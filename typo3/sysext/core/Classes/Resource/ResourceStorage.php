@@ -1314,10 +1314,8 @@ class ResourceStorage {
 		$this->assureFileWritePermissions($file);
 		// Call driver method to update the file and update file properties afterwards
 		$result = $this->driver->setFileContents($file, $contents);
-		$fileInfo = $this->driver->getFileInfo($file);
-		$fileInfo['sha1'] = $this->driver->hash($file, 'sha1');
-		$file->updateProperties($fileInfo);
-		$this->getFileRepository()->update($file);
+		$file->updateProperties(array('sha1' => $this->driver->hash($file, 'sha1')));
+		$this->updateFile($file);
 		return $result;
 	}
 
