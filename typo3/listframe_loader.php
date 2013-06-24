@@ -24,17 +24,14 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Redirects to real module if shortcut pressed
- *
- * Revised for TYPO3 3.6 2/2003 by Kasper Skårhøj
- * XHTML-trans compliant
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 require 'init.php';
 
-// Make instance:
-$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\ListFrameLoaderController');
-$SOBE->main();
+$listFrameLoaderController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\ListFrameLoaderController');
+$listFrameLoaderController->main();
 ?>

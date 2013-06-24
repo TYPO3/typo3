@@ -66,11 +66,19 @@ class FileController {
 	protected $fileData;
 
 	/**
+	 * Constructor
+	 */
+	public function __construct() {
+		$GLOBALS['SOBE'] = $this;
+		$this->init();
+	}
+
+	/**
 	 * Registering incoming data
 	 *
 	 * @return void
 	 */
-	public function init() {
+	protected function init() {
 		// Set the GPvars from outside
 		$this->file = GeneralUtility::_GP('file');
 		$this->CB = GeneralUtility::_GP('CB');

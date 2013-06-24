@@ -34,18 +34,16 @@ namespace TYPO3\CMS\Backend\Controller;
  */
 class LoginFramesetController {
 
-	// Internal, dynamic
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
-	public $content;
+	protected $content;
 
 	/**
 	 * Main function.
 	 * Creates the header code in XHTML, then the frameset for the two frames.
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function main() {
 		// Set doktype:
@@ -67,7 +65,6 @@ class LoginFramesetController {
 	 * Outputs the page content.
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function printContent() {
 		echo $this->content;

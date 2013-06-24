@@ -25,71 +25,11 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-$GLOBALS['BACK_PATH'] = '';
-require_once 'init.php';
+require 'init.php';
 
-/**
- * Extension of transfer data class
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- */
-class transferData extends \TYPO3\CMS\Backend\Form\DataPreprocessor {
-	/**
-	 * @var string
-	 * @todo Define visibility
-	 */
-	public $formname = 'loadform';
-
-	/**
-	 * @var boolean
-	 * @todo Define visibility
-	 */
-	public $loading = 1;
-
-	/**
-	 * Extra for show_item.php:
-	 *
-	 * @var array
-	 * @todo Define visibility
-	 */
-	public $theRecord = array();
-
-	/**
-	 * Register item function.
-	 *
-	 * @param string $table Table name
-	 * @param integer $id Record uid
-	 * @param string $field Field name
-	 * @param string $content Content string.
-	 * @return void
-	 * @todo Define visibility
-	 */
-	public function regItem($table, $id, $field, $content) {
-		$config = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
-		switch ($config['type']) {
-		case 'input':
-			if (isset($config['checkbox']) && $content == $config['checkbox']) {
-				$content = '';
-				break;
-			}
-			if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList($config['eval'], 'date')) {
-				$content = date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'], $content);
-			}
-			break;
-		case 'group':
-
-		case 'select':
-			break;
-		}
-		$this->theRecord[$field] = $content;
-	}
-}
-
-/**
- * @var $SOBE \TYPO3\CMS\Backend\Controller\ContentElement\ElementInformationController
- */
-$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\ContentElement\\ElementInformationController');
-$SOBE->init();
-$SOBE->main();
-$SOBE->printContent();
+$elementInformationController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+	'TYPO3\\CMS\\Backend\\Controller\\ContentElement\\ElementInformationController'
+);
+$elementInformationController->main();
+$elementInformationController->printContent();
 ?>
