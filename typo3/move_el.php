@@ -24,19 +24,14 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Move element wizard:
  * Moving pages or content elements (tt_content) around in the system via a page tree navigation.
  *
- * Revised for TYPO3 3.6 November/2003 by Kasper Skårhøj
- * XHTML compatible.
- *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-
-$BACK_PATH = '';
 require 'init.php';
-$LANG->includeLLFile('EXT:lang/locallang_misc.xlf');
 
 /**
  * Local extension of the page tree class
@@ -152,9 +147,7 @@ class ext_posMap_tt_content extends \TYPO3\CMS\Backend\Tree\View\PagePositionMap
 	}
 }
 
-// Make instance:
-$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\ContentElement\\MoveElementController');
-$SOBE->init();
-$SOBE->main();
-$SOBE->printContent();
+$moveElementController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\ContentElement\\MoveElementController');
+$moveElementController->main();
+$moveElementController->printContent();
 ?>

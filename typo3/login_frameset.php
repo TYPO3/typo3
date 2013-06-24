@@ -24,12 +24,11 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Login frameset
  *
  * This script generates a login-frameset used when the user must relogin.
- * Revised for TYPO3 3.6 November/2003 by Kasper Skårhøj
- * XHTML-frames compatible.
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
@@ -37,7 +36,7 @@ define('TYPO3_PROCEED_IF_NO_USER', 1);
 require 'init.php';
 
 // Make instance:
-$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\LoginFramesetController');
-$SOBE->main();
-$SOBE->printContent();
+$loginFramesetController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\LoginFramesetController');
+$loginFramesetController->main();
+$loginFramesetController->printContent();
 ?>

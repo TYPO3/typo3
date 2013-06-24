@@ -51,17 +51,26 @@ class ElementHistoryController {
 	public $doc;
 
 	/**
+	 * Constructor
+	 */
+	public function __construct() {
+		$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_show_rechis.xlf');
+		$GLOBALS['SOBE'] = $this;
+
+		$this->init();
+	}
+
+	/**
 	 * Initialize the module output
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
-	public function init() {
-		// Create internal template object:
+	protected function init() {
+		// Create internal template object
 		$this->doc = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->setModuleTemplate('EXT:backend/Resources/Private/Templates/show_rechis.html');
-		// Start the page header:
+		// Start the page header
 		$this->content .= $this->doc->header($GLOBALS['LANG']->getLL('title'));
 	}
 
@@ -69,7 +78,6 @@ class ElementHistoryController {
 	 * Generate module output
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function main() {
 		// Start history object
@@ -89,7 +97,6 @@ class ElementHistoryController {
 	 * Outputting the accumulated content to screen
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function printContent() {
 		$this->content .= $this->doc->endPage();
