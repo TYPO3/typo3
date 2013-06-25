@@ -204,13 +204,21 @@ class TypoScriptTemplateModuleController extends BaseScriptClass {
 			$markers['CONTENT'] = $this->content;
 		} else {
 			// Template pages:
-			$db = $this->getDatabaseConnection();
-			$res = $db->exec_SELECTquery('pages.uid, count(*) AS count, max(sys_template.root) AS root_max_val, min(sys_template.root) AS root_min_val', 'pages,sys_template', 'pages.uid=sys_template.pid' . BackendUtility::deleteClause('pages') . BackendUtility::versioningPlaceholderClause('pages') . BackendUtility::deleteClause('sys_template') . BackendUtility::versioningPlaceholderClause('sys_template'), 'pages.uid');
+			$records = $this->getDatabaseConnection()->exec_SELECTgetRows(
+				'pages.uid, count(*) AS count, max(sys_template.root) AS root_max_val, min(sys_template.root) AS root_min_val',
+				'pages,sys_template',
+				'pages.uid=sys_template.pid'
+					. BackendUtility::deleteClause('pages')
+					. BackendUtility::versioningPlaceholderClause('pages')
+					. BackendUtility::deleteClause('sys_template')
+					. BackendUtility::versioningPlaceholderClause('sys_template'),
+				'pages.uid',
+				'pages.pid, pages.sorting'
+			);
 			$pArray = array();
-			while ($row = $db->sql_fetch_assoc($res)) {
-				$this->setInPageArray($pArray, BackendUtility::BEgetRootLine($row['uid'], 'AND 1=1'), $row);
+			foreach ($records as $record) {
+				$this->setInPageArray($pArray, BackendUtility::BEgetRootLine($record['uid'], 'AND 1=1'), $record);
 			}
-			$db->sql_free_result($res);
 
 			$table = '<div class="table-fit"><table class="table table-striped table-hover" id="ts-overview">' .
 					'<thead>' .
