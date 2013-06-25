@@ -189,8 +189,18 @@ class TypoScriptTemplateModuleController extends \TYPO3\CMS\Backend\Module\BaseS
 				TABLE#ts-overview tr.t3-row-header td { padding: 2px 4px; font-weight:bold; color: #fff; }
 			';
 			// Template pages:
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('pages.uid, count(*) AS count, max(sys_template.root) AS root_max_val, min(sys_template.root) AS root_min_val', 'pages,sys_template', 'pages.uid=sys_template.pid' . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('pages') . \TYPO3\CMS\Backend\Utility\BackendUtility::versioningPlaceholderClause('pages') . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('sys_template') . \TYPO3\CMS\Backend\Utility\BackendUtility::versioningPlaceholderClause('sys_template'), 'pages.uid');
-			$templateArray = array();
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+				'pages.uid, count(*) AS count, max(sys_template.root) AS root_max_val, min(sys_template.root) AS root_min_val',
+				'pages,sys_template',
+				'pages.uid=sys_template.pid'
+					. \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('pages')
+					. \TYPO3\CMS\Backend\Utility\BackendUtility::versioningPlaceholderClause('pages')
+					. \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('sys_template')
+					. \TYPO3\CMS\Backend\Utility\BackendUtility::versioningPlaceholderClause('sys_template'),
+				'pages.uid',
+				'pages.sorting'
+			);
+
 			$pArray = array();
 			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 				$this->setInPageArray($pArray, \TYPO3\CMS\Backend\Utility\BackendUtility::BEgetRootLine($row['uid'], 'AND 1=1'), $row);
