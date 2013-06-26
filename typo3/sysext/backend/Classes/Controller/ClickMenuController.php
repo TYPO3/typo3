@@ -83,12 +83,21 @@ class ClickMenuController {
 	public $extClassArray = array();
 
 	/**
+	 * Constructor
+	 */
+	public function __construct() {
+		$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_misc.xlf');
+		$GLOBALS['SOBE'] = $this;
+
+		$this->init();
+	}
+
+	/**
 	 * Constructor function for script class.
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
-	public function init() {
+	protected function init() {
 		// Setting GPvars:
 		$this->backPath = GeneralUtility::_GP('backPath');
 		$this->item = GeneralUtility::_GP('item');
@@ -177,7 +186,6 @@ class ClickMenuController {
 	 * Main function - generating the click menu in whatever form it has.
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function main() {
 		$this->ajax = GeneralUtility::_GP('ajax') ? TRUE : FALSE;
@@ -210,7 +218,6 @@ class ClickMenuController {
 	 * End page and output content.
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function printContent() {
 		if (!$this->ajax) {

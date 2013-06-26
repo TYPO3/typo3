@@ -174,12 +174,21 @@ class ShortcutFrameController {
 	public $alternativeTableUid = array();
 
 	/**
+	 * Constructor
+	 */
+	public function __construct() {
+		$GLOBALS['SOBE'] = $this;
+		$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_misc.xlf');
+
+		$this->preinit();
+	}
+
+	/**
 	 * Pre-initialization - setting input variables for storing shortcuts etc.
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
-	public function preinit() {
+	protected function preinit() {
 		// Setting GPvars:
 		$this->isAjaxCall = (bool) GeneralUtility::_GP('ajax');
 		$this->modName = GeneralUtility::_GP('modName');
@@ -202,7 +211,6 @@ class ShortcutFrameController {
 	 * Adding shortcuts, editing shortcuts etc.
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function preprocess() {
 		// Default description
@@ -282,7 +290,6 @@ class ShortcutFrameController {
 	 * Initialize (page output)
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function init() {
 		$this->doc = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
@@ -324,7 +331,6 @@ class ShortcutFrameController {
 	 * Main function, creating content in the frame
 	 *
 	 * @return 	void
-	 * @todo Define visibility
 	 */
 	public function main() {
 		// By default, 5 groups are set
@@ -632,7 +638,6 @@ class ShortcutFrameController {
 	 * Outputting the accumulated content to screen
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function printContent() {
 		$content = '';

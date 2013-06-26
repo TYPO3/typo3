@@ -24,20 +24,16 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * New database item menu
  *
  * This script lets users choose a new database element to create.
  * Includes a wizard mode for visually pointing out the position of new pages
  *
- * Revised for TYPO3 3.6 November/2003 by Kasper Skårhøj
- * XHTML compliant
- *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-$BACK_PATH = '';
 require 'init.php';
-$LANG->includeLLFile('EXT:lang/locallang_misc.xlf');
 
 /**
  * Extension for the tree class that generates the tree of pages in the page-wizard mode
@@ -71,9 +67,7 @@ class localPageTree extends \TYPO3\CMS\Backend\Tree\View\PageTreeView {
 	}
 }
 
-// Make instance:
-$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\NewRecordController');
-$SOBE->init();
-$SOBE->main();
-$SOBE->printContent();
+$newRecordController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\NewRecordController');
+$newRecordController->main();
+$newRecordController->printContent();
 ?>

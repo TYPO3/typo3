@@ -24,19 +24,15 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Web>File: Create new folders in the filemounts
  *
- * Revised for TYPO3 3.6 November/2003 by Kasper Skårhøj
- *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-$BACK_PATH = '';
 require 'init.php';
 
-// Make instance:
-$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\File\\CreateFolderController');
-$SOBE->init();
-$SOBE->main();
-$SOBE->printContent();
+$createFolderController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\File\\CreateFolderController');
+$createFolderController->main();
+$createFolderController->printContent();
 ?>

@@ -142,7 +142,6 @@ class localPageTree extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
  */
 class rtePageTree extends localPageTree {
 
-
 }
 
 /**
@@ -268,7 +267,6 @@ class localFolderTree extends \TYPO3\CMS\Backend\Tree\View\FolderTreeView {
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class rteFolderTree extends localFolderTree {
-
 
 }
 

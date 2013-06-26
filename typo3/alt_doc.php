@@ -24,36 +24,31 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Main form rendering script
  * By sending certain parameters to this script you can bring up a form
  * which allows the user to edit the content of one or more database records.
  *
- * Revised for TYPO3 3.6 November/2003 by Kasper Skårhøj
- * XHTML compliant
- *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 require_once 'init.php';
-$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_alt_doc.xml');
 \TYPO3\CMS\Backend\Utility\BackendUtility::lockRecords();
 
-// Make instance:
-$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\EditDocumentController');
+$editDocumentController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\EditDocumentController');
 
 // Preprocessing, storing data if submitted to
-$SOBE->preInit();
+$editDocumentController->preInit();
 $formprotection = \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get();
 
 // Checks, if a save button has been clicked (or the doSave variable is sent)
-if ($SOBE->doProcessData()) {
+if ($editDocumentController->doProcessData()) {
 	if ($formprotection->validateToken(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('formToken'), 'editRecord')) {
-		$SOBE->processData();
+		$editDocumentController->processData();
 	}
 }
 
-// Main:
-$SOBE->init();
-$SOBE->main();
-$SOBE->printContent();
+$editDocumentController->init();
+$editDocumentController->main();
+$editDocumentController->printContent();
 ?>

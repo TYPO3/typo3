@@ -24,23 +24,21 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Folder tree in the File main module.
  *
- * Revised for TYPO3 3.6 2/2003 by Kasper Skårhøj
- * XHTML compliant
- *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-$BACK_PATH = '';
 require_once 'init.php';
 
 // Make instance if it is not an AJAX call
 if (!(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_AJAX)) {
-	$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\FileSystemNavigationFrameController');
-	$SOBE->init();
-	$SOBE->initPage();
-	$SOBE->main();
-	$SOBE->printContent();
+	$fileSystemNavigationFrameController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+		'TYPO3\\CMS\\Backend\\Controller\\FileSystemNavigationFrameController'
+	);
+	$fileSystemNavigationFrameController->initPage();
+	$fileSystemNavigationFrameController->main();
+	$fileSystemNavigationFrameController->printContent();
 }
 ?>

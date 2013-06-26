@@ -84,12 +84,21 @@ class EditFileController {
 	protected $fileObject;
 
 	/**
+	 * Constructor
+	 */
+	public function __construct() {
+		$GLOBALS['SOBE'] = $this;
+		$GLOBALS['BACK_PATH'] = '';
+
+		$this->init();
+	}
+
+	/**
 	 * Initialize script class
 	 *
 	 * @return 	void
-	 * @todo Define visibility
 	 */
-	public function init() {
+	protected function init() {
 		// Setting target, which must be a file reference to a file within the mounts.
 		$this->target = ($this->origTarget = ($fileIdentifier = GeneralUtility::_GP('target')));
 		$this->returnUrl = GeneralUtility::sanitizeLocalUrl(GeneralUtility::_GP('returnUrl'));
@@ -123,7 +132,6 @@ class EditFileController {
 	 * Main function, redering the actual content of the editing page
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function main() {
 		$docHeaderButtons = $this->getButtons();
@@ -201,7 +209,6 @@ class EditFileController {
 	 * Outputting the accumulated content to screen
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function printContent() {
 		echo $this->content;

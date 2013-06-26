@@ -24,25 +24,20 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Shortcut frame
  * Appears in the bottom frame of the backend frameset.
  * Provides links to registered shortcuts
  * If the 'cms' extension is loaded you will also have a field for entering page id/alias which will be found/edited
  *
- * Revised for TYPO3 3.6 2/2003 by Kasper Skårhøj
- * XHTML compliant output
- *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 require 'init.php';
-$LANG->includeLLFile('EXT:lang/locallang_misc.xlf');
 
-// Make instance:
-$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\ShortcutFrameController');
-$SOBE->preinit();
-$SOBE->preprocess();
-$SOBE->init();
-$SOBE->main();
-$SOBE->printContent();
+$shortcutFrameController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\ShortcutFrameController');
+$shortcutFrameController->preprocess();
+$shortcutFrameController->init();
+$shortcutFrameController->main();
+$shortcutFrameController->printContent();
 ?>
