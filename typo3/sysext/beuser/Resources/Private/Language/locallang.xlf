@@ -120,6 +120,14 @@
 			<trans-unit id="switchBackMode" xml:space="preserve">
 				<source>[switch-back mode]</source>
 			</trans-unit>
+			<trans-unit id="users" xml:space="preserve">
+				<source>Users</source>
+			</trans-unit>
+			<trans-unit id="compereUserList" xml:space="preserve">
+				<source>Compere user list</source>
+			</trans-unit>
+
+			
 		</body>
 	</file>
 </xliff>

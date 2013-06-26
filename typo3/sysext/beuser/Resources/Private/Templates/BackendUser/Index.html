@@ -31,7 +31,7 @@
 			</ul>
 
 			<f:form action="compare">
-				<f:form.submit value="Compare user list" />
+				<f:form.submit value="{f:translate(key: 'compereUserList')}" />
 			</f:form>
 
 		</bu:Section>
@@ -69,7 +69,7 @@
 					</f:comment>
 					<tr>
 						<td colspan="6">
-							<f:count subject="{backendUsers}" /> Users
+							<f:count subject="{backendUsers}" /> <f:translate key="users">Users</f:translate></td>
 						</td>
 					</tr>
 				</table>
@@ -93,7 +93,7 @@
 				</f:comment>
 				<tr>
 					<td colspan="6">
-						<f:count subject="{backendUsers}" /> Users
+						<f:count subject="{backendUsers}" /> <f:translate key="users">Users</f:translate></td>
 					</td>
 				</tr>
 			</table>
