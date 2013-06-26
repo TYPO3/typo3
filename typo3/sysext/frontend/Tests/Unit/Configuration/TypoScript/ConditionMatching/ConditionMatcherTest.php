@@ -370,6 +370,15 @@ class ConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 	/**
+	 * Tests whether numerical comparison does not match.
+	 *
+	 * @test
+	 */
+	public function globalVarConditionDoesNotMatchOnNotEqualExpression() {
+		$this->assertFalse($this->matchCondition->match('[globalVar = LIT:10 != 10]'));
+	}
+
+	/**
 	 * Tests whether numerical comparison matches.
 	 *
 	 * @test
