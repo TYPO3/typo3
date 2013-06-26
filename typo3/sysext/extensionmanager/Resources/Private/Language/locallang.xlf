@@ -150,6 +150,9 @@
 			<trans-unit id="searchTemplate.searchExtensions" xml:space="preserve">
 				<source>Search extensions</source>
 			</trans-unit>
+			<trans-unit id="extensionList.search" xml:space="preserve">
+				<source>Search:</source>
+			</trans-unit>
 			<trans-unit id="searchTemplate.submitButton" xml:space="preserve">
 				<source>Go</source>
 			</trans-unit>
