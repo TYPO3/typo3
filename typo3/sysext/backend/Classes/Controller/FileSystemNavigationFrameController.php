@@ -75,12 +75,20 @@ class FileSystemNavigationFrameController {
 	public $cMR;
 
 	/**
+	 * Constructor
+	 */
+	public function __construct() {
+		$GLOBALS['SOBE'] = $this;
+		$GLOBALS['BACK_PATH'] = '';
+		$this->init();
+	}
+
+	/**
 	 * Initialiation of the script class
 	 *
 	 * @return 	void
-	 * @todo Define visibility
 	 */
-	public function init() {
+	protected function init() {
 		// Setting backPath
 		$this->backPath = $GLOBALS['BACK_PATH'];
 		// Setting GPvars:
@@ -138,7 +146,6 @@ class FileSystemNavigationFrameController {
 	 * Main function, rendering the folder tree
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function main() {
 		// Produce browse-tree:
@@ -169,7 +176,6 @@ class FileSystemNavigationFrameController {
 	 * Outputting the accumulated content to screen
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function printContent() {
 		echo $this->content;

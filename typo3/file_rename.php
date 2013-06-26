@@ -24,19 +24,15 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Web>File: Renaming files and folders
  *
- * Revised for TYPO3 3.6 November/2003 by Kasper Skårhøj
- *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-$BACK_PATH = '';
 require 'init.php';
 
-// Make instance:
-$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\File\\RenameFileController');
-$SOBE->init();
-$SOBE->main();
-$SOBE->printContent();
+$renameFileController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\File\\RenameFileController');
+$renameFileController->main();
+$renameFileController->printContent();
 ?>

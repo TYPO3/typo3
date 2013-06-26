@@ -43,7 +43,6 @@ class DummyController {
 	 * Create content for the dummy script - outputting a blank page.
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function main() {
 		// Start page
@@ -56,7 +55,6 @@ class DummyController {
 	 * Outputting the accumulated content to screen
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function printContent() {
 		echo $this->content;

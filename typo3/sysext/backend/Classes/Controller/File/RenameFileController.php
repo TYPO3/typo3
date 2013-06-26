@@ -80,12 +80,21 @@ class RenameFileController {
 	public $content;
 
 	/**
-	 * Constructor function for class
-	 *
-	 * @return 	void
-	 * @todo Define visibility
+	 * Constructor
 	 */
-	public function init() {
+	public function __construct() {
+		$GLOBALS['SOBE'] = $this;
+		$GLOBALS['BACK_PATH'] = '';
+
+		$this->init();
+	}
+
+	/**
+	 * Initialize
+	 *
+	 * @return void
+	 */
+	protected function init() {
 		// Initialize GPvars:
 		$this->target = GeneralUtility::_GP('target');
 		$this->returnUrl = GeneralUtility::sanitizeLocalUrl(GeneralUtility::_GP('returnUrl'));
@@ -127,7 +136,6 @@ class RenameFileController {
 	 * Main function, rendering the content of the rename form
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function main() {
 		// Make page header:
@@ -184,7 +192,6 @@ class RenameFileController {
 	 * Outputting the accumulated content to screen
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function printContent() {
 		echo $this->content;

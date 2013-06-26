@@ -60,12 +60,21 @@ class NoDocumentsOpenController {
 	public $loadModules;
 
 	/**
-	 * Constructor, initialize.
+	 * Constructor
+	 */
+	public function __construct() {
+		$GLOBALS['SOBE'] = $this;
+		$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_alt_doc.xml');
+
+		$this->init();
+	}
+
+	/**
+	 * Initialize.
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
-	public function init() {
+	protected function init() {
 		// Start the template object:
 		$this->doc = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
 		$this->doc->bodyTagMargins['x'] = 5;
@@ -97,7 +106,6 @@ class NoDocumentsOpenController {
 	 * Rendering the content.
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function main() {
 		$msg = array();
@@ -144,7 +152,6 @@ class NoDocumentsOpenController {
 	 * Printing the content.
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function printContent() {
 		$this->content .= $this->doc->endPage();

@@ -24,20 +24,15 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Web>File: Editing documents
  *
- * Revised for TYPO3 3.6 2/2003 by Kasper Skårhøj
- * XHTML compliant (except textarea field)
- *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-$GLOBALS['BACK_PATH'] = '';
 require 'init.php';
 
-// Make instance:
-$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\File\\EditFileController');
-$SOBE->init();
-$SOBE->main();
-$SOBE->printContent();
+$editFileController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\File\\EditFileController');
+$editFileController->main();
+$editFileController->printContent();
 ?>

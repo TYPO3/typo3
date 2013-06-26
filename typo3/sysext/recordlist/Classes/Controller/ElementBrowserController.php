@@ -66,12 +66,22 @@ class ElementBrowserController {
 	public $doc;
 
 	/**
+	 * Constructor
+	 */
+	public function __construct() {
+		$GLOBALS['SOBE'] = $this;
+		$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_browse_links.xlf');
+		$GLOBALS['BACK_PATH'] = '';
+
+		$this->init();
+	}
+
+	/**
 	 * Not really needed but for backwards compatibility ...
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
-	public function init() {
+	protected function init() {
 		// Find "mode"
 		$this->mode = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('mode');
 		if (!$this->mode) {
@@ -87,7 +97,6 @@ class ElementBrowserController {
 	 * Main function, detecting the current mode of the element browser and branching out to internal methods.
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function main() {
 		// Clear temporary DB mounts
@@ -108,9 +117,7 @@ class ElementBrowserController {
 		// Look for alternative mountpoints
 		switch ((string) $this->mode) {
 			case 'rte':
-
 			case 'db':
-
 			case 'wizard':
 				// Setting alternative browsing mounts (ONLY local to browse_links.php this script so they stay "read-only")
 				$altMountPoints = trim($GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.altElementBrowserMountPoints'));
@@ -119,9 +126,7 @@ class ElementBrowserController {
 					$GLOBALS['WEBMOUNTS'] = $GLOBALS['BE_USER']->returnWebmounts();
 				}
 			case 'file':
-
 			case 'filedrag':
-
 			case 'folder':
 				// Setting additional read-only browsing file mounts
 				// @todo: add this feature for FAL and TYPO3 6.0
@@ -166,7 +171,6 @@ class ElementBrowserController {
 					$this->content = $this->browser->main_db();
 					break;
 				case 'file':
-
 				case 'filedrag':
 					$this->content = $this->browser->main_file();
 					break;
@@ -184,13 +188,11 @@ class ElementBrowserController {
 	 * Print module content
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function printContent() {
 		echo $this->content;
 	}
 
 }
-
 
 ?>

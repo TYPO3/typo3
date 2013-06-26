@@ -24,22 +24,17 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * No-document script
  * This is used by eg. the Doc module if no documents is registered as "open"
  * (a concept which is better known from the "classic backend"...)
  *
- * Revised for TYPO3 3.6 November/2003 by Kasper Skårhøj
- * XHTML compliant
- *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 require 'init.php';
-$LANG->includeLLFile('EXT:lang/locallang_alt_doc.xml');
 
-// Make instance:
-$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Backend\Controller\NoDocumentsOpenController');
-$SOBE->init();
-$SOBE->main();
-$SOBE->printContent();
+$noDocumentsOpenController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Backend\Controller\NoDocumentsOpenController');
+$noDocumentsOpenController->main();
+$noDocumentsOpenController->printContent();
 ?>

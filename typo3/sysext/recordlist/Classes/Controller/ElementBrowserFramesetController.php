@@ -45,7 +45,6 @@ class ElementBrowserFramesetController {
 	 * Creates the header code in XHTML, the JavaScript, then the frameset for the two frames.
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function main() {
 		// Setting GPvars:
@@ -84,13 +83,11 @@ class ElementBrowserFramesetController {
 	 * Outputs the page content.
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function printContent() {
 		echo $this->content;
 	}
 
 }
-
 
 ?>
