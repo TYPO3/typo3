@@ -2442,11 +2442,25 @@ function ' . $evalData . '(value) {
 				}
 				$itemArray[] = array('table' => $this_table, 'id' => $this_uid);
 				if (!$disabled && $show_thumbs) {
-					$rr = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL($this_table, $this_uid);
-					$imgs[] = '<span class="nobr">' . $this->getClickMenu(\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord($this_table, $rr, array(
-						'style' => 'vertical-align:top',
-						'title' => htmlspecialchars((\TYPO3\CMS\Backend\Utility\BackendUtility::getRecordPath($rr['pid'], $perms_clause, 15) . ' [UID: ' . $rr['uid'] . ']'))
-					)), $this_table, $this_uid) . '&nbsp;' . \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle($this_table, $rr, TRUE) . ' <span class="typo3-dimmed"><em>[' . $rr['uid'] . ']</em></span>' . '</span>';
+					if ($this_table === 'sys_file') {
+						if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($this_uid)) {
+							$fileObject = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getFileObject($this_uid);
+							if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], $fileObject->getExtension())) {
+								$imageUrl = $fileObject->process(\TYPO3\CMS\Core\Resource\ProcessedFile::CONTEXT_IMAGEPREVIEW, array())->getPublicUrl(TRUE);
+								$imgTag = '<img src="' . $imageUrl . '" alt="' . htmlspecialchars($fileObject->getName()) . '" />';
+							} else {
+								// Icon
+								$imgTag = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForFile(strtolower($fileObject->getExtension()), array('title' => $fileObject->getName()));
+							}
+							$imgs[] = '<span class="nobr">' . $imgTag . htmlspecialchars($fileObject->getName()) . '</span>';
+						}
+					} else {
+						$rr = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL($this_table, $this_uid);
+						$imgs[] = '<span class="nobr">' . $this->getClickMenu(\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord($this_table, $rr, array(
+							'style' => 'vertical-align:top',
+							'title' => htmlspecialchars((\TYPO3\CMS\Backend\Utility\BackendUtility::getRecordPath($rr['pid'], $perms_clause, 15) . ' [UID: ' . $rr['uid'] . ']'))
+						)), $this_table, $this_uid) . '&nbsp;' . \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle($this_table, $rr, TRUE) . ' <span class="typo3-dimmed"><em>[' . $rr['uid'] . ']</em></span>' . '</span>';
+					}
 				}
 			}
 			$thumbsnail = '';
