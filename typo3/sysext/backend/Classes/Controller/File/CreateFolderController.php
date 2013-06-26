@@ -91,12 +91,21 @@ class CreateFolderController {
 	public $content;
 
 	/**
-	 * Constructor function for class
+	 * Constructor
+	 */
+	public function __construct() {
+		$GLOBALS['SOBE'] = $this;
+		$GLOBALS['BACK_PATH'] = '';
+
+		$this->init();
+	}
+
+	/**
+	 * Initialize
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
-	public function init() {
+	protected function init() {
 		// Initialize GPvars:
 		$this->number = GeneralUtility::_GP('number');
 		$this->target = ($combinedIdentifier = GeneralUtility::_GP('target'));
@@ -139,7 +148,6 @@ class CreateFolderController {
 	 * Main function, rendering the main module content
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function main() {
 		// Start content compilation
@@ -244,7 +252,6 @@ class CreateFolderController {
 	 * Outputting the accumulated content to screen
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function printContent() {
 		echo $this->content;

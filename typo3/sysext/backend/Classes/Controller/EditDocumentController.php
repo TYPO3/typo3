@@ -352,10 +352,17 @@ class EditDocumentController {
 	public $dontStoreDocumentRef;
 
 	/**
+	 * Constructor
+	 */
+	public function __construct() {
+		$GLOBALS['SOBE'] = $this;
+		$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_alt_doc.xml');
+	}
+
+	/**
 	 * First initialization.
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function preInit() {
 		if (GeneralUtility::_GP('justLocalized')) {
@@ -408,7 +415,6 @@ class EditDocumentController {
 	 * Detects, if a save command has been triggered.
 	 *
 	 * @return boolean TRUE, then save the document (data submitted)
-	 * @todo Define visibility
 	 */
 	public function doProcessData() {
 		$out = $this->doSave || isset($_POST['_savedok_x']) || isset($_POST['_saveandclosedok_x']) || isset($_POST['_savedokview_x']) || isset($_POST['_savedoknew_x']) || isset($_POST['_translation_savedok_x']) || isset($_POST['_translation_savedokclear_x']);
@@ -419,7 +425,6 @@ class EditDocumentController {
 	 * Do processing of data, submitting it to TCEmain.
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function processData() {
 		// GPvars specifically for processing:
@@ -554,7 +559,6 @@ class EditDocumentController {
 	 * Initialize the normal module operation
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function init() {
 		// Setting more GPvars:
@@ -632,7 +636,6 @@ class EditDocumentController {
 	 * Main module operation
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function main() {
 		// Begin edit:
@@ -699,7 +702,6 @@ class EditDocumentController {
 	 * Outputting the accumulated content to screen
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function printContent() {
 		echo $this->content;

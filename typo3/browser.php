@@ -24,18 +24,15 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * This is the frameset to the file/record browser window
  *
- * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
- * XHTML-frames compatible.
- *
- * @author 	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 require 'init.php';
 
-// Make instance:
-$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Recordlist\\Controller\\ElementBrowserFramesetController');
-$SOBE->main();
-$SOBE->printContent();
+$elementBrowserFramesetController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Recordlist\\Controller\\ElementBrowserFramesetController');
+$elementBrowserFramesetController->main();
+$elementBrowserFramesetController->printContent();
 ?>

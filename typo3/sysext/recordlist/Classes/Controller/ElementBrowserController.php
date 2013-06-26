@@ -66,12 +66,22 @@ class ElementBrowserController {
 	public $doc;
 
 	/**
+	 * Constructor
+	 */
+	public function __construct() {
+		$GLOBALS['SOBE'] = $this;
+		$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_browse_links.xlf');
+		$GLOBALS['BACK_PATH'] = '';
+
+		$this->init();
+	}
+
+	/**
 	 * Not really needed but for backwards compatibility ...
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
-	public function init() {
+	protected function init() {
 		// Find "mode"
 		$this->mode = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('mode');
 		if (!$this->mode) {
@@ -87,7 +97,6 @@ class ElementBrowserController {
 	 * Main function, detecting the current mode of the element browser and branching out to internal methods.
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function main() {
 		// Clear temporary DB mounts
@@ -107,34 +116,30 @@ class ElementBrowserController {
 		$this->content = '';
 		// Look for alternative mountpoints
 		switch ((string) $this->mode) {
-		case 'rte':
-
-		case 'db':
-
-		case 'wizard':
-			// Setting alternative browsing mounts (ONLY local to browse_links.php this script so they stay "read-only")
-			$altMountPoints = trim($GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.altElementBrowserMountPoints'));
-			if ($altMountPoints) {
-				$GLOBALS['BE_USER']->groupData['webmounts'] = implode(',', array_unique(\TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $altMountPoints)));
-				$GLOBALS['WEBMOUNTS'] = $GLOBALS['BE_USER']->returnWebmounts();
-			}
-		case 'file':
-
-		case 'filedrag':
-
-		case 'folder':
-			// Setting additional read-only browsing file mounts
-			// @todo: add this feature for FAL and TYPO3 6.0
-			$altMountPoints = trim($GLOBALS['BE_USER']->getTSConfigVal('options.folderTree.altElementBrowserMountPoints'));
-			if ($altMountPoints) {
-				$altMountPoints = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $altMountPoints);
-				foreach ($altMountPoints as $filePathRelativeToFileadmindir) {
-					$GLOBALS['BE_USER']->addFileMount('', $filePathRelativeToFileadmindir, $filePathRelativeToFileadmindir, 1, 'readonly');
+			case 'rte':
+			case 'db':
+			case 'wizard':
+				// Setting alternative browsing mounts (ONLY local to browse_links.php this script so they stay "read-only")
+				$altMountPoints = trim($GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.altElementBrowserMountPoints'));
+				if ($altMountPoints) {
+					$GLOBALS['BE_USER']->groupData['webmounts'] = implode(',', array_unique(\TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $altMountPoints)));
+					$GLOBALS['WEBMOUNTS'] = $GLOBALS['BE_USER']->returnWebmounts();
 				}
-				$GLOBALS['BE_USER']->getFileStorages();
-				$GLOBALS['FILEMOUNTS'] = $GLOBALS['BE_USER']->groupData['filemounts'];
-			}
-			break;
+			case 'file':
+			case 'filedrag':
+			case 'folder':
+				// Setting additional read-only browsing file mounts
+				// @todo: add this feature for FAL and TYPO3 6.0
+				$altMountPoints = trim($GLOBALS['BE_USER']->getTSConfigVal('options.folderTree.altElementBrowserMountPoints'));
+				if ($altMountPoints) {
+					$altMountPoints = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $altMountPoints);
+					foreach ($altMountPoints as $filePathRelativeToFileadmindir) {
+						$GLOBALS['BE_USER']->addFileMount('', $filePathRelativeToFileadmindir, $filePathRelativeToFileadmindir, 1, 'readonly');
+					}
+					$GLOBALS['BE_USER']->getFileStorages();
+					$GLOBALS['FILEMOUNTS'] = $GLOBALS['BE_USER']->groupData['filemounts'];
+				}
+				break;
 		}
 		// Render type by user func
 		$browserRendered = FALSE;
@@ -159,23 +164,22 @@ class ElementBrowserController {
 			$GLOBALS['BE_USER']->pushModuleData('browse_links.php', $modData);
 			// Output the correct content according to $this->mode
 			switch ((string) $this->mode) {
-			case 'rte':
-				$this->content = $this->browser->main_rte();
-				break;
-			case 'db':
-				$this->content = $this->browser->main_db();
-				break;
-			case 'file':
-
-			case 'filedrag':
-				$this->content = $this->browser->main_file();
-				break;
-			case 'folder':
-				$this->content = $this->browser->main_folder();
-				break;
-			case 'wizard':
-				$this->content = $this->browser->main_rte(1);
-				break;
+				case 'rte':
+					$this->content = $this->browser->main_rte();
+					break;
+				case 'db':
+					$this->content = $this->browser->main_db();
+					break;
+				case 'file':
+				case 'filedrag':
+					$this->content = $this->browser->main_file();
+					break;
+				case 'folder':
+					$this->content = $this->browser->main_folder();
+					break;
+				case 'wizard':
+					$this->content = $this->browser->main_rte(1);
+					break;
 			}
 		}
 	}
@@ -184,13 +188,11 @@ class ElementBrowserController {
 	 * Print module content
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function printContent() {
 		echo $this->content;
 	}
 
 }
-
 
 ?>

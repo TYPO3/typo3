@@ -157,12 +157,22 @@ class NewRecordController {
 	public $tRows;
 
 	/**
+	 * Constructor
+	 */
+	public function __construct() {
+		$GLOBALS['SOBE'] = $this;
+		$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_misc.xlf');
+		$GLOBALS['BACK_PATH'] = '';
+
+		$this->init();
+	}
+
+	/**
 	 * Constructor function for the class
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
-	public function init() {
+	protected function init() {
 		// Page-selection permission clause (reading)
 		$this->perms_clause = $GLOBALS['BE_USER']->getPagePermsClause(1);
 		// This will hide records from display - it has nothing to do with user rights!!
@@ -221,7 +231,6 @@ class NewRecordController {
 	 * Main processing, creating the list of new record tables to select from
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function main() {
 		// If there was a page - or if the user is admin (admins has access to the root) we proceed:
@@ -568,7 +577,6 @@ class NewRecordController {
 	 * Ending page output and echo'ing content to browser.
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function printContent() {
 		echo $this->content;

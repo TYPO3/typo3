@@ -24,18 +24,15 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Dummy document - displays nothing but background color.
- *
- * Revised for TYPO3 3.6 2/2003 by Kasper Skårhøj
- * XHTML compliant content
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 require 'init.php';
 
-// Make instance:
-$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\DummyController');
-$SOBE->main();
-$SOBE->printContent();
+$dummyController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\DummyController');
+$dummyController->main();
+$dummyController->printContent();
 ?>

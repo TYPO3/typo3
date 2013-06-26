@@ -24,6 +24,7 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Context menu
  *
@@ -35,17 +36,11 @@
  *
  * If you want to integrate a context menu in your scripts, please see template::getContextMenuCode()
  *
- * Revised for TYPO3 3.6 2/2003 by Kasper Skårhøj
- * XHTML compliant
- *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 require 'init.php';
-$LANG->includeLLFile('EXT:lang/locallang_misc.xlf');
 
-// Make instance:
-$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\ClickMenuController');
-$SOBE->init();
+$clickMenuController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\ClickMenuController');
 
 /**
  * Include files for extra click menu options
@@ -55,6 +50,6 @@ foreach ($SOBE->include_once as $INC_FILE) {
 	include_once $INC_FILE;
 }
 
-$SOBE->main();
-$SOBE->printContent();
+$clickMenuController->main();
+$clickMenuController->printContent();
 ?>

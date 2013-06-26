@@ -97,12 +97,21 @@ class PageTreeNavigationController {
 	public $hasFilterBox;
 
 	/**
+	 * Constructor
+	 */
+	public function __construct() {
+		$GLOBALS['SOBE'] = $this;
+		$GLOBALS['BACK_PATH'] = '';
+
+		$this->init();
+	}
+
+	/**
 	 * Initialiation of the class
 	 *
 	 * @return 	void
-	 * @todo Define visibility
 	 */
-	public function init() {
+	protected function init() {
 		// Setting backPath
 		$this->backPath = $GLOBALS['BACK_PATH'];
 		// Setting GPvars:
@@ -187,7 +196,6 @@ class PageTreeNavigationController {
 	 * Main function, rendering the browsable page tree
 	 *
 	 * @return 	void
-	 * @todo Define visibility
 	 */
 	public function main() {
 		// Produce browse-tree:
@@ -232,7 +240,6 @@ class PageTreeNavigationController {
 	 * Outputting the accumulated content to screen
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function printContent() {
 		echo $this->content;

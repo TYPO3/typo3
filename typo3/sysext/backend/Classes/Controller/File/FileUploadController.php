@@ -80,12 +80,21 @@ class FileUploadController {
 	protected $folderObject;
 
 	/**
-	 * Constructor for initializing the class
+	 * Constructor
+	 */
+	public function __construct() {
+		$GLOBALS['BACK_PATH'] = '';
+		$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_misc.xlf');
+		$GLOBALS['SOBE'] = $this;
+		$this->init();
+	}
+
+	/**
+	 * Initialize
 	 *
 	 * @return 	void
-	 * @todo Define visibility
 	 */
-	public function init() {
+	protected function init() {
 		// Initialize GPvars:
 		$this->target = GeneralUtility::_GP('target');
 		$this->returnUrl = GeneralUtility::sanitizeLocalUrl(GeneralUtility::_GP('returnUrl'));
@@ -116,7 +125,6 @@ class FileUploadController {
 	 * Main function, rendering the upload file form fields
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function main() {
 		// Make page header:
@@ -185,7 +193,6 @@ class FileUploadController {
 	 * Outputting the accumulated content to screen
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function printContent() {
 		echo $this->content;
