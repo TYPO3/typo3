@@ -317,6 +317,19 @@ class OpenidService extends AbstractService {
 			// We just log it and do not return any records.
 			$this->writeLog($e->getMessage());
 		}
+
+		// Hook to modify the user record, e.g. to register a new user
+		if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['openid']['getUserRecord']) && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['openid']['getUserRecord'])) {
+			$_params = array(
+				'record' => &$record,
+				'response' => $this->openIDResponse,
+				'authInfo' => $this->authenticationInformation
+			);
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['openid']['getUserRecord'] as $funcName) {
+				GeneralUtility::callUserFunction($funcName, $_params, $this);
+			}
+		}
+
 		return $record;
 	}
 
@@ -360,6 +373,18 @@ class OpenidService extends AbstractService {
 			$this->writeLog('Could not create authentication request for OpenID identifier \'%s\'', $openIDIdentifier);
 			return;
 		}
+
+		// Hook to modify the auth request object, e.g. to request additional attributes
+		if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['openid']['authRequest']) && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['openid']['authRequest'])) {
+			$_params = array(
+				'authRequest' => $authenticationRequest,
+				'authInfo' => $this->authenticationInformation
+			);
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['openid']['authRequest'] as $funcName) {
+				GeneralUtility::callUserFunction($funcName, $_params, $this);
+			}
+		}
+
 		// Redirect the user to the OpenID server for authentication.
 		// Store the token for this authentication so we can verify the
 		// response.
