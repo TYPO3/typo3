@@ -40,6 +40,7 @@
 			"bJQueryUI":true,
 			"bLengthChange":false,
 			'iDisplayLength':15,
+			"oLanguage": {"sSearch": TYPO3.l10n.localize('extensionList.search')},
 			"bStateSave":true,
 			"fnDrawCallback": bindActions,
 			'aoColumns': [
