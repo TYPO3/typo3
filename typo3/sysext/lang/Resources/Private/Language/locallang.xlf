@@ -63,6 +63,16 @@
 			<trans-unit id="flashmessage.canceled" xml:space="preserve">
 				<source>The process has been canceled.</source>
 			</trans-unit>
+
+			<trans-unit id="table.language" xml:space="preserve">
+				<source>Language</source>
+			</trans-unit>
+			<trans-unit id="table.locale" xml:space="preserve">
+				<source>Locale</source>
+			</trans-unit>
+			<trans-unit id="table.extension" xml:space="preserve">
+				<source>Extension</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
