@@ -12,7 +12,7 @@
 	</f:comment>
 
 	<f:if condition="{compareUserList}">
-		<bu:Section title="Compare" collapsible="TRUE">
+		<bu:Section title="{f:translate(key: 'section.compare', default: 'Compare')}" collapsible="TRUE">
 			<ul id="compareUsers">
 				<f:for each="{compareUserList}" as="compareUser">
 					<li>
@@ -31,7 +31,7 @@
 			</ul>
 
 			<f:form action="compare">
-				<f:form.submit value="Compare user list" />
+				<f:form.submit value="{f:translate(key: 'compareUserList', default: 'Compare user list')}" />
 			</f:form>
 
 		</bu:Section>
@@ -69,7 +69,7 @@
 					</f:comment>
 					<tr>
 						<td colspan="6">
-							<f:count subject="{backendUsers}" /> Users
+							<f:count subject="{backendUsers}" /> <f:translate key="users">Users</f:translate>
 						</td>
 					</tr>
 				</table>
@@ -93,7 +93,7 @@
 				</f:comment>
 				<tr>
 					<td colspan="6">
-						<f:count subject="{backendUsers}" /> Users
+						<f:count subject="{backendUsers}" /> <f:translate key="users">Users</f:translate>
 					</td>
 				</tr>
 			</table>
