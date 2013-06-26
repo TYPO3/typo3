@@ -121,7 +121,7 @@
 				<source>[switch-back mode]</source>
 			</trans-unit>
 			<trans-unit id="confirm" xml:space="preserve">
-				<source>Are you sure you want to delete this backend user %s?</source>
+				<source>Are you sure you want to delete this backend user \'%s\'?</source>
 			</trans-unit>
 		</body>
 	</file>
