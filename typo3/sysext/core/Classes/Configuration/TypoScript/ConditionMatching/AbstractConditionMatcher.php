@@ -481,7 +481,7 @@ abstract class AbstractConditionMatcher {
 				$found = FALSE;
 				$rightValueParts = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('|', $rightValue);
 				foreach ($rightValueParts as $rightValueSingle) {
-					if ($leftValue === doubleval($rightValueSingle)) {
+					if ($leftValue == doubleval($rightValueSingle)) {
 						$found = TRUE;
 						break;
 					}
