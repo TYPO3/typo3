@@ -55,17 +55,23 @@ class ShortcutViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackend
 	 * @see template::makeShortcutIcon()
 	 */
 	public function render(array $getVars = array(), array $setVars = array()) {
-		$doc = $this->getDocInstance();
-		$currentRequest = $this->controllerContext->getRequest();
-		$extensionName = $currentRequest->getControllerExtensionName();
-		$moduleName = $currentRequest->getPluginName();
-		if (count($getVars) === 0) {
-			$modulePrefix = strtolower('tx_' . $extensionName . '_' . $moduleName);
-			$getVars = array('id', 'M', $modulePrefix);
+		$enableBookmarks = $GLOBALS['BE_USER']->getTSConfigVal('options.enableBookmarks');
+
+		if ($enableBookmarks) {
+			$doc = $this->getDocInstance();
+			$currentRequest = $this->controllerContext->getRequest();
+			$extensionName = $currentRequest->getControllerExtensionName();
+			$moduleName = $currentRequest->getPluginName();
+			if (count($getVars) === 0) {
+				$modulePrefix = strtolower('tx_' . $extensionName . '_' . $moduleName);
+				$getVars = array('id', 'M', $modulePrefix);
+			}
+			$getList = implode(',', $getVars);
+			$setList = implode(',', $setVars);
+			return $doc->makeShortcutIcon($getList, $setList, $moduleName);
 		}
-		$getList = implode(',', $getVars);
-		$setList = implode(',', $setVars);
-		return $doc->makeShortcutIcon($getList, $setList, $moduleName);
+		return '';
+
 	}
 }
 
