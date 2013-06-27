@@ -152,6 +152,8 @@ class FilesContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractConte
 			});
 		}
 		foreach ($fileObjects as $key => $fileObject) {
+			$GLOBALS['TSFE']->register['FILE_NUM_CURRENT'] = $key;
+			$GLOBALS['TSFE']->register['count_FILES'] = count($fileObjects);
 			$this->cObj->setCurrentFile($fileObject);
 			$content .= $this->cObj->cObjGetSingle($splitConf[$key]['renderObj'], $splitConf[$key]['renderObj.']);
 		}
