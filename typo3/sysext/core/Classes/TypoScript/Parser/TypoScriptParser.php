@@ -748,6 +748,28 @@ class TypoScriptParser {
 												$included_text = $included_text['typoscript'];
 											}
 											$newString .= $included_text . LF;
+
+											// load default TypoScript for content rendering templates like
+											// css_styled_content if those have been included through INCLUDE_TYPOSCRIPT
+											$filePointer = strtolower(trim($sourceParts[1]));
+											if (GeneralUtility::isFirstPartOfStr($filePointer, 'ext')) {
+												$filePointerPathParts = explode('/', substr($filePointer, 4));
+
+												// remove file part, determine whether to load setup or constants
+												list($includeType, ) = explode('.', array_pop($filePointerPathParts));
+
+												if (in_array($includeType, array('setup', 'constants'))) {
+													// adapt extension key to required format (no underscores)
+													$filePointerPathParts[0] = str_replace('_', '', $filePointerPathParts[0]);
+
+													// load default TypoScript
+													$defaultTypoScriptKey = implode('/', $filePointerPathParts) . '/';
+													$defaultTypoScript = $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_' . $includeType . '.'][$defaultTypoScriptKey];
+
+													$newString .= $defaultTypoScript;
+												}
+											}
+
 										} else {
 											$newString .= '
 ###
