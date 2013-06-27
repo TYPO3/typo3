@@ -30,7 +30,7 @@ class ArrayConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\AbstractT
 	/**
 	 * @var array<string>
 	 */
-	protected $sourceTypes = array('array');
+	protected $sourceTypes = array('string', 'array');
 
 	/**
 	 * @var string
@@ -43,9 +43,21 @@ class ArrayConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\AbstractT
 	protected $priority = 1;
 
 	/**
-	 * Actually convert from $source to $targetType, in fact a noop here.
+	 * We can only convert empty strings to array or array to array.
 	 *
-	 * @param array $source
+	 * @param mixed $source
+	 * @param string $targetType
+	 * @return boolean
+	 */
+	public function canConvertFrom($source, $targetType) {
+		return is_string($source) && $source === '' || is_array($source);
+	}
+
+	/**
+	 * Convert from $source to $targetType, a noop if the source is an array.
+	 * If it is an empty string it will be converted to an empty array.
+	 *
+	 * @param string|array $source
 	 * @param string $targetType
 	 * @param array $convertedChildProperties
 	 * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration
@@ -53,6 +65,12 @@ class ArrayConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\AbstractT
 	 * @api
 	 */
 	public function convertFrom($source, $targetType, array $convertedChildProperties = array(), \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration = NULL) {
+		if (is_string($source)) {
+			if ($source === '') {
+				$source = array();
+			}
+		}
+
 		return $source;
 	}
 }
