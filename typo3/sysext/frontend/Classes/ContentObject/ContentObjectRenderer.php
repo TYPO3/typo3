@@ -5376,6 +5376,12 @@ class ContentObjectRenderer {
 					case 'data':
 						$retVal = \TYPO3\CMS\Core\Utility\DebugUtility::viewArray($this->data);
 						break;
+					case 'register':
+						$retVal = \TYPO3\CMS\Core\Utility\DebugUtility::viewArray($GLOBALS['TSFE']->register);
+						break;
+					case 'page':
+						$retVal = \TYPO3\CMS\Core\Utility\DebugUtility::viewArray($GLOBALS['TSFE']->page);
+						break;
 					}
 					break;
 				}
