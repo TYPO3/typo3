@@ -239,6 +239,52 @@ class ActionControllerTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
 	 * @test
+	 */
+	public function resolveViewObjectNameUsesDeprecatedViewObjectNamePatternForExtensionsWithoutVendor() {
+		eval('class Tx_MyPackage_View_MyController_MyActionMyFormat {}');
+
+		$mockRequest = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Request', array(), array(), '', FALSE);
+		$mockRequest->expects($this->once())->method('getControllerExtensionName')->will($this->returnValue('MyPackage'));
+		$mockRequest->expects($this->once())->method('getControllerName')->will($this->returnValue('MyController'));
+		$mockRequest->expects($this->once())->method('getControllerActionName')->will($this->returnValue('MyAction'));
+		$mockRequest->expects($this->once())->method('getControllerVendorName')->will($this->returnValue(NULL));
+		$mockRequest->expects($this->atLeastOnce())->method('getFormat')->will($this->returnValue('MyFormat'));
+		$mockObjectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerInterface', array(), array(), '', FALSE);
+		$mockController = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\ActionController', array('dummy'), array(), '', FALSE);
+		$mockController->_set('request', $mockRequest);
+		$mockController->_set('objectManager', $mockObjectManager);
+
+		$this->assertEquals(
+			'Tx_MyPackage_View_MyController_MyActionMyFormat',
+			$mockController->_call('resolveViewObjectName')
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function resolveViewObjectNameUsesNamespacedViewObjectNamePatternForExtensionsWithVendor() {
+		eval('namespace MyVendor\MyPackage\View\MyController; class MyActionMyFormat {}');
+
+		$mockRequest = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Request', array(), array(), '', FALSE);
+		$mockRequest->expects($this->once())->method('getControllerExtensionName')->will($this->returnValue('MyPackage'));
+		$mockRequest->expects($this->once())->method('getControllerName')->will($this->returnValue('MyController'));
+		$mockRequest->expects($this->once())->method('getControllerActionName')->will($this->returnValue('MyAction'));
+		$mockRequest->expects($this->once())->method('getControllerVendorName')->will($this->returnValue('MyVendor'));
+		$mockRequest->expects($this->atLeastOnce())->method('getFormat')->will($this->returnValue('MyFormat'));
+		$mockObjectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerInterface', array(), array(), '', FALSE);
+		$mockController = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\ActionController', array('dummy'), array(), '', FALSE);
+		$mockController->_set('request', $mockRequest);
+		$mockController->_set('objectManager', $mockObjectManager);
+
+		$this->assertEquals(
+			'MyVendor\MyPackage\View\MyController\MyActionMyFormat',
+			$mockController->_call('resolveViewObjectName')
+		);
+	}
+
+	/**
+	 * @test
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function resolveActionMethodNameReturnsTheCurrentActionMethodNameFromTheRequest() {
