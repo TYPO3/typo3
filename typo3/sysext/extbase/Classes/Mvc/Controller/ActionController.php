@@ -59,7 +59,14 @@ class ActionController extends \TYPO3\CMS\Extbase\Mvc\Controller\AbstractControl
 	 * @var string
 	 * @api
 	 */
-	protected $viewObjectNamePattern = 'Tx_@extension_View_@controller_@action@format';
+	protected $viewObjectNamePattern = '@vendor\@extension\View\@controller\@action@format';
+
+	/**
+	 * @var string
+	 * @api
+	 * @deprecated since Extbase 6.2, will be removed two versions later
+	 */
+	protected $deprecatedViewObjectNamePattern = 'Tx_@extension_View_@controller_@action@format';
 
 	/**
 	 * A list of formats and object names of the views which should render them.
@@ -372,7 +379,14 @@ class ActionController extends \TYPO3\CMS\Extbase\Mvc\Controller\AbstractControl
 	 * @api
 	 */
 	protected function resolveViewObjectName() {
-		$possibleViewName = $this->viewObjectNamePattern;
+		$vendorName = $this->request->getControllerVendorName();
+
+		if ($vendorName !== NULL) {
+			$possibleViewName = str_replace('@vendor', $vendorName, $this->viewObjectNamePattern);
+		} else {
+			$possibleViewName = $this->deprecatedViewObjectNamePattern;
+		}
+
 		$extensionName = $this->request->getControllerExtensionName();
 		$possibleViewName = str_replace('@extension', $extensionName, $possibleViewName);
 		$possibleViewName = str_replace('@controller', $this->request->getControllerName(), $possibleViewName);
