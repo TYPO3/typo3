@@ -341,7 +341,8 @@ class ActionController extends \TYPO3\CMS\Extbase\Mvc\Controller\AbstractControl
 		}
 		if (!isset($view)) {
 			$view = $this->objectManager->create('TYPO3\\CMS\\Extbase\\Mvc\\View\\NotFoundView');
-			$view->assign('errorMessage', 'No template was found. View could not be resolved for action "' . $this->request->getControllerActionName() . '"');
+			$view->assign('errorMessage', 'No template was found. View could not be resolved for action "'
+				. $this->request->getControllerActionName() . '" in class "' . $this->request->getControllerObjectName() . '"');
 		}
 		$view->setControllerContext($this->controllerContext);
 		if (method_exists($view, 'injectSettings')) {
