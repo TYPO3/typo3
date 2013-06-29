@@ -330,7 +330,7 @@ class SetupModuleController {
 			\TYPO3\CMS\Backend\Utility\BackendUtility::setUpdateSignal('updatePageTree');
 		}
 		// Start page:
-		$this->doc->loadJavascriptLib('md5.js');
+		$this->doc->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/md5.js');
 		// Use a wrapper div
 		$this->content .= '<div id="user-setup-wrapper">';
 		// Load available backend modules
