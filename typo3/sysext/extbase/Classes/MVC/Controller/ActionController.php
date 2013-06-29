@@ -284,7 +284,8 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 		}
 		if (!isset($view)) {
 			$view = $this->objectManager->create('Tx_Extbase_MVC_View_NotFoundView');
-			$view->assign('errorMessage', 'No template was found. View could not be resolved for action "' . $this->request->getControllerActionName() . '"');
+			$view->assign('errorMessage', 'No template was found. View could not be resolved for action "'
+				. $this->request->getControllerActionName() . '" in class "' . $this->request->getControllerObjectName() . '"');
 		}
 		$view->setControllerContext($this->controllerContext);
 
