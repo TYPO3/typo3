@@ -311,9 +311,13 @@ TYPO3.EM.GridColumns.ExtensionTitle = {
 		if (value == '') {
 			value = '[no title]';
 		}
-		if (record.data.reviewstate < 0) {
+		if (record.data.reviewstate == -1) {
 			metaData.css += ' insecureExtension';
 			description += '<br><br><strong>' + TYPO3.l10n.localize('insecureExtension') + '</strong>';
+		}
+		if (record.data.reviewstate == -2) {
+			metaData.css += ' outdatedExtension';
+			description += '<br><br><strong>' + TYPO3.l10n.localize('outdatedExtension') + '</strong>';
 		}
 		if (description) {
 			metaData.attr = 'ext:qtip="' + Ext.util.Format.htmlEncode(description) + '"';

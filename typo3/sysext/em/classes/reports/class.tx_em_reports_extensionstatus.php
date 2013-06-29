@@ -82,6 +82,8 @@ class tx_em_reports_ExtensionStatus  implements tx_reports_StatusProvider {
 				'mainRepositoryCheck' => $terStatus,
 				'extensionsSecurityStatusNotInstalled' => $status[0],
 				'extensionsSecurityStatusInstalled' => $status[1],
+				'extensionsOutdatedStatusNotInstalled' => $status[2],
+				'extensionsOutdatedStatusInstalled' => $status[3],
 			);
 		}
 		return $statuses;
@@ -144,18 +146,28 @@ class tx_em_reports_ExtensionStatus  implements tx_reports_StatusProvider {
 	protected function getInsecuredExtensionsInSystem() {
 		$value = array(
 			$this->ok,
+			$this->ok,
+			$this->ok,
 			$this->ok
 		);
-		$message  = array('', '');
-		$severity = array(tx_reports_reports_status_Status::OK, tx_reports_reports_status_Status::OK);
+		$message  = array('', '', '', '');
+		$severity = array(
+			tx_reports_reports_status_Status::OK,
+			tx_reports_reports_status_Status::OK,
+			tx_reports_reports_status_Status::OK,
+			tx_reports_reports_status_Status::OK
+		);
 		$initialMessage = array(
 			$GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:reports_insecureInstalledExtensions') . '<br><br>',
 			$GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:reports_insecureExistingExtensions') . '<br><br>',
+			$GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:reports_outdatedInstalledExtensions') . '<br><br>',
+			$GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:reports_outdatedExistingExtensions') . '<br><br>',
 		);
 		$extensionList = array();
 		$installedExtensionList = array();
 		$extensionCompareList = array();
 		$unsecureList = array();
+		$outdatedList = array();
 
 		/** @var $list tx_em_Extensions_List */
 		$list = t3lib_div::makeInstance('tx_em_Extensions_List');
@@ -216,6 +228,46 @@ class tx_em_reports_ExtensionStatus  implements tx_reports_StatusProvider {
 			$message[1],
 			$severity[1]
 		);
+
+		// get outdated extensions from database
+		$outdatedListRows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('extkey, version', 'cache_extensions',
+			'reviewstate=-2 and extkey IN(' . $flatList . ')');
+		foreach ($outdatedListRows as $row) {
+			$outdatedList[] = $row['extkey'] . '|' . $row['version'];
+		}
+		$resultArray = array_intersect($extensionCompareList, $outdatedList);
+
+		if (count($resultArray) > 0) {
+			$count = array(0, 0);
+			foreach ($resultArray as $result) {
+				$temp = explode('|', $result);
+				$index = in_array($temp[0], $installedExtensionList, TRUE) ? 2 : 3;
+				$severity[$index] = tx_reports_reports_status_Status::WARNING;
+				$count[$index]++;
+				if ($message[$index] === '') {
+					$message[$index] = $initialMessage[$index];
+				}
+				$message[$index] .= '<strong>' . $temp[0] . '</strong> (version ' . $temp[1] . ')<br>';
+			}
+			if ($count[2]) {
+				$value[2] = sprintf($GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:reports_outdatedExtensionsFound'), $count[2]);
+			}
+			if ($count[3]) {
+				$value[3] = sprintf($GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:reports_outdatedExtensionsFound'), $count[3]);
+			}
+		}
+
+		$status[2] = t3lib_div::makeInstance('tx_reports_reports_status_Status',
+			$GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:reports_StatusInstalledOutdatedExtensions'),
+			$value[2],
+			$message[2],
+			$severity[2]);
+
+		$status[3] = t3lib_div::makeInstance('tx_reports_reports_status_Status',
+			$GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:reports_StatusExistingOutdatedExtensions'),
+			$value[3],
+			$message[3],
+			$severity[3]);
 
 		return $status;
 	}

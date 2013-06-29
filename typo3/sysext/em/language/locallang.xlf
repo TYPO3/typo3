@@ -2049,17 +2049,35 @@
 			<trans-unit id="reports_insecureExistingExtensions" xml:space="preserve">
 				<source>The following extensions were found on your system, but are currently not installed. Please delete the extensions using the extension manager:</source>
 			</trans-unit>
+			<trans-unit id="reports_outdatedInstalledExtensions" xml:space="preserve">
+				<source>The following extensions are outdated and may not be compatible with your installation. Please make sure these extensions are compatible and ask the extension author to publish updates:</source>
+			</trans-unit>
+			<trans-unit id="reports_outdatedExistingExtensions" xml:space="preserve">
+				<source>The following extensions were found on your system, but are currently not installed. Please make sure they are compatible with your system before installing them:</source>
+			</trans-unit>
 			<trans-unit id="reports_StatusInstalledExtensions" xml:space="preserve">
 				<source>Security status of installed extensions</source>
 			</trans-unit>
 			<trans-unit id="reports_StatusExistingExtensions" xml:space="preserve">
 				<source>Security status of existing extensions</source>
 			</trans-unit>
+			<trans-unit id="reports_StatusInstalledOutdatedExtensions" xml:space="preserve">
+				<source>Outdated status of installed extensions</source>
+			</trans-unit>
+			<trans-unit id="reports_StatusExistingOutdatedExtensions" xml:space="preserve">
+				<source>Outdated status of existing extensions</source>
+			</trans-unit>
 			<trans-unit id="insecureExtension" xml:space="preserve">
 				<source>This extension is marked as insecure and usage might damage your system. Please update this extension as soon as possible or remove it from your system.</source>
 			</trans-unit>
+			<trans-unit id="outdatedExtension" xml:space="preserve">
+				<source>The following extensions are outdated and may not be compatible with your installation. Please make sure these extensions are compatible and ask the extension author to publish updates.</source>
+			</trans-unit>
 			<trans-unit id="reports_insecureExtensionsFound" xml:space="preserve">
 				<source>%s insecure extension(s) found</source>
+			</trans-unit>
+			<trans-unit id="reports_outdatedExtensionsFound" xml:space="preserve">
+				<source>%s outdated extension(s) found</source>
 			</trans-unit>
 			<trans-unit id="reports_sysTerNotFound" xml:space="preserve">
 				<source>The table "sys_ter" was not found. Please go to the Install Tool and do a database compare!</source>
