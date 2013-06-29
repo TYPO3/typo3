@@ -66,7 +66,13 @@ class ClassInfoFactoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 */
 	public function buildClassInfoDetectsPropertiesToInjectByAnnotation() {
 		$classInfo = $this->classInfoFactory->buildClassInfoFromClassName('TYPO3\\CMS\\Extbase\\Tests\\Fixture\\ClassWithInjectProperties');
-		$this->assertEquals(array('secondDummyClass' => 'TYPO3\\CMS\\Extbase\\Tests\\Fixture\\SecondDummyClass'), $classInfo->getInjectProperties());
+		$this->assertEquals(
+			array(
+				'secondDummyClass' => 'TYPO3\\CMS\\Extbase\\Tests\\Fixture\\SecondDummyClass',
+				'secondDummyClassWithFlowInject' => 'TYPO3\\CMS\\Extbase\\Tests\\Fixture\\SecondDummyClass'
+			),
+			$classInfo->getInjectProperties()
+		);
 	}
 
 	/**
