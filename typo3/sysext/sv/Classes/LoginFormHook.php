@@ -68,7 +68,7 @@ class LoginFormHook {
 		$content = '';
 		if ($pObj->loginSecurityLevel == 'superchallenged' || $pObj->loginSecurityLevel == 'challenged') {
 			$content = '
-				<script type="text/javascript" src="md5.js"></script>
+				<script type="text/javascript" src="sysext/backend/Resources/Public/JavaScript/md5.js"></script>
 				' . $GLOBALS['TBE_TEMPLATE']->wrapScriptTags('
 					function doChallengeResponse(superchallenged) {	//
 						password = document.loginform.p_field.value;

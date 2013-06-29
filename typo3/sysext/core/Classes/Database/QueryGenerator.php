@@ -1530,8 +1530,8 @@ class QueryGenerator {
 		$out = '';
 		if ($this->extJSCODE) {
 			$out .= '
-			<script language="javascript" type="text/javascript" src="' . $GLOBALS['BACK_PATH'] . 'js/jsfunc.evalfield.js"></script>
-			<script language="javascript" type="text/javascript" src="' . $GLOBALS['BACK_PATH'] . 'jsfunc.tbe_editor.js"></script>
+			<script language="javascript" type="text/javascript" src="' . $GLOBALS['BACK_PATH'] . 'sysext/backend/Resources/Public/JavaScript/jsfunc.evalfield.js"></script>
+			<script language="javascript" type="text/javascript" src="' . $GLOBALS['BACK_PATH'] . 'sysext/backend/Resources/Public/JavaScript/jsfunc.tbe_editor.js"></script>
 			<script language="javascript" type="text/javascript">
 				TBE_EDITOR.formname = "' . $formname . '";
 				TBE_EDITOR.formnameUENC = "' . rawurlencode($formname) . '";

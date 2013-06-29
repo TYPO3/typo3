@@ -804,7 +804,7 @@ class DocumentTemplate {
 		// This loads the tabulator-in-textarea feature. It automatically modifies
 		// every textarea which is found.
 		if (!$GLOBALS['BE_USER']->uc['disableTabInTextarea']) {
-			$this->loadJavascriptLib('tab.js');
+			$this->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/tab.js');
 		}
 		// Include the JS for the Context Sensitive Help
 		if ($includeCsh) {

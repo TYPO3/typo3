@@ -5290,7 +5290,7 @@ function ' . $evalData . '(value) {
 		$this->TBE_EDITOR_fieldChanged_func = 'TBE_EDITOR.fieldChanged_fName(fName,formObj[fName+"_list"]);';
 		if (!$update) {
 			if ($this->loadMD5_JS) {
-				$this->loadJavascriptLib('md5.js');
+				$this->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/md5.js');
 			}
 			/** @var $pageRenderer \TYPO3\CMS\Core\Page\PageRenderer */
 			$pageRenderer = $GLOBALS['SOBE']->doc->getPageRenderer();
@@ -5308,9 +5308,9 @@ function ' . $evalData . '(value) {
 				'textareaResize' => !$GLOBALS['BE_USER']->uc['resizeTextareas'] == '0'
 			);
 			$pageRenderer->addInlineSettingArray('', $resizableSettings);
-			$this->loadJavascriptLib('js/jsfunc.evalfield.js');
-			$this->loadJavascriptLib('jsfunc.tbe_editor.js');
-			$this->loadJavascriptLib('jsfunc.placeholder.js');
+			$this->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/jsfunc.evalfield.js');
+			$this->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/jsfunc.tbe_editor.js');
+			$this->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/jsfunc.placeholder.js');
 			// Needed for tceform manipulation (date picker)
 			$typo3Settings = array(
 				'datePickerUSmode' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['USdateFormat'] ? 1 : 0,
