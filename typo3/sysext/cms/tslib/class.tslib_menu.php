@@ -1662,14 +1662,16 @@ class tslib_menu {
 	 * @access private
 	 */
 	function getBannedUids() {
-		$banUidArray = array();
+		$excludeUidList = isset($this->conf['excludeUidList.'])
+			? $this->parent_cObj->stdWrap($this->conf['excludeUidList'], $this->conf['excludeUidList.'])
+			: $this->conf['excludeUidList'];
 
-		if (trim($this->conf['excludeUidList']))        {
-			$banUidList = str_replace('current', $GLOBALS['TSFE']->page['uid'], $this->conf['excludeUidList']);
-			$banUidArray = t3lib_div::intExplode(',', $banUidList);
+		if (!trim($excludeUidList)) {
+			return array();
 		}
 
-		return $banUidArray;
+		$banUidList = str_replace('current', $GLOBALS['TSFE']->page['uid'], $excludeUidList);
+		return t3lib_div::intExplode(',', $banUidList);
 	}
 
 	/**
