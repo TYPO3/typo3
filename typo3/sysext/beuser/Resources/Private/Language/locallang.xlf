@@ -27,6 +27,9 @@
 			<trans-unit id="admin" xml:space="preserve">
 				<source>Admin</source>
 			</trans-unit>
+			<trans-unit id="users" xml:space="preserve">
+				<source>Users</source>
+			</trans-unit>
 			<trans-unit id="yes" xml:space="preserve">
 				<source>Yes</source>
 			</trans-unit>
@@ -62,6 +65,9 @@
 			</trans-unit>
 			<trans-unit id="compareBackendUsers" xml:space="preserve">
 				<source>Compare backend users</source>
+			</trans-unit>
+			<trans-unit id="compareUserList" xml:space="preserve">
+				<source>Compare user list</source>
 			</trans-unit>
 			<trans-unit id="status" xml:space="preserve">
 				<source>Status</source>
@@ -119,6 +125,12 @@
 			</trans-unit>
 			<trans-unit id="switchBackMode" xml:space="preserve">
 				<source>[switch-back mode]</source>
+			</trans-unit>
+			<trans-unit id="section.compare" xml:space="preserve">
+				<source>Compare</source>
+			</trans-unit>
+			<trans-unit id="compare" xml:space="preserve">
+				<source>Compare</source>
 			</trans-unit>
 		</body>
 	</file>
