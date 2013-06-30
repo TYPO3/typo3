@@ -338,7 +338,7 @@ class InstallSysExtsUpdate extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
 		$wizardClassName = get_class($this);
 		if (!empty($GLOBALS['TYPO3_CONF_VARS']['INSTALL']['wizardDone'][$wizardClassName])) {
 			$seenExtensions = json_decode($GLOBALS['TYPO3_CONF_VARS']['INSTALL']['wizardDone'][$wizardClassName], TRUE);
-			return (bool) array_diff($this->systemExtensions, $seenExtensions);
+			return count(array_diff($this->systemExtensions, $seenExtensions)) === 0;
 		}
 		return FALSE;
 	}
