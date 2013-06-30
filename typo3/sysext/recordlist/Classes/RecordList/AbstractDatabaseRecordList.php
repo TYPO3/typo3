@@ -745,38 +745,37 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 			}
 		}
 		switch ((string) $this->clickTitleMode) {
-		case 'edit':
-			// If the listed table is 'pages' we have to request the permission settings for each page:
-			if ($table == 'pages') {
-				$localCalcPerms = $GLOBALS['BE_USER']->calcPerms(\TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('pages', $row['uid']));
-				$permsEdit = $localCalcPerms & 2;
-			} else {
-				$permsEdit = $this->calcPerms & 16;
-			}
-			// "Edit" link: ( Only if permissions to edit the page-record of the content of the parent page ($this->id)
-			if ($permsEdit) {
-				$params = '&edit[' . $table . '][' . $row['uid'] . ']=edit';
-				$code = '<a href="#" onclick="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick($params, $this->backPath, -1)) . '" title="' . $GLOBALS['LANG']->getLL('edit', 1) . '">' . $code . '</a>';
-			}
-			break;
-		case 'show':
-			// "Show" link (only pages and tt_content elements)
-			if ($table == 'pages' || $table == 'tt_content') {
-				$code = '<a href="#" onclick="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::viewOnClick(($table == 'tt_content' ? $this->id . '#' . $row['uid'] : $row['uid']))) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', 1) . '">' . $code . '</a>';
-			}
-			break;
-		case 'info':
-			// "Info": (All records)
-			$code = '<a href="#" onclick="' . htmlspecialchars(('top.launchView(\'' . $table . '\', \'' . $row['uid'] . '\'); return false;')) . '" title="' . $GLOBALS['LANG']->getLL('showInfo', 1) . '">' . $code . '</a>';
-			break;
-		default:
-			// Output the label now:
-			if ($table == 'pages') {
-				$code = '<a href="' . htmlspecialchars($this->listURL($uid, '', 'firstElementNumber')) . '" onclick="setHighlight(' . $uid . ')">' . $code . '</a>';
-			} else {
-				$code = $this->linkUrlMail($code, $origCode);
-			}
-			break;
+			case 'edit':
+				// If the listed table is 'pages' we have to request the permission settings for each page:
+				if ($table == 'pages') {
+					$localCalcPerms = $GLOBALS['BE_USER']->calcPerms(\TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('pages', $row['uid']));
+					$permsEdit = $localCalcPerms & 2;
+				} else {
+					$permsEdit = $this->calcPerms & 16;
+				}
+				// "Edit" link: ( Only if permissions to edit the page-record of the content of the parent page ($this->id)
+				if ($permsEdit) {
+					$params = '&edit[' . $table . '][' . $row['uid'] . ']=edit';
+					$code = '<a href="#" onclick="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick($params, $this->backPath, -1)) . '" title="' . $GLOBALS['LANG']->getLL('edit', 1) . '">' . $code . '</a>';
+				}
+				break;
+			case 'show':
+				// "Show" link (only pages and tt_content elements)
+				if ($table == 'pages' || $table == 'tt_content') {
+					$code = '<a href="#" onclick="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::viewOnClick(($table == 'tt_content' ? $this->id . '#' . $row['uid'] : $row['uid']))) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', 1) . '">' . $code . '</a>';
+				}
+				break;
+			case 'info':
+				// "Info": (All records)
+				$code = '<a href="#" onclick="' . htmlspecialchars(('top.launchView(\'' . $table . '\', \'' . $row['uid'] . '\'); return false;')) . '" title="' . $GLOBALS['LANG']->getLL('showInfo', 1) . '">' . $code . '</a>';
+				break;
+			default:
+				// Output the label now:
+				if ($table == 'pages') {
+					$code = '<a href="' . htmlspecialchars($this->listURL($uid, '', 'firstElementNumber')) . '" onclick="setHighlight(' . $uid . ')">' . $code . '</a>';
+				} else {
+					$code = $this->linkUrlMail($code, $origCode);
+				}
 		}
 		return $code;
 	}

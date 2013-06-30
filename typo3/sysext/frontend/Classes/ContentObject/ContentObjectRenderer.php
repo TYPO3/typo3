@@ -3607,24 +3607,23 @@ class ContentObjectRenderer {
 								if (!$ext_list || \TYPO3\CMS\Core\Utility\GeneralUtility::inList($ext_list, $info['fileext'])) {
 									$items['files'][] = $info['file'];
 									switch ($sorting) {
-									case 'name':
-										$items['sorting'][] = strtolower($info['file']);
-										break;
-									case 'size':
-										$items['sorting'][] = filesize($wholePath);
-										break;
-									case 'ext':
-										$items['sorting'][] = $info['fileext'];
-										break;
-									case 'date':
-										$items['sorting'][] = filectime($wholePath);
-										break;
-									case 'mdate':
-										$items['sorting'][] = filemtime($wholePath);
-										break;
-									default:
-										$items['sorting'][] = $count;
-										break;
+										case 'name':
+											$items['sorting'][] = strtolower($info['file']);
+											break;
+										case 'size':
+											$items['sorting'][] = filesize($wholePath);
+											break;
+										case 'ext':
+											$items['sorting'][] = $info['fileext'];
+											break;
+										case 'date':
+											$items['sorting'][] = filectime($wholePath);
+											break;
+										case 'mdate':
+											$items['sorting'][] = filemtime($wholePath);
+											break;
+										default:
+											$items['sorting'][] = $count;
 									}
 									$count++;
 								}
@@ -4510,17 +4509,16 @@ class ContentObjectRenderer {
 		$type = isset($conf['roundType.']) ? $this->stdWrap($conf['roundType'], $conf['roundType.']) : $conf['roundType'];
 		$floatVal = floatval($content);
 		switch ($type) {
-		case 'ceil':
-			$content = ceil($floatVal);
-			break;
-		case 'floor':
-			$content = floor($floatVal);
-			break;
-		case 'round':
+			case 'ceil':
+				$content = ceil($floatVal);
+				break;
+			case 'floor':
+				$content = floor($floatVal);
+				break;
+			case 'round':
 
-		default:
-			$content = round($floatVal, intval($decimals));
-			break;
+			default:
+				$content = round($floatVal, intval($decimals));
 		}
 		return $content;
 	}
@@ -5278,112 +5276,112 @@ class ContentObjectRenderer {
 			if ((string) $key != '') {
 				$type = strtolower(trim($parts[0]));
 				switch ($type) {
-				case 'gp':
-					// Merge GET and POST and get $key out of the merged array
-					$retVal = $this->getGlobal($key, \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule(\TYPO3\CMS\Core\Utility\GeneralUtility::_GET(), \TYPO3\CMS\Core\Utility\GeneralUtility::_POST()));
-					break;
-				case 'tsfe':
-					$retVal = $this->getGlobal('TSFE|' . $key);
-					break;
-				case 'getenv':
-					$retVal = getenv($key);
-					break;
-				case 'getindpenv':
-					$retVal = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv($key);
-					break;
-				case 'field':
-					$retVal = $fieldArray[$key];
-					break;
-				case 'file':
-					$retVal = $this->getFileDataKey($key);
-					break;
-				case 'parameters':
-					$retVal = $this->parameters[$key];
-					break;
-				case 'register':
-					$retVal = $GLOBALS['TSFE']->register[$key];
-					break;
-				case 'global':
-					$retVal = $this->getGlobal($key);
-					break;
-				case 'leveltitle':
-					$nkey = $this->getKey($key, $GLOBALS['TSFE']->tmpl->rootLine);
-					$retVal = $this->rootLineValue($nkey, 'title', stristr($key, 'slide'));
-					break;
-				case 'levelmedia':
-					$nkey = $this->getKey($key, $GLOBALS['TSFE']->tmpl->rootLine);
-					$retVal = $this->rootLineValue($nkey, 'media', stristr($key, 'slide'));
-					break;
-				case 'leveluid':
-					$nkey = $this->getKey($key, $GLOBALS['TSFE']->tmpl->rootLine);
-					$retVal = $this->rootLineValue($nkey, 'uid', stristr($key, 'slide'));
-					break;
-				case 'levelfield':
-					$keyP = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $key);
-					$nkey = $this->getKey($keyP[0], $GLOBALS['TSFE']->tmpl->rootLine);
-					$retVal = $this->rootLineValue($nkey, $keyP[1], strtolower($keyP[2]) == 'slide');
-					break;
-				case 'fullrootline':
-					$keyP = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $key);
-					$fullKey = intval($keyP[0]) - count($GLOBALS['TSFE']->tmpl->rootLine) + count($GLOBALS['TSFE']->rootLine);
-					if ($fullKey >= 0) {
-						$retVal = $this->rootLineValue($fullKey, $keyP[1], stristr($keyP[2], 'slide'), $GLOBALS['TSFE']->rootLine);
-					}
-					break;
-				case 'date':
-					if (!$key) {
-						$key = 'd/m Y';
-					}
-					$retVal = date($key, $GLOBALS['EXEC_TIME']);
-					break;
-				case 'page':
-					$retVal = $GLOBALS['TSFE']->page[$key];
-					break;
-				case 'current':
-					$retVal = $this->data[$this->currentValKey];
-					break;
-				case 'level':
-					$retVal = count($GLOBALS['TSFE']->tmpl->rootLine) - 1;
-					break;
-				case 'db':
-					$selectParts = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(':', $key);
-					$db_rec = $GLOBALS['TSFE']->sys_page->getRawRecord($selectParts[0], $selectParts[1]);
-					if (is_array($db_rec) && $selectParts[2]) {
-						$retVal = $db_rec[$selectParts[2]];
-					}
-					break;
-				case 'lll':
-					$retVal = $GLOBALS['TSFE']->sL('LLL:' . $key);
-					break;
-				case 'path':
-					$retVal = $GLOBALS['TSFE']->tmpl->getFileName($key);
-					break;
-				case 'cobj':
-					switch ((string) $key) {
-					case 'parentRecordNumber':
-						$retVal = $this->parentRecordNumber;
+					case 'gp':
+						// Merge GET and POST and get $key out of the merged array
+						$retVal = $this->getGlobal($key, \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule(\TYPO3\CMS\Core\Utility\GeneralUtility::_GET(), \TYPO3\CMS\Core\Utility\GeneralUtility::_POST()));
 						break;
-					}
-					break;
-				case 'debug':
-					switch ((string) $key) {
-					case 'rootLine':
-						$retVal = \TYPO3\CMS\Core\Utility\DebugUtility::viewArray($GLOBALS['TSFE']->tmpl->rootLine);
+					case 'tsfe':
+						$retVal = $this->getGlobal('TSFE|' . $key);
 						break;
-					case 'fullRootLine':
-						$retVal = \TYPO3\CMS\Core\Utility\DebugUtility::viewArray($GLOBALS['TSFE']->rootLine);
+					case 'getenv':
+						$retVal = getenv($key);
 						break;
-					case 'data':
-						$retVal = \TYPO3\CMS\Core\Utility\DebugUtility::viewArray($this->data);
+					case 'getindpenv':
+						$retVal = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv($key);
+						break;
+					case 'field':
+						$retVal = $fieldArray[$key];
+						break;
+					case 'file':
+						$retVal = $this->getFileDataKey($key);
+						break;
+					case 'parameters':
+						$retVal = $this->parameters[$key];
 						break;
 					case 'register':
-						$retVal = \TYPO3\CMS\Core\Utility\DebugUtility::viewArray($GLOBALS['TSFE']->register);
+						$retVal = $GLOBALS['TSFE']->register[$key];
+						break;
+					case 'global':
+						$retVal = $this->getGlobal($key);
+						break;
+					case 'leveltitle':
+						$nkey = $this->getKey($key, $GLOBALS['TSFE']->tmpl->rootLine);
+						$retVal = $this->rootLineValue($nkey, 'title', stristr($key, 'slide'));
+						break;
+					case 'levelmedia':
+						$nkey = $this->getKey($key, $GLOBALS['TSFE']->tmpl->rootLine);
+						$retVal = $this->rootLineValue($nkey, 'media', stristr($key, 'slide'));
+						break;
+					case 'leveluid':
+						$nkey = $this->getKey($key, $GLOBALS['TSFE']->tmpl->rootLine);
+						$retVal = $this->rootLineValue($nkey, 'uid', stristr($key, 'slide'));
+						break;
+					case 'levelfield':
+						$keyP = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $key);
+						$nkey = $this->getKey($keyP[0], $GLOBALS['TSFE']->tmpl->rootLine);
+						$retVal = $this->rootLineValue($nkey, $keyP[1], strtolower($keyP[2]) == 'slide');
+						break;
+					case 'fullrootline':
+						$keyP = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $key);
+						$fullKey = intval($keyP[0]) - count($GLOBALS['TSFE']->tmpl->rootLine) + count($GLOBALS['TSFE']->rootLine);
+						if ($fullKey >= 0) {
+							$retVal = $this->rootLineValue($fullKey, $keyP[1], stristr($keyP[2], 'slide'), $GLOBALS['TSFE']->rootLine);
+						}
+						break;
+					case 'date':
+						if (!$key) {
+							$key = 'd/m Y';
+						}
+						$retVal = date($key, $GLOBALS['EXEC_TIME']);
 						break;
 					case 'page':
-						$retVal = \TYPO3\CMS\Core\Utility\DebugUtility::viewArray($GLOBALS['TSFE']->page);
+						$retVal = $GLOBALS['TSFE']->page[$key];
 						break;
-					}
-					break;
+					case 'current':
+						$retVal = $this->data[$this->currentValKey];
+						break;
+					case 'level':
+						$retVal = count($GLOBALS['TSFE']->tmpl->rootLine) - 1;
+						break;
+					case 'db':
+						$selectParts = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(':', $key);
+						$db_rec = $GLOBALS['TSFE']->sys_page->getRawRecord($selectParts[0], $selectParts[1]);
+						if (is_array($db_rec) && $selectParts[2]) {
+							$retVal = $db_rec[$selectParts[2]];
+						}
+						break;
+					case 'lll':
+						$retVal = $GLOBALS['TSFE']->sL('LLL:' . $key);
+						break;
+					case 'path':
+						$retVal = $GLOBALS['TSFE']->tmpl->getFileName($key);
+						break;
+					case 'cobj':
+						switch ((string) $key) {
+							case 'parentRecordNumber':
+								$retVal = $this->parentRecordNumber;
+								break;
+						}
+						break;
+					case 'debug':
+						switch ((string) $key) {
+							case 'rootLine':
+								$retVal = \TYPO3\CMS\Core\Utility\DebugUtility::viewArray($GLOBALS['TSFE']->tmpl->rootLine);
+								break;
+							case 'fullRootLine':
+								$retVal = \TYPO3\CMS\Core\Utility\DebugUtility::viewArray($GLOBALS['TSFE']->rootLine);
+								break;
+							case 'data':
+								$retVal = \TYPO3\CMS\Core\Utility\DebugUtility::viewArray($this->data);
+								break;
+							case 'register':
+								$retVal = \TYPO3\CMS\Core\Utility\DebugUtility::viewArray($GLOBALS['TSFE']->register);
+								break;
+							case 'page':
+								$retVal = \TYPO3\CMS\Core\Utility\DebugUtility::viewArray($GLOBALS['TSFE']->page);
+								break;
+						}
+						break;
 				}
 			}
 			if (is_array($TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_content.php']['getData'])) {
@@ -5432,44 +5430,43 @@ class ContentObjectRenderer {
 		if ($fileObject instanceof \TYPO3\CMS\Core\Resource\FileInterface) {
 			// All properties of the \TYPO3\CMS\Core\Resource\FileInterface are available here:
 			switch ($requestedFileInformationKey) {
-			case 'name':
-				return $fileObject->getName();
-				break;
-			case 'uid':
-				return $fileObject->getUid();
-				break;
-			case 'originalUid':
-				if ($fileObject instanceof \TYPO3\CMS\Core\Resource\FileReference) {
-					return $fileObject->getOriginalFile()->getUid();
-				} else {
-					return NULL;
-				}
-				break;
-			case 'size':
-				return $fileObject->getSize();
-				break;
-			case 'sha1':
-				return $fileObject->getSha1();
-				break;
-			case 'extension':
-				return $fileObject->getExtension();
-				break;
-			case 'mimetype':
-				return $fileObject->getMimeType();
-				break;
-			case 'contents':
-				return $fileObject->getContents();
-				break;
-			case 'publicUrl':
-				return $fileObject->getPublicUrl();
-				break;
-			case 'localPath':
-				return $fileObject->getForLocalProcessing();
-				break;
-			default:
-				// Generic alternative here
-				return $fileObject->getProperty($requestedFileInformationKey);
-				break;
+				case 'name':
+					return $fileObject->getName();
+					break;
+				case 'uid':
+					return $fileObject->getUid();
+					break;
+				case 'originalUid':
+					if ($fileObject instanceof \TYPO3\CMS\Core\Resource\FileReference) {
+						return $fileObject->getOriginalFile()->getUid();
+					} else {
+						return NULL;
+					}
+					break;
+				case 'size':
+					return $fileObject->getSize();
+					break;
+				case 'sha1':
+					return $fileObject->getSha1();
+					break;
+				case 'extension':
+					return $fileObject->getExtension();
+					break;
+				case 'mimetype':
+					return $fileObject->getMimeType();
+					break;
+				case 'contents':
+					return $fileObject->getContents();
+					break;
+				case 'publicUrl':
+					return $fileObject->getPublicUrl();
+					break;
+				case 'localPath':
+					return $fileObject->getForLocalProcessing();
+					break;
+				default:
+					// Generic alternative here
+					return $fileObject->getProperty($requestedFileInformationKey);
 			}
 		} else {
 			// TODO: fail silently as is common in tslib_content
@@ -6057,12 +6054,12 @@ class ContentObjectRenderer {
 			// If flag "returnLastTypoLinkUrl" set, then just return the latest URL made:
 			if ($conf['returnLast']) {
 				switch ($conf['returnLast']) {
-				case 'url':
-					return $this->lastTypoLinkUrl;
-					break;
-				case 'target':
-					return $this->lastTypoLinkTarget;
-					break;
+					case 'url':
+						return $this->lastTypoLinkUrl;
+						break;
+					case 'target':
+						return $this->lastTypoLinkTarget;
+						break;
 				}
 			}
 			$wrap = isset($conf['wrap.']) ? $this->stdWrap($conf['wrap'], $conf['wrap.']) : $conf['wrap'];
@@ -6309,20 +6306,20 @@ class ContentObjectRenderer {
 	 */
 	public function getQueryArguments($conf, $overruleQueryArguments = array(), $forceOverruleArguments = FALSE) {
 		switch ((string) $conf['method']) {
-		case 'GET':
-			$currentQueryArray = \TYPO3\CMS\Core\Utility\GeneralUtility::_GET();
-			break;
-		case 'POST':
-			$currentQueryArray = \TYPO3\CMS\Core\Utility\GeneralUtility::_POST();
-			break;
-		case 'GET,POST':
-			$currentQueryArray = array_merge(\TYPO3\CMS\Core\Utility\GeneralUtility::_GET(), \TYPO3\CMS\Core\Utility\GeneralUtility::_POST());
-			break;
-		case 'POST,GET':
-			$currentQueryArray = array_merge(\TYPO3\CMS\Core\Utility\GeneralUtility::_POST(), \TYPO3\CMS\Core\Utility\GeneralUtility::_GET());
-			break;
-		default:
-			$currentQueryArray = \TYPO3\CMS\Core\Utility\GeneralUtility::explodeUrl2Array(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('QUERY_STRING'), TRUE);
+			case 'GET':
+				$currentQueryArray = \TYPO3\CMS\Core\Utility\GeneralUtility::_GET();
+				break;
+			case 'POST':
+				$currentQueryArray = \TYPO3\CMS\Core\Utility\GeneralUtility::_POST();
+				break;
+			case 'GET,POST':
+				$currentQueryArray = array_merge(\TYPO3\CMS\Core\Utility\GeneralUtility::_GET(), \TYPO3\CMS\Core\Utility\GeneralUtility::_POST());
+				break;
+			case 'POST,GET':
+				$currentQueryArray = array_merge(\TYPO3\CMS\Core\Utility\GeneralUtility::_POST(), \TYPO3\CMS\Core\Utility\GeneralUtility::_GET());
+				break;
+			default:
+				$currentQueryArray = \TYPO3\CMS\Core\Utility\GeneralUtility::explodeUrl2Array(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('QUERY_STRING'), TRUE);
 		}
 		if ($conf['exclude']) {
 			$exclude = str_replace(',', '&', $conf['exclude']);
@@ -6512,21 +6509,21 @@ class ContentObjectRenderer {
 	public function caseshift($theValue, $case) {
 		$case = strtolower($case);
 		switch ($case) {
-		case 'upper':
-			$theValue = $GLOBALS['TSFE']->csConvObj->conv_case($GLOBALS['TSFE']->renderCharset, $theValue, 'toUpper');
-			break;
-		case 'lower':
-			$theValue = $GLOBALS['TSFE']->csConvObj->conv_case($GLOBALS['TSFE']->renderCharset, $theValue, 'toLower');
-			break;
-		case 'capitalize':
-			$theValue = ucwords($theValue);
-			break;
-		case 'ucfirst':
-			$theValue = $GLOBALS['TSFE']->csConvObj->convCaseFirst($GLOBALS['TSFE']->renderCharset, $theValue, 'toUpper');
-			break;
-		case 'lcfirst':
-			$theValue = $GLOBALS['TSFE']->csConvObj->convCaseFirst($GLOBALS['TSFE']->renderCharset, $theValue, 'toLower');
-			break;
+			case 'upper':
+				$theValue = $GLOBALS['TSFE']->csConvObj->conv_case($GLOBALS['TSFE']->renderCharset, $theValue, 'toUpper');
+				break;
+			case 'lower':
+				$theValue = $GLOBALS['TSFE']->csConvObj->conv_case($GLOBALS['TSFE']->renderCharset, $theValue, 'toLower');
+				break;
+			case 'capitalize':
+				$theValue = ucwords($theValue);
+				break;
+			case 'ucfirst':
+				$theValue = $GLOBALS['TSFE']->csConvObj->convCaseFirst($GLOBALS['TSFE']->renderCharset, $theValue, 'toUpper');
+				break;
+			case 'lcfirst':
+				$theValue = $GLOBALS['TSFE']->csConvObj->convCaseFirst($GLOBALS['TSFE']->renderCharset, $theValue, 'toLower');
+				break;
 		}
 		return $theValue;
 	}

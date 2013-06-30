@@ -484,63 +484,63 @@ class SetupModuleController {
 				$value = $config['default'];
 			}
 			switch ($type) {
-			case 'text':
+				case 'text':
 
-			case 'password':
-				$dataAdd = '';
-				if ($config['table'] == 'be_users') {
-					$dataAdd = '[be_users]';
-				}
-				if ($eval == 'md5') {
-					$more .= ' onchange="this.value=this.value?MD5(this.value):\'\';"';
-				}
-				if ($type == 'password') {
-					$value = '';
-				}
-				$noAutocomplete = $type == 'password' ? 'autocomplete="off" ' : '';
-				$html = '<input id="field_' . $fieldName . '"
-							type="' . $type . '"
-							name="data' . $dataAdd . '[' . $fieldName . ']" ' . $noAutocomplete . 'value="' . htmlspecialchars($value) . '" ' . $GLOBALS['TBE_TEMPLATE']->formWidth(20) . $more . ' />';
-				break;
-			case 'check':
-				if (!$class) {
-					$more .= ' class="check"';
-				}
-				$html = '<input id="field_' . $fieldName . '"
-									type="checkbox"
-									name="data[' . $fieldName . ']"' . ($value ? ' checked="checked"' : '') . $more . ' />';
-				break;
-			case 'select':
-				if (!$class) {
-					$more .= ' class="select"';
-				}
-				if ($config['itemsProcFunc']) {
-					$html = \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($config['itemsProcFunc'], $config, $this, '');
-				} else {
-					$html = '<select ' . $GLOBALS['TBE_TEMPLATE']->formWidth(20) . ' id="field_' . $fieldName . '" name="data[' . $fieldName . ']"' . $more . '>' . LF;
-					foreach ($config['items'] as $key => $optionLabel) {
-						$html .= '<option value="' . $key . '"' . ($value == $key ? ' selected="selected"' : '') . '>' . $this->getLabel($optionLabel, '', FALSE) . '</option>' . LF;
+				case 'password':
+					$dataAdd = '';
+					if ($config['table'] == 'be_users') {
+						$dataAdd = '[be_users]';
 					}
-					$html .= '</select>';
-				}
-				break;
-			case 'user':
-				$html = \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($config['userFunc'], $config, $this, '');
-				break;
-			case 'button':
-				if ($config['onClick']) {
-					$onClick = $config['onClick'];
-					if ($config['onClickLabels']) {
-						foreach ($config['onClickLabels'] as $key => $labelclick) {
-							$config['onClickLabels'][$key] = $this->getLabel($labelclick, '', FALSE);
+					if ($eval == 'md5') {
+						$more .= ' onchange="this.value=this.value?MD5(this.value):\'\';"';
+					}
+					if ($type == 'password') {
+						$value = '';
+					}
+					$noAutocomplete = $type == 'password' ? 'autocomplete="off" ' : '';
+					$html = '<input id="field_' . $fieldName . '"
+								type="' . $type . '"
+								name="data' . $dataAdd . '[' . $fieldName . ']" ' . $noAutocomplete . 'value="' . htmlspecialchars($value) . '" ' . $GLOBALS['TBE_TEMPLATE']->formWidth(20) . $more . ' />';
+					break;
+				case 'check':
+					if (!$class) {
+						$more .= ' class="check"';
+					}
+					$html = '<input id="field_' . $fieldName . '"
+										type="checkbox"
+										name="data[' . $fieldName . ']"' . ($value ? ' checked="checked"' : '') . $more . ' />';
+					break;
+				case 'select':
+					if (!$class) {
+						$more .= ' class="select"';
+					}
+					if ($config['itemsProcFunc']) {
+						$html = \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($config['itemsProcFunc'], $config, $this, '');
+					} else {
+						$html = '<select ' . $GLOBALS['TBE_TEMPLATE']->formWidth(20) . ' id="field_' . $fieldName . '" name="data[' . $fieldName . ']"' . $more . '>' . LF;
+						foreach ($config['items'] as $key => $optionLabel) {
+							$html .= '<option value="' . $key . '"' . ($value == $key ? ' selected="selected"' : '') . '>' . $this->getLabel($optionLabel, '', FALSE) . '</option>' . LF;
 						}
-						$onClick = vsprintf($onClick, $config['onClickLabels']);
+						$html .= '</select>';
 					}
-					$html = '<input ' . $GLOBALS['TBE_TEMPLATE']->formWidth(20) . ' type="button" value="' . $this->getLabel($config['buttonlabel'], '', FALSE) . '" onclick="' . $onClick . '" />';
-				}
-				break;
-			default:
-				$html = '';
+					break;
+				case 'user':
+					$html = \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($config['userFunc'], $config, $this, '');
+					break;
+				case 'button':
+					if ($config['onClick']) {
+						$onClick = $config['onClick'];
+						if ($config['onClickLabels']) {
+							foreach ($config['onClickLabels'] as $key => $labelclick) {
+								$config['onClickLabels'][$key] = $this->getLabel($labelclick, '', FALSE);
+							}
+							$onClick = vsprintf($onClick, $config['onClickLabels']);
+						}
+						$html = '<input ' . $GLOBALS['TBE_TEMPLATE']->formWidth(20) . ' type="button" value="' . $this->getLabel($config['buttonlabel'], '', FALSE) . '" onclick="' . $onClick . '" />';
+					}
+					break;
+				default:
+					$html = '';
 			}
 			$code[$i][1] = $label;
 			$code[$i++][2] = $html;

@@ -868,32 +868,32 @@ class InlineElement {
 		$nameObject = $this->inlineNames['object'];
 		$attributes = array();
 		switch ($type) {
-		case 'newRecord':
-			$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:cm.createnew', 1);
-			$icon = 'actions-document-new';
-			$className = 'typo3-newRecordLink';
-			$attributes['class'] = 'inlineNewButton ' . $this->inlineData['config'][$nameObject]['md5'];
-			$attributes['onclick'] = 'return inline.createNewRecord(\'' . $objectPrefix . '\')';
-			if (isset($conf['inline']['inlineNewButtonStyle']) && $conf['inline']['inlineNewButtonStyle']) {
-				$attributes['style'] = $conf['inline']['inlineNewButtonStyle'];
-			}
-			if (isset($conf['appearance']['newRecordLinkAddTitle']) && $conf['appearance']['newRecordLinkAddTitle']) {
-				$titleAddon = ' ' . $GLOBALS['LANG']->sL($GLOBALS['TCA'][$conf['foreign_table']]['ctrl']['title'], 1);
-			}
-			break;
-		case 'localize':
-			$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.xlf:localizeAllRecords', 1);
-			$icon = 'actions-document-localize';
-			$className = 'typo3-localizationLink';
-			$attributes['onclick'] = 'return inline.synchronizeLocalizeRecords(\'' . $objectPrefix . '\', \'localize\')';
-			break;
-		case 'synchronize':
-			$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.xlf:synchronizeWithOriginalLanguage', 1);
-			$icon = 'actions-document-synchronize';
-			$className = 'typo3-synchronizationLink';
-			$attributes['class'] = 'inlineNewButton ' . $this->inlineData['config'][$nameObject]['md5'];
-			$attributes['onclick'] = 'return inline.synchronizeLocalizeRecords(\'' . $objectPrefix . '\', \'synchronize\')';
-			break;
+			case 'newRecord':
+				$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:cm.createnew', 1);
+				$icon = 'actions-document-new';
+				$className = 'typo3-newRecordLink';
+				$attributes['class'] = 'inlineNewButton ' . $this->inlineData['config'][$nameObject]['md5'];
+				$attributes['onclick'] = 'return inline.createNewRecord(\'' . $objectPrefix . '\')';
+				if (isset($conf['inline']['inlineNewButtonStyle']) && $conf['inline']['inlineNewButtonStyle']) {
+					$attributes['style'] = $conf['inline']['inlineNewButtonStyle'];
+				}
+				if (isset($conf['appearance']['newRecordLinkAddTitle']) && $conf['appearance']['newRecordLinkAddTitle']) {
+					$titleAddon = ' ' . $GLOBALS['LANG']->sL($GLOBALS['TCA'][$conf['foreign_table']]['ctrl']['title'], 1);
+				}
+				break;
+			case 'localize':
+				$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.xlf:localizeAllRecords', 1);
+				$icon = 'actions-document-localize';
+				$className = 'typo3-localizationLink';
+				$attributes['onclick'] = 'return inline.synchronizeLocalizeRecords(\'' . $objectPrefix . '\', \'localize\')';
+				break;
+			case 'synchronize':
+				$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.xlf:synchronizeWithOriginalLanguage', 1);
+				$icon = 'actions-document-synchronize';
+				$className = 'typo3-synchronizationLink';
+				$attributes['class'] = 'inlineNewButton ' . $this->inlineData['config'][$nameObject]['md5'];
+				$attributes['onclick'] = 'return inline.synchronizeLocalizeRecords(\'' . $objectPrefix . '\', \'synchronize\')';
+				break;
 		}
 		// Create the link:
 		$icon = $icon ? IconUtility::getSpriteIcon($icon, array('title' => htmlspecialchars($title . $titleAddon))) : '';
@@ -933,25 +933,25 @@ class InlineElement {
 		if (isset($ajaxArguments) && is_array($ajaxArguments) && count($ajaxArguments)) {
 			$ajaxMethod = $ajaxIdParts[1];
 			switch ($ajaxMethod) {
-			case 'createNewRecord':
+				case 'createNewRecord':
 
-			case 'synchronizeLocalizeRecords':
+				case 'synchronizeLocalizeRecords':
 
-			case 'getRecordDetails':
-				$this->isAjaxCall = TRUE;
-				// Construct runtime environment for Inline Relational Record Editing:
-				$this->processAjaxRequestConstruct($ajaxArguments);
-				// Parse the DOM identifier (string), add the levels to the structure stack (array) and load the TCA config:
-				$this->parseStructureString($ajaxArguments[0], TRUE);
-				$this->injectAjaxConfiguration($ajaxArguments);
-				// Render content:
-				$ajaxObj->setContentFormat('jsonbody');
-				$ajaxObj->setContent(call_user_func_array(array(&$this, $ajaxMethod), $ajaxArguments));
-				break;
-			case 'setExpandedCollapsedState':
-				$ajaxObj->setContentFormat('jsonbody');
-				call_user_func_array(array(&$this, $ajaxMethod), $ajaxArguments);
-				break;
+				case 'getRecordDetails':
+					$this->isAjaxCall = TRUE;
+					// Construct runtime environment for Inline Relational Record Editing:
+					$this->processAjaxRequestConstruct($ajaxArguments);
+					// Parse the DOM identifier (string), add the levels to the structure stack (array) and load the TCA config:
+					$this->parseStructureString($ajaxArguments[0], TRUE);
+					$this->injectAjaxConfiguration($ajaxArguments);
+					// Render content:
+					$ajaxObj->setContentFormat('jsonbody');
+					$ajaxObj->setContent(call_user_func_array(array(&$this, $ajaxMethod), $ajaxArguments));
+					break;
+				case 'setExpandedCollapsedState':
+					$ajaxObj->setContentFormat('jsonbody');
+					call_user_func_array(array(&$this, $ajaxMethod), $ajaxArguments);
+					break;
 			}
 		}
 	}

@@ -50,12 +50,11 @@ class SoftReferenceHook extends \TYPO3\CMS\Core\Database\SoftReferenceIndex {
 		$retVal = FALSE;
 		$this->tokenID_basePrefix = $table . ':' . $uid . ':' . $field . ':' . $structurePath . ':' . $spKey;
 		switch ($spKey) {
-		case 'rtehtmlarea_images':
-			$retVal = $this->findRef_rtehtmlarea_images($content, $spParams);
-			break;
-		default:
-			$retVal = FALSE;
-			break;
+			case 'rtehtmlarea_images':
+				$retVal = $this->findRef_rtehtmlarea_images($content, $spParams);
+				break;
+			default:
+				$retVal = FALSE;
 		}
 		return $retVal;
 	}

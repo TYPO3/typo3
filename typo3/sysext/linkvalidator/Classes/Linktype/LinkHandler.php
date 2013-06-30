@@ -117,15 +117,14 @@ class LinkHandler extends \TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktype {
 			$title = $this->tsconfig['properties'][$tableName . '.']['label'];
 		}
 		switch ($errorType) {
-		case self::DELETED:
-			$response = $GLOBALS['LANG']->getLL('list.report.rowdeleted');
-			$response = str_replace('###title###', $title, $response);
-			$response = str_replace('###uid###', $errorParams['uid'], $response);
-			break;
-		default:
-			$response = $GLOBALS['LANG']->getLL('list.report.rownotexisting');
-			$response = str_replace('###uid###', $errorParams['uid'], $response);
-			break;
+			case self::DELETED:
+				$response = $GLOBALS['LANG']->getLL('list.report.rowdeleted');
+				$response = str_replace('###title###', $title, $response);
+				$response = str_replace('###uid###', $errorParams['uid'], $response);
+				break;
+			default:
+				$response = $GLOBALS['LANG']->getLL('list.report.rownotexisting');
+				$response = str_replace('###uid###', $errorParams['uid'], $response);
 		}
 		return $response;
 	}

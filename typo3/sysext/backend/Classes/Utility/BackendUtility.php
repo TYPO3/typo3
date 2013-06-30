@@ -553,19 +553,19 @@ class BackendUtility {
 									// Find iMode
 									$iMode = '';
 									switch ((string) $fCfg['authMode']) {
-									case 'explicitAllow':
-										$iMode = 'ALLOW';
-										break;
-									case 'explicitDeny':
-										$iMode = 'DENY';
-										break;
-									case 'individual':
-										if (!strcmp($iVal[4], 'EXPL_ALLOW')) {
+										case 'explicitAllow':
 											$iMode = 'ALLOW';
-										} elseif (!strcmp($iVal[4], 'EXPL_DENY')) {
+											break;
+										case 'explicitDeny':
 											$iMode = 'DENY';
-										}
-										break;
+											break;
+										case 'individual':
+											if (!strcmp($iVal[4], 'EXPL_ALLOW')) {
+												$iMode = 'ALLOW';
+											} elseif (!strcmp($iVal[4], 'EXPL_DENY')) {
+												$iMode = 'DENY';
+											}
+											break;
 									}
 									// Set iMode
 									if ($iMode) {
@@ -1607,21 +1607,21 @@ class BackendUtility {
 			$parts[] = 'v#1.' . $row['t3ver_id'];
 		}
 		switch ($row['t3ver_state']) {
-		case 1:
-			$parts[] = 'PLH WSID#' . $row['t3ver_wsid'];
-			break;
-		case 2:
-			$parts[] = 'Deleted element!';
-			break;
-		case 3:
-			$parts[] = 'NEW LOCATION (PLH) WSID#' . $row['t3ver_wsid'];
-			break;
-		case 4:
-			$parts[] = 'OLD LOCATION (PNT) WSID#' . $row['t3ver_wsid'];
-			break;
-		case -1:
-			$parts[] = 'New element!';
-			break;
+			case 1:
+				$parts[] = 'PLH WSID#' . $row['t3ver_wsid'];
+				break;
+			case 2:
+				$parts[] = 'Deleted element!';
+				break;
+			case 3:
+				$parts[] = 'NEW LOCATION (PLH) WSID#' . $row['t3ver_wsid'];
+				break;
+			case 4:
+				$parts[] = 'OLD LOCATION (PNT) WSID#' . $row['t3ver_wsid'];
+				break;
+			case -1:
+				$parts[] = 'New element!';
+				break;
 		}
 		if ($row['doktype'] == PageRepository::DOKTYPE_LINK) {
 			$parts[] = $GLOBALS['LANG']->sL($GLOBALS['TCA']['pages']['columns']['url']['label']) . ' ' . $row['url'];
@@ -1702,21 +1702,21 @@ class BackendUtility {
 			}
 			if ($GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
 				switch ($row['t3ver_state']) {
-				case 1:
-					$out .= ' - PLH WSID#' . $row['t3ver_wsid'];
-					break;
-				case 2:
-					$out .= ' - Deleted element!';
-					break;
-				case 3:
-					$out .= ' - NEW LOCATION (PLH) WSID#' . $row['t3ver_wsid'];
-					break;
-				case 4:
-					$out .= ' - OLD LOCATION (PNT)  WSID#' . $row['t3ver_wsid'];
-					break;
-				case -1:
-					$out .= ' - New element!';
-					break;
+					case 1:
+						$out .= ' - PLH WSID#' . $row['t3ver_wsid'];
+						break;
+					case 2:
+						$out .= ' - Deleted element!';
+						break;
+					case 3:
+						$out .= ' - NEW LOCATION (PLH) WSID#' . $row['t3ver_wsid'];
+						break;
+					case 4:
+						$out .= ' - OLD LOCATION (PNT)  WSID#' . $row['t3ver_wsid'];
+						break;
+					case -1:
+						$out .= ' - New element!';
+						break;
 				}
 			}
 			// Hidden
@@ -1969,35 +1969,38 @@ class BackendUtility {
 			}
 			$l = '';
 			switch ((string) $theColConf['type']) {
-			case 'radio':
-				$l = self::getLabelFromItemlist($table, $col, $value);
-				$l = $GLOBALS['LANG']->sL($l);
-				break;
-			case 'select':
-				if ($theColConf['MM']) {
-					if ($uid) {
-						// Display the title of MM related records in lists
-						if ($noRecordLookup) {
-							$MMfield = $theColConf['foreign_table'] . '.uid';
-						} else {
-							$MMfields = array($theColConf['foreign_table'] . '.' . $GLOBALS['TCA'][$theColConf['foreign_table']]['ctrl']['label']);
-							foreach (GeneralUtility::trimExplode(',', $GLOBALS['TCA'][$theColConf['foreign_table']]['ctrl']['label_alt'], 1) as $f) {
-								$MMfields[] = $theColConf['foreign_table'] . '.' . $f;
+				case 'radio':
+					$l = self::getLabelFromItemlist($table, $col, $value);
+					$l = $GLOBALS['LANG']->sL($l);
+					break;
+				case 'select':
+					if ($theColConf['MM']) {
+						if ($uid) {
+							// Display the title of MM related records in lists
+							if ($noRecordLookup) {
+								$MMfield = $theColConf['foreign_table'] . '.uid';
+							} else {
+								$MMfields = array($theColConf['foreign_table'] . '.' . $GLOBALS['TCA'][$theColConf['foreign_table']]['ctrl']['label']);
+								foreach (GeneralUtility::trimExplode(',', $GLOBALS['TCA'][$theColConf['foreign_table']]['ctrl']['label_alt'], 1) as $f) {
+									$MMfields[] = $theColConf['foreign_table'] . '.' . $f;
+								}
+								$MMfield = join(',', $MMfields);
 							}
-							$MMfield = join(',', $MMfields);
-						}
-						/** @var $dbGroup \TYPO3\CMS\Core\Database\RelationHandler */
-						$dbGroup = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\RelationHandler');
-						$dbGroup->start($value, $theColConf['foreign_table'], $theColConf['MM'], $uid, $table, $theColConf);
-						$selectUids = $dbGroup->tableArray[$theColConf['foreign_table']];
-						if (is_array($selectUids) && count($selectUids) > 0) {
-							$MMres = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid, ' . $MMfield, $theColConf['foreign_table'], 'uid IN (' . implode(',', $selectUids) . ')' . self::deleteClause($theColConf['foreign_table']));
-							while ($MMrow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($MMres)) {
-								$mmlA[] = $noRecordLookup ? $MMrow['uid'] : self::getRecordTitle($theColConf['foreign_table'], $MMrow, FALSE, $forceResult);
-							}
-							$GLOBALS['TYPO3_DB']->sql_free_result($MMres);
-							if (is_array($mmlA)) {
-								$l = implode('; ', $mmlA);
+							/** @var $dbGroup \TYPO3\CMS\Core\Database\RelationHandler */
+							$dbGroup = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\RelationHandler');
+							$dbGroup->start($value, $theColConf['foreign_table'], $theColConf['MM'], $uid, $table, $theColConf);
+							$selectUids = $dbGroup->tableArray[$theColConf['foreign_table']];
+							if (is_array($selectUids) && count($selectUids) > 0) {
+								$MMres = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid, ' . $MMfield, $theColConf['foreign_table'], 'uid IN (' . implode(',', $selectUids) . ')' . self::deleteClause($theColConf['foreign_table']));
+								while ($MMrow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($MMres)) {
+									$mmlA[] = $noRecordLookup ? $MMrow['uid'] : self::getRecordTitle($theColConf['foreign_table'], $MMrow, FALSE, $forceResult);
+								}
+								$GLOBALS['TYPO3_DB']->sql_free_result($MMres);
+								if (is_array($mmlA)) {
+									$l = implode('; ', $mmlA);
+								} else {
+									$l = 'N/A';
+								}
 							} else {
 								$l = 'N/A';
 							}
@@ -2005,119 +2008,115 @@ class BackendUtility {
 							$l = 'N/A';
 						}
 					} else {
-						$l = 'N/A';
-					}
-				} else {
-					$l = self::getLabelsFromItemsList($table, $col, $value);
-					if ($theColConf['foreign_table'] && !$l && $GLOBALS['TCA'][$theColConf['foreign_table']]) {
-						if ($noRecordLookup) {
-							$l = $value;
-						} else {
-							$rParts = GeneralUtility::trimExplode(',', $value, 1);
-							$lA = array();
-							foreach ($rParts as $rVal) {
-								$rVal = intval($rVal);
-								if ($rVal > 0) {
-									$r = self::getRecordWSOL($theColConf['foreign_table'], $rVal);
-								} else {
-									$r = self::getRecordWSOL($theColConf['neg_foreign_table'], -$rVal);
+						$l = self::getLabelsFromItemsList($table, $col, $value);
+						if ($theColConf['foreign_table'] && !$l && $GLOBALS['TCA'][$theColConf['foreign_table']]) {
+							if ($noRecordLookup) {
+								$l = $value;
+							} else {
+								$rParts = GeneralUtility::trimExplode(',', $value, 1);
+								$lA = array();
+								foreach ($rParts as $rVal) {
+									$rVal = intval($rVal);
+									if ($rVal > 0) {
+										$r = self::getRecordWSOL($theColConf['foreign_table'], $rVal);
+									} else {
+										$r = self::getRecordWSOL($theColConf['neg_foreign_table'], -$rVal);
+									}
+									if (is_array($r)) {
+										$lA[] = $GLOBALS['LANG']->sL(($rVal > 0 ? $theColConf['foreign_table_prefix'] : $theColConf['neg_foreign_table_prefix'])) . self::getRecordTitle(($rVal > 0 ? $theColConf['foreign_table'] : $theColConf['neg_foreign_table']), $r, FALSE, $forceResult);
+									} else {
+										$lA[] = $rVal ? '[' . $rVal . '!]' : '';
+									}
 								}
-								if (is_array($r)) {
-									$lA[] = $GLOBALS['LANG']->sL(($rVal > 0 ? $theColConf['foreign_table_prefix'] : $theColConf['neg_foreign_table_prefix'])) . self::getRecordTitle(($rVal > 0 ? $theColConf['foreign_table'] : $theColConf['neg_foreign_table']), $r, FALSE, $forceResult);
-								} else {
-									$lA[] = $rVal ? '[' . $rVal . '!]' : '';
-								}
+								$l = implode(', ', $lA);
 							}
-							$l = implode(', ', $lA);
 						}
 					}
-				}
-				break;
-			case 'group':
-				// resolve the titles for DB records
-				if ($theColConf['internal_type'] === 'db') {
-					$finalValues = array();
-					$relationTableName = $theColConf['allowed'];
-					$explodedValues = GeneralUtility::trimExplode(',', $value, TRUE);
+					break;
+				case 'group':
+					// resolve the titles for DB records
+					if ($theColConf['internal_type'] === 'db') {
+						$finalValues = array();
+						$relationTableName = $theColConf['allowed'];
+						$explodedValues = GeneralUtility::trimExplode(',', $value, TRUE);
 
-					foreach ($explodedValues as $explodedValue) {
+						foreach ($explodedValues as $explodedValue) {
 
-						if (MathUtility::canBeInterpretedAsInteger($explodedValue)) {
-							$relationTableNameForField = $relationTableName;
-						} else {
-							list($relationTableNameForField, $explodedValue) = self::splitTable_Uid($explodedValue);
+							if (MathUtility::canBeInterpretedAsInteger($explodedValue)) {
+								$relationTableNameForField = $relationTableName;
+							} else {
+								list($relationTableNameForField, $explodedValue) = self::splitTable_Uid($explodedValue);
+							}
+
+							$relationRecord = static::getRecordWSOL($relationTableNameForField, $explodedValue);
+							$finalValues[] = static::getRecordTitle($relationTableNameForField, $relationRecord);
 						}
 
-						$relationRecord = static::getRecordWSOL($relationTableNameForField, $explodedValue);
-						$finalValues[] = static::getRecordTitle($relationTableNameForField, $relationRecord);
-					}
-
-					$l = implode(', ', $finalValues);
-				} else {
-					$l = implode(', ', GeneralUtility::trimExplode(',', $value, TRUE));
-				}
-				break;
-			case 'check':
-				if (!is_array($theColConf['items']) || count($theColConf['items']) == 1) {
-					$l = $value ? $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xlf:yes') : $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xlf:no');
-				} else {
-					$lA = array();
-					foreach ($theColConf['items'] as $key => $val) {
-						if ($value & pow(2, $key)) {
-							$lA[] = $GLOBALS['LANG']->sL($val[0]);
-						}
-					}
-					$l = implode(', ', $lA);
-				}
-				break;
-			case 'input':
-				// Hide value 0 for dates, but show it for everything else
-				if (isset($value)) {
-					if (GeneralUtility::inList($theColConf['eval'], 'date')) {
-						// Handle native date field
-						if (isset($theColConf['dbType']) && $theColConf['dbType'] === 'date') {
-							$dateTimeFormats = $GLOBALS['TYPO3_DB']->getDateTimeFormats($table);
-							$emptyValue = $dateTimeFormats['date']['empty'];
-							$value = $value !== $emptyValue ? strtotime($value) : 0;
-						}
-						if (!empty($value)) {
-							$l = self::date($value) . ' (' . ($GLOBALS['EXEC_TIME'] - $value > 0 ? '-' : '') . self::calcAge(abs(($GLOBALS['EXEC_TIME'] - $value)), $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.minutesHoursDaysYears')) . ')';
-						}
-					} elseif (GeneralUtility::inList($theColConf['eval'], 'time')) {
-						if (!empty($value)) {
-							$l = self::time($value, FALSE);
-						}
-					} elseif (GeneralUtility::inList($theColConf['eval'], 'timesec')) {
-						if (!empty($value)) {
-							$l = self::time($value);
-						}
-					} elseif (GeneralUtility::inList($theColConf['eval'], 'datetime')) {
-						// Handle native date/time field
-						if (isset($theColConf['dbType']) && $theColConf['dbType'] === 'datetime') {
-							$dateTimeFormats = $GLOBALS['TYPO3_DB']->getDateTimeFormats($table);
-							$emptyValue = $dateTimeFormats['datetime']['empty'];
-							$value = $value !== $emptyValue ? strtotime($value) : 0;
-						}
-						if (!empty($value)) {
-							$l = self::datetime($value);
-						}
+						$l = implode(', ', $finalValues);
 					} else {
-						$l = $value;
+						$l = implode(', ', GeneralUtility::trimExplode(',', $value, TRUE));
 					}
-				}
-				break;
-			case 'flex':
-				$l = strip_tags($value);
-				break;
-			default:
-				if ($defaultPassthrough) {
-					$l = $value;
-				} elseif ($theColConf['MM']) {
-					$l = 'N/A';
-				} elseif ($value) {
-					$l = GeneralUtility::fixed_lgd_cs(strip_tags($value), 200);
-				}
-				break;
+					break;
+				case 'check':
+					if (!is_array($theColConf['items']) || count($theColConf['items']) == 1) {
+						$l = $value ? $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xlf:yes') : $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xlf:no');
+					} else {
+						$lA = array();
+						foreach ($theColConf['items'] as $key => $val) {
+							if ($value & pow(2, $key)) {
+								$lA[] = $GLOBALS['LANG']->sL($val[0]);
+							}
+						}
+						$l = implode(', ', $lA);
+					}
+					break;
+				case 'input':
+					// Hide value 0 for dates, but show it for everything else
+					if (isset($value)) {
+						if (GeneralUtility::inList($theColConf['eval'], 'date')) {
+							// Handle native date field
+							if (isset($theColConf['dbType']) && $theColConf['dbType'] === 'date') {
+								$dateTimeFormats = $GLOBALS['TYPO3_DB']->getDateTimeFormats($table);
+								$emptyValue = $dateTimeFormats['date']['empty'];
+								$value = $value !== $emptyValue ? strtotime($value) : 0;
+							}
+							if (!empty($value)) {
+								$l = self::date($value) . ' (' . ($GLOBALS['EXEC_TIME'] - $value > 0 ? '-' : '') . self::calcAge(abs(($GLOBALS['EXEC_TIME'] - $value)), $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.minutesHoursDaysYears')) . ')';
+							}
+						} elseif (GeneralUtility::inList($theColConf['eval'], 'time')) {
+							if (!empty($value)) {
+								$l = self::time($value, FALSE);
+							}
+						} elseif (GeneralUtility::inList($theColConf['eval'], 'timesec')) {
+							if (!empty($value)) {
+								$l = self::time($value);
+							}
+						} elseif (GeneralUtility::inList($theColConf['eval'], 'datetime')) {
+							// Handle native date/time field
+							if (isset($theColConf['dbType']) && $theColConf['dbType'] === 'datetime') {
+								$dateTimeFormats = $GLOBALS['TYPO3_DB']->getDateTimeFormats($table);
+								$emptyValue = $dateTimeFormats['datetime']['empty'];
+								$value = $value !== $emptyValue ? strtotime($value) : 0;
+							}
+							if (!empty($value)) {
+								$l = self::datetime($value);
+							}
+						} else {
+							$l = $value;
+						}
+					}
+					break;
+				case 'flex':
+					$l = strip_tags($value);
+					break;
+				default:
+					if ($defaultPassthrough) {
+						$l = $value;
+					} elseif ($theColConf['MM']) {
+						$l = 'N/A';
+					} elseif ($value) {
+						$l = GeneralUtility::fixed_lgd_cs(strip_tags($value), 200);
+					}
 			}
 			// If this field is a password field, then hide the password by changing it to a random number of asterisk (*)
 			if (stristr($theColConf['eval'], 'password')) {
@@ -2259,27 +2258,26 @@ class BackendUtility {
 					$lines[$fname] = '<strong>' . htmlspecialchars($config[1]) . '</strong><br />';
 					$lines[$fname] .= $config[2] . '<br />';
 					switch ($config[0]) {
-					case 'string':
+						case 'string':
 
-					case 'short':
-						$formEl = '<input type="text" name="' . $dataPrefix . '[' . $fname . ']" value="' . $params[$fname] . '"' . $GLOBALS['TBE_TEMPLATE']->formWidth(($config[0] == 'short' ? 24 : 48)) . ' />';
-						break;
-					case 'check':
-						$formEl = '<input type="hidden" name="' . $dataPrefix . '[' . $fname . ']" value="0" /><input type="checkbox" name="' . $dataPrefix . '[' . $fname . ']" value="1"' . ($params[$fname] ? ' checked="checked"' : '') . ' />';
-						break;
-					case 'comment':
-						$formEl = '';
-						break;
-					case 'select':
-						$opt = array();
-						foreach ($config[3] as $k => $v) {
-							$opt[] = '<option value="' . htmlspecialchars($k) . '"' . ($params[$fname] == $k ? ' selected="selected"' : '') . '>' . htmlspecialchars($v) . '</option>';
-						}
-						$formEl = '<select name="' . $dataPrefix . '[' . $fname . ']">' . implode('', $opt) . '</select>';
-						break;
-					default:
-						debug($config);
-						break;
+						case 'short':
+							$formEl = '<input type="text" name="' . $dataPrefix . '[' . $fname . ']" value="' . $params[$fname] . '"' . $GLOBALS['TBE_TEMPLATE']->formWidth(($config[0] == 'short' ? 24 : 48)) . ' />';
+							break;
+						case 'check':
+							$formEl = '<input type="hidden" name="' . $dataPrefix . '[' . $fname . ']" value="0" /><input type="checkbox" name="' . $dataPrefix . '[' . $fname . ']" value="1"' . ($params[$fname] ? ' checked="checked"' : '') . ' />';
+							break;
+						case 'comment':
+							$formEl = '';
+							break;
+						case 'select':
+							$opt = array();
+							foreach ($config[3] as $k => $v) {
+								$opt[] = '<option value="' . htmlspecialchars($k) . '"' . ($params[$fname] == $k ? ' selected="selected"' : '') . '>' . htmlspecialchars($v) . '</option>';
+							}
+							$formEl = '<select name="' . $dataPrefix . '[' . $fname . ']">' . implode('', $opt) . '</select>';
+							break;
+						default:
+							debug($config);
 					}
 					$lines[$fname] .= $formEl;
 					$lines[$fname] .= '<br /><br />';
@@ -2783,25 +2781,24 @@ class BackendUtility {
 				$signals[] = $params['JScode'];
 			} else {
 				switch ($set) {
-				case 'updatePageTree':
-					$signals[] = '
-							if (top && top.TYPO3.Backend.NavigationContainer.PageTree) {
-								top.TYPO3.Backend.NavigationContainer.PageTree.refreshTree();
-							}
-						';
-					break;
-				case 'updateFolderTree':
-					$signals[] = '
-							if (top && top.TYPO3.Backend.NavigationIframe) {
-								top.TYPO3.Backend.NavigationIframe.refresh();
-							}';
-					break;
-				case 'updateModuleMenu':
-					$signals[] = '
-							if (top && top.TYPO3.ModuleMenu.App) {
-								top.TYPO3.ModuleMenu.App.refreshMenu();
-							}';
-					break;
+					case 'updatePageTree':
+						$signals[] = '
+								if (top && top.TYPO3.Backend.NavigationContainer.PageTree) {
+									top.TYPO3.Backend.NavigationContainer.PageTree.refreshTree();
+								}
+							';
+						break;
+					case 'updateFolderTree':
+						$signals[] = '
+								if (top && top.TYPO3.Backend.NavigationIframe) {
+									top.TYPO3.Backend.NavigationIframe.refresh();
+								}';
+						break;
+					case 'updateModuleMenu':
+						$signals[] = '
+								if (top && top.TYPO3.ModuleMenu.App) {
+									top.TYPO3.ModuleMenu.App.refreshMenu();
+								}';
 				}
 			}
 		}
@@ -3846,11 +3843,11 @@ class BackendUtility {
 			// Cleanup command, if set
 			$cmd = GeneralUtility::_GET('adminWarning_cmd');
 			switch ($cmd) {
-			case 'remove_ENABLE_INSTALL_TOOL':
-				if (unlink($enableInstallToolFile)) {
-					unset($enableInstallToolFile);
-				}
-				break;
+				case 'remove_ENABLE_INSTALL_TOOL':
+					if (unlink($enableInstallToolFile)) {
+						unset($enableInstallToolFile);
+					}
+					break;
 			}
 			// Check if the Install Tool Password is still default: joh316
 			if ($GLOBALS['TYPO3_CONF_VARS']['BE']['installToolPassword'] == md5('joh316')) {
@@ -4035,14 +4032,13 @@ class BackendUtility {
 			$interface = $GLOBALS['BE_USER']->uc['interfaceSetup'];
 		}
 		switch ($interface) {
-		case 'frontend':
-			$script = '../.';
-			break;
-		case 'backend':
+			case 'frontend':
+				$script = '../.';
+				break;
+			case 'backend':
 
-		default:
-			$script = 'backend.php';
-			break;
+			default:
+				$script = 'backend.php';
 		}
 		return $script;
 	}

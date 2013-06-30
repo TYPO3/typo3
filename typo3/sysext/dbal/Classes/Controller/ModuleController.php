@@ -81,15 +81,15 @@ class ModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		$this->content .= $this->doc->section('', $this->doc->funcMenu('', \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncMenu(0, 'SET[function]', $this->MOD_SETTINGS['function'], $this->MOD_MENU['function'])));
 		// Debug log:
 		switch ($this->MOD_SETTINGS['function']) {
-		case 'info':
-			$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('Cached_info'), $this->printCachedInfo());
-			break;
-		case 'sqlcheck':
-			$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('SQL_check'), $this->printSqlCheck());
-			break;
-		case 0:
-			$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('Debug_log'), $this->printLogMgm());
-			break;
+			case 'info':
+				$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('Cached_info'), $this->printCachedInfo());
+				break;
+			case 'sqlcheck':
+				$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('SQL_check'), $this->printSqlCheck());
+				break;
+			case 0:
+				$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('Debug_log'), $this->printLogMgm());
+				break;
 		}
 		// ShortCut
 		if ($GLOBALS['BE_USER']->mayMakeShortcut()) {
@@ -122,55 +122,55 @@ class ModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 function updateQryForm(s) {
 	document.getElementById(\'tx-dbal-result\').style.display = \'none\';
 	switch(s) {
-	case \'SELECT\':
-		document.getElementById(\'tx-dbal-qryupdate\').style.display = \'none\';
-		document.getElementById(\'tx-dbal-qryfields\').style.display = \'table-row\';
-		document.getElementById(\'tx-dbal-qryinsertvalues\').style.display = \'none\';
-		document.getElementById(\'tx-dbal-qryupdatevalues\').style.display = \'none\';
-		document.getElementById(\'tx-dbal-qryfrom\').style.display = \'table-row\';
-		document.getElementById(\'tx-dbal-qryinto\').style.display = \'none\';
-		document.getElementById(\'tx-dbal-qrywhere\').style.display = \'table-row\';
-		document.getElementById(\'tx-dbal-qrygroup\').style.display = \'table-row\';
-		document.getElementById(\'tx-dbal-qryorder\').style.display = \'table-row\';
-		document.getElementById(\'tx-dbal-qrylimit\').style.display = \'table-row\';
-	break;
-	case \'INSERT\':
-		document.getElementById(\'tx-dbal-qryupdate\').style.display = \'none\';
-		document.getElementById(\'tx-dbal-qryfields\').style.display = \'none\';
-		document.getElementById(\'tx-dbal-qryinsertvalues\').style.display = \'table-row\';
-		document.getElementById(\'tx-dbal-qryupdatevalues\').style.display = \'none\';
-		document.getElementById(\'tx-dbal-qryfrom\').style.display = \'none\';
-		document.getElementById(\'tx-dbal-qryinto\').style.display = \'table-row\';
-		document.getElementById(\'tx-dbal-qrywhere\').style.display = \'table-row\';
-		document.getElementById(\'tx-dbal-qrygroup\').style.display = \'table-row\';
-		document.getElementById(\'tx-dbal-qryorder\').style.display = \'table-row\';
-		document.getElementById(\'tx-dbal-qrylimit\').style.display = \'table-row\';
-	break;
-	case \'UPDATE\':
-		document.getElementById(\'tx-dbal-qryupdate\').style.display = \'table-row\';
-		document.getElementById(\'tx-dbal-qryfields\').style.display = \'none\';
-		document.getElementById(\'tx-dbal-qryinsertvalues\').style.display = \'none\';
-		document.getElementById(\'tx-dbal-qryupdatevalues\').style.display = \'table-row\';
-		document.getElementById(\'tx-dbal-qryfrom\').style.display = \'none\';
-		document.getElementById(\'tx-dbal-qryinto\').style.display = \'none\';
-		document.getElementById(\'tx-dbal-qryupdate\').style.display = \'table-row\';
-		document.getElementById(\'tx-dbal-qrywhere\').style.display = \'table-row\';
-		document.getElementById(\'tx-dbal-qrygroup\').style.display = \'none\';
-		document.getElementById(\'tx-dbal-qryorder\').style.display = \'none\';
-		document.getElementById(\'tx-dbal-qrylimit\').style.display = \'none\';
-	break;
-	case \'DELETE\':
-		document.getElementById(\'tx-dbal-qryupdate\').style.display = \'none\';
-		document.getElementById(\'tx-dbal-qryfields\').style.display = \'none\';
-		document.getElementById(\'tx-dbal-qryinsertvalues\').style.display = \'none\';
-		document.getElementById(\'tx-dbal-qryupdatevalues\').style.display = \'none\';
-		document.getElementById(\'tx-dbal-qryfrom\').style.display = \'table-row\';
-		document.getElementById(\'tx-dbal-qryinto\').style.display = \'none\';
-		document.getElementById(\'tx-dbal-qrywhere\').style.display = \'table-row\';
-		document.getElementById(\'tx-dbal-qrygroup\').style.display = \'none\';
-		document.getElementById(\'tx-dbal-qryorder\').style.display = \'none\';
-		document.getElementById(\'tx-dbal-qrylimit\').style.display = \'none\';
-	break;
+		case \'SELECT\':
+			document.getElementById(\'tx-dbal-qryupdate\').style.display = \'none\';
+			document.getElementById(\'tx-dbal-qryfields\').style.display = \'table-row\';
+			document.getElementById(\'tx-dbal-qryinsertvalues\').style.display = \'none\';
+			document.getElementById(\'tx-dbal-qryupdatevalues\').style.display = \'none\';
+			document.getElementById(\'tx-dbal-qryfrom\').style.display = \'table-row\';
+			document.getElementById(\'tx-dbal-qryinto\').style.display = \'none\';
+			document.getElementById(\'tx-dbal-qrywhere\').style.display = \'table-row\';
+			document.getElementById(\'tx-dbal-qrygroup\').style.display = \'table-row\';
+			document.getElementById(\'tx-dbal-qryorder\').style.display = \'table-row\';
+			document.getElementById(\'tx-dbal-qrylimit\').style.display = \'table-row\';
+		break;
+		case \'INSERT\':
+			document.getElementById(\'tx-dbal-qryupdate\').style.display = \'none\';
+			document.getElementById(\'tx-dbal-qryfields\').style.display = \'none\';
+			document.getElementById(\'tx-dbal-qryinsertvalues\').style.display = \'table-row\';
+			document.getElementById(\'tx-dbal-qryupdatevalues\').style.display = \'none\';
+			document.getElementById(\'tx-dbal-qryfrom\').style.display = \'none\';
+			document.getElementById(\'tx-dbal-qryinto\').style.display = \'table-row\';
+			document.getElementById(\'tx-dbal-qrywhere\').style.display = \'table-row\';
+			document.getElementById(\'tx-dbal-qrygroup\').style.display = \'table-row\';
+			document.getElementById(\'tx-dbal-qryorder\').style.display = \'table-row\';
+			document.getElementById(\'tx-dbal-qrylimit\').style.display = \'table-row\';
+		break;
+		case \'UPDATE\':
+			document.getElementById(\'tx-dbal-qryupdate\').style.display = \'table-row\';
+			document.getElementById(\'tx-dbal-qryfields\').style.display = \'none\';
+			document.getElementById(\'tx-dbal-qryinsertvalues\').style.display = \'none\';
+			document.getElementById(\'tx-dbal-qryupdatevalues\').style.display = \'table-row\';
+			document.getElementById(\'tx-dbal-qryfrom\').style.display = \'none\';
+			document.getElementById(\'tx-dbal-qryinto\').style.display = \'none\';
+			document.getElementById(\'tx-dbal-qryupdate\').style.display = \'table-row\';
+			document.getElementById(\'tx-dbal-qrywhere\').style.display = \'table-row\';
+			document.getElementById(\'tx-dbal-qrygroup\').style.display = \'none\';
+			document.getElementById(\'tx-dbal-qryorder\').style.display = \'none\';
+			document.getElementById(\'tx-dbal-qrylimit\').style.display = \'none\';
+		break;
+		case \'DELETE\':
+			document.getElementById(\'tx-dbal-qryupdate\').style.display = \'none\';
+			document.getElementById(\'tx-dbal-qryfields\').style.display = \'none\';
+			document.getElementById(\'tx-dbal-qryinsertvalues\').style.display = \'none\';
+			document.getElementById(\'tx-dbal-qryupdatevalues\').style.display = \'none\';
+			document.getElementById(\'tx-dbal-qryfrom\').style.display = \'table-row\';
+			document.getElementById(\'tx-dbal-qryinto\').style.display = \'none\';
+			document.getElementById(\'tx-dbal-qrywhere\').style.display = \'table-row\';
+			document.getElementById(\'tx-dbal-qrygroup\').style.display = \'none\';
+			document.getElementById(\'tx-dbal-qryorder\').style.display = \'none\';
+			document.getElementById(\'tx-dbal-qrylimit\').style.display = \'none\';
+		break;
 	}
 }
 /*]]>*/
@@ -204,18 +204,18 @@ updateQryForm(\'' . $input['QUERY'] . '\');
 			';
 		$out .= '<tr id="tx-dbal-result" class="bgColor4"><th>Result:</th><td>';
 		switch ($input['QUERY']) {
-		case 'SELECT':
-			$qry = $GLOBALS['TYPO3_DB']->SELECTquery($input['FIELDS'], $input['FROM'], $input['WHERE'], $input['GROUP'], $input['ORDER'], $input['LIMIT']);
-			break;
-		case 'INSERT':
-			$qry = $GLOBALS['TYPO3_DB']->INSERTquery($input['INTO'], $this->createFieldsValuesArray($input['INSERTVALUES']));
-			break;
-		case 'UPDATE':
-			$qry = $GLOBALS['TYPO3_DB']->UPDATEquery($input['UPDATE'], $input['WHERE'], $this->createFieldsValuesArray($input['UPDATEVALUES']));
-			break;
-		case 'DELETE':
-			$qry = $GLOBALS['TYPO3_DB']->DELETEquery($input['FROM'], $input['WHERE']);
-			break;
+			case 'SELECT':
+				$qry = $GLOBALS['TYPO3_DB']->SELECTquery($input['FIELDS'], $input['FROM'], $input['WHERE'], $input['GROUP'], $input['ORDER'], $input['LIMIT']);
+				break;
+			case 'INSERT':
+				$qry = $GLOBALS['TYPO3_DB']->INSERTquery($input['INTO'], $this->createFieldsValuesArray($input['INSERTVALUES']));
+				break;
+			case 'UPDATE':
+				$qry = $GLOBALS['TYPO3_DB']->UPDATEquery($input['UPDATE'], $input['WHERE'], $this->createFieldsValuesArray($input['UPDATEVALUES']));
+				break;
+			case 'DELETE':
+				$qry = $GLOBALS['TYPO3_DB']->DELETEquery($input['FROM'], $input['WHERE']);
+				break;
 		}
 		$out .= '<pre>' . htmlspecialchars($qry) . '</pre></td></tr>';
 		$out .= '
@@ -354,174 +354,173 @@ updateQryForm(\'' . $input['QUERY'] . '\');
 		// Get cmd:
 		$cmd = (string) \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('cmd');
 		switch ($cmd) {
-		case 'flush':
-			$res = $GLOBALS['TYPO3_DB']->exec_TRUNCATEquery('tx_dbal_debuglog');
-			$res = $GLOBALS['TYPO3_DB']->exec_TRUNCATEquery('tx_dbal_debuglog_where');
-			$outStr = 'Log FLUSHED!';
-			break;
-		case 'joins':
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('table_join,exec_time,query,script', 'tx_dbal_debuglog', 'table_join!=\'\'', 'table_join,script,exec_time,query');
-			// Init vars in which to pick up the query result:
-			$tableIndex = array();
-			$tRows = array();
-			$tRows[] = '
-					<tr>
-						<td>Execution time</td>
-						<td>Table joins</td>
-						<td>Script</td>
-						<td>Query</td>
-					</tr>';
-			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-				$tableArray = $GLOBALS['TYPO3_DB']->SQLparser->parseFromTables($row['table_join']);
-				// Create table name index:
-				foreach ($tableArray as $a) {
-					foreach ($tableArray as $b) {
-						if ($b['table'] != $a['table']) {
-							$tableIndex[$a['table']][$b['table']] = 1;
-						}
-					}
-				}
-				// Create output row
-				$tRows[] = '
-						<tr>
-							<td>' . htmlspecialchars($row['exec_time']) . '</td>
-							<td>' . htmlspecialchars($row['table_join']) . '</td>
-							<td>' . htmlspecialchars($row['script']) . '</td>
-							<td>' . htmlspecialchars($row['query']) . '</td>
-						</tr>';
-			}
-			// Printing direct joins:
-			$outStr .= '<h4>Direct joins:</h4>' . \TYPO3\CMS\Core\Utility\DebugUtility::viewArray($tableIndex);
-			// Printing total dependencies:
-			foreach ($tableIndex as $priTable => $a) {
-				foreach ($tableIndex as $tableN => $v) {
-					foreach ($v as $tableP => $vv) {
-						if ($tableP == $priTable) {
-							$tableIndex[$priTable] = array_merge($v, $a);
-						}
-					}
-				}
-			}
-			$outStr .= '<h4>Total dependencies:</h4>' . \TYPO3\CMS\Core\Utility\DebugUtility::viewArray($tableIndex);
-			// Printing data rows:
-			$outStr .= '
-					<table border="1" cellspacing="0">' . implode('', $tRows) . '
-					</table>';
-			break;
-		case 'errors':
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('serdata,exec_time,query,script', 'tx_dbal_debuglog', 'errorFlag>0', '', 'tstamp DESC');
-			// Init vars in which to pick up the query result:
-			$tRows = array();
-			$tRows[] = '
-					<tr>
-						<td>Execution time</td>
-						<td>Error data</td>
-						<td>Script</td>
-						<td>Query</td>
-					</tr>';
-			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-				// Create output row
-				$tRows[] = '
-						<tr>
-							<td>' . htmlspecialchars($row['exec_time']) . '</td>
-							<td>' . \TYPO3\CMS\Core\Utility\DebugUtility::viewArray(unserialize($row['serdata'])) . '</td>
-							<td>' . htmlspecialchars($row['script']) . '</td>
-							<td>' . htmlspecialchars($row['query']) . '</td>
-						</tr>';
-			}
-			// Printing data rows:
-			$outStr .= '
-					<table border="1" cellspacing="0">' . implode('', $tRows) . '
-					</table>';
-			break;
-		case 'parsing':
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('query,serdata', 'tx_dbal_debuglog', 'errorFlag&2=2');
-			$tRows = array();
-			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-				// Create output row
-				$tRows[] = '
-						<tr>
-							<td>' . htmlspecialchars($row['query']) . '</td>
-						</tr>';
-			}
-			// Printing data rows:
-			$outStr .= '
-					<table border="1" cellspacing="0">' . implode('', $tRows) . '
-					</table>';
-			break;
-		case 'where':
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('tstamp,script,tablename,whereclause', 'tx_dbal_debuglog_where', '', '', 'tstamp DESC');
-			$tRows = array();
-			$tRows[] = '
-					<tr>
-						<td>Time</td>
-						<td>Script</td>
-						<td>Table</td>
-						<td>WHERE clause</td>
-					</tr>';
-			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-				$tRows[] = '
-						<tr>
-							<td>' . \TYPO3\CMS\Backend\Utility\BackendUtility::datetime($row['tstamp']) . '</td>
-							<td>' . htmlspecialchars($row['script']) . '</td>
-							<td>' . htmlspecialchars($row['tablename']) . '</td>
-								<td>' . str_replace(array('\'\'', '""', 'IS NULL', 'IS NOT NULL'), array('<span style="background-color:#ff0000;color:#ffffff;padding:2px;font-weight:bold;">\'\'</span>', '<span style="background-color:#ff0000;color:#ffffff;padding:2px;font-weight:bold;">""</span>', '<span style="background-color:#00ff00;color:#ffffff;padding:2px;font-weight:bold;">IS NULL</span>', '<span style="background-color:#00ff00;color:#ffffff;padding:2px;font-weight:bold;">IS NOT NULL</span>'), htmlspecialchars($row['whereclause'])) . '</td>
-						</tr>';
-			}
-			$outStr = '
-					<table border="1" cellspacing="0">' . implode('', $tRows) . '
-					</table>';
-			break;
-		default:
-			// Look for request to view specific script exec:
-			$specTime = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('specTime');
-			if ($specTime) {
-				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('exec_time,errorFlag,table_join,serdata,query', 'tx_dbal_debuglog', 'tstamp=' . (int) $specTime);
+			case 'flush':
+				$res = $GLOBALS['TYPO3_DB']->exec_TRUNCATEquery('tx_dbal_debuglog');
+				$res = $GLOBALS['TYPO3_DB']->exec_TRUNCATEquery('tx_dbal_debuglog_where');
+				$outStr = 'Log FLUSHED!';
+				break;
+			case 'joins':
+				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('table_join,exec_time,query,script', 'tx_dbal_debuglog', 'table_join!=\'\'', 'table_join,script,exec_time,query');
+				// Init vars in which to pick up the query result:
+				$tableIndex = array();
 				$tRows = array();
 				$tRows[] = '
 						<tr>
 							<td>Execution time</td>
-							<td>Error</td>
 							<td>Table joins</td>
-							<td>Data</td>
+							<td>Script</td>
 							<td>Query</td>
 						</tr>';
 				while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+					$tableArray = $GLOBALS['TYPO3_DB']->SQLparser->parseFromTables($row['table_join']);
+					// Create table name index:
+					foreach ($tableArray as $a) {
+						foreach ($tableArray as $b) {
+							if ($b['table'] != $a['table']) {
+								$tableIndex[$a['table']][$b['table']] = 1;
+							}
+						}
+					}
+					// Create output row
 					$tRows[] = '
 							<tr>
 								<td>' . htmlspecialchars($row['exec_time']) . '</td>
-								<td>' . ($row['errorFlag'] ? 1 : 0) . '</td>
 								<td>' . htmlspecialchars($row['table_join']) . '</td>
-								<td>' . \TYPO3\CMS\Core\Utility\DebugUtility::viewArray(unserialize($row['serdata'])) . '</td>
-								<td>' . str_replace(array('\'\'', '""', 'IS NULL', 'IS NOT NULL'), array('<span style="background-color:#ff0000;color:#ffffff;padding:2px;font-weight:bold;">\'\'</span>', '<span style="background-color:#ff0000;color:#ffffff;padding:2px;font-weight:bold;">""</span>', '<span style="background-color:#00ff00;color:#ffffff;padding:2px;font-weight:bold;">IS NULL</span>', '<span style="background-color:#00ff00;color:#ffffff;padding:2px;font-weight:bold;">IS NOT NULL</span>'), htmlspecialchars($row['query'])) . '</td>
+								<td>' . htmlspecialchars($row['script']) . '</td>
+								<td>' . htmlspecialchars($row['query']) . '</td>
 							</tr>';
 				}
-			} else {
-				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('tstamp,script, SUM(exec_time) as calc_sum, count(*) AS qrycount, MAX(errorFlag) as error', 'tx_dbal_debuglog', '', 'tstamp,script', 'tstamp DESC');
+				// Printing direct joins:
+				$outStr .= '<h4>Direct joins:</h4>' . \TYPO3\CMS\Core\Utility\DebugUtility::viewArray($tableIndex);
+				// Printing total dependencies:
+				foreach ($tableIndex as $priTable => $a) {
+					foreach ($tableIndex as $tableN => $v) {
+						foreach ($v as $tableP => $vv) {
+							if ($tableP == $priTable) {
+								$tableIndex[$priTable] = array_merge($v, $a);
+							}
+						}
+					}
+				}
+				$outStr .= '<h4>Total dependencies:</h4>' . \TYPO3\CMS\Core\Utility\DebugUtility::viewArray($tableIndex);
+				// Printing data rows:
+				$outStr .= '
+						<table border="1" cellspacing="0">' . implode('', $tRows) . '
+						</table>';
+				break;
+			case 'errors':
+				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('serdata,exec_time,query,script', 'tx_dbal_debuglog', 'errorFlag>0', '', 'tstamp DESC');
+				// Init vars in which to pick up the query result:
+				$tRows = array();
+				$tRows[] = '
+						<tr>
+							<td>Execution time</td>
+							<td>Error data</td>
+							<td>Script</td>
+							<td>Query</td>
+						</tr>';
+				while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+					// Create output row
+					$tRows[] = '
+							<tr>
+								<td>' . htmlspecialchars($row['exec_time']) . '</td>
+								<td>' . \TYPO3\CMS\Core\Utility\DebugUtility::viewArray(unserialize($row['serdata'])) . '</td>
+								<td>' . htmlspecialchars($row['script']) . '</td>
+								<td>' . htmlspecialchars($row['query']) . '</td>
+							</tr>';
+				}
+				// Printing data rows:
+				$outStr .= '
+						<table border="1" cellspacing="0">' . implode('', $tRows) . '
+						</table>';
+				break;
+			case 'parsing':
+				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('query,serdata', 'tx_dbal_debuglog', 'errorFlag&2=2');
+				$tRows = array();
+				while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+					// Create output row
+					$tRows[] = '
+							<tr>
+								<td>' . htmlspecialchars($row['query']) . '</td>
+							</tr>';
+				}
+				// Printing data rows:
+				$outStr .= '
+						<table border="1" cellspacing="0">' . implode('', $tRows) . '
+						</table>';
+				break;
+			case 'where':
+				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('tstamp,script,tablename,whereclause', 'tx_dbal_debuglog_where', '', '', 'tstamp DESC');
 				$tRows = array();
 				$tRows[] = '
 						<tr>
 							<td>Time</td>
-							<td># of queries</td>
-							<td>Error</td>
-							<td>Time (ms)</td>
 							<td>Script</td>
+							<td>Table</td>
+							<td>WHERE clause</td>
 						</tr>';
 				while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 					$tRows[] = '
 							<tr>
 								<td>' . \TYPO3\CMS\Backend\Utility\BackendUtility::datetime($row['tstamp']) . '</td>
-								<td>' . htmlspecialchars($row['qrycount']) . '</td>
-								<td>' . ($row['error'] ? '<strong style="color:#f00">ERR</strong>' : '') . '</td>
-								<td>' . htmlspecialchars($row['calc_sum']) . '</td>
-								<td><a href="' . $this->thisScript . '&amp;specTime=' . intval($row['tstamp']) . '">' . htmlspecialchars($row['script']) . '</a></td>
+								<td>' . htmlspecialchars($row['script']) . '</td>
+								<td>' . htmlspecialchars($row['tablename']) . '</td>
+									<td>' . str_replace(array('\'\'', '""', 'IS NULL', 'IS NOT NULL'), array('<span style="background-color:#ff0000;color:#ffffff;padding:2px;font-weight:bold;">\'\'</span>', '<span style="background-color:#ff0000;color:#ffffff;padding:2px;font-weight:bold;">""</span>', '<span style="background-color:#00ff00;color:#ffffff;padding:2px;font-weight:bold;">IS NULL</span>', '<span style="background-color:#00ff00;color:#ffffff;padding:2px;font-weight:bold;">IS NOT NULL</span>'), htmlspecialchars($row['whereclause'])) . '</td>
 							</tr>';
 				}
-			}
-			$outStr = '
-					<table border="1" cellspacing="0">' . implode('', $tRows) . '
-					</table>';
-			break;
+				$outStr = '
+						<table border="1" cellspacing="0">' . implode('', $tRows) . '
+						</table>';
+				break;
+			default:
+				// Look for request to view specific script exec:
+				$specTime = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('specTime');
+				if ($specTime) {
+					$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('exec_time,errorFlag,table_join,serdata,query', 'tx_dbal_debuglog', 'tstamp=' . (int) $specTime);
+					$tRows = array();
+					$tRows[] = '
+							<tr>
+								<td>Execution time</td>
+								<td>Error</td>
+								<td>Table joins</td>
+								<td>Data</td>
+								<td>Query</td>
+							</tr>';
+					while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+						$tRows[] = '
+								<tr>
+									<td>' . htmlspecialchars($row['exec_time']) . '</td>
+									<td>' . ($row['errorFlag'] ? 1 : 0) . '</td>
+									<td>' . htmlspecialchars($row['table_join']) . '</td>
+									<td>' . \TYPO3\CMS\Core\Utility\DebugUtility::viewArray(unserialize($row['serdata'])) . '</td>
+									<td>' . str_replace(array('\'\'', '""', 'IS NULL', 'IS NOT NULL'), array('<span style="background-color:#ff0000;color:#ffffff;padding:2px;font-weight:bold;">\'\'</span>', '<span style="background-color:#ff0000;color:#ffffff;padding:2px;font-weight:bold;">""</span>', '<span style="background-color:#00ff00;color:#ffffff;padding:2px;font-weight:bold;">IS NULL</span>', '<span style="background-color:#00ff00;color:#ffffff;padding:2px;font-weight:bold;">IS NOT NULL</span>'), htmlspecialchars($row['query'])) . '</td>
+								</tr>';
+					}
+				} else {
+					$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('tstamp,script, SUM(exec_time) as calc_sum, count(*) AS qrycount, MAX(errorFlag) as error', 'tx_dbal_debuglog', '', 'tstamp,script', 'tstamp DESC');
+					$tRows = array();
+					$tRows[] = '
+							<tr>
+								<td>Time</td>
+								<td># of queries</td>
+								<td>Error</td>
+								<td>Time (ms)</td>
+								<td>Script</td>
+							</tr>';
+					while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+						$tRows[] = '
+								<tr>
+									<td>' . \TYPO3\CMS\Backend\Utility\BackendUtility::datetime($row['tstamp']) . '</td>
+									<td>' . htmlspecialchars($row['qrycount']) . '</td>
+									<td>' . ($row['error'] ? '<strong style="color:#f00">ERR</strong>' : '') . '</td>
+									<td>' . htmlspecialchars($row['calc_sum']) . '</td>
+									<td><a href="' . $this->thisScript . '&amp;specTime=' . intval($row['tstamp']) . '">' . htmlspecialchars($row['script']) . '</a></td>
+								</tr>';
+					}
+				}
+				$outStr = '
+						<table border="1" cellspacing="0">' . implode('', $tRows) . '
+						</table>';
 		}
 		$menu = '
 					<a href="' . $this->thisScript . '&amp;cmd=flush">FLUSH LOG</a> -

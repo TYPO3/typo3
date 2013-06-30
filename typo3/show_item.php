@@ -67,19 +67,19 @@ class transferData extends \TYPO3\CMS\Backend\Form\DataPreprocessor {
 	public function regItem($table, $id, $field, $content) {
 		$config = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
 		switch ($config['type']) {
-		case 'input':
-			if (isset($config['checkbox']) && $content == $config['checkbox']) {
-				$content = '';
+			case 'input':
+				if (isset($config['checkbox']) && $content == $config['checkbox']) {
+					$content = '';
+					break;
+				}
+				if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList($config['eval'], 'date')) {
+					$content = date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'], $content);
+				}
 				break;
-			}
-			if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList($config['eval'], 'date')) {
-				$content = date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'], $content);
-			}
-			break;
-		case 'group':
+			case 'group':
 
-		case 'select':
-			break;
+			case 'select':
+				break;
 		}
 		$this->theRecord[$field] = $content;
 	}

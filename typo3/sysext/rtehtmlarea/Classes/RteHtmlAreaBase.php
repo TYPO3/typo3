@@ -1206,38 +1206,37 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 		// Process each toolbar item in the toolbar order list
 		foreach ($this->toolbarOrderArray as $item) {
 			switch ($item) {
-			case 'linebreak':
-				// Add row to toolbar if not empty
-				if (!empty($group)) {
-					$row[] = $group;
-					$group = array();
-				}
-				if (!empty($row)) {
-					$toolbar[] = $row;
-					$row = array();
-				}
-				break;
-			case 'bar':
-				// Add group to row if not empty
-				if (!empty($group)) {
-					$row[] = $group;
-					$group = array();
-				}
-				break;
-			case 'space':
-				if (end($group) != $this->convertToolbarForHTMLArea($item)) {
-					$group[] = $this->convertToolbarForHTMLArea($item);
-				}
-				break;
-			default:
-				if (in_array($item, $this->toolbar)) {
-					// Add the item to the group
-					$convertedItem = $this->convertToolbarForHTMLArea($item);
-					if ($convertedItem) {
-						$group[] = $convertedItem;
+				case 'linebreak':
+					// Add row to toolbar if not empty
+					if (!empty($group)) {
+						$row[] = $group;
+						$group = array();
 					}
-				}
-				break;
+					if (!empty($row)) {
+						$toolbar[] = $row;
+						$row = array();
+					}
+					break;
+				case 'bar':
+					// Add group to row if not empty
+					if (!empty($group)) {
+						$row[] = $group;
+						$group = array();
+					}
+					break;
+				case 'space':
+					if (end($group) != $this->convertToolbarForHTMLArea($item)) {
+						$group[] = $this->convertToolbarForHTMLArea($item);
+					}
+					break;
+				default:
+					if (in_array($item, $this->toolbar)) {
+						// Add the item to the group
+						$convertedItem = $this->convertToolbarForHTMLArea($item);
+						if ($convertedItem) {
+							$group[] = $convertedItem;
+						}
+					}
 			}
 		}
 		// Add the last group and last line, if not empty

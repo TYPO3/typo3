@@ -234,18 +234,17 @@ class AbstractMenuContentObject {
 		$this->debug = $GLOBALS['TSFE']->debug;
 		// In XHTML there is no "name" attribute anymore
 		switch ($GLOBALS['TSFE']->xhtmlDoctype) {
-		case 'xhtml_strict':
+			case 'xhtml_strict':
 
-		case 'xhtml_11':
+			case 'xhtml_11':
 
-		case 'xhtml_2':
+			case 'xhtml_2':
 
-		case 'html5':
-			$this->nameAttribute = 'id';
-			break;
-		default:
-			$this->nameAttribute = 'name';
-			break;
+			case 'html5':
+				$this->nameAttribute = 'id';
+				break;
+			default:
+				$this->nameAttribute = 'name';
 		}
 		// Sets the internal vars. $tmpl MUST be the template-object. $sys_page MUST be the sys_page object
 		if ($this->conf[$this->menuNumber . $objSuffix] && is_object($tmpl) && is_object($sys_page)) {
@@ -386,434 +385,432 @@ class AbstractMenuContentObject {
 			if ($this->menuNumber == 1 && $this->conf['special']) {
 				$value = isset($this->conf['special.']['value.']) ? $this->parent_cObj->stdWrap($this->conf['special.']['value'], $this->conf['special.']['value.']) : $this->conf['special.']['value'];
 				switch ($this->conf['special']) {
-				case 'userfunction':
-					$temp = $this->parent_cObj->callUserFunction($this->conf['special.']['userFunc'], array_merge($this->conf['special.'], array('_altSortField' => $altSortField)), '');
-					if (!is_array($temp)) {
+					case 'userfunction':
+						$temp = $this->parent_cObj->callUserFunction($this->conf['special.']['userFunc'], array_merge($this->conf['special.'], array('_altSortField' => $altSortField)), '');
+						if (!is_array($temp)) {
+							$temp = array();
+						}
+						break;
+					case 'language':
 						$temp = array();
-					}
-					break;
-				case 'language':
-					$temp = array();
-					// Getting current page record NOT overlaid by any translation:
-					$currentPageWithNoOverlay = $this->sys_page->getRawRecord('pages', $GLOBALS['TSFE']->page['uid']);
-					// Traverse languages set up:
-					$languageItems = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $value);
-					foreach ($languageItems as $sUid) {
-						// Find overlay record:
-						if ($sUid) {
-							$lRecs = $this->sys_page->getPageOverlay($GLOBALS['TSFE']->page['uid'], $sUid);
-						} else {
-							$lRecs = array();
-						}
-						// Checking if the "disabled" state should be set.
-						if (\TYPO3\CMS\Core\Utility\GeneralUtility::hideIfNotTranslated($GLOBALS['TSFE']->page['l18n_cfg']) && $sUid && !count($lRecs) || $GLOBALS['TSFE']->page['l18n_cfg'] & 1 && (!$sUid || !count($lRecs)) || !$this->conf['special.']['normalWhenNoLanguage'] && $sUid && !count($lRecs)) {
-							$iState = $GLOBALS['TSFE']->sys_language_uid == $sUid ? 'USERDEF2' : 'USERDEF1';
-						} else {
-							$iState = $GLOBALS['TSFE']->sys_language_uid == $sUid ? 'ACT' : 'NO';
-						}
-						if ($this->conf['addQueryString']) {
-							$getVars = $this->parent_cObj->getQueryArguments($this->conf['addQueryString.'], array('L' => $sUid), TRUE);
-						} else {
-							$getVars = '&L=' . $sUid;
-						}
-						// Adding menu item:
-						$temp[] = array_merge(array_merge($currentPageWithNoOverlay, $lRecs), array(
-							'ITEM_STATE' => $iState,
-							'_ADD_GETVARS' => $getVars,
-							'_SAFE' => TRUE
-						));
-					}
-					break;
-				case 'directory':
-					if ($value == '') {
-						$value = $GLOBALS['TSFE']->page['uid'];
-					}
-					$items = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $value);
-					foreach ($items as $id) {
-						$MP = $this->tmpl->getFromMPmap($id);
-						// Checking if a page is a mount page and if so, change the ID and set the MP var properly.
-						$mount_info = $this->sys_page->getMountPointInfo($id);
-						if (is_array($mount_info)) {
-							if ($mount_info['overlay']) {
-								// Overlays should already have their full MPvars calculated:
-								$MP = $this->tmpl->getFromMPmap($mount_info['mount_pid']);
-								$MP = $MP ? $MP : $mount_info['MPvar'];
+						// Getting current page record NOT overlaid by any translation:
+						$currentPageWithNoOverlay = $this->sys_page->getRawRecord('pages', $GLOBALS['TSFE']->page['uid']);
+						// Traverse languages set up:
+						$languageItems = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $value);
+						foreach ($languageItems as $sUid) {
+							// Find overlay record:
+							if ($sUid) {
+								$lRecs = $this->sys_page->getPageOverlay($GLOBALS['TSFE']->page['uid'], $sUid);
 							} else {
-								$MP = ($MP ? $MP . ',' : '') . $mount_info['MPvar'];
+								$lRecs = array();
 							}
-							$id = $mount_info['mount_pid'];
-						}
-						// Get sub-pages:
-						$res = $this->parent_cObj->exec_getQuery('pages', array('pidInList' => $id, 'orderBy' => $altSortField));
-						while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-							$GLOBALS['TSFE']->sys_page->versionOL('pages', $row, TRUE);
-							if (is_array($row)) {
-								// Keep mount point?
-								$mount_info = $this->sys_page->getMountPointInfo($row['uid'], $row);
-								// There is a valid mount point.
-								if (is_array($mount_info) && $mount_info['overlay']) {
-									// Using "getPage" is OK since we need the check for enableFields
-									// AND for type 2 of mount pids we DO require a doktype < 200!
-									$mp_row = $this->sys_page->getPage($mount_info['mount_pid']);
-									if (count($mp_row)) {
-										$row = $mp_row;
-										$row['_MP_PARAM'] = $mount_info['MPvar'];
-									} else {
-										// If the mount point could not be fetched with respect
-										// to enableFields, unset the row so it does not become a part of the menu!
-										unset($row);
-									}
-								}
-								// Add external MP params, then the row:
-								if (is_array($row)) {
-									if ($MP) {
-										$row['_MP_PARAM'] = $MP . ($row['_MP_PARAM'] ? ',' . $row['_MP_PARAM'] : '');
-									}
-									$temp[$row['uid']] = $this->sys_page->getPageOverlay($row);
-								}
+							// Checking if the "disabled" state should be set.
+							if (\TYPO3\CMS\Core\Utility\GeneralUtility::hideIfNotTranslated($GLOBALS['TSFE']->page['l18n_cfg']) && $sUid && !count($lRecs) || $GLOBALS['TSFE']->page['l18n_cfg'] & 1 && (!$sUid || !count($lRecs)) || !$this->conf['special.']['normalWhenNoLanguage'] && $sUid && !count($lRecs)) {
+								$iState = $GLOBALS['TSFE']->sys_language_uid == $sUid ? 'USERDEF2' : 'USERDEF1';
+							} else {
+								$iState = $GLOBALS['TSFE']->sys_language_uid == $sUid ? 'ACT' : 'NO';
 							}
+							if ($this->conf['addQueryString']) {
+								$getVars = $this->parent_cObj->getQueryArguments($this->conf['addQueryString.'], array('L' => $sUid), TRUE);
+							} else {
+								$getVars = '&L=' . $sUid;
+							}
+							// Adding menu item:
+							$temp[] = array_merge(array_merge($currentPageWithNoOverlay, $lRecs), array(
+								'ITEM_STATE' => $iState,
+								'_ADD_GETVARS' => $getVars,
+								'_SAFE' => TRUE
+							));
 						}
-					}
-					break;
-				case 'list':
-					if ($value == '') {
-						$value = $this->id;
-					}
-					/** @var \TYPO3\CMS\Core\Database\RelationHandler $loadDB*/
-					$loadDB = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\RelationHandler');
-					$loadDB->setFetchAllFields(TRUE);
-					$loadDB->start($value, 'pages');
-					$loadDB->additionalWhere['pages'] = $this->parent_cObj->enableFields('pages');
-					$loadDB->getFromDB();
-					foreach ($loadDB->itemArray as $val) {
-						$MP = $this->tmpl->getFromMPmap($val['id']);
-						// Keep mount point?
-						$mount_info = $this->sys_page->getMountPointInfo($val['id']);
-						// There is a valid mount point.
-						if (is_array($mount_info) && $mount_info['overlay']) {
-							// Using "getPage" is OK since we need the check for enableFields
-							// AND for type 2 of mount pids we DO require a doktype < 200!
-							$mp_row = $this->sys_page->getPage($mount_info['mount_pid']);
-							if (count($mp_row)) {
-								$row = $mp_row;
-								$row['_MP_PARAM'] = $mount_info['MPvar'];
-								// Overlays should already have their full MPvars calculated
+						break;
+					case 'directory':
+						if ($value == '') {
+							$value = $GLOBALS['TSFE']->page['uid'];
+						}
+						$items = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $value);
+						foreach ($items as $id) {
+							$MP = $this->tmpl->getFromMPmap($id);
+							// Checking if a page is a mount page and if so, change the ID and set the MP var properly.
+							$mount_info = $this->sys_page->getMountPointInfo($id);
+							if (is_array($mount_info)) {
 								if ($mount_info['overlay']) {
+									// Overlays should already have their full MPvars calculated:
 									$MP = $this->tmpl->getFromMPmap($mount_info['mount_pid']);
-									if ($MP) {
-										unset($row['_MP_PARAM']);
+									$MP = $MP ? $MP : $mount_info['MPvar'];
+								} else {
+									$MP = ($MP ? $MP . ',' : '') . $mount_info['MPvar'];
+								}
+								$id = $mount_info['mount_pid'];
+							}
+							// Get sub-pages:
+							$res = $this->parent_cObj->exec_getQuery('pages', array('pidInList' => $id, 'orderBy' => $altSortField));
+							while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+								$GLOBALS['TSFE']->sys_page->versionOL('pages', $row, TRUE);
+								if (is_array($row)) {
+									// Keep mount point?
+									$mount_info = $this->sys_page->getMountPointInfo($row['uid'], $row);
+									// There is a valid mount point.
+									if (is_array($mount_info) && $mount_info['overlay']) {
+										// Using "getPage" is OK since we need the check for enableFields
+										// AND for type 2 of mount pids we DO require a doktype < 200!
+										$mp_row = $this->sys_page->getPage($mount_info['mount_pid']);
+										if (count($mp_row)) {
+											$row = $mp_row;
+											$row['_MP_PARAM'] = $mount_info['MPvar'];
+										} else {
+											// If the mount point could not be fetched with respect
+											// to enableFields, unset the row so it does not become a part of the menu!
+											unset($row);
+										}
+									}
+									// Add external MP params, then the row:
+									if (is_array($row)) {
+										if ($MP) {
+											$row['_MP_PARAM'] = $MP . ($row['_MP_PARAM'] ? ',' . $row['_MP_PARAM'] : '');
+										}
+										$temp[$row['uid']] = $this->sys_page->getPageOverlay($row);
 									}
 								}
+							}
+						}
+						break;
+					case 'list':
+						if ($value == '') {
+							$value = $this->id;
+						}
+						/** @var \TYPO3\CMS\Core\Database\RelationHandler $loadDB*/
+						$loadDB = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\RelationHandler');
+						$loadDB->setFetchAllFields(TRUE);
+						$loadDB->start($value, 'pages');
+						$loadDB->additionalWhere['pages'] = $this->parent_cObj->enableFields('pages');
+						$loadDB->getFromDB();
+						foreach ($loadDB->itemArray as $val) {
+							$MP = $this->tmpl->getFromMPmap($val['id']);
+							// Keep mount point?
+							$mount_info = $this->sys_page->getMountPointInfo($val['id']);
+							// There is a valid mount point.
+							if (is_array($mount_info) && $mount_info['overlay']) {
+								// Using "getPage" is OK since we need the check for enableFields
+								// AND for type 2 of mount pids we DO require a doktype < 200!
+								$mp_row = $this->sys_page->getPage($mount_info['mount_pid']);
+								if (count($mp_row)) {
+									$row = $mp_row;
+									$row['_MP_PARAM'] = $mount_info['MPvar'];
+									// Overlays should already have their full MPvars calculated
+									if ($mount_info['overlay']) {
+										$MP = $this->tmpl->getFromMPmap($mount_info['mount_pid']);
+										if ($MP) {
+											unset($row['_MP_PARAM']);
+										}
+									}
+								} else {
+									// If the mount point could not be fetched with respect to
+									// enableFields, unset the row so it does not become a part of the menu!
+									unset($row);
+								}
 							} else {
-								// If the mount point could not be fetched with respect to
-								// enableFields, unset the row so it does not become a part of the menu!
-								unset($row);
+								$row = $loadDB->results['pages'][$val['id']];
 							}
+							//Add versioning overlay for current page (to respect workspaces)
+							if (is_array($row)) {
+								$this->sys_page->versionOL('pages', $row, TRUE);
+							}
+							// Add external MP params, then the row:
+							if (is_array($row)) {
+								if ($MP) {
+									$row['_MP_PARAM'] = $MP . ($row['_MP_PARAM'] ? ',' . $row['_MP_PARAM'] : '');
+								}
+								$temp[] = $this->sys_page->getPageOverlay($row);
+							}
+						}
+						break;
+					case 'updated':
+						if ($value == '') {
+							$value = $GLOBALS['TSFE']->page['uid'];
+						}
+						$items = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $value);
+						if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($this->conf['special.']['depth'])) {
+							$depth = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($this->conf['special.']['depth'], 1, 20);
 						} else {
-							$row = $loadDB->results['pages'][$val['id']];
+							$depth = 20;
 						}
-						//Add versioning overlay for current page (to respect workspaces)
-						if (is_array($row)) {
-							$this->sys_page->versionOL('pages', $row, TRUE);
+						// Max number of items
+						$limit = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($this->conf['special.']['limit'], 0, 100);
+						$maxAge = intval($this->parent_cObj->calc($this->conf['special.']['maxAge']));
+						if (!$limit) {
+							$limit = 10;
 						}
-						// Add external MP params, then the row:
-						if (is_array($row)) {
-							if ($MP) {
-								$row['_MP_PARAM'] = $MP . ($row['_MP_PARAM'] ? ',' . $row['_MP_PARAM'] : '');
-							}
-							$temp[] = $this->sys_page->getPageOverlay($row);
+						// *'auto', 'manual', 'tstamp'
+						$mode = $this->conf['special.']['mode'];
+						// Get id's
+						$id_list_arr = array();
+						foreach ($items as $id) {
+							$bA = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($this->conf['special.']['beginAtLevel'], 0, 100);
+							$id_list_arr[] = \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::getTreeList(-1 * $id, $depth - 1 + $bA, $bA - 1);
 						}
-					}
-					break;
-				case 'updated':
-					if ($value == '') {
-						$value = $GLOBALS['TSFE']->page['uid'];
-					}
-					$items = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $value);
-					if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($this->conf['special.']['depth'])) {
-						$depth = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($this->conf['special.']['depth'], 1, 20);
-					} else {
-						$depth = 20;
-					}
-					// Max number of items
-					$limit = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($this->conf['special.']['limit'], 0, 100);
-					$maxAge = intval($this->parent_cObj->calc($this->conf['special.']['maxAge']));
-					if (!$limit) {
-						$limit = 10;
-					}
-					// *'auto', 'manual', 'tstamp'
-					$mode = $this->conf['special.']['mode'];
-					// Get id's
-					$id_list_arr = array();
-					foreach ($items as $id) {
-						$bA = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($this->conf['special.']['beginAtLevel'], 0, 100);
-						$id_list_arr[] = \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::getTreeList(-1 * $id, $depth - 1 + $bA, $bA - 1);
-					}
-					$id_list = implode(',', $id_list_arr);
-					// Get sortField (mode)
-					switch ($mode) {
-					case 'starttime':
-						$sortField = 'starttime';
-						break;
-					case 'lastUpdated':
+						$id_list = implode(',', $id_list_arr);
+						// Get sortField (mode)
+						switch ($mode) {
+							case 'starttime':
+								$sortField = 'starttime';
+								break;
+							case 'lastUpdated':
 
-					case 'manual':
-						$sortField = 'lastUpdated';
-						break;
-					case 'tstamp':
-						$sortField = 'tstamp';
-						break;
-					case 'crdate':
-						$sortField = 'crdate';
-						break;
-					default:
-						$sortField = 'SYS_LASTCHANGED';
-						break;
-					}
-					// Get
-					$extraWhere = ($this->conf['includeNotInMenu'] ? '' : ' AND pages.nav_hide=0') . $this->getDoktypeExcludeWhere();
-					if ($this->conf['special.']['excludeNoSearchPages']) {
-						$extraWhere .= ' AND pages.no_search=0';
-					}
-					if ($maxAge > 0) {
-						$extraWhere .= ' AND ' . $sortField . '>' . ($GLOBALS['SIM_ACCESS_TIME'] - $maxAge);
-					}
-					$res = $this->parent_cObj->exec_getQuery('pages', array(
-						'pidInList' => '0',
-						'uidInList' => $id_list,
-						'where' => $sortField . '>=0' . $extraWhere,
-						'orderBy' => $altSortFieldValue ? $altSortFieldValue : $sortField . ' desc',
-						'max' => $limit
-					));
-					while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-						$GLOBALS['TSFE']->sys_page->versionOL('pages', $row, TRUE);
-						if (is_array($row)) {
-							$temp[$row['uid']] = $this->sys_page->getPageOverlay($row);
+							case 'manual':
+								$sortField = 'lastUpdated';
+								break;
+							case 'tstamp':
+								$sortField = 'tstamp';
+								break;
+							case 'crdate':
+								$sortField = 'crdate';
+								break;
+							default:
+								$sortField = 'SYS_LASTCHANGED';
 						}
-					}
-					break;
-				case 'keywords':
-					list($value) = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $value);
-					if (!$value) {
-						$value = $GLOBALS['TSFE']->page['uid'];
-					}
-					if ($this->conf['special.']['setKeywords'] || $this->conf['special.']['setKeywords.']) {
-						$kw = isset($this->conf['special.']['setKeywords.']) ? $this->parent_cObj->stdWrap($this->conf['special.']['setKeywords'], $this->conf['special.']['setKeywords.']) : $this->conf['special.']['setKeywords'];
-					} else {
-						// The page record of the 'value'.
-						$value_rec = $this->sys_page->getPage($value);
-						$kfieldSrc = $this->conf['special.']['keywordsField.']['sourceField'] ? $this->conf['special.']['keywordsField.']['sourceField'] : 'keywords';
-						// keywords.
-						$kw = trim(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::keywords($value_rec[$kfieldSrc]));
-					}
-					// *'auto', 'manual', 'tstamp'
-					$mode = $this->conf['special.']['mode'];
-					switch ($mode) {
-					case 'starttime':
-						$sortField = 'starttime';
-						break;
-					case 'lastUpdated':
-
-					case 'manual':
-						$sortField = 'lastUpdated';
-						break;
-					case 'tstamp':
-						$sortField = 'tstamp';
-						break;
-					case 'crdate':
-						$sortField = 'crdate';
-						break;
-					default:
-						$sortField = 'SYS_LASTCHANGED';
-						break;
-					}
-					// Depth, limit, extra where
-					if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($this->conf['special.']['depth'])) {
-						$depth = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($this->conf['special.']['depth'], 0, 20);
-					} else {
-						$depth = 20;
-					}
-					// Max number of items
-					$limit = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($this->conf['special.']['limit'], 0, 100);
-					$extraWhere = ' AND pages.uid<>' . $value . ($this->conf['includeNotInMenu'] ? '' : ' AND pages.nav_hide=0') . $this->getDoktypeExcludeWhere();
-					if ($this->conf['special.']['excludeNoSearchPages']) {
-						$extraWhere .= ' AND pages.no_search=0';
-					}
-					// Start point
-					$eLevel = $this->parent_cObj->getKey(isset($this->conf['special.']['entryLevel.']) ? $this->parent_cObj->stdWrap($this->conf['special.']['entryLevel'], $this->conf['special.']['entryLevel.']) : $this->conf['special.']['entryLevel'], $this->tmpl->rootLine);
-					$startUid = intval($this->tmpl->rootLine[$eLevel]['uid']);
-					// Which field is for keywords
-					$kfield = 'keywords';
-					if ($this->conf['special.']['keywordsField']) {
-						list($kfield) = explode(' ', trim($this->conf['special.']['keywordsField']));
-					}
-					// If there are keywords and the startuid is present.
-					if ($kw && $startUid) {
-						$bA = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($this->conf['special.']['beginAtLevel'], 0, 100);
-						$id_list = \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::getTreeList(-1 * $startUid, $depth - 1 + $bA, $bA - 1);
-						$kwArr = explode(',', $kw);
-						foreach ($kwArr as $word) {
-							$word = trim($word);
-							if ($word) {
-								$keyWordsWhereArr[] = $kfield . ' LIKE \'%' . $GLOBALS['TYPO3_DB']->quoteStr($word, 'pages') . '%\'';
-							}
+						// Get
+						$extraWhere = ($this->conf['includeNotInMenu'] ? '' : ' AND pages.nav_hide=0') . $this->getDoktypeExcludeWhere();
+						if ($this->conf['special.']['excludeNoSearchPages']) {
+							$extraWhere .= ' AND pages.no_search=0';
 						}
-						$res = $this->parent_cObj->exec_getQuery('pages', array('pidInList' => '0', 'uidInList' => $id_list, 'where' => '(' . implode(' OR ', $keyWordsWhereArr) . ')' . $extraWhere, 'orderBy' => $altSortFieldValue ? $altSortFieldValue : $sortField . ' desc', 'max' => $limit));
+						if ($maxAge > 0) {
+							$extraWhere .= ' AND ' . $sortField . '>' . ($GLOBALS['SIM_ACCESS_TIME'] - $maxAge);
+						}
+						$res = $this->parent_cObj->exec_getQuery('pages', array(
+							'pidInList' => '0',
+							'uidInList' => $id_list,
+							'where' => $sortField . '>=0' . $extraWhere,
+							'orderBy' => $altSortFieldValue ? $altSortFieldValue : $sortField . ' desc',
+							'max' => $limit
+						));
 						while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 							$GLOBALS['TSFE']->sys_page->versionOL('pages', $row, TRUE);
 							if (is_array($row)) {
 								$temp[$row['uid']] = $this->sys_page->getPageOverlay($row);
 							}
 						}
-					}
-					break;
-				case 'rootline':
-					$range = isset($this->conf['special.']['range.']) ? $this->parent_cObj->stdWrap($this->conf['special.']['range'], $this->conf['special.']['range.']) : $this->conf['special.']['range'];
-					$begin_end = explode('|', $range);
-					$begin_end[0] = intval($begin_end[0]);
-					if (!\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($begin_end[1])) {
-						$begin_end[1] = -1;
-					}
-					$beginKey = $this->parent_cObj->getKey($begin_end[0], $this->tmpl->rootLine);
-					$endKey = $this->parent_cObj->getKey($begin_end[1], $this->tmpl->rootLine);
-					if ($endKey < $beginKey) {
-						$endKey = $beginKey;
-					}
-					$rl_MParray = array();
-					foreach ($this->tmpl->rootLine as $k_rl => $v_rl) {
-						// For overlaid mount points, set the variable right now:
-						if ($v_rl['_MP_PARAM'] && $v_rl['_MOUNT_OL']) {
-							$rl_MParray[] = $v_rl['_MP_PARAM'];
+						break;
+					case 'keywords':
+						list($value) = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $value);
+						if (!$value) {
+							$value = $GLOBALS['TSFE']->page['uid'];
 						}
-						// Traverse rootline:
-						if ($k_rl >= $beginKey && $k_rl <= $endKey) {
-							$temp_key = $k_rl;
-							$temp[$temp_key] = $this->sys_page->getPage($v_rl['uid']);
-							if (count($temp[$temp_key])) {
-								// If there are no specific target for the page, put the level specific target on.
-								if (!$temp[$temp_key]['target']) {
-									$temp[$temp_key]['target'] = $this->conf['special.']['targets.'][$k_rl];
-									$temp[$temp_key]['_MP_PARAM'] = implode(',', $rl_MParray);
+						if ($this->conf['special.']['setKeywords'] || $this->conf['special.']['setKeywords.']) {
+							$kw = isset($this->conf['special.']['setKeywords.']) ? $this->parent_cObj->stdWrap($this->conf['special.']['setKeywords'], $this->conf['special.']['setKeywords.']) : $this->conf['special.']['setKeywords'];
+						} else {
+							// The page record of the 'value'.
+							$value_rec = $this->sys_page->getPage($value);
+							$kfieldSrc = $this->conf['special.']['keywordsField.']['sourceField'] ? $this->conf['special.']['keywordsField.']['sourceField'] : 'keywords';
+							// keywords.
+							$kw = trim(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::keywords($value_rec[$kfieldSrc]));
+						}
+						// *'auto', 'manual', 'tstamp'
+						$mode = $this->conf['special.']['mode'];
+						switch ($mode) {
+							case 'starttime':
+								$sortField = 'starttime';
+								break;
+							case 'lastUpdated':
+
+							case 'manual':
+								$sortField = 'lastUpdated';
+								break;
+							case 'tstamp':
+								$sortField = 'tstamp';
+								break;
+							case 'crdate':
+								$sortField = 'crdate';
+								break;
+							default:
+								$sortField = 'SYS_LASTCHANGED';
+						}
+						// Depth, limit, extra where
+						if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($this->conf['special.']['depth'])) {
+							$depth = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($this->conf['special.']['depth'], 0, 20);
+						} else {
+							$depth = 20;
+						}
+						// Max number of items
+						$limit = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($this->conf['special.']['limit'], 0, 100);
+						$extraWhere = ' AND pages.uid<>' . $value . ($this->conf['includeNotInMenu'] ? '' : ' AND pages.nav_hide=0') . $this->getDoktypeExcludeWhere();
+						if ($this->conf['special.']['excludeNoSearchPages']) {
+							$extraWhere .= ' AND pages.no_search=0';
+						}
+						// Start point
+						$eLevel = $this->parent_cObj->getKey(isset($this->conf['special.']['entryLevel.']) ? $this->parent_cObj->stdWrap($this->conf['special.']['entryLevel'], $this->conf['special.']['entryLevel.']) : $this->conf['special.']['entryLevel'], $this->tmpl->rootLine);
+						$startUid = intval($this->tmpl->rootLine[$eLevel]['uid']);
+						// Which field is for keywords
+						$kfield = 'keywords';
+						if ($this->conf['special.']['keywordsField']) {
+							list($kfield) = explode(' ', trim($this->conf['special.']['keywordsField']));
+						}
+						// If there are keywords and the startuid is present.
+						if ($kw && $startUid) {
+							$bA = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($this->conf['special.']['beginAtLevel'], 0, 100);
+							$id_list = \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::getTreeList(-1 * $startUid, $depth - 1 + $bA, $bA - 1);
+							$kwArr = explode(',', $kw);
+							foreach ($kwArr as $word) {
+								$word = trim($word);
+								if ($word) {
+									$keyWordsWhereArr[] = $kfield . ' LIKE \'%' . $GLOBALS['TYPO3_DB']->quoteStr($word, 'pages') . '%\'';
 								}
-							} else {
-								unset($temp[$temp_key]);
 							}
-						}
-						// For normal mount points, set the variable for next level.
-						if ($v_rl['_MP_PARAM'] && !$v_rl['_MOUNT_OL']) {
-							$rl_MParray[] = $v_rl['_MP_PARAM'];
-						}
-					}
-					// Reverse order of elements (e.g. "1,2,3,4" gets "4,3,2,1"):
-					if (isset($this->conf['special.']['reverseOrder']) && $this->conf['special.']['reverseOrder']) {
-						$temp = array_reverse($temp);
-						$rl_MParray = array_reverse($rl_MParray);
-					}
-					break;
-				case 'browse':
-					list($value) = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $value);
-					if (!$value) {
-						$value = $GLOBALS['TSFE']->page['uid'];
-					}
-					// Will not work out of rootline
-					if ($value != $this->tmpl->rootLine[0]['uid']) {
-						$recArr = array();
-						// The page record of the 'value'.
-						$value_rec = $this->sys_page->getPage($value);
-						// 'up' page cannot be outside rootline
-						if ($value_rec['pid']) {
-							// The page record of 'up'.
-							$recArr['up'] = $this->sys_page->getPage($value_rec['pid']);
-						}
-						// If the 'up' item was NOT level 0 in rootline...
-						if ($recArr['up']['pid'] && $value_rec['pid'] != $this->tmpl->rootLine[0]['uid']) {
-							// The page record of "index".
-							$recArr['index'] = $this->sys_page->getPage($recArr['up']['pid']);
-						}
-						// prev / next is found
-						$prevnext_menu = $this->sys_page->getMenu($value_rec['pid'], '*', $altSortField);
-						$lastKey = 0;
-						$nextActive = 0;
-						foreach ($prevnext_menu as $k_b => $v_b) {
-							if ($nextActive) {
-								$recArr['next'] = $v_b;
-								$nextActive = 0;
-							}
-							if ($v_b['uid'] == $value) {
-								if ($lastKey) {
-									$recArr['prev'] = $prevnext_menu[$lastKey];
+							$res = $this->parent_cObj->exec_getQuery('pages', array('pidInList' => '0', 'uidInList' => $id_list, 'where' => '(' . implode(' OR ', $keyWordsWhereArr) . ')' . $extraWhere, 'orderBy' => $altSortFieldValue ? $altSortFieldValue : $sortField . ' desc', 'max' => $limit));
+							while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+								$GLOBALS['TSFE']->sys_page->versionOL('pages', $row, TRUE);
+								if (is_array($row)) {
+									$temp[$row['uid']] = $this->sys_page->getPageOverlay($row);
 								}
-								$nextActive = 1;
 							}
-							$lastKey = $k_b;
 						}
-						reset($prevnext_menu);
-						$recArr['first'] = pos($prevnext_menu);
-						end($prevnext_menu);
-						$recArr['last'] = pos($prevnext_menu);
-						// prevsection / nextsection is found
-						// You can only do this, if there is a valid page two levels up!
-						if (is_array($recArr['index'])) {
-							$prevnextsection_menu = $this->sys_page->getMenu($recArr['index']['uid'], '*', $altSortField);
+						break;
+					case 'rootline':
+						$range = isset($this->conf['special.']['range.']) ? $this->parent_cObj->stdWrap($this->conf['special.']['range'], $this->conf['special.']['range.']) : $this->conf['special.']['range'];
+						$begin_end = explode('|', $range);
+						$begin_end[0] = intval($begin_end[0]);
+						if (!\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($begin_end[1])) {
+							$begin_end[1] = -1;
+						}
+						$beginKey = $this->parent_cObj->getKey($begin_end[0], $this->tmpl->rootLine);
+						$endKey = $this->parent_cObj->getKey($begin_end[1], $this->tmpl->rootLine);
+						if ($endKey < $beginKey) {
+							$endKey = $beginKey;
+						}
+						$rl_MParray = array();
+						foreach ($this->tmpl->rootLine as $k_rl => $v_rl) {
+							// For overlaid mount points, set the variable right now:
+							if ($v_rl['_MP_PARAM'] && $v_rl['_MOUNT_OL']) {
+								$rl_MParray[] = $v_rl['_MP_PARAM'];
+							}
+							// Traverse rootline:
+							if ($k_rl >= $beginKey && $k_rl <= $endKey) {
+								$temp_key = $k_rl;
+								$temp[$temp_key] = $this->sys_page->getPage($v_rl['uid']);
+								if (count($temp[$temp_key])) {
+									// If there are no specific target for the page, put the level specific target on.
+									if (!$temp[$temp_key]['target']) {
+										$temp[$temp_key]['target'] = $this->conf['special.']['targets.'][$k_rl];
+										$temp[$temp_key]['_MP_PARAM'] = implode(',', $rl_MParray);
+									}
+								} else {
+									unset($temp[$temp_key]);
+								}
+							}
+							// For normal mount points, set the variable for next level.
+							if ($v_rl['_MP_PARAM'] && !$v_rl['_MOUNT_OL']) {
+								$rl_MParray[] = $v_rl['_MP_PARAM'];
+							}
+						}
+						// Reverse order of elements (e.g. "1,2,3,4" gets "4,3,2,1"):
+						if (isset($this->conf['special.']['reverseOrder']) && $this->conf['special.']['reverseOrder']) {
+							$temp = array_reverse($temp);
+							$rl_MParray = array_reverse($rl_MParray);
+						}
+						break;
+					case 'browse':
+						list($value) = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $value);
+						if (!$value) {
+							$value = $GLOBALS['TSFE']->page['uid'];
+						}
+						// Will not work out of rootline
+						if ($value != $this->tmpl->rootLine[0]['uid']) {
+							$recArr = array();
+							// The page record of the 'value'.
+							$value_rec = $this->sys_page->getPage($value);
+							// 'up' page cannot be outside rootline
+							if ($value_rec['pid']) {
+								// The page record of 'up'.
+								$recArr['up'] = $this->sys_page->getPage($value_rec['pid']);
+							}
+							// If the 'up' item was NOT level 0 in rootline...
+							if ($recArr['up']['pid'] && $value_rec['pid'] != $this->tmpl->rootLine[0]['uid']) {
+								// The page record of "index".
+								$recArr['index'] = $this->sys_page->getPage($recArr['up']['pid']);
+							}
+							// prev / next is found
+							$prevnext_menu = $this->sys_page->getMenu($value_rec['pid'], '*', $altSortField);
 							$lastKey = 0;
 							$nextActive = 0;
-							foreach ($prevnextsection_menu as $k_b => $v_b) {
+							foreach ($prevnext_menu as $k_b => $v_b) {
 								if ($nextActive) {
-									$sectionRec_temp = $this->sys_page->getMenu($v_b['uid'], '*', $altSortField);
-									if (count($sectionRec_temp)) {
-										reset($sectionRec_temp);
-										$recArr['nextsection'] = pos($sectionRec_temp);
-										end($sectionRec_temp);
-										$recArr['nextsection_last'] = pos($sectionRec_temp);
-										$nextActive = 0;
-									}
+									$recArr['next'] = $v_b;
+									$nextActive = 0;
 								}
-								if ($v_b['uid'] == $value_rec['pid']) {
+								if ($v_b['uid'] == $value) {
 									if ($lastKey) {
-										$sectionRec_temp = $this->sys_page->getMenu($prevnextsection_menu[$lastKey]['uid'], '*', $altSortField);
-										if (count($sectionRec_temp)) {
-											reset($sectionRec_temp);
-											$recArr['prevsection'] = pos($sectionRec_temp);
-											end($sectionRec_temp);
-											$recArr['prevsection_last'] = pos($sectionRec_temp);
-										}
+										$recArr['prev'] = $prevnext_menu[$lastKey];
 									}
 									$nextActive = 1;
 								}
 								$lastKey = $k_b;
 							}
-						}
-						if ($this->conf['special.']['items.']['prevnextToSection']) {
-							if (!is_array($recArr['prev']) && is_array($recArr['prevsection_last'])) {
-								$recArr['prev'] = $recArr['prevsection_last'];
-							}
-							if (!is_array($recArr['next']) && is_array($recArr['nextsection'])) {
-								$recArr['next'] = $recArr['nextsection'];
-							}
-						}
-						$items = explode('|', $this->conf['special.']['items']);
-						$c = 0;
-						foreach ($items as $k_b => $v_b) {
-							$v_b = strtolower(trim($v_b));
-							if (intval($this->conf['special.'][$v_b . '.']['uid'])) {
-								$recArr[$v_b] = $this->sys_page->getPage(intval($this->conf['special.'][$v_b . '.']['uid']));
-							}
-							if (is_array($recArr[$v_b])) {
-								$temp[$c] = $recArr[$v_b];
-								if ($this->conf['special.'][$v_b . '.']['target']) {
-									$temp[$c]['target'] = $this->conf['special.'][$v_b . '.']['target'];
-								}
-								$tmpSpecialFields = $this->conf['special.'][$v_b . '.']['fields.'];
-								if (is_array($tmpSpecialFields)) {
-									foreach ($tmpSpecialFields as $fk => $val) {
-										$temp[$c][$fk] = $val;
+							reset($prevnext_menu);
+							$recArr['first'] = pos($prevnext_menu);
+							end($prevnext_menu);
+							$recArr['last'] = pos($prevnext_menu);
+							// prevsection / nextsection is found
+							// You can only do this, if there is a valid page two levels up!
+							if (is_array($recArr['index'])) {
+								$prevnextsection_menu = $this->sys_page->getMenu($recArr['index']['uid'], '*', $altSortField);
+								$lastKey = 0;
+								$nextActive = 0;
+								foreach ($prevnextsection_menu as $k_b => $v_b) {
+									if ($nextActive) {
+										$sectionRec_temp = $this->sys_page->getMenu($v_b['uid'], '*', $altSortField);
+										if (count($sectionRec_temp)) {
+											reset($sectionRec_temp);
+											$recArr['nextsection'] = pos($sectionRec_temp);
+											end($sectionRec_temp);
+											$recArr['nextsection_last'] = pos($sectionRec_temp);
+											$nextActive = 0;
+										}
 									}
+									if ($v_b['uid'] == $value_rec['pid']) {
+										if ($lastKey) {
+											$sectionRec_temp = $this->sys_page->getMenu($prevnextsection_menu[$lastKey]['uid'], '*', $altSortField);
+											if (count($sectionRec_temp)) {
+												reset($sectionRec_temp);
+												$recArr['prevsection'] = pos($sectionRec_temp);
+												end($sectionRec_temp);
+												$recArr['prevsection_last'] = pos($sectionRec_temp);
+											}
+										}
+										$nextActive = 1;
+									}
+									$lastKey = $k_b;
 								}
-								$c++;
+							}
+							if ($this->conf['special.']['items.']['prevnextToSection']) {
+								if (!is_array($recArr['prev']) && is_array($recArr['prevsection_last'])) {
+									$recArr['prev'] = $recArr['prevsection_last'];
+								}
+								if (!is_array($recArr['next']) && is_array($recArr['nextsection'])) {
+									$recArr['next'] = $recArr['nextsection'];
+								}
+							}
+							$items = explode('|', $this->conf['special.']['items']);
+							$c = 0;
+							foreach ($items as $k_b => $v_b) {
+								$v_b = strtolower(trim($v_b));
+								if (intval($this->conf['special.'][$v_b . '.']['uid'])) {
+									$recArr[$v_b] = $this->sys_page->getPage(intval($this->conf['special.'][$v_b . '.']['uid']));
+								}
+								if (is_array($recArr[$v_b])) {
+									$temp[$c] = $recArr[$v_b];
+									if ($this->conf['special.'][$v_b . '.']['target']) {
+										$temp[$c]['target'] = $this->conf['special.'][$v_b . '.']['target'];
+									}
+									$tmpSpecialFields = $this->conf['special.'][$v_b . '.']['fields.'];
+									if (is_array($tmpSpecialFields)) {
+										foreach ($tmpSpecialFields as $fk => $val) {
+											$temp[$c][$fk] = $val;
+										}
+									}
+									$c++;
+								}
 							}
 						}
-					}
-					break;
+						break;
 				}
 				if ($this->mconf['sectionIndex']) {
 					$sectionIndexes = array();
@@ -1539,27 +1536,27 @@ class AbstractMenuContentObject {
 			}
 		} else {
 			switch ($kind) {
-			case 'SPC':
-				$natVal = $this->menuArr[$key]['isSpacer'];
-				break;
-			case 'IFSUB':
-				$natVal = $this->isSubMenu($this->menuArr[$key]['uid']);
-				break;
-			case 'ACT':
-				$natVal = $this->isActive($this->menuArr[$key]['uid'], $this->getMPvar($key));
-				break;
-			case 'ACTIFSUB':
-				$natVal = $this->isActive($this->menuArr[$key]['uid'], $this->getMPvar($key)) && $this->isSubMenu($this->menuArr[$key]['uid']);
-				break;
-			case 'CUR':
-				$natVal = $this->isCurrent($this->menuArr[$key]['uid'], $this->getMPvar($key));
-				break;
-			case 'CURIFSUB':
-				$natVal = $this->isCurrent($this->menuArr[$key]['uid'], $this->getMPvar($key)) && $this->isSubMenu($this->menuArr[$key]['uid']);
-				break;
-			case 'USR':
-				$natVal = $this->menuArr[$key]['fe_group'];
-				break;
+				case 'SPC':
+					$natVal = $this->menuArr[$key]['isSpacer'];
+					break;
+				case 'IFSUB':
+					$natVal = $this->isSubMenu($this->menuArr[$key]['uid']);
+					break;
+				case 'ACT':
+					$natVal = $this->isActive($this->menuArr[$key]['uid'], $this->getMPvar($key));
+					break;
+				case 'ACTIFSUB':
+					$natVal = $this->isActive($this->menuArr[$key]['uid'], $this->getMPvar($key)) && $this->isSubMenu($this->menuArr[$key]['uid']);
+					break;
+				case 'CUR':
+					$natVal = $this->isCurrent($this->menuArr[$key]['uid'], $this->getMPvar($key));
+					break;
+				case 'CURIFSUB':
+					$natVal = $this->isCurrent($this->menuArr[$key]['uid'], $this->getMPvar($key)) && $this->isSubMenu($this->menuArr[$key]['uid']);
+					break;
+				case 'USR':
+					$natVal = $this->menuArr[$key]['fe_group'];
+					break;
 			}
 		}
 		return $natVal;

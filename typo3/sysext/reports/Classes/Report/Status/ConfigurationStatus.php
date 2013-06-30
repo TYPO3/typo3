@@ -265,12 +265,11 @@ class ConfigurationStatus implements \TYPO3\CMS\Reports\StatusProviderInterface 
 	protected function executeAdminCommand() {
 		$command = \TYPO3\CMS\Core\Utility\GeneralUtility::_GET('adminCmd');
 		switch ($command) {
-		case 'removeDeprecationLogFile':
-			self::removeDeprecationLogFile();
-			break;
-		default:
-			// intentionally left blank
-			break;
+			case 'removeDeprecationLogFile':
+				self::removeDeprecationLogFile();
+				break;
+			default:
+				// intentionally left blank
 		}
 	}
 

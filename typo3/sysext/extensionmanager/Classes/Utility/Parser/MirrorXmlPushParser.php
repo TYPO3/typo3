@@ -103,8 +103,8 @@ class MirrorXmlPushParser extends \TYPO3\CMS\Extensionmanager\Utility\Parser\Abs
 	 */
 	protected function startElement($parser, $elementName, $attrs) {
 		switch ($elementName) {
-		default:
-			$this->element = $elementName;
+			default:
+				$this->element = $elementName;
 		}
 	}
 
@@ -120,12 +120,12 @@ class MirrorXmlPushParser extends \TYPO3\CMS\Extensionmanager\Utility\Parser\Abs
 	 */
 	protected function endElement($parser, $elementName) {
 		switch ($elementName) {
-		case 'mirror':
-			$this->notify();
-			$this->resetProperties();
-			break;
-		default:
-			$this->element = NULL;
+			case 'mirror':
+				$this->notify();
+				$this->resetProperties();
+				break;
+			default:
+				$this->element = NULL;
 		}
 	}
 
@@ -142,29 +142,29 @@ class MirrorXmlPushParser extends \TYPO3\CMS\Extensionmanager\Utility\Parser\Abs
 	protected function characterData($parser, $data) {
 		if (isset($this->element)) {
 			switch ($this->element) {
-			case 'title':
-				$this->title = $data;
-				break;
-			case 'host':
-				$this->host = $data;
-				break;
-			case 'path':
-				$this->path = $data;
-				break;
-			case 'country':
-				$this->country = $data;
-				break;
-			case 'name':
-				$this->sponsorname = $data;
-				break;
-			case 'link':
-				$this->sponsorlink = $data;
-				break;
-			case 'logo':
-				$this->sponsorlogo = $data;
-				break;
-			default:
-
+				case 'title':
+					$this->title = $data;
+					break;
+				case 'host':
+					$this->host = $data;
+					break;
+				case 'path':
+					$this->path = $data;
+					break;
+				case 'country':
+					$this->country = $data;
+					break;
+				case 'name':
+					$this->sponsorname = $data;
+					break;
+				case 'link':
+					$this->sponsorlink = $data;
+					break;
+				case 'logo':
+					$this->sponsorlogo = $data;
+					break;
+				default:
+					// Do nothing
 			}
 		}
 	}

@@ -285,25 +285,25 @@ abstract class AbstractFile implements FileInterface {
 			$mimeType = $this->getMimeType();
 			list($fileType) = explode('/', $mimeType);
 			switch (strtolower($fileType)) {
-			case 'text':
-				$this->properties['type'] = self::FILETYPE_TEXT;
-				break;
-			case 'image':
-				$this->properties['type'] = self::FILETYPE_IMAGE;
-				break;
-			case 'audio':
-				$this->properties['type'] = self::FILETYPE_AUDIO;
-				break;
-			case 'video':
-				$this->properties['type'] = self::FILETYPE_VIDEO;
-				break;
-			case 'application':
+				case 'text':
+					$this->properties['type'] = self::FILETYPE_TEXT;
+					break;
+				case 'image':
+					$this->properties['type'] = self::FILETYPE_IMAGE;
+					break;
+				case 'audio':
+					$this->properties['type'] = self::FILETYPE_AUDIO;
+					break;
+				case 'video':
+					$this->properties['type'] = self::FILETYPE_VIDEO;
+					break;
+				case 'application':
 
-			case 'software':
-				$this->properties['type'] = self::FILETYPE_APPLICATION;
-				break;
-			default:
-				$this->properties['type'] = self::FILETYPE_UNKNOWN;
+				case 'software':
+					$this->properties['type'] = self::FILETYPE_APPLICATION;
+					break;
+				default:
+					$this->properties['type'] = self::FILETYPE_UNKNOWN;
 			}
 		}
 		return $this->properties['type'];

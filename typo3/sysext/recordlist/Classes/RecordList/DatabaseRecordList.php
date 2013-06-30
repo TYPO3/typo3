@@ -739,136 +739,135 @@ class DatabaseRecordList extends \TYPO3\CMS\Recordlist\RecordList\AbstractDataba
 			// Calculate users permissions to edit records in the table:
 			$permsEdit = $this->calcPerms & ($table == 'pages' ? 2 : 16);
 			switch ((string) $fCol) {
-			case '_PATH_':
-				// Path
-				$theData[$fCol] = '<i>[' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels._PATH_', 1) . ']</i>';
-				break;
-			case '_REF_':
-				// References
-				$theData[$fCol] = '<i>[' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_file_list.xlf:c__REF_', 1) . ']</i>';
-				break;
-			case '_LOCALIZATION_':
-				// Path
-				$theData[$fCol] = '<i>[' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels._LOCALIZATION_', 1) . ']</i>';
-				break;
-			case '_LOCALIZATION_b':
-				// Path
-				$theData[$fCol] = $GLOBALS['LANG']->getLL('Localize', 1);
-				break;
-			case '_CLIPBOARD_':
-				// Clipboard:
-				$cells = array();
-				// If there are elements on the clipboard for this table, then display the "paste into" icon:
-				$elFromTable = $this->clipObj->elFromTable($table);
-				if (count($elFromTable)) {
-					$cells['pasteAfter'] = '<a href="' . htmlspecialchars($this->clipObj->pasteUrl($table, $this->id)) . '" onclick="' . htmlspecialchars(('return ' . $this->clipObj->confirmMsg('pages', $this->pageRow, 'into', $elFromTable))) . '" title="' . $GLOBALS['LANG']->getLL('clip_paste', TRUE) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-paste-after') . '</a>';
-				}
-				// If the numeric clipboard pads are enabled, display the control icons for that:
-				if ($this->clipObj->current != 'normal') {
-					// The "select" link:
-					$cells['copyMarked'] = $this->linkClipboardHeaderIcon(\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-edit-copy', array('title' => $GLOBALS['LANG']->getLL('clip_selectMarked', TRUE))), $table, 'setCB');
-					// The "edit marked" link:
-					$editIdList = implode(',', $currentIdList);
-					$editIdList = '\'+editList(\'' . $table . '\',\'' . $editIdList . '\')+\'';
-					$params = '&edit[' . $table . '][' . $editIdList . ']=edit&disHelp=1';
-					$cells['edit'] = '<a href="#" onclick="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick($params, $this->backPath, -1)) . '" title="' . $GLOBALS['LANG']->getLL('clip_editMarked', TRUE) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open') . '</a>';
-					// The "Delete marked" link:
-					$cells['delete'] = $this->linkClipboardHeaderIcon(\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-edit-delete', array('title' => $GLOBALS['LANG']->getLL('clip_deleteMarked', TRUE))), $table, 'delete', sprintf($GLOBALS['LANG']->getLL('clip_deleteMarkedWarning'), $GLOBALS['LANG']->sL($GLOBALS['TCA'][$table]['ctrl']['title'])));
-					// The "Select all" link:
-					$cells['markAll'] = '<a class="cbcCheckAll" rel="" href="#" onclick="' . htmlspecialchars(('checkOffCB(\'' . implode(',', $this->CBnames) . '\', this); return false;')) . '" title="' . $GLOBALS['LANG']->getLL('clip_markRecords', TRUE) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-select') . '</a>';
-				} else {
-					$cells['empty'] = '';
-				}
-				/**
-				 * @hook renderListHeaderActions: Allows to change the clipboard icons of the Web>List table headers
-				 * @date 2007-11-20
-				 * @request 	Bernhard Kraft  <krafbt@kraftb.at>
-				 * @usage Above each listed table in Web>List a header row is shown. This hook allows to modify the icons responsible for the clipboard functions (shown above the clipboard checkboxes when a clipboard other than "Normal" is selected), or other "Action" functions which perform operations on the listed records.
-				 */
-				if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.db_list_extra.inc']['actions'])) {
-					foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.db_list_extra.inc']['actions'] as $classData) {
-						$hookObject = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($classData);
-						if (!$hookObject instanceof \TYPO3\CMS\Recordlist\RecordList\RecordListHookInterface) {
-							throw new \UnexpectedValueException('$hookObject must implement interface TYPO3\\CMS\\Recordlist\\RecordList\\RecordListHookInterface', 1195567850);
-						}
-						$cells = $hookObject->renderListHeaderActions($table, $currentIdList, $cells, $this);
+				case '_PATH_':
+					// Path
+					$theData[$fCol] = '<i>[' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels._PATH_', 1) . ']</i>';
+					break;
+				case '_REF_':
+					// References
+					$theData[$fCol] = '<i>[' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_file_list.xlf:c__REF_', 1) . ']</i>';
+					break;
+				case '_LOCALIZATION_':
+					// Path
+					$theData[$fCol] = '<i>[' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels._LOCALIZATION_', 1) . ']</i>';
+					break;
+				case '_LOCALIZATION_b':
+					// Path
+					$theData[$fCol] = $GLOBALS['LANG']->getLL('Localize', 1);
+					break;
+				case '_CLIPBOARD_':
+					// Clipboard:
+					$cells = array();
+					// If there are elements on the clipboard for this table, then display the "paste into" icon:
+					$elFromTable = $this->clipObj->elFromTable($table);
+					if (count($elFromTable)) {
+						$cells['pasteAfter'] = '<a href="' . htmlspecialchars($this->clipObj->pasteUrl($table, $this->id)) . '" onclick="' . htmlspecialchars(('return ' . $this->clipObj->confirmMsg('pages', $this->pageRow, 'into', $elFromTable))) . '" title="' . $GLOBALS['LANG']->getLL('clip_paste', TRUE) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-paste-after') . '</a>';
 					}
-				}
-				$theData[$fCol] = implode('', $cells);
-				break;
-			case '_CONTROL_':
-				// Control panel:
-				if (!$GLOBALS['TCA'][$table]['ctrl']['readOnly']) {
-					// If new records can be created on this page, add links:
-					if ($this->calcPerms & ($table == 'pages' ? 8 : 16) && $this->showNewRecLink($table)) {
-						if ($table == 'tt_content' && $this->newWizards) {
-							//  If mod.web_list.newContentWiz.overrideWithExtension is set, use that extension's create new content wizard instead:
-							$tmpTSc = \TYPO3\CMS\Backend\Utility\BackendUtility::getModTSconfig($this->pageinfo['uid'], 'mod.web_list');
-							$tmpTSc = $tmpTSc['properties']['newContentWiz.']['overrideWithExtension'];
-							$newContentWizScriptPath = $this->backPath . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($tmpTSc) ? \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($tmpTSc) . 'mod1/db_new_content_el.php' : 'sysext/cms/layout/db_new_content_el.php';
-							$icon = '<a href="#" onclick="' . htmlspecialchars(('return jumpExt(\'' . $newContentWizScriptPath . '?id=' . $this->id . '\');')) . '" title="' . $GLOBALS['LANG']->getLL('new', TRUE) . '">' . ($table == 'pages' ? \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-page-new') : \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-new')) . '</a>';
-						} elseif ($table == 'pages' && $this->newWizards) {
-							$icon = '<a href="' . htmlspecialchars(($this->backPath . 'db_new.php?id=' . $this->id . '&pagesOnly=1&returnUrl=' . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI')))) . '" title="' . $GLOBALS['LANG']->getLL('new', TRUE) . '">' . ($table == 'pages' ? \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-page-new') : \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-new')) . '</a>';
-						} else {
-							$params = '&edit[' . $table . '][' . $this->id . ']=new';
-							if ($table == 'pages_language_overlay') {
-								$params .= '&overrideVals[pages_language_overlay][doktype]=' . (int) $this->pageRow['doktype'];
+					// If the numeric clipboard pads are enabled, display the control icons for that:
+					if ($this->clipObj->current != 'normal') {
+						// The "select" link:
+						$cells['copyMarked'] = $this->linkClipboardHeaderIcon(\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-edit-copy', array('title' => $GLOBALS['LANG']->getLL('clip_selectMarked', TRUE))), $table, 'setCB');
+						// The "edit marked" link:
+						$editIdList = implode(',', $currentIdList);
+						$editIdList = '\'+editList(\'' . $table . '\',\'' . $editIdList . '\')+\'';
+						$params = '&edit[' . $table . '][' . $editIdList . ']=edit&disHelp=1';
+						$cells['edit'] = '<a href="#" onclick="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick($params, $this->backPath, -1)) . '" title="' . $GLOBALS['LANG']->getLL('clip_editMarked', TRUE) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open') . '</a>';
+						// The "Delete marked" link:
+						$cells['delete'] = $this->linkClipboardHeaderIcon(\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-edit-delete', array('title' => $GLOBALS['LANG']->getLL('clip_deleteMarked', TRUE))), $table, 'delete', sprintf($GLOBALS['LANG']->getLL('clip_deleteMarkedWarning'), $GLOBALS['LANG']->sL($GLOBALS['TCA'][$table]['ctrl']['title'])));
+						// The "Select all" link:
+						$cells['markAll'] = '<a class="cbcCheckAll" rel="" href="#" onclick="' . htmlspecialchars(('checkOffCB(\'' . implode(',', $this->CBnames) . '\', this); return false;')) . '" title="' . $GLOBALS['LANG']->getLL('clip_markRecords', TRUE) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-select') . '</a>';
+					} else {
+						$cells['empty'] = '';
+					}
+					/**
+					* @hook renderListHeaderActions: Allows to change the clipboard icons of the Web>List table headers
+					* @date 2007-11-20
+					* @request 	Bernhard Kraft  <krafbt@kraftb.at>
+					* @usage Above each listed table in Web>List a header row is shown. This hook allows to modify the icons responsible for the clipboard functions (shown above the clipboard checkboxes when a clipboard other than "Normal" is selected), or other "Action" functions which perform operations on the listed records.
+					*/
+					if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.db_list_extra.inc']['actions'])) {
+						foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.db_list_extra.inc']['actions'] as $classData) {
+							$hookObject = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($classData);
+							if (!$hookObject instanceof \TYPO3\CMS\Recordlist\RecordList\RecordListHookInterface) {
+								throw new \UnexpectedValueException('$hookObject must implement interface TYPO3\\CMS\\Recordlist\\RecordList\\RecordListHookInterface', 1195567850);
 							}
-							$icon = '<a href="#" onclick="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick($params, $this->backPath, -1)) . '" title="' . $GLOBALS['LANG']->getLL('new', TRUE) . '">' . ($table == 'pages' ? \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-page-new') : \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-new')) . '</a>';
+							$cells = $hookObject->renderListHeaderActions($table, $currentIdList, $cells, $this);
 						}
 					}
-					// If the table can be edited, add link for editing ALL SHOWN fields for all listed records:
-					if ($permsEdit && $this->table && is_array($currentIdList)) {
-						$editIdList = implode(',', $currentIdList);
-						if ($this->clipNumPane()) {
-							$editIdList = '\'+editList(\'' . $table . '\',\'' . $editIdList . '\')+\'';
+					$theData[$fCol] = implode('', $cells);
+					break;
+				case '_CONTROL_':
+					// Control panel:
+					if (!$GLOBALS['TCA'][$table]['ctrl']['readOnly']) {
+						// If new records can be created on this page, add links:
+						if ($this->calcPerms & ($table == 'pages' ? 8 : 16) && $this->showNewRecLink($table)) {
+							if ($table == 'tt_content' && $this->newWizards) {
+								//  If mod.web_list.newContentWiz.overrideWithExtension is set, use that extension's create new content wizard instead:
+								$tmpTSc = \TYPO3\CMS\Backend\Utility\BackendUtility::getModTSconfig($this->pageinfo['uid'], 'mod.web_list');
+								$tmpTSc = $tmpTSc['properties']['newContentWiz.']['overrideWithExtension'];
+								$newContentWizScriptPath = $this->backPath . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($tmpTSc) ? \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($tmpTSc) . 'mod1/db_new_content_el.php' : 'sysext/cms/layout/db_new_content_el.php';
+								$icon = '<a href="#" onclick="' . htmlspecialchars(('return jumpExt(\'' . $newContentWizScriptPath . '?id=' . $this->id . '\');')) . '" title="' . $GLOBALS['LANG']->getLL('new', TRUE) . '">' . ($table == 'pages' ? \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-page-new') : \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-new')) . '</a>';
+							} elseif ($table == 'pages' && $this->newWizards) {
+								$icon = '<a href="' . htmlspecialchars(($this->backPath . 'db_new.php?id=' . $this->id . '&pagesOnly=1&returnUrl=' . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI')))) . '" title="' . $GLOBALS['LANG']->getLL('new', TRUE) . '">' . ($table == 'pages' ? \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-page-new') : \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-new')) . '</a>';
+							} else {
+								$params = '&edit[' . $table . '][' . $this->id . ']=new';
+								if ($table == 'pages_language_overlay') {
+									$params .= '&overrideVals[pages_language_overlay][doktype]=' . (int) $this->pageRow['doktype'];
+								}
+								$icon = '<a href="#" onclick="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick($params, $this->backPath, -1)) . '" title="' . $GLOBALS['LANG']->getLL('new', TRUE) . '">' . ($table == 'pages' ? \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-page-new') : \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-new')) . '</a>';
+							}
 						}
-						$params = '&edit[' . $table . '][' . $editIdList . ']=edit&columnsOnly=' . implode(',', $this->fieldArray) . '&disHelp=1';
-						$icon .= '<a href="#" onclick="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick($params, $this->backPath, -1)) . '" title="' . $GLOBALS['LANG']->getLL('editShownColumns', TRUE) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open') . '</a>';
+						// If the table can be edited, add link for editing ALL SHOWN fields for all listed records:
+						if ($permsEdit && $this->table && is_array($currentIdList)) {
+							$editIdList = implode(',', $currentIdList);
+							if ($this->clipNumPane()) {
+								$editIdList = '\'+editList(\'' . $table . '\',\'' . $editIdList . '\')+\'';
+							}
+							$params = '&edit[' . $table . '][' . $editIdList . ']=edit&columnsOnly=' . implode(',', $this->fieldArray) . '&disHelp=1';
+							$icon .= '<a href="#" onclick="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick($params, $this->backPath, -1)) . '" title="' . $GLOBALS['LANG']->getLL('editShownColumns', TRUE) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open') . '</a>';
+						}
+						// Add an empty entry, so column count fits again after moving this into $icon
+						$theData[$fCol] = '&nbsp;';
 					}
-					// Add an empty entry, so column count fits again after moving this into $icon
+					break;
+				case '_AFTERCONTROL_':
+
+				case '_AFTERREF_':
+					// space column
 					$theData[$fCol] = '&nbsp;';
-				}
-				break;
-			case '_AFTERCONTROL_':
+					break;
+				default:
+					// Regular fields header:
+					$theData[$fCol] = '';
 
-			case '_AFTERREF_':
-				// space column
-				$theData[$fCol] = '&nbsp;';
-				break;
-			default:
-				// Regular fields header:
-				$theData[$fCol] = '';
-
-				// Check if $fCol is really a field and get the label and remove the colons at the end
-				$sortLabel = \TYPO3\CMS\Backend\Utility\BackendUtility::getItemLabel($table, $fCol);
-				if ($sortLabel !== NULL) {
-					$sortLabel = $GLOBALS['LANG']->sL($sortLabel, TRUE);
-					$sortLabel = rtrim(trim($sortLabel), ':');
-				} else {
-					// No TCA field, only output the $fCol variable with square brackets []
-					$sortLabel = htmlspecialchars($fCol);
-					$sortLabel = '<i>[' . rtrim(trim($sortLabel), ':') . ']</i>';
-				}
-
-				if ($this->table && is_array($currentIdList)) {
-					// If the numeric clipboard pads are selected, show duplicate sorting link:
-					if ($this->clipNumPane()) {
-						$theData[$fCol] .= '<a href="' . htmlspecialchars(($this->listURL('', -1) . '&duplicateField=' . $fCol)) . '" title="' . $GLOBALS['LANG']->getLL('clip_duplicates', TRUE) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-duplicates-select') . '</a>';
+					// Check if $fCol is really a field and get the label and remove the colons at the end
+					$sortLabel = \TYPO3\CMS\Backend\Utility\BackendUtility::getItemLabel($table, $fCol);
+					if ($sortLabel !== NULL) {
+						$sortLabel = $GLOBALS['LANG']->sL($sortLabel, TRUE);
+						$sortLabel = rtrim(trim($sortLabel), ':');
+					} else {
+						// No TCA field, only output the $fCol variable with square brackets []
+						$sortLabel = htmlspecialchars($fCol);
+						$sortLabel = '<i>[' . rtrim(trim($sortLabel), ':') . ']</i>';
 					}
-					// If the table can be edited, add link for editing THIS field for all listed records:
-					if (!$GLOBALS['TCA'][$table]['ctrl']['readOnly'] && $permsEdit && $GLOBALS['TCA'][$table]['columns'][$fCol]) {
-						$editIdList = implode(',', $currentIdList);
+
+					if ($this->table && is_array($currentIdList)) {
+						// If the numeric clipboard pads are selected, show duplicate sorting link:
 						if ($this->clipNumPane()) {
-							$editIdList = '\'+editList(\'' . $table . '\',\'' . $editIdList . '\')+\'';
+							$theData[$fCol] .= '<a href="' . htmlspecialchars(($this->listURL('', -1) . '&duplicateField=' . $fCol)) . '" title="' . $GLOBALS['LANG']->getLL('clip_duplicates', TRUE) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-duplicates-select') . '</a>';
 						}
-						$params = '&edit[' . $table . '][' . $editIdList . ']=edit&columnsOnly=' . $fCol . '&disHelp=1';
-						$iTitle = sprintf($GLOBALS['LANG']->getLL('editThisColumn'), $sortLabel);
-						$theData[$fCol] .= '<a href="#" onclick="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick($params, $this->backPath, -1)) . '" title="' . htmlspecialchars($iTitle) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open') . '</a>';
+						// If the table can be edited, add link for editing THIS field for all listed records:
+						if (!$GLOBALS['TCA'][$table]['ctrl']['readOnly'] && $permsEdit && $GLOBALS['TCA'][$table]['columns'][$fCol]) {
+							$editIdList = implode(',', $currentIdList);
+							if ($this->clipNumPane()) {
+								$editIdList = '\'+editList(\'' . $table . '\',\'' . $editIdList . '\')+\'';
+							}
+							$params = '&edit[' . $table . '][' . $editIdList . ']=edit&columnsOnly=' . $fCol . '&disHelp=1';
+							$iTitle = sprintf($GLOBALS['LANG']->getLL('editThisColumn'), $sortLabel);
+							$theData[$fCol] .= '<a href="#" onclick="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick($params, $this->backPath, -1)) . '" title="' . htmlspecialchars($iTitle) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open') . '</a>';
+						}
 					}
-				}
-				$theData[$fCol] .= $this->addSortLink($sortLabel, $fCol, $table);
-				break;
+					$theData[$fCol] .= $this->addSortLink($sortLabel, $fCol, $table);
 			}
 		}
 		/**

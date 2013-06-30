@@ -377,69 +377,68 @@ class TypoScriptParser {
 									}
 								}
 								switch (substr($line, 0, 1)) {
-								case '=':
-									if ($this->syntaxHighLight) {
-										$this->regHighLight('value', $lineP, strlen(ltrim(substr($line, 1))) - strlen(trim(substr($line, 1))));
-									}
-									if (strstr($objStrName, '.')) {
-										$value = array();
-										$value[0] = trim(substr($line, 1));
-										$this->setVal($objStrName, $setup, $value);
-									} else {
-										$setup[$objStrName] = trim(substr($line, 1));
-										if ($this->lastComment && $this->regComments) {
-											// Setting comment..
-											$setup[$objStrName . '..'] .= $this->lastComment;
+									case '=':
+										if ($this->syntaxHighLight) {
+											$this->regHighLight('value', $lineP, strlen(ltrim(substr($line, 1))) - strlen(trim(substr($line, 1))));
 										}
-										if ($this->regLinenumbers) {
-											$setup[$objStrName . '.ln..'][] = $this->lineNumberOffset + $this->rawP - 1;
+										if (strstr($objStrName, '.')) {
+											$value = array();
+											$value[0] = trim(substr($line, 1));
+											$this->setVal($objStrName, $setup, $value);
+										} else {
+											$setup[$objStrName] = trim(substr($line, 1));
+											if ($this->lastComment && $this->regComments) {
+												// Setting comment..
+												$setup[$objStrName . '..'] .= $this->lastComment;
+											}
+											if ($this->regLinenumbers) {
+												$setup[$objStrName . '.ln..'][] = $this->lineNumberOffset + $this->rawP - 1;
+											}
 										}
-									}
-									break;
-								case '{':
-									$this->inBrace++;
-									if (strstr($objStrName, '.')) {
-										$exitSig = $this->rollParseSub($objStrName, $setup);
-										if ($exitSig) {
-											return $exitSig;
+										break;
+									case '{':
+										$this->inBrace++;
+										if (strstr($objStrName, '.')) {
+											$exitSig = $this->rollParseSub($objStrName, $setup);
+											if ($exitSig) {
+												return $exitSig;
+											}
+										} else {
+											if (!isset($setup[($objStrName . '.')])) {
+												$setup[$objStrName . '.'] = array();
+											}
+											$exitSig = $this->parseSub($setup[$objStrName . '.']);
+											if ($exitSig) {
+												return $exitSig;
+											}
 										}
-									} else {
-										if (!isset($setup[($objStrName . '.')])) {
-											$setup[$objStrName . '.'] = array();
+										break;
+									case '(':
+										$this->multiLineObject = $objStrName;
+										$this->multiLineEnabled = 1;
+										$this->multiLineValue = array();
+										break;
+									case '<':
+										if ($this->syntaxHighLight) {
+											$this->regHighLight('value_copy', $lineP, strlen(ltrim(substr($line, 1))) - strlen(trim(substr($line, 1))));
 										}
-										$exitSig = $this->parseSub($setup[$objStrName . '.']);
-										if ($exitSig) {
-											return $exitSig;
+										$theVal = trim(substr($line, 1));
+										if (substr($theVal, 0, 1) == '.') {
+											$res = $this->getVal(substr($theVal, 1), $setup);
+										} else {
+											$res = $this->getVal($theVal, $this->setup);
 										}
-									}
-									break;
-								case '(':
-									$this->multiLineObject = $objStrName;
-									$this->multiLineEnabled = 1;
-									$this->multiLineValue = array();
-									break;
-								case '<':
-									if ($this->syntaxHighLight) {
-										$this->regHighLight('value_copy', $lineP, strlen(ltrim(substr($line, 1))) - strlen(trim(substr($line, 1))));
-									}
-									$theVal = trim(substr($line, 1));
-									if (substr($theVal, 0, 1) == '.') {
-										$res = $this->getVal(substr($theVal, 1), $setup);
-									} else {
-										$res = $this->getVal($theVal, $this->setup);
-									}
-									$this->setVal($objStrName, $setup, unserialize(serialize($res)), 1);
-									// unserialize(serialize(...)) may look stupid but is needed because of some reference issues. See Kaspers reply to "[TYPO3-core] good question" from December 15 2005.
-									break;
-								case '>':
-									if ($this->syntaxHighLight) {
-										$this->regHighLight('value_unset', $lineP, strlen(ltrim(substr($line, 1))) - strlen(trim(substr($line, 1))));
-									}
-									$this->setVal($objStrName, $setup, 'UNSET');
-									break;
-								default:
-									$this->error('Line ' . ($this->lineNumberOffset + $this->rawP - 1) . ': Object Name String, "' . htmlspecialchars($objStrName) . '" was not preceded by any operator, =<>({');
-									break;
+										$this->setVal($objStrName, $setup, unserialize(serialize($res)), 1);
+										// unserialize(serialize(...)) may look stupid but is needed because of some reference issues. See Kaspers reply to "[TYPO3-core] good question" from December 15 2005.
+										break;
+									case '>':
+										if ($this->syntaxHighLight) {
+											$this->regHighLight('value_unset', $lineP, strlen(ltrim(substr($line, 1))) - strlen(trim(substr($line, 1))));
+										}
+										$this->setVal($objStrName, $setup, 'UNSET');
+										break;
+									default:
+										$this->error('Line ' . ($this->lineNumberOffset + $this->rawP - 1) . ': Object Name String, "' . htmlspecialchars($objStrName) . '" was not preceded by any operator, =<>({');
 								}
 							}
 							$this->lastComment = '';
@@ -731,43 +730,43 @@ class TypoScriptParser {
 						if ($params['source']) {
 							$sourceParts = explode(':', $params['source'], 2);
 							switch (strtolower(trim($sourceParts[0]))) {
-							case 'file':
-								$filename = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName(trim($sourceParts[1]));
-								// Must exist and must not contain '..' and must be relative
-								if (strcmp($filename, '')) {
-									// Check for allowed files
-									if (\TYPO3\CMS\Core\Utility\GeneralUtility::verifyFilenameAgainstDenyPattern($filename)) {
-										if (@is_file($filename)) {
-											// Check for includes in included text
-											$includedFiles[] = $filename;
-											$included_text = self::checkIncludeLines(\TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($filename), $cycle_counter + 1, $returnFiles);
-											// If the method also has to return all included files, merge currently included
-											// files with files included by recursively calling itself
-											if ($returnFiles && is_array($included_text)) {
-												$includedFiles = array_merge($includedFiles, $included_text['files']);
-												$included_text = $included_text['typoscript'];
-											}
-											$newString .= $included_text . LF;
-										} else {
-											$newString .= '
+								case 'file':
+									$filename = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName(trim($sourceParts[1]));
+									// Must exist and must not contain '..' and must be relative
+									if (strcmp($filename, '')) {
+										// Check for allowed files
+										if (\TYPO3\CMS\Core\Utility\GeneralUtility::verifyFilenameAgainstDenyPattern($filename)) {
+											if (@is_file($filename)) {
+												// Check for includes in included text
+												$includedFiles[] = $filename;
+												$included_text = self::checkIncludeLines(\TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($filename), $cycle_counter + 1, $returnFiles);
+												// If the method also has to return all included files, merge currently included
+												// files with files included by recursively calling itself
+												if ($returnFiles && is_array($included_text)) {
+													$includedFiles = array_merge($includedFiles, $included_text['files']);
+													$included_text = $included_text['typoscript'];
+												}
+												$newString .= $included_text . LF;
+											} else {
+												$newString .= '
 ###
 ### ERROR: File "' . $filename . '" was not was not found.
 ###
 
 ';
-											\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog('File "' . $filename . '" was not found.', 'Core', \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_WARNING);
-										}
-									} else {
-										$newString .= '
+												\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog('File "' . $filename . '" was not found.', 'Core', \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_WARNING);
+											}
+										} else {
+											$newString .= '
 ###
 ### ERROR: File "' . $filename . '" was not included since it is not allowed due to fileDenyPattern
 ###
 
 ';
-										\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog('File "' . $filename . '" was not included since it is not allowed due to fileDenyPattern', 'Core', \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_WARNING);
+											\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog('File "' . $filename . '" was not included since it is not allowed due to fileDenyPattern', 'Core', \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_WARNING);
+										}
 									}
-								}
-								break;
+									break;
 							}
 						}
 						$newString .= '### ' . $splitStr . $subparts[0] . '> END:' . LF;

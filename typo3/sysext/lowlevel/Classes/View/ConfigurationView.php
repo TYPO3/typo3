@@ -142,59 +142,58 @@ class ConfigurationView {
 						</div>';
 		$this->content .= $this->doc->spacer(5);
 		switch ($this->MOD_SETTINGS['function']) {
-		case 0:
-			$theVar = $GLOBALS['TYPO3_CONF_VARS'];
-			\TYPO3\CMS\Core\Utility\GeneralUtility::naturalKeySortRecursive($theVar);
-			$arrayBrowser->varName = '$TYPO3_CONF_VARS';
-			break;
-		case 1:
-			$theVar = $GLOBALS['TCA'];
-			\TYPO3\CMS\Core\Utility\GeneralUtility::naturalKeySortRecursive($theVar);
-			$arrayBrowser->varName = '$TCA';
-			break;
-		case 2:
-			$theVar = $GLOBALS['TCA_DESCR'];
-			\TYPO3\CMS\Core\Utility\GeneralUtility::naturalKeySortRecursive($theVar);
-			$arrayBrowser->varName = '$TCA_DESCR';
-			break;
-		case 3:
-			$theVar = $GLOBALS['TYPO3_LOADED_EXT'];
-			\TYPO3\CMS\Core\Utility\GeneralUtility::naturalKeySortRecursive($theVar);
-			$arrayBrowser->varName = '$TYPO3_LOADED_EXT';
-			break;
-		case 4:
-			$theVar = $GLOBALS['T3_SERVICES'];
-			\TYPO3\CMS\Core\Utility\GeneralUtility::naturalKeySortRecursive($theVar);
-			$arrayBrowser->varName = '$T3_SERVICES';
-			break;
-		case 5:
-			$theVar = $GLOBALS['TBE_MODULES'];
-			\TYPO3\CMS\Core\Utility\GeneralUtility::naturalKeySortRecursive($theVar);
-			$arrayBrowser->varName = '$TBE_MODULES';
-			break;
-		case 6:
-			$theVar = $GLOBALS['TBE_MODULES_EXT'];
-			\TYPO3\CMS\Core\Utility\GeneralUtility::naturalKeySortRecursive($theVar);
-			$arrayBrowser->varName = '$TBE_MODULES_EXT';
-			break;
-		case 7:
-			$theVar = $GLOBALS['TBE_STYLES'];
-			\TYPO3\CMS\Core\Utility\GeneralUtility::naturalKeySortRecursive($theVar);
-			$arrayBrowser->varName = '$TBE_STYLES';
-			break;
-		case 8:
-			$theVar = $GLOBALS['BE_USER']->uc;
-			\TYPO3\CMS\Core\Utility\GeneralUtility::naturalKeySortRecursive($theVar);
-			$arrayBrowser->varName = '$BE_USER->uc';
-			break;
-		case 9:
-			$theVar = $GLOBALS['TYPO3_USER_SETTINGS'];
-			\TYPO3\CMS\Core\Utility\GeneralUtility::naturalKeySortRecursive($theVar);
-			$arrayBrowser->varName = '$TYPO3_USER_SETTINGS';
-			break;
-		default:
-			$theVar = array();
-			break;
+			case 0:
+				$theVar = $GLOBALS['TYPO3_CONF_VARS'];
+				\TYPO3\CMS\Core\Utility\GeneralUtility::naturalKeySortRecursive($theVar);
+				$arrayBrowser->varName = '$TYPO3_CONF_VARS';
+				break;
+			case 1:
+				$theVar = $GLOBALS['TCA'];
+				\TYPO3\CMS\Core\Utility\GeneralUtility::naturalKeySortRecursive($theVar);
+				$arrayBrowser->varName = '$TCA';
+				break;
+			case 2:
+				$theVar = $GLOBALS['TCA_DESCR'];
+				\TYPO3\CMS\Core\Utility\GeneralUtility::naturalKeySortRecursive($theVar);
+				$arrayBrowser->varName = '$TCA_DESCR';
+				break;
+			case 3:
+				$theVar = $GLOBALS['TYPO3_LOADED_EXT'];
+				\TYPO3\CMS\Core\Utility\GeneralUtility::naturalKeySortRecursive($theVar);
+				$arrayBrowser->varName = '$TYPO3_LOADED_EXT';
+				break;
+			case 4:
+				$theVar = $GLOBALS['T3_SERVICES'];
+				\TYPO3\CMS\Core\Utility\GeneralUtility::naturalKeySortRecursive($theVar);
+				$arrayBrowser->varName = '$T3_SERVICES';
+				break;
+			case 5:
+				$theVar = $GLOBALS['TBE_MODULES'];
+				\TYPO3\CMS\Core\Utility\GeneralUtility::naturalKeySortRecursive($theVar);
+				$arrayBrowser->varName = '$TBE_MODULES';
+				break;
+			case 6:
+				$theVar = $GLOBALS['TBE_MODULES_EXT'];
+				\TYPO3\CMS\Core\Utility\GeneralUtility::naturalKeySortRecursive($theVar);
+				$arrayBrowser->varName = '$TBE_MODULES_EXT';
+				break;
+			case 7:
+				$theVar = $GLOBALS['TBE_STYLES'];
+				\TYPO3\CMS\Core\Utility\GeneralUtility::naturalKeySortRecursive($theVar);
+				$arrayBrowser->varName = '$TBE_STYLES';
+				break;
+			case 8:
+				$theVar = $GLOBALS['BE_USER']->uc;
+				\TYPO3\CMS\Core\Utility\GeneralUtility::naturalKeySortRecursive($theVar);
+				$arrayBrowser->varName = '$BE_USER->uc';
+				break;
+			case 9:
+				$theVar = $GLOBALS['TYPO3_USER_SETTINGS'];
+				\TYPO3\CMS\Core\Utility\GeneralUtility::naturalKeySortRecursive($theVar);
+				$arrayBrowser->varName = '$TYPO3_USER_SETTINGS';
+				break;
+			default:
+				$theVar = array();
 		}
 		// Update node:
 		$update = 0;

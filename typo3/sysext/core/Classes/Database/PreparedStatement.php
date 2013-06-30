@@ -218,21 +218,21 @@ class PreparedStatement {
 	 */
 	public function bindValue($parameter, $value, $data_type = self::PARAM_AUTOTYPE) {
 		switch ($data_type) {
-		case self::PARAM_INT:
-			if (!is_int($value)) {
-				throw new \InvalidArgumentException('$value is not an integer as expected: ' . $value, 1281868686);
-			}
-			break;
-		case self::PARAM_BOOL:
-			if (!is_bool($value)) {
-				throw new \InvalidArgumentException('$value is not a boolean as expected: ' . $value, 1281868687);
-			}
-			break;
-		case self::PARAM_NULL:
-			if (!is_null($value)) {
-				throw new \InvalidArgumentException('$value is not NULL as expected: ' . $value, 1282489834);
-			}
-			break;
+			case self::PARAM_INT:
+				if (!is_int($value)) {
+					throw new \InvalidArgumentException('$value is not an integer as expected: ' . $value, 1281868686);
+				}
+				break;
+			case self::PARAM_BOOL:
+				if (!is_bool($value)) {
+					throw new \InvalidArgumentException('$value is not a boolean as expected: ' . $value, 1281868687);
+				}
+				break;
+			case self::PARAM_NULL:
+				if (!is_null($value)) {
+					throw new \InvalidArgumentException('$value is not NULL as expected: ' . $value, 1282489834);
+				}
+				break;
 		}
 		$key = is_int($parameter) ? $parameter - 1 : $parameter;
 		$this->parameters[$key] = array(
@@ -306,14 +306,14 @@ class PreparedStatement {
 			$fetch_style = $this->defaultFetchMode;
 		}
 		switch ($fetch_style) {
-		case self::FETCH_ASSOC:
-			$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($this->resource);
-			break;
-		case self::FETCH_NUM:
-			$row = $GLOBALS['TYPO3_DB']->sql_fetch_row($this->resource);
-			break;
-		default:
-			throw new \InvalidArgumentException('$fetch_style must be either TYPO3\\CMS\\Core\\Database\\PreparedStatement::FETCH_ASSOC or TYPO3\\CMS\\Core\\Database\\PreparedStatement::FETCH_NUM', 1281646455);
+			case self::FETCH_ASSOC:
+				$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($this->resource);
+				break;
+			case self::FETCH_NUM:
+				$row = $GLOBALS['TYPO3_DB']->sql_fetch_row($this->resource);
+				break;
+			default:
+				throw new \InvalidArgumentException('$fetch_style must be either TYPO3\\CMS\\Core\\Database\\PreparedStatement::FETCH_ASSOC or TYPO3\\CMS\\Core\\Database\\PreparedStatement::FETCH_NUM', 1281646455);
 		}
 		return $row;
 	}
@@ -401,13 +401,13 @@ class PreparedStatement {
 	 */
 	public function setFetchMode($mode) {
 		switch ($mode) {
-		case self::FETCH_ASSOC:
+			case self::FETCH_ASSOC:
 
-		case self::FETCH_NUM:
-			$this->defaultFetchMode = $mode;
-			break;
-		default:
-			throw new \InvalidArgumentException('$mode must be either TYPO3\\CMS\\Core\\Database\\PreparedStatement::FETCH_ASSOC or TYPO3\\CMS\\Core\\Database\\PreparedStatement::FETCH_NUM', 1281875340);
+			case self::FETCH_NUM:
+				$this->defaultFetchMode = $mode;
+				break;
+			default:
+				throw new \InvalidArgumentException('$mode must be either TYPO3\\CMS\\Core\\Database\\PreparedStatement::FETCH_ASSOC or TYPO3\\CMS\\Core\\Database\\PreparedStatement::FETCH_NUM', 1281875340);
 		}
 	}
 
@@ -444,20 +444,20 @@ class PreparedStatement {
 		}
 		foreach ($parameterValues as $key => $typeValue) {
 			switch ($typeValue['type']) {
-			case self::PARAM_NULL:
-				$value = 'NULL';
-				break;
-			case self::PARAM_INT:
-				$value = intval($typeValue['value']);
-				break;
-			case self::PARAM_STR:
-				$value = $GLOBALS['TYPO3_DB']->fullQuoteStr($typeValue['value'], $this->table);
-				break;
-			case self::PARAM_BOOL:
-				$value = $typeValue['value'] ? 1 : 0;
-				break;
-			default:
-				throw new \InvalidArgumentException(sprintf('Unknown type %s used for parameter %s.', $typeValue['type'], $key), 1281859196);
+				case self::PARAM_NULL:
+					$value = 'NULL';
+					break;
+				case self::PARAM_INT:
+					$value = intval($typeValue['value']);
+					break;
+				case self::PARAM_STR:
+					$value = $GLOBALS['TYPO3_DB']->fullQuoteStr($typeValue['value'], $this->table);
+					break;
+				case self::PARAM_BOOL:
+					$value = $typeValue['value'] ? 1 : 0;
+					break;
+				default:
+					throw new \InvalidArgumentException(sprintf('Unknown type %s used for parameter %s.', $typeValue['type'], $key), 1281859196);
 			}
 			if (is_int($key)) {
 				if (count($precompiledQueryParts['queryParts']) > 0) {

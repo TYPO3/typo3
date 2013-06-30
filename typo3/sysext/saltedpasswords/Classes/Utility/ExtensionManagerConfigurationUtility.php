@@ -64,33 +64,33 @@ class ExtensionManagerConfigurationUtility {
 	 */
 	private function setErrorLevel($level) {
 		switch ($level) {
-		case 'error':
-			$this->errorType = \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR;
-			$this->header = 'Errors found in your configuration';
-			$this->preText = 'SaltedPasswords will not work until these problems have been resolved:<br />';
-			break;
-		case 'warning':
-			if ($this->errorType < \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR) {
-				$this->errorType = \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING;
-				$this->header = 'Warnings about your configuration';
-				$this->preText = 'SaltedPasswords might behave different than expected:<br />';
-			}
-			break;
-		case 'info':
-			if ($this->errorType < \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING) {
-				$this->errorType = \TYPO3\CMS\Core\Messaging\FlashMessage::INFO;
-				$this->header = 'Additional information';
-				$this->preText = '<br />';
-			}
-			break;
-		case 'ok':
-			// TODO: Remove INFO condition as it has lower importance
-			if ($this->errorType < \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING && $this->errorType != \TYPO3\CMS\Core\Messaging\FlashMessage::INFO) {
-				$this->errorType = \TYPO3\CMS\Core\Messaging\FlashMessage::OK;
-				$this->header = 'No errors were found';
-				$this->preText = 'SaltedPasswords has been configured correctly and works as expected.<br />';
-			}
-			break;
+			case 'error':
+				$this->errorType = \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR;
+				$this->header = 'Errors found in your configuration';
+				$this->preText = 'SaltedPasswords will not work until these problems have been resolved:<br />';
+				break;
+			case 'warning':
+				if ($this->errorType < \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR) {
+					$this->errorType = \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING;
+					$this->header = 'Warnings about your configuration';
+					$this->preText = 'SaltedPasswords might behave different than expected:<br />';
+				}
+				break;
+			case 'info':
+				if ($this->errorType < \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING) {
+					$this->errorType = \TYPO3\CMS\Core\Messaging\FlashMessage::INFO;
+					$this->header = 'Additional information';
+					$this->preText = '<br />';
+				}
+				break;
+			case 'ok':
+				// TODO: Remove INFO condition as it has lower importance
+				if ($this->errorType < \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING && $this->errorType != \TYPO3\CMS\Core\Messaging\FlashMessage::INFO) {
+					$this->errorType = \TYPO3\CMS\Core\Messaging\FlashMessage::OK;
+					$this->header = 'No errors were found';
+					$this->preText = 'SaltedPasswords has been configured correctly and works as expected.<br />';
+				}
+				break;
 		}
 	}
 
