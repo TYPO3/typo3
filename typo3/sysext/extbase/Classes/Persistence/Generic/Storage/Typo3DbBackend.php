@@ -931,6 +931,7 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 			}
 			if (!empty($statement)) {
 				$statement = substr($statement, 5);
+				$statement = '(' . $tableName . '.uid IS NULL OR (' . $statement . '))';
 				$sql['additionalWhereClause'][] = $statement;
 			}
 		}
@@ -1039,7 +1040,7 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 					}
 					$additionalWhereClause .= '))';
 				}
-				$sql['additionalWhereClause'][] = '(' . $additionalWhereClause . ')';
+				$sql['additionalWhereClause'][] = '(' . $tableName . '.uid IS NULL OR (' . $additionalWhereClause . '))';
 			}
 		}
 	}
@@ -1068,7 +1069,8 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 				if (empty($storagePageIds)) {
 					throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\InconsistentQuerySettingsException('Missing storage page ids.', 1365779762);
 				}
-				$sql['additionalWhereClause'][] = $tableName . '.pid IN (' . implode(', ', $storagePageIds) . ')';
+				$statement = $tableName . '.pid IN (' . implode(', ', $storagePageIds) . ')';
+				$sql['additionalWhereClause'][] = '(' . $tableName . '.uid IS NULL OR (' . $statement . '))';
 			}
 		}
 	}
