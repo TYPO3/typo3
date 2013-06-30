@@ -700,11 +700,19 @@ EXTENSION KEYS:
 		}
 
 		// show a different background through a different class for insecure (-1) extensions,
+		// and for outdated (-2) extensions,
 		// for unreviewed (0) and reviewed extensions (1), just use the regular class
-		if ($this->xmlHandler->getReviewState($extKey, $extInfo['EM_CONF']['version']) < 0) {
-			$bgclass = ' class="unsupported-ext"';
-		} else {
-			$bgclass = ' class="' . ($bgColorClass ? $bgColorClass : 'em-listbg1') . '"';
+		$reviewState = $this->xmlHandler->getReviewState($extKey, $extInfo['EM_CONF']['version']);
+		switch ($reviewState) {
+			case -2:
+				$bgclass = ' class="outdated-ext"';
+				break;
+			case -1:
+				$bgclass = ' class="unsupported-ext"';
+				break;
+			default:
+				$bgclass = ' class="' . ($bgColorClass ? $bgColorClass : 'em-listbg1') . '"';
+				break;
 		}
 
 		return '

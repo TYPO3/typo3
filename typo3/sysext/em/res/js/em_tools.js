@@ -62,8 +62,11 @@ TYPO3.EM.Tools = function() {
 			if (value == '') {
 				value = '[no title]';
 			}
-			if (record.data.reviewstate < 0) {
+			if (record.data.reviewstate == -1) {
 				description += '<br><br><strong>' + TYPO3.lang.insecureExtension + '</strong>';
+			}
+			if (record.data.reviewstate == -2) {
+				description += '<br><br><strong>' + TYPO3.lang.outdatedExtension + '</strong>';
 			}
 			return record.data.icon + ' ' + value + ' (v' + record.data.version + ')';
 		},

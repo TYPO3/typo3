@@ -685,10 +685,16 @@
 			<label index="reports_StatusMainRepositoryUpdate">Last update of TYPO3 main repository</label>
 			<label index="reports_insecureInstalledExtensions">The following extensions are insecure and usage might damage your system. Please update these extensions as soon as possible or remove them from your system:</label>
 			<label index="reports_insecureExistingExtensions">The following extensions were found on your system, but are currently not installed. Please delete the extensions using the extension manager:</label>
+			<label index="reports_outdatedInstalledExtensions">The following extensions are outdated and may not be compatible with your installation. Please make sure these extensions are compatible and ask the extension author to publish updates:</label>
+			<label index="reports_outdatedExistingExtensions">The following extensions were found on your system, but are currently not installed. Please make sure they are compatible with your system before installing them:</label>
 			<label index="reports_StatusInstalledExtensions">Security status of installed extensions</label>
 			<label index="reports_StatusExistingExtensions">Security status of existing extensions</label>
+			<label index="reports_StatusInstalledOutdatedExtensions">Outdated status of installed extensions</label>
+			<label index="reports_StatusExistingOutdatedExtensions">Outdated status of existing extensions</label>
 			<label index="insecureExtension">This extension is marked as insecure and usage might damage your system. Please update this extension as soon as possible or remove it from your system.</label>
+			<label index="outdatedExtension">The following extensions are outdated and may not be compatible with your installation. Please make sure these extensions are compatible and ask the extension author to publish updates.</label>
 			<label index="reports_insecureExtensionsFound">%s insecure extension(s) found</label>
+			<label index="reports_outdatedExtensionsFound">%s outdated extension(s) found</label>
 			<label index="reports_sysTerNotFound">The table "sys_ter" was not found. Please go to the Install Tool and do a database compare!</label>
 			<label index="reports_MainRepositoryNotFound">The Main Repository entry in table "sys_ter" was not found. Please go to the Extension Manager and import static data!</label>
 			<label index="reports_MainRepositoryNoExtensions">The Main Repository has no extensions. Please update the repository in the Extension Manager or the Scheduler.</label>
