@@ -1192,6 +1192,11 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 					if (isset($row[$GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField']])
 						&& $row[$GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField']] > 0
 					) {
+						if (!$querySettings->getRespectSysLanguage()) {
+							$overlayedRows[] = $row;
+							continue;
+						}
+
 						$row = $this->databaseHandle->exec_SELECTgetSingleRow(
 							$tableName . '.*',
 							$tableName,
