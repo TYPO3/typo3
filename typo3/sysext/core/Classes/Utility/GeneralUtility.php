@@ -2153,47 +2153,47 @@ class GeneralUtility {
 			}
 			// Setting tag-values, manage stack:
 			switch ($val['type']) {
-			case 'open':
-				// If open tag it means there is an array stored in sub-elements. Therefore increase the stackpointer and reset the accumulation array:
-				// Setting blank place holder
-				$current[$tagName] = array();
-				$stack[$stacktop++] = $current;
-				$current = array();
-				break;
-			case 'close':
-				// If the tag is "close" then it is an array which is closing and we decrease the stack pointer.
-				$oldCurrent = $current;
-				$current = $stack[--$stacktop];
-				// Going to the end of array to get placeholder key, key($current), and fill in array next:
-				end($current);
-				$current[key($current)] = $oldCurrent;
-				unset($oldCurrent);
-				break;
-			case 'complete':
-				// If "complete", then it's a value. If the attribute "base64" is set, then decode the value, otherwise just set it.
-				if ($val['attributes']['base64']) {
-					$current[$tagName] = base64_decode($val['value']);
-				} else {
-					// Had to cast it as a string - otherwise it would be evaluate FALSE if tested with isset()!!
-					$current[$tagName] = (string) $val['value'];
-					// Cast type:
-					switch ((string) $val['attributes']['type']) {
-					case 'integer':
-						$current[$tagName] = (int) $current[$tagName];
-						break;
-					case 'double':
-						$current[$tagName] = (double) $current[$tagName];
-						break;
-					case 'boolean':
-						$current[$tagName] = (bool) $current[$tagName];
-						break;
-					case 'array':
-						// MUST be an empty array since it is processed as a value; Empty arrays would end up here because they would have no tags inside...
-						$current[$tagName] = array();
-						break;
+				case 'open':
+					// If open tag it means there is an array stored in sub-elements. Therefore increase the stackpointer and reset the accumulation array:
+					// Setting blank place holder
+					$current[$tagName] = array();
+					$stack[$stacktop++] = $current;
+					$current = array();
+					break;
+				case 'close':
+					// If the tag is "close" then it is an array which is closing and we decrease the stack pointer.
+					$oldCurrent = $current;
+					$current = $stack[--$stacktop];
+					// Going to the end of array to get placeholder key, key($current), and fill in array next:
+					end($current);
+					$current[key($current)] = $oldCurrent;
+					unset($oldCurrent);
+					break;
+				case 'complete':
+					// If "complete", then it's a value. If the attribute "base64" is set, then decode the value, otherwise just set it.
+					if ($val['attributes']['base64']) {
+						$current[$tagName] = base64_decode($val['value']);
+					} else {
+						// Had to cast it as a string - otherwise it would be evaluate FALSE if tested with isset()!!
+						$current[$tagName] = (string) $val['value'];
+						// Cast type:
+						switch ((string) $val['attributes']['type']) {
+							case 'integer':
+								$current[$tagName] = (int) $current[$tagName];
+								break;
+							case 'double':
+								$current[$tagName] = (double) $current[$tagName];
+								break;
+							case 'boolean':
+								$current[$tagName] = (bool) $current[$tagName];
+								break;
+							case 'array':
+								// MUST be an empty array since it is processed as a value; Empty arrays would end up here because they would have no tags inside...
+								$current[$tagName] = array();
+								break;
+						}
 					}
-				}
-				break;
+					break;
 			}
 		}
 		if ($reportDocTag) {
@@ -3144,223 +3144,221 @@ Connection: close
 		 */
 		$retVal = '';
 		switch ((string) $getEnvName) {
-		case 'SCRIPT_NAME':
-			$retVal = (PHP_SAPI == 'fpm-fcgi' || PHP_SAPI == 'cgi' || PHP_SAPI == 'cgi-fcgi') && ($_SERVER['ORIG_PATH_INFO'] ? $_SERVER['ORIG_PATH_INFO'] : $_SERVER['PATH_INFO']) ? ($_SERVER['ORIG_PATH_INFO'] ? $_SERVER['ORIG_PATH_INFO'] : $_SERVER['PATH_INFO']) : ($_SERVER['ORIG_SCRIPT_NAME'] ? $_SERVER['ORIG_SCRIPT_NAME'] : $_SERVER['SCRIPT_NAME']);
-			// Add a prefix if TYPO3 is behind a proxy: ext-domain.com => int-server.com/prefix
-			if (self::cmpIP($_SERVER['REMOTE_ADDR'], $GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyIP'])) {
-				if (self::getIndpEnv('TYPO3_SSL') && $GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyPrefixSSL']) {
-					$retVal = $GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyPrefixSSL'] . $retVal;
-				} elseif ($GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyPrefix']) {
-					$retVal = $GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyPrefix'] . $retVal;
-				}
-			}
-			break;
-		case 'SCRIPT_FILENAME':
-			$retVal = PATH_thisScript;
-			break;
-		case 'REQUEST_URI':
-			// Typical application of REQUEST_URI is return urls, forms submitting to itself etc. Example: returnUrl='.rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI'))
-			if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['requestURIvar']) {
-				// This is for URL rewriters that store the original URI in a server variable (eg ISAPI_Rewriter for IIS: HTTP_X_REWRITE_URL)
-				list($v, $n) = explode('|', $GLOBALS['TYPO3_CONF_VARS']['SYS']['requestURIvar']);
-				$retVal = $GLOBALS[$v][$n];
-			} elseif (!$_SERVER['REQUEST_URI']) {
-				// This is for ISS/CGI which does not have the REQUEST_URI available.
-				$retVal = '/' . ltrim(self::getIndpEnv('SCRIPT_NAME'), '/') . ($_SERVER['QUERY_STRING'] ? '?' . $_SERVER['QUERY_STRING'] : '');
-			} else {
-				$retVal = $_SERVER['REQUEST_URI'];
-			}
-			// Add a prefix if TYPO3 is behind a proxy: ext-domain.com => int-server.com/prefix
-			if (self::cmpIP($_SERVER['REMOTE_ADDR'], $GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyIP'])) {
-				if (self::getIndpEnv('TYPO3_SSL') && $GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyPrefixSSL']) {
-					$retVal = $GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyPrefixSSL'] . $retVal;
-				} elseif ($GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyPrefix']) {
-					$retVal = $GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyPrefix'] . $retVal;
-				}
-			}
-			break;
-		case 'PATH_INFO':
-			// $_SERVER['PATH_INFO']!=$_SERVER['SCRIPT_NAME'] is necessary because some servers (Windows/CGI) are seen to set PATH_INFO equal to script_name
-			// Further, there must be at least one '/' in the path - else the PATH_INFO value does not make sense.
-			// IF 'PATH_INFO' never works for our purpose in TYPO3 with CGI-servers, then 'PHP_SAPI=='cgi'' might be a better check. Right now strcmp($_SERVER['PATH_INFO'],\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('SCRIPT_NAME')) will always return FALSE for CGI-versions, but that is only as long as SCRIPT_NAME is set equal to PATH_INFO because of PHP_SAPI=='cgi' (see above)
-			if (PHP_SAPI != 'cgi' && PHP_SAPI != 'cgi-fcgi' && PHP_SAPI != 'fpm-fcgi') {
-				$retVal = $_SERVER['PATH_INFO'];
-			}
-			break;
-		case 'TYPO3_REV_PROXY':
-			$retVal = self::cmpIP($_SERVER['REMOTE_ADDR'], $GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyIP']);
-			break;
-		case 'REMOTE_ADDR':
-			$retVal = $_SERVER['REMOTE_ADDR'];
-			if (self::cmpIP($_SERVER['REMOTE_ADDR'], $GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyIP'])) {
-				$ip = self::trimExplode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
-				// Choose which IP in list to use
-				if (count($ip)) {
-					switch ($GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyHeaderMultiValue']) {
-					case 'last':
-						$ip = array_pop($ip);
-						break;
-					case 'first':
-						$ip = array_shift($ip);
-						break;
-					case 'none':
-
-					default:
-						$ip = '';
-						break;
+			case 'SCRIPT_NAME':
+				$retVal = (PHP_SAPI == 'fpm-fcgi' || PHP_SAPI == 'cgi' || PHP_SAPI == 'cgi-fcgi') && ($_SERVER['ORIG_PATH_INFO'] ? $_SERVER['ORIG_PATH_INFO'] : $_SERVER['PATH_INFO']) ? ($_SERVER['ORIG_PATH_INFO'] ? $_SERVER['ORIG_PATH_INFO'] : $_SERVER['PATH_INFO']) : ($_SERVER['ORIG_SCRIPT_NAME'] ? $_SERVER['ORIG_SCRIPT_NAME'] : $_SERVER['SCRIPT_NAME']);
+				// Add a prefix if TYPO3 is behind a proxy: ext-domain.com => int-server.com/prefix
+				if (self::cmpIP($_SERVER['REMOTE_ADDR'], $GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyIP'])) {
+					if (self::getIndpEnv('TYPO3_SSL') && $GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyPrefixSSL']) {
+						$retVal = $GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyPrefixSSL'] . $retVal;
+					} elseif ($GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyPrefix']) {
+						$retVal = $GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyPrefix'] . $retVal;
 					}
 				}
-				if (self::validIP($ip)) {
-					$retVal = $ip;
-				}
-			}
-			break;
-		case 'HTTP_HOST':
-			$retVal = $_SERVER['HTTP_HOST'];
-			if (self::cmpIP($_SERVER['REMOTE_ADDR'], $GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyIP'])) {
-				$host = self::trimExplode(',', $_SERVER['HTTP_X_FORWARDED_HOST']);
-				// Choose which host in list to use
-				if (count($host)) {
-					switch ($GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyHeaderMultiValue']) {
-					case 'last':
-						$host = array_pop($host);
-						break;
-					case 'first':
-						$host = array_shift($host);
-						break;
-					case 'none':
-
-					default:
-						$host = '';
-						break;
-					}
-				}
-				if ($host) {
-					$retVal = $host;
-				}
-			}
-			break;
-		case 'HTTP_REFERER':
-
-		case 'HTTP_USER_AGENT':
-
-		case 'HTTP_ACCEPT_ENCODING':
-
-		case 'HTTP_ACCEPT_LANGUAGE':
-
-		case 'REMOTE_HOST':
-
-		case 'QUERY_STRING':
-			$retVal = '';
-			if (isset($_SERVER[$getEnvName])) {
-				$retVal = $_SERVER[$getEnvName];
-			}
-			break;
-		case 'TYPO3_DOCUMENT_ROOT':
-			// Get the web root (it is not the root of the TYPO3 installation)
-			// The absolute path of the script can be calculated with TYPO3_DOCUMENT_ROOT + SCRIPT_FILENAME
-			// Some CGI-versions (LA13CGI) and mod-rewrite rules on MODULE versions will deliver a 'wrong' DOCUMENT_ROOT (according to our description). Further various aliases/mod_rewrite rules can disturb this as well.
-			// Therefore the DOCUMENT_ROOT is now always calculated as the SCRIPT_FILENAME minus the end part shared with SCRIPT_NAME.
-			$SFN = self::getIndpEnv('SCRIPT_FILENAME');
-			$SN_A = explode('/', strrev(self::getIndpEnv('SCRIPT_NAME')));
-			$SFN_A = explode('/', strrev($SFN));
-			$acc = array();
-			foreach ($SN_A as $kk => $vv) {
-				if (!strcmp($SFN_A[$kk], $vv)) {
-					$acc[] = $vv;
+				break;
+			case 'SCRIPT_FILENAME':
+				$retVal = PATH_thisScript;
+				break;
+			case 'REQUEST_URI':
+				// Typical application of REQUEST_URI is return urls, forms submitting to itself etc. Example: returnUrl='.rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI'))
+				if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['requestURIvar']) {
+					// This is for URL rewriters that store the original URI in a server variable (eg ISAPI_Rewriter for IIS: HTTP_X_REWRITE_URL)
+					list($v, $n) = explode('|', $GLOBALS['TYPO3_CONF_VARS']['SYS']['requestURIvar']);
+					$retVal = $GLOBALS[$v][$n];
+				} elseif (!$_SERVER['REQUEST_URI']) {
+					// This is for ISS/CGI which does not have the REQUEST_URI available.
+					$retVal = '/' . ltrim(self::getIndpEnv('SCRIPT_NAME'), '/') . ($_SERVER['QUERY_STRING'] ? '?' . $_SERVER['QUERY_STRING'] : '');
 				} else {
-					break;
+					$retVal = $_SERVER['REQUEST_URI'];
 				}
-			}
-			$commonEnd = strrev(implode('/', $acc));
-			if (strcmp($commonEnd, '')) {
-				$DR = substr($SFN, 0, -(strlen($commonEnd) + 1));
-			}
-			$retVal = $DR;
-			break;
-		case 'TYPO3_HOST_ONLY':
-			$httpHost = self::getIndpEnv('HTTP_HOST');
-			$httpHostBracketPosition = strpos($httpHost, ']');
-			$httpHostParts = explode(':', $httpHost);
-			$retVal = $httpHostBracketPosition !== FALSE ? substr($httpHost, 0, $httpHostBracketPosition + 1) : array_shift($httpHostParts);
-			break;
-		case 'TYPO3_PORT':
-			$httpHost = self::getIndpEnv('HTTP_HOST');
-			$httpHostOnly = self::getIndpEnv('TYPO3_HOST_ONLY');
-			$retVal = strlen($httpHost) > strlen($httpHostOnly) ? substr($httpHost, strlen($httpHostOnly) + 1) : '';
-			break;
-		case 'TYPO3_REQUEST_HOST':
-			$retVal = (self::getIndpEnv('TYPO3_SSL') ? 'https://' : 'http://') . self::getIndpEnv('HTTP_HOST');
-			break;
-		case 'TYPO3_REQUEST_URL':
-			$retVal = self::getIndpEnv('TYPO3_REQUEST_HOST') . self::getIndpEnv('REQUEST_URI');
-			break;
-		case 'TYPO3_REQUEST_SCRIPT':
-			$retVal = self::getIndpEnv('TYPO3_REQUEST_HOST') . self::getIndpEnv('SCRIPT_NAME');
-			break;
-		case 'TYPO3_REQUEST_DIR':
-			$retVal = self::getIndpEnv('TYPO3_REQUEST_HOST') . self::dirname(self::getIndpEnv('SCRIPT_NAME')) . '/';
-			break;
-		case 'TYPO3_SITE_URL':
-			if (defined('PATH_thisScript') && defined('PATH_site')) {
-				$lPath = substr(dirname(PATH_thisScript), strlen(PATH_site)) . '/';
-				$url = self::getIndpEnv('TYPO3_REQUEST_DIR');
-				$siteUrl = substr($url, 0, -strlen($lPath));
-				if (substr($siteUrl, -1) != '/') {
-					$siteUrl .= '/';
+				// Add a prefix if TYPO3 is behind a proxy: ext-domain.com => int-server.com/prefix
+				if (self::cmpIP($_SERVER['REMOTE_ADDR'], $GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyIP'])) {
+					if (self::getIndpEnv('TYPO3_SSL') && $GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyPrefixSSL']) {
+						$retVal = $GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyPrefixSSL'] . $retVal;
+					} elseif ($GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyPrefix']) {
+						$retVal = $GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyPrefix'] . $retVal;
+					}
 				}
-				$retVal = $siteUrl;
-			}
-			break;
-		case 'TYPO3_SITE_PATH':
-			$retVal = substr(self::getIndpEnv('TYPO3_SITE_URL'), strlen(self::getIndpEnv('TYPO3_REQUEST_HOST')));
-			break;
-		case 'TYPO3_SITE_SCRIPT':
-			$retVal = substr(self::getIndpEnv('TYPO3_REQUEST_URL'), strlen(self::getIndpEnv('TYPO3_SITE_URL')));
-			break;
-		case 'TYPO3_SSL':
-			$proxySSL = trim($GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxySSL']);
-			if ($proxySSL == '*') {
-				$proxySSL = $GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyIP'];
-			}
-			if (self::cmpIP(self::getIndpEnv('REMOTE_ADDR'), $proxySSL)) {
-				$retVal = TRUE;
-			} else {
-				$retVal = $_SERVER['SSL_SESSION_ID'] || !strcasecmp($_SERVER['HTTPS'], 'on') || !strcmp($_SERVER['HTTPS'], '1') ? TRUE : FALSE;
-			}
-			break;
-		case '_ARRAY':
-			$out = array();
-			// Here, list ALL possible keys to this function for debug display.
-			$envTestVars = self::trimExplode(',', '
-					HTTP_HOST,
-					TYPO3_HOST_ONLY,
-					TYPO3_PORT,
-					PATH_INFO,
-					QUERY_STRING,
-					REQUEST_URI,
-					HTTP_REFERER,
-					TYPO3_REQUEST_HOST,
-					TYPO3_REQUEST_URL,
-					TYPO3_REQUEST_SCRIPT,
-					TYPO3_REQUEST_DIR,
-					TYPO3_SITE_URL,
-					TYPO3_SITE_SCRIPT,
-					TYPO3_SSL,
-					TYPO3_REV_PROXY,
-					SCRIPT_NAME,
-					TYPO3_DOCUMENT_ROOT,
-					SCRIPT_FILENAME,
-					REMOTE_ADDR,
-					REMOTE_HOST,
-					HTTP_USER_AGENT,
-					HTTP_ACCEPT_LANGUAGE', 1);
-			foreach ($envTestVars as $v) {
-				$out[$v] = self::getIndpEnv($v);
-			}
-			reset($out);
-			$retVal = $out;
-			break;
+				break;
+			case 'PATH_INFO':
+				// $_SERVER['PATH_INFO']!=$_SERVER['SCRIPT_NAME'] is necessary because some servers (Windows/CGI) are seen to set PATH_INFO equal to script_name
+				// Further, there must be at least one '/' in the path - else the PATH_INFO value does not make sense.
+				// IF 'PATH_INFO' never works for our purpose in TYPO3 with CGI-servers, then 'PHP_SAPI=='cgi'' might be a better check. Right now strcmp($_SERVER['PATH_INFO'],\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('SCRIPT_NAME')) will always return FALSE for CGI-versions, but that is only as long as SCRIPT_NAME is set equal to PATH_INFO because of PHP_SAPI=='cgi' (see above)
+				if (PHP_SAPI != 'cgi' && PHP_SAPI != 'cgi-fcgi' && PHP_SAPI != 'fpm-fcgi') {
+					$retVal = $_SERVER['PATH_INFO'];
+				}
+				break;
+			case 'TYPO3_REV_PROXY':
+				$retVal = self::cmpIP($_SERVER['REMOTE_ADDR'], $GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyIP']);
+				break;
+			case 'REMOTE_ADDR':
+				$retVal = $_SERVER['REMOTE_ADDR'];
+				if (self::cmpIP($_SERVER['REMOTE_ADDR'], $GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyIP'])) {
+					$ip = self::trimExplode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
+					// Choose which IP in list to use
+					if (count($ip)) {
+						switch ($GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyHeaderMultiValue']) {
+							case 'last':
+								$ip = array_pop($ip);
+								break;
+							case 'first':
+								$ip = array_shift($ip);
+								break;
+							case 'none':
+
+							default:
+								$ip = '';
+						}
+					}
+					if (self::validIP($ip)) {
+						$retVal = $ip;
+					}
+				}
+				break;
+			case 'HTTP_HOST':
+				$retVal = $_SERVER['HTTP_HOST'];
+				if (self::cmpIP($_SERVER['REMOTE_ADDR'], $GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyIP'])) {
+					$host = self::trimExplode(',', $_SERVER['HTTP_X_FORWARDED_HOST']);
+					// Choose which host in list to use
+					if (count($host)) {
+						switch ($GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyHeaderMultiValue']) {
+							case 'last':
+								$host = array_pop($host);
+								break;
+							case 'first':
+								$host = array_shift($host);
+								break;
+							case 'none':
+
+							default:
+								$host = '';
+						}
+					}
+					if ($host) {
+						$retVal = $host;
+					}
+				}
+				break;
+			case 'HTTP_REFERER':
+
+			case 'HTTP_USER_AGENT':
+
+			case 'HTTP_ACCEPT_ENCODING':
+
+			case 'HTTP_ACCEPT_LANGUAGE':
+
+			case 'REMOTE_HOST':
+
+			case 'QUERY_STRING':
+				$retVal = '';
+				if (isset($_SERVER[$getEnvName])) {
+					$retVal = $_SERVER[$getEnvName];
+				}
+				break;
+			case 'TYPO3_DOCUMENT_ROOT':
+				// Get the web root (it is not the root of the TYPO3 installation)
+				// The absolute path of the script can be calculated with TYPO3_DOCUMENT_ROOT + SCRIPT_FILENAME
+				// Some CGI-versions (LA13CGI) and mod-rewrite rules on MODULE versions will deliver a 'wrong' DOCUMENT_ROOT (according to our description). Further various aliases/mod_rewrite rules can disturb this as well.
+				// Therefore the DOCUMENT_ROOT is now always calculated as the SCRIPT_FILENAME minus the end part shared with SCRIPT_NAME.
+				$SFN = self::getIndpEnv('SCRIPT_FILENAME');
+				$SN_A = explode('/', strrev(self::getIndpEnv('SCRIPT_NAME')));
+				$SFN_A = explode('/', strrev($SFN));
+				$acc = array();
+				foreach ($SN_A as $kk => $vv) {
+					if (!strcmp($SFN_A[$kk], $vv)) {
+						$acc[] = $vv;
+					} else {
+						break;
+					}
+				}
+				$commonEnd = strrev(implode('/', $acc));
+				if (strcmp($commonEnd, '')) {
+					$DR = substr($SFN, 0, -(strlen($commonEnd) + 1));
+				}
+				$retVal = $DR;
+				break;
+			case 'TYPO3_HOST_ONLY':
+				$httpHost = self::getIndpEnv('HTTP_HOST');
+				$httpHostBracketPosition = strpos($httpHost, ']');
+				$httpHostParts = explode(':', $httpHost);
+				$retVal = $httpHostBracketPosition !== FALSE ? substr($httpHost, 0, $httpHostBracketPosition + 1) : array_shift($httpHostParts);
+				break;
+			case 'TYPO3_PORT':
+				$httpHost = self::getIndpEnv('HTTP_HOST');
+				$httpHostOnly = self::getIndpEnv('TYPO3_HOST_ONLY');
+				$retVal = strlen($httpHost) > strlen($httpHostOnly) ? substr($httpHost, strlen($httpHostOnly) + 1) : '';
+				break;
+			case 'TYPO3_REQUEST_HOST':
+				$retVal = (self::getIndpEnv('TYPO3_SSL') ? 'https://' : 'http://') . self::getIndpEnv('HTTP_HOST');
+				break;
+			case 'TYPO3_REQUEST_URL':
+				$retVal = self::getIndpEnv('TYPO3_REQUEST_HOST') . self::getIndpEnv('REQUEST_URI');
+				break;
+			case 'TYPO3_REQUEST_SCRIPT':
+				$retVal = self::getIndpEnv('TYPO3_REQUEST_HOST') . self::getIndpEnv('SCRIPT_NAME');
+				break;
+			case 'TYPO3_REQUEST_DIR':
+				$retVal = self::getIndpEnv('TYPO3_REQUEST_HOST') . self::dirname(self::getIndpEnv('SCRIPT_NAME')) . '/';
+				break;
+			case 'TYPO3_SITE_URL':
+				if (defined('PATH_thisScript') && defined('PATH_site')) {
+					$lPath = substr(dirname(PATH_thisScript), strlen(PATH_site)) . '/';
+					$url = self::getIndpEnv('TYPO3_REQUEST_DIR');
+					$siteUrl = substr($url, 0, -strlen($lPath));
+					if (substr($siteUrl, -1) != '/') {
+						$siteUrl .= '/';
+					}
+					$retVal = $siteUrl;
+				}
+				break;
+			case 'TYPO3_SITE_PATH':
+				$retVal = substr(self::getIndpEnv('TYPO3_SITE_URL'), strlen(self::getIndpEnv('TYPO3_REQUEST_HOST')));
+				break;
+			case 'TYPO3_SITE_SCRIPT':
+				$retVal = substr(self::getIndpEnv('TYPO3_REQUEST_URL'), strlen(self::getIndpEnv('TYPO3_SITE_URL')));
+				break;
+			case 'TYPO3_SSL':
+				$proxySSL = trim($GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxySSL']);
+				if ($proxySSL == '*') {
+					$proxySSL = $GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyIP'];
+				}
+				if (self::cmpIP(self::getIndpEnv('REMOTE_ADDR'), $proxySSL)) {
+					$retVal = TRUE;
+				} else {
+					$retVal = $_SERVER['SSL_SESSION_ID'] || !strcasecmp($_SERVER['HTTPS'], 'on') || !strcmp($_SERVER['HTTPS'], '1') ? TRUE : FALSE;
+				}
+				break;
+			case '_ARRAY':
+				$out = array();
+				// Here, list ALL possible keys to this function for debug display.
+				$envTestVars = self::trimExplode(',', '
+						HTTP_HOST,
+						TYPO3_HOST_ONLY,
+						TYPO3_PORT,
+						PATH_INFO,
+						QUERY_STRING,
+						REQUEST_URI,
+						HTTP_REFERER,
+						TYPO3_REQUEST_HOST,
+						TYPO3_REQUEST_URL,
+						TYPO3_REQUEST_SCRIPT,
+						TYPO3_REQUEST_DIR,
+						TYPO3_SITE_URL,
+						TYPO3_SITE_SCRIPT,
+						TYPO3_SSL,
+						TYPO3_REV_PROXY,
+						SCRIPT_NAME,
+						TYPO3_DOCUMENT_ROOT,
+						SCRIPT_FILENAME,
+						REMOTE_ADDR,
+						REMOTE_HOST,
+						HTTP_USER_AGENT,
+						HTTP_ACCEPT_LANGUAGE', 1);
+				foreach ($envTestVars as $v) {
+					$out[$v] = self::getIndpEnv($v);
+				}
+				reset($out);
+				$retVal = $out;
+				break;
 		}
 		return $retVal;
 	}
@@ -3401,31 +3399,31 @@ Connection: close
 		if (isset($bInfo['BROWSER'])) {
 			// Browser version
 			switch ($bInfo['BROWSER']) {
-			case 'net':
-				$bInfo['VERSION'] = doubleval(substr($useragent, 8));
-				if (strpos($useragent, 'Netscape6/') !== FALSE) {
-					$bInfo['VERSION'] = doubleval(substr(strstr($useragent, 'Netscape6/'), 10));
-				}
-				// Will we ever know if this was a typo or intention...?! :-(
-				if (strpos($useragent, 'Netscape/6') !== FALSE) {
-					$bInfo['VERSION'] = doubleval(substr(strstr($useragent, 'Netscape/6'), 10));
-				}
-				if (strpos($useragent, 'Netscape/7') !== FALSE) {
-					$bInfo['VERSION'] = doubleval(substr(strstr($useragent, 'Netscape/7'), 9));
-				}
-				break;
-			case 'msie':
-				$tmp = strstr($useragent, 'MSIE');
-				$bInfo['VERSION'] = doubleval(preg_replace('/^[^0-9]*/', '', substr($tmp, 4)));
-				break;
-			case 'opera':
-				$tmp = strstr($useragent, 'Opera');
-				$bInfo['VERSION'] = doubleval(preg_replace('/^[^0-9]*/', '', substr($tmp, 5)));
-				break;
-			case 'konqu':
-				$tmp = strstr($useragent, 'Konqueror/');
-				$bInfo['VERSION'] = doubleval(substr($tmp, 10));
-				break;
+				case 'net':
+					$bInfo['VERSION'] = doubleval(substr($useragent, 8));
+					if (strpos($useragent, 'Netscape6/') !== FALSE) {
+						$bInfo['VERSION'] = doubleval(substr(strstr($useragent, 'Netscape6/'), 10));
+					}
+					// Will we ever know if this was a typo or intention...?! :-(
+					if (strpos($useragent, 'Netscape/6') !== FALSE) {
+						$bInfo['VERSION'] = doubleval(substr(strstr($useragent, 'Netscape/6'), 10));
+					}
+					if (strpos($useragent, 'Netscape/7') !== FALSE) {
+						$bInfo['VERSION'] = doubleval(substr(strstr($useragent, 'Netscape/7'), 9));
+					}
+					break;
+				case 'msie':
+					$tmp = strstr($useragent, 'MSIE');
+					$bInfo['VERSION'] = doubleval(preg_replace('/^[^0-9]*/', '', substr($tmp, 4)));
+					break;
+				case 'opera':
+					$tmp = strstr($useragent, 'Opera');
+					$bInfo['VERSION'] = doubleval(preg_replace('/^[^0-9]*/', '', substr($tmp, 5)));
+					break;
+				case 'konqu':
+					$tmp = strstr($useragent, 'Konqueror/');
+					$bInfo['VERSION'] = doubleval(substr($tmp, 10));
+					break;
 			}
 			// Client system
 			if (strpos($useragent, 'Win') !== FALSE) {
@@ -4430,20 +4428,19 @@ Connection: close
 			$subject = self::encodeHeader($subject, $encoding, $charset);
 		}
 		switch ((string) $encoding) {
-		case 'base64':
-			$headers = trim($headers) . LF . 'Mime-Version: 1.0' . LF . 'Content-Type: text/plain; charset="' . $charset . '"' . LF . 'Content-Transfer-Encoding: base64';
-			// Adding LF because I think MS outlook 2002 wants it... may be removed later again.
-			$message = trim(chunk_split(base64_encode(($message . LF)))) . LF;
-			break;
-		case '8bit':
-			$headers = trim($headers) . LF . 'Mime-Version: 1.0' . LF . 'Content-Type: text/plain; charset=' . $charset . LF . 'Content-Transfer-Encoding: 8bit';
-			break;
-		case 'quoted-printable':
+			case 'base64':
+				$headers = trim($headers) . LF . 'Mime-Version: 1.0' . LF . 'Content-Type: text/plain; charset="' . $charset . '"' . LF . 'Content-Transfer-Encoding: base64';
+				// Adding LF because I think MS outlook 2002 wants it... may be removed later again.
+				$message = trim(chunk_split(base64_encode(($message . LF)))) . LF;
+				break;
+			case '8bit':
+				$headers = trim($headers) . LF . 'Mime-Version: 1.0' . LF . 'Content-Type: text/plain; charset=' . $charset . LF . 'Content-Transfer-Encoding: 8bit';
+				break;
+			case 'quoted-printable':
 
-		default:
-			$headers = trim($headers) . LF . 'Mime-Version: 1.0' . LF . 'Content-Type: text/plain; charset=' . $charset . LF . 'Content-Transfer-Encoding: quoted-printable';
-			$message = self::quoted_printable($message);
-			break;
+			default:
+				$headers = trim($headers) . LF . 'Mime-Version: 1.0' . LF . 'Content-Type: text/plain; charset=' . $charset . LF . 'Content-Transfer-Encoding: quoted-printable';
+				$message = self::quoted_printable($message);
 		}
 		// Headers must be separated by CRLF according to RFC 2822, not just LF.
 		// But many servers (Gmail, for example) behave incorrectly and want only LF.
@@ -4536,23 +4533,22 @@ Connection: close
 			$partWasQuoted = $part[0] == '"';
 			$part = trim($part, '"');
 			switch ((string) $enc) {
-			case 'base64':
-				$part = '=?' . $charset . '?B?' . base64_encode($part) . '?=';
-				break;
-			case 'quoted-printable':
+				case 'base64':
+					$part = '=?' . $charset . '?B?' . base64_encode($part) . '?=';
+					break;
+				case 'quoted-printable':
 
-			default:
-				$qpValue = self::quoted_printable($part, 1000);
-				if ($part != $qpValue) {
-					// Encoded words in the header should not contain non-encoded:
-					// * spaces. "_" is a shortcut for "=20". See RFC 2047 for details.
-					// * question mark. See RFC 1342 (http://tools.ietf.org/html/rfc1342)
-					$search = array(' ', '?');
-					$replace = array('_', '=3F');
-					$qpValue = str_replace($search, $replace, $qpValue);
-					$part = '=?' . $charset . '?Q?' . $qpValue . '?=';
-				}
-				break;
+				default:
+					$qpValue = self::quoted_printable($part, 1000);
+					if ($part != $qpValue) {
+						// Encoded words in the header should not contain non-encoded:
+						// * spaces. "_" is a shortcut for "=20". See RFC 2047 for details.
+						// * question mark. See RFC 1342 (http://tools.ietf.org/html/rfc1342)
+						$search = array(' ', '?');
+						$replace = array('_', '=3F');
+						$qpValue = str_replace($search, $replace, $qpValue);
+						$part = '=?' . $charset . '?Q?' . $qpValue . '?=';
+					}
 			}
 			if ($partWasQuoted) {
 				$part = '"' . $part . '"';
@@ -4577,16 +4573,16 @@ Connection: close
 	static public function substUrlsInPlainText($message, $urlmode = '76', $index_script_url = '') {
 		$lengthLimit = FALSE;
 		switch ((string) $urlmode) {
-		case '':
-			$lengthLimit = FALSE;
-			break;
-		case 'all':
-			$lengthLimit = 0;
-			break;
-		case '76':
+			case '':
+				$lengthLimit = FALSE;
+				break;
+			case 'all':
+				$lengthLimit = 0;
+				break;
+			case '76':
 
-		default:
-			$lengthLimit = (int) $urlmode;
+			default:
+				$lengthLimit = (int) $urlmode;
 		}
 		if ($lengthLimit === FALSE) {
 			// No processing

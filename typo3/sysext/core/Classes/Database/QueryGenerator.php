@@ -287,78 +287,76 @@ class QueryGenerator {
 				if (is_array($fC) && $fC['label']) {
 					$this->fields[$fN]['label'] = rtrim(trim($GLOBALS['LANG']->sL($fC['label'])), ':');
 					switch ($this->fields[$fN]['type']) {
-					case 'input':
-						if (preg_match('/int|year/i', $this->fields[$fN]['eval'])) {
-							$this->fields[$fN]['type'] = 'number';
-						} elseif (preg_match('/time/i', $this->fields[$fN]['eval'])) {
-							$this->fields[$fN]['type'] = 'time';
-						} elseif (preg_match('/date/i', $this->fields[$fN]['eval'])) {
-							$this->fields[$fN]['type'] = 'date';
-						} else {
+						case 'input':
+							if (preg_match('/int|year/i', $this->fields[$fN]['eval'])) {
+								$this->fields[$fN]['type'] = 'number';
+							} elseif (preg_match('/time/i', $this->fields[$fN]['eval'])) {
+								$this->fields[$fN]['type'] = 'time';
+							} elseif (preg_match('/date/i', $this->fields[$fN]['eval'])) {
+								$this->fields[$fN]['type'] = 'date';
+							} else {
+								$this->fields[$fN]['type'] = 'text';
+							}
+							break;
+						case 'check':
+							if (!$this->fields[$fN]['items']) {
+								$this->fields[$fN]['type'] = 'boolean';
+							} else {
+								$this->fields[$fN]['type'] = 'binary';
+							}
+							break;
+						case 'radio':
+							$this->fields[$fN]['type'] = 'multiple';
+							break;
+						case 'select':
+							$this->fields[$fN]['type'] = 'multiple';
+							if ($this->fields[$fN]['foreign_table']) {
+								$this->fields[$fN]['type'] = 'relation';
+							}
+							if ($this->fields[$fN]['special']) {
+								$this->fields[$fN]['type'] = 'text';
+							}
+							break;
+						case 'group':
+							$this->fields[$fN]['type'] = 'files';
+							if ($this->fields[$fN]['internal_type'] == 'db') {
+								$this->fields[$fN]['type'] = 'relation';
+							}
+							break;
+						case 'user':
+
+						case 'flex':
+
+						case 'passthrough':
+
+						case 'none':
+
+						case 'text':
+
+						default:
 							$this->fields[$fN]['type'] = 'text';
-						}
-						break;
-					case 'check':
-						if (!$this->fields[$fN]['items']) {
-							$this->fields[$fN]['type'] = 'boolean';
-						} else {
-							$this->fields[$fN]['type'] = 'binary';
-						}
-						break;
-					case 'radio':
-						$this->fields[$fN]['type'] = 'multiple';
-						break;
-					case 'select':
-						$this->fields[$fN]['type'] = 'multiple';
-						if ($this->fields[$fN]['foreign_table']) {
-							$this->fields[$fN]['type'] = 'relation';
-						}
-						if ($this->fields[$fN]['special']) {
-							$this->fields[$fN]['type'] = 'text';
-						}
-						break;
-					case 'group':
-						$this->fields[$fN]['type'] = 'files';
-						if ($this->fields[$fN]['internal_type'] == 'db') {
-							$this->fields[$fN]['type'] = 'relation';
-						}
-						break;
-					case 'user':
-
-					case 'flex':
-
-					case 'passthrough':
-
-					case 'none':
-
-					case 'text':
-
-					default:
-						$this->fields[$fN]['type'] = 'text';
-						break;
 					}
 				} else {
 					$this->fields[$fN]['label'] = '[FIELD: ' . $fN . ']';
 					switch ($fN) {
-					case 'pid':
-						$this->fields[$fN]['type'] = 'relation';
-						$this->fields[$fN]['allowed'] = 'pages';
-						break;
-					case 'cruser_id':
-						$this->fields[$fN]['type'] = 'relation';
-						$this->fields[$fN]['allowed'] = 'be_users';
-						break;
-					case 'tstamp':
+						case 'pid':
+							$this->fields[$fN]['type'] = 'relation';
+							$this->fields[$fN]['allowed'] = 'pages';
+							break;
+						case 'cruser_id':
+							$this->fields[$fN]['type'] = 'relation';
+							$this->fields[$fN]['allowed'] = 'be_users';
+							break;
+						case 'tstamp':
 
-					case 'crdate':
-						$this->fields[$fN]['type'] = 'time';
-						break;
-					case 'deleted':
-						$this->fields[$fN]['type'] = 'boolean';
-						break;
-					default:
-						$this->fields[$fN]['type'] = 'number';
-						break;
+						case 'crdate':
+							$this->fields[$fN]['type'] = 'time';
+							break;
+						case 'deleted':
+							$this->fields[$fN]['type'] = 'boolean';
+							break;
+						default:
+							$this->fields[$fN]['type'] = 'number';
 					}
 				}
 			}
@@ -555,27 +553,26 @@ class QueryGenerator {
 				$fType = 'ignore';
 			}
 			switch ($fType) {
-			case 'newlevel':
-				if (!$queryConfig[$key]['nl']) {
-					$queryConfig[$key]['nl'][0]['type'] = 'FIELD_';
-				}
-				$queryConfig[$key]['nl'] = $this->cleanUpQueryConfig($queryConfig[$key]['nl']);
-				break;
-			case 'userdef':
-				$queryConfig[$key] = $this->userDefCleanUp($queryConfig[$key]);
-				break;
-			case 'ignore':
+				case 'newlevel':
+					if (!$queryConfig[$key]['nl']) {
+						$queryConfig[$key]['nl'][0]['type'] = 'FIELD_';
+					}
+					$queryConfig[$key]['nl'] = $this->cleanUpQueryConfig($queryConfig[$key]['nl']);
+					break;
+				case 'userdef':
+					$queryConfig[$key] = $this->userDefCleanUp($queryConfig[$key]);
+					break;
+				case 'ignore':
 
-			default:
-				$verifiedName = $this->verifyType($fName);
-				$queryConfig[$key]['type'] = 'FIELD_' . $this->verifyType($verifiedName);
-				if ($conf['comparison'] >> 5 != $this->comp_offsets[$fType]) {
-					$conf['comparison'] = $this->comp_offsets[$fType] << 5;
-				}
-				$queryConfig[$key]['comparison'] = $this->verifyComparison($conf['comparison'], $conf['negate'] ? 1 : 0);
-				$queryConfig[$key]['inputValue'] = $this->cleanInputVal($queryConfig[$key]);
-				$queryConfig[$key]['inputValue1'] = $this->cleanInputVal($queryConfig[$key], 1);
-				break;
+				default:
+					$verifiedName = $this->verifyType($fName);
+					$queryConfig[$key]['type'] = 'FIELD_' . $this->verifyType($verifiedName);
+					if ($conf['comparison'] >> 5 != $this->comp_offsets[$fType]) {
+						$conf['comparison'] = $this->comp_offsets[$fType] << 5;
+					}
+					$queryConfig[$key]['comparison'] = $this->verifyComparison($conf['comparison'], $conf['negate'] ? 1 : 0);
+					$queryConfig[$key]['inputValue'] = $this->cleanInputVal($queryConfig[$key]);
+					$queryConfig[$key]['inputValue1'] = $this->cleanInputVal($queryConfig[$key], 1);
 			}
 		}
 		return $queryConfig;
@@ -619,104 +616,103 @@ class QueryGenerator {
 				$fType = 'ignore';
 			}
 			switch ($fType) {
-			case 'ignore':
-				break;
-			case 'newlevel':
-				if (!$queryConfig[$key]['nl']) {
-					$queryConfig[$key]['nl'][0]['type'] = 'FIELD_';
-				}
-				$lineHTML .= '<input type="hidden" name="' . $this->name . $subscript . '[type]" value="newlevel">';
-				$codeArr[$arrCount]['sub'] = $this->getFormElements($subLevel + 1, $queryConfig[$key]['nl'], $subscript . '[nl]');
-				break;
-			case 'userdef':
-				$lineHTML .= $this->userDef($this->name . $subscript, $conf, $fName, $fType);
-				break;
-			case 'date':
-				$lineHTML .= $this->mkTypeSelect($this->name . $subscript . '[type]', $fName);
-				$lineHTML .= $this->mkCompSelect($this->name . $subscript . '[comparison]', $conf['comparison'], $conf['negate'] ? 1 : 0);
-				$lineHTML .= '<input type="checkbox" class="checkbox"' . ($conf['negate'] ? ' checked' : '') . ' name="' . $this->name . $subscript . '[negate]' . '" onClick="submit();">';
-				if ($conf['comparison'] == 100 || $conf['comparison'] == 101) {
-					// between
-					$lineHTML .= '<input type="text" name="' . $this->name . $subscript . '[inputValue]_hr' . '" value="' . strftime('%e-%m-%Y', $conf['inputValue']) . '" ' . $GLOBALS['TBE_TEMPLATE']->formWidth(10) . ' onChange="typo3form.fieldGet(\'' . $this->name . $subscript . '[inputValue]\', \'date\', \'\', 0,0);"><input type="hidden" value="' . htmlspecialchars($conf['inputValue']) . '" name="' . $this->name . $subscript . '[inputValue]' . '">';
-					$lineHTML .= '<input type="text" name="' . $this->name . $subscript . '[inputValue1]_hr' . '" value="' . strftime('%e-%m-%Y', $conf['inputValue1']) . '" ' . $GLOBALS['TBE_TEMPLATE']->formWidth(10) . ' onChange="typo3form.fieldGet(\'' . $this->name . $subscript . '[inputValue1]\', \'date\', \'\', 0,0);"><input type="hidden" value="' . htmlspecialchars($conf['inputValue1']) . '" name="' . $this->name . $subscript . '[inputValue1]' . '">';
-					$this->extJSCODE .= 'typo3form.fieldSet("' . $this->name . $subscript . '[inputValue]", "date", "", 0,0);';
-					$this->extJSCODE .= 'typo3form.fieldSet("' . $this->name . $subscript . '[inputValue1]", "date", "", 0,0);';
-				} else {
-					$lineHTML .= '<input type="text" name="' . $this->name . $subscript . '[inputValue]_hr' . '" value="' . strftime('%e-%m-%Y', $conf['inputValue']) . '" ' . $GLOBALS['TBE_TEMPLATE']->formWidth(10) . ' onChange="typo3form.fieldGet(\'' . $this->name . $subscript . '[inputValue]\', \'date\', \'\', 0,0);"><input type="hidden" value="' . htmlspecialchars($conf['inputValue']) . '" name="' . $this->name . $subscript . '[inputValue]' . '">';
-					$this->extJSCODE .= 'typo3form.fieldSet("' . $this->name . $subscript . '[inputValue]", "date", "", 0,0);';
-				}
-				break;
-			case 'time':
-				$lineHTML .= $this->mkTypeSelect($this->name . $subscript . '[type]', $fName);
-				$lineHTML .= $this->mkCompSelect($this->name . $subscript . '[comparison]', $conf['comparison'], $conf['negate'] ? 1 : 0);
-				$lineHTML .= '<input type="checkbox" class="checkbox"' . ($conf['negate'] ? ' checked' : '') . ' name="' . $this->name . $subscript . '[negate]' . '" onClick="submit();">';
-				if ($conf['comparison'] == 100 || $conf['comparison'] == 101) {
-					// between:
-					$lineHTML .= '<input type="text" name="' . $this->name . $subscript . '[inputValue]_hr' . '" value="' . strftime('%H:%M %e-%m-%Y', $conf['inputValue']) . '" ' . $GLOBALS['TBE_TEMPLATE']->formWidth(10) . ' onChange="typo3form.fieldGet(\'' . $this->name . $subscript . '[inputValue]\', \'datetime\', \'\', 0,0);"><input type="hidden" value="' . htmlspecialchars($conf['inputValue']) . '" name="' . $this->name . $subscript . '[inputValue]' . '">';
-					$lineHTML .= '<input type="text" name="' . $this->name . $subscript . '[inputValue1]_hr' . '" value="' . strftime('%H:%M %e-%m-%Y', $conf['inputValue1']) . '" ' . $GLOBALS['TBE_TEMPLATE']->formWidth(10) . ' onChange="typo3form.fieldGet(\'' . $this->name . $subscript . '[inputValue1]\', \'datetime\', \'\', 0,0);"><input type="hidden" value="' . htmlspecialchars($conf['inputValue1']) . '" name="' . $this->name . $subscript . '[inputValue1]' . '">';
-					$this->extJSCODE .= 'typo3form.fieldSet("' . $this->name . $subscript . '[inputValue]", "datetime", "", 0,0);';
-					$this->extJSCODE .= 'typo3form.fieldSet("' . $this->name . $subscript . '[inputValue1]", "datetime", "", 0,0);';
-				} else {
-					$lineHTML .= '<input type="text" name="' . $this->name . $subscript . '[inputValue]_hr' . '" value="' . strftime('%H:%M %e-%m-%Y', intval($conf['inputValue'])) . '" ' . $GLOBALS['TBE_TEMPLATE']->formWidth(10) . ' onChange="typo3form.fieldGet(\'' . $this->name . $subscript . '[inputValue]\', \'datetime\', \'\', 0,0);"><input type="hidden" value="' . htmlspecialchars($conf['inputValue']) . '" name="' . $this->name . $subscript . '[inputValue]' . '">';
-					$this->extJSCODE .= 'typo3form.fieldSet("' . $this->name . $subscript . '[inputValue]", "datetime", "", 0,0);';
-				}
-				break;
-			case 'multiple':
-
-			case 'binary':
-
-			case 'relation':
-				$lineHTML .= $this->mkTypeSelect($this->name . $subscript . '[type]', $fName);
-				$lineHTML .= $this->mkCompSelect($this->name . $subscript . '[comparison]', $conf['comparison'], $conf['negate'] ? 1 : 0);
-				$lineHTML .= '<input type="checkbox" class="checkbox"' . ($conf['negate'] ? ' checked' : '') . ' name="' . $this->name . $subscript . '[negate]' . '" onClick="submit();">';
-				if ($conf['comparison'] == 68 || $conf['comparison'] == 69 || $conf['comparison'] == 162 || $conf['comparison'] == 163) {
-					$lineHTML .= '<select name="' . $this->name . $subscript . '[inputValue]' . '[]" style="vertical-align:top;" size="5" multiple>';
-				} elseif ($conf['comparison'] == 66 || $conf['comparison'] == 67) {
-					if (is_array($conf['inputValue'])) {
-						$conf['inputValue'] = implode(',', $conf['inputValue']);
+				case 'ignore':
+					break;
+				case 'newlevel':
+					if (!$queryConfig[$key]['nl']) {
+						$queryConfig[$key]['nl'][0]['type'] = 'FIELD_';
 					}
-					$lineHTML .= '<input type="text" value="' . htmlspecialchars($conf['inputValue']) . '" name="' . $this->name . $subscript . '[inputValue]' . '"' . $GLOBALS['TBE_TEMPLATE']->formWidth(10) . '>';
-				} else {
-					$lineHTML .= '<select name="' . $this->name . $subscript . '[inputValue]' . '" style="vertical-align:top;" onChange="submit();">';
-				}
-				if ($conf['comparison'] != 66 && $conf['comparison'] != 67) {
-					$lineHTML .= $this->makeOptionList($fName, $conf, $this->table);
+					$lineHTML .= '<input type="hidden" name="' . $this->name . $subscript . '[type]" value="newlevel">';
+					$codeArr[$arrCount]['sub'] = $this->getFormElements($subLevel + 1, $queryConfig[$key]['nl'], $subscript . '[nl]');
+					break;
+				case 'userdef':
+					$lineHTML .= $this->userDef($this->name . $subscript, $conf, $fName, $fType);
+					break;
+				case 'date':
+					$lineHTML .= $this->mkTypeSelect($this->name . $subscript . '[type]', $fName);
+					$lineHTML .= $this->mkCompSelect($this->name . $subscript . '[comparison]', $conf['comparison'], $conf['negate'] ? 1 : 0);
+					$lineHTML .= '<input type="checkbox" class="checkbox"' . ($conf['negate'] ? ' checked' : '') . ' name="' . $this->name . $subscript . '[negate]' . '" onClick="submit();">';
+					if ($conf['comparison'] == 100 || $conf['comparison'] == 101) {
+						// between
+						$lineHTML .= '<input type="text" name="' . $this->name . $subscript . '[inputValue]_hr' . '" value="' . strftime('%e-%m-%Y', $conf['inputValue']) . '" ' . $GLOBALS['TBE_TEMPLATE']->formWidth(10) . ' onChange="typo3form.fieldGet(\'' . $this->name . $subscript . '[inputValue]\', \'date\', \'\', 0,0);"><input type="hidden" value="' . htmlspecialchars($conf['inputValue']) . '" name="' . $this->name . $subscript . '[inputValue]' . '">';
+						$lineHTML .= '<input type="text" name="' . $this->name . $subscript . '[inputValue1]_hr' . '" value="' . strftime('%e-%m-%Y', $conf['inputValue1']) . '" ' . $GLOBALS['TBE_TEMPLATE']->formWidth(10) . ' onChange="typo3form.fieldGet(\'' . $this->name . $subscript . '[inputValue1]\', \'date\', \'\', 0,0);"><input type="hidden" value="' . htmlspecialchars($conf['inputValue1']) . '" name="' . $this->name . $subscript . '[inputValue1]' . '">';
+						$this->extJSCODE .= 'typo3form.fieldSet("' . $this->name . $subscript . '[inputValue]", "date", "", 0,0);';
+						$this->extJSCODE .= 'typo3form.fieldSet("' . $this->name . $subscript . '[inputValue1]", "date", "", 0,0);';
+					} else {
+						$lineHTML .= '<input type="text" name="' . $this->name . $subscript . '[inputValue]_hr' . '" value="' . strftime('%e-%m-%Y', $conf['inputValue']) . '" ' . $GLOBALS['TBE_TEMPLATE']->formWidth(10) . ' onChange="typo3form.fieldGet(\'' . $this->name . $subscript . '[inputValue]\', \'date\', \'\', 0,0);"><input type="hidden" value="' . htmlspecialchars($conf['inputValue']) . '" name="' . $this->name . $subscript . '[inputValue]' . '">';
+						$this->extJSCODE .= 'typo3form.fieldSet("' . $this->name . $subscript . '[inputValue]", "date", "", 0,0);';
+					}
+					break;
+				case 'time':
+					$lineHTML .= $this->mkTypeSelect($this->name . $subscript . '[type]', $fName);
+					$lineHTML .= $this->mkCompSelect($this->name . $subscript . '[comparison]', $conf['comparison'], $conf['negate'] ? 1 : 0);
+					$lineHTML .= '<input type="checkbox" class="checkbox"' . ($conf['negate'] ? ' checked' : '') . ' name="' . $this->name . $subscript . '[negate]' . '" onClick="submit();">';
+					if ($conf['comparison'] == 100 || $conf['comparison'] == 101) {
+						// between:
+						$lineHTML .= '<input type="text" name="' . $this->name . $subscript . '[inputValue]_hr' . '" value="' . strftime('%H:%M %e-%m-%Y', $conf['inputValue']) . '" ' . $GLOBALS['TBE_TEMPLATE']->formWidth(10) . ' onChange="typo3form.fieldGet(\'' . $this->name . $subscript . '[inputValue]\', \'datetime\', \'\', 0,0);"><input type="hidden" value="' . htmlspecialchars($conf['inputValue']) . '" name="' . $this->name . $subscript . '[inputValue]' . '">';
+						$lineHTML .= '<input type="text" name="' . $this->name . $subscript . '[inputValue1]_hr' . '" value="' . strftime('%H:%M %e-%m-%Y', $conf['inputValue1']) . '" ' . $GLOBALS['TBE_TEMPLATE']->formWidth(10) . ' onChange="typo3form.fieldGet(\'' . $this->name . $subscript . '[inputValue1]\', \'datetime\', \'\', 0,0);"><input type="hidden" value="' . htmlspecialchars($conf['inputValue1']) . '" name="' . $this->name . $subscript . '[inputValue1]' . '">';
+						$this->extJSCODE .= 'typo3form.fieldSet("' . $this->name . $subscript . '[inputValue]", "datetime", "", 0,0);';
+						$this->extJSCODE .= 'typo3form.fieldSet("' . $this->name . $subscript . '[inputValue1]", "datetime", "", 0,0);';
+					} else {
+						$lineHTML .= '<input type="text" name="' . $this->name . $subscript . '[inputValue]_hr' . '" value="' . strftime('%H:%M %e-%m-%Y', intval($conf['inputValue'])) . '" ' . $GLOBALS['TBE_TEMPLATE']->formWidth(10) . ' onChange="typo3form.fieldGet(\'' . $this->name . $subscript . '[inputValue]\', \'datetime\', \'\', 0,0);"><input type="hidden" value="' . htmlspecialchars($conf['inputValue']) . '" name="' . $this->name . $subscript . '[inputValue]' . '">';
+						$this->extJSCODE .= 'typo3form.fieldSet("' . $this->name . $subscript . '[inputValue]", "datetime", "", 0,0);';
+					}
+					break;
+				case 'multiple':
+
+				case 'binary':
+
+				case 'relation':
+					$lineHTML .= $this->mkTypeSelect($this->name . $subscript . '[type]', $fName);
+					$lineHTML .= $this->mkCompSelect($this->name . $subscript . '[comparison]', $conf['comparison'], $conf['negate'] ? 1 : 0);
+					$lineHTML .= '<input type="checkbox" class="checkbox"' . ($conf['negate'] ? ' checked' : '') . ' name="' . $this->name . $subscript . '[negate]' . '" onClick="submit();">';
+					if ($conf['comparison'] == 68 || $conf['comparison'] == 69 || $conf['comparison'] == 162 || $conf['comparison'] == 163) {
+						$lineHTML .= '<select name="' . $this->name . $subscript . '[inputValue]' . '[]" style="vertical-align:top;" size="5" multiple>';
+					} elseif ($conf['comparison'] == 66 || $conf['comparison'] == 67) {
+						if (is_array($conf['inputValue'])) {
+							$conf['inputValue'] = implode(',', $conf['inputValue']);
+						}
+						$lineHTML .= '<input type="text" value="' . htmlspecialchars($conf['inputValue']) . '" name="' . $this->name . $subscript . '[inputValue]' . '"' . $GLOBALS['TBE_TEMPLATE']->formWidth(10) . '>';
+					} else {
+						$lineHTML .= '<select name="' . $this->name . $subscript . '[inputValue]' . '" style="vertical-align:top;" onChange="submit();">';
+					}
+					if ($conf['comparison'] != 66 && $conf['comparison'] != 67) {
+						$lineHTML .= $this->makeOptionList($fName, $conf, $this->table);
+						$lineHTML .= '</select>';
+					}
+					break;
+				case 'files':
+					$lineHTML .= $this->mkTypeSelect($this->name . $subscript . '[type]', $fName);
+					$lineHTML .= $this->mkCompSelect($this->name . $subscript . '[comparison]', $conf['comparison'], $conf['negate'] ? 1 : 0);
+					$lineHTML .= '<input type="checkbox" class="checkbox"' . ($conf['negate'] ? ' checked' : '') . ' name="' . $this->name . $subscript . '[negate]' . '" onClick="submit();">';
+					if ($conf['comparison'] == 68 || $conf['comparison'] == 69) {
+						$lineHTML .= '<select name="' . $this->name . $subscript . '[inputValue]' . '[]" style="vertical-align:top;" size="5" multiple>';
+					} else {
+						$lineHTML .= '<select name="' . $this->name . $subscript . '[inputValue]' . '" style="vertical-align:top;" onChange="submit();">';
+					}
+					$lineHTML .= '<option value=""></option>' . $this->makeOptionList($fName, $conf, $this->table);
 					$lineHTML .= '</select>';
-				}
-				break;
-			case 'files':
-				$lineHTML .= $this->mkTypeSelect($this->name . $subscript . '[type]', $fName);
-				$lineHTML .= $this->mkCompSelect($this->name . $subscript . '[comparison]', $conf['comparison'], $conf['negate'] ? 1 : 0);
-				$lineHTML .= '<input type="checkbox" class="checkbox"' . ($conf['negate'] ? ' checked' : '') . ' name="' . $this->name . $subscript . '[negate]' . '" onClick="submit();">';
-				if ($conf['comparison'] == 68 || $conf['comparison'] == 69) {
-					$lineHTML .= '<select name="' . $this->name . $subscript . '[inputValue]' . '[]" style="vertical-align:top;" size="5" multiple>';
-				} else {
-					$lineHTML .= '<select name="' . $this->name . $subscript . '[inputValue]' . '" style="vertical-align:top;" onChange="submit();">';
-				}
-				$lineHTML .= '<option value=""></option>' . $this->makeOptionList($fName, $conf, $this->table);
-				$lineHTML .= '</select>';
-				if ($conf['comparison'] == 66 || $conf['comparison'] == 67) {
-					$lineHTML .= ' + <input type="text" value="' . htmlspecialchars($conf['inputValue1']) . '" name="' . $this->name . $subscript . '[inputValue1]' . '"' . $GLOBALS['TBE_TEMPLATE']->formWidth(10) . '>';
-				}
-				break;
-			case 'boolean':
-				$lineHTML .= $this->mkTypeSelect($this->name . $subscript . '[type]', $fName);
-				$lineHTML .= $this->mkCompSelect($this->name . $subscript . '[comparison]', $conf['comparison'], $conf['negate'] ? 1 : 0);
-				$lineHTML .= '<input type="checkbox" class="checkbox"' . ($conf['negate'] ? ' checked' : '') . ' name="' . $this->name . $subscript . '[negate]' . '" onClick="submit();">';
-				$lineHTML .= '<input type="hidden" value="1" name="' . $this->name . $subscript . '[inputValue]' . '"' . $GLOBALS['TBE_TEMPLATE']->formWidth(10) . '>';
-				break;
-			default:
-				$lineHTML .= $this->mkTypeSelect($this->name . $subscript . '[type]', $fName);
-				$lineHTML .= $this->mkCompSelect($this->name . $subscript . '[comparison]', $conf['comparison'], $conf['negate'] ? 1 : 0);
-				$lineHTML .= '<input type="checkbox" class="checkbox"' . ($conf['negate'] ? ' checked' : '') . ' name="' . $this->name . $subscript . '[negate]' . '" onClick="submit();">';
-				if ($conf['comparison'] == 37 || $conf['comparison'] == 36) {
-					// between:
-					$lineHTML .= '<input type="text" value="' . htmlspecialchars($conf['inputValue']) . '" name="' . $this->name . $subscript . '[inputValue]' . '"' . $GLOBALS['TBE_TEMPLATE']->formWidth(5) . '>
-						<input type="text" value="' . htmlspecialchars($conf['inputValue1']) . '" name="' . $this->name . $subscript . '[inputValue1]' . '"' . $GLOBALS['TBE_TEMPLATE']->formWidth(5) . '>';
-				} else {
-					$lineHTML .= '<input type="text" value="' . htmlspecialchars($conf['inputValue']) . '" name="' . $this->name . $subscript . '[inputValue]' . '"' . $GLOBALS['TBE_TEMPLATE']->formWidth(10) . '>';
-				}
-				break;
+					if ($conf['comparison'] == 66 || $conf['comparison'] == 67) {
+						$lineHTML .= ' + <input type="text" value="' . htmlspecialchars($conf['inputValue1']) . '" name="' . $this->name . $subscript . '[inputValue1]' . '"' . $GLOBALS['TBE_TEMPLATE']->formWidth(10) . '>';
+					}
+					break;
+				case 'boolean':
+					$lineHTML .= $this->mkTypeSelect($this->name . $subscript . '[type]', $fName);
+					$lineHTML .= $this->mkCompSelect($this->name . $subscript . '[comparison]', $conf['comparison'], $conf['negate'] ? 1 : 0);
+					$lineHTML .= '<input type="checkbox" class="checkbox"' . ($conf['negate'] ? ' checked' : '') . ' name="' . $this->name . $subscript . '[negate]' . '" onClick="submit();">';
+					$lineHTML .= '<input type="hidden" value="1" name="' . $this->name . $subscript . '[inputValue]' . '"' . $GLOBALS['TBE_TEMPLATE']->formWidth(10) . '>';
+					break;
+				default:
+					$lineHTML .= $this->mkTypeSelect($this->name . $subscript . '[type]', $fName);
+					$lineHTML .= $this->mkCompSelect($this->name . $subscript . '[comparison]', $conf['comparison'], $conf['negate'] ? 1 : 0);
+					$lineHTML .= '<input type="checkbox" class="checkbox"' . ($conf['negate'] ? ' checked' : '') . ' name="' . $this->name . $subscript . '[negate]' . '" onClick="submit();">';
+					if ($conf['comparison'] == 37 || $conf['comparison'] == 36) {
+						// between:
+						$lineHTML .= '<input type="text" value="' . htmlspecialchars($conf['inputValue']) . '" name="' . $this->name . $subscript . '[inputValue]' . '"' . $GLOBALS['TBE_TEMPLATE']->formWidth(5) . '>
+							<input type="text" value="' . htmlspecialchars($conf['inputValue1']) . '" name="' . $this->name . $subscript . '[inputValue1]' . '"' . $GLOBALS['TBE_TEMPLATE']->formWidth(5) . '>';
+					} else {
+						$lineHTML .= '<input type="text" value="' . htmlspecialchars($conf['inputValue']) . '" name="' . $this->name . $subscript . '[inputValue]' . '"' . $GLOBALS['TBE_TEMPLATE']->formWidth(10) . '>';
+					}
 			}
 			if ($fType != 'ignore') {
 				$lineHTML .= $this->updateIcon();
@@ -1211,15 +1207,14 @@ class QueryGenerator {
 		$first = 1;
 		foreach ($queryConfig as $key => $conf) {
 			switch ($conf['type']) {
-			case 'newlevel':
-				$qs .= LF . $pad . trim($conf['operator']) . ' (' . $this->getQuery($queryConfig[$key]['nl'], ($pad . '   ')) . LF . $pad . ')';
-				break;
-			case 'userdef':
-				$qs .= LF . $pad . getUserDefQuery($conf, $first);
-				break;
-			default:
-				$qs .= LF . $pad . $this->getQuerySingle($conf, $first);
-				break;
+				case 'newlevel':
+					$qs .= LF . $pad . trim($conf['operator']) . ' (' . $this->getQuery($queryConfig[$key]['nl'], ($pad . '   ')) . LF . $pad . ')';
+					break;
+				case 'userdef':
+					$qs .= LF . $pad . getUserDefQuery($conf, $first);
+					break;
+				default:
+					$qs .= LF . $pad . $this->getQuerySingle($conf, $first);
 			}
 			$first = 0;
 		}

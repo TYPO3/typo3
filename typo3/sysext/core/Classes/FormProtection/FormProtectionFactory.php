@@ -91,16 +91,16 @@ class FormProtectionFactory {
 	 */
 	static protected function getClassNameByState() {
 		switch (TRUE) {
-		case self::isInstallToolSession():
-			$className = 'TYPO3\\CMS\\Core\\FormProtection\\InstallToolFormProtection';
-			break;
-		case self::isBackendSession():
-			$className = 'TYPO3\\CMS\\Core\\FormProtection\\BackendFormProtection';
-			break;
-		case self::isFrontendSession():
+			case self::isInstallToolSession():
+				$className = 'TYPO3\\CMS\\Core\\FormProtection\\InstallToolFormProtection';
+				break;
+			case self::isBackendSession():
+				$className = 'TYPO3\\CMS\\Core\\FormProtection\\BackendFormProtection';
+				break;
+			case self::isFrontendSession():
 
-		default:
-			$className = 'TYPO3\\CMS\\Core\\FormProtection\\DisabledFormProtection';
+			default:
+				$className = 'TYPO3\\CMS\\Core\\FormProtection\\DisabledFormProtection';
 		}
 		return $className;
 	}

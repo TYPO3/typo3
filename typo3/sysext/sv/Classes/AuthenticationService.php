@@ -50,21 +50,21 @@ class AuthenticationService extends \TYPO3\CMS\Sv\AbstractAuthenticationService 
 		$isProcessed = TRUE;
 		// Processing data according to the state it was submitted in.
 		switch ($passwordTransmissionStrategy) {
-		case 'normal':
-			$loginData['uident_text'] = $loginData['uident'];
-			break;
-		case 'challenged':
-			$loginData['uident_text'] = '';
-			$loginData['uident_challenged'] = $loginData['uident'];
-			$loginData['uident_superchallenged'] = '';
-			break;
-		case 'superchallenged':
-			$loginData['uident_text'] = '';
-			$loginData['uident_challenged'] = '';
-			$loginData['uident_superchallenged'] = $loginData['uident'];
-			break;
-		default:
-			$isProcessed = FALSE;
+			case 'normal':
+				$loginData['uident_text'] = $loginData['uident'];
+				break;
+			case 'challenged':
+				$loginData['uident_text'] = '';
+				$loginData['uident_challenged'] = $loginData['uident'];
+				$loginData['uident_superchallenged'] = '';
+				break;
+			case 'superchallenged':
+				$loginData['uident_text'] = '';
+				$loginData['uident_challenged'] = '';
+				$loginData['uident_superchallenged'] = $loginData['uident'];
+				break;
+			default:
+				$isProcessed = FALSE;
 		}
 		if (!empty($loginData['uident_text'])) {
 			$loginData['uident_challenged'] = (string) md5(($loginData['uname'] . ':' . $loginData['uident_text'] . ':' . $loginData['chalvalue']));

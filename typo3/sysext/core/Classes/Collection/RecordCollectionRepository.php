@@ -154,11 +154,11 @@ class RecordCollectionRepository {
 	 */
 	protected function createDomainObject(array $record) {
 		switch ($record['type']) {
-		case self::TYPE_Static:
-			$collection = \TYPO3\CMS\Core\Collection\StaticRecordCollection::create($record);
-			break;
-		default:
-			throw new \RuntimeException('Unknown record collection type "' . $record['type'], 1328646798);
+			case self::TYPE_Static:
+				$collection = \TYPO3\CMS\Core\Collection\StaticRecordCollection::create($record);
+				break;
+			default:
+				throw new \RuntimeException('Unknown record collection type "' . $record['type'], 1328646798);
 		}
 		return $collection;
 	}

@@ -127,20 +127,20 @@ class ModuleController {
 		$this->content = $this->doc->header('Indexing Engine Statistics');
 		$this->content .= $this->doc->spacer(5);
 		switch ($this->MOD_SETTINGS['function']) {
-		case 'stat':
-			$this->content .= $this->doc->section('Records', $this->doc->table($this->getRecordsNumbers()), 0, 1);
-			$this->content .= $this->doc->spacer(15);
-			$this->content .= $this->doc->section('index_phash TYPES', $this->doc->table($this->getPhashTypes()), 1);
-			$this->content .= $this->doc->spacer(15);
-			break;
-		case 'externalDocs':
-			$this->content .= $this->doc->section('External documents', $this->doc->table($this->getPhashExternalDocs()), 0, 1);
-			$this->content .= $this->doc->spacer(15);
-			break;
-		case 'typo3pages':
-			$this->content .= $this->doc->section('TYPO3 Pages', $this->doc->table($this->getPhashT3pages()), 0, 1);
-			$this->content .= $this->doc->spacer(15);
-			break;
+			case 'stat':
+				$this->content .= $this->doc->section('Records', $this->doc->table($this->getRecordsNumbers()), 0, 1);
+				$this->content .= $this->doc->spacer(15);
+				$this->content .= $this->doc->section('index_phash TYPES', $this->doc->table($this->getPhashTypes()), 1);
+				$this->content .= $this->doc->spacer(15);
+				break;
+			case 'externalDocs':
+				$this->content .= $this->doc->section('External documents', $this->doc->table($this->getPhashExternalDocs()), 0, 1);
+				$this->content .= $this->doc->spacer(15);
+				break;
+			case 'typo3pages':
+				$this->content .= $this->doc->section('TYPO3 Pages', $this->doc->table($this->getPhashT3pages()), 0, 1);
+				$this->content .= $this->doc->spacer(15);
+				break;
 		}
 		$docHeaderButtons = $this->getButtons();
 		$markers = array(

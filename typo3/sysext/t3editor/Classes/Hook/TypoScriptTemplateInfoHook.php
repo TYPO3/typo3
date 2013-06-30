@@ -131,17 +131,17 @@ class TypoScriptTemplateInfoHook {
 					if (is_array($POST['data'])) {
 						foreach ($POST['data'] as $field => $val) {
 							switch ($field) {
-							case 'constants':
+								case 'constants':
 
-							case 'config':
+								case 'config':
 
-							case 'title':
+								case 'title':
 
-							case 'sitetitle':
+								case 'sitetitle':
 
-							case 'description':
-								$recData['sys_template'][$saveId][$field] = $val;
-								break;
+								case 'description':
+									$recData['sys_template'][$saveId][$field] = $val;
+									break;
 							}
 						}
 					}

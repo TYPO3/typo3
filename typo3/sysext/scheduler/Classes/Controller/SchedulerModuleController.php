@@ -180,50 +180,49 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 		}
 		// Handle chosen action
 		switch ((string) $this->MOD_SETTINGS['function']) {
-		case 'scheduler':
-			// Scheduler's main screen
-			$this->executeTasks();
-			// Execute chosen action
-			switch ($this->CMD) {
-			case 'add':
+			case 'scheduler':
+				// Scheduler's main screen
+				$this->executeTasks();
+				// Execute chosen action
+				switch ($this->CMD) {
+					case 'add':
 
-			case 'edit':
-				try {
-					// Try adding or editing
-					$content .= $this->editTask();
-					$sectionTitle = $GLOBALS['LANG']->getLL('action.' . $this->CMD);
-				} catch (\Exception $e) {
-					// An exception may happen when the task to
-					// edit could not be found. In this case revert
-					// to displaying the list of tasks
-					// It can also happen when attempting to edit a running task
-					$content .= $this->listTasks();
+					case 'edit':
+						try {
+							// Try adding or editing
+							$content .= $this->editTask();
+							$sectionTitle = $GLOBALS['LANG']->getLL('action.' . $this->CMD);
+						} catch (\Exception $e) {
+							// An exception may happen when the task to
+							// edit could not be found. In this case revert
+							// to displaying the list of tasks
+							// It can also happen when attempting to edit a running task
+							$content .= $this->listTasks();
+						}
+						break;
+					case 'delete':
+						$this->deleteTask();
+						$content .= $this->listTasks();
+						break;
+					case 'stop':
+						$this->stopTask();
+						$content .= $this->listTasks();
+						break;
+					case 'list':
+
+					default:
+						$content .= $this->listTasks();
 				}
 				break;
-			case 'delete':
-				$this->deleteTask();
-				$content .= $this->listTasks();
+			case 'check':
+				// Setup check screen
+				// TODO: move check to the report module
+				$content .= $this->displayCheckScreen();
 				break;
-			case 'stop':
-				$this->stopTask();
-				$content .= $this->listTasks();
+			case 'info':
+				// Information screen
+				$content .= $this->displayInfoScreen();
 				break;
-			case 'list':
-
-			default:
-				$content .= $this->listTasks();
-				break;
-			}
-			break;
-		case 'check':
-			// Setup check screen
-			// TODO: move check to the report module
-			$content .= $this->displayCheckScreen();
-			break;
-		case 'info':
-			// Information screen
-			$content .= $this->displayInfoScreen();
-			break;
 		}
 		// Wrap the content in a section
 		return $this->doc->section($sectionTitle, '<div class="tx_scheduler_mod1">' . $content . '</div>', 0, 1);

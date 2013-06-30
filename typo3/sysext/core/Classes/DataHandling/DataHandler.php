@@ -1171,82 +1171,81 @@ class DataHandler {
 						}
 					}
 					switch ($field) {
-					case 'uid':
+						case 'uid':
 
-					case 'pid':
-						// Nothing happens, already set
-						break;
-					case 'perms_userid':
+						case 'pid':
+							// Nothing happens, already set
+							break;
+						case 'perms_userid':
 
-					case 'perms_groupid':
+						case 'perms_groupid':
 
-					case 'perms_user':
+						case 'perms_user':
 
-					case 'perms_group':
+						case 'perms_group':
 
-					case 'perms_everybody':
-						// Permissions can be edited by the owner or the administrator
-						if ($table == 'pages' && ($this->admin || $status == 'new' || $this->pageInfo($id, 'perms_userid') == $this->userid)) {
-							$value = intval($fieldValue);
-							switch ($field) {
-							case 'perms_userid':
-								$fieldArray[$field] = $value;
-								break;
-							case 'perms_groupid':
-								$fieldArray[$field] = $value;
-								break;
-							default:
-								if ($value >= 0 && $value < pow(2, 5)) {
+						case 'perms_everybody':
+							// Permissions can be edited by the owner or the administrator
+							if ($table == 'pages' && ($this->admin || $status == 'new' || $this->pageInfo($id, 'perms_userid') == $this->userid)) {
+								$value = intval($fieldValue);
+								switch ($field) {
+								case 'perms_userid':
 									$fieldArray[$field] = $value;
+									break;
+								case 'perms_groupid':
+									$fieldArray[$field] = $value;
+									break;
+								default:
+									if ($value >= 0 && $value < pow(2, 5)) {
+										$fieldArray[$field] = $value;
+									}
+									break;
 								}
-								break;
 							}
-						}
-						break;
-					case 't3ver_oid':
+							break;
+						case 't3ver_oid':
 
-					case 't3ver_id':
+						case 't3ver_id':
 
-					case 't3ver_wsid':
+						case 't3ver_wsid':
 
-					case 't3ver_state':
+						case 't3ver_state':
 
-					case 't3ver_count':
+						case 't3ver_count':
 
-					case 't3ver_stage':
+						case 't3ver_stage':
 
-					case 't3ver_tstamp':
-						// t3ver_label is not here because it CAN be edited as a regular field!
-						break;
-					default:
-						if (isset($GLOBALS['TCA'][$table]['columns'][$field])) {
-							// Evaluating the value
-							$res = $this->checkValue($table, $field, $fieldValue, $id, $status, $realPid, $tscPID);
-							if (array_key_exists('value', $res)) {
-								$fieldArray[$field] = $res['value'];
-							}
-							// Add the value of the original record to the diff-storage content:
-							if ($this->updateModeL10NdiffData && $GLOBALS['TCA'][$table]['ctrl']['transOrigDiffSourceField']) {
-								$originalLanguage_diffStorage[$field] = $this->updateModeL10NdiffDataClear ? '' : $originalLanguageRecord[$field];
-								$diffStorageFlag = TRUE;
-							}
-							// If autoversioning is happening we need to perform a nasty hack. The case is parallel to a similar hack inside checkValue_group_select_file().
-							// When a copy or version is made of a record, a search is made for any RTEmagic* images in fields having the "images" soft reference parser applied.
-							// That should be TRUE for RTE fields. If any are found they are duplicated to new names and the file reference in the bodytext is updated accordingly.
-							// However, with auto-versioning the submitted content of the field will just overwrite the corrected values. This leaves a) lost RTEmagic files and b) creates a double reference to the old files.
-							// The only solution I can come up with is detecting when auto versioning happens, then see if any RTEmagic images was copied and if so make a stupid string-replace of the content !
-							if ($this->autoVersioningUpdate === TRUE) {
-								if (is_array($this->RTEmagic_copyIndex[$table][$id][$field])) {
-									foreach ($this->RTEmagic_copyIndex[$table][$id][$field] as $oldRTEmagicName => $newRTEmagicName) {
-										$fieldArray[$field] = str_replace(' src="' . $oldRTEmagicName . '"', ' src="' . $newRTEmagicName . '"', $fieldArray[$field]);
+						case 't3ver_tstamp':
+							// t3ver_label is not here because it CAN be edited as a regular field!
+							break;
+						default:
+							if (isset($GLOBALS['TCA'][$table]['columns'][$field])) {
+								// Evaluating the value
+								$res = $this->checkValue($table, $field, $fieldValue, $id, $status, $realPid, $tscPID);
+								if (array_key_exists('value', $res)) {
+									$fieldArray[$field] = $res['value'];
+								}
+								// Add the value of the original record to the diff-storage content:
+								if ($this->updateModeL10NdiffData && $GLOBALS['TCA'][$table]['ctrl']['transOrigDiffSourceField']) {
+									$originalLanguage_diffStorage[$field] = $this->updateModeL10NdiffDataClear ? '' : $originalLanguageRecord[$field];
+									$diffStorageFlag = TRUE;
+								}
+								// If autoversioning is happening we need to perform a nasty hack. The case is parallel to a similar hack inside checkValue_group_select_file().
+								// When a copy or version is made of a record, a search is made for any RTEmagic* images in fields having the "images" soft reference parser applied.
+								// That should be TRUE for RTE fields. If any are found they are duplicated to new names and the file reference in the bodytext is updated accordingly.
+								// However, with auto-versioning the submitted content of the field will just overwrite the corrected values. This leaves a) lost RTEmagic files and b) creates a double reference to the old files.
+								// The only solution I can come up with is detecting when auto versioning happens, then see if any RTEmagic images was copied and if so make a stupid string-replace of the content !
+								if ($this->autoVersioningUpdate === TRUE) {
+									if (is_array($this->RTEmagic_copyIndex[$table][$id][$field])) {
+										foreach ($this->RTEmagic_copyIndex[$table][$id][$field] as $oldRTEmagicName => $newRTEmagicName) {
+											$fieldArray[$field] = str_replace(' src="' . $oldRTEmagicName . '"', ' src="' . $newRTEmagicName . '"', $fieldArray[$field]);
+										}
 									}
 								}
+							} elseif ($GLOBALS['TCA'][$table]['ctrl']['origUid'] === $field) {
+								// Allow value for original UID to pass by...
+								$fieldArray[$field] = $fieldValue;
 							}
-						} elseif ($GLOBALS['TCA'][$table]['ctrl']['origUid'] === $field) {
-							// Allow value for original UID to pass by...
-							$fieldArray[$field] = $fieldValue;
-						}
-						break;
 					}
 				}
 			}
@@ -1269,19 +1268,19 @@ class DataHandler {
 					if (isset($fieldArray[$vconf['field']])) {
 						// Look for transformation flag:
 						switch ((string) $incomingFieldArray[('_TRANSFORM_' . $vconf['field'])]) {
-						case 'RTE':
-							$RTEsetup = $this->BE_USER->getTSConfig('RTE', \TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig($tscPID));
-							$thisConfig = \TYPO3\CMS\Backend\Utility\BackendUtility::RTEsetup($RTEsetup['properties'], $table, $vconf['field'], $theTypeString);
-							// Set alternative relative path for RTE images/links:
-							$RTErelPath = is_array($eFile) ? dirname($eFile['relEditFile']) : '';
-							// Get RTE object, draw form and set flag:
-							$RTEobj = \TYPO3\CMS\Backend\Utility\BackendUtility::RTEgetObj();
-							if (is_object($RTEobj)) {
-								$fieldArray[$vconf['field']] = $RTEobj->transformContent('db', $fieldArray[$vconf['field']], $table, $vconf['field'], $currentRecord, $vconf['spec'], $thisConfig, $RTErelPath, $currentRecord['pid']);
-							} else {
-								debug('NO RTE OBJECT FOUND!');
-							}
-							break;
+							case 'RTE':
+								$RTEsetup = $this->BE_USER->getTSConfig('RTE', \TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig($tscPID));
+								$thisConfig = \TYPO3\CMS\Backend\Utility\BackendUtility::RTEsetup($RTEsetup['properties'], $table, $vconf['field'], $theTypeString);
+								// Set alternative relative path for RTE images/links:
+								$RTErelPath = is_array($eFile) ? dirname($eFile['relEditFile']) : '';
+								// Get RTE object, draw form and set flag:
+								$RTEobj = \TYPO3\CMS\Backend\Utility\BackendUtility::RTEgetObj();
+								if (is_object($RTEobj)) {
+									$fieldArray[$vconf['field']] = $RTEobj->transformContent('db', $fieldArray[$vconf['field']], $table, $vconf['field'], $currentRecord, $vconf['spec'], $thisConfig, $RTErelPath, $currentRecord['pid']);
+								} else {
+									debug('NO RTE OBJECT FOUND!');
+								}
+								break;
 						}
 					}
 				}
@@ -1396,39 +1395,39 @@ class DataHandler {
 
 		$PP = array($table, $id, $curValue, $status, $realPid, $recFID, $tscPID);
 		switch ($tcaFieldConf['type']) {
-		case 'text':
-			$res = $this->checkValue_text($res, $value, $tcaFieldConf, $PP, $field);
-			break;
-		case 'passthrough':
+			case 'text':
+				$res = $this->checkValue_text($res, $value, $tcaFieldConf, $PP, $field);
+				break;
+			case 'passthrough':
 
-		case 'user':
-			$res['value'] = $value;
-			break;
-		case 'input':
-			$res = $this->checkValue_input($res, $value, $tcaFieldConf, $PP, $field);
-			break;
-		case 'check':
-			$res = $this->checkValue_check($res, $value, $tcaFieldConf, $PP);
-			break;
-		case 'radio':
-			$res = $this->checkValue_radio($res, $value, $tcaFieldConf, $PP);
-			break;
-		case 'group':
+			case 'user':
+				$res['value'] = $value;
+				break;
+			case 'input':
+				$res = $this->checkValue_input($res, $value, $tcaFieldConf, $PP, $field);
+				break;
+			case 'check':
+				$res = $this->checkValue_check($res, $value, $tcaFieldConf, $PP);
+				break;
+			case 'radio':
+				$res = $this->checkValue_radio($res, $value, $tcaFieldConf, $PP);
+				break;
+			case 'group':
 
-		case 'select':
-			$res = $this->checkValue_group_select($res, $value, $tcaFieldConf, $PP, $uploadedFiles, $field);
-			break;
-		case 'inline':
-			$res = $this->checkValue_inline($res, $value, $tcaFieldConf, $PP, $field, $additionalData);
-			break;
-		case 'flex':
-			// FlexForms are only allowed for real fields.
-			if ($field) {
-				$res = $this->checkValue_flex($res, $value, $tcaFieldConf, $PP, $uploadedFiles, $field);
-			}
-			break;
-		default:
-			break;
+			case 'select':
+				$res = $this->checkValue_group_select($res, $value, $tcaFieldConf, $PP, $uploadedFiles, $field);
+				break;
+			case 'inline':
+				$res = $this->checkValue_inline($res, $value, $tcaFieldConf, $PP, $field, $additionalData);
+				break;
+			case 'flex':
+				// FlexForms are only allowed for real fields.
+				if ($field) {
+					$res = $this->checkValue_flex($res, $value, $tcaFieldConf, $PP, $uploadedFiles, $field);
+				}
+				break;
+			default:
+				// Do nothing
 		}
 		return $res;
 	}
@@ -1614,14 +1613,14 @@ class DataHandler {
 		// For group types:
 		if ($tcaFieldConf['type'] == 'group') {
 			switch ($tcaFieldConf['internal_type']) {
-			case 'file_reference':
+				case 'file_reference':
 
-			case 'file':
-				$valueArray = $this->checkValue_group_select_file($valueArray, $tcaFieldConf, $curValue, $uploadedFiles, $status, $table, $id, $recFID);
-				break;
-			case 'db':
-				$valueArray = $this->checkValue_group_select_processDBdata($valueArray, $tcaFieldConf, $id, $status, 'group', $table, $field);
-				break;
+				case 'file':
+					$valueArray = $this->checkValue_group_select_file($valueArray, $tcaFieldConf, $curValue, $uploadedFiles, $status, $table, $id, $recFID);
+					break;
+				case 'db':
+					$valueArray = $this->checkValue_group_select_processDBdata($valueArray, $tcaFieldConf, $id, $status, 'group', $table, $field);
+					break;
 			}
 		}
 		// For select types which has a foreign table attached:
@@ -2205,20 +2204,19 @@ class DataHandler {
 		$set = TRUE;
 		foreach ($evalArray as $func) {
 			switch ($func) {
-			case 'trim':
-				$value = trim($value);
-				break;
-			case 'required':
-				if (!$value) {
-					$set = 0;
-				}
-				break;
-			default:
-				$evalObj = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tce']['formevals'][$func] . ':&' . $func);
-				if (is_object($evalObj) && method_exists($evalObj, 'evaluateFieldValue')) {
-					$value = $evalObj->evaluateFieldValue($value, $is_in, $set);
-				}
-				break;
+				case 'trim':
+					$value = trim($value);
+					break;
+				case 'required':
+					if (!$value) {
+						$set = 0;
+					}
+					break;
+				default:
+					$evalObj = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tce']['formevals'][$func] . ':&' . $func);
+					if (is_object($evalObj) && method_exists($evalObj, 'evaluateFieldValue')) {
+						$value = $evalObj->evaluateFieldValue($value, $is_in, $set);
+					}
 			}
 		}
 		if ($set) {
@@ -2242,100 +2240,99 @@ class DataHandler {
 		$set = TRUE;
 		foreach ($evalArray as $func) {
 			switch ($func) {
-			case 'int':
+				case 'int':
 
-			case 'year':
+				case 'year':
 
-			case 'time':
+				case 'time':
 
-			case 'timesec':
-				$value = intval($value);
-				break;
-			case 'date':
+				case 'timesec':
+					$value = intval($value);
+					break;
+				case 'date':
 
-			case 'datetime':
-				$value = intval($value);
-				if ($value > 0 && !$this->dontProcessTransformations) {
-					$value -= date('Z', $value);
-				}
-				break;
-			case 'double2':
-				$value = preg_replace('/[^0-9,\\.-]/', '', $value);
-				$negative = substr($value, 0, 1) == '-';
-				$value = strtr($value, array(',' => '.', '-' => ''));
-				if (strpos($value, '.') === FALSE) {
-					$value .= '.0';
-				}
-				$valueArray = explode('.', $value);
-				$dec = array_pop($valueArray);
-				$value = join('', $valueArray) . '.' . $dec;
-				if ($negative) {
-					$value *= -1;
-				}
-				$value = number_format($value, 2, '.', '');
-				break;
-			case 'md5':
-				if (strlen($value) != 32) {
-					$set = FALSE;
-				}
-				break;
-			case 'trim':
-				$value = trim($value);
-				break;
-			case 'upper':
-				$value = $GLOBALS['LANG']->csConvObj->conv_case($GLOBALS['LANG']->charSet, $value, 'toUpper');
-				break;
-			case 'lower':
-				$value = $GLOBALS['LANG']->csConvObj->conv_case($GLOBALS['LANG']->charSet, $value, 'toLower');
-				break;
-			case 'required':
-				if (!isset($value) || $value === '') {
-					$set = FALSE;
-				}
-				break;
-			case 'is_in':
-				$c = strlen($value);
-				if ($c) {
-					$newVal = '';
-					for ($a = 0; $a < $c; $a++) {
-						$char = substr($value, $a, 1);
-						if (strpos($is_in, $char) !== FALSE) {
-							$newVal .= $char;
-						}
+				case 'datetime':
+					$value = intval($value);
+					if ($value > 0 && !$this->dontProcessTransformations) {
+						$value -= date('Z', $value);
 					}
-					$value = $newVal;
-				}
-				break;
-			case 'nospace':
-				$value = str_replace(' ', '', $value);
-				break;
-			case 'alpha':
-				$value = preg_replace('/[^a-zA-Z]/', '', $value);
-				break;
-			case 'num':
-				$value = preg_replace('/[^0-9]/', '', $value);
-				break;
-			case 'alphanum':
-				$value = preg_replace('/[^a-zA-Z0-9]/', '', $value);
-				break;
-			case 'alphanum_x':
-				$value = preg_replace('/[^a-zA-Z0-9_-]/', '', $value);
-				break;
-			case 'domainname':
-				if (!preg_match('/^[a-z0-9\\.\\-]*$/i', $value)) {
-					\TYPO3\CMS\Core\Utility\GeneralUtility::requireOnce(PATH_typo3 . 'contrib/idna/idna_convert.class.php');
-					$idnaConvert = new \idna_convert();
-					$idnaConvert->set_parameter('idn_version', '2008');
-					$value = $idnaConvert->encode($value);
-					unset($idnaConvert);
-				}
-				break;
-			default:
-				$evalObj = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tce']['formevals'][$func] . ':&' . $func);
-				if (is_object($evalObj) && method_exists($evalObj, 'evaluateFieldValue')) {
-					$value = $evalObj->evaluateFieldValue($value, $is_in, $set);
-				}
-				break;
+					break;
+				case 'double2':
+					$value = preg_replace('/[^0-9,\\.-]/', '', $value);
+					$negative = substr($value, 0, 1) == '-';
+					$value = strtr($value, array(',' => '.', '-' => ''));
+					if (strpos($value, '.') === FALSE) {
+						$value .= '.0';
+					}
+					$valueArray = explode('.', $value);
+					$dec = array_pop($valueArray);
+					$value = join('', $valueArray) . '.' . $dec;
+					if ($negative) {
+						$value *= -1;
+					}
+					$value = number_format($value, 2, '.', '');
+					break;
+				case 'md5':
+					if (strlen($value) != 32) {
+						$set = FALSE;
+					}
+					break;
+				case 'trim':
+					$value = trim($value);
+					break;
+				case 'upper':
+					$value = $GLOBALS['LANG']->csConvObj->conv_case($GLOBALS['LANG']->charSet, $value, 'toUpper');
+					break;
+				case 'lower':
+					$value = $GLOBALS['LANG']->csConvObj->conv_case($GLOBALS['LANG']->charSet, $value, 'toLower');
+					break;
+				case 'required':
+					if (!isset($value) || $value === '') {
+						$set = FALSE;
+					}
+					break;
+				case 'is_in':
+					$c = strlen($value);
+					if ($c) {
+						$newVal = '';
+						for ($a = 0; $a < $c; $a++) {
+							$char = substr($value, $a, 1);
+							if (strpos($is_in, $char) !== FALSE) {
+								$newVal .= $char;
+							}
+						}
+						$value = $newVal;
+					}
+					break;
+				case 'nospace':
+					$value = str_replace(' ', '', $value);
+					break;
+				case 'alpha':
+					$value = preg_replace('/[^a-zA-Z]/', '', $value);
+					break;
+				case 'num':
+					$value = preg_replace('/[^0-9]/', '', $value);
+					break;
+				case 'alphanum':
+					$value = preg_replace('/[^a-zA-Z0-9]/', '', $value);
+					break;
+				case 'alphanum_x':
+					$value = preg_replace('/[^a-zA-Z0-9_-]/', '', $value);
+					break;
+				case 'domainname':
+					if (!preg_match('/^[a-z0-9\\.\\-]*$/i', $value)) {
+						\TYPO3\CMS\Core\Utility\GeneralUtility::requireOnce(PATH_typo3 . 'contrib/idna/idna_convert.class.php');
+						$idnaConvert = new \idna_convert();
+						$idnaConvert->set_parameter('idn_version', '2008');
+						$value = $idnaConvert->encode($value);
+						unset($idnaConvert);
+					}
+					break;
+				default:
+					$evalObj = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tce']['formevals'][$func] . ':&' . $func);
+					if (is_object($evalObj) && method_exists($evalObj, 'evaluateFieldValue')) {
+						$value = $evalObj->evaluateFieldValue($value, $is_in, $set);
+					}
 			}
 		}
 		if ($set) {
@@ -2694,28 +2691,28 @@ class DataHandler {
 						if (!$commandIsProcessed) {
 							// Branch, based on command
 							switch ($command) {
-							case 'move':
-								$this->moveRecord($table, $id, $value);
-								break;
-							case 'copy':
-								if ($table === 'pages') {
-									$this->copyPages($id, $value);
-								} else {
-									$this->copyRecord($table, $id, $value, 1);
-								}
-								break;
-							case 'localize':
-								$this->localize($table, $id, $value);
-								break;
-							case 'inlineLocalizeSynchronize':
-								$this->inlineLocalizeSynchronize($table, $id, $value);
-								break;
-							case 'delete':
-								$this->deleteAction($table, $id);
-								break;
-							case 'undelete':
-								$this->undeleteRecord($table, $id);
-								break;
+								case 'move':
+									$this->moveRecord($table, $id, $value);
+									break;
+								case 'copy':
+									if ($table === 'pages') {
+										$this->copyPages($id, $value);
+									} else {
+										$this->copyRecord($table, $id, $value, 1);
+									}
+									break;
+								case 'localize':
+									$this->localize($table, $id, $value);
+									break;
+								case 'inlineLocalizeSynchronize':
+									$this->inlineLocalizeSynchronize($table, $id, $value);
+									break;
+								case 'delete':
+									$this->deleteAction($table, $id);
+									break;
+								case 'undelete':
+									$this->undeleteRecord($table, $id);
+									break;
 							}
 						}
 						foreach ($hookObjectsArr as $hookObj) {
@@ -4074,10 +4071,10 @@ class DataHandler {
 						foreach ($GLOBALS['TCA'][$table]['columns'] as $fieldName => $cfg) {
 							$conf = $cfg['config'];
 							switch ($conf['type']) {
-							case 'flex':
-								$flexObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\FlexForm\\FlexFormTools');
-								$flexObj->traverseFlexFormXMLData($table, $fieldName, \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordRaw($table, 'uid=' . intval($uid)), $this, 'deleteRecord_flexFormCallBack');
-								break;
+								case 'flex':
+									$flexObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\FlexForm\\FlexFormTools');
+									$flexObj->traverseFlexFormXMLData($table, $fieldName, \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordRaw($table, 'uid=' . intval($uid)), $this, 'deleteRecord_flexFormCallBack');
+									break;
 							}
 						}
 						// Fetches all fields that holds references to files
@@ -4627,38 +4624,37 @@ class DataHandler {
 					foreach ($fields as $fieldName => $value) {
 						$conf = $GLOBALS['TCA'][$table]['columns'][$fieldName]['config'];
 						switch ($conf['type']) {
-						case 'group':
+							case 'group':
 
-						case 'select':
-							$vArray = $this->remapListedDBRecords_procDBRefs($conf, $value, $theUidToUpdate, $table);
-							if (is_array($vArray)) {
-								$newData[$fieldName] = implode(',', $vArray);
-							}
-							break;
-						case 'flex':
-							if ($value == 'FlexForm_reference') {
-								// This will fetch the new row for the element
-								$origRecordRow = $this->recordInfo($table, $theUidToUpdate, '*');
-								if (is_array($origRecordRow)) {
-									\TYPO3\CMS\Backend\Utility\BackendUtility::workspaceOL($table, $origRecordRow);
-									// Get current data structure and value array:
-									$dataStructArray = \TYPO3\CMS\Backend\Utility\BackendUtility::getFlexFormDS($conf, $origRecordRow, $table);
-									$currentValueArray = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($origRecordRow[$fieldName]);
-									// Do recursive processing of the XML data:
-									$currentValueArray['data'] = $this->checkValue_flex_procInData($currentValueArray['data'], array(), array(), $dataStructArray, array($table, $theUidToUpdate, $fieldName), 'remapListedDBRecords_flexFormCallBack');
-									// The return value should be compiled back into XML, ready to insert directly in the field (as we call updateDB() directly later):
-									if (is_array($currentValueArray['data'])) {
-										$newData[$fieldName] = $this->checkValue_flexArray2Xml($currentValueArray, TRUE);
+							case 'select':
+								$vArray = $this->remapListedDBRecords_procDBRefs($conf, $value, $theUidToUpdate, $table);
+								if (is_array($vArray)) {
+									$newData[$fieldName] = implode(',', $vArray);
+								}
+								break;
+							case 'flex':
+								if ($value == 'FlexForm_reference') {
+									// This will fetch the new row for the element
+									$origRecordRow = $this->recordInfo($table, $theUidToUpdate, '*');
+									if (is_array($origRecordRow)) {
+										\TYPO3\CMS\Backend\Utility\BackendUtility::workspaceOL($table, $origRecordRow);
+										// Get current data structure and value array:
+										$dataStructArray = \TYPO3\CMS\Backend\Utility\BackendUtility::getFlexFormDS($conf, $origRecordRow, $table);
+										$currentValueArray = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($origRecordRow[$fieldName]);
+										// Do recursive processing of the XML data:
+										$currentValueArray['data'] = $this->checkValue_flex_procInData($currentValueArray['data'], array(), array(), $dataStructArray, array($table, $theUidToUpdate, $fieldName), 'remapListedDBRecords_flexFormCallBack');
+										// The return value should be compiled back into XML, ready to insert directly in the field (as we call updateDB() directly later):
+										if (is_array($currentValueArray['data'])) {
+											$newData[$fieldName] = $this->checkValue_flexArray2Xml($currentValueArray, TRUE);
+										}
 									}
 								}
-							}
-							break;
-						case 'inline':
-							$this->remapListedDBRecords_procInline($conf, $value, $uid, $table);
-							break;
-						default:
-							debug('Field type should not appear here: ' . $conf['type']);
-							break;
+								break;
+							case 'inline':
+								$this->remapListedDBRecords_procInline($conf, $value, $uid, $table);
+								break;
+							default:
+								debug('Field type should not appear here: ' . $conf['type']);
 						}
 					}
 					// If any fields were changed, those fields are updated!
@@ -5207,14 +5203,14 @@ class DataHandler {
 		if (!\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($perms)) {
 			if ($table != 'pages') {
 				switch ($perms) {
-				case 'edit':
+					case 'edit':
 
-				case 'delete':
+					case 'delete':
 
-				case 'new':
-					// This holds it all in case the record is not page!!
-					$perms = 'editcontent';
-					break;
+					case 'new':
+						// This holds it all in case the record is not page!!
+						$perms = 'editcontent';
+						break;
 				}
 			}
 			$perms = intval($this->pMap[$perms]);
@@ -6516,13 +6512,13 @@ class DataHandler {
 				$theFile = trim($theFile);
 				if ($theFile) {
 					switch ($func) {
-					case 'deleteAll':
-						if (@is_file(($uploadPath . '/' . $theFile))) {
-							unlink($uploadPath . '/' . $theFile);
-						} else {
-							$this->log($table, 0, 3, 0, 100, 'Delete: Referenced file that was supposed to be deleted together with it\'s record didn\'t exist');
-						}
-						break;
+						case 'deleteAll':
+							if (@is_file(($uploadPath . '/' . $theFile))) {
+								unlink($uploadPath . '/' . $theFile);
+							} else {
+								$this->log($table, 0, 3, 0, 100, 'Delete: Referenced file that was supposed to be deleted together with it\'s record didn\'t exist');
+							}
+							break;
 					}
 				}
 			}
@@ -6705,34 +6701,34 @@ class DataHandler {
 		}
 		// Clear cache for either ALL pages or ALL tables!
 		switch (strtolower($cacheCmd)) {
-		case 'pages':
-			if ($this->admin || $this->BE_USER->getTSConfigVal('options.clearCache.pages')) {
-				$this->internal_clearPageCache();
-			}
-			break;
-		case 'all':
-			if ($this->admin || $this->BE_USER->getTSConfigVal('options.clearCache.all')) {
-				// Clear all caching framework caches
-				$GLOBALS['typo3CacheManager']->flushCaches();
-				if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('cms')) {
-					$GLOBALS['TYPO3_DB']->exec_TRUNCATEquery('cache_treelist');
+			case 'pages':
+				if ($this->admin || $this->BE_USER->getTSConfigVal('options.clearCache.pages')) {
+					$this->internal_clearPageCache();
 				}
-				// Clearing additional cache tables:
-				if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearAllCache_additionalTables'])) {
-					foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearAllCache_additionalTables'] as $tableName) {
-						if (!preg_match('/[^[:alnum:]_]/', $tableName) && substr($tableName, -5) === 'cache') {
-							$GLOBALS['TYPO3_DB']->exec_TRUNCATEquery($tableName);
-						} else {
-							throw new \RuntimeException('TYPO3 Fatal Error: Trying to flush table "' . $tableName . '" with "Clear All Cache"', 1270853922);
+				break;
+			case 'all':
+				if ($this->admin || $this->BE_USER->getTSConfigVal('options.clearCache.all')) {
+					// Clear all caching framework caches
+					$GLOBALS['typo3CacheManager']->flushCaches();
+					if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('cms')) {
+						$GLOBALS['TYPO3_DB']->exec_TRUNCATEquery('cache_treelist');
+					}
+					// Clearing additional cache tables:
+					if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearAllCache_additionalTables'])) {
+						foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearAllCache_additionalTables'] as $tableName) {
+							if (!preg_match('/[^[:alnum:]_]/', $tableName) && substr($tableName, -5) === 'cache') {
+								$GLOBALS['TYPO3_DB']->exec_TRUNCATEquery($tableName);
+							} else {
+								throw new \RuntimeException('TYPO3 Fatal Error: Trying to flush table "' . $tableName . '" with "Clear All Cache"', 1270853922);
+							}
 						}
 					}
 				}
-			}
-			\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::removeCacheFiles();
-			break;
-		case 'temp_cached':
-			\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::removeCacheFiles();
-			break;
+				\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::removeCacheFiles();
+				break;
+			case 'temp_cached':
+				\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::removeCacheFiles();
+				break;
 		}
 		$tagsToFlush = array();
 		// Clear cache for a page ID!
@@ -6905,13 +6901,13 @@ class DataHandler {
 		$result = $fieldArray;
 		foreach ($fieldArray as $field => $value) {
 			switch ($GLOBALS['TCA'][$table]['columns'][$field]['config']['type']) {
-			case 'inline':
-				if ($GLOBALS['TCA'][$table]['columns'][$field]['config']['foreign_field']) {
-					if (!\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($value)) {
-						$result[$field] = count(\TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $value, TRUE));
+				case 'inline':
+					if ($GLOBALS['TCA'][$table]['columns'][$field]['config']['foreign_field']) {
+						if (!\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($value)) {
+							$result[$field] = count(\TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $value, TRUE));
+						}
 					}
-				}
-				break;
+					break;
 			}
 		}
 		return $result;

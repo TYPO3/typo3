@@ -139,48 +139,47 @@ class InfoPageTyposcriptConfigController extends \TYPO3\CMS\Backend\Module\Abstr
 			$tmpl->ext_expandAllNotes = 1;
 			$tmpl->ext_noPMicons = 1;
 			switch ($this->pObj->MOD_SETTINGS['tsconf_parts']) {
-			case '1':
-				$modTSconfig = \TYPO3\CMS\Backend\Utility\BackendUtility::getModTSconfig($this->pObj->id, 'mod');
-				break;
-			case '1a':
-				$modTSconfig = $GLOBALS['BE_USER']->getTSConfig('mod.web_layout', \TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig($this->pObj->id));
-				break;
-			case '1b':
-				$modTSconfig = $GLOBALS['BE_USER']->getTSConfig('mod.web_view', \TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig($this->pObj->id));
-				break;
-			case '1c':
-				$modTSconfig = $GLOBALS['BE_USER']->getTSConfig('mod.web_modules', \TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig($this->pObj->id));
-				break;
-			case '1d':
-				$modTSconfig = $GLOBALS['BE_USER']->getTSConfig('mod.web_list', \TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig($this->pObj->id));
-				break;
-			case '1e':
-				$modTSconfig = $GLOBALS['BE_USER']->getTSConfig('mod.web_info', \TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig($this->pObj->id));
-				break;
-			case '1f':
-				$modTSconfig = $GLOBALS['BE_USER']->getTSConfig('mod.web_func', \TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig($this->pObj->id));
-				break;
-			case '1g':
-				$modTSconfig = $GLOBALS['BE_USER']->getTSConfig('mod.web_ts', \TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig($this->pObj->id));
-				break;
-			case '2':
-				$modTSconfig = $GLOBALS['BE_USER']->getTSConfig('RTE', \TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig($this->pObj->id));
-				break;
-			case '5':
-				$modTSconfig = $GLOBALS['BE_USER']->getTSConfig('TCEFORM', \TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig($this->pObj->id));
-				break;
-			case '6':
-				$modTSconfig = $GLOBALS['BE_USER']->getTSConfig('TCEMAIN', \TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig($this->pObj->id));
-				break;
-			case '3':
-				$modTSconfig = $GLOBALS['BE_USER']->getTSConfig('TSFE', \TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig($this->pObj->id));
-				break;
-			case '4':
-				$modTSconfig = $GLOBALS['BE_USER']->getTSConfig('user', \TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig($this->pObj->id));
-				break;
-			default:
-				$modTSconfig['properties'] = \TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig($this->pObj->id);
-				break;
+				case '1':
+					$modTSconfig = \TYPO3\CMS\Backend\Utility\BackendUtility::getModTSconfig($this->pObj->id, 'mod');
+					break;
+				case '1a':
+					$modTSconfig = $GLOBALS['BE_USER']->getTSConfig('mod.web_layout', \TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig($this->pObj->id));
+					break;
+				case '1b':
+					$modTSconfig = $GLOBALS['BE_USER']->getTSConfig('mod.web_view', \TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig($this->pObj->id));
+					break;
+				case '1c':
+					$modTSconfig = $GLOBALS['BE_USER']->getTSConfig('mod.web_modules', \TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig($this->pObj->id));
+					break;
+				case '1d':
+					$modTSconfig = $GLOBALS['BE_USER']->getTSConfig('mod.web_list', \TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig($this->pObj->id));
+					break;
+				case '1e':
+					$modTSconfig = $GLOBALS['BE_USER']->getTSConfig('mod.web_info', \TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig($this->pObj->id));
+					break;
+				case '1f':
+					$modTSconfig = $GLOBALS['BE_USER']->getTSConfig('mod.web_func', \TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig($this->pObj->id));
+					break;
+				case '1g':
+					$modTSconfig = $GLOBALS['BE_USER']->getTSConfig('mod.web_ts', \TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig($this->pObj->id));
+					break;
+				case '2':
+					$modTSconfig = $GLOBALS['BE_USER']->getTSConfig('RTE', \TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig($this->pObj->id));
+					break;
+				case '5':
+					$modTSconfig = $GLOBALS['BE_USER']->getTSConfig('TCEFORM', \TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig($this->pObj->id));
+					break;
+				case '6':
+					$modTSconfig = $GLOBALS['BE_USER']->getTSConfig('TCEMAIN', \TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig($this->pObj->id));
+					break;
+				case '3':
+					$modTSconfig = $GLOBALS['BE_USER']->getTSConfig('TSFE', \TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig($this->pObj->id));
+					break;
+				case '4':
+					$modTSconfig = $GLOBALS['BE_USER']->getTSConfig('user', \TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig($this->pObj->id));
+					break;
+				default:
+					$modTSconfig['properties'] = \TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig($this->pObj->id);
 			}
 			$modTSconfig = $modTSconfig['properties'];
 			if (!is_array($modTSconfig)) {

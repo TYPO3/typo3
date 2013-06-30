@@ -182,18 +182,18 @@ class VersionNumberUtility {
 		$parts[1] = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($parts[1], 0, 999);
 		$parts[2] = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($parts[2], 0, 999);
 		switch ((string) $raise) {
-		case 'main':
-			$parts[0]++;
-			$parts[1] = 0;
-			$parts[2] = 0;
-			break;
-		case 'sub':
-			$parts[1]++;
-			$parts[2] = 0;
-			break;
-		case 'dev':
-			$parts[2]++;
-			break;
+			case 'main':
+				$parts[0]++;
+				$parts[1] = 0;
+				$parts[2] = 0;
+				break;
+			case 'sub':
+				$parts[1]++;
+				$parts[2] = 0;
+				break;
+			case 'dev':
+				$parts[2]++;
+				break;
 		}
 		return $parts[0] . '.' . $parts[1] . '.' . $parts[2];
 	}

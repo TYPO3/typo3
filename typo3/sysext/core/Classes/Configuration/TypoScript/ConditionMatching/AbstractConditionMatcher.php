@@ -209,207 +209,207 @@ abstract class AbstractConditionMatcher {
 		}
 		$keyParts = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('|', $key);
 		switch ($keyParts[0]) {
-		case 'browser':
-			$values = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $value, TRUE);
-			// take all identified browsers into account, eg chrome deliver
-			// webkit=>532.5, chrome=>4.1, safari=>532.5
-			// so comparing string will be
-			// "webkit532.5 chrome4.1 safari532.5"
-			$all = '';
-			foreach ($browserInfo['all'] as $key => $value) {
-				$all .= $key . $value . ' ';
-			}
-			foreach ($values as $test) {
-				if (stripos($all, $test) !== FALSE) {
-					return TRUE;
+			case 'browser':
+				$values = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $value, TRUE);
+				// take all identified browsers into account, eg chrome deliver
+				// webkit=>532.5, chrome=>4.1, safari=>532.5
+				// so comparing string will be
+				// "webkit532.5 chrome4.1 safari532.5"
+				$all = '';
+				foreach ($browserInfo['all'] as $key => $value) {
+					$all .= $key . $value . ' ';
 				}
-			}
-			break;
-		case 'version':
-			$values = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $value, TRUE);
-			foreach ($values as $test) {
-				if (strcspn($test, '=<>') == 0) {
-					switch (substr($test, 0, 1)) {
-					case '=':
-						if (doubleval(substr($test, 1)) == $browserInfo['version']) {
-							return TRUE;
-						}
-						break;
-					case '<':
-						if (doubleval(substr($test, 1)) > $browserInfo['version']) {
-							return TRUE;
-						}
-						break;
-					case '>':
-						if (doubleval(substr($test, 1)) < $browserInfo['version']) {
-							return TRUE;
-						}
-						break;
-					}
-				} elseif (strpos(' ' . $browserInfo['version'], $test) == 1) {
-					return TRUE;
-				}
-			}
-			break;
-		case 'system':
-			$values = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $value, TRUE);
-			// Take all identified systems into account, e.g. mac for iOS, Linux
-			// for android and Windows NT for Windows XP
-			$allSystems .= ' ' . implode(' ', $browserInfo['all_systems']);
-			foreach ($values as $test) {
-				if (stripos($allSystems, $test) !== FALSE) {
-					return TRUE;
-				}
-			}
-			break;
-		case 'device':
-			if (!isset($this->deviceInfo)) {
-				$this->deviceInfo = $this->getDeviceType(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('HTTP_USER_AGENT'));
-			}
-			$values = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $value, TRUE);
-			foreach ($values as $test) {
-				if ($this->deviceInfo == $test) {
-					return TRUE;
-				}
-			}
-			break;
-		case 'useragent':
-			$test = trim($value);
-			if (strlen($test)) {
-				return $this->searchStringWildcard($browserInfo['useragent'], $test);
-			}
-			break;
-		case 'language':
-			$values = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $value, TRUE);
-			foreach ($values as $test) {
-				if (preg_match('/^\\*.+\\*$/', $test)) {
-					$allLanguages = preg_split('/[,;]/', \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('HTTP_ACCEPT_LANGUAGE'));
-					if (in_array(substr($test, 1, -1), $allLanguages)) {
+				foreach ($values as $test) {
+					if (stripos($all, $test) !== FALSE) {
 						return TRUE;
 					}
-				} elseif (\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('HTTP_ACCEPT_LANGUAGE') == $test) {
-					return TRUE;
 				}
-			}
-			break;
-		case 'IP':
-			if (\TYPO3\CMS\Core\Utility\GeneralUtility::cmpIP(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE_ADDR'), $value)) {
-				return TRUE;
-			}
-			break;
-		case 'hostname':
-			if (\TYPO3\CMS\Core\Utility\GeneralUtility::cmpFQDN(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE_ADDR'), $value)) {
-				return TRUE;
-			}
-			break;
-		case 'hour':
-
-		case 'minute':
-
-		case 'month':
-
-		case 'year':
-
-		case 'dayofweek':
-
-		case 'dayofmonth':
-
-		case 'dayofyear':
-			// In order to simulate time properly in templates.
-			$theEvalTime = $GLOBALS['SIM_EXEC_TIME'];
-			switch ($key) {
-			case 'hour':
-				$theTestValue = date('H', $theEvalTime);
 				break;
-			case 'minute':
-				$theTestValue = date('i', $theEvalTime);
-				break;
-			case 'month':
-				$theTestValue = date('m', $theEvalTime);
-				break;
-			case 'year':
-				$theTestValue = date('Y', $theEvalTime);
-				break;
-			case 'dayofweek':
-				$theTestValue = date('w', $theEvalTime);
-				break;
-			case 'dayofmonth':
-				$theTestValue = date('d', $theEvalTime);
-				break;
-			case 'dayofyear':
-				$theTestValue = date('z', $theEvalTime);
-				break;
-			}
-			$theTestValue = intval($theTestValue);
-			// comp
-			$values = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $value, TRUE);
-			foreach ($values as $test) {
-				if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($test)) {
-					$test = '=' . $test;
-				}
-				if ($this->compareNumber($test, $theTestValue)) {
-					return TRUE;
-				}
-			}
-			break;
-		case 'compatVersion':
-			return \TYPO3\CMS\Core\Utility\GeneralUtility::compat_version($value);
-			break;
-		case 'loginUser':
-			if ($this->isUserLoggedIn()) {
+			case 'version':
 				$values = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $value, TRUE);
 				foreach ($values as $test) {
-					if ($test == '*' || !strcmp($this->getUserId(), $test)) {
+					if (strcspn($test, '=<>') == 0) {
+						switch (substr($test, 0, 1)) {
+							case '=':
+								if (doubleval(substr($test, 1)) == $browserInfo['version']) {
+									return TRUE;
+								}
+								break;
+							case '<':
+								if (doubleval(substr($test, 1)) > $browserInfo['version']) {
+									return TRUE;
+								}
+								break;
+							case '>':
+								if (doubleval(substr($test, 1)) < $browserInfo['version']) {
+									return TRUE;
+								}
+								break;
+						}
+					} elseif (strpos(' ' . $browserInfo['version'], $test) == 1) {
 						return TRUE;
 					}
 				}
-			} elseif ($value === '') {
-				return TRUE;
-			}
-			break;
-		case 'page':
-			if ($keyParts[1]) {
-				$page = $this->getPage();
-				$property = $keyParts[1];
-				if (!empty($page) && isset($page[$property])) {
-					if (strcmp($page[$property], $value) === 0) {
+				break;
+			case 'system':
+				$values = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $value, TRUE);
+				// Take all identified systems into account, e.g. mac for iOS, Linux
+				// for android and Windows NT for Windows XP
+				$allSystems .= ' ' . implode(' ', $browserInfo['all_systems']);
+				foreach ($values as $test) {
+					if (stripos($allSystems, $test) !== FALSE) {
 						return TRUE;
 					}
 				}
-			}
-			break;
-		case 'globalVar':
-			$values = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $value, TRUE);
-			foreach ($values as $test) {
-				$point = strcspn($test, '!=<>');
-				$theVarName = substr($test, 0, $point);
-				$nv = $this->getVariable(trim($theVarName));
-				$testValue = substr($test, $point);
-				if ($this->compareNumber($testValue, $nv)) {
+				break;
+			case 'device':
+				if (!isset($this->deviceInfo)) {
+					$this->deviceInfo = $this->getDeviceType(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('HTTP_USER_AGENT'));
+				}
+				$values = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $value, TRUE);
+				foreach ($values as $test) {
+					if ($this->deviceInfo == $test) {
+						return TRUE;
+					}
+				}
+				break;
+			case 'useragent':
+				$test = trim($value);
+				if (strlen($test)) {
+					return $this->searchStringWildcard($browserInfo['useragent'], $test);
+				}
+				break;
+			case 'language':
+				$values = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $value, TRUE);
+				foreach ($values as $test) {
+					if (preg_match('/^\\*.+\\*$/', $test)) {
+						$allLanguages = preg_split('/[,;]/', \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('HTTP_ACCEPT_LANGUAGE'));
+						if (in_array(substr($test, 1, -1), $allLanguages)) {
+							return TRUE;
+						}
+					} elseif (\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('HTTP_ACCEPT_LANGUAGE') == $test) {
+						return TRUE;
+					}
+				}
+				break;
+			case 'IP':
+				if (\TYPO3\CMS\Core\Utility\GeneralUtility::cmpIP(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE_ADDR'), $value)) {
 					return TRUE;
 				}
-			}
-			break;
-		case 'globalString':
-			$values = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $value, TRUE);
-			foreach ($values as $test) {
-				$point = strcspn($test, '=');
-				$theVarName = substr($test, 0, $point);
-				$nv = $this->getVariable(trim($theVarName));
-				$testValue = substr($test, $point + 1);
-				if ($this->searchStringWildcard($nv, trim($testValue))) {
+				break;
+			case 'hostname':
+				if (\TYPO3\CMS\Core\Utility\GeneralUtility::cmpFQDN(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE_ADDR'), $value)) {
 					return TRUE;
 				}
-			}
-			break;
-		case 'userFunc':
-			$values = preg_split('/\\(|\\)/', $value);
-			$funcName = trim($values[0]);
-			$funcValues = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $values[1]);
-			if (function_exists($funcName) && call_user_func_array($funcName, $funcValues)) {
-				return TRUE;
-			}
-			break;
+				break;
+			case 'hour':
+
+			case 'minute':
+
+			case 'month':
+
+			case 'year':
+
+			case 'dayofweek':
+
+			case 'dayofmonth':
+
+			case 'dayofyear':
+				// In order to simulate time properly in templates.
+				$theEvalTime = $GLOBALS['SIM_EXEC_TIME'];
+				switch ($key) {
+					case 'hour':
+						$theTestValue = date('H', $theEvalTime);
+						break;
+					case 'minute':
+						$theTestValue = date('i', $theEvalTime);
+						break;
+					case 'month':
+						$theTestValue = date('m', $theEvalTime);
+						break;
+					case 'year':
+						$theTestValue = date('Y', $theEvalTime);
+						break;
+					case 'dayofweek':
+						$theTestValue = date('w', $theEvalTime);
+						break;
+					case 'dayofmonth':
+						$theTestValue = date('d', $theEvalTime);
+						break;
+					case 'dayofyear':
+						$theTestValue = date('z', $theEvalTime);
+						break;
+				}
+				$theTestValue = intval($theTestValue);
+				// comp
+				$values = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $value, TRUE);
+				foreach ($values as $test) {
+					if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($test)) {
+						$test = '=' . $test;
+					}
+					if ($this->compareNumber($test, $theTestValue)) {
+						return TRUE;
+					}
+				}
+				break;
+			case 'compatVersion':
+				return \TYPO3\CMS\Core\Utility\GeneralUtility::compat_version($value);
+				break;
+			case 'loginUser':
+				if ($this->isUserLoggedIn()) {
+					$values = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $value, TRUE);
+					foreach ($values as $test) {
+						if ($test == '*' || !strcmp($this->getUserId(), $test)) {
+							return TRUE;
+						}
+					}
+				} elseif ($value === '') {
+					return TRUE;
+				}
+				break;
+			case 'page':
+				if ($keyParts[1]) {
+					$page = $this->getPage();
+					$property = $keyParts[1];
+					if (!empty($page) && isset($page[$property])) {
+						if (strcmp($page[$property], $value) === 0) {
+							return TRUE;
+						}
+					}
+				}
+				break;
+			case 'globalVar':
+				$values = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $value, TRUE);
+				foreach ($values as $test) {
+					$point = strcspn($test, '!=<>');
+					$theVarName = substr($test, 0, $point);
+					$nv = $this->getVariable(trim($theVarName));
+					$testValue = substr($test, $point);
+					if ($this->compareNumber($testValue, $nv)) {
+						return TRUE;
+					}
+				}
+				break;
+			case 'globalString':
+				$values = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $value, TRUE);
+				foreach ($values as $test) {
+					$point = strcspn($test, '=');
+					$theVarName = substr($test, 0, $point);
+					$nv = $this->getVariable(trim($theVarName));
+					$testValue = substr($test, $point + 1);
+					if ($this->searchStringWildcard($nv, trim($testValue))) {
+						return TRUE;
+					}
+				}
+				break;
+			case 'userFunc':
+				$values = preg_split('/\\(|\\)/', $value);
+				$funcName = trim($values[0]);
+				$funcValues = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $values[1]);
+				if (function_exists($funcName) && call_user_func_array($funcName, $funcValues)) {
+					return TRUE;
+				}
+				break;
 		}
 		return NULL;
 	}
@@ -429,20 +429,20 @@ abstract class AbstractConditionMatcher {
 			$k = trim($splitAgain[0]);
 			if ($k) {
 				switch ((string) trim($vars[0])) {
-				case 'GP':
-					$value = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP($k);
-					break;
-				case 'ENV':
-					$value = getenv($k);
-					break;
-				case 'IENV':
-					$value = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv($k);
-					break;
-				case 'LIT':
-					return trim($vars[1]);
-					break;
-				default:
-					return NULL;
+					case 'GP':
+						$value = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP($k);
+						break;
+					case 'ENV':
+						$value = getenv($k);
+						break;
+					case 'IENV':
+						$value = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv($k);
+						break;
+					case 'LIT':
+						return trim($vars[1]);
+						break;
+					default:
+						return NULL;
 				}
 				// If array:
 				if (count($splitAgain) > 1) {
@@ -469,45 +469,44 @@ abstract class AbstractConditionMatcher {
 			$operator = $matches[1];
 			$rightValue = $matches[2];
 			switch ($operator) {
-			case '>=':
-				return $leftValue >= doubleval($rightValue);
-				break;
-			case '<=':
-				return $leftValue <= doubleval($rightValue);
-				break;
-			case '!=':
-				// multiple values may be split with '|'
-				// see if none matches ("not in list")
-				$found = FALSE;
-				$rightValueParts = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('|', $rightValue);
-				foreach ($rightValueParts as $rightValueSingle) {
-					if ($leftValue == doubleval($rightValueSingle)) {
-						$found = TRUE;
-						break;
+				case '>=':
+					return $leftValue >= doubleval($rightValue);
+					break;
+				case '<=':
+					return $leftValue <= doubleval($rightValue);
+					break;
+				case '!=':
+					// multiple values may be split with '|'
+					// see if none matches ("not in list")
+					$found = FALSE;
+					$rightValueParts = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('|', $rightValue);
+					foreach ($rightValueParts as $rightValueSingle) {
+						if ($leftValue == doubleval($rightValueSingle)) {
+							$found = TRUE;
+							break;
+						}
 					}
-				}
-				return $found === FALSE;
-				break;
-			case '<':
-				return $leftValue < doubleval($rightValue);
-				break;
-			case '>':
-				return $leftValue > doubleval($rightValue);
-				break;
-			default:
-				// nothing valid found except '=', use '='
-				// multiple values may be split with '|'
-				// see if one matches ("in list")
-				$found = FALSE;
-				$rightValueParts = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('|', $rightValue);
-				foreach ($rightValueParts as $rightValueSingle) {
-					if ($leftValue == $rightValueSingle) {
-						$found = TRUE;
-						break;
+					return $found === FALSE;
+					break;
+				case '<':
+					return $leftValue < doubleval($rightValue);
+					break;
+				case '>':
+					return $leftValue > doubleval($rightValue);
+					break;
+				default:
+					// nothing valid found except '=', use '='
+					// multiple values may be split with '|'
+					// see if one matches ("in list")
+					$found = FALSE;
+					$rightValueParts = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('|', $rightValue);
+					foreach ($rightValueParts as $rightValueSingle) {
+						if ($leftValue == $rightValueSingle) {
+							$found = TRUE;
+							break;
+						}
 					}
-				}
-				return $found;
-				break;
+					return $found;
 			}
 		}
 		return FALSE;

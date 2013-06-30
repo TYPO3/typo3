@@ -261,35 +261,35 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 				} else {
 					// ... else use defaults:
 					switch ($cmd) {
-					case 'ts_images':
-						$value = $this->TS_images_db($value);
-						break;
-					case 'ts_reglinks':
-						$value = $this->TS_reglinks($value, 'db');
-						break;
-					case 'ts_links':
-						$value = $this->TS_links_db($value);
-						break;
-					case 'ts_preserve':
-						$value = $this->TS_preserve_db($value);
-						break;
-					case 'ts_transform':
+						case 'ts_images':
+							$value = $this->TS_images_db($value);
+							break;
+						case 'ts_reglinks':
+							$value = $this->TS_reglinks($value, 'db');
+							break;
+						case 'ts_links':
+							$value = $this->TS_links_db($value);
+							break;
+						case 'ts_preserve':
+							$value = $this->TS_preserve_db($value);
+							break;
+						case 'ts_transform':
 
-					case 'css_transform':
-						$this->allowedClasses = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->procOptions['allowedClasses'], 1);
-						// CR has a very disturbing effect, so just remove all CR and rely on LF
-						$value = str_replace(CR, '', $value);
-						// Transform empty paragraphs into spacing paragraphs
-						$value = str_replace('<p></p>', '<p>&nbsp;</p>', $value);
-						// Double any trailing spacing paragraph so that it does not get removed by divideIntoLines()
-						$value = preg_replace('/<p>&nbsp;<\/p>$/', '<p>&nbsp;</p>' . '<p>&nbsp;</p>', $value);
-						$value = $this->TS_transform_db($value, $cmd == 'css_transform');
-						break;
-					case 'ts_strip':
-						$value = $this->TS_strip_db($value);
-						break;
-					default:
-						break;
+						case 'css_transform':
+							$this->allowedClasses = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->procOptions['allowedClasses'], 1);
+							// CR has a very disturbing effect, so just remove all CR and rely on LF
+							$value = str_replace(CR, '', $value);
+							// Transform empty paragraphs into spacing paragraphs
+							$value = str_replace('<p></p>', '<p>&nbsp;</p>', $value);
+							// Double any trailing spacing paragraph so that it does not get removed by divideIntoLines()
+							$value = preg_replace('/<p>&nbsp;<\/p>$/', '<p>&nbsp;</p>' . '<p>&nbsp;</p>', $value);
+							$value = $this->TS_transform_db($value, $cmd == 'css_transform');
+							break;
+						case 'ts_strip':
+							$value = $this->TS_strip_db($value);
+							break;
+						default:
+							// Do nothing
 					}
 				}
 			}
@@ -303,27 +303,27 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 				} else {
 					// ... else use defaults:
 					switch ($cmd) {
-					case 'ts_images':
-						$value = $this->TS_images_rte($value);
-						break;
-					case 'ts_reglinks':
-						$value = $this->TS_reglinks($value, 'rte');
-						break;
-					case 'ts_links':
-						$value = $this->TS_links_rte($value);
-						break;
-					case 'ts_preserve':
-						$value = $this->TS_preserve_rte($value);
-						break;
-					case 'ts_transform':
+						case 'ts_images':
+							$value = $this->TS_images_rte($value);
+							break;
+						case 'ts_reglinks':
+							$value = $this->TS_reglinks($value, 'rte');
+							break;
+						case 'ts_links':
+							$value = $this->TS_links_rte($value);
+							break;
+						case 'ts_preserve':
+							$value = $this->TS_preserve_rte($value);
+							break;
+						case 'ts_transform':
 
-					case 'css_transform':
-						// Has a very disturbing effect, so just remove all '13' - depend on '10'
-						$value = str_replace(CR, '', $value);
-						$value = $this->TS_transform_rte($value, $cmd == 'css_transform');
-						break;
-					default:
-						break;
+						case 'css_transform':
+							// Has a very disturbing effect, so just remove all '13' - depend on '10'
+							$value = str_replace(CR, '', $value);
+							$value = $this->TS_transform_rte($value, $cmd == 'css_transform');
+							break;
+						default:
+							// Do nothing
 					}
 				}
 			}
@@ -490,19 +490,19 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 								$fI = @getimagesize($filepath);
 								// Perform corrections to aspect ratio based on configuration:
 								switch ((string) $this->procOptions['plainImageMode']) {
-								case 'lockDimensions':
-									$attribArray['width'] = $fI[0];
-									$attribArray['height'] = $fI[1];
-									break;
-								case 'lockRatioWhenSmaller':
-									if ($attribArray['width'] > $fI[0]) {
+									case 'lockDimensions':
 										$attribArray['width'] = $fI[0];
-									}
-								case 'lockRatio':
-									if ($fI[0] > 0) {
-										$attribArray['height'] = round($attribArray['width'] * ($fI[1] / $fI[0]));
-									}
-									break;
+										$attribArray['height'] = $fI[1];
+										break;
+									case 'lockRatioWhenSmaller':
+										if ($attribArray['width'] > $fI[0]) {
+											$attribArray['width'] = $fI[0];
+										}
+									case 'lockRatio':
+										if ($fI[0] > 0) {
+											$attribArray['height'] = round($attribArray['width'] * ($fI[1] / $fI[0]));
+										}
+										break;
 								}
 								// Compile the image tag again:
 								$params = \TYPO3\CMS\Core\Utility\GeneralUtility::implodeAttributes($attribArray, 1);
@@ -611,27 +611,27 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 	public function TS_reglinks($value, $direction) {
 		$retVal = '';
 		switch ($direction) {
-		case 'rte':
-			$retVal = $this->TS_AtagToAbs($value, 1);
-			break;
-		case 'db':
-			$siteURL = $this->siteUrl();
-			$blockSplit = $this->splitIntoBlock('A', $value);
-			foreach ($blockSplit as $k => $v) {
-				// Block
-				if ($k % 2) {
-					$attribArray = $this->get_tag_attributes_classic($this->getFirstTag($v), 1);
-					// If the url is local, remove url-prefix
-					if ($siteURL && substr($attribArray['href'], 0, strlen($siteURL)) == $siteURL) {
-						$attribArray['href'] = $this->relBackPath . substr($attribArray['href'], strlen($siteURL));
+			case 'rte':
+				$retVal = $this->TS_AtagToAbs($value, 1);
+				break;
+			case 'db':
+				$siteURL = $this->siteUrl();
+				$blockSplit = $this->splitIntoBlock('A', $value);
+				foreach ($blockSplit as $k => $v) {
+					// Block
+					if ($k % 2) {
+						$attribArray = $this->get_tag_attributes_classic($this->getFirstTag($v), 1);
+						// If the url is local, remove url-prefix
+						if ($siteURL && substr($attribArray['href'], 0, strlen($siteURL)) == $siteURL) {
+							$attribArray['href'] = $this->relBackPath . substr($attribArray['href'], strlen($siteURL));
+						}
+						$bTag = '<a ' . \TYPO3\CMS\Core\Utility\GeneralUtility::implodeAttributes($attribArray, 1) . '>';
+						$eTag = '</a>';
+						$blockSplit[$k] = $bTag . $this->TS_reglinks($this->removeFirstAndLastTag($blockSplit[$k]), $direction) . $eTag;
 					}
-					$bTag = '<a ' . \TYPO3\CMS\Core\Utility\GeneralUtility::implodeAttributes($attribArray, 1) . '>';
-					$eTag = '</a>';
-					$blockSplit[$k] = $bTag . $this->TS_reglinks($this->removeFirstAndLastTag($blockSplit[$k]), $direction) . $eTag;
 				}
-			}
-			$retVal = implode('', $blockSplit);
-			break;
+				$retVal = implode('', $blockSplit);
+				break;
 		}
 		return $retVal;
 	}
@@ -935,88 +935,87 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 				$tagName = strtolower($this->getFirstTagName($v));
 				// Process based on the tag:
 				switch ($tagName) {
-				case 'blockquote':
+					case 'blockquote':
 
-				case 'dd':
+					case 'dd':
 
-				case 'div':
+					case 'div':
 
-				case 'header':
+					case 'header':
 
-				case 'section':
+					case 'section':
 
-				case 'footer':
+					case 'footer':
 
-				case 'nav':
+					case 'nav':
 
-				case 'article':
+					case 'article':
 
-				case 'aside':
-					$blockSplit[$k] = $tag . $this->TS_transform_db($this->removeFirstAndLastTag($blockSplit[$k]), $css) . '</' . $tagName . '>' . $lastBR;
-					break;
-				case 'ol':
+					case 'aside':
+						$blockSplit[$k] = $tag . $this->TS_transform_db($this->removeFirstAndLastTag($blockSplit[$k]), $css) . '</' . $tagName . '>' . $lastBR;
+						break;
+					case 'ol':
 
-				case 'ul':
-					// Transform lists into <typolist>-tags:
-					if (!$css) {
-						if (!isset($this->procOptions['typolist']) || $this->procOptions['typolist']) {
-							$parts = $this->getAllParts($this->splitIntoBlock('LI', $this->removeFirstAndLastTag($blockSplit[$k])), 1, 0);
-							foreach ($parts as $k2 => $value) {
-								$parts[$k2] = preg_replace('/[' . LF . CR . ']+/', '', $parts[$k2]);
-								// remove all linesbreaks!
-								$parts[$k2] = $this->defaultTStagMapping($parts[$k2], 'db');
-								$parts[$k2] = $this->cleanFontTags($parts[$k2], 0, 0, 0);
-								$parts[$k2] = $this->HTMLcleaner_db($parts[$k2], strtolower($this->procOptions['allowTagsInTypolists'] ? $this->procOptions['allowTagsInTypolists'] : 'br,font,b,i,u,a,img,span,strong,em'));
+					case 'ul':
+						// Transform lists into <typolist>-tags:
+						if (!$css) {
+							if (!isset($this->procOptions['typolist']) || $this->procOptions['typolist']) {
+								$parts = $this->getAllParts($this->splitIntoBlock('LI', $this->removeFirstAndLastTag($blockSplit[$k])), 1, 0);
+								foreach ($parts as $k2 => $value) {
+									$parts[$k2] = preg_replace('/[' . LF . CR . ']+/', '', $parts[$k2]);
+									// remove all linesbreaks!
+									$parts[$k2] = $this->defaultTStagMapping($parts[$k2], 'db');
+									$parts[$k2] = $this->cleanFontTags($parts[$k2], 0, 0, 0);
+									$parts[$k2] = $this->HTMLcleaner_db($parts[$k2], strtolower($this->procOptions['allowTagsInTypolists'] ? $this->procOptions['allowTagsInTypolists'] : 'br,font,b,i,u,a,img,span,strong,em'));
+								}
+								if ($tagName == 'ol') {
+									$params = ' type="1"';
+								} else {
+									$params = '';
+								}
+								$blockSplit[$k] = '<typolist' . $params . '>' . LF . implode(LF, $parts) . LF . '</typolist>' . $lastBR;
 							}
-							if ($tagName == 'ol') {
-								$params = ' type="1"';
-							} else {
-								$params = '';
-							}
-							$blockSplit[$k] = '<typolist' . $params . '>' . LF . implode(LF, $parts) . LF . '</typolist>' . $lastBR;
-						}
-					} else {
-						$blockSplit[$k] = preg_replace(('/[' . LF . CR . ']+/'), ' ', $this->transformStyledATags($blockSplit[$k])) . $lastBR;
-					}
-					break;
-				case 'table':
-					// Tables are NOT allowed in any form (unless preserveTables is set or CSS is the mode)
-					if (!$this->procOptions['preserveTables'] && !$css) {
-						$blockSplit[$k] = $this->TS_transform_db($this->removeTables($blockSplit[$k]));
-					} else {
-						$blockSplit[$k] = preg_replace(('/[' . LF . CR . ']+/'), ' ', $this->transformStyledATags($blockSplit[$k])) . $lastBR;
-					}
-					break;
-				case 'h1':
-
-				case 'h2':
-
-				case 'h3':
-
-				case 'h4':
-
-				case 'h5':
-
-				case 'h6':
-					if (!$css) {
-						$attribArray = $this->get_tag_attributes_classic($tag);
-						// Processing inner content here:
-						$innerContent = $this->HTMLcleaner_db($this->removeFirstAndLastTag($blockSplit[$k]));
-						if (!isset($this->procOptions['typohead']) || $this->procOptions['typohead']) {
-							$type = intval(substr($tagName, 1));
-							$blockSplit[$k] = '<typohead' . ($type != 6 ? ' type="' . $type . '"' : '') . ($attribArray['align'] ? ' align="' . $attribArray['align'] . '"' : '') . ($attribArray['class'] ? ' class="' . $attribArray['class'] . '"' : '') . '>' . $innerContent . '</typohead>' . $lastBR;
 						} else {
-							$blockSplit[$k] = '<' . $tagName . ($attribArray['align'] ? ' align="' . htmlspecialchars($attribArray['align']) . '"' : '') . ($attribArray['class'] ? ' class="' . htmlspecialchars($attribArray['class']) . '"' : '') . '>' . $innerContent . '</' . $tagName . '>' . $lastBR;
+							$blockSplit[$k] = preg_replace(('/[' . LF . CR . ']+/'), ' ', $this->transformStyledATags($blockSplit[$k])) . $lastBR;
 						}
-					} else {
-						// Eliminate true linebreaks inside Hx tags
+						break;
+					case 'table':
+						// Tables are NOT allowed in any form (unless preserveTables is set or CSS is the mode)
+						if (!$this->procOptions['preserveTables'] && !$css) {
+							$blockSplit[$k] = $this->TS_transform_db($this->removeTables($blockSplit[$k]));
+						} else {
+							$blockSplit[$k] = preg_replace(('/[' . LF . CR . ']+/'), ' ', $this->transformStyledATags($blockSplit[$k])) . $lastBR;
+						}
+						break;
+					case 'h1':
+
+					case 'h2':
+
+					case 'h3':
+
+					case 'h4':
+
+					case 'h5':
+
+					case 'h6':
+						if (!$css) {
+							$attribArray = $this->get_tag_attributes_classic($tag);
+							// Processing inner content here:
+							$innerContent = $this->HTMLcleaner_db($this->removeFirstAndLastTag($blockSplit[$k]));
+							if (!isset($this->procOptions['typohead']) || $this->procOptions['typohead']) {
+								$type = intval(substr($tagName, 1));
+								$blockSplit[$k] = '<typohead' . ($type != 6 ? ' type="' . $type . '"' : '') . ($attribArray['align'] ? ' align="' . $attribArray['align'] . '"' : '') . ($attribArray['class'] ? ' class="' . $attribArray['class'] . '"' : '') . '>' . $innerContent . '</typohead>' . $lastBR;
+							} else {
+								$blockSplit[$k] = '<' . $tagName . ($attribArray['align'] ? ' align="' . htmlspecialchars($attribArray['align']) . '"' : '') . ($attribArray['class'] ? ' class="' . htmlspecialchars($attribArray['class']) . '"' : '') . '>' . $innerContent . '</' . $tagName . '>' . $lastBR;
+							}
+						} else {
+							// Eliminate true linebreaks inside Hx tags
+							$blockSplit[$k] = preg_replace(('/[' . LF . CR . ']+/'), ' ', $this->transformStyledATags($blockSplit[$k])) . $lastBR;
+						}
+						break;
+					default:
+						// Eliminate true linebreaks inside other headlist tags
 						$blockSplit[$k] = preg_replace(('/[' . LF . CR . ']+/'), ' ', $this->transformStyledATags($blockSplit[$k])) . $lastBR;
-					}
-					break;
-				default:
-					// Eliminate true linebreaks inside other headlist tags
-					$blockSplit[$k] = preg_replace(('/[' . LF . CR . ']+/'), ' ', $this->transformStyledATags($blockSplit[$k])) . $lastBR;
-					break;
 				}
 			} else {
 				// NON-block:
@@ -1089,49 +1088,49 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 				$attribArray = $this->get_tag_attributes_classic($tag);
 				// Based on tagname, we do transformations:
 				switch ($tagName) {
-				case 'blockquote':
+					case 'blockquote':
 
-				case 'dd':
+					case 'dd':
 
-				case 'div':
+					case 'div':
 
-				case 'header':
+					case 'header':
 
-				case 'section':
+					case 'section':
 
-				case 'footer':
+					case 'footer':
 
-				case 'nav':
+					case 'nav':
 
-				case 'article':
+					case 'article':
 
-				case 'aside':
-					$blockSplit[$k] = $tag . $this->TS_transform_rte($this->removeFirstAndLastTag($blockSplit[$k]), $css) . '</' . $tagName . '>';
-					break;
-				case 'typolist':
-					// Transform typolist blocks into OL/UL lists. Type 1 is expected to be numerical block
-					if (!isset($this->procOptions['typolist']) || $this->procOptions['typolist']) {
-						$tListContent = $this->removeFirstAndLastTag($blockSplit[$k]);
-						$tListContent = preg_replace('/^[ ]*' . LF . '/', '', $tListContent);
-						$tListContent = preg_replace('/' . LF . '[ ]*$/', '', $tListContent);
-						$lines = explode(LF, $tListContent);
-						$typ = $attribArray['type'] == 1 ? 'ol' : 'ul';
-						$blockSplit[$k] = '<' . $typ . '>' . LF . '<li>' . implode(('</li>' . LF . '<li>'), $lines) . '</li>' . '</' . $typ . '>';
-					}
-					break;
-				case 'typohead':
-					// Transform typohead into Hx tags.
-					if (!isset($this->procOptions['typohead']) || $this->procOptions['typohead']) {
-						$tC = $this->removeFirstAndLastTag($blockSplit[$k]);
-						$typ = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($attribArray['type'], 0, 6);
-						if (!$typ) {
-							$typ = 6;
+					case 'aside':
+						$blockSplit[$k] = $tag . $this->TS_transform_rte($this->removeFirstAndLastTag($blockSplit[$k]), $css) . '</' . $tagName . '>';
+						break;
+					case 'typolist':
+						// Transform typolist blocks into OL/UL lists. Type 1 is expected to be numerical block
+						if (!isset($this->procOptions['typolist']) || $this->procOptions['typolist']) {
+							$tListContent = $this->removeFirstAndLastTag($blockSplit[$k]);
+							$tListContent = preg_replace('/^[ ]*' . LF . '/', '', $tListContent);
+							$tListContent = preg_replace('/' . LF . '[ ]*$/', '', $tListContent);
+							$lines = explode(LF, $tListContent);
+							$typ = $attribArray['type'] == 1 ? 'ol' : 'ul';
+							$blockSplit[$k] = '<' . $typ . '>' . LF . '<li>' . implode(('</li>' . LF . '<li>'), $lines) . '</li>' . '</' . $typ . '>';
 						}
-						$align = $attribArray['align'] ? ' align="' . $attribArray['align'] . '"' : '';
-						$class = $attribArray['class'] ? ' class="' . $attribArray['class'] . '"' : '';
-						$blockSplit[$k] = '<h' . $typ . $align . $class . '>' . $tC . '</h' . $typ . '>';
-					}
-					break;
+						break;
+					case 'typohead':
+						// Transform typohead into Hx tags.
+						if (!isset($this->procOptions['typohead']) || $this->procOptions['typohead']) {
+							$tC = $this->removeFirstAndLastTag($blockSplit[$k]);
+							$typ = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($attribArray['type'], 0, 6);
+							if (!$typ) {
+								$typ = 6;
+							}
+							$align = $attribArray['align'] ? ' align="' . $attribArray['align'] . '"' : '';
+							$class = $attribArray['class'] ? ' class="' . $attribArray['class'] . '"' : '';
+							$blockSplit[$k] = '<h' . $typ . $align . $class . '>' . $tC . '</h' . $typ . '>';
+						}
+						break;
 				}
 				$blockSplit[$k + 1] = preg_replace('/^[ ]*' . LF . '/', '', $blockSplit[$k + 1]);
 			} else {
@@ -1247,80 +1246,80 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 			}
 			// Based on the direction of content, set further options:
 			switch ($direction) {
-			case 'rte':
-				if (!isset($this->procOptions['transformBoldAndItalicTags']) || $this->procOptions['transformBoldAndItalicTags']) {
-					// Transform bold/italics tags to strong/em
-					if (isset($keepTags['b'])) {
-						$keepTags['b'] = array('remap' => 'STRONG');
+				case 'rte':
+					if (!isset($this->procOptions['transformBoldAndItalicTags']) || $this->procOptions['transformBoldAndItalicTags']) {
+						// Transform bold/italics tags to strong/em
+						if (isset($keepTags['b'])) {
+							$keepTags['b'] = array('remap' => 'STRONG');
+						}
+						if (isset($keepTags['i'])) {
+							$keepTags['i'] = array('remap' => 'EM');
+						}
 					}
-					if (isset($keepTags['i'])) {
-						$keepTags['i'] = array('remap' => 'EM');
+					// Transforming keepTags array so it can be understood by the HTMLcleaner function. This basically converts the format of the array from TypoScript (having .'s) to plain multi-dimensional array.
+					list($keepTags) = $this->HTMLparserConfig($this->procOptions['HTMLparser_rte.'], $keepTags);
+					break;
+				case 'db':
+					if (!isset($this->procOptions['transformBoldAndItalicTags']) || $this->procOptions['transformBoldAndItalicTags']) {
+						// Transform strong/em back to bold/italics:
+						if (isset($keepTags['strong'])) {
+							$keepTags['strong'] = array('remap' => 'b');
+						}
+						if (isset($keepTags['em'])) {
+							$keepTags['em'] = array('remap' => 'i');
+						}
 					}
-				}
-				// Transforming keepTags array so it can be understood by the HTMLcleaner function. This basically converts the format of the array from TypoScript (having .'s) to plain multi-dimensional array.
-				list($keepTags) = $this->HTMLparserConfig($this->procOptions['HTMLparser_rte.'], $keepTags);
-				break;
-			case 'db':
-				if (!isset($this->procOptions['transformBoldAndItalicTags']) || $this->procOptions['transformBoldAndItalicTags']) {
-					// Transform strong/em back to bold/italics:
-					if (isset($keepTags['strong'])) {
-						$keepTags['strong'] = array('remap' => 'b');
-					}
-					if (isset($keepTags['em'])) {
-						$keepTags['em'] = array('remap' => 'i');
-					}
-				}
-				// Setting up span tags if they are allowed:
-				if (isset($keepTags['span'])) {
-					$classes = array_merge(array(''), $this->allowedClasses);
-					$keepTags['span'] = array(
-						'allowedAttribs' => 'id,class,style,title,lang,xml:lang,dir',
-						'fixAttrib' => array(
-							'class' => array(
-								'list' => $classes,
-								'removeIfFalse' => 1
-							)
-						),
-						'rmTagIfNoAttrib' => 1
-					);
-					if (!$this->procOptions['allowedClasses']) {
-						unset($keepTags['span']['fixAttrib']['class']['list']);
-					}
-				}
-				// Setting up font tags if they are allowed:
-				if (isset($keepTags['font'])) {
-					$colors = array_merge(array(''), \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->procOptions['allowedFontColors'], 1));
-					$keepTags['font'] = array(
-						'allowedAttribs' => 'face,color,size',
-						'fixAttrib' => array(
-							'face' => array(
-								'removeIfFalse' => 1
+					// Setting up span tags if they are allowed:
+					if (isset($keepTags['span'])) {
+						$classes = array_merge(array(''), $this->allowedClasses);
+						$keepTags['span'] = array(
+							'allowedAttribs' => 'id,class,style,title,lang,xml:lang,dir',
+							'fixAttrib' => array(
+								'class' => array(
+									'list' => $classes,
+									'removeIfFalse' => 1
+								)
 							),
-							'color' => array(
-								'removeIfFalse' => 1,
-								'list' => $colors
-							),
-							'size' => array(
-								'removeIfFalse' => 1
-							)
-						),
-						'rmTagIfNoAttrib' => 1
-					);
-					if (!$this->procOptions['allowedFontColors']) {
-						unset($keepTags['font']['fixAttrib']['color']['list']);
+							'rmTagIfNoAttrib' => 1
+						);
+						if (!$this->procOptions['allowedClasses']) {
+							unset($keepTags['span']['fixAttrib']['class']['list']);
+						}
 					}
-				}
-				// Setting further options, getting them from the processiong options:
-				$TSc = $this->procOptions['HTMLparser_db.'];
-				if (!$TSc['globalNesting']) {
-					$TSc['globalNesting'] = 'b,i,u,a,center,font,sub,sup,strong,em,strike,span';
-				}
-				if (!$TSc['noAttrib']) {
-					$TSc['noAttrib'] = 'b,i,u,br,center,hr,sub,sup,strong,em,li,ul,ol,blockquote,strike';
-				}
-				// Transforming the array from TypoScript to regular array:
-				list($keepTags) = $this->HTMLparserConfig($TSc, $keepTags);
-				break;
+					// Setting up font tags if they are allowed:
+					if (isset($keepTags['font'])) {
+						$colors = array_merge(array(''), \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->procOptions['allowedFontColors'], 1));
+						$keepTags['font'] = array(
+							'allowedAttribs' => 'face,color,size',
+							'fixAttrib' => array(
+								'face' => array(
+									'removeIfFalse' => 1
+								),
+								'color' => array(
+									'removeIfFalse' => 1,
+									'list' => $colors
+								),
+								'size' => array(
+									'removeIfFalse' => 1
+								)
+							),
+							'rmTagIfNoAttrib' => 1
+						);
+						if (!$this->procOptions['allowedFontColors']) {
+							unset($keepTags['font']['fixAttrib']['color']['list']);
+						}
+					}
+					// Setting further options, getting them from the processiong options:
+					$TSc = $this->procOptions['HTMLparser_db.'];
+					if (!$TSc['globalNesting']) {
+						$TSc['globalNesting'] = 'b,i,u,a,center,font,sub,sup,strong,em,strike,span';
+					}
+					if (!$TSc['noAttrib']) {
+						$TSc['noAttrib'] = 'b,i,u,br,center,hr,sub,sup,strong,em,li,ul,ol,blockquote,strike';
+					}
+					// Transforming the array from TypoScript to regular array:
+					list($keepTags) = $this->HTMLparserConfig($TSc, $keepTags);
+					break;
 			}
 			// Caching (internally, in object memory) the result unless tagList is set:
 			if (!$tagList) {

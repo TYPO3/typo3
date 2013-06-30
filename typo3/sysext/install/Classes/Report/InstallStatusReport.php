@@ -104,18 +104,18 @@ class InstallStatusReport implements \TYPO3\CMS\Reports\StatusProviderInterface 
 			} else {
 				if (!is_writable((PATH_site . $relPath))) {
 					switch ($requirementLevel) {
-					case 0:
-						$message .= sprintf($GLOBALS['LANG']->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_directoryShouldBeWritable'), (PATH_site . $relPath)) . '<br />';
-						if ($severity < \TYPO3\CMS\Reports\Status::WARNING) {
-							$value = $GLOBALS['LANG']->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_recommendedWritableDirectory');
-							$severity = \TYPO3\CMS\Reports\Status::WARNING;
-						}
-						break;
-					case 2:
-						$value = $GLOBALS['LANG']->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_requiredWritableDirectory');
-						$message .= sprintf($GLOBALS['LANG']->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_directoryMustBeWritable'), (PATH_site . $relPath)) . '<br />';
-						$severity = \TYPO3\CMS\Reports\Status::ERROR;
-						break;
+						case 0:
+							$message .= sprintf($GLOBALS['LANG']->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_directoryShouldBeWritable'), (PATH_site . $relPath)) . '<br />';
+							if ($severity < \TYPO3\CMS\Reports\Status::WARNING) {
+								$value = $GLOBALS['LANG']->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_recommendedWritableDirectory');
+								$severity = \TYPO3\CMS\Reports\Status::WARNING;
+							}
+							break;
+						case 2:
+							$value = $GLOBALS['LANG']->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_requiredWritableDirectory');
+							$message .= sprintf($GLOBALS['LANG']->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_directoryMustBeWritable'), (PATH_site . $relPath)) . '<br />';
+							$severity = \TYPO3\CMS\Reports\Status::ERROR;
+							break;
 					}
 				}
 			}

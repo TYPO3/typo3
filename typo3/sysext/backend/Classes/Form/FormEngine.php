@@ -1190,39 +1190,38 @@ class FormEngine {
 			}
 		}
 		switch ($PA['fieldConf']['config']['form_type']) {
-		case 'input':
-			$item = $this->getSingleField_typeInput($table, $field, $row, $PA);
-			break;
-		case 'text':
-			$item = $this->getSingleField_typeText($table, $field, $row, $PA);
-			break;
-		case 'check':
-			$item = $this->getSingleField_typeCheck($table, $field, $row, $PA);
-			break;
-		case 'radio':
-			$item = $this->getSingleField_typeRadio($table, $field, $row, $PA);
-			break;
-		case 'select':
-			$item = $this->getSingleField_typeSelect($table, $field, $row, $PA);
-			break;
-		case 'group':
-			$item = $this->getSingleField_typeGroup($table, $field, $row, $PA);
-			break;
-		case 'inline':
-			$item = $this->inline->getSingleField_typeInline($table, $field, $row, $PA);
-			break;
-		case 'none':
-			$item = $this->getSingleField_typeNone($table, $field, $row, $PA);
-			break;
-		case 'user':
-			$item = $this->getSingleField_typeUser($table, $field, $row, $PA);
-			break;
-		case 'flex':
-			$item = $this->getSingleField_typeFlex($table, $field, $row, $PA);
-			break;
-		default:
-			$item = $this->getSingleField_typeUnknown($table, $field, $row, $PA);
-			break;
+			case 'input':
+				$item = $this->getSingleField_typeInput($table, $field, $row, $PA);
+				break;
+			case 'text':
+				$item = $this->getSingleField_typeText($table, $field, $row, $PA);
+				break;
+			case 'check':
+				$item = $this->getSingleField_typeCheck($table, $field, $row, $PA);
+				break;
+			case 'radio':
+				$item = $this->getSingleField_typeRadio($table, $field, $row, $PA);
+				break;
+			case 'select':
+				$item = $this->getSingleField_typeSelect($table, $field, $row, $PA);
+				break;
+			case 'group':
+				$item = $this->getSingleField_typeGroup($table, $field, $row, $PA);
+				break;
+			case 'inline':
+				$item = $this->inline->getSingleField_typeInline($table, $field, $row, $PA);
+				break;
+			case 'none':
+				$item = $this->getSingleField_typeNone($table, $field, $row, $PA);
+				break;
+			case 'user':
+				$item = $this->getSingleField_typeUser($table, $field, $row, $PA);
+				break;
+			case 'flex':
+				$item = $this->getSingleField_typeFlex($table, $field, $row, $PA);
+				break;
+			default:
+				$item = $this->getSingleField_typeUnknown($table, $field, $row, $PA);
 		}
 		return $item;
 	}
@@ -1323,23 +1322,22 @@ class FormEngine {
 		}
 		foreach ($evalList as $func) {
 			switch ($func) {
-			case 'required':
-				$this->registerRequiredProperty('field', $table . '_' . $row['uid'] . '_' . $field, $PA['itemFormElName']);
-				// Mark this field for date/time disposal:
-				if (array_intersect($evalList, array('date', 'datetime', 'time'))) {
-					$this->requiredAdditional[$PA['itemFormElName']]['isPositiveNumber'] = TRUE;
-				}
-				break;
-			default:
-				// Pair hook to the one in \TYPO3\CMS\Core\DataHandling\DataHandler::checkValue_input_Eval()
-				$evalObj = GeneralUtility::getUserObj($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tce']['formevals'][$func] . ':&' . $func);
-				if (is_object($evalObj) && method_exists($evalObj, 'deevaluateFieldValue')) {
-					$_params = array(
-						'value' => $PA['itemFormElValue']
-					);
-					$PA['itemFormElValue'] = $evalObj->deevaluateFieldValue($_params);
-				}
-				break;
+				case 'required':
+					$this->registerRequiredProperty('field', $table . '_' . $row['uid'] . '_' . $field, $PA['itemFormElName']);
+					// Mark this field for date/time disposal:
+					if (array_intersect($evalList, array('date', 'datetime', 'time'))) {
+						$this->requiredAdditional[$PA['itemFormElName']]['isPositiveNumber'] = TRUE;
+					}
+					break;
+				default:
+					// Pair hook to the one in \TYPO3\CMS\Core\DataHandling\DataHandler::checkValue_input_Eval()
+					$evalObj = GeneralUtility::getUserObj($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tce']['formevals'][$func] . ':&' . $func);
+					if (is_object($evalObj) && method_exists($evalObj, 'deevaluateFieldValue')) {
+						$_params = array(
+							'value' => $PA['itemFormElValue']
+						);
+						$PA['itemFormElValue'] = $evalObj->deevaluateFieldValue($_params);
+					}
 			}
 		}
 		$paramsList = '\'' . $PA['itemFormElName'] . '\',\'' . implode(',', $evalList) . '\',\'' . trim($config['is_in']) . '\',' . (isset($config['checkbox']) ? 1 : 0) . ',\'' . $config['checkbox'] . '\'';
@@ -1555,19 +1553,18 @@ function ' . $evalData . '(value) {
 				$evalList = GeneralUtility::trimExplode(',', $config['eval'], 1);
 				foreach ($evalList as $func) {
 					switch ($func) {
-					case 'required':
-						$this->registerRequiredProperty('field', $table . '_' . $row['uid'] . '_' . $field, $PA['itemFormElName']);
-						break;
-					default:
-						// Pair hook to the one in \TYPO3\CMS\Core\DataHandling\DataHandler::checkValue_input_Eval() and \TYPO3\CMS\Core\DataHandling\DataHandler::checkValue_text_Eval()
-						$evalObj = GeneralUtility::getUserObj($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tce']['formevals'][$func] . ':&' . $func);
-						if (is_object($evalObj) && method_exists($evalObj, 'deevaluateFieldValue')) {
-							$_params = array(
-								'value' => $PA['itemFormElValue']
-							);
-							$PA['itemFormElValue'] = $evalObj->deevaluateFieldValue($_params);
-						}
-						break;
+						case 'required':
+							$this->registerRequiredProperty('field', $table . '_' . $row['uid'] . '_' . $field, $PA['itemFormElName']);
+							break;
+						default:
+							// Pair hook to the one in \TYPO3\CMS\Core\DataHandling\DataHandler::checkValue_input_Eval() and \TYPO3\CMS\Core\DataHandling\DataHandler::checkValue_text_Eval()
+							$evalObj = GeneralUtility::getUserObj($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tce']['formevals'][$func] . ':&' . $func);
+							if (is_object($evalObj) && method_exists($evalObj, 'deevaluateFieldValue')) {
+								$_params = array(
+									'value' => $PA['itemFormElValue']
+								);
+								$PA['itemFormElValue'] = $evalObj->deevaluateFieldValue($_params);
+							}
 					}
 				}
 				$iOnChange = implode('', $PA['fieldChangeFunc']);
@@ -2313,170 +2310,170 @@ function ' . $evalData . '(value) {
 		}
 		// Acting according to either "file" or "db" type:
 		switch ((string) $config['internal_type']) {
-		case 'file_reference':
-			$config['uploadfolder'] = '';
-		case 'file':
-			// Creating string showing allowed types:
-			$tempFT = GeneralUtility::trimExplode(',', $allowed, TRUE);
-			if (!count($tempFT)) {
-				$info .= '*';
-			}
-			foreach ($tempFT as $ext) {
-				if ($ext) {
-					$info .= strtoupper($ext) . ' ';
+			case 'file_reference':
+				$config['uploadfolder'] = '';
+			case 'file':
+				// Creating string showing allowed types:
+				$tempFT = GeneralUtility::trimExplode(',', $allowed, TRUE);
+				if (!count($tempFT)) {
+					$info .= '*';
 				}
-			}
-			// Creating string, showing disallowed types:
-			$tempFT_dis = GeneralUtility::trimExplode(',', $disallowed, TRUE);
-			if (count($tempFT_dis)) {
-				$info .= '<br />';
-			}
-			foreach ($tempFT_dis as $ext) {
-				if ($ext) {
-					$info .= '-' . strtoupper($ext) . ' ';
+				foreach ($tempFT as $ext) {
+					if ($ext) {
+						$info .= strtoupper($ext) . ' ';
+					}
 				}
-			}
-			// Making the array of file items:
-			$itemArray = GeneralUtility::trimExplode(',', $PA['itemFormElValue'], TRUE);
-			$fileFactory = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance();
-			// Correct the filename for the FAL items
-			foreach ($itemArray as &$fileItem) {
-				list($fileUid, $fileLabel) = explode('|', $fileItem);
-				if (MathUtility::canBeInterpretedAsInteger($fileUid)) {
-					$fileObject = $fileFactory->getFileObject($fileUid);
-					$fileLabel = $fileObject->getName();
+				// Creating string, showing disallowed types:
+				$tempFT_dis = GeneralUtility::trimExplode(',', $disallowed, TRUE);
+				if (count($tempFT_dis)) {
+					$info .= '<br />';
 				}
-				$fileItem = $fileUid . '|' . $fileLabel;
-			}
-			// Showing thumbnails:
-			$thumbsnail = '';
-			if ($show_thumbs) {
-				$imgs = array();
-				foreach ($itemArray as $imgRead) {
-					$imgP = explode('|', $imgRead);
-					$imgPath = rawurldecode($imgP[0]);
-					// FAL icon production
-					if (MathUtility::canBeInterpretedAsInteger($imgP[0])) {
-						$fileObject = $fileFactory->getFileObject($imgP[0]);
-						if (GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], $fileObject->getExtension())) {
-							$imageUrl = $fileObject->process(\TYPO3\CMS\Core\Resource\ProcessedFile::CONTEXT_IMAGEPREVIEW, array())->getPublicUrl(TRUE);
-							$imgTag = '<img src="' . $imageUrl . '" alt="' . htmlspecialchars($fileObject->getName()) . '" />';
+				foreach ($tempFT_dis as $ext) {
+					if ($ext) {
+						$info .= '-' . strtoupper($ext) . ' ';
+					}
+				}
+				// Making the array of file items:
+				$itemArray = GeneralUtility::trimExplode(',', $PA['itemFormElValue'], TRUE);
+				$fileFactory = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance();
+				// Correct the filename for the FAL items
+				foreach ($itemArray as &$fileItem) {
+					list($fileUid, $fileLabel) = explode('|', $fileItem);
+					if (MathUtility::canBeInterpretedAsInteger($fileUid)) {
+						$fileObject = $fileFactory->getFileObject($fileUid);
+						$fileLabel = $fileObject->getName();
+					}
+					$fileItem = $fileUid . '|' . $fileLabel;
+				}
+				// Showing thumbnails:
+				$thumbsnail = '';
+				if ($show_thumbs) {
+					$imgs = array();
+					foreach ($itemArray as $imgRead) {
+						$imgP = explode('|', $imgRead);
+						$imgPath = rawurldecode($imgP[0]);
+						// FAL icon production
+						if (MathUtility::canBeInterpretedAsInteger($imgP[0])) {
+							$fileObject = $fileFactory->getFileObject($imgP[0]);
+							if (GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], $fileObject->getExtension())) {
+								$imageUrl = $fileObject->process(\TYPO3\CMS\Core\Resource\ProcessedFile::CONTEXT_IMAGEPREVIEW, array())->getPublicUrl(TRUE);
+								$imgTag = '<img src="' . $imageUrl . '" alt="' . htmlspecialchars($fileObject->getName()) . '" />';
+							} else {
+								// Icon
+								$imgTag = IconUtility::getSpriteIconForFile(strtolower($fileObject->getExtension()), array('title' => $fileObject->getName()));
+							}
+							$imgs[] = '<span class="nobr">' . $imgTag . htmlspecialchars($fileObject->getName()) . '</span>';
 						} else {
-							// Icon
-							$imgTag = IconUtility::getSpriteIconForFile(strtolower($fileObject->getExtension()), array('title' => $fileObject->getName()));
+							$rowCopy = array();
+							$rowCopy[$field] = $imgPath;
+							$thumbnailCode = BackendUtility::thumbCode($rowCopy, $table, $field, $this->backPath, 'thumbs.php', $config['uploadfolder'], 0, ' align="middle"');
+							$imgs[] = '<span class="nobr">' . $thumbnailCode . $imgPath . '</span>';
 						}
-						$imgs[] = '<span class="nobr">' . $imgTag . htmlspecialchars($fileObject->getName()) . '</span>';
-					} else {
-						$rowCopy = array();
-						$rowCopy[$field] = $imgPath;
-						$thumbnailCode = BackendUtility::thumbCode($rowCopy, $table, $field, $this->backPath, 'thumbs.php', $config['uploadfolder'], 0, ' align="middle"');
-						$imgs[] = '<span class="nobr">' . $thumbnailCode . $imgPath . '</span>';
+					}
+					$thumbsnail = implode('<br />', $imgs);
+				}
+				// Creating the element:
+				$params = array(
+					'size' => $size,
+					'dontShowMoveIcons' => $maxitems <= 1,
+					'autoSizeMax' => MathUtility::forceIntegerInRange($config['autoSizeMax'], 0),
+					'maxitems' => $maxitems,
+					'style' => isset($config['selectedListStyle']) ? ' style="' . htmlspecialchars($config['selectedListStyle']) . '"' : ' style="' . $this->defaultMultipleSelectorStyle . '"',
+					'info' => $info,
+					'thumbnails' => $thumbsnail,
+					'readOnly' => $disabled,
+					'noBrowser' => $noList || isset($config['disable_controls']) && GeneralUtility::inList($config['disable_controls'], 'browser'),
+					'noList' => $noList,
+					'noDelete' => $noDelete
+				);
+				$item .= $this->dbFileIcons($PA['itemFormElName'], 'file', implode(',', $tempFT), $itemArray, '', $params, $PA['onFocus'], '', '', '', $config);
+				if (!$disabled && !(isset($config['disable_controls']) && GeneralUtility::inList($config['disable_controls'], 'upload'))) {
+					// Adding the upload field:
+					if ($this->edit_docModuleUpload && $config['uploadfolder']) {
+						// Insert the multiple attribute to enable HTML5 multiple file upload
+						$multipleAttribute = '';
+						$multipleFilenameSuffix = '';
+						if (isset($config['maxitems']) && $config['maxitems'] > 1) {
+							$multipleAttribute = ' multiple="multiple"';
+							$multipleFilenameSuffix = '[]';
+						}
+						$item .= '<div id="' . $PA['itemFormElID_file'] . '"><input type="file"' . $multipleAttribute . ' name="' . $PA['itemFormElName_file'] . $multipleFilenameSuffix . '" size="35" onchange="' . implode('', $PA['fieldChangeFunc']) . '" /></div>';
 					}
 				}
-				$thumbsnail = implode('<br />', $imgs);
-			}
-			// Creating the element:
-			$params = array(
-				'size' => $size,
-				'dontShowMoveIcons' => $maxitems <= 1,
-				'autoSizeMax' => MathUtility::forceIntegerInRange($config['autoSizeMax'], 0),
-				'maxitems' => $maxitems,
-				'style' => isset($config['selectedListStyle']) ? ' style="' . htmlspecialchars($config['selectedListStyle']) . '"' : ' style="' . $this->defaultMultipleSelectorStyle . '"',
-				'info' => $info,
-				'thumbnails' => $thumbsnail,
-				'readOnly' => $disabled,
-				'noBrowser' => $noList || isset($config['disable_controls']) && GeneralUtility::inList($config['disable_controls'], 'browser'),
-				'noList' => $noList,
-				'noDelete' => $noDelete
-			);
-			$item .= $this->dbFileIcons($PA['itemFormElName'], 'file', implode(',', $tempFT), $itemArray, '', $params, $PA['onFocus'], '', '', '', $config);
-			if (!$disabled && !(isset($config['disable_controls']) && GeneralUtility::inList($config['disable_controls'], 'upload'))) {
-				// Adding the upload field:
-				if ($this->edit_docModuleUpload && $config['uploadfolder']) {
-					// Insert the multiple attribute to enable HTML5 multiple file upload
-					$multipleAttribute = '';
-					$multipleFilenameSuffix = '';
-					if (isset($config['maxitems']) && $config['maxitems'] > 1) {
-						$multipleAttribute = ' multiple="multiple"';
-						$multipleFilenameSuffix = '[]';
+				break;
+			case 'folder':
+				// If the element is of the internal type "folder":
+				// Array of folder items:
+				$itemArray = GeneralUtility::trimExplode(',', $PA['itemFormElValue'], 1);
+				// Creating the element:
+				$params = array(
+					'size' => $size,
+					'dontShowMoveIcons' => $maxitems <= 1,
+					'autoSizeMax' => MathUtility::forceIntegerInRange($config['autoSizeMax'], 0),
+					'maxitems' => $maxitems,
+					'style' => isset($config['selectedListStyle']) ? ' style="' . htmlspecialchars($config['selectedListStyle']) . '"' : ' style="' . $this->defaultMultipleSelectorStyle . '"',
+					'info' => $info,
+					'readOnly' => $disabled,
+					'noBrowser' => $noList || isset($config['disable_controls']) && GeneralUtility::inList($config['disable_controls'], 'browser'),
+					'noList' => $noList
+				);
+				$item .= $this->dbFileIcons($PA['itemFormElName'], 'folder', '', $itemArray, '', $params, $PA['onFocus']);
+				break;
+			case 'db':
+				// If the element is of the internal type "db":
+				// Creating string showing allowed types:
+				$tempFT = GeneralUtility::trimExplode(',', $allowed, TRUE);
+				if (!strcmp(trim($tempFT[0]), '*')) {
+					$onlySingleTableAllowed = FALSE;
+					$info .= '<span class="nobr">' . htmlspecialchars($this->getLL('l_allTables')) . '</span><br />';
+				} elseif ($tempFT) {
+					$onlySingleTableAllowed = count($tempFT) == 1;
+					foreach ($tempFT as $theT) {
+						$aOnClick = 'setFormValueOpenBrowser(\'db\', \'' . ($PA['itemFormElName'] . '|||' . $theT) . '\'); return false;';
+						$info .= '<span class="nobr">
+										<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">' . IconUtility::getSpriteIconForRecord($theT, array()) . htmlspecialchars($this->sL($GLOBALS['TCA'][$theT]['ctrl']['title'])) . '</a></span><br />';
 					}
-					$item .= '<div id="' . $PA['itemFormElID_file'] . '"><input type="file"' . $multipleAttribute . ' name="' . $PA['itemFormElName_file'] . $multipleFilenameSuffix . '" size="35" onchange="' . implode('', $PA['fieldChangeFunc']) . '" /></div>';
 				}
-			}
-			break;
-		case 'folder':
-			// If the element is of the internal type "folder":
-			// Array of folder items:
-			$itemArray = GeneralUtility::trimExplode(',', $PA['itemFormElValue'], 1);
-			// Creating the element:
-			$params = array(
-				'size' => $size,
-				'dontShowMoveIcons' => $maxitems <= 1,
-				'autoSizeMax' => MathUtility::forceIntegerInRange($config['autoSizeMax'], 0),
-				'maxitems' => $maxitems,
-				'style' => isset($config['selectedListStyle']) ? ' style="' . htmlspecialchars($config['selectedListStyle']) . '"' : ' style="' . $this->defaultMultipleSelectorStyle . '"',
-				'info' => $info,
-				'readOnly' => $disabled,
-				'noBrowser' => $noList || isset($config['disable_controls']) && GeneralUtility::inList($config['disable_controls'], 'browser'),
-				'noList' => $noList
-			);
-			$item .= $this->dbFileIcons($PA['itemFormElName'], 'folder', '', $itemArray, '', $params, $PA['onFocus']);
-			break;
-		case 'db':
-			// If the element is of the internal type "db":
-			// Creating string showing allowed types:
-			$tempFT = GeneralUtility::trimExplode(',', $allowed, TRUE);
-			if (!strcmp(trim($tempFT[0]), '*')) {
-				$onlySingleTableAllowed = FALSE;
-				$info .= '<span class="nobr">' . htmlspecialchars($this->getLL('l_allTables')) . '</span><br />';
-			} elseif ($tempFT) {
-				$onlySingleTableAllowed = count($tempFT) == 1;
-				foreach ($tempFT as $theT) {
-					$aOnClick = 'setFormValueOpenBrowser(\'db\', \'' . ($PA['itemFormElName'] . '|||' . $theT) . '\'); return false;';
-					$info .= '<span class="nobr">
-									<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">' . IconUtility::getSpriteIconForRecord($theT, array()) . htmlspecialchars($this->sL($GLOBALS['TCA'][$theT]['ctrl']['title'])) . '</a></span><br />';
+				$perms_clause = $GLOBALS['BE_USER']->getPagePermsClause(1);
+				$itemArray = array();
+				$imgs = array();
+				// Thumbnails:
+				$temp_itemArray = GeneralUtility::trimExplode(',', $PA['itemFormElValue'], 1);
+				foreach ($temp_itemArray as $dbRead) {
+					$recordParts = explode('|', $dbRead);
+					list($this_table, $this_uid) = BackendUtility::splitTable_Uid($recordParts[0]);
+					// For the case that no table was found and only a single table is defined to be allowed, use that one:
+					if (!$this_table && $onlySingleTableAllowed) {
+						$this_table = $allowed;
+					}
+					$itemArray[] = array('table' => $this_table, 'id' => $this_uid);
+					if (!$disabled && $show_thumbs) {
+						$rr = BackendUtility::getRecordWSOL($this_table, $this_uid);
+						$imgs[] = '<span class="nobr">' . $this->getClickMenu(IconUtility::getSpriteIconForRecord($this_table, $rr, array(
+							'style' => 'vertical-align:top',
+							'title' => htmlspecialchars((BackendUtility::getRecordPath($rr['pid'], $perms_clause, 15) . ' [UID: ' . $rr['uid'] . ']'))
+						)), $this_table, $this_uid) . '&nbsp;' . BackendUtility::getRecordTitle($this_table, $rr, TRUE) . ' <span class="typo3-dimmed"><em>[' . $rr['uid'] . ']</em></span>' . '</span>';
+					}
 				}
-			}
-			$perms_clause = $GLOBALS['BE_USER']->getPagePermsClause(1);
-			$itemArray = array();
-			$imgs = array();
-			// Thumbnails:
-			$temp_itemArray = GeneralUtility::trimExplode(',', $PA['itemFormElValue'], 1);
-			foreach ($temp_itemArray as $dbRead) {
-				$recordParts = explode('|', $dbRead);
-				list($this_table, $this_uid) = BackendUtility::splitTable_Uid($recordParts[0]);
-				// For the case that no table was found and only a single table is defined to be allowed, use that one:
-				if (!$this_table && $onlySingleTableAllowed) {
-					$this_table = $allowed;
-				}
-				$itemArray[] = array('table' => $this_table, 'id' => $this_uid);
+				$thumbsnail = '';
 				if (!$disabled && $show_thumbs) {
-					$rr = BackendUtility::getRecordWSOL($this_table, $this_uid);
-					$imgs[] = '<span class="nobr">' . $this->getClickMenu(IconUtility::getSpriteIconForRecord($this_table, $rr, array(
-						'style' => 'vertical-align:top',
-						'title' => htmlspecialchars((BackendUtility::getRecordPath($rr['pid'], $perms_clause, 15) . ' [UID: ' . $rr['uid'] . ']'))
-					)), $this_table, $this_uid) . '&nbsp;' . BackendUtility::getRecordTitle($this_table, $rr, TRUE) . ' <span class="typo3-dimmed"><em>[' . $rr['uid'] . ']</em></span>' . '</span>';
+					$thumbsnail = implode('<br />', $imgs);
 				}
-			}
-			$thumbsnail = '';
-			if (!$disabled && $show_thumbs) {
-				$thumbsnail = implode('<br />', $imgs);
-			}
-			// Creating the element:
-			$params = array(
-				'size' => $size,
-				'dontShowMoveIcons' => $maxitems <= 1,
-				'autoSizeMax' => MathUtility::forceIntegerInRange($config['autoSizeMax'], 0),
-				'maxitems' => $maxitems,
-				'style' => isset($config['selectedListStyle']) ? ' style="' . htmlspecialchars($config['selectedListStyle']) . '"' : ' style="' . $this->defaultMultipleSelectorStyle . '"',
-				'info' => $info,
-				'thumbnails' => $thumbsnail,
-				'readOnly' => $disabled,
-				'noBrowser' => $noList || isset($config['disable_controls']) && GeneralUtility::inList($config['disable_controls'], 'browser'),
-				'noList' => $noList
-			);
-			$item .= $this->dbFileIcons($PA['itemFormElName'], 'db', implode(',', $tempFT), $itemArray, '', $params, $PA['onFocus'], $table, $field, $row['uid'], $config);
-			break;
+				// Creating the element:
+				$params = array(
+					'size' => $size,
+					'dontShowMoveIcons' => $maxitems <= 1,
+					'autoSizeMax' => MathUtility::forceIntegerInRange($config['autoSizeMax'], 0),
+					'maxitems' => $maxitems,
+					'style' => isset($config['selectedListStyle']) ? ' style="' . htmlspecialchars($config['selectedListStyle']) . '"' : ' style="' . $this->defaultMultipleSelectorStyle . '"',
+					'info' => $info,
+					'thumbnails' => $thumbsnail,
+					'readOnly' => $disabled,
+					'noBrowser' => $noList || isset($config['disable_controls']) && GeneralUtility::inList($config['disable_controls'], 'browser'),
+					'noList' => $noList
+				);
+				$item .= $this->dbFileIcons($PA['itemFormElName'], 'db', implode(',', $tempFT), $itemArray, '', $params, $PA['onFocus'], $table, $field, $row['uid'], $config);
+				break;
 		}
 		// Wizards:
 		$altItem = '<input type="hidden" name="' . $PA['itemFormElName'] . '" value="' . htmlspecialchars($PA['itemFormElValue']) . '" />';
@@ -2652,27 +2649,26 @@ function ' . $evalData . '(value) {
 						$skipCondition = FALSE;
 						$fakeRow = array();
 						switch ($splittedCondition[0]) {
-						case 'FIELD':
-							list($sheetName, $fieldName) = GeneralUtility::trimExplode('.', $splittedCondition[1]);
-							$fieldValue = $editData['data'][$sheetName][$lang][$fieldName];
-							$splittedCondition[1] = $fieldName;
-							$dataStruct['ROOT']['TCEforms']['displayCond'] = join(':', $splittedCondition);
-							$fakeRow = array($fieldName => $fieldValue);
-							break;
-						case 'HIDE_FOR_NON_ADMINS':
+							case 'FIELD':
+								list($sheetName, $fieldName) = GeneralUtility::trimExplode('.', $splittedCondition[1]);
+								$fieldValue = $editData['data'][$sheetName][$lang][$fieldName];
+								$splittedCondition[1] = $fieldName;
+								$dataStruct['ROOT']['TCEforms']['displayCond'] = join(':', $splittedCondition);
+								$fakeRow = array($fieldName => $fieldValue);
+								break;
+							case 'HIDE_FOR_NON_ADMINS':
 
-						case 'VERSION':
+							case 'VERSION':
 
-						case 'HIDE_L10N_SIBLINGS':
+							case 'HIDE_L10N_SIBLINGS':
 
-						case 'EXT':
-							break;
-						case 'REC':
-							$fakeRow = array('uid' => $row['uid']);
-							break;
-						default:
-							$skipCondition = TRUE;
-							break;
+							case 'EXT':
+								break;
+							case 'REC':
+								$fakeRow = array('uid' => $row['uid']);
+								break;
+							default:
+								$skipCondition = TRUE;
 						}
 						$displayConditionResult = TRUE;
 						if ($dataStruct['ROOT']['TCEforms']['displayCond']) {
@@ -3073,80 +3069,80 @@ function ' . $evalData . '(value) {
 	public function formatValue($config, $itemValue) {
 		$format = trim($config['format']);
 		switch ($format) {
-		case 'date':
-			if ($itemValue) {
-				$option = trim($config['format.']['option']);
-				if ($option) {
-					if ($config['format.']['strftime']) {
-						$value = strftime($option, $itemValue);
+			case 'date':
+				if ($itemValue) {
+					$option = trim($config['format.']['option']);
+					if ($option) {
+						if ($config['format.']['strftime']) {
+							$value = strftime($option, $itemValue);
+						} else {
+							$value = date($option, $itemValue);
+						}
 					} else {
-						$value = date($option, $itemValue);
+						$value = date('d-m-Y', $itemValue);
 					}
 				} else {
-					$value = date('d-m-Y', $itemValue);
+					$value = '';
 				}
-			} else {
-				$value = '';
-			}
-			if ($config['format.']['appendAge']) {
-				$value .= ' (' . BackendUtility::calcAge(($GLOBALS['EXEC_TIME'] - $itemValue), $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.minutesHoursDaysYears')) . ')';
-			}
-			$itemValue = $value;
-			break;
-		case 'datetime':
-			// compatibility with "eval" (type "input")
-			$itemValue = date('H:i d-m-Y', $itemValue);
-			break;
-		case 'time':
-			// compatibility with "eval" (type "input")
-			$itemValue = date('H:i', $itemValue);
-			break;
-		case 'timesec':
-			// compatibility with "eval" (type "input")
-			$itemValue = date('H:i:s', $itemValue);
-			break;
-		case 'year':
-			// compatibility with "eval" (type "input")
-			$itemValue = date('Y', $itemValue);
-			break;
-		case 'int':
-			$baseArr = array('dec' => 'd', 'hex' => 'x', 'HEX' => 'X', 'oct' => 'o', 'bin' => 'b');
-			$base = trim($config['format.']['base']);
-			$format = $baseArr[$base] ? $baseArr[$base] : 'd';
-			$itemValue = sprintf('%' . $format, $itemValue);
-			break;
-		case 'float':
-			$precision = MathUtility::forceIntegerInRange($config['format.']['precision'], 1, 10, 2);
-			$itemValue = sprintf('%.' . $precision . 'f', $itemValue);
-			break;
-		case 'number':
-			$format = trim($config['format.']['option']);
-			$itemValue = sprintf('%' . $format, $itemValue);
-			break;
-		case 'md5':
-			$itemValue = md5($itemValue);
-			break;
-		case 'filesize':
-			$value = GeneralUtility::formatSize(intval($itemValue));
-			if ($config['format.']['appendByteSize']) {
-				$value .= ' (' . $itemValue . ')';
-			}
-			$itemValue = $value;
-			break;
-		case 'user':
-			$func = trim($config['format.']['userFunc']);
-			if ($func) {
-				$params = array(
-					'value' => $itemValue,
-					'args' => $config['format.']['userFunc'],
-					'config' => $config,
-					'pObj' => &$this
-				);
-				$itemValue = GeneralUtility::callUserFunction($func, $params, $this);
-			}
-			break;
-		default:
-			break;
+				if ($config['format.']['appendAge']) {
+					$value .= ' (' . BackendUtility::calcAge(($GLOBALS['EXEC_TIME'] - $itemValue), $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.minutesHoursDaysYears')) . ')';
+				}
+				$itemValue = $value;
+				break;
+			case 'datetime':
+				// compatibility with "eval" (type "input")
+				$itemValue = date('H:i d-m-Y', $itemValue);
+				break;
+			case 'time':
+				// compatibility with "eval" (type "input")
+				$itemValue = date('H:i', $itemValue);
+				break;
+			case 'timesec':
+				// compatibility with "eval" (type "input")
+				$itemValue = date('H:i:s', $itemValue);
+				break;
+			case 'year':
+				// compatibility with "eval" (type "input")
+				$itemValue = date('Y', $itemValue);
+				break;
+			case 'int':
+				$baseArr = array('dec' => 'd', 'hex' => 'x', 'HEX' => 'X', 'oct' => 'o', 'bin' => 'b');
+				$base = trim($config['format.']['base']);
+				$format = $baseArr[$base] ? $baseArr[$base] : 'd';
+				$itemValue = sprintf('%' . $format, $itemValue);
+				break;
+			case 'float':
+				$precision = MathUtility::forceIntegerInRange($config['format.']['precision'], 1, 10, 2);
+				$itemValue = sprintf('%.' . $precision . 'f', $itemValue);
+				break;
+			case 'number':
+				$format = trim($config['format.']['option']);
+				$itemValue = sprintf('%' . $format, $itemValue);
+				break;
+			case 'md5':
+				$itemValue = md5($itemValue);
+				break;
+			case 'filesize':
+				$value = GeneralUtility::formatSize(intval($itemValue));
+				if ($config['format.']['appendByteSize']) {
+					$value .= ' (' . $itemValue . ')';
+				}
+				$itemValue = $value;
+				break;
+			case 'user':
+				$func = trim($config['format.']['userFunc']);
+				if ($func) {
+					$params = array(
+						'value' => $itemValue,
+						'args' => $config['format.']['userFunc'],
+						'config' => $config,
+						'pObj' => &$this
+					);
+					$itemValue = GeneralUtility::callUserFunction($func, $params, $this);
+				}
+				break;
+			default:
+				// Do nothing
 		}
 		return $itemValue;
 	}
@@ -3636,45 +3632,44 @@ function ' . $evalData . '(value) {
 		if (is_array($itemArray)) {
 			$itemArrayC = count($itemArray);
 			switch ($mode) {
-			case 'db':
-				foreach ($itemArray as $pp) {
-					$pRec = BackendUtility::getRecordWSOL($pp['table'], $pp['id']);
-					if (is_array($pRec)) {
-						$pTitle = BackendUtility::getRecordTitle($pp['table'], $pRec, FALSE, TRUE);
-						$pUid = $pp['table'] . '_' . $pp['id'];
-						$uidList[] = $pUid;
-						$title = htmlspecialchars($pTitle);
-						$opt[] = '<option value="' . htmlspecialchars($pUid) . '" title="' . $title . '">' . $title . '</option>';
+				case 'db':
+					foreach ($itemArray as $pp) {
+						$pRec = BackendUtility::getRecordWSOL($pp['table'], $pp['id']);
+						if (is_array($pRec)) {
+							$pTitle = BackendUtility::getRecordTitle($pp['table'], $pRec, FALSE, TRUE);
+							$pUid = $pp['table'] . '_' . $pp['id'];
+							$uidList[] = $pUid;
+							$title = htmlspecialchars($pTitle);
+							$opt[] = '<option value="' . htmlspecialchars($pUid) . '" title="' . $title . '">' . $title . '</option>';
+						}
 					}
-				}
-				break;
-			case 'file_reference':
+					break;
+				case 'file_reference':
 
-			case 'file':
-				foreach ($itemArray as $item) {
-					$itemParts = explode('|', $item);
-					$uidList[] = ($pUid = ($pTitle = $itemParts[0]));
-					$title = htmlspecialchars(basename(rawurldecode($itemParts[1])));
-					$opt[] = '<option value="' . htmlspecialchars(rawurldecode($itemParts[0])) . '" title="' . $title . '">' . $title . '</option>';
-				}
-				break;
-			case 'folder':
-				foreach ($itemArray as $pp) {
-					$pParts = explode('|', $pp);
-					$uidList[] = ($pUid = ($pTitle = $pParts[0]));
-					$title = htmlspecialchars(rawurldecode($pParts[0]));
-					$opt[] = '<option value="' . htmlspecialchars(rawurldecode($pParts[0])) . '" title="' . $title . '">' . $title . '</option>';
-				}
-				break;
-			default:
-				foreach ($itemArray as $pp) {
-					$pParts = explode('|', $pp, 2);
-					$uidList[] = ($pUid = $pParts[0]);
-					$pTitle = $pParts[1];
-					$title = htmlspecialchars(rawurldecode($pTitle));
-					$opt[] = '<option value="' . htmlspecialchars(rawurldecode($pUid)) . '" title="' . $title . '">' . $title . '</option>';
-				}
-				break;
+				case 'file':
+					foreach ($itemArray as $item) {
+						$itemParts = explode('|', $item);
+						$uidList[] = ($pUid = ($pTitle = $itemParts[0]));
+						$title = htmlspecialchars(basename(rawurldecode($itemParts[1])));
+						$opt[] = '<option value="' . htmlspecialchars(rawurldecode($itemParts[0])) . '" title="' . $title . '">' . $title . '</option>';
+					}
+					break;
+				case 'folder':
+					foreach ($itemArray as $pp) {
+						$pParts = explode('|', $pp);
+						$uidList[] = ($pUid = ($pTitle = $pParts[0]));
+						$title = htmlspecialchars(rawurldecode($pParts[0]));
+						$opt[] = '<option value="' . htmlspecialchars(rawurldecode($pParts[0])) . '" title="' . $title . '">' . $title . '</option>';
+					}
+					break;
+				default:
+					foreach ($itemArray as $pp) {
+						$pParts = explode('|', $pp, 2);
+						$uidList[] = ($pUid = $pParts[0]);
+						$pTitle = $pParts[1];
+						$title = htmlspecialchars(rawurldecode($pTitle));
+						$opt[] = '<option value="' . htmlspecialchars(rawurldecode($pUid)) . '" title="' . $title . '">' . $title . '</option>';
+					}
 			}
 		}
 		// Create selector box of the options
@@ -3816,39 +3811,39 @@ function ' . $evalData . '(value) {
 		$output = array();
 		if (is_object($this->clipObj)) {
 			switch ($mode) {
-			case 'file_reference':
+				case 'file_reference':
 
-			case 'file':
-				$elFromTable = $this->clipObj->elFromTable('_FILE');
-				$allowedExts = GeneralUtility::trimExplode(',', $allowed, 1);
-				// If there are a set of allowed extensions, filter the content:
-				if ($allowedExts) {
-					foreach ($elFromTable as $elValue) {
-						$pI = pathinfo($elValue);
-						$ext = strtolower($pI['extension']);
-						if (in_array($ext, $allowedExts)) {
-							$output[] = $elValue;
+				case 'file':
+					$elFromTable = $this->clipObj->elFromTable('_FILE');
+					$allowedExts = GeneralUtility::trimExplode(',', $allowed, 1);
+					// If there are a set of allowed extensions, filter the content:
+					if ($allowedExts) {
+						foreach ($elFromTable as $elValue) {
+							$pI = pathinfo($elValue);
+							$ext = strtolower($pI['extension']);
+							if (in_array($ext, $allowedExts)) {
+								$output[] = $elValue;
+							}
+						}
+					} else {
+						// If all is allowed, insert all: (This does NOT respect any disallowed extensions, but those will be filtered away by the backend TCEmain)
+						$output = $elFromTable;
+					}
+					break;
+				case 'db':
+					$allowedTables = GeneralUtility::trimExplode(',', $allowed, 1);
+					// All tables allowed for relation:
+					if (!strcmp(trim($allowedTables[0]), '*')) {
+						$output = $this->clipObj->elFromTable('');
+					} else {
+						// Only some tables, filter them:
+						foreach ($allowedTables as $tablename) {
+							$elFromTable = $this->clipObj->elFromTable($tablename);
+							$output = array_merge($output, $elFromTable);
 						}
 					}
-				} else {
-					// If all is allowed, insert all: (This does NOT respect any disallowed extensions, but those will be filtered away by the backend TCEmain)
-					$output = $elFromTable;
-				}
-				break;
-			case 'db':
-				$allowedTables = GeneralUtility::trimExplode(',', $allowed, 1);
-				// All tables allowed for relation:
-				if (!strcmp(trim($allowedTables[0]), '*')) {
-					$output = $this->clipObj->elFromTable('');
-				} else {
-					// Only some tables, filter them:
-					foreach ($allowedTables as $tablename) {
-						$elFromTable = $this->clipObj->elFromTable($tablename);
-						$output = array_merge($output, $elFromTable);
-					}
-				}
-				$output = array_keys($output);
-				break;
+					$output = array_keys($output);
+					break;
 			}
 		}
 		return $output;
@@ -3923,129 +3918,129 @@ function ' . $evalData . '(value) {
 						$icon = $iTitle;
 					}
 					switch ((string) $wConf['type']) {
-					case 'userFunc':
+						case 'userFunc':
 
-					case 'script':
+						case 'script':
 
-					case 'popup':
+						case 'popup':
 
-					case 'colorbox':
+						case 'colorbox':
 
-					case 'slider':
-						if (!$wConf['notNewRecords'] || MathUtility::canBeInterpretedAsInteger($row['uid'])) {
-							// Setting &P array contents:
-							$params = array();
-							$params['fieldConfig'] = $fieldConfig;
-							$params['params'] = $wConf['params'];
-							$params['exampleImg'] = $wConf['exampleImg'];
-							$params['table'] = $table;
-							$params['uid'] = $row['uid'];
-							$params['pid'] = $row['pid'];
-							$params['field'] = $field;
-							$params['flexFormPath'] = $flexFormPath;
-							$params['md5ID'] = $md5ID;
-							$params['returnUrl'] = $this->thisReturnUrl();
-							// Resolving script filename and setting URL.
-							if (!strcmp(substr($wConf['script'], 0, 4), 'EXT:')) {
-								$wScript = GeneralUtility::getFileAbsFileName($wConf['script']);
-								if ($wScript) {
-									$wScript = '../' . substr($wScript, strlen(PATH_site));
+						case 'slider':
+							if (!$wConf['notNewRecords'] || MathUtility::canBeInterpretedAsInteger($row['uid'])) {
+								// Setting &P array contents:
+								$params = array();
+								$params['fieldConfig'] = $fieldConfig;
+								$params['params'] = $wConf['params'];
+								$params['exampleImg'] = $wConf['exampleImg'];
+								$params['table'] = $table;
+								$params['uid'] = $row['uid'];
+								$params['pid'] = $row['pid'];
+								$params['field'] = $field;
+								$params['flexFormPath'] = $flexFormPath;
+								$params['md5ID'] = $md5ID;
+								$params['returnUrl'] = $this->thisReturnUrl();
+								// Resolving script filename and setting URL.
+								if (!strcmp(substr($wConf['script'], 0, 4), 'EXT:')) {
+									$wScript = GeneralUtility::getFileAbsFileName($wConf['script']);
+									if ($wScript) {
+										$wScript = '../' . substr($wScript, strlen(PATH_site));
+									} else {
+										break;
+									}
 								} else {
+									$wScript = $wConf['script'];
+								}
+								$url = $this->backPath . $wScript . (strstr($wScript, '?') ? '' : '?');
+								// If there is no script and the type is "colorbox", break right away:
+								if ((string) $wConf['type'] == 'colorbox' && !$wConf['script']) {
 									break;
 								}
-							} else {
-								$wScript = $wConf['script'];
+								// If "script" type, create the links around the icon:
+								if ((string) $wConf['type'] == 'script') {
+									$aUrl = $url . GeneralUtility::implodeArrayForUrl('', array('P' => $params));
+									$outArr[] = '<a href="' . htmlspecialchars($aUrl) . '" onclick="' . $this->blur() . 'return !TBE_EDITOR.isFormChanged();">' . $icon . '</a>';
+								} else {
+									// ... else types "popup", "colorbox" and "userFunc" will need additional parameters:
+									$params['formName'] = $this->formName;
+									$params['itemName'] = $itemName;
+									$params['fieldChangeFunc'] = $fieldChangeFunc;
+									$params['fieldChangeFuncHash'] = GeneralUtility::hmac(serialize($fieldChangeFunc));
+									switch ((string) $wConf['type']) {
+									case 'popup':
+
+									case 'colorbox':
+										// Current form value is passed as P[currentValue]!
+										$addJS = $wConf['popup_onlyOpenIfSelected'] ? 'if (!TBE_EDITOR.curSelected(\'' . $itemName . $listFlag . '\')){alert(' . $GLOBALS['LANG']->JScharCode($this->getLL('m_noSelItemForEdit')) . '); return false;}' : '';
+										$curSelectedValues = '+\'&P[currentSelectedValues]=\'+TBE_EDITOR.curSelected(\'' . $itemName . $listFlag . '\')';
+										$aOnClick = $this->blur() . $addJS . 'vHWin=window.open(\'' . $url . GeneralUtility::implodeArrayForUrl('', array('P' => $params)) . '\'+\'&P[currentValue]=\'+TBE_EDITOR.rawurlencode(' . $this->elName($itemName) . '.value,200)' . $curSelectedValues . ',\'popUp' . $md5ID . '\',\'' . $wConf['JSopenParams'] . '\');' . 'vHWin.focus();return false;';
+										// Setting "colorBoxLinks" - user LATER to wrap around the color box as well:
+										$colorBoxLinks = array('<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">', '</a>');
+										if ((string) $wConf['type'] == 'popup') {
+											$outArr[] = $colorBoxLinks[0] . $icon . $colorBoxLinks[1];
+										}
+										break;
+									case 'userFunc':
+										// Reference set!
+										$params['item'] = &$item;
+										$params['icon'] = $icon;
+										$params['iTitle'] = $iTitle;
+										$params['wConf'] = $wConf;
+										$params['row'] = $row;
+										$outArr[] = GeneralUtility::callUserFunction($wConf['userFunc'], $params, $this);
+										break;
+									case 'slider':
+										// Reference set!
+										$params['item'] = &$item;
+										$params['icon'] = $icon;
+										$params['iTitle'] = $iTitle;
+										$params['wConf'] = $wConf;
+										$params['row'] = $row;
+										$wizard = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Form\\Element\\ValueSlider');
+										$outArr[] = call_user_func_array(array(&$wizard, 'renderWizard'), array(&$params, &$this));
+									}
+								}
+								// Hide the real form element?
+								if (is_array($wConf['hideParent']) || $wConf['hideParent']) {
+									// Setting the item to a hidden-field.
+									$item = $itemKinds[1];
+									if (is_array($wConf['hideParent'])) {
+										$item .= $this->getSingleField_typeNone_render($wConf['hideParent'], $PA['itemFormElValue']);
+									}
+								}
 							}
-							$url = $this->backPath . $wScript . (strstr($wScript, '?') ? '' : '?');
-							// If there is no script and the type is "colorbox", break right away:
-							if ((string) $wConf['type'] == 'colorbox' && !$wConf['script']) {
+							break;
+						case 'select':
+							$fieldValue = array('config' => $wConf);
+							$TSconfig = $this->setTSconfig($table, $row);
+							$TSconfig[$field] = $TSconfig[$field]['wizards.'][$wid . '.'];
+							$selItems = $this->addSelectOptionsToItemArray($this->initItemArray($fieldValue), $fieldValue, $TSconfig, $field);
+							// Process items by a user function:
+							if (!empty($wConf['itemsProcFunc'])) {
+								$funcConfig = !empty($wConf['itemsProcFunc.']) ? $wConf['itemsProcFunc.'] : array();
+								$selItems = $this->procItems($selItems, $funcConfig, $wConf, $table, $row, $field);
+							}
+							$opt = array();
+							$opt[] = '<option>' . $iTitle . '</option>';
+							foreach ($selItems as $p) {
+								$opt[] = '<option value="' . htmlspecialchars($p[1]) . '">' . htmlspecialchars($p[0]) . '</option>';
+							}
+							if ($wConf['mode'] == 'append') {
+								$assignValue = $this->elName($itemName) . '.value=\'\'+this.options[this.selectedIndex].value+' . $this->elName($itemName) . '.value';
+							} elseif ($wConf['mode'] == 'prepend') {
+								$assignValue = $this->elName($itemName) . '.value+=\'\'+this.options[this.selectedIndex].value';
+							} else {
+								$assignValue = $this->elName($itemName) . '.value=this.options[this.selectedIndex].value';
+							}
+							$sOnChange = $assignValue . ';this.blur();this.selectedIndex=0;' . implode('', $fieldChangeFunc);
+							$outArr[] = '<select id="' . uniqid('tceforms-select-') . '" class="tceforms-select tceforms-wizardselect" name="_WIZARD' . $fName . '" onchange="' . htmlspecialchars($sOnChange) . '">' . implode('', $opt) . '</select>';
+							break;
+						case 'suggest':
+							if (isset($PA['fieldTSConfig']['suggest.']['default.']['hide']) && (bool) $PA['fieldTSConfig']['suggest.']['default.']['hide'] == TRUE) {
 								break;
 							}
-							// If "script" type, create the links around the icon:
-							if ((string) $wConf['type'] == 'script') {
-								$aUrl = $url . GeneralUtility::implodeArrayForUrl('', array('P' => $params));
-								$outArr[] = '<a href="' . htmlspecialchars($aUrl) . '" onclick="' . $this->blur() . 'return !TBE_EDITOR.isFormChanged();">' . $icon . '</a>';
-							} else {
-								// ... else types "popup", "colorbox" and "userFunc" will need additional parameters:
-								$params['formName'] = $this->formName;
-								$params['itemName'] = $itemName;
-								$params['fieldChangeFunc'] = $fieldChangeFunc;
-								$params['fieldChangeFuncHash'] = GeneralUtility::hmac(serialize($fieldChangeFunc));
-								switch ((string) $wConf['type']) {
-								case 'popup':
-
-								case 'colorbox':
-									// Current form value is passed as P[currentValue]!
-									$addJS = $wConf['popup_onlyOpenIfSelected'] ? 'if (!TBE_EDITOR.curSelected(\'' . $itemName . $listFlag . '\')){alert(' . $GLOBALS['LANG']->JScharCode($this->getLL('m_noSelItemForEdit')) . '); return false;}' : '';
-									$curSelectedValues = '+\'&P[currentSelectedValues]=\'+TBE_EDITOR.curSelected(\'' . $itemName . $listFlag . '\')';
-									$aOnClick = $this->blur() . $addJS . 'vHWin=window.open(\'' . $url . GeneralUtility::implodeArrayForUrl('', array('P' => $params)) . '\'+\'&P[currentValue]=\'+TBE_EDITOR.rawurlencode(' . $this->elName($itemName) . '.value,200)' . $curSelectedValues . ',\'popUp' . $md5ID . '\',\'' . $wConf['JSopenParams'] . '\');' . 'vHWin.focus();return false;';
-									// Setting "colorBoxLinks" - user LATER to wrap around the color box as well:
-									$colorBoxLinks = array('<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">', '</a>');
-									if ((string) $wConf['type'] == 'popup') {
-										$outArr[] = $colorBoxLinks[0] . $icon . $colorBoxLinks[1];
-									}
-									break;
-								case 'userFunc':
-									// Reference set!
-									$params['item'] = &$item;
-									$params['icon'] = $icon;
-									$params['iTitle'] = $iTitle;
-									$params['wConf'] = $wConf;
-									$params['row'] = $row;
-									$outArr[] = GeneralUtility::callUserFunction($wConf['userFunc'], $params, $this);
-									break;
-								case 'slider':
-									// Reference set!
-									$params['item'] = &$item;
-									$params['icon'] = $icon;
-									$params['iTitle'] = $iTitle;
-									$params['wConf'] = $wConf;
-									$params['row'] = $row;
-									$wizard = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Form\\Element\\ValueSlider');
-									$outArr[] = call_user_func_array(array(&$wizard, 'renderWizard'), array(&$params, &$this));
-								}
-							}
-							// Hide the real form element?
-							if (is_array($wConf['hideParent']) || $wConf['hideParent']) {
-								// Setting the item to a hidden-field.
-								$item = $itemKinds[1];
-								if (is_array($wConf['hideParent'])) {
-									$item .= $this->getSingleField_typeNone_render($wConf['hideParent'], $PA['itemFormElValue']);
-								}
-							}
-						}
-						break;
-					case 'select':
-						$fieldValue = array('config' => $wConf);
-						$TSconfig = $this->setTSconfig($table, $row);
-						$TSconfig[$field] = $TSconfig[$field]['wizards.'][$wid . '.'];
-						$selItems = $this->addSelectOptionsToItemArray($this->initItemArray($fieldValue), $fieldValue, $TSconfig, $field);
-						// Process items by a user function:
-						if (!empty($wConf['itemsProcFunc'])) {
-							$funcConfig = !empty($wConf['itemsProcFunc.']) ? $wConf['itemsProcFunc.'] : array();
-							$selItems = $this->procItems($selItems, $funcConfig, $wConf, $table, $row, $field);
-						}
-						$opt = array();
-						$opt[] = '<option>' . $iTitle . '</option>';
-						foreach ($selItems as $p) {
-							$opt[] = '<option value="' . htmlspecialchars($p[1]) . '">' . htmlspecialchars($p[0]) . '</option>';
-						}
-						if ($wConf['mode'] == 'append') {
-							$assignValue = $this->elName($itemName) . '.value=\'\'+this.options[this.selectedIndex].value+' . $this->elName($itemName) . '.value';
-						} elseif ($wConf['mode'] == 'prepend') {
-							$assignValue = $this->elName($itemName) . '.value+=\'\'+this.options[this.selectedIndex].value';
-						} else {
-							$assignValue = $this->elName($itemName) . '.value=this.options[this.selectedIndex].value';
-						}
-						$sOnChange = $assignValue . ';this.blur();this.selectedIndex=0;' . implode('', $fieldChangeFunc);
-						$outArr[] = '<select id="' . uniqid('tceforms-select-') . '" class="tceforms-select tceforms-wizardselect" name="_WIZARD' . $fName . '" onchange="' . htmlspecialchars($sOnChange) . '">' . implode('', $opt) . '</select>';
-						break;
-					case 'suggest':
-						if (isset($PA['fieldTSConfig']['suggest.']['default.']['hide']) && (bool) $PA['fieldTSConfig']['suggest.']['default.']['hide'] == TRUE) {
+							$outArr[] = $this->suggest->renderSuggestSelector($PA['itemFormElName'], $table, $field, $row, $PA);
 							break;
-						}
-						$outArr[] = $this->suggest->renderSuggestSelector($PA['itemFormElName'], $table, $field, $row, $PA);
-						break;
 					}
 					// Color wizard colorbox:
 					if ((string) $wConf['type'] == 'colorbox') {
@@ -4588,171 +4583,171 @@ function ' . $evalData . '(value) {
 		// If 'special' is configured:
 		if ($fieldValue['config']['special']) {
 			switch ($fieldValue['config']['special']) {
-			case 'tables':
-				$temp_tc = array_keys($GLOBALS['TCA']);
-				foreach ($temp_tc as $theTableNames) {
-					if (!$GLOBALS['TCA'][$theTableNames]['ctrl']['adminOnly']) {
+				case 'tables':
+					$temp_tc = array_keys($GLOBALS['TCA']);
+					foreach ($temp_tc as $theTableNames) {
+						if (!$GLOBALS['TCA'][$theTableNames]['ctrl']['adminOnly']) {
+							// Icon:
+							$icon = IconUtility::mapRecordTypeToSpriteIconName($theTableNames, array());
+							// Add help text
+							$helpText = array();
+							$GLOBALS['LANG']->loadSingleTableDescription($theTableNames);
+							$helpTextArray = $GLOBALS['TCA_DESCR'][$theTableNames]['columns'][''];
+							if (!empty($helpTextArray['description'])) {
+								$helpText['description'] = $helpTextArray['description'];
+							}
+							// Item configuration:
+							$items[] = array(
+								$this->sL($GLOBALS['TCA'][$theTableNames]['ctrl']['title']),
+								$theTableNames,
+								$icon,
+								$helpText
+							);
+						}
+					}
+					break;
+				case 'pagetypes':
+					$theTypes = $GLOBALS['TCA']['pages']['columns']['doktype']['config']['items'];
+					foreach ($theTypes as $theTypeArrays) {
 						// Icon:
-						$icon = IconUtility::mapRecordTypeToSpriteIconName($theTableNames, array());
+						$icon = 'empty-emtpy';
+						if ($theTypeArrays[1] != '--div--') {
+							$icon = IconUtility::mapRecordTypeToSpriteIconName('pages', array('doktype' => $theTypeArrays[1]));
+						}
+						// Item configuration:
+						$items[] = array(
+							$this->sL($theTypeArrays[0]),
+							$theTypeArrays[1],
+							$icon
+						);
+					}
+					break;
+				case 'exclude':
+					$theTypes = BackendUtility::getExcludeFields();
+					foreach ($theTypes as $theTypeArrays) {
+						list($theTable, $theFullField) = explode(':', $theTypeArrays[1]);
+						// If the field comes from a FlexForm, the syntax is more complex
+						$theFieldParts = explode(';', $theFullField);
+						$theField = array_pop($theFieldParts);
+						// Add header if not yet set for table:
+						if (!array_key_exists($theTable, $items)) {
+							$icon = IconUtility::mapRecordTypeToSpriteIconName($theTable, array());
+							$items[$theTable] = array(
+								$this->sL($GLOBALS['TCA'][$theTable]['ctrl']['title']),
+								'--div--',
+								$icon
+							);
+						}
 						// Add help text
 						$helpText = array();
-						$GLOBALS['LANG']->loadSingleTableDescription($theTableNames);
-						$helpTextArray = $GLOBALS['TCA_DESCR'][$theTableNames]['columns'][''];
+						$GLOBALS['LANG']->loadSingleTableDescription($theTable);
+						$helpTextArray = $GLOBALS['TCA_DESCR'][$theTable]['columns'][$theFullField];
 						if (!empty($helpTextArray['description'])) {
 							$helpText['description'] = $helpTextArray['description'];
 						}
 						// Item configuration:
 						$items[] = array(
-							$this->sL($GLOBALS['TCA'][$theTableNames]['ctrl']['title']),
-							$theTableNames,
-							$icon,
+							rtrim($GLOBALS['LANG']->sl($GLOBALS['TCA'][$theTable]['columns'][$theField]['label']), ':') . ' (' . $theField . ')',
+							$theTypeArrays[1],
+							'empty-empty',
 							$helpText
 						);
 					}
-				}
-				break;
-			case 'pagetypes':
-				$theTypes = $GLOBALS['TCA']['pages']['columns']['doktype']['config']['items'];
-				foreach ($theTypes as $theTypeArrays) {
-					// Icon:
-					$icon = 'empty-emtpy';
-					if ($theTypeArrays[1] != '--div--') {
-						$icon = IconUtility::mapRecordTypeToSpriteIconName('pages', array('doktype' => $theTypeArrays[1]));
-					}
-					// Item configuration:
-					$items[] = array(
-						$this->sL($theTypeArrays[0]),
-						$theTypeArrays[1],
-						$icon
+					break;
+				case 'explicitValues':
+					$theTypes = BackendUtility::getExplicitAuthFieldValues();
+					// Icons:
+					$icons = array(
+						'ALLOW' => 'status-status-permission-granted',
+						'DENY' => 'status-status-permission-denied'
 					);
-				}
-				break;
-			case 'exclude':
-				$theTypes = BackendUtility::getExcludeFields();
-				foreach ($theTypes as $theTypeArrays) {
-					list($theTable, $theFullField) = explode(':', $theTypeArrays[1]);
-					// If the field comes from a FlexForm, the syntax is more complex
-					$theFieldParts = explode(';', $theFullField);
-					$theField = array_pop($theFieldParts);
-					// Add header if not yet set for table:
-					if (!array_key_exists($theTable, $items)) {
-						$icon = IconUtility::mapRecordTypeToSpriteIconName($theTable, array());
-						$items[$theTable] = array(
-							$this->sL($GLOBALS['TCA'][$theTable]['ctrl']['title']),
-							'--div--',
-							$icon
-						);
-					}
-					// Add help text
-					$helpText = array();
-					$GLOBALS['LANG']->loadSingleTableDescription($theTable);
-					$helpTextArray = $GLOBALS['TCA_DESCR'][$theTable]['columns'][$theFullField];
-					if (!empty($helpTextArray['description'])) {
-						$helpText['description'] = $helpTextArray['description'];
-					}
-					// Item configuration:
-					$items[] = array(
-						rtrim($GLOBALS['LANG']->sl($GLOBALS['TCA'][$theTable]['columns'][$theField]['label']), ':') . ' (' . $theField . ')',
-						$theTypeArrays[1],
-						'empty-empty',
-						$helpText
-					);
-				}
-				break;
-			case 'explicitValues':
-				$theTypes = BackendUtility::getExplicitAuthFieldValues();
-				// Icons:
-				$icons = array(
-					'ALLOW' => 'status-status-permission-granted',
-					'DENY' => 'status-status-permission-denied'
-				);
-				// Traverse types:
-				foreach ($theTypes as $tableFieldKey => $theTypeArrays) {
-					if (is_array($theTypeArrays['items'])) {
-						// Add header:
-						$items[] = array(
-							$theTypeArrays['tableFieldLabel'],
-							'--div--'
-						);
-						// Traverse options for this field:
-						foreach ($theTypeArrays['items'] as $itemValue => $itemContent) {
-							// Add item to be selected:
-							$items[] = array(
-								'[' . $itemContent[2] . '] ' . $itemContent[1],
-								$tableFieldKey . ':' . preg_replace('/[:|,]/', '', $itemValue) . ':' . $itemContent[0],
-								$icons[$itemContent[0]]
-							);
-						}
-					}
-				}
-				break;
-			case 'languages':
-				$items = array_merge($items, BackendUtility::getSystemLanguages());
-				break;
-			case 'custom':
-				// Initialize:
-				$customOptions = $GLOBALS['TYPO3_CONF_VARS']['BE']['customPermOptions'];
-				if (is_array($customOptions)) {
-					foreach ($customOptions as $coKey => $coValue) {
-						if (is_array($coValue['items'])) {
+					// Traverse types:
+					foreach ($theTypes as $tableFieldKey => $theTypeArrays) {
+						if (is_array($theTypeArrays['items'])) {
 							// Add header:
 							$items[] = array(
-								$GLOBALS['LANG']->sl($coValue['header']),
+								$theTypeArrays['tableFieldLabel'],
 								'--div--'
 							);
-							// Traverse items:
-							foreach ($coValue['items'] as $itemKey => $itemCfg) {
-								// Icon:
-								if ($itemCfg[1]) {
-									list($icon) = $this->getIcon($itemCfg[1]);
-								} else {
-									$icon = 'empty-empty';
-								}
-								// Add help text
-								$helpText = array();
-								if (!empty($itemCfg[2])) {
-									$helpText['description'] = $GLOBALS['LANG']->sl($itemCfg[2]);
-								}
+							// Traverse options for this field:
+							foreach ($theTypeArrays['items'] as $itemValue => $itemContent) {
 								// Add item to be selected:
 								$items[] = array(
-									$GLOBALS['LANG']->sl($itemCfg[0]),
-									$coKey . ':' . preg_replace('/[:|,]/', '', $itemKey),
-									$icon,
-									$helpText
+									'[' . $itemContent[2] . '] ' . $itemContent[1],
+									$tableFieldKey . ':' . preg_replace('/[:|,]/', '', $itemValue) . ':' . $itemContent[0],
+									$icons[$itemContent[0]]
 								);
 							}
 						}
 					}
-				}
-				break;
-			case 'modListGroup':
-
-			case 'modListUser':
-				$loadModules = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Module\\ModuleLoader');
-				$loadModules->load($GLOBALS['TBE_MODULES']);
-				$modList = $fieldValue['config']['special'] == 'modListUser' ? $loadModules->modListUser : $loadModules->modListGroup;
-				if (is_array($modList)) {
-					foreach ($modList as $theMod) {
-						// Icon:
-						$icon = $GLOBALS['LANG']->moduleLabels['tabs_images'][$theMod . '_tab'];
-						if ($icon) {
-							$icon = '../' . substr($icon, strlen(PATH_site));
+					break;
+				case 'languages':
+					$items = array_merge($items, BackendUtility::getSystemLanguages());
+					break;
+				case 'custom':
+					// Initialize:
+					$customOptions = $GLOBALS['TYPO3_CONF_VARS']['BE']['customPermOptions'];
+					if (is_array($customOptions)) {
+						foreach ($customOptions as $coKey => $coValue) {
+							if (is_array($coValue['items'])) {
+								// Add header:
+								$items[] = array(
+									$GLOBALS['LANG']->sl($coValue['header']),
+									'--div--'
+								);
+								// Traverse items:
+								foreach ($coValue['items'] as $itemKey => $itemCfg) {
+									// Icon:
+									if ($itemCfg[1]) {
+										list($icon) = $this->getIcon($itemCfg[1]);
+									} else {
+										$icon = 'empty-empty';
+									}
+									// Add help text
+									$helpText = array();
+									if (!empty($itemCfg[2])) {
+										$helpText['description'] = $GLOBALS['LANG']->sl($itemCfg[2]);
+									}
+									// Add item to be selected:
+									$items[] = array(
+										$GLOBALS['LANG']->sl($itemCfg[0]),
+										$coKey . ':' . preg_replace('/[:|,]/', '', $itemKey),
+										$icon,
+										$helpText
+									);
+								}
+							}
 						}
-						// Add help text
-						$helpText = array(
-							'title' => $GLOBALS['LANG']->moduleLabels['labels'][$theMod . '_tablabel'],
-							'description' => $GLOBALS['LANG']->moduleLabels['labels'][$theMod . '_tabdescr']
-						);
-						// Item configuration:
-						$items[] = array(
-							$this->addSelectOptionsToItemArray_makeModuleData($theMod),
-							$theMod,
-							$icon,
-							$helpText
-						);
 					}
-				}
-				break;
+					break;
+				case 'modListGroup':
+
+				case 'modListUser':
+					$loadModules = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Module\\ModuleLoader');
+					$loadModules->load($GLOBALS['TBE_MODULES']);
+					$modList = $fieldValue['config']['special'] == 'modListUser' ? $loadModules->modListUser : $loadModules->modListGroup;
+					if (is_array($modList)) {
+						foreach ($modList as $theMod) {
+							// Icon:
+							$icon = $GLOBALS['LANG']->moduleLabels['tabs_images'][$theMod . '_tab'];
+							if ($icon) {
+								$icon = '../' . substr($icon, strlen(PATH_site));
+							}
+							// Add help text
+							$helpText = array(
+								'title' => $GLOBALS['LANG']->moduleLabels['labels'][$theMod . '_tablabel'],
+								'description' => $GLOBALS['LANG']->moduleLabels['labels'][$theMod . '_tabdescr']
+							);
+							// Item configuration:
+							$items[] = array(
+								$this->addSelectOptionsToItemArray_makeModuleData($theMod),
+								$theMod,
+								$icon,
+								$helpText
+							);
+						}
+					}
+					break;
 			}
 		}
 		// Return the items:
@@ -5915,12 +5910,12 @@ function ' . $evalData . '(value) {
 	public function getLL($str) {
 		$content = '';
 		switch (substr($str, 0, 2)) {
-		case 'l_':
-			$content = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.' . substr($str, 2));
-			break;
-		case 'm_':
-			$content = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:mess.' . substr($str, 2));
-			break;
+			case 'l_':
+				$content = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.' . substr($str, 2));
+				break;
+			case 'm_':
+				$content = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:mess.' . substr($str, 2));
+				break;
 		}
 		return $content;
 	}

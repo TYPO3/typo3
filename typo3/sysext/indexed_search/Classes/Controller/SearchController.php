@@ -455,36 +455,35 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 	 */
 	protected function makeRating($row) {
 		switch ((string) $this->searchData['sortOrder']) {
-		case 'rank_count':
-			return $row['order_val'] . ' ' . \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('result.ratingMatches', 'indexed_search');
-			break;
-		case 'rank_first':
-			return ceil(\TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange((255 - $row['order_val']), 1, 255) / 255 * 100) . '%';
-			break;
-		case 'rank_flag':
-			if ($this->firstRow['order_val2']) {
-				// (3 MSB bit, 224 is highest value of order_val1 currently)
-				$base = $row['order_val1'] * 256;
-				// 15-3 MSB = 12
-				$freqNumber = $row['order_val2'] / $this->firstRow['order_val2'] * pow(2, 12);
-				$total = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($base + $freqNumber, 0, 32767);
-				return ceil(log($total) / log(32767) * 100) . '%';
-			}
-			break;
-		case 'rank_freq':
-			$max = 10000;
-			$total = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($row['order_val'], 0, $max);
-			return ceil(log($total) / log($max) * 100) . '%';
-			break;
-		case 'crdate':
-			return $this->cObj->calcAge($GLOBALS['EXEC_TIME'] - $row['item_crdate'], 0);
-			break;
-		case 'mtime':
-			return $this->cObj->calcAge($GLOBALS['EXEC_TIME'] - $row['item_mtime'], 0);
-			break;
-		default:
-			return ' ';
-			break;
+			case 'rank_count':
+				return $row['order_val'] . ' ' . \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('result.ratingMatches', 'indexed_search');
+				break;
+			case 'rank_first':
+				return ceil(\TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange((255 - $row['order_val']), 1, 255) / 255 * 100) . '%';
+				break;
+			case 'rank_flag':
+				if ($this->firstRow['order_val2']) {
+					// (3 MSB bit, 224 is highest value of order_val1 currently)
+					$base = $row['order_val1'] * 256;
+					// 15-3 MSB = 12
+					$freqNumber = $row['order_val2'] / $this->firstRow['order_val2'] * pow(2, 12);
+					$total = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($base + $freqNumber, 0, 32767);
+					return ceil(log($total) / log(32767) * 100) . '%';
+				}
+				break;
+			case 'rank_freq':
+				$max = 10000;
+				$total = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($row['order_val'], 0, $max);
+				return ceil(log($total) / log($max) * 100) . '%';
+				break;
+			case 'crdate':
+				return $this->cObj->calcAge($GLOBALS['EXEC_TIME'] - $row['item_crdate'], 0);
+				break;
+			case 'mtime':
+				return $this->cObj->calcAge($GLOBALS['EXEC_TIME'] - $row['item_mtime'], 0);
+				break;
+			default:
+				return ' ';
 		}
 	}
 

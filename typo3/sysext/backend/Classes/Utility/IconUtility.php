@@ -156,18 +156,18 @@ class IconUtility {
 		// Shadow
 		if ($GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
 			switch ((int) $row['t3ver_state']) {
-			case 1:
-				return 'gfx/i/shadow_hide.png';
-				break;
-			case 2:
-				return 'gfx/i/shadow_delete.png';
-				break;
-			case 3:
-				return 'gfx/i/shadow_moveto_plh.png';
-				break;
-			case 4:
-				return 'gfx/i/shadow_moveto_pointer.png';
-				break;
+				case 1:
+					return 'gfx/i/shadow_hide.png';
+					break;
+				case 2:
+					return 'gfx/i/shadow_delete.png';
+					break;
+				case 3:
+					return 'gfx/i/shadow_moveto_plh.png';
+					break;
+				case 4:
+					return 'gfx/i/shadow_moveto_pointer.png';
+					break;
 			}
 		}
 		// First, find the icon file name. This can depend on configuration in TCA, field values and more:
@@ -349,15 +349,15 @@ class IconUtility {
 		// Return icon source/wHattributes:
 		$output = '';
 		switch ($outputMode) {
-		case 0:
-			$output = ' src="' . $backPath . $src . '" ' . $wHattribs;
-			break;
-		case 1:
-			$output = $backPath . $src;
-			break;
-		case 2:
-			$output = $wHattribs;
-			break;
+			case 0:
+				$output = ' src="' . $backPath . $src . '" ' . $wHattribs;
+				break;
+			case 1:
+				$output = $backPath . $src;
+				break;
+			case 2:
+				$output = $wHattribs;
+				break;
 		}
 		$cachedSkinImages[$imageId] = $output;
 		return $output;

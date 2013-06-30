@@ -199,17 +199,17 @@ class TreelistCacheUpdateHooks {
 		$actionNames = array_keys($actions);
 		foreach ($actionNames as $actionName) {
 			switch ($actionName) {
-			case 'allParents':
-				$this->clearCacheForAllParents($affectedParentPage);
-				break;
-			case 'setExpiration':
-				// Only used when setting an end time for a page
-				$expirationTime = $updatedFields['endtime'];
-				$this->setCacheExpiration($affectedPage, $expirationTime);
-				break;
-			case 'uidInTreelist':
-				$this->clearCacheWhereUidInTreelist($affectedPage);
-				break;
+				case 'allParents':
+					$this->clearCacheForAllParents($affectedParentPage);
+					break;
+				case 'setExpiration':
+					// Only used when setting an end time for a page
+					$expirationTime = $updatedFields['endtime'];
+					$this->setCacheExpiration($affectedPage, $expirationTime);
+					break;
+				case 'uidInTreelist':
+					$this->clearCacheWhereUidInTreelist($affectedPage);
+					break;
 			}
 		}
 		// From time to time clean the cache from expired entries
@@ -292,38 +292,38 @@ class TreelistCacheUpdateHooks {
 			$updatedFieldNames = array_keys($updatedFields);
 			foreach ($updatedFieldNames as $updatedFieldName) {
 				switch ($updatedFieldName) {
-				case 'pid':
+					case 'pid':
 
-				case $GLOBALS['TCA']['pages']['ctrl']['enablecolumns']['disabled']:
+					case $GLOBALS['TCA']['pages']['ctrl']['enablecolumns']['disabled']:
 
-				case $GLOBALS['TCA']['pages']['ctrl']['delete']:
+					case $GLOBALS['TCA']['pages']['ctrl']['delete']:
 
-				case $GLOBALS['TCA']['pages']['ctrl']['enablecolumns']['starttime']:
+					case $GLOBALS['TCA']['pages']['ctrl']['enablecolumns']['starttime']:
 
-				case $GLOBALS['TCA']['pages']['ctrl']['enablecolumns']['fe_group']:
+					case $GLOBALS['TCA']['pages']['ctrl']['enablecolumns']['fe_group']:
 
-				case 'extendToSubpages':
+					case 'extendToSubpages':
 
-				case 'php_tree_stop':
-					// php_tree_stop
-					$actions['allParents'] = TRUE;
-					$actions['uidInTreelist'] = TRUE;
-					break;
-				case $GLOBALS['TCA']['pages']['ctrl']['enablecolumns']['endtime']:
-					// end time set/unset
-					// When setting an end time the cache entry needs an
-					// expiration time. When unsetting the end time the
-					// page must become listed in the treelist again.
-					if ($updatedFields['endtime'] > 0) {
-						$actions['setExpiration'] = TRUE;
-					} else {
+					case 'php_tree_stop':
+						// php_tree_stop
+						$actions['allParents'] = TRUE;
 						$actions['uidInTreelist'] = TRUE;
-					}
-					break;
-				default:
-					if (in_array($updatedFieldName, $this->updateRequiringFields)) {
-						$actions['uidInTreelist'] = TRUE;
-					}
+						break;
+					case $GLOBALS['TCA']['pages']['ctrl']['enablecolumns']['endtime']:
+						// end time set/unset
+						// When setting an end time the cache entry needs an
+						// expiration time. When unsetting the end time the
+						// page must become listed in the treelist again.
+						if ($updatedFields['endtime'] > 0) {
+							$actions['setExpiration'] = TRUE;
+						} else {
+							$actions['uidInTreelist'] = TRUE;
+						}
+						break;
+					default:
+						if (in_array($updatedFieldName, $this->updateRequiringFields)) {
+							$actions['uidInTreelist'] = TRUE;
+						}
 				}
 			}
 		}

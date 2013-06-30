@@ -192,14 +192,14 @@ class ResourceFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	public function createCollectionObject(array $collectionData) {
 		switch ($collectionData['type']) {
-		case 'static':
-			$collection = Collection\StaticFileCollection::create($collectionData);
-			break;
-		case 'folder':
-			$collection = Collection\FolderBasedFileCollection::create($collectionData);
-			break;
-		default:
-			$collection = NULL;
+			case 'static':
+				$collection = Collection\StaticFileCollection::create($collectionData);
+				break;
+			case 'folder':
+				$collection = Collection\FolderBasedFileCollection::create($collectionData);
+				break;
+			default:
+				$collection = NULL;
 		}
 		return $collection;
 	}

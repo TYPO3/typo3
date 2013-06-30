@@ -199,19 +199,18 @@ class SpellCheckingController {
 		// Now sanitize $this->pspellMode
 		$this->pspellMode = \TYPO3\CMS\Core\Utility\GeneralUtility::inList('ultra,fast,normal,bad-spellers', $this->pspellMode) ? $this->pspellMode : 'normal';
 		switch ($this->pspellMode) {
-		case 'ultra':
+			case 'ultra':
 
-		case 'fast':
-			$pspellModeFlag = PSPELL_FAST;
-			break;
-		case 'bad-spellers':
-			$pspellModeFlag = PSPELL_BAD_SPELLERS;
-			break;
-		case 'normal':
+			case 'fast':
+				$pspellModeFlag = PSPELL_FAST;
+				break;
+			case 'bad-spellers':
+				$pspellModeFlag = PSPELL_BAD_SPELLERS;
+				break;
+			case 'normal':
 
-		default:
-			$pspellModeFlag = PSPELL_NORMAL;
-			break;
+			default:
+				$pspellModeFlag = PSPELL_NORMAL;
 		}
 		// Setting the charset
 		if (\TYPO3\CMS\Core\Utility\GeneralUtility::_POST('pspell_charset')) {
@@ -517,7 +516,6 @@ var selectedDictionary = "' . $this->dictionary . '";
 					$this->text .= $key . '="' . $val . '" ';
 				}
 				$this->text .= '>';
-				break;
 		}
 	}
 
@@ -531,7 +529,7 @@ var selectedDictionary = "' . $this->dictionary . '";
 		}
 		switch ($tag) {
 			case 'spellchecker':
-				break;
+
 			case 'br':
 
 			case 'BR':
@@ -554,7 +552,6 @@ var selectedDictionary = "' . $this->dictionary . '";
 				break;
 			default:
 				$this->text .= '</' . $tag . '>';
-				break;
 		}
 	}
 
