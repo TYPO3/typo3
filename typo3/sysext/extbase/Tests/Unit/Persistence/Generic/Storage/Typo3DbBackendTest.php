@@ -75,7 +75,7 @@ class Typo3DbBackendTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$sql = array();
 		$mockTypo3DbBackend = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Storage\\Typo3DbBackend', array('dummy'), array(), '', FALSE);
 		$mockTypo3DbBackend->_callRef('addSysLanguageStatement', $table, $sql, $querySettings);
-		$expectedSql = array('additionalWhereClause' => array('(' . $table . '.sys_language_uid IN (0,-1))'));
+		$expectedSql = array('additionalWhereClause' => array('(' . $table . '.uid IS NULL OR (' . $table . '.sys_language_uid IN (0,-1)))'));
 		$this->assertSame($expectedSql, $sql);
 	}
 
@@ -95,7 +95,7 @@ class Typo3DbBackendTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$sql = array();
 		$mockTypo3DbBackend = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Storage\\Typo3DbBackend', array('dummy'), array(), '', FALSE);
 		$mockTypo3DbBackend->_callRef('addSysLanguageStatement', $table, $sql, $querySettings);
-		$expectedSql = array('additionalWhereClause' => array('(' . $table . '.sys_language_uid IN (1,-1))'));
+		$expectedSql = array('additionalWhereClause' => array('(' . $table . '.uid IS NULL OR (' . $table . '.sys_language_uid IN (1,-1)))'));
 		$this->assertSame($expectedSql, $sql);
 	}
 
@@ -113,7 +113,7 @@ class Typo3DbBackendTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$sql = array();
 		$mockTypo3DbBackend = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Storage\\Typo3DbBackend', array('dummy'), array(), '', FALSE);
 		$mockTypo3DbBackend->_callRef('addSysLanguageStatement', $table, $sql, $querySettings);
-		$expectedSql = array('additionalWhereClause' => array('(' . $table . '.sys_language_uid IN (1,-1))'));
+		$expectedSql = array('additionalWhereClause' => array('(' . $table . '.uid IS NULL OR (' . $table . '.sys_language_uid IN (1,-1)))'));
 		$this->assertSame($expectedSql, $sql);
 	}
 
@@ -129,7 +129,7 @@ class Typo3DbBackendTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$querySettings = new \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings();
 		$mockTypo3DbBackend = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Storage\\Typo3DbBackend', array('dummy'), array(), '', FALSE);
 		$mockTypo3DbBackend->_callRef('addSysLanguageStatement', $table, $sql, $querySettings);
-		$expectedSql = array('additionalWhereClause' => array('(' . $table . '.sys_language_uid IN (0,-1))'));
+		$expectedSql = array('additionalWhereClause' => array('(' . $table . '.uid IS NULL OR (' . $table . '.sys_language_uid IN (0,-1)))'));
 		$this->assertSame($expectedSql, $sql);
 	}
 
@@ -147,7 +147,7 @@ class Typo3DbBackendTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$querySettings->setSysLanguageUid(0);
 		$mockTypo3DbBackend = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Storage\\Typo3DbBackend', array('dummy'), array(), '', FALSE);
 		$mockTypo3DbBackend->_callRef('addSysLanguageStatement', $table, $sql, $querySettings);
-		$expectedSql = array('additionalWhereClause' => array('(' . $table . '.sys_language_uid IN (0,-1))'));
+		$expectedSql = array('additionalWhereClause' => array('(' . $table . '.uid IS NULL OR (' . $table . '.sys_language_uid IN (0,-1)))'));
 		$this->assertSame($expectedSql, $sql);
 	}
 
@@ -164,7 +164,7 @@ class Typo3DbBackendTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$querySettings->setSysLanguageUid(2);
 		$mockTypo3DbBackend = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Storage\\Typo3DbBackend', array('dummy'), array(), '', FALSE);
 		$mockTypo3DbBackend->_callRef('addSysLanguageStatement', $table, $sql, $querySettings);
-		$expectedSql = array('additionalWhereClause' => array('(' . $table . '.sys_language_uid IN (2,-1))'));
+		$expectedSql = array('additionalWhereClause' => array('(' . $table . '.uid IS NULL OR (' . $table . '.sys_language_uid IN (2,-1)))'));
 		$this->assertSame($expectedSql, $sql);
 	}
 
@@ -182,7 +182,7 @@ class Typo3DbBackendTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$querySettings->setSysLanguageUid(2);
 		$mockTypo3DbBackend = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Storage\\Typo3DbBackend', array('dummy'), array(), '', FALSE);
 		$mockTypo3DbBackend->_callRef('addSysLanguageStatement', $table, $sql, $querySettings);
-		$expectedSql = array('additionalWhereClause' => array('(' . $table . '.sys_language_uid IN (2,-1) OR (' . $table . '.sys_language_uid=0 AND ' . $table . '.uid NOT IN (SELECT ' . $table . '.l10n_parent FROM ' . $table . ' WHERE ' . $table . '.l10n_parent>0 AND ' . $table . '.sys_language_uid>0)))'));
+		$expectedSql = array('additionalWhereClause' => array('(' . $table . '.uid IS NULL OR (' . $table . '.sys_language_uid IN (2,-1) OR (' . $table . '.sys_language_uid=0 AND ' . $table . '.uid NOT IN (SELECT ' . $table . '.l10n_parent FROM ' . $table . ' WHERE ' . $table . '.l10n_parent>0 AND ' . $table . '.sys_language_uid>0))))'));
 		$this->assertSame($expectedSql, $sql);
 	}
 
@@ -202,13 +202,16 @@ class Typo3DbBackendTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$mockTypo3DbBackend = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Storage\\Typo3DbBackend', array('dummy'), array(), '', FALSE);
 		$mockTypo3DbBackend->_callRef('addSysLanguageStatement', $table, $sql, $querySettings);
 		$expectedSql = array('additionalWhereClause' => array(
-			'(' . $table . '.sys_language_uid IN (2,-1)' .
-				' OR (' . $table . '.sys_language_uid=0 AND ' . $table . '.uid NOT IN (' .
-				'SELECT ' . $table . '.l10n_parent FROM ' . $table .
-				' WHERE ' . $table . '.l10n_parent>0 AND ' .
-				$table . '.sys_language_uid>0 AND ' .
-				$table . '.deleted=0)))')
-		);
+			'(' . $table . '.uid IS NULL OR ' .
+				'(' . $table . '.sys_language_uid IN (2,-1)' .
+					' OR (' . $table . '.sys_language_uid=0 AND ' . $table . '.uid NOT IN (' .
+					'SELECT ' . $table . '.l10n_parent FROM ' . $table .
+					' WHERE ' . $table . '.l10n_parent>0 AND ' .
+					$table . '.sys_language_uid>0 AND ' .
+					$table . '.deleted=0))' .
+				')' .
+			')'
+		));
 		$this->assertSame($expectedSql, $sql);
 	}
 
@@ -229,13 +232,16 @@ class Typo3DbBackendTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$mockTypo3DbBackend = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Storage\\Typo3DbBackend', array('dummy'), array(), '', FALSE);
 		$mockTypo3DbBackend->_callRef('addSysLanguageStatement', $table, $sql, $querySettings);
 		$expectedSql = array('additionalWhereClause' => array(
-			'(' . $table . '.sys_language_uid IN (2,-1)' .
-				' OR (' . $table . '.sys_language_uid=0 AND ' . $table . '.uid NOT IN (' .
-				'SELECT ' . $table . '.l10n_parent FROM ' . $table .
-				' WHERE ' . $table . '.l10n_parent>0 AND ' .
-				$table . '.sys_language_uid>0 AND ' .
-				$table . '.deleted=0)))')
-		);
+			'(' . $table . '.uid IS NULL OR ' .
+				'(' . $table . '.sys_language_uid IN (2,-1)' .
+					' OR (' . $table . '.sys_language_uid=0 AND ' . $table . '.uid NOT IN (' .
+					'SELECT ' . $table . '.l10n_parent FROM ' . $table .
+					' WHERE ' . $table . '.l10n_parent>0 AND ' .
+					$table . '.sys_language_uid>0 AND ' .
+					$table . '.deleted=0))' .
+				')' .
+			')'
+		));
 		$this->assertSame($expectedSql, $sql);
 	}
 
@@ -475,19 +481,19 @@ class Typo3DbBackendTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
 	 * DataProvider for addPageIdStatement Tests
-	 */
+	  */
 	public function providerForAddPageIdStatementData() {
 		$table = uniqid('tx_coretest_table');
 		return array(
 			'set Pid to zero if rootLevel = 1' => array(
 				'1',
 				$table,
-				array('additionalWhereClause' => array($table . '.pid = 0'))
+				array('additionalWhereClause' => array('(' . $table . '.uid IS NULL OR (' . $table . '.pid = 0))'))
 			),
 			'set Pid to given Pids if rootLevel = 0' => array(
 				'0',
 				$table,
-				array('additionalWhereClause' => array($table . '.pid IN (42, 27)'))
+				array('additionalWhereClause' => array('(' . $table . '.uid IS NULL OR (' . $table . '.pid IN (42, 27)))'))
 			),
 			'set no statement if rootLevel = -1' => array(
 				'-1',
