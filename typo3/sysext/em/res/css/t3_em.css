@@ -217,6 +217,11 @@ a.email {
 	font-weight: bold;
 }
 
+.outdatedExtension {
+	color: #0c08ff;
+	font-weight: bold;
+}
+
 .paddingActionIcon img {
 	margin-right: 5px;
 }
