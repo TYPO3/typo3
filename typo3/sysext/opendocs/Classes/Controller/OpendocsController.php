@@ -54,6 +54,7 @@ class OpendocsController implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookIn
 	 * @param \TYPO3\CMS\Backend\Controller\BackendController TYPO3 backend object reference
 	 */
 	public function __construct(\TYPO3\CMS\Backend\Controller\BackendController &$backendReference = NULL) {
+		$GLOBALS['LANG']->includeLLFile('EXT:opendocs/locallang_opendocs.xml');
 		$this->backendReference = $backendReference;
 		$this->loadDocsFromUserSession();
 	}

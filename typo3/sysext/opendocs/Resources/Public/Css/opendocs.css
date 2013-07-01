@@ -68,7 +68,7 @@ Description : styles the Open Documents toolbar item
 
 #tx-opendocs-menu .toolbar-item-menu .list tr.opendoc.first-row td,
 #tx-opendocs-menu .toolbar-item-menu .list tr.recentdoc.first-row td {
-	background-image: url('../../../../../gfx/shortcutgroups-bg.png');
+	background-image: url('../../../../../../gfx/shortcutgroups-bg.png');
 	background-repeat: repeat-x;
 	padding-top: 4px;
 }
