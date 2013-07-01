@@ -2461,11 +2461,11 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 
 			$dateFormat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'];
 			$timeFormat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'];
+			$modifyDateTime = file_exists(PATH_site . 'typo3temp/extensions.xml.gz') ?
+				date($dateFormat . ', ' . $timeFormat, filemtime(PATH_site . 'typo3temp/extensions.xml.gz')) :
+				'-';
 			$content = sprintf($GLOBALS['LANG']->getLL('note_last_update_new'),
-				date(
-					$dateFormat . ', ' . $timeFormat,
-					filemtime(PATH_site . 'typo3temp/extensions.xml.gz')
-				)
+				$modifyDateTime
 			) . '<br />';
 		}
 
