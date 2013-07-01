@@ -70,6 +70,14 @@ class DatabaseIntegrityView {
 	protected $formName = 'queryform';
 
 	/**
+	 * Constructor
+	 */
+	public function __construct() {
+		$GLOBALS['LANG']->includeLLFile('EXT:lowlevel/dbint/locallang.xml');
+		$GLOBALS['BE_USER']->modAccess($MCONF, 1);
+	}
+
+	/**
 	 * Initialization
 	 *
 	 * @return void
