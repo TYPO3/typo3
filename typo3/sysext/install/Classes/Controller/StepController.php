@@ -102,8 +102,8 @@ class StepController extends AbstractController {
 		$this->outputInstallToolNotEnabledMessageIfNeeded();
 		$this->migrateLocalconfToLocalConfigurationIfNeeded();
 		$this->outputInstallToolPasswordNotSetMessageIfNeeded();
-		$this->removeObsoleteLocalConfigurationSettings();
 		$this->executeOrOutputFirstInstallStepIfNeeded();
+		$this->removeObsoleteLocalConfigurationSettings();
 		$this->generateEncryptionKeyIfNeeded();
 		$this->initializeSession();
 		$this->checkSessionToken();
