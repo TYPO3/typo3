@@ -2462,9 +2462,11 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 					. t3lib_BEfunc::getFuncCheck(0, 'SET[display_files]', $this->MOD_SETTINGS['display_files'], '', '', 'id="checkDisplayFiles"')
 					. '&nbsp;<label for="checkDisplayFiles">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_tools_em.xml:display_files') . '</label>';
 			$this->content .= $this->doc->section($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_tools_em.xml:header_upd_ext'), $content, 0, 1);
-
+			$modifyDateTime = file_exists(PATH_site . 'typo3temp/extensions.xml.gz') ?
+				t3lib_BEfunc::datetime(filemtime(PATH_site . 'typo3temp/extensions.xml.gz')) :
+				'-';
 			$content = sprintf($GLOBALS['LANG']->getLL('note_last_update_new'),
-				t3lib_BEfunc::datetime(filemtime(PATH_site . 'typo3temp/extensions.xml.gz'))
+				$modifyDateTime
 			) . '<br />';
 		}
 
