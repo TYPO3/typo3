@@ -96,9 +96,11 @@ class FrontendContentAdapterService {
 						'captions' => array(),
 						'links' => array(),
 						'alternativeTexts' => array(),
-						$migrateFieldName . '_fileUids' => array()
+						$migrateFieldName . '_fileUids' => array(),
+						$migrateFieldName . '_fileReferenceUids' => array(),
 					);
 					$oldFieldNames[$migrateFieldName . '_fileUids'] = $migrateFieldName . '_fileUids';
+					$oldFieldNames[$migrateFieldName . '_fileReferenceUids'] = $migrateFieldName . '_fileReferenceUids';
 
 					foreach ($files as $file) {
 						/** @var $file \TYPO3\CMS\Core\Resource\FileReference */
@@ -109,13 +111,14 @@ class FrontendContentAdapterService {
 						$fileFieldContents['links'][] = $fileProperties['link'];
 						$fileFieldContents['alternativeTexts'][] = $fileProperties['alternative'];
 						$fileFieldContents[$migrateFieldName .  '_fileUids'][] = $file->getOriginalFile()->getUid();
+						$fileFieldContents[$migrateFieldName .  '_fileReferenceUids'][] = $file->getUid();
 					}
 					foreach ($oldFieldNames as $oldFieldType => $oldFieldName) {
 						if ($oldFieldType === '__typeMatch') {
 							continue;
 						}
-						// For paths, make comma separated list
-						if ($oldFieldType === 'paths' || substr($oldFieldType, -9) == '_fileUids') {
+						if ($oldFieldType === 'paths' || substr($oldFieldType, -9) == '_fileUids' || substr($oldFieldType, -18) == '_fileReferenceUids') {
+							// For paths and uids, make comma separated list
 							$fieldContents = implode(',', $fileFieldContents[$oldFieldType]);
 						} else {
 							// For all other fields, separate by newline
