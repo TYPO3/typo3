@@ -134,6 +134,31 @@ class ResourceFactory implements \TYPO3\CMS\Core\SingletonInterface {
 		}
 		return $this->storageInstances[$uid];
 	}
+	
+	/**
+	 * Returns the storage UID of the given path
+	 *
+	 * @param string $path The relative path.
+	 *
+	 * @return int storage UID or 0 if file/folder is not in a storage
+	 */
+	public function getStorageObjectUidFromPath($path) {
+		// simple check if there are storageInstances
+		if (count($this->storageInstances) == 0){
+			$storageRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\StorageRepository');
+			$storageRepository->findAll();
+		}
+		// return storage uid if file or folder was found in one of them
+		foreach($this->storageInstances as $sUid => &$sInst){
+			$storageConfig = $sInst->getConfiguration();
+			if ($storageConfig['pathType'] == 'relative' && \TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($path, $storageConfig['basePath'])) {
+				return (int) $sInst->getUid();
+				break;
+			}
+		}
+		// virtual storage-0
+		return 0;
+	}
 
 	/**
 	 * Converts a flexform data string to a flat array with key value pairs
@@ -283,10 +308,18 @@ class ResourceFactory implements \TYPO3\CMS\Core\SingletonInterface {
 			$storageUid = $parts[0];
 			$fileIdentifier = $parts[1];
 		} else {
-			// We only got a path: Go into backwards compatibility mode and
-			// use virtual Storage (uid=0)
-			$storageUid = 0;
-			$fileIdentifier = $parts[0];
+			// Check if file is in a storage repository
+			$storageUid = $this->getStorageObjectUidFromPath($identifier);
+			if ($storageUid > 0){
+				$sConfig = $this->storageInstances[$storageUid]->getConfiguration();
+				$input = $storageUid.':'.substr($identifier, strlen($sConfig['basePath']));
+				return $this->getObjectFromCombinedIdentifier($input);
+			} else {
+				// We only got a path: Go into backwards compatibility mode and
+				// use virtual Storage (uid=0)
+				$storageUid = 0;
+				$fileIdentifier = $parts[0];
+			}
 		}
 		return $this->getStorageObject($storageUid)->getFile($fileIdentifier);
 	}
@@ -338,7 +371,7 @@ class ResourceFactory implements \TYPO3\CMS\Core\SingletonInterface {
 			return $this->getFolderObjectFromCombinedIdentifier($input);
 		}
 	}
-
+	
 	/**
 	 * Gets a folder object from an identifier [storage]:[fileId]
 	 *
