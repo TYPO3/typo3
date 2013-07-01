@@ -75,5 +75,18 @@ class RepositoryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 		}
 		return $typo3OrgRepository;
 	}
+
+	/**
+	 * Update the last update time
+	 *
+	 * @param integer $uid
+	 * @return void
+	 */
+	public function updateLastUpdateTime($uid = 1) {
+		$repository = $this->findByUid($uid);
+		$repository->setLastUpdate(new \DateTime());
+		$this->update($repository);
+	}
+
 }
 ?>

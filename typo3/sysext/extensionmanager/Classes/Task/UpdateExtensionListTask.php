@@ -54,7 +54,14 @@ class UpdateExtensionListTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 		$objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
 		/** @var $repositoryHelper \TYPO3\CMS\Extensionmanager\Utility\Repository\Helper */
 		$repositoryHelper = $objectManager->get('TYPO3\\CMS\\Extensionmanager\\Utility\\Repository\\Helper');
-		$repositoryHelper->updateExtList();
+		$updated = $repositoryHelper->updateExtList();
+		if ($updated) {
+			$repositoryRepository = $objectManager->get(
+				'TYPO3\\CMS\\Extensionmanager\\Domain\\Repository\\RepositoryRepository'
+			);
+
+			$repositoryRepository->updateLastUpdateTime();
+		}
 	}
 }
 ?>
