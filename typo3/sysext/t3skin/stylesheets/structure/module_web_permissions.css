@@ -21,3 +21,12 @@ a.perm-denied,
 #perm-legend {
 	margin-top: 10px;
 }
+
+#permission-information img {
+	float: left;
+	padding-right: 10px; ;
+}
+
+#permission-information .text {
+	line-height: 12px;
+}
