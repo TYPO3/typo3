@@ -556,14 +556,11 @@ class PermissionModuleController {
 		$legendText .= '<br /><strong>' . $GLOBALS['LANG']->getLL('2', 1) . '</strong>: ' . $GLOBALS['LANG']->getLL('2_t', 1);
 		$legendText .= '<br /><strong>' . $GLOBALS['LANG']->getLL('4', 1) . '</strong>: ' . $GLOBALS['LANG']->getLL('4_t', 1);
 		$legendText .= '<br /><strong>' . $GLOBALS['LANG']->getLL('8', 1) . '</strong>: ' . $GLOBALS['LANG']->getLL('8_t', 1);
-		$code = '<table border="0" id="typo3-legendTable">
-			<tr>
-				<td valign="top">
+
+		$code = '<div id="permission-information">
 					<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/legend.gif', 'width="86" height="75"') . ' alt="" />
-				</td>
-				<td valign="top" nowrap="nowrap">' . $legendText . '</td>
-			</tr>
-		</table>';
+				<div class="text">' . $legendText . '</div></div>';
+
 		$code .= '<div id="perm-legend">' . $GLOBALS['LANG']->getLL('def', 1);
 		$code .= '<br /><br />' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-status-permission-granted') . ': ' . $GLOBALS['LANG']->getLL('A_Granted', 1);
 		$code .= '<br />' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-status-permission-denied') . ': ' . $GLOBALS['LANG']->getLL('A_Denied', 1);
