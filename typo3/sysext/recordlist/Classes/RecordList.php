@@ -346,8 +346,6 @@ class RecordList {
 			}
 			// Render the list of tables:
 			$dblist->generateList();
-			// Write the bottom of the page:
-			$dblist->writeBottom();
 			$listUrl = substr($dblist->listURL(), strlen($GLOBALS['BACK_PATH']));
 			// Add JavaScript functions to the page:
 			$this->doc->JScode = $this->doc->wrapScriptTags('

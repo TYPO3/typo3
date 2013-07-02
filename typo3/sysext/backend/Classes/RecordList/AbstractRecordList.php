@@ -270,18 +270,10 @@ abstract class AbstractRecordList {
 	 *
 	 * @return void
 	 * @todo Define visibility
+	 * @deprecated will be removed 2 versions from 6.2
 	 */
 	public function writeBottom() {
-		$this->HTMLcode .= '
-
-		<!--
-			End of list table:
-		-->
-		<table border="0" cellpadding="0" cellspacing="0">';
-		$theIcon = '<img' . IconUtility::skinImg($this->backPath, 'gfx/ol/stopper.gif', 'width="18" height="16"') . ' alt="" />';
-		$this->HTMLcode .= $this->addElement(1, '', array(), '', $this->leftMargin, $theIcon);
-		$this->HTMLcode .= '
-		</table>';
+		GeneralUtility::deprecationLog('Function writeBottom is not needed anymore');
 	}
 
 	/**
