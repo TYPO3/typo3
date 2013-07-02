@@ -71,7 +71,7 @@ class ArgumentBehaviorBeforeExtbase14Test extends \TYPO3\CMS\Extbase\Tests\Unit\
 	 * @test
 	 */
 	public function setValueProvidesFluentInterface() {
-		$argument = new \TYPO3\CMS\Extbase\Mvc\Controller\Argument('dummy', 'Text');
+		$argument = $this->getAccessibleMock('TYPO3\CMS\Extbase\Mvc\Controller\Argument', array('dummy'), array('dummy', 'Text'));
 		$this->enableDeprecatedPropertyMapperInArgument($argument);
 		$returnedArgument = $argument->setValue('x');
 		$this->assertSame($argument, $returnedArgument, 'The returned argument is not the original argument.');
@@ -82,7 +82,7 @@ class ArgumentBehaviorBeforeExtbase14Test extends \TYPO3\CMS\Extbase\Tests\Unit\
 	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	public function setValueUsesNullAsIs() {
-		$argument = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\Argument', array('transformValue'), array('dummy', 'ArrayObject'));
+		$argument = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\Argument', array('transformValue'), array('dummy', 'ArrayObject'));
 		$this->enableDeprecatedPropertyMapperInArgument($argument);
 		$argument->expects($this->never())->method('transformValue');
 		$argument->setValue(NULL);
@@ -93,7 +93,7 @@ class ArgumentBehaviorBeforeExtbase14Test extends \TYPO3\CMS\Extbase\Tests\Unit\
 	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	public function setValueUsesMatchingInstanceAsIs() {
-		$argument = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\Argument', array('transformValue'), array('dummy', 'ArrayObject'));
+		$argument = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\Argument', array('transformValue'), array('dummy', 'ArrayObject'));
 		$this->enableDeprecatedPropertyMapperInArgument($argument);
 		$argument->expects($this->never())->method('transformValue');
 		$argument->setValue(new \ArrayObject());
@@ -119,7 +119,7 @@ class ArgumentBehaviorBeforeExtbase14Test extends \TYPO3\CMS\Extbase\Tests\Unit\
 	 * @test
 	 */
 	public function toStringReturnsTheStringVersionOfTheArgumentsValue() {
-		$argument = new \TYPO3\CMS\Extbase\Mvc\Controller\Argument('dummy', 'Text');
+		$argument = $this->getAccessibleMock('TYPO3\CMS\Extbase\Mvc\Controller\Argument', array('dummy'), array('dummy', 'Text'));
 		$this->enableDeprecatedPropertyMapperInArgument($argument);
 		$argument->setValue(123);
 		$this->assertSame((string) $argument, '123', 'The returned argument is not a string.');
@@ -130,11 +130,11 @@ class ArgumentBehaviorBeforeExtbase14Test extends \TYPO3\CMS\Extbase\Tests\Unit\
 	 * @test
 	 */
 	public function setNewValidatorConjunctionCreatesANewValidatorConjunctionObject() {
-		$argument = new \TYPO3\CMS\Extbase\Mvc\Controller\Argument('dummy', 'Text');
+		$argument = $this->getAccessibleMock('TYPO3\CMS\Extbase\Mvc\Controller\Argument', array('dummy'), array('dummy', 'Text'));
 		$mockConjunctionValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\ConjunctionValidator');
 		$mockObjectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerInterface');
 		$mockObjectManager->expects($this->once())->method('get')->with('TYPO3\\CMS\\Extbase\\Validation\\Validator\\ConjunctionValidator')->will($this->returnValue($mockConjunctionValidator));
-		$argument->injectObjectManager($mockObjectManager);
+		$argument->_set('objectManager', $mockObjectManager);
 		$argument->setNewValidatorConjunction(array());
 		$this->assertSame($mockConjunctionValidator, $argument->getValidator());
 	}
@@ -163,7 +163,7 @@ class ArgumentBehaviorBeforeExtbase14Test extends \TYPO3\CMS\Extbase\Tests\Unit\
 		$mockObjectManager->expects($this->never())->method('create');
 		$mockObjectManager->expects($this->at(0))->method('get')->with('Validator1')->will($this->returnValue($validator1));
 		$mockObjectManager->expects($this->at(1))->method('get')->with('Validator2')->will($this->returnValue($validator2));
-		$argument->injectObjectManager($mockObjectManager);
+		$argument->_set('objectManager', $mockObjectManager);
 		$argument->_set('validator', $mockValidatorConjunction);
 		$argument->setNewValidatorConjunction(array('Validator1', 'Validator2'));
 	}
@@ -185,7 +185,7 @@ class ArgumentBehaviorBeforeExtbase14Test extends \TYPO3\CMS\Extbase\Tests\Unit\
 	protected function enableDeprecatedPropertyMapperInArgument(\TYPO3\CMS\Extbase\Mvc\Controller\Argument $argument) {
 		$mockConfigurationManager = $this->getMock('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManagerInterface');
 		$mockConfigurationManager->expects($this->any())->method('isFeatureEnabled')->with('rewrittenPropertyMapper')->will($this->returnValue(FALSE));
-		$argument->injectConfigurationManager($mockConfigurationManager);
+		$argument->_set('configurationManager', $mockConfigurationManager);
 	}
 }
 

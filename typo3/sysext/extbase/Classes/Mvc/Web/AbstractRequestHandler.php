@@ -34,55 +34,27 @@ abstract class AbstractRequestHandler implements \TYPO3\CMS\Extbase\Mvc\RequestH
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
+	 * @Flow\Inject
 	 */
 	protected $objectManager;
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Mvc\Dispatcher
+	 * @Flow\Inject
 	 */
 	protected $dispatcher;
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Mvc\Web\RequestBuilder
+	 * @Flow\Inject
 	 */
 	protected $requestBuilder;
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Service\EnvironmentService
+	 * @Flow\Inject
 	 */
 	protected $environmentService;
-
-	/**
-	 * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
-	 * @return void
-	 */
-	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager) {
-		$this->objectManager = $objectManager;
-	}
-
-	/**
-	 * @param \TYPO3\CMS\Extbase\Mvc\Dispatcher $dispatcher
-	 * @return void
-	 */
-	public function injectDispatcher(\TYPO3\CMS\Extbase\Mvc\Dispatcher $dispatcher) {
-		$this->dispatcher = $dispatcher;
-	}
-
-	/**
-	 * @param \TYPO3\CMS\Extbase\Mvc\Web\RequestBuilder $requestBuilder
-	 * @return void
-	 */
-	public function injectRequestBuilder(\TYPO3\CMS\Extbase\Mvc\Web\RequestBuilder $requestBuilder) {
-		$this->requestBuilder = $requestBuilder;
-	}
-
-	/**
-	 * @param \TYPO3\CMS\Extbase\Service\EnvironmentService $environmentService
-	 * @return void
-	 */
-	public function injectEnvironmentService(\TYPO3\CMS\Extbase\Service\EnvironmentService $environmentService) {
-		$this->environmentService = $environmentService;
-	}
 
 	/**
 	 * This request handler can handle any web request.

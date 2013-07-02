@@ -47,11 +47,13 @@ class QueryResult implements \TYPO3\CMS\Extbase\Persistence\QueryResultInterface
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper
+	 * @Flow\Inject
 	 */
 	protected $dataMapper;
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface
+	 * @Flow\Inject
 	 */
 	protected $persistenceManager;
 
@@ -73,26 +75,6 @@ class QueryResult implements \TYPO3\CMS\Extbase\Persistence\QueryResultInterface
 	 */
 	public function __construct(\TYPO3\CMS\Extbase\Persistence\QueryInterface $query) {
 		$this->query = $query;
-	}
-
-	/**
-	 * Injects the DataMapper to map records to objects
-	 *
-	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper $dataMapper
-	 * @return void
-	 */
-	public function injectDataMapper(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper $dataMapper) {
-		$this->dataMapper = $dataMapper;
-	}
-
-	/**
-	 * Injects the persistence manager
-	 *
-	 * @param \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface $persistenceManager
-	 * @return void
-	 */
-	public function injectPersistenceManager(\TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface $persistenceManager) {
-		$this->persistenceManager = $persistenceManager;
 	}
 
 	/**

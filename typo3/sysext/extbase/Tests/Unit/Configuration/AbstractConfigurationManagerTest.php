@@ -121,7 +121,7 @@ class AbstractConfigurationManagerTest extends \TYPO3\CMS\Extbase\Tests\Unit\Bas
 	public function setUp() {
 		$this->abstractConfigurationManager = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Configuration\\AbstractConfigurationManager', array('getContextSpecificFrameworkConfiguration', 'getTypoScriptSetup', 'getPluginConfiguration', 'getSwitchableControllerActions', 'getRecursiveStoragePids'));
 		$this->mockTypoScriptService = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Service\\TypoScriptService');
-		$this->abstractConfigurationManager->injectTypoScriptService($this->mockTypoScriptService);
+		$this->abstractConfigurationManager->_set('typoScriptService', $this->mockTypoScriptService);
 	}
 
 	/**
@@ -316,7 +316,7 @@ class AbstractConfigurationManagerTest extends \TYPO3\CMS\Extbase\Tests\Unit\Bas
 	public function switchableControllerActionsAreNotOverriddenIfPluginNameIsSpecified() {
 		/** @var \TYPO3\CMS\Extbase\Configuration\AbstractConfigurationManager|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
 		$abstractConfigurationManager = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Configuration\\AbstractConfigurationManager', array('overrideSwitchableControllerActions', 'getContextSpecificFrameworkConfiguration', 'getTypoScriptSetup', 'getPluginConfiguration', 'getSwitchableControllerActions', 'getRecursiveStoragePids'));
-		$abstractConfigurationManager->injectTypoScriptService($this->mockTypoScriptService);
+		$abstractConfigurationManager->_set('typoScriptService', $this->mockTypoScriptService);
 		$abstractConfigurationManager->setConfiguration(array('switchableControllerActions' => array('overriddenSwitchableControllerActions')));
 		$abstractConfigurationManager->expects($this->any())->method('getPluginConfiguration')->will($this->returnValue(array()));
 		$abstractConfigurationManager->expects($this->never())->method('overrideSwitchableControllerActions');
@@ -331,7 +331,7 @@ class AbstractConfigurationManagerTest extends \TYPO3\CMS\Extbase\Tests\Unit\Bas
 		$configuration = array('extensionName' => 'CurrentExtensionName', 'pluginName' => 'CurrentPluginName', 'switchableControllerActions' => array('overriddenSwitchableControllerActions'));
 		$abstractConfigurationManager = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Configuration\\AbstractConfigurationManager', array('overrideSwitchableControllerActions', 'getContextSpecificFrameworkConfiguration', 'getTypoScriptSetup', 'getPluginConfiguration', 'getSwitchableControllerActions', 'getRecursiveStoragePids'));
 		$this->mockTypoScriptService->expects($this->any())->method('convertTypoScriptArrayToPlainArray')->with($configuration)->will($this->returnValue($configuration));
-		$abstractConfigurationManager->injectTypoScriptService($this->mockTypoScriptService);
+		$abstractConfigurationManager->_set('typoScriptService', $this->mockTypoScriptService);
 		$abstractConfigurationManager->setConfiguration($configuration);
 		$abstractConfigurationManager->expects($this->any())->method('getPluginConfiguration')->will($this->returnValue(array()));
 		$abstractConfigurationManager->expects($this->once())->method('overrideSwitchableControllerActions');
@@ -346,7 +346,7 @@ class AbstractConfigurationManagerTest extends \TYPO3\CMS\Extbase\Tests\Unit\Bas
 		$configuration = array('switchableControllerActions' => array('overriddenSwitchableControllerActions'));
 		$abstractConfigurationManager = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Configuration\\AbstractConfigurationManager', array('overrideSwitchableControllerActions', 'getContextSpecificFrameworkConfiguration', 'getTypoScriptSetup', 'getPluginConfiguration', 'getSwitchableControllerActions', 'getRecursiveStoragePids'));
 		$this->mockTypoScriptService->expects($this->any())->method('convertTypoScriptArrayToPlainArray')->with($configuration)->will($this->returnValue($configuration));
-		$abstractConfigurationManager->injectTypoScriptService($this->mockTypoScriptService);
+		$abstractConfigurationManager->_set('typoScriptService', $this->mockTypoScriptService);
 		$abstractConfigurationManager->setConfiguration($configuration);
 		$abstractConfigurationManager->expects($this->any())->method('getPluginConfiguration')->will($this->returnValue(array()));
 		$abstractConfigurationManager->expects($this->once())->method('overrideSwitchableControllerActions');
