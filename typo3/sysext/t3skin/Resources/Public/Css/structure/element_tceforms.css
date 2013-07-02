@@ -217,15 +217,15 @@ select option.c-divider {
 }
 
 .typo3-TCEforms td.icons {
-	padding: 6px 2px;
+	padding: 2px;
 }
 
 .typo3-TCEforms td.thumbnails {
-	padding-top: 6px;
+	padding-top: 2px;
 }
 
 .typo3-TCEforms div.imagethumbs {
-	padding-top: 6px;
+	padding-top: 2px;
 	white-space: normal;
 	width: 253px;
 }

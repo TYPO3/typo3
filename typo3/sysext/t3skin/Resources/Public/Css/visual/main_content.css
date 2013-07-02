@@ -228,3 +228,9 @@ div.warningbox {
 span.warningboxheader {
 	margin-left: 5px;
 }
+
+
+/* all buttons have the "click" mouse cursor */
+.t3-btn {
+	cursor: pointer;
+}
