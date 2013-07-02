@@ -69,16 +69,12 @@ img.t3-TCEforms-contentchangedPaletteImg {
 	width: 7px;
 }
 
-table.typo3-TCEforms {
+.typo3-TCEforms {
 	width: 100%;
 }
 
-table.typo3-TCEforms tr td.t3-form-col1,
-table.typo3-TCEforms tr td.t3-form-col1 div {
-	width: 21px;
-}
 
-table.typo3-TCEforms tr.typo3-TCEforms-recHeaderRow td {
+.typo3-TCEforms-recHeaderRow {
 	padding-top: 5px;
 	padding-bottom: 20px;
 }
@@ -88,64 +84,64 @@ table.wrapperTable1 .class-main12 td.palette-header {
 	padding-left: 10px;
 }
 
-table.typo3-TCEforms .bgColor2,
-table.typo3-TCEforms tr.bgColor2 td {
+.typo3-TCEforms .bgColor2,
+.typo3-TCEforms tr.bgColor2 td {
 	padding-bottom: 5px;
 }
 
-table.typo3-TCEforms optgroup.c-divider,
+.typo3-TCEforms optgroup.c-divider,
 select option.c-divider {
 	margin-top: 10px;
 	padding: 0px;
 }
 
-table.typo3-TCEforms optgroup option {
+.typo3-TCEforms optgroup option {
 	margin: 0px;
 	padding: 2px;
 }
 
 
-table.typo3-TCEforms select.icon-select option {
+.typo3-TCEforms select.icon-select option {
 	padding-left: 22px;
 }
 
-table.typo3-TCEforms table.typo3-TCEforms-select-checkbox {
+.typo3-TCEforms table.typo3-TCEforms-select-checkbox {
 	margin-bottom: 10px;
 }
 
-table.typo3-TCEforms table.typo3-TCEforms-select-checkbox tbody {
+.typo3-TCEforms table.typo3-TCEforms-select-checkbox tbody {
 	display: block;
 	max-height: 300px;
 	overflow-y: scroll;
 }
 
-table.typo3-TCEforms table.typo3-TCEforms-select-checkbox tr td {
+.typo3-TCEforms table.typo3-TCEforms-select-checkbox tr td {
 	vertical-align: middle;
 }
 
-table.typo3-TCEforms table.typo3-TCEforms-select-checkbox tr.c-header td,
-table.typo3-TCEforms table.typo3-TCEforms-select-checkbox tr td.c-checkbox,
-table.typo3-TCEforms table.typo3-TCEforms-select-checkbox tr td.c-labelCell {
+.typo3-TCEforms table.typo3-TCEforms-select-checkbox tr.c-header td,
+.typo3-TCEforms table.typo3-TCEforms-select-checkbox tr td.c-checkbox,
+.typo3-TCEforms table.typo3-TCEforms-select-checkbox tr td.c-labelCell {
 	padding: 1px 3px;
 }
 
-table.typo3-TCEforms table.typo3-TCEforms-select-checkbox tr td.c-labelCell {
+.typo3-TCEforms table.typo3-TCEforms-select-checkbox tr td.c-labelCell {
 	min-width: 300px;
 }
 
-table.typo3-TCEforms table.typo3-TCEforms-select-checkbox tr td.c-labelCell img {
+.typo3-TCEforms table.typo3-TCEforms-select-checkbox tr td.c-labelCell img {
 	margin-right: 5px;
 }
 
-table.typo3-TCEforms table.typo3-TCEforms-select-checkbox td.c-descr {
+.typo3-TCEforms table.typo3-TCEforms-select-checkbox td.c-descr {
 	width: 40px;
 }
 
-table.typo3-TCEforms table.typo3-TCEforms-select-checkbox td.c-descr img {
+.typo3-TCEforms table.typo3-TCEforms-select-checkbox td.c-descr img {
 	float: right;
 }
 
-table.typo3-TCEforms table.typo3-TCEforms-select-singlebox {
+.typo3-TCEforms table.typo3-TCEforms-select-singlebox {
 	margin-bottom: 10px;
 	margin-top: 4px;
 }
@@ -157,90 +153,90 @@ table.typo3-TCEforms table.typo3-TCEforms-select-singlebox {
 	z-index: 3500;
 }
 
-table.typo3-TCEforms .class-main1 > td,
-table.typo3-TCEforms .class-main11 > td,
-table.typo3-TCEforms .class-main21 > td,
-table.typo3-TCEforms .class-main31 > td,
-table.typo3-TCEforms .class-main41 > td,
-table.typo3-TCEforms .class-main51 > td {
+.typo3-TCEforms .class-main1 > td,
+.typo3-TCEforms .class-main11 > td,
+.typo3-TCEforms .class-main21 > td,
+.typo3-TCEforms .class-main31 > td,
+.typo3-TCEforms .class-main41 > td,
+.typo3-TCEforms .class-main51 > td {
 	padding: 2px 0px 2px 0px;
 }
 
-table.typo3-TCEforms .class-main2 > td,
-table.typo3-TCEforms .class-main12 > td,
-table.typo3-TCEforms .class-main22 > td,
-table.typo3-TCEforms .class-main32 > td,
-table.typo3-TCEforms .class-main42 > td,
-table.typo3-TCEforms .class-main52 > td {
+.typo3-TCEforms .class-main2 > td,
+.typo3-TCEforms .class-main12 > td,
+.typo3-TCEforms .class-main22 > td,
+.typo3-TCEforms .class-main32 > td,
+.typo3-TCEforms .class-main42 > td,
+.typo3-TCEforms .class-main52 > td {
 	padding: 6px 0px 2px 0px;
 }
 
-table.typo3-TCEforms .class-main3,
-table.typo3-TCEforms .class-main13,
-table.typo3-TCEforms .class-main23,
-table.typo3-TCEforms .class-main33,
-table.typo3-TCEforms .class-main43,
-table.typo3-TCEforms .class-main53 {
+.typo3-TCEforms .class-main3,
+.typo3-TCEforms .class-main13,
+.typo3-TCEforms .class-main23,
+.typo3-TCEforms .class-main33,
+.typo3-TCEforms .class-main43,
+.typo3-TCEforms .class-main53 {
 	padding: 2px 0px 2px 0px;
 }
 
-table.typo3-TCEforms td.formField-header,
-table.typo3-TCEforms td.formField-field {
+.typo3-TCEforms td.formField-header,
+.typo3-TCEforms td.formField-field {
 	display: block;
 	position: relative;
 	padding-left: 10px;
 	padding-right: 10px;
 }
 
-table.typo3-TCEforms .formField,
-table.typo3-TCEforms .formField1,
-table.typo3-TCEforms .formField2,
-table.typo3-TCEforms .formField3,
-table.typo3-TCEforms .formField4,
-table.typo3-TCEforms .formField5 {
+.typo3-TCEforms .formField,
+.typo3-TCEforms .formField1,
+.typo3-TCEforms .formField2,
+.typo3-TCEforms .formField3,
+.typo3-TCEforms .formField4,
+.typo3-TCEforms .formField5 {
 	margin: 4px 2px 4px 1px;
-	padding: 1px;
+	padding: 2px;
 	vertical-align: middle;
 	position: relative;
 }
 
-table.typo3-TCEforms .formField:focus,
-table.typo3-TCEforms .formField1:focus,
-table.typo3-TCEforms .formField2:focus,
-table.typo3-TCEforms .formField3:focus,
-table.typo3-TCEforms .formField4:focus,
-table.typo3-TCEforms .formField5:focus {
+.typo3-TCEforms .formField:focus,
+.typo3-TCEforms .formField1:focus,
+.typo3-TCEforms .formField2:focus,
+.typo3-TCEforms .formField3:focus,
+.typo3-TCEforms .formField4:focus,
+.typo3-TCEforms .formField5:focus {
 	z-index: 3500;
 }
 
-table.typo3-TCEforms .wrapperTable,
-table.typo3-TCEforms .wrapperTable1,
-table.typo3-TCEforms .wrapperTable2,
-table.typo3-TCEforms .wrapperTable3,
-table.typo3-TCEforms .wrapperTable4,
-table.typo3-TCEforms .wrapperTable5 {
+.typo3-TCEforms .wrapperTable,
+.typo3-TCEforms .wrapperTable1,
+.typo3-TCEforms .wrapperTable2,
+.typo3-TCEforms .wrapperTable3,
+.typo3-TCEforms .wrapperTable4,
+.typo3-TCEforms .wrapperTable5 {
 	padding: 5px 0 5px 0;
 }
 
-table.typo3-TCEforms td.icons {
+.typo3-TCEforms td.icons {
 	padding: 6px 2px;
 }
 
-table.typo3-TCEforms td.thumbnails {
+.typo3-TCEforms td.thumbnails {
 	padding-top: 6px;
 }
 
-table.typo3-TCEforms div.imagethumbs {
+.typo3-TCEforms div.imagethumbs {
 	padding-top: 6px;
 	white-space: normal;
 	width: 253px;
 }
 
-table.typo3-TCEforms div.imagethumbs br {
+.typo3-TCEforms div.imagethumbs br {
 	display: none;
 }
 
-table.typo3-TCEforms div.imagethumbs .nobr {
+.typo3-TCEforms div.imagethumbs .nobr {
 	display: inline-block;
 	width: 60px;
 	height: 60px;
@@ -250,7 +246,7 @@ table.typo3-TCEforms div.imagethumbs .nobr {
 	text-align: center;
 }
 
-table.typo3-TCEforms div.imagethumbs .nobr a {
+.typo3-TCEforms div.imagethumbs .nobr a {
 	display: block;
 	width: 60px;
 	height: 60px;
@@ -258,18 +254,18 @@ table.typo3-TCEforms div.imagethumbs .nobr a {
 	text-align: center;
 }
 
-table.typo3-TCEforms div.imagethumbs .nobr a img {
+.typo3-TCEforms div.imagethumbs .nobr a img {
 	display: inline;
 	margin-right: auto;
 	vertical-align: middle;
 	margin-left: auto;
 }
 
-table.typo3-TCEforms div.imagethumbs .nobr span {
+.typo3-TCEforms div.imagethumbs .nobr span {
 	display: none;
 }
 
-table.typo3-TCEforms span.filetypes {
+.typo3-TCEforms span.filetypes {
 	display: block;
 	margin-top: 6px;
 	white-space: normal;
@@ -292,7 +288,6 @@ table.typo3-TCEforms span.filetypes {
 
 .t3-form-palette-field-container {
 	display: inline-block;
-	margin-left: 10px;
 	vertical-align: top;
 }
 
@@ -364,12 +359,12 @@ input.typo3-TCEforms-suggest-search {
 TCEforms Flexforms
 - - - - - - - - - - - - - - - - - - - - - */
 /** tabs inside the table => flexforms */
-table.typo3-TCEforms .wrapperTable .typo3-dyntabmenu-divs,
-table.typo3-TCEforms .wrapperTable1 .typo3-dyntabmenu-divs,
-table.typo3-TCEforms .wrapperTable2 .typo3-dyntabmenu-divs,
-table.typo3-TCEforms .wrapperTable3 .typo3-dyntabmenu-divs,
-table.typo3-TCEforms .wrapperTable4 .typo3-dyntabmenu-divs,
-table.typo3-TCEforms .wrapperTable5 .typo3-dyntabmenu-divs {
+.typo3-TCEforms .wrapperTable .typo3-dyntabmenu-divs,
+.typo3-TCEforms .wrapperTable1 .typo3-dyntabmenu-divs,
+.typo3-TCEforms .wrapperTable2 .typo3-dyntabmenu-divs,
+.typo3-TCEforms .wrapperTable3 .typo3-dyntabmenu-divs,
+.typo3-TCEforms .wrapperTable4 .typo3-dyntabmenu-divs,
+.typo3-TCEforms .wrapperTable5 .typo3-dyntabmenu-divs {
 	margin-right: 20px;
 	margin-bottom: 10px;
 }
@@ -537,7 +532,7 @@ img.t3-tceforms-sysfile-imagepreview {
 	margin-bottom: 10px;
 }
 
-* html div#typo3-docbody table.typo3-TCEforms {
+* html div#typo3-docbody .typo3-TCEforms {
 	margin-top: 20px;
 }
 
