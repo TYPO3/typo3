@@ -102,12 +102,6 @@ class PageLayoutController {
 	 */
 	public $edit_record;
 
-	// QuickEdit: If set, this variable tells quick edit that the last edited record had this value as UID and we should look up the new, real uid value in sys_log.
-	/**
-	 * @todo Define visibility
-	 */
-	public $new_unique_uid;
-
 	// Internal, static:
 	// Page select perms clause
 	/**
@@ -238,7 +232,6 @@ class PageLayoutController {
 		$this->clear_cache = GeneralUtility::_GP('clear_cache');
 		$this->popView = GeneralUtility::_GP('popView');
 		$this->edit_record = GeneralUtility::_GP('edit_record');
-		$this->new_unique_uid = GeneralUtility::_GP('new_unique_uid');
 		$this->search_field = GeneralUtility::_GP('search_field');
 		$this->search_levels = GeneralUtility::_GP('search_levels');
 		$this->showLimit = GeneralUtility::_GP('showLimit');
@@ -620,14 +613,6 @@ class PageLayoutController {
 			}
 			$url = $GLOBALS['BACK_PATH'] . 'alt_doc.php?edit[tt_content][' . implode(',', $idListA) . ']=edit&returnUrl=' . rawurlencode($this->local_linkThisScript(array('edit_record' => '')));
 			\TYPO3\CMS\Core\Utility\HttpUtility::redirect($url);
-		}
-		// If the former record edited was the creation of a NEW record, this will look up the created records uid:
-		if ($this->new_unique_uid) {
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_log', 'userid=' . intval($GLOBALS['BE_USER']->user['uid']) . ' AND NEWid=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->new_unique_uid, 'sys_log'));
-			$sys_log_row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
-			if (is_array($sys_log_row)) {
-				$edit_record = $sys_log_row['tablename'] . ':' . $sys_log_row['recuid'];
-			}
 		}
 		// Creating the selector box, allowing the user to select which element to edit:
 		$opt = array();
@@ -1134,7 +1119,6 @@ class PageLayoutController {
 	 */
 	public function local_linkThisScript($params) {
 		$params['popView'] = '';
-		$params['new_unique_uid'] = '';
 		return GeneralUtility::linkThisScript($params);
 	}
 

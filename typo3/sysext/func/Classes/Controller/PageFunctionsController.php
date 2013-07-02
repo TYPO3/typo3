@@ -148,7 +148,7 @@ class PageFunctionsController extends \TYPO3\CMS\Backend\Module\BaseScriptClass 
 				">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-view') . '</a>';
 			// Shortcut
 			if ($GLOBALS['BE_USER']->mayMakeShortcut()) {
-				$buttons['shortcut'] = $this->doc->makeShortcutIcon('id, edit_record, pointer, new_unique_uid, search_field, search_levels, showLimit', implode(',', array_keys($this->MOD_MENU)), $this->MCONF['name']);
+				$buttons['shortcut'] = $this->doc->makeShortcutIcon('id, edit_record, pointer, search_field, search_levels, showLimit', implode(',', array_keys($this->MOD_MENU)), $this->MCONF['name']);
 			}
 		}
 		return $buttons;
