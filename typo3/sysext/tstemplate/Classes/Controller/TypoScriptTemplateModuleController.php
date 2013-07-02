@@ -294,7 +294,7 @@ class TypoScriptTemplateModuleController extends \TYPO3\CMS\Backend\Module\BaseS
 			}
 			// Shortcut
 			if ($GLOBALS['BE_USER']->mayMakeShortcut()) {
-				$buttons['shortcut'] = $this->doc->makeShortcutIcon('id, edit_record, pointer, new_unique_uid, search_field, search_levels, showLimit', implode(',', array_keys($this->MOD_MENU)), $this->MCONF['name']);
+				$buttons['shortcut'] = $this->doc->makeShortcutIcon('id, edit_record, pointer, search_field, search_levels, showLimit', implode(',', array_keys($this->MOD_MENU)), $this->MCONF['name']);
 			}
 		} else {
 			// Shortcut
