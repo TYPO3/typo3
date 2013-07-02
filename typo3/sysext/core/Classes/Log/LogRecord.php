@@ -219,7 +219,7 @@ class LogRecord implements \ArrayAccess {
 	 * @return \TYPO3\CMS\Core\Log\LogRecord
 	 */
 	public function setMessage($message) {
-		$this->message = $message;
+		$this->message = (string) $message;
 		return $this;
 	}
 
