@@ -1465,7 +1465,6 @@ class ElementBrowser {
 			$dblist->start($id, \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('table'), $pointer, \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('search_field'), \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('search_levels'), \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('showLimit'));
 			$dblist->setDispFields();
 			$dblist->generateList();
-			$dblist->writeBottom();
 			//	Add the HTML for the record list to output variable:
 			$out .= $dblist->HTMLcode;
 			// Add support for fieldselectbox in singleTableMode

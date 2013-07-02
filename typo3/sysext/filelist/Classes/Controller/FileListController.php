@@ -288,8 +288,6 @@ class FileListController {
 			$this->filelist->start($this->folderObject, $this->pointer, $this->MOD_SETTINGS['sort'], $this->MOD_SETTINGS['reverse'], $this->MOD_SETTINGS['clipBoard'], $this->MOD_SETTINGS['bigControlPanel']);
 			// Generate the list
 			$this->filelist->generateList();
-			// Write the footer
-			$this->filelist->writeBottom();
 			// Set top JavaScript:
 			$this->doc->JScode = $this->doc->wrapScriptTags('
 
