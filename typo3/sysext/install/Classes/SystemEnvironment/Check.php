@@ -983,33 +983,38 @@ class Check {
 	 * @return Status\OkStatus|Status\NoticeStatus
 	 */
 	protected function isTrueTypeFontDpiStandard() {
-		// 20 Pixels at 96 DPI - the DefaultConfiguration
-		$fontSize = (20 / 96 * 72);
-
-		$textDimensions = @imageftbbox(
-			$fontSize,
-			0,
-			__DIR__ . '/../../Resources/Private/Font/vera.ttf',
-			'Testing true type support'
-		);
-		$fontBoxWidth = $textDimensions[2] - $textDimensions[0];
-
-		if ($fontBoxWidth < 300 && $fontBoxWidth > 200) {
-			$status = new Status\OkStatus();
-			$status->setTitle('FreeType True Type Font DPI');
-			$status->setMessage('Fonts are rendered by FreeType library. ' .
+		if (function_exists('imageftbbox')) {
+			// 20 Pixels at 96 DPI - the DefaultConfiguration
+			$fontSize = (20 / 96 * 72);
+			$textDimensions = @imageftbbox(
+				$fontSize,
+				0,
+				__DIR__ . '/../../Resources/Private/Font/vera.ttf',
+				'Testing true type support'
+			);
+			$fontBoxWidth = $textDimensions[2] - $textDimensions[0];
+			if ($fontBoxWidth < 300 && $fontBoxWidth > 200) {
+				$status = new Status\OkStatus();
+				$status->setTitle('FreeType True Type Font DPI');
+				$status->setMessage('Fonts are rendered by FreeType library. ' .
 					'We need to ensure that the final dimensions are as expected. ' .
 					'This server renderes fonts based on 96 DPI correctly'
-			);
-
-		} else {
-			$status = new Status\NoticeStatus();
-			$status->setTitle('FreeType True Type Font DPI');
-			$status->setMessage('Fonts are rendered by FreeType library. ' .
+				);
+			} else {
+				$status = new Status\NoticeStatus();
+				$status->setTitle('FreeType True Type Font DPI');
+				$status->setMessage('Fonts are rendered by FreeType library. ' .
 					'This server renders fonts not as expected. ' .
 					'Please configure FreeType or TYPO3_CONF_VARS[GFX][TTFdpi]'
+				);
+			}
+		} else {
+			$status = new Status\ErrorStatus();
+			$status->setTitle('PHP GD library freetype2 support missing');
+			$status->setMessage(
+				'The core relies on GD library compiled into PHP with freetype2' .
+				' support. This is missing on your system. Install it.'
 			);
-
 		}
 
 		return $status;
