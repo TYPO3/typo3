@@ -49,7 +49,7 @@ class AbstractWidgetControllerTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTes
 		$objectManager->expects($this->any())->method('get')->with('TYPO3\\CMS\\Extbase\\Mvc\\Web\\Routing\\UriBuilder')->will($this->returnValue($mockUriBuilder));
 
 		$configurationService = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\MvcPropertyMappingConfigurationService');
-		$abstractWidgetController->injectMvcPropertyMappingConfigurationService($configurationService);
+		$abstractWidgetController->_set('mvcPropertyMappingConfigurationService', $configurationService);
 		$abstractWidgetController->_set('arguments', new \TYPO3\CMS\Extbase\Mvc\Controller\Arguments());
 
 		$abstractWidgetController->_set('objectManager', $objectManager);

@@ -50,7 +50,6 @@ class FormViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHel
 	protected function injectDependenciesIntoViewHelper(\TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper $viewHelper) {
 		$viewHelper->injectConfigurationManager($this->mockConfigurationManager);
 		parent::injectDependenciesIntoViewHelper($viewHelper);
-		$this->mvcPropertyMapperConfigurationService->injectHashService(new \TYPO3\CMS\Extbase\Security\Cryptography\HashService());
 		$viewHelper->injectMvcPropertyMapperConfigurationService($this->mvcPropertyMapperConfigurationService);
 	}
 
@@ -136,7 +135,6 @@ class FormViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHel
 		$configurationManager = $this->getMock('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManager', array('isFeatureEnabled'));
 		$configurationManager->expects($this->once())->method('isFeatureEnabled')->with('rewrittenPropertyMapper')->will($this->returnValue(FALSE));
 		$viewHelper->injectConfigurationManager($configurationManager);
-		$this->mvcPropertyMapperConfigurationService->injectHashService(new \TYPO3\CMS\Extbase\Security\Cryptography\HashService());
 		$viewHelper->injectMvcPropertyMapperConfigurationService($this->mvcPropertyMapperConfigurationService);
 		parent::injectDependenciesIntoViewHelper($viewHelper);
 		$viewHelper->expects($this->once())->method('renderHiddenIdentityField')->will($this->returnValue('hiddenIdentityField'));
@@ -157,7 +155,6 @@ class FormViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHel
 		$configurationManager = $this->getMock('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManager', array('isFeatureEnabled'));
 		$configurationManager->expects($this->once())->method('isFeatureEnabled')->with('rewrittenPropertyMapper')->will($this->returnValue(TRUE));
 		$viewHelper->injectConfigurationManager($configurationManager);
-		$this->mvcPropertyMapperConfigurationService->injectHashService(new \TYPO3\CMS\Extbase\Security\Cryptography\HashService());
 		$viewHelper->injectMvcPropertyMapperConfigurationService($this->mvcPropertyMapperConfigurationService);
 		parent::injectDependenciesIntoViewHelper($viewHelper);
 		$viewHelper->expects($this->once())->method('renderHiddenIdentityField')->will($this->returnValue('hiddenIdentityField'));
@@ -177,7 +174,6 @@ class FormViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHel
 		$configurationManager = $this->getMock('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManager', array('isFeatureEnabled'));
 		$configurationManager->expects($this->once())->method('isFeatureEnabled')->with('rewrittenPropertyMapper')->will($this->returnValue(TRUE));
 		$viewHelper->injectConfigurationManager($configurationManager);
-		$this->mvcPropertyMapperConfigurationService->injectHashService(new \TYPO3\CMS\Extbase\Security\Cryptography\HashService());
 		$viewHelper->injectMvcPropertyMapperConfigurationService($this->mvcPropertyMapperConfigurationService);
 		parent::injectDependenciesIntoViewHelper($viewHelper);
 		$viewHelper->expects($this->once())->method('renderHiddenIdentityField')->will($this->returnValue('hiddenIdentityField'));
