@@ -22,11 +22,13 @@ class UriBuilder {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
+	 * @Flow\Inject
 	 */
 	protected $configurationManager;
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Service\ExtensionService
+	 * @Flow\Inject
 	 */
 	protected $extensionService;
 
@@ -116,32 +118,9 @@ class UriBuilder {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Service\EnvironmentService
+	 * @Flow\Inject
 	 */
 	protected $environmentService;
-
-	/**
-	 * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
-	 * @return void
-	 */
-	public function injectConfigurationManager(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager) {
-		$this->configurationManager = $configurationManager;
-	}
-
-	/**
-	 * @param \TYPO3\CMS\Extbase\Service\ExtensionService $extensionService
-	 * @return void
-	 */
-	public function injectExtensionService(\TYPO3\CMS\Extbase\Service\ExtensionService $extensionService) {
-		$this->extensionService = $extensionService;
-	}
-
-	/**
-	 * @param \TYPO3\CMS\Extbase\Service\EnvironmentService $environmentService
-	 * @return void
-	 */
-	public function injectEnvironmentService(\TYPO3\CMS\Extbase\Service\EnvironmentService $environmentService) {
-		$this->environmentService = $environmentService;
-	}
 
 	/**
 	 * Life-cycle method that is called by the DI container as soon as this object is completely built
