@@ -165,6 +165,7 @@ $GLOBALS['TBE_MODULES'] = array(
 	'file' => '',
 	'user' => '',
 	'tools' => '',
+	'system' => '',
 	'help' => ''
 );
 

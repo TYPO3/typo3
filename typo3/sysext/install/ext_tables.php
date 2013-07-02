@@ -10,7 +10,7 @@ if (TYPO3_MODE === 'BE') {
 	// Register backend module
 	\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
 		'TYPO3.CMS.' . $_EXTKEY,
-		'tools',
+		'system',
 		'install', '', array(
 			'BackendModule' => 'index, showEnableInstallToolButton, enableInstallTool',
 		),

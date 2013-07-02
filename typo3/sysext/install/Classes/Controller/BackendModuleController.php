@@ -72,7 +72,7 @@ class BackendModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCo
 	 * @throws \RuntimeException
 	 */
 	public function enableInstallToolAction() {
-		$token = $GLOBALS['_POST']['tx_install_tools_installinstall']['installToolEnableToken'];
+		$token = $GLOBALS['_POST']['tx_install_system_installinstall']['installToolEnableToken'];
 		if (\TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get()->validateToken($token, 'installTool')) {
 			$installToolService = $this->objectManager->get('TYPO3\\CMS\\Install\\Service\\EnableFileService');
 			$installToolService->createInstallToolEnableFile();
