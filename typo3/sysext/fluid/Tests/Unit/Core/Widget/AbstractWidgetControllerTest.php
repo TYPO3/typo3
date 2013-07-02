@@ -49,7 +49,7 @@ class AbstractWidgetControllerTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTes
 		$objectManager->expects($this->any())->method('get')->with('TYPO3\\CMS\\Extbase\\Mvc\\Web\\Routing\\UriBuilder')->will($this->returnValue($mockUriBuilder));
 
 		$configurationService = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\MvcPropertyMappingConfigurationService');
-		$abstractWidgetController->injectMvcPropertyMappingConfigurationService($configurationService);
+		$abstractWidgetController->_set('mvcPropertyMappingConfigurationService', $configurationService);
 		$abstractWidgetController->_set('arguments', new \TYPO3\CMS\Extbase\Mvc\Controller\Arguments());
 
 		$abstractWidgetController->_set('objectManager', $objectManager);
@@ -79,7 +79,7 @@ class AbstractWidgetControllerTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTes
 		$configurationManager->expects($this->any())->method('getConfiguration')->will($this->returnValue($frameworkConfiguration));
 		$view = $this->getAccessibleMock('TYPO3\\CMS\\Fluid\\View\\TemplateView', array('dummy'));
 		$abstractWidgetController = $this->getAccessibleMock('TYPO3\\CMS\\Fluid\\Core\\Widget\\AbstractWidgetController', array('dummy'));
-		$abstractWidgetController->injectConfigurationManager($configurationManager);
+		$abstractWidgetController->_set('configurationManager', $configurationManager);
 		$abstractWidgetController->_set('request', $request);
 		$abstractWidgetController->_call('setViewConfiguration', $view);
 		$this->assertEquals(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName('EXT:fluid/Resources/Private/DummyTestTemplates'), $view->_call('getTemplateRootPath'));

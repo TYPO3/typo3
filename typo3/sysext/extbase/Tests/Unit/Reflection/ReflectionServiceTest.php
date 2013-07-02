@@ -89,8 +89,8 @@ class ReflectionServiceTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 			class ' . $className . 'Repository {}
 		');
 
-		$service = new \TYPO3\CMS\Extbase\Reflection\ReflectionService();
-		$service->injectObjectManager($this->objectManager);
+		$service = $this->getAccessibleMock('TYPO3\CMS\Extbase\Reflection\ReflectionService', array('dummy'));
+		$service->_set('objectManager', $this->objectManager);
 		$classSchema = $service->getClassSchema('Foo\\Bar\\Domain\\Model\\' . $className);
 		$this->assertTrue($classSchema->isAggregateRoot());
 	}
@@ -107,8 +107,8 @@ class ReflectionServiceTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 			class Foo_Bar_Domain_Repository_' . $className . 'Repository {}
 		');
 
-		$service = new \TYPO3\CMS\Extbase\Reflection\ReflectionService();
-		$service->injectObjectManager($this->objectManager);
+		$service = $this->getAccessibleMock('TYPO3\CMS\Extbase\Reflection\ReflectionService', array('dummy'));
+		$service->_set('objectManager', $this->objectManager);
 		$classSchema = $service->getClassSchema('Foo_Bar_Domain_Model_' . $className);
 		$this->assertTrue($classSchema->isAggregateRoot());
 	}

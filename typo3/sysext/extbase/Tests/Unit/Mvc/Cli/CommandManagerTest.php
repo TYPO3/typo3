@@ -42,9 +42,9 @@ class CommandManagerTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	public function setUp() {
 		$this->commandControllerBackup = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['extbase']['commandControllers'];
-		$this->commandManager = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Cli\\CommandManager', array('getAvailableCommands'));
+		$this->commandManager = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Mvc\\Cli\\CommandManager', array('getAvailableCommands'));
 		$this->mockObjectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerInterface');
-		$this->commandManager->injectObjectManager($this->mockObjectManager);
+		$this->commandManager->_set('objectManager', $this->mockObjectManager);
 	}
 
 	public function tearDown() {
@@ -56,8 +56,9 @@ class CommandManagerTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function getAvailableCommandsReturnsAllAvailableCommands() {
-		$commandManager = new \TYPO3\CMS\Extbase\Mvc\Cli\CommandManager();
-		$commandManager->injectObjectManager($this->mockObjectManager);
+		/** @var \TYPO3\CMS\Core\Tests\AccessibleObjectInterface $commandManager */
+		$commandManager = $this->getAccessibleMock('TYPO3\CMS\Extbase\Mvc\Cli\CommandManager', array('dummy'));
+		$commandManager->_set('objectManager', $this->mockObjectManager);
 		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['extbase']['commandControllers'] = array(
 			'TYPO3\\CMS\\Extbase\\Tests\\Unit\\Mvc\\Cli\\Fixture\\Command\\MockACommandController',
 			'TYPO3\\CMS\\Extbase\\Tests\\Unit\\Mvc\\Cli\\Fixture\\Command\\MockBCommandController'
