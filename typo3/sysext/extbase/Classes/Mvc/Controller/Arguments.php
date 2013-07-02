@@ -34,6 +34,7 @@ class Arguments extends \ArrayObject {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
+	 * @Flow\Inject
 	 */
 	protected $objectManager;
 
@@ -52,16 +53,6 @@ class Arguments extends \ArrayObject {
 	 */
 	public function __construct() {
 		parent::__construct();
-	}
-
-	/**
-	 * Injects the object manager
-	 *
-	 * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
-	 * @return void
-	 */
-	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager) {
-		$this->objectManager = $objectManager;
 	}
 
 	/**

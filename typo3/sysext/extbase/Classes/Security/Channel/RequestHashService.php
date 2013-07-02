@@ -49,16 +49,9 @@ class RequestHashService implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Security\Cryptography\HashService
+	 * @Flow\Inject
 	 */
 	protected $hashService;
-
-	/**
-	 * @param \TYPO3\CMS\Extbase\Security\Cryptography\HashService $hashService
-	 * @return void
-	 */
-	public function injectHashService(\TYPO3\CMS\Extbase\Security\Cryptography\HashService $hashService) {
-		$this->hashService = $hashService;
-	}
 
 	/**
 	 * Generate a request hash for a list of form fields

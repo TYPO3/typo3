@@ -26,7 +26,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Mvc\Cli;
 class RequestTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Mvc\Cli\Request
+	 * @var \TYPO3\CMS\Extbase\Mvc\Cli\Request|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface
 	 */
 	protected $request;
 
@@ -39,9 +39,9 @@ class RequestTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * Sets up this test case
 	 */
 	public function setUp() {
-		$this->request = new \TYPO3\CMS\Extbase\Mvc\Cli\Request();
+		$this->request = $this->getAccessibleMock('TYPO3\CMS\Extbase\Mvc\Cli\Request', array('dummy'));
 		$this->mockObjectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerInterface');
-		$this->request->injectObjectManager($this->mockObjectManager);
+		$this->request->_set('objectManager', $this->mockObjectManager);
 	}
 
 	/**

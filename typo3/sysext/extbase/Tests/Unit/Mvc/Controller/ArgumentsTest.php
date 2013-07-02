@@ -69,8 +69,8 @@ class ArgumentsTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$mockArgument = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\Argument', array(), array(), '', FALSE);
 		$mockObjectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerInterface');
 		$mockObjectManager->expects($this->once())->method('get')->with('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\Argument')->will($this->returnValue($mockArgument));
-		$arguments = new \TYPO3\CMS\Extbase\Mvc\Controller\Arguments();
-		$arguments->injectObjectManager($mockObjectManager);
+		$arguments = $this->getAccessibleMock('TYPO3\CMS\Extbase\Mvc\Controller\Arguments', array('dummy'));
+		$arguments->_set('objectManager', $mockObjectManager);
 		$newArgument = $arguments->addNewArgument('someArgument');
 		$this->assertSame($newArgument, $mockArgument);
 	}
@@ -169,8 +169,8 @@ class ArgumentsTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$mockArgument->expects($this->any())->method('getName')->will($this->returnValue('dummyName'));
 		$mockObjectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerInterface');
 		$mockObjectManager->expects($this->once())->method('get')->with('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\Argument')->will($this->returnValue($mockArgument));
-		$arguments = new \TYPO3\CMS\Extbase\Mvc\Controller\Arguments();
-		$arguments->injectObjectManager($mockObjectManager);
+		$arguments = $this->getAccessibleMock('TYPO3\CMS\Extbase\Mvc\Controller\Arguments', array('dummy'));
+		$arguments->_set('objectManager', $mockObjectManager);
 		$addedArgument = $arguments->addNewArgument('dummyName');
 		$this->assertInstanceOf('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\Argument', $addedArgument, 'addNewArgument() either did not add a new argument or did not return it.');
 		$retrievedArgument = $arguments['dummyName'];
@@ -185,8 +185,8 @@ class ArgumentsTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$mockArgument->expects($this->any())->method('getName')->will($this->returnValue('dummyName'));
 		$mockObjectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerInterface');
 		$mockObjectManager->expects($this->once())->method('get')->with('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\Argument', 'dummyName', 'Text')->will($this->returnValue($mockArgument));
-		$arguments = new \TYPO3\CMS\Extbase\Mvc\Controller\Arguments();
-		$arguments->injectObjectManager($mockObjectManager);
+		$arguments = $this->getAccessibleMock('TYPO3\CMS\Extbase\Mvc\Controller\Arguments', array('dummy'));
+		$arguments->_set('objectManager', $mockObjectManager);
 		$arguments->addNewArgument('dummyName');
 	}
 
@@ -199,8 +199,8 @@ class ArgumentsTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$mockArgument->expects($this->once())->method('setRequired')->with(TRUE);
 		$mockObjectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerInterface');
 		$mockObjectManager->expects($this->once())->method('get')->with('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\Argument', 'dummyName', 'Text')->will($this->returnValue($mockArgument));
-		$arguments = new \TYPO3\CMS\Extbase\Mvc\Controller\Arguments();
-		$arguments->injectObjectManager($mockObjectManager);
+		$arguments = $this->getAccessibleMock('TYPO3\CMS\Extbase\Mvc\Controller\Arguments', array('dummy'));
+		$arguments->_set('objectManager', $mockObjectManager);
 		$arguments->addNewArgument('dummyName', 'Text', TRUE);
 	}
 
@@ -214,8 +214,8 @@ class ArgumentsTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$mockArgument->expects($this->once())->method('setDefaultValue')->with('someDefaultValue');
 		$mockObjectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerInterface');
 		$mockObjectManager->expects($this->once())->method('get')->with('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\Argument', 'dummyName', 'Text')->will($this->returnValue($mockArgument));
-		$arguments = new \TYPO3\CMS\Extbase\Mvc\Controller\Arguments();
-		$arguments->injectObjectManager($mockObjectManager);
+		$arguments = $this->getAccessibleMock('TYPO3\CMS\Extbase\Mvc\Controller\Arguments', array('dummy'));
+		$arguments->_set('objectManager', $mockObjectManager);
 		$arguments->addNewArgument('dummyName', 'Text', FALSE, 'someDefaultValue');
 	}
 
