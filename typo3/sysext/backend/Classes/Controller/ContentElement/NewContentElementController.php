@@ -178,10 +178,7 @@ class NewContentElementController {
 			$code = '';
 			$wizardItems = $this->getWizardItems();
 			// Wrapper for wizards
-			$this->elementWrapper['sectionHeader'] = array('<h3 class="divider">', '</h3>');
-			$this->elementWrapper['section'] = array('<table border="0" cellpadding="1" cellspacing="2">', '</table>');
-			$this->elementWrapper['wizard'] = array('<tr>', '</tr>');
-			$this->elementWrapper['wizardPart'] = array('<td>', '</td>');
+			$this->elementWrapper['section'] = array('<ul class="contentelement-wizard">', '</ul>');
 			// Copy wrapper for tabs
 			$this->elementWrapperForTabs = $this->elementWrapper;
 			// Hook for manipulating wizardItems, wrapper, onClickEvent etc.
@@ -227,21 +224,28 @@ class NewContentElementController {
 					if (!$this->onClickEvent) {
 						// Radio button:
 						$oC = 'document.editForm.defValues.value=unescape(\'' . rawurlencode($wInfo['params']) . '\');goToalt_doc();' . (!$this->onClickEvent ? 'window.location.hash=\'#sel2\';' : '');
-						$content .= $this->elementWrapper['wizardPart'][0] . '<input type="radio" name="tempB" value="' . htmlspecialchars($k) . '" onclick="' . htmlspecialchars($oC) . '" />' . $this->elementWrapper['wizardPart'][1];
+						$content .= '<div class="input"><input type="radio" name="tempB" value="' . htmlspecialchars($k) . '" onclick="' . htmlspecialchars($oC) . '" /></div>';
 						// Onclick action for icon/title:
 						$aOnClick = 'document.getElementsByName(\'tempB\')[' . $cc . '].checked=1;' . $oC . 'return false;';
 					} else {
 						$aOnClick = "document.editForm.defValues.value=unescape('".rawurlencode($wInfo['params'])."');goToalt_doc();".(!$this->onClickEvent?"window.location.hash='#sel2';":'');
 					}
 
-					// Icon:
-					$iInfo = @getimagesize($wInfo['icon']);
-					$content .= $this->elementWrapper['wizardPart'][0] . '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">
-						<img' . IconUtility::skinImg($this->doc->backPath, $wInfo['icon'], '') . ' alt="" /></a>' . $this->elementWrapper['wizardPart'][1];
-					// Title + description:
-					$content .= $this->elementWrapper['wizardPart'][0] . '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '"><strong>' . htmlspecialchars($wInfo['title']) . '</strong><br />' . nl2br(htmlspecialchars(trim($wInfo['description']))) . '</a>' . $this->elementWrapper['wizardPart'][1];
-					// Finally, put it together in a container:
-					$menuItems[$key]['content'] .= $this->elementWrapper['wizard'][0] . $content . $this->elementWrapper['wizard'][1];
+					$menuItems[$key]['content'] .=
+						'<li>
+							' . $content . '
+							<div class="icon">
+								<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">
+									<img' . IconUtility::skinImg($this->doc->backPath, $wInfo['icon'], '') . ' alt="" />
+								</a>
+							</div>
+							<div class="text">
+								<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">
+									<strong>' . htmlspecialchars($wInfo['title']) . '</strong>
+									<br />' . nl2br(htmlspecialchars(trim($wInfo['description']))) .
+								'</a>
+							</div>
+						</li>';
 					$cc++;
 				}
 			}
@@ -260,7 +264,7 @@ class NewContentElementController {
 			} else {
 				$code = $GLOBALS['LANG']->getLL('sel1', 1) . '<br /><br />';
 				foreach ($menuItems as $section) {
-					$code .= $this->elementWrapper['sectionHeader'][0] . $section['label'] . $this->elementWrapper['sectionHeader'][1] . $section['content'];
+					$code .= '<h3 class="divider">' . $section['label'] . '</h3>' . $section['content'];
 				}
 			}
 			$this->content .= $this->doc->section(!$this->onClickEvent ? $GLOBALS['LANG']->getLL('1_selectType') : '', $code, 0, 1);
