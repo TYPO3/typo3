@@ -48,15 +48,15 @@ class ArgumentTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function setUp() {
-		$this->simpleValueArgument = new \TYPO3\CMS\Extbase\Mvc\Controller\Argument('someName', 'string');
-		$this->objectArgument = new \TYPO3\CMS\Extbase\Mvc\Controller\Argument('someName', 'DateTime');
+		$this->simpleValueArgument = $this->getAccessibleMock('TYPO3\CMS\Extbase\Mvc\Controller\Argument', array('dummy'), array('someName', 'string'));
+		$this->objectArgument = $this->getAccessibleMock('TYPO3\CMS\Extbase\Mvc\Controller\Argument', array('dummy'), array('someName', 'DateTime'));
 		$this->mockPropertyMapper = $this->getMock('TYPO3\\CMS\\Extbase\\Property\\PropertyMapper');
-		$this->simpleValueArgument->injectPropertyMapper($this->mockPropertyMapper);
-		$this->objectArgument->injectPropertyMapper($this->mockPropertyMapper);
+		$this->simpleValueArgument->_set('propertyMapper', $this->mockPropertyMapper);
+		$this->objectArgument->_set('propertyMapper', $this->mockPropertyMapper);
 		$this->mockConfiguration = new \TYPO3\CMS\Extbase\Mvc\Controller\MvcPropertyMappingConfiguration();
 		$propertyMappingConfiguranion = new \TYPO3\CMS\Extbase\Mvc\Controller\MvcPropertyMappingConfiguration();
-		$this->simpleValueArgument->injectPropertyMappingConfiguration($propertyMappingConfiguranion);
-		$this->objectArgument->injectPropertyMappingConfiguration($propertyMappingConfiguranion);
+		$this->simpleValueArgument->_set('propertyMappingConfiguration', $propertyMappingConfiguranion);
+		$this->objectArgument->_set('propertyMappingConfiguration', $propertyMappingConfiguranion);
 	}
 
 	/**
@@ -173,6 +173,7 @@ class ArgumentTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 */
 	public function setValueUsesNullAsIs() {
 		$this->simpleValueArgument = new \TYPO3\CMS\Extbase\Mvc\Controller\Argument('dummy', 'string');
+		$this->simpleValueArgument = $this->getAccessibleMock('TYPO3\CMS\Extbase\Mvc\Controller\Argument', array('dummy'), array('dummy', 'string'));
 		$this->enableRewrittenPropertyMapperInArgument($this->simpleValueArgument);
 		$this->simpleValueArgument->setValue(NULL);
 		$this->assertNull($this->simpleValueArgument->getValue());
@@ -298,7 +299,7 @@ class ArgumentTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	protected function enableRewrittenPropertyMapperInArgument(\TYPO3\CMS\Extbase\Mvc\Controller\Argument $argument) {
 		$mockConfigurationManager = $this->getMock('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManagerInterface');
 		$mockConfigurationManager->expects($this->any())->method('isFeatureEnabled')->with('rewrittenPropertyMapper')->will($this->returnValue(TRUE));
-		$argument->injectConfigurationManager($mockConfigurationManager);
+		$argument->_set('configurationManager', $mockConfigurationManager);
 	}
 }
 

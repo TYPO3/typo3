@@ -58,17 +58,9 @@ abstract class AbstractTypeConverter implements \TYPO3\CMS\Extbase\Property\Type
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Object\ObjectManager
+	 * @inject
 	 */
 	protected $objectManager;
-
-	/**
-	 * Injects the object manager.
-	 *
-	 * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
-	 */
-	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager) {
-		$this->objectManager = $objectManager;
-	}
 
 	/**
 	 * Returns the list of source types the TypeConverter can handle.

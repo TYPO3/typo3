@@ -39,15 +39,9 @@ class IdentityMap implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\Session
+	 * @inject
 	 */
 	protected $persistenceSession;
-
-	/**
-	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\Session
-	 */
-	public function injectPersistenceSession(\TYPO3\CMS\Extbase\Persistence\Generic\Session $persistenceSession) {
-		$this->persistenceSession = $persistenceSession;
-	}
 
 	/**
 	 * Checks whether the given object is known to the identity map
