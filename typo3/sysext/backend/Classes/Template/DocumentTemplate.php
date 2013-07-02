@@ -1669,8 +1669,7 @@ class DocumentTemplate {
 	}
 
 	/**
-	 * Creates a DYNAMIC tab-menu where the tabs are switched between with DHTML.
-	 * Should work in MSIE, Mozilla, Opera and Konqueror. On Konqueror I did find a serious problem: <textarea> fields loose their content when you switch tabs!
+	 * Creates a tab menu
 	 *
 	 * @param array $menuItems Numeric array where each entry is an array in itself with associative keys: "label" contains the label for the TAB, "content" contains the HTML content that goes into the div-layer of the tabs content. "description" contains description text to be shown in the layer. "linkTitle" is short text for the title attribute of the tab-menu link (mouse-over text of tab). "stateIcon" indicates a standard status icon (see ->icon(), values: -1, 1, 2, 3). "icon" is an image tag placed before the text.
 	 * @param string $identString Identification string. This should be unique for every instance of a dynamic menu!
@@ -1679,103 +1678,111 @@ class DocumentTemplate {
 	 * @param boolean $noWrap If set, tab table cells are not allowed to wrap their content
 	 * @param boolean $fullWidth If set, the tabs will span the full width of their position
 	 * @param integer $defaultTabIndex Default tab to open (for toggle <=0). Value corresponds to integer-array index + 1 (index zero is "1", index "1" is 2 etc.). A value of zero (or something non-existing) will result in no default tab open.
-	 * @param integer $dividers2tabs If set to '1' empty tabs will be remove, If set to '2' empty tabs will be disabled
+	 * @param integer $removeEmptyTabs If set to '1' empty tabs will be remove, If set to '2' empty tabs will be disabled
 	 * @return string JavaScript section for the HTML header.
 	 */
-	public function getDynTabMenu($menuItems, $identString, $toggle = 0, $foldout = FALSE, $noWrap = TRUE, $fullWidth = FALSE, $defaultTabIndex = 1, $dividers2tabs = 2) {
-		// Load the static code, if not already done with the function below
-		$this->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/tabmenu.js');
+	public function getDynTabMenu($menuItems, $identString, $toggle = 0, $foldout = FALSE, $noWrap = TRUE, $fullWidth = FALSE, $defaultTabIndex = 1, $removeEmptyTabs = 2) {
 		$content = '';
+
 		if (is_array($menuItems)) {
+
+			// include JS for TabMenu
+			$this->pageRenderer->loadJquery();
+			$this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/TabMenuSetup');
+
+			// unique identifier on this page
+			$menuId = 'tabmenu-' . \TYPO3\CMS\Core\Utility\GeneralUtility::shortMD5($identString, 6);
+
 			// Init:
 			$options = array(array());
 			$divs = array();
-			$JSinit = array();
-			$id = $this->getDynTabMenuId($identString);
-			$noWrap = $noWrap ? ' nowrap="nowrap"' : '';
+
 			// Traverse menu items
 			$c = 0;
 			$tabRows = 0;
 			$titleLenCount = 0;
-			foreach ($menuItems as $index => $def) {
-				// Need to add one so checking for first index in JavaScript
-				// is different than if it is not set at all.
-				$index += 1;
+			foreach ($menuItems as $index => $menuItemData) {
+
+				$menuItemId = $menuId . '-' . $index;
+
 				// Switch to next tab row if needed
-				if (!$foldout && ($def['newline'] === TRUE && $titleLenCount > 0)) {
+				if (!$foldout && ($menuItemData['newline'] === TRUE && $titleLenCount > 0)) {
 					$titleLenCount = 0;
 					$tabRows++;
 					$options[$tabRows] = array();
 				}
-				if ($toggle == 1) {
-					$onclick = 'this.blur(); DTM_toggle("' . $id . '","' . $index . '"); return false;';
-				} else {
-					$onclick = 'this.blur(); DTM_activate("' . $id . '","' . $index . '", ' . ($toggle < 0 ? 1 : 0) . '); return false;';
-				}
-				$isEmpty = !(strcmp(trim($def['content']), '') || strcmp(trim($def['icon']), ''));
+
+				$isEmpty = !(strcmp(trim($menuItemData['content']), '') || strcmp(trim($menuItemData['icon']), ''));
+
 				// "Removes" empty tabs
-				if ($isEmpty && $dividers2tabs == 1) {
+				if ($isEmpty && $removeEmptyTabs == 1) {
 					continue;
 				}
-				$mouseOverOut = ' onmouseover="DTM_mouseOver(this);" onmouseout="DTM_mouseOut(this);"';
-				$requiredIcon = '<img name="' . $id . '-' . $index . '-REQ" src="' . $GLOBALS['BACK_PATH'] . 'gfx/clear.gif" class="t3-TCEforms-reqTabImg" alt="" />';
+
+				// set the classes for the container
+				$containerClasses = ($isEmpty ? 'disabled' : 'tab');
+				if ($noWrap) {
+					$containerClasses .= ' nowrap';
+				}
+
+				// required icon for TCEforms etc
+				$requiredIcon = '<img name="' . $menuItemId . '-REQ" src="' . $GLOBALS['BACK_PATH'] . 'gfx/clear.gif" class="t3-TCEforms-reqTabImg" alt="" />';
+
+				$tabHeader = $menuItemData['icon'] . ($menuItemData['label'] ? htmlspecialchars($menuItemData['label']) : '&nbsp;') . $requiredIcon;
+
+
+				if (!$foldout) {
+					$tabHeader .= $this->icons($menuItemData['stateIcon'], 'margin-left: 10px;');
+				}
+
+				// wrap in in a link if it is not empty
+				if (!$isEmpty) {
+					$tabHeader = '<a href="#' . $menuItemId . '" data-toggle="TabMenu" ' . ($menuItemData['linkTitle'] ? ' title="' . htmlspecialchars($menuItemData['linkTitle']) . '"' : '') . '>' . $tabHeader . '</a>';
+				}
+
 				if (!$foldout) {
 					// Create TAB cell:
-					$options[$tabRows][] = '
-							<td class="' . ($isEmpty ? 'disabled' : 'tab') . '" id="' . $id . '-' . $index . '-MENU"' . $noWrap . $mouseOverOut . '>' . ($isEmpty ? '' : '<a href="#" onclick="' . htmlspecialchars($onclick) . '"' . ($def['linkTitle'] ? ' title="' . htmlspecialchars($def['linkTitle']) . '"' : '') . '>') . $def['icon'] . ($def['label'] ? htmlspecialchars($def['label']) : '&nbsp;') . $requiredIcon . $this->icons($def['stateIcon'], 'margin-left: 10px;') . ($isEmpty ? '' : '</a>') . '</td>';
-					$titleLenCount += strlen($def['label']);
+					$options[$tabRows][] = '<li class="' . $containerClasses . '" id="' . $menuItemId . '-MENU">' . $tabHeader . '</li>';
+
+					$titleLenCount += strlen($menuItemData['label']);
 				} else {
 					// Create DIV layer for content:
-					$divs[] = '
-						<div class="' . ($isEmpty ? 'disabled' : 'tab') . '" id="' . $id . '-' . $index . '-MENU"' . $mouseOverOut . '>' . ($isEmpty ? '' : '<a href="#" onclick="' . htmlspecialchars($onclick) . '"' . ($def['linkTitle'] ? ' title="' . htmlspecialchars($def['linkTitle']) . '"' : '') . '>') . $def['icon'] . ($def['label'] ? htmlspecialchars($def['label']) : '&nbsp;') . $requiredIcon . ($isEmpty ? '' : '</a>') . '</div>';
+					$divs[] = '<div class="' . $containerClasses . '" id="' . $menuItemId . '-MENU">' . $tabHeader . '</div>';
 				}
+
 				// Create DIV layer for content:
 				$divs[] = '
-						<div style="display: none;" id="' . $id . '-' . $index . '-DIV" class="c-tablayer">' . ($def['description'] ? '<p class="c-descr">' . nl2br(htmlspecialchars($def['description'])) . '</p>' : '') . $def['content'] . '</div>';
-				// Create initialization string:
-				$JSinit[] = '
-						DTM_array["' . $id . '"][' . $c . '] = "' . $id . '-' . $index . '";
-				';
+						<div style="display: none;" id="' . $menuItemId . '" class="c-tablayer">' . ($menuItemData['description'] ? '<p class="c-descr">' . nl2br(htmlspecialchars($menuItemData['description'])) . '</p>' : '') . $menuItemData['content'] . '</div>';
+
 				// If not empty and we have the toggle option on, check if the tab needs to be expanded
 				if ($toggle == 1 && !$isEmpty) {
-					$JSinit[] = '
-						if (top.DTM_currentTabs["' . $id . '-' . $index . '"]) { DTM_toggle("' . $id . '","' . $index . '",1); }
-					';
+					// @todo: do we really need it?
 				}
 				$c++;
 			}
+
 			// Render menu:
 			if (count($options)) {
+
 				// Tab menu is compiled:
 				if (!$foldout) {
 					$tabContent = '';
 					for ($a = 0; $a <= $tabRows; $a++) {
 						$tabContent .= '
-
-					<!-- Tab menu -->
-					<table cellpadding="0" cellspacing="0" border="0"' . ($fullWidth ? ' width="100%"' : '') . ' class="typo3-dyntabmenu">
-						<tr>
-								' . implode('', $options[$a]) . '
-						</tr>
-					</table>';
+						<!-- Tab menu -->
+						<ul id="' . $menuId . '-menu-' . $a . '" class="nav nav-tabs typo3-dyntabmenu" style="' . ($fullWidth ? ' width="100%"' : '') . '">
+							' . implode('', $options[$a]) . '
+						</ul>';
 					}
-					$content .= '<div class="typo3-dyntabmenu-tabs">' . $tabContent . '</div>';
+
+					$content .= '<div class="nav-tabcontainer typo3-dyntabmenu-tabs">' . $tabContent . '</div>';
 				}
+
 				// Div layers are added:
 				$content .= '
 				<!-- Div layers for tab menu: -->
 				<div class="typo3-dyntabmenu-divs' . ($foldout ? '-foldout' : '') . '">
 				' . implode('', $divs) . '</div>';
-				// Java Script section added:
-				$content .= '
-				<!-- Initialization JavaScript for the menu -->
-				<script type="text/javascript">
-					DTM_array["' . $id . '"] = new Array();
-					' . implode('', $JSinit) . '
-					' . ($toggle <= 0 ? 'DTM_activate("' . $id . '", top.DTM_currentTabs["' . $id . '"]?top.DTM_currentTabs["' . $id . '"]:' . intval($defaultTabIndex) . ', 0);' : '') . '
-				</script>
-
-				';
 			}
 		}
 		return $content;
@@ -1787,8 +1794,10 @@ class DocumentTemplate {
 	 * @param string $identString Identification string. This should be unique for every instance of a dynamic menu!
 	 * @return string The id with a short MD5 of $identString and prefixed "DTM-", like "DTM-2e8791854a
 	 * @todo Define visibility
+	 * @deprecated since TYPO3 6.2, will be removed two versions later. This function is not needed anymore
 	 */
 	public function getDynTabMenuId($identString) {
+		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
 		$id = 'DTM-' . GeneralUtility::shortMD5($identString);
 		return $id;
 	}
