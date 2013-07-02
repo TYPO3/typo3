@@ -171,12 +171,16 @@ class Logger {
 	/**
 	 * Adds a log record.
 	 *
-	 * @param integer $level Log level.
+	 * @param integer|string $level Log level. Value according to \TYPO3\CMS\Core\Log\LogLevel. Alternatively accepts a string.
 	 * @param string $message Log message.
 	 * @param array $data Additional data to log
 	 * @return mixed
 	 */
 	public function log($level, $message, array $data = array()) {
+		$level = LogLevel::normalizeLevel($level);
+		if (is_string($level) && defined('TYPO3\\CMS\\Core\\Log\\LogLevel::' . strtoupper($level))) {
+			$level = constant('TYPO3\\CMS\\Core\\Log\\LogLevel::' . strtoupper($level));
+		}
 		\TYPO3\CMS\Core\Log\LogLevel::validateLevel($level);
 		if ($level > $this->minimumLogLevel) {
 			return $this;

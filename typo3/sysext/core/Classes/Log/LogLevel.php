@@ -147,6 +147,20 @@ class LogLevel {
 		}
 	}
 
+	/**
+	 * Normalizes level by converting it from string to integer
+	 *
+	 * @param string $level
+	 * @return integer|string
+	 */
+	public static function normalizeLevel($level) {
+		if (is_string($level) && defined(__CLASS__ . '::' . strtoupper($level))) {
+			$level = constant(__CLASS__ . '::' . strtoupper($level));
+		}
+
+		return $level;
+	}
+
 }
 
 
