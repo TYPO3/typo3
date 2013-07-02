@@ -85,12 +85,11 @@ class BootstrapTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$requestHandlerResolver = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\RequestHandlerResolver', array('resolveRequestHandler'));
 
 		/** @var $cliRequestHandler \TYPO3\CMS\Extbase\Mvc\Cli\RequestHandler|\PHPUnit_Framework_MockObject_MockObject */
-		$cliRequestHandler = $this->getMock('TYPO3\CMS\Extbase\Mvc\Cli\RequestHandler', array('canHandleRequest'));
+		$cliRequestHandler = $this->getAccessibleMock('TYPO3\CMS\Extbase\Mvc\Cli\RequestHandler', array('canHandleRequest'));
 		$cliRequestHandler->expects($this->any())->method('canHandleRequest')->will($this->returnValue(TRUE));
-		$cliRequestHandler->injectObjectManager($this->objectManager);
-		$cliRequestHandler->injectRequestBuilder($this->objectManager->get('TYPO3\CMS\Extbase\Mvc\Cli\RequestBuilder'));
-		$cliRequestHandler->injectDispatcher($this->objectManager->get('TYPO3\CMS\Extbase\Mvc\Dispatcher'));
-
+		$cliRequestHandler->_set('objectManager', $this->objectManager);
+		$cliRequestHandler->_set('requestBuilder', $this->objectManager->get('TYPO3\CMS\Extbase\Mvc\Cli\RequestBuilder'));
+		$cliRequestHandler->_set('dispatcher', $this->objectManager->get('TYPO3\CMS\Extbase\Mvc\Dispatcher'));
 		/** @var $cliResponse \TYPO3\CMS\Extbase\Mvc\Cli\Response */
 		$cliResponse = $this->getMock('TYPO3\CMS\Extbase\Mvc\Cli\Response', array('send'));
 
