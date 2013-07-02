@@ -2,9 +2,17 @@
 if (!defined('TYPO3_MODE')) {
 	die('Access denied.');
 }
-if (TYPO3_MODE == 'BE') {
-	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule('user', 'setup', 'after:task', \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'mod/');
-	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('_MOD_user_setup', 'EXT:setup/locallang_csh_mod.xml');
+if (TYPO3_MODE === 'BE') {
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule(
+		'user',
+		'setup',
+		'after:task',
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'mod/'
+	);
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr(
+		'_MOD_user_setup',
+		'EXT:setup/locallang_csh_mod.xml'
+	);
 }
 $GLOBALS['TYPO3_USER_SETTINGS'] = array(
 	'ctrl' => array(
