@@ -25,6 +25,7 @@ namespace TYPO3\CMS\Core\Log;
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Logger to log events and data for different components.
  *
@@ -32,7 +33,7 @@ namespace TYPO3\CMS\Core\Log;
  * @author Steffen Müller <typo3@t3node.com>
  * @author Steffen Gebert <steffen.gebert@typo3.org>
  */
-class Logger {
+class Logger implements \Psr\Log\LoggerInterface {
 
 	/**
 	 * Logger name or component for which this logger is meant to be used for.

@@ -10,6 +10,7 @@ $typo3Classes = array(
 	'tbe_foldertree' => PATH_typo3 . 'class.browse_links.php',
 	'tbe_pagetree' => PATH_typo3 . 'class.browse_links.php',
 	'transferdata' => PATH_typo3 . 'show_item.php',
+	'Psr\\Log\\LoggerInterface' => PATH_typo3 . 'contrib/Psr/Log/LoggerInterface.php',
 );
 return $typo3Classes;
 ?>
