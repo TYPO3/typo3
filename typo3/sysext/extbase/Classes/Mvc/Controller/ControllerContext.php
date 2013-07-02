@@ -73,39 +73,21 @@ class ControllerContext {
 
 	/**
 	 * @var \TYPO3\CMS\Core\Messaging\FlashMessageService
+	 * @Flow\Inject
 	 */
 	protected $flashMessageService;
 
 	/**
-	 * @param \TYPO3\CMS\Core\Messaging\FlashMessageService $flashMessageService
-	 */
-	public function injectFlashMessageService(\TYPO3\CMS\Core\Messaging\FlashMessageService $flashMessageService) {
-		$this->flashMessageService = $flashMessageService;
-	}
-
-	/**
 	 * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
+	 * @Flow\Inject
 	 */
 	protected $configurationManager;
 
 	/**
-	 * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
-	 */
-	public function injectConfigurationManager(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager) {
-		$this->configurationManager = $configurationManager;
-	}
-
-	/**
 	 * @var \TYPO3\CMS\Extbase\Service\ExtensionService
+	 * @Flow\Inject
 	 */
 	protected $extensionService;
-
-	/**
-	 * @param \TYPO3\CMS\Extbase\Service\ExtensionService $extensionService
-	 */
-	public function injectExtensionService(\TYPO3\CMS\Extbase\Service\ExtensionService $extensionService) {
-		$this->extensionService = $extensionService;
-	}
 
 	/**
 	 * Set the request of the controller

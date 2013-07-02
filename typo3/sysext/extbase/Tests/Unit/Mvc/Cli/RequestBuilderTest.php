@@ -26,7 +26,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Mvc\Cli;
 class RequestBuilderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Mvc\Cli\RequestBuilder
+	 * @var \TYPO3\CMS\Extbase\Mvc\Cli\RequestBuilder|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_Comparator_MockObject
 	 */
 	protected $requestBuilder;
 
@@ -70,10 +70,10 @@ class RequestBuilderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$this->mockCommandManager = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Cli\\CommandManager');
 		$this->mockCommandManager->expects($this->any())->method('getCommandByIdentifier')->with('some_extension_name:default:list')->will($this->returnValue($this->mockCommand));
 		$this->mockReflectionService = $this->getMock('TYPO3\\CMS\\Extbase\\Reflection\\ReflectionService');
-		$this->requestBuilder = new \TYPO3\CMS\Extbase\Mvc\Cli\RequestBuilder();
-		$this->requestBuilder->injectObjectManager($this->mockObjectManager);
-		$this->requestBuilder->injectReflectionService($this->mockReflectionService);
-		$this->requestBuilder->injectCommandManager($this->mockCommandManager);
+		$this->requestBuilder = $this->getAccessibleMock('TYPO3\CMS\Extbase\Mvc\Cli\RequestBuilder', array('dummy'));
+		$this->requestBuilder->_set('objectManager', $this->mockObjectManager);
+		$this->requestBuilder->_set('reflectionService', $this->mockReflectionService);
+		$this->requestBuilder->_set('commandManager', $this->mockCommandManager);
 	}
 
 	/**
@@ -100,7 +100,7 @@ class RequestBuilderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$this->mockCommandManager->getCommandByIdentifier('some_extension_name:default:list');
 		$mockCommandManager = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Cli\\CommandManager');
 		$mockCommandManager->expects($this->any())->method('getCommandByIdentifier')->with('test:default:list')->will($this->throwException(new \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchCommandException()));
-		$this->requestBuilder->injectCommandManager($mockCommandManager);
+		$this->requestBuilder->_set('commandManager', $mockCommandManager);
 		$request = $this->requestBuilder->build('test:default:list');
 		$this->assertSame('TYPO3\\CMS\\Extbase\\Command\\HelpCommandController', $request->getControllerObjectName());
 	}

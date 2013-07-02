@@ -46,15 +46,9 @@ abstract class AbstractFileCollectionConverter extends \TYPO3\CMS\Extbase\Proper
 
 	/**
 	 * @var \TYPO3\CMS\Core\Resource\ResourceFactory
+	 * @Flow\Inject
 	 */
 	protected $fileFactory;
-
-	/**
-	 * @param \TYPO3\CMS\Core\Resource\ResourceFactory $fileFactory
-	 */
-	public function injectFileFactory(\TYPO3\CMS\Core\Resource\ResourceFactory $fileFactory) {
-		$this->fileFactory = $fileFactory;
-	}
 
 	/**
 	 * Actually convert from $source to $targetType, taking into account the fully
