@@ -161,6 +161,14 @@ class RecordList {
 	public $content;
 
 	/**
+	 * Constructor
+	 */
+	public function __construct() {
+		$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_mod_web_list.xlf');
+		$GLOBALS['BE_USER']->modAccess($GLOBALS['MCONF'], 1);
+	}
+
+	/**
 	 * Initializing the module
 	 *
 	 * @return void
