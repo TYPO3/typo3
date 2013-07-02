@@ -215,11 +215,11 @@ class LogRecord implements \ArrayAccess {
 	/**
 	 * Sets the log message
 	 *
-	 * @param string $message Log message
+	 * @param string|object $message Log message. Usually a string, or an object that can be casted string (implements __toString())
 	 * @return \TYPO3\CMS\Core\Log\LogRecord
 	 */
 	public function setMessage($message) {
-		$this->message = $message;
+		$this->message = (string)$message;
 		return $this;
 	}
 
