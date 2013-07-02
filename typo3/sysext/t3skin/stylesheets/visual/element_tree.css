@@ -27,23 +27,6 @@ body#typo3-alt-file-navframe-php {
 	*background-image: url("../../images/shadows/navigation-container.png");
 }
 
-#typo3-alt-file-navframe-php #typo3-docheader-row1,
-#typo3-pagetree-topPanelItems,
-#typo3-pagetree .x-panel-tbar,
-#typo3-pagetree-deletionDropZone .x-panel-body {
-	background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAABCAYAAAAb4BS0AAAAGElEQVR42gENAPL/AEBAQExAQECzQEBA/xb3BD8CHBN0AAAAAElFTkSuQmCC");
-	/* star-hack targets IE7 */
-	*background-image: url("../../images/shadows/docheader1.png");
-}
-
-#typo3-alt-file-navframe-php #typo3-docheader-row2,
-.typo3-pagetree-indicatorBar-item,
-#typo3-pagetree-topPanel .typo3-pagetree-topPanel-item {
-	background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAABCAYAAAAb4BS0AAAAGElEQVR42gENAPL/ALi4uEy4uLi0uLi4/zSECHijpwMGAAAAAElFTkSuQmCC");
-	/* star-hack targets IE7 */
-	*background-image: url("../../images/shadows/docheader2.png");
-}
-
 table#typo3-tree a {
 	text-decoration: none;
 }
