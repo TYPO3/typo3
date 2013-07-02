@@ -49,6 +49,16 @@ class NullBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend implemen
 	}
 
 	/**
+	 * Acts as if it would enable data compression
+	 *
+	 * @param boolean $compression ignored
+	 * @return void
+	 */
+	public function setCompression($compression) {
+
+	}
+
+	/**
 	 * Returns False
 	 *
 	 * @param string $entryIdentifier ignored
