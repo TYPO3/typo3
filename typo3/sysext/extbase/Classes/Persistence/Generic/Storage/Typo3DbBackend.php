@@ -44,6 +44,7 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper
+	 * @Flow\Inject
 	 */
 	protected $dataMapper;
 
@@ -63,16 +64,19 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
+	 * @Flow\Inject
 	 */
 	protected $configurationManager;
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Service\CacheService
+	 * @Flow\Inject
 	 */
 	protected $cacheService;
 
 	/**
 	 * @var \TYPO3\CMS\Core\Cache\CacheManager
+	 * @Flow\Inject
 	 */
 	protected $cacheManager;
 
@@ -83,6 +87,7 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Service\EnvironmentService
+	 * @Flow\Inject
 	 */
 	protected $environmentService;
 
@@ -94,53 +99,12 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 	}
 
 	/**
-	 * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
-	 * @return void
-	 */
-	public function injectConfigurationManager(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager) {
-		$this->configurationManager = $configurationManager;
-	}
-
-	/**
-	 * @param \TYPO3\CMS\Core\Cache\CacheManager $cacheManager
-	 */
-	public function injectCacheManager(\TYPO3\CMS\Core\Cache\CacheManager $cacheManager) {
-		$this->cacheManager = $cacheManager;
-	}
-
-	/**
 	 * Lifecycle method
 	 *
 	 * @return void
 	 */
 	public function initializeObject() {
 		$this->tableColumnCache = $this->cacheManager->getCache('extbase_typo3dbbackend_tablecolumns');
-	}
-
-	/**
-	 * Injects the DataMapper to map nodes to objects
-	 *
-	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper $dataMapper
-	 * @return void
-	 */
-	public function injectDataMapper(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper $dataMapper) {
-		$this->dataMapper = $dataMapper;
-	}
-
-	/**
-	 * @param \TYPO3\CMS\Extbase\Service\CacheService $cacheService
-	 * @return void
-	 */
-	public function injectCacheService(\TYPO3\CMS\Extbase\Service\CacheService $cacheService) {
-		$this->cacheService = $cacheService;
-	}
-
-	/**
-	 * @param \TYPO3\CMS\Extbase\Service\EnvironmentService $environmentService
-	 * @return void
-	 */
-	public function injectEnvironmentService(\TYPO3\CMS\Extbase\Service\EnvironmentService $environmentService) {
-		$this->environmentService = $environmentService;
 	}
 
 	/**

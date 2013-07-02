@@ -36,6 +36,7 @@ abstract class AbstractController implements \TYPO3\CMS\Extbase\Mvc\Controller\C
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
+	 * @Flow\Inject
 	 */
 	protected $signalSlotDispatcher;
 
@@ -81,11 +82,13 @@ abstract class AbstractController implements \TYPO3\CMS\Extbase\Mvc\Controller\C
 	/**
 	 * @var \TYPO3\CMS\Extbase\Property\Mapper
 	 * @deprecated since Extbase 1.4.0, will be removed two versions after Extbase 6.1
+	 * @Flow\Inject
 	 */
 	protected $deprecatedPropertyMapper;
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Validation\ValidatorResolver
+	 * @Flow\Inject
 	 */
 	protected $validatorResolver;
 
@@ -165,17 +168,6 @@ abstract class AbstractController implements \TYPO3\CMS\Extbase\Mvc\Controller\C
 	}
 
 	/**
-	 * Injects the property mapper
-	 *
-	 * @param \TYPO3\CMS\Extbase\Property\Mapper $deprecatedPropertyMapper The property mapper
-	 * @return void
-	 * @deprecated since Extbase 1.4.0, will be removed two versions after Extbase 6.1
-	 */
-	public function injectDeprecatedPropertyMapper(\TYPO3\CMS\Extbase\Property\Mapper $deprecatedPropertyMapper) {
-		$this->deprecatedPropertyMapper = $deprecatedPropertyMapper;
-	}
-
-	/**
 	 * Injects the object manager
 	 *
 	 * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
@@ -184,16 +176,6 @@ abstract class AbstractController implements \TYPO3\CMS\Extbase\Mvc\Controller\C
 	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager) {
 		$this->objectManager = $objectManager;
 		$this->arguments = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\Arguments');
-	}
-
-	/**
-	 * Injects the validator resolver
-	 *
-	 * @param \TYPO3\CMS\Extbase\Validation\ValidatorResolver $validatorResolver
-	 * @return void
-	 */
-	public function injectValidatorResolver(\TYPO3\CMS\Extbase\Validation\ValidatorResolver $validatorResolver) {
-		$this->validatorResolver = $validatorResolver;
 	}
 
 	/**
@@ -207,15 +189,6 @@ abstract class AbstractController implements \TYPO3\CMS\Extbase\Mvc\Controller\C
 	 */
 	public function injectFlashMessageContainer(\TYPO3\CMS\Extbase\Mvc\Controller\FlashMessageContainer $flashMessageContainer) {
 		$this->flashMessageContainer = $flashMessageContainer;
-	}
-
-	/**
-	 * Injects the signal slot dispatcher
-	 *
-	 * @param \TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher
-	 */
-	public function injectSignalSlotDispatcher(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher) {
-		$this->signalSlotDispatcher = $signalSlotDispatcher;
 	}
 
 	/**
