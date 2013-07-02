@@ -85,7 +85,7 @@ class TableGarbageCollectionAdditionalFieldProvider implements \TYPO3\CMS\Schedu
 		$fieldConfiguration = array(
 			'code' => $fieldHtml,
 			'label' => 'LLL:EXT:scheduler/mod1/locallang.xml:label.tableGarbageCollection.allTables',
-			'cshKey' => '_MOD_tools_txschedulerM1',
+			'cshKey' => '_MOD_system_txschedulerM1',
 			'cshLabel' => $fieldId
 		);
 		return $fieldConfiguration;
@@ -131,7 +131,7 @@ class TableGarbageCollectionAdditionalFieldProvider implements \TYPO3\CMS\Schedu
 		$fieldConfiguration = array(
 			'code' => implode(LF, $fieldHtml),
 			'label' => 'LLL:EXT:scheduler/mod1/locallang.xml:label.tableGarbageCollection.table',
-			'cshKey' => '_MOD_tools_txschedulerM1',
+			'cshKey' => '_MOD_system_txschedulerM1',
 			'cshLabel' => $fieldId
 		);
 		return $fieldConfiguration;
@@ -169,7 +169,7 @@ class TableGarbageCollectionAdditionalFieldProvider implements \TYPO3\CMS\Schedu
 		$fieldConfiguration = array(
 			'code' => $fieldHtml,
 			'label' => 'LLL:EXT:scheduler/mod1/locallang.xml:label.tableGarbageCollection.numberOfDays',
-			'cshKey' => '_MOD_tools_txschedulerM1',
+			'cshKey' => '_MOD_system_txschedulerM1',
 			'cshLabel' => $fieldId
 		);
 		return $fieldConfiguration;

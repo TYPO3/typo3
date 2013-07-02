@@ -60,7 +60,7 @@ class TestTaskAdditionalFieldProvider implements \TYPO3\CMS\Scheduler\Additional
 		$additionalFields[$fieldID] = array(
 			'code' => $fieldCode,
 			'label' => 'LLL:EXT:scheduler/mod1/locallang.xml:label.email',
-			'cshKey' => '_MOD_tools_txschedulerM1',
+			'cshKey' => '_MOD_system_txschedulerM1',
 			'cshLabel' => $fieldID
 		);
 		return $additionalFields;

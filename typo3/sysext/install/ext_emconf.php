@@ -9,7 +9,7 @@
  * writing. "version" and "dependencies" must not be touched!
  ***************************************************************/
 $EM_CONF[$_EXTKEY] = array(
-	'title' => 'Tools>Install',
+	'title' => 'System>Install',
 	'description' => 'The Install Tool mounted as the module Tools>Install in TYPO3.',
 	'category' => 'module',
 	'shy' => 1,
