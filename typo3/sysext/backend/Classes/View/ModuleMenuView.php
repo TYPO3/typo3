@@ -225,7 +225,9 @@ class ModuleMenuView {
 						'navigationFrameScriptParam' => $submoduleData['navFrameScriptParam'],
 						'navigationComponentId' => $submoduleData['navigationComponentId']
 					);
-					if ($moduleData['navFrameScript']) {
+					// if the main module has a navframe script, inherit to the submodule,
+					// but only if it is not disabled explicitly (option is set to FALSE)
+					if ($moduleData['navFrameScript'] && $submoduleData['inheritNavigationComponentFromMainModule'] !== FALSE) {
 						$modules[$moduleKey]['subitems'][$submoduleKey]['parentNavigationFrameScript'] = $moduleData['navFrameScript'];
 					}
 				}
