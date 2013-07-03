@@ -186,23 +186,13 @@ class CreatePagesWizardModuleFunctionController extends \TYPO3\CMS\Backend\Modul
 				');
 			}
 		} else {
-			$theCode .= $GLOBALS['TBE_TEMPLATE']->rfw($GLOBALS['LANG']->getLL('wiz_newPages_errorMsg1'));
+			$theCode .= \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', '', $GLOBALS['LANG']->getLL('wiz_newPages_errorMsg1'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR)->render();
 		}
 		// CSH
 		$theCode .= \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('_MOD_web_func', 'tx_wizardcrpages', $GLOBALS['BACK_PATH'], '<br />|');
 		$out = $this->pObj->doc->header($GLOBALS['LANG']->getLL('wiz_crMany'));
 		$out .= $this->pObj->doc->section('', $theCode, 0, 1);
 		return $out;
-	}
-
-	/**
-	 * Return the helpbubble image tag.
-	 *
-	 * @return string HTML code for a help-bubble image.
-	 * @todo Define visibility
-	 */
-	public function helpBubble() {
-		return '<img src="' . $GLOBALS['BACK_PATH'] . 'gfx/helpbubble.gif" width="14" height="14" hspace="2" align="top" alt="" />';
 	}
 
 	/**
