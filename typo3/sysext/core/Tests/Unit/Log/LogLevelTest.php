@@ -70,7 +70,7 @@ class LevelTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 * @dataProvider isValidLevelThrowsExceptionOnInvalidLevelIfAskedToDoSoDataProvider
-	 * @expectedException \RangeException
+	 * @expectedException \Psr\Log\InvalidArgumentException
 	 */
 	public function isValidLevelThrowsExceptionOnInvalidLevelIfAskedToDoSo($inputValue) {
 		\TYPO3\CMS\Core\Log\LogLevel::validateLevel($inputValue);
