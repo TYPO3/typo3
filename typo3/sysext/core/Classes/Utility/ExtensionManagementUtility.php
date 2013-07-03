@@ -796,9 +796,10 @@ class ExtensionManagementUtility {
 	 * @param string $sub The submodule key. If $sub is not set a blank $main module is created.
 	 * @param string $position Can be used to set the position of the $sub module within the list of existing submodules for the main module. $position has this syntax: [cmd]:[submodule-key]. cmd can be "after", "before" or "top" (or blank which is default). If "after"/"before" then submodule will be inserted after/before the existing submodule with [submodule-key] if found. If not found, the bottom of list. If "top" the module is inserted in the top of the submodule list.
 	 * @param string $path The absolute path to the module. If this value is defined the path is added as an entry in $TBE_MODULES['_PATHS'][  main_sub  ] = $path; and thereby tells the backend where the newly added modules is found in the system.
+	 * @param array $moduleConfiguration additional configuration, previously put in "conf.php" of the module directory
 	 * @return void
 	 */
-	static public function addModule($main, $sub = '', $position = '', $path = '') {
+	static public function addModule($main, $sub = '', $position = '', $path = '', $moduleConfiguration = array()) {
 		if (isset($GLOBALS['TBE_MODULES'][$main]) && $sub) {
 			// If there is already a main module by this name:
 			// Adding the submodule to the correct position:
@@ -839,9 +840,15 @@ class ExtensionManagementUtility {
 			// Create new main modules with only one submodule, $sub (or none if $sub is blank)
 			$GLOBALS['TBE_MODULES'][$main] = $sub;
 		}
+		$fullModuleSignature = $main . ($sub ? '_' . $sub : '');
 		// Adding path:
 		if ($path) {
-			$GLOBALS['TBE_MODULES']['_PATHS'][$main . ($sub ? '_' . $sub : '')] = $path;
+			$GLOBALS['TBE_MODULES']['_PATHS'][$fullModuleSignature] = $path;
+		}
+
+		// add additional configuration
+		if (is_array($moduleConfiguration) && count($moduleConfiguration) > 0) {
+			$GLOBALS['TBE_MODULES']['_configuration'][$fullModuleSignature] = $moduleConfiguration;
 		}
 	}
 
