@@ -117,6 +117,39 @@
 			<trans-unit id="info" xml:space="preserve">
 				<source>Info</source>
 			</trans-unit>
+			<trans-unit id="info_imagesOnPage" xml:space="preserve">
+				<source>Images on this page</source>
+			</trans-unit>
+			<trans-unit id="info_imagesSize" xml:space="preserve">
+				<source>Total image file sizes</source>
+			</trans-unit>
+			<trans-unit id="info_DocumentSize" xml:space="preserve">
+				<source>Document size</source>
+			</trans-unit>
+			<trans-unit id="info_id" xml:space="preserve">
+				<source>Page Uid</source>
+			</trans-unit>
+			<trans-unit id="info_type" xml:space="preserve">
+				<source>Page type</source>
+			</trans-unit>
+			<trans-unit id="info_groupList" xml:space="preserve">
+				<source>Frontenduser group combination</source>
+			</trans-unit>
+			<trans-unit id="info_noCache" xml:space="preserve">
+				<source>Page cached</source>
+			</trans-unit>
+			<trans-unit id="info_countUserInt" xml:space="preserve">
+				<source>Count of USER_INT objects</source>
+			</trans-unit>
+			<trans-unit id="info_feuserName" xml:space="preserve">
+				<source>Name of logged in FE-User</source>
+			</trans-unit>
+			<trans-unit id="info_feuserId" xml:space="preserve">
+				<source>Id of logged in FE-User</source>
+			</trans-unit>
+			<trans-unit id="info_totalParsetime" xml:space="preserve">
+				<source>Total parsetime</source>
+			</trans-unit>
 			<trans-unit id="div_Levels_0" xml:space="preserve">
 				<source>This page</source>
 			</trans-unit>
