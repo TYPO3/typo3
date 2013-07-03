@@ -23,22 +23,6 @@ body#typo3-alt-clickmenu-php {
 	margin-top: 10px;
 }
 
-table#typo3-CSM-top img {
-	margin-bottom: 2px;
-	vertical-align: middle;
-}
-
-table#typo3-CSM-top tr td.c-closebutton {
-	padding-left: 10px;
-}
-
-table#typo3-CSM-top tr td.c-itemicon {
-	padding-left: 10px;
-}
-
-table#typo3-CSM-top img.c-roimg {
-	margin-right: 2px;
-}
 
 div#contentMenu0 {
 	position: absolute;
