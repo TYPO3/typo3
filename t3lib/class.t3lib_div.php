@@ -4152,7 +4152,7 @@ final class t3lib_div {
 				if (self::cmpIP(self::getIndpEnv('REMOTE_ADDR'), $proxySSL)) {
 					$retVal = TRUE;
 				} else {
-					$retVal = $_SERVER['SSL_SESSION_ID'] || !strcasecmp($_SERVER['HTTPS'], 'on') || !strcmp($_SERVER['HTTPS'], '1') ? TRUE : FALSE; // see http://bugs.typo3.org/view.php?id=3909
+					$retVal = $_SERVER['SSL_SESSION_ID'] || !strcasecmp($_SERVER['HTTP_X_FORWARDED_PROTO'], 'https') || !strcasecmp($_SERVER['HTTPS'], 'on') || !strcmp($_SERVER['HTTPS'], '1') ? TRUE : FALSE; // see http://bugs.typo3.org/view.php?id=3909
 				}
 				break;
 			case '_ARRAY':
