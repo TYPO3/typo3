@@ -11,6 +11,7 @@ $typo3Classes = array(
 	'tbe_pagetree' => PATH_typo3 . 'class.browse_links.php',
 	'transferdata' => PATH_typo3 . 'show_item.php',
 	'Psr\\Log\\LoggerInterface' => PATH_typo3 . 'contrib/Psr/Log/LoggerInterface.php',
+	'Psr\\Log\\InvalidArgumentException' => PATH_typo3 . 'contrib/Psr/Log/InvalidArgumentException.php',
 );
 return $typo3Classes;
 ?>
