@@ -26,6 +26,8 @@ namespace TYPO3\CMS\Core\TimeTracker;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Backend\Sprite\SpriteManager;
+use TYPO3\CMS\Backend\Utility\IconUtility;
 
 /**
  * Frontend Timetracking functions
@@ -128,6 +130,7 @@ class TimeTracker {
 	 * @return void
 	 */
 	public function start() {
+//		SpriteManager::initialize();
 		$this->wrapError = array(
 			0 => array('', ''),
 			1 => array('<strong>', '</strong>'),
@@ -262,6 +265,7 @@ class TimeTracker {
 		return $this->getMilliseconds($microtime) - $this->starttime;
 	}
 
+
 	/*******************************************
 	 *
 	 * Printing the parsing time information (for Admin Panel)
@@ -322,7 +326,7 @@ class TimeTracker {
 			if ($this->highlightLongerThan && intval($data['owntime']) > intval($this->highlightLongerThan)) {
 				$logRowClass = 'typo3-adminPanel-logRow-highlight';
 			} else {
-				$logRowClass = $c % 2 ? 'typo3-adminPanel-logRow-odd' : 'typo3-adminPanel-logRow-even';
+				$logRowClass = $c % 2 ? 'line-odd' : 'line-even';
 			}
 			$item = '';
 			// If first...
@@ -354,9 +358,10 @@ class TimeTracker {
 			$theLabel = \TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($theLabel, -$keyLgd);
 			$theLabel = $data['stackPointer'] ? '<span class="stackPointer">' . $theLabel . '</span>' : $theLabel;
 			$keyLabel = $theLabel . $keyLabel;
-			$item .= '<td class="' . $logRowClass . '" style="padding-left:2px;">' . ($flag_tree ? $data['icons'] : '') . $this->fw($keyLabel) . '</td>';
+			$item .= '<td class="' . $logRowClass . '">' . ($flag_tree ? $data['icons'] : '') . $this->fw($keyLabel) . '</td>';
 			// Key value:
 			$keyValue = $data['value'];
+
 			$item .= '<td class="' . $logRowClass . ' typo3-adminPanel-tsLogTime">' . $this->fw(htmlspecialchars($keyValue)) . '</td>';
 			if ($this->printConf['allTime']) {
 				$item .= '<td class="' . $logRowClass . ' typo3-adminPanel-tsLogTime"> ' . $this->fw($data['starttime']) . '</td>';
@@ -395,7 +400,7 @@ class TimeTracker {
 			$out .= '<tr>' . $item . '</tr>';
 			$c++;
 		}
-		$out = '<table id="typo3-adminPanel-tsLog">' . $out . '</table>';
+		$out = '<table class="admin-panel-table typo3-adminPanel-tsLog">' . $out . '</table>';
 		return $out;
 	}
 
@@ -409,7 +414,7 @@ class TimeTracker {
 	 * @param string $vKey Seems to be the previous tsStackLog key
 	 * @return string Returns the $content string generated/modified. Also the $arr array is modified!
 	 */
-	protected function fixContent(&$arr, $content, $depthData = '', $first = 0, $vKey = '') {
+	public function fixContent(&$arr, $content, $depthData = '', $first = 0, $vKey = '') {
 		$ac = 0;
 		$c = 0;
 		// First, find number of entries
@@ -482,9 +487,10 @@ class TimeTracker {
 	 *
 	 * @param string $str The string to be wrapped
 	 * @return string
+	 * @todo remove + hsc() move
 	 */
-	protected function fw($str) {
-		return '<span style="font-family:Verdana,Arial,Helvetica,sans-serif; font-size:10px; color:black; vertical-align:top;">' . $str . '&nbsp;</span>';
+	public function fw($str) {
+		return ($str);
 	}
 
 	/**
@@ -497,7 +503,7 @@ class TimeTracker {
 	 * @access private
 	 * @see printTSlog()
 	 */
-	protected function createHierarchyArray(&$arr, $pointer, $uniqueId) {
+	public function createHierarchyArray(&$arr, $pointer, $uniqueId) {
 		if (!is_array($arr)) {
 			$arr = array();
 		}
