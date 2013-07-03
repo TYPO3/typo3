@@ -424,11 +424,20 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider {
 			}
 			$searchFilter = $GLOBALS['TYPO3_DB']->fullQuoteStr('%' . $searchFilter . '%', 'pages');
 			$useNavTitle = $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.showNavTitle');
-			if ($useNavTitle) {
-				$searchWhere .= '(nav_title LIKE ' . $searchFilter . ' OR (nav_title = "" AND title LIKE ' . $searchFilter . '))';
-			} else {
-				$searchWhere .= 'title LIKE ' . $searchFilter;
+			$useAlias = $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.searchInAlias');
+
+			$searchWhereAlias = '';
+			if ($useAlias) {
+				$searchWhereAlias = ' OR alias LIKE ' . $searchFilter;
 			}
+
+			if ($useNavTitle) {
+				$searchWhere .= '(nav_title LIKE ' . $searchFilter .
+				' OR (nav_title = "" AND title LIKE ' . $searchFilter . ')' . $searchWhereAlias . ')';
+			} else {
+				$searchWhere .= 'title LIKE ' . $searchFilter . $searchWhereAlias;
+			}
+
 			$where .= ' AND (' . $searchWhere . ')';
 		}
 		return $where;
