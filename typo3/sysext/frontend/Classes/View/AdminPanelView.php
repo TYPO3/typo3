@@ -3,52 +3,44 @@ namespace TYPO3\CMS\Frontend\View;
 
 /***************************************************************
  *  Copyright notice
- *
  *  (c) 2008-2013 Jeff Segars <jeff@webempoweredchurch.org>
  *  (c) 2008-2013 David Slayback <dave@webempoweredchurch.org>
  *  All rights reserved
- *
  *  This script is part of the TYPO3 project. The TYPO3 project is
  *  free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation; either version 2 of the License, or
  *  (at your option) any later version.
- *
  *  The GNU General Public License can be found at
  *  http://www.gnu.org/copyleft/gpl.html.
  *  A copy is found in the textfile GPL.txt and important notices to the license
  *  from the author is found in LICENSE.txt distributed with these scripts.
- *
- *
  *  This script is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
- *
  *  This copyright notice MUST APPEAR in all copies of the scri.pt!
  ***************************************************************/
 
+use TYPO3\CMS\Backend\Sprite\SpriteManager;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * View class for the admin panel in frontend editing.
- *
- * @author Jeff Segars <jeff@webempoweredchurch.org>
- * @author David Slayback <dave@webempoweredchurch.org>
- * @author Dmitry Dulepov <dmitry@typo3.org>
  */
 class AdminPanelView {
 
 	/**
 	 * Determines whether the update button should be shown.
 	 *
-	 * @var 	boolean
+	 * @var boolean
 	 */
 	protected $extNeedUpdate = FALSE;
 
 	/**
-	 * Force preview?
+	 * Force preview
 	 *
 	 * @var boolean
 	 */
@@ -61,11 +53,6 @@ class AdminPanelView {
 		$this->initialize();
 	}
 
-	/*****************************************************
-	 *
-	 * Admin Panel Configuration/Initialization
-	 *
-	 ****************************************************/
 	/**
 	 * Initializes settings for the admin panel.
 	 *
@@ -86,7 +73,6 @@ class AdminPanelView {
 		}
 		if (GeneralUtility::_GP('ADMCMD_editIcons')) {
 			$GLOBALS['TSFE']->displayFieldEditIcons = 1;
-			$GLOBALS['BE_USER']->uc['TSFE_adminConfig']['edit_editNoPopup'] = 1;
 		}
 		if (GeneralUtility::_GP('ADMCMD_simUser')) {
 			$GLOBALS['BE_USER']->uc['TSFE_adminConfig']['preview_simulateUserGroup'] = intval(GeneralUtility::_GP('ADMCMD_simUser'));
@@ -108,15 +94,15 @@ class AdminPanelView {
 	}
 
 	/**
-	 * Obtains header data for the admin panel.
+	 * Add an additional stylesheet
 	 *
 	 * @return string
 	 */
 	public function getAdminPanelHeaderData() {
 		$result = '';
-		// Include BE styles
 		if (!empty($GLOBALS['TBE_STYLES']['stylesheets']['admPanel'])) {
-			$result = '<link rel="stylesheet" type="text/css" href="' . htmlspecialchars(GeneralUtility::locationHeaderUrl($GLOBALS['TBE_STYLES']['stylesheets']['admPanel'])) . '" />';
+			$stylesheet = GeneralUtility::locationHeaderUrl($GLOBALS['TBE_STYLES']['stylesheets']['admPanel']);
+			$result = '<link rel="stylesheet" type="text/css" href="' . htmlspecialchars($stylesheet) . '" />';
 		}
 		return $result;
 	}
@@ -130,14 +116,11 @@ class AdminPanelView {
 	public function isAdminModuleEnabled($key) {
 		$result = FALSE;
 		// Returns TRUE if the module checked is "preview" and the forcePreview flag is set.
-		if ($key == 'preview' && $this->ext_forcePreview) {
+		if ($key === 'preview' && $this->ext_forcePreview) {
 			$result = TRUE;
-		}
-		// If key is not set, only "all" is checked
-		if ($GLOBALS['BE_USER']->extAdminConfig['enable.']['all']) {
+		} elseif (!empty($GLOBALS['BE_USER']->extAdminConfig['enable.']['all'])) {
 			$result = TRUE;
-		}
-		if ($GLOBALS['BE_USER']->extAdminConfig['enable.'][$key]) {
+		} elseif (!empty($GLOBALS['BE_USER']->extAdminConfig['enable.'][$key])) {
 			$result = TRUE;
 		}
 		return $result;
@@ -172,7 +155,7 @@ class AdminPanelView {
 	}
 
 	/**
-	 * Returns the value for a Admin Panel setting. You must specify both the module-key and the internal setting key.
+	 * Returns the value for an Admin Panel setting.
 	 *
 	 * @param string $sectionName Module key
 	 * @param string $val Setting key
@@ -200,7 +183,7 @@ class AdminPanelView {
 			if ($sectionName == 'preview' && $this->ext_forcePreview) {
 				return !$val ? TRUE : $retVal;
 			}
-			// Regular check:
+
 			// See if the menu is expanded!
 			if ($this->isAdminModuleOpen($sectionName)) {
 				return $retVal;
@@ -220,26 +203,23 @@ class AdminPanelView {
 	/**
 	 * Returns TRUE if admin panel module is open
 	 *
-	 * @param string $pre Module key
+	 * @param string $key Module key
 	 * @return boolean TRUE, if the admin panel is open for the specified admin panel module key.
 	 */
-	public function isAdminModuleOpen($pre) {
-		return $GLOBALS['BE_USER']->uc['TSFE_adminConfig']['display_top'] && $GLOBALS['BE_USER']->uc['TSFE_adminConfig']['display_' . $pre];
+	public function isAdminModuleOpen($key) {
+		return $GLOBALS['BE_USER']->uc['TSFE_adminConfig']['display_top'] && $GLOBALS['BE_USER']->uc['TSFE_adminConfig']['display_' . $key];
 	}
 
-	/*****************************************************
-	 *
-	 * Admin Panel Rendering
-	 *
-	 ****************************************************/
 	/**
 	 * Creates and returns the HTML code for the Admin Panel in the TSFE frontend.
 	 *
+	 * @throws \UnexpectedValueException
 	 * @return string HTML for the Admin Panel
 	 */
 	public function display() {
 		$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_tsfe.xlf');
-		$moduleContent = '';
+		$moduleContent = $footer = '';
+
 		if ($GLOBALS['BE_USER']->uc['TSFE_adminConfig']['display_top']) {
 			if ($this->isAdminModuleEnabled('preview')) {
 				$moduleContent .= $this->getPreviewModule();
@@ -269,15 +249,18 @@ class AdminPanelView {
 		$row = $this->extGetLL('adminPanelTitle') . ': <span class="typo3-adminPanel-beuser">' . htmlspecialchars($GLOBALS['BE_USER']->user['username']) . '</span>';
 		$isVisible = $GLOBALS['BE_USER']->uc['TSFE_adminConfig']['display_top'];
 		$cssClassName = 'typo3-adminPanel-panel-' . ($isVisible ? 'open' : 'closed');
-		$header = '<tr class="typo3-adminPanel-hRow">' . '<td colspan="2" id="typo3-adminPanel-header" class="' . $cssClassName . '">' . '<span class="typo3-adminPanel-header-title">' . $row . '</span>' . $this->linkSectionHeader('top', '<span class="typo3-adminPanel-header-button"></span>', 'typo3-adminPanel-header-buttonWrapper') . '<input type="hidden" name="TSFE_ADMIN_PANEL[display_top]" value="' . $GLOBALS['BE_USER']->uc['TSFE_adminConfig']['display_top'] . '" /></td>' . '</tr>';
-		if ($moduleContent) {
-			$footer = '<tr class="typo3-adminPanel-fRow">' . '<td colspan="2" id="typo3-adminPanel-footer">' . ($this->extNeedUpdate ? ' <input class="typo3-adminPanel-update" type="submit" value="' . $this->extGetLL('update') . '" />' : '') . '</td>' . '</tr>';
-		} else {
-			$footer = '';
+		$header = '<tr class="typo3-adminPanel-header">' . '<td colspan="2" id="typo3-adminPanel-header" class="' . $cssClassName . '">' . '<span class="typo3-adminPanel-header-title">' . $row . '</span>' . $this->linkSectionHeader('top', '<span class="typo3-adminPanel-header-button"></span>', 'typo3-adminPanel-header-buttonWrapper') . '<input type="hidden" name="TSFE_ADMIN_PANEL[display_top]" value="' . $GLOBALS['BE_USER']->uc['TSFE_adminConfig']['display_top'] . '" /></td>' . '</tr>';
+		if ($moduleContent && $this->extNeedUpdate) {
+			$footer = '<tr class="typo3-adminPanel-footer">
+						<td colspan="2">
+							<input class="typo3-adminPanel-update" type="submit" value="' . $this->extGetLL('update') . '" />
+						</td>
+					</tr>';
 		}
 		$query = !GeneralUtility::_GET('id') ? '<input type="hidden" name="id" value="' . $GLOBALS['TSFE']->id . '" />' : '';
+
 		// The dummy field is needed for Firefox: to force a page reload on submit
-		// with must change the form value with JavaScript (see "onsubmit" attribute of the "form" element")
+		// which must change the form value with JavaScript (see "onsubmit" attribute of the "form" element")
 		$query .= '<input type="hidden" name="TSFE_ADMIN_PANEL[DUMMY]" value="" />';
 		foreach (GeneralUtility::_GET() as $key => $value) {
 			if ($key != 'TSFE_ADMIN_PANEL') {
@@ -290,7 +273,7 @@ class AdminPanelView {
 		}
 		$out = '
 <!--
-	TYPO3 admin panel start
+	TYPO3 Admin panel start
 -->
 <a id="TSFE_ADMIN"></a>
 <form id="TSFE_ADMIN_PANEL_FORM" name="TSFE_ADMIN_PANEL_FORM" action="' . htmlspecialchars(GeneralUtility::getIndpEnv('TYPO3_REQUEST_SCRIPT')) . '#TSFE_ADMIN" method="get" onsubmit="document.forms.TSFE_ADMIN_PANEL_FORM[\'TSFE_ADMIN_PANEL[DUMMY]\'].value=Math.random().toString().substring(2,8)">' . $query . '<table class="typo3-adminPanel">' . $header . $moduleContent . $footer . '</table></form>';
@@ -354,9 +337,7 @@ class AdminPanelView {
 	}
 
 	/*****************************************************
-	 *
 	 * Creating sections of the Admin Panel
-	 *
 	 ****************************************************/
 	/**
 	 * Creates the content for the "preview" section ("module") of the Admin Panel
@@ -374,12 +355,18 @@ class AdminPanelView {
 			$out .= $this->extGetItem('preview_simulateDate', '<input type="text" id="preview_simulateDate" name="TSFE_ADMIN_PANEL[preview_simulateDate]_hr" onchange="TSFEtypo3FormFieldGet(\'TSFE_ADMIN_PANEL[preview_simulateDate]\', \'datetime\', \'\', 1,0);" /><input type="hidden" name="TSFE_ADMIN_PANEL[preview_simulateDate]" value="' . $GLOBALS['BE_USER']->uc['TSFE_adminConfig']['preview_simulateDate'] . '" />');
 			$this->extJSCODE .= 'TSFEtypo3FormFieldSet("TSFE_ADMIN_PANEL[preview_simulateDate]", "datetime", "", 0, 0);';
 			// Simulate fe_user:
-			$options = '<option value="0">&nbsp;</option>';
+
+			$options = '';
+
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('fe_groups.uid, fe_groups.title', 'fe_groups,pages', 'pages.uid=fe_groups.pid AND pages.deleted=0 ' . BackendUtility::deleteClause('fe_groups') . ' AND ' . $GLOBALS['BE_USER']->getPagePermsClause(1));
 			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 				$options .= '<option value="' . $row['uid'] . '"' . ($GLOBALS['BE_USER']->uc['TSFE_adminConfig']['preview_simulateUserGroup'] == $row['uid'] ? ' selected="selected"' : '') . '>' . htmlspecialchars(('[' . $row['uid'] . '] ' . $row['title'])) . '</option>';
 			}
-			$out .= $this->extGetItem('preview_simulateUserGroup', '<select id="preview_simulateUserGroup" name="TSFE_ADMIN_PANEL[preview_simulateUserGroup]">' . $options . '</select>');
+			$GLOBALS['TYPO3_DB']->sql_free_result($res);
+			if ($options) {
+				$options = '<option value="0">&nbsp;</option>' . $options;
+				$out .= $this->extGetItem('preview_simulateUserGroup', '<select id="preview_simulateUserGroup" name="TSFE_ADMIN_PANEL[preview_simulateUserGroup]">' . $options . '</select>');
+			}
 		}
 		return $out;
 	}
@@ -408,7 +395,7 @@ class AdminPanelView {
 			$GLOBALS['BE_USER']->extPageInTreeInfo[] = array($GLOBALS['TSFE']->page['uid'], htmlspecialchars($GLOBALS['TSFE']->page['title']), $depth + 1);
 			$GLOBALS['BE_USER']->extGetTreeList($GLOBALS['TSFE']->id, $depth, 0, $GLOBALS['BE_USER']->getPagePermsClause(1));
 			foreach ($GLOBALS['BE_USER']->extPageInTreeInfo as $row) {
-				$outTable .= '<tr>' . '<td><img src="typo3/gfx/clear.gif" width="' . ($depth + 1 - $row[2]) * 18 . '" height="1" alt="" /><img ' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg(TYPO3_mainDir, 'gfx/i/pages.gif', 'width="18" height="16"') . ' align="top" alt="" /> ' . htmlspecialchars($row[1]) . '</td><td>' . $GLOBALS['BE_USER']->extGetNumberOfCachedPages($row[0]) . '</td></tr>';
+				$outTable .= '<tr>' . '<td><img src="typo3/gfx/clear.gif" width="' . ($depth + 1 - $row[2]) * 18 . '" height="1" alt="" /><img ' . IconUtility::skinImg(TYPO3_mainDir, 'gfx/i/pages.gif', 'width="18" height="16"') . ' align="top" alt="" /> ' . htmlspecialchars($row[1]) . '</td><td>' . $GLOBALS['BE_USER']->extGetNumberOfCachedPages($row[0]) . '</td></tr>';
 			}
 			$outTable = '<br /><table>' . $outTable . '</table>';
 			$outTable .= '<input type="submit" name="TSFE_ADMIN_PANEL[action][clearCache]" value="' . $this->extGetLL('cache_doit') . '" />';
@@ -432,8 +419,6 @@ class AdminPanelView {
 			$this->extNeedUpdate = TRUE;
 			$out .= $this->extGetItem('edit_displayFieldIcons', '', '<input type="hidden" name="TSFE_ADMIN_PANEL[edit_displayFieldIcons]" value="0" /><input type="checkbox" id="edit_displayFieldIcons" name="TSFE_ADMIN_PANEL[edit_displayFieldIcons]" value="1"' . ($GLOBALS['BE_USER']->uc['TSFE_adminConfig']['edit_displayFieldIcons'] ? ' checked="checked"' : '') . ' />');
 			$out .= $this->extGetItem('edit_displayIcons', '', '<input type="hidden" name="TSFE_ADMIN_PANEL[edit_displayIcons]" value="0" /><input type="checkbox" id="edit_displayIcons" name="TSFE_ADMIN_PANEL[edit_displayIcons]" value="1"' . ($GLOBALS['BE_USER']->uc['TSFE_adminConfig']['edit_displayIcons'] ? ' checked="checked"' : '') . ' />');
-			$out .= $this->extGetItem('edit_editFormsOnPage', '', '<input type="hidden" name="TSFE_ADMIN_PANEL[edit_editFormsOnPage]" value="0" /><input type="checkbox" id="edit_editFormsOnPage" name="TSFE_ADMIN_PANEL[edit_editFormsOnPage]" value="1"' . ($GLOBALS['BE_USER']->uc['TSFE_adminConfig']['edit_editFormsOnPage'] ? ' checked="checked"' : '') . ' />');
-			$out .= $this->extGetItem('edit_editNoPopup', '', '<input type="hidden" name="TSFE_ADMIN_PANEL[edit_editNoPopup]" value="0" /><input type="checkbox" id="edit_editNoPopup" name="TSFE_ADMIN_PANEL[edit_editNoPopup]" value="1"' . ($GLOBALS['BE_USER']->uc['TSFE_adminConfig']['edit_editNoPopup'] ? ' checked="checked"' : '') . ' />');
 			$out .= $this->extGetItem('', $this->ext_makeToolBar());
 			if (!GeneralUtility::_GP('ADMCMD_view')) {
 				$out .= $this->extGetItem('', '<a href="#" onclick="' . htmlspecialchars(('
@@ -489,62 +474,58 @@ class AdminPanelView {
 	 * @see display()
 	 */
 	protected function getInfoModule() {
-		$out = $this->extGetHead('info');
+		$head = $this->extGetHead('info');
+		$out = '';
 		if ($GLOBALS['BE_USER']->uc['TSFE_adminConfig']['display_info']) {
 			$tableArr = array();
 			if ($this->extGetFeAdminValue('cache', 'noCache')) {
 				$theBytes = 0;
 				$count = 0;
 				if (count($GLOBALS['TSFE']->imagesOnPage)) {
-					$tableArr[] = array('*Images on this page:*', '');
+					$tableArr[] = array($this->extGetLL('info_imagesOnPage'), count($GLOBALS['TSFE']->imagesOnPage), TRUE);
 					foreach ($GLOBALS['TSFE']->imagesOnPage as $file) {
 						$fs = @filesize($file);
-						$tableArr[] = array('&ndash; ' . $file, GeneralUtility::formatSize($fs));
+						$tableArr[] = array(TAB . $file, GeneralUtility::formatSize($fs));
 						$theBytes += $fs;
 						$count++;
 					}
 				}
 				// Add an empty line
-				$tableArr[] = array('', '');
-				$tableArr[] = array('*Total number of images:*', $count);
-				$tableArr[] = array('*Total image file sizes:*', GeneralUtility::formatSize($theBytes));
-				$tableArr[] = array('*Document size:*', GeneralUtility::formatSize(strlen($GLOBALS['TSFE']->content)));
-				$tableArr[] = array('*Total page load:*', GeneralUtility::formatSize(strlen($GLOBALS['TSFE']->content) + $theBytes));
+				$tableArr[] = array($this->extGetLL('info_imagesSize'), GeneralUtility::formatSize($theBytes), TRUE);
+				$tableArr[] = array($this->extGetLL('info_DocumentSize'), GeneralUtility::formatSize(strlen($GLOBALS['TSFE']->content)), TRUE);
 				$tableArr[] = array('', '');
 			}
-			$tableArr[] = array('id:', $GLOBALS['TSFE']->id);
-			$tableArr[] = array('type:', $GLOBALS['TSFE']->type);
-			$tableArr[] = array('gr_list:', $GLOBALS['TSFE']->gr_list);
-			$tableArr[] = array('no_cache:', $GLOBALS['TSFE']->no_cache ? 1 : 0);
-			$tableArr[] = array('USER_INT objects:', count($GLOBALS['TSFE']->config['INTincScript']));
-			$tableArr[] = array('fe_user, name:', $GLOBALS['TSFE']->fe_user->user['username']);
-			$tableArr[] = array('fe_user, uid:', $GLOBALS['TSFE']->fe_user->user['uid']);
-			// Add an empty line
-			$tableArr[] = array('', '');
-			// Parsetime:
-			$tableArr[] = array('*Total parsetime:*', $GLOBALS['TSFE']->scriptParseTime . ' ms');
+			$tableArr[] = array($this->extGetLL('info_id'), $GLOBALS['TSFE']->id);
+			$tableArr[] = array($this->extGetLL('info_type'), $GLOBALS['TSFE']->type);
+			$tableArr[] = array($this->extGetLL('info_groupList'), $GLOBALS['TSFE']->gr_list);
+			$tableArr[] = array($this->extGetLL('info_noCache'), $GLOBALS['TSFE']->no_cache ? 1 : 0);
+			$tableArr[] = array($this->extGetLL('info_countUserInt'), count($GLOBALS['TSFE']->config['INTincScript']));
+
+			if (!empty($GLOBALS['TSFE']->fe_user->user['uid'])) {
+				$tableArr[] = array($this->extGetLL('info_feuserName'), htmlspecialchars($GLOBALS['TSFE']->fe_user->user['username']));
+				$tableArr[] = array($this->extGetLL('info_feuserId'), htmlspecialchars($GLOBALS['TSFE']->fe_user->user['uid']));
+			}
+			$tableArr[] = array($this->extGetLL('info_totalParsetime'), $GLOBALS['TSFE']->scriptParseTime . ' ms', TRUE);
 			$table = '';
-			foreach ($tableArr as $arr) {
-				// Put text wrapped by "*" between <strong> tags
-				if (strlen($arr[0])) {
-					$value1 = preg_replace('/^\\*(.*)\\*$/', '$1', $arr[0], -1, $count);
-					$value1 = ($count ? '<strong>' : '') . $value1 . ($count ? '</strong>' : '');
-				} else {
-					$value1 = '&nbsp;';
-				}
-				$value2 = strlen($arr[1]) ? $arr[1] : '&nbsp;';
-				$value2 = $value2;
-				$table .= '<tr class="typo3-adminPanel-itemRow">' . '<td class="typo3-adminPanel-section-content-title">' . $value1 . '</td>' . '<td class="typo3-adminPanel-section-content">' . $value2 . '</td>' . '</tr>';
+			foreach ($tableArr as $key => $arr) {
+				$label = (isset($arr[2]) ? '<strong>' . $arr[0] . '</strong>' : $arr[0]);
+				$value = strlen($arr[1]) ? $arr[1] : '';
+				$table .=
+					'<tr class="typo3-adminPanel-itemRow ' . ($key % 2 == 0 ? 'line-even' : 'line-odd') . '">
+							<td class="typo3-adminPanel-section-content-title">' . $label . '</td>
+							<td class="typo3-adminPanel-section-content">' . htmlspecialchars($value) . '</td>
+						</tr>';
 			}
 			$out .= $table;
+			$out = '<tr><td colspan="2"><table class="admin-panel-table">' . $out . '</table></td></tr>';
 		}
+
+		$out = $head . $out;
 		return $out;
 	}
 
 	/*****************************************************
-	 *
 	 * Admin Panel Layout Helper functions
-	 *
 	 ****************************************************/
 	/**
 	 * Returns a row (with colspan=4) which is a header for a section in the Admin Panel.
@@ -572,7 +553,13 @@ class AdminPanelView {
 	 * @see extGetHead()
 	 */
 	public function linkSectionHeader($sectionSuffix, $sectionTitle, $className = '') {
-		return '<div class="typo3-adminPanel-label"><a href="javascript:void(0)" onclick="' . htmlspecialchars(('document.TSFE_ADMIN_PANEL_FORM[\'TSFE_ADMIN_PANEL[display_' . $sectionSuffix . ']\'].value=' . ($GLOBALS['BE_USER']->uc['TSFE_adminConfig']['display_' . $sectionSuffix] ? '0' : '1') . ';document.TSFE_ADMIN_PANEL_FORM.submit();return false;')) . '"' . ($className ? ' class="' . $className . '"' : '') . '>' . $sectionTitle . '</a></div>';
+		$onclick = 'document.TSFE_ADMIN_PANEL_FORM[\'TSFE_ADMIN_PANEL[display_' . $sectionSuffix . ']\'].value=' . ($GLOBALS['BE_USER']->uc['TSFE_adminConfig']['display_' . $sectionSuffix] ? '0' : '1') . ';document.TSFE_ADMIN_PANEL_FORM.submit();return false;';
+		$content = '<div class="typo3-adminPanel-label">
+						<a href="javascript:void(0)" onclick="' . htmlspecialchars($onclick) . '"' . ($className ? ' class="' . htmlspecialchars($className) . '"' : '') . '>'
+			. $sectionTitle .
+			'</a>
+		</div>';
+		return $content;
 	}
 
 	/**
@@ -581,14 +568,15 @@ class AdminPanelView {
 	 *
 	 * @param string $title Key to label
 	 * @param string $content The HTML content for the forth table cell.
-	 * @param string $checkboxContent The HTML for a checkbox or hidden fields
+	 * @param string $checkbox The HTML for a checkbox or hidden fields
 	 * @return string HTML table row.
 	 * @see extGetHead()
 	 */
-	public function extGetItem($title, $content = '', $checkboxContent = '') {
+	public function extGetItem($title, $content = '', $checkbox = '') {
+		$title = $title ? '<label for="' . htmlspecialchars($title) . '">' . $this->extGetLL($title) . '</label>' : '';
 		$out = '<tr class="typo3-adminPanel-itemRow">
-					<td class="typo3-adminPanel-section-content">' . $checkboxContent . ($title ? '<label for="' . htmlspecialchars($title) . '">' . $this->extGetLL($title) . '</label>' : '&nbsp;') . $content .
-			'</td></tr>';
+					<td class="typo3-adminPanel-section-content">' . $checkbox . $title . $content . '</td>
+				</tr>';
 		return $out;
 	}
 
@@ -605,64 +593,68 @@ class AdminPanelView {
 		$perms = $GLOBALS['BE_USER']->calcPerms($GLOBALS['TSFE']->page);
 		$langAllowed = $GLOBALS['BE_USER']->checkLanguageAccess($GLOBALS['TSFE']->sys_language_uid);
 		$id = $GLOBALS['TSFE']->id;
-		$toolBar = '<a href="' . htmlspecialchars((TYPO3_mainDir . 'show_rechis.php?element=' . rawurlencode(('pages:' . $id)) . '&returnUrl=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI')))) . '#latest">' . '<img ' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg(TYPO3_mainDir, 'gfx/history2.gif', 'width="13" height="12"') . ' hspace="2" border="0" align="top" title="' . $this->extGetLL('edit_recordHistory') . '" alt="" /></a>';
+		$returnUrl = '&returnUrl=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI'));
+
+		$icon = IconUtility::getSpriteIcon('actions-document-history-open', array('title' => $this->extGetLL('edit_newContentElement')));
+		$toolBar = '<a href="' . htmlspecialchars((TYPO3_mainDir . 'show_rechis.php?element=' . rawurlencode(('pages:' . $id)) . $returnUrl)) . '#latest">' . $icon . '</a>';
 		if ($perms & 16 && $langAllowed) {
 			$params = '';
 			if ($GLOBALS['TSFE']->sys_language_uid) {
 				$params = '&sys_language_uid=' . $GLOBALS['TSFE']->sys_language_uid;
 			}
-			$toolBar .= '<a href="' . htmlspecialchars(($newContentWizScriptPath . '?id=' . $id . $params . '&returnUrl=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI')))) . '">' . '<img ' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg(TYPO3_mainDir, 'gfx/new_record.gif', 'width="16" height="12"') . ' hspace="1" border="0" align="top" title="' . $this->extGetLL('edit_newContentElement') . '" alt="" /></a>';
+			$icon = IconUtility::getSpriteIcon('actions-document-new', array('title' => $this->extGetLL('edit_newContentElement')));
+			$toolBar .= '<a href="' . htmlspecialchars(($newContentWizScriptPath . '?id=' . $id . $params . '&returnUrl=' . $returnUrl)) . '">' . $icon . '</a>';
 		}
 		if ($perms & 2) {
-			$toolBar .= '<a href="' . htmlspecialchars((TYPO3_mainDir . 'move_el.php?table=pages&uid=' . $id . '&returnUrl=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI')))) . '">' . '<img ' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg(TYPO3_mainDir, 'gfx/move_page.gif', 'width="11" height="12') . ' hspace="2" border="0" align="top" title="' . $this->extGetLL('edit_move_page') . '" alt="" /></a>';
+			$icon = IconUtility::getSpriteIcon('actions-document-move', array('title' => $this->extGetLL('edit_move_page')));
+			$toolBar .= '<a href="' . htmlspecialchars((TYPO3_mainDir . 'move_el.php?table=pages&uid=' . $id . '&returnUrl=' . $returnUrl)) . '">' . $icon . '</a>';
 		}
 		if ($perms & 8) {
-			$toolBar .= '<a href="' . htmlspecialchars((TYPO3_mainDir . 'db_new.php?id=' . $id . '&pagesOnly=1&returnUrl=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI')))) . '">' . '<img ' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg(TYPO3_mainDir, 'gfx/new_page.gif', 'width="13" height="12"') . ' hspace="0" border="0" align="top" title="' . $this->extGetLL('edit_newPage') . '" alt="" /></a>';
+			$icon = IconUtility::getSpriteIcon('actions-page-new', array('title' => $this->extGetLL('edit_newPage')));
+			$toolBar .= '<a href="' . htmlspecialchars((TYPO3_mainDir . 'db_new.php?id=' . $id . '&pagesOnly=1&returnUrl=' . $returnUrl)) . '">' . $icon . '</a>';
 		}
 		if ($perms & 2) {
 			$params = '&edit[pages][' . $id . ']=edit';
-			$toolBar .= '<a href="' . htmlspecialchars((TYPO3_mainDir . 'alt_doc.php?' . $params . '&noView=1&returnUrl=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI')))) . '">' . '<img ' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg(TYPO3_mainDir, 'gfx/edit2.gif', 'width="11" height="12"') . 'hspace="2" border="0" align="top" title="' . $this->extGetLL('edit_editPageProperties') . '" alt="" /></a>';
+			$icon = IconUtility::getSpriteIcon('actions-document-open', array('title' => $this->extGetLL('edit_editPageProperties')));
+			$toolBar .= '<a href="' . htmlspecialchars((TYPO3_mainDir . 'alt_doc.php?' . $params . '&noView=1&returnUrl=' . $returnUrl)) . '">' . $icon . '</a>';
 			if ($GLOBALS['TSFE']->sys_language_uid && $langAllowed) {
-				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+				$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
 					'uid,pid,t3ver_state',
 					'pages_language_overlay',
 					'pid=' . intval($id) .
-						' AND sys_language_uid=' . $GLOBALS['TSFE']->sys_language_uid .
-						$GLOBALS['TSFE']->sys_page->enableFields('pages_language_overlay'),
-					'',
-					'',
-					'1'
+					' AND sys_language_uid=' . $GLOBALS['TSFE']->sys_language_uid .
+					$GLOBALS['TSFE']->sys_page->enableFields('pages_language_overlay')
 				);
-				$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 				$GLOBALS['TSFE']->sys_page->versionOL('pages_language_overlay', $row);
 				if (is_array($row)) {
 					$params = '&edit[pages_language_overlay][' . $row['uid'] . ']=edit';
-					$toolBar .= '<a href="' . htmlspecialchars((TYPO3_mainDir . 'alt_doc.php?' . $params . '&noView=1&returnUrl=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI')))) . '">' . '<img ' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg(TYPO3_mainDir, 'gfx/edit3.gif', 'width="11" height="12"') . ' hspace="2" border="0" align="top" title="' . $this->extGetLL('edit_editPageOverlay') . '" alt="" /></a>';
+					$icon = IconUtility::getSpriteIcon('mimetypes-x-content-page-language-overlay', array('title' => $this->extGetLL('edit_editPageOverlay')));
+					$toolBar .= '<a href="' . htmlspecialchars((TYPO3_mainDir . 'alt_doc.php?' . $params . '&noView=1&returnUrl=' . $returnUrl)) . '">' . $icon . '</a>';
 				}
 			}
 		}
 		if ($GLOBALS['BE_USER']->check('modules', 'web_list')) {
-			$urlParams = array();
-			$urlParams['id'] = $id;
-			$urlParams['returnUrl'] = GeneralUtility::getIndpEnv('REQUEST_URI');
-			$toolBar .= '<a href="' . htmlspecialchars((TYPO3_mainDir . BackendUtility::getModuleUrl('web_list', $urlParams))) . '">' . '<img ' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg(TYPO3_mainDir, 'gfx/list.gif', 'width="11" height="11"') . ' hspace="2" border="0" align="top" title="' . $this->extGetLL('edit_db_list') . '" alt="" /></a>';
+			$urlParams = array(
+				'id' => $id,
+				'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
+			);
+			$icon = IconUtility::getSpriteIcon('actions-system-list-open', array('title' => $this->extGetLL('edit_db_list')));
+			$toolBar .= '<a href="' . htmlspecialchars((TYPO3_mainDir . BackendUtility::getModuleUrl('web_list', $urlParams))) . '">' . $icon . '</a>';
 		}
+
+		$toolBar = '<div class="toolbar">' . $toolBar . '</div>';
+
 		return $toolBar;
 	}
 
 	/**
-	 * Returns the label for key, $key. If a translation for the language set in $GLOBALS['BE_USER']->uc['lang'] is found that is returned, otherwise the default value.
-	 * IF the global variable $LOCAL_LANG is NOT an array (yet) then this function loads the global $LOCAL_LANG array with the content of "sysext/lang/locallang_tsfe.xlf" so that the values therein can be used for labels in the Admin Panel
-	 *
-	 * FIXME The function should convert to $TSFE->renderCharset, not to UTF8!
+	 * Translate given key
 	 *
 	 * @param string $key Key for a label in the $LOCAL_LANG array of "sysext/lang/locallang_tsfe.xlf
 	 * @return string The value for the $key
 	 */
 	public function extGetLL($key) {
-		// Label string in the default backend output charset.
 		$labelStr = htmlspecialchars($GLOBALS['LANG']->getLL($key));
-		$labelStr = $GLOBALS['LANG']->csConvObj->utf8_to_entities($labelStr);
 		return $labelStr;
 	}
 
