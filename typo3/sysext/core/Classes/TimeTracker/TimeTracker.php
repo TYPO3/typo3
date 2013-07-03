@@ -322,7 +322,7 @@ class TimeTracker {
 			if ($this->highlightLongerThan && intval($data['owntime']) > intval($this->highlightLongerThan)) {
 				$logRowClass = 'typo3-adminPanel-logRow-highlight';
 			} else {
-				$logRowClass = $c % 2 ? 'typo3-adminPanel-logRow-odd' : 'typo3-adminPanel-logRow-even';
+				$logRowClass = $c % 2 ? 'line-odd' : 'line-even';
 			}
 			$item = '';
 			// If first...
@@ -354,7 +354,7 @@ class TimeTracker {
 			$theLabel = \TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($theLabel, -$keyLgd);
 			$theLabel = $data['stackPointer'] ? '<span class="stackPointer">' . $theLabel . '</span>' : $theLabel;
 			$keyLabel = $theLabel . $keyLabel;
-			$item .= '<td class="' . $logRowClass . '" style="padding-left:2px;">' . ($flag_tree ? $data['icons'] : '') . $this->fw($keyLabel) . '</td>';
+			$item .= '<td class="' . $logRowClass . '">' . ($flag_tree ? $data['icons'] : '') . $this->fw($keyLabel) . '</td>';
 			// Key value:
 			$keyValue = $data['value'];
 			$item .= '<td class="' . $logRowClass . ' typo3-adminPanel-tsLogTime">' . $this->fw(htmlspecialchars($keyValue)) . '</td>';
@@ -395,7 +395,7 @@ class TimeTracker {
 			$out .= '<tr>' . $item . '</tr>';
 			$c++;
 		}
-		$out = '<table id="typo3-adminPanel-tsLog">' . $out . '</table>';
+		$out = '<table class="admin-panel-table typo3-adminPanel-tsLog">' . $out . '</table>';
 		return $out;
 	}
 
@@ -478,13 +478,13 @@ class TimeTracker {
 	}
 
 	/**
-	 * Wraps input string in a <span> tag with black verdana font
+	 * Wraps input string in a <span> tag
 	 *
 	 * @param string $str The string to be wrapped
 	 * @return string
 	 */
 	protected function fw($str) {
-		return '<span style="font-family:Verdana,Arial,Helvetica,sans-serif; font-size:10px; color:black; vertical-align:top;">' . $str . '&nbsp;</span>';
+		return '<span>' . $str . '</span>';
 	}
 
 	/**
