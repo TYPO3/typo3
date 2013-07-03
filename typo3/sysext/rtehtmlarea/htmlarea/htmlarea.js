@@ -5362,8 +5362,17 @@ HTMLArea.CSS.Parser = Ext.extend(Ext.util.Observable, {
 				this.parseSelectorText(cssRules[rule].selectorText);
 			} else {
 					// Import rule
-				if (cssRules[rule].styleSheet && cssRules[rule].styleSheet.cssRules) {
-					this.parseRules(cssRules[rule].styleSheet.cssRules);
+				try {
+					if (cssRules[rule].styleSheet && cssRules[rule].styleSheet.cssRules) {
+							this.parseRules(cssRules[rule].styleSheet.cssRules);
+					}
+				} catch (e) {
+					if (/Security/i.test(e)) {
+						// If this is a security error, silently log the error and continue parsing
+						this.editor.appendToLog('HTMLArea.CSS.Parser', 'parseRules', 'A security error occurred. Make sure all stylesheets are accessed from the same domain/subdomain and using the same protocol as the current script.', 'error');
+					} else {
+						throw e;
+					}
 				}
 					// Media rule
 				if (cssRules[rule].cssRules) {
