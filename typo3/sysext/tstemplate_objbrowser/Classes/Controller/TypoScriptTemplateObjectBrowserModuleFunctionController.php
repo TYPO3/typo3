@@ -451,15 +451,10 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends \TYPO3\CMS
 				$theOutput .= $this->pObj->doc->section($GLOBALS['LANG']->getLL('conditions'), '', 0, 1);
 				$out = '';
 				foreach ($tmpl->sections as $key => $val) {
-					$out .= '<tr><td nowrap class="tsob-conditions"><input type="checkbox" name="conditions[' . $key . ']" id="check' . $key . '" value="' . htmlspecialchars($val) . '"' . ($this->pObj->MOD_SETTINGS['tsbrowser_conditions'][$key] ? ' checked' : '') . ' />';
-					$out .= '<label for="check' . $key . '">' . $tmpl->substituteCMarkers(htmlspecialchars($val)) . '</label></td></tr>';
+					$out .= '<div class="tsob-conditions"><input class="checkbox" type="checkbox" name="conditions[' . $key . ']" id="check' . $key . '" value="' . htmlspecialchars($val) . '"' . ($this->pObj->MOD_SETTINGS['tsbrowser_conditions'][$key] ? ' checked' : '') . ' />';
+					$out .= '<label for="check' . $key . '">' . $tmpl->substituteCMarkers(htmlspecialchars($val)) . '</label></div>';
 				}
-				$theOutput .= '
-								<table border="0" cellpadding="0" cellspacing="0" class="bgColor4">' . $out . '
-						<td><br /><input type="Submit" name="Submit" value="' . $GLOBALS['LANG']->getLL('setConditions') . '" /></td>
-								</table>
-
-				';
+				$theOutput .=  '<div class="tsob-menu-row2">' . $out . '</div><input type="Submit" name="Submit" value="' . $GLOBALS['LANG']->getLL('setConditions') . '" />';
 			}
 			// Ending section:
 			$theOutput .= $this->pObj->doc->sectionEnd();
