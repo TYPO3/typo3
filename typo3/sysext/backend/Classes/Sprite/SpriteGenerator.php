@@ -51,6 +51,17 @@ class SpriteGenerator {
 ';
 
 	/**
+	 * Template creating CSS for the high density spritefile
+	 *
+	 * @var string
+	 */
+	protected $templateSpriteHighDensity =  '
+.backgroundsize .###NAMESPACE###-###SPRITENAME### {
+	background-image: url(\'###SPRITEURL###\') !important;
+	background-size:###BGWIDTH### ###BGHEIGHT###;
+}
+';
+	/**
 	 * Template creating CSS for position and size of a single icon
 	 *
 	 * @var string
@@ -60,6 +71,11 @@ class SpriteGenerator {
 ###SIZE_INFO###
 }
 ';
+
+	/**
+	 * @var boolean
+	 */
+	protected $generateHighDensitySprite = TRUE;
 
 	/**
 	 * Most common icon-width in the sprite
@@ -115,7 +131,7 @@ class SpriteGenerator {
 	 *
 	 * @var boolean
 	 */
-	protected $ommitSpriteNameInIconName = FALSE;
+	protected $omitSpriteNameInIconName = FALSE;
 
 	/**
 	 * Namespace of css classes
@@ -223,13 +239,36 @@ class SpriteGenerator {
 	}
 
 	/**
+	 * Enables/Disables HighDensitySprite Generation
+	 *
+	 * @param boolean $boolean
+	 * @return \TYPO3\CMS\Backend\Sprite\SpriteGenerator An instance of $this, to enable chaining.
+	 */
+	public function setGenerateHighDensitySprite($boolean = TRUE) {
+		$this->generateHighDensitySprite = $boolean;
+		return $this;
+	}
+
+	/**
+	 * Setter do enable the exclusion of the sprites-name from iconnames
+	 *
+	 * @param boolean $value
+	 * @return \TYPO3\CMS\Backend\Sprite\SpriteGenerator An instance of $this, to enable chaining.
+	 * @deprecated since 6.2, will be removed two versions later - use setOmitSpriteNameInIconName() instead
+	 */
+	public function setOmmitSpriteNameInIconName($value) {
+		GeneralUtility::logDeprecatedFunction();
+		return $this->omitSpriteNameInIconName($value);
+	}
+
+	/**
 	 * Setter do enable the exclusion of the sprites-name from iconnames
 	 *
 	 * @param boolean $value
 	 * @return \TYPO3\CMS\Backend\Sprite\SpriteGenerator An instance of $this, to enable chaining.
 	 */
-	public function setOmmitSpriteNameInIconName($value) {
-		$this->ommitSpriteNameInIconName = is_bool($value) ? $value : FALSE;
+	public function setOmitSpriteNameInIconName($value) {
+		$this->omitSpriteNameInIconName = is_bool($value) ? $value : FALSE;
 		return $this;
 	}
 
@@ -281,13 +320,16 @@ class SpriteGenerator {
 	 * @return array
 	 */
 	public function generateSpriteFromArray(array $files) {
-		if (!$this->ommitSpriteNameInIconName) {
+		if (!$this->omitSpriteNameInIconName) {
 			$this->spriteBases[] = $this->spriteName;
 		}
 		$this->buildFileInformationCache($files);
 		// Calculate Icon Position in sprite
 		$this->calculateSpritePositions();
 		$this->generateGraphic();
+		if ($this->generateHighDensitySprite) {
+			$this->generateHighDensityGraphic();
+		}
 		$this->generateCSS();
 		$iconNames = array_keys($this->iconsData);
 		natsort($iconNames);
@@ -322,7 +364,21 @@ class SpriteGenerator {
 		foreach ($this->spriteBases as $base) {
 			$markerArray['###SPRITENAME###'] = $base;
 			$cssData .= HtmlParser::substituteMarkerArray($this->templateSprite, $markerArray);
+
+			if ($this->generateHighDensitySprite) {
+				$highDensityMarkerArray = array_merge($markerArray, array(
+					'###BGWIDTH###' => $this->spriteWidth . 'px',
+					'###BGHEIGHT###' => $this->spriteHeight . 'px',
+					'###SPRITEURL###' => str_replace(
+						$this->spriteName . '.png',
+						$this->spriteName . '.x2.png',
+						$markerArray['###SPRITEURL###']
+					)
+				));
+				$cssData .= HtmlParser::substituteMarkerArray($this->templateSpriteHighDensity, $highDensityMarkerArray);
+			}
 		}
+
 		foreach ($this->iconsData as $key => $data) {
 			$temp = $data['iconNameParts'];
 			array_shift($temp);
@@ -377,9 +433,8 @@ class SpriteGenerator {
 	 */
 	protected function generateGraphic() {
 		$tempSprite = GeneralUtility::tempnam($this->spriteName);
-		$filePath = array(
-			'mainFile' => PATH_site . $this->spriteFolder . $this->spriteName . '.png'
-		);
+		$filePath = PATH_site . $this->spriteFolder . $this->spriteName . '.png';
+
 		// Create black true color image with given size
 		$newSprite = imagecreatetruecolor($this->spriteWidth, $this->spriteHeight);
 		imagesavealpha($newSprite, TRUE);
@@ -393,13 +448,45 @@ class SpriteGenerator {
 			}
 		}
 		imagepng($newSprite, $tempSprite . '.png');
-		GeneralUtility::upload_copy_move($tempSprite . '.png', $filePath['mainFile']);
+		GeneralUtility::upload_copy_move($tempSprite . '.png', $filePath);
 		GeneralUtility::unlink_tempfile($tempSprite . '.png');
 	}
 
 	/**
+	 * The actual sprite generator, renders the command for Im/GM and executes
+	 *
+	 * @return void
+	 */
+	protected function generateHighDensityGraphic() {
+		$tempSprite = GeneralUtility::tempnam($this->spriteName . '.x2');
+		$filePath = PATH_site . $this->spriteFolder . $this->spriteName . '.x2.png';
+
+		// Create black true color image with given size
+		$newSprite = imagecreatetruecolor($this->spriteWidth * 2, $this->spriteHeight * 2);
+		imagesavealpha($newSprite, TRUE);
+		// Make it transparent
+		imagefill($newSprite, 0, 0, imagecolorallocatealpha($newSprite, 0, 255, 255, 127));
+		foreach ($this->iconsData as $icon) {
+			$function = 'imagecreatefrom' . strtolower($icon['fileExtension']);
+			if (function_exists($function)) {
+				if ($icon['fileNameHighDensity'] !== FALSE) {
+					// copy HighDensity file
+					$currentIcon = $function($icon['fileNameHighDensity']);
+					imagecopy($newSprite, $currentIcon, $icon['left'] * 2, $icon['top'] * 2, 0, 0, $icon['width'] * 2, $icon['height'] * 2);
+				} else {
+					// scale up normal file
+					$currentIcon = $function($icon['fileName']);
+					imagecopyresized($newSprite, $currentIcon, $icon['left'] * 2, $icon['top'] * 2, 0, 0, $icon['width'] * 2, $icon['height'] * 2, $icon['width'], $icon['height']);
+				}
+			}
+		}
+		imagepng($newSprite, $tempSprite . '.png');
+		GeneralUtility::upload_copy_move($tempSprite . '.png', $filePath);
+		GeneralUtility::unlink_tempfile($tempSprite . '.png');
+	}
+	/**
 	 * Arranges icons in sprites,
-	 * afterwards all icons have information about ther position in sprite
+	 * afterwards all icons have information about the position in sprite
 	 */
 	protected function calculateSpritePositions() {
 		$currentLeft = 0;
@@ -416,7 +503,7 @@ class SpriteGenerator {
 		}
 		// Reverse sorting: widest group to top
 		krsort($sizes);
-		// Integerate all icons grouped by icons size into the sprite
+		// Integrate all icons grouped by icons size into the sprite
 		foreach ($sizes as $sizeTag) {
 			$size = $this->explodeSizeTag($sizeTag);
 			$currentLeft = 0;
@@ -458,7 +545,7 @@ class SpriteGenerator {
 	 */
 	protected function getFolder($directoryPath) {
 		$subFolders = GeneralUtility::get_dirs(PATH_site . $directoryPath);
-		if (!$this->ommitSpriteNameInIconName) {
+		if (!$this->omitSpriteNameInIconName) {
 			$subFolders[] = '';
 		}
 		$resultArray = array();
@@ -471,7 +558,7 @@ class SpriteGenerator {
 				foreach ($icons as $icon) {
 					$fileInfo = pathinfo($icon);
 					$iconName = ($folder ? $folder . '-' : '') . $fileInfo['filename'];
-					if (!$this->ommitSpriteNameInIconName) {
+					if (!$this->omitSpriteNameInIconName) {
 						$iconName = $this->spriteName . '-' . $iconName;
 					}
 					$resultArray[$iconName] = $directoryPath . $folder . '/' . $icon;
@@ -504,8 +591,15 @@ class SpriteGenerator {
 				'width' => $imageInfo[0],
 				'height' => $imageInfo[1],
 				'left' => 0,
-				'top' => 0
+				'top' => 0,
+				'fileNameHighDensity' => FALSE
 			);
+			if ($this->generateHighDensitySprite) {
+				$highDensityFile = str_replace('.' . $fileInfo['extension'], '.x2.' . $fileInfo['extension'], $iconFile);
+				if (@file_exists(PATH_site . $highDensityFile)) {
+					$this->iconsData[$iconName]['fileNameHighDensity'] = $highDensityFile;
+				}
+			}
 			$sizeTag = $imageInfo[0] . 'x' . $imageInfo[1];
 			if (isset($this->iconSizes[$sizeTag])) {
 				$this->iconSizes[$sizeTag] += 1;
