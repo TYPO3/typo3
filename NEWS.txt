@@ -49,6 +49,17 @@ Administration / Customization
 Extbase
 -------------------------------------------------------------------------------
 
+* Recursive object validation
+
+Validation of object structures in extbase is now done recursively. If a tree
+of objects is created by the new property mapper, not only the top level object
+is validated, but all objects.
+
+* Allow empty validation
+
+In order to make a property required you now need to add the NotEmptyValidator
+to your property. The return value of validators is now optional.
+
 -------------------------------------------------------------------------------
 Fluid
 -------------------------------------------------------------------------------
