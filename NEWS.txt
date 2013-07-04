@@ -32,6 +32,10 @@ Changes and Improvements
 General
 -------------------------------------------------------------------------------
 
+* SpriteGenerator now supports high density sprites
+
+It is now possible to create high density sprites.
+
 -------------------------------------------------------------------------------
 Logging
 -------------------------------------------------------------------------------
