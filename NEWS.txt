@@ -42,6 +42,19 @@ Administration / Customization
 Extbase
 -------------------------------------------------------------------------------
 
+* Recursive validation and allowing empty validation
+
+This change enables recursive validation by backporting the TYPO3.Flow
+validation API. Also the validators allow empty values now.
+This is a breaking change if you expected the previous behavior. In order
+to make a property required you now need to add the NotEmptyValidator
+explicitly!
+
+This change also changes the validators required return type for the
+default property mapper before 6.1. Before this change the isValid method
+had to return a boolean value. Now this is not necessary anymore, because
+only the errors added by the validator are checked.
+
 -------------------------------------------------------------------------------
 Fluid
 -------------------------------------------------------------------------------
