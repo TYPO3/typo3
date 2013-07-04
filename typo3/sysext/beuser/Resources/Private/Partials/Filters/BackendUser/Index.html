@@ -3,38 +3,38 @@
 <bu:section title="Filter" collapsible="TRUE">
 	<f:form action="index" objectName="demand" object="{demand}">
 		<div>
-			<label for="tx_Beuser_username"><f:translate key="userName">Username</f:translate></label>
+			<label for="tx_Beuser_username"><f:translate id="userName">Username</f:translate></label>
 			<f:form.textfield
 				id="tx_Beuser_username"
 				property="userName"
 			/>
 		</div>
 		<div>
-			<label for="tx_Beuser_usertype"><f:translate key="admin">Admin</f:translate></label>
+			<label for="tx_Beuser_usertype"><f:translate id="admin">Admin</f:translate></label>
 			<f:form.select
 				id="tx_Beuser_usertype"
 				property="userType"
-				options="{0: '{f:translate(key:\"both\")}', 1: '{f:translate(key:\"adminOnly\")}', 2: '{f:translate(key:\"normalUserOnly\")}'}"
+				options="{0: '{f:translate(id:\"both\")}', 1: '{f:translate(id:\"adminOnly\")}', 2: '{f:translate(id:\"normalUserOnly\")}'}"
 			/>
 		</div>
 		<div>
-			<label for="tx_Beuser_status"><f:translate key="status">Status</f:translate></label>
+			<label for="tx_Beuser_status"><f:translate id="status">Status</f:translate></label>
 			<f:form.select
 				id="tx_Beuser_status"
 				property="status"
-				options="{0: '{f:translate(key:\"both\")}', 1: '{f:translate(key:\"activeOnly\")}', 2: '{f:translate(key:\"inactiveOnly\")}'}"
+				options="{0: '{f:translate(id:\"both\")}', 1: '{f:translate(id:\"activeOnly\")}', 2: '{f:translate(id:\"inactiveOnly\")}'}"
 			/>
 		</div>
 		<div>
-			<label for="tx_Beuser_logins"><f:translate key="login">Login</f:translate></label>
+			<label for="tx_Beuser_logins"><f:translate id="login">Login</f:translate></label>
 			<f:form.select
 				id="tx_Beuser_logins"
 				property="logins"
-				options="{0: '{f:translate(key:\"both\")}', 1: '{f:translate(key:\"loginBefore\")}', 2: '{f:translate(key:\"neverLoggedIn\")}'}"
+				options="{0: '{f:translate(id:\"both\")}', 1: '{f:translate(id:\"loginBefore\")}', 2: '{f:translate(id:\"neverLoggedIn\")}'}"
 			/>
 		</div>
 		<div>
-			<label for="tx_beuser_backendUserGroup"><f:translate key="backendUserGroup">User Group</f:translate></label>
+			<label for="tx_beuser_backendUserGroup"><f:translate id="backendUserGroup">User Group</f:translate></label>
 			<f:form.select
 				id="tx_beuser_backendUserGroup"
 				property="backendUserGroup"
@@ -43,6 +43,6 @@
 				optionValueField="uid"
 			/>
 		</div>
-		<f:form.submit class="indent" value="{f:translate(key: 'filter')}" />
+		<f:form.submit class="indent" value="{f:translate(id: 'filter')}" />
 	</f:form>
 </bu:section>

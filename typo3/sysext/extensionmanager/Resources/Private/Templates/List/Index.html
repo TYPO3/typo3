@@ -3,17 +3,17 @@
 <f:layout name="main" />
 
 <f:section name="docheader-buttons">
-	<f:be.buttons.icon uri="{f:uri.action(action:'form',controller:'UploadExtensionFile')}" icon="actions-edit-upload" title="{f:translate(key:'extensionList.uploadExtension')}"/>
+	<f:be.buttons.icon uri="{f:uri.action(action:'form',controller:'UploadExtensionFile')}" icon="actions-edit-upload" title="{f:translate(id:'extensionList.uploadExtension')}"/>
 </f:section>
 
 <f:section name="module-headline">
-	<h1><f:translate key="manageExtensions">Manage extensions</f:translate></h1>
+	<h1><f:translate id="manageExtensions">Manage extensions</f:translate></h1>
 </f:section>
 
 <f:section name="Content">
 	<div class="uploadForm" style="display: none;">
 		<span class="spinner"></span>
-		<f:translate key="extensionList.loading"/>
+		<f:translate id="extensionList.loading"/>
 	</div>
 
 	<div class="headerRow ui-helper-clearfix">
@@ -25,13 +25,13 @@
 	<table id="typo3-extension-list" class="typo3-extension-list">
 		<thead>
 			<tr>
-				<th title="{f:translate(key:'extensionList.header.title.update')}"><f:translate key="extensionList.header.update"/></th>
-				<th title="{f:translate(key:'extensionList.header.title.activate')}"><f:translate key="extensionList.header.activate"/></th>
-				<th><f:translate key="extensionList.header.extensionName"/></th>
-				<th><f:translate key="extensionList.header.extensionKey"/></th>
-				<th><f:translate key="extensionList.header.extensionVersion"/></th>
-				<th><f:translate key="extensionList.header.extensionActions"/></th>
-				<th><f:translate key="extensionList.header.extensionState"/></th>
+				<th title="{f:translate(id:'extensionList.header.title.update')}"><f:translate id="extensionList.header.update"/></th>
+				<th title="{f:translate(id:'extensionList.header.title.activate')}"><f:translate id="extensionList.header.activate"/></th>
+				<th><f:translate id="extensionList.header.extensionName"/></th>
+				<th><f:translate id="extensionList.header.extensionKey"/></th>
+				<th><f:translate id="extensionList.header.extensionVersion"/></th>
+				<th><f:translate id="extensionList.header.extensionActions"/></th>
+				<th><f:translate id="extensionList.header.extensionState"/></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -49,7 +49,7 @@
 						<f:be.buttons.icon
 							uri="{f:uri.action(action:'updateCommentForUpdatableVersions',controller:'Download',arguments:{extension:extension.key, integerVersion: extension.terObject.integerVersion},format:'json')}"
 							icon="actions-system-extension-update"
-							title="{f:translate(key:'extensionList.updateToVersion', arguments:{0:extension.updateToVersion.version})}"
+							title="{f:translate(id:'extensionList.updateToVersion', arguments:{0:extension.updateToVersion.version})}"
 						/>
 					</f:if>
 				</td>
@@ -77,7 +77,7 @@
 					<em:configureExtension extension="{extension}" />
 					<em:updateScript extensionKey="{extension.key}" />
 					<em:removeExtension extension="{extension}" />
-					<f:be.buttons.icon uri="{f:uri.action(action:'downloadExtensionZip',controller:'Action',arguments:'{extension:extension.key}')}" icon="actions-system-extension-download" title="{f:translate(key:'extensionList.downloadzip')}"/>
+					<f:be.buttons.icon uri="{f:uri.action(action:'downloadExtensionZip',controller:'Action',arguments:'{extension:extension.key}')}" icon="actions-system-extension-download" title="{f:translate(id:'extensionList.downloadzip')}"/>
 					<em:downloadExtensionData extension="{extension}" />
 				</td>
 				<td class="state {extension.state}">

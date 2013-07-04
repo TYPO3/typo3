@@ -3,11 +3,11 @@
 <f:layout name="main"/>
 
 <f:section name="docheader-buttons">
-	<f:be.buttons.icon uri="{f:uri.action(action: 'ter')}" icon="actions-view-go-back" title="{f:translate(key:'extConfTemplate.backToList')}" />
+	<f:be.buttons.icon uri="{f:uri.action(action: 'ter')}" icon="actions-view-go-back" title="{f:translate(id:'extConfTemplate.backToList')}" />
 </f:section>
 
 <f:section name="module-headline">
-	<h1><f:translate key="showAllVersions" /> {extensionKey}</h1>
+	<h1><f:translate id="showAllVersions" /> {extensionKey}</h1>
 </f:section>
 
 <f:section name="Content">
@@ -16,23 +16,23 @@
 
 		<table cellpadding="0" cellspacing="0" class="currentVersionInfo">
 			<tr class="ter-ext-single-info-key">
-				<th><f:translate key="extensionList.showAllVersions.extensionKey" /></th>
+				<th><f:translate id="extensionList.showAllVersions.extensionKey" /></th>
 				<td><strong>{currentVersion.extensionKey}</strong></td>
 			</tr>
 			<tr>
-				<th><f:translate key="extensionList.showAllVersions.version" /></th>
+				<th><f:translate id="extensionList.showAllVersions.version" /></th>
 				<td>
 					{currentVersion.version}
 					<span class="ter-ext-state ter-ext-state-{currentVersion.stateString}">{currentVersion.stateString}</span>
 				</td>
 			</tr>
 			<tr>
-				<th><f:translate key="extensionList.showAllVersions.lastUploaded" /></th>
+				<th><f:translate id="extensionList.showAllVersions.lastUploaded" /></th>
 				<td>
 					<f:format.date>{currentVersion.lastUpdated}</f:format.date></td>
 			</tr>
 			<tr>
-				<th><f:translate key="extensionList.showAllVersions.downloads" /></th>
+				<th><f:translate id="extensionList.showAllVersions.downloads" /></th>
 				<td>
 					<f:format.number decimals="0">
 						{currentVersion.alldownloadcounter}
@@ -40,19 +40,19 @@
 				</td>
 			</tr>
 			<tr>
-				<th><f:translate key="extensionList.showAllVersions.category" /></th>
+				<th><f:translate id="extensionList.showAllVersions.category" /></th>
 				<td>{currentVersion.categoryString}</td>
 			</tr>
 			<tr class="ter-ext-single-info-manual">
-				<th><f:translate key="extensionList.showAllVersions.manual" /></th>
+				<th><f:translate id="extensionList.showAllVersions.manual" /></th>
 				<td>
 					<a href="http://typo3.org/extension-manuals/{currentVersion.extensionKey}/current/" target="_blank">
-						<f:translate key="extensionList.showAllVersions.readOnline" />
+						<f:translate id="extensionList.showAllVersions.readOnline" />
 					</a>
 				</td>
 			</tr>
 			<tr>
-				<th><f:translate key="extensionList.showAllVersions.author" /></th>
+				<th><f:translate id="extensionList.showAllVersions.author" /></th>
 				<td>{currentVersion.authorName}</td>
 			</tr>
 		</table>

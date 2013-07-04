@@ -3,25 +3,25 @@
 <f:layout name="Default"/>
 
 <f:section name="iconButtons">
-	<span class="menuItem updateItem"><lang:be.spriteIcon icon="actions-system-extension-download" title="{f:translate(key:'button.update')}" /><f:translate key="button.update"/></span>
+	<span class="menuItem updateItem"><lang:be.spriteIcon icon="actions-system-extension-download" title="{f:translate(id:'button.update')}" /><f:translate id="button.update"/></span>
 	&nbsp;
-	<span class="menuItem cancelItem"><lang:be.spriteIcon icon="status-status-permission-denied" title="{f:translate(key:'button.cancel')}" /><f:translate key="button.cancel"/></span>
+	<span class="menuItem cancelItem"><lang:be.spriteIcon icon="status-status-permission-denied" title="{f:translate(id:'button.cancel')}" /><f:translate id="button.cancel"/></span>
 </f:section>
 
 
 <f:section name="content">
-	<h1><f:translate key="header.module" /></h1>
+	<h1><f:translate id="header.module" /></h1>
 
 	<f:flashMessages renderMode="div" />
 
 	<table border="0" cellpadding="0" cellspacing="0">
 		<tr>
 			<td class="languageSelectionListContainer">
-				<h3><f:translate key="header.languageSelectionList" /></h3>
+				<h3><f:translate id="header.languageSelectionList" /></h3>
 				<f:render partial="LanguageSelectionList" arguments="{_all}" />
 			</td>
 			<td class="translationUpdateListContainer">
-				<h3><f:translate key="header.translationUpdateList" /></h3>
+				<h3><f:translate id="header.translationUpdateList" /></h3>
 				<f:render partial="TranslationUpdateList" arguments="{_all}" />
 			</td>
 		</tr>
@@ -29,31 +29,31 @@
 
 	<div style="display: none;">
 		<span class="stateIcon" id="stateIconError">
-			<lang:be.spriteIcon icon="status-status-permission-denied" /><f:translate key="state.error"/>
+			<lang:be.spriteIcon icon="status-status-permission-denied" /><f:translate id="state.error"/>
 		</span>
 		<span class="stateIcon" id="stateIcon0">
-			<lang:be.spriteIcon icon="actions-document-info" /><f:translate key="state.notAvailable"/>
+			<lang:be.spriteIcon icon="actions-document-info" /><f:translate id="state.notAvailable"/>
 		</span>
 		<span class="stateIcon" id="stateIcon1">
-			<lang:be.spriteIcon icon="actions-system-extension-update" /><f:translate key="state.updateAvailable"/>
+			<lang:be.spriteIcon icon="actions-system-extension-update" /><f:translate id="state.updateAvailable"/>
 		</span>
 		<span class="stateIcon" id="stateIcon2">
-			<lang:be.spriteIcon icon="status-status-permission-denied" /><f:translate key="state.failed"/>
+			<lang:be.spriteIcon icon="status-status-permission-denied" /><f:translate id="state.failed"/>
 		</span>
 		<span class="stateIcon" id="stateIcon3">
-			<lang:be.spriteIcon icon="status-status-checked" /><f:translate key="state.upToDate"/>
+			<lang:be.spriteIcon icon="status-status-checked" /><f:translate id="state.upToDate"/>
 		</span>
 		<span class="stateIcon" id="stateIcon4">
-			<lang:be.spriteIcon icon="status-status-permission-denied" /><f:translate key="state.invalid"/>
+			<lang:be.spriteIcon icon="status-status-permission-denied" /><f:translate id="state.invalid"/>
 		</span>
 		<span class="stateIcon" id="stateIcon5">
-			<lang:be.spriteIcon icon="status-status-checked" /><f:translate key="state.updated"/>
+			<lang:be.spriteIcon icon="status-status-checked" /><f:translate id="state.updated"/>
 		</span>
 		<span class="stateIcon" id="stateIconChecking">
-			<span class="stateIconChecking"><f:translate key="state.checking"/></span>
+			<span class="stateIconChecking"><f:translate id="state.checking"/></span>
 		</span>
 		<span class="stateIcon" id="stateIconNone">
-			<span class="stateIconNone"><f:translate key="state.notChecked"/></span>
+			<span class="stateIconNone"><f:translate id="state.notChecked"/></span>
 		</span>
 	</div>
 </f:section>

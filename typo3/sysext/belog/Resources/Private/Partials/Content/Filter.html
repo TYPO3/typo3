@@ -26,7 +26,7 @@
 		<tbody>
 			<tr>
 				<th>
-					<label for="belog-users"><f:translate key="users" /></label>
+					<label for="belog-users"><f:translate id="users" /></label>
 				</th>
 				<td>
 					<f:form.select
@@ -38,7 +38,7 @@
 				</td>
 
 				<th>
-					<label for="belog-max"><f:translate key="max" /></label>
+					<label for="belog-max"><f:translate id="max" /></label>
 				</th>
 				<td>
 					<belog:form.translateLabelSelect
@@ -55,7 +55,7 @@
 						<f:if condition="{showWorkspaceSelector}">
 							<f:then>
 								<th>
-									<label for="belog-workspaces"><f:translate key="workspace" /></label>
+									<label for="belog-workspaces"><f:translate id="workspace" /></label>
 								</th>
 								<td>
 									<f:form.select
@@ -79,7 +79,7 @@
 				<f:if condition="{constraint.isInPageContext}">
 					<f:then>
 						<th>
-							<label for="belog-depth"><f:translate key="chLog_menuDepth" /></label>
+							<label for="belog-depth"><f:translate id="chLog_menuDepth" /></label>
 						</th>
 						<td>
 							<f:form.select
@@ -98,7 +98,7 @@
 
 			<tr>
 				<th>
-					<label for="belog-time"><f:translate key="time" /></label>
+					<label for="belog-time"><f:translate id="time" /></label>
 				</th>
 				<td>
 					<belog:form.translateLabelSelect
@@ -115,7 +115,7 @@
 					<f:if condition="{constraint.timeFrame} == 30">
 						<br />
 
-						<label for="tceforms-datetimefield-manualDateStart"><f:translate key="LLL:EXT:lang/locallang_common.xlf:from" /></label>&nbsp;
+						<label for="tceforms-datetimefield-manualDateStart"><f:translate id="LLL:EXT:lang/locallang_common.xlf:from" /></label>&nbsp;
 						<f:form.textfield
 							property="manualDateStart"
 							value="{constraint.manualDateStart -> f:format.date(format:'{settings.dateFormat} {settings.timeFormat}')}"
@@ -130,7 +130,7 @@
 							&nbsp;
 						</span>
 
-						<label for="tceforms-datetimefield-manualDateStop"><f:translate key="LLL:EXT:lang/locallang_common.xlf:to" /></label>&nbsp;
+						<label for="tceforms-datetimefield-manualDateStop"><f:translate id="LLL:EXT:lang/locallang_common.xlf:to" /></label>&nbsp;
 						<f:form.textfield
 							property="manualDateStop"
 							value="{constraint.manualDateStop -> f:format.date(format:'{settings.dateFormat} {settings.timeFormat}')}"
@@ -145,12 +145,12 @@
 							&nbsp;
 						</span>
 
-						<f:form.submit value="{f:translate(key:'set')}" />
+						<f:form.submit value="{f:translate(id:'set')}" />
 					</f:if>
 				</td>
 
 				<th>
-					<label for="belog-action"><f:translate key="action" /></label>
+					<label for="belog-action"><f:translate id="action" /></label>
 				</th>
 				<td>
 					<belog:form.translateLabelSelect
@@ -163,7 +163,7 @@
 				</td>
 
 				<th>
-					<label for="belog-group"><f:translate key="groupByPage" /></label>
+					<label for="belog-group"><f:translate id="groupByPage" /></label>
 				</th>
 				<td>
 					<f:form.checkbox

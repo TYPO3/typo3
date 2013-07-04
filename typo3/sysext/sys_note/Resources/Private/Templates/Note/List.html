@@ -10,19 +10,19 @@
 				<div class="single-note category-{note.category}">
 					<div class="header">
 						<span class="typeicon" oncontextmenu="Clickmenu.show('sys_note', '{note.uid}', '1', '', '', ''); return false;" onclick="Clickmenu.show('sys_note', '{note.uid}', '1', '','', ''); return false;"></span>
-						<span><f:translate key="author" /></span>
+						<span><f:translate id="author" /></span>
 						<f:if condition="{note.author.realName}">
 							<f:then>{note.author.realName}</f:then>
 							<f:else>{note.author.userName}</f:else>
 						</f:if>
 						&middot;
 
-						<span><f:translate key="date" /></span>
+						<span><f:translate id="date" /></span>
 						<f:format.date>{note.modificationDate}</f:format.date>
 
 						<f:if condition="{note.personal}">
 							&middot;
-							<span><f:translate key="personal" /></span>&nbsp;<f:translate key="yes" />
+							<span><f:translate id="personal" /></span>&nbsp;<f:translate id="yes" />
 						</f:if>
 
 						<div class="right icons">
@@ -31,7 +31,7 @@
 					</div>
 					<div class="content">
 						<div class="title">
-							<f:if condition="{note.category}"><f:translate key="category.{note.category}" />:</f:if>
+							<f:if condition="{note.category}"><f:translate id="category.{note.category}" />:</f:if>
 							{note.subject}
 						</div>
 						<f:format.nl2br>{note.message}</f:format.nl2br>

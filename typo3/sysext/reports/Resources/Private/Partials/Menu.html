@@ -1,7 +1,7 @@
 {namespace r=Tx_Reports_ViewHelpers}
 
 <f:be.menus.actionMenu>
-	<f:be.menus.actionMenuItem label="{f:translate(key:'reports_overview')}" controller="Report" action="index" />
+	<f:be.menus.actionMenuItem label="{f:translate(id:'reports_overview')}" controller="Report" action="index" />
 	<f:for each="{menu}" as="item">
 		<r:actionMenuItem label="{item.title}" controller="Report" action="detail" arguments="{extension:item.extension,report:item.report}" />
 	</f:for>

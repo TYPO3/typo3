@@ -15,12 +15,12 @@
 				<f:be.buttons.icon
 					uri="{f:widget.uri(arguments:{currentPage: 1})}"
 					icon="actions-view-paging-first"
-					title="{f:translate(key:'widget.pagination.first')}"
+					title="{f:translate(id:'widget.pagination.first')}"
 				/>
 				<f:be.buttons.icon
 					uri="{f:widget.uri(arguments:{currentPage: pagination.previousPage})}"
 					icon="actions-view-paging-previous"
-					title="{f:translate(key:'widget.pagination.previous')}"
+					title="{f:translate(id:'widget.pagination.previous')}"
 				/>
 			</f:then>
 			<f:else>
@@ -41,13 +41,13 @@
 					{recordsLabel}
 				</f:then>
 				<f:else>
-					<f:translate key="widget.pagination.records" />
+					<f:translate id="widget.pagination.records" />
 				</f:else>
 			</f:if>
 			{pagination.startRecord} - {pagination.endRecord}</span>
 		<span class="bar"> </span>
 		<span class="pageIndicator">
-			<f:translate key="widget.pagination.page" />
+			<f:translate id="widget.pagination.page" />
 			<span>
 				<form id="paginator-form-{position}" onsubmit="goToPage{position}(this); return false;" style="display:inline;">
 				<script type="text/javascript">
@@ -74,12 +74,12 @@
 				<f:be.buttons.icon
 					uri="{f:widget.uri(arguments:{currentPage: pagination.nextPage})}"
 					icon="actions-view-paging-next"
-					title="{f:translate(key:'widget.pagination.next')}"
+					title="{f:translate(id:'widget.pagination.next')}"
 				/>
 				<f:be.buttons.icon
 					uri="{f:widget.uri(arguments:{currentPage: pagination.numberOfPages})}"
 					icon="actions-view-paging-last"
-					title="{f:translate(key:'widget.pagination.last')}"
+					title="{f:translate(id:'widget.pagination.last')}"
 				/>
 			</f:then>
 			<f:else>
@@ -97,7 +97,7 @@
 		<f:be.buttons.icon
 			uri="{f:widget.uri(arguments:{currentPage: pagination.current})}"
 			icon="actions-system-refresh"
-			title="{f:translate(key:'widget.pagination.refresh')}"
+			title="{f:translate(id:'widget.pagination.refresh')}"
 		/>
 	</div>
 </f:section>

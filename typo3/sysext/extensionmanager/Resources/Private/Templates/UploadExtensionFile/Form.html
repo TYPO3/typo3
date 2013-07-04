@@ -1,7 +1,7 @@
 <f:form enctype="multipart/form-data" id="extensionUploadForm" method="post" controller="UploadExtensionFile" action="extract" format="json" additionalAttributes="{target:'typo3-extensionmanager-upload-target'}">
 	<div class="control-group">
 		<label for="extensionFile">
-			<f:translate key="uploadTemplate.extensionLabel" />
+			<f:translate id="uploadTemplate.extensionLabel" />
 		</label>
 		<div class="control">
 			<f:form.upload name="extensionFile" />
@@ -9,7 +9,7 @@
 	</div>
 
 	<div class="control-group">
-		<label for="extensionOverwrite">{f:translate(key:'extensionList.overwriteExtension')}</label>
+		<label for="extensionOverwrite">{f:translate(id:'extensionList.overwriteExtension')}</label>
 		<div class="control">
 			<f:form.checkbox name="overwrite" id="extensionOverwrite" value="1" />
 		</div>
@@ -17,7 +17,7 @@
 
 	<div class="control-group">
 		<div class="control">
-			<f:form.submit value="{f:translate(key:'uploadTemplate.uploadButton')}" id="extensionUpload" />
+			<f:form.submit value="{f:translate(id:'uploadTemplate.uploadButton')}" id="extensionUpload" />
 		</div>
 	</div>
 

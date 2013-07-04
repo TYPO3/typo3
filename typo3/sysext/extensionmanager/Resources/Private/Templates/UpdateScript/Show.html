@@ -3,11 +3,11 @@
 <f:layout name="main" />
 
 <f:section name="docheader-buttons">
-	<f:be.buttons.icon uri="{f:uri.action(action:'index',controller:'List',additionalParams:{search:extensionKey})}" icon="actions-view-go-back" title="{f:translate(key:'extConfTemplate.backToList')}" />
+	<f:be.buttons.icon uri="{f:uri.action(action:'index',controller:'List',additionalParams:{search:extensionKey})}" icon="actions-view-go-back" title="{f:translate(id:'extConfTemplate.backToList')}" />
 </f:section>
 
 <f:section name="module-headline">
-	<h1><f:translate key="updateScript.headline" arguments="{0: extensionKey}" /></h1>
+	<h1><f:translate id="updateScript.headline" arguments="{0: extensionKey}" /></h1>
 </f:section>
 
 <f:section name="Content">
@@ -18,7 +18,7 @@
 					<f:format.raw>{updateScriptResult}</f:format.raw>
 				</f:then>
 				<f:else>
-					<f:translate key="updateScript.none" />
+					<f:translate id="updateScript.none" />
 				</f:else>
 			</f:if>
 		</div>

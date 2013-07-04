@@ -4,16 +4,16 @@
 	<f:if condition="{row.headerOnly} == 0">
 	<p class="tx-indexedsearch-description">{row.description}</p>
 	<dl class="tx-indexedsearch-info">
-		<dt class="tx-indexedsearch-text-item-size"><f:translate key="result.size" />&nbsp;</dt>
+		<dt class="tx-indexedsearch-text-item-size"><f:translate id="result.size" />&nbsp;</dt>
 		<dd class="tx-indexedsearch-text-item-size">{row.size}</dd>
 
-		<dt class="tx-indexedsearch-text-item-crdate"><f:translate key="result.created" />&nbsp;</dt>
+		<dt class="tx-indexedsearch-text-item-crdate"><f:translate id="result.created" />&nbsp;</dt>
 		<dd class="tx-indexedsearch-text-item-crdate"><f:format.date>@{row.created}</f:format.date></dd>
 
-		<dt class="tx-indexedsearch-text-item-mtime"><f:translate key="result.modified" />&nbsp;</dt>
+		<dt class="tx-indexedsearch-text-item-mtime"><f:translate id="result.modified" />&nbsp;</dt>
 		<dd class="tx-indexedsearch-text-item-mtime"><f:format.date>@{row.modified}</f:format.date></dd>
 
-		<dt class="tx-indexedsearch-text-item-path"><f:translate key="result.path" />&nbsp;</dt>
+		<dt class="tx-indexedsearch-text-item-path"><f:translate id="result.path" />&nbsp;</dt>
 		<dd class="tx-indexedsearch-text-item-path"><f:format.html>{row.path}</f:format.html></dd>
 	</dl>
 	</f:if>
