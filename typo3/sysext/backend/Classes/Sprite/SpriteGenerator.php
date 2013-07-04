@@ -50,6 +50,12 @@ class SpriteGenerator {
 }
 ';
 
+	protected $templateSpriteRetina =  '
+.backgroundsize .###NAMESPACE###-###SPRITENAME### {
+	background-image: url(\'###SPRITEURL###\') !important;
+	background-size:###BGWIDTH### ###BGHEIGHT###;
+}
+';
 	/**
 	 * Template creating CSS for position and size of a single icon
 	 *
@@ -60,6 +66,11 @@ class SpriteGenerator {
 ###SIZE_INFO###
 }
 ';
+
+	/**
+	 * @var boolean
+	 */
+	protected $generateRetinaSprite = TRUE;
 
 	/**
 	 * Most common icon-width in the sprite
@@ -223,6 +234,16 @@ class SpriteGenerator {
 	}
 
 	/**
+	 * Enables/Disables RetinaSprite Generation
+	 *
+	 * @param boolean $boolean
+	 * @return \TYPO3\CMS\Backend\Sprite\SpriteGenerator An instance of $this, to enable chaining.
+	 */
+	public function setGenerateRetinaSprite($boolean = TRUE) {
+		$this->generateRetinaSprite = $boolean;
+		return $this;
+	}
+	/**
 	 * Setter do enable the exclusion of the sprites-name from iconnames
 	 *
 	 * @param boolean $value
@@ -288,6 +309,9 @@ class SpriteGenerator {
 		// Calculate Icon Position in sprite
 		$this->calculateSpritePositions();
 		$this->generateGraphic();
+		if ($this->generateRetinaSprite) {
+			$this->generateRetinaGraphic();
+		}
 		$this->generateCSS();
 		$iconNames = array_keys($this->iconsData);
 		natsort($iconNames);
@@ -322,7 +346,17 @@ class SpriteGenerator {
 		foreach ($this->spriteBases as $base) {
 			$markerArray['###SPRITENAME###'] = $base;
 			$cssData .= HtmlParser::substituteMarkerArray($this->templateSprite, $markerArray);
+
+			if ($this->generateRetinaSprite) {
+				$retinaMarkerArray = array_merge($markerArray, array(
+					'###BGWIDTH###' => $this->spriteWidth . 'px',
+					'###BGHEIGHT###' => $this->spriteHeight . 'px',
+					'###SPRITEURL###' => str_replace($this->spriteName . '.png', $this->spriteName . '.x2.png', $markerArray['###SPRITEURL###'])
+				));
+				$cssData .= HtmlParser::substituteMarkerArray($this->templateSpriteRetina, $retinaMarkerArray);
+			}
 		}
+
 		foreach ($this->iconsData as $key => $data) {
 			$temp = $data['iconNameParts'];
 			array_shift($temp);
@@ -377,9 +411,8 @@ class SpriteGenerator {
 	 */
 	protected function generateGraphic() {
 		$tempSprite = GeneralUtility::tempnam($this->spriteName);
-		$filePath = array(
-			'mainFile' => PATH_site . $this->spriteFolder . $this->spriteName . '.png'
-		);
+		$filePath = PATH_site . $this->spriteFolder . $this->spriteName . '.png';
+
 		// Create black true color image with given size
 		$newSprite = imagecreatetruecolor($this->spriteWidth, $this->spriteHeight);
 		imagesavealpha($newSprite, TRUE);
@@ -393,10 +426,42 @@ class SpriteGenerator {
 			}
 		}
 		imagepng($newSprite, $tempSprite . '.png');
-		GeneralUtility::upload_copy_move($tempSprite . '.png', $filePath['mainFile']);
+		GeneralUtility::upload_copy_move($tempSprite . '.png', $filePath);
 		GeneralUtility::unlink_tempfile($tempSprite . '.png');
 	}
 
+	/**
+	 * The actual sprite generator, renders the command for Im/GM and executes
+	 *
+	 * @return void
+	 */
+	protected function generateRetinaGraphic() {
+		$tempSprite = GeneralUtility::tempnam($this->spriteName . '.x2');
+		$filePath = PATH_site . $this->spriteFolder . $this->spriteName . '.x2.png';
+
+		// Create black true color image with given size
+		$newSprite = imagecreatetruecolor($this->spriteWidth * 2, $this->spriteHeight * 2);
+		imagesavealpha($newSprite, TRUE);
+		// Make it transparent
+		imagefill($newSprite, 0, 0, imagecolorallocatealpha($newSprite, 0, 255, 255, 127));
+		foreach ($this->iconsData as $icon) {
+			$function = 'imagecreatefrom' . strtolower($icon['fileExtension']);
+			if (function_exists($function)) {
+				if ($icon['fileNameRetina'] !== FALSE) {
+					DebugUtility::debug('retina');
+					$currentIcon = $function($icon['fileNameRetina']);
+					imagecopy($newSprite, $currentIcon, $icon['left'] * 2, $icon['top'] * 2, 0, 0, $icon['width'] * 2, $icon['height'] * 2);
+				} else {
+					$currentIcon = $function($icon['fileName']);
+					//imagecopy($newSprite, $currentIcon, $icon['left'], $icon['top'], 0, 0, $icon['width'], $icon['height']);
+					imagecopyresized($newSprite, $currentIcon, $icon['left'] * 2, $icon['top'] * 2, 0, 0, $icon['width'] * 2, $icon['height'] * 2, $icon['width'], $icon['height']);
+				}
+			}
+		}
+		imagepng($newSprite, $tempSprite . '.png');
+		GeneralUtility::upload_copy_move($tempSprite . '.png', $filePath);
+		GeneralUtility::unlink_tempfile($tempSprite . '.png');
+	}
 	/**
 	 * Arranges icons in sprites,
 	 * afterwards all icons have information about ther position in sprite
@@ -504,8 +569,15 @@ class SpriteGenerator {
 				'width' => $imageInfo[0],
 				'height' => $imageInfo[1],
 				'left' => 0,
-				'top' => 0
+				'top' => 0,
+				'fileNameRetina' => FALSE
 			);
+			if ($this->generateRetinaSprite) {
+				$retinaFile = str_replace('.' . $fileInfo['extension'], '.2x.' . $fileInfo['extension'], $iconFile);
+				if (file_exists(PATH_site . $retinaFile)) {
+					$this->iconsData[$iconName]['fileNameRetina'] = $retinaFile;
+				}
+			}
 			$sizeTag = $imageInfo[0] . 'x' . $imageInfo[1];
 			if (isset($this->iconSizes[$sizeTag])) {
 				$this->iconSizes[$sizeTag] += 1;
