@@ -12,7 +12,7 @@
 	</f:comment>
 
 	<f:if condition="{compareUserList}">
-		<bu:Section title="{f:translate(key: 'section.compare', default: 'Compare')}" collapsible="TRUE">
+		<bu:Section title="{f:translate(id: 'section.compare', default: 'Compare')}" collapsible="TRUE">
 			<ul id="compareUsers">
 				<f:for each="{compareUserList}" as="compareUser">
 					<li>
@@ -31,7 +31,7 @@
 			</ul>
 
 			<f:form action="compare">
-				<f:form.submit value="{f:translate(key: 'compareUserList', default: 'Compare user list')}" />
+				<f:form.submit value="{f:translate(id: 'compareUserList', default: 'Compare user list')}" />
 			</f:form>
 
 		</bu:Section>
@@ -47,7 +47,7 @@
 		Listing of all users
 	</f:comment>
 
-	<h2><f:translate key="backendUserListing">Backend User Listing</f:translate></h2>
+	<h2><f:translate id="backendUserListing">Backend User Listing</f:translate></h2>
 
 	<f:if condition="<f:count subject='{backendUsers}' /> > 50">
 		<f:then>
@@ -55,11 +55,11 @@
 				<table border="0" cellpadding="0" cellspacing="0" class="typo3-dblist">
 					<tr class="t3-row-header">
 						<td></td>
-						<td><f:translate key="userName">Username</f:translate></td>
-						<td><f:translate key="realName">Real name</f:translate></td>
+						<td><f:translate id="userName">Username</f:translate></td>
+						<td><f:translate id="realName">Real name</f:translate></td>
 						<td>&nbsp;</td>
 						<td>&nbsp;</td>
-						<td><f:translate key="lastLogin">Last login</f:translate></td>
+						<td><f:translate id="lastLogin">Last login</f:translate></td>
 					</tr>
 					<f:for each="{paginatedBackendUsers}" as="backendUser">
 						<f:render partial="BackendUser/IndexListRow" arguments="{demand: demand, backendUser: backendUser, dateFormat: dateFormat, timeFormat: timeFormat, returnUrl: returnUrl}" />
@@ -69,7 +69,7 @@
 					</f:comment>
 					<tr>
 						<td colspan="6">
-							<f:count subject="{backendUsers}" /> <f:translate key="users">Users</f:translate>
+							<f:count subject="{backendUsers}" /> <f:translate id="users">Users</f:translate>
 						</td>
 					</tr>
 				</table>
@@ -79,11 +79,11 @@
 			<table border="0" cellpadding="0" cellspacing="0" class="typo3-dblist">
 				<tr class="t3-row-header">
 					<td></td>
-					<td><f:translate key="userName">Username</f:translate></td>
-					<td><f:translate key="realName">Real name</f:translate></td>
+					<td><f:translate id="userName">Username</f:translate></td>
+					<td><f:translate id="realName">Real name</f:translate></td>
 					<td>&nbsp;</td>
 					<td>&nbsp;</td>
-					<td><f:translate key="lastLogin">Last login</f:translate></td>
+					<td><f:translate id="lastLogin">Last login</f:translate></td>
 				</tr>
 				<f:for each="{backendUsers}" as="backendUser">
 					<f:render partial="BackendUser/IndexListRow" arguments="{demand: demand, backendUser: backendUser, dateFormat: dateFormat, timeFormat: timeFormat, returnUrl: returnUrl}" />
@@ -93,7 +93,7 @@
 				</f:comment>
 				<tr>
 					<td colspan="6">
-						<f:count subject="{backendUsers}" /> <f:translate key="users">Users</f:translate>
+						<f:count subject="{backendUsers}" /> <f:translate id="users">Users</f:translate>
 					</td>
 				</tr>
 			</table>

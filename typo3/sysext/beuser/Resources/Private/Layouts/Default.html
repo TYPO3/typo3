@@ -5,8 +5,8 @@
 				<div class="left">
 					<f:be.buttons.csh />
 					<f:be.menus.actionMenu>
-						<f:be.menus.actionMenuItem label="{f:translate(key: 'backendUsers')}" controller="BackendUser" action="index" />
-						<f:be.menus.actionMenuItem label="{f:translate(key: 'onlineUsers')}" controller="BackendUser" action="online" />
+						<f:be.menus.actionMenuItem label="{f:translate(id: 'backendUsers')}" controller="BackendUser" action="index" />
+						<f:be.menus.actionMenuItem label="{f:translate(id: 'onlineUsers')}" controller="BackendUser" action="online" />
 					</f:be.menus.actionMenu>
 				</div>
 				<div class="right">
@@ -23,7 +23,7 @@
 		</div>
 		<div id="typo3-docbody">
 			<div id="typo3-inner-docbody">
-				<h1><f:translate key="backendUserAdministration">Backend User Administration</f:translate></h1>
+				<h1><f:translate id="backendUserAdministration">Backend User Administration</f:translate></h1>
 
 				<f:flashMessages renderMode="div" />
 

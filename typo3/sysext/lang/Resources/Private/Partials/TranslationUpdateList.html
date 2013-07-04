@@ -4,7 +4,7 @@
 	<thead>
 		<tr>
 			<td class="icon notSortable"></td>
-			<td class="extension"><f:translate key="table.extension">Extension</f:translate></td>
+			<td class="extension"><f:translate id="table.extension">Extension</f:translate></td>
 			<f:for each="{languageSelectionForm.selectedLanguages}" as="selectedLanguage">
 				<td class="language notSortable">{selectedLanguage.language}</td>
 			</f:for>
@@ -27,7 +27,7 @@
 						data-locale="{selectedLanguage.locale}"
 						data-updateurl="<f:uri.action action="updateTranslation" arguments="{extension:'{extension.key}', locales:'{selectedLanguage.locale}'}" />"
 					>
-						<span class="stateIconNone"><f:translate key="state.notChecked"/></span>
+						<span class="stateIconNone"><f:translate id="state.notChecked"/></span>
 					</td>
 				</f:for>
 			</tr>

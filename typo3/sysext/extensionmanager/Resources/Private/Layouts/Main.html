@@ -23,10 +23,10 @@
 	<div id="typo3-docheader">
 		<div class="typo3-docheader-functions">
 			<f:be.menus.actionMenu>
-				<f:be.menus.actionMenuItem label="{f:translate(key: 'manageExtensions')}" controller="List" action="index" />
-				<f:be.menus.actionMenuItem label="{f:translate(key: 'getExtensions')}" controller="List" action="ter" />
+				<f:be.menus.actionMenuItem label="{f:translate(id: 'manageExtensions')}" controller="List" action="index" />
+				<f:be.menus.actionMenuItem label="{f:translate(id: 'getExtensions')}" controller="List" action="ter" />
 				<f:if condition="{actionName} == 'showAllVersions'">
-					<f:be.menus.actionMenuItem label="{f:translate(key: 'showAllVersions')} {extensionKey}" controller="List" action="showAllVersions" />
+					<f:be.menus.actionMenuItem label="{f:translate(id: 'showAllVersions')} {extensionKey}" controller="List" action="showAllVersions" />
 				</f:if>
 			</f:be.menus.actionMenu>
 		</div>

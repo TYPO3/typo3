@@ -9,10 +9,10 @@
 	<f:for each="{searchWords}" as="searchWord" key="key">
 		<f:if condition="{key} > 0">
 			<f:then>
-				<f:translate key="searchFor.{searchWord.oper}" />&nbsp;{searchWord.sword}
+				<f:translate id="searchFor.{searchWord.oper}" />&nbsp;{searchWord.sword}
 			</f:then>
 			<f:else>
-				<f:translate key="searchFor" />&nbsp;{searchWord.sword}
+				<f:translate id="searchFor" />&nbsp;{searchWord.sword}
 			</f:else>
 		</f:if>
 	</f:for>
@@ -32,9 +32,9 @@
 										<a href="#anchor_{sectionId}">
 											<f:if condition="{sectionData.0}">
 												<f:then>{sectionData.0}</f:then>
-												<f:else><f:translate key="unnamedSection" /></f:else>
+												<f:else><f:translate id="unnamedSection" /></f:else>
 											</f:if>
-											&nbsp;({sectionData.1}&nbsp;<f:translate key="{f:if(condition: '{sectionData.1} > 1', then: 'word_pages', else: 'word_pages')}" />)
+											&nbsp;({sectionData.1}&nbsp;<f:translate id="{f:if(condition: '{sectionData.1} > 1', then: 'word_pages', else: 'word_pages')}" />)
 										</a>
 									</td>
 								</tr>
@@ -52,7 +52,7 @@
 				<f:if condition="{row.isSectionHeader}">
 					<f:then>
 					<div id="{row.anchorId}" class="tx-indexedsearch-sectionhead">
-						<h2 class="tx-indexedsearch-title">{row.sectionTitle} <span class="tx-indexedsearch-result-count">{row.numResultRows} <f:translate key="{f:if(condition: '{row.numResultRows} > 1', then: 'result.pages', else: 'result.page')}" /></span></h2>
+						<h2 class="tx-indexedsearch-title">{row.sectionTitle} <span class="tx-indexedsearch-result-count">{row.numResultRows} <f:translate id="{f:if(condition: '{row.numResultRows} > 1', then: 'result.pages', else: 'result.page')}" /></span></h2>
 					</div>
 					</f:then>
 					<f:else>
@@ -65,7 +65,7 @@
 			</div>
 		</f:then>
 		<f:else>
-			<f:translate key="result.noResult" />
+			<f:translate id="result.noResult" />
 		</f:else>
 	</f:if>
 </f:for>

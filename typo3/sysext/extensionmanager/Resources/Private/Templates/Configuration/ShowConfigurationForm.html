@@ -2,13 +2,13 @@
 <f:layout name="main" />
 
 <f:section name="docheader-buttons">
-	<f:be.buttons.icon uri="{f:uri.action(action:'index',controller:'List',additionalParams:{search:extension.key})}" icon="actions-view-go-back" title="{f:translate(key:'extConfTemplate.backToList')}" />
-	<f:be.buttons.icon uri="javascript:document.configurationform.submit();" icon="actions-document-save" title="{f:translate(key:'extConfTemplate.submitButton')}"/>
+	<f:be.buttons.icon uri="{f:uri.action(action:'index',controller:'List',additionalParams:{search:extension.key})}" icon="actions-view-go-back" title="{f:translate(id:'extConfTemplate.backToList')}" />
+	<f:be.buttons.icon uri="javascript:document.configurationform.submit();" icon="actions-document-save" title="{f:translate(id:'extConfTemplate.submitButton')}"/>
 </f:section>
 
 <f:section name="module-headline">
 	<h1>
-		<f:translate key="extConfTemplate.headline" />
+		<f:translate id="extConfTemplate.headline" />
 		{extension.key}
 	</h1>
 </f:section>
@@ -36,7 +36,7 @@
 										</f:then>
 										<f:else>
 											<f:if condition="{category.subcategories->f:count()} > 1">
-												<h3><f:translate key="extConfTemplate.other" /></h3>
+												<h3><f:translate id="extConfTemplate.other" /></h3>
 											</f:if>
 										</f:else>
 									</f:if>
@@ -50,7 +50,7 @@
 											<em:form.typoScriptConstants configuration="{item}" />
 											<f:if condition="{item.type} != 'user'">
 												<f:then>
-													<f:alias map="{label: '{f:translate(key: \'extConfTemplate.type.{item.type}\')}'}">
+													<f:alias map="{label: '{f:translate(id: \'extConfTemplate.type.{item.type}\')}'}">
 														<f:if condition="{label}">
 															<f:then>
 																<span class="info">({label})</span>

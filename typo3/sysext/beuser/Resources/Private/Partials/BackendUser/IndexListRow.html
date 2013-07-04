@@ -16,7 +16,7 @@
 			arguments="{uid: backendUser.uid}"
 		>
 			<bu:spriteManagerIcon iconName="actions-edit-add"/>
-			<f:translate key="compare">Compare</f:translate>
+			<f:translate id="compare">Compare</f:translate>
 		</f:link.action>
 	</td>
 	<td>
@@ -58,7 +58,7 @@
 				<f:format.date format="{dateFormat} {timeFormat}">{backendUser.lastLoginDateAndTime}</f:format.date>
 			</f:then>
 			<f:else>
-				<f:translate key="never">Never</f:translate>
+				<f:translate id="never">Never</f:translate>
 			</f:else>
 		</f:if>
 	</td>

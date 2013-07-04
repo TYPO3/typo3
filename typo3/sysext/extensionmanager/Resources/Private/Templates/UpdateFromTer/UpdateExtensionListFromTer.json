@@ -2,7 +2,7 @@
 <em:format.jsonEncode
 	additionalAttributes="{
 		updated: updated,
-		lastUpdateTime: '{repository.lastUpdate -> f:format.date(format: \'{f:translate(key: \\\'extensionList.updateFromTer.lastUpdate.fullTimeFormat\\\')}\')}',
+		lastUpdateTime: '{repository.lastUpdate -> f:format.date(format: \'{f:translate(id: \\\'extensionList.updateFromTer.lastUpdate.fullTimeFormat\\\')}\')}',
 		timeSinceLastUpdate: '{em:timeSinceLastUpdate(lastUpdateTime: repository.lastUpdate)}',
 		errorMessage: errorMessage
 	}"

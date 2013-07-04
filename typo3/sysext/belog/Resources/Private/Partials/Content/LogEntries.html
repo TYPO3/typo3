@@ -3,10 +3,10 @@
 <f:if condition="{constraint.groupByPage}">
 	<div>
 		<h2>
-			<f:translate key="overview" />
+			<f:translate id="overview" />
 		</h2>
 		<f:translate
-			key="timeInfo"
+			id="timeInfo"
 			arguments="{
 				0: '{f:format.date(format:\'{settings.dateFormat} H:i\', date:\'@{constraint.startTimestamp}\')}',
 				1: '{f:format.date(format:\'{settings.dateFormat} H:i\', date:\'@{constraint.endTimestamp}\')}'
@@ -40,7 +40,7 @@
 								<f:translate
 									key="logForNonPageRelatedActionsOrRootLevelOrPage"
 									arguments="{
-										0: '{f:translate(key:\'forNonPageRelatedActions\')}',
+										0: '{f:translate(id:\'forNonPageRelatedActions\')}',
 										1: '{f:format.date(format:\'{settings.dateFormat} H:i\', date:\'@{constraint.startTimestamp}\')}',
 										2: '{f:format.date(format:\'{settings.dateFormat} H:i\', date:\'@{constraint.endTimestamp}\')}'
 									}"
@@ -50,7 +50,7 @@
 								<f:translate
 									key="logForNonPageRelatedActionsOrRootLevelOrPage"
 									arguments="{
-										0: '{f:translate(key:\'forRootLevel\')}',
+										0: '{f:translate(id:\'forRootLevel\')}',
 										1: '{f:format.date(format:\'{settings.dateFormat} H:i\', date:\'@{constraint.startTimestamp}\')}',
 										2: '{f:format.date(format:\'{settings.dateFormat} H:i\', date:\'@{constraint.endTimestamp}\')}'
 									}"
@@ -104,19 +104,19 @@
 					<tr>
 						<th valign="top" class="t3-row-header">
 							<strong>
-								<f:translate key="chLog_l_error" />
+								<f:translate id="chLog_l_error" />
 							</strong>
 						</th>
 						<th class="t3-row-header"><img src="clear.gif" width="10" height="1" alt="" /></th>
 						<th valign="top" class="t3-row-header">
 							<strong>
-								<f:translate key="chLog_l_time" />
+								<f:translate id="chLog_l_time" />
 							</strong>
 						</th>
 						<th class="t3-row-header"><img src="clear.gif" width="10" height="1" alt="" /></th>
 						<th valign="top" class="t3-row-header">
 							<strong>
-								<f:translate key="chLog_l_user" />
+								<f:translate id="chLog_l_user" />
 							</strong>
 						</th>
 						<th class="t3-row-header"><img src="clear.gif" width="10" height="1" alt="" /></th>
@@ -124,10 +124,10 @@
 							<strong>
 								<f:if condition="{constraint.isInPageContext}">
 									<f:then>
-										<f:translate key="chLog_l_table" />
+										<f:translate id="chLog_l_table" />
 									</f:then>
 									<f:else>
-										<f:translate key="chLog_l_types" />
+										<f:translate id="chLog_l_types" />
 									</f:else>
 								</f:if>
 							</strong>
@@ -135,13 +135,13 @@
 						<th class="t3-row-header"><img src="clear.gif" width="10" height="1" alt="" /></th>
 						<th valign="top" class="t3-row-header">
 							<strong>
-								<f:translate key="chLog_l_action" />
+								<f:translate id="chLog_l_action" />
 							</strong>
 						</th>
 						<th class="t3-row-header"><img src="clear.gif" width="10" height="1" alt="" /></th>
 						<th valign="top" class="t3-row-header">
 							<strong>
-								<f:translate key="chLog_l_details" />
+								<f:translate id="chLog_l_details" />
 							</strong>
 						</th>
 						<th class="t3-row-header"><img src="clear.gif" width="10" height="1" alt="" /></th>
@@ -177,9 +177,9 @@
 										{logItem.tableName}
 									</f:then>
 									<f:else>
-										<f:if condition="{f:translate(key:'type_{logItem.type}')}">
+										<f:if condition="{f:translate(id:'type_{logItem.type}')}">
 											<f:then>
-												<f:translate key="type_{logItem.type}" />
+												<f:translate id="type_{logItem.type}" />
 											</f:then>
 											<f:else>
 												[{logItem.type}]
@@ -191,7 +191,7 @@
 							<td><img src="clear.gif" width="10" height="1" alt="" /></td>
 
 							<td valign="top">
-								<f:if condition="{f:translate(key:'action_{logItem.type}_{logItem.action}')}">
+								<f:if condition="{f:translate(id:'action_{logItem.type}_{logItem.action}')}">
 									<f:then>
 										<f:translate
 											key="action_{logItem.type}_{logItem.action}"
