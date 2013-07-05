@@ -1288,6 +1288,8 @@ class DatabaseConnection {
 		if (!$this->isConnected) {
 			$this->connectDB();
 		}
+
+		$originalDatabaseName = $this->databaseName;
 		$dbArr = array();
 		$db_list = $this->link->query("SHOW DATABASES");
 		while ($row = $db_list->fetch_object()) {
@@ -1302,6 +1304,9 @@ class DatabaseConnection {
 				// We catch the exception, skip the database and continue.
 			}
 		}
+		$this->setDatabaseName($originalDatabaseName);
+		$this->sql_select_db();
+
 		return $dbArr;
 	}
 
