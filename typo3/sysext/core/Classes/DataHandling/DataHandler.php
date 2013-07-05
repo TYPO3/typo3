@@ -1973,6 +1973,12 @@ class DataHandler {
 	 */
 	public function checkValue_flex($res, $value, $tcaFieldConf, $PP, $uploadedFiles, $field) {
 		list($table, $id, $curValue, $status, $realPid, $recFID) = $PP;
+		$hookObjects = array();
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['checkFlexFormValue'])) {
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['checkFlexFormValue'] as $classRef) {
+				array_push($hookObjects, \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($classRef));
+			}
+		}
 
 		if (is_array($value)) {
 			// This value is necessary for flex form processing to happen on flexform fields in page records when they are copied.
@@ -2001,6 +2007,13 @@ class DataHandler {
 			// Here we convert the currently submitted values BACK to an array, then merge the two and then BACK to XML again. This is needed to ensure the charsets are the same (provided that the current value was already stored IN the charset that the new value is converted to).
 			if (is_array($currentValueArray)) {
 				$arrValue = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($xmlValue);
+
+				foreach ($hookObjects as $hookObject) {
+					if (method_exists($hookObject, 'checkFlexFormValue_beforeMerge')) {
+						$hookObject->checkFlexFormValue_beforeMerge($this, $currentValueArray, $arrValue);
+					}
+				}
+
 				$arrValue = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($currentValueArray, $arrValue);
 				$xmlValue = $this->checkValue_flexArray2Xml($arrValue, TRUE);
 			}
