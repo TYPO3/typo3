@@ -149,6 +149,15 @@ class MailUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 	/**
+	 * @test
+	 */
+	public function breakLinesForEmailBreaksTextIfLineIsLongerThenTheLineWidth() {
+		$str = 'Mein Link auf eine News (Link: http://zzzzzzzzzzzzz.xxxxxxxxx.de/index.php?id=10&tx_ttnews%5Btt_news%5D=1&cHash=66f5af320da29b7ae1cda49047ca7358)';
+		$returnString = \TYPO3\CMS\Core\Utility\MailUtility::breakLinesForEmail($str);
+		$this->assertEquals($returnString, 'Mein Link auf eine News (Link:' . LF . 'http://zzzzzzzzzzzzz.xxxxxxxxx.de/index.php?id=10&tx_ttnews%5Btt_news%5D=1&cHash=66f5af320da29b7ae1cda49047ca7358)');
+	}
+
+	/**
 	 * Data provider for parseAddressesTest
 	 *
 	 * @return array Data sets
