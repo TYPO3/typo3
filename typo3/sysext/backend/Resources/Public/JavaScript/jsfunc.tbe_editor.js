@@ -605,6 +605,22 @@ var typo3form = {
 			}
 		}
 	},
+	fieldTogglePlaceholder: function(fieldName, showPlaceholder) {
+		if (!document[TBE_EDITOR.formname][fieldName]) {
+			return;
+		}
+
+		var formFieldItemWrapper = Element.up(document[TBE_EDITOR.formname][fieldName], '.t3-form-field-item');
+		var placeholder = formFieldItemWrapper.select('.t3-form-placeholder-placeholder')[0];
+		var formField = formFieldItemWrapper.select('.t3-form-placeholder-formfield')[0];
+		if (showPlaceholder) {
+			placeholder.show();
+			formField.hide();
+		} else {
+			placeholder.hide();
+			formField.show();
+		}
+	},
 	fieldSet: function(theField, evallist, is_in, checkbox, checkboxValue) {
 		var i;
 
