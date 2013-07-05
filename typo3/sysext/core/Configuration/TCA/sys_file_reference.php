@@ -3,6 +3,13 @@ return array(
 	'ctrl' => array(
 		'title' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_reference',
 		'label' => 'uid',
+		'label_userFunc' => 'EXT:core/Classes/Resource/Service/UserFileInlineLabelService.php:TYPO3\\CMS\\Core\\Resource\\Service\\UserFileInlineLabelService->getInlineLabel',
+		'label_userFunc_Options' => array(
+			'sys_file' => array(
+				'title',
+				'name'
+			)
+		),
 		'tstamp' => 'tstamp',
 		'crdate' => 'crdate',
 		'cruser_id' => 'cruser_id',
