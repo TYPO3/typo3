@@ -1318,7 +1318,7 @@ class DatabaseConnection {
 			$this->connectDB();
 		}
 		$whichTables = array();
-		$tables_result = $this->link->query('SHOW TABLE STATUS FROM `' . TYPO3_db . '`');
+		$tables_result = $this->link->query('SHOW TABLE STATUS FROM `' . $this->databaseName . '`');
 		if ($tables_result !== FALSE) {
 			while ($theTable = $tables_result->fetch_assoc()) {
 				$whichTables[$theTable['Name']] = $theTable;
