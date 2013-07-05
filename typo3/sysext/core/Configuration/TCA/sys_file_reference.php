@@ -152,9 +152,10 @@ return array(
 			'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.title',
 			'config' => array(
 				'type' => 'input',
-				'eval' => 'null',
 				'size' => '20',
+				'eval' => 'null',
 				'placeholder' => '__row|uid_local|title',
+				'mode' => 'useOrOverridePlaceholder',
 			)
 		),
 		'link' => array(
@@ -183,10 +184,11 @@ return array(
 			'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.description',
 			'config' => array(
 				'type' => 'text',
-				'eval' => 'null',
 				'cols' => '20',
 				'rows' => '5',
+				'eval' => 'null',
 				'placeholder' => '__row|uid_local|description',
+				'mode' => 'useOrOverridePlaceholder',
 			)
 		),
 		'alternative' => array(
@@ -195,9 +197,10 @@ return array(
 			'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.alternative',
 			'config' => array(
 				'type' => 'input',
-				'eval' => 'null',
 				'size' => '20',
+				'eval' => 'null',
 				'placeholder' => '__row|uid_local|alternative',
+				'mode' => 'useOrOverridePlaceholder',
 			),
 		),
 	),
