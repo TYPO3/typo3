@@ -572,7 +572,9 @@ abstract class AbstractConditionMatcher {
 	 */
 	protected function searchStringWildcard($haystack, $needle) {
 		$result = FALSE;
-		if ($needle) {
+		if ($haystack === $needle) {
+			$result = TRUE;
+		} elseif ($needle) {
 			if (preg_match('/^\\/.+\\/$/', $needle)) {
 				// Regular expression, only "//" is allowed as delimiter
 				$regex = $needle;
