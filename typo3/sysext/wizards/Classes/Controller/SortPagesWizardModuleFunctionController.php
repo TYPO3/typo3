@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\WizardSortpages\View;
+namespace TYPO3\CMS\Wizards\Controller;
 
 /***************************************************************
  *  Copyright notice
@@ -32,7 +32,7 @@ namespace TYPO3\CMS\WizardSortpages\View;
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-class SortPagesWizardModuleFunction extends \TYPO3\CMS\Backend\Module\AbstractFunctionModule {
+class SortPagesWizardModuleFunctionController extends \TYPO3\CMS\Backend\Module\AbstractFunctionModule {
 
 	/**
 	 * Adds menu items... but I think this is not used at all. Looks very much like some testing code. If anyone cares to check it we can remove it some day...
@@ -54,7 +54,7 @@ class SortPagesWizardModuleFunction extends \TYPO3\CMS\Backend\Module\AbstractFu
 	 * @todo Define visibility
 	 */
 	public function main() {
-		$GLOBALS['LANG']->includeLLFile('EXT:wizard_sortpages/locallang.xlf');
+		$GLOBALS['LANG']->includeLLFile('EXT:wizards/Resources/Private/Language/locallang.xlf');
 		$out = $this->pObj->doc->header($GLOBALS['LANG']->getLL('wiz_sort'));
 		if ($GLOBALS['BE_USER']->workspace === 0) {
 			$theCode = '';
@@ -120,7 +120,7 @@ class SortPagesWizardModuleFunction extends \TYPO3\CMS\Backend\Module\AbstractFu
 				$theCode .= $flashMessage->render();
 			}
 			// CSH:
-			$theCode .= \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('_MOD_web_func', 'tx_wizardsortpages', $GLOBALS['BACK_PATH'], '<br />|');
+			$theCode .= \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('_MOD_web_func', 'tx_wizards', $GLOBALS['BACK_PATH'], '<br />|');
 			$out .= $this->pObj->doc->section('', $theCode, 0, 1);
 		} else {
 			$out .= $this->pObj->doc->section('', 'Sorry, this function is not available in the current draft workspace!', 0, 1, 1);

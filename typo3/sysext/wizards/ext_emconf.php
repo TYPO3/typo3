@@ -1,6 +1,6 @@
 <?php
 /***************************************************************
- * Extension Manager/Repository config file for ext "wizard_sortpages".
+ * Extension Manager/Repository config file for ext "wizard_crpages".
  *
  * Auto generated 25-10-2011 13:11
  *
@@ -9,8 +9,8 @@
  * writing. "version" and "dependencies" must not be touched!
  ***************************************************************/
 $EM_CONF[$_EXTKEY] = array(
-	'title' => 'Web>Func, Wizards, Sort pages',
-	'description' => 'A little utility to rearrange the sorting order of pages in the backend.',
+	'title' => 'Web>Func, Wizards, Create or sort multiple pages',
+	'description' => 'A little utility to create many empty pages in one batch or sorting pages.',
 	'category' => 'module',
 	'shy' => 1,
 	'dependencies' => 'func_wizards',
