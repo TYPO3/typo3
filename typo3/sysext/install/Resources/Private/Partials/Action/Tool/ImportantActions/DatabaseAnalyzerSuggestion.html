@@ -2,12 +2,23 @@
 	<legend>{label}</legend>
 	<ol>
 		<li class="t3-install-form-label-after">
-			<input type="checkbox" class="checkall" id="t3-install-{key}-checkbox">
+			<input
+				type="checkbox"
+				class="checkall"
+				id="t3-install-{key}-checkbox"
+				{f:if(condition:'{enabled} == 1', then:' checked="checked"')}
+			/>
 			<label for="t3-install-{key}-checkbox">select/deselect all</label>
 		</li>
 		<f:for each="{data}" as="field">
 			<li class="t3-install-form-label-after">
-				<input type="checkbox" id="t3-install-db-{field.hash}" name="install[values][{field.hash}]" value="1">
+				<input
+					type="checkbox"
+					id="t3-install-db-{field.hash}"
+					name="install[values][{field.hash}]"
+					value="1"
+					{f:if(condition:'{enabled} == 1', then:' checked="checked"')}
+				/>
 				<label for="t3-install-db-{field.hash}">
 					{field.statement}
 					<f:if condition="{field.current}">
