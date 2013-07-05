@@ -430,6 +430,10 @@ TCEforms Inline-Relational-Record-Editing
 	cursor: pointer;
 }
 
+.t3-form-field-header-inline td.t3-form-field-header-inline-summary dl dt {
+	font-weight: bold;
+}
+
 /* - - - - - - - - - - - - - - - - - - - - -
 TCEforms Sections
 - - - - - - - - - - - - - - - - - - - - - */

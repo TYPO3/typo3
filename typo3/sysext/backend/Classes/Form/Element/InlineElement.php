@@ -521,6 +521,7 @@ class InlineElement {
 				'row' => $rec,
 				'title' => '',
 				'isOnSymmetricSide' => $isOnSymmetricSide,
+				'options' => isset($GLOBALS['TCA'][$foreign_table]['ctrl']['label_userFunc_Options']) ? $GLOBALS['TCA'][$foreign_table]['ctrl']['label_userFunc_Options'] : array(),
 				'parent' => array(
 					'uid' => $parentUid,
 					'config' => $config
