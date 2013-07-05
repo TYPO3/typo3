@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\WizardCrpages\Controller;
+namespace TYPO3\CMS\Wizards\Controller;
 
 /***************************************************************
  *  Copyright notice
@@ -82,7 +82,7 @@ class CreatePagesWizardModuleFunctionController extends \TYPO3\CMS\Backend\Modul
 	 * @todo Define visibility
 	 */
 	public function main() {
-		$GLOBALS['LANG']->includeLLFile('EXT:wizard_crpages/locallang.xlf');
+		$GLOBALS['LANG']->includeLLFile('EXT:wizards/Resources/Private/Language/locallang.xlf');
 		$theCode = '';
 		$this->tsConfig = \TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig($this->pObj->id);
 		$this->pagesTsConfig = isset($this->tsConfig['TCEFORM.']['pages.']) ? $this->tsConfig['TCEFORM.']['pages.'] : array();
@@ -179,7 +179,7 @@ class CreatePagesWizardModuleFunctionController extends \TYPO3\CMS\Backend\Modul
 				$pageRenderer = $GLOBALS['TBE_TEMPLATE']->getPageRenderer();
 				$pageRenderer->loadExtJS();
 				$pageRenderer->addExtOnReadyCode($extCode);
-				$pageRenderer->addCssInlineBlock('TYPO3\CMS\WizardCrpages\Controller\CreatePagesWizardModuleFunctionController', '
+				$pageRenderer->addCssInlineBlock('TYPO3\CMS\Wizards\Controller\CreatePagesWizardModuleFunctionController', '
 				#formFieldContainer {float: left; margin: 0 0 10px 0;}
 				.clearLeft {clear: left;}
 				#formFieldContainer label {width: 70px; display: inline-block;}
@@ -191,7 +191,7 @@ class CreatePagesWizardModuleFunctionController extends \TYPO3\CMS\Backend\Modul
 			$theCode .= GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', '', $GLOBALS['LANG']->getLL('wiz_newPages_errorMsg1'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR)->render();
 		}
 		// CSH
-		$theCode .= \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('_MOD_web_func', 'tx_wizardcrpages', $GLOBALS['BACK_PATH'], '<br />|');
+		$theCode .= \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('_MOD_web_func', 'tx_wizards', $GLOBALS['BACK_PATH'], '<br />|');
 		$out = $this->pObj->doc->header($GLOBALS['LANG']->getLL('wiz_crMany'));
 		$out .= $this->pObj->doc->section('', $theCode, 0, 1);
 		return $out;
