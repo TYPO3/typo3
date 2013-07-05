@@ -462,6 +462,12 @@ div.t3-form-field-header-inline td {
 	text-align:left;
 }
 
+.t3-form-field-header-inline td.t3-form-field-header-inline-summary dl dt {
+	float: left;
+	clear: left;
+	margin-right: 10px;
+}
+
 .t3-form-field-header-inline td.t3-form-field-header-inline-icon {
 	width:25px;
 }
