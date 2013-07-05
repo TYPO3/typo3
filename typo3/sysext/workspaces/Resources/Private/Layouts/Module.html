@@ -2,7 +2,16 @@
 <div class="typo3-fullDoc">
 	<div id="typo3-docheader">
 		<div class="typo3-docheader-functions">
-			<div class="left"></div>
+			<div class="left">
+				<select onchange="if (this.value) window.location.href=this.value">
+					<f:for each="{workspaceList}" as="workspace" key="uid">
+						<option value="{f:uri.action(action:index,additionalParams:'{workspace:uid}')}"  {f:if(condition: '{uid}=={activeWorkspaceUid}', then: ' selected="selected"')}>{workspace}</option>
+					</f:for>
+					<f:if condition="{showAllWorkspaceTab}">
+						<option value="{f:uri.action(action:index)}" {f:if(condition: '-98=={activeWorkspaceUid}', then: ' selected="selected"')}>All</option>
+					</f:if>
+				</select>
+			</div>
 			<div class="right">
 				<f:be.pagePath /><f:be.pageInfo />
 			</div>
@@ -28,7 +37,6 @@
 
 		<f:flashMessages renderMode="div" />
 
-		<f:render partial="navigation" arguments="{workspaceList: workspaceList, activeWorkspaceUid: activeWorkspaceUid, showAllWorkspaceTab:showAllWorkspaceTab}" />
 		<div class="typo3-dyntabmenu-divs"><f:render section="main" /></div>
 		<f:if condition="{showLegend}"><f:render partial="legend" /></f:if>
 	</div>
