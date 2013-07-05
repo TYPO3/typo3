@@ -1861,6 +1861,8 @@ class BackendUtility {
 				$params['table'] = $table;
 				$params['row'] = $row;
 				$params['title'] = '';
+				$params['options'] = isset($GLOBALS['TCA'][$table]['ctrl']['label_userFunc_options']) ? $GLOBALS['TCA'][$table]['ctrl']['label_userFunc_options'] : array();
+
 				// Create NULL-reference
 				$null = NULL;
 				GeneralUtility::callUserFunction($GLOBALS['TCA'][$table]['ctrl']['label_userFunc'], $params, $null);
