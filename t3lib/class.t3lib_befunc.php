@@ -1856,8 +1856,12 @@ final class t3lib_BEfunc {
 		t3lib_div::loadTCA($table);
 
 			// Find uploaddir automatically
-		$uploaddir = (is_null($uploaddir)) ? $TCA[$table]['columns'][$field]['config']['uploadfolder'] : $uploaddir;
-		$uploaddir = preg_replace('#/$#', '', $uploaddir);
+		if ($GLOBALS['TCA'][$table]['columns'][$field]['config']['internal_type'] == 'file_reference') {
+			$uploaddir = '';
+		} else {
+			$uploaddir = (is_null($uploaddir)) ? $TCA[$table]['columns'][$field]['config']['uploadfolder'] : $uploaddir;
+			$uploaddir = preg_replace('#/$#', '', $uploaddir);
+		}
 
 			// Set thumbs-script:
 		if (!$GLOBALS['TYPO3_CONF_VARS']['GFX']['thumbnails']) {
