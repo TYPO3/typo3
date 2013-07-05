@@ -2001,6 +2001,16 @@ class DataHandler {
 			// Here we convert the currently submitted values BACK to an array, then merge the two and then BACK to XML again. This is needed to ensure the charsets are the same (provided that the current value was already stored IN the charset that the new value is converted to).
 			if (is_array($currentValueArray)) {
 				$arrValue = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($xmlValue);
+
+				if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['checkFlexFormValue'])) {
+					foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['checkFlexFormValue'] as $classRef) {
+						$hookObject = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($classRef);
+						if (method_exists($hookObject, 'checkFlexFormValue_beforeMerge')) {
+							$hookObject->checkFlexFormValue_beforeMerge($this, $currentValueArray, $arrValue);
+						}
+					}
+				}
+
 				$arrValue = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($currentValueArray, $arrValue);
 				$xmlValue = $this->checkValue_flexArray2Xml($arrValue, TRUE);
 			}
