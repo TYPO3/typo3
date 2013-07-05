@@ -313,6 +313,9 @@ Do you want to continue WITHOUT saving?</source>
 			<trans-unit id="labels.uncheckAll" xml:space="preserve">
 				<source>Uncheck all</source>
 			</trans-unit>
+			<trans-unit id="labels.placeholder.override" xml:space="preserve">
+				<source>Override %s</source>
+			</trans-unit>
 			<trans-unit id="labels.changeInOrig" xml:space="preserve">
 				<source>Changed in original translation</source>
 			</trans-unit>
