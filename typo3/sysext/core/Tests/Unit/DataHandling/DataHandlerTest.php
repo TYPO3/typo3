@@ -285,6 +285,18 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$fixture->process_datamap();
 	}
 
+	/**
+	 * @test
+	 */
+	public function doesCheckFlexFormValueHookGetsCalled() {
+		$hookClass = uniqid('tx_coretest');
+		$hookMock = $this->getMock($hookClass, array('checkFlexFormValue_beforeMerge'));
+		$hookMock->expects($this->once())->method('checkFlexFormValue_beforeMerge');
+		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['checkFlexFormValue'][] = $hookClass;
+		$GLOBALS['T3_VAR']['getUserObj'][$hookClass] = $hookMock;
+		$this->fixture->checkValue_flex(array(), array(), array(), array(), array(), '');
+	}
+
 	/////////////////////////////////////
 	// Tests concerning log
 	/////////////////////////////////////
