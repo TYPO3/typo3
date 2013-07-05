@@ -4,10 +4,14 @@ Workspace Selector
 - - - - - - - - - - - - - - - - - - - - - */
 
 #workspace-selector-menu ul {
+	position: static;
+}
+
+#workspace-selector-menu .items {
 	list-style: none;
 	background-color: #f9f9f9;
-	border: 1px solid #abb2bc;
-	border-top: none;
+	overflow-y: auto;
+	max-height: 300px;
 }
 
 #workspace-selector-menu li {
@@ -16,15 +20,19 @@ Workspace Selector
 
 #workspace-selector-menu li a {
 	font-size: 11px;
-	line-height: 12px;
+	line-height: 19px;
 	text-decoration: none;
 }
 
 #workspace-selector-menu li.divider {
-	border-right: 1px solid #a5a5a5;
-	border-top: 1px solid #a5a5a5;
+	border: 0;
 	background-image: url('../../icons/gfx/shortcutgroups-bg.png');
 	background-repeat: repeat-x;
+	min-height: 10px;
+	padding-right: 0;
+}
+#workspace-selector-menu li.divider:hover {
+	background-color: transparent;
 }
 
 body.typo3-in-workspace #typo3-top-container {
