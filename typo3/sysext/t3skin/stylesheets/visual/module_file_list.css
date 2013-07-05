@@ -40,3 +40,71 @@ table#typo3-filelist tr td div.typo3-clipCtrl,
 table#typo3-filelist tr td div.typo3-editCtrl {
 	text-align: center;
 }
+
+
+body {
+	-webkit-transition:border 0.2s ease;
+	-moz-transition:border 0.2s ease;
+	-ms-transition:border 0.2s ease;
+	-o-transition:border 0.2s ease;
+	transition:border 0.2s ease;
+}
+.dropInProgess {
+	border:10px solid #73ab61;
+	padding:-10px !important!;
+	margin-bottom:20px !important;
+	-webkit-transition:border 0.2s ease;
+	-moz-transition:border 0.2s ease;
+	-ms-transition:border 0.2s ease;
+	-o-transition:border 0.2s ease;
+	transition:border 0.2s ease;
+}
+
+.DragUpload-DropZone.t3-dropzone {
+	position: absolute;
+	width:0;
+	display:none;
+	height:0;
+	z-index:9999;
+}
+
+.dropInProgess .DragUpload-DropZone.t3-dropzone,
+.uploadInProgress .DragUpload-DropZone.t3-dropzone,
+#dragUploadQueue {
+	width:40%;
+	height:auto;
+	top:10px;
+	left:30%;
+	border:1px solid #73ab61;
+	background:#c8d9c3;
+	padding:8px;
+	display:block;
+	box-shadow:0px 0px 10px 0px #888888;
+}
+
+#dragUploadQueue {
+	position: absolute;
+	top:30px;
+	background-color: #dedede;
+	border: 1px solid #a2aab8;
+}
+
+#dragUploadQueue .file {
+	position: relative;
+	border: 1px solid #a2aab8;
+	padding:4px;
+}
+#dragUploadQueue .file span {
+	padding: 4px;
+}
+#dragUploadQueue .file .filename {
+
+}
+#dragUploadQueue .file .progress {
+
+}
+#dragUploadQueue .file .controll {
+	position: absolute;
+	top:4px;
+	right: 4px;
+}
