@@ -436,6 +436,36 @@ Do you want to continue WITHOUT saving?</source>
 			<trans-unit id="file_upload.php.files" xml:space="preserve">
 				<source>files</source>
 			</trans-unit>
+			<trans-unit id="file_upload.draginformation.message" xml:space="preserve">
+				<source>You simply can drag your files into the filelist. Click again for classic mode.</source>
+			</trans-unit>
+			<trans-unit id="file_upload.draginformation.title" xml:space="preserve">
+				<source>Drag &amp; Drop available</source>
+			</trans-unit>
+			<trans-unit id="file_upload.dropzonehint" xml:space="preserve">
+				<source>Drop your files here!</source>
+			</trans-unit>
+			<trans-unit id="file_upload.maxFilesizeExceeded" xml:space="preserve">
+				<source>File &quot;{0}&quot; exceeds maximum filesize of {1} bytes!</source>
+			</trans-unit>
+			<trans-unit id="file_upload.fileNotAllowwed" xml:space="preserve">
+				<source>Filename &quot;{0}&quot; is not allowed!</source>
+			</trans-unit>
+			<trans-unit id="file_upload.uploadFailed" xml:space="preserve">
+				<source>Upload of file &quot;{0}&quot; failed!</source>
+			</trans-unit>
+			<trans-unit id="file_upload.upload-in-progress" xml:space="preserve">
+				<source>File upload in progress...</source>
+			</trans-unit>
+			<trans-unit id="file_upload.upload-progress-info" xml:space="preserve">
+				<source>Uploading file {0} out of {1} files.</source>
+			</trans-unit>
+			<trans-unit id="file_upload.upload-finished" xml:space="preserve">
+				<source>Upload complete! Filelist reloading...</source>
+			</trans-unit>
+			<trans-unit id="file_upload.overwriteExistingFiles" xml:space="preserve">
+				<source>Shall existing files be overwritten?</source>
+			</trans-unit>
 			<trans-unit id="file_upload.php.number_of_files" xml:space="preserve">
 				<source>Number of files:</source>
 			</trans-unit>
