@@ -1506,7 +1506,8 @@ class BackendUtility {
 		$thumbData = '';
 		// FAL references
 		if ($tcaConfig['type'] === 'inline') {
-			$referenceUids = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid', 'sys_file_reference', 'tablenames = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($table, 'sys_file_reference') . ' AND fieldname=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($field, 'sys_file_reference') . ' AND uid_foreign=' . intval($row['uid']) . self::deleteClause('sys_file_reference') . self::versioningPlaceholderClause('sys_file_reference'));
+			$sortingField = isset($tcaConfig['foreign_sortby']) ? $tcaConfig['foreign_sortby'] : '';
+			$referenceUids = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid', 'sys_file_reference', 'tablenames = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($table, 'sys_file_reference') . ' AND fieldname=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($field, 'sys_file_reference') . ' AND uid_foreign=' . intval($row['uid']) . self::deleteClause('sys_file_reference') . self::versioningPlaceholderClause('sys_file_reference'), '', $sortingField);
 			foreach ($referenceUids as $referenceUid) {
 				$fileReferenceObject = ResourceFactory::getInstance()->getFileReferenceObject($referenceUid['uid']);
 				$fileObject = $fileReferenceObject->getOriginalFile();
