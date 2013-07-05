@@ -758,7 +758,6 @@ TYPO3.Components.PageTree.Actions = {
 	 * @return {void}
 	 */
 	saveTitle: function(node, newText, oldText, treeEditor) {
-		this.singleClick(node.editNode, node.editNode.ownerTree);
 		if (newText === oldText || newText == '') {
 			treeEditor.updateNodeText(
 				node,
@@ -781,6 +780,7 @@ TYPO3.Components.PageTree.Actions = {
 						Ext.util.Format.htmlEncode(oldText)
 					);
 				}
+				this.singleClick(node.editNode, node.editNode.ownerTree);
 			},
 			this
 		);
