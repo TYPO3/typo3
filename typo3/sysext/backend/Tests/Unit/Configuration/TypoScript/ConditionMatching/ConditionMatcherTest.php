@@ -516,6 +516,19 @@ class ConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 *
 	 * @test
 	 */
+	public function globalStringConditionMatchesOnEmptyExpressionWithValueSetToEmptyString() {
+		$testKey = uniqid('test');
+		$_GET = array();
+		$_POST = array($testKey => '');
+		$this->assertTrue($this->matchCondition->match('[globalString = GP:' . $testKey . '=]'));
+		$this->assertTrue($this->matchCondition->match('[globalString = GP:' . $testKey . ' = ]'));
+	}
+
+	/**
+	 * Tests whether string comparison matches.
+	 *
+	 * @test
+	 */
 	public function globalStringConditionMatchesWildcardExpression() {
 		$this->assertTrue($this->matchCondition->match('[globalString = LIT:TYPO3.Test.Condition = TYPO3?Test?Condition]'));
 		$this->assertTrue($this->matchCondition->match('[globalString = LIT:TYPO3.Test.Condition = TYPO3.T*t.Condition]'));
