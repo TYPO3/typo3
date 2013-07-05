@@ -1012,6 +1012,7 @@ class FormEngine {
 		// Get the TCA configuration for the current field:
 		$PA['fieldConf'] = $GLOBALS['TCA'][$table]['columns'][$field];
 		$PA['fieldConf']['config']['form_type'] = $PA['fieldConf']['config']['form_type'] ? $PA['fieldConf']['config']['form_type'] : $PA['fieldConf']['config']['type'];
+
 		// Using "form_type" locally in this script
 		$skipThisField = $this->inline->skipField($table, $field, $row, $PA['fieldConf']['config']);
 
@@ -1124,6 +1125,28 @@ class FormEngine {
 						$lTTS_url = $this->backPath . 'alt_doc.php?edit[' . $table . '][' . $row['uid'] . ']=edit&columnsOnly=' . $field . '&returnUrl=' . rawurlencode($this->thisReturnUrl());
 						$label = '<a href="' . htmlspecialchars($lTTS_url) . '">' . $label . '</a>';
 					}
+
+					if ($PA['fieldConf']['config']['mode'] == 'useOrOverridePlaceholder') {
+						$onChange = htmlspecialchars(
+							'typo3form.fieldTogglePlaceholder(\'' . $PA['itemFormElName'] . '\', !this.checked)'
+						);
+
+						$isNull = ($PA['itemFormElValue'] === NULL);
+						$checked = (($isNull || $this->isNewRecord($table, $row)) ? '' : ' checked="checked"');
+
+						$this->additionalJS_post[] = 'typo3form.fieldTogglePlaceholder(\''
+							. $PA['itemFormElName'] . '\', ' . ($checked ? 'false' : 'true') . ');';
+
+						$item = '<div class="t3-form-field-placeholder-override">'
+						. '<span class="t3-tceforms-placeholder-override-checkbox">' .
+							'<input type="hidden" name="' . $PA['itemFormElNameActive'] . '" value="0" />' .
+							'<input type="checkbox" name="' . $PA['itemFormElNameActive'] . '" value="1" onchange="' . $onChange . '"' . $checked . ' /> <label>Override default value</label>' . // TODO add id to label?
+						'</span>'
+						. '<div class="t3-form-placeholder-placeholder">' . $this->getSingleField_typeNone_render($PA['fieldConf']['config'], $this->getPlaceholderValue($table, $field, $PA['fieldConf']['config'], $row)) . '</div>'
+						. '<div class="t3-form-placeholder-formfield">' . $item . '</div>'
+						. '</div>';
+					}
+
 					// Wrap the label with help text
 					$PA['label'] = ($label = BackendUtility::wrapInHelp($table, $field, $label));
 					// Create output value:
@@ -1387,6 +1410,7 @@ function ' . $evalData . '(value) {
 		$altItem .= '<input type="hidden" name="' . $PA['itemFormElName'] . '" value="' . htmlspecialchars($PA['itemFormElValue']) . '" />';
 		// Wrap a wizard around the item?
 		$item = $this->renderWizards(array($item, $altItem), $config['wizards'], $table, $row, $field, $PA, $PA['itemFormElName'] . '_hr', $specConf);
+
 		return $item;
 	}
 
@@ -5864,6 +5888,17 @@ function ' . $evalData . '(value) {
 	}
 
 	/**
+	 * Returns TRUE if the given $row is new (i.e. has not been saved to the database)
+	 *
+	 * @param string $table
+	 * @param array $row
+	 * @return bool
+	 */
+	protected function isNewRecord($table, $row) {
+		return !is_numeric($row['uid']);
+	}
+
+	/**
 	 * Return record path (visually formatted, using BackendUtility::getRecordPath() )
 	 *
 	 * @param string $table Table name
@@ -6254,7 +6289,7 @@ function ' . $evalData . '(value) {
 	}
 
 	/**
-	 * Determine and get the value for the placeholder and return the placeholder attribute
+	 * Return the placeholder attribute for an input field.
 	 *
 	 * @param string $table
 	 * @param string $field
@@ -6263,6 +6298,27 @@ function ' . $evalData . '(value) {
 	 * @return string
 	 */
 	protected function getPlaceholderAttribute($table, $field, array $config, array $row) {
+		if ($config['mode'] === 'useOrOverridePlaceholder') {
+			return '';
+		}
+
+		$value = $this->getPlaceholderValue($table, $field, $config, $row);
+
+		// Cleanup the string and support 'LLL:'
+		$value = htmlspecialchars(trim($this->sL($value)));
+		return empty($value) ? '' : ' placeholder="' . $value . '" ';
+	}
+
+	/**
+	 * Determine and get the value for the placeholder for an input field.
+	 *
+	 * @param string $table
+	 * @param string $field
+	 * @param array $config
+	 * @param array $row
+	 * @return string
+	 */
+	protected function getPlaceholderValue($table, $field, array $config, array $row) {
 		$value = trim($config['placeholder']);
 		if (!$value) {
 			return '';
@@ -6292,9 +6348,8 @@ function ' . $evalData . '(value) {
 				}
 			}
 		}
-		// Cleanup the string and support 'LLL:'
-		$value = htmlspecialchars(trim($this->sL($value)));
-		return empty($value) ? '' : ' placeholder="' . $value . '" ';
+
+		return $value;
 	}
 
 	/**
