@@ -113,10 +113,10 @@ abstract class AbstractNode {
 	 * @return boolean
 	 */
 	protected function exists() {
-		if (is_link($this->getAbsolutePath())) {
+		if (@is_link($this->getAbsolutePath())) {
 			return TRUE;
 		} else {
-			return file_exists($this->getAbsolutePath());
+			return @file_exists($this->getAbsolutePath());
 		}
 	}
 
