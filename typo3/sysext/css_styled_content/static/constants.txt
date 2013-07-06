@@ -33,6 +33,12 @@ styles.content.imgtext {
   maxW = 600
     # cat=content/cImage/b2; type=int+; label= Max Image Width (Text): Same as above, but this is the maximum width when text is wrapped around an imageblock. Default is 50% of the normal Max Image Width.
   maxWInText =
+    # cat=content/cImage/b3; type=boolean; label= Responsive rendering for images
+  responsive =
+    # cat=content/cImage/b4; type=options[Default img-tag=default, img-tag with alternate sources as srcset-attribute=srcset, picture-tag with source-child-tags=picture, img-tag with alternate sources as data-attributes=data]; label= Rendering-type for responsive images.
+  layoutKey = default
+
+
     # cat=content/cImage/c1; type=int+; label= Click-enlarge Image Width: This specifies the width of the enlarged image when click-enlarge is enabled.
   linkWrap.width = 800m
   linkWrap.height = 600m
