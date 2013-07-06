@@ -1331,6 +1331,67 @@ class ContentObjectRenderer {
 			} else {
 				$source = $info[3];
 			}
+
+			if ($conf['layoutKey']) {
+				$layoutKey = $this->stdWrap($conf['layoutKey'], $conf['layoutKey.']);
+				$imageTagLayout = $this->stdWrap($conf['layout.'][$layoutKey . '.']['element'], $conf['layout.'][$layoutKey . '.']['element.']);
+			} else {
+				$imageTagLayout = '<img src="###SRC###" width="###WIDTH###" height="###HEIGHT###" ###PARAMS### ###ALTPARAMS### ###BORDER### />';
+			}
+
+			$sources = '';
+			if ($conf['layoutKey'] && $conf['sourceCollection.'] && ($conf['layout.'][$conf['layoutKey'] . '.']['source'] || $conf['layout.'][$conf['layoutKey']  . '.']['source.'])) {
+
+				// find active sourceCollection
+				$activeSourceCollections = array();
+				foreach ($conf['sourceCollection.'] as $sourceCollectionKey => $sourceCollectionConfiguration) {
+					if (substr($sourceCollectionKey, -1) == '.') {
+						if ($this->checkIf($sourceCollectionConfiguration['if.'])){
+							$activeSourceCollections[] = $sourceCollectionConfiguration;
+						}
+					}
+				}
+
+				// apply option split to configurations
+				$srcLayoutOptionSplitted = $GLOBALS['TSFE']->tmpl->splitConfArray($conf['layout.'][$layoutKey . '.'], count($activeSourceCollections));
+
+				// render sources
+				foreach ($activeSourceCollections as $key => $sourceConfiguration) {
+					$sourceLayout = $this->stdWrap($srcLayoutOptionSplitted[$key]['source'], $srcLayoutOptionSplitted[$key]['source.']);
+
+					$sourceRenderConfiguration = array (
+						'file' => $file,
+						'file.' => $conf['file.']
+					);
+
+					$pixelDensity = isset($sourceConfiguration['pixelDensity']) ? $sourceConfiguration['pixelDensity'] : 1;
+					$dimensionKeys = array('width', 'height', 'maxW', 'minW', 'maxH', 'minW');
+					foreach ($dimensionKeys as $dimensionKey) {
+						$dimension = $this->stdWrap($sourceConfiguration[$dimensionKey], $sourceConfiguration[$dimensionKey . '.']);
+						if (!$dimension && isset($conf['file.'][$dimensionKey])) {
+							$dimension = $this->stdWrap($conf['file.'][$dimensionKey], $conf['file.'][$dimensionKey . '.']);
+						}
+						if ($dimension) {
+							if (strpos($dimension, 'c') > 0 && ($dimensionKey == 'width' || $dimensionKey == 'height')) {
+								$dimensionParts = explode('c' , $dimension, 2);
+								$dimension =  intval($dimensionParts[0] * $pixelDensity) . 'c';
+								if ($dimensionParts[1]) $dimension .= $dimensionParts[1];
+							} else {
+								$dimension = intval($dimension * $pixelDensity);
+							}
+							$sourceRenderConfiguration['file.'][$dimensionKey] = $dimension;
+						}
+					}
+
+					$sourceInfo = $this->getImgResource($sourceRenderConfiguration['file'], $sourceRenderConfiguration['file.']);
+					$sourceConfiguration['width'] = $sourceInfo[0];
+					$sourceConfiguration['height'] = $sourceInfo[1];
+					$sourceConfiguration['src'] = htmlspecialchars($sourceInfo[3]);
+
+					$sources .= $this->substituteMarkerArray($sourceLayout, $sourceConfiguration, '###|###', TRUE, TRUE);
+				}
+			}
+
 			// This array is used to collect the image-refs on the page...
 			$GLOBALS['TSFE']->imagesOnPage[] = $source;
 			$altParam = $this->getAltParam($conf);
@@ -1339,7 +1400,19 @@ class ContentObjectRenderer {
 			} else {
 				$params = isset($conf['params.']) ? ' ' . $this->stdWrap($conf['params'], $conf['params.']) : '';
 			}
-			$theValue = '<img src="' . htmlspecialchars($source) . '" width="' . $info[0] . '" height="' . $info[1] . '"' . $this->getBorderAttr(' border="' . intval($conf['border']) . '"') . $params . $altParam . (!empty($GLOBALS['TSFE']->xhtmlDoctype) ? ' /' : '') . '>';
+
+			$imageTagValues = array(
+				'width' =>  $info[0],
+				'height' => $info[1],
+				'src' => htmlspecialchars($source),
+				'params' => $params,
+				'altParams' => $altParam,
+				'border' =>  $this->getBorderAttr(' border="' . intval($conf['border']) . '"'),
+				'sources' => $sources
+			);
+
+			$theValue = $this->substituteMarkerArray($imageTagLayout, $imageTagValues, '###|###', TRUE, TRUE);
+
 			$linkWrap = isset($conf['linkWrap.']) ? $this->stdWrap($conf['linkWrap'], $conf['linkWrap.']) : $conf['linkWrap'];
 			if ($linkWrap) {
 				$theValue = $this->linkWrap($theValue, $linkWrap);
