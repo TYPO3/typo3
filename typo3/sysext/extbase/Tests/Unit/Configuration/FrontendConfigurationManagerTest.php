@@ -54,7 +54,7 @@ class FrontendConfigurationManagerTest extends \TYPO3\CMS\Extbase\Tests\Unit\Bas
 		$this->frontendConfigurationManager = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Configuration\\FrontendConfigurationManager', array('dummy'));
 		$this->frontendConfigurationManager->_set('contentObject', $this->mockContentObject);
 		$this->mockTypoScriptService = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Service\\TypoScriptService');
-		$this->frontendConfigurationManager->injectTypoScriptService($this->mockTypoScriptService);
+		$this->frontendConfigurationManager->_set('typoScriptService', $this->mockTypoScriptService);
 	}
 
 	/**
@@ -455,7 +455,7 @@ class FrontendConfigurationManagerTest extends \TYPO3\CMS\Extbase\Tests\Unit\Bas
 		/** @var $frontendConfigurationManager \TYPO3\CMS\Extbase\Configuration\FrontendConfigurationManager */
 		$frontendConfigurationManager = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Configuration\\FrontendConfigurationManager', array('getTypoScriptSetup'));
 		$frontendConfigurationManager->_set('contentObject', $this->mockContentObject);
-		$frontendConfigurationManager->injectTypoScriptService($this->mockTypoScriptService);
+		$frontendConfigurationManager->_set('typoScriptService', $this->mockTypoScriptService);
 
 		$this->mockTypoScriptService->expects($this->once())->method('convertTypoScriptArrayToPlainArray')->will($this->returnValue(array(
 			'persistence' => array(

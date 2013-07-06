@@ -37,23 +37,27 @@ class Repository implements \TYPO3\CMS\Extbase\Persistence\RepositoryInterface, 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\IdentityMap
 	 * @deprecated since 6.1 will be removed two versions later, use the persistence session instead
+	 * @inject
 	 */
 	protected $identityMap;
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 	 * @deprecated since 6.1, will be removed two versions later, use the persistence manager instead
+	 * @inject
 	 */
 	protected $backend;
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\Session
 	 * @deprecated since 6.1 will be removed two versions later, use the persistence manager instead
+	 * @inject
 	 */
 	protected $session;
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface
+	 * @inject
 	 */
 	protected $persistenceManager;
 
@@ -93,52 +97,13 @@ class Repository implements \TYPO3\CMS\Extbase\Persistence\RepositoryInterface, 
 			\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
 
 			$this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
-			$this->injectIdentityMap($this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\IdentityMap'));
-			$this->injectPersistenceManager($this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager'));
-			$this->injectBackend($this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\BackendInterface'));
-			$this->injectSession($this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Session'));
+			$this->identityMap = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\IdentityMap');
+			$this->persistenceManager = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager');
+			$this->backend = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\BackendInterface');
+			$this->session = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Session');
 		} else {
 			$this->objectManager = $objectManager;
 		}
-	}
-
-	/**
-	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\IdentityMap $identityMap
-	 * @return void
-	 * @deprecated since 6.1, will be removed two versions later
-	 */
-	public function injectIdentityMap(\TYPO3\CMS\Extbase\Persistence\Generic\IdentityMap $identityMap) {
-		$this->identityMap = $identityMap;
-	}
-
-	/**
-	 * Injects the Persistence Backend
-	 *
-	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface $backend The persistence backend
-	 * @return void
-	 * @deprecated since 6.1, will be removed two versions later
-	 */
-	public function injectBackend(\TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface $backend) {
-		$this->backend = $backend;
-	}
-
-	/**
-	 * Injects the Persistence Session
-	 *
-	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\Session $session The persistence session
-	 * @return void
-	 * @deprecated since 6.1, will be removed two versions later
-	 */
-	public function injectSession(\TYPO3\CMS\Extbase\Persistence\Generic\Session $session) {
-		$this->session = $session;
-	}
-
-	/**
-	 * @param \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface $persistenceManager
-	 * @return void
-	 */
-	public function injectPersistenceManager(\TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface $persistenceManager) {
-		$this->persistenceManager = $persistenceManager;
 	}
 
 	/**
