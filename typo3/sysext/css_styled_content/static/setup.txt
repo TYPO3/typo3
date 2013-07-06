@@ -660,6 +660,47 @@ tt_content.image.20 {
 	1 {
 		file.import.current = 1
 		file.width.field = imagewidth
+
+		layoutKey = {$styles.content.imgtext.layoutKey}
+		layout {
+			default {
+				element = <img src="###SRC###" width="###WIDTH###" height="###HEIGHT###" ###PARAMS### ###ALTPARAMS### ###BORDER######SELFCLOSINGTAGSLASH###>
+			}
+			srcset {
+				element = <img src="###SRC###" srcset="###SOURCECOLLECTION###" ###PARAMS### ###ALTPARAMS######SELFCLOSINGTAGSLASH###>
+				source = |*|###SRC### ###SRCSETCANDIDATE###,|*|###SRC### ###SRCSETCANDIDATE###
+			}
+			picture {
+				element = <picture>###SOURCECOLLECTION###<img src="###SRC###" ###PARAMS### ###ALTPARAMS######SELFCLOSINGTAGSLASH###></picture>
+				source = <source src="###SRC###" media="###MEDIAQUERY###"###SELFCLOSINGTAGSLASH###>
+			}
+			data {
+				element = <img src="###SRC###" ###SOURCECOLLECTION### ###PARAMS### ###ALTPARAMS######SELFCLOSINGTAGSLASH###>
+				source = data-###DATAKEY###="###SRC###"
+			}
+		}
+		# Default sourceCollection as an example
+		# Please write your own sourceCollection (highly recommended)
+		sourceCollection {
+			small {
+				width = 200
+
+				srcsetCandidate = 600w
+				mediaQuery = (max-device-width: 600px)
+				dataKey = small
+			}
+			smallRetina {
+				if.directReturn = 0
+
+				width = 200
+				pixelDensity = 2
+
+				srcsetCandidate = 600w 2x
+				mediaQuery = (max-device-width: 600px) AND (min-resolution: 192dpi)
+				dataKey = smallRetina
+			}
+		}
+
 		imageLinkWrap = 1
 		imageLinkWrap {
 			bodyTag = <body style="margin:0; background:#fff;">
@@ -860,34 +901,134 @@ tt_content.image.20 {
 		key.field = imageorient
 		# above-center
 		default = TEXT
-		default.value = <div class="csc-textpic csc-textpic-center csc-textpic-above###CLASSES###">###IMAGES######TEXT###</div>
+		default {
+			value = <div class="csc-textpic csc-textpic-center csc-textpic-above###CLASSES###">###IMAGES######TEXT###</div>
+			override = <div class="csc-textpic csc-textpic-responsive csc-textpic-center csc-textpic-above###CLASSES###">###IMAGES######TEXT###</div>
+			override {
+				if {
+					value = default
+					equals = {$styles.content.imgtext.layoutKey}
+					negate = 1
+				}
+			}
+		}
 		# above-right
 		1 = TEXT
-		1.value = <div class="csc-textpic csc-textpic-right csc-textpic-above###CLASSES###">###IMAGES######TEXT###</div>
+		1 {
+			value = <div class="csc-textpic csc-textpic-right csc-textpic-above###CLASSES###">###IMAGES######TEXT###</div>
+			override = <div class="csc-textpic csc-textpic-responsive csc-textpic-right csc-textpic-above###CLASSES###">###IMAGES######TEXT###</div>
+			override {
+				if {
+					value = default
+					equals = {$styles.content.imgtext.layoutKey}
+					negate = 1
+				}
+			}
+		}
 		# above-left
 		2 = TEXT
-		2.value = <div class="csc-textpic csc-textpic-left csc-textpic-above###CLASSES###">###IMAGES######TEXT###</div>
+		2 {
+			value = <div class="csc-textpic csc-textpic-left csc-textpic-above###CLASSES###">###IMAGES######TEXT###</div>
+			override = <div class="csc-textpic csc-textpic-responsive csc-textpic-left csc-textpic-above###CLASSES###">###IMAGES######TEXT###</div>
+			override {
+				if {
+					value = default
+					equals = {$styles.content.imgtext.layoutKey}
+					negate = 1
+				}
+			}
+		}
 		# below-center
 		8 = TEXT
-		8.value = <div class="csc-textpic csc-textpic-center csc-textpic-below###CLASSES###">###TEXT######IMAGES###</div>
+		8 {
+			value = <div class="csc-textpic csc-textpic-center csc-textpic-below###CLASSES###">###TEXT######IMAGES###</div>
+			override = <div class="csc-textpic csc-textpic-responsive csc-textpic-center csc-textpic-below###CLASSES###">###TEXT######IMAGES###</div>
+			override {
+				if {
+					value = default
+					equals = {$styles.content.imgtext.layoutKey}
+					negate = 1
+				}
+			}
+		}
 		# below-right
 		9 = TEXT
-		9.value = <div class="csc-textpic csc-textpic-right csc-textpic-below###CLASSES###">###TEXT######IMAGES###</div>
+		9 {
+			value = <div class="csc-textpic csc-textpic-right csc-textpic-below###CLASSES###">###TEXT######IMAGES###</div>
+			override = <div class="csc-textpic csc-textpic-responsive csc-textpic-right csc-textpic-below###CLASSES###">###TEXT######IMAGES###</div>
+			override {
+				if {
+					value = default
+					equals = {$styles.content.imgtext.layoutKey}
+					negate = 1
+				}
+			}
+		}
 		# below-left
 		10 = TEXT
-		10.value = <div class="csc-textpic csc-textpic-left csc-textpic-below###CLASSES###">###TEXT######IMAGES###</div>
+		10 {
+			value = <div class="csc-textpic csc-textpic-left csc-textpic-below###CLASSES###">###TEXT######IMAGES###</div>
+			override = <div class="csc-textpic csc-textpic-responsive csc-textpic-left csc-textpic-below###CLASSES###">###TEXT######IMAGES###</div>
+			override {
+				if {
+					value = default
+					equals = {$styles.content.imgtext.layoutKey}
+					negate = 1
+				}
+			}
+		}
 		# intext-right
 		17 = TEXT
-		17.value = <div class="csc-textpic csc-textpic-intext-right###CLASSES###">###IMAGES######TEXT###</div>
+		17 {
+			value = <div class="csc-textpic csc-textpic-intext-right###CLASSES###">###IMAGES######TEXT###</div>
+			override = <div class="csc-textpic csc-textpic-responsive csc-textpic-intext-right###CLASSES###">###IMAGES######TEXT###</div>
+			override {
+				if {
+					value = default
+					equals = {$styles.content.imgtext.layoutKey}
+					negate = 1
+				}
+			}
+		}
 		# intext-left
 		18 = TEXT
-		18.value = <div class="csc-textpic csc-textpic-intext-left###CLASSES###">###IMAGES######TEXT###</div>
+		18 {
+			value = <div class="csc-textpic csc-textpic-intext-left###CLASSES###">###IMAGES######TEXT###</div>
+			override = <div class="csc-textpic csc-textpic-responsive csc-textpic-intext-left###CLASSES###">###IMAGES######TEXT###</div>
+			override {
+				if {
+					value = default
+					equals = {$styles.content.imgtext.layoutKey}
+					negate = 1
+				}
+			}
+		}
 		# intext-right-nowrap
 		25 = TEXT
-		25.value = <div class="csc-textpic csc-textpic-intext-right-nowrap###CLASSES###">###IMAGES######TEXT###</div>
+		25 {
+			value = <div class="csc-textpic csc-textpic-intext-right-nowrap###CLASSES###">###IMAGES######TEXT###</div>
+			override = <div class="csc-textpic csc-textpic-responsive csc-textpic-intext-right-nowrap###CLASSES###">###IMAGES######TEXT###</div>
+			override {
+				if {
+					value = default
+					equals = {$styles.content.imgtext.layoutKey}
+					negate = 1
+				}
+			}
+		}
 		# intext-left-nowrap
 		26 = TEXT
-		26.value = <div class="csc-textpic csc-textpic-intext-left-nowrap###CLASSES###">###IMAGES######TEXT###</div>
+		26 {
+			value = <div class="csc-textpic csc-textpic-intext-left-nowrap###CLASSES###">###IMAGES######TEXT###</div>
+			override = <div class="csc-textpic csc-textpic-responsive csc-textpic-intext-left-nowrap###CLASSES###">###IMAGES######TEXT###</div>
+			override {
+				if {
+					value = default
+					equals = {$styles.content.imgtext.layoutKey}
+					negate = 1
+				}
+			}
+		}
 	}
 
 	rendering {
@@ -2106,6 +2247,8 @@ plugin.tx_cssstyledcontent._CSS_DEFAULT_STYLE (
 	.csc-header-alignment-center { text-align: center; }
 	.csc-header-alignment-right { text-align: right; }
 	.csc-header-alignment-left { text-align: left; }
+
+	div.csc-textpic-responsive, div.csc-textpic-responsive * { -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box;  }
 
 	/* Clear floats after csc-textpic and after csc-textpic-imagerow */
 	div.csc-textpic, div.csc-textpic div.csc-textpic-imagerow, ul.csc-uploads li { overflow: hidden; }
