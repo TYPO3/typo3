@@ -807,31 +807,30 @@ class ExtensionManagementUtility {
 			$mods = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $GLOBALS['TBE_MODULES'][$main], 1);
 			if (!in_array($sub, $mods)) {
 				switch (strtolower($place)) {
-				case 'after':
+					case 'after':
 
-				case 'before':
-					$pointer = 0;
-					$found = FALSE;
-					foreach ($mods as $k => $m) {
-						if (!strcmp($m, $modRef)) {
-							$pointer = strtolower($place) == 'after' ? $k + 1 : $k;
-							$found = TRUE;
+					case 'before':
+						$pointer = 0;
+						$found = FALSE;
+						foreach ($mods as $k => $m) {
+							if (!strcmp($m, $modRef)) {
+								$pointer = strtolower($place) == 'after' ? $k + 1 : $k;
+								$found = TRUE;
+							}
 						}
-					}
-					if ($found) {
-						array_splice($mods, $pointer, 0, $sub);
-					} else {
-						// If requested module is not found: Add at the end
-						array_push($mods, $sub);
-					}
-					break;
-				default:
-					if (strtolower($place) == 'top') {
-						array_unshift($mods, $sub);
-					} else {
-						array_push($mods, $sub);
-					}
-					break;
+						if ($found) {
+							array_splice($mods, $pointer, 0, $sub);
+						} else {
+							// If requested module is not found: Add at the end
+							array_push($mods, $sub);
+						}
+						break;
+					default:
+						if (strtolower($place) == 'top') {
+							array_unshift($mods, $sub);
+						} else {
+							array_push($mods, $sub);
+						}
 				}
 			}
 			// Re-inserting the submodule list:
@@ -1261,30 +1260,29 @@ plugin.' . $cN . $prefix . ' {
 ' . $pluginContent);
 		// After ST43
 		switch ($type) {
-		case 'list_type':
-			$addLine = 'tt_content.list.20.' . $key . $prefix . ' = < plugin.' . $cN . $prefix;
-			break;
-		case 'menu_type':
-			$addLine = 'tt_content.menu.20.' . $key . $prefix . ' = < plugin.' . $cN . $prefix;
-			break;
-		case 'CType':
-			$addLine = trim('
+			case 'list_type':
+				$addLine = 'tt_content.list.20.' . $key . $prefix . ' = < plugin.' . $cN . $prefix;
+				break;
+			case 'menu_type':
+				$addLine = 'tt_content.menu.20.' . $key . $prefix . ' = < plugin.' . $cN . $prefix;
+				break;
+			case 'CType':
+				$addLine = trim('
 tt_content.' . $key . $prefix . ' = COA
 tt_content.' . $key . $prefix . ' {
 	10 = < lib.stdheader
 	20 = < plugin.' . $cN . $prefix . '
 }
-				');
-			break;
-		case 'header_layout':
-			$addLine = 'lib.stdheader.10.' . $key . $prefix . ' = < plugin.' . $cN . $prefix;
-			break;
-		case 'includeLib':
-			$addLine = 'page.1000 = < plugin.' . $cN . $prefix;
-			break;
-		default:
-			$addLine = '';
-			break;
+');
+				break;
+			case 'header_layout':
+				$addLine = 'lib.stdheader.10.' . $key . $prefix . ' = < plugin.' . $cN . $prefix;
+				break;
+			case 'includeLib':
+				$addLine = 'page.1000 = < plugin.' . $cN . $prefix;
+				break;
+			default:
+				$addLine = '';
 		}
 		if ($addLine) {
 			self::addTypoScript($key, 'setup', '

@@ -49,17 +49,17 @@ class FramesetRenderer {
 				$theValue = $setup[$theKey];
 				if (intval($theKey) && ($conf = $setup[$theKey . '.'])) {
 					switch ($theValue) {
-					case 'FRAME':
-						$typeNum = intval($GLOBALS['TSFE']->tmpl->setup[$conf['obj'] . '.']['typeNum']);
-						if (!$conf['src'] && !$typeNum) {
-							$typeNum = -1;
-						}
-						$content .= '<frame' . $this->frameParams($conf, $typeNum) . ' />' . LF;
-						break;
-					case 'FRAMESET':
-						$frameset = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Page\\FramesetRenderer');
-						$content .= $frameset->make($conf) . LF;
-						break;
+						case 'FRAME':
+							$typeNum = intval($GLOBALS['TSFE']->tmpl->setup[$conf['obj'] . '.']['typeNum']);
+							if (!$conf['src'] && !$typeNum) {
+								$typeNum = -1;
+							}
+							$content .= '<frame' . $this->frameParams($conf, $typeNum) . ' />' . LF;
+							break;
+						case 'FRAMESET':
+							$frameset = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Page\\FramesetRenderer');
+							$content .= $frameset->make($conf) . LF;
+							break;
 					}
 				}
 			}

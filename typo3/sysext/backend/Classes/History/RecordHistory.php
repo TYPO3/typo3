@@ -206,19 +206,19 @@ class RecordHistory {
 		$cmdmapArray = array();
 		if ($diff['insertsDeletes']) {
 			switch (count($rollbackData)) {
-			case 1:
-				// all tables
-				$data = $diff['insertsDeletes'];
-				break;
-			case 2:
-				// one record
-				if ($diff['insertsDeletes'][$this->rollbackFields]) {
-					$data[$this->rollbackFields] = $diff['insertsDeletes'][$this->rollbackFields];
-				}
-				break;
-			case 3:
-				// one field in one record -- ignore!
-				break;
+				case 1:
+					// all tables
+					$data = $diff['insertsDeletes'];
+					break;
+				case 2:
+					// one record
+					if ($diff['insertsDeletes'][$this->rollbackFields]) {
+						$data[$this->rollbackFields] = $diff['insertsDeletes'][$this->rollbackFields];
+					}
+					break;
+				case 3:
+					// one field in one record -- ignore!
+					break;
 			}
 			if ($data) {
 				foreach ($data as $key => $action) {
@@ -257,18 +257,18 @@ class RecordHistory {
 			$diff_modified[$splitKey[0]][$splitKey[1]] = $value;
 		}
 		switch (count($rollbackData)) {
-		case 1:
-			// all tables
-			$data = $diff_modified;
-			break;
-		case 2:
-			// one record
-			$data[$rollbackData[0]][$rollbackData[1]] = $diff_modified[$rollbackData[0]][$rollbackData[1]];
-			break;
-		case 3:
-			// one field in one record
-			$data[$rollbackData[0]][$rollbackData[1]][$rollbackData[2]] = $diff_modified[$rollbackData[0]][$rollbackData[1]][$rollbackData[2]];
-			break;
+			case 1:
+				// all tables
+				$data = $diff_modified;
+				break;
+			case 2:
+				// one record
+				$data[$rollbackData[0]][$rollbackData[1]] = $diff_modified[$rollbackData[0]][$rollbackData[1]];
+				break;
+			case 3:
+				// one field in one record
+				$data[$rollbackData[0]][$rollbackData[1]][$rollbackData[2]] = $diff_modified[$rollbackData[0]][$rollbackData[1]][$rollbackData[2]];
+				break;
 		}
 		// Removing fields:
 		$data = $this->removeFilefields($rollbackData[0], $data);
@@ -725,14 +725,14 @@ class RecordHistory {
 					}
 					$hisDat = array();
 					switch ($row['action']) {
-					case 1:
-						// Insert
-						$hisDat['action'] = 'insert';
-						break;
-					case 3:
-						// Delete
-						$hisDat['action'] = 'delete';
-						break;
+						case 1:
+							// Insert
+							$hisDat['action'] = 'insert';
+							break;
+						case 3:
+							// Delete
+							$hisDat['action'] = 'delete';
+							break;
 					}
 					$hisDat['tstamp'] = $row['tstamp'];
 					$hisDat['user'] = $row['userid'];

@@ -703,25 +703,25 @@ class CharsetConverter {
 		// PHP-libs don't support fallback to SGML entities, but UTF-8 handles everything
 		if ($toCS == 'utf-8' || !$useEntityForNoChar) {
 			switch ($GLOBALS['TYPO3_CONF_VARS']['SYS']['t3lib_cs_convMethod']) {
-			case 'mbstring':
-				$conv_str = mb_convert_encoding($str, $toCS, $fromCS);
-				if (FALSE !== $conv_str) {
-					return $conv_str;
-				}
-				// Returns FALSE for unsupported charsets
-				break;
-			case 'iconv':
-				$conv_str = iconv($fromCS, $toCS . '//TRANSLIT', $str);
-				if (FALSE !== $conv_str) {
-					return $conv_str;
-				}
-				break;
-			case 'recode':
-				$conv_str = recode_string($fromCS . '..' . $toCS, $str);
-				if (FALSE !== $conv_str) {
-					return $conv_str;
-				}
-				break;
+				case 'mbstring':
+					$conv_str = mb_convert_encoding($str, $toCS, $fromCS);
+					if (FALSE !== $conv_str) {
+						return $conv_str;
+					}
+					// Returns FALSE for unsupported charsets
+					break;
+				case 'iconv':
+					$conv_str = iconv($fromCS, $toCS . '//TRANSLIT', $str);
+					if (FALSE !== $conv_str) {
+						return $conv_str;
+					}
+					break;
+				case 'recode':
+					$conv_str = recode_string($fromCS . '..' . $toCS, $str);
+					if (FALSE !== $conv_str) {
+						return $conv_str;
+					}
+					break;
 			}
 		}
 		if ($fromCS != 'utf-8') {
@@ -1222,26 +1222,26 @@ class CharsetConverter {
 		$cacheFileASCII = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName('typo3temp/cs/csascii_utf-8.tbl');
 		// Only process if the tables are not yet loaded
 		switch ($mode) {
-		case 'case':
-			if (is_array($this->caseFolding['utf-8'])) {
-				return 1;
-			}
-			// Use cached version if possible
-			if ($cacheFileCase && @is_file($cacheFileCase)) {
-				$this->caseFolding['utf-8'] = unserialize(\TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($cacheFileCase));
-				return 2;
-			}
-			break;
-		case 'ascii':
-			if (is_array($this->toASCII['utf-8'])) {
-				return 1;
-			}
-			// Use cached version if possible
-			if ($cacheFileASCII && @is_file($cacheFileASCII)) {
-				$this->toASCII['utf-8'] = unserialize(\TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($cacheFileASCII));
-				return 2;
-			}
-			break;
+			case 'case':
+				if (is_array($this->caseFolding['utf-8'])) {
+					return 1;
+				}
+				// Use cached version if possible
+				if ($cacheFileCase && @is_file($cacheFileCase)) {
+					$this->caseFolding['utf-8'] = unserialize(\TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($cacheFileCase));
+					return 2;
+				}
+				break;
+			case 'ascii':
+				if (is_array($this->toASCII['utf-8'])) {
+					return 1;
+				}
+				// Use cached version if possible
+				if ($cacheFileASCII && @is_file($cacheFileASCII)) {
+					$this->toASCII['utf-8'] = unserialize(\TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($cacheFileASCII));
+					return 2;
+				}
+				break;
 		}
 		// Process main Unicode data file
 		$unicodeDataFile = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('core') . 'Resources/Private/Charsets/unidata/UnicodeData.txt';
@@ -1289,15 +1289,15 @@ class CharsetConverter {
 				$utf8CaseFolding['toTitle'][$utf8_char] = $this->UnumberToChar(hexdec($title));
 			}
 			switch ($cat[0]) {
-			case 'M':
-				// mark (accent, umlaut, ...)
-				$mark['U+' . $char] = 1;
-				break;
-			case 'N':
-				// numeric value
-				if ($ord > 128 && $num != '') {
-					$number['U+' . $char] = $num;
-				}
+				case 'M':
+					// mark (accent, umlaut, ...)
+					$mark['U+' . $char] = 1;
+					break;
+				case 'N':
+					// numeric value
+					if ($ord > 128 && $num != '') {
+						$number['U+' . $char] = $num;
+					}
 			}
 			// Accented Latin letters without "official" decomposition
 			$match = array();
@@ -1312,30 +1312,30 @@ class CharsetConverter {
 			$match = array();
 			if (preg_match('/(<.*>)? *(.+)/', $decomp, $match)) {
 				switch ($match[1]) {
-				case '<circle>':
-					// add parenthesis as circle replacement, eg (1)
-					$match[2] = '0028 ' . $match[2] . ' 0029';
-					break;
-				case '<square>':
-					// add square brackets as square replacement, eg [1]
-					$match[2] = '005B ' . $match[2] . ' 005D';
-					break;
-				case '<compat>':
-					// ignore multi char decompositions that start with a space
-					if (preg_match('/^0020 /', $match[2])) {
+					case '<circle>':
+						// add parenthesis as circle replacement, eg (1)
+						$match[2] = '0028 ' . $match[2] . ' 0029';
+						break;
+					case '<square>':
+						// add square brackets as square replacement, eg [1]
+						$match[2] = '005B ' . $match[2] . ' 005D';
+						break;
+					case '<compat>':
+						// ignore multi char decompositions that start with a space
+						if (preg_match('/^0020 /', $match[2])) {
+							continue 2;
+						}
+						break;
+					case '<initial>':
+
+					case '<medial>':
+
+					case '<final>':
+
+					case '<isolated>':
+
+					case '<vertical>':
 						continue 2;
-					}
-					break;
-				case '<initial>':
-
-				case '<medial>':
-
-				case '<final>':
-
-				case '<isolated>':
-
-				case '<vertical>':
-					continue 2;
 				}
 				$decomposition['U+' . $char] = explode(' ', $match[2]);
 			}
@@ -1885,22 +1885,22 @@ class CharsetConverter {
 	 */
 	public function sb_char_mapping($str, $charset, $mode, $opt = '') {
 		switch ($mode) {
-		case 'case':
-			if (!$this->initCaseFolding($charset)) {
+			case 'case':
+				if (!$this->initCaseFolding($charset)) {
+					return $str;
+				}
+				// Do nothing
+				$map = &$this->caseFolding[$charset][$opt];
+				break;
+			case 'ascii':
+				if (!$this->initToASCII($charset)) {
+					return $str;
+				}
+				// Do nothing
+				$map = &$this->toASCII[$charset];
+				break;
+			default:
 				return $str;
-			}
-			// Do nothing
-			$map = &$this->caseFolding[$charset][$opt];
-			break;
-		case 'ascii':
-			if (!$this->initToASCII($charset)) {
-				return $str;
-			}
-			// Do nothing
-			$map = &$this->toASCII[$charset];
-			break;
-		default:
-			return $str;
 		}
 		$out = '';
 		for ($i = 0; strlen($str[$i]); $i++) {
@@ -2157,14 +2157,14 @@ class CharsetConverter {
 		}
 		$out = '';
 		switch ($mode) {
-		case 'case':
-			$map = &$this->caseFolding['utf-8'][$opt];
-			break;
-		case 'ascii':
-			$map = &$this->toASCII['utf-8'];
-			break;
-		default:
-			return $str;
+			case 'case':
+				$map = &$this->caseFolding['utf-8'][$opt];
+				break;
+			case 'ascii':
+				$map = &$this->toASCII['utf-8'];
+				break;
+			default:
+				return $str;
 		}
 		for ($i = 0; strlen($str[$i]); $i++) {
 			$c = ord($str[$i]);
@@ -2352,22 +2352,22 @@ class CharsetConverter {
 	 */
 	public function euc_char_mapping($str, $charset, $mode, $opt = '') {
 		switch ($mode) {
-		case 'case':
-			if (!$this->initCaseFolding($charset)) {
+			case 'case':
+				if (!$this->initCaseFolding($charset)) {
+					return $str;
+				}
+				// do nothing
+				$map = &$this->caseFolding[$charset][$opt];
+				break;
+			case 'ascii':
+				if (!$this->initToASCII($charset)) {
+					return $str;
+				}
+				// do nothing
+				$map = &$this->toASCII[$charset];
+				break;
+			default:
 				return $str;
-			}
-			// do nothing
-			$map = &$this->caseFolding[$charset][$opt];
-			break;
-		case 'ascii':
-			if (!$this->initToASCII($charset)) {
-				return $str;
-			}
-			// do nothing
-			$map = &$this->toASCII[$charset];
-			break;
-		default:
-			return $str;
 		}
 		$sjis = $charset == 'shift_jis';
 		$out = '';

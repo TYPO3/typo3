@@ -277,45 +277,44 @@ class IndexSearchRepository {
 			$wSel = '';
 			// Perform search for word:
 			switch ($theType) {
-			case '1':
-				// Part of word
-				$res = $this->searchWord($sWord, self::WILDCARD_LEFT | self::WILDCARD_RIGHT);
-				break;
-			case '2':
-				// First part of word
-				$res = $this->searchWord($sWord, self::WILDCARD_RIGHT);
-				break;
-			case '3':
-				// Last part of word
-				$res = $this->searchWord($sWord, self::WILDCARD_LEFT);
-				break;
-			case '10':
-				// Sounds like
-				/**
-				 * Indexer object
-				 *
-				 * @var \TYPO3\CMS\IndexedSearch\Indexer
-				 */
-				$indexerObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\IndexedSearch\\Indexer');
-				// Perform metaphone search
-				$storeMetaphoneInfoAsWords = $this->isTableUsed('index_words') ? FALSE : TRUE;
-				$res = $this->searchMetaphone($indexerObj->metaphone($sWord, $storeMetaphoneInfoAsWords));
-				unset($indexerObj);
-				break;
-			case '20':
-				// Sentence
-				$res = $this->searchSentence($sWord);
-				// If there is a fulltext search for a sentence there is
-				// a likeliness that sorting cannot be done by the rankings
-				// from the rel-table (because no relations will exist for the
-				// sentence in the word-table). So therefore mtime is used instead.
-				// It is not required, but otherwise some hits may be left out.
-				$this->sortOrder = 'mtime';
-				break;
-			default:
-				// Distinct word
-				$res = $this->searchDistinct($sWord);
-				break;
+				case '1':
+					// Part of word
+					$res = $this->searchWord($sWord, self::WILDCARD_LEFT | self::WILDCARD_RIGHT);
+					break;
+				case '2':
+					// First part of word
+					$res = $this->searchWord($sWord, self::WILDCARD_RIGHT);
+					break;
+				case '3':
+					// Last part of word
+					$res = $this->searchWord($sWord, self::WILDCARD_LEFT);
+					break;
+				case '10':
+					// Sounds like
+					/**
+					* Indexer object
+					*
+					* @var \TYPO3\CMS\IndexedSearch\Indexer
+					*/
+					$indexerObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\IndexedSearch\\Indexer');
+					// Perform metaphone search
+					$storeMetaphoneInfoAsWords = $this->isTableUsed('index_words') ? FALSE : TRUE;
+					$res = $this->searchMetaphone($indexerObj->metaphone($sWord, $storeMetaphoneInfoAsWords));
+					unset($indexerObj);
+					break;
+				case '20':
+					// Sentence
+					$res = $this->searchSentence($sWord);
+					// If there is a fulltext search for a sentence there is
+					// a likeliness that sorting cannot be done by the rankings
+					// from the rel-table (because no relations will exist for the
+					// sentence in the word-table). So therefore mtime is used instead.
+					// It is not required, but otherwise some hits may be left out.
+					$this->sortOrder = 'mtime';
+					break;
+				default:
+					// Distinct word
+					$res = $this->searchDistinct($sWord);
 			}
 			// Accumulate the word-select clauses
 			$this->wSelClauses[] = $wSel;
@@ -330,16 +329,15 @@ class IndexSearchRepository {
 				// Here the phash list are merged with the existing result based on whether we are dealing with OR, NOT or AND operations.
 				if ($c) {
 					switch ($v['oper']) {
-					case 'OR':
-						$totalHashList = array_unique(array_merge($phashList, $totalHashList));
-						break;
-					case 'AND NOT':
-						$totalHashList = array_diff($totalHashList, $phashList);
-						break;
-					default:
-						// AND...
-						$totalHashList = array_intersect($totalHashList, $phashList);
-						break;
+						case 'OR':
+							$totalHashList = array_unique(array_merge($phashList, $totalHashList));
+							break;
+						case 'AND NOT':
+							$totalHashList = array_diff($totalHashList, $phashList);
+							break;
+						default:
+							// AND...
+							$totalHashList = array_intersect($totalHashList, $phashList);
 					}
 				} else {
 					// First search
@@ -453,15 +451,15 @@ class IndexSearchRepository {
 		// If no match above, test the static types:
 		if (!$match) {
 			switch ((string) $this->sections) {
-			case '-1':
-				$whereClause .= ' AND ISEC.page_id=' . $GLOBALS['TSFE']->id;
-				break;
-			case '-2':
-				$whereClause .= ' AND ISEC.rl2=0';
-				break;
-			case '-3':
-				$whereClause .= ' AND ISEC.rl2>0';
-				break;
+				case '-1':
+					$whereClause .= ' AND ISEC.page_id=' . $GLOBALS['TSFE']->id;
+					break;
+				case '-2':
+					$whereClause .= ' AND ISEC.rl2=0';
+					break;
+				case '-3':
+					$whereClause .= ' AND ISEC.rl2>0';
+					break;
 			}
 		}
 		return $whereClause;
@@ -475,23 +473,22 @@ class IndexSearchRepository {
 	public function mediaTypeWhere() {
 		$whereClause = '';
 		switch ($this->mediaType) {
-		case '0':
-			// '0' => 'Kun TYPO3 sider',
-			$whereClause = ' AND IP.item_type=' . $GLOBALS['TYPO3_DB']->fullQuoteStr('0', 'index_phash');
-			break;
-		case '-2':
-			// All external documents
-			$whereClause = ' AND IP.item_type!=' . $GLOBALS['TYPO3_DB']->fullQuoteStr('0', 'index_phash');
-			break;
-		case FALSE:
+			case '0':
+				// '0' => 'Kun TYPO3 sider',
+				$whereClause = ' AND IP.item_type=' . $GLOBALS['TYPO3_DB']->fullQuoteStr('0', 'index_phash');
+				break;
+			case '-2':
+				// All external documents
+				$whereClause = ' AND IP.item_type!=' . $GLOBALS['TYPO3_DB']->fullQuoteStr('0', 'index_phash');
+				break;
+			case FALSE:
 
-		case '-1':
-			// All content
-			$whereClause = '';
-			break;
-		default:
-			$whereClause = ' AND IP.item_type=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->mediaType, 'index_phash');
-			break;
+			case '-1':
+				// All content
+				$whereClause = '';
+				break;
+			default:
+				$whereClause = ' AND IP.item_type=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->mediaType, 'index_phash');
 		}
 		return $whereClause;
 	}
@@ -525,18 +522,18 @@ class IndexSearchRepository {
 				foreach ($refs as $ref) {
 					list($table, $uid) = \TYPO3\CMS\Core\Utility\GeneralUtility::revExplode('_', $ref, 2);
 					switch ($table) {
-					case 'index_config':
-						$idxRec = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('uid', 'index_config', 'uid=' . intval($uid) . $this->enableFields('index_config'));
-						if ($idxRec) {
-							$list[] = $uid;
-						}
-						break;
-					case 'pages':
-						$indexCfgRecordsFromPid = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid', 'index_config', 'pid=' . intval($uid) . $this->enableFields('index_config'));
-						foreach ($indexCfgRecordsFromPid as $idxRec) {
-							$list[] = $idxRec['uid'];
-						}
-						break;
+						case 'index_config':
+							$idxRec = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('uid', 'index_config', 'uid=' . intval($uid) . $this->enableFields('index_config'));
+							if ($idxRec) {
+								$list[] = $uid;
+							}
+							break;
+						case 'pages':
+							$indexCfgRecordsFromPid = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid', 'index_config', 'pid=' . intval($uid) . $this->enableFields('index_config'));
+							foreach ($indexCfgRecordsFromPid as $idxRec) {
+								$list[] = $idxRec['uid'];
+							}
+							break;
 					}
 				}
 				$list = array_unique($list);
@@ -592,29 +589,28 @@ class IndexSearchRepository {
 		// calculate ranking based on all search-words found.
 		if (substr($this->sortOrder, 0, 5) == 'rank_') {
 			switch ($this->sortOrder) {
-			case 'rank_flag':
-				// This gives priority to word-position (max-value) so that words in title, keywords, description counts more than in content.
-				// The ordering is refined with the frequency sum as well.
-				$grsel = 'MAX(IR.flags) AS order_val1, SUM(IR.freq) AS order_val2';
-				$orderBy = 'order_val1' . $this->getDescendingSortOrderFlag() . ', order_val2' . $this->getDescendingSortOrderFlag();
-				break;
-			case 'rank_first':
-				// Results in average position of search words on page.
-				// Must be inversely sorted (low numbers are closer to top)
-				$grsel = 'AVG(IR.first) AS order_val';
-				$orderBy = 'order_val' . $this->getDescendingSortOrderFlag(TRUE);
-				break;
-			case 'rank_count':
-				// Number of words found
-				$grsel = 'SUM(IR.count) AS order_val';
-				$orderBy = 'order_val' . $this->getDescendingSortOrderFlag();
-				break;
-			default:
-				// Frequency sum. I'm not sure if this is the best way to do
-				// it (make a sum...). Or should it be the average?
-				$grsel = 'SUM(IR.freq) AS order_val';
-				$orderBy = 'order_val' . $this->getDescendingSortOrderFlag();
-				break;
+				case 'rank_flag':
+					// This gives priority to word-position (max-value) so that words in title, keywords, description counts more than in content.
+					// The ordering is refined with the frequency sum as well.
+					$grsel = 'MAX(IR.flags) AS order_val1, SUM(IR.freq) AS order_val2';
+					$orderBy = 'order_val1' . $this->getDescendingSortOrderFlag() . ', order_val2' . $this->getDescendingSortOrderFlag();
+					break;
+				case 'rank_first':
+					// Results in average position of search words on page.
+					// Must be inversely sorted (low numbers are closer to top)
+					$grsel = 'AVG(IR.first) AS order_val';
+					$orderBy = 'order_val' . $this->getDescendingSortOrderFlag(TRUE);
+					break;
+				case 'rank_count':
+					// Number of words found
+					$grsel = 'SUM(IR.count) AS order_val';
+					$orderBy = 'order_val' . $this->getDescendingSortOrderFlag();
+					break;
+				default:
+					// Frequency sum. I'm not sure if this is the best way to do
+					// it (make a sum...). Or should it be the average?
+					$grsel = 'SUM(IR.freq) AS order_val';
+					$orderBy = 'order_val' . $this->getDescendingSortOrderFlag();
 			}
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('ISEC.*, IP.*, ' . $grsel, 'index_words IW,
 							index_rel IR,
@@ -628,15 +624,15 @@ class IndexSearchRepository {
 			// there is no need for joining with the rel/word tables:
 			$orderBy = '';
 			switch ((string) $this->sortOrder) {
-			case 'title':
-				$orderBy = 'IP.item_title' . $this->getDescendingSortOrderFlag();
-				break;
-			case 'crdate':
-				$orderBy = 'IP.item_crdate' . $this->getDescendingSortOrderFlag();
-				break;
-			case 'mtime':
-				$orderBy = 'IP.item_mtime' . $this->getDescendingSortOrderFlag();
-				break;
+				case 'title':
+					$orderBy = 'IP.item_title' . $this->getDescendingSortOrderFlag();
+					break;
+				case 'crdate':
+					$orderBy = 'IP.item_crdate' . $this->getDescendingSortOrderFlag();
+					break;
+				case 'mtime':
+					$orderBy = 'IP.item_mtime' . $this->getDescendingSortOrderFlag();
+					break;
 			}
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('ISEC.*, IP.*', 'index_phash IP,index_section ISEC' . $page_join, 'IP.phash IN (' . $list . ') ' . $this->mediaTypeWhere() . $this->languageWhere() . $freeIndexUidClause . '
 							AND IP.phash = ISEC.phash' . $page_where, 'IP.phash,ISEC.phash,ISEC.phash_t3,ISEC.rl0,ISEC.rl1,ISEC.rl2 ,ISEC.page_id,ISEC.uniqid,IP.phash_grouping,IP.data_filename ,IP.data_page_id ,IP.data_page_reg1,IP.data_page_type,IP.data_page_mp,IP.gr_list,IP.item_type,IP.item_title,IP.item_description,IP.item_mtime,IP.tstamp,IP.item_size,IP.contentHash,IP.crdate,IP.parsetime,IP.sys_language_uid,IP.item_crdate,IP.cHashParams,IP.externalUrl,IP.recordUid,IP.freeIndexUid,IP.freeIndexSetId', $orderBy);

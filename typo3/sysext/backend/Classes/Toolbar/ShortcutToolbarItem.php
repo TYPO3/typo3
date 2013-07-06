@@ -567,66 +567,66 @@ class ShortcutToolbarItem implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookI
 	 */
 	protected function getShortcutIcon($row, $shortcut) {
 		switch ($row['module_name']) {
-		case 'xMOD_alt_doc.php':
-			$table = $shortcut['table'];
-			$recordid = $shortcut['recordid'];
-			if ($shortcut['type'] == 'edit') {
-				// Creating the list of fields to include in the SQL query:
-				$selectFields = $this->fieldArray;
-				$selectFields[] = 'uid';
-				$selectFields[] = 'pid';
-				if ($table == 'pages') {
-					if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('cms')) {
-						$selectFields[] = 'module';
-						$selectFields[] = 'extendToSubpages';
+			case 'xMOD_alt_doc.php':
+				$table = $shortcut['table'];
+				$recordid = $shortcut['recordid'];
+				if ($shortcut['type'] == 'edit') {
+					// Creating the list of fields to include in the SQL query:
+					$selectFields = $this->fieldArray;
+					$selectFields[] = 'uid';
+					$selectFields[] = 'pid';
+					if ($table == 'pages') {
+						if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('cms')) {
+							$selectFields[] = 'module';
+							$selectFields[] = 'extendToSubpages';
+						}
+						$selectFields[] = 'doktype';
 					}
-					$selectFields[] = 'doktype';
+					if (is_array($GLOBALS['TCA'][$table]['ctrl']['enablecolumns'])) {
+						$selectFields = array_merge($selectFields, $GLOBALS['TCA'][$table]['ctrl']['enablecolumns']);
+					}
+					if ($GLOBALS['TCA'][$table]['ctrl']['type']) {
+						$selectFields[] = $GLOBALS['TCA'][$table]['ctrl']['type'];
+					}
+					if ($GLOBALS['TCA'][$table]['ctrl']['typeicon_column']) {
+						$selectFields[] = $GLOBALS['TCA'][$table]['ctrl']['typeicon_column'];
+					}
+					if ($GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
+						$selectFields[] = 't3ver_state';
+					}
+					// Unique list!
+					$selectFields = array_unique($selectFields);
+					$permissionClause = $table == 'pages' && $this->perms_clause ? ' AND ' . $this->perms_clause : '';
+					$sqlQueryParts = array(
+						'SELECT' => implode(',', $selectFields),
+						'FROM' => $table,
+						'WHERE' => 'uid IN (' . $recordid . ') ' . $permissionClause . BackendUtility::deleteClause($table) . BackendUtility::versioningPlaceholderClause($table)
+					);
+					$result = $GLOBALS['TYPO3_DB']->exec_SELECT_queryArray($sqlQueryParts);
+					$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result);
+					$icon = IconUtility::getIcon($table, $row, $this->backPath);
+				} elseif ($shortcut['type'] == 'new') {
+					$icon = IconUtility::getIcon($table, '', $this->backPath);
 				}
-				if (is_array($GLOBALS['TCA'][$table]['ctrl']['enablecolumns'])) {
-					$selectFields = array_merge($selectFields, $GLOBALS['TCA'][$table]['ctrl']['enablecolumns']);
+				$icon = IconUtility::skinImg($this->backPath, $icon, '', 1);
+				break;
+			case 'xMOD_file_edit.php':
+				$icon = 'gfx/edit_file.gif';
+				break;
+			case 'xMOD_wizard_rte.php':
+				$icon = 'gfx/edit_rtewiz.gif';
+				break;
+			default:
+				if ($GLOBALS['LANG']->moduleLabels['tabs_images'][$row['module_name'] . '_tab']) {
+					$icon = $GLOBALS['LANG']->moduleLabels['tabs_images'][$row['module_name'] . '_tab'];
+					// Change icon of fileadmin references - otherwise it doesn't differ with Web->List
+					$icon = str_replace('mod/file/list/list.gif', 'mod/file/file.gif', $icon);
+					if (GeneralUtility::isAbsPath($icon)) {
+						$icon = '../' . substr($icon, strlen(PATH_site));
+					}
+				} else {
+					$icon = 'gfx/dummy_module.gif';
 				}
-				if ($GLOBALS['TCA'][$table]['ctrl']['type']) {
-					$selectFields[] = $GLOBALS['TCA'][$table]['ctrl']['type'];
-				}
-				if ($GLOBALS['TCA'][$table]['ctrl']['typeicon_column']) {
-					$selectFields[] = $GLOBALS['TCA'][$table]['ctrl']['typeicon_column'];
-				}
-				if ($GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
-					$selectFields[] = 't3ver_state';
-				}
-				// Unique list!
-				$selectFields = array_unique($selectFields);
-				$permissionClause = $table == 'pages' && $this->perms_clause ? ' AND ' . $this->perms_clause : '';
-				$sqlQueryParts = array(
-					'SELECT' => implode(',', $selectFields),
-					'FROM' => $table,
-					'WHERE' => 'uid IN (' . $recordid . ') ' . $permissionClause . BackendUtility::deleteClause($table) . BackendUtility::versioningPlaceholderClause($table)
-				);
-				$result = $GLOBALS['TYPO3_DB']->exec_SELECT_queryArray($sqlQueryParts);
-				$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result);
-				$icon = IconUtility::getIcon($table, $row, $this->backPath);
-			} elseif ($shortcut['type'] == 'new') {
-				$icon = IconUtility::getIcon($table, '', $this->backPath);
-			}
-			$icon = IconUtility::skinImg($this->backPath, $icon, '', 1);
-			break;
-		case 'xMOD_file_edit.php':
-			$icon = 'gfx/edit_file.gif';
-			break;
-		case 'xMOD_wizard_rte.php':
-			$icon = 'gfx/edit_rtewiz.gif';
-			break;
-		default:
-			if ($GLOBALS['LANG']->moduleLabels['tabs_images'][$row['module_name'] . '_tab']) {
-				$icon = $GLOBALS['LANG']->moduleLabels['tabs_images'][$row['module_name'] . '_tab'];
-				// Change icon of fileadmin references - otherwise it doesn't differ with Web->List
-				$icon = str_replace('mod/file/list/list.gif', 'mod/file/file.gif', $icon);
-				if (GeneralUtility::isAbsPath($icon)) {
-					$icon = '../' . substr($icon, strlen(PATH_site));
-				}
-			} else {
-				$icon = 'gfx/dummy_module.gif';
-			}
 		}
 		return '<img src="' . $icon . '" alt="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:toolbarItems.shortcut', TRUE) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:toolbarItems.shortcut', TRUE) . '" />';
 	}

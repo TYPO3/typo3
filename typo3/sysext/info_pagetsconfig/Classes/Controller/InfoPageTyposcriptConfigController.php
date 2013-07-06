@@ -183,7 +183,6 @@ class InfoPageTyposcriptConfigController extends \TYPO3\CMS\Backend\Module\Abstr
 					break;
 				default:
 					$modTSconfig['properties'] = \TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig($this->pObj->id);
-					break;
 			}
 
 			$modTSconfig = $modTSconfig['properties'];

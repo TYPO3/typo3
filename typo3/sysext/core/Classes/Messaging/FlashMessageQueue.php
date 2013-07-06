@@ -233,7 +233,6 @@ class FlashMessageQueue extends \SplQueue {
 				break;
 			default:
 				throw new \RuntimeException('The requested method "' . $name . '" cannot be called via __callStatic.', 1363300030);
-				break;
 		}
 	}
 
@@ -268,7 +267,6 @@ class FlashMessageQueue extends \SplQueue {
 				break;
 			default:
 				throw new \RuntimeException('The requested method "' . $name . '" cannot be called via __call.', 1363300072);
-				break;
 		}
 	}
 }

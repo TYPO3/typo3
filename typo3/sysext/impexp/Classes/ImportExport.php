@@ -1614,29 +1614,29 @@ class ImportExport {
 					// Traverse relation fields of each record
 					foreach ($this->dat['records'][$table . ':' . $uid]['rels'] as $field => $config) {
 						switch ((string) $config['type']) {
-						case 'flex':
-							// Get XML content and set as default value (string, non-processed):
-							$updateData[$table][$thisNewUid][$field] = $this->dat['records'][$table . ':' . $uid]['data'][$field];
-							// If there has been registered relations inside the flex form field, run processing on the content:
-							if (count($config['flexFormRels']['db']) || count($config['flexFormRels']['file'])) {
-								$origRecordRow = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($table, $thisNewUid, '*');
-								// This will fetch the new row for the element (which should be updated with any references to data structures etc.)
-								$conf = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
-								if (is_array($origRecordRow) && is_array($conf) && $conf['type'] === 'flex') {
-									// Get current data structure and value array:
-									$dataStructArray = \TYPO3\CMS\Backend\Utility\BackendUtility::getFlexFormDS($conf, $origRecordRow, $table);
-									$currentValueArray = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($updateData[$table][$thisNewUid][$field]);
-									// Do recursive processing of the XML data:
-									$iteratorObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
-									$iteratorObj->callBackObj = $this;
-									$currentValueArray['data'] = $iteratorObj->checkValue_flex_procInData($currentValueArray['data'], array(), array(), $dataStructArray, array($table, $thisNewUid, $field, $config), 'remapListedDBRecords_flexFormCallBack');
-									// The return value is set as an array which means it will be processed by tcemain for file and DB references!
-									if (is_array($currentValueArray['data'])) {
-										$updateData[$table][$thisNewUid][$field] = $currentValueArray;
+							case 'flex':
+								// Get XML content and set as default value (string, non-processed):
+								$updateData[$table][$thisNewUid][$field] = $this->dat['records'][$table . ':' . $uid]['data'][$field];
+								// If there has been registered relations inside the flex form field, run processing on the content:
+								if (count($config['flexFormRels']['db']) || count($config['flexFormRels']['file'])) {
+									$origRecordRow = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($table, $thisNewUid, '*');
+									// This will fetch the new row for the element (which should be updated with any references to data structures etc.)
+									$conf = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
+									if (is_array($origRecordRow) && is_array($conf) && $conf['type'] === 'flex') {
+										// Get current data structure and value array:
+										$dataStructArray = \TYPO3\CMS\Backend\Utility\BackendUtility::getFlexFormDS($conf, $origRecordRow, $table);
+										$currentValueArray = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($updateData[$table][$thisNewUid][$field]);
+										// Do recursive processing of the XML data:
+										$iteratorObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+										$iteratorObj->callBackObj = $this;
+										$currentValueArray['data'] = $iteratorObj->checkValue_flex_procInData($currentValueArray['data'], array(), array(), $dataStructArray, array($table, $thisNewUid, $field, $config), 'remapListedDBRecords_flexFormCallBack');
+										// The return value is set as an array which means it will be processed by tcemain for file and DB references!
+										if (is_array($currentValueArray['data'])) {
+											$updateData[$table][$thisNewUid][$field] = $currentValueArray;
+										}
 									}
 								}
-							}
-							break;
+								break;
 						}
 					}
 				} else {
@@ -1826,37 +1826,35 @@ class ImportExport {
 			$insertValue = $cfg['subst']['tokenValue'];
 			// Based on mode:
 			switch ((string) $this->softrefCfg[$tokenID]['mode']) {
-			case 'exclude':
-				// Exclude is a simple passthrough of the value
-				break;
-			case 'editable':
-				// Editable always picks up the value from this input array:
-				$insertValue = $this->softrefInputValues[$tokenID];
-				break;
-			default:
-				// Mapping IDs/creating files: Based on type, look up new value:
-				switch ((string) $cfg['subst']['type']) {
-					case 'file':
-						// Create / Overwrite file:
-						$insertValue = $this->processSoftReferences_saveFile($cfg['subst']['relFileName'], $cfg, $table, $uid);
-						break;
-					case 'db':
-					default:
-						// Trying to map database element if found in the mapID array:
-						list($tempTable, $tempUid) = explode(':', $cfg['subst']['recordRef']);
-						if (isset($this->import_mapId[$tempTable][$tempUid])) {
-							$insertValue = \TYPO3\CMS\Backend\Utility\BackendUtility::wsMapId($tempTable, $this->import_mapId[$tempTable][$tempUid]);
-							// Look if reference is to a page and the original token value was NOT an integer - then we assume is was an alias and try to look up the new one!
-							if ($tempTable === 'pages' && !\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($cfg['subst']['tokenValue'])) {
-								$recWithUniqueValue = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($tempTable, $insertValue, 'alias');
-								if ($recWithUniqueValue['alias']) {
-									$insertValue = $recWithUniqueValue['alias'];
+				case 'exclude':
+					// Exclude is a simple passthrough of the value
+					break;
+				case 'editable':
+					// Editable always picks up the value from this input array:
+					$insertValue = $this->softrefInputValues[$tokenID];
+					break;
+				default:
+					// Mapping IDs/creating files: Based on type, look up new value:
+					switch ((string) $cfg['subst']['type']) {
+						case 'file':
+							// Create / Overwrite file:
+							$insertValue = $this->processSoftReferences_saveFile($cfg['subst']['relFileName'], $cfg, $table, $uid);
+							break;
+						case 'db':
+						default:
+							// Trying to map database element if found in the mapID array:
+							list($tempTable, $tempUid) = explode(':', $cfg['subst']['recordRef']);
+							if (isset($this->import_mapId[$tempTable][$tempUid])) {
+								$insertValue = \TYPO3\CMS\Backend\Utility\BackendUtility::wsMapId($tempTable, $this->import_mapId[$tempTable][$tempUid]);
+								// Look if reference is to a page and the original token value was NOT an integer - then we assume is was an alias and try to look up the new one!
+								if ($tempTable === 'pages' && !\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($cfg['subst']['tokenValue'])) {
+									$recWithUniqueValue = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($tempTable, $insertValue, 'alias');
+									if ($recWithUniqueValue['alias']) {
+										$insertValue = $recWithUniqueValue['alias'];
+									}
 								}
 							}
-						}
-						break;
-				}
-				break;
+					}
 			}
 			// Finally, swap the soft reference token in tokenized content with the insert value:
 			$tokenizedContent = str_replace('{softref:' . $tokenID . '}', $insertValue, $tokenizedContent);

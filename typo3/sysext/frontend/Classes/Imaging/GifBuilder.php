@@ -199,39 +199,39 @@ class GifBuilder extends \TYPO3\CMS\Core\Imaging\GraphicalFunctions {
 				if (intval($theKey) && ($conf = $this->setup[$theKey . '.'])) {
 					// Swipes through TEXT and IMAGE-objects
 					switch ($theValue) {
-					case 'TEXT':
-						if ($this->setup[$theKey . '.'] = $this->checkTextObj($conf)) {
-							// Adjust font width if max size is set:
-							$maxWidth = isset($this->setup[$theKey . '.']['maxWidth.']) ? $this->cObj->stdWrap($this->setup[$theKey . '.']['maxWidth'], $this->setup[$theKey . '.']['maxWidth.']) : $this->setup[$theKey . '.']['maxWidth'];
-							if ($maxWidth) {
-								$this->setup[$theKey . '.']['fontSize'] = $this->fontResize($this->setup[$theKey . '.']);
-							}
-							// Calculate bounding box:
-							$txtInfo = $this->calcBBox($this->setup[$theKey . '.']);
-							$this->setup[$theKey . '.']['BBOX'] = $txtInfo;
-							$this->objBB[$theKey] = $txtInfo;
-							$this->setup[$theKey . '.']['imgMap'] = 0;
-						}
-						break;
-					case 'IMAGE':
-						$fileInfo = $this->getResource($conf['file'], $conf['file.']);
-						if ($fileInfo) {
-							$this->combinedFileNames[] = preg_replace('/\\.[[:alnum:]]+$/', '', basename($fileInfo[3]));
-							$this->setup[$theKey . '.']['file'] = $fileInfo[3];
-							$this->setup[$theKey . '.']['BBOX'] = $fileInfo;
-							$this->objBB[$theKey] = $fileInfo;
-							if ($conf['mask']) {
-								$maskInfo = $this->getResource($conf['mask'], $conf['mask.']);
-								if ($maskInfo) {
-									$this->setup[$theKey . '.']['mask'] = $maskInfo[3];
-								} else {
-									$this->setup[$theKey . '.']['mask'] = '';
+						case 'TEXT':
+							if ($this->setup[$theKey . '.'] = $this->checkTextObj($conf)) {
+								// Adjust font width if max size is set:
+								$maxWidth = isset($this->setup[$theKey . '.']['maxWidth.']) ? $this->cObj->stdWrap($this->setup[$theKey . '.']['maxWidth'], $this->setup[$theKey . '.']['maxWidth.']) : $this->setup[$theKey . '.']['maxWidth'];
+								if ($maxWidth) {
+									$this->setup[$theKey . '.']['fontSize'] = $this->fontResize($this->setup[$theKey . '.']);
 								}
+								// Calculate bounding box:
+								$txtInfo = $this->calcBBox($this->setup[$theKey . '.']);
+								$this->setup[$theKey . '.']['BBOX'] = $txtInfo;
+								$this->objBB[$theKey] = $txtInfo;
+								$this->setup[$theKey . '.']['imgMap'] = 0;
 							}
-						} else {
-							unset($this->setup[$theKey . '.']);
-						}
-						break;
+							break;
+						case 'IMAGE':
+							$fileInfo = $this->getResource($conf['file'], $conf['file.']);
+							if ($fileInfo) {
+								$this->combinedFileNames[] = preg_replace('/\\.[[:alnum:]]+$/', '', basename($fileInfo[3]));
+								$this->setup[$theKey . '.']['file'] = $fileInfo[3];
+								$this->setup[$theKey . '.']['BBOX'] = $fileInfo;
+								$this->objBB[$theKey] = $fileInfo;
+								if ($conf['mask']) {
+									$maskInfo = $this->getResource($conf['mask'], $conf['mask.']);
+									if ($maskInfo) {
+										$this->setup[$theKey . '.']['mask'] = $maskInfo[3];
+									} else {
+										$this->setup[$theKey . '.']['mask'] = '';
+									}
+								}
+							} else {
+								unset($this->setup[$theKey . '.']);
+							}
+							break;
 					}
 					// Checks if disabled is set... (this is also done in menu.php / imgmenu!!)
 					if ($conf['if.']) {
@@ -258,56 +258,56 @@ class GifBuilder extends \TYPO3\CMS\Core\Imaging\GraphicalFunctions {
 				$theValue = $this->setup[$theKey];
 				if (intval($theKey) && ($conf = $this->setup[$theKey . '.'])) {
 					switch ($theValue) {
-					case 'TEXT':
+						case 'TEXT':
 
-					case 'IMAGE':
-						if (isset($this->setup[$theKey . '.']['offset.'])) {
-							$this->setup[$theKey . '.']['offset'] = $this->cObj->stdWrap($this->setup[$theKey . '.']['offset'], $this->setup[$theKey . '.']['offset.']);
-						}
-						if ($this->setup[$theKey . '.']['offset']) {
-							$this->setup[$theKey . '.']['offset'] = $this->calcOffset($this->setup[$theKey . '.']['offset']);
-						}
-						break;
-					case 'BOX':
+						case 'IMAGE':
+							if (isset($this->setup[$theKey . '.']['offset.'])) {
+								$this->setup[$theKey . '.']['offset'] = $this->cObj->stdWrap($this->setup[$theKey . '.']['offset'], $this->setup[$theKey . '.']['offset.']);
+							}
+							if ($this->setup[$theKey . '.']['offset']) {
+								$this->setup[$theKey . '.']['offset'] = $this->calcOffset($this->setup[$theKey . '.']['offset']);
+							}
+							break;
+						case 'BOX':
 
-					case 'ELLIPSE':
-						if (isset($this->setup[$theKey . '.']['dimensions.'])) {
-							$this->setup[$theKey . '.']['dimensions'] = $this->cObj->stdWrap($this->setup[$theKey . '.']['dimensions'], $this->setup[$theKey . '.']['dimensions.']);
-						}
-						if ($this->setup[$theKey . '.']['dimensions']) {
-							$this->setup[$theKey . '.']['dimensions'] = $this->calcOffset($this->setup[$theKey . '.']['dimensions']);
-						}
-						break;
-					case 'WORKAREA':
-						if (isset($this->setup[$theKey . '.']['set.'])) {
-							$this->setup[$theKey . '.']['set'] = $this->cObj->stdWrap($this->setup[$theKey . '.']['set'], $this->setup[$theKey . '.']['set.']);
-						}
-						if ($this->setup[$theKey . '.']['set']) {
-							$this->setup[$theKey . '.']['set'] = $this->calcOffset($this->setup[$theKey . '.']['set']);
-						}
-						break;
-					case 'CROP':
-						if (isset($this->setup[$theKey . '.']['crop.'])) {
-							$this->setup[$theKey . '.']['crop'] = $this->cObj->stdWrap($this->setup[$theKey . '.']['crop'], $this->setup[$theKey . '.']['crop.']);
-						}
-						if ($this->setup[$theKey . '.']['crop']) {
-							$this->setup[$theKey . '.']['crop'] = $this->calcOffset($this->setup[$theKey . '.']['crop']);
-						}
-						break;
-					case 'SCALE':
-						if (isset($this->setup[$theKey . '.']['width.'])) {
-							$this->setup[$theKey . '.']['width'] = $this->cObj->stdWrap($this->setup[$theKey . '.']['width'], $this->setup[$theKey . '.']['width.']);
-						}
-						if ($this->setup[$theKey . '.']['width']) {
-							$this->setup[$theKey . '.']['width'] = $this->calcOffset($this->setup[$theKey . '.']['width']);
-						}
-						if (isset($this->setup[$theKey . '.']['height.'])) {
-							$this->setup[$theKey . '.']['height'] = $this->cObj->stdWrap($this->setup[$theKey . '.']['height'], $this->setup[$theKey . '.']['height.']);
-						}
-						if ($this->setup[$theKey . '.']['height']) {
-							$this->setup[$theKey . '.']['height'] = $this->calcOffset($this->setup[$theKey . '.']['height']);
-						}
-						break;
+						case 'ELLIPSE':
+							if (isset($this->setup[$theKey . '.']['dimensions.'])) {
+								$this->setup[$theKey . '.']['dimensions'] = $this->cObj->stdWrap($this->setup[$theKey . '.']['dimensions'], $this->setup[$theKey . '.']['dimensions.']);
+							}
+							if ($this->setup[$theKey . '.']['dimensions']) {
+								$this->setup[$theKey . '.']['dimensions'] = $this->calcOffset($this->setup[$theKey . '.']['dimensions']);
+							}
+							break;
+						case 'WORKAREA':
+							if (isset($this->setup[$theKey . '.']['set.'])) {
+								$this->setup[$theKey . '.']['set'] = $this->cObj->stdWrap($this->setup[$theKey . '.']['set'], $this->setup[$theKey . '.']['set.']);
+							}
+							if ($this->setup[$theKey . '.']['set']) {
+								$this->setup[$theKey . '.']['set'] = $this->calcOffset($this->setup[$theKey . '.']['set']);
+							}
+							break;
+						case 'CROP':
+							if (isset($this->setup[$theKey . '.']['crop.'])) {
+								$this->setup[$theKey . '.']['crop'] = $this->cObj->stdWrap($this->setup[$theKey . '.']['crop'], $this->setup[$theKey . '.']['crop.']);
+							}
+							if ($this->setup[$theKey . '.']['crop']) {
+								$this->setup[$theKey . '.']['crop'] = $this->calcOffset($this->setup[$theKey . '.']['crop']);
+							}
+							break;
+						case 'SCALE':
+							if (isset($this->setup[$theKey . '.']['width.'])) {
+								$this->setup[$theKey . '.']['width'] = $this->cObj->stdWrap($this->setup[$theKey . '.']['width'], $this->setup[$theKey . '.']['width.']);
+							}
+							if ($this->setup[$theKey . '.']['width']) {
+								$this->setup[$theKey . '.']['width'] = $this->calcOffset($this->setup[$theKey . '.']['width']);
+							}
+							if (isset($this->setup[$theKey . '.']['height.'])) {
+								$this->setup[$theKey . '.']['height'] = $this->cObj->stdWrap($this->setup[$theKey . '.']['height'], $this->setup[$theKey . '.']['height.']);
+							}
+							if ($this->setup[$theKey . '.']['height']) {
+								$this->setup[$theKey . '.']['height'] = $this->calcOffset($this->setup[$theKey . '.']['height']);
+							}
+							break;
 					}
 				}
 			}
@@ -412,95 +412,95 @@ class GifBuilder extends \TYPO3\CMS\Core\Imaging\GraphicalFunctions {
 					}
 
 					switch ($theValue) {
-					case 'IMAGE':
-						if ($conf['mask']) {
-							$this->maskImageOntoImage($this->im, $conf, $this->workArea);
-						} else {
-							$this->copyImageOntoImage($this->im, $conf, $this->workArea);
-						}
-						break;
-					case 'TEXT':
-						if (!$conf['hide']) {
-							if (is_array($conf['shadow.'])) {
-								$isStdWrapped = array();
-								foreach ($conf['shadow.'] as $key => $value) {
-									$parameter = rtrim($key, '.');
-									if (!$isStdWrapped[$parameter] && isset($conf[$parameter . '.'])) {
-										$conf['shadow.'][$parameter] = $this->cObj->stdWrap($conf[$parameter], $conf[$parameter . '.']);
-										$isStdWrapped[$parameter] = 1;
-									}
-								}
-								$this->makeShadow($this->im, $conf['shadow.'], $this->workArea, $conf);
+						case 'IMAGE':
+							if ($conf['mask']) {
+								$this->maskImageOntoImage($this->im, $conf, $this->workArea);
+							} else {
+								$this->copyImageOntoImage($this->im, $conf, $this->workArea);
 							}
-							if (is_array($conf['emboss.'])) {
-								$isStdWrapped = array();
-								foreach ($conf['emboss.'] as $key => $value) {
-									$parameter = rtrim($key, '.');
-									if (!$isStdWrapped[$parameter] && isset($conf[$parameter . '.'])) {
-										$conf['emboss.'][$parameter] = $this->cObj->stdWrap($conf[$parameter], $conf[$parameter . '.']);
-										$isStdWrapped[$parameter] = 1;
+							break;
+						case 'TEXT':
+							if (!$conf['hide']) {
+								if (is_array($conf['shadow.'])) {
+									$isStdWrapped = array();
+									foreach ($conf['shadow.'] as $key => $value) {
+										$parameter = rtrim($key, '.');
+										if (!$isStdWrapped[$parameter] && isset($conf[$parameter . '.'])) {
+											$conf['shadow.'][$parameter] = $this->cObj->stdWrap($conf[$parameter], $conf[$parameter . '.']);
+											$isStdWrapped[$parameter] = 1;
+										}
 									}
+									$this->makeShadow($this->im, $conf['shadow.'], $this->workArea, $conf);
 								}
-								$this->makeEmboss($this->im, $conf['emboss.'], $this->workArea, $conf);
-							}
-							if (is_array($conf['outline.'])) {
-								$isStdWrapped = array();
-								foreach ($conf['outline.'] as $key => $value) {
-									$parameter = rtrim($key, '.');
-									if (!$isStdWrapped[$parameter] && isset($conf[$parameter . '.'])) {
-										$conf['outline.'][$parameter] = $this->cObj->stdWrap($conf[$parameter], $conf[$parameter . '.']);
-										$isStdWrapped[$parameter] = 1;
+								if (is_array($conf['emboss.'])) {
+									$isStdWrapped = array();
+									foreach ($conf['emboss.'] as $key => $value) {
+										$parameter = rtrim($key, '.');
+										if (!$isStdWrapped[$parameter] && isset($conf[$parameter . '.'])) {
+											$conf['emboss.'][$parameter] = $this->cObj->stdWrap($conf[$parameter], $conf[$parameter . '.']);
+											$isStdWrapped[$parameter] = 1;
+										}
 									}
+									$this->makeEmboss($this->im, $conf['emboss.'], $this->workArea, $conf);
 								}
-								$this->makeOutline($this->im, $conf['outline.'], $this->workArea, $conf);
+								if (is_array($conf['outline.'])) {
+									$isStdWrapped = array();
+									foreach ($conf['outline.'] as $key => $value) {
+										$parameter = rtrim($key, '.');
+										if (!$isStdWrapped[$parameter] && isset($conf[$parameter . '.'])) {
+											$conf['outline.'][$parameter] = $this->cObj->stdWrap($conf[$parameter], $conf[$parameter . '.']);
+											$isStdWrapped[$parameter] = 1;
+										}
+									}
+									$this->makeOutline($this->im, $conf['outline.'], $this->workArea, $conf);
+								}
+								$conf['imgMap'] = 1;
+								$this->makeText($this->im, $conf, $this->workArea);
 							}
-							$conf['imgMap'] = 1;
-							$this->makeText($this->im, $conf, $this->workArea);
-						}
-						break;
-					case 'OUTLINE':
-						if ($this->setup[$conf['textObjNum']] == 'TEXT' && ($txtConf = $this->checkTextObj($this->setup[$conf['textObjNum'] . '.']))) {
-							$this->makeOutline($this->im, $conf, $this->workArea, $txtConf);
-						}
-						break;
-					case 'EMBOSS':
-						if ($this->setup[$conf['textObjNum']] == 'TEXT' && ($txtConf = $this->checkTextObj($this->setup[$conf['textObjNum'] . '.']))) {
-							$this->makeEmboss($this->im, $conf, $this->workArea, $txtConf);
-						}
-						break;
-					case 'SHADOW':
-						if ($this->setup[$conf['textObjNum']] == 'TEXT' && ($txtConf = $this->checkTextObj($this->setup[$conf['textObjNum'] . '.']))) {
-							$this->makeShadow($this->im, $conf, $this->workArea, $txtConf);
-						}
-						break;
-					case 'BOX':
-						$this->makeBox($this->im, $conf, $this->workArea);
-						break;
-					case 'EFFECT':
-						$this->makeEffect($this->im, $conf);
-						break;
-					case 'ADJUST':
-						$this->adjust($this->im, $conf);
-						break;
-					case 'CROP':
-						$this->crop($this->im, $conf);
-						break;
-					case 'SCALE':
-						$this->scale($this->im, $conf);
-						break;
-					case 'WORKAREA':
-						if ($conf['set']) {
-							// this sets the workArea
-							$this->setWorkArea($conf['set']);
-						}
-						if (isset($conf['clear'])) {
-							// This sets the current to the default;
-							$this->workArea = $this->defaultWorkArea;
-						}
-						break;
-					case 'ELLIPSE':
-						$this->makeEllipse($this->im, $conf, $this->workArea);
-						break;
+							break;
+						case 'OUTLINE':
+							if ($this->setup[$conf['textObjNum']] == 'TEXT' && ($txtConf = $this->checkTextObj($this->setup[$conf['textObjNum'] . '.']))) {
+								$this->makeOutline($this->im, $conf, $this->workArea, $txtConf);
+							}
+							break;
+						case 'EMBOSS':
+							if ($this->setup[$conf['textObjNum']] == 'TEXT' && ($txtConf = $this->checkTextObj($this->setup[$conf['textObjNum'] . '.']))) {
+								$this->makeEmboss($this->im, $conf, $this->workArea, $txtConf);
+							}
+							break;
+						case 'SHADOW':
+							if ($this->setup[$conf['textObjNum']] == 'TEXT' && ($txtConf = $this->checkTextObj($this->setup[$conf['textObjNum'] . '.']))) {
+								$this->makeShadow($this->im, $conf, $this->workArea, $txtConf);
+							}
+							break;
+						case 'BOX':
+							$this->makeBox($this->im, $conf, $this->workArea);
+							break;
+						case 'EFFECT':
+							$this->makeEffect($this->im, $conf);
+							break;
+						case 'ADJUST':
+							$this->adjust($this->im, $conf);
+							break;
+						case 'CROP':
+							$this->crop($this->im, $conf);
+							break;
+						case 'SCALE':
+							$this->scale($this->im, $conf);
+							break;
+						case 'WORKAREA':
+							if ($conf['set']) {
+								// this sets the workArea
+								$this->setWorkArea($conf['set']);
+							}
+							if (isset($conf['clear'])) {
+								// This sets the current to the default;
+								$this->workArea = $this->defaultWorkArea;
+							}
+							break;
+						case 'ELLIPSE':
+							$this->makeEllipse($this->im, $conf, $this->workArea);
+							break;
 					}
 				}
 			}
@@ -724,20 +724,19 @@ class GifBuilder extends \TYPO3\CMS\Core\Imaging\GraphicalFunctions {
 	 */
 	public function extension() {
 		switch (strtolower($this->setup['format'])) {
-		case 'jpg':
+			case 'jpg':
 
-		case 'jpeg':
-			return 'jpg';
-			break;
-		case 'png':
-			return 'png';
-			break;
-		case 'gif':
-			return 'gif';
-			break;
-		default:
-			return $this->gifExtension;
-			break;
+			case 'jpeg':
+				return 'jpg';
+				break;
+			case 'png':
+				return 'png';
+				break;
+			case 'gif':
+				return 'gif';
+				break;
+			default:
+				return $this->gifExtension;
 		}
 	}
 

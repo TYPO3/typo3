@@ -116,61 +116,60 @@ class SoftReferenceIndex {
 		$retVal = FALSE;
 		$this->tokenID_basePrefix = $table . ':' . $uid . ':' . $field . ':' . $structurePath . ':' . $spKey;
 		switch ($spKey) {
-		case 'notify':
-			// Simple notification
-			$resultArray = array(
-				'elements' => array(
-					array(
-						'matchString' => $content
-					)
-				)
-			);
-			$retVal = $resultArray;
-			break;
-		case 'substitute':
-			$tokenID = $this->makeTokenID();
-			$resultArray = array(
-				'content' => '{softref:' . $tokenID . '}',
-				'elements' => array(
-					array(
-						'matchString' => $content,
-						'subst' => array(
-							'type' => 'string',
-							'tokenID' => $tokenID,
-							'tokenValue' => $content
+			case 'notify':
+				// Simple notification
+				$resultArray = array(
+					'elements' => array(
+						array(
+							'matchString' => $content
 						)
 					)
-				)
-			);
-			$retVal = $resultArray;
-			break;
-		case 'images':
-			$retVal = $this->findRef_images($content, $spParams);
-			break;
-		case 'typolink':
-			$retVal = $this->findRef_typolink($content, $spParams);
-			break;
-		case 'typolink_tag':
-			$retVal = $this->findRef_typolink_tag($content, $spParams);
-			break;
-		case 'ext_fileref':
-			$retVal = $this->findRef_extension_fileref($content, $spParams);
-			break;
-		case 'TStemplate':
-			$retVal = $this->findRef_TStemplate($content, $spParams);
-			break;
-		case 'TSconfig':
-			$retVal = $this->findRef_TSconfig($content, $spParams);
-			break;
-		case 'email':
-			$retVal = $this->findRef_email($content, $spParams);
-			break;
-		case 'url':
-			$retVal = $this->findRef_url($content, $spParams);
-			break;
-		default:
-			$retVal = FALSE;
-			break;
+				);
+				$retVal = $resultArray;
+				break;
+			case 'substitute':
+				$tokenID = $this->makeTokenID();
+				$resultArray = array(
+					'content' => '{softref:' . $tokenID . '}',
+					'elements' => array(
+						array(
+							'matchString' => $content,
+							'subst' => array(
+								'type' => 'string',
+								'tokenID' => $tokenID,
+								'tokenValue' => $content
+							)
+						)
+					)
+				);
+				$retVal = $resultArray;
+				break;
+			case 'images':
+				$retVal = $this->findRef_images($content, $spParams);
+				break;
+			case 'typolink':
+				$retVal = $this->findRef_typolink($content, $spParams);
+				break;
+			case 'typolink_tag':
+				$retVal = $this->findRef_typolink_tag($content, $spParams);
+				break;
+			case 'ext_fileref':
+				$retVal = $this->findRef_extension_fileref($content, $spParams);
+				break;
+			case 'TStemplate':
+				$retVal = $this->findRef_TStemplate($content, $spParams);
+				break;
+			case 'TSconfig':
+				$retVal = $this->findRef_TSconfig($content, $spParams);
+				break;
+			case 'email':
+				$retVal = $this->findRef_email($content, $spParams);
+				break;
+			case 'url':
+				$retVal = $this->findRef_url($content, $spParams);
+				break;
+			default:
+				$retVal = FALSE;
 		}
 		return $retVal;
 	}
@@ -328,15 +327,15 @@ class SoftReferenceIndex {
 				$attribs = $htmlParser->get_tag_attributes($v);
 				$attributeName = '';
 				switch ($htmlParser->getFirstTagName($v)) {
-				case 'img':
-					$attributeName = 'src';
-					break;
-				case 'a':
-					$attributeName = 'href';
-					break;
-				case 'form':
-					$attributeName = 'action';
-					break;
+					case 'img':
+						$attributeName = 'src';
+						break;
+					case 'a':
+						$attributeName = 'href';
+						break;
+					case 'form':
+						$attributeName = 'action';
+						break;
 				}
 				// Get file reference:
 				if (isset($attribs[0][$attributeName])) {
@@ -666,105 +665,104 @@ class SoftReferenceIndex {
 		$elements[$tokenID . ':' . $idx]['matchString'] = $content;
 		// Based on link type, maybe do more:
 		switch ((string) $tLP['LINK_TYPE']) {
-		case 'mailto':
+			case 'mailto':
 
-		case 'url':
-			// Mail addresses and URLs can be substituted manually:
-			$elements[$tokenID . ':' . $idx]['subst'] = array(
-				'type' => 'string',
-				'tokenID' => $tokenID,
-				'tokenValue' => $tLP['url']
-			);
-			// Output content will be the token instead:
-			$content = '{softref:' . $tokenID . '}';
-			break;
-		case 'file':
-				// Process files referenced by their FAL uid
-			if ($tLP['identifier']) {
-				list ($linkHandlerKeyword, $linkHandlerValue) = explode(':', trim($tLP['identifier']), 2);
-				if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($linkHandlerValue)) {
-						// Token and substitute value
-					$elements[$tokenID . ':' . $idx]['subst'] = array(
-						'type' => 'db',
-						'recordRef' => 'sys_file:' . $linkHandlerValue,
-						'tokenID' => $tokenID,
-						'tokenValue' => $tLP['identifier'],
-					);
-						// Output content will be the token instead:
-					$content = '{softref:' . $tokenID . '}';
-				} else {
-						// This is a link to a folder...
-					return $content;
-				}
-
-			// Process files found in fileadmin directory:
-			} elseif (!$tLP['query']) {
-				// We will not process files which has a query added to it. That will look like a script we don't want to move.
-				// File must be inside fileadmin/
-				if (\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($tLP['filepath'], $this->fileAdminDir . '/')) {
-					// Set up the basic token and token value for the relative file:
-					$elements[$tokenID . ':' . $idx]['subst'] = array(
-						'type' => 'file',
-						'relFileName' => $tLP['filepath'],
-						'tokenID' => $tokenID,
-						'tokenValue' => $tLP['filepath']
-					);
-					// Depending on whether the file exists or not we will set the
-					$absPath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName(PATH_site . $tLP['filepath']);
-					if (!@is_file($absPath)) {
-						$elements[$tokenID . ':' . $idx]['error'] = 'File does not exist!';
-					}
-					// Output content will be the token instead
-					$content = '{softref:' . $tokenID . '}';
-				} else {
-					return $content;
-				}
-			} else {
-				return $content;
-			}
-			break;
-		case 'page':
-			// Rebuild page reference typolink part:
-			$content = '';
-			// Set page id:
-			if ($tLP['page_id']) {
-				$content .= '{softref:' . $tokenID . '}';
+			case 'url':
+				// Mail addresses and URLs can be substituted manually:
 				$elements[$tokenID . ':' . $idx]['subst'] = array(
-					'type' => 'db',
-					'recordRef' => 'pages:' . $tLP['page_id'],
+					'type' => 'string',
 					'tokenID' => $tokenID,
-					'tokenValue' => $tLP['alias'] ? $tLP['alias'] : $tLP['page_id']
+					'tokenValue' => $tLP['url']
 				);
-			}
-			// Add type if applicable
-			if (strlen($tLP['type'])) {
-				$content .= ',' . $tLP['type'];
-			}
-			// Add anchor if applicable
-			if (strlen($tLP['anchor'])) {
-				// Anchor is assumed to point to a content elements:
-				if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($tLP['anchor'])) {
-					// Initialize a new entry because we have a new relation:
-					$newTokenID = $this->makeTokenID('setTypoLinkPartsElement:anchor:' . $idx);
-					$elements[$newTokenID . ':' . $idx] = array();
-					$elements[$newTokenID . ':' . $idx]['matchString'] = 'Anchor Content Element: ' . $tLP['anchor'];
-					$content .= '#{softref:' . $newTokenID . '}';
-					$elements[$newTokenID . ':' . $idx]['subst'] = array(
-						'type' => 'db',
-						'recordRef' => 'tt_content:' . $tLP['anchor'],
-						'tokenID' => $newTokenID,
-						'tokenValue' => $tLP['anchor']
-					);
+				// Output content will be the token instead:
+				$content = '{softref:' . $tokenID . '}';
+				break;
+			case 'file':
+					// Process files referenced by their FAL uid
+				if ($tLP['identifier']) {
+					list ($linkHandlerKeyword, $linkHandlerValue) = explode(':', trim($tLP['identifier']), 2);
+					if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($linkHandlerValue)) {
+							// Token and substitute value
+						$elements[$tokenID . ':' . $idx]['subst'] = array(
+							'type' => 'db',
+							'recordRef' => 'sys_file:' . $linkHandlerValue,
+							'tokenID' => $tokenID,
+							'tokenValue' => $tLP['identifier'],
+						);
+							// Output content will be the token instead:
+						$content = '{softref:' . $tokenID . '}';
+					} else {
+							// This is a link to a folder...
+						return $content;
+					}
+
+				// Process files found in fileadmin directory:
+				} elseif (!$tLP['query']) {
+					// We will not process files which has a query added to it. That will look like a script we don't want to move.
+					// File must be inside fileadmin/
+					if (\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($tLP['filepath'], $this->fileAdminDir . '/')) {
+						// Set up the basic token and token value for the relative file:
+						$elements[$tokenID . ':' . $idx]['subst'] = array(
+							'type' => 'file',
+							'relFileName' => $tLP['filepath'],
+							'tokenID' => $tokenID,
+							'tokenValue' => $tLP['filepath']
+						);
+						// Depending on whether the file exists or not we will set the
+						$absPath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName(PATH_site . $tLP['filepath']);
+						if (!@is_file($absPath)) {
+							$elements[$tokenID . ':' . $idx]['error'] = 'File does not exist!';
+						}
+						// Output content will be the token instead
+						$content = '{softref:' . $tokenID . '}';
+					} else {
+						return $content;
+					}
 				} else {
-					// Anchor is a hardcoded string
-					$content .= '#' . $tLP['type'];
+					return $content;
 				}
-			}
-			break;
-		default:
-			$elements[$tokenID . ':' . $idx]['error'] = 'Couldn\\t decide typolink mode.';
-			return $content;
-			break;
+				break;
+			case 'page':
+				// Rebuild page reference typolink part:
+				$content = '';
+				// Set page id:
+				if ($tLP['page_id']) {
+					$content .= '{softref:' . $tokenID . '}';
+					$elements[$tokenID . ':' . $idx]['subst'] = array(
+						'type' => 'db',
+						'recordRef' => 'pages:' . $tLP['page_id'],
+						'tokenID' => $tokenID,
+						'tokenValue' => $tLP['alias'] ? $tLP['alias'] : $tLP['page_id']
+					);
+				}
+				// Add type if applicable
+				if (strlen($tLP['type'])) {
+					$content .= ',' . $tLP['type'];
+				}
+				// Add anchor if applicable
+				if (strlen($tLP['anchor'])) {
+					// Anchor is assumed to point to a content elements:
+					if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($tLP['anchor'])) {
+						// Initialize a new entry because we have a new relation:
+						$newTokenID = $this->makeTokenID('setTypoLinkPartsElement:anchor:' . $idx);
+						$elements[$newTokenID . ':' . $idx] = array();
+						$elements[$newTokenID . ':' . $idx]['matchString'] = 'Anchor Content Element: ' . $tLP['anchor'];
+						$content .= '#{softref:' . $newTokenID . '}';
+						$elements[$newTokenID . ':' . $idx]['subst'] = array(
+							'type' => 'db',
+							'recordRef' => 'tt_content:' . $tLP['anchor'],
+							'tokenID' => $newTokenID,
+							'tokenValue' => $tLP['anchor']
+						);
+					} else {
+						// Anchor is a hardcoded string
+						$content .= '#' . $tLP['type'];
+					}
+				}
+				break;
+			default:
+				$elements[$tokenID . ':' . $idx]['error'] = 'Couldn\\t decide typolink mode.';
+				return $content;
 		}
 		// Finally, for all entries that was rebuild with tokens, add target and class in the end:
 		if (strlen($content) && strlen($tLP['target'])) {

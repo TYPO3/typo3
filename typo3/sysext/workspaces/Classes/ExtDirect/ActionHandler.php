@@ -509,24 +509,23 @@ class ActionHandler extends \TYPO3\CMS\Workspaces\ExtDirect\AbstractHandler {
 			)
 		);
 		switch ($nextStageId) {
-		case \TYPO3\CMS\Workspaces\Service\StagesService::STAGE_PUBLISH_EXECUTE_ID:
+			case \TYPO3\CMS\Workspaces\Service\StagesService::STAGE_PUBLISH_EXECUTE_ID:
 
-		case \TYPO3\CMS\Workspaces\Service\StagesService::STAGE_PUBLISH_ID:
-			if (!empty($workspaceRec['publish_allow_notificaton_settings'])) {
-				$showNotificationFields = TRUE;
-			}
-			break;
-		case \TYPO3\CMS\Workspaces\Service\StagesService::STAGE_EDIT_ID:
-			if (!empty($workspaceRec['edit_allow_notificaton_settings'])) {
-				$showNotificationFields = TRUE;
-			}
-			break;
-		default:
-			$allow_notificaton_settings = $this->getStageService()->getPropertyOfCurrentWorkspaceStage($nextStageId, 'allow_notificaton_settings');
-			if (!empty($allow_notificaton_settings)) {
-				$showNotificationFields = TRUE;
-			}
-			break;
+			case \TYPO3\CMS\Workspaces\Service\StagesService::STAGE_PUBLISH_ID:
+				if (!empty($workspaceRec['publish_allow_notificaton_settings'])) {
+					$showNotificationFields = TRUE;
+				}
+				break;
+			case \TYPO3\CMS\Workspaces\Service\StagesService::STAGE_EDIT_ID:
+				if (!empty($workspaceRec['edit_allow_notificaton_settings'])) {
+					$showNotificationFields = TRUE;
+				}
+				break;
+			default:
+				$allow_notificaton_settings = $this->getStageService()->getPropertyOfCurrentWorkspaceStage($nextStageId, 'allow_notificaton_settings');
+				if (!empty($allow_notificaton_settings)) {
+					$showNotificationFields = TRUE;
+				}
 		}
 		if ($showNotificationFields == TRUE) {
 			$result['items'][] = array(

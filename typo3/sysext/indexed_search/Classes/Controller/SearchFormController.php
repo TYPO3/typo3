@@ -739,43 +739,42 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 		$this->resultSections = array();
 		if ($freeIndexUid <= 0) {
 			switch ($this->piVars['group']) {
-			case 'sections':
-				$rl2flag = substr($this->piVars['sections'], 0, 2) == 'rl';
-				$sections = array();
-				foreach ($resultRows as $row) {
-					$id = $row['rl0'] . '-' . $row['rl1'] . ($rl2flag ? '-' . $row['rl2'] : '');
-					$sections[$id][] = $row;
-				}
-				$this->resultSections = array();
-				foreach ($sections as $id => $resultRows) {
-					$rlParts = explode('-', $id);
-					$theId = $rlParts[2] ? $rlParts[2] : ($rlParts[1] ? $rlParts[1] : $rlParts[0]);
-					$theRLid = $rlParts[2] ? 'rl2_' . $rlParts[2] : ($rlParts[1] ? 'rl1_' . $rlParts[1] : '0');
-					$sectionName = $this->getPathFromPageId($theId);
-					if ($sectionName[0] == '/') {
-						$sectionName = substr($sectionName, 1);
+				case 'sections':
+					$rl2flag = substr($this->piVars['sections'], 0, 2) == 'rl';
+					$sections = array();
+					foreach ($resultRows as $row) {
+						$id = $row['rl0'] . '-' . $row['rl1'] . ($rl2flag ? '-' . $row['rl2'] : '');
+						$sections[$id][] = $row;
 					}
-					if (!trim($sectionName)) {
-						$sectionTitleLinked = $this->pi_getLL('unnamedSection', '', 1) . ':';
-					} else {
-						$onclick = 'document.' . $this->prefixId . '[\'' . $this->prefixId . '[_sections]\'].value=\'' . $theRLid . '\';document.' . $this->prefixId . '.submit();return false;';
-						$sectionTitleLinked = '<a href="#" onclick="' . htmlspecialchars($onclick) . '">' . htmlspecialchars($sectionName) . ':</a>';
+					$this->resultSections = array();
+					foreach ($sections as $id => $resultRows) {
+						$rlParts = explode('-', $id);
+						$theId = $rlParts[2] ? $rlParts[2] : ($rlParts[1] ? $rlParts[1] : $rlParts[0]);
+						$theRLid = $rlParts[2] ? 'rl2_' . $rlParts[2] : ($rlParts[1] ? 'rl1_' . $rlParts[1] : '0');
+						$sectionName = $this->getPathFromPageId($theId);
+						if ($sectionName[0] == '/') {
+							$sectionName = substr($sectionName, 1);
+						}
+						if (!trim($sectionName)) {
+							$sectionTitleLinked = $this->pi_getLL('unnamedSection', '', 1) . ':';
+						} else {
+							$onclick = 'document.' . $this->prefixId . '[\'' . $this->prefixId . '[_sections]\'].value=\'' . $theRLid . '\';document.' . $this->prefixId . '.submit();return false;';
+							$sectionTitleLinked = '<a href="#" onclick="' . htmlspecialchars($onclick) . '">' . htmlspecialchars($sectionName) . ':</a>';
+						}
+						$this->resultSections[$id] = array($sectionName, count($resultRows));
+						// Add content header:
+						$content .= $this->makeSectionHeader($id, $sectionTitleLinked, count($resultRows));
+						// Render result rows:
+						foreach ($resultRows as $row) {
+							$content .= $this->printResultRow($row);
+						}
 					}
-					$this->resultSections[$id] = array($sectionName, count($resultRows));
-					// Add content header:
-					$content .= $this->makeSectionHeader($id, $sectionTitleLinked, count($resultRows));
-					// Render result rows:
+					break;
+				default:
+					// flat:
 					foreach ($resultRows as $row) {
 						$content .= $this->printResultRow($row);
 					}
-				}
-				break;
-			default:
-				// flat:
-				foreach ($resultRows as $row) {
-					$content .= $this->printResultRow($row);
-				}
-				break;
 			}
 		} else {
 			foreach ($resultRows as $row) {
@@ -815,41 +814,40 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 			$GLOBALS['TT']->push('SearchWord "' . $sWord . '" - $theType=' . $theType);
 			// Perform search for word:
 			switch ($theType) {
-			case '1':
-				// Part of word
-				$res = $this->searchWord($sWord, self::WILDCARD_LEFT | self::WILDCARD_RIGHT);
-				break;
-			case '2':
-				// First part of word
-				$res = $this->searchWord($sWord, self::WILDCARD_RIGHT);
-				break;
-			case '3':
-				// Last part of word
-				$res = $this->searchWord($sWord, self::WILDCARD_LEFT);
-				break;
-			case '10':
-				// Sounds like
-				/**
-				 * Indexer object
-				 *
-				 * @var \TYPO3\CMS\IndexedSearch\Indexer
-				 */
-				// Initialize the indexer-class
-				$indexerObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\IndexedSearch\\Indexer');
-				// Perform metaphone search
-				$res = $this->searchMetaphone($indexerObj->metaphone($sWord, $this->storeMetaphoneInfoAsWords));
-				unset($indexerObj);
-				break;
-			case '20':
-				// Sentence
-				$res = $this->searchSentence($sWord);
-				$this->piVars['order'] = 'mtime';
-				// If there is a fulltext search for a sentence there is a likeliness that sorting cannot be done by the rankings from the rel-table (because no relations will exist for the sentence in the word-table). So therefore mtime is used instead. It is not required, but otherwise some hits may be left out.
-				break;
-			default:
-				// Distinct word
-				$res = $this->searchDistinct($sWord);
-				break;
+				case '1':
+					// Part of word
+					$res = $this->searchWord($sWord, self::WILDCARD_LEFT | self::WILDCARD_RIGHT);
+					break;
+				case '2':
+					// First part of word
+					$res = $this->searchWord($sWord, self::WILDCARD_RIGHT);
+					break;
+				case '3':
+					// Last part of word
+					$res = $this->searchWord($sWord, self::WILDCARD_LEFT);
+					break;
+				case '10':
+					// Sounds like
+					/**
+					* Indexer object
+					*
+					* @var \TYPO3\CMS\IndexedSearch\Indexer
+					*/
+					// Initialize the indexer-class
+					$indexerObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\IndexedSearch\\Indexer');
+					// Perform metaphone search
+					$res = $this->searchMetaphone($indexerObj->metaphone($sWord, $this->storeMetaphoneInfoAsWords));
+					unset($indexerObj);
+					break;
+				case '20':
+					// Sentence
+					$res = $this->searchSentence($sWord);
+					$this->piVars['order'] = 'mtime';
+					// If there is a fulltext search for a sentence there is a likeliness that sorting cannot be done by the rankings from the rel-table (because no relations will exist for the sentence in the word-table). So therefore mtime is used instead. It is not required, but otherwise some hits may be left out.
+					break;
+				default:
+					// Distinct word
+					$res = $this->searchDistinct($sWord);
 			}
 			// If there was a query to do, then select all phash-integers which resulted from this.
 			if ($res) {
@@ -862,16 +860,15 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 				// Here the phash list are merged with the existing result based on whether we are dealing with OR, NOT or AND operations.
 				if ($c) {
 					switch ($v['oper']) {
-					case 'OR':
-						$totalHashList = array_unique(array_merge($phashList, $totalHashList));
-						break;
-					case 'AND NOT':
-						$totalHashList = array_diff($totalHashList, $phashList);
-						break;
-					default:
-						// AND...
-						$totalHashList = array_intersect($totalHashList, $phashList);
-						break;
+						case 'OR':
+							$totalHashList = array_unique(array_merge($phashList, $totalHashList));
+							break;
+						case 'AND NOT':
+							$totalHashList = array_diff($totalHashList, $phashList);
+							break;
+						default:
+							// AND...
+							$totalHashList = array_intersect($totalHashList, $phashList);
 					}
 				} else {
 					$totalHashList = $phashList;
@@ -987,18 +984,18 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 		// If no match above, test the static types:
 		if (!$match) {
 			switch ((string) $this->piVars['sections']) {
-			case '-1':
-				// '-1' => 'Only this page',
-				$out .= ' AND ISEC.page_id=' . $GLOBALS['TSFE']->id;
-				break;
-			case '-2':
-				// '-2' => 'Top + level 1',
-				$out .= ' AND ISEC.rl2=0';
-				break;
-			case '-3':
-				// '-3' => 'Level 2 and out',
-				$out .= ' AND ISEC.rl2>0';
-				break;
+				case '-1':
+					// '-1' => 'Only this page',
+					$out .= ' AND ISEC.page_id=' . $GLOBALS['TSFE']->id;
+					break;
+				case '-2':
+					// '-2' => 'Top + level 1',
+					$out .= ' AND ISEC.rl2=0';
+					break;
+				case '-3':
+					// '-3' => 'Level 2 and out',
+					$out .= ' AND ISEC.rl2>0';
+					break;
 			}
 		}
 		return $out;
@@ -1012,20 +1009,20 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 */
 	public function mediaTypeWhere() {
 		switch ((string) $this->piVars['media']) {
-		case '0':
-			// '0' => 'Kun TYPO3 sider',
-			$out = ' AND IP.item_type=' . $GLOBALS['TYPO3_DB']->fullQuoteStr('0', 'index_phash');
-			break;
-		case '-2':
-			// All external documents
-			$out = ' AND IP.item_type<>' . $GLOBALS['TYPO3_DB']->fullQuoteStr('0', 'index_phash');
-			break;
-		case '-1':
-			// All content
-			$out = '';
-			break;
-		default:
-			$out = ' AND IP.item_type=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->piVars['media'], 'index_phash');
+			case '0':
+				// '0' => 'Kun TYPO3 sider',
+				$out = ' AND IP.item_type=' . $GLOBALS['TYPO3_DB']->fullQuoteStr('0', 'index_phash');
+				break;
+			case '-2':
+				// All external documents
+				$out = ' AND IP.item_type<>' . $GLOBALS['TYPO3_DB']->fullQuoteStr('0', 'index_phash');
+				break;
+			case '-1':
+				// All content
+				$out = '';
+				break;
+			default:
+				$out = ' AND IP.item_type=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->piVars['media'], 'index_phash');
 		}
 		return $out;
 	}
@@ -1061,18 +1058,18 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 				foreach ($refs as $ref) {
 					list($table, $uid) = \TYPO3\CMS\Core\Utility\GeneralUtility::revExplode('_', $ref, 2);
 					switch ($table) {
-					case 'index_config':
-						$idxRec = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('uid', 'index_config', 'uid=' . intval($uid) . $this->cObj->enableFields('index_config'));
-						if ($idxRec) {
-							$list[] = $uid;
-						}
-						break;
-					case 'pages':
-						$indexCfgRecordsFromPid = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid', 'index_config', 'pid=' . intval($uid) . $this->cObj->enableFields('index_config'));
-						foreach ($indexCfgRecordsFromPid as $idxRec) {
-							$list[] = $idxRec['uid'];
-						}
-						break;
+						case 'index_config':
+							$idxRec = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('uid', 'index_config', 'uid=' . intval($uid) . $this->cObj->enableFields('index_config'));
+							if ($idxRec) {
+								$list[] = $uid;
+							}
+							break;
+						case 'pages':
+							$indexCfgRecordsFromPid = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid', 'index_config', 'pid=' . intval($uid) . $this->cObj->enableFields('index_config'));
+							foreach ($indexCfgRecordsFromPid as $idxRec) {
+								$list[] = $idxRec['uid'];
+							}
+							break;
 					}
 				}
 				$list = array_unique($list);
@@ -1124,27 +1121,26 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 		// If any of the ranking sortings are selected, we must make a join with the word/rel-table again, because we need to calculate ranking based on all search-words found.
 		if (substr($this->piVars['order'], 0, 5) == 'rank_') {
 			switch ($this->piVars['order']) {
-			case 'rank_flag':
-				// This gives priority to word-position (max-value) so that words in title, keywords, description counts more than in content.
-				// The ordering is refined with the frequency sum as well.
-				$grsel = 'MAX(IR.flags) AS order_val1, SUM(IR.freq) AS order_val2';
-				$orderBy = 'order_val1' . $this->isDescending() . ',order_val2' . $this->isDescending();
-				break;
-			case 'rank_first':
-				// Results in average position of search words on page. Must be inversely sorted (low numbers are closer to top)
-				$grsel = 'AVG(IR.first) AS order_val';
-				$orderBy = 'order_val' . $this->isDescending(1);
-				break;
-			case 'rank_count':
-				// Number of words found
-				$grsel = 'SUM(IR.count) AS order_val';
-				$orderBy = 'order_val' . $this->isDescending();
-				break;
-			default:
-				// Frequency sum. I'm not sure if this is the best way to do it (make a sum...). Or should it be the average?
-				$grsel = 'SUM(IR.freq) AS order_val';
-				$orderBy = 'order_val' . $this->isDescending();
-				break;
+				case 'rank_flag':
+					// This gives priority to word-position (max-value) so that words in title, keywords, description counts more than in content.
+					// The ordering is refined with the frequency sum as well.
+					$grsel = 'MAX(IR.flags) AS order_val1, SUM(IR.freq) AS order_val2';
+					$orderBy = 'order_val1' . $this->isDescending() . ',order_val2' . $this->isDescending();
+					break;
+				case 'rank_first':
+					// Results in average position of search words on page. Must be inversely sorted (low numbers are closer to top)
+					$grsel = 'AVG(IR.first) AS order_val';
+					$orderBy = 'order_val' . $this->isDescending(1);
+					break;
+				case 'rank_count':
+					// Number of words found
+					$grsel = 'SUM(IR.count) AS order_val';
+					$orderBy = 'order_val' . $this->isDescending();
+					break;
+				default:
+					// Frequency sum. I'm not sure if this is the best way to do it (make a sum...). Or should it be the average?
+					$grsel = 'SUM(IR.freq) AS order_val';
+					$orderBy = 'order_val' . $this->isDescending();
 			}
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('ISEC.*, IP.*, ' . $grsel, 'index_words IW,
 							index_rel IR,
@@ -1158,15 +1154,15 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 			// Otherwise, if sorting are done with the pages table or other fields, there is no need for joining with the rel/word tables:
 			$orderBy = '';
 			switch ((string) $this->piVars['order']) {
-			case 'title':
-				$orderBy = 'IP.item_title' . $this->isDescending();
-				break;
-			case 'crdate':
-				$orderBy = 'IP.item_crdate' . $this->isDescending();
-				break;
-			case 'mtime':
-				$orderBy = 'IP.item_mtime' . $this->isDescending();
-				break;
+				case 'title':
+					$orderBy = 'IP.item_title' . $this->isDescending();
+					break;
+				case 'crdate':
+					$orderBy = 'IP.item_crdate' . $this->isDescending();
+					break;
+				case 'mtime':
+					$orderBy = 'IP.item_mtime' . $this->isDescending();
+					break;
 			}
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('ISEC.*, IP.*', 'index_phash IP,index_section ISEC' . $page_join, 'IP.phash IN (' . $list . ') ' . $this->mediaTypeWhere() . ' ' . $this->languageWhere() . $freeIndexUidClause . '
 							AND IP.phash = ISEC.phash
@@ -1707,16 +1703,15 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 		foreach ($sWArr as $k => $v) {
 			if ($c) {
 				switch ($v['oper']) {
-				case 'OR':
-					$searchingFor .= ' ' . $this->pi_getLL('searchFor_or', '', 1) . ' ' . $this->wrapSW($this->utf8_to_currentCharset($v['sword']));
-					break;
-				case 'AND NOT':
-					$searchingFor .= ' ' . $this->pi_getLL('searchFor_butNot', '', 1) . ' ' . $this->wrapSW($this->utf8_to_currentCharset($v['sword']));
-					break;
-				default:
-					// AND...
-					$searchingFor .= ' ' . $this->pi_getLL('searchFor_and', '', 1) . ' ' . $this->wrapSW($this->utf8_to_currentCharset($v['sword']));
-					break;
+					case 'OR':
+						$searchingFor .= ' ' . $this->pi_getLL('searchFor_or', '', 1) . ' ' . $this->wrapSW($this->utf8_to_currentCharset($v['sword']));
+						break;
+					case 'AND NOT':
+						$searchingFor .= ' ' . $this->pi_getLL('searchFor_butNot', '', 1) . ' ' . $this->wrapSW($this->utf8_to_currentCharset($v['sword']));
+						break;
+					default:
+						// AND...
+						$searchingFor .= ' ' . $this->pi_getLL('searchFor_and', '', 1) . ' ' . $this->wrapSW($this->utf8_to_currentCharset($v['sword']));
 				}
 			} else {
 				$searchingFor = $this->pi_getLL('searchFor', '', 1) . ' ' . $this->wrapSW($this->utf8_to_currentCharset($v['sword']));
@@ -1831,43 +1826,42 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 */
 	public function makeRating($row) {
 		switch ((string) $this->piVars['order']) {
-		case 'rank_count':
-			// Number of occurencies on page
-			return $row['order_val'] . ' ' . $this->pi_getLL('maketitle_matches');
-			break;
-		case 'rank_first':
-			// Close to top of page
-			return ceil(\TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange((255 - $row['order_val']), 1, 255) / 255 * 100) . '%';
-			break;
-		case 'rank_flag':
-			// Based on priority assigned to <title> / <meta-keywords> / <meta-description> / <body>
-			if ($this->firstRow['order_val2']) {
-				$base = $row['order_val1'] * 256;
-				// (3 MSB bit, 224 is highest value of order_val1 currently)
-				$freqNumber = $row['order_val2'] / $this->firstRow['order_val2'] * pow(2, 12);
-				// 15-3 MSB = 12
-				$total = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($base + $freqNumber, 0, 32767);
-				return ceil(log($total) / log(32767) * 100) . '%';
-			}
-			break;
-		case 'rank_freq':
-			// Based on frequency
-			$max = 10000;
-			$total = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($row['order_val'], 0, $max);
-			return ceil(log($total) / log($max) * 100) . '%';
-			break;
-		case 'crdate':
-			// Based on creation date
-			return $this->cObj->calcAge($GLOBALS['EXEC_TIME'] - $row['item_crdate'], 0);
-			break;
-		case 'mtime':
-			// Based on modification time
-			return $this->cObj->calcAge($GLOBALS['EXEC_TIME'] - $row['item_mtime'], 0);
-			break;
-		default:
-			// fx. title
-			return '&nbsp;';
-			break;
+			case 'rank_count':
+				// Number of occurencies on page
+				return $row['order_val'] . ' ' . $this->pi_getLL('maketitle_matches');
+				break;
+			case 'rank_first':
+				// Close to top of page
+				return ceil(\TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange((255 - $row['order_val']), 1, 255) / 255 * 100) . '%';
+				break;
+			case 'rank_flag':
+				// Based on priority assigned to <title> / <meta-keywords> / <meta-description> / <body>
+				if ($this->firstRow['order_val2']) {
+					$base = $row['order_val1'] * 256;
+					// (3 MSB bit, 224 is highest value of order_val1 currently)
+					$freqNumber = $row['order_val2'] / $this->firstRow['order_val2'] * pow(2, 12);
+					// 15-3 MSB = 12
+					$total = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($base + $freqNumber, 0, 32767);
+					return ceil(log($total) / log(32767) * 100) . '%';
+				}
+				break;
+			case 'rank_freq':
+				// Based on frequency
+				$max = 10000;
+				$total = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($row['order_val'], 0, $max);
+				return ceil(log($total) / log($max) * 100) . '%';
+				break;
+			case 'crdate':
+				// Based on creation date
+				return $this->cObj->calcAge($GLOBALS['EXEC_TIME'] - $row['item_crdate'], 0);
+				break;
+			case 'mtime':
+				// Based on modification time
+				return $this->cObj->calcAge($GLOBALS['EXEC_TIME'] - $row['item_mtime'], 0);
+				break;
+			default:
+				// fx. title
+				return '&nbsp;';
 		}
 	}
 

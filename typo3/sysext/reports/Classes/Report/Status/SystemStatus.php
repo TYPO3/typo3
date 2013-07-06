@@ -52,11 +52,13 @@ class SystemStatus implements \TYPO3\CMS\Reports\StatusProviderInterface {
 	protected function executeAdminCommand() {
 		$command = \TYPO3\CMS\Core\Utility\GeneralUtility::_GET('adminCmd');
 		switch ($command) {
-		case 'clear_peak_memory_usage_flag':
-			/** @var $registry \TYPO3\CMS\Core\Registry */
-			$registry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Registry');
-			$registry->remove('core', 'reports-peakMemoryUsage');
-			break;
+			case 'clear_peak_memory_usage_flag':
+				/** @var $registry \TYPO3\CMS\Core\Registry */
+				$registry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Registry');
+				$registry->remove('core', 'reports-peakMemoryUsage');
+				break;
+			default:
+				// Do nothing
 		}
 	}
 

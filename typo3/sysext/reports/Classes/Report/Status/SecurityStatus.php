@@ -168,9 +168,11 @@ class SecurityStatus implements \TYPO3\CMS\Reports\StatusProviderInterface {
 	protected function executeAdminCommand() {
 		$command = \TYPO3\CMS\Core\Utility\GeneralUtility::_GET('adminCmd');
 		switch ($command) {
-		case 'remove_ENABLE_INSTALL_TOOL':
-			unlink(PATH_site . 'typo3conf/ENABLE_INSTALL_TOOL');
-			break;
+			case 'remove_ENABLE_INSTALL_TOOL':
+				unlink(PATH_site . 'typo3conf/ENABLE_INSTALL_TOOL');
+				break;
+			default:
+				// Do nothing
 		}
 	}
 

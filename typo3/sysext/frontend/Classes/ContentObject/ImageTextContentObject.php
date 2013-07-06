@@ -407,29 +407,29 @@ class ImageTextContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractC
 			}
 			if ($c) {
 				switch ($contentPosition) {
-				case '0':
+					case '0':
 
-				case '8':
-					// below
-					switch ($align) {
-					case 'center':
-						$table_align = 'margin-left: auto; margin-right: auto';
+					case '8':
+						// below
+						switch ($align) {
+							case 'center':
+								$table_align = 'margin-left: auto; margin-right: auto';
+								break;
+							case 'right':
+								$table_align = 'margin-left: auto; margin-right: 0px';
+								break;
+							default:
+								// Most of all: left
+								$table_align = 'margin-left: 0px; margin-right: auto';
+						}
+						$table_align = 'style="' . $table_align . '"';
 						break;
-					case 'right':
-						$table_align = 'margin-left: auto; margin-right: 0px';
+					case '16':
+						// in text
+						$table_align = 'align="' . $align . '"';
 						break;
 					default:
-						// Most of all: left
-						$table_align = 'margin-left: 0px; margin-right: auto';
-					}
-					$table_align = 'style="' . $table_align . '"';
-					break;
-				case '16':
-					// in text
-					$table_align = 'align="' . $align . '"';
-					break;
-				default:
-					$table_align = '';
+						$table_align = '';
 				}
 				// Table-tag is inserted
 				$tablecode = '<table' . ($tableWidth ? ' width="' . $tableWidth . '"' : '') . ' border="0" cellspacing="0" cellpadding="0" ' . $table_align . ' class="imgtext-table">' . $tablecode;
@@ -448,30 +448,30 @@ class ImageTextContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractC
 			}
 			$spaceBelowAbove = isset($conf['spaceBelowAbove.']) ? intval($this->cObj->stdWrap($conf['spaceBelowAbove'], $conf['spaceBelowAbove.'])) : intval($conf['spaceBelowAbove']);
 			switch ($contentPosition) {
-			case '0':
-				// above
-				$output = '<div style="text-align:' . $align . ';">' . $tablecode . '</div>' . $this->cObj->wrapSpace($content, ($spaceBelowAbove . '|0'));
-				break;
-			case '8':
-				// below
-				$output = $this->cObj->wrapSpace($content, ('0|' . $spaceBelowAbove)) . '<div style="text-align:' . $align . ';">' . $tablecode . '</div>';
-				break;
-			case '16':
-				// in text
-				$output = $tablecode . $content;
-				break;
-			case '24':
-				// in text, no wrap
-				$theResult = '';
-				$theResult .= '<table border="0" cellspacing="0" cellpadding="0" class="imgtext-nowrap"><tr>';
-				if ($align == 'right') {
-					$theResult .= '<td valign="top">' . $content . '</td><td valign="top">' . $tablecode . '</td>';
-				} else {
-					$theResult .= '<td valign="top">' . $tablecode . '</td><td valign="top">' . $content . '</td>';
-				}
-				$theResult .= '</tr></table>';
-				$output = $theResult;
-				break;
+				case '0':
+					// above
+					$output = '<div style="text-align:' . $align . ';">' . $tablecode . '</div>' . $this->cObj->wrapSpace($content, ($spaceBelowAbove . '|0'));
+					break;
+				case '8':
+					// below
+					$output = $this->cObj->wrapSpace($content, ('0|' . $spaceBelowAbove)) . '<div style="text-align:' . $align . ';">' . $tablecode . '</div>';
+					break;
+				case '16':
+					// in text
+					$output = $tablecode . $content;
+					break;
+				case '24':
+					// in text, no wrap
+					$theResult = '';
+					$theResult .= '<table border="0" cellspacing="0" cellpadding="0" class="imgtext-nowrap"><tr>';
+					if ($align == 'right') {
+						$theResult .= '<td valign="top">' . $content . '</td><td valign="top">' . $tablecode . '</td>';
+					} else {
+						$theResult .= '<td valign="top">' . $tablecode . '</td><td valign="top">' . $content . '</td>';
+					}
+					$theResult .= '</tr></table>';
+					$output = $theResult;
+					break;
 			}
 		} else {
 			$output = $content;

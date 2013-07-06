@@ -696,7 +696,6 @@ class DatabaseConnection {
 				break;
 			default:
 				$constraint = 'AND';
-				break;
 		}
 
 		$queryParts = array();

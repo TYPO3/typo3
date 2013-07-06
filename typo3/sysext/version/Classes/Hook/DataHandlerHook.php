@@ -92,44 +92,46 @@ class DataHandlerHook {
 			$comment = (isset($value['comment']) && $value['comment'] ? $value['comment'] : $this->generalComment);
 			$notificationAlternativeRecipients = (isset($value['notificationAlternativeRecipients'])) && is_array($value['notificationAlternativeRecipients']) ? $value['notificationAlternativeRecipients'] : array();
 			switch ($action) {
-			case 'new':
-				// check if page / branch versioning is needed,
-				// or if "element" version can be used
-				$versionizeTree = -1;
-				if (isset($value['treeLevels'])) {
-					$versionizeTree = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($value['treeLevels'], -1, 100);
-				}
-				if ($table == 'pages' && $versionizeTree >= 0) {
-					$this->versionizePages($id, $value['label'], $versionizeTree, $tcemainObj);
-				} else {
-					$tcemainObj->versionizeRecord($table, $id, $value['label']);
-				}
-				break;
-			case 'swap':
+				case 'new':
+					// check if page / branch versioning is needed,
+					// or if "element" version can be used
+					$versionizeTree = -1;
+					if (isset($value['treeLevels'])) {
+						$versionizeTree = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($value['treeLevels'], -1, 100);
+					}
+					if ($table == 'pages' && $versionizeTree >= 0) {
+						$this->versionizePages($id, $value['label'], $versionizeTree, $tcemainObj);
+					} else {
+						$tcemainObj->versionizeRecord($table, $id, $value['label']);
+					}
+					break;
+				case 'swap':
 					$this->version_swap($table, $id, $value['swapWith'], $value['swapIntoWS'],
 						$tcemainObj,
 						$comment,
 						TRUE,
 						$notificationAlternativeRecipients
 					);
-				break;
-			case 'clearWSID':
-				$this->version_clearWSID($table, $id, FALSE, $tcemainObj);
-				break;
-			case 'flush':
-				$this->version_clearWSID($table, $id, TRUE, $tcemainObj);
-				break;
-			case 'setStage':
-				$elementIds = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $id, TRUE);
-				foreach ($elementIds as $elementId) {
-						$this->version_setStage($table, $elementId, $value['stageId'],
-							$comment,
-							TRUE,
-							$tcemainObj,
-							$notificationAlternativeRecipients
-						);
-				}
-				break;
+					break;
+				case 'clearWSID':
+					$this->version_clearWSID($table, $id, FALSE, $tcemainObj);
+					break;
+				case 'flush':
+					$this->version_clearWSID($table, $id, TRUE, $tcemainObj);
+					break;
+				case 'setStage':
+					$elementIds = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $id, TRUE);
+					foreach ($elementIds as $elementId) {
+							$this->version_setStage($table, $elementId, $value['stageId'],
+								$comment,
+								TRUE,
+								$tcemainObj,
+								$notificationAlternativeRecipients
+							);
+					}
+					break;
+				default:
+					// Do nothing
 			}
 		}
 	}
@@ -356,67 +358,67 @@ class DataHandlerHook {
 				// TODO: use localized labels
 				// Compile label:
 				switch ((int) $stageId) {
-				case 1:
-					$newStage = 'Ready for review';
-					break;
-				case 10:
-					$newStage = 'Ready for publishing';
-					break;
-				case -1:
-					$newStage = 'Element was rejected!';
-					break;
-				case 0:
-					$newStage = 'Rejected element was noticed and edited';
-					break;
-				default:
-					$newStage = 'Unknown state change!?';
-					break;
+					case 1:
+						$newStage = 'Ready for review';
+						break;
+					case 10:
+						$newStage = 'Ready for publishing';
+						break;
+					case -1:
+						$newStage = 'Element was rejected!';
+						break;
+					case 0:
+						$newStage = 'Rejected element was noticed and edited';
+						break;
+					default:
+						$newStage = 'Unknown state change!?';
 				}
 			}
 			if (count($notificationAlternativeRecipients) == 0) {
 				// Compile list of recipients:
 				$emails = array();
 				switch ((int) $stat['stagechg_notification']) {
-				case 1:
-					switch ((int) $stageId) {
 					case 1:
-						$emails = $this->getEmailsForStageChangeNotification($workspaceRec['reviewers']);
+						switch ((int) $stageId) {
+							case 1:
+								$emails = $this->getEmailsForStageChangeNotification($workspaceRec['reviewers']);
+								break;
+							case 10:
+								$emails = $this->getEmailsForStageChangeNotification($workspaceRec['adminusers'], TRUE);
+								break;
+							case -1:
+								// List of elements to reject:
+								$allElements = explode(',', $elementName);
+								// Traverse them, and find the history of each
+								foreach ($allElements as $elRef) {
+									list($eTable, $eUid) = explode(':', $elRef);
+									$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('log_data,tstamp,userid', 'sys_log', 'action=6 and details_nr=30
+													AND tablename=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($eTable, 'sys_log') . '
+													AND recuid=' . intval($eUid), '', 'uid DESC');
+									// Find all implicated since the last stage-raise from editing to review:
+									foreach ($rows as $dat) {
+										$data = unserialize($dat['log_data']);
+										$emails = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge($emails, $this->getEmailsForStageChangeNotification($dat['userid'], TRUE));
+										if ($data['stage'] == 1) {
+											break;
+										}
+									}
+								}
+								break;
+							case 0:
+								$emails = $this->getEmailsForStageChangeNotification($workspaceRec['members']);
+								break;
+							default:
+								$emails = $this->getEmailsForStageChangeNotification($workspaceRec['adminusers'], TRUE);
+						}
 						break;
 					case 10:
 						$emails = $this->getEmailsForStageChangeNotification($workspaceRec['adminusers'], TRUE);
-						break;
-					case -1:
-						// List of elements to reject:
-						$allElements = explode(',', $elementName);
-						// Traverse them, and find the history of each
-						foreach ($allElements as $elRef) {
-							list($eTable, $eUid) = explode(':', $elRef);
-							$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('log_data,tstamp,userid', 'sys_log', 'action=6 and details_nr=30
-											AND tablename=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($eTable, 'sys_log') . '
-											AND recuid=' . intval($eUid), '', 'uid DESC');
-							// Find all implicated since the last stage-raise from editing to review:
-							foreach ($rows as $dat) {
-								$data = unserialize($dat['log_data']);
-								$emails = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge($emails, $this->getEmailsForStageChangeNotification($dat['userid'], TRUE));
-								if ($data['stage'] == 1) {
-									break;
-								}
-							}
-						}
-						break;
-					case 0:
-						$emails = $this->getEmailsForStageChangeNotification($workspaceRec['members']);
+						$emails = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge($emails, $this->getEmailsForStageChangeNotification($workspaceRec['reviewers']));
+						$emails = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge($emails, $this->getEmailsForStageChangeNotification($workspaceRec['members']));
 						break;
 					default:
-						$emails = $this->getEmailsForStageChangeNotification($workspaceRec['adminusers'], TRUE);
-						break;
-					}
-					break;
-				case 10:
-					$emails = $this->getEmailsForStageChangeNotification($workspaceRec['adminusers'], TRUE);
-					$emails = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge($emails, $this->getEmailsForStageChangeNotification($workspaceRec['reviewers']));
-					$emails = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge($emails, $this->getEmailsForStageChangeNotification($workspaceRec['members']));
-					break;
+						// Do nothing
 				}
 			} else {
 				$emails = $notificationAlternativeRecipients;

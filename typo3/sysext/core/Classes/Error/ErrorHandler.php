@@ -108,19 +108,18 @@ class ErrorHandler implements \TYPO3\CMS\Core\Error\ErrorHandlerInterface {
 			throw new \TYPO3\CMS\Core\Error\Exception($message, 1);
 		} else {
 			switch ($errorLevel) {
-			case E_USER_ERROR:
+				case E_USER_ERROR:
 
-			case E_RECOVERABLE_ERROR:
-				$severity = 2;
-				break;
-			case E_USER_WARNING:
+				case E_RECOVERABLE_ERROR:
+					$severity = 2;
+					break;
+				case E_USER_WARNING:
 
-			case E_WARNING:
-				$severity = 1;
-				break;
-			default:
-				$severity = 0;
-				break;
+				case E_WARNING:
+					$severity = 1;
+					break;
+				default:
+					$severity = 0;
 			}
 			$logTitle = 'Core: Error handler (' . TYPO3_MODE . ')';
 			// Write error message to the configured syslogs,

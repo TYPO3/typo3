@@ -320,14 +320,14 @@ abstract class AbstractRecordList {
 		$content = '';
 		$tParam = $table ? '&table=' . rawurlencode($table) : '';
 		switch ($type) {
-		case 'fwd':
-			$href = $this->listURL() . '&pointer=' . ($pointer - $this->iLimit) . $tParam;
-			$content = '<a href="' . htmlspecialchars($href) . '">' . IconUtility::getSpriteIcon('actions-move-up') . '</a> <i>[1 - ' . $pointer . ']</i>';
-			break;
-		case 'rwd':
-			$href = $this->listURL() . '&pointer=' . $pointer . $tParam;
-			$content = '<a href="' . htmlspecialchars($href) . '">' . IconUtility::getSpriteIcon('actions-move-down') . '</a> <i>[' . ($pointer + 1) . ' - ' . $this->totalItems . ']</i>';
-			break;
+			case 'fwd':
+				$href = $this->listURL() . '&pointer=' . ($pointer - $this->iLimit) . $tParam;
+				$content = '<a href="' . htmlspecialchars($href) . '">' . IconUtility::getSpriteIcon('actions-move-up') . '</a> <i>[1 - ' . $pointer . ']</i>';
+				break;
+			case 'rwd':
+				$href = $this->listURL() . '&pointer=' . $pointer . $tParam;
+				$content = '<a href="' . htmlspecialchars($href) . '">' . IconUtility::getSpriteIcon('actions-move-down') . '</a> <i>[' . ($pointer + 1) . ' - ' . $this->totalItems . ']</i>';
+				break;
 		}
 		return $content;
 	}

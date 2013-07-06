@@ -1669,15 +1669,15 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 		if ($adapter) {
 			// Empty $adapter will always load the ext adapter
 			switch (\TYPO3\CMS\Core\Utility\GeneralUtility::strtolower(trim($adapter))) {
-			case self::EXTJS_ADAPTER_YUI:
-				$this->extJSadapter = 'yui/ext-yui-adapter.js';
-				break;
-			case self::EXTJS_ADAPTER_PROTOTYPE:
-				$this->extJSadapter = 'prototype/ext-prototype-adapter.js';
-				break;
-			case self::EXTJS_ADAPTER_JQUERY:
-				$this->extJSadapter = 'jquery/ext-jquery-adapter.js';
-				break;
+				case self::EXTJS_ADAPTER_YUI:
+					$this->extJSadapter = 'yui/ext-yui-adapter.js';
+					break;
+				case self::EXTJS_ADAPTER_PROTOTYPE:
+					$this->extJSadapter = 'prototype/ext-prototype-adapter.js';
+					break;
+				case self::EXTJS_ADAPTER_JQUERY:
+					$this->extJSadapter = 'jquery/ext-jquery-adapter.js';
+					break;
 			}
 		}
 		$this->addExtJS = TRUE;
@@ -2220,39 +2220,38 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	protected function renderJqueryScriptTag($version, $source, $namespace) {
 		switch (TRUE) {
-		case isset($this->jQueryCdnUrls[$source]):
-			if ($this->enableJqueryDebug) {
-				$minifyPart = '';
-			} else {
-				$minifyPart = '.min';
-			}
-			$jQueryFileName = sprintf($this->jQueryCdnUrls[$source], $version, $minifyPart);
-			break;
-		case $source === 'local':
-			$jQueryFileName = $this->backPath . $this->jQueryPath . 'jquery-' . rawurlencode($version);
-			if ($this->enableJqueryDebug) {
-				$jQueryFileName .= '.js';
-			} else {
-				$jQueryFileName .= '.min.js';
-			}
-			break;
-		default:
-			$jQueryFileName = $source;
+			case isset($this->jQueryCdnUrls[$source]):
+				if ($this->enableJqueryDebug) {
+					$minifyPart = '';
+				} else {
+					$minifyPart = '.min';
+				}
+				$jQueryFileName = sprintf($this->jQueryCdnUrls[$source], $version, $minifyPart);
+				break;
+			case $source === 'local':
+				$jQueryFileName = $this->backPath . $this->jQueryPath . 'jquery-' . rawurlencode($version);
+				if ($this->enableJqueryDebug) {
+					$jQueryFileName .= '.js';
+				} else {
+					$jQueryFileName .= '.min.js';
+				}
+				break;
+			default:
+				$jQueryFileName = $source;
 		}
 		// Include the jQuery Core
 		$scriptTag = '<script src="' . htmlspecialchars($jQueryFileName) . '" type="text/javascript"></script>' . LF;
 		// Set the noConflict mode to be available via "TYPO3.jQuery" in all installations
 		switch ($namespace) {
-		case self::JQUERY_NAMESPACE_DEFAULT_NOCONFLICT:
-			$scriptTag .= \TYPO3\CMS\Core\Utility\GeneralUtility::wrapJS('jQuery.noConflict();') . LF;
-			break;
-		case self::JQUERY_NAMESPACE_NONE:
-			break;
-		case self::JQUERY_NAMESPACE_DEFAULT:
+			case self::JQUERY_NAMESPACE_DEFAULT_NOCONFLICT:
+				$scriptTag .= \TYPO3\CMS\Core\Utility\GeneralUtility::wrapJS('jQuery.noConflict();') . LF;
+				break;
+			case self::JQUERY_NAMESPACE_NONE:
+				break;
+			case self::JQUERY_NAMESPACE_DEFAULT:
 
-		default:
-			$scriptTag .= \TYPO3\CMS\Core\Utility\GeneralUtility::wrapJS('var TYPO3 = TYPO3 || {}; TYPO3.' . $namespace . ' = jQuery.noConflict(true);') . LF;
-			break;
+			default:
+				$scriptTag .= \TYPO3\CMS\Core\Utility\GeneralUtility::wrapJS('var TYPO3 = TYPO3 || {}; TYPO3.' . $namespace . ' = jQuery.noConflict(true);') . LF;
 		}
 		return $scriptTag;
 	}
@@ -2650,18 +2649,18 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	protected function processJsFile($filename) {
 		switch (TYPO3_MODE) {
-		case 'FE':
-			if ($this->compressJavascript) {
-				$filename = $this->getCompressor()->compressJsFile($filename);
-			} else {
-				$filename = \TYPO3\CMS\Core\Utility\GeneralUtility::createVersionNumberedFilename($filename);
-			}
-			break;
-		case 'BE':
-			if ($this->compressJavascript) {
-				$filename = $this->getCompressor()->compressJsFile($filename);
-			}
-			break;
+			case 'FE':
+				if ($this->compressJavascript) {
+					$filename = $this->getCompressor()->compressJsFile($filename);
+				} else {
+					$filename = \TYPO3\CMS\Core\Utility\GeneralUtility::createVersionNumberedFilename($filename);
+				}
+				break;
+			case 'BE':
+				if ($this->compressJavascript) {
+					$filename = $this->getCompressor()->compressJsFile($filename);
+				}
+				break;
 		}
 		return $filename;
 	}

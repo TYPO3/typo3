@@ -113,14 +113,14 @@ class ExtensionXmlPushParser extends \TYPO3\CMS\Extensionmanager\Utility\Parser\
 	 */
 	protected function startElement($parser, $elementName, $attrs) {
 		switch ($elementName) {
-		case 'extension':
-			$this->extensionKey = $attrs['extensionkey'];
-			break;
-		case 'version':
-			$this->version = $attrs['version'];
-			break;
-		default:
-			$this->element = $elementName;
+			case 'extension':
+				$this->extensionKey = $attrs['extensionkey'];
+				break;
+			case 'version':
+				$this->version = $attrs['version'];
+				break;
+			default:
+				$this->element = $elementName;
 		}
 	}
 
@@ -133,15 +133,15 @@ class ExtensionXmlPushParser extends \TYPO3\CMS\Extensionmanager\Utility\Parser\
 	 */
 	protected function endElement($parser, $elementName) {
 		switch ($elementName) {
-		case 'extension':
-			$this->resetProperties(TRUE);
-			break;
-		case 'version':
-			$this->notify();
-			$this->resetProperties();
-			break;
-		default:
-			$this->element = NULL;
+			case 'extension':
+				$this->resetProperties(TRUE);
+				break;
+			case 'version':
+				$this->notify();
+				$this->resetProperties();
+				break;
+			default:
+				$this->element = NULL;
 		}
 	}
 
@@ -155,54 +155,54 @@ class ExtensionXmlPushParser extends \TYPO3\CMS\Extensionmanager\Utility\Parser\
 	protected function characterData($parser, $data) {
 		if (isset($this->element)) {
 			switch ($this->element) {
-			case 'downloadcounter':
-				// downloadcounter could be a child node of
-				// extension or version
-				if ($this->version == NULL) {
-					$this->extensionDownloadCounter = $data;
-				} else {
-					$this->versionDownloadCounter = $data;
-				}
-				break;
-			case 'title':
-				$this->title = $data;
-				break;
-			case 'description':
-				$this->description = $data;
-				break;
-			case 'state':
-				$this->state = $data;
-				break;
-			case 'reviewstate':
-				$this->reviewstate = $data;
-				break;
-			case 'category':
-				$this->category = $data;
-				break;
-			case 'lastuploaddate':
-				$this->lastuploaddate = $data;
-				break;
-			case 'uploadcomment':
-				$this->uploadcomment = $data;
-				break;
-			case 'dependencies':
-				$this->dependencies = $this->convertDependencies($data);
-				break;
-			case 'authorname':
-				$this->authorname = $data;
-				break;
-			case 'authoremail':
-				$this->authoremail = $data;
-				break;
-			case 'authorcompany':
-				$this->authorcompany = $data;
-				break;
-			case 'ownerusername':
-				$this->ownerusername = $data;
-				break;
-			case 't3xfilemd5':
-				$this->t3xfilemd5 = $data;
-				break;
+				case 'downloadcounter':
+					// downloadcounter could be a child node of
+					// extension or version
+					if ($this->version == NULL) {
+						$this->extensionDownloadCounter = $data;
+					} else {
+						$this->versionDownloadCounter = $data;
+					}
+					break;
+				case 'title':
+					$this->title = $data;
+					break;
+				case 'description':
+					$this->description = $data;
+					break;
+				case 'state':
+					$this->state = $data;
+					break;
+				case 'reviewstate':
+					$this->reviewstate = $data;
+					break;
+				case 'category':
+					$this->category = $data;
+					break;
+				case 'lastuploaddate':
+					$this->lastuploaddate = $data;
+					break;
+				case 'uploadcomment':
+					$this->uploadcomment = $data;
+					break;
+				case 'dependencies':
+					$this->dependencies = $this->convertDependencies($data);
+					break;
+				case 'authorname':
+					$this->authorname = $data;
+					break;
+				case 'authoremail':
+					$this->authoremail = $data;
+					break;
+				case 'authorcompany':
+					$this->authorcompany = $data;
+					break;
+				case 'ownerusername':
+					$this->ownerusername = $data;
+					break;
+				case 't3xfilemd5':
+					$this->t3xfilemd5 = $data;
+					break;
 			}
 		}
 	}

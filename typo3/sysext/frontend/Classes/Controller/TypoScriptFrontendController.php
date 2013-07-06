@@ -805,28 +805,28 @@ class TypoScriptFrontendController {
 			$GLOBALS['TYPO3_DB']->connectDB();
 		} catch (\RuntimeException $exception) {
 			switch ($exception->getCode()) {
-			case 1270853883:
-				// Cannot connect to current database
-				$message = 'Cannot connect to the configured database "' . TYPO3_db . '"';
-				if ($this->checkPageUnavailableHandler()) {
-					$this->pageUnavailableAndExit($message);
-				} else {
-					\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog($message, 'cms', \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_ERROR);
-					throw new \TYPO3\CMS\Core\Error\Http\ServiceUnavailableException($message, 1301648782);
-				}
-				break;
-			case 1270853884:
-				// Username / password not accepted
-				$message = 'The current username, password or host was not accepted when' . ' the connection to the database was attempted to be established!';
-				if ($this->checkPageUnavailableHandler()) {
-					$this->pageUnavailableAndExit($message);
-				} else {
-					\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog($message, 'cms', \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_ERROR);
-					throw new \TYPO3\CMS\Core\Error\Http\ServiceUnavailableException('Database Error: ' . $message, 1301648945);
-				}
-				break;
-			default:
-				throw $exception;
+				case 1270853883:
+					// Cannot connect to current database
+					$message = 'Cannot connect to the configured database "' . TYPO3_db . '"';
+					if ($this->checkPageUnavailableHandler()) {
+						$this->pageUnavailableAndExit($message);
+					} else {
+						\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog($message, 'cms', \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_ERROR);
+						throw new \TYPO3\CMS\Core\Error\Http\ServiceUnavailableException($message, 1301648782);
+					}
+					break;
+				case 1270853884:
+					// Username / password not accepted
+					$message = 'The current username, password or host was not accepted when' . ' the connection to the database was attempted to be established!';
+					if ($this->checkPageUnavailableHandler()) {
+						$this->pageUnavailableAndExit($message);
+					} else {
+						\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog($message, 'cms', \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_ERROR);
+						throw new \TYPO3\CMS\Core\Error\Http\ServiceUnavailableException('Database Error: ' . $message, 1301648945);
+					}
+					break;
+				default:
+					throw $exception;
 			}
 		}
 		// Call post processing function for DB connection:
@@ -1508,43 +1508,42 @@ class TypoScriptFrontendController {
 		$idArray = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $SC);
 		// Find $page record depending on shortcut mode:
 		switch ($mode) {
-		case \TYPO3\CMS\Frontend\Page\PageRepository::SHORTCUT_MODE_FIRST_SUBPAGE:
+			case \TYPO3\CMS\Frontend\Page\PageRepository::SHORTCUT_MODE_FIRST_SUBPAGE:
 
-		case \TYPO3\CMS\Frontend\Page\PageRepository::SHORTCUT_MODE_RANDOM_SUBPAGE:
-			$pageArray = $this->sys_page->getMenu($idArray[0] ? $idArray[0] : $thisUid, '*', 'sorting', 'AND pages.doktype<199 AND pages.doktype!=' . \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_BE_USER_SECTION);
-			$pO = 0;
-			if ($mode == \TYPO3\CMS\Frontend\Page\PageRepository::SHORTCUT_MODE_RANDOM_SUBPAGE && count($pageArray)) {
-				$randval = intval(rand(0, count($pageArray) - 1));
-				$pO = $randval;
-			}
-			$c = 0;
-			foreach ($pageArray as $pV) {
-				if ($c == $pO) {
-					$page = $pV;
-					break;
+			case \TYPO3\CMS\Frontend\Page\PageRepository::SHORTCUT_MODE_RANDOM_SUBPAGE:
+				$pageArray = $this->sys_page->getMenu($idArray[0] ? $idArray[0] : $thisUid, '*', 'sorting', 'AND pages.doktype<199 AND pages.doktype!=' . \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_BE_USER_SECTION);
+				$pO = 0;
+				if ($mode == \TYPO3\CMS\Frontend\Page\PageRepository::SHORTCUT_MODE_RANDOM_SUBPAGE && count($pageArray)) {
+					$randval = intval(rand(0, count($pageArray) - 1));
+					$pO = $randval;
 				}
-				$c++;
-			}
-			if (count($page) == 0) {
-				$message = 'This page (ID ' . $thisUid . ') is of type "Shortcut" and configured to redirect to a subpage. ' . 'However, this page has no accessible subpages.';
-				throw new \TYPO3\CMS\Core\Error\Http\PageNotFoundException($message, 1301648328);
-			}
-			break;
-		case \TYPO3\CMS\Frontend\Page\PageRepository::SHORTCUT_MODE_PARENT_PAGE:
-			$parent = $this->sys_page->getPage($thisUid);
-			$page = $this->sys_page->getPage($parent['pid']);
-			if (count($page) == 0) {
-				$message = 'This page (ID ' . $thisUid . ') is of type "Shortcut" and configured to redirect to its parent page. ' . 'However, the parent page is not accessible.';
-				throw new \TYPO3\CMS\Core\Error\Http\PageNotFoundException($message, 1301648358);
-			}
-			break;
-		default:
-			$page = $this->sys_page->getPage($idArray[0]);
-			if (count($page) == 0) {
-				$message = 'This page (ID ' . $thisUid . ') is of type "Shortcut" and configured to redirect to a page, which is not accessible (ID ' . $idArray[0] . ').';
-				throw new \TYPO3\CMS\Core\Error\Http\PageNotFoundException($message, 1301648404);
-			}
-			break;
+				$c = 0;
+				foreach ($pageArray as $pV) {
+					if ($c == $pO) {
+						$page = $pV;
+						break;
+					}
+					$c++;
+				}
+				if (count($page) == 0) {
+					$message = 'This page (ID ' . $thisUid . ') is of type "Shortcut" and configured to redirect to a subpage. ' . 'However, this page has no accessible subpages.';
+					throw new \TYPO3\CMS\Core\Error\Http\PageNotFoundException($message, 1301648328);
+				}
+				break;
+			case \TYPO3\CMS\Frontend\Page\PageRepository::SHORTCUT_MODE_PARENT_PAGE:
+				$parent = $this->sys_page->getPage($thisUid);
+				$page = $this->sys_page->getPage($parent['pid']);
+				if (count($page) == 0) {
+					$message = 'This page (ID ' . $thisUid . ') is of type "Shortcut" and configured to redirect to its parent page. ' . 'However, the parent page is not accessible.';
+					throw new \TYPO3\CMS\Core\Error\Http\PageNotFoundException($message, 1301648358);
+				}
+				break;
+			default:
+				$page = $this->sys_page->getPage($idArray[0]);
+				if (count($page) == 0) {
+					$message = 'This page (ID ' . $thisUid . ') is of type "Shortcut" and configured to redirect to a page, which is not accessible (ID ' . $idArray[0] . ').';
+					throw new \TYPO3\CMS\Core\Error\Http\PageNotFoundException($message, 1301648404);
+				}
 		}
 		// Check if short cut page was a shortcut itself, if so look up recursively:
 		if ($page['doktype'] == \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_SHORTCUT) {
@@ -2514,26 +2513,25 @@ class TypoScriptFrontendController {
 						$this->pageNotFoundAndExit('Page is not available in the requested language.');
 					} else {
 						switch ((string) $this->sys_language_mode) {
-						case 'strict':
-							$this->pageNotFoundAndExit('Page is not available in the requested language (strict).');
-							break;
-						case 'content_fallback':
-							$fallBackOrder = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $sys_language_content);
-							foreach ($fallBackOrder as $orderValue) {
-								if (!strcmp($orderValue, '0') || count($this->sys_page->getPageOverlay($this->id, $orderValue))) {
-									$this->sys_language_content = $orderValue;
-									// Setting content uid (but leaving the sys_language_uid)
-									break;
+							case 'strict':
+								$this->pageNotFoundAndExit('Page is not available in the requested language (strict).');
+								break;
+							case 'content_fallback':
+								$fallBackOrder = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $sys_language_content);
+								foreach ($fallBackOrder as $orderValue) {
+									if (!strcmp($orderValue, '0') || count($this->sys_page->getPageOverlay($this->id, $orderValue))) {
+										$this->sys_language_content = $orderValue;
+										// Setting content uid (but leaving the sys_language_uid)
+										break;
+									}
 								}
-							}
-							break;
-						case 'ignore':
-							$this->sys_language_content = $this->sys_language_uid;
-							break;
-						default:
-							// Default is that everything defaults to the default language...
-							$this->sys_language_uid = ($this->sys_language_content = 0);
-							break;
+								break;
+							case 'ignore':
+								$this->sys_language_content = $this->sys_language_uid;
+								break;
+							default:
+								// Default is that everything defaults to the default language...
+								$this->sys_language_uid = ($this->sys_language_content = 0);
 						}
 					}
 				}
@@ -2652,9 +2650,9 @@ class TypoScriptFrontendController {
 		// Check Submission of data.
 		// This is done at this point, because we need the config values
 		switch ($this->checkDataSubmission()) {
-		case 'email':
-			$this->sendFormmail();
-			break;
+			case 'email':
+				$this->sendFormmail();
+				break;
 		}
 	}
 
@@ -2879,20 +2877,19 @@ class TypoScriptFrontendController {
 				}
 				if ($TSConf['TSFE.']['jumpURL_HTTPStatusCode']) {
 					switch (intval($TSConf['TSFE.']['jumpURL_HTTPStatusCode'])) {
-					case 301:
-						$statusCode = \TYPO3\CMS\Core\Utility\HttpUtility::HTTP_STATUS_301;
-						break;
-					case 302:
-						$statusCode = \TYPO3\CMS\Core\Utility\HttpUtility::HTTP_STATUS_302;
-						break;
-					case 307:
-						$statusCode = \TYPO3\CMS\Core\Utility\HttpUtility::HTTP_STATUS_307;
-						break;
-					case 303:
+						case 301:
+							$statusCode = \TYPO3\CMS\Core\Utility\HttpUtility::HTTP_STATUS_301;
+							break;
+						case 302:
+							$statusCode = \TYPO3\CMS\Core\Utility\HttpUtility::HTTP_STATUS_302;
+							break;
+						case 307:
+							$statusCode = \TYPO3\CMS\Core\Utility\HttpUtility::HTTP_STATUS_307;
+							break;
+						case 303:
 
-					default:
-						$statusCode = \TYPO3\CMS\Core\Utility\HttpUtility::HTTP_STATUS_303;
-						break;
+						default:
+							$statusCode = \TYPO3\CMS\Core\Utility\HttpUtility::HTTP_STATUS_303;
 					}
 				}
 
@@ -3464,15 +3461,15 @@ class TypoScriptFrontendController {
 					/* @var $INTiS_cObj \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer */
 					$INTiS_cObj->INT_include = 1;
 					switch ($INTiS_config[$INTiS_key]['type']) {
-					case 'COA':
-						$incContent = $INTiS_cObj->COBJ_ARRAY($INTiS_config[$INTiS_key]['conf']);
-						break;
-					case 'FUNC':
-						$incContent = $INTiS_cObj->USER($INTiS_config[$INTiS_key]['conf']);
-						break;
-					case 'POSTUSERFUNC':
-						$incContent = $INTiS_cObj->callUserFunction($INTiS_config[$INTiS_key]['postUserFunc'], $INTiS_config[$INTiS_key]['conf'], $INTiS_config[$INTiS_key]['content']);
-						break;
+						case 'COA':
+							$incContent = $INTiS_cObj->COBJ_ARRAY($INTiS_config[$INTiS_key]['conf']);
+							break;
+						case 'FUNC':
+							$incContent = $INTiS_cObj->USER($INTiS_config[$INTiS_key]['conf']);
+							break;
+						case 'POSTUSERFUNC':
+							$incContent = $INTiS_cObj->callUserFunction($INTiS_config[$INTiS_key]['postUserFunc'], $INTiS_config[$INTiS_key]['conf'], $INTiS_config[$INTiS_key]['content']);
+							break;
 					}
 					$this->content .= $this->convOutputCharset($incContent, 'INC-' . $INTiS_c);
 					$this->content .= substr($INTiS_cPart, 35);
@@ -4338,29 +4335,28 @@ if (version == "n3") {
 	public function setJS($key, $content = '') {
 		if ($key) {
 			switch ($key) {
-			case 'mouseOver':
-				$this->additionalJavaScript[$key] = '		// JS function for mouse-over
-	function over(name, imgObj) {	//
-		if (version == "n3" && document[name]) {document[name].src = eval(name+"_h.src");}
-		else if (document.getElementById && document.getElementById(name)) {document.getElementById(name).src = eval(name+"_h.src");}
-		else if (imgObj)	{imgObj.src = eval(name+"_h.src");}
-	}
-		// JS function for mouse-out
-	function out(name, imgObj) {	//
-		if (version == "n3" && document[name]) {document[name].src = eval(name+"_n.src");}
-		else if (document.getElementById && document.getElementById(name)) {document.getElementById(name).src = eval(name+"_n.src");}
-		else if (imgObj)	{imgObj.src = eval(name+"_n.src");}
-	}';
-				break;
-			case 'openPic':
-				$this->additionalJavaScript[$key] = '	function openPic(url, winName, winParams) {	//
-		var theWindow = window.open(url, winName, winParams);
-		if (theWindow)	{theWindow.focus();}
-	}';
-				break;
-			default:
-				$this->additionalJavaScript[$key] = $content;
-				break;
+				case 'mouseOver':
+					$this->additionalJavaScript[$key] = '		// JS function for mouse-over
+		function over(name, imgObj) {	//
+			if (version == "n3" && document[name]) {document[name].src = eval(name+"_h.src");}
+			else if (document.getElementById && document.getElementById(name)) {document.getElementById(name).src = eval(name+"_h.src");}
+			else if (imgObj)	{imgObj.src = eval(name+"_h.src");}
+		}
+			// JS function for mouse-out
+		function out(name, imgObj) {	//
+			if (version == "n3" && document[name]) {document[name].src = eval(name+"_n.src");}
+			else if (document.getElementById && document.getElementById(name)) {document.getElementById(name).src = eval(name+"_n.src");}
+			else if (imgObj)	{imgObj.src = eval(name+"_n.src");}
+		}';
+					break;
+				case 'openPic':
+					$this->additionalJavaScript[$key] = '	function openPic(url, winName, winParams) {	//
+			var theWindow = window.open(url, winName, winParams);
+			if (theWindow)	{theWindow.focus();}
+		}';
+					break;
+				default:
+					$this->additionalJavaScript[$key] = $content;
 			}
 		}
 	}
@@ -4376,11 +4372,7 @@ if (version == "n3") {
 	 */
 	public function setCSS($key, $content) {
 		if ($key) {
-			switch ($key) {
-			default:
-				$this->additionalCSS[$key] = $content;
-				break;
-			}
+			$this->additionalCSS[$key] = $content;
 		}
 	}
 

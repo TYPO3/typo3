@@ -291,7 +291,6 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 				default:
 					$out = $this->export->compileMemoryToFileContent();
 					$fExt = ($this->export->doOutputCompress() ? '-z' : '') . '.t3d';
-					break;
 			}
 			// Filename:
 			$dlFile = $inData['filename'] ? $inData['filename'] : 'T3D_' . substr(preg_replace('/[^[:alnum:]_]/', '-', $inData['download_export_name']), 0, 20) . '_' . date('Y-m-d_H-i') . $fExt;

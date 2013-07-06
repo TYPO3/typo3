@@ -524,7 +524,6 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface {
 				break;
 			default:
 				$type = ucfirst($type);
-				break;
 		}
 		return $type;
 	}

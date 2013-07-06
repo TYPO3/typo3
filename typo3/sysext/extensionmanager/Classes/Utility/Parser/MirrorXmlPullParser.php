@@ -99,29 +99,29 @@ class MirrorXmlPullParser extends \TYPO3\CMS\Extensionmanager\Utility\Parser\Abs
 	 */
 	protected function startElement($elementName) {
 		switch ($elementName) {
-		case 'title':
-			$this->title = $this->getElementValue($elementName);
-			break;
-		case 'host':
-			$this->host = $this->getElementValue($elementName);
-			break;
-		case 'path':
-			$this->path = $this->getElementValue($elementName);
-			break;
-		case 'country':
-			$this->country = $this->getElementValue($elementName);
-			break;
-		case 'name':
-			$this->sponsorname = $this->getElementValue($elementName);
-			break;
-		case 'link':
-			$this->sponsorlink = $this->getElementValue($elementName);
-			break;
-		case 'logo':
-			$this->sponsorlogo = $this->getElementValue($elementName);
-			break;
-		default:
-
+			case 'title':
+				$this->title = $this->getElementValue($elementName);
+				break;
+			case 'host':
+				$this->host = $this->getElementValue($elementName);
+				break;
+			case 'path':
+				$this->path = $this->getElementValue($elementName);
+				break;
+			case 'country':
+				$this->country = $this->getElementValue($elementName);
+				break;
+			case 'name':
+				$this->sponsorname = $this->getElementValue($elementName);
+				break;
+			case 'link':
+				$this->sponsorlink = $this->getElementValue($elementName);
+				break;
+			case 'logo':
+				$this->sponsorlogo = $this->getElementValue($elementName);
+				break;
+			default:
+				// Do nothing
 		}
 	}
 
@@ -134,12 +134,12 @@ class MirrorXmlPullParser extends \TYPO3\CMS\Extensionmanager\Utility\Parser\Abs
 	 */
 	protected function endElement($elementName) {
 		switch ($elementName) {
-		case 'mirror':
-			$this->notify();
-			$this->resetProperties();
-			break;
-		default:
-
+			case 'mirror':
+				$this->notify();
+				$this->resetProperties();
+				break;
+			default:
+				// Do nothing
 		}
 	}
 

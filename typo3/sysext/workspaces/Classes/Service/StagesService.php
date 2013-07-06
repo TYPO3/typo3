@@ -301,21 +301,20 @@ class StagesService {
 		global $LANG;
 		$stageTitle = '';
 		switch ($ver_stage) {
-		case self::STAGE_PUBLISH_EXECUTE_ID:
-			$stageTitle = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_user_ws.xml:stage_publish');
-			break;
-		case self::STAGE_PUBLISH_ID:
-			$stageTitle = $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang_mod.xml:stage_ready_to_publish');
-			break;
-		case self::STAGE_EDIT_ID:
-			$stageTitle = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_user_ws.xml:stage_editing');
-			break;
-		default:
-			$stageTitle = $this->getPropertyOfCurrentWorkspaceStage($ver_stage, 'title');
-			if ($stageTitle == NULL) {
-				$stageTitle = $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:error.getStageTitle.stageNotFound');
-			}
-			break;
+			case self::STAGE_PUBLISH_EXECUTE_ID:
+				$stageTitle = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_user_ws.xml:stage_publish');
+				break;
+			case self::STAGE_PUBLISH_ID:
+				$stageTitle = $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang_mod.xml:stage_ready_to_publish');
+				break;
+			case self::STAGE_EDIT_ID:
+				$stageTitle = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_user_ws.xml:stage_editing');
+				break;
+			default:
+				$stageTitle = $this->getPropertyOfCurrentWorkspaceStage($ver_stage, 'title');
+				if ($stageTitle == NULL) {
+					$stageTitle = $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:error.getStageTitle.stageNotFound');
+				}
 		}
 		return $stageTitle;
 	}
@@ -458,33 +457,32 @@ class StagesService {
 		$workspaceRec = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('sys_workspace', $this->getWorkspaceId());
 		$recipientArray = array();
 		switch ($stageId) {
-		case self::STAGE_PUBLISH_EXECUTE_ID:
+			case self::STAGE_PUBLISH_EXECUTE_ID:
 
-		case self::STAGE_PUBLISH_ID:
-			if ($selectDefaultUserField == FALSE) {
-				$userList = $this->getResponsibleUser($workspaceRec['adminusers']);
-			} else {
-				$notification_default_user = $workspaceRec['publish_notification_defaults'];
-				$userList = $this->getResponsibleUser($notification_default_user);
-			}
-			break;
-		case self::STAGE_EDIT_ID:
-			if ($selectDefaultUserField == FALSE) {
-				$userList = $this->getResponsibleUser($workspaceRec['members']);
-			} else {
-				$notification_default_user = $workspaceRec['edit_notification_defaults'];
-				$userList = $this->getResponsibleUser($notification_default_user);
-			}
-			break;
-		default:
-			if ($selectDefaultUserField == FALSE) {
-				$responsible_persons = $this->getPropertyOfCurrentWorkspaceStage($stageId, 'responsible_persons');
-				$userList = $this->getResponsibleUser($responsible_persons);
-			} else {
-				$notification_default_user = $this->getPropertyOfCurrentWorkspaceStage($stageId, 'notification_defaults');
-				$userList = $this->getResponsibleUser($notification_default_user);
-			}
-			break;
+			case self::STAGE_PUBLISH_ID:
+				if ($selectDefaultUserField == FALSE) {
+					$userList = $this->getResponsibleUser($workspaceRec['adminusers']);
+				} else {
+					$notification_default_user = $workspaceRec['publish_notification_defaults'];
+					$userList = $this->getResponsibleUser($notification_default_user);
+				}
+				break;
+			case self::STAGE_EDIT_ID:
+				if ($selectDefaultUserField == FALSE) {
+					$userList = $this->getResponsibleUser($workspaceRec['members']);
+				} else {
+					$notification_default_user = $workspaceRec['edit_notification_defaults'];
+					$userList = $this->getResponsibleUser($notification_default_user);
+				}
+				break;
+			default:
+				if ($selectDefaultUserField == FALSE) {
+					$responsible_persons = $this->getPropertyOfCurrentWorkspaceStage($stageId, 'responsible_persons');
+					$userList = $this->getResponsibleUser($responsible_persons);
+				} else {
+					$notification_default_user = $this->getPropertyOfCurrentWorkspaceStage($stageId, 'notification_defaults');
+					$userList = $this->getResponsibleUser($notification_default_user);
+				}
 		}
 		if (!empty($userList)) {
 			$userRecords = \TYPO3\CMS\Backend\Utility\BackendUtility::getUserNames('username, uid, email, realName', 'AND uid IN (' . $userList . ')');
@@ -639,21 +637,20 @@ class StagesService {
 		$stagesOfWS = $this->getStagesForWS();
 		$countOfStages = count($stagesOfWS);
 		switch ($stageId) {
-		case self::STAGE_PUBLISH_ID:
-			$position = $countOfStages;
-			break;
-		case self::STAGE_EDIT_ID:
-			$position = 1;
-			break;
-		default:
-			$position = 1;
-			foreach ($stagesOfWS as $key => $stageInfoArray) {
-				$position++;
-				if ($stageId == $stageInfoArray['uid']) {
-					break;
+			case self::STAGE_PUBLISH_ID:
+				$position = $countOfStages;
+				break;
+			case self::STAGE_EDIT_ID:
+				$position = 1;
+				break;
+			default:
+				$position = 1;
+				foreach ($stagesOfWS as $key => $stageInfoArray) {
+					$position++;
+					if ($stageId == $stageInfoArray['uid']) {
+						break;
+					}
 				}
-			}
-			break;
 		}
 		return array('position' => $position, 'count' => $countOfStages);
 	}
@@ -752,22 +749,21 @@ class StagesService {
 			throw new \InvalidArgumentException($GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:error.stageId.integer'));
 		}
 		switch ($stageId) {
-		case self::STAGE_PUBLISH_EXECUTE_ID:
+			case self::STAGE_PUBLISH_EXECUTE_ID:
 
-		case self::STAGE_PUBLISH_ID:
-			$workspaceRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('sys_workspace', $this->getWorkspaceId());
-			return $workspaceRecord['publish_notification_mode'];
-			break;
-		case self::STAGE_EDIT_ID:
-			$workspaceRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('sys_workspace', $this->getWorkspaceId());
-			return $workspaceRecord['edit_notification_mode'];
-			break;
-		default:
-			$workspaceStage = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord(self::TABLE_STAGE, $stageId);
-			if (is_array($workspaceStage) && isset($workspaceStage['notification_mode'])) {
-				return $workspaceStage['notification_mode'];
-			}
-			break;
+			case self::STAGE_PUBLISH_ID:
+				$workspaceRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('sys_workspace', $this->getWorkspaceId());
+				return $workspaceRecord['publish_notification_mode'];
+				break;
+			case self::STAGE_EDIT_ID:
+				$workspaceRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('sys_workspace', $this->getWorkspaceId());
+				return $workspaceRecord['edit_notification_mode'];
+				break;
+			default:
+				$workspaceStage = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord(self::TABLE_STAGE, $stageId);
+				if (is_array($workspaceStage) && isset($workspaceStage['notification_mode'])) {
+					return $workspaceStage['notification_mode'];
+				}
 		}
 	}
 

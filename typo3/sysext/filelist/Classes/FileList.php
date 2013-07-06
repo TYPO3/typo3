@@ -477,7 +477,6 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 							break;
 						default:
 							$theData[$field] = \TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($theFile[$field], $this->fixedL);
-							break;
 					}
 				}
 				$out .= $this->addelement(1, $theIcon, $theData, ' class="file_list_normal"');
@@ -629,7 +628,6 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 						default:
 							// @todo: fix the access on the array
 							$theData[$field] = htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($theFile[$field], $this->fixedL));
-							break;
 					}
 				}
 				$out .= $this->addelement(1, $theIcon, $theData, ' class="file_list_normal"');

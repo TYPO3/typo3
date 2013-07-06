@@ -164,35 +164,35 @@ class ReferenceIndex {
 				foreach ($dbrels as $fieldname => $dat) {
 					// Based on type,
 					switch ((string) $dat['type']) {
-					case 'db':
-						$this->createEntryData_dbRels($table, $uid, $fieldname, '', $deleted, $dat['itemArray']);
-						break;
-					case 'file_reference':
+						case 'db':
+							$this->createEntryData_dbRels($table, $uid, $fieldname, '', $deleted, $dat['itemArray']);
+							break;
+						case 'file_reference':
 
-					case 'file':
-						$this->createEntryData_fileRels($table, $uid, $fieldname, '', $deleted, $dat['newValueFiles']);
-						break;
-					case 'flex':
-						// DB references:
-						if (is_array($dat['flexFormRels']['db'])) {
-							foreach ($dat['flexFormRels']['db'] as $flexpointer => $subList) {
-								$this->createEntryData_dbRels($table, $uid, $fieldname, $flexpointer, $deleted, $subList);
+						case 'file':
+							$this->createEntryData_fileRels($table, $uid, $fieldname, '', $deleted, $dat['newValueFiles']);
+							break;
+						case 'flex':
+							// DB references:
+							if (is_array($dat['flexFormRels']['db'])) {
+								foreach ($dat['flexFormRels']['db'] as $flexpointer => $subList) {
+									$this->createEntryData_dbRels($table, $uid, $fieldname, $flexpointer, $deleted, $subList);
+								}
 							}
-						}
-						// File references (NOT TESTED!)
-						if (is_array($dat['flexFormRels']['file'])) {
-							// Not tested
-							foreach ($dat['flexFormRels']['file'] as $flexpointer => $subList) {
-								$this->createEntryData_fileRels($table, $uid, $fieldname, $flexpointer, $deleted, $subList);
+							// File references (NOT TESTED!)
+							if (is_array($dat['flexFormRels']['file'])) {
+								// Not tested
+								foreach ($dat['flexFormRels']['file'] as $flexpointer => $subList) {
+									$this->createEntryData_fileRels($table, $uid, $fieldname, $flexpointer, $deleted, $subList);
+								}
 							}
-						}
-						// Soft references in flexforms (NOT TESTED!)
-						if (is_array($dat['flexFormRels']['softrefs'])) {
-							foreach ($dat['flexFormRels']['softrefs'] as $flexpointer => $subList) {
-								$this->createEntryData_softreferences($table, $uid, $fieldname, $flexpointer, $deleted, $subList['keys']);
+							// Soft references in flexforms (NOT TESTED!)
+							if (is_array($dat['flexFormRels']['softrefs'])) {
+								foreach ($dat['flexFormRels']['softrefs'] as $flexpointer => $subList) {
+									$this->createEntryData_softreferences($table, $uid, $fieldname, $flexpointer, $deleted, $subList['keys']);
+								}
 							}
-						}
-						break;
+							break;
 					}
 					// Softreferences in the field:
 					if (is_array($dat['softrefs'])) {
@@ -302,18 +302,18 @@ class ReferenceIndex {
 					foreach ($elements as $subKey => $el) {
 						if (is_array($el['subst'])) {
 							switch ((string) $el['subst']['type']) {
-							case 'db':
-								list($tableName, $recordId) = explode(':', $el['subst']['recordRef']);
-								$this->relations[] = $this->createEntryData($table, $uid, $fieldname, $flexpointer, $deleted, $tableName, $recordId, '', -1, $spKey, $subKey);
-								break;
-							case 'file_reference':
+								case 'db':
+									list($tableName, $recordId) = explode(':', $el['subst']['recordRef']);
+									$this->relations[] = $this->createEntryData($table, $uid, $fieldname, $flexpointer, $deleted, $tableName, $recordId, '', -1, $spKey, $subKey);
+									break;
+								case 'file_reference':
 
-							case 'file':
-								$this->relations[] = $this->createEntryData($table, $uid, $fieldname, $flexpointer, $deleted, '_FILE', 0, $el['subst']['relFileName'], -1, $spKey, $subKey);
-								break;
-							case 'string':
-								$this->relations[] = $this->createEntryData($table, $uid, $fieldname, $flexpointer, $deleted, '_STRING', 0, $el['subst']['tokenValue'], -1, $spKey, $subKey);
-								break;
+								case 'file':
+									$this->relations[] = $this->createEntryData($table, $uid, $fieldname, $flexpointer, $deleted, '_FILE', 0, $el['subst']['relFileName'], -1, $spKey, $subKey);
+									break;
+								case 'string':
+									$this->relations[] = $this->createEntryData($table, $uid, $fieldname, $flexpointer, $deleted, '_STRING', 0, $el['subst']['tokenValue'], -1, $spKey, $subKey);
+									break;
 							}
 						}
 					}
@@ -584,43 +584,43 @@ class ReferenceIndex {
 							$dataArray = array();
 							// Based on type,
 							switch ((string) $dat['type']) {
-							case 'db':
-								$error = $this->setReferenceValue_dbRels($refRec, $dat['itemArray'], $newValue, $dataArray);
-								if ($error) {
-									return $error;
-								}
-								break;
-							case 'file_reference':
+								case 'db':
+									$error = $this->setReferenceValue_dbRels($refRec, $dat['itemArray'], $newValue, $dataArray);
+									if ($error) {
+										return $error;
+									}
+									break;
+								case 'file_reference':
 
-							case 'file':
-								$error = $this->setReferenceValue_fileRels($refRec, $dat['newValueFiles'], $newValue, $dataArray);
-								if ($error) {
-									return $error;
-								}
-								break;
-							case 'flex':
-								// DB references:
-								if (is_array($dat['flexFormRels']['db'][$refRec['flexpointer']])) {
-									$error = $this->setReferenceValue_dbRels($refRec, $dat['flexFormRels']['db'][$refRec['flexpointer']], $newValue, $dataArray, $refRec['flexpointer']);
+								case 'file':
+									$error = $this->setReferenceValue_fileRels($refRec, $dat['newValueFiles'], $newValue, $dataArray);
 									if ($error) {
 										return $error;
 									}
-								}
-								// File references
-								if (is_array($dat['flexFormRels']['file'][$refRec['flexpointer']])) {
-									$this->setReferenceValue_fileRels($refRec, $dat['flexFormRels']['file'][$refRec['flexpointer']], $newValue, $dataArray, $refRec['flexpointer']);
-									if ($error) {
-										return $error;
+									break;
+								case 'flex':
+									// DB references:
+									if (is_array($dat['flexFormRels']['db'][$refRec['flexpointer']])) {
+										$error = $this->setReferenceValue_dbRels($refRec, $dat['flexFormRels']['db'][$refRec['flexpointer']], $newValue, $dataArray, $refRec['flexpointer']);
+										if ($error) {
+											return $error;
+										}
 									}
-								}
-								// Soft references in flexforms
-								if ($refRec['softref_key'] && is_array($dat['flexFormRels']['softrefs'][$refRec['flexpointer']]['keys'][$refRec['softref_key']])) {
-									$error = $this->setReferenceValue_softreferences($refRec, $dat['flexFormRels']['softrefs'][$refRec['flexpointer']], $newValue, $dataArray, $refRec['flexpointer']);
-									if ($error) {
-										return $error;
+									// File references
+									if (is_array($dat['flexFormRels']['file'][$refRec['flexpointer']])) {
+										$this->setReferenceValue_fileRels($refRec, $dat['flexFormRels']['file'][$refRec['flexpointer']], $newValue, $dataArray, $refRec['flexpointer']);
+										if ($error) {
+											return $error;
+										}
 									}
-								}
-								break;
+									// Soft references in flexforms
+									if ($refRec['softref_key'] && is_array($dat['flexFormRels']['softrefs'][$refRec['flexpointer']]['keys'][$refRec['softref_key']])) {
+										$error = $this->setReferenceValue_softreferences($refRec, $dat['flexFormRels']['softrefs'][$refRec['flexpointer']], $newValue, $dataArray, $refRec['flexpointer']);
+										if ($error) {
+											return $error;
+										}
+									}
+									break;
 							}
 							// Softreferences in the field:
 							if ($refRec['softref_key'] && is_array($dat['softrefs']['keys'][$refRec['softref_key']])) {

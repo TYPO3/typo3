@@ -81,14 +81,14 @@ class MediaFlexformUpdate extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
 				$data['data']['sGeneral']['lDEF']['mmHeight'] = array('vDEF' => intval($height));
 			}
 			switch ($type) {
-			case 'video':
-				$data['data']['sVideo'] = array('lDEF' => array('mmFile' => array('vDEF' => $sDEF['mmFile']['vDEF'])));
-				break;
-			case 'audio':
-				$data['data']['sAudio'] = array('lDEF' => array('mmAudioFallback' => array('vDEF' => $sDEF['mmFile']['vDEF'])));
-				break;
-			default:
-				continue;
+				case 'video':
+					$data['data']['sVideo'] = array('lDEF' => array('mmFile' => array('vDEF' => $sDEF['mmFile']['vDEF'])));
+					break;
+				case 'audio':
+					$data['data']['sAudio'] = array('lDEF' => array('mmAudioFallback' => array('vDEF' => $sDEF['mmFile']['vDEF'])));
+					break;
+				default:
+					continue;
 			}
 			$newXML = $flexformTools->flexArray2Xml($data, TRUE);
 			$newXML = str_replace('encoding=""', 'encoding="utf-8"', $newXML);

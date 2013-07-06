@@ -1342,30 +1342,29 @@ abstract class AbstractUserAuthentication {
 		$OK = FALSE;
 		$passwordCompareStrategy = $passwordCompareStrategy ? $passwordCompareStrategy : $this->security_level;
 		switch ($passwordCompareStrategy) {
-		case 'superchallenged':
+			case 'superchallenged':
 
-		case 'challenged':
-			// Check challenge stored in cookie:
-			if ($this->challengeStoredInCookie) {
-				session_start();
-				if ($_SESSION['login_challenge'] !== $loginData['chalvalue']) {
-					if ($this->writeDevLog) {
-						\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('PHP Session stored challenge "' . $_SESSION['login_challenge'] . '" and submitted challenge "' . $loginData['chalvalue'] . '" did not match, so authentication failed!', 'TYPO3\\CMS\\Core\\Authentication\\AbstractUserAuthentication', 2);
+			case 'challenged':
+				// Check challenge stored in cookie:
+				if ($this->challengeStoredInCookie) {
+					session_start();
+					if ($_SESSION['login_challenge'] !== $loginData['chalvalue']) {
+						if ($this->writeDevLog) {
+							\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('PHP Session stored challenge "' . $_SESSION['login_challenge'] . '" and submitted challenge "' . $loginData['chalvalue'] . '" did not match, so authentication failed!', 'TYPO3\\CMS\\Core\\Authentication\\AbstractUserAuthentication', 2);
+						}
+						$this->logoff();
+						return FALSE;
 					}
-					$this->logoff();
-					return FALSE;
 				}
-			}
-			if ((string) $loginData[('uident_' . $passwordCompareStrategy)] === (string) md5(($user[$this->username_column] . ':' . $user[$this->userident_column] . ':' . $loginData['chalvalue']))) {
-				$OK = TRUE;
-			}
-			break;
-		default:
-			// normal
-			if ((string) $loginData['uident_text'] === (string) $user[$this->userident_column]) {
-				$OK = TRUE;
-			}
-			break;
+				if ((string) $loginData[('uident_' . $passwordCompareStrategy)] === (string) md5(($user[$this->username_column] . ':' . $user[$this->userident_column] . ':' . $loginData['chalvalue']))) {
+					$OK = TRUE;
+				}
+				break;
+			default:
+				// normal
+				if ((string) $loginData['uident_text'] === (string) $user[$this->userident_column]) {
+					$OK = TRUE;
+				}
 		}
 		return $OK;
 	}

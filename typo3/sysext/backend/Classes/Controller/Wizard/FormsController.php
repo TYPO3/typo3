@@ -796,7 +796,6 @@ class FormsController {
 							break;
 						default:
 							$confData['default'] = trim($parts[2]);
-							break;
 					}
 					// Field configuration depending on the fields type:
 					switch ((string) $confData['type']) {
