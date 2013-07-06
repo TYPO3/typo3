@@ -77,4 +77,72 @@ $(document).ready(function() {
 			socketField.parent().fadeOut();
 		}
 	}).trigger('change');
+
+	$('#checkExtensions .typo3-message').hide();
+	$('#checkExtensions button').click(function(e) {
+		checkExtensionsCompatibility(true);
+		e.preventDefault();
+		return false;
+	});
 });
+
+function checkExtensionsCompatibility(force) {
+	var url = location.href + '&install[controller]=ajax&install[action]=extensionCompatibilityTester';
+	if (force) {
+		url += '&install[extensionCompatibilityTester][forceCheck]=1';
+	} else {
+		url += '&install[extensionCompatibilityTester][forceCheck]=0';
+	}
+	// avoid browser caching of ajax request
+	url += '&crp=' + new Date().getTime();
+	$.ajax({
+		url: url,
+		success: function(data) {
+			if (data === 'OK') {
+				handleCheckExtensionsSuccess();
+			} else {
+				if(data === 'unauthorized') {
+					location.reload();
+				}
+				// workaround for xdebug returning 200 OK on fatal errors
+				if (data.substring(data.length - 2) === 'OK') {
+					handleCheckExtensionsSuccess();
+				} else {
+					handleCheckExtensionsError();
+				}
+			}
+		},
+		error: function(data) {
+			handleCheckExtensionsError();
+		}
+	});
+}
+
+function handleCheckExtensionsSuccess() {
+	$.ajax({
+		url: $('#checkExtensions').data('protocolurl'),
+		success: function(data) {
+			if (data) {
+				$('.message-error .message-body', '#checkExtensions').html('The extension(s) ' + data + ' are not compatible. Please uninstall them and try again.');
+				$('.message-error', '#checkExtensions').show();
+			} else {
+				$('.message-error', '#checkExtensions').hide();
+				$('.message-ok', '#checkExtensions').show();
+				$('button', '#checkExtensions').hide();
+			}
+		},
+		error: function(data) {
+			$('.message-error', '#checkExtensions').hide();
+			$('.message-ok', '#checkExtensions').show();
+			$('button', '#checkExtensions').hide();
+		}
+	})
+}
+
+/**
+ * Call checkExtensionsCompatibility recursively on error
+ * so we can find all incompatible extensions
+ */
+function handleCheckExtensionsError() {
+	checkExtensionsCompatibility(false);
+}
