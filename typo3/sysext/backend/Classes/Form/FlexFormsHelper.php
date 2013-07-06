@@ -169,10 +169,12 @@ class FlexFormsHelper extends \TYPO3\CMS\Backend\Form\FormEngine {
 			$removeItems = !empty($fieldConf['removeItems']) ? GeneralUtility::trimExplode(',', $fieldConf['removeItems'], TRUE) : array();
 			$keepItems = !empty($fieldConf['keepItems']) ? GeneralUtility::trimExplode(',', $fieldConf['keepItems'], TRUE) : array();
 			$renameItems = !empty($fieldConf['altLabels']) && is_array($fieldConf['altLabels']) ? $fieldConf['altLabels'] : array();
+			$changeIcons = !empty($fieldConf['altIcons']) && is_array($fieldConf['altIcons']) ? $fieldConf['altIcons'] : array();
 			$addItems = !empty($fieldConf['addItems']) && is_array($fieldConf['addItems']) ? $fieldConf['addItems'] : array();
 			unset($fieldConf['removeItems']);
 			unset($fieldConf['keepItems']);
 			unset($fieldConf['altLabels']);
+			unset($fieldConf['altIcons']);
 			unset($fieldConf['addItems']);
 			// Manipulate field
 			if (!empty($field['TCEforms']) && is_array($field['TCEforms'])) {
@@ -205,8 +207,8 @@ class FlexFormsHelper extends \TYPO3\CMS\Backend\Form\FormEngine {
 			foreach ($this->removeSelectConfig as $option) {
 				unset($sheet[$fieldName]['TCEforms']['config'][$option]);
 			}
-			// Rename and remove items in select
-			if ((!empty($removeItems) || !empty($renameItems)) && !empty($selItems) && is_array($selItems)) {
+			// Rename and remove items or change item icon in select
+			if ((!empty($removeItems) || !empty($renameItems) || !empty($changeIcons)) && !empty($selItems) && is_array($selItems)) {
 				foreach ($selItems as $itemKey => $itemConf) {
 					// Option has no key, no manipulation possible
 					if (!isset($itemConf[1])) {
@@ -224,6 +226,13 @@ class FlexFormsHelper extends \TYPO3\CMS\Backend\Form\FormEngine {
 						if (strcasecmp($renameKey, $itemConf[1]) == 0) {
 							$selItems[$itemKey][0] = htmlspecialchars($renameValue);
 							unset($renameItems[$renameKey]);
+						}
+					}
+					// Change icon
+					foreach ($changeIcons as $iconKey => $iconValue) {
+						if (strcasecmp($iconKey, $itemConf[1]) == 0) {
+							$selItems[$itemKey][2] = $iconValue;
+							unset($changeIcons[$iconKey]);
 						}
 					}
 				}

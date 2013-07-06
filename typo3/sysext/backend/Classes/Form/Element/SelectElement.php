@@ -136,8 +136,13 @@ class SelectElement extends AbstractFormElement {
 				&& !$this->getBackendUserAuthentication()->checkAuthMode($table, $field, $evalValue, $config['authMode']);
 			if ($isRemoved && !$PA['fieldTSConfig']['disableNoMatchingValueElement'] && !$config['disableNoMatchingValueElement']) {
 				$tvP[1] = rawurlencode(@sprintf($nMV_label, $evalValue));
-			} elseif (isset($PA['fieldTSConfig']['altLabels.'][$evalValue])) {
-				$tvP[1] = rawurlencode($this->formEngine->sL($PA['fieldTSConfig']['altLabels.'][$evalValue]));
+			} else {
+				if (isset($PA['fieldTSConfig']['altLabels.'][$evalValue])) {
+					$tvP[1] = rawurlencode($this->formEngine->sL($PA['fieldTSConfig']['altLabels.'][$evalValue]));
+				}
+				if (isset($PA['fieldTSConfig']['altIcons.'][$evalValue])) {
+					$tvP[2] = $PA['fieldTSConfig']['altIcons.'][$evalValue];
+				}
 			}
 			if ($tvP[1] == '') {
 				// Case: flexform, default values supplied, no label provided (bug #9795)
