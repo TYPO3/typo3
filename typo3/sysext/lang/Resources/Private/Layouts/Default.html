@@ -1,16 +1,14 @@
-{namespace lang=TYPO3\CMS\Lang\ViewHelpers}
-
-<lang:be.container
+<f:be.container
 	enableJumpToUrl="0"
 	enableClickMenu="0"
 	loadPrototype="0"
 	loadScriptaculous="0"
 	loadExtJs="0"
 	loadJQuery="true"
-	addCssFiles="{
+	includeCssFiles="{
 		0: '{f:uri.resource(path:\'StyleSheet/LangModule.css\')}'
 	}"
-	addJsFiles="{
+	includeJsFiles="{
 		0: '{f:uri.resource(path:\'Contrib/jquery.dataTables-1.9.4.min.js\')}',
 		1: '{f:uri.resource(path:\'JavaScript/LangModule.js\')}'
 	}"
@@ -50,4 +48,4 @@
 		</div>
 
 	</div>
-</lang:be.container>
+</f:be.container>
