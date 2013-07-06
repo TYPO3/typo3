@@ -53,7 +53,7 @@
 	color: #dadada;
 	height: 27px;
 	line-height: 27px;
-	padding: 0 12px;
+	padding: 0 24px;
 	overflow: hidden;
 
 	/** Fake box width to 100%, excluding the padding */
@@ -68,9 +68,8 @@
 #typo3-docheader-row1 {
 	color: #000;
 	height: 16px;
-	padding: 3px 12px;
+	padding: 3px 24px;
 	overflow: hidden;
-
 	margin-top: 27px;
 }
 
