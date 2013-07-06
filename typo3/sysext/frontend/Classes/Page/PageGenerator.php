@@ -425,10 +425,17 @@ class PageGenerator {
 			foreach ($GLOBALS['TSFE']->tmpl->setup['plugin.'] as $key => $iCSScode) {
 				if (is_array($iCSScode)) {
 					if ($iCSScode['_CSS_DEFAULT_STYLE'] && empty($GLOBALS['TSFE']->config['config']['removeDefaultCss'])) {
-						$temp_styleLines[] = '/* default styles for extension "' . substr($key, 0, -1) . '" */' . LF . $iCSScode['_CSS_DEFAULT_STYLE'];
+						$cssDefaultStyle = isset($iCSScode['_CSS_DEFAULT_STYLE.']) ?
+							$GLOBALS['TSFE']->cObj->stdWrap($iCSScode['_CSS_DEFAULT_STYLE'], $iCSScode['_CSS_DEFAULT_STYLE.']) :
+							$iCSScode['_CSS_DEFAULT_STYLE'];
+						$temp_styleLines[] = '/* default styles for extension "' . substr($key, 0, -1) . '" */' . LF . $cssDefaultStyle;
 					}
 					if ($iCSScode['_CSS_PAGE_STYLE'] && empty($GLOBALS['TSFE']->config['config']['removePageCss'])) {
-						$temp_styleLines[] = '/* specific page styles for extension "' . substr($key, 0, -1) . '" */' . LF . implode(LF, $iCSScode['_CSS_PAGE_STYLE']);
+						$cssPageStyle = implode(LF, $iCSScode['_CSS_PAGE_STYLE']);
+						$cssPageStyle = isset($iCSScode['_CSS_PAGE_STYLE.']) ?
+							$GLOBALS['TSFE']->cObj->stdWrap($cssPageStyle, $iCSScode['_CSS_PAGE_STYLE.']) :
+							$cssPageStyle;
+						$temp_styleLines[] = '/* specific page styles for extension "' . substr($key, 0, -1) . '" */' . LF . $cssPageStyle;
 					}
 				}
 			}
