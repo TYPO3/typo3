@@ -162,8 +162,17 @@ class RteMagicImagesUpdateWizard extends \TYPO3\CMS\Install\Updates\AbstractUpda
 				$targetFieldName = $refRecord['field'];
 				$targetRecord = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('uid, ' . $targetFieldName, $refRecord['tablename'], 'uid=' . intval($refRecord['recuid']));
 				if ($targetRecord) {
-					// replace the old filename with the new one, and update the according record
-					$targetRecord[$targetFieldName] = str_replace($sourceFileName, $fileadminDirectory . $targetFileName, $targetRecord[$targetFieldName]);
+					// Replace the old filename with the new one, and add data-* attributes used by the RTE
+					$searchString = 'src="' . $sourceFileName . '"';
+					$replacementString = 'src="' . $fileadminDirectory . $targetFileName . '"';
+					$replacementString .= ' data-htmlarea-file-uid="' . $file->getUid() . '"';
+					$replacementString .= ' data-htmlarea-file-table="sys_file"';
+					$targetRecord[$targetFieldName] = str_replace(
+						$searchString,
+						$replacementString,
+						$targetRecord[$targetFieldName]
+					);
+					// Update the record
 					$GLOBALS['TYPO3_DB']->exec_UPDATEquery(
 						$refRecord['tablename'],
 						'uid=' . intval($refRecord['recuid']),
@@ -171,7 +180,7 @@ class RteMagicImagesUpdateWizard extends \TYPO3\CMS\Install\Updates\AbstractUpda
 					);
 					$queries[] = str_replace(LF, ' ', $GLOBALS['TYPO3_DB']->debug_lastBuiltQuery);
 
-					// finally, update the sys_refindex table as well
+					// Finally, update the sys_refindex table as well
 					$GLOBALS['TYPO3_DB']->exec_UPDATEquery(
 						'sys_refindex',
 						'hash=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($refRecord['hash'], 'sys_refindex'),
