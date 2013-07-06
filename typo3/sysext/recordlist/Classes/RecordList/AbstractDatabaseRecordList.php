@@ -26,6 +26,9 @@ namespace TYPO3\CMS\Recordlist\RecordList;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Child class for rendering of Web > List (not the final class.
  * Shared between Web>List (db_list.php) and Web>Page (sysext/cms/layout/db_layout.php)
@@ -311,13 +314,13 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 		$this->searchLevels = trim($levels);
 		$this->showLimit = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($showLimit, 0, 10000);
 		// Setting GPvars:
-		$this->csvOutput = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('csv') ? TRUE : FALSE;
-		$this->sortField = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('sortField');
-		$this->sortRev = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('sortRev');
-		$this->displayFields = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('displayFields');
-		$this->duplicateField = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('duplicateField');
-		if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('justLocalized')) {
-			$this->localizationRedirect(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('justLocalized'));
+		$this->csvOutput = GeneralUtility::_GP('csv') ? TRUE : FALSE;
+		$this->sortField = GeneralUtility::_GP('sortField');
+		$this->sortRev = GeneralUtility::_GP('sortRev');
+		$this->displayFields = GeneralUtility::_GP('displayFields');
+		$this->duplicateField = GeneralUtility::_GP('duplicateField');
+		if (GeneralUtility::_GP('justLocalized')) {
+			$this->localizationRedirect(GeneralUtility::_GP('justLocalized'));
 		}
 		// Init dynamic vars:
 		$this->counter = 0;
@@ -341,7 +344,7 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 		}
 		// Get configuration of collapsed tables from user uc and merge with sanitized GP vars
 		$this->tablesCollapsed = is_array($GLOBALS['BE_USER']->uc['moduleData']['list']) ? $GLOBALS['BE_USER']->uc['moduleData']['list'] : array();
-		$collapseOverride = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('collapse');
+		$collapseOverride = GeneralUtility::_GP('collapse');
 		if (is_array($collapseOverride)) {
 			foreach ($collapseOverride as $collapseTable => $collapseValue) {
 				if (is_array($GLOBALS['TCA'][$collapseTable]) && ($collapseValue == 0 || $collapseValue == 1)) {
@@ -351,7 +354,7 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 			// Save modified user uc
 			$GLOBALS['BE_USER']->uc['moduleData']['list'] = $this->tablesCollapsed;
 			$GLOBALS['BE_USER']->writeUC($GLOBALS['BE_USER']->uc);
-			$returnUrl = \TYPO3\CMS\Core\Utility\GeneralUtility::sanitizeLocalUrl(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('returnUrl'));
+			$returnUrl = GeneralUtility::sanitizeLocalUrl(GeneralUtility::_GP('returnUrl'));
 			if ($returnUrl !== '') {
 				\TYPO3\CMS\Core\Utility\HttpUtility::redirect($returnUrl);
 			}
@@ -387,11 +390,11 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 		foreach ($GLOBALS['TCA'] as $tableName => $value) {
 			// Checking if the table should be rendered:
 			// Checks that we see only permitted/requested tables:
-			if ((!$this->table || $tableName == $this->table) && (!$this->tableList || \TYPO3\CMS\Core\Utility\GeneralUtility::inList($this->tableList, $tableName)) && $GLOBALS['BE_USER']->check('tables_select', $tableName)) {
+			if ((!$this->table || $tableName == $this->table) && (!$this->tableList || GeneralUtility::inList($this->tableList, $tableName)) && $GLOBALS['BE_USER']->check('tables_select', $tableName)) {
 				// Don't show table if hidden by TCA ctrl section
 				$hideTable = $GLOBALS['TCA'][$tableName]['ctrl']['hideTable'] ? TRUE : FALSE;
 				// Don't show table if hidden by pageTSconfig mod.web_list.hideTables
-				if (in_array($tableName, \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->hideTables))) {
+				if (in_array($tableName, GeneralUtility::trimExplode(',', $this->hideTables))) {
 					$hideTable = TRUE;
 				}
 				// Override previous selection if table is enabled or hidden by TSconfig TCA override mod.web_list.table
@@ -487,7 +490,7 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 	 * @todo Define visibility
 	 */
 	public function showSysNotesForPage() {
-		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
+		GeneralUtility::logDeprecatedFunction();
 		return '';
 	}
 
@@ -544,7 +547,7 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 		$hookObjectsArr = array();
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.db_list.inc']['makeQueryArray'])) {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.db_list.inc']['makeQueryArray'] as $classRef) {
-				$hookObjectsArr[] = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($classRef);
+				$hookObjectsArr[] = GeneralUtility::getUserObj($classRef);
 			}
 		}
 		// Set ORDER BY:
@@ -573,7 +576,7 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 			'LIMIT' => $limit
 		);
 		// Filter out records that are translated, if TSconfig mod.web_list.hideTranslations is set
-		if ((in_array($table, \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->hideTranslations)) || $this->hideTranslations === '*') && !empty($GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']) && strcmp($table, 'pages_language_overlay')) {
+		if ((in_array($table, GeneralUtility::trimExplode(',', $this->hideTranslations)) || $this->hideTranslations === '*') && !empty($GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']) && strcmp($table, 'pages_language_overlay')) {
 			$queryParts['WHERE'] .= ' AND ' . $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] . '=0 ';
 		}
 		// Apply hook as requested in http://bugs.typo3.org/view.php?id=4361
@@ -630,7 +633,7 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 						if (isset($GLOBALS['TCA'][$table]['columns'][$fieldName])) {
 							$fieldConfig = &$GLOBALS['TCA'][$table]['columns'][$fieldName]['config'];
 							$condition = $fieldName . '=' . $this->searchString;
-							if ($fieldConfig['type'] == 'input' && $fieldConfig['eval'] && \TYPO3\CMS\Core\Utility\GeneralUtility::inList($fieldConfig['eval'], 'int')) {
+							if ($fieldConfig['type'] == 'input' && $fieldConfig['eval'] && GeneralUtility::inList($fieldConfig['eval'], 'int')) {
 								if (is_array($fieldConfig['search']) && in_array('pidonly', $fieldConfig['search']) && $currentPid > 0) {
 									$condition = '(' . $condition . ' AND ' . $tablePidField . '=' . $currentPid . ')';
 								}
@@ -688,7 +691,7 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 		$fieldListWasSet = FALSE;
 		// Get fields from ctrl section of TCA first
 		if (isset($GLOBALS['TCA'][$tableName]['ctrl']['searchFields'])) {
-			$fieldArray = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $GLOBALS['TCA'][$tableName]['ctrl']['searchFields'], TRUE);
+			$fieldArray = GeneralUtility::trimExplode(',', $GLOBALS['TCA'][$tableName]['ctrl']['searchFields'], TRUE);
 			$fieldListWasSet = TRUE;
 		}
 		// Call hook to add or change the list
@@ -700,7 +703,7 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 				'searchString' => $this->searchString
 			);
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['mod_list']['getSearchFieldList'] as $hookFunction) {
-				\TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($hookFunction, $hookParameters, $this);
+				GeneralUtility::callUserFunction($hookFunction, $hookParameters, $this);
 			}
 		}
 		return $fieldArray;
@@ -737,9 +740,9 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 		$origCode = $code;
 		// If the title is blank, make a "no title" label:
 		if (!strcmp($code, '')) {
-			$code = '<i>[' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.no_title', 1) . ']</i> - ' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs(\TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle($table, $row), $GLOBALS['BE_USER']->uc['titleLen']));
+			$code = '<i>[' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.no_title', 1) . ']</i> - ' . htmlspecialchars(GeneralUtility::fixed_lgd_cs(\TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle($table, $row), $GLOBALS['BE_USER']->uc['titleLen']));
 		} else {
-			$code = htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($code, $this->fixedL), ENT_QUOTES, 'UTF-8', FALSE);
+			$code = htmlspecialchars(GeneralUtility::fixed_lgd_cs($code, $this->fixedL), ENT_QUOTES, 'UTF-8', FALSE);
 			if ($code != htmlspecialchars($origCode)) {
 				$code = '<span title="' . htmlspecialchars($origCode, ENT_QUOTES, 'UTF-8', FALSE) . '">' . $code . '</span>';
 			}
@@ -791,11 +794,11 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 	public function linkUrlMail($code, $testString) {
 		// Check for URL:
 		$schema = parse_url($testString);
-		if ($schema['scheme'] && \TYPO3\CMS\Core\Utility\GeneralUtility::inList('http,https,ftp', $schema['scheme'])) {
+		if ($schema['scheme'] && GeneralUtility::inList('http,https,ftp', $schema['scheme'])) {
 			return '<a href="' . htmlspecialchars($testString) . '" target="_blank">' . $code . '</a>';
 		}
 		// Check for email:
-		if (\TYPO3\CMS\Core\Utility\GeneralUtility::validEmail($testString)) {
+		if (GeneralUtility::validEmail($testString)) {
 			return '<a href="mailto:' . htmlspecialchars($testString) . '" target="_blank">' . $code . '</a>';
 		}
 		// Return if nothing else...
@@ -840,13 +843,13 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 		if ($this->showLimit) {
 			$urlParameters['showLimit'] = $this->showLimit;
 		}
-		if ((!$exclList || !\TYPO3\CMS\Core\Utility\GeneralUtility::inList($exclList, 'firstElementNumber')) && $this->firstElementNumber) {
+		if ((!$exclList || !GeneralUtility::inList($exclList, 'firstElementNumber')) && $this->firstElementNumber) {
 			$urlParameters['pointer'] = $this->firstElementNumber;
 		}
-		if ((!$exclList || !\TYPO3\CMS\Core\Utility\GeneralUtility::inList($exclList, 'sortField')) && $this->sortField) {
+		if ((!$exclList || !GeneralUtility::inList($exclList, 'sortField')) && $this->sortField) {
 			$urlParameters['sortField'] = $this->sortField;
 		}
-		if ((!$exclList || !\TYPO3\CMS\Core\Utility\GeneralUtility::inList($exclList, 'sortRev')) && $this->sortRev) {
+		if ((!$exclList || !GeneralUtility::inList($exclList, 'sortRev')) && $this->sortRev) {
 			$urlParameters['sortRev'] = $this->sortRev;
 		}
 		return \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('web_list', $urlParameters);
@@ -912,7 +915,7 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 					}
 				}
 			} else {
-				\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog(sprintf('$TCA is broken for the table "%s": no required "columns" entry in $TCA.', $table), 'core', \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_ERROR);
+				GeneralUtility::sysLog(sprintf('$TCA is broken for the table "%s": no required "columns" entry in $TCA.', $table), 'core', GeneralUtility::SYSLOG_SEVERITY_ERROR);
 			}
 		}
 		return $fieldListArr;
@@ -929,7 +932,7 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 	 * @todo Define visibility
 	 */
 	public function getTreeObject($id, $depth, $perms_clause) {
-		$tree = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\View\\PageTreeView');
+		$tree = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\View\\PageTreeView');
 		$tree->init('AND ' . $perms_clause);
 		$tree->makeHTML = 0;
 		$tree->fieldArray = array('uid', 'php_tree_stop');

@@ -27,6 +27,8 @@ namespace TYPO3\CMS\IndexedSearch\Hook;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Crawler hook for indexed search. Works with the "crawler" extension
  *
@@ -74,7 +76,7 @@ class CrawlerHook {
 		// For each configuration, check if it should be executed and if so, start:
 		foreach ($indexingConfigurations as $cfgRec) {
 			// Generate a unique set-ID:
-			$setId = \TYPO3\CMS\Core\Utility\GeneralUtility::md5int(microtime());
+			$setId = GeneralUtility::md5int(microtime());
 			// Get next time:
 			$nextTime = $this->generateNextIndexingTime($cfgRec);
 			// Start process by updating index-config record:
@@ -145,7 +147,7 @@ class CrawlerHook {
 					break;
 				default:
 					if ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['crawler'][$cfgRec['type']]) {
-						$hookObj = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['crawler'][$cfgRec['type']]);
+						$hookObj = GeneralUtility::getUserObj($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['crawler'][$cfgRec['type']]);
 						if (is_object($hookObj)) {
 							// Parameters:
 							$params = array(
@@ -204,7 +206,7 @@ class CrawlerHook {
 						break;
 					default:
 						if ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['crawler'][$cfgRec['type']]) {
-							$hookObj = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['crawler'][$cfgRec['type']]);
+							$hookObj = GeneralUtility::getUserObj($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['crawler'][$cfgRec['type']]);
 							if (is_object($hookObj)) {
 								$this->pObj = $pObj;
 								// For addQueueEntryForHook()
@@ -280,10 +282,10 @@ class CrawlerHook {
 	public function crawler_execute_type2($cfgRec, &$session_data, $params, &$pObj) {
 		// Prepare path, making it absolute and checking:
 		$readpath = $params['url'];
-		if (!\TYPO3\CMS\Core\Utility\GeneralUtility::isAbsPath($readpath)) {
-			$readpath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($readpath);
+		if (!GeneralUtility::isAbsPath($readpath)) {
+			$readpath = GeneralUtility::getFileAbsFileName($readpath);
 		}
-		if (\TYPO3\CMS\Core\Utility\GeneralUtility::isAllowedAbsPath($readpath)) {
+		if (GeneralUtility::isAllowedAbsPath($readpath)) {
 			if (@is_file($readpath)) {
 				// If file, index it!
 				// Get root line (need to provide this when indexing external files)
@@ -291,7 +293,7 @@ class CrawlerHook {
 				// Load indexer if not yet.
 				$this->loadIndexerClass();
 				// (Re)-Indexing file on page.
-				$indexerObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\IndexedSearch\\Indexer');
+				$indexerObj = GeneralUtility::makeInstance('TYPO3\\CMS\\IndexedSearch\\Indexer');
 				$indexerObj->backend_initIndexer($cfgRec['pid'], 0, 0, '', $rl);
 				$indexerObj->backend_setFreeIndexUid($cfgRec['uid'], $cfgRec['set_id']);
 				$indexerObj->hash['phash'] = -1;
@@ -301,10 +303,10 @@ class CrawlerHook {
 			} elseif (@is_dir($readpath)) {
 				// If dir, read content and create new pending items for log:
 				// Select files and directories in path:
-				$extList = implode(',', \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $cfgRec['extensions'], 1));
+				$extList = implode(',', GeneralUtility::trimExplode(',', $cfgRec['extensions'], 1));
 				$fileArr = array();
-				$files = \TYPO3\CMS\Core\Utility\GeneralUtility::getAllFilesAndFoldersInPath($fileArr, $readpath, $extList, 0, 0);
-				$directoryList = \TYPO3\CMS\Core\Utility\GeneralUtility::get_dirs($readpath);
+				$files = GeneralUtility::getAllFilesAndFoldersInPath($fileArr, $readpath, $extList, 0, 0);
+				$directoryList = GeneralUtility::get_dirs($readpath);
 				if (is_array($directoryList) && $params['depth'] < $cfgRec['depth']) {
 					foreach ($directoryList as $subdir) {
 						if ((string) $subdir != '') {
@@ -312,7 +314,7 @@ class CrawlerHook {
 						}
 					}
 				}
-				$files = \TYPO3\CMS\Core\Utility\GeneralUtility::removePrefixPathFromList($files, PATH_site);
+				$files = GeneralUtility::removePrefixPathFromList($files, PATH_site);
 				// traverse the items and create log entries:
 				foreach ($files as $path) {
 					$this->instanceCounter++;
@@ -472,7 +474,7 @@ class CrawlerHook {
 		$url = preg_replace('/\\/\\/$/', '/', $url);
 		list($url) = explode('#', $url);
 		if (!strstr($url, '../')) {
-			if (\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($url, $baseUrl)) {
+			if (GeneralUtility::isFirstPartOfStr($url, $baseUrl)) {
 				if (!in_array($url, $urlLog)) {
 					return $url;
 				}
@@ -495,7 +497,7 @@ class CrawlerHook {
 		// Load indexer if not yet.
 		$this->loadIndexerClass();
 		// Index external URL:
-		$indexerObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\IndexedSearch\\Indexer');
+		$indexerObj = GeneralUtility::makeInstance('TYPO3\\CMS\\IndexedSearch\\Indexer');
 		$indexerObj->backend_initIndexer($pageId, 0, 0, '', $rl);
 		$indexerObj->backend_setFreeIndexUid($cfgUid, $setId);
 		$indexerObj->hash['phash'] = -1;
@@ -516,10 +518,10 @@ class CrawlerHook {
 		// Traverse links:
 		foreach ($list as $count => $linkInfo) {
 			// Decode entities:
-			$subUrl = \TYPO3\CMS\Core\Utility\GeneralUtility::htmlspecialchars_decode($linkInfo['href']);
+			$subUrl = GeneralUtility::htmlspecialchars_decode($linkInfo['href']);
 			$qParts = parse_url($subUrl);
 			if (!$qParts['scheme']) {
-				$relativeUrl = \TYPO3\CMS\Core\Utility\GeneralUtility::resolveBackPath($subUrl);
+				$relativeUrl = GeneralUtility::resolveBackPath($subUrl);
 				if ($relativeUrl[0] === '/') {
 					$subUrl = $baseAbsoluteHref . $relativeUrl;
 				} else {
@@ -545,11 +547,11 @@ class CrawlerHook {
 		$this->loadIndexerClass();
 		// Init:
 		$rl = is_array($rl) ? $rl : $this->getUidRootLineForClosestTemplate($cfgRec['pid']);
-		$fieldList = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $cfgRec['fieldlist'], 1);
+		$fieldList = GeneralUtility::trimExplode(',', $cfgRec['fieldlist'], 1);
 		$languageField = $GLOBALS['TCA'][$cfgRec['table2index']]['ctrl']['languageField'];
 		$sys_language_uid = $languageField ? $r[$languageField] : 0;
 		// (Re)-Indexing a row from a table:
-		$indexerObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\IndexedSearch\\Indexer');
+		$indexerObj = GeneralUtility::makeInstance('TYPO3\\CMS\\IndexedSearch\\Indexer');
 		parse_str(str_replace('###UID###', $r['uid'], $cfgRec['get_params']), $GETparams);
 		$indexerObj->backend_initIndexer($cfgRec['pid'], 0, $sys_language_uid, '', $rl, $GETparams, $cfgRec['chashcalc'] ? TRUE : FALSE);
 		$indexerObj->backend_setFreeIndexUid($cfgRec['uid'], $cfgRec['set_id']);
@@ -587,12 +589,12 @@ class CrawlerHook {
 	 */
 	public function getUidRootLineForClosestTemplate($id) {
 		global $TYPO3_CONF_VARS;
-		$tmpl = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\ExtendedTemplateService');
+		$tmpl = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\ExtendedTemplateService');
 		$tmpl->tt_track = 0;
 		// Do not log time-performance information
 		$tmpl->init();
 		// Gets the rootLine
-		$sys_page = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
+		$sys_page = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
 		$rootLine = $sys_page->getRootLine($id);
 		// This generates the constants/config + hierarchy info for the template.
 		$tmpl->runThroughTemplates($rootLine, 0);
@@ -640,9 +642,9 @@ class CrawlerHook {
 	 */
 	public function checkDeniedSuburls($url, $url_deny) {
 		if (trim($url_deny)) {
-			$url_denyArray = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(LF, $url_deny, 1);
+			$url_denyArray = GeneralUtility::trimExplode(LF, $url_deny, 1);
 			foreach ($url_denyArray as $testurl) {
-				if (\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($url, $testurl)) {
+				if (GeneralUtility::isFirstPartOfStr($url, $testurl)) {
 					echo $url . ' /// ' . $url_deny . LF;
 					return TRUE;
 				}

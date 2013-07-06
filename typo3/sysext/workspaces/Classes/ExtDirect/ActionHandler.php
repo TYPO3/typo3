@@ -26,6 +26,9 @@ namespace TYPO3\CMS\Workspaces\ExtDirect;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * ExtDirect action handler
  *
@@ -42,7 +45,7 @@ class ActionHandler extends \TYPO3\CMS\Workspaces\ExtDirect\AbstractHandler {
 	 * Creates this object.
 	 */
 	public function __construct() {
-		$this->stageService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Workspaces\\Service\\StagesService');
+		$this->stageService = GeneralUtility::makeInstance('TYPO3\\CMS\\Workspaces\\Service\\StagesService');
 	}
 
 	/**
@@ -259,7 +262,7 @@ class ActionHandler extends \TYPO3\CMS\Workspaces\ExtDirect\AbstractHandler {
 			}
 		}
 		if ($additionalRecipients !== '') {
-			$emails = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(LF, $additionalRecipients, TRUE);
+			$emails = GeneralUtility::trimExplode(LF, $additionalRecipients, TRUE);
 			$additionalRecipients = array();
 			foreach ($emails as $email) {
 				$additionalRecipients[$email] = array('email' => $email);
@@ -273,7 +276,7 @@ class ActionHandler extends \TYPO3\CMS\Workspaces\ExtDirect\AbstractHandler {
 		// and $recipients with the email address
 		$allRecipients = array_merge($additionalRecipients, $recipients);
 		foreach ($allRecipients as $email => $recipientInformation) {
-			if (\TYPO3\CMS\Core\Utility\GeneralUtility::validEmail($email)) {
+			if (GeneralUtility::validEmail($email)) {
 				$finalRecipients[] = $recipientInformation;
 			}
 		}
@@ -290,9 +293,9 @@ class ActionHandler extends \TYPO3\CMS\Workspaces\ExtDirect\AbstractHandler {
 	public function discardStagesFromPage($pageId) {
 		$cmdMapArray = array();
 		/** @var $workspaceService \TYPO3\CMS\Workspaces\Service\WorkspaceService */
-		$workspaceService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Workspaces\\Service\\WorkspaceService');
+		$workspaceService = GeneralUtility::makeInstance('TYPO3\\CMS\\Workspaces\\Service\\WorkspaceService');
 		/** @var $stageService \TYPO3\CMS\Workspaces\Service\StagesService */
-		$stageService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Workspaces\\Service\\StagesService');
+		$stageService = GeneralUtility::makeInstance('TYPO3\\CMS\\Workspaces\\Service\\StagesService');
 		$workspaceItemsArray = $workspaceService->selectVersionsInWorkspace($stageService->getWorkspaceId(), ($filter = 1), ($stage = -99), $pageId, ($recursionLevel = 0), ($selectionType = 'tables_modify'));
 		foreach ($workspaceItemsArray as $tableName => $items) {
 			foreach ($items as $item) {
@@ -362,7 +365,7 @@ class ActionHandler extends \TYPO3\CMS\Workspaces\ExtDirect\AbstractHandler {
 	 * @author Michael Klapper <development@morphodo.com>
 	 */
 	protected function processTcaCmd(array $cmdMapArray) {
-		$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+		$tce = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
 		$tce->start(array(), $cmdMapArray);
 		$tce->process_cmdmap();
 	}
@@ -567,7 +570,7 @@ class ActionHandler extends \TYPO3\CMS\Workspaces\ExtDirect\AbstractHandler {
 		$recipients = $this->getStageService()->getResponsibleBeUser($stage);
 		$default_recipients = $this->getStageService()->getResponsibleBeUser($stage, TRUE);
 		foreach ($recipients as $id => $user) {
-			if (\TYPO3\CMS\Core\Utility\GeneralUtility::validEmail($user['email'])) {
+			if (GeneralUtility::validEmail($user['email'])) {
 				$checked = FALSE;
 				$disabled = FALSE;
 				$name = $user['realName'] ? $user['realName'] : $user['username'];
@@ -618,7 +621,7 @@ class ActionHandler extends \TYPO3\CMS\Workspaces\ExtDirect\AbstractHandler {
 	 */
 	protected function getStageService() {
 		if (!isset($this->stageService)) {
-			$this->stageService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Workspaces\\Service\\StagesService');
+			$this->stageService = GeneralUtility::makeInstance('TYPO3\\CMS\\Workspaces\\Service\\StagesService');
 		}
 		return $this->stageService;
 	}
@@ -631,7 +634,7 @@ class ActionHandler extends \TYPO3\CMS\Workspaces\ExtDirect\AbstractHandler {
 	 * @author Michael Klapper <development@morphodo.com>
 	 */
 	public function sendPageToPreviousStage($id) {
-		$workspaceService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Workspaces\\Service\\WorkspaceService');
+		$workspaceService = GeneralUtility::makeInstance('TYPO3\\CMS\\Workspaces\\Service\\WorkspaceService');
 		$workspaceItemsArray = $workspaceService->selectVersionsInWorkspace($this->stageService->getWorkspaceId(), ($filter = 1), ($stage = -99), $id, ($recursionLevel = 0), ($selectionType = 'tables_modify'));
 		list($currentStage, $previousStage) = $this->getStageService()->getPreviousStageForElementCollection($workspaceItemsArray);
 		// get only the relevant items for processing
@@ -650,7 +653,7 @@ class ActionHandler extends \TYPO3\CMS\Workspaces\ExtDirect\AbstractHandler {
 	 * @author Michael Klapper <development@morphodo.com>
 	 */
 	public function sendPageToNextStage($id) {
-		$workspaceService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Workspaces\\Service\\WorkspaceService');
+		$workspaceService = GeneralUtility::makeInstance('TYPO3\\CMS\\Workspaces\\Service\\WorkspaceService');
 		$workspaceItemsArray = $workspaceService->selectVersionsInWorkspace($this->stageService->getWorkspaceId(), ($filter = 1), ($stage = -99), $id, ($recursionLevel = 0), ($selectionType = 'tables_modify'));
 		list($currentStage, $nextStage) = $this->getStageService()->getNextStageForElementCollection($workspaceItemsArray);
 		// get only the relevant items for processing
@@ -671,8 +674,8 @@ class ActionHandler extends \TYPO3\CMS\Workspaces\ExtDirect\AbstractHandler {
 	 * @author Michael Klapper <development@morphodo.com>
 	 */
 	public function updateStageChangeButtons($id) {
-		$stageService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Workspaces\\Service\\StagesService');
-		$workspaceService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Workspaces\\Service\\WorkspaceService');
+		$stageService = GeneralUtility::makeInstance('TYPO3\\CMS\\Workspaces\\Service\\StagesService');
+		$workspaceService = GeneralUtility::makeInstance('TYPO3\\CMS\\Workspaces\\Service\\WorkspaceService');
 		// fetch the next and previous stage
 		$workspaceItemsArray = $workspaceService->selectVersionsInWorkspace($stageService->getWorkspaceId(), ($filter = 1), ($stage = -99), $id, ($recursionLevel = 0), ($selectionType = 'tables_modify'));
 		list(, $nextStage) = $stageService->getNextStageForElementCollection($workspaceItemsArray);

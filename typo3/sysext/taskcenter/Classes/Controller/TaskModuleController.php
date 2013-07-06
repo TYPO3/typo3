@@ -24,6 +24,8 @@ namespace TYPO3\CMS\Taskcenter\Controller;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * This class provides a taskcenter for BE users
  *
@@ -41,7 +43,7 @@ class TaskModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	public function __construct() {
 		parent::init();
 		// Initialize document
-		$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
+		$this->doc = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
 		$this->doc->setModuleTemplate(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('taskcenter') . 'res/mod_template.html');
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->getPageRenderer()->loadScriptaculous('effects,dragdrop');
@@ -124,22 +126,22 @@ class TaskModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		list($extKey, $taskClass) = explode('.', $chosenTask, 2);
 		$title = $GLOBALS['LANG']->sL($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['taskcenter'][$extKey][$taskClass]['title']);
 		if (class_exists($taskClass)) {
-			$taskInstance = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($taskClass, $this);
+			$taskInstance = GeneralUtility::makeInstance($taskClass, $this);
 			if ($taskInstance instanceof \TYPO3\CMS\Taskcenter\TaskInterface) {
 				// Check if the task is restricted to admins only
 				if ($this->checkAccess($extKey, $taskClass)) {
 					$actionContent .= $taskInstance->getTask();
 				} else {
-					$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $GLOBALS['LANG']->getLL('error-access', TRUE), $GLOBALS['LANG']->getLL('error_header'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+					$flashMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $GLOBALS['LANG']->getLL('error-access', TRUE), $GLOBALS['LANG']->getLL('error_header'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
 					$actionContent .= $flashMessage->render();
 				}
 			} else {
 				// Error if the task is not an instance of tx_taskcenter_Task
-				$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', sprintf($GLOBALS['LANG']->getLL('error_no-instance', TRUE), $taskClass, 'TYPO3\\CMS\\Taskcenter\\TaskInterface'), $GLOBALS['LANG']->getLL('error_header'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+				$flashMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', sprintf($GLOBALS['LANG']->getLL('error_no-instance', TRUE), $taskClass, 'TYPO3\\CMS\\Taskcenter\\TaskInterface'), $GLOBALS['LANG']->getLL('error_header'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
 				$actionContent .= $flashMessage->render();
 			}
 		} else {
-			$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $GLOBALS['LANG']->sL('LLL:EXT:taskcenter/task/locallang_mod.xml:mlang_labels_tabdescr'), $GLOBALS['LANG']->sL('LLL:EXT:taskcenter/task/locallang_mod.xml:mlang_tabs_tab'), \TYPO3\CMS\Core\Messaging\FlashMessage::INFO);
+			$flashMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $GLOBALS['LANG']->sL('LLL:EXT:taskcenter/task/locallang_mod.xml:mlang_labels_tabdescr'), $GLOBALS['LANG']->sL('LLL:EXT:taskcenter/task/locallang_mod.xml:mlang_tabs_tab'), \TYPO3\CMS\Core\Messaging\FlashMessage::INFO);
 			$actionContent .= $flashMessage->render();
 		}
 		$content = '<div id="taskcenter-main">
@@ -219,7 +221,7 @@ class TaskModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 				// Check for custom icon
 				if (!empty($item['icon'])) {
 					if (strpos($item['icon'], '<img ') === FALSE) {
-						$absIconPath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFilename($item['icon']);
+						$absIconPath = GeneralUtility::getFileAbsFilename($item['icon']);
 						// If the file indeed exists, assemble relative path to it
 						if (file_exists($absIconPath)) {
 							$icon = $GLOBALS['BACK_PATH'] . '../' . str_replace(PATH_site, '', $absIconPath);
@@ -291,10 +293,10 @@ class TaskModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 					$taskDescriptionHtml = '';
 					// Check for custom icon
 					if (!empty($task['icon'])) {
-						$icon = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFilename($task['icon']);
+						$icon = GeneralUtility::getFileAbsFilename($task['icon']);
 					}
 					if (class_exists($taskClass)) {
-						$taskInstance = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($taskClass, $this);
+						$taskInstance = GeneralUtility::makeInstance($taskClass, $this);
 						if ($taskInstance instanceof \TYPO3\CMS\Taskcenter\TaskInterface) {
 							$taskDescriptionHtml = $taskInstance->getOverview();
 						}
@@ -313,7 +315,7 @@ class TaskModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 			}
 			$content .= $this->renderListMenu($tasks, TRUE);
 		} else {
-			$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $GLOBALS['LANG']->getLL('no-tasks', TRUE), '', \TYPO3\CMS\Core\Messaging\FlashMessage::INFO);
+			$flashMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $GLOBALS['LANG']->getLL('no-tasks', TRUE), '', \TYPO3\CMS\Core\Messaging\FlashMessage::INFO);
 			$this->content .= $flashMessage->render();
 		}
 		return $content;
@@ -403,7 +405,7 @@ class TaskModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * @return string Hyperlink with icon and appropriate JavaScript
 	 */
 	protected function openInNewWindow() {
-		$url = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL');
+		$url = GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL');
 		$onClick = 'devlogWin=window.open(\'' . $url . '\',\'taskcenter\',\'width=790,status=0,menubar=1,resizable=1,location=0,scrollbars=1,toolbar=0\');return false;';
 		$content = '<a href="#" onclick="' . htmlspecialchars($onClick) . '">' . '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/open_in_new_window.gif', 'width="19" height="14"') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.openInNewWindow', 1) . '" class="absmiddle" alt="" />' . '</a>';
 		return $content;

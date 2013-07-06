@@ -28,6 +28,9 @@ namespace TYPO3\CMS\Rtehtmlarea;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * A RTE using the htmlArea editor
  *
@@ -367,7 +370,7 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 			// Get the path to this extension:
 			$this->extHttpPath = $this->backPath . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($this->ID);
 			// Get the site URL
-			$this->siteURL = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
+			$this->siteURL = GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
 			// Get the host URL
 			$this->hostURL = $this->siteURL . TYPO3_mainDir;
 			// Element ID + pid
@@ -433,7 +436,7 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 				}
 			}
 			// Create content laguage service
-			$this->contentLanguageService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Lang\\LanguageService');
+			$this->contentLanguageService = GeneralUtility::makeInstance('TYPO3\\CMS\\Lang\\LanguageService');
 			$this->contentLanguageService->init($this->contentTypo3Language);
 			/* =======================================
 			 * TOOLBAR CONFIGURATION
@@ -513,7 +516,7 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 			$item = $this->triggerField($PA['itemFormElName']) . '
 				<div id="pleasewait' . $textAreaId . '" class="pleasewait" style="display: block;" >' . $LANG->getLL('Please wait') . '</div>
 				<div id="editorWrap' . $textAreaId . '" class="editorWrap" style="visibility: hidden; width:' . $editorWrapWidth . '; height:' . $editorWrapHeight . ';">
-				<textarea id="RTEarea' . $textAreaId . '" name="' . htmlspecialchars($PA['itemFormElName']) . '" rows="0" cols="0" style="' . \TYPO3\CMS\Core\Utility\GeneralUtility::deHSCentities(htmlspecialchars($this->RTEdivStyle)) . '">' . \TYPO3\CMS\Core\Utility\GeneralUtility::formatForTextarea($value) . '</textarea>
+				<textarea id="RTEarea' . $textAreaId . '" name="' . htmlspecialchars($PA['itemFormElName']) . '" rows="0" cols="0" style="' . GeneralUtility::deHSCentities(htmlspecialchars($this->RTEdivStyle)) . '">' . GeneralUtility::formatForTextarea($value) . '</textarea>
 				</div>' . LF;
 		}
 		// Return form item:
@@ -540,7 +543,7 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 		if ($fileName) {
 			$fileName = $this->getFullFileName($fileName);
 		}
-		$absolutePath = $fileName ? \TYPO3\CMS\Core\Utility\GeneralUtility::resolveBackPath(PATH_site . ($this->is_FE() || $this->isFrontendEditActive() ? '' : TYPO3_mainDir) . $fileName) : '';
+		$absolutePath = $fileName ? GeneralUtility::resolveBackPath(PATH_site . ($this->is_FE() || $this->isFrontendEditActive() ? '' : TYPO3_mainDir) . $fileName) : '';
 		// Fallback to default content css file if configured file does not exists or is of zero size
 		if (!$fileName || !file_exists($absolutePath) || !filesize($absolutePath)) {
 			$fileName = $this->getFullFileName('EXT:' . $this->ID . '/res/contentcss/default.css');
@@ -624,20 +627,20 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 			foreach ($TYPO3_CONF_VARS['EXTCONF'][$this->ID]['plugins'] as $pluginId => $pluginObjectConfiguration) {
 				$plugin = FALSE;
 				if (is_array($pluginObjectConfiguration) && count($pluginObjectConfiguration)) {
-					$plugin = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($pluginObjectConfiguration['objectReference']);
+					$plugin = GeneralUtility::getUserObj($pluginObjectConfiguration['objectReference']);
 				}
 				if (is_object($plugin)) {
 					if ($plugin->main($this)) {
 						$this->registeredPlugins[$pluginId] = $plugin;
 						// Override buttons from previously registered plugins
-						$pluginButtons = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $plugin->getPluginButtons(), 1);
+						$pluginButtons = GeneralUtility::trimExplode(',', $plugin->getPluginButtons(), 1);
 						foreach ($this->pluginButton as $previousPluginId => $buttonList) {
-							$this->pluginButton[$previousPluginId] = implode(',', array_diff(\TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->pluginButton[$previousPluginId], 1), $pluginButtons));
+							$this->pluginButton[$previousPluginId] = implode(',', array_diff(GeneralUtility::trimExplode(',', $this->pluginButton[$previousPluginId], 1), $pluginButtons));
 						}
 						$this->pluginButton[$pluginId] = $plugin->getPluginButtons();
-						$pluginLabels = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $plugin->getPluginLabels(), 1);
+						$pluginLabels = GeneralUtility::trimExplode(',', $plugin->getPluginLabels(), 1);
 						foreach ($this->pluginLabel as $previousPluginId => $labelList) {
-							$this->pluginLabel[$previousPluginId] = implode(',', array_diff(\TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->pluginLabel[$previousPluginId], 1), $pluginLabels));
+							$this->pluginLabel[$previousPluginId] = implode(',', array_diff(GeneralUtility::trimExplode(',', $this->pluginLabel[$previousPluginId], 1), $pluginLabels));
 						}
 						$this->pluginLabel[$pluginId] = $plugin->getPluginLabels();
 						$this->pluginEnabledArray[] = $pluginId;
@@ -683,7 +686,7 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 		}
 		$toolbarOrder = $this->thisConfig['toolbarOrder'] ? $this->thisConfig['toolbarOrder'] : $this->defaultToolbarOrder;
 		// Getting rid of undefined buttons
-		$this->toolbarOrderArray = array_intersect(\TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $toolbarOrder, 1), \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->defaultToolbarOrder, 1));
+		$this->toolbarOrderArray = array_intersect(GeneralUtility::trimExplode(',', $toolbarOrder, 1), GeneralUtility::trimExplode(',', $this->defaultToolbarOrder, 1));
 		$toolbarOrder = array_unique(array_values($this->toolbarOrderArray));
 		// Fetching specConf for field from backend
 		$pList = is_array($this->specConf['richtext']['parameters']) ? implode(',', $this->specConf['richtext']['parameters']) : '';
@@ -691,8 +694,8 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 			// If not all
 			$show = is_array($this->specConf['richtext']['parameters']) ? $this->specConf['richtext']['parameters'] : array();
 			if ($this->thisConfig['showButtons']) {
-				if (!\TYPO3\CMS\Core\Utility\GeneralUtility::inList($this->thisConfig['showButtons'], '*')) {
-					$show = array_unique(array_merge($show, \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->thisConfig['showButtons'], 1)));
+				if (!GeneralUtility::inList($this->thisConfig['showButtons'], '*')) {
+					$show = array_unique(array_merge($show, GeneralUtility::trimExplode(',', $this->thisConfig['showButtons'], 1)));
 				} else {
 					$show = array_unique(array_merge($show, $toolbarOrder));
 				}
@@ -713,14 +716,14 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 			$RTEkeyList = isset($GLOBALS['BE_USER']->userTS['options.']['RTEkeyList']) ? $GLOBALS['BE_USER']->userTS['options.']['RTEkeyList'] : '*';
 			if ($RTEkeyList != '*') {
 				// If not all
-				$show = array_intersect($show, \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $RTEkeyList, 1));
+				$show = array_intersect($show, GeneralUtility::trimExplode(',', $RTEkeyList, 1));
 			}
 		}
 		// Hiding buttons of disabled plugins
 		$hideButtons = array('space', 'bar', 'linebreak');
 		foreach ($this->pluginButton as $pluginId => $buttonList) {
 			if (!$this->isPluginEnabled($pluginId)) {
-				$buttonArray = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $buttonList, 1);
+				$buttonArray = GeneralUtility::trimExplode(',', $buttonList, 1);
 				foreach ($buttonArray as $button) {
 					$hideButtons[] = $button;
 				}
@@ -733,7 +736,7 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 			}
 		}
 		// Hiding buttons
-		$show = array_diff($show, $this->conf_toolbar_hide, \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->thisConfig['hideButtons'], 1));
+		$show = array_diff($show, $this->conf_toolbar_hide, GeneralUtility::trimExplode(',', $this->thisConfig['hideButtons'], 1));
 		// Apply toolbar constraints from registered plugins
 		foreach ($this->registeredPlugins as $pluginId => $plugin) {
 			if ($this->isPluginEnabled($pluginId) && method_exists($plugin, 'applyToolbarConstraints')) {
@@ -756,7 +759,7 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 		foreach ($this->pluginButton as $pluginId => $buttonList) {
 			if ($this->registeredPlugins[$pluginId]->addsButtons()) {
 				$showPlugin = FALSE;
-				$buttonArray = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $buttonList, 1);
+				$buttonArray = GeneralUtility::trimExplode(',', $buttonList, 1);
 				foreach ($buttonArray as $button) {
 					if (in_array($button, $this->toolbar)) {
 						$showPlugin = TRUE;
@@ -780,7 +783,7 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 		$requiredPlugins = array();
 		foreach ($this->registeredPlugins as $pluginId => $plugin) {
 			if ($this->isPluginEnabled($pluginId)) {
-				$requiredPlugins = array_merge($requiredPlugins, \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $plugin->getRequiredPlugins(), 1));
+				$requiredPlugins = array_merge($requiredPlugins, GeneralUtility::trimExplode(',', $plugin->getRequiredPlugins(), 1));
 			}
 		}
 		$requiredPlugins = array_unique($requiredPlugins);
@@ -835,9 +838,9 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 				RTEarea[0] = new Object();
 				RTEarea[0].version = "' . $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->ID]['version'] . '";
 				RTEarea[0].editorUrl = "' . $this->extHttpPath . 'htmlarea/";
-				RTEarea[0].editorCSS = "' . \TYPO3\CMS\Core\Utility\GeneralUtility::createVersionNumberedFilename($this->editorCSS) . '";
+				RTEarea[0].editorCSS = "' . GeneralUtility::createVersionNumberedFilename($this->editorCSS) . '";
 				RTEarea[0].editorSkin = "' . dirname($this->editorCSS) . '/";
-				RTEarea[0].editedContentCSS = "' . \TYPO3\CMS\Core\Utility\GeneralUtility::createVersionNumberedFilename($this->editedContentCSS) . '";
+				RTEarea[0].editedContentCSS = "' . GeneralUtility::createVersionNumberedFilename($this->editedContentCSS) . '";
 				RTEarea[0].hostUrl = "' . $this->hostURL . '";
 				RTEarea.init = function() {
 					if (typeof(HTMLArea) == "undefined" || !Ext.isReady) {
@@ -949,16 +952,16 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 		// Setting the list of tags to be removed if specified in the RTE config
 		if (trim($this->thisConfig['removeTags'])) {
 			$configureRTEInJavascriptString .= '
-			RTEarea[editornumber].htmlRemoveTags = /^(' . implode('|', \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->thisConfig['removeTags'], 1)) . ')$/i;';
+			RTEarea[editornumber].htmlRemoveTags = /^(' . implode('|', GeneralUtility::trimExplode(',', $this->thisConfig['removeTags'], 1)) . ')$/i;';
 		}
 		// Setting the list of tags to be removed with their contents if specified in the RTE config
 		if (trim($this->thisConfig['removeTagsAndContents'])) {
 			$configureRTEInJavascriptString .= '
-			RTEarea[editornumber].htmlRemoveTagsAndContents = /^(' . implode('|', \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->thisConfig['removeTagsAndContents'], 1)) . ')$/i;';
+			RTEarea[editornumber].htmlRemoveTagsAndContents = /^(' . implode('|', GeneralUtility::trimExplode(',', $this->thisConfig['removeTagsAndContents'], 1)) . ')$/i;';
 		}
 		// Setting array of custom tags if specified in the RTE config
 		if (!empty($this->thisConfig['customTags'])) {
-			$customTags = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->thisConfig['customTags'], 1);
+			$customTags = GeneralUtility::trimExplode(',', $this->thisConfig['customTags'], 1);
 			if (!empty($customTags)) {
 				$configureRTEInJavascriptString .= '
 				RTEarea[editornumber].customTags= ' . json_encode($customTags) . ';';
@@ -966,7 +969,7 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 		}
 		// Setting the pageStyle
 		$configureRTEInJavascriptString .= '
-			RTEarea[editornumber].pageStyle = "' . \TYPO3\CMS\Core\Utility\GeneralUtility::createVersionNumberedFilename($this->getContentCssFileName()) . '";';
+			RTEarea[editornumber].pageStyle = "' . GeneralUtility::createVersionNumberedFilename($this->getContentCssFileName()) . '";';
 		// Process classes configuration
 		$classesConfigurationRequired = FALSE;
 		foreach ($this->registeredPlugins as $pluginId => $plugin) {
@@ -1065,10 +1068,10 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 		// Scanning the list of sets of mutually exclusives classes if specified in the RTE config
 		if (is_array($RTEProperties['mutuallyExclusiveClasses.'])) {
 			foreach ($RTEProperties['mutuallyExclusiveClasses.'] as $listName => $conf) {
-				$classSet = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $conf, 1);
+				$classSet = GeneralUtility::trimExplode(',', $conf, 1);
 				$classList = implode(',', $classSet);
 				foreach ($classSet as $className) {
-					$classesArray['XOR'][$className] = '/^(' . implode('|', \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', \TYPO3\CMS\Core\Utility\GeneralUtility::rmFromList($className, $classList), 1)) . ')$/';
+					$classesArray['XOR'][$className] = '/^(' . implode('|', GeneralUtility::trimExplode(',', GeneralUtility::rmFromList($className, $classList), 1)) . ')$/';
 				}
 			}
 		}
@@ -1089,7 +1092,7 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 	 * @todo Define visibility
 	 */
 	public function buildNestedJSArray($conf) {
-		$convertedConf = \TYPO3\CMS\Core\Utility\GeneralUtility::removeDotsFromTS($conf);
+		$convertedConf = GeneralUtility::removeDotsFromTS($conf);
 		return str_replace(array(':"0"', ':"\\/^(', ')$\\/i"', ':"\\/^(', ')$\\/"', '[]'), array(':false', ':/^(', ')$/i', ':/^(', ')$/', '{}'), json_encode($convertedConf));
 	}
 
@@ -1103,9 +1106,9 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 		$JSLanguageArray = 'HTMLArea.I18N = new Object();' . LF;
 		$labelsArray = array('tooltips' => array(), 'msg' => array(), 'dialogs' => array());
 		foreach ($labelsArray as $labels => $subArray) {
-			$LOCAL_LANG = \TYPO3\CMS\Core\Utility\GeneralUtility::readLLfile('EXT:' . $this->ID . '/htmlarea/locallang_' . $labels . '.xml', $this->language, 'utf-8');
+			$LOCAL_LANG = GeneralUtility::readLLfile('EXT:' . $this->ID . '/htmlarea/locallang_' . $labels . '.xml', $this->language, 'utf-8');
 			if (!empty($LOCAL_LANG[$this->language])) {
-				$LOCAL_LANG[$this->language] = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($LOCAL_LANG['default'], $LOCAL_LANG[$this->language], FALSE, FALSE);
+				$LOCAL_LANG[$this->language] = GeneralUtility::array_merge_recursive_overrule($LOCAL_LANG['default'], $LOCAL_LANG[$this->language], FALSE, FALSE);
 			} else {
 				$LOCAL_LANG[$this->language] = $LOCAL_LANG['default'];
 			}
@@ -1128,19 +1131,19 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 	public function writeTemporaryFile($sourceFileName = '', $label, $fileExtension = 'js', $contents = '', $concatenate = FALSE) {
 		if ($sourceFileName) {
 			$output = '';
-			$source = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($sourceFileName);
+			$source = GeneralUtility::getFileAbsFileName($sourceFileName);
 			$output = file_get_contents($source);
 		} else {
 			$output = $contents;
 		}
-		$relativeFilename = 'typo3temp/' . $this->ID . '_' . str_replace('-', '_', $label) . '_' . \TYPO3\CMS\Core\Utility\GeneralUtility::shortMD5((TYPO3_version . $TYPO3_CONF_VARS['EXTCONF'][$this->ID]['version'] . ($sourceFileName ? $sourceFileName : $output)), 20) . '.' . $fileExtension;
+		$relativeFilename = 'typo3temp/' . $this->ID . '_' . str_replace('-', '_', $label) . '_' . GeneralUtility::shortMD5((TYPO3_version . $TYPO3_CONF_VARS['EXTCONF'][$this->ID]['version'] . ($sourceFileName ? $sourceFileName : $output)), 20) . '.' . $fileExtension;
 		$destination = PATH_site . $relativeFilename;
 		if (!file_exists($destination)) {
 			$minifiedJavaScript = '';
 			if ($fileExtension == 'js' && $output != '') {
-				$minifiedJavaScript = \TYPO3\CMS\Core\Utility\GeneralUtility::minifyJavaScript($output);
+				$minifiedJavaScript = GeneralUtility::minifyJavaScript($output);
 			}
-			$failure = \TYPO3\CMS\Core\Utility\GeneralUtility::writeFileToTypo3tempDir($destination, $minifiedJavaScript ? $minifiedJavaScript : $output);
+			$failure = GeneralUtility::writeFileToTypo3tempDir($destination, $minifiedJavaScript ? $minifiedJavaScript : $output);
 			if ($failure) {
 				throw new \RuntimeException($failure, 1294585668);
 			}
@@ -1150,7 +1153,7 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 		} else {
 			$filename = ($this->isFrontendEditActive() ? '' : $this->backPath . '../') . $relativeFilename;
 		}
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::resolveBackPath($filename);
+		return GeneralUtility::resolveBackPath($filename);
 	}
 
 	/**
@@ -1178,11 +1181,11 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 	public function buildJSLangArray($plugin) {
 		$LOCAL_LANG = FALSE;
 		$extensionKey = is_object($this->registeredPlugins[$plugin]) ? $this->registeredPlugins[$plugin]->getExtensionKey() : $this->ID;
-		$LOCAL_LANG = \TYPO3\CMS\Core\Utility\GeneralUtility::readLLfile('EXT:' . $extensionKey . '/htmlarea/plugins/' . $plugin . '/locallang.xml', $this->language, 'utf-8', 1);
+		$LOCAL_LANG = GeneralUtility::readLLfile('EXT:' . $extensionKey . '/htmlarea/plugins/' . $plugin . '/locallang.xml', $this->language, 'utf-8', 1);
 		$JSLanguageArray = 'HTMLArea.I18N["' . $plugin . '"] = new Object();' . LF;
 		if (is_array($LOCAL_LANG)) {
 			if (!empty($LOCAL_LANG[$this->language])) {
-				$LOCAL_LANG[$this->language] = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($LOCAL_LANG['default'], $LOCAL_LANG[$this->language], FALSE, FALSE);
+				$LOCAL_LANG[$this->language] = GeneralUtility::array_merge_recursive_overrule($LOCAL_LANG['default'], $LOCAL_LANG[$this->language], FALSE, FALSE);
 			} else {
 				$LOCAL_LANG[$this->language] = $LOCAL_LANG['default'];
 			}
@@ -1308,7 +1311,7 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 		} else {
 			$newFilename = ($this->is_FE() || $this->isFrontendEditActive() ? '' : $this->backPath . '../') . substr($filename, 1);
 		}
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::resolveBackPath($newFilename);
+		return GeneralUtility::resolveBackPath($newFilename);
 	}
 
 	/**
@@ -1368,7 +1371,7 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 	 */
 	public function clientInfo($userAgent = '') {
 		if (!$userAgent) {
-			$userAgent = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('HTTP_USER_AGENT');
+			$userAgent = GeneralUtility::getIndpEnv('HTTP_USER_AGENT');
 		}
 		$browserInfo = \TYPO3\CMS\Core\Utility\ClientUtility::getBrowserInfo($userAgent);
 		// Known engines: order is not irrelevant!
@@ -1396,7 +1399,7 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 	public function logDeprecatedProperty($deprecatedProperty, $useProperty, $version) {
 		if (!$this->thisConfig['logDeprecatedProperties.']['disabled']) {
 			$message = sprintf('RTE Page TSConfig property "%1$s" used on page id #%4$s is DEPRECATED and will be removed in TYPO3 %3$s. Use "%2$s" instead.', $deprecatedProperty, $useProperty, $version, $this->thePid);
-			\TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog($message);
+			GeneralUtility::deprecationLog($message);
 			if (is_object($GLOBALS['BE_USER']) && $this->thisConfig['logDeprecatedProperties.']['logAlsoToBELog']) {
 				$message = sprintf($GLOBALS['LANG']->getLL('deprecatedPropertyMessage'), $deprecatedProperty, $useProperty, $version, $this->thePid);
 				$GLOBALS['BE_USER']->simplelog($message, $this->ID);
@@ -1427,7 +1430,7 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 		if (strstr($str, '*')) {
 			$str = '*';
 		} else {
-			$str = implode(',', array_unique(\TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $str, 1)));
+			$str = implode(',', array_unique(GeneralUtility::trimExplode(',', $str, 1)));
 		}
 		return $str;
 	}
@@ -1436,15 +1439,15 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 	 * @todo Define visibility
 	 */
 	public function filterStyleEl($elValue, $matchList) {
-		$matchParts = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $matchList, 1);
+		$matchParts = GeneralUtility::trimExplode(',', $matchList, 1);
 		$styleParts = explode(';', $elValue);
 		$nStyle = array();
 		foreach ($styleParts as $k => $p) {
-			$pp = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(':', $p);
+			$pp = GeneralUtility::trimExplode(':', $p);
 			if ($pp[0] && $pp[1]) {
 				foreach ($matchParts as $el) {
 					$star = substr($el, -1) == '*';
-					if (!strcmp($pp[0], $el) || $star && \TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($pp[0], substr($el, 0, -1))) {
+					if (!strcmp($pp[0], $el) || $star && GeneralUtility::isFirstPartOfStr($pp[0], substr($el, 0, -1))) {
 						$nStyle[] = $pp[0] . ':' . $pp[1];
 					} else {
 						unset($styleParts[$k]);

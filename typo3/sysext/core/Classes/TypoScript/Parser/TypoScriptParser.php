@@ -27,6 +27,8 @@ namespace TYPO3\CMS\Core\TypoScript\Parser;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * The TypoScript parser
  *
@@ -507,23 +509,23 @@ class TypoScriptParser {
 				$newValue = (strcmp('', $currentValue) ? $currentValue . ',' : '') . trim($modifierArgument);
 				break;
 			case 'removeFromList':
-				$existingElements = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $currentValue);
-				$removeElements = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $modifierArgument);
+				$existingElements = GeneralUtility::trimExplode(',', $currentValue);
+				$removeElements = GeneralUtility::trimExplode(',', $modifierArgument);
 				if (count($removeElements)) {
 					$newValue = implode(',', array_diff($existingElements, $removeElements));
 				}
 				break;
 			case 'uniqueList':
-				$elements = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $currentValue);
+				$elements = GeneralUtility::trimExplode(',', $currentValue);
 				$newValue = implode(',', array_unique($elements));
 				break;
 			case 'reverseList':
-				$elements = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $currentValue);
+				$elements = GeneralUtility::trimExplode(',', $currentValue);
 				$newValue = implode(',', array_reverse($elements));
 				break;
 			case 'sortList':
-				$elements = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $currentValue);
-				$arguments = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $modifierArgument);
+				$elements = GeneralUtility::trimExplode(',', $currentValue);
+				$arguments = GeneralUtility::trimExplode(',', $modifierArgument);
 				$arguments = array_map('strtolower', $arguments);
 				$sort_flags = SORT_REGULAR;
 				if (in_array('numeric', $arguments)) {
@@ -540,12 +542,12 @@ class TypoScriptParser {
 					$hookMethod = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tsparser.php']['preParseFunc'][$modifierName];
 					$params = array('currentValue' => $currentValue, 'functionArgument' => $modifierArgument);
 					$fakeThis = FALSE;
-					$newValue = \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($hookMethod, $params, $fakeThis);
+					$newValue = GeneralUtility::callUserFunction($hookMethod, $params, $fakeThis);
 				} else {
-					\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog(
+					GeneralUtility::sysLog(
 						'Missing function definition for ' . $modifierName . ' on TypoScript',
 						'Core',
-						\TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_WARNING
+						GeneralUtility::SYSLOG_SEVERITY_WARNING
 					);
 				}
 		}
@@ -698,7 +700,7 @@ class TypoScriptParser {
 	static public function checkIncludeLines($string, $cycle_counter = 1, $returnFiles = FALSE) {
 		$includedFiles = array();
 		if ($cycle_counter > 100) {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog('It appears like TypoScript code is looping over itself. Check your templates for "&lt;INCLUDE_TYPOSCRIPT: ..." tags', 'Core', \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_WARNING);
+			GeneralUtility::sysLog('It appears like TypoScript code is looping over itself. Check your templates for "&lt;INCLUDE_TYPOSCRIPT: ..." tags', 'Core', GeneralUtility::SYSLOG_SEVERITY_WARNING);
 			if ($returnFiles) {
 				return array(
 					'typoscript' => '',
@@ -726,20 +728,20 @@ class TypoScriptParser {
 					if (preg_match('/^\\s*\\r?\\n/', $subparts[1])) {
 						// SO, the include was positively recognized:
 						$newString .= '### ' . $splitStr . $subparts[0] . '> BEGIN:' . LF;
-						$params = \TYPO3\CMS\Core\Utility\GeneralUtility::get_tag_attributes($subparts[0]);
+						$params = GeneralUtility::get_tag_attributes($subparts[0]);
 						if ($params['source']) {
 							$sourceParts = explode(':', $params['source'], 2);
 							switch (strtolower(trim($sourceParts[0]))) {
 								case 'file':
-									$filename = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName(trim($sourceParts[1]));
+									$filename = GeneralUtility::getFileAbsFileName(trim($sourceParts[1]));
 									// Must exist and must not contain '..' and must be relative
 									if (strcmp($filename, '')) {
 										// Check for allowed files
-										if (\TYPO3\CMS\Core\Utility\GeneralUtility::verifyFilenameAgainstDenyPattern($filename)) {
+										if (GeneralUtility::verifyFilenameAgainstDenyPattern($filename)) {
 											if (@is_file($filename)) {
 												// Check for includes in included text
 												$includedFiles[] = $filename;
-												$included_text = self::checkIncludeLines(\TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($filename), $cycle_counter + 1, $returnFiles);
+												$included_text = self::checkIncludeLines(GeneralUtility::getUrl($filename), $cycle_counter + 1, $returnFiles);
 												// If the method also has to return all included files, merge currently included
 												// files with files included by recursively calling itself
 												if ($returnFiles && is_array($included_text)) {
@@ -754,7 +756,7 @@ class TypoScriptParser {
 ###
 
 ';
-												\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog('File "' . $filename . '" was not found.', 'Core', \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_WARNING);
+												GeneralUtility::sysLog('File "' . $filename . '" was not found.', 'Core', GeneralUtility::SYSLOG_SEVERITY_WARNING);
 											}
 										} else {
 											$newString .= '
@@ -763,7 +765,7 @@ class TypoScriptParser {
 ###
 
 ';
-											\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog('File "' . $filename . '" was not included since it is not allowed due to fileDenyPattern', 'Core', \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_WARNING);
+											GeneralUtility::sysLog('File "' . $filename . '" was not included since it is not allowed due to fileDenyPattern', 'Core', GeneralUtility::SYSLOG_SEVERITY_WARNING);
 										}
 									}
 									break;
@@ -816,7 +818,7 @@ class TypoScriptParser {
 	 */
 	static public function extractIncludes($string, $cycle_counter = 1, $extractedFileNames = array()) {
 		if ($cycle_counter > 10) {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog('It appears like TypoScript code is looping over itself. Check your templates for "&lt;INCLUDE_TYPOSCRIPT: ..." tags', 'Core', \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_WARNING);
+			GeneralUtility::sysLog('It appears like TypoScript code is looping over itself. Check your templates for "&lt;INCLUDE_TYPOSCRIPT: ..." tags', 'Core', GeneralUtility::SYSLOG_SEVERITY_WARNING);
 			return '
 ###
 ### ERROR: Recursion!
@@ -867,7 +869,7 @@ class TypoScriptParser {
 					$fileContentString = implode('
 ', $fileContent);
 					// Write the content to the file
-					$realFileName = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($fileName);
+					$realFileName = GeneralUtility::getFileAbsFileName($fileName);
 					// Some file checks
 					if (empty($realFileName)) {
 						throw new \UnexpectedValueException(sprintf('"%s" is not a valid file location.', $fileName), 1294586441);
@@ -881,7 +883,7 @@ class TypoScriptParser {
 					$extractedFileNames[] = $realFileName;
 					// Recursive call to detected nested commented include statements
 					$fileContentString = self::extractIncludes($fileContentString, $cycle_counter + 1, $extractedFileNames);
-					if (!\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($realFileName, $fileContentString)) {
+					if (!GeneralUtility::writeFile($realFileName, $fileContentString)) {
 						throw new \RuntimeException(sprintf('Could not write file "%s"', $realFileName), 1294586444);
 					}
 					// Insert reference to the file in the rest content
@@ -1014,7 +1016,7 @@ class TypoScriptParser {
 				$lineC .= $this->highLightStyles['error'][0] . '<strong> - ERROR:</strong> ' . htmlspecialchars(implode(';', $errA[$rawP])) . $this->highLightStyles['error'][1];
 			}
 			if ($highlightBlockMode && $this->highLightData_bracelevel[$rawP]) {
-				$lineC = str_pad('', $this->highLightData_bracelevel[$rawP] * 2, ' ', STR_PAD_LEFT) . '<span style="' . $this->highLightBlockStyles . ($this->highLightBlockStyles_basecolor ? 'background-color: ' . \TYPO3\CMS\Core\Utility\GeneralUtility::modifyHTMLColorAll($this->highLightBlockStyles_basecolor, -$this->highLightData_bracelevel[$rawP] * 16) : '') . '">' . (strcmp($lineC, '') ? $lineC : '&nbsp;') . '</span>';
+				$lineC = str_pad('', $this->highLightData_bracelevel[$rawP] * 2, ' ', STR_PAD_LEFT) . '<span style="' . $this->highLightBlockStyles . ($this->highLightBlockStyles_basecolor ? 'background-color: ' . GeneralUtility::modifyHTMLColorAll($this->highLightBlockStyles_basecolor, -$this->highLightData_bracelevel[$rawP] * 16) : '') . '">' . (strcmp($lineC, '') ? $lineC : '&nbsp;') . '</span>';
 			}
 			if (is_array($lineNumDat)) {
 				$lineNum = $rawP + $lineNumDat[0];

@@ -27,6 +27,7 @@ namespace TYPO3\CMS\Core\Resource;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
@@ -403,7 +404,7 @@ class ResourceStorage {
 					$this->isOnline = TRUE;
 				} else {
 					// check if the storage is disabled temporary for now
-					$registryObject = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Registry');
+					$registryObject = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Registry');
 					$offlineUntil = $registryObject->get('core', 'sys_file_storage-' . $this->getUid() . '-offline-until');
 					if ($offlineUntil && $offlineUntil > time()) {
 						$this->isOnline = FALSE;
@@ -440,7 +441,7 @@ class ResourceStorage {
 	 * @return void
 	 */
 	public function markAsTemporaryOffline() {
-		$registryObject = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Registry');
+		$registryObject = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Registry');
 		$registryObject->set('core', 'sys_file_storage-' . $this->getUid() . '-offline-until', time() + 60 * 5);
 		$this->storageRecord['is_online'] = 0;
 		$this->isOnline = FALSE;
@@ -660,21 +661,21 @@ class ResourceStorage {
 	 * @return boolean TRUE if extension/filename is allowed
 	 */
 	protected function checkFileExtensionPermission($fileName) {
-		$isAllowed = \TYPO3\CMS\Core\Utility\GeneralUtility::verifyFilenameAgainstDenyPattern($fileName);
+		$isAllowed = GeneralUtility::verifyFilenameAgainstDenyPattern($fileName);
 		if ($isAllowed) {
-			$fileInfo = \TYPO3\CMS\Core\Utility\GeneralUtility::split_fileref($fileName);
+			$fileInfo = GeneralUtility::split_fileref($fileName);
 			// Set up the permissions for the file extension
 			$fileExtensionPermissions = $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']['webspace'];
-			$fileExtensionPermissions['allow'] = \TYPO3\CMS\Core\Utility\GeneralUtility::uniqueList(strtolower($fileExtensionPermissions['allow']));
-			$fileExtensionPermissions['deny'] = \TYPO3\CMS\Core\Utility\GeneralUtility::uniqueList(strtolower($fileExtensionPermissions['deny']));
+			$fileExtensionPermissions['allow'] = GeneralUtility::uniqueList(strtolower($fileExtensionPermissions['allow']));
+			$fileExtensionPermissions['deny'] = GeneralUtility::uniqueList(strtolower($fileExtensionPermissions['deny']));
 			$fileExtension = strtolower($fileInfo['fileext']);
 			if ($fileExtension !== '') {
 				// If the extension is found amongst the allowed types, we return TRUE immediately
-				if ($fileExtensionPermissions['allow'] === '*' || \TYPO3\CMS\Core\Utility\GeneralUtility::inList($fileExtensionPermissions['allow'], $fileExtension)) {
+				if ($fileExtensionPermissions['allow'] === '*' || GeneralUtility::inList($fileExtensionPermissions['allow'], $fileExtension)) {
 					return TRUE;
 				}
 				// If the extension is found amongst the denied types, we return FALSE immediately
-				if ($fileExtensionPermissions['deny'] === '*' || \TYPO3\CMS\Core\Utility\GeneralUtility::inList($fileExtensionPermissions['deny'], $fileExtension)) {
+				if ($fileExtensionPermissions['deny'] === '*' || GeneralUtility::inList($fileExtensionPermissions['deny'], $fileExtension)) {
 					return FALSE;
 				}
 				// If no match we return TRUE
@@ -1077,7 +1078,7 @@ class ResourceStorage {
 			throw new Exception\UploadException('The upload has failed, no uploaded file found!', 1322110455);
 		}
 		// Max upload size (kb) for files.
-		$maxUploadFileSize = \TYPO3\CMS\Core\Utility\GeneralUtility::getMaxUploadFileSize() * 1024;
+		$maxUploadFileSize = GeneralUtility::getMaxUploadFileSize() * 1024;
 		if ($uploadedFileSize >= $maxUploadFileSize) {
 			throw new Exception\UploadSizeException('The uploaded file exceeds the size-limit of ' . $maxUploadFileSize . ' bytes', 1322110041);
 		}
@@ -1614,7 +1615,7 @@ class ResourceStorage {
 		if (!$this->checkFolderActionPermission('add', $parentFolder)) {
 			throw new Exception\InsufficientFolderWritePermissionsException('You are not allowed to create directories in the folder "' . $parentFolder->getIdentifier() . '"', 1323059807);
 		}
-		$folderParts = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('/', $folderName, TRUE);
+		$folderParts = GeneralUtility::trimExplode('/', $folderName, TRUE);
 		foreach ($folderParts as $folder) {
 			// TODO check if folder creation succeeded
 			if ($this->hasFolderInFolder($folder, $parentFolder)) {
@@ -1913,7 +1914,7 @@ class ResourceStorage {
 	protected function getUniqueName(Folder $folder, $theFile, $dontCheckForUnique = FALSE) {
 		static $maxNumber = 99, $uniqueNamePrefix = '';
 		// Fetches info about path, name, extention of $theFile
-		$origFileInfo = \TYPO3\CMS\Core\Utility\GeneralUtility::split_fileref($theFile);
+		$origFileInfo = GeneralUtility::split_fileref($theFile);
 		// Adds prefix
 		if ($uniqueNamePrefix) {
 			$origFileInfo['file'] = $uniqueNamePrefix . $origFileInfo['file'];
@@ -1969,21 +1970,21 @@ class ResourceStorage {
 	 * @return \TYPO3\CMS\Extbase\Object\ObjectManager
 	 */
 	protected function getObjectManager() {
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+		return GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
 	}
 
 	/**
 	 * @return ResourceFactory
 	 */
 	protected function getFileFactory() {
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\ResourceFactory');
+		return GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\ResourceFactory');
 	}
 
 	/**
 	 * @return \TYPO3\CMS\Core\Resource\FileRepository
 	 */
 	protected function getFileRepository() {
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\FileRepository');
+		return GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\FileRepository');
 	}
 
 	/**
@@ -1991,7 +1992,7 @@ class ResourceStorage {
 	 */
 	protected function getFileProcessingService() {
 		if (!$this->fileProcessingService) {
-			$this->fileProcessingService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\Service\\FileProcessingService', $this, $this->driver);
+			$this->fileProcessingService = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\Service\\FileProcessingService', $this, $this->driver);
 		}
 		return $this->fileProcessingService;
 	}

@@ -27,6 +27,8 @@ namespace TYPO3\CMS\Lowlevel\View;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Script class for the Config module
  *
@@ -85,7 +87,7 @@ class ConfigurationView {
 		global $BACK_PATH;
 		$this->MCONF = $GLOBALS['MCONF'];
 		$this->menuConfig();
-		$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
+		$this->doc = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
 		$this->doc->backPath = $BACK_PATH;
 		$this->doc->setModuleTemplate('EXT:lowlevel/Resources/Private/Templates/config.html');
 		// JavaScript
@@ -129,7 +131,7 @@ class ConfigurationView {
 			'fixedLgd' => ''
 		);
 		// CLEANSE SETTINGS
-		$this->MOD_SETTINGS = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleData($this->MOD_MENU, \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('SET'), $this->MCONF['name']);
+		$this->MOD_SETTINGS = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleData($this->MOD_MENU, GeneralUtility::_GP('SET'), $this->MCONF['name']);
 	}
 
 	/**
@@ -139,9 +141,8 @@ class ConfigurationView {
 	 * @todo Define visibility
 	 */
 	public function main() {
-		$arrayBrowser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Lowlevel\\Utility\\ArrayBrowser');
+		$arrayBrowser = GeneralUtility::makeInstance('TYPO3\\CMS\\Lowlevel\\Utility\\ArrayBrowser');
 		$label = $this->MOD_MENU['function'][$this->MOD_SETTINGS['function']];
-
 		$this->content = $this->doc->header($GLOBALS['LANG']->getLL('configuration', TRUE));
 		$this->content .= '<h2>' . $label . '</h2>';
 
@@ -156,52 +157,52 @@ class ConfigurationView {
 		switch ($this->MOD_SETTINGS['function']) {
 			case 0:
 				$theVar = $GLOBALS['TYPO3_CONF_VARS'];
-				\TYPO3\CMS\Core\Utility\GeneralUtility::naturalKeySortRecursive($theVar);
+				GeneralUtility::naturalKeySortRecursive($theVar);
 				$arrayBrowser->varName = '$TYPO3_CONF_VARS';
 				break;
 			case 1:
 				$theVar = $GLOBALS['TCA'];
-				\TYPO3\CMS\Core\Utility\GeneralUtility::naturalKeySortRecursive($theVar);
+				GeneralUtility::naturalKeySortRecursive($theVar);
 				$arrayBrowser->varName = '$TCA';
 				break;
 			case 2:
 				$theVar = $GLOBALS['TCA_DESCR'];
-				\TYPO3\CMS\Core\Utility\GeneralUtility::naturalKeySortRecursive($theVar);
+				GeneralUtility::naturalKeySortRecursive($theVar);
 				$arrayBrowser->varName = '$TCA_DESCR';
 				break;
 			case 3:
 				$theVar = $GLOBALS['TYPO3_LOADED_EXT'];
-				\TYPO3\CMS\Core\Utility\GeneralUtility::naturalKeySortRecursive($theVar);
+				GeneralUtility::naturalKeySortRecursive($theVar);
 				$arrayBrowser->varName = '$TYPO3_LOADED_EXT';
 				break;
 			case 4:
 				$theVar = $GLOBALS['T3_SERVICES'];
-				\TYPO3\CMS\Core\Utility\GeneralUtility::naturalKeySortRecursive($theVar);
+				GeneralUtility::naturalKeySortRecursive($theVar);
 				$arrayBrowser->varName = '$T3_SERVICES';
 				break;
 			case 5:
 				$theVar = $GLOBALS['TBE_MODULES'];
-				\TYPO3\CMS\Core\Utility\GeneralUtility::naturalKeySortRecursive($theVar);
+				GeneralUtility::naturalKeySortRecursive($theVar);
 				$arrayBrowser->varName = '$TBE_MODULES';
 				break;
 			case 6:
 				$theVar = $GLOBALS['TBE_MODULES_EXT'];
-				\TYPO3\CMS\Core\Utility\GeneralUtility::naturalKeySortRecursive($theVar);
+				GeneralUtility::naturalKeySortRecursive($theVar);
 				$arrayBrowser->varName = '$TBE_MODULES_EXT';
 				break;
 			case 7:
 				$theVar = $GLOBALS['TBE_STYLES'];
-				\TYPO3\CMS\Core\Utility\GeneralUtility::naturalKeySortRecursive($theVar);
+				GeneralUtility::naturalKeySortRecursive($theVar);
 				$arrayBrowser->varName = '$TBE_STYLES';
 				break;
 			case 8:
 				$theVar = $GLOBALS['BE_USER']->uc;
-				\TYPO3\CMS\Core\Utility\GeneralUtility::naturalKeySortRecursive($theVar);
+				GeneralUtility::naturalKeySortRecursive($theVar);
 				$arrayBrowser->varName = '$BE_USER->uc';
 				break;
 			case 9:
 				$theVar = $GLOBALS['TYPO3_USER_SETTINGS'];
-				\TYPO3\CMS\Core\Utility\GeneralUtility::naturalKeySortRecursive($theVar);
+				GeneralUtility::naturalKeySortRecursive($theVar);
 				$arrayBrowser->varName = '$TYPO3_USER_SETTINGS';
 				break;
 			default:
@@ -209,7 +210,7 @@ class ConfigurationView {
 		}
 		// Update node:
 		$update = 0;
-		$node = \TYPO3\CMS\Core\Utility\GeneralUtility::_GET('node');
+		$node = GeneralUtility::_GET('node');
 		// If any plus-signs were clicked, it's registred.
 		if (is_array($node)) {
 			$this->MOD_SETTINGS['node_' . $this->MOD_SETTINGS['function']] = $arrayBrowser->depthKeys($node, $this->MOD_SETTINGS['node_' . $this->MOD_SETTINGS['function']]);
@@ -222,9 +223,9 @@ class ConfigurationView {
 		$arrayBrowser->regexMode = $this->MOD_SETTINGS['regexsearch'];
 		$arrayBrowser->fixedLgd = $this->MOD_SETTINGS['fixedLgd'];
 		$arrayBrowser->searchKeysToo = TRUE;
-		$search_field = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('search_field');
+		$search_field = GeneralUtility::_GP('search_field');
 		// If any POST-vars are send, update the condition array
-		if (\TYPO3\CMS\Core\Utility\GeneralUtility::_POST('search') && trim($search_field)) {
+		if (GeneralUtility::_POST('search') && trim($search_field)) {
 			$arrayBrowser->depthKeys = $arrayBrowser->getSearchKeys($theVar, '', $search_field, array());
 		}
 		// mask the encryption key to not show it as plaintext in the configuration module
@@ -234,16 +235,16 @@ class ConfigurationView {
 		$tree = $arrayBrowser->tree($theVar, '', '');
 		$this->content .= $this->doc->sectionEnd();
 		// Variable name:
-		if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('varname')) {
-			$line = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('_') ? \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('_') : \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('varname');
+		if (GeneralUtility::_GP('varname')) {
+			$line = GeneralUtility::_GP('_') ? GeneralUtility::_GP('_') : GeneralUtility::_GP('varname');
 			// Write the line to extTables.php
-			if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('writetoexttables')) {
+			if (GeneralUtility::_GP('writetoexttables')) {
 				// change value to $GLOBALS
 				$length = strpos($line, '[');
 				$var = substr($line, 0, $length);
 				$changedLine = '$GLOBALS[\'' . substr($line, 1, ($length - 1)) . '\']' . substr($line, $length);
 				// load current extTables.php
-				$extTables = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl(PATH_typo3conf . TYPO3_extTableDef_script);
+				$extTables = GeneralUtility::getUrl(PATH_typo3conf . TYPO3_extTableDef_script);
 				if ($var === '$TCA') {
 					// check if we are editing the TCA
 					preg_match_all('/\\[\'([^\']+)\'\\]/', $line, $parts);
@@ -251,10 +252,10 @@ class ConfigurationView {
 				// insert line in extTables.php
 				$extTables = preg_replace('/<\\?php|\\?>/is', '', $extTables);
 				$extTables = '<?php' . (empty($extTables) ? LF : '') . $extTables . $changedLine . LF . '?>';
-				$success = \TYPO3\CMS\Core\Utility\GeneralUtility::writeFile(PATH_typo3conf . TYPO3_extTableDef_script, $extTables);
+				$success = GeneralUtility::writeFile(PATH_typo3conf . TYPO3_extTableDef_script, $extTables);
 				if ($success) {
 					// show flash message
-					$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+					$flashMessage = GeneralUtility::makeInstance(
 						'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
 						'',
 						sprintf(
@@ -267,7 +268,7 @@ class ConfigurationView {
 					);
 				} else {
 					// Error: show flash message
-					$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+					$flashMessage = GeneralUtility::makeInstance(
 						'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
 						'',
 						sprintf($GLOBALS['LANG']->getLL('writeMessageFailed', TRUE), TYPO3_extTableDef_script),

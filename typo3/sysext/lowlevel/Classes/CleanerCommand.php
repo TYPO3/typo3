@@ -26,6 +26,9 @@ namespace TYPO3\CMS\Lowlevel;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Core functions for cleaning and analysing
  *
@@ -126,7 +129,7 @@ This will show you missing files in the TYPO3 system and only report back if err
 		$GLOBALS['BE_USER']->setWorkspace(0);
 		// Print Howto:
 		if ($this->cli_isArg('--showhowto')) {
-			$howto = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('lowlevel') . 'HOWTO_clean_up_TYPO3_installations.txt');
+			$howto = GeneralUtility::getUrl(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('lowlevel') . 'HOWTO_clean_up_TYPO3_installations.txt');
 			echo wordwrap($howto, 120) . LF;
 			die;
 		}
@@ -139,7 +142,7 @@ This will show you missing files in the TYPO3 system and only report back if err
 		}
 
 		if (is_array($this->cleanerModules[$analysisType])) {
-			$cleanerMode = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($this->cleanerModules[$analysisType][0]);
+			$cleanerMode = GeneralUtility::getUserObj($this->cleanerModules[$analysisType][0]);
 			$cleanerMode->cli_validateArgs();
 			// Run it...
 			if ($this->cli_isArg('-r')) {
@@ -179,7 +182,7 @@ NOW Running --AUTOFIX on result. OK?' . ($this->cli_isArg('--dryrun') ? ' (--dry
 	public function cli_referenceIndexCheck() {
 		// Reference index option:
 		$refIndexMode = isset($this->cli_args['--refindex']) ? $this->cli_args['--refindex'][0] : 'check';
-		if (!\TYPO3\CMS\Core\Utility\GeneralUtility::inList('update,ignore,check', $refIndexMode)) {
+		if (!GeneralUtility::inList('update,ignore,check', $refIndexMode)) {
 			$this->cli_echo('ERROR: Wrong value for --refindex argument.
 ', 1);
 			die;
@@ -188,7 +191,7 @@ NOW Running --AUTOFIX on result. OK?' . ($this->cli_isArg('--dryrun') ? ' (--dry
 			case 'check':
 
 			case 'update':
-				$refIndexObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\ReferenceIndex');
+				$refIndexObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\ReferenceIndex');
 				list($headerContent, $bodyContent, $errorCount) = $refIndexObj->updateIndex($refIndexMode == 'check', $this->cli_echo());
 				if ($errorCount && $refIndexMode == 'check') {
 					$ok = FALSE;
@@ -303,7 +306,7 @@ NOW Running --AUTOFIX on result. OK?' . ($this->cli_isArg('--dryrun') ? ' (--dry
 	 * @todo Define visibility
 	 */
 	public function genTree($rootID, $depth = 1000, $echoLevel = 0, $callBack = '') {
-		$pt = \TYPO3\CMS\Core\Utility\GeneralUtility::milliseconds();
+		$pt = GeneralUtility::milliseconds();
 		$this->performanceStatistics['genTree()'] = '';
 		// Initialize:
 		if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('workspaces')) {
@@ -333,11 +336,11 @@ NOW Running --AUTOFIX on result. OK?' . ($this->cli_isArg('--dryrun') ? ' (--dry
 			'misplaced_inside_tree' => array()
 		);
 		// Start traversal:
-		$pt2 = \TYPO3\CMS\Core\Utility\GeneralUtility::milliseconds();
+		$pt2 = GeneralUtility::milliseconds();
 		$this->performanceStatistics['genTree_traverse()'] = '';
 		$this->performanceStatistics['genTree_traverse():TraverseTables'] = '';
 		$this->genTree_traverse($rootID, $depth, $echoLevel, $callBack);
-		$this->performanceStatistics['genTree_traverse()'] = \TYPO3\CMS\Core\Utility\GeneralUtility::milliseconds() - $pt2;
+		$this->performanceStatistics['genTree_traverse()'] = GeneralUtility::milliseconds() - $pt2;
 		// Sort recStats (for diff'able displays)
 		foreach ($this->recStats as $kk => $vv) {
 			foreach ($this->recStats[$kk] as $tables => $recArrays) {
@@ -349,7 +352,7 @@ NOW Running --AUTOFIX on result. OK?' . ($this->cli_isArg('--dryrun') ? ' (--dry
 			echo LF . LF;
 		}
 		// Processing performance statistics:
-		$this->performanceStatistics['genTree()'] = \TYPO3\CMS\Core\Utility\GeneralUtility::milliseconds() - $pt;
+		$this->performanceStatistics['genTree()'] = GeneralUtility::milliseconds() - $pt;
 		// Count records:
 		foreach ($GLOBALS['TCA'] as $tableName => $cfg) {
 			// Select all records belonging to page:
@@ -421,16 +424,16 @@ NOW Running --AUTOFIX on result. OK?' . ($this->cli_isArg('--dryrun') ? ' (--dry
 		if ($callBack) {
 			$this->{$callBack}('pages', $rootID, $echoLevel, $versionSwapmode, $rootIsVersion);
 		}
-		$pt3 = \TYPO3\CMS\Core\Utility\GeneralUtility::milliseconds();
+		$pt3 = GeneralUtility::milliseconds();
 		// Traverse tables of records that belongs to page:
 		foreach ($GLOBALS['TCA'] as $tableName => $cfg) {
 			if ($tableName != 'pages') {
 				// Select all records belonging to page:
-				$pt4 = \TYPO3\CMS\Core\Utility\GeneralUtility::milliseconds();
+				$pt4 = GeneralUtility::milliseconds();
 				$resSub = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid' . ($GLOBALS['TCA'][$tableName]['ctrl']['delete'] ? ',' . $GLOBALS['TCA'][$tableName]['ctrl']['delete'] : ''), $tableName, 'pid=' . intval($rootID) . ($this->genTree_traverseDeleted ? '' : \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($tableName)));
-				$this->performanceStatistics['genTree_traverse():TraverseTables:']['MySQL']['(ALL)'] += \TYPO3\CMS\Core\Utility\GeneralUtility::milliseconds() - $pt4;
-				$this->performanceStatistics['genTree_traverse():TraverseTables:']['MySQL'][$tableName] += \TYPO3\CMS\Core\Utility\GeneralUtility::milliseconds() - $pt4;
-				$pt5 = \TYPO3\CMS\Core\Utility\GeneralUtility::milliseconds();
+				$this->performanceStatistics['genTree_traverse():TraverseTables:']['MySQL']['(ALL)'] += GeneralUtility::milliseconds() - $pt4;
+				$this->performanceStatistics['genTree_traverse():TraverseTables:']['MySQL'][$tableName] += GeneralUtility::milliseconds() - $pt4;
+				$pt5 = GeneralUtility::milliseconds();
 				$count = $GLOBALS['TYPO3_DB']->sql_num_rows($resSub);
 				if ($count) {
 					if ($echoLevel == 2) {
@@ -527,13 +530,13 @@ NOW Running --AUTOFIX on result. OK?' . ($this->cli_isArg('--dryrun') ? ' (--dry
 						}
 					}
 				}
-				$this->performanceStatistics['genTree_traverse():TraverseTables:']['Proc']['(ALL)'] += \TYPO3\CMS\Core\Utility\GeneralUtility::milliseconds() - $pt5;
-				$this->performanceStatistics['genTree_traverse():TraverseTables:']['Proc'][$tableName] += \TYPO3\CMS\Core\Utility\GeneralUtility::milliseconds() - $pt5;
+				$this->performanceStatistics['genTree_traverse():TraverseTables:']['Proc']['(ALL)'] += GeneralUtility::milliseconds() - $pt5;
+				$this->performanceStatistics['genTree_traverse():TraverseTables:']['Proc'][$tableName] += GeneralUtility::milliseconds() - $pt5;
 			}
 		}
 		unset($resSub);
 		unset($rowSub);
-		$this->performanceStatistics['genTree_traverse():TraverseTables'] += \TYPO3\CMS\Core\Utility\GeneralUtility::milliseconds() - $pt3;
+		$this->performanceStatistics['genTree_traverse():TraverseTables'] += GeneralUtility::milliseconds() - $pt3;
 		// Find subpages to root ID and traverse (only when rootID is not a version or is a branch-version):
 		if (!$versionSwapmode || $versionSwapmode == 'SWAPMODE:1') {
 			if ($depth > 0) {

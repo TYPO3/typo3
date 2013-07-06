@@ -27,6 +27,8 @@ namespace TYPO3\CMS\TsTemplate\Controller;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * This class displays the submodule "TypoScript Object Browser" inside the Web > Template module
  *
@@ -78,7 +80,7 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends \TYPO3\CMS
 			'ts_browser_alphaSort' => '1'
 		);
 		foreach (array('setup', 'const') as $bType) {
-			$addKey = \TYPO3\CMS\Core\Utility\GeneralUtility::_GET('addKey');
+			$addKey = GeneralUtility::_GET('addKey');
 			// If any plus-signs were clicked, it's registred.
 			if (is_array($addKey)) {
 				reset($addKey);
@@ -138,7 +140,7 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends \TYPO3\CMS
 			'stdWrap' => ''
 		);
 		if ($parentType) {
-			if (isset($TSobjDataTypes[$parentType]) && (!$TSobjDataTypes[$parentType] || \TYPO3\CMS\Core\Utility\GeneralUtility::inlist($TSobjDataTypes[$parentType], $parentValue))) {
+			if (isset($TSobjDataTypes[$parentType]) && (!$TSobjDataTypes[$parentType] || GeneralUtility::inlist($TSobjDataTypes[$parentType], $parentValue))) {
 				$ObjectKind = $parentValue;
 			} else {
 				// Object kind is "" if it should be known.
@@ -177,12 +179,12 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends \TYPO3\CMS
 		// Initializes the module. Done in this function because we may need to re-initialize if data is submitted!
 		global $tmpl, $tplRow, $theConstants;
 		// Defined global here!
-		$tmpl = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\ExtendedTemplateService');
+		$tmpl = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\ExtendedTemplateService');
 		// Do not log time-performance information
 		$tmpl->tt_track = 0;
 		$tmpl->init();
 		// Gets the rootLine
-		$sys_page = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
+		$sys_page = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
 		$rootLine = $sys_page->getRootLine($pageId);
 		// This generates the constants/config + hierarchy info for the template.
 		$tmpl->runThroughTemplates($rootLine, $template_uid);
@@ -203,7 +205,7 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends \TYPO3\CMS
 	public function main() {
 		global $BACK_PATH;
 		global $tmpl, $tplRow, $theConstants;
-		$POST = \TYPO3\CMS\Core\Utility\GeneralUtility::_POST();
+		$POST = GeneralUtility::_POST();
 		// Checking for more than one template an if, set a menu...
 		$manyTemplatesMenu = $this->pObj->templateMenu();
 		$template_uid = 0;
@@ -233,23 +235,23 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends \TYPO3\CMS
 					if ($POST['add_property']) {
 						$property = trim($POST['data'][$name]['name']);
 						if (preg_replace('/[^a-zA-Z0-9_\\.]*/', '', $property) != $property) {
-							$badPropertyMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $GLOBALS['LANG']->getLL('noSpaces') . '<br />' . $GLOBALS['LANG']->getLL('nothingUpdated'), $GLOBALS['LANG']->getLL('badProperty'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+							$badPropertyMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $GLOBALS['LANG']->getLL('noSpaces') . '<br />' . $GLOBALS['LANG']->getLL('nothingUpdated'), $GLOBALS['LANG']->getLL('badProperty'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
 							$this->addFlashMessage($badPropertyMessage);
 						} else {
 							$pline = $name . '.' . $property . ' = ' . trim($POST['data'][$name]['propertyValue']);
-							$propertyAddedMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', htmlspecialchars($pline), $GLOBALS['LANG']->getLL('propertyAdded'));
+							$propertyAddedMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', htmlspecialchars($pline), $GLOBALS['LANG']->getLL('propertyAdded'));
 							$this->addFlashMessage($propertyAddedMessage);
 							$line .= LF . $pline;
 						}
 					} elseif ($POST['update_value']) {
 						$pline = $name . ' = ' . trim($POST['data'][$name]['value']);
-						$updatedMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', htmlspecialchars($pline), $GLOBALS['LANG']->getLL('valueUpdated'));
+						$updatedMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', htmlspecialchars($pline), $GLOBALS['LANG']->getLL('valueUpdated'));
 						$this->addFlashMessage($updatedMessage);
 						$line .= LF . $pline;
 					} elseif ($POST['clear_object']) {
 						if ($POST['data'][$name]['clearValue']) {
 							$pline = $name . ' >';
-							$objectClearedMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', htmlspecialchars($pline), $GLOBALS['LANG']->getLL('objectCleared'));
+							$objectClearedMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', htmlspecialchars($pline), $GLOBALS['LANG']->getLL('objectCleared'));
 							$this->addFlashMessage($objectClearedMessage);
 							$line .= LF . $pline;
 						}
@@ -262,7 +264,7 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends \TYPO3\CMS
 					$field = $bType == 'setup' ? 'config' : 'constants';
 					$recData['sys_template'][$saveId][$field] = $tplRow[$field] . $line;
 					// Create new  tce-object
-					$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+					$tce = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
 					$tce->stripslashes_values = 0;
 					// Initialize
 					$tce->start($recData, array());
@@ -275,7 +277,7 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends \TYPO3\CMS
 				}
 			}
 		}
-		$tsbr = \TYPO3\CMS\Core\Utility\GeneralUtility::_GET('tsbr');
+		$tsbr = GeneralUtility::_GET('tsbr');
 		$update = 0;
 		if (is_array($tsbr)) {
 			// If any plus-signs were clicked, it's registred.
@@ -306,9 +308,9 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends \TYPO3\CMS
 		$tmpl->resourceCheck = 1;
 		$tmpl->removeFromGetFilePath = PATH_site;
 		if ($this->pObj->MOD_SETTINGS['ts_browser_type'] == 'const') {
-			$tmpl->ext_constants_BRP = intval(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('breakPointLN'));
+			$tmpl->ext_constants_BRP = intval(GeneralUtility::_GP('breakPointLN'));
 		} else {
-			$tmpl->ext_config_BRP = intval(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('breakPointLN'));
+			$tmpl->ext_config_BRP = intval(GeneralUtility::_GP('breakPointLN'));
 		}
 		$tmpl->generateConfig();
 		if ($bType == 'setup') {
@@ -343,7 +345,7 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends \TYPO3\CMS
 				$theOutput .= $this->pObj->doc->section($GLOBALS['LANG']->getLL('clearObject'), $out, 0, 0);
 				$theOutput .= $this->pObj->doc->spacer(10);
 			} else {
-				$noTemplateMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $GLOBALS['LANG']->getLL('noCurrentTemplate'), $GLOBALS['LANG']->getLL('edit'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+				$noTemplateMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $GLOBALS['LANG']->getLL('noCurrentTemplate'), $GLOBALS['LANG']->getLL('edit'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
 				$this->addFlashMessage($noTemplateMessage);
 			}
 			// Links:
@@ -372,9 +374,9 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends \TYPO3\CMS
 			$theOutput .= $this->pObj->doc->section('', $out);
 		} else {
 			$tmpl->tsbrowser_depthKeys = $this->pObj->MOD_SETTINGS['tsbrowser_depthKeys_' . $bType];
-			if (\TYPO3\CMS\Core\Utility\GeneralUtility::_POST('search') && \TYPO3\CMS\Core\Utility\GeneralUtility::_POST('search_field')) {
+			if (GeneralUtility::_POST('search') && GeneralUtility::_POST('search_field')) {
 				// If any POST-vars are send, update the condition array
-				$tmpl->tsbrowser_depthKeys = $tmpl->ext_getSearchKeys($theSetup, '', \TYPO3\CMS\Core\Utility\GeneralUtility::_POST('search_field'), array());
+				$tmpl->tsbrowser_depthKeys = $tmpl->ext_getSearchKeys($theSetup, '', GeneralUtility::_POST('search_field'), array());
 			}
 			$menu = '<div class="tsob-menu"><label>' . $GLOBALS['LANG']->getLL('browse') . '</label>';
 			$menu .= \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncMenu($this->pObj->id, 'SET[ts_browser_type]', $bType, $this->pObj->MOD_MENU['ts_browser_type']);
@@ -412,7 +414,7 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends \TYPO3\CMS
 					$errMsg[] = $inf[1] . ': &nbsp; &nbsp;' . $inf[0] . $errorLink;
 				}
 				$theOutput .= $this->pObj->doc->spacer(10);
-				$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', implode($errMsg, '<br />'), $GLOBALS['LANG']->getLL('errorsWarnings'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+				$flashMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', implode($errMsg, '<br />'), $GLOBALS['LANG']->getLL('errorsWarnings'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
 				$theOutput .= $flashMessage->render();
 			}
 			if (isset($this->pObj->MOD_SETTINGS['ts_browser_TLKeys_' . $bType][$theKey])) {
@@ -470,7 +472,7 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends \TYPO3\CMS
 	 */
 	protected function addFlashMessage(\TYPO3\CMS\Core\Messaging\FlashMessage $flashMessage) {
 		/** @var $flashMessageService \TYPO3\CMS\Core\Messaging\FlashMessageService */
-		$flashMessageService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessageService');
+		$flashMessageService = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessageService');
 		/** @var $defaultFlashMessageQueue \TYPO3\CMS\Core\Messaging\FlashMessageQueue */
 		$defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
 		$defaultFlashMessageQueue->enqueue($flashMessage);

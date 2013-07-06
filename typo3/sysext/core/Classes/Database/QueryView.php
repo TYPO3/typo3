@@ -26,6 +26,10 @@ namespace TYPO3\CMS\Core\Database;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+
 /**
  * Class used in module tools/dbint (advanced search) and which may hold code specific for that module
  * However the class has a general principle in it which may be used in the web/export module.
@@ -185,12 +189,12 @@ class QueryView {
 			// Show query
 			if ($saveArr['queryTable']) {
 				/** @var \TYPO3\CMS\Core\Database\QueryGenerator */
-				$qGen = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\QueryGenerator');
+				$qGen = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\QueryGenerator');
 				$qGen->init('queryConfig', $saveArr['queryTable']);
 				$qGen->makeSelectorTable($saveArr);
 				$qGen->enablePrefix = 1;
 				$qString = $qGen->getQuery($qGen->queryConfig);
-				$qCount = $GLOBALS['TYPO3_DB']->SELECTquery('count(*)', $qGen->table, $qString . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($qGen->table));
+				$qCount = $GLOBALS['TYPO3_DB']->SELECTquery('count(*)', $qGen->table, $qString . BackendUtility::deleteClause($qGen->table));
 				$qSelect = $qGen->getSelectQuery($qString);
 				$res = @$GLOBALS['TYPO3_DB']->sql_query($qCount);
 				if (!$GLOBALS['TYPO3_DB']->sql_error()) {
@@ -238,7 +242,7 @@ class QueryView {
 	public function procesStoreControl() {
 		$storeArray = $this->initStoreArray();
 		$storeQueryConfigs = unserialize($GLOBALS['SOBE']->MOD_SETTINGS['storeQueryConfigs']);
-		$storeControl = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('storeControl');
+		$storeControl = GeneralUtility::_GP('storeControl');
 		$storeIndex = intval($storeControl['STORE']);
 		$saveStoreArray = 0;
 		$writeArray = array();
@@ -248,9 +252,9 @@ class QueryView {
 				if ($storeIndex > 0) {
 					$writeArray = $this->loadStoreQueryConfigs($storeQueryConfigs, $storeIndex, $writeArray);
 					$saveStoreArray = 1;
-					$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', sprintf($GLOBALS['LANG']->getLL('query_loaded'), htmlspecialchars($storeArray[$storeIndex])));
+					$flashMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', sprintf($GLOBALS['LANG']->getLL('query_loaded'), htmlspecialchars($storeArray[$storeIndex])));
 				} elseif ($storeIndex < 0 && \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('sys_action')) {
-					$actionRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('sys_action', abs($storeIndex));
+					$actionRecord = BackendUtility::getRecord('sys_action', abs($storeIndex));
 					if (is_array($actionRecord)) {
 						$dA = unserialize($actionRecord['t2_data']);
 						$dbSC = array();
@@ -259,16 +263,16 @@ class QueryView {
 						}
 						$writeArray = $this->loadStoreQueryConfigs($dbSC, '0', $writeArray);
 						$saveStoreArray = 1;
-						$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', sprintf($GLOBALS['LANG']->getLL('query_from_action_loaded'), htmlspecialchars($actionRecord['title'])));
+						$flashMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', sprintf($GLOBALS['LANG']->getLL('query_from_action_loaded'), htmlspecialchars($actionRecord['title'])));
 					}
 				}
 			} elseif ($storeControl['SAVE']) {
 				if ($storeIndex < 0) {
 					$qOK = $this->saveQueryInAction(abs($storeIndex));
 					if ($qOK) {
-						$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $GLOBALS['LANG']->getLL('query_saved'));
+						$flashMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $GLOBALS['LANG']->getLL('query_saved'));
 					} else {
-						$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $GLOBALS['LANG']->getLL('query_notsaved'), '', \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+						$flashMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $GLOBALS['LANG']->getLL('query_notsaved'), '', \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
 					}
 				} else {
 					if (trim($storeControl['title'])) {
@@ -281,12 +285,12 @@ class QueryView {
 						}
 						$storeQueryConfigs = $this->addToStoreQueryConfigs($storeQueryConfigs, $storeIndex);
 						$saveStoreArray = 1;
-						$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $GLOBALS['LANG']->getLL('query_saved'));
+						$flashMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $GLOBALS['LANG']->getLL('query_saved'));
 					}
 				}
 			} elseif ($storeControl['REMOVE']) {
 				if ($storeIndex > 0) {
-					$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', sprintf($GLOBALS['LANG']->getLL('query_removed'), htmlspecialchars($storeArray[$storeControl['STORE']])));
+					$flashMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', sprintf($GLOBALS['LANG']->getLL('query_removed'), htmlspecialchars($storeArray[$storeControl['STORE']])));
 					// Removing
 					unset($storeArray[$storeControl['STORE']]);
 					$saveStoreArray = 1;
@@ -301,7 +305,7 @@ class QueryView {
 			unset($storeArray[0]);
 			$writeArray['storeArray'] = serialize($storeArray);
 			$writeArray['storeQueryConfigs'] = serialize($this->cleanStoreQueryConfigs($storeQueryConfigs, $storeArray));
-			$GLOBALS['SOBE']->MOD_SETTINGS = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleData($GLOBALS['SOBE']->MOD_MENU, $writeArray, $GLOBALS['SOBE']->MCONF['name'], 'ses');
+			$GLOBALS['SOBE']->MOD_SETTINGS = BackendUtility::getModuleData($GLOBALS['SOBE']->MOD_MENU, $writeArray, $GLOBALS['SOBE']->MCONF['name'], 'ses');
 		}
 		return $msg;
 	}
@@ -326,7 +330,7 @@ class QueryView {
 			$output .= $GLOBALS['SOBE']->doc->spacer(20);
 		}
 		// Query Maker:
-		$qGen = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\QueryGenerator');
+		$qGen = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\QueryGenerator');
 		$qGen->init('queryConfig', $GLOBALS['SOBE']->MOD_SETTINGS['queryTable']);
 		if ($this->formName) {
 			$qGen->setFormName($this->formName);
@@ -342,7 +346,7 @@ class QueryView {
 				$qString = $qGen->getQuery($qGen->queryConfig);
 				switch ($mQ) {
 					case 'count':
-						$qExplain = $GLOBALS['TYPO3_DB']->SELECTquery('count(*)', $qGen->table, $qString . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($qGen->table));
+						$qExplain = $GLOBALS['TYPO3_DB']->SELECTquery('count(*)', $qGen->table, $qString . BackendUtility::deleteClause($qGen->table));
 						break;
 					default:
 						$qExplain = $qGen->getSelectQuery($qString);
@@ -393,7 +397,7 @@ class QueryView {
 				}
 				if (is_array($this->hookArray['beforeResultTable'])) {
 					foreach ($this->hookArray['beforeResultTable'] as $_funcRef) {
-						$out .= \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($_funcRef, $GLOBALS['SOBE']->MOD_SETTINGS, $this);
+						$out .= GeneralUtility::callUserFunction($_funcRef, $GLOBALS['SOBE']->MOD_SETTINGS, $this);
 					}
 				}
 				if (count($rowArr)) {
@@ -416,12 +420,12 @@ class QueryView {
 					$rowArr[] = $this->csvValues($row, ',', '"', $GLOBALS['TCA'][$table], $table);
 				}
 				if (count($rowArr)) {
-					$out .= '<textarea name="whatever" rows="20" wrap="off"' . $GLOBALS['SOBE']->doc->formWidthText($this->formW, '', 'off') . ' class="fixed-font">' . \TYPO3\CMS\Core\Utility\GeneralUtility::formatForTextarea(implode(LF, $rowArr)) . '</textarea>';
+					$out .= '<textarea name="whatever" rows="20" wrap="off"' . $GLOBALS['SOBE']->doc->formWidthText($this->formW, '', 'off') . ' class="fixed-font">' . GeneralUtility::formatForTextarea(implode(LF, $rowArr)) . '</textarea>';
 					if (!$this->noDownloadB) {
 						$out .= '<BR><input type="submit" name="download_file" value="Click to download file" onClick="window.location.href=\'' . $this->downloadScript . '\';">';
 					}
 					// Downloads file:
-					if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('download_file')) {
+					if (GeneralUtility::_GP('download_file')) {
 						$filename = 'TYPO3_' . $table . '_export_' . date('dmy-Hi') . '.csv';
 						$mimeType = 'application/octet-stream';
 						header('Content-Type: ' . $mimeType);
@@ -466,7 +470,7 @@ class QueryView {
 				$valueArray[$key] = $this->getProcessedValueExtra($table, $key, $val, $conf, ';');
 			}
 		}
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::csvValues($valueArray, $delim, $quote);
+		return GeneralUtility::csvValues($valueArray, $delim, $quote);
 	}
 
 	/**
@@ -504,7 +508,7 @@ class QueryView {
 				// Get query
 				$qp = $GLOBALS['TYPO3_DB']->searchQuery(array($swords), $list, $table);
 				// Count:
-				$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('*', $table, $qp . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($table));
+				$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('*', $table, $qp . BackendUtility::deleteClause($table));
 				if ($count || $showAlways) {
 					// Output header:
 					$out .= '<strong>TABLE:</strong> ' . $GLOBALS['LANG']->sL($conf['ctrl']['title']) . '<BR>';
@@ -512,7 +516,7 @@ class QueryView {
 					// Show to limit
 					if ($count) {
 						$rowArr = array();
-						$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,' . $conf['ctrl']['label'], $table, $qp . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($table), '', '', $limit);
+						$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,' . $conf['ctrl']['label'], $table, $qp . BackendUtility::deleteClause($table), '', '', $limit);
 						while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 							$rowArr[] = $this->resultRowDisplay($row, $conf, $table);
 							$lrow = $row;
@@ -538,12 +542,12 @@ class QueryView {
 	 */
 	public function resultRowDisplay($row, $conf, $table) {
 		static $even = FALSE;
-		$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+		$tce = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
 		$SET = $GLOBALS['SOBE']->MOD_SETTINGS;
 		$out = '<tr class="bgColor' . ($even ? '6' : '4') . '">';
 		$even = !$even;
 		foreach ($row as $fN => $fV) {
-			if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList($SET['queryFields'], $fN) || !$SET['queryFields'] && $fN != 'pid' && $fN != 'deleted') {
+			if (GeneralUtility::inList($SET['queryFields'], $fN) || !$SET['queryFields'] && $fN != 'pid' && $fN != 'deleted') {
 				if ($SET['search_result_labels']) {
 					$fVnew = $this->getProcessedValueExtra($table, $fN, $fV, $conf, '<br />');
 				} else {
@@ -556,26 +560,26 @@ class QueryView {
 		$out .= '<td nowrap>';
 		if (!$row['deleted']) {
 			$out .= '<a href="#" onClick="top.launchView(\'' . $table . '\',' . $row['uid'] . ',\'' . $GLOBALS['BACK_PATH'] . '\');return false;">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-dialog-information') . '</a>';
-			$out .= '<a href="#" onClick="' . \TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick($params, $GLOBALS['BACK_PATH'], (\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI') . \TYPO3\CMS\Core\Utility\GeneralUtility::implodeArrayForUrl('SET', (array) \TYPO3\CMS\Core\Utility\GeneralUtility::_POST('SET')))) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open') . '</a>';
+			$out .= '<a href="#" onClick="' . BackendUtility::editOnClick($params, $GLOBALS['BACK_PATH'], (GeneralUtility::getIndpEnv('REQUEST_URI') . GeneralUtility::implodeArrayForUrl('SET', (array) GeneralUtility::_POST('SET')))) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open') . '</a>';
 		} else {
-			$out .= '<a href="' . \TYPO3\CMS\Core\Utility\GeneralUtility::linkThisUrl(($GLOBALS['BACK_PATH'] . 'tce_db.php'), array(
+			$out .= '<a href="' . GeneralUtility::linkThisUrl(($GLOBALS['BACK_PATH'] . 'tce_db.php'), array(
 				('cmd[' . $table . '][' . $row['uid'] . '][undelete]') => '1',
-				'redirect' => \TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array())
-			)) . \TYPO3\CMS\Backend\Utility\BackendUtility::getUrlToken('tceAction') . '">';
+				'redirect' => GeneralUtility::linkThisScript(array())
+			)) . BackendUtility::getUrlToken('tceAction') . '">';
 			$out .= \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-edit-restore', array('title' => 'undelete only')) . '</a>';
-			$out .= '<a href="' . \TYPO3\CMS\Core\Utility\GeneralUtility::linkThisUrl(($GLOBALS['BACK_PATH'] . 'tce_db.php'), array(
+			$out .= '<a href="' . GeneralUtility::linkThisUrl(($GLOBALS['BACK_PATH'] . 'tce_db.php'), array(
 				('cmd[' . $table . '][' . $row['uid'] . '][undelete]') => '1',
-				'redirect' => \TYPO3\CMS\Core\Utility\GeneralUtility::linkThisUrl('alt_doc.php', array(
+				'redirect' => GeneralUtility::linkThisUrl('alt_doc.php', array(
 					('edit[' . $table . '][' . $row['uid'] . ']') => 'edit',
-					'returnUrl' => \TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array())
+					'returnUrl' => GeneralUtility::linkThisScript(array())
 				))
-			)) . \TYPO3\CMS\Backend\Utility\BackendUtility::getUrlToken('tceAction') . '">';
+			)) . BackendUtility::getUrlToken('tceAction') . '">';
 			$out .= \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-edit-restore-edit', array('title' => 'undelete and edit')) . '</a>';
 		}
 		$_params = array($table => $row);
 		if (is_array($this->hookArray['additionalButtons'])) {
 			foreach ($this->hookArray['additionalButtons'] as $_funcRef) {
-				$out .= \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($_funcRef, $_params, $this);
+				$out .= GeneralUtility::callUserFunction($_funcRef, $_params, $this);
 			}
 		}
 		$out .= '</td>
@@ -727,7 +731,7 @@ class QueryView {
 			$theList = '';
 		}
 		if ($id && $depth > 0) {
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'pages', 'pid=' . $id . ' ' . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('pages') . ' AND ' . $perms_clause);
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'pages', 'pid=' . $id . ' ' . BackendUtility::deleteClause('pages') . ' AND ' . $perms_clause);
 			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 				if ($begin <= 0) {
 					$theList .= ',' . $row['uid'];
@@ -766,7 +770,7 @@ class QueryView {
 			$d->close();
 			natcasesort($fileArray);
 			while (list(, $fileName) = each($fileArray)) {
-				if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList($fV, $fileName) || $fV == $fileName) {
+				if (GeneralUtility::inList($fV, $fileName) || $fV == $fileName) {
 					if (!$out) {
 						$out = htmlspecialchars($fileName);
 					} else {
@@ -782,7 +786,7 @@ class QueryView {
 				} else {
 					$value = $val[0];
 				}
-				if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList($fV, $val[1]) || $fV == $val[1]) {
+				if (GeneralUtility::inList($fV, $val[1]) || $fV == $val[1]) {
 					if (!$out) {
 						$out = htmlspecialchars($value);
 					} else {
@@ -813,7 +817,7 @@ class QueryView {
 					} else {
 						$value = $val[0];
 					}
-					if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList($fV, $value) || $fV == $value) {
+					if (GeneralUtility::inList($fV, $value) || $fV == $value) {
 						if (!$out) {
 							$out = htmlspecialchars($value);
 						} else {
@@ -826,7 +830,7 @@ class QueryView {
 				$from_table_Arr = explode(',', $fieldSetup['allowed']);
 				$useTablePrefix = 1;
 				if (!$fieldSetup['prepend_tname']) {
-					$checkres = $GLOBALS['TYPO3_DB']->exec_SELECTquery($fN, $table, 'uid ' . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($table), ($groupBy = ''), ($orderBy = ''), ($limit = ''));
+					$checkres = $GLOBALS['TYPO3_DB']->exec_SELECTquery($fN, $table, 'uid ' . BackendUtility::deleteClause($table), ($groupBy = ''), ($orderBy = ''), ($limit = ''));
 					if ($checkres) {
 						while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($checkres)) {
 							if (stristr($row[$fN], ',')) {
@@ -897,12 +901,12 @@ class QueryView {
 							$webMountPageTree .= $webMountPageTreePrefix . $this->getTreeList($val, 999, ($begin = 0), $perms_clause);
 						}
 						if ($from_table == 'pages') {
-							$where_clause = 'uid IN (' . $webMountPageTree . ') ' . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($from_table) . ' AND ' . $perms_clause;
+							$where_clause = 'uid IN (' . $webMountPageTree . ') ' . BackendUtility::deleteClause($from_table) . ' AND ' . $perms_clause;
 						} else {
-							$where_clause = 'pid IN (' . $webMountPageTree . ') ' . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($from_table);
+							$where_clause = 'pid IN (' . $webMountPageTree . ') ' . BackendUtility::deleteClause($from_table);
 						}
 					} else {
-						$where_clause = 'uid' . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($from_table);
+						$where_clause = 'uid' . BackendUtility::deleteClause($from_table);
 					}
 					$orderBy = 'uid';
 					if (!$this->tableArray[$from_table]) {
@@ -918,7 +922,7 @@ class QueryView {
 					foreach ($this->tableArray[$from_table] as $key => $val) {
 						$GLOBALS['SOBE']->MOD_SETTINGS['labels_noprefix'] = $GLOBALS['SOBE']->MOD_SETTINGS['labels_noprefix'] == 1 ? 'on' : $GLOBALS['SOBE']->MOD_SETTINGS['labels_noprefix'];
 						$prefixString = $GLOBALS['SOBE']->MOD_SETTINGS['labels_noprefix'] == 'on' ? '' : ' [' . $tablePrefix . $val['uid'] . '] ';
-						if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList($fV, $tablePrefix . $val['uid']) || $fV == $tablePrefix . $val['uid']) {
+						if (GeneralUtility::inList($fV, $tablePrefix . $val['uid']) || $fV == $tablePrefix . $val['uid']) {
 							if ($useSelectLabels) {
 								if (!$out) {
 									$out = htmlspecialchars($prefixString . $labelFieldSelect[$val[$labelField]]);
@@ -968,7 +972,7 @@ class QueryView {
 		$tableHeader[] = '<thead><tr class="bgColor5">';
 		// Iterate over given columns
 		foreach ($row as $fieldName => $fieldValue) {
-			if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList($SET['queryFields'], $fieldName) || !$SET['queryFields'] && $fieldName != 'pid' && $fieldName != 'deleted') {
+			if (GeneralUtility::inList($SET['queryFields'], $fieldName) || !$SET['queryFields'] && $fieldName != 'pid' && $fieldName != 'deleted') {
 				$THparams = strlen($fieldValue) < 50 ? ' style="white-space:nowrap;"' : '';
 				if ($GLOBALS['SOBE']->MOD_SETTINGS['search_result_labels']) {
 					$title = $GLOBALS['LANG']->sL($conf['columns'][$fieldName]['label'] ? $conf['columns'][$fieldName]['label'] : $fieldName, 1);
@@ -998,7 +1002,7 @@ class QueryView {
 		$out = '';
 		$SET = $GLOBALS['SOBE']->MOD_SETTINGS;
 		foreach ($row as $fN => $fV) {
-			if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList($SET['queryFields'], $fN) || !$SET['queryFields'] && $fN != 'pid') {
+			if (GeneralUtility::inList($SET['queryFields'], $fN) || !$SET['queryFields'] && $fN != 'pid') {
 				if (!$out) {
 					if ($GLOBALS['SOBE']->MOD_SETTINGS['search_result_labels']) {
 						$out = $GLOBALS['LANG']->sL($conf['columns'][$fN]['label'] ? $conf['columns'][$fN]['label'] : $fN, 1);

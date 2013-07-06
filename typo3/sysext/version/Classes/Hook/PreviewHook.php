@@ -26,6 +26,9 @@ namespace TYPO3\CMS\Version\Hook;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Hook for checking if the preview mode is activated
  * preview mode = show a page of a workspace without having to log in
@@ -71,7 +74,7 @@ class PreviewHook implements \TYPO3\CMS\Core\SingletonInterface {
 			// re-initialize the TSFE object:
 			// because the GET variables are taken from the preview
 			// configuration
-			$GLOBALS['TSFE'] = ($this->tsfeObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController', $GLOBALS['TYPO3_CONF_VARS'], \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id'), \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('type'), \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('no_cache'), \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('cHash'), \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('jumpurl'), \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('MP'), \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('RDCT')));
+			$GLOBALS['TSFE'] = ($this->tsfeObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController', $GLOBALS['TYPO3_CONF_VARS'], GeneralUtility::_GP('id'), GeneralUtility::_GP('type'), GeneralUtility::_GP('no_cache'), GeneralUtility::_GP('cHash'), GeneralUtility::_GP('jumpurl'), GeneralUtility::_GP('MP'), GeneralUtility::_GP('RDCT')));
 			// Configuration after initialization of TSFE object.
 			// Basically this unsets the BE cookie if any and forces
 			// the BE user set according to the preview configuration.
@@ -93,7 +96,7 @@ class PreviewHook implements \TYPO3\CMS\Core\SingletonInterface {
 	public function initializePreviewUser(&$params, &$pObj) {
 		if ((is_null($params['BE_USER']) || $params['BE_USER'] === FALSE) && $this->previewConfiguration !== FALSE && $this->previewConfiguration['BEUSER_uid'] > 0) {
 			// New backend user object
-			$BE_USER = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\FrontendBackendUserAuthentication');
+			$BE_USER = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\FrontendBackendUserAuthentication');
 			$BE_USER->userTS_dontGetCached = 1;
 			$BE_USER->OS = TYPO3_OS;
 			$BE_USER->setBeUserByUid($this->previewConfiguration['BEUSER_uid']);
@@ -136,18 +139,18 @@ class PreviewHook implements \TYPO3\CMS\Core\SingletonInterface {
 		if ($inputCode) {
 			// "log out"
 			if ($inputCode == 'LOGOUT') {
-				setcookie($this->previewKey, '', 0, \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_PATH'));
+				setcookie($this->previewKey, '', 0, GeneralUtility::getIndpEnv('TYPO3_SITE_PATH'));
 				if ($this->tsfeObj->TYPO3_CONF_VARS['FE']['workspacePreviewLogoutTemplate']) {
 					$templateFile = PATH_site . $this->tsfeObj->TYPO3_CONF_VARS['FE']['workspacePreviewLogoutTemplate'];
 					if (@is_file($templateFile)) {
-						$message = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl(PATH_site . $this->tsfeObj->TYPO3_CONF_VARS['FE']['workspacePreviewLogoutTemplate']);
+						$message = GeneralUtility::getUrl(PATH_site . $this->tsfeObj->TYPO3_CONF_VARS['FE']['workspacePreviewLogoutTemplate']);
 					} else {
 						$message = '<strong>ERROR!</strong><br>Template File "' . $this->tsfeObj->TYPO3_CONF_VARS['FE']['workspacePreviewLogoutTemplate'] . '" configured with $TYPO3_CONF_VARS["FE"]["workspacePreviewLogoutTemplate"] not found. Please contact webmaster about this problem.';
 					}
 				} else {
 					$message = 'You logged out from Workspace preview mode. Click this link to <a href="%1$s">go back to the website</a>';
 				}
-				$returnUrl = \TYPO3\CMS\Core\Utility\GeneralUtility::sanitizeLocalUrl(\TYPO3\CMS\Core\Utility\GeneralUtility::_GET('returnUrl'));
+				$returnUrl = GeneralUtility::sanitizeLocalUrl(GeneralUtility::_GET('returnUrl'));
 				die(sprintf($message, htmlspecialchars(preg_replace('/\\&?' . $this->previewKey . '=[[:alnum:]]+/', '', $returnUrl))));
 			}
 			// Look for keyword configuration record:
@@ -156,7 +159,7 @@ class PreviewHook implements \TYPO3\CMS\Core\SingletonInterface {
 			// - Make sure to remove fe/be cookies (temporarily);
 			// BE already done in ADMCMD_preview_postInit()
 			if (is_array($previewData)) {
-				if (!count(\TYPO3\CMS\Core\Utility\GeneralUtility::_POST())) {
+				if (!count(GeneralUtility::_POST())) {
 					// Unserialize configuration:
 					$previewConfig = unserialize($previewData['config']);
 					// For full workspace preview we only ADD a get variable
@@ -167,27 +170,27 @@ class PreviewHook implements \TYPO3\CMS\Core\SingletonInterface {
 					// users can use those credentials.
 					if ($previewConfig['fullWorkspace']) {
 						// Set the workspace preview value:
-						\TYPO3\CMS\Core\Utility\GeneralUtility::_GETset($previewConfig['fullWorkspace'], 'ADMCMD_previewWS');
+						GeneralUtility::_GETset($previewConfig['fullWorkspace'], 'ADMCMD_previewWS');
 						// If ADMCMD_prev is set the $inputCode value cannot come
 						// from a cookie and we set that cookie here. Next time it will
 						// be found from the cookie if ADMCMD_prev is not set again...
-						if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP($this->previewKey)) {
+						if (GeneralUtility::_GP($this->previewKey)) {
 							// Lifetime is 1 hour, does it matter much?
 							// Requires the user to click the link from their email again if it expires.
-							SetCookie($this->previewKey, \TYPO3\CMS\Core\Utility\GeneralUtility::_GP($this->previewKey), 0, \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_PATH'));
+							SetCookie($this->previewKey, GeneralUtility::_GP($this->previewKey), 0, GeneralUtility::getIndpEnv('TYPO3_SITE_PATH'));
 						}
 						return $previewConfig;
-					} elseif (\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . 'index.php?' . $this->previewKey . '=' . $inputCode === \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL')) {
+					} elseif (GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . 'index.php?' . $this->previewKey . '=' . $inputCode === GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL')) {
 						// Set GET variables
 						$GET_VARS = '';
 						parse_str($previewConfig['getVars'], $GET_VARS);
-						\TYPO3\CMS\Core\Utility\GeneralUtility::_GETset($GET_VARS);
+						GeneralUtility::_GETset($GET_VARS);
 						// Return preview keyword configuration
 						return $previewConfig;
 					} else {
 						// This check is to prevent people from setting additional
 						// GET vars via realurl or other URL path based ways of passing parameters.
-						throw new \Exception(htmlspecialchars('Request URL did not match "' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . 'index.php?' . $this->previewKey . '=' . $inputCode . '"', 1294585190));
+						throw new \Exception(htmlspecialchars('Request URL did not match "' . GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . 'index.php?' . $this->previewKey . '=' . $inputCode . '"', 1294585190));
 					}
 				} else {
 					throw new \Exception('POST requests are incompatible with keyword preview.', 1294585191);
@@ -205,7 +208,7 @@ class PreviewHook implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return input code
 	 */
 	protected function getPreviewInputCode() {
-		$inputCode = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP($this->previewKey);
+		$inputCode = GeneralUtility::_GP($this->previewKey);
 		// If no inputcode and a cookie is set, load input code from cookie:
 		if (!$inputCode && $_COOKIE[$this->previewKey]) {
 			$inputCode = $_COOKIE[$this->previewKey];
