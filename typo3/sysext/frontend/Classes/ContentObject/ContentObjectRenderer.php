@@ -1331,6 +1331,55 @@ class ContentObjectRenderer {
 			} else {
 				$source = $info[3];
 			}
+
+            if ($conf['layoutKey']) {
+                $layoutKey = $this->stdWrap($conf['layoutKey'], $conf['layoutKey.']);
+                $imageTagLayout = $this->stdWrap($conf['layout.'][$layoutKey . '.']['element'], $conf['layout.'][$layoutKey . '.']['element.']);
+            } else {
+                $imageTagLayout = '<img src="###SRC###" width="###WIDTH###" height="###HEIGHT###" ###PARAMS### ###ALTPARAMS### ###BORDER### />';
+            }
+
+            $sources = '';
+            if ($conf['sourceCollection.'] && $conf['layoutKey']) {
+
+                $sourceCount = count($conf['sourceCollection.']);
+                $srcLayoutConfSplitted = $GLOBALS['TSFE']->tmpl->splitConfArray($conf['layout.'][$layoutKey . '.'], $sourceCount);
+
+                $layoutIndex = 0;
+                foreach ($conf['sourceCollection.'] as $key => $sourceItem) {
+
+                    $sourceLayout = $this->stdWrap($srcLayoutConfSplitted[$layoutIndex]['source'], $srcLayoutConfSplitted[$layoutIndex]['source.']);
+                    $layoutIndex ++;
+
+                    if (substr($key, -1) == '.') {
+                        $pixelDensity = isset($sourceItem['pixelDensity']) ? $sourceItem['pixelDensity'] : 1;
+
+                        $sourceRenderConfiguration = array (
+                            'file' => $file,
+                            'file.' => $conf['file.']
+                        );
+
+                        $dimensionKeys = array('width', 'height', 'maxW', 'minW', 'maxH', 'minW');
+                        foreach ($dimensionKeys as $dimensionKey) {
+                           $dimension = isset($sourceItem[$dimensionKey]) ? $sourceItem[$dimensionKey] : NULL;
+                           if (!$dimension && isset($conf['file.'][$dimensionKey])) {
+                               $dimension = $conf['file.'][$dimensionKey];
+                           }
+                           if ($dimension) {
+                               $sourceRenderConfiguration['file.'][$dimensionKey] = intval($dimension * $pixelDensity);
+                           }
+                        }
+
+                        $sourceInfo = $this->getImgResource($sourceRenderConfiguration['file'], $sourceRenderConfiguration['file.']);
+                        $sourceItem['width'] = $sourceInfo[0];
+                        $sourceItem['height'] = $sourceInfo[1];
+                        $sourceItem['src'] = htmlspecialchars($sourceInfo[3]);
+
+                        $sources .= $this->substituteMarkerArray($sourceLayout, $sourceItem, '###|###', TRUE, TRUE);
+                    }
+                }
+            }
+
 			// This array is used to collect the image-refs on the page...
 			$GLOBALS['TSFE']->imagesOnPage[] = $source;
 			$altParam = $this->getAltParam($conf);
@@ -1339,7 +1388,19 @@ class ContentObjectRenderer {
 			} else {
 				$params = isset($conf['params.']) ? ' ' . $this->stdWrap($conf['params'], $conf['params.']) : '';
 			}
-			$theValue = '<img src="' . htmlspecialchars($source) . '" width="' . $info[0] . '" height="' . $info[1] . '"' . $this->getBorderAttr(' border="' . intval($conf['border']) . '"') . $params . $altParam . (!empty($GLOBALS['TSFE']->xhtmlDoctype) ? ' /' : '') . '>';
+
+            $imageTagValues = array(
+                'width' =>  $info[0],
+                'height' => $info[1],
+                'src' => htmlspecialchars($source),
+                'params' => $params,
+                'altParams' => $altParam,
+                'border' =>  $this->getBorderAttr(' border="' . intval($conf['border']) . '"'),
+                'sources' => $sources
+            );
+
+            $theValue = $this->substituteMarkerArray($imageTagLayout, $imageTagValues, '###|###', TRUE, TRUE);
+
 			$linkWrap = isset($conf['linkWrap.']) ? $this->stdWrap($conf['linkWrap'], $conf['linkWrap.']) : $conf['linkWrap'];
 			if ($linkWrap) {
 				$theValue = $this->linkWrap($theValue, $linkWrap);
