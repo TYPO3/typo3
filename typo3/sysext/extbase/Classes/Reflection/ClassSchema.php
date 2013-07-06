@@ -84,7 +84,6 @@ class ClassSchema {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Service\TypeHandlingService
-	 * @inject
 	 */
 	protected $typeHandlingService;
 
@@ -95,6 +94,14 @@ class ClassSchema {
 	 */
 	public function __construct($className) {
 		$this->className = $className;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Extbase\Service\TypeHandlingService $typeHandlingService
+	 * @return void
+	 */
+	public function injectTypeHandlingService(\TYPO3\CMS\Extbase\Service\TypeHandlingService $typeHandlingService) {
+		$this->typeHandlingService = $typeHandlingService;
 	}
 
 	/**

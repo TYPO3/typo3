@@ -46,9 +46,15 @@ abstract class AbstractFileFolderConverter extends \TYPO3\CMS\Extbase\Property\T
 
 	/**
 	 * @var \TYPO3\CMS\Core\Resource\ResourceFactory
-	 * @inject
 	 */
 	protected $fileFactory;
+
+	/**
+	 * @param \TYPO3\CMS\Core\Resource\ResourceFactory $fileFactory
+	 */
+	public function injectFileFactory(\TYPO3\CMS\Core\Resource\ResourceFactory $fileFactory) {
+		$this->fileFactory = $fileFactory;
+	}
 
 	/**
 	 * Actually convert from $source to $targetType, taking into account the fully

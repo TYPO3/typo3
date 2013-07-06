@@ -34,25 +34,21 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\IdentityMap
-	 * @inject
 	 */
 	protected $identityMap;
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Reflection\ReflectionService
-	 * @inject
 	 */
 	protected $reflectionService;
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\Qom\QueryObjectModelFactory
-	 * @inject
 	 */
 	protected $qomFactory;
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\Session
-	 * @inject
 	 */
 	protected $persistenceSession;
 
@@ -72,13 +68,11 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory
-	 * @inject
 	 */
 	protected $dataMapFactory;
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\QueryFactoryInterface
-	 * @inject
 	 */
 	protected $queryFactory;
 
@@ -91,9 +85,75 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
-	 * @inject
 	 */
 	protected $objectManager;
+
+	/**
+	 * Injects the identity map
+	 *
+	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\IdentityMap $identityMap
+	 * @return void
+	 */
+	public function injectIdentityMap(\TYPO3\CMS\Extbase\Persistence\Generic\IdentityMap $identityMap) {
+		$this->identityMap = $identityMap;
+	}
+
+	/**
+	 * Injects the persistence session
+	 *
+	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\Session $persistenceSession
+	 * @return void
+	 */
+	public function injectSession(\TYPO3\CMS\Extbase\Persistence\Generic\Session $persistenceSession) {
+		$this->persistenceSession = $persistenceSession;
+	}
+
+	/**
+	 * Injects the Reflection Service
+	 *
+	 * @param \TYPO3\CMS\Extbase\Reflection\ReflectionService $reflectionService
+	 * @return void
+	 */
+	public function injectReflectionService(\TYPO3\CMS\Extbase\Reflection\ReflectionService $reflectionService) {
+		$this->reflectionService = $reflectionService;
+	}
+
+	/**
+	 * Injects the DataMap Factory
+	 *
+	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory $dataMapFactory
+	 * @return void
+	 */
+	public function injectDataMapFactory(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory $dataMapFactory) {
+		$this->dataMapFactory = $dataMapFactory;
+	}
+
+	/**
+	 * Injects the Query Factory
+	 *
+	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\QueryFactoryInterface $queryFactory
+	 */
+	public function injectQueryFactory(\TYPO3\CMS\Extbase\Persistence\Generic\QueryFactoryInterface $queryFactory) {
+		$this->queryFactory = $queryFactory;
+	}
+
+	/**
+	 * Sets the query object model factory
+	 *
+	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\Qom\QueryObjectModelFactory $qomFactory
+	 * @return void
+	 */
+	public function injectQomFactory(\TYPO3\CMS\Extbase\Persistence\Generic\Qom\QueryObjectModelFactory $qomFactory) {
+		$this->qomFactory = $qomFactory;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
+	 * @return void
+	 */
+	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager) {
+		$this->objectManager = $objectManager;
+	}
 
 	/**
 	 * Maps the given rows on objects

@@ -37,10 +37,10 @@ class DataMapperTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	public function mapMapsArrayToObjectByCallingmapToObject() {
 		$rows = array(array('uid' => '1234'));
 		$object = new \stdClass();
-		$dataMapper = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Mapper\\DataMapper', array('mapSingleRow', 'getTargetType'));
+		$dataMapper = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Mapper\\DataMapper', array('mapSingleRow', 'getTargetType'));
 		$dataMapper->expects($this->any())->method('getTargetType')->will($this->returnArgument(1));
 		$dataMapFactory = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Mapper\\DataMapFactory');
-		$dataMapper->_set('dataMapFactory', $dataMapFactory);
+		$dataMapper->injectDataMapFactory($dataMapFactory);
 		$dataMapper->expects($this->once())->method('mapSingleRow')->with($rows[0])->will($this->returnValue($object));
 		$dataMapper->map(get_class($object), $rows);
 	}
@@ -55,7 +55,7 @@ class DataMapperTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$identityMap->expects($this->once())->method('hasIdentifier')->with('1234')->will($this->returnValue(TRUE));
 		$identityMap->expects($this->once())->method('getObjectByIdentifier')->with('1234')->will($this->returnValue($object));
 		$dataMapper = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Mapper\\DataMapper', array('dummy'));
-		$dataMapper->_set('identityMap', $identityMap);
+		$dataMapper->injectIdentityMap($identityMap);
 		$dataMapper->_call('mapSingleRow', get_class($object), $row);
 	}
 
@@ -85,9 +85,8 @@ class DataMapperTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$dataMaps = array(
 			$className => $dataMap
 		);
-		/** @var \TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\TYPO3\CMS\Extbase\Reflection\ClassSchema $classSchema */
-		$classSchema = $this->getAccessibleMock('TYPO3\CMS\Extbase\Reflection\ClassSchema', array('dummy'), array($className));
-		$classSchema->_set('typeHandlingService', new \TYPO3\CMS\Extbase\Service\TypeHandlingService());
+		$classSchema = new \TYPO3\CMS\Extbase\Reflection\ClassSchema($className);
+		$classSchema->injectTypeHandlingService(new \TYPO3\CMS\Extbase\Service\TypeHandlingService());
 		$classSchema->addProperty('pid', 'integer');
 		$classSchema->addProperty('uid', 'integer');
 		$classSchema->addProperty('firstProperty', 'string');
@@ -98,7 +97,7 @@ class DataMapperTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$mockReflectionService->expects($this->any())->method('getClassSchema')->will($this->returnValue($classSchema));
 		$dataMapper = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Mapper\\DataMapper', array('dummy'));
 		$dataMapper->_set('dataMaps', $dataMaps);
-		$dataMapper->_set('reflectionService', $mockReflectionService);
+		$dataMapper->injectReflectionService($mockReflectionService);
 		$dataMapper->_call('thawProperties', $object, $row);
 		$this->assertAttributeEquals('firstValue', 'firstProperty', $object);
 		$this->assertAttributeEquals(1234, 'secondProperty', $object);

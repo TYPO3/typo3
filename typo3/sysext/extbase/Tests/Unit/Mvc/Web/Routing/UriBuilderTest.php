@@ -78,9 +78,9 @@ class UriBuilderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$this->uriBuilder = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Mvc\\Web\\Routing\\UriBuilder', array('build'));
 		$this->uriBuilder->setRequest($this->mockRequest);
 		$this->uriBuilder->_set('contentObject', $this->mockContentObject);
-		$this->uriBuilder->_set('configurationManager', $this->mockConfigurationManager);
-		$this->uriBuilder->_set('extensionService', $this->mockExtensionService);
-		$this->uriBuilder->_set('environmentService', $this->objectManager->get('TYPO3\\CMS\\Extbase\\Service\\EnvironmentService'));
+		$this->uriBuilder->injectConfigurationManager($this->mockConfigurationManager);
+		$this->uriBuilder->injectExtensionService($this->mockExtensionService);
+		$this->uriBuilder->injectEnvironmentService($this->objectManager->get('TYPO3\\CMS\\Extbase\\Service\\EnvironmentService'));
 	}
 
 	public function tearDown() {
@@ -482,7 +482,7 @@ class UriBuilderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$mockConfigurationManager = $this->getMock('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManager');
 		$mockConfigurationManager->expects($this->any())->method('getConfiguration')
 			->will($this->returnValue(array('view' => array('formatToPageTypeMapping' => array('txt' => 2)))));
-		$this->uriBuilder->_set('configurationManager', $mockConfigurationManager);
+		$this->uriBuilder->injectConfigurationManager($mockConfigurationManager);
 
 		$this->mockExtensionService->expects($this->any())->method('getTargetPageTypeByFormat')
 			->with(NULL, 'txt')
@@ -502,7 +502,7 @@ class UriBuilderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 		$mockConfigurationManager = $this->getMock('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManager');
 		$mockConfigurationManager->expects($this->any())->method('getConfiguration')->will($this->returnValue(array()));
-		$this->uriBuilder->_set('configurationManager', $mockConfigurationManager);
+		$this->uriBuilder->injectConfigurationManager($mockConfigurationManager);
 
 		$this->mockExtensionService->expects($this->any())->method('getTargetPageTypeByFormat')
 			->with(NULL, 'txt')
@@ -524,7 +524,7 @@ class UriBuilderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$mockConfigurationManager = $this->getMock('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManager');
 		$mockConfigurationManager->expects($this->any())->method('getConfiguration')
 			->will($this->returnValue(array(array('view' => array('formatToPageTypeMapping' => array('pdf' => 2))))));
-		$this->uriBuilder->_set('configurationManager', $mockConfigurationManager);
+		$this->uriBuilder->injectConfigurationManager($mockConfigurationManager);
 
 		$this->mockExtensionService->expects($this->any())->method('getTargetPageTypeByFormat')
 			->with(NULL, 'txt')

@@ -53,18 +53,18 @@ class MapperTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$queryFactory = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\QueryFactory');
 
 		/** @var \TYPO3\CMS\Extbase\Reflection\ReflectionService $reflectionService */
-		$reflectionService = $this-> getAccessibleMock('TYPO3\\CMS\\Extbase\\Reflection\\ReflectionService');
-		$reflectionService->_set('objectManager', $objectManager);
+		$reflectionService = $this->getMock('TYPO3\\CMS\\Extbase\\Reflection\\ReflectionService');
+		$reflectionService->injectObjectManager($objectManager);
 
 		/** @var \TYPO3\CMS\Extbase\Validation\ValidatorResolver $validatorResolver */
 		$validatorResolver = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\ValidatorResolver');
 
-		$this->fixture = $this->getAccessibleMock('TYPO3\CMS\Extbase\Property\Mapper', array('dummy'));
-		$this->fixture->_set('objectManager', $objectManager);
-		$this->fixture->_set('persistenceManager', $persistenceManager);
-		$this->fixture->_set('queryFactory', $queryFactory);
-		$this->fixture->_set('reflectionService', $reflectionService);
-		$this->fixture->_set('validatorResolver', $validatorResolver);
+		$this->fixture = new \TYPO3\CMS\Extbase\Property\Mapper();
+		$this->fixture->injectObjectManager($objectManager);
+		$this->fixture->injectPersistenceManager($persistenceManager);
+		$this->fixture->injectQueryFactory($queryFactory);
+		$this->fixture->injectReflectionService($reflectionService);
+		$this->fixture->injectValidatorResolver($validatorResolver);
 	}
 
 	public function tearDown() {

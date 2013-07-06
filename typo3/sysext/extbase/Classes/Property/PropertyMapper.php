@@ -31,13 +31,11 @@ class PropertyMapper implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
-	 * @inject
 	 */
 	protected $objectManager;
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationBuilder
-	 * @inject
 	 */
 	protected $configurationBuilder;
 
@@ -59,6 +57,22 @@ class PropertyMapper implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @var \TYPO3\CMS\Extbase\Error\Result
 	 */
 	protected $messages;
+
+	/**
+	 * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
+	 * @return void
+	 */
+	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager) {
+		$this->objectManager = $objectManager;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationBuilder $propertyMappingConfigurationBuilder
+	 * @return void
+	 */
+	public function injectPropertyMappingConfigurationBuilder(\TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationBuilder $propertyMappingConfigurationBuilder) {
+		$this->configurationBuilder = $propertyMappingConfigurationBuilder;
+	}
 
 	/**
 	 * Lifecycle method, called after all dependencies have been injected.

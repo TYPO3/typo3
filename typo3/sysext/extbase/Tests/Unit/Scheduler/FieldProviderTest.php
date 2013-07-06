@@ -78,19 +78,19 @@ class FieldProviderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 			FALSE
 		);
 
-		$this->command1 = $this->getAccessibleMock('TYPO3\CMS\Extbase\Mvc\Cli\Command', array('isInternal'), array('TYPO3\\CMS\\Extbase\\Tests\\MockACommandController', 'FuncA'));
-		$this->command1->_set('objectManager', $this->objectManager);
-		$this->command1->_set('reflectionService', $this->objectManager->get('TYPO3\CMS\Extbase\Reflection\ReflectionService'));
+		$this->command1 = $this->getMock('TYPO3\CMS\Extbase\Mvc\Cli\Command', array('isInternal'), array('TYPO3\\CMS\\Extbase\\Tests\\MockACommandController', 'FuncA'));
+		$this->command1->injectObjectManager($this->objectManager);
+		$this->command1->injectReflectionService($this->objectManager->get('TYPO3\CMS\Extbase\Reflection\ReflectionService'));
 		$this->command1->expects($this->any())->method('isInternal')->will($this->returnValue(FALSE));
 
-		$this->command2 = $this->getAccessibleMock('TYPO3\CMS\Extbase\Mvc\Cli\Command', array('isInternal'), array('Acme\\Mypkg\\Command\\MockBCommandController', 'FuncB'));
-		$this->command2->_set('objectManager', $this->objectManager);
-		$this->command2->_set('reflectionService', $this->objectManager->get('TYPO3\CMS\Extbase\Reflection\ReflectionService'));
+		$this->command2 = $this->getMock('TYPO3\CMS\Extbase\Mvc\Cli\Command', array('isInternal'), array('Acme\\Mypkg\\Command\\MockBCommandController', 'FuncB'));
+		$this->command2->injectObjectManager($this->objectManager);
+		$this->command2->injectReflectionService($this->objectManager->get('TYPO3\CMS\Extbase\Reflection\ReflectionService'));
 		$this->command2->expects($this->any())->method('isInternal')->will($this->returnValue(FALSE));
 
-		$this->command3 = $this->getAccessibleMock('TYPO3\CMS\Extbase\Mvc\Cli\Command', array('isInternal'), array('Tx_Extbase_Command_MockCCommandController', 'FuncC'));
-		$this->command3->_set('objectManager', $this->objectManager);
-		$this->command3->_set('reflectionService', $this->objectManager->get('TYPO3\CMS\Extbase\Reflection\ReflectionService'));
+		$this->command3 = $this->getMock('TYPO3\CMS\Extbase\Mvc\Cli\Command', array('isInternal'), array('Tx_Extbase_Command_MockCCommandController', 'FuncC'));
+		$this->command3->injectObjectManager($this->objectManager);
+		$this->command3->injectReflectionService($this->objectManager->get('TYPO3\CMS\Extbase\Reflection\ReflectionService'));
 		$this->command3->expects($this->any())->method('isInternal')->will($this->returnValue(FALSE));
 
 		$this->commandManager->expects($this->any())->method('getAvailableCommands')->will($this->returnValue(array($this->command1, $this->command2, $this->command3)));
