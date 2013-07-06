@@ -41,6 +41,7 @@ class TextareaViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormF
 	 */
 	public function initializeArguments() {
 		parent::initializeArguments();
+		$this->registerTagAttribute('autofocus', 'string', 'Specifies that a text area should automatically get focus when the page loads');
 		$this->registerTagAttribute('rows', 'int', 'The number of rows of a text area');
 		$this->registerTagAttribute('cols', 'int', 'The number of columns of a text area');
 		$this->registerTagAttribute('disabled', 'string', 'Specifies that the input element should be disabled when the page loads');
