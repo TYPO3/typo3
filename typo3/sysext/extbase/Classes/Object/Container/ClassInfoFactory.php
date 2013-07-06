@@ -123,7 +123,7 @@ class ClassInfoFactory {
 		if (is_array($reflectionProperties)) {
 			foreach ($reflectionProperties as $reflectionProperty) {
 				$reflectedProperty = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Reflection\\PropertyReflection', $reflectedClass->getName(), $reflectionProperty->getName());
-				if (($reflectedProperty->isTaggedWith('inject') || $reflectedProperty->isTaggedWith('Flow\Inject')) && $reflectedProperty->getName() !== 'settings') {
+				if ($reflectedProperty->isTaggedWith('inject') && $reflectedProperty->getName() !== 'settings') {
 					$varValues = $reflectedProperty->getTagValues('var');
 					if (count($varValues) == 1) {
 						$result[$reflectedProperty->getName()] = ltrim($varValues[0], '\\');
