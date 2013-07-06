@@ -458,7 +458,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 						if (is_array($row) && (int) $row['t3ver_state'] != 2) {
 							$singleElementHTML = '';
 							if (($this->defLangBinding && !$lP) ||
-								(!$this->defLangBinding && $lP && $row['sys_language_uid'] != -1)
+								(!$this->defLangBinding && !$lP && $row['sys_language_uid'] != -1)
 							) {
 								$defLanguageCount[$key][] = $row['uid'];
 							}
