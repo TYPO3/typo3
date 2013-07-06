@@ -26,6 +26,9 @@ namespace TYPO3\CMS\Core\Utility;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Extension Management functions
  *
@@ -222,7 +225,7 @@ class ExtensionManagementUtility {
 	 */
 	static public function addTCAcolumns($table, $columnArray, $addTofeInterface = 0) {
 		if (is_array($columnArray) && is_array($GLOBALS['TCA'][$table]) && is_array($GLOBALS['TCA'][$table]['columns'])) {
-			// Candidate for \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge() if integer-keys will some day make trouble...
+			// Candidate for array_merge() if integer-keys will some day make trouble...
 			$GLOBALS['TCA'][$table]['columns'] = array_merge($GLOBALS['TCA'][$table]['columns'], $columnArray);
 			if ($addTofeInterface) {
 				$GLOBALS['TCA'][$table]['feInterface']['fe_admin_fieldList'] .= ',' . implode(',', array_keys($columnArray));
@@ -249,10 +252,10 @@ class ExtensionManagementUtility {
 		$palettesChanged = array();
 		if ($str && is_array($GLOBALS['TCA'][$table]) && is_array($GLOBALS['TCA'][$table]['types'])) {
 			foreach ($GLOBALS['TCA'][$table]['types'] as $type => &$typeDetails) {
-				if ($specificTypesList === '' || \TYPO3\CMS\Core\Utility\GeneralUtility::inList($specificTypesList, $type)) {
+				if ($specificTypesList === '' || GeneralUtility::inList($specificTypesList, $type)) {
 					$fieldExists = FALSE;
 					if ($position != '' && is_array($GLOBALS['TCA'][$table]['palettes'])) {
-						$positionArray = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(':', $position);
+						$positionArray = GeneralUtility::trimExplode(':', $position);
 						if ($positionArray[0] == 'replace') {
 							foreach ($GLOBALS['TCA'][$table]['palettes'] as $palette => $paletteDetails) {
 								if (preg_match('/\\b' . preg_quote($palette, '/') . '\\b/', $typeDetails['showitem']) > 0 && preg_match('/\\b' . preg_quote($positionArray[1], '/') . '\\b/', $paletteDetails['showitem']) > 0) {
@@ -498,7 +501,7 @@ class ExtensionManagementUtility {
 				'localizeChildrenAtParentLocalization' => TRUE,
 			),
 		);
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($fileFieldTCAConfig, $customSettingOverride);
+		return GeneralUtility::array_merge_recursive_overrule($fileFieldTCAConfig, $customSettingOverride);
 	}
 
 	/**
@@ -531,7 +534,7 @@ class ExtensionManagementUtility {
 			if ($insertionPosition === '') {
 				$list .= ($list ? ', ' : '') . $insertionList;
 			} else {
-				$positions = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $insertionPosition, TRUE);
+				$positions = GeneralUtility::trimExplode(',', $insertionPosition, TRUE);
 				$items = self::explodeItemList($list);
 				$isInserted = FALSE;
 				// Iterate through all fields an check whether it's possible to inserte there:
@@ -650,9 +653,9 @@ class ExtensionManagementUtility {
 	 */
 	static protected function explodeItemList($itemList) {
 		$items = array();
-		$itemParts = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $itemList, TRUE);
+		$itemParts = GeneralUtility::trimExplode(',', $itemList, TRUE);
 		foreach ($itemParts as $itemPart) {
-			$itemDetails = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(';', $itemPart, FALSE, 5);
+			$itemDetails = GeneralUtility::trimExplode(';', $itemPart, FALSE, 5);
 			$key = $itemDetails[0];
 			if (strstr($key, '--')) {
 				// If $key is a separator (--div--) or palette (--palette--) then it will be appended by a unique number. This must be removed again when using this value!
@@ -726,7 +729,7 @@ class ExtensionManagementUtility {
 		if (empty($extensionName)) {
 			throw new \InvalidArgumentException('The extension name must not be empty', 1325938973);
 		}
-		$extensionKey = \TYPO3\CMS\Core\Utility\GeneralUtility::camelCaseToLowerCaseUnderscored($extensionName);
+		$extensionKey = GeneralUtility::camelCaseToLowerCaseUnderscored($extensionName);
 		$extensionName = str_replace(' ', '', ucwords(str_replace('_', ' ', $extensionName)));
 		$defaultModuleConfiguration = array(
 			'access' => 'admin',
@@ -738,7 +741,7 @@ class ExtensionManagementUtility {
 		if ($mainModuleName === 'web') {
 			$defaultModuleConfiguration['navigationComponentId'] = 'typo3-pagetree';
 		}
-		$moduleConfiguration = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($defaultModuleConfiguration, $moduleConfiguration);
+		$moduleConfiguration = GeneralUtility::array_merge_recursive_overrule($defaultModuleConfiguration, $moduleConfiguration);
 		if (strlen($subModuleName) > 0) {
 			$moduleSignature = $mainModuleName . '_' . $subModuleName;
 		} else {
@@ -803,8 +806,8 @@ class ExtensionManagementUtility {
 		if (isset($GLOBALS['TBE_MODULES'][$main]) && $sub) {
 			// If there is already a main module by this name:
 			// Adding the submodule to the correct position:
-			list($place, $modRef) = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(':', $position, 1);
-			$mods = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $GLOBALS['TBE_MODULES'][$main], 1);
+			list($place, $modRef) = GeneralUtility::trimExplode(':', $position, 1);
+			$mods = GeneralUtility::trimExplode(',', $GLOBALS['TBE_MODULES'][$main], 1);
 			if (!in_array($sub, $mods)) {
 				switch (strtolower($place)) {
 					case 'after':
@@ -1034,14 +1037,14 @@ class ExtensionManagementUtility {
 			if ($GLOBALS['T3_SERVICES'][$serviceType][$serviceKey]['available'] && $GLOBALS['T3_SERVICES'][$serviceType][$serviceKey]['os'] != '') {
 				// TYPO3_OS is not yet defined
 				$os_type = stristr(PHP_OS, 'win') && !stristr(PHP_OS, 'darwin') ? 'WIN' : 'UNIX';
-				$os = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', strtoupper($GLOBALS['T3_SERVICES'][$serviceType][$serviceKey]['os']));
+				$os = GeneralUtility::trimExplode(',', strtoupper($GLOBALS['T3_SERVICES'][$serviceType][$serviceKey]['os']));
 				if (!in_array($os_type, $os)) {
 					self::deactivateService($serviceType, $serviceKey);
 				}
 			}
 			// Convert subtype list to array for quicker access
 			$GLOBALS['T3_SERVICES'][$serviceType][$serviceKey]['serviceSubTypes'] = array();
-			$serviceSubTypes = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $info['subtype']);
+			$serviceSubTypes = GeneralUtility::trimExplode(',', $info['subtype']);
 			foreach ($serviceSubTypes as $subtype) {
 				$GLOBALS['T3_SERVICES'][$serviceType][$serviceKey]['serviceSubTypes'][$subtype] = $subtype;
 			}
@@ -1062,7 +1065,7 @@ class ExtensionManagementUtility {
 		$priority = 0;
 		$quality = 0;
 		if (!is_array($excludeServiceKeys)) {
-			$excludeServiceKeys = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $excludeServiceKeys, 1);
+			$excludeServiceKeys = GeneralUtility::trimExplode(',', $excludeServiceKeys, 1);
 		}
 		if (is_array($GLOBALS['T3_SERVICES'][$serviceType])) {
 			foreach ($GLOBALS['T3_SERVICES'][$serviceType] as $key => $info) {
@@ -1134,7 +1137,7 @@ class ExtensionManagementUtility {
 	static public function isServiceAvailable($serviceType, $serviceKey, $serviceDetails) {
 		// If the service depends on external programs - check if they exists
 		if (trim($serviceDetails['exec'])) {
-			$executables = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $serviceDetails['exec'], 1);
+			$executables = GeneralUtility::trimExplode(',', $serviceDetails['exec'], 1);
 			foreach ($executables as $executable) {
 				// If at least one executable file is not available, exit early returning FALSE
 				if (!\TYPO3\CMS\Core\Utility\CommandUtility::checkCommand($executable)) {
@@ -1582,7 +1585,7 @@ tt_content.' . $key . $prefix . ' {
 				$phpCodeToCache[] = '$_EXTCONF = $GLOBALS[\'TYPO3_CONF_VARS\'][\'EXT\'][\'extConf\'][$_EXTKEY];';
 				$phpCodeToCache[] = '';
 				// Add ext_localconf.php content of extension
-				$phpCodeToCache[] = trim(\TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($extensionDetails['ext_localconf.php']));
+				$phpCodeToCache[] = trim(GeneralUtility::getUrl($extensionDetails['ext_localconf.php']));
 				$phpCodeToCache[] = '';
 				$phpCodeToCache[] = '';
 			}
@@ -1774,7 +1777,7 @@ tt_content.' . $key . $prefix . ' {
 				$phpCodeToCache[] = '$_EXTCONF = $GLOBALS[\'TYPO3_CONF_VARS\'][\'EXT\'][\'extConf\'][$_EXTKEY];';
 				$phpCodeToCache[] = '';
 				// Add ext_tables.php content of extension
-				$phpCodeToCache[] = trim(\TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($extensionDetails['ext_tables.php']));
+				$phpCodeToCache[] = trim(GeneralUtility::getUrl($extensionDetails['ext_tables.php']));
 				$phpCodeToCache[] = '';
 				$phpCodeToCache[] = '\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::loadNewTcaColumnsConfigFiles();';
 				$phpCodeToCache[] = '';
@@ -1843,8 +1846,8 @@ tt_content.' . $key . $prefix . ' {
 	 * @deprecated since 6.1, will be removed in two versions
 	 */
 	static public function isLocalconfWritable() {
-		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager')
+		GeneralUtility::logDeprecatedFunction();
+		return GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager')
 			->canWriteConfiguration();
 	}
 
@@ -1881,7 +1884,7 @@ tt_content.' . $key . $prefix . ' {
 		} else {
 			// Fallback handling if extlist is still a string and not an array
 			// @deprecated since 6.0, will be removed in 6.2 ... check upgrade process before removal!
-			$loadedExtensions = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['EXT']['extList']);
+			$loadedExtensions = GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['EXT']['extList']);
 		}
 		// Add required extensions
 		$loadedExtensions = array_merge(static::getRequiredExtensionListArray(), $loadedExtensions);
@@ -1901,9 +1904,9 @@ tt_content.' . $key . $prefix . ' {
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXT']['requiredExt'])) {
 			$requiredExtensions = $GLOBALS['TYPO3_CONF_VARS']['EXT']['requiredExt'];
 		} else {
-			$requiredExtensions = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['EXT']['requiredExt']);
+			$requiredExtensions = GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['EXT']['requiredExt']);
 		}
-		$requiredExtensions = array_merge(\TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', REQUIRED_EXTENSIONS), $requiredExtensions);
+		$requiredExtensions = array_merge(GeneralUtility::trimExplode(',', REQUIRED_EXTENSIONS), $requiredExtensions);
 		$requiredExtensions = array_unique($requiredExtensions);
 		return $requiredExtensions;
 	}
@@ -1922,7 +1925,7 @@ tt_content.' . $key . $prefix . ' {
 		if (static::isLoaded($extensionKey)) {
 			throw new \RuntimeException('Extension already loaded', 1342345486);
 		}
-		$extList = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager')->getLocalConfigurationValueByPath('EXT/extListArray');
+		$extList = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager')->getLocalConfigurationValueByPath('EXT/extListArray');
 		$extList[] = $extensionKey;
 		static::writeNewExtensionList($extList);
 	}
@@ -1944,7 +1947,7 @@ tt_content.' . $key . $prefix . ' {
 		if (in_array($extensionKey, static::getRequiredExtensionListArray())) {
 			throw new \RuntimeException('Can not unload required extension', 1342348167);
 		}
-		$extList = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager')->getLocalConfigurationValueByPath('EXT/extListArray');
+		$extList = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager')->getLocalConfigurationValueByPath('EXT/extListArray');
 		$extList = array_diff($extList, array($extensionKey));
 		static::writeNewExtensionList($extList);
 	}
@@ -1959,7 +1962,7 @@ tt_content.' . $key . $prefix . ' {
 	 */
 	static public function writeNewExtensionList(array $newExtensionList) {
 		$extensionList = array_unique($newExtensionList);
-		\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager')->setLocalConfigurationValueByPath('EXT/extListArray', $extensionList);
+		GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager')->setLocalConfigurationValueByPath('EXT/extListArray', $extensionList);
 		static::removeCacheFiles();
 	}
 
@@ -1979,7 +1982,7 @@ tt_content.' . $key . $prefix . ' {
 		if ($result === FALSE) {
 			$message = '\TYPO3\CMS\Core\Category\CategoryRegistry: no category registered for table "%s". Key was already registered.';
 			/** @var $logger \TYPO3\CMS\Core\Log\Logger */
-			$logger = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Core\Log\LogManager')->getLogger(__CLASS__);
+			$logger = GeneralUtility::makeInstance('TYPO3\CMS\Core\Log\LogManager')->getLogger(__CLASS__);
 			$logger->warning(
 				sprintf($message, $tableName)
 			);

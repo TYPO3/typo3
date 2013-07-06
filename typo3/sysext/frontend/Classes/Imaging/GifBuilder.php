@@ -27,6 +27,8 @@ namespace TYPO3\CMS\Frontend\Imaging;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * GIFBUILDER
  *
@@ -40,7 +42,7 @@ namespace TYPO3\CMS\Frontend\Imaging;
  *
  * Here is an example of how to use this class (from tslib_content.php, function getImgResource):
  *
- * $gifCreator = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Imaging\\GifBuilder');
+ * $gifCreator = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Imaging\\GifBuilder');
  * $gifCreator->init();
  * $theImage='';
  * if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib']) {
@@ -138,7 +140,7 @@ class GifBuilder extends \TYPO3\CMS\Core\Imaging\GraphicalFunctions {
 		if (is_array($conf)) {
 			$this->setup = $conf;
 			$this->data = $data;
-			$this->cObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
+			$this->cObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
 			$this->cObj->start($this->data);
 			// Hook preprocess gifbuilder conf
 			// Added by Julle for 3.8.0
@@ -149,7 +151,7 @@ class GifBuilder extends \TYPO3\CMS\Core\Imaging\GraphicalFunctions {
 			if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_gifbuilder.php']['gifbuilder-ConfPreProcess'])) {
 				foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_gifbuilder.php']['gifbuilder-ConfPreProcess'] as $_funcRef) {
 					$_params = $this->setup;
-					$this->setup = \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($_funcRef, $_params, $this);
+					$this->setup = GeneralUtility::callUserFunction($_funcRef, $_params, $this);
 				}
 			}
 			// Initializing global Char Range Map
@@ -235,7 +237,7 @@ class GifBuilder extends \TYPO3\CMS\Core\Imaging\GraphicalFunctions {
 					}
 					// Checks if disabled is set... (this is also done in menu.php / imgmenu!!)
 					if ($conf['if.']) {
-						$cObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
+						$cObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
 						$cObj->start($this->data);
 						if (!$cObj->checkIf($conf['if.'])) {
 							unset($this->setup[$theKey]);
@@ -312,7 +314,7 @@ class GifBuilder extends \TYPO3\CMS\Core\Imaging\GraphicalFunctions {
 				}
 			}
 			// Get trivial data
-			$XY = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $this->setup['XY']);
+			$XY = GeneralUtility::intExplode(',', $this->setup['XY']);
 			$maxWidth = isset($this->setup['maxWidth.']) ? intval($this->cObj->stdWrap($this->setup['maxWidth'], $this->setup['maxWidth.'])) : intval($this->setup['maxWidth']);
 			$maxHeight = isset($this->setup['maxHeight.']) ? intval($this->cObj->stdWrap($this->setup['maxHeight'], $this->setup['maxHeight.'])) : intval($this->setup['maxHeight']);
 			$XY[0] = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($XY[0], 1, $maxWidth ? $maxWidth : 2000);
@@ -320,7 +322,7 @@ class GifBuilder extends \TYPO3\CMS\Core\Imaging\GraphicalFunctions {
 			$this->XY = $XY;
 			$this->w = $XY[0];
 			$this->h = $XY[1];
-			$this->OFFSET = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $this->setup['offset']);
+			$this->OFFSET = GeneralUtility::intExplode(',', $this->setup['offset']);
 			// this sets the workArea
 			$this->setWorkArea($this->setup['workArea']);
 			// this sets the default to the current;
@@ -541,7 +543,7 @@ class GifBuilder extends \TYPO3\CMS\Core\Imaging\GraphicalFunctions {
 	 * @todo Define visibility
 	 */
 	public function checkTextObj($conf) {
-		$cObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
+		$cObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
 		$cObj->start($this->data);
 		$isStdWrapped = array();
 		foreach ($conf as $key => $value) {
@@ -639,7 +641,7 @@ class GifBuilder extends \TYPO3\CMS\Core\Imaging\GraphicalFunctions {
 	 */
 	public function calcOffset($string) {
 		$value = array();
-		$numbers = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->calculateFunctions($string));
+		$numbers = GeneralUtility::trimExplode(',', $this->calculateFunctions($string));
 		foreach ($numbers as $key => $val) {
 			if ((string) $val == (string) intval($val)) {
 				$value[$key] = intval($val);
@@ -662,10 +664,10 @@ class GifBuilder extends \TYPO3\CMS\Core\Imaging\GraphicalFunctions {
 	 * @todo Define visibility
 	 */
 	public function getResource($file, $fileArray) {
-		if (!\TYPO3\CMS\Core\Utility\GeneralUtility::inList($this->imageFileExt, $fileArray['ext'])) {
+		if (!GeneralUtility::inList($this->imageFileExt, $fileArray['ext'])) {
 			$fileArray['ext'] = $this->gifExtension;
 		}
-		$cObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
+		$cObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
 		$cObj->start($this->data);
 		return $cObj->getImgResource($file, $fileArray);
 	}
@@ -695,13 +697,13 @@ class GifBuilder extends \TYPO3\CMS\Core\Imaging\GraphicalFunctions {
 		$meaningfulPrefix = '';
 		if ($GLOBALS['TSFE']->config['config']['meaningfulTempFilePrefix']) {
 			/** @var $basicFileFunctions \TYPO3\CMS\Core\Utility\File\BasicFileUtility */
-			$basicFileFunctions = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Utility\\File\\BasicFileUtility');
+			$basicFileFunctions = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Utility\\File\\BasicFileUtility');
 			$meaningfulPrefix = implode('_', array_merge($this->combinedTextStrings, $this->combinedFileNames));
 			$meaningfulPrefix = $basicFileFunctions->cleanFileName($meaningfulPrefix);
 			$meaningfulPrefixLength = intval($GLOBALS['TSFE']->config['config']['meaningfulTempFilePrefix']);
 			if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['UTF8filesystem']) {
 				/** @var $t3libCsInstance \TYPO3\CMS\Core\Charset\CharsetConverter */
-				$t3libCsInstance = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Charset\\CharsetConverter');
+				$t3libCsInstance = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Charset\\CharsetConverter');
 				$meaningfulPrefix = $t3libCsInstance->substr('utf-8', $meaningfulPrefix, 0, $meaningfulPrefixLength);
 			} else {
 				$meaningfulPrefix = substr($meaningfulPrefix, 0, $meaningfulPrefixLength);
@@ -712,7 +714,7 @@ class GifBuilder extends \TYPO3\CMS\Core\Imaging\GraphicalFunctions {
 		// Not only the wrong glyphs are printed but also some memory stack overflow resulted in strange additional
 		// chars - and finally the reason for this investigation: The Bounding box data was changing all the time
 		// resulting in new images being generated all the time. With PHP4 it works fine.
-		return $this->tempPath . $pre . $meaningfulPrefix . \TYPO3\CMS\Core\Utility\GeneralUtility::shortMD5(serialize($this->setup)) . '.' . $this->extension();
+		return $this->tempPath . $pre . $meaningfulPrefix . GeneralUtility::shortMD5(serialize($this->setup)) . '.' . $this->extension();
 	}
 
 	/**
@@ -749,7 +751,7 @@ class GifBuilder extends \TYPO3\CMS\Core\Imaging\GraphicalFunctions {
 	 */
 	protected function calculateValue($string) {
 		$calculatedValue = 0;
-		$parts = \TYPO3\CMS\Core\Utility\GeneralUtility::splitCalc($string, '+-*/%');
+		$parts = GeneralUtility::splitCalc($string, '+-*/%');
 		foreach ($parts as $part) {
 			$theVal = $part[1];
 			$sign = $part[0];
@@ -811,7 +813,7 @@ class GifBuilder extends \TYPO3\CMS\Core\Imaging\GraphicalFunctions {
 	 * @return integer The maxium value of the given comma separated and calculated values
 	 */
 	protected function calculateMaximum($string) {
-		$parts = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->calcOffset($string), TRUE);
+		$parts = GeneralUtility::trimExplode(',', $this->calcOffset($string), TRUE);
 		$maximum = count($parts) ? max($parts) : 0;
 		return $maximum;
 	}

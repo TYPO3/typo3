@@ -29,6 +29,8 @@ namespace TYPO3\CMS\Dbal\Database;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * TYPO3 database abstraction layer
  *
@@ -191,9 +193,9 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	 */
 	public function __construct() {
 		// Set SQL parser object for internal use:
-		$this->SQLparser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\SqlParser');
-		$this->installerSql = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Install\\Service\\SqlSchemaMigrationService');
-		$this->queryCache = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->getCache('dbal');
+		$this->SQLparser = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\SqlParser');
+		$this->installerSql = GeneralUtility::makeInstance('TYPO3\\CMS\\Install\\Service\\SqlSchemaMigrationService');
+		$this->queryCache = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->getCache('dbal');
 		// Set internal variables with configuration:
 		$this->conf = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['dbal'];
 		$this->initInternalVariables();
@@ -227,7 +229,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	 * @return void
 	 */
 	public function clearCachedFieldInfo() {
-		$phpCodeCache = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->getCache('cache_phpcode');
+		$phpCodeCache = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->getCache('cache_phpcode');
 		$phpCodeCache->flushByTag('t3lib_db');
 	}
 
@@ -237,7 +239,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	 * @return void
 	 */
 	public function cacheFieldInfo() {
-		$phpCodeCache = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->getCache('cache_phpcode');
+		$phpCodeCache = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->getCache('cache_phpcode');
 		// try to fetch cache
 		// cache is flushed when admin_query() is called
 		if ($phpCodeCache->has($this->cacheIdentifier)) {
@@ -406,7 +408,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	 */
 	public function exec_INSERTquery($table, $fields_values, $no_quote_fields = '') {
 		if ($this->debug) {
-			$pt = \TYPO3\CMS\Core\Utility\GeneralUtility::milliseconds();
+			$pt = GeneralUtility::milliseconds();
 		}
 		// Do field mapping if needed:
 		$ORIG_tableName = $table;
@@ -522,7 +524,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 			debug(array($this->lastQuery, $this->sql_error()));
 		}
 		if ($this->debug) {
-			$this->debugHandler('exec_INSERTquery', \TYPO3\CMS\Core\Utility\GeneralUtility::milliseconds() - $pt, array(
+			$this->debugHandler('exec_INSERTquery', GeneralUtility::milliseconds() - $pt, array(
 				'handlerType' => $hType,
 				'args' => array($table, $fields_values),
 				'ORIG_tablename' => $ORIG_tableName
@@ -581,7 +583,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	 */
 	public function exec_UPDATEquery($table, $where, $fields_values, $no_quote_fields = '') {
 		if ($this->debug) {
-			$pt = \TYPO3\CMS\Core\Utility\GeneralUtility::milliseconds();
+			$pt = GeneralUtility::milliseconds();
 		}
 		// Do table/field mapping:
 		$ORIG_tableName = $table;
@@ -645,7 +647,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 			debug(array($this->lastQuery, $this->sql_error()));
 		}
 		if ($this->debug) {
-			$this->debugHandler('exec_UPDATEquery', \TYPO3\CMS\Core\Utility\GeneralUtility::milliseconds() - $pt, array(
+			$this->debugHandler('exec_UPDATEquery', GeneralUtility::milliseconds() - $pt, array(
 				'handlerType' => $hType,
 				'args' => array($table, $where, $fields_values),
 				'ORIG_from_table' => $ORIG_tableName
@@ -667,7 +669,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	 */
 	public function exec_DELETEquery($table, $where) {
 		if ($this->debug) {
-			$pt = \TYPO3\CMS\Core\Utility\GeneralUtility::milliseconds();
+			$pt = GeneralUtility::milliseconds();
 		}
 		// Do table/field mapping:
 		$ORIG_tableName = $table;
@@ -704,7 +706,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 			debug(array($this->lastQuery, $this->sql_error()));
 		}
 		if ($this->debug) {
-			$this->debugHandler('exec_DELETEquery', \TYPO3\CMS\Core\Utility\GeneralUtility::milliseconds() - $pt, array(
+			$this->debugHandler('exec_DELETEquery', GeneralUtility::milliseconds() - $pt, array(
 				'handlerType' => $hType,
 				'args' => array($table, $where),
 				'ORIG_from_table' => $ORIG_tableName
@@ -730,7 +732,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	 */
 	public function exec_SELECTquery($select_fields, $from_table, $where_clause, $groupBy = '', $orderBy = '', $limit = '') {
 		if ($this->debug) {
-			$pt = \TYPO3\CMS\Core\Utility\GeneralUtility::milliseconds();
+			$pt = GeneralUtility::milliseconds();
 		}
 		// Map table / field names if needed:
 		$ORIG_tableName = $from_table;
@@ -764,7 +766,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 				break;
 			case 'adodb':
 				if ($limit != '') {
-					$splitLimit = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $limit);
+					$splitLimit = GeneralUtility::intExplode(',', $limit);
 					// Splitting the limit values:
 					if ($splitLimit[1]) {
 						// If there are two parameters, do mapping differently than otherwise:
@@ -816,7 +818,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 			if ($this->conf['debugOptions']['numberRows']) {
 				$data['numberRows'] = $this->sql_num_rows($sqlResult);
 			}
-			$this->debugHandler('exec_SELECTquery', \TYPO3\CMS\Core\Utility\GeneralUtility::milliseconds() - $pt, $data);
+			$this->debugHandler('exec_SELECTquery', GeneralUtility::milliseconds() - $pt, $data);
 		}
 		// Return result handler.
 		return $sqlResult;
@@ -830,7 +832,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	 */
 	public function exec_TRUNCATEquery($table) {
 		if ($this->debug) {
-			$pt = \TYPO3\CMS\Core\Utility\GeneralUtility::milliseconds();
+			$pt = GeneralUtility::milliseconds();
 		}
 		// Do table/field mapping:
 		$ORIG_tableName = $table;
@@ -863,7 +865,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 			debug(array($this->lastQuery, $this->sql_error()));
 		}
 		if ($this->debug) {
-			$this->debugHandler('exec_TRUNCATEquery', \TYPO3\CMS\Core\Utility\GeneralUtility::milliseconds() - $pt, array(
+			$this->debugHandler('exec_TRUNCATEquery', GeneralUtility::milliseconds() - $pt, array(
 				'handlerType' => $hType,
 				'args' => array($table),
 				'ORIG_from_table' => $ORIG_tableName
@@ -1167,7 +1169,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 		$hType = (string) $this->handlerCfg[$this->lastHandlerKey]['type'];
 		if ($hType === 'adodb' && $this->runningADOdbDriver('postgres')) {
 			// Possibly rewrite the LIMIT to be PostgreSQL-compatible
-			$splitLimit = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $limit);
+			$splitLimit = GeneralUtility::intExplode(',', $limit);
 			// Splitting the limit values:
 			if ($splitLimit[1]) {
 				// If there are two parameters, do mapping differently than otherwise:
@@ -1276,7 +1278,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	 */
 	public function prepare_SELECTquery($select_fields, $from_table, $where_clause, $groupBy = '', $orderBy = '', $limit = '', array $input_parameters = array()) {
 		if ($this->debug) {
-			$pt = \TYPO3\CMS\Core\Utility\GeneralUtility::milliseconds();
+			$pt = GeneralUtility::milliseconds();
 		}
 		$precompiledParts = array();
 		if ($this->queryCache) {
@@ -1295,7 +1297,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 						'args' => array($from_table, $select_fields, $where_clause, $groupBy, $orderBy, $limit, $input_parameters),
 						'precompiledParts' => $precompiledParts
 					);
-					$this->debugHandler('prepare_SELECTquery (cache hit)', \TYPO3\CMS\Core\Utility\GeneralUtility::milliseconds() - $pt, $data);
+					$this->debugHandler('prepare_SELECTquery (cache hit)', GeneralUtility::milliseconds() - $pt, $data);
 				}
 			}
 		}
@@ -1332,12 +1334,12 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 					$this->queryCache->set($cacheKey, $precompiledParts);
 				} catch (\TYPO3\CMS\Core\Cache\Exception $e) {
 					if ($this->debug) {
-						\TYPO3\CMS\Core\Utility\GeneralUtility::devLog($e->getMessage(), 'dbal', 1);
+						GeneralUtility::devLog($e->getMessage(), 'dbal', 1);
 					}
 				}
 			}
 		}
-		$preparedStatement = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\PreparedStatement', '', $from_table, $precompiledParts);
+		$preparedStatement = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\PreparedStatement', '', $from_table, $precompiledParts);
 		/* @var $preparedStatement \TYPO3\CMS\Core\Database\PreparedStatement */
 		// Bind values to parameters
 		foreach ($input_parameters as $key => $value) {
@@ -1348,7 +1350,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 				'args' => array($from_table, $select_fields, $where_clause, $groupBy, $orderBy, $limit, $input_parameters),
 				'ORIG_from_table' => $ORIG_tableName
 			);
-			$this->debugHandler('prepare_SELECTquery', \TYPO3\CMS\Core\Utility\GeneralUtility::milliseconds() - $pt, $data);
+			$this->debugHandler('prepare_SELECTquery', GeneralUtility::milliseconds() - $pt, $data);
 		}
 		// Return prepared statement
 		return $preparedStatement;
@@ -1379,7 +1381,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 		$hType = (string) $this->handlerCfg[$this->lastHandlerKey]['type'];
 		if ($hType === 'adodb' && $this->runningADOdbDriver('postgres')) {
 			// Possibly rewrite the LIMIT to be PostgreSQL-compatible
-			$splitLimit = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $limit);
+			$splitLimit = GeneralUtility::intExplode(',', $limit);
 			// Splitting the limit values:
 			if ($splitLimit[1]) {
 				// If there are two parameters, do mapping differently than otherwise:
@@ -1469,7 +1471,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	 */
 	public function exec_PREPAREDquery($query, array $precompiledParts) {
 		if ($this->debug) {
-			$pt = \TYPO3\CMS\Core\Utility\GeneralUtility::milliseconds();
+			$pt = GeneralUtility::milliseconds();
 		}
 		// Get handler key and select API:
 		switch ($precompiledParts['handler']) {
@@ -1482,7 +1484,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 				$limit = $precompiledParts['LIMIT'];
 				if ($this->runningADOdbDriver('postgres')) {
 					// Possibly rewrite the LIMIT to be PostgreSQL-compatible
-					$splitLimit = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $limit);
+					$splitLimit = GeneralUtility::intExplode(',', $limit);
 					// Splitting the limit values:
 					if ($splitLimit[1]) {
 						// If there are two parameters, do mapping differently than otherwise:
@@ -1492,7 +1494,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 					}
 				}
 				if ($limit != '') {
-					$splitLimit = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $limit);
+					$splitLimit = GeneralUtility::intExplode(',', $limit);
 					// Splitting the limit values:
 					if ($splitLimit[1]) {
 						// If there are two parameters, do mapping differently than otherwise:
@@ -1534,7 +1536,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 			if ($this->conf['debugOptions']['numberRows']) {
 				$data['numberRows'] = $this->sql_num_rows($sqlResult);
 			}
-			$this->debugHandler('exec_PREPAREDquery', \TYPO3\CMS\Core\Utility\GeneralUtility::milliseconds() - $pt, $data);
+			$this->debugHandler('exec_PREPAREDquery', GeneralUtility::milliseconds() - $pt, $data);
 		}
 		// Return result handler.
 		return $sqlResult;
@@ -1743,7 +1745,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 					}
 				} else {
 					// Detecting value type; list or plain:
-					if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList('NOTIN,IN', strtoupper(str_replace(array(' ', '
+					if (GeneralUtility::inList('NOTIN,IN', strtoupper(str_replace(array(' ', '
 ', '
 ', '	'), '', $where_clause[$k]['comparator'])))) {
 						if (isset($v['subquery'])) {
@@ -2421,7 +2423,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 		}
 		// This method is heavily used by Extbase, try to handle it with DBAL-native methods
 		$queryParts = $this->SQLparser->parseSQL($query);
-		if (is_array($queryParts) && \TYPO3\CMS\Core\Utility\GeneralUtility::inList('SELECT,UPDATE,INSERT,DELETE', $queryParts['type'])) {
+		if (is_array($queryParts) && GeneralUtility::inList('SELECT,UPDATE,INSERT,DELETE', $queryParts['type'])) {
 			return $this->exec_query($queryParts);
 		}
 		switch ($this->handlerCfg['_DEFAULT']['type']) {
@@ -2905,14 +2907,14 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 						if (mysql_select_db($cfgArray['config']['database'], $link)) {
 							$output = TRUE;
 						}
-						$setDBinit = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(LF, str_replace('\' . LF . \'', LF, $GLOBALS['TYPO3_CONF_VARS']['SYS']['setDBinit']), TRUE);
+						$setDBinit = GeneralUtility::trimExplode(LF, str_replace('\' . LF . \'', LF, $GLOBALS['TYPO3_CONF_VARS']['SYS']['setDBinit']), TRUE);
 						foreach ($setDBinit as $v) {
 							if (mysql_query($v, $link) === FALSE) {
-								\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog('Could not initialize DB connection with query "' . $v . '".', 'Core', 3);
+								GeneralUtility::sysLog('Could not initialize DB connection with query "' . $v . '".', 'Core', 3);
 							}
 						}
 					} else {
-						\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog('Could not connect to MySQL server ' . $cfgArray['config']['host'] . ' with user ' . $cfgArray['config']['username'] . '.', 'Core', 4);
+						GeneralUtility::sysLog('Could not connect to MySQL server ' . $cfgArray['config']['host'] . ' with user ' . $cfgArray['config']['username'] . '.', 'Core', 4);
 					}
 					break;
 				case 'adodb':
@@ -2942,7 +2944,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 					}
 					if (!$this->handlerInstance[$handlerKey]->isConnected()) {
 						$dsn = $cfgArray['config']['driver'] . '://' . $cfgArray['config']['username'] . (strlen($cfgArray['config']['password']) ? ':XXXX@' : '') . $cfgArray['config']['host'] . (isset($cfgArray['config']['port']) ? ':' . $cfgArray['config']['port'] : '') . '/' . $cfgArray['config']['database'] . ($GLOBALS['TYPO3_CONF_VARS']['SYS']['no_pconnect'] ? '' : '?persistent=1');
-						\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog('Could not connect to DB server using ADOdb on ' . $cfgArray['config']['host'] . ' with user ' . $cfgArray['config']['username'] . '.', 'Core', 4);
+						GeneralUtility::sysLog('Could not connect to DB server using ADOdb on ' . $cfgArray['config']['host'] . ' with user ' . $cfgArray['config']['username'] . '.', 'Core', 4);
 						error_log('DBAL error: Connection to ' . $dsn . ' failed. Maybe PHP doesn\'t support the database?');
 						$output = FALSE;
 					} else {
@@ -2957,14 +2959,14 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 					break;
 				case 'userdefined':
 					// Find class file:
-					$fileName = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($cfgArray['config']['classFile']);
+					$fileName = GeneralUtility::getFileAbsFileName($cfgArray['config']['classFile']);
 					if (@is_file($fileName)) {
 						require_once $fileName;
 					} else {
 						throw new \RuntimeException('DBAL error: "' . $fileName . '" was not a file to include.', 1310027975);
 					}
 					// Initialize:
-					$this->handlerInstance[$handlerKey] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($cfgArray['config']['class']);
+					$this->handlerInstance[$handlerKey] = GeneralUtility::makeInstance($cfgArray['config']['class']);
 					$this->handlerInstance[$handlerKey]->init($cfgArray, $this);
 					if (is_object($this->handlerInstance[$handlerKey])) {
 						$output = TRUE;
@@ -3562,7 +3564,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 					break;
 				case 'exec_SELECTquery':
 					// Get explain data:
-					if ($this->conf['debugOptions']['EXPLAIN'] && \TYPO3\CMS\Core\Utility\GeneralUtility::inList('adodb,native', $inData['handlerType'])) {
+					if ($this->conf['debugOptions']['EXPLAIN'] && GeneralUtility::inList('adodb,native', $inData['handlerType'])) {
 						$data['EXPLAIN'] = $this->debug_explain($this->lastQuery);
 					}
 					// Check parsing of Query:

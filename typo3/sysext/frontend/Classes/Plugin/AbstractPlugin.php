@@ -26,14 +26,9 @@ namespace TYPO3\CMS\Frontend\Plugin;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-/**
- * This script contains the parent class, 'pibase', providing an API with the most basic methods for frontend plugins
- *
- * Revised for TYPO3 3.6 June/2003 by Kasper Skårhøj
- * XHTML compliant
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- */
+
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Base class for frontend plugins
  * Most modern frontend plugins are extension classes of this one.
@@ -227,7 +222,7 @@ class AbstractPlugin {
 	public function __construct() {
 		// Setting piVars:
 		if ($this->prefixId) {
-			$this->piVars = \TYPO3\CMS\Core\Utility\GeneralUtility::_GPmerged($this->prefixId);
+			$this->piVars = GeneralUtility::_GPmerged($this->prefixId);
 			// cHash mode check
 			// IMPORTANT FOR CACHED PLUGINS (USER cObject): As soon as you generate cached plugin output which depends on parameters (eg. seeing the details of a news item) you MUST check if a cHash value is set.
 			// Background: The function call will check if a cHash parameter was sent with the URL because only if it was the page may be cached. If no cHash was found the function will simply disable caching to avoid unpredictable caching behaviour. In any case your plugin can generate the expected output and the only risk is that the content may not be cached. A missing cHash value is considered a mistake in the URL resulting from either URL manipulation, "realurl" "grayzones" etc. The problem is rare (more frequent with "realurl") but when it occurs it is very puzzling!
@@ -239,7 +234,7 @@ class AbstractPlugin {
 			$this->LLkey = $GLOBALS['TSFE']->config['config']['language'];
 			if (empty($GLOBALS['TSFE']->config['config']['language_alt'])) {
 				/** @var $locales \TYPO3\CMS\Core\Localization\Locales */
-				$locales = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Localization\\Locales');
+				$locales = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Localization\\Locales');
 				if (in_array($this->LLkey, $locales->getLocales())) {
 					$this->altLLkey = '';
 					foreach ($locales->getLocaleDependencies($this->LLkey) as $language) {
@@ -296,7 +291,7 @@ class AbstractPlugin {
 	public function pi_setPiVarDefaults() {
 		if (isset($this->conf['_DEFAULT_PI_VARS.']) && is_array($this->conf['_DEFAULT_PI_VARS.'])) {
 			$this->conf['_DEFAULT_PI_VARS.'] = $this->applyStdWrapRecursive($this->conf['_DEFAULT_PI_VARS.']);
-			$this->piVars = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($this->conf['_DEFAULT_PI_VARS.'], is_array($this->piVars) ? $this->piVars : array());
+			$this->piVars = GeneralUtility::array_merge_recursive_overrule($this->conf['_DEFAULT_PI_VARS.'], is_array($this->piVars) ? $this->piVars : array());
 		}
 	}
 
@@ -358,7 +353,7 @@ class AbstractPlugin {
 		$conf['useCacheHash'] = $this->pi_USER_INT_obj ? 0 : $cache;
 		$conf['no_cache'] = $this->pi_USER_INT_obj ? 0 : !$cache;
 		$conf['parameter'] = $altPageId ? $altPageId : ($this->pi_tmpPageId ? $this->pi_tmpPageId : $GLOBALS['TSFE']->id);
-		$conf['additionalParams'] = $this->conf['parent.']['addParams'] . \TYPO3\CMS\Core\Utility\GeneralUtility::implodeArrayForUrl('', $urlParameters, '', TRUE) . $this->pi_moreParams;
+		$conf['additionalParams'] = $this->conf['parent.']['addParams'] . GeneralUtility::implodeArrayForUrl('', $urlParameters, '', TRUE) . $this->pi_moreParams;
 		return $this->cObj->typoLink($str, $conf);
 	}
 
@@ -380,7 +375,7 @@ class AbstractPlugin {
 		if (is_array($this->piVars) && is_array($overrulePIvars) && !$clearAnyway) {
 			$piVars = $this->piVars;
 			unset($piVars['DATA']);
-			$overrulePIvars = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($piVars, $overrulePIvars);
+			$overrulePIvars = GeneralUtility::array_merge_recursive_overrule($piVars, $overrulePIvars);
 			if ($this->pi_autoCacheEn) {
 				$cache = $this->pi_autoCache($overrulePIvars);
 			}
@@ -450,7 +445,7 @@ class AbstractPlugin {
 	 */
 	public function pi_openAtagHrefInJSwindow($str, $winName = '', $winParams = 'width=670,height=500,status=0,menubar=0,scrollbars=1,resizable=1') {
 		if (preg_match('/(.*)(<a[^>]*>)(.*)/i', $str, $match)) {
-			$aTagContent = \TYPO3\CMS\Core\Utility\GeneralUtility::get_tag_attributes($match[2]);
+			$aTagContent = GeneralUtility::get_tag_attributes($match[2]);
 			$match[2] = '<a href="#" onclick="' . htmlspecialchars(('vHWin=window.open(\'' . $GLOBALS['TSFE']->baseUrlWrap($aTagContent['href']) . '\',\'' . ($winName ? $winName : md5($aTagContent['href'])) . '\',\'' . $winParams . '\');vHWin.focus();return false;')) . '">';
 			$str = $match[1] . $match[2] . $match[3];
 		}
@@ -650,7 +645,7 @@ class AbstractPlugin {
 			List search box:
 		-->
 		<div' . $this->pi_classParam('searchbox') . '>
-			<form action="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI')) . '" method="post" style="margin: 0 0 0 0;">
+			<form action="' . htmlspecialchars(GeneralUtility::getIndpEnv('REQUEST_URI')) . '" method="post" style="margin: 0 0 0 0;">
 			<' . trim(('table ' . $tableParams)) . '>
 				<tr>
 					<td><input type="text" name="' . $this->prefixId . '[sword]" value="' . htmlspecialchars($this->piVars['sword']) . '"' . $this->pi_classParam('searchbox-sword') . ' /></td>
@@ -782,10 +777,10 @@ class AbstractPlugin {
 	 */
 	public function pi_classParam($class, $addClasses = '') {
 		$output = '';
-		foreach (\TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $class) as $v) {
+		foreach (GeneralUtility::trimExplode(',', $class) as $v) {
 			$output .= ' ' . $this->pi_getClassName($v);
 		}
-		foreach (\TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $addClasses) as $v) {
+		foreach (GeneralUtility::trimExplode(',', $addClasses) as $v) {
 			$output .= ' ' . $v;
 		}
 		return ' class="' . trim($output) . '"';
@@ -846,7 +841,7 @@ class AbstractPlugin {
 		if ($GLOBALS['TSFE']->beUserLogin) {
 			// Create local cObj if not set:
 			if (!is_object($this->pi_EPtemp_cObj)) {
-				$this->pi_EPtemp_cObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
+				$this->pi_EPtemp_cObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
 				$this->pi_EPtemp_cObj->setParent($this->cObj->data, $this->cObj->currentRecord);
 			}
 			// Initialize the cObj object with current row
@@ -890,7 +885,7 @@ class AbstractPlugin {
 				'beforeLastTag' => 1,
 				'iconTitle' => $title
 			), $oConf);
-			$content = $this->cObj->editIcons($content, $tablename . ':' . $fields, $conf, $tablename . ':' . $row['uid'], $row, '&viewUrl=' . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI')));
+			$content = $this->cObj->editIcons($content, $tablename . ':' . $fields, $conf, $tablename . ':' . $row['uid'], $row, '&viewUrl=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI')));
 		}
 		return $content;
 	}
@@ -921,7 +916,7 @@ class AbstractPlugin {
 				$word = $this->LOCAL_LANG[$this->LLkey][$key][0]['target'];
 			}
 		} elseif ($this->altLLkey) {
-			$alternativeLanguageKeys = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->altLLkey, TRUE);
+			$alternativeLanguageKeys = GeneralUtility::trimExplode(',', $this->altLLkey, TRUE);
 			$alternativeLanguageKeys = array_reverse($alternativeLanguageKeys);
 			foreach ($alternativeLanguageKeys as $languageKey) {
 				if (!empty($this->LOCAL_LANG[$languageKey][$key][0]['target'])
@@ -971,10 +966,10 @@ class AbstractPlugin {
 		if (!$this->LOCAL_LANG_loaded && $this->scriptRelPath) {
 			$basePath = 'EXT:' . $this->extKey . '/' . dirname($this->scriptRelPath) . '/locallang.xml';
 			// Read the strings in the required charset (since TYPO3 4.2)
-			$this->LOCAL_LANG = \TYPO3\CMS\Core\Utility\GeneralUtility::readLLfile($basePath, $this->LLkey, $GLOBALS['TSFE']->renderCharset);
-			$alternativeLanguageKeys = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->altLLkey, TRUE);
+			$this->LOCAL_LANG = GeneralUtility::readLLfile($basePath, $this->LLkey, $GLOBALS['TSFE']->renderCharset);
+			$alternativeLanguageKeys = GeneralUtility::trimExplode(',', $this->altLLkey, TRUE);
 			foreach ($alternativeLanguageKeys as $languageKey) {
-				$tempLL = \TYPO3\CMS\Core\Utility\GeneralUtility::readLLfile($basePath, $languageKey);
+				$tempLL = GeneralUtility::readLLfile($basePath, $languageKey);
 				if ($this->LLkey !== 'default' && isset($tempLL[$languageKey])) {
 					$this->LOCAL_LANG[$languageKey] = $tempLL[$languageKey];
 				}
@@ -1065,7 +1060,7 @@ class AbstractPlugin {
 		} else {
 			// Order by data:
 			if (!$orderBy && $this->internal['orderBy']) {
-				if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList($this->internal['orderByList'], $this->internal['orderBy'])) {
+				if (GeneralUtility::inList($this->internal['orderByList'], $this->internal['orderBy'])) {
 					$orderBy = 'ORDER BY ' . $table . '.' . $this->internal['orderBy'] . ($this->internal['descFlag'] ? ' DESC' : '');
 				}
 			}
@@ -1114,7 +1109,7 @@ class AbstractPlugin {
 			$pid_list = $GLOBALS['TSFE']->id;
 		}
 		$recursive = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($recursive, 0);
-		$pid_list_arr = array_unique(\TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $pid_list, 1));
+		$pid_list_arr = array_unique(GeneralUtility::trimExplode(',', $pid_list, 1));
 		$pid_list = array();
 		foreach ($pid_list_arr as $val) {
 			$val = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($val, 0);
@@ -1137,7 +1132,7 @@ class AbstractPlugin {
 	 * @todo Define visibility
 	 */
 	public function pi_prependFieldsWithTable($table, $fieldList) {
-		$list = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $fieldList, 1);
+		$list = GeneralUtility::trimExplode(',', $fieldList, 1);
 		$return = array();
 		foreach ($list as $listItem) {
 			$return[] = $table . '.' . $listItem;
@@ -1183,7 +1178,7 @@ class AbstractPlugin {
 	 */
 	public function pi_isOnlyFields($fList, $lowerThan = -1) {
 		$lowerThan = $lowerThan == -1 ? $this->pi_lowerThan : $lowerThan;
-		$fList = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $fList, 1);
+		$fList = GeneralUtility::trimExplode(',', $fList, 1);
 		$tempPiVars = $this->piVars;
 		foreach ($fList as $k) {
 			if (!\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($tempPiVars[$k]) || $tempPiVars[$k] < $lowerThan) {
@@ -1258,7 +1253,7 @@ class AbstractPlugin {
 	public function pi_initPIflexForm($field = 'pi_flexform') {
 		// Converting flexform data into array:
 		if (!is_array($this->cObj->data[$field]) && $this->cObj->data[$field]) {
-			$this->cObj->data[$field] = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($this->cObj->data[$field]);
+			$this->cObj->data[$field] = GeneralUtility::xml2array($this->cObj->data[$field]);
 			if (!is_array($this->cObj->data[$field])) {
 				$this->cObj->data[$field] = array();
 			}

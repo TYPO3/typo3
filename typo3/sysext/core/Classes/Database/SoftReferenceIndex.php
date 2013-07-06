@@ -23,6 +23,9 @@ namespace TYPO3\CMS\Core\Database;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Soft Reference processing class
  * "Soft References" are references to database elements, files, email addresses, URls etc.
@@ -187,7 +190,7 @@ class SoftReferenceIndex {
 	 */
 	public function findRef_images($content, $spParams) {
 		// Start HTML parser and split content by image tag:
-		$htmlParser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Html\\HtmlParser');
+		$htmlParser = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Html\\HtmlParser');
 		$splitContent = $htmlParser->splitTags('img', $content);
 		$elements = array();
 		// Traverse splitted parts:
@@ -195,17 +198,17 @@ class SoftReferenceIndex {
 			if ($k % 2) {
 				// Get file reference:
 				$attribs = $htmlParser->get_tag_attributes($v);
-				$srcRef = \TYPO3\CMS\Core\Utility\GeneralUtility::htmlspecialchars_decode($attribs[0]['src']);
+				$srcRef = GeneralUtility::htmlspecialchars_decode($attribs[0]['src']);
 				$pI = pathinfo($srcRef);
 				// If it looks like a local image, continue. Otherwise ignore it.
-				$absPath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName(PATH_site . $srcRef);
+				$absPath = GeneralUtility::getFileAbsFileName(PATH_site . $srcRef);
 				if (!$pI['scheme'] && !$pI['query'] && $absPath && $srcRef !== 'clear.gif') {
 					// Initialize the element entry with info text here:
 					$tokenID = $this->makeTokenID($k);
 					$elements[$k] = array();
 					$elements[$k]['matchString'] = $v;
 					// If the image seems to be from fileadmin/ folder or an RTE image, then proceed to set up substitution token:
-					if (\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($srcRef, $this->fileAdminDir . '/') || \TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($srcRef, 'uploads/') && preg_match('/^RTEmagicC_/', basename($srcRef))) {
+					if (GeneralUtility::isFirstPartOfStr($srcRef, $this->fileAdminDir . '/') || GeneralUtility::isFirstPartOfStr($srcRef, 'uploads/') && preg_match('/^RTEmagicC_/', basename($srcRef))) {
 						// Token and substitute value:
 						// Make sure the value we work on is found and will get substituted in the content (Very important that the src-value is not DeHSC'ed)
 						if (strstr($splitContent[$k], $attribs[0]['src'])) {
@@ -286,7 +289,7 @@ class SoftReferenceIndex {
 	 */
 	public function findRef_typolink_tag($content, $spParams) {
 		// Parse string for special TYPO3 <link> tag:
-		$htmlParser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Html\\HtmlParser');
+		$htmlParser = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Html\\HtmlParser');
 		$linkTags = $htmlParser->splitTags('link', $content);
 		// Traverse result:
 		$elements = array();
@@ -319,7 +322,7 @@ class SoftReferenceIndex {
 	public function findRef_TStemplate($content, $spParams) {
 		$elements = array();
 		// First, try to find images and links:
-		$htmlParser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Html\\HtmlParser');
+		$htmlParser = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Html\\HtmlParser');
 		$splitContent = $htmlParser->splitTags('img,a,form', $content);
 		// Traverse splitted parts:
 		foreach ($splitContent as $k => $v) {
@@ -339,15 +342,15 @@ class SoftReferenceIndex {
 				}
 				// Get file reference:
 				if (isset($attribs[0][$attributeName])) {
-					$srcRef = \TYPO3\CMS\Core\Utility\GeneralUtility::htmlspecialchars_decode($attribs[0][$attributeName]);
+					$srcRef = GeneralUtility::htmlspecialchars_decode($attribs[0][$attributeName]);
 					// Set entry:
 					$tokenID = $this->makeTokenID($k);
 					$elements[$k] = array();
 					$elements[$k]['matchString'] = $v;
 					// OK, if it looks like a local file from fileadmin/, include it:
 					$pI = pathinfo($srcRef);
-					$absPath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName(PATH_site . $srcRef);
-					if (\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($srcRef, $this->fileAdminDir . '/') && !$pI['query'] && $absPath) {
+					$absPath = GeneralUtility::getFileAbsFileName(PATH_site . $srcRef);
+					if (GeneralUtility::isFirstPartOfStr($srcRef, $this->fileAdminDir . '/') && !$pI['query'] && $absPath) {
 						// Token and substitute value:
 						// Very important that the src-value is not DeHSC'ed
 						if (strstr($splitContent[$k], $attribs[0][$attributeName])) {
@@ -542,7 +545,7 @@ class SoftReferenceIndex {
 				);
 				$parts[$idx] = '{softref:' . $tokenID . '}';
 				// Check if the file actually exists:
-				$absPath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName(PATH_site . $value);
+				$absPath = GeneralUtility::getFileAbsFileName(PATH_site . $value);
 				if (!@is_file($absPath)) {
 					$elements['fileadminReferences.' . $idx]['error'] = 'File does not exist!';
 				}
@@ -566,7 +569,7 @@ class SoftReferenceIndex {
 	public function getTypoLinkParts($typolinkValue) {
 		$finalTagParts = array();
 		// Split by space into link / target / class
-		list($link_param, $browserTarget, $cssClass) = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(' ', $typolinkValue, 1);
+		list($link_param, $browserTarget, $cssClass) = GeneralUtility::trimExplode(' ', $typolinkValue, 1);
 		if (strlen($browserTarget)) {
 			$finalTagParts['target'] = $browserTarget;
 		}
@@ -596,7 +599,7 @@ class SoftReferenceIndex {
 				list($rootFileDat) = explode('?', rawurldecode($link_param));
 				$containsSlash = strstr($rootFileDat, '/');
 				$rFD_fI = pathinfo($rootFileDat);
-				if (trim($rootFileDat) && !$containsSlash && (@is_file(PATH_site . $rootFileDat) || \TYPO3\CMS\Core\Utility\GeneralUtility::inList('php,html,htm', strtolower($rFD_fI['extension'])))) {
+				if (trim($rootFileDat) && !$containsSlash && (@is_file(PATH_site . $rootFileDat) || GeneralUtility::inList('php,html,htm', strtolower($rFD_fI['extension'])))) {
 					$isLocalFile = 1;
 				} elseif ($containsSlash) {
 					// Adding this so realurl directories are linked right (non-existing).
@@ -626,7 +629,7 @@ class SoftReferenceIndex {
 					}
 
 					// Splitting the parameter by ',' and if the array counts more than 1 element it's a id/type/? pair
-					$pairParts = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $link_param);
+					$pairParts = GeneralUtility::trimExplode(',', $link_param);
 					if (count($pairParts) > 1) {
 						$link_param = $pairParts[0];
 						$finalTagParts['type'] = $pairParts[1]; // Overruling 'type'
@@ -700,7 +703,7 @@ class SoftReferenceIndex {
 				} elseif (!$tLP['query']) {
 					// We will not process files which has a query added to it. That will look like a script we don't want to move.
 					// File must be inside fileadmin/
-					if (\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($tLP['filepath'], $this->fileAdminDir . '/')) {
+					if (GeneralUtility::isFirstPartOfStr($tLP['filepath'], $this->fileAdminDir . '/')) {
 						// Set up the basic token and token value for the relative file:
 						$elements[$tokenID . ':' . $idx]['subst'] = array(
 							'type' => 'file',
@@ -709,7 +712,7 @@ class SoftReferenceIndex {
 							'tokenValue' => $tLP['filepath']
 						);
 						// Depending on whether the file exists or not we will set the
-						$absPath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName(PATH_site . $tLP['filepath']);
+						$absPath = GeneralUtility::getFileAbsFileName(PATH_site . $tLP['filepath']);
 						if (!@is_file($absPath)) {
 							$elements[$tokenID . ':' . $idx]['error'] = 'File does not exist!';
 						}

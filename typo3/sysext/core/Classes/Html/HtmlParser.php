@@ -26,6 +26,9 @@ namespace TYPO3\CMS\Core\Html;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Contains class with functions for parsing HTML code.
  *
@@ -205,7 +208,7 @@ class HtmlParser {
 	 */
 	static public function substituteMarkerArray($content, $markContentArray, $wrap = '', $uppercase = FALSE, $deleteUnused = FALSE) {
 		if (is_array($markContentArray)) {
-			$wrapArr = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('|', $wrap);
+			$wrapArr = GeneralUtility::trimExplode('|', $wrap);
 			foreach ($markContentArray as $marker => $markContent) {
 				if ($uppercase) {
 					// use strtr instead of strtoupper to avoid locale problems with Turkish
@@ -262,7 +265,7 @@ class HtmlParser {
 	 * @return string The processed output stream
 	 */
 	static public function substituteMarkerAndSubpartArrayRecursive($content, array $markersAndSubparts, $wrap = '', $uppercase = FALSE, $deleteUnused = FALSE) {
-		$wraps = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('|', $wrap);
+		$wraps = GeneralUtility::trimExplode('|', $wrap);
 		$singleItems = array();
 		$compoundItems = array();
 		// Split markers and subparts into separate arrays
@@ -329,7 +332,7 @@ class HtmlParser {
 	 * @todo Define visibility
 	 */
 	public function splitIntoBlock($tag, $content, $eliminateExtraEndTags = FALSE) {
-		$tags = array_unique(\TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $tag, 1));
+		$tags = array_unique(GeneralUtility::trimExplode(',', $tag, 1));
 		foreach ($tags as &$tag) {
 			$tag = preg_quote($tag, '/');
 		}
@@ -435,7 +438,7 @@ class HtmlParser {
 	 * @todo Define visibility
 	 */
 	public function splitTags($tag, $content) {
-		$tags = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $tag, 1);
+		$tags = GeneralUtility::trimExplode(',', $tag, 1);
 		foreach ($tags as &$tag) {
 			$tag = preg_quote($tag, '/');
 		}
@@ -556,7 +559,7 @@ class HtmlParser {
 				if ($val != '=') {
 					if ($valuemode) {
 						if ($name) {
-							$attributes[$name] = $deHSC ? \TYPO3\CMS\Core\Utility\GeneralUtility::htmlspecialchars_decode($val) : $val;
+							$attributes[$name] = $deHSC ? GeneralUtility::htmlspecialchars_decode($val) : $val;
 							$attributesMeta[$name]['dashType'] = $metaC[$key];
 							$name = '';
 						}
@@ -781,7 +784,7 @@ class HtmlParser {
 										$newTagAttrib = array();
 										if (!($tList = $tags[$tagName]['_allowedAttribs'])) {
 											// Just explode attribts for tag once
-											$tList = ($tags[$tagName]['_allowedAttribs'] = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', strtolower($tags[$tagName]['allowedAttribs']), 1));
+											$tList = ($tags[$tagName]['_allowedAttribs'] = GeneralUtility::trimExplode(',', strtolower($tags[$tagName]['allowedAttribs']), 1));
 										}
 										foreach ($tList as $allowTag) {
 											if (isset($tagAttrib[0][$allowTag])) {
@@ -830,7 +833,7 @@ class HtmlParser {
 												// Classes are case sensitive
 												if ($attr == 'class') {
 													$newClasses = array();
-													$classes = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(' ', $tagAttrib[0][$attr], TRUE);
+													$classes = GeneralUtility::trimExplode(' ', $tagAttrib[0][$attr], TRUE);
 													foreach ($classes as $class) {
 														if (in_array($class, $params['list'])) {
 															$newClasses[] = $class;
@@ -855,10 +858,10 @@ class HtmlParser {
 											}
 											if ($params['prefixLocalAnchors']) {
 												if (substr($tagAttrib[0][$attr], 0, 1) == '#') {
-													$prefix = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL');
+													$prefix = GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL');
 													$tagAttrib[0][$attr] = $prefix . $tagAttrib[0][$attr];
-													if ($params['prefixLocalAnchors'] == 2 && \TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($prefix, \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL'))) {
-														$tagAttrib[0][$attr] = substr($tagAttrib[0][$attr], strlen(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL')));
+													if ($params['prefixLocalAnchors'] == 2 && GeneralUtility::isFirstPartOfStr($prefix, GeneralUtility::getIndpEnv('TYPO3_SITE_URL'))) {
+														$tagAttrib[0][$attr] = substr($tagAttrib[0][$attr], strlen(GeneralUtility::getIndpEnv('TYPO3_SITE_URL')));
 													}
 												}
 											}
@@ -870,7 +873,7 @@ class HtmlParser {
 												}
 											}
 											if ($params['userFunc']) {
-												$tagAttrib[0][$attr] = \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($params['userFunc'], $tagAttrib[0][$attr], $this);
+												$tagAttrib[0][$attr] = GeneralUtility::callUserFunction($params['userFunc'], $tagAttrib[0][$attr], $this);
 											}
 										}
 									}
@@ -987,7 +990,7 @@ class HtmlParser {
 		if ($dir == 1) {
 			$value = htmlspecialchars($value);
 		} elseif ($dir == 2) {
-			$value = \TYPO3\CMS\Core\Utility\GeneralUtility::deHSCentities(htmlspecialchars($value));
+			$value = GeneralUtility::deHSCentities(htmlspecialchars($value));
 		} elseif ($dir == -1) {
 			$value = str_replace('&gt;', '>', $value);
 			$value = str_replace('&lt;', '<', $value);
@@ -1180,7 +1183,7 @@ class HtmlParser {
 	 * @todo Define visibility
 	 */
 	public function unprotectTags($content, $tagList = '') {
-		$tagsArray = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $tagList, 1);
+		$tagsArray = GeneralUtility::trimExplode(',', $tagList, 1);
 		$contentParts = explode('&lt;', $content);
 		next($contentParts);
 		// bypass the first
@@ -1220,8 +1223,8 @@ class HtmlParser {
 	 * @todo Define visibility
 	 */
 	public function stripTagsExcept($value, $tagList) {
-		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
-		$tags = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $tagList, 1);
+		GeneralUtility::logDeprecatedFunction();
+		$tags = GeneralUtility::trimExplode(',', $tagList, 1);
 		$forthArr = array();
 		$backArr = array();
 		foreach ($tags as $theTag) {
@@ -1340,7 +1343,7 @@ class HtmlParser {
 	 */
 	public function HTMLparserConfig($TSconfig, $keepTags = array()) {
 		// Allow tags (base list, merged with incoming array)
-		$alTags = array_flip(\TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', strtolower($TSconfig['allowTags']), 1));
+		$alTags = array_flip(GeneralUtility::trimExplode(',', strtolower($TSconfig['allowTags']), 1));
 		$keepTags = array_merge($alTags, $keepTags);
 		// Set config properties.
 		if (is_array($TSconfig['tags.'])) {
@@ -1370,10 +1373,10 @@ class HtmlParser {
 								$keepTags[$key]['fixAttrib'][$atName] = array_merge($keepTags[$key]['fixAttrib'][$atName], $atConfig);
 								// Candidate for \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge() if integer-keys will some day make trouble...
 								if (strcmp($keepTags[$key]['fixAttrib'][$atName]['range'], '')) {
-									$keepTags[$key]['fixAttrib'][$atName]['range'] = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $keepTags[$key]['fixAttrib'][$atName]['range']);
+									$keepTags[$key]['fixAttrib'][$atName]['range'] = GeneralUtility::trimExplode(',', $keepTags[$key]['fixAttrib'][$atName]['range']);
 								}
 								if (strcmp($keepTags[$key]['fixAttrib'][$atName]['list'], '')) {
-									$keepTags[$key]['fixAttrib'][$atName]['list'] = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $keepTags[$key]['fixAttrib'][$atName]['list']);
+									$keepTags[$key]['fixAttrib'][$atName]['list'] = GeneralUtility::trimExplode(',', $keepTags[$key]['fixAttrib'][$atName]['list']);
 								}
 							}
 						}
@@ -1387,7 +1390,7 @@ class HtmlParser {
 		}
 		// LocalNesting
 		if ($TSconfig['localNesting']) {
-			$lN = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', strtolower($TSconfig['localNesting']), 1);
+			$lN = GeneralUtility::trimExplode(',', strtolower($TSconfig['localNesting']), 1);
 			foreach ($lN as $tn) {
 				if (isset($keepTags[$tn])) {
 					$keepTags[$tn]['nesting'] = 1;
@@ -1395,7 +1398,7 @@ class HtmlParser {
 			}
 		}
 		if ($TSconfig['globalNesting']) {
-			$lN = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', strtolower($TSconfig['globalNesting']), 1);
+			$lN = GeneralUtility::trimExplode(',', strtolower($TSconfig['globalNesting']), 1);
 			foreach ($lN as $tn) {
 				if (isset($keepTags[$tn])) {
 					if (!is_array($keepTags[$tn])) {
@@ -1406,7 +1409,7 @@ class HtmlParser {
 			}
 		}
 		if ($TSconfig['rmTagIfNoAttrib']) {
-			$lN = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', strtolower($TSconfig['rmTagIfNoAttrib']), 1);
+			$lN = GeneralUtility::trimExplode(',', strtolower($TSconfig['rmTagIfNoAttrib']), 1);
 			foreach ($lN as $tn) {
 				if (isset($keepTags[$tn])) {
 					if (!is_array($keepTags[$tn])) {
@@ -1417,7 +1420,7 @@ class HtmlParser {
 			}
 		}
 		if ($TSconfig['noAttrib']) {
-			$lN = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', strtolower($TSconfig['noAttrib']), 1);
+			$lN = GeneralUtility::trimExplode(',', strtolower($TSconfig['noAttrib']), 1);
 			foreach ($lN as $tn) {
 				if (isset($keepTags[$tn])) {
 					if (!is_array($keepTags[$tn])) {
@@ -1428,7 +1431,7 @@ class HtmlParser {
 			}
 		}
 		if ($TSconfig['removeTags']) {
-			$lN = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', strtolower($TSconfig['removeTags']), 1);
+			$lN = GeneralUtility::trimExplode(',', strtolower($TSconfig['removeTags']), 1);
 			foreach ($lN as $tn) {
 				$keepTags[$tn] = array();
 				$keepTags[$tn]['allowedAttribs'] = 0;
@@ -1526,7 +1529,7 @@ class HtmlParser {
 				}
 				$newTag = '<' . trim(($tagName . ' ' . implode(' ', $outA)));
 				// All tags that are standalone (not wrapping, not having endtags) should be ended with '/>'
-				if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList('img,br,hr,meta,link,base,area,input,param,col', $tagName) || substr($value, -2) == '/>') {
+				if (GeneralUtility::inList('img,br,hr,meta,link,base,area,input,param,col', $tagName) || substr($value, -2) == '/>') {
 					$newTag .= ' />';
 				} else {
 					$newTag .= '>';

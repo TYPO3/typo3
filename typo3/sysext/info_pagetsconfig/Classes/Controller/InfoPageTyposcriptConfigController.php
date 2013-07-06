@@ -26,14 +26,9 @@ namespace TYPO3\CMS\InfoPagetsconfig\Controller;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-/**
- * Contains class for Page TSconfig wizard
- *
- * Revised for TYPO3 3.7 June/2004 by Kasper Skårhøj
- * XHTML compliant
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- */
+
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+
 /**
  * Page TSconfig viewer
  *
@@ -82,13 +77,13 @@ class InfoPageTyposcriptConfigController extends \TYPO3\CMS\Backend\Module\Abstr
 	 */
 	public function main() {
 		global $LANG;
-		$menu = \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncMenu($this->pObj->id, 'SET[tsconf_parts]', $this->pObj->MOD_SETTINGS['tsconf_parts'], $this->pObj->MOD_MENU['tsconf_parts']);
-		$menu .= '<br /><label for="checkTsconf_alphaSort">' . $GLOBALS['LANG']->getLL('sort_alphabetic', TRUE) . '</label> ' . \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck($this->pObj->id, 'SET[tsconf_alphaSort]', $this->pObj->MOD_SETTINGS['tsconf_alphaSort'], '', '', 'id="checkTsconf_alphaSort"');
+		$menu = BackendUtility::getFuncMenu($this->pObj->id, 'SET[tsconf_parts]', $this->pObj->MOD_SETTINGS['tsconf_parts'], $this->pObj->MOD_MENU['tsconf_parts']);
+		$menu .= '<br /><label for="checkTsconf_alphaSort">' . $GLOBALS['LANG']->getLL('sort_alphabetic', TRUE) . '</label> ' . BackendUtility::getFuncCheck($this->pObj->id, 'SET[tsconf_alphaSort]', $this->pObj->MOD_SETTINGS['tsconf_alphaSort'], '', '', 'id="checkTsconf_alphaSort"');
 		$menu .= '<br /><br />';
 		$theOutput = $this->pObj->doc->header($LANG->getLL('tsconf_title'));
 
 		if ($this->pObj->MOD_SETTINGS['tsconf_parts'] == 99) {
-			$TSparts = \TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig($this->pObj->id, '', 1);
+			$TSparts = BackendUtility::getPagesTSconfig($this->pObj->id, '', 1);
 			$lines = array();
 			$pUids = array();
 			foreach ($TSparts as $k => $v) {
@@ -98,11 +93,11 @@ class InfoPageTyposcriptConfigController extends \TYPO3\CMS\Backend\Module\Abstr
 						$editIcon = '';
 					} else {
 						$pUids[] = substr($k, 4);
-						$row = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('pages', substr($k, 4));
+						$row = BackendUtility::getRecordWSOL('pages', substr($k, 4));
 						$pTitle = $this->pObj->doc->getHeader('pages', $row, '', 0);
 						$editIdList = substr($k, 4);
 						$params = '&edit[pages][' . $editIdList . ']=edit&columnsOnly=TSconfig';
-						$onclickUrl = \TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick($params, $GLOBALS['BACK_PATH'], '');
+						$onclickUrl = BackendUtility::editOnClick($params, $GLOBALS['BACK_PATH'], '');
 						$editIcon = '<a href="#" onclick="' . htmlspecialchars($onclickUrl) . '" title="' . $GLOBALS['LANG']->getLL('editTSconfig', 1) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open') . '</a>';
 					}
 					$TScontent = nl2br(htmlspecialchars(trim($v) . chr(10)));
@@ -118,12 +113,12 @@ class InfoPageTyposcriptConfigController extends \TYPO3\CMS\Backend\Module\Abstr
 			}
 			if (count($pUids)) {
 				$params = '&edit[pages][' . implode(',', $pUids) . ']=edit&columnsOnly=TSconfig';
-				$onclickUrl = \TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick($params, $GLOBALS['BACK_PATH'], '');
+				$onclickUrl = BackendUtility::editOnClick($params, $GLOBALS['BACK_PATH'], '');
 				$editIcon = '<a href="#" onclick="' . htmlspecialchars($onclickUrl) . '" title="' . $GLOBALS['LANG']->getLL('editTSconfig_all', 1) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open') . '<strong>' . $GLOBALS['LANG']->getLL('editTSconfig_all', 1) . '</strong>' . '</a>';
 			} else {
 				$editIcon = '';
 			}
-			$theOutput .= $this->pObj->doc->section('', \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem(('_MOD_' . $GLOBALS['MCONF']['name']), 'tsconfig_edit', $GLOBALS['BACK_PATH'], '|<br />') . $menu . '
+			$theOutput .= $this->pObj->doc->section('', BackendUtility::cshItem(('_MOD_' . $GLOBALS['MCONF']['name']), 'tsconfig_edit', $GLOBALS['BACK_PATH'], '|<br />') . $menu . '
 					<br /><br />
 
 					<!-- Edit fields: -->
@@ -143,46 +138,46 @@ class InfoPageTyposcriptConfigController extends \TYPO3\CMS\Backend\Module\Abstr
 
 			switch ($this->pObj->MOD_SETTINGS['tsconf_parts']) {
 				case '1':
-					$modTSconfig = \TYPO3\CMS\Backend\Utility\BackendUtility::getModTSconfig($this->pObj->id, 'mod');
+					$modTSconfig = BackendUtility::getModTSconfig($this->pObj->id, 'mod');
 					break;
 				case '1a':
-					$modTSconfig = $GLOBALS['BE_USER']->getTSConfig('mod.web_layout', \TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig($this->pObj->id));
+					$modTSconfig = $GLOBALS['BE_USER']->getTSConfig('mod.web_layout', BackendUtility::getPagesTSconfig($this->pObj->id));
 					break;
 				case '1b':
-					$modTSconfig = $GLOBALS['BE_USER']->getTSConfig('mod.web_view', \TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig($this->pObj->id));
+					$modTSconfig = $GLOBALS['BE_USER']->getTSConfig('mod.web_view', BackendUtility::getPagesTSconfig($this->pObj->id));
 					break;
 				case '1c':
-					$modTSconfig = $GLOBALS['BE_USER']->getTSConfig('mod.web_modules', \TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig($this->pObj->id));
+					$modTSconfig = $GLOBALS['BE_USER']->getTSConfig('mod.web_modules', BackendUtility::getPagesTSconfig($this->pObj->id));
 					break;
 				case '1d':
-					$modTSconfig = $GLOBALS['BE_USER']->getTSConfig('mod.web_list', \TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig($this->pObj->id));
+					$modTSconfig = $GLOBALS['BE_USER']->getTSConfig('mod.web_list', BackendUtility::getPagesTSconfig($this->pObj->id));
 					break;
 				case '1e':
-					$modTSconfig = $GLOBALS['BE_USER']->getTSConfig('mod.web_info', \TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig($this->pObj->id));
+					$modTSconfig = $GLOBALS['BE_USER']->getTSConfig('mod.web_info', BackendUtility::getPagesTSconfig($this->pObj->id));
 					break;
 				case '1f':
-					$modTSconfig = $GLOBALS['BE_USER']->getTSConfig('mod.web_func', \TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig($this->pObj->id));
+					$modTSconfig = $GLOBALS['BE_USER']->getTSConfig('mod.web_func', BackendUtility::getPagesTSconfig($this->pObj->id));
 					break;
 				case '1g':
-					$modTSconfig = $GLOBALS['BE_USER']->getTSConfig('mod.web_ts', \TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig($this->pObj->id));
+					$modTSconfig = $GLOBALS['BE_USER']->getTSConfig('mod.web_ts', BackendUtility::getPagesTSconfig($this->pObj->id));
 					break;
 				case '2':
-					$modTSconfig = $GLOBALS['BE_USER']->getTSConfig('RTE', \TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig($this->pObj->id));
+					$modTSconfig = $GLOBALS['BE_USER']->getTSConfig('RTE', BackendUtility::getPagesTSconfig($this->pObj->id));
 					break;
 				case '5':
-					$modTSconfig = $GLOBALS['BE_USER']->getTSConfig('TCEFORM', \TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig($this->pObj->id));
+					$modTSconfig = $GLOBALS['BE_USER']->getTSConfig('TCEFORM', BackendUtility::getPagesTSconfig($this->pObj->id));
 					break;
 				case '6':
-					$modTSconfig = $GLOBALS['BE_USER']->getTSConfig('TCEMAIN', \TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig($this->pObj->id));
+					$modTSconfig = $GLOBALS['BE_USER']->getTSConfig('TCEMAIN', BackendUtility::getPagesTSconfig($this->pObj->id));
 					break;
 				case '3':
-					$modTSconfig = $GLOBALS['BE_USER']->getTSConfig('TSFE', \TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig($this->pObj->id));
+					$modTSconfig = $GLOBALS['BE_USER']->getTSConfig('TSFE', BackendUtility::getPagesTSconfig($this->pObj->id));
 					break;
 				case '4':
-					$modTSconfig = $GLOBALS['BE_USER']->getTSConfig('user', \TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig($this->pObj->id));
+					$modTSconfig = $GLOBALS['BE_USER']->getTSConfig('user', BackendUtility::getPagesTSconfig($this->pObj->id));
 					break;
 				default:
-					$modTSconfig['properties'] = \TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig($this->pObj->id);
+					$modTSconfig['properties'] = BackendUtility::getPagesTSconfig($this->pObj->id);
 			}
 
 			$modTSconfig = $modTSconfig['properties'];
@@ -190,7 +185,7 @@ class InfoPageTyposcriptConfigController extends \TYPO3\CMS\Backend\Module\Abstr
 				$modTSconfig = array();
 			}
 
-			$csh = \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('_MOD_' . $GLOBALS['MCONF']['name'], 'tsconfig_hierarchy', $GLOBALS['BACK_PATH'], '|<br />');
+			$csh = BackendUtility::cshItem('_MOD_' . $GLOBALS['MCONF']['name'], 'tsconfig_hierarchy', $GLOBALS['BACK_PATH'], '|<br />');
 			$tree = $tmpl->ext_getObjTree($modTSconfig, '', '', '', '', $this->pObj->MOD_SETTINGS['tsconf_alphaSort']);
 
 			$theOutput .= $this->pObj->doc->section(
