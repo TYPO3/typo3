@@ -204,23 +204,34 @@ class HtmlParser {
 	 * @see substituteMarker(), substituteMarkerInObject(), TEMPLATE()
 	 */
 	static public function substituteMarkerArray($content, $markContentArray, $wrap = '', $uppercase = FALSE, $deleteUnused = FALSE) {
-		if (is_array($markContentArray)) {
-			$wrapArr = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('|', $wrap);
-			foreach ($markContentArray as $marker => $markContent) {
-				if ($uppercase) {
-					// use strtr instead of strtoupper to avoid locale problems with Turkish
-					$marker = strtr($marker, 'abcdefghijklmnopqrstuvwxyz', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ');
+			if (is_array($markContentArray)) {
+				$wrapArr = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('|', $wrap);
+				foreach ($markContentArray as $marker => $markContent) {
+					if ($uppercase) {
+						// use strtr instead of strtoupper to avoid locale problems with Turkish
+						$marker = strtr($marker, 'abcdefghijklmnopqrstuvwxyz', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ');
+					}
+					if (count($wrapArr) > 0) {
+						$marker = $wrapArr[0] . $marker;
+					}
+					if (count($wrapArr) > 1) {
+						$marker .= $wrapArr[1];
+					}
+					$content = str_replace($marker, $markContent, $content);
 				}
-				if (count($wrapArr) > 0) {
-					$marker = $wrapArr[0] . $marker . $wrapArr[1];
-				}
-				$content = str_replace($marker, $markContent, $content);
-			}
 			if ($deleteUnused) {
 				if (empty($wrap)) {
 					$wrapArr = array('###', '###');
 				}
-				$content = preg_replace('/' . preg_quote($wrapArr[0], '/') . '([A-Z0-9_|\\-]*)' . preg_quote($wrapArr[1], '/') . '/is', '', $content);
+				$pattern = '';
+				if (count($wrapArr) > 0) {
+					$pattern .= '/' . preg_quote($wrapArr[0]) . '([A-Z0-9_|\-]*)';
+				}
+				if (count($wrapArr) > 1) {
+					$pattern .= preg_quote($wrapArr[1]);
+				}
+				$pattern .= '/is';
+				$content = preg_replace($pattern, '', $content);
 			}
 		}
 		return $content;
