@@ -1457,13 +1457,15 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 				list($userHomeStorageUid, $userHomeFilter) = explode(':', $GLOBALS['TYPO3_CONF_VARS']['BE']['userHomePath'], 2);
 				$userHomeStorageUid = intval($userHomeStorageUid);
 				if ($userHomeStorageUid > 0) {
+					/** @var \TYPO3\CMS\Core\Resource\ResourceStorage $storageObject */
 					$storageObject = $storageRepository->findByUid($userHomeStorageUid);
 					// First try and mount with [uid]_[username]
 					$userHomeFilterIdentifier = $userHomeFilter . $this->user['uid'] . '_' . $this->user['username'] . $GLOBALS['TYPO3_CONF_VARS']['BE']['userUploadDir'];
-					$didMount = $storageObject->addFileMount($userHomeFilterIdentifier);
-					// If that failed, try and mount with only [uid]
-					if (!$didMount) {
-						$userHomeFilterIdentifier = $userHomeFilter . $this->user['uid'] . '_' . $this->user['username'] . $GLOBALS['TYPO3_CONF_VARS']['BE']['userUploadDir'];
+					if ($storageObject->hasFolder($userHomeFilterIdentifier)) {
+						$storageObject->addFileMount($userHomeFilterIdentifier);
+					}
+					$userHomeFilterIdentifier = $userHomeFilter . $this->user['uid'] . $GLOBALS['TYPO3_CONF_VARS']['BE']['userUploadDir'];
+					if ($storageObject->hasFolder($userHomeFilterIdentifier)) {
 						$storageObject->addFileMount($userHomeFilterIdentifier);
 					}
 					$this->fileStorages[$storageObject->getUid()] = $storageObject;
@@ -1478,7 +1480,9 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 					$storageObject = $storageRepository->findByUid($groupHomeStorageUid);
 					foreach ($this->userGroups as $groupUid => $groupData) {
 						$groupHomeFilterIdentifier = $groupHomeFilter . $groupData['uid'];
-						$storageObject->addFileMount($groupHomeFilterIdentifier);
+						if ($storageObject->hasFolder($groupHomeFilterIdentifier)) {
+							$storageObject->addFileMount($groupHomeFilterIdentifier);
+						}
 					}
 					$this->fileStorages[$storageObject->getUid()] = $storageObject;
 				}
