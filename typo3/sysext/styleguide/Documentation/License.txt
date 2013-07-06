@@ -1,0 +1,11 @@
+	TYPO3.CMS.Styleguide
+==================================
+
+Icons
+	Icon by Yusuke Kamiyamane - http://p.yusukekamiyamane.com/
+
+Html
+	Examples by Zurb Foundation - http://foundation.zurb.com/docs/
+
+Text
+	Text by Bacon Ipsum - http://baconipsum.com/
