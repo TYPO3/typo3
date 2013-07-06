@@ -77,4 +77,39 @@ $(document).ready(function() {
 			socketField.parent().fadeOut();
 		}
 	}).trigger('change');
+
+	$('#checkExtensions .typo3-message').hide();
+	$('#checkExtensions button').click(function(){
+		var url = location.href + '&install[action]=loadExtensions';
+		$.ajax({
+			url: url,
+			success: function(data) {
+				if (data === 'OK') {
+					$('#checkExtensions .message-error').hide();
+					$('#checkExtensions .message-ok').show();
+					$('#checkExtensions button').hide();
+				} else {
+					// workaround for xdebug returning 200 OK on fatal errors
+					handleCheckExtensionsError();
+				}
+			},
+			error: function(data) {
+				handleCheckExtensionsError();
+			}
+		});
+		return false;
+	});
 });
+
+function handleCheckExtensionsError() {
+	$.ajax({
+		url: $('#checkExtensions').data('protocolurl'),
+		success: function(data) {
+			$('#checkExtensions .message-error .message-body').html('The extension "' + data + '" is not compatible. Please uninstall it and try again.');
+			$('#checkExtensions .message-error').show();
+		},
+		error: function(data) {
+			$('#checkExtensions .message-error').show();
+		}
+	})
+}
