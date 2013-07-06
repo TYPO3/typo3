@@ -756,6 +756,7 @@ tt_content.image.20 {
 		emptyTitleHandling = {$styles.content.imgtext.emptyTitleHandling}
 		titleInLink = {$styles.content.imgtext.titleInLink}
 		titleInLinkAndImg = {$styles.content.imgtext.titleInLinkAndImg}
+		renderDimensions = {$styles.content.imgtext.renderDimensions}
 	}
 
 	textPos.field = imageorient

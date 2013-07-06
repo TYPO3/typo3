@@ -142,8 +142,12 @@ class ImageViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedV
 			$this->resetFrontendEnvironment();
 		}
 		$this->tag->addAttribute('src', $imageSource);
-		$this->tag->addAttribute('width', $imageInfo[0]);
-		$this->tag->addAttribute('height', $imageInfo[1]);
+
+		if (TYPO3_MODE === 'BE' &&  $GLOBALS['TSFE']->tmpl->setup['tt_content.']['image.']['20.']['1.']['renderDimensions'] == 1) {
+			$this->tag->addAttribute('width', $imageInfo[0]);
+			$this->tag->addAttribute('height', $imageInfo[1]);
+		}
+
 		//the alt-attribute is mandatory to have valid html-code, therefore add it even if it is empty
 		if (empty($this->arguments['alt'])) {
 			$this->tag->addAttribute('alt', '');
