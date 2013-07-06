@@ -87,7 +87,17 @@ class RteMagicImagesUpdateWizard extends \TYPO3\CMS\Install\Updates\AbstractUpda
 	 * @return boolean TRUE if an update is needed, FALSE otherwise
 	 */
 	public function checkForUpdate(&$description) {
-		$description = 'This update wizard goes through all magic images, located in ' . \TYPO3\CMS\Core\Utility\PathUtility::dirname($this->oldPrefix) . '., and moves the files to fileadmin/_migrated/RTE/.<br />It also moves the files from uploads/ to the fileadmin/_migrated/ path.';
+		$description = 'This update wizard goes through all magic images, located in ' . \TYPO3\CMS\Core\Utility\PathUtility::dirname($this->oldPrefix) . '., and moves the files to fileadmin/_migrated/RTE/.';
+		$description .= '<br />It also moves the files from uploads/ to the fileadmin/_migrated/ path.';
+		// Issue warning about sys_refindex needing to be up to date
+		/** @var \TYPO3\CMS\Core\Messaging\FlashMessage $message */
+		$message = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+			'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
+			'This script bases itself on the references contained in the general reference index (sys_refindex). It is strongly advised to update it before running this wizard.',
+			'Updating the reference index',
+			\TYPO3\CMS\Core\Messaging\FlashMessage::WARNING
+		);
+		$description .= $message->render();
 
 		// wizard is only available if oldPrefix set
 		if ($this->oldPrefix) {
