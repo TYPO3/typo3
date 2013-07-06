@@ -117,6 +117,10 @@ if (isset($getPost['controller']) && $getPost['controller'] === 'tool') {
 	$controller = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
 		'TYPO3\\CMS\\Install\\Controller\\ToolController'
 	);
+} else if ($getPost['controller'] === 'ajax') {
+	$controller = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+		'TYPO3\CMS\install\Controller\AjaxController'
+	);
 } else {
 	$controller = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
 		'TYPO3\CMS\install\Controller\StepController'
