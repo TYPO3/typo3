@@ -83,7 +83,8 @@ class ImportantActions extends Action\AbstractAction implements Action\ActionInt
 			->assign('databaseHost', $GLOBALS['TYPO3_CONF_VARS']['DB']['host'])
 			->assign('databasePort', $GLOBALS['TYPO3_CONF_VARS']['DB']['port'])
 			->assign('databaseSocket', $GLOBALS['TYPO3_CONF_VARS']['DB']['socket'])
-			->assign('databaseNumberOfTables', count($this->getDatabase()->admin_get_tables()));
+			->assign('databaseNumberOfTables', count($this->getDatabase()->admin_get_tables()))
+			->assign('loadExtensionsProtocolFile', GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . 'typo3/sysext/install/Resources/Public/LoadExtensions.txt');
 
 		return $this->view->render();
 	}
