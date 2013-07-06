@@ -1758,8 +1758,13 @@ function ' . $evalData . '(value) {
 			$authModeDeny = $config['form_type'] == 'select' && $config['authMode'] && !$GLOBALS['BE_USER']->checkAuthMode($table, $field, $p[1], $config['authMode']);
 			if (in_array($p[1], $removeItems) || $languageDeny || $authModeDeny) {
 				unset($selItems[$tk]);
-			} elseif (isset($PA['fieldTSConfig']['altLabels.'][$p[1]])) {
-				$selItems[$tk][0] = htmlspecialchars($this->sL($PA['fieldTSConfig']['altLabels.'][$p[1]]));
+			} else {
+				if (isset($PA['fieldTSConfig']['altLabels.'][$p[1]])) {
+					$selItems[$tk][0] = htmlspecialchars($this->sL($PA['fieldTSConfig']['altLabels.'][$p[1]]));
+				}
+				if (isset($PA['fieldTSConfig']['altIcons.'][$p[1]])) {
+					$selItems[$tk][2] = $PA['fieldTSConfig']['altIcons.'][$p[1]];
+				}
 			}
 			// Removing doktypes with no access:
 			if (($table === 'pages' || $table === 'pages_language_overlay') && $field === 'doktype') {
@@ -4594,17 +4599,31 @@ function ' . $evalData . '(value) {
 	}
 
 	/**
-	 * Merges items into an item-array
+	 * Merges items into an item-array, optionally with an icon
+	 * example:
+	 * TCEFORM.pages.doktype.addItems.13 = My Label
+	 * TCEFORM.pages.doktype.addItems.13.icon = sysext/t3skin/icons/gfx/i/pages.gif (relative to the typo3/ directory)
 	 *
 	 * @param array $items The existing item array
-	 * @param array $iArray An array of items to add. NOTICE: The keys are mapped to values, and the values and mapped to be labels. No possibility of adding an icon.
+	 * @param array $iArray An array of items to add. NOTICE: The keys are mapped to values, and the values and mapped to be labels. If the key also contains (TSconfig syntax-style) an array with a dot at the end ("13." for the 13 as key/value), it is checked if an optional icon is given
 	 * @return array The updated $item array
 	 * @todo Define visibility
 	 */
 	public function addItems($items, $iArray) {
 		if (is_array($iArray)) {
 			foreach ($iArray as $value => $label) {
-				$items[] = array($this->sl($label), $value);
+				// if the label is an array (that means it is a subelement
+				// like "34.icon = mylabel.png", skip it (see its usage below)
+				if (is_array($label)) {
+					continue;
+				}
+				// check if the value "34 = mylabel" also has a "34.icon = myimage.png"
+				if (isset($iArray[$value . '.']) && $iArray[$value . '.']['icon']) {
+					$icon = $iArray[$value . '.']['icon'];
+				} else {
+					$icon = '';
+				}
+				$items[] = array($this->sl($label), $value, $icon);
 			}
 		}
 		return $items;

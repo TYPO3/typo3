@@ -1523,8 +1523,13 @@ class InlineElement {
 				$authModeDeny = $config['form_type'] == 'select' && $config['authMode'] && !$GLOBALS['BE_USER']->checkAuthMode($table, $field, $p[1], $config['authMode']);
 				if (in_array($p[1], $removeItems) || $languageDeny || $authModeDeny) {
 					unset($selItems[$tk]);
-				} elseif (isset($PA['fieldTSConfig']['altLabels.'][$p[1]])) {
-					$selItems[$tk][0] = htmlspecialchars($this->fObj->sL($PA['fieldTSConfig']['altLabels.'][$p[1]]));
+				} else {
+					if (isset($PA['fieldTSConfig']['altLabels.'][$p[1]])) {
+						$selItems[$tk][0] = htmlspecialchars($this->fObj->sL($PA['fieldTSConfig']['altLabels.'][$p[1]]));
+					}
+					if (isset($PA['fieldTSConfig']['altIcons.'][$p[1]])) {
+						$selItems[$tk][2] = $PA['fieldTSConfig']['altIcons.'][$p[1]];
+					}
 				}
 				// Removing doktypes with no access:
 				if (($table === 'pages' || $table === 'pages_language_overlay') && $field === 'doktype') {
