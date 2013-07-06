@@ -16,7 +16,7 @@ services:
 
 before_script:
 # Install build dependencies
-  - git clone git://github.com/typo3-ci/TYPO3-Travis-Integration.git -b TYPO3_4-7 build-environment
+  - git clone --single-branch --branch TYPO3_4-7 --depth 1 git://github.com/typo3-ci/TYPO3-Travis-Integration.git build-environment
   - source build-environment/install-helper.sh
   - installPhpModule igbinary
 # Disable memcache tests for now
@@ -25,9 +25,9 @@ before_script:
   - if [[ "$TRAVIS_PHP_VERSION" == "5.3" ]]; then installPhpModule -y apc; fi
 
 # Install rudimentary TYPO3
-  - git clone git://git.typo3.org/TYPO3v4/Distributions/Introduction.git build-environment/Introduction
+  - git clone --single-branch --branch master --depth 1 git://git.typo3.org/TYPO3v4/Distributions/Introduction.git build-environment/Introduction
   - mv build-environment/typo3conf .
-  - git clone git://git.typo3.org/TYPO3v4/Extensions/phpunit.git typo3conf/ext/phpunit/
+  - git clone --single-branch --branch master --depth 1 git://git.typo3.org/TYPO3v4/Extensions/phpunit.git typo3conf/ext/phpunit/
   - mkdir fileadmin
   - ln -s $PWD typo3_src
   - if [[ "$DB" == "mysql" ]]; then mysql -e "DROP DATABASE IF EXISTS typo3_test;" -uroot; fi
