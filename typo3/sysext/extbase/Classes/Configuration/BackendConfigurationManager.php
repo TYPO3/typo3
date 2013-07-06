@@ -33,12 +33,18 @@ namespace TYPO3\CMS\Extbase\Configuration;
 class BackendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\AbstractConfigurationManager {
 
 	/**
-	 * Needed to recursively fetch a page tree
-	 *
-	 * @var \TYPO3\CMS\Core\Database\QueryGenerator
-	 * @inject
+	 * @var \TYPO3\CMS\Core\Database\QueryGenerator Needed to recursively fetch a page tree
 	 */
 	protected $queryGenerator;
+
+	/**
+	 * Inject query generator
+	 *
+	 * @param \TYPO3\CMS\Core\Database\QueryGenerator $queryGenerator
+	 */
+	public function injectQueryGenerator(\TYPO3\CMS\Core\Database\QueryGenerator $queryGenerator) {
+		$this->queryGenerator = $queryGenerator;
+	}
 
 	/**
 	 * @var array

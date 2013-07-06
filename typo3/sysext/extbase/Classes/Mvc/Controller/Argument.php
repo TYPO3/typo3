@@ -36,25 +36,21 @@ class Argument {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
-	 * @inject
 	 */
 	protected $objectManager;
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\QueryFactory
-	 * @inject
 	 */
 	protected $queryFactory;
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
-	 * @inject
 	 */
 	protected $configurationManager;
 
 	/**
 	 * This is the old property mapper, which has been completely rewritten for 1.4.
-	 * @inject
 	 *
 	 * @var \TYPO3\CMS\Extbase\Property\Mapper
 	 */
@@ -64,13 +60,11 @@ class Argument {
 	 * The new, completely rewritten property mapper since Extbase 1.4.
 	 *
 	 * @var \TYPO3\CMS\Extbase\Property\PropertyMapper
-	 * @inject
 	 */
 	protected $propertyMapper;
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Mvc\Controller\MvcPropertyMappingConfiguration
-	 * @inject
 	 */
 	protected $propertyMappingConfiguration;
 
@@ -170,7 +164,6 @@ class Argument {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface
-	 * @inject
 	 */
 	protected $persistenceManager;
 
@@ -194,6 +187,32 @@ class Argument {
 	}
 
 	/**
+	 * Injects the object manager
+	 *
+	 * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
+	 * @return void
+	 */
+	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager) {
+		$this->objectManager = $objectManager;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Extbase\Property\Mapper $deprecatedPropertyMapper
+	 * @return void
+	 */
+	public function injectDeprecatedPropertyMapper(\TYPO3\CMS\Extbase\Property\Mapper $deprecatedPropertyMapper) {
+		$this->deprecatedPropertyMapper = $deprecatedPropertyMapper;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Extbase\Property\PropertyMapper $propertyMapper
+	 * @return void
+	 */
+	public function injectPropertyMapper(\TYPO3\CMS\Extbase\Property\PropertyMapper $propertyMapper) {
+		$this->propertyMapper = $propertyMapper;
+	}
+
+	/**
 	 * @param \TYPO3\CMS\Extbase\Reflection\ReflectionService $reflectionService
 	 * @return void
 	 */
@@ -204,12 +223,48 @@ class Argument {
 	}
 
 	/**
+	 * Injects the Persistence Manager
+	 *
+	 * @param \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface $persistenceManager
+	 * @return void
+	 */
+	public function injectPersistenceManager(\TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface $persistenceManager) {
+		$this->persistenceManager = $persistenceManager;
+	}
+
+	/**
+	 * Injects a QueryFactory instance
+	 *
+	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\QueryFactoryInterface $queryFactory
+	 * @return void
+	 */
+	public function injectQueryFactory(\TYPO3\CMS\Extbase\Persistence\Generic\QueryFactoryInterface $queryFactory) {
+		$this->queryFactory = $queryFactory;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
+	 * @return void
+	 */
+	public function injectConfigurationManager(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager) {
+		$this->configurationManager = $configurationManager;
+	}
+
+	/**
 	 * @param \TYPO3\CMS\Extbase\Service\TypeHandlingService $typeHandlingService
 	 * @return void
 	 */
 	public function injectTypeHandlingService(\TYPO3\CMS\Extbase\Service\TypeHandlingService $typeHandlingService) {
 		$this->typeHandlingService = $typeHandlingService;
 		$this->dataType = $this->typeHandlingService->normalizeType($this->dataType);
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Extbase\Mvc\Controller\MvcPropertyMappingConfiguration $mvcPropertyMappingConfiguration
+	 * @return void
+	 */
+	public function injectPropertyMappingConfiguration(\TYPO3\CMS\Extbase\Mvc\Controller\MvcPropertyMappingConfiguration $mvcPropertyMappingConfiguration) {
+		$this->propertyMappingConfiguration = $mvcPropertyMappingConfiguration;
 	}
 
 	/**

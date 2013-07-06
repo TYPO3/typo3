@@ -33,7 +33,6 @@ class CommandManager implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
-	 * @inject
 	 */
 	protected $objectManager;
 
@@ -46,6 +45,14 @@ class CommandManager implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @var array
 	 */
 	protected $shortCommandIdentifiers = NULL;
+
+	/**
+	 * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager A reference to the object manager
+	 * @return void
+	 */
+	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager) {
+		$this->objectManager = $objectManager;
+	}
 
 	/**
 	 * Returns an array of all commands

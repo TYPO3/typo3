@@ -36,7 +36,6 @@ class HelpCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\CommandCon
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Mvc\Cli\CommandManager
-	 * @inject
 	 */
 	protected $commandManager;
 
@@ -44,6 +43,14 @@ class HelpCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\CommandCon
 	 * @var array
 	 */
 	protected $commandsByExtensionsAndControllers = array();
+
+	/**
+	 * @param \TYPO3\CMS\Extbase\Mvc\Cli\CommandManager $commandManager
+	 * @return void
+	 */
+	public function injectCommandManager(\TYPO3\CMS\Extbase\Mvc\Cli\CommandManager $commandManager) {
+		$this->commandManager = $commandManager;
+	}
 
 	/**
 	 * Displays a short, general help message

@@ -60,7 +60,6 @@ class Session implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Reflection\ReflectionService
-	 * @inject
 	 */
 	protected $reflectionService;
 
@@ -70,6 +69,16 @@ class Session implements \TYPO3\CMS\Core\SingletonInterface {
 	public function __construct() {
 		$this->reconstitutedEntities = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
 		$this->objectMap = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+	}
+
+	/**
+	 * Injects a Reflection Service instance
+	 *
+	 * @param \TYPO3\CMS\Extbase\Reflection\ReflectionService $reflectionService
+	 * @return void
+	 */
+	public function injectReflectionService(\TYPO3\CMS\Extbase\Reflection\ReflectionService $reflectionService) {
+		$this->reflectionService = $reflectionService;
 	}
 
 	/**

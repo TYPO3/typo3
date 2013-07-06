@@ -336,7 +336,7 @@ class Typo3DbBackendTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 		/** @var $mockTypo3DbBackend \TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbBackend | \PHPUnit_Framework_MockObject_MockObject */
 		$mockTypo3DbBackend = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Storage\\Typo3DbBackend', array('dummy'), array(), '', FALSE);
-		$mockTypo3DbBackend->_set('environmentService', $mockEnvironmentService);
+		$mockTypo3DbBackend->injectEnvironmentService($mockEnvironmentService);
 		$mockTypo3DbBackend->_callRef('addVisibilityConstraintStatement', $mockQuerySettings, $tableName, $sql);
 		$this->assertSame($expectedSql, $sql['additionalWhereClause']);
 		unset($GLOBALS['TCA'][$tableName]);
@@ -377,7 +377,7 @@ class Typo3DbBackendTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 		/** @var $mockTypo3DbBackend \TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbBackend | \PHPUnit_Framework_MockObject_MockObject */
 		$mockTypo3DbBackend = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Storage\\Typo3DbBackend', array('dummy'), array(), '', FALSE);
-		$mockTypo3DbBackend->_set('environmentService', $mockEnvironmentService);
+		$mockTypo3DbBackend->injectEnvironmentService($mockEnvironmentService);
 		$mockTypo3DbBackend->_callRef('addVisibilityConstraintStatement', $mockQuerySettings, $tableName, $sql);
 		$this->assertSame($expectedSql, $sql['additionalWhereClause']);
 		unset($GLOBALS['TCA'][$tableName]);
@@ -407,7 +407,7 @@ class Typo3DbBackendTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 		/** @var $mockTypo3DbBackend \TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbBackend | \PHPUnit_Framework_MockObject_MockObject */
 		$mockTypo3DbBackend = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Storage\\Typo3DbBackend', array('dummy'), array(), '', FALSE);
-		$mockTypo3DbBackend->_set('environmentService', $mockEnvironmentService);
+		$mockTypo3DbBackend->injectEnvironmentService($mockEnvironmentService);
 		$mockTypo3DbBackend->_callRef('addVisibilityConstraintStatement', $mockQuerySettings, $tableName, $sql);
 		unset($GLOBALS['TCA'][$tableName]);
 	}

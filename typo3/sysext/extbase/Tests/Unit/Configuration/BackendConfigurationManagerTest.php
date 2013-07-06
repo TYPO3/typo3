@@ -52,7 +52,7 @@ class BackendConfigurationManagerTest extends \TYPO3\CMS\Extbase\Tests\Unit\Base
 		$GLOBALS['TYPO3_DB'] = $this->getMock('TYPO3\\CMS\\Core\\Database\\DatabaseConnection', array());
 		$this->backendConfigurationManager = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Configuration\\BackendConfigurationManager', array('getTypoScriptSetup'));
 		$this->mockTypoScriptService = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Service\\TypoScriptService');
-		$this->backendConfigurationManager->_set('typoScriptService', $this->mockTypoScriptService);
+		$this->backendConfigurationManager->injectTypoScriptService($this->mockTypoScriptService);
 	}
 
 	/**
@@ -351,7 +351,7 @@ class BackendConfigurationManagerTest extends \TYPO3\CMS\Extbase\Tests\Unit\Base
 		$queryGenerator->expects($this->any())
 			->method('getTreeList')
 			->will($this->onConsecutiveCalls('1,4', '2', '3,5,6'));
-		$abstractConfigurationManager->_set('queryGenerator', $queryGenerator);
+		$abstractConfigurationManager->injectQueryGenerator($queryGenerator);
 
 		$expectedResult = '1,4,2,3,5,6';
 		$actualResult = $abstractConfigurationManager->_call('getRecursiveStoragePids', $storagePid, $recursive);
@@ -368,7 +368,7 @@ class BackendConfigurationManagerTest extends \TYPO3\CMS\Extbase\Tests\Unit\Base
 
 		$queryGenerator = $this->getMock('TYPO3\\CMS\\Core\\Database\\QueryGenerator');
 		$queryGenerator->expects($this->never())->method('getTreeList');
-		$abstractConfigurationManager->_set('queryGenerator', $queryGenerator);
+		$abstractConfigurationManager->injectQueryGenerator($queryGenerator);
 
 		$expectedResult = '1,2,3';
 		$actualResult = $abstractConfigurationManager->_call('getRecursiveStoragePids', $storagePid);
@@ -386,7 +386,7 @@ class BackendConfigurationManagerTest extends \TYPO3\CMS\Extbase\Tests\Unit\Base
 
 		$queryGenerator = $this->getMock('TYPO3\\CMS\\Core\\Database\\QueryGenerator');
 		$queryGenerator->expects($this->never())->method('getTreeList');
-		$abstractConfigurationManager->_set('queryGenerator', $queryGenerator);
+		$abstractConfigurationManager->injectQueryGenerator($queryGenerator);
 
 		$expectedResult = '1,2,3';
 		$actualResult = $abstractConfigurationManager->_call('getRecursiveStoragePids', $storagePid, $recursive);
