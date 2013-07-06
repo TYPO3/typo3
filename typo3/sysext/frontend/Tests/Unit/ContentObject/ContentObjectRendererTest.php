@@ -1853,6 +1853,57 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 		$this->assertEquals($expectedResult, $cleanedResult);
 	}
+
+	/**
+	 *
+	 */
+	public function getImageTagTemplateFallsBackToDefaultTemplateIfNoTemplateIsFoundDataProvider() {
+		return array(
+			array( null, null ),
+			array( '', null ),
+			array( '', array()  ),
+			array( 'fooo', array('foo'=>'bar'))
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider getImageTagTemplateFallsBackToDefaultTemplateIfNoTemplateIsFoundDataProvider
+	 * @param string $key
+	 * @param array $configuration
+	 */
+	public function getImageTagTemplateFallsBackToDefaultTemplateIfNoTemplateIsFound($key, $configuration) {
+		$defaultImgTagTemplate = '<img src="###SRC###" width="###WIDTH###" height="###HEIGHT###" ###PARAMS### ###ALTPARAMS### ###BORDER### />';
+		$result = $this->cObj->getImageTagTemplate($key, $configuration);
+		$this->assertEquals($result, $defaultImgTagTemplate);
+	}
+
+	/**
+	 *
+	 */
+	public function getImageTagTemplateReturnTemplateElementIdentifiedByKeyDataProvider() {
+		return array(
+			array(
+				'foo',
+				array('foo.' => array('element' => '<img src="###SRC###" srcset="###SOURCES###" ###PARAMS### ###ALTPARAMS### />')),
+				'<img src="###SRC###" srcset="###SOURCES###" ###PARAMS### ###ALTPARAMS### />'
+			)
+
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider getImageTagTemplateReturnTemplateElementIdentifiedByKeyDataProvider
+	 * @param string $key
+	 * @param array $configuration
+	 * @param string $expectation
+	 */
+	public function getImageTagTemplateReturnTemplateElementIdentifiedByKey($key, $configuration, $expectation){
+		$result = $this->cObj->getImageTagTemplate($key, $configuration);
+		$this->assertEquals($result, $expectation);
+	}
+
 }
 
 ?>
