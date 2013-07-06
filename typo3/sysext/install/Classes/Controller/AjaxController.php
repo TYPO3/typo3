@@ -4,7 +4,7 @@ namespace TYPO3\CMS\Install\Controller;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013 Christian Kuhn <lolli@schwarzbu.ch>
+ *  (c) 2013 Susanne Moog <typo3@susannemoog.de>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -28,71 +28,102 @@ namespace TYPO3\CMS\Install\Controller;
  ***************************************************************/
 
 /**
- * Install tool controller, dispatcher class of the install tool.
+ * Install tool ajax controller, handles ajax requests
  *
- * Handles install tool session, login and login form rendering,
- * calls actions that need authentication and handles form tokens.
  */
-class ToolController extends AbstractController {
+class AjaxController extends AbstractController {
+
+	/**
+	 * @var string
+	 */
+	protected $unauthorized = 'unauthorized';
 
 	/**
 	 * @var array List of valid action names that need authentication
 	 */
 	protected $authenticationActions = array(
-		'welcome',
-		'importantActions',
-		'systemEnvironment',
-		'folderStructure',
-		'testSetup',
-		'updateWizard',
-		'allConfiguration',
-		'cleanUp',
+		'extensionCompatibilityTester'
 	);
 
 	/**
-	 * Main dispatch method
+	 * Main entry point
 	 *
 	 * @return void
 	 */
 	public function execute() {
 		$this->loadBaseExtensions();
 		$this->initializeObjectManager();
-
 		// Warning: Order of these methods is security relevant and interferes with different access
 		// conditions (new/existing installation). See the single method comments for details.
-		$this->outputInstallToolNotEnabledMessageIfNeeded();
-		$this->outputInstallToolPasswordNotSetMessageIfNeeded();
+		$this->checkInstallToolEnabled();
+		$this->checkInstallToolPasswordNotSet();
 		$this->initializeSession();
 		$this->checkSessionToken();
 		$this->checkSessionLifetime();
-		$this->logoutIfRequested();
-		$this->loginIfRequested();
-		$this->outputLoginFormIfNotAuthorized();
+		$this->checkLogin();
 		$this->dispatchAuthenticationActions();
 	}
 
 	/**
-	 * Logout user if requested
+	 * Check whether the install tool is enabled
 	 *
 	 * @return void
 	 */
-	protected function logoutIfRequested() {
-		$action = $this->getAction();
-		if ($action === 'logout') {
-			// @TODO: This and similar code in step action DefaultConfiguration should be moved to enable install file service
-			$enableInstallToolFile = PATH_typo3conf . 'ENABLE_INSTALL_TOOL';
-			if (is_file($enableInstallToolFile) && trim(file_get_contents($enableInstallToolFile)) !== 'KEEP_FILE') {
-				unlink($enableInstallToolFile);
+	protected function checkInstallToolEnabled() {
+		if (is_dir(PATH_typo3conf)) {
+			/** @var \TYPO3\CMS\Install\Service\EnableFileService $installToolEnableService */
+			$installToolEnableService = $this->objectManager->get('TYPO3\\CMS\\Install\\Service\\EnableFileService');
+			if (!$installToolEnableService->checkInstallToolEnableFile()) {
+				$this->output($this->unauthorized);
 			}
-
-			/** @var $formProtection \TYPO3\CMS\Core\FormProtection\InstallToolFormProtection */
-			$formProtection = \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get(
-				'TYPO3\\CMS\\Core\\FormProtection\\InstallToolFormProtection'
-			);
-			$formProtection->clean();
-			$this->session->destroySession();
-			$this->redirect();
 		}
+	}
+
+	/**
+	 * Check if the install tool password is set
+	 *
+	 * @return void
+	 */
+	protected function checkInstallToolPasswordNotSet() {
+		if (empty($GLOBALS['TYPO3_CONF_VARS']['BE']['installToolPassword'])) {
+			$this->output($this->unauthorized);
+		}
+	}
+
+	/**
+	 * Check login status
+	 *
+	 * @return void
+	 */
+	protected function checkLogin() {
+		if (!$this->session->isAuthorized()) {
+			$this->output($this->unauthorized);
+		} else {
+			$this->session->refreshSession();
+		}
+	}
+
+	/**
+	 * Overwrites abstract method
+	 * In contrast to abstract method, a response "you are not authorized is outputted"
+	 *
+	 * @param boolean $tokenOk
+	 * @return void
+	 */
+	protected function handleSessionTokenCheck($tokenOk) {
+		if (!$tokenOk) {
+			$this->output($this->unauthorized);
+		}
+	}
+
+	/**
+	 * Overwrites abstract method
+	 * In contrast to abstract method, a response "you are not authorized is outputted"
+	 *
+	 * @return void
+	 */
+	protected function handleSessionLifeTimeExpired() {
+		$this->output($this->unauthorized);
 	}
 
 	/**
@@ -104,24 +135,37 @@ class ToolController extends AbstractController {
 	protected function dispatchAuthenticationActions() {
 		$action = $this->getAction();
 		if ($action === '') {
-			$action = 'welcome';
+			$this->output('noAction');
 		}
 		$this->validateAuthenticationAction($action);
 		$actionClass = ucfirst($action);
 		/** @var \TYPO3\CMS\Install\Controller\Action\ActionInterface $toolAction */
-		$toolAction = $this->objectManager->get('TYPO3\\CMS\\Install\\Controller\\Action\\Tool\\' . $actionClass);
+		$toolAction = $this->objectManager->get('TYPO3\\CMS\\Install\\Controller\\Action\\Ajax\\' . $actionClass);
 		if (!($toolAction instanceof \TYPO3\CMS\Install\Controller\Action\ActionInterface)) {
 			throw new Exception(
 				$action . ' does not implement ActionInterface',
 				1369474308
 			);
 		}
-		$toolAction->setController('tool');
+		$toolAction->setController('ajax');
 		$toolAction->setAction($action);
 		$toolAction->setToken($this->generateTokenForAction($action));
 		$toolAction->setPostValues($this->getPostValues());
 		$this->output($toolAction->handle());
 	}
-}
 
+	/**
+	 * Output content.
+	 * WARNING: This exits the script execution!
+	 *
+	 * @param string $content Content to output
+	 */
+	protected function output($content = '') {
+		header('Content-Type: text/html; charset=utf-8');
+		header('Cache-Control: no-cache, must-revalidate');
+		header('Pragma: no-cache');
+		echo $content;
+		die;
+	}
+}
 ?>
