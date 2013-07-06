@@ -465,12 +465,18 @@ h1,
 	background-color: #ffffff;
 }
 
+#systemInformation {
+	overflow: hidden;
+}
+
 #systemInformation dt {
 	float: left;
 	width: 11em;
+	clear: left;
 }
 
 #systemInformation dd {
+	float: left;
 	padding-left: 11em;
 	font-weight: bold;
 }
