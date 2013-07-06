@@ -60,17 +60,17 @@ class QueryFactoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	protected function setUp() {
 		$this->dataMap = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Mapper\\DataMap', array('getIsStatic', 'getRootLevel'), array('Vendor\\Ext\\Domain\\Model\\ClubMate', 'tx_ext_domain_model_clubmate'));
 
-		$this->queryFactory = new \TYPO3\CMS\Extbase\Persistence\Generic\QueryFactory();
-		$this->queryFactory->injectConfigurationManager(
+		$this->queryFactory = $this->getAccessibleMock('TYPO3\CMS\Extbase\Persistence\Generic\QueryFactory', array('dummy'));
+		$this->queryFactory->_set('configurationManager',
 			$this->getMock('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManagerInterface')
 		);
 
 		$this->objectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerInterface');
-		$this->queryFactory->injectObjectManager($this->objectManager);
+		$this->queryFactory->_set('objectManager', $this->objectManager);
 
 		$this->dataMapper = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Mapper\\DataMapper', array('getDataMap', 'convertClassNameToTableName'));
 		$this->dataMapper->expects($this->any())->method('getDataMap')->will($this->returnValue($this->dataMap));
-		$this->queryFactory->injectDataMapper($this->dataMapper);
+		$this->queryFactory->_set('dataMapper', $this->dataMapper);
 	}
 
 	protected function tearDown() {

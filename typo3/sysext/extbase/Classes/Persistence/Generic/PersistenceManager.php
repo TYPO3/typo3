@@ -56,16 +56,19 @@ class PersistenceManager implements \TYPO3\CMS\Extbase\Persistence\PersistenceMa
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\QueryFactoryInterface
+	 * @inject
 	 */
 	protected $queryFactory;
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\Backend
+	 * @inject
 	 */
 	protected $backend;
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\Session
+	 * @inject
 	 */
 	protected $persistenceSession;
 
@@ -76,36 +79,6 @@ class PersistenceManager implements \TYPO3\CMS\Extbase\Persistence\PersistenceMa
 		$this->addedObjects = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
 		$this->removedObjects = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
 		$this->changedObjects = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
-	}
-
-	/**
-	 * Injects the Persistence Backend
-	 *
-	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface $backend The persistence backend
-	 * @return void
-	 */
-	public function injectBackend(\TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface $backend) {
-		$this->backend = $backend;
-	}
-
-	/**
-	 * Injects a QueryFactory instance
-	 *
-	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\QueryFactoryInterface $queryFactory
-	 * @return void
-	 */
-	public function injectQueryFactory(\TYPO3\CMS\Extbase\Persistence\Generic\QueryFactoryInterface $queryFactory) {
-		$this->queryFactory = $queryFactory;
-	}
-
-	/**
-	 * Injects the Persistence Session
-	 *
-	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\Session $session The persistence session
-	 * @return void
-	 */
-	public function injectPersistenceSession(\TYPO3\CMS\Extbase\Persistence\Generic\Session $session) {
-		$this->persistenceSession = $session;
 	}
 
 	/**

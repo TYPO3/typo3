@@ -91,7 +91,7 @@ class ActionControllerTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$mockController->expects($this->at(7))->method('buildControllerContext');
 		$mockController->expects($this->at(8))->method('resolveView');
 
-		$mockController->injectMvcPropertyMappingConfigurationService($configurationService);
+		$mockController->_set('mvcPropertyMappingConfigurationService', $configurationService);
 		$mockController->_set('arguments', new \TYPO3\CMS\Extbase\Mvc\Controller\Arguments());
 
 		$mockController->processRequest($mockRequest, $mockResponse);
@@ -112,7 +112,7 @@ class ActionControllerTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$mockArgumentMappingResults->expects($this->once())->method('hasErrors')->will($this->returnValue(FALSE));
 		$mockController = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\ActionController', array('fooAction', 'initializeAction'), array(), '', FALSE);
 		$mockSignalSlotDispatcher = $this->getMock('TYPO3\\CMS\Extbase\\SignalSlot\\Dispatcher', array(), array(), '', FALSE);
-		$mockController->injectSignalSlotDispatcher($mockSignalSlotDispatcher);
+		$mockController->_set('signalSlotDispatcher', $mockSignalSlotDispatcher);
 		$this->enableDeprecatedPropertyMapperInController($mockController);
 		$mockController->expects($this->once())->method('fooAction')->will($this->returnValue('the returned string'));
 		$mockController->_set('request', $mockRequest);
@@ -138,7 +138,7 @@ class ActionControllerTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$mockArgumentMappingResults->expects($this->once())->method('hasErrors')->will($this->returnValue(FALSE));
 		$mockController = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\ActionController', array('fooAction', 'initializeAction'), array(), '', FALSE);
 		$mockSignalSlotDispatcher = $this->getMock('TYPO3\\CMS\Extbase\\SignalSlot\\Dispatcher', array(), array(), '', FALSE);
-		$mockController->injectSignalSlotDispatcher($mockSignalSlotDispatcher);
+		$mockController->_set('signalSlotDispatcher', $mockSignalSlotDispatcher);
 		$this->enableDeprecatedPropertyMapperInController($mockController);
 		$mockController->expects($this->once())->method('fooAction');
 		$mockController->_set('request', $mockRequest);
@@ -188,7 +188,7 @@ class ActionControllerTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$mockArgumentMappingResults->expects($this->once())->method('hasErrors')->will($this->returnValue(FALSE));
 		$mockController = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\ActionController', array('fooAction', 'initializeAction'), array(), '', FALSE);
 		$mockSignalSlotDispatcher = $this->getMock('TYPO3\\CMS\Extbase\\SignalSlot\\Dispatcher', array(), array(), '', FALSE);
-		$mockController->injectSignalSlotDispatcher($mockSignalSlotDispatcher);
+		$mockController->_set('signalSlotDispatcher', $mockSignalSlotDispatcher);
 		$this->enableDeprecatedPropertyMapperInController($mockController);
 		$mockController->expects($this->once())->method('fooAction')->with('Default value');
 		$mockController->_set('request', $mockRequest);
@@ -349,7 +349,7 @@ class ActionControllerTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		);
 		$mockReflectionService = $this->getMock('TYPO3\\CMS\\Extbase\\Reflection\\ReflectionService', array(), array(), '', FALSE);
 		$mockReflectionService->expects($this->once())->method('getMethodParameters')->with(get_class($mockController), 'fooAction')->will($this->returnValue($methodParameters));
-		$mockController->injectReflectionService($mockReflectionService);
+		$mockController->_set('reflectionService', $mockReflectionService);
 		$mockController->_set('request', $mockRequest);
 		$mockController->_set('arguments', $mockArguments);
 		$mockController->_set('actionMethodName', 'fooAction');
@@ -396,7 +396,7 @@ class ActionControllerTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		);
 		$mockReflectionService = $this->getMock('TYPO3\\CMS\\Extbase\\Reflection\\ReflectionService', array(), array(), '', FALSE);
 		$mockReflectionService->expects($this->once())->method('getMethodParameters')->with(get_class($mockController), 'fooAction')->will($this->returnValue($methodParameters));
-		$mockController->injectReflectionService($mockReflectionService);
+		$mockController->_set('reflectionService', $mockReflectionService);
 		$mockController->_set('request', $mockRequest);
 		$mockController->_set('arguments', $mockArguments);
 		$mockController->_set('actionMethodName', 'fooAction');
@@ -423,7 +423,7 @@ class ActionControllerTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		);
 		$mockReflectionService = $this->getMock('TYPO3\\CMS\\Extbase\\Reflection\\ReflectionService', array(), array(), '', FALSE);
 		$mockReflectionService->expects($this->once())->method('getMethodParameters')->with(get_class($mockController), 'fooAction')->will($this->returnValue($methodParameters));
-		$mockController->injectReflectionService($mockReflectionService);
+		$mockController->_set('reflectionService', $mockReflectionService);
 		$mockController->_set('request', $mockRequest);
 		$mockController->_set('arguments', $mockArguments);
 		$mockController->_set('actionMethodName', 'fooAction');
@@ -448,8 +448,8 @@ class ActionControllerTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$mockReflectionService->expects($this->once())->method('getMethodTagsValues')->with(get_class($mockController), 'fooAction')->will($this->returnValue($methodTagsValues));
 		$mockValidatorResolver = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\ValidatorResolver', array(), array(), '', FALSE);
 		$mockValidatorResolver->expects($this->once())->method('buildMethodArgumentsValidatorConjunctions')->with(get_class($mockController), 'fooAction')->will($this->returnValue($methodArgumentsValidatorConjunctions));
-		$mockController->injectReflectionService($mockReflectionService);
-		$mockController->injectValidatorResolver($mockValidatorResolver);
+		$mockController->_set('reflectionService', $mockReflectionService);
+		$mockController->_set('validatorResolver', $mockValidatorResolver);
 		$mockController->_set('arguments', $arguments);
 		$mockController->_set('actionMethodName', 'fooAction');
 		$mockController->_call('initializeActionMethodValidators');
@@ -478,8 +478,8 @@ class ActionControllerTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$mockValidatorResolver = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\ValidatorResolver', array(), array(), '', FALSE);
 		$mockValidatorResolver->expects($this->once())->method('buildMethodArgumentsValidatorConjunctions')->with(get_class($mockController), 'fooAction')->will($this->returnValue($methodArgumentsValidatorConjunctions));
 		$mockValidatorResolver->expects($this->once())->method('getBaseValidatorConjunction')->with('F3_Foo_Quux')->will($this->returnValue($quuxBaseValidatorConjunction));
-		$mockController->injectReflectionService($mockReflectionService);
-		$mockController->injectValidatorResolver($mockValidatorResolver);
+		$mockController->_set('reflectionService', $mockReflectionService);
+		$mockController->_set('validatorResolver', $mockValidatorResolver);
 		$mockController->_set('arguments', $arguments);
 		$mockController->_set('actionMethodName', 'fooAction');
 		$mockController->_call('initializeActionMethodValidators');
@@ -510,8 +510,8 @@ class ActionControllerTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$mockValidatorResolver = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\ValidatorResolver', array(), array(), '', FALSE);
 		$mockValidatorResolver->expects($this->once())->method('buildMethodArgumentsValidatorConjunctions')->with(get_class($mockController), 'fooAction')->will($this->returnValue($methodArgumentsValidatorConjunctions));
 		$mockValidatorResolver->expects($this->any())->method('getBaseValidatorConjunction')->will($this->throwException(new \Exception('This should not be called because the dontvalidate annotation is set.')));
-		$mockController->injectReflectionService($mockReflectionService);
-		$mockController->injectValidatorResolver($mockValidatorResolver);
+		$mockController->_set('reflectionService', $mockReflectionService);
+		$mockController->_set('validatorResolver', $mockValidatorResolver);
 		$mockController->_set('arguments', $arguments);
 		$mockController->_set('actionMethodName', 'fooAction');
 		$mockController->_call('initializeActionMethodValidators');
@@ -583,7 +583,7 @@ class ActionControllerTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$mockController->_set('arguments', array($argument1, $argument2));
 		$mockController->_set('request', $mockRequest);
 		$mockController->_set('actionMethodName', 'fooAction');
-		$mockController->injectReflectionService($mockReflectionService);
+		$mockController->_set('reflectionService', $mockReflectionService);
 		$mockController->_call('checkRequestHash');
 	}
 
@@ -610,7 +610,7 @@ class ActionControllerTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$mockController->_set('arguments', array($argument1, $argument2));
 		$mockController->_set('request', $mockRequest);
 		$mockController->_set('actionMethodName', 'fooAction');
-		$mockController->injectReflectionService($mockReflectionService);
+		$mockController->_set('reflectionService', $mockReflectionService);
 		$mockController->_call('checkRequestHash');
 	}
 

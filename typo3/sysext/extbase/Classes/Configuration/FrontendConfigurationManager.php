@@ -36,16 +36,9 @@ class FrontendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\Abst
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Service\FlexFormService
+	 * @inject
 	 */
 	protected $flexFormService;
-
-	/**
-	 * @param \TYPO3\CMS\Extbase\Service\FlexFormService $flexFormService
-	 * @return void
-	 */
-	public function injectFlexFormService(\TYPO3\CMS\Extbase\Service\FlexFormService $flexFormService) {
-		$this->flexFormService = $flexFormService;
-	}
 
 	/**
 	 * Returns TypoScript Setup array from current Environment.

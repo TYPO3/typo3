@@ -35,6 +35,7 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\Session
+	 * @inject
 	 */
 	protected $session;
 
@@ -65,21 +66,25 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Reflection\ReflectionService
+	 * @inject
 	 */
 	protected $reflectionService;
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\Qom\QueryObjectModelFactory
+	 * @inject
 	 */
 	protected $qomFactory;
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\Storage\BackendInterface
+	 * @inject
 	 */
 	protected $storageBackend;
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper
+	 * @inject
 	 */
 	protected $dataMapper;
 
@@ -97,6 +102,7 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
+	 * @inject
 	 */
 	protected $signalSlotDispatcher;
 
@@ -112,59 +118,6 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 		$this->aggregateRootObjects = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
 		$this->deletedEntities = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
 		$this->changedEntities = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
-	}
-
-	/**
-	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\Session $session
-	 * @return void
-	 */
-	public function injectSession(\TYPO3\CMS\Extbase\Persistence\Generic\Session $session) {
-		$this->session = $session;
-	}
-
-	/**
-	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\Storage\BackendInterface $storageBackend
-	 * @return void
-	 */
-	public function injectStorageBackend(\TYPO3\CMS\Extbase\Persistence\Generic\Storage\BackendInterface $storageBackend) {
-		$this->storageBackend = $storageBackend;
-	}
-
-	/**
-	 * Injects the DataMapper to map nodes to objects
-	 *
-	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper $dataMapper
-	 * @return void
-	 */
-	public function injectDataMapper(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper $dataMapper) {
-		$this->dataMapper = $dataMapper;
-	}
-
-	/**
-	 * Injects the Reflection Service
-	 *
-	 * @param \TYPO3\CMS\Extbase\Reflection\ReflectionService $reflectionService
-	 * @return void
-	 */
-	public function injectReflectionService(\TYPO3\CMS\Extbase\Reflection\ReflectionService $reflectionService) {
-		$this->reflectionService = $reflectionService;
-	}
-
-	/**
-	 * Injects the QueryObjectModelFactory
-	 *
-	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\Qom\QueryObjectModelFactory $qomFactory
-	 * @return void
-	 */
-	public function injectQomFactory(\TYPO3\CMS\Extbase\Persistence\Generic\Qom\QueryObjectModelFactory $qomFactory) {
-		$this->qomFactory = $qomFactory;
-	}
-
-	/**
-	 * @param \TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher
-	 */
-	public function injectSignalSlotDispatcher(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher) {
-		$this->signalSlotDispatcher = $signalSlotDispatcher;
 	}
 
 	/**
