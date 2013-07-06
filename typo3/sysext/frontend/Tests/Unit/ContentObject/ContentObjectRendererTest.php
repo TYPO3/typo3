@@ -1853,6 +1853,328 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 		$this->assertEquals($expectedResult, $cleanedResult);
 	}
+
+	/**
+	 * @return array
+	 */
+	public function getImageTagTemplateFallsBackToDefaultTemplateIfNoTemplateIsFoundDataProvider() {
+		return array(
+			array( null, null),
+			array( '', null),
+			array( '', array()),
+			array( 'fooo', array('foo'=>'bar'))
+		);
+	}
+
+	/**
+	 * Make sure that the rendering falls back to the classic <img style if nothing else is found
+	 *
+	 * @test
+	 * @dataProvider getImageTagTemplateFallsBackToDefaultTemplateIfNoTemplateIsFoundDataProvider
+	 * @param string $key
+	 * @param array $configuration
+	 */
+	public function getImageTagTemplateFallsBackToDefaultTemplateIfNoTemplateIsFound($key, $configuration) {
+		$defaultImgTagTemplate = '<img src="###SRC###" width="###WIDTH###" height="###HEIGHT###" ###PARAMS### ###ALTPARAMS### ###BORDER######XHTMLSLASH###>';
+		$result = $this->cObj->getImageTagTemplate($key, $configuration);
+		$this->assertEquals($result, $defaultImgTagTemplate);
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getImageTagTemplateReturnTemplateElementIdentifiedByKeyDataProvider() {
+		return array(
+			array(
+				'foo',
+				array(
+					'layout.' => array(
+						'foo.' => array(
+							'element' => '<img src="###SRC###" srcset="###SOURCES###" ###PARAMS### ###ALTPARAMS### ###FOOBAR######XHTMLSLASH###>'
+						)
+					)
+				),
+				'<img src="###SRC###" srcset="###SOURCES###" ###PARAMS### ###ALTPARAMS### ###FOOBAR######XHTMLSLASH###>'
+			)
+
+		);
+	}
+
+	/**
+	 * Assure if a layoutKey and layout is given the selected layout is returned
+	 *
+	 * @test
+	 * @dataProvider getImageTagTemplateReturnTemplateElementIdentifiedByKeyDataProvider
+	 * @param string $key
+	 * @param array $configuration
+	 * @param string $expectation
+	 */
+	public function getImageTagTemplateReturnTemplateElementIdentifiedByKey($key, $configuration, $expectation){
+		$result = $this->cObj->getImageTagTemplate($key, $configuration);
+		$this->assertEquals($result, $expectation);
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getImageSourceCollectionReturnsEmptyStringIfNoSourcesAreDefinedDataProvider() {
+		return array(
+			array(null, null, null),
+			array('foo', null, null),
+			array('foo', array('sourceCollection.' => 1), 'bar')
+		);
+	}
+
+	/**
+	 * Make sure the source collection is empty if no valid configuration or source collection is defined
+	 *
+	 * @test
+	 * @dataProvider getImageSourceCollectionReturnsEmptyStringIfNoSourcesAreDefinedDataProvider
+	 * @param string $layoutKey
+	 * @param array $configuration
+	 * @param string $file
+	 */
+	public function getImageSourceCollectionReturnsEmptyStringIfNoSourcesAreDefined($layoutKey, $configuration, $file) {
+		$result = $this->cObj->getImageSourceCollection($layoutKey, $configuration, $file);
+		$this->assertSame($result, '');
+	}
+
+	/**
+	 * Make sure the generation of subimages calls the generation of the subimages and uses the layout -> source template
+	 *
+	 * @test
+	 */
+	public function getImageSourceCollectionRendersDefinedSources() {
+
+		$this->lcObj = $this->getAccessibleMock('\\TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer', array('stdWrap','getImgResource'));
+		$this->lcObj->start(array(), 'tt_content');
+
+		$layoutKey = 'test';
+
+		$configuration = array(
+			'layoutKey' => 'test',
+			'layout.' => array (
+				'test.' => array(
+					'element' => '<img ###SRC### ###SRCCOLLECTION### ###XHTMLSLASH###>',
+					'source' => '---###SRC###---'
+				)
+			),
+			'sourceCollection.' => array(
+				'1.' => array(
+					'width' => '200'
+				)
+			)
+		);
+
+		$file = 'testImageName';
+
+		// ayoid calling of stdWrap
+		$this->lcObj
+			->expects($this->any())
+			->method('stdWrap')
+			->will($this->returnArgument(0));
+
+		// avoid calling of imgResource
+		$this->lcObj
+			->expects($this->exactly(1))
+			->method('getImgResource')
+			->with($this->equalTo('testImageName'))
+			->will($this->returnValue(array(100,100,null,'bar')));
+
+		$result = $this->lcObj->getImageSourceCollection($layoutKey, $configuration, $file);
+
+		$this->assertEquals('---bar---', $result);
+	}
+
+
+	public function getImageSourceCollectionRendersDefinedLayoutKeyDataDefaultProvider() {
+		/**
+		 * @see css_styled_content/static/setup.txt
+		 */
+		$sourceCollectionArray = array(
+			'small.' => array(
+				'width' => '200',
+				'srcsetCandidate' => '600w',
+				'mediaQuery' => '(max-device-width: 600px)',
+				'dataKey' => 'small',
+			),
+			'smallRetina.' => array(
+				'if.directReturn' => 0,
+				'width' => '200',
+				'pixelDensity' => '2',
+				'srcsetCandidate' => '600w 2x',
+				'mediaQuery' => '(max-device-width: 600px) AND (min-resolution: 192dpi)',
+				'dataKey' => 'smallRetina',
+			)
+		);
+		return
+			array(
+				array(
+					'default',
+					array(
+						'layoutKey' => 'default',
+						'layout.' => array (
+							'default.' => array(
+								'element' => '<img src="###SRC###" width="###WIDTH###" height="###HEIGHT###" ###PARAMS### ###ALTPARAMS### ###BORDER######XHTMLSLASH###>',
+								'source' => ''
+							)
+						),
+						'sourceCollection.' => $sourceCollectionArray
+					)
+				),
+			);
+	}
+	/**
+	 * Make sure the generation of subimages renders the expected HTML Code for the sourceset
+	 *
+	 * @test
+	 * @dataProvider getImageSourceCollectionRendersDefinedLayoutKeyDataDefaultProvider
+	 * @param string $layoutKey
+	 * @param array $configuration
+	 */
+	public function getImageSourceCollectionRendersDefinedLayoutKeyDefault($layoutKey , $configuration) {
+
+		$this->lcObj = $this->getAccessibleMock('\\TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer', array('stdWrap','getImgResource'));
+		$this->lcObj->start(array(), 'tt_content');
+
+		$file = 'testImageName';
+
+		// ayoid calling of stdWrap
+		$this->lcObj
+			->expects($this->any())
+			->method('stdWrap')
+			->will($this->returnArgument(0));
+
+		$result = $this->lcObj->getImageSourceCollection($layoutKey, $configuration, $file);
+
+		$this->assertEmpty($result);
+	}
+
+
+	public function getImageSourceCollectionRendersDefinedLayoutKeyDataDataProvider() {
+		/**
+		 * @see css_styled_content/static/setup.txt
+		 */
+		$sourceCollectionArray = array(
+			'small.' => array(
+				'width' => '200',
+				'srcsetCandidate' => '600w',
+				'mediaQuery' => '(max-device-width: 600px)',
+				'dataKey' => 'small',
+			),
+			'smallRetina.' => array(
+				'if.directReturn' => 1,
+				'width' => '200',
+				'pixelDensity' => '2',
+				'srcsetCandidate' => '600w 2x',
+				'mediaQuery' => '(max-device-width: 600px) AND (min-resolution: 192dpi)',
+				'dataKey' => 'smallRetina',
+			)
+		);
+		return
+			array(
+				array(
+					'srcset',
+					array(
+						'layoutKey' => 'srcset',
+						'layout.' => array (
+							'srcset.' => array(
+								'element' => '<img src="###SRC###" srcset="###SOURCECOLLECTION###" ###PARAMS### ###ALTPARAMS######XHTMLSLASH###>',
+								'source' => '|*|###SRC### ###SRCSETCANDIDATE###,|*|###SRC### ###SRCSETCANDIDATE###'
+							)
+						),
+						'sourceCollection.' => $sourceCollectionArray
+					),
+					'xhtml_strict',
+					'bar-file.jpg 600w,bar-file.jpg 600w 2x',
+				),
+				array(
+					'picture',
+					array(
+						'layoutKey' => 'picture',
+						'layout.' => array (
+							'picture.' => array(
+								'element' => '<picture>###SOURCECOLLECTION###<img src="###SRC###" ###PARAMS### ###ALTPARAMS######XHTMLSLASH###></picture>',
+								'source' => '<source src="###SRC###" media="###MEDIAQUERY###"###XHTMLSLASH###>'
+							)
+						),
+						'sourceCollection.' => $sourceCollectionArray,
+					),
+					'xhtml_strict',
+					'<source src="bar-file.jpg" media="(max-device-width: 600px)" /><source src="bar-file.jpg" media="(max-device-width: 600px) AND (min-resolution: 192dpi)" />',
+				),
+				array(
+					'picture',
+					array(
+						'layoutKey' => 'picture',
+						'layout.' => array (
+							'picture.' => array(
+								'element' => '<picture>###SOURCECOLLECTION###<img src="###SRC###" ###PARAMS### ###ALTPARAMS######XHTMLSLASH###></picture>',
+								'source' => '<source src="###SRC###" media="###MEDIAQUERY###"###XHTMLSLASH###>'
+							)
+						),
+						'sourceCollection.' => $sourceCollectionArray,
+					),
+					'',
+					'<source src="bar-file.jpg" media="(max-device-width: 600px)"><source src="bar-file.jpg" media="(max-device-width: 600px) AND (min-resolution: 192dpi)">',
+				),
+				array(
+					'data',
+					array(
+						'layoutKey' => 'data',
+						'layout.' => array (
+							'data.' => array(
+								'element' => '<img src="###SRC###" ###SOURCECOLLECTION### ###PARAMS### ###ALTPARAMS######XHTMLSLASH###>',
+								'source' => 'data-###DATAKEY###="###SRC###"'
+							)
+						),
+						'sourceCollection.' => $sourceCollectionArray
+					),
+					'xhtml_strict',
+					'data-small="bar-file.jpg"data-smallRetina="bar-file.jpg"',
+				),
+			);
+	}
+
+	/**
+	 * Make sure the generation of subimages renders the expected HTML Code for the sourceset
+	 *
+	 * @test
+	 * @dataProvider getImageSourceCollectionRendersDefinedLayoutKeyDataDataProvider
+	 * @param string $layoutKey
+	 * @param array $configuration
+	 * @param string $expectedHtml
+	 */
+	public function getImageSourceCollectionRendersDefinedLayoutKeyData($layoutKey , $configuration, $xhtmlDoctype, $expectedHtml) {
+
+		$this->lcObj = $this->getAccessibleMock('\\TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer', array('stdWrap','getImgResource'));
+		$this->lcObj->start(array(), 'tt_content');
+
+		$file = 'testImageName';
+
+		$sysPageMock = $this->getMock('TYPO3\\CMS\\Frontend\\Page\\PageRepository', array('getRawRecord'));
+		$this->tsfe->sys_page = $sysPageMock;
+		$GLOBALS['TSFE'] = $this->tsfe;
+		$GLOBALS['TSFE']->xhtmlDoctype = $xhtmlDoctype;
+
+		// ayoid calling of stdWrap
+		$this->lcObj
+			->expects($this->any())
+			->method('stdWrap')
+			->will($this->returnArgument(0));
+
+		// avoid calling of imgResource
+				$this->lcObj
+					->expects($this->exactly(2))
+					->method('getImgResource')
+					->with($this->equalTo('testImageName'))
+					->will($this->returnValue(array(100,100,null,'bar-file.jpg')));
+
+		$result = $this->lcObj->getImageSourceCollection($layoutKey, $configuration, $file);
+
+		$this->assertEquals($expectedHtml , $result);
+	}
+
 }
 
 ?>
