@@ -119,11 +119,21 @@ class AbstractController {
 			$tokenOk = TRUE;
 		}
 
-		if (!$tokenOk) {
+		$this->handleSessionTokenCheck($tokenOk);
+	}
+
+	/**
+	 * handleSessionTokenCheck
+	 *
+	 * @param $tokenOk
+	 * @return void
+	 */
+	protected function handleSessionTokenCheck($tokenOk) {
+		if(!$tokenOk) {
 			$this->session->resetSession();
 			$this->session->startSession();
 
-			if ($this->isInitialInstallationInProgress()) {
+			if($this->isInitialInstallationInProgress()) {
 				$this->redirect();
 			} else {
 				/** @var $message \TYPO3\CMS\Install\Status\ErrorStatus */
@@ -148,17 +158,26 @@ class AbstractController {
 			$this->session->resetSession();
 			$this->session->startSession();
 
-			if ($this->isInitialInstallationInProgress()) {
-				$this->redirect();
-			} else {
-				/** @var $message \TYPO3\CMS\Install\Status\ErrorStatus */
-				$message = $this->objectManager->get('TYPO3\\CMS\\Install\\Status\\ErrorStatus');
-				$message->setTitle('Session expired');
-				$message->setMessage(
-					'Your Install Tool session has expired. You have been logged out, please login and try again.'
-				);
-				$this->output($this->loginForm($message));
-			}
+			$this->handleSessionLifeTimeExpired();
+		}
+	}
+
+	/**
+	 * handleSessionLifeTimeExpired
+	 *
+	 * @return void
+	 */
+	protected function handleSessionLifeTimeExpired() {
+		if($this->isInitialInstallationInProgress()) {
+			$this->redirect();
+		} else {
+			/** @var $message \TYPO3\CMS\Install\Status\ErrorStatus */
+			$message = $this->objectManager->get('TYPO3\\CMS\\Install\\Status\\ErrorStatus');
+			$message->setTitle('Session expired');
+			$message->setMessage(
+				'Your Install Tool session has expired. You have been logged out, please login and try again.'
+			);
+			$this->output($this->loginForm($message));
 		}
 	}
 

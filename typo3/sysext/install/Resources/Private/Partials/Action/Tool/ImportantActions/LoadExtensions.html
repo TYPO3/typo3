@@ -1,0 +1,17 @@
+<h4>Check if local extensions can be loaded</h4>
+<p>
+	Checks whether the local extensions ext_tables and ext_localconf files can be included without errors, meaning they can be loaded
+	without breaking the system.
+</p>
+<form method="post">
+	<f:render partial="Action/Common/HiddenFormFields" arguments="{_all}" />
+	<div id="checkExtensions" data-protocolurl="{loadExtensionsProtocolFile}">
+		<f:render partial="Action/Common/StatusMessage" arguments="{
+			message: {severity:'error', title:'Incompatible extension found!', message:'Something went wrong and no protocol was written.'}
+		}" />
+		<f:render partial="Action/Common/StatusMessage" arguments="{
+			message: {severity:'ok', title:'All local extensions can be loaded!'}
+		}" />
+		<f:render partial="Action/Common/SubmitButton" arguments="{name:'checkExtensions', text:'Check extensions'}"/>
+	</div>
+</form>
