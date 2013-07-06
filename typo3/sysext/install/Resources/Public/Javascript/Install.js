@@ -77,4 +77,64 @@ $(document).ready(function() {
 			socketField.parent().fadeOut();
 		}
 	}).trigger('change');
+
+	$('#checkExtensions .typo3-message').hide();
+	$('#checkExtensions button').click(function(){
+		checkExtensionsCompatibility(true);
+		return false;
+	});
 });
+
+function checkExtensionsCompatibility(force) {
+	var url = location.href + '&install[action]=loadExtensions';
+	if (force == true) {
+		url += '&install[loadExtensions][forceCheck]=1';
+	} else {
+		url += '&install[loadExtensions][forceCheck]=0';
+	}
+	// avoid browser caching of ajax request
+	url += '&crp=' + new Date().getTime();
+	$.ajax({
+		url: url,
+		success: function(data) {
+			if (data === 'OK') {
+				handleCheckExtensionsSuccess();
+			} else {
+				// workaround for xdebug returning 200 OK on fatal errors
+				handleCheckExtensionsError();
+			}
+		},
+		error: function(data) {
+			handleCheckExtensionsError();
+		}
+	});
+}
+
+function handleCheckExtensionsSuccess() {
+	$.ajax({
+		url: $('#checkExtensions').data('protocolurl'),
+		success: function(data) {
+			if (data) {
+				$('#checkExtensions .message-error .message-body').html('The extension(s) ' + data + ' are not compatible. Please uninstall them and try again.');
+				$('#checkExtensions .message-error').show();
+			} else {
+				$('#checkExtensions .message-error').hide();
+				$('#checkExtensions .message-ok').show();
+				$('#checkExtensions button').hide();
+			}
+		},
+		error: function(data) {
+			$('#checkExtensions .message-error').hide();
+			$('#checkExtensions .message-ok').show();
+			$('#checkExtensions button').hide();
+		}
+	})
+}
+
+/**
+ * Call checkExtensionsCompatibility recursively on error
+ * so we can find all incompatible extensions
+ */
+function handleCheckExtensionsError() {
+	checkExtensionsCompatibility(false);
+}
