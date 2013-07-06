@@ -28,6 +28,8 @@ namespace TYPO3\CMS\Feedit;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * View class for the edit panels in frontend editing.
  *
@@ -47,7 +49,7 @@ class FrontendEditPanel {
 	 * @return void
 	 */
 	public function __construct() {
-		$this->cObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
+		$this->cObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
 		$this->cObj->start(array());
 	}
 
@@ -70,7 +72,7 @@ class FrontendEditPanel {
 		// Special content is about to be shown, so the cache must be disabled.
 		$GLOBALS['TSFE']->set_no_cache('Frontend edit panel is shown', TRUE);
 		$formName = 'TSFE_EDIT_FORM_' . substr($GLOBALS['TSFE']->uniqueHash(), 0, 4);
-		$formTag = '<form name="' . $formName . '" id ="' . $formName . '" action="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI')) . '" method="post" enctype="' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'] . '" onsubmit="return TBE_EDITOR.checkSubmit(1);" style="margin: 0 0 0 0;">';
+		$formTag = '<form name="' . $formName . '" id ="' . $formName . '" action="' . htmlspecialchars(GeneralUtility::getIndpEnv('REQUEST_URI')) . '" method="post" enctype="' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'] . '" onsubmit="return TBE_EDITOR.checkSubmit(1);" style="margin: 0 0 0 0;">';
 		$sortField = $GLOBALS['TCA'][$table]['ctrl']['sortby'];
 		$labelField = $GLOBALS['TCA'][$table]['ctrl']['label'];
 		$hideField = $GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled'];
@@ -131,7 +133,7 @@ class FrontendEditPanel {
 									<input type="hidden" name="TSFE_EDIT[record]" value="' . $currentRecord . '" />
 									<table border="0" cellpadding="0" cellspacing="0" class="typo3-editPanel" summary="">
 										<tr>
-											<td nowrap="nowrap" bgcolor="#ABBBB4" class="typo3-editPanel-controls">' . $panel . '</td>' . ($labelTxt ? '<td nowrap="nowrap" bgcolor="#F6F2E6" class="typo3-editPanel-label"><font face="verdana" size="1" color="black">&nbsp;' . sprintf($labelTxt, htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($dataArr[$labelField], 50))) . '&nbsp;</font></td>' : '') . '
+											<td nowrap="nowrap" bgcolor="#ABBBB4" class="typo3-editPanel-controls">' . $panel . '</td>' . ($labelTxt ? '<td nowrap="nowrap" bgcolor="#F6F2E6" class="typo3-editPanel-label"><font face="verdana" size="1" color="black">&nbsp;' . sprintf($labelTxt, htmlspecialchars(GeneralUtility::fixed_lgd_cs($dataArr[$labelField], 50))) . '&nbsp;</font></td>' : '') . '
 										</tr>
 									</table>
 								</form>';
@@ -187,9 +189,9 @@ class FrontendEditPanel {
 		$GLOBALS['TSFE']->set_no_cache('Display frontend edit icons', TRUE);
 		$style = $conf['styleAttribute'] ? ' style="' . htmlspecialchars($conf['styleAttribute']) . '"' : '';
 		$iconTitle = $this->cObj->stdWrap($conf['iconTitle'], $conf['iconTitle.']);
-		$iconImg = $conf['iconImg'] ? $conf['iconImg'] : '<img  ' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg(TYPO3_mainDir, 'gfx/edit_fe.gif', 'width="11" height="12" border="0" align="top" ') . ' title="' . \TYPO3\CMS\Core\Utility\GeneralUtility::deHSCentities(htmlspecialchars($iconTitle)) . '"' . $style . ' class="frontEndEditIcons" alt="" />';
-		$nV = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('ADMCMD_view') ? 1 : 0;
-		$adminURL = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . TYPO3_mainDir;
+		$iconImg = $conf['iconImg'] ? $conf['iconImg'] : '<img  ' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg(TYPO3_mainDir, 'gfx/edit_fe.gif', 'width="11" height="12" border="0" align="top" ') . ' title="' . GeneralUtility::deHSCentities(htmlspecialchars($iconTitle)) . '"' . $style . ' class="frontEndEditIcons" alt="" />';
+		$nV = GeneralUtility::_GP('ADMCMD_view') ? 1 : 0;
+		$adminURL = GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . TYPO3_mainDir;
 		$icon = $this->editPanelLinkWrap_doWrap($iconImg, $adminURL . 'alt_doc.php?edit[' . $table . '][' . $editUid . ']=edit&columnsOnly=' . rawurlencode($fieldList) . '&noView=' . $nV . $addUrlParamStr, $currentRecord);
 		if ($conf['beforeLastTag'] < 0) {
 			$content = $icon . $content;
@@ -222,8 +224,8 @@ class FrontendEditPanel {
 	protected function editPanelLinkWrap($string, $formName, $cmd, $currentRecord = '', $confirm = '', $nPid = '') {
 		// Editing forms on page only supported in Live workspace (because of incomplete implementation)
 		$editFormsOnPage = $GLOBALS['BE_USER']->uc['TSFE_adminConfig']['edit_editFormsOnPage'] && $GLOBALS['BE_USER']->workspace === 0;
-		$nV = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('ADMCMD_view') ? 1 : 0;
-		$adminURL = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . TYPO3_mainDir;
+		$nV = GeneralUtility::_GP('ADMCMD_view') ? 1 : 0;
+		$adminURL = GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . TYPO3_mainDir;
 		if ($cmd == 'edit' && !$editFormsOnPage) {
 			$rParts = explode(':', $currentRecord);
 			$out = $this->editPanelLinkWrap_doWrap($string, $adminURL . 'alt_doc.php?edit[' . $rParts[0] . '][' . $rParts[1] . ']=edit&noView=' . $nV, $currentRecord);
@@ -240,7 +242,7 @@ class FrontendEditPanel {
 		} else {
 			if ($confirm && $GLOBALS['BE_USER']->jsConfirmation(8)) {
 				// Gets htmlspecialchared later
-				$cf1 = 'if (confirm(' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue($confirm, TRUE) . ')) {';
+				$cf1 = 'if (confirm(' . GeneralUtility::quoteJSvalue($confirm, TRUE) . ')) {';
 				$cf2 = '}';
 			} else {
 				$cf1 = ($cf2 = '');
@@ -261,7 +263,7 @@ class FrontendEditPanel {
 	 */
 	protected function editPanelLinkWrap_doWrap($string, $url, $currentRecord) {
 		if ($GLOBALS['BE_USER']->uc['TSFE_adminConfig']['edit_editNoPopup'] || $GLOBALS['BE_USER']->extAdminConfig['module.']['edit.']['forceNoPopup']) {
-			$retUrl = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI');
+			$retUrl = GeneralUtility::getIndpEnv('REQUEST_URI');
 			$rParts = explode(':', $currentRecord);
 			// This parentRecordNumber is used to make sure that only elements 3- of ordinary content elements makes a 'anchor' jump down the page.
 			if ($rParts[0] == 'tt_content' && $this->parentRecordNumber > 2) {
@@ -345,7 +347,7 @@ class FrontendEditPanel {
 	 * @return string
 	 */
 	protected function editContent($formTag, $formName, $theCmd, $newUID, array $dataArray, $table, $currentRecord, $blackLine) {
-		$tceforms = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Form\\FrontendFormEngine');
+		$tceforms = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Form\\FrontendFormEngine');
 		$tceforms->initDefaultBEMode();
 		$tceforms->prependFormFieldNames = 'TSFE_EDIT[data]';
 		$tceforms->prependFormFieldNames_file = 'TSFE_EDIT_file';
@@ -356,11 +358,11 @@ class FrontendEditPanel {
 		$tceforms->defStyle = 'font-family:Verdana;font-size:10px;';
 		$tceforms->edit_showFieldHelp = 0;
 		$tceforms->helpTextFontTag = '<font face="verdana,sans-serif" color="#333333" size="1">';
-		$trData = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Form\\DataPreprocessor');
+		$trData = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Form\\DataPreprocessor');
 		$trData->addRawData = TRUE;
 		$trData->lockRecords = 1;
 		// Added without testing - should provide ability to submit default values in frontend editing, in-page.
-		$trData->defVals = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('defVals');
+		$trData->defVals = GeneralUtility::_GP('defVals');
 		$trData->fetchRecord($table, $theCmd == 'new' ? $newUID : $dataArray['uid'], $theCmd == 'new' ? 'new' : '');
 		reset($trData->regTableItems_data);
 		$processedDataArr = current($trData->regTableItems_data);
@@ -369,7 +371,7 @@ class FrontendEditPanel {
 		$panel = '';
 		$buttons = '<input type="image" border="0" name="TSFE_EDIT[update]" src="' . $tceforms->backPath . 'gfx/savedok.gif" hspace="2" width="21" height="16" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc', 1) . '" />';
 		$buttons .= '<input type="image" border="0" name="TSFE_EDIT[update_close]" src="' . $tceforms->backPath . 'gfx/saveandclosedok.gif" hspace="2" width="21" height="16" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveCloseDoc', 1) . '" />';
-		$buttons .= '<input type="image" border="0" name="TSFE_EDIT[cancel]" onclick="' . htmlspecialchars(('window.location.href=\'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI') . '\';return false;')) . '" src="' . $tceforms->backPath . 'gfx/closedok.gif" hspace="2" width="21" height="16" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:rm.closeDoc', 1) . '" />';
+		$buttons .= '<input type="image" border="0" name="TSFE_EDIT[cancel]" onclick="' . htmlspecialchars(('window.location.href=\'' . GeneralUtility::getIndpEnv('REQUEST_URI') . '\';return false;')) . '" src="' . $tceforms->backPath . 'gfx/closedok.gif" hspace="2" width="21" height="16" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:rm.closeDoc', 1) . '" />';
 		// Buttons top
 		$panel .= $tceforms->intoTemplate(array('ITEM' => $buttons));
 		$panel .= $tceforms->getMainFields($table, $processedDataArr);

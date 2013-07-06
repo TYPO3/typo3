@@ -26,6 +26,9 @@ namespace TYPO3\CMS\Core\TypoScript;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * TSParser extension class to TemplateService
  * Contains functions for the TS module in TYPO3 backend
@@ -308,13 +311,13 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 		$this->setup['resources'] = $this->resources;
 		$this->setup['sitetitle'] = $this->sitetitle;
 		// Parse constants
-		$constants = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\Parser\\TypoScriptParser');
+		$constants = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\Parser\\TypoScriptParser');
 		// Register comments!
 		$constants->regComments = 1;
 		$constants->setup = $this->const;
 		$constants->setup = $this->mergeConstantsFromPageTSconfig($constants->setup);
 		/** @var $matchObj \TYPO3\CMS\Frontend\Configuration\TypoScript\ConditionMatching\ConditionMatcher */
-		$matchObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Configuration\\TypoScript\\ConditionMatching\\ConditionMatcher');
+		$matchObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Configuration\\TypoScript\\ConditionMatching\\ConditionMatcher');
 		// Matches ALL conditions in TypoScript
 		$matchObj->setSimulateMatchResult(TRUE);
 		$c = 0;
@@ -423,15 +426,15 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 						'id' => $GLOBALS['SOBE']->id,
 						'tsbr[' . $depth . ']' => $deeper ? 0 : 1
 					);
-					if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('breakPointLN')) {
-						$urlParameters['breakPointLN'] = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('breakPointLN');
+					if (GeneralUtility::_GP('breakPointLN')) {
+						$urlParameters['breakPointLN'] = GeneralUtility::_GP('breakPointLN');
 					}
 					$aHref = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('web_ts', $urlParameters) . '#' . $goto;
 					$HTML .= '<a name="' . $goto . '" href="' . htmlspecialchars($aHref) . '">' . $theIcon . '</a>';
 				}
 				$label = $key;
 				// Read only...
-				if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList('types,resources,sitetitle', $depth) && $this->bType == 'setup') {
+				if (GeneralUtility::inList('types,resources,sitetitle', $depth) && $this->bType == 'setup') {
 					$label = '<font color="#666666">' . $label . '</font>';
 				} else {
 					if ($this->linkObjects) {
@@ -439,8 +442,8 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 							'id' => $GLOBALS['SOBE']->id,
 							'sObj' => $depth
 						);
-						if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('breakPointLN')) {
-							$urlParameters['breakPointLN'] = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('breakPointLN');
+						if (GeneralUtility::_GP('breakPointLN')) {
+							$urlParameters['breakPointLN'] = GeneralUtility::_GP('breakPointLN');
 						}
 						$aHref = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('web_ts', $urlParameters);
 						if ($this->bType != 'const') {
@@ -656,7 +659,7 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 				$aHref = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('web_ts', $urlParameters);
 				$A_B = '<a href="' . htmlspecialchars($aHref) . '">';
 				$A_E = '</a>';
-				if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('template') == $row['templateID']) {
+				if (GeneralUtility::_GP('template') == $row['templateID']) {
 					$A_B = '<strong>' . $A_B;
 					$A_E .= '</strong>';
 				}
@@ -664,7 +667,7 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 				$A_B = '';
 				$A_E = '';
 			}
-			$HTML .= ($first ? '' : '<img src="' . $GLOBALS['BACK_PATH'] . 'gfx/ol/' . $PM . $BTM . '.gif" width="18" height="16" align="top" border="0" alt="" />') . $icon . $A_B . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($row['title'], $GLOBALS['BE_USER']->uc['titleLen'])) . $A_E . '&nbsp;&nbsp;';
+			$HTML .= ($first ? '' : '<img src="' . $GLOBALS['BACK_PATH'] . 'gfx/ol/' . $PM . $BTM . '.gif" width="18" height="16" align="top" border="0" alt="" />') . $icon . $A_B . htmlspecialchars(GeneralUtility::fixed_lgd_cs($row['title'], $GLOBALS['BE_USER']->uc['titleLen'])) . $A_E . '&nbsp;&nbsp;';
 			$RL = $this->ext_getRootlineNumber($row['pid']);
 			$keyArray[] = '<tr class="' . ($i++ % 2 == 0 ? 'bgColor4' : 'bgColor6') . '">
 							<td nowrap="nowrap">' . $HTML . '</td>
@@ -728,7 +731,7 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 		if ($syntaxHL) {
 			$all = preg_replace('/^[^' . LF . ']*./', '', $all);
 			$all = chop($all);
-			$tsparser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\Parser\\TypoScriptParser');
+			$tsparser = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\Parser\\TypoScriptParser');
 			$tsparser->lineNumberOffset = $this->ext_lineNumberOffset + 1;
 			$tsparser->parentObject = $this;
 			return $tsparser->doSyntaxHighlight($all, $lineNumbers ? array($this->ext_lineNumberOffset + 1) : '', $syntaxHLBlockmode);
@@ -751,9 +754,9 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 		if ($chars >= 4) {
 			if (strlen($string) > $chars) {
 				if (strlen($string) > 24 && substr($string, 0, 12) == '##' . $this->Cmarker . '_B##') {
-					return '##' . $this->Cmarker . '_B##' . \TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs(substr($string, 12, -12), ($chars - 3)) . '##' . $this->Cmarker . '_E##';
+					return '##' . $this->Cmarker . '_B##' . GeneralUtility::fixed_lgd_cs(substr($string, 12, -12), ($chars - 3)) . '##' . $this->Cmarker . '_E##';
 				} else {
-					return \TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($string, $chars - 3);
+					return GeneralUtility::fixed_lgd_cs($string, $chars - 3);
 				}
 			}
 		}
@@ -984,7 +987,7 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 		} else {
 			$m = strcspn($type, ' [');
 			$retArr['type'] = strtolower(substr($type, 0, $m));
-			if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList('int,options,file,boolean,offset,user', $retArr['type'])) {
+			if (GeneralUtility::inList('int,options,file,boolean,offset,user', $retArr['type'])) {
 				$p = trim(substr($type, $m));
 				$reg = array();
 				preg_match('/\\[(.*)\\]/', $p, $reg);
@@ -994,10 +997,10 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 					switch ($retArr['type']) {
 						case 'int':
 							if (substr($retArr['paramstr'], 0, 1) == '-') {
-								$retArr['params'] = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode('-', substr($retArr['paramstr'], 1));
+								$retArr['params'] = GeneralUtility::intExplode('-', substr($retArr['paramstr'], 1));
 								$retArr['params'][0] = intval('-' . $retArr['params'][0]);
 							} else {
-								$retArr['params'] = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode('-', $retArr['paramstr']);
+								$retArr['params'] = GeneralUtility::intExplode('-', $retArr['paramstr']);
 							}
 							$retArr['paramstr'] = $retArr['params'][0] . ' - ' . $retArr['params'][1];
 							break;
@@ -1073,7 +1076,7 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 			$iFile = $this->ext_localGfxPrefix . $imgConf;
 			$tFile = $this->ext_localWebGfxPrefix . $imgConf;
 		} elseif (substr($imgConf, 0, 4) == 'EXT:') {
-			$iFile = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($imgConf);
+			$iFile = GeneralUtility::getFileAbsFileName($imgConf);
 			if ($iFile) {
 				$f = substr($iFile, strlen(PATH_site));
 				$tFile = $GLOBALS['BACK_PATH'] . '../' . $f;
@@ -1140,7 +1143,7 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 						if (!$body) {
 							$body = $head;
 						}
-						$head = \TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($head, 35);
+						$head = GeneralUtility::fixed_lgd_cs($head, 35);
 					}
 					$typeDat = $this->ext_getTypeData($params['type']);
 					$checked = '';
@@ -1182,7 +1185,7 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 							break;
 						case 'offset':
 							$wArr = explode(',', $fV);
-							$labels = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $typeDat['paramstr']);
+							$labels = GeneralUtility::trimExplode(',', $typeDat['paramstr']);
 							$p_field = ($labels[0] ? $labels[0] : 'x') . ':<input type="text" name="' . $fN . '" value="' . $wArr[0] . '"' . $GLOBALS['TBE_TEMPLATE']->formWidth(4) . ' onChange="uFormUrl(' . $aname . ')" />';
 							$p_field .= ' , ';
 							$p_field .= ($labels[1] ? $labels[1] : 'y') . ':<input type="text" name="W' . $fN . '" value="' . $wArr[1] . '"' . $GLOBALS['TBE_TEMPLATE']->formWidth(4) . ' onChange="uFormUrl(' . $aname . ')" />';
@@ -1248,7 +1251,7 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 						case 'user':
 							$userFunction = $typeDat['paramstr'];
 							$userFunctionParams = array('fieldName' => $fN, 'fieldValue' => $fV);
-							$p_field = \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($userFunction, $userFunctionParams, $this, '');
+							$p_field = GeneralUtility::callUserFunction($userFunction, $userFunctionParams, $this, '');
 							break;
 						case 'small':
 
@@ -1490,7 +1493,7 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 								break;
 							case 'color':
 								$col = array();
-								if ($var && !\TYPO3\CMS\Core\Utility\GeneralUtility::inList($this->HTMLcolorList, strtolower($var))) {
+								if ($var && !GeneralUtility::inList($this->HTMLcolorList, strtolower($var))) {
 									$var = preg_replace('/[^A-Fa-f0-9]*/', '', $var);
 									$useFulHex = strlen($var) > 3;
 									$col[] = HexDec(substr($var, 0, 1));

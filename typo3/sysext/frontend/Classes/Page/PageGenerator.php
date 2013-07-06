@@ -26,6 +26,9 @@ namespace TYPO3\CMS\Frontend\Page;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Libraries for pagegen.php
  * The script "pagegen.php" is included by "index_ts.php" when a page is not cached but needs to be rendered.
@@ -62,10 +65,10 @@ class PageGenerator {
 			unset($temp_copy_TSFE);
 		}
 		if ($GLOBALS['TSFE']->config['config']['MP_defaults']) {
-			$temp_parts = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('|', $GLOBALS['TSFE']->config['config']['MP_defaults'], 1);
+			$temp_parts = GeneralUtility::trimExplode('|', $GLOBALS['TSFE']->config['config']['MP_defaults'], 1);
 			foreach ($temp_parts as $temp_p) {
 				list($temp_idP, $temp_MPp) = explode(':', $temp_p, 2);
-				$temp_ids = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $temp_idP);
+				$temp_ids = GeneralUtility::intExplode(',', $temp_idP);
 				foreach ($temp_ids as $temp_id) {
 					$GLOBALS['TSFE']->MP_defaults[$temp_id] = $temp_MPp;
 				}
@@ -77,7 +80,7 @@ class PageGenerator {
 		// Base url:
 		if (isset($GLOBALS['TSFE']->config['config']['baseURL'])) {
 			$GLOBALS['TSFE']->baseUrl = $GLOBALS['TSFE']->config['config']['baseURL'];
-			$GLOBALS['TSFE']->anchorPrefix = substr(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'), strlen(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL')));
+			$GLOBALS['TSFE']->anchorPrefix = substr(GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'), strlen(GeneralUtility::getIndpEnv('TYPO3_SITE_URL')));
 		}
 		// Internal and External target defaults
 		$GLOBALS['TSFE']->intTarget = '' . $GLOBALS['TSFE']->config['config']['intTarget'];
@@ -106,7 +109,7 @@ class PageGenerator {
 			$GLOBALS['TSFE']->setJS('openPic');
 		}
 		$GLOBALS['TSFE']->sWordRegEx = '';
-		$GLOBALS['TSFE']->sWordList = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('sword_list');
+		$GLOBALS['TSFE']->sWordList = GeneralUtility::_GP('sword_list');
 		if (is_array($GLOBALS['TSFE']->sWordList)) {
 			$space = !empty($GLOBALS['TSFE']->config['config']['sword_standAlone']) ? '[[:space:]]' : '';
 			foreach ($GLOBALS['TSFE']->sWordList as $val) {
@@ -387,7 +390,7 @@ class PageGenerator {
 		}
 		// Begin header section:
 		if (strcmp($GLOBALS['TSFE']->config['config']['htmlTag_setParams'], 'none')) {
-			$_attr = $GLOBALS['TSFE']->config['config']['htmlTag_setParams'] ? $GLOBALS['TSFE']->config['config']['htmlTag_setParams'] : \TYPO3\CMS\Core\Utility\GeneralUtility::implodeAttributes($htmlTagAttributes);
+			$_attr = $GLOBALS['TSFE']->config['config']['htmlTag_setParams'] ? $GLOBALS['TSFE']->config['config']['htmlTag_setParams'] : GeneralUtility::implodeAttributes($htmlTagAttributes);
 		} else {
 			$_attr = '';
 		}
@@ -419,7 +422,7 @@ class PageGenerator {
 					$pageRenderer->setIconMimeType($iconMimeType);
 				}
 			}
-			$pageRenderer->setFavIcon(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . $favIcon);
+			$pageRenderer->setFavIcon(GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . $favIcon);
 		}
 		// Including CSS files
 		if (is_array($GLOBALS['TSFE']->tmpl->setup['plugin.'])) {
@@ -465,7 +468,7 @@ class PageGenerator {
 						if ($GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['import']) {
 							if (!$GLOBALS['TSFE']->pSetup['includeCSS.'][($key . '.')]['external'] && substr($ss, 0, 1) != '/') {
 								// To fix MSIE 6 that cannot handle these as relative paths (according to Ben v Ende)
-								$ss = \TYPO3\CMS\Core\Utility\GeneralUtility::dirname(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('SCRIPT_NAME')) . '/' . $ss;
+								$ss = GeneralUtility::dirname(GeneralUtility::getIndpEnv('SCRIPT_NAME')) . '/' . $ss;
 							}
 							$pageRenderer->addCssInlineBlock('import_' . $key, '@import url("' . htmlspecialchars($ss) . '") ' . htmlspecialchars($GLOBALS['TSFE']->pSetup['includeCSS.'][($key . '.')]['media']) . ';', empty($GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['disableCompression']), $GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['forceOnTop'] ? TRUE : FALSE, '');
 						} else {
@@ -489,7 +492,7 @@ class PageGenerator {
 				}
 			}
 			if ($GLOBALS['TSFE']->pSetup['insertClassesFromRTE.']['add_mainStyleOverrideDefs'] && is_array($pageTSConfig['RTE.']['default.']['mainStyleOverride_add.'])) {
-				$mSOa_tList = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', strtoupper($GLOBALS['TSFE']->pSetup['insertClassesFromRTE.']['add_mainStyleOverrideDefs']), 1);
+				$mSOa_tList = GeneralUtility::trimExplode(',', strtoupper($GLOBALS['TSFE']->pSetup['insertClassesFromRTE.']['add_mainStyleOverrideDefs']), 1);
 				foreach ($pageTSConfig['RTE.']['default.']['mainStyleOverride_add.'] as $mSOa_key => $mSOa_value) {
 					if (!is_array($mSOa_value) && (in_array('*', $mSOa_tList) || in_array($mSOa_key, $mSOa_tList))) {
 						$style .= '
@@ -777,18 +780,18 @@ class PageGenerator {
 		if ($GLOBALS['TSFE']->config['config']['compressJs']) {
 			$pageRenderer->enableCompressJavascript();
 			$minifyErrorScript = ($minifyErrorInline = '');
-			$scriptJsCode = \TYPO3\CMS\Core\Utility\GeneralUtility::minifyJavaScript($scriptJsCode, $minifyErrorScript);
+			$scriptJsCode = GeneralUtility::minifyJavaScript($scriptJsCode, $minifyErrorScript);
 			if ($minifyErrorScript) {
 				$GLOBALS['TT']->setTSlogMessage($minifyErrorScript, 3);
 			}
 			if ($inlineJS) {
-				$inlineJS = \TYPO3\CMS\Core\Utility\GeneralUtility::minifyJavaScript($inlineJS, $minifyErrorInline);
+				$inlineJS = GeneralUtility::minifyJavaScript($inlineJS, $minifyErrorInline);
 				if ($minifyErrorInline) {
 					$GLOBALS['TT']->setTSlogMessage($minifyErrorInline, 3);
 				}
 			}
 			if ($inlineFooterJs) {
-				$inlineFooterJs = \TYPO3\CMS\Core\Utility\GeneralUtility::minifyJavaScript($inlineFooterJs, $minifyErrorInline);
+				$inlineFooterJs = GeneralUtility::minifyJavaScript($inlineFooterJs, $minifyErrorInline);
 				if ($minifyErrorInline) {
 					$GLOBALS['TT']->setTSlogMessage($minifyErrorInline, 3);
 				}
@@ -877,7 +880,7 @@ class PageGenerator {
 		}
 		// Header complete, now add content
 		if ($GLOBALS['TSFE']->pSetup['frameSet.']) {
-			$fs = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Page\\FramesetRenderer');
+			$fs = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Page\\FramesetRenderer');
 			$pageRenderer->addBodyContent($fs->make($GLOBALS['TSFE']->pSetup['frameSet.']));
 			$pageRenderer->addBodyContent(LF . '<noframes>' . LF);
 		}
@@ -972,7 +975,7 @@ class PageGenerator {
 		// Write file:
 		if ($script) {
 			if (!@is_file((PATH_site . $script))) {
-				\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile(PATH_site . $script, $str);
+				GeneralUtility::writeFile(PATH_site . $script, $str);
 			}
 		}
 		return $script;

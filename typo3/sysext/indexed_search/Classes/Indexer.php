@@ -26,6 +26,9 @@ namespace TYPO3\CMS\IndexedSearch;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * This class is a search indexer for TYPO3
  *
@@ -355,8 +358,8 @@ class Indexer {
 		// cHash values:
 		if ($createCHash) {
 			/* @var $cacheHash \TYPO3\CMS\Frontend\Page\CacheHashCalculator */
-			$cacheHash = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Page\\CacheHashCalculator');
-			$this->conf['cHash'] = $cacheHash->generateForParameters(\TYPO3\CMS\Core\Utility\GeneralUtility::implodeArrayForUrl('', $cHash_array));
+			$cacheHash = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Page\\CacheHashCalculator');
+			$this->conf['cHash'] = $cacheHash->generateForParameters(GeneralUtility::implodeArrayForUrl('', $cHash_array));
 		} else {
 			$this->conf['cHash'] = '';
 		}
@@ -477,16 +480,16 @@ class Indexer {
 		}
 		// Initialize lexer (class that deconstructs the text into words):
 		$lexerObjRef = $TYPO3_CONF_VARS['EXTCONF']['indexed_search']['lexer'] ? $TYPO3_CONF_VARS['EXTCONF']['indexed_search']['lexer'] : 'TYPO3\\CMS\\IndexedSearch\\Lexer';
-		$this->lexerObj = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($lexerObjRef);
+		$this->lexerObj = GeneralUtility::getUserObj($lexerObjRef);
 		$this->lexerObj->debug = $this->indexerConfig['debugMode'];
 		// Initialize metaphone hook:
 		// Make sure that the hook is loaded _after_ indexed_search as this may overwrite the hook depending on the configuration.
 		if ($this->enableMetaphoneSearch && $TYPO3_CONF_VARS['EXTCONF']['indexed_search']['metaphone']) {
-			$this->metaphoneObj = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($TYPO3_CONF_VARS['EXTCONF']['indexed_search']['metaphone']);
+			$this->metaphoneObj = GeneralUtility::getUserObj($TYPO3_CONF_VARS['EXTCONF']['indexed_search']['metaphone']);
 			$this->metaphoneObj->pObj = $this;
 		}
 		// Init charset class:
-		$this->csObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Charset\\CharsetConverter');
+		$this->csObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Charset\\CharsetConverter');
 	}
 
 	/**
@@ -501,7 +504,7 @@ class Indexer {
 		global $TYPO3_CONF_VARS;
 		if (is_array($TYPO3_CONF_VARS['EXTCONF']['indexed_search']['external_parsers'])) {
 			foreach ($TYPO3_CONF_VARS['EXTCONF']['indexed_search']['external_parsers'] as $extension => $_objRef) {
-				$this->external_parsers[$extension] = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($_objRef);
+				$this->external_parsers[$extension] = GeneralUtility::getUserObj($_objRef);
 				$this->external_parsers[$extension]->pObj = $this;
 				// Init parser and if it returns FALSE, unset its entry again:
 				if (!$this->external_parsers[$extension]->initParser($extension)) {
@@ -548,7 +551,7 @@ class Indexer {
 			// This will also prevent pages from being indexed if a fe_users has logged in and it turns out that the page content is not changed anyway. fe_users logged in should always search with hash_gr_list = "0,-1" OR "[their_group_list]". This situation will be prevented only if the page has been indexed with no user login on before hand. Else the page will be indexed by users until that event. However that does not present a serious problem.
 			$checkCHash = $this->checkContentHash();
 			if (!is_array($checkCHash) || $check === 1) {
-				$Pstart = \TYPO3\CMS\Core\Utility\GeneralUtility::milliseconds();
+				$Pstart = GeneralUtility::milliseconds();
 				$this->log_push('Converting charset of content (' . $this->conf['metaCharset'] . ') to utf-8', '');
 				$this->charsetEntity2utf8($this->contentParts, $this->conf['metaCharset']);
 				$this->log_pull();
@@ -572,7 +575,7 @@ class Indexer {
 				}
 				$this->log_pull();
 				// Set parsetime
-				$this->updateParsetime($this->hash['phash'], \TYPO3\CMS\Core\Utility\GeneralUtility::milliseconds() - $Pstart);
+				$this->updateParsetime($this->hash['phash'], GeneralUtility::milliseconds() - $Pstart);
 				// Checking external files if configured for.
 				$this->log_push('Checking external files', '');
 				if ($this->conf['index_externals']) {
@@ -619,7 +622,7 @@ class Indexer {
 			}
 			// TODO The code below stops at first unset tag. Is that correct?
 			for ($i = 0; isset($meta[$i]); $i++) {
-				$meta[$i] = \TYPO3\CMS\Core\Utility\GeneralUtility::get_tag_attributes($meta[$i]);
+				$meta[$i] = GeneralUtility::get_tag_attributes($meta[$i]);
 				if (stristr($meta[$i]['name'], 'keywords')) {
 					$contentArr['keywords'] .= ',' . $this->addSpacesToKeywordList($meta[$i]['content']);
 				}
@@ -757,16 +760,16 @@ class Indexer {
 		$list = $this->extractHyperLinks($content);
 		if ($this->indexerConfig['useCrawlerForExternalFiles'] && \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('crawler')) {
 			$this->includeCrawlerClass();
-			$crawler = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_crawler_lib');
+			$crawler = GeneralUtility::makeInstance('tx_crawler_lib');
 		}
 		// Traverse links:
 		foreach ($list as $linkInfo) {
 			// Decode entities:
 			if ($linkInfo['localPath']) {
 				// localPath means: This file is sent by a download script. While the indexed URL has to point to $linkInfo['href'], the absolute path to the file is specified here!
-				$linkSource = \TYPO3\CMS\Core\Utility\GeneralUtility::htmlspecialchars_decode($linkInfo['localPath']);
+				$linkSource = GeneralUtility::htmlspecialchars_decode($linkInfo['localPath']);
 			} else {
-				$linkSource = \TYPO3\CMS\Core\Utility\GeneralUtility::htmlspecialchars_decode($linkInfo['href']);
+				$linkSource = GeneralUtility::htmlspecialchars_decode($linkInfo['href']);
 			}
 			// Parse URL:
 			$qParts = parse_url($linkSource);
@@ -783,10 +786,10 @@ class Indexer {
 				}
 			} elseif (!$qParts['query']) {
 				$linkSource = urldecode($linkSource);
-				if (\TYPO3\CMS\Core\Utility\GeneralUtility::isAllowedAbsPath($linkSource)) {
+				if (GeneralUtility::isAllowedAbsPath($linkSource)) {
 					$localFile = $linkSource;
 				} else {
-					$localFile = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName(PATH_site . $linkSource);
+					$localFile = GeneralUtility::getFileAbsFileName(PATH_site . $linkSource);
 				}
 				if ($localFile && @is_file($localFile)) {
 					// Index local file:
@@ -832,7 +835,7 @@ class Indexer {
 	 * @todo Define visibility
 	 */
 	public function extractHyperLinks($html) {
-		$htmlParser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Core\Html\HtmlParser');
+		$htmlParser = GeneralUtility::makeInstance('TYPO3\CMS\Core\Html\HtmlParser');
 		$htmlParts = $htmlParser->splitTags('a', $html);
 		$hyperLinksData = array();
 		foreach ($htmlParts as $index => $tagData) {
@@ -861,7 +864,7 @@ class Indexer {
 	 */
 	public function extractBaseHref($html) {
 		$href = '';
-		$htmlParser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Core\Html\HtmlParser');
+		$htmlParser = GeneralUtility::makeInstance('TYPO3\CMS\Core\Html\HtmlParser');
 		$htmlParts = $htmlParser->splitTags('base', $html);
 		foreach ($htmlParts as $index => $tagData) {
 			if ($index % 2 !== 0) {
@@ -899,12 +902,12 @@ class Indexer {
 		// Get headers:
 		$urlHeaders = $this->getUrlHeaders($externalUrl);
 		if (stristr($urlHeaders['Content-Type'], 'text/html')) {
-			$content = ($this->indexExternalUrl_content = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($externalUrl));
+			$content = ($this->indexExternalUrl_content = GeneralUtility::getUrl($externalUrl));
 			if (strlen($content)) {
 				// Create temporary file:
-				$tmpFile = \TYPO3\CMS\Core\Utility\GeneralUtility::tempnam('EXTERNAL_URL');
+				$tmpFile = GeneralUtility::tempnam('EXTERNAL_URL');
 				if ($tmpFile) {
-					\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($tmpFile, $content);
+					GeneralUtility::writeFile($tmpFile, $content);
 					// Index that file:
 					$this->indexRegularDocument($externalUrl, TRUE, $tmpFile, 'html');
 					// Using "TRUE" for second parameter to force indexing of external URLs (mtime doesn't make sense, does it?)
@@ -924,10 +927,10 @@ class Indexer {
 	 */
 	public function getUrlHeaders($url) {
 		// Try to get the headers only
-		$content = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($url, 2);
+		$content = GeneralUtility::getUrl($url, 2);
 		if (strlen($content)) {
 			// Compile headers:
-			$headers = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(LF, $content, 1);
+			$headers = GeneralUtility::trimExplode(LF, $content, 1);
 			$retVal = array();
 			foreach ($headers as $line) {
 				if (!strlen(trim($line))) {
@@ -976,7 +979,7 @@ class Indexer {
 		$localPath = '';
 		$indexLocalFiles = $GLOBALS['T3_VAR']['ext']['indexed_search']['indexLocalFiles'];
 		if (is_array($indexLocalFiles)) {
-			$md5 = \TYPO3\CMS\Core\Utility\GeneralUtility::shortMD5($sourcePath);
+			$md5 = GeneralUtility::shortMD5($sourcePath);
 			// Note: not using self::isAllowedLocalFile here because this method
 			// is allowed to index files outside of the web site (for example,
 			// protected downloads)
@@ -995,7 +998,7 @@ class Indexer {
 	 */
 	protected function createLocalPathUsingDomainURL($sourcePath) {
 		$localPath = '';
-		$baseURL = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
+		$baseURL = GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
 		$baseURLLength = strlen($baseURL);
 		if (substr($sourcePath, 0, $baseURLLength) == $baseURL) {
 			$sourcePath = substr($sourcePath, $baseURLLength);
@@ -1084,7 +1087,7 @@ class Indexer {
 	 * @return boolean
 	 */
 	static protected function isAllowedLocalFile($filePath) {
-		$filePath = \TYPO3\CMS\Core\Utility\GeneralUtility::resolveBackPath($filePath);
+		$filePath = GeneralUtility::resolveBackPath($filePath);
 		$insideWebPath = substr($filePath, 0, strlen(PATH_site)) == PATH_site;
 		$isFile = is_file($filePath);
 		return $insideWebPath && $isFile;
@@ -1111,14 +1114,14 @@ class Indexer {
 		$ext = $altExtension ? $altExtension : strtolower($fI['extension']);
 		// Create abs-path:
 		if (!$contentTmpFile) {
-			if (!\TYPO3\CMS\Core\Utility\GeneralUtility::isAbsPath($file)) {
+			if (!GeneralUtility::isAbsPath($file)) {
 				// Relative, prepend PATH_site:
-				$absFile = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName(PATH_site . $file);
+				$absFile = GeneralUtility::getFileAbsFileName(PATH_site . $file);
 			} else {
 				// Absolute, pass-through:
 				$absFile = $file;
 			}
-			$absFile = \TYPO3\CMS\Core\Utility\GeneralUtility::isAllowedAbsPath($absFile) ? $absFile : '';
+			$absFile = GeneralUtility::isAllowedAbsPath($absFile) ? $absFile : '';
 		} else {
 			$absFile = $contentTmpFile;
 		}
@@ -1130,7 +1133,7 @@ class Indexer {
 				foreach ($cParts as $cPKey) {
 					$this->internal_log = array();
 					$this->log_push('Index: ' . str_replace('.', '_', basename($file)) . ($cPKey ? '#' . $cPKey : ''), '');
-					$Pstart = \TYPO3\CMS\Core\Utility\GeneralUtility::milliseconds();
+					$Pstart = GeneralUtility::milliseconds();
 					$subinfo = array('key' => $cPKey);
 					// Setting page range. This is "0" (zero) when no division is made, otherwise a range like "1-3"
 					$phash_arr = ($this->file_phash_arr = $this->setExtHashes($file, $subinfo));
@@ -1176,7 +1179,7 @@ class Indexer {
 									}
 									$this->log_pull();
 									// Set parsetime
-									$this->updateParsetime($phash_arr['phash'], \TYPO3\CMS\Core\Utility\GeneralUtility::milliseconds() - $Pstart);
+									$this->updateParsetime($phash_arr['phash'], GeneralUtility::milliseconds() - $Pstart);
 								} else {
 									// Update the timestamp
 									$this->updateTstamp($phash_arr['phash'], $mtime);
@@ -1949,7 +1952,7 @@ class Indexer {
 	 * @todo Define visibility
 	 */
 	public function includeCrawlerClass() {
-		\TYPO3\CMS\Core\Utility\GeneralUtility::requireOnce(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('crawler') . 'class.tx_crawler_lib.php');
+		GeneralUtility::requireOnce(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('crawler') . 'class.tx_crawler_lib.php');
 	}
 
 	/********************************
@@ -2147,7 +2150,7 @@ class Indexer {
 	 * @see http://bugs.typo3.org/view.php?id=1436
 	 */
 	protected function addSpacesToKeywordList($keywordList) {
-		$keywords = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $keywordList);
+		$keywords = GeneralUtility::trimExplode(',', $keywordList);
 		return ' ' . implode(', ', $keywords) . ' ';
 	}
 

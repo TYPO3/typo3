@@ -23,12 +23,9 @@ namespace TYPO3\CMS\Core\Charset;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-/**
- * Class for conversion between charsets.
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @author Martin Kutschker <martin.t.kutschker@blackbox.net>
- */
+
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Notes on UTF-8
  *
@@ -57,6 +54,7 @@ namespace TYPO3\CMS\Core\Charset;
  * - split/spliti
  * - ...
  */
+
 /**
  * Class for conversion between charsets
  *
@@ -620,7 +618,7 @@ class CharsetConverter {
 	 * Default constructor.
 	 */
 	public function __construct() {
-		$this->locales = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Localization\\Locales');
+		$this->locales = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Localization\\Locales');
 	}
 
 	/**
@@ -1156,15 +1154,15 @@ class CharsetConverter {
 			// Conversion table filename:
 			$charsetConvTableFile = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('core') . 'Resources/Private/Charsets/csconvtbl/' . $charset . '.tbl';
 			// If the conversion table is found:
-			if ($charset && \TYPO3\CMS\Core\Utility\GeneralUtility::validPathStr($charsetConvTableFile) && @is_file($charsetConvTableFile)) {
+			if ($charset && GeneralUtility::validPathStr($charsetConvTableFile) && @is_file($charsetConvTableFile)) {
 				// Cache file for charsets:
 				// Caching brought parsing time for gb2312 down from 2400 ms to 150 ms. For other charsets we are talking 11 ms down to zero.
-				$cacheFile = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName('typo3temp/cs/charset_' . $charset . '.tbl');
+				$cacheFile = GeneralUtility::getFileAbsFileName('typo3temp/cs/charset_' . $charset . '.tbl');
 				if ($cacheFile && @is_file($cacheFile)) {
-					$this->parsedCharsets[$charset] = unserialize(\TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($cacheFile));
+					$this->parsedCharsets[$charset] = unserialize(GeneralUtility::getUrl($cacheFile));
 				} else {
 					// Parse conversion table into lines:
-					$lines = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(LF, \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($charsetConvTableFile), 1);
+					$lines = GeneralUtility::trimExplode(LF, GeneralUtility::getUrl($charsetConvTableFile), 1);
 					// Initialize the internal variable holding the conv. table:
 					$this->parsedCharsets[$charset] = array('local' => array(), 'utf8' => array());
 					// traverse the lines:
@@ -1194,7 +1192,7 @@ class CharsetConverter {
 						}
 					}
 					if ($cacheFile) {
-						\TYPO3\CMS\Core\Utility\GeneralUtility::writeFileToTypo3tempDir($cacheFile, serialize($this->parsedCharsets[$charset]));
+						GeneralUtility::writeFileToTypo3tempDir($cacheFile, serialize($this->parsedCharsets[$charset]));
 					}
 				}
 				return 2;
@@ -1218,8 +1216,8 @@ class CharsetConverter {
 	 */
 	public function initUnicodeData($mode = NULL) {
 		// Cache files
-		$cacheFileCase = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName('typo3temp/cs/cscase_utf-8.tbl');
-		$cacheFileASCII = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName('typo3temp/cs/csascii_utf-8.tbl');
+		$cacheFileCase = GeneralUtility::getFileAbsFileName('typo3temp/cs/cscase_utf-8.tbl');
+		$cacheFileASCII = GeneralUtility::getFileAbsFileName('typo3temp/cs/csascii_utf-8.tbl');
 		// Only process if the tables are not yet loaded
 		switch ($mode) {
 			case 'case':
@@ -1228,7 +1226,7 @@ class CharsetConverter {
 				}
 				// Use cached version if possible
 				if ($cacheFileCase && @is_file($cacheFileCase)) {
-					$this->caseFolding['utf-8'] = unserialize(\TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($cacheFileCase));
+					$this->caseFolding['utf-8'] = unserialize(GeneralUtility::getUrl($cacheFileCase));
 					return 2;
 				}
 				break;
@@ -1238,14 +1236,14 @@ class CharsetConverter {
 				}
 				// Use cached version if possible
 				if ($cacheFileASCII && @is_file($cacheFileASCII)) {
-					$this->toASCII['utf-8'] = unserialize(\TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($cacheFileASCII));
+					$this->toASCII['utf-8'] = unserialize(GeneralUtility::getUrl($cacheFileASCII));
 					return 2;
 				}
 				break;
 		}
 		// Process main Unicode data file
 		$unicodeDataFile = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('core') . 'Resources/Private/Charsets/unidata/UnicodeData.txt';
-		if (!(\TYPO3\CMS\Core\Utility\GeneralUtility::validPathStr($unicodeDataFile) && @is_file($unicodeDataFile))) {
+		if (!(GeneralUtility::validPathStr($unicodeDataFile) && @is_file($unicodeDataFile))) {
 			return FALSE;
 		}
 		$fh = fopen($unicodeDataFile, 'rb');
@@ -1343,13 +1341,13 @@ class CharsetConverter {
 		fclose($fh);
 		// Process additional Unicode data for casing (allow folded characters to expand into a sequence)
 		$specialCasingFile = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('core') . 'Resources/Private/Charsets/unidata/SpecialCasing.txt';
-		if (\TYPO3\CMS\Core\Utility\GeneralUtility::validPathStr($specialCasingFile) && @is_file($specialCasingFile)) {
+		if (GeneralUtility::validPathStr($specialCasingFile) && @is_file($specialCasingFile)) {
 			$fh = fopen($specialCasingFile, 'rb');
 			if ($fh) {
 				while (!feof($fh)) {
 					$line = fgets($fh, 4096);
 					if ($line[0] != '#' && trim($line) != '') {
-						list($char, $lower, $title, $upper, $cond) = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(';', $line);
+						list($char, $lower, $title, $upper, $cond) = GeneralUtility::trimExplode(';', $line);
 						if ($cond == '' || $cond[0] == '#') {
 							$utf8_char = $this->UnumberToChar(hexdec($char));
 							if ($char != $lower) {
@@ -1381,13 +1379,13 @@ class CharsetConverter {
 		}
 		// Process custom decompositions
 		$customTranslitFile = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('core') . 'Resources/Private/Charsets/unidata/Translit.txt';
-		if (\TYPO3\CMS\Core\Utility\GeneralUtility::validPathStr($customTranslitFile) && @is_file($customTranslitFile)) {
+		if (GeneralUtility::validPathStr($customTranslitFile) && @is_file($customTranslitFile)) {
 			$fh = fopen($customTranslitFile, 'rb');
 			if ($fh) {
 				while (!feof($fh)) {
 					$line = fgets($fh, 4096);
 					if ($line[0] != '#' && trim($line) != '') {
-						list($char, $translit) = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(';', $line);
+						list($char, $translit) = GeneralUtility::trimExplode(';', $line);
 						if (!$translit) {
 							$omit['U+' . $char] = 1;
 						}
@@ -1441,10 +1439,10 @@ class CharsetConverter {
 			}
 		}
 		if ($cacheFileCase) {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::writeFileToTypo3tempDir($cacheFileCase, serialize($utf8CaseFolding));
+			GeneralUtility::writeFileToTypo3tempDir($cacheFileCase, serialize($utf8CaseFolding));
 		}
 		if ($cacheFileASCII) {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::writeFileToTypo3tempDir($cacheFileASCII, serialize($ascii));
+			GeneralUtility::writeFileToTypo3tempDir($cacheFileASCII, serialize($ascii));
 		}
 		return 3;
 	}
@@ -1464,9 +1462,9 @@ class CharsetConverter {
 			return 1;
 		}
 		// Use cached version if possible
-		$cacheFile = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName('typo3temp/cs/cscase_' . $charset . '.tbl');
+		$cacheFile = GeneralUtility::getFileAbsFileName('typo3temp/cs/cscase_' . $charset . '.tbl');
 		if ($cacheFile && @is_file($cacheFile)) {
-			$this->caseFolding[$charset] = unserialize(\TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($cacheFile));
+			$this->caseFolding[$charset] = unserialize(GeneralUtility::getUrl($cacheFile));
 			return 2;
 		}
 		// init UTF-8 conversion for this charset
@@ -1506,7 +1504,7 @@ class CharsetConverter {
 			$this->caseFolding[$charset]['toLower'][chr($i)] = chr($i + 32);
 		}
 		if ($cacheFile) {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::writeFileToTypo3tempDir($cacheFile, serialize($this->caseFolding[$charset]));
+			GeneralUtility::writeFileToTypo3tempDir($cacheFile, serialize($this->caseFolding[$charset]));
 		}
 		return 3;
 	}
@@ -1526,9 +1524,9 @@ class CharsetConverter {
 			return 1;
 		}
 		// Use cached version if possible
-		$cacheFile = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName('typo3temp/cs/csascii_' . $charset . '.tbl');
+		$cacheFile = GeneralUtility::getFileAbsFileName('typo3temp/cs/csascii_' . $charset . '.tbl');
 		if ($cacheFile && @is_file($cacheFile)) {
-			$this->toASCII[$charset] = unserialize(\TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($cacheFile));
+			$this->toASCII[$charset] = unserialize(GeneralUtility::getUrl($cacheFile));
 			return 2;
 		}
 		// Init UTF-8 conversion for this charset
@@ -1548,7 +1546,7 @@ class CharsetConverter {
 			}
 		}
 		if ($cacheFile) {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::writeFileToTypo3tempDir($cacheFile, serialize($this->toASCII[$charset]));
+			GeneralUtility::writeFileToTypo3tempDir($cacheFile, serialize($this->toASCII[$charset]));
 		}
 		return 3;
 	}
@@ -1838,7 +1836,7 @@ class CharsetConverter {
 		}
 		// Move the iso codes to the (because we're comparing the keys with "isset" later on)
 		$allLanguageCodes = array_flip($allLanguageCodes);
-		$preferredLanguages = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $languageCodesList);
+		$preferredLanguages = GeneralUtility::trimExplode(',', $languageCodesList);
 		// Order the preferred languages after they key
 		$sortedPreferredLanguages = array();
 		foreach ($preferredLanguages as $preferredLanguage) {

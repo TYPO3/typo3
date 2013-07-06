@@ -26,14 +26,9 @@ namespace TYPO3\CMS\Frontend\Page;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-/**
- * Contains a class with "Page functions" mainly for the frontend
- *
- * Revised for TYPO3 3.6 2/2003 by Kasper Skårhøj
- * XHTML-trans compliant
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- */
+
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Page functions, a lot of sql/pages-related functions
  * Mainly used in the frontend but also in some cases in the backend.
@@ -174,7 +169,7 @@ class PageRepository {
 		// Hook to manipulate the page uid for special overlay handling
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_page.php']['getPage'])) {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_page.php']['getPage'] as $classRef) {
-				$hookObject = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($classRef);
+				$hookObject = GeneralUtility::getUserObj($classRef);
 				if (!$hookObject instanceof \TYPO3\CMS\Frontend\Page\PageRepositoryGetPageHookInterface) {
 					throw new \UnexpectedValueException('$hookObject must implement interface TYPO3\\CMS\\Frontend\\Page\\PageRepositoryGetPageHookInterface', 1251476766);
 				}
@@ -289,7 +284,7 @@ class PageRepository {
 		$row = NULL;
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_page.php']['getPageOverlay'])) {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_page.php']['getPageOverlay'] as $classRef) {
-				$hookObject = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($classRef);
+				$hookObject = GeneralUtility::getUserObj($classRef);
 				if (!$hookObject instanceof \TYPO3\CMS\Frontend\Page\PageRepositoryGetPageOverlayHookInterface) {
 					throw new \UnexpectedValueException('$hookObject must implement interface TYPO3\\CMS\\Frontend\\Page\\PageRepositoryGetPageOverlayHookInterface', 1269878881);
 				}
@@ -298,7 +293,7 @@ class PageRepository {
 		}
 		// If language UID is different from zero, do overlay:
 		if ($lUid) {
-			$fieldArr = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['FE']['pageOverlayFields']);
+			$fieldArr = GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['FE']['pageOverlayFields']);
 			if (is_array($pageInput)) {
 				// Was the whole record
 				$page_id = $pageInput['uid'];
@@ -351,7 +346,7 @@ class PageRepository {
 	public function getRecordOverlay($table, $row, $sys_language_content, $OLmode = '') {
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_page.php']['getRecordOverlay'])) {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_page.php']['getRecordOverlay'] as $classRef) {
-				$hookObject = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($classRef);
+				$hookObject = GeneralUtility::getUserObj($classRef);
 				if (!$hookObject instanceof \TYPO3\CMS\Frontend\Page\PageRepositoryGetRecordOverlayHookInterface) {
 					throw new \UnexpectedValueException('$hookObject must implement interface TYPO3\\CMS\\Frontend\\Page\\PageRepositoryGetRecordOverlayHookInterface', 1269881658);
 				}
@@ -413,7 +408,7 @@ class PageRepository {
 		}
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_page.php']['getRecordOverlay'])) {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_page.php']['getRecordOverlay'] as $classRef) {
-				$hookObject = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($classRef);
+				$hookObject = GeneralUtility::getUserObj($classRef);
 				if (!$hookObject instanceof \TYPO3\CMS\Frontend\Page\PageRepositoryGetRecordOverlayHookInterface) {
 					throw new \UnexpectedValueException('$hookObject must implement interface TYPO3\\CMS\\Frontend\\Page\\PageRepositoryGetRecordOverlayHookInterface', 1269881659);
 				}
@@ -557,7 +552,7 @@ class PageRepository {
 	 * @todo Define visibility
 	 */
 	public function getRootLine($uid, $MP = '', $ignoreMPerrors = FALSE) {
-		$rootline = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Utility\\RootlineUtility', $uid, $MP, $this);
+		$rootline = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Utility\\RootlineUtility', $uid, $MP, $this);
 		try {
 			return $rootline->get();
 		} catch (\RuntimeException $ex) {
@@ -591,7 +586,7 @@ class PageRepository {
 			$path = '';
 			for ($a = 0; $a < $c; $a++) {
 				if ($rl[$a]['uid']) {
-					$path .= '/' . \TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs(strip_tags($rl[$a]['title']), $len);
+					$path .= '/' . GeneralUtility::fixed_lgd_cs(strip_tags($rl[$a]['title']), $len);
 				}
 			}
 			return $path;
@@ -614,7 +609,7 @@ class PageRepository {
 			$uI = parse_url($redirectTo);
 			// Relative path assumed now.
 			if (!$uI['scheme'] && substr($redirectTo, 0, 1) != '/') {
-				$redirectTo = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . $redirectTo;
+				$redirectTo = GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . $redirectTo;
 			}
 			return $redirectTo;
 		}
@@ -906,7 +901,7 @@ class PageRepository {
 							'ctrl' => $ctrl
 						);
 						foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_page.php']['addEnableColumns'] as $_funcRef) {
-							$query .= \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($_funcRef, $_params, $this);
+							$query .= GeneralUtility::callUserFunction($_funcRef, $_params, $this);
 						}
 					}
 				}
@@ -927,7 +922,7 @@ class PageRepository {
 	 * @todo Define visibility
 	 */
 	public function getMultipleGroupsWhereClause($field, $table) {
-		$memberGroups = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $GLOBALS['TSFE']->gr_list);
+		$memberGroups = GeneralUtility::intExplode(',', $GLOBALS['TSFE']->gr_list);
 		$orChecks = array();
 		// If the field is empty, then OK
 		$orChecks[] = $field . '=\'\'';

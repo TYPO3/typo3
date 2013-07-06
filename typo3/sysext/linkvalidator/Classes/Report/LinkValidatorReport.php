@@ -24,6 +24,9 @@ namespace TYPO3\CMS\Linkvalidator\Report;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Module 'Linkvalidator' for the 'linkvalidator' extension
  *
@@ -151,17 +154,17 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
 	 */
 	public function main() {
 		$GLOBALS['LANG']->includeLLFile('EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf');
-		$this->searchLevel = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('search_levels');
+		$this->searchLevel = GeneralUtility::_GP('search_levels');
 		if (isset($this->pObj->id)) {
 			$this->modTS = \TYPO3\CMS\Backend\Utility\BackendUtility::getModTSconfig($this->pObj->id, 'mod.linkvalidator');
 			$this->modTS = $this->modTS['properties'];
 		}
-		$update = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('updateLinkList');
+		$update = GeneralUtility::_GP('updateLinkList');
 		$prefix = '';
 		if (!empty($update)) {
 			$prefix = 'check';
 		}
-		$set = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP($prefix . 'SET');
+		$set = GeneralUtility::_GP($prefix . 'SET');
 		$this->pObj->handleExternalFunctionValue();
 		if (isset($this->searchLevel)) {
 			$this->pObj->MOD_SETTINGS['searchlevel'] = $this->searchLevel;
@@ -216,7 +219,7 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
 			$this->updateListHtml = '<input type="submit" name="updateLinkList" id="updateLinkList" value="' . $GLOBALS['LANG']->getLL('label_update') . '"/>';
 		}
 		$this->refreshListHtml = '<input type="submit" name="refreshLinkList" id="refreshLinkList" value="' . $GLOBALS['LANG']->getLL('label_refresh') . '"/>';
-		$this->processor = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Linkvalidator\\LinkAnalyzer');
+		$this->processor = GeneralUtility::makeInstance('TYPO3\\CMS\\Linkvalidator\\LinkAnalyzer');
 		$this->updateBrokenLinks();
 		$brokenLinkOverView = $this->processor->getLinkCounts($this->pObj->id);
 		$this->checkOptHtml = $this->getCheckOptions($brokenLinkOverView);
@@ -284,10 +287,10 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
 	protected function initialize() {
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'])) {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'] as $linkType => $classRef) {
-				$this->hookObjectsArr[$linkType] = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($classRef);
+				$this->hookObjectsArr[$linkType] = GeneralUtility::getUserObj($classRef);
 			}
 		}
-		$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
+		$this->doc = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->setModuleTemplate(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('linkvalidator') . 'Resources/Private/Templates/mod_template.html');
 		$this->relativePath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('linkvalidator');
@@ -312,7 +315,7 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
 		$searchFields = array();
 		// Get the searchFields from TypoScript
 		foreach ($this->modTS['searchFields.'] as $table => $fieldList) {
-			$fields = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $fieldList);
+			$fields = GeneralUtility::trimExplode(',', $fieldList);
 			foreach ($fields as $field) {
 				if (!$searchFields || !is_array($searchFields[$table]) || array_search($field, $searchFields[$table]) == FALSE) {
 					$searchFields[$table][] = $field;
@@ -328,7 +331,7 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
 			}
 			$this->processor->init($searchFields, $pageList);
 			// Check if button press
-			$update = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('updateLinkList');
+			$update = GeneralUtility::_GP('updateLinkList');
 			if (!empty($update)) {
 				$this->processor->getLinkStatistics($this->checkOpt, $this->modTS['checkhidden']);
 			}
@@ -346,7 +349,7 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
 		} else {
 			// If no access or if ID == zero
 			/** @var \TYPO3\CMS\Core\Messaging\FlashMessage $message */
-			$message = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+			$message = GeneralUtility::makeInstance(
 				'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
 				$GLOBALS['LANG']->getLL('no.access'),
 				$GLOBALS['LANG']->getLL('no.access.title'),
@@ -461,7 +464,7 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
 	protected function getNoBrokenLinkMessage(array $brokenLinksMarker) {
 		$brokenLinksMarker['LIST_HEADER'] = $this->doc->sectionHeader($GLOBALS['LANG']->getLL('list.header'));
 		/** @var $message \TYPO3\CMS\Core\Messaging\FlashMessage */
-		$message = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+		$message = GeneralUtility::makeInstance(
 			'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
 			$GLOBALS['LANG']->getLL('list.no.broken.links'),
 			$GLOBALS['LANG']->getLL('list.no.broken.links.title'),
@@ -511,7 +514,7 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
 		$brokenUrl = $hookObj->getBrokenUrl($row);
 		// Construct link to edit the content element
 		$params = '&edit[' . $table . '][' . $row['record_uid'] . ']=edit';
-		$requestUri = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI') .
+		$requestUri = GeneralUtility::getIndpEnv('REQUEST_URI') .
 			'?id=' . $this->pObj->id .
 			'&search_levels=' . $this->searchLevel;
 		$actionLink = '<a href="#" onclick="';
@@ -592,7 +595,7 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
 		} else {
 			$markerArray['total_count'] = $brokenLinkOverView['brokenlinkCount'];
 		}
-		$linktypes = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->modTS['linktypes'], 1);
+		$linktypes = GeneralUtility::trimExplode(',', $this->modTS['linktypes'], 1);
 		$hookSectionContent = '';
 		if (is_array($linktypes)) {
 			if (!empty($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'])

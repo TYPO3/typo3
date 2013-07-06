@@ -24,6 +24,8 @@ namespace TYPO3\CMS\Recycler\Controller;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Controller class for the 'recycler' extension. Handles the AJAX Requests
  *
@@ -71,8 +73,8 @@ class RecyclerAjaxController {
 	 * @return void
 	 */
 	public function mapCommand() {
-		$this->command = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('cmd');
-		$this->data = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('data');
+		$this->command = GeneralUtility::_GP('cmd');
+		$this->data = GeneralUtility::_GP('data');
 		// check params
 		if (!is_string($this->command)) {
 			// @TODO make devlog output
@@ -91,42 +93,42 @@ class RecyclerAjaxController {
 		$str = '';
 		switch ($this->command) {
 			case 'getDeletedRecords':
-				$table = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('table') ? \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('table') : \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('tableDefault');
-				$limit = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('limit') ? (int) \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('limit') : (int) \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('pagingSizeDefault');
-				$start = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('start') ? (int) \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('start') : 0;
-				$filter = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('filterTxt') ? \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('filterTxt') : '';
-				$startUid = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('startUid') ? \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('startUid') : '';
-				$depth = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('depth') ? \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('depth') : '';
+				$table = GeneralUtility::_GP('table') ? GeneralUtility::_GP('table') : GeneralUtility::_GP('tableDefault');
+				$limit = GeneralUtility::_GP('limit') ? (int) GeneralUtility::_GP('limit') : (int) GeneralUtility::_GP('pagingSizeDefault');
+				$start = GeneralUtility::_GP('start') ? (int) GeneralUtility::_GP('start') : 0;
+				$filter = GeneralUtility::_GP('filterTxt') ? GeneralUtility::_GP('filterTxt') : '';
+				$startUid = GeneralUtility::_GP('startUid') ? GeneralUtility::_GP('startUid') : '';
+				$depth = GeneralUtility::_GP('depth') ? GeneralUtility::_GP('depth') : '';
 				$this->setDataInSession('tableSelection', $table);
-				$model = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Recycler\\Domain\\Model\\DeletedRecords');
+				$model = GeneralUtility::makeInstance('TYPO3\\CMS\\Recycler\\Domain\\Model\\DeletedRecords');
 				$model->loadData($startUid, $table, $depth, $start . ',' . $limit, $filter);
 				$deletedRowsArray = $model->getDeletedRows();
-				$model = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Recycler\\Domain\\Model\\DeletedRecords');
+				$model = GeneralUtility::makeInstance('TYPO3\\CMS\\Recycler\\Domain\\Model\\DeletedRecords');
 				$totalDeleted = $model->getTotalCount($startUid, $table, $depth, $filter);
 				// load view
-				$view = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Recycler\\Controller\\DeletedRecordsController');
+				$view = GeneralUtility::makeInstance('TYPO3\\CMS\\Recycler\\Controller\\DeletedRecordsController');
 				$str = $view->transform($deletedRowsArray, $totalDeleted);
 				break;
 			case 'doDelete':
 				$str = FALSE;
-				$model = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Recycler\\Domain\\Model\\DeletedRecords');
+				$model = GeneralUtility::makeInstance('TYPO3\\CMS\\Recycler\\Domain\\Model\\DeletedRecords');
 				if ($model->deleteData($this->data)) {
 					$str = TRUE;
 				}
 				break;
 			case 'doUndelete':
 				$str = FALSE;
-				$recursive = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('recursive');
-				$model = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Recycler\\Domain\\Model\\DeletedRecords');
+				$recursive = GeneralUtility::_GP('recursive');
+				$model = GeneralUtility::makeInstance('TYPO3\\CMS\\Recycler\\Domain\\Model\\DeletedRecords');
 				if ($model->undeleteData($this->data, $recursive)) {
 					$str = TRUE;
 				}
 				break;
 			case 'getTables':
-				$depth = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('depth') ? \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('depth') : 0;
-				$startUid = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('startUid') ? \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('startUid') : '';
+				$depth = GeneralUtility::_GP('depth') ? GeneralUtility::_GP('depth') : 0;
+				$startUid = GeneralUtility::_GP('startUid') ? GeneralUtility::_GP('startUid') : '';
 				$this->setDataInSession('depthSelection', $depth);
-				$model = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Recycler\\Domain\\Model\\Tables');
+				$model = GeneralUtility::makeInstance('TYPO3\\CMS\\Recycler\\Domain\\Model\\Tables');
 				$str = $model->getTables('json', 1, $startUid, $depth);
 				break;
 			default:

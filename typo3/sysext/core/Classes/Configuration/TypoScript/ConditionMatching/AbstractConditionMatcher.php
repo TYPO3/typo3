@@ -26,6 +26,9 @@ namespace TYPO3\CMS\Core\Configuration\TypoScript\ConditionMatching;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Matching TypoScript conditions
  *
@@ -204,13 +207,13 @@ abstract class AbstractConditionMatcher {
 	 * @return mixed Returns TRUE or FALSE based on the evaluation
 	 */
 	protected function evaluateConditionCommon($key, $value) {
-		if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList('browser,version,system,useragent', strtolower($key))) {
-			$browserInfo = $this->getBrowserInfo(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('HTTP_USER_AGENT'));
+		if (GeneralUtility::inList('browser,version,system,useragent', strtolower($key))) {
+			$browserInfo = $this->getBrowserInfo(GeneralUtility::getIndpEnv('HTTP_USER_AGENT'));
 		}
-		$keyParts = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('|', $key);
+		$keyParts = GeneralUtility::trimExplode('|', $key);
 		switch ($keyParts[0]) {
 			case 'browser':
-				$values = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $value, TRUE);
+				$values = GeneralUtility::trimExplode(',', $value, TRUE);
 				// take all identified browsers into account, eg chrome deliver
 				// webkit=>532.5, chrome=>4.1, safari=>532.5
 				// so comparing string will be
@@ -226,7 +229,7 @@ abstract class AbstractConditionMatcher {
 				}
 				break;
 			case 'version':
-				$values = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $value, TRUE);
+				$values = GeneralUtility::trimExplode(',', $value, TRUE);
 				foreach ($values as $test) {
 					if (strcspn($test, '=<>') == 0) {
 						switch (substr($test, 0, 1)) {
@@ -252,7 +255,7 @@ abstract class AbstractConditionMatcher {
 				}
 				break;
 			case 'system':
-				$values = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $value, TRUE);
+				$values = GeneralUtility::trimExplode(',', $value, TRUE);
 				// Take all identified systems into account, e.g. mac for iOS, Linux
 				// for android and Windows NT for Windows XP
 				$allSystems .= ' ' . implode(' ', $browserInfo['all_systems']);
@@ -264,9 +267,9 @@ abstract class AbstractConditionMatcher {
 				break;
 			case 'device':
 				if (!isset($this->deviceInfo)) {
-					$this->deviceInfo = $this->getDeviceType(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('HTTP_USER_AGENT'));
+					$this->deviceInfo = $this->getDeviceType(GeneralUtility::getIndpEnv('HTTP_USER_AGENT'));
 				}
-				$values = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $value, TRUE);
+				$values = GeneralUtility::trimExplode(',', $value, TRUE);
 				foreach ($values as $test) {
 					if ($this->deviceInfo == $test) {
 						return TRUE;
@@ -280,25 +283,25 @@ abstract class AbstractConditionMatcher {
 				}
 				break;
 			case 'language':
-				$values = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $value, TRUE);
+				$values = GeneralUtility::trimExplode(',', $value, TRUE);
 				foreach ($values as $test) {
 					if (preg_match('/^\\*.+\\*$/', $test)) {
-						$allLanguages = preg_split('/[,;]/', \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('HTTP_ACCEPT_LANGUAGE'));
+						$allLanguages = preg_split('/[,;]/', GeneralUtility::getIndpEnv('HTTP_ACCEPT_LANGUAGE'));
 						if (in_array(substr($test, 1, -1), $allLanguages)) {
 							return TRUE;
 						}
-					} elseif (\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('HTTP_ACCEPT_LANGUAGE') == $test) {
+					} elseif (GeneralUtility::getIndpEnv('HTTP_ACCEPT_LANGUAGE') == $test) {
 						return TRUE;
 					}
 				}
 				break;
 			case 'IP':
-				if (\TYPO3\CMS\Core\Utility\GeneralUtility::cmpIP(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE_ADDR'), $value)) {
+				if (GeneralUtility::cmpIP(GeneralUtility::getIndpEnv('REMOTE_ADDR'), $value)) {
 					return TRUE;
 				}
 				break;
 			case 'hostname':
-				if (\TYPO3\CMS\Core\Utility\GeneralUtility::cmpFQDN(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE_ADDR'), $value)) {
+				if (GeneralUtility::cmpFQDN(GeneralUtility::getIndpEnv('REMOTE_ADDR'), $value)) {
 					return TRUE;
 				}
 				break;
@@ -342,7 +345,7 @@ abstract class AbstractConditionMatcher {
 				}
 				$theTestValue = intval($theTestValue);
 				// comp
-				$values = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $value, TRUE);
+				$values = GeneralUtility::trimExplode(',', $value, TRUE);
 				foreach ($values as $test) {
 					if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($test)) {
 						$test = '=' . $test;
@@ -353,11 +356,11 @@ abstract class AbstractConditionMatcher {
 				}
 				break;
 			case 'compatVersion':
-				return \TYPO3\CMS\Core\Utility\GeneralUtility::compat_version($value);
+				return GeneralUtility::compat_version($value);
 				break;
 			case 'loginUser':
 				if ($this->isUserLoggedIn()) {
-					$values = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $value, TRUE);
+					$values = GeneralUtility::trimExplode(',', $value, TRUE);
 					foreach ($values as $test) {
 						if ($test == '*' || !strcmp($this->getUserId(), $test)) {
 							return TRUE;
@@ -379,7 +382,7 @@ abstract class AbstractConditionMatcher {
 				}
 				break;
 			case 'globalVar':
-				$values = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $value, TRUE);
+				$values = GeneralUtility::trimExplode(',', $value, TRUE);
 				foreach ($values as $test) {
 					$point = strcspn($test, '!=<>');
 					$theVarName = substr($test, 0, $point);
@@ -391,7 +394,7 @@ abstract class AbstractConditionMatcher {
 				}
 				break;
 			case 'globalString':
-				$values = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $value, TRUE);
+				$values = GeneralUtility::trimExplode(',', $value, TRUE);
 				foreach ($values as $test) {
 					$point = strcspn($test, '=');
 					$theVarName = substr($test, 0, $point);
@@ -405,7 +408,7 @@ abstract class AbstractConditionMatcher {
 			case 'userFunc':
 				$values = preg_split('/\\(|\\)/', $value);
 				$funcName = trim($values[0]);
-				$funcValues = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $values[1]);
+				$funcValues = GeneralUtility::trimExplode(',', $values[1]);
 				if (function_exists($funcName) && call_user_func_array($funcName, $funcValues)) {
 					return TRUE;
 				}
@@ -430,13 +433,13 @@ abstract class AbstractConditionMatcher {
 			if ($k) {
 				switch ((string) trim($vars[0])) {
 					case 'GP':
-						$value = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP($k);
+						$value = GeneralUtility::_GP($k);
 						break;
 					case 'ENV':
 						$value = getenv($k);
 						break;
 					case 'IENV':
-						$value = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv($k);
+						$value = GeneralUtility::getIndpEnv($k);
 						break;
 					case 'LIT':
 						return trim($vars[1]);
@@ -479,7 +482,7 @@ abstract class AbstractConditionMatcher {
 					// multiple values may be split with '|'
 					// see if none matches ("not in list")
 					$found = FALSE;
-					$rightValueParts = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('|', $rightValue);
+					$rightValueParts = GeneralUtility::trimExplode('|', $rightValue);
 					foreach ($rightValueParts as $rightValueSingle) {
 						if ($leftValue == doubleval($rightValueSingle)) {
 							$found = TRUE;
@@ -499,7 +502,7 @@ abstract class AbstractConditionMatcher {
 					// multiple values may be split with '|'
 					// see if one matches ("in list")
 					$found = FALSE;
-					$rightValueParts = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('|', $rightValue);
+					$rightValueParts = GeneralUtility::trimExplode('|', $rightValue);
 					foreach ($rightValueParts as $rightValueSingle) {
 						if ($leftValue == $rightValueSingle) {
 							$found = TRUE;

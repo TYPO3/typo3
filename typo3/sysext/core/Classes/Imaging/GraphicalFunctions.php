@@ -27,6 +27,9 @@ namespace TYPO3\CMS\Core\Imaging;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
+
 /**
  * Standard graphical functions
  *
@@ -337,7 +340,7 @@ class GraphicalFunctions {
 			$this->cmds['png'] = '';
 		}
 		// Setting default JPG parameters:
-		$this->jpegQuality = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($gfxConf['jpg_quality'], 10, 100, 75);
+		$this->jpegQuality = MathUtility::forceIntegerInRange($gfxConf['jpg_quality'], 10, 100, 75);
 		$this->cmds['jpg'] = ($this->cmds['jpeg'] = '-colorspace ' . $this->colorspace . ' -sharpen 50 -quality ' . $this->jpegQuality);
 		if ($gfxConf['im_combine_filename']) {
 			$this->combineScript = $gfxConf['im_combine_filename'];
@@ -386,7 +389,7 @@ class GraphicalFunctions {
 			$this->csConvObj = $GLOBALS['LANG']->csConvObj;
 		} else {
 			// The object may not exist yet, so we need to create it now. Happens in the Install Tool for example.
-			$this->csConvObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Charset\\CharsetConverter');
+			$this->csConvObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Charset\\CharsetConverter');
 		}
 		$this->nativeCharset = 'utf-8';
 	}
@@ -412,14 +415,14 @@ class GraphicalFunctions {
 		if ($conf['file'] && $conf['mask']) {
 			$imgInf = pathinfo($conf['file']);
 			$imgExt = strtolower($imgInf['extension']);
-			if (!\TYPO3\CMS\Core\Utility\GeneralUtility::inList($this->gdlibExtensions, $imgExt)) {
+			if (!GeneralUtility::inList($this->gdlibExtensions, $imgExt)) {
 				$BBimage = $this->imageMagickConvert($conf['file'], $this->gifExtension);
 			} else {
 				$BBimage = $this->getImageDimensions($conf['file']);
 			}
 			$maskInf = pathinfo($conf['mask']);
 			$maskExt = strtolower($maskInf['extension']);
-			if (!\TYPO3\CMS\Core\Utility\GeneralUtility::inList($this->gdlibExtensions, $maskExt)) {
+			if (!GeneralUtility::inList($this->gdlibExtensions, $maskExt)) {
 				$BBmask = $this->imageMagickConvert($conf['mask'], $this->gifExtension);
 			} else {
 				$BBmask = $this->getImageDimensions($conf['mask']);
@@ -497,7 +500,7 @@ class GraphicalFunctions {
 	 */
 	public function copyImageOntoImage(&$im, $conf, $workArea) {
 		if ($conf['file']) {
-			if (!\TYPO3\CMS\Core\Utility\GeneralUtility::inList($this->gdlibExtensions, $conf['BBOX'][2])) {
+			if (!GeneralUtility::inList($this->gdlibExtensions, $conf['BBOX'][2])) {
 				$conf['BBOX'] = $this->imageMagickConvert($conf['BBOX'][3], $this->gifExtension);
 				$conf['file'] = $conf['BBOX'][3];
 			}
@@ -521,9 +524,9 @@ class GraphicalFunctions {
 	public function copyGifOntoGif(&$im, $cpImg, $conf, $workArea) {
 		$cpW = imagesx($cpImg);
 		$cpH = imagesy($cpImg);
-		$tile = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $conf['tile']);
-		$tile[0] = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($tile[0], 1, 20);
-		$tile[1] = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($tile[1], 1, 20);
+		$tile = GeneralUtility::intExplode(',', $conf['tile']);
+		$tile[0] = MathUtility::forceIntegerInRange($tile[0], 1, 20);
+		$tile[1] = MathUtility::forceIntegerInRange($tile[1], 1, 20);
 		$cpOff = $this->objPosition($conf, $workArea, array($cpW * $tile[0], $cpH * $tile[1]));
 		for ($xt = 0; $xt < $tile[0]; $xt++) {
 			$Xstart = $cpOff[0] + $cpW * $xt;
@@ -664,7 +667,7 @@ class GraphicalFunctions {
 				$fileColor = $tmpStr . '_colorNT.' . $this->gifExtension;
 				$fileMask = $tmpStr . '_maskNT.' . $this->gifExtension;
 				// Scalefactor
-				$sF = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($conf['niceText.']['scaleFactor'], 2, 5);
+				$sF = MathUtility::forceIntegerInRange($conf['niceText.']['scaleFactor'], 2, 5);
 				$newW = ceil($sF * imagesx($im));
 				$newH = ceil($sF * imagesy($im));
 				// Make mask
@@ -698,7 +701,7 @@ class GraphicalFunctions {
 						if ($this->V5_EFFECTS) {
 							$command .= $this->v5_sharpen($conf['niceText.']['sharpen']);
 						} else {
-							$command .= ' -sharpen ' . \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($conf['niceText.']['sharpen'], 1, 99);
+							$command .= ' -sharpen ' . MathUtility::forceIntegerInRange($conf['niceText.']['sharpen'], 1, 99);
 						}
 					}
 				}
@@ -782,7 +785,7 @@ class GraphicalFunctions {
 				$result[0] = 0;
 				$result[1] = 0;
 		}
-		$result = $this->applyOffset($result, \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $conf['offset']));
+		$result = $this->applyOffset($result, GeneralUtility::intExplode(',', $conf['offset']));
 		$result = $this->applyOffset($result, $workArea);
 		return $result;
 	}
@@ -892,7 +895,7 @@ class GraphicalFunctions {
 	 * @todo Define visibility
 	 */
 	public function calcTextCordsForMap($cords, $offset, $conf) {
-		$pars = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $conf['explode'] . ',');
+		$pars = GeneralUtility::intExplode(',', $conf['explode'] . ',');
 		$newCords[0] = $cords[0] + $offset[0] - $pars[0];
 		$newCords[1] = $cords[1] + $offset[1] + $pars[1];
 		$newCords[2] = $cords[2] + $offset[0] + $pars[0];
@@ -1018,7 +1021,7 @@ class GraphicalFunctions {
 				 */
 				$try = 0;
 				do {
-					$calc = ImageTTFBBox(\TYPO3\CMS\Core\Utility\GeneralUtility::freetypeDpiComp($sF * $strCfg['fontSize']), $angle, $fontFile, $strCfg['str']);
+					$calc = ImageTTFBBox(GeneralUtility::freetypeDpiComp($sF * $strCfg['fontSize']), $angle, $fontFile, $strCfg['str']);
 				} while ($calc[2] < 0 && $try++ < 10);
 				// Calculate offsets:
 				if (!count($offsetInfo)) {
@@ -1076,9 +1079,9 @@ class GraphicalFunctions {
 			$fontFile = self::prependAbsolutePath($strCfg['fontFile']);
 			if (is_readable($fontFile)) {
 				// Render part:
-				ImageTTFText($im, \TYPO3\CMS\Core\Utility\GeneralUtility::freetypeDpiComp($sF * $strCfg['fontSize']), $angle, $x, $y, $colorIndex, $fontFile, $strCfg['str']);
+				ImageTTFText($im, GeneralUtility::freetypeDpiComp($sF * $strCfg['fontSize']), $angle, $x, $y, $colorIndex, $fontFile, $strCfg['str']);
 				// Calculate offset to apply:
-				$wordInf = ImageTTFBBox(\TYPO3\CMS\Core\Utility\GeneralUtility::freetypeDpiComp($sF * $strCfg['fontSize']), $angle, self::prependAbsolutePath($strCfg['fontFile']), $strCfg['str']);
+				$wordInf = ImageTTFBBox(GeneralUtility::freetypeDpiComp($sF * $strCfg['fontSize']), $angle, self::prependAbsolutePath($strCfg['fontFile']), $strCfg['str']);
 				$x += $wordInf[2] - $wordInf[0] + intval($splitRendering['compX']) + intval($strCfg['xSpaceAfter']);
 				$y += $wordInf[5] - $wordInf[7] - intval($splitRendering['compY']) - intval($strCfg['ySpaceAfter']);
 			} else {
@@ -1148,9 +1151,9 @@ class GraphicalFunctions {
 					case 'charRange':
 						if (strlen($cfg['value'])) {
 							// Initialize range:
-							$ranges = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $cfg['value'], 1);
+							$ranges = GeneralUtility::trimExplode(',', $cfg['value'], 1);
 							foreach ($ranges as $i => $rangeDef) {
-								$ranges[$i] = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode('-', $ranges[$i]);
+								$ranges[$i] = GeneralUtility::intExplode('-', $ranges[$i]);
 								if (!isset($ranges[$i][1])) {
 									$ranges[$i][1] = $ranges[$i][0];
 								}
@@ -1178,7 +1181,7 @@ class GraphicalFunctions {
 									}
 									// Initialize first char
 									// Switch bank:
-									if ($inRange != $currentState && !\TYPO3\CMS\Core\Utility\GeneralUtility::inList('32,10,13,9', $uNumber)) {
+									if ($inRange != $currentState && !GeneralUtility::inList('32,10,13,9', $uNumber)) {
 										// Set result:
 										if (strlen($bankAccum)) {
 											$newResult[] = array(
@@ -1257,7 +1260,7 @@ class GraphicalFunctions {
 			$sF = 1;
 		} else {
 			// NICETEXT::
-			$sF = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($conf['niceText.']['scaleFactor'], 2, 5);
+			$sF = MathUtility::forceIntegerInRange($conf['niceText.']['scaleFactor'], 2, 5);
 		}
 		return $sF;
 	}
@@ -1385,7 +1388,7 @@ class GraphicalFunctions {
 		$thickness = intval($conf['thickness']);
 		if ($thickness) {
 			$txtConf['fontColor'] = $conf['color'];
-			$outLineDist = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($thickness, 1, 2);
+			$outLineDist = MathUtility::forceIntegerInRange($thickness, 1, 2);
 			for ($b = 1; $b <= $outLineDist; $b++) {
 				if ($b == 1) {
 					$it = 8;
@@ -1443,7 +1446,7 @@ class GraphicalFunctions {
 	public function makeEmboss(&$im, $conf, $workArea, $txtConf) {
 		$conf['color'] = $conf['highColor'];
 		$this->makeShadow($im, $conf, $workArea, $txtConf);
-		$newOffset = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $conf['offset']);
+		$newOffset = GeneralUtility::intExplode(',', $conf['offset']);
 		$newOffset[0] *= -1;
 		$newOffset[1] *= -1;
 		$conf['offset'] = implode(',', $newOffset);
@@ -1464,8 +1467,8 @@ class GraphicalFunctions {
 	 * @todo Define visibility
 	 */
 	public function makeShadow(&$im, $conf, $workArea, $txtConf) {
-		$workArea = $this->applyOffset($workArea, \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $conf['offset']));
-		$blurRate = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange(intval($conf['blur']), 0, 99);
+		$workArea = $this->applyOffset($workArea, GeneralUtility::intExplode(',', $conf['offset']));
+		$blurRate = MathUtility::forceIntegerInRange(intval($conf['blur']), 0, 99);
 		// No effects if ImageMagick ver. 5+
 		if (!$blurRate || $this->NO_IM_EFFECTS) {
 			$txtConf['fontColor'] = $conf['color'];
@@ -1508,7 +1511,7 @@ class GraphicalFunctions {
 				$times = ceil($blurRate / 10);
 				// Here I boost the blur-rate so that it is 100 already at 25. The rest is done by up to 99 iterations of the blur-command.
 				$newBlurRate = $blurRate * 4;
-				$newBlurRate = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($newBlurRate, 1, 99);
+				$newBlurRate = MathUtility::forceIntegerInRange($newBlurRate, 1, 99);
 				// Building blur-command
 				for ($a = 0; $a < $times; $a++) {
 					$command .= ' -blur ' . $blurRate;
@@ -1527,11 +1530,11 @@ class GraphicalFunctions {
 				// Adjust the mask
 				$intensity = 40;
 				if ($conf['intensity']) {
-					$intensity = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($conf['intensity'], 0, 100);
+					$intensity = MathUtility::forceIntegerInRange($conf['intensity'], 0, 100);
 				}
 				$intensity = ceil(255 - $intensity / 100 * 255);
 				$this->inputLevels($blurTextImg, 0, $intensity, $this->maskNegate);
-				$opacity = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange(intval($conf['opacity']), 0, 100);
+				$opacity = MathUtility::forceIntegerInRange(intval($conf['opacity']), 0, 100);
 				if ($opacity && $opacity < 100) {
 					$high = ceil(255 * $opacity / 100);
 					// Reducing levels as the opacity demands
@@ -1580,7 +1583,7 @@ class GraphicalFunctions {
 	 * @todo Define visibility
 	 */
 	public function makeBox(&$im, $conf, $workArea) {
-		$cords = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $conf['dimensions'] . ',,,');
+		$cords = GeneralUtility::intExplode(',', $conf['dimensions'] . ',,,');
 		$conf['offset'] = $cords[0] . ',' . $cords[1];
 		$cords = $this->objPosition($conf, $workArea, array($cords[2], $cords[3]));
 		$cols = $this->convertColor($conf['color']);
@@ -1589,7 +1592,7 @@ class GraphicalFunctions {
 			// conversion:
 			// PHP 0 = opaque, 127 = transparent
 			// TYPO3 100 = opaque, 0 = transparent
-			$opacity = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange(intval($conf['opacity']), 1, 100, 1);
+			$opacity = MathUtility::forceIntegerInRange(intval($conf['opacity']), 1, 100, 1);
 			$opacity = abs($opacity - 100);
 			$opacity = round(127 * $opacity / 100);
 		}
@@ -1619,7 +1622,7 @@ class GraphicalFunctions {
 	 * @see \TYPO3\CMS\Frontend\Imaging\GifBuilder::make()
 	 */
 	public function makeEllipse(&$im, array $conf, array $workArea) {
-		$ellipseConfiguration = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $conf['dimensions'] . ',,,');
+		$ellipseConfiguration = GeneralUtility::intExplode(',', $conf['dimensions'] . ',,,');
 		// Ellipse offset inside workArea (x/y)
 		$conf['offset'] = $ellipseConfiguration[0] . ',' . $ellipseConfiguration[1];
 		// @see objPosition
@@ -1674,7 +1677,7 @@ class GraphicalFunctions {
 						if ($this->V5_EFFECTS) {
 							$commands .= $this->v5_blur($value);
 						} else {
-							$commands .= ' -blur ' . \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($value, 1, 99);
+							$commands .= ' -blur ' . MathUtility::forceIntegerInRange($value, 1, 99);
 						}
 					}
 					break;
@@ -1683,31 +1686,31 @@ class GraphicalFunctions {
 						if ($this->V5_EFFECTS) {
 							$commands .= $this->v5_sharpen($value);
 						} else {
-							$commands .= ' -sharpen ' . \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($value, 1, 99);
+							$commands .= ' -sharpen ' . MathUtility::forceIntegerInRange($value, 1, 99);
 						}
 					}
 					break;
 				case 'rotate':
-					$commands .= ' -rotate ' . \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($value, 0, 360);
+					$commands .= ' -rotate ' . MathUtility::forceIntegerInRange($value, 0, 360);
 					break;
 				case 'solarize':
-					$commands .= ' -solarize ' . \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($value, 0, 99);
+					$commands .= ' -solarize ' . MathUtility::forceIntegerInRange($value, 0, 99);
 					break;
 				case 'swirl':
-					$commands .= ' -swirl ' . \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($value, 0, 1000);
+					$commands .= ' -swirl ' . MathUtility::forceIntegerInRange($value, 0, 1000);
 					break;
 				case 'wave':
-					$params = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $value);
-					$commands .= ' -wave ' . \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($params[0], 0, 99) . 'x' . \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($params[1], 0, 99);
+					$params = GeneralUtility::intExplode(',', $value);
+					$commands .= ' -wave ' . MathUtility::forceIntegerInRange($params[0], 0, 99) . 'x' . MathUtility::forceIntegerInRange($params[1], 0, 99);
 					break;
 				case 'charcoal':
-					$commands .= ' -charcoal ' . \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($value, 0, 100);
+					$commands .= ' -charcoal ' . MathUtility::forceIntegerInRange($value, 0, 100);
 					break;
 				case 'gray':
 					$commands .= ' -colorspace GRAY';
 					break;
 				case 'edge':
-					$commands .= ' -edge ' . \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($value, 0, 99);
+					$commands .= ' -edge ' . MathUtility::forceIntegerInRange($value, 0, 99);
 					break;
 				case 'emboss':
 					$commands .= ' -emboss';
@@ -1719,10 +1722,10 @@ class GraphicalFunctions {
 					$commands .= ' -flop';
 					break;
 				case 'colors':
-					$commands .= ' -colors ' . \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($value, 2, 255);
+					$commands .= ' -colors ' . MathUtility::forceIntegerInRange($value, 2, 255);
 					break;
 				case 'shear':
-					$commands .= ' -shear ' . \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($value, -90, 90);
+					$commands .= ' -shear ' . MathUtility::forceIntegerInRange($value, -90, 90);
 					break;
 				case 'invert':
 					$commands .= ' -negate';
@@ -1754,11 +1757,11 @@ class GraphicalFunctions {
 			switch ($effect) {
 				case 'inputlevels':
 					// low,high
-					$params = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $value);
+					$params = GeneralUtility::intExplode(',', $value);
 					$this->inputLevels($im, $params[0], $params[1]);
 					break;
 				case 'outputlevels':
-					$params = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $value);
+					$params = GeneralUtility::intExplode(',', $value);
 					$this->outputLevels($im, $params[0], $params[1]);
 					break;
 				case 'autolevels':
@@ -1780,7 +1783,7 @@ class GraphicalFunctions {
 	public function crop(&$im, $conf) {
 		// Clears workArea to total image
 		$this->setWorkArea('');
-		$cords = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $conf['crop'] . ',,,');
+		$cords = GeneralUtility::intExplode(',', $conf['crop'] . ',,,');
 		$conf['offset'] = $cords[0] . ',' . $cords[1];
 		$cords = $this->objPosition($conf, $this->workArea, array($cords[2], $cords[3]));
 		$newIm = imagecreatetruecolor($cords[2], $cords[3]);
@@ -1851,7 +1854,7 @@ class GraphicalFunctions {
 	 * @todo Define visibility
 	 */
 	public function setWorkArea($workArea) {
-		$this->workArea = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $workArea);
+		$this->workArea = GeneralUtility::intExplode(',', $workArea);
 		$this->workArea = $this->applyOffset($this->workArea, $this->OFFSET);
 		if (!$this->workArea[2]) {
 			$this->workArea[2] = $this->w;
@@ -1907,8 +1910,8 @@ class GraphicalFunctions {
 	 */
 	public function outputLevels(&$im, $low, $high, $swap = '') {
 		if ($low < $high) {
-			$low = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($low, 0, 255);
-			$high = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($high, 0, 255);
+			$low = MathUtility::forceIntegerInRange($low, 0, 255);
+			$high = MathUtility::forceIntegerInRange($high, 0, 255);
 			if ($swap) {
 				$temp = $low;
 				$low = 255 - $high;
@@ -1938,8 +1941,8 @@ class GraphicalFunctions {
 	 */
 	public function inputLevels(&$im, $low, $high, $swap = '') {
 		if ($low < $high) {
-			$low = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($low, 0, 255);
-			$high = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($high, 0, 255);
+			$low = MathUtility::forceIntegerInRange($low, 0, 255);
+			$high = MathUtility::forceIntegerInRange($high, 0, 255);
 			if ($swap) {
 				$temp = $low;
 				$low = 255 - $high;
@@ -1949,9 +1952,9 @@ class GraphicalFunctions {
 			$totalCols = ImageColorsTotal($im);
 			for ($c = 0; $c < $totalCols; $c++) {
 				$cols = ImageColorsForIndex($im, $c);
-				$cols['red'] = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange(($cols['red'] - $low) / $delta * 255, 0, 255);
-				$cols['green'] = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange(($cols['green'] - $low) / $delta * 255, 0, 255);
-				$cols['blue'] = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange(($cols['blue'] - $low) / $delta * 255, 0, 255);
+				$cols['red'] = MathUtility::forceIntegerInRange(($cols['red'] - $low) / $delta * 255, 0, 255);
+				$cols['green'] = MathUtility::forceIntegerInRange(($cols['green'] - $low) / $delta * 255, 0, 255);
+				$cols['blue'] = MathUtility::forceIntegerInRange(($cols['blue'] - $low) / $delta * 255, 0, 255);
 				ImageColorSet($im, $c, $cols['red'], $cols['green'], $cols['blue']);
 			}
 		}
@@ -1966,10 +1969,10 @@ class GraphicalFunctions {
 	 * @todo Define visibility
 	 */
 	public function IMreduceColors($file, $cols) {
-		$fI = \TYPO3\CMS\Core\Utility\GeneralUtility::split_fileref($file);
+		$fI = GeneralUtility::split_fileref($file);
 		$ext = strtolower($fI['fileext']);
 		$result = $this->randomName() . '.' . $ext;
-		if (($reduce = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($cols, 0, $ext == 'gif' ? 256 : $this->truecolorColors, 0)) > 0) {
+		if (($reduce = MathUtility::forceIntegerInRange($cols, 0, $ext == 'gif' ? 256 : $this->truecolorColors, 0)) > 0) {
 			$params = ' -colors ' . $reduce;
 			if ($reduce <= 256) {
 				$params .= ' -type Palette';
@@ -2001,7 +2004,7 @@ class GraphicalFunctions {
 	 */
 	public function prependAbsolutePath($fontFile) {
 		$absPath = defined('PATH_typo3') ? dirname(PATH_thisScript) . '/' : PATH_site;
-		$fontFile = \TYPO3\CMS\Core\Utility\GeneralUtility::isAbsPath($fontFile) ? $fontFile : \TYPO3\CMS\Core\Utility\GeneralUtility::resolveBackPath($absPath . $fontFile);
+		$fontFile = GeneralUtility::isAbsPath($fontFile) ? $fontFile : GeneralUtility::resolveBackPath($absPath . $fontFile);
 		return $fontFile;
 	}
 
@@ -2015,7 +2018,7 @@ class GraphicalFunctions {
 	 * @todo Define visibility
 	 */
 	public function v5_sharpen($factor) {
-		$factor = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange(ceil($factor / 10), 0, 10);
+		$factor = MathUtility::forceIntegerInRange(ceil($factor / 10), 0, 10);
 		$sharpenArr = explode(',', ',' . $this->im5fx_sharpenSteps);
 		$sharpenF = trim($sharpenArr[$factor]);
 		if ($sharpenF) {
@@ -2034,7 +2037,7 @@ class GraphicalFunctions {
 	 * @todo Define visibility
 	 */
 	public function v5_blur($factor) {
-		$factor = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange(ceil($factor / 10), 0, 10);
+		$factor = MathUtility::forceIntegerInRange(ceil($factor / 10), 0, 10);
 		$blurArr = explode(',', ',' . $this->im5fx_blurSteps);
 		$blurF = trim($blurArr[$factor]);
 		if ($blurF) {
@@ -2107,14 +2110,14 @@ class GraphicalFunctions {
 			$cParts[1] = trim($cParts[1]);
 			if (substr($cParts[1], 0, 1) == '*') {
 				$val = doubleval(substr($cParts[1], 1));
-				$col[0] = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($col[0] * $val, 0, 255);
-				$col[1] = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($col[1] * $val, 0, 255);
-				$col[2] = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($col[2] * $val, 0, 255);
+				$col[0] = MathUtility::forceIntegerInRange($col[0] * $val, 0, 255);
+				$col[1] = MathUtility::forceIntegerInRange($col[1] * $val, 0, 255);
+				$col[2] = MathUtility::forceIntegerInRange($col[2] * $val, 0, 255);
 			} else {
 				$val = intval($cParts[1]);
-				$col[0] = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($col[0] + $val, 0, 255);
-				$col[1] = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($col[1] + $val, 0, 255);
-				$col[2] = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($col[2] + $val, 0, 255);
+				$col[0] = MathUtility::forceIntegerInRange($col[0] + $val, 0, 255);
+				$col[1] = MathUtility::forceIntegerInRange($col[1] + $val, 0, 255);
+				$col[2] = MathUtility::forceIntegerInRange($col[2] + $val, 0, 255);
 			}
 		}
 		return $col;
@@ -2202,7 +2205,7 @@ class GraphicalFunctions {
 			default:
 				$result[1] = 0;
 		}
-		$result = $this->applyOffset($result, \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $conf['offset']));
+		$result = $this->applyOffset($result, GeneralUtility::intExplode(',', $conf['offset']));
 		$result = $this->applyOffset($result, $workArea);
 		return $result;
 	}
@@ -2239,7 +2242,7 @@ class GraphicalFunctions {
 				$newExt = $info[2];
 			}
 			if ($newExt == 'web') {
-				if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList($this->webImageExt, $info[2])) {
+				if (GeneralUtility::inList($this->webImageExt, $info[2])) {
 					$newExt = $info[2];
 				} else {
 					$newExt = $this->gif_or_jpg($info[2], $info[0], $info[1]);
@@ -2248,7 +2251,7 @@ class GraphicalFunctions {
 					}
 				}
 			}
-			if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList($this->imageFileExt, $newExt)) {
+			if (GeneralUtility::inList($this->imageFileExt, $newExt)) {
 				if (strstr($w . $h, 'm')) {
 					$max = 1;
 				} else {
@@ -2294,9 +2297,9 @@ class GraphicalFunctions {
 				$command = $this->scalecmd . ' ' . $info[0] . 'x' . $info[1] . '! ' . $params . ' ';
 				$cropscale = $data['crs'] ? 'crs-V' . $data['cropV'] . 'H' . $data['cropH'] : '';
 				if ($this->alternativeOutputKey) {
-					$theOutputName = \TYPO3\CMS\Core\Utility\GeneralUtility::shortMD5($command . $cropscale . basename($imagefile) . $this->alternativeOutputKey . '[' . $frame . ']');
+					$theOutputName = GeneralUtility::shortMD5($command . $cropscale . basename($imagefile) . $this->alternativeOutputKey . '[' . $frame . ']');
 				} else {
-					$theOutputName = \TYPO3\CMS\Core\Utility\GeneralUtility::shortMD5($command . $cropscale . $imagefile . filemtime($imagefile) . '[' . $frame . ']');
+					$theOutputName = GeneralUtility::shortMD5($command . $cropscale . $imagefile . filemtime($imagefile) . '[' . $frame . ']');
 				}
 				if ($this->imageMagickConvert_forceFileNameBody) {
 					$theOutputName = $this->imageMagickConvert_forceFileNameBody;
@@ -2319,7 +2322,7 @@ class GraphicalFunctions {
 					}
 					if ($info[2] == $this->gifExtension && !$this->dontCompress) {
 						// Compress with IM (lzw) or GD (rle)  (Workaround for the absence of lzw-compression in GD)
-						\TYPO3\CMS\Core\Utility\GeneralUtility::gif_compress($info[3], '');
+						GeneralUtility::gif_compress($info[3], '');
 					}
 					return $info;
 				}
@@ -2337,7 +2340,7 @@ class GraphicalFunctions {
 	 */
 	public function getImageDimensions($imageFile) {
 		preg_match('/([^\\.]*)$/', $imageFile, $reg);
-		if (file_exists($imageFile) && \TYPO3\CMS\Core\Utility\GeneralUtility::inList($this->imageFileExt, strtolower($reg[0]))) {
+		if (file_exists($imageFile) && GeneralUtility::inList($this->imageFileExt, strtolower($reg[0]))) {
 			if ($returnArr = $this->getCachedImageDimensions($imageFile)) {
 				return $returnArr;
 			} else {
@@ -2602,7 +2605,7 @@ class GraphicalFunctions {
 	public function imageMagickIdentify($imagefile) {
 		if (!$this->NO_IMAGE_MAGICK) {
 			$frame = $this->noFramePrepended ? '' : '[0]';
-			$cmd = \TYPO3\CMS\Core\Utility\GeneralUtility::imageMagickCommand('identify', $this->wrapFileName($imagefile) . $frame);
+			$cmd = GeneralUtility::imageMagickCommand('identify', $this->wrapFileName($imagefile) . $frame);
 			$returnVal = array();
 			\TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd, $returnVal);
 			$splitstring = $returnVal[0];
@@ -2647,11 +2650,11 @@ class GraphicalFunctions {
 			} else {
 				$frame = '';
 			}
-			$cmd = \TYPO3\CMS\Core\Utility\GeneralUtility::imageMagickCommand('convert', $params . ' ' . $this->wrapFileName($input) . $frame . ' ' . $this->wrapFileName($output));
+			$cmd = GeneralUtility::imageMagickCommand('convert', $params . ' ' . $this->wrapFileName($input) . $frame . ' ' . $this->wrapFileName($output));
 			$this->IM_commands[] = array($output, $cmd);
 			$ret = \TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd);
 			// Change the permissions of the file
-			\TYPO3\CMS\Core\Utility\GeneralUtility::fixPermissions($output);
+			GeneralUtility::fixPermissions($output);
 			return $ret;
 		}
 	}
@@ -2678,12 +2681,12 @@ class GraphicalFunctions {
 			}
 			$theMask = $this->randomName() . '.' . $this->gifExtension;
 			$this->imageMagickExec($mask, $theMask, $params);
-			$cmd = \TYPO3\CMS\Core\Utility\GeneralUtility::imageMagickCommand('combine', '-compose over +matte ' . $this->wrapFileName($input) . ' ' . $this->wrapFileName($overlay) . ' ' . $this->wrapFileName($theMask) . ' ' . $this->wrapFileName($output));
+			$cmd = GeneralUtility::imageMagickCommand('combine', '-compose over +matte ' . $this->wrapFileName($input) . ' ' . $this->wrapFileName($overlay) . ' ' . $this->wrapFileName($theMask) . ' ' . $this->wrapFileName($output));
 			// +matte = no alpha layer in output
 			$this->IM_commands[] = array($output, $cmd);
 			$ret = \TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd);
 			// Change the permissions of the file
-			\TYPO3\CMS\Core\Utility\GeneralUtility::fixPermissions($output);
+			GeneralUtility::fixPermissions($output);
 			if (is_file($theMask)) {
 				@unlink($theMask);
 			}
@@ -2738,14 +2741,14 @@ class GraphicalFunctions {
 	 */
 	public function createTempSubDir($dirName) {
 		// Checking if the this->tempPath is already prefixed with PATH_site and if not, prefix it with that constant.
-		if (\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($this->tempPath, PATH_site)) {
+		if (GeneralUtility::isFirstPartOfStr($this->tempPath, PATH_site)) {
 			$tmpPath = $this->tempPath;
 		} else {
 			$tmpPath = PATH_site . $this->tempPath;
 		}
 		// Making the temporary filename:
 		if (!@is_dir(($tmpPath . $dirName))) {
-			return \TYPO3\CMS\Core\Utility\GeneralUtility::mkdir($tmpPath . $dirName);
+			return GeneralUtility::mkdir($tmpPath . $dirName);
 		}
 	}
 
@@ -2814,7 +2817,7 @@ class GraphicalFunctions {
 					if ($this->ImageWrite($this->im, $file)) {
 						// ImageMagick operations
 						if ($this->setup['reduceColors'] || !$this->png_truecolor) {
-							$reduced = $this->IMreduceColors($file, \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($this->setup['reduceColors'], 256, $this->truecolorColors, 256));
+							$reduced = $this->IMreduceColors($file, MathUtility::forceIntegerInRange($this->setup['reduceColors'], 256, $this->truecolorColors, 256));
 							if ($reduced) {
 								@copy($reduced, $file);
 								@unlink($reduced);
@@ -2822,7 +2825,7 @@ class GraphicalFunctions {
 						}
 						// Compress with IM! (adds extra compression, LZW from ImageMagick)
 						// (Workaround for the absence of lzw-compression in GD)
-						\TYPO3\CMS\Core\Utility\GeneralUtility::gif_compress($file, 'IM');
+						GeneralUtility::gif_compress($file, 'IM');
 					}
 					break;
 				case 'jpg':
@@ -2831,7 +2834,7 @@ class GraphicalFunctions {
 					// Use the default
 					$quality = 0;
 					if ($this->setup['quality']) {
-						$quality = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($this->setup['quality'], 10, 100);
+						$quality = MathUtility::forceIntegerInRange($this->setup['quality'], 10, 100);
 					}
 					if ($this->ImageWrite($this->im, $file, $quality)) {
 
@@ -2903,7 +2906,7 @@ class GraphicalFunctions {
 				break;
 		}
 		if ($result) {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::fixPermissions($theImage);
+			GeneralUtility::fixPermissions($theImage);
 		}
 		return $result;
 	}

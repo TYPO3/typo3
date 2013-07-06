@@ -27,6 +27,9 @@ namespace TYPO3\CMS\Impexp;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+
 /**
  * EXAMPLE for using the impexp-class for exporting stuff:
  *
@@ -419,7 +422,7 @@ class ImportExport {
 		if (@is_file($imgFilepath)) {
 			$imgInfo = @getimagesize($imgFilepath);
 			if (is_array($imgInfo)) {
-				$fileContent = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($imgFilepath);
+				$fileContent = GeneralUtility::getUrl($imgFilepath);
 				$this->dat['header']['thumbnail'] = array(
 					'imgInfo' => $imgInfo,
 					'content' => $fileContent,
@@ -529,7 +532,7 @@ class ImportExport {
 	 * @todo Define visibility
 	 */
 	public function export_addRecord($table, $row, $relationLevel = 0) {
-		\TYPO3\CMS\Backend\Utility\BackendUtility::workspaceOL($table, $row);
+		BackendUtility::workspaceOL($table, $row);
 		if (strcmp($table, '') && is_array($row) && $row['uid'] > 0 && !$this->excludeMap[($table . ':' . $row['uid'])]) {
 			if ($this->checkPID($table === 'pages' ? $row['uid'] : $row['pid'])) {
 				if (!isset($this->dat['records'][($table . ':' . $row['uid'])])) {
@@ -537,7 +540,7 @@ class ImportExport {
 					$headerInfo = array();
 					$headerInfo['uid'] = $row['uid'];
 					$headerInfo['pid'] = $row['pid'];
-					$headerInfo['title'] = \TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs(\TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle($table, $row), 40);
+					$headerInfo['title'] = GeneralUtility::fixed_lgd_cs(BackendUtility::getRecordTitle($table, $row), 40);
 					$headerInfo['size'] = strlen(serialize($row));
 					if ($relationLevel) {
 						$headerInfo['relationLevel'] = $relationLevel;
@@ -549,7 +552,7 @@ class ImportExport {
 						// Create entry in the PID lookup:
 						$this->dat['header']['pid_lookup'][$row['pid']][$table][$row['uid']] = 1;
 						// Initialize reference index object:
-						$refIndexObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\ReferenceIndex');
+						$refIndexObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\ReferenceIndex');
 						// Yes to workspace overlays for exporting....
 						$refIndexObj->WSOL = TRUE;
 						// Data:
@@ -563,7 +566,7 @@ class ImportExport {
 						// Add information about the softrefs to header:
 						$this->dat['header']['records'][$table][$row['uid']]['softrefs'] = $this->flatSoftRefs($this->dat['records'][$table . ':' . $row['uid']]['rels']);
 					} else {
-						$this->error('Record ' . $table . ':' . $row['uid'] . ' was larger than maxRecordSize (' . \TYPO3\CMS\Core\Utility\GeneralUtility::formatSize($this->maxRecordSize) . ')');
+						$this->error('Record ' . $table . ':' . $row['uid'] . ' was larger than maxRecordSize (' . GeneralUtility::formatSize($this->maxRecordSize) . ')');
 					}
 				} else {
 					$this->error('Record ' . $table . ':' . $row['uid'] . ' already added.');
@@ -651,7 +654,7 @@ class ImportExport {
 		if (count($addR)) {
 			foreach ($addR as $fI) {
 				// Get and set record:
-				$row = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($fI['table'], $fI['id']);
+				$row = BackendUtility::getRecord($fI['table'], $fI['id']);
 				if (is_array($row)) {
 					$this->export_addRecord($fI['table'], $row, $relationLevel + 1);
 				}
@@ -730,7 +733,7 @@ class ImportExport {
 										foreach ($elements as $subKey => $el) {
 											if ($el['subst']['type'] === 'file' && $this->includeSoftref($el['subst']['tokenID'])) {
 												// Create abs path and ID for file:
-												$ID_absFile = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName(PATH_site . $el['subst']['relFileName']);
+												$ID_absFile = GeneralUtility::getFileAbsFileName(PATH_site . $el['subst']['relFileName']);
 												$ID = md5($ID_absFile);
 												if ($ID_absFile) {
 													if (!$this->dat['files'][$ID]) {
@@ -756,7 +759,7 @@ class ImportExport {
 								foreach ($elements as $subKey => $el) {
 									if ($el['subst']['type'] === 'file' && $this->includeSoftref($el['subst']['tokenID'])) {
 										// Create abs path and ID for file:
-										$ID_absFile = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName(PATH_site . $el['subst']['relFileName']);
+										$ID_absFile = GeneralUtility::getFileAbsFileName(PATH_site . $el['subst']['relFileName']);
 										$ID = md5($ID_absFile);
 										if ($ID_absFile) {
 											if (!$this->dat['files'][$ID]) {
@@ -817,7 +820,7 @@ class ImportExport {
 					$this->dat['header']['records'][$refParts[0]][$refParts[1]]['filerefs'][] = $fI['ID'];
 				}
 				// ... and finally add the heavy stuff:
-				$fileRec['content'] = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($fI['ID_absFile']);
+				$fileRec['content'] = GeneralUtility::getUrl($fI['ID_absFile']);
 				$fileRec['content_md5'] = md5($fileRec['content']);
 				$this->dat['files'][$fI['ID']] = $fileRec;
 				// For soft references, do further processing:
@@ -836,7 +839,7 @@ class ImportExport {
 							// Setting this data in the header
 							$this->dat['header']['files'][$RTEoriginal_ID] = $fileRec;
 							// ... and finally add the heavy stuff:
-							$fileRec['content'] = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($RTEoriginal_absPath);
+							$fileRec['content'] = GeneralUtility::getUrl($RTEoriginal_absPath);
 							$fileRec['content_md5'] = md5($fileRec['content']);
 							$this->dat['files'][$RTEoriginal_ID] = $fileRec;
 						} else {
@@ -846,21 +849,21 @@ class ImportExport {
 					// Files with external media?
 					// This is only done with files grabbed by a softreference parser since it is deemed improbable that hard-referenced files should undergo this treatment.
 					$html_fI = pathinfo(basename($fI['ID_absFile']));
-					if ($this->includeExtFileResources && \TYPO3\CMS\Core\Utility\GeneralUtility::inList($this->extFileResourceExtensions, strtolower($html_fI['extension']))) {
+					if ($this->includeExtFileResources && GeneralUtility::inList($this->extFileResourceExtensions, strtolower($html_fI['extension']))) {
 						$uniquePrefix = '###' . md5($GLOBALS['EXEC_TIME']) . '###';
 						if (strtolower($html_fI['extension']) === 'css') {
 							$prefixedMedias = explode($uniquePrefix, preg_replace('/(url[[:space:]]*\\([[:space:]]*["\']?)([^"\')]*)(["\']?[[:space:]]*\\))/i', '\\1' . $uniquePrefix . '\\2' . $uniquePrefix . '\\3', $fileRec['content']));
 						} else {
 							// html, htm:
-							$htmlParser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Html\\HtmlParser');
+							$htmlParser = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Html\\HtmlParser');
 							$prefixedMedias = explode($uniquePrefix, $htmlParser->prefixResourcePath($uniquePrefix, $fileRec['content'], array(), $uniquePrefix));
 						}
 						$htmlResourceCaptured = FALSE;
 						foreach ($prefixedMedias as $k => $v) {
 							if ($k % 2) {
-								$EXTres_absPath = \TYPO3\CMS\Core\Utility\GeneralUtility::resolveBackPath(dirname($fI['ID_absFile']) . '/' . $v);
-								$EXTres_absPath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($EXTres_absPath);
-								if ($EXTres_absPath && \TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($EXTres_absPath, PATH_site . $this->fileadminFolderName . '/') && @is_file($EXTres_absPath)) {
+								$EXTres_absPath = GeneralUtility::resolveBackPath(dirname($fI['ID_absFile']) . '/' . $v);
+								$EXTres_absPath = GeneralUtility::getFileAbsFileName($EXTres_absPath);
+								if ($EXTres_absPath && GeneralUtility::isFirstPartOfStr($EXTres_absPath, PATH_site . $this->fileadminFolderName . '/') && @is_file($EXTres_absPath)) {
 									$htmlResourceCaptured = TRUE;
 									$EXTres_ID = md5($EXTres_absPath);
 									$this->dat['header']['files'][$fI['ID']]['EXT_RES_ID'][] = $EXTres_ID;
@@ -877,7 +880,7 @@ class ImportExport {
 										// Setting this data in the header
 										$this->dat['header']['files'][$EXTres_ID] = $fileRec;
 										// ... and finally add the heavy stuff:
-										$fileRec['content'] = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($EXTres_absPath);
+										$fileRec['content'] = GeneralUtility::getUrl($EXTres_absPath);
 										$fileRec['content_md5'] = md5($fileRec['content']);
 										$this->dat['files'][$EXTres_ID] = $fileRec;
 									}
@@ -890,7 +893,7 @@ class ImportExport {
 					}
 				}
 			} else {
-				$this->error($fI['ID_absFile'] . ' was larger (' . \TYPO3\CMS\Core\Utility\GeneralUtility::formatSize(filesize($fI['ID_absFile'])) . ') than the maxFileSize (' . \TYPO3\CMS\Core\Utility\GeneralUtility::formatSize($this->maxFileSize) . ')! Skipping.');
+				$this->error($fI['ID_absFile'] . ' was larger (' . GeneralUtility::formatSize(filesize($fI['ID_absFile'])) . ') than the maxFileSize (' . GeneralUtility::formatSize($this->maxFileSize) . ')! Skipping.');
 			}
 		} else {
 			$this->error($fI['ID_absFile'] . ' was not a file! Skipping.');
@@ -1081,7 +1084,7 @@ class ImportExport {
 		// Creating XML file from $outputArray:
 		$charset = $this->dat['header']['charset'] ? $this->dat['header']['charset'] : 'utf-8';
 		$XML = '<?xml version="1.0" encoding="' . $charset . '" standalone="yes" ?>' . LF;
-		$XML .= \TYPO3\CMS\Core\Utility\GeneralUtility::array2xml($this->dat, '', 0, 'T3RecordDocument', 0, $options);
+		$XML .= GeneralUtility::array2xml($this->dat, '', 0, 'T3RecordDocument', 0, $options);
 		return $XML;
 	}
 
@@ -1447,7 +1450,7 @@ class ImportExport {
 	 * @todo Define visibility
 	 */
 	public function getNewTCE() {
-		$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+		$tce = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
 		$tce->stripslashes_values = 0;
 		$tce->dontProcessTransformations = 1;
 		$tce->enableLogging = $this->enableLogging;
@@ -1464,8 +1467,8 @@ class ImportExport {
 	 */
 	public function unlinkTempFiles() {
 		foreach ($this->unlinkFiles as $fileName) {
-			if (\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($fileName, PATH_site . 'typo3temp/')) {
-				\TYPO3\CMS\Core\Utility\GeneralUtility::unlink_tempfile($fileName);
+			if (GeneralUtility::isFirstPartOfStr($fileName, PATH_site . 'typo3temp/')) {
+				GeneralUtility::unlink_tempfile($fileName);
 				clearstatcache();
 				if (is_file($fileName)) {
 					$this->error('Error: ' . $fileName . ' was NOT unlinked as it should have been!', 1);
@@ -1498,7 +1501,7 @@ class ImportExport {
 			// original UID - NOT the new one!
 			// If the record has been written and received a new id, then proceed:
 			if (is_array($this->import_mapId[$table]) && isset($this->import_mapId[$table][$uid])) {
-				$thisNewUid = \TYPO3\CMS\Backend\Utility\BackendUtility::wsMapId($table, $this->import_mapId[$table][$uid]);
+				$thisNewUid = BackendUtility::wsMapId($table, $this->import_mapId[$table][$uid]);
 				if (is_array($this->dat['records'][$table . ':' . $uid]['rels'])) {
 					// Traverse relation fields of each record
 					foreach ($this->dat['records'][$table . ':' . $uid]['rels'] as $field => $config) {
@@ -1572,8 +1575,8 @@ class ImportExport {
 	 */
 	public function import_addFileNameToBeCopied($fI) {
 		if (is_array($this->dat['files'][$fI['ID']])) {
-			$tmpFile = \TYPO3\CMS\Core\Utility\GeneralUtility::tempnam('import_temp_');
-			\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($tmpFile, $this->dat['files'][$fI['ID']]['content']);
+			$tmpFile = GeneralUtility::tempnam('import_temp_');
+			GeneralUtility::writeFile($tmpFile, $this->dat['files'][$fI['ID']]['content']);
 			clearstatcache();
 			if (@is_file($tmpFile)) {
 				$this->unlinkFiles[] = $tmpFile;
@@ -1609,7 +1612,7 @@ class ImportExport {
 			// original UID - NOT the new one!
 			// If the record has been written and received a new id, then proceed:
 			if (is_array($this->import_mapId[$table]) && isset($this->import_mapId[$table][$uid])) {
-				$thisNewUid = \TYPO3\CMS\Backend\Utility\BackendUtility::wsMapId($table, $this->import_mapId[$table][$uid]);
+				$thisNewUid = BackendUtility::wsMapId($table, $this->import_mapId[$table][$uid]);
 				if (is_array($this->dat['records'][$table . ':' . $uid]['rels'])) {
 					// Traverse relation fields of each record
 					foreach ($this->dat['records'][$table . ':' . $uid]['rels'] as $field => $config) {
@@ -1619,15 +1622,15 @@ class ImportExport {
 								$updateData[$table][$thisNewUid][$field] = $this->dat['records'][$table . ':' . $uid]['data'][$field];
 								// If there has been registered relations inside the flex form field, run processing on the content:
 								if (count($config['flexFormRels']['db']) || count($config['flexFormRels']['file'])) {
-									$origRecordRow = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($table, $thisNewUid, '*');
+									$origRecordRow = BackendUtility::getRecord($table, $thisNewUid, '*');
 									// This will fetch the new row for the element (which should be updated with any references to data structures etc.)
 									$conf = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
 									if (is_array($origRecordRow) && is_array($conf) && $conf['type'] === 'flex') {
 										// Get current data structure and value array:
-										$dataStructArray = \TYPO3\CMS\Backend\Utility\BackendUtility::getFlexFormDS($conf, $origRecordRow, $table);
-										$currentValueArray = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($updateData[$table][$thisNewUid][$field]);
+										$dataStructArray = BackendUtility::getFlexFormDS($conf, $origRecordRow, $table);
+										$currentValueArray = GeneralUtility::xml2array($updateData[$table][$thisNewUid][$field]);
 										// Do recursive processing of the XML data:
-										$iteratorObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+										$iteratorObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
 										$iteratorObj->callBackObj = $this;
 										$currentValueArray['data'] = $iteratorObj->checkValue_flex_procInData($currentValueArray['data'], array(), array(), $dataStructArray, array($table, $thisNewUid, $field, $config), 'remapListedDBRecords_flexFormCallBack');
 										// The return value is set as an array which means it will be processed by tcemain for file and DB references!
@@ -1721,21 +1724,21 @@ class ImportExport {
 							}
 						}
 						// The new id:
-						$thisNewUid = \TYPO3\CMS\Backend\Utility\BackendUtility::wsMapId($table, $this->import_mapId[$table][$uid]);
+						$thisNewUid = BackendUtility::wsMapId($table, $this->import_mapId[$table][$uid]);
 						// Now, if there are any fields that require substitution to be done, lets go for that:
 						foreach ($fieldsIndex as $field => $softRefCfgs) {
 							if (is_array($GLOBALS['TCA'][$table]['columns'][$field])) {
 								$conf = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
 								if ($conf['type'] === 'flex') {
 									// This will fetch the new row for the element (which should be updated with any references to data structures etc.)
-									$origRecordRow = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($table, $thisNewUid, '*');
+									$origRecordRow = BackendUtility::getRecord($table, $thisNewUid, '*');
 									if (is_array($origRecordRow)) {
 										// Get current data structure and value array:
-										$dataStructArray = \TYPO3\CMS\Backend\Utility\BackendUtility::getFlexFormDS($conf, $origRecordRow, $table);
-										$currentValueArray = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($origRecordRow[$field]);
+										$dataStructArray = BackendUtility::getFlexFormDS($conf, $origRecordRow, $table);
+										$currentValueArray = GeneralUtility::xml2array($origRecordRow[$field]);
 										// Do recursive processing of the XML data:
 										/** @var $iteratorObj \TYPO3\CMS\Core\DataHandling\DataHandler */
-										$iteratorObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+										$iteratorObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
 										$iteratorObj->callBackObj = $this;
 										$currentValueArray['data'] = $iteratorObj->checkValue_flex_procInData($currentValueArray['data'], array(), array(), $dataStructArray, array($table, $uid, $field, $softRefCfgs), 'processSoftReferences_flexFormCallBack');
 										// The return value is set as an array which means it will be processed by tcemain for file and DB references!
@@ -1845,10 +1848,10 @@ class ImportExport {
 							// Trying to map database element if found in the mapID array:
 							list($tempTable, $tempUid) = explode(':', $cfg['subst']['recordRef']);
 							if (isset($this->import_mapId[$tempTable][$tempUid])) {
-								$insertValue = \TYPO3\CMS\Backend\Utility\BackendUtility::wsMapId($tempTable, $this->import_mapId[$tempTable][$tempUid]);
+								$insertValue = BackendUtility::wsMapId($tempTable, $this->import_mapId[$tempTable][$tempUid]);
 								// Look if reference is to a page and the original token value was NOT an integer - then we assume is was an alias and try to look up the new one!
 								if ($tempTable === 'pages' && !\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($cfg['subst']['tokenValue'])) {
-									$recWithUniqueValue = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($tempTable, $insertValue, 'alias');
+									$recWithUniqueValue = BackendUtility::getRecord($tempTable, $insertValue, 'alias');
 									if ($recWithUniqueValue['alias']) {
 										$insertValue = $recWithUniqueValue['alias'];
 									}
@@ -1878,7 +1881,7 @@ class ImportExport {
 			$dirPrefix = dirname($relFileName) . '/';
 			$rteOrigName = $this->getRTEoriginalFilename(basename($relFileName));
 			// If filename looks like an RTE file, and the directory is in "uploads/", then process as a RTE file!
-			if ($rteOrigName && \TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($dirPrefix, 'uploads/')) {
+			if ($rteOrigName && GeneralUtility::isFirstPartOfStr($dirPrefix, 'uploads/')) {
 				// RTE:
 				// First, find unique RTE file name:
 				if (@is_dir((PATH_site . $dirPrefix))) {
@@ -1888,7 +1891,7 @@ class ImportExport {
 					// Create copy file name:
 					$pI = pathinfo($relFileName);
 					$copyDestName = dirname($origDestName) . '/RTEmagicC_' . substr(basename($origDestName), 10) . '.' . $pI['extension'];
-					if (!@is_file($copyDestName) && !@is_file($origDestName) && $origDestName === \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($origDestName) && $copyDestName === \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($copyDestName)) {
+					if (!@is_file($copyDestName) && !@is_file($origDestName) && $origDestName === GeneralUtility::getFileAbsFileName($origDestName) && $copyDestName === GeneralUtility::getFileAbsFileName($copyDestName)) {
 						if ($this->dat['header']['files'][$fileHeaderInfo['RTE_ORIG_ID']]) {
 							// Write the copy and original RTE file to the respective filenames:
 							$this->writeFileVerify($copyDestName, $cfg['file_ID'], TRUE);
@@ -1904,7 +1907,7 @@ class ImportExport {
 				} else {
 					$this->error('ERROR: "' . PATH_site . $dirPrefix . '" was not a directory, so could not process file "' . $relFileName . '"');
 				}
-			} elseif (\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($dirPrefix, $this->fileadminFolderName . '/')) {
+			} elseif (GeneralUtility::isFirstPartOfStr($dirPrefix, $this->fileadminFolderName . '/')) {
 				// File in fileadmin/ folder:
 				// Create file (and possible resources)
 				$newFileName = $this->processSoftReferences_saveFile_createRelFile($dirPrefix, basename($relFileName), $cfg['file_ID'], $table, $uid);
@@ -1965,9 +1968,9 @@ class ImportExport {
 							if ($this->dat['files'][$res_fileID]['filename']) {
 								// Resolve original filename:
 								$relResourceFileName = $this->dat['files'][$res_fileID]['parentRelFileName'];
-								$absResourceFileName = \TYPO3\CMS\Core\Utility\GeneralUtility::resolveBackPath(PATH_site . $origDirPrefix . $relResourceFileName);
-								$absResourceFileName = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($absResourceFileName);
-								if ($absResourceFileName && \TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($absResourceFileName, PATH_site . $this->fileadminFolderName . '/')) {
+								$absResourceFileName = GeneralUtility::resolveBackPath(PATH_site . $origDirPrefix . $relResourceFileName);
+								$absResourceFileName = GeneralUtility::getFileAbsFileName($absResourceFileName);
+								if ($absResourceFileName && GeneralUtility::isFirstPartOfStr($absResourceFileName, PATH_site . $this->fileadminFolderName . '/')) {
 									$destDir = substr(dirname($absResourceFileName) . '/', strlen(PATH_site));
 									if ($this->verifyFolderAccess($destDir, TRUE) && $this->checkOrCreateDir($destDir)) {
 										$this->writeFileVerify($absResourceFileName, $res_fileID);
@@ -1984,7 +1987,7 @@ class ImportExport {
 					} else {
 						// Create the resouces directory name (filename without extension, suffixed "_FILES")
 						$resourceDir = dirname($newName) . '/' . preg_replace('/\\.[^.]*$/', '', basename($newName)) . '_FILES';
-						if (\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir($resourceDir)) {
+						if (GeneralUtility::mkdir($resourceDir)) {
 							foreach ($fileHeaderInfo['EXT_RES_ID'] as $res_fileID) {
 								if ($this->dat['files'][$res_fileID]['filename']) {
 									$absResourceFileName = $fileProcObj->getUniqueName($this->dat['files'][$res_fileID]['filename'], $resourceDir);
@@ -1998,7 +2001,7 @@ class ImportExport {
 					}
 					// If substitutions has been made, write the content to the file again:
 					if ($tokenSubstituted) {
-						\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($newName, $tokenizedContent);
+						GeneralUtility::writeFile($newName, $tokenizedContent);
 					}
 				}
 				return substr($newName, strlen(PATH_site));
@@ -2020,13 +2023,13 @@ class ImportExport {
 		if ($fileProcObj->actionPerms['newFile']) {
 			// Just for security, check again. Should actually not be necessary.
 			if ($fileProcObj->checkPathAgainstMounts($fileName) || $bypassMountCheck) {
-				$fI = \TYPO3\CMS\Core\Utility\GeneralUtility::split_fileref($fileName);
+				$fI = GeneralUtility::split_fileref($fileName);
 				if ($fileProcObj->checkIfAllowed($fI['fileext'], $fI['path'], $fI['file']) || $this->allowPHPScripts && $GLOBALS['BE_USER']->isAdmin()) {
-					if (\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($fileName)) {
+					if (GeneralUtility::getFileAbsFileName($fileName)) {
 						if ($this->dat['files'][$fileID]) {
-							\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($fileName, $this->dat['files'][$fileID]['content']);
+							GeneralUtility::writeFile($fileName, $this->dat['files'][$fileID]['content']);
 							$this->fileIDMap[$fileID] = $fileName;
-							if (md5(\TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($fileName)) == $this->dat['files'][$fileID]['content_md5']) {
+							if (md5(GeneralUtility::getUrl($fileName)) == $this->dat['files'][$fileID]['content_md5']) {
 								return TRUE;
 							} else {
 								$this->error('ERROR: File content "' . $fileName . '" was corrupted');
@@ -2059,13 +2062,13 @@ class ImportExport {
 		// Split dir path and remove first directory (which should be "fileadmin")
 		$filePathParts = explode('/', $dirPrefix);
 		$firstDir = array_shift($filePathParts);
-		if ($firstDir === $this->fileadminFolderName && \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($dirPrefix)) {
+		if ($firstDir === $this->fileadminFolderName && GeneralUtility::getFileAbsFileName($dirPrefix)) {
 			$pathAcc = '';
 			foreach ($filePathParts as $dirname) {
 				$pathAcc .= '/' . $dirname;
 				if (strlen($dirname)) {
 					if (!@is_dir((PATH_site . $this->fileadminFolderName . $pathAcc))) {
-						if (!\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir((PATH_site . $this->fileadminFolderName . $pathAcc))) {
+						if (!GeneralUtility::mkdir((PATH_site . $this->fileadminFolderName . $pathAcc))) {
 							$this->error('ERROR: Directory could not be created....B');
 							return FALSE;
 						}
@@ -2102,7 +2105,7 @@ class ImportExport {
 			// If that succeeded, return the path to it:
 			if ($result) {
 				// Remove the "fileadmin/" prefix of input path - and append the rest to the return value:
-				if (\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($dirPrefix, $this->fileadminFolderName . '/')) {
+				if (GeneralUtility::isFirstPartOfStr($dirPrefix, $this->fileadminFolderName . '/')) {
 					$dirPrefix = substr($dirPrefix, strlen($this->fileadminFolderName . '/'));
 				}
 				return substr($fileProcObj->mounts[$result]['path'] . $dirPrefix, strlen(PATH_site));
@@ -2129,9 +2132,9 @@ class ImportExport {
 			$fI = pathinfo($filename);
 			if (strtolower($fI['extension']) == 'xml') {
 				// XML:
-				$xmlContent = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($filename);
+				$xmlContent = GeneralUtility::getUrl($filename);
 				if (strlen($xmlContent)) {
-					$this->dat = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($xmlContent, '', TRUE);
+					$this->dat = GeneralUtility::xml2array($xmlContent, '', TRUE);
 					if (is_array($this->dat)) {
 						if ($this->dat['_DOCUMENT_TAG'] === 'T3RecordDocument' && is_array($this->dat['header']) && is_array($this->dat['records'])) {
 							$this->loadInit();
@@ -2349,7 +2352,7 @@ class ImportExport {
 					<tr class="' . $r['class'] . '">
 						<td>' . $this->renderControls($r) . '</td>
 						<td nowrap="nowrap">' . $r['preCode'] . $r['title'] . '</td>
-						<td nowrap="nowrap">' . \TYPO3\CMS\Core\Utility\GeneralUtility::formatSize($r['size']) . '</td>
+						<td nowrap="nowrap">' . GeneralUtility::formatSize($r['size']) . '</td>
 						<td nowrap="nowrap">' . ($r['msg'] && !$this->doesImport ? '<span class="typo3-red">' . htmlspecialchars($r['msg']) . '</span>' : '') . '</td>
 						' . ($this->update ? '<td nowrap="nowrap">' . $r['updateMode'] . '</td>' : '') . '
 						' . ($this->update ? '<td nowrap="nowrap">' . $r['updatePath'] . '</td>' : '') . '
@@ -2385,7 +2388,7 @@ class ImportExport {
 						$rows[] = '<tr class="' . $r['class'] . '">
 							<td>' . $this->renderControls($r) . '</td>
 							<td nowrap="nowrap">' . $r['preCode'] . $r['title'] . '</td>
-							<td nowrap="nowrap">' . \TYPO3\CMS\Core\Utility\GeneralUtility::formatSize($r['size']) . '</td>
+							<td nowrap="nowrap">' . GeneralUtility::formatSize($r['size']) . '</td>
 							<td nowrap="nowrap">' . ($r['msg'] && !$this->doesImport ? '<span class="typo3-red">' . htmlspecialchars($r['msg']) . '</span>' : '') . '</td>
 							' . ($this->update ? '<td nowrap="nowrap">' . $r['updateMode'] . '</td>' : '') . '
 							' . ($this->update ? '<td nowrap="nowrap">' . $r['updatePath'] . '</td>' : '') . '
@@ -2566,7 +2569,7 @@ class ImportExport {
 					if ($newUid = $this->import_mapId[$table][$uid]) {
 						$diffInverse = FALSE;
 						$recInf = $this->doesRecordExist($table, $newUid, '*');
-						\TYPO3\CMS\Backend\Utility\BackendUtility::workspaceOL($table, $recInf);
+						BackendUtility::workspaceOL($table, $recInf);
 					}
 					if (is_array($recInf)) {
 						$pInfo['showDiffContent'] = $this->compareRecords($recInf, $this->dat['records'][$table . ':' . $uid]['data'], $table, $diffInverse);
@@ -2579,7 +2582,7 @@ class ImportExport {
 			if ($table === 'pages') {
 				$viewID = $this->mode === 'export' ? $uid : ($this->doesImport ? $this->import_mapId['pages'][$uid] : 0);
 				if ($viewID) {
-					$pInfo['title'] = '<a href="#" onclick="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::viewOnClick($viewID, $GLOBALS['BACK_PATH'])) . 'return false;">' . $pInfo['title'] . '</a>';
+					$pInfo['title'] = '<a href="#" onclick="' . htmlspecialchars(BackendUtility::viewOnClick($viewID, $GLOBALS['BACK_PATH'])) . 'return false;">' . $pInfo['title'] . '</a>';
 				}
 			}
 		}
@@ -2602,13 +2605,13 @@ class ImportExport {
 			foreach ($record['softrefs'] as $info) {
 				$pInfo = array();
 				$pInfo['preCode'] = $preCode_A . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-status-reference-soft');
-				$pInfo['title'] = '<em>' . $info['field'] . ', "' . $info['spKey'] . '" </em>: <span title="' . htmlspecialchars($info['matchString']) . '">' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($info['matchString'], 60)) . '</span>';
+				$pInfo['title'] = '<em>' . $info['field'] . ', "' . $info['spKey'] . '" </em>: <span title="' . htmlspecialchars($info['matchString']) . '">' . htmlspecialchars(GeneralUtility::fixed_lgd_cs($info['matchString'], 60)) . '</span>';
 				if ($info['subst']['type']) {
 					if (strlen($info['subst']['title'])) {
-						$pInfo['title'] .= '<br/>' . $preCode_B . '<strong>' . $LANG->getLL('impexpcore_singlereco_title', 1) . '</strong> ' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($info['subst']['title'], 60));
+						$pInfo['title'] .= '<br/>' . $preCode_B . '<strong>' . $LANG->getLL('impexpcore_singlereco_title', 1) . '</strong> ' . htmlspecialchars(GeneralUtility::fixed_lgd_cs($info['subst']['title'], 60));
 					}
 					if (strlen($info['subst']['description'])) {
-						$pInfo['title'] .= '<br/>' . $preCode_B . '<strong>' . $LANG->getLL('impexpcore_singlereco_descr', 1) . '</strong> ' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($info['subst']['description'], 60));
+						$pInfo['title'] .= '<br/>' . $preCode_B . '<strong>' . $LANG->getLL('impexpcore_singlereco_descr', 1) . '</strong> ' . htmlspecialchars(GeneralUtility::fixed_lgd_cs($info['subst']['description'], 60));
 					}
 					$pInfo['title'] .= '<br/>' . $preCode_B . ($info['subst']['type'] == 'file' ? $LANG->getLL('impexpcore_singlereco_filename', 1) . ' <strong>' . $info['subst']['relFileName'] . '</strong>' : '') . ($info['subst']['type'] == 'string' ? $LANG->getLL('impexpcore_singlereco_value', 1) . ' <strong>' . $info['subst']['tokenValue'] . '</strong>' : '') . ($info['subst']['type'] == 'db' ? $LANG->getLL('impexpcore_softrefsel_record', 1) . ' <strong>' . $info['subst']['recordRef'] . '</strong>' : '');
 				}
@@ -2618,7 +2621,7 @@ class ImportExport {
 				$pInfo['type'] = 'softref';
 				$pInfo['_softRefInfo'] = $info;
 				$pInfo['type'] = 'softref';
-				if ($info['error'] && !\TYPO3\CMS\Core\Utility\GeneralUtility::inList('editable,exclude', $this->softrefCfg[$info['subst']['tokenID']]['mode'])) {
+				if ($info['error'] && !GeneralUtility::inList('editable,exclude', $this->softrefCfg[$info['subst']['tokenID']]['mode'])) {
 					$pInfo['msg'] .= $info['error'];
 				}
 				$lines[] = $pInfo;
@@ -2752,7 +2755,7 @@ class ImportExport {
 				// Check extension:
 				$fileProcObj = $this->getFileProcObj();
 				if ($fileProcObj->actionPerms['newFile']) {
-					$testFI = \TYPO3\CMS\Core\Utility\GeneralUtility::split_fileref(PATH_site . $fI['relFileName']);
+					$testFI = GeneralUtility::split_fileref(PATH_site . $fI['relFileName']);
 					if (!$this->allowPHPScripts && !$fileProcObj->checkIfAllowed($testFI['fileext'], $testFI['path'], $testFI['file'])) {
 						$pInfo['msg'] .= 'File extension was not allowed!';
 					}
@@ -2818,7 +2821,7 @@ class ImportExport {
 	public function checkDokType($checkTable, $doktype) {
 		global $PAGES_TYPES;
 		$allowedTableList = isset($PAGES_TYPES[$doktype]['allowedTables']) ? $PAGES_TYPES[$doktype]['allowedTables'] : $PAGES_TYPES['default']['allowedTables'];
-		$allowedArray = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $allowedTableList, 1);
+		$allowedArray = GeneralUtility::trimExplode(',', $allowedTableList, 1);
 		// If all tables or the table is listed as a allowed type, return TRUE
 		if (strstr($allowedTableList, '*') || in_array($checkTable, $allowedArray)) {
 			return TRUE;
@@ -2949,7 +2952,7 @@ class ImportExport {
 	 * @todo Define visibility
 	 */
 	public function includeSoftref($tokenID) {
-		return $tokenID && !\TYPO3\CMS\Core\Utility\GeneralUtility::inList('exclude,editable', $this->softrefCfg[$tokenID]['mode']);
+		return $tokenID && !GeneralUtility::inList('exclude,editable', $this->softrefCfg[$tokenID]['mode']);
 	}
 
 	/**
@@ -2988,7 +2991,7 @@ class ImportExport {
 	 * @todo Define visibility
 	 */
 	public function doesRecordExist($table, $uid, $fields = '') {
-		return \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($table, $uid, $fields ? $fields : 'uid,pid');
+		return BackendUtility::getRecord($table, $uid, $fields ? $fields : 'uid,pid');
 	}
 
 	/**
@@ -3001,7 +3004,7 @@ class ImportExport {
 	public function getRecordPath($pid) {
 		if (!isset($this->cache_getRecordPath[$pid])) {
 			$clause = $GLOBALS['BE_USER']->getPagePermsClause(1);
-			$this->cache_getRecordPath[$pid] = (string) \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordPath($pid, $clause, 20);
+			$this->cache_getRecordPath[$pid] = (string) BackendUtility::getRecordPath($pid, $clause, 20);
 		}
 		return $this->cache_getRecordPath[$pid];
 	}
@@ -3045,7 +3048,7 @@ class ImportExport {
 		global $LANG;
 		// Initialize:
 		$output = array();
-		$t3lib_diff_Obj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Utility\\DiffUtility');
+		$t3lib_diff_Obj = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Utility\\DiffUtility');
 		// Check if both inputs are records:
 		if (is_array($databaseRecord) && is_array($importRecord)) {
 			// Traverse based on database record
@@ -3054,7 +3057,7 @@ class ImportExport {
 					if (isset($importRecord[$fN])) {
 						if (strcmp(trim($databaseRecord[$fN]), trim($importRecord[$fN]))) {
 							// Create diff-result:
-							$output[$fN] = $t3lib_diff_Obj->makeDiffDisplay(\TYPO3\CMS\Backend\Utility\BackendUtility::getProcessedValue($table, $fN, !$inverseDiff ? $importRecord[$fN] : $databaseRecord[$fN], 0, 1, 1), \TYPO3\CMS\Backend\Utility\BackendUtility::getProcessedValue($table, $fN, !$inverseDiff ? $databaseRecord[$fN] : $importRecord[$fN], 0, 1, 1));
+							$output[$fN] = $t3lib_diff_Obj->makeDiffDisplay(BackendUtility::getProcessedValue($table, $fN, !$inverseDiff ? $importRecord[$fN] : $databaseRecord[$fN], 0, 1, 1), BackendUtility::getProcessedValue($table, $fN, !$inverseDiff ? $databaseRecord[$fN] : $importRecord[$fN], 0, 1, 1));
 						}
 						unset($importRecord[$fN]);
 					}
@@ -3095,7 +3098,7 @@ class ImportExport {
 	 */
 	public function getRTEoriginalFilename($string) {
 		// If "magic image":
-		if (\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($string, 'RTEmagicC_')) {
+		if (GeneralUtility::isFirstPartOfStr($string, 'RTEmagicC_')) {
 			// Find original file:
 			$pI = pathinfo(substr($string, strlen('RTEmagicC_')));
 			$filename = substr($pI['basename'], 0, -strlen(('.' . $pI['extension'])));
@@ -3112,7 +3115,7 @@ class ImportExport {
 	 */
 	public function getFileProcObj() {
 		if (!is_object($this->fileProcObj)) {
-			$this->fileProcObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Utility\\File\\ExtendedFileUtility');
+			$this->fileProcObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Utility\\File\\ExtendedFileUtility');
 			$this->fileProcObj->init($GLOBALS['FILEMOUNTS'], $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
 			$this->fileProcObj->init_actionPerms($GLOBALS['BE_USER']->getFileoperationPermissions());
 		}
@@ -3129,7 +3132,7 @@ class ImportExport {
 	public function callHook($name, $params) {
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/impexp/class.tx_impexp.php'][$name])) {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/impexp/class.tx_impexp.php'][$name] as $hook) {
-				\TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($hook, $params, $this);
+				GeneralUtility::callUserFunction($hook, $params, $this);
 			}
 		}
 	}

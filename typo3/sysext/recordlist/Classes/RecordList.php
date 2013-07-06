@@ -27,6 +27,9 @@ namespace TYPO3\CMS\Recordlist;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+
 /**
  * Script Class for the Web > List module; rendering the listing of records on a page
  *
@@ -179,17 +182,17 @@ class RecordList {
 		$this->MCONF = $GLOBALS['MCONF'];
 		$this->perms_clause = $GLOBALS['BE_USER']->getPagePermsClause(1);
 		// GPvars:
-		$this->id = (int) \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id');
-		$this->pointer = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('pointer');
-		$this->imagemode = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('imagemode');
-		$this->table = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('table');
-		$this->search_field = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('search_field');
-		$this->search_levels = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('search_levels');
-		$this->showLimit = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('showLimit');
-		$this->returnUrl = \TYPO3\CMS\Core\Utility\GeneralUtility::sanitizeLocalUrl(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('returnUrl'));
-		$this->clear_cache = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('clear_cache');
-		$this->cmd = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('cmd');
-		$this->cmd_table = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('cmd_table');
+		$this->id = (int) GeneralUtility::_GP('id');
+		$this->pointer = GeneralUtility::_GP('pointer');
+		$this->imagemode = GeneralUtility::_GP('imagemode');
+		$this->table = GeneralUtility::_GP('table');
+		$this->search_field = GeneralUtility::_GP('search_field');
+		$this->search_levels = GeneralUtility::_GP('search_levels');
+		$this->showLimit = GeneralUtility::_GP('showLimit');
+		$this->returnUrl = GeneralUtility::sanitizeLocalUrl(GeneralUtility::_GP('returnUrl'));
+		$this->clear_cache = GeneralUtility::_GP('clear_cache');
+		$this->cmd = GeneralUtility::_GP('cmd');
+		$this->cmd_table = GeneralUtility::_GP('cmd_table');
 		// Initialize menu
 		$this->menuConfig();
 	}
@@ -208,9 +211,9 @@ class RecordList {
 			'localization' => ''
 		);
 		// Loading module configuration:
-		$this->modTSconfig = \TYPO3\CMS\Backend\Utility\BackendUtility::getModTSconfig($this->id, 'mod.' . $this->MCONF['name']);
+		$this->modTSconfig = BackendUtility::getModTSconfig($this->id, 'mod.' . $this->MCONF['name']);
 		// Clean up settings:
-		$this->MOD_SETTINGS = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleData($this->MOD_MENU, \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('SET'), $this->MCONF['name']);
+		$this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, GeneralUtility::_GP('SET'), $this->MCONF['name']);
 	}
 
 	/**
@@ -221,7 +224,7 @@ class RecordList {
 	 */
 	public function clearCache() {
 		if ($this->clear_cache) {
-			$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+			$tce = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
 			$tce->stripslashes_values = 0;
 			$tce->start(array(), array());
 			$tce->clear_cacheCmd($this->id);
@@ -236,11 +239,11 @@ class RecordList {
 	 */
 	public function main() {
 		// Start document template object:
-		$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
+		$this->doc = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->setModuleTemplate('EXT:recordlist/Resources/Private/Templates/db_list.html');
 		// Loading current page record and checking access:
-		$this->pageinfo = \TYPO3\CMS\Backend\Utility\BackendUtility::readPageAccess($this->id, $this->perms_clause);
+		$this->pageinfo = BackendUtility::readPageAccess($this->id, $this->perms_clause);
 		$access = is_array($this->pageinfo) ? 1 : 0;
 		// Apply predefined values for hidden checkboxes
 		// Set predefined value for DisplayBigControlPanel:
@@ -263,9 +266,9 @@ class RecordList {
 		}
 		// Initialize the dblist object:
 		/** @var $dblist \TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList */
-		$dblist = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Recordlist\\RecordList\\DatabaseRecordList');
+		$dblist = GeneralUtility::makeInstance('TYPO3\\CMS\\Recordlist\\RecordList\\DatabaseRecordList');
 		$dblist->backPath = $GLOBALS['BACK_PATH'];
-		$dblist->script = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('web_list', array(), '');
+		$dblist->script = BackendUtility::getModuleUrl('web_list', array(), '');
 		$dblist->calcPerms = $GLOBALS['BE_USER']->calcPerms($this->pageinfo);
 		$dblist->thumbs = $GLOBALS['BE_USER']->uc['thumbnailsByDefault'];
 		$dblist->returnUrl = $this->returnUrl;
@@ -278,8 +281,8 @@ class RecordList {
 		$dblist->hideTranslations = $this->modTSconfig['properties']['hideTranslations'];
 		$dblist->tableTSconfigOverTCA = $this->modTSconfig['properties']['table.'];
 		$dblist->alternateBgColors = $this->modTSconfig['properties']['alternateBgColors'] ? 1 : 0;
-		$dblist->allowedNewTables = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->modTSconfig['properties']['allowedNewTables'], 1);
-		$dblist->deniedNewTables = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->modTSconfig['properties']['deniedNewTables'], 1);
+		$dblist->allowedNewTables = GeneralUtility::trimExplode(',', $this->modTSconfig['properties']['allowedNewTables'], 1);
+		$dblist->deniedNewTables = GeneralUtility::trimExplode(',', $this->modTSconfig['properties']['deniedNewTables'], 1);
 		$dblist->newWizards = $this->modTSconfig['properties']['newWizards'] ? 1 : 0;
 		$dblist->pageRow = $this->pageinfo;
 		$dblist->counter++;
@@ -289,17 +292,17 @@ class RecordList {
 		$dblist->clickTitleMode = $clickTitleMode === '' ? 'edit' : $clickTitleMode;
 		// Clipboard is initialized:
 		// Start clipboard
-		$dblist->clipObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Clipboard\\Clipboard');
+		$dblist->clipObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Clipboard\\Clipboard');
 		// Initialize - reads the clipboard content from the user session
 		$dblist->clipObj->initializeClipboard();
 		// Clipboard actions are handled:
 		// CB is the clipboard command array
-		$CB = \TYPO3\CMS\Core\Utility\GeneralUtility::_GET('CB');
+		$CB = GeneralUtility::_GET('CB');
 		if ($this->cmd == 'setCB') {
 			// CBH is all the fields selected for the clipboard, CBC is the checkbox fields which were checked.
 			// By merging we get a full array of checked/unchecked elements
 			// This is set to the 'el' array of the CB after being parsed so only the table in question is registered.
-			$CB['el'] = $dblist->clipObj->cleanUpCBC(array_merge((array) \TYPO3\CMS\Core\Utility\GeneralUtility::_POST('CBH'), (array) \TYPO3\CMS\Core\Utility\GeneralUtility::_POST('CBC')), $this->cmd_table);
+			$CB['el'] = $dblist->clipObj->cleanUpCBC(array_merge((array) GeneralUtility::_POST('CBH'), (array) GeneralUtility::_POST('CBC')), $this->cmd_table);
 		}
 		if (!$this->MOD_SETTINGS['clipBoard']) {
 			// If the clipboard is NOT shown, set the pad to 'normal'.
@@ -319,21 +322,21 @@ class RecordList {
 			// Deleting records...:
 			// Has not to do with the clipboard but is simply the delete action. The clipboard object is used to clean up the submitted entries to only the selected table.
 			if ($this->cmd == 'delete') {
-				$items = $dblist->clipObj->cleanUpCBC(\TYPO3\CMS\Core\Utility\GeneralUtility::_POST('CBC'), $this->cmd_table, 1);
+				$items = $dblist->clipObj->cleanUpCBC(GeneralUtility::_POST('CBC'), $this->cmd_table, 1);
 				if (count($items)) {
 					$cmd = array();
 					foreach ($items as $iK => $value) {
 						$iKParts = explode('|', $iK);
 						$cmd[$iKParts[0]][$iKParts[1]]['delete'] = 1;
 					}
-					$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+					$tce = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
 					$tce->stripslashes_values = 0;
 					$tce->start(array(), $cmd);
 					$tce->process_cmdmap();
 					if (isset($cmd['pages'])) {
-						\TYPO3\CMS\Backend\Utility\BackendUtility::setUpdateSignal('updatePageTree');
+						BackendUtility::setUpdateSignal('updatePageTree');
 					}
-					$tce->printLogErrorMessages(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI'));
+					$tce->printLogErrorMessages(GeneralUtility::getIndpEnv('REQUEST_URI'));
 				}
 			}
 			// Initialize the listing object, dblist, for rendering the list:
@@ -374,7 +377,7 @@ class RecordList {
 				' . $this->doc->redirectUrls($listUrl) . '
 				' . $dblist->CBfunctions() . '
 				function editRecords(table,idList,addParams,CBflag) {	//
-					window.location.href="' . $GLOBALS['BACK_PATH'] . 'alt_doc.php?returnUrl=' . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI')) . '&edit["+table+"]["+idList+"]=edit"+addParams;
+					window.location.href="' . $GLOBALS['BACK_PATH'] . 'alt_doc.php?returnUrl=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI')) . '&edit["+table+"]["+idList+"]=edit"+addParams;
 				}
 				function editList(table,idList) {	//
 					var list="";
@@ -423,20 +426,20 @@ class RecordList {
 						<form action="" method="post">';
 			// Add "display bigControlPanel" checkbox:
 			if ($this->modTSconfig['properties']['enableDisplayBigControlPanel'] === 'selectable') {
-				$this->body .= \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck($this->id, 'SET[bigControlPanel]', $this->MOD_SETTINGS['bigControlPanel'], '', $this->table ? '&table=' . $this->table : '', 'id="checkLargeControl"');
-				$this->body .= '<label for="checkLargeControl">' . \TYPO3\CMS\Backend\Utility\BackendUtility::wrapInHelp('xMOD_csh_corebe', 'list_options', $GLOBALS['LANG']->getLL('largeControl', TRUE)) . '</label><br />';
+				$this->body .= BackendUtility::getFuncCheck($this->id, 'SET[bigControlPanel]', $this->MOD_SETTINGS['bigControlPanel'], '', $this->table ? '&table=' . $this->table : '', 'id="checkLargeControl"');
+				$this->body .= '<label for="checkLargeControl">' . BackendUtility::wrapInHelp('xMOD_csh_corebe', 'list_options', $GLOBALS['LANG']->getLL('largeControl', TRUE)) . '</label><br />';
 			}
 			// Add "clipboard" checkbox:
 			if ($this->modTSconfig['properties']['enableClipBoard'] === 'selectable') {
 				if ($dblist->showClipboard) {
-					$this->body .= \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck($this->id, 'SET[clipBoard]', $this->MOD_SETTINGS['clipBoard'], '', $this->table ? '&table=' . $this->table : '', 'id="checkShowClipBoard"');
-					$this->body .= '<label for="checkShowClipBoard">' . \TYPO3\CMS\Backend\Utility\BackendUtility::wrapInHelp('xMOD_csh_corebe', 'list_options', $GLOBALS['LANG']->getLL('showClipBoard', TRUE)) . '</label><br />';
+					$this->body .= BackendUtility::getFuncCheck($this->id, 'SET[clipBoard]', $this->MOD_SETTINGS['clipBoard'], '', $this->table ? '&table=' . $this->table : '', 'id="checkShowClipBoard"');
+					$this->body .= '<label for="checkShowClipBoard">' . BackendUtility::wrapInHelp('xMOD_csh_corebe', 'list_options', $GLOBALS['LANG']->getLL('showClipBoard', TRUE)) . '</label><br />';
 				}
 			}
 			// Add "localization view" checkbox:
 			if ($this->modTSconfig['properties']['enableLocalizationView'] === 'selectable') {
-				$this->body .= \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck($this->id, 'SET[localization]', $this->MOD_SETTINGS['localization'], '', $this->table ? '&table=' . $this->table : '', 'id="checkLocalization"');
-				$this->body .= '<label for="checkLocalization">' . \TYPO3\CMS\Backend\Utility\BackendUtility::wrapInHelp('xMOD_csh_corebe', 'list_options', $GLOBALS['LANG']->getLL('localization', TRUE)) . '</label><br />';
+				$this->body .= BackendUtility::getFuncCheck($this->id, 'SET[localization]', $this->MOD_SETTINGS['localization'], '', $this->table ? '&table=' . $this->table : '', 'id="checkLocalization"');
+				$this->body .= '<label for="checkLocalization">' . BackendUtility::wrapInHelp('xMOD_csh_corebe', 'list_options', $GLOBALS['LANG']->getLL('localization', TRUE)) . '</label><br />';
 			}
 			$this->body .= '
 						</form>
@@ -447,7 +450,7 @@ class RecordList {
 			}
 			// Search box:
 			if (!$this->modTSconfig['properties']['disableSearchBox']) {
-				$sectionTitle = \TYPO3\CMS\Backend\Utility\BackendUtility::wrapInHelp('xMOD_csh_corebe', 'list_searchbox', $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.search', TRUE));
+				$sectionTitle = BackendUtility::wrapInHelp('xMOD_csh_corebe', 'list_searchbox', $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.search', TRUE));
 				$this->body .= '<div class="db_list-searchbox">' . $this->doc->section($sectionTitle, $dblist->getSearchBox(), FALSE, TRUE, FALSE, TRUE) . '</div>';
 			}
 			// Additional footer content
@@ -455,7 +458,7 @@ class RecordList {
 			if (is_array($footerContentHook)) {
 				foreach ($footerContentHook as $hook) {
 					$params = array();
-					$this->body .= \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($hook, $params, $this);
+					$this->body .= GeneralUtility::callUserFunction($hook, $params, $this);
 				}
 			}
 		}

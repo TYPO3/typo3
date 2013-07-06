@@ -23,6 +23,9 @@ namespace TYPO3\CMS\Reports\Report\Status;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Performs several checks about the system's health
  *
@@ -86,7 +89,7 @@ class SecurityStatus implements \TYPO3\CMS\Reports\StatusProviderInterface {
 			}
 		}
 		$GLOBALS['TYPO3_DB']->sql_free_result($res);
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Reports\\Status', $GLOBALS['LANG']->getLL('status_adminUserAccount'), $value, $message, $severity);
+		return GeneralUtility::makeInstance('TYPO3\\CMS\\Reports\\Status', $GLOBALS['LANG']->getLL('status_adminUserAccount'), $value, $message, $severity);
 	}
 
 	/**
@@ -104,7 +107,7 @@ class SecurityStatus implements \TYPO3\CMS\Reports\StatusProviderInterface {
 			$url = 'install/index.php?redirect_url=index.php' . urlencode('?TYPO3_INSTALL[type]=config#set_encryptionKey');
 			$message = sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:warning.install_encryption'), '<a href="' . $url . '">', '</a>');
 		}
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Reports\\Status', $GLOBALS['LANG']->getLL('status_encryptionKey'), $value, $message, $severity);
+		return GeneralUtility::makeInstance('TYPO3\\CMS\\Reports\\Status', $GLOBALS['LANG']->getLL('status_encryptionKey'), $value, $message, $severity);
 	}
 
 	/**
@@ -116,8 +119,8 @@ class SecurityStatus implements \TYPO3\CMS\Reports\StatusProviderInterface {
 		$value = $GLOBALS['LANG']->getLL('status_ok');
 		$message = '';
 		$severity = \TYPO3\CMS\Reports\Status::OK;
-		$defaultParts = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('|', FILE_DENY_PATTERN_DEFAULT, TRUE);
-		$givenParts = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('|', $GLOBALS['TYPO3_CONF_VARS']['BE']['fileDenyPattern'], TRUE);
+		$defaultParts = GeneralUtility::trimExplode('|', FILE_DENY_PATTERN_DEFAULT, TRUE);
+		$givenParts = GeneralUtility::trimExplode('|', $GLOBALS['TYPO3_CONF_VARS']['BE']['fileDenyPattern'], TRUE);
 		$result = array_intersect($defaultParts, $givenParts);
 		if ($defaultParts !== $result) {
 			$value = $GLOBALS['LANG']->getLL('status_insecure');
@@ -125,7 +128,7 @@ class SecurityStatus implements \TYPO3\CMS\Reports\StatusProviderInterface {
 			$url = 'install/index.php?redirect_url=index.php' . urlencode('?TYPO3_INSTALL[type]=config#set_encryptionKey');
 			$message = sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:warning.file_deny_pattern_partsNotPresent'), '<br /><pre>' . htmlspecialchars(FILE_DENY_PATTERN_DEFAULT) . '</pre><br />');
 		}
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Reports\\Status', $GLOBALS['LANG']->getLL('status_fileDenyPattern'), $value, $message, $severity);
+		return GeneralUtility::makeInstance('TYPO3\\CMS\\Reports\\Status', $GLOBALS['LANG']->getLL('status_fileDenyPattern'), $value, $message, $severity);
 	}
 
 	/**
@@ -138,12 +141,12 @@ class SecurityStatus implements \TYPO3\CMS\Reports\StatusProviderInterface {
 		$value = $GLOBALS['LANG']->getLL('status_ok');
 		$message = '';
 		$severity = \TYPO3\CMS\Reports\Status::OK;
-		if ($GLOBALS['TYPO3_CONF_VARS']['BE']['fileDenyPattern'] != FILE_DENY_PATTERN_DEFAULT && \TYPO3\CMS\Core\Utility\GeneralUtility::verifyFilenameAgainstDenyPattern('.htaccess')) {
+		if ($GLOBALS['TYPO3_CONF_VARS']['BE']['fileDenyPattern'] != FILE_DENY_PATTERN_DEFAULT && GeneralUtility::verifyFilenameAgainstDenyPattern('.htaccess')) {
 			$value = $GLOBALS['LANG']->getLL('status_insecure');
 			$severity = \TYPO3\CMS\Reports\Status::ERROR;
 			$message = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:warning.file_deny_htaccess');
 		}
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Reports\\Status', $GLOBALS['LANG']->getLL('status_htaccessUploadProtection'), $value, $message, $severity);
+		return GeneralUtility::makeInstance('TYPO3\\CMS\\Reports\\Status', $GLOBALS['LANG']->getLL('status_htaccessUploadProtection'), $value, $message, $severity);
 	}
 
 	/**
@@ -166,7 +169,7 @@ class SecurityStatus implements \TYPO3\CMS\Reports\StatusProviderInterface {
 	 * @return void
 	 */
 	protected function executeAdminCommand() {
-		$command = \TYPO3\CMS\Core\Utility\GeneralUtility::_GET('adminCmd');
+		$command = GeneralUtility::_GET('adminCmd');
 		switch ($command) {
 			case 'remove_ENABLE_INSTALL_TOOL':
 				unlink(PATH_site . 'typo3conf/ENABLE_INSTALL_TOOL');
@@ -191,7 +194,7 @@ class SecurityStatus implements \TYPO3\CMS\Reports\StatusProviderInterface {
 			$changeInstallToolPasswordUrl = 'mod.php?M=system_InstallInstall';
 			$message = sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:warning.installtool_default_password'), '<a href="' . $changeInstallToolPasswordUrl . '">', '</a>');
 		}
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Reports\\Status', $GLOBALS['LANG']->getLL('status_installToolPassword'), $value, $message, $severity);
+		return GeneralUtility::makeInstance('TYPO3\\CMS\\Reports\\Status', $GLOBALS['LANG']->getLL('status_installToolPassword'), $value, $message, $severity);
 	}
 
 	/**
@@ -209,7 +212,7 @@ class SecurityStatus implements \TYPO3\CMS\Reports\StatusProviderInterface {
 			$message .= $GLOBALS['LANG']->getLL('status_saltedPasswords_notInstalled');
 		} else {
 			/** @var \TYPO3\CMS\Saltedpasswords\Utility\ExtensionManagerConfigurationUtility $configCheck */
-			$configCheck = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Saltedpasswords\\Utility\\ExtensionManagerConfigurationUtility');
+			$configCheck = GeneralUtility::makeInstance('TYPO3\\CMS\\Saltedpasswords\\Utility\\ExtensionManagerConfigurationUtility');
 			$message = '<p>' . $GLOBALS['LANG']->getLL('status_saltedPasswords_infoText') . '</p>';
 			$messageDetail = '';
 			$flashMessage = $configCheck->checkConfigurationBackend(array(), new \TYPO3\CMS\Core\TypoScript\ConfigurationForm());
@@ -236,7 +239,7 @@ class SecurityStatus implements \TYPO3\CMS\Reports\StatusProviderInterface {
 				$message = '';
 			}
 		}
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Reports\\Status', $GLOBALS['LANG']->getLL('status_saltedPasswords'), $value, $message, $severity);
+		return GeneralUtility::makeInstance('TYPO3\\CMS\\Reports\\Status', $GLOBALS['LANG']->getLL('status_saltedPasswords'), $value, $message, $severity);
 	}
 
 	/**
@@ -253,7 +256,7 @@ class SecurityStatus implements \TYPO3\CMS\Reports\StatusProviderInterface {
 		if ($enableInstallToolFileExists) {
 			if (trim(file_get_contents($enableInstallToolFile)) === 'KEEP_FILE') {
 				$severity = \TYPO3\CMS\Reports\Status::WARNING;
-				$disableInstallToolUrl = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL') . '&amp;adminCmd=remove_ENABLE_INSTALL_TOOL';
+				$disableInstallToolUrl = GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL') . '&amp;adminCmd=remove_ENABLE_INSTALL_TOOL';
 				$value = $GLOBALS['LANG']->getLL('status_enabledPermanently');
 				$message = sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:warning.install_enabled'), '<span style="white-space: nowrap;">' . $enableInstallToolFile . '</span>');
 				$message .= ' <a href="' . $disableInstallToolUrl . '">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:warning.install_enabled_cmd') . '</a>';
@@ -263,14 +266,14 @@ class SecurityStatus implements \TYPO3\CMS\Reports\StatusProviderInterface {
 					unlink($enableInstallToolFile);
 				} else {
 					$severity = \TYPO3\CMS\Reports\Status::NOTICE;
-					$disableInstallToolUrl = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL') . '&amp;adminCmd=remove_ENABLE_INSTALL_TOOL';
+					$disableInstallToolUrl = GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL') . '&amp;adminCmd=remove_ENABLE_INSTALL_TOOL';
 					$value = $GLOBALS['LANG']->getLL('status_enabledTemporarily');
 					$message = sprintf($GLOBALS['LANG']->getLL('status_installEnabledTemporarily'), '<span style="white-space: nowrap;">' . $enableInstallToolFile . '</span>', floor($enableInstallToolFileTtl / 60));
 					$message .= ' <a href="' . $disableInstallToolUrl . '">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:warning.install_enabled_cmd') . '</a>';
 				}
 			}
 		}
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Reports\\Status', $GLOBALS['LANG']->getLL('status_installTool'), $value, $message, $severity);
+		return GeneralUtility::makeInstance('TYPO3\\CMS\\Reports\\Status', $GLOBALS['LANG']->getLL('status_installTool'), $value, $message, $severity);
 	}
 
 }

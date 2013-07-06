@@ -24,6 +24,8 @@ namespace TYPO3\CMS\Linkvalidator\Task;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * This class provides Scheduler plugin implementation
  *
@@ -239,7 +241,7 @@ class ValidatorTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 	public function execute() {
 		$this->setCliArguments();
 		$successfullyExecuted = TRUE;
-		if (!file_exists(($file = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($this->emailTemplateFile)))
+		if (!file_exists(($file = GeneralUtility::getFileAbsFileName($this->emailTemplateFile)))
 			&& !empty($this->email)
 		) {
 			if ($this->emailTemplateFile === 'EXT:linkvalidator/res/mailtemplate.html') {
@@ -253,13 +255,13 @@ class ValidatorTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 				);
 			}
 		}
-		$htmlFile = \TYPO3\CMS\Core\Utility\GeneralUtility::getURL($file);
+		$htmlFile = GeneralUtility::getURL($file);
 		$this->templateMail = \TYPO3\CMS\Core\Html\HtmlParser::getSubpart($htmlFile, '###REPORT_TEMPLATE###');
 		// The array to put the content into
 		$html = array();
 		$pageSections = '';
 		$this->isDifferentToLastRun = FALSE;
-		$pageList = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->page, 1);
+		$pageList = GeneralUtility::trimExplode(',', $this->page, 1);
 		$modTs = $this->loadModTsConfig($this->page);
 		if (is_array($pageList)) {
 			foreach ($pageList as $page) {
@@ -290,7 +292,7 @@ class ValidatorTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 		$searchFields = $this->getSearchField($modTs);
 		$linkTypes = $this->getLinkTypes($modTs);
 		/** @var $processor \TYPO3\CMS\Linkvalidator\LinkAnalyzer */
-		$processor = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Linkvalidator\\LinkAnalyzer');
+		$processor = GeneralUtility::makeInstance('TYPO3\\CMS\\Linkvalidator\\LinkAnalyzer');
 		if ($page === 0) {
 			$rootLineHidden = FALSE;
 		} else {
@@ -329,7 +331,7 @@ class ValidatorTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 	 */
 	protected function loadModTsConfig($page) {
 		$modTs = \TYPO3\CMS\Backend\Utility\BackendUtility::getModTSconfig($page, 'mod.linkvalidator');
-		$parseObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\Parser\\TypoScriptParser');
+		$parseObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\Parser\\TypoScriptParser');
 		$parseObj->parse($this->configuration);
 		if (count($parseObj->errors) > 0) {
 			$parseErrorMessage = $GLOBALS['LANG']->sL('LLL:EXT:linkvalidator/Resources/Private/Language/locallang.xlf:tasks.error.invalidTSconfig') . '<br />';
@@ -342,7 +344,7 @@ class ValidatorTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 		$modTs = $modTs['properties'];
 		$overrideTs = $tsConfig['mod.']['tx_linkvalidator.'];
 		if (is_array($overrideTs)) {
-			$modTs = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($modTs, $overrideTs);
+			$modTs = GeneralUtility::array_merge_recursive_overrule($modTs, $overrideTs);
 		}
 		return $modTs;
 	}
@@ -356,7 +358,7 @@ class ValidatorTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 	protected function getSearchField(array $modTS) {
 		// Get the searchFields from TypoScript
 		foreach ($modTS['searchFields.'] as $table => $fieldList) {
-			$fields = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $fieldList);
+			$fields = GeneralUtility::trimExplode(',', $fieldList);
 			foreach ($fields as $field) {
 				$searchFields[$table][] = $field;
 			}
@@ -372,7 +374,7 @@ class ValidatorTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 	 */
 	protected function getLinkTypes(array $modTS) {
 		$linkTypes = array();
-		$typesTmp = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $modTS['linktypes'], 1);
+		$typesTmp = GeneralUtility::trimExplode(',', $modTS['linktypes'], 1);
 		if (is_array($typesTmp)) {
 			if (!empty($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks']) && is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'])) {
 				foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'] as $type => $value) {
@@ -410,28 +412,28 @@ class ValidatorTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 					'pObj' => &$this,
 					'markerArray' => $markerArray
 				);
-				$newMarkers = \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($userFunc, $params, $this);
+				$newMarkers = GeneralUtility::callUserFunction($userFunc, $params, $this);
 				if (is_array($newMarkers)) {
-					$markerArray = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge($markerArray, $newMarkers);
+					$markerArray = GeneralUtility::array_merge($markerArray, $newMarkers);
 				}
 				unset($params);
 			}
 		}
 		$content = \TYPO3\CMS\Core\Html\HtmlParser::substituteMarkerArray($content, $markerArray, '###|###', TRUE, TRUE);
 		/** @var $mail \TYPO3\CMS\Core\Mail\MailMessage */
-		$mail = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Mail\\MailMessage');
+		$mail = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Mail\\MailMessage');
 		if (empty($modTsConfig['mail.']['fromemail'])) {
 			$modTsConfig['mail.']['fromemail'] = \TYPO3\CMS\Core\Utility\MailUtility::getSystemFromAddress();
 		}
 		if (empty($modTsConfig['mail.']['fromname'])) {
 			$modTsConfig['mail.']['fromname'] = \TYPO3\CMS\Core\Utility\MailUtility::getSystemFromName();
 		}
-		if (\TYPO3\CMS\Core\Utility\GeneralUtility::validEmail($modTsConfig['mail.']['fromemail'])) {
+		if (GeneralUtility::validEmail($modTsConfig['mail.']['fromemail'])) {
 			$mail->setFrom(array($modTsConfig['mail.']['fromemail'] => $modTsConfig['mail.']['fromname']));
 		} else {
 			throw new \Exception($GLOBALS['LANG']->sL('LLL:EXT:linkvalidator/Resources/Private/Language/locallang.xlf:tasks.error.invalidFromEmail'), '1295476760');
 		}
-		if (\TYPO3\CMS\Core\Utility\GeneralUtility::validEmail($modTsConfig['mail.']['replytoemail'])) {
+		if (GeneralUtility::validEmail($modTsConfig['mail.']['replytoemail'])) {
 			$mail->setReplyTo(array($modTsConfig['mail.']['replytoemail'] => $modTsConfig['mail.']['replytoname']));
 		}
 		if (!empty($modTsConfig['mail.']['subject'])) {
@@ -440,9 +442,9 @@ class ValidatorTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 			throw new \Exception($GLOBALS['LANG']->sL('LLL:EXT:linkvalidator/Resources/Private/Language/locallang.xlf:tasks.error.noSubject'), '1295476808');
 		}
 		if (!empty($this->email)) {
-			$emailList = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->email);
+			$emailList = GeneralUtility::trimExplode(',', $this->email);
 			foreach ($emailList as $emailAdd) {
-				if (!\TYPO3\CMS\Core\Utility\GeneralUtility::validEmail($emailAdd)) {
+				if (!GeneralUtility::validEmail($emailAdd)) {
 					throw new \Exception($GLOBALS['LANG']->sL('LLL:EXT:linkvalidator/Resources/Private/Language/locallang.xlf:tasks.error.invalidToEmail'), '1295476821');
 				} else {
 					$validEmailList[] = $emailAdd;
@@ -482,9 +484,9 @@ class ValidatorTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 					'oldBrokenLink' => $oldBrokenLink,
 					'pObj' => &$this
 				);
-				$newMarkers = \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($userFunc, $params, $this);
+				$newMarkers = GeneralUtility::callUserFunction($userFunc, $params, $this);
 				if (is_array($newMarkers)) {
-					$markerArray = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge($markerArray, $newMarkers);
+					$markerArray = GeneralUtility::array_merge($markerArray, $newMarkers);
 				}
 				unset($params);
 			}
