@@ -39,12 +39,6 @@ class ClassWithInjectProperties {
 	 * @inject
 	 */
 	protected $secondDummyClass;
-
-	/**
-	 * @var \TYPO3\CMS\Extbase\Tests\Fixture\SecondDummyClass
-	 * @Flow\Inject
-	 */
-	protected $secondDummyClassWithFlowInject;
 }
 
 ?>
