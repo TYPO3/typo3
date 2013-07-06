@@ -250,8 +250,8 @@ class DocumentTemplate {
 	// Skinning
 	// stylesheets from core
 	protected $stylesheetsCore = array(
-		'structure' => 'stylesheets/structure/',
-		'visual' => 'stylesheets/visual/',
+		'structure' => 'sysext/backend/Resources/Public/Css/structure/',
+		'visual' => 'sysext/backend/Resources/Public/Css/visual/',
 		'generatedSprites' => '../typo3temp/sprites/'
 	);
 
