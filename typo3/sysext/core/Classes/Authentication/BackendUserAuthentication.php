@@ -640,40 +640,40 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 		$out = TRUE;
 		// Checking value:
 		switch ((string) $authMode) {
-		case 'explicitAllow':
-			if (!\TYPO3\CMS\Core\Utility\GeneralUtility::inList($this->groupData['explicit_allowdeny'], ($testValue . ':ALLOW'))) {
-				$out = FALSE;
-			}
-			break;
-		case 'explicitDeny':
-			if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList($this->groupData['explicit_allowdeny'], $testValue . ':DENY')) {
-				$out = FALSE;
-			}
-			break;
-		case 'individual':
-			if (is_array($GLOBALS['TCA'][$table]) && is_array($GLOBALS['TCA'][$table]['columns'][$field])) {
-				$items = $GLOBALS['TCA'][$table]['columns'][$field]['config']['items'];
-				if (is_array($items)) {
-					foreach ($items as $iCfg) {
-						if (!strcmp($iCfg[1], $value) && $iCfg[4]) {
-							switch ((string) $iCfg[4]) {
-							case 'EXPL_ALLOW':
-								if (!\TYPO3\CMS\Core\Utility\GeneralUtility::inList($this->groupData['explicit_allowdeny'], ($testValue . ':ALLOW'))) {
-									$out = FALSE;
-								}
-								break;
-							case 'EXPL_DENY':
-								if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList($this->groupData['explicit_allowdeny'], $testValue . ':DENY')) {
-									$out = FALSE;
+			case 'explicitAllow':
+				if (!\TYPO3\CMS\Core\Utility\GeneralUtility::inList($this->groupData['explicit_allowdeny'], ($testValue . ':ALLOW'))) {
+					$out = FALSE;
+				}
+				break;
+			case 'explicitDeny':
+				if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList($this->groupData['explicit_allowdeny'], $testValue . ':DENY')) {
+					$out = FALSE;
+				}
+				break;
+			case 'individual':
+				if (is_array($GLOBALS['TCA'][$table]) && is_array($GLOBALS['TCA'][$table]['columns'][$field])) {
+					$items = $GLOBALS['TCA'][$table]['columns'][$field]['config']['items'];
+					if (is_array($items)) {
+						foreach ($items as $iCfg) {
+							if (!strcmp($iCfg[1], $value) && $iCfg[4]) {
+								switch ((string) $iCfg[4]) {
+									case 'EXPL_ALLOW':
+										if (!\TYPO3\CMS\Core\Utility\GeneralUtility::inList($this->groupData['explicit_allowdeny'], ($testValue . ':ALLOW'))) {
+											$out = FALSE;
+										}
+										break;
+									case 'EXPL_DENY':
+										if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList($this->groupData['explicit_allowdeny'], $testValue . ':DENY')) {
+											$out = FALSE;
+										}
+										break;
 								}
 								break;
 							}
-							break;
 						}
 					}
 				}
-			}
-			break;
+				break;
 		}
 		return $out;
 	}
@@ -840,21 +840,21 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 			$result = TRUE;
 		} elseif ($tableName == 'pages') {
 			switch ($actionType) {
-			case 'edit':
-				$result = ($compiledPermissions & 2) !== 0;
-				break;
-			case 'new':
-				// Create new page OR page content
-				$result = ($compiledPermissions & 8 + 16) !== 0;
-				break;
-			case 'delete':
-				$result = ($compiledPermissions & 4) !== 0;
-				break;
-			case 'editcontent':
-				$result = ($compiledPermissions & 16) !== 0;
-				break;
-			default:
-				$result = FALSE;
+				case 'edit':
+					$result = ($compiledPermissions & 2) !== 0;
+					break;
+				case 'new':
+					// Create new page OR page content
+					$result = ($compiledPermissions & 8 + 16) !== 0;
+					break;
+				case 'delete':
+					$result = ($compiledPermissions & 4) !== 0;
+					break;
+				case 'editcontent':
+					$result = ($compiledPermissions & 16) !== 0;
+					break;
+				default:
+					$result = FALSE;
 			}
 		} else {
 			$result = ($compiledPermissions & 16) !== 0;
@@ -1085,16 +1085,15 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 		$wsAccess = $this->checkWorkspace($wsid);
 		if ($wsAccess) {
 			switch ($wsAccess['uid']) {
-			case 0:
-				// Live workspace
-				// If access to Live workspace, no problem.
-				$retVal = TRUE;
-				break;
-			default:
-				// Custom workspace
-				$retVal = $wsAccess['_ACCESS'] === 'owner' || $this->checkWorkspace(0) && !($wsAccess['publish_access'] & 2);
-				// Either be an adminuser OR have access to online workspace which is OK as well as long as publishing access is not limited by workspace option.
-				break;
+				case 0:
+					// Live workspace
+					// If access to Live workspace, no problem.
+					$retVal = TRUE;
+					break;
+				default:
+					// Custom workspace
+					$retVal = $wsAccess['_ACCESS'] === 'owner' || $this->checkWorkspace(0) && !($wsAccess['publish_access'] & 2);
+					// Either be an adminuser OR have access to online workspace which is OK as well as long as publishing access is not limited by workspace option.
 			}
 		}
 		return $retVal;
@@ -1902,14 +1901,13 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 		// If not array, look up workspace record:
 		if (!is_array($wsRec)) {
 			switch ((string) $wsRec) {
-			case '0':
-				$wsRec = array('uid' => $wsRec);
-				break;
-			default:
-				if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('workspaces')) {
-					$wsRec = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow($fields, 'sys_workspace', 'pid=0 AND uid=' . intval($wsRec) . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('sys_workspace'), '', 'title');
-				}
-				break;
+				case '0':
+					$wsRec = array('uid' => $wsRec);
+					break;
+				default:
+					if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('workspaces')) {
+						$wsRec = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow($fields, 'sys_workspace', 'pid=0 AND uid=' . intval($wsRec) . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('sys_workspace'), '', 'title');
+					}
 			}
 		}
 		// If wsRec is set to an array, evaluate it:
@@ -1918,41 +1916,40 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 				return array_merge($wsRec, array('_ACCESS' => 'admin'));
 			} else {
 				switch ((string) $wsRec['uid']) {
-				case '0':
-					$retVal = $this->groupData['workspace_perms'] & 1 ? array_merge($wsRec, array('_ACCESS' => 'online')) : FALSE;
-					break;
-				default:
-					// Checking if the guy is admin:
-					if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList($wsRec['adminusers'], 'be_users_' . $this->user['uid'])) {
-						return array_merge($wsRec, array('_ACCESS' => 'owner'));
-					}
-					// Checking if he is owner through a user group of his:
-					foreach ($this->userGroupsUID as $groupUid) {
-						if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList($wsRec['adminusers'], 'be_groups_' . $groupUid)) {
+					case '0':
+						$retVal = $this->groupData['workspace_perms'] & 1 ? array_merge($wsRec, array('_ACCESS' => 'online')) : FALSE;
+						break;
+					default:
+						// Checking if the guy is admin:
+						if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList($wsRec['adminusers'], 'be_users_' . $this->user['uid'])) {
 							return array_merge($wsRec, array('_ACCESS' => 'owner'));
 						}
-					}
-					// Checking if he is reviewer user:
-					if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList($wsRec['reviewers'], 'be_users_' . $this->user['uid'])) {
-						return array_merge($wsRec, array('_ACCESS' => 'reviewer'));
-					}
-					// Checking if he is reviewer through a user group of his:
-					foreach ($this->userGroupsUID as $groupUid) {
-						if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList($wsRec['reviewers'], 'be_groups_' . $groupUid)) {
+						// Checking if he is owner through a user group of his:
+						foreach ($this->userGroupsUID as $groupUid) {
+							if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList($wsRec['adminusers'], 'be_groups_' . $groupUid)) {
+								return array_merge($wsRec, array('_ACCESS' => 'owner'));
+							}
+						}
+						// Checking if he is reviewer user:
+						if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList($wsRec['reviewers'], 'be_users_' . $this->user['uid'])) {
 							return array_merge($wsRec, array('_ACCESS' => 'reviewer'));
 						}
-					}
-					// Checking if he is member as user:
-					if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList($wsRec['members'], 'be_users_' . $this->user['uid'])) {
-						return array_merge($wsRec, array('_ACCESS' => 'member'));
-					}
-					// Checking if he is member through a user group of his:
-					foreach ($this->userGroupsUID as $groupUid) {
-						if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList($wsRec['members'], 'be_groups_' . $groupUid)) {
+						// Checking if he is reviewer through a user group of his:
+						foreach ($this->userGroupsUID as $groupUid) {
+							if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList($wsRec['reviewers'], 'be_groups_' . $groupUid)) {
+								return array_merge($wsRec, array('_ACCESS' => 'reviewer'));
+							}
+						}
+						// Checking if he is member as user:
+						if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList($wsRec['members'], 'be_users_' . $this->user['uid'])) {
 							return array_merge($wsRec, array('_ACCESS' => 'member'));
 						}
-					}
-					break;
+						// Checking if he is member through a user group of his:
+						foreach ($this->userGroupsUID as $groupUid) {
+							if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList($wsRec['members'], 'be_groups_' . $groupUid)) {
+								return array_merge($wsRec, array('_ACCESS' => 'member'));
+							}
+						}
 				}
 			}
 		}

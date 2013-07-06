@@ -1254,7 +1254,6 @@ class ClickMenu {
 									$pointer = count($menuItems);
 								}
 								$found = TRUE;
-								break;
 						}
 					}
 					if ($found) {

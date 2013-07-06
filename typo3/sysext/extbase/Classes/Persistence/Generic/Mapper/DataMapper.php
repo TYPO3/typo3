@@ -285,7 +285,6 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface {
 						} else {
 							$propertyValue = $this->mapResultToPropertyValue($object, $propertyName, $this->fetchRelated($object, $propertyName, $row[$columnName]));
 						}
-						break;
 				}
 			}
 			if ($propertyValue !== NULL) {

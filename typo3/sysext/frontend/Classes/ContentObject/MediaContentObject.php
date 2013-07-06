@@ -143,15 +143,15 @@ class MediaContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractConte
 									$parts[1] = substr($tsLine, $pos + 1);
 									$valueParts = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('=', $parts[1], TRUE);
 									switch (strtolower($parts[0])) {
-									case 'flashvars':
-										$conf['flashvars.'][$valueParts[0]] = $valueParts[1];
-										break;
-									case 'params':
-										$conf['params.'][$valueParts[0]] = $valueParts[1];
-										break;
-									case 'attributes':
-										$conf['attributes.'][$valueParts[0]] = $valueParts[1];
-										break;
+										case 'flashvars':
+											$conf['flashvars.'][$valueParts[0]] = $valueParts[1];
+											break;
+										case 'params':
+											$conf['params.'][$valueParts[0]] = $valueParts[1];
+											break;
+										case 'attributes':
+											$conf['attributes.'][$valueParts[0]] = $valueParts[1];
+											break;
 									}
 								}
 							}
@@ -195,51 +195,51 @@ class MediaContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractConte
 			}
 		}
 		switch ($renderType) {
-		case 'flowplayer':
-			$conf[$conf['type'] . '.'] = array_merge((array) $conf['mimeConf.']['flowplayer.'][($conf['type'] . '.')], $typeConf);
-			$conf = array_merge((array) $conf['mimeConf.']['flowplayer.'], $conf);
-			unset($conf['mimeConf.']);
-			$conf['attributes.'] = array_merge((array) $conf['attributes.'], $conf['predefined']);
-			$conf['params.'] = array_merge((array) $conf['params.'], $conf['predefined']);
-			$conf['flashvars.'] = array_merge((array) $conf['flashvars.'], $conf['predefined']);
-			$content = $this->cObj->FLOWPLAYER($conf);
-			break;
-		case 'swf':
-			$conf[$conf['type'] . '.'] = array_merge((array) $conf['mimeConf.']['swfobject.'][($conf['type'] . '.')], $typeConf);
-			$conf = array_merge((array) $conf['mimeConf.']['swfobject.'], $conf);
-			unset($conf['mimeConf.']);
-			$conf['flashvars.'] = array_merge((array) $conf['flashvars.'], $conf['predefined']);
-			$content = $this->cObj->SWFOBJECT($conf);
-			break;
-		case 'qt':
-			$conf[$conf['type'] . '.'] = array_merge($conf['mimeConf.']['swfobject.'][$conf['type'] . '.'], $typeConf);
-			$conf = array_merge($conf['mimeConf.']['qtobject.'], $conf);
-			unset($conf['mimeConf.']);
-			$conf['params.'] = array_merge((array) $conf['params.'], $conf['predefined']);
-			$content = $this->cObj->QTOBJECT($conf);
-			break;
-		case 'embed':
-			$paramsArray = array_merge((array) $typeConf['default.']['params.'], (array) $conf['params.'], $conf['predefined']);
-			$conf['params'] = '';
-			foreach ($paramsArray as $key => $value) {
-				$conf['params'] .= $key . '=' . $value . LF;
-			}
-			$content = $this->cObj->MULTIMEDIA($conf);
-			break;
-		default:
-			if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/hooks/class.tx_cms_mediaitems.php']['customMediaRender'])) {
-				foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/hooks/class.tx_cms_mediaitems.php']['customMediaRender'] as $classRef) {
-					$hookObj = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($classRef);
-					$conf['file'] = $videoFallback;
-					$conf['mode'] = is_file(PATH_site . $videoFallback) ? 'file' : 'url';
-					if (method_exists($hookObj, 'customMediaRender')) {
-						$content = $hookObj->customMediaRender($renderType, $conf, $this);
+			case 'flowplayer':
+				$conf[$conf['type'] . '.'] = array_merge((array) $conf['mimeConf.']['flowplayer.'][($conf['type'] . '.')], $typeConf);
+				$conf = array_merge((array) $conf['mimeConf.']['flowplayer.'], $conf);
+				unset($conf['mimeConf.']);
+				$conf['attributes.'] = array_merge((array) $conf['attributes.'], $conf['predefined']);
+				$conf['params.'] = array_merge((array) $conf['params.'], $conf['predefined']);
+				$conf['flashvars.'] = array_merge((array) $conf['flashvars.'], $conf['predefined']);
+				$content = $this->cObj->FLOWPLAYER($conf);
+				break;
+			case 'swf':
+				$conf[$conf['type'] . '.'] = array_merge((array) $conf['mimeConf.']['swfobject.'][($conf['type'] . '.')], $typeConf);
+				$conf = array_merge((array) $conf['mimeConf.']['swfobject.'], $conf);
+				unset($conf['mimeConf.']);
+				$conf['flashvars.'] = array_merge((array) $conf['flashvars.'], $conf['predefined']);
+				$content = $this->cObj->SWFOBJECT($conf);
+				break;
+			case 'qt':
+				$conf[$conf['type'] . '.'] = array_merge($conf['mimeConf.']['swfobject.'][$conf['type'] . '.'], $typeConf);
+				$conf = array_merge($conf['mimeConf.']['qtobject.'], $conf);
+				unset($conf['mimeConf.']);
+				$conf['params.'] = array_merge((array) $conf['params.'], $conf['predefined']);
+				$content = $this->cObj->QTOBJECT($conf);
+				break;
+			case 'embed':
+				$paramsArray = array_merge((array) $typeConf['default.']['params.'], (array) $conf['params.'], $conf['predefined']);
+				$conf['params'] = '';
+				foreach ($paramsArray as $key => $value) {
+					$conf['params'] .= $key . '=' . $value . LF;
+				}
+				$content = $this->cObj->MULTIMEDIA($conf);
+				break;
+			default:
+				if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/hooks/class.tx_cms_mediaitems.php']['customMediaRender'])) {
+					foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/hooks/class.tx_cms_mediaitems.php']['customMediaRender'] as $classRef) {
+						$hookObj = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($classRef);
+						$conf['file'] = $videoFallback;
+						$conf['mode'] = is_file(PATH_site . $videoFallback) ? 'file' : 'url';
+						if (method_exists($hookObj, 'customMediaRender')) {
+							$content = $hookObj->customMediaRender($renderType, $conf, $this);
+						}
 					}
 				}
-			}
-			if (isset($conf['stdWrap.'])) {
-				$content = $this->cObj->stdWrap($content, $conf['stdWrap.']);
-			}
+				if (isset($conf['stdWrap.'])) {
+					$content = $this->cObj->stdWrap($content, $conf['stdWrap.']);
+				}
 		}
 		return $content;
 	}

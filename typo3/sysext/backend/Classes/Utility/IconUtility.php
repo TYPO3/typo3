@@ -156,18 +156,18 @@ class IconUtility {
 		// Shadow
 		if ($GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
 			switch ((int) $row['t3ver_state']) {
-			case 1:
-				return 'gfx/i/shadow_hide.png';
-				break;
-			case 2:
-				return 'gfx/i/shadow_delete.png';
-				break;
-			case 3:
-				return 'gfx/i/shadow_moveto_plh.png';
-				break;
-			case 4:
-				return 'gfx/i/shadow_moveto_pointer.png';
-				break;
+				case 1:
+					return 'gfx/i/shadow_hide.png';
+					break;
+				case 2:
+					return 'gfx/i/shadow_delete.png';
+					break;
+				case 3:
+					return 'gfx/i/shadow_moveto_plh.png';
+					break;
+				case 4:
+					return 'gfx/i/shadow_moveto_pointer.png';
+					break;
 			}
 		}
 		// First, find the icon file name. This can depend on configuration in TCA, field values and more:
@@ -349,15 +349,15 @@ class IconUtility {
 		// Return icon source/wHattributes:
 		$output = '';
 		switch ($outputMode) {
-		case 0:
-			$output = ' src="' . $backPath . $src . '" ' . $wHattribs;
-			break;
-		case 1:
-			$output = $backPath . $src;
-			break;
-		case 2:
-			$output = $wHattribs;
-			break;
+			case 0:
+				$output = ' src="' . $backPath . $src . '" ' . $wHattribs;
+				break;
+			case 1:
+				$output = $backPath . $src;
+				break;
+			case 2:
+				$output = $wHattribs;
+				break;
 		}
 		$cachedSkinImages[$imageId] = $output;
 		return $output;
@@ -429,30 +429,29 @@ class IconUtility {
 					if ($mode) {
 						unset($ol_im);
 						switch ($mode) {
-						case 'deleted':
-							$ol_im = self::imagecreatefrom($GLOBALS['BACK_PATH'] . 'gfx/overlay_deleted.gif');
-							break;
-						case 'futuretiming':
-							$ol_im = self::imagecreatefrom($GLOBALS['BACK_PATH'] . 'gfx/overlay_timing.gif');
-							break;
-						case 'timing':
-							$ol_im = self::imagecreatefrom($GLOBALS['BACK_PATH'] . 'gfx/overlay_timing.gif');
-							break;
-						case 'hiddentiming':
-							$ol_im = self::imagecreatefrom($GLOBALS['BACK_PATH'] . 'gfx/overlay_hidden_timing.gif');
-							break;
-						case 'no_icon_found':
-							$ol_im = self::imagecreatefrom($GLOBALS['BACK_PATH'] . 'gfx/overlay_no_icon_found.gif');
-							break;
-						case 'disabled':
-							// is already greyed - nothing more
-							$ol_im = 0;
-							break;
-						case 'hidden':
+							case 'deleted':
+								$ol_im = self::imagecreatefrom($GLOBALS['BACK_PATH'] . 'gfx/overlay_deleted.gif');
+								break;
+							case 'futuretiming':
+								$ol_im = self::imagecreatefrom($GLOBALS['BACK_PATH'] . 'gfx/overlay_timing.gif');
+								break;
+							case 'timing':
+								$ol_im = self::imagecreatefrom($GLOBALS['BACK_PATH'] . 'gfx/overlay_timing.gif');
+								break;
+							case 'hiddentiming':
+								$ol_im = self::imagecreatefrom($GLOBALS['BACK_PATH'] . 'gfx/overlay_hidden_timing.gif');
+								break;
+							case 'no_icon_found':
+								$ol_im = self::imagecreatefrom($GLOBALS['BACK_PATH'] . 'gfx/overlay_no_icon_found.gif');
+								break;
+							case 'disabled':
+								// is already greyed - nothing more
+								$ol_im = 0;
+								break;
+							case 'hidden':
 
-						default:
-							$ol_im = self::imagecreatefrom($GLOBALS['BACK_PATH'] . 'gfx/overlay_hidden.gif');
-							break;
+							default:
+								$ol_im = self::imagecreatefrom($GLOBALS['BACK_PATH'] . 'gfx/overlay_hidden.gif');
 						}
 						if ($ol_im < 0) {
 							return $iconfile;

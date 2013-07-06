@@ -304,18 +304,18 @@ class DataPreprocessor {
 	 */
 	public function renderRecord_SW($data, $fieldConfig, $TSconfig, $table, $row, $field) {
 		switch ((string) $fieldConfig['config']['type']) {
-		case 'group':
-			$data = $this->renderRecord_groupProc($data, $fieldConfig, $TSconfig, $table, $row, $field);
-			break;
-		case 'select':
-			$data = $this->renderRecord_selectProc($data, $fieldConfig, $TSconfig, $table, $row, $field);
-			break;
-		case 'flex':
-			$data = $this->renderRecord_flexProc($data, $fieldConfig, $TSconfig, $table, $row, $field);
-			break;
-		case 'inline':
-			$data = $this->renderRecord_inlineProc($data, $fieldConfig, $TSconfig, $table, $row, $field);
-			break;
+			case 'group':
+				$data = $this->renderRecord_groupProc($data, $fieldConfig, $TSconfig, $table, $row, $field);
+				break;
+			case 'select':
+				$data = $this->renderRecord_selectProc($data, $fieldConfig, $TSconfig, $table, $row, $field);
+				break;
+			case 'flex':
+				$data = $this->renderRecord_flexProc($data, $fieldConfig, $TSconfig, $table, $row, $field);
+				break;
+			case 'inline':
+				$data = $this->renderRecord_inlineProc($data, $fieldConfig, $TSconfig, $table, $row, $field);
+				break;
 		}
 		return $data;
 	}
@@ -336,37 +336,37 @@ class DataPreprocessor {
 	 */
 	public function renderRecord_groupProc($data, $fieldConfig, $TSconfig, $table, $row, $field) {
 		switch ($fieldConfig['config']['internal_type']) {
-		case 'file':
-			// Init array used to accumulate the files:
-			$dataAcc = array();
-			// Now, load the files into the $dataAcc array, whether stored by MM or as a list of filenames:
-			if ($fieldConfig['config']['MM']) {
+			case 'file':
+				// Init array used to accumulate the files:
+				$dataAcc = array();
+				// Now, load the files into the $dataAcc array, whether stored by MM or as a list of filenames:
+				if ($fieldConfig['config']['MM']) {
+					$loadDB = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\RelationHandler');
+					$loadDB->start('', 'files', $fieldConfig['config']['MM'], $row['uid']);
+					// Setting dummy startup
+					foreach ($loadDB->itemArray as $value) {
+						if ($value['id']) {
+							$dataAcc[] = rawurlencode($value['id']) . '|' . rawurlencode($value['id']);
+						}
+					}
+				} else {
+					$fileList = GeneralUtility::trimExplode(',', $data, 1);
+					foreach ($fileList as $value) {
+						if ($value) {
+							$dataAcc[] = rawurlencode($value) . '|' . rawurlencode($value);
+						}
+					}
+				}
+				// Implode the accumulation array to a comma separated string:
+				$data = implode(',', $dataAcc);
+				break;
+			case 'db':
 				$loadDB = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\RelationHandler');
-				$loadDB->start('', 'files', $fieldConfig['config']['MM'], $row['uid']);
-				// Setting dummy startup
-				foreach ($loadDB->itemArray as $value) {
-					if ($value['id']) {
-						$dataAcc[] = rawurlencode($value['id']) . '|' . rawurlencode($value['id']);
-					}
-				}
-			} else {
-				$fileList = GeneralUtility::trimExplode(',', $data, 1);
-				foreach ($fileList as $value) {
-					if ($value) {
-						$dataAcc[] = rawurlencode($value) . '|' . rawurlencode($value);
-					}
-				}
-			}
-			// Implode the accumulation array to a comma separated string:
-			$data = implode(',', $dataAcc);
-			break;
-		case 'db':
-			$loadDB = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\RelationHandler');
-			/** @var $loadDB \TYPO3\CMS\Core\Database\RelationHandler */
-			$loadDB->start($data, $fieldConfig['config']['allowed'], $fieldConfig['config']['MM'], $row['uid'], $table, $fieldConfig['config']);
-			$loadDB->getFromDB();
-			$data = $loadDB->readyForInterface();
-			break;
+				/** @var $loadDB \TYPO3\CMS\Core\Database\RelationHandler */
+				$loadDB->start($data, $fieldConfig['config']['allowed'], $fieldConfig['config']['MM'], $row['uid'], $table, $fieldConfig['config']);
+				$loadDB->getFromDB();
+				$data = $loadDB->readyForInterface();
+				break;
 		}
 		return $data;
 	}
@@ -636,105 +636,105 @@ class DataPreprocessor {
 	public function selectAddSpecial($dataAcc, $elements, $specialKey) {
 		// Special select types:
 		switch ((string) $specialKey) {
-		case 'tables':
-			$tNames = array_keys($GLOBALS['TCA']);
-			foreach ($tNames as $tableName) {
-				foreach ($elements as $eKey => $value) {
-					if (!strcmp($tableName, $value)) {
-						$dataAcc[$eKey] = rawurlencode($value) . '|' . rawurlencode($this->sL($GLOBALS['TCA'][$value]['ctrl']['title']));
-					}
-				}
-			}
-			break;
-		case 'pagetypes':
-			$theTypes = $GLOBALS['TCA']['pages']['columns']['doktype']['config']['items'];
-			if (is_array($theTypes)) {
-				foreach ($theTypes as $theTypesArrays) {
+			case 'tables':
+				$tNames = array_keys($GLOBALS['TCA']);
+				foreach ($tNames as $tableName) {
 					foreach ($elements as $eKey => $value) {
-						if (!strcmp($theTypesArrays[1], $value)) {
-							$dataAcc[$eKey] = rawurlencode($value) . '|' . rawurlencode($this->sL($theTypesArrays[0]));
+						if (!strcmp($tableName, $value)) {
+							$dataAcc[$eKey] = rawurlencode($value) . '|' . rawurlencode($this->sL($GLOBALS['TCA'][$value]['ctrl']['title']));
 						}
 					}
 				}
-			}
-			break;
-		case 'exclude':
-			$theExcludeFields = BackendUtility::getExcludeFields();
-			if (is_array($theExcludeFields)) {
-				foreach ($theExcludeFields as $theExcludeFieldsArrays) {
-					foreach ($elements as $eKey => $value) {
-						if (!strcmp($theExcludeFieldsArrays[1], $value)) {
-							$dataAcc[$eKey] = rawurlencode($value) . '|' . rawurlencode(rtrim($theExcludeFieldsArrays[0], ':'));
-						}
-					}
-				}
-			}
-			break;
-		case 'explicitValues':
-			$theTypes = BackendUtility::getExplicitAuthFieldValues();
-			foreach ($theTypes as $tableFieldKey => $theTypeArrays) {
-				if (is_array($theTypeArrays['items'])) {
-					foreach ($theTypeArrays['items'] as $itemValue => $itemContent) {
+				break;
+			case 'pagetypes':
+				$theTypes = $GLOBALS['TCA']['pages']['columns']['doktype']['config']['items'];
+				if (is_array($theTypes)) {
+					foreach ($theTypes as $theTypesArrays) {
 						foreach ($elements as $eKey => $value) {
-							if (!strcmp(($tableFieldKey . ':' . $itemValue . ':' . $itemContent[0]), $value)) {
-								$dataAcc[$eKey] = rawurlencode($value) . '|' . rawurlencode(('[' . $itemContent[2] . '] ' . $itemContent[1]));
+							if (!strcmp($theTypesArrays[1], $value)) {
+								$dataAcc[$eKey] = rawurlencode($value) . '|' . rawurlencode($this->sL($theTypesArrays[0]));
 							}
 						}
 					}
 				}
-			}
-			break;
-		case 'languages':
-			$theLangs = BackendUtility::getSystemLanguages();
-			foreach ($theLangs as $lCfg) {
-				foreach ($elements as $eKey => $value) {
-					if (!strcmp($lCfg[1], $value)) {
-						$dataAcc[$eKey] = rawurlencode($value) . '|' . rawurlencode($lCfg[0]);
+				break;
+			case 'exclude':
+				$theExcludeFields = BackendUtility::getExcludeFields();
+				if (is_array($theExcludeFields)) {
+					foreach ($theExcludeFields as $theExcludeFieldsArrays) {
+						foreach ($elements as $eKey => $value) {
+							if (!strcmp($theExcludeFieldsArrays[1], $value)) {
+								$dataAcc[$eKey] = rawurlencode($value) . '|' . rawurlencode(rtrim($theExcludeFieldsArrays[0], ':'));
+							}
+						}
 					}
 				}
-			}
-			break;
-		case 'custom':
-			$customOptions = $GLOBALS['TYPO3_CONF_VARS']['BE']['customPermOptions'];
-			if (is_array($customOptions)) {
-				foreach ($customOptions as $coKey => $coValue) {
-					if (is_array($coValue['items'])) {
-						// Traverse items:
-						foreach ($coValue['items'] as $itemKey => $itemCfg) {
+				break;
+			case 'explicitValues':
+				$theTypes = BackendUtility::getExplicitAuthFieldValues();
+				foreach ($theTypes as $tableFieldKey => $theTypeArrays) {
+					if (is_array($theTypeArrays['items'])) {
+						foreach ($theTypeArrays['items'] as $itemValue => $itemContent) {
 							foreach ($elements as $eKey => $value) {
-								if (!strcmp(($coKey . ':' . $itemKey), $value)) {
-									$dataAcc[$eKey] = rawurlencode($value) . '|' . rawurlencode($this->sL($itemCfg[0]));
+								if (!strcmp(($tableFieldKey . ':' . $itemValue . ':' . $itemContent[0]), $value)) {
+									$dataAcc[$eKey] = rawurlencode($value) . '|' . rawurlencode(('[' . $itemContent[2] . '] ' . $itemContent[1]));
 								}
 							}
 						}
 					}
 				}
-			}
-			break;
-		case 'modListGroup':
-
-		case 'modListUser':
-			if (!$this->loadModules) {
-				$this->loadModules = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Module\\ModuleLoader');
-				$this->loadModules->load($GLOBALS['TBE_MODULES']);
-			}
-			$modList = $specialKey == 'modListUser' ? $this->loadModules->modListUser : $this->loadModules->modListGroup;
-			foreach ($modList as $theModName) {
-				foreach ($elements as $eKey => $value) {
-					$label = '';
-					// Add label for main module:
-					$pp = explode('_', $value);
-					if (count($pp) > 1) {
-						$label .= $GLOBALS['LANG']->moduleLabels['tabs'][($pp[0] . '_tab')] . '>';
-					}
-					// Add modules own label now:
-					$label .= $GLOBALS['LANG']->moduleLabels['tabs'][$value . '_tab'];
-					if (!strcmp($theModName, $value)) {
-						$dataAcc[$eKey] = rawurlencode($value) . '|' . rawurlencode($label);
+				break;
+			case 'languages':
+				$theLangs = BackendUtility::getSystemLanguages();
+				foreach ($theLangs as $lCfg) {
+					foreach ($elements as $eKey => $value) {
+						if (!strcmp($lCfg[1], $value)) {
+							$dataAcc[$eKey] = rawurlencode($value) . '|' . rawurlencode($lCfg[0]);
+						}
 					}
 				}
-			}
-			break;
+				break;
+			case 'custom':
+				$customOptions = $GLOBALS['TYPO3_CONF_VARS']['BE']['customPermOptions'];
+				if (is_array($customOptions)) {
+					foreach ($customOptions as $coKey => $coValue) {
+						if (is_array($coValue['items'])) {
+							// Traverse items:
+							foreach ($coValue['items'] as $itemKey => $itemCfg) {
+								foreach ($elements as $eKey => $value) {
+									if (!strcmp(($coKey . ':' . $itemKey), $value)) {
+										$dataAcc[$eKey] = rawurlencode($value) . '|' . rawurlencode($this->sL($itemCfg[0]));
+									}
+								}
+							}
+						}
+					}
+				}
+				break;
+			case 'modListGroup':
+
+			case 'modListUser':
+				if (!$this->loadModules) {
+					$this->loadModules = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Module\\ModuleLoader');
+					$this->loadModules->load($GLOBALS['TBE_MODULES']);
+				}
+				$modList = $specialKey == 'modListUser' ? $this->loadModules->modListUser : $this->loadModules->modListGroup;
+				foreach ($modList as $theModName) {
+					foreach ($elements as $eKey => $value) {
+						$label = '';
+						// Add label for main module:
+						$pp = explode('_', $value);
+						if (count($pp) > 1) {
+							$label .= $GLOBALS['LANG']->moduleLabels['tabs'][($pp[0] . '_tab')] . '>';
+						}
+						// Add modules own label now:
+						$label .= $GLOBALS['LANG']->moduleLabels['tabs'][$value . '_tab'];
+						if (!strcmp($theModName, $value)) {
+							$dataAcc[$eKey] = rawurlencode($value) . '|' . rawurlencode($label);
+						}
+					}
+				}
+				break;
 		}
 		return $dataAcc;
 	}

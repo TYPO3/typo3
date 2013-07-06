@@ -458,12 +458,12 @@ class FrontendUserAuthentication extends \TYPO3\CMS\Core\Authentication\Abstract
 	public function getKey($type, $key) {
 		if ($key) {
 			switch ($type) {
-			case 'user':
-				return $this->uc[$key];
-				break;
-			case 'ses':
-				return $this->sesData[$key];
-				break;
+				case 'user':
+					return $this->uc[$key];
+					break;
+				case 'ses':
+					return $this->sesData[$key];
+					break;
 			}
 		}
 	}
@@ -484,24 +484,24 @@ class FrontendUserAuthentication extends \TYPO3\CMS\Core\Authentication\Abstract
 	public function setKey($type, $key, $data) {
 		if ($key) {
 			switch ($type) {
-			case 'user':
-				if ($this->user['uid']) {
-					if ($data === NULL) {
-						unset($this->uc[$key]);
-					} else {
-						$this->uc[$key] = $data;
+				case 'user':
+					if ($this->user['uid']) {
+						if ($data === NULL) {
+							unset($this->uc[$key]);
+						} else {
+							$this->uc[$key] = $data;
+						}
+						$this->userData_change = 1;
 					}
-					$this->userData_change = 1;
-				}
-				break;
-			case 'ses':
-				if ($data === NULL) {
-					unset($this->sesData[$key]);
-				} else {
-					$this->sesData[$key] = $data;
-				}
-				$this->sesData_change = 1;
-				break;
+					break;
+				case 'ses':
+					if ($data === NULL) {
+						unset($this->sesData[$key]);
+					} else {
+						$this->sesData[$key] = $data;
+					}
+					$this->sesData_change = 1;
+					break;
 			}
 		}
 	}

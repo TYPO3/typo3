@@ -229,10 +229,6 @@ class PropertyType {
 	 */
 	static public function nameFromValue($type) {
 		switch (intval($type)) {
-			default:
-			case self::UNDEFINED:
-				$name = self::TYPENAME_UNDEFINED;
-				break;
 			case self::STRING:
 				$name = self::TYPENAME_STRING;
 				break;
@@ -272,6 +268,9 @@ class PropertyType {
 			case self::URI:
 				$name = self::TYPENAME_URI;
 				break;
+			default:
+			// case self::UNDEFINED:
+				$name = self::TYPENAME_UNDEFINED;
 		}
 
 		return $name;
@@ -285,10 +284,6 @@ class PropertyType {
 	 */
 	static public function valueFromName($name) {
 		switch ($name) {
-			default:
-			case self::TYPENAME_UNDEFINED:
-				$value = self::UNDEFINED;
-				break;
 			case self::TYPENAME_STRING:
 				$value = self::STRING;
 				break;
@@ -328,6 +323,9 @@ class PropertyType {
 			case self::TYPENAME_URI:
 				$value = self::URI;
 				break;
+			default:
+			// case self::TYPENAME_UNDEFINED:
+				$value = self::UNDEFINED;
 		}
 
 		return $value;

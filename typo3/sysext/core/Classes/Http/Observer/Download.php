@@ -80,22 +80,22 @@ class Download implements \SplObserver {
 	public function update(\SplSubject $request) {
 		$event = $request->getLastEvent();
 		switch ($event['name']) {
-		case 'receivedHeaders':
-			if ($this->targetFilename === '') {
-				$this->determineFilename($request, $event['data']);
-			}
-			$this->openFile();
-			break;
-		case 'receivedBodyPart':
+			case 'receivedHeaders':
+				if ($this->targetFilename === '') {
+					$this->determineFilename($request, $event['data']);
+				}
+				$this->openFile();
+				break;
+			case 'receivedBodyPart':
 
-		case 'receivedEncodedBodyPart':
-			fwrite($this->filePointer, $event['data']);
-			break;
-		case 'receivedBody':
-			$this->closeFile();
-			break;
-		default:
-
+			case 'receivedEncodedBodyPart':
+				fwrite($this->filePointer, $event['data']);
+				break;
+			case 'receivedBody':
+				$this->closeFile();
+				break;
+			default:
+				// Do nothing
 		}
 	}
 

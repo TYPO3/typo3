@@ -103,26 +103,26 @@ class Locker {
 		}
 		$this->method = $method;
 		switch ($this->method) {
-		case 'simple':
+			case 'simple':
 
-		case 'flock':
-			$path = PATH_site . 'typo3temp/locks/';
-			if (!is_dir($path)) {
-				\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir($path);
-			}
-			$this->id = md5($id);
-			$this->resource = $path . $this->id;
-			break;
-		case 'semaphore':
-			$this->id = abs(crc32($id));
-			if (($this->resource = sem_get($this->id, 1)) === FALSE) {
-				throw new \RuntimeException('Unable to get semaphore', 1313828196);
-			}
-			break;
-		case 'disable':
-			break;
-		default:
-			throw new \InvalidArgumentException('No such method "' . $method . '"', 1294586097);
+			case 'flock':
+				$path = PATH_site . 'typo3temp/locks/';
+				if (!is_dir($path)) {
+					\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir($path);
+				}
+				$this->id = md5($id);
+				$this->resource = $path . $this->id;
+				break;
+			case 'semaphore':
+				$this->id = abs(crc32($id));
+				if (($this->resource = sem_get($this->id, 1)) === FALSE) {
+					throw new \RuntimeException('Unable to get semaphore', 1313828196);
+				}
+				break;
+			case 'disable':
+				break;
+			default:
+				throw new \InvalidArgumentException('No such method "' . $method . '"', 1294586097);
 		}
 	}
 
@@ -149,57 +149,57 @@ class Locker {
 		$noWait = TRUE;
 		$isAcquired = TRUE;
 		switch ($this->method) {
-		case 'simple':
-			if (is_file($this->resource)) {
-				$this->sysLog('Waiting for a different process to release the lock');
-				$maxExecutionTime = ini_get('max_execution_time');
-				$maxAge = time() - ($maxExecutionTime ? $maxExecutionTime : 120);
-				if (@filectime($this->resource) < $maxAge) {
-					@unlink($this->resource);
-					$this->sysLog('Unlink stale lockfile');
+			case 'simple':
+				if (is_file($this->resource)) {
+					$this->sysLog('Waiting for a different process to release the lock');
+					$maxExecutionTime = ini_get('max_execution_time');
+					$maxAge = time() - ($maxExecutionTime ? $maxExecutionTime : 120);
+					if (@filectime($this->resource) < $maxAge) {
+						@unlink($this->resource);
+						$this->sysLog('Unlink stale lockfile');
+					}
 				}
-			}
-			$isAcquired = FALSE;
-			for ($i = 0; $i < $this->loops; $i++) {
-				$filepointer = @fopen($this->resource, 'x');
-				if ($filepointer !== FALSE) {
-					fclose($filepointer);
-					$this->sysLog('Lock acquired');
-					$noWait = $i === 0;
-					$isAcquired = TRUE;
-					break;
+				$isAcquired = FALSE;
+				for ($i = 0; $i < $this->loops; $i++) {
+					$filepointer = @fopen($this->resource, 'x');
+					if ($filepointer !== FALSE) {
+						fclose($filepointer);
+						$this->sysLog('Lock acquired');
+						$noWait = $i === 0;
+						$isAcquired = TRUE;
+						break;
+					}
+					usleep($this->step * 1000);
 				}
-				usleep($this->step * 1000);
-			}
-			if (!$isAcquired) {
-				throw new \RuntimeException('Lock file could not be created', 1294586098);
-			}
-			\TYPO3\CMS\Core\Utility\GeneralUtility::fixPermissions($this->resource);
-			break;
-		case 'flock':
-			if (($this->filepointer = fopen($this->resource, 'w+')) == FALSE) {
-				throw new \RuntimeException('Lock file could not be opened', 1294586099);
-			}
-			// Lock without blocking
-			if (flock($this->filepointer, (LOCK_EX | LOCK_NB)) == TRUE) {
-				$noWait = TRUE;
-			} elseif (flock($this->filepointer, LOCK_EX) == TRUE) {
-				// Lock with blocking (waiting for similar locks to become released)
+				if (!$isAcquired) {
+					throw new \RuntimeException('Lock file could not be created', 1294586098);
+				}
+				\TYPO3\CMS\Core\Utility\GeneralUtility::fixPermissions($this->resource);
+				break;
+			case 'flock':
+				if (($this->filepointer = fopen($this->resource, 'w+')) == FALSE) {
+					throw new \RuntimeException('Lock file could not be opened', 1294586099);
+				}
+				// Lock without blocking
+				if (flock($this->filepointer, (LOCK_EX | LOCK_NB)) == TRUE) {
+					$noWait = TRUE;
+				} elseif (flock($this->filepointer, LOCK_EX) == TRUE) {
+					// Lock with blocking (waiting for similar locks to become released)
+					$noWait = FALSE;
+				} else {
+					throw new \RuntimeException('Could not lock file "' . $this->resource . '"', 1294586100);
+				}
+				break;
+			case 'semaphore':
+				if (sem_acquire($this->resource)) {
+					// Unfortunately it seems not possible to find out if the request was blocked, so we return FALSE in any case to make sure the operation is tried again.
+					$noWait = FALSE;
+				}
+				break;
+			case 'disable':
 				$noWait = FALSE;
-			} else {
-				throw new \RuntimeException('Could not lock file "' . $this->resource . '"', 1294586100);
-			}
-			break;
-		case 'semaphore':
-			if (sem_acquire($this->resource)) {
-				// Unfortunately it seems not possible to find out if the request was blocked, so we return FALSE in any case to make sure the operation is tried again.
-				$noWait = FALSE;
-			}
-			break;
-		case 'disable':
-			$noWait = FALSE;
-			$isAcquired = FALSE;
-			break;
+				$isAcquired = FALSE;
+				break;
 		}
 		$this->isAcquired = $isAcquired;
 		return $noWait;
@@ -216,34 +216,34 @@ class Locker {
 		}
 		$success = TRUE;
 		switch ($this->method) {
-		case 'simple':
-			if (\TYPO3\CMS\Core\Utility\GeneralUtility::isAllowedAbsPath($this->resource) && \TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($this->resource, PATH_site . 'typo3temp/locks/')) {
-				if (@unlink($this->resource) == FALSE) {
+			case 'simple':
+				if (\TYPO3\CMS\Core\Utility\GeneralUtility::isAllowedAbsPath($this->resource) && \TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($this->resource, PATH_site . 'typo3temp/locks/')) {
+					if (@unlink($this->resource) == FALSE) {
+						$success = FALSE;
+					}
+				}
+				break;
+			case 'flock':
+				if (is_resource($this->filepointer)) {
+					if (flock($this->filepointer, LOCK_UN) == FALSE) {
+						$success = FALSE;
+					}
+					fclose($this->filepointer);
+				}
+				if (\TYPO3\CMS\Core\Utility\GeneralUtility::isAllowedAbsPath($this->resource) && \TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($this->resource, PATH_site . 'typo3temp/locks/')) {
+					@unlink($this->resource);
+				}
+				break;
+			case 'semaphore':
+				if (@sem_release($this->resource)) {
+					sem_remove($this->resource);
+				} else {
 					$success = FALSE;
 				}
-			}
-			break;
-		case 'flock':
-			if (is_resource($this->filepointer)) {
-				if (flock($this->filepointer, LOCK_UN) == FALSE) {
-					$success = FALSE;
-				}
-				fclose($this->filepointer);
-			}
-			if (\TYPO3\CMS\Core\Utility\GeneralUtility::isAllowedAbsPath($this->resource) && \TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($this->resource, PATH_site . 'typo3temp/locks/')) {
-				@unlink($this->resource);
-			}
-			break;
-		case 'semaphore':
-			if (@sem_release($this->resource)) {
-				sem_remove($this->resource);
-			} else {
+				break;
+			case 'disable':
 				$success = FALSE;
-			}
-			break;
-		case 'disable':
-			$success = FALSE;
-			break;
+				break;
 		}
 		$this->isAcquired = FALSE;
 		return $success;

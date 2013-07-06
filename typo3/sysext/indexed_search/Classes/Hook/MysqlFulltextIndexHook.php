@@ -90,43 +90,43 @@ class MysqlFulltextIndexHook {
 				$searchType = self::SENTENCE;
 			}
 			switch ($searchType) {
-			case self::ANY_PART_OF_THE_WORD:
+				case self::ANY_PART_OF_THE_WORD:
 
-			case self::LAST_PART_OF_THE_WORD:
+				case self::LAST_PART_OF_THE_WORD:
 
-			case self::FIRST_PART_OF_THE_WORD:
-				// First part of word
-				$wildcard = '*';
-				// Part-of-word search requires boolean mode!
-				$searchBoolean = TRUE;
-				break;
-			case self::SOUNDS_LIKE:
-				$indexerObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\IndexedSearch\\Indexer');
-				// Initialize the indexer-class
-				/** @var \TYPO3\CMS\IndexedSearch\Indexer $indexerObj */
-				$searchWord = $indexerObj->metaphone($searchWord, $indexerObj->storeMetaphoneInfoAsWords);
-				unset($indexerObj);
-				$fulltextIndex = 'index_fulltext.metaphonedata';
-				break;
-			case self::SENTENCE:
-				$searchBoolean = TRUE;
-				// Remove existing quotes and fix misplaced quotes.
-				$searchWord = trim(str_replace('"', ' ', $searchWord));
-				break;
-			}
-			// Perform search for word:
-			switch ($searchWordData['oper']) {
-			case 'AND NOT':
-				$booleanSearchString .= ' -' . $searchWord . $wildcard;
-				$searchBoolean = TRUE;
-				break;
-			case 'OR':
-				$booleanSearchString .= ' ' . $searchWord . $wildcard;
-				$searchBoolean = TRUE;
-				break;
-			default:
-				$booleanSearchString .= ' +' . $searchWord . $wildcard;
-				$naturalSearchString .= ' ' . $searchWord;
+				case self::FIRST_PART_OF_THE_WORD:
+					// First part of word
+					$wildcard = '*';
+					// Part-of-word search requires boolean mode!
+					$searchBoolean = TRUE;
+					break;
+				case self::SOUNDS_LIKE:
+					$indexerObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\IndexedSearch\\Indexer');
+					// Initialize the indexer-class
+					/** @var \TYPO3\CMS\IndexedSearch\Indexer $indexerObj */
+					$searchWord = $indexerObj->metaphone($searchWord, $indexerObj->storeMetaphoneInfoAsWords);
+					unset($indexerObj);
+					$fulltextIndex = 'index_fulltext.metaphonedata';
+					break;
+				case self::SENTENCE:
+					$searchBoolean = TRUE;
+					// Remove existing quotes and fix misplaced quotes.
+					$searchWord = trim(str_replace('"', ' ', $searchWord));
+					break;
+				}
+				// Perform search for word:
+				switch ($searchWordData['oper']) {
+					case 'AND NOT':
+						$booleanSearchString .= ' -' . $searchWord . $wildcard;
+						$searchBoolean = TRUE;
+						break;
+					case 'OR':
+						$booleanSearchString .= ' ' . $searchWord . $wildcard;
+						$searchBoolean = TRUE;
+						break;
+					default:
+						$booleanSearchString .= ' +' . $searchWord . $wildcard;
+						$naturalSearchString .= ' ' . $searchWord;
 			}
 			$count++;
 		}

@@ -93,33 +93,32 @@ class AdminCommand extends \TYPO3\CMS\Core\Controller\CommandLineController {
 		}
 		// Analysis type:
 		switch ((string) $analysisType) {
-		case 'setBElock':
-			if (@is_file((PATH_typo3conf . 'LOCK_BACKEND'))) {
-				$this->cli_echo('A lockfile already exists. Overwriting it...
-');
-			}
-			$lockFileContent = $this->cli_argValue('--redirect');
-			\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile(PATH_typo3conf . 'LOCK_BACKEND', $lockFileContent);
-			$this->cli_echo('Wrote lock-file to \'' . PATH_typo3conf . 'LOCK_BACKEND\' with content \'' . $lockFileContent . '\'');
-			break;
-		case 'clearBElock':
-			if (@is_file((PATH_typo3conf . 'LOCK_BACKEND'))) {
-				unlink(PATH_typo3conf . 'LOCK_BACKEND');
+			case 'setBElock':
 				if (@is_file((PATH_typo3conf . 'LOCK_BACKEND'))) {
-					$this->cli_echo('ERROR: Could not remove lock file \'' . PATH_typo3conf . 'LOCK_BACKEND\'!!
-', 1);
-				} else {
-					$this->cli_echo('Removed lock file \'' . PATH_typo3conf . 'LOCK_BACKEND\'
+					$this->cli_echo('A lockfile already exists. Overwriting it...
 ');
 				}
-			} else {
-				$this->cli_echo('No lock file \'' . PATH_typo3conf . 'LOCK_BACKEND\' was found; hence no lock can be removed.\'
+				$lockFileContent = $this->cli_argValue('--redirect');
+				\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile(PATH_typo3conf . 'LOCK_BACKEND', $lockFileContent);
+				$this->cli_echo('Wrote lock-file to \'' . PATH_typo3conf . 'LOCK_BACKEND\' with content \'' . $lockFileContent . '\'');
+				break;
+			case 'clearBElock':
+				if (@is_file((PATH_typo3conf . 'LOCK_BACKEND'))) {
+					unlink(PATH_typo3conf . 'LOCK_BACKEND');
+					if (@is_file((PATH_typo3conf . 'LOCK_BACKEND'))) {
+						$this->cli_echo('ERROR: Could not remove lock file \'' . PATH_typo3conf . 'LOCK_BACKEND\'!!
+', 1);
+					} else {
+						$this->cli_echo('Removed lock file \'' . PATH_typo3conf . 'LOCK_BACKEND\'
 ');
-			}
-			break;
-		default:
-			$this->cli_echo('Unknown toolkey, \'' . $analysisType . '\'');
-			break;
+					}
+				} else {
+					$this->cli_echo('No lock file \'' . PATH_typo3conf . 'LOCK_BACKEND\' was found; hence no lock can be removed.\'
+');
+				}
+				break;
+			default:
+				$this->cli_echo('Unknown toolkey, \'' . $analysisType . '\'');
 		}
 		$this->cli_echo(LF);
 	}

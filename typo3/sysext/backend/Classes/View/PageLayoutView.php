@@ -194,12 +194,12 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 		} else {
 			// Branch out based on table name:
 			switch ($table) {
-			case 'pages':
-				return $this->getTable_pages($id);
-				break;
-			case 'tt_content':
-				return $this->getTable_tt_content($id);
-				break;
+				case 'pages':
+					return $this->getTable_pages($id);
+					break;
+				case 'tt_content':
+					return $this->getTable_tt_content($id);
+					break;
 			}
 		}
 	}
@@ -255,17 +255,16 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 			// Select which fields to show:
 			$pKey = $GLOBALS['SOBE']->MOD_SETTINGS['pages'];
 			switch ($pKey) {
-			case 1:
-				$this->cleanTableNames();
-				$tableNames = $this->allowedTableNames;
-				$this->fieldArray = explode(',', 'title,uid,' . implode(',', array_keys($tableNames)));
-				break;
-			case 2:
-				$this->fieldArray = explode(',', 'title,uid,lastUpdated,newUntil,no_cache,cache_timeout,php_tree_stop,TSconfig,storage_pid,is_siteroot,fe_login_mode');
-				break;
-			default:
-				$this->fieldArray = explode(',', 'title,uid,alias,starttime,endtime,fe_group,target,url,shortcut,shortcut_mode');
-				break;
+				case 1:
+					$this->cleanTableNames();
+					$tableNames = $this->allowedTableNames;
+					$this->fieldArray = explode(',', 'title,uid,' . implode(',', array_keys($tableNames)));
+					break;
+				case 2:
+					$this->fieldArray = explode(',', 'title,uid,lastUpdated,newUntil,no_cache,cache_timeout,php_tree_stop,TSconfig,storage_pid,is_siteroot,fe_login_mode');
+					break;
+				default:
+					$this->fieldArray = explode(',', 'title,uid,alias,starttime,endtime,fe_group,target,url,shortcut,shortcut_mode');
 			}
 			// Getting select-depth:
 			$depth = intval($GLOBALS['SOBE']->MOD_SETTINGS['pages_levels']);
@@ -312,22 +311,21 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 					$eI = '';
 				}
 				switch ($field) {
-				case 'title':
-					$theData[$field] = '&nbsp;<strong>' . $GLOBALS['LANG']->sL($GLOBALS['TCA']['pages']['columns'][$field]['label']) . '</strong>' . $eI;
-					break;
-				case 'uid':
-					$theData[$field] = '&nbsp;<strong>ID:</strong>';
-					break;
-				default:
-					if (substr($field, 0, 6) == 'table_') {
-						$f2 = substr($field, 6);
-						if ($GLOBALS['TCA'][$f2]) {
-							$theData[$field] = '&nbsp;' . IconUtility::getSpriteIconForRecord($f2, array(), array('title' => $GLOBALS['LANG']->sL($GLOBALS['TCA'][$f2]['ctrl']['title'], 1)));
+					case 'title':
+						$theData[$field] = '&nbsp;<strong>' . $GLOBALS['LANG']->sL($GLOBALS['TCA']['pages']['columns'][$field]['label']) . '</strong>' . $eI;
+						break;
+					case 'uid':
+						$theData[$field] = '&nbsp;<strong>ID:</strong>';
+						break;
+					default:
+						if (substr($field, 0, 6) == 'table_') {
+							$f2 = substr($field, 6);
+							if ($GLOBALS['TCA'][$f2]) {
+								$theData[$field] = '&nbsp;' . IconUtility::getSpriteIconForRecord($f2, array(), array('title' => $GLOBALS['LANG']->sL($GLOBALS['TCA'][$f2]['ctrl']['title'], 1)));
+							}
+						} else {
+							$theData[$field] = '&nbsp;&nbsp;<strong>' . $GLOBALS['LANG']->sL($GLOBALS['TCA']['pages']['columns'][$field]['label'], 1) . '</strong>' . $eI;
 						}
-					} else {
-						$theData[$field] = '&nbsp;&nbsp;<strong>' . $GLOBALS['LANG']->sL($GLOBALS['TCA']['pages']['columns'][$field]['label'], 1) . '</strong>' . $eI;
-					}
-					break;
 				}
 			}
 			// Start table:
@@ -1039,39 +1037,38 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 		$theData = array();
 		foreach ($fieldArr as $field) {
 			switch ($field) {
-			case 'title':
-				$red = $this->plusPages[$row['uid']] ? '<font color="red"><strong>+&nbsp;</strong></font>' : '';
-				$pTitle = htmlspecialchars(BackendUtility::getProcessedValue('pages', $field, $row[$field], 20));
-				if ($red) {
-					$pTitle = '<a href="' . htmlspecialchars(($this->script . '?id=' . $row['uid'])) . '">' . $pTitle . '</a>';
-				}
-				$theData[$field] = $row['treeIcons'] . $theIcon . $red . $pTitle . '&nbsp;&nbsp;';
-				break;
-			case 'php_tree_stop':
-
-			case 'TSconfig':
-				$theData[$field] = $row[$field] ? '&nbsp;<strong>x</strong>' : '&nbsp;';
-				break;
-			case 'uid':
-				if ($GLOBALS['BE_USER']->doesUserHaveAccess($row, 2)) {
-					$params = '&edit[pages][' . $row['uid'] . ']=edit';
-					$eI = '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick($params, $this->backPath, '')) . '" title="' . $GLOBALS['LANG']->getLL('editThisPage', TRUE) . '">' . IconUtility::getSpriteIcon('actions-document-open') . '</a>';
-				} else {
-					$eI = '';
-				}
-				$theData[$field] = '<span align="right">' . $row['uid'] . $eI . '</span>';
-				break;
-			default:
-				if (substr($field, 0, 6) == 'table_') {
-					$f2 = substr($field, 6);
-					if ($GLOBALS['TCA'][$f2]) {
-						$c = $this->numberOfRecords($f2, $row['uid']);
-						$theData[$field] = '&nbsp;&nbsp;' . ($c ? $c : '');
+				case 'title':
+					$red = $this->plusPages[$row['uid']] ? '<font color="red"><strong>+&nbsp;</strong></font>' : '';
+					$pTitle = htmlspecialchars(BackendUtility::getProcessedValue('pages', $field, $row[$field], 20));
+					if ($red) {
+						$pTitle = '<a href="' . htmlspecialchars(($this->script . '?id=' . $row['uid'])) . '">' . $pTitle . '</a>';
 					}
-				} else {
-					$theData[$field] = '&nbsp;&nbsp;' . htmlspecialchars(BackendUtility::getProcessedValue('pages', $field, $row[$field]));
-				}
-				break;
+					$theData[$field] = $row['treeIcons'] . $theIcon . $red . $pTitle . '&nbsp;&nbsp;';
+					break;
+				case 'php_tree_stop':
+
+				case 'TSconfig':
+					$theData[$field] = $row[$field] ? '&nbsp;<strong>x</strong>' : '&nbsp;';
+					break;
+				case 'uid':
+					if ($GLOBALS['BE_USER']->doesUserHaveAccess($row, 2)) {
+						$params = '&edit[pages][' . $row['uid'] . ']=edit';
+						$eI = '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick($params, $this->backPath, '')) . '" title="' . $GLOBALS['LANG']->getLL('editThisPage', TRUE) . '">' . IconUtility::getSpriteIcon('actions-document-open') . '</a>';
+					} else {
+						$eI = '';
+					}
+					$theData[$field] = '<span align="right">' . $row['uid'] . $eI . '</span>';
+					break;
+				default:
+					if (substr($field, 0, 6) == 'table_') {
+						$f2 = substr($field, 6);
+						if ($GLOBALS['TCA'][$f2]) {
+							$c = $this->numberOfRecords($f2, $row['uid']);
+							$theData[$field] = '&nbsp;&nbsp;' . ($c ? $c : '');
+						}
+					} else {
+						$theData[$field] = '&nbsp;&nbsp;' . htmlspecialchars(BackendUtility::getProcessedValue('pages', $field, $row[$field]));
+					}
 			}
 		}
 		$this->addElement_tdParams['title'] = $row['_CSSCLASS'] ? ' class="' . $row['_CSSCLASS'] . '"' : '';
@@ -1264,122 +1261,121 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 		// Draw preview of the item depending on its CType (if not disabled by previous hook):
 		if ($drawItem) {
 			switch ($row['CType']) {
-			case 'header':
-				if ($row['subheader']) {
-					$out .= $this->linkEditContent($this->renderText($row['subheader']), $row) . '<br />';
-				}
-				break;
-			case 'text':
+				case 'header':
+					if ($row['subheader']) {
+						$out .= $this->linkEditContent($this->renderText($row['subheader']), $row) . '<br />';
+					}
+					break;
+				case 'text':
 
-			case 'textpic':
+				case 'textpic':
 
-			case 'image':
-				if ($row['CType'] == 'text' || $row['CType'] == 'textpic') {
+				case 'image':
+					if ($row['CType'] == 'text' || $row['CType'] == 'textpic') {
+						if ($row['bodytext']) {
+							$this->getProcessedValue('tt_content', 'text_align,text_face,text_size,text_color,text_properties', $row, $infoArr);
+							$out .= $this->linkEditContent($this->renderText($row['bodytext']), $row) . '<br />';
+						}
+					}
+					if ($row['CType'] == 'textpic' || $row['CType'] == 'image') {
+						if ($row['image']) {
+							$out .= $this->thumbCode($row, 'tt_content', 'image') . '<br />';
+							if ($row['imagecaption']) {
+								$out .= $this->linkEditContent($this->renderText($row['imagecaption']), $row) . '<br />';
+							}
+						}
+					}
+					break;
+				case 'bullets':
+
+				case 'table':
+
+				case 'mailform':
 					if ($row['bodytext']) {
-						$this->getProcessedValue('tt_content', 'text_align,text_face,text_size,text_color,text_properties', $row, $infoArr);
 						$out .= $this->linkEditContent($this->renderText($row['bodytext']), $row) . '<br />';
 					}
-				}
-				if ($row['CType'] == 'textpic' || $row['CType'] == 'image') {
-					if ($row['image']) {
-						$out .= $this->thumbCode($row, 'tt_content', 'image') . '<br />';
-						if ($row['imagecaption']) {
-							$out .= $this->linkEditContent($this->renderText($row['imagecaption']), $row) . '<br />';
+					break;
+				case 'uploads':
+					if ($row['media']) {
+						$out .= $this->thumbCode($row, 'tt_content', 'media') . '<br />';
+					}
+					break;
+				case 'multimedia':
+					if ($row['multimedia']) {
+						$out .= $this->renderText($row['multimedia']) . '<br />';
+						$out .= $this->renderText($row['parameters']) . '<br />';
+					}
+					break;
+				case 'menu':
+					if ($row['pages']) {
+						$out .= $this->linkEditContent($row['pages'], $row) . '<br />';
+					}
+					break;
+				case 'shortcut':
+					if (!empty($row['records'])) {
+						$shortcutContent = array();
+						$recordList = explode(',', $row['records']);
+						foreach ($recordList as $recordIdentifier) {
+							$split = BackendUtility::splitTable_Uid($recordIdentifier);
+							$tableName = empty($split[0]) ? 'tt_content' : $split[0];
+							$shortcutRecord = BackendUtility::getRecord($tableName, $split[1]);
+							if (is_array($shortcutRecord)) {
+								$icon = IconUtility::getSpriteIconForRecord($tableName, $shortcutRecord);
+								$onClick = $GLOBALS['SOBE']->doc->wrapClickMenuOnIcon($icon, $tableName, $shortcutRecord['uid'], 1, '', '+copy,info,edit,view', TRUE);
+								$shortcutContent[] = '<a href="#" onclick="' . htmlspecialchars($onClick) . '">' . $icon . '</a>' . htmlspecialchars(BackendUtility::getRecordTitle($tableName, $shortcutRecord));
+							}
+						}
+						$out .= implode('<br />', $shortcutContent) . '<br />';
+					}
+					break;
+				case 'list':
+					$hookArr = array();
+					$hookOut = '';
+					if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['list_type_Info'][$row['list_type']])) {
+						$hookArr = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['list_type_Info'][$row['list_type']];
+					} elseif (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['list_type_Info']['_DEFAULT'])) {
+						$hookArr = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['list_type_Info']['_DEFAULT'];
+					}
+					if (count($hookArr) > 0) {
+						$_params = array('pObj' => &$this, 'row' => $row, 'infoArr' => $infoArr);
+						foreach ($hookArr as $_funcRef) {
+							$hookOut .= GeneralUtility::callUserFunction($_funcRef, $_params, $this);
 						}
 					}
-				}
-				break;
-			case 'bullets':
-
-			case 'table':
-
-			case 'mailform':
-				if ($row['bodytext']) {
-					$out .= $this->linkEditContent($this->renderText($row['bodytext']), $row) . '<br />';
-				}
-				break;
-			case 'uploads':
-				if ($row['media']) {
-					$out .= $this->thumbCode($row, 'tt_content', 'media') . '<br />';
-				}
-				break;
-			case 'multimedia':
-				if ($row['multimedia']) {
-					$out .= $this->renderText($row['multimedia']) . '<br />';
-					$out .= $this->renderText($row['parameters']) . '<br />';
-				}
-				break;
-			case 'menu':
-				if ($row['pages']) {
-					$out .= $this->linkEditContent($row['pages'], $row) . '<br />';
-				}
-				break;
-			case 'shortcut':
-				if (!empty($row['records'])) {
-					$shortcutContent = array();
-					$recordList = explode(',', $row['records']);
-					foreach ($recordList as $recordIdentifier) {
-						$split = BackendUtility::splitTable_Uid($recordIdentifier);
-						$tableName = empty($split[0]) ? 'tt_content' : $split[0];
-						$shortcutRecord = BackendUtility::getRecord($tableName, $split[1]);
-						if (is_array($shortcutRecord)) {
-							$icon = IconUtility::getSpriteIconForRecord($tableName, $shortcutRecord);
-							$onClick = $GLOBALS['SOBE']->doc->wrapClickMenuOnIcon($icon, $tableName, $shortcutRecord['uid'], 1, '', '+copy,info,edit,view', TRUE);
-							$shortcutContent[] = '<a href="#" onclick="' . htmlspecialchars($onClick) . '">' . $icon . '</a>' . htmlspecialchars(BackendUtility::getRecordTitle($tableName, $shortcutRecord));
+					if (strcmp($hookOut, '')) {
+						$out .= $hookOut;
+					} elseif (!empty($row['list_type'])) {
+						$label = BackendUtility::getLabelFromItemlist('tt_content', 'list_type', $row['list_type']);
+						if (!empty($label)) {
+							$out .=  '<strong>' . $GLOBALS['LANG']->sL($label, TRUE) . '</strong><br />';
+						} else {
+							$message = sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.noMatchingValue'), $row['list_type']);
+							$out .= GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', htmlspecialchars($message), '', FlashMessage::WARNING)->render();
 						}
-					}
-					$out .= implode('<br />', $shortcutContent) . '<br />';
-				}
-				break;
-			case 'list':
-				$hookArr = array();
-				$hookOut = '';
-				if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['list_type_Info'][$row['list_type']])) {
-					$hookArr = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['list_type_Info'][$row['list_type']];
-				} elseif (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['list_type_Info']['_DEFAULT'])) {
-					$hookArr = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['list_type_Info']['_DEFAULT'];
-				}
-				if (count($hookArr) > 0) {
-					$_params = array('pObj' => &$this, 'row' => $row, 'infoArr' => $infoArr);
-					foreach ($hookArr as $_funcRef) {
-						$hookOut .= GeneralUtility::callUserFunction($_funcRef, $_params, $this);
-					}
-				}
-				if (strcmp($hookOut, '')) {
-					$out .= $hookOut;
-				} elseif (!empty($row['list_type'])) {
-					$label = BackendUtility::getLabelFromItemlist('tt_content', 'list_type', $row['list_type']);
-					if (!empty($label)) {
-						$out .=  '<strong>' . $GLOBALS['LANG']->sL($label, TRUE) . '</strong><br />';
+					} elseif (!empty($row['select_key'])) {
+						$out .= $GLOBALS['LANG']->sL(BackendUtility::getItemLabel('tt_content', 'select_key'), 1) . ' ' . $row['select_key'] . '<br />';
 					} else {
-						$message = sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.noMatchingValue'), $row['list_type']);
+						$out .= '<strong>' . $GLOBALS['LANG']->getLL('noPluginSelected') . '</strong>';
+					}
+					$out .= $GLOBALS['LANG']->sL(BackendUtility::getLabelFromItemlist('tt_content', 'pages', $row['pages']), 1) . '<br />';
+					break;
+				case 'script':
+					$out .= $GLOBALS['LANG']->sL(BackendUtility::getItemLabel('tt_content', 'select_key'), 1) . ' ' . $row['select_key'] . '<br />';
+					$out .= '<br />' . $this->linkEditContent($this->renderText($row['bodytext']), $row) . '<br />';
+					$out .= '<br />' . $this->linkEditContent($this->renderText($row['imagecaption']), $row) . '<br />';
+					break;
+				default:
+					$contentType = $this->CType_labels[$row['CType']];
+
+					if (isset($contentType)) {
+						$out .= '<strong>' . htmlspecialchars($contentType) . '</strong><br />';
+						if ($row['bodytext']) {
+							$out .= $this->linkEditContent($this->renderText($row['bodytext']), $row) . '<br />';
+						}
+					} else {
+						$message = sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.noMatchingValue'), $row['CType']);
 						$out .= GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', htmlspecialchars($message), '', FlashMessage::WARNING)->render();
 					}
-				} elseif (!empty($row['select_key'])) {
-					$out .= $GLOBALS['LANG']->sL(BackendUtility::getItemLabel('tt_content', 'select_key'), 1) . ' ' . $row['select_key'] . '<br />';
-				} else {
-					$out .= '<strong>' . $GLOBALS['LANG']->getLL('noPluginSelected') . '</strong>';
-				}
-				$out .= $GLOBALS['LANG']->sL(BackendUtility::getLabelFromItemlist('tt_content', 'pages', $row['pages']), 1) . '<br />';
-				break;
-			case 'script':
-				$out .= $GLOBALS['LANG']->sL(BackendUtility::getItemLabel('tt_content', 'select_key'), 1) . ' ' . $row['select_key'] . '<br />';
-				$out .= '<br />' . $this->linkEditContent($this->renderText($row['bodytext']), $row) . '<br />';
-				$out .= '<br />' . $this->linkEditContent($this->renderText($row['imagecaption']), $row) . '<br />';
-				break;
-			default:
-				$contentType = $this->CType_labels[$row['CType']];
-
-				if (isset($contentType)) {
-					$out .= '<strong>' . htmlspecialchars($contentType) . '</strong><br />';
-					if ($row['bodytext']) {
-						$out .= $this->linkEditContent($this->renderText($row['bodytext']), $row) . '<br />';
-					}
-				} else {
-					$message = sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.noMatchingValue'), $row['CType']);
-					$out .= GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', htmlspecialchars($message), '', FlashMessage::WARNING)->render();
-				}
-				break;
 			}
 		}
 		// Wrap span-tags:

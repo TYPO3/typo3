@@ -693,12 +693,12 @@ class DocumentTemplate {
 	public function formatTime($tstamp, $type) {
 		$dateStr = '';
 		switch ($type) {
-		case 1:
-			$dateStr = date($GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'], $tstamp);
-			break;
-		case 10:
-			$dateStr = date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'], $tstamp);
-			break;
+			case 1:
+				$dateStr = date($GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'], $tstamp);
+				break;
+			case 10:
+				$dateStr = date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'], $tstamp);
+				break;
 		}
 		return $dateStr;
 	}
@@ -769,36 +769,35 @@ class DocumentTemplate {
 		// Standard HTML tag
 		$htmlTag = '<html xmlns="http://www.w3.org/1999/xhtml">';
 		switch ($this->docType) {
-		case 'html_3':
-			$headerStart = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">';
-			$htmlTag = '<html>';
-			// Disable rendering of XHTML tags
-			$this->getPageRenderer()->setRenderXhtml(FALSE);
-			break;
-		case 'xhtml_strict':
-			$headerStart = '<!DOCTYPE html
-	PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">';
-			break;
-		case 'xhtml_frames':
-			$headerStart = '<!DOCTYPE html
-	PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN"
-	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">';
-			break;
-		case 'xhtml_trans':
-			$headerStart = '<!DOCTYPE html
-     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">';
-			break;
-		case 'html5':
+			case 'html_3':
+				$headerStart = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">';
+				$htmlTag = '<html>';
+				// Disable rendering of XHTML tags
+				$this->getPageRenderer()->setRenderXhtml(FALSE);
+				break;
+			case 'xhtml_strict':
+				$headerStart = '<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">';
+				break;
+			case 'xhtml_frames':
+				$headerStart = '<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">';
+				break;
+			case 'xhtml_trans':
+				$headerStart = '<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">';
+				break;
+			case 'html5':
 
-		default:
-			// The fallthrough is intended as HTML5, as this is the default for the BE since TYPO3 4.5
-			$headerStart = '<!DOCTYPE html>' . LF;
-			$htmlTag = '<html>';
-			// Disable rendering of XHTML tags
-			$this->getPageRenderer()->setRenderXhtml(FALSE);
-			break;
+			default:
+				// The fallthrough is intended as HTML5, as this is the default for the BE since TYPO3 4.5
+				$headerStart = '<!DOCTYPE html>' . LF;
+				$htmlTag = '<html>';
+				// Disable rendering of XHTML tags
+				$this->getPageRenderer()->setRenderXhtml(FALSE);
 		}
 		$this->pageRenderer->setHtmlTag($htmlTag);
 		// This loads the tabulator-in-textarea feature. It automatically modifies
@@ -1314,20 +1313,20 @@ class DocumentTemplate {
 	 */
 	public function icons($type, $styleAttribValue = '') {
 		switch ($type) {
-		case self::STATUS_ICON_ERROR:
-			$icon = 'status-dialog-error';
-			break;
-		case self::STATUS_ICON_WARNING:
-			$icon = 'status-dialog-warning';
-			break;
-		case self::STATUS_ICON_NOTIFICATION:
-			$icon = 'status-dialog-notification';
-			break;
-		case self::STATUS_ICON_OK:
-			$icon = 'status-dialog-ok';
-			break;
-		default:
-			break;
+			case self::STATUS_ICON_ERROR:
+				$icon = 'status-dialog-error';
+				break;
+			case self::STATUS_ICON_WARNING:
+				$icon = 'status-dialog-warning';
+				break;
+			case self::STATUS_ICON_NOTIFICATION:
+				$icon = 'status-dialog-notification';
+				break;
+			case self::STATUS_ICON_OK:
+				$icon = 'status-dialog-ok';
+				break;
+			default:
+				// Do nothing
 		}
 		if ($icon) {
 			return IconUtility::getSpriteIcon($icon);

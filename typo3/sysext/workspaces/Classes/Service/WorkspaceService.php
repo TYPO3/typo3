@@ -88,15 +88,15 @@ class WorkspaceService implements \TYPO3\CMS\Core\SingletonInterface {
 	static public function getWorkspaceTitle($wsId) {
 		$title = FALSE;
 		switch ($wsId) {
-		case self::LIVE_WORKSPACE_ID:
-			$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.xml:shortcut_onlineWS');
-			break;
-		default:
-			$labelField = $GLOBALS['TCA']['sys_workspace']['ctrl']['label'];
-			$wsRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('sys_workspace', $wsId, 'uid,' . $labelField);
-			if (is_array($wsRecord)) {
-				$title = $wsRecord[$labelField];
-			}
+			case self::LIVE_WORKSPACE_ID:
+				$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.xml:shortcut_onlineWS');
+				break;
+			default:
+				$labelField = $GLOBALS['TCA']['sys_workspace']['ctrl']['label'];
+				$wsRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('sys_workspace', $wsId, 'uid,' . $labelField);
+				if (is_array($wsRecord)) {
+					$title = $wsRecord[$labelField];
+				}
 		}
 		if ($title === FALSE) {
 			throw new \InvalidArgumentException('No such workspace defined');

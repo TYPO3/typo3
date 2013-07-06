@@ -191,21 +191,21 @@ class AjaxRequestHandler {
 			die;
 		}
 		switch ($this->contentFormat) {
-		case 'jsonhead':
+			case 'jsonhead':
 
-		case 'jsonbody':
+			case 'jsonbody':
 
-		case 'json':
-			$this->renderAsJSON();
-			break;
-		case 'javascript':
-			$this->renderAsJavascript();
-			break;
-		case 'xml':
-			$this->renderAsXML();
-			break;
-		default:
-			$this->renderAsPlain();
+			case 'json':
+				$this->renderAsJSON();
+				break;
+			case 'javascript':
+				$this->renderAsJavascript();
+				break;
+			case 'xml':
+				$this->renderAsXML();
+				break;
+			default:
+				$this->renderAsPlain();
 		}
 		die;
 	}

@@ -268,33 +268,32 @@ class CommandLineController {
 			$this->cli_echo(strtoupper($key) . ':
 ');
 			switch ($key) {
-			case 'synopsis':
-				$optStr = '';
-				foreach ($this->cli_options as $v) {
-					$optStr .= ' [' . $v[0] . ']';
-				}
-				$this->cli_echo($this->cli_indent(str_replace('###OPTIONS###', trim($optStr), $value), 4) . '
-
-');
-				break;
-			case 'options':
-				$this->cli_echo($this->cli_indent($value, 4) . LF);
-				$maxLen = 0;
-				foreach ($this->cli_options as $v) {
-					if (strlen($v[0]) > $maxLen) {
-						$maxLen = strlen($v[0]);
+				case 'synopsis':
+					$optStr = '';
+					foreach ($this->cli_options as $v) {
+						$optStr .= ' [' . $v[0] . ']';
 					}
-				}
-				foreach ($this->cli_options as $v) {
-					$this->cli_echo($v[0] . substr($this->cli_indent(rtrim(($v[1] . LF . $v[2])), ($maxLen + 4)), strlen($v[0])) . LF);
-				}
-				$this->cli_echo(LF);
-				break;
-			default:
-				$this->cli_echo($this->cli_indent($value, 4) . '
+					$this->cli_echo($this->cli_indent(str_replace('###OPTIONS###', trim($optStr), $value), 4) . '
 
 ');
-				break;
+					break;
+				case 'options':
+					$this->cli_echo($this->cli_indent($value, 4) . LF);
+					$maxLen = 0;
+					foreach ($this->cli_options as $v) {
+						if (strlen($v[0]) > $maxLen) {
+							$maxLen = strlen($v[0]);
+						}
+					}
+					foreach ($this->cli_options as $v) {
+						$this->cli_echo($v[0] . substr($this->cli_indent(rtrim(($v[1] . LF . $v[2])), ($maxLen + 4)), strlen($v[0])) . LF);
+					}
+					$this->cli_echo(LF);
+					break;
+				default:
+					$this->cli_echo($this->cli_indent($value, 4) . '
+
+');
 			}
 		}
 	}

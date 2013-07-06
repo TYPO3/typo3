@@ -206,7 +206,6 @@ class SwiftMailerAdapter implements \TYPO3\CMS\Core\Mail\MailerAdapterInterface 
 					break;
 				default:
 					$this->messageHeaders->addTextheader($headerName, $headerValue);
-					break;
 			}
 		}
 	}

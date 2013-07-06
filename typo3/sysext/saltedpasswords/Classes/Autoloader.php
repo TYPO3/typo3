@@ -41,11 +41,11 @@ class Autoloader {
 	 */
 	public function execute(\TYPO3\CMS\Install\Installer $instObj) {
 		switch ($instObj->step) {
-		case 4:
-			if (!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('saltedpasswords') && $this->isSaltedPasswordsSupported()) {
-				$this->activateSaltedPasswords();
-			}
-			break;
+			case 4:
+				if (!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('saltedpasswords') && $this->isSaltedPasswordsSupported()) {
+					$this->activateSaltedPasswords();
+				}
+				break;
 		}
 	}
 

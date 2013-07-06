@@ -198,22 +198,21 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 			$altText = $fileObject->getProperty('alternative');
 			$titleText = $fileObject->getProperty('name');
 			switch ($this->act) {
-			case 'magic':
-				$this->insertMagicImage($fileObject, $altText, $titleText, 'data-htmlarea-file-uid="' . $uid . '" data-htmlarea-file-table="' . $table . '"');
-				die;
-				break;
-			case 'plain':
-				$this->insertPlainImage($fileObject, $altText, $titleText, 'data-htmlarea-file-uid="' . $uid . '" data-htmlarea-file-table="' . $table . '"');
-				die;
-				break;
-			default:
-				// Call hook
-				foreach ($this->hookObjects as $hookObject) {
-					if (method_exists($hookObject, 'insertElement')) {
-						$hookObject->insertElement($this->act);
+				case 'magic':
+					$this->insertMagicImage($fileObject, $altText, $titleText, 'data-htmlarea-file-uid="' . $uid . '" data-htmlarea-file-table="' . $table . '"');
+					die;
+					break;
+				case 'plain':
+					$this->insertPlainImage($fileObject, $altText, $titleText, 'data-htmlarea-file-uid="' . $uid . '" data-htmlarea-file-table="' . $table . '"');
+					die;
+					break;
+				default:
+					// Call hook
+					foreach ($this->hookObjects as $hookObject) {
+						if (method_exists($hookObject, 'insertElement')) {
+							$hookObject->insertElement($this->act);
+						}
 					}
-				}
-				break;
 			}
 		}
 	}
@@ -698,131 +697,130 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 		$menuDef[$this->act]['isActive'] = TRUE;
 		$this->content .= $this->doc->getTabMenuRaw($menuDef);
 		switch ($this->act) {
-		case 'image':
-			$JScode = '
-				document.write(printCurrentImageOptions());
-				insertImagePropertiesInForm();';
-			$this->content .= '<br />' . $this->doc->wrapScriptTags($JScode);
-			break;
-		case 'plain':
+			case 'image':
+				$JScode = '
+					document.write(printCurrentImageOptions());
+					insertImagePropertiesInForm();';
+				$this->content .= '<br />' . $this->doc->wrapScriptTags($JScode);
+				break;
+			case 'plain':
 
-		case 'magic':
-			// Create folder tree:
-			$foldertree = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Rtehtmlarea\\ImageFolderTree');
-			$foldertree->thisScript = $this->thisScript;
-			$tree = $foldertree->getBrowsableTree();
-			// Get currently selected folder
-			if (!$this->curUrlInfo['value'] || $this->curUrlInfo['act'] != $this->act) {
-				$cmpPath = '';
-			} else {
-				$cmpPath = $this->curUrlInfo['value'];
-				if (!isset($this->expandFolder)) {
-					$this->expandFolder = $cmpPath;
+			case 'magic':
+				// Create folder tree:
+				$foldertree = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Rtehtmlarea\\ImageFolderTree');
+				$foldertree->thisScript = $this->thisScript;
+				$tree = $foldertree->getBrowsableTree();
+				// Get currently selected folder
+				if (!$this->curUrlInfo['value'] || $this->curUrlInfo['act'] != $this->act) {
+					$cmpPath = '';
+				} else {
+					$cmpPath = $this->curUrlInfo['value'];
+					if (!isset($this->expandFolder)) {
+						$this->expandFolder = $cmpPath;
+					}
 				}
-			}
-			// Get the selected folder
-			if ($this->expandFolder) {
-				$selectedFolder = FALSE;
-				$fileOrFolderObject = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->retrieveFileOrFolderObject($this->expandFolder);
-				if ($fileOrFolderObject instanceof \TYPO3\CMS\Core\Resource\Folder) {
-					// it's a folder
-					$selectedFolder = $fileOrFolderObject;
-				} elseif ($fileOrFolderObject instanceof \TYPO3\CMS\Core\Resource\FileInterface) {
-					// it's a file
-					// @todo: find the parent folder, right now done a bit ugly, because the file does not
-					// support finding the parent folder of a file on purpose
-					$folderIdentifier = dirname($fileOrFolderObject->getIdentifier());
-					$selectedFolder = $fileOrFolderObject->getStorage()->getFolder($folderIdentifier);
-				}
-			}
-			// If no folder is selected, get the user's default upload folder
-			if (!$selectedFolder) {
-				$selectedFolder = $GLOBALS['BE_USER']->getDefaultUploadFolder();
-			}
-			// Build the file upload and folder creation form
-			$uploadForm = '';
-			$createFolder = '';
-			if ($selectedFolder && !$this->isReadOnlyFolder($selectedFolder)) {
-				$uploadForm = $this->uploadForm($selectedFolder);
-				if ($GLOBALS['BE_USER']->isAdmin() || $GLOBALS['BE_USER']->getTSConfigVal('options.createFoldersInEB')) {
-					$createFolder = $this->createFolder($selectedFolder);
-				}
-			}
-			// Insert the upload form on top, if so configured
-			if ($GLOBALS['BE_USER']->getTSConfigVal('options.uploadFieldsInTopOfEB')) {
-				$this->content .= $uploadForm;
-			}
-			// Render the filelist if there is a folder selected
-			if ($selectedFolder) {
-				$files = $this->TBE_expandFolder($selectedFolder, $this->act === 'plain' ? 'jpg,jpeg,gif,png' : $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], $GLOBALS['BE_USER']->getTSConfigVal('options.noThumbsInRTEimageSelect'));
-			}
-			// Setup filelist indexed elements:
-			$this->doc->JScode .= $this->doc->wrapScriptTags('BrowseLinks.addElements(' . json_encode($this->elements) . ');');
-			// Wrap tree
-			$this->content .= '
-
-			<!--
-				Wrapper table for folder tree / file/folder list:
-			-->
-					<table border="0" cellpadding="0" cellspacing="0" id="typo3-linkFiles">
-						<tr>
-							<td class="c-wCell" valign="top">' . $this->barheader(($GLOBALS['LANG']->getLL('folderTree') . ':')) . $tree . '</td>
-							<td class="c-wCell" valign="top">' . $files . '</td>
-						</tr>
-					</table>
-					';
-			// Add help message
-			$helpMessage = $this->getHelpMessage($this->act);
-			if ($helpMessage) {
-				$this->content .= $this->getMsgBox($helpMessage);
-			}
-			// Adding create folder + upload form if applicable
-			if (!$GLOBALS['BE_USER']->getTSConfigVal('options.uploadFieldsInTopOfEB')) {
-				$this->content .= $uploadForm;
-			}
-			$this->content .= $createFolder;
-			$this->content .= '<br />';
-			break;
-		case 'dragdrop':
-			$foldertree = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TBE_FolderTree');
-			$foldertree->thisScript = $this->thisScript;
-			$foldertree->ext_noTempRecyclerDirs = TRUE;
-			$tree = $foldertree->getBrowsableTree();
-			// Get currently selected folder
-			if (!$this->curUrlInfo['value'] || $this->curUrlInfo['act'] != $this->act) {
-				$cmpPath = '';
-			} else {
-				$cmpPath = $this->curUrlInfo['value'];
-				if (!isset($this->expandFolder)) {
-					$this->expandFolder = $cmpPath;
-				}
-			}
-			if ($this->expandFolder) {
-				try {
-					$selectedFolder = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getFolderObjectFromCombinedIdentifier($this->expandFolder);
-				} catch (Exception $e) {
+				// Get the selected folder
+				if ($this->expandFolder) {
 					$selectedFolder = FALSE;
+					$fileOrFolderObject = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->retrieveFileOrFolderObject($this->expandFolder);
+					if ($fileOrFolderObject instanceof \TYPO3\CMS\Core\Resource\Folder) {
+						// it's a folder
+						$selectedFolder = $fileOrFolderObject;
+					} elseif ($fileOrFolderObject instanceof \TYPO3\CMS\Core\Resource\FileInterface) {
+						// it's a file
+						// @todo: find the parent folder, right now done a bit ugly, because the file does not
+						// support finding the parent folder of a file on purpose
+						$folderIdentifier = dirname($fileOrFolderObject->getIdentifier());
+						$selectedFolder = $fileOrFolderObject->getStorage()->getFolder($folderIdentifier);
+					}
 				}
-			}
-			// Render the filelist if there is a folder selected
-			if ($selectedFolder) {
-				$files = $this->TBE_dragNDrop($selectedFolder, implode(',', $this->allowedFileTypes));
-			}
-			// Wrap tree
-			$this->content .= '<table border="0" cellpadding="0" cellspacing="0">
-				<tr>
-					<td style="vertical-align: top;">' . $this->barheader(($GLOBALS['LANG']->getLL('folderTree') . ':')) . $tree . '</td>
-					<td>&nbsp;</td>
-					<td style="vertical-align: top;">' . $files . '</td>
-				</tr>
-				</table>';
-			break;
-		default:
-			// Call hook
-			foreach ($this->hookObjects as $hookObject) {
-				$this->content .= $hookObject->getTab($this->act);
-			}
-			break;
+				// If no folder is selected, get the user's default upload folder
+				if (!$selectedFolder) {
+					$selectedFolder = $GLOBALS['BE_USER']->getDefaultUploadFolder();
+				}
+				// Build the file upload and folder creation form
+				$uploadForm = '';
+				$createFolder = '';
+				if ($selectedFolder && !$this->isReadOnlyFolder($selectedFolder)) {
+					$uploadForm = $this->uploadForm($selectedFolder);
+					if ($GLOBALS['BE_USER']->isAdmin() || $GLOBALS['BE_USER']->getTSConfigVal('options.createFoldersInEB')) {
+						$createFolder = $this->createFolder($selectedFolder);
+					}
+				}
+				// Insert the upload form on top, if so configured
+				if ($GLOBALS['BE_USER']->getTSConfigVal('options.uploadFieldsInTopOfEB')) {
+					$this->content .= $uploadForm;
+				}
+				// Render the filelist if there is a folder selected
+				if ($selectedFolder) {
+					$files = $this->TBE_expandFolder($selectedFolder, $this->act === 'plain' ? 'jpg,jpeg,gif,png' : $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], $GLOBALS['BE_USER']->getTSConfigVal('options.noThumbsInRTEimageSelect'));
+				}
+				// Setup filelist indexed elements:
+				$this->doc->JScode .= $this->doc->wrapScriptTags('BrowseLinks.addElements(' . json_encode($this->elements) . ');');
+				// Wrap tree
+				$this->content .= '
+
+				<!--
+					Wrapper table for folder tree / file/folder list:
+				-->
+						<table border="0" cellpadding="0" cellspacing="0" id="typo3-linkFiles">
+							<tr>
+								<td class="c-wCell" valign="top">' . $this->barheader(($GLOBALS['LANG']->getLL('folderTree') . ':')) . $tree . '</td>
+								<td class="c-wCell" valign="top">' . $files . '</td>
+							</tr>
+						</table>
+						';
+				// Add help message
+				$helpMessage = $this->getHelpMessage($this->act);
+				if ($helpMessage) {
+					$this->content .= $this->getMsgBox($helpMessage);
+				}
+				// Adding create folder + upload form if applicable
+				if (!$GLOBALS['BE_USER']->getTSConfigVal('options.uploadFieldsInTopOfEB')) {
+					$this->content .= $uploadForm;
+				}
+				$this->content .= $createFolder;
+				$this->content .= '<br />';
+				break;
+			case 'dragdrop':
+				$foldertree = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TBE_FolderTree');
+				$foldertree->thisScript = $this->thisScript;
+				$foldertree->ext_noTempRecyclerDirs = TRUE;
+				$tree = $foldertree->getBrowsableTree();
+				// Get currently selected folder
+				if (!$this->curUrlInfo['value'] || $this->curUrlInfo['act'] != $this->act) {
+					$cmpPath = '';
+				} else {
+					$cmpPath = $this->curUrlInfo['value'];
+					if (!isset($this->expandFolder)) {
+						$this->expandFolder = $cmpPath;
+					}
+				}
+				if ($this->expandFolder) {
+					try {
+						$selectedFolder = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getFolderObjectFromCombinedIdentifier($this->expandFolder);
+					} catch (Exception $e) {
+						$selectedFolder = FALSE;
+					}
+				}
+				// Render the filelist if there is a folder selected
+				if ($selectedFolder) {
+					$files = $this->TBE_dragNDrop($selectedFolder, implode(',', $this->allowedFileTypes));
+				}
+				// Wrap tree
+				$this->content .= '<table border="0" cellpadding="0" cellspacing="0">
+					<tr>
+						<td style="vertical-align: top;">' . $this->barheader(($GLOBALS['LANG']->getLL('folderTree') . ':')) . $tree . '</td>
+						<td>&nbsp;</td>
+						<td style="vertical-align: top;">' . $files . '</td>
+					</tr>
+					</table>';
+				break;
+			default:
+				// Call hook
+				foreach ($this->hookObjects as $hookObject) {
+					$this->content .= $hookObject->getTab($this->act);
+				}
 		}
 		$this->content .= $this->doc->endPage();
 		$this->doc->JScodeArray['rtehtmlarea'] = $this->getJSCode($this->act, $this->editorNo, $this->sys_language_content);
@@ -981,14 +979,14 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 	 */
 	public function getHelpMessage($act) {
 		switch ($act) {
-		case 'plain':
-			return sprintf($GLOBALS['LANG']->getLL('plainImage_msg'), $this->plainMaxWidth, $this->plainMaxHeight);
-			break;
-		case 'magic':
-			return sprintf($GLOBALS['LANG']->getLL('magicImage_msg'));
-			break;
-		default:
-			return '';
+			case 'plain':
+				return sprintf($GLOBALS['LANG']->getLL('plainImage_msg'), $this->plainMaxWidth, $this->plainMaxHeight);
+				break;
+			case 'magic':
+				return sprintf($GLOBALS['LANG']->getLL('magicImage_msg'));
+				break;
+			default:
+				return '';
 		}
 	}
 

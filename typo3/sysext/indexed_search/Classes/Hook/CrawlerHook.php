@@ -86,79 +86,78 @@ class CrawlerHook {
 			$GLOBALS['TYPO3_DB']->exec_UPDATEquery('index_config', 'uid=' . intval($cfgRec['uid']), $field_array);
 			// Based on configuration type:
 			switch ($cfgRec['type']) {
-			case 1:
-				// RECORDS:
-				// Parameters:
-				$params = array(
-					'indexConfigUid' => $cfgRec['uid'],
-					'procInstructions' => array('[Index Cfg UID#' . $cfgRec['uid'] . ']'),
-					'url' => 'Records (start)'
-				);
-				//
-				$pObj->addQueueEntry_callBack($setId, $params, $this->callBack, $cfgRec['pid']);
-				break;
-			case 2:
-				// FILES:
-				// Parameters:
-				$params = array(
-					'indexConfigUid' => $cfgRec['uid'],
-					// General
-					'procInstructions' => array('[Index Cfg UID#' . $cfgRec['uid'] . ']'),
-					// General
-					'url' => $cfgRec['filepath'],
-					// Partly general... (for URL and file types)
-					'depth' => 0
-				);
-				$pObj->addQueueEntry_callBack($setId, $params, $this->callBack, $cfgRec['pid']);
-				break;
-			case 3:
-				// External URL:
-				// Parameters:
-				$params = array(
-					'indexConfigUid' => $cfgRec['uid'],
-					// General
-					'procInstructions' => array('[Index Cfg UID#' . $cfgRec['uid'] . ']'),
-					// General
-					'url' => $cfgRec['externalUrl'],
-					// Partly general... (for URL and file types)
-					'depth' => 0
-				);
-				$pObj->addQueueEntry_callBack($setId, $params, $this->callBack, $cfgRec['pid']);
-				break;
-			case 4:
-				// Page tree
-				// Parameters:
-				$params = array(
-					'indexConfigUid' => $cfgRec['uid'],
-					// General
-					'procInstructions' => array('[Index Cfg UID#' . $cfgRec['uid'] . ']'),
-					// General
-					'url' => intval($cfgRec['alternative_source_pid']),
-					// Partly general... (for URL and file types and page tree (root))
-					'depth' => 0
-				);
-				$pObj->addQueueEntry_callBack($setId, $params, $this->callBack, $cfgRec['pid']);
-				break;
-			case 5:
-				// Meta configuration, nothing to do:
-				// NOOP
-				break;
-			default:
-				if ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['crawler'][$cfgRec['type']]) {
-					$hookObj = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['crawler'][$cfgRec['type']]);
-					if (is_object($hookObj)) {
-						// Parameters:
-						$params = array(
-							'indexConfigUid' => $cfgRec['uid'],
-							// General
-							'procInstructions' => array('[Index Cfg UID#' . $cfgRec['uid'] . '/CUSTOM]'),
-							// General
-							'url' => $hookObj->initMessage($message)
-						);
-						$pObj->addQueueEntry_callBack($setId, $params, $this->callBack, $cfgRec['pid']);
+				case 1:
+					// RECORDS:
+					// Parameters:
+					$params = array(
+						'indexConfigUid' => $cfgRec['uid'],
+						'procInstructions' => array('[Index Cfg UID#' . $cfgRec['uid'] . ']'),
+						'url' => 'Records (start)'
+					);
+					//
+					$pObj->addQueueEntry_callBack($setId, $params, $this->callBack, $cfgRec['pid']);
+					break;
+				case 2:
+					// FILES:
+					// Parameters:
+					$params = array(
+						'indexConfigUid' => $cfgRec['uid'],
+						// General
+						'procInstructions' => array('[Index Cfg UID#' . $cfgRec['uid'] . ']'),
+						// General
+						'url' => $cfgRec['filepath'],
+						// Partly general... (for URL and file types)
+						'depth' => 0
+					);
+					$pObj->addQueueEntry_callBack($setId, $params, $this->callBack, $cfgRec['pid']);
+					break;
+				case 3:
+					// External URL:
+					// Parameters:
+					$params = array(
+						'indexConfigUid' => $cfgRec['uid'],
+						// General
+						'procInstructions' => array('[Index Cfg UID#' . $cfgRec['uid'] . ']'),
+						// General
+						'url' => $cfgRec['externalUrl'],
+						// Partly general... (for URL and file types)
+						'depth' => 0
+					);
+					$pObj->addQueueEntry_callBack($setId, $params, $this->callBack, $cfgRec['pid']);
+					break;
+				case 4:
+					// Page tree
+					// Parameters:
+					$params = array(
+						'indexConfigUid' => $cfgRec['uid'],
+						// General
+						'procInstructions' => array('[Index Cfg UID#' . $cfgRec['uid'] . ']'),
+						// General
+						'url' => intval($cfgRec['alternative_source_pid']),
+						// Partly general... (for URL and file types and page tree (root))
+						'depth' => 0
+					);
+					$pObj->addQueueEntry_callBack($setId, $params, $this->callBack, $cfgRec['pid']);
+					break;
+				case 5:
+					// Meta configuration, nothing to do:
+					// NOOP
+					break;
+				default:
+					if ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['crawler'][$cfgRec['type']]) {
+						$hookObj = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['crawler'][$cfgRec['type']]);
+						if (is_object($hookObj)) {
+							// Parameters:
+							$params = array(
+								'indexConfigUid' => $cfgRec['uid'],
+								// General
+								'procInstructions' => array('[Index Cfg UID#' . $cfgRec['uid'] . '/CUSTOM]'),
+								// General
+								'url' => $hookObj->initMessage($message)
+							);
+							$pObj->addQueueEntry_callBack($setId, $params, $this->callBack, $cfgRec['pid']);
+						}
 					}
-				}
-				break;
 			}
 		}
 		// Finally, look up all old index configurations which are finished and needs to be reset and done.
@@ -183,36 +182,35 @@ class CrawlerHook {
 				$session_data = unserialize($cfgRec['session_data']);
 				// Select which type:
 				switch ($cfgRec['type']) {
-				case 1:
-					// Records:
-					$this->crawler_execute_type1($cfgRec, $session_data, $params, $pObj);
-					break;
-				case 2:
-					// Files
-					$this->crawler_execute_type2($cfgRec, $session_data, $params, $pObj);
-					break;
-				case 3:
-					// External URL:
-					$this->crawler_execute_type3($cfgRec, $session_data, $params, $pObj);
-					break;
-				case 4:
-					// Page tree:
-					$this->crawler_execute_type4($cfgRec, $session_data, $params, $pObj);
-					break;
-				case 5:
-					// Meta
-					// NOOP (should never enter here!)
-					break;
-				default:
-					if ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['crawler'][$cfgRec['type']]) {
-						$hookObj = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['crawler'][$cfgRec['type']]);
-						if (is_object($hookObj)) {
-							$this->pObj = $pObj;
-							// For addQueueEntryForHook()
-							$hookObj->indexOperation($cfgRec, $session_data, $params, $this);
+					case 1:
+						// Records:
+						$this->crawler_execute_type1($cfgRec, $session_data, $params, $pObj);
+						break;
+					case 2:
+						// Files
+						$this->crawler_execute_type2($cfgRec, $session_data, $params, $pObj);
+						break;
+					case 3:
+						// External URL:
+						$this->crawler_execute_type3($cfgRec, $session_data, $params, $pObj);
+						break;
+					case 4:
+						// Page tree:
+						$this->crawler_execute_type4($cfgRec, $session_data, $params, $pObj);
+						break;
+					case 5:
+						// Meta
+						// NOOP (should never enter here!)
+						break;
+					default:
+						if ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['crawler'][$cfgRec['type']]) {
+							$hookObj = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['crawler'][$cfgRec['type']]);
+							if (is_object($hookObj)) {
+								$this->pObj = $pObj;
+								// For addQueueEntryForHook()
+								$hookObj->indexOperation($cfgRec, $session_data, $params, $this);
+							}
 						}
-					}
-					break;
 				}
 				// Save process data which might be modified:
 				$field_array = array(

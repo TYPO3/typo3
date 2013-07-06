@@ -187,79 +187,79 @@ class CacheManager implements \TYPO3\CMS\Core\SingletonInterface {
 		$objectClassesCache = $this->getCache('FLOW3_Object_Classes');
 		$objectConfigurationCache = $this->getCache('FLOW3_Object_Configuration');
 		switch ($fileMonitorIdentifier) {
-		case 'FLOW3_ClassFiles':
-			$modifiedAspectClassNamesWithUnderscores = array();
-			foreach ($changedFiles as $pathAndFilename => $status) {
-				$pathAndFilename = str_replace(FLOW3_PATH_PACKAGES, '', $pathAndFilename);
-				$matches = array();
-				if (preg_match('/[^\\/]+\\/(.+)\\/(Classes|Tests)\\/(.+)\\.php/', $pathAndFilename, $matches) === 1) {
-					$classNameWithUnderscores = str_replace('/', '_', $matches[1] . '_' . ($matches[2] === 'Tests' ? 'Tests_' : '') . $matches[3]);
-					$classNameWithUnderscores = str_replace('.', '_', $classNameWithUnderscores);
-					$modifiedClassNamesWithUnderscores[$classNameWithUnderscores] = TRUE;
-					// If an aspect was modified, the whole code cache needs to be flushed, so keep track of them:
-					if (substr($classNameWithUnderscores, -6, 6) === 'Aspect') {
-						$modifiedAspectClassNamesWithUnderscores[$classNameWithUnderscores] = TRUE;
-					}
-					// As long as no modified aspect was found, we are optimistic that only part of the cache needs to be flushed:
-					if (count($modifiedAspectClassNamesWithUnderscores) === 0) {
-						$objectClassesCache->remove($classNameWithUnderscores);
-					}
-				}
-			}
-			$flushDoctrineProxyCache = FALSE;
-			if (count($modifiedClassNamesWithUnderscores) > 0) {
-				$reflectionStatusCache = $this->getCache('FLOW3_Reflection_Status');
-				foreach (array_keys($modifiedClassNamesWithUnderscores) as $classNameWithUnderscores) {
-					$reflectionStatusCache->remove($classNameWithUnderscores);
-					if ($flushDoctrineProxyCache === FALSE && preg_match('/_Domain_Model_(.+)/', $classNameWithUnderscores) === 1) {
-						$flushDoctrineProxyCache = TRUE;
+			case 'FLOW3_ClassFiles':
+				$modifiedAspectClassNamesWithUnderscores = array();
+				foreach ($changedFiles as $pathAndFilename => $status) {
+					$pathAndFilename = str_replace(FLOW3_PATH_PACKAGES, '', $pathAndFilename);
+					$matches = array();
+					if (preg_match('/[^\\/]+\\/(.+)\\/(Classes|Tests)\\/(.+)\\.php/', $pathAndFilename, $matches) === 1) {
+						$classNameWithUnderscores = str_replace('/', '_', $matches[1] . '_' . ($matches[2] === 'Tests' ? 'Tests_' : '') . $matches[3]);
+						$classNameWithUnderscores = str_replace('.', '_', $classNameWithUnderscores);
+						$modifiedClassNamesWithUnderscores[$classNameWithUnderscores] = TRUE;
+						// If an aspect was modified, the whole code cache needs to be flushed, so keep track of them:
+						if (substr($classNameWithUnderscores, -6, 6) === 'Aspect') {
+							$modifiedAspectClassNamesWithUnderscores[$classNameWithUnderscores] = TRUE;
+						}
+						// As long as no modified aspect was found, we are optimistic that only part of the cache needs to be flushed:
+						if (count($modifiedAspectClassNamesWithUnderscores) === 0) {
+							$objectClassesCache->remove($classNameWithUnderscores);
+						}
 					}
 				}
+				$flushDoctrineProxyCache = FALSE;
+				if (count($modifiedClassNamesWithUnderscores) > 0) {
+					$reflectionStatusCache = $this->getCache('FLOW3_Reflection_Status');
+					foreach (array_keys($modifiedClassNamesWithUnderscores) as $classNameWithUnderscores) {
+						$reflectionStatusCache->remove($classNameWithUnderscores);
+						if ($flushDoctrineProxyCache === FALSE && preg_match('/_Domain_Model_(.+)/', $classNameWithUnderscores) === 1) {
+							$flushDoctrineProxyCache = TRUE;
+						}
+					}
+					$objectConfigurationCache->remove('allCompiledCodeUpToDate');
+				}
+				if (count($modifiedAspectClassNamesWithUnderscores) > 0) {
+					$this->systemLogger->log('Aspect classes have been modified, flushing the whole proxy classes cache.', LOG_INFO);
+					$objectClassesCache->flush();
+				}
+				if ($flushDoctrineProxyCache === TRUE) {
+					$this->systemLogger->log('Domain model changes have been detected, triggering Doctrine 2 proxy rebuilding.', LOG_INFO);
+					$objectConfigurationCache->remove('doctrineProxyCodeUpToDate');
+				}
+				break;
+			case 'FLOW3_ConfigurationFiles':
+				$policyChangeDetected = FALSE;
+				$routesChangeDetected = FALSE;
+				foreach (array_keys($changedFiles) as $pathAndFilename) {
+					$filename = basename($pathAndFilename);
+					if (!in_array($filename, array('Policy.yaml', 'Routes.yaml'))) {
+						continue;
+					}
+					if ($policyChangeDetected === FALSE && basename($pathAndFilename) === 'Policy.yaml') {
+						$this->systemLogger->log('The security policies have changed, flushing the policy cache.', LOG_INFO);
+						$this->getCache('FLOW3_Security_Policy')->flush();
+						$policyChangeDetected = TRUE;
+					} elseif ($routesChangeDetected === FALSE && basename($pathAndFilename) === 'Routes.yaml') {
+						$this->systemLogger->log('A Routes.yaml file has been changed, flushing the routing cache.', LOG_INFO);
+						$this->getCache('FLOW3_Mvc_Routing_FindMatchResults')->flush();
+						$this->getCache('FLOW3_Mvc_Routing_Resolve')->flush();
+						$routesChangeDetected = TRUE;
+					}
+				}
+				$this->systemLogger->log('The configuration has changed, triggering an AOP proxy class rebuild.', LOG_INFO);
+				$objectConfigurationCache->remove('allAspectClassesUpToDate');
 				$objectConfigurationCache->remove('allCompiledCodeUpToDate');
-			}
-			if (count($modifiedAspectClassNamesWithUnderscores) > 0) {
-				$this->systemLogger->log('Aspect classes have been modified, flushing the whole proxy classes cache.', LOG_INFO);
 				$objectClassesCache->flush();
-			}
-			if ($flushDoctrineProxyCache === TRUE) {
-				$this->systemLogger->log('Domain model changes have been detected, triggering Doctrine 2 proxy rebuilding.', LOG_INFO);
-				$objectConfigurationCache->remove('doctrineProxyCodeUpToDate');
-			}
-			break;
-		case 'FLOW3_ConfigurationFiles':
-			$policyChangeDetected = FALSE;
-			$routesChangeDetected = FALSE;
-			foreach (array_keys($changedFiles) as $pathAndFilename) {
-				$filename = basename($pathAndFilename);
-				if (!in_array($filename, array('Policy.yaml', 'Routes.yaml'))) {
-					continue;
+				break;
+			case 'FLOW3_TranslationFiles':
+				foreach ($changedFiles as $pathAndFilename => $status) {
+					$matches = array();
+					if (preg_match('/\\/Translations\\/.+\\.xlf/', $pathAndFilename, $matches) === 1) {
+						$this->systemLogger->log('The localization files have changed, thus flushing the I18n XML model cache.', LOG_INFO);
+						$this->getCache('FLOW3_I18n_XmlModelCache')->flush();
+						break;
+					}
 				}
-				if ($policyChangeDetected === FALSE && basename($pathAndFilename) === 'Policy.yaml') {
-					$this->systemLogger->log('The security policies have changed, flushing the policy cache.', LOG_INFO);
-					$this->getCache('FLOW3_Security_Policy')->flush();
-					$policyChangeDetected = TRUE;
-				} elseif ($routesChangeDetected === FALSE && basename($pathAndFilename) === 'Routes.yaml') {
-					$this->systemLogger->log('A Routes.yaml file has been changed, flushing the routing cache.', LOG_INFO);
-					$this->getCache('FLOW3_Mvc_Routing_FindMatchResults')->flush();
-					$this->getCache('FLOW3_Mvc_Routing_Resolve')->flush();
-					$routesChangeDetected = TRUE;
-				}
-			}
-			$this->systemLogger->log('The configuration has changed, triggering an AOP proxy class rebuild.', LOG_INFO);
-			$objectConfigurationCache->remove('allAspectClassesUpToDate');
-			$objectConfigurationCache->remove('allCompiledCodeUpToDate');
-			$objectClassesCache->flush();
-			break;
-		case 'FLOW3_TranslationFiles':
-			foreach ($changedFiles as $pathAndFilename => $status) {
-				$matches = array();
-				if (preg_match('/\\/Translations\\/.+\\.xlf/', $pathAndFilename, $matches) === 1) {
-					$this->systemLogger->log('The localization files have changed, thus flushing the I18n XML model cache.', LOG_INFO);
-					$this->getCache('FLOW3_I18n_XmlModelCache')->flush();
-					break;
-				}
-			}
-			break;
+				break;
 		}
 	}
 

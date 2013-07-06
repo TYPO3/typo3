@@ -42,11 +42,11 @@ abstract class AbstractExceptionHandler implements \TYPO3\CMS\Core\Error\Excepti
 	 */
 	public function handleException(\Exception $exception) {
 		switch (PHP_SAPI) {
-		case 'cli':
-			$this->echoExceptionCLI($exception);
-			break;
-		default:
-			$this->echoExceptionWeb($exception);
+			case 'cli':
+				$this->echoExceptionCLI($exception);
+				break;
+			default:
+				$this->echoExceptionWeb($exception);
 		}
 	}
 

@@ -330,16 +330,15 @@ class Rfc822AddressesParser {
 		$i = ($slashes = 0);
 		for (; $i < $iMax; ++$i) {
 			switch ($string[$i]) {
-			case '\\':
-				++$slashes;
-				break;
-			case '"':
-				if ($slashes % 2 == 0) {
-					$in_quote = !$in_quote;
-				}
-			default:
-				$slashes = 0;
-				break;
+				case '\\':
+					++$slashes;
+					break;
+				case '"':
+					if ($slashes % 2 == 0) {
+						$in_quote = !$in_quote;
+					}
+				default:
+					$slashes = 0;
 			}
 		}
 		return $in_quote;

@@ -341,15 +341,14 @@ class QueryView {
 				$qGen->enablePrefix = 1;
 				$qString = $qGen->getQuery($qGen->queryConfig);
 				switch ($mQ) {
-				case 'count':
-					$qExplain = $GLOBALS['TYPO3_DB']->SELECTquery('count(*)', $qGen->table, $qString . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($qGen->table));
-					break;
-				default:
-					$qExplain = $qGen->getSelectQuery($qString);
-					if ($mQ == 'explain') {
-						$qExplain = 'EXPLAIN ' . $qExplain;
-					}
-					break;
+					case 'count':
+						$qExplain = $GLOBALS['TYPO3_DB']->SELECTquery('count(*)', $qGen->table, $qString . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($qGen->table));
+						break;
+					default:
+						$qExplain = $qGen->getSelectQuery($qString);
+						if ($mQ == 'explain') {
+							$qExplain = 'EXPLAIN ' . $qExplain;
+						}
 				}
 				if (!$GLOBALS['BE_USER']->userTS['mod.']['dbint.']['disableShowSQLQuery']) {
 					$output .= $GLOBALS['SOBE']->doc->section('SQL query', $this->tableWrap(htmlspecialchars($qExplain)), 0, 1);
@@ -381,71 +380,70 @@ class QueryView {
 		$out = '';
 		$cPR = array();
 		switch ($mQ) {
-		case 'count':
-			$row = $GLOBALS['TYPO3_DB']->sql_fetch_row($res);
-			$cPR['header'] = 'Count';
-			$cPR['content'] = '<BR><strong>' . $row[0] . '</strong> records selected.';
-			break;
-		case 'all':
-			$rowArr = array();
-			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-				$rowArr[] = $this->resultRowDisplay($row, $GLOBALS['TCA'][$table], $table);
-				$lrow = $row;
-			}
-			if (is_array($this->hookArray['beforeResultTable'])) {
-				foreach ($this->hookArray['beforeResultTable'] as $_funcRef) {
-					$out .= \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($_funcRef, $GLOBALS['SOBE']->MOD_SETTINGS, $this);
+			case 'count':
+				$row = $GLOBALS['TYPO3_DB']->sql_fetch_row($res);
+				$cPR['header'] = 'Count';
+				$cPR['content'] = '<BR><strong>' . $row[0] . '</strong> records selected.';
+				break;
+			case 'all':
+				$rowArr = array();
+				while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+					$rowArr[] = $this->resultRowDisplay($row, $GLOBALS['TCA'][$table], $table);
+					$lrow = $row;
 				}
-			}
-			if (count($rowArr)) {
-				$out .= '<table border="0" cellpadding="2" cellspacing="1" width="100%">' . $this->resultRowTitles($lrow, $GLOBALS['TCA'][$table], $table) . implode(LF, $rowArr) . '</table>';
-			}
-			if (!$out) {
-				$out = '<em>No rows selected!</em>';
-			}
-			$cPR['header'] = 'Result';
-			$cPR['content'] = $out;
-			break;
-		case 'csv':
-			$rowArr = array();
-			$first = 1;
-			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-				if ($first) {
-					$rowArr[] = $this->csvValues(array_keys($row), ',', '');
-					$first = 0;
+				if (is_array($this->hookArray['beforeResultTable'])) {
+					foreach ($this->hookArray['beforeResultTable'] as $_funcRef) {
+						$out .= \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($_funcRef, $GLOBALS['SOBE']->MOD_SETTINGS, $this);
+					}
 				}
-				$rowArr[] = $this->csvValues($row, ',', '"', $GLOBALS['TCA'][$table], $table);
-			}
-			if (count($rowArr)) {
-				$out .= '<textarea name="whatever" rows="20" wrap="off"' . $GLOBALS['SOBE']->doc->formWidthText($this->formW, '', 'off') . ' class="fixed-font">' . \TYPO3\CMS\Core\Utility\GeneralUtility::formatForTextarea(implode(LF, $rowArr)) . '</textarea>';
-				if (!$this->noDownloadB) {
-					$out .= '<BR><input type="submit" name="download_file" value="Click to download file" onClick="window.location.href=\'' . $this->downloadScript . '\';">';
+				if (count($rowArr)) {
+					$out .= '<table border="0" cellpadding="2" cellspacing="1" width="100%">' . $this->resultRowTitles($lrow, $GLOBALS['TCA'][$table], $table) . implode(LF, $rowArr) . '</table>';
 				}
-				// Downloads file:
-				if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('download_file')) {
-					$filename = 'TYPO3_' . $table . '_export_' . date('dmy-Hi') . '.csv';
-					$mimeType = 'application/octet-stream';
-					header('Content-Type: ' . $mimeType);
-					header('Content-Disposition: attachment; filename=' . $filename);
-					echo implode(CRLF, $rowArr);
-					die;
+				if (!$out) {
+					$out = '<em>No rows selected!</em>';
 				}
-			}
-			if (!$out) {
-				$out = '<em>No rows selected!</em>';
-			}
-			$cPR['header'] = 'Result';
-			$cPR['content'] = $out;
-			break;
-		case 'explain':
+				$cPR['header'] = 'Result';
+				$cPR['content'] = $out;
+				break;
+			case 'csv':
+				$rowArr = array();
+				$first = 1;
+				while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+					if ($first) {
+						$rowArr[] = $this->csvValues(array_keys($row), ',', '');
+						$first = 0;
+					}
+					$rowArr[] = $this->csvValues($row, ',', '"', $GLOBALS['TCA'][$table], $table);
+				}
+				if (count($rowArr)) {
+					$out .= '<textarea name="whatever" rows="20" wrap="off"' . $GLOBALS['SOBE']->doc->formWidthText($this->formW, '', 'off') . ' class="fixed-font">' . \TYPO3\CMS\Core\Utility\GeneralUtility::formatForTextarea(implode(LF, $rowArr)) . '</textarea>';
+					if (!$this->noDownloadB) {
+						$out .= '<BR><input type="submit" name="download_file" value="Click to download file" onClick="window.location.href=\'' . $this->downloadScript . '\';">';
+					}
+					// Downloads file:
+					if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('download_file')) {
+						$filename = 'TYPO3_' . $table . '_export_' . date('dmy-Hi') . '.csv';
+						$mimeType = 'application/octet-stream';
+						header('Content-Type: ' . $mimeType);
+						header('Content-Disposition: attachment; filename=' . $filename);
+						echo implode(CRLF, $rowArr);
+						die;
+					}
+				}
+				if (!$out) {
+					$out = '<em>No rows selected!</em>';
+				}
+				$cPR['header'] = 'Result';
+				$cPR['content'] = $out;
+				break;
+			case 'explain':
 
-		default:
-			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-				$out .= '<br />' . \TYPO3\CMS\Core\Utility\DebugUtility::viewArray($row);
-			}
-			$cPR['header'] = 'Explain SQL query';
-			$cPR['content'] = $out;
-			break;
+			default:
+				while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+					$out .= '<br />' . \TYPO3\CMS\Core\Utility\DebugUtility::viewArray($row);
+				}
+				$cPR['header'] = 'Explain SQL query';
+				$cPR['content'] = $out;
 		}
 		return $cPR;
 	}
@@ -606,108 +604,105 @@ class QueryView {
 			if (is_array($fC) && $fC['label']) {
 				$fields['label'] = preg_replace('/:$/', '', trim($GLOBALS['LANG']->sL($fC['label'])));
 				switch ($fields['type']) {
-				case 'input':
-					if (preg_match('/int|year/i', $fields['eval'])) {
-						$fields['type'] = 'number';
-					} elseif (preg_match('/time/i', $fields['eval'])) {
-						$fields['type'] = 'time';
-					} elseif (preg_match('/date/i', $fields['eval'])) {
-						$fields['type'] = 'date';
-					} else {
+					case 'input':
+						if (preg_match('/int|year/i', $fields['eval'])) {
+							$fields['type'] = 'number';
+						} elseif (preg_match('/time/i', $fields['eval'])) {
+							$fields['type'] = 'time';
+						} elseif (preg_match('/date/i', $fields['eval'])) {
+							$fields['type'] = 'date';
+						} else {
+							$fields['type'] = 'text';
+						}
+						break;
+					case 'check':
+						if (!$fields['items']) {
+							$fields['type'] = 'boolean';
+						} else {
+							$fields['type'] = 'binary';
+						}
+						break;
+					case 'radio':
+						$fields['type'] = 'multiple';
+						break;
+					case 'select':
+						$fields['type'] = 'multiple';
+						if ($fields['foreign_table']) {
+							$fields['type'] = 'relation';
+						}
+						if ($fields['special']) {
+							$fields['type'] = 'text';
+						}
+						break;
+					case 'group':
+						$fields['type'] = 'files';
+						if ($fields['internal_type'] == 'db') {
+							$fields['type'] = 'relation';
+						}
+						break;
+					case 'user':
+
+					case 'flex':
+
+					case 'passthrough':
+
+					case 'none':
+
+					case 'text':
+
+					default:
 						$fields['type'] = 'text';
-					}
-					break;
-				case 'check':
-					if (!$fields['items']) {
-						$fields['type'] = 'boolean';
-					} else {
-						$fields['type'] = 'binary';
-					}
-					break;
-				case 'radio':
-					$fields['type'] = 'multiple';
-					break;
-				case 'select':
-					$fields['type'] = 'multiple';
-					if ($fields['foreign_table']) {
-						$fields['type'] = 'relation';
-					}
-					if ($fields['special']) {
-						$fields['type'] = 'text';
-					}
-					break;
-				case 'group':
-					$fields['type'] = 'files';
-					if ($fields['internal_type'] == 'db') {
-						$fields['type'] = 'relation';
-					}
-					break;
-				case 'user':
-
-				case 'flex':
-
-				case 'passthrough':
-
-				case 'none':
-
-				case 'text':
-
-				default:
-					$fields['type'] = 'text';
-					break;
 				}
 			} else {
 				$fields['label'] = '[FIELD: ' . $fN . ']';
 				switch ($fN) {
-				case 'pid':
-					$fields['type'] = 'relation';
-					$fields['allowed'] = 'pages';
-					break;
-				case 'cruser_id':
-					$fields['type'] = 'relation';
-					$fields['allowed'] = 'be_users';
-					break;
-				case 'tstamp':
+					case 'pid':
+						$fields['type'] = 'relation';
+						$fields['allowed'] = 'pages';
+						break;
+					case 'cruser_id':
+						$fields['type'] = 'relation';
+						$fields['allowed'] = 'be_users';
+						break;
+					case 'tstamp':
 
-				case 'crdate':
-					$fields['type'] = 'time';
-					break;
-				default:
-					$fields['type'] = 'number';
-					break;
+					case 'crdate':
+						$fields['type'] = 'time';
+						break;
+					default:
+						$fields['type'] = 'number';
 				}
 			}
 		}
 		switch ($fields['type']) {
-		case 'date':
-			if ($fV != -1) {
-				$out = strftime('%e-%m-%Y', $fV);
-			}
-			break;
-		case 'time':
-			if ($fV != -1) {
-				if ($splitString == '<br />') {
-					$out = strftime('%H:%M' . $splitString . '%e-%m-%Y', $fV);
-				} else {
-					$out = strftime('%H:%M %e-%m-%Y', $fV);
+			case 'date':
+				if ($fV != -1) {
+					$out = strftime('%e-%m-%Y', $fV);
 				}
-			}
-			break;
-		case 'multiple':
+				break;
+			case 'time':
+				if ($fV != -1) {
+					if ($splitString == '<br />') {
+						$out = strftime('%H:%M' . $splitString . '%e-%m-%Y', $fV);
+					} else {
+						$out = strftime('%H:%M %e-%m-%Y', $fV);
+					}
+				}
+				break;
+			case 'multiple':
 
-		case 'binary':
+			case 'binary':
 
-		case 'relation':
-			$out = $this->makeValueList($fN, $fV, $fields, $table, $splitString);
-			break;
-		case 'boolean':
-			$out = $fV ? 'True' : 'False';
-			break;
-		case 'files':
+			case 'relation':
+				$out = $this->makeValueList($fN, $fV, $fields, $table, $splitString);
+				break;
+			case 'boolean':
+				$out = $fV ? 'True' : 'False';
+				break;
+			case 'files':
 
-		default:
-			$out = htmlspecialchars($fV);
-			break;
+			default:
+				$out = htmlspecialchars($fV);
 		}
 		return $out;
 	}

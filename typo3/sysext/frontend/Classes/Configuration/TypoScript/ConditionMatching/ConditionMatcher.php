@@ -50,41 +50,41 @@ class ConditionMatcher extends \TYPO3\CMS\Core\Configuration\TypoScript\Conditio
 			return $result;
 		} else {
 			switch ($key) {
-			case 'usergroup':
-				$groupList = $this->getGroupList();
-				// '0,-1' is the default usergroups when not logged in!
-				if ($groupList != '0,-1') {
-					$values = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $value, TRUE);
-					foreach ($values as $test) {
-						if ($test == '*' || \TYPO3\CMS\Core\Utility\GeneralUtility::inList($groupList, $test)) {
-							return TRUE;
-						}
-					}
-				}
-				break;
-			case 'treeLevel':
-				$values = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $value, TRUE);
-				$treeLevel = count($this->rootline) - 1;
-				foreach ($values as $test) {
-					if ($test == $treeLevel) {
-						return TRUE;
-					}
-				}
-				break;
-			case 'PIDupinRootline':
-
-			case 'PIDinRootline':
-				$values = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $value, TRUE);
-				if ($key == 'PIDinRootline' || !in_array($this->pageId, $values)) {
-					foreach ($values as $test) {
-						foreach ($this->rootline as $rl_dat) {
-							if ($rl_dat['uid'] == $test) {
+				case 'usergroup':
+					$groupList = $this->getGroupList();
+					// '0,-1' is the default usergroups when not logged in!
+					if ($groupList != '0,-1') {
+						$values = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $value, TRUE);
+						foreach ($values as $test) {
+							if ($test == '*' || \TYPO3\CMS\Core\Utility\GeneralUtility::inList($groupList, $test)) {
 								return TRUE;
 							}
 						}
 					}
-				}
-				break;
+					break;
+				case 'treeLevel':
+					$values = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $value, TRUE);
+					$treeLevel = count($this->rootline) - 1;
+					foreach ($values as $test) {
+						if ($test == $treeLevel) {
+							return TRUE;
+						}
+					}
+					break;
+				case 'PIDupinRootline':
+
+				case 'PIDinRootline':
+					$values = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $value, TRUE);
+					if ($key == 'PIDinRootline' || !in_array($this->pageId, $values)) {
+						foreach ($values as $test) {
+							foreach ($this->rootline as $rl_dat) {
+								if ($rl_dat['uid'] == $test) {
+									return TRUE;
+								}
+							}
+						}
+					}
+					break;
 			}
 		}
 		return FALSE;

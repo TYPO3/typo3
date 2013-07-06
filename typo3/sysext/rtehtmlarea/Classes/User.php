@@ -192,8 +192,7 @@ class User {
 					$openK = $ki;
 					if ($openKeys[$openK]) {
 						$mArray = '';
-						switch ((string) $v['load']) {
-						case 'images_from_folder':
+						if ($v['load'] === 'images_from_folder') {
 							$mArray = array();
 							if ($v['path'] && @is_dir((PATH_site . $v['path']))) {
 								$files = \TYPO3\CMS\Core\Utility\GeneralUtility::getFilesInDir(PATH_site . $v['path'], 'gif,jpg,jpeg,png', 0, '');
@@ -213,7 +212,6 @@ class User {
 									}
 								}
 							}
-							break;
 						}
 						if (is_array($mArray)) {
 							if ($v['merge']) {
@@ -238,24 +236,23 @@ class User {
 								$logo = $v[$k2i . '.']['_icon'] ? $v[$k2i . '.']['_icon'] : '';
 								$onClickEvent = '';
 								switch ((string) $v[($k2i . '.')]['mode']) {
-								case 'wrap':
-									$wrap = explode('|', $v[$k2i . '.']['content']);
-									$onClickEvent = 'wrapHTML(' . $GLOBALS['LANG']->JScharCode($wrap[0]) . ',' . $GLOBALS['LANG']->JScharCode($wrap[1]) . ',false);';
-									break;
-								case 'processor':
-									$script = trim($v[$k2i . '.']['submitToScript']);
-									if (substr($script, 0, 4) != 'http') {
-										$script = $this->siteUrl . $script;
-									}
-									if ($script) {
-										$onClickEvent = 'processSelection(' . $GLOBALS['LANG']->JScharCode($script) . ');';
-									}
-									break;
-								case 'insert':
+									case 'wrap':
+										$wrap = explode('|', $v[$k2i . '.']['content']);
+										$onClickEvent = 'wrapHTML(' . $GLOBALS['LANG']->JScharCode($wrap[0]) . ',' . $GLOBALS['LANG']->JScharCode($wrap[1]) . ',false);';
+										break;
+									case 'processor':
+										$script = trim($v[$k2i . '.']['submitToScript']);
+										if (substr($script, 0, 4) != 'http') {
+											$script = $this->siteUrl . $script;
+										}
+										if ($script) {
+											$onClickEvent = 'processSelection(' . $GLOBALS['LANG']->JScharCode($script) . ');';
+										}
+										break;
+									case 'insert':
 
-								default:
-									$onClickEvent = 'insertHTML(' . $GLOBALS['LANG']->JScharCode($v[($k2i . '.')]['content']) . ');';
-									break;
+									default:
+										$onClickEvent = 'insertHTML(' . $GLOBALS['LANG']->JScharCode($v[($k2i . '.')]['content']) . ');';
 								}
 								$A = array('<a href="#" onClick="' . $onClickEvent . 'return false;">', '</a>');
 								$subcats[$k2i] = '<tr>

@@ -296,33 +296,37 @@ class GridDataService {
 	protected function sortDataArray() {
 		if (is_array($this->dataArray)) {
 			switch ($this->sort) {
-			case 'uid':
+				case 'uid':
 
-			case 'change':
+				case 'change':
 
-			case 'workspace_Tstamp':
+				case 'workspace_Tstamp':
 
-			case 't3ver_oid':
+				case 't3ver_oid':
 
-			case 'liveid':
+				case 'liveid':
 
-			case 'livepid':
+				case 'livepid':
 
-			case 'languageValue':
-				usort($this->dataArray, array($this, 'intSort'));
-				break;
-			case 'label_Workspace':
+				case 'languageValue':
+					usort($this->dataArray, array($this, 'intSort'));
+					break;
 
-			case 'label_Live':
+				case 'label_Workspace':
 
-			case 'label_Stage':
+				case 'label_Live':
 
-			case 'workspace_Title':
+				case 'label_Stage':
 
-			case 'path_Live':
-				// case 'path_Workspace': This is the first sorting attribute
-				usort($this->dataArray, array($this, 'stringSort'));
-				break;
+				case 'workspace_Title':
+
+				case 'path_Live':
+					// case 'path_Workspace': This is the first sorting attribute
+					usort($this->dataArray, array($this, 'stringSort'));
+					break;
+
+				default:
+					// Do nothing
 			}
 		} else {
 			\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog('Try to sort "' . $this->sort . '" in "TYPO3\\CMS\\Workspaces\\Service\\GridDataService::sortDataArray" but $this->dataArray is empty! This might be the Bug #26422 which could not reproduced yet.', 3);
@@ -399,20 +403,20 @@ class GridDataService {
 				if (isset($value['hidden']) && isset($column) && isset($versionArray[$column])) {
 					if ($value['hidden'] == 0) {
 						switch ($column) {
-						case 'workspace_Tstamp':
-							if (stripos($versionArray['workspace_Formated_Tstamp'], $filterText) !== FALSE) {
-								return TRUE;
-							}
-							break;
-						case 'change':
-							if (stripos(strval($versionArray[$column]), str_replace('%', '', $filterText)) !== FALSE) {
-								return TRUE;
-							}
-							break;
-						default:
-							if (stripos(strval($versionArray[$column]), $filterText) !== FALSE) {
-								return TRUE;
-							}
+							case 'workspace_Tstamp':
+								if (stripos($versionArray['workspace_Formated_Tstamp'], $filterText) !== FALSE) {
+									return TRUE;
+								}
+								break;
+							case 'change':
+								if (stripos(strval($versionArray[$column]), str_replace('%', '', $filterText)) !== FALSE) {
+									return TRUE;
+								}
+								break;
+							default:
+								if (stripos(strval($versionArray[$column]), $filterText) !== FALSE) {
+									return TRUE;
+								}
 						}
 					}
 				}
@@ -431,19 +435,19 @@ class GridDataService {
 	 */
 	protected function workspaceState($stateId, $hiddenOnline = FALSE, $hiddenOffline = FALSE) {
 		switch ($stateId) {
-		case -1:
-			$state = 'new';
-			break;
-		case 1:
+			case -1:
+				$state = 'new';
+				break;
+			case 1:
 
-		case 2:
-			$state = 'deleted';
-			break;
-		case 4:
-			$state = 'moved';
-			break;
-		default:
-			$state = 'modified';
+			case 2:
+				$state = 'deleted';
+				break;
+			case 4:
+				$state = 'moved';
+				break;
+			default:
+				$state = 'modified';
 		}
 		if ($hiddenOnline == 0 && $hiddenOffline == 1) {
 			$state = 'hidden';

@@ -216,24 +216,23 @@ class DatabaseIntegrityView {
 			$this->menu = \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncMenu(0, 'SET[function]', $this->MOD_SETTINGS['function'], $this->MOD_MENU['function']);
 		}
 		switch ($this->MOD_SETTINGS['function']) {
-		case 'search':
-			$this->func_search();
-			break;
-		case 'records':
-			$this->func_records();
-			break;
-		case 'relations':
-			$this->func_relations();
-			break;
-		case 'filesearch':
-			$this->func_filesearch();
-			break;
-		case 'refindex':
-			$this->func_refindex();
-			break;
-		default:
-			$this->func_default();
-			break;
+			case 'search':
+				$this->func_search();
+				break;
+			case 'records':
+				$this->func_records();
+				break;
+			case 'relations':
+				$this->func_relations();
+				break;
+			case 'filesearch':
+				$this->func_filesearch();
+				break;
+			case 'refindex':
+				$this->func_refindex();
+				break;
+			default:
+				$this->func_default();
 		}
 		// Setting up the buttons and markers for docheader
 		$docHeaderButtons = $this->getButtons();
@@ -373,15 +372,14 @@ class DatabaseIntegrityView {
 		}
 		$this->content .= $this->doc->section('', $menu2) . $this->doc->spacer(10);
 		switch ($this->MOD_SETTINGS['search']) {
-		case 'query':
-			$this->content .= $fullsearch->queryMaker();
-			break;
-		case 'raw':
+			case 'query':
+				$this->content .= $fullsearch->queryMaker();
+				break;
+			case 'raw':
 
-		default:
-			$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('searchOptions'), $fullsearch->form(), FALSE, TRUE);
-			$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('result'), $fullsearch->search(), FALSE, TRUE);
-			break;
+			default:
+				$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('searchOptions'), $fullsearch->form(), FALSE, TRUE);
+				$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('result'), $fullsearch->search(), FALSE, TRUE);
 		}
 	}
 

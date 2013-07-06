@@ -662,26 +662,26 @@ class ElementBrowser {
 	public function processSessionData($data) {
 		$store = FALSE;
 		switch ((string) $this->mode) {
-		case 'db':
-			if (isset($this->expandPage)) {
-				$data['expandPage'] = $this->expandPage;
-				$store = TRUE;
-			} else {
-				$this->expandPage = $data['expandPage'];
-			}
-			break;
-		case 'file':
+			case 'db':
+				if (isset($this->expandPage)) {
+					$data['expandPage'] = $this->expandPage;
+					$store = TRUE;
+				} else {
+					$this->expandPage = $data['expandPage'];
+				}
+				break;
+			case 'file':
 
-		case 'filedrag':
+			case 'filedrag':
 
-		case 'folder':
-			if (isset($this->expandFolder)) {
-				$data['expandFolder'] = $this->expandFolder;
-				$store = TRUE;
-			} else {
-				$this->expandFolder = $data['expandFolder'];
-			}
-			break;
+			case 'folder':
+				if (isset($this->expandFolder)) {
+					$data['expandFolder'] = $this->expandFolder;
+					$store = TRUE;
+				} else {
+					$this->expandFolder = $data['expandFolder'];
+				}
+				break;
 		}
 		return array($data, $store);
 	}
@@ -769,197 +769,196 @@ class ElementBrowser {
 		$content .= $this->printCurrentUrl($this->curUrlInfo['info']) . '<br />';
 		// Depending on the current action we will create the actual module content for selecting a link:
 		switch ($this->act) {
-		case 'mail':
-			$extUrl = '
+			case 'mail':
+				$extUrl = '
 
-			<!--
-				Enter mail address:
-			-->
-					<form action="" name="lurlform" id="lurlform">
-						<table border="0" cellpadding="2" cellspacing="1" id="typo3-linkMail">
-							<tr>
-								<td style="width: 96px;">' . $GLOBALS['LANG']->getLL('emailAddress', 1) . ':</td>
-								<td><input type="text" name="lemail"' . $this->doc->formWidth(20) . ' value="' . htmlspecialchars(($this->curUrlInfo['act'] == 'mail' ? $this->curUrlInfo['info'] : '')) . '" /> ' . '<input type="submit" value="' . $GLOBALS['LANG']->getLL('setLink', 1) . '" onclick="browse_links_setTarget(\'\');browse_links_setValue(\'mailto:\'+document.lurlform.lemail.value); return link_current();" /></td>
-							</tr>
-						</table>
-					</form>';
-			$content .= $extUrl;
-			break;
-		case 'url':
-			$extUrl = '
-
-			<!--
-				Enter External URL:
-			-->
-					<form action="" name="lurlform" id="lurlform">
-						<table border="0" cellpadding="2" cellspacing="1" id="typo3-linkURL">
-							<tr>
-								<td style="width: 96px;">URL:</td>
-								<td><input type="text" name="lurl"' . $this->doc->formWidth(30) . ' value="' . htmlspecialchars(($this->curUrlInfo['act'] == 'url' ? $this->curUrlInfo['info'] : 'http://')) . '" /> ' . '<input type="submit" value="' . $GLOBALS['LANG']->getLL('setLink', 1) . '" onclick="browse_links_setValue(document.lurlform.lurl.value); return link_current();" /></td>
-							</tr>
-						</table>
-					</form>';
-			$content .= $extUrl;
-			break;
-		case 'file':
-
-		case 'folder':
-			$foldertree = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('rteFolderTree');
-			$foldertree->thisScript = $this->thisScript;
-			$tree = $foldertree->getBrowsableTree();
-			if (!$this->curUrlInfo['value'] || $this->curUrlInfo['act'] != $this->act) {
-				$cmpPath = '';
-			} else {
-				$cmpPath = $this->curUrlInfo['value'];
-				if (!isset($this->expandFolder)) {
-					$this->expandFolder = $cmpPath;
-				}
-			}
-			// Create upload/create folder forms, if a path is given
-			if ($this->expandFolder) {
-				$selectedFolder = FALSE;
-				$fileOrFolderObject = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->retrieveFileOrFolderObject($this->expandFolder);
-
-				if ($fileOrFolderObject instanceof \TYPO3\CMS\Core\Resource\Folder) {
-					// It's a folder
-					$selectedFolder = $fileOrFolderObject;
-				} elseif ($fileOrFolderObject instanceof \TYPO3\CMS\Core\Resource\FileInterface) {
-					// It's a file
-					// @todo: find the parent folder, right now done a bit ugly, because the file does not
-					// support finding the parent folder of a file on purpose
-					$folderIdentifier = dirname($fileOrFolderObject->getIdentifier());
-					$selectedFolder = $fileOrFolderObject->getStorage()->getFolder($folderIdentifier);
-				}
-			}
-			// Or get the user's default upload folder
-			if (!$selectedFolder) {
-				$selectedFolder = $GLOBALS['BE_USER']->getDefaultUploadFolder();
-			}
-			// Build the file upload and folder creation form
-			$uploadForm = '';
-			$createFolder = '';
-			if ($selectedFolder && !$this->isReadOnlyFolder($selectedFolder)) {
-				$uploadForm = ($this->act === 'file') ? $this->uploadForm($selectedFolder) : '';
-				if ($GLOBALS['BE_USER']->isAdmin() || $GLOBALS['BE_USER']->getTSConfigVal('options.createFoldersInEB')) {
-					$createFolder = $this->createFolder($selectedFolder);
-				}
-			}
-			// Insert the upload form on top, if so configured
-			if ($GLOBALS['BE_USER']->getTSConfigVal('options.uploadFieldsInTopOfEB')) {
-				$content .= $uploadForm;
-			}
-
-			// Render the filelist if there is a folder selected
-			if ($selectedFolder) {
-				$files = $this->expandFolder($selectedFolder, $this->P['params']['allowedExtensions']);
-			}
-			$this->doc->JScode .= $this->doc->wrapScriptTags('
-			Tree.ajaxID = "SC_alt_file_navframe::expandCollapse";
-		');
-			$content .= '
-			<!--
-				Wrapper table for folder tree / file/folder list:
-			-->
-					<table border="0" cellpadding="0" cellspacing="0" id="typo3-linkFiles">
-						<tr>
-							<td class="c-wCell" valign="top">' . $this->barheader(($GLOBALS['LANG']->getLL('folderTree') . ':')) . $tree . '</td>
-							<td class="c-wCell" valign="top">' . $files . '</td>
-						</tr>
-					</table>
-					<br />
-					';
-			// Adding create folder + upload forms if applicable
-			if (!$GLOBALS['BE_USER']->getTSConfigVal('options.uploadFieldsInTopOfEB')) {
-				$content .= $uploadForm;
-			}
-			$content .= $createFolder . '<br />';
-			break;
-		case 'spec':
-			if (is_array($this->thisConfig['userLinks.'])) {
-				$subcats = array();
-				$v = $this->thisConfig['userLinks.'];
-				foreach ($v as $k2 => $value) {
-					$k2i = intval($k2);
-					if (substr($k2, -1) == '.' && is_array($v[$k2i . '.'])) {
-						// Title:
-						$title = trim($v[$k2i]);
-						if (!$title) {
-							$title = $v[$k2i . '.']['url'];
-						} else {
-							$title = $GLOBALS['LANG']->sL($title);
-						}
-						// Description:
-						$description = $v[$k2i . '.']['description'] ? $GLOBALS['LANG']->sL($v[($k2i . '.')]['description'], 1) . '<br />' : '';
-						// URL + onclick event:
-						$onClickEvent = '';
-						if (isset($v[$k2i . '.']['target'])) {
-							$onClickEvent .= 'browse_links_setTarget(\'' . $v[($k2i . '.')]['target'] . '\');';
-						}
-						$v[$k2i . '.']['url'] = str_replace('###_URL###', $this->siteURL, $v[$k2i . '.']['url']);
-						if (substr($v[$k2i . '.']['url'], 0, 7) == 'http://' || substr($v[$k2i . '.']['url'], 0, 7) == 'mailto:') {
-							$onClickEvent .= 'cur_href=unescape(\'' . rawurlencode($v[($k2i . '.')]['url']) . '\');link_current();';
-						} else {
-							$onClickEvent .= 'link_spec(unescape(\'' . $this->siteURL . rawurlencode($v[($k2i . '.')]['url']) . '\'));';
-						}
-						// Link:
-						$A = array('<a href="#" onclick="' . htmlspecialchars($onClickEvent) . 'return false;">', '</a>');
-						// Adding link to menu of user defined links:
-						$subcats[$k2i] = '
+				<!--
+					Enter mail address:
+				-->
+						<form action="" name="lurlform" id="lurlform">
+							<table border="0" cellpadding="2" cellspacing="1" id="typo3-linkMail">
 								<tr>
-									<td class="bgColor4">' . $A[0] . '<strong>' . htmlspecialchars($title) . ($this->curUrlInfo['info'] == $v[$k2i . '.']['url'] ? '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/blinkarrow_right.gif', 'width="5" height="9"') . ' class="c-blinkArrowR" alt="" />' : '') . '</strong><br />' . $description . $A[1] . '</td>
-								</tr>';
+									<td style="width: 96px;">' . $GLOBALS['LANG']->getLL('emailAddress', 1) . ':</td>
+									<td><input type="text" name="lemail"' . $this->doc->formWidth(20) . ' value="' . htmlspecialchars(($this->curUrlInfo['act'] == 'mail' ? $this->curUrlInfo['info'] : '')) . '" /> ' . '<input type="submit" value="' . $GLOBALS['LANG']->getLL('setLink', 1) . '" onclick="browse_links_setTarget(\'\');browse_links_setValue(\'mailto:\'+document.lurlform.lemail.value); return link_current();" /></td>
+								</tr>
+							</table>
+						</form>';
+				$content .= $extUrl;
+				break;
+			case 'url':
+				$extUrl = '
+
+				<!--
+					Enter External URL:
+				-->
+						<form action="" name="lurlform" id="lurlform">
+							<table border="0" cellpadding="2" cellspacing="1" id="typo3-linkURL">
+								<tr>
+									<td style="width: 96px;">URL:</td>
+									<td><input type="text" name="lurl"' . $this->doc->formWidth(30) . ' value="' . htmlspecialchars(($this->curUrlInfo['act'] == 'url' ? $this->curUrlInfo['info'] : 'http://')) . '" /> ' . '<input type="submit" value="' . $GLOBALS['LANG']->getLL('setLink', 1) . '" onclick="browse_links_setValue(document.lurlform.lurl.value); return link_current();" /></td>
+								</tr>
+							</table>
+						</form>';
+				$content .= $extUrl;
+				break;
+			case 'file':
+
+			case 'folder':
+				$foldertree = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('rteFolderTree');
+				$foldertree->thisScript = $this->thisScript;
+				$tree = $foldertree->getBrowsableTree();
+				if (!$this->curUrlInfo['value'] || $this->curUrlInfo['act'] != $this->act) {
+					$cmpPath = '';
+				} else {
+					$cmpPath = $this->curUrlInfo['value'];
+					if (!isset($this->expandFolder)) {
+						$this->expandFolder = $cmpPath;
 					}
 				}
-				// Sort by keys:
-				ksort($subcats);
-				// Add menu to content:
+				// Create upload/create folder forms, if a path is given
+				if ($this->expandFolder) {
+					$selectedFolder = FALSE;
+					$fileOrFolderObject = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->retrieveFileOrFolderObject($this->expandFolder);
+
+					if ($fileOrFolderObject instanceof \TYPO3\CMS\Core\Resource\Folder) {
+						// It's a folder
+						$selectedFolder = $fileOrFolderObject;
+					} elseif ($fileOrFolderObject instanceof \TYPO3\CMS\Core\Resource\FileInterface) {
+						// It's a file
+						// @todo: find the parent folder, right now done a bit ugly, because the file does not
+						// support finding the parent folder of a file on purpose
+						$folderIdentifier = dirname($fileOrFolderObject->getIdentifier());
+						$selectedFolder = $fileOrFolderObject->getStorage()->getFolder($folderIdentifier);
+					}
+				}
+				// Or get the user's default upload folder
+				if (!$selectedFolder) {
+					$selectedFolder = $GLOBALS['BE_USER']->getDefaultUploadFolder();
+				}
+				// Build the file upload and folder creation form
+				$uploadForm = '';
+				$createFolder = '';
+				if ($selectedFolder && !$this->isReadOnlyFolder($selectedFolder)) {
+					$uploadForm = ($this->act === 'file') ? $this->uploadForm($selectedFolder) : '';
+					if ($GLOBALS['BE_USER']->isAdmin() || $GLOBALS['BE_USER']->getTSConfigVal('options.createFoldersInEB')) {
+						$createFolder = $this->createFolder($selectedFolder);
+					}
+				}
+				// Insert the upload form on top, if so configured
+				if ($GLOBALS['BE_USER']->getTSConfigVal('options.uploadFieldsInTopOfEB')) {
+					$content .= $uploadForm;
+				}
+
+				// Render the filelist if there is a folder selected
+				if ($selectedFolder) {
+					$files = $this->expandFolder($selectedFolder, $this->P['params']['allowedExtensions']);
+				}
+				$this->doc->JScode .= $this->doc->wrapScriptTags('
+				Tree.ajaxID = "SC_alt_file_navframe::expandCollapse";
+			');
+				$content .= '
+				<!--
+					Wrapper table for folder tree / file/folder list:
+				-->
+						<table border="0" cellpadding="0" cellspacing="0" id="typo3-linkFiles">
+							<tr>
+								<td class="c-wCell" valign="top">' . $this->barheader(($GLOBALS['LANG']->getLL('folderTree') . ':')) . $tree . '</td>
+								<td class="c-wCell" valign="top">' . $files . '</td>
+							</tr>
+						</table>
+						<br />
+						';
+				// Adding create folder + upload forms if applicable
+				if (!$GLOBALS['BE_USER']->getTSConfigVal('options.uploadFieldsInTopOfEB')) {
+					$content .= $uploadForm;
+				}
+				$content .= $createFolder . '<br />';
+				break;
+			case 'spec':
+				if (is_array($this->thisConfig['userLinks.'])) {
+					$subcats = array();
+					$v = $this->thisConfig['userLinks.'];
+					foreach ($v as $k2 => $value) {
+						$k2i = intval($k2);
+						if (substr($k2, -1) == '.' && is_array($v[$k2i . '.'])) {
+							// Title:
+							$title = trim($v[$k2i]);
+							if (!$title) {
+								$title = $v[$k2i . '.']['url'];
+							} else {
+								$title = $GLOBALS['LANG']->sL($title);
+							}
+							// Description:
+							$description = $v[$k2i . '.']['description'] ? $GLOBALS['LANG']->sL($v[($k2i . '.')]['description'], 1) . '<br />' : '';
+							// URL + onclick event:
+							$onClickEvent = '';
+							if (isset($v[$k2i . '.']['target'])) {
+								$onClickEvent .= 'browse_links_setTarget(\'' . $v[($k2i . '.')]['target'] . '\');';
+							}
+							$v[$k2i . '.']['url'] = str_replace('###_URL###', $this->siteURL, $v[$k2i . '.']['url']);
+							if (substr($v[$k2i . '.']['url'], 0, 7) == 'http://' || substr($v[$k2i . '.']['url'], 0, 7) == 'mailto:') {
+								$onClickEvent .= 'cur_href=unescape(\'' . rawurlencode($v[($k2i . '.')]['url']) . '\');link_current();';
+							} else {
+								$onClickEvent .= 'link_spec(unescape(\'' . $this->siteURL . rawurlencode($v[($k2i . '.')]['url']) . '\'));';
+							}
+							// Link:
+							$A = array('<a href="#" onclick="' . htmlspecialchars($onClickEvent) . 'return false;">', '</a>');
+							// Adding link to menu of user defined links:
+							$subcats[$k2i] = '
+									<tr>
+										<td class="bgColor4">' . $A[0] . '<strong>' . htmlspecialchars($title) . ($this->curUrlInfo['info'] == $v[$k2i . '.']['url'] ? '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/blinkarrow_right.gif', 'width="5" height="9"') . ' class="c-blinkArrowR" alt="" />' : '') . '</strong><br />' . $description . $A[1] . '</td>
+									</tr>';
+						}
+					}
+					// Sort by keys:
+					ksort($subcats);
+					// Add menu to content:
+					$content .= '
+
+				<!--
+					Special userdefined menu:
+				-->
+							<table border="0" cellpadding="1" cellspacing="1" id="typo3-linkSpecial">
+								<tr>
+									<td class="bgColor5" class="c-wCell" valign="top"><strong>' . $GLOBALS['LANG']->getLL('special', 1) . '</strong></td>
+								</tr>
+								' . implode('', $subcats) . '
+							</table>
+							';
+				}
+				break;
+			case 'page':
+				$pagetree = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('rtePageTree');
+				$pagetree->thisScript = $this->thisScript;
+				$pagetree->ext_showPageId = $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.showPageIdWithTitle');
+				$pagetree->ext_showNavTitle = $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.showNavTitle');
+				$pagetree->addField('nav_title');
+				$tree = $pagetree->getBrowsableTree();
+				$cElements = $this->expandPage();
+				// Outputting Temporary DB mount notice:
+				if (intval($GLOBALS['BE_USER']->getSessionData('pageTree_temporaryMountPoint'))) {
+					$link = '<a href="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array('setTempDBmount' => 0))) . '">' . $GLOBALS['LANG']->sl('LLL:EXT:lang/locallang_core.xlf:labels.temporaryDBmount', 1) . '</a>';
+					$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $link, '', \TYPO3\CMS\Core\Messaging\FlashMessage::INFO);
+					$dbmount = $flashMessage->render();
+				}
 				$content .= '
 
-			<!--
-				Special userdefined menu:
-			-->
-						<table border="0" cellpadding="1" cellspacing="1" id="typo3-linkSpecial">
+				<!--
+					Wrapper table for page tree / record list:
+				-->
+						<table border="0" cellpadding="0" cellspacing="0" id="typo3-linkPages">
 							<tr>
-								<td class="bgColor5" class="c-wCell" valign="top"><strong>' . $GLOBALS['LANG']->getLL('special', 1) . '</strong></td>
+								<td class="c-wCell" valign="top">' . $this->barheader(($GLOBALS['LANG']->getLL('pageTree') . ':')) . $dbmount . $tree . '</td>
+								<td class="c-wCell" valign="top">' . $cElements . '</td>
 							</tr>
-							' . implode('', $subcats) . '
 						</table>
 						';
-			}
-			break;
-		case 'page':
-			$pagetree = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('rtePageTree');
-			$pagetree->thisScript = $this->thisScript;
-			$pagetree->ext_showPageId = $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.showPageIdWithTitle');
-			$pagetree->ext_showNavTitle = $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.showNavTitle');
-			$pagetree->addField('nav_title');
-			$tree = $pagetree->getBrowsableTree();
-			$cElements = $this->expandPage();
-			// Outputting Temporary DB mount notice:
-			if (intval($GLOBALS['BE_USER']->getSessionData('pageTree_temporaryMountPoint'))) {
-				$link = '<a href="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array('setTempDBmount' => 0))) . '">' . $GLOBALS['LANG']->sl('LLL:EXT:lang/locallang_core.xlf:labels.temporaryDBmount', 1) . '</a>';
-				$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $link, '', \TYPO3\CMS\Core\Messaging\FlashMessage::INFO);
-				$dbmount = $flashMessage->render();
-			}
-			$content .= '
-
-			<!--
-				Wrapper table for page tree / record list:
-			-->
-					<table border="0" cellpadding="0" cellspacing="0" id="typo3-linkPages">
-						<tr>
-							<td class="c-wCell" valign="top">' . $this->barheader(($GLOBALS['LANG']->getLL('pageTree') . ':')) . $dbmount . $tree . '</td>
-							<td class="c-wCell" valign="top">' . $cElements . '</td>
-						</tr>
-					</table>
-					';
-			break;
-		default:
-			// Call hook
-			foreach ($this->hookObjects as $hookObject) {
-				$content .= $hookObject->getTab($this->act);
-			}
-			break;
+				break;
+			default:
+				// Call hook
+				foreach ($this->hookObjects as $hookObject) {
+					$content .= $hookObject->getTab($this->act);
+				}
 		}
 		if (in_array('params', $allowedFields, TRUE)) {
 			$content .= '

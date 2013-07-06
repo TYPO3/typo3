@@ -592,14 +592,14 @@ class LocalDriver extends \TYPO3\CMS\Core\Resource\Driver\AbstractDriver {
 			throw new \InvalidArgumentException('Hash algorithm "' . $hashAlgorithm . '" is not supported.', 1304964032);
 		}
 		switch ($hashAlgorithm) {
-		case 'sha1':
-			$hash = sha1_file($this->getAbsolutePath($file));
-			break;
-		case 'md5':
-			$hash = md5_file($this->getAbsolutePath($file));
-			break;
-		default:
-			throw new \RuntimeException('Hash algorithm ' . $hashAlgorithm . ' is not implemented.', 1329644451);
+			case 'sha1':
+				$hash = sha1_file($this->getAbsolutePath($file));
+				break;
+			case 'md5':
+				$hash = md5_file($this->getAbsolutePath($file));
+				break;
+			default:
+				throw new \RuntimeException('Hash algorithm ' . $hashAlgorithm . ' is not implemented.', 1329644451);
 		}
 		return $hash;
 	}

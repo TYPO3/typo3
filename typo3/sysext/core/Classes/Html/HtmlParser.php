@@ -1019,55 +1019,55 @@ class HtmlParser {
 				$somethingDone = 0;
 				$prefix = isset($alternatives[strtoupper($firstTagName)]) ? $alternatives[strtoupper($firstTagName)] : $main_prefix;
 				switch (strtolower($firstTagName)) {
-				case 'td':
+					case 'td':
 
-				case 'body':
+					case 'body':
 
-				case 'table':
-					$src = $params[0]['background'];
-					if ($src) {
-						$params[0]['background'] = $this->prefixRelPath($prefix, $params[0]['background'], $suffix);
-						$somethingDone = 1;
-					}
-					break;
-				case 'img':
-
-				case 'input':
-
-				case 'script':
-
-				case 'embed':
-					$src = $params[0]['src'];
-					if ($src) {
-						$params[0]['src'] = $this->prefixRelPath($prefix, $params[0]['src'], $suffix);
-						$somethingDone = 1;
-					}
-					break;
-				case 'link':
-
-				case 'a':
-					$src = $params[0]['href'];
-					if ($src) {
-						$params[0]['href'] = $this->prefixRelPath($prefix, $params[0]['href'], $suffix);
-						$somethingDone = 1;
-					}
-					break;
-				case 'form':
-					$src = $params[0]['action'];
-					if ($src) {
-						$params[0]['action'] = $this->prefixRelPath($prefix, $params[0]['action'], $suffix);
-						$somethingDone = 1;
-					}
-					break;
-				case 'param':
-					$test = $params[0]['name'];
-					if ($test && $test === 'movie') {
-						if ($params[0]['value']) {
-							$params[0]['value'] = $this->prefixRelPath($prefix, $params[0]['value'], $suffix);
+					case 'table':
+						$src = $params[0]['background'];
+						if ($src) {
+							$params[0]['background'] = $this->prefixRelPath($prefix, $params[0]['background'], $suffix);
 							$somethingDone = 1;
 						}
-					}
-					break;
+						break;
+					case 'img':
+
+					case 'input':
+
+					case 'script':
+
+					case 'embed':
+						$src = $params[0]['src'];
+						if ($src) {
+							$params[0]['src'] = $this->prefixRelPath($prefix, $params[0]['src'], $suffix);
+							$somethingDone = 1;
+						}
+						break;
+					case 'link':
+
+					case 'a':
+						$src = $params[0]['href'];
+						if ($src) {
+							$params[0]['href'] = $this->prefixRelPath($prefix, $params[0]['href'], $suffix);
+							$somethingDone = 1;
+						}
+						break;
+					case 'form':
+						$src = $params[0]['action'];
+						if ($src) {
+							$params[0]['action'] = $this->prefixRelPath($prefix, $params[0]['action'], $suffix);
+							$somethingDone = 1;
+						}
+						break;
+					case 'param':
+						$test = $params[0]['name'];
+						if ($test && $test === 'movie') {
+							if ($params[0]['value']) {
+								$params[0]['value'] = $this->prefixRelPath($prefix, $params[0]['value'], $suffix);
+								$somethingDone = 1;
+							}
+						}
+						break;
 				}
 				if ($somethingDone) {
 					$tagParts = preg_split('/\\s+/s', $v, 2);

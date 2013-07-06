@@ -137,40 +137,36 @@ This will show you missing files in the TYPO3 system and only report back if err
 			$this->cli_help();
 			die;
 		}
-		// Analysis type:
-		switch ((string) $analysisType) {
-		default:
-			if (is_array($this->cleanerModules[$analysisType])) {
-				$cleanerMode = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($this->cleanerModules[$analysisType][0]);
-				$cleanerMode->cli_validateArgs();
-				// Run it...
-				if ($this->cli_isArg('-r')) {
-					if (!$cleanerMode->checkRefIndex || $this->cli_referenceIndexCheck()) {
-						$res = $cleanerMode->main();
-						$this->cli_printInfo($analysisType, $res);
-						// Autofix...
-						if ($this->cli_isArg('--AUTOFIX')) {
-							if ($this->cli_isArg('--YES') || $this->cli_keyboardInput_yes('
+
+		if (is_array($this->cleanerModules[$analysisType])) {
+			$cleanerMode = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($this->cleanerModules[$analysisType][0]);
+			$cleanerMode->cli_validateArgs();
+			// Run it...
+			if ($this->cli_isArg('-r')) {
+				if (!$cleanerMode->checkRefIndex || $this->cli_referenceIndexCheck()) {
+					$res = $cleanerMode->main();
+					$this->cli_printInfo($analysisType, $res);
+					// Autofix...
+					if ($this->cli_isArg('--AUTOFIX')) {
+						if ($this->cli_isArg('--YES') || $this->cli_keyboardInput_yes('
 
 NOW Running --AUTOFIX on result. OK?' . ($this->cli_isArg('--dryrun') ? ' (--dryrun simulation)' : ''))) {
-								$cleanerMode->main_autofix($res);
-							} else {
-								$this->cli_echo('ABORTING AutoFix...
+							$cleanerMode->main_autofix($res);
+						} else {
+							$this->cli_echo('ABORTING AutoFix...
 ', 1);
-							}
 						}
 					}
-				} else {
-					// Help only...
-					$cleanerMode->cli_help();
-					die;
 				}
 			} else {
-				$this->cli_echo('ERROR: Analysis Type \'' . $analysisType . '\' is unknown.
-', 1);
+				// Help only...
+				$cleanerMode->cli_help();
 				die;
 			}
-			break;
+		} else {
+			$this->cli_echo('ERROR: Analysis Type \'' . $analysisType . '\' is unknown.
+', 1);
+			die;
 		}
 	}
 
@@ -189,24 +185,24 @@ NOW Running --AUTOFIX on result. OK?' . ($this->cli_isArg('--dryrun') ? ' (--dry
 			die;
 		}
 		switch ($refIndexMode) {
-		case 'check':
+			case 'check':
 
-		case 'update':
-			$refIndexObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\ReferenceIndex');
-			list($headerContent, $bodyContent, $errorCount) = $refIndexObj->updateIndex($refIndexMode == 'check', $this->cli_echo());
-			if ($errorCount && $refIndexMode == 'check') {
-				$ok = FALSE;
-				$this->cli_echo('ERROR: Reference Index Check failed! (run with \'--refindex update\' to fix)
+			case 'update':
+				$refIndexObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\ReferenceIndex');
+				list($headerContent, $bodyContent, $errorCount) = $refIndexObj->updateIndex($refIndexMode == 'check', $this->cli_echo());
+				if ($errorCount && $refIndexMode == 'check') {
+					$ok = FALSE;
+					$this->cli_echo('ERROR: Reference Index Check failed! (run with \'--refindex update\' to fix)
 ', 1);
-			} else {
-				$ok = TRUE;
-			}
-			break;
-		case 'ignore':
-			$this->cli_echo('Reference Index Check: Bypassing reference index check...
+				} else {
+					$ok = TRUE;
+				}
+				break;
+			case 'ignore':
+				$this->cli_echo('Reference Index Check: Bypassing reference index check...
 ');
-			$ok = TRUE;
-			break;
+				$ok = TRUE;
+				break;
 		}
 		return $ok;
 	}

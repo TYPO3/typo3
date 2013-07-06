@@ -135,28 +135,28 @@ class PageGenerator {
 			$GLOBALS['TSFE']->xhtmlDoctype = $GLOBALS['TSFE']->config['config']['xhtmlDoctype'];
 			// Checking XHTML-docytpe
 			switch ((string) $GLOBALS['TSFE']->config['config']['xhtmlDoctype']) {
-			case 'xhtml_trans':
+				case 'xhtml_trans':
 
-			case 'xhtml_strict':
+				case 'xhtml_strict':
 
-			case 'xhtml_frames':
-				$GLOBALS['TSFE']->xhtmlVersion = 100;
-				break;
-			case 'xhtml_basic':
-				$GLOBALS['TSFE']->xhtmlVersion = 105;
-				break;
-			case 'xhtml_11':
+				case 'xhtml_frames':
+					$GLOBALS['TSFE']->xhtmlVersion = 100;
+					break;
+				case 'xhtml_basic':
+					$GLOBALS['TSFE']->xhtmlVersion = 105;
+					break;
+				case 'xhtml_11':
 
-			case 'xhtml+rdfa_10':
-				$GLOBALS['TSFE']->xhtmlVersion = 110;
-				break;
-			case 'xhtml_2':
-				$GLOBALS['TSFE']->xhtmlVersion = 200;
-				break;
-			default:
-				$GLOBALS['TSFE']->getPageRenderer()->setRenderXhtml(FALSE);
-				$GLOBALS['TSFE']->xhtmlDoctype = '';
-				$GLOBALS['TSFE']->xhtmlVersion = 0;
+				case 'xhtml+rdfa_10':
+					$GLOBALS['TSFE']->xhtmlVersion = 110;
+					break;
+				case 'xhtml_2':
+					$GLOBALS['TSFE']->xhtmlVersion = 200;
+					break;
+				default:
+					$GLOBALS['TSFE']->getPageRenderer()->setRenderXhtml(FALSE);
+					$GLOBALS['TSFE']->xhtmlDoctype = '';
+					$GLOBALS['TSFE']->xhtmlVersion = 0;
 			}
 		} else {
 			$GLOBALS['TSFE']->getPageRenderer()->setRenderXhtml(FALSE);
@@ -283,75 +283,75 @@ class PageGenerator {
 		$xmlDocument = TRUE;
 		// Part 1: XML prologue
 		switch ((string) $GLOBALS['TSFE']->config['config']['xmlprologue']) {
-		case 'none':
-			$xmlDocument = FALSE;
-			$GLOBALS['TSFE']->config['config']['xhtml_cleaning'] = 'none';
-			break;
-		case 'xml_10':
-			$docTypeParts[] = '<?xml version="1.0" encoding="' . $theCharset . '"?>';
-			break;
-		case 'xml_11':
-			$docTypeParts[] = '<?xml version="1.1" encoding="' . $theCharset . '"?>';
-			break;
-		case '':
-			if ($GLOBALS['TSFE']->xhtmlVersion) {
+			case 'none':
+				$xmlDocument = FALSE;
+				$GLOBALS['TSFE']->config['config']['xhtml_cleaning'] = 'none';
+				break;
+			case 'xml_10':
 				$docTypeParts[] = '<?xml version="1.0" encoding="' . $theCharset . '"?>';
-			}
-			break;
-		default:
-			$docTypeParts[] = $GLOBALS['TSFE']->config['config']['xmlprologue'];
+				break;
+			case 'xml_11':
+				$docTypeParts[] = '<?xml version="1.1" encoding="' . $theCharset . '"?>';
+				break;
+			case '':
+				if ($GLOBALS['TSFE']->xhtmlVersion) {
+					$docTypeParts[] = '<?xml version="1.0" encoding="' . $theCharset . '"?>';
+				}
+				break;
+			default:
+				$docTypeParts[] = $GLOBALS['TSFE']->config['config']['xmlprologue'];
 		}
 		// Part 2: DTD
 		$doctype = $GLOBALS['TSFE']->config['config']['doctype'];
 		if ($doctype) {
 			switch ($doctype) {
-			case 'xhtml_trans':
-				$docTypeParts[] = '<!DOCTYPE html
-     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">';
-				break;
-			case 'xhtml_strict':
-				$docTypeParts[] = '<!DOCTYPE html
-     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">';
-				break;
-			case 'xhtml_frames':
-				$docTypeParts[] = '<!DOCTYPE html
-     PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN"
-     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">';
-				break;
-			case 'xhtml_basic':
-				$docTypeParts[] = '<!DOCTYPE html
+				case 'xhtml_trans':
+					$docTypeParts[] = '<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">';
+					break;
+				case 'xhtml_strict':
+					$docTypeParts[] = '<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">';
+					break;
+				case 'xhtml_frames':
+					$docTypeParts[] = '<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">';
+					break;
+				case 'xhtml_basic':
+					$docTypeParts[] = '<!DOCTYPE html
     PUBLIC "-//W3C//DTD XHTML Basic 1.0//EN"
     "http://www.w3.org/TR/xhtml-basic/xhtml-basic10.dtd">';
-				break;
-			case 'xhtml_11':
-				$docTypeParts[] = '<!DOCTYPE html
-     PUBLIC "-//W3C//DTD XHTML 1.1//EN"
-     "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">';
-				break;
-			case 'xhtml_2':
-				$docTypeParts[] = '<!DOCTYPE html
-	PUBLIC "-//W3C//DTD XHTML 2.0//EN"
-	"http://www.w3.org/TR/xhtml2/DTD/xhtml2.dtd">';
-				break;
-			case 'xhtml+rdfa_10':
-				$docTypeParts[] = '<!DOCTYPE html
-	PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN"
-	"http://www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd">';
-				break;
-			case 'html5':
-				$docTypeParts[] = '<!DOCTYPE html>';
-				if ($xmlDocument) {
-					$pageRenderer->setMetaCharsetTag('<meta charset="|" />');
-				} else {
-					$pageRenderer->setMetaCharsetTag('<meta charset="|">');
-				}
-				break;
-			case 'none':
-				break;
-			default:
-				$docTypeParts[] = $doctype;
+					break;
+				case 'xhtml_11':
+					$docTypeParts[] = '<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">';
+					break;
+				case 'xhtml_2':
+					$docTypeParts[] = '<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 2.0//EN"
+    "http://www.w3.org/TR/xhtml2/DTD/xhtml2.dtd">';
+					break;
+				case 'xhtml+rdfa_10':
+					$docTypeParts[] = '<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN"
+    "http://www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd">';
+					break;
+				case 'html5':
+					$docTypeParts[] = '<!DOCTYPE html>';
+					if ($xmlDocument) {
+						$pageRenderer->setMetaCharsetTag('<meta charset="|" />');
+					} else {
+						$pageRenderer->setMetaCharsetTag('<meta charset="|">');
+					}
+					break;
+				case 'none':
+					break;
+				default:
+					$docTypeParts[] = $doctype;
 			}
 		} else {
 			$docTypeParts[] = '<!DOCTYPE html>';
@@ -962,12 +962,12 @@ class PageGenerator {
 		// Create filename / tags:
 		$script = '';
 		switch ($ext) {
-		case 'js':
-			$script = 'typo3temp/javascript_' . substr(md5($str), 0, 10) . '.js';
-			break;
-		case 'css':
-			$script = 'typo3temp/stylesheet_' . substr(md5($str), 0, 10) . '.css';
-			break;
+			case 'js':
+				$script = 'typo3temp/javascript_' . substr(md5($str), 0, 10) . '.js';
+				break;
+			case 'css':
+				$script = 'typo3temp/stylesheet_' . substr(md5($str), 0, 10) . '.css';
+				break;
 		}
 		// Write file:
 		if ($script) {
