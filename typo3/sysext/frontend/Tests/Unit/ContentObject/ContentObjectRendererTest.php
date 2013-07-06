@@ -1853,6 +1853,139 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 		$this->assertEquals($expectedResult, $cleanedResult);
 	}
+
+	/**
+	 * @return array
+	 */
+	public function getImageTagTemplateFallsBackToDefaultTemplateIfNoTemplateIsFoundDataProvider() {
+		return array(
+			array( null, null),
+			array( '', null),
+			array( '', array()),
+			array( 'fooo', array('foo'=>'bar'))
+		);
+	}
+
+	/**
+	 * Make sure that the rendering falls back to the classic <img style if nothing else is found
+	 *
+	 * @test
+	 * @dataProvider getImageTagTemplateFallsBackToDefaultTemplateIfNoTemplateIsFoundDataProvider
+	 * @param string $key
+	 * @param array $configuration
+	 */
+	public function getImageTagTemplateFallsBackToDefaultTemplateIfNoTemplateIsFound($key, $configuration) {
+		$defaultImgTagTemplate = '<img src="###SRC###" width="###WIDTH###" height="###HEIGHT###" ###PARAMS### ###ALTPARAMS### ###BORDER### />';
+		$result = $this->cObj->getImageTagTemplate($key, $configuration);
+		$this->assertEquals($result, $defaultImgTagTemplate);
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getImageTagTemplateReturnTemplateElementIdentifiedByKeyDataProvider() {
+		return array(
+			array(
+				'foo',
+				array(
+					'layout.' => array(
+						'foo.' => array(
+							'element' => '<img src="###SRC###" srcset="###SOURCES###" ###PARAMS### ###ALTPARAMS### ###FOOBAR###/>'
+						)
+					)
+				),
+				'<img src="###SRC###" srcset="###SOURCES###" ###PARAMS### ###ALTPARAMS### ###FOOBAR###/>'
+			)
+
+		);
+	}
+
+	/**
+	 * Assure if a layoutKey and layout is given the selected layout is returned
+	 *
+	 * @test
+	 * @dataProvider getImageTagTemplateReturnTemplateElementIdentifiedByKeyDataProvider
+	 * @param string $key
+	 * @param array $configuration
+	 * @param string $expectation
+	 */
+	public function getImageTagTemplateReturnTemplateElementIdentifiedByKey($key, $configuration, $expectation){
+		$result = $this->cObj->getImageTagTemplate($key, $configuration);
+		$this->assertEquals($result, $expectation);
+	}
+
+	/**
+ 	 * @return array
+	 */
+	public function getImageSourceCollectionReturnsEmptyStringIfNoSourcesAreDefinedDataProvider() {
+		return array(
+			array(null, null, null),
+			array('foo', null, null),
+			array('foo', array('sourceCollection.' => 1), 'bar')
+		);
+	}
+
+	/**
+	 * Make sure the source collection is empty if no valid configuration or source collection is defined
+	 *
+	 * @test
+	 * @dataProvider getImageSourceCollectionReturnsEmptyStringIfNoSourcesAreDefinedDataProvider
+	 * @param string $layoutKey
+	 * @param array $configuration
+	 * @param string $file
+	 */
+	public function getImageSourceCollectionReturnsEmptyStringIfNoSourcesAreDefined($layoutKey, $configuration, $file) {
+		$result = $this->cObj->getImageSourceCollection($layoutKey, $configuration, $file);
+		$this->assertSame($result, '');
+	}
+
+	/**
+	 * Make sure the generation of subimages calls the generation of the subimages and uses the layout -> source template
+	 *
+	 * @test
+	 */
+	public function getImageSourceCollectionRendersDefinedSources() {
+
+		$this->lcObj = $this->getAccessibleMock('\\TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer', array('stdWrap','getImgResource'));
+		$this->lcObj->start(array(), 'tt_content');
+
+		$layoutKey = 'test';
+
+		$configuration = array(
+			'layoutKey' => 'test',
+			'layout.' => array (
+				'test.' => array(
+					'element' => '<img ###SRC### ###SRCCOLLECTION### />',
+					'source' => '---###SRC###---'
+				)
+			),
+			'sourceCollection.' => array(
+				'1.' => array(
+					'width' => '200'
+				)
+			)
+		);
+
+		$file = 'testImageName';
+
+		// ayoid calling of stdWrap
+		$this->lcObj
+			->expects($this->any())
+			->method('stdWrap')
+			->will($this->returnArgument(0));
+
+		// avoid calling of imgResource
+		$this->lcObj
+			->expects($this->exactly(1))
+			->method('getImgResource')
+			->with($this->equalTo('testImageName'))
+			->will($this->returnValue(array(100,100,null,'bar')));
+
+		$result = $this->lcObj->getImageSourceCollection($layoutKey, $configuration, $file);
+
+		$this->assertEquals('---bar---', $result);
+	}
+
 }
 
 ?>
