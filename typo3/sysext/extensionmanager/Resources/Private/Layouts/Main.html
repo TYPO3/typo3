@@ -1,12 +1,13 @@
 {namespace em=TYPO3\CMS\Extensionmanager\ViewHelpers}
-<em:be.container pageTitle="Extension Manager" enableJumpToUrl="true" enableClickMenu="false" loadPrototype="false" loadScriptaculous="false" loadExtJs="false" loadExtJsTheme="true"
-	triggers="{triggers}"
-	addCssFiles="{
+
+<f:be.container pageTitle="Extension Manager" enableJumpToUrl="true" enableClickMenu="false" loadPrototype="false" loadScriptaculous="false" loadExtJs="false" loadExtJsTheme="true"
+
+	includeCssFiles="{
 		0:'{f:uri.resource(path:\'Css/main.css\')}',
 		1:'{f:uri.resource(path:\'Contrib/LoadMask/jquery.loadmask.css\')}',
 		2:'{f:uri.resource(path:\'Css/jquery.clearable.css\')}'
 	}"
-	addJsFiles="{
+	includeJsFiles="{
 		0:'{f:uri.resource(path:\'JavaScript/jquery-1.8.2.min.js\')}',
 		1:'{f:uri.resource(path:\'JavaScript/jquery.dataTables-1.9.4.min.js\')}',
 		2:'{f:uri.resource(path:\'JavaScript/jquery-ui-1.8.17.custom.min.js\')}',
@@ -20,6 +21,7 @@
 		9:'{f:uri.resource(path:\'JavaScript/upload.js\')}'
 		}">
 
+	<em:be.trigger triggers="{triggers}" />
 	<div id="typo3-docheader">
 		<div class="typo3-docheader-functions">
 			<f:be.menus.actionMenu>
@@ -40,4 +42,4 @@
 			<f:render section="Content" />
 		</div>
 	</div>
-</em:be.container>
+</f:be.container>
