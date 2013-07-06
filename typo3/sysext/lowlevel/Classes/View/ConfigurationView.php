@@ -140,7 +140,11 @@ class ConfigurationView {
 	 */
 	public function main() {
 		$arrayBrowser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Lowlevel\\Utility\\ArrayBrowser');
+		$label = $this->MOD_MENU['function'][$this->MOD_SETTINGS['function']];
+
 		$this->content = $this->doc->header($GLOBALS['LANG']->getLL('configuration', TRUE));
+		$this->content .= '<h2>' . $label . '</h2>';
+
 		$this->content .= '<div id="lowlevel-config">
 						<label for="search_field">' . $GLOBALS['LANG']->getLL('enterSearchPhrase', TRUE) . '</label>
 						<input type="text" id="search_field" name="search_field" value="' . htmlspecialchars($search_field) . '"' . $GLOBALS['TBE_TEMPLATE']->formWidth(20) . ' />
@@ -228,7 +232,6 @@ class ConfigurationView {
 			$theVar['SYS']['encryptionKey'] = '***** (length: ' . strlen($GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']) . ' characters)';
 		}
 		$tree = $arrayBrowser->tree($theVar, '', '');
-		$label = $this->MOD_MENU['function'][$this->MOD_SETTINGS['function']];
 		$this->content .= $this->doc->sectionEnd();
 		// Variable name:
 		if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('varname')) {
@@ -283,15 +286,8 @@ class ConfigurationView {
 				$this->content .= $GLOBALS['LANG']->getLL('copyPaste', TRUE) . LF . '</div>';
 			}
 		}
-		$this->content .= '<br /><table border="0" cellpadding="0" cellspacing="0" class="t3-tree t3-tree-config">';
-		$this->content .= '<tr>
-					<th class="t3-row-header t3-tree-config-header">' . $label . '</th>
-				</tr>
-				<tr>
-					<td>' . $tree . '</td>
-				</tr>
-			</table>
-		';
+		$this->content .= '<div class="nowrap">' . $tree . '</div>';
+
 		// Setting up the buttons and markers for docheader
 		$docHeaderButtons = $this->getButtons();
 		$markers = array(
