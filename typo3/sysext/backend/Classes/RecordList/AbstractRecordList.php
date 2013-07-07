@@ -270,10 +270,10 @@ abstract class AbstractRecordList {
 	 *
 	 * @return void
 	 * @todo Define visibility
-	 * @deprecated will be removed 2 versions from 6.2
+	 * @deprecated since 6.2, will be removed 2 versions later - Function not needed anymore
 	 */
 	public function writeBottom() {
-		GeneralUtility::deprecationLog('Function writeBottom is not needed anymore');
+		GeneralUtility::logDeprecatedFunction();
 	}
 
 	/**
