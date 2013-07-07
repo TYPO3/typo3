@@ -129,9 +129,10 @@ class BasicFileUtility {
 	 * @return 	void
 	 * @see typo3/init.php, \TYPO3\CMS\Core\Authentication\BackendUserAuthentication::returnFilemounts()
 	 * @todo Define visibility
+	 * @deprecated All methods in this class should not be used anymore since TYPO3 6.0. Please use corresponding TYPO3\\CMS\\Core\\Resource\\ResourceStorage (fetched via BE_USERS->getFileStorages()), as all functions should be found there (in a cleaner manner).
 	 */
 	public function init($mounts, $f_ext) {
-		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction('All methods in this class should not be used anymore since TYPO3 6.0. Please use corresponding TYPO3\\CMS\\Core\\Resource\\ResourceStorage (fetched via BE_USERS->getFileStorages()), as all functions should be found there (in a cleaner manner).');
+		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
 		$this->f_ext['webspace']['allow'] = \TYPO3\CMS\Core\Utility\GeneralUtility::uniqueList(strtolower($f_ext['webspace']['allow']));
 		$this->f_ext['webspace']['deny'] = \TYPO3\CMS\Core\Utility\GeneralUtility::uniqueList(strtolower($f_ext['webspace']['deny']));
 		$this->f_ext['ftpspace']['allow'] = \TYPO3\CMS\Core\Utility\GeneralUtility::uniqueList(strtolower($f_ext['ftpspace']['allow']));
