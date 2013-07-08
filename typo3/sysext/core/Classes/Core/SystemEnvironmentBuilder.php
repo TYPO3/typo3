@@ -61,7 +61,6 @@ class SystemEnvironmentBuilder {
 		self::definePaths($relativePathPart);
 		self::checkMainPathsExist();
 		self::requireBaseClasses();
-		self::setupClassAliasForLegacyBaseClasses();
 		self::handleMagicQuotesGpc();
 		self::addCorePearPathToIncludePath();
 		self::initializeGlobalVariables();
@@ -106,9 +105,6 @@ class SystemEnvironmentBuilder {
 		define('FILE_DENY_PATTERN_DEFAULT', '\\.(php[3-6]?|phpsh|phtml)(\\..*)?$|^\\.htaccess$');
 		// Security related constant: List of file extensions that should be registered as php script file extensions
 		define('PHP_EXTENSIONS_DEFAULT', 'php,php3,php4,php5,php6,phpsh,inc,phtml');
-
-		// List of extensions required to run the core
-		define('REQUIRED_EXTENSIONS', 'core,backend,frontend,cms,lang,sv,extensionmanager,recordlist,extbase,fluid,cshmanual,install,saltedpasswords');
 
 		// Operating system identifier
 		// Either "WIN" or empty string
@@ -191,28 +187,19 @@ class SystemEnvironmentBuilder {
 	static protected function requireBaseClasses() {
 		require_once __DIR__ . '/../Utility/GeneralUtility.php';
 		require_once __DIR__ . '/../Utility/ArrayUtility.php';
+		require_once __DIR__ . '/../Utility/PathUtility.php';
 		require_once __DIR__ . '/../SingletonInterface.php';
 		require_once __DIR__ . '/../Configuration/ConfigurationManager.php';
-		require_once __DIR__ . '/../Utility/ExtensionManagementUtility.php';
-		require_once __DIR__ . '/../Cache/Cache.php';
-		require_once __DIR__ . '/../Cache/Exception.php';
-		require_once __DIR__ . '/../Cache/Exception/NoSuchCacheException.php';
-		require_once __DIR__ . '/../Cache/Exception/InvalidDataException.php';
-		require_once __DIR__ . '/../Cache/CacheFactory.php';
-		require_once __DIR__ . '/../Cache/CacheManager.php';
 		require_once __DIR__ . '/../Cache/Frontend/FrontendInterface.php';
 		require_once __DIR__ . '/../Cache/Frontend/AbstractFrontend.php';
 		require_once __DIR__ . '/../Cache/Frontend/StringFrontend.php';
 		require_once __DIR__ . '/../Cache/Frontend/PhpFrontend.php';
 		require_once __DIR__ . '/../Cache/Backend/BackendInterface.php';
-		require_once __DIR__ . '/../Cache/Backend/TaggableBackendInterface.php';
-		require_once __DIR__ . '/../Cache/Backend/AbstractBackend.php';
 		require_once __DIR__ . '/../Cache/Backend/PhpCapableBackendInterface.php';
-		require_once __DIR__ . '/../Cache/Backend/SimpleFileBackend.php';
-		require_once __DIR__ . '/../Cache/Backend/NullBackend.php';
-		require_once __DIR__ . '/../Log/LogLevel.php';
-		require_once __DIR__ . '/../Utility/MathUtility.php';
+		require_once __DIR__ . '/../Cache/Backend/AbstractBackend.php';
+		require_once __DIR__ . '/../Cache/Backend/EarlyClassLoaderBackend.php';
 		require_once __DIR__ . '/ClassLoader.php';
+		require_once __DIR__ . '/ClassAliasMap.php';
 	}
 
 	/**
@@ -222,8 +209,6 @@ class SystemEnvironmentBuilder {
 	 * @deprecated since 6.0, will be removed in 6.2
 	 */
 	static public function setupClassAliasForLegacyBaseClasses() {
-		class_alias('TYPO3\\CMS\\Core\\Utility\\GeneralUtility', 't3lib_div');
-		class_alias('TYPO3\\CMS\\Core\\Utility\\ExtensionManagementUtility', 't3lib_extMgm');
 	}
 
 	/**

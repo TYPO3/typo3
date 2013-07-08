@@ -814,8 +814,9 @@ class TemplateService {
 	public function addExtensionStatics($idList, $templateID, $pid, $row) {
 		$this->extensionStaticsProcessed = TRUE;
 
+		//TODO: change to use new API
 		foreach ($GLOBALS['TYPO3_LOADED_EXT'] as $extKey => $files) {
-			if (is_array($files) && ($files['ext_typoscript_constants.txt'] || $files['ext_typoscript_setup.txt'])) {
+			if ($files instanceof \TYPO3\CMS\Core\Compatibility\LoadedExtensionArrayElement && ($files['ext_typoscript_constants.txt'] || $files['ext_typoscript_setup.txt'])) {
 				$mExtKey = str_replace('_', '', $extKey);
 				$subrow = array(
 					'constants' => $files['ext_typoscript_constants.txt'] ? GeneralUtility::getUrl($files['ext_typoscript_constants.txt']) : '',

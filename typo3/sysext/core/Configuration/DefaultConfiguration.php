@@ -137,6 +137,13 @@ return array(
 					'backend' => 'TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend',
 					'options' => array()
 				),
+				// The cache_classes cache is for the class loader/class alias map only
+				// and must not be abused by third party extensions.
+				'cache_classes' => array(
+					'frontend' => 'TYPO3\CMS\Core\Cache\Frontend\PhpFrontend',
+					'backend' => 'TYPO3\CMS\Core\Cache\Backend\ClassLoaderBackend',
+					'options' => array()
+				),
 				'cache_hash' => array(
 					'frontend' => 'TYPO3\CMS\Core\Cache\Frontend\VariableFrontend',
 					'backend' => 'TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend',
