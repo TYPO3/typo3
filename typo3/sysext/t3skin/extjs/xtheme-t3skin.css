@@ -675,7 +675,7 @@ ul.x-tab-strip-bottom{
 	border-color:#A2AAB8;
 }
 .x-form-field{
-	font:normal 10px verdana, arial, tahoma, helvetica, sans-serif;
+	font-size: 10px;
 }
 
 .x-form-text, textarea.x-form-field{
@@ -748,16 +748,16 @@ ul.x-tab-strip-bottom{
 }
 
 .x-form-grow-sizer {
-	font:normal 10px verdana, arial, tahoma, helvetica, sans-serif;
+	font-size: 10px;
 }
 
 .x-form-item {
-	font:normal 10px verdana, arial, tahoma, helvetica, sans-serif;
+	font-size: 10px;
 }
 
 .x-form-invalid-msg {
 	color:#c0272b;
-	font:normal 10px verdana, arial, tahoma, helvetica, sans-serif;
+	font-size: 10px;
 	background-image:url(images/shared/warning.gif);
 }
 
@@ -766,7 +766,7 @@ ul.x-tab-strip-bottom{
 }
 
 .x-small-editor .x-form-field {
-	font:normal 10px verdana, arial, tahoma, helvetica, sans-serif;
+	font-size: 10px;
 }
 
 .ext-safari .x-small-editor .x-form-field {
@@ -899,7 +899,7 @@ ul.x-tab-strip-bottom{
 }
 
 .x-toolbar td,.x-toolbar span,.x-toolbar input,.x-toolbar div,.x-toolbar select,.x-toolbar label{
-	font:normal 10px verdana, arial,tahoma, helvetica, sans-serif;
+	font-size: 10px;
 }
 
 .x-toolbar .x-item-disabled {
@@ -1178,7 +1178,7 @@ td.x-grid3-hd-over, td.x-grid3-hd-menu-open {
 }
 
 .x-grid3-topbar, .x-grid3-bottombar{
-	font:normal 10px verdana, arial, tahoma, helvetica, sans-serif;
+	font-size: 10px;
 }
 
 .x-grid3-bottombar .x-toolbar{
@@ -1256,7 +1256,7 @@ td.x-grid3-hd-over, td.x-grid3-hd-menu-open {
 	background-image:url("images/grid/row-expand-sprite.png");
 	background-position: 4px -38px;
 	color:#606060;
-	font:bold 11px verdana, arial, tahoma, helvetica, sans-serif;
+	font:bold 11px;
 	padding: 5px 4px 4px 27px;
 }
 
@@ -1279,7 +1279,7 @@ td.x-grid3-hd-over, td.x-grid3-hd-menu-open {
 
 .x-grid-empty {
 	color:gray;
-	font:normal 10px verdana, arial, tahoma, helvetica, sans-serif;
+	font:normal 10px;
 }
 
 .x-grid-with-col-lines .x-grid3-row td.x-grid3-cell {
@@ -1435,7 +1435,7 @@ td.x-grid3-hd-over, td.x-grid3-hd-menu-open {
 
 .x-tree-node{
 	color:#000;
-	font: normal 10px verdana, arial, tahoma, helvetica, sans-serif;
+	font: normal 10px;
 }
 
 .x-tree-node a, .x-dd-drag-ghost a {
@@ -1841,7 +1841,7 @@ a.x-menu-item {
 .x-combo-list {
 	border-color:#bcbcbc;
 	background-color:#eaeaea;
-	font:normal 12px verdana, arial, tahoma, helvetica, sans-serif;
+	font:normal 12px;
 }
 
 .x-combo-list-inner {
@@ -1849,7 +1849,7 @@ a.x-menu-item {
 }
 
 .x-combo-list-hd {
-	font:bold 10px verdana, arial, tahoma, helvetica, sans-serif;
+	font:bold 10px;
 	color:#55545E;
 	background-image: url(images/layout/panel-title-light-bg.gif);
 	border-bottom-color:#bcbcbc;
@@ -1873,7 +1873,7 @@ a.x-menu-item {
 }
 
 .x-combo-list-small {
-	font:normal 10px verdana, arial, tahoma, helvetica, sans-serif;
+	font:normal 10px;
 }
 .x-panel {
 	border-color: #A2AAB8;
@@ -2143,11 +2143,11 @@ body.x-body-masked .x-window-plain .x-window-mc {
 
 .x-list-header-inner div em {
 	border-left-color:#ddd;
-	font:normal 10px verdana, arial, tahoma, helvetica, sans-serif;
+	font:normal 10px;
 }
 
 .x-list-body dt em {
-	font:normal 10px verdana, arial, tahoma, helvetica, sans-serif;
+	font:normal 10px;
 }
 
 .x-list-over {

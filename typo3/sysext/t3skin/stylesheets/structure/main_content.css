@@ -19,23 +19,24 @@ div {
 
 /* Occasionally used, eg. in About Modules: */
 h1 {
-	margin: 6px 0 24px 0;
+	font-size: 2em;
+	margin: 0 0 24px 0;
 	line-height: 1.1em;
 }
 
 h2 {
-	margin: 2px 0 20px 0;
+	font-size: 1.55em;
+	margin: 0 0 20px 0;
 }
 
-/* Normal section headers */
 h3 {
-	padding: 2px 0;
-	margin: 8px 0 10px;
+	font-size: 1.3em;
+	margin: 0 0 10px 0;
 }
 
-/* Discrete section headers (no background) */
 h4 {
-	margin: 6px 0;
+	font-size: 1em;
+	margin: 0 0 6px 0;
 }
 
 p,
