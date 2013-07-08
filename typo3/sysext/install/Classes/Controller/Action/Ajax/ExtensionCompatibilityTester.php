@@ -98,6 +98,7 @@ class ExtensionCompatibilityTester extends Action\AbstractAction implements Acti
 	 */
 	protected function getExtensionsToLoad() {
 		$extensionsToLoad = array();
+		//TODO: FIXME
 		$GLOBALS['TYPO3_LOADED_EXT'] = Utility\ExtensionManagementUtility::loadTypo3LoadedExtensionInformation(FALSE);
 		$extensionsToExclude = $this->getExtensionsToExclude();
 		foreach ($GLOBALS['TYPO3_LOADED_EXT'] as $key => $extension) {
