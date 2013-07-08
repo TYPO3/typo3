@@ -110,6 +110,7 @@ $TYPO3_CONF_VARS = array(
 		'reverseProxyPrefix' => '',				// String: optional prefix to be added to the internal URL (SCRIPT_NAME and REQUEST_URI).
 		'reverseProxySSL' => '',				// String: '*' or list of IP addresses of proxies that use SSL (https) for the connection to the client, but an unencrypted connection (http) to the server. If '*' all proxies defined in <a href="#SYS-reverseProxyIP">[SYS][reverseProxyIP]</a> use SSL.
 		'reverseProxyPrefixSSL' => '',				// String: prefix to be added to the internal URL (SCRIPT_NAME and REQUEST_URI) when accessing the server via an SSL proxy. This setting overrides <a href="#SYS-reverseProxyPrefix">[SYS][reverseProxyPrefix]</a>.
+		'AcceptXForwardedProtoSSL' => FALSE,		// Boolean: If true the HTTP Header 'X-Forwarded-Proto' will be taken into consideration when accessing the server via an transparent SSL proxy. The proxy will have to set the header value of 'X-Forwarded-Proto' to 'https'. Default is 'false'.
 		'caching' => array(
 			'cacheFrontends' => array(
 				't3lib_cache_frontend_VariableFrontend' => 't3lib_cache_frontend_VariableFrontend',
