@@ -30,7 +30,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 
 /**
- * Contains the TYPO3 Core Engine
+ * The main data handler class which takes care of correctly updating and inserting records.
+ * This class was formerly known as TCEmain.
  *
  * This is the TYPO3 Core Engine class for manipulation of the database
  * This class is used by eg. the tce_db.php script which provides an the interface for POST forms to this class.
@@ -48,211 +49,284 @@ class DataHandler {
 	// *********************
 	// Public variables you can configure before using the class:
 	// *********************
-	// Boolean: If TRUE, the default log-messages will be stored. This should not be necessary if the locallang-file for the log-display is properly configured. So disabling this will just save some database-space as the default messages are not saved.
 	/**
-	 * @todo Define visibility
+	 * If TRUE, the default log-messages will be stored. This should not be necessary if the locallang-file for the
+	 * log-display is properly configured. So disabling this will just save some database-space as the default messages are not saved.
+	 *
+	 * @var boolean
 	 */
 	public $storeLogMessages = TRUE;
 
-	// Boolean: If TRUE, actions are logged to sys_log.
 	/**
-	 * @todo Define visibility
+	 * If TRUE, actions are logged to sys_log.
+	 *
+	 * @var boolean
 	 */
 	public $enableLogging = TRUE;
 
-	// Boolean: If TRUE, the datamap array is reversed in the order, which is a nice thing if you're creating a whole new bunch of records.
 	/**
-	 * @todo Define visibility
+	 * If TRUE, the datamap array is reversed in the order, which is a nice thing if you're creating a whole new
+	 * bunch of records.
+	 *
+	 * @var boolean
 	 */
 	public $reverseOrder = FALSE;
 
-	// Boolean: If TRUE, only fields which are different from the database values are saved! In fact, if a whole input array is similar, it's not saved then.
 	/**
-	 * @todo Define visibility
+	 * If TRUE, only fields which are different from the database values are saved! In fact, if a whole input array
+	 * is similar, it's not saved then.
+	 *
+	 * @var boolean
 	 */
 	public $checkSimilar = TRUE;
 
-	// Boolean: If TRUE, incoming values in the data-array have their slashes stripped. ALWAYS SET THIS TO ZERO and supply an unescaped data array instead. This switch may totally disappear in future versions of this class!
 	/**
-	 * @todo Define visibility
+	 * If TRUE, incoming values in the data-array have their slashes stripped. ALWAYS SET THIS TO ZERO and supply an
+	 * unescaped data array instead. This switch may totally disappear in future versions of this class!
+	 *
+	 * @var boolean
 	 */
 	public $stripslashes_values = TRUE;
 
-	// Boolean: This will read the record after having updated or inserted it. If anything is not properly submitted an error is written to the log. This feature consumes extra time by selecting records
 	/**
-	 * @todo Define visibility
+	 * This will read the record after having updated or inserted it. If anything is not properly submitted an error
+	 * is written to the log. This feature consumes extra time by selecting records
+	 *
+	 * @var boolean
 	 */
 	public $checkStoredRecords = TRUE;
 
-	// Boolean: If set, values '' and 0 will equal each other when the stored records are checked.
 	/**
-	 * @todo Define visibility
+	 * If set, values '' and 0 will equal each other when the stored records are checked.
+	 *
+	 * @var boolean
 	 */
 	public $checkStoredRecords_loose = TRUE;
 
-	// Boolean. If this is set, then a page is deleted by deleting the whole branch under it (user must have deletepermissions to it all). If not set, then the page is deleted ONLY if it has no branch
 	/**
-	 * @todo Define visibility
+	 * If this is set, then a page is deleted by deleting the whole branch under it (user must have
+	 * delete permissions to it all). If not set, then the page is deleted ONLY if it has no branch.
+	 *
+	 * @var boolean
 	 */
 	public $deleteTree = FALSE;
 
-	// Boolean. If set, then the 'hideAtCopy' flag for tables will be ignored.
 	/**
-	 * @todo Define visibility
+	 * If set, then the 'hideAtCopy' flag for tables will be ignored.
+	 *
+	 * @var boolean
 	 */
 	public $neverHideAtCopy = FALSE;
 
-	// Boolean: If set, then transformations are NOT performed on the input.
 	/**
-	 * @todo Define visibility
+	 * If set, then transformations are NOT performed on the input.
+	 *
+	 * @var boolean
 	 */
 	public $dontProcessTransformations = FALSE;
 
-	// Boolean: If set, .vDEFbase values are unset in flexforms.
 	/**
-	 * @todo Define visibility
+	 * If set, .vDEFbase values are unset in flexforms.
+	 *
+	 * @var boolean
 	 */
 	public $clear_flexFormData_vDEFbase = FALSE;
 
-	// Boolean/Mixed: TRUE: (traditional) Updates when record is saved. For flexforms, updates if change is made to the localized value. FALSE: Will not update anything. "FORCE_FFUPD" (string): Like TRUE, but will force update to the FlexForm Field
 	/**
-	 * @todo Define visibility
+	 * TRUE: (traditional) Updates when record is saved. For flexforms, updates if change is made to the localized value.
+	 * FALSE: Will not update anything.
+	 * "FORCE_FFUPD" (string): Like TRUE, but will force update to the FlexForm Field
+	 *
+	 * @var boolean|string
 	 */
 	public $updateModeL10NdiffData = TRUE;
 
-	// Boolean: If TRUE, the translation diff. fields will in fact be reset so that they indicate that all needs to change again! It's meant as the opposite of declaring the record translated.
 	/**
-	 * @todo Define visibility
+	 * If TRUE, the translation diff. fields will in fact be reset so that they indicate that all needs to change again!
+	 * It's meant as the opposite of declaring the record translated.
+	 *
+	 * @var boolean
 	 */
 	public $updateModeL10NdiffDataClear = FALSE;
 
-	// Boolean: If TRUE, workspace restrictions are bypassed on edit an create actions (process_datamap()). YOU MUST KNOW what you do if you use this feature!
 	/**
-	 * @todo Define visibility
+	 * If TRUE, workspace restrictions are bypassed on edit an create actions (process_datamap()).
+	 * YOU MUST KNOW what you do if you use this feature!
+	 *
+	 * @var boolean
 	 */
 	public $bypassWorkspaceRestrictions = FALSE;
 
-	// Boolean: If TRUE, file handling of attached files (addition, deletion etc) is bypassed - the value is saved straight away. YOU MUST KNOW what you are doing with this feature!
 	/**
-	 * @todo Define visibility
+	 * If TRUE, file handling of attached files (addition, deletion etc) is bypassed - the value is saved straight away.
+	 * YOU MUST KNOW what you are doing with this feature!
+	 *
+	 * @var boolean
 	 */
 	public $bypassFileHandling = FALSE;
 
-	// Boolean: If TRUE, access check, check for deleted etc. for records is bypassed. YOU MUST KNOW what you are doing if you use this feature!
 	/**
-	 * @todo Define visibility
+	 * If TRUE, access check, check for deleted etc. for records is bypassed.
+	 * YOU MUST KNOW what you are doing if you use this feature!
+	 *
+	 * @var boolean
 	 */
 	public $bypassAccessCheckForRecords = FALSE;
 
-	// String. Comma-list. This list of tables decides which tables will be copied. If empty then none will. If '*' then all will (that the user has permission to of course)
 	/**
-	 * @todo Define visibility
+	 * Comma-separated list. This list of tables decides which tables will be copied. If empty then none will.
+	 * If '*' then all will (that the user has permission to of course)
+	 *
+	 * @var string
 	 */
 	public $copyWhichTables = '*';
 
-	// Integer. If 0 then branch is NOT copied. If 1 then pages on the 1st level is copied. If 2 then pages on the second level is copied ... and so on
 	/**
-	 * @todo Define visibility
+	 * If 0 then branch is NOT copied.
+	 * If 1 then pages on the 1st level is copied.
+	 * If 2 then pages on the second level is copied ... and so on
+	 *
+	 * @var integer
 	 */
 	public $copyTree = 0;
 
-	// Array [table][fields]=value: New records are created with default values and you can set this array on the form $defaultValues[$table][$field] = $value to override the default values fetched from TCA. If ->setDefaultsFromUserTS is called UserTSconfig default values will overrule existing values in this array (thus UserTSconfig overrules externally set defaults which overrules TCA defaults)
 	/**
-	 * @todo Define visibility
+	 * [table][fields]=value: New records are created with default values and you can set this array on the
+	 * form $defaultValues[$table][$field] = $value to override the default values fetched from TCA.
+	 * If ->setDefaultsFromUserTS is called UserTSconfig default values will overrule existing values in this array
+	 * (thus UserTSconfig overrules externally set defaults which overrules TCA defaults)
+	 *
+	 * @var array
 	 */
 	public $defaultValues = array();
 
-	// Array [table][fields]=value: You can set this array on the form $overrideValues[$table][$field] = $value to override the incoming data. You must set this externally. You must make sure the fields in this array are also found in the table, because it's not checked. All columns can be set by this array!
 	/**
-	 * @todo Define visibility
+	 * [table][fields]=value: You can set this array on the form $overrideValues[$table][$field] = $value to
+	 * override the incoming data. You must set this externally. You must make sure the fields in this array are also
+	 * found in the table, because it's not checked. All columns can be set by this array!
+	 *
+	 * @var array
 	 */
 	public $overrideValues = array();
 
-	// Array [filename]=alternative_filename: Use this array to force another name onto a file. Eg. if you set ['/tmp/blablabal'] = 'my_file.txt' and '/tmp/blablabal' is set for a certain file-field, then 'my_file.txt' will be used as the name instead.
 	/**
-	 * @todo Define visibility
+	 * [filename]=alternative_filename: Use this array to force another name onto a file.
+	 * Eg. if you set ['/tmp/blablabal'] = 'my_file.txt' and '/tmp/blablabal' is set for a certain file-field,
+	 * then 'my_file.txt' will be used as the name instead.
+	 *
+	 * @var array
 	 */
 	public $alternativeFileName = array();
 
-	// Array [filename]=alternative_filepath: Same as alternativeFileName but with relative path to the file
 	/**
-	 * @todo Define visibility
+	 * Array [filename]=alternative_filepath: Same as alternativeFileName but with relative path to the file
+	 *
+	 * @var array
 	 */
 	public $alternativeFilePath = array();
 
-	// If entries are set in this array corresponding to fields for update, they are ignored and thus NOT updated. You could set this array from a series of checkboxes with value=0 and hidden fields before the checkbox with 1. Then an empty checkbox will disable the field.
 	/**
-	 * @todo Define visibility
+	 * If entries are set in this array corresponding to fields for update, they are ignored and thus NOT updated.
+	 * You could set this array from a series of checkboxes with value=0 and hidden fields before the checkbox with 1.
+	 * Then an empty checkbox will disable the field.
+	 *
+	 * @var array
 	 */
 	public $data_disableFields = array();
 
-	// Use this array to validate suggested uids for tables by setting [table]:[uid]. This is a dangerous option since it will force the inserted record to have a certain UID. The value just have to be TRUE, but if you set it to "DELETE" it will make sure any record with that UID will be deleted first (raw delete). The option is used for import of T3D files when synchronizing between two mirrored servers. As a security measure this feature is available only for Admin Users (for now)
 	/**
-	 * @todo Define visibility
+	 * Use this array to validate suggested uids for tables by setting [table]:[uid]. This is a dangerous option
+	 * since it will force the inserted record to have a certain UID. The value just have to be TRUE, but if you set
+	 * it to "DELETE" it will make sure any record with that UID will be deleted first (raw delete).
+	 * The option is used for import of T3D files when synchronizing between two mirrored servers.
+	 * As a security measure this feature is available only for Admin Users (for now)
+	 *
+	 * @var array
 	 */
 	public $suggestedInsertUids = array();
 
-	// Object. Call back object for flex form traversation. Useful when external classes wants to use the iteration functions inside tcemain for traversing a FlexForm structure.
 	/**
-	 * @todo Define visibility
+	 * Object. Call back object for FlexForm traversal. Useful when external classes wants to use the
+	 * iteration functions inside DataHandler for traversing a FlexForm structure.
+	 *
+	 * @var object
 	 */
 	public $callBackObj;
 
 	// *********************
 	// Internal variables (mapping arrays) which can be used (read-only) from outside
 	// *********************
-	// Contains mapping of auto-versionized records.
 	/**
+	 * Contains mapping of auto-versionized records.
+	 *
+	 * @var array
 	 * @todo Define visibility
 	 */
 	public $autoVersionIdMap = array();
 
-	// When new elements are created, this array contains a map between their "NEW..." string IDs and the eventual UID they got when stored in database
 	/**
+	 * When new elements are created, this array contains a map between their "NEW..." string IDs and the eventual UID they got when stored in database
+	 *
+	 * @var array
 	 * @todo Define visibility
 	 */
 	public $substNEWwithIDs = array();
 
-	// Like $substNEWwithIDs, but where each old "NEW..." id is mapped to the table it was from.
 	/**
+	 * Like $substNEWwithIDs, but where each old "NEW..." id is mapped to the table it was from.
+	 *
+	 * @var array
 	 * @todo Define visibility
 	 */
 	public $substNEWwithIDs_table = array();
 
-	// Holds the tables and there the ids of newly created child records from IRRE
 	/**
+	 * Holds the tables and there the ids of newly created child records from IRRE
+	 *
+	 * @var array
 	 * @todo Define visibility
 	 */
 	public $newRelatedIDs = array();
 
-	// This array is the sum of all copying operations in this class. May be READ from outside, thus partly public.
 	/**
+	 * This array is the sum of all copying operations in this class. May be READ from outside, thus partly public.
+	 *
+	 * @var array
 	 * @todo Define visibility
 	 */
 	public $copyMappingArray_merged = array();
 
-	// A map between input file name and final destination for files being attached to records.
 	/**
+	 * A map between input file name and final destination for files being attached to records.
+	 *
+	 * @var array
 	 * @todo Define visibility
 	 */
 	public $copiedFileMap = array();
 
-	// Contains [table][id][field] of fiels where RTEmagic images was copied. Holds old filename as key and new filename as value.
 	/**
+	 * Contains [table][id][field] of fiels where RTEmagic images was copied. Holds old filename as key and new filename as value.
+	 *
+	 * @var array
 	 * @todo Define visibility
 	 */
 	public $RTEmagic_copyIndex = array();
 
-	// Errors are collected in this variable.
 	/**
+	 * Errors are collected in this variable.
+	 *
+	 * @var array
 	 * @todo Define visibility
 	 */
 	public $errorLog = array();
 
+
 	// *********************
 	// Internal Variables, do not touch.
 	// *********************
+
 	// Variables set in init() function:
+
 	/**
 	 * The user-object the script uses. If not set from outside, this is set to the current global $BE_USER.
 	 *
@@ -261,26 +335,34 @@ class DataHandler {
 	 */
 	public $BE_USER;
 
-	// Will be set to uid of be_user executing this script
 	/**
+	 * Will be set to uid of be_user executing this script
+	 *
+	 * @var integer
 	 * @todo Define visibility
 	 */
 	public $userid;
 
-	// Will be set to username of be_user executing this script
 	/**
+	 * Will be set to username of be_user executing this script
+	 *
+	 * @var string
 	 * @todo Define visibility
 	 */
 	public $username;
 
-	// Will be set if user is admin
 	/**
+	 * Will be set if user is admin
+	 *
+	 * @var boolean
 	 * @todo Define visibility
 	 */
 	public $admin;
 
-	// Can be overridden from $GLOBALS['TYPO3_CONF_VARS']
 	/**
+	 * Can be overridden from $GLOBALS['TYPO3_CONF_VARS']
+	 *
+	 * @var array
 	 * @todo Define visibility
 	 */
 	public $defaultPermissions = array(
@@ -289,8 +371,10 @@ class DataHandler {
 		'everybody' => ''
 	);
 
-	// The list of <table>-<fields> that cannot be edited by user. This is compiled from TCA/exclude-flag combined with non_exclude_fields for the user.
 	/**
+	 * The list of <table>-<fields> that cannot be edited by user.This is compiled from TCA/exclude-flag combined with non_exclude_fields for the user.
+	 *
+	 * @var array
 	 * @todo Define visibility
 	 */
 	public $exclude_array;
@@ -303,21 +387,27 @@ class DataHandler {
 	 */
 	protected $control = array();
 
-	// Set with incoming data array
 	/**
+	 * Set with incoming data array
+	 *
+	 * @var array
 	 * @todo Define visibility
 	 */
 	public $datamap = array();
 
-	// Set with incoming cmd array
 	/**
+	 * Set with incoming cmd array
+	 *
+	 * @var array
 	 * @todo Define visibility
 	 */
 	public $cmdmap = array();
 
 	// Internal static:
-	// Permission mapping
 	/**
+	 * Permission mapping
+	 *
+	 * @var array
 	 * @todo Define visibility
 	 */
 	public $pMap = array(
@@ -332,127 +422,183 @@ class DataHandler {
 		'editcontent' => 16
 	);
 
-	// Integer: The interval between sorting numbers used with tables with a 'sorting' field defined. Min 1
 	/**
+	 * Integer: The interval between sorting numbers used with tables with a 'sorting' field defined. Min 1
+	 *
+	 * @var integer
 	 * @todo Define visibility
 	 */
 	public $sortIntervals = 256;
 
 	// Internal caching arrays
-	// Used by function checkRecordUpdateAccess() to store whether a record is updateable or not.
 	/**
+	 * Used by function checkRecordUpdateAccess() to store whether a record is updateable or not.
+	 *
+	 * @var array
 	 * @todo Define visibility
 	 */
 	public $recUpdateAccessCache = array();
 
-	// User by function checkRecordInsertAccess() to store whether a record can be inserted on a page id
 	/**
+	 * User by function checkRecordInsertAccess() to store whether a record can be inserted on a page id
+	 *
+	 * @var array
 	 * @todo Define visibility
 	 */
 	public $recInsertAccessCache = array();
 
-	// Caching array for check of whether records are in a webmount
 	/**
+	 * Caching array for check of whether records are in a webmount
+	 *
+	 * @var array
 	 * @todo Define visibility
 	 */
 	public $isRecordInWebMount_Cache = array();
 
-	// Caching array for page ids in webmounts
 	/**
+	 * Caching array for page ids in webmounts
+	 *
+	 * @var array
 	 * @todo Define visibility
 	 */
 	public $isInWebMount_Cache = array();
 
-	// Caching for collecting TSconfig for page ids
 	/**
+	 * Caching for collecting TSconfig for page ids
+	 *
+	 * @var array
 	 * @todo Define visibility
 	 */
 	public $cachedTSconfig = array();
 
-	// Used for caching page records in pageInfo()
 	/**
+	 * Used for caching page records in pageInfo()
+	 *
+	 * @var array
 	 * @todo Define visibility
 	 */
 	public $pageCache = array();
 
-	// Array caching workspace access for BE_USER
 	/**
+	 * Array caching workspace access for BE_USER
+	 *
+	 * @var array
 	 * @todo Define visibility
 	 */
 	public $checkWorkspaceCache = array();
 
 	// Other arrays:
-	// For accumulation of MM relations that must be written after new records are created.
 	/**
+	 * For accumulation of MM relations that must be written after new records are created.
+	 *
+	 * @var array
 	 * @todo Define visibility
 	 */
 	public $dbAnalysisStore = array();
 
-	// For accumulation of files which must be deleted after processing of all input content
 	/**
+	 * For accumulation of files which must be deleted after processing of all input content
+	 *
+	 * @var array
 	 * @todo Define visibility
 	 */
 	public $removeFilesStore = array();
 
-	// Uploaded files, set by process_uploads()
 	/**
+	 * Uploaded files, set by process_uploads()
+	 *
+	 * @var array
 	 * @todo Define visibility
 	 */
 	public $uploadedFileArray = array();
 
-	// Used for tracking references that might need correction after operations
 	/**
+	 * Used for tracking references that might need correction after operations
+	 *
+	 * @var array
 	 * @todo Define visibility
 	 */
 	public $registerDBList = array();
 
-	// Used for tracking references that might need correction in pid field after operations (e.g. IRRE)
 	/**
+	 * Used for tracking references that might need correction in pid field after operations (e.g. IRRE)
+	 *
+	 * @var array
 	 * @todo Define visibility
 	 */
 	public $registerDBPids = array();
 
-	// Used by the copy action to track the ids of new pages so subpages are correctly inserted! THIS is internally cleared for each executed copy operation! DO NOT USE THIS FROM OUTSIDE! Read from copyMappingArray_merged instead which is accumulating this information.
 	/**
-	 * @todo Define visibility
+	 * Used by the copy action to track the ids of new pages so subpages are correctly inserted!
+	 * THIS is internally cleared for each executed copy operation! DO NOT USE THIS FROM OUTSIDE!
+	 * Read from copyMappingArray_merged instead which is accumulating this information.
+	 *
+	 * NOTE: This is used by some outside scripts (e.g. hooks), as the results in $copyMappingArray_merged
+	 * are only available after an action has been completed.
+	 *
+	 * @var array
 	 */
 	public $copyMappingArray = array();
 
-	// array used for remapping uids and values at the end of process_datamap
 	/**
+	 * Array used for remapping uids and values at the end of process_datamap
+	 *
+	 * @var array
 	 * @todo Define visibility
 	 */
 	public $remapStack = array();
 
-	// array used for remapping uids and values at the end of process_datamap (e.g. $remapStackRecords[<table>][<uid>] = <index in $remapStack>)
 	/**
+	 * Array used for remapping uids and values at the end of process_datamap
+	 * (e.g. $remapStackRecords[<table>][<uid>] = <index in $remapStack>)
+	 *
+	 * @var array
 	 * @todo Define visibility
 	 */
 	public $remapStackRecords = array();
 
-	// array used for checking whether new children need to be remapped
+	/**
+	 * Array used for checking whether new children need to be remapped
+	 *
+	 * @var array
+	 */
 	protected $remapStackChildIds = array();
 
-	// array used for executing addition actions after remapping happened (sett processRemapStack())
+	/**
+	 * Array used for executing addition actions after remapping happened (set processRemapStack())
+	 *
+	 * @var array
+	 */
 	protected $remapStackActions = array();
 
-	// array used for executing post-processing on the reference index
+	/**
+	 * Array used for executing post-processing on the reference index
+	 *
+	 * @var array
+	 */
 	protected $remapStackRefIndex = array();
 
-	// array used for additional calls to $this->updateRefIndex
 	/**
+	 * Array used for additional calls to $this->updateRefIndex
+	 *
+	 * @var array
 	 * @todo Define visibility
 	 */
 	public $updateRefIndexStack = array();
 
-	// tells, that this TCEmain was called from \TYPO3\CMS\Impext\ImportExport - this variable is set by \TYPO3\CMS\Impext\ImportExport
 	/**
+	 * Tells, that this DataHandler instance was called from \TYPO3\CMS\Impext\ImportExport.
+	 * This variable is set by \TYPO3\CMS\Impext\ImportExport
+	 *
+	 * @var array
 	 * @todo Define visibility
 	 */
 	public $callFromImpExp = FALSE;
 
-	// Array for new flexform index mapping
 	/**
+	 * Array for new flexform index mapping
+	 *
+	 * @var array
 	 * @todo Define visibility
 	 */
 	public $newIndexMap = array();
@@ -460,30 +606,44 @@ class DataHandler {
 	// Various
 	/**
 	 * basicFileFunctions object
-	 * For "singleTon" file-manipulation object
+	 * For "singleton" file-manipulation object
 	 *
 	 * @var \TYPO3\CMS\Core\Utility\File\BasicFileUtility
 	 * @todo Define visibility
 	 */
 	public $fileFunc;
 
-	// Set to "currentRecord" during checking of values.
 	/**
+	 * Set to "currentRecord" during checking of values.
+	 *
+	 * @var array
 	 * @todo Define visibility
 	 */
 	public $checkValue_currentRecord = array();
 
-	// A signal flag used to tell file processing that autoversioning has happend and hence certain action should be applied.
 	/**
+	 * A signal flag used to tell file processing that autoversioning has happend and hence certain action should be applied.
+	 *
+	 * @var boolean
 	 * @todo Define visibility
 	 */
 	public $autoVersioningUpdate = FALSE;
 
-	// Disable delete clause
+	/**
+	 * Disable delete clause
+	 *
+	 * @var boolean
+	 */
 	protected $disableDeleteClause = FALSE;
 
+	/**
+	 * @var array
+	 */
 	protected $checkModifyAccessListHookObjects;
 
+	/**
+	 * @var array
+	 */
 	protected $version_remapMMForVersionSwap_reg;
 
 	/**
