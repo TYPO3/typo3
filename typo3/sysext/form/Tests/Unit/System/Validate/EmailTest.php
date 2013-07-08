@@ -55,6 +55,7 @@ class tx_form_System_Validate_EmailTest extends Tx_Extbase_Tests_Unit_BaseTestCa
 	public function validEmailProvider() {
 		return array(
 			'a@b.de'               => array('a@b.de'),
+			'A@B.DE'               => array('A@B.DE'),
 			'somebody@localhost'   => array('somebody@localhost'),
 			'somebody@mymac.local' => array('somebody@mymac.local')
 		);
