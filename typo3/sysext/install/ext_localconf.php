@@ -2,6 +2,9 @@
 if (!defined('TYPO3_MODE')) {
 	die('Access denied.');
 }
+
+// TYPO3 6.2 - Migrate package states from LocalConfiguration to PackageStates file
+$TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['update']['packageStates'] = 'TYPO3\\CMS\\Install\\CoreUpdates\\PackageStatesUpdate';
 // TYPO3 6.0 - Create page and TypoScript root template (automatically executed in 123-mode)
 $TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['update']['rootTemplate'] = 'TYPO3\\CMS\\Install\\CoreUpdates\\RootTemplateUpdate';
 // TYPO3 4.5 - Check the database to be utf-8 compliant

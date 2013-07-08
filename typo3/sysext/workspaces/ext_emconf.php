@@ -1,6 +1,6 @@
 <?php
 /***************************************************************
- * Extension Manager/Repository config file for ext "workspaces".
+ * Extension Manager/Repository config file for ext "version".
  *
  * Auto generated 13-03-2012 16:03
  *
@@ -9,35 +9,34 @@
  * writing. "version" and "dependencies" must not be touched!
  ***************************************************************/
 $EM_CONF[$_EXTKEY] = array(
-	'title' => 'Workspaces Management',
-	'description' => 'Adds workspaces functionality with custom stages to TYPO3.',
+	'title' => 'Versioning Management',
+	'description' => 'Backend Interface for management of the versioning API.',
 	'category' => 'be',
-	'author' => 'Workspaces Team',
-	'author_email' => '',
+	'author' => 'Kasper Skaarhoj',
+	'author_email' => 'kasperYYYY@typo3.com',
 	'shy' => '',
-	'dependencies' => 'version',
+	'dependencies' => '',
 	'conflicts' => '',
 	'priority' => '',
-	'module' => '',
+	'module' => 'cm1',
+	'doNotLoadInFE' => 0,
 	'state' => 'stable',
 	'internal' => '',
 	'uploadfolder' => 0,
-	'docPath' => 'Documentation',
 	'createDirs' => '',
 	'modify_tables' => '',
-	'clearCacheOnLoad' => 1,
+	'clearCacheOnLoad' => 0,
 	'lockType' => '',
 	'author_company' => '',
-	'version' => '6.2.0',
+	'version' => '6.0.0',
+	'_md5_values_when_last_written' => '',
 	'constraints' => array(
 		'depends' => array(
-			'typo3' => '6.2.0-6.2.99',
-			'version' => '6.2.0-6.2.99',
+			'typo3' => '6.0.0-0.0.0'
 		),
 		'conflicts' => array(),
 		'suggests' => array()
 	),
-	'_md5_values_when_last_written' => '',
 	'suggests' => array()
 );
 ?>

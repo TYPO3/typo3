@@ -146,6 +146,7 @@ class ListUtilityTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @return void
 	 */
 	public function getAvailableAndInstalledExtensionsTest($availableExtensions, $expectedResult) {
+		$this->markTestIncomplete();
 		$this->assertEquals($expectedResult, $this->fixture->getAvailableAndInstalledExtensions($availableExtensions));
 	}
 
@@ -185,6 +186,7 @@ class ListUtilityTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @return void
 	 */
 	public function enrichExtensionsWithEmConfInformation($extensions, $emConf, $expectedResult) {
+		$this->markTestIncomplete();
 		$this->fixture->extensionRepository = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Repository\\ExtensionRepository', array('findOneByExtensionKeyAndVersion'));
 		$this->fixture->emConfUtility = $this->getMock('TYPO3\\CMS\\Extensionmanager\\Utility\\EmConfUtility');
 		$this->fixture->emConfUtility->expects($this->any())->method('includeEmConf')->will($this->returnValue($emConf));
