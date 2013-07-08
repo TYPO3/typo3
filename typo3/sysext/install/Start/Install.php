@@ -109,7 +109,7 @@ require __DIR__ . '/../../core/Classes/Core/Bootstrap.php';
 \TYPO3\CMS\Core\Core\Bootstrap::getInstance()
 	->baseSetup('typo3/sysext/install/Start/')
 	->startOutputBuffering()
-	->loadConfigurationAndInitialize(FALSE);
+	->loadConfigurationAndInitialize(FALSE, 'TYPO3\\CMS\\Core\\Package\\FailSafePackageManager');
 
 // Execute 'tool' or 'step' controller depending on install[controller] GET/POST parameter
 $getPost = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('install');

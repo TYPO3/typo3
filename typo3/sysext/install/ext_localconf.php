@@ -2,6 +2,7 @@
 if (!defined('TYPO3_MODE')) {
 	die('Access denied.');
 }
+
 // TYPO3 6.0 - Create page and TypoScript root template (automatically executed in 123-mode)
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['rootTemplate'] = 'TYPO3\\CMS\\Install\\Updates\\RootTemplateUpdate';
 // TYPO3 4.5 - Check the database to be utf-8 compliant
