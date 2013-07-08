@@ -35,4 +35,11 @@ namespace TYPO3\CMS\Core\Tests;
  */
 abstract class UnitTestCase extends BaseTestCase {
 
+	/**
+	 * TODO: make LoadedExtensionsArray serializable instead
+	 *
+	 * @var array
+	 */
+	protected $backupGlobalsBlacklist = array('TYPO3_LOADED_EXT');
+
 }

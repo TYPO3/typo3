@@ -36,6 +36,6 @@
 require __DIR__ . '/typo3/sysext/core/Classes/Core/Bootstrap.php';
 \TYPO3\CMS\Core\Core\Bootstrap::getInstance()
 	->baseSetup('')
-	->redirectToInstallerIfLocalConfigurationFileDoesNotExist();
+	->redirectToInstallerIfEssentialConfigurationDoesNotExist();
 
 require(PATH_tslib . 'index_ts.php');

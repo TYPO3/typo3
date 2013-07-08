@@ -125,7 +125,7 @@ class ConfigurationUtility implements \TYPO3\CMS\Core\SingletonInterface {
 		$theConstants = array();
 
 		if (strlen($rawConfigurationString) > 0) {
-			$extensionPathInformation = $GLOBALS['TYPO3_LOADED_EXT'][$extensionKey];
+			$extensionPathInformation = $this->getExtensionPathInformation($extensionKey);
 
 			$tsStyleConfig = $this->objectManager->get('TYPO3\\CMS\\Core\\TypoScript\\ConfigurationForm');
 			$tsStyleConfig->doNotSortCategoriesBeforeMakingForm = TRUE;
@@ -163,6 +163,14 @@ class ConfigurationUtility implements \TYPO3\CMS\Core\SingletonInterface {
 		}
 
 		return $theConstants;
+	}
+
+	/**
+	 * @param string $extensionKey
+	 * @return mixed
+	 */
+	protected function getExtensionPathInformation($extensionKey) {
+		return $GLOBALS['TYPO3_LOADED_EXT'][$extensionKey];
 	}
 
 	/**

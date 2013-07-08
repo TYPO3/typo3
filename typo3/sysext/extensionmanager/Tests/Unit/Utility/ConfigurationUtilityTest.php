@@ -61,7 +61,6 @@ class ConfigurationUtilityTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCas
 			),
 		);
 
-		$GLOBALS['TYPO3_LOADED_EXT'][$extensionKey]= array();
 		$GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$extensionKey] = serialize($currentConfiguration);
 		$actual = $configurationUtility->getCurrentConfiguration($extensionKey);
 		$this->assertEquals($expected, $actual);
@@ -74,12 +73,17 @@ class ConfigurationUtilityTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCas
 		/** @var $configurationUtility \TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
 		$configurationUtility = $this->getAccessibleMock(
 			'TYPO3\\CMS\\Extensionmanager\\Utility\\ConfigurationUtility',
-			array('getDefaultConfigurationRawString')
+			array('getDefaultConfigurationRawString', 'getExtensionPathInformation')
 		);
 		$configurationUtility
 			->expects($this->once())
 			->method('getDefaultConfigurationRawString')
 			->will($this->returnValue('foo'));
+
+		$configurationUtility
+			->expects($this->once())
+			->method('getExtensionPathInformation')
+			->will($this->returnValue(NULL));
 
 		$tsStyleConfig = $this->getMock('TYPO3\\CMS\\Core\\TypoScript\\ConfigurationForm');
 

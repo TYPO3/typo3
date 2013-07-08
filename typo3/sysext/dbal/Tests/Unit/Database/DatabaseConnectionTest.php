@@ -28,7 +28,7 @@ class DatabaseConnectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function setUp() {
 		// Backup list of loaded extensions
-		$this->loadedExtensions = $GLOBALS['TYPO3_LOADED_EXT'];
+//		$this->loadedExtensions = $GLOBALS['TYPO3_LOADED_EXT'];
 		// Backup database connection
 		$this->db = $GLOBALS['TYPO3_DB'];
 		$this->temporaryFiles = array();
@@ -50,7 +50,7 @@ class DatabaseConnectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		// Restore DB connection
 		$GLOBALS['TYPO3_DB'] = $this->db;
 		// Restore list of loaded extensions
-		$GLOBALS['TYPO3_LOADED_EXT'] = $this->loadedExtensions;
+//		$GLOBALS['TYPO3_LOADED_EXT'] = $this->loadedExtensions;
 	}
 
 	/**

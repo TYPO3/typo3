@@ -216,7 +216,7 @@ abstract class FunctionalTestCase extends BaseTestCase {
 				} elseif (isset($column['is-NULL']) && ($column['is-NULL'] === 'yes')) {
 					$columnValue = NULL;
 				} else {
-					$columnValue = $table->$columnName;
+					$columnValue = (string) $table->$columnName;
 				}
 
 				$insertArray[$columnName] = $columnValue;

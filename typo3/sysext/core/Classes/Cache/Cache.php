@@ -31,7 +31,7 @@ namespace TYPO3\CMS\Core\Cache;
 class Cache {
 
 	/**
-	 * @var 	boolean
+	 * @var boolean TRUE if caching framework was fully initialized
 	 */
 	static protected $isCachingFrameworkInitialized = FALSE;
 
@@ -65,6 +65,18 @@ class Cache {
 			self::$isCachingFrameworkInitialized = TRUE;
 		}
 		return self::$isCachingFrameworkInitialized;
+	}
+
+	/**
+	 * Resets the isCachingFrameworkInitialized state
+	 * Beware! This is not public API and necessary for edge cases in the install tool.
+	 *
+	 * @return void
+	 */
+	static public function flagCachingFrameworkForReinitialization() {
+		self::$isCachingFrameworkInitialized = FALSE;
+		unset($GLOBALS['typo3CacheManager']);
+		unset($GLOBALS['typo3CacheFactory']);
 	}
 
 	/**

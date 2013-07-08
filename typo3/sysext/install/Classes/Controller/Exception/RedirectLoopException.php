@@ -30,4 +30,3 @@ namespace TYPO3\CMS\Install\Controller\Exception;
 class RedirectLoopException extends \TYPO3\CMS\Install\Exception {
 
 }
-?>

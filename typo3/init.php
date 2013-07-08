@@ -56,7 +56,7 @@ require __DIR__ . '/sysext/core/Classes/Core/Bootstrap.php';
 
 \TYPO3\CMS\Core\Core\Bootstrap::getInstance()
 	->baseSetup('typo3/')
-	->redirectToInstallerIfLocalConfigurationFileDoesNotExist('../')
+	->redirectToInstallerIfEssentialConfigurationDoesNotExist('../')
 	->startOutputBuffering()
 	->loadConfigurationAndInitialize()
 	->loadTypo3LoadedExtAndExtLocalconf(TRUE)

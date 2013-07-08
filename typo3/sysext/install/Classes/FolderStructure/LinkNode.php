@@ -200,5 +200,5 @@ class LinkNode extends AbstractNode implements NodeInterface {
 	protected function getCurrentTarget() {
 		return readlink($this->getAbsolutePath());
 	}
+
 }
-?>

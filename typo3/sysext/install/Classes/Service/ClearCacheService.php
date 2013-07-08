@@ -60,6 +60,9 @@ class ClearCacheService {
 		// Delete typo3temp/Cache
 		GeneralUtility::rmdir(PATH_site . 'typo3temp/Cache', TRUE);
 
+		$bootstrap = \TYPO3\CMS\Core\Core\Bootstrap::getInstance();
+		$bootstrap->reinitializeClassLoaderAndCachesAndPackageManagement();
+
 		// Get all table names starting with 'cf_' and truncate them
 		$database = $this->getDatabaseInstance();
 		$tables = $database->admin_get_tables();
@@ -73,7 +76,7 @@ class ClearCacheService {
 		// From this point on, the code may fatal, if some broken extension is loaded.
 
 		// Use bootstrap to load all ext_localconf and ext_tables
-		\TYPO3\CMS\Core\Core\Bootstrap::getInstance()
+		$bootstrap
 			->loadTypo3LoadedExtAndExtLocalconf(FALSE)
 			->applyAdditionalConfigurationSettings()
 			->initializeTypo3DbGlobal()

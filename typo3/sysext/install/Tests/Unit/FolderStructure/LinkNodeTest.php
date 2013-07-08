@@ -381,5 +381,5 @@ class LinkNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$node->expects($this->once())->method('getAbsolutePath')->will($this->returnValue($path));
 		$this->assertFalse($node->_call('isTargetCorrect'));
 	}
+
 }
-?>

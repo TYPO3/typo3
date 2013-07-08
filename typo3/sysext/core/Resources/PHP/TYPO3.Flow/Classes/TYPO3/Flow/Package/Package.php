@@ -436,12 +436,34 @@ class Package implements PackageInterface {
 		return $classFiles;
 	}
 
+	/**
+	 * Added by TYPO3 CMS
+	 *
+	 * The package caching serializes package objects.
+	 * The package manager instance may not be serialized
+	 * as a fresh instance is created upon every request.
+	 *
+	 * This method will be removed once the package is
+	 * released of the package manager dependency.
+	 *
+	 * @return array
+	 */
 	public function __sleep() {
 		$properties = get_class_vars(__CLASS__);
 		unset($properties['packageManager']);
 		return array_keys($properties);
 	}
 
+	/**
+	 * Added by TYPO3 CMS
+	 *
+	 * The package caching deserializes package objects.
+	 * A fresh package manager instance has to be set
+	 * during bootstrapping.
+	 *
+	 * This method will be removed once the package is
+	 * released of the package manager dependency.
+	 */
 	public function __wakeup() {
 		if (isset($GLOBALS['TYPO3_currentPackageManager'])) {
 			$this->packageManager = $GLOBALS['TYPO3_currentPackageManager'];

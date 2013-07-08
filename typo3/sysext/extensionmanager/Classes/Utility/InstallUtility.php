@@ -172,6 +172,7 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	protected function unloadExtension($extensionKey) {
 		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::unloadExtension($extensionKey);
+		$this->reloadCaches();
 	}
 
 	/**

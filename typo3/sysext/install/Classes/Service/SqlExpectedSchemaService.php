@@ -68,13 +68,13 @@ class SqlExpectedSchemaService {
 		$sqlString = array();
 
 		// Find all ext_tables.sql of loaded extensions
-		$loadedExtensionInformation = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::loadTypo3LoadedExtensionInformation(FALSE);
+		$loadedExtensionInformation = $GLOBALS['TYPO3_LOADED_EXT'];
 		foreach ($loadedExtensionInformation as $extensionConfiguration) {
-			if (is_array($extensionConfiguration) && $extensionConfiguration['ext_tables.sql']) {
+			if ((is_array($extensionConfiguration) || $extensionConfiguration instanceof \ArrayAccess) && $extensionConfiguration['ext_tables.sql']) {
 				$sqlString[] = GeneralUtility::getUrl($extensionConfiguration['ext_tables.sql']);
 			}
 			if ($withStatic
-				&& is_array($extensionConfiguration)
+				&& (is_array($extensionConfiguration) || $extensionConfiguration instanceof \ArrayAccess)
 				&& $extensionConfiguration['ext_tables_static+adt.sql']
 			) {
 				$sqlString[] = GeneralUtility::getUrl($extensionConfiguration['ext_tables_static+adt.sql']);

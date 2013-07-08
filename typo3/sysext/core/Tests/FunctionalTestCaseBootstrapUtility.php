@@ -68,7 +68,8 @@ class FunctionalTestCaseBootstrapUtility {
 		$this->setUpInstanceDirectories();
 		$this->setUpInstanceCoreLinks();
 		$this->linkTestExtensionsToInstance($testExtensionsToLoad);
-		$this->setUpLocalConfiguration($coreExtensionsToLoad, $testExtensionsToLoad);
+		$this->setUpLocalConfiguration();
+		$this->setUpPackageStates($coreExtensionsToLoad, $testExtensionsToLoad);
 		$this->setUpBasicTypo3Bootstrap();
 		$this->setUpTestDatabase();
 		$this->createDatabaseStructure();
@@ -163,7 +164,7 @@ class FunctionalTestCaseBootstrapUtility {
 			ORIGINAL_ROOT . 'index.php' => $this->instancePath . '/index.php'
 		);
 		foreach ($linksToSet as $from => $to) {
-			$success = symlink($from,  $to);
+			$success = symlink($from, $to);
 			if (!$success) {
 				throw new Exception(
 					'Creating link failed: from ' . $from . ' to: ' . $to,
@@ -208,7 +209,7 @@ class FunctionalTestCaseBootstrapUtility {
 	 * @throws Exception
 	 * @return void
 	 */
-	protected function setUpLocalConfiguration(array $coreExtensionsToLoad, array $testExtensionPaths) {
+	protected function setUpLocalConfiguration() {
 		$originalConfigurationArray = require ORIGINAL_ROOT . 'typo3conf/LocalConfiguration.php';
 		// Base of final LocalConfiguration is core factory configuration
 		$finalConfigurationArray = require ORIGINAL_ROOT .'typo3/sysext/core/Configuration/FactoryConfiguration.php';
@@ -231,14 +232,6 @@ class FunctionalTestCaseBootstrapUtility {
 
 		$finalConfigurationArray['DB']['database'] = $this->databaseName;
 
-		// Determine list of additional extensions to load
-		$extensionNamesOfTestExtensions = array();
-		foreach ($testExtensionPaths as $path) {
-			$extensionNamesOfTestExtensions[] = basename($path);
-		}
-		$extensionsToLoad = array_merge($coreExtensionsToLoad, $extensionNamesOfTestExtensions);
-		$finalConfigurationArray['EXT']['extListArray'] = $extensionsToLoad;
-
 		$result = $this->writeFile(
 			$this->instancePath . '/typo3conf/LocalConfiguration.php',
 			'<?php' . chr(10) .
@@ -251,6 +244,31 @@ class FunctionalTestCaseBootstrapUtility {
 		);
 		if (!$result) {
 			throw new Exception('Can not write local configuration', 1376657277);
+		}
+	}
+
+	/**
+	 * @param array $coreExtensionsToLoad Additional core extensions to load
+	 * @param array $testExtensionPaths Paths to extensions relative to document root
+	 * @throws Exception
+	 * @TODO Figure out what the intention of the upper arguments is
+	 */
+	protected function setUpPackageStates(array $coreExtensionsToLoad, array $testExtensionPaths) {
+		$packageStates = require ORIGINAL_ROOT . 'typo3conf/PackageStates.php';
+		$packageStates['packages']['phpunit']['packagePath'] = '../../' . $packageStates['packages']['phpunit']['packagePath'];
+
+		$result = $this->writeFile(
+			$this->instancePath . '/typo3conf/PackageStates.php',
+			'<?php' . chr(10) .
+			'return ' .
+			$this->arrayExport(
+				$packageStates
+			) .
+			';' . chr(10) .
+			'?>'
+		);
+		if (!$result) {
+			throw new Exception('Can not write PackageStates', 1381612729);
 		}
 	}
 

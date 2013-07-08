@@ -56,6 +56,8 @@ class StepController extends AbstractController {
 		// conditions (new/existing installation). See the single method comments for details.
 		$this->outputInstallToolNotEnabledMessageIfNeeded();
 		$this->migrateLocalconfToLocalConfigurationIfNeeded();
+		// @TODO: Move method to silest upgrader?!
+		$this->migrateExtensionListToPackageStatesFile();
 		$this->outputInstallToolPasswordNotSetMessageIfNeeded();
 		$this->executeOrOutputFirstInstallStepIfNeeded();
 		$this->executeSilentConfigurationUpgradesIfNeeded();
@@ -254,6 +256,31 @@ class StepController extends AbstractController {
 
 			// Perform a reload to self, so bootstrap now uses new LocalConfiguration.php
 			$this->redirect();
+		}
+	}
+
+	/**
+	 * "Silent" upgrade very early in step installer, before rendering step 1
+	 *
+	 * @throws \Exception
+	 * @return void
+	 */
+	protected function migrateExtensionListToPackageStatesFile() {
+		try {
+			if (file_exists(PATH_typo3conf . 'PackageStates.php')) {
+				return;
+			}
+			$bootstrap = \TYPO3\CMS\Core\Core\Bootstrap::getInstance();
+			$packageManager = new \TYPO3\CMS\Install\Updates\UpdatePackageManager($bootstrap->getEarlyInstance('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager'));
+			$packageManager->createPackageStatesFile($bootstrap, PATH_site, PATH_typo3conf . 'PackageStates.php');
+
+			// Perform a reload to self, so bootstrap now uses new PackageStates.php
+			$this->redirect();
+		} catch (\Exception $exception) {
+			if (file_exists(PATH_typo3conf . 'PackageStates.php')) {
+				unlink(PATH_typo3conf . 'PackageStates.php');
+			}
+			throw $exception;
 		}
 	}
 
