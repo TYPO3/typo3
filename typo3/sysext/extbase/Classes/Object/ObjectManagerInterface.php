@@ -79,6 +79,16 @@ interface ObjectManagerInterface extends \TYPO3\CMS\Core\SingletonInterface {
 	 * @return integer One of the Container::SCOPE_ constants
 	 */
 	public function getScope($objectName);
+
+	/**
+	 * Get implementation class
+	 *
+	 * @param string $className
+	 * @return string class name
+	 * @internal
+	 */
+	public function getImplementationClass($className);
+
 }
 
 ?>

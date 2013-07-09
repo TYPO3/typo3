@@ -256,6 +256,7 @@ class Argument {
 	 * @api
 	 */
 	public function setDataType($dataType) {
+
 		$this->dataType = $dataType;
 		$this->dataTypeClassSchema = $this->reflectionService->getClassSchema($dataType);
 		return $this;

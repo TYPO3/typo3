@@ -154,6 +154,17 @@ class ObjectManager implements ObjectManagerInterface {
 	public function getEmptyObject($className) {
 		return $this->objectContainer->getEmptyObject($className);
 	}
+
+	/**
+	 * Get implementation class
+	 *
+	 * @param string $className
+	 * @return string class name
+	 * @internal
+	 */
+	public function getImplementationClass($className) {
+		return $this->objectContainer->getImplementationClassName($className);
+	}
 }
 
 ?>

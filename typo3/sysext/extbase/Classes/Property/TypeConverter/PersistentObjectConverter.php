@@ -62,6 +62,12 @@ class PersistentObjectConverter extends ObjectConverter {
 	protected $priority = 1;
 
 	/**
+	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper
+	 * @inject
+	 */
+	protected $dataMapper;
+
+	/**
 	 * @var \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface
 	 * @inject
 	 */
@@ -76,6 +82,18 @@ class PersistentObjectConverter extends ObjectConverter {
 	 */
 	public function canConvertFrom($source, $targetType) {
 		return is_subclass_of($targetType, 'TYPO3\\CMS\\Extbase\\DomainObject\\AbstractDomainObject');
+	}
+
+	/**
+	 * Returns the type for a given source, depending on e.g. the __type setting or other properties.
+	 *
+	 * @param mixed $source
+	 * @param string $originalTargetType
+	 * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration
+	 * @return string
+	 */
+	public function getTargetTypeForSource($source, $originalTargetType, \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration = NULL) {
+		return $this->dataMapper->getTargetType($originalTargetType, $source);
 	}
 
 	/**
