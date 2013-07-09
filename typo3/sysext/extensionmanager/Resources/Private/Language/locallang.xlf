@@ -305,6 +305,9 @@
 			<trans-unit id="extensionList.updateFromTer.never" xml:space="preserve">
 				<source>Never</source>
 			</trans-unit>
+			<trans-unit id="extensionList.uninstall.dependencyError" xml:space="preserve">
+				<source>Cannot deactivate extension '%s' - The extension(s) '%s' depend on it.</source>
+			</trans-unit>
 
 			<trans-unit id="task.updateExtensionListTask.name" xml:space="preserve">
 				<source>Update extension list</source>
