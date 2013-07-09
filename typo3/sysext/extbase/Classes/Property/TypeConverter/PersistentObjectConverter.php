@@ -62,6 +62,12 @@ class PersistentObjectConverter extends ObjectConverter {
 	protected $priority = 1;
 
 	/**
+	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper
+	 * @inject
+	 */
+	protected $dataMapper;
+
+	/**
 	 * @var \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface
 	 * @inject
 	 */
@@ -76,6 +82,27 @@ class PersistentObjectConverter extends ObjectConverter {
 	 */
 	public function canConvertFrom($source, $targetType) {
 		return is_subclass_of($targetType, 'TYPO3\\CMS\\Extbase\\DomainObject\\AbstractDomainObject');
+	}
+
+	/**
+	 * Returns the type for a given source, depending on e.g. the __type setting or other properties.
+	 *
+	 * @param mixed $source
+	 * @param string $originalTargetType
+	 * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration
+	 * @return string
+	 */
+	public function getTargetTypeForSource($source, $originalTargetType, \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration = NULL) {
+		if (is_string($source) || (is_array($source) && isset($source['__identity']))) {
+			$objectIdentifier = is_string($source) ? $source : $source['__identity'];
+			// Implementation classname translation happens in DataMapper.
+			// Has no performance impact as object is fetched from PersistenceSession if already reconstituted
+			return get_class($this->fetchObjectFromPersistence($objectIdentifier, $originalTargetType));
+		} elseif (is_array($source)) {
+			// Ask the datamapper in case of a new object
+			return $this->dataMapper->getTargetType($originalTargetType, $source);
+		}
+		return $originalTargetType;
 	}
 
 	/**
