@@ -886,11 +886,10 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 						$fieldListArr[] = $fN;
 					}
 				}
-				// Add special fields:
-				if ($dontCheckUser || $GLOBALS['BE_USER']->isAdmin()) {
-					$fieldListArr[] = 'uid';
-					$fieldListArr[] = 'pid';
-				}
+
+				$fieldListArr[] = 'uid';
+				$fieldListArr[] = 'pid';
+
 				// Add date fields
 				if ($dontCheckUser || $GLOBALS['BE_USER']->isAdmin() || $addDateFields) {
 					if ($GLOBALS['TCA'][$table]['ctrl']['tstamp']) {
