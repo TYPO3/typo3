@@ -153,7 +153,14 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	public function uninstall($extensionKey) {
 		$dependentExtensions = $this->dependencyUtility->findInstalledExtensionsThatDependOnMe($extensionKey);
 		if (is_array($dependentExtensions) && count($dependentExtensions) > 0) {
-			throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException('Cannot deactivate extension ' . $extensionKey . ' - The extension(s) ' . implode(',', $dependentExtensions) . ' depend on it', 1342554622);
+			throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException(
+				\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate(
+					'extensionList.uninstall.dependencyError',
+					'extensionmanager',
+					array($extensionKey, implode(',', $dependentExtensions))
+				),
+				1342554622
+			);
 		} else {
 			$this->unloadExtension($extensionKey);
 		}

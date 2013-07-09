@@ -79,7 +79,18 @@ class ActionController extends \TYPO3\CMS\Extensionmanager\Controller\AbstractCo
 		$installedExtensions = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getLoadedExtensionListArray();
 		if (in_array($extension, $installedExtensions)) {
 			// uninstall
-			$this->installUtility->uninstall($extension);
+			try {
+				$this->installUtility->uninstall($extension);
+			} catch (\TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException $e) {
+				$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+					'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
+					htmlspecialchars($e->getMessage()),
+					'',
+					\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR,
+					TRUE
+				);
+				$this->getControllerContext()->getFlashMessageQueue()->enqueue($flashMessage);
+			}
 		} else {
 			// install
 			$this->managementService->resolveDependenciesAndInstall(
