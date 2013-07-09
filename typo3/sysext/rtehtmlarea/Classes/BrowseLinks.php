@@ -788,13 +788,44 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 	 * @todo Define visibility
 	 */
 	public function addQueryParametersSelector() {
-		return $this->act == 'page' && $this->buttonConfig && is_array($this->buttonConfig['queryParametersSelector.']) && $this->buttonConfig['queryParametersSelector.']['enabled'] ? '
-						<tr>
-							<td>' . $GLOBALS['LANG']->getLL('query_parameters', 1) . ':</td>
-							<td colspan="3">
-								<input type="text" name="query_parameters" value="' . ($this->curUrlInfo['query'] ? $this->curUrlInfo['query'] : '') . '" ' . $this->doc->formWidth(30) . ' />
-							</td>
-						</tr>' : '';
+		if($this->act == 'page' && $this->buttonConfig && is_array($this->buttonConfig['queryParametersSelector.']) && $this->buttonConfig['queryParametersSelector.']['enabled']){
+			$inputType = $this->buttonConfig['queryParametersSelector.']['input'];
+			if($this->buttonConfig['properties.']['parameter.']['allowedParameters']){
+				$parametersAnchorArray = t3lib_div::trimExplode(',', $this->buttonConfig['properties.']['parameter.']['allowedParameters'], 1);
+			}
+			switch($inputType){
+				case 'select':
+					if (is_array($parametersAnchorArray) && is_array($this->RTEProperties['parameters.'])){
+						$options = '<option value=""></option>';
+						foreach($parametersAnchorArray as $allowedParameter){
+							$parameterLabel = (is_array($this->RTEProperties['parameters.'][$allowedParameter.'.']) && $this->RTEProperties['parameters.'][$allowedParameter.'.']['name']) ? $this->getPageConfigLabel($this->RTEProperties['parameters.'][$allowedParameter.'.']['name'], 0) : $allowedParameter;
+							$parameterConfig = (is_array($this->RTEProperties['parameters.'][$allowedParameter.'.']) && $this->RTEProperties['parameters.'][$allowedParameter.'.']['config']) ? $this->RTEProperties['parameters.'][$allowedParameter.'.']['config'] : '';
+							$options .= '<option value="' . $parameterConfig . '">' . $parameterLabel . '</option>';
+						}
+						return '<tr>
+									<td>'.$LANG->getLL('query_parameters',1).':</td>
+									<td colspan="3">
+										<select name="query_parameters">' . $options . '</select>
+									</td>
+								</tr>';
+					} else{
+						return '';
+					}
+				break;
+
+				case 'text';
+				default;
+					return '<tr>
+								<td>'.$LANG->getLL('query_parameters',1).':</td>
+								<td colspan="3">
+									<input type="text" name="query_parameters" value="' . ($this->curUrlInfo['query']?$this->curUrlInfo['query']:'') . '" ' . $this->doc->formWidth(30) . ' />
+								</td>
+							</tr>';
+				break;
+			}
+		} else{
+			return '';
+		}
 	}
 
 	/**
