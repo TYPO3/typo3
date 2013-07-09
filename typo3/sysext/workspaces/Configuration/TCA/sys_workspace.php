@@ -3,7 +3,7 @@ return array(
 	'ctrl' => array(
 		'label' => 'title',
 		'tstamp' => 'tstamp',
-		'title' => 'LLL:EXT:lang/locallang_tca.xml:sys_workspace',
+		'title' => 'LLL:EXT:lang/locallang_tca.xlf:sys_workspace',
 		'adminOnly' => 1,
 		'rootLevel' => 1,
 		'delete' => 'deleted',
@@ -16,7 +16,7 @@ return array(
 	),
 	'columns' => array(
 		'title' => array(
-			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.title',
+			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.title',
 			'config' => array(
 				'type' => 'input',
 				'size' => '20',
@@ -25,7 +25,7 @@ return array(
 			)
 		),
 		'description' => array(
-			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.description',
+			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.description',
 			'config' => array(
 				'type' => 'text',
 				'rows' => 5,
@@ -33,7 +33,7 @@ return array(
 			)
 		),
 		'adminusers' => array(
-			'label' => 'LLL:EXT:lang/locallang_tca.xml:sys_workspace.adminusers',
+			'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_workspace.adminusers',
 			'config' => array(
 				'type' => 'group',
 				'internal_type' => 'db',
@@ -51,7 +51,7 @@ return array(
 			)
 		),
 		'members' => array(
-			'label' => 'LLL:EXT:lang/locallang_tca.xml:sys_workspace.members',
+			'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_workspace.members',
 			'config' => array(
 				'type' => 'group',
 				'internal_type' => 'db',
@@ -69,7 +69,7 @@ return array(
 			)
 		),
 		'db_mountpoints' => array(
-			'label' => 'LLL:EXT:lang/locallang_tca.xml:db_mountpoints',
+			'label' => 'LLL:EXT:lang/locallang_tca.xlf:db_mountpoints',
 			'config' => array(
 				'type' => 'group',
 				'internal_type' => 'db',
@@ -86,7 +86,7 @@ return array(
 			)
 		),
 		'file_mountpoints' => array(
-			'label' => 'LLL:EXT:lang/locallang_tca.xml:file_mountpoints',
+			'label' => 'LLL:EXT:lang/locallang_tca.xlf:file_mountpoints',
 			'config' => array(
 				'type' => 'select',
 				'foreign_table' => 'sys_filemounts',
@@ -99,7 +99,7 @@ return array(
 			)
 		),
 		'publish_time' => array(
-			'label' => 'LLL:EXT:lang/locallang_tca.xml:sys_workspace.publish_time',
+			'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_workspace.publish_time',
 			'config' => array(
 				'type' => 'input',
 				'size' => '8',
@@ -110,7 +110,7 @@ return array(
 			)
 		),
 		'unpublish_time' => array(
-			'label' => 'LLL:EXT:lang/locallang_tca.xml:sys_workspace.unpublish_time',
+			'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_workspace.unpublish_time',
 			'config' => array(
 				'type' => 'input',
 				'size' => '8',
@@ -125,28 +125,28 @@ return array(
 			'displayCond' => 'FALSE'
 		),
 		'freeze' => array(
-			'label' => 'LLL:EXT:lang/locallang_tca.xml:sys_workspace.freeze',
+			'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_workspace.freeze',
 			'config' => array(
 				'type' => 'check',
 				'default' => '0'
 			)
 		),
 		'live_edit' => array(
-			'label' => 'LLL:EXT:lang/locallang_tca.xml:sys_workspace.live_edit',
+			'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_workspace.live_edit',
 			'config' => array(
 				'type' => 'check',
 				'default' => '0'
 			)
 		),
 		'disable_autocreate' => array(
-			'label' => 'LLL:EXT:lang/locallang_tca.xml:sys_workspace.disable_autocreate',
+			'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_workspace.disable_autocreate',
 			'config' => array(
 				'type' => 'check',
 				'default' => '0'
 			)
 		),
 		'swap_modes' => array(
-			'label' => 'LLL:EXT:lang/locallang_tca.xml:sys_workspace.swap_modes',
+			'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_workspace.swap_modes',
 			'config' => array(
 				'type' => 'select',
 				'items' => array(
@@ -157,7 +157,7 @@ return array(
 			)
 		),
 		'publish_access' => array(
-			'label' => 'LLL:EXT:lang/locallang_tca.xml:sys_workspace.publish_access',
+			'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_workspace.publish_access',
 			'config' => array(
 				'type' => 'check',
 				'items' => array(
@@ -167,7 +167,7 @@ return array(
 			)
 		),
 		'stagechg_notification' => array(
-			'label' => 'LLL:EXT:lang/locallang_tca.xml:sys_workspace.stagechg_notification',
+			'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_workspace.stagechg_notification',
 			'config' => array(
 				'type' => 'select',
 				'items' => array(
@@ -179,7 +179,7 @@ return array(
 		),
 		'custom_stages' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xml:sys_workspace.custom_stages',
+			'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.custom_stages',
 			'config' => array(
 				'type' => 'inline',
 				'foreign_table' => 'sys_workspace_stage',
@@ -191,18 +191,18 @@ return array(
 			'default' => 0
 		),
 		'edit_notification_mode' => array(
-			'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xml:sys_workspace.edit_notification_mode',
+			'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.edit_notification_mode',
 			'config' => array(
 				'type' => 'select',
 				'items' => array(
-					array('LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xml:sys_workspace.notification_mode.0', 0),
-					array('LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xml:sys_workspace.notification_mode.1', 1),
-					array('LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xml:sys_workspace.notification_mode.2', 2)
+					array('LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.notification_mode.0', 0),
+					array('LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.notification_mode.1', 1),
+					array('LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.notification_mode.2', 2)
 				)
 			)
 		),
 		'edit_notification_defaults' => array(
-			'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xml:sys_workspace.edit_notification_defaults',
+			'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.edit_notification_defaults',
 			'displayCond' => 'FIELD:edit_notification_mode:IN:0,1',
 			'config' => array(
 				'type' => 'group',
@@ -221,25 +221,25 @@ return array(
 			)
 		),
 		'edit_allow_notificaton_settings' => array(
-			'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xml:sys_workspace.edit_allow_notificaton_settings',
+			'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.edit_allow_notificaton_settings',
 			'config' => array(
 				'type' => 'check',
 				'default' => 1
 			)
 		),
 		'publish_notification_mode' => array(
-			'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xml:sys_workspace.publish_notification_mode',
+			'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.publish_notification_mode',
 			'config' => array(
 				'type' => 'select',
 				'items' => array(
-					array('LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xml:sys_workspace.notification_mode.0', 0),
-					array('LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xml:sys_workspace.notification_mode.1', 1),
-					array('LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xml:sys_workspace.notification_mode.2', 2)
+					array('LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.notification_mode.0', 0),
+					array('LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.notification_mode.1', 1),
+					array('LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.notification_mode.2', 2)
 				)
 			)
 		),
 		'publish_notification_defaults' => array(
-			'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xml:sys_workspace.publish_notification_defaults',
+			'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.publish_notification_defaults',
 			'displayCond' => 'FIELD:publish_notification_mode:IN:0,1',
 			'config' => array(
 				'type' => 'group',
@@ -258,7 +258,7 @@ return array(
 			)
 		),
 		'publish_allow_notificaton_settings' => array(
-			'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xml:sys_workspace.publish_allow_notificaton_settings',
+			'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.publish_allow_notificaton_settings',
 			'config' => array(
 				'type' => 'check',
 				'default' => 1
@@ -267,12 +267,12 @@ return array(
 	),
 	'types' => array(
 		'0' => array('showitem' => 'title,description,
-			--div--;LLL:EXT:lang/locallang_tca.xml:sys_filemounts.tabs.users,adminusers,members,
-			--div--;LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xml:tabs.notification_settings,stagechg_notification,edit_notification_mode,edit_notification_defaults,edit_allow_notificaton_settings,publish_notification_mode,publish_notification_defaults,publish_allow_notificaton_settings,
-			--div--;LLL:EXT:lang/locallang_tca.xml:sys_filemounts.tabs.mountpoints,db_mountpoints,file_mountpoints,
-			--div--;LLL:EXT:lang/locallang_tca.xml:sys_filemounts.tabs.publishing,publish_time,unpublish_time,
-			--div--;LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xml:sys_filemounts.tabs.staging,custom_stages,
-			--div--;LLL:EXT:lang/locallang_tca.xml:sys_filemounts.tabs.other,freeze,live_edit,disable_autocreate,swap_modes,publish_access')
+			--div--;LLL:EXT:lang/locallang_tca.xlf:sys_filemounts.tabs.users,adminusers,members,
+			--div--;LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:tabs.notification_settings,stagechg_notification,edit_notification_mode,edit_notification_defaults,edit_allow_notificaton_settings,publish_notification_mode,publish_notification_defaults,publish_allow_notificaton_settings,
+			--div--;LLL:EXT:lang/locallang_tca.xlf:sys_filemounts.tabs.mountpoints,db_mountpoints,file_mountpoints,
+			--div--;LLL:EXT:lang/locallang_tca.xlf:sys_filemounts.tabs.publishing,publish_time,unpublish_time,
+			--div--;LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_filemounts.tabs.staging,custom_stages,
+			--div--;LLL:EXT:lang/locallang_tca.xlf:sys_filemounts.tabs.other,freeze,live_edit,disable_autocreate,swap_modes,publish_access')
 	)
 );
 ?>

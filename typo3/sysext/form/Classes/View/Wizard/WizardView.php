@@ -54,7 +54,7 @@ class WizardView extends \TYPO3\CMS\Form\View\Wizard\AbstractWizardView {
 	 */
 	public function __construct(\TYPO3\CMS\Form\Domain\Repository\ContentRepository $repository) {
 		parent::__construct($repository);
-		$GLOBALS['LANG']->includeLLFile('EXT:form/Resources/Private/Language/locallang_wizard.xml');
+		$GLOBALS['LANG']->includeLLFile('EXT:form/Resources/Private/Language/locallang_wizard.xlf');
 		$GLOBALS['SOBE'] = $this;
 		// Define the document template object
 		$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');

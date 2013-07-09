@@ -101,7 +101,7 @@ class LanguageRepository {
 			array_shift($languages);
 
 			foreach ($languages as $locale => $language) {
-				$label = htmlspecialchars($GLOBALS['LANG']->sL('LLL:EXT:setup/mod/locallang.xml:lang_' . $locale));
+				$label = htmlspecialchars($GLOBALS['LANG']->sL('LLL:EXT:setup/mod/locallang.xlf:lang_' . $locale));
 				if ($label === '') {
 					$label = htmlspecialchars($language);
 				}

@@ -57,7 +57,7 @@ class StagesService {
 	 *
 	 * @var string
 	 */
-	private $pathToLocallang = 'LLL:EXT:workspaces/Resources/Private/Language/locallang.xml';
+	private $pathToLocallang = 'LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf';
 
 	/**
 	 * Local cache to reduce number of database queries for stages, groups, etc.
@@ -219,7 +219,7 @@ class StagesService {
 		} else {
 			$stages[] = array(
 				'uid' => self::STAGE_EDIT_ID,
-				'title' => $GLOBALS['LANG']->sL(($this->pathToLocallang . ':actionSendToStage')) . ' "' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_user_ws.xml:stage_editing') . '"'
+				'title' => $GLOBALS['LANG']->sL(($this->pathToLocallang . ':actionSendToStage')) . ' "' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_user_ws.xlf:stage_editing') . '"'
 			);
 			$workspaceRec = BackendUtility::getRecord('sys_workspace', $this->getWorkspaceId());
 			if ($workspaceRec['custom_stages'] > 0) {
@@ -232,7 +232,7 @@ class StagesService {
 			}
 			$stages[] = array(
 				'uid' => self::STAGE_PUBLISH_ID,
-				'title' => $GLOBALS['LANG']->sL(($this->pathToLocallang . ':actionSendToStage')) . ' "' . $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang_mod.xml:stage_ready_to_publish') . '"'
+				'title' => $GLOBALS['LANG']->sL(($this->pathToLocallang . ':actionSendToStage')) . ' "' . $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang_mod.xlf:stage_ready_to_publish') . '"'
 			);
 			$stages[] = array(
 				'uid' => self::STAGE_PUBLISH_EXECUTE_ID,
@@ -305,18 +305,18 @@ class StagesService {
 		$stageTitle = '';
 		switch ($ver_stage) {
 			case self::STAGE_PUBLISH_EXECUTE_ID:
-				$stageTitle = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_user_ws.xml:stage_publish');
+				$stageTitle = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_user_ws.xlf:stage_publish');
 				break;
 			case self::STAGE_PUBLISH_ID:
-				$stageTitle = $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang_mod.xml:stage_ready_to_publish');
+				$stageTitle = $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang_mod.xlf:stage_ready_to_publish');
 				break;
 			case self::STAGE_EDIT_ID:
-				$stageTitle = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_user_ws.xml:stage_editing');
+				$stageTitle = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_user_ws.xlf:stage_editing');
 				break;
 			default:
 				$stageTitle = $this->getPropertyOfCurrentWorkspaceStage($ver_stage, 'title');
 				if ($stageTitle == NULL) {
-					$stageTitle = $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:error.getStageTitle.stageNotFound');
+					$stageTitle = $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:error.getStageTitle.stageNotFound');
 				}
 		}
 		return $stageTitle;
@@ -340,7 +340,7 @@ class StagesService {
 	 */
 	public function getNextStage($stageId) {
 		if (!\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($stageId)) {
-			throw new \InvalidArgumentException($GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:error.stageId.integer'), 1291109987);
+			throw new \InvalidArgumentException($GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:error.stageId.integer'), 1291109987);
 		}
 		$nextStage = FALSE;
 		$workspaceStageRecs = $this->getStagesForWS();
@@ -360,7 +360,7 @@ class StagesService {
 		if ($nextStage === FALSE) {
 			$nextStage[] = array(
 				'uid' => self::STAGE_EDIT_ID,
-				'title' => $GLOBALS['LANG']->sL(($this->pathToLocallang . ':actionSendToStage')) . ' "' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_user_ws.xml:stage_editing') . '"'
+				'title' => $GLOBALS['LANG']->sL(($this->pathToLocallang . ':actionSendToStage')) . ' "' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_user_ws.xlf:stage_editing') . '"'
 			);
 		}
 		return $nextStage;
@@ -405,7 +405,7 @@ class StagesService {
 	 */
 	public function getPrevStage($stageid) {
 		if (!\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($stageid)) {
-			throw new \InvalidArgumentException($GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:error.stageId.integer'));
+			throw new \InvalidArgumentException($GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:error.stageId.integer'));
 		}
 		$prevStage = FALSE;
 		$workspaceStageRecs = $this->getStagesForWS();
@@ -621,7 +621,7 @@ class StagesService {
 	public function getPropertyOfCurrentWorkspaceStage($stageId, $property) {
 		$result = NULL;
 		if (!\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($stageId)) {
-			throw new \InvalidArgumentException($GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:error.stageId.integer'));
+			throw new \InvalidArgumentException($GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:error.stageId.integer'));
 		}
 		$workspaceStage = BackendUtility::getRecord(self::TABLE_STAGE, $stageId);
 		if (is_array($workspaceStage) && isset($workspaceStage[$property])) {
@@ -749,7 +749,7 @@ class StagesService {
 	 */
 	public function getNotificationMode($stageId) {
 		if (!\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($stageId)) {
-			throw new \InvalidArgumentException($GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:error.stageId.integer'));
+			throw new \InvalidArgumentException($GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:error.stageId.integer'));
 		}
 		switch ($stageId) {
 			case self::STAGE_PUBLISH_EXECUTE_ID:

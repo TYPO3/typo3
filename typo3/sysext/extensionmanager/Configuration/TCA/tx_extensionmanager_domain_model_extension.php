@@ -1,7 +1,7 @@
 <?php
 return array(
 	'ctrl' => array(
-		'title' => 'LLL:EXT:extensionmanager/Resources/Private/Language/locallang_db.xml:tx_extensionmanager_domain_model_extension',
+		'title' => 'LLL:EXT:extensionmanager/Resources/Private/Language/locallang_db.xlf:tx_extensionmanager_domain_model_extension',
 		'label' => 'uid',
 		'default_sortby' => '',
 		'hideTable' => TRUE
@@ -12,7 +12,7 @@ return array(
 	'columns' => array(
 		'extension_key' => array(
 			'exclude' => 0,
-			'label' => 'LLL:EXT:extensionmanager/Resources/Private/locallang_db.xml:tx_extensionmanager_domain_model_extension.extensionkey',
+			'label' => 'LLL:EXT:extensionmanager/Resources/Private/locallang_db.xlf:tx_extensionmanager_domain_model_extension.extensionkey',
 			'config' => array(
 				'type' => 'input',
 				'size' => '30'
@@ -20,7 +20,7 @@ return array(
 		),
 		'version' => array(
 			'exclude' => 0,
-			'label' => 'LLL:EXT:extensionmanager/Resources/Private/locallang_db.xml:tx_extensionmanager_domain_model_extension.version',
+			'label' => 'LLL:EXT:extensionmanager/Resources/Private/locallang_db.xlf:tx_extensionmanager_domain_model_extension.version',
 			'config' => array(
 				'type' => 'input',
 				'size' => '30'
@@ -33,7 +33,7 @@ return array(
 		),
 		'integer_version' => array(
 			'exclude' => 0,
-			'label' => 'LLL:EXT:extensionmanager/Resources/Private/locallang_db.xml:tx_extensionmanager_domain_model_extension.integerversion',
+			'label' => 'LLL:EXT:extensionmanager/Resources/Private/locallang_db.xlf:tx_extensionmanager_domain_model_extension.integerversion',
 			'config' => array(
 				'type' => 'input',
 				'size' => '30'
@@ -41,7 +41,7 @@ return array(
 		),
 		'title' => array(
 			'exclude' => 0,
-			'label' => 'LLL:EXT:extensionmanager/Resources/Private/locallang_db.xml:tx_extensionmanager_domain_model_extension.title',
+			'label' => 'LLL:EXT:extensionmanager/Resources/Private/locallang_db.xlf:tx_extensionmanager_domain_model_extension.title',
 			'config' => array(
 				'type' => 'input',
 				'size' => '30'
@@ -49,7 +49,7 @@ return array(
 		),
 		'description' => array(
 			'exclude' => 0,
-			'label' => 'LLL:EXT:extensionmanager/Resources/Private/locallang_db.xml:tx_extensionmanager_domain_model_extension.description',
+			'label' => 'LLL:EXT:extensionmanager/Resources/Private/locallang_db.xlf:tx_extensionmanager_domain_model_extension.description',
 			'config' => array(
 				'type' => 'text',
 				'cols' => '30',
@@ -58,7 +58,7 @@ return array(
 		),
 		'state' => array(
 			'exclude' => 0,
-			'label' => 'LLL:EXT:extensionmanager/Resources/Private/locallang_db.xml:tx_extensionmanager_domain_model_extension.state',
+			'label' => 'LLL:EXT:extensionmanager/Resources/Private/locallang_db.xlf:tx_extensionmanager_domain_model_extension.state',
 			'config' => array(
 				'type' => 'input',
 				'size' => '30',
@@ -68,7 +68,7 @@ return array(
 		),
 		'category' => array(
 			'exclude' => 0,
-			'label' => 'LLL:EXT:extensionmanager/Resources/Private/locallang_db.xml:tx_extensionmanager_domain_model_extension.category',
+			'label' => 'LLL:EXT:extensionmanager/Resources/Private/locallang_db.xlf:tx_extensionmanager_domain_model_extension.category',
 			'config' => array(
 				'type' => 'input',
 				'size' => '30',
@@ -78,7 +78,7 @@ return array(
 		),
 		'last_updated' => array(
 			'exclude' => 0,
-			'label' => 'LLL:EXT:extensionmanager/Resources/Private/locallang_db.xml:tx_extensionmanager_domain_model_extension.lastupdated',
+			'label' => 'LLL:EXT:extensionmanager/Resources/Private/locallang_db.xlf:tx_extensionmanager_domain_model_extension.lastupdated',
 			'config' => array(
 				'type' => 'input',
 				'size' => '30',
@@ -87,7 +87,7 @@ return array(
 		),
 		'update_comment' => array(
 			'exclude' => 0,
-			'label' => 'LLL:EXT:extensionmanager/Resources/Private/locallang_db.xml:tx_extensionmanager_domain_model_extension.updatecomment',
+			'label' => 'LLL:EXT:extensionmanager/Resources/Private/locallang_db.xlf:tx_extensionmanager_domain_model_extension.updatecomment',
 			'config' => array(
 				'type' => 'text',
 				'cols' => '30',
@@ -96,7 +96,7 @@ return array(
 		),
 		'author_name' => array(
 			'exclude' => 0,
-			'label' => 'LLL:EXT:extensionmanager/Resources/Private/locallang_db.xml:tx_extensionmanager_domain_model_extension.authorname',
+			'label' => 'LLL:EXT:extensionmanager/Resources/Private/locallang_db.xlf:tx_extensionmanager_domain_model_extension.authorname',
 			'config' => array(
 				'type' => 'input',
 				'size' => '30'
@@ -104,7 +104,7 @@ return array(
 		),
 		'author_email' => array(
 			'exclude' => 0,
-			'label' => 'LLL:EXT:extensionmanager/Resources/Private/locallang_db.xml:tx_extensionmanager_domain_model_extension.authoremail',
+			'label' => 'LLL:EXT:extensionmanager/Resources/Private/locallang_db.xlf:tx_extensionmanager_domain_model_extension.authoremail',
 			'config' => array(
 				'type' => 'input',
 				'size' => '30'
@@ -112,7 +112,7 @@ return array(
 		),
 		'current_version' => array(
 			'exclude' => 0,
-			'label' => 'LLL:EXT:extensionmanager/Resources/Private/locallang_db.xml:tx_extensionmanager_domain_model_extension.currentversion',
+			'label' => 'LLL:EXT:extensionmanager/Resources/Private/locallang_db.xlf:tx_extensionmanager_domain_model_extension.currentversion',
 			'config' => array(
 				'type' => 'check',
 				'size' => '1'
@@ -120,7 +120,7 @@ return array(
 		),
 		'review_state' => array(
 			'exclude' => 0,
-			'label' => 'LLL:EXT:extensionmanager/Resources/Private/locallang_db.xml:tx_extensionmanager_domain_model_extension.reviewstate',
+			'label' => 'LLL:EXT:extensionmanager/Resources/Private/locallang_db.xlf:tx_extensionmanager_domain_model_extension.reviewstate',
 			'config' => array(
 				'type' => 'check',
 				'size' => '1'
@@ -128,7 +128,7 @@ return array(
 		),
 		'md5hash' => array(
 			'exclude' => 0,
-			'label' => 'LLL:EXT:extensionmanager/Resources/Private/locallang_db.xml:tx_extensionmanager_domain_model_extension.md5hash',
+			'label' => 'LLL:EXT:extensionmanager/Resources/Private/locallang_db.xlf:tx_extensionmanager_domain_model_extension.md5hash',
 			'config' => array(
 				'type' => 'input',
 				'size' => '1',
@@ -136,7 +136,7 @@ return array(
 		),
 		'serialized_dependencies' => array(
 			'exclude' => 0,
-			'label' => 'LLL:EXT:extensionmanager/Resources/Private/locallang_db.xml:tx_extensionmanager_domain_model_extension.serializedDependencies',
+			'label' => 'LLL:EXT:extensionmanager/Resources/Private/locallang_db.xlf:tx_extensionmanager_domain_model_extension.serializedDependencies',
 			'config' => array(
 				'type' => 'input',
 				'size' => '30',

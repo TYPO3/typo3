@@ -92,7 +92,7 @@ class WorkspaceService implements \TYPO3\CMS\Core\SingletonInterface {
 		$title = FALSE;
 		switch ($wsId) {
 			case self::LIVE_WORKSPACE_ID:
-				$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.xml:shortcut_onlineWS');
+				$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.xlf:shortcut_onlineWS');
 				break;
 			default:
 				$labelField = $GLOBALS['TCA']['sys_workspace']['ctrl']['label'];

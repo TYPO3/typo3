@@ -37,7 +37,7 @@
 unset($MCONF);
 require 'conf.php';
 require $BACK_PATH . 'init.php';
-$LANG->includeLLFile('EXT:cms/layout/locallang.xml');
+$LANG->includeLLFile('EXT:cms/layout/locallang.xlf');
 
 $BE_USER->modAccess($MCONF, 1);
 // Will open up records locked by current user. It's assumed that the locking should end if this script is hit.

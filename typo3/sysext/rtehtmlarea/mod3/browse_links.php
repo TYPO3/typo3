@@ -39,8 +39,8 @@ error_reporting(E_ALL & ~(E_STRICT | E_NOTICE | E_DEPRECATED));
 unset($MCONF);
 require 'conf.php';
 require $BACK_PATH . 'init.php';
-$LANG->includeLLFile('EXT:rtehtmlarea/mod3/locallang.xml');
-$LANG->includeLLFile('EXT:rtehtmlarea/htmlarea/locallang_dialogs.xml');
+$LANG->includeLLFile('EXT:rtehtmlarea/mod3/locallang.xlf');
+$LANG->includeLLFile('EXT:rtehtmlarea/htmlarea/locallang_dialogs.xlf');
 /*
  * @deprecated since 6.0, the classname tx_rtehtmlarea_SC_browse_links and this file is obsolete
  * and will be removed with 6.2. The class was renamed and is now located at:

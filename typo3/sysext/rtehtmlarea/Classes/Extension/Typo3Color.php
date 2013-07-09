@@ -36,7 +36,7 @@ class Typo3Color extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 	protected $pluginName = 'TYPO3Color';
 
 	// The name of the plugin registered by the extension
-	protected $relativePathToLocallangFile = 'extensions/TYPO3Color/locallang.xml';
+	protected $relativePathToLocallangFile = 'extensions/TYPO3Color/locallang.xlf';
 
 	// Path to this main locallang file of the extension relative to the extension dir.
 	protected $relativePathToSkin = 'extensions/TYPO3Color/skin/htmlarea.css';

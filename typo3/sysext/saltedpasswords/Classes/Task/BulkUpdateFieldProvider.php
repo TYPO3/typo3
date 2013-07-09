@@ -78,7 +78,7 @@ class BulkUpdateFieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldPro
 		$fieldHtml = '<input type="checkbox"' . ' name="' . $fieldName . '"' . ' id="' . $fieldId . '"' . ' value="' . $fieldValue . '"' . ($fieldChecked ? ' checked="checked"' : '') . ' />';
 		$additionalFields[$fieldId] = array(
 			'code' => $fieldHtml,
-			'label' => 'LLL:EXT:saltedpasswords/locallang.xml:ext.saltedpasswords.tasks.bulkupdate.label.canDeactivateSelf',
+			'label' => 'LLL:EXT:saltedpasswords/locallang.xlf:ext.saltedpasswords.tasks.bulkupdate.label.canDeactivateSelf',
 			'cshKey' => '_txsaltedpasswords',
 			'cshLabel' => $fieldId
 		);
@@ -89,7 +89,7 @@ class BulkUpdateFieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldPro
 		$fieldHtml = '<input type="text" name="' . $fieldName . '" id="' . $fieldId . '" value="' . htmlspecialchars($fieldValue) . '" />';
 		$additionalFields[$fieldId] = array(
 			'code' => $fieldHtml,
-			'label' => 'LLL:EXT:saltedpasswords/locallang.xml:ext.saltedpasswords.tasks.bulkupdate.label.numberOfRecords',
+			'label' => 'LLL:EXT:saltedpasswords/locallang.xlf:ext.saltedpasswords.tasks.bulkupdate.label.numberOfRecords',
 			'cshKey' => '_txsaltedpasswords',
 			'cshLabel' => $fieldId
 		);
@@ -109,7 +109,7 @@ class BulkUpdateFieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldPro
 		// If not, fail validation and issue error message
 		if (!is_numeric($submittedData['scheduler_saltedpasswordsBulkUpdateNumberOfRecords']) || intval($submittedData['scheduler_saltedpasswordsBulkUpdateNumberOfRecords']) < 0) {
 			$result = FALSE;
-			$parentObject->addMessage($GLOBALS['LANG']->sL('LLL:EXT:saltedpasswords/locallang.xml:ext.saltedpasswords.tasks.bulkupdate.invalidNumberOfRecords'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+			$parentObject->addMessage($GLOBALS['LANG']->sL('LLL:EXT:saltedpasswords/locallang.xlf:ext.saltedpasswords.tasks.bulkupdate.invalidNumberOfRecords'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
 		}
 		return $result;
 	}

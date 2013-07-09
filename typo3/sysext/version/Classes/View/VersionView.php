@@ -56,30 +56,30 @@ class VersionView {
 			$versions = \TYPO3\CMS\Backend\Utility\BackendUtility::selectVersionsOfRecord('pages', $onlineId, 'uid,pid,t3ver_label,t3ver_oid,t3ver_wsid,t3ver_id');
 			// If more than one was found...:
 			if (count($versions) > 1) {
-				$selectorLabel = '<strong>' . $GLOBALS['LANG']->sL('LLL:EXT:version/locallang.xml:versionSelect.label', TRUE) . '</strong>';
+				$selectorLabel = '<strong>' . $GLOBALS['LANG']->sL('LLL:EXT:version/locallang.xlf:versionSelect.label', TRUE) . '</strong>';
 				// Create selector box entries:
 				$opt = array();
 				foreach ($versions as $vRow) {
 					if ($vRow['uid'] == $onlineId) {
 						// Live version
-						$label = '[' . $GLOBALS['LANG']->sL('LLL:EXT:version/locallang.xml:versionSelect.live', TRUE) . ']';
+						$label = '[' . $GLOBALS['LANG']->sL('LLL:EXT:version/locallang.xlf:versionSelect.live', TRUE) . ']';
 					} else {
-						$label = $vRow['t3ver_label'] . ' (' . $GLOBALS['LANG']->sL('LLL:EXT:version/locallang.xml:versionId', TRUE) . ' ' . $vRow['t3ver_id'] . ($vRow['t3ver_wsid'] != 0 ? ' ' . $GLOBALS['LANG']->sL('LLL:EXT:version/locallang.xml:workspaceId', TRUE) . ' ' . $vRow['t3ver_wsid'] : '') . ')';
+						$label = $vRow['t3ver_label'] . ' (' . $GLOBALS['LANG']->sL('LLL:EXT:version/locallang.xlf:versionId', TRUE) . ' ' . $vRow['t3ver_id'] . ($vRow['t3ver_wsid'] != 0 ? ' ' . $GLOBALS['LANG']->sL('LLL:EXT:version/locallang.xlf:workspaceId', TRUE) . ' ' . $vRow['t3ver_wsid'] : '') . ')';
 					}
 					$opt[] = '<option value="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array('id' => $vRow['uid']))) . '"' . ($id == $vRow['uid'] ? ' selected="selected"' : '') . '>' . htmlspecialchars($label) . '</option>';
 				}
 				// Add management link:
-				$management = '<input type="button" value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:ver.mgm', TRUE) . '" onclick="window.location.href=\'' . htmlspecialchars(($GLOBALS['BACK_PATH'] . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('version') . 'cm1/index.php?table=pages&uid=' . $onlineId)) . '\';" />';
+				$management = '<input type="button" value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:ver.mgm', TRUE) . '" onclick="window.location.href=\'' . htmlspecialchars(($GLOBALS['BACK_PATH'] . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('version') . 'cm1/index.php?table=pages&uid=' . $onlineId)) . '\';" />';
 				// Create onchange handler:
 				$onChange = 'window.location.href=this.options[this.selectedIndex].value;';
 				// Controls:
 				if ($id == $onlineId) {
-					$controls .= '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/blinkarrow_left.gif', 'width="5" height="9"') . ' class="absmiddle" alt="" /> <strong>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:ver.online', TRUE) . '</strong>';
+					$controls .= '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/blinkarrow_left.gif', 'width="5" height="9"') . ' class="absmiddle" alt="" /> <strong>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:ver.online', TRUE) . '</strong>';
 				} elseif (!$noAction) {
 					$controls .= '<a href="' . $GLOBALS['TBE_TEMPLATE']->issueCommand(('&cmd[pages][' . $onlineId . '][version][swapWith]=' . $id . '&cmd[pages][' . $onlineId . '][version][action]=swap'), \TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array('id' => $onlineId))) . '" class="nobr">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-version-swap-version', array(
-						'title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:ver.swapPage', TRUE),
+						'title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:ver.swapPage', TRUE),
 						'style' => 'margin-left:5px;vertical-align:bottom;'
-					)) . '<strong>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:ver.swap', TRUE) . '</strong></a>';
+					)) . '<strong>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:ver.swap', TRUE) . '</strong></a>';
 				}
 				// Write out HTML code:
 				return '

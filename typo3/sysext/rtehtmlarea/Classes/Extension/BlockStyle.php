@@ -36,7 +36,7 @@ class BlockStyle extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 	protected $pluginName = 'BlockStyle';
 
 	// The name of the plugin registered by the extension
-	protected $relativePathToLocallangFile = 'extensions/BlockStyle/locallang.xml';
+	protected $relativePathToLocallangFile = 'extensions/BlockStyle/locallang.xlf';
 
 	// Path to this main locallang file of the extension relative to the extension dir.
 	protected $relativePathToSkin = '';

@@ -271,7 +271,7 @@ class SetupModuleController {
 	 * @todo Define visibility
 	 */
 	public function init() {
-		$GLOBALS['LANG']->includeLLFile('EXT:setup/mod/locallang.xml');
+		$GLOBALS['LANG']->includeLLFile('EXT:setup/mod/locallang.xlf');
 		$this->MCONF = $GLOBALS['MCONF'];
 		// Returns the script user - that is the REAL logged in user! ($GLOBALS[BE_USER] might be another user due to simulation!)
 		$scriptUser = $this->getRealScriptUserObj();

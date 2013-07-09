@@ -75,7 +75,7 @@ class VersionClickMenu {
 	 * @todo Define visibility
 	 */
 	public function includeLL() {
-		return $GLOBALS['LANG']->includeLLFile('EXT:version/locallang.xml', FALSE);
+		return $GLOBALS['LANG']->includeLLFile('EXT:version/locallang.xlf', FALSE);
 	}
 
 }
