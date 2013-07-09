@@ -1015,7 +1015,8 @@ class PageLayoutController {
 			'closedok' => '',
 			'deletedok' => '',
 			'undo' => '',
-			'history_record' => ''
+			'history_record' => '',
+			'paste' => '',
 		);
 		// View page
 		$buttons['view'] = '<a href="#" onclick="' . htmlspecialchars(BackendUtility::viewOnClick($this->pageinfo['uid'], $GLOBALS['BACK_PATH'], BackendUtility::BEgetRootLine($this->pageinfo['uid']))) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', TRUE) . '">' . IconUtility::getSpriteIcon('actions-document-view') . '</a>';
@@ -1100,6 +1101,15 @@ class PageLayoutController {
 					$buttons['history_record'] = '<a href="#" onclick="' . htmlspecialchars(('jumpToUrl(\'' . $GLOBALS['BACK_PATH'] . 'show_rechis.php?element=' . rawurlencode(($this->eRParts[0] . ':' . $this->eRParts[1])) . '&returnUrl=' . rawurlencode($this->R_URI) . '#latest\');return false;')) . '" title="' . $GLOBALS['LANG']->getLL('recordHistory', TRUE) . '">' . IconUtility::getSpriteIcon('actions-document-history-open') . '</a>';
 				}
 			}
+		}
+
+		// Clipboard button
+		/** @var \TYPO3\CMS\Backend\Clipboard\Clipboard $clipBoard */
+		$clipBoard = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Clipboard\\Clipboard');
+		$clipBoard->initializeClipboard();
+		$contentElements = $clipBoard->elFromTable('tt_content');
+		if (count($contentElements)) {
+			$buttons['paste'] = '<a href="' . htmlspecialchars($clipBoard->pasteUrl('tt_content', $this->id)) . '" onclick="return ' . htmlspecialchars($clipBoard->confirmMsg('pages', $this->pageinfo, 'into', $contentElements)) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_web_list.xlf:clip_paste', TRUE) . '">' . IconUtility::getSpriteIcon('actions-document-paste-after') . '</a>';
 		}
 		return $buttons;
 	}
