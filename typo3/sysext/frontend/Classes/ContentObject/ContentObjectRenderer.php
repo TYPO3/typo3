@@ -5671,7 +5671,7 @@ class ContentObjectRenderer {
 				// The '-' character means 'no title'. Necessary in order to specify further parameters without setting the title!
 				$forceTitle = '';
 			}
-			if (isset($link_paramA[4]) && strlen(trim($link_paramA[4])) > 0) {
+			if (isset($link_paramA[4]) && strlen(trim($link_paramA[4])) > 0 && trim($link_paramA[4]) != '-') {
 				$forceParams = trim($link_paramA[4]);
 				// params value
 				$conf['additionalParams'] .= $forceParams[0] == '&' ? $forceParams : '&' . $forceParams;
