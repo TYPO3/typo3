@@ -168,7 +168,7 @@ class ErrorHandler implements \TYPO3\CMS\Core\Error\ErrorHandlerInterface {
 	 * @return void
 	 */
 	protected function writeLog($logMessage, $severity) {
-		if (is_object($GLOBALS['TYPO3_DB']) && !empty($GLOBALS['TYPO3_DB']->link)) {
+		if (is_object($GLOBALS['TYPO3_DB']) && $GLOBALS['TYPO3_DB']->isConnected()) {
 			$userId = 0;
 			$workspace = 0;
 			if (is_object($GLOBALS['BE_USER'])) {
