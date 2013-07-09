@@ -256,6 +256,7 @@ class Argument {
 	 * @api
 	 */
 	public function setDataType($dataType) {
+
 		$this->dataType = $dataType;
 		$this->dataTypeClassSchema = $this->reflectionService->getClassSchema($dataType);
 		return $this;
@@ -381,6 +382,9 @@ class Argument {
 				$this->value = NULL;
 				return $this;
 			}
+
+			$this->dataType = $this->objectManager->getImplementationClass($this->dataType);
+
 			if (is_object($rawValue) && $rawValue instanceof $this->dataType) {
 				$this->value = $rawValue;
 				return $this;
