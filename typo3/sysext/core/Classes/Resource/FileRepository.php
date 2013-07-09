@@ -151,7 +151,7 @@ class FileRepository extends AbstractRepository {
 		$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 			'*',
 			$this->table,
-			sprintf('storage=%u AND identifier LIKE %s AND NOT identifier LIKE %s',
+			sprintf('storage=%u AND deleted=0 AND identifier LIKE %s AND NOT identifier LIKE %s',
 					$storage,
 					$GLOBALS['TYPO3_DB']->fullQuoteStr($GLOBALS['TYPO3_DB']->escapeStrForLike($identifier, $this->table) . '%', $this->table),
 					$GLOBALS['TYPO3_DB']->fullQuoteStr($GLOBALS['TYPO3_DB']->escapeStrForLike($identifier, $this->table) . '%/%', $this->table)

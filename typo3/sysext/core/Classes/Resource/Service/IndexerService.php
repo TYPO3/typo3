@@ -176,16 +176,36 @@ class IndexerService implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	public function indexFilesInFolder(\TYPO3\CMS\Core\Resource\Folder $folder) {
 		$numberOfIndexedFiles = 0;
+		$fileIndentifiers = array();
+
 		// Index all files in this folder
 		$fileObjects = $folder->getFiles();
+
 		// emit signal
 		$this->emitPreMultipleFilesIndexSignal($fileObjects);
 		foreach ($fileObjects as $fileObject) {
 			$this->indexFile($fileObject);
+			$fileIndentifiers[] = $fileObject->getIdentifier();
 			$numberOfIndexedFiles++;
 		}
+
+		// check for deleted files (file not found during indexing are deleted)
+		foreach ($this->getRepository()->getFileIndexRecordsForFolder($folder) as $file) {
+			if (!in_array($file['identifier'], $fileIndentifiers)) {
+				/** @var $fileObject \TYPO3\CMS\Core\Resource\AbstractFile */
+				$fileObject = $this->getRepository()->findByIdentifier($file['uid']);
+				$fileObject->setDeleted();
+				$this->getRepository()->update($fileObject);
+			}
+		}
+
 		// emit signal
 		$this->emitPostMultipleFilesIndexSignal($fileObjects);
+
+		// cleanup to prevent to much memory use on big folders
+		unset($fileObjects);
+		unset($fileIndentifiers);
+
 		// Call this function recursively for each subfolder
 		$subFolders = $folder->getSubfolders();
 		foreach ($subFolders as $subFolder) {
