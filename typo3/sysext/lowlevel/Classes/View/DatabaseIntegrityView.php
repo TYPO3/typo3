@@ -76,7 +76,7 @@ class DatabaseIntegrityView {
 	 * Constructor
 	 */
 	public function __construct() {
-		$GLOBALS['LANG']->includeLLFile('EXT:lowlevel/dbint/locallang.xml');
+		$GLOBALS['LANG']->includeLLFile('EXT:lowlevel/dbint/locallang.xlf');
 		$GLOBALS['BE_USER']->modAccess($GLOBALS['MCONF'], 1);
 	}
 

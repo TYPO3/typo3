@@ -36,7 +36,7 @@ class SelectFont extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 	protected $pluginName = 'SelectFont';
 
 	// The name of the plugin registered by the extension
-	protected $relativePathToLocallangFile = 'extensions/SelectFont/locallang.xml';
+	protected $relativePathToLocallangFile = 'extensions/SelectFont/locallang.xlf';
 
 	// Path to this main locallang file of the extension relative to the extension dir.
 	protected $relativePathToSkin = '';

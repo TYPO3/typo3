@@ -11,15 +11,15 @@ if (TYPO3_MODE == 'BE') {
 // Register the autopublishing task
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['TYPO3\\CMS\\Workspaces\\Task\\AutoPublishTask'] = array(
 	'extension' => $_EXTKEY,
-	'title' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_mod.xml:autopublishTask.name',
-	'description' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_mod.xml:autopublishTask.description'
+	'title' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_mod.xlf:autopublishTask.name',
+	'description' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_mod.xlf:autopublishTask.description'
 );
 
 // Register the cleanup preview links task
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['TYPO3\\CMS\\Workspaces\\Task\\CleanupPreviewLinkTask'] = array(
 	'extension' => $_EXTKEY,
-	'title' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_mod.xml:cleanupPreviewLinkTask.name',
-	'description' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_mod.xml:cleanupPreviewLinkTask.description'
+	'title' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_mod.xlf:cleanupPreviewLinkTask.name',
+	'description' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_mod.xlf:cleanupPreviewLinkTask.description'
 );
 
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processCmdmapClass']['workspaces'] = 'TYPO3\\CMS\\Workspaces\\Hook\\DataHandlerHook';

@@ -36,31 +36,31 @@ class BackendWarnings {
 	 *
 	 * @param array $warnings Warnings
 	 * @return void
-	 * @see 	\TYPO3\CMS\Backend\Utility\BackendUtility::displayWarningMessages()
+	 * @see \TYPO3\CMS\Backend\Utility\BackendUtility::displayWarningMessages()
 	 */
 	public function displayWarningMessages_postProcess(array &$warnings) {
 		$backend = \TYPO3\CMS\Rsaauth\Backend\BackendFactory::getBackend();
 		if ($backend instanceof \TYPO3\CMS\Rsaauth\Backend\CommandLineBackend) {
 			// Not using the PHP extension!
-			$warnings['rsaauth_cmdline'] = $GLOBALS['LANG']->sL('LLL:EXT:rsaauth/hooks/locallang.xml:hook_using_cmdline');
+			$warnings['rsaauth_cmdline'] = $GLOBALS['LANG']->sL('LLL:EXT:rsaauth/hooks/locallang.xlf:hook_using_cmdline');
 			// Check the path
 			$extconf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['rsaauth']);
 			$path = trim($extconf['temporaryDirectory']);
 			if ($path == '') {
 				// Path is empty
-				$warnings['rsaauth'] = $GLOBALS['LANG']->sL('LLL:EXT:rsaauth/hooks/locallang.xml:hook_empty_directory');
+				$warnings['rsaauth'] = $GLOBALS['LANG']->sL('LLL:EXT:rsaauth/hooks/locallang.xlf:hook_empty_directory');
 			} elseif (!\TYPO3\CMS\Core\Utility\GeneralUtility::isAbsPath($path)) {
 				// Path is not absolute
-				$warnings['rsaauth'] = $GLOBALS['LANG']->sL('LLL:EXT:rsaauth/hooks/locallang.xml:hook_directory_not_absolute');
+				$warnings['rsaauth'] = $GLOBALS['LANG']->sL('LLL:EXT:rsaauth/hooks/locallang.xlf:hook_directory_not_absolute');
 			} elseif (!@is_dir($path)) {
 				// Path does not represent a directory
-				$warnings['rsaauth'] = $GLOBALS['LANG']->sL('LLL:EXT:rsaauth/hooks/locallang.xml:hook_directory_not_exist');
+				$warnings['rsaauth'] = $GLOBALS['LANG']->sL('LLL:EXT:rsaauth/hooks/locallang.xlf:hook_directory_not_exist');
 			} elseif (!@is_writable($path)) {
 				// Directory is not writable
-				$warnings['rsaauth'] = $GLOBALS['LANG']->sL('LLL:EXT:rsaauth/hooks/locallang.xml:hook_directory_not_writable');
+				$warnings['rsaauth'] = $GLOBALS['LANG']->sL('LLL:EXT:rsaauth/hooks/locallang.xlf:hook_directory_not_writable');
 			} elseif (substr($path, 0, strlen(PATH_site)) == PATH_site) {
 				// Directory is inside the site root
-				$warnings['rsaauth'] = $GLOBALS['LANG']->sL('LLL:EXT:rsaauth/hooks/locallang.xml:hook_directory_inside_siteroot');
+				$warnings['rsaauth'] = $GLOBALS['LANG']->sL('LLL:EXT:rsaauth/hooks/locallang.xlf:hook_directory_inside_siteroot');
 			}
 		}
 	}

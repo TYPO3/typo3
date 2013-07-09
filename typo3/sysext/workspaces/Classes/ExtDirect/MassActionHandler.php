@@ -41,7 +41,7 @@ class MassActionHandler extends \TYPO3\CMS\Workspaces\ExtDirect\AbstractHandler 
 	 *
 	 * @var string
 	 */
-	private $pathToLocallang = 'LLL:EXT:workspaces/Resources/Private/Language/locallang.xml';
+	private $pathToLocallang = 'LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf';
 
 	/**
 	 * Get list of available mass workspace actions.

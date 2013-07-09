@@ -13,7 +13,7 @@ if (TYPO3_MODE === 'BE') {
 	);
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('xMOD_tx_impexp', 'EXT:impexp/locallang_csh.xlf');
 	// CSH labels for TYPO3 4.5 and greater.  These labels override the ones set above, while still falling back to the original labels if no translation is available.
-	$GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride']['EXT:impexp/locallang_csh.xml'][] = 'EXT:impexp/locallang_csh_45.xml';
+	$GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride']['EXT:impexp/locallang_csh.xml'][] = 'EXT:impexp/locallang_csh_45.xlf';
 	// Special context menu actions for the import/export module
 	$importExportActions = '
 		9000 = DIVIDER
@@ -21,7 +21,7 @@ if (TYPO3_MODE === 'BE') {
 		9100 = ITEM
 		9100 {
 			name = exportT3d
-			label = LLL:EXT:impexp/app/locallang.xml:export
+			label = LLL:EXT:impexp/app/locallang.xlf:export
 			spriteIcon = actions-document-export-t3d
 			callbackAction = exportT3d
 		}

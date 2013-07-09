@@ -60,7 +60,7 @@ class SleepTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 	 * @return string Information to display
 	 */
 	public function getAdditionalInformation() {
-		return $GLOBALS['LANG']->sL('LLL:EXT:scheduler/mod1/locallang.xml:label.sleepTime') . ': ' . $this->sleepTime;
+		return $GLOBALS['LANG']->sL('LLL:EXT:scheduler/mod1/locallang.xlf:label.sleepTime') . ': ' . $this->sleepTime;
 	}
 
 }

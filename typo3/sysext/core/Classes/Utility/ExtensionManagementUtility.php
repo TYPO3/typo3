@@ -376,7 +376,7 @@ class ExtensionManagementUtility {
 	 * - $table = 'tt_content'
 	 * - $field = 'CType'
 	 * - $item = array(
-	 * 'LLL:EXT:cms/locallang_ttc.xml:CType.I.10',
+	 * 'LLL:EXT:cms/locallang_ttc.xlf:CType.I.10',
 	 * 'login',
 	 * 'i/tt_content_login.gif',
 	 * ),

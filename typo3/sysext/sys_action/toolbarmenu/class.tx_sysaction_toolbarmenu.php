@@ -25,7 +25,7 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 // Load the language file
-$GLOBALS['LANG']->includeLLFile('EXT:sys_action/locallang.xml');
+$GLOBALS['LANG']->includeLLFile('EXT:sys_action/locallang.xlf');
 /*
  * @deprecated since 6.0, the classname tx_sysactionToolbarMenu and this file is obsolete
  * and will be removed with 6.2. The class was renamed and is now located at:

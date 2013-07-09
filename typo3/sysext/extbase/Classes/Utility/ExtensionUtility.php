@@ -200,7 +200,7 @@ tt_content.' . $pluginSignature . ' {
 	 * @param string $subModuleName The submodule key.
 	 * @param string $position This can be used to set the position of the $sub module within the list of existing submodules for the main module. $position has this syntax: [cmd]:[submodule-key]. cmd can be "after", "before" or "top" (or blank which is default). If "after"/"before" then submodule will be inserted after/before the existing submodule with [submodule-key] if found. If not found, the bottom of list. If "top" the module is inserted in the top of the submodule list.
 	 * @param array $controllerActions is an array of allowed combinations of controller and action stored in an array (controller name as key and a comma separated list of action names as value, the first controller and its first action is chosen as default)
-	 * @param array $moduleConfiguration The configuration options of the module (icon, locallang.xml file)
+	 * @param array $moduleConfiguration The configuration options of the module (icon, locallang.xlf file)
 	 * @throws \InvalidArgumentException
 	 * @return void
 	 */

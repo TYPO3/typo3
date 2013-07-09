@@ -4,7 +4,7 @@ return array(
 		'label' => 'title',
 		'tstamp' => 'tstamp',
 		'sortby' => 'sorting',
-		'title' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xml:sys_workspace_stage',
+		'title' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace_stage',
 		'adminOnly' => 1,
 		'rootLevel' => 1,
 		'hideTable' => TRUE,
@@ -18,7 +18,7 @@ return array(
 	),
 	'columns' => array(
 		'title' => array(
-			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.title',
+			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.title',
 			'config' => array(
 				'type' => 'input',
 				'size' => '20',
@@ -27,7 +27,7 @@ return array(
 			)
 		),
 		'responsible_persons' => array(
-			'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xml:sys_workspace_stage.responsible_persons',
+			'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace_stage.responsible_persons',
 			'config' => array(
 				'type' => 'group',
 				'internal_type' => 'db',
@@ -45,7 +45,7 @@ return array(
 			)
 		),
 		'default_mailcomment' => array(
-			'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xml:sys_workspace_stage.default_mailcomment',
+			'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace_stage.default_mailcomment',
 			'config' => array(
 				'type' => 'text',
 				'rows' => 5,
@@ -54,31 +54,31 @@ return array(
 		),
 		'parentid' => array(
 			'exclude' => 0,
-			'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xml:sys_workspace_stage.parentid',
+			'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace_stage.parentid',
 			'config' => array(
 				'type' => 'passthrough'
 			)
 		),
 		'parenttable' => array(
 			'exclude' => 0,
-			'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xml:sys_workspace_stage.parenttable',
+			'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace_stage.parenttable',
 			'config' => array(
 				'type' => 'passthrough'
 			)
 		),
 		'notification_mode' => array(
-			'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xml:sys_workspace_stage.notification_mode',
+			'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace_stage.notification_mode',
 			'config' => array(
 				'type' => 'select',
 				'items' => array(
-					array('LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xml:sys_workspace.notification_mode.0', 0),
-					array('LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xml:sys_workspace.notification_mode.1', 1),
-					array('LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xml:sys_workspace.notification_mode.2', 2)
+					array('LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.notification_mode.0', 0),
+					array('LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.notification_mode.1', 1),
+					array('LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.notification_mode.2', 2)
 				)
 			)
 		),
 		'notification_defaults' => array(
-			'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xml:sys_workspace_stage.notification_defaults',
+			'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace_stage.notification_defaults',
 			'displayCond' => 'FIELD:notification_mode:IN:0,1',
 			'config' => array(
 				'type' => 'group',
@@ -97,7 +97,7 @@ return array(
 			)
 		),
 		'allow_notificaton_settings' => array(
-			'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xml:sys_workspace_stage.allow_notificaton_settings',
+			'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace_stage.allow_notificaton_settings',
 			'config' => array(
 				'type' => 'check',
 				'default' => 1

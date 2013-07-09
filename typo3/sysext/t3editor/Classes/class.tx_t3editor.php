@@ -24,7 +24,7 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-$GLOBALS['LANG']->includeLLFile('EXT:t3editor/locallang.xml');
+$GLOBALS['LANG']->includeLLFile('EXT:t3editor/locallang.xlf');
 /*
  * @deprecated since 6.0, the classname tx_t3editor and this file is obsolete
  * and will be removed with 6.2. The class was renamed and is now located at:

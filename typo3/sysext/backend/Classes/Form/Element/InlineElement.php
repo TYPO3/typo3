@@ -996,7 +996,7 @@ class InlineElement {
 	 * @return void
 	 */
 	protected function processAjaxRequestConstruct(&$ajaxArguments) {
-		$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_alt_doc.xml');
+		$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_alt_doc.xlf');
 		// Create a new anonymous object:
 		$GLOBALS['SOBE'] = new \stdClass();
 		$GLOBALS['SOBE']->MOD_MENU = array(

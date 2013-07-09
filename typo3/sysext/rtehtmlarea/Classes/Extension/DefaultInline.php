@@ -36,7 +36,7 @@ class DefaultInline extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 	protected $pluginName = 'DefaultInline';
 
 	// The name of the plugin registered by the extension
-	protected $relativePathToLocallangFile = 'extensions/DefaultInline/locallang.xml';
+	protected $relativePathToLocallangFile = 'extensions/DefaultInline/locallang.xlf';
 
 	// Path to this main locallang file of the extension relative to the extension dir.
 	protected $relativePathToSkin = 'extensions/DefaultInline/skin/htmlarea.css';

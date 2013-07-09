@@ -59,7 +59,7 @@ class TestTaskAdditionalFieldProvider implements \TYPO3\CMS\Scheduler\Additional
 		$additionalFields = array();
 		$additionalFields[$fieldID] = array(
 			'code' => $fieldCode,
-			'label' => 'LLL:EXT:scheduler/mod1/locallang.xml:label.email',
+			'label' => 'LLL:EXT:scheduler/mod1/locallang.xlf:label.email',
 			'cshKey' => '_MOD_system_txschedulerM1',
 			'cshLabel' => $fieldID
 		);
@@ -77,7 +77,7 @@ class TestTaskAdditionalFieldProvider implements \TYPO3\CMS\Scheduler\Additional
 	public function validateAdditionalFields(array &$submittedData, \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $parentObject) {
 		$submittedData['email'] = trim($submittedData['email']);
 		if (empty($submittedData['email'])) {
-			$parentObject->addMessage($GLOBALS['LANG']->sL('LLL:EXT:scheduler/mod1/locallang.xml:msg.noEmail'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+			$parentObject->addMessage($GLOBALS['LANG']->sL('LLL:EXT:scheduler/mod1/locallang.xlf:msg.noEmail'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
 			$result = FALSE;
 		} else {
 			$result = TRUE;

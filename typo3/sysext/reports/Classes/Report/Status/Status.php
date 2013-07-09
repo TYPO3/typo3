@@ -40,7 +40,7 @@ class Status implements \TYPO3\CMS\Reports\ReportInterface {
 	 */
 	public function __construct() {
 		$this->getStatusProviders();
-		$GLOBALS['LANG']->includeLLFile('EXT:reports/reports/locallang.xml');
+		$GLOBALS['LANG']->includeLLFile('EXT:reports/reports/locallang.xlf');
 	}
 
 	/**

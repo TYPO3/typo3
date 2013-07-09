@@ -130,7 +130,6 @@ class RenameFileController {
 	 * @todo Define visibility
 	 */
 	public function main() {
-		//TODO: change locallang*.php to locallang*.xml
 		// Make page header:
 		$this->content = $this->doc->startPage($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:file_rename.php.pagetitle'));
 		$pageContent = $this->doc->header($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:file_rename.php.pagetitle'));

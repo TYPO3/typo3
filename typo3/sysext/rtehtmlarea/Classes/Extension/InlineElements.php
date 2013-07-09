@@ -36,7 +36,7 @@ class InlineElements extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 	protected $pluginName = 'InlineElements';
 
 	// The name of the plugin registered by the extension
-	protected $relativePathToLocallangFile = 'extensions/InlineElements/locallang.xml';
+	protected $relativePathToLocallangFile = 'extensions/InlineElements/locallang.xlf';
 
 	// Path to this main locallang file of the extension relative to the extension dir.
 	protected $relativePathToSkin = 'extensions/InlineElements/skin/htmlarea.css';

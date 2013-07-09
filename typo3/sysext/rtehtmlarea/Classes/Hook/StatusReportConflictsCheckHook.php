@@ -46,7 +46,7 @@ class StatusReportConflictsCheckHook implements \TYPO3\CMS\Reports\StatusProvide
 	 * @return \TYPO3\CMS\Reports\Status
 	 */
 	protected function checkIfNoConflictingExtensionIsInstalled() {
-		$title = $GLOBALS['LANG']->sL('LLL:EXT:rtehtmlarea/hooks/statusreport/locallang.xml:title');
+		$title = $GLOBALS['LANG']->sL('LLL:EXT:rtehtmlarea/hooks/statusreport/locallang.xlf:title');
 		$conflictingExtensions = array();
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rtehtmlarea']['conflicts'])) {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rtehtmlarea']['conflicts'] as $extensionKey => $version) {
@@ -56,11 +56,11 @@ class StatusReportConflictsCheckHook implements \TYPO3\CMS\Reports\StatusProvide
 			}
 		}
 		if (count($conflictingExtensions)) {
-			$value = $GLOBALS['LANG']->sL('LLL:EXT:rtehtmlarea/hooks/statusreport/locallang.xml:keys') . ' ' . implode(', ', $conflictingExtensions);
-			$message = $GLOBALS['LANG']->sL('LLL:EXT:rtehtmlarea/hooks/statusreport/locallang.xml:uninstall');
+			$value = $GLOBALS['LANG']->sL('LLL:EXT:rtehtmlarea/hooks/statusreport/locallang.xlf:keys') . ' ' . implode(', ', $conflictingExtensions);
+			$message = $GLOBALS['LANG']->sL('LLL:EXT:rtehtmlarea/hooks/statusreport/locallang.xlf:uninstall');
 			$status = \TYPO3\CMS\Reports\Status::ERROR;
 		} else {
-			$value = $GLOBALS['LANG']->sL('LLL:EXT:rtehtmlarea/hooks/statusreport/locallang.xml:none');
+			$value = $GLOBALS['LANG']->sL('LLL:EXT:rtehtmlarea/hooks/statusreport/locallang.xlf:none');
 			$message = '';
 			$status = \TYPO3\CMS\Reports\Status::OK;
 		}
