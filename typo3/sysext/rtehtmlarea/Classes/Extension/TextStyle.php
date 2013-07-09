@@ -36,7 +36,7 @@ class TextStyle extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 	protected $pluginName = 'TextStyle';
 
 	// The name of the plugin registered by the extension
-	protected $relativePathToLocallangFile = 'extensions/TextStyle/locallang.xml';
+	protected $relativePathToLocallangFile = 'extensions/TextStyle/locallang.xlf';
 
 	// Path to this main locallang file of the extension relative to the extension dir.
 	protected $relativePathToSkin = '';

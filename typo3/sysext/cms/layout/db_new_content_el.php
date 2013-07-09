@@ -42,7 +42,7 @@ unset($MLANG);
 // Merging locallang files/arrays:
 $GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_misc.xlf');
 $LOCAL_LANG_orig = $LOCAL_LANG;
-$LANG->includeLLFile('EXT:cms/layout/locallang_db_new_content_el.xml');
+$LANG->includeLLFile('EXT:cms/layout/locallang_db_new_content_el.xlf');
 $LOCAL_LANG = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($LOCAL_LANG_orig, $LOCAL_LANG);
 // Exits if 'cms' extension is not loaded:
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('cms', 1);

@@ -71,7 +71,7 @@ class Tables {
 				'',
 				$deletedRecordsTotal,
 				'',
-				$GLOBALS['LANG']->sL('LLL:EXT:recycler/mod1/locallang.xml:label_alltables')
+				$GLOBALS['LANG']->sL('LLL:EXT:recycler/mod1/locallang.xlf:label_alltables')
 			));
 		}
 		$output = json_encode($jsonArray);

@@ -59,7 +59,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 	 */
 	public function __construct(\TYPO3\CMS\Taskcenter\Controller\TaskModuleController $taskObject) {
 		$this->taskObject = $taskObject;
-		$GLOBALS['LANG']->includeLLFile('EXT:sys_action/locallang.xml');
+		$GLOBALS['LANG']->includeLLFile('EXT:sys_action/locallang.xlf');
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['sys_action']['tx_sysaction_task'])) {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['sys_action']['tx_sysaction_task'] as $classRef) {
 				$this->hookObjects[] = GeneralUtility::getUserObj($classRef);

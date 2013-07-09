@@ -48,7 +48,7 @@ class WarningMessagePostProcessor {
 			if ($highestSeverity > \TYPO3\CMS\Reports\Status::OK) {
 				// Display a message that there's something wrong and that
 				// the admin should take a look at the detailed status report
-				$GLOBALS['LANG']->includeLLFile('EXT:reports/reports/locallang.xml');
+				$GLOBALS['LANG']->includeLLFile('EXT:reports/reports/locallang.xlf');
 				$reportModuleIdentifier = 'system_ReportsTxreportsm1';
 				$reportModuleParameters = array(
 					'tx_reports_system_reportstxreportsm1[extension]=tx_reports',

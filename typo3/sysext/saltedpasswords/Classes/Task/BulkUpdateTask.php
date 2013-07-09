@@ -106,7 +106,7 @@ class BulkUpdateTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 	 * @return string Additional information
 	 */
 	public function getAdditionalInformation() {
-		$information = $GLOBALS['LANG']->sL('LLL:EXT:saltedpasswords/locallang.xml:ext.saltedpasswords.tasks.bulkupdate.label.additionalinformation.deactivateself') . $this->getCanDeactivateSelf() . '; ' . $GLOBALS['LANG']->sL('LLL:EXT:saltedpasswords/locallang.xml:ext.saltedpasswords.tasks.bulkupdate.label.additionalinformation.numberofrecords') . $this->getNumberOfRecords();
+		$information = $GLOBALS['LANG']->sL('LLL:EXT:saltedpasswords/locallang.xlf:ext.saltedpasswords.tasks.bulkupdate.label.additionalinformation.deactivateself') . $this->getCanDeactivateSelf() . '; ' . $GLOBALS['LANG']->sL('LLL:EXT:saltedpasswords/locallang.xlf:ext.saltedpasswords.tasks.bulkupdate.label.additionalinformation.numberofrecords') . $this->getNumberOfRecords();
 		return $information;
 	}
 

@@ -59,7 +59,7 @@ class SleepTaskAdditionalFieldProvider implements \TYPO3\CMS\Scheduler\Additiona
 		$additionalFields = array();
 		$additionalFields[$fieldID] = array(
 			'code' => $fieldCode,
-			'label' => 'LLL:EXT:scheduler/mod1/locallang.xml:label.sleepTime',
+			'label' => 'LLL:EXT:scheduler/mod1/locallang.xlf:label.sleepTime',
 			'cshKey' => '_MOD_system_txschedulerM1',
 			'cshLabel' => $fieldID
 		);
@@ -77,7 +77,7 @@ class SleepTaskAdditionalFieldProvider implements \TYPO3\CMS\Scheduler\Additiona
 	public function validateAdditionalFields(array &$submittedData, \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $parentObject) {
 		$submittedData['sleepTime'] = intval($submittedData['sleepTime']);
 		if ($submittedData['sleepTime'] < 0) {
-			$parentObject->addMessage($GLOBALS['LANG']->sL('LLL:EXT:scheduler/mod1/locallang.xml:msg.invalidSleepTime'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+			$parentObject->addMessage($GLOBALS['LANG']->sL('LLL:EXT:scheduler/mod1/locallang.xlf:msg.invalidSleepTime'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
 			$result = FALSE;
 		} else {
 			$result = TRUE;

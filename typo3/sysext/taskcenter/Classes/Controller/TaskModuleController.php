@@ -57,7 +57,7 @@ class TaskModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 */
 	public function menuConfig() {
 		$this->MOD_MENU = array('mode' => array());
-		$this->MOD_MENU['mode']['information'] = $GLOBALS['LANG']->sL('LLL:EXT:taskcenter/locallang.xml:task_overview');
+		$this->MOD_MENU['mode']['information'] = $GLOBALS['LANG']->sL('LLL:EXT:taskcenter/locallang.xlf:task_overview');
 		$this->MOD_MENU['mode']['tasks'] = 'Tasks';
 		parent::menuConfig();
 	}
@@ -141,7 +141,7 @@ class TaskModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 				$actionContent .= $flashMessage->render();
 			}
 		} else {
-			$flashMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $GLOBALS['LANG']->sL('LLL:EXT:taskcenter/task/locallang_mod.xml:mlang_labels_tabdescr'), $GLOBALS['LANG']->sL('LLL:EXT:taskcenter/task/locallang_mod.xml:mlang_tabs_tab'), \TYPO3\CMS\Core\Messaging\FlashMessage::INFO);
+			$flashMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $GLOBALS['LANG']->sL('LLL:EXT:taskcenter/task/locallang_mod.xlf:mlang_labels_tabdescr'), $GLOBALS['LANG']->sL('LLL:EXT:taskcenter/task/locallang_mod.xlf:mlang_tabs_tab'), \TYPO3\CMS\Core\Messaging\FlashMessage::INFO);
 			$actionContent .= $flashMessage->render();
 		}
 		$content = '<div id="taskcenter-main">
@@ -158,7 +158,7 @@ class TaskModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * @return void
 	 */
 	protected function renderInformationContent() {
-		$content = $this->description($GLOBALS['LANG']->getLL('mlang_tabs_tab'), $GLOBALS['LANG']->sL('LLL:EXT:taskcenter/task/locallang_mod.xml:mlang_labels_tabdescr'));
+		$content = $this->description($GLOBALS['LANG']->getLL('mlang_tabs_tab'), $GLOBALS['LANG']->sL('LLL:EXT:taskcenter/task/locallang_mod.xlf:mlang_labels_tabdescr'));
 		$content .= $GLOBALS['LANG']->getLL('taskcenter-about');
 		if ($GLOBALS['BE_USER']->isAdmin()) {
 			$content .= '<br /><br />' . $this->description($GLOBALS['LANG']->getLL('taskcenter-adminheader'), $GLOBALS['LANG']->getLL('taskcenter-admin'));

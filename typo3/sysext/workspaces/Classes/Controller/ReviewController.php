@@ -132,7 +132,7 @@ class ReviewController extends \TYPO3\CMS\Workspaces\Controller\AbstractControll
 		parent::initializeAction();
 		$this->template->setExtDirectStateProvider();
 		if (\TYPO3\CMS\Workspaces\Service\WorkspaceService::isOldStyleWorkspaceUsed()) {
-			$flashMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:warning.oldStyleWorkspaceInUser'), '', \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING);
+			$flashMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:warning.oldStyleWorkspaceInUser'), '', \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING);
 			/** @var $flashMessageService \TYPO3\CMS\Core\Messaging\FlashMessageService */
 			$flashMessageService = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessageService');
 			/** @var $defaultFlashMessageQueue \TYPO3\CMS\Core\Messaging\FlashMessageQueue */

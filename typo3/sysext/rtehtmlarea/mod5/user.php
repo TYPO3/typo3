@@ -35,8 +35,8 @@ error_reporting(E_ALL & ~(E_STRICT | E_NOTICE | E_DEPRECATED));
 unset($MCONF);
 require 'conf.php';
 require $BACK_PATH . 'init.php';
-$LANG->includeLLFile('EXT:rtehtmlarea/mod5/locallang.xml');
-$LANG->includeLLFile('EXT:rtehtmlarea/htmlarea/locallang_dialogs.xml');
+$LANG->includeLLFile('EXT:rtehtmlarea/mod5/locallang.xlf');
+$LANG->includeLLFile('EXT:rtehtmlarea/htmlarea/locallang_dialogs.xlf');
 // Make instance:
 $SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Rtehtmlarea\\User');
 $SOBE->init();

@@ -279,7 +279,7 @@ class PageLayoutController {
 		// example settings:
 		// 	$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['cms']['db_layout']['addTables']['tx_myext'] =
 		//		array ('default' => array(
-		//				'MENU' => 'LLL:EXT:tx_myext/locallang_db.xml:menuDefault',
+		//				'MENU' => 'LLL:EXT:tx_myext/locallang_db.xlf:menuDefault',
 		//				'fList' =>  'title,description,image',
 		//				'icon' => TRUE));
 		if (is_array($this->externalTables)) {

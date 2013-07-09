@@ -1,7 +1,7 @@
 <?php
 return array(
 	'ctrl' => array(
-		'title' => 'LLL:EXT:rtehtmlarea/locallang_db.xml:tx_rtehtmlarea_acronym',
+		'title' => 'LLL:EXT:rtehtmlarea/locallang_db.xlf:tx_rtehtmlarea_acronym',
 		'label' => 'term',
 		'default_sortby' => 'ORDER BY term',
 		'sortby' => 'sorting',
@@ -68,19 +68,19 @@ return array(
 		),
 		'type' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:rtehtmlarea/locallang_db.xml:tx_rtehtmlarea_acronym.type',
+			'label' => 'LLL:EXT:rtehtmlarea/locallang_db.xlf:tx_rtehtmlarea_acronym.type',
 			'config' => array(
 				'type' => 'radio',
 				'items' => array(
-					array('LLL:EXT:rtehtmlarea/locallang_db.xml:tx_rtehtmlarea_acronym.type.I.1', '2'),
-					array('LLL:EXT:rtehtmlarea/locallang_db.xml:tx_rtehtmlarea_acronym.type.I.0', '1')
+					array('LLL:EXT:rtehtmlarea/locallang_db.xlf:tx_rtehtmlarea_acronym.type.I.1', '2'),
+					array('LLL:EXT:rtehtmlarea/locallang_db.xlf:tx_rtehtmlarea_acronym.type.I.0', '1')
 				),
 				'default' => '2'
 			)
 		),
 		'term' => array(
 			'exclude' => 0,
-			'label' => 'LLL:EXT:rtehtmlarea/locallang_db.xml:tx_rtehtmlarea_acronym.term',
+			'label' => 'LLL:EXT:rtehtmlarea/locallang_db.xlf:tx_rtehtmlarea_acronym.term',
 			'config' => array(
 				'type' => 'input',
 				'size' => '30',
@@ -89,7 +89,7 @@ return array(
 		),
 		'acronym' => array(
 			'exclude' => 0,
-			'label' => 'LLL:EXT:rtehtmlarea/locallang_db.xml:tx_rtehtmlarea_acronym.acronym',
+			'label' => 'LLL:EXT:rtehtmlarea/locallang_db.xlf:tx_rtehtmlarea_acronym.acronym',
 			'config' => array(
 				'type' => 'input',
 				'size' => '30',
@@ -98,7 +98,7 @@ return array(
 		),
 		'static_lang_isocode' => array(
 			'exclude' => 0,
-			'label' => 'LLL:EXT:rtehtmlarea/locallang_db.xml:tx_rtehtmlarea_acronym.static_lang_isocode',
+			'label' => 'LLL:EXT:rtehtmlarea/locallang_db.xlf:tx_rtehtmlarea_acronym.static_lang_isocode',
 			'displayCond' => 'EXT:static_info_tables:LOADED:true',
 			'config' => array(
 				'type' => 'select',

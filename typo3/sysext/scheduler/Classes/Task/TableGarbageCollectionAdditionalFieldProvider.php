@@ -84,7 +84,7 @@ class TableGarbageCollectionAdditionalFieldProvider implements \TYPO3\CMS\Schedu
 		$fieldHtml = '<input type="checkbox" ' . $checked . 'onChange="actOnChangeSchedulerTableGarbageCollectionAllTables(this)" ' . 'name="' . $fieldName . '" ' . 'id="' . $fieldId . '" />';
 		$fieldConfiguration = array(
 			'code' => $fieldHtml,
-			'label' => 'LLL:EXT:scheduler/mod1/locallang.xml:label.tableGarbageCollection.allTables',
+			'label' => 'LLL:EXT:scheduler/mod1/locallang.xlf:label.tableGarbageCollection.allTables',
 			'cshKey' => '_MOD_system_txschedulerM1',
 			'cshLabel' => $fieldId
 		);
@@ -130,7 +130,7 @@ class TableGarbageCollectionAdditionalFieldProvider implements \TYPO3\CMS\Schedu
 		$fieldHtml[] = '// -->/*]]>*/</script>';
 		$fieldConfiguration = array(
 			'code' => implode(LF, $fieldHtml),
-			'label' => 'LLL:EXT:scheduler/mod1/locallang.xml:label.tableGarbageCollection.table',
+			'label' => 'LLL:EXT:scheduler/mod1/locallang.xlf:label.tableGarbageCollection.table',
 			'cshKey' => '_MOD_system_txschedulerM1',
 			'cshLabel' => $fieldId
 		);
@@ -168,7 +168,7 @@ class TableGarbageCollectionAdditionalFieldProvider implements \TYPO3\CMS\Schedu
 		$fieldHtml = '<input type="text" ' . 'name="' . $fieldName . '" ' . 'id="' . $fieldId . '" ' . $disabled . 'value="' . intval($taskInfo['scheduler_tableGarbageCollection_numberOfDays']) . '" ' . 'size="4" />';
 		$fieldConfiguration = array(
 			'code' => $fieldHtml,
-			'label' => 'LLL:EXT:scheduler/mod1/locallang.xml:label.tableGarbageCollection.numberOfDays',
+			'label' => 'LLL:EXT:scheduler/mod1/locallang.xlf:label.tableGarbageCollection.numberOfDays',
 			'cshKey' => '_MOD_system_txschedulerM1',
 			'cshLabel' => $fieldId
 		);
@@ -239,7 +239,7 @@ class TableGarbageCollectionAdditionalFieldProvider implements \TYPO3\CMS\Schedu
 			$validData = TRUE;
 		} else {
 			// Issue error message
-			$parentObject->addMessage($GLOBALS['LANG']->sL('LLL:EXT:scheduler/mod1/locallang.xml:msg.invalidNumberOfDays'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+			$parentObject->addMessage($GLOBALS['LANG']->sL('LLL:EXT:scheduler/mod1/locallang.xlf:msg.invalidNumberOfDays'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
 		}
 		return $validData;
 	}

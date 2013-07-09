@@ -9,7 +9,7 @@ if (TYPO3_MODE == 'BE') {
 	// Add context sensitive help (csh) to the backend module
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr(
 		'_MOD_system_txschedulerM1',
-		'EXT:' . $_EXTKEY . '/mod1/locallang_csh_scheduler.xml'
+		'EXT:' . $_EXTKEY . '/mod1/locallang_csh_scheduler.xlf'
 	);
 
 	// Register specific icon for run task button

@@ -45,7 +45,7 @@ class ImportExportTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 	 */
 	public function __construct(\TYPO3\CMS\Taskcenter\Controller\TaskModuleController $taskObject) {
 		$this->taskObject = $taskObject;
-		$GLOBALS['LANG']->includeLLFile('EXT:impexp/locallang_csh.xml');
+		$GLOBALS['LANG']->includeLLFile('EXT:impexp/locallang_csh.xlf');
 	}
 
 	/**

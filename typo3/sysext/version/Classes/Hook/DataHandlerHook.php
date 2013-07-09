@@ -850,9 +850,9 @@ class DataHandlerHook {
 											// Set log entry for live record:
 											$propArr = $tcemainObj->getRecordPropertiesFromRow($table, $swapVersion);
 											if ($propArr['_ORIG_pid'] == -1) {
-												$label = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_tcemain.xml:version_swap.offline_record_updated');
+												$label = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_tcemain.xlf:version_swap.offline_record_updated');
 											} else {
-												$label = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_tcemain.xml:version_swap.online_record_updated');
+												$label = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_tcemain.xlf:version_swap.online_record_updated');
 											}
 											$theLogId = $tcemainObj->log($table, $id, 2, $propArr['pid'], 0, $label, 10, array($propArr['header'], $table . ':' . $id), $propArr['event_pid']);
 											$tcemainObj->setHistory($table, $id, $theLogId);
@@ -861,9 +861,9 @@ class DataHandlerHook {
 											// Set log entry for offline record:
 											$propArr = $tcemainObj->getRecordPropertiesFromRow($table, $curVersion);
 											if ($propArr['_ORIG_pid'] == -1) {
-												$label = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_tcemain.xml:version_swap.offline_record_updated');
+												$label = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_tcemain.xlf:version_swap.offline_record_updated');
 											} else {
-												$label = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_tcemain.xml:version_swap.online_record_updated');
+												$label = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_tcemain.xlf:version_swap.online_record_updated');
 											}
 											$theLogId = $tcemainObj->log($table, $swapWith, 2, $propArr['pid'], 0, $label, 10, array($propArr['header'], $table . ':' . $swapWith), $propArr['event_pid']);
 											$tcemainObj->setHistory($table, $swapWith, $theLogId);

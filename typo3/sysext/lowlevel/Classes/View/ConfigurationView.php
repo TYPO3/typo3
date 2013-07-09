@@ -73,7 +73,7 @@ class ConfigurationView {
 	 * Constructor
 	 */
 	public function __construct() {
-		$GLOBALS['LANG']->includeLLFile('EXT:lowlevel/config/locallang.xml');
+		$GLOBALS['LANG']->includeLLFile('EXT:lowlevel/config/locallang.xlf');
 		$GLOBALS['BE_USER']->modAccess($GLOBALS['MCONF'], 1);
 	}
 

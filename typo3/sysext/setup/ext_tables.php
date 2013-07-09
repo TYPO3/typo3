@@ -11,7 +11,7 @@ if (TYPO3_MODE === 'BE') {
 	);
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr(
 		'_MOD_user_setup',
-		'EXT:setup/locallang_csh_mod.xml'
+		'EXT:setup/locallang_csh_mod.xlf'
 	);
 }
 $GLOBALS['TYPO3_USER_SETTINGS'] = array(
@@ -21,31 +21,31 @@ $GLOBALS['TYPO3_USER_SETTINGS'] = array(
 	'columns' => array(
 		'realName' => array(
 			'type' => 'text',
-			'label' => 'LLL:EXT:setup/mod/locallang.xml:beUser_realName',
+			'label' => 'LLL:EXT:setup/mod/locallang.xlf:beUser_realName',
 			'table' => 'be_users',
 			'csh' => 'beUser_realName'
 		),
 		'email' => array(
 			'type' => 'text',
-			'label' => 'LLL:EXT:setup/mod/locallang.xml:beUser_email',
+			'label' => 'LLL:EXT:setup/mod/locallang.xlf:beUser_email',
 			'table' => 'be_users',
 			'csh' => 'beUser_email'
 		),
 		'emailMeAtLogin' => array(
 			'type' => 'check',
-			'label' => 'LLL:EXT:setup/mod/locallang.xml:emailMeAtLogin',
+			'label' => 'LLL:EXT:setup/mod/locallang.xlf:emailMeAtLogin',
 			'csh' => 'emailMeAtLogin'
 		),
 		'password' => array(
 			'type' => 'password',
-			'label' => 'LLL:EXT:setup/mod/locallang.xml:newPassword',
+			'label' => 'LLL:EXT:setup/mod/locallang.xlf:newPassword',
 			'table' => 'be_users',
 			'csh' => 'newPassword',
 			'eval' => 'md5'
 		),
 		'password2' => array(
 			'type' => 'password',
-			'label' => 'LLL:EXT:setup/mod/locallang.xml:newPasswordAgain',
+			'label' => 'LLL:EXT:setup/mod/locallang.xlf:newPasswordAgain',
 			'table' => 'be_users',
 			'csh' => 'newPasswordAgain',
 			'eval' => 'md5'
@@ -53,106 +53,106 @@ $GLOBALS['TYPO3_USER_SETTINGS'] = array(
 		'lang' => array(
 			'type' => 'select',
 			'itemsProcFunc' => 'TYPO3\\CMS\\Setup\\Controller\\SetupModuleController->renderLanguageSelect',
-			'label' => 'LLL:EXT:setup/mod/locallang.xml:language',
+			'label' => 'LLL:EXT:setup/mod/locallang.xlf:language',
 			'csh' => 'language'
 		),
 		'startModule' => array(
 			'type' => 'select',
 			'itemsProcFunc' => 'TYPO3\\CMS\\Setup\\Controller\\SetupModuleController->renderStartModuleSelect',
-			'label' => 'LLL:EXT:setup/mod/locallang.xml:startModule',
+			'label' => 'LLL:EXT:setup/mod/locallang.xlf:startModule',
 			'csh' => 'startModule'
 		),
 		'thumbnailsByDefault' => array(
 			'type' => 'check',
-			'label' => 'LLL:EXT:setup/mod/locallang.xml:showThumbs',
+			'label' => 'LLL:EXT:setup/mod/locallang.xlf:showThumbs',
 			'csh' => 'showThumbs'
 		),
 		'edit_wideDocument' => array(
 			'type' => 'check',
-			'label' => 'LLL:EXT:setup/mod/locallang.xml:edit_wideDocument',
+			'label' => 'LLL:EXT:setup/mod/locallang.xlf:edit_wideDocument',
 			'csh' => 'edit_wideDocument'
 		),
 		'titleLen' => array(
 			'type' => 'text',
-			'label' => 'LLL:EXT:setup/mod/locallang.xml:maxTitleLen',
+			'label' => 'LLL:EXT:setup/mod/locallang.xlf:maxTitleLen',
 			'csh' => 'maxTitleLen'
 		),
 		'edit_RTE' => array(
 			'type' => 'check',
-			'label' => 'LLL:EXT:setup/mod/locallang.xml:edit_RTE',
+			'label' => 'LLL:EXT:setup/mod/locallang.xlf:edit_RTE',
 			'csh' => 'edit_RTE'
 		),
 		'edit_docModuleUpload' => array(
 			'type' => 'check',
-			'label' => 'LLL:EXT:setup/mod/locallang.xml:edit_docModuleUpload',
+			'label' => 'LLL:EXT:setup/mod/locallang.xlf:edit_docModuleUpload',
 			'csh' => 'edit_docModuleUpload'
 		),
 		'showHiddenFilesAndFolders' => array(
 			'type' => 'check',
-			'label' => 'LLL:EXT:setup/mod/locallang.xml:showHiddenFilesAndFolders',
+			'label' => 'LLL:EXT:setup/mod/locallang.xlf:showHiddenFilesAndFolders',
 			'csh' => 'showHiddenFilesAndFolders'
 		),
 		'copyLevels' => array(
 			'type' => 'text',
-			'label' => 'LLL:EXT:setup/mod/locallang.xml:copyLevels',
+			'label' => 'LLL:EXT:setup/mod/locallang.xlf:copyLevels',
 			'csh' => 'copyLevels'
 		),
 		'recursiveDelete' => array(
 			'type' => 'check',
-			'label' => 'LLL:EXT:setup/mod/locallang.xml:recursiveDelete',
+			'label' => 'LLL:EXT:setup/mod/locallang.xlf:recursiveDelete',
 			'csh' => 'recursiveDelete'
 		),
 		'simulate' => array(
 			'type' => 'select',
 			'itemsProcFunc' => 'TYPO3\\CMS\\Setup\\Controller\\SetupModuleController->renderSimulateUserSelect',
-			'label' => 'LLL:EXT:setup/mod/locallang.xml:simulate',
+			'label' => 'LLL:EXT:setup/mod/locallang.xlf:simulate',
 			'csh' => 'simuser'
 		),
 		'resetConfiguration' => array(
 			'type' => 'button',
-			'label' => 'LLL:EXT:setup/mod/locallang.xml:resetConfiguration',
-			'buttonlabel' => 'LLL:EXT:setup/mod/locallang.xml:resetConfigurationShort',
+			'label' => 'LLL:EXT:setup/mod/locallang.xlf:resetConfiguration',
+			'buttonlabel' => 'LLL:EXT:setup/mod/locallang.xlf:resetConfigurationShort',
 			'csh' => 'reset',
 			'onClick' => 'if (confirm(\'%s\')) { document.getElementById(\'setValuesToDefault\').value = 1; this.form.submit(); }',
 			'onClickLabels' => array(
-				'LLL:EXT:setup/mod/locallang.xml:setToStandardQuestion'
+				'LLL:EXT:setup/mod/locallang.xlf:setToStandardQuestion'
 			)
 		),
 		'clearSessionVars' => array(
 			'type' => 'button',
 			'access' => 'admin',
-			'label' => 'LLL:EXT:setup/mod/locallang.xml:clearSessionVars',
-			'buttonlabel' => 'LLL:EXT:setup/mod/locallang.xml:clearSessionVarsShort',
+			'label' => 'LLL:EXT:setup/mod/locallang.xlf:clearSessionVars',
+			'buttonlabel' => 'LLL:EXT:setup/mod/locallang.xlf:clearSessionVarsShort',
 			'csh' => 'reset',
 			'onClick' => 'if (confirm(\'%s\')) { document.getElementById(\'clearSessionVars\').value = 1; this.form.submit(); }',
 			'onClickLabels' => array(
-				'LLL:EXT:setup/mod/locallang.xml:clearSessionVarsQuestion'
+				'LLL:EXT:setup/mod/locallang.xlf:clearSessionVarsQuestion'
 			)
 		),
 		'resizeTextareas' => array(
 			'type' => 'check',
-			'label' => 'LLL:EXT:setup/mod/locallang.xml:resizeTextareas',
+			'label' => 'LLL:EXT:setup/mod/locallang.xlf:resizeTextareas',
 			'csh' => 'resizeTextareas'
 		),
 		'resizeTextareas_Flexible' => array(
 			'type' => 'check',
-			'label' => 'LLL:EXT:setup/mod/locallang.xml:resizeTextareas_Flexible',
+			'label' => 'LLL:EXT:setup/mod/locallang.xlf:resizeTextareas_Flexible',
 			'csh' => 'resizeTextareas_Flexible'
 		),
 		'resizeTextareas_MaxHeight' => array(
 			'type' => 'text',
-			'label' => 'LLL:EXT:setup/mod/locallang.xml:flexibleTextareas_MaxHeight',
+			'label' => 'LLL:EXT:setup/mod/locallang.xlf:flexibleTextareas_MaxHeight',
 			'csh' => 'flexibleTextareas_MaxHeight'
 		),
 		'debugInWindow' => array(
 			'type' => 'check',
-			'label' => 'LLL:EXT:setup/mod/locallang.xml:debugInWindow',
+			'label' => 'LLL:EXT:setup/mod/locallang.xlf:debugInWindow',
 			'access' => 'admin'
 		)
 	),
-	'showitem' => '--div--;LLL:EXT:setup/mod/locallang.xml:personal_data,realName,email,emailMeAtLogin,password,password2,lang,
-			--div--;LLL:EXT:setup/mod/locallang.xml:opening,startModule,thumbnailsByDefault,titleLen,
-			--div--;LLL:EXT:setup/mod/locallang.xml:editFunctionsTab,edit_RTE,edit_wideDocument,edit_docModuleUpload,showHiddenFilesAndFolders,resizeTextareas,resizeTextareas_Flexible,resizeTextareas_MaxHeight,copyLevels,recursiveDelete,resetConfiguration,clearSessionVars,
-			--div--;LLL:EXT:setup/mod/locallang.xml:adminFunctions,simulate,debugInWindow'
+	'showitem' => '--div--;LLL:EXT:setup/mod/locallang.xlf:personal_data,realName,email,emailMeAtLogin,password,password2,lang,
+			--div--;LLL:EXT:setup/mod/locallang.xlf:opening,startModule,thumbnailsByDefault,titleLen,
+			--div--;LLL:EXT:setup/mod/locallang.xlf:editFunctionsTab,edit_RTE,edit_wideDocument,edit_docModuleUpload,showHiddenFilesAndFolders,resizeTextareas,resizeTextareas_Flexible,resizeTextareas_MaxHeight,copyLevels,recursiveDelete,resetConfiguration,clearSessionVars,
+			--div--;LLL:EXT:setup/mod/locallang.xlf:adminFunctions,simulate,debugInWindow'
 );
 ?>

@@ -1106,7 +1106,7 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 		$JSLanguageArray = 'HTMLArea.I18N = new Object();' . LF;
 		$labelsArray = array('tooltips' => array(), 'msg' => array(), 'dialogs' => array());
 		foreach ($labelsArray as $labels => $subArray) {
-			$LOCAL_LANG = GeneralUtility::readLLfile('EXT:' . $this->ID . '/htmlarea/locallang_' . $labels . '.xml', $this->language, 'utf-8');
+			$LOCAL_LANG = GeneralUtility::readLLfile('EXT:' . $this->ID . '/htmlarea/locallang_' . $labels . '.xlf', $this->language, 'utf-8');
 			if (!empty($LOCAL_LANG[$this->language])) {
 				$LOCAL_LANG[$this->language] = GeneralUtility::array_merge_recursive_overrule($LOCAL_LANG['default'], $LOCAL_LANG[$this->language], FALSE, FALSE);
 			} else {
@@ -1181,7 +1181,7 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 	public function buildJSLangArray($plugin) {
 		$LOCAL_LANG = FALSE;
 		$extensionKey = is_object($this->registeredPlugins[$plugin]) ? $this->registeredPlugins[$plugin]->getExtensionKey() : $this->ID;
-		$LOCAL_LANG = GeneralUtility::readLLfile('EXT:' . $extensionKey . '/htmlarea/plugins/' . $plugin . '/locallang.xml', $this->language, 'utf-8', 1);
+		$LOCAL_LANG = GeneralUtility::readLLfile('EXT:' . $extensionKey . '/htmlarea/plugins/' . $plugin . '/locallang.xlf', $this->language, 'utf-8', 1);
 		$JSLanguageArray = 'HTMLArea.I18N["' . $plugin . '"] = new Object();' . LF;
 		if (is_array($LOCAL_LANG)) {
 			if (!empty($LOCAL_LANG[$this->language])) {
