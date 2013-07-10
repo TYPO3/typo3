@@ -730,7 +730,7 @@ class t3lib_TCEforms {
 				if (
 					($GLOBALS['TCA'][$table]['ctrl']['type'] && !strcmp($field, $typeField))
 					|| ($GLOBALS['TCA'][$table]['ctrl']['requestUpdate']
-						&& t3lib_div::inList($GLOBALS['TCA'][$table]['ctrl']['requestUpdate'], $field))) {
+						&& t3lib_div::inList(str_replace(' ', '', $GLOBALS['TCA'][$table]['ctrl']['requestUpdate']), $field))) {
 					if ($GLOBALS['BE_USER']->jsConfirmation(1)) {
 						$alertMsgOnChange = 'if (confirm(TBE_EDITOR.labels.onChangeAlert) && TBE_EDITOR.checkSubmit(-1)){ TBE_EDITOR.submitForm() };';
 					} else {
