@@ -432,6 +432,11 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider {
 			$where .= ' AND doktype NOT IN (' . implode(',', $excludedDoktypes) . ')';
 		}
 
+		$additionalWhereClause = $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.additionalWhereClause');
+		if (!empty($additionalWhereClause)) {
+			$where .= ' AND ' . $GLOBALS['TYPO3_DB']->quoteStr($additionalWhereClause);
+		}
+debug($where);
 		if ($searchFilter !== '') {
 			if (is_numeric($searchFilter) && $searchFilter > 0) {
 				$searchWhere .= 'uid = ' . intval($searchFilter) . ' OR ';
@@ -454,6 +459,7 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider {
 
 			$where .= ' AND (' . $searchWhere . ')';
 		}
+
 		return $where;
 	}
 
