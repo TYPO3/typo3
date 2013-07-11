@@ -547,7 +547,7 @@ class ElementInformationController {
 		// Compile information for title tag:
 		$infoData = array();
 		if (count($rows)) {
-			$infoData[] = '<tr class="t3-row-header">' .
+			$infoDataHeader = '<tr class="t3-row-header">' .
 					'<td>&nbsp;</td>' .
 					'<td>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.field') . '</td>' .
 					'<td>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.flexpointer') . '</td>' .
@@ -560,7 +560,7 @@ class ElementInformationController {
 		}
 		foreach ($rows as $row) {
 			$actions = $this->getRecordActions($row['ref_table'], $row['ref_uid']);
-			$infoData[] = '<tr>' .
+			$infoData[] = '<tr class="db_list_normal">' .
 					'<td style="white-space:nowrap;">' . $actions . '</td>' .
 					'<td>' . htmlspecialchars($this->getLabelForTableColumn($table, $row['field'])) . '</td>' .
 					'<td>' . htmlspecialchars($row['flexpointer']) . '</td>' .
@@ -577,8 +577,10 @@ class ElementInformationController {
 		}
 
 		return '<table border="0" cellpadding="0" cellspacing="0" class="typo3-dblist">' .
+				'<thead>' . $infoDataHeader . '</thead>' .
+				'<tbody>' .
 				implode('', $infoData) .
-				'</table>';
+				'</tbody></table>';
 	}
 
 	/**
