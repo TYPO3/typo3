@@ -64,8 +64,9 @@ class DataMapperTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 */
 	public function thawPropertiesSetsPropertyValues() {
 		$className = 'Class' . md5(uniqid(mt_rand(), TRUE));
-		eval('class ' . $className . ' extends TYPO3\\CMS\\Extbase\\DomainObject\\AbstractEntity { public $firstProperty; public $secondProperty; public $thirdProperty; public $fourthProperty; }');
-		$object = new $className();
+		$classNameWithNS = __NAMESPACE__ . '\\' . $className;
+		eval('namespace ' . __NAMESPACE__ . '; class ' . $className . ' extends \\TYPO3\\CMS\\Extbase\\DomainObject\\AbstractEntity { public $firstProperty; public $secondProperty; public $thirdProperty; public $fourthProperty; }');
+		$object = new $classNameWithNS();
 		$row = array(
 			'uid' => '1234',
 			'firstProperty' => 'firstValue',
@@ -83,10 +84,10 @@ class DataMapperTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$dataMap = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Mapper\\DataMap', array('dummy'), array($className, $className));
 		$dataMap->_set('columnMaps', $columnMaps);
 		$dataMaps = array(
-			$className => $dataMap
+			$classNameWithNS => $dataMap
 		);
 		/** @var \TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\TYPO3\CMS\Extbase\Reflection\ClassSchema $classSchema */
-		$classSchema = $this->getAccessibleMock('TYPO3\CMS\Extbase\Reflection\ClassSchema', array('dummy'), array($className));
+		$classSchema = $this->getAccessibleMock('TYPO3\CMS\Extbase\Reflection\ClassSchema', array('dummy'), array($classNameWithNS));
 		$classSchema->_set('typeHandlingService', new \TYPO3\CMS\Extbase\Service\TypeHandlingService());
 		$classSchema->addProperty('pid', 'integer');
 		$classSchema->addProperty('uid', 'integer');
