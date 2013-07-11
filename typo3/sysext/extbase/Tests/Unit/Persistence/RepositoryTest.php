@@ -322,8 +322,8 @@ class RepositoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @param string $modelClassName
 	 */
 	public function constructSetsObjectTypeFromClassName($repositoryClassName, $modelClassName) {
-		$mockClassName = 'MockRepository' . uniqid();
-		eval('class ' . $mockClassName . ' extends TYPO3\\CMS\\Extbase\\Persistence\\Repository {
+		$repositoryClassNameWithNS = __NAMESPACE__ . '\\' . $repositoryClassName;
+		eval('namespace ' . __NAMESPACE__ . '; class ' . $repositoryClassName . ' extends \\TYPO3\\CMS\\Extbase\\Persistence\\Repository {
 			protected function getRepositoryClassName() {
 				return \'' . $repositoryClassName . '\';
 			}
@@ -331,7 +331,7 @@ class RepositoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 				return $this->objectType;
 			}
 		}');
-		$this->repository = new $mockClassName($this->mockObjectManager);
+		$this->repository = new $repositoryClassNameWithNS($this->mockObjectManager);
 		$this->assertEquals($modelClassName, $this->repository->_getObjectType());
 	}
 
