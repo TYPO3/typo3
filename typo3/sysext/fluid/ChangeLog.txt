@@ -1,6 +1,39 @@
 ChangeLog for Fluid
 ===================
 
+Changes for 6.2
+===============
+
+!!! Image view helper does not render title tag by default
+
+In previous versions of fluid the image view helper always rendered the
+title attribute. If not set, the value of the required alt attribute was set as
+title.
+This fallback was removed with version 6.2. If not specifically set, title
+is not rendered anymore.
+
+Full Changes for 6.2
+====================
+
+[TASK] Move language include to .xlf
+[TASK] Replace inject methods with @inject
+[FEATURE] Improve BE container view helper
+[TASK] Remove Comment for deprecation of f:translate key
+[!!!][FEATURE] Backport recursive and allowing empty validation from Flow
+[BUGFIX] ShortcutVH must not ignore options.enableBookmarks
+[TASK] Remove last bits of forceCharset handling
+[FEATURE] ViewHelper to display file sizes
+[TASK] Move ExtJS- & JavaScript from t3lib
+[FEATURE] Switch View Helper
+[BUGFIX] FormFieldVH->getPropertyValue() must work without form object
+[BUGFIX] Enable CheckboxViewHelper binding to ArrayObject and Null
+[TASK] Remove mention of template.php
+[BUGFIX] Remove second registration of argument 'placeholder'
+[FEATURE] Add placeholder argument to VH for Textarea and Textfield
+[FEATURE] ImageViewHelper removed title fallback onto alt tag
+[BUGFIX] Mentions of old class names
+[TASK] Reschedule the removal for the old property mapper
+
 Changes for 6.1.0
 =================
 
