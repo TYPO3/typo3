@@ -1,6 +1,44 @@
 ChangeLog for Extbase
 =====================
 
+Changes for 6.2
+
+Full Changes for 6.2
+--------------------
+
+[TASK] Move language include to .xlf
+[TASK] Replace inject methods with @inject
+[TASK] CGL, switch(): Indent "case" correctly; no "break" in default
+[TASK] Replace inject methods with @inject; allow @Flow\Inject
+[!!!][FEATURE] Backport recursive and allowing empty validation from Flow
+[FEATURE] Support @Flow\Inject annotations in Extbase
+[TASK] Improve error message in NotFoundView to identify source
+[BUGFIX] ActionController must use namespaced object view pattern
+[BUGFIX] Fix property mapping of checkbox arrays
+[FEATURE] Enable chaining of set* funtions
+[BUGFIX] Generation of class information fails with DateTime
+[BUGFIX] Repair broken unit tests
+[BUGFIX] findByUid should respect query settings of repository
+[TASK] Make preperations for backporting Flow validation api
+[TASK] Mark Extbase\Mvc\Controller\FlashMessageContainer deprecated
+[FEATURE] Add ObjectManager->getScope like in TYPO3.Flow
+[BUGFIX] Wrong position for beforeCallActionMethod
+[FEATURE] Automatically determine page type for URIs with format
+[FEATURE] Backport Object Type Converter from Flow
+[TASK] Remove dummy files from ext:extbase
+[BUGFIX] Mentions of old class names
+[BUGFIX] Mentions of old class names
+[BUGFIX] Mentions of old class names
+[BUGFIX] Fix persisting of lazy object storages
+[BUGFIX] Incomplete mocking in Bootstrap test
+[BUGFIX] Fix typo in deprecation description
+[TASK] Reschedule the removal for the old property mapper
+[TASK] Raise sysext versions to 6.2.0
+[TASK] Add latest changes to ChangeLog.txt
+[BUGFIX] Don't respect sys_language in Backends getObjectByIdentifier
+[BUGFIX] Fix persisting new objects
+[BUGFIX] Fix failing unit tests
+
 Changes for 6.1.0
 =================
 
@@ -170,8 +208,6 @@ Revert "[FEATURE] Allow different overriding of object mapping per plugin"
 [TASK] Provide Unit Test for Error/Message
 [FEATURE] Provide UnitTest.xml with code coverage generation
 [TASK] Rename property, getter and setters of File Model
-[FEATURE] Add userGroups to backendUser model
-[FEATURE] Add filemount property to backend users
 [BUGFIX] Remove newline after ?> in AbstractController
 [BUGFIX] Avoid clearing the page cache too often
 [BUGFIX] Correct indention of class comment
