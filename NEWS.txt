@@ -37,6 +37,11 @@ Logging
 * The logger of the Logging API now complies with the PSR-3 standard of the
   PHP Framework Interop Group: http://www.php-fig.org/psr/3/
 
+* The deprecationLog is disabled by default to deliver a product that is
+oriented on production environment ("production ready").  However, it's
+recommended to enable deprecationLog during development to identify function
+calls which are supposed to get removed in future.
+
 -------------------------------------------------------------------------------
 Backend
 -------------------------------------------------------------------------------
