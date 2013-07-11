@@ -121,7 +121,11 @@ class PageGenerator {
 		// dtdAllowsFrames indicates whether to use the target attribute in links
 		$GLOBALS['TSFE']->dtdAllowsFrames = FALSE;
 		if ($GLOBALS['TSFE']->config['config']['doctype']) {
-			if (in_array((string) $GLOBALS['TSFE']->config['config']['doctype'], array('xhtml_frames', 'html5'))) {
+			if (in_array(
+				(string) $GLOBALS['TSFE']->config['config']['doctype'],
+				array('xhtml_trans', 'xhtml_frames', 'xhtml_basic', 'xhtml_2', 'html5'),
+				TRUE)
+			) {
 				$GLOBALS['TSFE']->dtdAllowsFrames = TRUE;
 			}
 		} else {
