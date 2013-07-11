@@ -189,7 +189,11 @@ class SimpleDataHandlerController {
 			$clipObj->initializeClipboard();
 			if ($this->CB['paste']) {
 				$clipObj->setCurrentPad($this->CB['pad']);
-				$this->cmd = $clipObj->makePasteCmdArray($this->CB['paste'], $this->cmd);
+				$this->cmd = $clipObj->makePasteCmdArray(
+					$this->CB['paste'],
+					$this->cmd,
+					isset($this->CB['update']) ? unserialize($this->CB['update']) : NULL
+				);
 			}
 			if ($this->CB['delete']) {
 				$clipObj->setCurrentPad($this->CB['pad']);
