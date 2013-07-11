@@ -168,6 +168,11 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	 */
 	public $itemLabels = array();
 
+	/**
+	 * @var \TYPO3\CMS\Backend\Clipboard\Clipboard
+	 */
+	protected $clipBoard;
+
 	/*****************************************
 	 *
 	 * Renderings
@@ -378,6 +383,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	 */
 	public function getTable_tt_content($id) {
 		$this->initializeLanguages();
+		$this->initializeClipboard();
 		// Initialize:
 		$RTE = $GLOBALS['BE_USER']->isRTE();
 		$lMarg = 1;
@@ -512,7 +518,8 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 							$colTitle = $GLOBALS['LANG']->sL($item[0]);
 						}
 					}
-					$head[$key] .= $this->tt_content_drawColHeader($colTitle, $this->doEdit && count($rowArr) ? '&edit[tt_content][' . $editUidList . ']=edit' . $pageTitleParamForAltDoc : '', $newP);
+					$pasteP = array('colPos' => $key, 'sys_language_uid' => $lP);
+					$head[$key] .= $this->tt_content_drawColHeader($colTitle, $this->doEdit && count($rowArr) ? '&edit[tt_content][' . $editUidList . ']=edit' . $pageTitleParamForAltDoc : '', $newP, $pasteP);
 					$editUidList = '';
 				}
 				// For each column, fit the rendered content into a table cell:
@@ -738,12 +745,13 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 					}
 					// Add section header:
 					$newP = $this->newContentElementOnClick($id, $key, $this->tt_contentConfig['sys_language_uid']);
+					$pasteP = array('colPos' => $key, 'sys_language_uid' => $this->tt_contentConfig['sys_language_uid']);
 					$out .= '
 
 						<!-- Column header: -->
 						<tr>
 							<td></td>
-							<td valign="top" colspan="3">' . $this->tt_content_drawColHeader(\TYPO3\CMS\Backend\Utility\BackendUtility::getProcessedValue('tt_content', 'colPos', $key), ($this->doEdit && count($rowArr) ? '&edit[tt_content][' . $editUidList . ']=edit' . $pageTitleParamForAltDoc : ''), $newP) . $theNewButton . '<br /></td>
+							<td valign="top" colspan="3">' . $this->tt_content_drawColHeader(\TYPO3\CMS\Backend\Utility\BackendUtility::getProcessedValue('tt_content', 'colPos', $key), ($this->doEdit && count($rowArr) ? '&edit[tt_content][' . $editUidList . ']=edit' . $pageTitleParamForAltDoc : ''), $newP, $pasteP) . $theNewButton . '<br /></td>
 						</tr>';
 					// Finally, add the content from the records in this column:
 					$out .= $rowOut;
@@ -1091,20 +1099,36 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	 * @param string $colName Column name
 	 * @param string $editParams Edit params (Syntax: &edit[...] for alt_doc.php)
 	 * @param string $newParams New element params (Syntax: &edit[...] for alt_doc.php) OBSOLETE
+	 * @param array|NULL $pasteParams Paste element params (i.e. array(colPos => 1, sys_language_uid => 2))
 	 * @return string HTML table
 	 * @todo Define visibility
 	 */
-	public function tt_content_drawColHeader($colName, $editParams, $newParams) {
-		$icons = '';
+	public function tt_content_drawColHeader($colName, $editParams, $newParams, array $pasteParams = NULL) {
+		$iconsArr = array();
 		// Create command links:
 		if ($this->tt_contentConfig['showCommands']) {
 			// Edit whole of column:
 			if ($editParams) {
-				$icons .= '<a href="#" onclick="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick($editParams, $this->backPath)) . '" title="' . $GLOBALS['LANG']->getLL('editColumn', TRUE) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open') . '</a>';
+				$iconsArr['edit'] = '<a href="#" onclick="'
+					. htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick($editParams, $this->backPath))
+					. '" title="' . $GLOBALS['LANG']->getLL('editColumn', TRUE) . '">'
+					. \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open') . '</a>';
+			}
+			if ($pasteParams) {
+				$elFromTable = $this->clipBoard->elFromTable('tt_content');
+				if (count($elFromTable)) {
+					$iconsArr['paste'] = '<a href="'
+						. htmlspecialchars($this->clipBoard->pasteUrl('tt_content', $this->id, TRUE, $pasteParams))
+						. '" onclick="' . htmlspecialchars(('return '
+						. $this->clipBoard->confirmMsg('pages', $this->pageRecord, 'into', $elFromTable, $colName)))
+						. '" title="' . $GLOBALS['LANG']->getLL('clip_paste', TRUE) . '">'
+						. \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-paste-into') . '</a>';
+				}
 			}
 		}
-		if (strlen($icons)) {
-			$icons = '<div class="t3-page-colHeader-icons">' . $icons . '</div>';
+		$icons = '';
+		if (count($iconsArr)) {
+			$icons = '<div class="t3-page-colHeader-icons">' . implode('', $iconsArr) . '</div>';
 		}
 		// Create header row:
 		$out = '<div class="t3-page-colHeader t3-row-header">
@@ -1618,6 +1642,33 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	 * Various helper functions
 	 *
 	 ********************************/
+
+	/**
+	 * Initializes the clipboard for generating paste links
+	 *
+	 * @return void
+	 *
+	 * @see \TYPO3\CMS\Recordlist\RecordList::main()
+	 * @see \TYPO3\CMS\Backend\Controller\ClickMenuController::main()
+	 * @see \TYPO3\CMS\Filelist\Controller\FileListController::main()
+	 */
+	protected function initializeClipboard() {
+		// Start clipboard
+		$this->clipBoard = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Clipboard\\Clipboard');
+
+		// Initialize - reads the clipboard content from the user session
+		$this->clipBoard->initializeClipboard();
+
+		// This locks the clipboard to the Normal for this request.
+		$this->clipBoard->lockToNormal();
+
+		// Clean up pad
+		$this->clipBoard->cleanCurrent();
+
+		// Save the clipboard content
+		$this->clipBoard->endClipboard();
+	}
+
 	/**
 	 * Counts and returns the number of records on the page with $pid
 	 *
