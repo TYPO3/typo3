@@ -167,6 +167,7 @@ class ClickMenu {
 		$this->iParts[1] = GeneralUtility::_GP('uid');
 		$this->iParts[2] = GeneralUtility::_GP('listFr');
 		$this->iParts[3] = GeneralUtility::_GP('enDisItems');
+		$this->addParams = unserialize(base64_decode(GeneralUtility::_GP('addParams')));
 		// Setting flags:
 		if ($this->iParts[2]) {
 			$this->listFrame = 1;
@@ -260,13 +261,16 @@ class ClickMenu {
 			// Edit:
 			if (!$root && ($GLOBALS['BE_USER']->isPSet($lCP, $table, 'edit') || $GLOBALS['BE_USER']->isPSet($lCP, $table, 'editcontent'))) {
 				if (!in_array('edit', $this->disabledItems)) {
-					$menuItems['edit'] = $this->DB_edit($table, $uid);
+
+					$editParams = $this->addParams['editParams'] ? $this->addParams['editParams'] : NULL;
+					$menuItems['edit'] = $this->DB_edit($table, $uid, $editParams);
 				}
 				$this->editOK = 1;
 			}
 			// New:
 			if (!in_array('new', $this->disabledItems) && $GLOBALS['BE_USER']->isPSet($lCP, $table, 'new')) {
-				$menuItems['new'] = $this->DB_new($table, $uid);
+				$newParams = is_array($this->addParams['colInfo']) ? $this->addParams['colInfo'] : NULL;
+				$menuItems['new'] = $this->DB_new($table, $uid, $newParams);
 			}
 			// Info:
 			if (!in_array('info', $this->disabledItems) && !$root) {
@@ -295,8 +299,12 @@ class ClickMenu {
 						$menuItems['pasteinto'] = $this->DB_paste('', $uid, 'into', $elInfo);
 					}
 				}
-				$elFromTable = count($this->clipObj->elFromTable($table));
-				if (!$root && !$DBmount && $elFromTable && $GLOBALS['TCA'][$table]['ctrl']['sortby']) {
+				$elFromTable = $this->clipObj->elFromTable($table);
+				$pasteParams = is_array($this->addParams['colInfo']) ? $this->addParams['colInfo'] : NULL;
+				if ($table == 'tt_content' && $lCP & 16 && count($elFromTable) && $pasteParams) {
+					$elInfo[3] = $elFromTable;
+					$menuItems['pasteinto'] = $this->DB_paste($table, $uid, 'into', $elInfo, $pasteParams);
+				} elseif (!$root && !$DBmount && count($elFromTable) && $GLOBALS['TCA'][$table]['ctrl']['sortby']) {
 					$menuItems['pasteafter'] = $this->DB_paste($table, -$uid, 'after', $elInfo);
 				}
 			}
@@ -434,15 +442,21 @@ class ClickMenu {
 	 * @internal
 	 * @todo Define visibility
 	 */
-	public function DB_paste($table, $uid, $type, $elInfo) {
+	public function DB_paste($table, $uid, $type, $elInfo, array $update = NULL) {
 		$editOnClick = '';
 		$loc = 'top.content.list_frame';
 		if ($GLOBALS['BE_USER']->jsConfirmation(2)) {
-			$conf = $loc . ' && confirm(' . $GLOBALS['LANG']->JScharCode(sprintf($GLOBALS['LANG']->sL(('LLL:EXT:lang/locallang_core.xlf:mess.' . ($elInfo[2] == 'copy' ? 'copy' : 'move') . '_' . $type)), $elInfo[0], $elInfo[1])) . ')';
+			if ($elInfo['3'] && is_array($update)) {
+				$colTitle = BackendUtility::getProcessedValue('tt_content', 'colPos', $update['colPos']);
+				$confirmMsg = $this->clipObj->confirmMsg($table, $this->rec, $type, $elInfo[3], $colTitle);
+			} else {
+				$confirmMsg = 'confirm(' . $GLOBALS['LANG']->JScharCode(sprintf($GLOBALS['LANG']->sL(('LLL:EXT:lang/locallang_core.xlf:mess.' . ($elInfo[2] == 'copy' ? 'copy' : 'move') . '_' . $type)), $elInfo[0], $elInfo[1])) . ')';
+			}
+			$conf = $loc . ' && ' . $confirmMsg;
 		} else {
 			$conf = $loc;
 		}
-		$editOnClick = 'if(' . $conf . '){' . $loc . '.location.href=top.TS.PATH_typo3+\'' . $this->clipObj->pasteUrl($table, $uid, 0) . '&redirect=\'+top.rawurlencode(' . $this->frameLocation(($loc . '.document')) . '.pathname+' . $this->frameLocation(($loc . '.document')) . '.search); hideCM();}';
+		$editOnClick = 'if(' . $conf . '){' . $loc . '.location.href=top.TS.PATH_typo3+\'' . $this->clipObj->pasteUrl($table, $uid, 0, $update) . '&redirect=\'+top.rawurlencode(' . $this->frameLocation(($loc . '.document')) . '.pathname+' . $this->frameLocation(($loc . '.document')) . '.search); hideCM();}';
 		return $this->linkItem($this->label('paste' . $type), $this->excludeIcon(IconUtility::getSpriteIcon('actions-document-paste-' . $type)), $editOnClick . 'return false;');
 	}
 
@@ -581,7 +595,7 @@ class ClickMenu {
 	 * @internal
 	 * @todo Define visibility
 	 */
-	public function DB_edit($table, $uid) {
+	public function DB_edit($table, $uid, $editParams = NULL) {
 		// If another module was specified, replace the default Page module with the new one
 		$newPageModule = trim($GLOBALS['BE_USER']->getTSConfigVal('options.overridePageModule'));
 		$pageModule = BackendUtility::isModuleSetInTBE_MODULES($newPageModule) ? $newPageModule : 'web_layout';
@@ -599,7 +613,7 @@ class ClickMenu {
 			}
 		}
 		if (!$editOnClick) {
-			$editOnClick = 'if(' . $loc . '){' . $loc . '.location.href=top.TS.PATH_typo3+\'alt_doc.php?returnUrl=\'+top.rawurlencode(' . $this->frameLocation(($loc . '.document')) . '.pathname+' . $this->frameLocation(($loc . '.document')) . '.search)+\'&edit[' . $table . '][' . $uid . ']=edit' . $addParam . '\';}';
+			$editOnClick = 'if(' . $loc . '){' . $loc . '.location.href=top.TS.PATH_typo3+\'alt_doc.php?returnUrl=\'+top.rawurlencode(' . $this->frameLocation(($loc . '.document')) . '.pathname+' . $this->frameLocation(($loc . '.document')) . '.search)+\'' . ( $editParams ? $editParams : '&edit[' . $table . '][' . $uid . ']=edit' ) . $addParam . '\';}';
 		}
 		return $this->linkItem($this->label('edit'), $this->excludeIcon(IconUtility::getSpriteIcon($theIcon)), $editOnClick . 'return hideCM();');
 	}
@@ -613,10 +627,11 @@ class ClickMenu {
 	 * @internal
 	 * @todo Define visibility
 	 */
-	public function DB_new($table, $uid) {
+	public function DB_new($table, $uid, array $defaultParams = NULL) {
 		$editOnClick = '';
 		$loc = 'top.content.list_frame';
-		$editOnClick = 'if(' . $loc . '){' . $loc . '.location.href=top.TS.PATH_typo3+\'' . ($this->listFrame ? 'alt_doc.php?returnUrl=\'+top.rawurlencode(' . $this->frameLocation(($loc . '.document')) . '.pathname+' . $this->frameLocation(($loc . '.document')) . '.search)+\'&edit[' . $table . '][-' . $uid . ']=new\'' : 'db_new.php?id=' . intval($uid) . '\'') . ';}';
+		$addParams = is_array($defaultParams) ? GeneralUtility::implodeArrayForUrl('defVals['.$table.']', $defaultParams) : '';
+		$editOnClick = 'if(' . $loc . '){' . $loc . '.location.href=top.TS.PATH_typo3+\'' . ($this->listFrame ? 'alt_doc.php?returnUrl=\'+top.rawurlencode(' . $this->frameLocation(($loc . '.document')) . '.pathname+' . $this->frameLocation(($loc . '.document')) . '.search)+\'&edit[' . $table . '][-' . $uid . ']=new' . $addParams . '\'' : 'db_new.php?id=' . intval($uid) . '\'') . ';}';
 		return $this->linkItem($this->label('new'), $this->excludeIcon(IconUtility::getSpriteIcon('actions-' . ($table === 'pages' ? 'page' : 'document') . '-new')), $editOnClick . 'return hideCM();');
 	}
 
