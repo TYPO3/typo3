@@ -519,7 +519,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 							$colTitle = $GLOBALS['LANG']->sL($item[0]);
 						}
 					}
-					$head[$key] .= $this->tt_content_drawColHeader($colTitle, $this->doEdit && count($rowArr) ? '&edit[tt_content][' . $editUidList . ']=edit' . $pageTitleParamForAltDoc : '', $newP);
+					$head[$key] .= $this->tt_content_drawColHeader($colTitle, $this->doEdit && count($rowArr) ? '&edit[tt_content][' . $editUidList . ']=edit' . $pageTitleParamForAltDoc : '', $newP, $key, $lP);
 					$editUidList = '';
 				}
 				// For each column, fit the rendered content into a table cell:
@@ -739,7 +739,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 						<!-- Column header: -->
 						<tr>
 							<td></td>
-							<td valign="top" colspan="3">' . $this->tt_content_drawColHeader(BackendUtility::getProcessedValue('tt_content', 'colPos', $key), ($this->doEdit && count($rowArr) ? '&edit[tt_content][' . $editUidList . ']=edit' . $pageTitleParamForAltDoc : ''), $newP) . $theNewButton . '<br /></td>
+							<td valign="top" colspan="3">' . $this->tt_content_drawColHeader(BackendUtility::getProcessedValue('tt_content', 'colPos', $key), ($this->doEdit && count($rowArr) ? '&edit[tt_content][' . $editUidList . ']=edit' . $pageTitleParamForAltDoc : ''), $newP, $key, $this->tt_contentConfig['sys_language_uid']) . $theNewButton . '<br /></td>
 						</tr>';
 					// Finally, add the content from the records in this column:
 					$out .= $rowOut;
@@ -1089,21 +1089,10 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	 * @return string HTML table
 	 * @todo Define visibility
 	 */
-	public function tt_content_drawColHeader($colName, $editParams, $newParams) {
-		$icons = '';
-		// Create command links:
-		if ($this->tt_contentConfig['showCommands']) {
-			// Edit whole of column:
-			if ($editParams) {
-				$icons .= '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick($editParams, $this->backPath)) . '" title="' . $GLOBALS['LANG']->getLL('editColumn', TRUE) . '">' . IconUtility::getSpriteIcon('actions-document-open') . '</a>';
-			}
-		}
-		if (strlen($icons)) {
-			$icons = '<div class="t3-page-colHeader-icons">' . $icons . '</div>';
-		}
+	public function tt_content_drawColHeader($colName, $editParams, $newParams, $colPos = 0, $sys_language_uid = 0) {
 		// Create header row:
-		$out = '<div class="t3-page-colHeader t3-row-header">
-					' . $icons . '
+		$onClick = $GLOBALS['SOBE']->doc->wrapClickMenuOnIcon('', 'tt_content', $this->id, 1, base64_encode(serialize(array('editParams' => $editParams, 'colInfo' => array('colPos' => $colPos, 'sys_language_uid' => $sys_language_uid)))), '+new,edit,pasteinto', TRUE);
+		$out = '<div class="t3-page-colHeader t3-row-header" oncontextmenu="'.htmlspecialchars($onClick).'" onclick="'.htmlspecialchars($onClick).'">
 					<div class="t3-page-colHeader-label">' . htmlspecialchars($colName) . '</div>
 				</div>';
 		return $out;
