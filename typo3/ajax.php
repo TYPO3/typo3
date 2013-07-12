@@ -53,7 +53,7 @@ if (in_array($ajaxID, $noUserAjaxIDs)) {
 	define('TYPO3_PROCEED_IF_NO_USER', 2);
 }
 
-require 'init.php';
+require __DIR__ . '/init.php';
 
 // finding the script path from the variable
 $ajaxScript = $TYPO3_CONF_VARS['BE']['AJAX'][$ajaxID];

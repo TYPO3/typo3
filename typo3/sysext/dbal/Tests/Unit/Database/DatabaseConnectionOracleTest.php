@@ -27,7 +27,7 @@ class DatabaseConnectionOracleTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		// Backup database connection
 		$this->db = $GLOBALS['TYPO3_DB'];
 		// Reconfigure DBAL to use Oracle
-		require 'Fixtures/oci8.config.php';
+		require __DIR__ . '/Fixtures/oci8.config.php';
 		$className = self::buildAccessibleProxy('TYPO3\\CMS\\Dbal\\Database\\DatabaseConnection');
 		$GLOBALS['TYPO3_DB'] = new $className();
 		$parserClassName = self::buildAccessibleProxy('TYPO3\\CMS\\Dbal\\Database\\SqlParser');

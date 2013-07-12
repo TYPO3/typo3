@@ -32,7 +32,7 @@
  * @author Peter Kühn <peter@kuehn.com>
  * @author Kasper Skårhøj <typo3@typo3.com>
  */
-require 'init.php';
+require __DIR__ . '/init.php';
 
 $colorpickerController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\Wizard\\ColorpickerController');
 $colorpickerController->main();
