@@ -35,7 +35,6 @@ namespace TYPO3\CMS\Info\Controller;
  */
 class InfoModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 
-	// Internal, dynamic:
 	/**
 	 * @todo Define visibility
 	 */
@@ -60,16 +59,23 @@ class InfoModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	public $doc;
 
 	/**
+	 * Constructor
+	 */
+	public function __construct() {
+		$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_mod_web_info.xlf');
+		$GLOBALS['BE_USER']->modAccess($GLOBALS['MCONF'], TRUE);
+	}
+
+	/**
 	 * Initialize module header etc and call extObjContent function
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function main() {
 		// Access check...
 		// The page will show only if there is a valid page and if this page may be viewed by the user
 		$this->pageinfo = \TYPO3\CMS\Backend\Utility\BackendUtility::readPageAccess($this->id, $this->perms_clause);
-		$access = is_array($this->pageinfo) ? 1 : 0;
+		$access = is_array($this->pageinfo);
 		if ($this->id && $access || $GLOBALS['BE_USER']->user['admin'] && !$this->id) {
 			$this->CALC_PERMS = $GLOBALS['BE_USER']->calcPerms($this->pageinfo);
 			if ($GLOBALS['BE_USER']->user['admin'] && !$this->id) {
@@ -111,7 +117,12 @@ class InfoModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 			$docHeaderButtons = $this->getButtons();
 			$markers = array(
 				'CSH' => $docHeaderButtons['csh'],
-				'FUNC_MENU' => \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncMenu($this->id, 'SET[function]', $this->MOD_SETTINGS['function'], $this->MOD_MENU['function']),
+				'FUNC_MENU' => \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncMenu(
+					$this->id,
+					'SET[function]',
+					$this->MOD_SETTINGS['function'],
+					$this->MOD_MENU['function']
+				),
 				'CONTENT' => $this->content
 			);
 			// Build the <body> for the module
@@ -132,7 +143,6 @@ class InfoModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * Print module content (from $this->content)
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function printContent() {
 		$this->content = $this->doc->insertStylesAndJS($this->content);
@@ -162,6 +172,5 @@ class InfoModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	}
 
 }
-
 
 ?>
