@@ -584,6 +584,23 @@ class EditDocumentController {
 		$this->MCONF['name'] = 'xMOD_alt_doc.php';
 		// CLEANSE SETTINGS
 		$this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, GeneralUtility::_GP('SET'), $this->MCONF['name']);
+
+		// Hook for processing preview popViewId_addParams, popViewId and viewUrl
+		// could be used to modify the save and view preview URL
+		if (sizeof($this->getHookObjects())) {
+			$parameters = array(
+				'editconf' => $this->editconf,
+				'popViewId_addParams' => &$this->popViewId_addParams,
+				'popViewId' => &$this->popViewId,
+				'viewUrl' => &$this->viewUrl,
+			);
+			foreach ($this->getHookObjects() as $hook) {
+				if ((method_exists($hook, 'processPreviewLink'))) {
+					$hook->processPreviewLink($parameters, $this);
+				}
+			}
+		}
+
 		// Create an instance of the document template object
 		$this->doc = $GLOBALS['TBE_TEMPLATE'];
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
@@ -630,6 +647,27 @@ class EditDocumentController {
 		// Setting up the context sensitive menu:
 		$this->doc->getContextMenuCode();
 		$this->doc->bodyTagAdditions = 'onload="window.scrollTo(0,' . MathUtility::forceIntegerInRange(GeneralUtility::_GP('_scrollPosition'), 0, 10000) . ');"';
+	}
+
+	/**
+	 * Get the pre created hook objects for the EditDocumentController
+	 *
+	 * @return array
+	 */
+	protected function getHookObjects(){
+		static $hookObjects = NULL;
+		if ($hookObjects === NULL) {
+			$hookObjects = array();
+			if (is_array ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/alt_doc.php']['hookObject'])) {
+				foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/alt_doc.php']['hookObject'] as $classReference) {
+					$hook = GeneralUtility::getUserObj($classReference);
+					if (is_object($hook)) {
+						$hookObjects[] = $hook;
+					}
+				}
+			}
+		}
+		return $hookObjects;
 	}
 
 	/**
@@ -796,6 +834,14 @@ class EditDocumentController {
 										if ($GLOBALS['TCA'][$table]['ctrl']['languageField'] && $calcPRec[$GLOBALS['TCA'][$table]['ctrl']['languageField']] > 0) {
 											$this->viewId_addParams = '&L=' . $calcPRec[$GLOBALS['TCA'][$table]['ctrl']['languageField']];
 										}
+
+										$pagesTSconfig = \TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig($calcPRec['pid']);
+										if (is_array($pagesTSconfig['common.']['table.'][$table.'.']) && is_numeric($pagesTSconfig['common.']['table.'][$table.'.']['FePreviewPid'])) {
+											$this->viewId = $pagesTSconfig['common.']['table.'][$table.'.']['FePreviewPid'];
+											if (isset($pagesTSconfig['common.']['table.'][$table.'.']['additionalParams'])) {
+												$this->viewId_addParams .= '&' . str_replace('###UID###', $theUid, trim($pagesTSconfig['common.']['table.'][$table.'.']['additionalParams'], '& '));
+											}
+										}
 									}
 									// Check internals regarding access:
 									$isRootLevelRestrictionIgnored = BackendUtility::isRootLevelRestrictionIgnored($table);
@@ -926,7 +972,17 @@ class EditDocumentController {
 			$buttons['save'] = IconUtility::getSpriteIcon('actions-document-save', array('html' => '<input type="image" name="_savedok" class="c-inputButton" src="clear.gif" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc', 1) . '" />'));
 			// SAVE / VIEW button:
 			if ($this->viewId && !$this->noView && ExtensionManagementUtility::isLoaded('cms') && $this->getNewIconMode($this->firstEl['table'], 'saveDocView')) {
-				$buttons['save_view'] = IconUtility::getSpriteIcon('actions-document-save-view', array('html' => '<input type="image" class="c-inputButton" name="_savedokview" src="clear.gif" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDocShow', 1) . '" />'));
+
+				$pagesTSconfig = \TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig($this->pageinfo['uid']);
+				if (isset($pagesTSconfig['properties']['excludeDokTypes'])) {
+					$excludeDokTypes = GeneralUtility::intExplode(',', $pagesTSconfig['properties']['excludeDokTypes'], TRUE);
+				} else {
+					// exclude sysfolders and recycler by default
+					$excludeDokTypes = array(254, 255);
+				}
+				if (!in_array($this->pageinfo['doktype'], $excludeDokTypes) || isset($pagesTSconfig['common.']['table.'][$table.'.']['FePreviewPid'])) {
+					$buttons['save_view'] = IconUtility::getSpriteIcon('actions-document-save-view', array('html' => '<input type="image" class="c-inputButton" name="_savedokview" src="clear.gif" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDocShow', 1) . '" />'));
+				}
 			}
 			// SAVE / NEW button:
 			if (count($this->elementsData) == 1 && $this->getNewIconMode($this->firstEl['table'])) {
@@ -970,6 +1026,19 @@ class EditDocumentController {
 		$buttons['csh'] = BackendUtility::cshItem('xMOD_csh_corebe', 'TCEforms', $GLOBALS['BACK_PATH'], '', TRUE);
 		$buttons['shortcut'] = $this->shortCutLink();
 		$buttons['open_in_new_window'] = $this->openInNewWindowLink();
+
+		// Hook for change the behavior of the button generation
+		if (sizeof($this->getHookObjects())) {
+			$parameters = array(
+				'buttons' => &$buttons
+			);
+			foreach ($this->getHookObjects() as $hook) {
+				if ((method_exists($hook, 'manipulateButtons'))) {
+					$hook->manipulateButtons($parameters, $this);
+				}
+			}
+		}
+
 		return $buttons;
 	}
 
