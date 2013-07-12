@@ -23,6 +23,8 @@ use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Backend\Tree\View\PagePositionMap;
 use TYPO3\CMS\Backend\Tree\View\NewRecordPageTreeView;
 use TYPO3\CMS\Core\Utility\HttpUtility;
+use TYPO3\CMS\Frontend\Page\PageRepository;
+
 
 /**
  * Script class for 'db_new'
@@ -305,7 +307,16 @@ class NewRecordController {
 		}
 		if (is_array($this->pageinfo) && $this->pageinfo['uid']) {
 			// View
-			$buttons['view'] = '<a href="#" onclick="' . htmlspecialchars(BackendUtility::viewOnClick($this->pageinfo['uid'], $this->doc->backPath, BackendUtility::BEgetRootLine($this->pageinfo['uid']))) . '" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', TRUE) . '">' . IconUtility::getSpriteIcon('actions-document-view') . '</a>';
+			$pagesTSconfig = BackendUtility::getPagesTSconfig($this->pageinfo['uid']);
+			if (isset($pagesTSconfig['TCEMAIN.']['preview.']['disableButtonForDokType'])) {
+				$excludeDokTypes = GeneralUtility::intExplode(',', $pagesTSconfig['TCEMAIN.']['preview.']['disableButtonForDokType'], TRUE);
+			} else {
+				// exclude sysfolders and recycler by default
+				$excludeDokTypes = array(PageRepository::DOKTYPE_RECYCLER, PageRepository::DOKTYPE_SYSFOLDER, PageRepository::DOKTYPE_SPACER);
+			}
+			if (!in_array((int)$this->pageinfo['doktype'], $excludeDokTypes, TRUE)) {
+				$buttons['view'] = '<a href="#" onclick="' . htmlspecialchars(BackendUtility::viewOnClick($this->pageinfo['uid'], $this->doc->backPath, BackendUtility::BEgetRootLine($this->pageinfo['uid']))) . '" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', TRUE) . '">' . IconUtility::getSpriteIcon('actions-document-view') . '</a>';
+			}
 		}
 		return $buttons;
 	}

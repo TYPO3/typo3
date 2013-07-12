@@ -676,6 +676,7 @@ class EditDocumentController {
 		$this->R_URI = $this->R_URL_parts['path'] . '?' . ltrim(GeneralUtility::implodeArrayForUrl('', $this->R_URL_getvars), '&');
 		// Setting virtual document name
 		$this->MCONF['name'] = 'xMOD_alt_doc.php';
+
 		// Create an instance of the document template object
 		$this->doc = $GLOBALS['TBE_TEMPLATE'];
 		$pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
@@ -1119,7 +1120,16 @@ class EditDocumentController {
 			$buttons['save'] = IconUtility::getSpriteIcon('actions-document-save', array('html' => '<input type="image" name="_savedok" class="c-inputButton" src="clear.gif" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc', TRUE) . '" />'));
 			// SAVE / VIEW button:
 			if ($this->viewId && !$this->noView && $this->getNewIconMode($this->firstEl['table'], 'saveDocView')) {
-				$buttons['save_view'] = IconUtility::getSpriteIcon('actions-document-save-view', array('html' => '<input onclick="window.open(\'\', \'newTYPO3frontendWindow\');" type="image" class="c-inputButton" name="_savedokview" src="clear.gif" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDocShow', TRUE) . '" />'));
+				$pagesTSconfig = BackendUtility::getPagesTSconfig($this->pageinfo['uid']);
+				if (isset($pagesTSconfig['TCEMAIN.']['preview.']['disableButtonForDokType'])) {
+					$excludeDokTypes = GeneralUtility::intExplode(',', $pagesTSconfig['TCEMAIN.']['preview.']['disableButtonForDokType'], TRUE);
+				} else {
+					// exclude sysfolders and recycler by default
+					$excludeDokTypes = array(PageRepository::DOKTYPE_RECYCLER, PageRepository::DOKTYPE_SYSFOLDER, PageRepository::DOKTYPE_SPACER);
+				}
+				if (!in_array((int)$this->pageinfo['doktype'], $excludeDokTypes, TRUE) || isset($pagesTSconfig['TCEMAIN.']['preview.'][$this->firstEl['table'].'.']['previewPageId'])) {
+					$buttons['save_view'] = IconUtility::getSpriteIcon('actions-document-save-view', array('html' => '<input onclick="window.open(\'\', \'newTYPO3frontendWindow\');" type="image" class="c-inputButton" name="_savedokview" src="clear.gif" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDocShow', TRUE) . '" />'));
+				}
 			}
 			// SAVE / NEW button:
 			if (count($this->elementsData) === 1 && $this->getNewIconMode($this->firstEl['table'])) {
@@ -1182,6 +1192,7 @@ class EditDocumentController {
 		$buttons['csh'] = BackendUtility::cshItem('xMOD_csh_corebe', 'TCEforms');
 		$buttons['shortcut'] = $this->shortCutLink();
 		$buttons['open_in_new_window'] = $this->openInNewWindowLink();
+
 		return $buttons;
 	}
 
