@@ -24,27 +24,14 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Module: Advanced functions
  * Advanced Functions related to pages
  *
- * Revised for TYPO3 3.6 November/2003 by Kasper Skårhøj
- * XHTML compliant
- *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-unset($MCONF);
-require 'conf.php';
-require $BACK_PATH . 'init.php';
-$LANG->includeLLFile('EXT:lang/locallang_mod_web_func.xlf');
-$BE_USER->modAccess($MCONF, 1);
-/*
- * @deprecated since 6.0, the classname SC_mod_web_func_index and this file is obsolete
- * and will be removed with 6.2. The class was renamed and is now located at:
- * typo3/sysext/func/Classes/Controller/PageFunctionsController.php
- */
-require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('func') . 'Classes/Controller/PageFunctionsController.php';
-// Make instance:
+
 /** @var $SOBE \TYPO3\CMS\Func\Controller\PageFunctionsController */
 $SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Func\\Controller\\PageFunctionsController');
 $SOBE->init();
