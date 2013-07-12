@@ -27,7 +27,7 @@ class DatabaseConnectionPostgresqlTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
 		// Backup database connection
 		$this->db = $GLOBALS['TYPO3_DB'];
 		// Reconfigure DBAL to use PostgreSQL
-		require 'Fixtures/postgresql.config.php';
+		require __DIR__ . '/Fixtures/postgresql.config.php';
 		$className = self::buildAccessibleProxy('TYPO3\\CMS\\Dbal\\Database\\DatabaseConnection');
 		$GLOBALS['TYPO3_DB'] = new $className();
 		$parserClassName = self::buildAccessibleProxy('TYPO3\\CMS\\Dbal\\Database\\SqlParser');

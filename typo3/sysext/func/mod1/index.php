@@ -34,7 +34,7 @@
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 unset($MCONF);
-require 'conf.php';
+require __DIR__ . '/conf.php';
 require $BACK_PATH . 'init.php';
 $LANG->includeLLFile('EXT:lang/locallang_mod_web_func.xlf');
 $BE_USER->modAccess($MCONF, 1);

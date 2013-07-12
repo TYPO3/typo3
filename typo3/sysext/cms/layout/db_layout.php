@@ -35,7 +35,7 @@
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 unset($MCONF);
-require 'conf.php';
+require __DIR__ . '/conf.php';
 require $BACK_PATH . 'init.php';
 $LANG->includeLLFile('EXT:cms/layout/locallang.xlf');
 

@@ -36,7 +36,7 @@
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 $BACK_PATH = '';
-require 'init.php';
+require __DIR__ . '/init.php';
 $LANG->includeLLFile('EXT:lang/locallang_misc.xlf');
 
 /**
