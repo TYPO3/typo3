@@ -59,10 +59,21 @@ class Bootstrap {
 	protected $requestId;
 
 	/**
-	 * Disable direct creation of this object.
+	 * The application context
+	 *
+	 * @var \TYPO3\CMS\Core\Core\ApplicationContext
 	 */
-	protected function __construct() {
+	protected $context;
+
+	/**
+	 * Disable direct creation of this object.
+	 * Set unique requestId and the application context
+	 *
+	 * @var string Application context
+	 */
+	protected function __construct($context) {
 		$this->requestId = uniqid();
+		$this->context = new ApplicationContext($context);
 	}
 
 	/**
@@ -80,7 +91,9 @@ class Bootstrap {
 	 */
 	static public function getInstance() {
 		if (is_null(self::$instance)) {
-			self::$instance = new \TYPO3\CMS\Core\Core\Bootstrap();
+			require_once(__DIR__ . '/ApplicationContext.php');
+			$context = trim(getenv('TYPO3_CONTEXT'), '"\' ') ? : 'Development';
+			self::$instance = new \TYPO3\CMS\Core\Core\Bootstrap($context);
 		}
 		return self::$instance;
 	}
@@ -93,6 +106,15 @@ class Bootstrap {
 	 */
 	public function getRequestId() {
 		return $this->requestId;
+	}
+
+	/**
+	 * Returns the context this bootstrap was started in.
+	 *
+	 * @return \TYPO3\CMS\Core\Core\ApplicationContext The context encapsulated in an object
+	 */
+	public function getContext() {
+		return $this->context;
 	}
 
 	/**

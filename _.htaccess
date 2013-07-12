@@ -83,6 +83,10 @@ RewriteEngine On
 # Change this path, if your TYPO3 installation is located in a subdirectory of the website root.
 #RewriteBase /
 
+# Rule to set ApplicationContext based on hostname
+#RewriteCond %{HTTP_HOST} ^dev\.example\.com$
+#RewriteRule (.*) $1 [E=TYPO3_CONTEXT:Development]
+
 # Rule for versioned static files, configured through:
 # - $TYPO3_CONF_VARS['BE']['versionNumberInFilename']
 # - $TYPO3_CONF_VARS['FE']['versionNumberInFilename']
