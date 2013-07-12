@@ -33,7 +33,7 @@
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-require 'init.php';
+require __DIR__ . '/init.php';
 
 $simpleDataHandlerController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\SimpleDataHandlerController');
 

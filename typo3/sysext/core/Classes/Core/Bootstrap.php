@@ -29,7 +29,7 @@ namespace TYPO3\CMS\Core\Core;
 
 use \TYPO3\CMS\Core\Utility;
 
-require 'SystemEnvironmentBuilder.php';
+require __DIR__ . '/SystemEnvironmentBuilder.php';
 
 /**
  * This class encapsulates bootstrap related methods.

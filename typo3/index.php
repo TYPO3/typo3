@@ -31,7 +31,7 @@
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 define('TYPO3_PROCEED_IF_NO_USER', 1);
-require 'init.php';
+require __DIR__ . '/init.php';
 
 $loginController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\LoginController');
 $loginController->main();

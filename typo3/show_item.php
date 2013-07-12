@@ -25,7 +25,7 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-require 'init.php';
+require __DIR__ . '/init.php';
 
 $elementInformationController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
 	'TYPO3\\CMS\\Backend\\Controller\\ContentElement\\ElementInformationController'

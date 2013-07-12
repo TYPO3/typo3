@@ -31,7 +31,7 @@
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-require 'init.php';
+require __DIR__ . '/init.php';
 
 /**
  * Local extension of the page tree class

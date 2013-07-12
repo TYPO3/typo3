@@ -33,7 +33,7 @@
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-require 'init.php';
+require __DIR__ . '/init.php';
 
 /**
  * Extension for the tree class that generates the tree of pages in the page-wizard mode

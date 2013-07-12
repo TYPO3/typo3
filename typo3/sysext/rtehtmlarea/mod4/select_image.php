@@ -33,7 +33,7 @@
  */
 error_reporting(E_ALL & ~(E_STRICT | E_NOTICE | E_DEPRECATED));
 unset($MCONF);
-require 'conf.php';
+require __DIR__ . '/conf.php';
 require $BACK_PATH . 'init.php';
 $LANG->includeLLFile('EXT:lang/locallang_TYPO3\\CMS\\Recordlist\\Browser\\ElementBrowser.xlf');
 $LANG->includeLLFile('EXT:rtehtmlarea/mod4/locallang.xlf');

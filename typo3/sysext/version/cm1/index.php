@@ -23,7 +23,7 @@
  ***************************************************************/
 
 unset($MCONF);
-require 'conf.php';
+require __DIR__ . '/conf.php';
 require $BACK_PATH . 'init.php';
 $GLOBALS['LANG']->includeLLFile('EXT:version/locallang.xlf');
 $SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Version\\Controller\\VersionModuleController');
