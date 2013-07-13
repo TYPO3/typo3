@@ -127,7 +127,7 @@ class PageRepository {
 	 *
 	 * @param boolean $show_hidden If $show_hidden is TRUE, the hidden-field is ignored!! Normally this should be FALSE. Is used for previewing.
 	 * @return void
-	 * @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::fetch_the_id(), \TYPO3\CMS\TstemplateAnalyzer\Controller\TemplateAnalyzerModuleFunctionController::initialize_editor()
+	 * @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::fetch_the_id(), \TYPO3\CMS\Tstemplate\Controller\TemplateAnalyzerModuleFunctionController::initialize_editor()
 	 * @todo Define visibility
 	 */
 	public function init($show_hidden) {

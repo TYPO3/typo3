@@ -6399,22 +6399,22 @@ class SC_mod_web_ts_index extends \TYPO3\CMS\Tstemplate\Controller\TypoScriptTem
 /**
  * @deprecated since 6.0 will be removed in 7.0
  */
-class tx_tstemplateanalyzer extends \TYPO3\CMS\TstemplateAnalyzer\Controller\TemplateAnalyzerModuleFunctionController {}
+class tx_tstemplateanalyzer extends \TYPO3\CMS\Tstemplate\Controller\TemplateAnalyzerModuleFunctionController {}
 
 /**
  * @deprecated since 6.0 will be removed in 7.0
  */
-class tx_tstemplateceditor extends \TYPO3\CMS\TstemplateCeditor\Controller\TypoScriptTemplateConstantEditorModuleFunctionController {}
+class tx_tstemplateceditor extends \TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateConstantEditorModuleFunctionController {}
 
 /**
  * @deprecated since 6.0 will be removed in 7.0
  */
-class tx_tstemplateinfo extends \TYPO3\CMS\TstemplateInfo\Controller\TypoScriptTemplateInformationModuleFunctionController {}
+class tx_tstemplateinfo extends \TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateInformationModuleFunctionController {}
 
 /**
  * @deprecated since 6.0 will be removed in 7.0
  */
-class tx_tstemplateobjbrowser extends \TYPO3\CMS\TstemplateObjbrowser\Controller\TypoScriptTemplateObjectBrowserModuleFunctionController {}
+class tx_tstemplateobjbrowser extends \TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateObjectBrowserModuleFunctionController {}
 
 /**
  * @deprecated since 6.0 will be removed in 7.0
