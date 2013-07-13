@@ -77,7 +77,7 @@ class TypoScriptTemplateInfoHook {
 	 * called in typo3/sysext/tstemplate_info/Classes/Controller/TypoScriptTemplateInformationModuleFunctionController.php
 	 *
 	 * @param array $parameters
-	 * @param \TYPO3\CMS\TstemplateInfo\Controller\TypoScriptTemplateInformationModuleFunctionController $pObj
+	 * @param \TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateInformationModuleFunctionController $pObj
 	 * @return void
 	 */
 	public function postOutputProcessingHook($parameters, $pObj) {
