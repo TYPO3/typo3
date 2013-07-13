@@ -269,7 +269,8 @@ class StepController extends AbstractController {
 
 			// Build new TYPO3_CONF_VARS array
 			$TYPO3_CONF_VARS = NULL;
-			eval(implode(LF, $typo3ConfigurationVariables));
+			$evalData = implode(LF, $typo3ConfigurationVariables);
+			eval($evalData);
 
 			// Add db settings to array
 			$TYPO3_CONF_VARS['DB'] = $typo3DatabaseVariables;
