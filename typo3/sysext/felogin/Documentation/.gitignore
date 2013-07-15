@@ -1,0 +1,7 @@
+# this is file .gitignore
+
+# ignore everything in this directory
+_make/*
+
+# but do not ignore this file
+!_not_versioned/.gitignore
