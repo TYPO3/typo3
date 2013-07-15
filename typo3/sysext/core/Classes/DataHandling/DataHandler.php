@@ -3392,7 +3392,18 @@ class DataHandler {
 				if ($localizedDestPid < 0) {
 					$this->copyRecord($table, $record['uid'], $localizedDestPid, $first, $overrideValues, $excludeFields, $record[$GLOBALS['TCA'][$table]['ctrl']['languageField']]);
 				} else {
-					$this->copyRecord($table, $record['uid'], $destPid < 0 ? $tscPID : $destPid, $first, $overrideValues, $excludeFields, $record[$GLOBALS['TCA'][$table]['ctrl']['languageField']]);
+					$newId = $this->copyRecord($table, $record['uid'], $destPid < 0 ? $tscPID : $destPid, $first, $overrideValues, $excludeFields, $record[$GLOBALS['TCA'][$table]['ctrl']['languageField']]);
+					// If the original record got copied after another one (destination record) but there is no
+					// translated version of the destination record then at least apply the "copyAfterDuplFields"
+					// but take care not to reset "sys_language_uid"
+					if ($newId && $destPid < 0) {
+
+						$newData = $this->fixCopyAfterDuplFields($table, $newId, $overrideValues[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']], FALSE);
+						unset($newData[$GLOBALS['TCA'][$table]['ctrl']['languageField']]);
+						if (count($newData)) {
+							$this->updateDB($table, $newId, $newData);
+						}
+					}
 				}
 			}
 		}
@@ -3529,6 +3540,11 @@ class DataHandler {
 				$this->moveRecord_procFields($table, $uid, $destPid);
 				// Create query for update:
 				$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid=' . intval($uid), $updateFields);
+				// fixCopyAfterDuplFields.
+				// This has to be done before "moveL10nOverlayRecords" so that "colPos" of the moved record is set properly then
+				if ($origDestPid < 0) {
+					$this->fixCopyAfterDuplFields($table, $uid, abs($origDestPid), 1);
+				}
 				// Check for the localizations of that element
 				$this->moveL10nOverlayRecords($table, $uid, $destPid, $destPid);
 				// Call post processing hooks:
@@ -3553,10 +3569,6 @@ class DataHandler {
 				// Clear cache after moving
 				$this->clear_cache($table, $uid);
 				$this->fixUniqueInPid($table, $uid);
-				// fixCopyAfterDuplFields
-				if ($origDestPid < 0) {
-					$this->fixCopyAfterDuplFields($table, $uid, abs($origDestPid), 1);
-				}
 			} else {
 				$destPropArr = $this->getRecordProperties('pages', $destPid);
 				$this->log($table, $uid, 4, 0, 1, 'Attempt to move page \'%s\' (%s) to inside of its own rootline (at page \'%s\' (%s))', 10, array($propArr['header'], $uid, $destPropArr['header'], $destPid), $propArr['pid']);
@@ -3582,6 +3594,10 @@ class DataHandler {
 						$this->moveRecord_procFields($table, $uid, $destPid);
 						// Create query for update:
 						$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid=' . intval($uid), $updateFields);
+						// fixCopyAfterDuplFields
+						if ($origDestPid < 0) {
+							$this->fixCopyAfterDuplFields($table, $uid, abs($origDestPid), 1);
+						}
 						// Check for the localizations of that element
 						$this->moveL10nOverlayRecords($table, $uid, $destPid, $originalRecordDestinationPid);
 						// Call post processing hooks:
@@ -3607,10 +3623,6 @@ class DataHandler {
 						$this->clear_cache($table, $uid);
 						// fixUniqueInPid
 						$this->fixUniqueInPid($table, $uid);
-						// fixCopyAfterDuplFields
-						if ($origDestPid < 0) {
-							$this->fixCopyAfterDuplFields($table, $uid, abs($origDestPid), 1);
-						}
 					} else {
 						$destPropArr = $this->getRecordProperties('pages', $destPid);
 						$this->log($table, $uid, 4, 0, 1, 'Attempt to move page \'%s\' (%s) to inside of its own rootline (at page \'%s\' (%s))', 10, array($propArr['header'], $uid, $destPropArr['header'], $destPid), $propArr['pid']);
@@ -3725,6 +3737,16 @@ class DataHandler {
 					$this->moveRecord($table, $record['uid'], $localizedDestPid);
 				} else {
 					$this->moveRecord($table, $record['uid'], $destPid);
+					// If the original record gets moved after another one (destination record) but there is no
+					// translated version of the destination record then at least apply the "copyAfterDuplFields"
+					// but take care not to reset "sys_language_uid"
+					if ($originalRecordDestinationPid < 0) {
+						$newData = $this->fixCopyAfterDuplFields($table, $record['uid'], $uid, FALSE);
+						unset($newData[$GLOBALS['TCA'][$table]['ctrl']['languageField']]);
+						if (count($newData)) {
+							$this->updateDB($table, $record['uid'], $newData);
+						}
+					}
 				}
 			}
 		}
