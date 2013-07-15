@@ -151,9 +151,10 @@ class t3lib_TCEforms_Tree {
 			// Create a JavaScript code line which will ask the user to save/update the form due to changing the element.
 			// This is used for eg. "type" fields and others configured with "requestUpdate"
 		if (($GLOBALS['TCA'][$table]['ctrl']['type']
-					&& !strcmp($field, $GLOBALS['TCA'][$table]['ctrl']['type']))
-				|| ($GLOBALS['TCA'][$table]['ctrl']['requestUpdate']
-					&& t3lib_div::inList($GLOBALS['TCA'][$table]['ctrl']['requestUpdate'], $field))) {
+			&& !strcmp($field, $GLOBALS['TCA'][$table]['ctrl']['type']))
+			|| ($GLOBALS['TCA'][$table]['ctrl']['requestUpdate']
+			&& t3lib_div::inList(str_replace(' ', '', $GLOBALS['TCA'][$table]['ctrl']['requestUpdate']), $field))
+		) {
 			if ($GLOBALS['BE_USER']->jsConfirmation(1)) {
 				$onChange .= 'if (confirm(TBE_EDITOR.labels.onChangeAlert) && ' .
 					'TBE_EDITOR.checkSubmit(-1)){ TBE_EDITOR.submitForm() };';
