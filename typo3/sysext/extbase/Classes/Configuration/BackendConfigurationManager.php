@@ -66,8 +66,19 @@ class BackendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\Abstr
 			if ($pageId > 0) {
 				/** @var $sysPage \TYPO3\CMS\Frontend\Page\PageRepository */
 				$sysPage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
+				/** @var $rootlinePageId int special pageId for use in getRootline. May be changed in workspace mode */
+				$rootlinePageId = $pageId;
+				// Check if in workspace-mode
+				if (intval($GLOBALS['BE_USER']->workspace) > 0) {
+					// Get uid of live/placeholder page
+					$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('t3ver_oid', 'pages', 'uid=' . intval($pageId));
+					$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
+					if ($row) {
+						$rootlinePageId = intval($row['t3ver_oid']) > 0 ? intval($row['t3ver_oid']) : $pageId;
+					}
+				}
 				// Get the rootline for the current page
-				$rootline = $sysPage->getRootLine($pageId, '', TRUE);
+				$rootline = $sysPage->getRootLine($rootlinePageId, '', TRUE);
 			}
 			// This generates the constants/config + hierarchy info for the template.
 			$template->runThroughTemplates($rootline, 0);
@@ -126,7 +137,7 @@ class BackendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\Abstr
 	 * @return integer current page id. If no page is selected current root page id is returned
 	 */
 	protected function getCurrentPageId() {
-		$pageId = (integer) \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id');
+		$pageId = (integer)\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id');
 		if ($pageId > 0) {
 			return $pageId;
 		}
