@@ -922,7 +922,8 @@ class TypoScriptFrontendController {
 		$this->fe_user->checkPid = $this->TYPO3_CONF_VARS['FE']['checkFeUserPid'];
 		$this->fe_user->lifetime = intval($this->TYPO3_CONF_VARS['FE']['lifetime']);
 		// List of pid's acceptable
-		$this->fe_user->checkPid_value = $GLOBALS['TYPO3_DB']->cleanIntList(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('pid'));
+		$pid = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('pid');
+		$this->fe_user->checkPid_value = $pid ? $GLOBALS['TYPO3_DB']->cleanIntList($pid) : 0;
 		// Check if a session is transferred:
 		if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('FE_SESSION_KEY')) {
 			$fe_sParts = explode('-', \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('FE_SESSION_KEY'));
