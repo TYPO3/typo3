@@ -115,7 +115,10 @@ class LocalConfigurationUpdate extends \TYPO3\CMS\Install\Updates\AbstractUpdate
 			}
 			// Build new TYPO3_CONF_VARS array
 			$TYPO3_CONF_VARS = NULL;
-			eval(implode(LF, $typo3ConfigurationVariables));
+			// Issue #39434: Combining next two lines into one triggers a weird issue in some PHP versions
+			$evalData = implode(LF, $typo3ConfigurationVariables);
+			eval($evalData);
+
 			// Add db settings to array
 			$TYPO3_CONF_VARS['DB'] = $typo3DatabaseVariables;
 			$TYPO3_CONF_VARS = \TYPO3\CMS\Core\Utility\ArrayUtility::sortByKeyRecursive($TYPO3_CONF_VARS);
