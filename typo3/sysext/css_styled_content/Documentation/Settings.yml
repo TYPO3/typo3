@@ -5,7 +5,7 @@
 ---
 conf.py:
   copyright: 1997-2013
-  project: css_styled_content
+  project: CSS styled content
   version: 6.2
   release: 6.2
 ...
