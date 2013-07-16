@@ -5,7 +5,7 @@
 ---
 conf.py:
   copyright: 2009-2013
-  project: rsaauth
+  project: RSA authentication for TYPO3
   version: 6.2
   release: 6.2
 ...

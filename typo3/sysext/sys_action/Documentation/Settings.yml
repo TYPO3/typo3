@@ -5,7 +5,7 @@
 ---
 conf.py:
   copyright: 1997-2013
-  project: sys_action
+  project: User>Task Center, Actions
   version: 6.2
   release: 6.2
 ...

@@ -5,7 +5,7 @@
 ---
 conf.py:
   copyright: 2000-2013
-  project: linkvalidator
+  project: Link Validator
   version: 6.2.0
   release: 6.2.0
 ...

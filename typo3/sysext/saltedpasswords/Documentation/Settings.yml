@@ -5,7 +5,7 @@
 ---
 conf.py:
   copyright: 2009-2013
-  project: saltedpasswords
+  project: Salted user password hashes
   version: 6.2
   release: 6.2
 ...
