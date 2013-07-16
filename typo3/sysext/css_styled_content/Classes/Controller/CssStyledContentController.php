@@ -1033,10 +1033,10 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 			$constant = (int) $configuration['constant'];
 			if ($configuration['space'] === 'before') {
 				$value = $constant + $this->cObj->data['spaceBefore'];
-				$declaration = 'margin-top: ' . $value . 'px;';
+				$declaration = 'margin-top: ' . $value . 'px !important;';
 			} else {
 				$value = $constant + $this->cObj->data['spaceAfter'];
-				$declaration = 'margin-bottom: ' . $value . 'px;';
+				$declaration = 'margin-bottom: ' . $value . 'px !important;';
 			}
 			if (!empty($value)) {
 				if ($configuration['classStdWrap.']) {
