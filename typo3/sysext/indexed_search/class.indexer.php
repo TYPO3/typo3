@@ -1633,6 +1633,7 @@ class tx_indexedsearch_indexer {
 			'recordUid' => intval($this->conf['recordUid']),
 			'freeIndexUid' => intval($this->conf['freeIndexUid']),
 			'freeIndexSetId' => intval($this->conf['freeIndexSetId']),
+			'sys_language_uid' => intval($this->conf['sys_language_uid']),
 		);
 		if (tx_indexedsearch_util::isTableUsed('index_phash')) {
 			$GLOBALS['TYPO3_DB']->exec_INSERTquery('index_phash', $fields);
