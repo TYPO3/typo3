@@ -197,11 +197,20 @@ class FileRepository extends AbstractRepository {
 	 * @throws \InvalidArgumentException
 	 * @api
 	 */
-	public function findByRelation($tableName, $fieldName, $uid) {
+	public function findByRelation($tableName, $fieldName, $uid, $offset = NULL, $max = NULL) {
+		$limit = '';
 		$itemList = array();
 		if (!\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($uid)) {
 			throw new \InvalidArgumentException('Uid of related record has to be an integer.', 1316789798);
 		}
+		if ($offset !== NULL && $max !== NULL) {
+			$limit .= (string)$offset . ',' . (string)$max;
+		} elseif ($max !== NULL) {
+			$limit .= (string)$max;
+		} elseif($offset !== NULL) {
+			$limit .= '0,99999999999';
+		}
+		debug($limit);
 		$references = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 			'*',
 			'sys_file_reference',
@@ -211,7 +220,8 @@ class FileRepository extends AbstractRepository {
 				' AND uid_foreign=' . intval($uid) .
 				' AND fieldname=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($fieldName, 'sys_file_reference'),
 			'',
-			'sorting_foreign'
+			'sorting_foreign',
+			$limit
 		);
 		foreach ($references as $referenceRecord) {
 			$itemList[] = $this->createFileReferenceObject($referenceRecord);
