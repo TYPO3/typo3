@@ -211,3 +211,7 @@ img.t3-icon-workspaces-sendtonextstage {
 img.t3-icon-workspaces-sendtoprevstage {
 	background-position: 0 4px !important;
 }
+
+table.t3-workspaces-foldout-contentDiff td.content {
+	word-break: break-all;
+}
