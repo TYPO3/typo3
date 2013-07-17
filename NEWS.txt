@@ -73,6 +73,12 @@ result: '0, 22, 11, 4'
 Administration / Customization
 -------------------------------------------------------------------------------
 
+* felogin is now protecting the change password form with RSA
+
+This requires small adjustments to the template.html file.
+The CHANGEPASSWORD_FORM subpart needs an onsubmit="###ON_SUBMIT###" attribute
+for the form-tag and the ###EXTRA_HIDDEN### marker inside the form.
+
 -------------------------------------------------------------------------------
 Extbase
 -------------------------------------------------------------------------------

@@ -26,6 +26,9 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/setup/mod/index.php']['setupScrip
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/setup/mod/index.php']['modifyUserDataBeforeSave'][$_EXTKEY] = 'TYPO3\\CMS\\Rsaauth\\Hook\\UserSetupHook->decryptPassword';
 // Add a hook to the FE login form (felogin system extension)
 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['loginFormOnSubmitFuncs'][$_EXTKEY] = 'TYPO3\\CMS\\Rsaauth\\Hook\\FrontendLoginHook->loginFormHook';
+// Add a hook to the FE login change password form (felogin system extension)
+$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['changePasswordFormOnSubmitFuncs'][$_EXTKEY] = 'TYPO3\\CMS\\Rsaauth\\Hook\\FrontendLoginHook->changePasswordFormOnSubmitHook';
+$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['changePasswordFormModifyPostDataFuncs'][$_EXTKEY] = 'TYPO3\\CMS\\Rsaauth\\Hook\\FrontendLoginHook->changePasswordFormModifyPostDataHook';
 // Add a hook to show Backend warnings
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['displayWarningMessages'][$_EXTKEY] = 'TYPO3\\CMS\\Rsaauth\\BackendWarnings';
 // Use popup window to refresh login instead of the AJAX relogin:

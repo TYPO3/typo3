@@ -148,7 +148,7 @@
 
 
 <!-- ###CHANGEPASSWORD_FORM### -->
-<form action="###ACTION_URI###" method="post">
+<form action="###ACTION_URI###" method="post" onsubmit="###ON_SUBMIT###">
 	<fieldset>
 		<legend>###LEGEND###</legend>
 		<div>
@@ -163,7 +163,7 @@
 			<input type="submit" name="tx_felogin_pi1[changepasswordsubmit]" value="###SEND_PASSWORD###" />
 		 </div>
 	</fieldset>
-
+	###EXTRA_HIDDEN###
 </form>
 <!-- ###CHANGEPASSWORD_FORM### -->
 ###BACKLINK_LOGIN###

@@ -326,6 +326,12 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin 
 				// All is fine, continue with new password
 				$postData = GeneralUtility::_POST($this->prefixId);
 				if (isset($postData['changepasswordsubmit'])) {
+					if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['changePasswordFormModifyPostDataFuncs'])) {
+						$_params = &$postData;
+						foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['changePasswordFormModifyPostDataFuncs'] as $funcRef) {
+							GeneralUtility::callUserFunction($funcRef, $_params, $this);
+						}
+					}
 					if (strlen($postData['password1']) < $minLength) {
 						$markerArray['###STATUS_MESSAGE###'] = sprintf($this->getDisplayText(
 							'change_password_tooshort_message',
@@ -376,6 +382,28 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin 
 						$this->prefixId . '[user]' => $user['uid'],
 						$this->prefixId . '[forgothash]' => $piHash
 					));
+
+					$onSubmit = '';
+					$extraHidden = '';
+					$onSubmitArray = array();
+					$extraHiddenArray = array();
+					if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['changePasswordFormOnSubmitFuncs'])) {
+						$_params = array();
+						foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['changePasswordFormOnSubmitFuncs'] as $funcRef) {
+							list($onSub, $hid) = GeneralUtility::callUserFunction($funcRef, $_params, $this);
+							$onSubmitArray[] = $onSub;
+							$extraHiddenArray[] = $hid;
+						}
+					}
+					if (count($onSubmitArray)) {
+						$onSubmit = implode('; ', $onSubmitArray) . '; return true;';
+					}
+					if (count($extraHiddenArray)) {
+						$extraHidden = implode(LF, $extraHiddenArray);
+					}
+
+					$markerArray['###EXTRA_HIDDEN###'] = $extraHidden;
+					$markerArray['###ON_SUBMIT###'] = $onSubmit;
 					$markerArray['###LEGEND###'] = $this->pi_getLL('change_password', '', TRUE);
 					$markerArray['###NEWPASSWORD1_LABEL###'] = $this->pi_getLL('newpassword_label1', '', TRUE);
 					$markerArray['###NEWPASSWORD2_LABEL###'] = $this->pi_getLL('newpassword_label2', '', TRUE);
