@@ -23,6 +23,9 @@ namespace TYPO3\CMS\Rsaauth\Hook;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * This class contains a hook to implement RSA authentication for the TYPO3
  * Frontend. Warning: felogin must be USER_INT for this to work!
@@ -52,7 +55,7 @@ class FrontendLoginHook {
 					'rsaauth_min.js'
 				);
 				foreach ($files as $file) {
-					$result[1] .= '<script type="text/javascript" src="' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . $javascriptPath . $file . '"></script>';
+					$result[1] .= '<script type="text/javascript" src="' . GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . $javascriptPath . $file . '"></script>';
 				}
 				// Generate a new key pair
 				$keyPair = $backend->createNewKeyPair();
@@ -68,6 +71,31 @@ class FrontendLoginHook {
 		return $result;
 	}
 
+	/**
+	 * Hooks to the felogin extension to provide additional code for the change password form of FE login
+	 *
+	 * @return array 0 => onSubmit function, 1 => extra fields and required files
+	 */
+	public function changePasswordFormOnSubmitHook() {
+		$result = $this->loginFormHook();
+		$result[0] = 'tx_rsaauth_feChangePasswordEncrypt(this);';
+		return $result;
+	}
+
+	/**
+	 * Hook for the felogin extension to decrypt passwords
+	 *
+	 * @param array $postData Post data containing password1 and password2
+	 * @return void
+	 */
+	public function changePasswordFormModifyPostDataHook(array &$postData) {
+		if ($GLOBALS['TSFE']->fe_user->security_level !== 'rsa') {
+			return;
+		}
+		$cryptService = GeneralUtility::makeInstance('TYPO3\\CMS\\Rsaauth\\RsaCryptService');
+		$postData['password1'] = $cryptService->decrypt($postData['password1']);
+		$postData['password2'] = $cryptService->decrypt($postData['password2']);
+	}
 }
 
 
