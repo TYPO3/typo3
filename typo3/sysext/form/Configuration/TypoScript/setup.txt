@@ -1,3 +1,7 @@
+# Cancel the check that prevents display of subheader for old mailform
+tt_content.mailform.10.20.if.isFalse.override = 0
+
+# Replace rendering of old mailform
 tt_content.mailform.20 >
 tt_content.mailform.20 = FORM
 tt_content.mailform.20 {
