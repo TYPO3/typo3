@@ -40,6 +40,31 @@ function tx_rsaauth_feencrypt(form) {
 	}
 }
 
+function tx_rsaauth_feChangePasswordEncrypt(form) {
+	var rsa = new RSAKey();
+	rsa.setPublic(form.n.value, form.e.value);
+
+	var elPassword1 = document.getElementById('tx_felogin_pi1-newpassword1');
+	var elPassword2 = document.getElementById('tx_felogin_pi1-newpassword2');
+
+	var password1 = elPassword1.value;
+	var password2 = elPassword2.value;
+
+	var res1 = rsa.encrypt(password1);
+	var res2 = rsa.encrypt(password2);
+
+	// Remove all plaintext-data. This will also prevent plain text authentication.
+	elPassword1.value = "";
+	elPassword2.value = "";
+	form.e.value = "";
+	form.n.value = "";
+
+	if (res1 && res2) {
+		elPassword1.value = 'rsa:' + hex2b64(res1);
+		elPassword2.value = 'rsa:' + hex2b64(res2);
+	}
+}
+
 function tx_rsaauth_encryptUserSetup() {
 
 	var rsa = new RSAKey();
