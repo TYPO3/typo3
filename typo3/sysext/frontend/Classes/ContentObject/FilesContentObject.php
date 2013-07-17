@@ -78,7 +78,9 @@ class FilesContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractConte
 				}
 				$referencesForeignTable = $this->stdWrapValue('table', $conf['references.'], $table);
 				$referencesForeignUid = $this->stdWrapValue('uid', $conf['references.'], isset($this->cObj->data['_LOCALIZED_UID']) ? $this->cObj->data['_LOCALIZED_UID'] : $this->cObj->data['uid']);
-				$this->addToArray($fileRepository->findByRelation($referencesForeignTable, $referencesFieldName, $referencesForeignUid), $fileObjects);
+				$referencesOffset = $conf['references.']['offset'] ? $this->stdWrapValue('offset', $conf['references.']) : NULL;
+				$referencesMaximum = $conf['references.']['max'] ? $this->stdWrapValue('max', $conf['references.']) : NULL;
+				$this->addToArray($fileRepository->findByRelation($referencesForeignTable, $referencesFieldName, $referencesForeignUid, $referencesOffset, $referencesMaximum), $fileObjects);
 			}
 		}
 		if ($conf['files'] || $conf['files.']) {
