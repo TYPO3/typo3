@@ -325,6 +325,11 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin 
 			} else {
 				// All is fine, continue with new password
 				$postData = GeneralUtility::_POST($this->prefixId);
+				if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('rsaauth') && $GLOBALS['TSFE']->fe_user->security_level === 'rsa') {
+					$cryptService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Rsaauth\RsaCryptService');
+					$postData['password1'] = $cryptService->decrypt($postData['password1']);
+					$postData['password2'] = $cryptService->decrypt($postData['password2']);
+				}
 				if (isset($postData['changepasswordsubmit'])) {
 					if (strlen($postData['password1']) < $minLength) {
 						$markerArray['###STATUS_MESSAGE###'] = sprintf($this->getDisplayText(
@@ -376,6 +381,23 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin 
 						$this->prefixId . '[user]' => $user['uid'],
 						$this->prefixId . '[forgothash]' => $piHash
 					));
+					$extraHidden = '';
+					$extraHiddenArray = array();
+					$onSubmit = '';
+					if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['changePasswordFormOnSubmitFuncs'])) {
+						$_params = array();
+						foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['changePasswordFormOnSubmitFuncs'] as $funcRef) {
+							list($onSubmit, $hid) = \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($funcRef, $_params, $this);
+							$extraHiddenArray[] = $hid;
+						}
+					}
+
+					if (count($extraHiddenArray)) {
+						$extraHidden = implode(LF, $extraHiddenArray);
+					}
+
+					$markerArray['###EXTRA_HIDDEN###'] = $extraHidden;
+					$markerArray['###ON_SUBMIT###'] = $onSubmit;
 					$markerArray['###LEGEND###'] = $this->pi_getLL('change_password', '', 1);
 					$markerArray['###NEWPASSWORD1_LABEL###'] = $this->pi_getLL('newpassword_label1', '', 1);
 					$markerArray['###NEWPASSWORD2_LABEL###'] = $this->pi_getLL('newpassword_label2', '', 1);
