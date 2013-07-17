@@ -296,6 +296,13 @@ lib.stdheader {
 			}
 			value = html5
 			equals.data = TSFE:config|config|doctype
+			# Hide subheader for old style form element (it is used for recipient mail)
+			isFalse = 0
+			isFalse.override = 1
+			isFalse.override {
+				if.equals.field = CType
+				if.value = mailform
+			}
 		}
 	}
 
