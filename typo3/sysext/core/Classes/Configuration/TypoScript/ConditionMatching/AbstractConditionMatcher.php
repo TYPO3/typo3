@@ -212,6 +212,15 @@ abstract class AbstractConditionMatcher {
 		}
 		$keyParts = GeneralUtility::trimExplode('|', $key);
 		switch ($keyParts[0]) {
+			case 'context':
+				$values = GeneralUtility::trimExplode(',', $value, TRUE);
+				$currentContext = $this->getContext();
+				foreach ($values as $context) {
+					if ($this->searchStringWildcard($currentContext, $context)) {
+						return TRUE;
+					}
+				}
+				break;
 			case 'browser':
 				$values = GeneralUtility::trimExplode(',', $value, TRUE);
 				// take all identified browsers into account, eg chrome deliver
@@ -537,6 +546,15 @@ abstract class AbstractConditionMatcher {
 			$result = (bool) preg_match($regex, ((string) $haystack));
 		}
 		return $result;
+	}
+
+	/**
+	 * Gets the current Application Context.
+	 *
+	 * @return string The application context
+	 */
+	protected function getContext() {
+		return (string)\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->getContext();
 	}
 
 	/**
