@@ -212,6 +212,15 @@ abstract class AbstractConditionMatcher {
 		}
 		$keyParts = GeneralUtility::trimExplode('|', $key);
 		switch ($keyParts[0]) {
+			case 'applicationContext':
+				$values = GeneralUtility::trimExplode(',', $value, TRUE);
+				$currentApplicationContext = GeneralUtility::getApplicationContext();
+				foreach ($values as $applicationContext) {
+					if ($this->searchStringWildcard($currentApplicationContext, $applicationContext)) {
+						return TRUE;
+					}
+				}
+				break;
 			case 'browser':
 				$values = GeneralUtility::trimExplode(',', $value, TRUE);
 				// take all identified browsers into account, eg chrome deliver
