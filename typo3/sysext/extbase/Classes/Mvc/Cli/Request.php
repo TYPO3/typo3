@@ -124,6 +124,12 @@ class Request implements \TYPO3\CMS\Extbase\Mvc\RequestInterface {
 			)
 			_(?P<controllerName>[a-z_]+)Controller
 			$/ix', $controllerObjectName, $matches);
+
+		if (!$matches['extensionName']) {
+			list($vendorExtension, $command) = explode('\Command\\', $controllerObjectName);
+			$matches['extensionName'] = array_pop(explode('\\', $vendorExtension));
+		}
+
 		$this->controllerExtensionName = $matches['extensionName'];
 		$this->controllerObjectName = $controllerObjectName;
 		$this->command = NULL;
