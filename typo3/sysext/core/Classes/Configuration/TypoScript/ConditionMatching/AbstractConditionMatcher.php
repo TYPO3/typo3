@@ -212,6 +212,28 @@ abstract class AbstractConditionMatcher {
 		}
 		$keyParts = GeneralUtility::trimExplode('|', $key);
 		switch ($keyParts[0]) {
+			case 'context':
+				$values = GeneralUtility::trimExplode(',', $value, TRUE);
+				$context = \TYPO3\CMS\Core\Core\Bootstrap::getInstance()->getContext();
+				if (in_array((string)$context, $values)) {
+					return TRUE;
+				}
+				break;
+			case 'rootContext':
+				$values = GeneralUtility::trimExplode(',', $value, TRUE);
+				$context = \TYPO3\CMS\Core\Core\Bootstrap::getInstance()->getContext();
+				$contextParts = explode('/', (string)$context);
+				$rootContext = $contextParts[0];
+				if (in_array($rootContext, $values)) {
+					return TRUE;
+				}
+				break;
+			case 'contextMatch':
+				$context = \TYPO3\CMS\Core\Core\Bootstrap::getInstance()->getContext();
+				if (preg_match((string)$value, $context) > 0) {
+					return TRUE;
+				}
+				break;
 			case 'browser':
 				$values = GeneralUtility::trimExplode(',', $value, TRUE);
 				// take all identified browsers into account, eg chrome deliver
