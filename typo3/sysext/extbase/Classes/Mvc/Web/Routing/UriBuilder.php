@@ -77,6 +77,11 @@ class UriBuilder {
 	protected $addQueryString = FALSE;
 
 	/**
+	 * @var string
+	 */
+	protected $addQueryStringMethod = NULL;
+
+	/**
 	 * @var array
 	 */
 	protected $argumentsToBeExcludedFromQueryString = array();
@@ -271,6 +276,28 @@ class UriBuilder {
 	}
 
 	/**
+	 * Sets the method to get the addQueryString parameters. Defaults undefined
+	 * which results in using QUERY_STRING.
+	 *
+	 * @param string $addQueryStringMethod
+	 * @return Tx_Extbase_MVC_Web_Routing_UriBuilder the current UriBuilder to allow method chaining
+	 * @api
+	 * @see TSref/typolink.addQueryString.method
+	 */
+	public function setAddQueryStringMethod($addQueryStringMethod) {
+		$this->addQueryStringMethod = $addQueryStringMethod;
+		return $this;
+	}
+
+	/**
+	 * @return string
+	 * @api
+	 */
+	public function getAddQueryStringMethod() {
+		return (string)$this->addQueryStringMethod;
+	}
+
+	/**
 	 * A list of arguments to be excluded from the query parameters
 	 * Only active if addQueryString is set
 	 *
@@ -436,6 +463,7 @@ class UriBuilder {
 		$this->format = '';
 		$this->createAbsoluteUri = FALSE;
 		$this->addQueryString = FALSE;
+		$this->addQueryStringMethod = NULL;
 		$this->argumentsToBeExcludedFromQueryString = array();
 		$this->linkAccessRestrictedPages = FALSE;
 		$this->targetPageUid = NULL;
@@ -548,15 +576,34 @@ class UriBuilder {
 	 */
 	public function buildBackendUri() {
 		if ($this->addQueryString === TRUE) {
-			$arguments = \TYPO3\CMS\Core\Utility\GeneralUtility::_GET();
+			if ($this->addQueryStringMethod) {
+				switch ($this->addQueryStringMethod) {
+					case 'GET':
+						$arguments = \TYPO3\CMS\Core\Utility\GeneralUtility::_GET();
+						break;
+					case 'POST':
+						$arguments = \TYPO3\CMS\Core\Utility\GeneralUtility::_POST();
+						break;
+					case 'GET,POST':
+						$arguments = array_merge(\TYPO3\CMS\Core\Utility\GeneralUtility::_GET(), \TYPO3\CMS\Core\Utility\GeneralUtility::_POST());
+						break;
+					case 'POST,GET':
+						$arguments = array_merge(\TYPO3\CMS\Core\Utility\GeneralUtility::_POST(), \TYPO3\CMS\Core\Utility\GeneralUtility::_GET());
+						break;
+					default:
+						$arguments = \TYPO3\CMS\Core\Utility\GeneralUtility::explodeUrl2Array(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('QUERY_STRING'), TRUE);
+				}
+			} else {
+				$arguments = \TYPO3\CMS\Core\Utility\GeneralUtility::_GET();
+			}
 			foreach ($this->argumentsToBeExcludedFromQueryString as $argumentToBeExcluded) {
 				$argumentToBeExcluded = \TYPO3\CMS\Core\Utility\GeneralUtility::explodeUrl2Array($argumentToBeExcluded, TRUE);
 				$arguments = \TYPO3\CMS\Core\Utility\GeneralUtility::arrayDiffAssocRecursive($arguments, $argumentToBeExcluded);
 			}
 		} else {
 			$arguments = array(
-				'M' => \TYPO3\CMS\Core\Utility\GeneralUtility::_GET('M'),
-				'id' => \TYPO3\CMS\Core\Utility\GeneralUtility::_GET('id')
+				'M' => \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('M'),
+				'id' => \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id')
 			);
 		}
 		$arguments = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($arguments, $this->arguments);
@@ -616,6 +663,9 @@ class UriBuilder {
 				$typolinkConfiguration['addQueryString.'] = array(
 					'exclude' => implode(',', $this->argumentsToBeExcludedFromQueryString)
 				);
+			}
+			if ($this->addQueryStringMethod) {
+				$typolinkConfiguration['addQueryString.']['method'] = $this->addQueryStringMethod;
 			}
 		}
 		if ($this->noCache === TRUE) {
