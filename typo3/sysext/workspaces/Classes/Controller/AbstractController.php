@@ -105,6 +105,19 @@ class AbstractController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 	}
 
 	/**
+	 * @param NULL|string $actionName
+	 * @param array $controllerArguments
+	 * @param NULL|string $controllerName
+	 * @return string
+	 */
+	protected function getUriFor($actionName = NULL, array $controllerArguments = array(), $controllerName = NULL) {
+		/** @var $uriBuilder \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder */
+		$uriBuilder = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Mvc\\Web\\Routing\\UriBuilder');
+		$uri = $uriBuilder->reset()->uriFor($actionName, $controllerArguments, $controllerName, 'workspaces', 'web_workspacesworkspaces');
+		return $uri;
+	}
+
+	/**
 	 * Gets the selected language.
 	 *
 	 * @return string

@@ -1,10 +1,13 @@
-
-ul.x-tab-strip.x-tab-strip-top {
-	width: 100%;
+#typo3-workspace-tabs-tabpanel ul.x-tab-strip {
 	margin-bottom: 0;
+	width: 20000px;
 }
-ul.x-tab-strip.x-tab-strip-top li.last {
-	float: right;
+#typo3-workspace-tabs-combobox {
+	margin-left: 5px;
+	margin-bottom: 5px;
+}
+#typo3-workspace-tabs.active-comboBox {
+	border-bottom: 1px solid #ADADAD;
 }
 span.item-state-modified {
 	color: #f78f25;
