@@ -75,6 +75,13 @@ Ext.onReady(function() {
 	TYPO3.Workspaces.MainStore.proxy = new Ext.data.DirectProxy({
 		directFn : TYPO3.Workspaces.ExtDirect.getWorkspaceInfos
 	});
+
+	TYPO3.Workspaces.Tabs = new TYPO3.Workspaces.TabContainer({
+		renderTo: 'workspacetabs',
+		tabs: TYPO3.settings.Workspaces.workspaceTabs,
+		active: TYPO3.settings.Workspaces.activeWorkspaceId
+	});
+
 	// fire grid
 	var WS = new TYPO3.Workspaces.App.init();
 

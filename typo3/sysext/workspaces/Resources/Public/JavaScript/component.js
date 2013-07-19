@@ -189,6 +189,102 @@ Ext.ux.TYPO3.Workspace.RowPanel = Ext.extend(Ext.Panel, {
 	}
 });
 
+TYPO3.Workspaces.TabContainer = Ext.extend(Ext.Panel, {
+	tabPanel: null,
+	comboBox: null,
+
+	id: 'typo3-workspace-tabs',
+	renderTo: 'workspacetabs',
+	unstyled: true,
+	layout: 'fit',
+
+	tabs: [],
+	active: null,
+
+	initComponent: function() {
+		this.addEvents('render', 'resize');
+
+		this.tabPanel = new Ext.TabPanel({
+			activeTab: 'workspace-' + this.active,
+			unstyled: true,
+			hidden: true,
+
+			enableTabScroll: true,
+			defaults: {
+				autoScroll: true
+			},
+
+			split: true,
+			useSplitTips: true,
+			autoScroll: true,
+			animScroll: true,
+			id: 'typo3-workspace-tabs-tabpanel',
+			border: false,
+
+			items: this.tabs,
+			listeners: {
+				beforetabchange: function(panel, newTab, currentTab) {
+					if (typeof currentTab !== 'undefined' && newTab.triggerUrl) {
+						location.href = top.TYPO3.configuration.PATH_typo3 + newTab.triggerUrl;
+					}
+				}
+			}
+		});
+
+		this.comboBox = new Ext.form.ComboBox({
+			mode: 'local',
+			value: this.active,
+			valueField: 'workspaceId',
+			displayField: 'title',
+			hidden: true,
+
+			selectOnFocus: true,
+			id: 'typo3-workspace-tabs-combobox',
+			triggerAction: 'all',
+			editable: false,
+			forceSelection: true,
+
+			store: new Ext.data.JsonStore({
+				fields: [
+					{ name: 'workspaceId', type: 'integer' },
+					{ name: 'triggerUrl', type: 'string' },
+					{ name: 'title', type: 'string' }
+				],
+				data: this.tabs
+			}),
+
+			listeners: {
+				select: function(combo, record, index) {
+					var triggerUrl = record.get('triggerUrl');
+					location.href = top.TYPO3.configuration.PATH_typo3 + triggerUrl;
+				}
+			}
+		});
+
+		this.items = [this.tabPanel, this.comboBox];
+
+		TYPO3.Workspaces.TabContainer.superclass.initComponent.call(this);
+	},
+
+	afterRender : function() {
+		TYPO3.Workspaces.TabContainer.superclass.afterRender.call(this);
+
+		var tP = this.tabPanel;
+
+		if (tP.scrollLeft && tP.scrollRight && tP.scrollLeft.isVisible() && tP.scrollRight.isVisible()) {
+			this.removeClass('active-tabPanel')
+			this.addClass('active-comboBox')
+			this.tabPanel.hide();
+			this.comboBox.show();
+		} else {
+			this.addClass('active-tabPanel')
+			this.removeClass('active-comboBox')
+			this.tabPanel.show();
+			this.comboBox.hide();
+		}
+	}
+});
+
 TYPO3.Workspaces.RowExpander = new Ext.grid.RowExpander({
 	menuDisabled: true,
 	hideable: false,
