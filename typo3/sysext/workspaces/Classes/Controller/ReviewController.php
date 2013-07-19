@@ -70,7 +70,10 @@ class ReviewController extends \TYPO3\CMS\Workspaces\Controller\AbstractControll
 				}
 			}
 		}
-		$this->pageRenderer->addInlineSetting('Workspaces', 'isLiveWorkspace', $GLOBALS['BE_USER']->workspace == 0 ? TRUE : FALSE);
+		$this->pageRenderer->addInlineSetting('Workspaces', 'isLiveWorkspace', (int)$GLOBALS['BE_USER']->workspace === 0 ? TRUE : FALSE);
+		$this->pageRenderer->addInlineSetting('Workspaces', 'workspaceTabs', $this->prepareWorkspaceTabs($wsList, $activeWorkspace));
+		$this->pageRenderer->addInlineSetting('Workspaces', 'activeWorkspaceId', $activeWorkspace);
+		$this->pageRenderer->addInlineSetting('Workspaces', 'PATH_typo3', GeneralUtility::getIndpEnv('TYPO3_SITE_PATH') . TYPO3_mainDir);
 		$this->view->assign('performWorkspaceSwitch', $performWorkspaceSwitch);
 		$this->view->assign('workspaceList', $wsList);
 		$this->view->assign('activeWorkspaceUid', $activeWorkspace);
@@ -95,6 +98,9 @@ class ReviewController extends \TYPO3\CMS\Workspaces\Controller\AbstractControll
 			$wsList = array_intersect_key($wsList, $wsCur);
 		}
 
+		$this->pageRenderer->addInlineSetting('Workspaces', 'workspaceTabs', $this->prepareWorkspaceTabs($wsList, \TYPO3\CMS\Workspaces\Service\WorkspaceService::SELECT_ALL_WORKSPACES));
+		$this->pageRenderer->addInlineSetting('Workspaces', 'activeWorkspaceId', \TYPO3\CMS\Workspaces\Service\WorkspaceService::SELECT_ALL_WORKSPACES);
+		$this->pageRenderer->addInlineSetting('Workspaces', 'PATH_typo3', GeneralUtility::getIndpEnv('TYPO3_SITE_PATH') . TYPO3_mainDir);
 		$this->view->assign('pageUid', GeneralUtility::_GP('id'));
 		$this->view->assign('showGrid', TRUE);
 		$this->view->assign('showLegend', TRUE);
@@ -179,6 +185,7 @@ class ReviewController extends \TYPO3\CMS\Workspaces\Controller\AbstractControll
 		$resources = array(
 			$resourcePath . 'Component/RowDetailTemplate.js',
 			$resourcePath . 'Component/RowExpander.js',
+			$resourcePath . 'Component/TabPanel.js',
 			$resourcePath . 'Store/mainstore.js',
 			$resourcePath . 'configuration.js',
 			$resourcePath . 'helpers.js',
@@ -195,6 +202,61 @@ class ReviewController extends \TYPO3\CMS\Workspaces\Controller\AbstractControll
 			$this->pageRenderer->addJsFile($javaScriptFile);
 		}
 		$this->pageRenderer->addInlineSetting('RecordHistory', 'moduleUrl', \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('record_history'));
+	}
+
+	/**
+	 * Prepares available workspace tabs.
+	 *
+	 * @param array $workspaceList
+	 * @param int $activeWorkspace
+	 * @return array
+	 */
+	protected function prepareWorkspaceTabs(array $workspaceList, $activeWorkspace) {
+		$tabs = array();
+
+		if ($activeWorkspace !== \TYPO3\CMS\Workspaces\Service\WorkspaceService::SELECT_ALL_WORKSPACES) {
+			$tabs[] = array(
+				'title' => $workspaceList[$activeWorkspace],
+				'itemId' => 'workspace-' . $activeWorkspace,
+				'workspaceId' => $activeWorkspace,
+				'triggerUrl' => $this->getModuleUri($activeWorkspace),
+			);
+		}
+
+		$tabs[] = array(
+			'title' => 'All workspaces',
+			'itemId' => 'workspace-' . \TYPO3\CMS\Workspaces\Service\WorkspaceService::SELECT_ALL_WORKSPACES,
+			'workspaceId' => \TYPO3\CMS\Workspaces\Service\WorkspaceService::SELECT_ALL_WORKSPACES,
+			'triggerUrl' => $this->getModuleUri(\TYPO3\CMS\Workspaces\Service\WorkspaceService::SELECT_ALL_WORKSPACES),
+		);
+
+		foreach ($workspaceList as $workspaceId => $workspaceTitle) {
+			if ($workspaceId === $activeWorkspace) {
+				continue;
+			}
+			$tabs[] = array(
+				'title' => $workspaceTitle,
+				'itemId' => 'workspace-' . $workspaceId,
+				'workspaceId' => $workspaceId,
+				'triggerUrl' => $this->getModuleUri($workspaceId),
+			);
+		}
+
+		return $tabs;
+	}
+
+	/**
+	 * Gets the module URI.
+	 *
+	 * @param int $workspaceId
+	 * @return string
+	 */
+	protected function getModuleUri($workspaceId) {
+		$parameters = array(
+			'id' => (int)$this->pageId,
+			'workspace' => (int)$workspaceId,
+		);
+		return \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('web_WorkspacesWorkspaces', $parameters);
 	}
 
 }

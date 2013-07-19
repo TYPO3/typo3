@@ -1,7 +1,6 @@
-
 ul.x-tab-strip.x-tab-strip-top {
-	width: 100%;
 	margin-bottom: 0;
+	margin-top: 0;
 	padding-left: 0;
 }
 ul.x-tab-strip.x-tab-strip-top li.last {
@@ -257,4 +256,36 @@ table.t3-workspaces-foldout-contentDiff td.content {
 }
 .typo3-workspaces-collection-parent-expanded .typo3-workspaces-collection-level-node {
 	background-position: -21px 2px;
+}
+
+.x-menu.typo3-workspaces-menu {
+	background-image: none;
+}
+.x-menu.typo3-workspaces-menu a.x-menu-item {
+	padding: 3px 14px;
+}
+
+.x-tab-menu-right {
+	background: #dadada;
+	border-color: #adadad;
+	border-style: solid;
+	border-width: 1px;
+	-moz-border-radius-topleft: 3px;
+	-moz-border-radius-topright: 3px;
+	-webkit-border-top-left-radius: 3px;
+	-webkit-border-top-right-radius: 3px;
+	border-top-left-radius: 3px;
+	border-top-right-radius: 3px;
+	color: #666666;
+	background-position: center 6px;
+	padding: 4px;
+
+	background-image: url('../Images/menu.png');
+	background-repeat: no-repeat;
+	width: 16px;
+	position: absolute;
+	right: 0;
+	top: 0;
+	z-index: 10;
+	cursor:pointer;
 }
