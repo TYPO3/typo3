@@ -54,6 +54,7 @@ class LinkViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedVi
 		$this->registerTagAttribute('rel', 'string', 'Specifies the relationship between the current document and the linked document');
 		$this->registerTagAttribute('rev', 'string', 'Specifies the relationship between the linked document and the current document');
 		$this->registerTagAttribute('target', 'string', 'Specifies where to open the linked document');
+		$this->registerArgument('addQueryStringMethod', 'string', 'Method to be used for query string');
 	}
 
 	/**
@@ -112,6 +113,9 @@ class LinkViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedVi
 		if ($this->hasArgument('format') && $this->arguments['format'] !== '') {
 			$arguments['format'] = $this->arguments['format'];
 		}
-		return $uriBuilder->reset()->setArguments(array($argumentPrefix => $arguments))->setSection($this->arguments['section'])->setAddQueryString(TRUE)->setArgumentsToBeExcludedFromQueryString(array($argumentPrefix, 'cHash'))->setFormat($this->arguments['format'])->build();
+		if ($this->hasArgument('addQueryStringMethod') && $this->arguments['addQueryStringMethod'] !== '') {
+			$arguments['addQueryStringMethod'] = $this->arguments['addQueryStringMethod'];
+		}
+		return $uriBuilder->reset()->setArguments(array($argumentPrefix => $arguments))->setSection($this->arguments['section'])->setAddQueryString(TRUE)->setAddQueryStringMethod($this->arguments['addQueryStringMethod'])->setArgumentsToBeExcludedFromQueryString(array($argumentPrefix, 'cHash'))->setFormat($this->arguments['format'])->build();
 	}
 }

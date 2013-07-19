@@ -43,6 +43,11 @@ class UriBuilderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	protected $getBackup;
 
 	/**
+	 * @var array
+	 */
+	protected $postBackup;
+
+	/**
 	 * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
 	 */
 	protected $mockConfigurationManager;
@@ -71,6 +76,7 @@ class UriBuilderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$this->tsfeBackup = $GLOBALS['TSFE'];
 		$GLOBALS['TSFE'] = $this->getMock('TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController', array(), array(), '', FALSE);
 		$this->getBackup = \TYPO3\CMS\Core\Utility\GeneralUtility::_GET();
+		$this->postBackup = \TYPO3\CMS\Core\Utility\GeneralUtility::_POST();
 		$this->mockContentObject = $this->getMock('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
 		$this->mockRequest = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Web\\Request');
 		$this->mockExtensionService = $this->getMock('TYPO3\\CMS\\Extbase\\Service\\ExtensionService');
@@ -86,13 +92,14 @@ class UriBuilderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	public function tearDown() {
 		$GLOBALS['TSFE'] = $this->tsfeBackup;
 		\TYPO3\CMS\Core\Utility\GeneralUtility::_GETset($this->getBackup);
+		$_POST = $this->postBackup;
 	}
 
 	/**
 	 * @test
 	 */
 	public function settersAndGettersWorkAsExpected() {
-		$this->uriBuilder->reset()->setArguments(array('test' => 'arguments'))->setSection('testSection')->setFormat('testFormat')->setCreateAbsoluteUri(TRUE)->setAbsoluteUriScheme('https')->setAddQueryString(TRUE)->setArgumentsToBeExcludedFromQueryString(array('test' => 'addQueryStringExcludeArguments'))->setArgumentPrefix('testArgumentPrefix')->setLinkAccessRestrictedPages(TRUE)->setTargetPageUid(123)->setTargetPageType(321)->setNoCache(TRUE)->setUseCacheHash(FALSE);
+		$this->uriBuilder->reset()->setArguments(array('test' => 'arguments'))->setSection('testSection')->setFormat('testFormat')->setCreateAbsoluteUri(TRUE)->setAbsoluteUriScheme('https')->setAddQueryString(TRUE)->setArgumentsToBeExcludedFromQueryString(array('test' => 'addQueryStringExcludeArguments'))->setAddQueryStringMethod('GET,POST')->setArgumentPrefix('testArgumentPrefix')->setLinkAccessRestrictedPages(TRUE)->setTargetPageUid(123)->setTargetPageType(321)->setNoCache(TRUE)->setUseCacheHash(FALSE);
 		$this->assertEquals(array('test' => 'arguments'), $this->uriBuilder->getArguments());
 		$this->assertEquals('testSection', $this->uriBuilder->getSection());
 		$this->assertEquals('testFormat', $this->uriBuilder->getFormat());
@@ -100,6 +107,7 @@ class UriBuilderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$this->assertEquals('https', $this->uriBuilder->getAbsoluteUriScheme());
 		$this->assertEquals(TRUE, $this->uriBuilder->getAddQueryString());
 		$this->assertEquals(array('test' => 'addQueryStringExcludeArguments'), $this->uriBuilder->getArgumentsToBeExcludedFromQueryString());
+		$this->assertEquals('GET,POST', $this->uriBuilder->getAddQueryStringMethod());
 		$this->assertEquals('testArgumentPrefix', $this->uriBuilder->getArgumentPrefix());
 		$this->assertEquals(TRUE, $this->uriBuilder->getLinkAccessRestrictedPages());
 		$this->assertEquals(123, $this->uriBuilder->getTargetPageUid());
@@ -189,7 +197,24 @@ class UriBuilderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 */
 	public function buildBackendUriKeepsQueryParametersIfAddQueryStringIsSet() {
 		\TYPO3\CMS\Core\Utility\GeneralUtility::_GETset(array('M' => 'moduleKey', 'id' => 'pageId', 'foo' => 'bar'));
+		$_POST = array();
+		$_POST['foo2'] = 'bar2';
 		$this->uriBuilder->setAddQueryString(TRUE);
+		$this->uriBuilder->setAddQueryStringMethod('GET,POST');
+		$expectedResult = 'mod.php?M=moduleKey&id=pageId&foo=bar&foo2=bar2';
+		$actualResult = $this->uriBuilder->buildBackendUri();
+		$this->assertEquals($expectedResult, $actualResult);
+	}
+
+	/**
+	 * @test
+	 */
+	public function buildBackendUriKeepsQueryParametersIfAddQueryStringMethodIsNotSet() {
+		\TYPO3\CMS\Core\Utility\GeneralUtility::_GETset(array('M' => 'moduleKey', 'id' => 'pageId', 'foo' => 'bar'));
+		$_POST = array();
+		$_POST['foo2'] = 'bar2';
+		$this->uriBuilder->setAddQueryString(TRUE);
+		$this->uriBuilder->setAddQueryStringMethod(NULL);
 		$expectedResult = 'mod.php?M=moduleKey&id=pageId&foo=bar';
 		$actualResult = $this->uriBuilder->buildBackendUri();
 		$this->assertEquals($expectedResult, $actualResult);
@@ -207,10 +232,13 @@ class UriBuilderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 					'foo' => 'bar'
 				),
 				array(
+					'foo2' => 'bar2'
+				),
+				array(
 					'M',
 					'id'
 				),
-				'mod.php?foo=bar'
+				'mod.php?foo=bar&foo2=bar2'
 			),
 			'Arguments to be excluded in the end' => array(
 				array(
@@ -219,10 +247,13 @@ class UriBuilderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 					'M' => 'moduleKey'
 				),
 				array(
+					'foo2' => 'bar2'
+				),
+				array(
 					'M',
 					'id'
 				),
-				'mod.php?foo=bar'
+				'mod.php?foo=bar&foo2=bar2'
 			),
 			'Arguments in nested array to be excluded' => array(
 				array(
@@ -233,10 +264,13 @@ class UriBuilderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 					'M' => 'moduleKey'
 				),
 				array(
+					'foo2' => 'bar2'
+				),
+				array(
 					'id',
 					'tx_foo[bar]'
 				),
-				'mod.php?M=moduleKey'
+				'mod.php?M=moduleKey&foo2=bar2'
 			),
 			'Arguments in multidimensional array to be excluded' => array(
 				array(
@@ -249,10 +283,13 @@ class UriBuilderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 					'M' => 'moduleKey'
 				),
 				array(
+					'foo2' => 'bar2'
+				),
+				array(
 					'id',
 					'tx_foo[bar][baz]'
 				),
-				'mod.php?M=moduleKey'
+				'mod.php?M=moduleKey&foo2=bar2'
 			),
 		);
 	}
@@ -261,9 +298,11 @@ class UriBuilderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @test
 	 * @dataProvider buildBackendUriRemovesSpecifiedQueryParametersIfArgumentsToBeExcludedFromQueryStringIsSetDataProvider
 	 */
-	public function buildBackendUriRemovesSpecifiedQueryParametersIfArgumentsToBeExcludedFromQueryStringIsSet(array $parameters, array $excluded, $expected) {
+	public function buildBackendUriRemovesSpecifiedQueryParametersIfArgumentsToBeExcludedFromQueryStringIsSet(array $parameters, array $postArguments, array $excluded, $expected) {
 		\TYPO3\CMS\Core\Utility\GeneralUtility::_GETset($parameters);
+		$_POST = $postArguments;
 		$this->uriBuilder->setAddQueryString(TRUE);
+		$this->uriBuilder->setAddQueryStringMethod('GET,POST');
 		$this->uriBuilder->setArgumentsToBeExcludedFromQueryString($excluded);
 		$actualResult = $this->uriBuilder->buildBackendUri();
 		$this->assertEquals($expected, $actualResult);
@@ -409,7 +448,7 @@ class UriBuilderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @test
 	 */
 	public function resetSetsAllOptionsToTheirDefaultValue() {
-		$this->uriBuilder->setArguments(array('test' => 'arguments'))->setSection('testSection')->setFormat('someFormat')->setCreateAbsoluteUri(TRUE)->setAddQueryString(TRUE)->setArgumentsToBeExcludedFromQueryString(array('test' => 'addQueryStringExcludeArguments'))->setArgumentPrefix('testArgumentPrefix')->setLinkAccessRestrictedPages(TRUE)->setTargetPageUid(123)->setTargetPageType(321)->setNoCache(TRUE)->setUseCacheHash(FALSE);
+		$this->uriBuilder->setArguments(array('test' => 'arguments'))->setSection('testSection')->setFormat('someFormat')->setCreateAbsoluteUri(TRUE)->setAddQueryString(TRUE)->setArgumentsToBeExcludedFromQueryString(array('test' => 'addQueryStringExcludeArguments'))->setAddQueryStringMethod(NULL)->setArgumentPrefix('testArgumentPrefix')->setLinkAccessRestrictedPages(TRUE)->setTargetPageUid(123)->setTargetPageType(321)->setNoCache(TRUE)->setUseCacheHash(FALSE);
 		$this->uriBuilder->reset();
 		$this->assertEquals(array(), $this->uriBuilder->getArguments());
 		$this->assertEquals('', $this->uriBuilder->getSection());
@@ -417,6 +456,7 @@ class UriBuilderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$this->assertEquals(FALSE, $this->uriBuilder->getCreateAbsoluteUri());
 		$this->assertEquals(FALSE, $this->uriBuilder->getAddQueryString());
 		$this->assertEquals(array(), $this->uriBuilder->getArgumentsToBeExcludedFromQueryString());
+		$this->assertEquals(NULL, $this->uriBuilder->getAddQueryStringMethod());
 		$this->assertEquals(NULL, $this->uriBuilder->getArgumentPrefix());
 		$this->assertEquals(FALSE, $this->uriBuilder->getLinkAccessRestrictedPages());
 		$this->assertEquals(NULL, $this->uriBuilder->getTargetPageUid());
@@ -453,6 +493,29 @@ class UriBuilderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$this->uriBuilder->setTargetPageUid(123);
 		$this->uriBuilder->setArguments(array('foo' => 'bar', 'baz' => array('extbase' => 'fluid')));
 		$expectedConfiguration = array('parameter' => 123, 'useCacheHash' => 1, 'additionalParams' => '&foo=bar&baz[extbase]=fluid');
+		$actualConfiguration = $this->uriBuilder->_call('buildTypolinkConfiguration');
+		$this->assertEquals($expectedConfiguration, $actualConfiguration);
+	}
+
+	/**
+	 * @test
+	 */
+	public function buildTypolinkConfigurationProperlySetsAddQueryString() {
+		$this->uriBuilder->setTargetPageUid(123);
+		$this->uriBuilder->setAddQueryString(TRUE);
+		$expectedConfiguration = array('parameter' => 123, 'addQueryString' => 1, 'useCacheHash' => 1);
+		$actualConfiguration = $this->uriBuilder->_call('buildTypolinkConfiguration');
+		$this->assertEquals($expectedConfiguration, $actualConfiguration);
+	}
+
+	/**
+	 * @test
+	 */
+	public function buildTypolinkConfigurationProperlySetsAddQueryStringMethod() {
+		$this->uriBuilder->setTargetPageUid(123);
+		$this->uriBuilder->setAddQueryString(TRUE);
+		$this->uriBuilder->setAddQueryStringMethod('GET,POST');
+		$expectedConfiguration = array('parameter' => 123, 'addQueryString' => 1, 'addQueryString.' => array('method' => 'GET,POST'), 'useCacheHash' => 1);
 		$actualConfiguration = $this->uriBuilder->_call('buildTypolinkConfiguration');
 		$this->assertEquals($expectedConfiguration, $actualConfiguration);
 	}
