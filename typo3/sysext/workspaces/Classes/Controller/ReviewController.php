@@ -152,30 +152,41 @@ class ReviewController extends \TYPO3\CMS\Workspaces\Controller\AbstractControll
 		$this->pageRenderer->addJsFile($this->backPath . 'js/extjs/ux/Ext.app.SearchField.js');
 		$this->pageRenderer->addJsFile($this->backPath . 'js/extjs/ux/Ext.ux.FitToParent.js');
 		$resourcePath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('workspaces') . 'Resources/Public/JavaScript/';
+
+		// @todo Integrate additional stylesheet resources
 		$this->pageRenderer->addCssFile($resourcePath . 'gridfilters/css/GridFilters.css');
 		$this->pageRenderer->addCssFile($resourcePath . 'gridfilters/css/RangeMenu.css');
-		$jsFiles = array(
-			'gridfilters/menu/RangeMenu.js',
-			'gridfilters/menu/ListMenu.js',
-			'gridfilters/GridFilters.js',
-			'gridfilters/filter/Filter.js',
-			'gridfilters/filter/StringFilter.js',
-			'gridfilters/filter/DateFilter.js',
-			'gridfilters/filter/ListFilter.js',
-			'gridfilters/filter/NumericFilter.js',
-			'gridfilters/filter/BooleanFilter.js',
-			'gridfilters/filter/BooleanFilter.js',
-			'Store/mainstore.js',
-			'configuration.js',
-			'helpers.js',
-			'actions.js',
-			'component.js',
-			'toolbar.js',
-			'grid.js',
-			'workspaces.js'
+
+		$filters = array(
+			$resourcePath. 'gridfilters/menu/RangeMenu.js',
+			$resourcePath. 'gridfilters/menu/ListMenu.js',
+			$resourcePath .'gridfilters/GridFilters.js',
+			$resourcePath . 'gridfilters/filter/Filter.js',
+			$resourcePath . 'gridfilters/filter/StringFilter.js',
+			$resourcePath . 'gridfilters/filter/DateFilter.js',
+			$resourcePath . 'gridfilters/filter/ListFilter.js',
+			$resourcePath . 'gridfilters/filter/NumericFilter.js',
+			$resourcePath . 'gridfilters/filter/BooleanFilter.js',
+			$resourcePath . 'gridfilters/filter/BooleanFilter.js',
 		);
-		foreach ($jsFiles as $jsFile) {
-			$this->pageRenderer->addJsFile($resourcePath . $jsFile);
+
+		$custom = $this->getAdditionalResourceService()->getJavaScriptResources();
+
+		$resources = array(
+			$resourcePath . 'Store/mainstore.js',
+			$resourcePath . 'configuration.js',
+			$resourcePath . 'helpers.js',
+			$resourcePath . 'actions.js',
+			$resourcePath . 'component.js',
+			$resourcePath . 'toolbar.js',
+			$resourcePath . 'grid.js',
+			$resourcePath . 'workspaces.js'
+		);
+
+		$javaScriptFiles = array_merge($filters, $custom, $resources);
+
+		foreach ($javaScriptFiles as $javaScriptFile) {
+			$this->pageRenderer->addJsFile($javaScriptFile);
 		}
 	}
 

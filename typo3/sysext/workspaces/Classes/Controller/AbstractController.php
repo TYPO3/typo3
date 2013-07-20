@@ -83,6 +83,25 @@ class AbstractController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 			'depth_infi' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_infi')
 		));
 		$this->pageRenderer->addInlineLanguageLabelFile('EXT:workspaces/Resources/Private/Language/locallang.xlf');
+		$this->assignExtensionSettings();
+	}
+
+	/**
+	 * Assigns additional Workspace settings to TYPO3.settings.Workspaces.extension
+	 *
+	 * @return void
+	 */
+	protected function assignExtensionSettings() {
+		$extension = array(
+			'AdditionalColumn' => array(
+				'Definition' => array(),
+				'Handler' => array(),
+			),
+		);
+
+		$extension['AdditionalColumn']['Definition'] = $this->getAdditionalColumnService()->getDefinition();
+		$extension['AdditionalColumn']['Handler'] = $this->getAdditionalColumnService()->getHandler();
+		$this->pageRenderer->addInlineSetting('Workspaces', 'extension', $extension);
 	}
 
 	/**
@@ -115,6 +134,20 @@ class AbstractController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 			$language = $GLOBALS['BE_USER']->uc['moduleData']['Workspaces'][$GLOBALS['BE_USER']->workspace]['language'];
 		}
 		return $language;
+	}
+
+	/**
+	 * @return \TYPO3\CMS\Workspaces\Service\AdditionalColumnService
+	 */
+	protected function getAdditionalColumnService() {
+		return $this->objectManager->get('TYPO3\\CMS\\Workspaces\\Service\\AdditionalColumnService');
+	}
+
+	/**
+	 * @return \TYPO3\CMS\Workspaces\Service\AdditionalResourceService
+	 */
+	protected function getAdditionalResourceService() {
+		return $this->objectManager->get('TYPO3\\CMS\\Workspaces\\Service\\AdditionalResourceService');
 	}
 
 }

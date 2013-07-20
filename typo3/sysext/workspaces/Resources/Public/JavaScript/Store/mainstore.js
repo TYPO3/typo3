@@ -31,8 +31,7 @@ TYPO3.Workspaces.Configuration.StoreFieldArray = [
 	{name : 'allowedAction_edit'},
 	{name : 'allowedAction_editVersionedPage'},
 	{name : 'allowedAction_view'}
-
-];
+].concat(TYPO3.settings.Workspaces.extension.AdditionalColumn.Definition);
 
 TYPO3.Workspaces.MainStore = new Ext.data.GroupingStore({
 	storeId : 'workspacesMainStore',
