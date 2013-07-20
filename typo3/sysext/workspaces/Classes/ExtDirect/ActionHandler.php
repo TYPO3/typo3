@@ -27,8 +27,8 @@ namespace TYPO3\CMS\Workspaces\ExtDirect;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 
 /**
  * ExtDirect action handler
@@ -69,12 +69,17 @@ class ActionHandler extends \TYPO3\CMS\Workspaces\ExtDirect\AbstractHandler {
 	 * @todo What about reporting errors back to the ExtJS interface? /olly/
 	 */
 	public function swapSingleRecord($table, $t3ver_oid, $orig_uid) {
+		$versionRecord = BackendUtility::getRecord($table, $orig_uid);
+		$currentWorkspace = $this->setTemporaryWorkspace($versionRecord['t3ver_wsid']);
+
 		$cmd[$table][$t3ver_oid]['version'] = array(
 			'action' => 'swap',
 			'swapWith' => $orig_uid,
 			'swapIntoWS' => 1
 		);
 		$this->processTcaCmd($cmd);
+
+		$this->setTemporaryWorkspace($currentWorkspace);
 	}
 
 	/**
@@ -86,10 +91,15 @@ class ActionHandler extends \TYPO3\CMS\Workspaces\ExtDirect\AbstractHandler {
 	 * @todo What about reporting errors back to the ExtJS interface? /olly/
 	 */
 	public function deleteSingleRecord($table, $uid) {
+		$versionRecord = BackendUtility::getRecord($table, $uid);
+		$currentWorkspace = $this->setTemporaryWorkspace($versionRecord['t3ver_wsid']);
+
 		$cmd[$table][$uid]['version'] = array(
 			'action' => 'clearWSID'
 		);
 		$this->processTcaCmd($cmd);
+
+		$this->setTemporaryWorkspace($currentWorkspace);
 	}
 
 	/**
@@ -153,6 +163,8 @@ class ActionHandler extends \TYPO3\CMS\Workspaces\ExtDirect\AbstractHandler {
 	 */
 	public function sendToNextStageWindow($uid, $table, $t3ver_oid) {
 		$elementRecord = BackendUtility::getRecord($table, $uid);
+		$currentWorkspace = $this->setTemporaryWorkspace($elementRecord['t3ver_wsid']);
+
 		if (is_array($elementRecord)) {
 			$stageId = $elementRecord['t3ver_stage'];
 			if ($this->getStageService()->isValid($stageId)) {
@@ -170,6 +182,8 @@ class ActionHandler extends \TYPO3\CMS\Workspaces\ExtDirect\AbstractHandler {
 		} else {
 			$result = $this->getErrorResponse('error.sendToNextStage.noRecordFound', 1287264776);
 		}
+
+		$this->setTemporaryWorkspace($currentWorkspace);
 		return $result;
 	}
 
@@ -182,6 +196,8 @@ class ActionHandler extends \TYPO3\CMS\Workspaces\ExtDirect\AbstractHandler {
 	 */
 	public function sendToPrevStageWindow($uid, $table) {
 		$elementRecord = BackendUtility::getRecord($table, $uid);
+		$currentWorkspace = $this->setTemporaryWorkspace($elementRecord['t3ver_wsid']);
+
 		if (is_array($elementRecord)) {
 			$stageId = $elementRecord['t3ver_stage'];
 			if ($this->getStageService()->isValid($stageId)) {
@@ -203,6 +219,8 @@ class ActionHandler extends \TYPO3\CMS\Workspaces\ExtDirect\AbstractHandler {
 		} else {
 			$result = $this->getErrorResponse('error.sendToNextStage.noRecordFound', 1287264765);
 		}
+
+		$this->setTemporaryWorkspace($currentWorkspace);
 		return $result;
 	}
 
@@ -393,6 +411,10 @@ class ActionHandler extends \TYPO3\CMS\Workspaces\ExtDirect\AbstractHandler {
 		$table = $parameters->affects->table;
 		$uid = $parameters->affects->uid;
 		$t3ver_oid = $parameters->affects->t3ver_oid;
+
+		$elementRecord = BackendUtility::getRecord($table, $uid);
+		$currentWorkspace = $this->setTemporaryWorkspace($elementRecord['t3ver_wsid']);
+
 		$recipients = $this->getRecipientList($parameters->receipients, $parameters->additional, $setStageId);
 		if ($setStageId == \TYPO3\CMS\Workspaces\Service\StagesService::STAGE_PUBLISH_EXECUTE_ID) {
 			$cmdArray[$table][$t3ver_oid]['version']['action'] = 'swap';
@@ -409,6 +431,8 @@ class ActionHandler extends \TYPO3\CMS\Workspaces\ExtDirect\AbstractHandler {
 		$result = array(
 			'success' => TRUE
 		);
+
+		$this->setTemporaryWorkspace($currentWorkspace);
 		return $result;
 	}
 
@@ -428,11 +452,14 @@ class ActionHandler extends \TYPO3\CMS\Workspaces\ExtDirect\AbstractHandler {
 	 */
 	public function sendToPrevStageExecute(\stdClass $parameters) {
 		$cmdArray = array();
-		$recipients = array();
 		$setStageId = $parameters->affects->nextStage;
 		$comments = $parameters->comments;
 		$table = $parameters->affects->table;
 		$uid = $parameters->affects->uid;
+
+		$elementRecord = BackendUtility::getRecord($table, $uid);
+		$currentWorkspace = $this->setTemporaryWorkspace($elementRecord['t3ver_wsid']);
+
 		$recipients = $this->getRecipientList($parameters->receipients, $parameters->additional, $setStageId);
 		$cmdArray[$table][$uid]['version']['action'] = 'setStage';
 		$cmdArray[$table][$uid]['version']['stageId'] = $setStageId;
@@ -442,6 +469,8 @@ class ActionHandler extends \TYPO3\CMS\Workspaces\ExtDirect\AbstractHandler {
 		$result = array(
 			'success' => TRUE
 		);
+
+		$this->setTemporaryWorkspace($currentWorkspace);
 		return $result;
 	}
 
@@ -696,6 +725,34 @@ class ActionHandler extends \TYPO3\CMS\Workspaces\ExtDirect\AbstractHandler {
 			)
 		);
 		return $toolbarButtons;
+	}
+
+	/**
+	 * @param integer $workspaceId
+	 * @return integer Id of the original workspace
+	 * @throws \TYPO3\CMS\Core\Exception
+	 */
+	protected function setTemporaryWorkspace($workspaceId) {
+		$workspaceId = (int) $workspaceId;
+		$currentWorkspace = (int) $this->getBackendUser()->workspace;
+
+		if ($currentWorkspace !== $workspaceId) {
+			if (!$this->getBackendUser()->setTemporaryWorkspace($workspaceId)) {
+				throw new \TYPO3\CMS\Core\Exception(
+					'Cannot set temporary workspace to "' . $workspaceId . '"',
+					1371484524
+				);
+			}
+		}
+
+		return $currentWorkspace;
+	}
+
+	/**
+	 * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+	 */
+	protected function getBackendUser() {
+		return $GLOBALS['BE_USER'];
 	}
 
 }

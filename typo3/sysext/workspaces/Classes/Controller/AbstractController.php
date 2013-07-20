@@ -130,8 +130,9 @@ class AbstractController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 	 */
 	protected function getLanguageSelection() {
 		$language = 'all';
-		if (isset($GLOBALS['BE_USER']->uc['moduleData']['Workspaces'][$GLOBALS['BE_USER']->workspace]['language'])) {
-			$language = $GLOBALS['BE_USER']->uc['moduleData']['Workspaces'][$GLOBALS['BE_USER']->workspace]['language'];
+		$backendUser = $this->getBackendUser();
+		if (isset($backendUser->uc['moduleData']['Workspaces'][$backendUser->workspace]['language'])) {
+			$language = $backendUser->uc['moduleData']['Workspaces'][$backendUser->workspace]['language'];
 		}
 		return $language;
 	}
@@ -148,6 +149,13 @@ class AbstractController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 	 */
 	protected function getAdditionalResourceService() {
 		return $this->objectManager->get('TYPO3\\CMS\\Workspaces\\Service\\AdditionalResourceService');
+	}
+
+	/**
+	 * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+	 */
+	protected function getBackendUser() {
+		return $GLOBALS['BE_USER'];
 	}
 
 }

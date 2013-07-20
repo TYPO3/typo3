@@ -165,6 +165,7 @@ class GridDataService {
 					$versionArray['workspace_Title'] = htmlspecialchars(\TYPO3\CMS\Workspaces\Service\WorkspaceService::getWorkspaceTitle($versionRecord['t3ver_wsid']));
 					$versionArray['workspace_Tstamp'] = $versionRecord['tstamp'];
 					$versionArray['workspace_Formated_Tstamp'] = BackendUtility::datetime($versionRecord['tstamp']);
+					$versionArray['t3ver_wsid'] = $versionRecord['t3ver_wsid'];
 					$versionArray['t3ver_oid'] = $record['t3ver_oid'];
 					$versionArray['livepid'] = $record['livepid'];
 					$versionArray['stage'] = $versionRecord['t3ver_stage'];

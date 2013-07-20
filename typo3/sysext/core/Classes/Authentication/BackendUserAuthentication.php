@@ -1978,12 +1978,8 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 */
 	public function setWorkspace($workspaceId) {
 		// Check workspace validity and if not found, revert to default workspace.
-		if ($this->workspaceRec = $this->checkWorkspace($workspaceId, '*')) {
-			// Set workspace ID internally
-			$this->workspace = (int) $workspaceId;
-		} else {
-			$this->workspace = (int) $this->getDefaultWorkspace();
-			$this->workspaceRec = $this->checkWorkspace($this->workspace, '*');
+		if (!$this->setTemporaryWorkspace($workspaceId)) {
+			$this->setDefaultWorkspace();
 		}
 		// Unset access cache:
 		unset($this->checkWorkspaceCurrent_cache);
@@ -1993,6 +1989,35 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 			$GLOBALS['TYPO3_DB']->exec_UPDATEquery('be_users', 'uid=' . intval($this->user['uid']), array('workspace_id' => $this->user['workspace_id']));
 			$this->simplelog('User changed workspace to "' . $this->workspace . '"');
 		}
+	}
+
+	/**
+	 * Sets a temporary workspace in the context of the current backend user.
+	 *
+	 * @param integer $workspaceId
+	 * @return boolean
+	 */
+	public function setTemporaryWorkspace($workspaceId) {
+		$result = FALSE;
+		$workspaceRecord = $this->checkWorkspace($workspaceId, '*');
+
+		if ($workspaceRecord) {
+			$this->workspaceRec = $workspaceRecord;
+			$this->workspace = (int) $workspaceId;
+			$result = TRUE;
+		}
+
+		return $result;
+	}
+
+	/**
+	 * Sets the default workspace in the context of the current backend user.
+	 *
+	 * @return void
+	 */
+	public function setDefaultWorkspace() {
+		$this->workspace = (int) $this->getDefaultWorkspace();
+		$this->workspaceRec = $this->checkWorkspace($this->workspace, '*');
 	}
 
 	/**

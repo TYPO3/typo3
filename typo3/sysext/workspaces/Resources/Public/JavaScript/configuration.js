@@ -172,7 +172,7 @@ TYPO3.Workspaces.Configuration.SendToPrevStageButton = {
 	xtype: 'actioncolumn',
 	header:'',
 	width: 18,
-	hidden: (TYPO3.settings.Workspaces.allView === '1'),
+	hidden: false,
 	items:[
 		{
 			iconCls: 't3-icon t3-icon-extensions t3-icon-extensions-workspaces t3-icon-workspaces-sendtoprevstage',
@@ -189,7 +189,7 @@ TYPO3.Workspaces.Configuration.SendToNextStageButton = {
 	xtype: 'actioncolumn',
 	header:'',
 	width: 18,
-	hidden: (TYPO3.settings.Workspaces.allView === '1'),
+	hidden: false,
 	items: [
 		{},{	// empty dummy important!!!!
 			iconCls: 't3-icon t3-icon-extensions t3-icon-extensions-workspaces t3-icon-workspaces-sendtonextstage',
@@ -214,7 +214,7 @@ TYPO3.Workspaces.Configuration.Stage = {
 	},
 	renderer: function(value, metaData, record, rowIndex, colIndex, store) {
 		var returnCode = '';
-		if (record.json.allowedAction_prevStage && TYPO3.settings.Workspaces.allView !== '1') {
+		if (record.json.allowedAction_prevStage) {
 			var tempTooltip = TYPO3.Workspaces.Configuration.SendToPrevStageButton.items[0].tooltip;
 			TYPO3.Workspaces.Configuration.SendToPrevStageButton.items[0].tooltip += ' &quot;'+ record.json.label_prevStage + '&quot;';
 			var prevButton = new Ext.grid.ActionColumn(TYPO3.Workspaces.Configuration.SendToPrevStageButton);
@@ -224,7 +224,7 @@ TYPO3.Workspaces.Configuration.Stage = {
 			returnCode += "<span class=\"t3-icon t3-icon-empty t3-icon-empty-empty\">&nbsp;</span>";
 		}
 		returnCode += record.json.label_Stage;
-		if (record.json.allowedAction_nextStage && TYPO3.settings.Workspaces.allView !== '1') {
+		if (record.json.allowedAction_nextStage) {
 			var tempTooltip = TYPO3.Workspaces.Configuration.SendToNextStageButton.items[1].tooltip;
 			TYPO3.Workspaces.Configuration.SendToNextStageButton.items[1].tooltip += ' &quot;'+ record.json.label_nextStage + '&quot;';
 			var nextButton = new Ext.grid.ActionColumn(TYPO3.Workspaces.Configuration.SendToNextStageButton);
@@ -253,7 +253,7 @@ TYPO3.Workspaces.Configuration.RowButtons = {
 	header: TYPO3.l10n.localize('column.actions'),
 	width: 80,
 	hideable: false,
-	hidden: (TYPO3.settings.Workspaces.allView === '1'),
+	hidden: false,
 	menuDisabled: true,
 	items: [
 		{
@@ -277,6 +277,10 @@ TYPO3.Workspaces.Configuration.RowButtons = {
 			handler: function(grid, rowIndex, colIndex) {
 				var record = TYPO3.Workspaces.MainStore.getAt(rowIndex);
 				var newUrl = 'alt_doc.php?returnUrl=' + encodeURIComponent(document.location.href) + '&id=' + TYPO3.settings.Workspaces.id + '&edit[' + record.json.table + '][' + record.json.uid + ']=edit';
+				// Append workspace of record in all-workspaces view
+				if (TYPO3.settings.Workspaces.allView) {
+					newUrl += '&workspace=' + record.json.t3ver_wsid;
+				}
 				window.location.href = newUrl;
 			},
 			getClass: function(v, meta, rec) {
@@ -353,7 +357,7 @@ TYPO3.Workspaces.Configuration.SwapButton = {
 	width: 18,
 	menuDisabled: true,
 	sortable: false,
-	hidden: (TYPO3.settings.Workspaces.allView === '1'),
+	hidden: false,
 	items: [
 		{
 			iconCls:'t3-icon t3-icon-actions t3-icon-actions-version t3-icon-version-swap-workspace'

@@ -45,12 +45,6 @@ class StagesService {
 	const MODE_NOTIFY_SOMEONE = 0;
 	const MODE_NOTIFY_ALL = 1;
 	const MODE_NOTIFY_ALL_STRICT = 2;
-	/**
-	 * Current workspace ID
-	 *
-	 * @var integer
-	 */
-	private $workspaceId = NULL;
 
 	/**
 	 * Path to the locallang file
@@ -84,29 +78,10 @@ class StagesService {
 	/**
 	 * Getter for current workspace id
 	 *
-	 * @return integer current workspace id
+	 * @return integer Current workspace id
 	 */
 	public function getWorkspaceId() {
-		if ($this->workspaceId == NULL) {
-			$this->setWorkspaceId($GLOBALS['BE_USER']->workspace);
-		}
-		return $this->workspaceId;
-	}
-
-	/**
-	 * Setter for current workspace id
-	 *
-	 * @param integer current workspace id
-	 */
-	private function setWorkspaceId($wsid) {
-		$this->workspaceId = $wsid;
-	}
-
-	/**
-	 * constructor for workspace library
-	 */
-	public function __construct() {
-		$this->setWorkspaceId($GLOBALS['BE_USER']->workspace);
+		return $this->getBackendUser()->workspace;
 	}
 
 	/**
@@ -288,6 +263,8 @@ class StagesService {
 	 * Check if given workspace has custom staging activated
 	 *
 	 * @return boolean
+	 * @deprecated since TYPO3 6.2, will be removed two versions later
+	 * not used anymore in the TYPO3 CMS Core
 	 */
 	public function checkCustomStagingForWS() {
 		$workspaceRec = BackendUtility::getRecord('sys_workspace', $this->getWorkspaceId());
@@ -400,8 +377,8 @@ class StagesService {
 	/**
 	 * Get next stage in process for given stage id
 	 *
-	 * @param int			stageid
-	 * @return int			id
+	 * @param integer $stageid Id of the stage to fetch the previous one for
+	 * @return integer The previous stage Id
 	 */
 	public function getPrevStage($stageid) {
 		if (!\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($stageid)) {
@@ -768,6 +745,13 @@ class StagesService {
 					return $workspaceStage['notification_mode'];
 				}
 		}
+	}
+
+	/**
+	 * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+	 */
+	protected function getBackendUser() {
+		return $GLOBALS['BE_USER'];
 	}
 
 }

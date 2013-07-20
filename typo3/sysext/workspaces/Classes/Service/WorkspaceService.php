@@ -76,10 +76,20 @@ class WorkspaceService implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	public function getCurrentWorkspace() {
 		$workspaceId = $GLOBALS['BE_USER']->workspace;
-		if ($GLOBALS['BE_USER']->isAdmin()) {
-			$activeId = $GLOBALS['BE_USER']->getSessionData('tx_workspace_activeWorkspace');
-			$workspaceId = $activeId !== NULL ? $activeId : $workspaceId;
+		$activeId = $GLOBALS['BE_USER']->getSessionData('tx_workspace_activeWorkspace');
+
+		// Avoid invalid workspace settings
+		if ($activeId !== NULL && $activeId !== self::SELECT_ALL_WORKSPACES) {
+			$availableWorkspaces = $this->getAvailableWorkspaces();
+			if (!isset($availableWorkspaces[$activeId])) {
+				$activeId = NULL;
+			}
 		}
+
+		if ($activeId !== NULL) {
+			$workspaceId = $activeId;
+		}
+
 		return $workspaceId;
 	}
 
@@ -518,7 +528,8 @@ class WorkspaceService implements \TYPO3\CMS\Core\SingletonInterface {
 				$versionRecord = BackendUtility::getRecord($table, $uid);
 			}
 
-			$additionalParameters = '';
+			$additionalParameters = '&tx_workspaces_web_workspacesworkspaces[previewWS]=' . $versionRecord['t3ver_wsid'];
+
 			$languageField = $GLOBALS['TCA'][$table]['ctrl']['languageField'];
 			if ($versionRecord[$languageField] > 0) {
 				$additionalParameters .= '&L=' . $versionRecord[$languageField];
@@ -602,7 +613,7 @@ class WorkspaceService implements \TYPO3\CMS\Core\SingletonInterface {
 		$redirect = $backPath . 'index.php?redirect_url=';
 		// @todo why do we need these additional params? the URIBuilder should add the controller, but he doesn't :(
 		$additionalParams = '&tx_workspaces_web_workspacesworkspaces%5Bcontroller%5D=Preview&M=web_WorkspacesWorkspaces&id=';
-		$viewScript = $backPath . $uriBuilder->setArguments(array('tx_workspaces_web_workspacesworkspaces' => array('previewWS' => $GLOBALS['BE_USER']->workspace)))->uriFor('index', array(), 'TYPO3\\CMS\\Workspaces\\Controller\\PreviewController', 'workspaces', 'web_workspacesworkspaces') . $additionalParams;
+		$viewScript = $backPath . $uriBuilder->uriFor('index', array(), 'TYPO3\\CMS\\Workspaces\\Controller\\PreviewController', 'workspaces', 'web_workspacesworkspaces') . $additionalParams;
 		if ($addDomain === TRUE) {
 			return BackendUtility::getViewDomain($uid) . $redirect . urlencode($viewScript) . $uid;
 		} else {
