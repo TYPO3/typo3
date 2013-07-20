@@ -4,6 +4,7 @@ TYPO3.Workspaces.Configuration.StoreFieldArray = [
 	{name : 'table'},
 	{name : 'uid', type : 'int'},
 	{name : 't3ver_oid', type : 'int'},
+	{name : 't3ver_wsid', type : 'int'},
 	{name : 'livepid', type : 'int'},
 	{name : 'stage', type: 'int'},
 	{name : 'change',type : 'int'},

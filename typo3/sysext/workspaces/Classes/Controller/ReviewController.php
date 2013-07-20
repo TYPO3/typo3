@@ -45,7 +45,7 @@ class ReviewController extends \TYPO3\CMS\Workspaces\Controller\AbstractControll
 	public function indexAction() {
 		$wsService = GeneralUtility::makeInstance('TYPO3\\CMS\\Workspaces\\Service\\WorkspaceService');
 		$this->view->assign('showGrid', !($GLOBALS['BE_USER']->workspace === 0 && !$GLOBALS['BE_USER']->isAdmin()));
-		$this->view->assign('showAllWorkspaceTab', $GLOBALS['BE_USER']->isAdmin());
+		$this->view->assign('showAllWorkspaceTab', TRUE);
 		$this->view->assign('pageUid', GeneralUtility::_GP('id'));
 		$this->view->assign('showLegend', !($GLOBALS['BE_USER']->workspace === 0 && !$GLOBALS['BE_USER']->isAdmin()));
 		$wsList = $wsService->getAvailableWorkspaces();
@@ -80,27 +80,31 @@ class ReviewController extends \TYPO3\CMS\Workspaces\Controller\AbstractControll
 	}
 
 	/**
-	 * Renders the review module for admins.
+	 * Renders the review module user dependent.
 	 * The module will show all records of all workspaces.
 	 *
 	 * @return void
 	 */
 	public function fullIndexAction() {
+		$wsService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Workspaces\\Service\\WorkspaceService');
+		$wsList = $wsService->getAvailableWorkspaces();
+
 		if (!$GLOBALS['BE_USER']->isAdmin()) {
-			$this->redirect('index');
-		} else {
-			$wsService = GeneralUtility::makeInstance('TYPO3\\CMS\\Workspaces\\Service\\WorkspaceService');
-			$this->view->assign('pageUid', GeneralUtility::_GP('id'));
-			$this->view->assign('showGrid', TRUE);
-			$this->view->assign('showLegend', TRUE);
-			$this->view->assign('showAllWorkspaceTab', $GLOBALS['BE_USER']->isAdmin());
-			$this->view->assign('workspaceList', $wsService->getAvailableWorkspaces());
-			$this->view->assign('activeWorkspaceUid', \TYPO3\CMS\Workspaces\Service\WorkspaceService::SELECT_ALL_WORKSPACES);
-			$this->view->assign('showPreviewLink', FALSE);
-			$GLOBALS['BE_USER']->setAndSaveSessionData('tx_workspace_activeWorkspace', \TYPO3\CMS\Workspaces\Service\WorkspaceService::SELECT_ALL_WORKSPACES);
-			// set flag for javascript
-			$this->pageRenderer->addInlineSetting('Workspaces', 'allView', '1');
+			$activeWorkspace = $GLOBALS['BE_USER']->workspace;
+			$wsCur = array($activeWorkspace => TRUE);
+			$wsList = array_intersect_key($wsList, $wsCur);
 		}
+
+		$this->view->assign('pageUid', GeneralUtility::_GP('id'));
+		$this->view->assign('showGrid', TRUE);
+		$this->view->assign('showLegend', TRUE);
+		$this->view->assign('showAllWorkspaceTab', TRUE);
+		$this->view->assign('workspaceList', $wsList);
+		$this->view->assign('activeWorkspaceUid', \TYPO3\CMS\Workspaces\Service\WorkspaceService::SELECT_ALL_WORKSPACES);
+		$this->view->assign('showPreviewLink', FALSE);
+		$GLOBALS['BE_USER']->setAndSaveSessionData('tx_workspace_activeWorkspace', \TYPO3\CMS\Workspaces\Service\WorkspaceService::SELECT_ALL_WORKSPACES);
+		// set flag for javascript
+		$this->pageRenderer->addInlineSetting('Workspaces', 'allView', '1');
 	}
 
 	/**
