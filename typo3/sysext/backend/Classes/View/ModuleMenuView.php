@@ -314,7 +314,7 @@ class ModuleMenuView {
 		$buttonLabel = $GLOBALS['BE_USER']->user['ses_backuserid'] ? 'LLL:EXT:lang/locallang_core.xlf:buttons.exit' : 'LLL:EXT:lang/locallang_core.xlf:buttons.logout';
 		$buttonForm = '
 		<form action="logout.php" target="_top">
-			<input type="submit" value="&nbsp;' . $GLOBALS['LANG']->sL($buttonLabel, 1) . '&nbsp;" />
+			<input type="submit" id="logout-submit-button" value="' . $GLOBALS['LANG']->sL($buttonLabel, 1) . '" />
 		</form>';
 		return $buttonForm;
 	}
