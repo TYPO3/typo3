@@ -178,5 +178,13 @@ TYPO3.Workspaces.Helpers = {
 				}
 			]
 		});
+	},
+
+	getAdditionalColumnHandler: function() {
+		var handlers = [];
+		Ext.each(TYPO3.settings.Workspaces.extension.AdditionalColumn.Handler, function(objectName) {
+			handlers.push(eval(objectName));
+		});
+		return handlers;
 	}
 };
