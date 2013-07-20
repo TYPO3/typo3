@@ -185,6 +185,9 @@ class GridDataService {
 					$versionArray['allowedAction_edit'] = $isRecordTypeAllowedToModify && !$isDeletedPage;
 					$versionArray['allowedAction_editVersionedPage'] = $isRecordTypeAllowedToModify && !$isDeletedPage;
 					$versionArray['state_Workspace'] = $recordState;
+
+					$this->getAdditionalColumnService()->getData($versionArray, $combinedRecord);
+
 					if ($filterTxt == '' || $this->isFilterTextInVisibleColumns($filterTxt, $versionArray)) {
 						$this->dataArray[] = $versionArray;
 					}
@@ -546,6 +549,13 @@ class GridDataService {
 		// Arguments are always ($this, [method argument], [method argument], ...)
 		$signalArguments = array_merge(array($this), array_slice(func_get_args(), 1));
 		$this->getSignalSlotDispatcher()->dispatch('TYPO3\\CMS\\Workspaces\\Service\\GridDataService', $signalName, $signalArguments);
+	}
+
+	/**
+	 * @return \TYPO3\CMS\Workspaces\Service\AdditionalColumnService
+	 */
+	protected function getAdditionalColumnService() {
+		return $this->getObjectManager()->get('TYPO3\\CMS\\Workspaces\\Service\\AdditionalColumnService');
 	}
 
 	/**
