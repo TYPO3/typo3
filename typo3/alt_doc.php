@@ -35,6 +35,7 @@
 require_once 'init.php';
 \TYPO3\CMS\Backend\Utility\BackendUtility::lockRecords();
 
+/* @var $editDocumentController \TYPO3\CMS\Backend\Controller\EditDocumentController */
 $editDocumentController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\EditDocumentController');
 
 // Preprocessing, storing data if submitted to
