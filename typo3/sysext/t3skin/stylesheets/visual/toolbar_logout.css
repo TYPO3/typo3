@@ -8,6 +8,7 @@ Logout-Button
 	color: #fff;
 	cursor: pointer;
 	text-align: center;
+	padding: 0 5px;
 }
 
 #logout-button input:hover {
