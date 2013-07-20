@@ -344,6 +344,13 @@ class ClassLoader {
 			$delimiter = '\\';
 		}
 		$classNameParts = explode($delimiter, $tempClassName, 4);
+
+		// we only handle classes that follow the convention Vendor\Product\Classname\PossiblyInSubnamespace,
+		// so we won't deal with class names that only have two parts
+		if (count($classNameParts) <= 2) {
+			return;
+		}
+
 		if (isset($classNameParts[0]) && $classNameParts[0] === 'TYPO3' && (isset($classNameParts[1]) && $classNameParts[1] === 'CMS')) {
 			$extensionKey = GeneralUtility::camelCaseToLowerCaseUnderscored($classNameParts[2]);
 			$classNameWithoutVendorAndProduct = $classNameParts[3];
