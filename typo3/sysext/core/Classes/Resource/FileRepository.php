@@ -100,7 +100,7 @@ class FileRepository extends AbstractRepository {
 	 * @TODO : indexing service, right now it's fine that way as this function will serve as the public API
 	 * @TODO : throw an exception if nothing found, for consistent handling as in AbstractRepository?
 	 * @param File $fileObject
-	 * @return bool|int
+	 * @return boolean|integer
 	 */
 	public function getFileIndexStatus(File $fileObject) {
 		$storageUid = $fileObject->getStorage()->getUid();
@@ -190,9 +190,9 @@ class FileRepository extends AbstractRepository {
 	/**
 	 * Find FileReference objects by relation to other records
 	 *
-	 * @param int $tableName Table name of the related record
-	 * @param int $fieldName Field name of the related record
-	 * @param int $uid The UID of the related record (needs to be the localized uid, as translated IRRE elements relate to them)
+	 * @param integer $tableName Table name of the related record
+	 * @param integer $fieldName Field name of the related record
+	 * @param integer $uid The UID of the related record (needs to be the localized uid, as translated IRRE elements relate to them)
 	 * @return array An array of objects, empty if no objects found
 	 * @throws \InvalidArgumentException
 	 * @api

@@ -174,7 +174,7 @@ class LogRecord implements \ArrayAccess {
 	 * Returns the severity level
 	 *
 	 * @see \TYPO3\CMS\Core\Log\Level
-	 * @return int Severity level
+	 * @return integer Severity level
 	 */
 	public function getLevel() {
 		return $this->level;

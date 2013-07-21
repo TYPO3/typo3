@@ -113,7 +113,7 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 	 * @param string $tableName The database table name
 	 * @param array $row The row to be inserted
 	 * @param boolean $isRelation TRUE if we are currently inserting into a relation table, FALSE by default
-	 * @return int The uid of the inserted row
+	 * @return integer The uid of the inserted row
 	 */
 	public function addRow($tableName, array $row, $isRelation = FALSE) {
 		$fields = array();
@@ -146,7 +146,7 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 	 * @param array $row The row to be updated
 	 * @param boolean $isRelation TRUE if we are currently inserting into a relation table, FALSE by default
 	 * @throws \InvalidArgumentException
-	 * @return bool
+	 * @return boolean
 	 */
 	public function updateRow($tableName, array $row, $isRelation = FALSE) {
 		if (!isset($row['uid'])) {
@@ -214,7 +214,7 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 	 * @param string $tableName The database table name
 	 * @param array $identifier An array of identifier array('fieldname' => value). This array will be transformed to a WHERE clause
 	 * @param boolean $isRelation TRUE if we are currently manipulating a relation table, FALSE by default
-	 * @return bool
+	 * @return boolean
 	 */
 	public function removeRow($tableName, array $identifier, $isRelation = FALSE) {
 		$statement = 'DELETE FROM ' . $tableName . ' WHERE ' . $this->parseIdentifier($identifier);

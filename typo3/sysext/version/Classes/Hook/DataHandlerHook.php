@@ -150,7 +150,7 @@ class DataHandlerHook {
 	 *
 	 * @param string $command
 	 * @param string $table
-	 * @param int $id
+	 * @param integer $id
 	 * @param mixed $value
 	 * @param \TYPO3\CMS\Core\DataHandling\DataHandler $tcemain
 	 */

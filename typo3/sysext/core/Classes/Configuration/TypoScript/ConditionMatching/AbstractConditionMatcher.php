@@ -204,7 +204,7 @@ abstract class AbstractConditionMatcher {
 	 *
 	 * @param string $key The condition to match against its criterias.
 	 * @param string $value
-	 * @return mixed Returns TRUE or FALSE based on the evaluation
+	 * @return NULL|boolean Result of the evaluation; NULL if condition could not be evaluated
 	 */
 	protected function evaluateConditionCommon($key, $value) {
 		if (GeneralUtility::inList('browser,version,system,useragent', strtolower($key))) {
@@ -258,7 +258,7 @@ abstract class AbstractConditionMatcher {
 				$values = GeneralUtility::trimExplode(',', $value, TRUE);
 				// Take all identified systems into account, e.g. mac for iOS, Linux
 				// for android and Windows NT for Windows XP
-				$allSystems .= ' ' . implode(' ', $browserInfo['all_systems']);
+				$allSystems = ' ' . implode(' ', $browserInfo['all_systems']);
 				foreach ($values as $test) {
 					if (stripos($allSystems, $test) !== FALSE) {
 						return TRUE;

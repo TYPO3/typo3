@@ -47,7 +47,7 @@ class CurrencyViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHe
 	 * @param string $thousandsSeparator (optional) The thousands separator.
 	 * @param boolean $prependCurrency (optional) Select if the curreny sign should be prepended
 	 * @param boolean $separateCurrency (optional) Separate the currency sign from the number by a single space, defaults to true due to backwards compatibility
-	 * @param int $decimals (optional) Set decimals places.
+	 * @param integer $decimals (optional) Set decimals places.
 	 * @return string the formatted amount.
 	 * @api
 	 */

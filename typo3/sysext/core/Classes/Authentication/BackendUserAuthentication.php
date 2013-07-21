@@ -395,7 +395,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 *
 	 * @param array $row Is the pagerow for which the permissions is checked
 	 * @param integer $perms Is the binary representation of the permission we are going to check. Every bit in this number represents a permission that must be set. See function explanation.
-	 * @return boolean TRUE or False upon evaluation
+	 * @return boolean
 	 * @todo Define visibility
 	 */
 	public function doesUserHaveAccess($row, $perms) {
@@ -623,7 +623,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 * @param string $field Field name (must be configured in TCA and of type "select" with authMode set!)
 	 * @param string $value Value to evaluation (single value, must not contain any of the chars ":,|")
 	 * @param string $authMode Auth mode keyword (explicitAllow, explicitDeny, individual)
-	 * @return boolean TRUE or FALSE whether access is granted or not.
+	 * @return boolean Whether access is granted or not
 	 * @todo Define visibility
 	 */
 	public function checkAuthMode($table, $field, $value, $authMode) {

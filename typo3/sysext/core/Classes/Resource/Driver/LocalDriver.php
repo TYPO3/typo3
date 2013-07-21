@@ -759,7 +759,7 @@ class LocalDriver extends \TYPO3\CMS\Core\Resource\Driver\AbstractDriver {
 	 * associated with (or we don't want to create an object for) them - e.g. when moving a file to another storage.
 	 *
 	 * @param string $identifier
-	 * @return bool TRUE if removing the file succeeded
+	 * @return boolean TRUE if removing the file succeeded
 	 */
 	public function deleteFileRaw($identifier) {
 		$targetPath = $this->absoluteBasePath . ltrim($identifier, '/');
@@ -1116,7 +1116,7 @@ class LocalDriver extends \TYPO3\CMS\Core\Resource\Driver\AbstractDriver {
 	 *
 	 * @param \TYPO3\CMS\Core\Resource\Folder $container
 	 * @param mixed $content An object or an identifier to check
-	 * @return bool TRUE if $content is within $container, always FALSE if $container is not within this storage
+	 * @return boolean TRUE if $content is within $container, always FALSE if $container is not within this storage
 	 */
 	public function isWithin(\TYPO3\CMS\Core\Resource\Folder $container, $content) {
 		if ($container->getStorage() != $this->storage) {

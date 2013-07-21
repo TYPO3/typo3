@@ -310,7 +310,7 @@ class DependencyUtility implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * @param string $extensionKey
-	 * @return bool
+	 * @return boolean
 	 */
 	protected function isDependentExtensionLoaded($extensionKey) {
 		return \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($extensionKey);

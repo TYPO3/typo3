@@ -77,7 +77,7 @@ class SwiftMailerAdapter implements \TYPO3\CMS\Core\Mail\MailerAdapterInterface 
 	 * @param array $additionalParameters Extra parameters for the mail() command
 	 * @param boolean $fakeSending If set fake sending a mail
 	 * @throws \TYPO3\CMS\Core\Exception
-	 * @return bool
+	 * @return boolean
 	 */
 	public function mail($to, $subject, $messageBody, $additionalHeaders = NULL, $additionalParameters = NULL, $fakeSending = FALSE) {
 		// report success for fake sending

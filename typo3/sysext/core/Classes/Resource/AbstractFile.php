@@ -433,7 +433,7 @@ abstract class AbstractFile implements FileInterface {
 	/**
 	 * Deletes this file from its storage. This also means that this object becomes useless.
 	 *
-	 * @return bool TRUE if deletion succeeded
+	 * @return boolean TRUE if deletion succeeded
 	 */
 	public function delete() {
 		// The storage will mark this file as deleted

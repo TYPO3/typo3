@@ -172,7 +172,7 @@ class DateTimeConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\Abstra
 	 * Returns whether date information (day, month, year) are present as keys in $source.
 	 *
 	 * @param array $source
-	 * @return bool
+	 * @return boolean
 	 */
 	protected function isDatePartKeysProvided(array $source) {
 		return isset($source['day']) && ctype_digit($source['day'])

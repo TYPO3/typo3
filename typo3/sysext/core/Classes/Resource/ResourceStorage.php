@@ -346,7 +346,7 @@ class ResourceStorage {
 	/**
 	 * Returns TRUE if this storage has the given capability.
 	 *
-	 * @param int $capability A capability, as defined in a CAPABILITY_* constant
+	 * @param integer $capability A capability, as defined in a CAPABILITY_* constant
 	 * @return boolean
 	 */
 	protected function hasCapability($capability) {
@@ -978,10 +978,9 @@ class ResourceStorage {
 	 * Previously in \TYPO3\CMS\Core\Utility\File\ExtendedFileUtility::deleteFile()
 	 *
 	 * @param $fileObject FileInterface
-	 *
 	 * @throws Exception\InsufficientFileAccessPermissionsException
 	 * @throws Exception\FileOperationErrorException
-	 * @return bool TRUE if deletion succeeded
+	 * @return boolean TRUE if deletion succeeded
 	 */
 	public function deleteFile($fileObject) {
 		if (!$this->checkFileActionPermission('remove', $fileObject)) {
@@ -1051,7 +1050,7 @@ class ResourceStorage {
 	 * @param string $localFilePath the temporary file name from $_FILES['file1']['tmp_name']
 	 * @param Folder $targetFolder
 	 * @param string $targetFileName the destination file name $_FILES['file1']['name']
-	 * @param int $uploadedFileSize
+	 * @param integer $uploadedFileSize
 	 *
 	 * @throws Exception\InsufficientFolderWritePermissionsException
 	 * @throws Exception\UploadException
@@ -1529,8 +1528,8 @@ class ResourceStorage {
 
 	/**
 	 * @param $path
-	 * @param int $start
-	 * @param int $numberOfItems
+	 * @param integer $start
+	 * @param integer $numberOfItems
 	 * @param array $folderFilterCallbacks
 	 * @param boolean $recursive
 	 * @return array

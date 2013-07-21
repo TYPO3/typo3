@@ -4053,7 +4053,7 @@ Connection: close
 	 *
 	 * @param string $classRef The class or function to check
 	 * @param array $additionalPrefixes Additional allowed prefixes, mostly this will be user_
-	 * @return bool TRUE if name is allowed
+	 * @return boolean TRUE if name is allowed
 	 * @deprecated since 6.0, will be removed two versions later
 	 */
 	static public function hasValidClassPrefix($classRef, array $additionalPrefixes = array()) {

@@ -47,7 +47,7 @@ class MysqlFulltextIndexHook {
 	 * Gets a SQL result pointer to traverse for the search records.
 	 *
 	 * @param array $searchWordsArray Search words
-	 * @param int $freeIndexUid Pointer to which indexing configuration you want to search in. -1 means no filtering. 0 means only regular indexed content.
+	 * @param integer $freeIndexUid Pointer to which indexing configuration you want to search in. -1 means no filtering. 0 means only regular indexed content.
 	 * @return boolean|\mysqli_result|object MySQLi result object / DBAL object
 	 */
 	public function getResultRows_SQLpointer($searchWordsArray, $freeIndexUid = -1) {
@@ -148,7 +148,7 @@ class MysqlFulltextIndexHook {
 	 * Execute final query, based on phash integer list. The main point is sorting the result in the right order.
 	 *
 	 * @param array $searchData Array with search string, boolean indicator, and fulltext index reference
-	 * @param int $freeIndexUid Pointer to which indexing configuration you want to search in. -1 means no filtering. 0 means only regular indexed content.
+	 * @param integer $freeIndexUid Pointer to which indexing configuration you want to search in. -1 means no filtering. 0 means only regular indexed content.
 	 * @return boolean|\mysqli_result|object MySQLi result object / DBAL object
 	 */
 	protected function execFinalQuery_fulltext($searchData, $freeIndexUid = -1) {

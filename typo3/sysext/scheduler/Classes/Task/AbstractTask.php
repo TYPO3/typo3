@@ -414,7 +414,7 @@ abstract class AbstractTask {
 	/**
 	 * Saves the details of the task to the database.
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	public function save() {
 		return $this->scheduler->saveTask($this);
@@ -424,7 +424,7 @@ abstract class AbstractTask {
 	 * Stops the task, by replacing the execution object by an empty one
 	 * NOTE: the task still needs to be saved after that
 	 *
-	 * @return 	void
+	 * @return void
 	 */
 	public function stop() {
 		$this->execution = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Scheduler\\Execution');

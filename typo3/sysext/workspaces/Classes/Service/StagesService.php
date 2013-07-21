@@ -84,7 +84,7 @@ class StagesService {
 	/**
 	 * Getter for current workspace id
 	 *
-	 * @return int current workspace id
+	 * @return integer current workspace id
 	 */
 	public function getWorkspaceId() {
 		if ($this->workspaceId == NULL) {
@@ -96,7 +96,7 @@ class StagesService {
 	/**
 	 * Setter for current workspace id
 	 *
-	 * @param int current workspace id
+	 * @param integer current workspace id
 	 */
 	private function setWorkspaceId($wsid) {
 		$this->workspaceId = $wsid;
@@ -287,7 +287,7 @@ class StagesService {
 	/**
 	 * Check if given workspace has custom staging activated
 	 *
-	 * @return bool TRUE or FALSE
+	 * @return boolean
 	 */
 	public function checkCustomStagingForWS() {
 		$workspaceRec = BackendUtility::getRecord('sys_workspace', $this->getWorkspaceId());
@@ -662,7 +662,7 @@ class StagesService {
 	 * Check if the user has access to the previous stage, relative to the given stage
 	 *
 	 * @param integer $stageId
-	 * @return bool
+	 * @return boolean
 	 */
 	public function isPrevStageAllowedForUser($stageId) {
 		$isAllowed = FALSE;
@@ -684,7 +684,7 @@ class StagesService {
 	 * Check if the user has access to the next stage, relative to the given stage
 	 *
 	 * @param integer $stageId
-	 * @return bool
+	 * @return boolean
 	 */
 	public function isNextStageAllowedForUser($stageId) {
 		$isAllowed = FALSE;
@@ -704,7 +704,7 @@ class StagesService {
 
 	/**
 	 * @param $stageId
-	 * @return bool
+	 * @return boolean
 	 */
 	protected function isStageAllowedForUser($stageId) {
 		$cacheKey = $this->getWorkspaceId() . '_' . $stageId;

@@ -446,7 +446,7 @@ class WorkspaceService implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Trivial check to see if the user already migrated his workspaces
 	 * to the new style (either manually or with the migrator scripts)
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	static public function isOldStyleWorkspaceUsed() {
 		$oldStyleWorkspaceIsUsed = FALSE;

@@ -40,7 +40,7 @@ interface DomainObjectInterface {
 	/**
 	 * Getter for uid.
 	 *
-	 * @return int the uid or NULL if none set yet.
+	 * @return integer The uid or NULL if none set yet.
 	 */
 	public function getUid();
 
@@ -55,7 +55,7 @@ interface DomainObjectInterface {
 	/**
 	 * Getter for the pid.
 	 *
-	 * @return int The pid or NULL if none set yet.
+	 * @return integer The pid or NULL if none set yet.
 	 */
 	public function getPid();
 
