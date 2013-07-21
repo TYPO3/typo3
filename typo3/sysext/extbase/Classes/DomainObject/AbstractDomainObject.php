@@ -83,7 +83,7 @@ abstract class AbstractDomainObject implements \TYPO3\CMS\Extbase\DomainObject\D
 	/**
 	 * Getter for uid.
 	 *
-	 * @return int the uid or NULL if none set yet.
+	 * @return integer the uid or NULL if none set yet.
 	 */
 	public function getUid() {
 		if ($this->uid !== NULL) {
@@ -110,7 +110,7 @@ abstract class AbstractDomainObject implements \TYPO3\CMS\Extbase\DomainObject\D
 	/**
 	 * Getter for the pid.
 	 *
-	 * @return int The pid or NULL if none set yet.
+	 * @return integer The pid or NULL if none set yet.
 	 */
 	public function getPid() {
 		if ($this->pid === NULL) {

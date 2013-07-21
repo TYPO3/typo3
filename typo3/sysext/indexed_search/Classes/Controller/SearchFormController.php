@@ -534,7 +534,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 * Get search result rows / data from database. Returned as data in array.
 	 *
 	 * @param array $searchWordArray Search word array
-	 * @param int Pointer to which indexing configuration you want to search in. -1 means no filtering. 0 means only regular indexed content.
+	 * @param integer Pointer to which indexing configuration you want to search in. -1 means no filtering. 0 means only regular indexed content.
 	 * @return array False if no result, otherwise an array with keys for first row, result rows and total number of results found.
 	 * @todo Define visibility
 	 */
@@ -2305,7 +2305,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	/**
 	 * Obtains search form target pid from the TypoScript configuration
 	 *
-	 * @return int
+	 * @return integer
 	 */
 	protected function getSearchFormActionPidFromTS() {
 		$result = 0;
@@ -2323,8 +2323,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	/**
 	 * Formats date as 'created' date
 	 *
-	 * @param int $date
-	 * @param string $defaultFormat
+	 * @param integer $date
 	 * @return string
 	 */
 	protected function formatCreatedDate($date) {
@@ -2335,8 +2334,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	/**
 	 * Formats date as 'modified' date
 	 *
-	 * @param int $date
-	 * @param string $defaultFormat
+	 * @param integer $date
 	 * @return string
 	 */
 	protected function formatModifiedDate($date) {
@@ -2348,7 +2346,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 * Formats the date using format string from TypoScript or default format
 	 * if TypoScript format is not set
 	 *
-	 * @param int $date
+	 * @param integer $date
 	 * @param string $tsKey
 	 * @param string $defaultFormat
 	 * @return string

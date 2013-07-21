@@ -280,7 +280,7 @@ class PropertyType {
 	 * Returns the numeric constant value of the type with the specified name.
 	 *
 	 * @param string $name The name of the property type
-	 * @return int The numeric constant value
+	 * @return integer The numeric constant value
 	 */
 	static public function valueFromName($name) {
 		switch ($name) {

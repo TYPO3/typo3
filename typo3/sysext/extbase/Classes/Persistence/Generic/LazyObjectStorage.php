@@ -118,7 +118,7 @@ class LazyObjectStorage extends \TYPO3\CMS\Extbase\Persistence\ObjectStorage imp
 	}
 
 	/**
-	 * @return bool
+	 * @return boolean
 	 */
 	protected function isStorageAlreadyMemorizedInParentCleanState() {
 		return $this->parentObject->_getCleanProperty($this->propertyName) === $this;
@@ -161,7 +161,7 @@ class LazyObjectStorage extends \TYPO3\CMS\Extbase\Persistence\ObjectStorage imp
 	 * Counts the elements in the storage array
 	 *
 	 * @throws Exception
-	 * @return int The number of elements in the ObjectStorage
+	 * @return integer The number of elements in the ObjectStorage
 	 */
 	public function count() {
 		$columnMap = $this->dataMapper->getDataMap(get_class($this->parentObject))->getColumnMap($this->propertyName);

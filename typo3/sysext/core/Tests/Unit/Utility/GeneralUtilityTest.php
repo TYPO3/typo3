@@ -4019,7 +4019,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 * @dataProvider generateRandomBytesReturnsExpectedAmountOfBytesDataProvider
-	 * @param int $numberOfBytes Number of Bytes to generate
+	 * @param integer $numberOfBytes Number of Bytes to generate
 	 */
 	public function generateRandomBytesReturnsExpectedAmountOfBytes($numberOfBytes) {
 		$this->assertEquals(strlen(Utility\GeneralUtility::generateRandomBytes($numberOfBytes)), $numberOfBytes);
@@ -4048,7 +4048,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 * @dataProvider generateRandomBytesReturnsDifferentBytesDuringDifferentCallsDataProvider
-	 * @param int $numberOfBytes  Number of Bytes to generate
+	 * @param integer $numberOfBytes  Number of Bytes to generate
 	 */
 	public function generateRandomBytesReturnsDifferentBytesDuringDifferentCalls($numberOfBytes) {
 		$results = array();

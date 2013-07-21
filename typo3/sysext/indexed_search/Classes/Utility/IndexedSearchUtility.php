@@ -54,7 +54,7 @@ class IndexedSearchUtility {
 	 * Using 7 instead of 8 just because that makes the integers lower than 32 bit (28 bit) and so they do not interfere with UNSIGNED integers or PHP-versions which has varying output from the hexdec function.
 	 *
 	 * @param string $stringToHash String to hash
-	 * @return int Integer intepretation of the md5 hash of input string.
+	 * @return integer Integer intepretation of the md5 hash of input string.
 	 */
 	static public function md5inthash($stringToHash) {
 		return hexdec(substr(md5($stringToHash), 0, 7));

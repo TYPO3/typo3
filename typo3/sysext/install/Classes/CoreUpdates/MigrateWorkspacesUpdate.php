@@ -175,7 +175,7 @@ class MigrateWorkspacesUpdate extends \TYPO3\CMS\Install\CoreUpdates\InstallSysE
 	/**
 	 * Check if any table contains draft-workspace records
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	protected function isDraftWorkspaceUsed() {
 		$foundDraftRecords = FALSE;
@@ -198,7 +198,7 @@ class MigrateWorkspacesUpdate extends \TYPO3\CMS\Install\CoreUpdates\InstallSysE
 	 * Find workspaces which have no sys_workspace_state(s) but have records using states
 	 * If "
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	protected function isOldStyleWorkspace() {
 		$foundOldStyleStages = FALSE;
@@ -273,7 +273,7 @@ class MigrateWorkspacesUpdate extends \TYPO3\CMS\Install\CoreUpdates\InstallSysE
 	/**
 	 * Check if there's any workspace which doesn't support the new admin-field format yet
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	protected function isOldStyleAdminFieldUsed() {
 		$where = 'adminusers != "" AND adminusers NOT LIKE "%be_users%" AND adminusers NOT LIKE "%be_groups%" AND deleted=0';

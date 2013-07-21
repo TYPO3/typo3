@@ -201,7 +201,7 @@ abstract class AbstractDriver {
 	/**
 	 * Returns TRUE if this driver has the given capability.
 	 *
-	 * @param int $capability A capability, as defined in a CAPABILITY_* constant
+	 * @param integer $capability A capability, as defined in a CAPABILITY_* constant
 	 * @return boolean
 	 */
 	public function hasCapability($capability) {

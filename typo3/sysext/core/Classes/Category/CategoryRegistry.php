@@ -71,7 +71,7 @@ class CategoryRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 	 *              + typesList: list of types that shall visualize the categories field
 	 *              + position: insert position of the categories field
 	 *              + fieldConfiguration: TCA field config array to override defaults
-	 * @return bool
+	 * @return boolean
 	 * @throws \RuntimeException
 	 */
 	public function add($extensionKey, $tableName, $fieldName = 'categories', $options = array()) {

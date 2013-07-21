@@ -58,7 +58,7 @@ abstract class AbstractExtJsTree extends \TYPO3\CMS\Backend\Tree\AbstractTree {
 	/**
 	 * Fetches the next tree level
 	 *
-	 * @param int $nodeId
+	 * @param integer $nodeId
 	 * @param stdClass $nodeData
 	 * @return array
 	 */
