@@ -509,6 +509,21 @@ class ContentObjectRenderer {
 	 * @see ContentObjectRender::$userObjectType
 	 */
 	const OBJECTTYPE_USER = 2;
+
+	/**
+	 * Signal Slot Dispatcher
+	 *
+	 * @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
+	 */
+	protected $signalSlotDispatcher;
+
+	/**
+	 * Signal gets called before image processing
+	 * 
+	 * @see getImgResource()
+	 */
+	const SIGNAL_PreImageProcess = 'preImageProcess';
+
 	/**
 	 * Class constructor.
 	 * Well, it has to be called manually since it is not a real constructor function.
@@ -552,6 +567,30 @@ class ContentObjectRenderer {
 				$postInitializationProcessor->postProcessContentObjectInitialization($this);
 			}
 		}
+	}
+
+	/**
+	 * Returns the SignalSlot dispatcher
+	 *
+	 * @return \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
+	 */
+	protected function getSignalSlotDispatcher() {
+		if (!isset($this->signalSlotDispatcher)) {
+			$this->signalSlotDispatcher = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager')
+				->get('TYPO3\\CMS\\Extbase\\SignalSlot\\Dispatcher');
+		}
+		return $this->signalSlotDispatcher;
+	}
+
+	/**
+	 * Emits file pre-image-processing signal
+	 *
+	 * @param Resource\FileInterface $file
+	 * @param array $references References to variables, to adjust them in slots
+	 * @return void
+	 */
+	protected function emitPreFileProcess(\TYPO3\CMS\Core\Resource\FileInterface $file, array $references = array()) {
+		$this->getSignalSlotDispatcher()->dispatch(__CLASS__, self::SIGNAL_PreImageProcess, array($this, $file, $references));
 	}
 
 	/**
@@ -5185,6 +5224,7 @@ class ContentObjectRenderer {
 						if ($GLOBALS['TSFE']->config['config']['meaningfulTempFilePrefix']) {
 							$processingConfiguration['useTargetFileNameAsPrefix'] = 1;
 						}
+						$this->emitPreFileProcess($fileObject, array('processingConfiguration' => &$processingConfiguration));
 						$processedFileObject = $fileObject->process(\TYPO3\CMS\Core\Resource\ProcessedFile::CONTEXT_IMAGECROPSCALEMASK, $processingConfiguration);
 						$hash = $processedFileObject->calculateChecksum();
 						// store info in the TSFE template cache (kept for backwards compatibility)
