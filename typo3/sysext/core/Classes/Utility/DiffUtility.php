@@ -197,11 +197,11 @@ class DiffUtility {
 		$outArray = array();
 		foreach ($strArr as $lineOfWords) {
 			$allWords = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(' ', $lineOfWords, 1);
-			$outArray = array_merge($outArray, $allWords);
-			$outArray[] = '';
-			$outArray[] = '';
+			$outArray[] = $allWords;
+			$outArray[] = array('');
+			$outArray[] = array('');
 		}
-		return $outArray;
+		return call_user_func_array('array_merge', $outArray);
 	}
 
 	/**
