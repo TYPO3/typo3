@@ -29,6 +29,7 @@ namespace TYPO3\CMS\Backend\View;
 
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\Core\Tests\Unit\Utility\GeneralUtilityTest;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
@@ -111,7 +112,7 @@ class ThumbnailView {
 		// Only needed for MD5 sum calculation of backwards-compatibility uploads/ files thumbnails.
 		$size = GeneralUtility::_GP('size');
 		$filePathOrCombinedFileIdentifier = rawurldecode(GeneralUtility::_GP('file'));
-		$md5sum = GeneralUtility::_GP('md5sum');
+		$hmac = GeneralUtility::_GP('hmac');
 		// Image extension list is set:
 		// valid extensions. OBS: No spaces in the list, all lowercase...
 		$this->imageList = $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'];
@@ -142,7 +143,7 @@ class ThumbnailView {
 				// Maybe this could be relaxed to not throw an error as long as the path is still within PATH_site
 				$this->errorGif('File path', 'must not contain', '"../"');
 			}
-			if ($relativeFilePath && file_exists(PATH_site . $relativeFilePath)) {
+			if ($relativeFilePath && @file_exists(PATH_site . $relativeFilePath)) {
 				// Check file extension:
 				$reg = array();
 				if (preg_match('/(.*)\\.([^\\.]*$)/', $relativeFilePath, $reg)) {
@@ -160,10 +161,8 @@ class ThumbnailView {
 			// Do an MD5 check to prevent viewing of images without permission
 			$OK = FALSE;
 			if ($mTime) {
-				// Always use the absolute path for this check!
-				$check = basename($relativeFilePath) . ':' . $mTime . ':' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'];
-				$md5_real = GeneralUtility::shortMD5($check);
-				if (!strcmp($md5_real, $md5sum)) {
+				$hmac_real = GeneralUtilityTest::hmac(basename($relativeFilePath) . ':' . $mTime, 'thumbnailgen');
+				if (!strcmp($hmac_real, $hmac)) {
 					$OK = TRUE;
 				}
 			}
@@ -176,7 +175,7 @@ class ThumbnailView {
 			$fileObject = ResourceFactory::getInstance()->getFileObjectFromCombinedIdentifier($combinedIdentifier);
 		}
 		if (empty($OK)) {
-			$OK = $fileObject !== NULL && $fileObject->checkActionPermission('read') && $fileObject->calculateChecksum() == $md5sum;
+			$OK = $fileObject !== NULL && $fileObject->checkActionPermission('read') && $fileObject->calculateChecksum() == $hmac;
 		}
 		if ($OK) {
 			$this->image = $fileObject;
