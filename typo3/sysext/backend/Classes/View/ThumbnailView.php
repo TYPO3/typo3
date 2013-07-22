@@ -142,7 +142,7 @@ class ThumbnailView {
 				// Maybe this could be relaxed to not throw an error as long as the path is still within PATH_site
 				$this->errorGif('File path', 'must not contain', '"../"');
 			}
-			if ($relativeFilePath && file_exists(PATH_site . $relativeFilePath)) {
+			if ($relativeFilePath && @file_exists(PATH_site . $relativeFilePath)) {
 				// Check file extension:
 				$reg = array();
 				if (preg_match('/(.*)\\.([^\\.]*$)/', $relativeFilePath, $reg)) {
@@ -160,9 +160,8 @@ class ThumbnailView {
 			// Do an MD5 check to prevent viewing of images without permission
 			$OK = FALSE;
 			if ($mTime) {
-				// Always use the absolute path for this check!
 				$check = basename($relativeFilePath) . ':' . $mTime . ':' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'];
-				$md5_real = GeneralUtility::shortMD5($check);
+				$md5_real = md5($check);
 				if (!strcmp($md5_real, $md5sum)) {
 					$OK = TRUE;
 				}

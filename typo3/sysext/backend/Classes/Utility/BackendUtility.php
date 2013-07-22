@@ -1632,7 +1632,7 @@ class BackendUtility {
 	 * @param string $thumbScript Must point to "thumbs.php" relative to the script position
 	 * @param string $theFile Must be the proper reference to the file that thumbs.php should show
 	 * @param string $tparams The additional attributes for the image tag
-	 * @param integer $size The size of the thumbnail send along to "thumbs.php
+	 * @param integer $size The size of the thumbnail sent along to "thumbs.php"
 	 * @return string Image tag
 	 */
 	static public function getThumbNail($thumbScript, $theFile, $tparams = '', $size = '') {
@@ -1641,7 +1641,8 @@ class BackendUtility {
 		$params .= trim($size) ? '&size=' . trim($size) : '';
 		$params .= '&md5sum=' . md5($check);
 		$url = $thumbScript . '?' . $params;
-		$th = '<img src="' . htmlspecialchars($url) . '" title="' . trim(basename($theFile)) . '"' . ($tparams ? ' ' . $tparams : '') . ' alt="" />';
+		$title = $alt = trim(basename($theFile));
+		$th = '<img src="' . htmlspecialchars($url) . '" title="' . $title . '"' . ($tparams ? ' ' . $tparams : '') . ' alt="' . $alt . '" />';
 		return $th;
 	}
 
