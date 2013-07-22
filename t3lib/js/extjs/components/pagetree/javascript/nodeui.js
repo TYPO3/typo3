@@ -148,9 +148,6 @@ TYPO3.Components.PageTree.PageTreeNodeUI = Ext.extend(Ext.tree.TreeNodeUI, {
 		for (var i = 0; i < textNode.dom.childNodes.length; ++i) {
 			if (textNode.dom.childNodes[i].nodeName === 'SPAN') {
 				ddHandles[handlesIndex++] = textNode.dom.childNodes[i];
-				if (textNode.dom.childNodes[i].childNodes) {
-					ddHandles[handlesIndex++] = textNode.dom.childNodes[i].childNodes[0];
-				}
 			}
 		}
 
