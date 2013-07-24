@@ -200,7 +200,7 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 		$classSelected = array();
 		if ($this->buttonConfig['properties.']['class.']['allowedClasses']) {
 			$this->setClass = $this->curUrlArray['class'];
-			$classesAnchorArray = GeneralUtility::trimExplode(',', $this->buttonConfig['properties.']['class.']['allowedClasses'], 1);
+			$classesAnchorArray = GeneralUtility::trimExplode(',', $this->buttonConfig['properties.']['class.']['allowedClasses'], TRUE);
 			$classesAnchorConfigArray = array();
 			// Collecting allowed classes and configured default values
 			$classesAnchor = array();
@@ -264,7 +264,7 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 		}
 		// Initializing additional attributes
 		if ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rtehtmlarea']['plugins']['TYPO3Link']['additionalAttributes']) {
-			$addAttributes = GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rtehtmlarea']['plugins']['TYPO3Link']['additionalAttributes'], 1);
+			$addAttributes = GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rtehtmlarea']['plugins']['TYPO3Link']['additionalAttributes'], TRUE);
 			foreach ($addAttributes as $attribute) {
 				$this->additionalAttributes[$attribute] = isset($this->curUrlArray[$attribute]) ? $this->curUrlArray[$attribute] : '';
 			}
@@ -445,7 +445,7 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 		}
 		// Removing items as per configuration
 		if (is_array($this->buttonConfig['options.']) && $this->buttonConfig['options.']['removeItems']) {
-			$this->allowedItems = array_diff($this->allowedItems, GeneralUtility::trimExplode(',', $this->buttonConfig['options.']['removeItems'], 1));
+			$this->allowedItems = array_diff($this->allowedItems, GeneralUtility::trimExplode(',', $this->buttonConfig['options.']['removeItems'], TRUE));
 		}
 		reset($this->allowedItems);
 		if (!in_array($this->act, $this->allowedItems)) {

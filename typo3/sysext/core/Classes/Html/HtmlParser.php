@@ -332,7 +332,7 @@ class HtmlParser {
 	 * @todo Define visibility
 	 */
 	public function splitIntoBlock($tag, $content, $eliminateExtraEndTags = FALSE) {
-		$tags = array_unique(GeneralUtility::trimExplode(',', $tag, 1));
+		$tags = array_unique(GeneralUtility::trimExplode(',', $tag, TRUE));
 		foreach ($tags as &$tag) {
 			$tag = preg_quote($tag, '/');
 		}
@@ -438,7 +438,7 @@ class HtmlParser {
 	 * @todo Define visibility
 	 */
 	public function splitTags($tag, $content) {
-		$tags = GeneralUtility::trimExplode(',', $tag, 1);
+		$tags = GeneralUtility::trimExplode(',', $tag, TRUE);
 		foreach ($tags as &$tag) {
 			$tag = preg_quote($tag, '/');
 		}
@@ -784,7 +784,7 @@ class HtmlParser {
 										$newTagAttrib = array();
 										if (!($tList = $tags[$tagName]['_allowedAttribs'])) {
 											// Just explode attribts for tag once
-											$tList = ($tags[$tagName]['_allowedAttribs'] = GeneralUtility::trimExplode(',', strtolower($tags[$tagName]['allowedAttribs']), 1));
+											$tList = ($tags[$tagName]['_allowedAttribs'] = GeneralUtility::trimExplode(',', strtolower($tags[$tagName]['allowedAttribs']), TRUE));
 										}
 										foreach ($tList as $allowTag) {
 											if (isset($tagAttrib[0][$allowTag])) {
@@ -1183,7 +1183,7 @@ class HtmlParser {
 	 * @todo Define visibility
 	 */
 	public function unprotectTags($content, $tagList = '') {
-		$tagsArray = GeneralUtility::trimExplode(',', $tagList, 1);
+		$tagsArray = GeneralUtility::trimExplode(',', $tagList, TRUE);
 		$contentParts = explode('&lt;', $content);
 		next($contentParts);
 		// bypass the first
@@ -1224,7 +1224,7 @@ class HtmlParser {
 	 */
 	public function stripTagsExcept($value, $tagList) {
 		GeneralUtility::logDeprecatedFunction();
-		$tags = GeneralUtility::trimExplode(',', $tagList, 1);
+		$tags = GeneralUtility::trimExplode(',', $tagList, TRUE);
 		$forthArr = array();
 		$backArr = array();
 		foreach ($tags as $theTag) {
@@ -1343,7 +1343,7 @@ class HtmlParser {
 	 */
 	public function HTMLparserConfig($TSconfig, $keepTags = array()) {
 		// Allow tags (base list, merged with incoming array)
-		$alTags = array_flip(GeneralUtility::trimExplode(',', strtolower($TSconfig['allowTags']), 1));
+		$alTags = array_flip(GeneralUtility::trimExplode(',', strtolower($TSconfig['allowTags']), TRUE));
 		$keepTags = array_merge($alTags, $keepTags);
 		// Set config properties.
 		if (is_array($TSconfig['tags.'])) {
@@ -1390,7 +1390,7 @@ class HtmlParser {
 		}
 		// LocalNesting
 		if ($TSconfig['localNesting']) {
-			$lN = GeneralUtility::trimExplode(',', strtolower($TSconfig['localNesting']), 1);
+			$lN = GeneralUtility::trimExplode(',', strtolower($TSconfig['localNesting']), TRUE);
 			foreach ($lN as $tn) {
 				if (isset($keepTags[$tn])) {
 					$keepTags[$tn]['nesting'] = 1;
@@ -1398,7 +1398,7 @@ class HtmlParser {
 			}
 		}
 		if ($TSconfig['globalNesting']) {
-			$lN = GeneralUtility::trimExplode(',', strtolower($TSconfig['globalNesting']), 1);
+			$lN = GeneralUtility::trimExplode(',', strtolower($TSconfig['globalNesting']), TRUE);
 			foreach ($lN as $tn) {
 				if (isset($keepTags[$tn])) {
 					if (!is_array($keepTags[$tn])) {
@@ -1409,7 +1409,7 @@ class HtmlParser {
 			}
 		}
 		if ($TSconfig['rmTagIfNoAttrib']) {
-			$lN = GeneralUtility::trimExplode(',', strtolower($TSconfig['rmTagIfNoAttrib']), 1);
+			$lN = GeneralUtility::trimExplode(',', strtolower($TSconfig['rmTagIfNoAttrib']), TRUE);
 			foreach ($lN as $tn) {
 				if (isset($keepTags[$tn])) {
 					if (!is_array($keepTags[$tn])) {
@@ -1420,7 +1420,7 @@ class HtmlParser {
 			}
 		}
 		if ($TSconfig['noAttrib']) {
-			$lN = GeneralUtility::trimExplode(',', strtolower($TSconfig['noAttrib']), 1);
+			$lN = GeneralUtility::trimExplode(',', strtolower($TSconfig['noAttrib']), TRUE);
 			foreach ($lN as $tn) {
 				if (isset($keepTags[$tn])) {
 					if (!is_array($keepTags[$tn])) {
@@ -1431,7 +1431,7 @@ class HtmlParser {
 			}
 		}
 		if ($TSconfig['removeTags']) {
-			$lN = GeneralUtility::trimExplode(',', strtolower($TSconfig['removeTags']), 1);
+			$lN = GeneralUtility::trimExplode(',', strtolower($TSconfig['removeTags']), TRUE);
 			foreach ($lN as $tn) {
 				$keepTags[$tn] = array();
 				$keepTags[$tn]['allowedAttribs'] = 0;

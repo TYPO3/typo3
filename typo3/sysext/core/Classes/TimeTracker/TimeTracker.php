@@ -346,7 +346,7 @@ class TimeTracker {
 				}
 			}
 			if ($flag_tree) {
-				$tmp = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('.', $data['key'], 1);
+				$tmp = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('.', $data['key'], TRUE);
 				$theLabel = end($tmp);
 			} else {
 				$theLabel = $data['key'];

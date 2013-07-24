@@ -1542,7 +1542,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 			}
 			// Remove disabled languages
 			$modSharedTSconfig = BackendUtility::getModTSconfig($id, 'mod.SHARED');
-			$disableLanguages = isset($modSharedTSconfig['properties']['disableLanguages']) ? GeneralUtility::trimExplode(',', $modSharedTSconfig['properties']['disableLanguages'], 1) : array();
+			$disableLanguages = isset($modSharedTSconfig['properties']['disableLanguages']) ? GeneralUtility::trimExplode(',', $modSharedTSconfig['properties']['disableLanguages'], TRUE) : array();
 			if (count($langSelItems) && count($disableLanguages)) {
 				foreach ($disableLanguages as $language) {
 					if ($language != 0 && isset($langSelItems[$language])) {

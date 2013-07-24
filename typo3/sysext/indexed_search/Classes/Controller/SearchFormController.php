@@ -319,7 +319,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 		}
 		// Add media to search in:
 		if (strlen(trim($this->conf['search.']['mediaList']))) {
-			$mediaList = implode(',', GeneralUtility::trimExplode(',', $this->conf['search.']['mediaList'], 1));
+			$mediaList = implode(',', GeneralUtility::trimExplode(',', $this->conf['search.']['mediaList'], TRUE));
 		}
 		foreach ($this->external_parsers as $extension => $obj) {
 			// Skip unwanted extensions

@@ -279,7 +279,7 @@ class QueryGenerator {
 			$this->name = $name;
 			$this->table = $table;
 			$this->fieldList = $fieldList ? $fieldList : $this->makeFieldList();
-			$fieldArr = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->fieldList, 1);
+			$fieldArr = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->fieldList, TRUE);
 			foreach ($fieldArr as $fN) {
 				$fC = $GLOBALS['TCA'][$this->table]['columns'][$fN];
 				$this->fields[$fN] = $fC['config'];
@@ -409,7 +409,7 @@ class QueryGenerator {
 	 * @todo Define visibility
 	 */
 	public function setAndCleanUpExternalLists($name, $list, $force = '') {
-		$fields = array_unique(\TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $list . ',' . $force, 1));
+		$fields = array_unique(\TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $list . ',' . $force, TRUE));
 		$reList = array();
 		foreach ($fields as $fN) {
 			if ($this->fields[$fN]) {

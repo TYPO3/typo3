@@ -1151,7 +1151,7 @@ class GraphicalFunctions {
 					case 'charRange':
 						if (strlen($cfg['value'])) {
 							// Initialize range:
-							$ranges = GeneralUtility::trimExplode(',', $cfg['value'], 1);
+							$ranges = GeneralUtility::trimExplode(',', $cfg['value'], TRUE);
 							foreach ($ranges as $i => $rangeDef) {
 								$ranges[$i] = GeneralUtility::intExplode('-', $ranges[$i]);
 								if (!isset($ranges[$i][1])) {

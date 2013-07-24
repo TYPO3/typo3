@@ -227,7 +227,7 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 			$modes[$revmodes['ts_css']] = 'css_transform,ts_images,ts_links';
 		}
 		// Make list unique
-		$modes = array_unique(GeneralUtility::trimExplode(',', implode(',', $modes), 1));
+		$modes = array_unique(GeneralUtility::trimExplode(',', implode(',', $modes), TRUE));
 		// Reverse order if direction is "rte"
 		if ($direction == 'rte') {
 			$modes = array_reverse($modes);
@@ -271,7 +271,7 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 						case 'ts_transform':
 
 						case 'css_transform':
-							$this->allowedClasses = GeneralUtility::trimExplode(',', $this->procOptions['allowedClasses'], 1);
+							$this->allowedClasses = GeneralUtility::trimExplode(',', $this->procOptions['allowedClasses'], TRUE);
 							// CR has a very disturbing effect, so just remove all CR and rely on LF
 							$value = str_replace(CR, '', $value);
 							// Transform empty paragraphs into spacing paragraphs
@@ -1227,14 +1227,14 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 			// Setting up allowed tags:
 			// If the $tagList input var is set, this will take precedence
 			if (strcmp($tagList, '')) {
-				$keepTags = array_flip(GeneralUtility::trimExplode(',', $tagList, 1));
+				$keepTags = array_flip(GeneralUtility::trimExplode(',', $tagList, TRUE));
 			} else {
 				// Default is to get allowed/denied tags from internal array of processing options:
 				// Construct default list of tags to keep:
 				$typoScript_list = 'b,i,u,a,img,br,div,center,pre,font,hr,sub,sup,p,strong,em,li,ul,ol,blockquote,strike,span';
-				$keepTags = array_flip(GeneralUtility::trimExplode(',', $typoScript_list . ',' . strtolower($this->procOptions['allowTags']), 1));
+				$keepTags = array_flip(GeneralUtility::trimExplode(',', $typoScript_list . ',' . strtolower($this->procOptions['allowTags']), TRUE));
 				// For tags to deny, remove them from $keepTags array:
-				$denyTags = GeneralUtility::trimExplode(',', $this->procOptions['denyTags'], 1);
+				$denyTags = GeneralUtility::trimExplode(',', $this->procOptions['denyTags'], TRUE);
 				foreach ($denyTags as $dKe) {
 					unset($keepTags[$dKe]);
 				}
@@ -1283,7 +1283,7 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 					}
 					// Setting up font tags if they are allowed:
 					if (isset($keepTags['font'])) {
-						$colors = array_merge(array(''), GeneralUtility::trimExplode(',', $this->procOptions['allowedFontColors'], 1));
+						$colors = array_merge(array(''), GeneralUtility::trimExplode(',', $this->procOptions['allowedFontColors'], TRUE));
 						$keepTags['font'] = array(
 							'allowedAttribs' => 'face,color,size',
 							'fixAttrib' => array(
@@ -1346,12 +1346,12 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 			$value = $this->internalizeFontTags($value);
 		}
 		// Setting configuration for processing:
-		$allowTagsOutside = GeneralUtility::trimExplode(',', strtolower($this->procOptions['allowTagsOutside'] ? 'hr,' . $this->procOptions['allowTagsOutside'] : 'hr,img'), 1);
+		$allowTagsOutside = GeneralUtility::trimExplode(',', strtolower($this->procOptions['allowTagsOutside'] ? 'hr,' . $this->procOptions['allowTagsOutside'] : 'hr,img'), TRUE);
 		$remapParagraphTag = strtoupper($this->procOptions['remapParagraphTag']);
 		$divSplit = $this->splitIntoBlock('div,p', $value, 1);
 		// Setting the third param to 1 will eliminate false end-tags. Maybe this is a good thing to do...?
 		if ($this->procOptions['keepPDIVattribs']) {
-			$keepAttribListArr = GeneralUtility::trimExplode(',', strtolower($this->procOptions['keepPDIVattribs']), 1);
+			$keepAttribListArr = GeneralUtility::trimExplode(',', strtolower($this->procOptions['keepPDIVattribs']), TRUE);
 		} else {
 			$keepAttribListArr = array();
 		}

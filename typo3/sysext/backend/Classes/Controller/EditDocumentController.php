@@ -734,7 +734,7 @@ class EditDocumentController {
 				foreach ($conf as $cKey => $cmd) {
 					if ($cmd == 'edit' || $cmd == 'new') {
 						// Get the ids:
-						$ids = GeneralUtility::trimExplode(',', $cKey, 1);
+						$ids = GeneralUtility::trimExplode(',', $cKey, TRUE);
 						// Traverse the ids:
 						foreach ($ids as $theUid) {
 							// Checking if the user has permissions? (Only working as a precaution,
@@ -1258,7 +1258,7 @@ class EditDocumentController {
 					foreach ($conf as $cKey => $cmd) {
 						if ($cmd == 'edit') {
 							// Traverse the ids:
-							$ids = GeneralUtility::trimExplode(',', $cKey, 1);
+							$ids = GeneralUtility::trimExplode(',', $cKey, TRUE);
 							foreach ($ids as $idKey => $theUid) {
 								if (is_array($mapArray)) {
 									if ($mapArray[$table][$theUid]) {

@@ -815,14 +815,14 @@ class BackendUtility {
 	 */
 	static public function getSpecConfParts($str, $defaultExtras) {
 		// Add defaultExtras:
-		$specConfParts = GeneralUtility::trimExplode(':', $defaultExtras . ':' . $str, 1);
+		$specConfParts = GeneralUtility::trimExplode(':', $defaultExtras . ':' . $str, TRUE);
 		$reg = array();
 		if (count($specConfParts)) {
 			foreach ($specConfParts as $k2 => $v2) {
 				unset($specConfParts[$k2]);
 				if (preg_match('/(.*)\\[(.*)\\]/', $v2, $reg)) {
 					$specConfParts[trim($reg[1])] = array(
-						'parameters' => GeneralUtility::trimExplode('|', $reg[2], 1)
+						'parameters' => GeneralUtility::trimExplode('|', $reg[2], TRUE)
 					);
 				} else {
 					$specConfParts[trim($v2)] = 1;
@@ -1882,7 +1882,7 @@ class BackendUtility {
 				// No userFunc: Build label
 				$t = self::getProcessedValue($table, $GLOBALS['TCA'][$table]['ctrl']['label'], $row[$GLOBALS['TCA'][$table]['ctrl']['label']], 0, 0, FALSE, $row['uid'], $forceResult);
 				if ($GLOBALS['TCA'][$table]['ctrl']['label_alt'] && ($GLOBALS['TCA'][$table]['ctrl']['label_alt_force'] || !strcmp($t, ''))) {
-					$altFields = GeneralUtility::trimExplode(',', $GLOBALS['TCA'][$table]['ctrl']['label_alt'], 1);
+					$altFields = GeneralUtility::trimExplode(',', $GLOBALS['TCA'][$table]['ctrl']['label_alt'], TRUE);
 					$tA = array();
 					if (!empty($t)) {
 						$tA[] = $t;
@@ -2000,7 +2000,7 @@ class BackendUtility {
 								$MMfield = $theColConf['foreign_table'] . '.uid';
 							} else {
 								$MMfields = array($theColConf['foreign_table'] . '.' . $GLOBALS['TCA'][$theColConf['foreign_table']]['ctrl']['label']);
-								foreach (GeneralUtility::trimExplode(',', $GLOBALS['TCA'][$theColConf['foreign_table']]['ctrl']['label_alt'], 1) as $f) {
+								foreach (GeneralUtility::trimExplode(',', $GLOBALS['TCA'][$theColConf['foreign_table']]['ctrl']['label_alt'], TRUE) as $f) {
 									$MMfields[] = $theColConf['foreign_table'] . '.' . $f;
 								}
 								$MMfield = join(',', $MMfields);
@@ -2032,7 +2032,7 @@ class BackendUtility {
 							if ($noRecordLookup) {
 								$l = $value;
 							} else {
-								$rParts = GeneralUtility::trimExplode(',', $value, 1);
+								$rParts = GeneralUtility::trimExplode(',', $value, TRUE);
 								$lA = array();
 								foreach ($rParts as $rVal) {
 									$rVal = intval($rVal);
@@ -2222,7 +2222,7 @@ class BackendUtility {
 			$fields[] = $prefix . $GLOBALS['TCA'][$table]['ctrl']['label'];
 		}
 		if ($GLOBALS['TCA'][$table]['ctrl']['label_alt']) {
-			$secondFields = GeneralUtility::trimExplode(',', $GLOBALS['TCA'][$table]['ctrl']['label_alt'], 1);
+			$secondFields = GeneralUtility::trimExplode(',', $GLOBALS['TCA'][$table]['ctrl']['label_alt'], TRUE);
 			foreach ($secondFields as $fieldN) {
 				$fields[] = $prefix . $fieldN;
 			}
@@ -3372,12 +3372,12 @@ class BackendUtility {
 			return FALSE;
 		}
 		// Otherwise parse the list:
-		$keyList = GeneralUtility::trimExplode(',', $parserList, 1);
+		$keyList = GeneralUtility::trimExplode(',', $parserList, TRUE);
 		$output = array();
 		foreach ($keyList as $val) {
 			$reg = array();
 			if (preg_match('/^([[:alnum:]_-]+)\\[(.*)\\]$/', $val, $reg)) {
-				$output[$reg[1]] = GeneralUtility::trimExplode(';', $reg[2], 1);
+				$output[$reg[1]] = GeneralUtility::trimExplode(';', $reg[2], TRUE);
 			} else {
 				$output[$val] = '';
 			}
@@ -3396,7 +3396,7 @@ class BackendUtility {
 		foreach ($GLOBALS['TBE_MODULES'] as $mkey => $list) {
 			$loaded[$mkey] = 1;
 			if (!is_array($list) && trim($list)) {
-				$subList = GeneralUtility::trimExplode(',', $list, 1);
+				$subList = GeneralUtility::trimExplode(',', $list, TRUE);
 				foreach ($subList as $skey) {
 					$loaded[$mkey . '_' . $skey] = 1;
 				}

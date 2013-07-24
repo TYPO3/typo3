@@ -528,7 +528,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 		// Admins can see any page, no need to check there
 		if (!empty($appliedDbMounts) && !$GLOBALS['BE_USER']->isAdmin()) {
 			$cleanDbMountList = array();
-			$dbMounts = GeneralUtility::trimExplode(',', $appliedDbMounts, 1);
+			$dbMounts = GeneralUtility::trimExplode(',', $appliedDbMounts, TRUE);
 			// Walk through every wanted DB-Mount and check if it allowed for the current user
 			foreach ($dbMounts as $dbMount) {
 				$uid = intval(substr($dbMount, strrpos($dbMount, '_') + 1));
@@ -616,7 +616,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 			return $content;
 		}
 		$content .= '<option value=""></option>';
-		$grList = GeneralUtility::trimExplode(',', $record['t1_allowed_groups'], 1);
+		$grList = GeneralUtility::trimExplode(',', $record['t1_allowed_groups'], TRUE);
 		foreach ($grList as $group) {
 			$checkGroup = BackendUtility::getRecord('be_groups', $group);
 			if (is_array($checkGroup)) {

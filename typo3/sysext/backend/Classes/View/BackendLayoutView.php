@@ -87,7 +87,7 @@ class BackendLayoutView {
 		if (isset($tcaConfig['itemsProcFunc']) && $tcaConfig['itemsProcFunc']) {
 			$tcaItems = $this->addColPosListLayoutItems($id, $tcaItems);
 		}
-		foreach (GeneralUtility::trimExplode(',', $tsConfig['properties']['removeItems'], 1) as $removeId) {
+		foreach (GeneralUtility::trimExplode(',', $tsConfig['properties']['removeItems'], TRUE) as $removeId) {
 			foreach ($tcaItems as $key => $item) {
 				if ($item[1] == $removeId) {
 					unset($tcaItems[$key]);

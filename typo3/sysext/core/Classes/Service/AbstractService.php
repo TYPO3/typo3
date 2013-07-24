@@ -279,7 +279,7 @@ abstract class AbstractService {
 	 */
 	public function checkExec($progList) {
 		$ret = TRUE;
-		$progList = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $progList, 1);
+		$progList = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $progList, TRUE);
 		foreach ($progList as $prog) {
 			if (!\TYPO3\CMS\Core\Utility\CommandUtility::checkCommand($prog)) {
 				// Program not found

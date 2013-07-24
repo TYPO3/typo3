@@ -127,7 +127,7 @@ class FrontendEditingController {
 	public function displayEditIcons($content, $params, array $conf = array(), $currentRecord = '', array $dataArray = array(), $addUrlParamStr = '') {
 		// Check incoming params:
 		list($currentRecordTable, $currentRecordUID) = explode(':', $currentRecord);
-		list($fieldList, $table) = array_reverse(\TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(':', $params, 1));
+		list($fieldList, $table) = array_reverse(\TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(':', $params, TRUE));
 		// Reverse the array because table is optional
 		if (!$table) {
 			$table = $currentRecordTable;
@@ -484,7 +484,7 @@ class FrontendEditingController {
 			}
 			if (!$conf['onlyCurrentPid'] || $dataArray['pid'] == $GLOBALS['TSFE']->id) {
 				// Permissions:
-				$types = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', \TYPO3\CMS\Core\Utility\GeneralUtility::strtolower($conf['allow']), 1);
+				$types = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', \TYPO3\CMS\Core\Utility\GeneralUtility::strtolower($conf['allow']), TRUE);
 				$allow = array_flip($types);
 				$perms = $GLOBALS['BE_USER']->calcPerms($GLOBALS['TSFE']->page);
 				if ($table == 'pages') {

@@ -930,7 +930,7 @@ class Indexer {
 		$content = GeneralUtility::getUrl($url, 2);
 		if (strlen($content)) {
 			// Compile headers:
-			$headers = GeneralUtility::trimExplode(LF, $content, 1);
+			$headers = GeneralUtility::trimExplode(LF, $content, TRUE);
 			$retVal = array();
 			foreach ($headers as $line) {
 				if (!strlen(trim($line))) {

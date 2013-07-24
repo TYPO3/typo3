@@ -721,7 +721,7 @@ class DataHandler {
 				if (isset($this->datamap[$table])) {
 					foreach ($uid_array as $id => $uidList) {
 						if (isset($this->datamap[$table][$id])) {
-							$theIdsInArray = GeneralUtility::trimExplode(',', $uidList, 1);
+							$theIdsInArray = GeneralUtility::trimExplode(',', $uidList, TRUE);
 							foreach ($theIdsInArray as $copyToUid) {
 								$this->datamap[$table][$copyToUid] = $this->datamap[$table][$id];
 							}
@@ -1257,7 +1257,7 @@ class DataHandler {
 				$shadowCols .= ',' . $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'];
 				$shadowCols .= ',' . $GLOBALS['TCA'][$table]['ctrl']['type'];
 				$shadowCols .= ',' . $GLOBALS['TCA'][$table]['ctrl']['label'];
-				$shadowColumns = array_unique(\TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $shadowCols, 1));
+				$shadowColumns = array_unique(\TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $shadowCols, TRUE));
 				foreach ($shadowColumns as $fieldName) {
 					if (strcmp($justStoredRecord[$fieldName], $liveRec[$fieldName]) && isset($GLOBALS['TCA'][$table]['columns'][$fieldName]) && $fieldName !== 'uid' && $fieldName !== 'pid') {
 						$newRecord[$fieldName] = $justStoredRecord[$fieldName];
@@ -1606,7 +1606,7 @@ class DataHandler {
 	 * @todo Define visibility
 	 */
 	public function checkValue_text($res, $value, $tcaFieldConf, $PP, $field = '') {
-		$evalCodesArray = GeneralUtility::trimExplode(',', $tcaFieldConf['eval'], 1);
+		$evalCodesArray = GeneralUtility::trimExplode(',', $tcaFieldConf['eval'], TRUE);
 		$res = $this->checkValue_text_Eval($value, $evalCodesArray, $tcaFieldConf['is_in']);
 		return $res;
 	}
@@ -1646,7 +1646,7 @@ class DataHandler {
 			}
 		}
 		// Process evaluation settings:
-		$evalCodesArray = GeneralUtility::trimExplode(',', $tcaFieldConf['eval'], 1);
+		$evalCodesArray = GeneralUtility::trimExplode(',', $tcaFieldConf['eval'], TRUE);
 		$res = $this->checkValue_input_Eval($value, $evalCodesArray, $tcaFieldConf['is_in']);
 		// Process UNIQUE settings:
 		// Field is NOT set for flexForms - which also means that uniqueInPid and unique is NOT available for flexForm fields! Also getUnique should not be done for versioning and if PID is -1 ($realPid<0) then versioning is happening...
@@ -1922,7 +1922,7 @@ class DataHandler {
 							}
 						}
 					} else {
-						$theFileValues = GeneralUtility::trimExplode(',', $curValue, 1);
+						$theFileValues = GeneralUtility::trimExplode(',', $curValue, TRUE);
 					}
 					$currentFilesForHistory = implode(',', $theFileValues);
 					// DELETE files: If existing files were found, traverse those and register files for deletion which has been removed:
@@ -2572,7 +2572,7 @@ class DataHandler {
 	 * @todo Define visibility
 	 */
 	public function checkValue_group_select_explodeSelectGroupValue($value) {
-		$valueArray = GeneralUtility::trimExplode(',', $value, 1);
+		$valueArray = GeneralUtility::trimExplode(',', $value, TRUE);
 		foreach ($valueArray as &$newVal) {
 			$temp = explode('|', $newVal, 2);
 			$newVal = str_replace(',', '', str_replace('|', '', rawurldecode($temp[0])));
@@ -2940,7 +2940,7 @@ class DataHandler {
 				//Used to check language and general editing rights
 				if ($language > 0 && $this->BE_USER->checkLanguageAccess($language) || $this->BE_USER->recordEditAccessInternals($table, $uid, FALSE, FALSE, $fullLanguageCheckNeeded)) {
 					$data = array();
-					$nonFields = array_unique(\TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', 'uid,perms_userid,perms_groupid,perms_user,perms_group,perms_everybody,t3ver_oid,t3ver_wsid,t3ver_id,t3ver_label,t3ver_state,t3ver_count,t3ver_stage,t3ver_tstamp,' . $excludeFields, 1));
+					$nonFields = array_unique(\TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', 'uid,perms_userid,perms_groupid,perms_user,perms_group,perms_everybody,t3ver_oid,t3ver_wsid,t3ver_id,t3ver_label,t3ver_state,t3ver_count,t3ver_stage,t3ver_tstamp,' . $excludeFields, TRUE));
 					// So it copies (and localized) content from workspace...
 					$row = BackendUtility::getRecordWSOL($table, $uid);
 					if (is_array($row)) {
@@ -3412,7 +3412,7 @@ class DataHandler {
 					}
 				}
 			} else {
-				$theFileValues = GeneralUtility::trimExplode(',', $value, 1);
+				$theFileValues = GeneralUtility::trimExplode(',', $value, TRUE);
 			}
 			// Traverse this array of files:
 			$uploadFolder = $conf['internal_type'] == 'file' ? $conf['uploadfolder'] : '';
@@ -4346,7 +4346,7 @@ class DataHandler {
 		if ($force) {
 			// Returns the branch WITHOUT permission checks (0 secures that)
 			$brExist = $this->doesBranchExist('', $uid, 0, 1);
-			$res = GeneralUtility::trimExplode(',', $brExist . $uid, 1);
+			$res = GeneralUtility::trimExplode(',', $brExist . $uid, TRUE);
 		} else {
 			$res = $this->canDeletePage($uid);
 		}
@@ -4404,7 +4404,7 @@ class DataHandler {
 				// Checks if we had permissions
 				if ($brExist != -1) {
 					if ($this->noRecordsFromUnallowedTables($brExist . $uid)) {
-						$pagesInBranch = GeneralUtility::trimExplode(',', $brExist . $uid, 1);
+						$pagesInBranch = GeneralUtility::trimExplode(',', $brExist . $uid, TRUE);
 						foreach ($pagesInBranch as $pageInBranch) {
 							if (!$this->BE_USER->recordEditAccessInternals('pages', $pageInBranch, FALSE, FALSE, TRUE)) {
 								return 'Attempt to delete page which has prohibited localizations.';
@@ -4884,7 +4884,7 @@ class DataHandler {
 		// Table name to prepend the UID
 		$prependName = $conf['type'] == 'group' ? $conf['prepend_tname'] : '';
 		// Which tables that should possibly not be remapped
-		$dontRemapTables = GeneralUtility::trimExplode(',', $conf['dontRemapTablesOnCopy'], 1);
+		$dontRemapTables = GeneralUtility::trimExplode(',', $conf['dontRemapTablesOnCopy'], TRUE);
 		// Convert value to list of references:
 		$dbAnalysis = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\RelationHandler');
 		$dbAnalysis->registerNonTableValues = $conf['type'] == 'select' && $conf['allowNonIdValues'] ? 1 : 0;
@@ -5348,7 +5348,7 @@ class DataHandler {
 			// Check non-root-level
 			$doktype = $this->pageInfo($page_uid, 'doktype');
 			$allowedTableList = isset($GLOBALS['PAGES_TYPES'][$doktype]['allowedTables']) ? $GLOBALS['PAGES_TYPES'][$doktype]['allowedTables'] : $GLOBALS['PAGES_TYPES']['default']['allowedTables'];
-			$allowedArray = GeneralUtility::trimExplode(',', $allowedTableList, 1);
+			$allowedArray = GeneralUtility::trimExplode(',', $allowedTableList, TRUE);
 			// If all tables or the table is listed as a allowed type, return TRUE
 			if (strstr($allowedTableList, '*') || in_array($checkTable, $allowedArray)) {
 				return TRUE;
@@ -5568,7 +5568,7 @@ class DataHandler {
 			return FALSE;
 		}
 		$allowedTableList = isset($GLOBALS['PAGES_TYPES'][$doktype]['allowedTables']) ? $GLOBALS['PAGES_TYPES'][$doktype]['allowedTables'] : $GLOBALS['PAGES_TYPES']['default']['allowedTables'];
-		$allowedArray = GeneralUtility::trimExplode(',', $allowedTableList, 1);
+		$allowedArray = GeneralUtility::trimExplode(',', $allowedTableList, TRUE);
 		// If all tables is OK the return TRUE
 		if (strstr($allowedTableList, '*')) {
 			// OK...
@@ -6240,7 +6240,7 @@ class DataHandler {
 	 * @todo Define visibility
 	 */
 	public function assemblePermissions($string) {
-		$keyArr = GeneralUtility::trimExplode(',', $string, 1);
+		$keyArr = GeneralUtility::trimExplode(',', $string, TRUE);
 		$value = 0;
 		foreach ($keyArr as $key) {
 			if ($key && isset($this->pMap[$key])) {
@@ -6458,7 +6458,7 @@ class DataHandler {
 			$newData = array();
 			foreach ($GLOBALS['TCA'][$table]['columns'] as $field => $conf) {
 				if ($conf['config']['type'] == 'input') {
-					$evalCodesArray = GeneralUtility::trimExplode(',', $conf['config']['eval'], 1);
+					$evalCodesArray = GeneralUtility::trimExplode(',', $conf['config']['eval'], TRUE);
 					if (in_array('uniqueInPid', $evalCodesArray)) {
 						$newV = $this->getUnique($table, $field, $curData[$field], $uid, $curData['pid']);
 						if (strcmp($newV, $curData[$field])) {
@@ -6489,7 +6489,7 @@ class DataHandler {
 	public function fixCopyAfterDuplFields($table, $uid, $prevUid, $update, $newData = array()) {
 		if ($GLOBALS['TCA'][$table] && $GLOBALS['TCA'][$table]['ctrl']['copyAfterDuplFields']) {
 			$prevData = $this->recordInfo($table, $prevUid, '*');
-			$theFields = GeneralUtility::trimExplode(',', $GLOBALS['TCA'][$table]['ctrl']['copyAfterDuplFields'], 1);
+			$theFields = GeneralUtility::trimExplode(',', $GLOBALS['TCA'][$table]['ctrl']['copyAfterDuplFields'], TRUE);
 			foreach ($theFields as $field) {
 				if ($GLOBALS['TCA'][$table]['columns'][$field] && ($update || !isset($newData[$field]))) {
 					$newData[$field] = $prevData[$field];
@@ -6534,7 +6534,7 @@ class DataHandler {
 		if ($GLOBALS['TCA'][$table]['columns']) {
 			foreach ($GLOBALS['TCA'][$table]['columns'] as $field => $configArr) {
 				if ($configArr['config']['type'] === 'input') {
-					$evalCodesArray = GeneralUtility::trimExplode(',', $configArr['config']['eval'], 1);
+					$evalCodesArray = GeneralUtility::trimExplode(',', $configArr['config']['eval'], TRUE);
 					if (in_array('uniqueInPid', $evalCodesArray) || in_array('unique', $evalCodesArray)) {
 						$listArr[] = $field;
 					}
@@ -6819,7 +6819,7 @@ class DataHandler {
 			}
 			// Clear cache for pages entered in TSconfig:
 			if ($TSConfig['clearCacheCmd']) {
-				$Commands = GeneralUtility::trimExplode(',', $TSConfig['clearCacheCmd'], 1);
+				$Commands = GeneralUtility::trimExplode(',', $TSConfig['clearCacheCmd'], TRUE);
 				$Commands = array_unique($Commands);
 				foreach ($Commands as $cmdPart) {
 					$this->clear_cacheCmd($cmdPart);
@@ -7076,7 +7076,7 @@ class DataHandler {
 				case 'inline':
 					if ($GLOBALS['TCA'][$table]['columns'][$field]['config']['foreign_field']) {
 						if (!\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($value)) {
-							$result[$field] = count(\TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $value, TRUE));
+							$result[$field] = count(GeneralUtility::trimExplode(',', $value, TRUE));
 						}
 					}
 					break;

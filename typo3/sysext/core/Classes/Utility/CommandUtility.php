@@ -326,7 +326,7 @@ class CommandUtility {
 		}
 			// Merge the submitted paths array to the global
 		if ($paths) {
-			$paths = GeneralUtility::trimExplode(',', $paths, 1);
+			$paths = GeneralUtility::trimExplode(',', $paths, TRUE);
 			if (is_array($paths)) {
 				foreach ($paths as $path) {
 						// Make absolute path of relative
@@ -365,7 +365,7 @@ class CommandUtility {
 		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['binSetup']) {
 			$pathSetup = preg_split('/[\n,]+/', $GLOBALS['TYPO3_CONF_VARS']['SYS']['binSetup']);
 			foreach ($pathSetup as $val) {
-				list($cmd, $cmdPath) = GeneralUtility::trimExplode('=', $val, 1);
+				list($cmd, $cmdPath) = GeneralUtility::trimExplode('=', $val, TRUE);
 				$cmdArr[$cmd]['app'] = basename($cmdPath);
 				$cmdArr[$cmd]['path'] = dirname($cmdPath) . '/';
 				$cmdArr[$cmd]['valid'] = TRUE;
@@ -394,7 +394,7 @@ class CommandUtility {
 
 			// Add configured paths
 		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['binPath']) {
-			$sysPath = GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['SYS']['binPath'], 1);
+			$sysPath = GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['SYS']['binPath'], TRUE);
 			foreach ($sysPath as $val) {
 				$val = self::fixPath($val);
 				$sysPathArr[$val] = $val;
@@ -405,7 +405,7 @@ class CommandUtility {
 			// TODO: how does this work for WIN
 		if ($GLOBALS['_SERVER']['PATH']) {
 			$sep = (TYPO3_OS == 'WIN' ? ';' : ':');
-			$envPath = GeneralUtility::trimExplode($sep, $GLOBALS['_SERVER']['PATH'], 1);
+			$envPath = GeneralUtility::trimExplode($sep, $GLOBALS['_SERVER']['PATH'], TRUE);
 			foreach ($envPath as $val) {
 				$val = self::fixPath($val);
 				$sysPathArr[$val] = $val;

@@ -1162,7 +1162,7 @@ class CharsetConverter {
 					$this->parsedCharsets[$charset] = unserialize(GeneralUtility::getUrl($cacheFile));
 				} else {
 					// Parse conversion table into lines:
-					$lines = GeneralUtility::trimExplode(LF, GeneralUtility::getUrl($charsetConvTableFile), 1);
+					$lines = GeneralUtility::trimExplode(LF, GeneralUtility::getUrl($charsetConvTableFile), TRUE);
 					// Initialize the internal variable holding the conv. table:
 					$this->parsedCharsets[$charset] = array('local' => array(), 'utf8' => array());
 					// traverse the lines:
