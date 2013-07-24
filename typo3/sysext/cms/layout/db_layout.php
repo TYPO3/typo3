@@ -29,9 +29,6 @@
  *
  * This module lets you view a page in a more Content Management like style than the ordinary record-list
  *
- * Revised for TYPO3 3.6 November/2003 by Kasper Skårhøj
- * XHTML compliant
- *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 unset($MCONF);

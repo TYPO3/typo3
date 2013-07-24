@@ -30,13 +30,6 @@ namespace TYPO3\CMS\Core\Html;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Contains class with functions for parsing HTML code.
- *
- * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- */
-/**
  * Functions for parsing HTML.
  * You are encouraged to use this class in your own applications
  *

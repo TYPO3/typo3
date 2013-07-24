@@ -27,9 +27,6 @@
 /**
  * Module: Permission setting
  *
- * Revised for TYPO3 3.6 November/2003 by Kasper Skårhøj
- * XHTML compliant
- *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 $LANG->includeLLFile('EXT:lang/locallang_mod_web_perm.xlf');

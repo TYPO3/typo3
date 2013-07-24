@@ -26,13 +26,7 @@ namespace TYPO3\CMS\Core\Database;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-/**
- * Contains class for loading database groups
- *
- * Revised for TYPO3 3.6 September/2003 by Kasper Skårhøj
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- */
+
 /**
  * Load database groups (relations)
  * Used to process the relations created by the TCA element types "group" and "select" for database records. Manages MM-relations as well.
