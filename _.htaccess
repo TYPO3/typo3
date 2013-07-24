@@ -84,6 +84,7 @@ RewriteEngine On
 #RewriteBase /
 
 # Rules to set ApplicationContext based on hostname
+# Please take care to set the TYPO3_CONTEXT manually for any cron jobs.
 #RewriteCond %{HTTP_HOST} ^dev\.example\.com$
 #RewriteRule (.*) $1 [E=TYPO3_CONTEXT:Development]
 #RewriteCond %{HTTP_HOST} ^staging\.example\.com$
@@ -111,18 +112,14 @@ RewriteRule ^fileadmin/(.*/)?_recycler_/ - [F]
 RewriteRule ^fileadmin/templates/.*(\.txt|\.ts)$ - [F]
 RewriteRule ^typo3conf/ext/[^/]+/Resources/Private/ - [F]
 
-# Stop rewrite processing, if we are in the typo3/ directory.
-# For httpd.conf, use this line instead of the next one:
-# RewriteRule ^/TYPO3root/(typo3/|t3lib/|fileadmin/|typo3conf/|typo3temp/|uploads/|favicon\.ico) - [L]
-RewriteRule ^(typo3/|t3lib/|fileadmin/|typo3conf/|typo3temp/|uploads/|favicon\.ico) - [L]
-
-# If the file/symlink/directory does not exist => Redirect to index.php.
+# Do not rewrite static resources, but serve them directly.
 # For httpd.conf, you need to prefix each '%{REQUEST_FILENAME}' with '%{DOCUMENT_ROOT}'.
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteCond %{REQUEST_FILENAME} !-l
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d [OR]
+RewriteCond %{REQUEST_FILENAME} -l
+RewriteRule .* - [L]
 
-# Main URL rewriting.
+# TYPO3 decides how to handle the rest of the requests.
 # For httpd.conf, use this line instead of the next one:
 # RewriteRule .* /TYPO3root/index.php [L]
 RewriteRule .* index.php [L]
