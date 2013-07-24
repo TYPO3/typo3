@@ -103,7 +103,7 @@ Will report lost files.';
 		$fileArr = array();
 		$fileArr = \TYPO3\CMS\Core\Utility\GeneralUtility::getAllFilesAndFoldersInPath($fileArr, PATH_site . 'uploads/');
 		$fileArr = \TYPO3\CMS\Core\Utility\GeneralUtility::removePrefixPathFromList($fileArr, PATH_site);
-		$excludePaths = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->cli_argValue('--excludePath', 0), 1);
+		$excludePaths = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->cli_argValue('--excludePath', 0), TRUE);
 		// Traverse files and for each, look up if its found in the reference index.
 		foreach ($fileArr as $key => $value) {
 			$include = TRUE;

@@ -173,7 +173,7 @@ class ModuleSettings {
 	 * @todo Define visibility
 	 */
 	public function setStoreList($storeList) {
-		$this->storeList = is_array($storeList) ? $storeList : GeneralUtility::trimExplode(',', $storeList, 1);
+		$this->storeList = is_array($storeList) ? $storeList : GeneralUtility::trimExplode(',', $storeList, TRUE);
 		if ($this->writeDevLog) {
 			GeneralUtility::devLog('Store list:' . implode(',', $this->storeList), 'TYPO3\\CMS\\Backend\\ModuleSettings', 0);
 		}
@@ -187,7 +187,7 @@ class ModuleSettings {
 	 * @todo Define visibility
 	 */
 	public function addToStoreList($storeList) {
-		$storeList = is_array($storeList) ? $storeList : GeneralUtility::trimExplode(',', $storeList, 1);
+		$storeList = is_array($storeList) ? $storeList : GeneralUtility::trimExplode(',', $storeList, TRUE);
 		$this->storeList = array_merge($this->storeList, $storeList);
 		if ($this->writeDevLog) {
 			GeneralUtility::devLog('Store list:' . implode(',', $this->storeList), 'TYPO3\\CMS\\Backend\\ModuleSettings', 0);
@@ -381,7 +381,7 @@ class ModuleSettings {
 	 * @todo Define visibility
 	 */
 	public function getStoreControl($showElements = 'load,remove,save', $useOwnForm = TRUE) {
-		$showElements = GeneralUtility::trimExplode(',', $showElements, 1);
+		$showElements = GeneralUtility::trimExplode(',', $showElements, TRUE);
 		$this->initStorage();
 		// Preset selector
 		$opt = array();

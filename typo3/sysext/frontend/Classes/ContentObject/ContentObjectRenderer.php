@@ -1892,7 +1892,7 @@ class ContentObjectRenderer {
 	 */
 	public function fillInMarkerArray(array $markContentArray, array $row, $fieldList = '', $nl2br = TRUE, $prefix = 'FIELD_', $HSC = FALSE) {
 		if ($fieldList) {
-			$fArr = GeneralUtility::trimExplode(',', $fieldList, 1);
+			$fArr = GeneralUtility::trimExplode(',', $fieldList, TRUE);
 			foreach ($fArr as $field) {
 				$markContentArray['###' . $prefix . $field . '###'] = $nl2br ? nl2br($row[$field], !empty($GLOBALS['TSFE']->xhtmlDoctype)) : $row[$field];
 			}
@@ -4308,7 +4308,7 @@ class ContentObjectRenderer {
 		$mimetype = '';
 		$mimetypeValue = '';
 		if ($fI['extension']) {
-			$mimeTypes = GeneralUtility::trimExplode(',', $conf['mimeTypes'], 1);
+			$mimeTypes = GeneralUtility::trimExplode(',', $conf['mimeTypes'], TRUE);
 			foreach ($mimeTypes as $v) {
 				$parts = explode('=', $v, 2);
 				if (strtolower($fI['extension']) == strtolower(trim($parts[0]))) {
@@ -4888,7 +4888,7 @@ class ContentObjectRenderer {
 	 */
 	public function encaps_lineSplit($theValue, $conf) {
 		$lParts = explode(LF, $theValue);
-		$encapTags = GeneralUtility::trimExplode(',', strtolower($conf['encapsTagList']), 1);
+		$encapTags = GeneralUtility::trimExplode(',', strtolower($conf['encapsTagList']), TRUE);
 		$nonWrappedTag = $conf['nonWrappedTag'];
 		$defaultAlign = isset($conf['defaultAlign.']) ? trim($this->stdWrap($conf['defaultAlign'], $conf['defaultAlign.'])) : trim($conf['defaultAlign']);
 		if (!strcmp('', $theValue)) {
@@ -5248,7 +5248,7 @@ class ContentObjectRenderer {
 		if (!strstr($field, '//')) {
 			return $this->data[trim($field)];
 		} else {
-			$sections = GeneralUtility::trimExplode('//', $field, 1);
+			$sections = GeneralUtility::trimExplode('//', $field, TRUE);
 			foreach ($sections as $k) {
 				if (strcmp($this->data[$k], '')) {
 					return $this->data[$k];
@@ -6475,7 +6475,7 @@ class ContentObjectRenderer {
 	 */
 	public function processParams($params) {
 		$paramArr = array();
-		$lines = GeneralUtility::trimExplode(LF, $params, 1);
+		$lines = GeneralUtility::trimExplode(LF, $params, TRUE);
 		foreach ($lines as $val) {
 			$pair = explode('=', $val, 2);
 			if (!\TYPO3\CMS\Core\Utility\GeneralUtility::inList('#,/', substr(trim($pair[0]), 0, 1))) {
@@ -6963,7 +6963,7 @@ class ContentObjectRenderer {
 		unset($dataArr['uid']);
 		$uid = intval($uid);
 		if ($uid) {
-			$fieldList = implode(',', GeneralUtility::trimExplode(',', $fieldList, 1));
+			$fieldList = implode(',', GeneralUtility::trimExplode(',', $fieldList, TRUE));
 			$updateFields = array();
 			foreach ($dataArr as $f => $v) {
 				if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList($fieldList, $f)) {
@@ -7032,7 +7032,7 @@ class ContentObjectRenderer {
 			$dataArr['pid'] = $pid;
 		}
 		// Set pid < 0 and the dataarr-pid will be used!
-		$fieldList = implode(',', GeneralUtility::trimExplode(',', $fieldList . ',' . $extraList, 1));
+		$fieldList = implode(',', GeneralUtility::trimExplode(',', $fieldList . ',' . $extraList, TRUE));
 		$insertFields = array();
 		foreach ($dataArr as $f => $v) {
 			if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList($fieldList, $f)) {
@@ -7059,7 +7059,7 @@ class ContentObjectRenderer {
 	 * @todo Define visibility
 	 */
 	public function DBmayFEUserEdit($table, $row, $feUserRow, $allowedGroups = '', $feEditSelf = 0) {
-		$groupList = $allowedGroups ? implode(',', array_intersect(\TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $feUserRow['usergroup'], 1), GeneralUtility::trimExplode(',', $allowedGroups, 1))) : $feUserRow['usergroup'];
+		$groupList = $allowedGroups ? implode(',', array_intersect(\TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $feUserRow['usergroup'], TRUE), GeneralUtility::trimExplode(',', $allowedGroups, TRUE))) : $feUserRow['usergroup'];
 		$ok = 0;
 		// Points to the field that allows further editing from frontend if not set. If set the record is locked.
 		if (!$GLOBALS['TCA'][$table]['ctrl']['fe_admin_lock'] || !$row[$GLOBALS['TCA'][$table]['ctrl']['fe_admin_lock']]) {
@@ -7102,7 +7102,7 @@ class ContentObjectRenderer {
 	 */
 	public function DBmayFEUserEditSelect($table, $feUserRow, $allowedGroups = '', $feEditSelf = 0) {
 		// Returns where-definition that selects user-editable records.
-		$groupList = $allowedGroups ? implode(',', array_intersect(\TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $feUserRow['usergroup'], 1), GeneralUtility::trimExplode(',', $allowedGroups, 1))) : $feUserRow['usergroup'];
+		$groupList = $allowedGroups ? implode(',', array_intersect(\TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $feUserRow['usergroup'], TRUE), GeneralUtility::trimExplode(',', $allowedGroups, TRUE))) : $feUserRow['usergroup'];
 		$OR_arr = array();
 		// Points to the field (integer) that holds the fe_users-id of the creator fe_user
 		if ($GLOBALS['TCA'][$table]['ctrl']['fe_cruser_id']) {

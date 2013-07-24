@@ -96,7 +96,7 @@ class FileContentParser {
 		$extOK = FALSE;
 		$mainExtension = '';
 		// Ignore extensions
-		$ignoreExtensions = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', strtolower($indexerConfig['ignoreExtensions']), 1);
+		$ignoreExtensions = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', strtolower($indexerConfig['ignoreExtensions']), TRUE);
 		if (in_array($extension, $ignoreExtensions)) {
 			$this->pObj->log_setTSlogMessage(sprintf($this->sL('LLL:EXT:indexed_search/locallang.xlf:ignoreExtensions'), $extension), 1);
 			return FALSE;
@@ -305,7 +305,7 @@ class FileContentParser {
 		// Read indexer-config
 		$indexerConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['indexed_search']);
 		// Ignore extensions
-		$ignoreExtensions = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', strtolower($indexerConfig['ignoreExtensions']), 1);
+		$ignoreExtensions = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', strtolower($indexerConfig['ignoreExtensions']), TRUE);
 		if (in_array($extension, $ignoreExtensions)) {
 			return FALSE;
 		}

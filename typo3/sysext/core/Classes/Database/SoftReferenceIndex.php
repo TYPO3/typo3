@@ -569,7 +569,7 @@ class SoftReferenceIndex {
 	public function getTypoLinkParts($typolinkValue) {
 		$finalTagParts = array();
 		// Split by space into link / target / class
-		list($link_param, $browserTarget, $cssClass) = GeneralUtility::trimExplode(' ', $typolinkValue, 1);
+		list($link_param, $browserTarget, $cssClass) = GeneralUtility::trimExplode(' ', $typolinkValue, TRUE);
 		if (strlen($browserTarget)) {
 			$finalTagParts['target'] = $browserTarget;
 		}

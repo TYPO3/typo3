@@ -208,7 +208,7 @@ class RelationHandler {
 			$tablelist = implode(',', array_keys($GLOBALS['TCA']));
 		}
 		// The tables are traversed and internal arrays are initialized:
-		$tempTableArray = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $tablelist, 1);
+		$tempTableArray = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $tablelist, TRUE);
 		foreach ($tempTableArray as $key => $val) {
 			$tName = trim($val);
 			$this->tableArray[$tName] = array();

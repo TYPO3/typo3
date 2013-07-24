@@ -263,7 +263,7 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 			}
 			$path = trim($path);
 			// Explode into an array:
-			$fileArray = GeneralUtility::trimExplode(',', $fileList, 1);
+			$fileArray = GeneralUtility::trimExplode(',', $fileList, TRUE);
 			// If there were files to list...:
 			if (count($fileArray)) {
 				// Get the descriptions for the files (if any):

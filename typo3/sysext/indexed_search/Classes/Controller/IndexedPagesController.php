@@ -545,7 +545,7 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 	 */
 	public function listWords($ftrows, $header, $stopWordBoxes = FALSE, $page = '') {
 		// Prepare keywords:
-		$keywords = is_array($page) ? array_flip(GeneralUtility::trimExplode(',', $page['keywords'], 1)) : '';
+		$keywords = is_array($page) ? array_flip(GeneralUtility::trimExplode(',', $page['keywords'], TRUE)) : '';
 		// Render list:
 		$trows = '';
 		$trows .= '
@@ -969,7 +969,7 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 			$phashRows = $this->allPhashListed;
 			$this->allPhashListed = array();
 		} else {
-			$phashRows = GeneralUtility::trimExplode(',', $phashList, 1);
+			$phashRows = GeneralUtility::trimExplode(',', $phashList, TRUE);
 		}
 		foreach ($phashRows as $phash) {
 			$phash = intval($phash);
@@ -1049,7 +1049,7 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 	public function processPageKeywords($pageKeywords, $pageUid) {
 		// Get pages current keywords
 		$pageRec = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('pages', $pageUid);
-		$keywords = array_flip(GeneralUtility::trimExplode(',', $pageRec['keywords'], 1));
+		$keywords = array_flip(GeneralUtility::trimExplode(',', $pageRec['keywords'], TRUE));
 		// Merge keywords:
 		foreach ($pageKeywords as $key => $v) {
 			if ($v) {

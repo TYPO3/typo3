@@ -367,7 +367,7 @@ class GeneralUtility {
 	static public function cmpIPv4($baseIP, $list) {
 		$IPpartsReq = explode('.', $baseIP);
 		if (count($IPpartsReq) == 4) {
-			$values = self::trimExplode(',', $list, 1);
+			$values = self::trimExplode(',', $list, TRUE);
 			foreach ($values as $test) {
 				$testList = explode('/', $test);
 				if (count($testList) == 2) {
@@ -414,7 +414,7 @@ class GeneralUtility {
 		// Policy default: Deny connection
 		$success = FALSE;
 		$baseIP = self::normalizeIPv6($baseIP);
-		$values = self::trimExplode(',', $list, 1);
+		$values = self::trimExplode(',', $list, TRUE);
 		foreach ($values as $test) {
 			$testList = explode('/', $test);
 			if (count($testList) == 2) {
@@ -613,7 +613,7 @@ class GeneralUtility {
 			$baseHostName = $baseHost;
 		}
 		$baseHostNameParts = explode('.', $baseHostName);
-		$values = self::trimExplode(',', $list, 1);
+		$values = self::trimExplode(',', $list, TRUE);
 		foreach ($values as $test) {
 			$hostNameParts = explode('.', $test);
 			// To match hostNameParts can only be shorter (in case of wildcards) or equal
@@ -818,7 +818,7 @@ class GeneralUtility {
 		if (isset($secondParameter)) {
 			throw new \InvalidArgumentException('TYPO3 Fatal Error: TYPO3\\CMS\\Core\\Utility\\GeneralUtility::uniqueList() does NOT support more than a single argument value anymore. You have specified more than one!', 1270853886);
 		}
-		return implode(',', array_unique(self::trimExplode(',', $in_list, 1)));
+		return implode(',', array_unique(self::trimExplode(',', $in_list, TRUE)));
 	}
 
 	/**
@@ -1525,7 +1525,7 @@ class GeneralUtility {
 	 * @return array Output array with selected variables.
 	 */
 	static public function compileSelectedGetVarsFromArray($varList, array $getArray, $GPvarAlt = TRUE) {
-		$keys = self::trimExplode(',', $varList, 1);
+		$keys = self::trimExplode(',', $varList, TRUE);
 		$outArr = array();
 		foreach ($keys as $v) {
 			if (isset($getArray[$v])) {
@@ -3352,7 +3352,7 @@ Connection: close
 						REMOTE_ADDR,
 						REMOTE_HOST,
 						HTTP_USER_AGENT,
-						HTTP_ACCEPT_LANGUAGE', 1);
+						HTTP_ACCEPT_LANGUAGE', TRUE);
 				foreach ($envTestVars as $v) {
 					$out[$v] = self::getIndpEnv($v);
 				}
@@ -3710,7 +3710,7 @@ Connection: close
 		if (is_array($uid_or_record)) {
 			$recCopy_temp = array();
 			if ($fields) {
-				$fieldArr = self::trimExplode(',', $fields, 1);
+				$fieldArr = self::trimExplode(',', $fields, TRUE);
 				foreach ($fieldArr as $k => $v) {
 					$recCopy_temp[$k] = $uid_or_record[$v];
 				}
@@ -4298,7 +4298,7 @@ Connection: close
 	static public function makeInstanceService($serviceType, $serviceSubType = '', $excludeServiceKeys = array()) {
 		$error = FALSE;
 		if (!is_array($excludeServiceKeys)) {
-			$excludeServiceKeys = self::trimExplode(',', $excludeServiceKeys, 1);
+			$excludeServiceKeys = self::trimExplode(',', $excludeServiceKeys, TRUE);
 		}
 		$requestInfo = array(
 			'requestedServiceType' => $serviceType,
@@ -4877,7 +4877,7 @@ Connection: close
 	static public function arrayToLogString(array $arr, $valueList = array(), $valueLength = 20) {
 		$str = '';
 		if (!is_array($valueList)) {
-			$valueList = self::trimExplode(',', $valueList, 1);
+			$valueList = self::trimExplode(',', $valueList, TRUE);
 		}
 		$valListCnt = count($valueList);
 		foreach ($arr as $key => $value) {

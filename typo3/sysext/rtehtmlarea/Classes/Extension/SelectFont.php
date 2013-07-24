@@ -131,7 +131,7 @@ class SelectFont extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 				$hideItems = $this->thisConfig['buttons.'][$buttonId . '.']['removeItems'];
 			}
 			if ($this->thisConfig['buttons.'][$buttonId . '.']['addItems']) {
-				$addItems = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->htmlAreaRTE->cleanList($this->thisConfig['buttons.'][$buttonId . '.']['addItems']), 1);
+				$addItems = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->htmlAreaRTE->cleanList($this->thisConfig['buttons.'][$buttonId . '.']['addItems']), TRUE);
 			}
 		}
 		// Initializing the items array

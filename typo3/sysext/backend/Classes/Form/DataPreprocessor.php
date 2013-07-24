@@ -117,7 +117,7 @@ class DataPreprocessor {
 		}
 		if ($GLOBALS['TCA'][$table]) {
 			// For each ID value (integer) we
-			$ids = GeneralUtility::trimExplode(',', $idList, 1);
+			$ids = GeneralUtility::trimExplode(',', $idList, TRUE);
 			foreach ($ids as $id) {
 				// If ID is not blank:
 				if (strcmp($id, '')) {
@@ -167,7 +167,7 @@ class DataPreprocessor {
 							$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $table, 'uid=' . abs($id) . BackendUtility::deleteClause($table));
 							if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 								// Gets the list of fields to copy from the previous record.
-								$fArr = GeneralUtility::trimExplode(',', $GLOBALS['TCA'][$table]['ctrl']['useColumnsForDefaultValues'], 1);
+								$fArr = GeneralUtility::trimExplode(',', $GLOBALS['TCA'][$table]['ctrl']['useColumnsForDefaultValues'], TRUE);
 								foreach ($fArr as $theF) {
 									if (isset($GLOBALS['TCA'][$table]['columns'][$theF]) && !isset($newRow[$theF])) {
 										$newRow[$theF] = $row[$theF];
@@ -350,7 +350,7 @@ class DataPreprocessor {
 						}
 					}
 				} else {
-					$fileList = GeneralUtility::trimExplode(',', $data, 1);
+					$fileList = GeneralUtility::trimExplode(',', $data, TRUE);
 					foreach ($fileList as $value) {
 						if ($value) {
 							$dataAcc[] = rawurlencode($value) . '|' . rawurlencode($value);
@@ -388,7 +388,7 @@ class DataPreprocessor {
 	public function renderRecord_selectProc($data, $fieldConfig, $TSconfig, $table, $row, $field) {
 		// Initialize:
 		// Current data set.
-		$elements = GeneralUtility::trimExplode(',', $data, 1);
+		$elements = GeneralUtility::trimExplode(',', $data, TRUE);
 		// New data set, ready for interface (list of values, rawurlencoded)
 		$dataAcc = array();
 		// For list selectors (multi-value):

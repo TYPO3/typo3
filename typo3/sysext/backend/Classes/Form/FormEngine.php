@@ -664,7 +664,7 @@ class FormEngine {
 			if ($GLOBALS['TCA'][$table]['types'][$typeNum]) {
 				$itemList = $GLOBALS['TCA'][$table]['types'][$typeNum]['showitem'];
 				if ($itemList) {
-					$fields = GeneralUtility::trimExplode(',', $itemList, 1);
+					$fields = GeneralUtility::trimExplode(',', $itemList, TRUE);
 					$excludeElements = ($this->excludeElements = $this->getExcludeElements($table, $row, $typeNum));
 					foreach ($fields as $fieldInfo) {
 						$parts = explode(';', $fieldInfo);
@@ -732,7 +732,7 @@ class FormEngine {
 				// If such a list existed...
 				if ($itemList) {
 					// Explode the field list and possibly rearrange the order of the fields, if configured for
-					$fields = GeneralUtility::trimExplode(',', $itemList, 1);
+					$fields = GeneralUtility::trimExplode(',', $itemList, TRUE);
 					if ($this->fieldOrder) {
 						$fields = $this->rearrange($fields);
 					}
@@ -918,7 +918,7 @@ class FormEngine {
 		}
 		$out = '';
 		$types_fieldConfig = BackendUtility::getTCAtypes($table, $row, 1);
-		$editFieldList = array_unique(GeneralUtility::trimExplode(',', $list, 1));
+		$editFieldList = array_unique(GeneralUtility::trimExplode(',', $list, TRUE));
 		foreach ($editFieldList as $theFieldC) {
 			list($theField, $palFields) = preg_split('/\\[|\\]/', $theFieldC);
 			$theField = trim($theField);
@@ -932,7 +932,7 @@ class FormEngine {
 				$out .= $this->getDivider();
 			}
 			if ($palFields) {
-				$out .= $this->getPaletteFields($table, $row, '', '', implode(',', GeneralUtility::trimExplode('|', $palFields, 1)));
+				$out .= $this->getPaletteFields($table, $row, '', '', implode(',', GeneralUtility::trimExplode('|', $palFields, TRUE)));
 			}
 		}
 		return $out;
@@ -1255,7 +1255,7 @@ class FormEngine {
 		$config = $PA['fieldConf']['config'];
 		$specConf = $this->getSpecConfFromString($PA['extra'], $PA['fieldConf']['defaultExtras']);
 		$size = MathUtility::forceIntegerInRange($config['size'] ? $config['size'] : 30, 5, $this->maxInputWidth);
-		$evalList = GeneralUtility::trimExplode(',', $config['eval'], 1);
+		$evalList = GeneralUtility::trimExplode(',', $config['eval'], TRUE);
 		$classAndStyleAttributes = $this->formWidthAsArray($size);
 		$fieldAppendix = '';
 		$item = '';
@@ -1459,7 +1459,7 @@ function ' . $evalData . '(value) {
 	public function getSingleField_typeText($table, $field, $row, &$PA) {
 		// Init config:
 		$config = $PA['fieldConf']['config'];
-		$evalList = GeneralUtility::trimExplode(',', $config['eval'], 1);
+		$evalList = GeneralUtility::trimExplode(',', $config['eval'], TRUE);
 		if ($this->renderReadonly || $config['readOnly']) {
 			return $this->getSingleField_typeNone_render($config, $PA['itemFormElValue']);
 		}
@@ -1559,7 +1559,7 @@ function ' . $evalData . '(value) {
 				} else {
 					$class = 'tceforms-textarea';
 				}
-				$evalList = GeneralUtility::trimExplode(',', $config['eval'], 1);
+				$evalList = GeneralUtility::trimExplode(',', $config['eval'], TRUE);
 				foreach ($evalList as $func) {
 					switch ($func) {
 						case 'required':
@@ -1724,7 +1724,7 @@ function ' . $evalData . '(value) {
 			$selItems = $this->procItems($selItems, $PA['fieldTSConfig']['itemsProcFunc.'], $config, $table, $row, $field);
 		}
 		// Possibly remove some items:
-		$removeItems = GeneralUtility::trimExplode(',', $PA['fieldTSConfig']['removeItems'], 1);
+		$removeItems = GeneralUtility::trimExplode(',', $PA['fieldTSConfig']['removeItems'], TRUE);
 		foreach ($selItems as $tk => $p) {
 			// Checking languages and authMode:
 			$languageDeny = $GLOBALS['TCA'][$table]['ctrl']['languageField'] && !strcmp($GLOBALS['TCA'][$table]['ctrl']['languageField'], $field) && !$GLOBALS['BE_USER']->checkLanguageAccess($p[1]);
@@ -2195,9 +2195,9 @@ function ' . $evalData . '(value) {
 		// Register the required number of elements:
 		$this->registerRequiredProperty('range', $PA['itemFormElName'], array($minitems, $maxitems, 'imgName' => $table . '_' . $row['uid'] . '_' . $field));
 		// Get "removeItems":
-		$removeItems = GeneralUtility::trimExplode(',', $PA['fieldTSConfig']['removeItems'], 1);
+		$removeItems = GeneralUtility::trimExplode(',', $PA['fieldTSConfig']['removeItems'], TRUE);
 		// Get the array with selected items:
-		$itemArray = GeneralUtility::trimExplode(',', $PA['itemFormElValue'], 1);
+		$itemArray = GeneralUtility::trimExplode(',', $PA['itemFormElValue'], TRUE);
 		// Possibly filter some items:
 		$keepItemsFunc = create_function('$value', '$parts=explode(\'|\',$value,2); return rawurldecode($parts[0]);');
 		$itemArray = GeneralUtility::keepItemsInArray($itemArray, $PA['fieldTSConfig']['keepItems'], $keepItemsFunc);
@@ -2438,7 +2438,7 @@ function ' . $evalData . '(value) {
 		case 'folder':
 			// If the element is of the internal type "folder":
 			// Array of folder items:
-			$itemArray = GeneralUtility::trimExplode(',', $PA['itemFormElValue'], 1);
+			$itemArray = GeneralUtility::trimExplode(',', $PA['itemFormElValue'], TRUE);
 			// Creating the element:
 			$params = array(
 				'size' => $size,
@@ -2472,7 +2472,7 @@ function ' . $evalData . '(value) {
 			$itemArray = array();
 			$imgs = array();
 			// Thumbnails:
-			$temp_itemArray = GeneralUtility::trimExplode(',', $PA['itemFormElValue'], 1);
+			$temp_itemArray = GeneralUtility::trimExplode(',', $PA['itemFormElValue'], TRUE);
 			foreach ($temp_itemArray as $dbRead) {
 				$recordParts = explode('|', $dbRead);
 				list($this_table, $this_uid) = BackendUtility::splitTable_Uid($recordParts[0]);
@@ -3249,7 +3249,7 @@ function ' . $evalData . '(value) {
 	 * @todo Define visibility
 	 */
 	public function rearrange($fields) {
-		$fO = array_flip(GeneralUtility::trimExplode(',', $this->fieldOrder, 1));
+		$fO = array_flip(GeneralUtility::trimExplode(',', $this->fieldOrder, TRUE));
 		$newFields = array();
 		foreach ($fields as $cc => $content) {
 			$cP = GeneralUtility::trimExplode(';', $content);
@@ -3282,7 +3282,7 @@ function ' . $evalData . '(value) {
 		if ($GLOBALS['TCA'][$table]['types'][$typeNum]['subtype_value_field']) {
 			$sTfield = $GLOBALS['TCA'][$table]['types'][$typeNum]['subtype_value_field'];
 			if (trim($GLOBALS['TCA'][$table]['types'][$typeNum]['subtypes_excludelist'][$row[$sTfield]])) {
-				$excludeElements = GeneralUtility::trimExplode(',', $GLOBALS['TCA'][$table]['types'][$typeNum]['subtypes_excludelist'][$row[$sTfield]], 1);
+				$excludeElements = GeneralUtility::trimExplode(',', $GLOBALS['TCA'][$table]['types'][$typeNum]['subtypes_excludelist'][$row[$sTfield]], TRUE);
 			}
 		}
 		// If a bitmask-value field has been configured, then find possible fields to exclude based on that:
@@ -3295,7 +3295,7 @@ function ' . $evalData . '(value) {
 					if (MathUtility::canBeInterpretedAsInteger($bit)) {
 						$bit = MathUtility::forceIntegerInRange($bit, 0, 30);
 						if (substr($bitKey, 0, 1) == '-' && !($sTValue & pow(2, $bit)) || substr($bitKey, 0, 1) == '+' && $sTValue & pow(2, $bit)) {
-							$excludeElements = array_merge($excludeElements, GeneralUtility::trimExplode(',', $eList, 1));
+							$excludeElements = array_merge($excludeElements, GeneralUtility::trimExplode(',', $eList, TRUE));
 						}
 					}
 				}
@@ -3322,7 +3322,7 @@ function ' . $evalData . '(value) {
 		if ($GLOBALS['TCA'][$table]['types'][$typeNum]['subtype_value_field']) {
 			$sTfield = $GLOBALS['TCA'][$table]['types'][$typeNum]['subtype_value_field'];
 			if (trim($GLOBALS['TCA'][$table]['types'][$typeNum]['subtypes_addlist'][$row[$sTfield]])) {
-				$addElements = GeneralUtility::trimExplode(',', $GLOBALS['TCA'][$table]['types'][$typeNum]['subtypes_addlist'][$row[$sTfield]], 1);
+				$addElements = GeneralUtility::trimExplode(',', $GLOBALS['TCA'][$table]['types'][$typeNum]['subtypes_addlist'][$row[$sTfield]], TRUE);
 			}
 		}
 		// Return the return
@@ -3464,7 +3464,7 @@ function ' . $evalData . '(value) {
 		if ($GLOBALS['TCA'][$table] && (is_array($GLOBALS['TCA'][$table]['palettes'][$palette]) || $itemList)) {
 			$itemList = $itemList ? $itemList : $GLOBALS['TCA'][$table]['palettes'][$palette]['showitem'];
 			if ($itemList) {
-				$fields = GeneralUtility::trimExplode(',', $itemList, 1);
+				$fields = GeneralUtility::trimExplode(',', $itemList, TRUE);
 				foreach ($fields as $info) {
 					$fieldParts = GeneralUtility::trimExplode(';', $info);
 					$theField = $fieldParts[0];
@@ -3849,7 +3849,7 @@ function ' . $evalData . '(value) {
 
 				case 'file':
 					$elFromTable = $this->clipObj->elFromTable('_FILE');
-					$allowedExts = GeneralUtility::trimExplode(',', $allowed, 1);
+					$allowedExts = GeneralUtility::trimExplode(',', $allowed, TRUE);
 					// If there are a set of allowed extensions, filter the content:
 					if ($allowedExts) {
 						foreach ($elFromTable as $elValue) {
@@ -3865,7 +3865,7 @@ function ' . $evalData . '(value) {
 					}
 					break;
 				case 'db':
-					$allowedTables = GeneralUtility::trimExplode(',', $allowed, 1);
+					$allowedTables = GeneralUtility::trimExplode(',', $allowed, TRUE);
 					// All tables allowed for relation:
 					if (!strcmp(trim($allowedTables[0]), '*')) {
 						$output = $this->clipObj->elFromTable('');
@@ -4234,7 +4234,7 @@ function ' . $evalData . '(value) {
 	 */
 	public function extractValuesOnlyFromValueLabelList($itemFormElValue) {
 		// Get values of selected items:
-		$itemArray = GeneralUtility::trimExplode(',', $itemFormElValue, 1);
+		$itemArray = GeneralUtility::trimExplode(',', $itemFormElValue, TRUE);
 		foreach ($itemArray as $tk => $tv) {
 			$tvP = explode('|', $tv, 2);
 			$tvP[0] = rawurldecode($tvP[0]);
@@ -4854,7 +4854,7 @@ function ' . $evalData . '(value) {
 			if (is_array($row)) {
 				// Prepare the icon if available:
 				if ($iField && $iPath && $row[$iField]) {
-					$iParts = GeneralUtility::trimExplode(',', $row[$iField], 1);
+					$iParts = GeneralUtility::trimExplode(',', $row[$iField], TRUE);
 					$icon = '../' . $iPath . '/' . trim($iParts[0]);
 				} elseif (GeneralUtility::inList('singlebox,checkbox', $fieldValue['config']['renderMode'])) {
 					$icon = IconUtility::mapRecordTypeToSpriteIconName($f_table, $row);
@@ -6131,7 +6131,7 @@ function ' . $evalData . '(value) {
 			$show_thumbs = TRUE;
 			$table = 'tt_content';
 			// Making the array of file items:
-			$itemArray = GeneralUtility::trimExplode(',', $value, 1);
+			$itemArray = GeneralUtility::trimExplode(',', $value, TRUE);
 			// Showing thumbnails:
 			$thumbsnail = '';
 			if ($show_thumbs) {

@@ -490,7 +490,7 @@ class HelpModuleController {
 	public function printImage($images, $descr) {
 		$code = '';
 		// Splitting:
-		$imgArray = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $images, 1);
+		$imgArray = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $images, TRUE);
 		if (count($imgArray)) {
 			$descrArray = explode(LF, $descr, count($imgArray));
 			foreach ($imgArray as $k => $image) {

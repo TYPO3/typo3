@@ -2568,13 +2568,13 @@ class TypoScriptFrontendController {
 			}
 		}
 		// Setting softMergeIfNotBlank:
-		$table_fields = GeneralUtility::trimExplode(',', $this->config['config']['sys_language_softMergeIfNotBlank'], 1);
+		$table_fields = GeneralUtility::trimExplode(',', $this->config['config']['sys_language_softMergeIfNotBlank'], TRUE);
 		foreach ($table_fields as $TF) {
 			list($tN, $fN) = explode(':', $TF);
 			$GLOBALS['TCA'][$tN]['columns'][$fN]['l10n_mode'] = 'mergeIfNotBlank';
 		}
 		// Setting softExclude:
-		$table_fields = GeneralUtility::trimExplode(',', $this->config['config']['sys_language_softExclude'], 1);
+		$table_fields = GeneralUtility::trimExplode(',', $this->config['config']['sys_language_softExclude'], TRUE);
 		foreach ($table_fields as $TF) {
 			list($tN, $fN) = explode(':', $TF);
 			$GLOBALS['TCA'][$tN]['columns'][$fN]['l10n_mode'] = 'exclude';

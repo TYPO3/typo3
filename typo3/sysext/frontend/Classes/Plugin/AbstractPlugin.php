@@ -1109,7 +1109,7 @@ class AbstractPlugin {
 			$pid_list = $GLOBALS['TSFE']->id;
 		}
 		$recursive = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($recursive, 0);
-		$pid_list_arr = array_unique(GeneralUtility::trimExplode(',', $pid_list, 1));
+		$pid_list_arr = array_unique(GeneralUtility::trimExplode(',', $pid_list, TRUE));
 		$pid_list = array();
 		foreach ($pid_list_arr as $val) {
 			$val = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($val, 0);
@@ -1132,7 +1132,7 @@ class AbstractPlugin {
 	 * @todo Define visibility
 	 */
 	public function pi_prependFieldsWithTable($table, $fieldList) {
-		$list = GeneralUtility::trimExplode(',', $fieldList, 1);
+		$list = GeneralUtility::trimExplode(',', $fieldList, TRUE);
 		$return = array();
 		foreach ($list as $listItem) {
 			$return[] = $table . '.' . $listItem;
@@ -1178,7 +1178,7 @@ class AbstractPlugin {
 	 */
 	public function pi_isOnlyFields($fList, $lowerThan = -1) {
 		$lowerThan = $lowerThan == -1 ? $this->pi_lowerThan : $lowerThan;
-		$fList = GeneralUtility::trimExplode(',', $fList, 1);
+		$fList = GeneralUtility::trimExplode(',', $fList, TRUE);
 		$tempPiVars = $this->piVars;
 		foreach ($fList as $k) {
 			if (!\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($tempPiVars[$k]) || $tempPiVars[$k] < $lowerThan) {

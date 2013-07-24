@@ -458,8 +458,8 @@ class NewContentElementController {
 		// Get TCEFORM from TSconfig of current page
 		$row = array('pid' => $this->id);
 		$TCEFORM_TSconfig = BackendUtility::getTCEFORM_TSconfig('tt_content', $row);
-		$removeItems = GeneralUtility::trimExplode(',', $TCEFORM_TSconfig['CType']['removeItems'], 1);
-		$keepItems = GeneralUtility::trimExplode(',', $TCEFORM_TSconfig['CType']['keepItems'], 1);
+		$removeItems = GeneralUtility::trimExplode(',', $TCEFORM_TSconfig['CType']['removeItems'], TRUE);
+		$keepItems = GeneralUtility::trimExplode(',', $TCEFORM_TSconfig['CType']['keepItems'], TRUE);
 		$headersUsed = array();
 		// Traverse wizard items:
 		foreach ($wizardItems as $key => $cfg) {

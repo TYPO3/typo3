@@ -178,7 +178,7 @@ class ClickMenu {
 			$this->isDBmenu = 1;
 		}
 		$TSkey = ($this->isDBmenu ? 'page' : 'folder') . ($this->listFrame ? 'List' : 'Tree');
-		$this->disabledItems = GeneralUtility::trimExplode(',', $GLOBALS['BE_USER']->getTSConfigVal('options.contextMenu.' . $TSkey . '.disableItems'), 1);
+		$this->disabledItems = GeneralUtility::trimExplode(',', $GLOBALS['BE_USER']->getTSConfigVal('options.contextMenu.' . $TSkey . '.disableItems'), TRUE);
 		$this->leftIcons = $GLOBALS['BE_USER']->getTSConfigVal('options.contextMenu.options.leftIcons');
 		// &cmLevel flag detected (2nd level menu)
 		if (!$this->cmLevel) {
@@ -1206,10 +1206,10 @@ class ClickMenu {
 	public function addMenuItems($menuItems, $newMenuItems, $position = '') {
 		if (is_array($newMenuItems)) {
 			if ($position) {
-				$posArr = GeneralUtility::trimExplode(',', $position, 1);
+				$posArr = GeneralUtility::trimExplode(',', $position, TRUE);
 				foreach ($posArr as $pos) {
-					list($place, $menuEntry) = GeneralUtility::trimExplode(':', $pos, 1);
-					list($place, $placeExtra) = GeneralUtility::trimExplode('-', $place, 1);
+					list($place, $menuEntry) = GeneralUtility::trimExplode(':', $pos, TRUE);
+					list($place, $placeExtra) = GeneralUtility::trimExplode('-', $place, TRUE);
 					// Bottom
 					$pointer = count($menuItems);
 					$found = FALSE;
@@ -1337,7 +1337,7 @@ class ClickMenu {
 				$menuItems = $newMenuArray;
 			} else {
 				// Traverse all elements except those listed (just unsetting them):
-				$elements = GeneralUtility::trimExplode(',', $this->iParts[3], 1);
+				$elements = GeneralUtility::trimExplode(',', $this->iParts[3], TRUE);
 				foreach ($elements as $value) {
 					unset($menuItems[$value]);
 				}
