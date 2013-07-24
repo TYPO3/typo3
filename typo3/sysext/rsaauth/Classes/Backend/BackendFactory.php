@@ -55,8 +55,6 @@ class BackendFactory {
 	 * will not be an abstract backend as shown below but a real class, which is
 	 * derieved from the tx_rsaauth_abstract_backend.
 	 *
-	 * <!-- Please, keep the variable type! It helps IDEs to provide autocomple! -->
-	 *
 	 * @var \TYPO3\CMS\Rsaauth\Backend\AbstractBackend
 	 */
 	static protected $selectedBackend = NULL;
@@ -83,7 +81,7 @@ class BackendFactory {
 						break;
 					}
 					// Attempt to force destruction of the object
-					unset($backend);
+					unset($backendObject);
 				}
 			}
 		}
