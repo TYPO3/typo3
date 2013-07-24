@@ -28,13 +28,4 @@ Git Repositories
 Most of these extensions are developed by the core team itself and are
 maintained directly in the main Core Git repository:
 
-http://git.typo3.org/TYPO3v4/Core.git
-
-Some of the extensions are developed by external teams (e.g. dbal, version,
-workspaces) and are thus maintained in separate Git repositories and linked
-into the core as submodules.
-
-In order to retrieve them together with the core, issue these commands:
-
-git pull
-git submodule update --init
+https://git.typo3.org/Packages/TYPO3.CMS.git
