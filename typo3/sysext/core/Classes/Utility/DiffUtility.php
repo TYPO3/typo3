@@ -26,14 +26,7 @@ namespace TYPO3\CMS\Core\Utility;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-/**
- * Contains class which has functions that generates a difference output of a content string
- *
- * Revised for TYPO3 3.6 November/2003 by Kasper Skårhøj
- * XHTML Compliant
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- */
+
 /**
  * This class has functions which generates a difference output of a content string
  *

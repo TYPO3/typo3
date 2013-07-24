@@ -26,14 +26,7 @@ namespace TYPO3\CMS\Lowlevel\Utility;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-/**
- * Class for displaying an array as a tree
- *
- * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
- * XHTML compliant
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- */
+
 /**
  * Class for displaying an array as a tree
  * See the extension 'lowlevel' /config (Backend module 'Tools > Configuration')

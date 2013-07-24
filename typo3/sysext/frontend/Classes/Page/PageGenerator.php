@@ -30,15 +30,6 @@ namespace TYPO3\CMS\Frontend\Page;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Libraries for pagegen.php
- * The script "pagegen.php" is included by "index_ts.php" when a page is not cached but needs to be rendered.
- *
- * Revised for TYPO3 3.6 June/2003 by Kasper Skårhøj
- * XHTML compliant
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- */
-/**
  * Class for starting TypoScript page generation
  *
  * The class is not instantiated as an objects but called directly with the "::" operator.

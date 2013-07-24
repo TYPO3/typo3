@@ -33,14 +33,6 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Contains class for creating a position map.
- *
- * Revised for TYPO3 3.6 November/2003 by Kasper Skårhøj
- * XHTML compliant (should be)
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- */
-/**
  * Position map class - generating a page tree / content element list which links for inserting (copy/move) of records.
  * Used for pages / tt_content element wizards of various kinds.
  *

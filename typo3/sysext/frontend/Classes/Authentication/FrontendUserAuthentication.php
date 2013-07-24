@@ -26,15 +26,7 @@ namespace TYPO3\CMS\Frontend\Authentication;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-/**
- * Front End session user. Login and session data
- * Included from index_ts.php
- *
- * Revised for TYPO3 3.6 June/2003 by Kasper Skårhøj
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @author René Fritz <r.fritz@colorcube.de>
- */
+
 /**
  * Extension class for Front End User Authentication.
  *

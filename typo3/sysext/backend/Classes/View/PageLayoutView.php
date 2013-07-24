@@ -33,15 +33,6 @@ use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Include file extending \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRecordList
- * for use with the web_layout module
- *
- * Revised for TYPO3 3.6 November/2003 by Kasper Skårhøj
- * XHTML compliant
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- */
-/**
  * Child class for the Web > Page module
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>

@@ -30,7 +30,8 @@ namespace TYPO3\CMS\Backend\Rte;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * RTE base class: Delivers browser-detection, TCEforms binding and transformation routines for the "rte" extension, registering it with the RTE API in TYPO3 3.6.0
+ * RTE base class: Delivers browser-detection, TCEforms binding and transformation routines
+ * for the "rte" extension, registering it with the RTE API
  * See "rte" extension for usage.
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>

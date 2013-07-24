@@ -31,13 +31,6 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Contains class for getting and transforming data for display in backend forms (TCEforms)
- *
- * Revised for TYPO3 3.6 September/2003 by Kasper Skårhøj
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- */
-/**
  * Class for getting and transforming data for display in backend forms (TCEforms)
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>

@@ -30,13 +30,6 @@ namespace TYPO3\CMS\Core\TypoScript;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Class with template object that is responsible for generating the template
- *
- * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- */
-/**
  * Template object that is responsible for generating the TypoScript template based on template records.
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>

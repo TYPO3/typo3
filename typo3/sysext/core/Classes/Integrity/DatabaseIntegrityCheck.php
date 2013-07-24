@@ -26,15 +26,7 @@ namespace TYPO3\CMS\Core\Integrity;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-/**
- * Contains a class for evaluation of database integrity according to $GLOBALS['TCA']
- * Most of these functions are considered obsolete!
- *
- * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
- * XHTML compliant
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- */
+
 /**
  * This class holds functions used by the TYPO3 backend to check the integrity of the database (The DBint module, 'lowlevel' extension)
  *
