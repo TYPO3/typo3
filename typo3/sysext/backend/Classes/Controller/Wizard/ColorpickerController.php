@@ -214,12 +214,12 @@ class ColorpickerController {
 					' . $this->colorImage() . '
 
 						<!-- Value box: -->
-					<p class="c-head">' . $GLOBALS['LANG']->getLL('colorpicker_colorValue', 1) . '</p>
+					<p class="c-head">' . $GLOBALS['LANG']->getLL('colorpicker_colorValue', TRUE) . '</p>
 					<table border="0" cellpadding="0" cellspacing="3">
 						<tr>
 							<td><input type="text" ' . $this->doc->formWidth(7) . ' maxlength="10" name="colorValue" value="' . htmlspecialchars($this->colorValue) . '" /></td>
-							<td style="background-color:' . htmlspecialchars($this->colorValue) . '; border: 1px solid black;">&nbsp;<span style="color: black;">' . $GLOBALS['LANG']->getLL('colorpicker_black', 1) . '</span>&nbsp;<span style="color: white;">' . $GLOBALS['LANG']->getLL('colorpicker_white', 1) . '</span>&nbsp;</td>
-							<td><input type="submit" name="save_close" value="' . $GLOBALS['LANG']->getLL('colorpicker_setClose', 1) . '" /></td>
+							<td style="background-color:' . htmlspecialchars($this->colorValue) . '; border: 1px solid black;">&nbsp;<span style="color: black;">' . $GLOBALS['LANG']->getLL('colorpicker_black', TRUE) . '</span>&nbsp;<span style="color: white;">' . $GLOBALS['LANG']->getLL('colorpicker_white', TRUE) . '</span>&nbsp;</td>
+							<td><input type="submit" name="save_close" value="' . $GLOBALS['LANG']->getLL('colorpicker_setClose', TRUE) . '" /></td>
 						</tr>
 					</table>
 
@@ -324,7 +324,7 @@ class ColorpickerController {
 			$rows++;
 		}
 		$table = '
-			<p class="c-head">' . $GLOBALS['LANG']->getLL('colorpicker_fromMatrix', 1) . '</p>
+			<p class="c-head">' . $GLOBALS['LANG']->getLL('colorpicker_fromMatrix', TRUE) . '</p>
 			<table border="0" cellpadding="1" cellspacing="1" style="width:100%; border: 1px solid black; cursor:crosshair;">' . implode('', $tRows) . '
 			</table>';
 		return $table;
@@ -348,7 +348,7 @@ class ColorpickerController {
 		}
 		// Compile selector box and return result:
 		$output = '
-			<p class="c-head">' . $GLOBALS['LANG']->getLL('colorpicker_fromList', 1) . '</p>
+			<p class="c-head">' . $GLOBALS['LANG']->getLL('colorpicker_fromList', TRUE) . '</p>
 			<select onchange="document.colorform.colorValue.value = this.options[this.selectedIndex].value; document.colorform.submit(); return false;">
 				' . implode('
 				', $opt) . '
@@ -370,7 +370,7 @@ class ColorpickerController {
 					$this->colorValue = '#' . $this->getIndex(\TYPO3\CMS\Core\Imaging\GraphicalFunctions::imageCreateFromFile($this->pickerImage), GeneralUtility::_POST('coords_x'), GeneralUtility::_POST('coords_y'));
 				}
 				$pickerFormImage = '
-				<p class="c-head">' . $GLOBALS['LANG']->getLL('colorpicker_fromImage', 1) . '</p>
+				<p class="c-head">' . $GLOBALS['LANG']->getLL('colorpicker_fromImage', TRUE) . '</p>
 				<input type="image" src="../' . substr($this->pickerImage, strlen(PATH_site)) . '" name="coords" style="cursor:crosshair;" /><br />';
 			} else {
 				$pickerFormImage = '';

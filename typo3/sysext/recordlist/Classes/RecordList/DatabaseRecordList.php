@@ -758,7 +758,7 @@ class DatabaseRecordList extends \TYPO3\CMS\Recordlist\RecordList\AbstractDataba
 					break;
 				case '_LOCALIZATION_b':
 					// Path
-					$theData[$fCol] = $GLOBALS['LANG']->getLL('Localize', 1);
+					$theData[$fCol] = $GLOBALS['LANG']->getLL('Localize', TRUE);
 					break;
 				case '_CLIPBOARD_':
 					// Clipboard:

@@ -378,14 +378,14 @@ class PermissionModuleController {
 			<table border="0" cellspacing="2" cellpadding="0" id="typo3-permissionMatrix">
 				<tr>
 					<td></td>
-					<td class="bgColor2">' . str_replace(' ', '<br />', $GLOBALS['LANG']->getLL('1', 1)) . '</td>
-					<td class="bgColor2">' . str_replace(' ', '<br />', $GLOBALS['LANG']->getLL('16', 1)) . '</td>
-					<td class="bgColor2">' . str_replace(' ', '<br />', $GLOBALS['LANG']->getLL('2', 1)) . '</td>
-					<td class="bgColor2">' . str_replace(' ', '<br />', $GLOBALS['LANG']->getLL('4', 1)) . '</td>
-					<td class="bgColor2">' . str_replace(' ', '<br />', $GLOBALS['LANG']->getLL('8', 1)) . '</td>
+					<td class="bgColor2">' . str_replace(' ', '<br />', $GLOBALS['LANG']->getLL('1', TRUE)) . '</td>
+					<td class="bgColor2">' . str_replace(' ', '<br />', $GLOBALS['LANG']->getLL('16', TRUE)) . '</td>
+					<td class="bgColor2">' . str_replace(' ', '<br />', $GLOBALS['LANG']->getLL('2', TRUE)) . '</td>
+					<td class="bgColor2">' . str_replace(' ', '<br />', $GLOBALS['LANG']->getLL('4', TRUE)) . '</td>
+					<td class="bgColor2">' . str_replace(' ', '<br />', $GLOBALS['LANG']->getLL('8', TRUE)) . '</td>
 				</tr>
 				<tr>
-					<td align="right" class="bgColor2">' . $GLOBALS['LANG']->getLL('Owner', 1) . '</td>
+					<td align="right" class="bgColor2">' . $GLOBALS['LANG']->getLL('Owner', TRUE) . '</td>
 					<td class="bgColor-20">' . $this->printCheckBox('perms_user', 1) . '</td>
 					<td class="bgColor-20">' . $this->printCheckBox('perms_user', 5) . '</td>
 					<td class="bgColor-20">' . $this->printCheckBox('perms_user', 2) . '</td>
@@ -393,7 +393,7 @@ class PermissionModuleController {
 					<td class="bgColor-20">' . $this->printCheckBox('perms_user', 4) . '</td>
 				</tr>
 				<tr>
-					<td align="right" class="bgColor2">' . $GLOBALS['LANG']->getLL('Group', 1) . '</td>
+					<td align="right" class="bgColor2">' . $GLOBALS['LANG']->getLL('Group', TRUE) . '</td>
 					<td class="bgColor-20">' . $this->printCheckBox('perms_group', 1) . '</td>
 					<td class="bgColor-20">' . $this->printCheckBox('perms_group', 5) . '</td>
 					<td class="bgColor-20">' . $this->printCheckBox('perms_group', 2) . '</td>
@@ -401,7 +401,7 @@ class PermissionModuleController {
 					<td class="bgColor-20">' . $this->printCheckBox('perms_group', 4) . '</td>
 				</tr>
 				<tr>
-					<td align="right" class="bgColor2">' . $GLOBALS['LANG']->getLL('Everybody', 1) . '</td>
+					<td align="right" class="bgColor2">' . $GLOBALS['LANG']->getLL('Everybody', TRUE) . '</td>
 					<td class="bgColor-20">' . $this->printCheckBox('perms_everybody', 1) . '</td>
 					<td class="bgColor-20">' . $this->printCheckBox('perms_everybody', 5) . '</td>
 					<td class="bgColor-20">' . $this->printCheckBox('perms_everybody', 2) . '</td>
@@ -415,7 +415,7 @@ class PermissionModuleController {
 			<input type="hidden" name="data[pages][' . $this->id . '][perms_group]" value="' . $this->pageinfo['perms_group'] . '" />
 			<input type="hidden" name="data[pages][' . $this->id . '][perms_everybody]" value="' . $this->pageinfo['perms_everybody'] . '" />
 			' . $this->getRecursiveSelect($this->id, $this->perms_clause) . '
-			<input type="submit" name="submit" value="' . $GLOBALS['LANG']->getLL('Save', 1) . '" />' . '<input type="submit" value="' . $GLOBALS['LANG']->getLL('Abort', 1) . '" onclick="' . htmlspecialchars(('jumpToUrl(' . GeneralUtility::quoteJSvalue((BackendUtility::getModuleUrl('web_perm') . '&id=' . $this->id), TRUE) . '); return false;')) . '" />
+			<input type="submit" name="submit" value="' . $GLOBALS['LANG']->getLL('Save', TRUE) . '" />' . '<input type="submit" value="' . $GLOBALS['LANG']->getLL('Abort', TRUE) . '" onclick="' . htmlspecialchars(('jumpToUrl(' . GeneralUtility::quoteJSvalue((BackendUtility::getModuleUrl('web_perm') . '&id=' . $this->id), TRUE) . '); return false;')) . '" />
 			<input type="hidden" name="redirect" value="' . htmlspecialchars((BackendUtility::getModuleUrl('web_perm') . '&mode=' . $this->MOD_SETTINGS['mode'] . '&depth=' . $this->MOD_SETTINGS['depth'] . '&id=' . intval($this->return_id) . '&lastEdited=' . $this->id)) . '" />
 			' . \TYPO3\CMS\Backend\Form\FormEngine::getHiddenTokenField('tceAction');
 		// Adding section with the permission setting matrix:
@@ -426,13 +426,13 @@ class PermissionModuleController {
 		// Adding help text:
 		if ($GLOBALS['BE_USER']->uc['helpText']) {
 			$this->content .= $this->doc->divider(20);
-			$legendText = '<strong>' . $GLOBALS['LANG']->getLL('1', 1) . '</strong>: ' . $GLOBALS['LANG']->getLL('1_t', 1);
-			$legendText .= '<br /><strong>' . $GLOBALS['LANG']->getLL('16', 1) . '</strong>: ' . $GLOBALS['LANG']->getLL('16_t', 1);
-			$legendText .= '<br /><strong>' . $GLOBALS['LANG']->getLL('2', 1) . '</strong>: ' . $GLOBALS['LANG']->getLL('2_t', 1);
-			$legendText .= '<br /><strong>' . $GLOBALS['LANG']->getLL('4', 1) . '</strong>: ' . $GLOBALS['LANG']->getLL('4_t', 1);
-			$legendText .= '<br /><strong>' . $GLOBALS['LANG']->getLL('8', 1) . '</strong>: ' . $GLOBALS['LANG']->getLL('8_t', 1);
-			$code = $legendText . '<br /><br />' . $GLOBALS['LANG']->getLL('def', 1);
-			$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('Legend', 1) . ':', $code);
+			$legendText = '<strong>' . $GLOBALS['LANG']->getLL('1', TRUE) . '</strong>: ' . $GLOBALS['LANG']->getLL('1_t', TRUE);
+			$legendText .= '<br /><strong>' . $GLOBALS['LANG']->getLL('16', TRUE) . '</strong>: ' . $GLOBALS['LANG']->getLL('16_t', TRUE);
+			$legendText .= '<br /><strong>' . $GLOBALS['LANG']->getLL('2', TRUE) . '</strong>: ' . $GLOBALS['LANG']->getLL('2_t', TRUE);
+			$legendText .= '<br /><strong>' . $GLOBALS['LANG']->getLL('4', TRUE) . '</strong>: ' . $GLOBALS['LANG']->getLL('4_t', TRUE);
+			$legendText .= '<br /><strong>' . $GLOBALS['LANG']->getLL('8', TRUE) . '</strong>: ' . $GLOBALS['LANG']->getLL('8_t', TRUE);
+			$code = $legendText . '<br /><br />' . $GLOBALS['LANG']->getLL('def', TRUE);
+			$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('Legend', TRUE) . ':', $code);
 		}
 	}
 
@@ -522,7 +522,7 @@ class PermissionModuleController {
 			if ($editPermsAllowed && $pageId) {
 				$aHref = BackendUtility::getModuleUrl('web_perm') . '&mode=' . $this->MOD_SETTINGS['mode'] . '&depth=' . $this->MOD_SETTINGS['depth'] . '&id=' . ($data['row']['_ORIG_uid'] ? $data['row']['_ORIG_uid'] : $pageId) . '&return_id=' . $this->id . '&edit=1';
 				$cells[] = '
-					<td' . $bgCol . '><a href="' . htmlspecialchars($aHref) . '" title="' . $GLOBALS['LANG']->getLL('ch_permissions', 1) . '">' . IconUtility::getSpriteIcon('actions-document-open') . '</a></td>';
+					<td' . $bgCol . '><a href="' . htmlspecialchars($aHref) . '" title="' . $GLOBALS['LANG']->getLL('ch_permissions', TRUE) . '">' . IconUtility::getSpriteIcon('actions-document-open') . '</a></td>';
 			} else {
 				$cells[] = '
 					<td' . $bgCol . '></td>';
@@ -539,7 +539,7 @@ class PermissionModuleController {
 				<td' . $bgCol . ' nowrap="nowrap">' . ($pageId ? ' ' . \TYPO3\CMS\Perm\Controller\PermissionAjaxController::renderPermissions($data['row']['perms_everybody'], $pageId, 'everybody') : '') . '</td>
 
 				<td' . $bgCol . ' class="center"><img' . IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/line.gif', 'width="5" height="16"') . ' alt="" /></td>
-				<td' . $bgCol . ' nowrap="nowrap">' . ($data['row']['editlock'] ? '<span id="el_' . $pageId . '" class="editlock"><a class="editlock" onclick="WebPermissions.toggleEditLock(\'' . $pageId . '\', \'1\');" title="' . $GLOBALS['LANG']->getLL('EditLock_descr', 1) . '">' . IconUtility::getSpriteIcon('status-warning-lock') . '</a></span>' : ($pageId === 0 ? '' : '<span id="el_' . $pageId . '" class="editlock"><a class="editlock" onclick="WebPermissions.toggleEditLock(\'' . $pageId . '\', \'0\');" title="Enable the &raquo;Admin-only&laquo; edit lock for this page">[+]</a></span>')) . '</td>
+				<td' . $bgCol . ' nowrap="nowrap">' . ($data['row']['editlock'] ? '<span id="el_' . $pageId . '" class="editlock"><a class="editlock" onclick="WebPermissions.toggleEditLock(\'' . $pageId . '\', \'1\');" title="' . $GLOBALS['LANG']->getLL('EditLock_descr', TRUE) . '">' . IconUtility::getSpriteIcon('status-warning-lock') . '</a></span>' : ($pageId === 0 ? '' : '<span id="el_' . $pageId . '" class="editlock"><a class="editlock" onclick="WebPermissions.toggleEditLock(\'' . $pageId . '\', \'0\');" title="Enable the &raquo;Admin-only&laquo; edit lock for this page">[+]</a></span>')) . '</td>
 			';
 			// Compile table row:
 			$code .= '
@@ -555,19 +555,19 @@ class PermissionModuleController {
 		// CSH for permissions setting
 		$this->content .= BackendUtility::cshItem('xMOD_csh_corebe', 'perm_module', $GLOBALS['BACK_PATH'], '<br />|');
 		// Creating legend table:
-		$legendText = '<strong>' . $GLOBALS['LANG']->getLL('1', 1) . '</strong>: ' . $GLOBALS['LANG']->getLL('1_t', 1);
-		$legendText .= '<br /><strong>' . $GLOBALS['LANG']->getLL('16', 1) . '</strong>: ' . $GLOBALS['LANG']->getLL('16_t', 1);
-		$legendText .= '<br /><strong>' . $GLOBALS['LANG']->getLL('2', 1) . '</strong>: ' . $GLOBALS['LANG']->getLL('2_t', 1);
-		$legendText .= '<br /><strong>' . $GLOBALS['LANG']->getLL('4', 1) . '</strong>: ' . $GLOBALS['LANG']->getLL('4_t', 1);
-		$legendText .= '<br /><strong>' . $GLOBALS['LANG']->getLL('8', 1) . '</strong>: ' . $GLOBALS['LANG']->getLL('8_t', 1);
+		$legendText = '<strong>' . $GLOBALS['LANG']->getLL('1', TRUE) . '</strong>: ' . $GLOBALS['LANG']->getLL('1_t', TRUE);
+		$legendText .= '<br /><strong>' . $GLOBALS['LANG']->getLL('16', TRUE) . '</strong>: ' . $GLOBALS['LANG']->getLL('16_t', TRUE);
+		$legendText .= '<br /><strong>' . $GLOBALS['LANG']->getLL('2', TRUE) . '</strong>: ' . $GLOBALS['LANG']->getLL('2_t', TRUE);
+		$legendText .= '<br /><strong>' . $GLOBALS['LANG']->getLL('4', TRUE) . '</strong>: ' . $GLOBALS['LANG']->getLL('4_t', TRUE);
+		$legendText .= '<br /><strong>' . $GLOBALS['LANG']->getLL('8', TRUE) . '</strong>: ' . $GLOBALS['LANG']->getLL('8_t', TRUE);
 
 		$code = '<div id="permission-information">
 					<img' . IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/legend.gif', 'width="86" height="75"') . ' alt="" />
 				<div class="text">' . $legendText . '</div></div>';
 
-		$code .= '<div id="perm-legend">' . $GLOBALS['LANG']->getLL('def', 1);
-		$code .= '<br /><br />' . IconUtility::getSpriteIcon('status-status-permission-granted') . ': ' . $GLOBALS['LANG']->getLL('A_Granted', 1);
-		$code .= '<br />' . IconUtility::getSpriteIcon('status-status-permission-denied') . ': ' . $GLOBALS['LANG']->getLL('A_Denied', 1);
+		$code .= '<div id="perm-legend">' . $GLOBALS['LANG']->getLL('def', TRUE);
+		$code .= '<br /><br />' . IconUtility::getSpriteIcon('status-status-permission-granted') . ': ' . $GLOBALS['LANG']->getLL('A_Granted', TRUE);
+		$code .= '<br />' . IconUtility::getSpriteIcon('status-status-permission-denied') . ': ' . $GLOBALS['LANG']->getLL('A_Denied', TRUE);
 		$code .= '</div>';
 		// Adding section with legend code:
 		$this->content .= $this->doc->spacer(20);

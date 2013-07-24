@@ -2339,13 +2339,13 @@ class ImportExport {
 				$rows = array();
 				$rows[] = '
 				<tr class="bgColor5 tableheader">
-					<td>' . $LANG->getLL('impexpcore_displaycon_controls', 1) . '</td>
-					<td>' . $LANG->getLL('impexpcore_displaycon_title', 1) . '</td>
-					<td>' . $LANG->getLL('impexpcore_displaycon_size', 1) . '</td>
-					<td>' . $LANG->getLL('impexpcore_displaycon_message', 1) . '</td>
-					' . ($this->update ? '<td>' . $LANG->getLL('impexpcore_displaycon_updateMode', 1) . '</td>' : '') . '
-					' . ($this->update ? '<td>' . $LANG->getLL('impexpcore_displaycon_currentPath', 1) . '</td>' : '') . '
-					' . ($this->showDiff ? '<td>' . $LANG->getLL('impexpcore_displaycon_result', 1) . '</td>' : '') . '
+					<td>' . $LANG->getLL('impexpcore_displaycon_controls', TRUE) . '</td>
+					<td>' . $LANG->getLL('impexpcore_displaycon_title', TRUE) . '</td>
+					<td>' . $LANG->getLL('impexpcore_displaycon_size', TRUE) . '</td>
+					<td>' . $LANG->getLL('impexpcore_displaycon_message', TRUE) . '</td>
+					' . ($this->update ? '<td>' . $LANG->getLL('impexpcore_displaycon_updateMode', TRUE) . '</td>' : '') . '
+					' . ($this->update ? '<td>' . $LANG->getLL('impexpcore_displaycon_currentPath', TRUE) . '</td>' : '') . '
+					' . ($this->showDiff ? '<td>' . $LANG->getLL('impexpcore_displaycon_result', TRUE) . '</td>' : '') . '
 				</tr>';
 				foreach ($lines as $r) {
 					$rows[] = '
@@ -2360,7 +2360,7 @@ class ImportExport {
 					</tr>';
 				}
 				$out = '
-					<strong>' . $LANG->getLL('impexpcore_displaycon_insidePagetree', 1) . '</strong>
+					<strong>' . $LANG->getLL('impexpcore_displaycon_insidePagetree', TRUE) . '</strong>
 					<br /><br />
 					<table border="0" cellpadding="0" cellspacing="1">' . implode('', $rows) . '</table>
 					<br /><br />';
@@ -2376,13 +2376,13 @@ class ImportExport {
 					$rows = array();
 					$rows[] = '
 					<tr class="bgColor5 tableheader">
-						<td>' . $LANG->getLL('impexpcore_displaycon_controls', 1) . '</td>
-						<td>' . $LANG->getLL('impexpcore_displaycon_title', 1) . '</td>
-						<td>' . $LANG->getLL('impexpcore_displaycon_size', 1) . '</td>
-						<td>' . $LANG->getLL('impexpcore_displaycon_message', 1) . '</td>
-						' . ($this->update ? '<td>' . $LANG->getLL('impexpcore_displaycon_updateMode', 1) . '</td>' : '') . '
-						' . ($this->update ? '<td>' . $LANG->getLL('impexpcore_displaycon_currentPath', 1) . '</td>' : '') . '
-						' . ($this->showDiff ? '<td>' . $LANG->getLL('impexpcore_displaycon_result', 1) . '</td>' : '') . '
+						<td>' . $LANG->getLL('impexpcore_displaycon_controls', TRUE) . '</td>
+						<td>' . $LANG->getLL('impexpcore_displaycon_title', TRUE) . '</td>
+						<td>' . $LANG->getLL('impexpcore_displaycon_size', TRUE) . '</td>
+						<td>' . $LANG->getLL('impexpcore_displaycon_message', TRUE) . '</td>
+						' . ($this->update ? '<td>' . $LANG->getLL('impexpcore_displaycon_updateMode', TRUE) . '</td>' : '') . '
+						' . ($this->update ? '<td>' . $LANG->getLL('impexpcore_displaycon_currentPath', TRUE) . '</td>' : '') . '
+						' . ($this->showDiff ? '<td>' . $LANG->getLL('impexpcore_displaycon_result', TRUE) . '</td>' : '') . '
 					</tr>';
 					foreach ($lines as $r) {
 						$rows[] = '<tr class="' . $r['class'] . '">
@@ -2396,7 +2396,7 @@ class ImportExport {
 						</tr>';
 					}
 					$out .= '
-						<strong>' . $LANG->getLL('impexpcore_singlereco_outsidePagetree', 1) . '</strong>
+						<strong>' . $LANG->getLL('impexpcore_singlereco_outsidePagetree', TRUE) . '</strong>
 						<br /><br />
 						<table border="0" cellpadding="0" cellspacing="1">' . implode('', $rows) . '</table>';
 				}
@@ -2505,7 +2505,7 @@ class ImportExport {
 		// Unknown table name:
 		if ($table === '_SOFTREF_') {
 			$pInfo['preCode'] = $preCode;
-			$pInfo['title'] = '<em>' . $GLOBALS['LANG']->getLL('impexpcore_singlereco_softReferencesFiles', 1) . '</em>';
+			$pInfo['title'] = '<em>' . $GLOBALS['LANG']->getLL('impexpcore_singlereco_softReferencesFiles', TRUE) . '</em>';
 		} elseif (!isset($GLOBALS['TCA'][$table])) {
 			// Unknown table name:
 			$pInfo['preCode'] = $preCode;
@@ -2608,12 +2608,12 @@ class ImportExport {
 				$pInfo['title'] = '<em>' . $info['field'] . ', "' . $info['spKey'] . '" </em>: <span title="' . htmlspecialchars($info['matchString']) . '">' . htmlspecialchars(GeneralUtility::fixed_lgd_cs($info['matchString'], 60)) . '</span>';
 				if ($info['subst']['type']) {
 					if (strlen($info['subst']['title'])) {
-						$pInfo['title'] .= '<br/>' . $preCode_B . '<strong>' . $LANG->getLL('impexpcore_singlereco_title', 1) . '</strong> ' . htmlspecialchars(GeneralUtility::fixed_lgd_cs($info['subst']['title'], 60));
+						$pInfo['title'] .= '<br/>' . $preCode_B . '<strong>' . $LANG->getLL('impexpcore_singlereco_title', TRUE) . '</strong> ' . htmlspecialchars(GeneralUtility::fixed_lgd_cs($info['subst']['title'], 60));
 					}
 					if (strlen($info['subst']['description'])) {
-						$pInfo['title'] .= '<br/>' . $preCode_B . '<strong>' . $LANG->getLL('impexpcore_singlereco_descr', 1) . '</strong> ' . htmlspecialchars(GeneralUtility::fixed_lgd_cs($info['subst']['description'], 60));
+						$pInfo['title'] .= '<br/>' . $preCode_B . '<strong>' . $LANG->getLL('impexpcore_singlereco_descr', TRUE) . '</strong> ' . htmlspecialchars(GeneralUtility::fixed_lgd_cs($info['subst']['description'], 60));
 					}
-					$pInfo['title'] .= '<br/>' . $preCode_B . ($info['subst']['type'] == 'file' ? $LANG->getLL('impexpcore_singlereco_filename', 1) . ' <strong>' . $info['subst']['relFileName'] . '</strong>' : '') . ($info['subst']['type'] == 'string' ? $LANG->getLL('impexpcore_singlereco_value', 1) . ' <strong>' . $info['subst']['tokenValue'] . '</strong>' : '') . ($info['subst']['type'] == 'db' ? $LANG->getLL('impexpcore_softrefsel_record', 1) . ' <strong>' . $info['subst']['recordRef'] . '</strong>' : '');
+					$pInfo['title'] .= '<br/>' . $preCode_B . ($info['subst']['type'] == 'file' ? $LANG->getLL('impexpcore_singlereco_filename', TRUE) . ' <strong>' . $info['subst']['relFileName'] . '</strong>' : '') . ($info['subst']['type'] == 'string' ? $LANG->getLL('impexpcore_singlereco_value', TRUE) . ' <strong>' . $info['subst']['tokenValue'] . '</strong>' : '') . ($info['subst']['type'] == 'db' ? $LANG->getLL('impexpcore_softrefsel_record', TRUE) . ' <strong>' . $info['subst']['recordRef'] . '</strong>' : '');
 				}
 				$pInfo['ref'] = 'SOFTREF';
 				$pInfo['size'] = '';
@@ -2838,7 +2838,7 @@ class ImportExport {
 	public function renderControls($r) {
 		global $LANG;
 		if ($this->mode === 'export') {
-			return $r['type'] == 'record' ? '<input type="checkbox" name="tx_impexp[exclude][' . $r['ref'] . ']" id="checkExclude' . $r['ref'] . '" value="1" /> <label for="checkExclude' . $r['ref'] . '">' . $LANG->getLL('impexpcore_singlereco_exclude', 1) . '</label>' : ($r['type'] == 'softref' ? $this->softrefSelector($r['_softRefInfo']) : '');
+			return $r['type'] == 'record' ? '<input type="checkbox" name="tx_impexp[exclude][' . $r['ref'] . ']" id="checkExclude' . $r['ref'] . '" value="1" /> <label for="checkExclude' . $r['ref'] . '">' . $LANG->getLL('impexpcore_singlereco_exclude', TRUE) . '</label>' : ($r['type'] == 'softref' ? $this->softrefSelector($r['_softRefInfo']) : '');
 		} else {
 			// During import
 			// For softreferences with editable fields:
@@ -2886,7 +2886,7 @@ class ImportExport {
 				// Description:
 				if (!strlen($cfg['subst']['description'])) {
 					$descriptionField .= '
-					' . $LANG->getLL('impexpcore_printerror_description', 1) . '<br/>
+					' . $LANG->getLL('impexpcore_printerror_description', TRUE) . '<br/>
 					<input type="text" name="tx_impexp[softrefCfg][' . $cfg['subst']['tokenID'] . '][description]" value="' . htmlspecialchars($this->softrefCfg[$cfg['subst']['tokenID']]['description']) . '" />';
 				} else {
 					$descriptionField .= '
