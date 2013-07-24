@@ -633,14 +633,14 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 					if ($plugin->main($this)) {
 						$this->registeredPlugins[$pluginId] = $plugin;
 						// Override buttons from previously registered plugins
-						$pluginButtons = GeneralUtility::trimExplode(',', $plugin->getPluginButtons(), 1);
+						$pluginButtons = GeneralUtility::trimExplode(',', $plugin->getPluginButtons(), TRUE);
 						foreach ($this->pluginButton as $previousPluginId => $buttonList) {
-							$this->pluginButton[$previousPluginId] = implode(',', array_diff(GeneralUtility::trimExplode(',', $this->pluginButton[$previousPluginId], 1), $pluginButtons));
+							$this->pluginButton[$previousPluginId] = implode(',', array_diff(GeneralUtility::trimExplode(',', $this->pluginButton[$previousPluginId], TRUE), $pluginButtons));
 						}
 						$this->pluginButton[$pluginId] = $plugin->getPluginButtons();
-						$pluginLabels = GeneralUtility::trimExplode(',', $plugin->getPluginLabels(), 1);
+						$pluginLabels = GeneralUtility::trimExplode(',', $plugin->getPluginLabels(), TRUE);
 						foreach ($this->pluginLabel as $previousPluginId => $labelList) {
-							$this->pluginLabel[$previousPluginId] = implode(',', array_diff(GeneralUtility::trimExplode(',', $this->pluginLabel[$previousPluginId], 1), $pluginLabels));
+							$this->pluginLabel[$previousPluginId] = implode(',', array_diff(GeneralUtility::trimExplode(',', $this->pluginLabel[$previousPluginId], TRUE), $pluginLabels));
 						}
 						$this->pluginLabel[$pluginId] = $plugin->getPluginLabels();
 						$this->pluginEnabledArray[] = $pluginId;
@@ -686,7 +686,7 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 		}
 		$toolbarOrder = $this->thisConfig['toolbarOrder'] ? $this->thisConfig['toolbarOrder'] : $this->defaultToolbarOrder;
 		// Getting rid of undefined buttons
-		$this->toolbarOrderArray = array_intersect(GeneralUtility::trimExplode(',', $toolbarOrder, 1), GeneralUtility::trimExplode(',', $this->defaultToolbarOrder, 1));
+		$this->toolbarOrderArray = array_intersect(GeneralUtility::trimExplode(',', $toolbarOrder, TRUE), GeneralUtility::trimExplode(',', $this->defaultToolbarOrder, TRUE));
 		$toolbarOrder = array_unique(array_values($this->toolbarOrderArray));
 		// Fetching specConf for field from backend
 		$pList = is_array($this->specConf['richtext']['parameters']) ? implode(',', $this->specConf['richtext']['parameters']) : '';
@@ -695,7 +695,7 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 			$show = is_array($this->specConf['richtext']['parameters']) ? $this->specConf['richtext']['parameters'] : array();
 			if ($this->thisConfig['showButtons']) {
 				if (!GeneralUtility::inList($this->thisConfig['showButtons'], '*')) {
-					$show = array_unique(array_merge($show, GeneralUtility::trimExplode(',', $this->thisConfig['showButtons'], 1)));
+					$show = array_unique(array_merge($show, GeneralUtility::trimExplode(',', $this->thisConfig['showButtons'], TRUE)));
 				} else {
 					$show = array_unique(array_merge($show, $toolbarOrder));
 				}
@@ -716,14 +716,14 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 			$RTEkeyList = isset($GLOBALS['BE_USER']->userTS['options.']['RTEkeyList']) ? $GLOBALS['BE_USER']->userTS['options.']['RTEkeyList'] : '*';
 			if ($RTEkeyList != '*') {
 				// If not all
-				$show = array_intersect($show, GeneralUtility::trimExplode(',', $RTEkeyList, 1));
+				$show = array_intersect($show, GeneralUtility::trimExplode(',', $RTEkeyList, TRUE));
 			}
 		}
 		// Hiding buttons of disabled plugins
 		$hideButtons = array('space', 'bar', 'linebreak');
 		foreach ($this->pluginButton as $pluginId => $buttonList) {
 			if (!$this->isPluginEnabled($pluginId)) {
-				$buttonArray = GeneralUtility::trimExplode(',', $buttonList, 1);
+				$buttonArray = GeneralUtility::trimExplode(',', $buttonList, TRUE);
 				foreach ($buttonArray as $button) {
 					$hideButtons[] = $button;
 				}
@@ -736,7 +736,7 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 			}
 		}
 		// Hiding buttons
-		$show = array_diff($show, $this->conf_toolbar_hide, GeneralUtility::trimExplode(',', $this->thisConfig['hideButtons'], 1));
+		$show = array_diff($show, $this->conf_toolbar_hide, GeneralUtility::trimExplode(',', $this->thisConfig['hideButtons'], TRUE));
 		// Apply toolbar constraints from registered plugins
 		foreach ($this->registeredPlugins as $pluginId => $plugin) {
 			if ($this->isPluginEnabled($pluginId) && method_exists($plugin, 'applyToolbarConstraints')) {
@@ -759,7 +759,7 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 		foreach ($this->pluginButton as $pluginId => $buttonList) {
 			if ($this->registeredPlugins[$pluginId]->addsButtons()) {
 				$showPlugin = FALSE;
-				$buttonArray = GeneralUtility::trimExplode(',', $buttonList, 1);
+				$buttonArray = GeneralUtility::trimExplode(',', $buttonList, TRUE);
 				foreach ($buttonArray as $button) {
 					if (in_array($button, $this->toolbar)) {
 						$showPlugin = TRUE;
@@ -783,7 +783,7 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 		$requiredPlugins = array();
 		foreach ($this->registeredPlugins as $pluginId => $plugin) {
 			if ($this->isPluginEnabled($pluginId)) {
-				$requiredPlugins = array_merge($requiredPlugins, GeneralUtility::trimExplode(',', $plugin->getRequiredPlugins(), 1));
+				$requiredPlugins = array_merge($requiredPlugins, GeneralUtility::trimExplode(',', $plugin->getRequiredPlugins(), TRUE));
 			}
 		}
 		$requiredPlugins = array_unique($requiredPlugins);
@@ -952,16 +952,16 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 		// Setting the list of tags to be removed if specified in the RTE config
 		if (trim($this->thisConfig['removeTags'])) {
 			$configureRTEInJavascriptString .= '
-			RTEarea[editornumber].htmlRemoveTags = /^(' . implode('|', GeneralUtility::trimExplode(',', $this->thisConfig['removeTags'], 1)) . ')$/i;';
+			RTEarea[editornumber].htmlRemoveTags = /^(' . implode('|', GeneralUtility::trimExplode(',', $this->thisConfig['removeTags'], TRUE)) . ')$/i;';
 		}
 		// Setting the list of tags to be removed with their contents if specified in the RTE config
 		if (trim($this->thisConfig['removeTagsAndContents'])) {
 			$configureRTEInJavascriptString .= '
-			RTEarea[editornumber].htmlRemoveTagsAndContents = /^(' . implode('|', GeneralUtility::trimExplode(',', $this->thisConfig['removeTagsAndContents'], 1)) . ')$/i;';
+			RTEarea[editornumber].htmlRemoveTagsAndContents = /^(' . implode('|', GeneralUtility::trimExplode(',', $this->thisConfig['removeTagsAndContents'], TRUE)) . ')$/i;';
 		}
 		// Setting array of custom tags if specified in the RTE config
 		if (!empty($this->thisConfig['customTags'])) {
-			$customTags = GeneralUtility::trimExplode(',', $this->thisConfig['customTags'], 1);
+			$customTags = GeneralUtility::trimExplode(',', $this->thisConfig['customTags'], TRUE);
 			if (!empty($customTags)) {
 				$configureRTEInJavascriptString .= '
 				RTEarea[editornumber].customTags= ' . json_encode($customTags) . ';';
@@ -1068,10 +1068,10 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 		// Scanning the list of sets of mutually exclusives classes if specified in the RTE config
 		if (is_array($RTEProperties['mutuallyExclusiveClasses.'])) {
 			foreach ($RTEProperties['mutuallyExclusiveClasses.'] as $listName => $conf) {
-				$classSet = GeneralUtility::trimExplode(',', $conf, 1);
+				$classSet = GeneralUtility::trimExplode(',', $conf, TRUE);
 				$classList = implode(',', $classSet);
 				foreach ($classSet as $className) {
-					$classesArray['XOR'][$className] = '/^(' . implode('|', GeneralUtility::trimExplode(',', GeneralUtility::rmFromList($className, $classList), 1)) . ')$/';
+					$classesArray['XOR'][$className] = '/^(' . implode('|', GeneralUtility::trimExplode(',', GeneralUtility::rmFromList($className, $classList), TRUE)) . ')$/';
 				}
 			}
 		}
@@ -1430,7 +1430,7 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 		if (strstr($str, '*')) {
 			$str = '*';
 		} else {
-			$str = implode(',', array_unique(GeneralUtility::trimExplode(',', $str, 1)));
+			$str = implode(',', array_unique(GeneralUtility::trimExplode(',', $str, TRUE)));
 		}
 		return $str;
 	}
@@ -1439,7 +1439,7 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 	 * @todo Define visibility
 	 */
 	public function filterStyleEl($elValue, $matchList) {
-		$matchParts = GeneralUtility::trimExplode(',', $matchList, 1);
+		$matchParts = GeneralUtility::trimExplode(',', $matchList, TRUE);
 		$styleParts = explode(';', $elValue);
 		$nStyle = array();
 		foreach ($styleParts as $k => $p) {

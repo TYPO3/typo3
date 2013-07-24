@@ -554,7 +554,7 @@ class DataHandlerHook {
 	 * @return 	array		Array of emails
 	 */
 	protected function getEmailsForStageChangeNotification($listOfUsers, $noTablePrefix = FALSE) {
-		$users = GeneralUtility::trimExplode(',', $listOfUsers, 1);
+		$users = GeneralUtility::trimExplode(',', $listOfUsers, TRUE);
 		$emails = array();
 		foreach ($users as $userIdent) {
 			if ($noTablePrefix) {
@@ -1296,7 +1296,7 @@ class DataHandlerHook {
 		if ($GLOBALS['TCA'][$table]['columns']) {
 			foreach ($GLOBALS['TCA'][$table]['columns'] as $field => $configArr) {
 				if ($configArr['config']['type'] === 'input') {
-					$evalCodesArray = GeneralUtility::trimExplode(',', $configArr['config']['eval'], 1);
+					$evalCodesArray = GeneralUtility::trimExplode(',', $configArr['config']['eval'], TRUE);
 					if (in_array('uniqueInPid', $evalCodesArray) || in_array('unique', $evalCodesArray)) {
 						$listArr[] = $field;
 					}

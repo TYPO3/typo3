@@ -721,7 +721,7 @@ class DataHandler {
 				if (isset($this->datamap[$table])) {
 					foreach ($uid_array as $id => $uidList) {
 						if (isset($this->datamap[$table][$id])) {
-							$theIdsInArray = GeneralUtility::trimExplode(',', $uidList, 1);
+							$theIdsInArray = GeneralUtility::trimExplode(',', $uidList, TRUE);
 							foreach ($theIdsInArray as $copyToUid) {
 								$this->datamap[$table][$copyToUid] = $this->datamap[$table][$id];
 							}
@@ -1257,7 +1257,7 @@ class DataHandler {
 				$shadowCols .= ',' . $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'];
 				$shadowCols .= ',' . $GLOBALS['TCA'][$table]['ctrl']['type'];
 				$shadowCols .= ',' . $GLOBALS['TCA'][$table]['ctrl']['label'];
-				$shadowColumns = array_unique(\TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $shadowCols, 1));
+				$shadowColumns = array_unique(GeneralUtility::trimExplode(',', $shadowCols, TRUE));
 				foreach ($shadowColumns as $fieldName) {
 					if (strcmp($justStoredRecord[$fieldName], $liveRec[$fieldName]) && isset($GLOBALS['TCA'][$table]['columns'][$fieldName]) && $fieldName !== 'uid' && $fieldName !== 'pid') {
 						$newRecord[$fieldName] = $justStoredRecord[$fieldName];
@@ -1328,7 +1328,7 @@ class DataHandler {
 					// Stripping slashes - will probably be removed the day $this->stripslashes_values is removed as an option...
 					if ($this->stripslashes_values) {
 						if (is_array($fieldValue)) {
-							\TYPO3\CMS\Core\Utility\GeneralUtility::stripSlashesOnArray($fieldValue);
+							GeneralUtility::stripSlashesOnArray($fieldValue);
 						} else {
 							$fieldValue = stripslashes($fieldValue);
 						}
@@ -1457,7 +1457,7 @@ class DataHandler {
 					// Must replace the marker if present in content!
 					$insertContent = str_replace($eFileMarker, '', $mixedRec[$eFile['contentField']]);
 					$SW_fileNewContent = $parseHTML->substituteSubpart($SW_fileContent, $eFileMarker, LF . $insertContent . LF, 1, 1);
-					\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($eFile['editFile'], $SW_fileNewContent);
+					GeneralUtility::writeFile($eFile['editFile'], $SW_fileNewContent);
 					// Write status:
 					if (!strstr($id, 'NEW') && $eFile['statusField']) {
 						$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid=' . intval($id), array(
@@ -1606,7 +1606,7 @@ class DataHandler {
 	 * @todo Define visibility
 	 */
 	public function checkValue_text($res, $value, $tcaFieldConf, $PP, $field = '') {
-		$evalCodesArray = GeneralUtility::trimExplode(',', $tcaFieldConf['eval'], 1);
+		$evalCodesArray = GeneralUtility::trimExplode(',', $tcaFieldConf['eval'], TRUE);
 		$res = $this->checkValue_text_Eval($value, $evalCodesArray, $tcaFieldConf['is_in']);
 		return $res;
 	}
@@ -1646,7 +1646,7 @@ class DataHandler {
 			}
 		}
 		// Process evaluation settings:
-		$evalCodesArray = GeneralUtility::trimExplode(',', $tcaFieldConf['eval'], 1);
+		$evalCodesArray = GeneralUtility::trimExplode(',', $tcaFieldConf['eval'], TRUE);
 		$res = $this->checkValue_input_Eval($value, $evalCodesArray, $tcaFieldConf['is_in']);
 		// Process UNIQUE settings:
 		// Field is NOT set for flexForms - which also means that uniqueInPid and unique is NOT available for flexForm fields! Also getUnique should not be done for versioning and if PID is -1 ($realPid<0) then versioning is happening...
@@ -1922,14 +1922,14 @@ class DataHandler {
 							}
 						}
 					} else {
-						$theFileValues = GeneralUtility::trimExplode(',', $curValue, 1);
+						$theFileValues = GeneralUtility::trimExplode(',', $curValue, TRUE);
 					}
 					$currentFilesForHistory = implode(',', $theFileValues);
 					// DELETE files: If existing files were found, traverse those and register files for deletion which has been removed:
 					if (count($theFileValues)) {
 						// Traverse the input values and for all input values which match an EXISTING value, remove the existing from $theFileValues array (this will result in an array of all the existing files which should be deleted!)
 						foreach ($valueArray as $key => $theFile) {
-							if ($theFile && !strstr(\TYPO3\CMS\Core\Utility\GeneralUtility::fixWindowsFilePath($theFile), '/')) {
+							if ($theFile && !strstr(GeneralUtility::fixWindowsFilePath($theFile), '/')) {
 								$theFileValues = GeneralUtility::removeArrayEntryByValue($theFileValues, $theFile);
 							}
 						}
@@ -1958,7 +1958,7 @@ class DataHandler {
 					}
 					// NEW FILES? If the value contains '/' it indicates, that the file
 					// is new and should be added to the uploadsdir (whether its absolute or relative does not matter here)
-					if (strstr(\TYPO3\CMS\Core\Utility\GeneralUtility::fixWindowsFilePath($theFile), '/')) {
+					if (strstr(GeneralUtility::fixWindowsFilePath($theFile), '/')) {
 						// Check various things before copying file:
 						// File and destination must exist
 						if (@is_dir($dest) && (@is_file($theFile) || @is_uploaded_file($theFile))) {
@@ -1978,7 +1978,7 @@ class DataHandler {
 									$theDestFile = $this->fileFunc->getUniqueName($this->fileFunc->cleanFileName($fI['file']), $dest);
 									// If we have a unique destination filename, then write the file:
 									if ($theDestFile) {
-										\TYPO3\CMS\Core\Utility\GeneralUtility::upload_copy_move($theFile, $theDestFile);
+										GeneralUtility::upload_copy_move($theFile, $theDestFile);
 										// Hook for post-processing the upload action
 										if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processUpload'])) {
 											foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processUpload'] as $classRef) {
@@ -2001,7 +2001,7 @@ class DataHandler {
 									$this->log($table, $id, 5, 0, 1, 'File extension \'%s\' not allowed. (%s)', 12, array($fI['fileext'], $recFID), $propArr['event_pid']);
 								}
 							} else {
-								$this->log($table, $id, 5, 0, 1, 'Filesize (%s) of file \'%s\' exceeds limit (%s). (%s)', 13, array(\TYPO3\CMS\Core\Utility\GeneralUtility::formatSize($fileSize), $theFile, GeneralUtility::formatSize($maxSize * 1024), $recFID), $propArr['event_pid']);
+								$this->log($table, $id, 5, 0, 1, 'Filesize (%s) of file \'%s\' exceeds limit (%s). (%s)', 13, array(GeneralUtility::formatSize($fileSize), $theFile, GeneralUtility::formatSize($maxSize * 1024), $recFID), $propArr['event_pid']);
 							}
 						} else {
 							$this->log($table, $id, 5, 0, 1, 'The destination (%s) or the source file (%s) does not exist. (%s)', 14, array($dest, $theFile, $recFID), $propArr['event_pid']);
@@ -2065,7 +2065,7 @@ class DataHandler {
 							} elseif (@is_file($theFile)) {
 								$dest = dirname(PATH_site . $this->alternativeFilePath[$theFile]);
 								if (!@is_dir($dest)) {
-									\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep(PATH_site, dirname($this->alternativeFilePath[$theFile]) . '/');
+									GeneralUtility::mkdir_deep(PATH_site, dirname($this->alternativeFilePath[$theFile]) . '/');
 								}
 								// Init:
 								$maxSize = intval($tcaFieldConf['max_size']);
@@ -2083,7 +2083,7 @@ class DataHandler {
 										$theDestFile = PATH_site . $this->alternativeFilePath[$theFile];
 										// Write the file:
 										if ($theDestFile) {
-											\TYPO3\CMS\Core\Utility\GeneralUtility::upload_copy_move($theFile, $theDestFile);
+											GeneralUtility::upload_copy_move($theFile, $theDestFile);
 											$this->copiedFileMap[$theFile] = $theDestFile;
 											clearstatcache();
 											if (!@is_file($theDestFile)) {
@@ -2096,7 +2096,7 @@ class DataHandler {
 										$this->log($table, $id, 5, 0, 1, 'File extension \'%s\' not allowed. (%s)', 12, array($fI['fileext'], $recFID), $propArr['event_pid']);
 									}
 								} else {
-									$this->log($table, $id, 5, 0, 1, 'Filesize (%s) of file \'%s\' exceeds limit (%s). (%s)', 13, array(\TYPO3\CMS\Core\Utility\GeneralUtility::formatSize($fileSize), $theFile, GeneralUtility::formatSize($maxSize * 1024), $recFID), $propArr['event_pid']);
+									$this->log($table, $id, 5, 0, 1, 'Filesize (%s) of file \'%s\' exceeds limit (%s). (%s)', 13, array(GeneralUtility::formatSize($fileSize), $theFile, GeneralUtility::formatSize($maxSize * 1024), $recFID), $propArr['event_pid']);
 								}
 								// If the destination file was created, we will set the new filename in the value array, otherwise unset the entry in the value array!
 								if (@is_file($theDestFile)) {
@@ -2109,7 +2109,7 @@ class DataHandler {
 							}
 						}
 						$theFile = GeneralUtility::fixWindowsFilePath($theFile);
-						if (\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($theFile, PATH_site)) {
+						if (GeneralUtility::isFirstPartOfStr($theFile, PATH_site)) {
 							$theFile = substr($theFile, strlen(PATH_site));
 						}
 					}
@@ -2493,7 +2493,7 @@ class DataHandler {
 					break;
 				case 'domainname':
 					if (!preg_match('/^[a-z0-9\\.\\-]*$/i', $value)) {
-						\TYPO3\CMS\Core\Utility\GeneralUtility::requireOnce(PATH_typo3 . 'contrib/idna/idna_convert.class.php');
+						GeneralUtility::requireOnce(PATH_typo3 . 'contrib/idna/idna_convert.class.php');
 						$idnaConvert = new \idna_convert();
 						$idnaConvert->set_parameter('idn_version', '2008');
 						$value = $idnaConvert->encode($value);
@@ -2572,7 +2572,7 @@ class DataHandler {
 	 * @todo Define visibility
 	 */
 	public function checkValue_group_select_explodeSelectGroupValue($value) {
-		$valueArray = GeneralUtility::trimExplode(',', $value, 1);
+		$valueArray = GeneralUtility::trimExplode(',', $value, TRUE);
 		foreach ($valueArray as &$newVal) {
 			$temp = explode('|', $newVal, 2);
 			$newVal = str_replace(',', '', str_replace('|', '', rawurldecode($temp[0])));
@@ -2940,7 +2940,7 @@ class DataHandler {
 				//Used to check language and general editing rights
 				if ($language > 0 && $this->BE_USER->checkLanguageAccess($language) || $this->BE_USER->recordEditAccessInternals($table, $uid, FALSE, FALSE, $fullLanguageCheckNeeded)) {
 					$data = array();
-					$nonFields = array_unique(\TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', 'uid,perms_userid,perms_groupid,perms_user,perms_group,perms_everybody,t3ver_oid,t3ver_wsid,t3ver_id,t3ver_label,t3ver_state,t3ver_count,t3ver_stage,t3ver_tstamp,' . $excludeFields, 1));
+					$nonFields = array_unique(GeneralUtility::trimExplode(',', 'uid,perms_userid,perms_groupid,perms_user,perms_group,perms_everybody,t3ver_oid,t3ver_wsid,t3ver_id,t3ver_label,t3ver_state,t3ver_count,t3ver_stage,t3ver_tstamp,' . $excludeFields, TRUE));
 					// So it copies (and localized) content from workspace...
 					$row = BackendUtility::getRecordWSOL($table, $uid);
 					if (is_array($row)) {
@@ -3061,7 +3061,7 @@ class DataHandler {
 		if (!strstr($this->copyWhichTables, '*')) {
 			foreach ($copyTablesArray as $k => $table) {
 				// Pages are always going...
-				if (!$table || !\TYPO3\CMS\Core\Utility\GeneralUtility::inList(($this->copyWhichTables . ',pages'), $table)) {
+				if (!$table || !GeneralUtility::inList(($this->copyWhichTables . ',pages'), $table)) {
 					unset($copyTablesArray[$k]);
 				}
 			}
@@ -3412,7 +3412,7 @@ class DataHandler {
 					}
 				}
 			} else {
-				$theFileValues = GeneralUtility::trimExplode(',', $value, 1);
+				$theFileValues = GeneralUtility::trimExplode(',', $value, TRUE);
 			}
 			// Traverse this array of files:
 			$uploadFolder = $conf['internal_type'] == 'file' ? $conf['uploadfolder'] : '';
@@ -3456,7 +3456,7 @@ class DataHandler {
 			foreach ($recs as $rec) {
 				$filename = basename($rec['ref_string']);
 				$fileInfo = array();
-				if (\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($filename, 'RTEmagicC_')) {
+				if (GeneralUtility::isFirstPartOfStr($filename, 'RTEmagicC_')) {
 					$fileInfo['exists'] = @is_file((PATH_site . $rec['ref_string']));
 					$fileInfo['original'] = substr($rec['ref_string'], 0, -strlen($filename)) . 'RTEmagicP_' . preg_replace('/\\.[[:alnum:]]+$/', '', substr($filename, 10));
 					$fileInfo['original_exists'] = @is_file((PATH_site . $fileInfo['original']));
@@ -3475,8 +3475,8 @@ class DataHandler {
 							$copyDestName = dirname($origDestName) . '/RTEmagicC_' . substr(basename($origDestName), 10) . '.' . $pI['extension'];
 							if (!@is_file($copyDestName) && !@is_file($origDestName) && $origDestName === GeneralUtility::getFileAbsFileName($origDestName) && $copyDestName === GeneralUtility::getFileAbsFileName($copyDestName)) {
 								// Making copies:
-								\TYPO3\CMS\Core\Utility\GeneralUtility::upload_copy_move(PATH_site . $fileInfo['original'], $origDestName);
-								\TYPO3\CMS\Core\Utility\GeneralUtility::upload_copy_move(PATH_site . $rec['ref_string'], $copyDestName);
+								GeneralUtility::upload_copy_move(PATH_site . $fileInfo['original'], $origDestName);
+								GeneralUtility::upload_copy_move(PATH_site . $rec['ref_string'], $copyDestName);
 								clearstatcache();
 								// Register this:
 								$this->RTEmagic_copyIndex[$rec['tablename']][$rec['recuid']][$rec['field']][$rec['ref_string']] = substr($copyDestName, strlen(PATH_site));
@@ -3941,7 +3941,7 @@ class DataHandler {
 													}
 													$overrideValues[$fN] = '[' . $translateToMsg . '] ' . $row[$fN];
 												}
-											} elseif (\TYPO3\CMS\Core\Utility\GeneralUtility::inList('exclude,noCopy,mergeIfNotBlank', $fCfg['l10n_mode']) && $fN != $GLOBALS['TCA'][$Ttable]['ctrl']['languageField'] && $fN != $GLOBALS['TCA'][$Ttable]['ctrl']['transOrigPointerField']) {
+											} elseif (GeneralUtility::inList('exclude,noCopy,mergeIfNotBlank', $fCfg['l10n_mode']) && $fN != $GLOBALS['TCA'][$Ttable]['ctrl']['languageField'] && $fN != $GLOBALS['TCA'][$Ttable]['ctrl']['transOrigPointerField']) {
 												// Otherwise, do not copy field (unless it is the language field or
 												// pointer to the original language)
 												$excludeFields[] = $fN;
@@ -4013,7 +4013,7 @@ class DataHandler {
 		$parts = GeneralUtility::trimExplode(',', $command);
 		$field = $parts[0];
 		$type = $parts[1];
-		if ($field && (\TYPO3\CMS\Core\Utility\GeneralUtility::inList('localize,synchronize', $type) || \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($type)) && isset($GLOBALS['TCA'][$table]['columns'][$field]['config'])) {
+		if ($field && (GeneralUtility::inList('localize,synchronize', $type) || \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($type)) && isset($GLOBALS['TCA'][$table]['columns'][$field]['config'])) {
 			$config = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
 			$foreignTable = $config['foreign_table'];
 			$localizationMode = BackendUtility::getInlineLocalizationMode($table, $config);
@@ -4064,7 +4064,7 @@ class DataHandler {
 							$item['id'] = $this->localize($item['table'], $item['id'], $language);
 							$item['id'] = $this->overlayAutoVersionId($item['table'], $item['id']);
 							$dbAnalysisCurrent->itemArray[] = $item;
-						} elseif (\TYPO3\CMS\Core\Utility\GeneralUtility::inList('localize,synchronize', $type)) {
+						} elseif (GeneralUtility::inList('localize,synchronize', $type)) {
 							foreach ($elementsOriginal as $originalId => $item) {
 								$item['id'] = $this->localize($item['table'], $item['id'], $language);
 								$item['id'] = $this->overlayAutoVersionId($item['table'], $item['id']);
@@ -4346,7 +4346,7 @@ class DataHandler {
 		if ($force) {
 			// Returns the branch WITHOUT permission checks (0 secures that)
 			$brExist = $this->doesBranchExist('', $uid, 0, 1);
-			$res = GeneralUtility::trimExplode(',', $brExist . $uid, 1);
+			$res = GeneralUtility::trimExplode(',', $brExist . $uid, TRUE);
 		} else {
 			$res = $this->canDeletePage($uid);
 		}
@@ -4404,7 +4404,7 @@ class DataHandler {
 				// Checks if we had permissions
 				if ($brExist != -1) {
 					if ($this->noRecordsFromUnallowedTables($brExist . $uid)) {
-						$pagesInBranch = GeneralUtility::trimExplode(',', $brExist . $uid, 1);
+						$pagesInBranch = GeneralUtility::trimExplode(',', $brExist . $uid, TRUE);
 						foreach ($pagesInBranch as $pageInBranch) {
 							if (!$this->BE_USER->recordEditAccessInternals('pages', $pageInBranch, FALSE, FALSE, TRUE)) {
 								return 'Attempt to delete page which has prohibited localizations.';
@@ -4884,7 +4884,7 @@ class DataHandler {
 		// Table name to prepend the UID
 		$prependName = $conf['type'] == 'group' ? $conf['prepend_tname'] : '';
 		// Which tables that should possibly not be remapped
-		$dontRemapTables = GeneralUtility::trimExplode(',', $conf['dontRemapTablesOnCopy'], 1);
+		$dontRemapTables = GeneralUtility::trimExplode(',', $conf['dontRemapTablesOnCopy'], TRUE);
 		// Convert value to list of references:
 		$dbAnalysis = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\RelationHandler');
 		$dbAnalysis->registerNonTableValues = $conf['type'] == 'select' && $conf['allowNonIdValues'] ? 1 : 0;
@@ -5348,7 +5348,7 @@ class DataHandler {
 			// Check non-root-level
 			$doktype = $this->pageInfo($page_uid, 'doktype');
 			$allowedTableList = isset($GLOBALS['PAGES_TYPES'][$doktype]['allowedTables']) ? $GLOBALS['PAGES_TYPES'][$doktype]['allowedTables'] : $GLOBALS['PAGES_TYPES']['default']['allowedTables'];
-			$allowedArray = GeneralUtility::trimExplode(',', $allowedTableList, 1);
+			$allowedArray = GeneralUtility::trimExplode(',', $allowedTableList, TRUE);
 			// If all tables or the table is listed as a allowed type, return TRUE
 			if (strstr($allowedTableList, '*') || in_array($checkTable, $allowedArray)) {
 				return TRUE;
@@ -5544,7 +5544,7 @@ class DataHandler {
 		foreach (array_keys($GLOBALS['TCA']) as $table) {
 			if (isset($GLOBALS['TCA'][$table]['columns'])) {
 				foreach ($GLOBALS['TCA'][$table]['columns'] as $field => $config) {
-					if ($config['exclude'] && !\TYPO3\CMS\Core\Utility\GeneralUtility::inList($this->BE_USER->groupData['non_exclude_fields'], ($table . ':' . $field))) {
+					if ($config['exclude'] && !GeneralUtility::inList($this->BE_USER->groupData['non_exclude_fields'], ($table . ':' . $field))) {
 						$list[] = $table . '-' . $field;
 					}
 				}
@@ -5568,7 +5568,7 @@ class DataHandler {
 			return FALSE;
 		}
 		$allowedTableList = isset($GLOBALS['PAGES_TYPES'][$doktype]['allowedTables']) ? $GLOBALS['PAGES_TYPES'][$doktype]['allowedTables'] : $GLOBALS['PAGES_TYPES']['default']['allowedTables'];
-		$allowedArray = GeneralUtility::trimExplode(',', $allowedTableList, 1);
+		$allowedArray = GeneralUtility::trimExplode(',', $allowedTableList, TRUE);
 		// If all tables is OK the return TRUE
 		if (strstr($allowedTableList, '*')) {
 			// OK...
@@ -6240,7 +6240,7 @@ class DataHandler {
 	 * @todo Define visibility
 	 */
 	public function assemblePermissions($string) {
-		$keyArr = GeneralUtility::trimExplode(',', $string, 1);
+		$keyArr = GeneralUtility::trimExplode(',', $string, TRUE);
 		$value = 0;
 		foreach ($keyArr as $key) {
 			if ($key && isset($this->pMap[$key])) {
@@ -6401,7 +6401,7 @@ class DataHandler {
 	 * @todo Define visibility
 	 */
 	public function removeCacheFiles() {
-		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
+		GeneralUtility::logDeprecatedFunction();
 		return \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::removeCacheFiles();
 	}
 
@@ -6458,7 +6458,7 @@ class DataHandler {
 			$newData = array();
 			foreach ($GLOBALS['TCA'][$table]['columns'] as $field => $conf) {
 				if ($conf['config']['type'] == 'input') {
-					$evalCodesArray = GeneralUtility::trimExplode(',', $conf['config']['eval'], 1);
+					$evalCodesArray = GeneralUtility::trimExplode(',', $conf['config']['eval'], TRUE);
 					if (in_array('uniqueInPid', $evalCodesArray)) {
 						$newV = $this->getUnique($table, $field, $curData[$field], $uid, $curData['pid']);
 						if (strcmp($newV, $curData[$field])) {
@@ -6489,7 +6489,7 @@ class DataHandler {
 	public function fixCopyAfterDuplFields($table, $uid, $prevUid, $update, $newData = array()) {
 		if ($GLOBALS['TCA'][$table] && $GLOBALS['TCA'][$table]['ctrl']['copyAfterDuplFields']) {
 			$prevData = $this->recordInfo($table, $prevUid, '*');
-			$theFields = GeneralUtility::trimExplode(',', $GLOBALS['TCA'][$table]['ctrl']['copyAfterDuplFields'], 1);
+			$theFields = GeneralUtility::trimExplode(',', $GLOBALS['TCA'][$table]['ctrl']['copyAfterDuplFields'], TRUE);
 			foreach ($theFields as $field) {
 				if ($GLOBALS['TCA'][$table]['columns'][$field] && ($update || !isset($newData[$field]))) {
 					$newData[$field] = $prevData[$field];
@@ -6529,12 +6529,12 @@ class DataHandler {
 	 * @deprecated since 6.1, will be removed in two versions, use \TYPO3\CMS\Version\Hook\DataHandlerHook::getUniqueFields() instead
 	 */
 	public function getUniqueFields($table) {
-		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
+		GeneralUtility::logDeprecatedFunction();
 		$listArr = array();
 		if ($GLOBALS['TCA'][$table]['columns']) {
 			foreach ($GLOBALS['TCA'][$table]['columns'] as $field => $configArr) {
 				if ($configArr['config']['type'] === 'input') {
-					$evalCodesArray = GeneralUtility::trimExplode(',', $configArr['config']['eval'], 1);
+					$evalCodesArray = GeneralUtility::trimExplode(',', $configArr['config']['eval'], TRUE);
 					if (in_array('uniqueInPid', $evalCodesArray) || in_array('unique', $evalCodesArray)) {
 						$listArr[] = $field;
 					}
@@ -6802,7 +6802,7 @@ class DataHandler {
 						foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearPageCacheEval'] as $funcName) {
 							$_params = array('pageIdArray' => &$list_cache, 'table' => $table, 'uid' => $uid, 'functionID' => 'clear_cache()');
 							// Returns the array of ids to clear, FALSE if nothing should be cleared! Never an empty array!
-							\TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($funcName, $_params, $this);
+							GeneralUtility::callUserFunction($funcName, $_params, $this);
 						}
 					}
 					// Delete cache for selected pages:
@@ -6819,7 +6819,7 @@ class DataHandler {
 			}
 			// Clear cache for pages entered in TSconfig:
 			if ($TSConfig['clearCacheCmd']) {
-				$Commands = GeneralUtility::trimExplode(',', $TSConfig['clearCacheCmd'], 1);
+				$Commands = GeneralUtility::trimExplode(',', $TSConfig['clearCacheCmd'], TRUE);
 				$Commands = array_unique($Commands);
 				foreach ($Commands as $cmdPart) {
 					$this->clear_cacheCmd($cmdPart);
@@ -6829,7 +6829,7 @@ class DataHandler {
 			if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc'])) {
 				$_params = array('table' => $table, 'uid' => $uid, 'uid_page' => $pageUid, 'TSConfig' => $TSConfig);
 				foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc'] as $_funcRef) {
-					\TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($_funcRef, $_params, $this);
+					GeneralUtility::callUserFunction($_funcRef, $_params, $this);
 				}
 			}
 		}
@@ -6912,7 +6912,7 @@ class DataHandler {
 					foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearPageCacheEval'] as $funcName) {
 						$_params = array('pageIdArray' => &$list_cache, 'cacheCmd' => $cacheCmd, 'functionID' => 'clear_cacheCmd()');
 						// Returns the array of ids to clear, FALSE if nothing should be cleared! Never an empty array!
-						\TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($funcName, $_params, $this);
+						GeneralUtility::callUserFunction($funcName, $_params, $this);
 					}
 				}
 				// Delete cache for selected pages:
@@ -6924,7 +6924,7 @@ class DataHandler {
 			}
 		}
 		// flush cache by tag
-		if (\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr(strtolower($cacheCmd), 'cachetag:')) {
+		if (GeneralUtility::isFirstPartOfStr(strtolower($cacheCmd), 'cachetag:')) {
 			$cacheTag = substr($cacheCmd, 9);
 			$tagsToFlush[] = $cacheTag;
 		}
@@ -6943,7 +6943,7 @@ class DataHandler {
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc'])) {
 			$_params = array('cacheCmd' => strtolower($cacheCmd));
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc'] as $_funcRef) {
-				\TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($_funcRef, $_params, $this);
+				GeneralUtility::callUserFunction($_funcRef, $_params, $this);
 			}
 		}
 	}
@@ -7076,7 +7076,7 @@ class DataHandler {
 				case 'inline':
 					if ($GLOBALS['TCA'][$table]['columns'][$field]['config']['foreign_field']) {
 						if (!\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($value)) {
-							$result[$field] = count(\TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $value, TRUE));
+							$result[$field] = count(GeneralUtility::trimExplode(',', $value, TRUE));
 						}
 					}
 					break;

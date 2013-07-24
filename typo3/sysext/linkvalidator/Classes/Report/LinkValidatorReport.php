@@ -595,7 +595,7 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
 		} else {
 			$markerArray['total_count'] = $brokenLinkOverView['brokenlinkCount'];
 		}
-		$linktypes = GeneralUtility::trimExplode(',', $this->modTS['linktypes'], 1);
+		$linktypes = GeneralUtility::trimExplode(',', $this->modTS['linktypes'], TRUE);
 		$hookSectionContent = '';
 		if (is_array($linktypes)) {
 			if (!empty($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'])

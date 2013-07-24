@@ -177,7 +177,7 @@ class AddController {
 								$insertValue = $addEl . ',' . $curValueOfFlexform;
 								break;
 						}
-						$insertValue = implode(',', GeneralUtility::trimExplode(',', $insertValue, 1));
+						$insertValue = implode(',', GeneralUtility::trimExplode(',', $insertValue, TRUE));
 						$data[$this->P['table']][$this->P['uid']][$this->P['field']] = array();
 						$flexToolObj->setArrayValueByPath($this->P['flexFormPath'], $data[$this->P['table']][$this->P['uid']][$this->P['field']], $insertValue);
 					} else {
@@ -192,7 +192,7 @@ class AddController {
 								$data[$this->P['table']][$this->P['uid']][$this->P['field']] = $addEl . ',' . $current[$this->P['field']];
 								break;
 						}
-						$data[$this->P['table']][$this->P['uid']][$this->P['field']] = implode(',', GeneralUtility::trimExplode(',', $data[$this->P['table']][$this->P['uid']][$this->P['field']], 1));
+						$data[$this->P['table']][$this->P['uid']][$this->P['field']] = implode(',', GeneralUtility::trimExplode(',', $data[$this->P['table']][$this->P['uid']][$this->P['field']], TRUE));
 					}
 					// Submit the data:
 					$tce->start($data, array());

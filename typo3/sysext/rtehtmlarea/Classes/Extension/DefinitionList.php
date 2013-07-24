@@ -92,7 +92,7 @@ class DefinitionList extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 	 */
 	public function applyToolbarConstraints($show) {
 		$blockElementsButtons = 'formatblock, indent, outdent, blockquote, insertparagraphbefore, insertparagraphafter, left, center, right, justifyfull, orderedlist, unorderedlist';
-		$notRemoved = array_intersect(\TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $blockElementsButtons, 1), $show);
+		$notRemoved = array_intersect(\TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $blockElementsButtons, TRUE), $show);
 		// DefinitionList plugin requires BlockElements plugin
 		// We will not allow any definition lists operations if all block elements buttons were disabled
 		if (empty($notRemoved)) {

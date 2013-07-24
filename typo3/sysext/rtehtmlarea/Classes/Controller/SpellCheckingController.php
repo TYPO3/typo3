@@ -177,8 +177,8 @@ class SpellCheckingController {
 		}
 		// Setting the list of dictionaries
 		$dictionaryList = shell_exec($this->AspellDirectory . ' dump dicts');
-		$dictionaryList = implode(',', GeneralUtility::trimExplode(LF, $dictionaryList, 1));
-		$dictionaryArray = GeneralUtility::trimExplode(',', $dictionaryList, 1);
+		$dictionaryList = implode(',', GeneralUtility::trimExplode(LF, $dictionaryList, TRUE));
+		$dictionaryArray = GeneralUtility::trimExplode(',', $dictionaryList, TRUE);
 		$restrictToDictionaries = GeneralUtility::_POST('restrictToDictionaries');
 		if ($restrictToDictionaries) {
 			$dictionaryArray = array_intersect($dictionaryArray, GeneralUtility::trimExplode(',', $restrictToDictionaries, 1));
@@ -604,7 +604,7 @@ var selectedDictionary = "' . $this->dictionary . '";
 					$AspellCommand = $catCommand . ' ' . escapeshellarg($tmpFileName) . ' | ' . $this->AspellDirectory . ' -a check --mode=none --sug-mode=' . escapeshellarg($this->pspellMode) . ($this->personalDictionaryPath ? ' --home-dir=' . escapeshellarg($this->personalDictionaryPath) : '') . ' --lang=' . escapeshellarg($this->dictionary) . ' --encoding=' . escapeshellarg($this->aspellEncoding) . ' 2>&1';
 					$AspellAnswer = shell_exec($AspellCommand);
 					$AspellResultLines = array();
-					$AspellResultLines = GeneralUtility::trimExplode(LF, $AspellAnswer, 1);
+					$AspellResultLines = GeneralUtility::trimExplode(LF, $AspellAnswer, TRUE);
 					if (substr($AspellResultLines[0], 0, 6) == 'Error:') {
 						echo '{' . $AspellAnswer . '}';
 					}
@@ -617,8 +617,8 @@ var selectedDictionary = "' . $this->dictionary . '";
 							$suggest = array();
 							$suggestions = array();
 							if (substr($AspellResultLines['1'], 0, 1) == '&') {
-								$suggestions = GeneralUtility::trimExplode(':', $AspellResultLines['1'], 1);
-								$suggest = GeneralUtility::trimExplode(',', $suggestions['1'], 1);
+								$suggestions = GeneralUtility::trimExplode(':', $AspellResultLines['1'], TRUE);
+								$suggest = GeneralUtility::trimExplode(',', $suggestions['1'], TRUE);
 							}
 							if (sizeof($suggest) != 0) {
 								$this->suggestionCount++;

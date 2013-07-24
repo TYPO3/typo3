@@ -168,7 +168,7 @@ class CommandLineController {
 		$allOptions = array();
 		foreach ($this->cli_options as $cfg) {
 			$allOptions[] = $cfg[0];
-			$argSplit = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(' ', $cfg[0], 1);
+			$argSplit = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(' ', $cfg[0], TRUE);
 			if (isset($cli_args_copy[$argSplit[0]])) {
 				foreach ($argSplit as $i => $v) {
 					$ii = $i;

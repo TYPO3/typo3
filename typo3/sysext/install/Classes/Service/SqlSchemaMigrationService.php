@@ -73,7 +73,7 @@ class SqlSchemaMigrationService {
 	 * @return array Array with information about table.
 	 */
 	public function getFieldDefinitions_fileContent($fileContent) {
-		$lines = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(LF, $fileContent, 1);
+		$lines = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(LF, $fileContent, TRUE);
 		$table = '';
 		$total = array();
 		foreach ($lines as $value) {

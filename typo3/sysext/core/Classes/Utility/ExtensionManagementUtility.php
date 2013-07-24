@@ -806,8 +806,8 @@ class ExtensionManagementUtility {
 		if (isset($GLOBALS['TBE_MODULES'][$main]) && $sub) {
 			// If there is already a main module by this name:
 			// Adding the submodule to the correct position:
-			list($place, $modRef) = GeneralUtility::trimExplode(':', $position, 1);
-			$mods = GeneralUtility::trimExplode(',', $GLOBALS['TBE_MODULES'][$main], 1);
+			list($place, $modRef) = GeneralUtility::trimExplode(':', $position, TRUE);
+			$mods = GeneralUtility::trimExplode(',', $GLOBALS['TBE_MODULES'][$main], TRUE);
 			if (!in_array($sub, $mods)) {
 				switch (strtolower($place)) {
 					case 'after':
@@ -1065,7 +1065,7 @@ class ExtensionManagementUtility {
 		$priority = 0;
 		$quality = 0;
 		if (!is_array($excludeServiceKeys)) {
-			$excludeServiceKeys = GeneralUtility::trimExplode(',', $excludeServiceKeys, 1);
+			$excludeServiceKeys = GeneralUtility::trimExplode(',', $excludeServiceKeys, TRUE);
 		}
 		if (is_array($GLOBALS['T3_SERVICES'][$serviceType])) {
 			foreach ($GLOBALS['T3_SERVICES'][$serviceType] as $key => $info) {
@@ -1137,7 +1137,7 @@ class ExtensionManagementUtility {
 	static public function isServiceAvailable($serviceType, $serviceKey, $serviceDetails) {
 		// If the service depends on external programs - check if they exists
 		if (trim($serviceDetails['exec'])) {
-			$executables = GeneralUtility::trimExplode(',', $serviceDetails['exec'], 1);
+			$executables = GeneralUtility::trimExplode(',', $serviceDetails['exec'], TRUE);
 			foreach ($executables as $executable) {
 				// If at least one executable file is not available, exit early returning FALSE
 				if (!\TYPO3\CMS\Core\Utility\CommandUtility::checkCommand($executable)) {

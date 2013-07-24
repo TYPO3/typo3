@@ -303,7 +303,7 @@ class CrawlerHook {
 			} elseif (@is_dir($readpath)) {
 				// If dir, read content and create new pending items for log:
 				// Select files and directories in path:
-				$extList = implode(',', GeneralUtility::trimExplode(',', $cfgRec['extensions'], 1));
+				$extList = implode(',', GeneralUtility::trimExplode(',', $cfgRec['extensions'], TRUE));
 				$fileArr = array();
 				$files = GeneralUtility::getAllFilesAndFoldersInPath($fileArr, $readpath, $extList, 0, 0);
 				$directoryList = GeneralUtility::get_dirs($readpath);
@@ -547,7 +547,7 @@ class CrawlerHook {
 		$this->loadIndexerClass();
 		// Init:
 		$rl = is_array($rl) ? $rl : $this->getUidRootLineForClosestTemplate($cfgRec['pid']);
-		$fieldList = GeneralUtility::trimExplode(',', $cfgRec['fieldlist'], 1);
+		$fieldList = GeneralUtility::trimExplode(',', $cfgRec['fieldlist'], TRUE);
 		$languageField = $GLOBALS['TCA'][$cfgRec['table2index']]['ctrl']['languageField'];
 		$sys_language_uid = $languageField ? $r[$languageField] : 0;
 		// (Re)-Indexing a row from a table:
@@ -642,7 +642,7 @@ class CrawlerHook {
 	 */
 	public function checkDeniedSuburls($url, $url_deny) {
 		if (trim($url_deny)) {
-			$url_denyArray = GeneralUtility::trimExplode(LF, $url_deny, 1);
+			$url_denyArray = GeneralUtility::trimExplode(LF, $url_deny, TRUE);
 			foreach ($url_denyArray as $testurl) {
 				if (GeneralUtility::isFirstPartOfStr($url, $testurl)) {
 					echo $url . ' /// ' . $url_deny . LF;

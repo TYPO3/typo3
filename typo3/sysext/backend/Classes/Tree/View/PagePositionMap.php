@@ -339,7 +339,7 @@ class PagePositionMap {
 	 * @todo Define visibility
 	 */
 	public function insertQuadLines($codes, $allBlank = FALSE) {
-		$codeA = GeneralUtility::trimExplode(',', $codes . ',line', 1);
+		$codeA = GeneralUtility::trimExplode(',', $codes . ',line', TRUE);
 		$lines = array();
 		foreach ($codeA as $code) {
 			if ($code == 'blank' || $allBlank) {
@@ -370,7 +370,7 @@ class PagePositionMap {
 	public function printContentElementColumns($pid, $moveUid, $colPosList, $showHidden, $R_URI) {
 		$this->R_URI = $R_URI;
 		$this->moveUid = $moveUid;
-		$colPosArray = GeneralUtility::trimExplode(',', $colPosList, 1);
+		$colPosArray = GeneralUtility::trimExplode(',', $colPosList, TRUE);
 		$lines = array();
 		foreach ($colPosArray as $kk => $vv) {
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'tt_content', 'pid=' . intval($pid) . ($showHidden ? '' : BackendUtility::BEenableFields('tt_content')) . ' AND colPos=' . intval($vv) . (strcmp($this->cur_sys_language, '') ? ' AND sys_language_uid=' . intval($this->cur_sys_language) : '') . BackendUtility::deleteClause('tt_content') . BackendUtility::versioningPlaceholderClause('tt_content'), '', 'sorting');

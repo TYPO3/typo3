@@ -316,11 +316,11 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 		$removedProperties = array();
 		if (is_array($this->buttonConfig['properties.'])) {
 			if ($this->buttonConfig['properties.']['removeItems']) {
-				$removedProperties = GeneralUtility::trimExplode(',', $this->buttonConfig['properties.']['removeItems'], 1);
+				$removedProperties = GeneralUtility::trimExplode(',', $this->buttonConfig['properties.']['removeItems'], TRUE);
 			}
 		}
 		if ($this->buttonConfig['properties.']['class.']['allowedClasses']) {
-			$classesImageArray = GeneralUtility::trimExplode(',', $this->buttonConfig['properties.']['class.']['allowedClasses'], 1);
+			$classesImageArray = GeneralUtility::trimExplode(',', $this->buttonConfig['properties.']['class.']['allowedClasses'], TRUE);
 			$classesImageJSOptions = '<option value=""></option>';
 			foreach ($classesImageArray as $class) {
 				$classesImageJSOptions .= '<option value="' . $class . '">' . $class . '</option>';
@@ -896,7 +896,7 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 		}
 		// Remove options according to RTE configuration
 		if (is_array($this->buttonConfig['options.']) && $this->buttonConfig['options.']['removeItems']) {
-			$allowedItems = array_diff($allowedItems, GeneralUtility::trimExplode(',', $this->buttonConfig['options.']['removeItems'], 1));
+			$allowedItems = array_diff($allowedItems, GeneralUtility::trimExplode(',', $this->buttonConfig['options.']['removeItems'], TRUE));
 		}
 		return $allowedItems;
 	}

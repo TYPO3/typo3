@@ -708,7 +708,7 @@ class ElementBrowser {
 		// Starting content:
 		$content = $this->doc->startPage('RTE link');
 		// Initializing the action value, possibly removing blinded values etc:
-		$allowedItems = array_diff(explode(',', 'page,file,folder,url,mail,spec'), GeneralUtility::trimExplode(',', $this->thisConfig['blindLinkOptions'], 1));
+		$allowedItems = array_diff(explode(',', 'page,file,folder,url,mail,spec'), GeneralUtility::trimExplode(',', $this->thisConfig['blindLinkOptions'], TRUE));
 		$allowedItems = array_diff($allowedItems, GeneralUtility::trimExplode(',', $this->P['params']['blindLinkOptions']));
 		// Call hook for extra options
 		foreach ($this->hookObjects as $hookObject) {
@@ -1411,7 +1411,7 @@ class ElementBrowser {
 			if (!strcmp(trim($tables), '*')) {
 				$tablesArr = array_keys($GLOBALS['TCA']);
 			} else {
-				$tablesArr = GeneralUtility::trimExplode(',', $tables, 1);
+				$tablesArr = GeneralUtility::trimExplode(',', $tables, TRUE);
 			}
 			reset($tablesArr);
 			// Headline for selecting records:

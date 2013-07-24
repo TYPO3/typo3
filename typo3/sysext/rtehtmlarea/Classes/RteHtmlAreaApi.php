@@ -118,7 +118,7 @@ abstract class RteHtmlAreaApi {
 	 */
 	public function addButtonsToToolbar() {
 		//Add only buttons not yet in the default toolbar order
-		$addButtons = implode(',', array_diff(\TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->pluginButtons, 1), \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->htmlAreaRTE->defaultToolbarOrder, 1)));
+		$addButtons = implode(',', array_diff(\TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->pluginButtons, TRUE), \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->htmlAreaRTE->defaultToolbarOrder, TRUE)));
 		return ($addButtons ? 'bar,' . $addButtons . ',linebreak,' : '') . $this->htmlAreaRTE->defaultToolbarOrder;
 	}
 
@@ -145,7 +145,7 @@ abstract class RteHtmlAreaApi {
 	public function buildJavascriptConfiguration($RTEcounter) {
 		global $TSFE, $LANG;
 		$registerRTEinJavascriptString = '';
-		$pluginButtons = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->pluginButtons, 1);
+		$pluginButtons = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->pluginButtons, TRUE);
 		foreach ($pluginButtons as $button) {
 			if (in_array($button, $this->toolbar)) {
 				if (!is_array($this->thisConfig['buttons.']) || !is_array($this->thisConfig['buttons.'][($button . '.')])) {
