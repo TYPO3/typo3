@@ -167,7 +167,7 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin 
 		}
 		// What to display
 		$content = '';
-		if ($this->piVars['forgot']) {
+		if ($this->piVars['forgot'] && $this->conf['showForgotPassword']) {
 			$content .= $this->showForgot();
 		} elseif ($this->piVars['forgothash']) {
 			$content .= $this->changePassword();
