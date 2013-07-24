@@ -265,7 +265,7 @@ class FormsController {
 			// Save & Close
 			$buttons['save_close'] = '<input type="image" class="c-inputButton" name="saveandclosedok"' . IconUtility::skinImg($this->doc->backPath, 'gfx/saveandclosedok.gif') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveCloseDoc', 1) . '" />';
 			// Reload
-			$buttons['reload'] = '<input type="image" class="c-inputButton" name="_refresh"' . IconUtility::skinImg('', 'gfx/refresh_n.gif') . ' title="' . $GLOBALS['LANG']->getLL('forms_refresh', 1) . '" />';
+			$buttons['reload'] = '<input type="image" class="c-inputButton" name="_refresh"' . IconUtility::skinImg('', 'gfx/refresh_n.gif') . ' title="' . $GLOBALS['LANG']->getLL('forms_refresh', TRUE) . '" />';
 		}
 		return $buttons;
 	}
@@ -374,9 +374,9 @@ class FormsController {
 		$tRows = array();
 		// Set header row:
 		$cells = array(
-			$GLOBALS['LANG']->getLL('forms_preview', 1) . ':',
-			$GLOBALS['LANG']->getLL('forms_element', 1) . ':',
-			$GLOBALS['LANG']->getLL('forms_config', 1) . ':'
+			$GLOBALS['LANG']->getLL('forms_preview', TRUE) . ':',
+			$GLOBALS['LANG']->getLL('forms_element', TRUE) . ':',
+			$GLOBALS['LANG']->getLL('forms_config', TRUE) . ':'
 		);
 		$tRows[] = '
 			<tr class="bgColor2" id="typo3-formWizardHeader">
@@ -405,7 +405,7 @@ class FormsController {
 					$types = explode(',', 'input,textarea,select,check,radio,password,file,hidden,submit,property,label');
 					foreach ($types as $t) {
 						$opt[] = '
-								<option value="' . $t . '"' . ($confData['type'] == $t ? ' selected="selected"' : '') . '>' . $GLOBALS['LANG']->getLL(('forms_type_' . $t), 1) . '</option>';
+								<option value="' . $t . '"' . ($confData['type'] == $t ? ' selected="selected"' : '') . '>' . $GLOBALS['LANG']->getLL(('forms_type_' . $t), TRUE) . '</option>';
 					}
 					$temp_cells[$GLOBALS['LANG']->getLL('forms_type')] = '
 							<select name="FORMCFG[c][' . ($k + 1) * 2 . '][type]">
@@ -418,7 +418,7 @@ class FormsController {
 					}
 					// Required checkbox:
 					if (!GeneralUtility::inList('check,hidden,submit,label', $confData['type'])) {
-						$temp_cells[$GLOBALS['LANG']->getLL('forms_required')] = '<input type="checkbox" name="FORMCFG[c][' . ($k + 1) * 2 . '][required]" value="1"' . ($confData['required'] ? ' checked="checked"' : '') . ' title="' . $GLOBALS['LANG']->getLL('forms_required', 1) . '" />';
+						$temp_cells[$GLOBALS['LANG']->getLL('forms_required')] = '<input type="checkbox" name="FORMCFG[c][' . ($k + 1) * 2 . '][required]" value="1"' . ($confData['required'] ? ' checked="checked"' : '') . ' title="' . $GLOBALS['LANG']->getLL('forms_required', TRUE) . '" />';
 					}
 					// Put sub-items together into table cell:
 					$cells[] = $this->formatCells($temp_cells);
@@ -429,28 +429,28 @@ class FormsController {
 						$confData['fieldname'] = 'attachment' . ++$this->attachmentCounter;
 					}
 					if (!GeneralUtility::inList('label', $confData['type'])) {
-						$temp_cells[$GLOBALS['LANG']->getLL('forms_fieldName')] = '<input type="text"' . $this->doc->formWidth(10) . ' name="FORMCFG[c][' . ($k + 1) * 2 . '][fieldname]" value="' . htmlspecialchars($confData['fieldname']) . '" title="' . $GLOBALS['LANG']->getLL('forms_fieldName', 1) . '" />';
+						$temp_cells[$GLOBALS['LANG']->getLL('forms_fieldName')] = '<input type="text"' . $this->doc->formWidth(10) . ' name="FORMCFG[c][' . ($k + 1) * 2 . '][fieldname]" value="' . htmlspecialchars($confData['fieldname']) . '" title="' . $GLOBALS['LANG']->getLL('forms_fieldName', TRUE) . '" />';
 					}
 					// Field configuration depending on the fields type:
 					switch ((string) $confData['type']) {
 						case 'textarea':
-							$temp_cells[$GLOBALS['LANG']->getLL('forms_cols')] = '<input type="text"' . $this->doc->formWidth(5) . ' name="FORMCFG[c][' . ($k + 1) * 2 . '][cols]" value="' . htmlspecialchars($confData['cols']) . '" title="' . $GLOBALS['LANG']->getLL('forms_cols', 1) . '" />';
-							$temp_cells[$GLOBALS['LANG']->getLL('forms_rows')] = '<input type="text"' . $this->doc->formWidth(5) . ' name="FORMCFG[c][' . ($k + 1) * 2 . '][rows]" value="' . htmlspecialchars($confData['rows']) . '" title="' . $GLOBALS['LANG']->getLL('forms_rows', 1) . '" />';
-							$temp_cells[$GLOBALS['LANG']->getLL('forms_extra')] = '<input type="checkbox" name="FORMCFG[c][' . ($k + 1) * 2 . '][extra]" value="OFF"' . ($confData['extra'] == 'OFF' ? ' checked="checked"' : '') . ' title="' . $GLOBALS['LANG']->getLL('forms_extra', 1) . '" />';
+							$temp_cells[$GLOBALS['LANG']->getLL('forms_cols')] = '<input type="text"' . $this->doc->formWidth(5) . ' name="FORMCFG[c][' . ($k + 1) * 2 . '][cols]" value="' . htmlspecialchars($confData['cols']) . '" title="' . $GLOBALS['LANG']->getLL('forms_cols', TRUE) . '" />';
+							$temp_cells[$GLOBALS['LANG']->getLL('forms_rows')] = '<input type="text"' . $this->doc->formWidth(5) . ' name="FORMCFG[c][' . ($k + 1) * 2 . '][rows]" value="' . htmlspecialchars($confData['rows']) . '" title="' . $GLOBALS['LANG']->getLL('forms_rows', TRUE) . '" />';
+							$temp_cells[$GLOBALS['LANG']->getLL('forms_extra')] = '<input type="checkbox" name="FORMCFG[c][' . ($k + 1) * 2 . '][extra]" value="OFF"' . ($confData['extra'] == 'OFF' ? ' checked="checked"' : '') . ' title="' . $GLOBALS['LANG']->getLL('forms_extra', TRUE) . '" />';
 							break;
 						case 'input':
 
 						case 'password':
-							$temp_cells[$GLOBALS['LANG']->getLL('forms_size')] = '<input type="text"' . $this->doc->formWidth(5) . ' name="FORMCFG[c][' . ($k + 1) * 2 . '][size]" value="' . htmlspecialchars($confData['size']) . '" title="' . $GLOBALS['LANG']->getLL('forms_size', 1) . '" />';
-							$temp_cells[$GLOBALS['LANG']->getLL('forms_max')] = '<input type="text"' . $this->doc->formWidth(5) . ' name="FORMCFG[c][' . ($k + 1) * 2 . '][max]" value="' . htmlspecialchars($confData['max']) . '" title="' . $GLOBALS['LANG']->getLL('forms_max', 1) . '" />';
+							$temp_cells[$GLOBALS['LANG']->getLL('forms_size')] = '<input type="text"' . $this->doc->formWidth(5) . ' name="FORMCFG[c][' . ($k + 1) * 2 . '][size]" value="' . htmlspecialchars($confData['size']) . '" title="' . $GLOBALS['LANG']->getLL('forms_size', TRUE) . '" />';
+							$temp_cells[$GLOBALS['LANG']->getLL('forms_max')] = '<input type="text"' . $this->doc->formWidth(5) . ' name="FORMCFG[c][' . ($k + 1) * 2 . '][max]" value="' . htmlspecialchars($confData['max']) . '" title="' . $GLOBALS['LANG']->getLL('forms_max', TRUE) . '" />';
 							break;
 						case 'file':
-							$temp_cells[$GLOBALS['LANG']->getLL('forms_size')] = '<input type="text"' . $this->doc->formWidth(5) . ' name="FORMCFG[c][' . ($k + 1) * 2 . '][size]" value="' . htmlspecialchars($confData['size']) . '" title="' . $GLOBALS['LANG']->getLL('forms_size', 1) . '" />';
+							$temp_cells[$GLOBALS['LANG']->getLL('forms_size')] = '<input type="text"' . $this->doc->formWidth(5) . ' name="FORMCFG[c][' . ($k + 1) * 2 . '][size]" value="' . htmlspecialchars($confData['size']) . '" title="' . $GLOBALS['LANG']->getLL('forms_size', TRUE) . '" />';
 							break;
 						case 'select':
-							$temp_cells[$GLOBALS['LANG']->getLL('forms_size')] = '<input type="text"' . $this->doc->formWidth(5) . ' name="FORMCFG[c][' . ($k + 1) * 2 . '][size]" value="' . htmlspecialchars($confData['size']) . '" title="' . $GLOBALS['LANG']->getLL('forms_size', 1) . '" />';
-							$temp_cells[$GLOBALS['LANG']->getLL('forms_autosize')] = '<input type="checkbox" name="FORMCFG[c][' . ($k + 1) * 2 . '][autosize]" value="1"' . ($confData['autosize'] ? ' checked="checked"' : '') . ' title="' . $GLOBALS['LANG']->getLL('forms_autosize', 1) . '" />';
-							$temp_cells[$GLOBALS['LANG']->getLL('forms_multiple')] = '<input type="checkbox" name="FORMCFG[c][' . ($k + 1) * 2 . '][multiple]" value="1"' . ($confData['multiple'] ? ' checked="checked"' : '') . ' title="' . $GLOBALS['LANG']->getLL('forms_multiple', 1) . '" />';
+							$temp_cells[$GLOBALS['LANG']->getLL('forms_size')] = '<input type="text"' . $this->doc->formWidth(5) . ' name="FORMCFG[c][' . ($k + 1) * 2 . '][size]" value="' . htmlspecialchars($confData['size']) . '" title="' . $GLOBALS['LANG']->getLL('forms_size', TRUE) . '" />';
+							$temp_cells[$GLOBALS['LANG']->getLL('forms_autosize')] = '<input type="checkbox" name="FORMCFG[c][' . ($k + 1) * 2 . '][autosize]" value="1"' . ($confData['autosize'] ? ' checked="checked"' : '') . ' title="' . $GLOBALS['LANG']->getLL('forms_autosize', TRUE) . '" />';
+							$temp_cells[$GLOBALS['LANG']->getLL('forms_multiple')] = '<input type="checkbox" name="FORMCFG[c][' . ($k + 1) * 2 . '][multiple]" value="1"' . ($confData['multiple'] ? ' checked="checked"' : '') . ' title="' . $GLOBALS['LANG']->getLL('forms_multiple', TRUE) . '" />';
 							break;
 					}
 					// Field configuration depending on the fields type:
@@ -467,11 +467,11 @@ class FormsController {
 					}
 					// Default data
 					if ($confData['type'] == 'select' || $confData['type'] == 'radio') {
-						$temp_cells[$GLOBALS['LANG']->getLL('forms_options')] = '<textarea ' . $this->doc->formWidthText(15) . ' rows="4" name="FORMCFG[c][' . ($k + 1) * 2 . '][options]" title="' . $GLOBALS['LANG']->getLL('forms_options', 1) . '">' . GeneralUtility::formatForTextarea($confData['default']) . '</textarea>';
+						$temp_cells[$GLOBALS['LANG']->getLL('forms_options')] = '<textarea ' . $this->doc->formWidthText(15) . ' rows="4" name="FORMCFG[c][' . ($k + 1) * 2 . '][options]" title="' . $GLOBALS['LANG']->getLL('forms_options', TRUE) . '">' . GeneralUtility::formatForTextarea($confData['default']) . '</textarea>';
 					} elseif ($confData['type'] == 'check') {
-						$temp_cells[$GLOBALS['LANG']->getLL('forms_checked')] = '<input type="checkbox" name="FORMCFG[c][' . ($k + 1) * 2 . '][default]" value="1"' . (trim($confData['default']) ? ' checked="checked"' : '') . ' title="' . $GLOBALS['LANG']->getLL('forms_checked', 1) . '" />';
+						$temp_cells[$GLOBALS['LANG']->getLL('forms_checked')] = '<input type="checkbox" name="FORMCFG[c][' . ($k + 1) * 2 . '][default]" value="1"' . (trim($confData['default']) ? ' checked="checked"' : '') . ' title="' . $GLOBALS['LANG']->getLL('forms_checked', TRUE) . '" />';
 					} elseif ($confData['type'] && $confData['type'] != 'file') {
-						$temp_cells[$GLOBALS['LANG']->getLL('forms_default')] = '<input type="text"' . $this->doc->formWidth(15) . ' name="FORMCFG[c][' . ($k + 1) * 2 . '][default]" value="' . htmlspecialchars($confData['default']) . '" title="' . $GLOBALS['LANG']->getLL('forms_default', 1) . '" />';
+						$temp_cells[$GLOBALS['LANG']->getLL('forms_default')] = '<input type="text"' . $this->doc->formWidth(15) . ' name="FORMCFG[c][' . ($k + 1) * 2 . '][default]" value="' . htmlspecialchars($confData['default']) . '" title="' . $GLOBALS['LANG']->getLL('forms_default', TRUE) . '" />';
 					}
 					$cells[] = $confData['type'] ? $this->formatCells($temp_cells) : '';
 					// CTRL panel for an item (move up/down/around):
@@ -481,18 +481,18 @@ class FormsController {
 					// FIXME $inputStyle undefined
 					$brTag = $inputStyle ? '' : '<br />';
 					if ($k != 0) {
-						$ctrl .= '<input type="image" name="FORMCFG[row_up][' . ($k + 1) * 2 . ']"' . IconUtility::skinImg($this->doc->backPath, 'gfx/pil2up.gif', '') . $onClick . ' title="' . $GLOBALS['LANG']->getLL('table_up', 1) . '" />' . $brTag;
+						$ctrl .= '<input type="image" name="FORMCFG[row_up][' . ($k + 1) * 2 . ']"' . IconUtility::skinImg($this->doc->backPath, 'gfx/pil2up.gif', '') . $onClick . ' title="' . $GLOBALS['LANG']->getLL('table_up', TRUE) . '" />' . $brTag;
 					} else {
-						$ctrl .= '<input type="image" name="FORMCFG[row_bottom][' . ($k + 1) * 2 . ']"' . IconUtility::skinImg($this->doc->backPath, 'gfx/turn_up.gif', '') . $onClick . ' title="' . $GLOBALS['LANG']->getLL('table_bottom', 1) . '" />' . $brTag;
+						$ctrl .= '<input type="image" name="FORMCFG[row_bottom][' . ($k + 1) * 2 . ']"' . IconUtility::skinImg($this->doc->backPath, 'gfx/turn_up.gif', '') . $onClick . ' title="' . $GLOBALS['LANG']->getLL('table_bottom', TRUE) . '" />' . $brTag;
 					}
-					$ctrl .= '<input type="image" name="FORMCFG[row_remove][' . ($k + 1) * 2 . ']"' . IconUtility::skinImg($this->doc->backPath, 'gfx/garbage.gif', '') . $onClick . ' title="' . $GLOBALS['LANG']->getLL('table_removeRow', 1) . '" />' . $brTag;
+					$ctrl .= '<input type="image" name="FORMCFG[row_remove][' . ($k + 1) * 2 . ']"' . IconUtility::skinImg($this->doc->backPath, 'gfx/garbage.gif', '') . $onClick . ' title="' . $GLOBALS['LANG']->getLL('table_removeRow', TRUE) . '" />' . $brTag;
 					// FIXME $tLines undefined
 					if ($k + 1 != count($tLines)) {
-						$ctrl .= '<input type="image" name="FORMCFG[row_down][' . ($k + 1) * 2 . ']"' . IconUtility::skinImg($this->doc->backPath, 'gfx/pil2down.gif', '') . $onClick . ' title="' . $GLOBALS['LANG']->getLL('table_down', 1) . '" />' . $brTag;
+						$ctrl .= '<input type="image" name="FORMCFG[row_down][' . ($k + 1) * 2 . ']"' . IconUtility::skinImg($this->doc->backPath, 'gfx/pil2down.gif', '') . $onClick . ' title="' . $GLOBALS['LANG']->getLL('table_down', TRUE) . '" />' . $brTag;
 					} else {
-						$ctrl .= '<input type="image" name="FORMCFG[row_top][' . ($k + 1) * 2 . ']"' . IconUtility::skinImg($this->doc->backPath, 'gfx/turn_down.gif', '') . $onClick . ' title="' . $GLOBALS['LANG']->getLL('table_top', 1) . '" />' . $brTag;
+						$ctrl .= '<input type="image" name="FORMCFG[row_top][' . ($k + 1) * 2 . ']"' . IconUtility::skinImg($this->doc->backPath, 'gfx/turn_down.gif', '') . $onClick . ' title="' . $GLOBALS['LANG']->getLL('table_top', TRUE) . '" />' . $brTag;
 					}
-					$ctrl .= '<input type="image" name="FORMCFG[row_add][' . ($k + 1) * 2 . ']"' . IconUtility::skinImg($this->doc->backPath, 'gfx/add.gif', '') . $onClick . ' title="' . $GLOBALS['LANG']->getLL('table_addRow', 1) . '" />' . $brTag;
+					$ctrl .= '<input type="image" name="FORMCFG[row_add][' . ($k + 1) * 2 . ']"' . IconUtility::skinImg($this->doc->backPath, 'gfx/add.gif', '') . $onClick . ' title="' . $GLOBALS['LANG']->getLL('table_addRow', TRUE) . '" />' . $brTag;
 					$ctrl = '<span class="c-wizButtonsV">' . $ctrl . '</span>';
 					// Finally, put together the full row from the generated content above:
 					$bgC = $confData['type'] ? ' class="bgColor5"' : '';
@@ -520,14 +520,14 @@ class FormsController {
 			$tRows[] = '
 				<tr>
 					<td colspan="2" class="bgColor2">&nbsp;</td>
-					<td colspan="2" class="bgColor2"><strong>' . $GLOBALS['LANG']->getLL('forms_special_eform', 1) . ':</strong>' . BackendUtility::cshItem('xMOD_csh_corebe', 'wizard_forms_wiz_formmail_info', $GLOBALS['BACK_PATH'], '') . '</td>
+					<td colspan="2" class="bgColor2"><strong>' . $GLOBALS['LANG']->getLL('forms_special_eform', TRUE) . ':</strong>' . BackendUtility::cshItem('xMOD_csh_corebe', 'wizard_forms_wiz_formmail_info', $GLOBALS['BACK_PATH'], '') . '</td>
 				</tr>';
 			// "FORM type":
 			$tRows[] = '
 				<tr class="bgColor5">
 					<td>&nbsp;</td>
 					<td class="bgColor4">&nbsp;</td>
-					<td>' . $GLOBALS['LANG']->getLL('forms_eform_formtype_mail', 1) . ':</td>
+					<td>' . $GLOBALS['LANG']->getLL('forms_eform_formtype_mail', TRUE) . ':</td>
 					<td>
 						<input type="hidden" name="FORMCFG[c][' . 1000 * 2 . '][fieldname]" value="formtype_mail" />
 						<input type="hidden" name="FORMCFG[c][' . 1000 * 2 . '][type]" value="submit" />
@@ -539,7 +539,7 @@ class FormsController {
 				<tr class="bgColor5">
 					<td>&nbsp;</td>
 					<td class="bgColor4">&nbsp;</td>
-					<td>' . $GLOBALS['LANG']->getLL('forms_eform_html_enabled', 1) . ':</td>
+					<td>' . $GLOBALS['LANG']->getLL('forms_eform_html_enabled', TRUE) . ':</td>
 					<td>
 						<input type="hidden" name="FORMCFG[c][' . 1001 * 2 . '][fieldname]" value="html_enabled" />
 						<input type="hidden" name="FORMCFG[c][' . 1001 * 2 . '][type]" value="hidden" />
@@ -551,7 +551,7 @@ class FormsController {
 				<tr class="bgColor5">
 					<td>&nbsp;</td>
 					<td class="bgColor4">&nbsp;</td>
-					<td>' . $GLOBALS['LANG']->getLL('forms_eform_subject', 1) . ':</td>
+					<td>' . $GLOBALS['LANG']->getLL('forms_eform_subject', TRUE) . ':</td>
 					<td>
 						<input type="hidden" name="FORMCFG[c][' . 1002 * 2 . '][fieldname]" value="subject" />
 						<input type="hidden" name="FORMCFG[c][' . 1002 * 2 . '][type]" value="hidden" />
@@ -563,7 +563,7 @@ class FormsController {
 				<tr class="bgColor5">
 					<td>&nbsp;</td>
 					<td class="bgColor4">&nbsp;</td>
-					<td>' . $GLOBALS['LANG']->getLL('forms_eform_recipient', 1) . ':</td>
+					<td>' . $GLOBALS['LANG']->getLL('forms_eform_recipient', TRUE) . ':</td>
 					<td>
 						<input type="text"' . $this->doc->formWidth(15) . ' name="FORMCFG[recipient]" value="' . htmlspecialchars($row['subheader']) . '" />
 					</td>

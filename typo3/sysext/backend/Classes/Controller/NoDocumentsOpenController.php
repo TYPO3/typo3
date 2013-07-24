@@ -110,7 +110,7 @@ class NoDocumentsOpenController {
 	public function main() {
 		$msg = array();
 		// Add a message, telling that no documents were open...
-		$msg[] = '<p>' . $GLOBALS['LANG']->getLL('noDocuments_msg', 1) . '</p><br />';
+		$msg[] = '<p>' . $GLOBALS['LANG']->getLL('noDocuments_msg', TRUE) . '</p><br />';
 		// If another page module was specified, replace the default Page module with the new one
 		$newPageModule = trim($GLOBALS['BE_USER']->getTSConfigVal('options.overridePageModule'));
 		$pageModule = \TYPO3\CMS\Backend\Utility\BackendUtility::isModuleSetInTBE_MODULES($newPageModule) ? $newPageModule : 'web_layout';
@@ -130,14 +130,14 @@ class NoDocumentsOpenController {
 			$msg_2 = array();
 			// Web>Page:
 			if ($a_wp) {
-				$msg_2[] = '<strong><a href="#" onclick="top.goToModule(\'' . $pageModule . '\'); return false;">' . $GLOBALS['LANG']->getLL('noDocuments_pagemodule', 1) . $img_web_layout . '</a></strong>';
+				$msg_2[] = '<strong><a href="#" onclick="top.goToModule(\'' . $pageModule . '\'); return false;">' . $GLOBALS['LANG']->getLL('noDocuments_pagemodule', TRUE) . $img_web_layout . '</a></strong>';
 				if ($a_wl) {
 					$msg_2[] = $GLOBALS['LANG']->getLL('noDocuments_OR');
 				}
 			}
 			// Web>List
 			if ($a_wl) {
-				$msg_2[] = '<strong><a href="#" onclick="top.goToModule(\'web_list\'); return false;">' . $GLOBALS['LANG']->getLL('noDocuments_listmodule', 1) . $img_web_list . '</a></strong>';
+				$msg_2[] = '<strong><a href="#" onclick="top.goToModule(\'web_list\'); return false;">' . $GLOBALS['LANG']->getLL('noDocuments_listmodule', TRUE) . $img_web_list . '</a></strong>';
 			}
 			$msg[] = '<p>' . sprintf($GLOBALS['LANG']->getLL('noDocuments_msg2', 1), implode(' ', $msg_2)) . '</p><br />';
 		}

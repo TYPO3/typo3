@@ -261,23 +261,23 @@ class HelpModuleController {
 		$output = '';
 		$output .= '
 
-			<h1>' . $GLOBALS['LANG']->getLL('manual_title', 1) . '</h1>';
+			<h1>' . $GLOBALS['LANG']->getLL('manual_title', TRUE) . '</h1>';
 		$output .= '
 
-			<h2>' . $GLOBALS['LANG']->getLL('introduction', 1) . '</h2>
-			<p>' . $GLOBALS['LANG']->getLL('description', 1) . '</p>';
+			<h2>' . $GLOBALS['LANG']->getLL('introduction', TRUE) . '</h2>
+			<p>' . $GLOBALS['LANG']->getLL('description', TRUE) . '</p>';
 		$output .= '
 
-			<h2>' . $GLOBALS['LANG']->getLL('TOC', 1) . '</h2>' . $this->render_TOC_makeTocList($tocArray);
+			<h2>' . $GLOBALS['LANG']->getLL('TOC', TRUE) . '</h2>' . $this->render_TOC_makeTocList($tocArray);
 		if (!$this->renderALL) {
 			$output .= '
 				<br/>
-				<p class="c-nav"><a href="mod.php?M=help_cshmanual&renderALL=1">' . $GLOBALS['LANG']->getLL('full_manual', 1) . '</a></p>';
+				<p class="c-nav"><a href="mod.php?M=help_cshmanual&renderALL=1">' . $GLOBALS['LANG']->getLL('full_manual', TRUE) . '</a></p>';
 		}
 		if ($this->renderALL) {
 			$output .= '
 
-				<h2>' . $GLOBALS['LANG']->getLL('full_manual_chapters', 1) . '</h2>' . implode('
+				<h2>' . $GLOBALS['LANG']->getLL('full_manual_chapters', TRUE) . '</h2>' . implode('
 
 
 				<!-- NEW SECTION: -->
@@ -306,7 +306,7 @@ class HelpModuleController {
 				$outputSections[$table] = '
 
 		<!-- New CSHkey/Table: ' . $table . ' -->
-		<p class="c-nav"><a name="ANCHOR_' . $table . '" href="#">' . $GLOBALS['LANG']->getLL('to_top', 1) . '</a></p>
+		<p class="c-nav"><a name="ANCHOR_' . $table . '" href="#">' . $GLOBALS['LANG']->getLL('to_top', TRUE) . '</a></p>
 		<h2>' . $this->getTableFieldLabel($table) . '</h2>
 
 		' . $outputSections[$table];
@@ -337,7 +337,7 @@ class HelpModuleController {
 		foreach ($keys as $tocKey) {
 			if (is_array($tocArray[$tocKey])) {
 				$output .= '
-					<li>' . $GLOBALS['LANG']->getLL(('TOC_' . $tocKey), 1) . '
+					<li>' . $GLOBALS['LANG']->getLL(('TOC_' . $tocKey), TRUE) . '
 						<ul>
 							<li>' . implode('</li>
 							<li>', $tocArray[$tocKey]) . '</li>
@@ -400,7 +400,7 @@ class HelpModuleController {
 		$output = $this->substituteGlossaryWords($output);
 		// TOC link:
 		if (!$this->renderALL) {
-			$tocLink = '<p class="c-nav"><a href="mod.php?M=help_cshmanual">' . $GLOBALS['LANG']->getLL('goToToc', 1) . '</a></p>';
+			$tocLink = '<p class="c-nav"><a href="mod.php?M=help_cshmanual">' . $GLOBALS['LANG']->getLL('goToToc', TRUE) . '</a></p>';
 			$output = $tocLink . '
 				<br/>' . $output . '
 				<br />' . $tocLink;
@@ -427,8 +427,8 @@ class HelpModuleController {
 		// Link to Full table description and TOC:
 		$getLLKey = $this->limitAccess ? 'fullDescription' : 'fullDescription_module';
 		$output .= '<br />
-			<p class="c-nav"><a href="mod.php?M=help_cshmanual&tfID=' . rawurlencode(($key . '.*')) . '">' . $GLOBALS['LANG']->getLL($getLLKey, 1) . '</a></p>
-			<p class="c-nav"><a href="mod.php?M=help_cshmanual">' . $GLOBALS['LANG']->getLL('goToToc', 1) . '</a></p>';
+			<p class="c-nav"><a href="mod.php?M=help_cshmanual&tfID=' . rawurlencode(($key . '.*')) . '">' . $GLOBALS['LANG']->getLL($getLLKey, TRUE) . '</a></p>
+			<p class="c-nav"><a href="mod.php?M=help_cshmanual">' . $GLOBALS['LANG']->getLL('goToToc', TRUE) . '</a></p>';
 		return $output;
 	}
 

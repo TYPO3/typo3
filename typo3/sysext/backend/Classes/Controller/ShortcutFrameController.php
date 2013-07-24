@@ -401,18 +401,18 @@ class ShortcutFrameController {
 					if ($this->groupLabels[abs($sc_group)] && strcmp('1', $this->groupLabels[abs($sc_group)])) {
 						$label = $this->groupLabels[abs($sc_group)];
 					} else {
-						$label = $GLOBALS['LANG']->getLL('shortcut_group_' . abs($sc_group), 1);
+						$label = $GLOBALS['LANG']->getLL('shortcut_group_' . abs($sc_group), TRUE);
 						// Fallback label
 						if (!$label) {
-							$label = $GLOBALS['LANG']->getLL('shortcut_group', 1) . ' ' . abs($sc_group);
+							$label = $GLOBALS['LANG']->getLL('shortcut_group', TRUE) . ' ' . abs($sc_group);
 						}
 					}
 					if ($sc_group >= 0) {
 						$onC = 'if (confirm(' . $GLOBALS['LANG']->JScharCode($GLOBALS['LANG']->getLL('bookmark_delAllInCat')) . ')){window.location.href=\'alt_shortcut.php?deleteCategory=' . $sc_group . '\';}return false;';
-						$this->linesPre[] = '<td>&nbsp;</td><td class="bgColor5"><a href="#" onclick="' . htmlspecialchars($onC) . '" title="' . $GLOBALS['LANG']->getLL('bookmark_delAllInCat', 1) . '">' . $label . '</a></td>';
+						$this->linesPre[] = '<td>&nbsp;</td><td class="bgColor5"><a href="#" onclick="' . htmlspecialchars($onC) . '" title="' . $GLOBALS['LANG']->getLL('bookmark_delAllInCat', TRUE) . '">' . $label . '</a></td>';
 					} else {
 						// Fallback label
-						$label = $GLOBALS['LANG']->getLL('bookmark_global', 1) . ': ' . ($label ? $label : abs($sc_group));
+						$label = $GLOBALS['LANG']->getLL('bookmark_global', TRUE) . ': ' . ($label ? $label : abs($sc_group));
 						$this->lines[] = '<td>&nbsp;</td><td class="bgColor5">' . $label . '</td>';
 					}
 					unset($label);
@@ -441,11 +441,11 @@ class ShortcutFrameController {
 			$formerGr = $row['sc_group'];
 		}
 		ksort($this->selOpt);
-		array_unshift($this->selOpt, '<option>[' . $GLOBALS['LANG']->getLL('bookmark_selSC', 1) . ']</option>');
+		array_unshift($this->selOpt, '<option>[' . $GLOBALS['LANG']->getLL('bookmark_selSC', TRUE) . ']</option>');
 		$this->editLoadedFunc();
 		$this->editPageIdFunc();
 		if (!$this->editLoaded && ExtensionManagementUtility::isLoaded('cms')) {
-			$editIdCode = '<td nowrap="nowrap">' . $GLOBALS['LANG']->getLL('bookmark_editID', 1) . ': <input type="text" value="' . ($this->editError ? htmlspecialchars($this->editPage) : '') . '" name="editPage"' . $this->doc->formWidth(15) . ' onchange="submitEditPage(this.value);" />' . ($this->editError ? '&nbsp;<strong><span class="typo3-red">' . htmlspecialchars($this->editError) . '</span></strong>' : '') . (is_array($this->theEditRec) ? '&nbsp;<strong>' . $GLOBALS['LANG']->getLL('bookmark_loadEdit', 1) . ' \'' . BackendUtility::getRecordTitle('pages', $this->theEditRec, TRUE) . '\'</strong> (' . htmlspecialchars($this->editPath) . ')' : '') . ($this->searchFor ? '&nbsp;' . $GLOBALS['LANG']->getLL('bookmark_searchFor', 1) . ' <strong>\'' . htmlspecialchars($this->searchFor) . '\'</strong>' : '') . '</td>';
+			$editIdCode = '<td nowrap="nowrap">' . $GLOBALS['LANG']->getLL('bookmark_editID', TRUE) . ': <input type="text" value="' . ($this->editError ? htmlspecialchars($this->editPage) : '') . '" name="editPage"' . $this->doc->formWidth(15) . ' onchange="submitEditPage(this.value);" />' . ($this->editError ? '&nbsp;<strong><span class="typo3-red">' . htmlspecialchars($this->editError) . '</span></strong>' : '') . (is_array($this->theEditRec) ? '&nbsp;<strong>' . $GLOBALS['LANG']->getLL('bookmark_loadEdit', TRUE) . ' \'' . BackendUtility::getRecordTitle('pages', $this->theEditRec, TRUE) . '\'</strong> (' . htmlspecialchars($this->editPath) . ')' : '') . ($this->searchFor ? '&nbsp;' . $GLOBALS['LANG']->getLL('bookmark_searchFor', TRUE) . ' <strong>\'' . htmlspecialchars($this->searchFor) . '\'</strong>' : '') . '</td>';
 		} else {
 			$editIdCode = '';
 		}
@@ -517,10 +517,10 @@ class ShortcutFrameController {
 				if ($v && strcmp('1', $v)) {
 					$label = $v;
 				} else {
-					$label = $GLOBALS['LANG']->getLL('bookmark_group_' . $k, 1);
+					$label = $GLOBALS['LANG']->getLL('bookmark_group_' . $k, TRUE);
 					// Fallback label
 					if (!$label) {
-						$label = $GLOBALS['LANG']->getLL('bookmark_group', 1) . ' ' . $k;
+						$label = $GLOBALS['LANG']->getLL('bookmark_group', TRUE) . ' ' . $k;
 					}
 				}
 				$opt[] = '<option value="' . $k . '"' . (!strcmp($this->editSC_rec['sc_group'], $k) ? ' selected="selected"' : '') . '>' . $label . '</option>';
@@ -530,17 +530,17 @@ class ShortcutFrameController {
 					if ($v && strcmp('1', $v)) {
 						$label = $v;
 					} else {
-						$label = $GLOBALS['LANG']->getLL('bookmark_group_' . $k, 1);
+						$label = $GLOBALS['LANG']->getLL('bookmark_group_' . $k, TRUE);
 						// Fallback label
 						if (!$label) {
-							$label = $GLOBALS['LANG']->getLL('bookmark_group', 1) . ' ' . $k;
+							$label = $GLOBALS['LANG']->getLL('bookmark_group', TRUE) . ' ' . $k;
 						}
 					}
 					// Add a prefix for global groups
-					$label = $GLOBALS['LANG']->getLL('bookmark_global', 1) . ': ' . $label;
+					$label = $GLOBALS['LANG']->getLL('bookmark_global', TRUE) . ': ' . $label;
 					$opt[] = '<option value="-' . $k . '"' . (!strcmp($this->editSC_rec['sc_group'], ('-' . $k)) ? ' selected="selected"' : '') . '>' . $label . '</option>';
 				}
-				$opt[] = '<option value="-100"' . (!strcmp($this->editSC_rec['sc_group'], '-100') ? ' selected="selected"' : '') . '>' . $GLOBALS['LANG']->getLL('bookmark_global', 1) . ': ' . $GLOBALS['LANG']->getLL('bookmark_all', 1) . '</option>';
+				$opt[] = '<option value="-100"' . (!strcmp($this->editSC_rec['sc_group'], '-100') ? ' selected="selected"' : '') . '>' . $GLOBALS['LANG']->getLL('bookmark_global', TRUE) . ': ' . $GLOBALS['LANG']->getLL('bookmark_all', TRUE) . '</option>';
 			}
 			// border="0" hspace="2" width="21" height="16" - not XHTML compliant in <input type="image" ...>
 			$manageForm = '
@@ -551,10 +551,10 @@ class ShortcutFrameController {
 				<table border="0" cellpadding="0" cellspacing="0" id="typo3-shortcuts-editing">
 					<tr>
 						<td>&nbsp;&nbsp;</td>
-						<td><input type="image" class="c-inputButton" name="_savedok"' . IconUtility::skinImg($this->doc->backPath, 'gfx/savedok.gif', '') . ' title="' . $GLOBALS['LANG']->getLL('shortcut_save', 1) . '" /></td>
-						<td><input type="image" class="c-inputButton" name="_saveclosedok"' . IconUtility::skinImg($this->doc->backPath, 'gfx/saveandclosedok.gif', '') . ' title="' . $GLOBALS['LANG']->getLL('bookmark_saveClose', 1) . '" /></td>
-						<td><input type="image" class="c-inputButton" name="_closedok"' . IconUtility::skinImg($this->doc->backPath, 'gfx/closedok.gif', '') . ' title="' . $GLOBALS['LANG']->getLL('bookmark_close', 1) . '" /></td>
-						<td><input type="image" class="c-inputButton" name="_deletedok"' . IconUtility::skinImg($this->doc->backPath, 'gfx/deletedok.gif', '') . ' title="' . $GLOBALS['LANG']->getLL('bookmark_delete', 1) . '" /></td>
+						<td><input type="image" class="c-inputButton" name="_savedok"' . IconUtility::skinImg($this->doc->backPath, 'gfx/savedok.gif', '') . ' title="' . $GLOBALS['LANG']->getLL('shortcut_save', TRUE) . '" /></td>
+						<td><input type="image" class="c-inputButton" name="_saveclosedok"' . IconUtility::skinImg($this->doc->backPath, 'gfx/saveandclosedok.gif', '') . ' title="' . $GLOBALS['LANG']->getLL('bookmark_saveClose', TRUE) . '" /></td>
+						<td><input type="image" class="c-inputButton" name="_closedok"' . IconUtility::skinImg($this->doc->backPath, 'gfx/closedok.gif', '') . ' title="' . $GLOBALS['LANG']->getLL('bookmark_close', TRUE) . '" /></td>
+						<td><input type="image" class="c-inputButton" name="_deletedok"' . IconUtility::skinImg($this->doc->backPath, 'gfx/deletedok.gif', '') . ' title="' . $GLOBALS['LANG']->getLL('bookmark_delete', TRUE) . '" /></td>
 						<td><input name="editName" type="text" value="' . htmlspecialchars($this->editSC_rec['description']) . '"' . $this->doc->formWidth(15) . ' /></td>
 						<td><select name="editGroup">' . implode('', $opt) . '</select></td>
 					</tr>
@@ -574,7 +574,7 @@ class ShortcutFrameController {
 		if (count($this->lines)) {
 			if (!$GLOBALS['BE_USER']->getTSConfigVal('options.mayNotCreateEditBookmarks')) {
 				$this->lines = array_merge(array(
-					'<td><input type="checkbox" id="editShortcut_check" name="editShortcut_check" value="1"' . ($this->editSC ? ' checked="checked"' : '') . ' />' . ' <label for="editShortcut_check">' . $GLOBALS['LANG']->getLL('bookmark_edit', 1) . '</label>&nbsp;</td>'
+					'<td><input type="checkbox" id="editShortcut_check" name="editShortcut_check" value="1"' . ($this->editSC ? ' checked="checked"' : '') . ' />' . ' <label for="editShortcut_check">' . $GLOBALS['LANG']->getLL('bookmark_edit', TRUE) . '</label>&nbsp;</td>'
 				), $this->lines);
 				$this->lines[] = '<td>' . $manageForm . '</td>';
 			}
@@ -718,7 +718,7 @@ class ShortcutFrameController {
 				$options[$value] = '<option value="' . htmlspecialchars($value) . '"' . $selected . '>' . htmlspecialchars($label) . '</option>';
 			}
 		} else {
-			$options[] = '<option value="-99">' . $GLOBALS['LANG']->getLL('bookmark_noWSfound', 1) . '</option>';
+			$options[] = '<option value="-99">' . $GLOBALS['LANG']->getLL('bookmark_noWSfound', TRUE) . '</option>';
 		}
 		$selector = '';
 		// Preview:

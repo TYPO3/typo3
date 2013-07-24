@@ -100,7 +100,7 @@ class WizardView extends \TYPO3\CMS\Form\View\Wizard\AbstractWizardView {
 		// Getting the body content
 		$markers['CONTENT'] = $this->getBodyContent();
 		// Build the HTML for the module
-		$content = $this->doc->startPage($GLOBALS['LANG']->getLL('title', 1));
+		$content = $this->doc->startPage($GLOBALS['LANG']->getLL('title', TRUE));
 		$content .= $this->doc->moduleBody(array(), $docHeaderButtons, $markers);
 		$content .= $this->doc->endPage();
 		$content = $this->doc->insertStylesAndJS($content);
@@ -349,7 +349,7 @@ class WizardView extends \TYPO3\CMS\Form\View\Wizard\AbstractWizardView {
 			$bodyContent = '';
 		} else {
 			/** @var $flashMessage \TYPO3\CMS\Core\Messaging\FlashMessage */
-			$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $GLOBALS['LANG']->getLL('errorMessage', 1), $GLOBALS['LANG']->getLL('errorTitle', 1), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+			$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $GLOBALS['LANG']->getLL('errorMessage', TRUE), $GLOBALS['LANG']->getLL('errorTitle', TRUE), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
 			$bodyContent = $flashMessage->render();
 		}
 		return $bodyContent;

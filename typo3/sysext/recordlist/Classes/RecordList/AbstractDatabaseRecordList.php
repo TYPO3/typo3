@@ -759,7 +759,7 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 				// "Edit" link: ( Only if permissions to edit the page-record of the content of the parent page ($this->id)
 				if ($permsEdit) {
 					$params = '&edit[' . $table . '][' . $row['uid'] . ']=edit';
-					$code = '<a href="#" onclick="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick($params, $this->backPath, -1)) . '" title="' . $GLOBALS['LANG']->getLL('edit', 1) . '">' . $code . '</a>';
+					$code = '<a href="#" onclick="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick($params, $this->backPath, -1)) . '" title="' . $GLOBALS['LANG']->getLL('edit', TRUE) . '">' . $code . '</a>';
 				}
 				break;
 			case 'show':
@@ -770,7 +770,7 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 				break;
 			case 'info':
 				// "Info": (All records)
-				$code = '<a href="#" onclick="' . htmlspecialchars(('top.launchView(\'' . $table . '\', \'' . $row['uid'] . '\'); return false;')) . '" title="' . $GLOBALS['LANG']->getLL('showInfo', 1) . '">' . $code . '</a>';
+				$code = '<a href="#" onclick="' . htmlspecialchars(('top.launchView(\'' . $table . '\', \'' . $row['uid'] . '\'); return false;')) . '" title="' . $GLOBALS['LANG']->getLL('showInfo', TRUE) . '">' . $code . '</a>';
 				break;
 			default:
 				// Output the label now:

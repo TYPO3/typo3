@@ -639,11 +639,11 @@ class PageLayoutController {
 		if (is_array($languageOverlayRecord)) {
 			$inValue = 'pages_language_overlay:' . $languageOverlayRecord['uid'];
 			$is_selected += intval($edit_record == $inValue);
-			$opt[] = '<option value="' . $inValue . '"' . ($edit_record == $inValue ? ' selected="selected"' : '') . '>[ ' . $GLOBALS['LANG']->getLL('editLanguageHeader', 1) . ' ]</option>';
+			$opt[] = '<option value="' . $inValue . '"' . ($edit_record == $inValue ? ' selected="selected"' : '') . '>[ ' . $GLOBALS['LANG']->getLL('editLanguageHeader', TRUE) . ' ]</option>';
 		} else {
 			$inValue = 'pages:' . $this->id;
 			$is_selected += intval($edit_record == $inValue);
-			$opt[] = '<option value="' . $inValue . '"' . ($edit_record == $inValue ? ' selected="selected"' : '') . '>[ ' . $GLOBALS['LANG']->getLL('editPageProperties', 1) . ' ]</option>';
+			$opt[] = '<option value="' . $inValue . '"' . ($edit_record == $inValue ? ' selected="selected"' : '') . '>[ ' . $GLOBALS['LANG']->getLL('editPageProperties', TRUE) . ' ]</option>';
 		}
 		// Selecting all content elements from this language and allowed colPos:
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'tt_content', 'pid=' . intval($this->id) . ' AND sys_language_uid=' . intval($this->current_sys_language) . ' AND colPos IN (' . $this->colPosList . ')' . ($this->MOD_SETTINGS['tt_content_showHidden'] ? '' : BackendUtility::BEenableFields('tt_content')) . BackendUtility::deleteClause('tt_content') . BackendUtility::versioningPlaceholderClause('tt_content'), '', 'colPos,sorting');
@@ -663,7 +663,7 @@ class PageLayoutController {
 				if (strcmp($cRow['colPos'], $colPos)) {
 					$colPos = $cRow['colPos'];
 					$opt[] = '<option value=""></option>';
-					$opt[] = '<option value="_EDIT_COL:' . $colPos . '">__' . $GLOBALS['LANG']->sL(BackendUtility::getLabelFromItemlist('tt_content', 'colPos', $colPos), 1) . ':__</option>';
+					$opt[] = '<option value="_EDIT_COL:' . $colPos . '">__' . $GLOBALS['LANG']->sL(BackendUtility::getLabelFromItemlist('tt_content', 'colPos', $colPos), TRUE) . ':__</option>';
 				}
 				$inValue = 'tt_content:' . $cRow['uid'];
 				$is_selected += intval($edit_record == $inValue);
@@ -681,7 +681,7 @@ class PageLayoutController {
 		// If none is yet selected...
 		if (!$is_selected) {
 			$opt[] = '<option value=""></option>';
-			$opt[] = '<option value="' . $edit_record . '"  selected="selected">[ ' . $GLOBALS['LANG']->getLL('newLabel', 1) . ' ]</option>';
+			$opt[] = '<option value="' . $edit_record . '"  selected="selected">[ ' . $GLOBALS['LANG']->getLL('newLabel', TRUE) . ' ]</option>';
 		}
 		// Splitting the edit-record cmd value into table/uid:
 		$this->eRParts = explode(':', $edit_record);
@@ -800,7 +800,7 @@ class PageLayoutController {
 		}
 		// Bottom controls (function menus):
 		$q_count = $this->getNumberOfHiddenElements();
-		$h_func_b = BackendUtility::getFuncCheck($this->id, 'SET[tt_content_showHidden]', $this->MOD_SETTINGS['tt_content_showHidden'], 'db_layout.php', '', 'id="checkTt_content_showHidden"') . '<label for="checkTt_content_showHidden">' . (!$q_count ? $GLOBALS['TBE_TEMPLATE']->dfw($GLOBALS['LANG']->getLL('hiddenCE', 1)) : $GLOBALS['LANG']->getLL('hiddenCE', 1) . ' (' . $q_count . ')') . '</label>';
+		$h_func_b = BackendUtility::getFuncCheck($this->id, 'SET[tt_content_showHidden]', $this->MOD_SETTINGS['tt_content_showHidden'], 'db_layout.php', '', 'id="checkTt_content_showHidden"') . '<label for="checkTt_content_showHidden">' . (!$q_count ? $GLOBALS['TBE_TEMPLATE']->dfw($GLOBALS['LANG']->getLL('hiddenCE', TRUE)) : $GLOBALS['LANG']->getLL('hiddenCE', TRUE) . ' (' . $q_count . ')') . '</label>';
 		$h_func_b .= '<br />' . BackendUtility::getFuncCheck($this->id, 'SET[showPalettes]', $this->MOD_SETTINGS['showPalettes'], 'db_layout.php', '', 'id="checkShowPalettes"') . '<label for="checkShowPalettes">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPalettes', 1) . '</label>';
 		if (ExtensionManagementUtility::isLoaded('context_help')) {
 			$h_func_b .= '<br />' . BackendUtility::getFuncCheck($this->id, 'SET[showDescriptions]', $this->MOD_SETTINGS['showDescriptions'], 'db_layout.php', '', 'id="checkShowDescriptions"') . '<label for="checkShowDescriptions">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.showDescriptions', 1) . '</label>';
@@ -1030,7 +1030,7 @@ class PageLayoutController {
 		if (!$this->modTSconfig['properties']['disableIconToolbar']) {
 			// Move record
 			if (MathUtility::canBeInterpretedAsInteger($this->eRParts[1])) {
-				$buttons['move_record'] = '<a href="' . htmlspecialchars(($GLOBALS['BACK_PATH'] . 'move_el.php?table=' . $this->eRParts[0] . '&uid=' . $this->eRParts[1] . '&returnUrl=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI')))) . '">' . IconUtility::getSpriteIcon(('actions-' . ($this->eRParts[0] == 'tt_content' ? 'document' : 'page') . '-move'), array('class' => 'c-inputButton', 'title' => $GLOBALS['LANG']->getLL(('move_' . ($this->eRParts[0] == 'tt_content' ? 'record' : 'page')), 1))) . '</a>';
+				$buttons['move_record'] = '<a href="' . htmlspecialchars(($GLOBALS['BACK_PATH'] . 'move_el.php?table=' . $this->eRParts[0] . '&uid=' . $this->eRParts[1] . '&returnUrl=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI')))) . '">' . IconUtility::getSpriteIcon(('actions-' . ($this->eRParts[0] == 'tt_content' ? 'document' : 'page') . '-move'), array('class' => 'c-inputButton', 'title' => $GLOBALS['LANG']->getLL(('move_' . ($this->eRParts[0] == 'tt_content' ? 'record' : 'page')), TRUE))) . '</a>';
 			}
 
 			// Edit page properties and page language overlay icons

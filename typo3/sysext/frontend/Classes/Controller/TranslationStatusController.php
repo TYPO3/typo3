@@ -143,7 +143,7 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
 			$info .= \TYPO3\CMS\Core\Utility\GeneralUtility::hideIfNotTranslated($data['row']['l18n_cfg']) ? '<span title="' . $LANG->sL('LLL:EXT:cms/locallang_tca.xlf:pages.l18n_cfg.I.2', '1') . '">N</span>' : '&nbsp;';
 			// Put into cell:
 			$tCells[] = '<td class="' . $status . ' c-leftLine">' . $info . '</td>';
-			$tCells[] = '<td class="' . $status . '" title="' . $LANG->getLL('lang_renderl10n_CEcount', '1') . '" align="center">' . $this->getContentElementCount($data['row']['uid'], 0) . '</td>';
+			$tCells[] = '<td class="' . $status . '" title="' . $LANG->getLL('lang_renderl10n_CEcount', TRUE) . '" align="center">' . $this->getContentElementCount($data['row']['uid'], 0) . '</td>';
 			$modSharedTSconfig = \TYPO3\CMS\Backend\Utility\BackendUtility::getModTSconfig($data['row']['uid'], 'mod.SHARED');
 			$disableLanguages = isset($modSharedTSconfig['properties']['disableLanguages']) ? \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $modSharedTSconfig['properties']['disableLanguages'], 1) : array();
 			// Traverse system languages:
@@ -159,7 +159,7 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
 							$row,
 							array('class' => 'c-recIcon')
 						);
-						$info = $icon . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($row['title'], $titleLen)) . (strcmp($row['nav_title'], '') ? ' [Nav: <em>' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($row['nav_title'], $titleLen)) . '</em>]' : '') . ($row['_COUNT'] > 1 ? '<div>' . $LANG->getLL('lang_renderl10n_badThingThereAre', '1') . '</div>' : '');
+						$info = $icon . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($row['title'], $titleLen)) . (strcmp($row['nav_title'], '') ? ' [Nav: <em>' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($row['nav_title'], $titleLen)) . '</em>]' : '') . ($row['_COUNT'] > 1 ? '<div>' . $LANG->getLL('lang_renderl10n_badThingThereAre', TRUE) . '</div>' : '');
 						$tCells[] = '<td class="' . $status . ' c-leftLine">' . $info . '</td>';
 						// Edit whole record:
 						$info = '';
@@ -169,7 +169,7 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
 						$info .= '<a href="#" onclick="' . htmlspecialchars(('top.loadEditId(' . intval($data['row']['uid']) . ',"&SET[language]=' . $langRow['uid'] . '"); return false;')) . '" title="' . $LANG->getLL('lang_renderl10n_editPageLang', TRUE) . '">' . IconUtility::getSpriteIcon('actions-page-open') . '</a>';
 						$info .= str_replace('###LANG_UID###', $langRow['uid'], $viewPageLink);
 						$tCells[] = '<td class="' . $status . '">' . $info . '</td>';
-						$tCells[] = '<td class="' . $status . '" title="' . $LANG->getLL('lang_renderl10n_CEcount', '1') . '" align="center">' . $this->getContentElementCount($data['row']['uid'], $langRow['uid']) . '</td>';
+						$tCells[] = '<td class="' . $status . '" title="' . $LANG->getLL('lang_renderl10n_CEcount', TRUE) . '" align="center">' . $this->getContentElementCount($data['row']['uid'], $langRow['uid']) . '</td>';
 					} else {
 						if (in_array($langRow['uid'], $disableLanguages)) {
 							// Language has been disabled for this page
@@ -196,14 +196,14 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
 		}
 		// Put together HEADER:
 		$tCells = array();
-		$tCells[] = '<td>' . $LANG->getLL('lang_renderl10n_page', '1') . ':</td>';
+		$tCells[] = '<td>' . $LANG->getLL('lang_renderl10n_page', TRUE) . ':</td>';
 		if (is_array($langRecUids[0])) {
 			$params = '&edit[pages][' . implode(',', $langRecUids[0]) . ']=edit&columnsOnly=title,nav_title,l18n_cfg,hidden';
 			$editIco = '<a href="#" onclick="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick($params, $GLOBALS['BACK_PATH'])) . '" title="' . $LANG->getLL('lang_renderl10n_editPageProperties', TRUE) . '">' . IconUtility::getSpriteIcon('actions-document-new') . '</a>';
 		} else {
 			$editIco = '';
 		}
-		$tCells[] = '<td class="c-leftLine" colspan="2">' . $LANG->getLL('lang_renderl10n_default', '1') . ':' . $editIco . '</td>';
+		$tCells[] = '<td class="c-leftLine" colspan="2">' . $LANG->getLL('lang_renderl10n_default', TRUE) . ':' . $editIco . '</td>';
 		foreach ($languages as $langRow) {
 			if ($this->pObj->MOD_SETTINGS['lang'] == 0 || (int) $this->pObj->MOD_SETTINGS['lang'] === (int) $langRow['uid']) {
 				// Title:
