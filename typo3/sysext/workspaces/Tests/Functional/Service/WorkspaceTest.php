@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Workspaces\Service;
+namespace TYPO3\CMS\Workspaces\Tests\Functional\Service;
 
 /***************************************************************
  *  Copyright notice
@@ -26,35 +26,41 @@ namespace TYPO3\CMS\Workspaces\Service;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
- * Workspace service test
- *
- * @author Workspaces Team (http://forge.typo3.org/projects/show/typo3v4-workspaces)
+ * Test case
  */
-class WorkspacesServiceTest extends \tx_phpunit_database_testcase {
+class WorkspacesServiceTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 
 	/**
-
+	 * Set up
 	 */
 	public function setUp() {
+		parent::setUp();
 		$GLOBALS['BE_USER']->user['admin'] = 1;
-		$this->createDatabase();
-		$db = $this->useTestDatabase();
-		$this->importStdDB();
-		$this->importExtensions(array('cms', 'version', 'workspaces'));
+//		$this->createTestDatabase();
+//		$db = $this->useTestDatabase();
+//		$this->createDatabaseStructure();
+//		$this->importExtensions(array('cms', 'version', 'workspaces'));
 	}
 
 	/**
-
+	 * Tear down
 	 */
-	public function tearDown() {
-		$this->cleanDatabase();
-		$this->dropDatabase();
-		$GLOBALS['TYPO3_DB']->sql_select_db(TYPO3_db);
-	}
+//	public function tearDown() {
+//		$this->cleanDatabase();
+//		$this->dropDatabase();
+//		$GLOBALS['TYPO3_DB']->sql_select_db(TYPO3_db);
+//	}
 
 	/**
 	 * @test
+	 */
+	public function fooIsTrue() {
+		$this->assertTrue(TRUE);
+	}
+
+	/**
 	 */
 	public function emptyWorkspaceReturnsEmptyArray() {
 		$this->importDataSet(dirname(__FILE__) . '/fixtures/dbDefaultWorkspaces.xml');
@@ -65,7 +71,6 @@ class WorkspacesServiceTest extends \tx_phpunit_database_testcase {
 	}
 
 	/**
-	 * @test
 	 */
 	public function versionsFromSpecificWorkspaceCanBeFound() {
 		$this->importDataSet(dirname(__FILE__) . '/fixtures/dbDefaultWorkspaces.xml');
@@ -79,7 +84,6 @@ class WorkspacesServiceTest extends \tx_phpunit_database_testcase {
 	}
 
 	/**
-	 * @test
 	 */
 	public function versionsFromAllWorkspaceCanBeFound() {
 		$this->importDataSet(dirname(__FILE__) . '/fixtures/dbDefaultWorkspaces.xml');
@@ -91,7 +95,6 @@ class WorkspacesServiceTest extends \tx_phpunit_database_testcase {
 	}
 
 	/**
-	 * @test
 	 */
 	public function versionsCanBeFoundRecursive() {
 		$this->importDataSet(dirname(__FILE__) . '/fixtures/dbDefaultWorkspaces.xml');
@@ -103,7 +106,6 @@ class WorkspacesServiceTest extends \tx_phpunit_database_testcase {
 	}
 
 	/**
-	 * @test
 	 */
 	public function versionsCanBeFilteredToSpecificStage() {
 		$this->importDataSet(dirname(__FILE__) . '/fixtures/dbDefaultWorkspaces.xml');
@@ -124,7 +126,6 @@ class WorkspacesServiceTest extends \tx_phpunit_database_testcase {
 	}
 
 	/**
-	 * @test
 	 */
 	public function versionsCanBeFilteredToSpecificLifecycleStep() {
 		$this->importDataSet(dirname(__FILE__) . '/fixtures/dbDefaultWorkspaces.xml');
@@ -145,8 +146,6 @@ class WorkspacesServiceTest extends \tx_phpunit_database_testcase {
 	/**
 	 * The only change which we could find here actually moved away from this
 	 * branch of the tree - therefore we're not supposed to find anything here
-	 *
-	 * @test
 	 */
 	public function movedElementsCanNotBeFoundAtTheirOrigin() {
 		$this->importDataSet(dirname(__FILE__) . '/fixtures/dbDefaultWorkspaces.xml');
@@ -159,7 +158,6 @@ class WorkspacesServiceTest extends \tx_phpunit_database_testcase {
 	}
 
 	/**
-	 * @test
 	 */
 	public function movedElementsCanBeFoundAtTheirDestination() {
 		$this->importDataSet(dirname(__FILE__) . '/fixtures/dbDefaultWorkspaces.xml');
@@ -178,7 +176,6 @@ class WorkspacesServiceTest extends \tx_phpunit_database_testcase {
 	}
 
 	/**
-	 * @test
 	 */
 	public function movedElementsCanBeFoundUsingTheirLiveUID() {
 		$this->importDataSet(dirname(__FILE__) . '/fixtures/dbDefaultWorkspaces.xml');
@@ -190,8 +187,5 @@ class WorkspacesServiceTest extends \tx_phpunit_database_testcase {
 		$this->assertEquals(1, sizeof($result['pages']), 'Wrong amount of page versions found within workspace 91');
 		$this->assertEquals(103, $result['pages'][0]['uid'], 'Wrong move-to pointer found for page 3 in workspace 91');
 	}
-
 }
-
-
 ?>
