@@ -2792,9 +2792,10 @@ class ContentObjectRenderer {
 	 * @return string The processed input value
 	 */
 	public function stdWrap_htmlSpecialChars($content = '', $conf = array()) {
-		$content = htmlSpecialChars($content);
 		if ($conf['htmlSpecialChars.']['preserveEntities']) {
-			$content = GeneralUtility::deHSCentities($content);
+			$content = htmlspecialchars($content, ENT_COMPAT | ENT_HTML401, 'UTF-8', FALSE);
+		} else {
+			$content = htmlspecialchars($content);
 		}
 		return $content;
 	}

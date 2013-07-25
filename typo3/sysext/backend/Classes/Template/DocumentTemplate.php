@@ -1612,7 +1612,7 @@ class DocumentTemplate {
 			$menuDef = array();
 			foreach ($menuItems as $value => $label) {
 				$menuDef[$value]['isActive'] = !strcmp($currentValue, $value);
-				$menuDef[$value]['label'] = GeneralUtility::deHSCentities(htmlspecialchars($label));
+				$menuDef[$value]['label'] = htmlspecialchars($label, ENT_COMPAT | ENT_HTML401, 'UTF-8', FALSE);
 				$menuDef[$value]['url'] = $script . '?' . $mainParams . $addparams . '&' . $elementName . '=' . $value;
 			}
 			$content = $this->getTabMenuRaw($menuDef);
