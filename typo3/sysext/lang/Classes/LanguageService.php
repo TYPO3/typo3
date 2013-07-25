@@ -322,7 +322,7 @@ class LanguageService {
 			$output = $input;
 		}
 		if ($hsc) {
-			$output = \TYPO3\CMS\Core\Utility\GeneralUtility::deHSCentities(htmlspecialchars($output));
+			$output = htmlspecialchars($output, ENT_COMPAT | ENT_HTML401, 'UTF-8', FALSE);
 		}
 		return $output . $this->debugLL($input);
 	}

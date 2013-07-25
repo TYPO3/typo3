@@ -626,7 +626,7 @@ class PermissionModuleController {
 					}
 					$lKey = $this->getLevels - $a + 1;
 					$opts .= '
-						<option value="' . htmlspecialchars(implode(',', $theIdListArr)) . '">' . GeneralUtility::deHSCentities(htmlspecialchars(($label_recur . ' ' . $lKey . ' ' . $label_levels))) . ' (' . count($theIdListArr) . ' ' . $label_pA . ')' . '</option>';
+						<option value="' . htmlspecialchars(implode(',', $theIdListArr)) . '">' . htmlspecialchars($label_recur . ' ' . $lKey . ' ' . $label_levels, ENT_COMPAT | ENT_HTML401, 'UTF-8', FALSE) . ' (' . count($theIdListArr) . ' ' . $label_pA . ')' . '</option>';
 				}
 			}
 			// Put the selector box together:

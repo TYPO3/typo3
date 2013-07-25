@@ -983,7 +983,7 @@ class HtmlParser {
 		if ($dir == 1) {
 			$value = htmlspecialchars($value);
 		} elseif ($dir == 2) {
-			$value = GeneralUtility::deHSCentities(htmlspecialchars($value));
+			$value = htmlspecialchars($value, ENT_COMPAT | ENT_HTML401, 'UTF-8', FALSE);
 		} elseif ($dir == -1) {
 			$value = str_replace('&gt;', '>', $value);
 			$value = str_replace('&lt;', '<', $value);
