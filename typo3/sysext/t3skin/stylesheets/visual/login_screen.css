@@ -215,3 +215,36 @@
 	background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(0, #e2e2e2), color-stop(1, #c2c2c2));
 	background-repeat: repeat-x;
 }
+
+/**
+ * @section openid
+ */
+#t3-login-form-openId-provider-large a {
+	padding: 4px;
+	background-color: white;
+	border: 1px solid #AAA;
+	border-radius: 3px;
+	display: inline-block;
+	text-align: center;
+	width: 104px;
+	height: 50px;
+}
+#t3-login-form-openId-provider-large img,
+#t3-login-form-openId-provider-large span {
+	display: inline-block;
+	vertical-align: middle;
+}
+#t3-login-form-openId-provider-large a:hover {
+	background-color: #ff8600;
+}
+
+#t3-login-form-openId-provider-small a {
+	padding: 4px;
+	background-color: white;
+	border: 1px solid #AAA;
+	border-radius: 3px;
+	display: inline-block;
+}
+#t3-login-form-openId-provider-small a:hover {
+	background-color: #ff8600;
+}

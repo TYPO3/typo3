@@ -119,6 +119,75 @@ class LoginController {
 	 */
 	public $interfaceSelector_hidden;
 
+    /**
+     * Array of OpenID providers.
+     *
+     * "large" and "small" arrays contain arrays
+     * with OpenID provider information:
+     * - url       - Provider URL for the OpenID field
+     * - name      - Name of provider
+     * - image_url - Image URL
+     *
+     * @var array
+     */
+    public $openidProviders = array(
+        'large' => array(
+            /*
+            array(
+                'url'       => 'http://id.bogo/all.xrds.php',
+                'name'      => 'id.bogo provider name',
+                'image_url' => '/fileadmin/openid-id.bogo.png'
+                ),*/
+            array(
+                'name'      => 'Google',
+                'url'       => 'https://www.google.com/accounts/o8/id',
+                'image_url' => 'extensions-openid-large-google'
+            ),
+            array(
+                'name'      => 'Yahoo',
+                'url'       => 'http://me.yahoo.com/',
+                'image_url' => 'extensions-openid-large-yahoo'
+            ),
+            array(
+                'name'      => 'MyOpenID',
+                'url'       => 'http://{username}.myopenid.com/',
+                'image_url' => 'extensions-openid-large-myopenid'
+            ),
+        ),
+        'small' => array(
+            array(
+                'name'      => 'Wordpress',
+                'url'       => 'http://{username}.wordpress.com/',
+                'image_url' => 'extensions-openid-small-wordpress'
+            ),
+            array(
+                'name'      => 'Blogger',
+                'url'       => 'http://{username}.blogspot.com/',
+                'image_url' => 'extensions-openid-small-blogger'
+            ),
+            array(
+                'name'      => 'Verisign',
+                'url'       => 'http://{username}.pip.verisignlabs.com/',
+                'image_url' => 'extensions-openid-small-verisign'
+            ),
+            array(
+                'name'      => 'ClaimID',
+                'url'       => 'http://claimid.com/{username}',
+                'image_url' => 'extensions-openid-small-claimid'
+            ),
+            array(
+                'name'      => 'ClickPass',
+                'url'       => 'http://clickpass.com/public/{username}',
+                'image_url' => 'extensions-openid-small-clickpass'
+            ),
+            array(
+                'name'      => 'Launchpad',
+                'url'       => 'https://launchpad.net/~{username}',
+                'image_url' => 'extensions-openid-small-launchpad'
+            ),
+        )
+    );
+
 	// Additional hidden fields to be placed at the login form
 	/**
 	 * @todo Define visibility
@@ -264,6 +333,36 @@ class LoginController {
 		} else {
 			$markers['LABEL_INTERFACE'] = $GLOBALS['LANG']->getLL('labels.interface', TRUE);
 			$markers['VALUE_INTERFACE'] = $this->interfaceSelector;
+		}
+		//FIXME: load providers from TS
+		foreach (array('large', 'small') as $size) {
+			$uSize = strtoupper($size);
+			if (!count($this->openidProviders[$size])) {
+				$content = HtmlParser::substituteSubpart($content, '###FIELD_OPENID_PROVIDER_' . $uSize . '###', '');
+				continue;
+			}
+			$pTpl = HtmlParser::getSubpart($GLOBALS['TBE_TEMPLATE']->moduleTemplate, '###OPENID_PROVIDER_' . $uSize . '###');
+			$pHtml = '';
+			foreach ($this->openidProviders[$size] as $provider) {
+				$pMarkers = array();
+				$pMarkers['PROVIDER_LABEL'] = $provider['name'];
+				if (strpos($provider['image_url'], '.') !== false) {
+					//filename
+					$pMarkers['PROVIDER_IMAGE'] = '<img src="'
+						. htmlspecialchars($provider['image_url']) . '"'
+						. ' title="' . htmlspecialchars($provider['name']) . '"'
+						. ' alt="' . htmlspecialchars($provider['name']) . '"'
+						. '/>';
+				} else {
+					$pMarkers['PROVIDER_IMAGE'] = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon(
+						$provider['image_url'],
+						array('title' => $provider['name'])
+					);
+				}
+				$pMarkers['PROVIDER_URL']   = htmlspecialchars(json_encode($provider['url']));
+				$pHtml .= HtmlParser::substituteMarkerArray($pTpl, $pMarkers, '###|###');
+			}
+			$content = HtmlParser::substituteSubpart($content, '###OPENID_PROVIDER_' . $uSize . '###', $pHtml);
 		}
 		return HtmlParser::substituteMarkerArray($content, $markers, '###|###');
 	}

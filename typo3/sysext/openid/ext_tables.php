@@ -47,4 +47,34 @@ $GLOBALS['TYPO3_USER_SETTINGS']['columns']['tx_openid_openid'] = array(
 );
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addFieldsToUserSettings('tx_openid_openid', 'after:password2');
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('_MOD_user_setup', 'EXT:openid/locallang_csh_mod.xml');
+
+if (TYPO3_MODE == 'BE') {
+	$iconPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Icons/';
+	\TYPO3\CMS\Backend\Sprite\SpriteManager::addSingleIcons(
+		array(
+			'large-aol'      => $iconPath . 'large/aol.png',
+			'large-google'   => $iconPath . 'large/google.png',
+			'large-mailru'   => $iconPath . 'large/mailru.png',
+			'large-myopenid' => $iconPath . 'large/myopenid.png',
+			'large-verisign' => $iconPath . 'large/verisign.png',
+			'large-yahoo'    => $iconPath . 'large/yahoo.png',
+			'large-yandex'   => $iconPath . 'large/yandex.png',
+
+			'small-aol'         => $iconPath . 'small/aol.png',
+			'small-blogger'     => $iconPath . 'small/blogger.png',
+			'small-claimid'     => $iconPath . 'small/claimid.png',
+			'small-clickpass'   => $iconPath . 'small/clickpass.png',
+			'small-google'      => $iconPath . 'small/google.png',
+			'small-launchpad'   => $iconPath . 'small/launchpad.png',
+			'small-livejournal' => $iconPath . 'small/livejournal.png',
+			'small-mailru'      => $iconPath . 'small/mailru.png',
+			'small-myopenid'    => $iconPath . 'small/myopenid.png',
+			'small-verisign'    => $iconPath . 'small/verisign.png',
+			'small-wordpress'   => $iconPath . 'small/wordpress.png',
+			'small-yahoo'       => $iconPath . 'small/yahoo.png',
+			'small-yandex'      => $iconPath . 'small/yandex.png',
+		),
+		$_EXTKEY
+	);
+}
 ?>
