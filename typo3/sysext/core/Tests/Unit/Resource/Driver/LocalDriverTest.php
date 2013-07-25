@@ -28,7 +28,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-require_once 'vfsStream/vfsStream.php';
 require_once dirname(dirname(__FILE__)) . '/BaseTestCase.php';
 require_once dirname(__FILE__) . '/Fixtures/LocalDriverFilenameFilter.php';
 

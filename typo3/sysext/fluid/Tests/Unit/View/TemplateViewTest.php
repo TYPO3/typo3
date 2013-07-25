@@ -17,7 +17,6 @@ include_once(__DIR__ . '/Fixtures/TemplateViewFixture.php');
 /**
  * Testcase for the TemplateView
  */
-@require_once('vfsStream/vfsStream.php'); // include vfs stream wrapper
 class TemplateViewTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
