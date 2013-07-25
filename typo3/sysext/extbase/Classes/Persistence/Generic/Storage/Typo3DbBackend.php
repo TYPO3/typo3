@@ -1169,7 +1169,7 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 				if ($pageRepository->versioningPreview && isset($row['_ORIG_uid'])) {
 					$row['uid'] = $row['_ORIG_uid'];
 				}
-				if ($querySettings->getRespectSysLanguage()) {
+				if ($querySettings->getRespectSysLanguage() || !$querySettings->getReturnRawQueryResult()) {
 					if ($tableName == 'pages') {
 						$row = $pageRepository->getPageOverlay($row, $querySettings->getSysLanguageUid());
 					} elseif (isset($GLOBALS['TCA'][$tableName]['ctrl']['languageField'])
