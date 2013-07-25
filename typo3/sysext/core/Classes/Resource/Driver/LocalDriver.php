@@ -845,6 +845,7 @@ class LocalDriver extends \TYPO3\CMS\Core\Resource\Driver\AbstractDriver {
 	 * @param \TYPO3\CMS\Core\Resource\Folder $folderToCopy
 	 * @param \TYPO3\CMS\Core\Resource\Folder $targetFolder
 	 * @param string $newFolderName
+	 * @throws \TYPO3\CMS\Core\Resource\Exception\FileOperationErrorException
 	 * @return boolean
 	 */
 	public function copyFolderWithinStorage(\TYPO3\CMS\Core\Resource\Folder $folderToCopy, \TYPO3\CMS\Core\Resource\Folder $targetFolder, $newFolderName) {
@@ -853,10 +854,10 @@ class LocalDriver extends \TYPO3\CMS\Core\Resource\Driver\AbstractDriver {
 		$targetFolderPath = $this->getAbsolutePath($targetFolder) . $newFolderName . '/';
 		mkdir($targetFolderPath);
 		$sourceFolderPath = $this->getAbsolutePath($folderToCopy);
-		/** @var $iterator RecursiveDirectoryIterator */
+		/** @var $iterator \RecursiveDirectoryIterator */
 		$iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($sourceFolderPath));
 		while ($iterator->valid()) {
-			/** @var $current RecursiveDirectoryIterator */
+			/** @var $current \RecursiveDirectoryIterator */
 			$current = $iterator->current();
 			$itemSubPath = $iterator->getSubPathname();
 			if ($current->isDir() && !($itemSubPath === '..' || $itemSubPath === '.')) {
