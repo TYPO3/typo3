@@ -24,8 +24,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource;
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-require_once 'vfsStream/vfsStream.php';
-
 /**
  * Testcase for the factory of FAL
  *

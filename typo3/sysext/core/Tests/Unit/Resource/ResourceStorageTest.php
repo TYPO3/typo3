@@ -25,7 +25,6 @@ use TYPO3\CMS\Core\Resource\ResourceStorage;
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-require_once 'vfsStream/vfsStream.php';
 
 /**
  * Testcase for the VFS mount class
