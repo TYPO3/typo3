@@ -252,7 +252,9 @@ class FileRepository extends AbstractRepository {
 	 * @return void
 	 */
 	public function update($modifiedObject) {
-		// TODO check if $modifiedObject is an instance of AbstractFile
+		if (!$modifiedObject instanceof \TYPO3\CMS\Core\Resource\AbstractFile) {
+			throw new \InvalidArgumentException('modifiedObject has to be an instance of AbstractFile.', 1374757225);
+		}
 		// TODO check if $modifiedObject is indexed
 		$changedProperties = $modifiedObject->getUpdatedProperties();
 		$properties = $modifiedObject->getProperties();
