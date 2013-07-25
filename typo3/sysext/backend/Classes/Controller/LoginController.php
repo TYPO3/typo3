@@ -119,6 +119,25 @@ class LoginController {
 	 */
 	public $interfaceSelector_hidden;
 
+	/**
+	 * Array of OpenID providers.
+	 *
+	 * "large" and "small" arrays contain arrays with OpenID provider information:
+	 * - url       - Provider URL for the OpenID field
+	 * - name      - Name of provider
+	 * - image_url - (optional) Image URL. When not given, sprites are used:
+	 *               - extensions-openid-small-$providerkey
+	 *               - extensions-openid-large-$providerkey
+	 *
+	 * Keys in the arrays are the provider keys used for the sprites
+	 *
+	 * @var array
+	 */
+	public $openIdProviders = array(
+		'large' => array(),
+		'small' => array()
+	);
+
 	// Additional hidden fields to be placed at the login form
 	/**
 	 * @todo Define visibility
@@ -180,6 +199,51 @@ class LoginController {
 				HttpUtility::redirect($this->redirect_url);
 			}
 			die;
+		}
+		$this->initOpenIdProviders();
+	}
+
+	/**
+	 * Loads configured OpenID providers from OpenID extension configuration
+	 *
+	 * @return void
+	 * @uses   $this->openIdProviders
+	 * @uses   $TYPO3_CONF_VARS['SVCONF']['auth']['tx_openid']['providers']
+	 */
+	protected function initOpenIdProviders() {
+		$providers = array();
+		if (isset($GLOBALS['TYPO3_CONF_VARS']['SVCONF']['auth']['tx_openid']['providers'])) {
+			$providers = $GLOBALS['TYPO3_CONF_VARS']['SVCONF']['auth']['tx_openid']['providers'];
+		}
+
+		$globalConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['openid']);
+		if (isset($globalConfig['custom']) && $globalConfig['custom'] != '') {
+			$lines = explode("\n", $globalConfig['custom']);
+			foreach ($lines as $providerLine) {
+				$data = str_getcsv($providerLine);
+				if (count($data) != 3 && count($data) != 4) {
+					continue;
+				}
+				$providers[$data[0]] = array(
+					'name' => $data[1],
+					'url'  => $data[2],
+				);
+				if (isset($data[3])) {
+					$providers[$data[0]]['image_url'] = $data[3];
+				}
+			}
+		}
+
+		foreach (array('large', 'small') as $size) {
+			if (!isset($globalConfig[$size]) || $globalConfig[$size] == '') {
+				continue;
+			}
+			$enabled = explode(',', $globalConfig[$size]);
+			foreach ($enabled as $providerKey) {
+				if (isset($providers[$providerKey])) {
+					$this->openIdProviders[$size][$providerKey] = $providers[$providerKey];
+				}
+			}
 		}
 	}
 
@@ -264,6 +328,35 @@ class LoginController {
 		} else {
 			$markers['LABEL_INTERFACE'] = $GLOBALS['LANG']->getLL('labels.interface', TRUE);
 			$markers['VALUE_INTERFACE'] = $this->interfaceSelector;
+		}
+		//show openid provider icons
+		foreach (array('large', 'small') as $size) {
+			$uSize = strtoupper($size);
+			if (!count($this->openIdProviders[$size])) {
+				$content = HtmlParser::substituteSubpart($content, '###FIELD_OPENID_PROVIDER_' . $uSize . '###', '');
+				continue;
+			}
+			$pTpl = HtmlParser::getSubpart($GLOBALS['TBE_TEMPLATE']->moduleTemplate, '###OPENID_PROVIDER_' . $uSize . '###');
+			$pHtml = '';
+			foreach ($this->openIdProviders[$size] as $providerKey => $provider) {
+				$pMarkers = array();
+				$pMarkers['PROVIDER_LABEL'] = $provider['name'];
+				if (isset($provider['image_url'])) {
+					$pMarkers['PROVIDER_IMAGE'] = '<img src="'
+						. htmlspecialchars($provider['image_url']) . '"'
+						. ' title="' . htmlspecialchars($provider['name']) . '"'
+						. ' alt="' . htmlspecialchars($provider['name']) . '"'
+						. '/>';
+				} else {
+					$pMarkers['PROVIDER_IMAGE'] = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon(
+						'extensions-openid-' . $size . '-' . $providerKey,
+						array('title' => htmlspecialchars($provider['name']))
+					);
+				}
+				$pMarkers['PROVIDER_URL']   = htmlspecialchars(json_encode($provider['url']));
+				$pHtml .= HtmlParser::substituteMarkerArray($pTpl, $pMarkers, '###|###');
+			}
+			$content = HtmlParser::substituteSubpart($content, '###OPENID_PROVIDER_' . $uSize . '###', $pHtml);
 		}
 		return HtmlParser::substituteMarkerArray($content, $markers, '###|###');
 	}

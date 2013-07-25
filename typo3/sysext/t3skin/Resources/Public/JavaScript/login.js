@@ -125,6 +125,14 @@ TYPO3BackendLogin = {
 
 		$('t3-login-form-footer-default').hide();
 		$('t3-login-form-footer-openId').show();
+		var provider = $('t3-login-form-openId-provider-large');
+		if (provider) {
+			provider.show();
+		}
+		provider = $('t3-login-form-openId-provider-small');
+		if (provider) {
+			provider.show();
+		}
 		$('t3-login-password-section').hide();
 
 		if ($('t3-login-interface-section')) {
@@ -145,6 +153,14 @@ TYPO3BackendLogin = {
 		$('t3-login-form-footer-default').show();
 		$('t3-login-form-footer-openId').hide();
 		$('t3-login-password-section').show();
+		var provider = $('t3-login-form-openId-provider-large');
+		if (provider) {
+			provider.hide();
+		}
+		provider = $('t3-login-form-openId-provider-small');
+		if (provider) {
+			provider.hide();
+		}
 
 		if ($('t3-login-interface-section')) {
 			$('t3-login-interface-section').show();
@@ -242,6 +258,17 @@ TYPO3BackendLogin = {
 		// the box with the login form, so it doesn't jump around when the spinner is shown
 		var loginBoxHeight = $('t3-login-form-fields').getHeight();
 		$('t3-login-process').setStyle({height: loginBoxHeight + 'px'}).show();
+	},
+
+	selectOpenIdProvider: function(url) {
+		$('t3-username').value = url;
+		$('t3-username').activate();
+		var begin = url.indexOf('{username}');
+		if (begin > -1) {
+			$('t3-username').setSelectionRange(begin, begin + 10);
+		} else {
+			$('t3-username').form.submit();
+		}
 	}
 };
 
