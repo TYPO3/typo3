@@ -4524,10 +4524,18 @@ class DataHandler {
 					$dbAnalysis = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\RelationHandler');
 					$dbAnalysis->start($value, $conf['foreign_table'], '', $uid, $table, $conf);
 					$dbAnalysis->undeleteRecord = TRUE;
+
+					$enableCascadingDelete = TRUE;
+					if (isset($conf['behaviour']['enableCascadingDelete']) && !$conf['behaviour']['enableCascadingDelete']) {
+						$enableCascadingDelete = FALSE;
+					}
+
 					// Walk through the items and remove them
 					foreach ($dbAnalysis->itemArray as $v) {
 						if (!$undeleteRecord) {
-							$this->deleteAction($v['table'], $v['id']);
+							if ($enableCascadingDelete) {
+								$this->deleteAction($v['table'], $v['id']);
+							}
 						} else {
 							$this->undeleteRecord($v['table'], $v['id']);
 						}
