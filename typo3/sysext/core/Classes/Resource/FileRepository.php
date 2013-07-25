@@ -248,11 +248,10 @@ class FileRepository extends AbstractRepository {
 	/**
 	 * Updates an existing file object in the database
 	 *
-	 * @param AbstractFile $modifiedObject
+	 * @param \TYPO3\CMS\Core\Resource\AbstractFile $modifiedObject
 	 * @return void
 	 */
-	public function update($modifiedObject) {
-		// TODO check if $modifiedObject is an instance of AbstractFile
+	public function update(\TYPO3\CMS\Core\Resource\AbstractFile $modifiedObject) {
 		// TODO check if $modifiedObject is indexed
 		$changedProperties = $modifiedObject->getUpdatedProperties();
 		$properties = $modifiedObject->getProperties();
