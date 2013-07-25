@@ -559,7 +559,16 @@ abstract class AbstractFile implements FileInterface {
 	 */
 	abstract public function updateProperties(array $properties);
 
-}
+	/**
+	 * Returns the names of all properties that have been updated in this record
+	 * Needs to be implemented in each subclass see File
+	 *
+	 * @return array The keys of updated properties
+	 */
+	public function getUpdatedProperties() {
+		return array_keys($this->properties);
+	}
 
+}
 
 ?>
