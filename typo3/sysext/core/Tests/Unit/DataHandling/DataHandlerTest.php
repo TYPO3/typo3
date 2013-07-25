@@ -243,7 +243,7 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function processDatamapWhenEditingRecordInWorkspaceCreatesNewRecordInWorkspace() {
-			// Unset possible hooks on method under test
+		// Unset possible hooks on method under test
 		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'] = array();
 
 		$GLOBALS['TYPO3_DB'] = $this->getMock('TYPO3\\CMS\\Core\\Database\\DatabaseConnection');
@@ -355,6 +355,7 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @param string $storedValue
 	 * @param string $storedType
 	 * @param boolean $allowNull
+	 *
 	 * @dataProvider equalSubmittedAndStoredValuesAreDeterminedDataProvider
 	 * @test
 	 */
@@ -513,6 +514,33 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				NULL, NULL, 'int', TRUE
 			),
 		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function deleteRecord_procBasedOnFieldTypeRespectsEnableCascadingDelete() {
+		$table = uniqid('foo_');
+		$conf = array(
+			'type' => 'inline',
+			'foreign_table' => uniqid('foreign_foo_'),
+			'behaviour' => array(
+				'enableCascadingDelete' => 0,
+			)
+		);
+
+		/** @var \TYPO3\CMS\Core\Database\RelationHandler $mockRelationHandler */
+		$mockRelationHandler = $this->getMock('TYPO3\\CMS\\Core\\Database\\RelationHandler', array(), array(), '', FALSE);
+		$mockRelationHandler->itemArray = array(
+			'1' => array('table' => uniqid('bar_'), 'id' => 67)
+		);
+
+		/** @var \TYPO3\CMS\Core\DataHandling\DataHandler $mockDataHandler */
+		$mockDataHandler = $this->getAccessibleMock('TYPO3\\CMS\\Core\\DataHandling\\DataHandler', array('getInlineFieldType', 'deleteAction', 'createRelationHandlerInstance'), array(), '', FALSE);
+		$mockDataHandler->expects($this->once())->method('getInlineFieldType')->will($this->returnValue('field'));
+		$mockDataHandler->expects($this->once())->method('createRelationHandlerInstance')->will($this->returnValue($mockRelationHandler));
+		$mockDataHandler->expects($this->never())->method('deleteAction');
+		$mockDataHandler->deleteRecord_procBasedOnFieldType($table, 42, 'foo', 'bar', $conf);
 	}
 }
 
