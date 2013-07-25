@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Workspaces\Service;
+namespace TYPO3\CMS\Workspaces\Tests\Functional\Service;
 
 /***************************************************************
  *  Copyright notice

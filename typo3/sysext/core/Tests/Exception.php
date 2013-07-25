@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Core\Tests;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -21,14 +23,10 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
- * Boostrap code for functional tests
+ * An exception - Thrown in abstract test cases to mark
+ * a test configuration or setup error.
  */
-require_once(__DIR__ . '/../Tests/BaseTestCase.php');
-require_once(__DIR__ . '/../Tests/FunctionalTestCase.php');
-require_once(__DIR__ . '/../Tests/Exception.php');
-if (!defined('ORIGINAL_ROOT')) {
-	define('ORIGINAL_ROOT', $_SERVER['PWD']);
+class Exception extends \Exception {
 }
 ?>
