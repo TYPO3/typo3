@@ -78,6 +78,24 @@
 <!-- ###LOGIN_ERROR### end -->
 
 <div id="t3-login-form-fields" class="###CSS_OPENIDCLASS###">
+	<!-- ###FIELD_OPENID_PROVIDER_LARGE### begin -->
+	<div class="t3-login-field" id="t3-login-form-openId-provider-large" style="display: none">
+		<!-- ###OPENID_PROVIDER_LARGE### begin -->
+		<a href="#" onclick="TYPO3BackendLogin.selectOpenIdProvider(###PROVIDER_URL###);return false;" title="###PROVIDER_LABEL###">
+			###PROVIDER_IMAGE###
+		</a>
+		<!-- ###OPENID_PROVIDER_LARGE### end -->
+	</div>
+	<!-- ###FIELD_OPENID_PROVIDER_LARGE### end -->
+	<!-- ###FIELD_OPENID_PROVIDER_SMALL### begin -->
+	<div class="t3-login-field" id="t3-login-form-openId-provider-small" style="display: none">
+		<!-- ###OPENID_PROVIDER_SMALL### begin -->
+		<a href="#" onclick="TYPO3BackendLogin.selectOpenIdProvider(###PROVIDER_URL###);return false;" title="###PROVIDER_LABEL###">
+			###PROVIDER_IMAGE###
+		</a>
+		<!-- ###OPENID_PROVIDER_SMALL### end -->
+	</div>
+	<!-- ###FIELD_OPENID_PROVIDER_SMALL### end -->
 	<div class="t3-login-field">
 		<input type="text" id="t3-username" name="username" value="###VALUE_USERNAME###" placeholder="###LABEL_USERNAME###" class="t3-username" autofocus="autofocus" />
 

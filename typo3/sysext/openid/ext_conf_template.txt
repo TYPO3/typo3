@@ -1,0 +1,8 @@
+#cat=Backend; type=string; label=Large OpenID provider buttons: Comma-separated. Predefined providers: blogger, claimid, clickpass, google, launchpad, myopenid, verisign, yahoo, wordpress
+large=google,yahoo,myopenid
+
+#cat=Backend; type=string; label=Small OpenID provider buttons: Comma-separated. See predefined provider list above
+small=wordpress,blogger,verisign,claimid,clickpass,launchpad
+
+#cat=Backend; type=user[EXT:openid/Classes/Utility/ExtensionManagerConfigurationUtility.php:TYPO3\CMS\Openid\Utility\ExtensionManagerConfigurationUtility->providerInput]; label=Custom providers: One provider on each line. "key,title,/path/to/logo.png,http://provider.example.org/openid". Use the key in "large" and "small" fields.
+custom=
