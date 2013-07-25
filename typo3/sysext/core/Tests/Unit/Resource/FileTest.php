@@ -24,8 +24,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource;
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-require_once 'vfsStream/vfsStream.php';
-
 /**
  * Testcase for the file class of the TYPO3 FAL
  *
