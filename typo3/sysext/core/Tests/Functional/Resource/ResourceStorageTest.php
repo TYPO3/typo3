@@ -27,8 +27,6 @@ namespace TYPO3\CMS\Core\Tests\Functional\Resource;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-require_once 'vfsStream/vfsStream.php';
-
 /**
  * Functional test case for the FAL Storage.
  *

@@ -29,8 +29,6 @@ namespace TYPO3\CMS\Core\Tests\Functional\Resource;
 
 use TYPO3\CMS\Core\Resource;
 
-require_once 'vfsStream/vfsStream.php';
-
 /**
  * Functional test case for the FAL folder class.
  *
