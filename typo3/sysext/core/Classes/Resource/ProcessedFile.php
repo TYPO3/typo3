@@ -339,6 +339,21 @@ class ProcessedFile extends AbstractFile {
 	}
 
 	/**
+	 * Returns the names of all properties that have been updated in this record
+	 * $this->update is only set when file is replaced so we update all properties
+	 * TODO make this more generic like in File
+	 *
+	 * @return array The keys of updated properties
+	 */
+	public function getUpdatedProperties() {
+		$updateProperties = array();
+		if ($this->updated) {
+			$updateProperties = array_keys($this->properties);
+		}
+		return $updateProperties;
+	}
+
+	/**
 	 * Basic array function for the DB update
 	 *
 	 * @return array
