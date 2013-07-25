@@ -28,6 +28,7 @@ namespace TYPO3\CMS\Core\DataHandling;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 
 /**
  * The main data handler class which takes care of correctly updating and inserting records.
@@ -1920,7 +1921,7 @@ class DataHandler {
 					$theFileValues = array();
 					// If MM relations for the files also!
 					if ($tcaFieldConf['MM']) {
-						$dbAnalysis = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\RelationHandler');
+						$dbAnalysis = $this->createRelationHandlerInstance();
 						/** @var $dbAnalysis \TYPO3\CMS\Core\Database\RelationHandler */
 						$dbAnalysis->start('', 'files', $tcaFieldConf['MM'], $id);
 						foreach ($dbAnalysis->itemArray as $item) {
@@ -2029,7 +2030,7 @@ class DataHandler {
 			// If MM relations for the files, we will set the relations as MM records and change the valuearray to contain a single entry with a count of the number of files!
 			if ($tcaFieldConf['MM']) {
 				/** @var $dbAnalysis \TYPO3\CMS\Core\Database\RelationHandler */
-				$dbAnalysis = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\RelationHandler');
+				$dbAnalysis = $this->createRelationHandlerInstance();
 				// Dummy
 				$dbAnalysis->tableArray['files'] = array();
 				foreach ($valueArray as $key => $theFile) {
@@ -2538,13 +2539,13 @@ class DataHandler {
 		$prep = $type == 'group' ? $tcaFieldConf['prepend_tname'] : $tcaFieldConf['neg_foreign_table'];
 		$newRelations = implode(',', $valueArray);
 		/** @var $dbAnalysis \TYPO3\CMS\Core\Database\RelationHandler */
-		$dbAnalysis = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\RelationHandler');
+		$dbAnalysis = $this->createRelationHandlerInstance();
 		$dbAnalysis->registerNonTableValues = $tcaFieldConf['allowNonIdValues'] ? 1 : 0;
 		$dbAnalysis->start($newRelations, $tables, '', 0, $currentTable, $tcaFieldConf);
 		if ($tcaFieldConf['MM']) {
 			if ($status == 'update') {
 				/** @var $oldRelations_dbAnalysis \TYPO3\CMS\Core\Database\RelationHandler */
-				$oldRelations_dbAnalysis = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\RelationHandler');
+				$oldRelations_dbAnalysis = $this->createRelationHandlerInstance();
 				$oldRelations_dbAnalysis->registerNonTableValues = $tcaFieldConf['allowNonIdValues'] ? 1 : 0;
 				// Db analysis with $id will initialize with the existing relations
 				$oldRelations_dbAnalysis->start('', $tables, $tcaFieldConf['MM'], $id, $currentTable, $tcaFieldConf);
@@ -2757,7 +2758,7 @@ class DataHandler {
 		$valueArray = $this->applyFiltersToValues($tcaFieldConf, $valueArray);
 		// Fetch the related child records using \TYPO3\CMS\Core\Database\RelationHandler
 		/** @var $dbAnalysis \TYPO3\CMS\Core\Database\RelationHandler */
-		$dbAnalysis = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\RelationHandler');
+		$dbAnalysis = $this->createRelationHandlerInstance();
 		$dbAnalysis->start(implode(',', $valueArray), $foreignTable, '', 0, $table, $tcaFieldConf);
 		// If the localizationMode is set to 'keep', the children for the localized parent are kept as in the original untranslated record:
 		$localizationMode = BackendUtility::getInlineLocalizationMode($table, $tcaFieldConf);
@@ -3274,7 +3275,7 @@ class DataHandler {
 			$localizeReferences = $localizeForeignTable && isset($conf['localizeReferencesAtParentLocalization']) && $conf['localizeReferencesAtParentLocalization'];
 			$localizeChildren = $localizeForeignTable && isset($conf['behaviour']['localizeChildrenAtParentLocalization']) && $conf['behaviour']['localizeChildrenAtParentLocalization'];
 			/** @var $dbAnalysis \TYPO3\CMS\Core\Database\RelationHandler */
-			$dbAnalysis = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\RelationHandler');
+			$dbAnalysis = $this->createRelationHandlerInstance();
 			$dbAnalysis->start($value, $allowedTables, $mmTable, $uid, $table, $conf);
 			// Localize referenced records of select fields:
 			if ($language > 0 && ($localizeReferences && empty($mmTable) || $localizeChildren && $localizationMode === 'select' && $inlineSubType === 'mm')) {
@@ -3313,7 +3314,7 @@ class DataHandler {
 			} else {
 				// Fetch the related child records using \TYPO3\CMS\Core\Database\RelationHandler
 				/** @var $dbAnalysis \TYPO3\CMS\Core\Database\RelationHandler */
-				$dbAnalysis = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\RelationHandler');
+				$dbAnalysis = $this->createRelationHandlerInstance();
 				$dbAnalysis->start($value, $conf['foreign_table'], '', $uid, $table, $conf);
 				// Walk through the items, copy them and remember the new id:
 				foreach ($dbAnalysis->itemArray as $k => $v) {
@@ -3411,7 +3412,7 @@ class DataHandler {
 			if ($conf['MM']) {
 				$theFileValues = array();
 				/** @var $dbAnalysis \TYPO3\CMS\Core\Database\RelationHandler */
-				$dbAnalysis = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\RelationHandler');
+				$dbAnalysis = $this->createRelationHandlerInstance();
 				$dbAnalysis->start('', 'files', $conf['MM'], $uid);
 				foreach ($dbAnalysis->itemArray as $somekey => $someval) {
 					if ($someval['id']) {
@@ -3832,7 +3833,7 @@ class DataHandler {
 						// make sure they reside at that page and not at its parent
 						$destPid = $uid;
 					}
-					$dbAnalysis = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\RelationHandler');
+					$dbAnalysis = $this->createRelationHandlerInstance();
 					$dbAnalysis->start($value, $conf['foreign_table'], '', $uid, $table, $conf);
 				}
 			}
@@ -4040,7 +4041,7 @@ class DataHandler {
 						$mmTable = $inlineSubType == 'mm' && isset($config['MM']) && $config['MM'] ? $config['MM'] : '';
 						// Fetch children from original language parent:
 						/** @var $dbAnalysisOriginal \TYPO3\CMS\Core\Database\RelationHandler */
-						$dbAnalysisOriginal = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\RelationHandler');
+						$dbAnalysisOriginal = $this->createRelationHandlerInstance();
 						$dbAnalysisOriginal->start($transOrigRecord[$field], $foreignTable, $mmTable, $transOrigRecord['uid'], $transOrigTable, $config);
 						$elementsOriginal = array();
 						foreach ($dbAnalysisOriginal->itemArray as $item) {
@@ -4049,7 +4050,7 @@ class DataHandler {
 						unset($dbAnalysisOriginal);
 						// Fetch children from current localized parent:
 						/** @var $dbAnalysisCurrent \TYPO3\CMS\Core\Database\RelationHandler */
-						$dbAnalysisCurrent = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\RelationHandler');
+						$dbAnalysisCurrent = $this->createRelationHandlerInstance();
 						$dbAnalysisCurrent->start($parentRecord[$field], $foreignTable, $mmTable, $id, $table, $config);
 						// Perform synchronization: Possibly removal of already localized records:
 						if ($type == 'synchronize') {
@@ -4528,13 +4529,23 @@ class DataHandler {
 			if ($foreign_table) {
 				$inlineType = $this->getInlineFieldType($conf);
 				if ($inlineType == 'list' || $inlineType == 'field') {
-					$dbAnalysis = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\RelationHandler');
+					/** @var \TYPO3\CMS\Core\Database\RelationHandler $dbAnalysis */
+					$dbAnalysis = $this->createRelationHandlerInstance();
 					$dbAnalysis->start($value, $conf['foreign_table'], '', $uid, $table, $conf);
 					$dbAnalysis->undeleteRecord = TRUE;
+
+					$enableCascadingDelete = TRUE;
+					// non type save comparison is intended!
+					if (isset($conf['behaviour']['enableCascadingDelete']) && $conf['behaviour']['enableCascadingDelete'] == FALSE) {
+						$enableCascadingDelete = FALSE;
+					}
+
 					// Walk through the items and remove them
 					foreach ($dbAnalysis->itemArray as $v) {
 						if (!$undeleteRecord) {
-							$this->deleteAction($v['table'], $v['id']);
+							if ($enableCascadingDelete) {
+								$this->deleteAction($v['table'], $v['id']);
+							}
 						} else {
 							$this->undeleteRecord($v['table'], $v['id']);
 						}
@@ -4544,7 +4555,7 @@ class DataHandler {
 		} elseif ($this->isReferenceField($conf)) {
 			$allowedTables = $conf['type'] == 'group' ? $conf['allowed'] : $conf['foreign_table'] . ',' . $conf['neg_foreign_table'];
 			$prependName = $conf['type'] == 'group' ? $conf['prepend_tname'] : $conf['neg_foreign_table'];
-			$dbAnalysis = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\RelationHandler');
+			$dbAnalysis = $this->createRelationHandlerInstance();
 			$dbAnalysis->start($value, $allowedTables, $conf['MM'], $uid, $table, $conf);
 			foreach ($dbAnalysis->itemArray as $v) {
 				$this->updateRefIndexStack[$table][$uid][] = array($v['table'], $v['id']);
@@ -4694,13 +4705,13 @@ class DataHandler {
 				$prependName = $conf['type'] == 'group' ? $conf['prepend_tname'] : $conf['neg_foreign_table'];
 				if ($conf['MM']) {
 					/** @var $dbAnalysis \TYPO3\CMS\Core\Database\RelationHandler */
-					$dbAnalysis = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\RelationHandler');
+					$dbAnalysis = $this->createRelationHandlerInstance();
 					$dbAnalysis->start('', $allowedTables, $conf['MM'], $id, $table, $conf);
 					if (count($dbAnalysis->getValueArray($prependName))) {
 						$this->version_remapMMForVersionSwap_reg[$id][$field] = array($dbAnalysis, $conf['MM'], $prependName);
 					}
 					/** @var $dbAnalysis \TYPO3\CMS\Core\Database\RelationHandler */
-					$dbAnalysis = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\RelationHandler');
+					$dbAnalysis = $this->createRelationHandlerInstance();
 					$dbAnalysis->start('', $allowedTables, $conf['MM'], $swapWith, $table, $conf);
 					if (count($dbAnalysis->getValueArray($prependName))) {
 						$this->version_remapMMForVersionSwap_reg[$swapWith][$field] = array($dbAnalysis, $conf['MM'], $prependName);
@@ -4746,7 +4757,7 @@ class DataHandler {
 			$prependName = $dsConf['type'] == 'group' ? $dsConf['prepend_tname'] : $dsConf['neg_foreign_table'];
 			if ($dsConf['MM']) {
 				/** @var $dbAnalysis \TYPO3\CMS\Core\Database\RelationHandler */
-				$dbAnalysis = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\RelationHandler');
+				$dbAnalysis = $this->createRelationHandlerInstance();
 				$dbAnalysis->start('', $allowedTables, $dsConf['MM'], $uid, $table, $dsConf);
 				$this->version_remapMMForVersionSwap_reg[$uid][$field . '/' . $path] = array($dbAnalysis, $dsConf['MM'], $prependName);
 			}
@@ -4893,7 +4904,7 @@ class DataHandler {
 		// Which tables that should possibly not be remapped
 		$dontRemapTables = GeneralUtility::trimExplode(',', $conf['dontRemapTablesOnCopy'], TRUE);
 		// Convert value to list of references:
-		$dbAnalysis = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\RelationHandler');
+		$dbAnalysis = $this->createRelationHandlerInstance();
 		$dbAnalysis->registerNonTableValues = $conf['type'] == 'select' && $conf['allowNonIdValues'] ? 1 : 0;
 		$dbAnalysis->start($value, $allowedTables, $conf['MM'], $MM_localUid, $table, $conf);
 		// Traverse those references and map IDs:
@@ -4936,7 +4947,7 @@ class DataHandler {
 				$this->remapListedDBRecords_procDBRefs($conf, $value, $theUidToUpdate, $table);
 			} elseif ($inlineType !== FALSE) {
 				/** @var $dbAnalysis \TYPO3\CMS\Core\Database\RelationHandler */
-				$dbAnalysis = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\RelationHandler');
+				$dbAnalysis = $this->createRelationHandlerInstance();
 				$dbAnalysis->start($value, $conf['foreign_table'], '', 0, $table, $conf);
 				// Update child records if using pointer fields ('foreign_field'):
 				if ($inlineType == 'field') {
@@ -7327,6 +7338,14 @@ class DataHandler {
 		}
 	}
 
+	/**
+	 * function to make the static call to GeneralUtility mockable
+	 *
+	 * @return \TYPO3\CMS\Core\Database\RelationHandler
+	 */
+	protected function createRelationHandlerInstance() {
+		return GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\RelationHandler');
+	}
 }
 
 
