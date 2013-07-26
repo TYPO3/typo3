@@ -35,61 +35,27 @@ class UpdateFromTerController extends \TYPO3\CMS\Extensionmanager\Controller\Abs
 
 	/**
 	 * @var \TYPO3\CMS\Extensionmanager\Utility\Repository\Helper
+	 * @inject
 	 */
 	protected $repositoryHelper;
 
 	/**
 	 * @var \TYPO3\CMS\Extensionmanager\Domain\Repository\RepositoryRepository
+	 * @inject
 	 */
 	protected $repositoryRepository;
 
 	/**
 	 * @var \TYPO3\CMS\Extensionmanager\Utility\ListUtility
+	 * @inject
 	 */
 	protected $listUtility;
 
 	/**
 	 * @var \TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository
+	 * @inject
 	 */
 	protected $extensionRepository;
-
-	/**
-	 * Dependency injection of the Extension Repository
-	 *
-	 * @param \TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository $extensionRepository
-	 * @return void
-	 */
-	public function injectExtensionRepository(\TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository $extensionRepository) {
-		$this->extensionRepository = $extensionRepository;
-	}
-
-	/**
-	 * Dependency injection of the Repository Helper Utility
-	 *
-	 * @param \TYPO3\CMS\Extensionmanager\Utility\Repository\Helper $repositoryHelper
-	 * @return void
-	 */
-	public function injectRepositoryHelper(\TYPO3\CMS\Extensionmanager\Utility\Repository\Helper $repositoryHelper) {
-		$this->repositoryHelper = $repositoryHelper;
-	}
-
-	/**
-	 * Dependency injection of repository repository
-	 *
-	 * @param \TYPO3\CMS\Extensionmanager\Domain\Repository\RepositoryRepository $repositoryRepository
-	 * @return void
-	 */
-	public function injectRepositoryRepository(\TYPO3\CMS\Extensionmanager\Domain\Repository\RepositoryRepository $repositoryRepository) {
-		$this->repositoryRepository = $repositoryRepository;
-	}
-
-	/**
-	 * @param \TYPO3\CMS\Extensionmanager\Utility\ListUtility $listUtility
-	 * @return void
-	 */
-	public function injectListUtility(\TYPO3\CMS\Extensionmanager\Utility\ListUtility $listUtility) {
-		$this->listUtility = $listUtility;
-	}
 
 	/**
 	 * Update extension list from TER

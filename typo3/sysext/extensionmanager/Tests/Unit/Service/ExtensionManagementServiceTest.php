@@ -94,6 +94,7 @@ class ExtensionManagementServiceTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseT
 		$extensionModelMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\Extension', array('getExtensionKey'));
 		$extensionModelMock->_set('extensionKey', 'foobar');
 		$extensionModelMock->_set('version', '1.0.0');
+		$extensionModelMock->_set('_isClone', TRUE);
 		$downloadQueue = array(
 			$extensionModelMock
 		);
@@ -116,6 +117,7 @@ class ExtensionManagementServiceTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseT
 		$extensionModelMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\Extension', array('getExtensionKey'));
 		$extensionModelMock->_set('extensionKey', 'foobar');
 		$extensionModelMock->_set('version', '1.0.0');
+		$extensionModelMock->_set('_isClone', TRUE);
 		$downloadQueue = array(
 			$extensionModelMock
 		);
@@ -239,6 +241,5 @@ class ExtensionManagementServiceTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseT
 	}
 
 }
-
 
 ?>

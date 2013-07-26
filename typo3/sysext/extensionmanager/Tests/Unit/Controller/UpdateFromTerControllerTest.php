@@ -46,7 +46,7 @@ class UpdateFromTerControllerTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTest
 		$repositoryHelperMock->expects($this->once())->method('updateExtList');
 		$extensionRepositoryMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Repository\\ExtensionRepository');
 		$extensionRepositoryMock->expects($this->once())->method('countAll')->will($this->returnValue(0));
-		$controllerMock->injectExtensionRepository($extensionRepositoryMock);
+		$controllerMock->_set('extensionRepository', $extensionRepositoryMock);
 
 		$controllerMock->_set('repositoryRepository', $repositoryRepositoryMock);
 		$controllerMock->_set('repositoryHelper', $repositoryHelperMock);
@@ -72,7 +72,7 @@ class UpdateFromTerControllerTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTest
 		$repositoryHelperMock->expects($this->never())->method('updateExtList');
 		$extensionRepositoryMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Repository\\ExtensionRepository');
 		$extensionRepositoryMock->expects($this->once())->method('countAll')->will($this->returnValue(100));
-		$controllerMock->injectExtensionRepository($extensionRepositoryMock);
+		$controllerMock->_set('extensionRepository', $extensionRepositoryMock);
 
 		$controllerMock->_set('repositoryRepository', $repositoryRepositoryMock);
 		$controllerMock->_set('repositoryHelper', $repositoryHelperMock);
@@ -98,7 +98,7 @@ class UpdateFromTerControllerTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTest
 		$repositoryHelperMock->expects($this->once())->method('updateExtList');
 		$extensionRepositoryMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Repository\\ExtensionRepository');
 		$extensionRepositoryMock->expects($this->once())->method('countAll')->will($this->returnValue(100));
-		$controllerMock->injectExtensionRepository($extensionRepositoryMock);
+		$controllerMock->_set('extensionRepository', $extensionRepositoryMock);
 
 		$controllerMock->_set('repositoryRepository', $repositoryRepositoryMock);
 		$controllerMock->_set('repositoryHelper', $repositoryHelperMock);

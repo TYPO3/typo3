@@ -68,6 +68,7 @@ class Extension extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Object\ObjectManager
+	 * @inject
 	 */
 	protected $objectManager;
 
@@ -161,14 +162,6 @@ class Extension extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 * @var integer
 	 */
 	protected $position = 0;
-
-	/**
-	 * @param \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager
-	 * @return void
-	 */
-	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManager $objectManager) {
-		$this->objectManager = $objectManager;
-	}
 
 	/**
 	 * @param string $authorEmail

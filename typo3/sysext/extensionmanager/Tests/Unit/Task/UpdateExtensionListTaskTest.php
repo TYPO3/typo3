@@ -54,7 +54,8 @@ class UpdateExtensionListTaskTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTest
 	 * @test
 	 */
 	public function updateExtensionListTaskIsInstanceOfAbstractTask() {
-		$taskMock = $this->getMock('TYPO3\CMS\Extensionmanager\Task\\UpdateExtensionListTask');
+		$this->getMock('TYPO3\\CMS\\Scheduler\\Task\\AbstractTask');
+		$taskMock = $this->getMock('TYPO3\\CMS\\Extensionmanager\\Task\\UpdateExtensionListTask');
 		$this->assertInstanceOf('TYPO3\\CMS\\Scheduler\\Task\\AbstractTask', $taskMock);
 	}
 

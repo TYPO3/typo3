@@ -35,80 +35,45 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Object\ObjectManager
+	 * @inject
 	 */
 	public $objectManager;
 
 	/**
 	 * @var \TYPO3\CMS\Install\Service\SqlSchemaMigrationService
+	 * @inject
 	 */
 	public $installToolSqlParser;
 
 	/**
 	 * @var \TYPO3\CMS\Extensionmanager\Utility\DependencyUtility
+	 * @inject
 	 */
 	protected $dependencyUtility;
 
 	/**
 	 * @var \TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility
+	 * @inject
 	 */
 	protected $fileHandlingUtility;
 
 	/**
 	 * @var \TYPO3\CMS\Extensionmanager\Utility\ListUtility
+	 * @inject
 	 */
 	protected $listUtility;
 
 	/**
 	 * @var \TYPO3\CMS\Extensionmanager\Utility\DatabaseUtility
+	 * @inject
 	 */
 	protected $databaseUtility;
 
 	/**
 	 * @var \TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository
+	 * @inject
 	 */
 	public $extensionRepository;
-
-	/**
-	 * @param \TYPO3\CMS\Extensionmanager\Utility\ListUtility $listUtility
-	 * @return void
-	 */
-	public function injectListUtility(\TYPO3\CMS\Extensionmanager\Utility\ListUtility $listUtility) {
-		$this->listUtility = $listUtility;
-	}
-
-	/**
-	 * @param \TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility $filehandlingUtility
-	 * @return void
-	 */
-	public function injectFileHandlingUtility(\TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility $fileHandlingUtility) {
-		$this->fileHandlingUtility = $fileHandlingUtility;
-	}
-
-	/**
-	 * @param \TYPO3\CMS\Extensionmanager\Utility\DependencyUtility $dependencyUtility
-	 * @return void
-	 */
-	public function injectDependencyUtility(\TYPO3\CMS\Extensionmanager\Utility\DependencyUtility $dependencyUtility) {
-		$this->dependencyUtility = $dependencyUtility;
-	}
-
-	/**
-	 * @param \TYPO3\CMS\Extensionmanager\Utility\DatabaseUtility $databaseUtility
-	 * @return void
-	 */
-	public function injectDatabaseUtility(\TYPO3\CMS\Extensionmanager\Utility\DatabaseUtility $databaseUtility) {
-		$this->databaseUtility = $databaseUtility;
-	}
-
-	/**
-	 * Inject emConfUtility
-	 *
-	 * @param \TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository $extensionRepository
-	 * @return void
-	 */
-	public function injectExtensionRepository(\TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository $extensionRepository) {
-		$this->extensionRepository = $extensionRepository;
-	}
 
 	/**
 	 * __construct
