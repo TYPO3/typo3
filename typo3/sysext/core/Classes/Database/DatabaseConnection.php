@@ -1071,7 +1071,7 @@ class DatabaseConnection {
 	 * @return boolean Returns TRUE on success or FALSE on failure.
 	 */
 	public function sql_free_result($res) {
-		if ($this->debug_check_recordset($res)) {
+		if ($this->debug_check_recordset($res) && is_object($res)) {
 			return $res->free();
 		} else {
 			return FALSE;
