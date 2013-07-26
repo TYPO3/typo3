@@ -887,7 +887,7 @@ class LocalDriver extends \TYPO3\CMS\Core\Resource\Driver\AbstractDriver {
 		mkdir($targetFolderPath);
 		$sourceFolderPath = $this->getAbsolutePath($folderToCopy);
 		/** @var $iterator \RecursiveDirectoryIterator */
-		$iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($sourceFolderPath));
+		$iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($sourceFolderPath), \RecursiveIteratorIterator::SELF_FIRST);
 		while ($iterator->valid()) {
 			/** @var $current \RecursiveDirectoryIterator */
 			$current = $iterator->current();
