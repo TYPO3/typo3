@@ -1338,7 +1338,7 @@ input.ui-button {
 
 .ui-buttonset .ui-button {
   margin-left: 0;
-  margin-right: -0.3em;
+  margin-right: -.3em;
 }
 
 /* workarounds */
@@ -1466,8 +1466,8 @@ button.ui-button::-moz-focus-inner {
 }
 
 .ui-slider-horizontal .ui-slider-handle {
-  top: -0.3em;
-  margin-left: -0.6em;
+  top: -.3em;
+  margin-left: -.6em;
 }
 
 .ui-slider-horizontal .ui-slider-range {
@@ -1489,9 +1489,9 @@ button.ui-button::-moz-focus-inner {
 }
 
 .ui-slider-vertical .ui-slider-handle {
-  left: -0.3em;
+  left: -.3em;
   margin-left: 0;
-  margin-bottom: -0.6em;
+  margin-bottom: -.6em;
 }
 
 .ui-slider-vertical .ui-slider-range {
@@ -2122,7 +2122,7 @@ p {
   white-space: nowrap;
 }
 .typo3-extension-list th:hover {
-  background: rgba(200, 200, 200, 0);
+  background: rgba(200, 200, 200, 0.3);
 }
 .typo3-extension-list th .DataTables_sort_icon {
   display: inline-block;
