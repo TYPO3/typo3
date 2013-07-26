@@ -119,7 +119,6 @@ class TemplateAnalyzerModuleFunctionController extends \TYPO3\CMS\Backend\Module
 		$GLOBALS['tmpl']->clearList_setup_temp = array_flip($GLOBALS['tmpl']->clearList_setup);
 		$pointer = count($GLOBALS['tmpl']->hierarchyInfo);
 		$GLOBALS['tmpl']->hierarchyInfoArr = $GLOBALS['tmpl']->ext_process_hierarchyInfo(array(), $pointer);
-		$GLOBALS['tmpl']->processIncludes();
 		$hierarArr = array();
 		$head = '<tr class="t3-row-header">';
 		$head .= '<td>' . $GLOBALS['LANG']->getLL('title', TRUE) . '</td>';
