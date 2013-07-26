@@ -99,7 +99,7 @@ class ExtensionManagementServiceTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseT
 		);
 		$downloadQueueMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\DownloadQueue', array('removeExtensionFromQueue', 'addExtensionToInstallQueue'));
 		$downloadUtilityMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Utility\\DownloadUtility', array('download'));
-		$downloadUtilityMock->expects($this->once())->method('download')->with(clone $extensionModelMock);
+		$downloadUtilityMock->expects($this->once())->method('download')->with($extensionModelMock);
 		$managementMock->_set('downloadUtility', $downloadUtilityMock);
 		$managementMock->_set('downloadQueue', $downloadQueueMock);
 		$managementMock->_call('downloadDependencies', $downloadQueue);
@@ -121,7 +121,7 @@ class ExtensionManagementServiceTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseT
 		);
 		$downloadQueueMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\DownloadQueue', array('removeExtensionFromQueue', 'addExtensionToInstallQueue'));
 		$downloadUtilityMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Utility\\DownloadUtility', array('download'));
-		$downloadQueueMock->expects($this->once())->method('removeExtensionFromQueue')->with(clone $extensionModelMock);
+		$downloadQueueMock->expects($this->once())->method('removeExtensionFromQueue')->with($extensionModelMock);
 		$managementMock->_set('downloadUtility', $downloadUtilityMock);
 		$managementMock->_set('downloadQueue', $downloadQueueMock);
 		$managementMock->_call('downloadDependencies', $downloadQueue);
