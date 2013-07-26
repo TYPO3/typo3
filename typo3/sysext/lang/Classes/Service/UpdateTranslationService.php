@@ -58,6 +58,12 @@ class UpdateTranslationService {
 	protected $terConnection;
 
 	/**
+	 * @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
+	 * @inject
+	 */
+	protected $signalSlotDispatcher;
+
+	/**
 	 * @var array
 	 */
 	protected $translationStates = array();
@@ -115,7 +121,7 @@ class UpdateTranslationService {
 			return static::TRANSLATION_INVALID;
 		}
 
-		$mirrorUrl = $this->repositoryHelper->getMirrors()->getMirrorUrl();
+		$mirrorUrl = $this->getMirrorUrl($extensionKey);
 		$status = $this->terConnection->fetchTranslationStatus($extensionKey, $mirrorUrl);
 
 		foreach ($selectedLanguages as $language) {
@@ -171,13 +177,34 @@ class UpdateTranslationService {
 		}
 
 		$state = static::TRANSLATION_FAILED;
-		$mirrorUrl = $this->repositoryHelper->getMirrors()->getMirrorUrl();
+		$mirrorUrl = $this->getMirrorUrl($extensionKey);
 		$updateResult = $this->terConnection->updateTranslation($extensionKey, $locale, $mirrorUrl);
 		if ($updateResult === TRUE) {
 			$state = static::TRANSLATION_UPDATED;
 		}
 
 		return $state;
+	}
+
+	/**
+	 * Returns the mirror URL for a given extension.
+	 *
+	 * @param string $extensionKey
+	 * @return string
+	 */
+	protected function getMirrorUrl($extensionKey) {
+		$mirrorUrl = $this->repositoryHelper->getMirrors()->getMirrorUrl();
+
+		$this->signalSlotDispatcher->dispatch(
+			__CLASS__,
+			'postProcessMirrorUrl',
+			array(
+				'extensionKey' => $extensionKey,
+				'mirrorUrl' => &$mirrorUrl,
+			)
+		);
+
+		return $mirrorUrl;
 	}
 
 }
