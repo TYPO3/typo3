@@ -289,6 +289,7 @@ select option.c-divider {
 .t3-form-palette-field-container {
 	display: inline-block;
 	vertical-align: top;
+	padding-right: 25px;
 }
 
 .t3-form-palette-field-container .t3-form-palette-field-label,
