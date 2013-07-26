@@ -769,7 +769,7 @@ class DatabaseConnection {
 	 *
 	 * @param string $query The query to execute
 	 * @param array $queryComponents The components of the query to execute
-	 * @return \mysqli_statement|object MySQLi statement / DBAL object
+	 * @return \mysqli_stmt|object MySQLi statement / DBAL object
 	 * @internal This method may only be called by \TYPO3\CMS\Core\Database\PreparedStatement
 	 */
 	public function prepare_PREPAREDquery($query, array $queryComponents) {
@@ -1081,7 +1081,7 @@ class DatabaseConnection {
 	 * @return boolean Returns TRUE on success or FALSE on failure.
 	 */
 	public function sql_free_result($res) {
-		if ($this->debug_check_recordset($res)) {
+		if ($this->debug_check_recordset($res) && is_object($res)) {
 			return $res->free();
 		} else {
 			return FALSE;
