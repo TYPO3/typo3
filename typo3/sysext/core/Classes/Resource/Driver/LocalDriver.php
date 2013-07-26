@@ -408,7 +408,7 @@ class LocalDriver extends \TYPO3\CMS\Core\Resource\Driver\AbstractDriver {
 	 */
 	protected function getFileAndFoldernamesInPath($path, $recursive = FALSE) {
 		if ($recursive) {
-			$iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($path, \FilesystemIterator::CURRENT_AS_FILEINFO));
+			$iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($path, \FilesystemIterator::CURRENT_AS_FILEINFO), \RecursiveIteratorIterator::SELF_FIRST);
 		} else {
 			$iterator = new \RecursiveDirectoryIterator($path, \FilesystemIterator::CURRENT_AS_FILEINFO);
 		}
@@ -859,13 +859,17 @@ class LocalDriver extends \TYPO3\CMS\Core\Resource\Driver\AbstractDriver {
 		while ($iterator->valid()) {
 			/** @var $current \RecursiveDirectoryIterator */
 			$current = $iterator->current();
+			$fileName = $current->getFilename();
 			$itemSubPath = $iterator->getSubPathname();
-			if ($current->isDir() && !($itemSubPath === '..' || $itemSubPath === '.')) {
+			if ($current->isDir() && !($fileName === '..' || $fileName === '.')) {
 				mkdir($targetFolderPath . $itemSubPath);
 			} elseif ($current->isFile()) {
 				$result = copy($sourceFolderPath . $itemSubPath, $targetFolderPath . $itemSubPath);
 				if ($result === FALSE) {
-					throw new \TYPO3\CMS\Core\Resource\Exception\FileOperationErrorException('Copying file "' . $sourceFolderPath . $itemSubPath . '" to "' . $targetFolderPath . $itemSubPath . '" failed.', 1330119452);
+					throw new \TYPO3\CMS\Core\Resource\Exception\FileOperationErrorException(
+						'Copying file "' . $sourceFolderPath . $itemSubPath . '" to "' . $targetFolderPath . $itemSubPath . '" failed.',
+						1330119452
+					);
 				}
 			}
 			$iterator->next();
