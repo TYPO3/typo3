@@ -36,33 +36,15 @@ class FileHandlingUtility implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * @var \TYPO3\CMS\Extensionmanager\Utility\EmConfUtility
+	 * @inject
 	 */
 	protected $emConfUtility;
 
 	/**
-	 * Injector for Tx_Extensionmanager_Utility_EmConf
-	 *
-	 * @param \TYPO3\CMS\Extensionmanager\Utility\EmConfUtility $emConfUtility
-	 * @return void
-	 */
-	public function injectEmConfUtility(\TYPO3\CMS\Extensionmanager\Utility\EmConfUtility $emConfUtility) {
-		$this->emConfUtility = $emConfUtility;
-	}
-
-	/**
 	 * @var \TYPO3\CMS\Extensionmanager\Utility\InstallUtility
+	 * @inject
 	 */
 	protected $installUtility;
-
-	/**
-	 * Injector for Tx_Extensionmanager_Utility_Install
-	 *
-	 * @param \TYPO3\CMS\Extensionmanager\Utility\InstallUtility $installUtility
-	 * @return void
-	 */
-	public function injectInstallUtility(\TYPO3\CMS\Extensionmanager\Utility\InstallUtility $installUtility) {
-		$this->installUtility = $installUtility;
-	}
 
 	/**
 	 * Unpack an extension in t3x data format and write files

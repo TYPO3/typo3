@@ -36,42 +36,21 @@ class UploadExtensionFileController extends \TYPO3\CMS\Extensionmanager\Controll
 
 	/**
 	 * @var \TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility
+	 * @inject
 	 */
 	protected $fileHandlingUtility;
 
 	/**
 	 * @var \TYPO3\CMS\Extensionmanager\Utility\Connection\TerUtility
+	 * @inject
 	 */
 	protected $terUtility;
 
 	/**
 	 * @var \TYPO3\CMS\Extensionmanager\Utility\InstallUtility
+	 * @inject
 	 */
 	protected $installUtility;
-
-	/**
-	 * @param \TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility $fileHandlingUtility
-	 * @return void
-	 */
-	public function injectFileHandlingUtility(\TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility $fileHandlingUtility) {
-		$this->fileHandlingUtility = $fileHandlingUtility;
-	}
-
-	/**
-	 * @param \TYPO3\CMS\Extensionmanager\Utility\Connection\TerUtility $terUtility
-	 * @return void
-	 */
-	public function injectTerUtility(\TYPO3\CMS\Extensionmanager\Utility\Connection\TerUtility $terUtility) {
-		$this->terUtility = $terUtility;
-	}
-
-	/**
-	 * @param \TYPO3\CMS\Extensionmanager\Utility\InstallUtility $installUtility
-	 * @return void
-	 */
-	public function injectInstallUtility(\TYPO3\CMS\Extensionmanager\Utility\InstallUtility $installUtility) {
-		$this->installUtility = $installUtility;
-	}
 
 	/**
 	 * Render upload extension form

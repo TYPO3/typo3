@@ -35,68 +35,33 @@ class ExtensionManagementService implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * @var \TYPO3\CMS\Extensionmanager\Domain\Model\DownloadQueue
+	 * @inject
 	 */
 	protected $downloadQueue;
 
 	/**
 	 * @var \TYPO3\CMS\Extensionmanager\Utility\DependencyUtility
+	 * @inject
 	 */
 	protected $dependencyUtility;
 
 	/**
 	 * @var \TYPO3\CMS\Extensionmanager\Utility\InstallUtility
+	 * @inject
 	 */
 	protected $installUtility;
 
 	/**
 	 * @var \TYPO3\CMS\Extensionmanager\Utility\ListUtility
+	 * @inject
 	 */
 	protected $listUtility;
 
 	/**
-	 * @param \TYPO3\CMS\Extensionmanager\Domain\Model\DownloadQueue $downloadQueue
-	 * @return void
-	 */
-	public function injectDownloadQueue(\TYPO3\CMS\Extensionmanager\Domain\Model\DownloadQueue $downloadQueue) {
-		$this->downloadQueue = $downloadQueue;
-	}
-
-	/**
-	 * @param \TYPO3\CMS\Extensionmanager\Utility\DependencyUtility $dependencyUtility
-	 * @return void
-	 */
-	public function injectDependencyUtility(\TYPO3\CMS\Extensionmanager\Utility\DependencyUtility $dependencyUtility) {
-		$this->dependencyUtility = $dependencyUtility;
-	}
-
-	/**
-	 * @param \TYPO3\CMS\Extensionmanager\Utility\InstallUtility $installUtility
-	 * @return void
-	 */
-	public function injectInstallUtility(\TYPO3\CMS\Extensionmanager\Utility\InstallUtility $installUtility) {
-		$this->installUtility = $installUtility;
-	}
-
-	/**
-	 * @param \TYPO3\CMS\Extensionmanager\Utility\ListUtility $listUtility
-	 * @return void
-	 */
-	public function injectListUtility(\TYPO3\CMS\Extensionmanager\Utility\ListUtility $listUtility) {
-		$this->listUtility = $listUtility;
-	}
-
-	/**
 	 * @var \TYPO3\CMS\Extensionmanager\Utility\DownloadUtility
+	 * @inject
 	 */
 	protected $downloadUtility;
-
-	/**
-	 * @param \TYPO3\CMS\Extensionmanager\Utility\DownloadUtility $downloadUtility
-	 * @return void
-	 */
-	public function injectDownloadUtility(\TYPO3\CMS\Extensionmanager\Utility\DownloadUtility $downloadUtility) {
-		$this->downloadUtility = $downloadUtility;
-	}
 
 	/**
 	 * @param string $extensionKey
