@@ -1556,49 +1556,87 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 		$this->assertTrue(file_exists($this->getUrlInMount('/targetFolder/newFolder/')));
 	}
 
-	protected function _setupFolderForCopyTest() {
-		$fileContents1 = uniqid();
-		$fileContents2 = uniqid();
-		$this->addToMount(array(
-			'targetFolder' => array(),
+	/**
+	 * @test
+	 */
+	public function copyFolderWithinStorageCopiesSingleFileToNewFolderName() {
+		$vfsBasedir = uniqid('base-');
+		$vfsStructure = array(
 			'sourceFolder' => array(
-				'subFolder' => array('file' => $fileContents1),
-				'file' => $fileContents2
-			)
-		));
-		$fixture = $this->createDriverFixture(array(
-			'basePath' => $this->getMountRootUrl()
-		));
-		return $fixture;
+				'file' => uniqid(),
+			),
+			'targetFolder' => array(),
+		);
+		\vfsStream::setup($vfsBasedir);
+		\vfsStream::create($vfsStructure);
+		/** @var \TYPO3\CMS\Core\Resource\Driver\LocalDriver|\PHPUnit_Framework_MockObject_MockObject $fixture */
+		$fixture = $this->getMock('TYPO3\\CMS\\Core\\Resource\\Driver\\LocalDriver', array('getAbsolutePath'), array(), '', FALSE);
+		$fixture->expects($this->at(0))
+			->method('getAbsolutePath')
+			->will($this->returnValue('vfs://' . $vfsBasedir . '/targetFolder/'));
+		$fixture->expects($this->at(1))
+			->method('getAbsolutePath')
+			->will($this->returnValue('vfs://' . $vfsBasedir . '/sourceFolder/'));
+		$sourceFolderMock = $this->getMock('TYPO3\CMS\Core\Resource\Folder', array(), array(), '', FALSE);
+		$targetFolderMock = $this->getMock('TYPO3\CMS\Core\Resource\Folder', array(), array(), '', FALSE);
+		$fixture->copyFolderWithinStorage($sourceFolderMock, $targetFolderMock, 'newFolderName');
+		$this->assertTrue(is_file('vfs://' . $vfsBasedir . '/targetFolder/newFolderName/file'));
 	}
 
 	/**
 	 * @test
-	 * @see _setupFolderForCopyTest
 	 */
-	public function foldersCanBeCopiedWithinSameStorage() {
-		$fixture = $this->_setupFolderForCopyTest();
-		$sourceFolder = $this->getSimpleFolderMock('/sourceFolder/');
-		$targetFolder = $this->getSimpleFolderMock('/targetFolder/');
-		$fixture->copyFolderWithinStorage($sourceFolder, $targetFolder, 'sourceFolder');
-		$this->assertTrue($fixture->folderExists('/targetFolder/sourceFolder/'));
-		$this->assertTrue($fixture->fileExists('/targetFolder/sourceFolder/file'));
-		$this->assertTrue($fixture->folderExists('/targetFolder/sourceFolder/subFolder/'));
-		$this->assertTrue($fixture->fileExists('/targetFolder/sourceFolder/subFolder/file'));
+	public function copyFolderWithinStorageCopiesSingleSubFolderToNewFolderName() {
+		$vfsBasedir = uniqid('base-');
+		$vfsStructure = array(
+			'sourceFolder' => array(
+				'subFolder' => array(),
+			),
+			'targetFolder' => array(),
+		);
+		\vfsStream::setup($vfsBasedir);
+		\vfsStream::create($vfsStructure);
+		/** @var \TYPO3\CMS\Core\Resource\Driver\LocalDriver|\PHPUnit_Framework_MockObject_MockObject $fixture */
+		$fixture = $this->getMock('TYPO3\\CMS\\Core\\Resource\\Driver\\LocalDriver', array('getAbsolutePath'), array(), '', FALSE);
+		$fixture->expects($this->at(0))
+			->method('getAbsolutePath')
+			->will($this->returnValue('vfs://' . $vfsBasedir . '/targetFolder/'));
+		$fixture->expects($this->at(1))
+			->method('getAbsolutePath')
+			->will($this->returnValue('vfs://' . $vfsBasedir . '/sourceFolder/'));
+		$sourceFolderMock = $this->getMock('TYPO3\CMS\Core\Resource\Folder', array(), array(), '', FALSE);
+		$targetFolderMock = $this->getMock('TYPO3\CMS\Core\Resource\Folder', array(), array(), '', FALSE);
+		$fixture->copyFolderWithinStorage($sourceFolderMock, $targetFolderMock, 'newFolderName');
+		$this->assertTrue(is_dir('vfs://' . $vfsBasedir . '/targetFolder/newFolderName/subFolder'));
 	}
 
 	/**
 	 * @test
-	 * @see _setupFolderForCopyTest
 	 */
-	public function folderNameCanBeChangedWhileCopying() {
-		$fixture = $this->_setupFolderForCopyTest();
-		$sourceFolder = $this->getSimpleFolderMock('/sourceFolder/');
-		$targetFolder = $this->getSimpleFolderMock('/targetFolder/');
-		$fixture->copyFolderWithinStorage($sourceFolder, $targetFolder, 'newFolder');
-		$this->assertTrue($fixture->folderExists('/targetFolder/newFolder/'));
-		$this->assertTrue($fixture->fileExists('/targetFolder/newFolder/file'));
-		$this->assertFalse($fixture->folderExists('/targetFolder/sourceFolder/'));
+	public function copyFolderWithinStorageCopiesFileInSingleSubFolderToNewFolderName() {
+		$vfsBasedir = uniqid('base-');
+		$vfsStructure = array(
+			'sourceFolder' => array(
+				'subFolder' => array(
+					'file' => uniqid(),
+				),
+			),
+			'targetFolder' => array(),
+		);
+		\vfsStream::setup($vfsBasedir);
+		\vfsStream::create($vfsStructure);
+		/** @var \TYPO3\CMS\Core\Resource\Driver\LocalDriver|\PHPUnit_Framework_MockObject_MockObject $fixture */
+		$fixture = $this->getMock('TYPO3\\CMS\\Core\\Resource\\Driver\\LocalDriver', array('getAbsolutePath'), array(), '', FALSE);
+		$fixture->expects($this->at(0))
+			->method('getAbsolutePath')
+			->will($this->returnValue('vfs://' . $vfsBasedir . '/targetFolder/'));
+		$fixture->expects($this->at(1))
+			->method('getAbsolutePath')
+			->will($this->returnValue('vfs://' . $vfsBasedir . '/sourceFolder/'));
+		$sourceFolderMock = $this->getMock('TYPO3\CMS\Core\Resource\Folder', array(), array(), '', FALSE);
+		$targetFolderMock = $this->getMock('TYPO3\CMS\Core\Resource\Folder', array(), array(), '', FALSE);
+		$fixture->copyFolderWithinStorage($sourceFolderMock, $targetFolderMock, 'newFolderName');
+		$this->assertTrue(is_file('vfs://' . $vfsBasedir . '/targetFolder/newFolderName/subFolder/file'));
 	}
 
 }
