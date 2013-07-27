@@ -24,6 +24,10 @@ namespace TYPO3\CMS\Core\Tests\Unit\Log\Writer;
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use \org\bovigo\vfs\vfsStream;
+use \org\bovigo\vfs\vfsStreamDirectory;
+use \org\bovigo\vfs\vfsStreamWrapper;
+
 /**
  * Testcase for \TYPO3\CMS\Core\Log\Writer\FileWriter
  *
@@ -45,7 +49,7 @@ class FileTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		if (!class_exists('vfsStream')) {
 			$this->markTestSkipped('File backend tests are not available with this phpunit version.');
 		}
-		\vfsStream::setup('LogRoot');
+		vfsStream::setup('LogRoot');
 	}
 
 	/**
@@ -88,7 +92,7 @@ class FileTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function setLogFileSetsLogFile() {
 		$this->setUpVfsStream();
-		\vfsStream::newFile($this->logFileName)->at(\vfsStreamWrapper::getRoot());
+		vfsStream::newFile($this->logFileName)->at(vfsStreamWrapper::getRoot());
 		$writer = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Log\\Writer\\FileWriter');
 		$writer->setLogFile($this->getDefaultFileName());
 		$this->assertAttributeEquals($this->getDefaultFileName(), 'logFile', $writer);
@@ -109,7 +113,7 @@ class FileTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function createsLogFileDirectory() {
 		$this->setUpVfsStream();
 		$this->createWriter();
-		$this->assertTrue(\vfsStreamWrapper::getRoot()->hasChild($this->logFileDirectory));
+		$this->assertTrue(vfsStreamWrapper::getRoot()->hasChild($this->logFileDirectory));
 	}
 
 	/**
@@ -118,7 +122,7 @@ class FileTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function createsLogFile() {
 		$this->setUpVfsStream();
 		$this->createWriter();
-		$this->assertTrue(\vfsStreamWrapper::getRoot()->getChild($this->logFileDirectory)->hasChild($this->logFileName));
+		$this->assertTrue(vfsStreamWrapper::getRoot()->getChild($this->logFileDirectory)->hasChild($this->logFileName));
 	}
 
 	/**
@@ -202,7 +206,7 @@ class FileTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->setUpVfsStream();
 		$directory = uniqid('Log');
 			// create a directory
-		\vfsStreamWrapper::getRoot()->addChild(new \vfsStreamDirectory($directory));
+		vfsStreamWrapper::getRoot()->addChild(new vfsStreamDirectory($directory));
 		$logFile = 'vfs://LogRoot/' . $directory . '/' . $this->logFileName;
 		$this->assertTrue(is_dir('vfs://LogRoot/' . $directory));
 		$this->createWriter()->setLogFile($logFile);

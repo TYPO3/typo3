@@ -1,6 +1,5 @@
 <?php
 namespace TYPO3\CMS\Core\Tests\Unit\Utility;
-use TYPO3\CMS\Core\Utility;
 
 /***************************************************************
  *  Copyright notice
@@ -24,6 +23,10 @@ use TYPO3\CMS\Core\Utility;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use TYPO3\CMS\Core\Utility;
+use \org\bovigo\vfs\vfsStreamDirectory;
+use \org\bovigo\vfs\vfsStreamWrapper;
 
 /**
  * Testcase for class \TYPO3\CMS\Core\Utility\GeneralUtility
@@ -3078,12 +3081,12 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function mkdirDeepCreatesDirectoryInVfsStream() {
-		if (!class_exists('\\vfsStreamWrapper')) {
+		if (!class_exists('org\\bovigo\\vfs\\vfsStreamWrapper')) {
 			$this->markTestSkipped('mkdirDeepCreatesDirectoryInVfsStream() test not available with this phpunit version.');
 		}
-		\vfsStreamWrapper::register();
+		vfsStreamWrapper::register();
 		$baseDirectory = uniqid('test_');
-		\vfsStreamWrapper::setRoot(new \vfsStreamDirectory($baseDirectory));
+		vfsStreamWrapper::setRoot(new vfsStreamDirectory($baseDirectory));
 		Utility\GeneralUtility::mkdir_deep('vfs://' . $baseDirectory . '/', 'sub');
 		$this->assertTrue(is_dir('vfs://' . $baseDirectory . '/sub'));
 	}

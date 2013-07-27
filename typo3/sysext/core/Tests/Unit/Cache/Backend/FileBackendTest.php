@@ -24,6 +24,9 @@ namespace TYPO3\CMS\Core\Tests\Unit\Cache\Backend;
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
+use \org\bovigo\vfs\vfsStreamDirectory;
+use \org\bovigo\vfs\vfsStreamWrapper;
+
 /**
  * Testcase for the File cache backend
  *
@@ -40,12 +43,12 @@ class FileBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return void
 	 */
 	public function setUp() {
-		if (!class_exists('\vfsStreamWrapper')) {
+		if (!class_exists('org\\bovigo\\vfs\\vfsStreamWrapper')) {
 			$this->markTestSkipped('File backend tests are not available with this phpunit version.');
 		}
 
-		\vfsStreamWrapper::register();
-		\vfsStreamWrapper::setRoot(new \vfsStreamDirectory('Foo'));
+		vfsStreamWrapper::register();
+		vfsStreamWrapper::setRoot(new vfsStreamDirectory('Foo'));
 	}
 
 	/**
