@@ -115,7 +115,7 @@ class DriverRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return string The class name
 	 */
 	public function getDriverClass($shortName) {
-		if (class_exists($shortName) && in_array($shortName, $this->drivers)) {
+		if (in_array($shortName, $this->drivers) && class_exists($shortName)) {
 			return $shortName;
 		}
 		if (!array_key_exists($shortName, $this->drivers)) {
