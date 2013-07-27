@@ -1,5 +1,6 @@
 <?php
 namespace TYPO3\CMS\Core\Tests\Unit\Resource;
+use \org\bovigo\vfs\vfsStream;
 
 /***************************************************************
  *  Copyright notice
@@ -43,7 +44,7 @@ class FolderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	public function setUp() {
 		$this->singletonInstances = \TYPO3\CMS\Core\Utility\GeneralUtility::getSingletonInstances();
-		\vfsStream::setup($this->basedir);
+		vfsStream::setup($this->basedir);
 	}
 
 	protected function tearDown() {

@@ -1,5 +1,6 @@
 <?php
 namespace TYPO3\CMS\Core\Tests\Unit\Resource;
+use \org\bovigo\vfs\vfsStream;
 
 /***************************************************************
  *  Copyright notice
@@ -46,7 +47,7 @@ abstract class BaseTestCase extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function setUp() {
 		$this->mountDir = uniqid('mount-');
 		$this->basedir = uniqid('base-');
-		\vfsStream::setup($this->basedir);
+		vfsStream::setup($this->basedir);
 		// Add an entry for the mount directory to the VFS contents
 		$this->vfsContents = array($this->mountDir => array());
 	}
@@ -63,7 +64,7 @@ abstract class BaseTestCase extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		if (is_callable('vfsStream::create') === FALSE) {
 			$this->markTestSkipped('vfsStream::create() does not exist');
 		}
-		\vfsStream::create($this->vfsContents);
+		vfsStream::create($this->vfsContents);
 	}
 
 	/**
@@ -83,7 +84,7 @@ abstract class BaseTestCase extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return string
 	 */
 	protected function getUrlInMount($path) {
-		return \vfsStream::url($this->basedir . '/' . $this->mountDir . '/' . ltrim($path, '/'));
+		return vfsStream::url($this->basedir . '/' . $this->mountDir . '/' . ltrim($path, '/'));
 	}
 
 	/**
@@ -103,7 +104,7 @@ abstract class BaseTestCase extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return string
 	 */
 	protected function getUrl($path) {
-		return \vfsStream::url($this->basedir . '/' . ltrim($path, '/'));
+		return vfsStream::url($this->basedir . '/' . ltrim($path, '/'));
 	}
 
 	/**

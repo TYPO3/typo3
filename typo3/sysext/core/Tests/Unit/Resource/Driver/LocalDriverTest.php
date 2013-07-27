@@ -1,6 +1,8 @@
 <?php
 namespace TYPO3\CMS\Core\Tests\Unit\Resource\Driver;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use \org\bovigo\vfs\vfsStream;
+use \org\bovigo\vfs\vfsStreamWrapper;
 
 /***************************************************************
  *  Copyright notice
@@ -237,7 +239,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 	public function driverConfigVerificationFailsIfConfiguredBasePathDoesNotExist() {
 		$this->setExpectedException('TYPO3\\CMS\\Core\\Resource\\Exception\\InvalidConfigurationException', '', 1299233097);
 		$driverConfiguration = array(
-			'basePath' => \vfsStream::url($this->basedir . 'doesntexist/')
+			'basePath' => vfsStream::url($this->basedir . 'doesntexist/')
 		);
 		$this->assertFalse(file_exists($driverConfiguration['basePath']));
 		\TYPO3\CMS\Core\Resource\Driver\LocalDriver::verifyConfiguration($driverConfiguration);
@@ -940,7 +942,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 		$fixture = $this->createDriverFixture(array(
 			'basePath' => $this->getMountRootUrl()
 		));
-		\vfsStream::create(array($this->basedir => array('somefile' => '')));
+		vfsStream::create(array($this->basedir => array('somefile' => '')));
 		$fixture->getFolderList('somedir/');
 	}
 
@@ -1118,17 +1120,17 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 		}
 		$data = array_merge_recursive($data, array(
 			'arbitrary group, readable/writable' => array(
-				\vfsStream::GROUP_USER_1,
+				vfsStream::GROUP_USER_1,
 				6,
 				array('r' => TRUE, 'w' => TRUE)
 			),
 			'arbitrary group, readable/not writable' => array(
-				\vfsStream::GROUP_USER_1,
+				vfsStream::GROUP_USER_1,
 				436,
 				array('r' => TRUE, 'w' => FALSE)
 			),
 			'arbitrary group, not readable/not writable' => array(
-				\vfsStream::GROUP_USER_1,
+				vfsStream::GROUP_USER_1,
 				432,
 				array('r' => FALSE, 'w' => FALSE)
 			)
@@ -1151,9 +1153,9 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 			'basePath' => $this->getMountRootUrl()
 		));
 		/** @var $fileObject vfsStreamContent */
-		$fileObject = \vfsStreamWrapper::getRoot()->getChild($this->mountDir)->getChild('testfile');
+		$fileObject = vfsStreamWrapper::getRoot()->getChild($this->mountDir)->getChild('testfile');
 		// just use an "arbitrary" user here - it is only important that
-		$fileObject->chown(\vfsStream::OWNER_USER_1);
+		$fileObject->chown(vfsStream::OWNER_USER_1);
 		$fileObject->chgrp($group);
 		$fileObject->chmod($permissions);
 		$this->assertEquals($expectedResult, $fixture->getFilePermissions($this->getSimpleFileMock('/testfile')));
@@ -1567,8 +1569,8 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 			),
 			'targetFolder' => array(),
 		);
-		\vfsStream::setup($vfsBasedir);
-		\vfsStream::create($vfsStructure);
+		vfsStream::setup($vfsBasedir);
+		vfsStream::create($vfsStructure);
 		/** @var \TYPO3\CMS\Core\Resource\Driver\LocalDriver|\PHPUnit_Framework_MockObject_MockObject $fixture */
 		$fixture = $this->getMock('TYPO3\\CMS\\Core\\Resource\\Driver\\LocalDriver', array('getAbsolutePath'), array(), '', FALSE);
 		$fixture->expects($this->at(0))
@@ -1594,8 +1596,8 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 			),
 			'targetFolder' => array(),
 		);
-		\vfsStream::setup($vfsBasedir);
-		\vfsStream::create($vfsStructure);
+		vfsStream::setup($vfsBasedir);
+		vfsStream::create($vfsStructure);
 		/** @var \TYPO3\CMS\Core\Resource\Driver\LocalDriver|\PHPUnit_Framework_MockObject_MockObject $fixture */
 		$fixture = $this->getMock('TYPO3\\CMS\\Core\\Resource\\Driver\\LocalDriver', array('getAbsolutePath'), array(), '', FALSE);
 		$fixture->expects($this->at(0))
@@ -1623,8 +1625,8 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 			),
 			'targetFolder' => array(),
 		);
-		\vfsStream::setup($vfsBasedir);
-		\vfsStream::create($vfsStructure);
+		vfsStream::setup($vfsBasedir);
+		vfsStream::create($vfsStructure);
 		/** @var \TYPO3\CMS\Core\Resource\Driver\LocalDriver|\PHPUnit_Framework_MockObject_MockObject $fixture */
 		$fixture = $this->getMock('TYPO3\\CMS\\Core\\Resource\\Driver\\LocalDriver', array('getAbsolutePath'), array(), '', FALSE);
 		$fixture->expects($this->at(0))
