@@ -54,6 +54,9 @@ class ImportantActions extends Action\AbstractAction implements Action\ActionInt
 		if (isset($this->postValues['set']['createAdministrator'])) {
 			$actionMessages[] = $this->createAdministrator();
 		}
+		if (isset($this->postValues['set']['clearAllCache'])) {
+			$actionMessages[] = $this->clearAllCache();
+		}
 
 		// Database analyzer handling
 		if (isset($this->postValues['set']['databaseAnalyzerExecute'])
@@ -137,6 +140,20 @@ class ImportantActions extends Action\AbstractAction implements Action\ActionInt
 			$message->setTitle('Site name not changed');
 			$message->setMessage('Site name must be at least one character long.');
 		}
+		return $message;
+	}
+
+	/**
+	 * Clear all caches
+	 *
+	 * @return \TYPO3\CMS\Install\Status\StatusInterface
+	 */
+	protected function clearAllCache() {
+		/** @var \TYPO3\CMS\Install\Service\ClearCacheService $clearCacheService */
+		$clearCacheService = $this->objectManager->get('TYPO3\\CMS\\Install\\Service\\ClearCacheService');
+		$clearCacheService->clearAll();
+		$message = $this->objectManager->get('TYPO3\\CMS\\Install\\Status\\OkStatus');
+		$message->setTitle('Successfully cleared all caches');
 		return $message;
 	}
 
