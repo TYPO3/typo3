@@ -1,0 +1,98 @@
+
+
+.ui-widget-header {
+	background: none;
+	border: none;
+	font-weight: normal;
+}
+
+.dataTable {
+	border-right: 1px solid #a2aab8;
+	border-bottom: 1px solid #a2aab8;
+	border-left: 1px solid #a2aab8;
+}
+
+.dataTables_info {
+	font-size: 10px;
+	color: #444;
+	float: left;
+}
+
+.paging_two_button .ui-button {
+	float: left;
+	cursor: pointer;
+}
+
+.paging_full_numbers .ui-button {
+	padding: 2px 6px;
+	margin: 0;
+	cursor: pointer;
+	color: #333 !important;
+}
+
+.dataTables_paginate .ui-button {
+	margin-right: -0.1em !important;
+}
+
+.paging_full_numbers {
+	float: right;
+}
+
+.dataTables_paginate {
+	width: auto;
+}
+
+.typo3-documentation-list {
+	width: 100%;
+}
+
+.typo3-documentation-list td {
+	padding: 10px;
+}
+
+.typo3-documentation-list td.title {
+	width: 280px;
+}
+
+.typo3-documentation-list td.icons {
+	width: 40px;
+}
+
+.typo3-documentation-list .icons a {
+	display: none;
+}
+
+.typo3-documentation-list tr:hover .icons a {
+	display: inline;
+}
+
+.typo3-documentation-list td.formats {
+	width: 140px;
+
+	a {
+		padding: 2px;
+
+		&:hover {
+			border: 1px solid #333;
+		}
+	}
+}
+
+.headerTooltip,
+.tooltip {
+	@include box-shadow(2px 2px 11px #666);
+
+	display: none;
+	width: 400px;
+	background-color: #ffa;
+	border: 1px solid #cc9;
+	padding: 3px;
+	font-size: 13px;
+	z-index: 1000;
+}
+
+.headerTooltip {
+	width: 150px;
+}
+
+p { padding-bottom: 20px; }

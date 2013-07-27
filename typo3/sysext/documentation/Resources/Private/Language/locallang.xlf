@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2013-07-04T16:35:47Z" product-name="documentation">
+		<header/>
+		<body>
+
+			<trans-unit id="documentation_manager">
+				<source>Documentation Manager</source>
+			</trans-unit>
+
+			<trans-unit id="documentation.title">
+				<source>Title</source>
+			</trans-unit>
+			<trans-unit id="documentation.type">
+				<source>Type</source>
+			</trans-unit>
+			<trans-unit id="documentation.actions">
+				<source>Actions</source>
+			</trans-unit>
+			<trans-unit id="documentation.actions.download">
+				<source>Download document</source>
+			</trans-unit>
+
+			<trans-unit id="tx_documentation_domain_model_document">
+				<source>Document</source>
+			</trans-unit>
+			<trans-unit id="tx_documentation_domain_model_document.package_key">
+				<source>Package Key</source>
+			</trans-unit>
+			<trans-unit id="tx_documentation_domain_model_document.title">
+				<source>Title</source>
+			</trans-unit>
+			<trans-unit id="tx_documentation_domain_model_document.version">
+				<source>Version</source>
+			</trans-unit>
+			<trans-unit id="tx_documentation_domain_model_document.translations">
+				<source>Translations</source>
+			</trans-unit>
+
+			<trans-unit id="tx_documentation_domain_model_documenttranslation">
+				<source>Document Translation</source>
+			</trans-unit>
+			<trans-unit id="tx_documentation_domain_model_documenttranslation.language">
+				<source>Language</source>
+			</trans-unit>
+			<trans-unit id="tx_documentation_domain_model_documenttranslation.title">
+				<source>Title</source>
+			</trans-unit>
+			<trans-unit id="tx_documentation_domain_model_documenttranslation.description">
+				<source>Description</source>
+			</trans-unit>
+			<trans-unit id="tx_documentation_domain_model_documenttranslation.formats">
+				<source>Formats</source>
+			</trans-unit>
+
+			<trans-unit id="tx_documentation_domain_model_documentformat">
+				<source>Document Format</source>
+			</trans-unit>
+			<trans-unit id="tx_documentation_domain_model_documentformat.format">
+				<source>Format</source>
+			</trans-unit>
+			<trans-unit id="tx_documentation_domain_model_documentformat.path">
+				<source>Path</source>
+			</trans-unit>
+
+			<trans-unit id="showDocumentation" xml:space="preserve">
+				<source>Show Documentation</source>
+			</trans-unit>
+			<trans-unit id="manageDocumentation" xml:space="preserve">
+				<source>Manage Documentation</source>
+			</trans-unit>
+			<trans-unit id="searchTemplate.submitButton" xml:space="preserve">
+				<source>Go</source>
+			</trans-unit>
+			<trans-unit id="downloadSucceeded" xml:space="preserve">
+				<source>The rendered documentation was downloaded successfully.</source>
+			</trans-unit>
+			<trans-unit id="downloadFailed" xml:space="preserve">
+				<source>Download failed</source>
+			</trans-unit>
+			<trans-unit id="downloadFailedNoArchive" xml:space="preserve">
+				<source>No rendered documentation archive could be found on docs.typo3.org.</source>
+			</trans-unit>
+			<trans-unit id="downloadFailedDetails" xml:space="preserve">
+				<source>The documentation for "%s" could not be downloaded, because of the following error: %s (%d).</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

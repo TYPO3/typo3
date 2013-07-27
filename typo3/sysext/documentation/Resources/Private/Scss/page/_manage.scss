@@ -1,0 +1,127 @@
+// Upload extension
+.headerRow { overflow: auto; width: 100% }
+
+.typo3-documentation-headerRowLeft {
+	float: left;
+}
+
+.typo3-documentation-headerRowRight {
+	float: right;
+}
+
+.ui-toolbar {
+	margin-bottom: 5px;
+
+	.dataTables_filter {
+		display: block;
+	}
+}
+
+
+
+// Table
+.typo3-documentation-list {
+
+	border-spacing: 0;
+
+	// Header
+	thead {
+		background-color: #666;
+
+		tr {
+			background: none !important;
+
+			&:hover {
+				background: none;
+			}
+		}
+	}
+
+	th {
+		background: none;
+		border: 0;
+		padding: 8px 10px;
+
+		min-width: 53px;
+
+		vertical-align: middle;
+
+		font-weight: bold;
+		color: #fff;
+
+		cursor: pointer;
+		white-space: nowrap;
+
+
+		&:hover {
+			background: rgba(200,200,200,.3);
+		}
+
+		.DataTables_sort_icon {
+			display: inline-block;
+			vertical-align: middle;
+			margin-left: 5px;
+
+			&.ui-icon-carat-2-n-s {
+				background: none;
+			}
+		}
+	}
+
+	// All lines
+	tr {
+
+		// Reset some values that get applied by jQuery UI styling
+		&.odd,
+		&.even {
+			td {
+				background: none;
+			}
+
+			&:hover {
+				td {
+					background: none;
+				}
+			}
+		}
+
+		// Add some stuff to match corporate design
+		td {
+			background: none;
+			padding: 8px 10px;
+			vertical-align: middle;
+
+			img {
+				vertical-align: middle;
+				margin-right: 5px;
+			}
+		}
+
+		// Zebra-look
+		&:nth-child(2n) {
+			background: #fff;
+		}
+
+		&:nth-child(2n + 1) {
+			background: #f7f7f7;
+		}
+
+		// Hovering lines
+		&:hover {
+			background: #ececec;
+		}
+
+	}
+}
+
+
+
+// Paginator
+.dataTables_info {
+	display: none;
+}
+
+.dataTables_paginate {
+	float: left;
+	margin: 10px 0 0;
+}
