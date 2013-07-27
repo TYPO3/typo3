@@ -541,6 +541,10 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 		if ($this->isAdmin()) {
 			return 31;
 		}
+		// Return 0 if page is not within the allowed web mount
+		if (!$this->isInWebMount($row['uid'])) {
+			return 0;
+		}
 		$out = 0;
 		if (isset($row['perms_userid']) && isset($row['perms_user']) && isset($row['perms_groupid']) && isset($row['perms_group']) && isset($row['perms_everybody']) && isset($this->groupList)) {
 			if ($this->user['uid'] == $row['perms_userid']) {
