@@ -772,54 +772,56 @@ abstract class AbstractTreeView {
 		$idH = array();
 		// Traverse the records:
 		while ($crazyRecursionLimiter > 0 && ($row = $this->getDataNext($res, $subCSSclass))) {
-			$a++;
-			$crazyRecursionLimiter--;
-			$newID = $row['uid'];
-			if ($newID == 0) {
-				throw new \RuntimeException('Endless recursion detected: TYPO3 has detected an error in the database. Please fix it manually (e.g. using phpMyAdmin) and change the UID of ' . $this->table . ':0 to a new value.<br /><br />See <a href="http://bugs.typo3.org/view.php?id=3495" target="_blank">bugs.typo3.org/view.php?id=3495</a> to get more information about a possible cause.', 1294586383);
-			}
-			// Reserve space.
-			$this->tree[] = array();
-			end($this->tree);
-			// Get the key for this space
-			$treeKey = key($this->tree);
-			$LN = $a == $c ? 'blank' : 'line';
-			// If records should be accumulated, do so
-			if ($this->setRecs) {
-				$this->recs[$row['uid']] = $row;
-			}
-			// Accumulate the id of the element in the internal arrays
-			$this->ids[] = ($idH[$row['uid']]['uid'] = $row['uid']);
-			$this->ids_hierarchy[$depth][] = $row['uid'];
-			$this->orig_ids_hierarchy[$depth][] = $row['_ORIG_uid'] ? $row['_ORIG_uid'] : $row['uid'];
-			// Make a recursive call to the next level
-			$HTML_depthData = $depthData . '<img' . IconUtility::skinImg($this->backPath, ('gfx/ol/' . $LN . '.gif'), 'width="18" height="16"') . ' alt="" />';
-			if ($depth > 1 && $this->expandNext($newID) && !$row['php_tree_stop']) {
-				$nextCount = $this->getTree($newID, $depth - 1, $this->makeHTML ? $HTML_depthData : '', $blankLineCode . ',' . $LN, $row['_SUBCSSCLASS']);
-				if (count($this->buffer_idH)) {
-					$idH[$row['uid']]['subrow'] = $this->buffer_idH;
+			if ($GLOBALS['BE_USER']->isInWebMount($row['uid'])) {
+				$a++;
+				$crazyRecursionLimiter--;
+				$newID = $row['uid'];
+				if ($newID == 0) {
+					throw new \RuntimeException('Endless recursion detected: TYPO3 has detected an error in the database. Please fix it manually (e.g. using phpMyAdmin) and change the UID of ' . $this->table . ':0 to a new value.<br /><br />See <a href="http://bugs.typo3.org/view.php?id=3495" target="_blank">bugs.typo3.org/view.php?id=3495</a> to get more information about a possible cause.', 1294586383);
 				}
-				// Set "did expand" flag
-				$exp = 1;
-			} else {
-				$nextCount = $this->getCount($newID);
-				// Clear "did expand" flag
-				$exp = 0;
+				// Reserve space.
+				$this->tree[] = array();
+				end($this->tree);
+				// Get the key for this space
+				$treeKey = key($this->tree);
+				$LN = $a == $c ? 'blank' : 'line';
+				// If records should be accumulated, do so
+				if ($this->setRecs) {
+					$this->recs[$row['uid']] = $row;
+				}
+				// Accumulate the id of the element in the internal arrays
+				$this->ids[] = ($idH[$row['uid']]['uid'] = $row['uid']);
+				$this->ids_hierarchy[$depth][] = $row['uid'];
+				$this->orig_ids_hierarchy[$depth][] = $row['_ORIG_uid'] ? $row['_ORIG_uid'] : $row['uid'];
+				// Make a recursive call to the next level
+				$HTML_depthData = $depthData . '<img' . IconUtility::skinImg($this->backPath, ('gfx/ol/' . $LN . '.gif'), 'width="18" height="16"') . ' alt="" />';
+				if ($depth > 1 && $this->expandNext($newID) && !$row['php_tree_stop']) {
+					$nextCount = $this->getTree($newID, $depth - 1, $this->makeHTML ? $HTML_depthData : '', $blankLineCode . ',' . $LN, $row['_SUBCSSCLASS']);
+					if (count($this->buffer_idH)) {
+						$idH[$row['uid']]['subrow'] = $this->buffer_idH;
+					}
+					// Set "did expand" flag
+					$exp = 1;
+				} else {
+					$nextCount = $this->getCount($newID);
+					// Clear "did expand" flag
+					$exp = 0;
+				}
+				// Set HTML-icons, if any:
+				if ($this->makeHTML) {
+					$HTML = $depthData . $this->PMicon($row, $a, $c, $nextCount, $exp);
+					$HTML .= $this->wrapStop($this->getIcon($row), $row);
+				}
+				// Finally, add the row/HTML content to the ->tree array in the reserved key.
+				$this->tree[$treeKey] = array(
+					'row' => $row,
+					'HTML' => $HTML,
+					'HTML_depthData' => $this->makeHTML == 2 ? $HTML_depthData : '',
+					'invertedDepth' => $depth,
+					'blankLineCode' => $blankLineCode,
+					'bank' => $this->bank
+				);
 			}
-			// Set HTML-icons, if any:
-			if ($this->makeHTML) {
-				$HTML = $depthData . $this->PMicon($row, $a, $c, $nextCount, $exp);
-				$HTML .= $this->wrapStop($this->getIcon($row), $row);
-			}
-			// Finally, add the row/HTML content to the ->tree array in the reserved key.
-			$this->tree[$treeKey] = array(
-				'row' => $row,
-				'HTML' => $HTML,
-				'HTML_depthData' => $this->makeHTML == 2 ? $HTML_depthData : '',
-				'invertedDepth' => $depth,
-				'blankLineCode' => $blankLineCode,
-				'bank' => $this->bank
-			);
 		}
 		$this->getDataFree($res);
 		$this->buffer_idH = $idH;
