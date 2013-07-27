@@ -773,6 +773,11 @@ abstract class AbstractTreeView {
 		$idH = array();
 		// Traverse the records:
 		while ($crazyRecursionLimiter > 0 && ($row = $this->getDataNext($res, $subCSSclass))) {
+			if (!$GLOBALS['BE_USER']->isInWebMount($row['uid'])) {
+				// Current record is not within web mount => skip it
+				continue;
+			}
+
 			$a++;
 			$crazyRecursionLimiter--;
 			$newID = $row['uid'];
