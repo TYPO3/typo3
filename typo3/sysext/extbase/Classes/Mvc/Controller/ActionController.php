@@ -424,7 +424,7 @@ class ActionController extends \TYPO3\CMS\Extbase\Mvc\Controller\AbstractControl
 		if (class_exists($viewObjectName) === FALSE) {
 			$viewObjectName = str_replace('@format', '', $possibleViewName);
 		}
-		if (class_exists($viewObjectName) === FALSE && isset($this->viewFormatToObjectNameMap[$format])) {
+		if (isset($this->viewFormatToObjectNameMap[$format]) && class_exists($viewObjectName) === FALSE) {
 			$viewObjectName = $this->viewFormatToObjectNameMap[$format];
 		}
 		return class_exists($viewObjectName) ? $viewObjectName : FALSE;
