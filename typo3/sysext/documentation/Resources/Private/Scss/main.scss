@@ -1,0 +1,17 @@
+/*
+ *  Created: 2013-07-26
+ *
+ *  CSS in SASS's SCSS dialect for
+ *  TYPO3 Documentation Module v6.2.0
+ *  Questions can be submitted to xavier@typo3.org
+ *
+ */
+
+// Some helpers
+@import "helpers/mixins";
+
+// Appearance of the page
+@import "page/base",
+		"page/manage",
+		"page/get";
+
