@@ -62,7 +62,7 @@ abstract class BaseTestCase extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 	protected function initializeVfs() {
-		if (is_callable('vfsStream::create') === FALSE) {
+		if (is_callable('org\\bovigo\\vfs\\vfsStream::create') === FALSE) {
 			$this->markTestSkipped('vfsStream::create() does not exist');
 		}
 		vfsStream::create($this->vfsContents);
