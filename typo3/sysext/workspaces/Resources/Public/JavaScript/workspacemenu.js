@@ -39,10 +39,7 @@ var WorkspaceMenu = Class.create({
 	initialize: function() {
 
 		Ext.onReady(function() {
-			Event.observe(
-				window, 'resize',
-				function() { TYPO3BackendToolbarManager.positionMenu('workspace-selector-menu'); }
-			);
+			Event.observe(window, 'resize', TYPO3BackendWorkspaceMenu.updateDimension);
 			if (top.TYPO3.configuration.inWorkspace == 1) {
 				Ext.getBody().addClass('typo3-in-workspace');
 				this.updateTopBar(top.TYPO3.Workspaces.workspaceTitle);
@@ -73,6 +70,7 @@ var WorkspaceMenu = Class.create({
 
 		if (!toolbarItem.hasClassName('toolbar-item-active')) {
 			toolbarItem.addClassName('toolbar-item-active');
+			TYPO3BackendWorkspaceMenu.updateDimension();
 			Effect.Appear(menu, {duration: 0.2});
 			TYPO3BackendToolbarManager.hideOthers(toolbarItem);
 		} else {
@@ -163,6 +161,29 @@ var WorkspaceMenu = Class.create({
 				userItem = Ext.select ('#username');
 			}
 			userItem.insertHtml('beforeEnd', '<span id="typo3-topbar-workspaces-title">@' + Ext.util.Format.htmlEncode(workspaceTitle) + '</span>')
+		}
+	},
+
+	updateDimension: function() {
+		var toolbarItem = Ext.get('workspace-selector-menu');
+		var container = toolbarItem.select('.toolbar-item-menu').first();
+		var menuTop = toolbarItem.select('.top').first();
+		var menuItems = toolbarItem.select('.items').first();
+		var fixDisplay = container.isStyle('display', 'none');
+
+		TYPO3BackendToolbarManager.positionMenu('workspace-selector-menu');
+
+		if (fixDisplay) {
+			container.setStyle({visibility: 'hidden', display: 'block'});
+		}
+
+		menuItems.setStyle(
+			'max-height',
+			(top.TYPO3.Backend.getHeight() - menuTop.getY() - menuTop.getHeight() - 20) + 'px'
+		);
+
+		if (fixDisplay) {
+			container.setStyle({display: 'none', visibility: 'visible'});
 		}
 	}
 
