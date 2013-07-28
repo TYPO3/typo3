@@ -46,7 +46,7 @@ class FileTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	protected $logFileName = 'test.log';
 
 	protected function setUpVfsStream() {
-		if (!class_exists('vfsStream')) {
+		if (!class_exists('org\\bovigo\\vfs\\vfsStream')) {
 			$this->markTestSkipped('File backend tests are not available with this phpunit version.');
 		}
 		vfsStream::setup('LogRoot');
