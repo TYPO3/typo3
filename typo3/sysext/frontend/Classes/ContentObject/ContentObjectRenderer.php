@@ -5257,12 +5257,12 @@ class ContentObjectRenderer {
 	 * Implements the TypoScript data type "getText". This takes a string with parameters and based on those a value from somewhere in the system is returned.
 	 *
 	 * @param string $string The parameter string, eg. "field : title" or "field : navtitle // field : title" (in the latter case and example of how the value is FIRST splitted by "//" is shown)
-	 * @param mixed $fieldArray Alternative field array; If you set this to an array this variable will be used to look up values for the "field" key. Otherwise the current page record in $GLOBALS['TSFE']->page is used.
+	 * @param NULL|array $fieldArray Alternative field array; If you set this to an array this variable will be used to look up values for the "field" key. Otherwise the current page record in $GLOBALS['TSFE']->page is used.
 	 * @return string The value fetched
 	 * @see getFieldVal()
 	 * @todo Define visibility
 	 */
-	public function getData($string, $fieldArray) {
+	public function getData($string, $fieldArray = NULL) {
 		global $TYPO3_CONF_VARS;
 		if (!is_array($fieldArray)) {
 			$fieldArray = $GLOBALS['TSFE']->page;
