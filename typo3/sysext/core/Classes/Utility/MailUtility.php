@@ -174,6 +174,7 @@ class MailUtility {
 
 	/**
 	 * Breaks up a single line of text for emails
+	 * Words - longer than $lineWidth - will not be split into parts
 	 *
 	 * @param string $str The string to break up
 	 * @param string $newlineChar The string to implode the broken lines with (default/typically \n)
@@ -193,6 +194,7 @@ class MailUtility {
 				if ($spacePos !== FALSE) {
 					// take everything up to last space-char
 					$theLine = substr($substr, 0, $spacePos);
+					$substrStart++;
 				} else {
 					// search for space-char in remaining text
 					// makes this line longer than $lineWidth!
