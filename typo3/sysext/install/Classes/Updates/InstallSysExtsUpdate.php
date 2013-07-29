@@ -60,6 +60,7 @@ class InstallSysExtsUpdate extends AbstractUpdate {
 		'reports',
 		'scheduler',
 		'simulatestatic',
+		'documentation',
 	);
 
 	/**

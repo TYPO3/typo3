@@ -38,6 +38,7 @@ return array(
 			'install',
 			'belog',
 			'beuser',
+			'documentation',
 			'aboutmodules',
 			'setup',
 			'taskcenter',
