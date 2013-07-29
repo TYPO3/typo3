@@ -97,6 +97,7 @@ class IndexerService implements \TYPO3\CMS\Core\SingletonInterface {
 		// If the file is already indexed, then the file information will
 		// be updated on the existing record
 		if ($fileObject->isIndexed()) {
+			$fileInfo['deleted'] = 0;
 			$GLOBALS['TYPO3_DB']->exec_UPDATEquery('sys_file', sprintf('uid = %d', $fileObject->getUid()), $fileInfo);
 		} else {
 			// Check if a file has been moved outside of FAL -- we have some
@@ -226,7 +227,7 @@ class IndexerService implements \TYPO3\CMS\Core\SingletonInterface {
 				'sha1' => $storage->hashFile($file, 'sha1'),
 				'type' => $file->getType(),
 				'mime_type' => $file->getMimeType(),
-				'extension' => $file->getExtension()
+				'extension' => $file->getExtension(),
 			);
 			$fileInfo = array_merge($defaultFileInfo, $fileInfo->getArrayCopy());
 			$fileInfo = new \ArrayObject($fileInfo);
