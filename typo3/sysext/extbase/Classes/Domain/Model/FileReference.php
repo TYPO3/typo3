@@ -41,6 +41,11 @@ class FileReference extends \TYPO3\CMS\Extbase\Domain\Model\AbstractFileFolder {
 	protected $fileRepository;
 
 	/**
+	 * @var \TYPO3\CMS\Extbase\Domain\Model\File
+	 */
+	protected $uidLocal;
+
+	/**
 	 * @return \TYPO3\CMS\Core\Resource\FileReference
 	 */
 	public function getOriginalResource() {
@@ -49,6 +54,13 @@ class FileReference extends \TYPO3\CMS\Extbase\Domain\Model\AbstractFileFolder {
 		}
 
 		return $this->originalResource;
+	}
+
+	/**
+	 * @return \TYPO3\CMS\Extbase\Domain\Model\File
+	 */
+	public function getUidLocal() {
+		return $this->uidLocal;
 	}
 }
 
