@@ -533,6 +533,23 @@ class ResourceStorageTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCa
 
 	/**
 	 * @test
+	 * @expectedException \RuntimeException
+	 */
+	public function deleteFolderThrowsExceptionIfFolderIsNotEmptyAndRecursiveDeleteIsDisabled() {
+		/** @var \TYPO3\CMS\Core\Resource\Folder|\PHPUnit_Framework_MockObject_MockObject $folderMock */
+		$folderMock = $this->getMock('TYPO3\\CMS\\Core\\Resource\\Folder', array(), array(), '', FALSE);
+		/** @var \TYPO3\CMS\Core\Resource\Driver\AbstractDriver|\PHPUnit_Framework_MockObject_MockObject $driverMock */
+		$driverMock = $this->getMock('TYPO3\\CMS\\Core\\Resource\\Driver\\AbstractDriver', array(), array(), '', FALSE);
+		$driverMock->expects($this->once())->method('isFolderEmpty')->will($this->returnValue(FALSE));
+		/** @var \TYPO3\CMS\Core\Resource\ResourceStorage|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $fixture */
+		$fixture = $this->getAccessibleMock('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', array('checkFolderActionPermission'), array(), '', FALSE);
+		$fixture->expects($this->any())->method('checkFolderActionPermission')->will($this->returnValue(TRUE));
+		$fixture->_set('driver', $driverMock);
+		$fixture->deleteFolder($folderMock, FALSE);
+	}
+
+	/**
+	 * @test
 	 */
 	public function createFolderCallsDriverForFolderCreation() {
 		$mockedParentFolder = $this->getSimpleFolderMock('/someFolder/');
