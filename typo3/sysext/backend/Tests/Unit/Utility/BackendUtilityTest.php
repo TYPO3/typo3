@@ -684,6 +684,160 @@ class BackendUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$onclickCode = 'var previewWin = window.open(\'' . $alternativeUrl . '\',\'newTYPO3frontendWindow\');';
 		$this->assertStringMatchesFormat($onclickCode, Utility\BackendUtility::viewOnClick(NULL, NULL, NULL, NULL, $alternativeUrl, NULL, FALSE));
 	}
+
+	/**
+	 * Tests concerning replaceMarkerInWhereClause
+	 */
+
+	/**
+	 * @return array
+	 */
+	public function replaceMarkerInWhereClauseDataProvider() {
+		return array(
+			'replaceMarkerInWhereClause replaces record field marker with quoted string' => array(
+				' AND pages.title=\'###REC_FIELD_dummyfield###\'',
+				array(
+					'_THIS_ROW' => array(
+						'dummyfield' => 'Hello World'
+					)
+				),
+				' AND pages.title=\'Hello World\''
+			),
+			'replaceMarkerInWhereClause replaces record field marker with fullquoted string' => array(
+				' AND pages.title=###REC_FIELD_dummyfield###',
+				array(
+					'_THIS_ROW' => array(
+						'dummyfield' => 'Hello World'
+					)
+				),
+				' AND pages.title=\'Hello World\''
+			),
+			'replaceMarkerInWhereClause replaces current pid with integer' => array(
+				' AND pages.uid=###CURRENT_PID###',
+				array(
+					'_CURRENT_PID' => 42
+				),
+				' AND pages.uid=42'
+			),
+			'replaceMarkerInWhereClause replaces current pid with string' => array(
+				' AND pages.uid=###CURRENT_PID###',
+				array(
+					'_CURRENT_PID' => '42string'
+				),
+				' AND pages.uid=42'
+			),
+			'replaceMarkerInWhereClause replaces current record uid with integer' => array(
+				' AND pages.uid=###THIS_UID###',
+				array(
+					'_THIS_UID' => 42
+				),
+				' AND pages.uid=42'
+			),
+			'replaceMarkerInWhereClause replaces current record uid with string' => array(
+				' AND pages.uid=###THIS_UID###',
+				array(
+					'_THIS_UID' => '42string'
+				),
+				' AND pages.uid=42'
+			),
+			'replaceMarkerInWhereClause replaces current record cid with integer' => array(
+				' AND pages.uid=###THIS_CID###',
+				array(
+					'_THIS_CID' => 42
+				),
+				' AND pages.uid=42'
+			),
+			'replaceMarkerInWhereClause replaces current record cid with string' => array(
+				' AND pages.uid=###THIS_CID###',
+				array(
+					'_THIS_CID' => '42string'
+				),
+				' AND pages.uid=42'
+			),
+			'replaceMarkerInWhereClause replaces storage pid with integer' => array(
+				' AND pages.uid=###STORAGE_PID###',
+				array(
+					'_STORAGE_PID' => 42
+				),
+				' AND pages.uid=42'
+			),
+			'replaceMarkerInWhereClause replaces storage pid with string' => array(
+				' AND pages.uid=###STORAGE_PID###',
+				array(
+					'_STORAGE_PID' => '42string'
+				),
+				' AND pages.uid=42'
+			),
+			'replaceMarkerInWhereClause replaces siteroot uid with integer' => array(
+				' AND pages.uid=###SITEROOT###',
+				array(
+					'_SITEROOT' => 42
+				),
+				' AND pages.uid=42'
+			),
+			'replaceMarkerInWhereClause replaces siteroot uid with string' => array(
+				' AND pages.uid=###SITEROOT###',
+				array(
+					'_SITEROOT' => '42string'
+				),
+				' AND pages.uid=42'
+			),
+			'replaceMarkerInWhereClause replaces page tsconfig id with integer' => array(
+				' AND pages.uid=###PAGE_TSCONFIG_ID###',
+				array(
+					'dummyfield' => array(
+						'PAGE_TSCONFIG_ID' => 42
+					)
+				),
+				' AND pages.uid=42'
+			),
+			'replaceMarkerInWhereClause replaces page tsconfig id with string' => array(
+				' AND pages.uid=###PAGE_TSCONFIG_ID###',
+				array(
+					'dummyfield' => array(
+						'PAGE_TSCONFIG_ID' => '42string'
+					)
+				),
+				' AND pages.uid=42'
+			),
+			'replaceMarkerInWhereClause replaces page tsconfig id list' => array(
+				' AND pages.uid IN (###PAGE_TSCONFIG_IDLIST###)',
+				array(
+					'dummyfield' => array(
+						'PAGE_TSCONFIG_IDLIST' => '1,a,2,b,3,c'
+					)
+				),
+				' AND pages.uid IN (1,0,2,0,3,0)'
+			),
+			'replaceMarkerInWhereClause replaces page tsconfig id list with empty string' => array(
+				' AND pages.uid IN (###PAGE_TSCONFIG_IDLIST###)',
+				array(
+					'dummyfield' => array(
+						'PAGE_TSCONFIG_IDLIST' => ''
+					)
+				),
+				' AND pages.uid IN (0)'
+			),
+			'replaceMarkerInWhereClause replaces page tsconfig string' => array(
+				' AND pages.title=\'###PAGE_TSCONFIG_STR###\'',
+				array(
+					'dummyfield' => array(
+						'PAGE_TSCONFIG_STR' => '42'
+					)
+				),
+				' AND pages.title=\'42\''
+			)
+		);
+	}
+
+	/**
+	 * @test
+	 *
+	 * @dataProvider replaceMarkerInWhereClauseDataProvider
+	 */
+	public function replaceMarkerInWhereClauseReturnsValidWhereClause($whereClause, $tsConfig, $expected) {
+		$this->assertSame($expected, Utility\BackendUtility::replaceMarkerInWhereClause($whereClause, 'dummyfield', $tsConfig, 'dummytable'));
+	}
 }
 
 ?>

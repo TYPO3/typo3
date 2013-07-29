@@ -3069,28 +3069,7 @@ class BackendUtility {
 		$foreign_table = $fieldValue['config'][$prefix . 'foreign_table'];
 		$rootLevel = $GLOBALS['TCA'][$foreign_table]['ctrl']['rootLevel'];
 		$fTWHERE = $fieldValue['config'][$prefix . 'foreign_table_where'];
-		if (strstr($fTWHERE, '###REC_FIELD_')) {
-			$fTWHERE_parts = explode('###REC_FIELD_', $fTWHERE);
-			foreach ($fTWHERE_parts as $kk => $vv) {
-				if ($kk) {
-					$fTWHERE_subpart = explode('###', $vv, 2);
-					if (substr($fTWHERE_parts[0], -1) === '\'' && $fTWHERE_subpart[1][0] === '\'') {
-						$fTWHERE_parts[$kk] = $GLOBALS['TYPO3_DB']->quoteStr($TSconfig['_THIS_ROW'][$fTWHERE_subpart[0]], $foreign_table) . $fTWHERE_subpart[1];
-					} else {
-						$fTWHERE_parts[$kk] = $GLOBALS['TYPO3_DB']->fullQuoteStr($TSconfig['_THIS_ROW'][$fTWHERE_subpart[0]], $foreign_table) . $fTWHERE_subpart[1];
-					}
-				}
-			}
-			$fTWHERE = implode('', $fTWHERE_parts);
-		}
-		$fTWHERE = str_replace('###CURRENT_PID###', intval($TSconfig['_CURRENT_PID']), $fTWHERE);
-		$fTWHERE = str_replace('###THIS_UID###', intval($TSconfig['_THIS_UID']), $fTWHERE);
-		$fTWHERE = str_replace('###THIS_CID###', intval($TSconfig['_THIS_CID']), $fTWHERE);
-		$fTWHERE = str_replace('###STORAGE_PID###', intval($TSconfig['_STORAGE_PID']), $fTWHERE);
-		$fTWHERE = str_replace('###SITEROOT###', intval($TSconfig['_SITEROOT']), $fTWHERE);
-		$fTWHERE = str_replace('###PAGE_TSCONFIG_ID###', intval($TSconfig[$field]['PAGE_TSCONFIG_ID']), $fTWHERE);
-		$fTWHERE = str_replace('###PAGE_TSCONFIG_IDLIST###', $GLOBALS['TYPO3_DB']->cleanIntList($TSconfig[$field]['PAGE_TSCONFIG_IDLIST']), $fTWHERE);
-		$fTWHERE = str_replace('###PAGE_TSCONFIG_STR###', $GLOBALS['TYPO3_DB']->quoteStr($TSconfig[$field]['PAGE_TSCONFIG_STR'], $foreign_table), $fTWHERE);
+		$fTWHERE = static::replaceMarkerInWhereClause($fTWHERE, $field, $TSconfig, $foreign_table);
 		$wgolParts = $GLOBALS['TYPO3_DB']->splitGroupOrderLimit($fTWHERE);
 		// rootLevel = -1 means that elements can be on the rootlevel OR on any page (pid!=-1)
 		// rootLevel = 0 means that elements are not allowed on root level
@@ -3130,6 +3109,53 @@ class BackendUtility {
 			}
 		}
 		return $GLOBALS['TYPO3_DB']->exec_SELECT_queryArray($queryParts);
+	}
+
+	/**
+	 * Replaces all special markers in a where clause.
+	 * Special markers are:
+	 * ###REC_FIELD_[field name]###
+	 * ###THIS_UID### - is current element uid (zero if new).
+	 * ###THIS_CID###
+	 * ###CURRENT_PID### - is the current page id (pid of the record).
+	 * ###STORAGE_PID###
+	 * ###SITEROOT###
+	 * ###PAGE_TSCONFIG_ID### -  a value you can set from Page TSconfig dynamically.
+	 * ###PAGE_TSCONFIG_IDLIST### -  a value you can set from Page TSconfig dynamically.
+	 * ###PAGE_TSCONFIG_STR### -  a value you can set from Page TSconfig dynamically.
+	 *
+	 * @param string $whereClause
+	 * @param string $field
+	 * @param array $tsConfig
+	 * @param string $foreignTable
+	 *
+	 * @return string
+	 */
+	static public function replaceMarkerInWhereClause($whereClause, $field, $tsConfig, $foreignTable) {
+		if (strstr($whereClause, '###REC_FIELD_')) {
+			$whereClauseParts = explode('###REC_FIELD_', $whereClause);
+			foreach ($whereClauseParts as $key => $value) {
+				if ($key) {
+					$whereClauseSubarts = explode('###', $value, 2);
+					if (substr($whereClauseParts[0], -1) === '\'' && $whereClauseSubarts[1][0] === '\'') {
+						$whereClauseParts[$key] = $GLOBALS['TYPO3_DB']->quoteStr($tsConfig['_THIS_ROW'][$whereClauseSubarts[0]], $foreignTable) . $whereClauseSubarts[1];
+					} else {
+						$whereClauseParts[$key] = $GLOBALS['TYPO3_DB']->fullQuoteStr($tsConfig['_THIS_ROW'][$whereClauseSubarts[0]], $foreignTable) . $whereClauseSubarts[1];
+					}
+				}
+			}
+			$whereClause = implode('', $whereClauseParts);
+		}
+		$whereClause = str_replace('###CURRENT_PID###', intval($tsConfig['_CURRENT_PID']), $whereClause);
+		$whereClause = str_replace('###THIS_UID###', intval($tsConfig['_THIS_UID']), $whereClause);
+		$whereClause = str_replace('###THIS_CID###', intval($tsConfig['_THIS_CID']), $whereClause);
+		$whereClause = str_replace('###STORAGE_PID###', intval($tsConfig['_STORAGE_PID']), $whereClause);
+		$whereClause = str_replace('###SITEROOT###', intval($tsConfig['_SITEROOT']), $whereClause);
+		$whereClause = str_replace('###PAGE_TSCONFIG_ID###', intval($tsConfig[$field]['PAGE_TSCONFIG_ID']), $whereClause);
+		$whereClause = str_replace('###PAGE_TSCONFIG_IDLIST###', $GLOBALS['TYPO3_DB']->cleanIntList($tsConfig[$field]['PAGE_TSCONFIG_IDLIST']), $whereClause);
+		$whereClause = str_replace('###PAGE_TSCONFIG_STR###', $GLOBALS['TYPO3_DB']->quoteStr($tsConfig[$field]['PAGE_TSCONFIG_STR'], $foreignTable), $whereClause);
+
+		return $whereClause;
 	}
 
 	/**
