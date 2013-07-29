@@ -19,14 +19,22 @@
 	</f:else>
 </f:if>
 
-<f:if condition="{nextUpdateWizardIdentifier}">
-	<form method="post">
-		<f:render partial="Action/Common/HiddenFormFields" arguments="{_all}" />
-		<input type="hidden" name="install[values][identifier]" value="{nextUpdateWizardIdentifier}"/>
-		<f:render
-			partial="Action/Common/SubmitButton"
-			arguments="{name:'getUserInput', text:'Go to the next update wizard'}"
-		/>
-		<hr />
-	</form>
-</f:if>
+<form method="post">
+	<f:render partial="Action/Common/HiddenFormFields" arguments="{_all}" />
+	<f:if condition="{nextUpdateWizardIdentifier}">
+		<f:then>
+			<input type="hidden" name="install[values][identifier]" value="{nextUpdateWizardIdentifier}"/>
+			<f:render
+				partial="Action/Common/SubmitButton"
+				arguments="{name:'getUserInput', text:'Go to the next update wizard'}"
+			/>
+		</f:then>
+		<f:else>
+			<f:render
+				partial="Action/Common/SubmitButton"
+				arguments="{name:'backToWizard', text:'Go back to the update wizard'}"
+			/>
+		</f:else>
+	</f:if>
+	<hr />
+</form>
