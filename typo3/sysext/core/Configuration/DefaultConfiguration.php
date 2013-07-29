@@ -227,6 +227,7 @@ return array(
 			'impexp',
 			'belog',
 			'about',
+			'documentation',
 			'cshmanual',
 			'aboutmodules',
 			'setup',
