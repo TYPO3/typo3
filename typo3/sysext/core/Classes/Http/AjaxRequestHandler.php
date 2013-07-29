@@ -267,7 +267,7 @@ class AjaxRequestHandler {
 		}
 		$content = json_encode($this->content);
 		header('Content-type: application/json; charset=' . $this->requestCharset);
-		header('X-JSON: ' . ($this->contentFormat != 'jsonbody' ? $content : TRUE));
+		header('X-JSON: ' . ($this->contentFormat == 'jsonhead' ? $content : TRUE));
 		// Bring content in xhr.responseText except when in "json head only" mode
 		if ($this->contentFormat != 'jsonhead') {
 			echo $content;
@@ -292,6 +292,4 @@ class AjaxRequestHandler {
 	}
 
 }
-
-
 ?>
