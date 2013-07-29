@@ -448,7 +448,6 @@ abstract class AbstractFile implements FileInterface {
 	 */
 	public function setDeleted() {
 		$this->deleted = TRUE;
-		$this->updateProperties(array('deleted' => TRUE));
 	}
 
 	/**
