@@ -42,9 +42,11 @@ class ConfigureExtensionViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Link\Act
 	 * Renders a configure extension link if the extension has configuration options
 	 *
 	 * @param array $extension
+	 * @param string|NULL $content
+	 *
 	 * @return string the rendered a tag
 	 */
-	public function render($extension) {
+	public function render($extension, $content = NULL) {
 		$tag = '';
 		if ($extension['installed'] && file_exists(PATH_site . $extension['siteRelPath'] . '/ext_conf_template.txt')) {
 			$uriBuilder = $this->controllerContext->getUriBuilder();
@@ -56,8 +58,13 @@ class ConfigureExtensionViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Link\Act
 			), 'Configuration');
 			$this->tag->addAttribute('href', $uri);
 			$this->tag->addAttribute('title', \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('extensionList.configure', 'extensionmanager'));
-			$this->tag->setContent(\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-system-extension-configure'));
+			if ($content === NULL) {
+				$content = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-system-extension-configure');
+			}
+			$this->tag->setContent($content);
 			$tag = $this->tag->render();
+		} elseif ($content !== NULL) {
+			$tag = $content;
 		}
 		return $tag;
 	}
