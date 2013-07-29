@@ -1376,6 +1376,9 @@ class HtmlParser {
 					}
 					unset($tagC['fixAttrib.']);
 					unset($tagC['fixAttrib']);
+					if ($tagC['rmTagIfNoAttrib'] && !$tagC['nesting']) {
+						$tagC['nesting'] = 1;
+					}
 					// Candidate for \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge() if integer-keys will some day make trouble...
 					$keepTags[$key] = array_merge($keepTags[$key], $tagC);
 				}
@@ -1409,6 +1412,7 @@ class HtmlParser {
 						$keepTags[$tn] = array();
 					}
 					$keepTags[$tn]['rmTagIfNoAttrib'] = 1;
+					$keepTags[$tn]['nesting'] = 1;
 				}
 			}
 		}
