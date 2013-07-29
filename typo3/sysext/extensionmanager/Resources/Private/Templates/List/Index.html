@@ -67,7 +67,7 @@
 					</f:else>
 				</f:if>
 
-					<em:image src="../{extension.siteRelPath}/{extension.ext_icon}" alt="{extension.title}" height="16" />{extension.title}
+					<em:image src="../{extension.siteRelPath}/{extension.ext_icon}" alt="{extension.title}" height="16" /><em:configureExtension extension="{extension}" forceConfiguration="0">{extension.title}</em:configureExtension>
 				</td>
 				<td>
 					{extensionKey}
@@ -76,7 +76,7 @@
 					{extension.version}
 				</td>
 				<td class="icons">
-					<em:configureExtension extension="{extension}" />
+					<em:configureExtension extension="{extension}"><f:be.buttons.icon icon="actions-system-extension-configure" title="{f:translate(key:'extensionList.configure')}" /></em:configureExtension>
 					<em:updateScript extensionKey="{extension.key}" />
 					<em:removeExtension extension="{extension}" />
 					<f:be.buttons.icon uri="{f:uri.action(action:'downloadExtensionZip',controller:'Action',arguments:'{extension:extension.key}')}" icon="actions-system-extension-download" title="{f:translate(key:'extensionList.downloadzip')}"/>
