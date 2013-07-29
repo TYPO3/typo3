@@ -41,6 +41,11 @@ class File extends \TYPO3\CMS\Extbase\Domain\Model\AbstractFileFolder {
 	protected $fileRepository;
 
 	/**
+	 * @var int
+	 */
+	protected $type;
+
+	/**
 	 * @return \TYPO3\CMS\Core\Resource\File
 	 */
 	public function getOriginalResource() {
@@ -49,6 +54,13 @@ class File extends \TYPO3\CMS\Extbase\Domain\Model\AbstractFileFolder {
 		}
 
 		return $this->originalResource;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getType() {
+		return $this->type;
 	}
 }
 

@@ -534,7 +534,19 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 					$recordTypeStatements = array();
 					foreach ($recordTypes as $recordType) {
 						$tableName = $dataMap->getTableName();
-						$recordTypeStatements[] = $tableName . '.' . $dataMap->getRecordTypeColumnName() . '=' . $this->databaseHandle->fullQuoteStr($recordType, $tableName);
+
+						if (strpos($dataMap->getRecordTypeColumnName(), ':')) {
+							$recordTypePath = explode(':', $dataMap->getRecordTypeColumnName());
+							$rightSelectorType = $this->dataMapper->getType($className, \TYPO3\CMS\Core\Utility\GeneralUtility::underscoredToLowerCamelCase($recordTypePath[0]));
+							$rightTableName = $this->dataMapper->convertClassNameToTableName($rightSelectorType);
+							$sql['unions'][$rightTableName] = 'LEFT JOIN ' . $rightTableName;
+							$sql['unions'][$rightTableName] .= ' ON ' . $tableName . '.' . $recordTypePath[0] . ' = ' . $rightTableName . '.uid';
+							$recordTypeStatements[] = $rightTableName . '.' . $recordTypePath[1] . '=' . $this->databaseHandle->fullQuoteStr($recordType, $tableName);
+
+						} else {
+							$recordTypeStatements[] = $tableName . '.' . $dataMap->getRecordTypeColumnName() . '=' . $this->databaseHandle->fullQuoteStr($recordType, $tableName);
+						}
+
 					}
 					$sql['additionalWhereClause'][] = '(' . implode(' OR ', $recordTypeStatements) . ')';
 				}
@@ -1185,7 +1197,8 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 			$overlayedRows = array();
 			foreach ($rows as $row) {
 				// If current row is a translation select its parent
-				if (isset($tableName) && isset($GLOBALS['TCA'][$tableName])
+				if ($querySettings->getRespectSysLanguage()
+					&& isset($tableName) && isset($GLOBALS['TCA'][$tableName])
 					&& isset($GLOBALS['TCA'][$tableName]['ctrl']['languageField'])
 					&& isset($GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField'])
 				) {
@@ -1204,14 +1217,16 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 				if ($pageRepository->versioningPreview && isset($row['_ORIG_uid'])) {
 					$row['uid'] = $row['_ORIG_uid'];
 				}
-				if ($tableName == 'pages') {
-					$row = $pageRepository->getPageOverlay($row, $querySettings->getSysLanguageUid());
-				} elseif (isset($GLOBALS['TCA'][$tableName]['ctrl']['languageField'])
-					&& $GLOBALS['TCA'][$tableName]['ctrl']['languageField'] !== ''
-				) {
-					if (in_array($row[$GLOBALS['TCA'][$tableName]['ctrl']['languageField']], array(-1, 0))) {
-						$overlayMode = $languageMode === 'strict' ? 'hideNonTranslated' : '';
-						$row = $pageRepository->getRecordOverlay($tableName, $row, $querySettings->getSysLanguageUid(), $overlayMode);
+				if ($querySettings->getRespectSysLanguage()) {
+					if ($tableName == 'pages') {
+						$row = $pageRepository->getPageOverlay($row, $querySettings->getSysLanguageUid());
+					} elseif (isset($GLOBALS['TCA'][$tableName]['ctrl']['languageField'])
+						&& $GLOBALS['TCA'][$tableName]['ctrl']['languageField'] !== ''
+					) {
+						if (in_array($row[$GLOBALS['TCA'][$tableName]['ctrl']['languageField']], array(-1, 0))) {
+							$overlayMode = $languageMode === 'strict' ? 'hideNonTranslated' : '';
+							$row = $pageRepository->getRecordOverlay($tableName, $row, $querySettings->getSysLanguageUid(), $overlayMode);
+						}
 					}
 				}
 				if ($row !== NULL && is_array($row)) {
