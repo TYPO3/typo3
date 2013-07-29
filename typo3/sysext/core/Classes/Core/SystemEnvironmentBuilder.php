@@ -213,9 +213,6 @@ class SystemEnvironmentBuilder {
 		require_once __DIR__ . '/../Log/LogLevel.php';
 		require_once __DIR__ . '/../Utility/MathUtility.php';
 		require_once __DIR__ . '/ClassLoader.php';
-		if (PHP_VERSION_ID < 50307) {
-			require_once __DIR__ . '/../Compatibility/CompatbilityClassLoaderPhpBelow50307.php';
-		}
 	}
 
 	/**

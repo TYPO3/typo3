@@ -935,16 +935,8 @@ class CharsetConverter {
 	 * @todo Define visibility
 	 */
 	public function entities_to_utf8($str, $alsoStdHtmlEnt = FALSE) {
-		// Workaround for #39287: 3rd parameter for get_html_translation_table() was only added in PHP 5.3.4 and later
-		// see http://php.net/manual/en/function.get-html-translation-table.php
-		$applyPhpCompatibilityFix = version_compare(phpversion(), '5.3.4', '<');
-
 		if ($alsoStdHtmlEnt) {
-			if ($applyPhpCompatibilityFix === TRUE) {
-				$trans_tbl = array_flip(get_html_translation_table(HTML_ENTITIES, ENT_COMPAT));
-			} else {
-				$trans_tbl = array_flip(get_html_translation_table(HTML_ENTITIES, ENT_COMPAT, 'UTF-8'));
-			}
+			$trans_tbl = array_flip(get_html_translation_table(HTML_ENTITIES, ENT_COMPAT, 'UTF-8'));
 		}
 		$token = md5(microtime());
 		$parts = explode($token, preg_replace('/(&([#[:alnum:]]*);)/', $token . '${2}' . $token, $str));
@@ -966,9 +958,6 @@ class CharsetConverter {
 			} elseif ($alsoStdHtmlEnt && isset($trans_tbl['&' . $v . ';'])) {
 				// Other entities:
 				$v = $trans_tbl['&' . $v . ';'];
-				if ($applyPhpCompatibilityFix === TRUE) {
-					$v = $this->utf8_encode($v, 'iso-8859-1');
-				}
 				$parts[$k] = $v;
 			} else {
 				// No conversion:

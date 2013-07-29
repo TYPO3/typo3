@@ -22,7 +22,7 @@ cover using TYPO3 with other databases or web servers.
 The following configuration is the minimum required:
 
 - a web server capable of running PHP
-- PHP 5.3.0 or newer with the following extensions:
+- PHP 5.3.7 or newer with the following extensions:
 	- fileinfo
 	- filter
 	- GD2
@@ -74,12 +74,6 @@ The following configuration is recommended:
 - 200 MB or more of disk space
 - AllowOverride in the Apache configuration includes "Indexes" and "FileInfo"
   (see FAQ below)
-
-Since PHP below version 5.3.7 has a bug in correctly resolving type hints being
-in method signatures of interfaces - which need to be defined using a map for
-class aliases - we suggest to use at least PHP 5.3.7. Find more details here:
-- https://bugs.php.net/bug.php?id=54624
-- http://forge.typo3.org/issues/40653
 
 TYPO3 uses /dev/urandom or /dev/random on Unix-like platforms for security
 purposes. Access to these files is highly recommended and increases TYPO3
