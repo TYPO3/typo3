@@ -44,6 +44,9 @@ class MigrateWorkspacesUpdate extends \TYPO3\CMS\Install\CoreUpdates\InstallSysE
 	 * @return 	boolean		whether an update is needed (TRUE) or not (FALSE)
 	 */
 	public function checkForUpdate(&$description) {
+		if ($this->isWizardDone()) {
+			return FALSE;
+		}
 		$result = FALSE;
 		$description = 'Migrates the old hardcoded draft workspace to be a real workspace record,
 		updates workspace owner fields to support either users or groups and
@@ -138,6 +141,7 @@ class MigrateWorkspacesUpdate extends \TYPO3\CMS\Install\CoreUpdates\InstallSysE
 		}
 		// Wizard skipped by the user
 		if (empty($this->pObj->INSTALL['update']['migrateWorkspaces']['versioning'])) {
+			$this->markWizardAsDone();
 			return TRUE;
 		}
 		\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->loadExtensionTables(FALSE);
@@ -368,7 +372,32 @@ class MigrateWorkspacesUpdate extends \TYPO3\CMS\Install\CoreUpdates\InstallSysE
 		return $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'sys_workspace', $where);
 	}
 
-}
+	/**
+	 * Marks some wizard as being "seen" so that it not shown again.
+	 *
+	 * Writes the info in LocalConfiguration.php
+	 *
+	 * @param mixed $confValue The configuration is set to this value
+	 * @return void
+	 */
+	protected function markWizardAsDone($confValue = 1) {
+		\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager')->setLocalConfigurationValueByPath('INSTALL/wizardDone/' . get_class($this), $confValue);
+	}
 
+	/**
+	 * Checks if this wizard has been "done" before
+	 *
+	 * @return boolean TRUE if wizard has been done before, FALSE otherwise
+	 */
+	protected function isWizardDone() {
+		$wizardClassName = get_class($this);
+		$done = FALSE;
+		if (isset($GLOBALS['TYPO3_CONF_VARS']['INSTALL']['wizardDone'][$wizardClassName]) && $GLOBALS['TYPO3_CONF_VARS']['INSTALL']['wizardDone'][$wizardClassName]) {
+			$done = TRUE;
+		}
+		return $done;
+	}
+
+}
 
 ?>
