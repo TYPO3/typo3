@@ -103,17 +103,22 @@ return array(
 			'config' => array(
 				'type' => 'select',
 				'items' => array(
-					array('', 0)
+					array('', 0),
 				),
-				'itemsProcFunc' => 'tx_staticinfotables_div->selectItemsTCA',
-				'itemsProcFunc_config' => array(
-					'table' => 'static_languages',
-					'indexField' => 'uid',
-					'prependHotlist' => 1
-				),
+				'foreign_table' => 'static_languages',
+				'foreign_table_where' => 'ORDER BY static_languages.lg_name_en',
+				'itemsProcFunc' => 'SJBR\\StaticInfoTables\\Hook\\Backend\\Form\\ElementRenderingHelper->translateLanguagesSelector',
 				'size' => 1,
 				'minitems' => 0,
-				'maxitems' => 1
+				'maxitems' => 1,
+				'wizards' => array(
+					'suggest' => array(
+						'type' => 'suggest',
+						'default' => array(
+							'receiverClass' => 'SJBR\\StaticInfoTables\\Hook\\Backend\\Form\\SuggestReceiver'
+						)
+					)
+				)
 			)
 		)
 	),
