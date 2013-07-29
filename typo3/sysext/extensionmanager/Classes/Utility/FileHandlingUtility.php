@@ -338,7 +338,7 @@ class FileHandlingUtility implements \TYPO3\CMS\Core\SingletonInterface {
 			$version =  '0.0.0';
 		}
 
-		$fileName = $this->getAbsolutePath('typo3temp/' . $extension . '_' . $version . '.zip');
+		$fileName = $this->getAbsolutePath('typo3temp/' . $extension . '_' . $version . '_' . date('YmdHi') . '.zip');
 
 		$zip = new \ZipArchive();
 		$zip->open($fileName, \ZipArchive::CREATE);
