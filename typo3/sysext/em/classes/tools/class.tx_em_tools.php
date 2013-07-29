@@ -387,8 +387,12 @@ final class tx_em_Tools {
 	 */
 	public static function depToString($dep, $type = 'depends') {
 		if (is_array($dep)) {
-			unset($dep[$type]['php']);
-			unset($dep[$type]['typo3']);
+			if (isset($dep[$type]['php'])) {
+				unset($dep[$type]['php']);
+			}
+			if (isset($dep[$type]['typo3'])) {
+				unset($dep[$type]['typo3']);
+			}
 			$s = (count($dep[$type])) ? implode(',', array_keys($dep[$type])) : '';
 			return $s;
 		}
