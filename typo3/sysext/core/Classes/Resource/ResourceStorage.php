@@ -1506,7 +1506,7 @@ class ResourceStorage {
 		if (!$this->checkFolderActionPermission('remove', $folderObject)) {
 			throw new Exception\InsufficientFileAccessPermissionsException('You are not allowed to access the folder "' . $folderObject->getIdentifier() . '\'', 1323423953);
 		}
-		if ($this->driver->isFolderEmpty($folderObject) && !$deleteRecursively) {
+		if (!$this->driver->isFolderEmpty($folderObject) && !$deleteRecursively) {
 			throw new \RuntimeException('Could not delete folder "' . $folderObject->getIdentifier() . '" because it is not empty.', 1325952534);
 		}
 
