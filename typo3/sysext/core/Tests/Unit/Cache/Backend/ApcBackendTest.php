@@ -66,14 +66,6 @@ class ApcBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function itIsPossibleToSetAndCheckExistenceInCache() {
-		// APC has some slam protection that tries to prevent hammering of cache
-		// entries. This can be disabled, but the option does not work at least
-		// in native PHP 5.3.3 on debian squeeze. While it is no problem with
-		// higher PHP version like the current one on travis-ci.org,
-		// the test is now just skipped on PHP environments that are knows for issues.
-		if (version_compare(phpversion(), '5.3.4', '<')) {
-			$this->markTestSkipped('This test is not reliable with PHP version below 5.3.3');
-		}
 		$backend = $this->setUpBackend();
 		$data = 'Some data';
 		$identifier = 'MyIdentifier' . md5(uniqid(mt_rand(), TRUE));
@@ -86,14 +78,6 @@ class ApcBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function itIsPossibleToSetAndGetEntry() {
-		// APC has some slam protection that tries to prevent hammering of cache
-		// entries. This can be disabled, but the option does not work at least
-		// in native PHP 5.3.3 on debian squeeze. While it is no problem with
-		// higher PHP version like the current one on travis-ci.org,
-		// the test is now just skipped on PHP environments that are knows for issues.
-		if (version_compare(phpversion(), '5.3.4', '<')) {
-			$this->markTestSkipped('This test is not reliable with PHP version below 5.3.3');
-		}
 		$backend = $this->setUpBackend();
 		$data = 'Some data';
 		$identifier = 'MyIdentifier' . md5(uniqid(mt_rand(), TRUE));
@@ -227,14 +211,6 @@ class ApcBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function flushRemovesAllCacheEntries() {
-		// APC has some slam protection that tries to prevent hammering of cache
-		// entries. This can be disabled, but the option does not work at least
-		// in native PHP 5.3.3 on debian squeeze. While it is no problem with
-		// higher PHP version like the current one on travis-ci.org,
-		// the test is now just skipped on PHP environments that are knows for issues.
-		if (version_compare(phpversion(), '5.3.4', '<')) {
-			$this->markTestSkipped('This test is not reliable with PHP version below 5.3.3');
-		}
 		$backend = $this->setUpBackend();
 		$data = 'some data' . microtime();
 		$backend->set('BackendAPCTest1', $data);

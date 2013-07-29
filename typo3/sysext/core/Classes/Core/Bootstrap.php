@@ -353,11 +353,7 @@ class Bootstrap {
 	 * @return \TYPO3\CMS\Core\Core\Bootstrap
 	 */
 	protected function registerAutoloader() {
-		if (PHP_VERSION_ID < 50307) {
-			\TYPO3\CMS\Core\Compatibility\CompatbilityClassLoaderPhpBelow50307::registerAutoloader();
-		} else {
-			\TYPO3\CMS\Core\Core\ClassLoader::registerAutoloader();
-		}
+		\TYPO3\CMS\Core\Core\ClassLoader::registerAutoloader();
 		return $this;
 	}
 
@@ -1057,11 +1053,7 @@ class Bootstrap {
 	 * @internal This is not a public API method, do not use in own extensions
 	 */
 	public function shutdown() {
-		if (PHP_VERSION_ID < 50307) {
-			\TYPO3\CMS\Core\Compatibility\CompatbilityClassLoaderPhpBelow50307::unregisterAutoloader();
-		} else {
-			\TYPO3\CMS\Core\Core\ClassLoader::unregisterAutoloader();
-		}
+		\TYPO3\CMS\Core\Core\ClassLoader::unregisterAutoloader();
 		return $this;
 	}
 

@@ -54,12 +54,8 @@ class DataSubmissionControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		if (TYPO3_OS === 'WIN') {
 			$this->markTestSkipped('destructorDoesNotRemoveFilesNotWithinTypo3TempDirectory() test not available on Windows.');
 		}
-			// Reflection needs php 5.3.2 or above
-		if (version_compare(phpversion(), '5.3.2', '<')) {
-			$this->markTestSkipped('destructorDoesNotRemoveFilesNotWithinTypo3TempDirectory() test not available with php version smaller than 5.3.2');
-		}
 
-			// Create test file
+		// Create test file
 		touch($file);
 		if (!is_file($file)) {
 			$this->markTestSkipped('destructorDoesNotRemoveFilesNotWithinTypo3TempDirectory() skipped: Test file could not be created');

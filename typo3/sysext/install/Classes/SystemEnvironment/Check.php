@@ -125,7 +125,7 @@ class Check {
 	/**
 	 * Checks if current directory (.) is in PHP include path
 	 *
-	 * @return Status\WarningStatus|Status\OkStatus
+	 * @return Status\StatusInterface
 	 */
 	protected function checkCurrentDirectoryIsInIncludePath() {
 		$includePath = ini_get('include_path');
@@ -151,7 +151,7 @@ class Check {
 	/**
 	 * Check if file uploads are enabled in PHP
 	 *
-	 * @return Status\ErrorStatus|Status\OkStatus
+	 * @return Status\StatusInterface
 	 */
 	protected function checkFileUploadEnabled() {
 		if (!ini_get('file_uploads')) {
@@ -177,7 +177,7 @@ class Check {
 	/**
 	 * Check maximum file upload size against default value of 10MB
 	 *
-	 * @return Status\ErrorStatus|Status\OkStatus
+	 * @return Status\StatusInterface
 	 */
 	protected function checkMaximumFileUploadSize() {
 		$maximumUploadFilesize = $this->getBytesFromSizeMeasurement(ini_get('upload_max_filesize'));
@@ -202,7 +202,7 @@ class Check {
 	/**
 	 * Check maximum post upload size correlates with maximum file upload
 	 *
-	 * @return Status\ErrorStatus|Status\OkStatus
+	 * @return Status\StatusInterface
 	 */
 	protected function checkPostUploadSizeIsHigherOrEqualMaximumFileUploadSize() {
 		$maximumUploadFilesize = $this->getBytesFromSizeMeasurement(ini_get('upload_max_filesize'));
@@ -227,7 +227,7 @@ class Check {
 	/**
 	 * Check memory settings
 	 *
-	 * @return Status\ErrorStatus|Status\WarningStatus|Status\OkStatus
+	 * @return Status\StatusInterface
 	 */
 	protected function checkMemorySettings() {
 		$memoryLimit = $this->getBytesFromSizeMeasurement(ini_get('memory_limit'));
@@ -269,28 +269,17 @@ class Check {
 	/**
 	 * Check minimum PHP version
 	 *
-	 * @return Status\ErrorStatus|Status\OkStatus
+	 * @return Status\StatusInterface
 	 */
 	protected function checkPhpVersion() {
-		$minimumPhpVersion = '5.3.0';
-		$recommendedPhpVersion = '5.3.7';
+		$minimumPhpVersion = '5.3.7';
 		$currentPhpVersion = phpversion();
 		if (version_compare($currentPhpVersion, $minimumPhpVersion) < 0) {
 			$status = new Status\ErrorStatus();
 			$status->setTitle('PHP version too low');
 			$status->setMessage(
 				'Your PHP version ' . $currentPhpVersion . ' is too old. TYPO3 CMS does not run' .
-				' with this version. Update to at least PHP ' . $recommendedPhpVersion
-			);
-		} elseif (version_compare($currentPhpVersion, $recommendedPhpVersion) < 0) {
-			$status = new Status\WarningStatus();
-			$status->setTitle('PHP version below recommended version');
-			$status->setMessage(
-				'Your PHP version ' . $currentPhpVersion . ' is below the recommended version' .
-				' ' . $recommendedPhpVersion . '. TYPO3 CMS will mostly run with your PHP' .
-				' version, but it is not officially supported. Expect some problems,' .
-				' and a performance penalty, monitor your system for errors and watch' .
-				' out for an upgrade, soon.'
+				' with this version. Update to at least PHP ' . $minimumPhpVersion
 			);
 		} else {
 			$status = new Status\OkStatus();
@@ -302,7 +291,7 @@ class Check {
 	/**
 	 * Check maximum execution time
 	 *
-	 * @return Status\ErrorStatus|Status\WarningStatus|Status\OkStatus
+	 * @return Status\StatusInterface
 	 */
 	protected function checkMaxExecutionTime() {
 		$minimumMaximumExecutionTime = 30;
@@ -354,7 +343,7 @@ class Check {
 	/**
 	 * Check for disabled functions
 	 *
-	 * @return Status\ErrorStatus|Status\OkStatus
+	 * @return Status\StatusInterface
 	 */
 	protected function checkDisableFunctions() {
 		$disabledFunctions = trim(ini_get('disable_functions'));
@@ -403,7 +392,7 @@ class Check {
 	/**
 	 * Check if safe mode is enabled
 	 *
-	 * @return Status\ErrorStatus|Status\OkStatus
+	 * @return Status\StatusInterface
 	 */
 	protected function checkSafeMode() {
 		$safeModeEnabled = FALSE;
@@ -430,7 +419,7 @@ class Check {
 	/**
 	 * Check for doc_root ini setting
 	 *
-	 * @return Status\NoticeStatus|Status\OkStatus
+	 * @return Status\StatusInterface
 	 */
 	protected function checkDocRoot() {
 		$docRootSetting = trim(ini_get('doc_root'));
@@ -454,7 +443,7 @@ class Check {
 	/**
 	 * Check open_basedir
 	 *
-	 * @return Status\NoticeStatus|Status\OkStatus
+	 * @return Status\StatusInterface
 	 */
 	protected function checkOpenBaseDir() {
 		$openBaseDirSetting = trim(ini_get('open_basedir'));
@@ -478,7 +467,7 @@ class Check {
 	/**
 	 * If xdebug is loaded, the default max_nesting_level of 100 must be raised
 	 *
-	 * @return Status\ErrorStatus|Status\OkStatus
+	 * @return Status\StatusInterface
 	 */
 	protected function checkXdebugMaxNestingLevel() {
 		if (extension_loaded('xdebug')) {
@@ -509,7 +498,7 @@ class Check {
 	/**
 	 * Check accessibility and functionality of OpenSSL
 	 *
-	 * @return Status\NoticeStatus|Status\OkStatus
+	 * @return Status\StatusInterface
 	 */
 	protected function checkOpenSslInstalled() {
 		if (extension_loaded('openssl')) {
@@ -541,7 +530,7 @@ class Check {
 	/**
 	 * Check enabled suhosin
 	 *
-	 * @return Status\NoticeStatus|Status\OkStatus
+	 * @return Status\StatusInterface
 	 */
 	protected function checkSuhosinLoaded() {
 		if ($this->isSuhosinLoaded()) {
@@ -563,7 +552,7 @@ class Check {
 	/**
 	 * Check suhosin.request.max_vars
 	 *
-	 * @return Status\ErrorStatus|Status\InfoStatus|Status\OkStatus
+	 * @return Status\StatusInterface
 	 */
 	protected function checkSuhosinRequestMaxVars() {
 		$recommendedRequestMaxVars = 400;
@@ -596,7 +585,7 @@ class Check {
 	/**
 	 * Check suhosin.post.max_vars
 	 *
-	 * @return Status\ErrorStatus|Status\InfoStatus|Status\OkStatus
+	 * @return Status\StatusInterface
 	 */
 	protected function checkSuhosinPostMaxVars() {
 		$recommendedPostMaxVars = 400;
@@ -629,7 +618,7 @@ class Check {
 	/**
 	 * Check suhosin.get.max_value_length
 	 *
-	 * @return Status\ErrorStatus|Status\InfoStatus|Status\OkStatus
+	 * @return Status\StatusInterface
 	 */
 	protected function checkSuhosinGetMaxValueLength() {
 		$recommendedGetMaxValueLength = 2000;
@@ -662,7 +651,7 @@ class Check {
 	/**
 	 * Check suhosin.executor.include.whitelist contains phar
 	 *
-	 * @return Status\NoticeStatus|Status\InfoStatus|Status\OkStatus
+	 * @return Status\StatusInterface
 	 */
 	protected function checkSuhosinExecutorIncludeWhiteListContainsPhar() {
 		if ($this->isSuhosinLoaded()) {
@@ -692,7 +681,7 @@ class Check {
 	/**
 	 * Check suhosin.executor.include.whitelist contains vfs
 	 *
-	 * @return Status\NoticeStatus|Status\InfoStatus|Status\OkStatus
+	 * @return Status\StatusInterface
 	 */
 	protected function checkSuhosinExecutorIncludeWhiteListContainsVfs() {
 		if ($this->isSuhosinLoaded()) {
@@ -723,7 +712,7 @@ class Check {
 	/**
 	 * Check if some opcode cache is loaded
 	 *
-	 * @return Status\WarningStatus|Status\OkStatus
+	 * @return Status\StatusInterface
 	 */
 	protected function checkSomePhpOpcodeCacheIsLoaded() {
 		if (
@@ -756,7 +745,7 @@ class Check {
 	/**
 	 * Check doc comments can be fetched by reflection
 	 *
-	 * @return Status\ErrorStatus|Status\OkStatus
+	 * @return Status\StatusInterface
 	 */
 	protected function checkReflectionDocComment() {
 		$testReflection = new \ReflectionMethod(get_class($this), __FUNCTION__);
@@ -781,7 +770,7 @@ class Check {
 	/**
 	 * Checks thread stack size if on windows with apache
 	 *
-	 * @return Status\WarningStatus|Status\OkStatus
+	 * @return Status\StatusInterface
 	 */
 	protected function checkWindowsApacheThreadStackSize() {
 		if (
@@ -809,7 +798,7 @@ class Check {
 	 * Check if a specific required PHP extension is loaded
 	 *
 	 * @param string $extension
-	 * @return Status\ErrorStatus|Status\OkStatus
+	 * @return Status\StatusInterface
 	 */
 	protected function checkRequiredPhpExtension($extension) {
 		if (!extension_loaded($extension)) {
@@ -829,7 +818,7 @@ class Check {
 	/**
 	 * Check imagecreatetruecolor to verify gdlib works as expected
 	 *
-	 * @return Status\ErrorStatus|Status\OkStatus
+	 * @return Status\StatusInterface
 	 */
 	protected function checkGdLibTrueColorSupport() {
 		if (function_exists('imagecreatetruecolor')) {
@@ -859,7 +848,7 @@ class Check {
 	/**
 	 * Check gif support of GD library
 	 *
-	 * @return Status\ErrorStatus|Status\OkStatus
+	 * @return Status\StatusInterface
 	 */
 	protected function checkGdLibGifSupport() {
 		if (
@@ -894,7 +883,7 @@ class Check {
 	/**
 	 * Check jgp support of GD library
 	 *
-	 * @return Status\ErrorStatus|Status\OkStatus
+	 * @return Status\StatusInterface
 	 */
 	protected function checkGdLibJpgSupport() {
 		if (
@@ -918,7 +907,7 @@ class Check {
 	/**
 	 * Check png support of GD library
 	 *
-	 * @return Status\ErrorStatus|Status\OkStatus
+	 * @return Status\StatusInterface
 	 */
 	protected function checkGdLibPngSupport() {
 		if (
@@ -954,7 +943,7 @@ class Check {
 	/**
 	 * Check gdlib supports freetype
 	 *
-	 * @return Status\ErrorStatus|Status\OkStatus
+	 * @return Status\StatusInterface
 	 */
 	protected function checkGdLibFreeTypeSupport() {
 		if (function_exists('imagettftext')) {
@@ -980,7 +969,7 @@ class Check {
 	/**
 	 * Create true type font test image
 	 *
-	 * @return Status\OkStatus|Status\NoticeStatus
+	 * @return Status\StatusInterface
 	 */
 	protected function isTrueTypeFontDpiStandard() {
 		if (function_exists('imageftbbox')) {
@@ -1023,7 +1012,7 @@ class Check {
 	/**
 	 * Check php magic quotes
 	 *
-	 * @return Status\OkStatus|Status\WarningStatus
+	 * @return Status\StatusInterface
 	 */
 	protected function checkPhpMagicQuotes() {
 		if (get_magic_quotes_gpc()) {
@@ -1043,7 +1032,7 @@ class Check {
 	/**
 	 * Check register globals
 	 *
-	 * @return Status\ErrorStatus|Status\OkStatus
+	 * @return Status\StatusInterface
 	 */
 	protected function checkRegisterGlobals() {
 		$registerGlobalsEnabled = filter_var(
@@ -1143,7 +1132,5 @@ class Check {
 		}
 		return $bytes;
 	}
-
-
 }
 ?>
