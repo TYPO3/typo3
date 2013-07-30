@@ -69,6 +69,11 @@ class ReportController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 	public function detailAction($extension, $report) {
 		$content = ($error = '');
 		$reportClass = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports'][$extension][$report]['report'];
+		// If extension has been uninstalled/removed redirect to index
+		if ($reportClass === NULL) {
+			$this->redirect('index');
+		}
+
 		$reportInstance = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($reportClass, $this);
 		if ($reportInstance instanceof \TYPO3\CMS\Reports\ReportInterface) {
 			$content = $reportInstance->getReport();
