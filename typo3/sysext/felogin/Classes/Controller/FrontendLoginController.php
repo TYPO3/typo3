@@ -372,10 +372,10 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin 
 				}
 				if (!$done) {
 					// Change password form
-					$markerArray['###ACTION_URI###'] = $this->pi_getPageLink($GLOBALS['TSFE']->id, '', array(
+					$markerArray['###ACTION_URI###'] = $this->getPageLink('', array(
 						$this->prefixId . '[user]' => $user['uid'],
 						$this->prefixId . '[forgothash]' => $piHash
-					));
+					), TRUE);
 					$markerArray['###LEGEND###'] = $this->pi_getLL('change_password', '', TRUE);
 					$markerArray['###NEWPASSWORD1_LABEL###'] = $this->pi_getLL('newpassword_label1', '', TRUE);
 					$markerArray['###NEWPASSWORD2_LABEL###'] = $this->pi_getLL('newpassword_label2', '', TRUE);
