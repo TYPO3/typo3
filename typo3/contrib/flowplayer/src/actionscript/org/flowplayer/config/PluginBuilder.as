@@ -47,6 +47,7 @@ package org.flowplayer.config {
         private var _controlsVersion:String;
         private var _audioVersion:String;
         private var _loadables:Array;
+		private var _callType:String
 
         public function PluginBuilder(playerSwfName:String, controlsVersion:String, audioVersion:String, config:Config, pluginObjects:Object, skinObjects:Object) {
             _playerURL = playerSwfName;
@@ -57,6 +58,10 @@ package org.flowplayer.config {
             _audioVersion = audioVersion;
             _loadables = [];
             updatePrototypedLoadableUrls();
+			if(new RegExp("config={").exec(playerSwfName))
+				_callType = "URL";
+			else
+				_callType = "default";
             log.debug("pluginObject ", _pluginObjects);
         }
 
@@ -65,6 +70,7 @@ package org.flowplayer.config {
             for (var name:String in _pluginObjects) {
                 if (! isObjectDisabled(name, _pluginObjects) && (_pluginObjects[name].hasOwnProperty("url") || name == "controls" || name == "audio")) {
                     log.debug("creating loadable for '" + name + "', " + _pluginObjects[name]);
+					_pluginObjects[name].callType = _callType;
                     _loadables.push(newLoadable(_pluginObjects, name));
                 }
             }
@@ -194,7 +200,7 @@ package org.flowplayer.config {
 		
 		private function getVersionFromSwfName(swfName:String):String {
             log.debug("getVersionFromSwfName() " + playerSwfName);
-			if (playerSwfName.indexOf(swfName) < 0) return null;
+			if (playerSwfName.indexOf(swfName + "-") < 0) return null;
 			if (playerSwfName.indexOf(".swf") < (swfName + "-").length) return null;
             return playerSwfName.substring(playerSwfName.indexOf("-") + 1, playerSwfName.indexOf(".swf"));
 		}
@@ -254,6 +260,7 @@ package org.flowplayer.config {
 					if (! (config && config.hasOwnProperty("opacity")) && defaults.hasOwnProperty("opacity")) {
 						plugin.opacity = defaults["opacity"];
 					}
+
 					plugin = new PropertyBinder(plugin, "config").copyProperties(defaults, false) as DisplayPluginModel;
 					log.debug(name + " position after applying defaults " + plugin.position + ", zIndex " + plugin.zIndex);
 				}

@@ -53,6 +53,7 @@ package org.flowplayer.util {
 			log.debug("copyProperties, overwrite = " + overwrite + (_extraProps ? ", extraprops will be set to " + _extraProps : ""));
 			for (var prop:String in source) {
 				if (overwrite || ! hasValue(_object, prop)) {
+
 					copyProperty(prop, source[prop]);
 				}
 			}
@@ -102,6 +103,7 @@ package org.flowplayer.util {
         }
 		
 		private function hasValue(obj:Object, prop:String):Boolean {
+
 			if (objHasValue(obj, prop)) {
 				return true;
 			} else if (_extraProps) {
@@ -110,23 +112,25 @@ package org.flowplayer.util {
 			return false;
 		}
 
-		private function objHasValue(obj:Object, prop:String):Boolean {
-			try {
-				var value:Object = obj[prop];
-				if (value is Number) {
-					return value >= 0;
-				}
+        private function objHasValue(obj:Object, prop:String):Boolean {
+            //fix for #225
+            if (obj == null) return false;
+            try {
+
+                var value:Object = obj[prop];
+                if (value is Number) {
+                    return value >= 0;
+                }
                 if (value is Boolean) {
                     return true;
                 }
+                return value != null;
+            } catch (ignore:Error) {}
 
-				return value != null;
-			} catch (ignore:Error) { }
-            
-			// some flowplayer classes implement hasValue() (for example DisplayPropertiesImpl)
+            // some flowplayer classes implement hasValue() (for example DisplayPropertiesImpl)
             try {
-				return obj.hasValue(prop);
-			} catch (ignore:Error) { }
+                return obj.hasValue(prop);
+            } catch (ignore:Error) { }
 
 			return false;
 		}

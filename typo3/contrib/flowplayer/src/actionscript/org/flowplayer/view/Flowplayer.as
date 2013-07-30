@@ -31,6 +31,7 @@ package org.flowplayer.view {
     import org.flowplayer.model.DisplayPluginModel;
     import org.flowplayer.model.DisplayProperties;
     import org.flowplayer.model.PlayerError;
+    import org.flowplayer.model.Playlist;
     import org.flowplayer.model.PluginEvent;
     import org.flowplayer.model.PluginEventType;
     import org.flowplayer.model.PluginModel;
@@ -162,10 +163,24 @@ package org.flowplayer.view {
                 addCallback("isKeyboardShortcutsEnabled", isKeyboardShortcutsEnabled);
                 addCallback("validateKey", validateKey);
 
+                addCallback("bufferAnimate", bufferAnimate);
+
             } catch (e:Error) {
                 handleError(PlayerError.INIT_FAILED, "Unable to add callback to ExternalInterface");
             }
         }
+
+//        private function killTheLastClip(evt:*=null):void {
+//            var array:Array = new Array();
+//            var pl:Playlist = playlist;
+//
+//            for (var x:int = 0; x < pl.length-1; x++) {
+//                var clip:Clip = pl.getClip(x);
+//                array.push(clip);
+//            }
+//            pl.getClip(pl.length-1).setCustomProperty('rel',false);
+//            pl.replaceClips2(array);
+//        }
 
         private function loadPlaylistFeed(feedName:String, clipHandler:Function):void {
             var feedLoader:ResourceLoader = createLoader();

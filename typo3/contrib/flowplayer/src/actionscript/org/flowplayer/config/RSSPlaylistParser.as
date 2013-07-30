@@ -33,7 +33,7 @@ package org.flowplayer.config {
             }
             
             default xml namespace = ns;
-			
+
 			var rss:XML = new XML(rawRSS);
             
             if (rss.name() == "rss" && Number(rss.@version) <= 2)
@@ -43,31 +43,49 @@ package org.flowplayer.config {
 
      		
 	            	try {
-	                    	var clip:Clip = parseClip(item, commonClipObject);
-	                } catch (e:Error) {
+						if(item.ym::content.length() > 0 && item.ym::thumbnail.length() > 0) {
+                            var thumbnail:Clip = parseThumbnail(item, commonClipObject);
+                        } else {
+                            thumbnail = null;
+                        }
+                        var clip:Clip = parseClip(item, commonClipObject, thumbnail != null);
+                    } catch (e:Error) {
 	                        if (e.errorID == UNSUPPORTED_TYPE) {
 	                        	log.info("unsupported media type, ignoring this item");
 	                        } else {
 	                        	throw e;
 	                        }
 	                }
-	                
-	                if (clip) {
-	                	log.info("created clip " + clip);
-	                    result.push(clip);
-	                    if (playlist) {
-	                        playlist.addClip(clip, -1 , true);
-	                    }
-	                }
-	               
+
+                     if (clip) {
+                         log.info("created clip " + clip);
+                         result.push(clip);
+                         if (playlist) {
+                             playlist.addClip(clip, -1 , true);
+                         }
+                     }
+                     if (thumbnail) {
+                         log.info("created thumbnail clip " + thumbnail);
+                         log.info("clip.index == " + playlist.indexOf(clip));
+                         result.push(thumbnail);
+                         if (playlist) {
+                             playlist.addClip(thumbnail, playlist.indexOf(clip), true);
+                         }
+                     }
+
  	           	}
             }
-            
+
+            //#470 check for a playlist when replacing the playlist with an rss feed.
+            if (playlist) playlist.toIndex(0);
             return result;
         }
         
-        private function parseClip(item:XML, commonClipObject:Object):Clip {
+        private function parseClip(item:XML, commonClipObject:Object, hasThumbnail:Boolean = false):Clip {
             var clip:Clip =  new Clip();
+            if (hasThumbnail) {
+                clip.autoPlay = false;
+            }
             new PropertyBinder(clip, "customProperties").copyProperties(commonClipObject) as Clip;
             
             if (!clip.getCustomProperty("bitrates")) clip.setCustomProperty("bitrates", []);
@@ -97,6 +115,26 @@ package org.flowplayer.config {
             log.debug("created clip " + clip);
             return clip;
         }
+
+		private function parseThumbnail(item:XML, commonClipObject:Object):Clip {
+			var clip:Clip =  new Clip();
+			
+			if (item.ym::thumbnail.length() > 0) {
+                parseMediaThumbnail(XML(item.ym::thumbnail), clip);
+            }
+
+			//add flowplayer clip properties
+            if (item.fp::thumbnail.attributes().length() > 0) {
+            	parseClipProperties(item.fp::thumbnail, clip);
+            }
+            
+            //add custom clip properties from rss elements
+            for each (var childItem:XML in item.children()) {
+                addClipCustomProperty(clip, childItem, parseCustomProperty(childItem));
+            }
+
+			return clip;
+		}
 
         private function setClipType(clip:Clip, typeVal:String):void {
             var type:ClipType = ClipType.fromMimeType(typeVal);
@@ -193,7 +231,7 @@ package org.flowplayer.config {
         }
 
 		private function parseMediaItem(elem:XML, clip:Clip):Boolean {
-
+			
             clip.url = elem.@url.toString();
             if(int(elem.@duration.toString()) > 0) {
                 clip.duration = int(elem.@duration.toString());
@@ -214,12 +252,36 @@ package org.flowplayer.config {
             }
             return false;
         }
+
+		private function parseMediaThumbnail(elem:XML, clip:Clip):Boolean {
+
+            clip.url = elem.@url.toString();
+
+            if(elem.@type) {
+                try {
+                    setClipType(clip, elem.@type.toString());
+                    log.info("found valid type " + elem.@type.toString());
+                    return true;
+                } catch (e:Error) {
+                    if (e.errorID == UNSUPPORTED_TYPE) {
+                        log.info("skipping unsupported media type " + elem.@type.toString());
+                    } else {
+                        throw e;
+                    }
+                }
+            }
+
+            return false;
+        }
         
         private function addBitrateItems(elem:XML, clip:Clip):void {
 			if (elem.@bitrate && elem.@width)
 			{
+                var bitrateItem:Object = {url: new String(elem.@url), bitrate: new Number(elem.@bitrate), width: new Number(elem.@width), height: new Number(elem.@height)};
+                //#586 add a bitrate label with a new namespace attribute fp:bitratelabel
+                 if (elem.@fp::["bitratelabel"] !=="") bitrateItem.label = new String(elem.@fp::["bitratelabel"]);
 				// need to explicitely cast attributes for external events, #47
-				clip.customProperties["bitrates"].push({url: new String(elem.@url), bitrate: new Number(elem.@bitrate), width: new Number(elem.@width), height: new Number(elem.@height)});
+				clip.customProperties["bitrates"].push(bitrateItem);
 			}
         }
     }

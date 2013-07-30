@@ -137,7 +137,7 @@ package org.flowplayer.controller {
                 }
 
             } else {
-				if ( canOnEvent(ClipEventType.STOP, [closeStreamAndConnection]) )
+				if ( dispatchBeforeEvent(ClipEventType.STOP, [closeStreamAndConnection]) )
                 	onEvent(ClipEventType.STOP, [closeStreamAndConnection]);
 
                 if (closeStreamAndConnection && playList.current.parent != null) {
@@ -148,21 +148,21 @@ package org.flowplayer.controller {
         }
 		
 		internal function close(silent:Boolean):void {
-			if (canOnEvent(ClipEventType.STOP, [true, silent])) {
+			if (dispatchBeforeEvent(ClipEventType.STOP, [true, silent])) {
 				changeState(waitingState);
 				onEvent(ClipEventType.STOP, [true, silent]);
 			}
 		}
 		
-		internal function pause():void {
+		internal function pause(silent:Boolean = false):void {
 			log.debug("cannot pause in this state");
 		}
 		
-		internal function resume():void {
+		internal function resume(silent:Boolean = false):void {
 			log.debug("cannot resume in this state");
 		}
 		
-		internal function seekTo(seconds:Number):void {
+		internal function seekTo(seconds:Number, silent:Boolean = false):void {
 			log.debug("cannot seek in this state");
 		}
 		
@@ -187,11 +187,11 @@ package org.flowplayer.controller {
 			return status;
 		}
 
-		protected function canOnEvent(eventType:ClipEventType, params:Array = null, beforeEventInfo:Object = null):Boolean {
-            log.debug("canOnEvent() " + eventType.name + ", current clip " + playList.current);
+		protected function dispatchBeforeEvent(eventType:ClipEventType, params:Array = null, beforeEventInfo:Object = null):Boolean {
+            log.debug("dispatchBeforeEvent() " + eventType.name + ", current clip " + playList.current);
 			Assert.notNull(eventType, "eventType must be non-null");
 			if (playList.current.isNullClip) return false;
-			
+
 			if (eventType.isCancellable) {
                 log.debug("canOnEvent(): dispatching before event for " + eventType.name);
 				if (! playList.current.dispatchBeforeEvent(new ClipEvent(eventType, beforeEventInfo))) {

@@ -18,7 +18,7 @@
 
 package org.flowplayer.util {
     import com.adobe.utils.StringUtil;
-import flash.display.LoaderInfo;
+	import flash.display.LoaderInfo;
 	import flash.external.ExternalInterface;
     import flash.net.URLRequest;
     import flash.net.navigateToURL;
@@ -34,17 +34,28 @@ import flash.display.LoaderInfo;
 		public static function completeURL(baseURL:String, fileName:String):String {
 			return addBaseURL(baseURL || pageLocation || playerBaseUrl, fileName);
 		}
+		
+		public static function isValid(URL:String):Boolean {
+            //#53 update url filter to accomodate for pretty urls with semi colons.
+            var regex:RegExp = /^http(s)?:\/\/((\d+\.\d+\.\d+\.\d+)|(([\w-]+\.)+([a-z,A-Z][\w-]*)))(:[1-9][0-9]*)?(\/(?:%+@&=)|([\w-.\/:;%+@&=]+[\w-.\/?:;%+@&=]*)?)?(#(.*))?$/i;
+			return regex.test(URL);
+		}
 
 		public static function addBaseURL(baseURL:String, fileName:String):String {
 			if (fileName == null) return null;
 			
 			if (isCompleteURLWithProtocol(fileName)) return fileName;
-			if (fileName.indexOf("/") == 0) return fileName;
-			
+
 			if (baseURL == '' || baseURL == null || baseURL == 'null') {
 				return fileName;
 			}
 			if (baseURL != null) {
+                //#494 with relative filenames with a root path strip the baseurl of paths first.
+                if (fileName.indexOf("/") == 0) {
+                    var pathIndex:Number = baseURL.indexOf("/", 8);
+                    return (pathIndex >= 0 ? baseURL.substr(0, pathIndex) : baseURL) + fileName;
+                }
+
 				if (baseURL.lastIndexOf("/") == baseURL.length - 1)
 					return baseURL + fileName;
 				return baseURL + "/" + fileName;
@@ -106,6 +117,18 @@ import flash.display.LoaderInfo;
                 return [null, url];
             }
         }
+
+        public static function baseUrl(url:String):String {
+            return url.substr(0, url.lastIndexOf("/"));
+        }
+
+        public static function isRtmpUrl(url:String):Boolean {
+            //#439 check for all rtmp streaming protocols when checking for rtmp urls.
+            var protocols:Array = ["rtmp","rtmpt", "rtmpe", "rtmpte", "rtmfp"];
+            var protocol:String = url.substr(0,url.indexOf("://"));
+            return protocols.indexOf(protocol) >= 0;
+            //return (url.indexOf("rtmp://") == 0);
+        }
 		
 		public static function get playerBaseUrl():String {
 			var url:String = _loaderInfo.url;
@@ -130,19 +153,20 @@ import flash.display.LoaderInfo;
         }
 
         public static function openPage(url:String, linkWindow:String = "_blank", popUpDimensions:Array = null):void {
-            if (linkWindow == "_popup" && ExternalInterface.available) {
-                _log.debug("openPage(), opening popup");
+            try {
+                ExternalInterface.call(getJSOpenPageCallString(linkWindow, popUpDimensions, url));
+            } catch (e:Error) {
+                navigateToURL(new URLRequest(url), linkWindow);
+            }
+        }
+
+        private static function getJSOpenPageCallString(linkWindow:String, popUpDimensions:Array, url:String):String {
+            if (linkWindow == "_popup") {
+                _log.debug("getJSOpenPageCallString(), will use a popup");
                 var dimensions:Array = popUpDimensions || [800,600];
-                ExternalInterface.call("window.open('" + url + "','PopUpWindow','width=" + dimensions[0] + ",height=" + dimensions[1] + ",toolbar=yes,scrollbars=yes')");
+                return "window.open('" + url + "','PopUpWindow','width=" + dimensions[0] + ",height=" + dimensions[1] + ",toolbar=yes,scrollbars=yes')";
             } else {
-                // Use JS to bypass popup blockers if ExternalInterface is available
-                var window:String = linkWindow == "_popup" ? "_blank" : linkWindow;
-                if (ExternalInterface.available) {
-                    ExternalInterface.call('window.open("' + url + '","' + window + '")');
-                } else {
-                    //request a blank page
-                    navigateToURL(new URLRequest(url), window);
-                }
+                return 'window.open("' + url + '","' + linkWindow + '")';
             }
         }
     }
