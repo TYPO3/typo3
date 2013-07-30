@@ -795,6 +795,8 @@ class ExtendedFileUtility extends \TYPO3\CMS\Core\Utility\File\BasicFileUtility 
 			$fileName = $cmds['data'];
 			$resultObject = $targetFolderObject->createFile($fileName);
 			$this->writelog(8, 0, 1, 'File created: "%s"', array($fileName));
+		} catch (\TYPO3\CMS\Core\Resource\Exception\IllegalFileExtensionException $e) {
+			$this->writeLog(8, 1, 106, 'Extension of file "%s" was not allowed!', array($fileName));
 		} catch (\TYPO3\CMS\Core\Resource\Exception\InsufficientFolderWritePermissionsException $e) {
 			$this->writelog(8, 1, 103, 'You are not allowed to create files!', '');
 		} catch (\TYPO3\CMS\Core\Resource\Exception\NotInMountPointException $e) {
@@ -845,6 +847,9 @@ class ExtendedFileUtility extends \TYPO3\CMS\Core\Utility\File\BasicFileUtility 
 			return FALSE;
 		} catch (\TYPO3\CMS\Core\Resource\Exception\InsufficientFileWritePermissionsException $e) {
 			$this->writelog(9, 1, 100, 'File "%s" was not saved! Write-permission problem?', array($fileObject->getIdentifier()));
+			return FALSE;
+		} catch (\TYPO3\CMS\Core\Resource\Exception\IllegalFileExtensionException $e) {
+			$this->writelog(9, 1, 100, 'File "%s" was not saved! File extension rejected!', array($fileObject->getIdentifier()));
 			return FALSE;
 		}
 	}
