@@ -9,6 +9,9 @@
 			<trans-unit id="labels.openId" xml:space="preserve">
 				<source>OpenID</source>
 			</trans-unit>
+			<trans-unit id="labels.openId_prefill" xml:space="preserve">
+				<source>Automatically fill OpenID next time</source>
+			</trans-unit>
 			<trans-unit id="labels.password" xml:space="preserve">
 				<source>Password</source>
 			</trans-unit>

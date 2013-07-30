@@ -339,6 +339,7 @@ class LoginController {
 			'LABEL_DONATELINK' => $GLOBALS['LANG']->getLL('labels.donate', TRUE),
 			'LABEL_USERNAME' => $GLOBALS['LANG']->getLL('labels.username', TRUE),
 			'LABEL_OPENID' => $GLOBALS['LANG']->getLL('labels.openId', TRUE),
+			'LABEL_OPENID_PREFILL' => $GLOBALS['LANG']->getLL('labels.openId_prefill', TRUE),
 			'LABEL_PASSWORD' => $GLOBALS['LANG']->getLL('labels.password', TRUE),
 			'LABEL_WHATISOPENID' => $GLOBALS['LANG']->getLL('labels.whatIsOpenId', TRUE),
 			'LABEL_SWITCHOPENID' => $GLOBALS['LANG']->getLL('labels.switchToOpenId', TRUE),

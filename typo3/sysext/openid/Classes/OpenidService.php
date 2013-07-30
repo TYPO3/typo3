@@ -180,6 +180,12 @@ class OpenidService extends \TYPO3\CMS\Core\Service\AbstractService {
 					$userRecord = $this->getUserRecord($openIDIdentifier);
 					if ($userRecord != NULL) {
 						$this->writeLog('User \'%s\' logged in with OpenID \'%s\'', $userRecord[$this->parentObject->formfield_uname], $openIDIdentifier);
+						$openIDCookieName = 'typo3-login-openid-' . strtolower(TYPO3_MODE);
+						if (GeneralUtility::_GP('tx_openid_prefill')) {
+							setcookie($openIDCookieName, $openIDIdentifier, strtotime('+1 year'), '/');
+						} else if (isset($_COOKIE[$openIDCookieName])) {
+							setcookie($openIDCookieName, 'deleted', 1, '/');
+						}
 					} else {
 						$this->writeLog('Failed to login user using OpenID \'%s\'', $openIDIdentifier);
 					}
@@ -392,19 +398,23 @@ class OpenidService extends \TYPO3\CMS\Core\Service\AbstractService {
 	 * @return string Return URL
 	 */
 	protected function getReturnURL() {
+		$prefillParam = '';
+		if ((bool)GeneralUtility::_GP('tx_openid_prefill')) {
+			$prefillParam = '&tx_openid_prefill=1';
+		}
 		if ($this->authenticationInformation['loginType'] === 'FE') {
 			// We will use eID to send user back, create session data and
 			// return to the calling page.
 			// Notice: 'pid' and 'logintype' parameter names cannot be changed!
 			// They are essential for FE user authentication.
-			$returnURL = 'index.php?eID=tx_openid&' . 'pid=' . $this->authenticationInformation['db_user']['checkPidList'] . '&' . 'logintype=login&';
+			$returnURL = 'index.php?eID=tx_openid&' . 'pid=' . $this->authenticationInformation['db_user']['checkPidList'] . '&' . 'logintype=login' . $prefillParam . '&';
 		} else {
 			// In the Backend we will use dedicated script to create session.
 			// It is much easier for the Backend to manage users.
 			// Notice: 'login_status' parameter name cannot be changed!
 			// It is essential for BE user authentication.
 			$absoluteSiteURL = substr(GeneralUtility::getIndpEnv('TYPO3_SITE_URL'), strlen(GeneralUtility::getIndpEnv('TYPO3_REQUEST_HOST')));
-			$returnURL = $absoluteSiteURL . TYPO3_mainDir . 'sysext/' . $this->extKey . '/class.tx_openid_return.php?login_status=login&';
+			$returnURL = $absoluteSiteURL . TYPO3_mainDir . 'sysext/' . $this->extKey . '/class.tx_openid_return.php?login_status=login' . $prefillParam . '&';
 		}
 		if (GeneralUtility::_GP('tx_openid_mode') === 'finish') {
 			$requestURL = GeneralUtility::_GP('tx_openid_location');
