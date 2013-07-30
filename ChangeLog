@@ -1,3 +1,11 @@
+2013-07-30  48003fb                  [RELEASE] Release of TYPO3 4.5.29 (TYPO3 Release Team)
+2013-07-30  2c8786a  #49210          [SECURITY] XSS in 3rd party library Audio Player (Oliver Hader)
+2013-07-27  4201b11  #41487          [BUGFIX] Fix double-stdWrapping of GIFBUILDER's TEXT object (jyps)
+2013-07-26  63d9173  #50480          [TASK] Remove empty .gitmodules file (Christian Kuhn)
+2013-07-25  b7a108e  #50410          [TASK] Revise typo3/sysext/README.txt (Wouter Wolters)
+2013-07-23  c1af96c                  [TASK] Set TYPO3 version to 4.5.29-dev (TYPO3 Release Team)
+
+
 2013-07-23  e31ba6f                  [RELEASE] Release of TYPO3 4.5.28 (TYPO3 Release Team)
 2013-07-22  baea16c  #32292          [BUGFIX] Page within a mountpoint using Show Content from Page fatals (Patrick)
 2013-07-19  743782b  #43163          [BUGFIX] PHP Module pgsql not supported (Nicole Cordes)
