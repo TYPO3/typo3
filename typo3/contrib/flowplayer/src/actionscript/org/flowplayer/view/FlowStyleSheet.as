@@ -322,8 +322,7 @@ package org.flowplayer.view {
             return StyleSheetUtil.colorAlpha(rootStyle[colorProperty]);
         }
 
-		
 
-		
-	}
+        public function set rootStyleName(rootStyleName:String):void {_styleName = rootStyleName;}
+    }
 }

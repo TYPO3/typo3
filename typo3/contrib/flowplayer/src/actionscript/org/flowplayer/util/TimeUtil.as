@@ -18,6 +18,42 @@
 package org.flowplayer.util {
 
     public class TimeUtil {
+
+        public static function formatSeconds(secondsIn:Number):String {
+            if (isNaN(secondsIn))
+                return "00:00";
+
+            // first round the input value so that the seconds value will not be truncated
+            var sec:int = Math.round(secondsIn as Number);
+
+            var result:String = "";
+
+            var min:Number = Math.floor(sec/60);
+            var seconds:int = int(sec) % 60;
+            result = two(seconds);
+
+            var hr:Number = Math.floor(min/60);
+            min = min % 60;
+            result = two(min) + ":" + result;
+
+            if (hr == 0) return result;
+
+            var day:Number = Math.floor(hr/60);
+            hr = hr % 60;
+            result = two(hr) + ":" + result;
+
+            if (day == 0) return result;
+
+            result = day + ":" + result;
+
+            return result;
+        }
+
+        private static function two(x:Number):String {
+            return ((x>9) ? "" : "0") + x;
+        }
+
+
         public static function seconds(str:String, timeMultiplier:Number = 1000):Number {
             return Math.round(toSeconds(str) * timeMultiplier / 100) * 100;
         }

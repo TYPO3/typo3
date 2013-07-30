@@ -18,8 +18,9 @@
  */
 
 package org.flowplayer.controller {
+    import org.flowplayer.view.ErrorHandler;
 
-	/**
+    /**
 	 * Loader is to load different kinds of resources of the net. The URLs will
 	 * be resolved relative to the embedding HTML page or to the player SWF.
 	 * The urls are resolved relative to the player SWF when the player is
@@ -39,7 +40,9 @@ package org.flowplayer.controller {
 		function clear():void;
 		
 		function set completeListener(listener:Function):void;
-		
+
+        function set errorHandler(errorHandler:ErrorHandler):void;
+
 		/**
 		 * Loads the specified url or from urls previously added.
 		 */

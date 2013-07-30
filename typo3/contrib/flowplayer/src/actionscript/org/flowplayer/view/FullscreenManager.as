@@ -29,7 +29,7 @@ package org.flowplayer.view {
 	import org.flowplayer.model.PluginModel;
 	import org.flowplayer.util.Assert;
 	import org.flowplayer.util.Log;
-	
+	import org.flowplayer.util.VersionUtil;
 	import flash.display.Stage;
 	import flash.display.StageDisplayState;
 	import flash.events.FullScreenEvent;
@@ -111,7 +111,8 @@ package org.flowplayer.view {
                 log.info("hardware scaling not supported by this Flash version");
                 return;
             }
-			if (clip.accelerated) {
+			// accelerated and no stage video
+			if (clip.useHWScaling) {
 				_stage.fullScreenSourceRect = new Rectangle(0, 0,clip.originalWidth, clip.originalHeight);
 				log.info("harware scaled fullscreen initialized with rectangle " + _stage.fullScreenSourceRect);
 			} else {

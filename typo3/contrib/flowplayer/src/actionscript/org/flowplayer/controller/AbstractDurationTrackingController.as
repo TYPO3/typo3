@@ -46,26 +46,31 @@ package org.flowplayer.controller {
 			_playlist = playlist;
 		}
 
-		public final function onEvent(event:ClipEventType, params:Array = null):void {
-			if (event == ClipEventType.BEGIN) {
-				load(new ClipEvent(event), clip, params ? params[0] : false);
-            } else if (event == ClipEventType.PAUSE) {
-                pause(new ClipEvent(event));
-            } else if (event == ClipEventType.RESUME) {
-                resume(new ClipEvent(event));
-            } else if (event == ClipEventType.STOP) {
-                stop(new ClipEvent(event), params[0], params[1]);
-            } else if (event == ClipEventType.SEEK) {
-                seekTo(new ClipEvent(event), params[0]);
-            } else if (event == ClipEventType.SWITCH) {
-				doSwitchStream(new ClipEvent(event), clip, params[0]);
+		public final function onEvent(eventType:ClipEventType, params:Array = null):void {
+            var silent:Boolean = false;
+			if (eventType == ClipEventType.BEGIN) {
+				load(new ClipEvent(eventType), clip, params ? params[0] : false);
+
+            } else if (eventType == ClipEventType.PAUSE) {
+                silent = params[0] as Boolean;
+                pause(silent ? null : new ClipEvent(eventType));
+
+            } else if (eventType == ClipEventType.RESUME) {
+                silent = params[0] as Boolean;
+                resume(silent ? null : new ClipEvent(eventType));
+
+            } else if (eventType == ClipEventType.STOP) {
+                stop(new ClipEvent(eventType), params ? params[0] : null, params ? params[1] : null);
+
+            } else if (eventType == ClipEventType.SEEK) {
+                silent = params[1] as Boolean;
+                seekTo(silent ? null : new ClipEvent(eventType, params[0]), params[0]);
+
+            } else if (eventType == ClipEventType.SWITCH) {
+				doSwitchStream(new ClipEvent(eventType), clip, params ? params[0] : null);
             }
 		}
 
-		public final function stopBuffering():void {
-			doStopBuffering();
-		}
-		
 		protected final function dispatchPlayEvent(event:ClipEvent):void {
             if (! event) return;
             log.debug("dispatching " + event + " on clip " + clip);
@@ -125,13 +130,13 @@ package org.flowplayer.controller {
 
 		private function load(event:ClipEvent, clip:Clip, pauseAfterStart:Boolean = false):void {
 			clip.onPause(onPause);
-            clip.onBufferFull(onBufferFull);
+            clip.onStart(onBegin);
             log.debug("calling doLoad");
 			doLoad(event, clip, pauseAfterStart);
 		}
 
-        private function onBufferFull(event:ClipEvent):void {
-            log.debug("buffer is full, creating and starting duration tracker");
+        private function onBegin(event:ClipEvent):void {
+            log.debug("onBegin, creating and starting duration tracker");
             createDurationTracker(clip);
         }
 
@@ -141,8 +146,9 @@ package org.flowplayer.controller {
 		}
 
 		private function pause(event:ClipEvent):void {
-            if (! durationTracker) return;
-			durationTracker.stop();
+            if (durationTracker) {
+                durationTracker.stop();
+            }
 			doPause(event);
 		}
 
@@ -196,9 +202,6 @@ package org.flowplayer.controller {
 		}
 		
 		protected function doSeekTo(event:ClipEvent, seconds:Number):void {
-		}
-		
-		protected function doStopBuffering():void {
 		}
 
         protected function doSwitchStream(param:ClipEvent, clip:Clip, netStreamPlayOptions:Object = null):void {
