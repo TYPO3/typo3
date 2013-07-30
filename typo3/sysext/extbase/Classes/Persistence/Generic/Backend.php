@@ -246,11 +246,7 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 				return NULL;
 			}
 		}
-		if ($this->session->hasObject($object)) {
-			return $this->session->getIdentifierByObject($object);
-		} else {
-			return NULL;
-		}
+		return $this->session->getIdentifierByObject($object);
 	}
 
 	/**

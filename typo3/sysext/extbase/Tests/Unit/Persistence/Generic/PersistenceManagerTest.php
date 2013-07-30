@@ -72,15 +72,17 @@ class PersistenceManagerTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase 
 	/**
 	 * @test
 	 */
-	public function getIdentifierByObjectReturnsIdentifierFromSession() {
+	public function getIdentifierByObjectReturnsIdentifierFromBackend() {
 		$fakeUuid = 'fakeUuid';
 		$object = new \stdClass();
 
-		$mockSession = $this->getMock('TYPO3\CMS\Extbase\Persistence\Generic\Session');
-		$mockSession->expects($this->once())->method('getIdentifierByObject')->with($object)->will($this->returnValue($fakeUuid));
+		$mockBackend = $this->getMock('TYPO3\\CMS\Extbase\\Persistence\\Generic\\BackendInterface');
+		$mockBackend->expects($this->once())->method('getIdentifierByObject')->with($object)->will($this->returnValue($fakeUuid));
 
-		$manager = new \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager();
-		$manager->injectPersistenceSession($mockSession);
+		/** @var \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $manager */
+		$manager = $this->getAccessibleMock('TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager', array('dummy'));
+		$manager->_set('backend', $mockBackend);
+
 
 		$this->assertEquals($manager->getIdentifierByObject($object), $fakeUuid);
 	}
