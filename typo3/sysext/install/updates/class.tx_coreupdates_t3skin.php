@@ -73,7 +73,7 @@ class tx_coreupdates_t3skin extends Tx_Install_Updates_Base {
 		$result = FALSE;
 		if ($this->versionNumber >= 4004000 && !t3lib_extMgm::isLoaded('t3skin')) {
 			// check wether the table can be truncated or if sysext with tca has to be installed
-			if ($this->checkForUpdate($customMessages[])) {
+			if ($this->checkForUpdate($customMessages)) {
 				$extList = $this->addExtToList(array('t3skin'));
 				if ($extList) {
 					$message = $this->writeNewExtensionList($extList);
