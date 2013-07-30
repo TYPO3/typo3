@@ -512,6 +512,13 @@ HTMLArea.Acronym = Ext.extend(HTMLArea.Plugin, {
 				this.getPluginInstance('Language').setLanguageAttributes(abbr, language);
 			}
 			this.editor.getSelection().insertNode(abbr);
+			// Position the cursor just after the inserted abbreviation
+			abbr = this.editor.getSelection().getParentElement();
+			if (abbr.nextSibling) {
+				this.editor.getSelection().selectNodeContents(abbr.nextSibling, true);
+			} else {
+				this.editor.getSelection().selectNodeContents(abbr.parentNode, false);
+			}
 		} else {
 			var abbr = this.params.abbr;
 			abbr.title = tab.find('itemId', 'useTerm')[0].getValue();
