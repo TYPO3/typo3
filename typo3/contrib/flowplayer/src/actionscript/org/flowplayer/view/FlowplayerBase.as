@@ -19,6 +19,7 @@
 
 package org.flowplayer.view {
     import flash.display.DisplayObject;
+    import flash.display.Loader;
     import flash.display.Stage;
     import flash.text.TextField;
     import flash.utils.getDefinitionByName;
@@ -37,6 +38,7 @@ package org.flowplayer.view {
     import org.flowplayer.model.DisplayProperties;
     import org.flowplayer.model.DisplayPropertiesImpl;
     import org.flowplayer.model.ErrorCode;
+    import org.flowplayer.model.EventDispatcher;
     import org.flowplayer.model.Loadable;
     import org.flowplayer.model.PlayerError;
     import org.flowplayer.model.PlayerEvent;
@@ -53,9 +55,12 @@ package org.flowplayer.view {
     import org.flowplayer.util.LogConfiguration;
     import org.flowplayer.util.PropertyBinder;
     import org.flowplayer.util.TextUtil;
+    import org.flowplayer.util.TimeUtil;
     import org.flowplayer.util.VersionUtil;
     import org.flowplayer.util.URLUtil;
 	import org.flowplayer.view.KeyboardHandler;
+    import org.flowplayer.view.PlayButtonOverlayView;
+    import org.flowplayer.view.PlayButtonOverlayView;
 
     use namespace flow_internal;
 
@@ -100,6 +105,7 @@ package org.flowplayer.view {
 			var animation:Animation;
             var version:VersionUtil;
             var client:NetConnectionClient;
+            var time:TimeUtil;
 
 			if (_instance) {
 				log.error("Flowplayer already instantiated");
@@ -182,18 +188,18 @@ package org.flowplayer.view {
 		/**
 		 * Pauses the current clip.
 		 */
-		public function pause():FlowplayerBase {
+		public function pause(silent:Boolean = false):FlowplayerBase {
 			log.debug("pause()");
-			_playListController.pause();
+			_playListController.pause(silent);
 			return this;
 		}
 		
 		/**
 		 * Resumes playback of the current clip.
 		 */
-		public function resume():FlowplayerBase {
+		public function resume(silent:Boolean = false):FlowplayerBase {
 			log.debug("resume()");
-			_playListController.resume();
+			_playListController.resume(silent);
 			return this;
 		}
 		
@@ -206,12 +212,12 @@ package org.flowplayer.view {
 			if (state == State.PAUSED) {
 				resume();
 				return true;
-			} else if (state == State.PLAYING) {
+            } else if (state == State.WAITING) {
+                play();
+                return true;
+			} else {
 				pause();
 				return false;
-			} else if (state == State.WAITING) {
-				play();
-				return true;
 			}
 			return false;
 		}
@@ -326,6 +332,15 @@ package org.flowplayer.view {
             return pluginPanelOp(doTogglePlugin, pluginName, props) as Boolean;
         }
 
+        public function bufferAnimate(enable:Boolean = true):void {
+            var playBtn:Object = playButtonOverlay.getDisplayObject();
+            if (enable) {
+                playBtn.startBuffering();
+            } else {
+                playBtn.stopBuffering();
+            }
+        }
+
         private function pluginPanelOp(func:Function, pluginName:String, props:Object = null):Object {
             var plugin:Object = _pluginRegistry.getPlugin(pluginName);
             checkPlugin(plugin, pluginName, DisplayProperties);
@@ -361,7 +376,7 @@ package org.flowplayer.view {
 		private function doHidePlugin(disp:DisplayObject):void {
 			if (disp.parent == screen && disp == playButtonOverlay.getDisplayObject()) {
 				playButtonOverlay.getDisplayObject()["hideButton"]();
-			} else if (disp.parent) {
+			} else if (disp.parent && ! (disp.parent is Loader)) {
 				disp.parent.removeChild(disp);
 			}
             var props:DisplayProperties = _pluginRegistry.getPluginByDisplay(disp);
@@ -399,9 +414,9 @@ package org.flowplayer.view {
 		/**
 		 * Seeks to the specified target second value in the clip's timeline.
 		 */
-		public function seek(seconds:Number):FlowplayerBase {
+		public function seek(seconds:Number, silent:Boolean = false):FlowplayerBase {
 			log.debug("seek to " + seconds + " seconds");
-			_playListController.seekTo(seconds);
+			_playListController.seekTo(seconds, silent);
 			return this;
 		}
 		
@@ -409,9 +424,9 @@ package org.flowplayer.view {
 		 * Seeks to the specified point.
 		 * @param the point in the timeline, between 0 and 100
 		 */
-		public function seekRelative(value:Number):FlowplayerBase {
+		public function seekRelative(value:Number, silent:Boolean = false):FlowplayerBase {
 			log.debug("seekRelative " + value + "%, clip is " + playlist.current);
-			seek(playlist.current.duration * (value/100));
+			seek(playlist.current.duration * (value/100), silent);
 			return this;
 		}
 

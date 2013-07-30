@@ -46,7 +46,7 @@ package org.flowplayer.controller {
 			log.debug("play()");
 			stop();
 			bufferingState.nextStateAfterBufferFull = playingState;
-			if (canOnEvent(ClipEventType.BEGIN, [false])) {
+			if (dispatchBeforeEvent(ClipEventType.BEGIN, [false])) {
 				playList.current.played = true;
 				changeState(bufferingState);
 				onEvent(ClipEventType.BEGIN, [false]);
@@ -55,19 +55,18 @@ package org.flowplayer.controller {
 
 		internal override function stopBuffering():void {
 			log.debug("stopBuffering() called");
-			stop();
-			getMediaController().stopBuffering();
+			stop(true);
 		}
 
-		internal override function pause():void {
-			if (canOnEvent(ClipEventType.PAUSE)) {
+		internal override function pause(silent:Boolean = false):void {
+			if (dispatchBeforeEvent(ClipEventType.PAUSE, [silent])) {
 				changeState(pausedState);
-				onEvent(ClipEventType.PAUSE);
+				onEvent(ClipEventType.PAUSE, [silent]);
 			}
 		}
 		
-		internal override function seekTo(seconds:Number):void {
-			if (canOnEvent(ClipEventType.SEEK, [seconds]))
+		internal override function seekTo(seconds:Number, silent:Boolean = false):void {
+			if (silent || dispatchBeforeEvent(ClipEventType.SEEK, [seconds, silent]))
 				onEvent(ClipEventType.SEEK, [seconds]);
 		}
 

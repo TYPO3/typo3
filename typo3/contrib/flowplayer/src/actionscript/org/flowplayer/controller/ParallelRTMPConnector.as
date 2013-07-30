@@ -24,6 +24,10 @@ package org.flowplayer.controller {
         protected var _connection:NetConnection;
         protected var _failureListener:Function;
         protected var _failed:Boolean;
+        private var _proxyType:String;
+        private var _objectEncoding:uint;
+        private var _connectionArgs:Array;
+        private var _attempts:int;
 
         public function ParallelRTMPConnector(url:String, connectionClient:Object, onSuccess:Function, onFailure:Function) {
             _url = url;
@@ -34,7 +38,12 @@ package org.flowplayer.controller {
             log.debug("created with connection client " + _connectionClient);
         }
 
-        public function connect(proxyType:String, objectEncoding:uint, connectionArgs:Array):void {
+        public function connect(proxyType:String, objectEncoding:uint, connectionArgs:Array, attempts:int = 3):void {
+            _proxyType = proxyType;
+            _objectEncoding = objectEncoding;
+            _connectionArgs = connectionArgs;
+            _attempts = attempts;
+
             log.debug(this +"::connect() using proxy type '" + proxyType + "'" + ", object encoding " + objectEncoding);
             if (_successListener == null) {
                 log.debug(this + ", this connector has been stopped, will not proceed with connect()");
@@ -70,6 +79,7 @@ package org.flowplayer.controller {
 
             if (event.info.code == "NetConnection.Connect.Success") {
                 if (_successListener != null) {
+                    log.debug("established connection to URL " + _connection.uri);
                     _successListener(this, _connection);
                 } else {
                     log.debug("this connector is stopped, will not call successListener");
@@ -88,11 +98,25 @@ package org.flowplayer.controller {
                 return;
             }
 
-            if (["NetConnection.Connect.Failed", "NetConnection.Connect.Rejected", "NetConnection.Connect.AppShutdown", "NetConnection.Connect.InvalidApp"].indexOf(event.info.code) >= 0) {
-                _failed = true;
-                if (_failureListener != null) {
-                    _failureListener();
+
+            if ("NetConnection.Connect.Failed" == event.info.code) {
+                log.debug("connection attempts left " + (_attempts - 1));
+                if (--_attempts > 0) {
+                    log.debug("retrying connection");
+                    connect(_proxyType, _objectEncoding, _connectionArgs, _attempts);
+                    return;
                 }
+                fail();
+            }
+            if (["NetConnection.Connect.Rejected", "NetConnection.Connect.AppShutdown", "NetConnection.Connect.InvalidApp"].indexOf(event.info.code) >= 0) {
+                fail();
+            }
+        }
+
+        private function fail():void {
+            _failed = true;
+            if (_failureListener != null) {
+                _failureListener();
             }
         }
 
@@ -110,6 +134,10 @@ package org.flowplayer.controller {
 
         public function get failed():Boolean {
             return _failed;
+        }
+
+        public function get connectionArgs():Array {
+            return _connectionArgs;
         }
     }
 }

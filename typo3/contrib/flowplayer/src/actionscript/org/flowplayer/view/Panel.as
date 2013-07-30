@@ -17,19 +17,21 @@
  */
 
 package org.flowplayer.view {
-	import org.flowplayer.model.DisplayPropertiesImpl;	
-	
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.geom.Rectangle;
+	import flash.system.Capabilities;
 	import flash.utils.Dictionary;
 	
 	import org.flowplayer.layout.DrawWrapper;
 	import org.flowplayer.layout.Layout;
 	import org.flowplayer.layout.MarginLayout;
-	import org.flowplayer.model.DisplayProperties;
-	import org.flowplayer.util.Log;	
+    import org.flowplayer.model.DisplayProperties;
+    import org.flowplayer.model.DisplayProperties;
+	import org.flowplayer.model.DisplayPropertiesImpl;
+    import org.flowplayer.util.Assert;
+    import org.flowplayer.util.Log;
 
 	/**
 	 * @author anssi
@@ -38,10 +40,11 @@ package org.flowplayer.view {
 
 		private var log:Log = new Log(this);
 		private var layout:Layout;
-//		private var displayProperties:Dictionary = new Dictionary();
+		private var childProps:Array;
 
 		public function Panel() {
 			addEventListener(Event.ADDED_TO_STAGE, createLayout);
+			childProps = new Array();
 		}
 
 		public function addView(view:DisplayObject, resizeListener:Object = null, properties:DisplayProperties = null):void {
@@ -80,41 +83,53 @@ package org.flowplayer.view {
 			
 			layout.addView(view, listener, properties);
 		}
-		
-		override public function addChild(child:DisplayObject):DisplayObject {
-			log.debug("addChild " + child);
-			if (child is Preloader) {
-				log.warn("adding Preloader to panel??");
-			}
-			return super.addChild(child);
-		}
-		
+
 		override public function swapChildren(child1:DisplayObject, child2:DisplayObject):void {
 			log.warn("swapChildren on Panel called, overridden here and does nothing");
 		}
 		
 		private function addChildView(properties:DisplayProperties):void {
-			log.info("updating Z index of " + properties + ", target Z index is " + properties.zIndex + ", numChildreb " + numChildren);
+			log.info("addChildView() updating Z index of " + properties + ", target Z index is " + properties.zIndex + ", numChildren " + numChildren);
+            Assert.notNull(properties.getDisplayObject(), "displayObject cannot be null");
+			for (var i:int = 0; i < numChildren; i++)
+				log.debug("addChildView(), " + getChildAt(i) + " at " + i);
 
-			for (var i:int = 0; i < numChildren; i++) {
-				log.debug(getChildAt(i) + " at " + i);
-			}
-
-			if (properties.zIndex < numChildren) {
-				log.debug("adding child at " + properties.zIndex);
-				var currentChild:DisplayObject = getChildAt(properties.zIndex);
-				addChildAt(properties.getDisplayObject(), properties.zIndex);
+			var index:Number;
+			if (numChildren > 0 && childProps.length > 0 && properties.zIndex <= childProps[childProps.length -1].zIndex) {
+				index = getPositionToAddByZIndex(properties.zIndex);
+                log.debug("addChildView() adding child at " + index);
+                try {
+                    addChildAt(properties.getDisplayObject(), index);
+                } catch (e:Error) {
+                    log.info("addChildView(), error " + e);
+                    // a workaraound to some strange bugs with invalid index
+                    addChild(properties.getDisplayObject());
+                }
 			} else {
+				index = numChildren;
+                log.debug("addChildView() adding to top " + properties.getDisplayObject());
 				addChild(properties.getDisplayObject());
 			}
-			properties.zIndex = getChildIndex(properties.getDisplayObject());
-			log.debug("Z index updated to  " + properties.zIndex);
 			
-			log.debug("child indexes are now: ");
+			if(childProps.length == 0)
+				childProps.push(properties);
+			else
+				childProps.splice(index, 0, properties);
 
-			for (var j:int = 0; j < numChildren; j++) {
-				log.debug(getChildAt(j) + " at " + j);
-			}
+			log.debug("addChildView() child indexes are now: ");
+
+			for (var j:int = 0; j < numChildren; j++)
+				log.debug("addChildView(), " + getChildAt(j) + " at " + j);
+		}
+		
+		private function getPositionToAddByZIndex(zIndex:int):int {
+			
+			for(var i:int = 0; i < childProps.length; ++i)
+				if(childProps[i].zIndex >= zIndex) { 
+					return i;
+					break;
+				}
+			return childProps.length - 1;
 		}
 
 		public function getZIndex(view:DisplayObject):int {
@@ -127,10 +142,6 @@ package org.flowplayer.view {
 		}
 
 		public function update(view:DisplayObject, properties:DisplayProperties):Rectangle {
-			log.debug("updating zIndex to " + properties.zIndex);
-			if (properties.zIndex >= 0) {
-				setChildIndex(view, properties.zIndex < numChildren ? properties.zIndex : numChildren - 1);
-			}
 			return layout.update(view, properties);
 		}
 
@@ -139,6 +150,14 @@ package org.flowplayer.view {
 			if (! getChildByName(view.name)) {
 				return;
 			}
+            for(var i:int = 0; i < childProps.length; ++i) {
+                var props:DisplayProperties = childProps[i];
+                if(props.getDisplayObject() == view) {
+                    childProps.splice(i, 1);
+                    break;
+                }
+            }
+
 			super.removeChild(view);
 			layout.removeView(view);
 		}

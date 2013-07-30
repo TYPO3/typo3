@@ -257,5 +257,6 @@ package org.flowplayer.config {
         public function get configObject():Object {
             return _configObject;
         }
+
     }
 }

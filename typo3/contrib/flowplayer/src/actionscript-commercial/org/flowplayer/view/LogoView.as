@@ -17,34 +17,20 @@
  */
 
 package org.flowplayer.view {
-	import flash.text.TextField;
+    import flash.display.DisplayObject;
+    import flash.events.FullScreenEvent;
+    import flash.events.MouseEvent;
+    import flash.events.TimerEvent;
+    import flash.net.URLRequest;
+    import flash.net.navigateToURL;
+    import flash.text.TextField;
+    import flash.utils.Timer;
 
-    import org.flowplayer.KeyUtil;
     import org.flowplayer.controller.ResourceLoader;
-    import org.flowplayer.model.Plugin;
-    import org.flowplayer.model.PluginModel;
+    import org.flowplayer.controller.ResourceLoaderImpl;
+    import org.flowplayer.model.Logo;
     import org.flowplayer.util.PropertyBinder;
     import org.flowplayer.util.URLUtil;
-	import org.flowplayer.controller.ResourceLoaderImpl;
-	import org.flowplayer.model.DisplayProperties;
-	import org.flowplayer.model.Logo;
-	import org.flowplayer.model.PlayerEvent;
-	import org.flowplayer.util.Arrange;
-	import org.flowplayer.view.AbstractSprite;
-	
-	import flash.display.DisplayObject;
-	import flash.display.StageDisplayState;
-	import flash.events.Event;
-	import flash.events.FullScreenEvent;
-	import flash.events.MouseEvent;
-	import flash.events.TimerEvent;
-	import flash.geom.Rectangle;
-	import flash.net.URLRequest;
-	import flash.net.navigateToURL;
-	import flash.utils.Timer;
-
-    import org.flowplayer.view.BuiltInAssetHelper;
-    import org.flowplayer.view.Flowplayer;
 
     /**
 	 * @author api
@@ -105,7 +91,7 @@ package org.flowplayer.view {
 //				Arrange.center(_image, width, height);
 				_image.x = width - _image.width;
 				_image.y = 0;
-                log.debug("image: " + Arrange.describeBounds(_image));
+                // log.debug("image: " + Arrange.describeBounds(_image));
 
 				CONFIG::freeVersion {
 					_copyrightNotice.y = _image.height;
@@ -161,7 +147,6 @@ package org.flowplayer.view {
                 _model.fullscreenOnly = fullscreenOnly;
                 //var playerBaseUrl:String = URLUtil.playerBaseUrl(_panel.loaderInfo);
                 var playerBaseUrl:String = URLUtil.playerBaseUrl;
-                if (! verifyLogoUrl(_model.url, playerBaseUrl)) return;
 
                 if (_image && _image.parent == this) {
                     removeChild(_image);
@@ -171,21 +156,6 @@ package org.flowplayer.view {
                 var loader:ResourceLoader = new ResourceLoaderImpl(playerBaseUrl, _player);
                 loader.load(url, onImageLoaded);
             }
-        }
-
-        CONFIG::commercialVersion
-        private function verifyLogoUrl(configuredUrl:String, playerBaseUrl:String):Boolean {
-            if  (! URLUtil.isCompleteURLWithProtocol(configuredUrl)) return true;
-            if (URLUtil.localDomain(playerBaseUrl)) return true;
-
-            var playerDomain:String = KeyUtil.parseDomain(playerBaseUrl, true);
-            if (playerDomain == "flowplayer.org") return true;
-
-            if (KeyUtil.parseDomain(configuredUrl, true) != playerDomain) {
-                log.error("cannot load logo from domain " + KeyUtil.parseDomain(configuredUrl, true));
-                return false;
-            }
-            return true;
         }
 
 		CONFIG::commercialVersion
@@ -237,20 +207,29 @@ package org.flowplayer.view {
         }
 
 		private function onFullscreen(event:FullScreenEvent):void {
+            log.debug("onFullscreen(), " + (event.fullScreen ? "enter fullscreen" : "exit fullscreen"));
 			if (event.fullScreen) {
-                if ((_hideTimer && _hideTimer.running) || _model.displayTime > 0) {
+				
+                if ( (_hideTimer && _hideTimer.running)) {
+                    log.debug("onFullscreen(), hide timer is running -> returning")
                     // hide timer is running or the hide time already passed
                     return;
                 }
+
 				show();
 			} else {
 				if (_model.fullscreenOnly) {
+					if(_hideTimer && _hideTimer.running) {
+						_hideTimer.reset();
+						_hideTimer = null;
+					}
 					hide(0);
 				}
 			}
 		}
 
 		private function show():void {
+            log.debug("show()");
             if (_preHideAlpha != -1) {
                 this.alpha = _preHideAlpha;
                 _model.alpha = _preHideAlpha;
@@ -267,15 +246,7 @@ package org.flowplayer.view {
 
 				if (_model.displayTime > 0) {
                     log.debug("show() creating hide timer");
-					_hideTimer = new Timer(_model.displayTime * 1000, 1);
-					_hideTimer.addEventListener(TimerEvent.TIMER_COMPLETE,
-
-                            function(event:TimerEvent):void {
-                                log.debug("display time complete");
-                                hide(_model.fadeSpeed);
-                                _hideTimer.stop();
-                            });
-					_hideTimer.start();
+					startTimer();
 				}
 			}
 //            else {
@@ -307,9 +278,21 @@ package org.flowplayer.view {
 		private function removeFromPanel():void {
             log.debug("removeFromPanel() " + this.parent);
 			if (this.parent) {
-                log.debug("removing logo from panel");
+                // log.debug("removing logo from panel");
 				_panel.removeChild(this);
             }
+		}
+		
+		private function startTimer():void {
+
+			_hideTimer = new Timer(_model.displayTime * 1000, 1);
+			_hideTimer.addEventListener(TimerEvent.TIMER_COMPLETE,
+							function(event:TimerEvent):void {
+                                log.debug("display time complete");
+                                hide(_model.fadeSpeed);
+                                _hideTimer.stop();
+                            });
+			_hideTimer.start();
 		}
 		
 		CONFIG::freeVersion

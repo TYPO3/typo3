@@ -21,4 +21,3 @@
     <component id="JSON" class="com.adobe.serialization.json.JSON" />
     <!--<component id="Log" class="org.flowplayer.view.FlowplayerComponent" />-->
 </componentPackage>
-

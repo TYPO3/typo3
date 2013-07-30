@@ -5,7 +5,7 @@ package  {
 //    import org.flowplayer.pseudostreaming.PseudoStreaming;
     
 public class BuiltInConfig {
-//    private var pseudo:org.flowplayer.rtmp.RTMPStreamProvider;
+//    private var rtmp:org.flowplayer.rtmp.RTMPStreamProvider;
 //    private var controls:org.flowplayer.controls.Controls;
 //    private var share:org.flowplayer.shareembed.ShareEmbed;
 //    private var pseudo:org.flowplayer.pseudostreaming.PseudoStreamProvider;
@@ -17,19 +17,19 @@ public class BuiltInConfig {
 //    public var Logo:Class;
 
     public static const config:Object = { 
-//       "plugins": {
-//           "psuedo": {
-//               "url": 'org.flowplayer.psuedostreaming.PseudoStreamProvider'
-//           }
+       "plugins": {
+//        "pseudo": {
+//              "url": 'org.flowplayer.pseudostreaming.PseudoStreamProvider'
+//        },
 //        "rtmp": {
 //            "url": 'org.flowplayer.rtmp.RTMPStreamProvider'
 //        },
 //        "controls": {
 //            "url": 'org.flowplayer.controls.Controls'
-//		        }
+//		}
 //           viral: {
 //               url: 'org.flowplayer.shareembed.ShareEmbed'
-//           }
+           }
        }
     }; 
 }

@@ -71,6 +71,7 @@ package org.flowplayer.view {
 			if (video)
 				removeChild(video);
 			video = clip.getContent() as Video;
+            log.debug("init() video == " + video);
 			if (video == null) {
 				log.warn("no video content in clip " + clip);
 				return;
