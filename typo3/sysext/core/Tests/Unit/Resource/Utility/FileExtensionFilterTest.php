@@ -110,6 +110,50 @@ class FileExtensionFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		);
 	}
 
+	/**
+	 * @param string $fileExtension
+	 * @param array|string $allowedExtensions
+	 * @param array|string $disallowedExtensions
+	 * @param boolean $isAllowed
+	 * @test
+	 * @dataProvider extensionFilterIgnoresCaseInAllowedExtensionCheckDataProvider
+	 */
+	public function extensionFilterIgnoresCaseInAllowedExtensionCheck($fileExtension, $allowedExtensions, $disallowedExtensions, $isAllowed) {
+
+		/** @var \TYPO3\CMS\Core\Resource\File $file */
+		$file = new \TYPO3\CMS\Core\Resource\File(array('name' => 'file.' . $fileExtension));
+
+		/** @var \TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter $filter */
+		$filter = $this->getAccessibleMock('\TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter', array('dummy'));
+		$filter->setAllowedFileExtensions($allowedExtensions);
+		$filter->setDisallowedFileExtensions($disallowedExtensions);
+		$result = $filter->_call('isAllowed', $file);
+		$this->assertEquals($isAllowed, $result);
+	}
+
+	/**
+	 * @return array
+	 */
+	public function extensionFilterIgnoresCaseInAllowedExtensionCheckDataProvider() {
+		return array(
+			'Allowed extensions' => array(
+				'ext1', 'EXT1', '', TRUE
+			),
+			'Allowed extensions, lower and upper case mix' => array(
+				'ext1', 'ext2, ExT1, Ext3', '', TRUE
+			),
+			'Disallowed extensions' => array(
+				'ext1', '', 'EXT1', FALSE
+			),
+			'Disallowed extensions, lower and upper case mix' => array(
+				'ext1', '', 'ext2, ExT1, Ext3', FALSE
+			),
+			'Combine allowed / disallowed extensions' => array(
+				'ext1', 'EXT1', 'EXT1', FALSE
+			),
+		);
+	}
+
 }
 
 ?>
