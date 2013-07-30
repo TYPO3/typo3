@@ -1,5 +1,6 @@
 package org.flowplayer.controller {
-	import org.flowplayer.model.ClipType;	
+	import org.flowplayer.model.ClipType;
+	import org.flowplayer.model.ClipEvent;
 	import org.flowplayer.model.ClipEventType;	
 	import org.flowplayer.model.Cuepoint;	
 	import org.flowplayer.util.Log;	
@@ -22,10 +23,13 @@ package org.flowplayer.controller {
 		private var log:Log = new Log(this);
 		private var _clip:Clip;
 		private var _startTime:int;
-		private var _timer:Timer;
+		private var _progressTimer:Timer;
 		private var _storedTime:int = 0;
 		private var _onLastSecondDispatched:Boolean;
 		private var _controller:MediaController;
+		private var _endDetectTimer:Timer;
+		private var _wasPaused:Boolean = false;
+		private var _lastTimeDetected:Number;
 
 		public function PlayTimeTracker(clip:Clip, controller:MediaController) {
 			_clip = clip;
@@ -33,20 +37,22 @@ package org.flowplayer.controller {
 		}
 		
 		public function start():void {
-			if (_timer && _timer.running)
+			if (_progressTimer && _progressTimer.running)
 				stop();
-			_timer = new Timer(30);
-			_timer.addEventListener(TimerEvent.TIMER, checkProgress);
+			_progressTimer = new Timer(30);
+			_progressTimer.addEventListener(TimerEvent.TIMER, checkProgress);
 			_startTime = getTimer();
 			log.debug("started at time " + time);
-			_timer.start();
+			_progressTimer.start();
 			_onLastSecondDispatched = false;
+			
+			_endDetectTimer = new Timer(100);
 		}
 
 		public function stop():void {
-			if (!_timer) return;
+			if (!_progressTimer) return;
 			_storedTime = time;
-			_timer.stop();
+			_progressTimer.stop();
 			log.debug("stopped at time " + _storedTime);
 		}
 
@@ -57,7 +63,7 @@ package org.flowplayer.controller {
 		}
 
 		public function get time():Number {
-			if (! _timer) return 0;
+			if (! _progressTimer) return 0;
 			
 			var timeNow:Number = getTimer();
 			var _timePassed:Number = _storedTime + (timeNow - _startTime)/1000;
@@ -70,13 +76,13 @@ package org.flowplayer.controller {
 				return _controller.time;
 			}
 			
-			if (! _timer.running) return _storedTime;
+			if (! _progressTimer.running) return _storedTime;
 			return _timePassed;
 		}
 
 		private function checkProgress(event:TimerEvent):void {
-			if (!_timer) {
-                log.debug("no timer running");
+			if (!_progressTimer) {
+                // log.debug("no timer running");
                 return;
             }
 			checkAndFireCuepoints();
@@ -88,30 +94,69 @@ package org.flowplayer.controller {
 				// Duration may become available once it's loaded from metadata.
 				if (timePassed > 5) {
 					log.debug("durationless clip, stopping duration tracking");
-					_timer.stop();					
+					_progressTimer.stop();
 				}
 				return;
 			}
-			if (completelyPlayed(_clip)) {
-				stop();
-				log.info(this + " completely played, dispatching complete");
-				log.info("clip.durationFromMetadata " + _clip.durationFromMetadata);
-				log.info("clip.duration " + _clip.duration);
-				dispatchEvent(new TimerEvent(TimerEvent.TIMER_COMPLETE));
-			}
+			
+			checkCompletelyPlayed(_clip);
 			
 			if (! _onLastSecondDispatched && timePassed >= _clip.duration - 1) {
-				_clip.dispatch(ClipEventType.LAST_SECOND);
 				_onLastSecondDispatched = true;
+				_clip.dispatch(ClipEventType.LAST_SECOND);
 			}
 		}
 		
-		private function completelyPlayed(clip:Clip):Boolean {
+		private function checkCompletelyPlayed(clip:Clip):void {
+            // _clip.endLimit is used by the AdSense plugin for some workarounds
+			if (durationReached) {
+                // durationFromMetadata is zero for images
+                completelyPlayed();
+
+            } else if (clip.duration - time < 2 && !_endDetectTimer.running) {
+				startEndTimer(clip);
+            }
+		}
+
+        public function get durationReached():Boolean {
+            if (_clip.durationFromMetadata > _clip.duration) {
+                return time >= _clip.duration;
+            }
+            return _clip.duration - time < _clip.endLimit;
+        }
+
+		private function startEndTimer(clip:Clip):void {
+		
+			bindEndListeners();
+            _endDetectTimer.addEventListener(TimerEvent.TIMER,
+                    function(event:TimerEvent):void {
+                        log.debug("last time detected == " + _lastTimeDetected);
+                        if(time == _lastTimeDetected && _endDetectTimer.running || durationReached) {
+                            log.debug("clip has reached his end, timer stopped");
+                            _endDetectTimer.reset();
+                            completelyPlayed();
+                        }
+                        _lastTimeDetected = time;
+                    }
+			);
 			
-			if (clip.durationFromMetadata > clip.duration) {
-				return time >= clip.duration;
+			log.debug("starting end detect timer");
+			_endDetectTimer.start();
+			
+		}
+		
+		private function completelyPlayed():void {
+			if(_endDetectTimer.running) {
+				unbindEndListeners();
+				_endDetectTimer.reset();
+				_endDetectTimer = null;
 			}
-			return clip.duration - time < clip.endLimit;
+			
+			stop();
+			log.info(this + " completely played, dispatching complete");
+			log.info("clip.durationFromMetadata " + _clip.durationFromMetadata);
+			log.info("clip.duration " + _clip.duration);
+			dispatchEvent(new TimerEvent(TimerEvent.TIMER_COMPLETE));
 		}
 
 		private function checkAndFireCuepoints():void {
@@ -151,10 +196,40 @@ package org.flowplayer.controller {
 			if (lastFireTime == -1) return false;
 			return getTimer() - cue.lastFireTime < 2000;
 		}
-
-		public function get durationReached():Boolean {
-			return _clip.duration > 0 && time >= _clip.duration;
+		
+		private function stopTimer(event:ClipEvent):void {
+			log.debug("state is paused, endTimer stopped");
+			_clip.unbind(stopTimer);
+			_endDetectTimer.reset();
+			_clip.onResume(restartEndTimer);
 		}
+		
+		private function killTimer(event:ClipEvent):void {
+			log.debug("buffer is empty, clip has reached his end");
+			_clip.unbind(killTimer);
+			_endDetectTimer.reset();
+			completelyPlayed();
+		}
+		
+		private function restartEndTimer(event:ClipEvent):void {
+			_clip.unbind(restartEndTimer);
+			log.debug("restarting timer");
+			startEndTimer(_clip);
+		}
+		
+		private function bindEndListeners():void {
+			_clip.onPause(stopTimer);
+			_clip.onBufferEmpty(killTimer);
+		}
+		
+		private function unbindEndListeners():void {
+			_clip.unbind(stopTimer);
+			_clip.unbind(killTimer);
+		}
+//
+//		public function get durationReached():Boolean {
+//			return _clip.duration > 0 && time >= _clip.duration;
+//		}
 		
 	}
 }

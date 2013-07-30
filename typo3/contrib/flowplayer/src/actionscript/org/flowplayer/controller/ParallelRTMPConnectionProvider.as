@@ -18,19 +18,13 @@
  */
 
 package org.flowplayer.controller {
-    import flash.events.NetStatusEvent;
-    import flash.events.NetStatusEvent;
+    import com.adobe.utils.ArrayUtil;
 
+    import flash.events.NetStatusEvent;
     import flash.events.TimerEvent;
     import flash.net.NetConnection;
-
     import flash.utils.Timer;
 
-    import org.flowplayer.controller.ConnectionProvider;
-    import org.flowplayer.controller.DefaultRTMPConnectionProvider;
-    import org.flowplayer.controller.NetStreamControllingStreamProvider;
-    import org.flowplayer.controller.StreamProvider;
-    import org.flowplayer.model.Clip;
     import org.flowplayer.model.Clip;
     import org.flowplayer.util.Log;
 
@@ -45,10 +39,11 @@ package org.flowplayer.controller {
         protected var _successListener:Function;
         protected var _failureListener:Function;
         protected var _connectionClient:Object;
-        protected var _connector1:ParallelRTMPConnector;
-        protected var _connector2:ParallelRTMPConnector;
-        protected var _connection:NetConnection;
+        protected var _rtmpConnector:ParallelRTMPConnector;
+        protected var _rtmptConnector:ParallelRTMPConnector;
+        private var _succeededConnector:ParallelRTMPConnector;
 
+        protected var _connection:NetConnection;
         protected var _netConnectionUrl:String;
         protected var _proxyType:String;
         protected var _failOverDelay:int;
@@ -57,12 +52,12 @@ package org.flowplayer.controller {
             _netConnectionUrl = netConnectionUrl;
             _proxyType = proxyType;
             _failOverDelay = failOverDelay;
+            log.debug("ParallelRTMPConnectionProvider created");
         }
 
         public function connect(ignored:StreamProvider, clip:Clip, successListener:Function, objectEncoding:uint, connectionArgs:Array):void {
 
             _successListener = successListener;
-            _connection = null;
 
             var configuredUrl:String = getNetConnectionUrl(clip)
             if (! configuredUrl && _failureListener != null) {
@@ -71,56 +66,105 @@ package org.flowplayer.controller {
             var parts:Array = getUrlParts(configuredUrl);
             var connArgs:Array = (clip.getCustomProperty("connectionArgs") as Array) || connectionArgs;
 
+            if (hasConnectionToSameServerWithSameArgs(parts[1], connArgs)) {
+                log.debug("already connected to server " + parts[1] + ", with same connection arguments -> calling success listener");
+                if (successListener != null) {
+                    successListener(_connection);
+                }
+                return;
+            }
+
+            successListener = null;
+            if (_connection) {
+                log.debug("doConnect(): closing previous connection");
+                _connection.close();
+                _connection = null;
+            }
+
             if (parts && (parts[0] == 'rtmp' || parts[0] == 'rtmpe')) {
 
                 log.debug("will connect using RTMP and RTMPT in parallel, connectionClient " + _connectionClient);
-                _connector1 = createConnector((parts[0] == 'rtmp' ? 'rtmp' : 'rtmpe') + '://' + parts[1]);
-                _connector2 = createConnector((parts[0] == 'rtmp' ? 'rtmpt' : 'rtmpte') + '://' + parts[1]);
+                _rtmpConnector = createConnector((parts[0] == 'rtmp' ? 'rtmp' : 'rtmpe') + '://' + parts[1]);
+                _rtmptConnector = createConnector((parts[0] == 'rtmp' ? 'rtmpt' : 'rtmpte') + '://' + parts[1]);
 
-                doConnect(_connector1, _proxyType, objectEncoding, connArgs);
+                doConnect(_rtmpConnector, _proxyType, objectEncoding, connArgs);
 
                 // RTMPT connect is started after 250 ms
                 var delay:Timer = new Timer(_failOverDelay, 1);
                 delay.addEventListener(TimerEvent.TIMER, function(event:TimerEvent):void {
-                    doConnect(_connector2, _proxyType, objectEncoding, connectionArgs);
+                    doConnect(_rtmptConnector, _proxyType, objectEncoding, connArgs);
                 });
                 delay.start();
 
             } else {
                 log.debug("connecting to URL " + configuredUrl);
-                _connector1 = createConnector(configuredUrl);
-                doConnect(_connector1, _proxyType, objectEncoding, connArgs);
+                _rtmpConnector = createConnector(configuredUrl);
+                doConnect(_rtmpConnector, _proxyType, objectEncoding, connArgs);
             }
+        }
+
+        private function hasConnectionToSameServerWithSameArgs(host:String, args:Array):Boolean {
+            log.debug("hasConnectionToSameServerWithSameArgs ? previous URI == " + (_connection && _connection.uri));
+            if (! _succeededConnector) return false;
+            if (! _connection) return false;
+            if (! _connection.connected) return false;
+
+            var parts:Array = getUrlParts(_connection.uri);
+            log.debug("hasConnectionToSameServerWithSameArgs ? previous host == " + parts[1] + " current host == " + host);
+
+            if (host != parts[1]) return false;
+
+            log.debug("hasConnectionToSameServerWithSameArgs(), old connection args:", _succeededConnector.connectionArgs);
+            log.debug("hasConnectionToSameServerWithSameArgs(), new connection args:", args);
+
+            if (hasElements(args) && ! hasElements(_succeededConnector.connectionArgs)
+                    || ! hasElements(args) && hasElements(_succeededConnector.connectionArgs)) {
+                log.debug("connection args arrays are different (empty and non-empty)");
+                return false;
+            }
+            if (args && _succeededConnector.connectionArgs && ! ArrayUtil.arraysAreEqual(_succeededConnector.connectionArgs, args)) {
+                log.debug("connection args arrays are nonequal");
+                return false;
+            }
+
+            return true;
+        }
+
+        private function hasElements(args:Array):Boolean {
+            return args && args.length > 0;
         }
 
         protected function createConnector(url:String):ParallelRTMPConnector {
             return new ParallelRTMPConnector(url, connectionClient, onConnectorSuccess, onConnectorFailure);
         }
 
-        private function doConnect(connector1:ParallelRTMPConnector, proxyType:String, objectEncoding:uint, connectionArgs:Array):void {
+        private function doConnect(connector:ParallelRTMPConnector, proxyType:String, objectEncoding:uint, connectionArgs:Array):void {
             if (connectionArgs.length > 0) {
-                connector1.connect(_proxyType, objectEncoding, connectionArgs);
+                connector.connect(_proxyType, objectEncoding, connectionArgs);
             } else {
-                connector1.connect(_proxyType, objectEncoding, null);
+                connector.connect(_proxyType, objectEncoding, null);
             }
         }
 
         protected function onConnectorSuccess(connector:ParallelRTMPConnector, connection:NetConnection):void {
             log.debug(connector + " established a connection");
             if (_connection) return;
-            _connection = connection;
 
-            if (connector == _connector2 && _connector1) {
-                _connector1.stop();
-            } else if (_connector2) {
-                _connector2.stop();
+            _connection = connection;
+            _succeededConnector = connector;
+
+            if (connector == _rtmptConnector && _rtmpConnector) {
+                _rtmpConnector.stop();
+            } else if (_rtmptConnector) {
+                _rtmptConnector.stop();
             }
             _successListener(connection);
         }
 
-        protected function onConnectorFailure():void {
-            if (isFailedOrNotUsed(_connector1) && isFailedOrNotUsed(_connector2) && _failureListener != null) {
-                _failureListener();
+        //#391 add message argument required by some connection providers
+        protected function onConnectorFailure(message:String = null):void {
+            if (isFailedOrNotUsed(_rtmpConnector) && isFailedOrNotUsed(_rtmptConnector) && _failureListener != null) {
+                _failureListener(message);
             }
         }
 
@@ -138,15 +182,15 @@ package org.flowplayer.controller {
         }
 
         protected function getNetConnectionUrl(clip:Clip):String {
+            if (clip.customProperties && clip.customProperties.netConnectionUrl) {
+                log.debug("clip has netConnectionUrl as a property " + clip.customProperties.netConnectionUrl);
+                return clip.customProperties.netConnectionUrl;
+            }
             if (isRtmpUrl(clip.completeUrl)) {
                 log.debug("clip has complete rtmp url");
                 var url:String = clip.completeUrl;
                 var lastSlashPos:Number = url.lastIndexOf("/");
                 return url.substring(0, lastSlashPos);
-            }
-            if (clip.customProperties && clip.customProperties.netConnectionUrl) {
-                log.debug("clip has netConnectionUrl as a property " + clip.customProperties.netConnectionUrl);
-                return clip.customProperties.netConnectionUrl;
             }
             log.debug("using netConnectionUrl from config" + _netConnectionUrl);
             return _netConnectionUrl;

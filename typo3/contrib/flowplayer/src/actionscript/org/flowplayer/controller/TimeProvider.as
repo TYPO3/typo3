@@ -14,6 +14,6 @@ package org.flowplayer.controller {
     public interface TimeProvider {
 
         function getTime(netStream:NetStream):Number;
-        
+
     }
 }

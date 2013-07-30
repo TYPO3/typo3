@@ -157,13 +157,31 @@ package com.adobe.serialization.json {
 						s += "\\t";
 						break;
 						
-					default:	// everything else
-						
+                    default:	// everything else
+
+                        if ( ch < ' ' || ch > '}' ) {
+                            // get the hex digit(s) of the character (either 1 or 2 digits)
+                            var hexCode:String = ch.charCodeAt( 0 ).toString( 16 );
+
+                            // ensure that there are 4 digits by adjusting
+                            // the # of zeros accordingly.
+                            while( hexCode.length < 4 )
+                            {
+                                hexCode = "0"+hexCode;
+                            }
+                            // create the unicode escape sequence with 4 hex digits
+                            s += "\\u" + hexCode;
+                        } else {
+
+                            // no need to do any special encoding, just pass-through
+                            s += ch;
+                        }
+						/*
 						// check for a control character and escape as unicode
 						if ( ch < ' ' ) {
 							// get the hex digit(s) of the character (either 1 or 2 digits)
 							var hexCode:String = ch.charCodeAt( 0 ).toString( 16 );
-							
+
 							// ensure that there are 4 digits by adjusting
 							// the # of zeros accordingly.
 							var zeroPad:String = hexCode.length == 2 ? "00" : "000";
@@ -176,6 +194,7 @@ package com.adobe.serialization.json {
 							s += ch;
 							
 						}
+						*/
 				}	// end switch
 				
 			}	// end for loop

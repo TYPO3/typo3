@@ -1,0 +1,166 @@
+FLOWPLAYER COMMERCIAL LICENSE version 0.1
+==========================================
+Copyright (c) 2008 Flowplayer Ltd, all rights reserved
+
+Please read this License carefully before using, downloading or installing
+the Software (Flowplayer, as defined below). By using, downloading or
+installing the Software, Licensee is agreeing to be bound by this License
+and the licenses granted hereunder are subject to compliance with any and
+all terms of this License. IF YOU DO NOT ACCEPT THE TERMS AND CONDITIONS
+OF THIS LICENSE, DO NOT USE, DOWNLOAD, INSTALL OR DISTRIBUTE ANY OF THE
+LICENSED SOFTWARE.
+
+Terms and definitions
+=====================
+
+"Software" means the licensed Flowplayer software
+
+"Adaptation" means a derivative work based upon the Licensed Software resulting
+from any addition to, editing of or deletion from the substance or structure of the
+original source code or a compiled version of the Licensed Software or any previous
+Adaptations or a work that programmatically interacts with the Licensed Software.
+
+"Licensed Software" means the same as Software.
+
+"License" means this document.
+
+"Licensor" means Flowplayer Ltd.
+
+"License Key" means an alphanumeric key that is used to activate the Sofware. The License
+Key is provided by Licensor.
+
+"Licensee" means an individual or entity exercising rights under and complying with the
+terms of this License who has not previously violated the terms of this License with respect
+to the Software, or who has received express permission from the Licensor to exercise rights
+under this License despite a previous violation.
+
+License Grant
+=============
+Licensor hereby grants the Licensee a non-exclusive, non-transferable, non-assignable license,
+without the right to sublicense to: Access, display, integrate and use the Software in one
+(1) Internet domain that has been registered with Licensor. Licensor provides a license key
+that is tied to the domain name; and Make an Adaptation and access, display and integrate
+it in the one (1) Internet domain that has been registered with Licensor. The Adaptation must
+not remove the License Key logic from the Software so that the Adaptation only functions if a
+valid license key has been configured for it.
+
+Licensor hereby grants the Licensee a non-exclusive, worldwide, royalty-free, non-transferable,
+non-assignable patent license, without the right to sublicense, under any patent rights
+the Licensor holds in the Software to use, run, and modify the Software in the one (1) Internet
+domain that has been registered with Licensor, provided that any Adaptation made to the Software
+does not remove the License Key logic from the Software so that the Adaptation only functions
+if a valid license key has been configured for it.
+
+All rights not expressly granted by this Agreement are expressly reserved by Licensor.
+
+Applicability of License
+========================
+
+This License applies to the Software version purchased by the Licensee.
+Additional later versions released by the Licensor are not part of this License.
+
+Protection of Licensed Software
+===============================
+
+Except as specifically set forth herein or as otherwise agreed to between Licensor and Licensee,
+Licensee shall not have the right to copy, relicense, sell, lease, transfer, encumber, assign
+or make available for public use the Software. Any attempt to take any such actions is void,
+and will automatically terminate your rights under this License.
+
+Licensee shall use its best efforts to ensure that no unauthorized copy of the Licensed Programs
+shall be made, in whole or in part, in any form.  Licensee shall prohibit all users of the Software
+from modifying, reverse-engineering or disassembling any part of the Software.  All rights not
+expressly granted by Licensor are hereby reserved.
+
+Effective Date
+==============
+
+The rights and licenses granted hereunder shall commence on the date any of the Software are
+electronically delivered to Licensee.  Licensor agrees to make the Software available for
+electronic delivery to Licensee promptly after receipt by Licensor of the License Fee. For
+purposes of this Agreement, the License Fee means the amount of money required to be paid
+by Licensee to Licensor for legal usage of the Software under the terms of this agreement.
+
+Termination of the license
+==========================
+
+This license is subject to termination by Licensor at any time if (a) Licensee violates any terms
+of this License, (b) Licensor has a reasonable basis to believe that Licensee's business is
+impairing Licensor's business.
+
+Ownership of Intellectual Property
+==================================
+
+Licensor is the sole owner of all intellectual property rights pertaining to the Licensed Software.
+Licensor reserves all rights not expressly granted herein.
+
+NO WARRANTY
+===========
+
+TO THE FULLEST EXTENT PERMISSIBLE UNDER APPLICABLE LAW, THE LICENSED SOFTWARE IS PROVIDED TO YOU "AS IS,"
+WITH ALL FAULTS, WITHOUT WARRANTY OF ANY KIND, AND YOUR USE IS AT YOUR SOLE RISK. THE ENTIRE RISK
+OF SATISFACTORY QUALITY AND PERFORMANCE RESIDES WITH YOU. LICENSOR DISCLAIMS ANY AND ALL EXPRESS,
+IMPLIED OR STATUTORY WARRANTIES, INCLUDING IMPLIED WARRANTIES OF MERCHANTABILITY, SATISFACTORY QUALITY,
+FITNESS FOR A PARTICULAR PURPOSE, NONINFRINGEMENT OF THIRD PARTY RIGHTS, ANY WARRANTIES OR CONDITIONS
+OF TITLE, AND WARRANTIES (IF ANY) ARISING FROM A COURSE OF DEALING, USAGE, OR TRADE PRACTICE. LICENSOR
+DOES NOT WARRANT AGAINST INTERFERENCE WITH YOUR ENJOYMENT OF THE PROGRAM; THAT THE PROGRAM WILL MEET
+YOUR REQUIREMENTS; THAT OPERATION OF THE PROGRAM WILL BE UNINTERRUPTED OR ERROR-FREE, OR THAT THE PROGRAM
+WILL BE COMPATIBLE WITH THIRD PARTY SOFTWARE OR THAT ANY ERRORS IN THE PROGRAM WILL BE CORRECTED. NO ORAL
+OR WRITTEN ADVICE PROVIDED BY LICENSOR OR ANY AUTHORIZED REPRESENTATIVE SHALL CREATE A WARRANTY. SOME
+JURISDICTIONS DO NOT ALLOW THE EXCLUSION OF OR LIMITATIONS ON IMPLIED WARRANTIES OR THE LIMITATIONS
+ON THE APPLICABLE STATUTORY RIGHTS OF A CONSUMER, SO SOME OR ALL OF THE ABOVE EXCLUSIONS AND LIMITATIONS
+MAY NOT APPLY TO YOU. LICENSEE IS SOLELY RESPONSIBLE FOR DETERMINING THE APPROPRIATENESS OF USING AND
+DISTRIBUTING THE LICENSED SOFTWARE AND ASSUMES ALL RISKS ASSOCIATED WITH ITS EXERCISE OF RIGHTS UNDER
+THIS AGREEMENT, INCLUDING BUT NOT LIMITED TO THE RISKS AND COSTS OF PROGRAM ERRORS, COMPLIANCE WITH
+APPLICABLE LAWS, DAMAGE TO OR LOSS OF DATA, PROGRAMS OR EQUIPMENT, SUITABILITY FOR HOSTING AND
+UNAVAILABILITY OR INTERRUPTION OF OPERATIONS.
+
+Limitation of Liability
+=======================
+Except to the extent required by applicable law, THE CUMULATIVE, AGGREGATE LIABILITY OF LICENSOR
+TO LICENSEE FOR ALL CLAIMS RELATED TO THE LICENSED SOFTWARE AND THIS AGREEMENT, WILL NOT EXCEED
+THE TOTAL AMOUNT OF ALL LICENSE FEES PAID TO LICENSOR HEREUNDER. LICENSOR WILL NOT IN ANY CASE
+BE LIABLE FOR ANY SPECIAL, INCIDENTAL, CONSEQUENTIAL, INDIRECT, PUNITIVE, OR EXEMPLARY DAMAGES
+ARISING IN ANY WAY OUT OF THE USE OF THE PRODUCT, THE SERVICES OR THIS AGREEMENT, INCLUDING
+WITHOUT LIMITATION, DAMAGES FOR LOST PROFIT, LOST REVENUE, LOSS OF USE, LOSS OF DATA, COSTS
+OF RECREATING LOST DATA, THE COST OF ANY SUBSTITUTE EQUIPMENT, PROGRAM, OR DATA, OR CLAIMS
+BY ANY THIRD PARTY, INCLUDING WITH LIMITATION THIRD PARTY CLAIMS OF INFRINGEMENT OF INTELLECTUAL
+PROPERTY RIGHTS, INFRINGEMENT OF COPYRIGHT, TRADEMARK, PATENT, OR TRADE SECRETS. LICENSEE'S
+SOLE AND EXCLUSIVE REMEDY IS SET FORTH IN THIS AGREEMENT. THE LIMITATION ON DAMAGES SET FORTH
+IN SECTION WILL NOT APPLY TO INDEMNIFICATION OBLIGATIONS OR BREACHES BY LICENSEE.
+
+Indemnity
+=========
+Licensee shall indemnify Licensor, its employees, officers, licensees and agents for all damages,
+costs and expenses, including, without limitation, attorneysâ€™ fees, arising from any claims arising
+as a result of Licenseeâ€™s use of the Licensed Software, either as provided or as Adapted by Licensee.
+
+Export
+======
+Licensee agrees and certifies that it will not export or re-export, directly or indirectly, the Licensed
+Software contrary to the laws of the United States or any other country.
+
+Severability
+============
+If for any reason a court of competent jurisdiction finds any provision of this License or portion
+thereof, to be unenforceable, that provision of the License shall be enforced to the maximum extent
+permissible so as to affect the intent of the parties, and the remainder of this License shall
+continue in full force and effect.
+
+Governing Law
+=============
+This License shall be governed by the laws of Finland. Any disputes arising under this License
+shall be heard in the city of Espoo, Finland.
+
+Complete Agreement
+===================
+This License constitutes the entire agreement between Licensor and Licensee with respect to the
+use of the Licensed Software and supersedes all prior or contemporaneous understandings
+or agreements, written or oral, regarding such subject matter. No one other than Licensor
+has the right to modify or amend this License.
+
+Waiver of Breach
+================
+No term or provision of this License shall be deemed waived and no breach excused, unless such
+waiver or consent shall be in writing and signed by Licensor.
+

@@ -83,7 +83,7 @@ package org.flowplayer.view {
 			
 			var resizingFunc:Function = function(event:TimerEvent = null):void {
 
-				if ( event && ! resizer.hasOrigSize() && Timer(event.target).currentCount < Timer(event.target).repeatCount ) {
+				if ( event && ! resizer.hasOrigSize() && Timer(event.target).currentCount < Timer(event.target).repeatCount )	{
 					log.debug("we don't have a size yet.. waiting for the video object to have a size");
 					return;
 				}

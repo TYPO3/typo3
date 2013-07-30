@@ -40,27 +40,24 @@ import org.flowplayer.model.ClipEventType;
 			log.debug("play()");
 			if (! playListReady) return;
 			bufferingState.nextStateAfterBufferFull = playingState;
-			if (canOnEvent(ClipEventType.BEGIN, [false], false)) {
+			if (dispatchBeforeEvent(ClipEventType.BEGIN, [false], false)) {
 				playList.current.played = true;
 				changeState(bufferingState);
 				onEvent(ClipEventType.BEGIN, [false]);
 			}
 		}
 
-		internal override function stopBuffering():void {
-			log.debug("stopBuffering() called");
-			getMediaController().stopBuffering();
-		}
-
         override internal function stop(closeStreamAndConnection:Boolean = false, silent:Boolean = false):void {
-			log.debug("cannot stop in waiting state ");
-		}
-		
+            if (closeStreamAndConnection) {
+                stop(true);
+            }
+        }
+
 		internal override function startBuffering():void {
 			if (! playListReady) return;
 			log.debug("startBuffering()");
 			bufferingState.nextStateAfterBufferFull = pausedState;
-			if (canOnEvent(ClipEventType.BEGIN, [true], true)) {
+			if (dispatchBeforeEvent(ClipEventType.BEGIN, [true], true)) {
 				changeState(bufferingState);
 				onEvent(ClipEventType.BEGIN, [true]);
 			}

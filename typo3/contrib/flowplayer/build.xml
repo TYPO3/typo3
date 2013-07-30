@@ -1,14 +1,15 @@
 <project name="Flowplayer" default="build">
     <property file="build.generated.properties"/>
+    <property file="${user.home}/core.properties" />
     <property file="build.properties"/>
 
     <property name="version-1" value="3"/>
     <property name="version-2" value="2"/>
-    <property name="version-3" value="7"/>
+    <property name="version-3" value="16"/>
     <property name="version-status" value=""/>
-    <property name="controls-version-info" value="3.2.5"/>
-    <property name="audio-version-info" value="3.2.2"/>
-    <property name="flowplayer-js-version-info" value="3.2.6"/>
+    <property name="controls-version-info" value="3.2.15"/>
+    <property name="audio-version-info" value="3.2.10"/>
+    <property name="flowplayer-js-version-info" value="3.2.12"/>
     <property name="source-dist-root-folder" value="flowplayer"/>
 
     <property name="version-status-quoted" value="&quot;&#39;${version-status}&#39;&quot;"/>
@@ -46,9 +47,9 @@
         <available file="${controls-dir}/build.xml"/>
     </condition>
 
-    <property name="libs-path" value="${flex3libsdir} ${lib-dir}/thunderbolt ${plugin-libs} ${plugin-swc}"/>
+    <property name="libs-path" value="${flexlibsdir} ${lib-dir}/thunderbolt ${plugin-libs} ${plugin-swc}"/>
     <property name="classes-for-lib"
-              value="org.flowplayer.view.Flowplayer org.flowplayer.util.PropertyBinder org.flowplayer.util.Arrange org.flowplayer.util.Assert org.flowplayer.model.PluginEvent org.flowplayer.util.TextUtil org.flowplayer.view.AbstractSprite org.flowplayer.view.AnimationEngine org.flowplayer.controller.NetStreamControllingStreamProvider org.flowplayer.controller.NetStreamClient org.flowplayer.controller.NetConnectionClient"/>
+              value="org.flowplayer.view.Flowplayer org.flowplayer.util.PropertyBinder org.flowplayer.util.Arrange org.flowplayer.util.Assert org.flowplayer.model.PluginEvent org.flowplayer.util.TextUtil org.flowplayer.view.AbstractSprite org.flowplayer.view.AnimationEngine org.flowplayer.controller.NetStreamControllingStreamProvider org.flowplayer.controller.NetStreamClient org.flowplayer.controller.NetConnectionClient org.flowplayer.util.TimeUtil"/>
     <property name="doc-classes"
               value="${classes-for-lib} org.flowplayer.view.FlowplayerBase org.flowplayer.view.StyleableSprite org.flowplayer.model.Plugin org.flowplayer.model.PluginModel org.flowplayer.model.DisplayPluginModel org.flowplayer.model.ProviderModel org.flowplayer.model.Cloneable org.flowplayer.model.DisplayProperties org.flowplayer.model.Identifiable org.flowplayer.model.Callable org.flowplayer.model.Clip org.flowplayer.model.Playlist org.flowplayer.model.AbstractEvent org.flowplayer.model.ClipEvent org.flowplayer.model.PlayerEvent org.flowplayer.model.PluginEvent org.flowplayer.model.ClipEventDispatcher org.flowplayer.model.ClipEventSupport org.flowplayer.model.EventType org.flowplayer.model.ClipEventType org.flowplayer.model.PlayerEventType org.flowplayer.model.PluginEventType org.flowplayer.view.Styleable org.flowplayer.controller.StreamProvider org.flowplayer.model.PluginFactory org.flowplayer.controller.ClipURLResolver org.flowplayer.controller.ConnectionProvider org.flowplayer.util.Log"/>
 
@@ -72,11 +73,21 @@
     <property name="commercial-player-binary-versioned" value="flowplayer.commercial-${version-info}.swf"/>
 
     <property name="dist-name" value="flowplayer-${version-info}.zip"/>
+    <property name="dist-target-name" value="flowplayer-${version-info}-${flash.target.player}.zip"/>
     <property name="commercial-dist-name" value="flowplayer.commercial-${version-info}.zip"/>
+    <property name="commercial-dist-target-name" value="flowplayer.commercial-${version-info}-${flash.target.player}.zip"/>
     <property name="multidomain-dist-name" value="flowplayer.multidomain-${version-info}.zip"/>
+    <property name="multidomain-dist-target-name" value="flowplayer.multidomain-${version-info}-${flash.target.player}.zip"/>
     <property name="devkit-dist-name" value="flowplayer.devkit-${version-info}.zip"/>
     <property name="apidoc-dist-name" value="flowplayer.asdoc-${version-info}.zip"/>
     <property name="source-dist-name" value="flowplayer-${version-info}-src.zip"/>
+
+    <property name="dist-name-dev" value="flowplayer.zip"/>
+    <property name="commercial-dist-name-dev" value="flowplayer.commercial.zip"/>
+    <property name="multidomain-dist-name-dev" value="flowplayer.multidomain.zip"/>
+    <property name="devkit-dist-name-dev" value="flowplayer.devkit.zip"/>
+    <property name="apidoc-dist-name-dev" value="flowplayer.asdoc.zip"/>
+    <property name="source-dist-name-dev" value="flowplayer-src.zip"/>
 
     <target name="clean" depends="clean-plugins">
         <delete dir="${build-dir}">
@@ -93,12 +104,13 @@
         <example player-swf="${player-binary-versioned}" example-dir="example-free"/>
     </target>
 
-    <target name="deploy" if="deploy.dir">
-        <copy todir="${deploy.dir}">
+    <target name="deploy" if="deploy.dir" description="copies swf and js to deploy dirs" depends="jsplugins">
+        <copy todir="${deploy.dir}" overwrite="true">
             <fileset dir="${build-dir}">
                 <include name="*swf"/>
             </fileset>
         </copy>
+        <iterate-plugins target="deploy" buildfiles="${jsplugins.buildfiles}" basedirectory="../js-plugins" />
     </target>
 
     <target name="build" description="builds all" depends="dobuild, deploy" />
@@ -190,10 +202,12 @@
                 <arg line="-define+=CONFIG::versionStatus,${version-status-quoted}"/>
                 <arg line="-define+=CONFIG::controlsVersion,${controls-version-info-quoted}"/>
                 <arg line="-define+=CONFIG::audioVersion,${audio-version-info-quoted}"/>
-                <arg line="-define+=CONFIG::skin,true"/>
+                <arg line="-define+=CONFIG::skin,'true'"/>
                 <arg line="-define+=CONFIG::hasSlowMotion,'${has-slowmotion-buttons}'"/>
                 <arg line="-define+=CONFIG::debug,'@{debug}'"/>
                 <arg line="-define+=CONFIG::enableByteRange,'false'"/>
+                <arg line="-define+=CONFIG::FLASH_10_1,'${flash.use.10.1}'"/>
+                <arg line="${compiler.defines}"/>
                 <arg line="-keep-as3-metadata=Value,External"/>
                 <arg line="-source-path ${src-as} ${src-as-commercial} ${classpath} ${plugin-libs}"/>
                 <arg line="-static-link-runtime-shared-libraries=true" />
@@ -210,7 +224,7 @@
                 
                 <arg line="-file-specs '${src-as}/org/flowplayer/view/Preloader.as'"/>
                 <arg line="-output '${build-dir}/@{binary}'"/>
-                <arg line="-target-player '10.1.0'"/>
+
             </exec>
         </sequential>
     </macrodef>
@@ -224,6 +238,7 @@
     </target>
 
     <target name="compile-lib">
+        <echo message="running ${compc_bin} with classpath ${classpath}" />
         <exec executable="${compc_bin}" failonerror="true">
             <arg line="-source-path ${src-as} ${src-as-commercial} ${classpath}"/>
             <arg line="-compute-digest=false"/>
@@ -235,6 +250,8 @@
             <arg line="-strict=true"/>
             <arg line="-incremental=true"/>
 			<arg line="-define+=CONFIG::debug,'false'"/>
+            <arg line="-define+=CONFIG::FLASH_10_1,'${flash.use.10.1}'"/>
+
         </exec>
     </target>
 
@@ -331,9 +348,11 @@
 
     <macrodef name="iterate-plugins">
         <attribute name="target"/>
+        <attribute name="buildfiles" default="${plugin.buildfiles}"/>
+        <attribute name="basedirectory" default="${plugins.dir}"/>
         <sequential>
             <subant target="@{target}">
-                <fileset dir="${plugins.dir}" includes="${plugin.buildfiles}"/>
+                <fileset dir="@{basedirectory}" includes="@{buildfiles}"/>
                 <property name="remotedir" value="${remotedir}"/>
                 <property name="all-swf-zip" value="${basedir}/dist/latest.zip"/>
                 <property name="swfremotedir" value="${swfremotedir}"/>
@@ -341,13 +360,16 @@
                 <property name="aws-secretKey" value="${aws-secretKey}"/>
                 <property name="keyfile" value="${keyfile}"/>
                 <property name="url-file" value="${url-file}"/>
-                <property name="devkit-dir" value="${devkit-dir}"/>
+                <property name="yaml-file" value="${yaml-file}"/>
+                <property name="devkit-dir" value="../${devkit-dir}"/>
+                <property name="js.deploy.dir" value="${js.deploy.dir}"/>
+                <property name="mxmlc-bin" value="${mxmlc-bin}" />
             </subant>
         </sequential>
     </macrodef>
 
     <target name="release-plugin" description="releases one plugin, specify the plugin name with -Dplugin=">
-        <ant antfile="../${plugin}/build.xml" target="release-remote" dir="../${plugin}">
+        <ant antfile="build.xml" target="release-remote" dir="../plugins/${plugin}">
             <property name="remotedir" value="${remotedir}"/>
             <property name="all-swf-zip" value="${basedir}/dist/latest.zip"/>
             <property name="swfremotedir" value="${swfremotedir}"/>
@@ -355,6 +377,14 @@
             <property name="aws-secretKey" value="${aws-secretKey}"/>
             <property name="url-file" value="${url-file}"/>
             <property name="keyfile" value="${keyfile}"/>
+            <property name="devkit-dir" value="../${devkit-dir}"/>
+        </ant>
+    </target>
+
+
+    <target name="release-js-plugin" description="releases one JS plugin, specify the plugin name with -Dplugin=">
+        <ant antfile="build.xml" target="release-remote" dir="../js-plugins/${plugin}">
+            <property name="devkit-dir" value="../${devkit-dir}"/>
         </ant>
     </target>
 
@@ -371,18 +401,26 @@
         <!--</exec>-->
     </target>
 
-    <target name="zip" description="creates a distribution zip package" depends="build">
+    <target name="zip" description="creates a distribution zip package">
         <zip-player zip-name="${dist-name}" player-swf-dir="${build-dir}" player-swf="${player-binary-versioned}"
                     license="LICENSE.txt" example-dir="example-free"/>
+        <copy file="${dist-dir}/${dist-name}" tofile="${dist-dir}/flowplayer.zip" />
+        <copy file="${dist-dir}/${dist-name}" tofile="${dist-dir}/${dist-target-name}" />
     </target>
 
-    <target name="zip-biz" description="creates a Commercial distribution zip package" depends="build-biz">
+    <target name="zip-biz" description="creates a Commercial distribution zip package">
         <zip-player zip-name="${commercial-dist-name}" player-swf-dir="${build-dir}"
                     player-swf="${commercial-player-binary-versioned}" license="LICENSE_COMMERCIAL.txt"
                     example-dir="example-biz"/>
+        <copy file="${dist-dir}/${commercial-dist-name}" tofile="${dist-dir}/flowplayer.commercial.zip" />
+        <copy file="${dist-dir}/${commercial-dist-name}" tofile="${dist-dir}/${commercial-dist-target-name}" />
+
+
         <zip-player zip-name="${multidomain-dist-name}" player-swf-dir="${build-dir}"
                     player-swf="${commercial-player-binary-versioned}" license="LICENSE_MULTIDOMAIN.txt"
                     example-dir="example-biz"/>
+
+        <copy file="${dist-dir}/${multidomain-dist-name}" tofile="${dist-dir}/${multidomain-dist-target-name}" />
     </target>
 
     <macrodef name="zip-player">
@@ -394,10 +432,14 @@
         <sequential>
             <echo message="++ Zipping @{zip-name} +++"></echo>
 
-            <zip destfile="${dist-dir}/@{zip-name}">
+            <zip destfile="${dist-dir}/@{zip-name}" update="false">
                 <zipfileset prefix="flowplayer" dir=".">
                     <include name="@{license}"/>
+                    <!--<include name="flowplayer-${flowplayer-js-version-info}.min.js" />-->
                     <include name="README.txt"/>
+                </zipfileset>
+                <zipfileset prefix="flowplayer" dir="${src-js}/flowplayer.js">
+                    <include name="flowplayer-${flowplayer-js-version-info}.min.js"/>
                 </zipfileset>
                 <zipfileset prefix="flowplayer" dir="@{player-swf-dir}">
                     <include name="@{player-swf}"/>
@@ -428,6 +470,7 @@
                 <include name="build.properties"/>
             </zipfileset>
         </zip>
+        <copy file="${dist-dir}/${source-dist-name}" tofile="${dist-dir}/flowplayer-src.zip" />
     </target>
 
     <macrodef name="verify-zip">
@@ -446,7 +489,7 @@
                     <available file="${dist-dir}/flowplayer/README.txt"/>
                     <available file="${dist-dir}/flowplayer/example/index.html"/>
                     <available file="${dist-dir}/flowplayer/example/style.css"/>
-                    <available file="${dist-dir}/flowplayer/example/flowplayer-${flowplayer-js-version-info}.min.js"/>
+                    <available file="${dist-dir}/flowplayer/flowplayer-${flowplayer-js-version-info}.min.js"/>
                 </and>
             </condition>
             <fail unless="${resources-available}" message="Not all required resources present in @{zip-name}"/>
@@ -470,14 +513,22 @@
                 <include name="*.properties"/>
                 <include name="src/**/*"/>
             </zipfileset>
-            <zipfileset prefix="flowplayer.devkit/doc" dir="${apidoc-dir}">
-                <include name="**/*"/>
-            </zipfileset>
+            <!--<zipfileset prefix="flowplayer.devkit/doc" dir="${apidoc-dir}">-->
+                <!--<include name="**/*"/>-->
+            <!--</zipfileset>-->
         </zip>
     </target>
 
-    <target name="dist" description="Create distribution packages">
+    <target name="dist" description="Create distribution packages" depends="build-all">
         <iterate-plugins target="dist"/>
+        <ant target="zip"/>
+        <ant target="zip-biz"/>
+        <ant target="zip-devkit"/>
+        <ant target="source-dist"/>
+    </target>
+
+    <target name="all-dist" description="Create distribution packages for all plugins">
+        <iterate-plugins target="dist" buildfiles="${allplugins.buildfiles}" />
         <ant target="zip"/>
         <ant target="zip-biz"/>
         <ant target="zip-devkit"/>
@@ -506,6 +557,9 @@
         <echo message="version-status: ${version-status}"/>
     </target>
 
+    <target name="jsplugins">
+        <iterate-plugins target="min" buildfiles="${jsplugins.buildfiles}" basedirectory="../js-plugins"/>
+    </target>
 
 	<target name="debug-js">
 		 <get src="http://flowplayer.org/js/tools/tools.flashembed-1.0.4.js" dest="${dist-dir}/flowplayer-debug.js"/>

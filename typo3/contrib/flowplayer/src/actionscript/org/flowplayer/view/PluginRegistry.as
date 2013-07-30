@@ -70,8 +70,7 @@ package org.flowplayer.view {
 
 		/**
 		 * Gets a plugin by it's name.
-		 * @return the plugin mode, this is a clone of the current model and changes made
-		 * to the returned object are not reflected to the copy stored in this registrty
+		 * @return the plugin model
 		 */
 		public function getPlugin(name:String):Object {
 			var plugin:Object = _plugins[name] || _providers[name] || _genericPlugins[name];
@@ -80,7 +79,6 @@ package org.flowplayer.view {
 				updateZIndex(plugin as DisplayProperties);
 			}
             return plugin;
-//			return clone(plugin);
 		}
 		
 		private function updateZIndex(props:DisplayProperties):void {

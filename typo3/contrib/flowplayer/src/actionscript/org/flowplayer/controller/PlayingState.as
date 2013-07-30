@@ -28,10 +28,11 @@ package org.flowplayer.controller {
     import org.flowplayer.model.State;
 
     use namespace flow_internal;
-	/**
-	 * @author api
-	 */
-	internal class PlayingState extends PlayState {
+
+    /**
+     * @author api
+     */
+    internal class PlayingState extends PlayState {
         private var _inStreamTracker:InStreamTracker;
 
         public function PlayingState(stateCode:State, playlist:Playlist, playlistController:PlayListController, providers:Dictionary) {
@@ -57,17 +58,17 @@ package org.flowplayer.controller {
             stop();
             bufferingState.nextStateAfterBufferFull = playingState;
 
-            if (canOnEvent(ClipEventType.BEGIN, [false])) {
+            if (dispatchBeforeEvent(ClipEventType.BEGIN, [false])) {
                 changeState(bufferingState);
                 playList.current.played = true;
-				onEvent(ClipEventType.BEGIN, [false]);
+                onEvent(ClipEventType.BEGIN, [false]);
             }
         }
 
         internal override function switchStream(netStreamPlayOptions:Object = null):void {
             log.debug("cannot start playing in this state");
-			if ( canOnEvent(ClipEventType.SWITCH, [netStreamPlayOptions]) )
-            	onEvent(ClipEventType.SWITCH, [netStreamPlayOptions]);
+            if (dispatchBeforeEvent(ClipEventType.SWITCH, [netStreamPlayOptions]))
+                onEvent(ClipEventType.SWITCH, [netStreamPlayOptions]);
         }
 
         override protected function setEventListeners(eventSupport:ClipEventSupport, add:Boolean = true):void {
@@ -125,30 +126,29 @@ package org.flowplayer.controller {
             _inStreamTracker.start();
         }
 
-		internal override function stopBuffering():void {
-			log.debug("stopBuffering() called");
-			stop();
-			getMediaController().stopBuffering();
-		}
+        internal override function stopBuffering():void {
+            log.debug("stopBuffering() called");
+            stop(true);
+        }
 
-		internal override function pause():void {
-			if (canOnEvent(ClipEventType.PAUSE)) {
+        internal override function pause(silent:Boolean = false):void {
+            if (silent || dispatchBeforeEvent(ClipEventType.PAUSE, [silent])) {
 
                 // with a live stream we need to stop
-                if (playList.current.live) {
+                if (playList.current.live && playList.current.stopLiveOnPause) {
                     stop();
                     return;
                 }
 
-				changeState(pausedState);
-				onEvent(ClipEventType.PAUSE);
-			}
-		}
-		
-		internal override function seekTo(seconds:Number):void {
-			if ( canOnEvent(ClipEventType.SEEK, [seconds], seconds) )
-				onEvent(ClipEventType.SEEK, [seconds]);
-		}
+                changeState(pausedState);
+                onEvent(ClipEventType.PAUSE, [silent]);
+            }
+        }
+
+        internal override function seekTo(seconds:Number, silent:Boolean = false):void {
+            if (silent || dispatchBeforeEvent(ClipEventType.SEEK, [seconds, silent], seconds))
+                onEvent(ClipEventType.SEEK, [seconds, silent]);
+        }
 
         override protected function onClipStop(event:ClipEvent):void {
             super.onClipStop(event);

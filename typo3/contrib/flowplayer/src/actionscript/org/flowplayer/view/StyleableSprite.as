@@ -62,10 +62,10 @@ import flash.net.navigateToURL;
 		public function StyleableSprite(styleName:String = null, errorHandler:ErrorHandler = null, loader:ResourceLoader = null) {
 			_errorHandler = errorHandler;
 			_loader = loader;
-			if (styleName && loader) {
-				_style = new FlowStyleSheet(styleName);
-				loadOrDrawBackground();
-			}
+            if (styleName) {
+                _style = new FlowStyleSheet(styleName);
+                loadOrDrawBackground();
+            }
 		}
 
 		/**
@@ -228,7 +228,8 @@ import flash.net.navigateToURL;
 		}
 		
 		private function loadOrDrawBackground():void {
-			if (_style.backgroundImage) {
+			if (_style.backgroundImage && _style.backgroundImage != "none") {
+                if (! _loader) throw new Error("loader not available");
 				log.debug("stylesheet specified a background image " + _style.backgroundImage);
 				loadBackgroundImage();
 			} else {

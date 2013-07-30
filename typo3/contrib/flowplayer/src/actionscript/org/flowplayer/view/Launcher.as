@@ -16,8 +16,6 @@
  *    along with Flowplayer.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.flowplayer.view {
-    import flash.external.ExternalInterface;
-
     import org.flowplayer.config.Config;
 	import org.flowplayer.config.ConfigParser;
 	import org.flowplayer.config.ExternalInterfaceHelper;
@@ -25,12 +23,12 @@ package org.flowplayer.view {
 	import org.flowplayer.controller.PlayListController;
 	import org.flowplayer.controller.ResourceLoader;
 	import org.flowplayer.controller.ResourceLoaderImpl;
-	import org.flowplayer.flow_internal;
+    import org.flowplayer.flow_internal;
 	import org.flowplayer.model.Callable;
 	import org.flowplayer.model.Clip;
 	import org.flowplayer.model.ClipEvent;
-import org.flowplayer.model.ClipEventType;
-import org.flowplayer.model.DisplayPluginModel;
+    import org.flowplayer.model.ClipEventType;
+    import org.flowplayer.model.DisplayPluginModel;
 	import org.flowplayer.model.DisplayProperties;
 	import org.flowplayer.model.DisplayPropertiesImpl;
     import org.flowplayer.model.ErrorCode;
@@ -60,6 +58,8 @@ import org.flowplayer.model.DisplayPluginModel;
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
 	import flash.display.Sprite;
+	import flash.display.BlendMode;
+
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.events.TimerEvent;
@@ -70,8 +70,11 @@ import org.flowplayer.model.DisplayPluginModel;
 	import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;
 
-	import flash.utils.*;		
-	
+	import flash.utils.*;
+
+    CONFIG::FLASH_10_1 {
+    import flash.media.StageVideo;
+    }
 	use namespace flow_internal; 
 
 	public class Launcher extends StyleableSprite implements ErrorHandler {
@@ -96,6 +99,7 @@ import org.flowplayer.model.DisplayPluginModel;
         private var _clickCount:int;
         private var _clickTimer:Timer = new Timer(200, 1);
         private var _clickEvent:MouseEvent;
+		private var _screenMask:Sprite;
 
 		[Frame(factoryClass="org.flowplayer.view.Preloader")]
 		public function Launcher() {
@@ -128,6 +132,7 @@ import org.flowplayer.model.DisplayPluginModel;
 			rootStyle = _config.canvas.style;
             stage.addEventListener(Event.RESIZE, onStageResize);
             stage.addEventListener(Event.RESIZE, arrangeScreen);
+
 			setSize(Arrange.parentWidth, Arrange.parentHeight);
 
 			if (! VersionInfo.commercial) {
@@ -221,7 +226,10 @@ import org.flowplayer.model.DisplayPluginModel;
 			
 			log.debug("starting configured streams");
             startStreams();
-            arrangeScreen();
+
+            //#627 re-enabling screen mask for stage video.
+			createScreenMask();
+            arrangeScreen();		
 			
             addListeners();
 
@@ -238,6 +246,21 @@ import org.flowplayer.model.DisplayPluginModel;
 //                event.preventDefault();
 //            });
 //            lookupSlowMotionPlugin(_flowplayer);
+		}
+
+        //#508 disabling the stagevideo screen mask, canvas is visible without it.
+		private function createScreenMask():void {
+			blendMode = BlendMode.LAYER;
+			
+			_screenMask = new Sprite();
+			_screenMask.graphics.beginFill(0xff0000);
+			_screenMask.graphics.drawRect(0, 0, 1, 1);
+			_screenMask.blendMode = BlendMode.ERASE;
+			
+			_screenMask.x = 0;
+			_screenMask.y = 0;
+			_screenMask.width = 100;
+			_screenMask.height = 100;
 		}
 
 		private function resizeCanvasLogo():void {
@@ -430,12 +453,12 @@ import org.flowplayer.model.DisplayPluginModel;
 		}
 
 		public function handleError(error:ErrorCode, info:Object = null, throwError:Boolean = true):void {
-			if (_flowplayer) {
-				_flowplayer.dispatchError(error, info);
-			} else {
-				// initialization is not complete, create a dispatches just to dispatch this error
-				new PlayerEventDispatcher().dispatchError(error, info);
-			}
+            if (_flowplayer) {
+                _flowplayer.dispatchError(error, info);
+            } else {
+                // initialization is not complete, create a dispatcher just to dispatch this error
+                new PlayerEventDispatcher().dispatchError(error, info);
+            }
 			var stack:String = "";
 			if ( CONFIG::debug && info is Error && info.getStackTrace() )
 				stack = info.getStackTrace();
@@ -485,7 +508,7 @@ import org.flowplayer.model.DisplayPluginModel;
 			_panel.addView(screen.getDisplayObject(), null, screen);
 		}
 		
-		private function arrangeScreen(event:Event = null):void {
+		private function arrangeScreen(event:Event = null):void {		
             log.debug("arrangeScreen(), already arranged " + _screenArrangeCount);
             if (_screenArrangeCount > 1) return;
             if (! _pluginRegistry) return;
@@ -493,7 +516,6 @@ import org.flowplayer.model.DisplayPluginModel;
             if (! screen) return;
 
 			if (_controlsModel && _controlsModel.visible) {
-				
 				if (isControlsAlwaysAutoHide() || (_controlsModel.position.bottom.px > 0)) {
 					log.debug("controls is autoHide or it's in a non-default vertical position, configuring screen to take all available space");
 					setScreenBottomAndHeight(screen, 100, 0);
@@ -518,7 +540,7 @@ import org.flowplayer.model.DisplayPluginModel;
 			screen.getDisplayObject().visible = true;
 			_pluginRegistry.updateDisplayProperties(screen, true);
 			_panel.update(screen.getDisplayObject(), screen);
-			_panel.draw(screen.getDisplayObject());
+			_panel.draw(screen.getDisplayObject());			
             _screenArrangeCount++;
 		}
 
@@ -556,9 +578,10 @@ import org.flowplayer.model.DisplayPluginModel;
 
 		private function isControlsAlwaysAutoHide():Boolean {
 			if (!_controlsModel) return false;
-            var controls:DisplayObject = _controlsModel.getDisplayObject();
-			log.debug("controls.auotoHide " + controls["getAutoHide"]());
-			return  ! controls["getAutoHide"]()["fullscreenOnly"];
+            var controls:Object = _controlsModel.getDisplayObject();
+			log.debug("controls.auotoHide " + controls.getAutoHide());
+            //#583 this seems to handle the fullscreenOnly property better
+            return  !controls.getAutoHide().fullscreenOnly;
 		}
 
 		private function createFlowplayer():void {
@@ -711,8 +734,22 @@ import org.flowplayer.model.DisplayPluginModel;
 			graphics.beginFill(0, 0);
 			graphics.drawRect(0, 0, Arrange.parentWidth, Arrange.parentHeight);
 			graphics.endFill();
+
+            //#508 disabling the stagevideo screen mask, canvas is visible without it.
+            CONFIG::FLASH_10_1 {
+			   _flowplayer.playlist.onStageVideoStateChange(onStageVideoStateChange);
+
+               //#44 fixes for #627, now bind and unbind stagevideo events during seeking to prevent the mask repositioning.
+               _flowplayer.playlist.onBeforeSeek(function(event:ClipEvent):void {
+                   _flowplayer.playlist.unbind(onStageVideoStateChange);
+               });
+
+               _flowplayer.playlist.onSeek(function(event:ClipEvent):void {
+                   _flowplayer.playlist.onStageVideoStateChange(onStageVideoStateChange);
+               });
+            }
 		}
-		
+
 		private function onMouseOut(event:MouseEvent):void {
 			_flowplayer.dispatchEvent(PlayerEvent.mouseOut());
 		}
@@ -720,6 +757,57 @@ import org.flowplayer.model.DisplayPluginModel;
 		private function onMouseOver(event:MouseEvent):void {
 			_flowplayer.dispatchEvent(PlayerEvent.mouseOver());
 		}
+
+        //#508 disabling the stagevideo screen mask, canvas is visible without it.
+        CONFIG::FLASH_10_1 {
+            private function onStageVideoStateChange(event:ClipEvent):void {
+                var stageVideo:StageVideo = event.info as StageVideo;
+                log.debug("stage video state changed " + stageVideo);
+
+                if (stageVideo) {
+                    //#44 fixes for #627 check if the stagevideo dimensions and positioning has changed to update the stage video mask with.
+                    //unbinding and binding stage video events caused issues with instream playlists therefore has to be kept binded.
+                    if (_screenMask.width !== stageVideo.viewPort.width) {
+                        _screenMask.width = stageVideo.viewPort.width;
+                    }
+
+                    if (_screenMask.height !== stageVideo.viewPort.height) {
+                        _screenMask.height = stageVideo.viewPort.height;
+                    }
+
+                    if (_screenMask.x !== stageVideo.viewPort.x) _screenMask.x = stageVideo.viewPort.x;
+                    if (_screenMask.y !== stageVideo.viewPort.y) _screenMask.y = stageVideo.viewPort.y;
+
+                    log.debug("mask dimensions " + _screenMask.width + " x " + _screenMask.height);
+                    log.debug("mask pos " + _screenMask.x + ", " + _screenMask.y);
+
+
+                    if (!contains(_screenMask)) {
+                        //#508 stage video mask was being added to the top layer and hiding all children.
+                        //_canvasLogo.visible = false;
+                        //#20 for the free player swap the logo with the stage video mask to display underneath not on top.
+                        CONFIG::freeVersion {
+
+                            addChildAt(_screenMask, 0);
+                            swapChildren(_screenMask, _copyrightNotice);
+                            swapChildren(_screenMask, _canvasLogo);
+
+                        }
+
+                        CONFIG::commercialVersion {
+                            addChildAt(_screenMask, 1);
+                        }
+                        //addChildAt(_screenMask, _canvasLogo ? 1 : 0);
+                        log.debug("adding mask");
+                    }
+                } else {
+                    if (contains(_screenMask)) {
+                        log.debug("removing mask")
+                        removeChild(_screenMask);
+                    }
+                }
+            }
+        }
 
 		private function createPanel():void {
 			_panel = new Panel();
