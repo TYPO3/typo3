@@ -1,0 +1,137 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>FlowPlayer</title>
+<script type="text/javascript" src="flashembed.min.js"></script>
+</head>
+<body bgcolor="#CCCCCC">
+
+<div id="flowplayerholder">
+	This will be replaced by the player. 
+</div>
+<script type="text/javascript">
+
+var replacementPlaylist = [ { url: "metacafe.flv", provider: "lighttpd" }, { url: "acera.mp4" }  ];
+	
+new flashembed("flowplayerholder", { id: 'player', src: "flowplayer.commercial.swf", width: 520, height: 360, bgcolor: '#ffffff' }, 
+  { config: { 
+	log: { level: 'debug', filter: 'org.flowplayer.view.Launcher' },
+//	clip: "honda_accord.flv",
+//	clip: { url: "honda_accord.flv", autoPlay: false, autoBuffering: false, scaling: "scale" },
+//	clip: { url: "http://193.33.186.56:84/honda_accord.flv", autoPlay: false, autoBuffering: false, scaling: "scale", provider: "lighttpd", start: 30 },
+
+	clip: { scaling: 'scale', baseURL: '/Users/api/code/core/build' },
+ 	playlist: [ 
+		{ url: 'honda_accord.flv', autoPlay: false, autoBuffering: true, duration: 10 },
+		{ url: "http://193.33.186.56:84/krzykelo2@56.com_56flv_zhajm_121608180025.flv", provider: 'lighttpd', autoPlay: false, autoBuffering: true, cuepoints: [[ [5, 12, { time: 3, caption: "Buy a license!", price: 120 }], "function()" ], [ [7, 14, { time: 4, caption: "Buy a second license!", price: 90 }], "function()" ]]  },
+  	],
+  	
+  	skinning: {
+  		play: null,
+  		contextMenu: [
+  			{ "About FunTube": "function()" },
+  			{ "FunTube player 0.1": null },
+  			"-",
+  			{ "visit our site yeah": "function()" }
+  		]
+	},
+
+  	plugins: {
+
+  		//lighttpd: { url: "flowplayer.pseudostreaming.swf" }
+  	}
+ } });
+
+var flowplayer = new Object();
+flowplayer.fireEvent = function(objectID, type, obj1, obj2, obj3, obj4) {
+	//if (type == "onClick") return false;
+	//if (type == "onKeypress") return false;
+/*
+	console.log("JavaScript received " + type + ", objectID " + objectID);
+	console.log(obj1);
+	console.log(obj2);
+	console.log(obj3);
+*/
+};
+
+var animated = false;
+
+function getPlayer() {
+	return document.getElementById('player');
+}
+
+function animateScreen() {
+	var player = document.getElementById('player');
+	if (animated) {
+		player.plugin_animate("screen", { left: 0, right: 0, bottom: 25, top: 0 } , 1000, 'onScreenAnimated');
+	} else
+		player.plugin_animate("screen", { left: '50%', top: "40%", width: 170, height: 150 }, 1000, 'onScreenAnimated');
+	animated = !animated;
+}
+
+function animateMenu() {
+	var player = document.getElementById('player');
+	player.addPlugin("menu", { left: 0, right: 0, width: 120, alpha: 0 });
+	player.plugin_animate("menu", { left: 320, top: 270, alpha: 1 }, 1000, 'onScreenAnimated');
+	
+}
+
+function increaseVolume() {
+	getPlayer().setVolume(getPlayer().getVolume() + 10);
+}
+
+function setContent() {
+	getPlayer().plugin_invoke("content", "setHtml", null, "&lt;br/&gt;jejjejje");
+}
+
+function onContentAnimated() {
+}
+
+</script>
+<p>
+playback method:<br/>
+</p>
+<a href="javascript: console.log(getPlayer().play({ url: 'honda_accord.flv' }));">play honda ad! (replaces playlist)</a> |
+<a href="javascript: console.log(getPlayer().play());">just play</a><br/>
+<a href="javascript: console.log(getPlayer().play(0));">play clip 1</a> | <a href="javascript: console.log(getPlayer().play(1));">play clip 2</a><br/>
+<a href="javascript: console.log(getPlayer().toggle());">toggle</a> | <a href="javascript: console.log(getPlayer().stop());">stop</a><br/>
+<a href="javascript: console.log(getPlayer().seek('50pct'));">seek to 50 %</a>
+<a href="javascript: console.log(getPlayer().buffer());">start buffering</a><br/>
+<p>
+
+<p>
+Misc:
+<a href="javascript: console.log(getPlayer().getVersion())">log flowplayer version</a><br/>
+<a href="javascript: console.log(getPlayer().getStatus())">log status to console</a><br/>
+<a href="javascript: getPlayer().setVolume(getPlayer().getVolume() + 0.1);">increase volume</a> |
+<a href="javascript: getPlayer().setVolume(getPlayer().getVolume() - 0.1);">decrease volume</a><br/>
+</p>
+
+<p>
+Animation and plugins:<br/>
+<a href="javascript: animateScreen()">animate screen!</a><br/>
+<a href="javascript: animateMenu()">animate menu!</a><br/>
+<a href="javascript: console.log(getPlayer().getPlugin('screen'))">log 'screen' properties to console</a><br/>
+</p>
+
+<p>
+Playlist:<br/>
+<a href="javascript: getPlayer().setPlaylist(replacementPlaylist);">Replace playlist</a>
+<a href="javascript: console.log(getPlayer().currentClip())">log current clip to console</a><br/>
+<a href="javascript: console.log(getPlayer().clip(0))">log clip at index 0</a><br/>
+<a href="javascript: console.log(getPlayer().clip())">log common clip</a><br/>
+<a href="javascript: console.log(getPlayer().getPlaylist());">log playlist</a><br/>
+</p>
+
+<p>
+Plugin stuff:<br/>
+<a href="javascript: setContent();">set new content to the content plugin</a><br/>
+<a href="javascript: console.log(getPlayer().plugin_invoke('content', 'getHtml'));">log the current content of the content plugin</a><br/>
+<a href="javascript: console.log(getPlayer().plugin_invoke('content', 'append', null, document.getElementById('content').innerHTML));">append content</a><br/>
+<a href="javascript: getPlayer().plugin_animate('content', { top: 10, left: 10, width: 350, height: 300, alpha: 0.8 }, 1000, onContentAnimated);">add long content</a><br/>
+</p>
+<div style="display:none" id="content">
+<p><b>- because we rock!</b></p></div>
+</body>
+</html>

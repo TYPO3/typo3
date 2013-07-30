@@ -48,23 +48,29 @@ import org.flowplayer.model.ClipEventType;
             resume();
 		}
 		
-		internal override function resume():void {
+		internal override function resume(silent:Boolean = false):void {
 			log.debug("resume(), changing to stage " + playingState);
-			if (canOnEvent(ClipEventType.RESUME)) {
+			if (silent || dispatchBeforeEvent(ClipEventType.RESUME, [silent])) {
 				changeState(playingState);
-				onEvent(ClipEventType.RESUME);
+				onEvent(ClipEventType.RESUME, [silent]);
 			}
 		} 
 
 		internal override function stopBuffering():void {
 			log.debug("stopBuffering() called");
-			stop();
-			getMediaController().stopBuffering();
+			stop(true);
 		}
 
-		internal override function seekTo(seconds:Number):void {
-			if ( canOnEvent(ClipEventType.SEEK, [seconds], seconds))
-				onEvent(ClipEventType.SEEK, [seconds]);
+		internal override function seekTo(seconds:Number, silent:Boolean = false):void {
+			if (silent || dispatchBeforeEvent(ClipEventType.SEEK, [seconds, silent], seconds))
+				onEvent(ClipEventType.SEEK, [seconds, silent]);
 		}
+
+        //fix for #279, switchStream method missing for paused state
+        internal override function switchStream(netStreamPlayOptions:Object = null):void {
+            log.debug("switchStream()");
+            if (dispatchBeforeEvent(ClipEventType.SWITCH, [netStreamPlayOptions]))
+                onEvent(ClipEventType.SWITCH, [netStreamPlayOptions]);
+        }
 	}
 }

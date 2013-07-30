@@ -122,11 +122,6 @@ package org.flowplayer.controller {
         function set volumeController(controller:VolumeController):void;
 
         /**
-         * Stops loading data into the buffer.
-         */
-        function stopBuffering():void;
-
-        /**
          * Is this provider in the process of stopping the stream?
          * When stopped the provider should not dispatch any events resulting from events that
          * might get triggered by the underlying streaming implementation.

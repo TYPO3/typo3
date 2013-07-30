@@ -22,7 +22,8 @@ package org.flowplayer.util {
 	import flash.display.GradientType;
 	import flash.display.Graphics;
 	import flash.display.*;
-	import flash.geom.Matrix;		
+    import flash.geom.ColorTransform;
+    import flash.geom.Matrix;
 
 	/**
 	 * @author api
@@ -85,6 +86,13 @@ package org.flowplayer.util {
 			}
 			beginLinearGradientFill(graph, width, height, color, alphas, x, y);
 		}
-				
+
+        public static function transformColor(disp:DisplayObject, rgba:Array):void {
+//            log.debug("transformColor, alphaOffset " + alphaOffset + ", RGB: " + redOffset + ", " + greenOffset + ", " + blueOffset);
+            if (! disp) return;
+            var transform:ColorTransform = new ColorTransform(0, 0, 0, rgba[3], rgba[0], rgba[1], rgba[2]);
+            disp.transform.colorTransform = transform;
+        }
+
 	}
 }

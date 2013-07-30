@@ -44,6 +44,10 @@ package org.flowplayer.util {
 			return VersionUtil.majorVersion() == 9;
 		}
 		
+		public static function hasStageVideo():Boolean {
+			return (VersionUtil.majorVersion() == 10 && VersionUtil.minorVersion() >= 2) ||
+					VersionUtil.majorVersion() > 10;
+		}
 		
 	}
 }

@@ -45,7 +45,7 @@ package org.flowplayer.model {
          * Dispatches a plugin event in the before phase.
          *
          * @param eventType the type of the event to dispatch
-         * @param eventId the ID for the event, this the ID used to distinguis between diferent generic plugin events
+         * @param eventId the ID for the event, this the ID used to distinguish between different generic plugin events
          * @param info optional info object, will be passed to JavaScript
          * @param info2 optional info object, will be passed to JavaScript
          * @return true if the event can continue, false if it was prevented

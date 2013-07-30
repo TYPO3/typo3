@@ -1,0 +1,22 @@
+		
+<script src="http://piimaa.info/js/flashembed.js"></script>
+<script src="../flowplayer-src.js"></script> 
+
+<a id="player">&nbsp;</a>
+
+<script>
+$f("player", "foo", {
+
+	onError: function(code, message) {
+		console.info(code, message);		
+	}
+		
+});
+
+// test errors
+setTimeout(function() {
+	$f.fireEvent("player", "onError", 301, "Unable to load plugin");
+	$f.fireEvent("player", "onError", "content", 100, "Plugin initialization failed");
+	$f.fireEvent("player", "onError", 0, 200, "Stream not found");		
+}, 100);	
+</script>
