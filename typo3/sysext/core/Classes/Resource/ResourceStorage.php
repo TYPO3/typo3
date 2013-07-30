@@ -941,6 +941,9 @@ class ResourceStorage {
 		if (!$this->checkFileActionPermission('write', $file)) {
 			throw new Exception\InsufficientFileWritePermissionsException('Writing to file "' . $file->getIdentifier() . '" is not allowed.', 1330121088);
 		}
+		if ($this->checkFileExtensionPermission($file->getName()) === FALSE) {
+			throw new Exception\IllegalFileExtensionException('You are not allowed to edit a file with extension "' . $file->getExtension() . '"', 1366711933);
+		}
 			// Call driver method to update the file and update file properties afterwards
 		$result = $this->driver->setFileContents($file, $contents);
 		$fileInfo = $this->driver->getFileInfo($file);
@@ -962,6 +965,9 @@ class ResourceStorage {
 	 * @return FileInterface The file object
 	 */
 	public function createFile($fileName, Folder $targetFolderObject) {
+		if ($this->checkFileExtensionPermission($fileName) === FALSE) {
+			throw new Exception\IllegalFileExtensionException('You are not allowed to create a file with this extension on storage "' . $targetFolderObject->getCombinedIdentifier() . '"', 1366711745);
+		}
 		if (!$this->checkFolderActionPermission('add', $targetFolderObject)) {
 			throw new Exception\InsufficientFolderWritePermissionsException('You are not allowed to create directories on this storage "' . $targetFolderObject->getIdentifier() . '"', 1323059807);
 		}
@@ -1245,6 +1251,10 @@ class ResourceStorage {
 		// The name should be different from the current.
 		if ($file->getIdentifier() == $targetFileName) {
 			return $file;
+		}
+		// Check if file extension is allowed
+		if ($this->checkFileExtensionPermission($targetFileName) === FALSE) {
+			throw new Exception\IllegalFileExtensionException('You are not allowed to rename a file with to this extension', 1371466663);
 		}
 		// Check if user is allowed to rename
 		if (!$this->checkUserActionPermission('rename', 'File')) {
