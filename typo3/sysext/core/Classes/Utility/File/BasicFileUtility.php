@@ -527,7 +527,7 @@ class BasicFileUtility {
 				$fileName = $this->csConvObj->specCharsToASCII($charset, $fileName);
 			}
 			// Replace unwanted characters by underscores
-			$cleanFileName = preg_replace('/[^.[:alnum:]_-]/', '_', trim($fileName));
+			$cleanFileName = preg_replace('/[^\.0-9A-Za-z@_\-]/', '_', trim($fileName));
 		}
 		// Strip trailing dots and return
 		return preg_replace('/\\.*$/', '', $cleanFileName);
