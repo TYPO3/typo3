@@ -17,8 +17,10 @@
  */
 
 package org.flowplayer.controller {
-	import org.flowplayer.model.Clip;	
-	/**
+	import org.flowplayer.model.Clip;
+    import org.flowplayer.view.ErrorHandler;
+
+    /**
 	 * @author api
 	 */
 	internal class ClipImageLoader implements ResourceLoader {
@@ -63,6 +65,10 @@ package org.flowplayer.controller {
 
         public function get loadComplete():Boolean {
             return _loader.loadComplete;
+        }
+
+        public function set errorHandler(errorHandler:ErrorHandler):void {
+            _loader.errorHandler = errorHandler;
         }
     }
 }
