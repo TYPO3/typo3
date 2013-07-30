@@ -17,26 +17,23 @@
  */
 
 package org.flowplayer.model {
+    import flash.display.DisplayObject;
+    import flash.media.Video;
     import flash.net.NetStream;
+    import flash.utils.Dictionary;
 
     import org.flowplayer.controller.ClipURLResolver;
-    import org.flowplayer.controller.ConnectionProvider;
-import org.flowplayer.flow_internal;
-	import org.flowplayer.model.ClipEvent;
-	import org.flowplayer.util.ArrayUtil;
-	import org.flowplayer.util.Log;
-	import org.flowplayer.util.URLUtil;
-	
-	import flash.display.DisplayObject;
-	import flash.media.Video;
-	import flash.utils.Dictionary;		
-	
-	use namespace flow_internal;		
+    import org.flowplayer.flow_internal;
+    import org.flowplayer.util.ArrayUtil;
+    import org.flowplayer.util.URLUtil;
+    import org.flowplayer.util.VersionUtil;
+
+    use namespace flow_internal;
 
 	/**
 	 * @inheritDoc
 	 */
-	public class Clip extends ClipEventDispatcher {
+	public class Clip extends ClipEventDispatcher implements Extendable {
 
         // the main playlist where this clip belongs to
         private var _playlist:Playlist;
@@ -44,10 +41,8 @@ import org.flowplayer.flow_internal;
         private var _preroll:Clip;
         private var _postroll:Clip;
         private var _parent:Clip;
-
 		private var _cuepoints:Dictionary;
 		private var _cuepointsInNegative:Array;
-//		private var _previousPositives:Array;
 		private var _baseUrl:String;
 		private var _url:String;
         private var _urlsByResolver:Array;
@@ -66,10 +61,11 @@ import org.flowplayer.flow_internal;
 		private var _content:DisplayObject;
 		private var _originalWidth:int;
 		private var _originalHeight:int;
-		private var _bufferLength:int;
+        private var _bufferLength:int;
+        private var _backBufferLength:int;
 		private var _played:Boolean;
 		private var _provider:String;
-		private var _customProperties:Object;
+		private var _extension:ExtendableHelper = new ExtendableHelper();
 		private var _fadeInSpeed:int;
 		private var _fadeOutSpeed:int;
 		private var _live:Boolean;		
@@ -84,8 +80,9 @@ import org.flowplayer.flow_internal;
         private var _netStream:NetStream;
         private var _startDispatched:Boolean;
         private var _currentTime:Number = 0;
-        private var _endLimit:Number = 0.5;
+        private var _endLimit:Number = 0;
         private var _encoding:Boolean = false;
+        private var _stopLiveOnPause:Boolean = true;
 
         public function Clip() {
             _childPlaylist = new TimedPlaylist();
@@ -95,6 +92,7 @@ import org.flowplayer.flow_internal;
             _urlsByResolver = [];
 			_start = 0;
 			_bufferLength = 3;
+            _backBufferLength = 30;
 			_scaling = MediaSize.FILLED_TO_AVAILABLE_SPACE;
 			_provider = "http";
 			_smoothing = true;
@@ -103,7 +101,9 @@ import org.flowplayer.flow_internal;
 			_linkWindow = "_self";
 			_image = true;
 			_cuepointMultiplier = 1000;
-            _seekableOnBegin = null;
+            //#416 enable seekableOnBegin to enable the scrubbar correctly when autobuffering.
+            _seekableOnBegin = true;
+			_accelerated = false;
 		}
 
 		public static function create(clipObj:Object, url:String, baseUrl:String = null):Clip {
@@ -134,7 +134,7 @@ import org.flowplayer.flow_internal;
             clip._url = url;
             clip._baseUrl = baseUrl;
             clip._autoPlay = true;
-            return clip;
+			return clip;
         }
 
         public function getParentPlaylist():Playlist {
@@ -385,13 +385,20 @@ import org.flowplayer.flow_internal;
             _urlsByResolver = [];
         }
 
-		/*
-		 * If the encoding is set property, uri encode for ut8 urls
-		 */
+
+        //#412 check for empty baseurl or else player url is appended and affects the url parsing.
+        //#494 regression issued caused by #412, enable base url correctly.
 		[Value]
 		public function get completeUrl():String {
-			return urlEncoding ? encodeURI(URLUtil.completeURL(_baseUrl, url)) : URLUtil.completeURL(_baseUrl, url);
+            return encodeUrl(URLUtil.completeURL(this._baseUrl, this.url));
 		}
+
+		//If the encoding is set property, uri encode for ut8 urls
+        private function encodeUrl(url:String):String {
+            if (!urlEncoding) return url;
+            return encodeURI(url);
+        }
+
 
 		public function get type():ClipType {
             if (_type) {
@@ -445,6 +452,19 @@ import org.flowplayer.flow_internal;
 			log.info("clip duration set to " + value);
 		}
 
+        [Value]
+        public function get duration():Number {
+            if (_duration > 0) {
+                return _duration;
+            }
+            var metadataDur:Number = durationFromMetadata;
+            if (_start > 0 && metadataDur > _start) {
+                return metadataDur - _start;
+            }
+            return metadataDur || 0;
+        }
+
+        [Value]
 		public function get durationFromMetadata():Number {
 			if (_metaData)
 				return decodeDuration(_metaData.duration);
@@ -465,22 +485,13 @@ import org.flowplayer.flow_internal;
         }
 		
 		public function set durationFromMetadata(value:Number):void {
+            if (_metaData is Boolean && ! _metaData) {
+                return;
+            }
 			if (! _metaData) {
 				_metaData = new Object();
 			}
 			_metaData.duration = value;
-		}
-
-		[Value]
-		public function get duration():Number {
-			if (_duration > 0) {
-				return _duration;
-			}
-			var metadataDur:Number = durationFromMetadata;
-			if (_start > 0 && metadataDur > _start) {
-				return metadataDur - _start;
-			}
-			return metadataDur || 0;
 		}
 
 		[Value]
@@ -489,11 +500,8 @@ import org.flowplayer.flow_internal;
 		}
 		
 		public function set metaData(metaData:Object):void {
+         log.debug("received metadata", metaData);
 			this._metaData = metaData;
-//			if (! (_duration >= 0) && metaData && metaData.duration) {
-//				setNegativeCuepointTimes(metaData.duration);
-//				addCommonClipNegativeCuepoints();
-//			}
 		}
 		
 		[Value]
@@ -608,7 +616,6 @@ import org.flowplayer.flow_internal;
 		
 		private function getWidth():int {
 			if (! _content) {
-//				log.warn("Getting width from a clip that does not have content loaded yet, returning zero");
 				return 0;
 			}
 			return _content.width;
@@ -635,15 +642,24 @@ import org.flowplayer.flow_internal;
 			return _content.height;
 		}
 		
-		[Value]
-		public function get bufferLength():int {
-			return _bufferLength;
-		}
+        [Value]
+        public function get bufferLength():int {
+            return _bufferLength;
+        }
 		
-		public function set bufferLength(bufferLength:int):void {
-			_bufferLength = bufferLength;
-		}
-		
+        public function set bufferLength(bufferLength:int):void {
+            _bufferLength = bufferLength;
+        }
+
+        [Value]
+        public function get backBufferLength():int {
+            return _backBufferLength;
+        }
+
+        public function set backBufferLength(bufferLength:int):void {
+            _backBufferLength = bufferLength;
+        }
+
 		public function get played():Boolean {
 			return _played;
 		}
@@ -671,8 +687,11 @@ import org.flowplayer.flow_internal;
 		[Value]
 		public function get cuepoints():Array {
 			var cues:Array = new Array();
-			for each (var cue:Object in _cuepoints) {
-				cues.push(cue);
+			for each (var value:Object in _cuepoints) {
+                var cues2:Array = value as Array;
+                for each (var cue:Object in cues2) {
+                    cues.push(cue);
+                }
 			}
 			return cues;
 		}
@@ -684,6 +703,14 @@ import org.flowplayer.flow_internal;
 		[Value]
 		public function get accelerated():Boolean {
 			return _accelerated;
+		}
+		
+		public function get useHWScaling():Boolean {
+			return _accelerated && ! VersionUtil.hasStageVideo();
+		}
+		
+		public function get useStageVideo():Boolean {
+			return _accelerated && VersionUtil.hasStageVideo();
 		}
 
 		public function get isNullClip():Boolean {
@@ -709,19 +736,13 @@ import org.flowplayer.flow_internal;
 		}
 		
 		public function get customProperties():Object {
-			return _customProperties;
+			return _extension.props;
 		}
 		
 		public function set customProperties(props:Object):void {
-			_customProperties = props;
-			
-			// workaraound to not allow setting cuepoints to custom properties
-            if (_customProperties && _customProperties["cuepoints"]) {
-                delete _customProperties["cuepoints"];
-            }
-            if (_customProperties && _customProperties["playlist"]) {
-                delete _customProperties["playlist"];
-            }
+			_extension.props = props;
+            _extension.deleteProp("cuepoints");
+            _extension.deleteProp("playlist");
 		}
 		
 		public function get smoothing():Boolean {
@@ -732,17 +753,13 @@ import org.flowplayer.flow_internal;
 			_smoothing = smoothing;
 		}
 		
-		public function getCustomProperty(property:String):Object {
-			if (!_customProperties) return null;
-			return _customProperties[property];
+		public function getCustomProperty(name:String):Object {
+			return _extension.getProp(name);
 		}
 
-		public function setCustomProperty(property:String, value:Object):void {
-            if (property == "playlist") return;
-			if (!_customProperties) {
-				_customProperties = new Object();
-			}
-			_customProperties[property] = value;
+		public function setCustomProperty(name:String, value:Object):void {
+            if (name == "playlist") return;
+            _extension.setProp(name, value);
 		}
 		
 		[Value]				
@@ -778,7 +795,8 @@ import org.flowplayer.flow_internal;
 		}
 		
 		public function set linkUrl(linkUrl:String):void {
-			_linkUrl = linkUrl;
+			if(URLUtil.isValid(linkUrl))
+				_linkUrl = linkUrl;
 		}
 		
 		[Value]		
@@ -993,6 +1011,18 @@ import org.flowplayer.flow_internal;
         [Value]
         public function get urlEncoding():Boolean {
         	return _encoding;
+        }
+
+        public function deleteCustomProperty(name:String):void {
+            _extension.deleteProp(name);
+        }
+
+        public function get stopLiveOnPause():Boolean {
+            return _stopLiveOnPause;
+        }
+
+        public function set stopLiveOnPause(value:Boolean):void {
+            _stopLiveOnPause = value;
         }
     }
 }

@@ -130,7 +130,7 @@ styles.content.media {
     # cat=content/cMedia/j6; type=int+; label= Media Audio Height: define the default height for the media audio
   defaultAudioHeight = 30
    	# cat=content/cMedia/j7; type=; label= Flow Player: configure the path to the flow-player
-  flowPlayer = typo3/contrib/flowplayer/flowplayer-3.2.7.swf
+  flowPlayer = typo3/contrib/flowplayer/flowplayer-3.2.16.swf
 }
 
 styles.content.table {

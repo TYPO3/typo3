@@ -38,13 +38,11 @@ package org.flowplayer.view {
         public var injectedConfig:String;
 
         public function Preloader() {
-
             var logConfig:LogConfiguration = new LogConfiguration();
             logConfig.level = "error";
             logConfig.filter = "org.flowplayer.view.Preloader";
             Log.configure(logConfig);
             _log.debug("Preloader");
-
             stop();
             addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
         }
@@ -86,7 +84,8 @@ package org.flowplayer.view {
             log("onAddedToStage(), bytes loaded " + loaderInfo.bytesLoaded);
             stage.addEventListener(Event.RESIZE, onStageResize, false, 1);
             setParentDimensions();
-            
+            //#628 opera browsers do not return filesize correctly for latest flash players so require to use load completion instead which may help with gzipped files also.
+            loaderInfo.addEventListener(Event.COMPLETE, onComplete);
             addEventListener(Event.ENTER_FRAME, enterFrameHandler);
         }
 
@@ -95,15 +94,31 @@ package org.flowplayer.view {
 
             if (loaderInfo.bytesLoaded == loaderInfo.bytesTotal) {
                 log("bytesLoaded == bytesTotal, stageWidth = " + Arrange.parentWidth + " , stageHeight = " + Arrange.parentHeight);
-                if (Arrange.parentWidth != 0 && Arrange.parentHeight != 0) {
-                    initialize();
-                    removeEventListener(Event.ENTER_FRAME, enterFrameHandler);
-                }
+                completeInitialize();
+            }
+        }
+
+        private function onComplete(e:Event):void {
+            completeInitialize();
+		}
+
+        /**
+         * #438 Complete handler for both preloader methods.
+         */
+        private function completeInitialize():void
+        {
+            if (Arrange.parentWidth != 0 && Arrange.parentHeight != 0) {
+                initialize();
             }
         }
 
         private function initialize():void {
             log("initialize()");
+
+            //#428 remove both loading event listeners.
+            loaderInfo.removeEventListener(Event.COMPLETE, onComplete);
+            removeEventListener(Event.ENTER_FRAME, enterFrameHandler);
+
             nextFrame();
 
             if (_app) {

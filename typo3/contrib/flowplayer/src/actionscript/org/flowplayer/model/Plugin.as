@@ -34,11 +34,16 @@ package org.flowplayer.model {
 	public interface Plugin {
 		
 		/**
-		 * Provided plugins configuration properties. 
+		 * Provides plugins their configuration properties.
 		 * This happens when the plugin SWF has been loaded but
 		 * before it is added to the display list.
+         *
+         * An instance of a PluginModel is passed. This instance provides access to the configuration
+         * options among other things.
+         *
+         * @param model the plugin model
 		 */
-		function onConfig(configProps:PluginModel):void;
+		function onConfig(model:PluginModel):void;
 
 		/**
 		 * Called when the player has been initialized. The interface is immediately ready to use, all
