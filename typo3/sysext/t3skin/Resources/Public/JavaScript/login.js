@@ -1,7 +1,6 @@
 var isWebKit = document.childNodes && !document.all && !navigator.taintEnabled;
 
 TYPO3BackendLogin = {
-
 	/**
 	 *  Initializing the Login Interface
 	 */
@@ -11,6 +10,7 @@ TYPO3BackendLogin = {
 		TYPO3BackendLogin.setVisibilityOfClearIcon($('t3-username'), $('t3-username-clearIcon'));
 		TYPO3BackendLogin.setVisibilityOfClearIcon($('t3-password'), $('t3-password-clearIcon'));
 		TYPO3BackendLogin.checkCookieSupport();
+		TYPO3BackendLogin.checkForOpenIdCookie();
 		TYPO3BackendLogin.checkForLogintypeCookie();
 		TYPO3BackendLogin.checkForInterfaceCookie();
 		$('t3-username').activate();
@@ -122,6 +122,7 @@ TYPO3BackendLogin = {
 	 */
 	switchToOpenId: function() {
 		$('t3-login-openIdLogo').show();
+		$('t3-login-openId-prefill').show();
 
 		$('t3-login-form-footer-default').hide();
 		$('t3-login-form-footer-openId').show();
@@ -130,7 +131,9 @@ TYPO3BackendLogin = {
 		if ($('t3-login-interface-section')) {
 			$('t3-login-interface-section').hide();
 		}
-
+		if (TYPO3BackendLogin.openid) {
+			$('t3-username').setValue(TYPO3BackendLogin.openid);
+		}
 		$('t3-username').activate();
 
 		TYPO3BackendLogin.setLogintypeCookie('openid');
@@ -141,6 +144,7 @@ TYPO3BackendLogin = {
 	 */
 	switchToDefault: function() {
 		$('t3-login-openIdLogo').hide();
+		$('t3-login-openId-prefill').hide();
 
 		$('t3-login-form-footer-default').show();
 		$('t3-login-form-footer-openId').hide();
@@ -150,7 +154,11 @@ TYPO3BackendLogin = {
 			$('t3-login-interface-section').show();
 		}
 
-		$('t3-username').activate();
+		var username = $('t3-username');
+		if (TYPO3BackendLogin.openid && username.getValue() == TYPO3BackendLogin.openid) {
+			username.setValue('');
+		}
+		username.activate();
 
 		TYPO3BackendLogin.setLogintypeCookie('username');
 	},
@@ -193,6 +201,17 @@ TYPO3BackendLogin = {
 		var now = new Date();
 		var expires = new Date(now.getTime() + 1000*60*60*24*365); // cookie expires in one year
 		document.cookie = 'typo3-login-method=' + type + '; expires=' + expires.toGMTString() + ';';
+	},
+
+	/**
+	 * Check if an OpenID was stored in the cookie and store it in this class
+	 */
+	checkForOpenIdCookie: function() {
+	    var openid = Ext.util.Cookies.get('typo3-login-openid-be');
+            if (openid) {
+                TYPO3BackendLogin.openid = openid;
+                $('t3-openId-prefill').checked = 'checked';
+            }
 	},
 
 	/**

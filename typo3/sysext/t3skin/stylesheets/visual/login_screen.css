@@ -77,6 +77,13 @@
 	color: #333;
 }
 
+#typo3-index-php #t3-login-openId-prefill > * {
+	vertical-align: middle;
+}
+#typo3-index-php #t3-openId-prefill {
+	width: auto;
+}
+
 #typo3-index-php input.t3-login-submit {
 	background-color: #ff8600;
 	background-image: url('../../images/login/login-submit-background.gif');
