@@ -478,7 +478,7 @@ class FileHandlingUtilityTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase
 		// Create zip-file from extension
 		$filename = $fileHandlerMock->_call('createZipFileFromExtension', $extKey);
 
-		$expectedFilename = PATH_site . 'typo3temp/' . $extKey . '_0.0.0.zip';
+		$expectedFilename = PATH_site . 'typo3temp/' . $extKey . '_0.0.0_' . date('YmdHi') . '.zip';
 		$this->assertEquals($expectedFilename, $filename, 'Archive file name differs from expectation');
 
 		// File was created
