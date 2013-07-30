@@ -120,7 +120,7 @@ class FileExtensionFilter {
 	 */
 	protected function isAllowed(\TYPO3\CMS\Core\Resource\FileInterface $file) {
 		$result = TRUE;
-		$fileExt = $file->getExtension();
+		$fileExt = strtolower($file->getExtension());
 		// Check allowed file extensions
 		if ($this->allowedFileExtensions !== NULL && count($this->allowedFileExtensions) > 0 && !in_array($fileExt, $this->allowedFileExtensions)) {
 			$result = FALSE;
@@ -153,6 +153,8 @@ class FileExtensionFilter {
 	/**
 	 * Converts mixed (string or array) input arguments into an array, NULL if empty.
 	 *
+	 * All array values will be converted to lower case.
+	 *
 	 * @param mixed $inputArgument Comma-separated list or array.
 	 * @return array
 	 */
@@ -163,6 +165,11 @@ class FileExtensionFilter {
 		} elseif (strlen($inputArgument) > 0) {
 			$returnValue = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $inputArgument);
 		}
+
+		if (is_array($returnValue)) {
+			$returnValue = array_map('strtolower', $returnValue);
+		}
+
 		return $returnValue;
 	}
 
