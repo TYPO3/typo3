@@ -20,6 +20,7 @@ package org.flowplayer.model {
     import flash.display.DisplayObject;
 
     import org.flowplayer.model.DisplayPropertiesImpl;
+	import org.flowplayer.util.URLUtil;
 
 	/**
 	 * @author api
@@ -86,7 +87,8 @@ package org.flowplayer.model {
 		}
 		
 		public function set linkUrl(linkUrl:String):void {
-			_linkUrl = linkUrl;
+			if(URLUtil.isValid(linkUrl))
+				_linkUrl = linkUrl;
 		}
 		
         [Value]

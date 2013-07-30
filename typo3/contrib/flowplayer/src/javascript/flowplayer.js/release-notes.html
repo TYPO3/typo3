@@ -1,0 +1,71 @@
+3.3.0
+    - bufferAnimate()
+
+3.2.0
+	- getLogo
+	- logo.configure()
+	- getPlay
+
+3.1.5
+	- unload really called if unloaded
+	
+3.1.1.
+	- new API method: <samp>addClip</samp>
+	- new API method: <samp>toggleFullscreen</samp>
+	- new event: <samp>onClipAdd</samp>
+	- a critical fix to a <a href="http://flowplayer.org/forum/8/18186">wrappper bug</a>
+	
+3.1.0 
+	* YUICompressor
+	* old flash versions and splash screen	
+	
+3.0.6
+	* flashembed 1.0.1 - handles IE A- tag container bug
+	* unload() method working properly
+	* plugin.getPlayer()
+	* support for unlimited amount of arguments for plugin callback functions
+
+3.0.5
+	* uses flashembed
+	* fixed a bug where player did not always work when common clip was given as plain string
+	
+3.0.3
+	* re-installation to same node now removes the previous installation
+	* getIndex() function
+	* clip given in href- attribute can be overridden from configuration
+	* href does NOT override playlist, only common clip's url
+	* onError fixed
+	* onLoad bug fixes (may cause multiple onCuepoint triggers)
+	
+3.0.2
+	* millisecond cuepoints
+	* onMouseOver, onMouseOut
+	* player, clip and plugin specific onError listeners
+	* setPlaylist
+	* setClip
+
+3.0.1
+	* getVersion returns now correct value
+	* onBeforeClick was triggered when player was already loaded (Safari only)
+	* embedded cuepoints
+	* close method
+	
+3.0.0
+	* GPL 3
+	* onBegin and onBeforeBegin events
+	* getConfig() returns modifiable version of the configuration, getConfig(true) returns a clone
+
+3.0.0-rc4
+	* clip specific onBeforeEvent couldn't stop default behaviour
+
+3.0.0-rc3
+	* getConfig API method to the Player object (read only) 
+	* getFlashParams API method to the Player object
+	* utility methods: <samp>$f.each, $f.extend</samp> for Plugin developers
+	
+
+3.0.0-rc1
+	* show(), hide(), isHidden() methods
+	* resume method missing
+	* if player not loaded and core api method is called -> no error is thrown. just silence.
+	* made flowplayer(0) function work without wrapper element having an id attribute 

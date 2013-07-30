@@ -21,7 +21,7 @@ package org.flowplayer.model {
 
 	public class ClipType {
 
-        private static const FLASH_VIDEO_EXTENSIONS:Array = ['f4b', 'f4p', 'f4v', 'flv'];
+        private static const FLASH_VIDEO_EXTENSIONS:Array = ['f4b', 'f4p', 'f4v', 'flv', "flv2"];
         //new clip prefix chromeless: denotes a chromeless url with a video id reference
         private static const VIDEOAPI_PREFIX:String = 'api:';
         private static const VIDEO_EXTENSIONS:Array = ['3g2', '3gp', 'aac', 'm4a', 'm4v', 'mov', 'mp4', 'vp6', 'mpeg4', 'video'];
@@ -94,15 +94,22 @@ package org.flowplayer.model {
         }
 
         private static function knownEndingExtension(name:String):String {
-            var extensions:Array = VIDEO_EXTENSIONS.concat(IMAGE_EXTENSIONS).concat(FLASH_VIDEO_EXTENSIONS);
-            extensions.push("mp3");
+            var extensions:Array = knownFileExtensions();
             for (var i:int = 0; i < extensions.length; i++) {
-                var extension:String = extensions[i] as String;
-                if (name.lastIndexOf(extension) == name.length - extension.length) {
-                    return extension;
+                //#423 this is an extension check only no prefix check, so add the . or else files with known extensions will be chosen instead. casting may not be neccessary.
+                var extension:String = "." + extensions[i];
+                //#392 possible fix for extensions with no filetypes like rtmp flv clips, require positive index check.
+                if (name.lastIndexOf(extension) >= 0 && name.lastIndexOf(extension) == name.length - extension.length) {
+                    return extensions[i];
                 }
             }
             return null;
+        }
+
+        public static function knownFileExtensions():Array {
+            var extensions:Array = VIDEO_EXTENSIONS.concat(IMAGE_EXTENSIONS).concat(FLASH_VIDEO_EXTENSIONS);
+            extensions.push("mp3");
+            return extensions;
         }
 
 		public static function fromFileExtension(name:String):ClipType {

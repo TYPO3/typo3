@@ -19,8 +19,10 @@
 
 package org.flowplayer.view {
     import flash.display.DisplayObject;
+    import flash.display.DisplayObjectContainer;
     import flash.events.MouseEvent;
     import flash.events.TimerEvent;
+    import flash.utils.Timer;
     import flash.utils.getDefinitionByName;
 
     import org.flowplayer.controller.ResourceLoader;
@@ -35,8 +37,9 @@ package org.flowplayer.view {
     import org.flowplayer.model.PluginEventType;
     import org.flowplayer.model.PluginModel;
     import org.flowplayer.model.State;
+    import org.flowplayer.model.Status;
     import org.flowplayer.util.Arrange;
-    import org.flowplayer.view.BuiltInAssetHelper;
+    import org.flowplayer.util.AccessibilityUtil;
     import org.flowplayer.view.BuiltInAssetHelper;
 
     public class PlayButtonOverlayView extends AbstractSprite implements Plugin {
@@ -53,6 +56,7 @@ package org.flowplayer.view {
 		private var _origAlpha:Number;
 		private var _play:PlayButtonOverlay;
         private var _rotation:RotatingAnimation;
+        private var _playDetectTimer:Timer;
 
 		public function PlayButtonOverlayView(resizeToTextWidth:Boolean, play:PlayButtonOverlay, pluginRegistry:PluginRegistry) {
 			_resizeToTextWidth = resizeToTextWidth;
@@ -61,6 +65,9 @@ package org.flowplayer.view {
 			_play = play;
 			createChildren();
 			buttonMode = true;
+
+            //#443 set accessibility for play button
+            AccessibilityUtil.setAccessible(this,  "play");
 			
             startBuffering();
 			
@@ -178,12 +185,14 @@ package org.flowplayer.view {
 			eventSupport.onConnect(startBuffering);
 
             // onBegin is here because onBeforeBegin is not dispatched when playing after a timed out and invalid netConnection
-            eventSupport.onStart(hideButton);
-            
+//            eventSupport.onStart(hideButton);
+//            eventSupport.onStart(createPlaybackStartedCallback);
+
             eventSupport.onBeforeBegin(hideButton);
-			eventSupport.onBeforeBegin(startBuffering);
-			
+			eventSupport.onBegin(bufferUntilStarted);
+
 			eventSupport.onResume(hide);
+            eventSupport.onResume(bufferUntilStarted);
 
 			// onPause: call stopBuffering first and then showButton (stopBuffering hides the button)
 			eventSupport.onPause(stopBuffering);
@@ -194,19 +203,29 @@ package org.flowplayer.view {
 			
 			// onBeforeFinish: call stopBuffering first and then showButton (stopBuffering hides the button)
 			eventSupport.onBeforeFinish(stopBuffering);
+
 			eventSupport.onBeforeFinish(showReplayButton, isParentClipOrPostroll);
 
             // showing the buffer animation on buffer empty causes trouble with live streams and also on other cases
-//			eventSupport.onBufferEmpty(startBuffering);
+            //#395 apply buffer animation status to VOD streams only.
+			eventSupport.onBufferEmpty(startBuffering, applyForClip);
 
-			eventSupport.onBufferFull(stopBuffering);
+            //#415 regression issue with #395, stop the buffering animation correctly.
+			eventSupport.onBufferFull(stopBuffering, applyForClip);
 			
-			eventSupport.onBeforeSeek(startBuffering);
-			eventSupport.onSeek(stopBuffering);
-			
+            eventSupport.onBeforeSeek(bufferUntilStarted);
+            eventSupport.onSeek(stopBuffering);
+
 			eventSupport.onBufferStop(stopBuffering);
 			eventSupport.onBufferStop(showButton);
 		}
+
+        private function applyForClip(clip:Clip):Boolean {
+            // #474
+            if (_player.status.time >= clip.duration - 2) return false;
+
+            return !clip.live;
+        }
 
         private function isParentClip(clip:Clip):Boolean {
             return ! clip.isInStream;
@@ -359,7 +378,8 @@ package org.flowplayer.view {
 				props.display = "block";
 				_pluginRegistry.updateDisplayProperties(props);
 			}
-			
+            // #474
+            stopBuffering();
 			addButton();
 			show();
 			onResize();
@@ -440,5 +460,43 @@ package org.flowplayer.view {
 		private function get model():DisplayPluginModel {
 			return DisplayPluginModel(_pluginRegistry.getPlugin("play"));
 		}
-	}
+
+        private function bufferUntilStarted(event:ClipEvent = null):void {
+            if (event && event.isDefaultPrevented()) return;
+            startBuffering();
+            createPlaybackStartedCallback(stopBuffering);
+        }
+
+        private function createPlaybackStartedCallback(callback:Function):void {
+            log.debug("detectPlayback()");
+
+            if (! _player.isPlaying()) {
+                log.debug("detectPlayback(), not playing, returning");
+                return;
+            }
+            if (_playDetectTimer && _playDetectTimer.running) {
+                log.debug("detectPlayback(), not playing, returning");
+                return;
+            }
+
+            var time:Number = _player.status.time;
+
+            _playDetectTimer = new Timer(200);
+            _playDetectTimer.addEventListener(TimerEvent.TIMER,
+                    function(event:TimerEvent):void {
+                        var currentTime:Number = _player.status.time;
+                        log.debug("on detectPlayback() currentTime " + currentTime + ", time " + time);
+
+                        if (Math.abs(currentTime - time) > 0.2) {
+                            _playDetectTimer.stop();
+                            log.debug("playback started");
+                            callback();
+                        } else {
+                            log.debug("not started yet, currentTime " + currentTime + ", time " + time);
+                        }
+                    });
+            log.debug("doStart(), starting timer");
+            _playDetectTimer.start();
+        }
+    }
 }

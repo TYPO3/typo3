@@ -67,7 +67,7 @@ package org.flowplayer.view {
 					separatorBeforeNextItem = false;
 				} else {
 					for (var label:String in item) {
-						log.debug("creating menu item for " + label + ", callback " + menuItems[label]);
+						log.debug("creating menu item for " + label + ", callback " + item[label]);
 						addCustomMenuItem(menu, label, itemNum++, item[label], separatorBeforeNextItem);
 					}
 					separatorBeforeNextItem = false;
@@ -77,10 +77,16 @@ package org.flowplayer.view {
 		}
 		
 		CONFIG::commercialVersion
-		private function addCustomMenuItem(menu:ContextMenu, label:String, itemIndex:int, callback:String, separatorBeforeNextItem:Boolean):void {
-			if (! callback || callback == "null") {
+		private function addCustomMenuItem(menu:ContextMenu, label:String, itemIndex:int, callback:*, separatorBeforeNextItem:Boolean):void {
+            if (! callback || callback == "null") {
 				addItem(menu, new ContextMenuItem(label, separatorBeforeNextItem, false));
-			} else {
+			} else if (callback is Object && Object(callback).hasOwnProperty("url")) {
+                //Issue #384 added links support in context menus with configuration { url: "domain.com", target: "_blank"} which will work in embedded players.
+                log.debug("creating item with link");
+                addItem(menu, new ContextMenuItem(label, separatorBeforeNextItem, true), function(event:ContextMenuEvent):void {
+                  navigateToURL(new URLRequest(callback.url), Object(callback).hasOwnProperty("target") ? Object(callback).target : "_self");
+                });
+            } else {
 				log.debug("creating item with callback");
 				addItem(menu, new ContextMenuItem(label, separatorBeforeNextItem, true), createCallback(itemIndex));
 			}
@@ -104,12 +110,13 @@ package org.flowplayer.view {
 			});
 			// 1-3 Required by the GPL license
 			// 1 copyright notice
-			addItem(menu, new ContextMenuItem("Copyright © 2008-2011 Flowplayer Oy", true, false));
+			var date:Date = new Date();
+			addItem(menu, new ContextMenuItem("Copyright © 2008-" + date.fullYear + " Flowplayer Oy", true, false));
 			// 2 NO WARRANTY
 			addItem(menu, new ContextMenuItem("Flowplayer comes without any warranty", false, false));
 			// 3 Link to license
 			addItem(menu, new ContextMenuItem("GNU GENERAL PUBLIC LICENSE...", false, true), function(event:ContextMenuEvent):void {
-				navigateToURL(new URLRequest("http://flowplayer.org/license_gpl.html"), "_self");
+				navigateToURL(new URLRequest("http://flowplayer.org/license/"), "_self");
 			});
 			return menu; 
 		}

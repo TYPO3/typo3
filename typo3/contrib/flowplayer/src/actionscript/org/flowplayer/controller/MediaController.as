@@ -42,12 +42,7 @@ package org.flowplayer.controller {
 		 * Gets the status of this controller.
 		 */
 		function getStatus(state:State):Status;
-		
-		/**
-		 * Stops loading the media.
-		 */
-		function stopBuffering():void;
-		
+
 		/**
 		 * Gets the current playhead time.
 		 */

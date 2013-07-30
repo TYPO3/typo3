@@ -138,10 +138,12 @@ package org.flowplayer.controller {
 				return clip;
 			}
 			if (clipIndex >= 0) {
+/*
 				if (clipIndex == _playList.currentIndex && getState() != State.WAITING) {
 					log.debug("play(): already playing this clip, returning");
 					return _playList.current;
 				}
+*/
 				_state.stop();
 				if (_playList.toIndex(clipIndex) == null) {
 					log.error("There is no clip at index " + clipIndex + ", cannot play");
@@ -230,13 +232,15 @@ package org.flowplayer.controller {
 			return clip;
 		}
 		
-		flow_internal function pause():Clip {
-			_state.pause();
+		flow_internal function pause(silent:Boolean = false):Clip {
+            log.debug("pause(), silent? " + silent);
+			_state.pause(silent);
 			return _playList.current;
 		}
 		
-		flow_internal function resume():Clip {
-			_state.resume();
+		flow_internal function resume(silent:Boolean = false):Clip {
+            log.debug("resume(), silent? " + silent);
+			_state.resume(silent);
 			return _playList.current;
 		}
 		
@@ -256,10 +260,10 @@ package org.flowplayer.controller {
 			_state.close(silent);
 		}
 		
-		flow_internal function seekTo(seconds:Number):Clip {
-			log.debug("seekTo " + seconds);
+		flow_internal function seekTo(seconds:Number, silent:Boolean = false):Clip {
+			log.debug("seekTo " + seconds + ", silent? " + silent);
 			if (seconds >= 0) {
-				_state.seekTo(seconds);
+				_state.seekTo(seconds, silent);
 			} else {
 				log.warn("seekTo was called with seconds value " + seconds);
 			}

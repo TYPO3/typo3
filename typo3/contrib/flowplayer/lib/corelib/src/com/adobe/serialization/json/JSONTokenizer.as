@@ -428,10 +428,18 @@ package com.adobe.serialization.json {
 		 * sort of white space and comments
 		 */
 		private function skipIgnored():void {
-			skipWhite();
-			skipComments();
-			skipWhite();
-		}
+
+			var originalLoc:int;
+
+			// keep trying to skip whitespace and comments as long
+			// as we keep advancing past the original location
+			do
+			{
+				originalLoc = loc;
+				skipWhite();
+				skipComments();
+			} while ( originalLoc != loc );
+        }
 		
 		/**
 		 * Skips comments in the input string, either

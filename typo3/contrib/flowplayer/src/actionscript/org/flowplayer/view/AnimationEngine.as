@@ -102,6 +102,7 @@ package org.flowplayer.view {
 				if (disp.visible) {
 					panelAnimate(currentProps.getDisplayObject(), newProps, durationMillis, endCallback, easeFunc);
 				} else {
+                    log.info("removing from panel " + disp);
 					_panel.removeChild(disp);
 				}
 				_pluginRegistry.updateDisplayProperties(newProps);
@@ -143,21 +144,24 @@ package org.flowplayer.view {
 		 * Fades in a DisplayObject.
 		 */
 		public function fadeIn(view:DisplayObject, durationMillis:Number = 500, completeCallback:Function = null, updatePanel:Boolean = true):Animation {
-			return animateAlpha(view, 1, durationMillis, completeCallback, updatePanel);
+			view.visible = true;
+            return animateAlpha(view, 1, durationMillis, completeCallback, updatePanel);
 		}
 
 		/**
 		 * Fades a DisplayObject to a specified alpha value.
 		 */
 		public function fadeTo(view:DisplayObject, alpha:Number, durationMillis:Number = 500, completeCallback:Function = null, updatePanel:Boolean = true):Animation {
-			return animateAlpha(view, alpha, durationMillis, completeCallback, updatePanel);
+            view.visible = true;
+            return animateAlpha(view, alpha, durationMillis, completeCallback, updatePanel);
 		}
 
 		/**
 		 * Fades out a DisplayObject.
 		 */
 		public function fadeOut(view:DisplayObject, durationMillis:Number = 500, completeCallback:Function = null, updatePanel:Boolean = true):Animation {
-			return animateAlpha(view, 0, durationMillis, completeCallback, updatePanel);
+            view.visible = true;
+            return animateAlpha(view, 0, durationMillis, completeCallback, updatePanel);
 		}
 
 		/**
@@ -231,25 +235,30 @@ package org.flowplayer.view {
 		private function animateAlpha(view:DisplayObject, target:Number, durationMillis:Number = 500, completeCallback:Function = null, updatePanel:Boolean = true):Animation {
 			Assert.notNull(view, "animateAlpha: view cannot be null");
 			var playable:Animation = createTween("alpha", view, target, durationMillis);
-			if (! playable) {
+            var plugin:DisplayProperties = _pluginRegistry.getPluginByDisplay(view);
+            if (! playable) {
 				if (completeCallback != null) {
 					completeCallback();
 				}
+                if (target == 0) {
+                    _panel.removeChild(view);
+                } else if (view.parent != _panel) {
+                    _panel.addView(view, null, plugin);
+                }
 				return null;
 			}
 
 			// cancel previous alpha animations
 			cancel(view, playable);
 
-			var plugin:DisplayProperties = _pluginRegistry.getPluginByDisplay(view);
 			if (updatePanel && plugin) {
 				log.debug("animateAlpha(): will add/remove from panel");
 				// this is a plugin, add/remove it from a panel
 				if (target == 0) {
 					playable.addEventListener(GoEvent.COMPLETE, 
 						function(event:GoEvent):void {
-							if (!_canceledByPlayable[playable]) { 
-								log.debug("removing " + view + " from panel");
+							if (!_canceledByPlayable[playable] && view.parent) {
+								log.info("removing " + view + " from panel");
 								view.parent.removeChild(view);
 							} else {
 								log.info("previous fadeout was canceled, will not remove " + view + " from panel");
@@ -259,13 +268,14 @@ package org.flowplayer.view {
 					_panel.addView(view, null, plugin);
 				}
 			} else {
-				log.debug("animateAlpha, view is not added/removed from panel");
+				log.info("animateAlpha, view is not added/removed from panel: " + view);
 			}
 			 
 			var tween:Animation = start(view, playable, completeCallback) as Animation;
 			if (tween) {
-				_pluginRegistry.updateDisplayPropertiesForDisplay(view, { alpha: target, display: (target == 0 ? "none" : "block") });
-			}
+                // do not change the display: 'none'/'block' property here!! Changing alpha should not affect 'display'.
+                _pluginRegistry.updateDisplayPropertiesForDisplay(view, { alpha: target });
+            }
 			return tween;
 		}
 
@@ -276,7 +286,8 @@ package org.flowplayer.view {
 				_panel.addView(view);
 			}
 			var target:Rectangle = _panel.update(view, props);
-			startTweens(view, props.alpha, target.width, target.height, target.x, target.y, durationMillis, callback, easeFunc);
+            //#426 when a plugin width is set to a percentage, x/y is required to be floored or else it will affect the animation engine. specifically for the autohide function.
+			startTweens(view, props.alpha, target.width, target.height, int(target.x), int(target.y), durationMillis, callback, easeFunc);
 			if (durationMillis == 0) {
 				if (props.alpha >= 0) {
 					view.alpha = props.alpha;
