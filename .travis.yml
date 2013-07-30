@@ -21,17 +21,15 @@ before_script:
   - if [[ "$TRAVIS_PHP_VERSION" == "5.3" ]]; then installPhpModule -y apc; fi
 
 # Install rudimentary TYPO3
-  - if [[ "$PHPUNIT" == "1" ]]; then git clone --single-branch --branch master --depth 1 git://git.typo3.org/TYPO3v4/Distributions/Introduction.git build-environment/Introduction; fi
   - if [[ "$PHPUNIT" == "1" ]]; then mv build-environment/typo3conf .; fi
   - if [[ "$PHPUNIT" == "1" ]]; then git clone --single-branch --branch master --depth 1 git://git.typo3.org/TYPO3v4/Extensions/phpunit.git typo3conf/ext/phpunit/; fi
   - if [[ "$PHPUNIT" == "1" ]]; then mkdir fileadmin; fi
   - if [[ "$PHPUNIT" == "1" ]]; then mkdir uploads; fi
+  - if [[ "$PHPUNIT" == "1" ]]; then mkdir typo3temp; fi
   - if [[ "$DB" == "mysql" ]]; then mysql -e "DROP DATABASE IF EXISTS typo3_test;" -uroot; fi
-  - if [[ "$DB" == "mysql" ]]; then mysql -e "create database IF NOT EXISTS typo3_test;" -uroot; fi
-  - if [[ "$DB" == "mysql" ]]; then mysql -uroot typo3_test < build-environment/Introduction/typo3conf/ext/introduction/Resources/Private/Subpackages/Introduction/Database/introduction.sql; fi
-  - if [[ "$DB" == "mysql" ]]; then mysql -uroot typo3_test < build-environment/dbimport/cache_tables.sql; fi
+  - if [[ "$DB" == "mysql" ]]; then mysql -e "CREATE DATABASE IF NOT EXISTS typo3_test;" -uroot; fi
+  - if [[ "$DB" == "mysql" ]]; then php build-environment/dbimport/DatabaseImport.php; fi
   - if [[ "$DB" == "mysql" ]]; then mysql -uroot typo3_test < build-environment/dbimport/cli_users.sql; fi
-  - if [[ "$DB" == "mysql" ]]; then mysql -uroot typo3_test < build-environment/dbimport/phpunit.sql; fi
 
 script:
   - if [[ "$PHPLINT" == "1" ]]; then phpLint all; fi
