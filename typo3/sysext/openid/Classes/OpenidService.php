@@ -180,6 +180,7 @@ class OpenidService extends \TYPO3\CMS\Core\Service\AbstractService {
 					$userRecord = $this->getUserRecord($openIDIdentifier);
 					if ($userRecord != NULL) {
 						$this->writeLog('User \'%s\' logged in with OpenID \'%s\'', $userRecord[$this->parentObject->formfield_uname], $openIDIdentifier);
+						setcookie('typo3-login-openid-' . strtolower(TYPO3_MODE), $openIDIdentifier, strtotime('+1 year'), '/');
 					} else {
 						$this->writeLog('Failed to login user using OpenID \'%s\'', $openIDIdentifier);
 					}
