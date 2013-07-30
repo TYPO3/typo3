@@ -679,7 +679,11 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 					$attribArray['title'] = preg_match('/ /', $attribArray['title']) ? '"' . $attribArray['title'] . '"' : $attribArray['title'];
 					// Creating the TYPO3 pseudo-tag "<LINK>" for the link (includes href/url, target and class attributes):
 					// If data-htmlarea-external attribute is set, keep the href unchanged
-					$href = ($attribArray['data-htmlarea-external'] ? $attribArray['href'] : $info['url']) . ($info['query'] ? ',0,' . $info['query'] : '');
+					if ($attribArray['data-htmlarea-external']) {
+						$href = $attribArray['href'];
+					} else {
+						$href = $info['url'] . ($info['query'] ? ',0,' . $info['query'] : '');
+					}
 					$bTag = '<link ' . $href . ($attribArray['target'] ? ' ' . $attribArray['target'] : ($attribArray['class'] || $attribArray['title'] ? ' -' : '')) . ($attribArray['class'] ? ' ' . $attribArray['class'] : ($attribArray['title'] ? ' -' : '')) . ($attribArray['title'] ? ' ' . $attribArray['title'] : '') . '>';
 					$eTag = '</link>';
 					// Modify parameters
