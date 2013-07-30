@@ -126,7 +126,7 @@ class PersistenceManager implements \TYPO3\CMS\Extbase\Persistence\PersistenceMa
 	 * @api
 	 */
 	public function getIdentifierByObject($object) {
-		return $this->persistenceSession->getIdentifierByObject($object);
+		return $this->backend->getIdentifierByObject($object);
 	}
 
 	/**
