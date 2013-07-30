@@ -1,3 +1,12 @@
+2013-07-30  96f4f06                  [RELEASE] Release of TYPO3 4.7.14 (TYPO3 Release Team)
+2013-07-30  85fa0c7  #49209          [SECURITY] XSS in 3rd party library Flowplayer (Oliver Hader)
+2013-07-30  557a0fd  #49210          [SECURITY] XSS in 3rd party library Audio Player (Oliver Hader)
+2013-07-27  46ae61c  #41487          [BUGFIX] Fix double-stdWrapping of GIFBUILDER's TEXT object (jyps)
+2013-07-26  6e208e3  #50480          [TASK] Remove empty .gitmodules file (Christian Kuhn)
+2013-07-25  71c3262  #50410          [TASK] Revise typo3/sysext/README.txt (Wouter Wolters)
+2013-07-23  1710919                  [TASK] Set TYPO3 version to 4.7.14-dev (TYPO3 Release Team)
+
+
 2013-07-23  fca2653                  [RELEASE] Release of TYPO3 4.7.13 (TYPO3 Release Team)
 2013-07-15  1e44ee2  #42921          [BUGFIX] Fix PHP warning trigged in initFEuser (Markus Klein)
 2013-07-15  4f49cb0  #49872          [BUGFIX] requestUpdate sensitive to spaces (Markus Klein)
