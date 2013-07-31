@@ -17,6 +17,10 @@ span.waiting {
 	cursor: wait !important;
 }
 
+span.stateIcon {
+	display: inline-block;
+}
+
 span.stateIcon span {
 	margin-right: 6px;
 }
