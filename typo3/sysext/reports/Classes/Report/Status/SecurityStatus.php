@@ -188,7 +188,7 @@ class SecurityStatus implements \TYPO3\CMS\Reports\StatusProviderInterface {
 		$value = $GLOBALS['LANG']->getLL('status_ok');
 		$message = '';
 		$severity = \TYPO3\CMS\Reports\Status::OK;
-		if ($GLOBALS['TYPO3_CONF_VARS']['BE']['installToolPassword'] == md5('joh316')) {
+		if ($GLOBALS['TYPO3_CONF_VARS']['BE']['installToolPassword'] == '$P$Cc7lZckuwDL.xSzpms4tGeh6EisF5D/') {
 			$value = $GLOBALS['LANG']->getLL('status_insecure');
 			$severity = \TYPO3\CMS\Reports\Status::ERROR;
 			$changeInstallToolPasswordUrl = 'mod.php?M=system_InstallInstall';

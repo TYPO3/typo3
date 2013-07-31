@@ -112,7 +112,10 @@ class ImportantActions extends Action\AbstractAction implements Action\ActionInt
 		} else {
 			/** @var \TYPO3\CMS\Core\Configuration\ConfigurationManager $configurationManager */
 			$configurationManager = $this->objectManager->get('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager');
-			$configurationManager->setLocalConfigurationValueByPath('BE/installToolPassword', md5($values['newInstallToolPassword']));
+			$configurationManager->setLocalConfigurationValueByPath(
+				'BE/installToolPassword',
+				$this->getSaltedPassword($values['newInstallToolPassword'])
+			);
 			/** @var $message \TYPO3\CMS\Install\Status\StatusInterface */
 			$message = $this->objectManager->get('TYPO3\\CMS\\Install\\Status\\OkStatus');
 			$message->setTitle('Install tool password changed');

@@ -213,9 +213,34 @@ class AbstractController {
 		$action = $this->getAction();
 		$postValues = $this->getPostValues();
 		if ($action === 'login') {
-			if (isset($postValues['values']['password'])
-				&& md5($postValues['values']['password']) === $GLOBALS['TYPO3_CONF_VARS']['BE']['installToolPassword']
-			) {
+			$validPassword = FALSE;
+			if (isset($postValues['values']['password'])) {
+				$password = $postValues['values']['password'];
+				$hashedPassword = $GLOBALS['TYPO3_CONF_VARS']['BE']['installToolPassword'];
+				if (
+					\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('saltedpasswords')
+					&& \TYPO3\CMS\Saltedpasswords\Utility\SaltedPasswordsUtility::isUsageEnabled('BE')
+				) {
+					// Need to initialize the "saltMethods", which are defined in ext_localconf.php
+					require(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('saltedpasswords') . 'ext_localconf.php');
+					$saltFactory = \TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::getSaltingInstance($hashedPassword);
+					if (is_object($saltFactory)) {
+						$validPassword = $saltFactory->checkPassword($password, $hashedPassword);
+					} elseif (md5($password) === $hashedPassword) {
+						// Update install tool password
+						$saltFactory = \TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::getSaltingInstance(NULL);
+						$configurationManager = $this->objectManager->get('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager');
+						$configurationManager->setLocalConfigurationValueByPath(
+							'BE/installToolPassword',
+							$saltFactory->getHashedPassword($password)
+						);
+						$validPassword = TRUE;
+					}
+				} elseif (!$validPassword && md5($password) === $hashedPassword) {
+					$validPassword = TRUE;
+				}
+			}
+			if ($validPassword) {
 				$this->session->setAuthorized();
 				$this->sendLoginSuccessfulMail();
 				$this->redirect();
@@ -519,6 +544,29 @@ class AbstractController {
 			$redirectLocation,
 			\TYPO3\CMS\Core\Utility\HttpUtility::HTTP_STATUS_303
 		);
+	}
+
+	/**
+	 * @param string $password
+	 *
+	 * @return string
+	 */
+	protected function decryptRsaAuthPassword($password) {
+		$decryptedPassword = '';
+		$backend = \TYPO3\CMS\Rsaauth\Backend\BackendFactory::getBackend();
+		if (!is_null($backend)) {
+			// Get private key
+			/** @var $storage \TYPO3\CMS\Rsaauth\Storage\AbstractStorage */
+			$storage = \TYPO3\CMS\Rsaauth\Storage\StorageFactory::getStorage();
+			$key = $storage->get();
+			if ($key !== NULL && substr($password, 0, 4) === 'rsa:') {
+				$decryptedPassword = $backend->decrypt($key, substr($password, 4));
+				// Remove the key
+				$storage->put(NULL);
+			}
+		}
+
+		return $decryptedPassword;
 	}
 
 	/**
