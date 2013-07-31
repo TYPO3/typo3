@@ -208,5 +208,44 @@ abstract class AbstractAction {
 			->initializeTypo3DbGlobal()
 			->loadExtensionTables(FALSE);
 	}
+
+	/**
+	 * Checks if saltedpasswords is enabled for backend usage.
+	 *
+	 * @return boolean
+	 */
+	protected function isSaltedPasswordsEnabled() {
+		if (
+			\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('saltedpasswords')
+			&& \TYPO3\CMS\Saltedpasswords\Utility\SaltedPasswordsUtility::isUsageEnabled('BE')
+		) {
+			if (empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/saltedpasswords']['saltMethods'])) {
+				// Need to initialize the "saltMethods", which are defined in ext_localconf.php
+				require(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('saltedpasswords') . 'ext_localconf.php');
+			}
+			return TRUE;
+		}
+
+		return FALSE;
+	}
+
+	/**
+	 * This function checks the existence of saltedpasswords and returns a hashed key.
+	 * Either the salted password or a md5 hash.
+	 *
+	 * @param string $password
+	 *
+	 * @return string
+	 */
+	protected function getSaltedPassword($password) {
+		if ($this->isSaltedPasswordsEnabled()) {
+			$saltFactory = \TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::getSaltingInstance(NULL, 'BE');
+			$hashedPassword = $saltFactory->getHashedPassword($password);
+		} else {
+			$hashedPassword = md5($password);
+		}
+
+		return $hashedPassword;
+	}
 }
 ?>
