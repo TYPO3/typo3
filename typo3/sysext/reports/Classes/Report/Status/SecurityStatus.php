@@ -183,7 +183,15 @@ class SecurityStatus implements \TYPO3\CMS\Reports\StatusProviderInterface {
 		$value = $GLOBALS['LANG']->getLL('status_ok');
 		$message = '';
 		$severity = \TYPO3\CMS\Reports\Status::OK;
-		if ($GLOBALS['TYPO3_CONF_VARS']['BE']['installToolPassword'] == md5('joh316')) {
+		$validPassword = TRUE;
+		$installToolPassword = $GLOBALS['TYPO3_CONF_VARS']['BE']['installToolPassword'];
+		$saltFactory = \TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::getSaltingInstance($installToolPassword);
+		if (is_object($saltFactory)) {
+			$validPassword = !$saltFactory->checkPassword('joh316', $installToolPassword);
+		} elseif ($installToolPassword === md5('joh316')) {
+			$validPassword = FALSE;
+		}
+		if (!$validPassword) {
 			$value = $GLOBALS['LANG']->getLL('status_insecure');
 			$severity = \TYPO3\CMS\Reports\Status::ERROR;
 			$changeInstallToolPasswordUrl = 'mod.php?M=system_InstallInstall';

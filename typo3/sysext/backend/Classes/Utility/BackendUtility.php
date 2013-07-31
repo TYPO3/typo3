@@ -3951,7 +3951,15 @@ class BackendUtility {
 					break;
 			}
 			// Check if the Install Tool Password is still default: joh316
-			if ($GLOBALS['TYPO3_CONF_VARS']['BE']['installToolPassword'] == md5('joh316')) {
+			$validPassword = TRUE;
+			$installToolPassword = $GLOBALS['TYPO3_CONF_VARS']['BE']['installToolPassword'];
+			$saltFactory = \TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::getSaltingInstance($installToolPassword);
+			if (is_object($saltFactory)) {
+				$validPassword = !$saltFactory->checkPassword('joh316', $installToolPassword);
+			} elseif ($installToolPassword === md5('joh316')) {
+				$validPassword = FALSE;
+			}
+			if (!$validPassword) {
 				$url = 'install/index.php?redirect_url=index.php' . urlencode('?TYPO3_INSTALL[type]=about');
 				$warnings['install_password'] = sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:warning.install_password'), '<a href="' . $url . '">', '</a>');
 			}
