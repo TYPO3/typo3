@@ -208,5 +208,16 @@ abstract class AbstractAction {
 			->initializeTypo3DbGlobal()
 			->loadExtensionTables(FALSE);
 	}
+
+	/**
+	 * This function returns a salted hashed key.
+	 *
+	 * @param string $password
+	 * @return string
+	 */
+	protected function getHashedPassword($password) {
+		$saltFactory = \TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::getSaltingInstance(NULL, 'BE');
+		return $saltFactory->getHashedPassword($password);
+	}
 }
 ?>
