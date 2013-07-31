@@ -78,7 +78,7 @@ class DatabaseData extends Action\AbstractAction implements StepInterface {
 		$this->getDatabase()->exec_INSERTquery('be_users', $adminUserFields);
 
 		// Set password as install tool password
-		$configurationManager->setLocalConfigurationValueByPath('BE/installToolPassword', md5($password));
+		$configurationManager->setLocalConfigurationValueByPath('BE/installToolPassword', $hashedPassword);
 
 		return $result;
 	}

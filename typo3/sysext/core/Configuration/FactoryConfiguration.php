@@ -8,7 +8,6 @@
 return array(
 	'BE' => array(
 		'explicitADmode' => 'explicitAllow',
-		'installToolPassword' => 'bacb98acf97e0b6112b1d1b650b84971',
 		'loginSecurityLevel' => 'rsa',
 	),
 	'DB' => array(
