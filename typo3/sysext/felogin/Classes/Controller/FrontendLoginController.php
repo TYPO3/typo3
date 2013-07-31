@@ -172,7 +172,7 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin 
 		} elseif ($this->piVars['forgothash']) {
 			$content .= $this->changePassword();
 		} else {
-			if ($this->userIsLoggedIn && !$this->logintype) {
+			if ($this->userIsLoggedIn && $this->logintype !== 'logout') {
 				$content .= $this->showLogout();
 			} else {
 				$content .= $this->showLogin();
