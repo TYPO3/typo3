@@ -218,9 +218,7 @@ class ImportantActions extends Action\AbstractAction implements Action\ActionInt
 				$message->setTitle('Administrator user not created');
 				$message->setMessage('A user with username ' . $username . ' exists already.');
 			} else {
-				$saltFactory = \TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::getSaltingInstance(NULL, 'BE');
-				$hashedPassword = $saltFactory->getHashedPassword($password);
-
+				$hashedPassword = $this->getHashedPassword($password);
 				$adminUserFields = array(
 					'username' => $username,
 					'password' => $hashedPassword,
