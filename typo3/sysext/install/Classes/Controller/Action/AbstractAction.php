@@ -208,5 +208,17 @@ abstract class AbstractAction {
 			->initializeTypo3DbGlobal()
 			->loadExtensionTables(FALSE);
 	}
+
+	/**
+	 * This function checks the existence of saltedpasswords and returns a hashed key.
+	 * Either the salted password or a md5 hash.
+	 *
+	 * @param string $password
+	 * @return string
+	 */
+	protected function getHashedPassword($password) {
+		$saltFactory = \TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::getSaltingInstance();
+		return $saltFactory->getHashedPassword($password);
+	}
 }
 ?>

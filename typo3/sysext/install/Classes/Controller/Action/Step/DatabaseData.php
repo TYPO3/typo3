@@ -67,11 +67,10 @@ class DatabaseData extends Action\AbstractAction implements StepInterface {
 		$this->importDatabaseData();
 
 		// Insert admin user
-		// Password is simple md5 here for now, will be updated by saltedpasswords on first login
-		// @TODO: Handle saltedpasswords in installer and store password salted in the first place
+		$hashedPassword = $this->getHashedPassword($password);
 		$adminUserFields = array(
-			'username' => $username,
-			'password' => md5($password),
+			'username' => 'admin',
+			'password' => $hashedPassword,
 			'admin' => 1,
 			'tstamp' => $GLOBALS['EXEC_TIME'],
 			'crdate' => $GLOBALS['EXEC_TIME']
