@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Install\CoreUpdates;
+namespace TYPO3\CMS\Install\Updates;
 
 /***************************************************************
  *  Copyright notice
@@ -26,30 +26,33 @@ namespace TYPO3\CMS\Install\CoreUpdates;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
- * Contains the update class for the compatibility version. Used by the update wizard in the install tool.
+ * Contains the update class for the compatibility version.
+ * Used by the update wizard in the install tool.
  *
  * @author Sebastian Kurfürst <sebastian@garbage-group.de
  */
-class CompatVersionUpdate extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
+class CompatVersionUpdate extends AbstractUpdate {
 
+	/**
+	 * @var string
+	 */
 	protected $title = 'Version Compatibility';
 
 	/**
 	 * Function which checks if update is needed. Called in the beginning of an update process.
 	 *
-	 * @param 	string		pointer to description for the update
-	 * @return 	boolean		TRUE if update is needs to be performed, FALSE otherwise.
-	 * @todo Define visibility
+	 * @param string &$description Pointer to description for the update
+	 * @return boolean TRUE if update is needs to be performed, FALSE otherwise.
 	 */
 	public function checkForUpdate(&$description) {
-		global $TYPO3_CONF_VARS;
 		if (!$this->compatVersionIsCurrent()) {
 			$description = '
 				<p>
 					Your current TYPO3 installation is configured to
 					<strong>behave like version
-					' . htmlspecialchars($TYPO3_CONF_VARS['SYS']['compat_version']) . '
+					' . htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['SYS']['compat_version']) . '
 					</strong> of TYPO3. If you just upgraded from this version,
 					you most likely want to <strong>use new features</strong> as
 					well.
@@ -60,20 +63,18 @@ class CompatVersionUpdate extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
 					features.
 				</p>
 			';
-			return 1;
+			return TRUE;
 		}
-		return 0;
+		return FALSE;
 	}
 
 	/**
-	 * second step: get user input if needed
+	 * Second step: get user input if needed
 	 *
-	 * @param 	string		input prefix, all names of form fields have to start with this. Append custom name in [ ... ]
-	 * @return 	string		HTML output
-	 * @todo Define visibility
+	 * @param string Input prefix, all names of form fields have to start with this. Append custom name in [ ... ]
+	 * @return string HTML output
 	 */
 	public function getUserInput($inputPrefix) {
-		global $TYPO3_CONF_VARS;
 		if ($this->compatVersionIsCurrent()) {
 			$content = '
 				<fieldset>
@@ -107,7 +108,7 @@ class CompatVersionUpdate extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
 		} else {
 			$content = '
 				<p>
-					TYPO3 output is currently compatible to version ' . htmlspecialchars($TYPO3_CONF_VARS['SYS']['compat_version']) . '.
+					TYPO3 output is currently compatible to version ' . htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['SYS']['compat_version']) . '.
 					To use all the new features in the current TYPO3 version,
 					make sure you follow the guidelines below to upgrade without
 					problems.
@@ -141,25 +142,23 @@ class CompatVersionUpdate extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
 	/**
 	 * Checks if user input is valid
 	 *
-	 * @param 	string		pointer to output custom messages
-	 * @return 	boolean		TRUE if user input is correct, then the update is performed. When FALSE, return to getUserInput
-	 * @todo Define visibility
+	 * @param string Pointer to output custom messages
+	 * @return boolean TRUE if user input is correct, then the update is performed. When FALSE, return to getUserInput
 	 */
 	public function checkUserInput(&$customMessages) {
-		global $TYPO3_CONF_VARS;
 		if ($this->compatVersionIsCurrent()) {
-			return 1;
+			return TRUE;
 		} else {
 			if ($this->userInput['compatVersion']['all']) {
-				return 1;
+				return TRUE;
 			} else {
-				$performUpdate = 1;
-				$oldVersion = \TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionNumberToInteger($TYPO3_CONF_VARS['SYS']['compat_version']);
+				$performUpdate = TRUE;
+				$oldVersion = \TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionNumberToInteger($GLOBALS['TYPO3_CONF_VARS']['SYS']['compat_version']);
 				$currentVersion = \TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionNumberToInteger(TYPO3_branch);
-				foreach ($TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['compat_version'] as $internalName => $details) {
+				foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['compat_version'] as $internalName => $details) {
 					if ($details['version'] > $oldVersion && $details['version'] <= $currentVersion) {
 						if (!$this->userInput['compatVersion'][$internalName]) {
-							$performUpdate = 0;
+							$performUpdate = FALSE;
 							$customMessages = 'If you want to update the compatibility version, you need to confirm all checkboxes on the previous page.';
 							break;
 						}
@@ -173,58 +172,48 @@ class CompatVersionUpdate extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
 	/**
 	 * Performs the update itself
 	 *
-	 * @param 	array		pointer where to insert all DB queries made, so they can be shown to the user if wanted
-	 * @param 	string		pointer to output custom messages
-	 * @return 	boolean		TRUE if update succeeded, FALSE otherwise
-	 * @todo Define visibility
+	 * @param array Pointer where to insert all DB queries made, so they can be shown to the user if wanted
+	 * @param string Pointer to output custom messages
+	 * @return boolean TRUE if update succeeded, FALSE otherwise
 	 */
 	public function performUpdate(array &$dbQueries, &$customMessages) {
 		$customMessages = '';
-		// if we just set it to an older version
+		// If we just set it to an older version
 		if ($this->userInput['version']) {
 			$customMessages .= 'If you want to see what you need to do to use the new features, run the update wizard again!';
 		}
 		$version = $this->userInput['version'] ? $this->userInput['version'] : TYPO3_branch;
 		\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager')->setLocalConfigurationValueByPath('SYS/compat_version', $version);
 		$customMessages .= '<br />The compatibility version has been set to ' . $version . '.';
-		return 1;
+		return TRUE;
 	}
 
-	/**********************
-	 *
-	 * HELPER FUNCTIONS - just used in this update method
-	 *
-	 **********************/
 	/**
-	 * checks if compatibility version is set to current version
+	 * Checks if compatibility version is set to current version
 	 *
-	 * @return 	boolean		TRUE if compat version is equal the current version
-	 * @todo Define visibility
+	 * @return boolean TRUE if compat version is equal the current version
 	 */
-	public function compatVersionIsCurrent() {
-		global $TYPO3_CONF_VARS;
-		if (TYPO3_branch != $TYPO3_CONF_VARS['SYS']['compat_version']) {
-			return 0;
+	protected function compatVersionIsCurrent() {
+		if (TYPO3_branch != $GLOBALS['TYPO3_CONF_VARS']['SYS']['compat_version']) {
+			return FALSE;
 		} else {
-			return 1;
+			return TRUE;
 		}
 	}
 
 	/**
-	 * show changes needed
+	 * Show changes needed
 	 *
-	 * @param 	string		input prefix to prepend all form fields with.
-	 * @return 	string		HTML output
-	 * @todo Define visibility
+	 * @param string Input prefix to prepend all form fields with.
+	 * @return string HTML output
 	 */
-	public function showChangesNeeded($inputPrefix = '') {
-		global $TYPO3_CONF_VARS;
-		$oldVersion = \TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionNumberToInteger($TYPO3_CONF_VARS['SYS']['compat_version']);
+	protected function showChangesNeeded($inputPrefix = '') {
+		$oldVersion = \TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionNumberToInteger($GLOBALS['TYPO3_CONF_VARS']['SYS']['compat_version']);
 		$currentVersion = \TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionNumberToInteger(TYPO3_branch);
 		$tableContents = '';
-		if (is_array($TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['compat_version'])) {
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['compat_version'])) {
 			$updateWizardBoxes = '';
-			foreach ($TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['compat_version'] as $internalName => $details) {
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['compat_version'] as $internalName => $details) {
 				if ($details['version'] > $oldVersion && $details['version'] <= $currentVersion) {
 					$description = str_replace(chr(10), '<br />', $details['description']);
 					$description_acknowledge = isset($details['description_acknowledge']) ? str_replace(chr(10), '<br />', $details['description_acknowledge']) : '';
@@ -252,6 +241,5 @@ class CompatVersionUpdate extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
 	}
 
 }
-
 
 ?>

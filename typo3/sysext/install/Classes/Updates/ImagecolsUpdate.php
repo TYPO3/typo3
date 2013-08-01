@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Install\CoreUpdates;
+namespace TYPO3\CMS\Install\Updates;
 
 /***************************************************************
  *  Copyright notice
@@ -26,21 +26,24 @@ namespace TYPO3\CMS\Install\CoreUpdates;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Contains the update class for merging advanced and normal pagetype.
  *
  * @author Steffen Kamper <info@sk-typo3.de>
- * @version
  */
-class ImagecolsUpdate extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
+class ImagecolsUpdate extends AbstractUpdate {
 
+	/**
+	 * @var string
+	 */
 	protected $title = 'Update Existing Text with Image Content Elements';
 
 	/**
 	 * Checks if an update is needed
 	 *
-	 * @param 	string		&$description: The description for the update
-	 * @return 	boolean		whether an update is needed (TRUE) or not (FALSE)
+	 * @param string &$description The description for the update
+	 * @return boolean Whether an update is needed (TRUE) or not (FALSE)
 	 */
 	public function checkForUpdate(&$description) {
 		$result = FALSE;
@@ -58,9 +61,9 @@ class ImagecolsUpdate extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
 	/**
 	 * Performs the database update. Changes the doktype from 2 (advanced) to 1 (standard)
 	 *
-	 * @param 	array		&$dbQueries: queries done in this update
-	 * @param 	mixed		&$customMessages: custom messages
-	 * @return 	boolean		whether it worked (TRUE) or not (FALSE)
+	 * @param array &$dbQueries Queries done in this update
+	 * @param mixed &$customMessages Custom messages
+	 * @return boolean Whether it worked (TRUE) or not (FALSE)
 	 */
 	public function performUpdate(array &$dbQueries, &$customMessages) {
 		$result = FALSE;
@@ -80,6 +83,5 @@ class ImagecolsUpdate extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
 	}
 
 }
-
 
 ?>

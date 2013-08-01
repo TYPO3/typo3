@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Install\CoreUpdates;
+namespace TYPO3\CMS\Install\Updates;
 
 /***************************************************************
  *  Copyright notice
@@ -29,17 +29,20 @@ namespace TYPO3\CMS\Install\CoreUpdates;
 /**
  * Contains the update class checking against configured compressionlevel. Used by the update wizard in the install tool.
  *
- * @author 	Steffen Ritter <info@rs-websystems.de>
+ * @author Steffen Ritter <info@rs-websystems.de>
  */
-class CompressionLevelUpdate extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
+class CompressionLevelUpdate extends AbstractUpdate {
 
+	/**
+	 * @var string
+	 */
 	protected $title = 'Check Compression Level';
 
 	/**
 	 * Checks if there there is an compression level configured which may break the BE.
 	 *
-	 * @param 	string		&$description: The description for the update
-	 * @return 	boolean		whether an update is needed (TRUE) or not (FALSE)
+	 * @param string &$description The description for the update
+	 * @return boolean Whether an update is needed (TRUE) or not (FALSE)
 	 */
 	public function checkForUpdate(&$description) {
 		$description = '<p><strong>TYPO3_CONF_VARS[BE][compressionLevel] is enabled.</strong><br />
@@ -54,8 +57,8 @@ class CompressionLevelUpdate extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
 	/**
 	 * second step: get user info
 	 *
-	 * @param 	string		input prefix, all names of form fields have to start with this. Append custom name in [ ... ]
-	 * @return 	string		HTML output
+	 * @param string Input prefix, all names of form fields have to start with this. Append custom name in [ ... ]
+	 * @return string HTML output
 	 */
 	public function getUserInput($inputPrefix) {
 		$content = '<p><strong>This configuration cannot be fixed automatically and requires a manual update.</strong> Please include the following lines from _.htaccess on top of your .htacess file.
@@ -75,9 +78,9 @@ AddEncoding gzip .gzip
 	/**
 	 * performs the action of the UpdateManager
 	 *
-	 * @param 	array		&$dbQueries: queries done in this update
-	 * @param 	mixed		&$customMessages: custom messages
-	 * @return 	bool		whether everything went smoothly or not
+	 * @param array &$dbQueries Queries done in this update
+	 * @param mixed &$customMessages Custom messages
+	 * @return boolean Whether everything went smoothly or not
 	 */
 	public function performUpdate(array &$dbQueries, &$customMessages) {
 		$customMessages = 'Cannot automatically fix this problem! Please check manually.';
@@ -86,6 +89,5 @@ AddEncoding gzip .gzip
 	}
 
 }
-
 
 ?>

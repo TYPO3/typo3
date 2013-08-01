@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Install\CoreUpdates;
+namespace TYPO3\CMS\Install\Updates;
 
 /***************************************************************
  *  Copyright notice
@@ -26,17 +26,21 @@ namespace TYPO3\CMS\Install\CoreUpdates;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Contains the update class for filling the basic repository record of the extension manager
  *
  * @author Georg Ringer <typo3@ringerge.org>
  */
-class ExtensionManagerTables extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
+class ExtensionManagerTables extends AbstractUpdate {
 
+	/**
+	 * @var string
+	 */
 	protected $title = 'Add the default Extension Manager database tables';
 
 	/**
-	 * @var null|\TYPO3\CMS\Install\Service\SqlSchemaMigrationService
+	 * @var NULL|\TYPO3\CMS\Install\Service\SqlSchemaMigrationService
 	 */
 	protected $installToolSqlParser = NULL;
 
@@ -74,7 +78,7 @@ class ExtensionManagerTables extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
 	/**
 	 * Checks if an update is needed
 	 *
-	 * @param string &$description: The description for the update
+	 * @param string &$description The description for the update
 	 * @return boolean Whether an update is needed (TRUE) or not (FALSE)
 	 */
 	public function checkForUpdate(&$description) {
@@ -103,7 +107,7 @@ class ExtensionManagerTables extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
 	}
 
 	/**
-	 * @param mixed &$customMessages: custom messages
+	 * @param mixed &$customMessages Custom messages
 	 *
 	 * @return boolean
 	 */
@@ -120,8 +124,8 @@ class ExtensionManagerTables extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
 	/**
 	 * Performs the database update.
 	 *
-	 * @param array &$dbQueries: queries done in this update
-	 * @param mixed &$customMessages: custom messages
+	 * @param array &$dbQueries Queries done in this update
+	 * @param mixed &$customMessages Custom messages
 	 * @return boolean Whether it worked (TRUE) or not (FALSE)
 	 */
 	public function performUpdate(array &$dbQueries, &$customMessages) {

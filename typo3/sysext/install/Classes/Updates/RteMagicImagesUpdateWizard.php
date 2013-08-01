@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Install\Updates;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Upgrade wizard that moves all RTE magic images (usually in uploads/)
  * that have the prefix RTEmagicC_* to the default storage (usually fileadmin/_migrated/RTE/)
@@ -30,24 +31,23 @@ namespace TYPO3\CMS\Install\Updates;
  * the softreference index
  *
  * @author Benjamin Mack <benni@typo3.org>
- * @license http://www.gnu.org/copyleft/gpl.html
  */
-class RteMagicImagesUpdateWizard extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
+class RteMagicImagesUpdateWizard extends AbstractUpdate {
 
 	/**
-	 * title of the update wizard
+	 * Title of the update wizard
 	 * @var string
 	 */
 	protected $title = 'Migrate all RTE magic images from uploads/RTEmagicC_* to fileadmin/_migrated/RTE/';
 
 	/**
-	 * the default storage
+	 * The default storage
 	 * @var \TYPO3\CMS\Core\Resource\ResourceStorage
 	 */
 	protected $storage;
 
 	/**
-	 * the old location of the file name, e.g. "uploads/RTEmagicC_"
+	 * The old location of the file name, e.g. "uploads/RTEmagicC_"
 	 * @var string
 	 */
 	protected $oldPrefix = NULL;
@@ -57,12 +57,15 @@ class RteMagicImagesUpdateWizard extends \TYPO3\CMS\Install\Updates\AbstractUpda
 	 */
 	protected $logger;
 
+	/**
+	 * Constructor
+	 */
 	public function __construct() {
 		/** @var $logManager \TYPO3\CMS\Core\Log\LogManager */
 		$logManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Log\\LogManager');
 		$this->logger = $logManager->getLogger(__CLASS__);
 
-		// set it to uploads/RTEmagicC_*
+		// Set it to uploads/RTEmagicC_*
 		if (!empty($GLOBALS['TYPO3_CONF_VARS']['BE']['RTE_imageStorageDir'])) {
 			$this->oldPrefix = $GLOBALS['TYPO3_CONF_VARS']['BE']['RTE_imageStorageDir'] . 'RTEmagicC_';
 		}
@@ -99,7 +102,7 @@ class RteMagicImagesUpdateWizard extends \TYPO3\CMS\Install\Updates\AbstractUpda
 		);
 		$description .= $message->render();
 
-		// wizard is only available if oldPrefix set
+		// Wizard is only available if oldPrefix set
 		if ($this->oldPrefix) {
 			$oldRecords = $this->findMagicImagesInOldLocation();
 			if (count($oldRecords) > 0) {
@@ -108,7 +111,7 @@ class RteMagicImagesUpdateWizard extends \TYPO3\CMS\Install\Updates\AbstractUpda
 			}
 		}
 
-		// disable the update wizard if there are no old RTE magic images
+		// Disable the update wizard if there are no old RTE magic images
 		return FALSE;
 	}
 
@@ -130,7 +133,7 @@ class RteMagicImagesUpdateWizard extends \TYPO3\CMS\Install\Updates\AbstractUpda
 		$targetDirectory = '/_migrated/RTE/';
 		$fullTargetDirectory = PATH_site . $fileadminDirectory . $targetDirectory;
 
-		// create the directory, if necessary
+		// Create the directory, if necessary
 		if (!is_dir($fullTargetDirectory)) {
 			\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep($fullTargetDirectory);
 		}
@@ -139,15 +142,15 @@ class RteMagicImagesUpdateWizard extends \TYPO3\CMS\Install\Updates\AbstractUpda
 		$oldRecords = $this->findMagicImagesInOldLocation();
 		foreach ($oldRecords as $refRecord) {
 
-			// is usually uploads/RTE_magicC_123423324.png.png
+			// Is usually uploads/RTE_magicC_123423324.png.png
 			$sourceFileName     = $refRecord['ref_string'];
-			// absolute path/filename
+			// Absolute path/filename
 			$fullSourceFileName = PATH_site . $refRecord['ref_string'];
 			$targetFileName     = $targetDirectory . \TYPO3\CMS\Core\Utility\PathUtility::basename($refRecord['ref_string']);
-			// full directory
+			// Full directory
 			$fullTargetFileName = $fullTargetDirectory . \TYPO3\CMS\Core\Utility\PathUtility::basename($refRecord['ref_string']);
 
-			// if the source file does not exist, we should just continue, but leave a message in the docs;
+			// If the source file does not exist, we should just continue, but leave a message in the docs;
 			// ideally, the user would be informed after the update as well.
 			if (!file_exists(PATH_site . $sourceFileName)) {
 				$this->logger->notice('File ' . $sourceFileName . ' does not exist. Reference was not migrated.', array());
@@ -165,12 +168,16 @@ class RteMagicImagesUpdateWizard extends \TYPO3\CMS\Install\Updates\AbstractUpda
 
 			rename($fullSourceFileName, $fullTargetFileName);
 
-			// get the File object
+			// Get the File object
 			$file = $this->storage->getFile($targetFileName);
 			if ($file instanceof \TYPO3\CMS\Core\Resource\File) {
-				// and now update the referencing field
+				// And now update the referencing field
 				$targetFieldName = $refRecord['field'];
-				$targetRecord = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('uid, ' . $targetFieldName, $refRecord['tablename'], 'uid=' . intval($refRecord['recuid']));
+				$targetRecord = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
+					'uid, ' . $targetFieldName,
+					$refRecord['tablename'],
+					'uid=' . intval($refRecord['recuid'])
+				);
 				if ($targetRecord) {
 					// Replace the old filename with the new one, and add data-* attributes used by the RTE
 					$searchString = 'src="' . $sourceFileName . '"';
@@ -227,6 +234,5 @@ class RteMagicImagesUpdateWizard extends \TYPO3\CMS\Install\Updates\AbstractUpda
 	}
 
 }
-
 
 ?>
