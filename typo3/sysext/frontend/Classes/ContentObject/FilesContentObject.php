@@ -182,7 +182,8 @@ class FilesContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractConte
 	 * @return string Value of the config variable
 	 */
 	protected function stdWrapValue($key, array $config, $defaultValue = '') {
-		return $this->cObj->stdWrap($config[$key], $config[$key . '.']) ? $this->cObj->stdWrap($config[$key], $config[$key . '.']) : $defaultValue;
+		$stdWrapped = $this->cObj->stdWrap($config[$key], $config[$key . '.']);
+		return $stdWrapped ? $stdWrapped : $defaultValue;
 	}
 
 }
