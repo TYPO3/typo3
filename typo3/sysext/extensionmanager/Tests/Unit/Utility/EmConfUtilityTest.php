@@ -25,66 +25,68 @@ namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Utility;
  ***************************************************************/
 
 /**
- * EmConf utility test
- *
+ * Test case
  */
 class EmConfUtilityTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
-	 * Data Provider for construct em conf tests
-	 *
-	 * @return array
-	 */
-	public function constructEmConfDataProvider() {
-		return array(
-			array(
-				array(
-					'extKey' => 'enetcache',
-					'EM_CONF' => array(
-						'title' => 'Plugin cache engine',
-						'description' => 'Provides an interface to cache plugin content elements based on 4.3 caching framework',
-						'category' => 'Frontend',
-						'shy' => 0,
-						'version' => '1.0.6',
-						'dependencies' => '',
-						'conflicts' => '',
-						'priority' => '',
-						'loadOrder' => '',
-						'TYPO3_version' => '4.3.0-0.0.0',
-						'PHP_version' => '',
-						'module' => '',
-						'state' => 'stable',
-						'uploadfolder' => 0,
-						'createDirs' => '',
-						'modify_tables' => '',
-						'clearcacheonload' => 0,
-						'lockType' => '',
-						'author' => 'Firstname Lastname',
-						'author_email' => 'test@example.com',
-						'author_company' => 'test',
-						'CGLcompliance' => NULL,
-						'CGLcompliance_note' => NULL
-					)
-				)
-			)
-		);
-	}
-
-	/**
-	 * Tests whether the comment block is added
-	 *
-	 * @param array $extensionData
 	 * @test
-	 * @dataProvider constructEmConfDataProvider
-	 * @return void
 	 */
-	public function constructEmConfAddsCommentBlock(array $extensionData) {
-		$fileHandlerMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Utility\\EmConfUtility', array('includeEmConf'));
-		$emConf = $fileHandlerMock->_call('constructEmConf', $extensionData);
+	public function constructEmConfAddsCommentBlock() {
+		$extensionData = array(
+			'extKey' => 'key',
+			'EM_CONF' => array(),
+		);
+		$fixture = new \TYPO3\CMS\Extensionmanager\Utility\EmConfUtility();
+		$emConf = $fixture->constructEmConf($extensionData);
 		$this->assertContains('Extension Manager/Repository config file for ext', $emConf);
 	}
 
+	/**
+	 * @test
+	 */
+	public function fixEmConfTransfersOldConflictSettingToNewFormatWithSingleConflictingExtension() {
+		$input = array(
+			'title' => 'a title',
+			'conflicts' => 'foo',
+		);
+		$expected = array(
+			'title' => 'a title',
+			'conflicts' => 'foo',
+			'constraints' => array(
+				'depends' => array(),
+				'conflicts' => array(
+					'foo' => '',
+				),
+				'suggests' => array(),
+			),
+		);
+		$fixture = new \TYPO3\CMS\Extensionmanager\Utility\EmConfUtility();
+		$this->assertEquals($expected, $fixture->fixEmConf($input));
+	}
+
+	/**
+	 * @test
+	 */
+	public function fixEmConfTransfersOldConflictSettingToNewFormatWithTwoConflictingExtensions() {
+		$input = array(
+			'title' => 'a title',
+			'conflicts' => 'foo,bar',
+		);
+		$expected = array(
+			'title' => 'a title',
+			'conflicts' => 'foo,bar',
+			'constraints' => array(
+				'depends' => array(),
+				'conflicts' => array(
+					'foo' => '',
+					'bar' => '',
+				),
+				'suggests' => array(),
+			),
+		);
+		$fixture = new \TYPO3\CMS\Extensionmanager\Utility\EmConfUtility();
+		$this->assertEquals($expected, $fixture->fixEmConf($input));
+	}
 }
-
-
 ?>
