@@ -1,10 +1,10 @@
 <?php
-namespace TYPO3\CMS\Install\CoreUpdates;
+namespace TYPO3\CMS\Install\Updates;
 
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2008-2013 Steffen Kamper <info@sk-typo3.de>
+ *  (c) 1999-2013 Sebastian Kurfürst <sebastian@garbage-group.de>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -26,26 +26,32 @@ namespace TYPO3\CMS\Install\CoreUpdates;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
- * Contains the update class for merging advanced and normal pagetype.
+ * Contains the update class for not in menu pages.
+ * Used by the update wizard in the install tool.
  *
+ * @author Sebastian Kurfürst <sebastian@garbage-group.de>
  * @author Steffen Kamper <info@sk-typo3.de>
  */
-class MergeAdvancedUpdate extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
+class NotInMenuUpdate extends AbstractUpdate {
 
-	protected $title = 'Update Pages with Pagetype "Advanced"';
+	/**
+	 * @var string
+	 */
+	protected $title = 'Update Pages with Doktype "Not in menu"';
 
 	/**
 	 * Checks if an update is needed
 	 *
-	 * @param 	string		&$description: The description for the update
-	 * @return 	boolean		whether an update is needed (TRUE) or not (FALSE)
+	 * @param string &$description The description for the update
+	 * @return boolean Whether an update is needed (TRUE) or not (FALSE)
 	 */
 	public function checkForUpdate(&$description) {
 		$result = FALSE;
-		$description = 'Merges the "Advanced" pagetype (doktype 2) to "Standard" (doktype 1) because "Standard" now has the same features, and "Advanced" is not needed anymore.';
+		$description = 'Removes the deprecated pages doktype "Not in menu". It sets the successing flag "Not in menu" for the corresponding pages instead.';
 		if ($this->versionNumber >= 4002000) {
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'pages', 'doktype=2', '', '', '1');
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'pages', 'doktype=5', '', '', '1');
 			if ($GLOBALS['TYPO3_DB']->sql_num_rows($res)) {
 				$result = TRUE;
 			}
@@ -55,19 +61,20 @@ class MergeAdvancedUpdate extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
 	}
 
 	/**
-	 * Performs the database update. Changes the doktype from 2 (advanced) to 1 (standard)
+	 * Performs the database update. Changes the doktype from 5 ("not in menu") to 1 (standard) and sets the "nav_hide" flag to 1
 	 *
-	 * @param 	array		&$dbQueries: queries done in this update
-	 * @param 	mixed		&$customMessages: custom messages
-	 * @return 	boolean		whether it worked (TRUE) or not (FALSE)
+	 * @param array &$dbQueries Queries done in this update
+	 * @param mixed &$customMessages Custom messages
+	 * @return boolean Whether it worked (TRUE) or not (FALSE)
 	 */
 	public function performUpdate(array &$dbQueries, &$customMessages) {
 		$result = FALSE;
 		if ($this->versionNumber >= 4002000) {
 			$updateArray = array(
-				'doktype' => 1
+				'doktype' => 1,
+				'nav_hide' => 1
 			);
-			$res = $GLOBALS['TYPO3_DB']->exec_UPDATEquery('pages', 'doktype=2', $updateArray);
+			$res = $GLOBALS['TYPO3_DB']->exec_UPDATEquery('pages', 'doktype=5', $updateArray);
 			$dbQueries[] = str_replace(chr(10), ' ', $GLOBALS['TYPO3_DB']->debug_lastBuiltQuery);
 			if ($GLOBALS['TYPO3_DB']->sql_error()) {
 				$customMessages = 'SQL-ERROR: ' . htmlspecialchars($GLOBALS['TYPO3_DB']->sql_error());
@@ -79,6 +86,5 @@ class MergeAdvancedUpdate extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
 	}
 
 }
-
 
 ?>

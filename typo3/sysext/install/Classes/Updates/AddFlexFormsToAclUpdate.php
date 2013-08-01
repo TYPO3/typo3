@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Install\CoreUpdates;
+namespace TYPO3\CMS\Install\Updates;
 
 /***************************************************************
  *  Copyright notice
@@ -26,13 +26,18 @@ namespace TYPO3\CMS\Install\CoreUpdates;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
- * Contains the update for group access lists, adds all excludeable FlexForm fields. Used by the update wizard in the install tool.
+ * Contains the update for group access lists, adds all excludeable FlexForm fields.
+ * Used by the update wizard in the install tool.
  *
  * @author Kai Vogel <kai.vogel(at)speedprogs.de>
  */
-class AddFlexFormsToAclUpdate extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
+class AddFlexFormsToAclUpdate extends AbstractUpdate {
 
+	/**
+	 * @var string
+	 */
 	protected $title = 'Add Excludable FlexForm Fields to Group Access Lists';
 
 	/**
@@ -178,6 +183,5 @@ class AddFlexFormsToAclUpdate extends \TYPO3\CMS\Install\Updates\AbstractUpdate 
 	}
 
 }
-
 
 ?>

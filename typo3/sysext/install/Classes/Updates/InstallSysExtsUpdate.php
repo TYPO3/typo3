@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Install\CoreUpdates;
+namespace TYPO3\CMS\Install\Updates;
 
 /***************************************************************
  *  Copyright notice
@@ -28,14 +28,15 @@ namespace TYPO3\CMS\Install\CoreUpdates;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Contains the update class for adding new system extensions.
  *
  * @author Benjamin Mack <benni@typo3.org>
  * @author Steffen Kamper <info@sk-typo3.de>
- * @author  Kai Vogel <kai.vogel@speedprogs.de>
+ * @author Kai Vogel <kai.vogel@speedprogs.de>
  */
-class InstallSysExtsUpdate extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
+class InstallSysExtsUpdate extends AbstractUpdate {
 
 	/**
 	 * @var string
@@ -88,7 +89,7 @@ class InstallSysExtsUpdate extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
 	protected $informationUrl = 'http://typo3.org/index.php?type=95832&tx_terfe2_pi1%5Baction%5D=show&tx_terfe2_pi1%5Bformat%5D=json&tx_terfe2_pi1%5BextensionKey%5D=@extensionKey';
 
 	/**
-	 * @var bool
+	 * @var boolean
 	 */
 	protected $updateSuccessful = TRUE;
 
@@ -164,7 +165,7 @@ class InstallSysExtsUpdate extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
 	 * @return boolean whether it worked (TRUE) or not (FALSE)
 	 */
 	public function performUpdate(array &$dbQueries, &$customMessages) {
-			// Get extension keys that were submitted by the user to be installed and that are valid for this update wizard
+		// Get extension keys that were submitted by the user to be installed and that are valid for this update wizard
 		if (is_array($this->userInput['sysext'])) {
 			$extArray = array_intersect(
 				$this->systemExtensions,
@@ -173,7 +174,7 @@ class InstallSysExtsUpdate extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
 			$this->installExtensions($extArray, $customMessages);
 		}
 
-			// Show this wizard again only if new extension keys have been found
+		// Show this wizard again only if new extension keys have been found
 		$this->markWizardAsDone();
 
 		return $this->updateSuccessful;
@@ -242,7 +243,7 @@ class InstallSysExtsUpdate extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
 	 * @return array Extension details
 	 */
 	protected function getExtensionDetails($extensionKey) {
-			// Local extension
+		// Local extension
 		$extEmConf = PATH_site . str_replace('@extensionKey', $extensionKey, $this->extEmConfPath);
 		if (file_exists($extEmConf)) {
 			$EM_CONF = FALSE;
@@ -291,19 +292,19 @@ class InstallSysExtsUpdate extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
 
 		$fileContent = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($url, 0, array(TYPO3_user_agent));
 
-			// No content, force cURL if disabled in configuration but found in system
+		// No content, force cURL if disabled in configuration but found in system
 		if ($fileContent === FALSE && function_exists('curl_init') && empty($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlUse'])) {
 			$GLOBALS['TYPO3_CONF_VARS']['SYS']['curlUse'] = TRUE;
 			$fileContent = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($url, 0, array(TYPO3_user_agent));
 			$GLOBALS['TYPO3_CONF_VARS']['SYS']['curlUse'] = FALSE;
 		}
 
-			// Still no content, try file_get_contents if allow_url_fopen is enabled
+		// Still no content, try file_get_contents if allow_url_fopen is enabled
 		if ($fileContent === FALSE && function_exists('file_get_contents') && ini_get('allow_url_fopen')) {
 			$fileContent = file_get_contents($url);
 		}
 
-			// Can not fetch url, throw an exception
+		// Can not fetch url, throw an exception
 		if ($fileContent === FALSE) {
 			throw new \Exception(
 				'Can not fetch URL "' . $url . '". Possibile reasons are network problems or misconfiguration.',

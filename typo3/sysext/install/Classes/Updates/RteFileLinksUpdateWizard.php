@@ -31,7 +31,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * The content string and the reference index (sys_refindex) are updated accordingly.
  */
-class RteFileLinksUpdateWizard extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
+class RteFileLinksUpdateWizard extends AbstractUpdate {
 
 	/**
 	 * Title of the update wizard

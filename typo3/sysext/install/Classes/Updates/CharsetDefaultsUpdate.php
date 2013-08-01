@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Install\CoreUpdates;
+namespace TYPO3\CMS\Install\Updates;
 
 /***************************************************************
  *  Copyright notice
@@ -26,20 +26,24 @@ namespace TYPO3\CMS\Install\CoreUpdates;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Displays warnings and information about the database character set
  */
-class CharsetDefaultsUpdate extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
+class CharsetDefaultsUpdate extends AbstractUpdate {
 
+	/**
+	 * @var string
+	 */
 	protected $title = 'Database Character Set';
 
 	/**
 	 * Checks if the configuration is relying on old default values or not.
 	 * If needed, this updater will fix the configuration appropriately.
 	 *
-	 * @param 	string		&$description: The description for the update
-	 * @param 	string		&$showUpdate: 0=dont show update; 1=show update and next button; 2=only show description
-	 * @return 	boolean		whether an update is needed (TRUE) or not (FALSE)
+	 * @param string &$description The description for the update
+	 * @param string &$showUpdate 0=don't show update; 1=show update and next button; 2=only show description
+	 * @return boolean Whether an update is needed (TRUE) or not (FALSE)
 	 */
 	public function checkForUpdate(&$description, &$showUpdate = FALSE) {
 		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['setDBinit'] === '-1') {
@@ -57,9 +61,9 @@ class CharsetDefaultsUpdate extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
 	 * This is needed for any sites that were relying on the former default
 	 * values which are going to change in TYPO3 4.5.
 	 *
-	 * @param 	array		&$dbQueries: queries done in this update
-	 * @param 	mixed		&$customMessages: custom messages
-	 * @return 	boolean		whether the updated was made or not
+	 * @param array &$dbQueries Queries done in this update
+	 * @param mixed &$customMessages Custom messages
+	 * @return boolean Whether the updated was made or not
 	 */
 	public function performUpdate(array &$dbQueries, &$customMessages) {
 		// Update "setDBinit" setting
@@ -76,6 +80,5 @@ class CharsetDefaultsUpdate extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
 	}
 
 }
-
 
 ?>

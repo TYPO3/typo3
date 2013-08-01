@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Install\Updates;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Upgrade wizard which checks all existing filemounts
  * and upgrades this them in case we have:
@@ -30,10 +31,9 @@ namespace TYPO3\CMS\Install\Updates;
  * b) relative filemounts (base = 1) which aren't related to a storage
  * further we assume that all other filemounts (base > 1) are already related to a storage
  *
- * @author 	  Tolleiv Nietsch <typo3@tolleiv.de>
- * @license 	 http://www.gnu.org/copyleft/gpl.html
+ * @author Tolleiv Nietsch <typo3@tolleiv.de>
  */
-class FilemountUpdateWizard extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
+class FilemountUpdateWizard extends AbstractUpdate {
 
 	/**
 	 * @var string
@@ -79,21 +79,25 @@ class FilemountUpdateWizard extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
 	/**
 	 * Checks if an update is needed.
 	 *
-	 * @param 	string		&$description: The description for the update
-	 * @return 	boolean		TRUE if an update is needed, FALSE otherwise
+	 * @param string &$description The description for the update
+	 * @return boolean TRUE if an update is needed, FALSE otherwise
 	 */
 	public function checkForUpdate(&$description) {
 		$description = 'Migrate all filemounts to be based on file abstraction layer storages.';
-		$filemountCount = $this->db->exec_SELECTcountRows('*', 'sys_filemounts', 'base IN (0,1) ' . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('sys_filemounts'));
+		$filemountCount = $this->db->exec_SELECTcountRows(
+			'*',
+			'sys_filemounts',
+			'base IN (0,1) ' . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('sys_filemounts')
+		);
 		return $filemountCount > 0 && !$this->isWizardDone();
 	}
 
 	/**
 	 * Performs the database update.
 	 *
-	 * @param 	array		&$dbQueries: queries done in this update
-	 * @param 	mixed		&$customMessages: custom messages
-	 * @return 	boolean		TRUE on success, FALSE on error
+	 * @param array &$dbQueries Queries done in this update
+	 * @param mixed &$customMessages Custom messages
+	 * @return boolean TRUE on success, FALSE on error
 	 */
 	public function performUpdate(array &$dbQueries, &$customMessages) {
 		$this->init();
@@ -109,21 +113,36 @@ class FilemountUpdateWizard extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
 	/**
 	 * Takes the existing absolute filemounts (base=0) and migrates them to use
 	 * the existing fileadmin/ storage or a new storage.
+	 *
+	 * @return void
 	 */
 	protected function migrateAbsoluteFilemounts() {
 		$description = 'This is the local %s directory. This storage mount has been created by the TYPO3 upgrade wizards.';
 		$fileadminDir = PATH_site . $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'];
-		$absoluteFilemounts = $this->db->exec_SELECTgetRows('*', 'sys_filemounts', 'base = 0' . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('sys_filemounts'));
+		$absoluteFilemounts = $this->db->exec_SELECTgetRows(
+			'*',
+			'sys_filemounts',
+			'base = 0' . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('sys_filemounts')
+		);
 		foreach ($absoluteFilemounts as $filemount) {
 			if (stristr($filemount['path'], $fileadminDir)) {
 				$storageId = $this->storage->getUid();
 				$storagePath = str_replace($fileadminDir, '', $filemount['path']);
 			} else {
-				$storageId = $this->storageRepository->createLocalStorage($filemount['title'] . ' (auto-created)', $filemount['path'], 'absolute', sprintf($description, $filemount['path']));
+				$storageId = $this->storageRepository->createLocalStorage(
+					$filemount['title'] . ' (auto-created)',
+					$filemount['path'],
+					'absolute',
+					sprintf($description, $filemount['path'])
+				);
 				$storagePath = '/';
 				$this->sqlQueries[] = $GLOBALS['TYPO3_DB']->debug_lastBuiltQuery;
 			}
-			$this->db->exec_UPDATEquery('sys_filemounts', 'uid=' . intval($filemount['uid']), array('base' => $storageId, 'path' => $storagePath));
+			$this->db->exec_UPDATEquery(
+				'sys_filemounts',
+				'uid=' . intval($filemount['uid']),
+				array('base' => $storageId, 'path' => $storagePath)
+			);
 			$this->sqlQueries[] = $GLOBALS['TYPO3_DB']->debug_lastBuiltQuery;
 		}
 	}
@@ -131,16 +150,25 @@ class FilemountUpdateWizard extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
 	/**
 	 * Relative filemounts are transformed to relate to our fileadmin/ storage
 	 * and their path is modified to be a valid resource location
+	 *
+	 * @return void
 	 */
 	protected function migrateRelativeFilemounts() {
-		$relativeFilemounts = $this->db->exec_SELECTgetRows('*', 'sys_filemounts', 'base = 1' . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('sys_filemounts'));
+		$relativeFilemounts = $this->db->exec_SELECTgetRows(
+			'*',
+			'sys_filemounts',
+			'base = 1' . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('sys_filemounts')
+		);
 		foreach ($relativeFilemounts as $filemount) {
-			$this->db->exec_UPDATEquery('sys_filemounts', 'uid=' . intval($filemount['uid']), array('base' => $this->storage->getUid(), 'path' => '/' . ltrim($filemount['path'], '/')));
+			$this->db->exec_UPDATEquery(
+				'sys_filemounts',
+				'uid=' . intval($filemount['uid']),
+				array('base' => $this->storage->getUid(), 'path' => '/' . ltrim($filemount['path'], '/'))
+			);
 			$this->sqlQueries[] = $GLOBALS['TYPO3_DB']->debug_lastBuiltQuery;
 		}
 	}
 
 }
-
 
 ?>
