@@ -182,7 +182,7 @@ class Tx_Fluid_Core_ViewHelper_TagBuilder {
 	/**
 	 * Renders and returns the tag
 	 *
-	 * @return void
+	 * @return string
 	 * @api
 	 */
 	public function render() {
