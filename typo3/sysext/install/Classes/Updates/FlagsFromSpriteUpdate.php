@@ -1,10 +1,10 @@
 <?php
-namespace TYPO3\CMS\Install\CoreUpdates;
+namespace TYPO3\CMS\Install\Updates;
 
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 1999-2013 Sebastian Kurfürst <sebastian@garbage-group.de>
+ *  (c) 2010-2013 Ernesto Baschny <ernst@cron-it.de>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -26,27 +26,30 @@ namespace TYPO3\CMS\Install\CoreUpdates;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-/**
- * Contains the update class for not in menu pages. Used by the update wizard in the install tool.
- *
- * @author Sebastian Kurfürst <sebastian@garbage-group.de>
- * @author Steffen Kamper <info@sk-typo3.de>
- */
-class NotInMenuUpdate extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
 
-	protected $title = 'Update Pages with Doktype "Not in menu"';
+/**
+ * Contains the update class for transitioning from ".gif" flags to sprites
+ *
+ * @author Ernesto Baschny <ernst@cron-it.de>
+ */
+class FlagsFromSpriteUpdate extends AbstractUpdate {
+
+	/**
+	 * @var string
+	 */
+	protected $title = 'Update Graphics, Using Sprites for sys_language Records';
 
 	/**
 	 * Checks if an update is needed
 	 *
-	 * @param 	string		&$description: The description for the update
-	 * @return 	boolean		whether an update is needed (TRUE) or not (FALSE)
+	 * @param string &$description The description for the update
+	 * @return boolean Whether an update is needed (TRUE) or not (FALSE)
 	 */
 	public function checkForUpdate(&$description) {
 		$result = FALSE;
-		$description = 'Removes the deprecated pages doktype "Not in menu". It sets the successing flag "Not in menu" for the corresponding pages instead.';
-		if ($this->versionNumber >= 4002000) {
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'pages', 'doktype=5', '', '', '1');
+		$description = 'Removes the ".gif" suffix from entries in sys_language, because flags now come from a sprite provided by t3skin and not individual .gif files.';
+		if ($this->versionNumber >= 4005000) {
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'sys_language', 'flag LIKE \'%.gif\'', '', '', '1');
 			if ($GLOBALS['TYPO3_DB']->sql_num_rows($res)) {
 				$result = TRUE;
 			}
@@ -56,21 +59,26 @@ class NotInMenuUpdate extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
 	}
 
 	/**
-	 * Performs the database update. Changes the doktype from 5 ("not in menu") to 1 (standard) and sets the "nav_hide" flag to 1
+	 * Performs the database update. Changes the flags from ".gif" to flag without suffix
 	 *
-	 * @param 	array		&$dbQueries: queries done in this update
-	 * @param 	mixed		&$customMessages: custom messages
-	 * @return 	boolean		whether it worked (TRUE) or not (FALSE)
+	 * @param array &$dbQueries: queries done in this update
+	 * @param mixed &$customMessages: custom messages
+	 * @return boolean Whether it worked (TRUE) or not (FALSE)
 	 */
 	public function performUpdate(array &$dbQueries, &$customMessages) {
 		$result = FALSE;
-		if ($this->versionNumber >= 4002000) {
-			$updateArray = array(
-				'doktype' => 1,
-				'nav_hide' => 1
-			);
-			$res = $GLOBALS['TYPO3_DB']->exec_UPDATEquery('pages', 'doktype=5', $updateArray);
-			$dbQueries[] = str_replace(chr(10), ' ', $GLOBALS['TYPO3_DB']->debug_lastBuiltQuery);
+		if ($this->versionNumber >= 4005000) {
+			$sql = 'UPDATE sys_language SET flag=REPLACE(flag, \'.gif\', \'\') WHERE flag LIKE \'%.gif\'';
+			$res = $GLOBALS['TYPO3_DB']->sql_query($sql);
+			$dbQueries[] = $sql;
+			if ($GLOBALS['TYPO3_DB']->sql_error()) {
+				$customMessages = 'SQL-ERROR: ' . htmlspecialchars($GLOBALS['TYPO3_DB']->sql_error());
+			} else {
+				$result = TRUE;
+			}
+			$sql = 'UPDATE sys_language SET flag=\'multiple\' WHERE flag=\'multi-language\'';
+			$res = $GLOBALS['TYPO3_DB']->sql_query($sql);
+			$dbQueries[] = $sql;
 			if ($GLOBALS['TYPO3_DB']->sql_error()) {
 				$customMessages = 'SQL-ERROR: ' . htmlspecialchars($GLOBALS['TYPO3_DB']->sql_error());
 			} else {
@@ -81,6 +89,5 @@ class NotInMenuUpdate extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
 	}
 
 }
-
 
 ?>

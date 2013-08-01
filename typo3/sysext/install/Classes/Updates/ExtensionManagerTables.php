@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Install\CoreUpdates;
+namespace TYPO3\CMS\Install\Updates;
 
 /***************************************************************
  *  Copyright notice
@@ -26,17 +26,21 @@ namespace TYPO3\CMS\Install\CoreUpdates;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Contains the update class for filling the basic repository record of the extension manager
  *
  * @author Georg Ringer <typo3@ringerge.org>
  */
-class ExtensionManagerTables extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
+class ExtensionManagerTables extends AbstractUpdate {
 
+	/**
+	 * @var string
+	 */
 	protected $title = 'Add the default Extension Manager database tables';
 
 	/**
-	 * @var null|\TYPO3\CMS\Install\Service\SqlSchemaMigrationService
+	 * @var NULL|\TYPO3\CMS\Install\Service\SqlSchemaMigrationService
 	 */
 	protected $installToolSqlParser = NULL;
 

@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Install\Updates;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Performs certain DB updates in order to ensure that the DB fields
  * are set properly. Currently this is used for ensuring that there
@@ -30,9 +31,8 @@ namespace TYPO3\CMS\Install\Updates;
  * parent records (e.g. a tt_content record) are not on PID=0
  *
  * @author Benni Mack <benni@typo3.org>
- * @license http://www.gnu.org/copyleft/gpl.html
  */
-class ReferenceIntegrityUpdateWizard extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
+class ReferenceIntegrityUpdateWizard extends AbstractUpdate {
 
 	/**
 	 * @var string
@@ -42,8 +42,8 @@ class ReferenceIntegrityUpdateWizard extends \TYPO3\CMS\Install\Updates\Abstract
 	/**
 	 * Checks if an update is needed
 	 *
-	 * @param 	string		&$description: The description for the update
-	 * @return 	boolean		TRUE if an update is needed, FALSE otherwise
+	 * @param string &$description The description for the update
+	 * @return boolean TRUE if an update is needed, FALSE otherwise
 	 */
 	public function checkForUpdate(&$description) {
 		$description = 'Checks if there are file references that are on the root level. This could have happened due to a misconfigured previous migration.';
@@ -53,9 +53,9 @@ class ReferenceIntegrityUpdateWizard extends \TYPO3\CMS\Install\Updates\Abstract
 	/**
 	 * Performs the database update.
 	 *
-	 * @param 	array		&$dbQueries: queries done in this update
-	 * @param 	mixed		&$customMessages: custom messages
-	 * @return 	boolean		TRUE on success, FALSE on error
+	 * @param array &$dbQueries Queries done in this update
+	 * @param mixed &$customMessages Custom messages
+	 * @return boolean TRUE on success, FALSE on error
 	 */
 	public function performUpdate(array &$dbQueries, &$customMessages) {
 		$updates = $this->getRequiredUpdates();
@@ -90,7 +90,7 @@ class ReferenceIntegrityUpdateWizard extends \TYPO3\CMS\Install\Updates\Abstract
 	}
 
 	/**
-	 * fetches a list of all sys_file_references that have PID=0
+	 * Fetches a list of all sys_file_references that have PID=0
 	 *
 	 * @return mixed
 	 */
@@ -103,7 +103,7 @@ class ReferenceIntegrityUpdateWizard extends \TYPO3\CMS\Install\Updates\Abstract
 	}
 
 	/**
-	 * fetches all sys_file_reference records that are on PID=0 BUT their counter parts (the target record)
+	 * Fetches all sys_file_reference records that are on PID=0 BUT their counter parts (the target record)
 	 * is NOT on pid=0
 	 *
 	 * @return array
@@ -137,6 +137,5 @@ class ReferenceIntegrityUpdateWizard extends \TYPO3\CMS\Install\Updates\Abstract
 		return $inproperConnectedReferences;
 	}
 }
-
 
 ?>

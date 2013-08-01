@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Install\CoreUpdates;
+namespace TYPO3\CMS\Install\Updates;
 
 /***************************************************************
  *  Copyright notice
@@ -26,12 +26,13 @@ namespace TYPO3\CMS\Install\CoreUpdates;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Contains the update class for not installed t3skin. Used by the update wizard in the install tool.
  *
- * @author 	Steffen Ritter <info@rs-websystems.de>
+ * @author Steffen Ritter <info@rs-websystems.de>
  */
-class T3skinUpdate extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
+class T3skinUpdate extends AbstractUpdate {
 
 	/**
 	 * @var string
@@ -41,8 +42,8 @@ class T3skinUpdate extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
 	/**
 	 * Checks if t3skin is not installed.
 	 *
-	 * @param 	string		&$description: The description for the update
-	 * @return 	boolean		whether an update is needed (TRUE) or not (FALSE)
+	 * @param string &$description The description for the update
+	 * @return boolean Whether an update is needed (TRUE) or not (FALSE)
 	 */
 	public function checkForUpdate(&$description) {
 		$result = FALSE;
@@ -58,8 +59,8 @@ class T3skinUpdate extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
 	/**
 	 * second step: get user info
 	 *
-	 * @param 	string		input prefix, all names of form fields have to start with this. Append custom name in [ ... ]
-	 * @return 	string		HTML output
+	 * @param string Input prefix, all names of form fields have to start with this. Append custom name in [ ... ]
+	 * @return string HTML output
 	 */
 	public function getUserInput($inputPrefix) {
 		$content = '<strong>Install the system extension</strong><br />You are about to install the extension "t3skin".';
@@ -69,9 +70,9 @@ class T3skinUpdate extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
 	/**
 	 * performs the action of the UpdateManager
 	 *
-	 * @param 	array		&$dbQueries: queries done in this update
-	 * @param 	mixed		&$customMessages: custom messages
-	 * @return 	bool		whether everything went smoothly or not
+	 * @param array &$dbQueries Queries done in this update
+	 * @param mixed &$customMessages Custom messages
+	 * @return boolean Whether everything went smoothly or not
 	 */
 	public function performUpdate(array &$dbQueries, &$customMessages) {
 		$result = FALSE;
@@ -91,6 +92,5 @@ class T3skinUpdate extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
 	}
 
 }
-
 
 ?>

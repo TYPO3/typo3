@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Install\CoreUpdates;
+namespace TYPO3\CMS\Install\Updates;
 
 /***************************************************************
  *  Copyright notice
@@ -26,10 +26,15 @@ namespace TYPO3\CMS\Install\CoreUpdates;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Migrates the old media FlexForm to the new
  */
-class RootTemplateUpdate extends \TYPO3\CMS\Install\Updates\AbstractUpdate implements \TYPO3\CMS\Install\Updates\InstallerProcessInterface {
+class RootTemplateUpdate extends AbstractUpdate implements InstallerProcessInterface {
+
+	/**
+	 * @var string
+	 */
 	protected $title = 'Integrate TypoScript Root Template';
 
 	/**
@@ -56,9 +61,9 @@ class RootTemplateUpdate extends \TYPO3\CMS\Install\Updates\AbstractUpdate imple
 	/**
 	 * Performs updates and creates one page and Typoscript root template.
 	 *
-	 * @param 	array		&$dbQueries: queries done in this update
-	 * @param 	mixed		&$customMessages: custom messages
-	 * @return 	boolean		whether the updated was made or not
+	 * @param array &$dbQueries Queries done in this update
+	 * @param mixed &$customMessages Custom messages
+	 * @return boolean Whether the updated was made or not
 	 */
 	public function performUpdate(array &$dbQueries, &$customMessages) {
 		$now = time();
@@ -156,6 +161,5 @@ class RootTemplateUpdate extends \TYPO3\CMS\Install\Updates\AbstractUpdate imple
 		return $templates;
 	}
 }
-
 
 ?>

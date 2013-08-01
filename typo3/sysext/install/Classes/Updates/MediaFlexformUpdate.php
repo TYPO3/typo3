@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Install\CoreUpdates;
+namespace TYPO3\CMS\Install\Updates;
 
 /***************************************************************
  *  Copyright notice
@@ -26,11 +26,15 @@ namespace TYPO3\CMS\Install\CoreUpdates;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Migrates the old media FlexForm to the new
  */
-class MediaFlexformUpdate extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
+class MediaFlexformUpdate extends AbstractUpdate {
 
+	/**
+	 * @var string
+	 */
 	protected $title = 'FlexForm Data from Media Element';
 
 	/**
@@ -53,12 +57,18 @@ class MediaFlexformUpdate extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
 	}
 
 	/**
-	 * @param 	array		&$dbQueries: queries done in this update
-	 * @param 	mixed		&$customMessages: custom messages
-	 * @return 	boolean		whether the updated was made or not
+	 * Perform update
+	 *
+	 * @param array &$dbQueries Queries done in this update
+	 * @param mixed &$customMessages Custom messages
+	 * @return boolean Whether the updated was made or not
 	 */
 	public function performUpdate(array &$dbQueries, &$customMessages) {
-		$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid,pi_flexform', $GLOBALS['TYPO3_CONF_VARS']['SYS']['contentTable'], 'CType = "media" AND pi_flexform LIKE "%<sheet index=\\"sDEF\\">%"');
+		$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+			'uid,pi_flexform',
+			$GLOBALS['TYPO3_CONF_VARS']['SYS']['contentTable'],
+			'CType = "media" AND pi_flexform LIKE "%<sheet index=\\"sDEF\\">%"'
+		);
 		/** @var $flexformTools \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools */
 		$flexformTools = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\FlexForm\\FlexFormTools');
 		foreach ($rows as $row) {
@@ -92,12 +102,15 @@ class MediaFlexformUpdate extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
 			}
 			$newXML = $flexformTools->flexArray2Xml($data, TRUE);
 			$newXML = str_replace('encoding=""', 'encoding="utf-8"', $newXML);
-			$GLOBALS['TYPO3_DB']->exec_UPDATEquery($GLOBALS['TYPO3_CONF_VARS']['SYS']['contentTable'], 'uid = ' . $row['uid'], array('pi_flexform' => $newXML));
+			$GLOBALS['TYPO3_DB']->exec_UPDATEquery(
+				$GLOBALS['TYPO3_CONF_VARS']['SYS']['contentTable'],
+				'uid = ' . $row['uid'],
+				array('pi_flexform' => $newXML)
+			);
 		}
 		return TRUE;
 	}
 
 }
-
 
 ?>

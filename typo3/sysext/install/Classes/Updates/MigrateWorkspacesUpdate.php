@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Install\CoreUpdates;
+namespace TYPO3\CMS\Install\Updates;
 
 /***************************************************************
  *  Copyright notice
@@ -26,22 +26,29 @@ namespace TYPO3\CMS\Install\CoreUpdates;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Migrates workspaces from TYPO3 versions below 4.5.
  *
  * @author Tolleiv Nietsch <info@tolleiv.de>
  */
-class MigrateWorkspacesUpdate extends \TYPO3\CMS\Install\CoreUpdates\InstallSysExtsUpdate {
+class MigrateWorkspacesUpdate extends \TYPO3\CMS\Install\Updates\InstallSysExtsUpdate {
 
+	/**
+	 * @var string
+	 */
 	protected $title = 'Versioning and Workspaces';
 
+	/**
+	 * @var array
+	 */
 	public $sqlQueries;
 
 	/**
 	 * Checks if an update is needed
 	 *
-	 * @param 	string		&$description: The description for the update, which will be updated with a description of the script's purpose
-	 * @return 	boolean		whether an update is needed (TRUE) or not (FALSE)
+	 * @param string &$description The description for the update, which will be updated with a description of the script's purpose
+	 * @return boolean Whether an update is needed (TRUE) or not (FALSE)
 	 */
 	public function checkForUpdate(&$description) {
 		$result = FALSE;
@@ -54,7 +61,10 @@ class MigrateWorkspacesUpdate extends \TYPO3\CMS\Install\CoreUpdates\InstallSysE
 		if ($this->versionNumber >= 4005000) {
 			// If neither version nor workspaces is installed, we're not doing a migration
 			// Present the user with the choice of activating versioning and workspaces
-			if (!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('version') && !\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('workspaces')) {
+			if (
+				!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('version')
+				&& !\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('workspaces')
+			) {
 				$result = TRUE;
 				// Override the default description
 				$description = 'Activates the usage of workspaces in your installation. Workspaces let you edit elements
@@ -64,7 +74,10 @@ class MigrateWorkspacesUpdate extends \TYPO3\CMS\Install\CoreUpdates\InstallSysE
 					install "fluid" and "extbase" too, as they are used by the "workspaces" extension).';
 			} else {
 				\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->loadExtensionTables(FALSE);
-				if (!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('version') || !\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('workspaces')) {
+				if (
+					!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('version')
+					|| !\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('workspaces')
+				) {
 					$result = TRUE;
 					$reason .= ' Both extensions "version" and "workspaces" need to be
 						present to use the entire versioning and workflow featureset of TYPO3.';
@@ -99,7 +112,10 @@ class MigrateWorkspacesUpdate extends \TYPO3\CMS\Install\CoreUpdates\InstallSysE
 	 */
 	public function getUserInput($inputPrefix) {
 		$content = '';
-		if (!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('version') && !\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('workspaces')) {
+		if (
+			!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('version')
+			&& !\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('workspaces')
+		) {
 			// We need feedback only if versioning is not activated at all
 			// In such a case we want to leave the user with the choice of not activating the stuff at all
 			$content = '
@@ -126,9 +142,9 @@ class MigrateWorkspacesUpdate extends \TYPO3\CMS\Install\CoreUpdates\InstallSysE
 	/**
 	 * Performs the database update. Changes existing workspaces to use the new custom workspaces
 	 *
-	 * @param 	array		&$databaseQueries: queries done in this update
-	 * @param 	mixed		&$customMessages: custom messages
-	 * @return 	boolean		whether it worked (TRUE) or not (FALSE)
+	 * @param array &$databaseQueries: queries done in this update
+	 * @param mixed &$customMessages: custom messages
+	 * @return boolean Whether it worked (TRUE) or not (FALSE)
 	 */
 	public function performUpdate(array &$databaseQueries, &$customMessages) {
 		$result = TRUE;
@@ -230,10 +246,10 @@ class MigrateWorkspacesUpdate extends \TYPO3\CMS\Install\CoreUpdates\InstallSysE
 	/**
 	 * Create a new stage for the given workspace
 	 *
-	 * @param 		integer	Workspace ID
-	 * @param 		string		The label of the new stage
-	 * @param 		string		The users or groups which are authorized for that stage
-	 * @return 	integer	The id of the new stage
+	 * @param integer Workspace ID
+	 * @param string The label of the new stage
+	 * @param string The users or groups which are authorized for that stage
+	 * @return integer	The id of the new stage
 	 */
 	protected function createReviewStageForWorkspace($workspaceId, $stageLabel, $stageMembers) {
 		$data = array(
@@ -250,10 +266,10 @@ class MigrateWorkspacesUpdate extends \TYPO3\CMS\Install\CoreUpdates\InstallSysE
 	/**
 	 * Updates the stages of placeholder records within the given workspace from $oldId to $newId
 	 *
-	 * @param 		integer	Workspace ID
-	 * @param 		integer	Old stage od
-	 * @param 		integer	New stage od
-	 * @return 	void
+	 * @param integer Workspace ID
+	 * @param integer Old stage od
+	 * @param integer New stage od
+	 * @return void
 	 */
 	protected function migrateOldRecordsToStage($workspaceId, $oldStageId, $newStageId) {
 		$tables = array_keys($GLOBALS['TCA']);
@@ -369,6 +385,5 @@ class MigrateWorkspacesUpdate extends \TYPO3\CMS\Install\CoreUpdates\InstallSysE
 	}
 
 }
-
 
 ?>

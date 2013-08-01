@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Install\CoreUpdates;
+namespace TYPO3\CMS\Install\Updates;
 
 /***************************************************************
  *  Copyright notice
@@ -26,27 +26,30 @@ namespace TYPO3\CMS\Install\CoreUpdates;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Contains the update class for merging advanced and normal pagetype.
  *
  * @author Steffen Kamper <info@sk-typo3.de>
- * @version
  */
-class ImagecolsUpdate extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
+class MergeAdvancedUpdate extends AbstractUpdate {
 
-	protected $title = 'Update Existing Text with Image Content Elements';
+	/**
+	 * @var string
+	 */
+	protected $title = 'Update Pages with Pagetype "Advanced"';
 
 	/**
 	 * Checks if an update is needed
 	 *
-	 * @param 	string		&$description: The description for the update
-	 * @return 	boolean		whether an update is needed (TRUE) or not (FALSE)
+	 * @param string &$description: The description for the update
+	 * @return boolean whether an update is needed (TRUE) or not (FALSE)
 	 */
 	public function checkForUpdate(&$description) {
 		$result = FALSE;
-		$description = 'Sets tt_content.imagecols = 1 to all entries having "0". This is needed to have a valid value for imagecols.';
-		if ($this->versionNumber >= 4003000) {
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'tt_content', 'CTYPE IN (\'textpic\', \'image\') AND imagecols=0', '', '', '1');
+		$description = 'Merges the "Advanced" pagetype (doktype 2) to "Standard" (doktype 1) because "Standard" now has the same features, and "Advanced" is not needed anymore.';
+		if ($this->versionNumber >= 4002000) {
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'pages', 'doktype=2', '', '', '1');
 			if ($GLOBALS['TYPO3_DB']->sql_num_rows($res)) {
 				$result = TRUE;
 			}
@@ -58,17 +61,17 @@ class ImagecolsUpdate extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
 	/**
 	 * Performs the database update. Changes the doktype from 2 (advanced) to 1 (standard)
 	 *
-	 * @param 	array		&$dbQueries: queries done in this update
-	 * @param 	mixed		&$customMessages: custom messages
-	 * @return 	boolean		whether it worked (TRUE) or not (FALSE)
+	 * @param array &$dbQueries Queries done in this update
+	 * @param mixed &$customMessages Custom messages
+	 * @return boolean Whether it worked (TRUE) or not (FALSE)
 	 */
 	public function performUpdate(array &$dbQueries, &$customMessages) {
 		$result = FALSE;
-		if ($this->versionNumber >= 4003000) {
+		if ($this->versionNumber >= 4002000) {
 			$updateArray = array(
-				'imagecols' => 1
+				'doktype' => 1
 			);
-			$res = $GLOBALS['TYPO3_DB']->exec_UPDATEquery('tt_content', 'CTYPE IN (\'textpic\', \'image\') AND imagecols=0', $updateArray);
+			$res = $GLOBALS['TYPO3_DB']->exec_UPDATEquery('pages', 'doktype=2', $updateArray);
 			$dbQueries[] = str_replace(chr(10), ' ', $GLOBALS['TYPO3_DB']->debug_lastBuiltQuery);
 			if ($GLOBALS['TYPO3_DB']->sql_error()) {
 				$customMessages = 'SQL-ERROR: ' . htmlspecialchars($GLOBALS['TYPO3_DB']->sql_error());
@@ -80,6 +83,5 @@ class ImagecolsUpdate extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
 	}
 
 }
-
 
 ?>
