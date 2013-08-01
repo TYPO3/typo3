@@ -207,7 +207,7 @@ class UpdateWizard extends Action\AbstractAction implements Action\ActionInterfa
 	}
 
 	/**
-	 * Creates instance of an upgrade object, setting the pObj, versionNumber and pObj
+	 * Creates instance of an upgrade object, setting the pObj, versionNumber and userInput
 	 *
 	 * @param string $className The class name
 	 * @param string $identifier The identifier of upgrade object - needed to fetch user input

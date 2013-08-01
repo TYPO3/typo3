@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Install\CoreUpdates;
+namespace TYPO3\CMS\Install\Updates;
 
 /***************************************************************
  *  Copyright notice
@@ -26,21 +26,24 @@ namespace TYPO3\CMS\Install\CoreUpdates;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Contains the update class for the split of css styled content templates. Used by the update wizard in the install tool.
  *
  * @author Susanne Moog <typo3@susanne-moog.de>
  */
-class CscSplitUpdate extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
+class CscSplitUpdate extends AbstractUpdate {
 
+	/**
+	 * @var string
+	 */
 	protected $title = 'Split TypoScript Templates from CSS Styled Content';
 
 	/**
 	 * Function which checks if update is needed. Called in the beginning of an update process.
 	 *
-	 * @param 	string		pointer to description for the update
-	 * @return 	boolean		TRUE if update is needs to be performed, FALSE otherwise.
-	 * @todo Define visibility
+	 * @param string &$description Pointer to description for the update
+	 * @return boolean TRUE if update is needs to be performed, FALSE otherwise.
 	 */
 	public function checkForUpdate(&$description) {
 		$templates = $this->getTemplatesWithCsc($dbQueries, $customMessages);
@@ -55,10 +58,9 @@ class CscSplitUpdate extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
 	/**
 	 * Performs the update itself
 	 *
-	 * @param 	array		pointer where to insert all DB queries made, so they can be shown to the user if wanted
-	 * @param 	string		pointer to output custom messages
-	 * @return 	boolean		TRUE if update succeeded, FALSE otherwise
-	 * @todo Define visibility
+	 * @param array &$dbQueries Pointer where to insert all DB queries made, so they can be shown to the user if wanted
+	 * @param string &$customMessages Pointer to output custom messages
+	 * @return boolean TRUE if update succeeded, FALSE otherwise
 	 */
 	public function performUpdate(array &$dbQueries, &$customMessages) {
 		$templates = $this->getTemplatesWithCsc($dbQueries, $customMessages);
@@ -74,12 +76,11 @@ class CscSplitUpdate extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
 	/**
 	 * Gets the templates that include the static css styled content template
 	 *
-	 * @param 	array		pointer where to insert all DB queries made, so they can be shown to the user if wanted
-	 * @param 	string		pointer to output custom messages
-	 * @return 	array		uid and inclusion string for the templates, that include csc
-	 * @todo Define visibility
+	 * @param array &$dbQueries Pointer where to insert all DB queries made, so they can be shown to the user if wanted
+	 * @param string &$customMessages Pointer to output custom messages
+	 * @return array uid and inclusion string for the templates, that include csc
 	 */
-	public function getTemplatesWithCsc(&$dbQueries, &$customMessages) {
+	protected function getTemplatesWithCsc(&$dbQueries, &$customMessages) {
 		$fields = 'uid, include_static_file';
 		$table = 'sys_template';
 		$where = 'include_static_file LIKE "%EXT:css_styled_content/static/%"';
@@ -98,11 +99,10 @@ class CscSplitUpdate extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
 	/**
 	 * Take a list of templates and filter them if they need an update or not
 	 *
-	 * @param 	array		uid and inclusion string for the templates, that include csc
-	 * @return 	array		uid and inclusion string for the templates, that include csc and need an update
-	 * @todo Define visibility
+	 * @param array $allTemplates uid and inclusion string for the templates, that include csc
+	 * @return array uid and inclusion string for the templates, that include csc and need an update
 	 */
-	public function findUpdateableTemplatesWithCsc($allTemplates) {
+	protected function findUpdateableTemplatesWithCsc($allTemplates) {
 		$compatVersion = \TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionNumberToInteger($GLOBALS['TYPO3_CONF_VARS']['SYS']['compat_version']);
 		$currentVersion = \TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionNumberToInteger(TYPO3_branch);
 		$templatesCount = count($allTemplates);
@@ -163,12 +163,11 @@ class CscSplitUpdate extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
 	/**
 	 * updates the template records to include the new css styled content templates, according to the current compat version
 	 *
-	 * @param 	array		template records to update, fetched by getTemplates() and filtered by
-	 * @param 	array		pointer where to insert all DB queries made, so they can be shown to the user if wanted
-	 * @param 	string		pointer to output custom messages
-	 * @todo Define visibility
+	 * @param array $templates Template records to update, fetched by getTemplates() and filtered by
+	 * @param array &$dbQueries Pointer where to insert all DB queries made, so they can be shown to the user if wanted
+	 * @param string &$customMessages Pointer to output custom messages
 	 */
-	public function updateCscTemplates($templates, &$dbQueries, &$customMessages) {
+	protected function updateCscTemplates($templates, &$dbQueries, &$customMessages) {
 		foreach ($templates as $template) {
 			$table = 'sys_template';
 			$where = 'uid =' . $template['uid'];
@@ -184,6 +183,5 @@ class CscSplitUpdate extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
 	}
 
 }
-
 
 ?>

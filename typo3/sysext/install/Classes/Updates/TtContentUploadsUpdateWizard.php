@@ -23,16 +23,17 @@ namespace TYPO3\CMS\Install\Updates;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Upgrade wizard which goes through all files referenced in the tt_content.media filed
  * and creates sys_file records as well as sys_file_reference records for the individual usages.
  *
  * @author Steffen Ritter <steffen.ritter@typo3.org>
- * @license http://www.gnu.org/copyleft/gpl.html
  */
-class TtContentUploadsUpdateWizard extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
+class TtContentUploadsUpdateWizard extends AbstractUpdate {
 
 	const FOLDER_ContentUploads = '_migrated/content_uploads';
+
 	/**
 	 * @var string
 	 */
@@ -89,15 +90,19 @@ class TtContentUploadsUpdateWizard extends \TYPO3\CMS\Install\Updates\AbstractUp
 	/**
 	 * Checks if an update is needed
 	 *
-	 * @param 	string		&$description: The description for the update
-	 * @return 	boolean		TRUE if an update is needed, FALSE otherwise
+	 * @param string &$description The description for the update
+	 * @return boolean TRUE if an update is needed, FALSE otherwise
 	 */
 	public function checkForUpdate(&$description) {
 		$updateNeeded = FALSE;
 		// Fetch records where the field media does not contain a plain integer value
 		// * check whether media field is not empty
 		// * then check whether media field does not contain a reference count (= not integer)
-		$notMigratedRowsCount = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('uid', 'tt_content', 'media <> \'\' AND CAST(CAST(media AS DECIMAL) AS CHAR) <> media OR (CType = \'uploads\' AND select_key != \'\')');
+		$notMigratedRowsCount = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows(
+			'uid',
+			'tt_content',
+			'media <> \'\' AND CAST(CAST(media AS DECIMAL) AS CHAR) <> media OR (CType = \'uploads\' AND select_key != \'\')'
+		);
 		if ($notMigratedRowsCount > 0) {
 			$description = 'There are Content Elements of type "upload" which are referencing files that are not using ' . ' the File Abstraction Layer. This wizard will move the files to fileadmin/' . self::FOLDER_ContentUploads . ' and index them.';
 			$updateNeeded = TRUE;
@@ -108,9 +113,9 @@ class TtContentUploadsUpdateWizard extends \TYPO3\CMS\Install\Updates\AbstractUp
 	/**
 	 * Performs the database update.
 	 *
-	 * @param 	array		&$dbQueries: queries done in this update
-	 * @param 	mixed		&$customMessages: custom messages
-	 * @return 	boolean		TRUE on success, FALSE on error
+	 * @param array &$dbQueries Queries done in this update
+	 * @param mixed &$customMessages Custom messages
+	 * @return boolean TRUE on success, FALSE on error
 	 */
 	public function performUpdate(array &$dbQueries, &$customMessages) {
 		$this->init();
@@ -211,11 +216,13 @@ class TtContentUploadsUpdateWizard extends \TYPO3\CMS\Install\Updates\AbstractUp
 	 */
 	protected function getRecordsFromTable() {
 		$fields = implode(',', array('uid', 'pid', 'select_key', 'media', 'imagecaption', 'titleText'));
-		$records = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows($fields, 'tt_content', 'media <> \'\' AND CAST(CAST(media AS DECIMAL) AS CHAR) <> media OR (CType = \'uploads\' AND select_key != \'\')');
+		$records = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+			$fields,
+			'tt_content', 'media <> \'\' AND CAST(CAST(media AS DECIMAL) AS CHAR) <> media OR (CType = \'uploads\' AND select_key != \'\')'
+		);
 		return $records;
 	}
 
 }
-
 
 ?>
