@@ -42,7 +42,7 @@ class FormUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return \TYPO3\CMS\Form\Utility\FormUtility
 	 */
 	static public function getInstance() {
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Form\\Utility\\FormUtility');
+		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(__CLASS__);
 	}
 
 	/**
