@@ -39,7 +39,7 @@ class BackendUtilityHook implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return \TYPO3\CMS\Workspaces\Hook\BackendUtilityHook
 	 */
 	static public function getInstance() {
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Workspaces\\Hook\\BackendUtilityHook');
+		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(__CLASS__);
 	}
 
 	/**
