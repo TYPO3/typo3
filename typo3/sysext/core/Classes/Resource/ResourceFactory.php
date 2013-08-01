@@ -46,7 +46,7 @@ class ResourceFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return ResourceFactory
 	 */
 	static public function getInstance() {
-		return GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\ResourceFactory');
+		return GeneralUtility::makeInstance(__CLASS__);
 	}
 
 	/**

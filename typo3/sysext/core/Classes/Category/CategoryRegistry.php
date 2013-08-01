@@ -50,7 +50,7 @@ class CategoryRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return \TYPO3\CMS\Core\Category\CategoryRegistry
 	 */
 	static public function getInstance() {
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Category\\CategoryRegistry');
+		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(__CLASS__);
 	}
 
 	/**
