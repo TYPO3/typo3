@@ -67,7 +67,10 @@ define('PATH_typo3', PATH_site.TYPO3_mainDir);
 require_once(PATH_t3lib.'class.t3lib_div.php');
 require_once(PATH_t3lib.'class.t3lib_extmgm.php');
 
-require(PATH_t3lib.'config_default.php');
+// This line should be removed because config_default.php is already loaded by typo3/init.php, included from typo3/thumbs.php.
+// Keeping it as fallback for because we cannot make sure that t3lib/thumbs.php is called directly.
+require_once(PATH_t3lib.'config_default.php');
+
 if (!defined ('TYPO3_db')) {
 	die ('The configuration file was not included.');
 }
