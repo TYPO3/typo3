@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Extbase\Tests\Unit\Scheduler;
+namespace TYPO3\CMS\Scheduler\Tests\Unit\Extbase;
 
 require_once __DIR__ . '/Fixtures/MockACommandController.php';
 require_once __DIR__ . '/Fixtures/MockBCommandController.php';
@@ -62,7 +62,7 @@ class FieldProviderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	protected $commandManager;
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Scheduler\FieldProvider|\PHPUnit_Framework_MockObject_MockObject|\Tx_Phpunit_Interface_AccessibleObject
+	 * @var \TYPO3\CMS\Scheduler\Extbase\FieldProvider|\PHPUnit_Framework_MockObject_MockObject|\Tx_Phpunit_Interface_AccessibleObject
 	 */
 	protected $fieldProvider;
 
@@ -71,14 +71,14 @@ class FieldProviderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$this->commandManager = $this->getMock('TYPO3\CMS\Extbase\Mvc\Cli\CommandManager', array('getAvailableCommands'));
 
 		$this->fieldProvider = $this->getAccessibleMock(
-			'\TYPO3\CMS\Extbase\Scheduler\FieldProvider',
+			'\TYPO3\CMS\Scheduler\Extbase\FieldProvider',
 			array('dummy'),
 			array(),
 			'',
 			FALSE
 		);
 
-		$this->command1 = $this->getAccessibleMock('TYPO3\CMS\Extbase\Mvc\Cli\Command', array('isInternal'), array('TYPO3\\CMS\\Extbase\\Tests\\MockACommandController', 'FuncA'));
+		$this->command1 = $this->getAccessibleMock('TYPO3\CMS\Extbase\Mvc\Cli\Command', array('isInternal'), array('TYPO3\\CMS\\Scheduler\\Tests\\MockACommandController', 'FuncA'));
 		$this->command1->_set('objectManager', $this->objectManager);
 		$this->command1->_set('reflectionService', $this->objectManager->get('TYPO3\CMS\Extbase\Reflection\ReflectionService'));
 		$this->command1->expects($this->any())->method('isInternal')->will($this->returnValue(FALSE));
@@ -88,7 +88,7 @@ class FieldProviderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$this->command2->_set('reflectionService', $this->objectManager->get('TYPO3\CMS\Extbase\Reflection\ReflectionService'));
 		$this->command2->expects($this->any())->method('isInternal')->will($this->returnValue(FALSE));
 
-		$this->command3 = $this->getAccessibleMock('TYPO3\CMS\Extbase\Mvc\Cli\Command', array('isInternal'), array('Tx_Extbase_Command_MockCCommandController', 'FuncC'));
+		$this->command3 = $this->getAccessibleMock('TYPO3\CMS\Extbase\Mvc\Cli\Command', array('isInternal'), array('Tx_Scheduler_Command_MockCCommandController', 'FuncC'));
 		$this->command3->_set('objectManager', $this->objectManager);
 		$this->command3->_set('reflectionService', $this->objectManager->get('TYPO3\CMS\Extbase\Reflection\ReflectionService'));
 		$this->command3->expects($this->any())->method('isInternal')->will($this->returnValue(FALSE));
@@ -106,9 +106,9 @@ class FieldProviderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 */
 	public function getCommandControllerActionFieldFetchesCorrectClassNames() {
 		$actualResult = $this->fieldProvider->_call('getCommandControllerActionField', array());
-		$this->assertContains('<option title="test" value="extbase:mocka:funca">Extbase MockA: FuncA</option>', $actualResult['code']);
+		$this->assertContains('<option title="test" value="scheduler:mocka:funca">Scheduler MockA: FuncA</option>', $actualResult['code']);
 		$this->assertContains('<option title="test" value="mypkg:mockb:funcb">Mypkg MockB: FuncB</option>', $actualResult['code']);
-		$this->assertContains('<option title="test" value="extbase:mockc:funcc">Extbase MockC: FuncC</option>', $actualResult['code']);
+		$this->assertContains('<option title="test" value="scheduler:mockc:funcc">Scheduler MockC: FuncC</option>', $actualResult['code']);
 	}
 
 	/**
@@ -120,7 +120,7 @@ class FieldProviderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		eval('namespace ' . __NAMESPACE__ . '; class ' . $className . ' extends \\TYPO3\\CMS\\Extbase\\Mvc\\Controller\\AbstractController { function getExtensionName() { return $this->extensionName; } }');
 		$classNameNamespaced = __NAMESPACE__ . '\\' . $className;
 		$mockController = new $classNameNamespaced();
-		$expectedResult = 'Extbase';
+		$expectedResult = 'Scheduler';
 		$actualResult = $mockController->getExtensionName();
 		$this->assertSame($expectedResult, $actualResult);
 	}
@@ -142,9 +142,9 @@ class FieldProviderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$expectedAdditionalFields = array(
 			'action' => array(
 				'code' => '<select name="tx_scheduler[task_extbase][action]">' . LF
-					. '<option title="test" value="extbase:mocka:funca" selected="selected">Extbase MockA: FuncA</option>' . LF
+					. '<option title="test" value="scheduler:mocka:funca" selected="selected">Scheduler MockA: FuncA</option>' . LF
 					. '<option title="test" value="mypkg:mockb:funcb">Mypkg MockB: FuncB</option>' . LF
-					. '<option title="test" value="extbase:mockc:funcc">Extbase MockC: FuncC</option>' . LF
+					. '<option title="test" value="scheduler:mockc:funcc">Scheduler MockC: FuncC</option>' . LF
 					. '</select>',
 				'label' => 'CommandController Command. <em>Save and reopen to define command arguments</em>'
 			),
@@ -159,7 +159,7 @@ class FieldProviderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		);
 
 		$taskInfo = array();
-		$task = new \TYPO3\CMS\Extbase\Scheduler\Task();
+		$task = new \TYPO3\CMS\Scheduler\Extbase\Task();
 		$task->setCommandIdentifier($this->command1->getCommandIdentifier());
 		$schedulerModule = new \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController();
 

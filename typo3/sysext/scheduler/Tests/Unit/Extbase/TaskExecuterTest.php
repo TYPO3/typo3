@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Extbase\Tests\Unit\Scheduler;
+namespace TYPO3\CMS\Scheduler\Tests\Unit\Extbase;
 
 require_once __DIR__ . '/Fixtures/MockACommandController.php';
 
@@ -60,16 +60,16 @@ class TaskExecutorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	protected $configurationManager;
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Scheduler\TaskExecutor|\PHPUnit_Framework_MockObject_MockObject|\Tx_Phpunit_Interface_AccessibleObject
+	 * @var \TYPO3\CMS\Scheduler\Extbase\TaskExecutor|\PHPUnit_Framework_MockObject_MockObject|\Tx_Phpunit_Interface_AccessibleObject
 	 */
 	protected $taskExecuter;
 
 	public function setUp() {
-		$this->controller = $this->getAccessibleMock('TYPO3\CMS\Extbase\Tests\MockACommandController', array('dummy'));
+		$this->controller = $this->getAccessibleMock('TYPO3\CMS\Scheduler\Tests\MockACommandController', array('dummy'));
 		$this->controller->_set('reflectionService', $this->objectManager->get('TYPO3\CMS\Extbase\Reflection\ReflectionService'));
 		$this->controller->_set('objectManager', $this->objectManager);
 
-		$command = new \TYPO3\CMS\Extbase\Mvc\Cli\Command('TYPO3\CMS\Extbase\Tests\MockACommandController', 'funcA');
+		$command = new \TYPO3\CMS\Extbase\Mvc\Cli\Command('TYPO3\CMS\Scheduler\Tests\MockACommandController', 'funcA');
 		$nullBackend = new \TYPO3\CMS\Core\Cache\Backend\NullBackend('production');
 		$variableFrontend = new \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend('foo', $nullBackend);
 
@@ -102,15 +102,15 @@ class TaskExecutorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$dispatcher->expects($this->any())->method('resolveController')->will($this->returnValue($this->controller));
 		$dispatcher->_set('signalSlotDispatcher', $this->objectManager->get('TYPO3\CMS\Extbase\SignalSlot\Dispatcher'));
 
-		$this->taskExecuter = $this->getAccessibleMock('TYPO3\CMS\Extbase\Scheduler\TaskExecutor', array('dummy', 'shutdown', 'getDispatcher'));
+		$this->taskExecuter = $this->getAccessibleMock('TYPO3\CMS\Scheduler\Extbase\TaskExecutor', array('dummy', 'shutdown', 'getDispatcher'));
 		$this->taskExecuter->expects($this->any())->method('getDispatcher')->will($this->returnValue($dispatcher));
 		$this->taskExecuter->_set('objectManager', $this->objectManager);
 		$this->taskExecuter->_set('commandManager', $this->commandManager);
 		$this->taskExecuter->_set('configurationManager', $this->configurationManager);
 		$this->taskExecuter->initializeObject();
 
-		/** @var $task \TYPO3\CMS\Extbase\Scheduler\Task|\PHPUnit_Framework_MockObject_MockObject */
-		$task = $this->getMock('TYPO3\CMS\Extbase\Scheduler\Task', array('dummy', 'getCommandIdentifier'));
+		/** @var $task \TYPO3\CMS\Scheduler\Extbase\Task|\PHPUnit_Framework_MockObject_MockObject */
+		$task = $this->getMock('TYPO3\CMS\Scheduler\Extbase\Task', array('dummy', 'getCommandIdentifier'));
 		$task->expects($this->any())->method('getCommandIdentifier')->will($this->returnValue('extbase:controller:command'));
 		$this->taskExecuter->execute($task);
 

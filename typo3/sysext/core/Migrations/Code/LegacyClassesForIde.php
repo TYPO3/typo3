@@ -2784,17 +2784,17 @@ class Tx_Extbase_Reflection_Service extends \TYPO3\CMS\Extbase\Reflection\Reflec
 /**
  * @deprecated since 6.0 will be removed in 7.0
  */
-class Tx_Extbase_Scheduler_FieldProvider extends \TYPO3\CMS\Extbase\Scheduler\FieldProvider {}
+class Tx_Extbase_Scheduler_FieldProvider extends \TYPO3\CMS\Scheduler\Extbase\FieldProvider {}
 
 /**
  * @deprecated since 6.0 will be removed in 7.0
  */
-class Tx_Extbase_Scheduler_Task extends \TYPO3\CMS\Extbase\Scheduler\Task {}
+class Tx_Extbase_Scheduler_Task extends \TYPO3\CMS\Scheduler\Extbase\Task {}
 
 /**
  * @deprecated since 6.0 will be removed in 7.0
  */
-class Tx_Extbase_Scheduler_TaskExecutor extends \TYPO3\CMS\Extbase\Scheduler\TaskExecutor {}
+class Tx_Extbase_Scheduler_TaskExecutor extends \TYPO3\CMS\Scheduler\Extbase\TaskExecutor {}
 
 /**
  * @deprecated since 6.0 will be removed in 7.0

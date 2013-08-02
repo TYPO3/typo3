@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Extbase\Tests\Unit\Scheduler;
+namespace TYPO3\CMS\Scheduler\Tests\Unit\Extbase;
 
 /***************************************************************
  *  Copyright notice
@@ -35,18 +35,18 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Scheduler;
 class TaskTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Scheduler\Task|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface
+	 * @var \TYPO3\CMS\Scheduler\Extbase\Task|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface
 	 */
 	protected $task;
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Scheduler\TaskExecutor|\PHPUnit_Framework_MockObject_MockObject
+	 * @var \TYPO3\CMS\Scheduler\Extbase\TaskExecutor|\PHPUnit_Framework_MockObject_MockObject
 	 */
 	protected $taskExecutor;
 
 	public function setUp() {
-		$this->taskExecutor = $this->getMock('TYPO3\\CMS\\Extbase\\Scheduler\\TaskExecutor', array('execute'));
-		$this->task = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Scheduler\\Task', array('logException'), array(), '', FALSE);
+		$this->taskExecutor = $this->getMock('TYPO3\\CMS\\Scheduler\\Extbase\\TaskExecutor', array('execute'));
+		$this->task = $this->getAccessibleMock('TYPO3\\CMS\\Scheduler\\Extbase\\Task', array('logException'), array(), '', FALSE);
 		$this->task->_set('objectManager', \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager'));
 		$this->task->_set('commandManager', \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Mvc\\Cli\\CommandManager'));
 	}

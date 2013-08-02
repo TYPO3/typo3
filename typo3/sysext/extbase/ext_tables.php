@@ -51,11 +51,11 @@ if (!isset($TCA['fe_groups']['ctrl']['type'])) {
 	$TCA['fe_groups']['ctrl']['type'] = 'tx_extbase_type';
 }
 $TCA['fe_groups']['types']['Tx_Extbase_Domain_Model_FrontendUserGroup'] = $TCA['fe_groups']['types']['0'];
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['TYPO3\\CMS\\Extbase\\Scheduler\\Task'] = array(
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['TYPO3\\CMS\\Scheduler\\Extbase\\Task'] = array(
 	'extension' => $_EXTKEY,
 	'title' => 'LLL:EXT:extbase/Resources/Private/Language/locallang_db.xlf:task.name',
 	'description' => 'LLL:EXT:extbase/Resources/Private/Language/locallang_db.xlf:task.description',
-	'additionalFields' => 'TYPO3\\CMS\\Extbase\\Scheduler\\FieldProvider'
+	'additionalFields' => 'TYPO3\\CMS\\Scheduler\\Extbase\\FieldProvider'
 );
 
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['checkFlexFormValue'][] = 'TYPO3\CMS\Extbase\Hook\DataHandler\CheckFlexFormValue';

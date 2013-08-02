@@ -1,5 +1,4 @@
 <?php
-namespace TYPO3\CMS\Extbase\Tests;
 
 /***************************************************************
  *  Copyright notice
@@ -28,18 +27,14 @@ namespace TYPO3\CMS\Extbase\Tests;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 /**
- * MockACommandController Fixture
+ * MockCCommandController Fixture
  */
-class MockACommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\CommandController {
+class Tx_Scheduler_Command_MockCCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\CommandController {
 
 	/**
-	 * funcACommand
-	 *
-	 * @param integer $arg A not required argument
-	 * @return string
+	 * funcCCommand
 	 */
-	public function funcACommand($arg = 1) {
-		return 'Foo';
+	public function funcCCommand() {
 	}
 }
 
