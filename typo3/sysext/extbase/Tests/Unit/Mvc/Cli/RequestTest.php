@@ -68,6 +68,26 @@ class RequestTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$this->mockObjectManager->expects($this->once())->method('get')->with('TYPO3\\CMS\\Extbase\\Mvc\\Cli\\Command', 'Tx_SomeExtension_Command_BeerCommandController', 'drink');
 		$this->request->getCommand();
 	}
+
+	/**
+	 * @test
+	 */
+	public function setControllerObjectNameProperlyResolvesExtensionNameWithNamespaces() {
+		$mockCliRequest = new \TYPO3\CMS\Extbase\Mvc\Cli\Request;
+		$mockCliRequest->setControllerObjectName('TYPO3\CMS\Extbase\Command\NamespacedMockCommandController');
+
+		$this->assertSame('Extbase', $mockCliRequest->getControllerExtensionName());
+	}
+
+	/**
+	 * @test
+	 */
+	public function setControllerObjectNameProperlyResolvesExtensionNameWithoutNamespaces() {
+		$mockCliRequest = new \TYPO3\CMS\Extbase\Mvc\Cli\Request;
+		$mockCliRequest->setControllerObjectName('Tx_Extbase_Command_OldschoolMockCommandController');
+
+		$this->assertSame('Extbase', $mockCliRequest->getControllerExtensionName());
+	}
 }
 
 ?>
