@@ -76,9 +76,14 @@ class PageViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedVi
 	public function render($pageUid = NULL, array $additionalParams = array(), $pageType = 0, $noCache = FALSE, $noCacheHash = FALSE, $section = '', $linkAccessRestrictedPages = FALSE, $absolute = FALSE, $addQueryString = FALSE, array $argumentsToBeExcludedFromQueryString = array()) {
 		$uriBuilder = $this->controllerContext->getUriBuilder();
 		$uri = $uriBuilder->reset()->setTargetPageUid($pageUid)->setTargetPageType($pageType)->setNoCache($noCache)->setUseCacheHash(!$noCacheHash)->setSection($section)->setLinkAccessRestrictedPages($linkAccessRestrictedPages)->setArguments($additionalParams)->setCreateAbsoluteUri($absolute)->setAddQueryString($addQueryString)->setArgumentsToBeExcludedFromQueryString($argumentsToBeExcludedFromQueryString)->build();
-		$this->tag->addAttribute('href', $uri);
-		$this->tag->setContent($this->renderChildren());
-		return $this->tag->render();
+		if (strlen($uri)) {
+			$this->tag->addAttribute('href', $uri);
+			$this->tag->setContent($this->renderChildren());
+			$result = $this->tag->render();
+		} else {
+			$result = $this->renderChildren();
+		}
+		return $result;
 	}
 }
 
