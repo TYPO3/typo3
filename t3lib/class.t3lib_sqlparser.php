@@ -1824,7 +1824,7 @@ class t3lib_sqlparser {
 		$query = 'CREATE TABLE ' . $components['TABLE'] . ' (
 			' . implode(',
 			', $fieldsKeys) . '
-			)' . ($components['tableType'] ? ' TYPE=' . $components['tableType'] : '');
+			)' . ($components['tableType'] ? ' ENGINE=' . $components['tableType'] : '');
 
 		return $query;
 	}
