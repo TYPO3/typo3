@@ -119,19 +119,8 @@ class Request implements \TYPO3\CMS\Extbase\Mvc\RequestInterface {
 	 * @return void
 	 */
 	public function setControllerObjectName($controllerObjectName) {
-		$matches = array();
-		preg_match('/
-			^Tx
-			_(?P<extensionName>[^_]+)
-			_
-			(
-				Command
-			|
-				(?P<subpackageKey>.+)_Controller
-			)
-			_(?P<controllerName>[a-z_]+)Controller
-			$/ix', $controllerObjectName, $matches);
-		$this->controllerExtensionName = $matches['extensionName'];
+		$nameParts = \TYPO3\CMS\Core\Utility\ClassNamingUtility::explodeObjectControllerName($controllerObjectName);
+		$this->controllerExtensionName = $nameParts['extensionName'];
 		$this->controllerObjectName = $controllerObjectName;
 		$this->command = NULL;
 	}
