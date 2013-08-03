@@ -120,7 +120,7 @@ class FileExtensionFilter {
 	 */
 	protected function isAllowed(\TYPO3\CMS\Core\Resource\FileInterface $file) {
 		$result = TRUE;
-		$fileExt = $file->getExtension();
+		$fileExt = strtolower($file->getExtension());
 		// Check allowed file extensions
 		if ($this->allowedFileExtensions !== NULL && count($this->allowedFileExtensions) > 0 && !in_array($fileExt, $this->allowedFileExtensions)) {
 			$result = FALSE;
@@ -138,7 +138,7 @@ class FileExtensionFilter {
 	 * @param mixed $allowedFileExtensions  Comma-separated list or array, of allowed file extensions
 	 */
 	public function setAllowedFileExtensions($allowedFileExtensions) {
-		$this->allowedFileExtensions = $this->convertToArray($allowedFileExtensions);
+		$this->allowedFileExtensions = $this->convertToLowercaseArray($allowedFileExtensions);
 	}
 
 	/**
@@ -147,22 +147,29 @@ class FileExtensionFilter {
 	 * @param mixed $disallowedFileExtensions  Comma-separated list or array, of allowed file extensions
 	 */
 	public function setDisallowedFileExtensions($disallowedFileExtensions) {
-		$this->disallowedFileExtensions = $this->convertToArray($disallowedFileExtensions);
+		$this->disallowedFileExtensions = $this->convertToLowercaseArray($disallowedFileExtensions);
 	}
 
 	/**
 	 * Converts mixed (string or array) input arguments into an array, NULL if empty.
 	 *
+	 * All array values will be converted to lower case.
+	 *
 	 * @param mixed $inputArgument Comma-separated list or array.
 	 * @return array
 	 */
-	protected function convertToArray($inputArgument) {
+	protected function convertToLowercaseArray($inputArgument) {
 		$returnValue = NULL;
 		if (is_array($inputArgument)) {
 			$returnValue = $inputArgument;
 		} elseif (strlen($inputArgument) > 0) {
 			$returnValue = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $inputArgument);
 		}
+
+		if (is_array($returnValue)) {
+			$returnValue = array_map('strtolower', $returnValue);
+		}
+
 		return $returnValue;
 	}
 
