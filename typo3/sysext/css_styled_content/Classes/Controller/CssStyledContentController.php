@@ -658,7 +658,7 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 				$titleText = trim($this->cObj->stdWrap($imgConf['titleText'], $imgConf['titleText.']));
 				if ($titleText) {
 					// This will be used by the IMAGE call later:
-					$GLOBALS['TSFE']->ATagParams .= ' title="' . $titleText . '"';
+					$GLOBALS['TSFE']->ATagParams .= ' title="' . htmlspecialchars($titleText) . '"';
 				}
 			}
 
