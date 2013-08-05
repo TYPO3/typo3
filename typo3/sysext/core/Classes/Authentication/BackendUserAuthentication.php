@@ -690,6 +690,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 * @todo Define visibility
 	 */
 	public function checkLanguageAccess($langValue) {
+		// TODO implement locale support
 		// The users language list must be non-blank - otherwise all languages are allowed.
 		if (strcmp(trim($this->groupData['allowed_languages']), '')) {
 			$langValue = intval($langValue);

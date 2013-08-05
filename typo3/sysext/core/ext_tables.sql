@@ -323,6 +323,47 @@ CREATE TABLE sys_file (
 );
 
 #
+# Table structure for table 'sys_file_metadata'
+#
+CREATE TABLE sys_file_metadata (
+	uid int(11) NOT NULL auto_increment,
+	pid int(11) DEFAULT '0' NOT NULL,
+	# update timestamp of the database record, not the file!
+	tstamp int(11) DEFAULT '0' NOT NULL,
+	crdate int(11) DEFAULT '0' NOT NULL,
+	cruser_id int(11) DEFAULT '0' NOT NULL,
+	deleted tinyint(4) DEFAULT '0' NOT NULL,
+
+	file_uid int(11) DEFAULT '0' NOT NULL,
+
+	# Versioning fields
+	t3ver_oid int(11) DEFAULT '0' NOT NULL,
+	t3ver_id int(11) DEFAULT '0' NOT NULL,
+	t3ver_wsid int(11) DEFAULT '0' NOT NULL,
+	t3ver_label varchar(30) DEFAULT '' NOT NULL,
+	t3ver_state tinyint(4) DEFAULT '0' NOT NULL,
+	t3ver_stage int(11) DEFAULT '0' NOT NULL,
+	t3ver_count int(11) DEFAULT '0' NOT NULL,
+	t3ver_tstamp int(11) DEFAULT '0' NOT NULL,
+	t3ver_move_id int(11) DEFAULT '0' NOT NULL,
+	t3_origuid int(11) DEFAULT '0' NOT NULL,
+
+	# localization fields
+	sys_language_uid int(11) DEFAULT '0' NOT NULL,
+	locale varchar(17) DEFAULT '' NOT NULL,
+	l10n_parent int(11) DEFAULT '0' NOT NULL,
+  l10n_diffsource mediumblob,
+
+	title tinytext,
+	description text,
+	alternative text,
+
+	PRIMARY KEY (uid),
+	KEY parent (pid,deleted),
+	KEY t3ver_oid (t3ver_oid,t3ver_wsid),
+);
+
+#
 # Table structure for table 'sys_file_processedfile'.
 # which is a "temporary" file, like an image preview
 # This table does not have a TCA representation, as it is only written
@@ -602,6 +643,10 @@ CREATE TABLE sys_language (
   title varchar(80) DEFAULT '' NOT NULL,
   flag varchar(20) DEFAULT '' NOT NULL,
   static_lang_isocode int(11) unsigned DEFAULT '0' NOT NULL,
+  static_country_isocode int(11) unsigned DEFAULT '0' NOT NULL,
+  # a locale identifier may have a maximum of 17 chars according to RFC 1766
+  # (see https://tools.ietf.org/html/rfc1766)
+  locale varchar(17) DEFAULT '' NOT NULL,
   PRIMARY KEY (uid),
   KEY parent (pid)
 );

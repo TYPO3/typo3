@@ -453,6 +453,23 @@ class ResourceFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 	/**
+	 * Creates a file reference object for a given referencing (content) record and a given file object.
+	 * The overlay properties for a reference, like title and description, can be set on the relation object later on.
+	 *
+	 * Please note that this reference is not automatically persisted. You should do this yourself by using the
+	 * FileReferenceRepository.
+	 *
+	 * @param string $referencingTable The
+	 * @param array $referencingRecord
+	 * @param string $referencingField
+	 * @param FileInterface $referencedFile
+	 * @return FileReference The resulting file reference
+	 */
+	public function createFileReference($referencingTable, $referencingRecord, $referencingField, FileInterface $referencedFile) {
+		// TODO implement
+	}
+
+	/**
 	 * Creates a file usage object from an array of fileReference data
 	 * from sys_file_reference table.
 	 * Requires a database row to be already fetched and present.
