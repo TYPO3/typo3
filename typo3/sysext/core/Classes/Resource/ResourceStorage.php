@@ -69,6 +69,8 @@ class ResourceStorage {
 
 	const SIGNAL_PreProcessConfiguration = 'preProcessConfiguration';
 	const SIGNAL_PostProcessConfiguration = 'postProcessConfiguration';
+	const SIGNAL_PreFileAdd = 'preFileAdd';
+	const SIGNAL_PostFileAdd = 'postFileAdd';
 	const SIGNAL_PreFileCopy = 'preFileCopy';
 	const SIGNAL_PostFileCopy = 'postFileCopy';
 	const SIGNAL_PreFileMove = 'preFileMove';
@@ -1069,8 +1071,8 @@ class ResourceStorage {
 			throw new \InvalidArgumentException('File "' . $localFilePath . '" does not exist.', 1319552745);
 		}
 		$this->assureFileAddPermissions($localFilePath, $targetFolder, $targetFileName);
-		$targetFolder = $targetFolder ? $targetFolder : $this->getDefaultFolder();
-		$targetFileName = $targetFileName ? $targetFileName : PathUtility::basename($localFilePath);
+		$targetFolder = $targetFolder ?: $this->getDefaultFolder();
+		$targetFileName = $targetFileName ?: PathUtility::basename($localFilePath);
 		if ($conflictMode === 'cancel' && $this->driver->fileExistsInFolder($targetFileName, $targetFolder)) {
 			throw new Exception\ExistingTargetFileNameException('File "' . $targetFileName . '" already exists in folder ' . $targetFolder->getIdentifier(), 1322121068);
 		} elseif ($conflictMode === 'changeName') {
@@ -1078,7 +1080,13 @@ class ResourceStorage {
 		}
 		// We do not care whether the file exists if $conflictMode is "replace",
 		// so just use the name as is in that case
-		return $this->driver->addFile($localFilePath, $targetFolder, $targetFileName);
+		$this->emitPreFileAddSignal($targetFileName, $targetFolder);
+
+		$file = $this->driver->addFile($localFilePath, $targetFolder, $targetFileName);
+
+		$this->emitPostFileAddSignal($file, $targetFolder);
+
+		return $file;
 	}
 
 	/**
@@ -1919,6 +1927,28 @@ class ResourceStorage {
 	 */
 	protected function emitPostProcessConfigurationSignal() {
 		$this->getSignalSlotDispatcher()->dispatch('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', self::SIGNAL_PostProcessConfiguration, array($this));
+	}
+
+	/**
+	 * Emits file pre-add signal
+	 *
+	 * @param string $fileName
+	 * @param Folder $targetFolder
+	 * @return void
+	 */
+	protected function emitPreFileAddSignal($fileName, Folder $targetFolder) {
+		$this->getSignalSlotDispatcher()->dispatch('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', self::SIGNAL_PreFileAdd, array($fileName, $targetFolder));
+	}
+
+	/**
+	 * Emits the file post-add signal
+	 *
+	 * @param FileInterface $file
+	 * @param Folder $targetFolder
+	 * @return void
+	 */
+	protected function emitPostFileAddSignal(FileInterface $file, Folder $targetFolder) {
+		$this->getSignalSlotDispatcher()->dispatch('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', self::SIGNAL_PostFileAdd, array($file, $targetFolder));
 	}
 
 	/**
