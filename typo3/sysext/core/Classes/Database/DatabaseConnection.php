@@ -1183,7 +1183,7 @@ class DatabaseConnection {
 
 		$this->link = mysqli_init();
 		$connected = $this->link->real_connect(
-			$this->databaseHost,
+			$host,
 			$this->databaseUsername,
 			$this->databaseUserPassword,
 			NULL,
