@@ -128,10 +128,17 @@ class FileRepository extends AbstractRepository {
 		$storageUid = $fileObject->getStorage()->getUid();
 		$identifier = $fileObject->getIdentifier();
 		$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
-			'*',
-			$this->table,
-			sprintf('storage=%u AND identifier=%s', $storageUid, $GLOBALS['TYPO3_DB']->fullQuoteStr($identifier, $this->table))
+			// TODO add locale
+			'f.*', // f.*, m.*
+			$this->table . ' AS f', // LEFT JOIN sys_file_metadata AS m ON f.uid = m.file_uid
+			sprintf('f.storage=%u AND f.identifier=%s', $storageUid, $GLOBALS['TYPO3_DB']->fullQuoteStr($identifier, $this->table))
 		);
+
+		// TODO remove this debug stuff again
+		if ($GLOBALS['TYPO3_DB']->sql_error()) {
+			echo $GLOBALS['TYPO3_DB']->sql_error();
+		}
+
 		if (!is_array($row)) {
 			return FALSE;
 		} else {

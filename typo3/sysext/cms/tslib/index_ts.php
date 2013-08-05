@@ -171,6 +171,7 @@ $TSFE->convPOSTCharset();
 $TT->push('Setting language and locale', '');
 $TSFE->settingLanguage();
 $TSFE->settingLocale();
+$TSFE->setContentLocale();
 $TT->pull();
 // Check JumpUrl
 $TSFE->setExternalJumpUrl();

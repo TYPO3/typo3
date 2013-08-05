@@ -337,13 +337,20 @@ class ResourceFactory implements \TYPO3\CMS\Core\SingletonInterface {
 		if (!$this->fileInstances[$uid]) {
 			// Fetches data in case $fileData is empty
 			if (empty($fileData)) {
+				// TODO add locale
 				/** @var $GLOBALS['TYPO3_DB'] \TYPO3\CMS\Core\Database\DatabaseConnection */
-				$fileData = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', 'sys_file', 'uid=' . intval($uid) . ' AND deleted=0');
+				$fileData = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
+					'*',
+					'sys_file',
+					'uid=' . intval($uid) . ' AND deleted=0'
+				);
 				if (!is_array($fileData)) {
 					throw new \TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException('No file found for given UID.', 1317178604);
 				}
 			}
-			$this->fileInstances[$uid] = $this->createFileObject($fileData);
+			$fileObject = $this->createFileObject($fileData);
+			// TODO load localizations
+			$this->fileInstances[$uid] = $fileObject;
 		}
 		return $this->fileInstances[$uid];
 	}
@@ -369,6 +376,31 @@ class ResourceFactory implements \TYPO3\CMS\Core\SingletonInterface {
 			// auto-detecting the best-matching storage to use
 		}
 		return $this->getStorageObject($storageUid, array(), $fileIdentifier)->getFile($fileIdentifier);
+	}
+
+	/**
+	 * Loads the localized records for a file and inserts them into the object.
+	 *
+	 * @param LocalizableFileInterface $fileObject
+	 * @return int THe number of locales loaded for the file
+	 */
+	protected function loadLocalizedMetadataIntoObject(LocalizableFileInterface $fileObject) {
+		$fileUid = $fileObject->getUid();
+
+		$metadataRecords = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+			'*',
+			'sys_file_metadata',
+			'file_uid=' . $fileUid
+			// TODO limit to currently used locales
+		);
+
+		$localesCounter = 0;
+		foreach ($metadataRecords as $record) {
+			$fileObject->addPropertiesForLocale($record['locale'], $record);
+			++$localesCounter;
+		}
+
+		return $localesCounter;
 	}
 
 	/**
@@ -492,12 +524,24 @@ class ResourceFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return File
 	 */
 	public function createFileObject(array $fileData) {
-		/** @var File $fileObject */
-		$fileObject = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\File', $fileData);
+		$storageObject = $fileData['storage'];
 		if (is_numeric($fileData['storage'])) {
 			$storageObject = $this->getStorageObject($fileData['storage']);
+		}
+
+		if ($storageObject->getUid() === 0) {
+			$fileClass = 'TYPO3\\CMS\\Core\\Resource\\SimpleFile';
+		} else {
+			$fileClass = 'TYPO3\\CMS\\Core\\Resource\\EnrichedFile';
+		}
+
+		/** @var File $fileObject */
+		$fileObject = GeneralUtility::makeInstance($fileClass, $fileData);
+
+		if (isset($storageObject)) {
 			$fileObject->setStorage($storageObject);
 		}
+
 		return $fileObject;
 	}
 
@@ -534,6 +578,23 @@ class ResourceFactory implements \TYPO3\CMS\Core\SingletonInterface {
 			$this->fileReferenceInstances[$uid] = $this->createFileReferenceObject($fileReferenceData);
 		}
 		return $this->fileReferenceInstances[$uid];
+	}
+
+	/**
+	 * Creates a file reference object for a given referencing (content) record and a given file object.
+	 * The overlay properties for a reference, like title and description, can be set on the relation object later on.
+	 *
+	 * Please note that this reference is not automatically persisted. You should do this yourself by using the
+	 * FileReferenceRepository.
+	 *
+	 * @param string $referencingTable The
+	 * @param array $referencingRecord
+	 * @param string $referencingField
+	 * @param FileInterface $referencedFile
+	 * @return FileReference The resulting file reference
+	 */
+	public function createFileReference($referencingTable, $referencingRecord, $referencingField, FileInterface $referencedFile) {
+		// TODO implement
 	}
 
 	/**

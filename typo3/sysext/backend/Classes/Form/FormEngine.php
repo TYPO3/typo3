@@ -1031,7 +1031,6 @@ class FormEngine {
 			&& $PA['fieldConf']['config']['form_type'] != 'passthrough'
 			&& ($this->RTEenabled || !$PA['fieldConf']['config']['showIfRTE'])
 			&& $displayConditionResult
-			&& (!$GLOBALS['TCA'][$table]['ctrl']['languageField'] || $PA['fieldConf']['l10n_display'] || strcmp($PA['fieldConf']['l10n_mode'], 'exclude') || $row[$GLOBALS['TCA'][$table]['ctrl']['languageField']] <= 0)
 			&& (!$GLOBALS['TCA'][$table]['ctrl']['languageField'] || !$this->localizationMode || $this->localizationMode === $PA['fieldConf']['l10n_cat'])
 		) {
 			// Fetching the TSconfig for the current table/field. This includes the $row which means that
@@ -3520,8 +3519,15 @@ function ' . $evalData . '(value) {
 	 * @todo Define visibility
 	 */
 	public function registerDefaultLanguageData($table, $rec) {
+		$languageField = $GLOBALS['TCA'][$table]['ctrl']['languageField'];
+		$localeField = $GLOBALS['TCA'][$table]['ctrl']['localeField'];
+
 		// Add default language:
-		if ($GLOBALS['TCA'][$table]['ctrl']['languageField'] && $rec[$GLOBALS['TCA'][$table]['ctrl']['languageField']] > 0 && $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] && intval($rec[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']]) > 0) {
+		if ((($languageField && $rec[$languageField] > 0)
+				|| ($localeField && $rec[$localeField] !== '')
+			)
+				&& $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']
+				&& intval($rec[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']]) > 0) {
 			$lookUpTable = $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerTable'] ? $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerTable'] : $table;
 			// Get data formatted:
 			$this->defaultLanguageData[$table . ':' . $rec['uid']] = BackendUtility::getRecordWSOL($lookUpTable, intval($rec[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']]));

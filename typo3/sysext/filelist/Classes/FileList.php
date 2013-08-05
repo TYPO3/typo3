@@ -721,11 +721,40 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 		// Edit metadata of file
 		try {
 			if (is_a($fileOrFolderObject, 'TYPO3\\CMS\\Core\\Resource\\File') && $fileOrFolderObject->isIndexed() && $fileOrFolderObject->checkActionPermission('edit')) {
-				$data = array(
-					'sys_file' => array($fileOrFolderObject->getUid() => 'edit')
-				);
-				$editOnClick = \TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick(GeneralUtility::implodeArrayForUrl('edit', $data), $GLOBALS['BACK_PATH'], $this->listUrl());
-				$cells['editmetadata'] = '<a href="#" onclick="' . $editOnClick . '" title="Edit Metadata of this file">' . IconUtility::getSpriteIcon('actions-document-open') . '</a>';
+				$metadataRecords = $this->getMetadataRecordsForFile($fileOrFolderObject);
+
+				if (!$metadataRecords) {
+					$data = array(
+						'sys_file_metadata' => array(0 => 'new')
+					);
+					$defaultValues = array(
+						'sys_file_metadata' => array(
+							// TODO add user's default locale to this array
+							'file_uid' => $fileOrFolderObject->getUid(),
+							'title' => $fileOrFolderObject->getName()
+						)
+					);
+					// setting an override value is necessary to not display the input field (instead a hidden field is
+					// inserted -> see EditDocumentController and FormEngine for details)
+					$overrideValues = array(
+						'sys_file_metadata' => array(
+							'file_uid' => $fileOrFolderObject->getUid()
+						)
+					);
+					$urlParam = GeneralUtility::implodeArrayForUrl('edit', $data)
+						. GeneralUtility::implodeArrayForUrl('defVals', $defaultValues)
+						. GeneralUtility::implodeArrayForUrl('overrideVals', $overrideValues);
+					$editOnClick = \TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick($urlParam, $GLOBALS['BACK_PATH'], $this->listUrl());
+					$cells['editmetadata'] = '<a href="#" onclick="' . $editOnClick . '" title="Edit Metadata of this file">' . IconUtility::getSpriteIcon('actions-document-open') . '</a>';
+				} else {
+					// TODO decide which record to edit (best matching locale, "first" record [as is now], ...)
+					$data = array(
+						'sys_file_metadata' => array($metadataRecords[0]['uid'] => 'edit')
+					);
+					$editOnClick = \TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick(GeneralUtility::implodeArrayForUrl('edit', $data), $GLOBALS['BACK_PATH'], $this->listUrl());
+					$cells['editmetadata'] = '<a href="#" onclick="' . $editOnClick . '" title="Edit Metadata of this file">' . IconUtility::getSpriteIcon('actions-document-open') . '</a>';
+				}
+
 			} else {
 				$cells['editmetadata'] = IconUtility::getSpriteIcon('empty-empty');
 			}
@@ -794,6 +823,12 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 												' . implode('
 												', $cells) . '
 											</div>';
+	}
+
+	protected function getMetadataRecordsForFile(AbstractFile $fileObject) {
+		$records = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'sys_file_metadata', 'file_uid = ' . $fileObject->getUid());
+
+		return $records;
 	}
 
 	/**

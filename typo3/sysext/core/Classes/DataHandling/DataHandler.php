@@ -28,6 +28,7 @@ namespace TYPO3\CMS\Core\DataHandling;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Utility\LocaleUtility;
 
 /**
  * The main data handler class which takes care of correctly updating and inserting records.
@@ -1261,6 +1262,7 @@ class DataHandler {
 				$newRecord = array();
 				$shadowCols = $GLOBALS['TCA'][$table]['ctrl']['shadowColumnsForNewPlaceholders'];
 				$shadowCols .= ',' . $GLOBALS['TCA'][$table]['ctrl']['languageField'];
+				$shadowCols .= ',' . $GLOBALS['TCA'][$table]['ctrl']['localeField'];
 				$shadowCols .= ',' . $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'];
 				$shadowCols .= ',' . $GLOBALS['TCA'][$table]['ctrl']['type'];
 				$shadowCols .= ',' . $GLOBALS['TCA'][$table]['ctrl']['label'];
@@ -1312,7 +1314,14 @@ class DataHandler {
 			// This is done to make the pid positive for offline versions; Necessary to have diff-view for pages_language_overlay in workspaces.
 			BackendUtility::fixVersioningPid($table, $currentRecord);
 			// Get original language record if available:
-			if (is_array($currentRecord) && $GLOBALS['TCA'][$table]['ctrl']['transOrigDiffSourceField'] && $GLOBALS['TCA'][$table]['ctrl']['languageField'] && $currentRecord[$GLOBALS['TCA'][$table]['ctrl']['languageField']] > 0 && $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] && intval($currentRecord[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']]) > 0) {
+			if (is_array($currentRecord) && $GLOBALS['TCA'][$table]['ctrl']['transOrigDiffSourceField']
+					&& (
+						($GLOBALS['TCA'][$table]['ctrl']['languageField'] && $currentRecord[$GLOBALS['TCA'][$table]['ctrl']['languageField']] > 0)
+						|| ($GLOBALS['TCA'][$table]['ctrl']['localeField'] && $currentRecord[$GLOBALS['TCA'][$table]['ctrl']['localeField']] != '')
+					)
+					&& $GLOBALS['TCA'][$table]['ctrl']['languageField'] && $currentRecord[$GLOBALS['TCA'][$table]['ctrl']['languageField']] > 0
+					&& $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']
+					&& intval($currentRecord[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']]) > 0) {
 				$lookUpTable = $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerTable'] ? $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerTable'] : $table;
 				$originalLanguageRecord = $this->recordInfo($lookUpTable, $currentRecord[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']], '*');
 				BackendUtility::workspaceOL($lookUpTable, $originalLanguageRecord);
@@ -1329,6 +1338,7 @@ class DataHandler {
 		foreach ($incomingFieldArray as $field => $fieldValue) {
 			if (!in_array(($table . '-' . $field), $this->exclude_array) && !$this->data_disableFields[$table][$id][$field]) {
 				// The field must be editable.
+				// TODO add locale support
 				// Checking if a value for language can be changed:
 				$languageDeny = $GLOBALS['TCA'][$table]['ctrl']['languageField'] && !strcmp($GLOBALS['TCA'][$table]['ctrl']['languageField'], $field) && !$this->BE_USER->checkLanguageAccess($fieldValue);
 				if (!$languageDeny) {
@@ -2765,7 +2775,14 @@ class DataHandler {
 			// Fetch the current record and determine the original record:
 			$row = BackendUtility::getRecordWSOL($table, $id);
 			if (is_array($row)) {
-				$language = intval($row[$GLOBALS['TCA'][$table]['ctrl']['languageField']]);
+				if ($row[$GLOBALS['TCA'][$table]['ctrl']['localeField']]) {
+					$locale = $row[$GLOBALS['TCA'][$table]['ctrl']['localeField']];
+					$language = LocaleUtility::getLanguageUidForLocale($locale);
+				} else {
+					$language = $row[$GLOBALS['TCA'][$table]['ctrl']['languageField']];
+				}
+
+				$language = intval($language);
 				$transOrigPointer = intval($row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']]);
 				// If language is set (e.g. 1) and also transOrigPointer (e.g. 123), use transOrigPointer as uid:
 				if ($language > 0 && $transOrigPointer) {
@@ -3317,6 +3334,7 @@ class DataHandler {
 				$dbAnalysis->start($value, $conf['foreign_table'], '', $uid, $table, $conf);
 				// Walk through the items, copy them and remember the new id:
 				foreach ($dbAnalysis->itemArray as $k => $v) {
+					// TODO implement locale support
 					// If language is set and differs from original record, this isn't a copy action but a localization of our parent/ancestor:
 					if ($language > 0 && BackendUtility::isTableLocalizable($table) && $language != $row[$GLOBALS['TCA'][$table]['ctrl']['languageField']]) {
 						// If children should be localized when the parent gets localized the first time, just do it:
@@ -3545,12 +3563,14 @@ class DataHandler {
 				// Index the localized record uids by language
 				if (is_array($destL10nRecords)) {
 					foreach ($destL10nRecords as $record) {
+						// TODO implement locale support
 						$localizedDestPids[$record[$GLOBALS['TCA'][$table]['ctrl']['languageField']]] = -$record['uid'];
 					}
 				}
 			}
 			// Copy the localized records after the corresponding localizations of the destination record
 			foreach ($l10nRecords as $record) {
+				// TODO implement locale support
 				$localizedDestPid = intval($localizedDestPids[$record[$GLOBALS['TCA'][$table]['ctrl']['languageField']]]);
 				if ($localizedDestPid < 0) {
 					$this->copyRecord($table, $record['uid'], $localizedDestPid, $first, $overrideValues, $excludeFields, $record[$GLOBALS['TCA'][$table]['ctrl']['languageField']]);
@@ -3875,6 +3895,7 @@ class DataHandler {
 				$destL10nRecords = BackendUtility::getRecordsByField($table, $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'], abs($originalRecordDestinationPid), $where);
 				// Index the localized record uids by language
 				if (is_array($destL10nRecords)) {
+					// TODO implement locale support
 					foreach ($destL10nRecords as $record) {
 						$localizedDestPids[$record[$GLOBALS['TCA'][$table]['ctrl']['languageField']]] = -$record['uid'];
 					}
@@ -3882,6 +3903,7 @@ class DataHandler {
 			}
 			// Move the localized records after the corresponding localizations of the destination record
 			foreach ($l10nRecords as $record) {
+				// TODO implement locale support
 				$localizedDestPid = intval($localizedDestPids[$record[$GLOBALS['TCA'][$table]['ctrl']['languageField']]]);
 				if ($localizedDestPid < 0) {
 					$this->moveRecord($table, $record['uid'], $localizedDestPid);
@@ -3905,18 +3927,28 @@ class DataHandler {
 	public function localize($table, $uid, $language) {
 		$newId = FALSE;
 		$uid = intval($uid);
-		if ($GLOBALS['TCA'][$table] && $uid && $this->isNestedElementCallRegistered($table, $uid, 'localize') === FALSE) {
+		$tableConfiguration = $GLOBALS['TCA'][$table];
+		if ($tableConfiguration && $uid && $this->isNestedElementCallRegistered($table, $uid, 'localize') === FALSE) {
 			$this->registerNestedElementCall($table, $uid, 'localize');
-			if ($GLOBALS['TCA'][$table]['ctrl']['languageField'] && $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] && !$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerTable'] || $table === 'pages') {
-				if ($langRec = BackendUtility::getRecord('sys_language', intval($language), 'uid,title')) {
+			if (($tableConfiguration['ctrl']['languageField'] || $tableConfiguration['ctrl']['localeField'])
+				&& $tableConfiguration['ctrl']['transOrigPointerField'] && !$tableConfiguration['ctrl']['transOrigPointerTable'] || $table === 'pages') {
+
+				if ($tableConfiguration['ctrl']['localeField']) {
+					$langRec = LocaleUtility::getLocaleRecord($language);
+				} else {
+					$langRec = BackendUtility::getRecord('sys_language', intval($language), 'uid,title,locale');
+				}
+
+				if ($langRec) {
 					if ($this->doesRecordExist($table, $uid, 'show')) {
 						// Getting workspace overlay if possible - this will localize versions in workspace if any
 						$row = BackendUtility::getRecordWSOL($table, $uid);
 						if (is_array($row)) {
-							if ($row[$GLOBALS['TCA'][$table]['ctrl']['languageField']] <= 0 || $table === 'pages') {
-								if ($row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']] == 0 || $table === 'pages') {
+							// TODO implement locale support
+							if ($row[$tableConfiguration['ctrl']['languageField']] <= 0 || $table === 'pages') {
+								if ($row[$tableConfiguration['ctrl']['transOrigPointerField']] == 0 || $table === 'pages') {
 									if ($table === 'pages') {
-										$pass = $GLOBALS['TCA'][$table]['ctrl']['transForeignTable'] === 'pages_language_overlay' && !BackendUtility::getRecordsByField('pages_language_overlay', 'pid', $uid, (' AND ' . $GLOBALS['TCA']['pages_language_overlay']['ctrl']['languageField'] . '=' . intval($langRec['uid'])));
+										$pass = $tableConfiguration['ctrl']['transForeignTable'] === 'pages_language_overlay' && !BackendUtility::getRecordsByField('pages_language_overlay', 'pid', $uid, (' AND ' . $GLOBALS['TCA']['pages_language_overlay']['ctrl']['languageField'] . '=' . intval($langRec['uid'])));
 										$Ttable = 'pages_language_overlay';
 									} else {
 										$pass = !BackendUtility::getRecordLocalization($table, $uid, $langRec['uid'], ('AND pid=' . intval($row['pid'])));
@@ -3928,16 +3960,17 @@ class DataHandler {
 										$excludeFields = array();
 										// Set override values:
 										$overrideValues[$GLOBALS['TCA'][$Ttable]['ctrl']['languageField']] = $langRec['uid'];
+										$overrideValues[$GLOBALS['TCA'][$Ttable]['ctrl']['localeField']] = $langRec['locale'];
 										$overrideValues[$GLOBALS['TCA'][$Ttable]['ctrl']['transOrigPointerField']] = $uid;
 										// Copy the type (if defined in both tables) from the original record so that translation has same type as original record
-										if (isset($GLOBALS['TCA'][$table]['ctrl']['type']) && isset($GLOBALS['TCA'][$Ttable]['ctrl']['type'])) {
-											$overrideValues[$GLOBALS['TCA'][$Ttable]['ctrl']['type']] = $row[$GLOBALS['TCA'][$table]['ctrl']['type']];
+										if (isset($tableConfiguration['ctrl']['type']) && isset($GLOBALS['TCA'][$Ttable]['ctrl']['type'])) {
+											$overrideValues[$GLOBALS['TCA'][$Ttable]['ctrl']['type']] = $row[$tableConfiguration['ctrl']['type']];
 										}
 										// Set exclude Fields:
-										foreach ($GLOBALS['TCA'][$Ttable]['columns'] as $fN => $fCfg) {
+										foreach ($GLOBALS['TCA'][$Ttable]['columns'] as $fieldName => $fCfg) {
 											// Check if we are just prefixing:
 											if ($fCfg['l10n_mode'] == 'prefixLangTitle') {
-												if (($fCfg['config']['type'] == 'text' || $fCfg['config']['type'] == 'input') && strlen($row[$fN])) {
+												if (($fCfg['config']['type'] == 'text' || $fCfg['config']['type'] == 'input') && strlen($row[$fieldName])) {
 													list($tscPID) = BackendUtility::getTSCpid($table, $uid, '');
 													$TSConfig = $this->getTCEMAIN_TSconfig($tscPID);
 													if (isset($TSConfig['translateToMessage']) && strlen($TSConfig['translateToMessage'])) {
@@ -3946,12 +3979,12 @@ class DataHandler {
 													if (!strlen($translateToMsg)) {
 														$translateToMsg = 'Translate to ' . $langRec['title'] . ':';
 													}
-													$overrideValues[$fN] = '[' . $translateToMsg . '] ' . $row[$fN];
+													$overrideValues[$fieldName] = '[' . $translateToMsg . '] ' . $row[$fieldName];
 												}
-											} elseif (GeneralUtility::inList('exclude,noCopy,mergeIfNotBlank', $fCfg['l10n_mode']) && $fN != $GLOBALS['TCA'][$Ttable]['ctrl']['languageField'] && $fN != $GLOBALS['TCA'][$Ttable]['ctrl']['transOrigPointerField']) {
+											} elseif (GeneralUtility::inList('exclude,noCopy,mergeIfNotBlank', $fCfg['l10n_mode']) && $fieldName != $GLOBALS['TCA'][$Ttable]['ctrl']['languageField'] && $fieldName != $GLOBALS['TCA'][$Ttable]['ctrl']['localeField'] && $fieldName != $GLOBALS['TCA'][$Ttable]['ctrl']['transOrigPointerField']) {
 												// Otherwise, do not copy field (unless it is the language field or
 												// pointer to the original language)
-												$excludeFields[] = $fN;
+												$excludeFields[] = $fieldName;
 											}
 										}
 										if ($Ttable === $table) {
@@ -4001,7 +4034,7 @@ class DataHandler {
 					$this->newlog('Sys language UID "' . $language . '" not found valid!', 1);
 				}
 			} else {
-				$this->newlog('Localization failed; "languageField" and "transOrigPointerField" must be defined for the table!', 1);
+				$this->newlog('Localization failed; "languageField"/"localeField" and "transOrigPointerField" must be defined for the table!', 1);
 			}
 		}
 		return $newId;
@@ -4026,7 +4059,13 @@ class DataHandler {
 			$localizationMode = BackendUtility::getInlineLocalizationMode($table, $config);
 			if ($localizationMode == 'select') {
 				$parentRecord = BackendUtility::getRecordWSOL($table, $id);
-				$language = intval($parentRecord[$GLOBALS['TCA'][$table]['ctrl']['languageField']]);
+				if ($parentRecord[$GLOBALS['TCA'][$table]['ctrl']['localeField']]) {
+					$locale = intval($parentRecord[$GLOBALS['TCA'][$table]['ctrl']['localeField']]);
+					$language = LocaleUtility::getLanguageUidForLocale($locale);
+				} else {
+					$language = intval($parentRecord[$GLOBALS['TCA'][$table]['ctrl']['languageField']]);
+				}
+
 				$transOrigPointer = intval($parentRecord[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']]);
 				$transOrigTable = BackendUtility::getOriginalTranslationTable($table);
 				$childTransOrigPointerField = $GLOBALS['TCA'][$foreignTable]['ctrl']['transOrigPointerField'];
@@ -6119,6 +6158,7 @@ class DataHandler {
 	 */
 	public function addDefaultPermittedLanguageIfNotSet($table, &$incomingFieldArray) {
 		// Checking languages:
+		// TODO implement locale support
 		if ($GLOBALS['TCA'][$table]['ctrl']['languageField']) {
 			if (!isset($incomingFieldArray[$GLOBALS['TCA'][$table]['ctrl']['languageField']])) {
 				// Language field must be found in input row - otherwise it does not make sense.

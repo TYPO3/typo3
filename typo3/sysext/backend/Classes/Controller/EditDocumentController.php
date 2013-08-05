@@ -34,6 +34,7 @@ use TYPO3\CMS\Core\Html\HtmlParser;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
+use TYPO3\CMS\Core\Utility\LocaleUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
@@ -792,9 +793,17 @@ class EditDocumentController {
 										$hasAccess = $CALC_PERMS & 16 ? 1 : 0;
 										$deleteAccess = $CALC_PERMS & 16 ? 1 : 0;
 										$this->viewId = $calcPRec['pid'];
+
 										// Adding "&L=xx" if the record being edited has a languageField with a value larger than zero!
-										if ($GLOBALS['TCA'][$table]['ctrl']['languageField'] && $calcPRec[$GLOBALS['TCA'][$table]['ctrl']['languageField']] > 0) {
+										if ($GLOBALS['TCA'][$table]['ctrl']['languageField']
+												&& $calcPRec[$GLOBALS['TCA'][$table]['ctrl']['languageField']] > 0) {
+
 											$this->viewId_addParams = '&L=' . $calcPRec[$GLOBALS['TCA'][$table]['ctrl']['languageField']];
+										} else if ($GLOBALS['TCA'][$table]['ctrl']['localeField']
+												&& $calcPRec[$GLOBALS['TCA'][$table]['ctrl']['languageField']] !== '') {
+
+											// Adding "&L=xx-XX" if the record being edited has a localeField with a value larger than zero!
+											$this->viewId_addParams = '&L=' . $calcPRec[$GLOBALS['TCA'][$table]['ctrl']['localeField']];
 										}
 									}
 									// Check internals regarding access:
@@ -1112,59 +1121,151 @@ class EditDocumentController {
 	public function languageSwitch($table, $uid, $pid = NULL) {
 		$content = '';
 		$languageField = $GLOBALS['TCA'][$table]['ctrl']['languageField'];
+		$localeField = $GLOBALS['TCA'][$table]['ctrl']['localeField'];
 		$transOrigPointerField = $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'];
+
 		// Table editable and activated for languages?
-		if ($GLOBALS['BE_USER']->check('tables_modify', $table) && $languageField && $transOrigPointerField && !$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerTable']) {
+		if ($GLOBALS['BE_USER']->check('tables_modify', $table) && ($languageField || $localeField)
+				&& $transOrigPointerField && !$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerTable']) {
+
 			if (is_null($pid)) {
 				$row = BackendUtility::getRecord($table, $uid, 'pid');
 				$pid = $row['pid'];
 			}
-			// Get all avalibale languages for the page
+
+			// Get all available languages for the page
 			$langRows = $this->getLanguages($pid);
+
+			// if the table does only use locales, there is no "default" language, thus we drop the corresponding
+			// language entry. This cannot be done in getLanguages(), as it does not know about the language
+			if (!$languageField) {
+				unset($langRows[0]);
+			}
+
 			// Page available in other languages than default language?
 			if (is_array($langRows) && count($langRows) > 1) {
 				$rowsByLang = array();
-				$fetchFields = 'uid,' . $languageField . ',' . $transOrigPointerField;
+				$rowsByLocale = array();
+				$fetchFieldsArray = array(
+					'uid',
+					$transOrigPointerField
+				);
+				if ($localeField) {
+					$fetchFieldsArray[] = $localeField;
+				} else if ($languageField) {
+					$fetchFieldsArray[] = $languageField;
+				}
+				$fetchFields = implode(',', $fetchFieldsArray);
+
 				// Get record in current language
 				$rowCurrent = BackendUtility::getLiveVersionOfRecord($table, $uid, $fetchFields);
 				if (!is_array($rowCurrent)) {
 					$rowCurrent = BackendUtility::getRecord($table, $uid, $fetchFields);
 				}
-				$currentLanguage = $rowCurrent[$languageField];
+				if ($localeField) {
+					// TODO check if and how we should implement something similar to [all] languages (uid -1) here -> could be a mapping from an empty locale string
+					$currentLocale = $rowCurrent[$localeField];
+					if ($currentLocale !== '') {
+						$currentLanguage = LocaleUtility::getLanguageUidForLocale($currentLocale);
+					} else if ($currentLocale == 'zz-mul') {
+						// TODO check if we should use this locale or another one
+						// locale zz-mul is the "all languages" locale.
+						$currentLanguage = -1;
+					} else {
+						$currentLanguage = 0;
+					}
+				} else {
+					$currentLanguage = $rowCurrent[$languageField];
+				}
+				//echo $currentLocale . " - " . $currentLanguage;
+
 				// Disabled for records with [all] language!
 				if ($currentLanguage > -1) {
 					// Get record in default language if needed
-					if ($currentLanguage && $rowCurrent[$transOrigPointerField]) {
+					if (($currentLanguage > 0 && $rowCurrent[$transOrigPointerField])) {
+						// TODO implement as soon as decision about default locale (yes/no) has been made
 						$rowsByLang[0] = BackendUtility::getLiveVersionOfRecord($table, $rowCurrent[$transOrigPointerField], $fetchFields);
 						if (!is_array($rowsByLang[0])) {
 							$rowsByLang[0] = BackendUtility::getRecord($table, $rowCurrent[$transOrigPointerField], $fetchFields);
 						}
+
+						// The "default" locale is the one we derived the current record from => it does not have to match the default language
+						if ($localeField) {
+							$rowsByLocale[$rowsByLang[0][$localeField]] = $rowsByLang[0];
+						}
 					} else {
 						$rowsByLang[$rowCurrent[$languageField]] = $rowCurrent;
+						if ($localeField) {
+							$rowsByLocale[$rowCurrent[$localeField]] = $rowCurrent;
+						}
 					}
-					if ($rowCurrent[$transOrigPointerField] || $currentLanguage === '0') {
-						// Get record in other languages to see what's already available
-						$translations = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows($fetchFields, $table, 'pid=' . intval($pid) . ' AND ' . $languageField . '>0' . ' AND ' . $transOrigPointerField . '=' . intval($rowsByLang[0]['uid']) . BackendUtility::deleteClause($table) . BackendUtility::versioningPlaceholderClause($table));
+
+					if ($localeField) {
+						// in case we have a locale, we use the current record as the "default" (= the base for the translation)
+						// when the current record is not translated
+						if (!$transOrigPointerField || intval($rowCurrent[$transOrigPointerField]) === 0) {
+							$defaultLanguageUid = $rowCurrent['uid'];
+						} else {
+							$defaultLanguageUid = $rowCurrent[$transOrigPointerField];
+						}
+					} else {
+						$defaultLanguageUid = $rowsByLang[0]['uid'];
+					}
+
+					// TODO implement fetching localization chains here
+					if ($rowCurrent[$transOrigPointerField] || $currentLanguage === '0' || $localeField) {
+						$GLOBALS['TYPO3_DB']->store_lastBuiltQuery = TRUE;
+						// Get record in other languages to see what's already available; this has to be always done
+						// when getting the
+						$translations = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+							$fetchFields, $table,
+							'pid=' . intval($pid) . ' AND ('
+								. ($languageField != '' ? $languageField . '>0' : '0=1') // TODO check this query part
+								. ' OR ' . ($localeField != '' ? $localeField . ' != ""' : '0=1') // TODO check this query part
+								. ') AND ' . $transOrigPointerField . '=' . intval($defaultLanguageUid)
+								. BackendUtility::deleteClause($table)
+								. BackendUtility::versioningPlaceholderClause($table)
+						);
+						//echo $GLOBALS['TYPO3_DB']->debug_lastBuiltQuery;
 						foreach ($translations as $row) {
 							$rowsByLang[$row[$languageField]] = $row;
+							if ($localeField) {
+								$rowsByLocale[$row[$localeField]] = $row;
+							}
 						}
 					}
+
 					$langSelItems = array();
 					foreach ($langRows as $lang) {
-						if ($GLOBALS['BE_USER']->checkLanguageAccess($lang['uid'])) {
-							$newTranslation = isset($rowsByLang[$lang['uid']]) ? '' : ' [' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.new', TRUE) . ']';
-							// Create url for creating a localized record
-							if ($newTranslation) {
-								$href = $this->doc->issueCommand('&cmd[' . $table . '][' . $rowsByLang[0]['uid'] . '][localize]=' . $lang['uid'], $this->backPath . 'alt_doc.php?justLocalized=' . rawurlencode(($table . ':' . $rowsByLang[0]['uid'] . ':' . $lang['uid'])) . '&returnUrl=' . rawurlencode($this->retUrl) . BackendUtility::getUrlToken('editRecord'));
-							} else {
-								$href = $this->backPath . 'alt_doc.php?';
-								$href .= '&edit[' . $table . '][' . $rowsByLang[$lang['uid']]['uid'] . ']=edit';
-								$href .= '&returnUrl=' . rawurlencode($this->retUrl) . BackendUtility::getUrlToken('editRecord');
-							}
-							$langSelItems[$lang['uid']] = '
-								<option value="' . htmlspecialchars($href) . '"' . ($currentLanguage == $lang['uid'] ? ' selected="selected"' : '') . '>' . htmlspecialchars(($lang['title'] . $newTranslation)) . '</option>';
+						if (!$GLOBALS['BE_USER']->checkLanguageAccess($lang['uid'])) {
+							continue;
 						}
+
+						$newTranslation = (isset($rowsByLang[$lang['uid']]) || $rowsByLocale[$lang['locale']]) ? '' : ' [' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.new', TRUE) . ']';
+//echo $lang['locale'] . ' - ' . ($newTranslation ? 'ja' : 'nein') . ':';
+						// Create url for...
+						if ($newTranslation) {
+							// ... creating a localized record
+							$href = $this->doc->issueCommand(
+								'&cmd[' . $table . '][' . $defaultLanguageUid . '][localize]=' . $lang['locale'],
+								$this->backPath . 'alt_doc.php?justLocalized=' . rawurlencode(($table . ':' . $defaultLanguageUid . ':' . $lang['locale'])) . '&returnUrl=' . rawurlencode($this->retUrl) . BackendUtility::getUrlToken('editRecord')
+							);
+						} else {
+							if ($localeField) {
+								$localizedRecordUid = $rowsByLocale[$lang['locale']]['uid'];
+							} else {
+								$localizedRecordUid = $rowsByLang[$lang['uid']]['uid'];
+							}
+
+							// ... editing an existing localized record
+							$href = $this->backPath . 'alt_doc.php?'
+								. '&edit[' . $table . '][' . $localizedRecordUid . ']=edit'
+								. '&returnUrl=' . rawurlencode($this->retUrl) . BackendUtility::getUrlToken('editRecord');
+						}
+						$langSelItems[$lang['uid']] = '
+								<option value="' . htmlspecialchars($href) . '"' . ($currentLanguage == $lang['uid'] ? ' selected="selected"' : '') . '>' . htmlspecialchars(($lang['title'] . $newTranslation)) . '</option>';
 					}
+
 					// If any languages are left, make selector:
 					if (count($langSelItems) > 1) {
 						$onChange = 'if(this.options[this.selectedIndex].value){window.location.href=(this.options[this.selectedIndex].value);}';
@@ -1181,14 +1282,29 @@ class EditDocumentController {
 	/**
 	 * Redirects to alt_doc with new parameters to edit a just created localized record
 	 *
-	 * @param string $justLocalized String passed by GET &justLocalized=
+	 * @param string $justLocalized String passed by GET &justLocalized=, consisting of the table, the original and the new language
 	 * @return void
 	 * @todo Define visibility
 	 */
 	public function localizationRedirect($justLocalized) {
 		list($table, $orig_uid, $language) = explode(':', $justLocalized);
-		if ($GLOBALS['TCA'][$table] && $GLOBALS['TCA'][$table]['ctrl']['languageField'] && $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']) {
-			$localizedRecord = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('uid', $table, $GLOBALS['TCA'][$table]['ctrl']['languageField'] . '=' . intval($language) . ' AND ' . $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] . '=' . intval($orig_uid) . BackendUtility::deleteClause($table) . BackendUtility::versioningPlaceholderClause($table));
+		if ($GLOBALS['TCA'][$table]
+				&& ($GLOBALS['TCA'][$table]['ctrl']['languageField'] || $GLOBALS['TCA'][$table]['ctrl']['localeField'])
+				&& $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']) {
+
+			if ($GLOBALS['TCA'][$table]['ctrl']['localeField']) {
+				$languageClause = $GLOBALS['TCA'][$table]['ctrl']['localeField'] . '=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($language, 'sys_language');
+			} else {
+				$languageClause = $GLOBALS['TCA'][$table]['ctrl']['languageField'] . '=' . intval($language);
+			}
+
+			$localizedRecord = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
+				'uid', $table,
+				$languageClause
+					. ' AND ' . $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] . '=' . intval($orig_uid)
+					. BackendUtility::deleteClause($table)
+					. BackendUtility::versioningPlaceholderClause($table)
+			);
 			if (is_array($localizedRecord)) {
 				// Create parameters and finally run the classic page module for creating a new page translation
 				$params = '&edit[' . $table . '][' . $localizedRecord['uid'] . ']=edit';
@@ -1202,12 +1318,12 @@ class EditDocumentController {
 	/**
 	 * Returns sys_language records available for record translations on given page.
 	 *
-	 * @param integer $id Page id: If zero, the query will select all sys_language records from root level which are NOT hidden. If set to another value, the query will select all sys_language records that has a pages_language_overlay record on that page (and is not hidden, unless you are admin user)
+	 * @param integer $pageId Page id: If zero, the query will select all sys_language records from root level which are NOT hidden. If set to another value, the query will select all sys_language records that has a pages_language_overlay record on that page (and is not hidden, unless you are admin user)
 	 * @return array Language records including faked record for default language
 	 * @todo Define visibility
 	 */
-	public function getLanguages($id) {
-		$modSharedTSconfig = BackendUtility::getModTSconfig($id, 'mod.SHARED');
+	public function getLanguages($pageId) {
+		$modSharedTSconfig = BackendUtility::getModTSconfig($pageId, 'mod.SHARED');
 		// Fallback non sprite-configuration
 		if (preg_match('/\\.gif$/', $modSharedTSconfig['properties']['defaultLanguageFlag'])) {
 			$modSharedTSconfig['properties']['defaultLanguageFlag'] = str_replace('.gif', '', $modSharedTSconfig['properties']['defaultLanguageFlag']);
@@ -1217,13 +1333,20 @@ class EditDocumentController {
 				'uid' => 0,
 				'pid' => 0,
 				'hidden' => 0,
-				'title' => strlen($modSharedTSconfig['properties']['defaultLanguageLabel']) ? $modSharedTSconfig['properties']['defaultLanguageLabel'] . ' (' . $GLOBALS['LANG']->sl('LLL:EXT:lang/locallang_mod_web_list.xlf:defaultLanguage') . ')' : $GLOBALS['LANG']->sl('LLL:EXT:lang/locallang_mod_web_list.xlf:defaultLanguage'),
+				'title' => strlen($modSharedTSconfig['properties']['defaultLanguageLabel']) ? $modSharedTSconfig['properties']['defaultLanguageLabel'] . ' (' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_web_list.xlf:defaultLanguage') . ')' : $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_web_list.xlf:defaultLanguage'),
 				'flag' => $modSharedTSconfig['properties']['defaultLanguageFlag']
 			)
 		);
-		$exQ = $GLOBALS['BE_USER']->isAdmin() ? '' : ' AND sys_language.hidden=0';
-		if ($id) {
-			$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('sys_language.*', 'pages_language_overlay,sys_language', 'pages_language_overlay.sys_language_uid=sys_language.uid AND pages_language_overlay.pid=' . intval($id) . BackendUtility::deleteClause('pages_language_overlay') . $exQ, 'pages_language_overlay.sys_language_uid,sys_language.uid,sys_language.pid,sys_language.tstamp,sys_language.hidden,sys_language.title,sys_language.static_lang_isocode,sys_language.flag', 'sys_language.title');
+		$hiddenClause = $GLOBALS['BE_USER']->isAdmin() ? '' : ' AND sys_language.hidden=0';
+		if ($pageId) {
+			$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+				'sys_language.*',
+				'pages_language_overlay,sys_language',
+				'pages_language_overlay.sys_language_uid=sys_language.uid AND pages_language_overlay.pid='
+					. intval($pageId) . BackendUtility::deleteClause('pages_language_overlay') . $hiddenClause,
+				'pages_language_overlay.sys_language_uid,sys_language.uid,sys_language.pid,sys_language.tstamp,sys_language.hidden,sys_language.title,sys_language.static_lang_isocode,sys_language.flag',
+				'sys_language.title'
+			);
 		} else {
 			$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('sys_language.*', 'sys_language', 'sys_language.hidden=0', '', 'sys_language.title');
 		}

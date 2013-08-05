@@ -508,6 +508,13 @@ class TypoScriptFrontendController {
 	 */
 	public $sys_language_uid = 0;
 
+	/**
+	 * The locale currently used; can be derived from the sys_language_uid
+	 *
+	 * @var string
+	 */
+	protected $contentLocale = '';
+
 	// Site language mode for content fall back.
 	/**
 	 * @todo Define visibility
@@ -2622,6 +2629,24 @@ class TypoScriptFrontendController {
 				$GLOBALS['TT']->setTSlogMessage('Locale "' . htmlspecialchars($this->config['config']['locale_all']) . '" not found.', 3);
 			}
 		}
+	}
+
+	public function setContentLocale() {
+		if ($this->config['config']['contentLocale']) {
+			$this->contentLocale = $this->config['config']['contentLocale'];
+		} else if ($this->sys_language_uid > 0) {
+			$sysLanguageRecord = \TYPO3\CMS\Core\Utility\LocaleUtility::getLanguageRecord($this->sys_language_uid);
+			$this->contentLocale = $sysLanguageRecord['locale'];
+		}
+		$this->contentLocale = \TYPO3\CMS\Core\Utility\LocaleUtility::canonicalizeLocale($this->contentLocale);
+	}
+
+	public function getContentLocale() {
+		return $this->contentLocale;
+	}
+
+	public function getContentLocaleFallbackChain() {
+		return \TYPO3\CMS\Core\Utility\LocaleUtility::getFallbackChainForLocale($this->contentLocale);
 	}
 
 	/**

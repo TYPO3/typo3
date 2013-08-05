@@ -52,6 +52,29 @@ return array(
 				'maxitems' => 1
 			)
 		),
+		'locale' => array(
+			'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_language.locale',
+			'config' => array(
+				'type' => 'input',
+				'size' => '17',
+				'max' => '17',
+				'eval' => 'trim,lower'
+			)
+		),
+		'fallback' => array(
+			'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_language.fallback',
+			'config' => array(
+				'type' => 'select',
+				'items' => array(
+					array('', 0)
+				),
+				'foreign_table' => 'sys_language',
+				'foreign_table_where' => 'AND sys_language.uid != ###REC_FIELD_uid###',
+				'size' => 1,
+				'minitems' => 0,
+				'maxitems' => 1
+			)
+		),
 		'flag' => array(
 			'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_language.flag',
 			'config' => array(
@@ -64,10 +87,26 @@ return array(
 				'minitems' => 0,
 				'maxitems' => 1
 			)
+		),
+		'static_country_isocode' => array(
+			'exclude' => 1,
+			'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_language.country_isocode',
+			'displayCond' => 'EXT:static_info_tables:LOADED:true',
+			'config' => array(
+				'type' => 'select',
+				'items' => array(
+					array('', 0)
+				),
+				'foreign_table' => 'static_countries',
+				'foreign_table_where' => 'AND static_countries.pid=0 ORDER BY static_countries.cn_short_en',
+				'size' => 1,
+				'minitems' => 0,
+				'maxitems' => 1
+			)
 		)
 	),
 	'types' => array(
-		'1' => array('showitem' => 'hidden;;;;1-1-1,title;;;;2-2-2,static_lang_isocode,flag')
+		'1' => array('showitem' => 'hidden;;;;1-1-1,title;;;;2-2-2,locale,fallback,static_lang_isocode,static_country_isocode,flag')
 	)
 );
 ?>
