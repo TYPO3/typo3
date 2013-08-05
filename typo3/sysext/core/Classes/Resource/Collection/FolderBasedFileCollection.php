@@ -69,9 +69,11 @@ class FolderBasedFileCollection extends \TYPO3\CMS\Core\Resource\Collection\Abst
 	 * @return void
 	 */
 	public function loadContents() {
-		$entries = $this->folder->getFiles();
-		foreach ($entries as $entry) {
-			$this->add($entry);
+		if ($this->folder instanceof \TYPO3\CMS\Core\Resource\Folder) {
+			$entries = $this->folder->getFiles();
+			foreach ($entries as $entry) {
+				$this->add($entry);
+			}
 		}
 	}
 
