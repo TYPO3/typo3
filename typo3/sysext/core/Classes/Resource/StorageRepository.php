@@ -205,8 +205,8 @@ class StorageRepository extends AbstractRepository {
 	 *
 	 * @return string the additional where clause, something like " AND deleted=0 AND hidden=0"
 	 */
-	protected function getWhereClauseForEnabledFields() {
-		if (TYPO3_MODE === 'FE') {
+	protected function getWhereClauseForEnabledFields($environmentMode = NULL) {
+		if ($this->getEnvironmentMode() === 'FE') {
 			// frontend context
 			$whereClause = $GLOBALS['TSFE']->sys_page->enableFields($this->table);
 			$whereClause .= $GLOBALS['TSFE']->sys_page->deleteClause($this->table);
@@ -216,6 +216,16 @@ class StorageRepository extends AbstractRepository {
 			$whereClause .= \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($this->table);
 		}
 		return $whereClause;
+	}
+
+	/**
+	 * Function to return the current TYPO3_MODE.
+	 * This function can be mocked in unit tests to be able to test frontend behaviour.
+	 *
+	 * @return string
+	 */
+	protected function getEnvironmentMode() {
+		return TYPO3_MODE;
 	}
 }
 
