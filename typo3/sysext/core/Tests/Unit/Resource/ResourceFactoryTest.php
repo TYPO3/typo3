@@ -103,8 +103,8 @@ class FactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	public function directoryDataProviderValidFolderValues() {
 		return array(
-			'relative path' => array('fileadmin'),
-			'path with PATH_site' => array(PATH_site . 'fileadmin')
+			'relative path' => array('typo3'),
+			'path with PATH_site' => array(PATH_site . 'typo3')
 		);
 	}
 
@@ -116,7 +116,7 @@ class FactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$storage = $this->getMock('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', array('getFile', 'getFolder'), array(), '', FALSE);
 		$storage->expects($this->once())
 			->method('getFolder')
-			->with('fileadmin');
+			->with('typo3');
 		$this->fixture->_set('storageInstances', array(0 => $storage));
 		$this->fixture->retrieveFileOrFolderObject($source);
 	}
