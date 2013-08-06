@@ -141,6 +141,10 @@ table.typo3-page-columnsMode tr td a b {
 	text-decoration: underline;
 }
 
+.t3-page-ce-body-inner {
+	word-break: break-all;
+}
+
 table.t3-page-columns tr td span.exampleContent a {
 	color: #000000;
 	text-decoration: none;
