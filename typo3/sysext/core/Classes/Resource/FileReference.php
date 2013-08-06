@@ -290,6 +290,15 @@ class FileReference implements FileInterface {
 	}
 
 	/**
+	 * Returns the basename (the name without extension) of this file.
+	 *
+	 * @return string
+	 */
+	public function getNameWithoutExtension() {
+		return $this->originalFile->getNameWithoutExtension();
+	}
+
+	/**
 	 * Get the MIME type of this file
 	 *
 	 * @return array file information
