@@ -623,7 +623,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 	/**
 	 * @test
 	 * @depends existenceChecksWorkForFilesAndFolders
-	 * @return array The driver fixture, the mocked file
+	 * @return \TYPO3\CMS\Core\Resource\Driver\LocalDriver The driver fixture
 	 */
 	public function newFilesCanBeCreated() {
 		$this->addToMount(array(
@@ -633,18 +633,16 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 		list($basedir, $fixture) = $this->prepareRealTestEnvironment();
 		mkdir($basedir . '/someDir');
 		$fixture->createFile('testfile.txt', $fixture->getFolder('someDir'));
-		$mockedFile = $this->getSimpleFileMock('/someDir/testfile.txt');
 		$this->assertTrue($fixture->fileExists('/someDir/testfile.txt'));
-		return array($fixture, $mockedFile);
+		return $fixture;
 	}
 
 	/**
 	 * @test
 	 * @depends newFilesCanBeCreated
 	 */
-	public function createdFilesAreEmpty(array $arguments) {
-		/** @var $fixture \TYPO3\CMS\Core\Resource\Driver\LocalDriver */
-		list($fixture, $mockedFile) = $arguments;
+	public function createdFilesAreEmpty(\TYPO3\CMS\Core\Resource\Driver\LocalDriver $fixture) {
+		$mockedFile = $this->getSimpleFileMock('/someDir/testfile.txt');
 		$fileData = $fixture->getFileContents($mockedFile);
 		$this->assertEquals(0, strlen($fileData));
 	}
