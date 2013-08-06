@@ -84,6 +84,9 @@ class ExtendedFileUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * Sets up this testcase
 	 */
 	public function setUp() {
+		$this->singletonInstances = \TYPO3\CMS\Core\Utility\GeneralUtility::getSingletonInstances();
+		\TYPO3\CMS\Core\Utility\GeneralUtility::purgeInstances();
+
 		$this->storageRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\StorageRepository');
 		// Initializing file processor
 		$GLOBALS['BE_USER'] = $this->getMock('TYPO3\\CMS\\Core\\Authentication\\BackendUserAuthentication', array('getSessionData', 'setAndSaveSessionData'));
@@ -94,8 +97,6 @@ class ExtendedFileUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->fileProcessor->init($GLOBALS['FILEMOUNTS'], $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
 		$this->fileProcessor->init_actionPerms($GLOBALS['BE_USER']->getFileoperationPermissions());
 		$this->fileProcessor->dontCheckForUnique = 1;
-		$this->singletonInstances = \TYPO3\CMS\Core\Utility\GeneralUtility::getSingletonInstances();
-		\TYPO3\CMS\Core\Utility\GeneralUtility::purgeInstances();
 	}
 
 	/**

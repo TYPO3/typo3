@@ -45,6 +45,8 @@ class BackendFormProtectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * Set up
 	 */
 	public function setUp() {
+		$this->singletonInstances = \TYPO3\CMS\Core\Utility\GeneralUtility::getSingletonInstances();
+
 		$GLOBALS['BE_USER'] = $this->getMock(
 			'TYPO3\\CMS\\Core\\Authentication\\BackendUserAuthentication',
 			array('getSessionData', 'setAndSaveSessionData')
@@ -55,8 +57,6 @@ class BackendFormProtectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			'TYPO3\\CMS\\Core\\FormProtection\BackendFormProtection',
 			array('acquireLock', 'releaseLock')
 		);
-
-		$this->singletonInstances = \TYPO3\CMS\Core\Utility\GeneralUtility::getSingletonInstances();
 	}
 
 	public function tearDown() {
