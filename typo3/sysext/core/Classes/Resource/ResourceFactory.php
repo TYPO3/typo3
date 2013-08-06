@@ -377,8 +377,10 @@ class ResourceFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return FileInterface|Folder
 	 */
 	public function retrieveFileOrFolderObject($input) {
-		// Easy function to deal with that, could be dropped in the future
-		// if we know where to use this function
+		// Remove PATH_site because absolute paths under Windows systems contain ':'
+		// This is done in all considered sub functions anyway
+		$input = str_replace(PATH_site, '', $input);
+		
 		if (GeneralUtility::isFirstPartOfStr($input, 'file:')) {
 			$input = substr($input, 5);
 			return $this->retrieveFileOrFolderObject($input);
