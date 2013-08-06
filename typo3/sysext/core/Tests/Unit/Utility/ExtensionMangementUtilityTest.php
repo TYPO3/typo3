@@ -62,12 +62,12 @@ class ExtensionManagementUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 	protected $testFilesToDelete = array();
 
 	public function setUp() {
+		$this->singletonInstances = \TYPO3\CMS\Core\Utility\GeneralUtility::getSingletonInstances();
 		$this->createAccessibleProxyClass();
 		$this->globals = array(
 			'TYPO3_LOADED_EXT' => serialize($GLOBALS['TYPO3_LOADED_EXT'])
 		);
 		$this->testFilesToDelete = array();
-		$this->singletonInstances = \TYPO3\CMS\Core\Utility\GeneralUtility::getSingletonInstances();
 	}
 
 	public function tearDown() {

@@ -101,6 +101,7 @@ class StandaloneViewTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @return void
 	 */
 	public function setUp() {
+		$this->singletonInstances = \TYPO3\CMS\Core\Utility\GeneralUtility::getSingletonInstances();
 		$this->view = $this->getAccessibleMock('TYPO3\\CMS\\Fluid\\View\\StandaloneView', array('dummy'), array(), '', FALSE);
 		$this->mockTemplateParser = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\Parser\\TemplateParser');
 		$this->mockParsedTemplate = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\Parser\\ParsedTemplateInterface');
@@ -124,7 +125,6 @@ class StandaloneViewTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$this->view->setRenderingContext($this->mockRenderingContext);
 		$this->mockTemplateCompiler = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\Compiler\\TemplateCompiler');
 		$this->view->_set('templateCompiler', $this->mockTemplateCompiler);
-		$this->singletonInstances = \TYPO3\CMS\Core\Utility\GeneralUtility::getSingletonInstances();
 		\TYPO3\CMS\Core\Utility\GeneralUtility::setSingletonInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager', $this->mockObjectManager);
 		\TYPO3\CMS\Core\Utility\GeneralUtility::addInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer', $this->mockContentObject);
 	}
