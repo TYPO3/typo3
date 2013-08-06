@@ -205,8 +205,11 @@ class StorageRepository extends AbstractRepository {
 	 *
 	 * @return string the additional where clause, something like " AND deleted=0 AND hidden=0"
 	 */
-	protected function getWhereClauseForEnabledFields() {
-		if (TYPO3_MODE === 'FE') {
+	protected function getWhereClauseForEnabledFields($environmentMode = NULL) {
+		if ($environmentMode === NULL) {
+			$environmentMode = TYPO3_MODE;
+		}
+		if ($environmentMode === 'FE') {
 			// frontend context
 			$whereClause = $GLOBALS['TSFE']->sys_page->enableFields($this->table);
 			$whereClause .= $GLOBALS['TSFE']->sys_page->deleteClause($this->table);
