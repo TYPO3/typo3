@@ -115,54 +115,56 @@ class DocumentRepository {
 		$documents = array();
 
 		$documentKeys = \TYPO3\CMS\Core\Utility\GeneralUtility::get_dirs(PATH_site . $basePath);
-		foreach ($documentKeys as $documentKey) {
-			$icon = \TYPO3\CMS\Documentation\Utility\GeneralUtility::getIcon($documentKey);
+		if (is_array($documentKeys)) {
+			foreach ($documentKeys as $documentKey) {
+				$icon = \TYPO3\CMS\Documentation\Utility\GeneralUtility::getIcon($documentKey);
 
-			/** @var \TYPO3\CMS\Documentation\Domain\Model\Document $document */
-			$document = $this->objectManager->get('TYPO3\\CMS\\Documentation\\Domain\\Model\\Document')
-				->setPackageKey($documentKey)
-				->setIcon($icon);
+				/** @var \TYPO3\CMS\Documentation\Domain\Model\Document $document */
+				$document = $this->objectManager->get('TYPO3\\CMS\\Documentation\\Domain\\Model\\Document')
+					->setPackageKey($documentKey)
+					->setIcon($icon);
 
-			$languagePath = $basePath . $documentKey . '/';
-			$languages = \TYPO3\CMS\Core\Utility\GeneralUtility::get_dirs(PATH_site . $languagePath);
-			foreach ($languages as $language) {
-				$metadata = $this->getMetadata($documentKey, $language);
+				$languagePath = $basePath . $documentKey . '/';
+				$languages = \TYPO3\CMS\Core\Utility\GeneralUtility::get_dirs(PATH_site . $languagePath);
+				foreach ($languages as $language) {
+					$metadata = $this->getMetadata($documentKey, $language);
 
-				/** @var \TYPO3\CMS\Documentation\Domain\Model\DocumentTranslation $documentTranslation */
-				$documentTranslation = $this->objectManager->get('TYPO3\\CMS\\Documentation\\Domain\\Model\\DocumentTranslation')
-					->setLanguage($language)
-					->setTitle($metadata['title'])
-					->setDescription($metadata['description']);
+					/** @var \TYPO3\CMS\Documentation\Domain\Model\DocumentTranslation $documentTranslation */
+					$documentTranslation = $this->objectManager->get('TYPO3\\CMS\\Documentation\\Domain\\Model\\DocumentTranslation')
+						->setLanguage($language)
+						->setTitle($metadata['title'])
+						->setDescription($metadata['description']);
 
-				$formatPath = $languagePath . $language . '/';
-				$formats = \TYPO3\CMS\Core\Utility\GeneralUtility::get_dirs(PATH_site . $formatPath);
-				foreach ($formats as $format) {
-					$documentFile = '';
-					switch ($format) {
-						case 'html':
-							$documentFile = 'Index.html';
-							break;
-						case 'pdf':
-							// Retrieve first PDF
-							$files = \TYPO3\CMS\Core\Utility\GeneralUtility::getFilesInDir(PATH_site . $formatPath . $format, 'pdf');
-							if (count($files) > 0) {
-								$documentFile = current($files);
-							}
-							break;
+					$formatPath = $languagePath . $language . '/';
+					$formats = \TYPO3\CMS\Core\Utility\GeneralUtility::get_dirs(PATH_site . $formatPath);
+					foreach ($formats as $format) {
+						$documentFile = '';
+						switch ($format) {
+							case 'html':
+								$documentFile = 'Index.html';
+								break;
+							case 'pdf':
+								// Retrieve first PDF
+								$files = \TYPO3\CMS\Core\Utility\GeneralUtility::getFilesInDir(PATH_site . $formatPath . $format, 'pdf');
+								if (count($files) > 0) {
+									$documentFile = current($files);
+								}
+								break;
+						}
+						if (!empty($documentFile) && is_file(PATH_site . $formatPath . $format . '/' . $documentFile)) {
+							/** @var \TYPO3\CMS\Documentation\Domain\Model\DocumentFormat $documentFormat */
+							$documentFormat = $this->objectManager->get('TYPO3\\CMS\\Documentation\\Domain\\Model\\DocumentFormat')
+								->setFormat($format)
+								->setPath($formatPath . $format . '/' . $documentFile);
+
+							$documentTranslation->addFormat($documentFormat);
+						}
 					}
-					if (!empty($documentFile) && is_file(PATH_site . $formatPath . $format . '/' . $documentFile)) {
-						/** @var \TYPO3\CMS\Documentation\Domain\Model\DocumentFormat $documentFormat */
-						$documentFormat = $this->objectManager->get('TYPO3\\CMS\\Documentation\\Domain\\Model\\DocumentFormat')
-							->setFormat($format)
-							->setPath($formatPath . $format . '/' . $documentFile);
 
-						$documentTranslation->addFormat($documentFormat);
+					if (count($documentTranslation->getFormats()) > 0) {
+						$document->addTranslation($documentTranslation);
+						$documents[$documentKey] = $document;
 					}
-				}
-
-				if (count($documentTranslation->getFormats()) > 0) {
-					$document->addTranslation($documentTranslation);
-					$documents[$documentKey] = $document;
 				}
 			}
 		}
