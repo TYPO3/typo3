@@ -112,9 +112,14 @@ class DocumentRepository {
 	 */
 	protected function findSphinxDocuments() {
 		$basePath = 'typo3conf/Documentation/';
-		$documents = array();
 
+		$documents = array();
 		$documentKeys = \TYPO3\CMS\Core\Utility\GeneralUtility::get_dirs(PATH_site . $basePath);
+		// Early return in case no document keys were found
+		if (!is_array($documentKeys)) {
+			return $documents;
+		}
+
 		foreach ($documentKeys as $documentKey) {
 			$icon = \TYPO3\CMS\Documentation\Utility\GeneralUtility::getIcon($documentKey);
 
