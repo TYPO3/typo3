@@ -65,7 +65,7 @@ class StorageRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			'',
 			FALSE
 		);
-		$storageRepositoryMock->_call('getWhereClauseForEnabledFields');
+		$storageRepositoryMock->_call('getWhereClauseForEnabledFields', 'FE');
 	}
 }
 
