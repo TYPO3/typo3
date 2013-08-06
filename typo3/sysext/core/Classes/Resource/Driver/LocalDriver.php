@@ -338,6 +338,9 @@ class LocalDriver extends \TYPO3\CMS\Core\Resource\Driver\AbstractDriver {
 			if ($this->applyFilterMethodsToDirectoryItem($filterMethods, $iteratorItem, $identifier, $path) === FALSE) {
 				continue;
 			}
+
+			// dirname returns "/" when called with "/" as the argument, so strip trailing slashes here to be sure
+			$path = rtrim(GeneralUtility::fixWindowsFilePath(dirname($identifier)), '/') . '/';
 			if (isset($itemRows[$identifier])) {
 				list($key, $item) = $this->{$itemHandlerMethod}($iteratorItem, $path, $itemRows[$identifier]);
 			} else {
@@ -856,11 +859,13 @@ class LocalDriver extends \TYPO3\CMS\Core\Resource\Driver\AbstractDriver {
 		$sourceFolderPath = $this->getAbsolutePath($folderToCopy);
 		/** @var $iterator \RecursiveDirectoryIterator */
 		$iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($sourceFolderPath), \RecursiveIteratorIterator::SELF_FIRST);
+		// Rewind the iterator as this is important for some systems e.g. Windows
+		$iterator->rewind();
 		while ($iterator->valid()) {
 			/** @var $current \RecursiveDirectoryIterator */
 			$current = $iterator->current();
 			$fileName = $current->getFilename();
-			$itemSubPath = $iterator->getSubPathname();
+			$itemSubPath = GeneralUtility::fixWindowsFilePath($iterator->getSubPathname());
 			if ($current->isDir() && !($fileName === '..' || $fileName === '.')) {
 				mkdir($targetFolderPath . $itemSubPath);
 			} elseif ($current->isFile()) {
