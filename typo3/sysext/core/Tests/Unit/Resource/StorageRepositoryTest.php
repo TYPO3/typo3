@@ -60,11 +60,12 @@ class StorageRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			->with('sys_file_storage');
 		$storageRepositoryMock = $this->getAccessibleMock(
 			'TYPO3\\CMS\\Core\\Resource\\StorageRepository',
-			array('dummy'),
+			array('getEnvironmentMode'),
 			array(),
 			'',
 			FALSE
 		);
+		$storageRepositoryMock->expects($this->any())->method('getEnvironmentMode')->will($this->returnValue('FE'));
 		$storageRepositoryMock->_call('getWhereClauseForEnabledFields');
 	}
 }
