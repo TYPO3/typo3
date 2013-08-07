@@ -1561,6 +1561,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 *
 	 * addFolder = 1
 	 * readFolder = 1
+	 * copyFolder = 1
 	 * moveFolder = 1
 	 * writeFolder = 1
 	 * renameFolder = 1
@@ -1583,36 +1584,35 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	public function getFilePermissions() {
 		if (!isset($this->filePermissions)) {
 			$defaultOptions = array(
+				// File permissions
 				'addFile' => TRUE,
-				// new option
 				'readFile' => TRUE,
-				// new option, generic check of the user rights
 				'editFile' => TRUE,
-				// new option
 				'writeFile' => TRUE,
-				// new option, generic check of the user rights
 				'uploadFile' => TRUE,
 				'copyFile' => TRUE,
 				'moveFile' => TRUE,
 				'renameFile' => TRUE,
 				'unzipFile' => TRUE,
 				'removeFile' => TRUE,
+				// Folder permissions
 				'addFolder' => TRUE,
 				'readFolder' => TRUE,
-				// new option,, generic check of the user rights
+				'copyFolder' => TRUE,
 				'moveFolder' => TRUE,
 				'renameFolder' => TRUE,
 				'writeFolder' => TRUE,
-				// new option, generic check of the user rights
 				'removeFolder' => TRUE,
 				'removeSubfolders' => TRUE
 			);
 			if (!$this->isAdmin()) {
-				$this->filePermissions = $this->getTSConfig('permissions.file.default');
-				if (empty($this->filePermissions)) {
+				$defaultPermissionsTsConfig = $this->getTSConfigProp('permissions.file.default');
+				if (!empty($defaultPermissionsTsConfig)) {
+					$defaultOptions = $defaultPermissionsTsConfig;
+				} else {
 					$oldFileOperationPermissions = $this->getFileoperationPermissions();
 					// Lower permissions if the old file operation permissions are not set
-					if ($oldFileOperationPermissions ^ 1) {
+					if (!($oldFileOperationPermissions & 1)) {
 						$defaultOptions['addFile'] = FALSE;
 						$defaultOptions['uploadFile'] = FALSE;
 						$defaultOptions['copyFile'] = FALSE;
@@ -1622,20 +1622,20 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 						$defaultOptions['editFile'] = FALSE;
 						$defaultOptions['writeFile'] = FALSE;
 					}
-					if ($oldFileOperationPermissions ^ 2) {
+					if (!($oldFileOperationPermissions & 2)) {
 						$defaultOptions['unzipFile'] = FALSE;
 					}
-					if ($oldFileOperationPermissions ^ 4) {
+					if (!($oldFileOperationPermissions & 4)) {
 						$defaultOptions['addFolder'] = FALSE;
 						$defaultOptions['moveFolder'] = FALSE;
 						$defaultOptions['renameFolder'] = FALSE;
 						$defaultOptions['removeFolder'] = FALSE;
 						$defaultOptions['writeFolder'] = FALSE;
 					}
-					if ($oldFileOperationPermissions ^ 8) {
+					if (!($oldFileOperationPermissions & 8)) {
 						$defaultOptions['copyFolder'] = FALSE;
 					}
-					if ($oldFileOperationPermissions ^ 16) {
+					if (!($oldFileOperationPermissions & 16)) {
 						$defaultOptions['removeSubfolders'] = FALSE;
 					}
 				}
@@ -1648,21 +1648,22 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	/**
 	 * Gets the file permissions for a storage
 	 * by merging any storage-specific permissions for a
-	 * storage with the default settings
+	 * storage with the default settings.
+	 * Admin users will always get the default settings.
 	 *
 	 * @api
 	 * @param \TYPO3\CMS\Core\Resource\ResourceStorage $storageObject
 	 * @return array
 	 */
 	public function getFilePermissionsForStorage(\TYPO3\CMS\Core\Resource\ResourceStorage $storageObject) {
-		$defaultFilePermissions = $this->getFilePermissions();
-		$storagePermissionsArray = $this->getTSConfig('permissions.file.storage.' . $storageObject->getUid());
-		$storageFilePermissions = $storagePermissionsArray['properties'];
-		if (is_array($storageFilePermissions) && count($storageFilePermissions)) {
-			return array_merge($defaultFilePermissions, $storageFilePermissions);
-		} else {
-			return $defaultFilePermissions;
+		$finalUserPermissions = $this->getFilePermissions();
+		if (!$this->isAdmin()) {
+			$storageFilePermissions = $this->getTSConfigProp('permissions.file.storage.' . $storageObject->getUid());
+			if (!empty($storageFilePermissions)) {
+				$finalUserPermissions = array_merge($finalUserPermissions, $storageFilePermissions);
+			}
 		}
+		return $finalUserPermissions;
 	}
 
 	/**
