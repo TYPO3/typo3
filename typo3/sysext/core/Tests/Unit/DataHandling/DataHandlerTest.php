@@ -532,6 +532,61 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 	/**
+	 * @param boolean $expected
+	 * @param array $eval
+	 * @dataProvider getPlaceholderTitleForTableLabelReturnsLabelThatsMatchesLabelFieldConditionsDataProvider
+	 * @test
+	 */
+	public function getPlaceholderTitleForTableLabelReturnsLabelThatsMatchesLabelFieldConditions($expected, $eval) {
+		$table = 'phpunit_dummy';
+
+		$subject = $this->getAccessibleMock(
+			'TYPO3\\CMS\\Core\\DataHandling\\DataHandler',
+			array('dummy')
+		);
+
+		$backendUser = $this->getMock('TYPO3\\CMS\\Core\\Authentication\\BackendUserAuthentication');
+		$subject->BE_USER = $backendUser;
+		$subject->BE_USER->workspace = 1;
+
+		$GLOBALS['TCA'][$table] = array();
+		$GLOBALS['TCA'][$table]['ctrl'] = array('label' => 'dummy');
+		$GLOBALS['TCA'][$table]['columns'] = array(
+			'dummy' => array(
+				'config' => array(
+					'eval' => $eval
+				)
+			)
+		);
+
+		$this->assertEquals($expected, $subject->_call('getPlaceholderTitleForTableLabel', $table));
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getPlaceholderTitleForTableLabelReturnsLabelThatsMatchesLabelFieldConditionsDataProvider() {
+		return array(
+			array(
+				0.10,
+				'double2'
+			),
+			array(
+				0,
+				'int'
+			),
+			array(
+				'0',
+				'datetime'
+			),
+			array(
+				'[PLACEHOLDER, WS#1]',
+				''
+			)
+		);
+	}
+
+	/**
 	 * @param string $value
 	 * @param string $expectedValue
 	 *
