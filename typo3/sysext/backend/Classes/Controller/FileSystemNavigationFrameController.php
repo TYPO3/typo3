@@ -46,6 +46,11 @@ class FileSystemNavigationFrameController {
 	public $cMR;
 
 	/**
+	 * @var array
+	 */
+	protected $scopeData;
+
+	/**
 	 * Initialiation of the script class
 	 *
 	 * @return 	void
@@ -57,11 +62,28 @@ class FileSystemNavigationFrameController {
 		// Setting GPvars:
 		$this->currentSubScript = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('currentSubScript');
 		$this->cMR = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('cMR');
+
+		$scopeData = (string)\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('scopeData');
+		$scopeHash = (string)\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('scopeHash');
+
+		if (!empty($scopeData) && \TYPO3\CMS\Core\Utility\GeneralUtility::hmac($scopeData) === $scopeHash) {
+			$this->scopeData = unserialize($scopeData);
+		}
+
 		// Create folder tree object:
-		/** @var $foldertree \TYPO3\CMS\Filelist\FileListFolderTree */
-		$this->foldertree = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Filelist\\FileListFolderTree');
+		if (!empty($this->scopeData)) {
+			$this->foldertree = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($this->scopeData['class']);
+			$this->foldertree->thisScript = $this->scopeData['script'];
+			$this->foldertree->ext_noTempRecyclerDirs = $this->scopeData['ext_noTempRecyclerDirs'];
+			$GLOBALS['SOBE']->browser = new \stdClass();
+			$GLOBALS['SOBE']->browser->mode = $this->scopeData['browser']['mode'];
+			$GLOBALS['SOBE']->browser->act = $this->scopeData['browser']['act'];
+		} else {
+			$this->foldertree = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Filelist\\FileListFolderTree');
+			$this->foldertree->thisScript = 'alt_file_navframe.php';
+		}
+
 		$this->foldertree->ext_IconMode = $GLOBALS['BE_USER']->getTSConfigVal('options.folderTree.disableIconLinkToContextmenu');
-		$this->foldertree->thisScript = 'alt_file_navframe.php';
 	}
 
 	/**

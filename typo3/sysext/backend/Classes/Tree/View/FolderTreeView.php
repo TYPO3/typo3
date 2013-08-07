@@ -110,7 +110,14 @@ class FolderTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 	public function PMiconATagWrap($icon, $cmd, $isExpand = TRUE) {
 		if ($this->thisScript) {
 			// Activates dynamic AJAX based tree
-			$js = htmlspecialchars('Tree.load(\'' . $cmd . '\', ' . intval($isExpand) . ', this);');
+			$scopeData = '';
+			$scopeHash = '';
+			// $this->scope is defined in TBE_FolderTree
+			if (!empty($this->scope)) {
+				$scopeData = serialize($this->scope);
+				$scopeHash = \TYPO3\CMS\Core\Utility\GeneralUtility::hmac($scopeData);
+			}
+			$js = htmlspecialchars('Tree.load(\'' . $cmd . '\', ' . intval($isExpand) . ', this, \'' . $scopeData . '\', \'' . $scopeHash . '\');');
 			return '<a class="pm" onclick="' . $js . '">' . $icon . '</a>';
 		} else {
 			return $icon;
