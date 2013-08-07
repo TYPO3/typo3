@@ -96,16 +96,16 @@ class LocallangXmlParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 */
-	public function canParseLlxmlInFrench() {
-		$LOCAL_LANG = $this->parser->getParsedData(self::getFixtureFilePath('locallang.xml'), 'fr');
-		$this->assertArrayHasKey('fr', $LOCAL_LANG, 'fr key not found in $LOCAL_LANG');
+	public function canParseLlxmlInMd5Code() {
+		$LOCAL_LANG = $this->parser->getParsedData(self::getFixtureFilePath('locallang.xml'), 'md5');
+		$this->assertArrayHasKey('md5', $LOCAL_LANG, 'md5 key not found in $LOCAL_LANG');
 		$expectedLabels = array(
-			'label1' => 'Ceci est le libellé no. 1',
-			'label2' => 'Ceci est le libellé no. 2',
-			'label3' => 'Ceci est le libellé no. 3'
+			'label1' => '409a6edbc70dbeeccbfe5f1e569d6717',
+			'label2' => 'b5dc71ae9f52ecb9e7704c50562e39b0',
+			'label3' => '51eac55fa5ca15789ce9bbb0cf927296'
 		);
 		foreach ($expectedLabels as $key => $expectedLabel) {
-			$this->assertEquals($expectedLabel, $LOCAL_LANG['fr'][$key][0]['target']);
+			$this->assertEquals($expectedLabel, $LOCAL_LANG['md5'][$key][0]['target']);
 		}
 	}
 
@@ -129,19 +129,19 @@ class LocallangXmlParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function canOverrideLlxml() {
 		$GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride'][self::getFixtureFilePath('locallang.xml')][] = self::getFixtureFilePath('locallang_override.xml');
-		$LOCAL_LANG = array_merge(\TYPO3\CMS\Core\Utility\GeneralUtility::readLLfile(self::getFixtureFilePath('locallang.xml'), 'default'), \TYPO3\CMS\Core\Utility\GeneralUtility::readLLfile(self::getFixtureFilePath('locallang.xml'), 'fr'));
+		$LOCAL_LANG = array_merge(\TYPO3\CMS\Core\Utility\GeneralUtility::readLLfile(self::getFixtureFilePath('locallang.xml'), 'default'), \TYPO3\CMS\Core\Utility\GeneralUtility::readLLfile(self::getFixtureFilePath('locallang.xml'), 'md5'));
 		$this->assertArrayHasKey('default', $LOCAL_LANG, 'default key not found in $LOCAL_LANG');
-		$this->assertArrayHasKey('fr', $LOCAL_LANG, 'fr key not found in $LOCAL_LANG');
+		$this->assertArrayHasKey('md5', $LOCAL_LANG, 'md5 key not found in $LOCAL_LANG');
 		$expectedLabels = array(
 			'default' => array(
 				'label1' => 'This is my 1st label',
 				'label2' => 'This is my 2nd label',
 				'label3' => 'This is label #3'
 			),
-			'fr' => array(
-				'label1' => 'Ceci est mon 1er libellé',
-				'label2' => 'Ceci est le libellé no. 2',
-				'label3' => 'Ceci est mon 3e libellé'
+			'md5' => array(
+				'label1' => '409a6edbc70dbeeccbfe5f1e569d6717',
+				'label2' => 'b5dc71ae9f52ecb9e7704c50562e39b0',
+				'label3' => '51eac55fa5ca15789ce9bbb0cf927296'
 			)
 		);
 		foreach ($expectedLabels as $languageKey => $expectedLanguageLabels) {
