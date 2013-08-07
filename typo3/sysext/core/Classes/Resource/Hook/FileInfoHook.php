@@ -47,6 +47,10 @@ class FileInfoHook {
 			$processedFile = $fileObject->process(\TYPO3\CMS\Core\Resource\ProcessedFile::CONTEXT_IMAGEPREVIEW, array('width' => 150, 'height' => 150));
 			$previewImage = $processedFile->getPublicUrl(TRUE);
 			$content = '';
+			if ($fileObject->isMissing()) {
+				$flashMessage = \TYPO3\CMS\Core\Resource\Utility\BackendUtility::getFlashMessageForMissingFile($fileObject);
+				$content .= $flashMessage->render();
+			}
 			if ($previewImage) {
 				$content .= '<img src="' . htmlspecialchars($previewImage) . '" alt="" class="t3-tceforms-sysfile-imagepreview" />';
 			}

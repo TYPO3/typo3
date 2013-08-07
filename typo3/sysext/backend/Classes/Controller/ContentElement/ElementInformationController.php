@@ -251,30 +251,41 @@ class ElementInformationController {
 		if (!$this->fileObject) {
 			return;
 		}
+		$imageTag = '';
+		$downloadLink = '';
 
-		$fileExtension = $this->fileObject->getExtension();
-		if (GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], $fileExtension)) {
-			$thumbUrl = $this->fileObject->process(
-				ProcessedFile::CONTEXT_IMAGEPREVIEW,
-				array(
-					'width' => '400m',
-					'height' => '400m'
-				)
-			)->getPublicUrl(TRUE);
-		}
+		// check if file is marked as missing
+		if ($this->fileObject->isMissing()) {
+			$flashMessage = \TYPO3\CMS\Core\Resource\Utility\BackendUtility::getFlashMessageForMissingFile($this->fileObject);
+			$imageTag .= $flashMessage->render();
 
-		// Create thumbnail image?
-		if ($thumbUrl) {
-			$imageTag = '<img src="' . $thumbUrl . '" ' .
-					'alt="' . htmlspecialchars(trim($this->fileObject->getName())) . '" ' .
-					'title="' . htmlspecialchars(trim($this->fileObject->getName())) . '" />';
-		}
+		} else {
 
-		// Display download link?
-		if ($this->fileObject->getPublicUrl()) {
-			$downloadLink = '<a href="../' . $this->fileObject->getPublicUrl() . '" target="_blank">' .
-					$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xlf:download', TRUE) .
-					'</a>';
+			$fileExtension = $this->fileObject->getExtension();
+			$thumbUrl = '';
+			if (GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], $fileExtension)) {
+				$thumbUrl = $this->fileObject->process(
+					ProcessedFile::CONTEXT_IMAGEPREVIEW,
+					array(
+						'width' => '400m',
+						'height' => '400m'
+					)
+				)->getPublicUrl(TRUE);
+			}
+
+			// Create thumbnail image?
+			if ($thumbUrl) {
+				$imageTag .= '<img src="' . $thumbUrl . '" ' .
+						'alt="' . htmlspecialchars(trim($this->fileObject->getName())) . '" ' .
+						'title="' . htmlspecialchars(trim($this->fileObject->getName())) . '" />';
+			}
+
+			// Display download link?
+			if ($this->fileObject->getPublicUrl()) {
+				$downloadLink .= '<a href="../' . $this->fileObject->getPublicUrl() . '" target="_blank">' .
+						$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xlf:download', TRUE) .
+						'</a>';
+			}
 		}
 
 		return ($imageTag ? '<p>' . $imageTag . '</p>' : '') .
