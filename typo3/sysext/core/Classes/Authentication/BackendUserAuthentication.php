@@ -1608,8 +1608,10 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 				'removeSubfolders' => TRUE
 			);
 			if (!$this->isAdmin()) {
-				$this->filePermissions = $this->getTSConfig('permissions.file.default');
-				if (empty($this->filePermissions)) {
+				$defaultPermissionTsConfig = $this->getTSConfig('permissions.file.default');
+				if (!empty($defaultPermissionTsConfig['properties'])) {
+					$defaultOptions = $defaultPermissionTsConfig['properties'];
+				} else {
 					$oldFileOperationPermissions = $this->getFileoperationPermissions();
 					// Lower permissions if the old file operation permissions are not set
 					if ($oldFileOperationPermissions ^ 1) {
