@@ -767,11 +767,13 @@ class ResourceStorage {
 	 */
 	public function getPublicUrl(ResourceInterface $resourceObject, $relativeToCurrentScript = FALSE) {
 		$publicUrl = NULL;
-		// Pre-process the public URL by an accordant slot
-		$this->emitPreGeneratePublicUrl($resourceObject, $relativeToCurrentScript, array('publicUrl' => &$publicUrl));
-		// If slot did not handle the signal, use the default way to determine public URL
-		if ($publicUrl === NULL) {
-			$publicUrl = $this->driver->getPublicUrl($resourceObject, $relativeToCurrentScript);
+		if ($this->isOnline()) {
+			// Pre-process the public URL by an accordant slot
+			$this->emitPreGeneratePublicUrl($resourceObject, $relativeToCurrentScript, array('publicUrl' => &$publicUrl));
+			// If slot did not handle the signal, use the default way to determine public URL
+			if ($publicUrl === NULL) {
+				$publicUrl = $this->driver->getPublicUrl($resourceObject, $relativeToCurrentScript);
+			}
 		}
 		return $publicUrl;
 	}
