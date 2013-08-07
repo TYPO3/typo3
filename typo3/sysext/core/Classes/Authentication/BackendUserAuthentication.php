@@ -1609,7 +1609,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 			);
 			if (!$this->isAdmin()) {
 				$this->filePermissions = $this->getTSConfig('permissions.file.default');
-				if (!is_array($this->filePermissions)) {
+				if (empty($this->filePermissions)) {
 					$oldFileOperationPermissions = $this->getFileoperationPermissions();
 					// Lower permissions if the old file operation permissions are not set
 					if ($oldFileOperationPermissions ^ 1) {
