@@ -35,7 +35,7 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  *
  * @author Andreas Wolf <andreas.wolf@ikt-werk.de>
  */
-class LocalDriver extends \TYPO3\CMS\Core\Resource\Driver\AbstractDriver {
+class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 
 	/**
 	 * The absolute base path. It always contains a trailing slash.
@@ -230,16 +230,6 @@ class LocalDriver extends \TYPO3\CMS\Core\Resource\Driver\AbstractDriver {
 		return $this->extractFileInformation($absoluteFilePath, $dirPath);
 	}
 
-	/**
-	 * Wrapper for \TYPO3\CMS\Core\Utility\GeneralUtility::validPathStr()
-	 *
-	 * @param string $theFile Filepath to evaluate
-	 * @return boolean TRUE if no '/', '..' or '\' is in the $theFile
-	 * @see \TYPO3\CMS\Core\Utility\GeneralUtility::validPathStr()
-	 */
-	protected function isPathValid($theFile) {
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::validPathStr($theFile);
-	}
 
 	/**
 	 * Returns a string where any character not matching [.a-zA-Z0-9_-] is
@@ -918,18 +908,6 @@ class LocalDriver extends \TYPO3\CMS\Core\Resource\Driver\AbstractDriver {
 		return $newIdentifier;
 	}
 
-	/**
-	 * Makes sure the Path given as parameter is valid
-	 *
-	 * @param string $filePath The file path (including the file name!)
-	 * @return void
-	 */
-	protected function checkFilePath($filePath) {
-		// filePath must be valid
-		if (!$this->isPathValid($filePath)) {
-			throw new \TYPO3\CMS\Core\Resource\Exception\InvalidPathException('File ' . $filePath . ' is not valid (".." and "//" is not allowed in path).', 1320286857);
-		}
-	}
 
 	/**
 	 * Renames a folder in this storage.
