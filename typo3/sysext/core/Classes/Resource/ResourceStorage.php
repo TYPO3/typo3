@@ -590,16 +590,18 @@ class ResourceStorage {
 			$isWriteCheck = TRUE;
 		}
 		// Check 3: Check the capabilities of the storage (and the driver)
-		if ($isWriteCheck && !$this->isWritable()) {
+		if ($isWriteCheck && ($file->isMissing() || !$this->isWritable())) {
 			return FALSE;
 		}
-		// Check 4: "File permissions" of the driver
-		$filePermissions = $this->driver->getFilePermissions($file);
-		if ($isReadCheck && !$filePermissions['r']) {
-			return FALSE;
-		}
-		if ($isWriteCheck && !$filePermissions['w']) {
-			return FALSE;
+		// Check 4: "File permissions" of the driver (only when file isn't marked as missing)
+		if (!$file->isMissing()) {
+			$filePermissions = $this->driver->getFilePermissions($file);
+			if ($isReadCheck && !$filePermissions['r']) {
+				return FALSE;
+			}
+			if ($isWriteCheck && !$filePermissions['w']) {
+				return FALSE;
+			}
 		}
 		return TRUE;
 	}

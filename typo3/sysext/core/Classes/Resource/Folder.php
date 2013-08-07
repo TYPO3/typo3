@@ -480,6 +480,15 @@ class Folder implements FolderInterface {
 	public function getRole() {
 		return $this->storage->getRole($this);
 	}
+
+	/**
+	 * Returns is this folder is the processing folder of the storage
+	 *
+	 * @return boolean
+	 */
+	public function isProcessingFolder() {
+		return trim($this->getStorage()->getProcessingFolder()->getIdentifier(), '/') === trim($this->getIdentifier(), '/');
+	}
 }
 
 ?>

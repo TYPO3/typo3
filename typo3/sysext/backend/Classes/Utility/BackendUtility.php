@@ -1521,6 +1521,20 @@ class BackendUtility {
 			foreach ($referenceUids as $referenceUid) {
 				$fileReferenceObject = ResourceFactory::getInstance()->getFileReferenceObject($referenceUid['uid']);
 				$fileObject = $fileReferenceObject->getOriginalFile();
+
+				if ($fileObject->isMissing()) {
+					/** @var \TYPO3\CMS\Core\Messaging\FlashMessage $flashMessage */
+					$flashMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
+						$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:warning.file_missing_text') .
+						' <abbr title="' . htmlspecialchars($fileObject->getStorage()->getName() . ' :: '.$fileObject->getIdentifier()) . '">' .
+						htmlspecialchars($fileObject->getName()) .
+						'</abbr>',
+						$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:warning.file_missing'), FlashMessage::ERROR
+					);
+					$thumbData .= $flashMessage->render();
+					continue;
+				}
+
 				// Web image
 				if (GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], $fileReferenceObject->getExtension())) {
 					$imageUrl = $fileObject->process(ProcessedFile::CONTEXT_IMAGEPREVIEW, array(
@@ -1558,9 +1572,16 @@ class BackendUtility {
 							'width' => $sizeParts[0],
 							'height' => $sizeParts[1]
 						))->getPublicUrl(TRUE);
-						if (!$fileObject->checkActionPermission('read')) {
+						if (!$fileObject->isMissing()) {
 							/** @var \TYPO3\CMS\Core\Messaging\FlashMessage $flashMessage */
-							$flashMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:warning.file_missing_text') . ' <abbr title="' . htmlspecialchars($fileObject->getName()) . '">' . htmlspecialchars($fileObject->getName()) . '</abbr>', $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:warning.file_missing'), FlashMessage::ERROR);
+							$flashMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
+								$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:warning.file_missing_text') .
+								' <abbr title="' . htmlspecialchars($fileObject->getStorage()->getName() . ' :: '.$fileObject->getIdentifier()) . '">' .
+								htmlspecialchars($fileObject->getName()) .
+								'</abbr>',
+								$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:warning.file_missing'),
+								FlashMessage::ERROR
+							);
 							$thumbData .= $flashMessage->render();
 							continue;
 						}
