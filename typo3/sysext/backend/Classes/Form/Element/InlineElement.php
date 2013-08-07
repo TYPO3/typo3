@@ -551,29 +551,33 @@ class InlineElement {
 		} else {
 			$recTitle = BackendUtility::getRecordTitle($foreign_table, $rec, TRUE);
 		}
+
+		$altText = BackendUtility::getRecordIconAltText($rec, $foreign_table);
+		$iconImg = IconUtility::getSpriteIconForRecord($foreign_table, $rec, array('title' => htmlspecialchars($altText), 'id' => $objectId . '_icon'));
+		$label = '<span id="' . $objectId . '_label">' . $recTitle . '</span>';
+		$ctrl = $this->renderForeignRecordHeaderControl($parentUid, $foreign_table, $rec, $config, $isVirtualRecord);
+		$thumbnail = FALSE;
+
 		// Renders a thumbnail for the header
 		if (!empty($config['appearance']['headerThumbnail']['field'])) {
 			$fieldValue = $rec[$config['appearance']['headerThumbnail']['field']];
 			$firstElement = array_shift(GeneralUtility::trimExplode(',', $fieldValue));
 			$fileUid = array_pop(BackendUtility::splitTable_Uid($firstElement));
+
 			if (!empty($fileUid)) {
 				$fileObject = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getFileObject($fileUid);
-				if ($fileObject) {
+				if ($fileObject && $fileObject->isMissing()) {
+					$flashMessage = \TYPO3\CMS\Backend\Utility\BackendUtility::getFlashMessageForMissingFile($fileObject);
+					$thumbnail = $flashMessage->render();
+				} elseif($fileObject) {
 					$imageSetup = $config['appearance']['headerThumbnail'];
 					unset($imageSetup['field']);
 					$imageSetup = array_merge(array('width' => 64, 'height' => 64), $imageSetup);
 					$imageUrl = $fileObject->process(\TYPO3\CMS\Core\Resource\ProcessedFile::CONTEXT_IMAGEPREVIEW, $imageSetup)->getPublicUrl(TRUE);
 					$thumbnail = '<img src="' . $imageUrl . '" alt="' . htmlspecialchars($recTitle) . '">';
-				} else {
-					$thumbnail = FALSE;
 				}
 			}
-
 		}
-		$altText = BackendUtility::getRecordIconAltText($rec, $foreign_table);
-		$iconImg = IconUtility::getSpriteIconForRecord($foreign_table, $rec, array('title' => htmlspecialchars($altText), 'id' => $objectId . '_icon'));
-		$label = '<span id="' . $objectId . '_label">' . $recTitle . '</span>';
-		$ctrl = $this->renderForeignRecordHeaderControl($parentUid, $foreign_table, $rec, $config, $isVirtualRecord);
 		$header = '<table>' . '<tr>' . (!empty($config['appearance']['headerThumbnail']['field']) && $thumbnail ?
 				'<td class="t3-form-field-header-inline-thumbnail" id="' . $objectId . '_thumbnailcontainer">' . $thumbnail . '</td>' :
 				'<td class="t3-form-field-header-inline-icon" id="' . $objectId . '_iconcontainer">' . $iconImg . '</td>') . '<td class="t3-form-field-header-inline-summary">' . $label . '</td>' . '<td clasS="t3-form-field-header-inline-ctrl">' . $ctrl . '</td>' . '</tr>' . '</table>';

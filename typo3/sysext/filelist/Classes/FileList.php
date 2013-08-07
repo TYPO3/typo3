@@ -618,8 +618,12 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 							break;
 						case 'file':
 							$theData[$field] = $this->linkWrapFile(htmlspecialchars($fileName), $fileObject);
+
+							if ($fileObject->isMissing()) {
+								$flashMessage = \TYPO3\CMS\Backend\Utility\BackendUtility::getFlashMessageForMissingFile($fileObject);
+								$theData[$field] .= $flashMessage->render();
 							// Thumbnails?
-							if ($this->thumbs && $this->isImage($ext)) {
+							} elseif ($this->thumbs && $this->isImage($ext)) {
 								$processedFile = $fileObject->process(\TYPO3\CMS\Core\Resource\ProcessedFile::CONTEXT_IMAGEPREVIEW, array());
 								if ($processedFile) {
 									$thumbUrl = $processedFile->getPublicUrl(TRUE);

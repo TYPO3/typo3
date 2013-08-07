@@ -325,6 +325,15 @@ class FileReference implements FileInterface {
 		return (int) $this->originalFile->getType();
 	}
 
+	/**
+	 * Check if file is marked as missing by indexer
+	 *
+	 * @return boolean
+	 */
+	public function isMissing() {
+		return (bool) $this->originalFile->getProperty('missing');
+	}
+
 	/******************
 	 * CONTENTS RELATED
 	 ******************/
