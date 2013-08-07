@@ -29,7 +29,7 @@ return array(
 		),
 	),
 	'interface' => array(
-		'showRecordFieldList' => 'storage, name, description, alternative, type, mime_type, size, sha1'
+		'showRecordFieldList' => 'storage, name, description, alternative, type, mime_type, size, sha1, missing'
 	),
 	'columns' => array(
 		't3ver_label' => array(
@@ -153,6 +153,15 @@ return array(
 				'max' => '30',
 				'eval' => 'int',
 				'default' => 0
+			)
+		),
+		'missing' => array(
+			'exclude' => 0,
+			'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file.missing',
+			'config' => array(
+				'readOnly' => 1,
+				'type' => 'check',
+				'default' => '0'
 			)
 		)
 	),

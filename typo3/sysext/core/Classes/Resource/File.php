@@ -341,7 +341,39 @@ class File extends AbstractFile {
 		$this->indexable = $indexable;
 	}
 
-}
+	/**
+	 * @return boolean
+	 */
+	public function isMissing() {
+		return (bool) $this->getProperty('missing');
+	}
 
+	/**
+	 * @param boolean $missing
+	 */
+	public function setMissing($missing) {
+		$this->updateProperties(array('missing' => $missing ? 1 : 0));
+	}
+
+	/**
+	 * Returns a publicly accessible URL for this file
+	 * When file is marked as missing or deleted no url is returned
+	 *
+	 * WARNING: Access to the file may be restricted by further means, e.g. some
+	 * web-based authentication. You have to take care of this yourself.
+	 *
+	 * @param bool  $relativeToCurrentScript   Determines whether the URL returned should be relative to the current script, in case it is relative at all (only for the LocalDriver)
+	 *
+	 * @return string
+	 */
+	public function getPublicUrl($relativeToCurrentScript = FALSE) {
+		if ($this->isMissing() || $this->deleted) {
+			return FALSE;
+		} else {
+			return $this->getStorage()->getPublicUrl($this, $relativeToCurrentScript);
+		}
+	}
+
+}
 
 ?>

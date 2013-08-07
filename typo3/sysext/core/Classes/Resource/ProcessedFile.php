@@ -447,6 +447,11 @@ class ProcessedFile extends AbstractFile {
 	public function needsReprocessing() {
 		$fileMustBeRecreated = FALSE;
 
+		// if original is missing we can not reprocess the file
+		if ($this->originalFile->isMissing()) {
+			return FALSE;
+		}
+
 		// processedFile does not exist
 		if (!$this->usesOriginalFile() && !$this->exists()) {
 			$fileMustBeRecreated = TRUE;
