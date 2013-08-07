@@ -271,6 +271,22 @@ class ResourceStorageTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCa
 	}
 
 	/**
+	 * @test
+	 */
+	public function getPublicUrlReturnsNullIfStorageIsNotOnline() {
+		/** @var $driver \TYPO3\CMS\Core\Resource\Driver\LocalDriver */
+		$driver = $this->getMock('TYPO3\\CMS\\Core\\Resource\\Driver\\LocalDriver', array(), array(array('basePath' => $this->getMountRootUrl())));
+		/** @var $fixture \TYPO3\CMS\Core\Resource\ResourceStorage */
+		$fixture = $this->getMock('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', array('isOnline'), array($driver, array('configuration' => array())));
+		$fixture->expects($this->once())->method('isOnline')->will($this->returnValue(FALSE));
+
+		$sourceFileIdentifier = '/sourceFile.ext';
+		$sourceFile = $this->getSimpleFileMock($sourceFileIdentifier);
+		$result = $fixture->getPublicUrl($sourceFile);
+		$this->assertSame($result, NULL);
+	}
+
+	/**
 	 * Data provider for checkFolderPermissionsRespectsFilesystemPermissions
 	 *
 	 * @return array
