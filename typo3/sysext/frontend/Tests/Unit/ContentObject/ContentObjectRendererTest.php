@@ -888,6 +888,13 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				),
 				'0.80'
 			),
+			'testing decimals with input as string' => array(
+				'0.8',
+				array(
+					'decimals' => 2
+				),
+				'0.80'
+			),
 			'testing dec_point' => array(
 				0.8,
 				array(
