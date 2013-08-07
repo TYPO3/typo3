@@ -1608,8 +1608,10 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 				'removeSubfolders' => TRUE
 			);
 			if (!$this->isAdmin()) {
-				$this->filePermissions = $this->getTSConfig('permissions.file.default');
-				if (empty($this->filePermissions)) {
+				$defaultPermissionsTsConfig = $this->getTSConfigProp('permissions.file.default');
+				if (!empty($defaultPermissionsTsConfig)) {
+					$defaultOptions = $defaultPermissionsTsConfig;
+				} else {
 					$oldFileOperationPermissions = $this->getFileoperationPermissions();
 					// Lower permissions if the old file operation permissions are not set
 					if ($oldFileOperationPermissions ^ 1) {
@@ -1653,9 +1655,8 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 */
 	public function getFilePermissionsForStorage(\TYPO3\CMS\Core\Resource\ResourceStorage $storageObject) {
 		$defaultFilePermissions = $this->getFilePermissions();
-		$storagePermissionsArray = $this->getTSConfig('permissions.file.storage.' . $storageObject->getUid());
-		$storageFilePermissions = $storagePermissionsArray['properties'];
-		if (is_array($storageFilePermissions) && count($storageFilePermissions)) {
+		$storageFilePermissions = $this->getTSConfigProp('permissions.file.storage.' . $storageObject->getUid());
+		if (!empty($storageFilePermissions)) {
 			return array_merge($defaultFilePermissions, $storageFilePermissions);
 		} else {
 			return $defaultFilePermissions;
