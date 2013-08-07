@@ -1497,6 +1497,13 @@ class ImportExport {
 	public function setRelations() {
 		$updateData = array();
 		// import_newId contains a register of all records that was in the import memorys "records" key
+		$storageRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\StorageRepository');
+		$storage = $storageRepository->findByUid(1);
+		if (!$storage->hasFolder('_import')) {
+			$storage->createFolder('_import');
+		}
+		$importFolder = $storage->getFolder('_import');
+
 		foreach ($this->import_newId as $nId => $dat) {
 			$table = $dat['table'];
 			$uid = $dat['uid'];
@@ -1505,6 +1512,12 @@ class ImportExport {
 			if (is_array($this->import_mapId[$table]) && isset($this->import_mapId[$table][$uid])) {
 				$thisNewUid = BackendUtility::wsMapId($table, $this->import_mapId[$table][$uid]);
 				if (is_array($this->dat['records'][$table . ':' . $uid]['rels'])) {
+					if ($table != 'pages') {
+						$oldPid = $this->dat['records'][$table . ':' . $uid]['data']['pid'];
+						$thisNewPageUid = \TYPO3\CMS\Backend\Utility\BackendUtility::wsMapId($table, $this->import_mapId['pages'][$oldPid]);
+					} else {
+						$thisNewPageUid = $thisNewUid;
+					}
 					// Traverse relation fields of each record
 					foreach ($this->dat['records'][$table . ':' . $uid]['rels'] as $field => $config) {
 						switch ((string) $config['type']) {
@@ -1520,7 +1533,21 @@ class ImportExport {
 									foreach ($config['newValueFiles'] as $fI) {
 										$valArr[] = $this->import_addFileNameToBeCopied($fI);
 									}
-									$updateData[$table][$thisNewUid][$field] = implode(',', $valArr);
+									$refIds = array();
+									foreach ($valArr as $tempFile) {
+										$fileObject = $storage->addFile($tempFile, $importFolder, $this->alternativeFileName[$tempFile]);
+										$refId = uniqid('NEW');
+										$refIds[] = $refId;
+										$updateData['sys_file_reference'][$refId] = array(
+											'uid_local' => $fileObject->getUid(),
+											'uid_foreign' => $thisNewUid, // uid of your content record
+											'tablenames' => $table,
+											'fieldname' => $field,
+											'pid' => $thisNewPageUid, // parent id of the parent page
+											'table_local' => 'sys_file',
+										);
+									}
+									$updateData[$table][$thisNewUid][$field] = implode(',',$refIds);
 								}
 								break;
 						}
@@ -1948,7 +1975,9 @@ class ImportExport {
 			return substr($this->fileIDMap[$fileID], strlen(PATH_site));
 		}
 		// Verify FileMount access to dir-prefix. Returns the best alternative relative path if any
-		$dirPrefix = $this->verifyFolderAccess($origDirPrefix);
+		// $dirPrefix = $this->verifyFolderAccess($origDirPrefix);
+		// TODO
+		$dirPrefix = 'fileadmin/';
 		if ($dirPrefix && (!$this->update || $origDirPrefix === $dirPrefix) && $this->checkOrCreateDir($dirPrefix)) {
 			$fileHeaderInfo = $this->dat['header']['files'][$fileID];
 			$updMode = $this->update && $this->import_mapId[$table][$uid] === $uid && $this->import_mode[$table . ':' . $uid] !== 'as_new';
@@ -1962,7 +1991,8 @@ class ImportExport {
 				$newName = $fileProcObj->getUniqueName($fileName, PATH_site . $dirPrefix);
 			}
 			// Write main file:
-			if ($this->writeFileVerify($newName, $fileID)) {
+			if ($this->writeFileVerify($newName, $fileID, TRUE)) {
+				/* Drop this support?
 				// If the resource was an HTML/CSS file with resources attached, we will write those as well!
 				if (is_array($fileHeaderInfo['EXT_RES_ID'])) {
 					$tokenizedContent = $this->dat['files'][$fileID]['tokenizedContent'];
@@ -2009,7 +2039,8 @@ class ImportExport {
 						GeneralUtility::writeFile($newName, $tokenizedContent);
 					}
 				}
-				return substr($newName, strlen(PATH_site));
+				*/
+				return $newName;
 			}
 		}
 	}
@@ -2023,7 +2054,7 @@ class ImportExport {
 	 * @return boolean Returns TRUE if it went well. Notice that the content of the file is read again, and md5 from import memory is validated.
 	 * @todo Define visibility
 	 */
-	public function writeFileVerify($fileName, $fileID, $bypassMountCheck = FALSE) {
+	public function writeFileVerify(&$fileName, $fileID, $bypassMountCheck = FALSE) {
 		$fileProcObj = $this->getFileProcObj();
 		if ($fileProcObj->actionPerms['newFile']) {
 			// Just for security, check again. Should actually not be necessary.
@@ -2032,9 +2063,24 @@ class ImportExport {
 				if ($fileProcObj->checkIfAllowed($fI['fileext'], $fI['path'], $fI['file']) || $this->allowPHPScripts && $GLOBALS['BE_USER']->isAdmin()) {
 					if (GeneralUtility::getFileAbsFileName($fileName)) {
 						if ($this->dat['files'][$fileID]) {
-							GeneralUtility::writeFile($fileName, $this->dat['files'][$fileID]['content']);
+							//\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($fileName, $this->dat['files'][$fileID]['content']);
+							$storageRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\StorageRepository');
+							$storage = $storageRepository->findByUid(1);
+							if (!$storage->hasFolder('_import')) {
+								$storage->createFolder('_import');
+							}
+							$importFolder = $storage->getFolder('_import');
+
+							$fileFunc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Utility\\File\\BasicFileUtility');
+							$fileName = $fileFunc->getUniqueName(basename($fileName), PATH_site . $importFolder->getPublicUrl());
+
+							$fileObject = $storage->createFile(basename($fileName), $importFolder);
+							$storage->setFileContents($fileObject, $this->dat['files'][$fileID]['content']);
+
 							$this->fileIDMap[$fileID] = $fileName;
-							if (md5(GeneralUtility::getUrl($fileName)) == $this->dat['files'][$fileID]['content_md5']) {
+							if (md5(\TYPO3\CMS\Core\Utility\GeneralUtility::getUrl(PATH_site . $fileObject->getPublicUrl())) == $this->dat['files'][$fileID]['content_md5']) {
+								$fileName = 'file:' . $fileObject->getUid();
+								$this->fileIDMap[$fileID] = $fileName;
 								return TRUE;
 							} else {
 								$this->error('ERROR: File content "' . $fileName . '" was corrupted');
