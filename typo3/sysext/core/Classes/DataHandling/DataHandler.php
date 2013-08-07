@@ -1194,7 +1194,7 @@ class DataHandler {
 										$newVersion_placeholderFieldArray['t3ver_state'] = 1;
 										// Setting workspace - only so display of place holders can filter out those from other workspaces.
 										$newVersion_placeholderFieldArray['t3ver_wsid'] = $this->BE_USER->workspace;
-										$newVersion_placeholderFieldArray[$GLOBALS['TCA'][$table]['ctrl']['label']] = '[PLACEHOLDER, WS#' . $this->BE_USER->workspace . ']';
+										$newVersion_placeholderFieldArray[$GLOBALS['TCA'][$table]['ctrl']['label']] = $this->getPlaceholderTitleForTableLabel($table);
 										// Saving placeholder as 'original'
 										$this->insertDB($table, $id, $newVersion_placeholderFieldArray, FALSE);
 										// For the actual new offline version, set versioning values to point to placeholder:
@@ -1276,6 +1276,20 @@ class DataHandler {
 				}
 			}
 		}
+	}
+
+	/**
+	 * Create a placeholder for the label field that does match the field requirements
+	 *
+	 * @param string $table The table name
+	 * @return string placeholder value
+	 */
+	public function getPlaceholderTitleForTableLabel($table) {
+		$labelPlaceholder = '[PLACEHOLDER, WS#' . $this->BE_USER->workspace . ']';
+		$labelField = $GLOBALS['TCA'][$table]['ctrl']['label'];
+		$evalCodesArray = GeneralUtility::trimExplode(',', $GLOBALS['TCA'][$table]['columns'][$labelField]['eval'], TRUE);
+		$transformedLabel = $this->checkValue_input_Eval($labelPlaceholder, $evalCodesArray, '');
+		return $transformedLabel['value'];
 	}
 
 	/**

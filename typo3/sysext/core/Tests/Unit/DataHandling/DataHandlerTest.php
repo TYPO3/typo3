@@ -514,6 +514,54 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			),
 		);
 	}
+
+	/**
+	 * @param boolean $expected
+	 * @param array $eval
+	 * @dataProvider getPlaceholderTitleForTableLabelReturnsLabelThatsMatchesLabelFieldConditionsDataProvider
+	 * @test
+	 */
+	public function getPlaceholderTitleForTableLabelReturnsLabelThatsMatchesLabelFieldConditions($expected, $eval) {
+		$table = 'phpunit_dummy';
+
+		$backendUser = $this->getMock('TYPO3\\CMS\\Core\\Authentication\\BackendUserAuthentication');
+		$this->fixture->BE_USER = $backendUser;
+		$this->fixture->BE_USER->workspace = 1;
+
+		$GLOBALS['TCA'][$table] = array();
+		$GLOBALS['TCA'][$table]['ctrl'] = array('label' => 'dummy');
+		$GLOBALS['TCA'][$table]['columns'] = array(
+			'dummy' => array(
+				'eval' => $eval
+			)
+		);
+
+		$this->assertEquals($expected, $this->fixture->getPlaceholderTitleForTableLabel($table));
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getPlaceholderTitleForTableLabelReturnsLabelThatsMatchesLabelFieldConditionsDataProvider() {
+		return array(
+			array(
+				0.10,
+				'double2'
+			),
+			array(
+				0,
+				'int'
+			),
+			array(
+				'0',
+				'datetime'
+			),
+			array(
+				'[PLACEHOLDER, WS#1]',
+				''
+			)
+		);
+	}
 }
 
 ?>
