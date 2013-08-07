@@ -618,8 +618,13 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 							break;
 						case 'file':
 							$theData[$field] = $this->linkWrapFile(htmlspecialchars($fileName), $fileObject);
+
+							if ($fileObject->isMissing()) {
+								/** @var \TYPO3\CMS\Core\Messaging\FlashMessage $flashMessage */
+								$flashMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:warning.file_missing_text') . ' <abbr title="' . htmlspecialchars($fileObject->getStorage()->getName().' :: '.$fileObject->getIdentifier()) . '">' . htmlspecialchars($fileObject->getName()) . '</abbr>', $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:warning.file_missing'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+								$theData[$field] .= $flashMessage->render();
 							// Thumbnails?
-							if ($this->thumbs && $this->isImage($ext)) {
+							} elseif ($this->thumbs && $this->isImage($ext)) {
 								$processedFile = $fileObject->process(\TYPO3\CMS\Core\Resource\ProcessedFile::CONTEXT_IMAGEPREVIEW, array());
 								if ($processedFile) {
 									$thumbUrl = $processedFile->getPublicUrl(TRUE);

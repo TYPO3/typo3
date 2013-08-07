@@ -251,6 +251,8 @@ class ElementInformationController {
 		if (!$this->fileObject) {
 			return;
 		}
+		$imageTag = '';
+		$downloadLink = '';
 
 		$fileExtension = $this->fileObject->getExtension();
 		if (GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], $fileExtension)) {
@@ -263,17 +265,24 @@ class ElementInformationController {
 			)->getPublicUrl(TRUE);
 		}
 
+		// check if file isn't marked as missing
+		if ($this->fileObject->isMissing()) {
+			/** @var \TYPO3\CMS\Core\Messaging\FlashMessage $flashMessage */
+			$flashMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:warning.file_missing_text') . ' <abbr title="' . htmlspecialchars($this->fileObject->getStorage()->getName().' :: '.$this->fileObject->getIdentifier()) . '">' . htmlspecialchars($this->fileObject->getName()) . '</abbr>', $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:warning.file_missing'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+			$imageTag .= $flashMessage->render();
+		}
+
 		// Create thumbnail image?
 		if ($thumbUrl) {
-			$imageTag = '<img src="' . $thumbUrl . '" ' .
+			$imageTag .= '<img src="' . $thumbUrl . '" ' .
 					'alt="' . htmlspecialchars(trim($this->fileObject->getName())) . '" ' .
 					'title="' . htmlspecialchars(trim($this->fileObject->getName())) . '" />';
 		}
 
 		// Display download link?
 		if ($this->fileObject->getPublicUrl()) {
-			$downloadLink = '<a href="../' . $this->fileObject->getPublicUrl() . '" target="_blank">' .
-					$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xlf:download', 1) .
+			$downloadLink .= '<a href="../' . $this->fileObject->getPublicUrl() . '" target="_blank">' .
+					$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xlf:download', TRUE) .
 					'</a>';
 		}
 

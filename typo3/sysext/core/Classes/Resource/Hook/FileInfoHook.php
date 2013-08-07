@@ -47,6 +47,11 @@ class FileInfoHook {
 			$processedFile = $fileObject->process(\TYPO3\CMS\Core\Resource\ProcessedFile::CONTEXT_IMAGEPREVIEW, array('width' => 150, 'height' => 150));
 			$previewImage = $processedFile->getPublicUrl(TRUE);
 			$content = '';
+			if ($fileObject->isMissing()) {
+				/** @var \TYPO3\CMS\Core\Messaging\FlashMessage $flashMessage */
+				$flashMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:warning.file_missing_text') . ' <abbr title="' . htmlspecialchars($fileObject->getStorage()->getName().' :: '.$fileObject->getIdentifier()) . '">' . htmlspecialchars($fileObject->getName()) . '</abbr>', $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:warning.file_missing'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+				$content .= $flashMessage->render();
+			}
 			if ($previewImage) {
 				$content .= '<img src="' . htmlspecialchars($previewImage) . '" alt="" class="t3-tceforms-sysfile-imagepreview" />';
 			}
