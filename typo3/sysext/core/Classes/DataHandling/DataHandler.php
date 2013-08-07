@@ -1138,11 +1138,12 @@ class DataHandler {
 							if ($status == 'new' && $table == 'pages' && is_array($TSConfig['permissions.'])) {
 								$fieldArray = $this->setTSconfigPermissions($fieldArray, $TSConfig['permissions.']);
 							}
-							if ($createNewVersion) {
-								$newVersion_placeholderFieldArray = $fieldArray;
-							}
 							// Processing of all fields in incomingFieldArray and setting them in $fieldArray
 							$fieldArray = $this->fillInFieldArray($table, $id, $fieldArray, $incomingFieldArray, $theRealPid, $status, $tscPID);
+							if ($createNewVersion) {
+								// create a placeholder array with already processed field content
+								$newVersion_placeholderFieldArray = $fieldArray;
+							}
 							// NOTICE! All manipulation beyond this point bypasses both "excludeFields" AND possible "MM" relations / file uploads to field!
 							// Forcing some values unto field array:
 							// NOTICE: This overriding is potentially dangerous; permissions per field is not checked!!!
