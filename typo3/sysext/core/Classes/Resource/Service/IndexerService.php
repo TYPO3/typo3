@@ -98,6 +98,7 @@ class IndexerService implements \TYPO3\CMS\Core\SingletonInterface {
 		// be updated on the existing record
 		if ($fileObject->isIndexed()) {
 			$fileInfo['deleted'] = 0;
+			$fileInfo['missing'] = 0;
 			$GLOBALS['TYPO3_DB']->exec_UPDATEquery('sys_file', sprintf('uid = %d', $fileObject->getUid()), $fileInfo);
 		} else {
 			// Check if a file has been moved outside of FAL -- we have some
@@ -109,6 +110,8 @@ class IndexerService implements \TYPO3\CMS\Core\SingletonInterface {
 				if (!$otherFile->exists()) {
 					// @todo: create a log entry
 					$movedFile = TRUE;
+					$fileInfo['deleted'] = 0;
+					$fileInfo['missing'] = 0;
 					$otherFile->updateProperties($fileInfo);
 					$this->getRepository()->update($otherFile);
 					$fileInfo['uid'] = $otherFile->getUid();
@@ -177,16 +180,36 @@ class IndexerService implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	public function indexFilesInFolder(\TYPO3\CMS\Core\Resource\Folder $folder) {
 		$numberOfIndexedFiles = 0;
+		$fileIndentifiers = array();
+
 		// Index all files in this folder
 		$fileObjects = $folder->getFiles();
+
 		// emit signal
 		$this->emitPreMultipleFilesIndexSignal($fileObjects);
 		foreach ($fileObjects as $fileObject) {
 			$this->indexFile($fileObject);
+			$fileIndentifiers[] = $fileObject->getIdentifier();
 			$numberOfIndexedFiles++;
 		}
+
+		// check for deleted files (file not found during indexing are marked as missing)
+		foreach ($this->getRepository()->getFileIndexRecordsForFolder($folder) as $file) {
+			if (!in_array($file['identifier'], $fileIndentifiers)) {
+				/** @var $fileObject \TYPO3\CMS\Core\Resource\File */
+				$fileObject = $this->getRepository()->findByIdentifier($file['uid']);
+				$fileObject->setMissing(TRUE);
+				$this->getRepository()->update($fileObject);
+			}
+		}
+
 		// emit signal
 		$this->emitPostMultipleFilesIndexSignal($fileObjects);
+
+		// cleanup to prevent to much memory use on big folders
+		unset($fileObjects);
+		unset($fileIndentifiers);
+
 		// Call this function recursively for each subfolder
 		$subFolders = $folder->getSubfolders();
 		foreach ($subFolders as $subFolder) {

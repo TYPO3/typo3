@@ -1552,6 +1552,20 @@ class BackendUtility {
 			foreach ($referenceUids as $referenceUid) {
 				$fileReferenceObject = ResourceFactory::getInstance()->getFileReferenceObject($referenceUid['uid']);
 				$fileObject = $fileReferenceObject->getOriginalFile();
+
+				if ($fileObject->isMissing()) {
+					/** @var \TYPO3\CMS\Core\Messaging\FlashMessage $flashMessage */
+					$flashMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
+						$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:warning.file_missing_text') .
+						' <abbr title="' . htmlspecialchars($fileObject->getStorage()->getName() . ' :: '.$fileObject->getIdentifier()) . '">' .
+						htmlspecialchars($fileObject->getName()) .
+						'</abbr>',
+						$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:warning.file_missing'), FlashMessage::ERROR
+					);
+					$thumbData .= $flashMessage->render();
+					continue;
+				}
+
 				// Web image
 				if (GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], $fileReferenceObject->getExtension())) {
 					$imageUrl = $fileObject->process(ProcessedFile::CONTEXT_IMAGEPREVIEW, array(
@@ -1584,17 +1598,26 @@ class BackendUtility {
 					$fileName = trim($uploaddir . '/' . $theFile, '/');
 					$fileObject = ResourceFactory::getInstance()->retrieveFileOrFolderObject($fileName);
 					$fileExtension = $fileObject->getExtension();
+
+					if ($fileObject->isMissing()) {
+						/** @var \TYPO3\CMS\Core\Messaging\FlashMessage $flashMessage */
+						$flashMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
+							$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:warning.file_missing_text') .
+							' <abbr title="' . htmlspecialchars($fileObject->getStorage()->getName() . ' :: '.$fileObject->getIdentifier()) . '">' .
+							htmlspecialchars($fileObject->getName()) .
+							'</abbr>',
+							$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:warning.file_missing'),
+							FlashMessage::ERROR
+						);
+						$thumbData .= $flashMessage->render();
+						continue;
+					}
+
 					if ($fileExtension == 'ttf' || GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], $fileExtension)) {
 						$imageUrl = $fileObject->process(ProcessedFile::CONTEXT_IMAGEPREVIEW, array(
 							'width' => $sizeParts[0],
 							'height' => $sizeParts[1]
 						))->getPublicUrl(TRUE);
-						if (!$fileObject->checkActionPermission('read')) {
-							/** @var \TYPO3\CMS\Core\Messaging\FlashMessage $flashMessage */
-							$flashMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:warning.file_missing_text') . ' <abbr title="' . htmlspecialchars($fileObject->getName()) . '">' . htmlspecialchars($fileObject->getName()) . '</abbr>', $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:warning.file_missing'), FlashMessage::ERROR);
-							$thumbData .= $flashMessage->render();
-							continue;
-						}
 						$image = '<img src="' . htmlspecialchars($imageUrl) . '" hspace="2" border="0" title="' . htmlspecialchars($fileObject->getName()) . '"' . $tparams . ' alt="" />';
 						if ($linkInfoPopup) {
 							$onClick = 'top.launchView(\'_FILE\', \'' . $fileName . '\',\'\',\'' . $backPath . '\');return false;';
