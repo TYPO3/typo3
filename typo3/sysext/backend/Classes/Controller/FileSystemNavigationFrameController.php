@@ -72,6 +72,20 @@ class FileSystemNavigationFrameController {
 	public $cMR;
 
 	/**
+	 * @var array
+	 */
+	protected $scopeData;
+
+	/**
+	 * Constructor
+	 */
+	public function __construct() {
+		$GLOBALS['SOBE'] = $this;
+		$GLOBALS['BACK_PATH'] = '';
+		$this->init();
+	}
+
+	/**
 	 * Initialiation of the script class
 	 *
 	 * @return 	void
@@ -81,13 +95,30 @@ class FileSystemNavigationFrameController {
 		// Setting backPath
 		$this->backPath = $GLOBALS['BACK_PATH'];
 		// Setting GPvars:
-		$this->currentSubScript = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('currentSubScript');
-		$this->cMR = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('cMR');
+		$this->currentSubScript = GeneralUtility::_GP('currentSubScript');
+		$this->cMR = GeneralUtility::_GP('cMR');
+
+		$scopeData = (string) GeneralUtility::_GP('scopeData');
+		$scopeHash = (string) GeneralUtility::_GP('scopeHash');
+
+		if (!empty($scopeData) && GeneralUtility::hmac($scopeData) === $scopeHash) {
+			$this->scopeData = unserialize($scopeData);
+		}
+
 		// Create folder tree object:
-		/** @var $foldertree \TYPO3\CMS\Filelist\FileListFolderTree */
-		$this->foldertree = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Filelist\\FileListFolderTree');
+		if (!empty($this->scopeData)) {
+			$this->foldertree = GeneralUtility::makeInstance($this->scopeData['class']);
+			$this->foldertree->thisScript = $this->scopeData['script'];
+			$this->foldertree->ext_noTempRecyclerDirs = $this->scopeData['ext_noTempRecyclerDirs'];
+			$GLOBALS['SOBE']->browser = new \stdClass();
+			$GLOBALS['SOBE']->browser->mode = $this->scopeData['browser']['mode'];
+			$GLOBALS['SOBE']->browser->act = $this->scopeData['browser']['act'];
+		} else {
+			$this->foldertree = GeneralUtility::makeInstance('TYPO3\\CMS\\Filelist\\FileListFolderTree');
+			$this->foldertree->thisScript = 'alt_file_navframe.php';
+		}
+
 		$this->foldertree->ext_IconMode = $GLOBALS['BE_USER']->getTSConfigVal('options.folderTree.disableIconLinkToContextmenu');
-		$this->foldertree->thisScript = 'alt_file_navframe.php';
 	}
 
 	/**
