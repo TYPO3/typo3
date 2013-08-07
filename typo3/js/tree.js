@@ -124,10 +124,16 @@ var Tree = {
 	pageID: 0,
 
 	// reloads a part of the page tree (useful when "expand" / "collapse")
-	load: function(params, isExpand, obj) {
+	load: function(params, isExpand, obj, scopeData, scopeHash) {
+		var scope = '';
+
+		if (scopeData && scopeHash) {
+			scope = '&scopeData=' + encodeURIComponent(scopeData) + '&scopeHash=' + encodeURIComponent(scopeHash);
+		}
+
 			// fallback if AJAX is not possible (e.g. IE < 6)
 		if (typeof Ajax.getTransport() !== 'object') {
-			window.location.href = this.thisScript + '?ajaxID=' + this.ajaxID + '&PM=' + encodeURIComponent(params);
+			window.location.href = this.thisScript + '?ajaxID=' + this.ajaxID + '&PM=' + encodeURIComponent(params) + scope;
 			return;
 		}
 
@@ -150,7 +156,7 @@ var Tree = {
 		
 		var call = new Ajax.Request(this.thisScript, {
 			method: 'get',
-			parameters: 'ajaxID=' + this.ajaxID + '&PM=' + encodeURIComponent(params),
+			parameters: 'ajaxID=' + this.ajaxID + '&PM=' + encodeURIComponent(params) + scope,
 			onComplete: function(xhr) {
 				// the parent node needs to be overwritten, not the object
 				$(obj.parentNode.parentNode).replace(xhr.responseText);
