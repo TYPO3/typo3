@@ -543,6 +543,9 @@
 			<trans-unit id="postprocessor_mail" xml:space="preserve">
 				<source>Send email</source>
 			</trans-unit>
+			<trans-unit id="postprocessor_redirect" xml:space="preserve">
+				<source>Redirect</source>
+			</trans-unit>
 			<trans-unit id="postprocessor_dummy_title" xml:space="preserve">
 				<source>No post processor selected</source>
 			</trans-unit>
@@ -558,8 +561,8 @@
 			<trans-unit id="postprocessor_properties_subject" xml:space="preserve">
 				<source>Subject</source>
 			</trans-unit>
-			<trans-unit id="postprocessor_mail" xml:space="preserve">
-				<source>Send email</source>
+			<trans-unit id="postprocessor_properties_destination" xml:space="preserve">
+				<source>Destination to redirect to</source>
 			</trans-unit>
 			<trans-unit id="prefix_prefix" xml:space="preserve">
 				<source>Prefix</source>
