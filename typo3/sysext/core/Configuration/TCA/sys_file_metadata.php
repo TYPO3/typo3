@@ -110,11 +110,11 @@ return array(
 				'type' => 'passthrough'
 			)
 		),
-		'locale' => array(
+		/*'locale' => array(
 			'config' => array(
 				'type' => 'passthrough'
 			)
-		),
+		),*/
 	),
 	'types' => array(
 		'1' => array('showitem' => 'fileinfo, locale, l10n_parent, title, description, alternative, file_uid')
