@@ -151,6 +151,17 @@ class AbstractUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 		$this->assertEquals($mock->processLoginData($originalData, $passwordSubmissionStrategy), $processedData);
 	}
 
+	/**
+	 * @test
+	 */
+	public function getAuthInfoArrayReturnsEmptyPidListIfNoCheckPidValueIsGiven() {
+		/** @var $mock \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication */
+		$mock = $this->getMock('TYPO3\\CMS\\Core\\Authentication\\AbstractUserAuthentication', array('dummy'));
+		$mock->checkPid_value = NULL;
+		$result = $mock->getAuthInfoArray();
+		$this->assertEquals('', $result['db_user']['checkPidList']);
+	}
+
 }
 
 ?>
