@@ -1011,8 +1011,16 @@ class DatabaseRecordList extends \TYPO3\CMS\Recordlist\RecordList\AbstractDataba
 		$permsEdit = $table == 'pages' && $localCalcPerms & 2 || $table != 'pages' && $this->calcPerms & 16;
 		// "Show" link (only pages and tt_content elements)
 		if ($table == 'pages' || $table == 'tt_content') {
-			$params = '&edit[' . $table . '][' . $row['uid'] . ']=edit';
-			$cells['view'] = '<a href="#" onclick="' . htmlspecialchars(BackendUtility::viewOnClick(($table == 'tt_content' ? $this->id . '#' . $row['uid'] : $row['uid']), $this->backPath)) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', TRUE) . '">' . IconUtility::getSpriteIcon('actions-document-view') . '</a>';
+			$cells['view'] = '<a href="#" onclick="'
+				. htmlspecialchars(
+					BackendUtility::viewOnClick(
+						($table === 'tt_content' ? $this->id : $row['uid']),
+						$this->backPath,
+						'',
+						($table === 'tt_content' ? '#' . $row['uid'] : '')
+					)
+				) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', TRUE) . '">'
+				. IconUtility::getSpriteIcon('actions-document-view') . '</a>';
 		} elseif (!$this->table) {
 			$cells['view'] = $this->spaceIcon;
 		}
