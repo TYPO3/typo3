@@ -4502,7 +4502,7 @@ class tslib_cObj {
 		$thousands_sep = isset($conf['thousands_sep.'])
 			? $this->stdWrap($conf['thousands_sep'], $conf['thousands_sep.'])
 			: $conf['thousands_sep'];
-		return number_format($content, $decimals, $dec_point, $thousands_sep);
+		return number_format(floatval($content), $decimals, $dec_point, $thousands_sep);
 	}
 
 	/**
