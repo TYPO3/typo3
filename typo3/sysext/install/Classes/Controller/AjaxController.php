@@ -42,7 +42,9 @@ class AjaxController extends AbstractController {
 	 * @var array List of valid action names that need authentication
 	 */
 	protected $authenticationActions = array(
-		'extensionCompatibilityTester'
+		'extensionCompatibilityTester',
+		'uninstallExtension',
+		'clearCache'
 	);
 
 	/**

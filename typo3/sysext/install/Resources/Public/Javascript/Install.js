@@ -78,17 +78,24 @@ $(document).ready(function() {
 		}
 	}).trigger('change');
 
-	$('#checkExtensions .typo3-message').hide();
-	$('#checkExtensions button').click(function(e) {
+	$('.typo3-message', '#checkExtensions').hide();
+	$('button', '#checkExtensions').click(function(e) {
 		checkExtensionsCompatibility(true);
 		e.preventDefault();
 		return false;
 	});
 });
 
+/**
+ * Checks extension compatibility by trying to load ext_tables and ext_localconf
+ * via ajax.
+ *
+ * @param force
+ */
 function checkExtensionsCompatibility(force) {
 	var url = location.href + '&install[controller]=ajax&install[action]=extensionCompatibilityTester';
 	if (force) {
+		clearCache();
 		url += '&install[extensionCompatibilityTester][forceCheck]=1';
 	} else {
 		url += '&install[extensionCompatibilityTester][forceCheck]=0';
@@ -117,12 +124,46 @@ function checkExtensionsCompatibility(force) {
 	});
 }
 
+/**
+ * Handles result of extension compatibility check.
+ * Displays uninstall buttons for non-compatible extensions.
+ */
 function handleCheckExtensionsSuccess() {
 	$.ajax({
 		url: $('#checkExtensions').data('protocolurl'),
 		success: function(data) {
 			if (data) {
-				$('.message-error .message-body', '#checkExtensions').html('The extension(s) ' + data + ' are not compatible. Please uninstall them and try again.');
+				$('.message-error .message-body', '#checkExtensions').html(
+					'The following extensions are not compatible. Please uninstall them and try again. '
+				);
+				var extensions = data.split(',');
+				var unloadButtonWrapper = $('<fieldset class="t3-install-form-submit"></fieldset>');
+				for(var i=0; i<extensions.length; i++) {
+					var extension = extensions[i];
+					var unloadButton = $('<button />', {
+						text: 'Uninstall '+ $.trim(extension),
+						click: function(e) {
+							uninstallExtension($.trim(extension));
+							e.preventDefault();
+							return false;
+						}
+					});
+					var fullButton = unloadButtonWrapper.append(unloadButton);
+					$('.message-error .message-body', '#checkExtensions').append(fullButton);
+				}
+				var unloadAllButton = $('<button />', {
+					text: 'Uninstall all incompatible extensions: '+ data,
+					click: function(e) {
+						uninstallExtension(data);
+						e.preventDefault();
+						return false;
+					}
+				});
+				unloadButtonWrapper.append('<hr />');
+				var fullUnloadAllButton = unloadButtonWrapper.append(unloadAllButton);
+				$('.message-error .message-body', '#checkExtensions').append(fullUnloadAllButton);
+
+
 				$('.message-error', '#checkExtensions').show();
 			} else {
 				$('.message-error', '#checkExtensions').hide();
@@ -144,4 +185,48 @@ function handleCheckExtensionsSuccess() {
  */
 function handleCheckExtensionsError() {
 	checkExtensionsCompatibility(false);
+}
+
+/**
+ * Send an ajax request to uninstall an extension (or multiple extensions)
+ *
+ * @param extension string of extension(s) - may be comma separated
+ */
+function uninstallExtension(extension) {
+	var url = location.href + '&install[controller]=ajax&install[action]=uninstallExtension' +
+		'&install[uninstallExtension][extensions]=' + extension;
+	$.ajax({
+		url: url,
+		cache: false,
+		success: function(data) {
+			if (data === 'OK') {
+				checkExtensionsCompatibility(true);
+			} else {
+				if(data === 'unauthorized') {
+					location.reload();
+				}
+				// workaround for xdebug returning 200 OK on fatal errors
+				if (data.substring(data.length - 2) === 'OK') {
+					checkExtensionsCompatibility(true);
+				} else {
+					$('.message-error .message-body', '#checkExtensions').html(
+						'Something went wrong. Check failed.'
+					);
+				}
+			}
+		},
+		error: function(data) {
+			handleCheckExtensionsError();
+		}
+	});
+}
+
+/**
+ * Ajax call to clear all caches.
+ */
+function clearCache() {
+	$.ajax({
+		url: location.href + '&install[controller]=ajax&install[action]=clearCache',
+		cache: false
+	});
 }
