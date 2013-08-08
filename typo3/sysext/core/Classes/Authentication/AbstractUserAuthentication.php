@@ -1325,8 +1325,12 @@ abstract class AbstractUserAuthentication {
 		$authInfo['db_user']['userident_column'] = $this->userident_column;
 		$authInfo['db_user']['usergroup_column'] = $this->usergroup_column;
 		$authInfo['db_user']['enable_clause'] = $this->user_where_clause();
-		$authInfo['db_user']['checkPidList'] = $this->checkPid ? $this->checkPid_value : '';
-		$authInfo['db_user']['check_pid_clause'] = $this->checkPid ? ' AND pid IN (' . $GLOBALS['TYPO3_DB']->cleanIntList($authInfo['db_user']['checkPidList']) . ')' : '';
+		$authInfo['db_user']['checkPidList'] = $this->checkPid && $this->checkPid_value
+			? $this->checkPid_value
+			: '';
+		$authInfo['db_user']['check_pid_clause'] = $this->checkPid && $this->checkPid_value
+			? ' AND pid IN (' . $GLOBALS['TYPO3_DB']->cleanIntList($authInfo['db_user']['checkPidList']) . ')'
+			: '';
 		$authInfo['db_groups']['table'] = $this->usergroup_table;
 		return $authInfo;
 	}
