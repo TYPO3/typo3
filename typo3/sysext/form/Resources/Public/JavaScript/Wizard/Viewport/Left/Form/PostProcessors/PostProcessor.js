@@ -104,16 +104,28 @@ TYPO3.Form.Wizard.Viewport.Left.Form.PostProcessors.PostProcessor = Ext.extend(E
 						}
 					});
 					break;
+				case 'destination':
+					formItems.push({
+						fieldLabel: TYPO3.l10n.localize('postprocessor_properties_destination'),
+						name: 'destination',
+						allowBlank: false,
+						listeners: {
+							'triggerclick': {
+								scope: this,
+								fn: this.storeValue
+							}
+						}
+					});
+					break;
 			}
 		}, this);
 
-		// TODO: Add the remove button when more post processors are available
-		/*formItems.push({
+		formItems.push({
 			xtype: 'button',
 			text: TYPO3.l10n.localize('button_remove'),
 			handler: this.removePostProcessor,
 			scope: this
-		});*/
+		});
 
 		var config = {
 			items: [

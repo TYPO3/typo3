@@ -42,9 +42,7 @@ TYPO3.Form.Wizard.Viewport.Left.Form.PostProcessor = Ext.extend(Ext.Panel, {
 			items: [{
 				xtype: 'typo3-form-wizard-viewport-left-form-postprocessors-dummy',
 				ref: 'dummy'
-			}]
-			// TODO: When there are more post processors, the dropdown should be visible
-			/*,
+			}],
 			tbar: [
 				{
 					xtype: 'combo',
@@ -71,7 +69,7 @@ TYPO3.Form.Wizard.Viewport.Left.Form.PostProcessor = Ext.extend(Ext.Panel, {
 						}
 					}
 				}
-			]*/
+			]
 		};
 
 			// apply config
