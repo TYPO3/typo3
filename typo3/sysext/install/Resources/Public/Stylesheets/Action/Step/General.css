@@ -160,12 +160,17 @@ fieldset span {
 	float: left;
 }
 
+.t3-install-form-label-before label,
 .t3-install-form-label-after label,
 .t3-install-form-label-above label {
 	float: none;
 	display: block;
 	width: auto;
 	margin-right: 0;
+}
+
+.t3-install-form-label-before label {
+	float: left;
 }
 
 .t3-install-form-label-above label {
@@ -178,6 +183,10 @@ fieldset span {
 
 .t3-install-form-label-width-7 label {
 	width: 7em;
+}
+
+.t3-install-form-label-width-10 label {
+	width: 10em;
 }
 
 .t3-install-form-label-width-21 label {
