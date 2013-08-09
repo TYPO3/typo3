@@ -8,7 +8,7 @@
 
 	<p>
 		Import basic database structure and create a backend administrator user.
-		The password can be used to log in to the install tool and to the TYPO3 CMS backend with username "admin".
+		The password can be used to log in to the install tool and to the TYPO3 CMS backend (default: with username "admin").
 	</p>
 
 	<p>
@@ -21,6 +21,16 @@
 
 		<fieldset class="t3-install-form-label-width-7">
 			<ol>
+				<li>
+					<label for="password">Username</label>
+					<input
+						class="t3-install-form-input-text"
+						name="install[values][username]"
+						id="username"
+						placeholder="admin"
+					/>
+				</li>
+
 				<li>
 					<label for="password">Password</label>
 					<input
