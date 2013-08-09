@@ -63,6 +63,13 @@ class GeneralUtility {
 	 */
 	static protected $nonSingletonInstances = array();
 
+	/**
+	 * The application context
+	 *
+	 * @var \TYPO3\CMS\Core\Core\ApplicationContext
+	 */
+	static protected $context = NULL;
+
 	/*************************
 	 *
 	 * GET/POST Variables
@@ -4983,6 +4990,33 @@ Connection: close
 			}
 		}
 		echo $obContent;
+	}
+
+	/**
+	 * Set the ApplicationContext
+	 *
+	 * This function is used by the Bootstrap to hand over the context. It must not be used anywhere else,
+	 * because the context shall never be changed on runtime!
+	 *
+	 * @param \TYPO3\CMS\Core\Core\ApplicationContext $context
+	 * @throws \RuntimeException if context is overriden
+	 * @internal This is not a public API method, do not use in own extensions
+	 */
+	static public function presetContext(\TYPO3\CMS\Core\Core\ApplicationContext $context) {
+		if (is_null(static::$context)) {
+			static::$context = $context;
+		} else {
+			throw new \RuntimeException('Trying to override context which has already been defined!', 1376084316);
+		}
+	}
+
+	/**
+	 * Get the ApplicationContext
+	 *
+	 * @return \TYPO3\CMS\Core\Core\ApplicationContext
+	 */
+	static public function getContext() {
+		return static::$context;
 	}
 }
 ?>
