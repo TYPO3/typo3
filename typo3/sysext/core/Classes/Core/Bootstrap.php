@@ -112,6 +112,7 @@ class Bootstrap {
 	 * Returns the context this bootstrap was started in.
 	 *
 	 * @return \TYPO3\CMS\Core\Core\ApplicationContext The context encapsulated in an object
+	 * @internal This is not a public API method, do not use in own extensions
 	 */
 	public function getContext() {
 		return $this->context;
@@ -141,6 +142,7 @@ class Bootstrap {
 	 */
 	public function baseSetup($relativePathPart = '') {
 		\TYPO3\CMS\Core\Core\SystemEnvironmentBuilder::run($relativePathPart);
+		Utility\GeneralUtility::presetContext($this->context);
 		return $this;
 	}
 

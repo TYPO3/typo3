@@ -4142,6 +4142,23 @@ text with a ' . $urlMatch . '$|s'),
 		$this->assertTrue(preg_match($expectedPreg, Utility\GeneralUtility::substUrlsInPlainText($input, 1, 'http://example.com/index.php')) == 1);
 	}
 
+	/**
+	 * @test
+	 * @expectedException \RuntimeException
+	 */
+	public function refusesPresetContextWhenContextHasAlreadyBeenSet() {
+		$context = new \TYPO3\CMS\Core\Core\ApplicationContext('Development');
+		Utility\GeneralUtility::presetContext($context);
+	}
+
+	/**
+	 * @test
+	 */
+	public function getContextGetsContext() {
+		$context = $this->readAttribute('\\TYPO3\\CMS\\Core\\Utility\\GeneralUtility', 'context');
+		$this->assertSame($context, Utility\GeneralUtility::getContext());
+	}
+
 }
 
 ?>
