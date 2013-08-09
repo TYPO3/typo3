@@ -44,6 +44,8 @@ class DatabaseData extends Action\AbstractAction implements StepInterface {
 
 		$postValues = $this->postValues['values'];
 
+		$username = strlen($postValues['username']) ? $postValues['username'] : 'admin';
+
 		// Check password and return early if not good enough
 		$password = $postValues['password'];
 		if (strlen($password) < 8) {
@@ -68,7 +70,7 @@ class DatabaseData extends Action\AbstractAction implements StepInterface {
 		// Password is simple md5 here for now, will be updated by saltedpasswords on first login
 		// @TODO: Handle saltedpasswords in installer and store password salted in the first place
 		$adminUserFields = array(
-			'username' => 'admin',
+			'username' => $username,
 			'password' => md5($password),
 			'admin' => 1,
 			'tstamp' => $GLOBALS['EXEC_TIME'],
