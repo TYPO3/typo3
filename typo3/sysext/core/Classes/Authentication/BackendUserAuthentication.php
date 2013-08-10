@@ -1678,6 +1678,8 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 						$defaultOptions['moveFile'] = FALSE;
 						$defaultOptions['renameFile'] = FALSE;
 						$defaultOptions['removeFile'] = FALSE;
+						$defaultOptions['editFile'] = FALSE;
+						$defaultOptions['writeFile'] = FALSE;
 					}
 					if ($oldFileOperationPermissions ^ 2) {
 						$defaultOptions['unzipFile'] = FALSE;
@@ -1687,6 +1689,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 						$defaultOptions['moveFolder'] = FALSE;
 						$defaultOptions['renameFolder'] = FALSE;
 						$defaultOptions['removeFolder'] = FALSE;
+						$defaultOptions['writeFolder'] = FALSE;
 					}
 					if ($oldFileOperationPermissions ^ 8) {
 						$defaultOptions['copyFolder'] = FALSE;
