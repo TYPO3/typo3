@@ -1,4 +1,9 @@
-<f:be.container>
+<f:be.container
+	includeCssFiles="{
+		1: '{f:uri.resource(path:\'Css/styles.css\')}'
+		0: '{f:uri.resource(path:\'Css/cms-override.css\')}'
+	}"
+>
 	<div class="typo3-fullDoc">
 		<div id="typo3-docheader">
 			<div class="typo3-docheader-functions">
@@ -12,6 +17,7 @@
 						<f:be.menus.actionMenuItem label="{f:translate(key: 'testel')}" controller="Styleguide" action="testel" />
 					</f:be.menus.actionMenu>
 				</div>
+
 				<div class="right">
 				</div>
 			</div>
@@ -26,6 +32,7 @@
 				</div>
 			</div>
 		</div>
+
 		<div id="typo3-docbody">
 			<div id="typo3-inner-docbody">
 				<h1><f:translate key="backendStyleguide" /></h1>
