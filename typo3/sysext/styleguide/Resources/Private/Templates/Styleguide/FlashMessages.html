@@ -1,0 +1,22 @@
+{namespace sg = TYPO3\CMS\Styleguide\ViewHelpers}
+
+<f:layout name="Default" />
+
+<f:section name="iconButtons">
+	<a href="#"
+	   onclick="window.location.href='alt_doc.php?returnUrl='+T3_THIS_LOCATION+'&edit[be_users][0]=new'; return false;">
+		<bu:spriteManagerIcon iconName="actions-document-new"/>
+	</a>
+</f:section>
+
+<f:section name="content">
+	<h2>FlashMessages</h2>
+
+	<f:flashMessages />
+
+	<hr />
+
+	<p><f:link.action action="forms">Previous page &laquo;forms&raquo;</f:link.action> /
+		<f:link.action action="helpers">Next page &laquo;helpers&raquo;</f:link.action></p>
+
+</f:section>
