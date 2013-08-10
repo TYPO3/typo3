@@ -37,6 +37,30 @@ class StyleguideController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 	 * Index
 	 */
 	public function indexAction() {
+	}
+
+	/**
+	 * Typography
+	 */
+	public function typographyAction() {
+	}
+
+	/**
+	 * Forms
+	 */
+	public function formsAction() {
+	}
+
+	/**
+	 * Tables
+	 */
+	public function tablesAction() {
+	}
+
+	/**
+	 * FlashMessages
+	 */
+	public function flashMessagesAction() {
 		$this->flashMessageContainer->add($this->getLoremIpsum(), 'Title for Info message', FlashMessage::INFO, TRUE);
 		$this->flashMessageContainer->add($this->getLoremIpsum(), 'Title for Info message', FlashMessage::NOTICE, TRUE);
 		$this->flashMessageContainer->add($this->getLoremIpsum(), 'Title for Info message', FlashMessage::ERROR, TRUE);
@@ -45,27 +69,10 @@ class StyleguideController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 	}
 
 	/**
-	 * Forms
+	 * Helpers
 	 */
-	public function formAction() {
-	}
+	public function helpersAction() {
 
-	/**
-	 * Testel
-	 */
-	public function testelAction() {
-	}
-
-	/**
-	 * Grid
-	 */
-	public function gridAction() {
-	}
-
-	/**
-	 * Tables
-	 */
-	public function tableAction() {
 	}
 
 	/**

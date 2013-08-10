@@ -12,17 +12,17 @@
 			<trans-unit id="index" xml:space="preserve">
 				<source>Index</source>
 			</trans-unit>
-			<trans-unit id="form" xml:space="preserve">
-				<source>Form</source>
+			<trans-unit id="forms" xml:space="preserve">
+				<source>Forms</source>
 			</trans-unit>
-			<trans-unit id="table" xml:space="preserve">
-				<source>Table</source>
+			<trans-unit id="tables" xml:space="preserve">
+				<source>Tables</source>
 			</trans-unit>
-			<trans-unit id="grid" xml:space="preserve">
-				<source>Grid</source>
+			<trans-unit id="flashMessages" xml:space="preserve">
+				<source>FlashMessages</source>
 			</trans-unit>
-			<trans-unit id="testel" xml:space="preserve">
-				<source>Testel</source>
+			<trans-unit id="helpers" xml:space="preserve">
+				<source>Helpers</source>
 			</trans-unit>
 		</body>
 	</file>

@@ -11,10 +11,10 @@
 					<f:be.buttons.csh />
 					<f:be.menus.actionMenu>
 						<f:be.menus.actionMenuItem label="{f:translate(key: 'index')}" controller="Styleguide" action="index" />
-						<f:be.menus.actionMenuItem label="{f:translate(key: 'table')}" controller="Styleguide" action="table" />
-						<f:be.menus.actionMenuItem label="{f:translate(key: 'grid')}" controller="Styleguide" action="grid" />
-						<f:be.menus.actionMenuItem label="{f:translate(key: 'testel')}" controller="Styleguide" action="testel" />
+						<f:be.menus.actionMenuItem label="{f:translate(key: 'tables')}" controller="Styleguide" action="tables" />
 						<f:be.menus.actionMenuItem label="{f:translate(key: 'forms')}" controller="Styleguide" action="forms" />
+						<f:be.menus.actionMenuItem label="{f:translate(key: 'flashMessages')}" controller="Styleguide" action="flashMessages" />
+						<f:be.menus.actionMenuItem label="{f:translate(key: 'helpers')}" controller="Styleguide" action="helpers" />
 					</f:be.menus.actionMenu>
 				</div>
 
@@ -36,8 +36,6 @@
 		<div id="typo3-docbody">
 			<div id="typo3-inner-docbody">
 				<h1><f:translate key="backendStyleguide" /></h1>
-
-				<f:flashMessages renderMode="div" />
 
 				<f:render section="content" />
 			</div>
