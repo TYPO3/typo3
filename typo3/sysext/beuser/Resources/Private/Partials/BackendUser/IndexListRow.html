@@ -6,10 +6,12 @@
 			<bu:spriteIconForRecord table="be_users" object="{backendUser}" />
 		</a>
 	</td>
-	<td>
-		<b>{backendUser.userName}</b>
+	<td class="t3-title-column">
+		<a href="alt_doc.php?edit[be_users][{backendUser.uid}]=edit&returnUrl={returnUrl}">
+			<b>{backendUser.userName}</b><br />
+			{backendUser.realName}
+		</a>
 	</td>
-	<td>{backendUser.realName}</td>
 	<td>
 		<f:link.action
 			action="addToCompareList"
