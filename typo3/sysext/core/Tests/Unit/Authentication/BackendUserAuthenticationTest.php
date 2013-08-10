@@ -4,7 +4,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Authentication;
 /***************************************************************
  * Copyright notice
  *
- * (c) 2010-2011 Oliver Klee (typo3-coding@oliverklee.de)
+ * (c) 2010-2013 Oliver Klee (typo3-coding@oliverklee.de)
  * All rights reserved
  *
  * This script is part of the TYPO3 project. The TYPO3 project is
@@ -35,13 +35,6 @@ class BackendUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @var \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
 	 */
 	private $fixture = NULL;
-
-	/**
-	 * Enable backup of global and system variables
-	 *
-	 * @var boolean
-	 */
-	protected $backupGlobals = TRUE;
 
 	public function setUp() {
 		// reset hooks
