@@ -97,7 +97,7 @@ class GraphicalFunctions {
 	protected $allowedColorSpaceNames = array(
 		'CMY',
 		'CMYK',
-		'Grey',
+		'Gray',
 		'HCL',
 		'HSB',
 		'HSL',
