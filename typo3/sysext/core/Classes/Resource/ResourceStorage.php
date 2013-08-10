@@ -592,9 +592,6 @@ class ResourceStorage {
 			$isWriteCheck = TRUE;
 		}
 		// Check 3: Check the capabilities of the storage (and the driver)
-		if ($isReadCheck && !$this->isBrowsable()) {
-			return FALSE;
-		}
 		if ($isWriteCheck && !$this->isWritable()) {
 			return FALSE;
 		}
