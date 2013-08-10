@@ -1,0 +1,40 @@
+{namespace sg = TYPO3\CMS\Styleguide\ViewHelpers}
+
+<f:layout name="Default" />
+
+<f:section name="iconButtons">
+	<a href="#"
+	   onclick="window.location.href='alt_doc.php?returnUrl='+T3_THIS_LOCATION+'&edit[be_users][0]=new'; return false;">
+		<bu:spriteManagerIcon iconName="actions-document-new"/>
+	</a>
+</f:section>
+
+<f:section name="content">
+	<f:comment>
+		****************************************
+		Reset
+		****************************************
+	</f:comment>
+
+	<h2>Normalize</h2>
+
+	<p>Since TYPO3 version 6.2 <a href="http://necolas.github.io/normalize.css/" target="_blank">Normalize.css</a> is included in the TYOP3 CMS core.<br />
+		Normalize.css is a project by <a href="http://nicolasgallagher.com/">Nicolas Gallagher</a>, co-created with <a href="http://music.thewikies.com/jonneal/">Jonathan Neal</a>.<br />
+		Source code available on GitHub: <a href="https://github.com/necolas/normalize.css/" target="_blank">necolas/normalize.css</a>. Thank you!</p>
+
+	<f:comment>
+		****************************************
+		Clearfix
+		****************************************
+	</f:comment>
+
+	<h2>clearfix</h2>
+
+	<p>Clearfix is included since TYPO3 6.2. Thank you!</p>
+
+
+	<hr />
+
+	<p><f:link.action action="flashMessages">Previous page &laquo;flashMessages&raquo;</f:link.action></p>
+
+</f:section>
