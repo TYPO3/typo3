@@ -58,6 +58,11 @@ a {
 a:hover {
 	color: #000000;
 	background-color: transparent;
+	text-decoration: underline;
+}
+
+tr:hover a {
+	text-decoration: underline;
 }
 
 a.t3-link {
