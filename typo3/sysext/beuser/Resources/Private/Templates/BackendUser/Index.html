@@ -54,9 +54,11 @@
 			<f:be.widget.paginate objects="{backendUsers}" as="paginatedBackendUsers" configuration="{itemsPerPage: 50, insertAbove: 1, insertBelow: 1}">
 				<table border="0" cellpadding="0" cellspacing="0" class="typo3-dblist">
 					<tr class="t3-row-header">
-						<td></td>
-						<td><f:translate key="userName">Username</f:translate></td>
-						<td><f:translate key="realName">Real name</f:translate></td>
+						<td>&nbsp;</td>
+						<td>
+							<f:translate key="userName">Username</f:translate> /
+							<f:translate key="realName">Real name</f:translate>
+						</td>
 						<td>&nbsp;</td>
 						<td>&nbsp;</td>
 						<td><f:translate key="lastLogin">Last login</f:translate></td>
@@ -78,9 +80,11 @@
 		<f:else>
 			<table border="0" cellpadding="0" cellspacing="0" class="typo3-dblist">
 				<tr class="t3-row-header">
-					<td></td>
-					<td><f:translate key="userName">Username</f:translate></td>
-					<td><f:translate key="realName">Real name</f:translate></td>
+					<td>&nbsp;</td>
+					<td>
+						<f:translate key="userName">Username</f:translate> /
+						<f:translate key="realName">Real name</f:translate>
+					</td>
 					<td>&nbsp;</td>
 					<td>&nbsp;</td>
 					<td><f:translate key="lastLogin">Last login</f:translate></td>
