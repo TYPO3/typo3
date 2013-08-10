@@ -60,6 +60,163 @@ class BackendUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->fixture->logoff();
 	}
 
+	/**
+	 * @return array
+	 */
+	public function getTSConfigDataProvider() {
+
+		$completeConfiguration = array(
+			'value' => 'oneValue',
+			'value.' => array('oneProperty' => 'oneValue'),
+			'permissions.' => array(
+				'file.' => array(
+					'default.' => array('readAction' => '1'),
+					'1.' => array('writeAction' => '1'),
+					'0.' => array('readAction' => '0'),
+				),
+			)
+		);
+
+		return array(
+			'single level string' => array(
+				$completeConfiguration,
+				'permissions',
+				array(
+					'value' => NULL,
+					'properties' =>
+					array(
+						'file.' => array(
+							'default.' => array('readAction' => '1'),
+							'1.' => array('writeAction' => '1'),
+							'0.' => array('readAction' => '0'),
+						),
+					),
+				),
+			),
+			'two levels string' => array(
+				$completeConfiguration,
+				'permissions.file',
+				array(
+					'value' => NULL,
+					'properties' =>
+					array(
+						'default.' => array('readAction' => '1'),
+						'1.' => array('writeAction' => '1'),
+						'0.' => array('readAction' => '0'),
+					),
+				),
+			),
+			'three levels string' => array(
+				$completeConfiguration,
+				'permissions.file.default',
+				array(
+					'value' => NULL,
+					'properties' =>
+					array('readAction' => '1'),
+				),
+			),
+			'three levels string with integer property' => array(
+				$completeConfiguration,
+				'permissions.file.1',
+				array(
+					'value' => NULL,
+					'properties' => array('writeAction' => '1'),
+				),
+			),
+			'three levels string with integer zero property' => array(
+				$completeConfiguration,
+				'permissions.file.0',
+				array(
+					'value' => NULL,
+					'properties' => array('readAction' => '0'),
+				),
+			),
+			'four levels string with integer zero property, value, no properties' => array(
+				$completeConfiguration,
+				'permissions.file.0.readAction',
+				array(
+					'value' => '0',
+					'properties' => NULL,
+				),
+			),
+			'four levels string with integer property, value, no properties' => array(
+				$completeConfiguration,
+				'permissions.file.1.writeAction',
+				array(
+					'value' => '1',
+					'properties' => NULL,
+				),
+			),
+			'one level, not existant string' => array(
+				$completeConfiguration,
+				'foo',
+				array(
+					'value' => NULL,
+					'properties' => NULL,
+				),
+			),
+			'two level, not existant string' => array(
+				$completeConfiguration,
+				'foo.bar',
+				array(
+					'value' => NULL,
+					'properties' => NULL,
+				),
+			),
+			'two level, where second level does not exist' => array(
+				$completeConfiguration,
+				'permissions.bar',
+				array(
+					'value' => NULL,
+					'properties' => NULL,
+				),
+			),
+			'three level, where third level does not exist' => array(
+				$completeConfiguration,
+				'permissions.file.foo',
+				array(
+					'value' => NULL,
+					'properties' => NULL,
+				),
+			),
+			'three level, where second and third level does not exist' => array(
+				$completeConfiguration,
+				'permissions.foo.bar',
+				array(
+					'value' => NULL,
+					'properties' => NULL,
+				),
+			),
+			'value and properties' => array(
+				$completeConfiguration,
+				'value',
+				array(
+					'value' => 'oneValue',
+					'properties' => array('oneProperty' => 'oneValue'),
+				),
+			),
+		);
+	}
+
+	/**
+	 * @param $objectString
+	 * @param $expectedConfiguration
+	 */
+
+	/**
+	 * @param array $completeConfiguration
+	 * @param $objectString
+	 * @param array $expectedConfiguration
+	 * @dataProvider getTSConfigDataProvider
+	 * @test
+	 */
+	public function getTSConfigReturnsCorrectArrayForGivenObjectString(array $completeConfiguration, $objectString, array $expectedConfiguration) {
+		$this->fixture->userTS = $completeConfiguration;
+
+		$actualConfiguration = $this->fixture->getTSConfig($objectString);
+		$this->assertSame($expectedConfiguration, $actualConfiguration);
+	}
+
 }
 
 ?>
