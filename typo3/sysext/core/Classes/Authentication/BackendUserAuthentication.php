@@ -1176,11 +1176,11 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 			// Getting Root-ts if not sent
 			$config = $this->userTS;
 		}
-		$TSConf = array();
-		$parts = explode('.', $objectString, 2);
+		$TSConf = array('value' => NULL, 'properties' => NULL);
+		$parts = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('.', $objectString, TRUE, 2);
 		$key = $parts[0];
-		if (trim($key)) {
-			if (count($parts) > 1 && trim($parts[1])) {
+		if (strlen($key) > 0) {
+			if (count($parts) > 1 && strlen($parts[1]) > 0) {
 				// Go on, get the next level
 				if (is_array($config[$key . '.'])) {
 					$TSConf = $this->getTSConfig($parts[1], $config[$key . '.']);
