@@ -32,6 +32,24 @@ Changes and Improvements
 General
 -------------------------------------------------------------------------------
 
+* Support of language fallback chains
+
+The extended content_fallback setting part that allowed to configure a
+simple single-level language fallback chain is considered deprecated in
+favor of the "languageFallbackChain" setting.
+
+Example:
+The configuration setting:
+"sys_language_mode = content_fallback; 2,1"
+must be changed into:
+"sys_language_mode = content_fallback
+ languageFallbackChain = 2,1"
+
+In general the new chain allows you to define e.g. German as fallback language
+for a different region like e.g. Austria instead of the site-wide English
+default language. Therefore a new API method "getRecordOverlayWithFallback"
+must be used instead of the deprecated "getRecordOverlay".
+
 -------------------------------------------------------------------------------
 Logging
 -------------------------------------------------------------------------------

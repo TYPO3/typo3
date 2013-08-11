@@ -85,7 +85,23 @@ class RecordsContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractCon
 					if ($val['table'] === 'pages') {
 						$row = $GLOBALS['TSFE']->sys_page->getPageOverlay($row);
 					} else {
-						$row = $GLOBALS['TSFE']->sys_page->getRecordOverlay($val['table'], $row, $GLOBALS['TSFE']->sys_language_content, $GLOBALS['TSFE']->sys_language_contentOL);
+						$fallbackChain = NULL;
+						if (isset($conf['languageFallbackChain'])) {
+							$fallbackChain = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(
+								',', $conf['languageFallbackChain']
+							);
+						}
+
+						$pageLanguageBinding = TRUE;
+						if (isset($conf['respectPageLanguageBinding']) &&
+							$conf['respectPageLanguageBinding'] == '0'
+						) {
+							$pageLanguageBinding = FALSE;
+						}
+
+						$row = $GLOBALS['TSFE']->sys_page->getRecordOverlayWithFallback(
+							$conf['table'], $row, NULL, NULL, $fallbackChain, $pageLanguageBinding
+						);
 					}
 				}
 				// Might be unset in the content overlay things...

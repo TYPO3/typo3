@@ -1002,6 +1002,11 @@ ignore - The system will stay with the selected language even if the page is not
 			<default><![CDATA[
 ]]></default>
 		</property>
+		<property name="languageFallbackChain" type="string">
+			<description><![CDATA[Ordered Comma-separated list of language ids for the language fallback.]]></description>
+			<default><![CDATA[
+]]></default>
+		</property>
 		<property name="sys_language_overlay" type="string">
 			<description><![CDATA[boolean / keyword
 			If set, records from certain tables selected by the CONTENT cObject using the "languageField" setting will select the default language (0) instead of any language set by sys_language_uid / sys_language_mode. In addition the system will look for a translation of the selected record and overlay configured fields.
@@ -1194,6 +1199,14 @@ Use -1 in combination with collect.
 .collectReverse (boolean/stdWrap): Change order of elements in collect mode. If set, elements of the current page will be on the bottom.]]></description>
 			<default><![CDATA[
 ]]></default>
+		</property>
+		<property name="languageFallbackChain" type="stringList">
+			<description><![CDATA[Ordered comma-separated list of language ids for the language fallback chain (not considered for pages)]]></description>
+			<default><![CDATA[If this is NOT defined, the rendering of the records is done like configured for the site!]]></default>
+		</property>
+		<property name="respectPageLanguageBinding" type="boolean">
+			<description><![CDATA[Set this to 0 to prevent the binding of the language fallback chain to the current page (not considered for pages)]]></description>
+			<default><![CDATA[If this is NOT defined, the rendering of the records is bound to the available page languages!]]></default>
 		</property>
 		<property name="stdWrap" type="stdWrap">
 			<description><![CDATA[
@@ -5483,6 +5496,14 @@ All measures is in pixels.]]></description>
 			<description><![CDATA[Normally a record cannot be selected, if it's parent page (pid) is not accessible for the website user. This option disables that check.]]></description>
 			<default><![CDATA[
 ]]></default>
+		</property>
+		<property name="languageFallbackChain" type="stringList">
+			<description><![CDATA[Ordered comma-separated list of language ids for the language fallback chain (not considered for pages)]]></description>
+			<default><![CDATA[If this is NOT defined, the rendering of the records is done like configured for the site!]]></default>
+		</property>
+		<property name="respectPageLanguageBinding" type="boolean">
+			<description><![CDATA[Set this to 0 to prevent the binding of the language fallback chain to the current page (not considered for pages)]]></description>
+			<default><![CDATA[If this is NOT defined, the rendering of the records is bound to the available page languages!]]></default>
 		</property>
 		<property name="source" type="stdWrap">
 			<description><![CDATA[List of record-id's, optionally with appended table-names.

@@ -28,6 +28,7 @@ namespace TYPO3\CMS\Frontend\Page;
  ***************************************************************/
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * Page functions, a lot of sql/pages-related functions
@@ -271,14 +272,16 @@ class PageRepository {
 	/**
 	 * Returns the relevant page overlay record fields
 	 *
+	 * @throws \UnexpectedValueException
 	 * @param mixed $pageInput If $pageInput is an integer, it's the pid of the pageOverlay record and thus the page overlay record is returned. If $pageInput is an array, it's a page-record and based on this page record the language record is found and OVERLAYED before the page record is returned.
 	 * @param integer $lUid Language UID if you want to set an alternative value to $this->sys_language_uid which is default. Should be >=0
 	 * @return array Page row which is overlayed with language_overlay record (or the overlay record alone)
-	 * @todo Define visibility
 	 */
 	public function getPageOverlay($pageInput, $lUid = -1) {
 		// Initialize:
+		$noSpecialLanguageRequested = FALSE;
 		if ($lUid < 0) {
+			$noSpecialLanguageRequested = TRUE;
 			$lUid = $this->sys_language_uid;
 		}
 		$row = NULL;
@@ -304,14 +307,58 @@ class PageRepository {
 				$page_id = $pageInput;
 			}
 			if (count($fieldArr)) {
+				$languageClause = 'sys_language_uid=' . intval($lUid) . ' ';
+
+				$languageList = array();
+				if ($noSpecialLanguageRequested) {
+					$languageList = array_unique(array_merge(
+						array($lUid),
+						$GLOBALS['TSFE']->languageFallbackChain,
+						array($GLOBALS['TSFE']->sys_language_content)
+					));
+
+					$languageIds = implode(',', array_map('intval', $languageList));
+					$languageClause = 'sys_language_uid IN (' . $languageIds . ') ';
+				}
+
 				// NOTE to enabledFields('pages_language_overlay'):
 				// Currently the showHiddenRecords of TSFE set will allow pages_language_overlay records to be selected as they are child-records of a page.
 				// However you may argue that the showHiddenField flag should determine this. But that's not how it's done right now.
+
 				// Selecting overlay record:
-				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(implode(',', $fieldArr), 'pages_language_overlay', 'pid=' . intval($page_id) . '
-								AND sys_language_uid=' . intval($lUid) . $this->enableFields('pages_language_overlay'), '', '', '1');
-				$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
+				if (!in_array('sys_language_uid', $fieldArr)) {
+					$fieldArr[] = 'sys_language_uid';
+				}
+				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+					implode(',', $fieldArr),
+					'pages_language_overlay',
+					'pid=' . intval($page_id) .
+						' AND ' . $languageClause .
+						$this->enableFields('pages_language_overlay'),
+					'',
+					'',
+					2
+				);
+
+				if ($noSpecialLanguageRequested) {
+					// Fetch the row and prefer the most recent in the fallback priority list starting with the lUid
+					$firstRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
+					$secondRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
+					foreach ($languageList as $languageId) {
+						if ($firstRow['sys_language_uid'] == $languageId) {
+							$row = $firstRow;
+							break;
+
+						} elseif ($secondRow['sys_language_uid'] == $languageId) {
+							$row = $secondRow;
+							break;
+						}
+					}
+				} else {
+					$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
+				}
 				$GLOBALS['TYPO3_DB']->sql_free_result($res);
+
 				$this->versionOL('pages_language_overlay', $row);
 				if (is_array($row)) {
 					$row['_PAGES_OVERLAY'] = TRUE;
@@ -334,16 +381,74 @@ class PageRepository {
 	}
 
 	/**
-	 * Creates language-overlay for records in general (where translation is found in records from the same table)
+	 * Creates a language overlay for records stored inside tables which contain the
+	 * translation information themselves. In addition to getRecordOverlay this method
+	 * also checks for specified content language fallbacks and includes them.
 	 *
 	 * @param string $table Table name
-	 * @param array $row Record to overlay. Must containt uid, pid and $table]['ctrl']['languageField']
-	 * @param integer $sys_language_content Pointer to the sys_language uid for content on the site.
+	 * @param array $row Record to overlay. Must contain uid, pid and $table]['ctrl']['languageField']
+	 * @param integer|null $sys_language_content Pointer to the sys_language uid for content on the site.
+	 * @param string|null $OLmode Overlay mode. If "hideNonTranslated" then records without translation will not be returned un-translated but unset (and return value is FALSE)
+	 * @param array|null $fallbackList ordered fallback list of language ids
+	 * @param bool $pageLanguageBinding use page language binding for the language fallback chain (only used if fallbackList is NULL)
+	 * @return mixed Returns the input record, possibly overlaid with a translation. But if $OLmode is "hideNonTranslated" then it will return FALSE if no translation is found.
+	 */
+	public function getRecordOverlayWithFallback(
+		$table, $row, $sys_language_content = NULL, $OLmode = NULL, $fallbackList = NULL, $pageLanguageBinding = TRUE
+	) {
+		/** @var TypoScriptFrontendController $tsfe */
+		$tsfe = $GLOBALS['TSFE'];
+		$sys_language_content = ($sys_language_content !== NULL ? $sys_language_content : $tsfe->sys_language_content);
+		$OLmode = ($OLmode !== NULL ? $OLmode: $tsfe->sys_language_contentOL);
+		if ($fallbackList === NULL) {
+			$fallbackList = $tsfe->languageFallbackChainWithPageLanguageBinding;
+			if (!$pageLanguageBinding) {
+				$fallbackList = $tsfe->languageFallbackChain;
+			}
+		}
+
+		$record = $this->getRecordOverlayWithoutFallback($table, $row, $sys_language_content, $OLmode);
+		if (!is_array($record) || !isset($record['_LOCALIZED_UID'])) {
+			if (count($fallbackList) && $sys_language_content && $OLmode !== 'hideNonTranslated') {
+				foreach ($fallbackList as $fallbackId) {
+					$record = $this->getRecordOverlayWithoutFallback($table, $row, $fallbackId, $OLmode);
+					if (is_array($record) && isset($record['_LOCALIZED_UID'])) {
+						break;
+					}
+				}
+			}
+		}
+		return $record;
+	}
+
+	/**
+	 * Creates a language overlay for records stored inside tables which contain the
+	 * translation information themselves.
+	 *
+	 * @param string $table Table name the record comes from
+	 * @param array $row Record to overlay. Must contain the columns uid, pid and $TCA[$table]['ctrl']['languageField']
+	 * @param integer $sys_language_content Pointer to the sys_language uid to use for content.
 	 * @param string $OLmode Overlay mode. If "hideNonTranslated" then records without translation will not be returned un-translated but unset (and return value is FALSE)
 	 * @return mixed Returns the input record, possibly overlaid with a translation. But if $OLmode is "hideNonTranslated" then it will return FALSE if no translation is found.
-	 * @todo Define visibility
+	 * @deprecated since 6.2; will be removed two versions later
 	 */
 	public function getRecordOverlay($table, $row, $sys_language_content, $OLmode = '') {
+		GeneralUtility::logDeprecatedFunction();
+		return $this->getRecordOverlayWithoutFallback($table, $row, $sys_language_content, $OLmode);
+	}
+
+	/**
+	 * Creates a language overlay for records stored inside tables which contain the
+	 * translation information themselves.
+	 *
+	 * @throws \UnexpectedValueException
+	 * @param string $table Table name the record comes from
+	 * @param array $row Record to overlay. Must contain the columns uid, pid and $TCA[$table]['ctrl']['languageField']
+	 * @param integer $sys_language_content Pointer to the sys_language uid to use for content.
+	 * @param string $OLmode Overlay mode. If "hideNonTranslated" then records without translation will not be returned translated but unset (and return value is FALSE)
+	 * @return mixed Returns the input record, possibly overlaid with a translation. But if $OLmode is "hideNonTranslated" then it will return FALSE if no translation is found.
+	 */
+	public function getRecordOverlayWithoutFallback($table, $row, $sys_language_content, $OLmode) {
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_page.php']['getRecordOverlay'])) {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_page.php']['getRecordOverlay'] as $classRef) {
 				$hookObject = GeneralUtility::getUserObj($classRef);
@@ -415,6 +520,7 @@ class PageRepository {
 				$hookObject->getRecordOverlay_postProcess($table, $row, $sys_language_content, $OLmode, $this);
 			}
 		}
+
 		return $row;
 	}
 
