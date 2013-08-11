@@ -83,6 +83,13 @@ class Typo3QuerySettings implements \TYPO3\CMS\Extbase\Persistence\Generic\Query
 	protected $respectSysLanguage = TRUE;
 
 	/**
+	 * Flag if the language overlay should be prevented (default is FALSE).
+	 *
+	 * @var boolean
+	 */
+	protected $preventLanguageOverlay = FALSE;
+
+	/**
 	 * The language uid for the language overlay.
 	 *
 	 * @var integer
@@ -179,6 +186,27 @@ class Typo3QuerySettings implements \TYPO3\CMS\Extbase\Persistence\Generic\Query
 	 */
 	public function getRespectSysLanguage() {
 		return $this->respectSysLanguage;
+	}
+
+	/**
+	 * Sets the flag if a language overlay should be prevented.
+	 *
+	 * @param boolean $preventLanguageOverlay TRUE if a language overlay should be prevented.
+	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface
+	 * @api
+	 */
+	public function setPreventLanguageOverlay($preventLanguageOverlay) {
+		$this->preventLanguageOverlay = $preventLanguageOverlay;
+		return $this;
+	}
+
+	/**
+	 * Returns the state, if a language overlay should be prevented.
+	 *
+	 * @return boolean TRUE, if a language overlay should be prevented; otherwise FALSE.
+	 */
+	public function getPreventLanguageOverlay() {
+		return $this->preventLanguageOverlay;
 	}
 
 	/**
