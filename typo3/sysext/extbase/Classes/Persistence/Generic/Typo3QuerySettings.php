@@ -83,6 +83,13 @@ class Typo3QuerySettings implements \TYPO3\CMS\Extbase\Persistence\Generic\Query
 	protected $respectSysLanguage = TRUE;
 
 	/**
+	 * Flag if the language overlay should be prvented (default is FALSE).
+	 *
+	 * @var boolean
+	 */
+	protected $preventLanguageOverlay = FALSE;
+
+	/**
 	 * The language uid for the language overlay.
 	 *
 	 * @var integer
@@ -179,6 +186,27 @@ class Typo3QuerySettings implements \TYPO3\CMS\Extbase\Persistence\Generic\Query
 	 */
 	public function getRespectSysLanguage() {
 		return $this->respectSysLanguage;
+	}
+
+	/**
+	 * Sets the flag if a language overlay should be prevented.
+	 *
+	 * @param boolean $preventLanguageOverlay TRUE if a language overlay should be prevented.
+	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface
+	 * @api
+	 */
+	public function setPreventLanguageOverlay($preventLanguageOverlay) {
+		$this->preventLanguageOverlay = $preventLanguageOverlay;
+		return $this;
+	}
+
+	/**
+	 * Returns the state, if a language overlay should be prevented.
+	 *
+	 * @return boolean TRUE, if a language overlay should be prevented; otherwise FALSE.
+	 */
+	public function getPreventLanguageOverlay() {
+		return $this->preventLanguageOverlay;
 	}
 
 	/**
@@ -290,12 +318,11 @@ class Typo3QuerySettings implements \TYPO3\CMS\Extbase\Persistence\Generic\Query
 	 * Sets the flag if the query should return objects that are deleted.
 	 *
 	 * @param boolean $includeDeleted
-	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface
+	 * @return void
 	 * @api
 	 */
 	public function setIncludeDeleted($includeDeleted) {
 		$this->includeDeleted = $includeDeleted;
-		return $this;
 	}
 
 	/**
@@ -311,11 +338,10 @@ class Typo3QuerySettings implements \TYPO3\CMS\Extbase\Persistence\Generic\Query
 	 * Sets the state, if the QueryResult should be returned unmapped.
 	 *
 	 * @param boolean $returnRawQueryResult TRUE, if the QueryResult should be returned unmapped; otherwise FALSE.
-	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface
+	 * @return void
 	 */
 	public function setReturnRawQueryResult($returnRawQueryResult) {
 		$this->returnRawQueryResult = $returnRawQueryResult;
-		return $this;
 	}
 
 	/**
