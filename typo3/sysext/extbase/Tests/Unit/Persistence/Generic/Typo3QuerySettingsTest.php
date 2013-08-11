@@ -130,6 +130,24 @@ class Typo3QuerySettingsTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase 
 
 	/**
 	 * @test
+	 * @dataProvider booleanValueProvider
+	 *
+	 * @param boolean $input
+	 */
+	public function setPreventLanguageOverlaySetsPreventLanguageOverlayCorrectly($input) {
+		$this->typo3QuerySettings->setPreventLanguageOverlay($input);
+		$this->assertEquals($input, $this->typo3QuerySettings->getPreventLanguageOverlay());
+	}
+
+	/**
+	 * @test
+	 */
+	public function setPreventLanguageOverlayAllowsChaining() {
+		$this->assertTrue($this->typo3QuerySettings->setPreventLanguageOverlay(TRUE) instanceof \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface);
+	}
+
+	/**
+	 * @test
 	 */
 	public function setSysLanguageUidAllowsChaining() {
 		$this->assertTrue($this->typo3QuerySettings->setSysLanguageUid(42) instanceof \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface);
