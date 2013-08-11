@@ -79,7 +79,7 @@ class ResourceFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Inject signal slot dispatcher
 	 */
 	public function __construct(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher = NULL) {
-		$this->signalSlotDispatcher = $signalSlotDispatcher ?: GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\SignalSlot\\Dispatcher');
+		$this->signalSlotDispatcher = $signalSlotDispatcher ?: \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\SignalSlot\\Dispatcher');
 	}
 
 	/**
