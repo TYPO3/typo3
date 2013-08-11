@@ -156,13 +156,19 @@ class FilesContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractConte
 			});
 		}
 
-		$GLOBALS['TSFE']->register['FILES_COUNT'] = count($fileObjects);
-		$fileObjectCounter = 0;
+		/** @var \TYPO3\CMS\Core\Utility\IterationStateUtility $iterationState */
+		$iterationState = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Utility\\IterationStateUtility', count($fileObjects));
+		$GLOBALS['TSFE']->register['FILES_COUNT'] = $iterationState->getMaximum();
 		foreach ($fileObjects as $key => $fileObject) {
-			$GLOBALS['TSFE']->register['FILE_NUM_CURRENT'] = $fileObjectCounter;
+			$iterationState->increase($key);
+			$GLOBALS['TSFE']->register['FILE_NUM_CURRENT'] = $iterationState->getIndex();
+			$GLOBALS['TSFE']->register['FILE_CYCLE'] = $iterationState->getIteration();
+			$GLOBALS['TSFE']->register['FILE_IS_FIRST'] = $iterationState->isFirst();
+			$GLOBALS['TSFE']->register['FILE_IS_LAST'] = $iterationState->isLast();
+			$GLOBALS['TSFE']->register['FILE_IS_ODD'] = $iterationState->isOdd();
+			$GLOBALS['TSFE']->register['FILE_IS_EVEN'] = $iterationState->isEven();
 			$this->cObj->setCurrentFile($fileObject);
 			$content .= $this->cObj->cObjGetSingle($splitConf[$key]['renderObj'], $splitConf[$key]['renderObj.']);
-			$fileObjectCounter++;
 		}
 		$content = $this->cObj->stdWrap($content, $conf['stdWrap.']);
 		return $content;
