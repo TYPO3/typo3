@@ -132,6 +132,27 @@ return array(
 		'reverseProxyPrefix' => '',				// String: optional prefix to be added to the internal URL (SCRIPT_NAME and REQUEST_URI).
 		'reverseProxySSL' => '',				// String: '*' or list of IP addresses of proxies that use SSL (https) for the connection to the client, but an unencrypted connection (http) to the server. If '*' all proxies defined in <a href="#SYS-reverseProxyIP">[SYS][reverseProxyIP]</a> use SSL.
 		'reverseProxyPrefixSSL' => '',			// String: prefix to be added to the internal URL (SCRIPT_NAME and REQUEST_URI) when accessing the server via an SSL proxy. This setting overrides <a href="#SYS-reverseProxyPrefix">[SYS][reverseProxyPrefix]</a>.
+		'locking' => array(
+			'lockConfigurations' => array(
+				'page-generation' => array(
+					'locker' => 'TYPO3\CMS\Core\Locking\Locker\FileLocker',
+					'options' => array(
+						'retries' => 75,
+						'retryInterval' => 200,
+						'respectExecutionTime' => TRUE,
+					),
+				),
+				'syslog-file' => array(
+					'locker' => 'TYPO3\CMS\Core\Locking\Locker\FileLocker',
+					'options' => array(
+						'logging' => FALSE,
+					),
+				),
+				'mail-send' => array(
+					'locker' => 'TYPO3\CMS\Core\Locking\Locker\FileLocker',
+				),
+			),
+		),
 		'caching' => array(
 			'cacheConfigurations' => array(
 				// The cache_core cache is is for core php code only and must
