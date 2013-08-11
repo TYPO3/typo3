@@ -40,6 +40,8 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  */
 class ResourceFactory implements \TYPO3\CMS\Core\SingletonInterface {
 
+	const SIGNAL_PostProcessStorage = 'postProcessStorage';
+
 	/**
 	 * Gets a singleton instance of this class.
 	 *
@@ -75,6 +77,18 @@ class ResourceFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @var array
 	 */
 	protected $localDriverStorageCache = NULL;
+
+	/**
+	 * @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
+	 */
+	protected $signalSlotDispatcher;
+
+	/**
+	 * Inject signal slot dispatcher
+	 */
+	public function __construct(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher = NULL) {
+		$this->signalSlotDispatcher = $signalSlotDispatcher ?: GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\SignalSlot\\Dispatcher');
+	}
 
 	/**
 	 * Creates a driver object for a specified storage object.
@@ -142,6 +156,7 @@ class ResourceFactory implements \TYPO3\CMS\Core\SingletonInterface {
 			if (!$storageObject instanceof ResourceStorage) {
 				$storageObject = $this->createStorageObject($recordData, $storageConfiguration);
 			}
+			$this->signalSlotDispatcher->dispatch('TYPO3\\CMS\\Core\\Resource\\ResourceFactory', self::SIGNAL_PostProcessStorage, array($this, $storageObject));
 			$this->storageInstances[$uid] = $storageObject;
 		}
 		return $this->storageInstances[$uid];
