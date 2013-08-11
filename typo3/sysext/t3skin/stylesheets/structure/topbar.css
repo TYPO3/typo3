@@ -12,7 +12,7 @@ Topbar (whole upper area), containts Logo and toolbar
 
 #typo3-top-container {
 	height: 100%;
-	padding: 0 24px 0 16px;
+	padding: 0 24px;
 }
 
 #typo3-logo {
