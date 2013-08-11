@@ -13,32 +13,19 @@
 		</a>
 	</td>
 	<td>
-		<f:link.action
-			action="addToCompareList"
-			arguments="{uid: backendUser.uid}"
-		>
-			<bu:spriteManagerIcon iconName="actions-edit-add"/>
-			<f:translate key="compare">Compare</f:translate>
-		</f:link.action>
+		<f:link.action action="addToCompareList" arguments="{uid: backendUser.uid}"><bu:spriteManagerIcon iconName="actions-edit-add"/></f:link.action>
+		<f:link.action action="addToCompareList" arguments="{uid: backendUser.uid}"><f:translate key="compare">Compare</f:translate></f:link.action>
 	</td>
 	<td>
-		<a href="#" onclick="top.launchView('be_users', '{backendUser.uid}'); return false;">
-			<bu:spriteManagerIcon iconName="actions-document-info" />
-		</a>
-		<a href="alt_doc.php?edit[be_users][{backendUser.uid}]=edit&returnUrl={returnUrl}">
-			<bu:spriteManagerIcon iconName="actions-document-open" />
-		</a>
+		<a href="#" onclick="top.launchView('be_users', '{backendUser.uid}'); return false;"><bu:spriteManagerIcon iconName="actions-document-info" /></a>
+		<a href="alt_doc.php?edit[be_users][{backendUser.uid}]=edit&returnUrl={returnUrl}"><bu:spriteManagerIcon iconName="actions-document-open" /></a>
 
 		<f:if condition="{backendUser.isDisabled} == 1">
 			<f:then>
-				<a href="<bu:issueCommand parameters="tce_db.php?&data[be_users][{backendUser.uid}][disable]=0&redirect={redirectUrl}" />">
-					<bu:spriteManagerIcon iconName="actions-edit-unhide" options="{title: 'unhide'}" />
-				</a>
+				<a href="<bu:issueCommand parameters="tce_db.php?&data[be_users][{backendUser.uid}][disable]=0&redirect={redirectUrl}" />"><bu:spriteManagerIcon iconName="actions-edit-unhide" options="{title: 'unhide'}" /></a>
 			</f:then>
 			<f:else>
-				<a href="<bu:issueCommand parameters="tce_db.php?&data[be_users][{backendUser.uid}][disable]=1&redirect={redirectUrl}" />">
-					<bu:spriteManagerIcon iconName="actions-edit-hide" options="{title: 'hide'}" />
-				</a>
+				<a href="<bu:issueCommand parameters="tce_db.php?&data[be_users][{backendUser.uid}][disable]=1&redirect={redirectUrl}" />"><bu:spriteManagerIcon iconName="actions-edit-hide" options="{title: 'hide'}" /></a>
 			</f:else>
 		</f:if>
 
