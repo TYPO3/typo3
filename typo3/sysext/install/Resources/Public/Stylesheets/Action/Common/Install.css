@@ -312,6 +312,10 @@ button span.t3-install-form-button-icon-negative {
 	background-image: url('../../../Images/Menu/SystemEnvironment.png');
 }
 
+#t3-install-menu #t3-install-menu-configuration {
+	background-image: url('../../../Images/Menu/Configuration.png');
+}
+
 #t3-install-menu #t3-install-menu-folderStructure {
 	background-image: url('../../../Images/Menu/FolderStructure.png');
 }
@@ -398,7 +402,12 @@ button span.t3-install-form-button-icon-negative {
 	color: #111 !important;
 }
 
-
+.t3-install-tool-configuration-radio {
+	float: none;
+}
+.t3-install-tool-configuration-radio-label {
+	float: none;
+}
 
 .typo3-message {
 	padding: 0.6em 0.6em 0.6em 2.6em;

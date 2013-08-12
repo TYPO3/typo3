@@ -1,0 +1,29 @@
+<div class="typo3-message {f:if(condition:'{preset.isAvailable}', then:'message-ok', else:'message-error')}">
+	<div class="header-container">
+		<div class="message-header">
+			<input
+				type="radio"
+				class="t3-install-tool-configuration-radio"
+				id="t3-install-tool-configuration-charset-iconv"
+				name="install[values][{feature.name}][enable]"
+				value="{preset.name}"
+				{f:if(condition:'{preset.isAvailable}', then:'', else:'disabled="disabled"')}
+				{f:if(condition:'{preset.isActive}', then:'checked="checked"')}
+			/>
+			<label
+				for="t3-install-tool-configuration-charset-iconv"
+				class="t3-install-tool-configuration-radio-label"
+			>
+				<strong>
+					iconv
+				</strong>
+				{f:if(condition:'{preset.isActive}', then:' [Active]')}
+			</label>
+		</div>
+	</div>
+	<div class="message-body>">
+		iconv implementation is based on a PHP module. It works well but
+		mbstring should be preferred if available.
+	</div>
+</div>
+<p></p>

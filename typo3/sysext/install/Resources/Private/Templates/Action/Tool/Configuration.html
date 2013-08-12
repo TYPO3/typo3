@@ -1,0 +1,28 @@
+{namespace i=TYPO3\CMS\Install\ViewHelpers}
+
+<f:layout name="ToolAuthenticated" />
+
+<f:section name="Content">
+	<h3>Configuration presets</h3>
+
+	<f:for each="{actionMessages}" as="statusMessage">
+		<f:render partial="Action/Common/StatusMessage" arguments="{message: statusMessage}" />
+	</f:for>
+
+	<p>
+		The configuration module suggests best matching configuration settings
+		based on your system setup.
+	</p>
+
+	<hr />
+
+	<form method="post">
+		<f:render partial="Action/Common/HiddenFormFields" arguments="{_all}" />
+
+		<f:for each="{features}" as="feature">
+			<f:render partial="Action/Tool/Configuration/{feature.name}" arguments="{_all}" />
+		</f:for>
+
+		<f:render partial="Action/Common/SubmitButton" arguments="{name:'activate', text:'Activate'}"/>
+	</form>
+</f:section>
