@@ -1,0 +1,3 @@
+<f:for each="{feature.presetsOrderedByPriority}" as="preset">
+	<f:render partial="Action/Tool/Configuration/{feature.name}/{preset.name}" arguments="{_all}" />
+</f:for>
