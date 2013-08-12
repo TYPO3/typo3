@@ -1,0 +1,10 @@
+
+<f:if condition="{preset.isAvailable}">
+	<form method="post">
+		<f:render partial="Action/Common/HiddenFormFields" arguments="{_all}" />
+		<input type="hidden" value="{feature.name}" name="install[values][feature]" />
+		<input type="hidden" value="{preset.name}" name="install[values][preset]" />
+		<f:render partial="Action/Common/SubmitButton" arguments="{name:'activateFeature', text:'Activate'}"/>
+		mbstring
+	</form>
+</f:if>
