@@ -316,8 +316,10 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 		if ($this->CMD == 'user') {
 			$this->createSchedulerUser();
 		}
+
 		// Start generating the content
-		$content = $GLOBALS['LANG']->getLL('msg.schedulerSetupCheck');
+		$content = '<p class="lead">' . $GLOBALS['LANG']->getLL('msg.schedulerSetupCheck') . '</p>';
+
 		// Display information about last automated run, as stored in the system registry
 		/** @var $registry \TYPO3\CMS\Core\Registry */
 		$registry = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Registry');
@@ -439,8 +441,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 				$tr++;
 			}
 			// Render the table and return it
-			$content = '<div>' . $GLOBALS['LANG']->getLL('msg.infoScreenIntro') . '</div>';
-			$content .= $this->doc->spacer(5);
+			$content = '<p class="lead">' . $GLOBALS['LANG']->getLL('msg.infoScreenIntro') . '</p>';
 			$content .= $this->doc->table($table, $tableLayout);
 		}
 		return $content;

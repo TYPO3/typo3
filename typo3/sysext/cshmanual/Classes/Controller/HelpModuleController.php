@@ -257,18 +257,13 @@ class HelpModuleController {
 				$this->render_TOC_el($cshKey, 'other', $outputSections, $tocArray, $CSHkeys);
 			}
 		}
+
 		// COMPILE output:
 		$output = '';
-		$output .= '
+		$output .= '<h1>' . $GLOBALS['LANG']->getLL('manual_title', TRUE) . '</h1>';
+		$output .= '<p class="lead">' . $GLOBALS['LANG']->getLL('description', TRUE) . '</p>';
 
-			<h1>' . $GLOBALS['LANG']->getLL('manual_title', TRUE) . '</h1>';
-		$output .= '
-
-			<h2>' . $GLOBALS['LANG']->getLL('introduction', TRUE) . '</h2>
-			<p>' . $GLOBALS['LANG']->getLL('description', TRUE) . '</p>';
-		$output .= '
-
-			<h2>' . $GLOBALS['LANG']->getLL('TOC', TRUE) . '</h2>' . $this->render_TOC_makeTocList($tocArray);
+		$output .= '<h2>' . $GLOBALS['LANG']->getLL('TOC', TRUE) . '</h2>' . $this->render_TOC_makeTocList($tocArray);
 		if (!$this->renderALL) {
 			$output .= '
 				<br/>

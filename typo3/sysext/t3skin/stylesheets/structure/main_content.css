@@ -57,6 +57,8 @@ div.hr {
 	height: 1px;
 }
 
+.lead { font-size: 1.3em; }
+
 /** .uppercase is kept for backwards-compatibility, use .divider */
 .divider,
 .uppercase {
