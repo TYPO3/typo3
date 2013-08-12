@@ -1,0 +1,40 @@
+<div class="typo3-message message-warning">
+	<div class="header-container">
+		<div class="message-header">
+			<input
+				type="radio"
+				class="t3-install-tool-configuration-radio"
+				id="t3-install-tool-configuration-image-custom"
+				name="install[values][{feature.name}][enable]"
+				value="{preset.name}"
+				{f:if(condition:'{preset.isActive}', then:'checked="checked"')}
+			/>
+			<label
+				for="t3-install-tool-configuration-image-custom"
+				class="t3-install-tool-configuration-radio-label"
+			>
+				<strong>
+					Custom configuration
+				</strong>
+				{f:if(condition:'{preset.isActive}', then:' [Active]')}
+			</label>
+		</div>
+	</div>
+	<div class="message-body>">
+		<p>
+			Custom configuration mixture if no other preset fits.
+		</p>
+
+		<f:for each="{preset.configurationValues}" as="configurationValue" key="configurationKey">
+			<div>
+				<input
+					type="input"
+					name="install[values][{feature.name}][{preset.name}][{configurationKey}]"
+					value="{configurationValue}"
+				/>
+				{configurationKey}
+			</div>
+		</f:for>
+	</div>
+</div>
+<p></p>
