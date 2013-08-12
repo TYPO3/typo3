@@ -37,11 +37,17 @@ class DefaultConfiguration extends Action\AbstractAction implements StepInterfac
 	 * @return array<\TYPO3\CMS\Install\Status\StatusInterface>
 	 */
 	public function execute() {
-		// @TODO: Implement "auto configuration"
+		/** @var \TYPO3\CMS\Install\Configuration\FeatureManager $featureManager */
+		$featureManager = $this->objectManager->get('TYPO3\\CMS\\Install\\Configuration\\FeatureManager');
+		// Get best matching configuration presets
+		$configurationValues = $featureManager->getBestMatchingConfigurationForAllFeatures();
+
+		// Setting SYS/isInitialInstallationInProgress to FALSE marks this instance installation as complete
+		$configurationValues['SYS/isInitialInstallationInProgress'] = FALSE;
 
 		/** @var $configurationManager \TYPO3\CMS\Core\Configuration\ConfigurationManager */
 		$configurationManager = $this->objectManager->get('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager');
-		$configurationManager->setLocalConfigurationValueByPath('SYS/isInitialInstallationInProgress', FALSE);
+		$configurationManager->setLocalConfigurationValuesByPathValuePairs($configurationValues);
 
 		/** @var \TYPO3\CMS\Install\Service\SessionService $session */
 		$session = $this->objectManager->get('TYPO3\\CMS\\Install\\Service\\SessionService');
