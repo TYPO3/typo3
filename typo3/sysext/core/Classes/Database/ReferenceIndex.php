@@ -494,11 +494,24 @@ class ReferenceIndex {
 			foreach ($theFileValues as $file) {
 				if (trim($file)) {
 					$realFile = $dest . '/' . trim($file);
-					$newValueFiles[] = array(
+					$newValueFile = array(
 						'filename' => basename($file),
 						'ID' => md5($realFile),
 						'ID_absFile' => $realFile
 					);
+					// Set sys_file and id for referenced files
+					if ($conf['internal_type'] === 'file_reference') {
+						try {
+							$file = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->retrieveFileOrFolderObject($file);
+							if ($file instanceof \TYPO3\CMS\Core\Resource\FileInterface) {
+								$newValueFile['table'] = 'sys_file';
+								$newValueFile['id'] = $file->getUid();
+							}
+						} catch (\Exception $e) {
+
+						}
+					}
+					$newValueFiles[] = $newValueFile;
 				}
 			}
 			return $newValueFiles;
