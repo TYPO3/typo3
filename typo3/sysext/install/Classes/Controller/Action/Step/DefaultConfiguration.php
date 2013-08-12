@@ -37,8 +37,6 @@ class DefaultConfiguration extends Action\AbstractAction implements StepInterfac
 	 * @return array<\TYPO3\CMS\Install\Status\StatusInterface>
 	 */
 	public function execute() {
-		// @TODO: Implement "auto configuration"
-
 		/** @var $configurationManager \TYPO3\CMS\Core\Configuration\ConfigurationManager */
 		$configurationManager = $this->objectManager->get('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager');
 		$configurationManager->setLocalConfigurationValueByPath('SYS/isInitialInstallationInProgress', FALSE);
