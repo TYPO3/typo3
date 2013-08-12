@@ -42,6 +42,7 @@ class ToolController extends AbstractController {
 		'welcome',
 		'importantActions',
 		'systemEnvironment',
+		'configuration',
 		'folderStructure',
 		'testSetup',
 		'updateWizard',
