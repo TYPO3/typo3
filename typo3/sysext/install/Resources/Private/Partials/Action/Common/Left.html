@@ -18,6 +18,11 @@
 				</f:if>
 			</a>
 		</li>
+		<li id="t3-install-menu-configuration" class="{f:if(condition:'{action} == \'configuration\'', then:'act')}">
+			<a href="Install.php?install[action]=configuration&install[context]={context}&install[controller]=tool">
+				Configuration Presets
+			</a>
+		</li>
 		<li id="t3-install-menu-folderStructure" class="{f:if(condition:'{action} == \'folderStructure\'', then:'act')}">
 			<a href="Install.php?install[action]=folderStructure&install[context]={context}&install[controller]=tool">
 				Folder structure

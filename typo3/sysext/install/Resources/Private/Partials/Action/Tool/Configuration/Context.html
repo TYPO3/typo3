@@ -1,0 +1,26 @@
+<div class="toggleGroup">
+	<div class="toggleButton">
+		<h4>Development / Production settings</h4>
+	</div>
+
+	<div class="toggleData" style="display:none">
+		<p>
+			A set of configuration options should be different if the current
+			environment is a development or a production system. The goal is
+			to configure a production instance with maximum performance and no
+			debug output that is possibly shown to users, while development
+			instances should enable error output.
+		</p>
+		<p>
+			The environment can be defined with the environment variable
+			"TYPO3_CONTEXT" set to "Production" or "Development". If no context
+			environment variable is set, "Production" is assumed.
+		</p>
+
+		<f:for each="{feature.presetsOrderedByPriority}" as="preset">
+			<f:render partial="Action/Tool/Configuration/{feature.name}/{preset.name}" arguments="{_all}" />
+		</f:for>
+	</div>
+</div>
+
+<hr />
