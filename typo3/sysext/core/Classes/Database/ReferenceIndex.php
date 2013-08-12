@@ -468,41 +468,55 @@ class ReferenceIndex {
 	 * @param string $value Field value
 	 * @param array $conf Field configuration array of type "TCA/columns
 	 * @param integer $uid Field uid
-	 * @retur array If field type is OK it will return an array with the files inside. Else FALSE
+	 * @return array If field type is OK it will return an array with the files inside. Else FALSE
 	 * @todo Define visibility
 	 */
 	public function getRelations_procFiles($value, $conf, $uid) {
-		if ($conf['type'] == 'group' && ($conf['internal_type'] == 'file' || $conf['internal_type'] == 'file_reference')) {
-			// Collect file values in array:
-			if ($conf['MM']) {
-				$theFileValues = array();
-				$dbAnalysis = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\RelationHandler');
-				$dbAnalysis->start('', 'files', $conf['MM'], $uid);
-				foreach ($dbAnalysis->itemArray as $somekey => $someval) {
-					if ($someval['id']) {
-						$theFileValues[] = $someval['id'];
+		if ($conf['type'] !== 'group' || ($conf['internal_type'] !== 'file' && $conf['internal_type'] !== 'file_reference')) {
+			return FALSE;
+		}
+
+		// Collect file values in array:
+		if ($conf['MM']) {
+			$theFileValues = array();
+			$dbAnalysis = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\RelationHandler');
+			$dbAnalysis->start('', 'files', $conf['MM'], $uid);
+			foreach ($dbAnalysis->itemArray as $someval) {
+				if ($someval['id']) {
+					$theFileValues[] = $someval['id'];
+				}
+			}
+		} else {
+			$theFileValues = explode(',', $value);
+		}
+		// Traverse the files and add them:
+		$uploadFolder = $conf['internal_type'] == 'file' ? $conf['uploadfolder'] : '';
+		$dest = $this->destPathFromUploadFolder($uploadFolder);
+		$newValueFiles = array();
+		foreach ($theFileValues as $file) {
+			if (trim($file)) {
+				$realFile = $dest . '/' . trim($file);
+				$newValueFile = array(
+					'filename' => basename($file),
+					'ID' => md5($realFile),
+					'ID_absFile' => $realFile
+				);
+				// Set sys_file and id for referenced files
+				if ($conf['internal_type'] === 'file_reference') {
+					try {
+						$file = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->retrieveFileOrFolderObject($file);
+						if ($file instanceof \TYPO3\CMS\Core\Resource\FileInterface) {
+							$newValueFile['table'] = 'sys_file';
+							$newValueFile['id'] = $file->getUid();
+						}
+					} catch (\Exception $e) {
+
 					}
 				}
-			} else {
-				$theFileValues = explode(',', $value);
+				$newValueFiles[] = $newValueFile;
 			}
-			// Traverse the files and add them:
-			$uploadFolder = $conf['internal_type'] == 'file' ? $conf['uploadfolder'] : '';
-			$dest = $this->destPathFromUploadFolder($uploadFolder);
-			$newValueFiles = array();
-			foreach ($theFileValues as $file) {
-				if (trim($file)) {
-					$realFile = $dest . '/' . trim($file);
-					$newValueFiles[] = array(
-						'filename' => basename($file),
-						'ID' => md5($realFile),
-						'ID_absFile' => $realFile
-					);
-				}
-			}
-			return $newValueFiles;
 		}
-		return FALSE;
+		return $newValueFiles;
 	}
 
 	/**
