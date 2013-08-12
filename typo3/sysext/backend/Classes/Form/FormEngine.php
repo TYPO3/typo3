@@ -3684,7 +3684,7 @@ function ' . $evalData . '(value) {
 					foreach ($itemArray as $item) {
 						$itemParts = explode('|', $item);
 						$uidList[] = ($pUid = ($pTitle = $itemParts[0]));
-						$title = htmlspecialchars(basename(rawurldecode($itemParts[1])));
+						$title = htmlspecialchars(basename(rawurldecode($itemParts[1] ? $itemParts[1] : $itemParts[0])));
 						$opt[] = '<option value="' . htmlspecialchars(rawurldecode($itemParts[0])) . '" title="' . $title . '">' . $title . '</option>';
 					}
 					break;
