@@ -21,6 +21,7 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * This file contains the default array definition that is
  * later populated as $GLOBALS['TYPO3_CONF_VARS']

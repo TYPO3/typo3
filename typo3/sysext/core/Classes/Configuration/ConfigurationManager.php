@@ -1,6 +1,5 @@
 <?php
 namespace TYPO3\CMS\Core\Configuration;
-use TYPO3\CMS\Core\Utility;
 
 /***************************************************************
  *  Copyright notice
@@ -24,6 +23,9 @@ use TYPO3\CMS\Core\Utility;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use TYPO3\CMS\Core\Utility;
+
 /**
  * Handle loading and writing of global and local (instance specific)
  * configuration.
@@ -78,7 +80,8 @@ class ConfigurationManager {
 		'EXT/extConf',
 		'EXTCONF',
 		'INSTALL/wizardDone',
-		'DB'
+		'DB',
+		'SYS/caching/cacheConfigurations',
 	);
 
 	/**
