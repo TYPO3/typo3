@@ -90,7 +90,7 @@ class RecyclerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 	 */
 	public function render() {
 		$this->content .= $this->doc->header($GLOBALS['LANG']->getLL('title'));
-		$this->content .= $this->doc->section('', $GLOBALS['LANG']->getLL('description'));
+		$this->content .= '<p class="lead">' . $GLOBALS['LANG']->getLL('description') . '</p>';
 		if ($this->isAccessibleForCurrentUser) {
 			$this->loadHeaderData();
 			// div container for renderTo

@@ -57,17 +57,24 @@ class IndexingStatisticsController extends \TYPO3\CMS\Backend\Module\AbstractFun
 	 */
 	public function showStats() {
 		$conf['words'] = 50;
+
 		// max words in result list
 		$conf['bid'] = intval(\TYPO3\CMS\Core\Utility\GeneralUtility::_GET('id'));
+
 		// pageid for several statistics
 		$addwhere1 = '';
+
 		// all records
 		$addwhere2 = ' AND tstamp > ' . ($GLOBALS['EXEC_TIME'] - 30 * 24 * 60 * 60);
+
 		// last 30 days
 		$addwhere3 = ' AND tstamp > ' . ($GLOBALS['EXEC_TIME'] - 24 * 60 * 60);
+
 		// last 24 hours
-		$content = $GLOBALS['LANG']->getLL('title2') . '
-			<table cellpading="5" cellspacing="5" valign="top"><tr><td valign="top">' . $this->listSeveralStats($GLOBALS['LANG']->getLL('all'), $addwhere1, $conf) . '</td><td valign="top">' . $this->listSeveralStats($GLOBALS['LANG']->getLL('last30days'), $addwhere2, $conf) . '</td><td valign="top">' . $this->listSeveralStats($GLOBALS['LANG']->getLL('last24hours'), $addwhere3, $conf) . '</td></tr></table>' . $this->note;
+		$content = '<p class="lead">' . $GLOBALS['LANG']->getLL('title2') . '</p>';
+		$content .= '<table cellpading="5" cellspacing="5" valign="top" class=""><tr><td valign="top">' . $this->listSeveralStats($GLOBALS['LANG']->getLL('all'), $addwhere1, $conf) . '</td><td valign="top">' . $this->listSeveralStats($GLOBALS['LANG']->getLL('last30days'), $addwhere2, $conf) . '</td><td valign="top">' . $this->listSeveralStats($GLOBALS['LANG']->getLL('last24hours'), $addwhere3, $conf) . '</td></tr></table>';
+		$content .= '<p>' . $this->note . '</p>';
+
 		// Ask hook to include more on the page:
 		if ($hookObj = $this->hookRequest('additionalSearchStat')) {
 			$content .= $hookObj->additionalSearchStat();

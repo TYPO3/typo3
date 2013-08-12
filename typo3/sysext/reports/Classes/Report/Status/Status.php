@@ -55,7 +55,7 @@ class Status implements \TYPO3\CMS\Reports\ReportInterface {
 		// Updating the registry
 		$registry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Registry');
 		$registry->set('tx_reports', 'status.highestSeverity', $highestSeverity);
-		$content .= '<p class="help">' . $GLOBALS['LANG']->getLL('status_report_explanation') . '</p>';
+		$content .= '<p class="lead">' . $GLOBALS['LANG']->getLL('status_report_explanation') . '</p>';
 		return $content . $this->renderStatus($status);
 	}
 
