@@ -6195,13 +6195,39 @@ class DataHandler {
 	 * @param string $table Table name
 	 * @param integer $uid Record uid
 	 * @return integer PID value (unless the record did not exist in which case FALSE)
-	 * @todo Define visibility
+	 * @deprecated since TYPO3 CMS 6.2, use getPageId() instead
 	 */
 	public function getPID($table, $uid) {
-		$res_tmp = $GLOBALS['TYPO3_DB']->exec_SELECTquery('pid', $table, 'uid=' . intval($uid));
-		if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res_tmp)) {
-			return $row['pid'];
+		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
+		return $this->getPageId($table, $uid);
+	}
+
+	/**
+	 * Gets the page id from the live(!) record
+	 * of the record defined by $table and $uid.
+	 *
+	 * @param string $table Name of the table
+	 * @param integer $uid Uid of the record
+	 * @return NULL|integer Page id of the live record
+	 */
+	protected function getPageId($table, $uid) {
+		$pageId = NULL;
+
+		$queryUid = $uid;
+		$queryField = ($table === 'pages' ? 'uid' : 'pid');
+		$liveUid = \TYPO3\CMS\Backend\Utility\BackendUtility::getLiveVersionIdOfRecord($table, $uid);
+
+		if ($liveUid !== NULL) {
+			$queryUid = $liveUid;
 		}
+
+		$record = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($table, $queryUid, $queryField, '', FALSE);
+
+		if (!empty($record)) {
+			$pageId = $record[$queryField];
+		}
+
+		return $pageId;
 	}
 
 	/**
@@ -6601,11 +6627,7 @@ class DataHandler {
 				if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('cms')) {
 					$list_cache = array();
 					if ($table === 'pages' || $table === 'pages_language_overlay') {
-						if ($table === 'pages_language_overlay') {
-							$pageUid = $this->getPID($table, $uid);
-						} else {
-							$pageUid = $uid;
-						}
+						$pageUid = $this->getPageId($table, $uid);
 						// Builds list of pages on the SAME level as this page (siblings)
 						$res_tmp = $GLOBALS['TYPO3_DB']->exec_SELECTquery('A.pid AS pid, B.uid AS uid', 'pages A, pages B', 'A.uid=' . intval($pageUid) . ' AND B.pid=A.pid AND B.deleted=0');
 						$pid_tmp = 0;
@@ -6634,7 +6656,7 @@ class DataHandler {
 						}
 					} else {
 						// For other tables than "pages", delete cache for the records "parent page".
-						$list_cache[] = ($pageUid = intval($this->getPID($table, $uid)));
+						$list_cache[] = ($pageUid = intval($this->getPageId($table, $uid)));
 					}
 					// Call pre-processing function for clearing of cache for page ids:
 					if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearPageCacheEval'])) {
