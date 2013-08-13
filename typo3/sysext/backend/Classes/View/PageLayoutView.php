@@ -144,7 +144,6 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	 * @todo Define visibility
 	 */
 	public $activeTables = array();
-
 	/**
 	 * @todo Define visibility
 	 */
@@ -171,6 +170,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	 * Renderings
 	 *
 	 *****************************************/
+
 	/**
 	 * Adds the code of a single table
 	 *
@@ -217,6 +217,201 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 		// Create listing
 		$out = $this->makeOrdinaryList($table, $id, $fList, $icon, $addWhere);
 		return $out;
+	}
+
+	/**
+	 * Creates a standard list of elements from a table.
+	 *
+	 * @param string $table Table name
+	 * @param integer $id Page id.
+	 * @param string $fList Comma list of fields to display
+	 * @param boolean $icon If TRUE, icon is shown
+	 * @param string $addWhere Additional WHERE-clauses.
+	 * @return string HTML table
+	 * @todo Define visibility
+	 */
+	public function makeOrdinaryList($table, $id, $fList, $icon = 0, $addWhere = '') {
+		// Initialize
+		$queryParts = $this->makeQueryArray($table, $id, $addWhere);
+		$this->setTotalItems($queryParts);
+		$dbCount = 0;
+		// Make query for records if there were any records found in the count operation
+		if ($this->totalItems) {
+			$result = $GLOBALS['TYPO3_DB']->exec_SELECT_queryArray($queryParts);
+			$dbCount = $GLOBALS['TYPO3_DB']->sql_num_rows($result);
+		}
+		// If records were found, render the list
+		if ($dbCount == 0) {
+			return '';
+		}
+		// Set fields
+		$out = '';
+		$this->fieldArray = GeneralUtility::trimExplode(',', '__cmds__,' . $fList . ',__editIconLink__', TRUE);
+		$theData = array();
+		$theData = $this->headerFields($this->fieldArray, $table, $theData);
+		// Title row
+		$localizedTableTitle = $GLOBALS['LANG']->sL($GLOBALS['TCA'][$table]['ctrl']['title'], 1);
+		$out .= '<tr class="t3-row-header">' . '<td nowrap="nowrap" class="col-icon"></td>' . '<td nowrap="nowrap" colspan="' . (count($theData) - 2) . '"><span class="c-table">' . $localizedTableTitle . '</span> (' . $dbCount . ')</td>' . '<td nowrap="nowrap" class="col-icon"></td>' . '</tr>';
+		// Column's titles
+		if ($this->doEdit) {
+			$theData['__cmds__'] = '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick(('&edit[' . $table . '][' . $this->id . ']=new'), $this->backPath)) . '" title="' . $GLOBALS['LANG']->getLL('new', TRUE) . '">' . IconUtility::getSpriteIcon('actions-document-new') . '</a>';
+		}
+		$out .= $this->addelement(1, '', $theData, ' class="c-headLine"', 15);
+		// Render Items
+		$this->eCounter = $this->firstElementNumber;
+		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result)) {
+			BackendUtility::workspaceOL($table, $row);
+			if (is_array($row)) {
+				list($flag, $code) = $this->fwd_rwd_nav();
+				$out .= $code;
+				if ($flag) {
+					$params = '&edit[' . $table . '][' . $row['uid'] . ']=edit';
+					$Nrow = array();
+					// Setting icons links
+					if ($icon) {
+						$Nrow['__cmds__'] = $this->getIcon($table, $row);
+					}
+					// Get values:
+					$Nrow = $this->dataFields($this->fieldArray, $table, $row, $Nrow);
+					// Attach edit icon
+					if ($this->doEdit) {
+						$Nrow['__editIconLink__'] = '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick($params, $this->backPath)) . '" title="' . $GLOBALS['LANG']->getLL('edit', TRUE) . '">' . IconUtility::getSpriteIcon('actions-document-open') . '</a>';
+					} else {
+						$Nrow['__editIconLink__'] = $this->noEditIcon();
+					}
+					$out .= $this->addelement(1, '', $Nrow, 'class="db_list_normal"');
+				}
+				$this->eCounter++;
+			}
+		}
+		// Wrap it all in a table:
+		$out = '
+			<!--
+				Standard list of table "' . $table . '"
+			-->
+			<table border="0" cellpadding="0" cellspacing="0" class="typo3-dblist">
+				' . $out . '
+			</table>';
+		return $out;
+	}
+
+	/**
+	 * Header fields made for the listing of records
+	 *
+	 * @param array $fieldArr Field names
+	 * @param string $table The table name
+	 * @param array $out Array to which the headers are added.
+	 * @return array $out returned after addition of the header fields.
+	 * @see makeOrdinaryList()
+	 * @todo Define visibility
+	 */
+	public function headerFields($fieldArr, $table, $out = array()) {
+		foreach ($fieldArr as $fieldName) {
+			$ll = $GLOBALS['LANG']->sL($GLOBALS['TCA'][$table]['columns'][$fieldName]['label'], 1);
+			$out[$fieldName] = $ll ? $ll : '&nbsp;';
+		}
+		return $out;
+	}
+
+	/**
+	 * Creates the icon image tag for record from table and wraps it in a link which will trigger the click menu.
+	 *
+	 * @param string $table Table name
+	 * @param array $row Record array
+	 * @return string HTML for the icon
+	 * @todo Define visibility
+	 */
+	public function getIcon($table, $row) {
+		// Initialization
+		$alttext = BackendUtility::getRecordIconAltText($row, $table);
+		$icon = IconUtility::getSpriteIconForRecord($table, $row, array('title' => $alttext));
+		$this->counter++;
+		// The icon with link
+		if ($GLOBALS['BE_USER']->recordEditAccessInternals($table, $row)) {
+			$icon = $GLOBALS['SOBE']->doc->wrapClickMenuOnIcon($icon, $table, $row['uid']);
+		}
+		return $icon;
+	}
+
+	/**********************************
+	 *
+	 * Generic listing of items
+	 *
+	 **********************************/
+
+	/**
+	 * Adds content to all data fields in $out array
+	 *
+	 * @param array $fieldArr Array of fields to display. Each field name has a special feature which is that the field name can be specified as more field names. Eg. "field1,field2;field3". Field 2 and 3 will be shown in the same cell of the table separated by <br /> while field1 will have its own cell.
+	 * @param string $table Table name
+	 * @param array $row Record array
+	 * @param array $out Array to which the data is added
+	 * @return array $out array returned after processing.
+	 * @see makeOrdinaryList()
+	 * @todo Define visibility
+	 */
+	public function dataFields($fieldArr, $table, $row, $out = array()) {
+		// Check table validity:
+		if ($GLOBALS['TCA'][$table]) {
+			$thumbsCol = $GLOBALS['TCA'][$table]['ctrl']['thumbnail'];
+			// Traverse fields:
+			foreach ($fieldArr as $fieldName) {
+				if ($GLOBALS['TCA'][$table]['columns'][$fieldName]) {
+					// Each field has its own cell (if configured in TCA)
+					// If the column is a thumbnail column:
+					if ($fieldName == $thumbsCol) {
+						$out[$fieldName] = $this->thumbCode($row, $table, $fieldName);
+					} else {
+						// ... otherwise just render the output:
+						$out[$fieldName] = nl2br(htmlspecialchars(trim(GeneralUtility::fixed_lgd_cs(BackendUtility::getProcessedValue($table, $fieldName, $row[$fieldName], 0, 0, 0, $row['uid']), 250))));
+					}
+				} else {
+					// Each field is separated by <br /> and shown in the same cell (If not a TCA field, then explode the field name with ";" and check each value there as a TCA configured field)
+					$theFields = explode(';', $fieldName);
+					// Traverse fields, separated by ";" (displayed in a single cell).
+					foreach ($theFields as $fName2) {
+						if ($GLOBALS['TCA'][$table]['columns'][$fName2]) {
+							$out[$fieldName] .= '<strong>' . $GLOBALS['LANG']->sL($GLOBALS['TCA'][$table]['columns'][$fName2]['label'], 1) . '</strong>' . '&nbsp;&nbsp;' . htmlspecialchars(GeneralUtility::fixed_lgd_cs(BackendUtility::getProcessedValue($table, $fName2, $row[$fName2], 0, 0, 0, $row['uid']), 25)) . '<br />';
+						}
+					}
+				}
+				// If no value, add a nbsp.
+				if (!$out[$fieldName]) {
+					$out[$fieldName] = '&nbsp;';
+				}
+				// Wrap in dimmed-span tags if record is "disabled"
+				if ($this->isDisabled($table, $row)) {
+					$out[$fieldName] = $GLOBALS['TBE_TEMPLATE']->dfw($out[$fieldName]);
+				}
+			}
+		}
+		return $out;
+	}
+
+	/**
+	 * Returns TRUE, if the record given as parameters is NOT visible based on hidden/starttime/endtime (if available)
+	 *
+	 * @param string $table Tablename of table to test
+	 * @param array $row Record row.
+	 * @return boolean Returns TRUE, if disabled.
+	 * @todo Define visibility
+	 */
+	public function isDisabled($table, $row) {
+		if ($GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled'] && $row[$GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled']] || $GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['starttime'] && $row[$GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['starttime']] > $GLOBALS['EXEC_TIME'] || $GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['endtime'] && $row[$GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['endtime']] && $row[$GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['endtime']] < $GLOBALS['EXEC_TIME']) {
+			return TRUE;
+		}
+	}
+
+	/**
+	 * Returns icon for "no-edit" of a record.
+	 * Basically, the point is to signal that this record could have had an edit link if the circumstances were right. A placeholder for the regular edit icon...
+	 *
+	 * @param string $label Label key from LOCAL_LANG
+	 * @return string IMG tag for icon.
+	 * @todo Define visibility
+	 */
+	public function noEditIcon($label = 'noEditItems') {
+		return IconUtility::getSpriteIcon('status-edit-read-only', array('title' => $GLOBALS['LANG']->getLL($label, TRUE)));
 	}
 
 	/**
@@ -331,38 +526,149 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 		return $out;
 	}
 
-	/**
-	 * Returns the backend layout which should be used for this page.
+	/**********************************
 	 *
-	 * @param integer $id Uid of the current page
-	 * @return mixed Uid of the backend layout record or NULL if no layout should be used
+	 * Additional functions; Pages
+	 *
+	 **********************************/
+
+	/**
+	 * Function, which fills in the internal array, $this->allowedTableNames with all tables to which the user has access. Also a set of standard tables (pages, static_template, sys_filemounts, etc...) are filtered out. So what is left is basically all tables which makes sense to list content from.
+	 *
+	 * @return void
 	 * @todo Define visibility
 	 */
-	public function getSelectedBackendLayoutUid($id) {
-		// uid and pid are needed for workspaceOL()
-		$page = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('uid, pid, backend_layout', 'pages', 'uid=' . $id);
-		BackendUtility::workspaceOL('pages', $page);
-		$backendLayoutUid = intval($page['backend_layout']);
-		if ($backendLayoutUid == -1) {
-			// If it is set to "none" - don't use any
-			$backendLayoutUid = NULL;
-		} elseif ($backendLayoutUid == 0) {
-			// If it not set check the rootline for a layout on next level and use this
-			$rootline = BackendUtility::BEgetRootLine($id, '', TRUE);
-			for ($i = count($rootline) - 2; $i > 0; $i--) {
-				$backendLayoutUid = intval($rootline[$i]['backend_layout_next_level']);
-				if ($backendLayoutUid > 0) {
-					// Stop searching if a layout for "next level" is set
-					break;
-				} elseif ($backendLayoutUid == -1) {
-					// If layout for "next level" is set to "none" - don't use any and stop searching
-					$backendLayoutUid = NULL;
-					break;
+	public function cleanTableNames() {
+		// Get all table names:
+		$tableNames = array_flip(array_keys($GLOBALS['TCA']));
+		// Unset common names:
+		unset($tableNames['pages']);
+		unset($tableNames['static_template']);
+		unset($tableNames['sys_filemounts']);
+		unset($tableNames['sys_action']);
+		unset($tableNames['sys_workflows']);
+		unset($tableNames['be_users']);
+		unset($tableNames['be_groups']);
+		$this->allowedTableNames = array();
+		// Traverse table names and set them in allowedTableNames array IF they can be read-accessed by the user.
+		if (is_array($tableNames)) {
+			foreach ($tableNames as $k => $v) {
+				if ($GLOBALS['BE_USER']->check('tables_select', $k)) {
+					$this->allowedTableNames['table_' . $k] = $k;
 				}
 			}
 		}
-		// If it is set to a positive value use this
-		return $backendLayoutUid;
+	}
+
+	/**
+	 * Adds pages-rows to an array, selecting recursively in the page tree.
+	 *
+	 * @param array $theRows Array which will accumulate page rows
+	 * @param integer $pid Pid to select from
+	 * @param string $qWhere Query-where clause
+	 * @param string $treeIcons Prefixed icon code.
+	 * @param integer $depth Depth (decreasing)
+	 * @return array $theRows, but with added rows.
+	 * @todo Define visibility
+	 */
+	public function pages_getTree($theRows, $pid, $qWhere, $treeIcons, $depth) {
+		$depth--;
+		if ($depth >= 0) {
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'pages', 'pid=' . intval($pid) . $qWhere, '', 'sorting');
+			$c = 0;
+			$rc = $GLOBALS['TYPO3_DB']->sql_num_rows($res);
+			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+				BackendUtility::workspaceOL('pages', $row);
+				if (is_array($row)) {
+					$c++;
+					$row['treeIcons'] = $treeIcons . '<img' . IconUtility::skinImg($this->backPath, ('gfx/ol/join' . ($rc == $c ? 'bottom' : '') . '.gif'), 'width="18" height="16"') . ' alt="" />';
+					$theRows[] = $row;
+					// Get the branch
+					$spaceOutIcons = '<img' . IconUtility::skinImg($this->backPath, ('gfx/ol/' . ($rc == $c ? 'blank.gif' : 'line.gif')), 'width="18" height="16"') . ' alt="" />';
+					$theRows = $this->pages_getTree($theRows, $row['uid'], $qWhere, $treeIcons . $spaceOutIcons, $row['php_tree_stop'] ? 0 : $depth);
+				}
+			}
+		} else {
+			$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('uid', 'pages', 'pid=' . intval($pid) . $qWhere);
+			if ($count) {
+				$this->plusPages[$pid] = $count;
+			}
+		}
+		return $theRows;
+	}
+
+	/**********************************
+	 *
+	 * Additional functions; Content Elements
+	 *
+	 **********************************/
+
+	/**
+	 * Adds a list item for the pages-rendering
+	 *
+	 * @param array $row Record array
+	 * @param array $fieldArr Field list
+	 * @return string HTML for the item
+	 * @todo Define visibility
+	 */
+	public function pages_drawItem($row, $fieldArr) {
+		// Initialization
+		$theIcon = $this->getIcon('pages', $row);
+		// Preparing and getting the data-array
+		$theData = array();
+		foreach ($fieldArr as $field) {
+			switch ($field) {
+				case 'title':
+					$red = $this->plusPages[$row['uid']] ? '<font color="red"><strong>+&nbsp;</strong></font>' : '';
+					$pTitle = htmlspecialchars(BackendUtility::getProcessedValue('pages', $field, $row[$field], 20));
+					if ($red) {
+						$pTitle = '<a href="' . htmlspecialchars(($this->script . '?id=' . $row['uid'])) . '">' . $pTitle . '</a>';
+					}
+					$theData[$field] = $row['treeIcons'] . $theIcon . $red . $pTitle . '&nbsp;&nbsp;';
+					break;
+				case 'php_tree_stop':
+
+				case 'TSconfig':
+					$theData[$field] = $row[$field] ? '&nbsp;<strong>x</strong>' : '&nbsp;';
+					break;
+				case 'uid':
+					if ($GLOBALS['BE_USER']->doesUserHaveAccess($row, 2)) {
+						$params = '&edit[pages][' . $row['uid'] . ']=edit';
+						$eI = '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick($params, $this->backPath, '')) . '" title="' . $GLOBALS['LANG']->getLL('editThisPage', TRUE) . '">' . IconUtility::getSpriteIcon('actions-document-open') . '</a>';
+					} else {
+						$eI = '';
+					}
+					$theData[$field] = '<span align="right">' . $row['uid'] . $eI . '</span>';
+					break;
+				default:
+					if (substr($field, 0, 6) == 'table_') {
+						$f2 = substr($field, 6);
+						if ($GLOBALS['TCA'][$f2]) {
+							$c = $this->numberOfRecords($f2, $row['uid']);
+							$theData[$field] = '&nbsp;&nbsp;' . ($c ? $c : '');
+						}
+					} else {
+						$theData[$field] = '&nbsp;&nbsp;' . htmlspecialchars(BackendUtility::getProcessedValue('pages', $field, $row[$field]));
+					}
+			}
+		}
+		$this->addElement_tdParams['title'] = $row['_CSSCLASS'] ? ' class="' . $row['_CSSCLASS'] . '"' : '';
+		return $this->addelement(1, '', $theData);
+	}
+
+	/**
+	 * Counts and returns the number of records on the page with $pid
+	 *
+	 * @param string $table Table name
+	 * @param integer $pid Page id
+	 * @return integer Number of records.
+	 * @todo Define visibility
+	 */
+	public function numberOfRecords($table, $pid) {
+		if ($GLOBALS['TCA'][$table]) {
+			$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('uid', $table, 'pid=' . intval($pid) . BackendUtility::deleteClause($table) . BackendUtility::versioningPlaceholderClause($table));
+		}
+		return intval($count);
 	}
 
 	/**
@@ -406,6 +712,8 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 			$langListArr = GeneralUtility::intExplode(',', $langList);
 			$defLanguageCount = array();
 			$defLangBinding = array();
+			$backendLayout = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\View\\BackendLayoutView', $id);
+			$backendLayoutSetup = $backendLayout->getSelectedBackendLayoutSetup();
 			// For each languages... :
 			// If not languageMode, then we'll only be through this once.
 			foreach ($langListArr as $lP) {
@@ -502,7 +810,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 					// Add new-icon link, header:
 					$newP = $this->newContentElementOnClick($id, $key, $lP);
 					$colTitle = BackendUtility::getProcessedValue('tt_content', 'colPos', $key);
-					$tcaItems = GeneralUtility::callUserFunction('TYPO3\\CMS\\Backend\\View\\BackendLayoutView->getColPosListItemsParsed', $id, $this);
+					$tcaItems = $backendLayout->getColPosListItemsParsed();
 					foreach ($tcaItems as $item) {
 						if ($item[1] == $key) {
 							$colTitle = $GLOBALS['LANG']->sL($item[0]);
@@ -522,15 +830,11 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 						}
 					}
 				} else {
-					$backendLayoutRecord = $this->getBackendLayoutConfiguration();
 					// GRID VIEW:
-					// Initialize TS parser to parse config to array
-					$parser = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\Parser\\TypoScriptParser');
-					$parser->parse($parser->checkIncludeLines($backendLayoutRecord['config']));
 					$grid .= '<div class="t3-gridContainer"><table border="0" cellspacing="0" cellpadding="0" width="100%" height="100%" class="t3-page-columns t3-gridTable">';
 					// Add colgroups
-					$colCount = intval($parser->setup['backend_layout.']['colCount']);
-					$rowCount = intval($parser->setup['backend_layout.']['rowCount']);
+					$colCount = intval($backendLayoutSetup['config']['colCount']);
+					$rowCount = intval($backendLayoutSetup['config']['rowCount']);
 					$grid .= '<colgroup>';
 					for ($i = 0; $i < $colCount; $i++) {
 						$grid .= '<col style="width:' . 100 / $colCount . '%"></col>';
@@ -538,7 +842,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 					$grid .= '</colgroup>';
 					// Cycle through rows
 					for ($row = 1; $row <= $rowCount; $row++) {
-						$rowConfig = $parser->setup['backend_layout.']['rows.'][$row . '.'];
+						$rowConfig = $backendLayoutSetup['config']['rows.'][$row . '.'];
 						if (!isset($rowConfig)) {
 							continue;
 						}
@@ -782,169 +1086,6 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	}
 
 	/**
-	 * Get backend layout configuration
-	 *
-	 * @return array
-	 */
-	public function getBackendLayoutConfiguration() {
-		$backendLayoutUid = $this->getSelectedBackendLayoutUid($this->id);
-		if (!$backendLayoutUid) {
-			return array(
-				'config' => \TYPO3\CMS\Backend\View\BackendLayoutView::getDefaultColumnLayout()
-			);
-		}
-		return BackendUtility::getRecord('backend_layout', intval($backendLayoutUid));
-	}
-
-	/**********************************
-	 *
-	 * Generic listing of items
-	 *
-	 **********************************/
-	/**
-	 * Creates a standard list of elements from a table.
-	 *
-	 * @param string $table Table name
-	 * @param integer $id Page id.
-	 * @param string $fList Comma list of fields to display
-	 * @param boolean $icon If TRUE, icon is shown
-	 * @param string $addWhere Additional WHERE-clauses.
-	 * @return string HTML table
-	 * @todo Define visibility
-	 */
-	public function makeOrdinaryList($table, $id, $fList, $icon = 0, $addWhere = '') {
-		// Initialize
-		$queryParts = $this->makeQueryArray($table, $id, $addWhere);
-		$this->setTotalItems($queryParts);
-		$dbCount = 0;
-		// Make query for records if there were any records found in the count operation
-		if ($this->totalItems) {
-			$result = $GLOBALS['TYPO3_DB']->exec_SELECT_queryArray($queryParts);
-			$dbCount = $GLOBALS['TYPO3_DB']->sql_num_rows($result);
-		}
-		// If records were found, render the list
-		if ($dbCount == 0) {
-			return '';
-		}
-		// Set fields
-		$out = '';
-		$this->fieldArray = GeneralUtility::trimExplode(',', '__cmds__,' . $fList . ',__editIconLink__', TRUE);
-		$theData = array();
-		$theData = $this->headerFields($this->fieldArray, $table, $theData);
-		// Title row
-		$localizedTableTitle = $GLOBALS['LANG']->sL($GLOBALS['TCA'][$table]['ctrl']['title'], 1);
-		$out .= '<tr class="t3-row-header">' . '<td nowrap="nowrap" class="col-icon"></td>' . '<td nowrap="nowrap" colspan="' . (count($theData) - 2) . '"><span class="c-table">' . $localizedTableTitle . '</span> (' . $dbCount . ')</td>' . '<td nowrap="nowrap" class="col-icon"></td>' . '</tr>';
-		// Column's titles
-		if ($this->doEdit) {
-			$theData['__cmds__'] = '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick(('&edit[' . $table . '][' . $this->id . ']=new'), $this->backPath)) . '" title="' . $GLOBALS['LANG']->getLL('new', TRUE) . '">' . IconUtility::getSpriteIcon('actions-document-new') . '</a>';
-		}
-		$out .= $this->addelement(1, '', $theData, ' class="c-headLine"', 15);
-		// Render Items
-		$this->eCounter = $this->firstElementNumber;
-		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result)) {
-			BackendUtility::workspaceOL($table, $row);
-			if (is_array($row)) {
-				list($flag, $code) = $this->fwd_rwd_nav();
-				$out .= $code;
-				if ($flag) {
-					$params = '&edit[' . $table . '][' . $row['uid'] . ']=edit';
-					$Nrow = array();
-					// Setting icons links
-					if ($icon) {
-						$Nrow['__cmds__'] = $this->getIcon($table, $row);
-					}
-					// Get values:
-					$Nrow = $this->dataFields($this->fieldArray, $table, $row, $Nrow);
-					// Attach edit icon
-					if ($this->doEdit) {
-						$Nrow['__editIconLink__'] = '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick($params, $this->backPath)) . '" title="' . $GLOBALS['LANG']->getLL('edit', TRUE) . '">' . IconUtility::getSpriteIcon('actions-document-open') . '</a>';
-					} else {
-						$Nrow['__editIconLink__'] = $this->noEditIcon();
-					}
-					$out .= $this->addelement(1, '', $Nrow, 'class="db_list_normal"');
-				}
-				$this->eCounter++;
-			}
-		}
-		// Wrap it all in a table:
-		$out = '
-			<!--
-				Standard list of table "' . $table . '"
-			-->
-			<table border="0" cellpadding="0" cellspacing="0" class="typo3-dblist">
-				' . $out . '
-			</table>';
-		return $out;
-	}
-
-	/**
-	 * Adds content to all data fields in $out array
-	 *
-	 * @param array $fieldArr Array of fields to display. Each field name has a special feature which is that the field name can be specified as more field names. Eg. "field1,field2;field3". Field 2 and 3 will be shown in the same cell of the table separated by <br /> while field1 will have its own cell.
-	 * @param string $table Table name
-	 * @param array $row Record array
-	 * @param array $out Array to which the data is added
-	 * @return array $out array returned after processing.
-	 * @see makeOrdinaryList()
-	 * @todo Define visibility
-	 */
-	public function dataFields($fieldArr, $table, $row, $out = array()) {
-		// Check table validity:
-		if ($GLOBALS['TCA'][$table]) {
-			$thumbsCol = $GLOBALS['TCA'][$table]['ctrl']['thumbnail'];
-			// Traverse fields:
-			foreach ($fieldArr as $fieldName) {
-				if ($GLOBALS['TCA'][$table]['columns'][$fieldName]) {
-					// Each field has its own cell (if configured in TCA)
-					// If the column is a thumbnail column:
-					if ($fieldName == $thumbsCol) {
-						$out[$fieldName] = $this->thumbCode($row, $table, $fieldName);
-					} else {
-						// ... otherwise just render the output:
-						$out[$fieldName] = nl2br(htmlspecialchars(trim(GeneralUtility::fixed_lgd_cs(BackendUtility::getProcessedValue($table, $fieldName, $row[$fieldName], 0, 0, 0, $row['uid']), 250))));
-					}
-				} else {
-					// Each field is separated by <br /> and shown in the same cell (If not a TCA field, then explode the field name with ";" and check each value there as a TCA configured field)
-					$theFields = explode(';', $fieldName);
-					// Traverse fields, separated by ";" (displayed in a single cell).
-					foreach ($theFields as $fName2) {
-						if ($GLOBALS['TCA'][$table]['columns'][$fName2]) {
-							$out[$fieldName] .= '<strong>' . $GLOBALS['LANG']->sL($GLOBALS['TCA'][$table]['columns'][$fName2]['label'], 1) . '</strong>' . '&nbsp;&nbsp;' . htmlspecialchars(GeneralUtility::fixed_lgd_cs(BackendUtility::getProcessedValue($table, $fName2, $row[$fName2], 0, 0, 0, $row['uid']), 25)) . '<br />';
-						}
-					}
-				}
-				// If no value, add a nbsp.
-				if (!$out[$fieldName]) {
-					$out[$fieldName] = '&nbsp;';
-				}
-				// Wrap in dimmed-span tags if record is "disabled"
-				if ($this->isDisabled($table, $row)) {
-					$out[$fieldName] = $GLOBALS['TBE_TEMPLATE']->dfw($out[$fieldName]);
-				}
-			}
-		}
-		return $out;
-	}
-
-	/**
-	 * Header fields made for the listing of records
-	 *
-	 * @param array $fieldArr Field names
-	 * @param string $table The table name
-	 * @param array $out Array to which the headers are added.
-	 * @return array $out returned after addition of the header fields.
-	 * @see makeOrdinaryList()
-	 * @todo Define visibility
-	 */
-	public function headerFields($fieldArr, $table, $out = array()) {
-		foreach ($fieldArr as $fieldName) {
-			$ll = $GLOBALS['LANG']->sL($GLOBALS['TCA'][$table]['columns'][$fieldName]['label'], 1);
-			$out[$fieldName] = $ll ? $ll : '&nbsp;';
-		}
-		return $out;
-	}
-
-	/**
 	 * Gets content records per column. This is required for correct workspace overlays.
 	 *
 	 * @param string $table Table to be queried
@@ -969,157 +1110,117 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 		return $contentRecordsPerColumn;
 	}
 
-	/**********************************
-	 *
-	 * Additional functions; Pages
-	 *
-	 **********************************/
 	/**
-	 * Adds pages-rows to an array, selecting recursively in the page tree.
+	 * Traverse the result pointer given, adding each record to array and setting some internal values at the same time.
 	 *
-	 * @param array $theRows Array which will accumulate page rows
-	 * @param integer $pid Pid to select from
-	 * @param string $qWhere Query-where clause
-	 * @param string $treeIcons Prefixed icon code.
-	 * @param integer $depth Depth (decreasing)
-	 * @return array $theRows, but with added rows.
+	 * @param boolean|\mysqli_result|object $result MySQLi result object / DBAL object
+	 * @param string $table Table name defaulting to tt_content
+	 * @return array The selected rows returned in this array.
 	 * @todo Define visibility
 	 */
-	public function pages_getTree($theRows, $pid, $qWhere, $treeIcons, $depth) {
-		$depth--;
-		if ($depth >= 0) {
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'pages', 'pid=' . intval($pid) . $qWhere, '', 'sorting');
-			$c = 0;
-			$rc = $GLOBALS['TYPO3_DB']->sql_num_rows($res);
-			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-				BackendUtility::workspaceOL('pages', $row);
-				if (is_array($row)) {
-					$c++;
-					$row['treeIcons'] = $treeIcons . '<img' . IconUtility::skinImg($this->backPath, ('gfx/ol/join' . ($rc == $c ? 'bottom' : '') . '.gif'), 'width="18" height="16"') . ' alt="" />';
-					$theRows[] = $row;
-					// Get the branch
-					$spaceOutIcons = '<img' . IconUtility::skinImg($this->backPath, ('gfx/ol/' . ($rc == $c ? 'blank.gif' : 'line.gif')), 'width="18" height="16"') . ' alt="" />';
-					$theRows = $this->pages_getTree($theRows, $row['uid'], $qWhere, $treeIcons . $spaceOutIcons, $row['php_tree_stop'] ? 0 : $depth);
+	public function getResult($result, $table = 'tt_content') {
+		// Initialize:
+		$editUidList = '';
+		$recs = array();
+		$nextTree = $this->nextThree;
+		$c = 0;
+		$output = array();
+		// Traverse the result:
+		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result)) {
+			BackendUtility::workspaceOL($table, $row, -99, TRUE);
+			if ($row) {
+				// Add the row to the array:
+				$output[] = $row;
+				// Set an internal register:
+				$recs[$c] = $row['uid'];
+				// Create the list of the next three ids (for editing links...)
+				for ($a = 0; $a < $nextTree; $a++) {
+					if (isset($recs[$c - $a]) && !GeneralUtility::inList($this->tt_contentData['nextThree'][$recs[$c - $a]], $row['uid'])) {
+						$this->tt_contentData['nextThree'][$recs[$c - $a]] .= $row['uid'] . ',';
+					}
 				}
+				// Set next/previous ids:
+				if (isset($recs[$c - 1])) {
+					if (isset($recs[$c - 2])) {
+						$this->tt_contentData['prev'][$row['uid']] = -$recs[($c - 2)];
+					} else {
+						$this->tt_contentData['prev'][$row['uid']] = $row['pid'];
+					}
+					$this->tt_contentData['next'][$recs[$c - 1]] = -$row['uid'];
+				}
+				$c++;
 			}
+		}
+		// Return selected records
+		return $output;
+	}
+
+	/**
+	 * Creates onclick-attribute content for a new content element
+	 *
+	 * @param integer $id Page id where to create the element.
+	 * @param integer $colPos Preset: Column position value
+	 * @param integer $sys_language Preset: Sys langauge value
+	 * @return string String for onclick attribute.
+	 * @see getTable_tt_content()
+	 * @todo Define visibility
+	 */
+	public function newContentElementOnClick($id, $colPos, $sys_language) {
+		if ($this->option_newWizard) {
+			$onClick = 'window.location.href=\'db_new_content_el.php?id=' . $id . '&colPos=' . $colPos . '&sys_language_uid=' . $sys_language . '&uid_pid=' . $id . '&returnUrl=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI')) . '\';';
 		} else {
-			$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('uid', 'pages', 'pid=' . intval($pid) . $qWhere);
-			if ($count) {
-				$this->plusPages[$pid] = $count;
-			}
+			$onClick = BackendUtility::editOnClick('&edit[tt_content][' . $id . ']=new&defVals[tt_content][colPos]=' . $colPos . '&defVals[tt_content][sys_language_uid]=' . $sys_language, $this->backPath);
 		}
-		return $theRows;
+		return $onClick;
 	}
 
 	/**
-	 * Adds a list item for the pages-rendering
+	 * Creates button which is used to create copies of records..
 	 *
-	 * @param array $row Record array
-	 * @param array $fieldArr Field list
-	 * @return string HTML for the item
+	 * @param array $defLanguageCount Numeric array with uids of tt_content elements in the default language
+	 * @param integer $lP Sys language UID
+	 * @return string "Copy languages" button, if available.
 	 * @todo Define visibility
 	 */
-	public function pages_drawItem($row, $fieldArr) {
-		// Initialization
-		$theIcon = $this->getIcon('pages', $row);
-		// Preparing and getting the data-array
-		$theData = array();
-		foreach ($fieldArr as $field) {
-			switch ($field) {
-				case 'title':
-					$red = $this->plusPages[$row['uid']] ? '<font color="red"><strong>+&nbsp;</strong></font>' : '';
-					$pTitle = htmlspecialchars(BackendUtility::getProcessedValue('pages', $field, $row[$field], 20));
-					if ($red) {
-						$pTitle = '<a href="' . htmlspecialchars(($this->script . '?id=' . $row['uid'])) . '">' . $pTitle . '</a>';
-					}
-					$theData[$field] = $row['treeIcons'] . $theIcon . $red . $pTitle . '&nbsp;&nbsp;';
-					break;
-				case 'php_tree_stop':
-
-				case 'TSconfig':
-					$theData[$field] = $row[$field] ? '&nbsp;<strong>x</strong>' : '&nbsp;';
-					break;
-				case 'uid':
-					if ($GLOBALS['BE_USER']->doesUserHaveAccess($row, 2)) {
-						$params = '&edit[pages][' . $row['uid'] . ']=edit';
-						$eI = '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick($params, $this->backPath, '')) . '" title="' . $GLOBALS['LANG']->getLL('editThisPage', TRUE) . '">' . IconUtility::getSpriteIcon('actions-document-open') . '</a>';
-					} else {
-						$eI = '';
-					}
-					$theData[$field] = '<span align="right">' . $row['uid'] . $eI . '</span>';
-					break;
-				default:
-					if (substr($field, 0, 6) == 'table_') {
-						$f2 = substr($field, 6);
-						if ($GLOBALS['TCA'][$f2]) {
-							$c = $this->numberOfRecords($f2, $row['uid']);
-							$theData[$field] = '&nbsp;&nbsp;' . ($c ? $c : '');
-						}
-					} else {
-						$theData[$field] = '&nbsp;&nbsp;' . htmlspecialchars(BackendUtility::getProcessedValue('pages', $field, $row[$field]));
-					}
+	public function newLanguageButton($defLanguageCount, $lP) {
+		if ($this->doEdit && count($defLanguageCount) && $lP) {
+			$params = '';
+			foreach ($defLanguageCount as $uidVal) {
+				$params .= '&cmd[tt_content][' . $uidVal . '][localize]=' . $lP;
 			}
+			// Copy for language:
+			$onClick = 'window.location.href=\'' . $GLOBALS['SOBE']->doc->issueCommand($params) . '\'; return false;';
+			$theNewButton = $GLOBALS['SOBE']->doc->t3Button($onClick, $GLOBALS['LANG']->getLL('newPageContent_copyForLang') . ' [' . count($defLanguageCount) . ']');
+			return $theNewButton;
 		}
-		$this->addElement_tdParams['title'] = $row['_CSSCLASS'] ? ' class="' . $row['_CSSCLASS'] . '"' : '';
-		return $this->addelement(1, '', $theData);
 	}
 
-	/**********************************
-	 *
-	 * Additional functions; Content Elements
-	 *
-	 **********************************/
 	/**
-	 * Draw header for a content element column:
+	 * Filters out all tt_content uids which are already translated so only non-translated uids is left.
+	 * Selects across columns, but within in the same PID. Columns are expect to be the same for translations and original but this may be a conceptual error (?)
 	 *
-	 * @param string $colName Column name
-	 * @param string $editParams Edit params (Syntax: &edit[...] for alt_doc.php)
-	 * @param string $newParams New element params (Syntax: &edit[...] for alt_doc.php) OBSOLETE
-	 * @return string HTML table
+	 * @param array $defLanguageCount Numeric array with uids of tt_content elements in the default language
+	 * @param integer $id Page pid
+	 * @param integer $lP Sys language UID
+	 * @return array Modified $defLanguageCount
 	 * @todo Define visibility
 	 */
-	public function tt_content_drawColHeader($colName, $editParams, $newParams) {
-		$icons = '';
-		// Create command links:
-		if ($this->tt_contentConfig['showCommands']) {
-			// Edit whole of column:
-			if ($editParams) {
-				$icons .= '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick($editParams, $this->backPath)) . '" title="' . $GLOBALS['LANG']->getLL('editColumn', TRUE) . '">' . IconUtility::getSpriteIcon('actions-document-open') . '</a>';
+	public function getNonTranslatedTTcontentUids($defLanguageCount, $id, $lP) {
+		if ($lP && count($defLanguageCount)) {
+			// Select all translations here:
+			$queryParts = $this->makeQueryArray('tt_content', $id, 'AND sys_language_uid=' . intval($lP) . ' AND l18n_parent IN (' . implode(',', $defLanguageCount) . ')');
+			$result = $GLOBALS['TYPO3_DB']->exec_SELECT_queryArray($queryParts);
+			// Flip uids:
+			$defLanguageCount = array_flip($defLanguageCount);
+			// Traverse any selected elements and unset original UID if any:
+			$rowArr = $this->getResult($result);
+			foreach ($rowArr as $row) {
+				unset($defLanguageCount[$row['l18n_parent']]);
 			}
+			// Flip again:
+			$defLanguageCount = array_keys($defLanguageCount);
 		}
-		if (strlen($icons)) {
-			$icons = '<div class="t3-page-colHeader-icons">' . $icons . '</div>';
-		}
-		// Create header row:
-		$out = '<div class="t3-page-colHeader t3-row-header">
-					' . $icons . '
-					<div class="t3-page-colHeader-label">' . htmlspecialchars($colName) . '</div>
-				</div>';
-		return $out;
-	}
-
-	/**
-	 * Draw the footer for a single tt_content element
-	 *
-	 * @param array $row Record array
-	 * @return string HTML of the footer
-	 */
-	protected function tt_content_drawFooter(array $row) {
-		$content = '';
-		// Get processed values:
-		$info = array();
-		$this->getProcessedValue('tt_content', 'starttime,endtime,fe_group,spaceBefore,spaceAfter', $row, $info);
-		// Display info from records fields:
-		if (count($info)) {
-			$content = '<div class="t3-page-ce-info">
-				' . implode('<br />', $info) . '
-				</div>';
-		}
-		// Wrap it
-		if (!empty($content)) {
-			$content = '<div class="t3-page-ce-footer">' . $content . '</div>';
-		}
-		return $content;
+		return $defLanguageCount;
 	}
 
 	/**
@@ -1211,6 +1312,66 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 				</h4>
 				<div class="t3-page-ce-body">';
 	}
+
+	/**
+	 * Checking if the RTE is available/enabled for a certain table/field and if so, it returns TRUE.
+	 * Used to determine if the RTE button should be displayed.
+	 *
+	 * @param string $table Table name
+	 * @param array $row Record row (needed, if there are RTE dependencies based on other fields in the record)
+	 * @param string $field Field name
+	 * @return boolean Returns TRUE if the rich text editor would be enabled/available for the field name specified.
+	 * @todo Define visibility
+	 */
+	public function isRTEforField($table, $row, $field) {
+		$specConf = $this->getSpecConfForField($table, $row, $field);
+		$p = BackendUtility::getSpecConfParametersFromArray($specConf['rte_transform']['parameters']);
+		if (isset($specConf['richtext']) && (!$p['flag'] || !$row[$p['flag']])) {
+			BackendUtility::fixVersioningPid($table, $row);
+			list($tscPID, $thePidValue) = BackendUtility::getTSCpid($table, $row['uid'], $row['pid']);
+			// If the pid-value is not negative (that is, a pid could NOT be fetched)
+			if ($thePidValue >= 0) {
+				$RTEsetup = $GLOBALS['BE_USER']->getTSConfig('RTE', BackendUtility::getPagesTSconfig($tscPID));
+				$RTEtypeVal = BackendUtility::getTCAtypeValue($table, $row);
+				$thisConfig = BackendUtility::RTEsetup($RTEsetup['properties'], $table, $field, $RTEtypeVal);
+				if (!$thisConfig['disabled']) {
+					return TRUE;
+				}
+			}
+		}
+		return FALSE;
+	}
+
+	/**
+	 * Returns "special" configuration from the "types" configuration in TCA for the record given by tablename/fieldname.
+	 * Used by isRTEforField() in the process of finding whether a field has RTE enabled or not.
+	 *
+	 * @param string $table Table name
+	 * @param array $row Record array
+	 * @param string $field Field name
+	 * @return array Spec. conf (if available)
+	 * @access private
+	 * @see isRTEforField()
+	 * @todo Define visibility
+	 */
+	public function getSpecConfForField($table, $row, $field) {
+		// Get types-configuration for the record:
+		$types_fieldConfig = BackendUtility::getTCAtypes($table, $row);
+		// Find the given field and return the spec key value if found:
+		if (is_array($types_fieldConfig)) {
+			foreach ($types_fieldConfig as $vconf) {
+				if ($vconf['field'] == $field) {
+					return $vconf['spec'];
+				}
+			}
+		}
+	}
+
+	/********************************
+	 *
+	 * Various helper functions
+	 *
+	 ********************************/
 
 	/**
 	 * Draws the preview content for a content element
@@ -1385,71 +1546,25 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	}
 
 	/**
-	 * Filters out all tt_content uids which are already translated so only non-translated uids is left.
-	 * Selects across columns, but within in the same PID. Columns are expect to be the same for translations and original but this may be a conceptual error (?)
+	 * Creates processed values for all fieldnames in $fieldList based on values from $row array.
+	 * The result is 'returned' through $info which is passed as a reference
 	 *
-	 * @param array $defLanguageCount Numeric array with uids of tt_content elements in the default language
-	 * @param integer $id Page pid
-	 * @param integer $lP Sys language UID
-	 * @return array Modified $defLanguageCount
+	 * @param string $table Table name
+	 * @param string $fieldList Commalist of fields.
+	 * @param array $row Record from which to take values for processing.
+	 * @param array $info Array to which the processed values are added.
+	 * @return void
 	 * @todo Define visibility
 	 */
-	public function getNonTranslatedTTcontentUids($defLanguageCount, $id, $lP) {
-		if ($lP && count($defLanguageCount)) {
-			// Select all translations here:
-			$queryParts = $this->makeQueryArray('tt_content', $id, 'AND sys_language_uid=' . intval($lP) . ' AND l18n_parent IN (' . implode(',', $defLanguageCount) . ')');
-			$result = $GLOBALS['TYPO3_DB']->exec_SELECT_queryArray($queryParts);
-			// Flip uids:
-			$defLanguageCount = array_flip($defLanguageCount);
-			// Traverse any selected elements and unset original UID if any:
-			$rowArr = $this->getResult($result);
-			foreach ($rowArr as $row) {
-				unset($defLanguageCount[$row['l18n_parent']]);
+	public function getProcessedValue($table, $fieldList, array $row, array &$info) {
+		// Splitting values from $fieldList
+		$fieldArr = explode(',', $fieldList);
+		// Traverse fields from $fieldList
+		foreach ($fieldArr as $field) {
+			if ($row[$field]) {
+				$info[] = '<strong>' . htmlspecialchars($this->itemLabels[$field]) . '</strong> ' . htmlspecialchars(BackendUtility::getProcessedValue($table, $field, $row[$field]));
 			}
-			// Flip again:
-			$defLanguageCount = array_keys($defLanguageCount);
 		}
-		return $defLanguageCount;
-	}
-
-	/**
-	 * Creates button which is used to create copies of records..
-	 *
-	 * @param array $defLanguageCount Numeric array with uids of tt_content elements in the default language
-	 * @param integer $lP Sys language UID
-	 * @return string "Copy languages" button, if available.
-	 * @todo Define visibility
-	 */
-	public function newLanguageButton($defLanguageCount, $lP) {
-		if ($this->doEdit && count($defLanguageCount) && $lP) {
-			$params = '';
-			foreach ($defLanguageCount as $uidVal) {
-				$params .= '&cmd[tt_content][' . $uidVal . '][localize]=' . $lP;
-			}
-			// Copy for language:
-			$onClick = 'window.location.href=\'' . $GLOBALS['SOBE']->doc->issueCommand($params) . '\'; return false;';
-			$theNewButton = $GLOBALS['SOBE']->doc->t3Button($onClick, $GLOBALS['LANG']->getLL('newPageContent_copyForLang') . ' [' . count($defLanguageCount) . ']');
-			return $theNewButton;
-		}
-	}
-
-	/**
-	 * Creates onclick-attribute content for a new content element
-	 *
-	 * @param integer $id Page id where to create the element.
-	 * @param integer $colPos Preset: Column position value
-	 * @param integer $sys_language Preset: Sys langauge value
-	 * @return string String for onclick attribute.
-	 * @see getTable_tt_content()
-	 * @todo Define visibility
-	 */
-	public function newContentElementOnClick($id, $colPos, $sys_language) {
-		if ($this->option_newWizard) {
-			$onClick = 'window.location.href=\'db_new_content_el.php?id=' . $id . '&colPos=' . $colPos . '&sys_language_uid=' . $sys_language . '&uid_pid=' . $id . '&returnUrl=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI')) . '\';';
-		} else {
-			$onClick = BackendUtility::editOnClick('&edit[tt_content][' . $id . ']=new&defVals[tt_content][colPos]=' . $colPos . '&defVals[tt_content][sys_language_uid]=' . $sys_language, $this->backPath);
-		}
-		return $onClick;
 	}
 
 	/**
@@ -1474,6 +1589,19 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	}
 
 	/**
+	 * Processing of larger amounts of text (usually from RTE/bodytext fields) with word wrapping etc.
+	 *
+	 * @param string $input Input string
+	 * @return string Output string
+	 * @todo Define visibility
+	 */
+	public function renderText($input) {
+		$input = strip_tags($input);
+		$input = GeneralUtility::fixed_lgd_cs($input, 1500);
+		return nl2br(htmlspecialchars(trim($input), ENT_QUOTES, 'UTF-8', FALSE));
+	}
+
+	/**
 	 * Adds a button to edit the row in RTE wizard
 	 *
 	 * @param array $row The row of tt_content element
@@ -1490,6 +1618,59 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 		$RTEonClick = 'window.location.href=\'' . $this->backPath . 'wizard_rte.php?' . GeneralUtility::implodeArrayForUrl('', array('P' => $params)) . '\';return false;';
 		$addButton = $this->option_showBigButtons && $this->doEdit ? $GLOBALS['SOBE']->doc->t3Button($RTEonClick, $GLOBALS['LANG']->getLL('editInRTE')) : '';
 		return $addButton;
+	}
+
+	/**
+	 * Draw the footer for a single tt_content element
+	 *
+	 * @param array $row Record array
+	 * @return string HTML of the footer
+	 */
+	protected function tt_content_drawFooter(array $row) {
+		$content = '';
+		// Get processed values:
+		$info = array();
+		$this->getProcessedValue('tt_content', 'starttime,endtime,fe_group,spaceBefore,spaceAfter', $row, $info);
+		// Display info from records fields:
+		if (count($info)) {
+			$content = '<div class="t3-page-ce-info">
+				' . implode('<br />', $info) . '
+				</div>';
+		}
+		// Wrap it
+		if (!empty($content)) {
+			$content = '<div class="t3-page-ce-footer">' . $content . '</div>';
+		}
+		return $content;
+	}
+
+	/**
+	 * Draw header for a content element column:
+	 *
+	 * @param string $colName Column name
+	 * @param string $editParams Edit params (Syntax: &edit[...] for alt_doc.php)
+	 * @param string $newParams New element params (Syntax: &edit[...] for alt_doc.php) OBSOLETE
+	 * @return string HTML table
+	 * @todo Define visibility
+	 */
+	public function tt_content_drawColHeader($colName, $editParams, $newParams) {
+		$icons = '';
+		// Create command links:
+		if ($this->tt_contentConfig['showCommands']) {
+			// Edit whole of column:
+			if ($editParams) {
+				$icons .= '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick($editParams, $this->backPath)) . '" title="' . $GLOBALS['LANG']->getLL('editColumn', TRUE) . '">' . IconUtility::getSpriteIcon('actions-document-open') . '</a>';
+			}
+		}
+		if (strlen($icons)) {
+			$icons = '<div class="t3-page-colHeader-icons">' . $icons . '</div>';
+		}
+		// Create header row:
+		$out = '<div class="t3-page-colHeader t3-row-header">
+					' . $icons . '
+					<div class="t3-page-colHeader-label">' . htmlspecialchars($colName) . '</div>
+				</div>';
+		return $out;
 	}
 
 	/**
@@ -1552,137 +1733,37 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	}
 
 	/**
-	 * Traverse the result pointer given, adding each record to array and setting some internal values at the same time.
+	 * Returns the backend layout which should be used for this page.
 	 *
-	 * @param boolean|\mysqli_result|object $result MySQLi result object / DBAL object
-	 * @param string $table Table name defaulting to tt_content
-	 * @return array The selected rows returned in this array.
+	 * @param integer $id Uid of the current page
+	 * @return mixed Uid of the backend layout record or NULL if no layout should be used
 	 * @todo Define visibility
 	 */
-	public function getResult($result, $table = 'tt_content') {
-		// Initialize:
-		$editUidList = '';
-		$recs = array();
-		$nextTree = $this->nextThree;
-		$c = 0;
-		$output = array();
-		// Traverse the result:
-		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result)) {
-			BackendUtility::workspaceOL($table, $row, -99, TRUE);
-			if ($row) {
-				// Add the row to the array:
-				$output[] = $row;
-				// Set an internal register:
-				$recs[$c] = $row['uid'];
-				// Create the list of the next three ids (for editing links...)
-				for ($a = 0; $a < $nextTree; $a++) {
-					if (isset($recs[$c - $a]) && !GeneralUtility::inList($this->tt_contentData['nextThree'][$recs[$c - $a]], $row['uid'])) {
-						$this->tt_contentData['nextThree'][$recs[$c - $a]] .= $row['uid'] . ',';
-					}
+	public function getSelectedBackendLayoutUid($id) {
+		// uid and pid are needed for workspaceOL()
+		$page = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('uid, pid, backend_layout', 'pages', 'uid=' . $id);
+		BackendUtility::workspaceOL('pages', $page);
+		$backendLayoutUid = intval($page['backend_layout']);
+		if ($backendLayoutUid == -1) {
+			// If it is set to "none" - don't use any
+			$backendLayoutUid = NULL;
+		} elseif ($backendLayoutUid == 0) {
+			// If it not set check the rootline for a layout on next level and use this
+			$rootline = BackendUtility::BEgetRootLine($id, '', TRUE);
+			for ($i = count($rootline) - 2; $i > 0; $i--) {
+				$backendLayoutUid = intval($rootline[$i]['backend_layout_next_level']);
+				if ($backendLayoutUid > 0) {
+					// Stop searching if a layout for "next level" is set
+					break;
+				} elseif ($backendLayoutUid == -1) {
+					// If layout for "next level" is set to "none" - don't use any and stop searching
+					$backendLayoutUid = NULL;
+					break;
 				}
-				// Set next/previous ids:
-				if (isset($recs[$c - 1])) {
-					if (isset($recs[$c - 2])) {
-						$this->tt_contentData['prev'][$row['uid']] = -$recs[($c - 2)];
-					} else {
-						$this->tt_contentData['prev'][$row['uid']] = $row['pid'];
-					}
-					$this->tt_contentData['next'][$recs[$c - 1]] = -$row['uid'];
-				}
-				$c++;
 			}
 		}
-		// Return selected records
-		return $output;
-	}
-
-	/********************************
-	 *
-	 * Various helper functions
-	 *
-	 ********************************/
-	/**
-	 * Counts and returns the number of records on the page with $pid
-	 *
-	 * @param string $table Table name
-	 * @param integer $pid Page id
-	 * @return integer Number of records.
-	 * @todo Define visibility
-	 */
-	public function numberOfRecords($table, $pid) {
-		if ($GLOBALS['TCA'][$table]) {
-			$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('uid', $table, 'pid=' . intval($pid) . BackendUtility::deleteClause($table) . BackendUtility::versioningPlaceholderClause($table));
-		}
-		return intval($count);
-	}
-
-	/**
-	 * Processing of larger amounts of text (usually from RTE/bodytext fields) with word wrapping etc.
-	 *
-	 * @param string $input Input string
-	 * @return string Output string
-	 * @todo Define visibility
-	 */
-	public function renderText($input) {
-		$input = strip_tags($input);
-		$input = GeneralUtility::fixed_lgd_cs($input, 1500);
-		return nl2br(htmlspecialchars(trim($input), ENT_QUOTES, 'UTF-8', FALSE));
-	}
-
-	/**
-	 * Creates the icon image tag for record from table and wraps it in a link which will trigger the click menu.
-	 *
-	 * @param string $table Table name
-	 * @param array $row Record array
-	 * @return string HTML for the icon
-	 * @todo Define visibility
-	 */
-	public function getIcon($table, $row) {
-		// Initialization
-		$alttext = BackendUtility::getRecordIconAltText($row, $table);
-		$icon = IconUtility::getSpriteIconForRecord($table, $row, array('title' => $alttext));
-		$this->counter++;
-		// The icon with link
-		if ($GLOBALS['BE_USER']->recordEditAccessInternals($table, $row)) {
-			$icon = $GLOBALS['SOBE']->doc->wrapClickMenuOnIcon($icon, $table, $row['uid']);
-		}
-		return $icon;
-	}
-
-	/**
-	 * Creates processed values for all fieldnames in $fieldList based on values from $row array.
-	 * The result is 'returned' through $info which is passed as a reference
-	 *
-	 * @param string $table Table name
-	 * @param string $fieldList Commalist of fields.
-	 * @param array $row Record from which to take values for processing.
-	 * @param array $info Array to which the processed values are added.
-	 * @return void
-	 * @todo Define visibility
-	 */
-	public function getProcessedValue($table, $fieldList, array $row, array &$info) {
-		// Splitting values from $fieldList
-		$fieldArr = explode(',', $fieldList);
-		// Traverse fields from $fieldList
-		foreach ($fieldArr as $field) {
-			if ($row[$field]) {
-				$info[] = '<strong>' . htmlspecialchars($this->itemLabels[$field]) . '</strong> ' . htmlspecialchars(BackendUtility::getProcessedValue($table, $field, $row[$field]));
-			}
-		}
-	}
-
-	/**
-	 * Returns TRUE, if the record given as parameters is NOT visible based on hidden/starttime/endtime (if available)
-	 *
-	 * @param string $table Tablename of table to test
-	 * @param array $row Record row.
-	 * @return boolean Returns TRUE, if disabled.
-	 * @todo Define visibility
-	 */
-	public function isDisabled($table, $row) {
-		if ($GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled'] && $row[$GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled']] || $GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['starttime'] && $row[$GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['starttime']] > $GLOBALS['EXEC_TIME'] || $GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['endtime'] && $row[$GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['endtime']] && $row[$GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['endtime']] < $GLOBALS['EXEC_TIME']) {
-			return TRUE;
-		}
+		// If it is set to a positive value use this
+		return $backendLayoutUid;
 	}
 
 	/**
@@ -1706,105 +1787,12 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 		return $content;
 	}
 
-	/**
-	 * Returns icon for "no-edit" of a record.
-	 * Basically, the point is to signal that this record could have had an edit link if the circumstances were right. A placeholder for the regular edit icon...
-	 *
-	 * @param string $label Label key from LOCAL_LANG
-	 * @return string IMG tag for icon.
-	 * @todo Define visibility
-	 */
-	public function noEditIcon($label = 'noEditItems') {
-		return IconUtility::getSpriteIcon('status-edit-read-only', array('title' => $GLOBALS['LANG']->getLL($label, TRUE)));
-	}
-
-	/**
-	 * Function, which fills in the internal array, $this->allowedTableNames with all tables to which the user has access. Also a set of standard tables (pages, static_template, sys_filemounts, etc...) are filtered out. So what is left is basically all tables which makes sense to list content from.
-	 *
-	 * @return void
-	 * @todo Define visibility
-	 */
-	public function cleanTableNames() {
-		// Get all table names:
-		$tableNames = array_flip(array_keys($GLOBALS['TCA']));
-		// Unset common names:
-		unset($tableNames['pages']);
-		unset($tableNames['static_template']);
-		unset($tableNames['sys_filemounts']);
-		unset($tableNames['sys_action']);
-		unset($tableNames['sys_workflows']);
-		unset($tableNames['be_users']);
-		unset($tableNames['be_groups']);
-		$this->allowedTableNames = array();
-		// Traverse table names and set them in allowedTableNames array IF they can be read-accessed by the user.
-		if (is_array($tableNames)) {
-			foreach ($tableNames as $k => $v) {
-				if ($GLOBALS['BE_USER']->check('tables_select', $k)) {
-					$this->allowedTableNames['table_' . $k] = $k;
-				}
-			}
-		}
-	}
-
-	/**
-	 * Checking if the RTE is available/enabled for a certain table/field and if so, it returns TRUE.
-	 * Used to determine if the RTE button should be displayed.
-	 *
-	 * @param string $table Table name
-	 * @param array $row Record row (needed, if there are RTE dependencies based on other fields in the record)
-	 * @param string $field Field name
-	 * @return boolean Returns TRUE if the rich text editor would be enabled/available for the field name specified.
-	 * @todo Define visibility
-	 */
-	public function isRTEforField($table, $row, $field) {
-		$specConf = $this->getSpecConfForField($table, $row, $field);
-		$p = BackendUtility::getSpecConfParametersFromArray($specConf['rte_transform']['parameters']);
-		if (isset($specConf['richtext']) && (!$p['flag'] || !$row[$p['flag']])) {
-			BackendUtility::fixVersioningPid($table, $row);
-			list($tscPID, $thePidValue) = BackendUtility::getTSCpid($table, $row['uid'], $row['pid']);
-			// If the pid-value is not negative (that is, a pid could NOT be fetched)
-			if ($thePidValue >= 0) {
-				$RTEsetup = $GLOBALS['BE_USER']->getTSConfig('RTE', BackendUtility::getPagesTSconfig($tscPID));
-				$RTEtypeVal = BackendUtility::getTCAtypeValue($table, $row);
-				$thisConfig = BackendUtility::RTEsetup($RTEsetup['properties'], $table, $field, $RTEtypeVal);
-				if (!$thisConfig['disabled']) {
-					return TRUE;
-				}
-			}
-		}
-		return FALSE;
-	}
-
-	/**
-	 * Returns "special" configuration from the "types" configuration in TCA for the record given by tablename/fieldname.
-	 * Used by isRTEforField() in the process of finding whether a field has RTE enabled or not.
-	 *
-	 * @param string $table Table name
-	 * @param array $row Record array
-	 * @param string $field Field name
-	 * @return array Spec. conf (if available)
-	 * @access private
-	 * @see isRTEforField()
-	 * @todo Define visibility
-	 */
-	public function getSpecConfForField($table, $row, $field) {
-		// Get types-configuration for the record:
-		$types_fieldConfig = BackendUtility::getTCAtypes($table, $row);
-		// Find the given field and return the spec key value if found:
-		if (is_array($types_fieldConfig)) {
-			foreach ($types_fieldConfig as $vconf) {
-				if ($vconf['field'] == $field) {
-					return $vconf['spec'];
-				}
-			}
-		}
-	}
-
 	/*****************************************
 	 *
 	 * External renderings
 	 *
 	 *****************************************/
+
 	/**
 	 * Creates an info-box for the current page (identified by input record).
 	 *

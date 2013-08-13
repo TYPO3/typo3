@@ -176,6 +176,39 @@ mod.wizards.newContentElement {
 		plugins.show = *
 	}
 }
+BackendLayoutView {
+	setup {
+		0 {
+			config{
+				colCount = 4
+				rowCount = 1
+				rows {
+				1 {
+					columns {
+						1 {
+							name = LLL:EXT:cms/locallang_ttc.xlf:colPos.I.0
+									colPos = 1
+								}
+								2 {
+							name = LLL:EXT:cms/locallang_ttc.xlf:colPos.I.1
+									colPos = 0
+								}
+								3 {
+							name = LLL:EXT:cms/locallang_ttc.xlf:colPos.I.2
+									colPos = 2
+								}
+								4 {
+							name = LLL:EXT:cms/locallang_ttc.xlf:colPos.I.3
+									colPos = 3
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
 
 ');
 $TYPO3_CONF_VARS['SYS']['contentTable'] = 'tt_content';
