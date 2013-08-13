@@ -320,7 +320,7 @@ return array(
 			'label' => 'LLL:EXT:cms/locallang_ttc.xlf:colPos',
 			'config' => array(
 				'type' => 'select',
-				'itemsProcFunc' => 'TYPO3\\CMS\\Backend\\View\\BackendLayoutView->colPosListItemProcFunc',
+				'itemsProcFunc' => 'TYPO3\\CMS\\Backend\\View\\BackendLayoutViewHelpers->colPosListItemsProcFunc',
 				'items' => array(
 					array(
 						'LLL:EXT:cms/locallang_ttc.xlf:colPos.I.0',

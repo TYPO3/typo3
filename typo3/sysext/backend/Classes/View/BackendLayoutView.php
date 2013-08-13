@@ -1,6 +1,5 @@
 <?php
 namespace TYPO3\CMS\Backend\View;
-
 /***************************************************************
  *  Copyright notice
  *
@@ -29,65 +28,186 @@ namespace TYPO3\CMS\Backend\View;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\SingletonInterface;
 
 /**
- * Backend layout for CMS
+ * Backend layout class
  *
  * @author GridView Team
+ * @author Arno Dudek <webmaster@adgrafik.at>
  */
-class BackendLayoutView {
+class BackendLayoutView implements SingletonInterface {
 
 	/**
-	 * ItemProcFunc for colpos items
-	 *
-	 * @param array $params
-	 * @return void
+	 * @var array $setup
 	 */
-	public function colPosListItemProcFunc(&$params) {
-		if ($params['row']['pid'] > 0) {
-			$params['items'] = $this->addColPosListLayoutItems($params['row']['pid'], $params['items']);
-		} else {
-			// Negative uid_pid values indicate that the element has been inserted after an existing element
-			// so there is no pid to get the backendLayout for and we have to get that first
-			$existingElement = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('pid', 'tt_content', 'uid=' . -intval($params['row']['pid']));
-			if ($existingElement['pid'] > 0) {
-				$params['items'] = $this->addColPosListLayoutItems($existingElement['pid'], $params['items']);
-			}
-		}
+	protected $setup;
+
+	/**
+	 * @var array $parsedSetup
+	 */
+	protected $parsedSetup;
+
+	/**
+	 * @var array $selectedBackendLayoutId
+	 */
+	protected $selectedBackendLayoutId;
+
+	/**
+	 * @var array $backendLayoutColPos
+	 */
+	protected $backendLayoutColPos;
+
+	/**
+	 * Constructor
+	 *
+	 * @param integer $pageUid
+	 */
+	public function __construct($pageUid = 0) {
+		$this->loadSetup($pageUid);
 	}
 
 	/**
-	 * Adds items to a colpos list
+	 * Returns the grid layout setup.
 	 *
-	 * @param integer $pageId
-	 * @param array $items
+	 * @param integer $pageUid
 	 * @return array
 	 */
-	protected function addColPosListLayoutItems($pageId, $items) {
-		$layout = $this->getSelectedBackendLayout($pageId);
-		if ($layout && $layout['__items']) {
-			$items = $layout['__items'];
+	public function getSetup($pageUid = 0) {
+		return $this->setup[$pageUid];
+	}
+
+	/**
+	 * Returns the grid layout setup by layout ID.
+	 *
+	 * @param string $layoutId: The backend layout ID.
+	 * @param integer $pageUid
+	 * @param string $fieldName: Current field.
+	 * @param boolean $useCache
+	 * @return array
+	 */
+	public function getSetupByLayoutId($layoutId, $pageUid = 0, $fieldName = NULL, $useCache = TRUE) {
+
+		$fieldName = ($fieldName === NULL) ? 'backend_layout' : $fieldName;
+
+		if(isset($this->parsedSetup[$pageUid][$fieldName][$layoutId]) && $useCache) {
+			$setup = $this->parsedSetup[$pageUid][$fieldName][$layoutId];
+		} else {
+			$setup = $this->setup[$pageUid][$fieldName][$layoutId];
+			if (isset($setup)) {
+				$parser = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\Parser\\TypoScriptParser');
+				$conditionMatcher = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Configuration\\TypoScript\\ConditionMatching\\ConditionMatcher');
+				$parser->parse($parser->checkIncludeLines($setup['config']), $conditionMatcher);
+				if($parser->setup['backend_layout.']) {
+					$setup['config'] = $parser->setup['backend_layout.'];
+				}
+				$this->parsedSetup[$pageUid][$fieldName][$layoutId] = $setup;
+			} else {
+				$setup = array();
+			}
 		}
-		return $items;
+
+		return $setup;
+	}
+
+	/**
+	 * Returns the backend layout which should be used for this page.
+	 *
+	 * @param integer $pageUid
+	 * @return mixed Uid of the backend layout record or NULL if no layout should be used
+	 */
+	protected function getSelectedBackendLayoutId($pageUid = 0) {
+
+		if ($this->selectedBackendLayoutId[$pageUid] === NULL) {
+			$page = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('uid, pid, backend_layout', 'pages', 'uid=' . $pageUid);
+			BackendUtility::workspaceOL('pages', $page);
+
+			$this->selectedBackendLayoutId[$pageUid] = $page['backend_layout'];
+			if ($this->selectedBackendLayoutId[$pageUid] == -1) {
+				// If it is set to "none" - don't use any
+				$this->selectedBackendLayoutId[$pageUid] = FALSE;
+			} elseif ($this->selectedBackendLayoutId[$pageUid] == 0) {
+				// If it not set check the rootline for a layout on next level and use this
+				$rootline = BackendUtility::BEgetRootLine($pageUid, '', TRUE);
+				for ($i = count($rootline) - 2; $i > 0; $i--) {
+					$this->selectedBackendLayoutId[$pageUid] = $rootline[$i]['backend_layout_next_level'];
+					if ($this->selectedBackendLayoutId[$pageUid] != 0) {
+						// Stop searching if a layout for "next level" is set
+						break;
+					} elseif ($this->selectedBackendLayoutId[$pageUid] == -1){
+						// If layout for "next level" is set to "none" - don't use any and stop searching
+						$this->selectedBackendLayoutId[$pageUid] = FALSE;
+						break;
+					}
+				}
+			}
+		}
+		// If it is set to a positive value use this
+		return $this->selectedBackendLayoutId[$pageUid];
+	}
+
+	/**
+	 * Returns the grid layout setup of selected backend layout.
+	 *
+	 * @param integer $pageUid
+	 * @return array
+	 */
+	public function getSelectedBackendLayout($pageUid = 0) {
+		return $this->getSelectedBackendLayoutSetup($pageUid);
+	}
+
+	/**
+	 * Returns the grid layout setup of selected backend layout.
+	 *
+	 * @param integer $pageUid
+	 * @return array
+	 */
+	public function getSelectedBackendLayoutSetup($pageUid = 0) {
+		return $this->getSetupByLayoutId($this->getSelectedBackendLayoutId($pageUid), $pageUid);
+	}
+
+	/**
+	 * Gets the selected backend layout columns
+	 *
+	 * @param integer $pageUid
+	 * @return array|NULL  $backendLayout
+	 */
+	protected function getSelectedBackendLayoutColPosItems($pageUid = 0) {
+		if (!isset($this->backendLayoutColPos[$pageUid])) {
+			$this->parseBackendLayoutColPos($pageUid);
+		}
+		return $this->backendLayoutColPos[$pageUid]['items'];
+	}
+
+	/**
+	 * Gets the selected backend layout
+	 *
+	 * @param integer $pageUid
+	 * @return array|NULL  $backendLayout
+	 */
+	public function getSelectedBackendLayoutColPosList($pageUid = 0) {
+		if (!isset($this->backendLayoutColPos[$pageUid])) {
+			$this->parseBackendLayoutColPos($pageUid);
+		}
+		return $this->backendLayoutColPos[$pageUid]['list'];
 	}
 
 	/**
 	 * Gets the list of available columns for a given page id
 	 *
-	 * @param integer $id
+	 * @param integer $pageUid
 	 * @return array $tcaItems
 	 */
-	public function getColPosListItemsParsed($id) {
-		$tsConfig = BackendUtility::getModTSconfig($id, 'TCEFORM.tt_content.colPos');
+	public function getColPosListItemsParsed($pageUid = 0) {
+		$tsConfig  = BackendUtility::getModTSconfig($pageUid, 'TCEFORM.tt_content.colPos');
 		$tcaConfig = $GLOBALS['TCA']['tt_content']['columns']['colPos']['config'];
-		/** @var $tceForms \TYPO3\CMS\Backend\Form\FormEngine */
 		$tceForms = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Form\\FormEngine');
 		$tcaItems = $tcaConfig['items'];
 		$tcaItems = $tceForms->addItems($tcaItems, $tsConfig['properties']['addItems.']);
 		if (isset($tcaConfig['itemsProcFunc']) && $tcaConfig['itemsProcFunc']) {
-			$tcaItems = $this->addColPosListLayoutItems($id, $tcaItems);
+			$this->addColPosSelectItems($tcaItems, $pageUid);
 		}
-		foreach (GeneralUtility::trimExplode(',', $tsConfig['properties']['removeItems'], TRUE) as $removeId) {
+		foreach (GeneralUtility::trimExplode(',', $tsConfig['properties']['removeItems'], 1) as $removeId) {
 			foreach ($tcaItems as $key => $item) {
 				if ($item[1] == $removeId) {
 					unset($tcaItems[$key]);
@@ -98,66 +218,170 @@ class BackendLayoutView {
 	}
 
 	/**
-	 * Gets the selected backend layout
+	 * Returns the item array for form field selection.
 	 *
-	 * @param integer $id
-	 * @return array|NULL $backendLayout
+	 * @param array &$items: Select items
+	 * @param integer $pageUid
+	 * @param string $fieldName: Current field
+	 * @return void
 	 */
-	public function getSelectedBackendLayout($id) {
-		$rootline = BackendUtility::BEgetRootLine($id);
-		$backendLayoutUid = NULL;
-		for ($i = count($rootline); $i > 0; $i--) {
-			$page = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('uid, pid, backend_layout, backend_layout_next_level', 'pages', 'uid=' . intval($rootline[$i]['uid']));
-			BackendUtility::workspaceOL('pages', $page);
-			$selectedBackendLayout = intval($page['backend_layout']);
-			$selectedBackendLayoutNextLevel = intval($page['backend_layout_next_level']);
-			if ($selectedBackendLayout != 0 && $page['uid'] == $id) {
-				if ($selectedBackendLayout > 0) {
-					// Backend layout for current page is set
-					$backendLayoutUid = $selectedBackendLayout;
-				}
-				break;
-			} elseif ($selectedBackendLayoutNextLevel == -1 && $page['uid'] != $id) {
-				// Some previous page in our rootline sets layout_next to "None"
-				break;
-			} elseif ($selectedBackendLayoutNextLevel > 0 && $page['uid'] != $id) {
-				// Some previous page in our rootline sets some backend_layout, use it
-				$backendLayoutUid = $selectedBackendLayoutNextLevel;
-				break;
+	public function addBackendLayoutSelectItems(&$items, $pageUid = 0, $fieldName) {
+
+		foreach ($this->setup[$pageUid][$fieldName] as $backendLayoutId => $item) {
+			if ($backendLayoutId > 0) {
+				$items[] = array(
+					$GLOBALS['LANG']->sL($item['title']),
+					$backendLayoutId,
+					$item['icon'],
+				);
 			}
 		}
-		$backendLayout = NULL;
-		if ($backendLayoutUid) {
-			$backendLayout = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', 'backend_layout', 'uid=' . $backendLayoutUid);
-		} else {
-			$backendLayout['config'] = self::getDefaultColumnLayout();
+	}
+
+	/**
+	 * Adds items to a colpos list
+	 *
+	 * @param array &$items: Select items
+	 * @param integer $pageUid
+	 * @return void
+	 */
+	public function addColPosSelectItems(&$items, $pageUid = 0) {
+		// If setup found reset items
+		if (($colPosItems = $this->getSelectedBackendLayoutColPosItems($pageUid)) !== NULL) {
+			$items = $colPosItems;
 		}
-		if ($backendLayout) {
-			/** @var $parser \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser */
-			$parser = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\Parser\\TypoScriptParser');
-			/** @var \TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher $conditionMatcher */
-			$conditionMatcher = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Configuration\\TypoScript\\ConditionMatching\\ConditionMatcher');
-			$parser->parse($parser->checkIncludeLines($backendLayout['config']), $conditionMatcher);
-			$backendLayout['__config'] = $parser->setup;
-			$backendLayout['__items'] = array();
-			$backendLayout['__colPosList'] = array();
-			// create items and colPosList
-			if ($backendLayout['__config']['backend_layout.'] && $backendLayout['__config']['backend_layout.']['rows.']) {
-				foreach ($backendLayout['__config']['backend_layout.']['rows.'] as $row) {
-					if (isset($row['columns.']) && is_array($row['columns.'])) {
-						foreach ($row['columns.'] as $column) {
-							$backendLayout['__items'][] = array(
-								GeneralUtility::isFirstPartOfStr($column['name'], 'LLL:') ? $GLOBALS['LANG']->sL($column['name']) : $column['name'],
-								$column['colPos'],
-								NULL
-							);
-							$backendLayout['__colPosList'][] = $column['colPos'];
+	}
+
+	/**
+	 * Returns the page TSconfig merged with the grid layout records.
+	 *
+	 * @param integer $pageUid
+	 * @return BackendLayoutView
+	 */
+	public function loadSetup($pageUid = 0) {
+		// Load page TSconfig.
+		$pageTSconfig = BackendUtility::getPagesTSconfig($pageUid);
+		$storagePid = $this->getStoragePid($pageTSconfig);
+		$pageTSconfigId = $this->getPageTSconfigId($pageTSconfig);
+		$exclude = $this->getExcludedLayouts($pageTSconfig);
+		foreach (array('backend_layout', 'backend_layout_next_level') as $fieldName) {
+			$layoutProviders = array();
+			// Set default layout
+			$layoutProviders['default'][0]['config'] = $this->getDefaultColumnLayout();
+			// Add layout records
+			$results = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+				'*',
+				'backend_layout',
+					'(
+						( ' . $pageTSconfigId[$fieldName] . ' = 0 AND ' . $storagePid . ' = 0 )
+					OR ( backend_layout.pid = ' . intval($pageTSconfigId[$fieldName]) . ' OR backend_layout.pid = ' . intval($storagePid) . ' )
+					OR ( ' . $pageTSconfigId[$fieldName] . ' = 0 AND backend_layout.pid = ' . intval($pageUid) . ' )
+				)' . BackendUtility::BEenableFields('backend_layout'),
+				'',
+				'sorting ASC',
+				'',
+				'uid'
+			);
+			$layoutProviders['default'] = array_merge($layoutProviders['default'], $results);
+
+			// Use layout providers to get more layouts from other sources
+
+			foreach ($layoutProviders as $layoutProvider => $layouts) {
+				$layoutProviderPrefix = '';
+				if($layoutProvider !== 'default') {
+					$layoutProviderPrefix = $layoutProvider . '_';
+				}
+				if(count($layouts) > 0) {
+					foreach ($layouts as $item) {
+						// Continue if layout is excluded
+						if (in_array((string) $layoutProviderPrefix . $item['uid'], $exclude, TRUE)) {
+							continue;
 						}
+						// Prepend icon path for records
+						$item['icon'] = (isset($item['icon']) && $item['icon'] != '')
+								? '../' . $GLOBALS['TCA']['backend_layout']['ctrl']['selicon_field_path'] . '/' . htmlspecialchars($item['icon'])
+								: '';
+						$this->setup[$pageUid][$fieldName][$layoutProviderPrefix . $item['uid']] = $item;
 					}
 				}
 			}
 		}
-		return $backendLayout;
+		return $this;
+	}
+
+	/**
+	 * Returns the storage PID from TCEFORM.
+	 *
+	 * @param array $pageTSconfig
+	 * @return array
+	 */
+	protected function getStoragePid($pageTSconfig) {
+		$storagePid = isset($pageTSconfig['TCEFORM.']['pages.']['_STORAGE_PID'])
+				? $pageTSconfig['TCEFORM.']['pages.']['_STORAGE_PID']
+				: 0;
+		return $storagePid;
+	}
+
+	/**
+	 * Returns the page TSconfig from TCEFORM.
+	 *
+	 * @param array $pageTSconfig
+	 * @return array
+	 */
+	protected function getPageTSconfigId($pageTSconfig) {
+		$pageTSconfigId = array(
+			'backend_layout' => isset($pageTSconfig['TCEFORM.']['pages.']['backend_layout.']['PAGE_TSCONFIG_ID'])
+					? $pageTSconfig['TCEFORM.']['pages.']['backend_layout.']['PAGE_TSCONFIG_ID']
+					: 0,
+			'backend_layout_next_level' => isset($pageTSconfig['TCEFORM.']['pages.']['backend_layout_next_level.']['PAGE_TSCONFIG_ID'])
+					? $pageTSconfig['TCEFORM.']['pages.']['backend_layout_next_level.']['PAGE_TSCONFIG_ID']
+					: 0,
+		);
+		return $pageTSconfigId;
+	}
+
+	/**
+	 * Returns excluded layouts from TSconfig.
+	 *
+	 * @param array $pageTSconfig
+	 * @return array
+	 */
+	protected function getExcludedLayouts($pageTSconfig) {
+		$exclude = isset($pageTSconfig['BackendLayoutView']['exclude'])
+				? GeneralUtility::trimExplode(',', $pageTSconfig['BackendLayoutView']['exclude'])
+				: array();
+		return $exclude;
+	}
+
+	/**
+	 * Parse backend layout columns and provide information about the resulting list of available colPos values.
+	 *
+	 * @param integer $pageUid
+	 * @return void
+	 */
+	protected function parseBackendLayoutColPos($pageUid = 0) {
+
+		$setup = $this->getSetupByLayoutId($this->getSelectedBackendLayoutId($pageUid), $pageUid);
+
+		if ($setup) {
+			$this->backendLayoutColPos = array(
+				'items' => array(),
+				'list' => array(),
+			);
+
+			foreach ($setup['config']['rows.'] as $row) {
+				if (isset($row['columns.']) && is_array($row['columns.'])) {
+					foreach ($row['columns.'] as $column) {
+						$this->backendLayoutColPos[$pageUid]['items'][] = array(
+							$GLOBALS['LANG']->sL($column['name']),
+							intval($column['colPos']),
+							NULL
+						);
+						$this->backendLayoutColPos[$pageUid]['list'][] = intval($column['colPos']);
+					}
+				}
+			}
+		}
 	}
 
 	/**
@@ -196,8 +420,5 @@ class BackendLayoutView {
 		}
 		';
 	}
-
 }
-
-
 ?>
