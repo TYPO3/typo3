@@ -177,7 +177,10 @@ abstract class AbstractConfigurationManager implements \TYPO3\CMS\Core\Singleton
 			}
 
 			if (!empty($frameworkConfiguration['persistence']['recursive'])) {
-				$frameworkConfiguration['persistence']['storagePid'] = $this->getRecursiveStoragePids($frameworkConfiguration['persistence']['storagePid'], (int) $frameworkConfiguration['persistence']['recursive']);
+				$recursiveStoragePids = $this->getRecursiveStoragePids($frameworkConfiguration['persistence']['storagePid'], (int) $frameworkConfiguration['persistence']['recursive']);
+				if ($recursiveStoragePids !== '') {
+					$frameworkConfiguration['persistence']['storagePid'] .= ',' . $recursiveStoragePids;
+				}
 			}
 		}
 		// 1st level cache
