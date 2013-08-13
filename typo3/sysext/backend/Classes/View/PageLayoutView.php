@@ -406,6 +406,8 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 			$langListArr = GeneralUtility::intExplode(',', $langList);
 			$defLanguageCount = array();
 			$defLangBinding = array();
+			$backendLayout = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\View\\BackendLayoutView', $id);
+			$backendLayoutSetup = $backendLayout->getSelectedBackendLayoutSetup($id);
 			// For each languages... :
 			// If not languageMode, then we'll only be through this once.
 			foreach ($langListArr as $lP) {
@@ -506,7 +508,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 					// Add new-icon link, header:
 					$newP = $this->newContentElementOnClick($id, $key, $lP);
 					$colTitle = BackendUtility::getProcessedValue('tt_content', 'colPos', $key);
-					$tcaItems = GeneralUtility::callUserFunction('TYPO3\\CMS\\Backend\\View\\BackendLayoutView->getColPosListItemsParsed', $id, $this);
+					$tcaItems = $backendLayout->getColPosListItemsParsed($id);
 					foreach ($tcaItems as $item) {
 						if ($item[1] == $key) {
 							$colTitle = $GLOBALS['LANG']->sL($item[0]);
@@ -526,18 +528,11 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 						}
 					}
 				} else {
-					$backendLayoutRecord = $this->getBackendLayoutConfiguration();
 					// GRID VIEW:
-					// Initialize TS parser to parse config to array
-					/** @var \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser $parser */
-					$parser = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\Parser\\TypoScriptParser');
-					/** @var \TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher $conditionMatcher */
-					$conditionMatcher = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Configuration\\TypoScript\\ConditionMatching\\ConditionMatcher');
-					$parser->parse($parser->checkIncludeLines($backendLayoutRecord['config']), $conditionMatcher);
 					$grid .= '<div class="t3-gridContainer"><table border="0" cellspacing="0" cellpadding="0" width="100%" height="100%" class="t3-page-columns t3-gridTable">';
 					// Add colgroups
-					$colCount = intval($parser->setup['backend_layout.']['colCount']);
-					$rowCount = intval($parser->setup['backend_layout.']['rowCount']);
+					$colCount = intval($backendLayoutSetup['config']['colCount']);
+					$rowCount = intval($backendLayoutSetup['config']['rowCount']);
 					$grid .= '<colgroup>';
 					for ($i = 0; $i < $colCount; $i++) {
 						$grid .= '<col style="width:' . 100 / $colCount . '%"></col>';
@@ -545,7 +540,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 					$grid .= '</colgroup>';
 					// Cycle through rows
 					for ($row = 1; $row <= $rowCount; $row++) {
-						$rowConfig = $parser->setup['backend_layout.']['rows.'][$row . '.'];
+						$rowConfig = $backendLayoutSetup['config']['rows.'][$row . '.'];
 						if (!isset($rowConfig)) {
 							continue;
 						}
@@ -560,16 +555,27 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 							// Render the grid cell
 							$colSpan = intval($columnConfig['colspan']);
 							$rowSpan = intval($columnConfig['rowspan']);
-							$grid .= '<td valign="top"' . ($colSpan > 0 ? ' colspan="' . $colSpan . '"' : '') . ($rowSpan > 0 ? ' rowspan="' . $rowSpan . '"' : '') . ' class="t3-gridCell t3-page-column t3-page-column-' . $columnKey . (!isset($columnConfig['colPos']) ? ' t3-gridCell-unassigned' : '') . (isset($columnConfig['colPos']) && !$head[$columnKey] ? ' t3-gridCell-restricted' : '') . ($colSpan > 0 ? ' t3-gridCell-width' . $colSpan : '') . ($rowSpan > 0 ? ' t3-gridCell-height' . $rowSpan : '') . '">';
+							$grid .= '<td valign="top"' .
+								($colSpan > 0 ? ' colspan="' . $colSpan . '"' : '') .
+								($rowSpan > 0 ? ' rowspan="' . $rowSpan . '"' : '') .
+								' class="t3-gridCell t3-page-column t3-page-column-' . $columnKey .
+								((!isset($columnConfig['colPos']) || $columnConfig['colPos'] === '') ? ' t3-gridCell-unassigned' : '') .
+								((isset($columnConfig['colPos']) && $columnConfig['colPos'] !== '' && !$head[$columnKey]) ? ' t3-gridCell-restricted' : '') .
+								($colSpan > 0 ? ' t3-gridCell-width' . $colSpan : '') .
+								($rowSpan > 0 ? ' t3-gridCell-height' . $rowSpan : '') . '">';
+
 							// Draw the pre-generated header with edit and new buttons if a colPos is assigned.
 							// If not, a new header without any buttons will be generated.
-							if (isset($columnConfig['colPos']) && $head[$columnKey]) {
+							if (isset($columnConfig['colPos']) && $columnConfig['colPos'] !== '' && $head[$columnKey]) {
 								$grid .= $head[$columnKey] . $content[$columnKey];
-							} elseif ($columnConfig['colPos']) {
+							} elseif (isset($columnConfig['colPos']) && $columnConfig['colPos'] !== '') {
 								$grid .= $this->tt_content_drawColHeader($GLOBALS['LANG']->getLL('noAccess'), '', '');
+							} elseif (isset($columnConfig['name']) && strlen($columnConfig['name']) > 0) {
+								$grid .= $this->tt_content_drawColHeader($GLOBALS['LANG']->sL($columnConfig['name']) . ' (' . $GLOBALS['LANG']->getLL('notAssigned') . ')', '', '');
 							} else {
 								$grid .= $this->tt_content_drawColHeader($GLOBALS['LANG']->getLL('notAssigned'), '', '');
 							}
+
 							$grid .= '</td>';
 						}
 						$grid .= '</tr>';
@@ -786,21 +792,6 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 		}
 		// Return content:
 		return $out;
-	}
-
-	/**
-	 * Get backend layout configuration
-	 *
-	 * @return array
-	 */
-	public function getBackendLayoutConfiguration() {
-		$backendLayoutUid = $this->getSelectedBackendLayoutUid($this->id);
-		if (!$backendLayoutUid) {
-			return array(
-				'config' => \TYPO3\CMS\Backend\View\BackendLayoutView::getDefaultColumnLayout()
-			);
-		}
-		return BackendUtility::getRecord('backend_layout', intval($backendLayoutUid));
 	}
 
 	/**********************************
