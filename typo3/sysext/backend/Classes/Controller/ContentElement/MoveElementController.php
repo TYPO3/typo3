@@ -198,12 +198,12 @@ class MoveElementController {
 					// Load SHARED page-TSconfig settings and retrieve column list from there, if applicable:
 					// SHARED page-TSconfig settings.
 					$modTSconfig_SHARED = BackendUtility::getModTSconfig($this->page_id, 'mod.SHARED');
-					$colPosArray = GeneralUtility::callUserFunction('TYPO3\\CMS\\Backend\\View\\BackendLayoutView->getColPosListItemsParsed', $this->page_id, $this);
-					foreach ($colPosArray as $colPos) {
-						$colPosList .= $colPosList != '' ? ',' . $colPos[1] : $colPos[1];
-					}
-					// Removing duplicates, if any
-					$colPosList = implode(',', array_unique(GeneralUtility::intExplode(',', $colPosList)));
+					$colPosArray = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\View\\BackendLayoutView', $this->page_id)->getSelectedBackendLayoutColPosList($this->page_id);
+					if (is_array($colPosArray)) {
+                        $colPosList = implode(',', array_unique($colPosArray));
+					} else {
+                        $colPosList = '1,0,2,3';
+                    }
 					// Adding parent page-header and the content element columns from position-map:
 					$code = $hline . '<br />';
 					$code .= $posMap->printContentElementColumns($this->page_id, $this->moveUid, $colPosList, 1, $this->R_URI);

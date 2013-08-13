@@ -16,7 +16,8 @@ return array(
 		'iconfile' => 'backend_layout.gif',
 		'selicon_field' => 'icon',
 		'selicon_field_path' => 'uploads/media',
-		'thumbnail' => 'resources'
+		'thumbnail' => 'resources',
+		'dividers2tabs' => 1
 	),
 	'interface' => array(
 		'showRecordFieldList' => 'title,config,description,hidden,icon'
@@ -79,8 +80,19 @@ return array(
 			)
 		)
 	),
+	'palettes' => array(
+		'general' => array('canNotCollapse' => 1, 'showitem' => 'title, --linebreak--, description',),
+		'appearance' => array('canNotCollapse' => 1, 'showitem' => 'icon',),
+		'visibility' => array('canNotCollapse' => 1, 'showitem' => 'hidden;LLL:EXT:cms/locallang_tca.xlf:backend_layout',),
+	),
 	'types' => array(
-		'1' => array('showitem' => 'hidden,title;;1;;2-2-2, icon, description, config')
+		'1' => array(
+			'showitem' =>
+				'--palette--;LLL:EXT:cms/locallang_tca.xlf:backend_layout;general,
+				--palette--;LLL:EXT:cms/locallang_tca.xlf:tabs.appearance;appearance,
+				--div--;LLL:EXT:cms/locallang_tca.xlf:backend_layout.config, config,
+				--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access,--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.visibility;visibility'
+		),
 	)
 );
 ?>
