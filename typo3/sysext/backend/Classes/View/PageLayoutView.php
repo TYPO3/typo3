@@ -406,6 +406,8 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 			$langListArr = GeneralUtility::intExplode(',', $langList);
 			$defLanguageCount = array();
 			$defLangBinding = array();
+			$backendLayout = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\View\\BackendLayoutView', $id);
+			$backendLayoutSetup = $backendLayout->getSelectedBackendLayoutSetup();
 			// For each languages... :
 			// If not languageMode, then we'll only be through this once.
 			foreach ($langListArr as $lP) {
@@ -502,7 +504,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 					// Add new-icon link, header:
 					$newP = $this->newContentElementOnClick($id, $key, $lP);
 					$colTitle = BackendUtility::getProcessedValue('tt_content', 'colPos', $key);
-					$tcaItems = GeneralUtility::callUserFunction('TYPO3\\CMS\\Backend\\View\\BackendLayoutView->getColPosListItemsParsed', $id, $this);
+					$tcaItems = $backendLayout->getColPosListItemsParsed();
 					foreach ($tcaItems as $item) {
 						if ($item[1] == $key) {
 							$colTitle = $GLOBALS['LANG']->sL($item[0]);
@@ -522,15 +524,11 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 						}
 					}
 				} else {
-					$backendLayoutRecord = $this->getBackendLayoutConfiguration();
 					// GRID VIEW:
-					// Initialize TS parser to parse config to array
-					$parser = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\Parser\\TypoScriptParser');
-					$parser->parse($parser->checkIncludeLines($backendLayoutRecord['config']));
 					$grid .= '<div class="t3-gridContainer"><table border="0" cellspacing="0" cellpadding="0" width="100%" height="100%" class="t3-page-columns t3-gridTable">';
 					// Add colgroups
-					$colCount = intval($parser->setup['backend_layout.']['colCount']);
-					$rowCount = intval($parser->setup['backend_layout.']['rowCount']);
+					$colCount = intval($backendLayoutSetup['config']['colCount']);
+					$rowCount = intval($backendLayoutSetup['config']['rowCount']);
 					$grid .= '<colgroup>';
 					for ($i = 0; $i < $colCount; $i++) {
 						$grid .= '<col style="width:' . 100 / $colCount . '%"></col>';
@@ -538,7 +536,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 					$grid .= '</colgroup>';
 					// Cycle through rows
 					for ($row = 1; $row <= $rowCount; $row++) {
-						$rowConfig = $parser->setup['backend_layout.']['rows.'][$row . '.'];
+						$rowConfig = $backendLayoutSetup['config']['rows.'][$row . '.'];
 						if (!isset($rowConfig)) {
 							continue;
 						}
@@ -779,21 +777,6 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 		}
 		// Return content:
 		return $out;
-	}
-
-	/**
-	 * Get backend layout configuration
-	 *
-	 * @return array
-	 */
-	public function getBackendLayoutConfiguration() {
-		$backendLayoutUid = $this->getSelectedBackendLayoutUid($this->id);
-		if (!$backendLayoutUid) {
-			return array(
-				'config' => \TYPO3\CMS\Backend\View\BackendLayoutView::getDefaultColumnLayout()
-			);
-		}
-		return BackendUtility::getRecord('backend_layout', intval($backendLayoutUid));
 	}
 
 	/**********************************
