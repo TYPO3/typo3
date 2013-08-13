@@ -350,10 +350,29 @@ class BackendConfigurationManagerTest extends \TYPO3\CMS\Extbase\Tests\Unit\Base
 		$queryGenerator = $this->getMock('TYPO3\\CMS\\Core\\Database\\QueryGenerator');
 		$queryGenerator->expects($this->any())
 			->method('getTreeList')
-			->will($this->onConsecutiveCalls('1,4', '2', '3,5,6'));
+			->will($this->onConsecutiveCalls('4', '', '5,6'));
 		$abstractConfigurationManager->_set('queryGenerator', $queryGenerator);
 
-		$expectedResult = '1,4,2,3,5,6';
+		$expectedResult = '4,5,6';
+		$actualResult = $abstractConfigurationManager->_call('getRecursiveStoragePids', $storagePid, $recursive);
+		$this->assertEquals($expectedResult, $actualResult);
+	}
+
+	/**
+	 * @test
+	 */
+	public function storagePidsAreExtendedIfRecursiveSearchIsConfiguredAndWithPidIncludedForNegativePid() {
+		$storagePid = '1,2,-3';
+		$recursive = 99;
+		/** @var $abstractConfigurationManager \TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager */
+		$abstractConfigurationManager = $this->getAccessibleMock('TYPO3\CMS\\Extbase\\Configuration\\BackendConfigurationManager', array('overrideSwitchableControllerActions', 'getContextSpecificFrameworkConfiguration', 'getTypoScriptSetup', 'getPluginConfiguration', 'getSwitchableControllerActions'));
+		$queryGenerator = $this->getMock('TYPO3\\CMS\\Core\\Database\\QueryGenerator');
+		$queryGenerator->expects($this->any())
+			->method('getTreeList')
+			->will($this->onConsecutiveCalls('4', '', '3,5,6'));
+		$abstractConfigurationManager->_set('queryGenerator', $queryGenerator);
+
+		$expectedResult = '4,3,5,6';
 		$actualResult = $abstractConfigurationManager->_call('getRecursiveStoragePids', $storagePid, $recursive);
 		$this->assertEquals($expectedResult, $actualResult);
 	}
