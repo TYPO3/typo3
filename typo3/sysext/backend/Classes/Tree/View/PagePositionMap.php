@@ -401,20 +401,21 @@ class PagePositionMap {
 		$row1 = '';
 		$row2 = '';
 		$count = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange(count($colPosArray), 1);
-		$backendLayout = GeneralUtility::callUserFunction('TYPO3\\CMS\\Backend\\View\\BackendLayoutView->getSelectedBackendLayout', $pid, $this);
-		if (isset($backendLayout['__config']['backend_layout.'])) {
+		$backendLayout = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\View\\BackendLayoutView', $pid);
+		$backendLayoutSetup = $backendLayout->getSelectedBackendLayoutSetup($pid);
+		if ($backendLayoutSetup) {
 			$table = '<div class="t3-gridContainer"><table border="0" cellspacing="0" cellpadding="0" id="typo3-ttContentList">';
-			$colCount = intval($backendLayout['__config']['backend_layout.']['colCount']);
-			$rowCount = intval($backendLayout['__config']['backend_layout.']['rowCount']);
+			$colCount = intval($backendLayoutSetup['colCount']);
+			$rowCount = intval($backendLayoutSetup['rowCount']);
 			$table .= '<colgroup>';
 			for ($i = 0; $i < $colCount; $i++) {
 				$table .= '<col style="width:' . 100 / $colCount . '%"></col>';
 			}
 			$table .= '</colgroup>';
-			$tcaItems = GeneralUtility::callUserFunction('TYPO3\\CMS\\Backend\\View\\BackendLayoutView->getColPosListItemsParsed', $pid, $this);
+			$tcaItems = $backendLayout->getColPosListItemsParsed($pid);
 			// Cycle through rows
 			for ($row = 1; $row <= $rowCount; $row++) {
-				$rowConfig = $backendLayout['__config']['backend_layout.']['rows.'][$row . '.'];
+				$rowConfig = $backendLayoutSetup['rows.'][$row . '.'];
 				if (!isset($rowConfig)) {
 					continue;
 				}
