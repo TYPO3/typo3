@@ -198,7 +198,18 @@ abstract class AbstractConfigurationManager implements \TYPO3\CMS\Core\Singleton
 			}
 
 			if (!empty($frameworkConfiguration['persistence']['recursive'])) {
-				$frameworkConfiguration['persistence']['storagePid'] = $this->getRecursiveStoragePids($frameworkConfiguration['persistence']['storagePid'], (int) $frameworkConfiguration['persistence']['recursive']);
+				// All implementations of getTreeList allow to pass the ids negative to include them into the result
+				// otherwise only childpages are returned
+				$storagePids = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $frameworkConfiguration['persistence']['storagePid']);
+				array_walk($storagePids, function (&$storagePid) {
+					if ($storagePid > 0) {
+						$storagePid = -$storagePid;
+					}
+				});
+				$frameworkConfiguration['persistence']['storagePid'] = $this->getRecursiveStoragePids(
+					implode(',', $storagePids),
+					(int) $frameworkConfiguration['persistence']['recursive']
+				);
 			}
 		}
 		// 1st level cache

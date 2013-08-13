@@ -308,6 +308,36 @@ class AbstractConfigurationManagerTest extends \TYPO3\CMS\Extbase\Tests\Unit\Bas
 	}
 
 	/**
+	 * @test
+	 */
+	public function getConfigurationRetrievesStoragePidIncludingGivenStoragePidWithRecursiveSetForSingleStoragePid() {
+		$pluginConfiguration = array(
+			'persistence' => array(
+				'storagePid' => 1,
+				'recursive' => 99
+			)
+		);
+		$this->abstractConfigurationManager->expects($this->once())->method('getPluginConfiguration')->will($this->returnValue($pluginConfiguration));
+		$this->abstractConfigurationManager->expects($this->once())->method('getRecursiveStoragePids')->with('-1');
+		$this->abstractConfigurationManager->getConfiguration('SomeOtherExtensionName', 'SomeOtherCurrentPluginName');
+	}
+
+	/**
+	 * @test
+	 */
+	public function getConfigurationRetrievesStoragePidIncludingGivenStoragePidWithRecursiveSetForMultipleStoragePid() {
+		$pluginConfiguration = array(
+			'persistence' => array(
+				'storagePid' => '1,25',
+				'recursive' => 99
+			)
+		);
+		$this->abstractConfigurationManager->expects($this->once())->method('getPluginConfiguration')->will($this->returnValue($pluginConfiguration));
+		$this->abstractConfigurationManager->expects($this->once())->method('getRecursiveStoragePids')->with('-1,-25');
+		$this->abstractConfigurationManager->getConfiguration('SomeOtherExtensionName', 'SomeOtherCurrentPluginName');
+	}
+
+	/**
 	 * switchableControllerActions *
 	 */
 	/**
