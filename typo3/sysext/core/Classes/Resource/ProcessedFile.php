@@ -191,8 +191,7 @@ class ProcessedFile extends AbstractFile {
 			throw new \RuntimeException('Cannot update original file!', 1350582054);
 		}
 		// TODO this should be more generic (in fact it only works for local file paths)
-		$addedFile = $this->storage->addFile($filePath, $this->storage->getProcessingFolder(), $this->name, 'replace');
-		$addedFile->setIndexable(FALSE);
+		$addedFile = $this->storage->updateProcessedFile($filePath, $this);
 
 		// Update some related properties
 		$this->identifier = $addedFile->getIdentifier();
