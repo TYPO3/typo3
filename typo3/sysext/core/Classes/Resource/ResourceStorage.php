@@ -572,13 +572,14 @@ class ResourceStorage {
 	 * @return boolean
 	 */
 	public function checkFileActionPermission($action, FileInterface $file) {
+		$isProcessedFile = $file instanceof ProcessedFile;
 		// Check 1: Does the user have permission to perform the action? e.g. "readFile"
-		if ($this->checkUserActionPermission($action, 'File') === FALSE) {
+		if (!$isProcessedFile && $this->checkUserActionPermission($action, 'File') === FALSE) {
 			return FALSE;
 		}
-		// Check 2: Does the user has the right to perform the action?
+		// Check 2: Does the user have the right to perform the action?
 		// (= is he within the file mount borders)
-		if (is_array($this->fileMounts) && count($this->fileMounts) && !$this->isWithinFileMountBoundaries($file)) {
+		if (!$isProcessedFile && is_array($this->fileMounts) && count($this->fileMounts) && !$this->isWithinFileMountBoundaries($file)) {
 			return FALSE;
 		}
 		$isReadCheck = FALSE;
@@ -721,6 +722,24 @@ class ResourceStorage {
 		// We do not care whether the file exists if $conflictMode is "replace",
 		// so just use the name as is in that case
 		return $this->driver->addFile($localFilePath, $targetFolder, $fileName);
+	}
+
+	/**
+	 * Updates a processed file with a new file from the local filesystem.
+	 *
+	 * @param $localFilePath
+	 * @param ProcessedFile $processedFile
+	 * @return FileInterface
+	 * @throws \InvalidArgumentException
+	 * @internal use only
+	 */
+	public function updateProcessedFile($localFilePath, ProcessedFile $processedFile) {
+		if (!file_exists($localFilePath)) {
+			throw new \InvalidArgumentException('File "' . $localFilePath . '" does not exist.', 1319552745);
+		}
+		$file = $this->driver->addFile($localFilePath, $this->getProcessingFolder(), $processedFile->getName());
+		$file->setIndexable(FALSE);
+		return $file;
 	}
 
 	/**
