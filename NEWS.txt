@@ -36,12 +36,31 @@ General
 Logging
 -------------------------------------------------------------------------------
 
-* The logger of the Logging API now complies with the PSR-3 standard of the
-  PHP Framework Interop Group: http://www.php-fig.org/psr/3/
+* Logging API PSR-3 compliance
+
+The logger of the Logging API now complies with the PSR-3 standard of the
+PHP Framework Interop Group: http://www.php-fig.org/psr/3/
 
 -------------------------------------------------------------------------------
 Backend
 -------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------
+Frontend
+-------------------------------------------------------------------------------
+
+* Minor API change in \TYPO3\CMS\Frontend\ContentObjectRenderer->getTreeList()
+
+getTreeList() got some cleanup and slightly changed its return result. Former
+versions sometimes returned a trailing comma which is not the case anymore.
+
+Before:
+getTreeList(42, 4) // get pids for pageId 42, 4 levels deep
+result: '0, 22, 11, 4,'
+
+After:
+getTreeList(42, 4)
+result: '0, 22, 11, 4'
 
 -------------------------------------------------------------------------------
 Administration / Customization

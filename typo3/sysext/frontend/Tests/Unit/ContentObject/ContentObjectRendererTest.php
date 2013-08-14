@@ -50,6 +50,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * Set up
 	 */
 	public function setUp() {
+		$GLOBALS['TYPO3_DB'] = $this->getMock('TYPO3\\CMS\\Core\\Database\\DatabaseConnection', array());
 		$this->template = $this->getMock('TYPO3\\CMS\\Core\\TypoScript\\TemplateService', array('getFileName', 'linkData'));
 		$this->tsfe = $this->getAccessibleMock('TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController', array('dummy'), array(), '', FALSE);
 		$this->tsfe->tmpl = $this->template;
@@ -1225,6 +1226,42 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 	/**
+	 * @test
+	 */
+	public function getQueryCallsGetTreeListWithNegativeValuesIfRecursiveIsSet() {
+		$this->cObj = $this->getAccessibleMock('\\TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer', array('getTreeList'));
+		$this->cObj->start(array(), 'tt_content');
+		$conf = array(
+			'recursive' => '15',
+			'pidInList' => '16, -35'
+		);
+		$this->cObj->expects($this->at(0))
+			->method('getTreeList')
+			->with(-16, 15);
+		$this->cObj->expects($this->at(1))
+			->method('getTreeList')
+			->with(-35, 15);
+		$this->cObj->getQuery('tt_content', $conf, TRUE);
+	}
+
+	/**
+	 * @test
+	 */
+	public function getQueryCallsGetTreeListWithCurrentPageIfThisIsSet() {
+		$this->cObj = $this->getAccessibleMock('\\TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer', array('getTreeList'));
+		$GLOBALS['TSFE']->id = 27;
+		$this->cObj->start(array(), 'tt_content');
+		$conf = array(
+			'pidInList' => 'this',
+			'recursive' => '4'
+		);
+		$this->cObj->expects($this->once())
+			->method('getTreeList')
+			->with(-27);
+		$this->cObj->getQuery('tt_content', $conf, TRUE);
+	}
+
+	/**
 	 * Data provider for the stdWrap_strftime test
 	 *
 	 * @return array multi-dimensional array with the second level like this:
@@ -1852,6 +1889,88 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$cleanedResult = str_replace(' ', '', $cleanedResult);
 
 		$this->assertEquals($expectedResult, $cleanedResult);
+	}
+
+	/**
+	 * @test
+	 */
+	public function getTreeListReturnsChildPageUids() {
+		$GLOBALS['TYPO3_DB']->expects($this->any())->method('exec_SELECTgetSingleRow')->with('treelist')->will($this->returnValue(NULL));
+		$GLOBALS['TSFE']->sys_page
+			->expects($this->any())
+			->method('getRawRecord')
+			->will(
+				$this->onConsecutiveCalls(
+					array('uid' => 17),
+					array('uid' => 321),
+					array('uid' => 719),
+					array('uid' => 42)
+				)
+			);
+
+		$GLOBALS['TSFE']->sys_page->expects($this->any())->method('getMountPointInfo')->will($this->returnValue(NULL));
+		$GLOBALS['TYPO3_DB']
+			->expects($this->any())
+			->method('exec_SELECTgetRows')
+			->will(
+				$this->onConsecutiveCalls(
+					array(
+						array('uid' => 321)
+					),
+					array(
+						array('uid' => 719)
+					),
+					array(
+						array('uid' => 42)
+					)
+				)
+			);
+		// 17 = pageId, 5 = recursionLevel, 0 = begin (entry to recursion, internal), TRUE = do not check enable fields
+		// 17 is positive, we expect 17 NOT to be included in result
+		$result = $this->cObj->getTreeList(17, 5, 0, TRUE);
+		$expectedResult = '0,42,719,321';
+		$this->assertEquals($expectedResult, $result);
+	}
+
+	/**
+	 * @test
+	 */
+	public function getTreeListReturnsChildPageUidsAndOriginalPidForNegativeValue() {
+		$GLOBALS['TYPO3_DB']->expects($this->any())->method('exec_SELECTgetSingleRow')->with('treelist')->will($this->returnValue(NULL));
+		$GLOBALS['TSFE']->sys_page
+			->expects($this->any())
+			->method('getRawRecord')
+			->will(
+				$this->onConsecutiveCalls(
+					array('uid' => 17),
+					array('uid' => 321),
+					array('uid' => 719),
+					array('uid' => 42)
+				)
+			);
+
+		$GLOBALS['TSFE']->sys_page->expects($this->any())->method('getMountPointInfo')->will($this->returnValue(NULL));
+		$GLOBALS['TYPO3_DB']
+			->expects($this->any())
+			->method('exec_SELECTgetRows')
+			->will(
+				$this->onConsecutiveCalls(
+					array(
+						array('uid' => 321)
+					),
+					array(
+						array('uid' => 719)
+					),
+					array(
+						array('uid' => 42)
+					)
+				)
+			);
+		// 17 = pageId, 5 = recursionLevel, 0 = begin (entry to recursion, internal), TRUE = do not check enable fields
+		// 17 is negative, we expect 17 to be included in result
+		$result = $this->cObj->getTreeList(-17, 5, 0, TRUE);
+		$expectedResult = '0,42,719,321,17';
+		$this->assertEquals($expectedResult, $result);
 	}
 }
 
