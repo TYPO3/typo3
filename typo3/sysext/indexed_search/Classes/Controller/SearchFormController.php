@@ -1113,7 +1113,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 			$siteIdNumbers = GeneralUtility::intExplode(',', $this->wholeSiteIdList);
 			$id_list = array();
 			foreach ($siteIdNumbers as $rootId) {
-				$id_list[] = $this->cObj->getTreeList($rootId, 9999, 0, 0, '', '') . $rootId;
+				$id_list[] = $this->cObj->getTreeList(-1 * $rootId, 9999);
 			}
 			$page_where = ' ISEC.page_id IN (' . implode(',', $id_list) . ')';
 		} else {
