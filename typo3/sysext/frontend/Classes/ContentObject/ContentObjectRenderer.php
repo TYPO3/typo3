@@ -7218,7 +7218,7 @@ class ContentObjectRenderer {
 		$depth = intval($depth);
 		$begin = intval($begin);
 		$id = intval($id);
-		$theList = '';
+		$theList = array();
 		$addId = 0;
 		$requestHash = '';
 		if ($id) {
@@ -7268,75 +7268,98 @@ class ContentObjectRenderer {
 			}
 			// Select sublevel:
 			if ($depth > 0) {
-				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($allFields, 'pages', 'pid = ' . intval($id) . ' AND deleted = 0 ' . $moreWhereClauses, '', 'sorting');
-				while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-					$GLOBALS['TSFE']->sys_page->versionOL('pages', $row);
-					if ($row['doktype'] == \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_RECYCLER || $row['doktype'] == \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_BE_USER_SECTION || $row['t3ver_state'] > 0) {
-						// Doing this after the overlay to make sure changes
-						// in the overlay are respected.
-						// However, we do not process pages below of and
-						// including of type recycler and BE user section
-						continue;
-					}
-					// Find mount point if any:
-					$next_id = $row['uid'];
-					$mount_info = $GLOBALS['TSFE']->sys_page->getMountPointInfo($next_id, $row);
-					// Overlay mode:
-					if (is_array($mount_info) && $mount_info['overlay']) {
-						$next_id = $mount_info['mount_pid'];
-						$res2 = $GLOBALS['TYPO3_DB']->exec_SELECTquery($allFields, 'pages', 'uid = ' . intval($next_id) . ' AND deleted = 0 ' . $moreWhereClauses, '', 'sorting');
-						$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res2);
-						$GLOBALS['TYPO3_DB']->sql_free_result($res2);
+				$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+					$allFields,
+					'pages',
+					'pid = ' . intval($id) . ' AND deleted = 0 ' . $moreWhereClauses,
+					'',
+					'sorting'
+				);
+				if (is_array($rows)) {
+					foreach ($rows as $row) {
 						$GLOBALS['TSFE']->sys_page->versionOL('pages', $row);
 						if ($row['doktype'] == \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_RECYCLER || $row['doktype'] == \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_BE_USER_SECTION || $row['t3ver_state'] > 0) {
-							// Doing this after the overlay to make sure
-							// changes in the overlay are respected.
-							// see above
+							// Doing this after the overlay to make sure changes
+							// in the overlay are respected.
+							// However, we do not process pages below of and
+							// including of type recycler and BE user section
 							continue;
 						}
-					}
-					// Add record:
-					if ($dontCheckEnableFields || $GLOBALS['TSFE']->checkPagerecordForIncludeSection($row)) {
-						// Add ID to list:
-						if ($begin <= 0) {
-							if ($dontCheckEnableFields || $GLOBALS['TSFE']->checkEnableFields($row)) {
-								$theList .= $next_id . ',';
+						// Find mount point if any:
+						$next_id = $row['uid'];
+						$mount_info = $GLOBALS['TSFE']->sys_page->getMountPointInfo($next_id, $row);
+						// Overlay mode:
+						if (is_array($mount_info) && $mount_info['overlay']) {
+							$next_id = $mount_info['mount_pid'];
+							$res2 = $GLOBALS['TYPO3_DB']->exec_SELECTquery($allFields, 'pages', 'uid = ' . intval($next_id) . ' AND deleted = 0 ' . $moreWhereClauses, '', 'sorting');
+							$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res2);
+							$GLOBALS['TYPO3_DB']->sql_free_result($res2);
+							$GLOBALS['TSFE']->sys_page->versionOL('pages', $row);
+							if ($row['doktype'] == \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_RECYCLER || $row['doktype'] == \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_BE_USER_SECTION || $row['t3ver_state'] > 0) {
+								// Doing this after the overlay to make sure
+								// changes in the overlay are respected.
+								// see above
+								continue;
 							}
 						}
-						// Next level:
-						if ($depth > 1 && !$row['php_tree_stop']) {
-							// Normal mode:
-							if (is_array($mount_info) && !$mount_info['overlay']) {
-								$next_id = $mount_info['mount_pid'];
+						// Add record:
+						if ($dontCheckEnableFields || $GLOBALS['TSFE']->checkPagerecordForIncludeSection($row)) {
+							// Add ID to list:
+							if ($begin <= 0) {
+								if ($dontCheckEnableFields || $GLOBALS['TSFE']->checkEnableFields($row)) {
+									$theList[] = $next_id;
+								}
 							}
-							// Call recursively, if the id is not in prevID_array:
-							if (!in_array($next_id, $prevId_array)) {
-								$theList .= self::getTreeList($next_id, $depth - 1, $begin - 1, $dontCheckEnableFields, $addSelectFields, $moreWhereClauses, $prevId_array, $recursionLevel + 1);
+							// Next level:
+							if ($depth > 1 && !$row['php_tree_stop']) {
+								// Normal mode:
+								if (is_array($mount_info) && !$mount_info['overlay']) {
+									$next_id = $mount_info['mount_pid'];
+								}
+								// Call recursively, if the id is not in prevID_array:
+								if (!in_array($next_id, $prevId_array)) {
+									$theList = array_merge(
+										\TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(
+											',',
+											self::getTreeList($next_id, $depth - 1, $begin - 1, $dontCheckEnableFields, $addSelectFields, $moreWhereClauses, $prevId_array, $recursionLevel + 1)
+										),
+										$theList
+									);
+								}
 							}
 						}
 					}
 				}
-				$GLOBALS['TYPO3_DB']->sql_free_result($res);
 			}
 			// If first run, check if the ID should be returned:
 			if (!$recursionLevel) {
 				if ($addId) {
 					if ($begin > 0) {
-						$theList .= 0;
+						$theList[] = 0;
 					} else {
-						$theList .= $addId;
+						$theList[] = $addId;
+					}
+				}
+				foreach($theList as $key => $pid) {
+					if (!$pid) {
+						unset($theList[$key]);
 					}
 				}
 				$GLOBALS['TYPO3_DB']->exec_INSERTquery('cache_treelist', array(
 					'md5hash' => $requestHash,
 					'pid' => $id,
-					'treelist' => $theList,
+					'treelist' => implode(',', $theList),
 					'tstamp' => $GLOBALS['EXEC_TIME']
 				));
 			}
 		}
 		// Return list:
-		return $theList;
+		foreach ($theList as $key => $pid) {
+			if (!$pid) {
+				unset($theList[$key]);
+			}
+		}
+		return implode(',', $theList);
 	}
 
 	/**
@@ -7491,14 +7514,24 @@ class ContentObjectRenderer {
 		if (isset($conf['recursive'])) {
 			$conf['recursive'] = intval($conf['recursive']);
 			if ($conf['recursive'] > 0) {
-				$pidList = '';
-				foreach (explode(',', $conf['pidInList']) as $value) {
-					if ($value === 'this') {
-						$value = $GLOBALS['TSFE']->id;
+				$pidList = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $conf['pidInList']);
+				array_walk($pidList, function (&$storagePid) {
+					if ($storagePid === 'this') {
+						$storagePid = $GLOBALS['TSFE']->id;
 					}
-					$pidList .= $value . ',' . $this->getTreeList($value, $conf['recursive']);
+					if ($storagePid > 0) {
+						$storagePid = -$storagePid;
+					}
+				});
+				foreach ($pidList as $value) {
+					// Implementation of getTreeList allows to pass the id negative to include
+					// it into the result otherwise only childpages are returned
+					$pidList = array_merge(
+						\TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',',$this->getTreeList($value, $conf['recursive'])),
+						$pidList
+					);
 				}
-				$conf['pidInList'] = trim($pidList, ',');
+				$conf['pidInList'] = implode(',', $pidList);
 			}
 		}
 		if (!strcmp($conf['pidInList'], '')) {
