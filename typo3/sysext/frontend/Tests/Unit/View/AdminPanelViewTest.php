@@ -36,6 +36,27 @@ class AdminPanelViewTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$GLOBALS['LANG'] = $this->getMock('TYPO3\\CMS\\Lang\\LanguageService', array(), array(), '', FALSE);
 	}
 
+	/**
+	 * @test
+	 */
+	public function extGetFeAdminValueReturnsTimestamp() {
+		$strTime = '2013-01-01 01:00:00';
+		$timestamp = strtotime($strTime);
+
+		$backendUser = $this->getMock('TYPO3\\CMS\\Core\\Authentication\\BackendUserAuthentication');
+		$backendUser->uc['TSFE_adminConfig']['preview_simulateDate'] = $timestamp;
+		unset($backendUser->extAdminConfig['override.']['preview.']);
+		unset($backendUser->extAdminConfig['override.']['preview']);
+		$GLOBALS['BE_USER'] = $backendUser;
+
+		$adminPanelMock = $this->getMock('TYPO3\\CMS\\Frontend\\View\\AdminPanelView', array('isAdminModuleEnabled','isAdminModuleOpen'), array(), '', FALSE);
+		$adminPanelMock->expects($this->any())->method('isAdminModuleEnabled')->will($this->returnValue(TRUE));
+		$adminPanelMock->expects($this->any())->method('isAdminModuleOpen')->will($this->returnValue(TRUE));
+
+		$timestampReturned = $adminPanelMock->extGetFeAdminValue('preview', 'simulateDate');
+		$this->assertEquals($timestamp, $timestampReturned);
+	}
+
 	/////////////////////////////////////////////
 	// Test concerning extendAdminPanel hook
 	/////////////////////////////////////////////
