@@ -365,6 +365,7 @@ $GLOBALS['TBE_STYLES']['spriteIconApi']['coreSpriteImageNames'] = array(
 	'actions-system-extension-sqldump',
 	'actions-system-extension-uninstall',
 	'actions-system-extension-update',
+	'actions-system-extension-update-disabled',
 	'actions-system-help-open',
 	'actions-system-list-open',
 	'actions-system-options-view',

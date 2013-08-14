@@ -84,6 +84,9 @@
 			<trans-unit id="extensionList.updateToVersion" xml:space="preserve">
 				<source>Update to version %s</source>
 			</trans-unit>
+			<trans-unit id="extensionList.updateDisabled" xml:space="preserve">
+				<source>An update is available but this operation is currently disabled</source>
+			</trans-unit>
 			<trans-unit id="extensionList.deactivate" xml:space="preserve">
 				<source>Deactivate</source>
 			</trans-unit>
