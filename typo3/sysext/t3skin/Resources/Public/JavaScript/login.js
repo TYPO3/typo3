@@ -1,6 +1,7 @@
 var isWebKit = document.childNodes && !document.all && !navigator.taintEnabled;
 
 TYPO3BackendLogin = {
+	currentForm: '',
 
 	/**
 	 *  Initializing the Login Interface
@@ -8,12 +9,23 @@ TYPO3BackendLogin = {
 	start: function() {
 		TYPO3BackendLogin.preloadImages();
 		TYPO3BackendLogin.registerEventListeners();
-		TYPO3BackendLogin.setVisibilityOfClearIcon($('t3-username'), $('t3-username-clearIcon'));
-		TYPO3BackendLogin.setVisibilityOfClearIcon($('t3-password'), $('t3-password-clearIcon'));
+		$$('.clearIcon').each(function(clearIcon) {
+			var name = clearIcon.id.substring(0, clearIcon.id.length - 10);
+			TYPO3BackendLogin.setVisibilityOfClearIcon($(name), clearIcon);
+		});
+
+		//disable non-first-form elements so they are not submitted
+		$$('.t3-login-form').each(function(form, index) {
+			if (index == 0) {
+				return;
+			}
+			$$('#' + form.id + ' input').each(function(elem) {
+				elem.disable();
+			});
+		});
 		TYPO3BackendLogin.checkCookieSupport();
 		TYPO3BackendLogin.checkForLogintypeCookie();
 		TYPO3BackendLogin.checkForInterfaceCookie();
-		$('t3-username').activate();
 	},
 
 	/**
@@ -28,16 +40,15 @@ TYPO3BackendLogin = {
 	 * Registers listeners for the Login Interface (e.g. to toggle OpenID and Default login)
 	 */
 	registerEventListeners: function() {
-		Event.observe(
-				$('t3-login-switchToOpenId'),
+		$$('.t3-login-form-footer-switch').each(function(elem) {
+			Event.observe(
+				elem,
 				'click',
-				TYPO3BackendLogin.switchToOpenId
+				function() {
+					TYPO3BackendLogin.switchTo(elem.id.substr(21));
+				}
 			);
-		Event.observe(
-			$('t3-login-switchToDefault'),
-			'click',
-			TYPO3BackendLogin.switchToDefault
-		);
+		});
 		Event.observe(
 			$('t3-login-submit'),
 			'click',
@@ -53,25 +64,26 @@ TYPO3BackendLogin = {
 			);
 		}
 
-		$A(['t3-username', 't3-password']).each(function(value) {
+		$$('.clearIcon').each(function(clearIcon) {
+			var name = clearIcon.id.substring(0, clearIcon.id.length - 10);
 			Event.observe(
-					$(value + '-clearIcon'),
-					'click',
-					function() { TYPO3BackendLogin.clearInputField($(value)); }
+				clearIcon,
+				'click',
+				function() { TYPO3BackendLogin.clearInputField($(name)); }
 			);
 			TYPO3BackendLogin.observeEvents(
-					$(value),
-					['focus', 'blur', 'keypress'],
-					function() { TYPO3BackendLogin.setVisibilityOfClearIcon($(value), $(value + '-clearIcon')); }
+				$(name),
+				['focus', 'blur', 'keypress'],
+				function() { TYPO3BackendLogin.setVisibilityOfClearIcon($(name), clearIcon); }
 			);
-			if (!isWebKit) {
+			if (!isWebKit && $(name + '-alert-capslock')) {
 				Event.observe(
-					$(value),
+					$(name),
 					'keypress',
-					function(event) { TYPO3BackendLogin.showCapsLockWarning($(value + '-alert-capslock'), event); }
+					function(event) { TYPO3BackendLogin.showCapsLockWarning($(name + '-alert-capslock'), event); }
 				);
 			}
-		})
+		});
 	},
 
 	/**
@@ -118,41 +130,54 @@ TYPO3BackendLogin = {
 	},
 
 	/**
-	 * Change to Interface for OpenId login and save the selection to a cookie
+	 * Change to different login form
 	 */
-	switchToOpenId: function() {
-		$('t3-login-openIdLogo').show();
-
-		$('t3-login-form-footer-default').hide();
-		$('t3-login-form-footer-openId').show();
-		$('t3-login-password-section').hide();
-
-		if ($('t3-login-interface-section')) {
-			$('t3-login-interface-section').hide();
+	switchTo: function(formName) {
+		if (!$('t3-login-form-' + formName)) {
+			return;
 		}
-
-		$('t3-username').activate();
-
-		TYPO3BackendLogin.setLogintypeCookie('openid');
+		if (TYPO3BackendLogin.currentForm == '') {
+			//simply use the first one
+			TYPO3BackendLogin.currentForm = $$('.t3-login-form')[0].id.substr(14);
+		}
+		TYPO3BackendLogin.hideForm(TYPO3BackendLogin.currentForm);
+		TYPO3BackendLogin.showForm(formName);
+		TYPO3BackendLogin.currentForm = formName;
 	},
 
 	/**
-	 * Change to Interface for default login and save the selection to a cookie
+	 * Hide the login form with the given name
 	 */
-	switchToDefault: function() {
-		$('t3-login-openIdLogo').hide();
+	hideForm: function(formName) {
+		$('t3-login-form-' + formName).setStyle({'display': 'none'});
+		$('t3-login-form-footer-' + formName).setStyle({'display': ''});
+		$('t3-login-form-footer-' + formName).removeClassName('hidden');
 
-		$('t3-login-form-footer-default').show();
-		$('t3-login-form-footer-openId').hide();
-		$('t3-login-password-section').show();
+		//disable form elements so they are not submitted
+		$$('#t3-login-form-' + formName + ' input').each(
+			function(elem) {
+				elem.disable();
+			}
+		);
+	},
 
-		if ($('t3-login-interface-section')) {
-			$('t3-login-interface-section').show();
-		}
+	/**
+	 * Show the login form with the given name
+	 */
+	showForm: function(formName) {
+		$('t3-login-form-' + formName).setStyle({'display': ''});
+		$('t3-login-form-footer-' + formName).setStyle({'display': 'none'});
+		$('t3-login-form-footer-' + formName).addClassName('hidden');
 
-		$('t3-username').activate();
+		//enable form elements again
+		$$('#t3-login-form-' + formName + ' input').each(
+			function(elem) {
+				elem.enable();
+			}
+		);
 
-		TYPO3BackendLogin.setLogintypeCookie('username');
+		$$('#t3-login-form-' + formName + ' input')[0].activate();
+		TYPO3BackendLogin.setLogintypeCookie(formName);
 	},
 
 	/**
@@ -199,8 +224,9 @@ TYPO3BackendLogin = {
 	 * Check if a login type was stored in a cookie and change the Interface accordingly
 	 */
 	checkForLogintypeCookie: function() {
-		if(document.cookie.indexOf('typo3-login-method=openid') >- 1) {
-			TYPO3BackendLogin.switchToOpenId();
+		var activeForm = Ext.util.Cookies.get('typo3-login-method');
+		if (activeForm) {
+			TYPO3BackendLogin.switchTo(activeForm);
 		}
 	},
 
