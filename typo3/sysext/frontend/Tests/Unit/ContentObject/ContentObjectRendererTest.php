@@ -47,9 +47,16 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	protected $template = NULL;
 
 	/**
+	 * @var \TYPO3\CMS\Core\Database\DatabaseConnection
+	 */
+	protected $typo3DbBackup;
+
+	/**
 	 * Set up
 	 */
 	public function setUp() {
+		$this->typo3DbBackup = $GLOBALS['TYPO3_DB'];
+		$GLOBALS['TYPO3_DB'] = $this->getMock('TYPO3\\CMS\\Core\\Database\\DatabaseConnection', array());
 		$this->template = $this->getMock('TYPO3\\CMS\\Core\\TypoScript\\TemplateService', array('getFileName', 'linkData'));
 		$this->tsfe = $this->getAccessibleMock('TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController', array('dummy'), array(), '', FALSE);
 		$this->tsfe->tmpl = $this->template;
@@ -63,6 +70,13 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$GLOBALS['TYPO3_CONF_VARS']['SYS']['TYPO3\\CMS\\Core\\Charset\\CharsetConverter_utils'] = 'mbstring';
 		$this->cObj = $this->getAccessibleMock('\\TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer', array('dummy'));
 		$this->cObj->start(array(), 'tt_content');
+	}
+
+	/**
+	 * Tears down this testcase
+	 */
+	public function tearDown() {
+		$GLOBALS['TYPO3_DB'] = $this->typo3DbBackup;
 	}
 
 	////////////////////////
@@ -1225,6 +1239,26 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 	/**
+	 * @test
+	 */
+	public function getQueryCallsGetTreeListWithNegativeValuesIfRecursiveIsSet() {
+		$this->cObj = $this->getAccessibleMock('\\TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer', array('getTreeList'));
+		$this->cObj->start(array(), 'tt_content');
+		$conf = array(
+			'recursive' => '15',
+			'pidInList' => '16, -35'
+		);
+		$this->cObj->expects($this->at(0))
+			->method('getTreeList')
+			->with(-16, 15);
+		$this->cObj->expects($this->at(1))
+			->method('getTreeList')
+			->with(-35, 15);
+		$this->cObj->getQuery('tt_content', $conf, TRUE);
+
+	}
+
+	/**
 	 * Data provider for the stdWrap_strftime test
 	 *
 	 * @return array multi-dimensional array with the second level like this:
@@ -1852,6 +1886,70 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$cleanedResult = str_replace(' ', '', $cleanedResult);
 
 		$this->assertEquals($expectedResult, $cleanedResult);
+	}
+
+	/**
+	 * @test
+	 */
+	public function getTreeListReturnsChildPageUids() {
+		$GLOBALS['TYPO3_DB']->expects($this->any())->method('exec_SELECTgetSingleRow')->with('treelist')->will($this->returnValue(NULL));
+		$GLOBALS['TSFE']->sys_page->expects($this->any())
+			->method('getRawRecord')
+			->will($this->onConsecutiveCalls(
+				array('uid' => 17),
+				array('uid' => 321),
+				array('uid' => 719),
+				array('uid' => 42)
+			));
+
+		$GLOBALS['TSFE']->sys_page->expects($this->any())->method('getMountPointInfo')->will($this->returnValue(NULL));
+		$GLOBALS['TYPO3_DB']->expects($this->any())->method('exec_SELECTgetRows')->will($this->onConsecutiveCalls(
+				array(
+					array('uid' => 321)
+				),
+				array(
+					array('uid' => 719)
+				),
+				array(
+					array('uid' => 42)
+				)
+			)
+		);
+		$result = $this->cObj->getTreeList(17, 5, 0, TRUE);
+		$expectedResult = '42,719,321';
+		$this->assertEquals($expectedResult, $result);
+	}
+
+	/**
+	 * @test
+	 */
+	public function getTreeListReturnsChildPageUidsAndOriginalPidForNegativeValue() {
+		$GLOBALS['TYPO3_DB']->expects($this->any())->method('exec_SELECTgetSingleRow')->with('treelist')->will($this->returnValue(NULL));
+		$GLOBALS['TSFE']->sys_page->expects($this->any())
+			->method('getRawRecord')
+			->will($this->onConsecutiveCalls(
+				array('uid' => 17),
+				array('uid' => 321),
+				array('uid' => 719),
+				array('uid' => 42)
+			));
+
+		$GLOBALS['TSFE']->sys_page->expects($this->any())->method('getMountPointInfo')->will($this->returnValue(NULL));
+		$GLOBALS['TYPO3_DB']->expects($this->any())->method('exec_SELECTgetRows')->will($this->onConsecutiveCalls(
+				array(
+					array('uid' => 321)
+				),
+				array(
+					array('uid' => 719)
+				),
+				array(
+					array('uid' => 42)
+				)
+			)
+		);
+		$result = $this->cObj->getTreeList(-17, 5, 0, TRUE);
+		$expectedResult = '42,719,321,17';
+		$this->assertEquals($expectedResult, $result);
 	}
 }
 
