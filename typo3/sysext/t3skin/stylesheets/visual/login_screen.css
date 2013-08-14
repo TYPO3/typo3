@@ -61,18 +61,25 @@
 }
 
 #typo3-index-php .t3-login-form-footer,
-#typo3-index-php .t3-login-form-footer a.switchToOpenId,
 #typo3-index-php dl#t3-login-news a {
 	color: #888;
 	font-size: 10px;
 }
 
-#typo3-index-php .t3-login-form-footer a.switchToOpenId,
+#typo3-index-php .t3-login-form-footer-switch {
+	display: inline;
+}
+#typo3-index-php .t3-login-form-footer-switch + .t3-login-form-footer-switch:before {
+	content: " | ";
+}
+#typo3-index-php .t3-login-form-footer-switch.hidden + .t3-login-form-footer-switch:before {
+	content: "";
+}
+
 #typo3-index-php dl#t3-login-news a {
 	text-decoration: underline;
 }
 
-#typo3-index-php .t3-login-form-footer a.switchToOpenId:hover,
 #typo3-index-php dl#t3-login-news a:hover {
 	color: #333;
 }

@@ -56,18 +56,6 @@ class LoginController {
 	 */
 	public $GPinterface;
 
-	// GPvar: preset username
-	/**
-	 * @todo Define visibility
-	 */
-	public $u;
-
-	// GPvar: preset password
-	/**
-	 * @todo Define visibility
-	 */
-	public $p;
-
 	// GPvar: If "L" is "OUT", then any logged in used is logged out. If redirect_url is given, we redirect to it
 	/**
 	 * @todo Define visibility
@@ -148,11 +136,6 @@ class LoginController {
 		session_start();
 		$this->redirect_url = GeneralUtility::sanitizeLocalUrl(GeneralUtility::_GP('redirect_url'));
 		$this->GPinterface = GeneralUtility::_GP('interface');
-		// Grabbing preset username and password, for security reasons this feature only works if SSL is used
-		if (GeneralUtility::getIndpEnv('TYPO3_SSL')) {
-			$this->u = GeneralUtility::_GP('u');
-			$this->p = GeneralUtility::_GP('p');
-		}
 		// If "L" is "OUT", then any logged in is logged out. If redirect_url is given, we redirect to it
 		$this->L = GeneralUtility::_GP('L');
 		// Login
@@ -246,8 +229,6 @@ class LoginController {
 	public function makeLoginForm() {
 		$content = HtmlParser::getSubpart($GLOBALS['TBE_TEMPLATE']->moduleTemplate, '###LOGIN_FORM###');
 		$markers = array(
-			'VALUE_USERNAME' => htmlspecialchars($this->u),
-			'VALUE_PASSWORD' => htmlspecialchars($this->p),
 			'VALUE_SUBMIT' => $GLOBALS['LANG']->getLL('labels.submitLogin', TRUE)
 		);
 		// Show an error message if the login command was successful already, otherwise remove the subpart
@@ -265,6 +246,61 @@ class LoginController {
 			$markers['LABEL_INTERFACE'] = $GLOBALS['LANG']->getLL('labels.interface', TRUE);
 			$markers['VALUE_INTERFACE'] = $this->interfaceSelector;
 		}
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['LoginForm']['provideLoginForm'])) {
+			$formsData = array(
+				'forms' => array(),
+				'labels' => array(),
+			);
+			ksort($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['LoginForm']['provideLoginForm']);
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['LoginForm']['provideLoginForm'] as $callbackConf) {
+				$params = array(
+					'forms'  => &$formsData['forms'],
+					'labels' => &$formsData['labels'],
+					'conf'   => $callbackConf['conf'],
+				);
+				GeneralUtility::callUserFunction(
+					$callbackConf['callback'], $params, $this
+				);
+			}
+			$markers['FORMS'] = '';
+
+			if (count($formsData['labels']) <= 1) {
+				$content = HtmlParser::substituteSubpart($content, '###SWITCH_BUTTONS###', '');
+				$markers['FORMS'] = implode('', $formsData['forms']);
+			} else {
+				$labelHtml = HtmlParser::getSubpart($content, '###SWITCH_BUTTONS###');
+				$formHtml  = HtmlParser::getSubpart($content, '###FORMS###');
+				$labels = '';
+				$forms = '';
+				$labelStyle = ' style="display: none" class="hidden"';
+				$formStyle = '';
+				foreach ($formsData['labels'] as $key => $label) {
+					$labels .= HtmlParser::substituteMarkerArray(
+						$labelHtml,
+						array(
+							'LABEL' => $label,
+							'BUTTON_NAME' => $key,
+							'BUTTON_STYLE' => $labelStyle
+						),
+						'###|###'
+					);
+					$forms .= HtmlParser::substituteMarkerArray(
+						$formHtml,
+						array(
+							'FORM' => $formsData['forms'][$key],
+							'FORM_NAME' => $key,
+							'FORM_STYLE' => $formStyle
+						),
+						'###|###'
+					);
+					$formStyle = ' style="display: none"';
+					$labelStyle = '';
+				}
+				$content = HtmlParser::substituteSubpart($content, '###SWITCH_BUTTONS###', $labels);
+				$content = HtmlParser::substituteSubpart($content, '###FORMS###', $forms);
+			}
+		}
+
 		return HtmlParser::substituteMarkerArray($content, $markers, '###|###');
 	}
 
@@ -323,7 +359,6 @@ class LoginController {
 			'NEWS' => $this->makeLoginNews(),
 			'COPYRIGHT' => BackendUtility::TYPO3_copyRightNotice($GLOBALS['TYPO3_CONF_VARS']['SYS']['loginCopyrightShowVersion']),
 			'CSS_CLASSES' => !empty($additionalCssClasses) ? 'class="' . implode(' ', $additionalCssClasses) . '"' : '',
-			'CSS_OPENIDCLASS' => 't3-login-openid-' . (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('openid') ? 'enabled' : 'disabled'),
 			// The labels will be replaced later on, thus the other parts above
 			// can use these markers as well and it will be replaced
 			'HEADLINE' => $GLOBALS['LANG']->getLL('headline', TRUE),
@@ -337,13 +372,6 @@ class LoginController {
 			'ERROR_CAPSLOCK' => $GLOBALS['LANG']->getLL('error.capslock', TRUE),
 			'ERROR_FURTHERHELP' => $GLOBALS['LANG']->getLL('error.furtherInformation', TRUE),
 			'LABEL_DONATELINK' => $GLOBALS['LANG']->getLL('labels.donate', TRUE),
-			'LABEL_USERNAME' => $GLOBALS['LANG']->getLL('labels.username', TRUE),
-			'LABEL_OPENID' => $GLOBALS['LANG']->getLL('labels.openId', TRUE),
-			'LABEL_PASSWORD' => $GLOBALS['LANG']->getLL('labels.password', TRUE),
-			'LABEL_WHATISOPENID' => $GLOBALS['LANG']->getLL('labels.whatIsOpenId', TRUE),
-			'LABEL_SWITCHOPENID' => $GLOBALS['LANG']->getLL('labels.switchToOpenId', TRUE),
-			'LABEL_SWITCHDEFAULT' => $GLOBALS['LANG']->getLL('labels.switchToDefault', TRUE),
-			'CLEAR' => $GLOBALS['LANG']->getLL('clear', TRUE),
 			'LOGIN_PROCESS' => $GLOBALS['LANG']->getLL('login_process', TRUE),
 			'SITELINK' => '<a href="/">###SITENAME###</a>',
 			// Global variables will now be replaced (at last)
@@ -643,56 +671,6 @@ class LoginController {
 				catch(error) {
 					//continue
 				}
-
-					// Wait a few millisecons before calling checkFocus(). This might be necessary because some browsers need some time to auto-fill in the form fields
-				window.setTimeout("checkFocus()", 50);
-			}
-
-				// This moves focus to the right input field:
-			function checkFocus() {
-					// If for some reason there already is a username in the username form field, move focus to the password field:
-				if (document.loginform.username && document.loginform.username.value == "") {
-					document.loginform.username.focus();
-				} else if (document.loginform.p_field && document.loginform.p_field.type!="hidden") {
-					document.loginform.p_field.focus();
-				}
-			}
-
-				// This function shows a warning, if user has capslock enabled
-				// parameter showWarning: shows warning if TRUE and capslock active, otherwise only hides warning, if capslock gets inactive
-			function checkCapslock(e, showWarning) {
-				if (!isCapslock(e)) {
-					document.getElementById(\'t3-capslock\').style.display = \'none\';
-				} else if (showWarning) {
-					document.getElementById(\'t3-capslock\').style.display = \'block\';
-				}
-			}
-
-				// Checks weather capslock is enabled (returns TRUE if enabled, false otherwise)
-				// thanks to http://24ways.org/2007/capturing-caps-lock
-
-			function isCapslock(e) {
-				var ev = e ? e : window.event;
-				if (!ev) {
-					return;
-				}
-				var targ = ev.target ? ev.target : ev.srcElement;
-				// get key pressed
-				var which = -1;
-				if (ev.which) {
-					which = ev.which;
-				} else if (ev.keyCode) {
-					which = ev.keyCode;
-				}
-				// get shift status
-				var shift_status = false;
-				if (ev.shiftKey) {
-					shift_status = ev.shiftKey;
-				} else if (ev.modifiers) {
-					shift_status = !!(ev.modifiers & 4);
-				}
-				return (((which >= 65 && which <= 90) && !shift_status) ||
-					((which >= 97 && which <= 122) && shift_status));
 			}
 
 				// prevent opening the login form in the backend frameset

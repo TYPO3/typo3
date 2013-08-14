@@ -143,7 +143,12 @@ class OpenidService extends \TYPO3\CMS\Core\Service\AbstractService {
 		$this->loginData = $loginData;
 		$this->authenticationInformation = $authenticationInformation;
 		// Implement normalization according to OpenID 2.0 specification
-		$this->openIDIdentifier = $this->normalizeOpenID($this->loginData['uname']);
+		if (isset($_POST['openid_url'])) {
+			$this->openIDIdentifier = $this->normalizeOpenID($_POST['openid_url']);
+		} else {
+			//BC for pre-6.2/non-js FE login forms
+			$this->openIDIdentifier = $this->normalizeOpenID($this->loginData['uname']);
+		}
 		// If we are here after authentication by the OpenID server, get its response.
 		if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('tx_openid_mode') == 'finish' && $this->openIDResponse == NULL) {
 			$this->includePHPOpenIDLibrary();

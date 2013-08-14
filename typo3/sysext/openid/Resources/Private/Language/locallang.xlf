@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:35Z" product-name="openid">
+		<header/>
+		<body>
+			<trans-unit id="labels.openId" xml:space="preserve">
+				<source>OpenID</source>
+			</trans-unit>
+			<trans-unit id="labels.whatIsOpenId" xml:space="preserve">
+				<source>What is OpenId?</source>
+			</trans-unit>
+			<trans-unit id="labels.switchToOpenId" xml:space="preserve">
+				<source>Switch to OpenID</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

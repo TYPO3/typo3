@@ -51,7 +51,7 @@
 	width: 100%;
 }
 
-#typo3-index-php .t3-login-field .t3-login-clearInputField {
+#typo3-index-php .t3-login-field .t3-clearInputField {
 	cursor: pointer;
 	position: absolute;
 	top: 11px;
@@ -77,15 +77,6 @@
 
 #typo3-index-php #t3-interfaceselector option {
 	height: 19px;
-}
-
-#typo3-index-php #t3-login-openIdLogo {
-	position: absolute;
-}
-
-#typo3-index-php .t3-login-openid-disabled .t3-login-form-footer,
-#typo3-index-php .t3-login-openid-disabled #t3-login-openIdLogo {
-	display: none;
 }
 
 #typo3-index-php .t3-login-field input.t3-login-submit {

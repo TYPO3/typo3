@@ -1,0 +1,8 @@
+#t3-login-form-openid #openid_url {
+    background-image: url('../../../ext_icon.gif');
+    background-position: 6px 50%; /* LTR */
+    background-repeat: no-repeat;
+    padding-left: 30px;
+    box-sizing: border-box;
+    width: 350px;/*315 + 20 + 15*/
+}

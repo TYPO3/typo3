@@ -1,0 +1,7 @@
+{namespace backend=TYPO3\CMS\Backend\ViewHelpers}
+	<div class="t3-login-field">
+		<input type="text" id="openid_url" name="openid_url" value="{openid}" placeholder="{f:translate(key:'LLL:EXT:openid/Resources/Private/Language/locallang.xlf:labels.openId')}" class="t3-openid disableme" autofocus="autofocus" />
+		<input type="hidden" name="username" value="openid" class="disableme"/>
+
+		<backend:ClearInputField field="openid_url"/>
+	</div>
