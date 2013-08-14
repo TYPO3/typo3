@@ -48,11 +48,21 @@
 				</f:if>
 				<td>
 					<f:if condition="{extension.updateAvailable}">
-						<f:be.buttons.icon
-							uri="{f:uri.action(action:'updateCommentForUpdatableVersions',controller:'Download',arguments:{extension:extension.key, integerVersion: extension.terObject.integerVersion},format:'json')}"
-							icon="actions-system-extension-update"
-							title="{f:translate(key:'extensionList.updateToVersion', arguments:{0:extension.updateToVersion.version})}"
-						/>
+						<f:if condition="{extension.state} == 'excludeFromUpdates'">
+							<f:then>
+								<f:be.buttons.icon
+									icon="actions-system-extension-update-disabled"
+									title="{f:translate(key:'extensionList.updateDisabled')}"
+								/>
+							</f:then>
+							<f:else>
+								<f:be.buttons.icon
+									uri="{f:uri.action(action:'updateCommentForUpdatableVersions',controller:'Download',arguments:{extension:extension.key, integerVersion: extension.terObject.integerVersion},format:'json')}"
+									icon="actions-system-extension-update"
+									title="{f:translate(key:'extensionList.updateToVersion', arguments:{0:extension.updateToVersion.version})}"
+								/>
+							</f:else>
+						</f:if>
 					</f:if>
 				</td>
 				<td>
