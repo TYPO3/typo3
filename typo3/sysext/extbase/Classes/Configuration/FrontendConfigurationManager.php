@@ -120,7 +120,7 @@ class FrontendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\Abst
 			if ($this->contentObject->data['recursive'] > 0) {
 				$explodedPages = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $pages);
 				foreach ($explodedPages as $pid) {
-					$list[] = trim($this->contentObject->getTreeList($pid, $this->contentObject->data['recursive']), ',');
+					$list[] = $this->contentObject->getTreeList($pid, $this->contentObject->data['recursive']);
 				}
 			}
 			if (count($list) > 0) {
