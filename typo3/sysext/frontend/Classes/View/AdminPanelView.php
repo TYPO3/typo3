@@ -194,6 +194,12 @@ class AdminPanelView {
 				return $GLOBALS['BE_USER']->extAdminConfig['override.'][$sectionName];
 			}
 			$retVal = $val ? $GLOBALS['BE_USER']->uc['TSFE_adminConfig'][$sectionName . '_' . $val] : 1;
+			
+			/* convert date to timestamp */
+			if ($sectionName == 'preview' && $val == 'simulateDate') {
+				$retVal = strtotime(urldecode($retVal));
+			}
+
 			if ($sectionName == 'preview' && $this->ext_forcePreview) {
 				return !$val ? TRUE : $retVal;
 			}
