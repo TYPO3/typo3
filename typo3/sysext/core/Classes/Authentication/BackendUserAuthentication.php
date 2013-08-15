@@ -2055,8 +2055,12 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 * @todo Define visibility
 	 */
 	public function writelog($type, $action, $error, $details_nr, $details, $data, $tablename = '', $recuid = '', $recpid = '', $event_pid = -1, $NEWid = '', $userId = 0) {
+		if (!$userId && isset($this->user['uid'])) {
+			$userId = $this->user['uid'];
+		}
+
 		$fields_values = array(
-			'userid' => $userId ? $userId : intval($this->user['uid']),
+			'userid' => intval($userId),
 			'type' => intval($type),
 			'action' => intval($action),
 			'error' => intval($error),
