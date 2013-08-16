@@ -294,7 +294,7 @@ select option.c-divider {
 }
 
 input.typo3-TCEforms-suggest-search {
-	background-image: url('../../icons/gfx/zoom.gif');
+	background-image: url('../../../../icons/gfx/zoom.gif');
 	background-position: 2px center;
 	background-repeat: no-repeat;
 }

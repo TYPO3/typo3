@@ -18,13 +18,13 @@ a.perm-denied:hover {
 
 a.perm-allowed,
 #perm-legend .perm-allowed {
-	background: transparent url('../../icons/gfx/perm-allowed.gif') no-repeat scroll center;
+	background: transparent url('../../../../icons/gfx/perm-allowed.gif') no-repeat scroll center;
 	color: green;
 }
 
 a.perm-denied,
 #perm-legend .perm-denied {
-	background: transparent url('../../icons/gfx/perm-denied.gif') no-repeat scroll center;
+	background: transparent url('../../../../icons/gfx/perm-denied.gif') no-repeat scroll center;
 	color: red;
 }
 

@@ -27,7 +27,7 @@ Pagetree
 #typo3-pagetree .x-tree-node .x-tree-node-over {
 	background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAABCAYAAAAb4BS0AAAAGElEQVR42gENAPL/AMjIyEzIyMizyMjI/zhvCQelaHPPAAAAAElFTkSuQmCC");
 	/* star-hack targets IE7 */
-	*background-image: url("../../images/shadows/navigation-container.png");
+	*background-image: url("../../../../images/shadows/navigation-container.png");
 	background-position: right;
 	background-repeat: repeat-y;
 	background-color: #f2f2f2;
@@ -88,39 +88,39 @@ Pagetree
 }
 
 .x-dd-drop-nodrop .x-dd-drop-icon {
-	background-image: url(../../images/icons/apps/pagetree-drag-place-denied.png);
+	background-image: url(../../../../images/icons/apps/pagetree-drag-place-denied.png);
 }
 
 .x-tree-drop-ok-append.typo3-pagetree-copy .x-dd-drop-icon {
-	background-image: url(../../images/icons/apps/pagetree-drag-new-inside.png);
+	background-image: url(../../../../images/icons/apps/pagetree-drag-new-inside.png);
 }
 
 .x-tree-drop-ok-below.typo3-pagetree-copy .x-dd-drop-icon {
-	background-image: url(../../images/icons/apps/pagetree-drag-copy-below.png);
+	background-image: url(../../../../images/icons/apps/pagetree-drag-copy-below.png);
 }
 
 .x-tree-drop-ok-above.typo3-pagetree-copy .x-dd-drop-icon {
-	background-image: url(../../images/icons/apps/pagetree-drag-copy-above.png);
+	background-image: url(../../../../images/icons/apps/pagetree-drag-copy-above.png);
 }
 
 .x-tree-drop-ok-between.typo3-pagetree-copy .x-dd-drop-icon {
-	background-image: url(../../images/icons/apps/pagetree-drag-new-between.png);
+	background-image: url(../../../../images/icons/apps/pagetree-drag-new-between.png);
 }
 
 .x-tree-drop-ok-append .x-dd-drop-icon {
-	background-image: url(../../images/icons/apps/pagetree-drag-move-into.png);
+	background-image: url(../../../../images/icons/apps/pagetree-drag-move-into.png);
 }
 
 .x-tree-drop-ok-between .x-dd-drop-icon {
-	background-image: url(../../images/icons/apps/pagetree-drag-move-between.png);
+	background-image: url(../../../../images/icons/apps/pagetree-drag-move-between.png);
 }
 
 .x-tree-drop-ok-below .x-dd-drop-icon {
-	background-image: url(../../images/icons/apps/pagetree-drag-move-below.png);
+	background-image: url(../../../../images/icons/apps/pagetree-drag-move-below.png);
 }
 
 .x-tree-drop-ok-above .x-dd-drop-icon {
-	background-image: url(../../images/icons/apps/pagetree-drag-move-above.png);
+	background-image: url(../../../../images/icons/apps/pagetree-drag-move-above.png);
 }
 
 #typo3-pagetree .x-tree-node .x-tree-drag-insert-below,
@@ -162,12 +162,12 @@ Pagetree
 #typo3-pagetree-topPanel .x-btn-click,
 #typo3-pagetree-topPanel .x-btn-over {
 	background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAAWCAIAAACKUbHAAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAD9JREFUCB19wdERAUAARDEv23+FmsGZG38Sz0sfKoXEppDKyldyxBzzM1eObWYMM5Zr/ipEWRm9UXnr0OVxvQAaNAkk1SzJpgAAAABJRU5ErkJggg==");
-	*background-image: url("../../images/backgrounds/docheader-pagetree-button-hover.png");
+	*background-image: url("../../../../images/backgrounds/docheader-pagetree-button-hover.png");
 }
 
 #typo3-pagetree-topPanel .x-btn-pressed {
 	background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAAWCAIAAABlk9r+AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAADtJREFUCB0FwYENADAMw6Ap/79cPFhV7b333ltVDdWqWLkaxYABc7AL5nDj7gw0cMMxxCCrXLtTVmhV+SoifU9efLPxAAAAAElFTkSuQmCC");
-	*background-image: url("../../images/backgrounds/docheader-pagetree-button.png");
+	*background-image: url("../../../../images/backgrounds/docheader-pagetree-button.png");
 }
 
 #typo3-pagetree-topPanel .x-btn-pressed,
@@ -312,7 +312,7 @@ Pagetree
 
 .typo3-pagetree-deletionDropZone-restore {
 	background-color: #d5d5d5;
-	background-image: url('../../images/backgrounds/button.png');
+	background-image: url('../../../../images/backgrounds/button.png');
 	background-repeat: repeat-x;
 	background-image: -moz-linear-gradient(center top, #f6f6f6 10%, #d5d5d5 90%);
 	background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(0.1, #f6f6f6), color-stop(0.9, #d5d5d5));
@@ -327,7 +327,7 @@ Pagetree
 
 .typo3-pagetree-deletionDropZone-restore:hover {
 	background-color: #c8c8c8;
-	background-image: url('../../images/backgrounds/button-hover.png');
+	background-image: url('../../../../images/backgrounds/button-hover.png');
 	background-image: -moz-linear-gradient(center top, #f6f6f6 10%, #bdbcbc 90%);
 	background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(0.1, #f6f6f6), color-stop(0.9, #c8c8c8));
 	background-image: linear-gradient(center top, #f6f6f6 10%, #c8c8c8 90%);
@@ -338,11 +338,11 @@ Pagetree
 }
 
 .typo3-pagetree-deletionDropZone-restoreText {
-	background: transparent url('../../images/spinner/d5d5d5.gif') no-repeat 0 3px;
+	background: transparent url('../../../../images/spinner/d5d5d5.gif') no-repeat 0 3px;
 }
 
 .typo3-pagetree-deletionDropZone-proxyOver .x-dd-drop-icon {
-	background-image: url(../../images/icons/actions/edit-delete.png);
+	background-image: url(../../../../images/icons/actions/edit-delete.png);
 }
 
 #typo3-pagetree .typo3-pagetree-deletionDropZone-activateProxyOver {
