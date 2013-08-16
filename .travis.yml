@@ -1,36 +1,52 @@
 language: php
+
 php:
   - 5.3
   - 5.4
   - 5.5
 
 env:
-  - DB=mysql PHPUNIT=1
+  - DB=mysql UNITTESTS=1
   - DB=none PHPLINT=1
 
 services:
   - memcached
 
 before_script:
-# Install build dependencies
   - git clone --single-branch --branch master --depth 1 git://github.com/typo3-ci/TYPO3-Travis-Integration.git build-environment
   - source build-environment/install-helper.sh
-  - if [[ "$TRAVIS_PHP_VERSION" != "5.5" ]]; then installPhpModule igbinary; fi
-  - installPhpModule -y memcache
-  - installPhpModule redis
-  - if [[ "$TRAVIS_PHP_VERSION" == "5.3" ]]; then installPhpModule -y apc; fi
 
-# Install rudimentary TYPO3
-  - if [[ "$PHPUNIT" == "1" ]]; then mv build-environment/typo3conf .; fi
-  - if [[ "$PHPUNIT" == "1" ]]; then git clone --single-branch --branch master --depth 1 git://git.typo3.org/TYPO3v4/Extensions/phpunit.git typo3conf/ext/phpunit/; fi
-  - if [[ "$PHPUNIT" == "1" ]]; then mkdir fileadmin; fi
-  - if [[ "$PHPUNIT" == "1" ]]; then mkdir uploads; fi
-  - if [[ "$PHPUNIT" == "1" ]]; then mkdir typo3temp; fi
-  - if [[ "$DB" == "mysql" ]]; then mysql -e "DROP DATABASE IF EXISTS typo3_test;" -uroot; fi
-  - if [[ "$DB" == "mysql" ]]; then mysql -e "CREATE DATABASE IF NOT EXISTS typo3_test;" -uroot; fi
-  - if [[ "$DB" == "mysql" ]]; then php build-environment/dbimport/DatabaseImport.php; fi
-  - if [[ "$DB" == "mysql" ]]; then mysql -uroot typo3_test < build-environment/dbimport/cli_users.sql; fi
+  - >
+    if [[ "$UNITTESTS" == "1" ]]; then
+    	if [[ "$TRAVIS_PHP_VERSION" == "5.3" ]]; then
+    		installPhpModule -y apc;
+    	fi
+    	if [[ "$TRAVIS_PHP_VERSION" != "5.5" ]]; then
+    		installPhpModule igbinary
+    	fi
+    	installPhpModule -y memcache
+    	installPhpModule redis
+    	mv build-environment/typo3conf .
+    	git clone --single-branch --branch master --depth 1 git://git.typo3.org/TYPO3v4/Extensions/phpunit.git typo3conf/ext/phpunit/
+    	mkdir fileadmin
+    	mkdir uploads
+    	mkdir typo3temp
+    fi
+
+  - >
+    if [[ "$DB" == "mysql" ]]; then
+    	mysql -e "DROP DATABASE IF EXISTS typo3_test;" -uroot
+    	mysql -e "CREATE DATABASE IF NOT EXISTS typo3_test;" -uroot
+    	php build-environment/dbimport/DatabaseImport.php
+    	mysql -uroot typo3_test < build-environment/dbimport/cli_users.sql
+    fi
 
 script:
-  - if [[ "$PHPLINT" == "1" ]]; then phpLint all; fi
-  - if [[ "$PHPUNIT" == "1" ]]; then php $PWD/typo3/cli_dispatch.phpsh phpunit -c typo3/sysext/core/Build/UnitTests.xml; fi
+  - >
+    if [[ "$PHPLINT" == "1" ]]; then
+    	phpLint all
+    fi
+  - >
+    if [[ "$UNITTESTS" == "1" ]]; then
+    	php $PWD/typo3/cli_dispatch.phpsh phpunit -c typo3/sysext/core/Build/UnitTests.xml
+    fi
