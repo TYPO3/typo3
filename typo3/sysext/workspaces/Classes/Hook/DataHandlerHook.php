@@ -26,12 +26,30 @@ namespace TYPO3\CMS\Workspaces\Hook;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+
 /**
  * Tcemain service
  *
  * @author Workspaces Team (http://forge.typo3.org/projects/show/typo3v4-workspaces)
  */
 class DataHandlerHook {
+
+	/**
+	 * Only execute version command for existing records.
+	 *
+	 * @param $command
+	 * @param $table
+	 * @param $id
+	 * @param $value
+	 * @param \TYPO3\CMS\Core\DataHandling\DataHandler $tcemain
+	 */
+	public function processCmdmap_preProcess(&$command, $table, $id, $value, \TYPO3\CMS\Core\DataHandling\DataHandler $tcemain) {
+		// Only execute version command for existing records.
+		if ($command === 'version' && !BackendUtility::getRecord($table, $id)) {
+			$command = '';
+		}
+	}
 
 	/**
 	 * In case a sys_workspace_stage record is deleted we do a hard reset
