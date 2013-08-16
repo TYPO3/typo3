@@ -32,6 +32,9 @@
 		<testsuite name="EXT:beuser tests">
 			<directory>../../../../typo3/sysext/beuser/Tests/Unit/</directory>
 		</testsuite>
+		<testsuite name="EXT:documentation tests">
+			<directory>../../../../typo3/sysext/documentation/Tests/Unit/</directory>
+		</testsuite>
 		<testsuite name="EXT:extbase tests">
 			<directory>../../../../typo3/sysext/extbase/Tests/Unit/</directory>
 		</testsuite>
