@@ -63,6 +63,18 @@
 			<trans-unit id="status_referenceIndex" xml:space="preserve">
 				<source>Reference Index</source>
 			</trans-unit>
+			<trans-unit id="status_fal" xml:space="preserve">
+				<source>File Abstraction Layer</source>
+			</trans-unit>
+			<trans-unit id="status_missingFiles" xml:space="preserve">
+				<source>Files flagged as missing</source>
+			</trans-unit>
+			<trans-unit id="status_missingFilesCount" xml:space="preserve">
+				<source>%1$s files</source>
+			</trans-unit>
+			<trans-unit id="status_missingFilesMessage" xml:space="preserve">
+				<source>These files are flagged as missing. Restore the files and run the indexer to reset the missing flag.</source>
+			</trans-unit>
 			<trans-unit id="status_memcachedConfiguration" xml:space="preserve">
 				<source>Memcached Configuration</source>
 			</trans-unit>
