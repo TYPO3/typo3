@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Documentation\Tests;
+namespace TYPO3\CMS\Documentation\Tests\Unit\Domain\Model;
 
 /***************************************************************
  *  Copyright notice

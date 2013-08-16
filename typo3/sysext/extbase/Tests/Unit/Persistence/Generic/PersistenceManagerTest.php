@@ -39,7 +39,7 @@ class PersistenceManagerTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase 
 	 * @test
 	 */
 	public function persistAllPassesAddedObjectsToBackend() {
-		$entity2 = new \TYPO3\CMS\Extbase\Tests\Persistence\Fixture\Model\Entity2();
+		$entity2 = new \TYPO3\CMS\Extbase\Tests\Unit\Persistence\Fixture\Model\Entity2();
 		$objectStorage = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
 		$objectStorage->attach($entity2);
 		$mockBackend = $this->getMock('TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface');
@@ -56,7 +56,7 @@ class PersistenceManagerTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase 
 	 * @test
 	 */
 	public function persistAllPassesRemovedObjectsToBackend() {
-		$entity2 = new \TYPO3\CMS\Extbase\Tests\Persistence\Fixture\Model\Entity2();
+		$entity2 = new \TYPO3\CMS\Extbase\Tests\Unit\Persistence\Fixture\Model\Entity2();
 		$objectStorage = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
 		$objectStorage->attach($entity2);
 		$mockBackend = $this->getMock('TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface');
@@ -218,17 +218,17 @@ class PersistenceManagerTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase 
 	public function updateSchedulesAnObjectForPersistence() {
 		$className = uniqid('BazFixture');
 		eval ('
-			namespace Foo\\Bar\\Domain\\Model;
+			namespace ' . __NAMESPACE__ . '\\Domain\\Model;
 			class ' . $className . ' extends \\TYPO3\\CMS\\Extbase\\DomainObject\\AbstractEntity {
 				protected $uid = 42;
 			}
 		');
 		eval ('
-			namespace Foo\\Bar\\Domain\\Repository;
+			namespace ' . __NAMESPACE__ . '\\Domain\\Repository;
 			class  ' . $className . 'Repository extends \\TYPO3\\CMS\\Extbase\\Persistence\\Repository {}
 		');
-		$classNameWithNamespace = 'Foo\\Bar\\Domain\\Model\\' . $className;
-		$repositorClassNameWithNamespace = 'Foo\\Bar\\Domain\\Repository\\' . $className . 'Repository';
+		$classNameWithNamespace = __NAMESPACE__ . '\\Domain\\Model\\' . $className;
+		$repositorClassNameWithNamespace = __NAMESPACE__ . '\\Domain\\Repository\\' . $className . 'Repository';
 
 		$persistenceManager = $this->getAccessibleMock('TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager', array('dummy'));
 		$session = new \TYPO3\CMS\Extbase\Persistence\Generic\Session();
@@ -337,16 +337,16 @@ class PersistenceManagerTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase 
 	public function persistAllAddsNamespacedReconstitutedObjectFromSessionToBackendsAggregateRootObjects() {
 		$className = uniqid('BazFixture');
 		eval ('
-			namespace Foo\\Bar\\Domain\\Model;
+			namespace ' . __NAMESPACE__ . '\\Domain\\Model;
 			class ' . $className . ' extends \\TYPO3\\CMS\\Extbase\\DomainObject\\AbstractEntity {}
 		');
 		eval ('
-			namespace Foo\\Bar\\Domain\\Repository;
+			namespace ' . __NAMESPACE__ . '\\Domain\\Repository;
 			class  ' . $className . 'Repository {}
 		');
 		$persistenceManager = $this->getAccessibleMock('TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager', array('dummy'));
 		$aggregateRootObjects = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
-		$classNameWithNamespace = 'Foo\\Bar\\Domain\\Model\\' . $className;
+		$classNameWithNamespace = __NAMESPACE__ . '\\Domain\\Model\\' . $className;
 		$entity1 = new $classNameWithNamespace();
 		$aggregateRootObjects->attach($entity1);
 		$mockBackend = $this->getMock($this->buildAccessibleProxy('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Backend'), array('commit', 'setAggregateRootObjects', 'setDeletedEntities'), array(), '', FALSE);

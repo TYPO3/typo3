@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Core\Tests\Unit\Utility\File;
+namespace TYPO3\CMS\Core\Tests\Functional\Utility\File;
 
 /* * *************************************************************
  *  Copyright notice
