@@ -257,8 +257,8 @@ class DocumentTemplate {
 
 	// Include these CSS directories from skins by default
 	protected $stylesheetsSkins = array(
-		'structure' => 'stylesheets/structure/',
-		'visual' => 'stylesheets/visual/'
+		'structure' => 'Resources/Public/Css/structure/',
+		'visual' => 'Resources/Public/Css/visual/'
 	);
 
 	/**

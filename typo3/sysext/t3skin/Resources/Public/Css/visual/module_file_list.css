@@ -10,7 +10,7 @@ table#typo3-filelist {
 
 table#typo3-filelist tr td.c-headLine {
 	background-color: #b8bec9;
-	background-image: url('../../icons/gfx/alt_menu_mainitem_bg.gif');
+	background-image: url('../../../../icons/gfx/alt_menu_mainitem_bg.gif');
 	background-repeat: repeat-x;
 	font-weight: bold;
 }

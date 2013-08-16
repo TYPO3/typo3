@@ -25,7 +25,7 @@ Workspace Selector
 
 #workspace-selector-menu li.divider {
 	border: 0;
-	background-image: url('../../icons/gfx/shortcutgroups-bg.png');
+	background-image: url('../../../../icons/gfx/shortcutgroups-bg.png');
 	background-repeat: repeat-x;
 	min-height: 10px;
 	padding-right: 0;
@@ -39,15 +39,15 @@ body.typo3-in-workspace #typo3-top-container {
 }
 
 body.typo3-in-workspace #typo3-topbar .x-panel-bwrap {
-	background: url('../../images/backgrounds/topbar-in-workspace-background-left.png') no-repeat;
+	background: url('../../../../images/backgrounds/topbar-in-workspace-background-left.png') no-repeat;
 }
 
 body.typo3-in-workspace #typo3-topbar .x-panel-body {
-	background: url('../../images/backgrounds/topbar-in-workspace-background-right.png') no-repeat right 0;
+	background: url('../../../../images/backgrounds/topbar-in-workspace-background-right.png') no-repeat right 0;
 }
 
 body.typo3-in-workspace #typo3-topbar {
-	background: url('../../images/backgrounds/topbar-in-workspace-background.gif');
+	background: url('../../../../images/backgrounds/topbar-in-workspace-background.gif');
 }
 
 body.typo3-in-workspace #typo3-topbar #username {

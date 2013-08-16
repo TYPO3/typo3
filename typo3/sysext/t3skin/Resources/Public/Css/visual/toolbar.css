@@ -19,7 +19,7 @@ Toolbar inside the Topbar
 }
 
 .toolbar-item-active {
-	background-image: url('../../icons/gfx/toolbar_item_active_bg.png');
+	background-image: url('../../../../icons/gfx/toolbar_item_active_bg.png');
 	height: 20px;
 }
 

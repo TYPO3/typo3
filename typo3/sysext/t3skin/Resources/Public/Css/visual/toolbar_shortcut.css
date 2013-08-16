@@ -7,7 +7,7 @@ Shortcuts menu in the toolbar
 }
 
 #shortcut-menu .shortcut-list tr.shortcut.first-row td {
-	background-image: url('../../icons/gfx/shortcutgroups-bg.png');
+	background-image: url('../../../../icons/gfx/shortcutgroups-bg.png');
 	background-repeat: repeat-x;
 }
 

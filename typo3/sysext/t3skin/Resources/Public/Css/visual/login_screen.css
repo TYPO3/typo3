@@ -7,7 +7,7 @@
 
 #typo3-index-php {
 	background-color: #494949;
-	background-image: url('../../images/backgrounds/gray-gradient.png');
+	background-image: url('../../../../images/backgrounds/gray-gradient.png');
 	background-repeat: repeat-x;
 }
 
@@ -16,7 +16,7 @@
 }
 
 #typo3-index-php .t3-headline h2 {
-	background: transparent url('../../icons/login-icon-key.png') no-repeat 12px 8px;
+	background: transparent url('../../../../icons/login-icon-key.png') no-repeat 12px 8px;
 	color: #fff;
 	font-size: 12px;
 }
@@ -26,12 +26,12 @@
 }
 
 #typo3-index-php #t3-login-process h2 {
-	background: url('../../icons/login-submit-progress.gif') no-repeat 10px center;
+	background: url('../../../../icons/login-submit-progress.gif') no-repeat 10px center;
 	font-size: 11px !important;
 }
 
 #typo3-index-php .t3-headline .t3-login-news-headline {
-	background: transparent url('../../icons/login-icon-news.gif') no-repeat 10px center;
+	background: transparent url('../../../../icons/login-icon-news.gif') no-repeat 10px center;
 	color: #fff;
 	font-size: 11px !important;
 	line-height: 24px;
@@ -79,7 +79,7 @@
 
 #typo3-index-php input.t3-login-submit {
 	background-color: #ff8600;
-	background-image: url('../../images/login/login-submit-background.gif');
+	background-image: url('../../../../images/login/login-submit-background.gif');
 	background-image: linear-gradient(center top, #fe9500 0%, #cf6610 100%);
 	background-image: -moz-linear-gradient(center top, #fe9500 0%, #cf6610 100%);
 	background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(0, #fe9500), color-stop(1, #cf6610));
@@ -177,7 +177,7 @@
 }
 
 .t3-login-alert-error h2 {
-	background: url('../../icons/login-alert-error.gif') no-repeat left 2px;
+	background: url('../../../../icons/login-alert-error.gif') no-repeat left 2px;
 	color: #be0027;
 }
 
@@ -196,7 +196,7 @@
 }
 
 .t3-login-alert-warning h2 {
-	background: url('../../icons/login-alert-warning.gif') no-repeat left 2px;
+	background: url('../../../../icons/login-alert-warning.gif') no-repeat left 2px;
 	color: #9e7d4a;
 }
 

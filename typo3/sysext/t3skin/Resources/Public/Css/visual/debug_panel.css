@@ -6,7 +6,7 @@ TYPO3 debug panel
 }
 
 .typo3-debugPanel-dragDropArrowDown {
-	background-image: url('../../icons/gfx/arrowdown.png');
+	background-image: url('../../../../icons/gfx/arrowdown.png');
 	display: block;
 	visibility: visible;
 	z-index: 20000;

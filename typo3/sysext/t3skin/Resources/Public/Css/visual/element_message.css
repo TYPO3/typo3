@@ -25,7 +25,7 @@ Flash Messages
 .message-notice {
 	color: #777;
 	background-color: #f6f7fa;
-	background-image: url('../../icons/gfx/notice.png');
+	background-image: url('../../../../icons/gfx/notice.png');
 	border-color: #c2cbcf;
 }
 
@@ -36,7 +36,7 @@ Flash Messages
 .message-information {
 	color: #4c73a1;
 	background-color: #eaf7ff;
-	background-image: url('../../icons/gfx/information.png');
+	background-image: url('../../../../icons/gfx/information.png');
 	border-color: #c5dbe6;
 }
 
@@ -47,7 +47,7 @@ Flash Messages
 .message-ok {
 	color: #3b7826;
 	background-color: #cdeaca;
-	background-image: url('../../icons/gfx/ok.png');
+	background-image: url('../../../../icons/gfx/ok.png');
 	border-color: #58b548;
 }
 
@@ -58,7 +58,7 @@ Flash Messages
 .message-warning {
 	color: #9e7d4a;
 	background-color:#fbf6de;
-	background-image: url("../../icons/gfx/warning.png");
+	background-image: url("../../../../icons/gfx/warning.png");
 	border-color: #b1905c;
 }
 
@@ -69,7 +69,7 @@ Flash Messages
 .message-error {
 	color: #aa0225;
 	background-color: #f6d3cf;
-	background-image: url('../../icons/gfx/error.png');
+	background-image: url('../../../../icons/gfx/error.png');
 	border-color: #d66c68;
 }
 

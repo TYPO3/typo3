@@ -13,7 +13,7 @@
 }
 
 #typo3-dblist-sysnotes .single-note .header span.typeicon {
-	background:  url(../../icons/ext/sys_note/icon-default.png) no-repeat top left;
+	background:  url(../../../../icons/ext/sys_note/icon-default.png) no-repeat top left;
 	width: 23px;
 	height: 24px;
 	margin-right: 7px;
@@ -43,16 +43,16 @@
 }
 
 #typo3-dblist-sysnotes .category-1 .header span.typeicon {
-	background-image: url(../../icons/ext/sys_note/icon-instruction.png);
+	background-image: url(../../../../icons/ext/sys_note/icon-instruction.png);
 }
 #typo3-dblist-sysnotes .category-2 .header span.typeicon {
-	background-image: url(../../icons/ext/sys_note/icon-template.png);
+	background-image: url(../../../../icons/ext/sys_note/icon-template.png);
 }
 #typo3-dblist-sysnotes .category-3 .header span.typeicon {
-	background-image: url(../../icons/ext/sys_note/icon-note.png);
+	background-image: url(../../../../icons/ext/sys_note/icon-note.png);
 }
 #typo3-dblist-sysnotes .category-4 .header span.typeicon {
-	background-image: url(../../icons/ext/sys_note/icon-todo.png);
+	background-image: url(../../../../icons/ext/sys_note/icon-todo.png);
 }
 
 #typo3-dblist-sysnotes .single-note .header span {

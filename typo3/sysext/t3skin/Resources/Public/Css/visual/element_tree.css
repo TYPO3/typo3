@@ -24,7 +24,7 @@ body#typo3-alt-file-navframe-php {
 #typo3-pagetree-treeContainer {
 	background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAA9JREFUeNpiun79OkCAAQAFFgKIFwyKvQAAAABJRU5ErkJggg==");
 	/* star-hack targets IE7 */
-	*background-image: url("../../images/shadows/navigation-container.png");
+	*background-image: url("../../../../images/shadows/navigation-container.png");
 }
 
 table#typo3-tree a {
@@ -92,7 +92,7 @@ ul.tree ul li {
 }
 
 ul.tree ul li.expanded ul {
-	background: transparent url('../../icons/gfx/ol/line.gif') left top repeat-y;
+	background: transparent url('../../../../icons/gfx/ol/line.gif') left top repeat-y;
 }
 
 ul.tree ul li.last > ul {
@@ -134,7 +134,7 @@ ul.tree ul li.active ul span a {
 
 #treeFilterBox {
 	background-color: #dadada;
-	background-image: url('../../icons/gfx/filter_bg.gif');
+	background-image: url('../../../../icons/gfx/filter_bg.gif');
 	background-repeat: no-repeat;
 	background-position: 0 -2px;
 }
@@ -157,5 +157,5 @@ ul.tree ul li.active ul span a {
 }
 
 #tree-toolbar-filter-item.active {
-	background-image: url("../../icons/gfx/toolbar_item_active_bg.png")
+	background-image: url("../../../../icons/gfx/toolbar_item_active_bg.png")
 }
