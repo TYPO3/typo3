@@ -90,52 +90,56 @@ class DataHandlerHook {
 	 */
 	public function processCmdmap($command, $table, $id, $value, &$commandIsProcessed, \TYPO3\CMS\Core\DataHandling\DataHandler $tcemainObj) {
 		// custom command "version"
-		if ($command == 'version') {
-			$commandIsProcessed = TRUE;
-			$action = (string) $value['action'];
-			$comment = (isset($value['comment']) && $value['comment'] ? $value['comment'] : $this->generalComment);
-			$notificationAlternativeRecipients = (isset($value['notificationAlternativeRecipients'])) && is_array($value['notificationAlternativeRecipients']) ? $value['notificationAlternativeRecipients'] : array();
-			switch ($action) {
-				case 'new':
-					// check if page / branch versioning is needed,
-					// or if "element" version can be used
-					$versionizeTree = -1;
-					if (isset($value['treeLevels'])) {
-						$versionizeTree = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($value['treeLevels'], -1, 100);
-					}
-					if ($table == 'pages' && $versionizeTree >= 0) {
-						$this->versionizePages($id, $value['label'], $versionizeTree, $tcemainObj);
-					} else {
-						$tcemainObj->versionizeRecord($table, $id, $value['label']);
-					}
-					break;
-				case 'swap':
-					$this->version_swap($table, $id, $value['swapWith'], $value['swapIntoWS'],
-						$tcemainObj,
-						$comment,
-						TRUE,
-						$notificationAlternativeRecipients
-					);
-					break;
-				case 'clearWSID':
-					$this->version_clearWSID($table, $id, FALSE, $tcemainObj);
-					break;
-				case 'flush':
-					$this->version_clearWSID($table, $id, TRUE, $tcemainObj);
-					break;
-				case 'setStage':
-					$elementIds = GeneralUtility::trimExplode(',', $id, TRUE);
-					foreach ($elementIds as $elementId) {
-							$this->version_setStage($table, $elementId, $value['stageId'],
-								$comment,
-								TRUE,
-								$tcemainObj,
-								$notificationAlternativeRecipients
-							);
-					}
-					break;
-				default:
-					// Do nothing
+		if ($command === 'version') {
+			// Check if the record exists
+			$record = BackendUtility::getRecord($table, $id);
+			if(is_array($record) && count($record) === 1) {
+				$commandIsProcessed = TRUE;
+				$action = (string) $value['action'];
+				$comment = (isset($value['comment']) && $value['comment'] ? $value['comment'] : $this->generalComment);
+				$notificationAlternativeRecipients = (isset($value['notificationAlternativeRecipients'])) && is_array($value['notificationAlternativeRecipients']) ? $value['notificationAlternativeRecipients'] : array();
+				switch ($action) {
+					case 'new':
+						// check if page / branch versioning is needed,
+						// or if "element" version can be used
+						$versionizeTree = -1;
+						if (isset($value['treeLevels'])) {
+							$versionizeTree = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($value['treeLevels'], -1, 100);
+						}
+						if ($table == 'pages' && $versionizeTree >= 0) {
+							$this->versionizePages($id, $value['label'], $versionizeTree, $tcemainObj);
+						} else {
+							$tcemainObj->versionizeRecord($table, $id, $value['label']);
+						}
+						break;
+					case 'swap':
+						$this->version_swap($table, $id, $value['swapWith'], $value['swapIntoWS'],
+							$tcemainObj,
+							$comment,
+							TRUE,
+							$notificationAlternativeRecipients
+						);
+						break;
+					case 'clearWSID':
+						$this->version_clearWSID($table, $id, FALSE, $tcemainObj);
+						break;
+					case 'flush':
+						$this->version_clearWSID($table, $id, TRUE, $tcemainObj);
+						break;
+					case 'setStage':
+						$elementIds = GeneralUtility::trimExplode(',', $id, TRUE);
+						foreach ($elementIds as $elementId) {
+								$this->version_setStage($table, $elementId, $value['stageId'],
+									$comment,
+									TRUE,
+									$tcemainObj,
+									$notificationAlternativeRecipients
+								);
+						}
+						break;
+					default:
+						// Do nothing
+				}
 			}
 		}
 	}
