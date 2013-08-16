@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Core\Tests\Tree\TableConfiguration;
+namespace TYPO3\CMS\Core\Tests\Unit\Tree\TableConfiguration;
 
 /***************************************************************
  *  Copyright notice

@@ -131,10 +131,9 @@ class VersionNumberUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @param string $expectedVersion
 	 */
 	public function getNumericTypo3VersionNumber($currentVersion, $expectedVersion) {
-		$namespace = 'TYPO3\\CMS\\Core\\Utility';
 		$className = uniqid('VersionNumberUtility');
-		eval('namespace ' . $namespace . '; class ' . $className . ' extends \\TYPO3\\CMS\\Core\\Utility\\VersionNumberUtility {' . '  protected static function getCurrentTypo3Version() {' . '    return \'' . $currentVersion . '\';' . '  }' . '}');
-		$className = $namespace . '\\' . $className;
+		eval('namespace ' . __NAMESPACE__ . '; class ' . $className . ' extends \\TYPO3\\CMS\\Core\\Utility\\VersionNumberUtility {' . '  protected static function getCurrentTypo3Version() {' . '    return \'' . $currentVersion . '\';' . '  }' . '}');
+		$className = __NAMESPACE__ . '\\' . $className;
 		$version = $className::getNumericTypo3Version();
 		$this->assertEquals($expectedVersion, $version);
 	}

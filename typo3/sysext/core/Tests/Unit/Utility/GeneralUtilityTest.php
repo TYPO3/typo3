@@ -2536,10 +2536,9 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function minifyJavaScriptWritesExceptionMessageToDevLog() {
-		$namespace = 'TYPO3\\CMS\\Core\\Utility';
 		$t3libDivMock = uniqid('GeneralUtility');
-		eval('namespace ' . $namespace . '; class ' . $t3libDivMock . ' extends \\TYPO3\\CMS\\Core\\Utility\\GeneralUtility {' . '  public static function devLog($errorMessage) {' . '    if (!($errorMessage === \'Error minifying java script: foo\')) {' . '      throw new \\UnexpectedValue(\'broken\');' . '    }' . '    throw new \\RuntimeException();' . '  }' . '}');
-		$t3libDivMock = $namespace . '\\' . $t3libDivMock;
+		eval('namespace ' . __NAMESPACE__ . '; class ' . $t3libDivMock . ' extends \\TYPO3\\CMS\\Core\\Utility\\GeneralUtility {' . '  public static function devLog($errorMessage) {' . '    if (!($errorMessage === \'Error minifying java script: foo\')) {' . '      throw new \\UnexpectedValue(\'broken\');' . '    }' . '    throw new \\RuntimeException();' . '  }' . '}');
+		$t3libDivMock = __NAMESPACE__ . '\\' . $t3libDivMock;
 		$hookClassName = uniqid('tx_coretest');
 		$minifyHookMock = $this->getMock('stdClass', array('minify'), array(), $hookClassName);
 		$functionName = '&' . $hookClassName . '->minify';

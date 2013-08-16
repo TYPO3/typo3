@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Form\Tests\View\Mail\Html\Element;
+namespace TYPO3\CMS\Form\Tests\Unit\View\Mail\Html\Element;
 
 /***************************************************************
  *  Copyright notice
