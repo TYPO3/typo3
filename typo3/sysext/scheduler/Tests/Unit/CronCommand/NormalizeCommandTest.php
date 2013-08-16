@@ -37,11 +37,11 @@ class NormalizeCommandTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	protected function getAccessibleProxy() {
 		$className = 'NormalizeCommand' . uniqid();
-		$fullClassName = 'TYPO3\\CMS\\Scheduler\\CronCommand\\' . $className;
+		$fullClassName = __NAMESPACE__ . '\\' . $className;
 		if (!class_exists($className, FALSE)) {
 			eval(
-				'namespace TYPO3\CMS\Scheduler\CronCommand;' .
-				'class ' . $className . ' extends NormalizeCommand {' .
+				'namespace ' . __NAMESPACE__ . ';' .
+				'class ' . $className . ' extends \\TYPO3\\CMS\\Scheduler\\CronCommand\\NormalizeCommand {' .
 				'  public static function convertKeywordsToCronCommand($cronCommand) {' .
 				'    return parent::convertKeywordsToCronCommand($cronCommand);' .
 				'  }' .

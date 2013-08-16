@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Extbase\Tests\Persistence\Fixture\Model;
+namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence\Fixture\Model;
 
 /***************************************************************
  *  Copyright notice
@@ -47,7 +47,7 @@ class Entity2 extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	public $someInteger;
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Tests\Persistence\Fixture\Model\Entity3
+	 * @var \TYPO3\CMS\Extbase\Tests\Unit\Persistence\Fixture\Model\Entity3
 	 */
 	public $someReference;
 

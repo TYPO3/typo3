@@ -210,17 +210,16 @@ class ArrayUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function isValidPathReturnsTrueIfPathExists() {
-		$namespace = 'TYPO3\\CMS\\Core\\Utility';
 		$className = uniqid('ArrayUtility');
 		eval(
-			'namespace ' . $namespace . ';' .
+			'namespace ' . __NAMESPACE__ . ';' .
 			'class ' . $className . ' extends \\TYPO3\\CMS\\Core\\Utility\\ArrayUtility {' .
 			'  public static function getValueByPath() {' .
 			'    return 42;' .
 			'  }' .
 			'}'
 		);
-		$className = $namespace . '\\' . $className;
+		$className = __NAMESPACE__ . '\\' . $className;
 		$this->assertTrue($className::isValidPath(array('foo'), 'foo'));
 	}
 
@@ -228,17 +227,16 @@ class ArrayUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function isValidPathReturnsFalseIfPathDoesNotExist() {
-		$namespace = 'TYPO3\\CMS\\Core\\Utility';
 		$className = uniqid('ArrayUtility');
 		eval(
-			'namespace ' . $namespace . ';' .
+			'namespace ' . __NAMESPACE__ . ';' .
 			'class ' . $className . ' extends \\TYPO3\\CMS\\Core\\Utility\\ArrayUtility {' .
 			'  public static function getValueByPath() {' .
 			'    throw new \RuntimeException(\'foo\', 123);' .
 			'  }' .
 			'}'
 		);
-		$className = $namespace . '\\' . $className;
+		$className = __NAMESPACE__ . '\\' . $className;
 		$this->assertFalse($className::isValidPath(array('foo'), 'foo'));
 	}
 
