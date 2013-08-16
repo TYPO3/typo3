@@ -65,6 +65,9 @@ class TaskExecutorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	protected $taskExecuter;
 
 	public function setUp() {
+		if (!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('scheduler')) {
+			$this->markTestSkipped('Tests need EXT:scheduler loaded.');
+		}
 		$this->controller = $this->getAccessibleMock('TYPO3\CMS\Extbase\Tests\MockACommandController', array('dummy'));
 		$this->controller->injectReflectionService($this->objectManager->get('TYPO3\CMS\Extbase\Reflection\ReflectionService'));
 		$this->controller->injectObjectManager($this->objectManager);

@@ -67,6 +67,9 @@ class FieldProviderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	protected $fieldProvider;
 
 	public function setUp() {
+		if (!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('scheduler')) {
+			$this->markTestSkipped('Tests need EXT:scheduler loaded.');
+		}
 		$this->objectManager = $this->getMock('TYPO3\CMS\Extbase\Object\ObjectManager', array('dummy'));
 		$this->commandManager = $this->getMock('TYPO3\CMS\Extbase\Mvc\Cli\CommandManager', array('getAvailableCommands'));
 
