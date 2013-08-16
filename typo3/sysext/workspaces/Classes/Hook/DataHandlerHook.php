@@ -37,6 +37,24 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 class DataHandlerHook {
 
 	/**
+	 * Only execute version command for existing records.
+	 *
+	 * @param $command
+	 * @param $table
+	 * @param $id
+	 * @param $value
+	 * @param \TYPO3\CMS\Core\DataHandling\DataHandler $tcemain
+	 */
+	public function processCmdmap_preProcess(&$command, $table, $id, $value, \TYPO3\CMS\Core\DataHandling\DataHandler $tcemain) {
+		// Only execute version command for existing records.
+		// On workspace mass actions, it may happen that records no longer exist.
+		// For example for recursive page deletion.
+		if ($command === 'version' && !BackendUtility::getRecord($table, $id)) {
+			$command = '';
+		}
+	}
+
+	/**
 	 * In case a sys_workspace_stage record is deleted we do a hard reset
 	 * for all existing records in that stage to avoid that any of these end up
 	 * as orphan records.
