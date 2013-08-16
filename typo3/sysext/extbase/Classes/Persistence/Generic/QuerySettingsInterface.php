@@ -79,22 +79,42 @@ interface QuerySettingsInterface {
 	 * @return boolean TRUE, if a  and language overlay should be performed; otherwise FALSE.
 	 */
 	public function getRespectSysLanguage();
-
+	
 	/**
-	 * Sets the language uid for the language overlay.
-	 *
-	 * @param integer $sysLanguageUid language uid for the language overlay
+	 * @param mixed $languageOverlayMode TRUE, FALSE or "hideNonTranslated"
 	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface instance of $this to allow method chaining
 	 * @api
 	 */
-	public function setSysLanguageUid($sysLanguageUid);
+	public function setLanguageOverlayMode($languageOverlayMode);
 
 	/**
-	 * Returns the language uid for the language overlay
-	 *
-	 * @return integer language uid for the language overlay
+	 * @return mixed TRUE, FALSE or "hideNonTranslated"
 	 */
-	public function getSysLanguageUid();
+	public function getLanguageOverlayMode();
+	
+	/**
+	 * @param string $languageMode NULL, "content_fallback", "strict" or "ignore"
+	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface instance of $this to allow method chaining
+	 * @api
+	 */
+	public function setLanguageMode($languageMode);
+
+	/**
+	 * @return string NULL, "content_fallback", "strict" or "ignore"
+	 */
+	public function getLanguageMode();
+
+	/**
+	 * @param integer $languageUid
+	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface instance of $this to allow method chaining
+	 * @api
+	 */
+	public function setLanguageUid($languageUid);
+
+	/**
+	 * @return integer
+	 */
+	public function getLanguageUid();
 
 	/**
 	 * Sets a flag indicating whether all or some enable fields should be ignored. If TRUE, all enable fields are ignored.
