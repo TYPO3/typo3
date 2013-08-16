@@ -9,7 +9,7 @@
  	padding: 20px 0 20px 50px;
  	font-size: 11px !important;
  	text-align: left;
-	background: url("images/status/loading.gif") no-repeat 10px center;
+	background: url("../../Images/rtehtmlarea/status/loading.gif") no-repeat 10px center;
 	vertical-align: middle;
 	color: #7F8083;
 }
@@ -26,7 +26,7 @@
 	margin:0;
 }
 .editorWrap .resizable {
-	background-image: url("images/status/resizable.gif");
+	background-image: url("../../Images/rtehtmlarea/status/resizable.gif");
 	background-position: bottom right;
 	background-repeat: no-repeat;
 }
@@ -97,7 +97,7 @@ body.ext-ie6 .htmlarea .toolbar .button {
 	display: none;
 }
 .htmlarea .toolbar .x-btn-text {
-	background-image: url("images/sprites/actions.png");
+	background-image: url("../../Images/rtehtmlarea/sprites/actions.png");
 	background-repeat: no-repeat;
 	width: 20px;
 	height: 18px;
@@ -105,7 +105,7 @@ body.ext-ie6 .htmlarea .toolbar .button {
 	margin: 1px 0 1px 2px;
 }
 body.ext-ie6 .htmlarea .toolbar .x-btn-text {
-	background-image: url("images/sprites/actions.gif");
+	background-image: url("../../Images/rtehtmlarea/sprites/actions.gif");
 }
 /* fixing button background-color and border-color in IE6 */
 body.ext-ie6 .htmlarea .toolbar .buttonHover,
@@ -149,7 +149,7 @@ body.ext-ie6 .htmlarea-context-menu .buttonActive,
 }
 .htmlarea .toolbar .separator {
 	background-color: transparent;
-	background-image: url("images/separator.gif");
+	background-image: url("../../Images/rtehtmlarea/separator.gif");
 	background-repeat: no-repeat;
 	background-position: 0 -1px;
 	width: 7px;
@@ -219,13 +219,13 @@ body.ext-ie6 .htmlarea-context-menu .buttonActive,
 }
 /* Selectors for dialogue windows */
 .htmlarea-window .x-panel-icon {
-	background-image: url("images/sprites/actions.png");
+	background-image: url("../../Images/rtehtmlarea/sprites/actions.png");
 	background-repeat: no-repeat;
 	margin-top: 2px;
 	height: 22px;
 }
 body.ext-ie6 .htmlarea-window .x-panel-icon {
-	background-image: url("images/sprites/actions.gif");
+	background-image: url("../../Images/rtehtmlarea/sprites/actions.gif");
 }
 .htmlarea-window .x-window-header .t3-help-link {
 	color: #fff;
@@ -384,7 +384,7 @@ body.ext-ie6 .htmlarea-window .x-panel-icon {
 	border-top: 1px solid #A2AAB8;
 }
 .htmlarea-context-menu .hover {
-	background-image: url("images/alt_menu_mainitem_bg.gif");
+	background-image: url("../../Images/rtehtmlarea/alt_menu_mainitem_bg.gif");
 	background-repeat: repeat-x;
 	color: #FFF;
 	margin: 0 2px 0 0;
@@ -392,7 +392,7 @@ body.ext-ie6 .htmlarea-window .x-panel-icon {
 	border-color: #A2AAB8;
 }
 .htmlarea-context-menu .x-menu-item-icon {
-	background-image: url("images/sprites/actions.png");
+	background-image: url("../../Images/rtehtmlarea/sprites/actions.png");
 	background-repeat: no-repeat;
 	margin-top: -2px;
 	margin-left: -2px;
@@ -400,25 +400,25 @@ body.ext-ie6 .htmlarea-window .x-panel-icon {
 	height: 18px;
 }
 body.ext-ie6 .htmlarea-context-menu .x-menu-item-icon {
-	background-image: url("images/sprites/actions.gif");
+	background-image: url("../../Images/rtehtmlarea/sprites/actions.gif");
 }
 /* Window status bar selectors */
 .htmlarea-window .status-ready {
 	padding-left: 21px !important;
 	background-repeat: no-repeat;
-	background-image: url("images/status/dialog-ok.png");
+	background-image: url("../../Images/rtehtmlarea/status/dialog-ok.png");
 	background-position: 0px 2px;
 }
 .htmlarea-window .status-info {
 	padding-left: 21px !important;
 	background-repeat: no-repeat;
-	background-image: url("images/status/dialog-information.png");
+	background-image: url("../../Images/rtehtmlarea/status/dialog-information.png");
 	background-position: 0px 2px;
 }
 .htmlarea-window .status-wait {
 	padding-left: 45px !important;
 	background-repeat: no-repeat;
-	background-image: url("images/status/loading-balls.gif");
+	background-image: url("../../Images/rtehtmlarea/status/loading-balls.gif");
 	background-position: 0px 6px;
 }
 .htmlarea-window .x-toolbar .x-btn {
