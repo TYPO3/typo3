@@ -63,6 +63,15 @@
 			<trans-unit id="status_referenceIndex" xml:space="preserve">
 				<source>Reference Index</source>
 			</trans-unit>
+			<trans-unit id="status_fal" xml:space="preserve">
+				<source>Fal</source>
+			</trans-unit>
+			<trans-unit id="status_missingFiles" xml:space="preserve">
+				<source>Files marked as missed</source>
+			</trans-unit>
+			<trans-unit id="status_missingFilesCount" xml:space="preserve">
+				<source>%1$s files</source>
+			</trans-unit>
 			<trans-unit id="status_memcachedConfiguration" xml:space="preserve">
 				<source>Memcached Configuration</source>
 			</trans-unit>
