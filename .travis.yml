@@ -7,6 +7,7 @@ php:
 
 env:
   - DB=mysql UNITTESTS=1
+  - DB=none FUNCTIONALTESTS=1
   - DB=none PHPLINT=1
 
 services:
@@ -34,6 +35,14 @@ before_script:
     fi
 
   - >
+    if [[ "$FUNCTIONALTESTS" == "1" ]]; then
+    	mv build-environment/typo3conf .
+    	git clone --single-branch --branch master --depth 1 git://git.typo3.org/TYPO3v4/Extensions/phpunit.git typo3conf/ext/phpunit/
+    	chmod u+x ./typo3conf/ext/phpunit/Composer/vendor/bin/phpunit
+    	chmod u+x ./typo3conf/ext/phpunit/Composer/vendor/phpunit/phpunit/composer/bin/phpunit
+    fi
+
+  - >
     if [[ "$DB" == "mysql" ]]; then
     	mysql -e "DROP DATABASE IF EXISTS typo3_test;" -uroot
     	mysql -e "CREATE DATABASE IF NOT EXISTS typo3_test;" -uroot
@@ -49,4 +58,8 @@ script:
   - >
     if [[ "$UNITTESTS" == "1" ]]; then
     	php $PWD/typo3/cli_dispatch.phpsh phpunit -c typo3/sysext/core/Build/UnitTests.xml
+    fi
+  - >
+    if [[ "$FUNCTIONALTESTS" == "1" ]]; then
+    	./typo3conf/ext/phpunit/Composer/vendor/bin/phpunit -c typo3/sysext/core/Build/FunctionalTests.xml
     fi
