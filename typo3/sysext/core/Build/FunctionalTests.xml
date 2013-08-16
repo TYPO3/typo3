@@ -1,0 +1,22 @@
+<phpunit
+	backupGlobals="true"
+	backupStaticAttributes="false"
+	bootstrap="FunctionalTestsBootstrap.php"
+	colors="true"
+	convertErrorsToExceptions="true"
+	convertWarningsToExceptions="true"
+	forceCoversAnnotation="false"
+	processIsolation="false"
+	stopOnError="false"
+	stopOnFailure="false"
+	stopOnIncomplete="false"
+	stopOnSkipped="false"
+	strict="false"
+	verbose="false"
+>
+	<testsuites>
+		<testsuite name="EXT:core tests">
+			<directory>../../../../typo3/sysext/core/Tests/Functional/Functional/</directory>
+		</testsuite>
+	</testsuites>
+</phpunit>
