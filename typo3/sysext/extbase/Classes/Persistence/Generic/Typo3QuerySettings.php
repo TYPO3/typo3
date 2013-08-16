@@ -31,7 +31,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Query settings. This class is NOT part of the FLOW3 API.
- * It reflects the settings unique to TYPO3 4.x.
+ * It reflects the settings unique to TYPO3 CMS.
  *
  * @api
  */
@@ -83,11 +83,25 @@ class Typo3QuerySettings implements \TYPO3\CMS\Extbase\Persistence\Generic\Query
 	protected $respectSysLanguage = TRUE;
 
 	/**
-	 * The language uid for the language overlay.
+	 * Representing sys_language_overlay only valid for current context
+	 *
+	 * @var mixed
+	 */
+	protected $languageOverlayMode = TRUE;
+
+	/**
+	 * Representing sys_language_mode only valid for current context
+	 *
+	 * @var string
+	 */
+	protected $languageMode = NULL;
+
+	/**
+	 * Represensting sys_language_uid only valid for current context
 	 *
 	 * @var integer
 	 */
-	protected $sysLanguageUid = 0;
+	protected $languageUid = 0;
 
 	/**
 	 * Flag if the the query result should be returned as raw QueryResult.
@@ -109,12 +123,19 @@ class Typo3QuerySettings implements \TYPO3\CMS\Extbase\Persistence\Generic\Query
 			$this->setIgnoreEnableFields(TRUE);
 		}
 
+		// TYPO3 CMS language defaults
+		$this->setLanguageUid(0);
+		$this->setLanguageMode(NULL);
+		$this->setLanguageOverlayMode(FALSE);
+
 		// Set correct language uid for frontend handling
 		if (isset($GLOBALS['TSFE']) && is_object($GLOBALS['TSFE'])) {
-			$this->setSysLanguageUid($GLOBALS['TSFE']->sys_language_content);
+			$this->setLanguageUid(intval($GLOBALS['TSFE']->sys_language_content));
+			$this->setLanguageOverlayMode($GLOBALS['TSFE']->sys_language_contentOL ?: FALSE);
+			$this->setLanguageMode($GLOBALS['TSFE']->sys_language_mode ?: NULL);
 		} elseif (intval(GeneralUtility::_GP('L'))) {
 			// Set language from 'L' parameter
-			$this->setSysLanguageUid(intval(GeneralUtility::_GP('L')));
+			$this->setLanguageUid(intval(GeneralUtility::_GP('L')));
 		}
 	}
 
@@ -161,10 +182,8 @@ class Typo3QuerySettings implements \TYPO3\CMS\Extbase\Persistence\Generic\Query
 	}
 
 	/**
-	 * Sets the flag if a  and language overlay should be performed.
-	 *
-	 * @param boolean $respectSysLanguage TRUE if a  and language overlay should be performed.
-	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface
+	 * @param boolean $respectSysLanguage TRUE if TYPO3 language settings are to be applied
+	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface (fluent interface)
 	 * @api
 	 */
 	public function setRespectSysLanguage($respectSysLanguage) {
@@ -173,33 +192,84 @@ class Typo3QuerySettings implements \TYPO3\CMS\Extbase\Persistence\Generic\Query
 	}
 
 	/**
-	 * Returns the state, if a  and language overlay should be performed.
-	 *
-	 * @return boolean TRUE, if a  and language overlay should be performed; otherwise FALSE.
+	 * @return boolean TRUE if TYPO3 language settings are to be applied
 	 */
 	public function getRespectSysLanguage() {
 		return $this->respectSysLanguage;
 	}
 
 	/**
+	 * @param mixed $languageOverlayMode TRUE, FALSE or "hideNonTranslated"
+	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface instance of $this to allow method chaining
+	 * @api
+	 */
+	public function setLanguageOverlayMode($languageOverlayMode = FALSE) {
+		$this->languageOverlayMode = $languageOverlayMode;
+		return $this;
+	}
+
+	/**
+	 * @return mixed TRUE, FALSE or "hideNonTranslated"
+	 */
+	public function getLanguageOverlayMode() {
+		return $this->languageOverlayMode;
+	}
+
+	/**
+	 * @param string $languageMode NULL, "content_fallback", "strict" or "ignore"
+	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface instance of $this to allow method chaining
+	 * @api
+	 */
+	public function setLanguageMode($languageMode = '') {
+		$this->languageMode = $languageMode;
+		return $this;
+	}
+
+	/**
+	 * @return string NULL, "content_fallback", "strict" or "ignore"
+	 */
+	public function getLanguageMode() {
+		return $this->languageMode;
+	}
+
+	/**
+	 * @param integer $languageUid
+	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface instance of $this to allow method chaining
+	 * @api
+	 */
+	public function setLanguageUid($languageUid) {
+		$this->languageUid = $languageUid;
+		return $this;
+	}
+
+	/**
+	 * @return integer
+	 */
+	public function getLanguageUid() {
+		return $this->languageUid;
+	}
+
+	/**
 	 * Sets the language uid for the language overlay.
 	 *
 	 * @param integer $sysLanguageUid language uid for the language overlay
-	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface
-	 * @api
+	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface instance of $this to allow method chaining
+	 * @deprecated since Extbase 6.2, will be removed two versions later. Use setLanguageUid() instead.
 	 */
 	public function setSysLanguageUid($sysLanguageUid) {
-		$this->sysLanguageUid = $sysLanguageUid;
-		return $this;
+		GeneralUtility::logDeprecatedFunction();
+		return $this->setLanguageUid($sysLanguageUid);
 	}
 
 	/**
 	 * Returns the language uid for the language overlay
 	 *
 	 * @return integer language uid for the language overlay
+	 * @deprecated since Extbase 6.2, will be removed two versions later. Use getLanguageUid() instead.
 	 */
 	public function getSysLanguageUid() {
-		return $this->sysLanguageUid;
+		GeneralUtility::logDeprecatedFunction();
+		return $this->getLanguageUid();
 	}
 
 	/**
