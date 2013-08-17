@@ -816,9 +816,10 @@ class DatabaseRecordList extends \TYPO3\CMS\Recordlist\RecordList\AbstractDataba
 								$icon = '<a href="' . htmlspecialchars(($this->backPath . 'db_new.php?id=' . $this->id . '&pagesOnly=1&returnUrl=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI')))) . '" title="' . $GLOBALS['LANG']->getLL('new', TRUE) . '">' . ($table == 'pages' ? IconUtility::getSpriteIcon('actions-page-new') : IconUtility::getSpriteIcon('actions-document-new')) . '</a>';
 							} else {
 								$params = '&edit[' . $table . '][' . $this->id . ']=new';
-								if ($table == 'pages_language_overlay') {
-									$params .= '&overrideVals[pages_language_overlay][doktype]=' . (int) $this->pageRow['doktype'];
-								}
+								// @todo move to translation handling for pages in list module
+								//if ($table == 'pages_language_overlay') {
+								//	$params .= '&overrideVals[pages_language_overlay][doktype]=' . (int) $this->pageRow['doktype'];
+								//}
 								$icon = '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick($params, $this->backPath, -1)) . '" title="' . $GLOBALS['LANG']->getLL('new', TRUE) . '">' . ($table == 'pages' ? IconUtility::getSpriteIcon('actions-page-new') : IconUtility::getSpriteIcon('actions-document-new')) . '</a>';
 							}
 						}
@@ -1185,7 +1186,7 @@ class DatabaseRecordList extends \TYPO3\CMS\Recordlist\RecordList\AbstractDataba
 		$cells = array();
 		$cells['pasteAfter'] = ($cells['pasteInto'] = $this->spaceIcon);
 		//enables to hide the copy, cut and paste icons for localized records - doesn't make much sense to perform these options for them
-		$isL10nOverlay = $this->localizationView && $table != 'pages_language_overlay' && $row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']] != 0;
+		$isL10nOverlay = $this->localizationView && $row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']] != 0;
 		// Return blank, if disabled:
 		// Whether a numeric clipboard pad is active or the normal pad we will see different content of the panel:
 		// For the "Normal" pad:

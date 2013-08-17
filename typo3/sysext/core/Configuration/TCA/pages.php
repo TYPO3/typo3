@@ -22,7 +22,10 @@ return array(
 			'endtime' => 'endtime',
 			'fe_group' => 'fe_group'
 		),
-		'transForeignTable' => 'pages_language_overlay',
+		#'transForeignTable' => 'pages_language_overlay',
+		'languageField' => 'sys_language_uid',
+		'transOrigPointerField' => 'l10n_parent',
+		'transOrigDiffSourceField' => 'l10n_diffsource',
 		'typeicon_column' => 'doktype',
 		'typeicon_classes' => array(
 			'1' => 'apps-pagetree-page-default',
@@ -787,7 +790,38 @@ return array(
 				'maxitems' => 1,
 				'default' => ''
 			)
-		)
+		),
+		'sys_language_uid' => array(
+			'exclude' => 1,
+			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.language',
+			'config' => array(
+				'type' => 'select',
+				'foreign_table' => 'sys_language',
+				'foreign_table_where' => 'ORDER BY sys_language.title',
+				'items' => array(
+					array('LLL:EXT:lang/locallang_general.xlf:LGL.allLanguages', -1),
+					array('LLL:EXT:lang/locallang_general.xlf:LGL.default_value', 0)
+				)
+			)
+		),
+		'l10n_parent' => array(
+			'displayCond' => 'FIELD:sys_language_uid:>:0',
+			'exclude' => 1,
+			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.l18n_parent',
+			'config' => array(
+				'type' => 'select',
+				'items' => array(
+					array('', 0)
+				),
+				'foreign_table' => 'pages',
+				'foreign_table_where' => 'AND pages.uid=###REC_FIELD_l10n_parent### AND pages.sys_language_uid IN (-1,0)'
+			)
+		),
+		'l10n_diffsource' => array(
+			'config' => array(
+				'type' => 'passthrough'
+			)
+		),
 	),
 	'types' => array(
 		// normal

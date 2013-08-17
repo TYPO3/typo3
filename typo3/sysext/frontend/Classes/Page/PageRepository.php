@@ -156,7 +156,7 @@ class PageRepository {
 	 ******************************************/
 	/**
 	 * Returns the $row for the page with uid = $uid (observing ->where_hid_del)
-	 * Any pages_language_overlay will be applied before the result is returned.
+	 * Any translation overlay will be applied before the result is returned.
 	 * If no page is found an empty array is returned.
 	 *
 	 * @param integer $uid The page id to look up.
@@ -275,6 +275,7 @@ class PageRepository {
 	 * @param integer $lUid Language UID if you want to set an alternative value to $this->sys_language_uid which is default. Should be >=0
 	 * @return array Page row which is overlayed with language_overlay record (or the overlay record alone)
 	 * @todo Define visibility
+	 * @todo deprecate
 	 */
 	public function getPageOverlay($pageInput, $lUid = -1) {
 		// Initialize:
@@ -291,46 +292,27 @@ class PageRepository {
 				$hookObject->getPageOverlay_preProcess($pageInput, $lUid, $this);
 			}
 		}
+
+		$row = $pageInput;
 		// If language UID is different from zero, do overlay:
 		if ($lUid) {
-			$fieldArr = GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['FE']['pageOverlayFields']);
-			if (is_array($pageInput)) {
-				// Was the whole record
-				$page_id = $pageInput['uid'];
-				// Make sure that only fields which exist in the incoming record are overlaid!
-				$fieldArr = array_intersect($fieldArr, array_keys($pageInput));
-			} else {
+			if (!is_array($pageInput)) {
 				// Was the id
-				$page_id = $pageInput;
-			}
-			if (count($fieldArr)) {
-				// NOTE to enabledFields('pages_language_overlay'):
-				// Currently the showHiddenRecords of TSFE set will allow pages_language_overlay records to be selected as they are child-records of a page.
-				// However you may argue that the showHiddenField flag should determine this. But that's not how it's done right now.
-				// Selecting overlay record:
-				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(implode(',', $fieldArr), 'pages_language_overlay', 'pid=' . intval($page_id) . '
-								AND sys_language_uid=' . intval($lUid) . $this->enableFields('pages_language_overlay'), '', '', '1');
-				$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
+				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+					'*',
+					'pages',
+					'uid=' . intval($pageInput),
+					'',
+					'',
+					'1'
+				);
+				$originalRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 				$GLOBALS['TYPO3_DB']->sql_free_result($res);
-				$this->versionOL('pages_language_overlay', $row);
-				if (is_array($row)) {
-					$row['_PAGES_OVERLAY'] = TRUE;
-					$row['_PAGES_OVERLAY_UID'] = $row['uid'];
-					$row['_PAGES_OVERLAY_LANGUAGE'] = $lUid;
-					// Unset vital fields that are NOT allowed to be overlaid:
-					unset($row['uid']);
-					unset($row['pid']);
-				}
 			}
+			$row = $this->getRecordOverlay('pages', $originalRow, $lUid);
 		}
-		// Create output:
-		if (is_array($pageInput)) {
-			// If the input was an array, simply overlay the newfound array and return...
-			return is_array($row) ? array_merge($pageInput, $row) : $pageInput;
-		} else {
-			// Always an array in return
-			return is_array($row) ? $row : array();
-		}
+		// Always an array in return
+		return is_array($row) ? $row : array();
 	}
 
 	/**

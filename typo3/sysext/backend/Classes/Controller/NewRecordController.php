@@ -596,8 +596,8 @@ class NewRecordController {
 		$parameters = '&edit[' . $table . '][' . $pid . ']=new';
 		if ($table == 'pages' && $GLOBALS['TYPO3_CONF_VARS']['SYS']['contentTable'] && isset($GLOBALS['TCA'][$GLOBALS['TYPO3_CONF_VARS']['SYS']['contentTable']]) && $addContentTable) {
 			$parameters .= '&edit[' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['contentTable'] . '][prev]=new&returnNewPageId=1';
-		} elseif ($table == 'pages_language_overlay') {
-			$parameters .= '&overrideVals[pages_language_overlay][doktype]=' . (int) $this->pageinfo['doktype'];
+		} elseif ($table == 'pages') {
+			$parameters .= '&overrideVals[pages][doktype]=' . (int) $this->pageinfo['doktype'];
 		}
 		$onClick = BackendUtility::editOnClick($parameters, '', $this->returnUrl);
 		return '<a href="#" onclick="' . htmlspecialchars($onClick) . '">' . $linkText . '</a>';

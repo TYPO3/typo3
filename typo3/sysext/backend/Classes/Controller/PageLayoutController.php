@@ -295,7 +295,7 @@ class PageLayoutController {
 				}
 			}
 		}
-		// First, select all pages_language_overlay records on the current page. Each represents a possibility for a language on the page. Add these to language selector.
+		// First, select all translated pages records on the current page. Each represents a possibility for a language on the page. Add these to language selector.
 		$res = $this->exec_languageQuery($this->id);
 		while ($lrow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 			if ($GLOBALS['BE_USER']->checkLanguageAccess($lrow['uid'])) {
@@ -385,13 +385,14 @@ class PageLayoutController {
 	 */
 	protected function getLocalizedPageTitle() {
 		if ($this->current_sys_language > 0) {
+			$transOrigPointerField = $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'];
 			$overlayRecord = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
 				'title',
-				'pages_language_overlay',
-				'pid = ' . intval($this->id) .
+				'pages',
+				$transOrigPointerField . ' = ' . intval($this->id) .
 						' AND sys_language_uid = ' . intval($this->current_sys_language) .
-						BackendUtility::deleteClause('pages_language_overlay') .
-						BackendUtility::versioningPlaceholderClause('pages_language_overlay'),
+						BackendUtility::deleteClause('pages') .
+						BackendUtility::versioningPlaceholderClause('pages'),
 				'',
 				'',
 				'',
@@ -634,10 +635,11 @@ class PageLayoutController {
 		$is_selected = 0;
 		$languageOverlayRecord = '';
 		if ($this->current_sys_language) {
-			list($languageOverlayRecord) = BackendUtility::getRecordsByField('pages_language_overlay', 'pid', $this->id, 'AND sys_language_uid=' . intval($this->current_sys_language));
+			$transOrigPointerField = $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'];
+			list($languageOverlayRecord) = BackendUtility::getRecordsByField('pages', $transOrigPointerField, $this->id, 'AND sys_language_uid=' . intval($this->current_sys_language));
 		}
 		if (is_array($languageOverlayRecord)) {
-			$inValue = 'pages_language_overlay:' . $languageOverlayRecord['uid'];
+			$inValue = 'pages:' . $languageOverlayRecord['uid'];
 			$is_selected += intval($edit_record == $inValue);
 			$opt[] = '<option value="' . $inValue . '"' . ($edit_record == $inValue ? ' selected="selected"' : '') . '>[ ' . $GLOBALS['LANG']->getLL('editLanguageHeader', TRUE) . ' ]</option>';
 		} else {
@@ -1036,15 +1038,16 @@ class PageLayoutController {
 			// Edit page properties and page language overlay icons
 			if ($this->CALC_PERMS & 2) {
 
-				// Edit localized page_language_overlay only when one specific language is selected
+				// Edit localized page only when one specific language is selected
 				if ($this->MOD_SETTINGS['function'] == 1 && $this->current_sys_language > 0) {
+					$transOrigPointerField = $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'];
 					$overlayRecord = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
 						'uid',
-						'pages_language_overlay',
-						'pid = ' . intval($this->id) . ' ' .
+						'pages',
+						$transOrigPointerField . ' = ' . intval($this->id) . ' ' .
 						'AND sys_language_uid = ' . intval($this->current_sys_language) .
-						\TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('pages_language_overlay') .
-						\TYPO3\CMS\Backend\Utility\BackendUtility::versioningPlaceholderClause('pages_language_overlay'),
+						\TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('pages') .
+						\TYPO3\CMS\Backend\Utility\BackendUtility::versioningPlaceholderClause('pages'),
 						'',
 						'',
 						'',
@@ -1052,7 +1055,7 @@ class PageLayoutController {
 					);
 
 					$editLanguageOnClick = htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick(
-						'&edit[pages_language_overlay][' . $overlayRecord['uid'] . ']=edit',
+						'&edit[pages][' . $overlayRecord['uid'] . ']=edit',
 						$GLOBALS['BACK_PATH'])
 					);
 					$buttons['edit_language'] = '<a href="#" ' .
@@ -1141,20 +1144,30 @@ class PageLayoutController {
 	/**
 	 * Returns a SQL query for selecting sys_language records.
 	 *
-	 * @param integer $id Page id: If zero, the query will select all sys_language records from root level which are NOT hidden. If set to another value, the query will select all sys_language records that has a pages_language_overlay record on that page (and is not hidden, unless you are admin user)
+	 * @param integer $id Page id: If zero, the query will select all sys_language records from root level which are NOT hidden. If set to another value, the query will select all sys_language records that has a translated pages record on that page (and is not hidden, unless you are admin user)
 	 * @return string Return query string.
 	 * @todo Define visibility
 	 */
 	public function exec_languageQuery($id) {
 		if ($id) {
-			$exQ = BackendUtility::deleteClause('pages_language_overlay') .
+			$exQ = BackendUtility::deleteClause('pages') .
 				($GLOBALS['BE_USER']->isAdmin() ? '' : ' AND sys_language.hidden=0');
+			$transOrigPointerField = $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'];
 			return $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 				'sys_language.*',
-				'pages_language_overlay,sys_language',
-				'pages_language_overlay.sys_language_uid=sys_language.uid AND pages_language_overlay.pid=' . intval($id) . $exQ .
-					BackendUtility::versioningPlaceholderClause('pages_language_overlay'),
-				'pages_language_overlay.sys_language_uid,sys_language.uid,sys_language.pid,sys_language.tstamp,sys_language.hidden,sys_language.title,sys_language.static_lang_isocode,sys_language.flag',
+				'pages,sys_language',
+				'pages.sys_language_uid=sys_language.uid'
+					. ' AND pages.' . $transOrigPointerField . '=' . intval($id)
+					. $exQ
+					. BackendUtility::versioningPlaceholderClause('pages'),
+				'pages.sys_language_uid,'
+					. 'sys_language.uid,'
+					. 'sys_language.pid,'
+					. 'sys_language.tstamp,'
+					. 'sys_language.hidden,'
+					. 'sys_language.title,'
+					. 'sys_language.static_lang_isocode,'
+					. 'sys_language.flag',
 				'sys_language.title'
 			);
 		} else {

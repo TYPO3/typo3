@@ -476,10 +476,10 @@ class WorkspaceService implements \TYPO3\CMS\Core\SingletonInterface {
 		// If the language is not default, check state of overlay
 		if ($language > 0) {
 			$whereClause = 'pid = ' . intval($id);
-			$whereClause .= ' AND ' . $GLOBALS['TCA']['pages_language_overlay']['ctrl']['languageField'] . ' = ' . intval($language);
+			$whereClause .= ' AND ' . $GLOBALS['TCA']['pages']['ctrl']['languageField'] . ' = ' . intval($language);
 			$whereClause .= ' AND t3ver_wsid = ' . intval($GLOBALS['BE_USER']->workspace);
-			$whereClause .= BackendUtility::deleteClause('pages_language_overlay');
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('t3ver_state', 'pages_language_overlay', $whereClause);
+			$whereClause .= BackendUtility::deleteClause('pages');
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('t3ver_state', 'pages', $whereClause);
 			if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 				$isNewPage = (int) $row['t3ver_state'] === 1;
 			}
@@ -507,7 +507,7 @@ class WorkspaceService implements \TYPO3\CMS\Core\SingletonInterface {
 
 		if ($table == 'pages') {
 			$viewUrl = BackendUtility::viewOnClick(BackendUtility::getLiveVersionIdOfRecord('pages', $uid));
-		} elseif ($table === 'pages_language_overlay' || $table === 'tt_content') {
+		} elseif ($table === 'tt_content') {
 			if ($liveRecord === NULL) {
 				$liveRecord = BackendUtility::getLiveVersionOfRecord($table, $uid);
 			}

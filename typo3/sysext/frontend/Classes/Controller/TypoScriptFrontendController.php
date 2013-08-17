@@ -211,7 +211,7 @@ class TypoScriptFrontendController {
 	 */
 	public $showHiddenPage = '';
 
-	// Flag indicating that hidden records should be shown. This includes sys_template, pages_language_overlay and even fe_groups in addition to all other regular content. So in effect, this includes everything except pages.
+	// Flag indicating that hidden records should be shown. This includes sys_template, pages and even fe_groups in addition to all other regular content. So in effect, this includes everything except pages.
 	/**
 	 * @todo Define visibility
 	 */

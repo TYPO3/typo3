@@ -389,8 +389,18 @@ abstract class AbstractRecordList {
 	 * @todo Define visibility
 	 */
 	public function initializeLanguages() {
+		$transOrigPointerField = $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'];
 		// Look up page overlays:
-		$this->pageOverlays = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'pages_language_overlay', 'pid=' . intval($this->id) . BackendUtility::deleteClause('pages_language_overlay') . BackendUtility::versioningPlaceholderClause('pages_language_overlay'), '', '', '', 'sys_language_uid');
+		$this->pageOverlays = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+			'*',
+			'pages',
+			$transOrigPointerField . '=' . intval($this->id)
+				. BackendUtility::deleteClause('pages')
+				. BackendUtility::versioningPlaceholderClause('pages'),
+			'',
+			'',
+			'',
+			'sys_language_uid');
 		$this->languageIconTitles = $this->getTranslateTools()->getSystemLanguages($this->id, $this->backPath);
 	}
 
