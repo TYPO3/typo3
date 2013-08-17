@@ -45,10 +45,16 @@ class UpdateFromTerControllerTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTest
 	 */
 	protected $extensionRepositoryMock;
 
+	/**
+	 * @var \TYPO3\CMS\Extensionmanager\Utility\Repository\Helper
+	 */
+	protected $repositoryHelperMock;
+
 	public function setUp() {
 		$this->mockObjectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerInterface');
 		$this->repositoryRepositoryMock = $this->getMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Repository\\RepositoryRepository', array('findByUid'), array($this->mockObjectManager));
 		$this->extensionRepositoryMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Repository\\ExtensionRepository', array(), array($this->mockObjectManager));
+		$this->repositoryHelperMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Utility\\Repository\\Helper', array('updateExtList'), array(), '', FALSE);
 	}
 
 	/**
@@ -58,16 +64,16 @@ class UpdateFromTerControllerTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTest
 	public function updateExtensionListFromTerCallsUpdateExtListIfExtensionListIsEmpty() {
 		$controllerMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Controller\\UpdateFromTerController', array('dummy'));
 		$repositoryModelMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\Repository', array('getLastUpdate'));
-		$repositoryHelperMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Utility\\Repository\\Helper', array('updateExtList'));
+
 		$viewMock = $this->getAccessibleMock('TYPO3\\CMS\\Fluid\\View\\TemplateView', array('assign'));
 		$requestMock = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Mvc\\Request', array('hasArgument', 'getArgument'));
 		$viewMock->expects($this->any())->method('assign')->will($this->returnValue($viewMock));
 		$this->repositoryRepositoryMock->expects($this->once())->method('findByUid')->with(1)->will($this->returnValue($repositoryModelMock));
-		$repositoryHelperMock->expects($this->once())->method('updateExtList');
+		$this->repositoryHelperMock->expects($this->once())->method('updateExtList');
 		$this->extensionRepositoryMock->expects($this->once())->method('countAll')->will($this->returnValue(0));
 		$controllerMock->_set('extensionRepository', $this->extensionRepositoryMock);
 		$controllerMock->_set('repositoryRepository', $this->repositoryRepositoryMock);
-		$controllerMock->_set('repositoryHelper', $repositoryHelperMock);
+		$controllerMock->_set('repositoryHelper', $this->repositoryHelperMock);
 		$controllerMock->_set('settings', array('repositoryUid' => 1));
 		$controllerMock->_set('view', $viewMock);
 		$controllerMock->_set('request', $requestMock);
@@ -81,16 +87,15 @@ class UpdateFromTerControllerTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTest
 	public function updateExtensionListFromTerDoesNotCallsUpdateExtListIfExtensionListIsNotEmpty() {
 		$controllerMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Controller\\UpdateFromTerController', array('dummy'));
 		$repositoryModelMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\Repository', array('getLastUpdate'));
-		$repositoryHelperMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Utility\\Repository\\Helper', array('updateExtList'));
 		$viewMock = $this->getAccessibleMock('TYPO3\\CMS\\Fluid\\View\\TemplateView', array('assign'));
 		$requestMock = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Mvc\\Request', array('hasArgument', 'getArgument'));
 		$viewMock->expects($this->any())->method('assign')->will($this->returnValue($viewMock));
 		$this->repositoryRepositoryMock->expects($this->once())->method('findByUid')->with(1)->will($this->returnValue($repositoryModelMock));
-		$repositoryHelperMock->expects($this->never())->method('updateExtList');
+		$this->repositoryHelperMock->expects($this->never())->method('updateExtList');
 		$this->extensionRepositoryMock->expects($this->once())->method('countAll')->will($this->returnValue(100));
 		$controllerMock->_set('extensionRepository', $this->extensionRepositoryMock);
 		$controllerMock->_set('repositoryRepository', $this->repositoryRepositoryMock);
-		$controllerMock->_set('repositoryHelper', $repositoryHelperMock);
+		$controllerMock->_set('repositoryHelper', $this->repositoryHelperMock);
 		$controllerMock->_set('settings', array('repositoryUid' => 1));
 		$controllerMock->_set('view', $viewMock);
 		$controllerMock->_set('request', $requestMock);
@@ -104,16 +109,15 @@ class UpdateFromTerControllerTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTest
 	public function updateExtensionListFromTerCallsUpdateExtListIfForceUpdateCheckIsSet() {
 		$controllerMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Controller\\UpdateFromTerController', array('dummy'));
 		$repositoryModelMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\Repository', array('getLastUpdate'));
-		$repositoryHelperMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Utility\\Repository\\Helper', array('updateExtList'));
 		$viewMock = $this->getAccessibleMock('TYPO3\\CMS\\Fluid\\View\\TemplateView', array('assign'));
 		$requestMock = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Mvc\\Request', array('hasArgument', 'getArgument'));
 		$viewMock->expects($this->any())->method('assign')->will($this->returnValue($viewMock));
 		$this->repositoryRepositoryMock->expects($this->once())->method('findByUid')->with(1)->will($this->returnValue($repositoryModelMock));
-		$repositoryHelperMock->expects($this->once())->method('updateExtList');
+		$this->repositoryHelperMock->expects($this->once())->method('updateExtList');
 		$this->extensionRepositoryMock->expects($this->once())->method('countAll')->will($this->returnValue(100));
 		$controllerMock->_set('extensionRepository', $this->extensionRepositoryMock);
 		$controllerMock->_set('repositoryRepository', $this->repositoryRepositoryMock);
-		$controllerMock->_set('repositoryHelper', $repositoryHelperMock);
+		$controllerMock->_set('repositoryHelper', $this->repositoryHelperMock);
 		$controllerMock->_set('settings', array('repositoryUid' => 1));
 		$controllerMock->_set('view', $viewMock);
 		$controllerMock->_set('request', $requestMock);
