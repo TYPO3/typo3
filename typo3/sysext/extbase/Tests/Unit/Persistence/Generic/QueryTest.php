@@ -100,6 +100,16 @@ class QueryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
 	 * @test
+	 */
+	public function executeReturnsRawObjectDataIfReturnRawQueryResultIsSet() {
+		$this->persistenceManager->expects($this->once())->method('getObjectDataByQuery')->with($this->query)->will($this->returnValue('rawQueryResult'));
+		$expectedResult = 'rawQueryResult';
+		$actualResult = $this->query->execute(TRUE);
+		$this->assertEquals($expectedResult, $actualResult);
+	}
+
+	/**
+	 * @test
 	 * @expectedException \InvalidArgumentException
 	 */
 	public function setLimitAcceptsOnlyIntegers() {

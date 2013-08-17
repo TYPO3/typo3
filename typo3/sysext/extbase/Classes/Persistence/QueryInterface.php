@@ -128,10 +128,11 @@ interface QueryInterface {
 	/**
 	 * Executes the query and returns the result.
 	 *
-	 * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface|array The query result object or an array if $this->getQuerySettings()->getReturnRawQueryResult() is TRUE
+	 * @param $returnRawQueryResult boolean avoids the object mapping by the persistence
+	 * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface|array The query result object or an array if $returnRawQueryResult is TRUE
 	 * @api
 	 */
-	public function execute();
+	public function execute($returnRawQueryResult = FALSE);
 
 	/**
 	 * Sets the property names to order the result by. Expected like this:

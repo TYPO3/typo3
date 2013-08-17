@@ -203,11 +203,12 @@ class Query implements \TYPO3\CMS\Extbase\Persistence\QueryInterface {
 	/**
 	 * Executes the query against the database and returns the result
 	 *
-	 * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface|array The query result object or an array if $this->getQuerySettings()->getReturnRawQueryResult() is TRUE
+	 * @param $returnRawQueryResult boolean avoids the object mapping by the persistence
+	 * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface|array The query result object or an array if $returnRawQueryResult is TRUE
 	 * @api
 	 */
-	public function execute() {
-		if ($this->getQuerySettings()->getReturnRawQueryResult() === TRUE) {
+	public function execute($returnRawQueryResult = FALSE) {
+		if ($returnRawQueryResult === TRUE || $this->getQuerySettings()->getReturnRawQueryResult() === TRUE) {
 			return $this->persistenceManager->getObjectDataByQuery($this);
 		} else {
 			return $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\QueryResultInterface', $this);
