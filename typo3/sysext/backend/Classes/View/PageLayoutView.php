@@ -312,10 +312,10 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 						if (substr($field, 0, 6) == 'table_') {
 							$f2 = substr($field, 6);
 							if ($GLOBALS['TCA'][$f2]) {
-								$theData[$field] = '&nbsp;' . IconUtility::getSpriteIconForRecord($f2, array(), array('title' => $GLOBALS['LANG']->sL($GLOBALS['TCA'][$f2]['ctrl']['title'], 1)));
+								$theData[$field] = '&nbsp;' . IconUtility::getSpriteIconForRecord($f2, array(), array('title' => $GLOBALS['LANG']->sL($GLOBALS['TCA'][$f2]['ctrl']['title'], TRUE)));
 							}
 						} else {
-							$theData[$field] = '&nbsp;&nbsp;<strong>' . $GLOBALS['LANG']->sL($GLOBALS['TCA']['pages']['columns'][$field]['label'], 1) . '</strong>' . $eI;
+							$theData[$field] = '&nbsp;&nbsp;<strong>' . $GLOBALS['LANG']->sL($GLOBALS['TCA']['pages']['columns'][$field]['label'], TRUE) . '</strong>' . $eI;
 						}
 				}
 			}
@@ -832,7 +832,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 		$theData = array();
 		$theData = $this->headerFields($this->fieldArray, $table, $theData);
 		// Title row
-		$localizedTableTitle = $GLOBALS['LANG']->sL($GLOBALS['TCA'][$table]['ctrl']['title'], 1);
+		$localizedTableTitle = $GLOBALS['LANG']->sL($GLOBALS['TCA'][$table]['ctrl']['title'], TRUE);
 		$out .= '<tr class="t3-row-header">' . '<td nowrap="nowrap" class="col-icon"></td>' . '<td nowrap="nowrap" colspan="' . (count($theData) - 2) . '"><span class="c-table">' . $localizedTableTitle . '</span> (' . $dbCount . ')</td>' . '<td nowrap="nowrap" class="col-icon"></td>' . '</tr>';
 		// Column's titles
 		if ($this->doEdit) {
@@ -909,7 +909,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 					// Traverse fields, separated by ";" (displayed in a single cell).
 					foreach ($theFields as $fName2) {
 						if ($GLOBALS['TCA'][$table]['columns'][$fName2]) {
-							$out[$fieldName] .= '<strong>' . $GLOBALS['LANG']->sL($GLOBALS['TCA'][$table]['columns'][$fName2]['label'], 1) . '</strong>' . '&nbsp;&nbsp;' . htmlspecialchars(GeneralUtility::fixed_lgd_cs(BackendUtility::getProcessedValue($table, $fName2, $row[$fName2], 0, 0, 0, $row['uid']), 25)) . '<br />';
+							$out[$fieldName] .= '<strong>' . $GLOBALS['LANG']->sL($GLOBALS['TCA'][$table]['columns'][$fName2]['label'], TRUE) . '</strong>' . '&nbsp;&nbsp;' . htmlspecialchars(GeneralUtility::fixed_lgd_cs(BackendUtility::getProcessedValue($table, $fName2, $row[$fName2], 0, 0, 0, $row['uid']), 25)) . '<br />';
 						}
 					}
 				}
@@ -938,7 +938,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	 */
 	public function headerFields($fieldArr, $table, $out = array()) {
 		foreach ($fieldArr as $fieldName) {
-			$ll = $GLOBALS['LANG']->sL($GLOBALS['TCA'][$table]['columns'][$fieldName]['label'], 1);
+			$ll = $GLOBALS['LANG']->sL($GLOBALS['TCA'][$table]['columns'][$fieldName]['label'], TRUE);
 			$out[$fieldName] = $ll ? $ll : '&nbsp;';
 		}
 		return $out;
@@ -1342,14 +1342,14 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 							$out .= GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', htmlspecialchars($message), '', FlashMessage::WARNING)->render();
 						}
 					} elseif (!empty($row['select_key'])) {
-						$out .= $GLOBALS['LANG']->sL(BackendUtility::getItemLabel('tt_content', 'select_key'), 1) . ' ' . $row['select_key'] . '<br />';
+						$out .= $GLOBALS['LANG']->sL(BackendUtility::getItemLabel('tt_content', 'select_key'), TRUE) . ' ' . $row['select_key'] . '<br />';
 					} else {
 						$out .= '<strong>' . $GLOBALS['LANG']->getLL('noPluginSelected') . '</strong>';
 					}
-					$out .= $GLOBALS['LANG']->sL(BackendUtility::getLabelFromItemlist('tt_content', 'pages', $row['pages']), 1) . '<br />';
+					$out .= $GLOBALS['LANG']->sL(BackendUtility::getLabelFromItemlist('tt_content', 'pages', $row['pages']), TRUE) . '<br />';
 					break;
 				case 'script':
-					$out .= $GLOBALS['LANG']->sL(BackendUtility::getItemLabel('tt_content', 'select_key'), 1) . ' ' . $row['select_key'] . '<br />';
+					$out .= $GLOBALS['LANG']->sL(BackendUtility::getItemLabel('tt_content', 'select_key'), TRUE) . ' ' . $row['select_key'] . '<br />';
 					$out .= '<br />' . $this->linkEditContent($this->renderText($row['bodytext']), $row) . '<br />';
 					$out .= '<br />' . $this->linkEditContent($this->renderText($row['imagecaption']), $row) . '<br />';
 					break;
@@ -1921,9 +1921,9 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 				if ($c || GeneralUtility::inList('tt_content', $tName)) {
 					// Add row to menu:
 					$out .= '
-					<td><a href="#' . $tName . '"></a>' . IconUtility::getSpriteIconForRecord($tName, array(), array('title' => $GLOBALS['LANG']->sL($GLOBALS['TCA'][$tName]['ctrl']['title'], 1))) . '</td>';
+					<td><a href="#' . $tName . '"></a>' . IconUtility::getSpriteIconForRecord($tName, array(), array('title' => $GLOBALS['LANG']->sL($GLOBALS['TCA'][$tName]['ctrl']['title'], TRUE))) . '</td>';
 					// ... and to the internal array, activeTables we also add table icon and title (for use elsewhere)
-					$this->activeTables[$tName] = IconUtility::getSpriteIconForRecord($tName, array(), array('title' => ($GLOBALS['LANG']->sL($GLOBALS['TCA'][$tName]['ctrl']['title'], 1) . ': ' . $c . ' ' . $GLOBALS['LANG']->getLL('records', TRUE)))) . '&nbsp;' . $GLOBALS['LANG']->sL($GLOBALS['TCA'][$tName]['ctrl']['title'], 1);
+					$this->activeTables[$tName] = IconUtility::getSpriteIconForRecord($tName, array(), array('title' => ($GLOBALS['LANG']->sL($GLOBALS['TCA'][$tName]['ctrl']['title'], TRUE) . ': ' . $c . ' ' . $GLOBALS['LANG']->getLL('records', TRUE)))) . '&nbsp;' . $GLOBALS['LANG']->sL($GLOBALS['TCA'][$tName]['ctrl']['title'], TRUE);
 				}
 			}
 		}

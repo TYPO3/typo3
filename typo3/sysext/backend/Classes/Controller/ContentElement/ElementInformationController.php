@@ -273,7 +273,7 @@ class ElementInformationController {
 		// Display download link?
 		if ($this->fileObject->getPublicUrl()) {
 			$downloadLink = '<a href="../' . $this->fileObject->getPublicUrl() . '" target="_blank">' .
-					$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xlf:download', 1) .
+					$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xlf:download', TRUE) .
 					'</a>';
 		}
 
@@ -291,9 +291,9 @@ class ElementInformationController {
 
 		if ($this->type !== 'folder') {
 			$extraFields = array(
-				'crdate' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_general.xlf:LGL.creationDate', 1),
-				'cruser_id' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_general.xlf:LGL.creationUserId', 1),
-				'tstamp' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_general.xlf:LGL.timestamp', 1)
+				'crdate' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_general.xlf:LGL.creationDate', TRUE),
+				'cruser_id' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_general.xlf:LGL.creationUserId', TRUE),
+				'tstamp' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_general.xlf:LGL.timestamp', TRUE)
 			);
 		}
 
@@ -331,7 +331,7 @@ class ElementInformationController {
 			}
 
 			$itemValue = BackendUtility::getProcessedValue($this->table, $name, $this->row[$name], 0, 0, FALSE, $uid);
-			$itemLabel = $GLOBALS['LANG']->sL(BackendUtility::getItemLabel($this->table, $name), 1);
+			$itemLabel = $GLOBALS['LANG']->sL(BackendUtility::getItemLabel($this->table, $name), TRUE);
 			$tableRows[] = '
 				<tr>
 					<td class="t3-col-header">' . $itemLabel . '</td>
@@ -400,7 +400,7 @@ class ElementInformationController {
 			}
 			$uid = $this->row['uid'];
 			$itemValue = BackendUtility::getProcessedValue($this->table, $name, $this->row[$name], 0, 0, FALSE, $uid);
-			$itemLabel = $GLOBALS['LANG']->sL(BackendUtility::getItemLabel($this->table, $name), 1);
+			$itemLabel = $GLOBALS['LANG']->sL(BackendUtility::getItemLabel($this->table, $name), TRUE);
 			$tableRows[] = '
 				<tr>
 					<td class="t3-col-header">' . $itemLabel . '</td>

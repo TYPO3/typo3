@@ -106,7 +106,7 @@ class ElementBrowserRecordList extends \TYPO3\CMS\Recordlist\RecordList\Database
 	 */
 	public function linkWrapItems($table, $uid, $code, $row) {
 		if (!$code) {
-			$code = '<i>[' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.no_title', 1) . ']</i>';
+			$code = '<i>[' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.no_title', TRUE) . ']</i>';
 		} else {
 			$code = BackendUtility::getRecordTitlePrep($code, $this->fixedL);
 		}

@@ -467,13 +467,13 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 		}
 		if (in_array('file', $this->allowedItems)) {
 			$menuDef['file']['isActive'] = $this->act == 'file';
-			$menuDef['file']['label'] = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_browse_links.xlf:file', 1);
+			$menuDef['file']['label'] = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_browse_links.xlf:file', TRUE);
 			$menuDef['file']['url'] = '#';
 			$menuDef['file']['addParams'] = 'onclick="jumpToUrl(\'' . htmlspecialchars(('?act=file&mode=' . $this->mode . '&bparams=' . $this->bparams)) . '\');return false;"';
 		}
 		if (in_array('folder', $this->allowedItems)) {
 			$menuDef['folder']['isActive'] = $this->act == 'folder';
-			$menuDef['folder']['label'] = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_browse_links.xlf:folder', 1);
+			$menuDef['folder']['label'] = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_browse_links.xlf:folder', TRUE);
 			$menuDef['folder']['url'] = '#';
 			$menuDef['folder']['addParams'] = 'onclick="jumpToUrl(\'' . htmlspecialchars(('?act=folder&mode=' . $this->mode . '&bparams=' . $this->bparams)) . '\');return false;"';
 		}
@@ -626,7 +626,7 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 								$title = $GLOBALS['LANG']->sL($title);
 							}
 							// Description:
-							$description = $v[$k2i . '.']['description'] ? $GLOBALS['LANG']->sL($v[($k2i . '.')]['description'], 1) . '<br />' : '';
+							$description = $v[$k2i . '.']['description'] ? $GLOBALS['LANG']->sL($v[($k2i . '.')]['description'], TRUE) . '<br />' : '';
 							// URL + onclick event:
 							$onClickEvent = '';
 							if (isset($v[$k2i . '.']['target'])) {
@@ -673,7 +673,7 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 				$cElements = $this->expandPage();
 				// Outputting Temporary DB mount notice:
 				if (intval($GLOBALS['BE_USER']->getSessionData('pageTree_temporaryMountPoint'))) {
-					$link = '<a href="' . htmlspecialchars(GeneralUtility::linkThisScript(array('setTempDBmount' => 0))) . '">' . $GLOBALS['LANG']->sl('LLL:EXT:lang/locallang_core.xlf:labels.temporaryDBmount', 1) . '</a>';
+					$link = '<a href="' . htmlspecialchars(GeneralUtility::linkThisScript(array('setTempDBmount' => 0))) . '">' . $GLOBALS['LANG']->sl('LLL:EXT:lang/locallang_core.xlf:labels.temporaryDBmount', TRUE) . '</a>';
 					$flashMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $link, '', \TYPO3\CMS\Core\Messaging\FlashMessage::INFO);
 					$dbmount = $flashMessage->render();
 				}

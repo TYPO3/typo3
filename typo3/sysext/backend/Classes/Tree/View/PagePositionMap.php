@@ -431,7 +431,7 @@ class PagePositionMap {
 					$params['pid'] = $pid;
 					foreach ($tcaItems as $item) {
 						if ($item[1] == $columnKey) {
-							$head = $GLOBALS['LANG']->sL(BackendUtility::getLabelFromItemlist('tt_content', 'colPos', $columnKey, $params), 1);
+							$head = $GLOBALS['LANG']->sL(BackendUtility::getLabelFromItemlist('tt_content', 'colPos', $columnKey, $params), TRUE);
 						}
 					}
 					// Render the grid cell
@@ -454,7 +454,7 @@ class PagePositionMap {
 		} else {
 			// Traverse the columns here:
 			foreach ($colPosArray as $kk => $vv) {
-				$row1 .= '<td align="center" width="' . round(100 / $count) . '%"><div class="t3-page-colHeader t3-row-header">' . $this->wrapColumnHeader($GLOBALS['LANG']->sL(BackendUtility::getLabelFromItemlist('tt_content', 'colPos', $vv, $pid), 1), $vv) . '</div></td>';
+				$row1 .= '<td align="center" width="' . round(100 / $count) . '%"><div class="t3-page-colHeader t3-row-header">' . $this->wrapColumnHeader($GLOBALS['LANG']->sL(BackendUtility::getLabelFromItemlist('tt_content', 'colPos', $vv, $pid), TRUE), $vv) . '</div></td>';
 				$row2 .= '<td valign="top" nowrap="nowrap">' . implode('<br />', $lines[$vv]) . '</td>';
 			}
 			$table = '
