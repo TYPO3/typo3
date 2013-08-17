@@ -119,7 +119,7 @@ class StagesService {
 	 */
 	public function getPreviousStageForElementCollection(
 		$workspaceItems,
-		array $byTableName = array('tt_content', 'pages', 'pages_language_overlay')
+		array $byTableName = array('tt_content', 'pages')
 	) {
 		$currentStage = array();
 		$previousStage = array();
@@ -168,7 +168,7 @@ class StagesService {
 	 */
 	public function getNextStageForElementCollection(
 		$workspaceItems,
-		array $byTableName = array('tt_content', 'pages', 'pages_language_overlay')
+		array $byTableName = array('tt_content', 'pages')
 	) {
 		$currentStage = array();
 		$usedStages = array();

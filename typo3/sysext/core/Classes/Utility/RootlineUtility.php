@@ -256,11 +256,7 @@ class RootlineUtility {
 						}
 					}
 					if (isset($configuration['foreign_table_field'])) {
-						if (intval($this->languageUid) > 0 && $columnIsOverlaid) {
-							$whereClauseParts[] = trim($configuration['foreign_table_field']) . ' = \'pages_language_overlay\'';
-						} else {
-							$whereClauseParts[] = trim($configuration['foreign_table_field']) . ' = \'pages\'';
-						}
+						$whereClauseParts[] = trim($configuration['foreign_table_field']) . ' = \'pages\'';
 					}
 					$whereClause = implode(' AND ', $whereClauseParts);
 					$whereClause .= $this->pageContext->deleteClause($table);

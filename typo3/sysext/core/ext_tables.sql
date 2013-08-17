@@ -175,10 +175,17 @@ CREATE TABLE pages (
   fe_login_mode tinyint(4) DEFAULT '0' NOT NULL,
   backend_layout int(10) DEFAULT '0' NOT NULL,
   backend_layout_next_level int(10) DEFAULT '0' NOT NULL,
-  PRIMARY KEY (uid),
+
+# Language fields
+	sys_language_uid int(11) DEFAULT '0' NOT NULL,
+	l10n_parent int(11) DEFAULT '0' NOT NULL,
+	l10n_diffsource mediumblob NOT NULL,
+
+	PRIMARY KEY (uid),
   KEY t3ver_oid (t3ver_oid,t3ver_wsid),
   KEY parent (pid,deleted,sorting),
-  KEY alias (alias)
+  KEY alias (alias),
+	KEY sys_language_uid (sys_language_uid)
 );
 
 #
