@@ -85,25 +85,12 @@ class Repository implements \TYPO3\CMS\Extbase\Persistence\RepositoryInterface, 
 	 * Constructs a new Repository
 	 *
 	 * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
-	 * @deprecated since Extbase 6.0.0; will be removed in Extbase 6.2 - Use objectManager to instantiate repository objects instead of GeneralUtility::makeInstance
 	 */
-	public function __construct(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager = NULL) {
+	public function __construct(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager) {
+		$this->objectManager = $objectManager;
+
 		$nsSeparator = strpos($this->getRepositoryClassName(), '\\') !== FALSE ? '\\\\' : '_';
 		$this->objectType = preg_replace(array('/' . $nsSeparator . 'Repository' . $nsSeparator . '(?!.*' . $nsSeparator . 'Repository' . $nsSeparator . ')/', '/Repository$/'), array($nsSeparator . 'Model' . $nsSeparator, ''), $this->getRepositoryClassName());
-		if ($objectManager === NULL) {
-			// Legacy creation, in case the object manager is NOT injected
-			// If ObjectManager IS there, then all properties are automatically injected
-			// @deprecated since Extbase 6.0.0, will be removed in Extbase 6.2
-			\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
-
-			$this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
-			$this->identityMap = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\IdentityMap');
-			$this->persistenceManager = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager');
-			$this->backend = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\BackendInterface');
-			$this->session = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Session');
-		} else {
-			$this->objectManager = $objectManager;
-		}
 	}
 
 	/**
