@@ -70,7 +70,7 @@ class UploadExtensionFileControllerTest extends \TYPO3\CMS\Extbase\Tests\Unit\Ba
 	 */
 	public function getExtensionFromZipFileExtractsExtensionKey($filename, $expectedKey) {
 		$fixture = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Controller\\UploadExtensionFileController', array('dummy'));
-		$installUtilityMock = $this->getMock('TYPO3\\CMS\\Extensionmanager\\Utility\\InstallUtility');
+		$installUtilityMock = $this->getMock('TYPO3\\CMS\\Extensionmanager\\Utility\\InstallUtility', array(), array(), '', FALSE);
 		$installUtilityMock->expects($this->once())->method('install');
 		$fixture->_set('installUtility', $installUtilityMock);
 		$fileHandlingUtilityMock = $this->getMock('TYPO3\\CMS\\Extensionmanager\\Utility\\FileHandlingUtility');

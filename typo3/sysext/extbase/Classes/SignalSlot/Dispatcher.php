@@ -123,7 +123,7 @@ class Dispatcher implements \TYPO3\CMS\Core\SingletonInterface {
 	public function dispatch($signalClassName, $signalName, array $signalArguments = array()) {
 		$this->initializeObject();
 		if (!isset($this->slots[$signalClassName][$signalName])) {
-			return NULL;
+			return $signalArguments;
 		}
 		foreach ($this->slots[$signalClassName][$signalName] as $slotInformation) {
 			if (isset($slotInformation['object'])) {

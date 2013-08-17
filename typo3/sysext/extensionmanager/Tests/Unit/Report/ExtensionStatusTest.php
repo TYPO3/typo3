@@ -1,6 +1,5 @@
 <?php
 namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Report;
-use TYPO3\CMS\Extensionmanager\Report;
 
 /***************************************************************
  *  Copyright notice
@@ -24,6 +23,8 @@ use TYPO3\CMS\Extensionmanager\Report;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use TYPO3\CMS\Extensionmanager\Report;
 
 /**
  * Test case
@@ -52,7 +53,7 @@ class ExtensionStatusTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @test
 	 */
 	public function extensionStatusImplementsStatusProviderInterface() {
-		$reportMock = $this->getMock('TYPO3\\CMS\\Extensionmanager\\Report\\ExtensionStatus');
+		$reportMock = $this->getMock('TYPO3\\CMS\\Extensionmanager\\Report\\ExtensionStatus', array(), array(), '', FALSE);
 		$this->assertInstanceOf('TYPO3\\CMS\\Reports\\StatusProviderInterface', $reportMock);
 	}
 
@@ -60,7 +61,7 @@ class ExtensionStatusTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @test
 	 */
 	public function getStatusReturnsArray() {
-		$report = new Report\ExtensionStatus();
+		$report = $this->getMock('TYPO3\\CMS\\Extensionmanager\\Report\\ExtensionStatus', array('getSecurityStatusOfExtensions', 'getMainRepositoryStatus'), array(), '', FALSE);
 		$this->assertInternalType('array', $report->getStatus());
 	}
 
@@ -68,7 +69,7 @@ class ExtensionStatusTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @test
 	 */
 	public function getStatusReturnArrayContainsFiveEntries() {
-		$report = new Report\ExtensionStatus();
+		$report = $this->getMock('TYPO3\\CMS\\Extensionmanager\\Report\\ExtensionStatus', array('getSecurityStatusOfExtensions', 'getMainRepositoryStatus'), array(), '', FALSE);
 		$this->assertSame(5, count($report->getStatus()));
 	}
 
@@ -76,10 +77,15 @@ class ExtensionStatusTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @test
 	 */
 	public function getStatusReturnArrayContainsInstancesOfReportsStatusStatus() {
-		$report = new Report\ExtensionStatus();
+		$statusObject = $this->objectManager->get('TYPO3\\CMS\\Reports\\Status', 'title', 'value');
+		/** @var \TYPO3\CMS\Extensionmanager\Report\ExtensionStatus $report */
+		$report = $this->getMock('TYPO3\\CMS\\Extensionmanager\\Report\\ExtensionStatus', array('getSecurityStatusOfExtensions', 'getMainRepositoryStatus'), array(), '', FALSE);
+		$report->expects($this->any())->method('getMainRepositoryStatus')->will($this->returnValue($statusObject));
 		$resultStatuses = $report->getStatus();
 		foreach($resultStatuses as $status) {
-			$this->assertInstanceOf('TYPO3\\CMS\\Reports\\Status', $status);
+			if ($status) {
+				$this->assertInstanceOf('TYPO3\\CMS\\Reports\\Status', $status);
+			}
 		}
 	}
 
@@ -87,8 +93,32 @@ class ExtensionStatusTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @test
 	 */
 	public function getStatusCallsGetMainRepositoryStatusForMainRepositoryStatusResult() {
+		/** @var $mockTerObject \TYPO3\CMS\Extensionmanager\Domain\Model\Extension|\PHPUnit_Framework_MockObject_MockObject */
+		$mockTerObject = $this->getMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\Extension');
+		$mockTerObject
+			->expects($this->any())
+			->method('getVersion')
+			->will($this->returnValue('1.0.6'));
+		$mockTerObject
+			->expects($this->atLeastOnce())
+			->method('getReviewState')
+			->will($this->returnValue(0));
+		$mockExtensionList = array(
+			'enetcache' => array(
+				'installed' => TRUE,
+				'terObject' => $mockTerObject
+			),
+		);
+		/** @var $mockListUtility \TYPO3\CMS\Extensionmanager\Utility\ListUtility|\PHPUnit_Framework_MockObject_MockObject */
+		$mockListUtility = $this->getMock('TYPO3\\CMS\\Extensionmanager\\Utility\\ListUtility');
+		$mockListUtility
+			->expects($this->once())
+			->method('getAvailableAndInstalledExtensionsWithAdditionalInformation')
+			->will($this->returnValue($mockExtensionList));
 		/** @var $mockReport \TYPO3\CMS\Extensionmanager\Report\ExtensionStatus|\PHPUnit_Framework_MockObject_MockObject */
-		$mockReport = $this->getMock('TYPO3\\CMS\\Extensionmanager\\Report\\ExtensionStatus', array('getMainRepositoryStatus'));
+		$mockReport = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Report\\ExtensionStatus', array('getMainRepositoryStatus'), array(), '', FALSE);
+		$mockReport->_set('objectManager', $this->mockObjectManager);
+		$mockReport->_set('listUtility', $mockListUtility);
 		$mockReport
 			->expects($this->once())
 			->method('getMainRepositoryStatus')
@@ -107,7 +137,8 @@ class ExtensionStatusTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 			->will($this->returnValue(NULL));
 
 		/** @var $mockReport \TYPO3\CMS\Extensionmanager\Report\ExtensionStatus|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
-		$mockReport = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Report\\ExtensionStatus', array('dummy'));
+		$mockReport = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Report\\ExtensionStatus', array('dummy'), array(), '', FALSE);
+		$mockReport->_set('objectManager', $this->objectManager);
 		$mockReport->_set('repositoryRepository', $this->mockRepositoryRepository);
 
 		/** @var $result \TYPO3\CMS\Reports\Status */
@@ -132,7 +163,8 @@ class ExtensionStatusTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 			->will($this->returnValue($mockRepository));
 
 		/** @var $mockReport \TYPO3\CMS\Extensionmanager\Report\ExtensionStatus|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
-		$mockReport = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Report\\ExtensionStatus', array('dummy'));
+		$mockReport = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Report\\ExtensionStatus', array('dummy'), array(), '', FALSE);
+		$mockReport->_set('objectManager', $this->objectManager);
 		$mockReport->_set('repositoryRepository', $this->mockRepositoryRepository);
 
 		/** @var $result \TYPO3\CMS\Reports\Status */
@@ -157,7 +189,8 @@ class ExtensionStatusTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 			->will($this->returnValue($mockRepository));
 
 		/** @var $mockReport \TYPO3\CMS\Extensionmanager\Report\ExtensionStatus|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
-		$mockReport = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Report\\ExtensionStatus', array('dummy'));
+		$mockReport = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Report\\ExtensionStatus', array('dummy'), array(), '', FALSE);
+		$mockReport->_set('objectManager', $this->objectManager);
 		$mockReport->_set('repositoryRepository', $this->mockRepositoryRepository);
 
 		/** @var $result \TYPO3\CMS\Reports\Status */
@@ -193,7 +226,8 @@ class ExtensionStatusTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 			->will($this->returnValue($mockExtensionList));
 
 		/** @var $mockReport \TYPO3\CMS\Extensionmanager\Report\ExtensionStatus|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
-		$mockReport = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Report\\ExtensionStatus', array('dummy'));
+		$mockReport = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Report\\ExtensionStatus', array('dummy'), array(), '', FALSE);
+		$mockReport->_set('objectManager', $this->objectManager);
 		$mockReport->_set('listUtility', $mockListUtility);
 
 		$result = $mockReport->_call('getSecurityStatusOfExtensions');
@@ -230,7 +264,8 @@ class ExtensionStatusTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 			->will($this->returnValue($mockExtensionList));
 
 		/** @var $mockReport \TYPO3\CMS\Extensionmanager\Report\ExtensionStatus|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
-		$mockReport = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Report\\ExtensionStatus', array('dummy'));
+		$mockReport = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Report\\ExtensionStatus', array('dummy'), array(), '', FALSE);
+		$mockReport->_set('objectManager', $this->objectManager);
 		$mockReport->_set('listUtility', $mockListUtility);
 
 		$result = $mockReport->_call('getSecurityStatusOfExtensions');
@@ -266,7 +301,8 @@ class ExtensionStatusTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 			->will($this->returnValue($mockExtensionList));
 
 		/** @var $mockReport \TYPO3\CMS\Extensionmanager\Report\ExtensionStatus|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
-		$mockReport = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Report\\ExtensionStatus', array('dummy'));
+		$mockReport = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Report\\ExtensionStatus', array('dummy'), array(), '', FALSE);
+		$mockReport->_set('objectManager', $this->objectManager);
 		$mockReport->_set('listUtility', $mockListUtility);
 
 		$result = $mockReport->_call('getSecurityStatusOfExtensions');
@@ -302,7 +338,8 @@ class ExtensionStatusTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 			->will($this->returnValue($mockExtensionList));
 
 		/** @var $mockReport \TYPO3\CMS\Extensionmanager\Report\ExtensionStatus|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
-		$mockReport = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Report\\ExtensionStatus', array('dummy'));
+		$mockReport = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Report\\ExtensionStatus', array('dummy'), array(), '', FALSE);
+		$mockReport->_set('objectManager', $this->objectManager);
 		$mockReport->_set('listUtility', $mockListUtility);
 
 		$result = $mockReport->_call('getSecurityStatusOfExtensions');
@@ -339,7 +376,8 @@ class ExtensionStatusTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 			->will($this->returnValue($mockExtensionList));
 
 		/** @var $mockReport \TYPO3\CMS\Extensionmanager\Report\ExtensionStatus|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
-		$mockReport = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Report\\ExtensionStatus', array('dummy'));
+		$mockReport = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Report\\ExtensionStatus', array('dummy'), array(), '', FALSE);
+		$mockReport->_set('objectManager', $this->objectManager);
 		$mockReport->_set('listUtility', $mockListUtility);
 
 		$result = $mockReport->_call('getSecurityStatusOfExtensions');
@@ -376,7 +414,8 @@ class ExtensionStatusTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 			->will($this->returnValue($mockExtensionList));
 
 		/** @var $mockReport \TYPO3\CMS\Extensionmanager\Report\ExtensionStatus|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
-		$mockReport = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Report\\ExtensionStatus', array('dummy'));
+		$mockReport = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Report\\ExtensionStatus', array('dummy'), array(), '', FALSE);
+		$mockReport->_set('objectManager', $this->objectManager);
 		$mockReport->_set('listUtility', $mockListUtility);
 
 		$result = $mockReport->_call('getSecurityStatusOfExtensions');
@@ -412,7 +451,8 @@ class ExtensionStatusTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 			->will($this->returnValue($mockExtensionList));
 
 		/** @var $mockReport \TYPO3\CMS\Extensionmanager\Report\ExtensionStatus|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
-		$mockReport = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Report\\ExtensionStatus', array('dummy'));
+		$mockReport = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Report\\ExtensionStatus', array('dummy'), array(), '', FALSE);
+		$mockReport->_set('objectManager', $this->objectManager);
 		$mockReport->_set('listUtility', $mockListUtility);
 
 		$result = $mockReport->_call('getSecurityStatusOfExtensions');
@@ -448,7 +488,8 @@ class ExtensionStatusTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 			->will($this->returnValue($mockExtensionList));
 
 		/** @var $mockReport \TYPO3\CMS\Extensionmanager\Report\ExtensionStatus|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
-		$mockReport = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Report\\ExtensionStatus', array('dummy'));
+		$mockReport = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Report\\ExtensionStatus', array('dummy'), array(), '', FALSE);
+		$mockReport->_set('objectManager', $this->objectManager);
 		$mockReport->_set('listUtility', $mockListUtility);
 
 		$result = $mockReport->_call('getSecurityStatusOfExtensions');

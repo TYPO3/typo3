@@ -294,8 +294,27 @@ class DispatcherTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @test
 	 * @author Alexander Schnitzler <alex.schnitzler@typovision.de>
 	 */
-	public function dispatchReturnsVoidIfSignalNameAndOrSignalClassNameIsNotRegistered() {
-		$this->assertSame(NULL, $this->signalSlotDispatcher->dispatch('ClassA', 'emitSomeSignal'));
+	public function dispatchReturnsEmptyArrayIfSignalNameAndOrSignalClassNameIsNotRegistered() {
+		$this->assertSame(array(), $this->signalSlotDispatcher->dispatch('ClassA', 'someNotRegisteredSignalName'));
+	}
+
+	/**
+	 * @test
+	 */
+	public function dispatchReturnsEmptyArrayIfSignalDoesNotProvideAnyArguments() {
+		$this->assertSame(array(), $this->signalSlotDispatcher->dispatch('ClassA', 'emitSomeSignal'));
+	}
+
+	/**
+	 * @test
+	 */
+	public function dispatchReturnsArgumentsArrayAsIsIfSignalIsNotRegistered() {
+		$arguments = array(
+			'argument1' => 42,
+			'argument2' => 'a string',
+			'argument3' => new \stdClass()
+		);
+		$this->assertSame($arguments, $this->signalSlotDispatcher->dispatch('ClassA', 'emitSomeSignal', $arguments));
 	}
 
 	/**

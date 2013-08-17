@@ -27,6 +27,7 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * A persistence backend. This backend maps objects to the relational model of the storage backend.
  * It persists all added, removed and changed objects.
@@ -182,9 +183,10 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 	 * @api
 	 */
 	public function getObjectDataByQuery(\TYPO3\CMS\Extbase\Persistence\QueryInterface $query) {
-		$this->signalSlotDispatcher->dispatch(__CLASS__, 'beforeGettingObjectData', array('query' => $query));
+		$signalResult = $this->signalSlotDispatcher->dispatch(__CLASS__, 'beforeGettingObjectData', array($query));
+		list($query) = $signalResult;
 		$result = $this->storageBackend->getObjectDataByQuery($query);
-		$this->signalSlotDispatcher->dispatch(__CLASS__, 'afterGettingObjectData', array('query' => $query, 'result' => &$result));
+		list($query, $result) = $this->signalSlotDispatcher->dispatch(__CLASS__, 'afterGettingObjectData', array($query, $result));
 		return $result;
 	}
 

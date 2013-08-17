@@ -167,7 +167,7 @@ class ExtensionManagementServiceTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseT
 		$downloadQueue = array(
 			$extensionModelMock
 		);
-		$installUtility = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Utility\\InstallUtility', array('uninstall'));
+		$installUtility = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Utility\\InstallUtility', array('uninstall'), array(), '', FALSE);
 		$installUtility->expects($this->once())->method('uninstall')->with('foobar');
 		$managementMock->_set('installUtility', $installUtility);
 		$managementMock->_call('uninstallDependenciesToBeUpdated', $downloadQueue);
@@ -188,7 +188,7 @@ class ExtensionManagementServiceTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseT
 		$downloadQueue = array(
 			$extensionModelMock
 		);
-		$installUtility = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Utility\\InstallUtility', array('uninstall'));
+		$installUtility = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Utility\\InstallUtility', array('uninstall'), array(), '', FALSE);
 		$managementMock->_set('installUtility', $installUtility);
 		$resolvedDependencies = $managementMock->_call('uninstallDependenciesToBeUpdated', $downloadQueue);
 		$this->assertEquals(array('updated' => array('foobar' => $extensionModelMock)), $resolvedDependencies);
@@ -209,7 +209,7 @@ class ExtensionManagementServiceTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseT
 				'siteRelPath' => 'path'
 			)
 		);
-		$installUtility = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Utility\\InstallUtility', array('install'));
+		$installUtility = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Utility\\InstallUtility', array('install'), array(), '', FALSE);
 		$installUtility->expects($this->once())->method('install')->with(array(
 			'key' => 'foobar',
 			'siteRelPath' => 'path'
@@ -229,7 +229,7 @@ class ExtensionManagementServiceTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseT
 		$installQueue = array(
 			'foobar' => 'foobar'
 		);
-		$installUtility = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Utility\\InstallUtility', array('install'));
+		$installUtility = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Utility\\InstallUtility', array('install'), array(), '', FALSE);
 		$installUtility->expects($this->once())->method('install')->with('foobar');
 		$managementMock->_set('installUtility', $installUtility);
 		$resolvedDependencies = $managementMock->_call('installDependencies', $installQueue);

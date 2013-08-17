@@ -37,10 +37,16 @@ class UpdateExtensionListTaskTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTest
 	protected $singletonInstances = array();
 
 	/**
+	 * @var \TYPO3\CMS\Extensionmanager\Utility\Repository\Helper
+	 */
+	protected $repositoryHelper;
+
+	/**
 	 * Set up
 	 */
 	public function setUp() {
 		$this->singletonInstances = \TYPO3\CMS\Core\Utility\GeneralUtility::getSingletonInstances();
+		$this->repositoryHelper = $this->getMock('TYPO3\\CMS\\Extensionmanager\\Utility\\Repository\\Helper', array(), array(), '', FALSE);
 	}
 
 	/**
@@ -62,8 +68,7 @@ class UpdateExtensionListTaskTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTest
 	 * @test
 	 */
 	public function executeCallsUpdateExtListOfRepositoryHelper() {
-		$repositoryHelperMock = $this->getMock('TYPO3\\CMS\\Extensionmanager\\Utility\\Repository\\Helper');
-		$repositoryHelperMock
+		$this->repositoryHelper
 				->expects($this->once())
 				->method('updateExtList');
 
@@ -72,7 +77,7 @@ class UpdateExtensionListTaskTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTest
 				->expects($this->at(0))
 				->method('get')
 				->with('TYPO3\\CMS\\Extensionmanager\\Utility\\Repository\\Helper')
-				->will($this->returnValue($repositoryHelperMock));
+				->will($this->returnValue($this->repositoryHelper));
 
 		$persistenceManagerMock = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager');
 		$objectManagerMock
@@ -90,14 +95,12 @@ class UpdateExtensionListTaskTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTest
 	 * @test
 	 */
 	public function executeCallsPersistAllOnPersistenceManager() {
-		$repositoryHelperMock = $this->getMock('TYPO3\\CMS\\Extensionmanager\\Utility\\Repository\\Helper');
-
 		$objectManagerMock = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
 		$objectManagerMock
 			->expects($this->at(0))
 			->method('get')
 			->with('TYPO3\\CMS\\Extensionmanager\\Utility\\Repository\\Helper')
-			->will($this->returnValue($repositoryHelperMock));
+			->will($this->returnValue($this->repositoryHelper));
 
 		$persistenceManagerMock = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager');
 		$persistenceManagerMock
