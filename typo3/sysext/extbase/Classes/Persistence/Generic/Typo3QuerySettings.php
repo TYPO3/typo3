@@ -107,6 +107,7 @@ class Typo3QuerySettings implements \TYPO3\CMS\Extbase\Persistence\Generic\Query
 	 * Flag if the the query result should be returned as raw QueryResult.
 	 *
 	 * @var boolean
+	 * @deprecated since Extbase 6.2, will be removed two versions later
 	 */
 	protected $returnRawQueryResult = FALSE;
 
@@ -382,8 +383,10 @@ class Typo3QuerySettings implements \TYPO3\CMS\Extbase\Persistence\Generic\Query
 	 *
 	 * @param boolean $returnRawQueryResult TRUE, if the QueryResult should be returned unmapped; otherwise FALSE.
 	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface
+	 * @deprecated since Extbase 6.2, will be removed two versions later. Please use argument in query->execute() instead.
 	 */
 	public function setReturnRawQueryResult($returnRawQueryResult) {
+		GeneralUtility::logDeprecatedFunction();
 		$this->returnRawQueryResult = $returnRawQueryResult;
 		return $this;
 	}
@@ -392,8 +395,10 @@ class Typo3QuerySettings implements \TYPO3\CMS\Extbase\Persistence\Generic\Query
 	 * Returns the state, if the QueryResult should be returned unmapped.
 	 *
 	 * @return boolean TRUE, if the QueryResult should be returned unmapped; otherwise FALSE.
+	 * @deprecated since Extbase 6.2, will be removed two versions later. Please use argument in query->execute() instead.
 	 */
 	public function getReturnRawQueryResult() {
+		GeneralUtility::logDeprecatedFunction();
 		return $this->returnRawQueryResult;
 	}
 }
