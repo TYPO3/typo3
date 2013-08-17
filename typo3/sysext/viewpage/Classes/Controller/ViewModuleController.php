@@ -33,13 +33,24 @@ namespace TYPO3\CMS\Viewpage\Controller;
  */
 class ViewModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
 
+	public function __construct() {
+		parent::__construct();
+
+		$GLOBALS['LANG']->includeLLFile('EXT:viewpage/Resources/Private/Language/locallang.xlf');
+	}
+
 	/**
 	 * Show selected page from pagetree in iframe
 	 *
 	 * @return void
 	 */
 	public function showAction() {
-		$this->view->assign('url', $this->getTargetUrl());
+		$this->view->assignMultiple(
+			array(
+				'widths' => $this->getPreviewFrameWidths(),
+				'url' => $this->getTargetUrl()
+			)
+		);
 	}
 
 	/**
@@ -122,7 +133,27 @@ class ViewModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 		return $domain;
 	}
 
-}
+	/**
+	 * Get available widths for preview frame
+	 *
+	 * @return array
+	 */
+	protected function getPreviewFrameWidths() {
+		return array(
+			'1280' => '1280px ' . $GLOBALS['LANG']->getLL('computer'),
+			'1024' => '1024px ' . $GLOBALS['LANG']->getLL('tablet'),
+			'960' => '960px ' . $GLOBALS['LANG']->getLL('mobile'),
+			'800' => '800px ' . $GLOBALS['LANG']->getLL('computer'),
+			'768' => '768px ' . $GLOBALS['LANG']->getLL('tablet'),
+			'600' => '600px ' . $GLOBALS['LANG']->getLL('tablet'),
+			'640' => '640px ' . $GLOBALS['LANG']->getLL('mobile'),
+			'480' => '480px ' . $GLOBALS['LANG']->getLL('mobile'),
+			'400' => '400px ' . $GLOBALS['LANG']->getLL('mobile'),
+			'360' => '360px ' . $GLOBALS['LANG']->getLL('mobile'),
+			'300' => '300px ' . $GLOBALS['LANG']->getLL('mobile')
+		);
+	}
 
+}
 
 ?>
