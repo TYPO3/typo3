@@ -1735,7 +1735,7 @@ function ' . $evalData . '(value) {
 				$selItems[$tk][0] = htmlspecialchars($this->sL($PA['fieldTSConfig']['altLabels.'][$p[1]]));
 			}
 			// Removing doktypes with no access:
-			if (($table === 'pages' || $table === 'pages_language_overlay') && $field === 'doktype') {
+			if ($table === 'pages' && $field === 'doktype') {
 				if (!($GLOBALS['BE_USER']->isAdmin() || GeneralUtility::inList($GLOBALS['BE_USER']->groupData['pagetypes_select'], $p[1]))) {
 					unset($selItems[$tk]);
 				}
@@ -2636,7 +2636,18 @@ function ' . $evalData . '(value) {
 			// Look up page overlays:
 			$checkPageLanguageOverlay = $GLOBALS['BE_USER']->getTSConfigVal('options.checkPageLanguageOverlay') ? TRUE : FALSE;
 			if ($checkPageLanguageOverlay) {
-				$pageOverlays = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'pages_language_overlay', 'pid=' . intval($row['pid']) . BackendUtility::deleteClause('pages_language_overlay') . BackendUtility::versioningPlaceholderClause('pages_language_overlay'), '', '', '', 'sys_language_uid');
+				$transOrigPointerField = $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'];
+				$pageOverlays = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+					'*',
+					'pages',
+					$transOrigPointerField . '=' . intval($row['pid'])
+						. BackendUtility::deleteClause('pages')
+						. BackendUtility::versioningPlaceholderClause('pages'),
+					'',
+					'',
+					'',
+					'sys_language_uid'
+				);
 			}
 			$languages = $this->getAvailableLanguages();
 			foreach ($languages as $lInfo) {

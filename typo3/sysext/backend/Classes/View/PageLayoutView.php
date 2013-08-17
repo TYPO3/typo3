@@ -593,10 +593,25 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 					$viewLink = '<a href="#" onclick="' . htmlspecialchars(BackendUtility::viewOnClick($this->id, $this->backPath, BackendUtility::BEgetRootLine($this->id), '', '', ('&L=' . $lP))) . '">' . IconUtility::getSpriteIcon('actions-document-view') . '</a>';
 					// Language overlay page header:
 					if ($lP) {
-						list($lpRecord) = BackendUtility::getRecordsByField('pages_language_overlay', 'pid', $id, 'AND sys_language_uid=' . intval($lP));
-						BackendUtility::workspaceOL('pages_language_overlay', $lpRecord);
-						$params = '&edit[pages_language_overlay][' . $lpRecord['uid'] . ']=edit&overrideVals[pages_language_overlay][sys_language_uid]=' . $lP;
-						$lPLabel = $GLOBALS['SOBE']->doc->wrapClickMenuOnIcon(IconUtility::getSpriteIconForRecord('pages_language_overlay', $lpRecord), 'pages_language_overlay', $lpRecord['uid']) . $viewLink . ($GLOBALS['BE_USER']->check('tables_modify', 'pages_language_overlay') ? '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick($params, $this->backPath)) . '" title="' . $GLOBALS['LANG']->getLL('edit', TRUE) . '">' . IconUtility::getSpriteIcon('actions-document-open') . '</a>' : '') . htmlspecialchars(GeneralUtility::fixed_lgd_cs($lpRecord['title'], 20));
+						$transOrigPointerField = $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'];
+						list($lpRecord) = BackendUtility::getRecordsByField('pages', $transOrigPointerField, $id, 'AND sys_language_uid=' . intval($lP));
+						BackendUtility::workspaceOL('pages', $lpRecord);
+						$params = '&edit[pages][' . $lpRecord['uid'] . ']=edit&overrideVals[pages][sys_language_uid]=' . $lP;
+						$lPLabel = $GLOBALS['SOBE']->doc->wrapClickMenuOnIcon(
+								IconUtility::getSpriteIconForRecord('pages', $lpRecord),
+								'pages',
+								$lpRecord['uid']
+							)
+							. $viewLink
+							. ($GLOBALS['BE_USER']->check('tables_modify', 'pages')
+								? '<a href="#" onclick="'
+									. htmlspecialchars(BackendUtility::editOnClick($params, $this->backPath))
+									. '" title="' . $GLOBALS['LANG']->getLL('edit', TRUE) . '">'
+									. IconUtility::getSpriteIcon('actions-document-open')
+									. '</a>'
+								: ''
+							)
+							. htmlspecialchars(GeneralUtility::fixed_lgd_cs($lpRecord['title'], 20));
 					} else {
 						$lPLabel = $viewLink;
 					}
@@ -752,9 +767,10 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 					$bArray[0] = $GLOBALS['SOBE']->doc->t3Button(BackendUtility::editOnClick('&edit[pages][' . $id . ']=edit', $this->backPath, ''), $GLOBALS['LANG']->getLL('editPageProperties'));
 				}
 			} else {
-				if ($this->doEdit && $GLOBALS['BE_USER']->check('tables_modify', 'pages_language_overlay')) {
-					list($languageOverlayRecord) = BackendUtility::getRecordsByField('pages_language_overlay', 'pid', $id, 'AND sys_language_uid=' . intval($GLOBALS['SOBE']->current_sys_language));
-					$bArray[0] = $GLOBALS['SOBE']->doc->t3Button(BackendUtility::editOnClick('&edit[pages_language_overlay][' . $languageOverlayRecord['uid'] . ']=edit', $this->backPath, ''), $GLOBALS['LANG']->getLL('editPageProperties_curLang'));
+				if ($this->doEdit && $GLOBALS['BE_USER']->check('tables_modify', 'pages')) {
+					$transOrigPointerField = $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'];
+					list($languageOverlayRecord) = BackendUtility::getRecordsByField('pages', $transOrigPointerField, $id, 'AND sys_language_uid=' . intval($GLOBALS['SOBE']->current_sys_language));
+					$bArray[0] = $GLOBALS['SOBE']->doc->t3Button(BackendUtility::editOnClick('&edit[pages][' . $languageOverlayRecord['uid'] . ']=edit', $this->backPath, ''), $GLOBALS['LANG']->getLL('editPageProperties_curLang'));
 				}
 			}
 			if ($this->ext_CALC_PERMS & 4 || $this->ext_CALC_PERMS & 2) {
@@ -1497,22 +1513,29 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	 * Displays only languages which are not yet present for the current page and
 	 * that are not disabled with page TS.
 	 *
-	 * @param integer $id Page id for which to create a new language (pages_language_overlay record)
+	 * @param integer $id Page id for which to create a new language
 	 * @return string <select> HTML element (if there were items for the box anyways...)
 	 * @see getTable_tt_content()
 	 * @todo Define visibility
 	 */
 	public function languageSelector($id) {
-		if ($GLOBALS['BE_USER']->check('tables_modify', 'pages_language_overlay')) {
+		// Create an instance of the document template object
+		$doc = $GLOBALS['TBE_TEMPLATE'];
+		$content = '';
+		$languageField = $GLOBALS['TCA']['pages']['ctrl']['languageField'];
+		$transOrigPointerField = $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'];
+		$returnUrl = GeneralUtility::sanitizeLocalUrl(GeneralUtility::_GP('returnUrl'));
+
+		if ($GLOBALS['BE_USER']->check('tables_modify', 'pages') && $languageField && $transOrigPointerField) {
+
 			// First, select all
 			$res = $GLOBALS['SOBE']->exec_languageQuery(0);
 			$langSelItems = array();
-			$langSelItems[0] = '
-						<option value="0"></option>';
+			$langSelItems[0] = '';
 			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 				if ($GLOBALS['BE_USER']->checkLanguageAccess($row['uid'])) {
-					$langSelItems[$row['uid']] = '
-							<option value="' . $row['uid'] . '">' . htmlspecialchars($row['title']) . '</option>';
+					$langSelItems[$row['uid']] = $row['title'];
+
 				}
 			}
 			// Then, subtract the languages which are already on the page:
@@ -1543,12 +1566,33 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 			}
 			// If any languages are left, make selector:
 			if (count($langSelItems) > 1) {
-				$onChangeContent = 'window.location.href=\'' . $this->backPath . 'alt_doc.php?&edit[pages_language_overlay][' . $id . ']=new&overrideVals[pages_language_overlay][doktype]=' . (int) $this->pageRecord['doktype'] . '&overrideVals[pages_language_overlay][sys_language_uid]=\'+this.options[this.selectedIndex].value+\'&returnUrl=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI')) . '\'';
-				return $GLOBALS['LANG']->getLL('new_language', TRUE) . ': <select name="createNewLanguage" onchange="' . htmlspecialchars($onChangeContent) . '">
-						' . implode('', $langSelItems) . '
-					</select><br /><br />';
+				$onChange = 'if(this.options[this.selectedIndex].value){window.location.href=(this.options[this.selectedIndex].value);}';
+				$labelString = $GLOBALS['LANG']->getLL('new_language', TRUE);
+				$optionStringTemplate = '<option value="%s">%s</option > ';
+				$optionsString = '';
+				$options = array();
+				$options[0] = '';
+				foreach($langSelItems as $languageUid => $languageTitle) {
+					$options[$languageUid] = $languageTitle;
+				}
+				foreach ($options as $languageUid => $languageTitle) {
+					$href = '0';
+					if ($languageUid > 0) {
+						$href = $this->backPath
+							. 'tce_db.php?&cmd[pages][' . $id . '][localize]=' . $languageUid
+							. '&redirect=' . $this->backPath . 'alt_doc.php?justLocalized=' . rawurlencode('pages: ' . $id . ':' . $languageUid)
+							. '&returnUrl=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI'))
+							. '&vC=' . $GLOBALS['BE_USER']->veriCode() . BackendUtility::getUrlToken('tceAction')
+							. '&prErr=1'
+							. '&uPT=1';
+					}
+					$optionsString .= sprintf($optionStringTemplate, $href, htmlspecialchars($languageTitle));
+				}
+				$selectStringTemplate = '<select name="_langSelector" onchange="' . htmlspecialchars($onChange) . '">%s</select>';
+				$content = $labelString . sprintf($selectStringTemplate, $optionsString);
 			}
 		}
+		return $content;
 	}
 
 	/**
