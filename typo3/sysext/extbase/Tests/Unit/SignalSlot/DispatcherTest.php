@@ -31,7 +31,6 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\SignalSlot;
  * Testcase for the Signal Dispatcher Class
  *
  * @author Felix Oertel <f@oer.tel>
- * @author Alexander Schnitzler <alex.schnitzler@typovision.de>
  */
 class DispatcherTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
@@ -47,7 +46,6 @@ class DispatcherTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
 	 * @test
-	 * @author Felix Oertel <f@oer.tel>
 	 */
 	public function connectAllowsForConnectingASlotWithASignal() {
 		$mockSignal = $this->getMock('ClassA', array('emitSomeSignal'));
@@ -61,7 +59,6 @@ class DispatcherTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
 	 * @test
-	 * @author Felix Oertel <f@oer.tel>
 	 */
 	public function connectAlsoAcceptsObjectsInPlaceOfTheClassName() {
 		$mockSignal = $this->getMock('ClassA', array('emitSomeSignal'));
@@ -75,7 +72,6 @@ class DispatcherTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
 	 * @test
-	 * @author Felix Oertel <f@oer.tel>
 	 */
 	public function connectAlsoAcceptsClosuresActingAsASlot() {
 		$mockSignal = $this->getMock('ClassA', array('emitSomeSignal'));
@@ -90,7 +86,6 @@ class DispatcherTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
 	 * @test
-	 * @author Felix Oertel <f@oer.tel>
 	 */
 	public function dispatchPassesTheSignalArgumentsToTheSlotMethod() {
 		$arguments = array();
@@ -104,7 +99,6 @@ class DispatcherTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
 	 * @test
-	 * @author Felix Oertel <f@oer.tel>
 	 */
 	public function dispatchRetrievesSlotInstanceFromTheObjectManagerIfOnlyAClassNameWasSpecified() {
 		$slotClassName = uniqid('Mock_');
@@ -122,8 +116,151 @@ class DispatcherTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
 	 * @test
+	 */
+	public function dispatchHandsOverArgumentsReturnedByAFormerSlot() {
+		$firstSlotClassName = uniqid('Mock_');
+		$secondSlotClassName = uniqid('Mock_');
+
+		eval(
+			'class ' . $firstSlotClassName . ' { function slot($foo, $baz) { return array(\'modified_\' . $foo, \'modified_\' . $baz);} }
+			class ' . $secondSlotClassName . ' { function slot($foo, $baz) { $this->arguments = array($foo, $baz); } }'
+		);
+
+		$firstMockSlot = new $firstSlotClassName();
+		$secondMockSlot = new $secondSlotClassName();
+
+		$mockObjectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerInterface');
+		$mockObjectManager->expects($this->any())->method('isRegistered')
+			->will($this->returnValueMap(array(array($firstSlotClassName, TRUE), array($secondSlotClassName, TRUE))));
+		$mockObjectManager->expects($this->any())->method('get')
+			->will($this->returnValueMap(array(array($firstSlotClassName, $firstMockSlot), array($secondSlotClassName, $secondMockSlot))));
+
+		$this->signalSlotDispatcher->_set('objectManager', $mockObjectManager);
+		$this->signalSlotDispatcher->_set('isInitialized', TRUE);
+
+		$this->signalSlotDispatcher->connect('Foo', 'emitBar', $firstSlotClassName, 'slot', FALSE);
+		$this->signalSlotDispatcher->connect('Foo', 'emitBar', $secondSlotClassName, 'slot', FALSE);
+
+		$this->signalSlotDispatcher->dispatch('Foo', 'emitBar', array('foo' => 'bar', 'baz' => 'quux'));
+
+		$this->assertSame($secondMockSlot->arguments, array('modified_bar', 'modified_quux'));
+	}
+
+	/**
+	 * @test
+	 */
+	public function dispatchHandsOverArgumentsReturnedByAFormerSlotWithoutInterferingWithSignalSlotInformation() {
+		$firstSlotClassName = uniqid('Mock_');
+		$secondSlotClassName = uniqid('Mock_');
+
+		eval(
+			'class ' . $firstSlotClassName . ' { function slot($foo, $baz) { return array(\'modified_\' . $foo, \'modified_\' . $baz);} }
+			class ' . $secondSlotClassName . ' { function slot($foo, $baz) { $this->arguments = array($foo, $baz); } }'
+		);
+
+		$firstMockSlot = new $firstSlotClassName();
+		$secondMockSlot = new $secondSlotClassName();
+
+		$mockObjectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerInterface');
+		$mockObjectManager->expects($this->any())->method('isRegistered')
+			->will($this->returnValueMap(array(array($firstSlotClassName, TRUE), array($secondSlotClassName, TRUE))));
+		$mockObjectManager->expects($this->any())->method('get')
+			->will($this->returnValueMap(array(array($firstSlotClassName, $firstMockSlot), array($secondSlotClassName, $secondMockSlot))));
+
+		$this->signalSlotDispatcher->_set('objectManager', $mockObjectManager);
+		$this->signalSlotDispatcher->_set('isInitialized', TRUE);
+
+		$this->signalSlotDispatcher->connect('Foo', 'emitBar', $firstSlotClassName, 'slot');
+		$this->signalSlotDispatcher->connect('Foo', 'emitBar', $secondSlotClassName, 'slot');
+
+		$this->signalSlotDispatcher->dispatch('Foo', 'emitBar', array('foo' => 'bar', 'baz' => 'quux'));
+
+		$this->assertSame($secondMockSlot->arguments, array('modified_bar', 'modified_quux'));
+	}
+
+	/**
+	 * @test
+	 */
+	public function dispatchHandsOverFormerArgumentsIfPreviousSlotDoesNotReturnAnything() {
+		$firstSlotClassName = uniqid('Mock_');
+		$secondSlotClassName = uniqid('Mock_');
+		$thirdSlotClassName = uniqid('Mock_');
+
+		eval(
+			'class ' . $firstSlotClassName . ' { function slot($foo, $baz) { return array(\'modified_\' . $foo, \'modified_\' . $baz);} }
+			class ' . $secondSlotClassName . ' { function slot($foo, $baz) { } }
+			class ' . $thirdSlotClassName . ' { function slot($foo, $baz) { $this->arguments = array($foo, $baz); } }'
+		);
+
+		$firstMockSlot = new $firstSlotClassName();
+		$secondMockSlot = new $secondSlotClassName();
+		$thirdMockSlot = new $thirdSlotClassName();
+
+		$mockObjectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerInterface');
+		$mockObjectManager->expects($this->any())->method('isRegistered')
+			->will($this->returnValueMap(array(array($firstSlotClassName, TRUE), array($secondSlotClassName, TRUE), array($thirdSlotClassName, TRUE))));
+		$mockObjectManager->expects($this->any())->method('get')
+			->will($this->returnValueMap(array(array($firstSlotClassName, $firstMockSlot), array($secondSlotClassName, $secondMockSlot), array($thirdSlotClassName, $thirdMockSlot))));
+
+		$this->signalSlotDispatcher->_set('objectManager', $mockObjectManager);
+		$this->signalSlotDispatcher->_set('isInitialized', TRUE);
+
+		$this->signalSlotDispatcher->connect('Foo', 'emitBar', $firstSlotClassName, 'slot');
+		$this->signalSlotDispatcher->connect('Foo', 'emitBar', $secondSlotClassName, 'slot');
+		$this->signalSlotDispatcher->connect('Foo', 'emitBar', $thirdSlotClassName, 'slot');
+
+		$this->signalSlotDispatcher->dispatch('Foo', 'emitBar', array('foo' => 'bar', 'baz' => 'quux'));
+
+		$this->assertSame($thirdMockSlot->arguments, array('modified_bar', 'modified_quux'));
+	}
+
+	/**
+	 * @test
+	 * @expectedException \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotReturnException
+	 */
+	public function dispatchThrowsAnExceptionIfTheSlotReturnsNonArray() {
+		$slotClassName = uniqid('Mock_');
+
+		eval('class ' . $slotClassName . ' { function slot($foo, $baz) { return \'string\'; } }');
+
+		$mockSlot = new $slotClassName();
+
+		$mockObjectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerInterface');
+		$mockObjectManager->expects($this->once())->method('isRegistered')->with($slotClassName)->will($this->returnValue(TRUE));
+		$mockObjectManager->expects($this->once())->method('get')->with($slotClassName)->will($this->returnValue($mockSlot));
+
+		$this->signalSlotDispatcher->_set('objectManager', $mockObjectManager);
+		$this->signalSlotDispatcher->_set('isInitialized', TRUE);
+
+		$this->signalSlotDispatcher->connect('Foo', 'emitBar', $slotClassName, 'slot', FALSE);
+		$this->signalSlotDispatcher->dispatch('Foo', 'emitBar', array('foo' => 'bar', 'baz' => 'quux'));
+	}
+
+	/**
+	 * @test
+	 * @expectedException \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotReturnException
+	 */
+	public function dispatchThrowsAnExceptionIfTheSlotReturnsDifferentNumberOfItems() {
+		$slotClassName = uniqid('Mock_');
+
+		eval('class ' . $slotClassName . ' { function slot($foo, $baz) { return array($foo, $baz, \'too much\'); } }');
+
+		$mockSlot = new $slotClassName();
+
+		$mockObjectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerInterface');
+		$mockObjectManager->expects($this->once())->method('isRegistered')->with($slotClassName)->will($this->returnValue(TRUE));
+		$mockObjectManager->expects($this->once())->method('get')->with($slotClassName)->will($this->returnValue($mockSlot));
+
+		$this->signalSlotDispatcher->_set('objectManager', $mockObjectManager);
+		$this->signalSlotDispatcher->_set('isInitialized', TRUE);
+
+		$this->signalSlotDispatcher->connect('Foo', 'emitBar', $slotClassName, 'slot', FALSE);
+		$this->signalSlotDispatcher->dispatch('Foo', 'emitBar', array('foo' => 'bar', 'baz' => 'quux'));
+	}
+
+	/**
+	 * @test
 	 * @expectedException \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException
-	 * @author Felix Oertel <f@oer.tel>
 	 */
 	public function dispatchThrowsAnExceptionIfTheSpecifiedClassOfASlotIsUnknown() {
 		$mockObjectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerInterface');
@@ -137,7 +274,6 @@ class DispatcherTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	/**
 	 * @test
 	 * @expectedException \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException
-	 * @author Felix Oertel <f@oer.tel>
 	 */
 	public function dispatchThrowsAnExceptionIfTheSpecifiedSlotMethodDoesNotExist() {
 		$slotClassName = uniqid('Mock_');
@@ -155,7 +291,6 @@ class DispatcherTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
 	 * @test
-	 * @author Felix Oertel <f@oer.tel>
 	 */
 	public function dispatchPassesFirstArgumentContainingSlotInformationIfTheConnectionStatesSo() {
 		$arguments = array();
