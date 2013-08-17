@@ -90,11 +90,10 @@ class QueryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	/**
 	 * @test
 	 */
-	public function executeReturnsRawObjectDataIfRawQueryResultSettingIsTrue() {
-		$this->querySettings->expects($this->once())->method('getReturnRawQueryResult')->will($this->returnValue(TRUE));
+	public function executeReturnsRawObjectDataIfReturnRawQueryResultIsSet() {
 		$this->persistenceManager->expects($this->once())->method('getObjectDataByQuery')->with($this->query)->will($this->returnValue('rawQueryResult'));
 		$expectedResult = 'rawQueryResult';
-		$actualResult = $this->query->execute();
+		$actualResult = $this->query->execute(TRUE);
 		$this->assertEquals($expectedResult, $actualResult);
 	}
 

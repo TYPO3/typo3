@@ -175,21 +175,6 @@ interface QuerySettingsInterface {
 	 * @return boolean
 	 */
 	public function getIncludeDeleted();
-
-	/**
-	 * Sets the state, if the QueryResult should be returned unmapped.
-	 *
-	 * @param boolean $returnRawQueryResult TRUE, if the QueryResult should be returned unmapped; otherwise FALSE.
-	 * @return void
-	 */
-	public function setReturnRawQueryResult($returnRawQueryResult);
-
-	/**
-	 * Returns the state, if the QueryResult should be returned unmapped.
-	 *
-	 * @return boolean TRUE, if the QueryResult should be returned unmapped; otherwise FALSE.
-	 */
-	public function getReturnRawQueryResult();
 }
 
 ?>
