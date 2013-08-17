@@ -182,9 +182,9 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 	 * @api
 	 */
 	public function getObjectDataByQuery(\TYPO3\CMS\Extbase\Persistence\QueryInterface $query) {
-		$this->signalSlotDispatcher->dispatch(__CLASS__, 'beforeGettingObjectData', array('query' => $query));
+		list($query) = $this->signalSlotDispatcher->dispatch(__CLASS__, 'beforeGettingObjectData', array('query' => $query));
 		$result = $this->storageBackend->getObjectDataByQuery($query);
-		$this->signalSlotDispatcher->dispatch(__CLASS__, 'afterGettingObjectData', array('query' => $query, 'result' => &$result));
+		list($query, $result) = $this->signalSlotDispatcher->dispatch(__CLASS__, 'afterGettingObjectData', array('query' => $query, 'result' => $result));
 		return $result;
 	}
 
