@@ -23,12 +23,29 @@
  ***************************************************************/
 
 /**
- * Boostrap code for functional tests
+ * This file is defined in FuntionalTests.xml and called by phpunit
+ * before instantiating the test suites, it must also be included
+ * with phpunit parameter --bootstrap if executing single test case classes.
+ */
+
+/**
+ * Require classes the functional test classes extend from or use for further bootstrap.
+ * Only files required for "new TestCaseClass" are required here and a general exception
+ * that is thrown by setUp() code.
  */
 require_once(__DIR__ . '/../Tests/BaseTestCase.php');
 require_once(__DIR__ . '/../Tests/FunctionalTestCase.php');
+require_once(__DIR__ . '/../Tests/FunctionalTestCaseBootstrapUtility.php');
 require_once(__DIR__ . '/../Tests/Exception.php');
+
+/**
+ * Define a constant to specify the document root since this calculation would
+ * be way more complicated if done within the test class.
+ *
+ * It is required that phpunit binary is called from the document root of the instance,
+ * otherwise path calculation of the created TYPO3 CMS instance will fail.
+ */
 if (!defined('ORIGINAL_ROOT')) {
-	define('ORIGINAL_ROOT', $_SERVER['PWD']);
+	define('ORIGINAL_ROOT', $_SERVER['PWD'] . '/');
 }
 ?>
