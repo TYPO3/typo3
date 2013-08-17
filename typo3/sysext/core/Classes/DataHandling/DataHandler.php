@@ -1309,11 +1309,17 @@ class DataHandler {
 		} else {
 			// We must use the current values as basis for this!
 			$currentRecord = ($checkValueRecord = $this->recordInfo($table, $id, '*'));
-			// This is done to make the pid positive for offline versions; Necessary to have diff-view for pages_language_overlay in workspaces.
+			// This is done to make the pid positive for offline versions; Necessary to have diff-view for translated pages in workspaces.
 			BackendUtility::fixVersioningPid($table, $currentRecord);
 			// Get original language record if available:
-			if (is_array($currentRecord) && $GLOBALS['TCA'][$table]['ctrl']['transOrigDiffSourceField'] && $GLOBALS['TCA'][$table]['ctrl']['languageField'] && $currentRecord[$GLOBALS['TCA'][$table]['ctrl']['languageField']] > 0 && $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] && intval($currentRecord[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']]) > 0) {
-				$lookUpTable = $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerTable'] ? $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerTable'] : $table;
+			if (is_array($currentRecord)
+					&& $GLOBALS['TCA'][$table]['ctrl']['transOrigDiffSourceField']
+					&& $GLOBALS['TCA'][$table]['ctrl']['languageField']
+					&& $currentRecord[$GLOBALS['TCA'][$table]['ctrl']['languageField']] > 0
+					&& $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']
+					&& intval($currentRecord[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']]) > 0
+			) {
+				$lookUpTable = $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerTable'] ?: $table;
 				$originalLanguageRecord = $this->recordInfo($lookUpTable, $currentRecord[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']], '*');
 				BackendUtility::workspaceOL($lookUpTable, $originalLanguageRecord);
 				$originalLanguage_diffStorage = unserialize($currentRecord[$GLOBALS['TCA'][$table]['ctrl']['transOrigDiffSourceField']]);
@@ -1505,7 +1511,7 @@ class DataHandler {
 		$res = array();
 		$recFID = $table . ':' . $id . ':' . $field;
 		// Processing special case of field pages.doktype
-		if (($table === 'pages' || $table === 'pages_language_overlay') && $field === 'doktype') {
+		if ($table === 'pages' && $field === 'doktype') {
 			// If the user may not use this specific doktype, we issue a warning
 			if (!($this->admin || GeneralUtility::inList($this->BE_USER->groupData['pagetypes_select'], $value))) {
 				$propArr = $this->getRecordProperties($table, $id);
@@ -3915,26 +3921,15 @@ class DataHandler {
 						if (is_array($row)) {
 							if ($row[$GLOBALS['TCA'][$table]['ctrl']['languageField']] <= 0 || $table === 'pages') {
 								if ($row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']] == 0 || $table === 'pages') {
-									if ($table === 'pages') {
-										$pass = $GLOBALS['TCA'][$table]['ctrl']['transForeignTable'] === 'pages_language_overlay' && !BackendUtility::getRecordsByField('pages_language_overlay', 'pid', $uid, (' AND ' . $GLOBALS['TCA']['pages_language_overlay']['ctrl']['languageField'] . '=' . intval($langRec['uid'])));
-										$Ttable = 'pages_language_overlay';
-									} else {
-										$pass = !BackendUtility::getRecordLocalization($table, $uid, $langRec['uid'], ('AND pid=' . intval($row['pid'])));
-										$Ttable = $table;
-									}
-									if ($pass) {
+									if (!BackendUtility::getRecordLocalization($table, $uid, $langRec['uid'], ('AND pid=' . intval($row['pid'])))) {
 										// Initialize:
 										$overrideValues = array();
 										$excludeFields = array();
 										// Set override values:
-										$overrideValues[$GLOBALS['TCA'][$Ttable]['ctrl']['languageField']] = $langRec['uid'];
-										$overrideValues[$GLOBALS['TCA'][$Ttable]['ctrl']['transOrigPointerField']] = $uid;
-										// Copy the type (if defined in both tables) from the original record so that translation has same type as original record
-										if (isset($GLOBALS['TCA'][$table]['ctrl']['type']) && isset($GLOBALS['TCA'][$Ttable]['ctrl']['type'])) {
-											$overrideValues[$GLOBALS['TCA'][$Ttable]['ctrl']['type']] = $row[$GLOBALS['TCA'][$table]['ctrl']['type']];
-										}
+										$overrideValues[$GLOBALS['TCA'][$table]['ctrl']['languageField']] = $langRec['uid'];
+										$overrideValues[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']] = $uid;
 										// Set exclude Fields:
-										foreach ($GLOBALS['TCA'][$Ttable]['columns'] as $fN => $fCfg) {
+										foreach ($GLOBALS['TCA'][$table]['columns'] as $fN => $fCfg) {
 											// Check if we are just prefixing:
 											if ($fCfg['l10n_mode'] == 'prefixLangTitle') {
 												if (($fCfg['config']['type'] == 'text' || $fCfg['config']['type'] == 'input') && strlen($row[$fN])) {
@@ -3948,39 +3943,23 @@ class DataHandler {
 													}
 													$overrideValues[$fN] = '[' . $translateToMsg . '] ' . $row[$fN];
 												}
-											} elseif (GeneralUtility::inList('exclude,noCopy,mergeIfNotBlank', $fCfg['l10n_mode']) && $fN != $GLOBALS['TCA'][$Ttable]['ctrl']['languageField'] && $fN != $GLOBALS['TCA'][$Ttable]['ctrl']['transOrigPointerField']) {
+											} elseif (GeneralUtility::inList('exclude,noCopy,mergeIfNotBlank', $fCfg['l10n_mode'])
+												&& $fN != $GLOBALS['TCA'][$table]['ctrl']['languageField']
+												&& $fN != $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']
+											) {
 												// Otherwise, do not copy field (unless it is the language field or
 												// pointer to the original language)
 												$excludeFields[] = $fN;
 											}
 										}
-										if ($Ttable === $table) {
-											// Get the uid of record after which this localized record should be inserted
-											$previousUid = $this->getPreviousLocalizedRecordUid($table, $uid, $row['pid'], $language);
-											// Execute the copy:
-											$newId = $this->copyRecord($table, $uid, -$previousUid, 1, $overrideValues, implode(',', $excludeFields), $language);
-											$autoVersionNewId = $this->getAutoVersionId($table, $newId);
-											if (is_null($autoVersionNewId) === FALSE) {
-												$this->triggerRemapAction($table, $newId, array($this, 'placeholderShadowing'), array($table, $autoVersionNewId), TRUE);
-											}
-										} else {
-											// Create new record:
-											/** @var $copyTCE \TYPO3\CMS\Core\DataHandling\DataHandler */
-											$copyTCE = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
-											// Copy forth the cached TSconfig
-											$copyTCE->stripslashes_values = 0;
-											$copyTCE->cachedTSconfig = $this->cachedTSconfig;
-											// Transformations should NOT be carried out during copy
-											$copyTCE->dontProcessTransformations = 1;
-											$copyTCE->start(array($Ttable => array('NEW' => $overrideValues)), '', $this->BE_USER);
-											$copyTCE->process_datamap();
-											// Getting the new UID as if it had been copied:
-											$theNewSQLID = $copyTCE->substNEWwithIDs['NEW'];
-											if ($theNewSQLID) {
-												// If is by design that $Ttable is used and not $table! See "l10nmgr" extension. Could be debated, but this is what I chose for this "pseudo case"
-												$this->copyMappingArray[$Ttable][$uid] = $theNewSQLID;
-												$newId = $theNewSQLID;
-											}
+
+										// Get the uid of record after which this localized record should be inserted
+										$previousUid = $this->getPreviousLocalizedRecordUid($table, $uid, $row['pid'], $language);
+										// Execute the copy:
+										$newId = $this->copyRecord($table, $uid, -$previousUid, 1, $overrideValues, implode(',', $excludeFields), $language);
+										$autoVersionNewId = $this->getAutoVersionId($table, $newId);
+										if (is_null($autoVersionNewId) === FALSE) {
+											$this->triggerRemapAction($table, $newId, array($this, 'placeholderShadowing'), array($table, $autoVersionNewId), TRUE);
 										}
 									} else {
 										$this->newlog('Localization failed; There already was a localization for this language of the record!', 1);
@@ -6768,12 +6747,9 @@ class DataHandler {
 				// If table is "pages":
 				if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('cms')) {
 					$list_cache = array();
-					if ($table === 'pages' || $table === 'pages_language_overlay') {
-						if ($table === 'pages_language_overlay') {
-							$pageUid = $this->getPID($table, $uid);
-						} else {
-							$pageUid = $uid;
-						}
+					if ($table === 'pages') {
+						$pageUid = $uid;
+
 						// Builds list of pages on the SAME level as this page (siblings)
 						$res_tmp = $GLOBALS['TYPO3_DB']->exec_SELECTquery('A.pid AS pid, B.uid AS uid', 'pages A, pages B', 'A.uid=' . intval($pageUid) . ' AND B.pid=A.pid AND B.deleted=0');
 						$pid_tmp = 0;

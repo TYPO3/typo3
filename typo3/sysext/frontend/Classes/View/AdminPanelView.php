@@ -620,20 +620,21 @@ class AdminPanelView {
 			$params = '&edit[pages][' . $id . ']=edit';
 			$toolBar .= '<a href="' . htmlspecialchars((TYPO3_mainDir . 'alt_doc.php?' . $params . '&noView=1&returnUrl=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI')))) . '">' . '<img ' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg(TYPO3_mainDir, 'gfx/edit2.gif', 'width="11" height="12"') . 'hspace="2" border="0" align="top" title="' . $this->extGetLL('edit_editPageProperties') . '" alt="" /></a>';
 			if ($GLOBALS['TSFE']->sys_language_uid && $langAllowed) {
+				$transOrigPointerField = $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'];
 				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 					'uid,pid,t3ver_state',
-					'pages_language_overlay',
-					'pid=' . intval($id) .
+					'pages',
+					$transOrigPointerField . '=' . intval($id) .
 						' AND sys_language_uid=' . $GLOBALS['TSFE']->sys_language_uid .
-						$GLOBALS['TSFE']->sys_page->enableFields('pages_language_overlay'),
+						$GLOBALS['TSFE']->sys_page->enableFields('pages'),
 					'',
 					'',
 					'1'
 				);
 				$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
-				$GLOBALS['TSFE']->sys_page->versionOL('pages_language_overlay', $row);
+				$GLOBALS['TSFE']->sys_page->versionOL('pages', $row);
 				if (is_array($row)) {
-					$params = '&edit[pages_language_overlay][' . $row['uid'] . ']=edit';
+					$params = '&edit[pages][' . $row['uid'] . ']=edit';
 					$toolBar .= '<a href="' . htmlspecialchars((TYPO3_mainDir . 'alt_doc.php?' . $params . '&noView=1&returnUrl=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI')))) . '">' . '<img ' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg(TYPO3_mainDir, 'gfx/edit3.gif', 'width="11" height="12"') . ' hspace="2" border="0" align="top" title="' . $this->extGetLL('edit_editPageOverlay') . '" alt="" /></a>';
 				}
 			}

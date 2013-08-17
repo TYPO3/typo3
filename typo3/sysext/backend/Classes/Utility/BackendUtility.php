@@ -614,7 +614,6 @@ class BackendUtility {
 
 	/**
 	 * Gets the original translation pointer table.
-	 * For e.g. pages_language_overlay this would be pages.
 	 *
 	 * @param string $table Name of the table
 	 * @return string Pointer table (if any)

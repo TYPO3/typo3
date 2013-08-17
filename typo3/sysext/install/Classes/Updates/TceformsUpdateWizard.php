@@ -75,7 +75,7 @@ class TceformsUpdateWizard extends AbstractUpdate {
 	 * @return boolean TRUE if an update is needed, FALSE otherwise
 	 */
 	public function checkForUpdate(&$description) {
-		$description = 'This update wizard goes through all files that are referenced in the tt_content.image and pages.media / pages_language_overlay.media filed and adds the files to the new File Index.<br />It also moves the files from uploads/ to the fileadmin/_migrated/ path.<br /><br />This update wizard can be called multiple times in case it didn\'t finish after running once.';
+		$description = 'This update wizard goes through all files that are referenced in the tt_content.image and pages.media field and adds the files to the new File Index.<br />It also moves the files from uploads/ to the fileadmin/_migrated/ path.<br /><br />This update wizard can be called multiple times in case it didn\'t finish after running once.';
 		// Make this wizard always available
 		return TRUE;
 	}
@@ -102,13 +102,6 @@ class TceformsUpdateWizard extends AbstractUpdate {
 				)
 			),
 			'pages' => array(
-				'media' => array(
-					'sourcePath' => 'uploads/media/',
-					// Relative to fileadmin
-					'targetPath' => '_migrated/media/'
-				)
-			),
-			'pages_language_overlay' => array(
 				'media' => array(
 					'sourcePath' => 'uploads/media/',
 					// Relative to fileadmin

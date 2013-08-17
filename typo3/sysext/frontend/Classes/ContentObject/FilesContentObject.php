@@ -73,9 +73,6 @@ class FilesContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractConte
 			$referencesFieldName = $this->stdWrapValue('fieldName', $conf['references.']);
 			if ($referencesFieldName) {
 				$table = $this->cObj->getCurrentTable();
-				if ($table === 'pages' && isset($this->cObj->data['_LOCALIZED_UID']) && intval($this->cObj->data['sys_language_uid']) > 0) {
-					$table = 'pages_language_overlay';
-				}
 				$referencesForeignTable = $this->stdWrapValue('table', $conf['references.'], $table);
 				$referencesForeignUid = $this->stdWrapValue('uid', $conf['references.'], isset($this->cObj->data['_LOCALIZED_UID']) ? $this->cObj->data['_LOCALIZED_UID'] : $this->cObj->data['uid']);
 				$this->addToArray($fileRepository->findByRelation($referencesForeignTable, $referencesFieldName, $referencesForeignUid), $fileObjects);
