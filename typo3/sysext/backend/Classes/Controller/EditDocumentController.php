@@ -1202,7 +1202,7 @@ class EditDocumentController {
 	/**
 	 * Returns sys_language records available for record translations on given page.
 	 *
-	 * @param integer $id Page id: If zero, the query will select all sys_language records from root level which are NOT hidden. If set to another value, the query will select all sys_language records that has a pages_language_overlay record on that page (and is not hidden, unless you are admin user)
+	 * @param integer $id Page id: If zero, the query will select all sys_language records from root level which are NOT hidden. If set to another value, the query will select all sys_language records that are used in a translated record on that page (and is not hidden, unless you are admin user)
 	 * @return array Language records including faked record for default language
 	 * @todo Define visibility
 	 */
@@ -1223,7 +1223,24 @@ class EditDocumentController {
 		);
 		$exQ = $GLOBALS['BE_USER']->isAdmin() ? '' : ' AND sys_language.hidden=0';
 		if ($id) {
-			$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('sys_language.*', 'pages_language_overlay,sys_language', 'pages_language_overlay.sys_language_uid=sys_language.uid AND pages_language_overlay.pid=' . intval($id) . BackendUtility::deleteClause('pages_language_overlay') . $exQ, 'pages_language_overlay.sys_language_uid,sys_language.uid,sys_language.pid,sys_language.tstamp,sys_language.hidden,sys_language.title,sys_language.static_lang_isocode,sys_language.flag', 'sys_language.title');
+			$transOrigPointerField = $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'];
+			$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+				'sys_language.*',
+				'pages,sys_language',
+				'pages.sys_language_uid=sys_language.uid'
+					. ' AND pages.' . $transOrigPointerField . '=' . intval($id)
+					. BackendUtility::deleteClause('pages')
+					. $exQ,
+				'pages.sys_language_uid,'
+					. 'sys_language.uid,'
+					. 'sys_language.pid,'
+					. 'sys_language.tstamp,'
+					. 'sys_language.hidden,'
+					. 'sys_language.title,'
+					. 'sys_language.static_lang_isocode,'
+					. 'sys_language.flag',
+				'sys_language.title'
+			);
 		} else {
 			$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('sys_language.*', 'sys_language', 'sys_language.hidden=0', '', 'sys_language.title');
 		}
