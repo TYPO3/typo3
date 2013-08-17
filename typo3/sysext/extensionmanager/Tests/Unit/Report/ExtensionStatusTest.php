@@ -33,6 +33,22 @@ use TYPO3\CMS\Extensionmanager\Report;
 class ExtensionStatusTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
+	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
+	 */
+	protected $mockObjectManager;
+
+	/**
+	 * @var \TYPO3\CMS\Extensionmanager\Domain\Repository\RepositoryRepository
+	 */
+	protected $mockRepositoryRepository;
+
+	public function setUp() {
+		$this->mockObjectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerInterface');
+		/** @var $mockRepositoryRepository \TYPO3\CMS\Extensionmanager\Domain\Repository\RepositoryRepository|\PHPUnit_Framework_MockObject_MockObject */
+		$this->mockRepositoryRepository = $this->getMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Repository\\RepositoryRepository', array(), array($this->mockObjectManager));
+	}
+
+	/**
 	 * @test
 	 */
 	public function extensionStatusImplementsStatusProviderInterface() {
@@ -85,16 +101,14 @@ class ExtensionStatusTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @test
 	 */
 	public function getMainRepositoryStatusReturnsErrorStatusIfRepositoryIsNotFound() {
-		/** @var $mockRepositoryRepository \TYPO3\CMS\Extensionmanager\Domain\Repository\RepositoryRepository|\PHPUnit_Framework_MockObject_MockObject */
-		$mockRepositoryRepository = $this->getMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Repository\\RepositoryRepository');
-		$mockRepositoryRepository
+		$this->mockRepositoryRepository
 			->expects($this->once())
 			->method('findOneTypo3OrgRepository')
 			->will($this->returnValue(NULL));
 
 		/** @var $mockReport \TYPO3\CMS\Extensionmanager\Report\ExtensionStatus|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
 		$mockReport = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Report\\ExtensionStatus', array('dummy'));
-		$mockReport->_set('repositoryRepository', $mockRepositoryRepository);
+		$mockReport->_set('repositoryRepository', $this->mockRepositoryRepository);
 
 		/** @var $result \TYPO3\CMS\Reports\Status */
 		$result = $mockReport->_call('getMainRepositoryStatus');
@@ -112,16 +126,14 @@ class ExtensionStatusTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 			->method('getLastUpdate')
 			->will($this->returnValue(new \DateTime('-8 days')));
 
-		/** @var $mockRepositoryRepository \TYPO3\CMS\Extensionmanager\Domain\Repository\RepositoryRepository|\PHPUnit_Framework_MockObject_MockObject */
-		$mockRepositoryRepository = $this->getMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Repository\\RepositoryRepository');
-		$mockRepositoryRepository
+		$this->mockRepositoryRepository
 			->expects($this->once())
 			->method('findOneTypo3OrgRepository')
 			->will($this->returnValue($mockRepository));
 
 		/** @var $mockReport \TYPO3\CMS\Extensionmanager\Report\ExtensionStatus|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
 		$mockReport = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Report\\ExtensionStatus', array('dummy'));
-		$mockReport->_set('repositoryRepository', $mockRepositoryRepository);
+		$mockReport->_set('repositoryRepository', $this->mockRepositoryRepository);
 
 		/** @var $result \TYPO3\CMS\Reports\Status */
 		$result = $mockReport->_call('getMainRepositoryStatus');
@@ -139,16 +151,14 @@ class ExtensionStatusTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 			->method('getLastUpdate')
 			->will($this->returnValue(new \DateTime('-6 days')));
 
-		/** @var $mockRepositoryRepository \TYPO3\CMS\Extensionmanager\Domain\Repository\RepositoryRepository|\PHPUnit_Framework_MockObject_MockObject */
-		$mockRepositoryRepository = $this->getMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Repository\\RepositoryRepository');
-		$mockRepositoryRepository
+		$this->mockRepositoryRepository
 			->expects($this->once())
 			->method('findOneTypo3OrgRepository')
 			->will($this->returnValue($mockRepository));
 
 		/** @var $mockReport \TYPO3\CMS\Extensionmanager\Report\ExtensionStatus|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
 		$mockReport = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Report\\ExtensionStatus', array('dummy'));
-		$mockReport->_set('repositoryRepository', $mockRepositoryRepository);
+		$mockReport->_set('repositoryRepository', $this->mockRepositoryRepository);
 
 		/** @var $result \TYPO3\CMS\Reports\Status */
 		$result = $mockReport->_call('getMainRepositoryStatus');

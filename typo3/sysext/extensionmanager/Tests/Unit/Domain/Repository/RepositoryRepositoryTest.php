@@ -4,7 +4,7 @@ namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Domain\Repository;
 /***************************************************************
  * Copyright notice
  *
- * (c) 2012-2013 Chritian Kuhn, <lolli@schwarzbu.ch>
+ * (c) 2012-2013 Christian Kuhn, <lolli@schwarzbu.ch>
  * All rights reserved
  *
  * This script is part of the TYPO3 project. The TYPO3 project is
@@ -32,17 +32,32 @@ namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Domain\Repository;
 class RepositoryRepositoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
+	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
+	 */
+	protected $mockObjectManager;
+
+	/**
+	 * @var \TYPO3\CMS\Extensionmanager\Domain\Repository\RepositoryRepository
+	 */
+	protected $fixture;
+
+	public function setUp() {
+		$this->mockObjectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerInterface');
+		/** @var $fixture \TYPO3\CMS\Extensionmanager\Domain\Repository\RepositoryRepository|\PHPUnit_Framework_MockObject_MockObject */
+		$this->fixture = $this->getMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Repository\\RepositoryRepository', array('findAll'), array($this->mockObjectManager));
+	}
+
+	/**
 	 * @test
 	 */
 	public function findOneTypo3OrgRepositoryReturnsNullIfNoRepositoryWithThisTitleExists() {
-		/** @var $fixture \TYPO3\CMS\Extensionmanager\Domain\Repository\RepositoryRepository|\PHPUnit_Framework_MockObject_MockObject */
-		$fixture = $this->getMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Repository\\RepositoryRepository', array('findAll'));
-		$fixture
+
+		$this->fixture
 			->expects($this->once())
 			->method('findAll')
 			->will($this->returnValue(array()));
 
-		$this->assertNull($fixture->findOneTypo3OrgRepository());
+		$this->assertNull($this->fixture->findOneTypo3OrgRepository());
 	}
 
 	/**
@@ -60,14 +75,12 @@ class RepositoryRepositoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCas
 			->method('getTitle')
 			->will($this->returnValue('TYPO3.org Main Repository'));
 
-		/** @var $fixture \TYPO3\CMS\Extensionmanager\Domain\Repository\RepositoryRepository|\PHPUnit_Framework_MockObject_MockObject */
-		$fixture = $this->getMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Repository\\RepositoryRepository', array('findAll'));
-		$fixture
+		$this->fixture
 			->expects($this->once())
 			->method('findAll')
 			->will($this->returnValue(array($mockModelOne, $mockModelTwo)));
 
-		$this->assertSame($mockModelTwo, $fixture->findOneTypo3OrgRepository());
+		$this->assertSame($mockModelTwo, $this->fixture->findOneTypo3OrgRepository());
 	}
 }
 

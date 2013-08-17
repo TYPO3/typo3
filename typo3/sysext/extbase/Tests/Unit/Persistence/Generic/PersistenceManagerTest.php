@@ -36,6 +36,15 @@ require_once __DIR__ . '/../Fixture/Model/Entity2.php';
 class PersistenceManagerTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
+	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
+	 */
+	protected $mockObjectManager;
+
+	public function setUp() {
+		$this->mockObjectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerInterface');
+	}
+
+	/**
 	 * @test
 	 */
 	public function persistAllPassesAddedObjectsToBackend() {
@@ -234,7 +243,7 @@ class PersistenceManagerTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase 
 		$session = new \TYPO3\CMS\Extbase\Persistence\Generic\Session();
 		$changedEntities = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
 		$entity1 = new $classNameWithNamespace();
-		$repository = $this->getAccessibleMock($repositorClassNameWithNamespace, array('dummy'));
+		$repository = $this->getAccessibleMock($repositorClassNameWithNamespace, array('dummy'), array($this->mockObjectManager));
 		$repository->_set('objectType', get_class($entity1));
 		$mockBackend = $this->getMock($this->buildAccessibleProxy('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Backend'), array('commit', 'setChangedEntities'), array(), '', FALSE);
 		$mockBackend->expects($this->once())
