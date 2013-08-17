@@ -50,7 +50,7 @@ class LocalPageTree extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 	 * @todo Define visibility
 	 */
 	public function wrapTitle($title, $v) {
-		$title = !strcmp(trim($title), '') ? '<em>[' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.no_title', 1) . ']</em>' : htmlspecialchars($title);
+		$title = !strcmp(trim($title), '') ? '<em>[' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.no_title', TRUE) . ']</em>' : htmlspecialchars($title);
 		return $title;
 	}
 

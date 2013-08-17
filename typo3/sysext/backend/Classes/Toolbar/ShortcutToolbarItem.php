@@ -353,7 +353,7 @@ class ShortcutToolbarItem implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookI
 		foreach ($this->shortcutGroups as $groupId => $groupLabel) {
 			$label = $groupLabel;
 			if ($groupLabel == '1') {
-				$label = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.xlf:bookmark_group_' . abs($groupId), 1);
+				$label = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.xlf:bookmark_group_' . abs($groupId), TRUE);
 				if (empty($label)) {
 					// Fallback label
 					$label = $GLOBALS['LANG']->getLL('bookmark_group', 1) . ' ' . abs($groupId);
@@ -361,7 +361,7 @@ class ShortcutToolbarItem implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookI
 			}
 			if ($groupId < 0) {
 				// Global group
-				$label = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.xlf:bookmark_global', 1) . ': ' . (!empty($label) ? $label : abs($groupId));
+				$label = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.xlf:bookmark_global', TRUE) . ': ' . (!empty($label) ? $label : abs($groupId));
 				if ($groupId == -100) {
 					$label = $GLOBALS['LANG']->getLL('bookmark_global', 1) . ': ' . $GLOBALS['LANG']->getLL('bookmark_all', 1);
 				}

@@ -975,9 +975,9 @@ class QueryView {
 			if (GeneralUtility::inList($SET['queryFields'], $fieldName) || !$SET['queryFields'] && $fieldName != 'pid' && $fieldName != 'deleted') {
 				$THparams = strlen($fieldValue) < 50 ? ' style="white-space:nowrap;"' : '';
 				if ($GLOBALS['SOBE']->MOD_SETTINGS['search_result_labels']) {
-					$title = $GLOBALS['LANG']->sL($conf['columns'][$fieldName]['label'] ? $conf['columns'][$fieldName]['label'] : $fieldName, 1);
+					$title = $GLOBALS['LANG']->sL($conf['columns'][$fieldName]['label'] ? $conf['columns'][$fieldName]['label'] : $fieldName, TRUE);
 				} else {
-					$title = $GLOBALS['LANG']->sL($fieldName, 1);
+					$title = $GLOBALS['LANG']->sL($fieldName, TRUE);
 				}
 				$tableHeader[] = '<th' . $THparams . '>' . $title . '</th>';
 			}
@@ -1005,15 +1005,15 @@ class QueryView {
 			if (GeneralUtility::inList($SET['queryFields'], $fN) || !$SET['queryFields'] && $fN != 'pid') {
 				if (!$out) {
 					if ($GLOBALS['SOBE']->MOD_SETTINGS['search_result_labels']) {
-						$out = $GLOBALS['LANG']->sL($conf['columns'][$fN]['label'] ? $conf['columns'][$fN]['label'] : $fN, 1);
+						$out = $GLOBALS['LANG']->sL($conf['columns'][$fN]['label'] ? $conf['columns'][$fN]['label'] : $fN, TRUE);
 					} else {
-						$out = $GLOBALS['LANG']->sL($fN, 1);
+						$out = $GLOBALS['LANG']->sL($fN, TRUE);
 					}
 				} else {
 					if ($GLOBALS['SOBE']->MOD_SETTINGS['search_result_labels']) {
-						$out .= ',' . $GLOBALS['LANG']->sL(($conf['columns'][$fN]['label'] ? $conf['columns'][$fN]['label'] : $fN), 1);
+						$out .= ',' . $GLOBALS['LANG']->sL(($conf['columns'][$fN]['label'] ? $conf['columns'][$fN]['label'] : $fN), TRUE);
 					} else {
-						$out .= ',' . $GLOBALS['LANG']->sL($fN, 1);
+						$out .= ',' . $GLOBALS['LANG']->sL($fN, TRUE);
 					}
 				}
 			}

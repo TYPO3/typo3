@@ -1393,7 +1393,7 @@ class ClickMenu {
 	 * @todo Define visibility
 	 */
 	public function label($label) {
-		return $GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:cm.' . $label, 1));
+		return $GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:cm.' . $label, TRUE));
 	}
 
 	/**

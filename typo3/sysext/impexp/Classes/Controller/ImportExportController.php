@@ -846,8 +846,8 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 								<input type="hidden" name="file[upload][1][target]" value="' . htmlspecialchars($tempFolder) . '" />
 								<input type="hidden" name="file[upload][1][data]" value="1" /><br />
 
-								<input type="submit" name="_upload" value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:file_upload.php.submit', 1) . '" />
-								<input type="checkbox" name="overwriteExistingFiles" id="checkOverwriteExistingFiles" value="1" checked="checked" /> <label for="checkOverwriteExistingFiles">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.xlf:overwriteExistingFiles', 1) . '</label>
+								<input type="submit" name="_upload" value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:file_upload.php.submit', TRUE) . '" />
+								<input type="checkbox" name="overwriteExistingFiles" id="checkOverwriteExistingFiles" value="1" checked="checked" /> <label for="checkOverwriteExistingFiles">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.xlf:overwriteExistingFiles', TRUE) . '</label>
 						</td>
 					</tr>';
 				if (GeneralUtility::_POST('_upload')) {

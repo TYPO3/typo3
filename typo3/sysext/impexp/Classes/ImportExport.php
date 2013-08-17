@@ -3080,7 +3080,7 @@ class ImportExport {
 				foreach ($output as $fN => $state) {
 					$tRows[] = '
 						<tr>
-							<td class="bgColor5">' . $GLOBALS['LANG']->sL($GLOBALS['TCA'][$table]['columns'][$fN]['label'], 1) . ' (' . htmlspecialchars($fN) . ')</td>
+							<td class="bgColor5">' . $GLOBALS['LANG']->sL($GLOBALS['TCA'][$table]['columns'][$fN]['label'], TRUE) . ' (' . htmlspecialchars($fN) . ')</td>
 							<td class="bgColor4">' . $state . '</td>
 						</tr>
 					';

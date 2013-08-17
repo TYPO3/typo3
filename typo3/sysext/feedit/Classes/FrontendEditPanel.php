@@ -369,9 +369,9 @@ class FrontendEditPanel {
 		$processedDataArr['uid'] = $theCmd == 'new' ? 'NEW' : $dataArray['uid'];
 		$processedDataArr['pid'] = $theCmd == 'new' ? $newUID : $dataArray['pid'];
 		$panel = '';
-		$buttons = '<input type="image" border="0" name="TSFE_EDIT[update]" src="' . $tceforms->backPath . 'gfx/savedok.gif" hspace="2" width="21" height="16" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc', 1) . '" />';
-		$buttons .= '<input type="image" border="0" name="TSFE_EDIT[update_close]" src="' . $tceforms->backPath . 'gfx/saveandclosedok.gif" hspace="2" width="21" height="16" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveCloseDoc', 1) . '" />';
-		$buttons .= '<input type="image" border="0" name="TSFE_EDIT[cancel]" onclick="' . htmlspecialchars(('window.location.href=\'' . GeneralUtility::getIndpEnv('REQUEST_URI') . '\';return false;')) . '" src="' . $tceforms->backPath . 'gfx/closedok.gif" hspace="2" width="21" height="16" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:rm.closeDoc', 1) . '" />';
+		$buttons = '<input type="image" border="0" name="TSFE_EDIT[update]" src="' . $tceforms->backPath . 'gfx/savedok.gif" hspace="2" width="21" height="16" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc', TRUE) . '" />';
+		$buttons .= '<input type="image" border="0" name="TSFE_EDIT[update_close]" src="' . $tceforms->backPath . 'gfx/saveandclosedok.gif" hspace="2" width="21" height="16" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveCloseDoc', TRUE) . '" />';
+		$buttons .= '<input type="image" border="0" name="TSFE_EDIT[cancel]" onclick="' . htmlspecialchars(('window.location.href=\'' . GeneralUtility::getIndpEnv('REQUEST_URI') . '\';return false;')) . '" src="' . $tceforms->backPath . 'gfx/closedok.gif" hspace="2" width="21" height="16" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:rm.closeDoc', TRUE) . '" />';
 		// Buttons top
 		$panel .= $tceforms->intoTemplate(array('ITEM' => $buttons));
 		$panel .= $tceforms->getMainFields($table, $processedDataArr);

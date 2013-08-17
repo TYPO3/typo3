@@ -227,9 +227,9 @@ class User {
 								if (!$title) {
 									$title = '[' . $GLOBALS['LANG']->getLL('noTitle', TRUE) . ']';
 								} else {
-									$title = $GLOBALS['LANG']->sL($title, 1);
+									$title = $GLOBALS['LANG']->sL($title, TRUE);
 								}
-								$description = $GLOBALS['LANG']->sL($v[($k2i . '.')]['description'], 1) . '<br />';
+								$description = $GLOBALS['LANG']->sL($v[($k2i . '.')]['description'], TRUE) . '<br />';
 								if (!$v[($k2i . '.')]['dontInsertSiteUrl']) {
 									$v[$k2i . '.']['content'] = str_replace('###_URL###', $this->siteUrl, $v[$k2i . '.']['content']);
 								}
@@ -276,7 +276,7 @@ class User {
 				if (!$title) {
 					$title = '[' . $GLOBALS['LANG']->getLL('noTitle', TRUE) . ']';
 				} else {
-					$title = $GLOBALS['LANG']->sL($title, 1);
+					$title = $GLOBALS['LANG']->sL($title, TRUE);
 				}
 				$lines[] = '<tr><td colspan="3" class="bgColor5"><a href="#" title="' . $GLOBALS['LANG']->getLL('expand', TRUE) . '" onClick="jumpToUrl(\'?OC_key=' . ($openKeys[$openK] ? 'C|' : 'O|') . $openK . '\');return false;"><img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], ('gfx/ol/' . ($openKeys[$openK] ? 'minus' : 'plus') . 'bullet.gif'), 'width="18" height="16"') . ' title="' . $GLOBALS['LANG']->getLL('expand', TRUE) . '" /><strong>' . $title . '</strong></a></td></tr>';
 				$lines[] = $v;
