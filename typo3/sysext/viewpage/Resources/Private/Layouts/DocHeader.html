@@ -1,13 +1,18 @@
-<f:be.container loadExtJs="1">
-	<style type="text/css">
-		.typo3-inner-docbody {
-			height: 100%;
-		}
-	</style>
-
+<f:be.container
+	loadJQuery="TRUE"
+	includeJsFiles="{
+		0:'{f:uri.resource(path:\'JavaScript/common.js\')}'
+	}"
+>
 	<div class="typo3-fullDoc">
 		<div id="typo3-docheader">
 			<div class="typo3-docheader-functions">
+				<form>
+					<label for="width">
+						<f:translate key="width" />
+					</label>
+					<f:form.select options="{widths}" id="width" name="width" />
+				</form>
 			</div>
 			<div class="typo3-docheader-buttons">
 				<div class="left">

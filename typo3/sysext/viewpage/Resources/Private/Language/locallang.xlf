@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:37Z" product-name="viewpage">
+		<header/>
+		<body>
+			<trans-unit id="width" xml:space="preserve">
+				<source>Width</source>
+			</trans-unit>
+			<trans-unit id="tablet" xml:space="preserve">
+				<source>Tablet</source>
+			</trans-unit>
+			<trans-unit id="mobile" xml:space="preserve">
+				<source>Mobile</source>
+			</trans-unit>
+			<trans-unit id="computer" xml:space="preserve">
+				<source>Computer</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>
