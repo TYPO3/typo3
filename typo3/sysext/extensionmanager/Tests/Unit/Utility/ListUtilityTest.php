@@ -38,6 +38,11 @@ class ListUtilityTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	private $loadedExtensions = array();
 
 	/**
+	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
+	 */
+	protected $mockObjectManager;
+
+	/**
 	 * @return void
 	 */
 	public function setUp() {
@@ -50,6 +55,7 @@ class ListUtilityTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 			'saltedpasswords' => 'saltedpasswords',
 			'rsaauth' => 'rsaauth'
 		);
+		$this->mockObjectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerInterface');
 	}
 
 	/**
@@ -185,7 +191,7 @@ class ListUtilityTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @return void
 	 */
 	public function enrichExtensionsWithEmConfInformation($extensions, $emConf, $expectedResult) {
-		$this->fixture->extensionRepository = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Repository\\ExtensionRepository', array('findOneByExtensionKeyAndVersion'));
+		$this->fixture->extensionRepository = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Repository\\ExtensionRepository', array('findOneByExtensionKeyAndVersion'), array($this->mockObjectManager));
 		$this->fixture->emConfUtility = $this->getMock('TYPO3\\CMS\\Extensionmanager\\Utility\\EmConfUtility');
 		$this->fixture->emConfUtility->expects($this->any())->method('includeEmConf')->will($this->returnValue($emConf));
 		$this->assertEquals($expectedResult, $this->fixture->enrichExtensionsWithEmConfAndTerInformation($extensions));
