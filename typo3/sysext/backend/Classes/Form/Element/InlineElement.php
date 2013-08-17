@@ -1523,7 +1523,7 @@ class InlineElement {
 					$selItems[$tk][0] = htmlspecialchars($this->fObj->sL($PA['fieldTSConfig']['altLabels.'][$p[1]]));
 				}
 				// Removing doktypes with no access:
-				if (($table === 'pages' || $table === 'pages_language_overlay') && $field === 'doktype') {
+				if ($table === 'pages' && $field === 'doktype') {
 					if (!($GLOBALS['BE_USER']->isAdmin() || GeneralUtility::inList($GLOBALS['BE_USER']->groupData['pagetypes_select'], $p[1]))) {
 						unset($selItems[$tk]);
 					}

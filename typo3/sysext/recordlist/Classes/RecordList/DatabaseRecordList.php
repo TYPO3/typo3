@@ -30,6 +30,7 @@ namespace TYPO3\CMS\Recordlist\RecordList;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 
 /**
  * Class for rendering of Web>List module
@@ -816,9 +817,10 @@ class DatabaseRecordList extends \TYPO3\CMS\Recordlist\RecordList\AbstractDataba
 								$icon = '<a href="' . htmlspecialchars(($this->backPath . 'db_new.php?id=' . $this->id . '&pagesOnly=1&returnUrl=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI')))) . '" title="' . $GLOBALS['LANG']->getLL('new', TRUE) . '">' . ($table == 'pages' ? IconUtility::getSpriteIcon('actions-page-new') : IconUtility::getSpriteIcon('actions-document-new')) . '</a>';
 							} else {
 								$params = '&edit[' . $table . '][' . $this->id . ']=new';
-								if ($table == 'pages_language_overlay') {
-									$params .= '&overrideVals[pages_language_overlay][doktype]=' . (int) $this->pageRow['doktype'];
-								}
+								// @todo move to translation handling for pages in list module
+								//if ($table == 'pages_language_overlay') {
+								//	$params .= '&overrideVals[pages_language_overlay][doktype]=' . (int) $this->pageRow['doktype'];
+								//}
 								$icon = '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick($params, $this->backPath, -1)) . '" title="' . $GLOBALS['LANG']->getLL('new', TRUE) . '">' . ($table == 'pages' ? IconUtility::getSpriteIcon('actions-page-new') : IconUtility::getSpriteIcon('actions-document-new')) . '</a>';
 							}
 						}
@@ -1185,7 +1187,7 @@ class DatabaseRecordList extends \TYPO3\CMS\Recordlist\RecordList\AbstractDataba
 		$cells = array();
 		$cells['pasteAfter'] = ($cells['pasteInto'] = $this->spaceIcon);
 		//enables to hide the copy, cut and paste icons for localized records - doesn't make much sense to perform these options for them
-		$isL10nOverlay = $this->localizationView && $table != 'pages_language_overlay' && $row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']] != 0;
+		$isL10nOverlay = $this->localizationView && $row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']] != 0;
 		// Return blank, if disabled:
 		// Whether a numeric clipboard pad is active or the normal pad we will see different content of the panel:
 		// For the "Normal" pad:
@@ -1283,7 +1285,16 @@ class DatabaseRecordList extends \TYPO3\CMS\Recordlist\RecordList\AbstractDataba
 			$this->translations = $translations['translations'];
 			// Traverse page translations and add icon for each language that does NOT yet exist:
 			$lNew = '';
-			foreach ($this->pageOverlays as $lUid_OnPage => $lsysRec) {
+			if ($table === 'pages'){
+				$languages = array();
+				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('sys_language.*', 'sys_language', 'sys_language.hidden=0');
+				while ($sysLanguageRecord = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+					$languages[$sysLanguageRecord['uid']] = $sysLanguageRecord;
+				}
+			} else {
+				$languages = $this->pageOverlays;
+			}
+			foreach ($languages as $lUid_OnPage => $lsysRec) {
 				if (!isset($translations['translations'][$lUid_OnPage]) && $GLOBALS['BE_USER']->checkLanguageAccess($lUid_OnPage)) {
 					$url = substr($this->listURL(), strlen($this->backPath));
 					$href = $GLOBALS['SOBE']->doc->issueCommand('&cmd[' . $table . '][' . $row['uid'] . '][localize]=' . $lUid_OnPage, $url . '&justLocalized=' . rawurlencode(($table . ':' . $row['uid'] . ':' . $lUid_OnPage)));
