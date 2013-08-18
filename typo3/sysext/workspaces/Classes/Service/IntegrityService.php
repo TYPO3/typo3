@@ -26,6 +26,8 @@ namespace TYPO3\CMS\Workspaces\Service;
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+
 /**
  * Service for integrity
  *
@@ -130,17 +132,17 @@ class IntegrityService {
 	 */
 	protected function checkLocalization(\TYPO3\CMS\Workspaces\Domain\Model\CombinedRecord $element) {
 		$table = $element->getTable();
-		if (\TYPO3\CMS\Backend\Utility\BackendUtility::isTableLocalizable($table)) {
+		if (BackendUtility::isTableLocalizable($table)) {
 			$languageField = $GLOBALS['TCA'][$table]['ctrl']['languageField'];
 			$languageParentField = $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'];
 			$versionRow = $element->getVersionRecord()->getRow();
 			// If element is a localization:
 			if ($versionRow[$languageField] > 0) {
 				// Get localization parent from live workspace:
-				$languageParentRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($table, $versionRow[$languageParentField], 'uid,t3ver_state');
+				$languageParentRecord = BackendUtility::getRecord($table, $versionRow[$languageParentField], 'uid,t3ver_state');
 				// If localization parent is a "new placeholder" record:
 				if ($languageParentRecord['t3ver_state'] == 1) {
-					$title = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle($table, $versionRow);
+					$title = BackendUtility::getRecordTitle($table, $versionRow);
 					// Add warning for current versionized record:
 					$this->addIssue($element->getLiveRecord()->getIdentifier(), self::STATUS_Warning, sprintf(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('integrity.dependsOnDefaultLanguageRecord', 'workspaces'), $title));
 					// Add info for related localization parent record:
