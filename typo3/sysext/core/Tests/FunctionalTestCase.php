@@ -139,6 +139,18 @@ abstract class FunctionalTestCase extends BaseTestCase {
 	}
 
 	/**
+	 * Get DatabaseConnection instance - $GLOBALS['TYPO3_DB']
+	 *
+	 * This method should be used instead of direct access to
+	 * $GLOBALS['TYPO3_DB'] for easy IDE auto completion.
+	 *
+	 * @return \TYPO3\CMS\Core\Database\DatabaseConnection
+	 */
+	protected function getDatabase() {
+		return $GLOBALS['TYPO3_DB'];
+	}
+
+	/**
 	 * Imports a data set represented as XML into the test database,
 	 *
 	 * @param string $path Absolute path to the XML file containing the data set to load
@@ -153,8 +165,7 @@ abstract class FunctionalTestCase extends BaseTestCase {
 			);
 		}
 
-		/** @var \TYPO3\CMS\Core\Database\DatabaseConnection $database */
-		$database = $GLOBALS['TYPO3_DB'];
+		$database = $this->getDatabase();
 
 		$xml = simplexml_load_file($path);
 		$foreignKeys = array();

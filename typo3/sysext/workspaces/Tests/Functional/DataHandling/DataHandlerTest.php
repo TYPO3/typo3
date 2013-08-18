@@ -73,8 +73,7 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 
 		$versionedId = $dataHandler->getAutoVersionId('tt_content', $uid);
 
-		/** @var \TYPO3\CMS\Core\Database\DatabaseConnection $database */
-		$database = $GLOBALS['TYPO3_DB'];
+		$database = $this->getDatabase();
 		$row = $database->exec_SELECTgetSingleRow('*', 'tt_content', 'uid = ' . $versionedId);
 		$this->assertNotEmpty($row);
 
