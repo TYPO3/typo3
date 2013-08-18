@@ -26,6 +26,8 @@ namespace TYPO3\CMS\Workspaces\Hook;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+
 /**
  * Tcemain service
  *
@@ -77,10 +79,10 @@ class DataHandlerHook {
 	protected function resetStageOfElements($stageId) {
 		$fields = array('t3ver_stage' => \TYPO3\CMS\Workspaces\Service\StagesService::STAGE_EDIT_ID);
 		foreach ($this->getTcaTables() as $tcaTable) {
-			if (\TYPO3\CMS\Backend\Utility\BackendUtility::isTableWorkspaceEnabled($tcaTable)) {
+			if (BackendUtility::isTableWorkspaceEnabled($tcaTable)) {
 				$where = 't3ver_stage = ' . intval($stageId);
 				$where .= ' AND t3ver_wsid > 0 AND pid=-1';
-				$where .= \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($tcaTable);
+				$where .= BackendUtility::deleteClause($tcaTable);
 				$GLOBALS['TYPO3_DB']->exec_UPDATEquery($tcaTable, $where, $fields);
 			}
 		}
@@ -95,10 +97,10 @@ class DataHandlerHook {
 	protected function flushWorkspaceElements($workspaceId) {
 		$command = array();
 		foreach ($this->getTcaTables() as $tcaTable) {
-			if (\TYPO3\CMS\Backend\Utility\BackendUtility::isTableWorkspaceEnabled($tcaTable)) {
+			if (BackendUtility::isTableWorkspaceEnabled($tcaTable)) {
 				$where = '1=1';
-				$where .= \TYPO3\CMS\Backend\Utility\BackendUtility::getWorkspaceWhereClause($tcaTable, $workspaceId);
-				$where .= \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($tcaTable);
+				$where .= BackendUtility::getWorkspaceWhereClause($tcaTable, $workspaceId);
+				$where .= BackendUtility::deleteClause($tcaTable);
 				$records = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid', $tcaTable, $where, '', '', '', 'uid');
 				if (is_array($records)) {
 					foreach (array_keys($records) as $recordId) {

@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Perm\Controller;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 
 /**
  * This class extends the permissions module in the TYPO3 Backend to provide
@@ -64,11 +65,11 @@ class PermissionAjaxController {
 		$this->conf['editLockState'] = intval(\TYPO3\CMS\Core\Utility\GeneralUtility::_POST('editLockState'));
 		// User: Replace some parts of the posted values
 		$this->conf['new_owner_uid'] = intval(\TYPO3\CMS\Core\Utility\GeneralUtility::_POST('newOwnerUid'));
-		$temp_owner_data = \TYPO3\CMS\Backend\Utility\BackendUtility::getUserNames('username, uid', ' AND uid = ' . $this->conf['new_owner_uid']);
+		$temp_owner_data = BackendUtility::getUserNames('username, uid', ' AND uid = ' . $this->conf['new_owner_uid']);
 		$this->conf['new_owner_username'] = htmlspecialchars($temp_owner_data[$this->conf['new_owner_uid']]['username']);
 		// Group: Replace some parts of the posted values
 		$this->conf['new_group_uid'] = intval(\TYPO3\CMS\Core\Utility\GeneralUtility::_POST('newGroupUid'));
-		$temp_group_data = \TYPO3\CMS\Backend\Utility\BackendUtility::getGroupNames('title,uid', ' AND uid = ' . $this->conf['new_group_uid']);
+		$temp_group_data = BackendUtility::getGroupNames('title,uid', ' AND uid = ' . $this->conf['new_group_uid']);
 		$this->conf['new_group_username'] = htmlspecialchars($temp_group_data[$this->conf['new_group_uid']]['title']);
 	}
 
@@ -170,11 +171,11 @@ class PermissionAjaxController {
 	 */
 	protected function renderUserSelector($page, $ownerUid, $username = '') {
 		// Get usernames
-		$beUsers = \TYPO3\CMS\Backend\Utility\BackendUtility::getUserNames();
+		$beUsers = BackendUtility::getUserNames();
 		// Init groupArray
 		$groups = array();
 		if (!$GLOBALS['BE_USER']->isAdmin()) {
-			$beUsers = \TYPO3\CMS\Backend\Utility\BackendUtility::blindUserNames($beUsers, $groups, 1);
+			$beUsers = BackendUtility::blindUserNames($beUsers, $groups, 1);
 		}
 		// Owner selector:
 		$options = '';
@@ -202,11 +203,11 @@ class PermissionAjaxController {
 	 */
 	protected function renderGroupSelector($page, $groupUid, $groupname = '') {
 		// Get usernames
-		$beGroups = \TYPO3\CMS\Backend\Utility\BackendUtility::getListGroupNames('title,uid');
+		$beGroups = BackendUtility::getListGroupNames('title,uid');
 		$beGroupKeys = array_keys($beGroups);
-		$beGroupsO = ($beGroups = \TYPO3\CMS\Backend\Utility\BackendUtility::getGroupNames());
+		$beGroupsO = ($beGroups = BackendUtility::getGroupNames());
 		if (!$GLOBALS['BE_USER']->isAdmin()) {
-			$beGroups = \TYPO3\CMS\Backend\Utility\BackendUtility::blindGroupNames($beGroupsO, $beGroupKeys, 1);
+			$beGroups = BackendUtility::blindGroupNames($beGroupsO, $beGroupKeys, 1);
 		}
 		// Group selector:
 		$options = '';
