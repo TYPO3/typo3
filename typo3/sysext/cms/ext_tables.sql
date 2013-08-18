@@ -334,6 +334,7 @@ CREATE TABLE tt_content (
   accessibility_bypass_text varchar(30) DEFAULT '' NOT NULL,
   l18n_parent int(11) DEFAULT '0' NOT NULL,
   l18n_diffsource mediumblob,
+  selected_categories text,
 
   PRIMARY KEY (uid),
   KEY t3ver_oid (t3ver_oid,t3ver_wsid),
