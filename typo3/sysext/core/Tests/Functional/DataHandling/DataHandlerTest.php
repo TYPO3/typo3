@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Core\Tests\Functional\Functional\DataHandling;
+namespace TYPO3\CMS\Core\Tests\Functional\DataHandling;
 
 /***************************************************************
  * Copyright notice
