@@ -32,7 +32,7 @@ namespace TYPO3\CMS\Core\Tests\Functional\Resource;
  *
  * @author Andreas Wolf <andreas.wolf@typo3.org>
  */
-class BaseTestCase extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
+class BaseTestCase extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 	public function getStorageObject() {
 		$this->initializeVfs();
 		$resourceFactory = new \TYPO3\CMS\Core\Resource\ResourceFactory();

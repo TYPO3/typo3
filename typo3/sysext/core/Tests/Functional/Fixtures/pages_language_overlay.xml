@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dataset>
+    <pages_language_overlay>
+        <uid>1</uid>
+        <pid>1</pid>
+        <title>Root [Dansk]</title>
+        <deleted>0</deleted>
+        <hidden>0</hidden>
+        <sys_language_uid>1</sys_language_uid>
+    </pages_language_overlay>
+    <pages_language_overlay>
+        <uid>2</uid>
+        <pid>1</pid>
+        <title>Root [Deutsch]</title>
+        <deleted>0</deleted>
+        <hidden>0</hidden>
+        <sys_language_uid>2</sys_language_uid>
+    </pages_language_overlay>
+</dataset>
