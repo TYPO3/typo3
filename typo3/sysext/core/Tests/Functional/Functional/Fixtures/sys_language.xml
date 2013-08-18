@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dataset>
+    <sys_language>
+        <uid>1</uid>
+        <pid>0</pid>
+        <tstamp>1277119475</tstamp>
+        <hidden>0</hidden>
+        <title>Dansk</title>
+        <flag>dk</flag>
+        <static_lang_isocode>0</static_lang_isocode>
+    </sys_language>
+    <sys_language>
+        <uid>2</uid>
+        <pid>0</pid>
+        <tstamp>1277119475</tstamp>
+        <hidden>0</hidden>
+        <title>Deutsch</title>
+        <flag>de</flag>
+        <static_lang_isocode>0</static_lang_isocode>
+    </sys_language>
+</dataset>
