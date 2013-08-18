@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Form\View\Wizard;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 
 /**
  * The form wizard view
@@ -256,7 +257,7 @@ class WizardView extends \TYPO3\CMS\Form\View\Wizard\AbstractWizardView {
 	protected function loadSettings() {
 		$record = $this->repository->getRecord();
 		$pageId = $record->getPageId();
-		$modTSconfig = \TYPO3\CMS\Backend\Utility\BackendUtility::getModTSconfig($pageId, 'mod.wizards.form');
+		$modTSconfig = BackendUtility::getModTSconfig($pageId, 'mod.wizards.form');
 		$settings = $modTSconfig['properties'];
 		$this->removeTrailingDotsFromTyposcript($settings);
 		$this->doc->JScode .= $this->doc->wrapScriptTags('TYPO3.Form.Wizard.Settings = ' . json_encode($settings) . ';');
@@ -326,9 +327,9 @@ class WizardView extends \TYPO3\CMS\Form\View\Wizard\AbstractWizardView {
 			'reload' => ''
 		);
 		// CSH
-		$buttons['csh'] = \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('xMOD_csh_corebe', 'wizard_forms_wiz', $GLOBALS['BACK_PATH'], '');
+		$buttons['csh'] = BackendUtility::cshItem('xMOD_csh_corebe', 'wizard_forms_wiz', $GLOBALS['BACK_PATH'], '');
 		// CSH Buttons
-		$buttons['csh_buttons'] = \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('xMOD_csh_corebe', 'wizard_forms_wiz_buttons', $GLOBALS['BACK_PATH'], '');
+		$buttons['csh_buttons'] = BackendUtility::cshItem('xMOD_csh_corebe', 'wizard_forms_wiz_buttons', $GLOBALS['BACK_PATH'], '');
 		// Close
 		$getPostVariables = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('P');
 		$buttons['close'] = '<a href="#" onclick="' . htmlspecialchars(('jumpToUrl(unescape(\'' . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::sanitizeLocalUrl($getPostVariables['returnUrl'])) . '\')); return false;')) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-close', array(

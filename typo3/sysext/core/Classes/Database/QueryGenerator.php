@@ -26,18 +26,14 @@ namespace TYPO3\CMS\Core\Database;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+
 /**
  * Class for generating front end for building queries
  *
  * @author Christian Jul Jensen <christian@typo3.com>
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @coauthor Jo Hasenau <info@cybercraft.de>
- */
-/**
- * Class for generating front end for building queries
- *
- * @author Christian Jul Jensen <christian@typo3.com>
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class QueryGenerator {
 
@@ -828,7 +824,7 @@ class QueryGenerator {
 				$from_table_Arr = explode(',', $fieldSetup['allowed']);
 				$useTablePrefix = 1;
 				if (!$fieldSetup['prepend_tname']) {
-					$checkres = $GLOBALS['TYPO3_DB']->exec_SELECTquery($fN, $table, \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($table), ($groupBy = ''), ($orderBy = ''), ($limit = ''));
+					$checkres = $GLOBALS['TYPO3_DB']->exec_SELECTquery($fN, $table, BackendUtility::deleteClause($table), ($groupBy = ''), ($orderBy = ''), ($limit = ''));
 					if ($checkres) {
 						while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($checkres)) {
 							if (stristr($row[$fN], ',')) {
@@ -901,18 +897,18 @@ class QueryGenerator {
 						if ($from_table == 'pages') {
 							$where_clause = 'uid IN (' . $webMountPageTree . ') ';
 							if (!$GLOBALS['SOBE']->MOD_SETTINGS['show_deleted']) {
-								$where_clause .= \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($from_table) . ' AND' . $perms_clause;
+								$where_clause .= BackendUtility::deleteClause($from_table) . ' AND' . $perms_clause;
 							}
 						} else {
 							$where_clause = 'pid IN (' . $webMountPageTree . ') ';
 							if (!$GLOBALS['SOBE']->MOD_SETTINGS['show_deleted']) {
-								$where_clause .= \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($from_table);
+								$where_clause .= BackendUtility::deleteClause($from_table);
 							}
 						}
 					} else {
 						$where_clause = 'uid';
 						if (!$GLOBALS['SOBE']->MOD_SETTINGS['show_deleted']) {
-							$where_clause .= \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($from_table);
+							$where_clause .= BackendUtility::deleteClause($from_table);
 						}
 					}
 					$orderBy = 'uid';
@@ -1402,9 +1398,9 @@ class QueryGenerator {
 			if (in_array('order', $enableArr) && !$GLOBALS['BE_USER']->userTS['mod.']['dbint.']['disableOrderBy']) {
 				$orderByArr = explode(',', $this->extFieldLists['queryOrder']);
 				$orderBy = '';
-				$orderBy .= $this->mkTypeSelect('SET[queryOrder]', $orderByArr[0], '') . '&nbsp;' . \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck($GLOBALS['SOBE']->id, 'SET[queryOrderDesc]', $modSettings['queryOrderDesc'], '', '', 'id="checkQueryOrderDesc"') . '&nbsp;<label for="checkQueryOrderDesc">Descending</label>';
+				$orderBy .= $this->mkTypeSelect('SET[queryOrder]', $orderByArr[0], '') . '&nbsp;' . BackendUtility::getFuncCheck($GLOBALS['SOBE']->id, 'SET[queryOrderDesc]', $modSettings['queryOrderDesc'], '', '', 'id="checkQueryOrderDesc"') . '&nbsp;<label for="checkQueryOrderDesc">Descending</label>';
 				if ($orderByArr[0]) {
-					$orderBy .= '<BR>' . $this->mkTypeSelect('SET[queryOrder2]', $orderByArr[1], '') . '&nbsp;' . \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck($GLOBALS['SOBE']->id, 'SET[queryOrder2Desc]', $modSettings['queryOrder2Desc'], '', '', 'id="checkQueryOrder2Desc"') . '&nbsp;<label for="checkQueryOrder2Desc">Descending</label>';
+					$orderBy .= '<BR>' . $this->mkTypeSelect('SET[queryOrder2]', $orderByArr[1], '') . '&nbsp;' . BackendUtility::getFuncCheck($GLOBALS['SOBE']->id, 'SET[queryOrder2Desc]', $modSettings['queryOrder2Desc'], '', '', 'id="checkQueryOrder2Desc"') . '&nbsp;<label for="checkQueryOrder2Desc">Descending</label>';
 				}
 				$out .= '<tr>
 					<td' . $TDparams . '><strong>Order By:</strong></td>
@@ -1463,7 +1459,7 @@ class QueryGenerator {
 			$theList = '';
 		}
 		if ($id && $depth > 0) {
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'pages', 'pid=' . $id . ' ' . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('pages') . ' AND ' . $perms_clause);
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'pages', 'pid=' . $id . ' ' . BackendUtility::deleteClause('pages') . ' AND ' . $perms_clause);
 			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 				if ($begin <= 0) {
 					$theList .= ',' . $row['uid'];
@@ -1508,7 +1504,7 @@ class QueryGenerator {
 		}
 		$fieldlist = $this->extFieldLists['queryFields'] . ',pid' . ($GLOBALS['TCA'][$this->table]['ctrl']['delete'] ? ',' . $GLOBALS['TCA'][$this->table]['ctrl']['delete'] : '');
 		if (!$GLOBALS['SOBE']->MOD_SETTINGS['show_deleted']) {
-			$qString .= \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($this->table);
+			$qString .= BackendUtility::deleteClause($this->table);
 		}
 		$query = $GLOBALS['TYPO3_DB']->SELECTquery($fieldlist, $this->table, $qString, trim($this->extFieldLists['queryGroup']), $this->extFieldLists['queryOrder'] ? trim($this->extFieldLists['queryOrder_SQL']) : '', $this->extFieldLists['queryLimit']);
 		return $query;

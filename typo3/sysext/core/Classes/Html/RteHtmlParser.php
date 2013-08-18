@@ -27,6 +27,7 @@ namespace TYPO3\CMS\Core\Html;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -210,7 +211,7 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 			$this->blockElementList = $this->procOptions['blockElementList'];
 		}
 		// Get parameters for rte_transformation:
-		$p = ($this->rte_p = \TYPO3\CMS\Backend\Utility\BackendUtility::getSpecConfParametersFromArray($specConf['rte_transform']['parameters']));
+		$p = ($this->rte_p = BackendUtility::getSpecConfParametersFromArray($specConf['rte_transform']['parameters']));
 		// Setting modes:
 		if (strcmp($this->procOptions['overruleMode'], '')) {
 			$modes = array_unique(GeneralUtility::trimExplode(',', $this->procOptions['overruleMode']));
@@ -808,10 +809,10 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 							// If no id or alias is given, set it to class record pid
 							// Checking if the id-parameter is an alias.
 							if (!\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($idPart)) {
-								list($idPartR) = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordsByField('pages', 'alias', $idPart);
+								list($idPartR) = BackendUtility::getRecordsByField('pages', 'alias', $idPart);
 								$idPart = intval($idPartR['uid']);
 							}
-							$page = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('pages', $idPart);
+							$page = BackendUtility::getRecord('pages', $idPart);
 							if (is_array($page)) {
 								// Page must exist...
 								$href = $siteUrl . '?id=' . $idPart . ($pairParts[2] ? $pairParts[2] : '') . ($sectionMark ? '#' . $sectionMark : '');

@@ -26,6 +26,8 @@ namespace TYPO3\CMS\Workspaces\Service;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+
 /**
  * Grid data service
  *
@@ -131,8 +133,8 @@ class GridDataService {
 				$isRecordTypeAllowedToModify = $GLOBALS['BE_USER']->check('tables_modify', $table);
 
 				foreach ($records as $record) {
-					$origRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($table, $record['t3ver_oid']);
-					$versionRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($table, $record['uid']);
+					$origRecord = BackendUtility::getRecord($table, $record['t3ver_oid']);
+					$versionRecord = BackendUtility::getRecord($table, $record['uid']);
 					$combinedRecord = \TYPO3\CMS\Workspaces\Domain\Model\CombinedRecord::createFromArrays($table, $origRecord, $versionRecord);
 					$this->getIntegrityService()->checkElement($combinedRecord);
 
@@ -147,18 +149,21 @@ class GridDataService {
 					$versionArray['id'] = $table . ':' . $record['uid'];
 					$versionArray['uid'] = $record['uid'];
 					$versionArray['workspace'] = $versionRecord['t3ver_id'];
-					$versionArray['label_Workspace'] = htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle($table, $versionRecord));
-					$versionArray['label_Live'] = htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle($table, $origRecord));
+					$versionArray['label_Workspace'] = htmlspecialchars(
+						BackendUtility::getRecordTitle($table, $versionRecord));
+					$versionArray['label_Live'] = htmlspecialchars(BackendUtility::getRecordTitle($table, $origRecord));
 					$versionArray['label_Stage'] = htmlspecialchars($stagesObj->getStageTitle($versionRecord['t3ver_stage']));
 					$tempStage = $stagesObj->getNextStage($versionRecord['t3ver_stage']);
 					$versionArray['label_nextStage'] = htmlspecialchars($stagesObj->getStageTitle($tempStage['uid']));
 					$tempStage = $stagesObj->getPrevStage($versionRecord['t3ver_stage']);
 					$versionArray['label_prevStage'] = htmlspecialchars($stagesObj->getStageTitle($tempStage['uid']));
-					$versionArray['path_Live'] = htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::getRecordPath($record['livepid'], '', 999));
-					$versionArray['path_Workspace'] = htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::getRecordPath($record['wspid'], '', 999));
+					$versionArray['path_Live'] = htmlspecialchars(
+						BackendUtility::getRecordPath($record['livepid'], '', 999));
+					$versionArray['path_Workspace'] = htmlspecialchars(
+						BackendUtility::getRecordPath($record['wspid'], '', 999));
 					$versionArray['workspace_Title'] = htmlspecialchars(\TYPO3\CMS\Workspaces\Service\WorkspaceService::getWorkspaceTitle($versionRecord['t3ver_wsid']));
 					$versionArray['workspace_Tstamp'] = $versionRecord['tstamp'];
-					$versionArray['workspace_Formated_Tstamp'] = \TYPO3\CMS\Backend\Utility\BackendUtility::datetime($versionRecord['tstamp']);
+					$versionArray['workspace_Formated_Tstamp'] = BackendUtility::datetime($versionRecord['tstamp']);
 					$versionArray['t3ver_oid'] = $record['t3ver_oid'];
 					$versionArray['livepid'] = $record['livepid'];
 					$versionArray['stage'] = $versionRecord['t3ver_stage'];
@@ -484,7 +489,7 @@ class GridDataService {
 	 */
 	protected function getLanguageValue($table, array $record) {
 		$languageValue = 0;
-		if (\TYPO3\CMS\Backend\Utility\BackendUtility::isTableLocalizable($table)) {
+		if (BackendUtility::isTableLocalizable($table)) {
 			$languageField = $GLOBALS['TCA'][$table]['ctrl']['languageField'];
 			if (!empty($record[$languageField])) {
 				$languageValue = $record[$languageField];

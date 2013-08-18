@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Linkvalidator\Task;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 
 /**
  * This class provides Scheduler Additional Field plugin implementation
@@ -100,7 +101,7 @@ class ValidatorTaskAdditionalFieldProvider implements \TYPO3\CMS\Scheduler\Addit
 		$fieldId = 'task_page';
 		$fieldCode = '<input type="text" name="tx_scheduler[linkvalidator][page]" id="' . $fieldId . '" value="' . htmlspecialchars($taskInfo['page']) . '"/>';
 		$label = $GLOBALS['LANG']->sL('LLL:EXT:linkvalidator/Resources/Private/Language/locallang.xlf:tasks.validate.page');
-		$label = \TYPO3\CMS\Backend\Utility\BackendUtility::wrapInHelp('linkvalidator', $fieldId, $label);
+		$label = BackendUtility::wrapInHelp('linkvalidator', $fieldId, $label);
 		$additionalFields[$fieldId] = array(
 			'code' => $fieldCode,
 			'label' => $label
@@ -123,7 +124,7 @@ class ValidatorTaskAdditionalFieldProvider implements \TYPO3\CMS\Scheduler\Addit
 		}
 		$fieldCode .= '</select>';
 		$label = $GLOBALS['LANG']->sL('LLL:EXT:linkvalidator/Resources/Private/Language/locallang.xlf:tasks.validate.depth');
-		$label = \TYPO3\CMS\Backend\Utility\BackendUtility::wrapInHelp('linkvalidator', $fieldId, $label);
+		$label = BackendUtility::wrapInHelp('linkvalidator', $fieldId, $label);
 		$additionalFields[$fieldId] = array(
 			'code' => $fieldCode,
 			'label' => $label
@@ -132,7 +133,7 @@ class ValidatorTaskAdditionalFieldProvider implements \TYPO3\CMS\Scheduler\Addit
 		$fieldCode = '<textarea  name="tx_scheduler[linkvalidator][configuration]" id="' . $fieldId . '" >' .
 					htmlspecialchars($taskInfo['configuration']) . '</textarea>';
 		$label = $GLOBALS['LANG']->sL('LLL:EXT:linkvalidator/Resources/Private/Language/locallang.xlf:tasks.validate.conf');
-		$label = \TYPO3\CMS\Backend\Utility\BackendUtility::wrapInHelp('linkvalidator', $fieldId, $label);
+		$label = BackendUtility::wrapInHelp('linkvalidator', $fieldId, $label);
 		$additionalFields[$fieldId] = array(
 			'code' => $fieldCode,
 			'label' => $label
@@ -141,7 +142,7 @@ class ValidatorTaskAdditionalFieldProvider implements \TYPO3\CMS\Scheduler\Addit
 		$fieldCode = '<input type="text"  name="tx_scheduler[linkvalidator][email]" id="' . $fieldId . '" value="' .
 					htmlspecialchars($taskInfo['email']) . '" />';
 		$label = $GLOBALS['LANG']->sL('LLL:EXT:linkvalidator/Resources/Private/Language/locallang.xlf:tasks.validate.email');
-		$label = \TYPO3\CMS\Backend\Utility\BackendUtility::wrapInHelp('linkvalidator', $fieldId, $label);
+		$label = BackendUtility::wrapInHelp('linkvalidator', $fieldId, $label);
 		$additionalFields[$fieldId] = array(
 			'code' => $fieldCode,
 			'label' => $label
@@ -150,7 +151,7 @@ class ValidatorTaskAdditionalFieldProvider implements \TYPO3\CMS\Scheduler\Addit
 		$fieldCode = '<input type="checkbox"  name="tx_scheduler[linkvalidator][emailOnBrokenLinkOnly]" id="' . $fieldId . '" ' .
 					(htmlspecialchars($taskInfo['emailOnBrokenLinkOnly']) ? 'checked="checked"' : '') . ' />';
 		$label = $GLOBALS['LANG']->sL('LLL:EXT:linkvalidator/Resources/Private/Language/locallang.xlf:tasks.validate.emailOnBrokenLinkOnly');
-		$label = \TYPO3\CMS\Backend\Utility\BackendUtility::wrapInHelp('linkvalidator', $fieldId, $label);
+		$label = BackendUtility::wrapInHelp('linkvalidator', $fieldId, $label);
 		$additionalFields[$fieldId] = array(
 			'code' => $fieldCode,
 			'label' => $label
@@ -159,7 +160,7 @@ class ValidatorTaskAdditionalFieldProvider implements \TYPO3\CMS\Scheduler\Addit
 		$fieldCode = '<input type="text"  name="tx_scheduler[linkvalidator][emailTemplateFile]" id="' . $fieldId .
 					'" value="' . htmlspecialchars($taskInfo['emailTemplateFile']) . '" />';
 		$label = $GLOBALS['LANG']->sL('LLL:EXT:linkvalidator/Resources/Private/Language/locallang.xlf:tasks.validate.emailTemplateFile');
-		$label = \TYPO3\CMS\Backend\Utility\BackendUtility::wrapInHelp('linkvalidator', $fieldId, $label);
+		$label = BackendUtility::wrapInHelp('linkvalidator', $fieldId, $label);
 		$additionalFields[$fieldId] = array(
 			'code' => $fieldCode,
 			'label' => $label
