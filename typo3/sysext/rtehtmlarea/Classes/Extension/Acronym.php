@@ -23,6 +23,8 @@ namespace TYPO3\CMS\Rtehtmlarea\Extension;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+
 /**
  * Acronym extension for htmlArea RTE
  *
@@ -171,10 +173,10 @@ class Acronym extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 			$languageList = implode('\',\'', \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_DB']->fullQuoteStr(strtoupper($this->thisConfig['buttons.']['language.']['restrictToItems']), $tableB)));
 			$whereClause .= ' AND ' . $tableB . '.lg_iso_2 IN (' . $languageList . ') ';
 		}
-		$whereClause .= \TYPO3\CMS\Backend\Utility\BackendUtility::BEenableFields($tableA);
-		$whereClause .= \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($tableA);
-		$whereClause .= \TYPO3\CMS\Backend\Utility\BackendUtility::BEenableFields($tableB);
-		$whereClause .= \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($tableB);
+		$whereClause .= BackendUtility::BEenableFields($tableA);
+		$whereClause .= BackendUtility::deleteClause($tableA);
+		$whereClause .= BackendUtility::BEenableFields($tableB);
+		$whereClause .= BackendUtility::deleteClause($tableB);
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($fields, $tableAB, $whereClause);
 		while ($acronymRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 			$item = array('term' => $acronymRow['term'], 'abbr' => $acronymRow['acronym'], 'language' => strtolower($acronymRow['lg_iso_2']) . ($acronymRow['lg_country_iso_2'] ? '-' . $acronymRow['lg_country_iso_2'] : ''));

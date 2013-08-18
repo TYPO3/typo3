@@ -29,6 +29,7 @@ namespace TYPO3\CMS\Rtehtmlarea;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -378,13 +379,13 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 			// Form element name
 			$this->elementParts = explode('][', preg_replace('/\\]$/', '', preg_replace('/^(TSFE_EDIT\\[data\\]\\[|data\\[)/', '', $this->elementId)));
 			// Find the page PIDs:
-			list($this->tscPID, $this->thePid) = \TYPO3\CMS\Backend\Utility\BackendUtility::getTSCpid(trim($this->elementParts[0]), trim($this->elementParts[1]), $thePidValue);
+			list($this->tscPID, $this->thePid) = BackendUtility::getTSCpid(trim($this->elementParts[0]), trim($this->elementParts[1]), $thePidValue);
 			// Record "types" field value:
 			$this->typeVal = $RTEtypeVal;
 			// TCA "types" value for record
 			// Find "thisConfig" for record/editor:
 			unset($this->RTEsetup);
-			$this->RTEsetup = $GLOBALS['BE_USER']->getTSConfig('RTE', \TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig($this->tscPID));
+			$this->RTEsetup = $GLOBALS['BE_USER']->getTSConfig('RTE', BackendUtility::getPagesTSconfig($this->tscPID));
 			$this->thisConfig = $thisConfig;
 			// Special configuration and default extras:
 			$this->specConf = $specConf;
@@ -417,8 +418,8 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 					$selectFields = $tableA . '.uid,' . $tableB . '.lg_iso_2,' . $tableB . '.lg_country_iso_2,' . $tableB . '.lg_typo3';
 					$tableAB = $tableA . ' LEFT JOIN ' . $tableB . ' ON ' . $tableA . '.static_lang_isocode=' . $tableB . '.uid';
 					$whereClause = $tableA . '.uid IN (' . $languagesUidsList . ') ';
-					$whereClause .= \TYPO3\CMS\Backend\Utility\BackendUtility::BEenableFields($tableA);
-					$whereClause .= \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($tableA);
+					$whereClause .= BackendUtility::BEenableFields($tableA);
+					$whereClause .= BackendUtility::deleteClause($tableA);
 					$res = $TYPO3_DB->exec_SELECTquery($selectFields, $tableAB, $whereClause);
 					while ($languageRow = $TYPO3_DB->sql_fetch_assoc($res)) {
 						$this->contentISOLanguage = strtolower(trim($languageRow['lg_iso_2']) . (trim($languageRow['lg_country_iso_2']) ? '_' . trim($languageRow['lg_country_iso_2']) : ''));
@@ -1421,7 +1422,7 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 		if ($this->is_FE()) {
 			return '';
 		} else {
-			$p = \TYPO3\CMS\Backend\Utility\BackendUtility::getSpecConfParametersFromArray($this->specConf['rte_transform']['parameters']);
+			$p = BackendUtility::getSpecConfParametersFromArray($this->specConf['rte_transform']['parameters']);
 			return $this->elementParts[0] . ':' . $this->elementParts[1] . ':' . $this->elementParts[2] . ':' . $this->thePid . ':' . $this->typeVal . ':' . $this->tscPID . ':' . $p['imgpath'];
 		}
 	}

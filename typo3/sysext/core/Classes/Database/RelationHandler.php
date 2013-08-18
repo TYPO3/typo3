@@ -26,6 +26,7 @@ namespace TYPO3\CMS\Core\Database;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 
 /**
  * Load database groups (relations)
@@ -617,7 +618,7 @@ class RelationHandler {
 		}
 		// Use the deleteClause (e.g. "deleted=0") on this table
 		if ($useDeleteClause) {
-			$whereClause .= \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($foreign_table);
+			$whereClause .= BackendUtility::deleteClause($foreign_table);
 		}
 		// If it's requested to look for the parent uid AND the parent table,
 		// add an additional SQL-WHERE clause
@@ -629,9 +630,9 @@ class RelationHandler {
 			$whereClause .= ' AND ' . $field . '=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($value, $foreign_table);
 		}
 		// Select children in the same workspace:
-		if (\TYPO3\CMS\Backend\Utility\BackendUtility::isTableWorkspaceEnabled($this->currentTable) && \TYPO3\CMS\Backend\Utility\BackendUtility::isTableWorkspaceEnabled($foreign_table)) {
-			$currentRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($this->currentTable, $uid, 't3ver_wsid', '', $useDeleteClause);
-			$whereClause .= \TYPO3\CMS\Backend\Utility\BackendUtility::getWorkspaceWhereClause($foreign_table, $currentRecord['t3ver_wsid']);
+		if (BackendUtility::isTableWorkspaceEnabled($this->currentTable) && BackendUtility::isTableWorkspaceEnabled($foreign_table)) {
+			$currentRecord = BackendUtility::getRecord($this->currentTable, $uid, 't3ver_wsid', '', $useDeleteClause);
+			$whereClause .= BackendUtility::getWorkspaceWhereClause($foreign_table, $currentRecord['t3ver_wsid']);
 		}
 		// Get the correct sorting field
 		// Specific manual sortby for data handled by this field
@@ -695,7 +696,7 @@ class RelationHandler {
 			if (!(\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($updateToUid) && $updateToUid > 0)) {
 				$updateToUid = 0;
 			}
-			$considerWorkspaces = $GLOBALS['BE_USER']->workspace !== 0 && \TYPO3\CMS\Backend\Utility\BackendUtility::isTableWorkspaceEnabled($foreign_table);
+			$considerWorkspaces = $GLOBALS['BE_USER']->workspace !== 0 && BackendUtility::isTableWorkspaceEnabled($foreign_table);
 			$fields = 'uid,' . $foreign_field;
 			// Consider the symmetric field if defined:
 			if ($symmetric_field) {
@@ -711,7 +712,7 @@ class RelationHandler {
 				$table = $val['table'];
 				// Fetch the current (not overwritten) relation record if we should handle symmetric relations
 				if ($symmetric_field || $considerWorkspaces) {
-					$row = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($table, $uid, $fields, '', FALSE);
+					$row = BackendUtility::getRecord($table, $uid, $fields, '', FALSE);
 				}
 				if ($symmetric_field) {
 					$isOnSymmetricSide = self::isOnSymmetricSide($parentUid, $conf, $row);
@@ -879,7 +880,8 @@ class RelationHandler {
 		foreach ($this->itemArray as $key => $val) {
 			$theRow = $this->results[$val['table']][$val['id']];
 			if ($theRow && is_array($GLOBALS['TCA'][$val['table']])) {
-				$label = \TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs(strip_tags(\TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle($val['table'], $theRow)), $titleLen);
+				$label = \TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs(strip_tags(
+						BackendUtility::getRecordTitle($val['table'], $theRow)), $titleLen);
 				$label = $label ? $label : '[...]';
 				$output[] = str_replace(',', '', $val['table'] . '_' . $val['id'] . '|' . rawurlencode($label));
 			}

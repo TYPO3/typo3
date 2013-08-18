@@ -27,6 +27,7 @@ namespace TYPO3\CMS\Filelist\Controller;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -197,7 +198,7 @@ class FileListController {
 			'bigControlPanel' => ''
 		);
 		// CLEANSE SETTINGS
-		$this->MOD_SETTINGS = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleData(
+		$this->MOD_SETTINGS = BackendUtility::getModuleData(
 			$this->MOD_MENU,
 			GeneralUtility::_GP('SET'),
 			$this->MCONF['name']
@@ -333,15 +334,15 @@ class FileListController {
 				';
 				// Add "display bigControlPanel" checkbox:
 				if ($GLOBALS['BE_USER']->getTSConfigVal('options.file_list.enableDisplayBigControlPanel') === 'selectable') {
-					$pageContent .= \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck($this->id, 'SET[bigControlPanel]', $this->MOD_SETTINGS['bigControlPanel'], '', '', 'id="bigControlPanel"') . '<label for="bigControlPanel"> ' . $GLOBALS['LANG']->getLL('bigControlPanel', TRUE) . '</label><br />';
+					$pageContent .= BackendUtility::getFuncCheck($this->id, 'SET[bigControlPanel]', $this->MOD_SETTINGS['bigControlPanel'], '', '', 'id="bigControlPanel"') . '<label for="bigControlPanel"> ' . $GLOBALS['LANG']->getLL('bigControlPanel', TRUE) . '</label><br />';
 				}
 				// Add "display thumbnails" checkbox:
 				if ($GLOBALS['BE_USER']->getTSConfigVal('options.file_list.enableDisplayThumbnails') === 'selectable') {
-					$pageContent .= \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck($this->id, 'SET[displayThumbs]', $this->MOD_SETTINGS['displayThumbs'], '', '', 'id="checkDisplayThumbs"') . ' <label for="checkDisplayThumbs">' . $GLOBALS['LANG']->getLL('displayThumbs', TRUE) . '</label><br />';
+					$pageContent .= BackendUtility::getFuncCheck($this->id, 'SET[displayThumbs]', $this->MOD_SETTINGS['displayThumbs'], '', '', 'id="checkDisplayThumbs"') . ' <label for="checkDisplayThumbs">' . $GLOBALS['LANG']->getLL('displayThumbs', TRUE) . '</label><br />';
 				}
 				// Add "clipboard" checkbox:
 				if ($GLOBALS['BE_USER']->getTSConfigVal('options.file_list.enableClipBoard') === 'selectable') {
-					$pageContent .= \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck($this->id, 'SET[clipBoard]', $this->MOD_SETTINGS['clipBoard'], '', '', 'id="checkClipBoard"') . ' <label for="checkClipBoard">' . $GLOBALS['LANG']->getLL('clipBoard', TRUE) . '</label>';
+					$pageContent .= BackendUtility::getFuncCheck($this->id, 'SET[clipBoard]', $this->MOD_SETTINGS['clipBoard'], '', '', 'id="checkClipBoard"') . ' <label for="checkClipBoard">' . $GLOBALS['LANG']->getLL('clipBoard', TRUE) . '</label>';
 				}
 				$pageContent .= '
 					</div>
@@ -349,12 +350,12 @@ class FileListController {
 				// Set clipboard:
 				if ($this->MOD_SETTINGS['clipBoard']) {
 					$pageContent .= $this->filelist->clipObj->printClipboard();
-					$pageContent .= \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('xMOD_csh_corebe', 'filelist_clipboard', $GLOBALS['BACK_PATH']);
+					$pageContent .= BackendUtility::cshItem('xMOD_csh_corebe', 'filelist_clipboard', $GLOBALS['BACK_PATH']);
 				}
 			}
 			$markerArray = array(
 				'CSH' => $docHeaderButtons['csh'],
-				'FUNC_MENU' => \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncMenu($this->id, 'SET[function]', $this->MOD_SETTINGS['function'], $this->MOD_MENU['function']),
+				'FUNC_MENU' => BackendUtility::getFuncMenu($this->id, 'SET[function]', $this->MOD_SETTINGS['function'], $this->MOD_MENU['function']),
 				'CONTENT' => ($this->errorMessage ? $this->errorMessage->render() : '') . $pageContent,
 				'FOLDER_IDENTIFIER' => $this->folderObject->getCombinedIdentifier(),
 				'FILEDENYPATERN' => $GLOBALS['TYPO3_CONF_VARS']['BE']['fileDenyPattern'],
@@ -424,7 +425,7 @@ class FileListController {
 			$buttons['shortcut'] = $this->doc->makeShortcutIcon('pointer,id,target,table', implode(',', array_keys($this->MOD_MENU)), $this->MCONF['name']);
 		}
 		// FileList Module CSH:
-		$buttons['csh'] = \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('xMOD_csh_corebe', 'filelist_module', $GLOBALS['BACK_PATH'], '', TRUE);
+		$buttons['csh'] = BackendUtility::cshItem('xMOD_csh_corebe', 'filelist_module', $GLOBALS['BACK_PATH'], '', TRUE);
 		// Upload button (only if upload to this directory is allowed)
 		if ($this->folderObject && $this->folderObject->getStorage()->checkUserActionPermission('upload', 'File') && $this->folderObject->checkActionPermission('write')) {
 			$buttons['upload'] = '<a href="' . $GLOBALS['BACK_PATH'] . 'file_upload.php?target=' . rawurlencode($this->folderObject->getCombinedIdentifier()) . '&amp;returnUrl=' . rawurlencode($this->filelist->listURL()) . '" id="button-upload" title="' . $GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:cm.upload', 1)) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-edit-upload') . '</a>';

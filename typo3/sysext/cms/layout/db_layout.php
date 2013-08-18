@@ -24,6 +24,8 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+
 /**
  * Module: Web>Page
  *
@@ -38,7 +40,7 @@ $LANG->includeLLFile('EXT:cms/layout/locallang.xlf');
 
 $BE_USER->modAccess($MCONF, 1);
 // Will open up records locked by current user. It's assumed that the locking should end if this script is hit.
-\TYPO3\CMS\Backend\Utility\BackendUtility::lockRecords();
+BackendUtility::lockRecords();
 // Exits if 'cms' extension is not loaded:
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('cms', 1);
 /**

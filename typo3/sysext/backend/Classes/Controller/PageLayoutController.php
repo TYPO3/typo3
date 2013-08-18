@@ -1043,15 +1043,16 @@ class PageLayoutController {
 						'pages_language_overlay',
 						'pid = ' . intval($this->id) . ' ' .
 						'AND sys_language_uid = ' . intval($this->current_sys_language) .
-						\TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('pages_language_overlay') .
-						\TYPO3\CMS\Backend\Utility\BackendUtility::versioningPlaceholderClause('pages_language_overlay'),
+						BackendUtility::deleteClause('pages_language_overlay') .
+						BackendUtility::versioningPlaceholderClause('pages_language_overlay'),
 						'',
 						'',
 						'',
 						'sys_language_uid'
 					);
 
-					$editLanguageOnClick = htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick(
+					$editLanguageOnClick = htmlspecialchars(
+						BackendUtility::editOnClick(
 						'&edit[pages_language_overlay][' . $overlayRecord['uid'] . ']=edit',
 						$GLOBALS['BACK_PATH'])
 					);
@@ -1064,7 +1065,9 @@ class PageLayoutController {
 
 
 				// Edit page properties
-				$editPageOnClick = htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick('&edit[pages][' . $this->id . ']=edit', $GLOBALS['BACK_PATH']));
+				$editPageOnClick = htmlspecialchars(
+					BackendUtility::editOnClick('&edit[pages][' . $this->id . ']=edit', $GLOBALS['BACK_PATH'])
+				);
 				$buttons['edit_page'] = '<a href="#" ' .
 					'onclick="' . $editPageOnClick . '"' .
 					'title="' . $GLOBALS['LANG']->getLL('editPageProperties', TRUE) . '">' .

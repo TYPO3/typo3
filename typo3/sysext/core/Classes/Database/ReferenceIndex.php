@@ -27,6 +27,7 @@ namespace TYPO3\CMS\Core\Database;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -101,7 +102,7 @@ class ReferenceIndex {
 		// Get current index from Database:
 		$currentRels = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'sys_refindex', 'tablename=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($table, 'sys_refindex') . ' AND recuid=' . intval($uid), '', '', '', 'hash');
 		// First, test to see if the record exists (including deleted-flagged)
-		if (\TYPO3\CMS\Backend\Utility\BackendUtility::getRecordRaw($table, 'uid=' . intval($uid), 'uid')) {
+		if (BackendUtility::getRecordRaw($table, 'uid=' . intval($uid), 'uid')) {
 			// Then, get relations:
 			$relations = $this->generateRefIndexData($table, $uid);
 			if (is_array($relations)) {
@@ -370,7 +371,7 @@ class ReferenceIndex {
 				if ($conf['type'] == 'flex') {
 					// Get current value array:
 					// NOTICE: failure to resolve Data Structures can lead to integrity problems with the reference index. Please look up the note in the JavaDoc documentation for the function \TYPO3\CMS\Backend\Utility\BackendUtility::getFlexFormDS()
-					$dataStructArray = \TYPO3\CMS\Backend\Utility\BackendUtility::getFlexFormDS($conf, $row, $table, $field, $this->WSOL);
+					$dataStructArray = BackendUtility::getFlexFormDS($conf, $row, $table, $field, $this->WSOL);
 					$currentValueArray = GeneralUtility::xml2array($value);
 					// Traversing the XML structure, processing files:
 					if (is_array($currentValueArray)) {
@@ -390,10 +391,10 @@ class ReferenceIndex {
 					}
 				}
 				// Soft References:
-				if (strlen($value) && ($softRefs = \TYPO3\CMS\Backend\Utility\BackendUtility::explodeSoftRefParserList($conf['softref']))) {
+				if (strlen($value) && ($softRefs = BackendUtility::explodeSoftRefParserList($conf['softref']))) {
 					$softRefValue = $value;
 					foreach ($softRefs as $spKey => $spParams) {
-						$softRefObj = \TYPO3\CMS\Backend\Utility\BackendUtility::softRefParserObj($spKey);
+						$softRefObj = BackendUtility::softRefParserObj($spKey);
 						if (is_object($softRefObj)) {
 							$resultArray = $softRefObj->findRef($table, $field, $uid, $softRefValue, $spKey, $spParams);
 							if (is_array($resultArray)) {
@@ -442,10 +443,10 @@ class ReferenceIndex {
 			$this->temp_flexRelations['db'][$structurePath] = $result;
 		}
 		// Soft References:
-		if (strlen($dataValue) && ($softRefs = \TYPO3\CMS\Backend\Utility\BackendUtility::explodeSoftRefParserList($dsConf['softref']))) {
+		if (strlen($dataValue) && ($softRefs = BackendUtility::explodeSoftRefParserList($dsConf['softref']))) {
 			$softRefValue = $dataValue;
 			foreach ($softRefs as $spKey => $spParams) {
-				$softRefObj = \TYPO3\CMS\Backend\Utility\BackendUtility::softRefParserObj($spKey);
+				$softRefObj = BackendUtility::softRefParserObj($spKey);
 				if (is_object($softRefObj)) {
 					$resultArray = $softRefObj->findRef($table, $field, $uid, $softRefValue, $spKey, $spParams, $structurePath);
 					if (is_array($resultArray) && is_array($resultArray['elements'])) {
