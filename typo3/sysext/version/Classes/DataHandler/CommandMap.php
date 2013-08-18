@@ -26,6 +26,7 @@ namespace TYPO3\CMS\Version\DataHandler;
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 
 /**
  * Handles the \TYPO3\CMS\Core\DataHandling\DataHandler command map and is
@@ -351,7 +352,7 @@ class CommandMap {
 		$elementList = array($table => $liveIds);
 		if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList('any,pages', $this->workspacesChangeStageMode)) {
 			if (count($liveIds) === 1) {
-				$workspaceRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($table, $liveIds[0], 't3ver_wsid');
+				$workspaceRecord = BackendUtility::getRecord($table, $liveIds[0], 't3ver_wsid');
 				$workspaceId = $workspaceRecord['t3ver_wsid'];
 			} else {
 				$workspaceId = $this->getTceMain()->BE_USER->workspace;
@@ -487,7 +488,7 @@ class CommandMap {
 			$id = $this->processCallback($this->getScopeData($scope, self::KEY_PurgeWithErrorMessageGetIdCallback), array($element));
 			$this->remove($table, $id, 'version');
 			$this->getTceMain()->log($table, $id, 5, 0, 1, $this->getScopeData($scope, self::KEY_ScopeErrorMessage), $this->getScopeData($scope, self::KEY_ScopeErrorCode), array(
-				\TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle($table, \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($table, $id)),
+				BackendUtility::getRecordTitle($table, BackendUtility::getRecord($table, $id)),
 				$table,
 				$id
 			));
@@ -698,7 +699,7 @@ class CommandMap {
 	public function createNewDependentElementChildReferenceCallback(array $callerArguments, array $targetArgument, \TYPO3\CMS\Version\Dependency\ElementEntity $caller, $eventName) {
 		/** @var $reference \TYPO3\CMS\Version\Dependency\ReferenceEntity */
 		$reference = $callerArguments['reference'];
-		$fieldCOnfiguration = \TYPO3\CMS\Backend\Utility\BackendUtility::getTcaFieldConfiguration($caller->getTable(), $reference->getField());
+		$fieldCOnfiguration = BackendUtility::getTcaFieldConfiguration($caller->getTable(), $reference->getField());
 		if (!$fieldCOnfiguration || !\TYPO3\CMS\Core\Utility\GeneralUtility::inList('field,list', $this->getTceMain()->getInlineFieldType($fieldCOnfiguration))) {
 			return \TYPO3\CMS\Version\Dependency\ElementEntity::RESPONSE_Skip;
 		}
@@ -716,7 +717,7 @@ class CommandMap {
 	public function createNewDependentElementParentReferenceCallback(array $callerArguments, array $targetArgument, \TYPO3\CMS\Version\Dependency\ElementEntity $caller, $eventName) {
 		/** @var $reference \TYPO3\CMS\Version\Dependency\ReferenceEntity */
 		$reference = $callerArguments['reference'];
-		$fieldCOnfiguration = \TYPO3\CMS\Backend\Utility\BackendUtility::getTcaFieldConfiguration($reference->getElement()->getTable(), $reference->getField());
+		$fieldCOnfiguration = BackendUtility::getTcaFieldConfiguration($reference->getElement()->getTable(), $reference->getField());
 		if (!$fieldCOnfiguration || !\TYPO3\CMS\Core\Utility\GeneralUtility::inList('field,list', $this->getTceMain()->getInlineFieldType($fieldCOnfiguration))) {
 			return \TYPO3\CMS\Version\Dependency\ElementEntity::RESPONSE_Skip;
 		}
@@ -778,7 +779,7 @@ class CommandMap {
 	 */
 	public function createNewDependentElementCallback(array $callerArguments, array $targetArgument, \TYPO3\CMS\Version\Dependency\ElementEntity $caller) {
 		if ($caller->hasDataValue('liveId') === FALSE) {
-			$liveId = \TYPO3\CMS\Backend\Utility\BackendUtility::getLiveVersionIdOfRecord($caller->getTable(), $caller->getId());
+			$liveId = BackendUtility::getLiveVersionIdOfRecord($caller->getTable(), $caller->getId());
 			if (is_null($liveId) === FALSE) {
 				$caller->setDataValue('liveId', $liveId);
 			}

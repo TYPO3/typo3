@@ -24,6 +24,7 @@ namespace TYPO3\CMS\Linkvalidator\Task;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -330,7 +331,7 @@ class ValidatorTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 	 * @throws \Exception
 	 */
 	protected function loadModTsConfig($page) {
-		$modTs = \TYPO3\CMS\Backend\Utility\BackendUtility::getModTSconfig($page, 'mod.linkvalidator');
+		$modTs = BackendUtility::getModTSconfig($page, 'mod.linkvalidator');
 		$parseObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\Parser\\TypoScriptParser');
 		$parseObj->parse($this->configuration);
 		if (count($parseObj->errors) > 0) {
@@ -502,9 +503,9 @@ class ValidatorTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 				$markerArray[$markerKey . '_old'] = $oldBrokenLink[$markerKey];
 			}
 		}
-		$markerArray['title'] = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle(
+		$markerArray['title'] = BackendUtility::getRecordTitle(
 			'pages',
-			\TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('pages', $curPage)
+			BackendUtility::getRecord('pages', $curPage)
 		);
 		$content = '';
 		if ($markerArray['brokenlinkCount'] > 0) {

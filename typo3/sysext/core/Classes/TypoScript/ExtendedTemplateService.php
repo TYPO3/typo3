@@ -27,6 +27,7 @@ namespace TYPO3\CMS\Core\TypoScript;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -429,7 +430,7 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 					if (GeneralUtility::_GP('breakPointLN')) {
 						$urlParameters['breakPointLN'] = GeneralUtility::_GP('breakPointLN');
 					}
-					$aHref = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('web_ts', $urlParameters) . '#' . $goto;
+					$aHref = BackendUtility::getModuleUrl('web_ts', $urlParameters) . '#' . $goto;
 					$HTML .= '<a name="' . $goto . '" href="' . htmlspecialchars($aHref) . '">' . $theIcon . '</a>';
 				}
 				$label = $key;
@@ -445,7 +446,7 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 						if (GeneralUtility::_GP('breakPointLN')) {
 							$urlParameters['breakPointLN'] = GeneralUtility::_GP('breakPointLN');
 						}
-						$aHref = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('web_ts', $urlParameters);
+						$aHref = BackendUtility::getModuleUrl('web_ts', $urlParameters);
 						if ($this->bType != 'const') {
 							$ln = is_array($arr[$key . '.ln..']) ? 'Defined in: ' . $this->lineNumberToScript($arr[($key . '.ln..')]) : 'N/A';
 						} else {
@@ -649,14 +650,14 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 			$PM = 'join';
 			$HTML .= $depthData;
 			$alttext = '[' . $row['templateID'] . ']';
-			$alttext .= $row['pid'] ? ' - ' . \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordPath($row['pid'], $GLOBALS['SOBE']->perms_clause, 20) : '';
+			$alttext .= $row['pid'] ? ' - ' . BackendUtility::getRecordPath($row['pid'], $GLOBALS['SOBE']->perms_clause, 20) : '';
 			$icon = substr($row['templateID'], 0, 3) == 'sys' ? \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('sys_template', $row, array('title' => $alttext)) : \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('mimetypes-x-content-template-static', array('title' => $alttext));
 			if (in_array($row['templateID'], $this->clearList_const) || in_array($row['templateID'], $this->clearList_setup)) {
 				$urlParameters = array(
 					'id' => $GLOBALS['SOBE']->id,
 					'template' => $row['templateID']
 				);
-				$aHref = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('web_ts', $urlParameters);
+				$aHref = BackendUtility::getModuleUrl('web_ts', $urlParameters);
 				$A_B = '<a href="' . htmlspecialchars($aHref) . '">';
 				$A_E = '</a>';
 				if (GeneralUtility::_GP('template') == $row['templateID']) {
@@ -832,7 +833,7 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 			}
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_template', 'pid=' . intval($id) . $addC . ' ' . $this->whereClause, '', 'sorting', '1');
 			$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
-			\TYPO3\CMS\Backend\Utility\BackendUtility::workspaceOL('sys_template', $row);
+			BackendUtility::workspaceOL('sys_template', $row);
 			$GLOBALS['TYPO3_DB']->sql_free_result($res);
 			// Returns the template row if found.
 			return $row;
@@ -852,7 +853,7 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 			$outRes = array();
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_template', 'pid=' . intval($id) . ' ' . $this->whereClause, '', 'sorting');
 			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-				\TYPO3\CMS\Backend\Utility\BackendUtility::workspaceOL('sys_template', $row);
+				BackendUtility::workspaceOL('sys_template', $row);
 				if (is_array($row)) {
 					$outRes[] = $row;
 				}
@@ -1578,7 +1579,7 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 	 * @todo Define visibility
 	 */
 	public function ext_prevPageWithTemplate($id, $perms_clause) {
-		$rootLine = \TYPO3\CMS\Backend\Utility\BackendUtility::BEgetRootLine($id, $perms_clause ? ' AND ' . $perms_clause : '');
+		$rootLine = BackendUtility::BEgetRootLine($id, $perms_clause ? ' AND ' . $perms_clause : '');
 		foreach ($rootLine as $p) {
 			if ($this->ext_getFirstTemplate($p['uid'])) {
 				return $p;

@@ -24,6 +24,7 @@ namespace TYPO3\CMS\IndexedSearch\Controller;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -163,8 +164,8 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 		} else {
 			// Detail listings:
 			// Depth function menu:
-			$h_func = \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncMenu($this->pObj->id, 'SET[type]', $this->pObj->MOD_SETTINGS['type'], $this->pObj->MOD_MENU['type'], 'index.php');
-			$h_func .= \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncMenu($this->pObj->id, 'SET[depth]', $this->pObj->MOD_SETTINGS['depth'], $this->pObj->MOD_MENU['depth'], 'index.php');
+			$h_func = BackendUtility::getFuncMenu($this->pObj->id, 'SET[type]', $this->pObj->MOD_SETTINGS['type'], $this->pObj->MOD_MENU['type'], 'index.php');
+			$h_func .= BackendUtility::getFuncMenu($this->pObj->id, 'SET[depth]', $this->pObj->MOD_SETTINGS['depth'], $this->pObj->MOD_MENU['depth'], 'index.php');
 			// Show title / function menu:
 			$theOutput .= $this->pObj->doc->header($LANG->getLL('title'));
 			$theOutput .= $this->pObj->doc->section('', $h_func, 0, 1);
@@ -201,7 +202,8 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 		// Traverse page tree:
 		$code = '';
 		foreach ($tree->tree as $data) {
-			$code .= $this->indexed_info($data['row'], $data['HTML'] . $this->showPageDetails(\TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitlePrep($data['row']['title']), $data['row']['uid']));
+			$code .= $this->indexed_info($data['row'], $data['HTML'] . $this->showPageDetails(
+					BackendUtility::getRecordTitlePrep($data['row']['title']), $data['row']['uid']));
 		}
 		if ($code) {
 			$code = '<br /><br />
@@ -395,7 +397,7 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 				$lines[] = '<td>' . $cmdLinks . '</td>';
 				$lines[] = '<td style="white-space: normal;">' . htmlspecialchars($row['item_description']) . '...</td>';
 				$lines[] = '<td>' . GeneralUtility::formatSize($row['item_size']) . '</td>';
-				$lines[] = '<td>' . \TYPO3\CMS\Backend\Utility\BackendUtility::dateTimeAge($row['tstamp']) . '</td>';
+				$lines[] = '<td>' . BackendUtility::dateTimeAge($row['tstamp']) . '</td>';
 		}
 		return $lines;
 	}
@@ -502,7 +504,7 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 			$content .= '<h3>Word statistics</h3>';
 			// Finding all words for this phash:
 			$ftrows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('index_words.*, index_rel.*', 'index_rel, index_words', 'index_rel.phash = ' . intval($phash) . ' AND index_words.wid = index_rel.wid', '', 'index_words.baseword', '');
-			$pageRec = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('pages', $phashRecord['data_page_id']);
+			$pageRec = BackendUtility::getRecord('pages', $phashRecord['data_page_id']);
 			$showStopWordCheckBox = $GLOBALS['BE_USER']->isAdmin();
 			$content .= $this->listWords($ftrows, 'All words found on page (' . count($ftrows) . '):', $showStopWordCheckBox, $pageRec);
 			if ($this->enableMetaphoneSearch) {
@@ -1048,7 +1050,7 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 	 */
 	public function processPageKeywords($pageKeywords, $pageUid) {
 		// Get pages current keywords
-		$pageRec = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('pages', $pageUid);
+		$pageRec = BackendUtility::getRecord('pages', $pageUid);
 		$keywords = array_flip(GeneralUtility::trimExplode(',', $pageRec['keywords'], TRUE));
 		// Merge keywords:
 		foreach ($pageKeywords as $key => $v) {

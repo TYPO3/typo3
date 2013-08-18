@@ -26,6 +26,7 @@ namespace TYPO3\CMS\Func\Controller;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 
 /**
  * Script Class for the Web > Functions module
@@ -70,7 +71,7 @@ class PageFunctionsController extends \TYPO3\CMS\Backend\Module\BaseScriptClass 
 	public function main() {
 		// Access check...
 		// The page will show only if there is a valid page and if this page may be viewed by the user
-		$this->pageinfo = \TYPO3\CMS\Backend\Utility\BackendUtility::readPageAccess($this->id, $this->perms_clause);
+		$this->pageinfo = BackendUtility::readPageAccess($this->id, $this->perms_clause);
 		$access = is_array($this->pageinfo);
 		// Template markers
 		$markers = array(
@@ -105,7 +106,7 @@ class PageFunctionsController extends \TYPO3\CMS\Backend\Module\BaseScriptClass 
 			// Setting up the buttons and markers for docheader
 			$docHeaderButtons = $this->getButtons();
 			$markers['CSH'] = $docHeaderButtons['csh'];
-			$markers['FUNC_MENU'] = \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncMenu(
+			$markers['FUNC_MENU'] = BackendUtility::getFuncMenu(
 				$this->id,
 				'SET[function]',
 				$this->MOD_SETTINGS['function'],
@@ -153,13 +154,13 @@ class PageFunctionsController extends \TYPO3\CMS\Backend\Module\BaseScriptClass 
 			'shortcut' => ''
 		);
 		// CSH
-		$buttons['csh'] = \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('_MOD_web_func', '', $GLOBALS['BACK_PATH'], '', TRUE);
+		$buttons['csh'] = BackendUtility::cshItem('_MOD_web_func', '', $GLOBALS['BACK_PATH'], '', TRUE);
 		if ($this->id && is_array($this->pageinfo)) {
 			// View page
-			$buttons['view'] = '<a href="#"
-					onclick="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::viewOnClick($this->pageinfo['uid'], $GLOBALS['BACK_PATH'], \TYPO3\CMS\Backend\Utility\BackendUtility::BEgetRootLine($this->pageinfo['uid']))) . '"
-					title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', TRUE) . '
-				">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-view') . '</a>';
+			$buttons['view'] = '<a href="#" '
+				. 'onclick="' . htmlspecialchars(BackendUtility::viewOnClick($this->pageinfo['uid'], $GLOBALS['BACK_PATH'], BackendUtility::BEgetRootLine($this->pageinfo['uid']))) . '" '
+				. 'title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', TRUE) . '">'
+				. \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-view') . '</a>';
 			// Shortcut
 			if ($GLOBALS['BE_USER']->mayMakeShortcut()) {
 				$buttons['shortcut'] = $this->doc->makeShortcutIcon('id, edit_record, pointer, new_unique_uid, search_field, search_levels, showLimit', implode(',', array_keys($this->MOD_MENU)), $this->MCONF['name']);

@@ -25,6 +25,7 @@ namespace TYPO3\CMS\Linkvalidator\Report;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -156,7 +157,7 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
 		$GLOBALS['LANG']->includeLLFile('EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf');
 		$this->searchLevel = GeneralUtility::_GP('search_levels');
 		if (isset($this->pObj->id)) {
-			$this->modTS = \TYPO3\CMS\Backend\Utility\BackendUtility::getModTSconfig($this->pObj->id, 'mod.linkvalidator');
+			$this->modTS = BackendUtility::getModTSconfig($this->pObj->id, 'mod.linkvalidator');
 			$this->modTS = $this->modTS['properties'];
 		}
 		$update = GeneralUtility::_GP('updateLinkList');
@@ -294,7 +295,7 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->setModuleTemplate(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('linkvalidator') . 'Resources/Private/Templates/mod_template.html');
 		$this->relativePath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('linkvalidator');
-		$this->pageRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::readPageAccess($this->pObj->id, $GLOBALS['BE_USER']->getPagePermsClause(1));
+		$this->pageRecord = BackendUtility::readPageAccess($this->pObj->id, $GLOBALS['BE_USER']->getPagePermsClause(1));
 		$this->isAccessibleForCurrentUser = FALSE;
 		if ($this->pObj->id && is_array($this->pageRecord) || !$this->pObj->id && $this->isCurrentUserAdmin()) {
 			$this->isAccessibleForCurrentUser = TRUE;
@@ -490,7 +491,7 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
 		$makerTableHead['tablehead_lastcheck'] = $GLOBALS['LANG']->getLL('list.tableHead.lastCheck');
 		// Add CSH to the header of each column
 		foreach ($makerTableHead as $column => $label) {
-			$label = \TYPO3\CMS\Backend\Utility\BackendUtility::wrapInHelp('linkvalidator', $column, $label);
+			$label = BackendUtility::wrapInHelp('linkvalidator', $column, $label);
 			$makerTableHead[$column] = $label;
 		}
 		// Add section header
@@ -518,7 +519,7 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
 			'?id=' . $this->pObj->id .
 			'&search_levels=' . $this->searchLevel;
 		$actionLink = '<a href="#" onclick="';
-		$actionLink .= \TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick(
+		$actionLink .= BackendUtility::editOnClick(
 			$params,
 			$GLOBALS['BACK_PATH'],
 			$requestUri
@@ -550,7 +551,7 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
 		$element .= $elementHeadline;
 		$element .= ' ' . sprintf($GLOBALS['LANG']->getLL('list.field'), $fieldName);
 		$markerArray['actionlink'] = $actionLink;
-		$markerArray['path'] = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordPath($row['record_pid'], '', 0, 0);
+		$markerArray['path'] = BackendUtility::getRecordPath($row['record_pid'], '', 0, 0);
 		$markerArray['element'] = $element;
 		$markerArray['headlink'] = $row['link_title'];
 		$markerArray['linktarget'] = $brokenUrl;
@@ -588,7 +589,7 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
 		$hookSectionTemplate = \TYPO3\CMS\Core\Html\HtmlParser::getSubpart($checkOptionsTemplate, '###HOOK_SECTION###');
 		$markerArray['statistics_header'] = $this->doc->sectionHeader($GLOBALS['LANG']->getLL('report.statistics.header'));
 		$totalCountLabel = $GLOBALS['LANG']->getLL('overviews.nbtotal');
-		$totalCountLabel = \TYPO3\CMS\Backend\Utility\BackendUtility::wrapInHelp('linkvalidator', 'checkboxes', $totalCountLabel);
+		$totalCountLabel = BackendUtility::wrapInHelp('linkvalidator', 'checkboxes', $totalCountLabel);
 		$markerArray['total_count_label'] = $totalCountLabel;
 		if (empty($brokenLinkOverView['brokenlinkCount'])) {
 			$markerArray['total_count'] = '0';
@@ -646,7 +647,7 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
 	 */
 	protected function getDocHeaderButtons() {
 		$buttons = array(
-			'csh' => \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('_MOD_web_func', '', $GLOBALS['BACK_PATH']),
+			'csh' => BackendUtility::cshItem('_MOD_web_func', '', $GLOBALS['BACK_PATH']),
 			'shortcut' => $this->getShortcutButton(),
 			'save' => ''
 		);

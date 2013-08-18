@@ -26,6 +26,7 @@ namespace TYPO3\CMS\IndexedSearch\Controller;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 
 /**
  * Backend module providing boring statistics of the index-tables.
@@ -114,7 +115,7 @@ class ModuleController {
 			)
 		);
 		// cleanse settings
-		$this->MOD_SETTINGS = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleData($this->MOD_MENU, \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('SET'), $this->MCONF['name'], 'ses');
+		$this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('SET'), $this->MCONF['name'], 'ses');
 	}
 
 	/**
@@ -145,7 +146,7 @@ class ModuleController {
 		$docHeaderButtons = $this->getButtons();
 		$markers = array(
 			'CSH' => $docHeaderButtons['csh'],
-			'FUNC_MENU' => \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncMenu(0, 'SET[function]', $this->MOD_SETTINGS['function'], $this->MOD_MENU['function']),
+			'FUNC_MENU' => BackendUtility::getFuncMenu(0, 'SET[function]', $this->MOD_SETTINGS['function'], $this->MOD_MENU['function']),
 			'CONTENT' => $this->content
 		);
 		$this->content = $this->doc->startPage('Indexing Engine Statistics');
@@ -278,9 +279,9 @@ class ModuleController {
 				htmlentities(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($row['item_title'], 30)),
 				\TYPO3\CMS\Core\Utility\GeneralUtility::formatSize($row['item_size']),
 				$this->getNumberOfWords($row['phash']),
-				\TYPO3\CMS\Backend\Utility\BackendUtility::datetime($row['item_mtime']),
-				\TYPO3\CMS\Backend\Utility\BackendUtility::datetime($row['crdate']),
-				$row['tstamp'] != $row['crdate'] ? \TYPO3\CMS\Backend\Utility\BackendUtility::datetime($row['tstamp']) : '',
+				BackendUtility::datetime($row['item_mtime']),
+				BackendUtility::datetime($row['crdate']),
+				$row['tstamp'] != $row['crdate'] ? BackendUtility::datetime($row['tstamp']) : '',
 				$row['parsetime'],
 				$this->getNumberOfSections($row['phash']) . '/' . $grListRec[0]['pcount'] . '/' . $this->getNumberOfFulltext($row['phash']),
 				$row['pcount'] . '/' . $this->formatFeGroup($grListRec),
@@ -297,9 +298,9 @@ class ModuleController {
 						'',
 						\TYPO3\CMS\Core\Utility\GeneralUtility::formatSize($row2['item_size']),
 						$this->getNumberOfWords($row2['phash']),
-						\TYPO3\CMS\Backend\Utility\BackendUtility::datetime($row2['item_mtime']),
-						\TYPO3\CMS\Backend\Utility\BackendUtility::datetime($row2['crdate']),
-						$row2['tstamp'] != $row2['crdate'] ? \TYPO3\CMS\Backend\Utility\BackendUtility::datetime($row2['tstamp']) : '',
+						BackendUtility::datetime($row2['item_mtime']),
+						BackendUtility::datetime($row2['crdate']),
+						$row2['tstamp'] != $row2['crdate'] ? BackendUtility::datetime($row2['tstamp']) : '',
 						$row2['parsetime'],
 						$this->getNumberOfSections($row2['phash']) . '/' . $grListRec[0]['pcount'] . '/' . $this->getNumberOfFulltext($row2['phash']),
 						'-/' . $this->formatFeGroup($grListRec),
@@ -343,9 +344,9 @@ class ModuleController {
 				htmlentities(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($row['item_title'], 30)),
 				\TYPO3\CMS\Core\Utility\GeneralUtility::formatSize($row['item_size']),
 				$this->getNumberOfWords($row['phash']),
-				\TYPO3\CMS\Backend\Utility\BackendUtility::datetime($row['item_mtime']),
-				\TYPO3\CMS\Backend\Utility\BackendUtility::datetime($row['crdate']),
-				$row['tstamp'] != $row['crdate'] ? \TYPO3\CMS\Backend\Utility\BackendUtility::datetime($row['tstamp']) : '',
+				BackendUtility::datetime($row['item_mtime']),
+				BackendUtility::datetime($row['crdate']),
+				$row['tstamp'] != $row['crdate'] ? BackendUtility::datetime($row['tstamp']) : '',
 				$row['parsetime'],
 				$this->getNumberOfSections($row['phash']) . '/' . $grListRec[0]['pcount'] . '/' . $this->getNumberOfFulltext($row['phash']),
 				$row['pcount'],
@@ -363,8 +364,8 @@ class ModuleController {
 						'',
 						$this->getNumberOfWords($row2['phash']),
 						'',
-						\TYPO3\CMS\Backend\Utility\BackendUtility::datetime($row2['crdate']),
-						$row2['tstamp'] != $row2['crdate'] ? \TYPO3\CMS\Backend\Utility\BackendUtility::datetime($row2['tstamp']) : '',
+						BackendUtility::datetime($row2['crdate']),
+						$row2['tstamp'] != $row2['crdate'] ? BackendUtility::datetime($row2['tstamp']) : '',
 						$row2['parsetime'],
 						$this->getNumberOfSections($row2['phash']) . '/' . $grListRec[0]['pcount'] . '/' . $this->getNumberOfFulltext($row2['phash']),
 						'',

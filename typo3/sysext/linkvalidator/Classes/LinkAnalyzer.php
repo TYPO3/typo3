@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Linkvalidator;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 
 /**
  * This class provides Processing plugin implementation
@@ -146,7 +147,7 @@ class LinkAnalyzer {
 					$where = 'deleted = 0 AND pid IN (' . $this->pidList . ')';
 				}
 				if (!$considerHidden) {
-					$where .= \TYPO3\CMS\Backend\Utility\BackendUtility::BEenableFields($table);
+					$where .= BackendUtility::BEenableFields($table);
 				}
 				// If table is not configured, assume the extension is not installed
 				// and therefore no need to check it
@@ -236,11 +237,11 @@ class LinkAnalyzer {
 			// Check if a TCA configured field has soft references defined (see TYPO3 Core API document)
 			if ($conf['softref'] && strlen($valueField)) {
 				// Explode the list of soft references/parameters
-				$softRefs = \TYPO3\CMS\Backend\Utility\BackendUtility::explodeSoftRefParserList($conf['softref']);
+				$softRefs = BackendUtility::explodeSoftRefParserList($conf['softref']);
 				// Traverse soft references
 				foreach ($softRefs as $spKey => $spParams) {
 					/** @var $softRefObj \TYPO3\CMS\Core\Database\SoftReferenceIndex */
-					$softRefObj = \TYPO3\CMS\Backend\Utility\BackendUtility::softRefParserObj($spKey);
+					$softRefObj = BackendUtility::softRefParserObj($spKey);
 					// If there is an object returned...
 					if (is_object($softRefObj)) {
 						// Do processing
