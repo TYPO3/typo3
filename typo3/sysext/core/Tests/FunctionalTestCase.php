@@ -64,7 +64,9 @@ abstract class FunctionalTestCase extends BaseTestCase {
 	 * extension list and ext_tables.sql of those extensions will be applied.
 	 *
 	 * This property will stay empty in this abstract, so it is possible
-	 * to just overwrite it in extending classes.
+	 * to just overwrite it in extending classes. Extensions noted here will
+	 * be loaded for every test of a test case and it is not possible to change
+	 * the list of loaded extensions between single tests of a test case.
 	 *
 	 * Required core extensions like core, cms, extbase and so on are loaded
 	 * automatically, so there is no need to add them here. See constant
@@ -78,7 +80,9 @@ abstract class FunctionalTestCase extends BaseTestCase {
 	 * Array of test/fixture extensions paths that should be loaded for a test.
 	 *
 	 * This property will stay empty in this abstract, so it is possible
-	 * to just overwrite it in extending classes.
+	 * to just overwrite it in extending classes. Extensions noted here will
+	 * be loaded for every test of a test case and it is not possible to change
+	 * the list of loaded extensions between single tests of a test case.
 	 *
 	 * Given path is expected to be relative to your document root, example:
 	 *
