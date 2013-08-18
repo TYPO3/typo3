@@ -1,6 +1,5 @@
 <?php
 namespace TYPO3\CMS\Workspaces\Controller;
-use TYPO3\CMS\Core\Utility;
 
 /***************************************************************
  *  Copyright notice
@@ -28,6 +27,8 @@ use TYPO3\CMS\Core\Utility;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Utility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -109,7 +110,7 @@ class PreviewController extends \TYPO3\CMS\Workspaces\Controller\AbstractControl
 			if (in_array($previewWS, array_keys($wsList)) && $activeWorkspace != $previewWS) {
 				$activeWorkspace = $previewWS;
 				$GLOBALS['BE_USER']->setWorkspace($activeWorkspace);
-				\TYPO3\CMS\Backend\Utility\BackendUtility::setUpdateSignal('updatePageTree');
+				BackendUtility::setUpdateSignal('updatePageTree');
 			}
 		}
 		/** @var $uriBuilder \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder */
@@ -118,7 +119,7 @@ class PreviewController extends \TYPO3\CMS\Workspaces\Controller\AbstractControl
 		$wsSettingsUri = $uriBuilder->uriFor('singleIndex', array(), 'TYPO3\\CMS\\Workspaces\\Controller\\ReviewController', 'workspaces', 'web_workspacesworkspaces');
 		$wsSettingsParams = '&tx_workspaces_web_workspacesworkspaces[controller]=Review';
 		$wsSettingsUrl = $wsSettingsPath . $wsSettingsUri . $wsSettingsParams;
-		$viewDomain = \TYPO3\CMS\Backend\Utility\BackendUtility::getViewDomain($this->pageId);
+		$viewDomain = BackendUtility::getViewDomain($this->pageId);
 		$wsBaseUrl = $viewDomain . '/index.php?id=' . $this->pageId . '&L=' . $language;
 		// @todo - handle new pages here
 		// branchpoints are not handled anymore because this feature is not supposed anymore
@@ -132,7 +133,7 @@ class PreviewController extends \TYPO3\CMS\Workspaces\Controller\AbstractControl
 		$this->view->assign('wsUrl', $wsBaseUrl . '&ADMCMD_view=1&ADMCMD_editIcons=1&ADMCMD_previewWS=' . $GLOBALS['BE_USER']->workspace);
 		$this->view->assign('wsSettingsUrl', $wsSettingsUrl);
 		$this->view->assign('backendDomain', GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY'));
-		$splitPreviewTsConfig = \TYPO3\CMS\Backend\Utility\BackendUtility::getModTSconfig($this->pageId, 'workspaces.splitPreviewModes');
+		$splitPreviewTsConfig = BackendUtility::getModTSconfig($this->pageId, 'workspaces.splitPreviewModes');
 		$splitPreviewModes = GeneralUtility::trimExplode(',', $splitPreviewTsConfig['value']);
 		$allPreviewModes = array('slider', 'vbox', 'hbox');
 		if (!array_intersect($splitPreviewModes, $allPreviewModes)) {
@@ -199,7 +200,7 @@ class PreviewController extends \TYPO3\CMS\Workspaces\Controller\AbstractControl
 		$pathTYPO3 = GeneralUtility::dirname(GeneralUtility::getIndpEnv('SCRIPT_NAME')) . '/';
 		// If another page module was specified, replace the default Page module with the new one
 		$newPageModule = trim($GLOBALS['BE_USER']->getTSConfigVal('options.overridePageModule'));
-		$pageModule = \TYPO3\CMS\Backend\Utility\BackendUtility::isModuleSetInTBE_MODULES($newPageModule) ? $newPageModule : 'web_layout';
+		$pageModule = BackendUtility::isModuleSetInTBE_MODULES($newPageModule) ? $newPageModule : 'web_layout';
 		if (!$GLOBALS['BE_USER']->check('modules', $pageModule)) {
 			$pageModule = '';
 		}

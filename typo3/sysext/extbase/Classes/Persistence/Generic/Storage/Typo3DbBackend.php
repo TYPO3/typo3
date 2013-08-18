@@ -27,6 +27,9 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Storage;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+
 /**
  * A Storage backend
  */
@@ -890,8 +893,8 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 				$statement = $this->getPageRepository()->enableFields($tableName);
 			} else {
 				// TYPO3_MODE === 'BE'
-				$statement = \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($tableName);
-				$statement .= \TYPO3\CMS\Backend\Utility\BackendUtility::BEenableFields($tableName);
+				$statement = BackendUtility::deleteClause($tableName);
+				$statement .= BackendUtility::BEenableFields($tableName);
 			}
 			if (!empty($statement)) {
 				$statement = substr($statement, 5);
@@ -965,10 +968,10 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 	protected function getBackendConstraintStatement($tableName, $ignoreEnableFields, $includeDeleted) {
 		$statement = '';
 		if (!$ignoreEnableFields) {
-			$statement .= \TYPO3\CMS\Backend\Utility\BackendUtility::BEenableFields($tableName);
+			$statement .= BackendUtility::BEenableFields($tableName);
 		}
 		if (!$includeDeleted) {
-			$statement .= \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($tableName);
+			$statement .= BackendUtility::deleteClause($tableName);
 		}
 		return $statement;
 	}
@@ -1252,7 +1255,7 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 			return;
 		}
 		if (!isset($this->pageTSConfigCache[$storagePage])) {
-			$this->pageTSConfigCache[$storagePage] = \TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig($storagePage);
+			$this->pageTSConfigCache[$storagePage] = BackendUtility::getPagesTSconfig($storagePage);
 		}
 		if (isset($this->pageTSConfigCache[$storagePage]['TCEMAIN.']['clearCacheCmd'])) {
 			$clearCacheCommands = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', strtolower($this->pageTSConfigCache[$storagePage]['TCEMAIN.']['clearCacheCmd']), TRUE);

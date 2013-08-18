@@ -27,6 +27,7 @@ namespace TYPO3\CMS\Lowlevel;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -310,7 +311,7 @@ NOW Running --AUTOFIX on result. OK?' . ($this->cli_isArg('--dryrun') ? ' (--dry
 		$this->performanceStatistics['genTree()'] = '';
 		// Initialize:
 		if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('workspaces')) {
-			$this->workspaceIndex = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid,title', 'sys_workspace', '1=1' . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('sys_workspace'), '', '', '', 'uid');
+			$this->workspaceIndex = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid,title', 'sys_workspace', '1=1' . BackendUtility::deleteClause('sys_workspace'), '', '', '', 'uid');
 		}
 		$this->workspaceIndex[-1] = TRUE;
 		$this->workspaceIndex[0] = TRUE;
@@ -385,7 +386,7 @@ NOW Running --AUTOFIX on result. OK?' . ($this->cli_isArg('--dryrun') ? ' (--dry
 	public function genTree_traverse($rootID, $depth, $echoLevel = 0, $callBack = '', $versionSwapmode = '', $rootIsVersion = 0, $accumulatedPath = '') {
 		// Register page:
 		$this->recStats['all']['pages'][$rootID] = $rootID;
-		$pageRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordRaw('pages', 'uid=' . intval($rootID), 'deleted,title,t3ver_count,t3ver_wsid');
+		$pageRecord = BackendUtility::getRecordRaw('pages', 'uid=' . intval($rootID), 'deleted,title,t3ver_count,t3ver_wsid');
 		$accumulatedPath .= '/' . $pageRecord['title'];
 		// Register if page is deleted:
 		if ($pageRecord['deleted']) {
@@ -430,7 +431,7 @@ NOW Running --AUTOFIX on result. OK?' . ($this->cli_isArg('--dryrun') ? ' (--dry
 			if ($tableName != 'pages') {
 				// Select all records belonging to page:
 				$pt4 = GeneralUtility::milliseconds();
-				$resSub = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid' . ($GLOBALS['TCA'][$tableName]['ctrl']['delete'] ? ',' . $GLOBALS['TCA'][$tableName]['ctrl']['delete'] : ''), $tableName, 'pid=' . intval($rootID) . ($this->genTree_traverseDeleted ? '' : \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($tableName)));
+				$resSub = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid' . ($GLOBALS['TCA'][$tableName]['ctrl']['delete'] ? ',' . $GLOBALS['TCA'][$tableName]['ctrl']['delete'] : ''), $tableName, 'pid=' . intval($rootID) . ($this->genTree_traverseDeleted ? '' : BackendUtility::deleteClause($tableName)));
 				$this->performanceStatistics['genTree_traverse():TraverseTables:']['MySQL']['(ALL)'] += GeneralUtility::milliseconds() - $pt4;
 				$this->performanceStatistics['genTree_traverse():TraverseTables:']['MySQL'][$tableName] += GeneralUtility::milliseconds() - $pt4;
 				$pt5 = GeneralUtility::milliseconds();
@@ -479,7 +480,7 @@ NOW Running --AUTOFIX on result. OK?' . ($this->cli_isArg('--dryrun') ? ' (--dry
 						}
 						// Add any versions of those records:
 						if ($this->genTree_traverseVersions) {
-							$versions = \TYPO3\CMS\Backend\Utility\BackendUtility::selectVersionsOfRecord($tableName, $rowSub['uid'], 'uid,t3ver_wsid,t3ver_count' . ($GLOBALS['TCA'][$tableName]['ctrl']['delete'] ? ',' . $GLOBALS['TCA'][$tableName]['ctrl']['delete'] : ''), 0, TRUE);
+							$versions = BackendUtility::selectVersionsOfRecord($tableName, $rowSub['uid'], 'uid,t3ver_wsid,t3ver_count' . ($GLOBALS['TCA'][$tableName]['ctrl']['delete'] ? ',' . $GLOBALS['TCA'][$tableName]['ctrl']['delete'] : ''), 0, TRUE);
 							if (is_array($versions)) {
 								foreach ($versions as $verRec) {
 									if (!$verRec['_CURRENT_VERSION']) {
@@ -541,14 +542,14 @@ NOW Running --AUTOFIX on result. OK?' . ($this->cli_isArg('--dryrun') ? ' (--dry
 		if (!$versionSwapmode || $versionSwapmode == 'SWAPMODE:1') {
 			if ($depth > 0) {
 				$depth--;
-				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'pages', 'pid=' . intval($rootID) . ($this->genTree_traverseDeleted ? '' : \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('pages')), '', 'sorting');
+				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'pages', 'pid=' . intval($rootID) . ($this->genTree_traverseDeleted ? '' : BackendUtility::deleteClause('pages')), '', 'sorting');
 				while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 					$this->genTree_traverse($row['uid'], $depth, $echoLevel, $callBack, $versionSwapmode, 0, $accumulatedPath);
 				}
 			}
 			// Add any versions of pages
 			if ($rootID > 0 && $this->genTree_traverseVersions) {
-				$versions = \TYPO3\CMS\Backend\Utility\BackendUtility::selectVersionsOfRecord('pages', $rootID, 'uid,t3ver_oid,t3ver_wsid,t3ver_count', 0, TRUE);
+				$versions = BackendUtility::selectVersionsOfRecord('pages', $rootID, 'uid,t3ver_oid,t3ver_wsid,t3ver_count', 0, TRUE);
 				if (is_array($versions)) {
 					foreach ($versions as $verRec) {
 						if (!$verRec['_CURRENT_VERSION']) {

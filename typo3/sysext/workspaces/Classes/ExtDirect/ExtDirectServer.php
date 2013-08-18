@@ -26,6 +26,9 @@ namespace TYPO3\CMS\Workspaces\ExtDirect;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+
 /**
  * ExtDirect server
  *
@@ -123,8 +126,8 @@ class ExtDirectServer extends \TYPO3\CMS\Workspaces\ExtDirect\AbstractHandler {
 		$t3lib_diff = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Utility\\DiffUtility');
 		/** @var $parseObj \TYPO3\CMS\Core\Html\RteHtmlParser */
 		$parseObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Html\\RteHtmlParser');
-		$liveRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($parameter->table, $parameter->t3ver_oid);
-		$versionRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($parameter->table, $parameter->uid);
+		$liveRecord = BackendUtility::getRecord($parameter->table, $parameter->t3ver_oid);
+		$versionRecord = BackendUtility::getRecord($parameter->table, $parameter->uid);
 		$icon_Live = \TYPO3\CMS\Backend\Utility\IconUtility::mapRecordTypeToSpriteIconClass($parameter->table, $liveRecord);
 		$icon_Workspace = \TYPO3\CMS\Backend\Utility\IconUtility::mapRecordTypeToSpriteIconClass($parameter->table, $versionRecord);
 		$stagePosition = $this->getStagesService()->getPositionOfCurrentStage($parameter->stage);
@@ -141,7 +144,7 @@ class ExtDirectServer extends \TYPO3\CMS\Workspaces\ExtDirect\AbstractHandler {
 				// call diff class only if there is a difference
 				if (strcmp($liveRecord[$fieldName], $versionRecord[$fieldName]) !== 0) {
 					// Select the human readable values before diff
-					$liveRecord[$fieldName] = \TYPO3\CMS\Backend\Utility\BackendUtility::getProcessedValue(
+					$liveRecord[$fieldName] = BackendUtility::getProcessedValue(
 						$parameter->table,
 						$fieldName,
 						$liveRecord[$fieldName],
@@ -150,7 +153,7 @@ class ExtDirectServer extends \TYPO3\CMS\Workspaces\ExtDirect\AbstractHandler {
 						FALSE,
 						$liveRecord['uid']
 					);
-					$versionRecord[$fieldName] = \TYPO3\CMS\Backend\Utility\BackendUtility::getProcessedValue(
+					$versionRecord[$fieldName] = BackendUtility::getProcessedValue(
 						$parameter->table,
 						$fieldName,
 						$versionRecord[$fieldName],
@@ -160,13 +163,13 @@ class ExtDirectServer extends \TYPO3\CMS\Workspaces\ExtDirect\AbstractHandler {
 						$versionRecord['uid']
 					);
 					// Get the field's label. If not available, use the field name
-					$fieldTitle = $GLOBALS['LANG']->sL(\TYPO3\CMS\Backend\Utility\BackendUtility::getItemLabel($parameter->table, $fieldName));
+					$fieldTitle = $GLOBALS['LANG']->sL(BackendUtility::getItemLabel($parameter->table, $fieldName));
 					if (empty($fieldTitle)) {
 						$fieldTitle = $fieldName;
 					}
 					if ($GLOBALS['TCA'][$parameter->table]['columns'][$fieldName]['config']['type'] == 'group' && $GLOBALS['TCA'][$parameter->table]['columns'][$fieldName]['config']['internal_type'] == 'file') {
-						$versionThumb = \TYPO3\CMS\Backend\Utility\BackendUtility::thumbCode($versionRecord, $parameter->table, $fieldName, '');
-						$liveThumb = \TYPO3\CMS\Backend\Utility\BackendUtility::thumbCode($liveRecord, $parameter->table, $fieldName, '');
+						$versionThumb = BackendUtility::thumbCode($versionRecord, $parameter->table, $fieldName, '');
+						$liveThumb = BackendUtility::thumbCode($liveRecord, $parameter->table, $fieldName, '');
 						$diffReturnArray[] = array(
 							'field' => $fieldName,
 							'label' => $fieldTitle,
@@ -234,11 +237,11 @@ class ExtDirectServer extends \TYPO3\CMS\Workspaces\ExtDirect\AbstractHandler {
 		foreach ($sysLogRows as $sysLogRow) {
 			$sysLogEntry = array();
 			$data = unserialize($sysLogRow['log_data']);
-			$beUserRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('be_users', $sysLogRow['userid']);
+			$beUserRecord = BackendUtility::getRecord('be_users', $sysLogRow['userid']);
 			$sysLogEntry['stage_title'] = $this->getStagesService()->getStageTitle($data['stage']);
 			$sysLogEntry['user_uid'] = $sysLogRow['userid'];
 			$sysLogEntry['user_username'] = is_array($beUserRecord) ? $beUserRecord['username'] : '';
-			$sysLogEntry['tstamp'] = \TYPO3\CMS\Backend\Utility\BackendUtility::datetime($sysLogRow['tstamp']);
+			$sysLogEntry['tstamp'] = BackendUtility::datetime($sysLogRow['tstamp']);
 			$sysLogEntry['user_comment'] = $data['comment'];
 			$sysLogReturnArray[] = $sysLogEntry;
 		}

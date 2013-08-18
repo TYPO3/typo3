@@ -27,9 +27,10 @@ namespace TYPO3\CMS\Filelist;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Resource\FolderInterface;
-use TYPO3\CMS\Backend\Utility\IconUtility;
 
 /**
  * Class for rendering of File>Filelist
@@ -174,7 +175,7 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 	 * @todo Define visibility
 	 */
 	public function start(\TYPO3\CMS\Core\Resource\Folder $folderObject, $pointer, $sort, $sortRev, $clipBoard = FALSE, $bigControlPanel = FALSE) {
-		$this->script = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('file_list');
+		$this->script = BackendUtility::getModuleUrl('file_list');
 		$this->folderObject = $folderObject;
 		$this->counter = 0;
 		$this->totalbytes = 0;
@@ -603,7 +604,7 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 							$theData[$field] = strtoupper($ext);
 							break;
 						case 'tstamp':
-							$theData[$field] = \TYPO3\CMS\Backend\Utility\BackendUtility::date($fileInfo['mtime']);
+							$theData[$field] = BackendUtility::date($fileInfo['mtime']);
 							break;
 						case '_CLIPBOARD_':
 							$temp = '';
@@ -728,7 +729,7 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 				$data = array(
 					'sys_file' => array($fileOrFolderObject->getUid() => 'edit')
 				);
-				$editOnClick = \TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick(GeneralUtility::implodeArrayForUrl('edit', $data), $GLOBALS['BACK_PATH'], $this->listUrl());
+				$editOnClick = BackendUtility::editOnClick(GeneralUtility::implodeArrayForUrl('edit', $data), $GLOBALS['BACK_PATH'], $this->listUrl());
 				$cells['editmetadata'] = '<a href="#" onclick="' . $editOnClick . '" title="Edit Metadata of this file">' . IconUtility::getSpriteIcon('actions-document-open') . '</a>';
 			} else {
 				$cells['editmetadata'] = IconUtility::getSpriteIcon('empty-empty');
@@ -761,9 +762,9 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 		if ($fileOrFolderObject->checkActionPermission('remove')) {
 			$identifier = $fileOrFolderObject->getIdentifier();
 			if ($fileOrFolderObject instanceof TYPO3\CMS\Core\Resource\Folder) {
-				$referenceCountText = \TYPO3\CMS\Backend\Utility\BackendUtility::referenceCount('_FILE', $identifier, ' (There are %s reference(s) to this folder!)');
+				$referenceCountText = BackendUtility::referenceCount('_FILE', $identifier, ' (There are %s reference(s) to this folder!)');
 			} else {
-				$referenceCountText = \TYPO3\CMS\Backend\Utility\BackendUtility::referenceCount('sys_file', $identifier, ' (There are %s reference(s) to this file!)');
+				$referenceCountText = BackendUtility::referenceCount('sys_file', $identifier, ' (There are %s reference(s) to this file!)');
 			}
 
 			if ($GLOBALS['BE_USER']->jsConfirmation(4)) {
