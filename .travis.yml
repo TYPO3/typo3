@@ -39,8 +39,6 @@ before_script:
     	mv build-environment/typo3conf .
     	git clone --single-branch --branch master --depth 1 git://git.typo3.org/TYPO3v4/Extensions/phpunit.git typo3conf/ext/phpunit/
     	mkdir typo3temp
-    	chmod u+x ./typo3conf/ext/phpunit/Composer/vendor/bin/phpunit
-    	chmod u+x ./typo3conf/ext/phpunit/Composer/vendor/phpunit/phpunit/composer/bin/phpunit
     fi
 
   - >
@@ -55,12 +53,10 @@ script:
   - >
     if [[ "$PHPLINT" == "1" ]]; then
     	phpLint all
-    fi
-  - >
-    if [[ "$UNITTESTS" == "1" ]]; then
+    elif [[ "$UNITTESTS" == "1" ]]; then
     	php $PWD/typo3/cli_dispatch.phpsh phpunit -c typo3/sysext/core/Build/UnitTests.xml
-    fi
-  - >
-    if [[ "$FUNCTIONALTESTS" == "1" ]]; then
+    elif [[ "$FUNCTIONALTESTS" == "1" ]]; then
     	./typo3conf/ext/phpunit/Composer/vendor/bin/phpunit -c typo3/sysext/core/Build/FunctionalTests.xml
+    else
+    	exit 1
     fi
