@@ -56,7 +56,13 @@ class FlashMessageQueue extends \SplQueue {
 	 * @param \TYPO3\CMS\Core\Messaging\FlashMessage $message Instance of \TYPO3\CMS\Core\Messaging\FlashMessage, representing a message
 	 * @return void
 	 */
-	public function enqueue(\TYPO3\CMS\Core\Messaging\FlashMessage $message) {
+	public function enqueue($message) {
+		if (!($message instanceof FlashMessage)) {
+			throw new \TYPO3\CMS\Core\Exception(
+				'enqueue() expects an object of type \TYPO3\CMS\Core\Messaging\FlashMessage but is of type "' . get_class($message) . '"',
+				1376833554
+			);
+		}
 		if ($message->isSessionMessage()) {
 			$this->addFlashMessageToSession($message);
 		} else {
