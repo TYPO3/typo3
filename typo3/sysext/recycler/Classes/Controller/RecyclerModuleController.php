@@ -24,7 +24,10 @@ namespace TYPO3\CMS\Recycler\Controller;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+
 // This checks permissions and exits if the users has no permission for entry.
+
 /**
  * Module 'Recycler' for the 'recycler' extension.
  *
@@ -65,7 +68,7 @@ class RecyclerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 		$this->doc->setExtDirectStateProvider();
 		$this->pageRenderer = $this->doc->getPageRenderer();
 		$this->relativePath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('recycler');
-		$this->pageRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::readPageAccess($this->id, $this->perms_clause);
+		$this->pageRecord = BackendUtility::readPageAccess($this->id, $this->perms_clause);
 		$this->isAccessibleForCurrentUser = $this->id && is_array($this->pageRecord) || !$this->id && $this->isCurrentUserAdmin();
 		//don't access in workspace
 		if ($GLOBALS['BE_USER']->workspace !== 0) {
@@ -223,7 +226,7 @@ class RecyclerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 	 */
 	protected function getDocHeaderButtons() {
 		$buttons = array(
-			'csh' => \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('_MOD_web_func', '', $GLOBALS['BACK_PATH']),
+			'csh' => BackendUtility::cshItem('_MOD_web_func', '', $GLOBALS['BACK_PATH']),
 			'shortcut' => $this->getShortcutButton(),
 			'save' => ''
 		);
@@ -265,7 +268,7 @@ class RecyclerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 	 * @return 	string		The HTML representation of the function menu selector
 	 */
 	protected function getFunctionMenu() {
-		return \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncMenu(0, 'SET[function]', $this->MOD_SETTINGS['function'], $this->MOD_MENU['function']);
+		return BackendUtility::getFuncMenu(0, 'SET[function]', $this->MOD_SETTINGS['function'], $this->MOD_MENU['function']);
 	}
 
 	/**

@@ -27,6 +27,8 @@ namespace TYPO3\CMS\Core\Integrity;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+
 /**
  * This class holds functions used by the TYPO3 backend to check the integrity of the database (The DBint module, 'lowlevel' extension)
  *
@@ -217,10 +219,18 @@ class DatabaseIntegrityCheck {
 	public function genTree_records($theID, $depthData, $table = '', $versions = FALSE) {
 		if ($versions) {
 			// Select all records from table pointing to this page:
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(\TYPO3\CMS\Backend\Utility\BackendUtility::getCommonSelectFields($table), $table, 'pid=-1 AND t3ver_oid=' . intval($theID) . (!$this->genTree_includeDeleted ? \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($table) : ''));
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+				BackendUtility::getCommonSelectFields($table),
+				$table,
+				'pid=-1 AND t3ver_oid=' . intval($theID) . (!$this->genTree_includeDeleted ? BackendUtility::deleteClause($table) : '')
+			);
 		} else {
 			// Select all records from table pointing to this page:
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(\TYPO3\CMS\Backend\Utility\BackendUtility::getCommonSelectFields($table), $table, 'pid=' . intval($theID) . (!$this->genTree_includeDeleted ? \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($table) : ''));
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+				BackendUtility::getCommonSelectFields($table),
+				$table,
+				'pid=' . intval($theID) . (!$this->genTree_includeDeleted ? BackendUtility::deleteClause($table) : '')
+			);
 		}
 		// Traverse selected:
 		$a = 0;
@@ -240,7 +250,7 @@ class DatabaseIntegrityCheck {
 				$PM = 'join';
 				$LN = $a == $c ? 'blank' : 'line';
 				$BTM = $a == $c ? 'bottom' : '';
-				$this->genTree_HTML .= $depthData . '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->backPath, ('gfx/ol/' . $PM . $BTM . '.gif'), 'width="18" height="16"') . ' align="top" alt="" />' . $versionLabel . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord($table, $row, array('title' => $table)) . htmlspecialchars(($row['uid'] . ': ' . \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle($table, $row))) . '</span></div>';
+				$this->genTree_HTML .= $depthData . '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->backPath, ('gfx/ol/' . $PM . $BTM . '.gif'), 'width="18" height="16"') . ' align="top" alt="" />' . $versionLabel . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord($table, $row, array('title' => $table)) . htmlspecialchars(($row['uid'] . ': ' . BackendUtility::getRecordTitle($table, $row))) . '</span></div>';
 			}
 			// Register various data for this item:
 			$this->rec_idArray[$table][$newID] = $row;
@@ -306,7 +316,7 @@ class DatabaseIntegrityCheck {
 					$this->lRecords[$table][$row['uid']] = array(
 						'uid' => $row['uid'],
 						'pid' => $row['pid'],
-						'title' => strip_tags(\TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle($table, $row))
+						'title' => strip_tags(BackendUtility::getRecordTitle($table, $row))
 					);
 					$lostIdList[] = $row['uid'];
 				}
@@ -363,7 +373,7 @@ class DatabaseIntegrityCheck {
 				if ($count) {
 					$list[$table] = $count;
 				}
-				$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('uid', $table, 'pid IN (' . $pid_list_tmp . ')' . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($table));
+				$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('uid', $table, 'pid IN (' . $pid_list_tmp . ')' . BackendUtility::deleteClause($table));
 				if ($count) {
 					$list_n[$table] = $count;
 				}
@@ -615,7 +625,7 @@ class DatabaseIntegrityCheck {
 				$idlist = array_keys($dbArr);
 				$theList = implode(',', $idlist);
 				if ($theList) {
-					$mres = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', $table, 'uid IN (' . $theList . ')' . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($table));
+					$mres = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', $table, 'uid IN (' . $theList . ')' . BackendUtility::deleteClause($table));
 					while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($mres)) {
 						if (isset($dbArr[$row['uid']])) {
 							unset($dbArr[$row['uid']]);

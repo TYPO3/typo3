@@ -27,6 +27,7 @@ namespace TYPO3\CMS\Recordlist\RecordList;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -385,7 +386,7 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 	 */
 	public function generateList() {
 		// Set page record in header
-		$this->pageRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('pages', $this->id);
+		$this->pageRecord = BackendUtility::getRecordWSOL('pages', $this->id);
 		// Traverse the TCA table array:
 		foreach ($GLOBALS['TCA'] as $tableName => $value) {
 			// Checking if the table should be rendered:
@@ -530,7 +531,7 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 	 * @todo Define visibility
 	 */
 	public function thumbCode($row, $table, $field) {
-		return \TYPO3\CMS\Backend\Utility\BackendUtility::thumbCode($row, $table, $field, $this->backPath);
+		return BackendUtility::thumbCode($row, $table, $field, $this->backPath);
 	}
 
 	/**
@@ -570,7 +571,7 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 		$queryParts = array(
 			'SELECT' => $fieldList,
 			'FROM' => $table,
-			'WHERE' => $this->pidSelect . ' ' . $pC . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($table) . \TYPO3\CMS\Backend\Utility\BackendUtility::versioningPlaceholderClause($table) . ' ' . $addWhere . ' ' . $search,
+			'WHERE' => $this->pidSelect . ' ' . $pC . BackendUtility::deleteClause($table) . BackendUtility::versioningPlaceholderClause($table) . ' ' . $addWhere . ' ' . $search,
 			'GROUPBY' => '',
 			'ORDERBY' => $GLOBALS['TYPO3_DB']->stripOrderBy($orderBy),
 			'LIMIT' => $limit
@@ -740,7 +741,8 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 		$origCode = $code;
 		// If the title is blank, make a "no title" label:
 		if (!strcmp($code, '')) {
-			$code = '<i>[' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.no_title', 1) . ']</i> - ' . htmlspecialchars(GeneralUtility::fixed_lgd_cs(\TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle($table, $row), $GLOBALS['BE_USER']->uc['titleLen']));
+			$code = '<i>[' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.no_title', 1) . ']</i> - ' . htmlspecialchars(GeneralUtility::fixed_lgd_cs(
+						BackendUtility::getRecordTitle($table, $row), $GLOBALS['BE_USER']->uc['titleLen']));
 		} else {
 			$code = htmlspecialchars(GeneralUtility::fixed_lgd_cs($code, $this->fixedL), ENT_QUOTES, 'UTF-8', FALSE);
 			if ($code != htmlspecialchars($origCode)) {
@@ -751,7 +753,7 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 			case 'edit':
 				// If the listed table is 'pages' we have to request the permission settings for each page:
 				if ($table == 'pages') {
-					$localCalcPerms = $GLOBALS['BE_USER']->calcPerms(\TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('pages', $row['uid']));
+					$localCalcPerms = $GLOBALS['BE_USER']->calcPerms(BackendUtility::getRecord('pages', $row['uid']));
 					$permsEdit = $localCalcPerms & 2;
 				} else {
 					$permsEdit = $this->calcPerms & 16;
@@ -759,13 +761,15 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 				// "Edit" link: ( Only if permissions to edit the page-record of the content of the parent page ($this->id)
 				if ($permsEdit) {
 					$params = '&edit[' . $table . '][' . $row['uid'] . ']=edit';
-					$code = '<a href="#" onclick="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick($params, $this->backPath, -1)) . '" title="' . $GLOBALS['LANG']->getLL('edit', TRUE) . '">' . $code . '</a>';
+					$code = '<a href="#" onclick="' . htmlspecialchars(
+							BackendUtility::editOnClick($params, $this->backPath, -1)) . '" title="' . $GLOBALS['LANG']->getLL('edit', TRUE) . '">' . $code . '</a>';
 				}
 				break;
 			case 'show':
 				// "Show" link (only pages and tt_content elements)
 				if ($table == 'pages' || $table == 'tt_content') {
-					$code = '<a href="#" onclick="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::viewOnClick(($table == 'tt_content' ? $this->id . '#' . $row['uid'] : $row['uid']))) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', TRUE) . '">' . $code . '</a>';
+					$code = '<a href="#" onclick="' . htmlspecialchars(
+							BackendUtility::viewOnClick(($table == 'tt_content' ? $this->id . '#' . $row['uid'] : $row['uid']))) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', TRUE) . '">' . $code . '</a>';
 				}
 				break;
 			case 'info':
@@ -852,7 +856,7 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 		if ((!$exclList || !GeneralUtility::inList($exclList, 'sortRev')) && $this->sortRev) {
 			$urlParameters['sortRev'] = $this->sortRev;
 		}
-		return \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('web_list', $urlParameters);
+		return BackendUtility::getModuleUrl('web_list', $urlParameters);
 	}
 
 	/**
@@ -952,7 +956,7 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 	public function localizationRedirect($justLocalized) {
 		list($table, $orig_uid, $language) = explode(':', $justLocalized);
 		if ($GLOBALS['TCA'][$table] && $GLOBALS['TCA'][$table]['ctrl']['languageField'] && $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']) {
-			$localizedRecord = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('uid', $table, $GLOBALS['TCA'][$table]['ctrl']['languageField'] . '=' . intval($language) . ' AND ' . $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] . '=' . intval($orig_uid) . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($table) . \TYPO3\CMS\Backend\Utility\BackendUtility::versioningPlaceholderClause($table));
+			$localizedRecord = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('uid', $table, $GLOBALS['TCA'][$table]['ctrl']['languageField'] . '=' . intval($language) . ' AND ' . $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] . '=' . intval($orig_uid) . BackendUtility::deleteClause($table) . BackendUtility::versioningPlaceholderClause($table));
 			if (is_array($localizedRecord)) {
 				// Create parameters and finally run the classic page module for creating a new page translation
 				$url = substr($this->listURL(), strlen($this->backPath));

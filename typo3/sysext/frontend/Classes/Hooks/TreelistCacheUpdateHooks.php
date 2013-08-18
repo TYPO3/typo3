@@ -26,6 +26,9 @@ namespace TYPO3\CMS\Frontend\Hooks;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+
 /**
  * Class that hooks into TCEmain and listens for updates to pages to update the
  * treelist cache
@@ -86,7 +89,7 @@ class TreelistCacheUpdateHooks {
 				$affectedPageUid = $recordId;
 				// When updating a page the pid is not directly available so we
 				// need to retrieve it ourselves.
-				$fullPageRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($table, $recordId);
+				$fullPageRecord = BackendUtility::getRecord($table, $recordId);
 				$affectedPagePid = $fullPageRecord['pid'];
 			}
 			$clearCacheActions = $this->determineClearCacheActions($status, $updatedFields);
@@ -107,7 +110,7 @@ class TreelistCacheUpdateHooks {
 	 */
 	public function processCmdmap_postProcess($command, $table, $recordId, $commandValue, \TYPO3\CMS\Core\DataHandling\DataHandler $tceMain) {
 		if ($table == 'pages' && $command == 'delete') {
-			$deletedRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($table, $recordId, '*', '', FALSE);
+			$deletedRecord = BackendUtility::getRecord($table, $recordId, '*', '', FALSE);
 			$affectedPageUid = $deletedRecord['uid'];
 			$affectedPagePid = $deletedRecord['pid'];
 			// Faking the updated fields
@@ -228,7 +231,7 @@ class TreelistCacheUpdateHooks {
 	 * @return void
 	 */
 	protected function clearCacheForAllParents($affectedParentPage) {
-		$rootline = \TYPO3\CMS\Backend\Utility\BackendUtility::BEgetRootLine($affectedParentPage);
+		$rootline = BackendUtility::BEgetRootLine($affectedParentPage);
 		$rootlineIds = array();
 		foreach ($rootline as $page) {
 			if ($page['uid'] != 0) {

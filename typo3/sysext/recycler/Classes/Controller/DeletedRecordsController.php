@@ -24,6 +24,8 @@ namespace TYPO3\CMS\Recycler\Controller;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+
 /**
  * Deleted Records View
  *
@@ -49,17 +51,18 @@ class DeletedRecordsController {
 			foreach ($deletedRowsArray as $table => $rows) {
 				$total += count($deletedRowsArray[$table]);
 				foreach ($rows as $row) {
-					$backendUser = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('be_users', $row[$GLOBALS['TCA'][$table]['ctrl']['cruser_id']], 'username', '', FALSE);
+					$backendUser = BackendUtility::getRecord('be_users', $row[$GLOBALS['TCA'][$table]['ctrl']['cruser_id']], 'username', '', FALSE);
 					$jsonArray['rows'][] = array(
 						'uid' => $row['uid'],
 						'pid' => $row['pid'],
 						'table' => $table,
-						'crdate' => \TYPO3\CMS\Backend\Utility\BackendUtility::datetime($row[$GLOBALS['TCA'][$table]['ctrl']['crdate']]),
-						'tstamp' => \TYPO3\CMS\Backend\Utility\BackendUtility::datetime($row[$GLOBALS['TCA'][$table]['ctrl']['tstamp']]),
+						'crdate' => BackendUtility::datetime($row[$GLOBALS['TCA'][$table]['ctrl']['crdate']]),
+						'tstamp' => BackendUtility::datetime($row[$GLOBALS['TCA'][$table]['ctrl']['tstamp']]),
 						'owner' => htmlspecialchars($backendUser['username']),
 						'owner_uid' => $row[$GLOBALS['TCA'][$table]['ctrl']['cruser_id']],
 						'tableTitle' => \TYPO3\CMS\Recycler\Utility\RecyclerUtility::getUtf8String($GLOBALS['LANG']->sL($GLOBALS['TCA'][$table]['ctrl']['title'])),
-						'title' => htmlspecialchars(\TYPO3\CMS\Recycler\Utility\RecyclerUtility::getUtf8String(\TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle($table, $row))),
+						'title' => htmlspecialchars(\TYPO3\CMS\Recycler\Utility\RecyclerUtility::getUtf8String(
+								BackendUtility::getRecordTitle($table, $row))),
 						'path' => \TYPO3\CMS\Recycler\Utility\RecyclerUtility::getRecordPath($row['pid'])
 					);
 				}

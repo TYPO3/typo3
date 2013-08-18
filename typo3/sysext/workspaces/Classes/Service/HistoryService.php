@@ -26,6 +26,9 @@ namespace TYPO3\CMS\Workspaces\Service;
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+
 /**
  * Service for history
  *
@@ -52,7 +55,7 @@ class HistoryService implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Creates this object.
 	 */
 	public function __construct() {
-		$this->backendUserNames = \TYPO3\CMS\Backend\Utility\BackendUtility::getUserNames();
+		$this->backendUserNames = BackendUtility::getUserNames();
 	}
 
 	/**
@@ -89,7 +92,7 @@ class HistoryService implements \TYPO3\CMS\Core\SingletonInterface {
 			$differences = implode('<br/>', $this->getDifferences($entry));
 		}
 		return array(
-			'datetime' => htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::datetime($entry['tstamp'])),
+			'datetime' => htmlspecialchars(BackendUtility::datetime($entry['tstamp'])),
 			'user' => htmlspecialchars($this->getUserName($entry['user'])),
 			'differences' => $differences
 		);
@@ -110,7 +113,10 @@ class HistoryService implements \TYPO3\CMS\Core\SingletonInterface {
 			foreach ($fields as $field) {
 				if (!empty($GLOBALS['TCA'][$tableName]['columns'][$field]['config']['type']) && $GLOBALS['TCA'][$tableName]['columns'][$field]['config']['type'] !== 'passthrough') {
 					// Create diff-result:
-					$fieldDifferences = $this->getDifferencesObject()->makeDiffDisplay(\TYPO3\CMS\Backend\Utility\BackendUtility::getProcessedValue($tableName, $field, $entry['oldRecord'][$field], 0, TRUE), \TYPO3\CMS\Backend\Utility\BackendUtility::getProcessedValue($tableName, $field, $entry['newRecord'][$field], 0, TRUE));
+					$fieldDifferences = $this->getDifferencesObject()->makeDiffDisplay(
+						BackendUtility::getProcessedValue($tableName, $field, $entry['oldRecord'][$field], 0, TRUE),
+						BackendUtility::getProcessedValue($tableName, $field, $entry['newRecord'][$field], 0, TRUE)
+					);
 					$differences[] = nl2br($fieldDifferences);
 				}
 			}
