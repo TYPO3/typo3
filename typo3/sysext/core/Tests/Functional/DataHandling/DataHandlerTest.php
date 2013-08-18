@@ -66,8 +66,7 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 
 		$this->assertGreaterThanOrEqual(1, $uid);
 
-		/** @var DatabaseConnection $database */
-		$database = $GLOBALS['TYPO3_DB'];
+		$database = $this->getDatabase();
 		$row = $database->exec_SELECTgetSingleRow('*', 'tt_content', 'uid = ' . $uid);
 		$this->assertNotEmpty($row);
 
@@ -101,8 +100,7 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 		$uid = $dataHandler->copyMappingArray_merged['tt_content'][$originalRecordId];
 		$this->assertGreaterThanOrEqual(2, $uid);
 
-		/** @var DatabaseConnection $database */
-		$database = $GLOBALS['TYPO3_DB'];
+		$database = $this->getDatabase();
 		$row = $database->exec_SELECTgetSingleRow('*', 'tt_content', 'uid = ' . $uid);
 		$this->assertNotEmpty($row);
 

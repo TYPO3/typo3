@@ -64,7 +64,9 @@ abstract class FunctionalTestCase extends BaseTestCase {
 	 * extension list and ext_tables.sql of those extensions will be applied.
 	 *
 	 * This property will stay empty in this abstract, so it is possible
-	 * to just overwrite it in extending classes.
+	 * to just overwrite it in extending classes. Extensions noted here will
+	 * be loaded for every test of a test case and it is not possible to change
+	 * the list of loaded extensions between single tests of a test case.
 	 *
 	 * Required core extensions like core, cms, extbase and so on are loaded
 	 * automatically, so there is no need to add them here. See constant
@@ -78,7 +80,9 @@ abstract class FunctionalTestCase extends BaseTestCase {
 	 * Array of test/fixture extensions paths that should be loaded for a test.
 	 *
 	 * This property will stay empty in this abstract, so it is possible
-	 * to just overwrite it in extending classes.
+	 * to just overwrite it in extending classes. Extensions noted here will
+	 * be loaded for every test of a test case and it is not possible to change
+	 * the list of loaded extensions between single tests of a test case.
 	 *
 	 * Given path is expected to be relative to your document root, example:
 	 *
@@ -135,6 +139,18 @@ abstract class FunctionalTestCase extends BaseTestCase {
 	}
 
 	/**
+	 * Get DatabaseConnection instance - $GLOBALS['TYPO3_DB']
+	 *
+	 * This method should be used instead of direct access to
+	 * $GLOBALS['TYPO3_DB'] for easy IDE auto completion.
+	 *
+	 * @return \TYPO3\CMS\Core\Database\DatabaseConnection
+	 */
+	protected function getDatabase() {
+		return $GLOBALS['TYPO3_DB'];
+	}
+
+	/**
 	 * Imports a data set represented as XML into the test database,
 	 *
 	 * @param string $path Absolute path to the XML file containing the data set to load
@@ -149,8 +165,7 @@ abstract class FunctionalTestCase extends BaseTestCase {
 			);
 		}
 
-		/** @var \TYPO3\CMS\Core\Database\DatabaseConnection $database */
-		$database = $GLOBALS['TYPO3_DB'];
+		$database = $this->getDatabase();
 
 		$xml = simplexml_load_file($path);
 		$foreignKeys = array();
