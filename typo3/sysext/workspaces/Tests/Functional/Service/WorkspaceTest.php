@@ -26,38 +26,35 @@ namespace TYPO3\CMS\Workspaces\Tests\Functional\Service;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Workspace service test
  *
  * @author Workspaces Team (http://forge.typo3.org/projects/show/typo3v4-workspaces)
  */
-class WorkspacesServiceTest extends \tx_phpunit_database_testcase {
+class WorkspacesServiceTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 
 	/**
-
 	 */
 	public function setUp() {
-		$GLOBALS['BE_USER']->user['admin'] = 1;
-		$this->createDatabase();
-		$db = $this->useTestDatabase();
-		$this->importStdDB();
-		$this->importExtensions(array('cms', 'version', 'workspaces'));
-	}
+		$this->coreExtensionsToLoad[] = 'version';
+		$this->coreExtensionsToLoad[] = 'workspaces';
+		parent::setUp();
+		/** @var $backendUser \TYPO3\CMS\Core\Authentication\BackendUserAuthentication */
+		$backendUser = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Authentication\\BackendUserAuthentication');
+		$backendUser->user['admin'] = 1;
+		$GLOBALS['BE_USER'] = $backendUser;
+		\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->initializeLanguageObject();
 
-	/**
-
-	 */
-	public function tearDown() {
-		$this->cleanDatabase();
-		$this->dropDatabase();
-		$GLOBALS['TYPO3_DB']->sql_select_db(TYPO3_db);
+		$this->importDataSet(dirname(__FILE__) . '/../Fixtures/dbDefaultWorkspaces.xml');
 	}
 
 	/**
 	 * @test
 	 */
 	public function emptyWorkspaceReturnsEmptyArray() {
-		$this->importDataSet(dirname(__FILE__) . '/fixtures/dbDefaultWorkspaces.xml');
 		$service = new \TYPO3\CMS\Workspaces\Service\WorkspaceService();
 		$result = $service->selectVersionsInWorkspace(90);
 		$this->assertTrue(empty($result), 'The workspace 90 contains no changes and the result was supposed to be empty');
@@ -68,8 +65,8 @@ class WorkspacesServiceTest extends \tx_phpunit_database_testcase {
 	 * @test
 	 */
 	public function versionsFromSpecificWorkspaceCanBeFound() {
-		$this->importDataSet(dirname(__FILE__) . '/fixtures/dbDefaultWorkspaces.xml');
-		$this->importDataSet(dirname(__FILE__) . '/fixtures/dbDefaultPages.xml');
+		$this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/core/Tests/Functional/Functional/Fixtures/pages.xml');
+		$this->importDataSet(dirname(__FILE__) . '/../Fixtures/dbDefaultPages.xml');
 		$service = new \TYPO3\CMS\Workspaces\Service\WorkspaceService();
 		$result = $service->selectVersionsInWorkspace(91, 0, -99, 2);
 		$this->assertTrue(is_array($result), 'The result from workspace 91 is supposed to be an array');
@@ -82,8 +79,8 @@ class WorkspacesServiceTest extends \tx_phpunit_database_testcase {
 	 * @test
 	 */
 	public function versionsFromAllWorkspaceCanBeFound() {
-		$this->importDataSet(dirname(__FILE__) . '/fixtures/dbDefaultWorkspaces.xml');
-		$this->importDataSet(dirname(__FILE__) . '/fixtures/dbDefaultPages.xml');
+		$this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/core/Tests/Functional/Functional/Fixtures/pages.xml');
+		$this->importDataSet(dirname(__FILE__) . '/../Fixtures/dbDefaultPages.xml');
 		$service = new \TYPO3\CMS\Workspaces\Service\WorkspaceService();
 		$result = $service->selectVersionsInWorkspace(\TYPO3\CMS\Workspaces\Service\WorkspaceService::SELECT_ALL_WORKSPACES, 0, -99, 2);
 		$this->assertTrue(is_array($result), 'The result from workspace 91 is supposed to be an array');
@@ -94,8 +91,8 @@ class WorkspacesServiceTest extends \tx_phpunit_database_testcase {
 	 * @test
 	 */
 	public function versionsCanBeFoundRecursive() {
-		$this->importDataSet(dirname(__FILE__) . '/fixtures/dbDefaultWorkspaces.xml');
-		$this->importDataSet(dirname(__FILE__) . '/fixtures/dbDefaultPages.xml');
+		$this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/core/Tests/Functional/Functional/Fixtures/pages.xml');
+		$this->importDataSet(dirname(__FILE__) . '/../Fixtures/dbDefaultPages.xml');
 		$service = new \TYPO3\CMS\Workspaces\Service\WorkspaceService();
 		$result = $service->selectVersionsInWorkspace(91, 0, -99, 1, 99);
 		$this->assertTrue(is_array($result), 'The result from workspace 91 is supposed to be an array');
@@ -106,8 +103,8 @@ class WorkspacesServiceTest extends \tx_phpunit_database_testcase {
 	 * @test
 	 */
 	public function versionsCanBeFilteredToSpecificStage() {
-		$this->importDataSet(dirname(__FILE__) . '/fixtures/dbDefaultWorkspaces.xml');
-		$this->importDataSet(dirname(__FILE__) . '/fixtures/dbDefaultPages.xml');
+		$this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/core/Tests/Functional/Functional/Fixtures/pages.xml');
+		$this->importDataSet(dirname(__FILE__) . '/../Fixtures/dbDefaultPages.xml');
 		$service = new \TYPO3\CMS\Workspaces\Service\WorkspaceService();
 		// testing stage 1
 		$result = $service->selectVersionsInWorkspace(91, 0, 1, 1, 99);
@@ -127,8 +124,8 @@ class WorkspacesServiceTest extends \tx_phpunit_database_testcase {
 	 * @test
 	 */
 	public function versionsCanBeFilteredToSpecificLifecycleStep() {
-		$this->importDataSet(dirname(__FILE__) . '/fixtures/dbDefaultWorkspaces.xml');
-		$this->importDataSet(dirname(__FILE__) . '/fixtures/dbDefaultPages.xml');
+		$this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/core/Tests/Functional/Functional/Fixtures/pages.xml');
+		$this->importDataSet(dirname(__FILE__) . '/../Fixtures/dbDefaultPages.xml');
 		$service = new \TYPO3\CMS\Workspaces\Service\WorkspaceService();
 		// testing all "draft" records
 		$result = $service->selectVersionsInWorkspace(91, 1, -99, 1, 99);
@@ -149,8 +146,8 @@ class WorkspacesServiceTest extends \tx_phpunit_database_testcase {
 	 * @test
 	 */
 	public function movedElementsCanNotBeFoundAtTheirOrigin() {
-		$this->importDataSet(dirname(__FILE__) . '/fixtures/dbDefaultWorkspaces.xml');
-		$this->importDataSet(dirname(__FILE__) . '/fixtures/dbMovedContent.xml');
+		$this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/core/Tests/Functional/Functional/Fixtures/pages.xml');
+		$this->importDataSet(dirname(__FILE__) . '/../Fixtures/dbMovedContent.xml');
 		// Test if the placeholder can be found when we ask using recursion (same result)
 		$service = new \TYPO3\CMS\Workspaces\Service\WorkspaceService();
 		$result = $service->selectVersionsInWorkspace(91, 0, -99, 2, 99);
@@ -162,8 +159,7 @@ class WorkspacesServiceTest extends \tx_phpunit_database_testcase {
 	 * @test
 	 */
 	public function movedElementsCanBeFoundAtTheirDestination() {
-		$this->importDataSet(dirname(__FILE__) . '/fixtures/dbDefaultWorkspaces.xml');
-		$this->importDataSet(dirname(__FILE__) . '/fixtures/dbMovedContent.xml');
+		$this->importDataSet(dirname(__FILE__) . '/../Fixtures/dbMovedContent.xml');
 		// Test if the placeholder can be found when we ask using recursion (same result)
 		$service = new \TYPO3\CMS\Workspaces\Service\WorkspaceService();
 		$result = $service->selectVersionsInWorkspace(91, 0, -99, 5, 99);
@@ -181,8 +177,7 @@ class WorkspacesServiceTest extends \tx_phpunit_database_testcase {
 	 * @test
 	 */
 	public function movedElementsCanBeFoundUsingTheirLiveUID() {
-		$this->importDataSet(dirname(__FILE__) . '/fixtures/dbDefaultWorkspaces.xml');
-		$this->importDataSet(dirname(__FILE__) . '/fixtures/dbMovedContent.xml');
+		$this->importDataSet(dirname(__FILE__) . '/../Fixtures/dbMovedContent.xml');
 		// Test if the placeholder can be found when we ask using recursion (same result)
 		$service = new \TYPO3\CMS\Workspaces\Service\WorkspaceService();
 		$result = $service->selectVersionsInWorkspace(91, 0, -99, 3, 99);
@@ -190,8 +185,5 @@ class WorkspacesServiceTest extends \tx_phpunit_database_testcase {
 		$this->assertEquals(1, sizeof($result['pages']), 'Wrong amount of page versions found within workspace 91');
 		$this->assertEquals(103, $result['pages'][0]['uid'], 'Wrong move-to pointer found for page 3 in workspace 91');
 	}
-
 }
-
-
 ?>
