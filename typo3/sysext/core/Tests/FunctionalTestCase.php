@@ -151,6 +151,37 @@ abstract class FunctionalTestCase extends BaseTestCase {
 	}
 
 	/**
+	 * Initialize backend user
+	 *
+	 * @param int $userUid uid of the user we want to initialize. This user must exist in the fixture file
+	 * @throws Exception
+	 */
+	protected function setUpBackendUserFromFixture($userUid) {
+		$this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/core/Tests/Functional/Fixtures/be_users.xml');
+		$database = $this->getDatabase();
+		$userRow = $database->exec_SELECTgetSingleRow('*', 'be_users', 'uid = ' . $userUid);
+
+		/** @var $backendUser \TYPO3\CMS\Core\Authentication\BackendUserAuthentication */
+		$backendUser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Authentication\\BackendUserAuthentication');
+		$sessionId = $backendUser->createSessionId();
+		$_SERVER['HTTP_COOKIE'] = 'be_typo_user=' . $sessionId . '; path=/';
+		$backendUser->id = $sessionId;
+		$backendUser->sendNoCacheHeaders = FALSE;
+		$backendUser->dontSetCookie = TRUE;
+		$backendUser->createUserSession($userRow);
+
+		$GLOBALS['BE_USER'] = $backendUser;
+		$GLOBALS['BE_USER']->start();
+		if (!is_array($GLOBALS['BE_USER']->user) || !$GLOBALS['BE_USER']->user['uid']) {
+			throw new Exception(
+				'Can not initialize backend user',
+				1377095807
+			);
+		}
+		$GLOBALS['BE_USER']->backendCheckLogin();
+	}
+
+	/**
 	 * Imports a data set represented as XML into the test database,
 	 *
 	 * @param string $path Absolute path to the XML file containing the data set to load
