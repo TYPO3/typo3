@@ -180,6 +180,7 @@ $TSFE->handleDataSubmission();
 
 // Check for shortcut page and redirect
 $TSFE->checkPageForShortcutRedirect();
+
 // Generate page
 $TSFE->setUrlIdToken();
 $TT->push('Page generation', '');
@@ -189,13 +190,33 @@ if ($TSFE->isGeneratePage()) {
 	if ($temp_theScript) {
 		include $temp_theScript;
 	} else {
-		include PATH_tslib . 'pagegen.php';
+		\TYPO3\CMS\Frontend\Page\PageGenerator::pagegenInit();
+		// Global content object
+		$TSFE->newCObj();
+		// LIBRARY INCLUSION, TypoScript
+		$temp_incFiles = \TYPO3\CMS\Frontend\Page\PageGenerator::getIncFiles();
+		foreach ($temp_incFiles as $temp_file) {
+			include_once './' . $temp_file;
+		}
+		// Content generation
+		if (!$TSFE->isINTincScript()) {
+			\TYPO3\CMS\Frontend\Page\PageGenerator::renderContent();
+			$TSFE->setAbsRefPrefix();
+		}
 	}
 	$TSFE->generatePage_postProcessing();
 } elseif ($TSFE->isINTincScript()) {
-	include PATH_tslib . 'pagegen.php';
+	\TYPO3\CMS\Frontend\Page\PageGenerator::pagegenInit();
+	// Global content object
+	$TSFE->newCObj();
+	// LIBRARY INCLUSION, TypoScript
+	$temp_incFiles = \TYPO3\CMS\Frontend\Page\PageGenerator::getIncFiles();
+	foreach ($temp_incFiles as $temp_file) {
+		include_once './' . $temp_file;
+	}
 }
 $TT->pull();
+
 // $TSFE->config['INTincScript']
 if ($TSFE->isINTincScript()) {
 	$TT->push('Non-cached objects', '');
