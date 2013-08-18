@@ -24,6 +24,8 @@ namespace TYPO3\CMS\Install\Updates;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+
 /**
  * Upgrade wizard which checks all existing filemounts
  * and upgrades this them in case we have:
@@ -87,7 +89,7 @@ class FilemountUpdateWizard extends AbstractUpdate {
 		$filemountCount = $this->db->exec_SELECTcountRows(
 			'*',
 			'sys_filemounts',
-			'base IN (0,1) ' . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('sys_filemounts')
+			'base IN (0,1) ' . BackendUtility::deleteClause('sys_filemounts')
 		);
 		return $filemountCount > 0 && !$this->isWizardDone();
 	}
@@ -122,7 +124,7 @@ class FilemountUpdateWizard extends AbstractUpdate {
 		$absoluteFilemounts = $this->db->exec_SELECTgetRows(
 			'*',
 			'sys_filemounts',
-			'base = 0' . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('sys_filemounts')
+			'base = 0' . BackendUtility::deleteClause('sys_filemounts')
 		);
 		foreach ($absoluteFilemounts as $filemount) {
 			if (stristr($filemount['path'], $fileadminDir)) {
@@ -157,7 +159,7 @@ class FilemountUpdateWizard extends AbstractUpdate {
 		$relativeFilemounts = $this->db->exec_SELECTgetRows(
 			'*',
 			'sys_filemounts',
-			'base = 1' . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('sys_filemounts')
+			'base = 1' . BackendUtility::deleteClause('sys_filemounts')
 		);
 		foreach ($relativeFilemounts as $filemount) {
 			$this->db->exec_UPDATEquery(

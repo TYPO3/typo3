@@ -28,6 +28,7 @@ namespace TYPO3\CMS\Frontend\View;
  *  This copyright notice MUST APPEAR in all copies of the scri.pt!
  ***************************************************************/
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -372,7 +373,7 @@ class AdminPanelView {
 			$this->extJSCODE .= 'TSFEtypo3FormFieldSet("TSFE_ADMIN_PANEL[preview_simulateDate]", "datetime", "", 0, 0);';
 			// Simulate fe_user:
 			$options = '<option value="0">&nbsp;</option>';
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('fe_groups.uid, fe_groups.title', 'fe_groups,pages', 'pages.uid=fe_groups.pid AND pages.deleted=0 ' . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('fe_groups') . ' AND ' . $GLOBALS['BE_USER']->getPagePermsClause(1));
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('fe_groups.uid, fe_groups.title', 'fe_groups,pages', 'pages.uid=fe_groups.pid AND pages.deleted=0 ' . BackendUtility::deleteClause('fe_groups') . ' AND ' . $GLOBALS['BE_USER']->getPagePermsClause(1));
 			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 				$options .= '<option value="' . $row['uid'] . '"' . ($GLOBALS['BE_USER']->uc['TSFE_adminConfig']['preview_simulateUserGroup'] == $row['uid'] ? ' selected="selected"' : '') . '>' . htmlspecialchars(('[' . $row['uid'] . '] ' . $row['title'])) . '</option>';
 			}
@@ -425,7 +426,7 @@ class AdminPanelView {
 		if ($GLOBALS['BE_USER']->uc['TSFE_adminConfig']['display_edit']) {
 			// If another page module was specified, replace the default Page module with the new one
 			$newPageModule = trim($GLOBALS['BE_USER']->getTSConfigVal('options.overridePageModule'));
-			$pageModule = \TYPO3\CMS\Backend\Utility\BackendUtility::isModuleSetInTBE_MODULES($newPageModule) ? $newPageModule : 'web_layout';
+			$pageModule = BackendUtility::isModuleSetInTBE_MODULES($newPageModule) ? $newPageModule : 'web_layout';
 			$this->extNeedUpdate = TRUE;
 			$out .= $this->extGetItem('edit_displayFieldIcons', '', '<input type="hidden" name="TSFE_ADMIN_PANEL[edit_displayFieldIcons]" value="0" /><input type="checkbox" id="edit_displayFieldIcons" name="TSFE_ADMIN_PANEL[edit_displayFieldIcons]" value="1"' . ($GLOBALS['BE_USER']->uc['TSFE_adminConfig']['edit_displayFieldIcons'] ? ' checked="checked"' : '') . ' />');
 			$out .= $this->extGetItem('edit_displayIcons', '', '<input type="hidden" name="TSFE_ADMIN_PANEL[edit_displayIcons]" value="0" /><input type="checkbox" id="edit_displayIcons" name="TSFE_ADMIN_PANEL[edit_displayIcons]" value="1"' . ($GLOBALS['BE_USER']->uc['TSFE_adminConfig']['edit_displayIcons'] ? ' checked="checked"' : '') . ' />');
@@ -442,7 +443,7 @@ class AdminPanelView {
 							parent.opener.top.goToModule("' . $pageModule . '");
 							parent.opener.top.focus();
 						} else {
-							vHWin=window.open(\'' . TYPO3_mainDir . \TYPO3\CMS\Backend\Utility\BackendUtility::getBackendScript() . '\',\'' . md5(('Typo3Backend-' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'])) . '\',\'status=1,menubar=1,scrollbars=1,resizable=1\');
+							vHWin=window.open(\'' . TYPO3_mainDir . BackendUtility::getBackendScript() . '\',\'' . md5(('Typo3Backend-' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'])) . '\',\'status=1,menubar=1,scrollbars=1,resizable=1\');
 							vHWin.focus();
 						}
 						return false;
@@ -596,7 +597,7 @@ class AdminPanelView {
 	 */
 	public function ext_makeToolBar() {
 		//  If mod.web_list.newContentWiz.overrideWithExtension is set, use that extension's create new content wizard instead:
-		$tsConfig = \TYPO3\CMS\Backend\Utility\BackendUtility::getModTSconfig($this->pageinfo['uid'], 'mod.web_list');
+		$tsConfig = BackendUtility::getModTSconfig($this->pageinfo['uid'], 'mod.web_list');
 		$tsConfig = $tsConfig['properties']['newContentWiz.']['overrideWithExtension'];
 		$newContentWizScriptPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($tsConfig) ? \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($tsConfig) . 'mod1/db_new_content_el.php' : TYPO3_mainDir . 'sysext/cms/layout/db_new_content_el.php';
 		$perms = $GLOBALS['BE_USER']->calcPerms($GLOBALS['TSFE']->page);
@@ -642,7 +643,7 @@ class AdminPanelView {
 			$urlParams = array();
 			$urlParams['id'] = $id;
 			$urlParams['returnUrl'] = GeneralUtility::getIndpEnv('REQUEST_URI');
-			$toolBar .= '<a href="' . htmlspecialchars((TYPO3_mainDir . \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('web_list', $urlParams))) . '">' . '<img ' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg(TYPO3_mainDir, 'gfx/list.gif', 'width="11" height="11"') . ' hspace="2" border="0" align="top" title="' . $this->extGetLL('edit_db_list') . '" alt="" /></a>';
+			$toolBar .= '<a href="' . htmlspecialchars((TYPO3_mainDir . BackendUtility::getModuleUrl('web_list', $urlParams))) . '">' . '<img ' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg(TYPO3_mainDir, 'gfx/list.gif', 'width="11" height="11"') . ' hspace="2" border="0" align="top" title="' . $this->extGetLL('edit_db_list') . '" alt="" /></a>';
 		}
 		return $toolBar;
 	}

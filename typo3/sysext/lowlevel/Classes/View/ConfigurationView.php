@@ -27,6 +27,7 @@ namespace TYPO3\CMS\Lowlevel\View;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -131,7 +132,7 @@ class ConfigurationView {
 			'fixedLgd' => ''
 		);
 		// CLEANSE SETTINGS
-		$this->MOD_SETTINGS = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleData($this->MOD_MENU, GeneralUtility::_GP('SET'), $this->MCONF['name']);
+		$this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, GeneralUtility::_GP('SET'), $this->MCONF['name']);
 	}
 
 	/**
@@ -150,8 +151,8 @@ class ConfigurationView {
 						<label for="search_field">' . $GLOBALS['LANG']->getLL('enterSearchPhrase', TRUE) . '</label>
 						<input type="text" id="search_field" name="search_field" value="' . htmlspecialchars($search_field) . '"' . $GLOBALS['TBE_TEMPLATE']->formWidth(20) . ' />
 						<input type="submit" name="search" id="search" value="' . $GLOBALS['LANG']->getLL('search', TRUE) . '" />';
-		$this->content .= \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck(0, 'SET[regexsearch]', $this->MOD_SETTINGS['regexsearch'], '', '', 'id="checkRegexsearch"') . '<label for="checkRegexsearch">' . $GLOBALS['LANG']->getLL('useRegExp', TRUE) . '</label>';
-		$this->content .= \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck(0, 'SET[fixedLgd]', $this->MOD_SETTINGS['fixedLgd'], '', '', 'id="checkFixedLgd"') . '<label for="checkFixedLgd">' . $GLOBALS['LANG']->getLL('cropLines', TRUE) . '</label>
+		$this->content .= BackendUtility::getFuncCheck(0, 'SET[regexsearch]', $this->MOD_SETTINGS['regexsearch'], '', '', 'id="checkRegexsearch"') . '<label for="checkRegexsearch">' . $GLOBALS['LANG']->getLL('useRegExp', TRUE) . '</label>';
+		$this->content .= BackendUtility::getFuncCheck(0, 'SET[fixedLgd]', $this->MOD_SETTINGS['fixedLgd'], '', '', 'id="checkFixedLgd"') . '<label for="checkFixedLgd">' . $GLOBALS['LANG']->getLL('cropLines', TRUE) . '</label>
 						</div>';
 		$this->content .= $this->doc->spacer(5);
 		switch ($this->MOD_SETTINGS['function']) {
@@ -335,7 +336,7 @@ class ConfigurationView {
 	 * @return string HTML of the function menu
 	 */
 	protected function getFuncMenu() {
-		$funcMenu = \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncMenu(0, 'SET[function]', $this->MOD_SETTINGS['function'], $this->MOD_MENU['function']);
+		$funcMenu = BackendUtility::getFuncMenu(0, 'SET[function]', $this->MOD_SETTINGS['function'], $this->MOD_MENU['function']);
 		return $funcMenu;
 	}
 

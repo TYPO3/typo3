@@ -25,6 +25,9 @@ namespace TYPO3\CMS\Viewpage\Controller;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+
 /**
  * Controller for viewing the frontend
  *
@@ -96,10 +99,10 @@ class ViewModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 	 */
 	protected function getAdminCommand($pageId) {
 		// The page will show only if there is a valid page and if this page may be viewed by the user
-		$pageinfo = \TYPO3\CMS\Backend\Utility\BackendUtility::readPageAccess($pageId, $GLOBALS['BE_USER']->getPagePermsClause(1));
+		$pageinfo = BackendUtility::readPageAccess($pageId, $GLOBALS['BE_USER']->getPagePermsClause(1));
 		$addCommand = '';
 		if (is_array($pageinfo)) {
-			$addCommand = '&ADMCMD_view=1&ADMCMD_editIcons=1' . \TYPO3\CMS\Backend\Utility\BackendUtility::ADMCMD_previewCmds($pageinfo);
+			$addCommand = '&ADMCMD_view=1&ADMCMD_editIcons=1' . BackendUtility::ADMCMD_previewCmds($pageinfo);
 		}
 		return $addCommand;
 	}
@@ -114,7 +117,7 @@ class ViewModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 	 */
 	protected function getTypeParameterIfSet($pageId) {
 		$typeParameter = '';
-		$modTSconfig = \TYPO3\CMS\Backend\Utility\BackendUtility::getModTSconfig($pageId, 'mod.web_view');
+		$modTSconfig = BackendUtility::getModTSconfig($pageId, 'mod.web_view');
 		$typeId = intval($modTSconfig['properties']['type']);
 		if ($typeId > 0) {
 			$typeParameter = '&type=' . $typeId;
@@ -129,7 +132,7 @@ class ViewModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 	 * @return boolean|string Domain name if there is one, FALSE if not
 	 */
 	protected function getDomainName($pageId) {
-		$domain = \TYPO3\CMS\Backend\Utility\BackendUtility::firstDomainRecord(\TYPO3\CMS\Backend\Utility\BackendUtility::BEgetRootLine($pageId));
+		$domain = BackendUtility::firstDomainRecord(BackendUtility::BEgetRootLine($pageId));
 		return $domain;
 	}
 

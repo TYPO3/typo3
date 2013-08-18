@@ -27,6 +27,8 @@ namespace TYPO3\CMS\Cshmanual\Controller;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+
 /**
  * Script Class for rendering the Context Sensitive Help documents, either the single display in the small pop-up window or the full-table view in the larger window.
  *
@@ -148,7 +150,7 @@ class HelpModuleController {
 			$this->field = $flexFormField;
 		}
 		// limitAccess is checked if the $this->table really IS a table (and if the user is NOT a translator who should see all!)
-		$showAllToUser = \TYPO3\CMS\Backend\Utility\BackendUtility::isModuleSetInTBE_MODULES('txllxmltranslateM1') && $GLOBALS['BE_USER']->check('modules', 'txllxmltranslateM1');
+		$showAllToUser = BackendUtility::isModuleSetInTBE_MODULES('txllxmltranslateM1') && $GLOBALS['BE_USER']->check('modules', 'txllxmltranslateM1');
 		$this->limitAccess = isset($GLOBALS['TCA'][$this->table]) ? !$showAllToUser : FALSE;
 		$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_view_help.xlf', 1);
 	}
@@ -278,7 +280,7 @@ class HelpModuleController {
 				<!-- NEW SECTION: -->
 				', $outputSections);
 		}
-		$output .= '<hr /><p class="manual-title">' . \TYPO3\CMS\Backend\Utility\BackendUtility::TYPO3_copyRightNotice() . '</p>';
+		$output .= '<hr /><p class="manual-title">' . BackendUtility::TYPO3_copyRightNotice() . '</p>';
 		return $output;
 	}
 
@@ -634,7 +636,7 @@ class HelpModuleController {
 	public function createGlossaryIndex() {
 		// Create hash string and try to retrieve glossary array:
 		$hash = md5('typo3/mod.php?M=help_cshmanual:glossary');
-		list($this->glossaryWords, $this->substWords) = unserialize(\TYPO3\CMS\Backend\Utility\BackendUtility::getHash($hash));
+		list($this->glossaryWords, $this->substWords) = unserialize(BackendUtility::getHash($hash));
 		// Generate glossary words if not found:
 		if (!is_array($this->glossaryWords)) {
 			// Initialize:
@@ -668,7 +670,7 @@ class HelpModuleController {
 				}
 			}
 			krsort($this->substWords);
-			\TYPO3\CMS\Backend\Utility\BackendUtility::storeHash($hash, serialize(array($this->glossaryWords, $this->substWords)), 'Glossary');
+			BackendUtility::storeHash($hash, serialize(array($this->glossaryWords, $this->substWords)), 'Glossary');
 		}
 	}
 

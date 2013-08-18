@@ -26,11 +26,9 @@ namespace TYPO3\CMS\Core\Configuration\FlexForm;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-/**
- * Contains functions for manipulating flex form data
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- */
+
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+
 /**
  * Contains functions for manipulating flex form data
  *
@@ -111,7 +109,7 @@ class FlexFormTools {
 		}
 		$this->callBackObj = $callBackObj;
 		// Get Data Structure:
-		$dataStructArray = \TYPO3\CMS\Backend\Utility\BackendUtility::getFlexFormDS($GLOBALS['TCA'][$table]['columns'][$field]['config'], $row, $table, $field);
+		$dataStructArray = BackendUtility::getFlexFormDS($GLOBALS['TCA'][$table]['columns'][$field]['config'], $row, $table, $field);
 		// If data structure was ok, proceed:
 		if (is_array($dataStructArray)) {
 			// Get flexform XML data:
@@ -253,7 +251,7 @@ class FlexFormTools {
 	public function getAvailableLanguages() {
 		$isL = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('static_info_tables');
 		// Find all language records in the system
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('static_lang_isocode,title,uid', 'sys_language', 'pid=0' . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('sys_language'), '', 'title');
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('static_lang_isocode,title,uid', 'sys_language', 'pid=0' . BackendUtility::deleteClause('sys_language'), '', 'title');
 		// Traverse them
 		$output = array();
 		$output[0] = array(
@@ -264,7 +262,7 @@ class FlexFormTools {
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 			$output[$row['uid']] = $row;
 			if ($isL && $row['static_lang_isocode']) {
-				$rr = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('static_languages', $row['static_lang_isocode'], 'lg_iso_2');
+				$rr = BackendUtility::getRecord('static_languages', $row['static_lang_isocode'], 'lg_iso_2');
 				if ($rr['lg_iso_2']) {
 					$output[$row['uid']]['ISOcode'] = $rr['lg_iso_2'];
 				}
