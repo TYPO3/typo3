@@ -32,22 +32,25 @@ class FunctionalTestCaseBootstrapUtility {
 	/**
 	 * @var string Identifier calculated from test case class
 	 */
-	static protected $identifier;
+	protected $identifier;
 
 	/**
 	 * @var string Absolute path to test instance document root
 	 */
-	static protected $instancePath;
+	protected $instancePath;
 
 	/**
 	 * @var string Name of test database
 	 */
-	static protected $databaseName;
+	protected $databaseName;
 
 	/**
-	 * Set up creates a test database and fills with data.
-	 *
-	 * This method should be called with parent::setUp() in your test cases!
+	 * @var string Name of original database
+	 */
+	protected $originalDatabaseName;
+
+	/**
+	 * Set up creates a test instance and database.
 	 *
 	 * @param string $testCaseClassName Name of test case class
 	 * @param array $coreExtensionsToLoad Array of core extensions to load
@@ -73,15 +76,13 @@ class FunctionalTestCaseBootstrapUtility {
 	}
 
 	/**
-	 * Tear down.
-	 *
-	 * This method should be called with parent::setUp() in your test cases!
+	 * Tear down destroys the instance and database.
 	 *
 	 * @throws Exception
 	 * @return void
 	 */
 	public function tearDown() {
-		if (empty(static::$identifier)) {
+		if (empty($this->identifier)) {
 			throw new Exception(
 				'Test identifier not set. Is parent::setUp() called in setUp()?',
 				1376739702
@@ -100,7 +101,7 @@ class FunctionalTestCaseBootstrapUtility {
 	 */
 	protected function setUpIdentifier($testCaseClassName) {
 		// 7 characters of sha1 should be enough for a unique identification
-		static::$identifier = substr(sha1($testCaseClassName), 0, 7);
+		$this->identifier = substr(sha1($testCaseClassName), 0, 7);
 	}
 
 	/**
@@ -109,7 +110,7 @@ class FunctionalTestCaseBootstrapUtility {
 	 * @return void
 	 */
 	protected function setUpInstancePath() {
-		static::$instancePath = ORIGINAL_ROOT . 'typo3temp/functional-' . static::$identifier;
+		$this->instancePath = ORIGINAL_ROOT . 'typo3temp/functional-' . $this->identifier;
 	}
 
 	/**
@@ -119,7 +120,7 @@ class FunctionalTestCaseBootstrapUtility {
 	 * @return void
 	 */
 	protected function removeOldInstanceIfExists() {
-		if (is_dir(static::$instancePath)) {
+		if (is_dir($this->instancePath)) {
 			$this->removeInstance();
 		}
 	}
@@ -140,10 +141,10 @@ class FunctionalTestCaseBootstrapUtility {
 			'/uploads'
 		);
 		foreach ($foldersToCreate as $folder) {
-			$success = mkdir(static::$instancePath . $folder);
+			$success = mkdir($this->instancePath . $folder);
 			if (!$success) {
 				throw new Exception(
-					'Creating directory failed: ' . static::$instancePath . $folder,
+					'Creating directory failed: ' . $this->instancePath . $folder,
 					1376657189
 				);
 			}
@@ -158,8 +159,8 @@ class FunctionalTestCaseBootstrapUtility {
 	 */
 	protected function setUpInstanceCoreLinks() {
 		$linksToSet = array(
-			ORIGINAL_ROOT . 'typo3' => static::$instancePath . '/typo3',
-			ORIGINAL_ROOT . 'index.php' => static::$instancePath . '/index.php'
+			ORIGINAL_ROOT . 'typo3' => $this->instancePath . '/typo3',
+			ORIGINAL_ROOT . 'index.php' => $this->instancePath . '/index.php'
 		);
 		foreach ($linksToSet as $from => $to) {
 			$success = symlink($from,  $to);
@@ -188,7 +189,7 @@ class FunctionalTestCaseBootstrapUtility {
 				);
 			}
 			$absoluteExtensionPath = ORIGINAL_ROOT . $extensionPath;
-			$destinationPath = static::$instancePath . '/typo3conf/ext/'. basename($absoluteExtensionPath);
+			$destinationPath = $this->instancePath . '/typo3conf/ext/'. basename($absoluteExtensionPath);
 			$success = symlink($absoluteExtensionPath, $destinationPath);
 			if (!$success) {
 				throw new Exception(
@@ -214,8 +215,9 @@ class FunctionalTestCaseBootstrapUtility {
 
 		$finalConfigurationArray['DB'] = $originalConfigurationArray['DB'];
 		// Calculate and set new database name
-		static::$databaseName = $originalConfigurationArray['DB']['database'] . '_test_' . static::$identifier;
-		$finalConfigurationArray['DB']['database'] = static::$databaseName;
+		$this->originalDatabaseName = $originalConfigurationArray['DB']['database'];
+		$this->databaseName = $this->originalDatabaseName . '_test_' . $this->identifier;
+		$finalConfigurationArray['DB']['database'] = $this->databaseName;
 
 		// Determine list of additional extensions to load
 		$extensionNamesOfTestExtensions = array();
@@ -226,7 +228,7 @@ class FunctionalTestCaseBootstrapUtility {
 		$finalConfigurationArray['EXT']['extListArray'] = $extensionsToLoad;
 
 		$result = $this->writeFile(
-			static::$instancePath . '/typo3conf/LocalConfiguration.php',
+			$this->instancePath . '/typo3conf/LocalConfiguration.php',
 			'<?php' . chr(10) .
 			'return ' .
 			$this->arrayExport(
@@ -246,16 +248,16 @@ class FunctionalTestCaseBootstrapUtility {
 	 * @return void
 	 */
 	protected function setUpBasicTypo3Bootstrap() {
-		$_SERVER['PWD'] = static::$instancePath;
+		$_SERVER['PWD'] = $this->instancePath;
 		$_SERVER['argv'][0] = 'index.php';
 
 		define('TYPO3_MODE', 'BE');
 		define('TYPO3_cliMode', TRUE);
 
-		require static::$instancePath . '/typo3/sysext/core/Classes/Core/CliBootstrap.php';
+		require $this->instancePath . '/typo3/sysext/core/Classes/Core/CliBootstrap.php';
 		\TYPO3\CMS\Core\Core\CliBootstrap::checkEnvironmentOrDie();
 
-		require static::$instancePath . '/typo3/sysext/core/Classes/Core/Bootstrap.php';
+		require $this->instancePath . '/typo3/sysext/core/Classes/Core/Bootstrap.php';
 		\TYPO3\CMS\Core\Core\Bootstrap::getInstance()
 			->baseSetup('')
 			->loadConfigurationAndInitialize(FALSE)
@@ -274,16 +276,21 @@ class FunctionalTestCaseBootstrapUtility {
 		/** @var \TYPO3\CMS\Core\Database\DatabaseConnection $database */
 		$database = $GLOBALS['TYPO3_DB'];
 		$database->sql_pconnect();
-		// @TODO: Test if database exists already and drop if so (eg. because of a fatal)
-		$createDatabaseResult = $database->admin_query('CREATE DATABASE `' . static::$databaseName . '`');
+		// Drop database in case a previous test had a fatal and did not clean up properly
+		$database->admin_query('DROP DATABASE IF EXISTS `' . $this->databaseName . '`');
+		$createDatabaseResult = $database->admin_query('CREATE DATABASE `' . $this->databaseName . '`');
 		if (!$createDatabaseResult) {
+			$user = $GLOBALS['TYPO3_CONF_VARS']['DB']['username'];
+			$host = $GLOBALS['TYPO3_CONF_VARS']['DB']['host'];
 			throw new Exception(
-				'Unable to create database with name ' . static::$databaseName . ' permission problem?',
+				'Unable to create database with name ' . $this->databaseName . '. This is probably a permission problem.'
+				. ' For this instance this could be fixed executing'
+				. ' "GRANT ALL ON `' . $this->originalDatabaseName . '_test_%`.* TO `' . $user . '`@`' . $host . '`;"',
 				1376579070
 			);
 		}
-		$database->setDatabaseName(static::$databaseName);
-		$database->sql_select_db(static::$databaseName);
+		$database->setDatabaseName($this->databaseName);
+		$database->sql_select_db($this->databaseName);
 	}
 
 	/**
@@ -329,10 +336,12 @@ class FunctionalTestCaseBootstrapUtility {
 	 * @return void
 	 */
 	protected function tearDownTestDatabase() {
-		$result = $GLOBALS['TYPO3_DB']->admin_query('DROP DATABASE `' . static::$databaseName . '`');
+		/** @var \TYPO3\CMS\Core\Database\DatabaseConnection $database */
+		$database = $GLOBALS['TYPO3_DB'];
+		$result = $database->admin_query('DROP DATABASE `' . $this->databaseName . '`');
 		if (!$result) {
 			throw new Exception(
-				'Dropping test database ' . static::$databaseName . ' failed',
+				'Dropping test database ' . $this->databaseName . ' failed',
 				1376583188
 			);
 		}
@@ -345,10 +354,10 @@ class FunctionalTestCaseBootstrapUtility {
 	 * @return void
 	 */
 	protected function removeInstance() {
-		$success = $this->rmdir(static::$instancePath, TRUE);
+		$success = $this->rmdir($this->instancePath, TRUE);
 		if (!$success) {
 			throw new Exception(
-				'Can not remove folder: ' . static::$instancePath,
+				'Can not remove folder: ' . $this->instancePath,
 				1376657210
 			);
 		}
