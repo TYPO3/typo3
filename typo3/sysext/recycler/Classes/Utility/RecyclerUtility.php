@@ -23,6 +23,9 @@ namespace TYPO3\CMS\Recycler\Utility;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+
 /**
  * Helper class for the 'recycler' extension.
  *
@@ -48,14 +51,14 @@ class RecyclerUtility {
 		// First, resetting flags.
 		$hasAccess = 0;
 		$calcPRec = $row;
-		\TYPO3\CMS\Backend\Utility\BackendUtility::fixVersioningPid($table, $calcPRec);
+		BackendUtility::fixVersioningPid($table, $calcPRec);
 		if (is_array($calcPRec)) {
 			if ($table == 'pages') {
 				// If pages:
 				$CALC_PERMS = $GLOBALS['BE_USER']->calcPerms($calcPRec);
 				$hasAccess = $CALC_PERMS & 2 ? 1 : 0;
 			} else {
-				$CALC_PERMS = $GLOBALS['BE_USER']->calcPerms(\TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('pages', $calcPRec['pid']));
+				$CALC_PERMS = $GLOBALS['BE_USER']->calcPerms(BackendUtility::getRecord('pages', $calcPRec['pid']));
 				// Fetching pid-record first.
 				$hasAccess = $CALC_PERMS & 16 ? 1 : 0;
 			}
@@ -90,9 +93,9 @@ class RecyclerUtility {
 			if (is_resource($res)) {
 				$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 				$GLOBALS['TYPO3_DB']->sql_free_result($res);
-				\TYPO3\CMS\Backend\Utility\BackendUtility::workspaceOL('pages', $row);
+				BackendUtility::workspaceOL('pages', $row);
 				if (is_array($row)) {
-					\TYPO3\CMS\Backend\Utility\BackendUtility::fixVersioningPid('pages', $row);
+					BackendUtility::fixVersioningPid('pages', $row);
 					$uid = $row['pid'];
 					$output = '/' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($row['title'], $titleLimit)) . $output;
 					if ($row['deleted']) {

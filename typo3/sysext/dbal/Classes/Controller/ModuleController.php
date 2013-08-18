@@ -25,6 +25,8 @@ namespace TYPO3\CMS\Dbal\Controller;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+
 /**
  * Script class; Backend module for DBAL extension
  *
@@ -62,7 +64,7 @@ class ModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	public function main() {
 		$this->thisScript = 'mod.php?M=' . $this->MCONF['name'];
 		// Clean up settings:
-		$this->MOD_SETTINGS = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleData($this->MOD_MENU, \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('SET'), $this->MCONF['name']);
+		$this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('SET'), $this->MCONF['name']);
 		// Draw the header
 		$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
@@ -78,7 +80,7 @@ class ModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		$this->content .= $this->doc->startPage($GLOBALS['LANG']->getLL('title'));
 		$this->content .= $this->doc->header($GLOBALS['LANG']->getLL('title'));
 		$this->content .= $this->doc->spacer(5);
-		$this->content .= $this->doc->section('', $this->doc->funcMenu('', \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncMenu(0, 'SET[function]', $this->MOD_SETTINGS['function'], $this->MOD_MENU['function'])));
+		$this->content .= $this->doc->section('', $this->doc->funcMenu('', BackendUtility::getFuncMenu(0, 'SET[function]', $this->MOD_SETTINGS['function'], $this->MOD_MENU['function'])));
 		// Debug log:
 		switch ($this->MOD_SETTINGS['function']) {
 			case 'info':
@@ -462,7 +464,7 @@ updateQryForm(\'' . $input['QUERY'] . '\');
 				while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 					$tRows[] = '
 							<tr>
-								<td>' . \TYPO3\CMS\Backend\Utility\BackendUtility::datetime($row['tstamp']) . '</td>
+								<td>' . BackendUtility::datetime($row['tstamp']) . '</td>
 								<td>' . htmlspecialchars($row['script']) . '</td>
 								<td>' . htmlspecialchars($row['tablename']) . '</td>
 									<td>' . str_replace(array('\'\'', '""', 'IS NULL', 'IS NOT NULL'), array('<span style="background-color:#ff0000;color:#ffffff;padding:2px;font-weight:bold;">\'\'</span>', '<span style="background-color:#ff0000;color:#ffffff;padding:2px;font-weight:bold;">""</span>', '<span style="background-color:#00ff00;color:#ffffff;padding:2px;font-weight:bold;">IS NULL</span>', '<span style="background-color:#00ff00;color:#ffffff;padding:2px;font-weight:bold;">IS NOT NULL</span>'), htmlspecialchars($row['whereclause'])) . '</td>
@@ -510,7 +512,7 @@ updateQryForm(\'' . $input['QUERY'] . '\');
 					while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 						$tRows[] = '
 								<tr>
-									<td>' . \TYPO3\CMS\Backend\Utility\BackendUtility::datetime($row['tstamp']) . '</td>
+									<td>' . BackendUtility::datetime($row['tstamp']) . '</td>
 									<td>' . htmlspecialchars($row['qrycount']) . '</td>
 									<td>' . ($row['error'] ? '<strong style="color:#f00">ERR</strong>' : '') . '</td>
 									<td>' . htmlspecialchars($row['calc_sum']) . '</td>

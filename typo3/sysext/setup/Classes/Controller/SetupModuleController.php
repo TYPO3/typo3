@@ -27,6 +27,7 @@ namespace TYPO3\CMS\Setup\Controller;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -290,7 +291,7 @@ class SetupModuleController {
 		$this->doc = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->setModuleTemplate('EXT:setup/Resources/Private/Templates/setup.html');
-		$this->doc->form = '<form action="' . \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('user_setup') . '" method="post" name="usersetup" enctype="application/x-www-form-urlencoded">';
+		$this->doc->form = '<form action="' . BackendUtility::getModuleUrl('user_setup') . '" method="post" name="usersetup" enctype="application/x-www-form-urlencoded">';
 		$this->doc->tableLayout = array(
 			'defRow' => array(
 				'0' => array('<td class="td-label">', '</td>'),
@@ -336,7 +337,7 @@ class SetupModuleController {
 			';
 		}
 		if ($this->pagetreeNeedsRefresh) {
-			\TYPO3\CMS\Backend\Utility\BackendUtility::setUpdateSignal('updatePageTree');
+			BackendUtility::setUpdateSignal('updatePageTree');
 		}
 		// Start page:
 		$this->doc->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/md5.js');
@@ -418,7 +419,7 @@ class SetupModuleController {
 			'save' => '',
 			'shortcut' => ''
 		);
-		$buttons['csh'] = \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('_MOD_user_setup', '', $GLOBALS['BACK_PATH'], '|', TRUE);
+		$buttons['csh'] = BackendUtility::cshItem('_MOD_user_setup', '', $GLOBALS['BACK_PATH'], '|', TRUE);
 		$buttons['save'] = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-save', array('html' => '<input type="image" name="data[save]" class="c-inputButton" src="clear.gif" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc', TRUE) . '" />'));
 		if ($GLOBALS['BE_USER']->mayMakeShortcut()) {
 			$buttons['shortcut'] = $this->doc->makeShortcutIcon('', '', $this->MCONF['name']);
@@ -657,7 +658,7 @@ class SetupModuleController {
 		if ($GLOBALS['BE_USER']->isAdmin()) {
 			$this->simUser = intval(GeneralUtility::_GP('simUser'));
 			// Make user-selector:
-			$users = \TYPO3\CMS\Backend\Utility\BackendUtility::getUserNames('username,usergroup,usergroup_cached_list,uid,realName', \TYPO3\CMS\Backend\Utility\BackendUtility::BEenableFields('be_users'));
+			$users = BackendUtility::getUserNames('username,usergroup,usergroup_cached_list,uid,realName', BackendUtility::BEenableFields('be_users'));
 			$opt = array();
 			foreach ($users as $rr) {
 				if ($rr['uid'] != $GLOBALS['BE_USER']->user['uid']) {
@@ -665,7 +666,7 @@ class SetupModuleController {
 				}
 			}
 			if (count($opt)) {
-				$this->simulateSelector = '<select ' . $GLOBALS['TBE_TEMPLATE']->formWidth(20) . ' id="field_simulate" name="simulateUser" onchange="window.location.href=\'' . \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('user_setup') . '&simUser=\'+this.options[this.selectedIndex].value;"><option></option>' . implode('', $opt) . '</select>';
+				$this->simulateSelector = '<select ' . $GLOBALS['TBE_TEMPLATE']->formWidth(20) . ' id="field_simulate" name="simulateUser" onchange="window.location.href=\'' . BackendUtility::getModuleUrl('user_setup') . '&simUser=\'+this.options[this.selectedIndex].value;"><option></option>' . implode('', $opt) . '</select>';
 			}
 		}
 		// This can only be set if the previous code was executed.
@@ -754,7 +755,7 @@ class SetupModuleController {
 		} elseif (!GeneralUtility::inList('language,simuser,reset', $str)) {
 			$field = 'option_' . $str;
 		}
-		return \TYPO3\CMS\Backend\Utility\BackendUtility::wrapInHelp($context, $field, $label);
+		return BackendUtility::wrapInHelp($context, $field, $label);
 	}
 
 	/**

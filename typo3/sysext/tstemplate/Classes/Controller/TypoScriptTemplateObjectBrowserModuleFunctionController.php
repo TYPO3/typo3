@@ -27,6 +27,7 @@ namespace TYPO3\CMS\TsTemplate\Controller;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -353,7 +354,7 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends \TYPO3\CMS
 			$urlParameters = array(
 				'id' => $this->pObj->id
 			);
-			$aHref = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('web_ts', $urlParameters);
+			$aHref = BackendUtility::getModuleUrl('web_ts', $urlParameters);
 			if (!$this->pObj->MOD_SETTINGS[('ts_browser_TLKeys_' . $bType)][$this->pObj->sObj]) {
 				if (count($theSetup)) {
 					$out = '<a href="' . htmlspecialchars(($aHref . '&addKey[' . rawurlencode($this->pObj->sObj) . ']=1&SET[ts_browser_toplevel_' . $bType . ']=' . rawurlencode($this->pObj->sObj))) . '">';
@@ -379,14 +380,14 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends \TYPO3\CMS
 				$tmpl->tsbrowser_depthKeys = $tmpl->ext_getSearchKeys($theSetup, '', GeneralUtility::_POST('search_field'), array());
 			}
 			$menu = '<div class="tsob-menu"><label>' . $GLOBALS['LANG']->getLL('browse') . '</label>';
-			$menu .= \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncMenu($this->pObj->id, 'SET[ts_browser_type]', $bType, $this->pObj->MOD_MENU['ts_browser_type']);
+			$menu .= BackendUtility::getFuncMenu($this->pObj->id, 'SET[ts_browser_type]', $bType, $this->pObj->MOD_MENU['ts_browser_type']);
 			$menu .= '<label for="ts_browser_toplevel_' . $bType . '">' . $GLOBALS['LANG']->getLL('objectList') . '</label>';
-			$menu .= \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncMenu($this->pObj->id, 'SET[ts_browser_toplevel_' . $bType . ']', $this->pObj->MOD_SETTINGS['ts_browser_toplevel_' . $bType], $this->pObj->MOD_MENU['ts_browser_toplevel_' . $bType]);
+			$menu .= BackendUtility::getFuncMenu($this->pObj->id, 'SET[ts_browser_toplevel_' . $bType . ']', $this->pObj->MOD_SETTINGS['ts_browser_toplevel_' . $bType], $this->pObj->MOD_MENU['ts_browser_toplevel_' . $bType]);
 			//search
 			$menu .= '<label for="search_field">' . $GLOBALS['LANG']->getLL('search') . '</label>';
 			$menu .= '<input type="Text" name="search_field" id="search_field" value="' . htmlspecialchars($POST['search_field']) . '"' . $GLOBALS['TBE_TEMPLATE']->formWidth(20) . '/>';
 			$menu .= '<input type="Submit" name="search" class="tsob-search-submit" value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xlf:search') . '" />';
-			$menu .= \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck($this->pObj->id, 'SET[ts_browser_regexsearch]', $this->pObj->MOD_SETTINGS['ts_browser_regexsearch'], '', '', 'id="checkTs_browser_regexsearch"');
+			$menu .= BackendUtility::getFuncCheck($this->pObj->id, 'SET[ts_browser_regexsearch]', $this->pObj->MOD_SETTINGS['ts_browser_regexsearch'], '', '', 'id="checkTs_browser_regexsearch"');
 			$menu .= '<label for="checkTs_browser_regexsearch">' . $GLOBALS['LANG']->getLL('regExp') . '</label>';
 			$menu .= '</div>';
 			$theOutput .= $this->pObj->doc->section('', '<nobr>' . $menu . '</nobr>');
@@ -400,7 +401,7 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends \TYPO3\CMS
 			$urlParameters = array(
 				'id' => $this->pObj->id
 			);
-			$aHref = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('web_ts', $urlParameters);
+			$aHref = BackendUtility::getModuleUrl('web_ts', $urlParameters);
 			// Parser Errors:
 			$pEkey = $bType == 'setup' ? 'config' : 'constants';
 			if (count($tmpl->parserErrors[$pEkey])) {
@@ -436,15 +437,15 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends \TYPO3\CMS
 			';
 			// second row options
 			$menu = '<div class="tsob-menu-row2">';
-			$menu .= \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck($this->pObj->id, 'SET[ts_browser_showComments]', $this->pObj->MOD_SETTINGS['ts_browser_showComments'], '', '', 'id="checkTs_browser_showComments"');
+			$menu .= BackendUtility::getFuncCheck($this->pObj->id, 'SET[ts_browser_showComments]', $this->pObj->MOD_SETTINGS['ts_browser_showComments'], '', '', 'id="checkTs_browser_showComments"');
 			$menu .= '<label for="checkTs_browser_showComments">' . $GLOBALS['LANG']->getLL('displayComments') . '</label>';
-			$menu .= \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck($this->pObj->id, 'SET[ts_browser_alphaSort]', $this->pObj->MOD_SETTINGS['ts_browser_alphaSort'], '', '', 'id="checkTs_browser_alphaSort"');
+			$menu .= BackendUtility::getFuncCheck($this->pObj->id, 'SET[ts_browser_alphaSort]', $this->pObj->MOD_SETTINGS['ts_browser_alphaSort'], '', '', 'id="checkTs_browser_alphaSort"');
 			$menu .= '<label for="checkTs_browser_alphaSort">' . $GLOBALS['LANG']->getLL('sortAlphabetically') . '</label>';
-			$menu .= \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck($this->pObj->id, 'SET[ts_browser_fixedLgd]', $this->pObj->MOD_SETTINGS['ts_browser_fixedLgd'], '', '', 'id="checkTs_browser_fixedLgd"');
+			$menu .= BackendUtility::getFuncCheck($this->pObj->id, 'SET[ts_browser_fixedLgd]', $this->pObj->MOD_SETTINGS['ts_browser_fixedLgd'], '', '', 'id="checkTs_browser_fixedLgd"');
 			$menu .= '<label for="checkTs_browser_fixedLgd">' . $GLOBALS['LANG']->getLL('cropLines') . '</label>';
 			if ($bType == 'setup' && !$this->pObj->MOD_SETTINGS['ts_browser_fixedLgd']) {
 				$menu .= '<br /><br /><label>' . $GLOBALS['LANG']->getLL('displayConstants') . '</label>';
-				$menu .= \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncMenu($this->pObj->id, 'SET[ts_browser_const]', $this->pObj->MOD_SETTINGS['ts_browser_const'], $this->pObj->MOD_MENU['ts_browser_const']);
+				$menu .= BackendUtility::getFuncMenu($this->pObj->id, 'SET[ts_browser_const]', $this->pObj->MOD_SETTINGS['ts_browser_const'], $this->pObj->MOD_MENU['ts_browser_const']);
 			}
 			$menu .= '</div>';
 			$theOutput .= $this->pObj->doc->section($GLOBALS['LANG']->getLL('displayOptions'), '<nobr>' . $menu . '</nobr>', 0, 1);

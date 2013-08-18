@@ -27,6 +27,8 @@ namespace TYPO3\CMS\WizardSortpages\View;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+
 /**
  * Creates the "Sort pages" wizard
  *
@@ -79,7 +81,7 @@ class SortPagesWizardModuleFunction extends \TYPO3\CMS\Backend\Module\AbstractFu
 					}
 					$tce->start(array(), $cmd);
 					$tce->process_cmdmap();
-					\TYPO3\CMS\Backend\Utility\BackendUtility::setUpdateSignal('updatePageTree');
+					BackendUtility::setUpdateSignal('updatePageTree');
 				}
 			}
 			$menuItems = $sys_pages->getMenu($this->pObj->id, '*', 'sorting', '', FALSE);
@@ -95,11 +97,11 @@ class SortPagesWizardModuleFunction extends \TYPO3\CMS\Backend\Module\AbstractFu
 				foreach ($menuItems as $rec) {
 					$m_perms_clause = $GLOBALS['BE_USER']->getPagePermsClause(2);
 					// edit permissions for that page!
-					$pRec = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('pages', $rec['uid'], 'uid', ' AND ' . $m_perms_clause);
+					$pRec = BackendUtility::getRecord('pages', $rec['uid'], 'uid', ' AND ' . $m_perms_clause);
 					$lines[] = '<tr><td nowrap="nowrap">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('pages', $rec) . (!is_array($pRec) ? $GLOBALS['TBE_TEMPLATE']->rfw('<strong>' . $GLOBALS['LANG']->getLL('wiz_W', TRUE) . '</strong> ') : '') . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($rec['title'], $GLOBALS['BE_USER']->uc['titleLen'])) . '&nbsp;</td>
 					' . (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('cms') ? '<td nowrap="nowrap">' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($rec['subtitle'], $GLOBALS['BE_USER']->uc['titleLen'])) . '&nbsp;</td>' : '') . '
-					<td nowrap="nowrap">' . \TYPO3\CMS\Backend\Utility\BackendUtility::datetime($rec['tstamp']) . '&nbsp;&nbsp;</td>
-					<td nowrap="nowrap">' . \TYPO3\CMS\Backend\Utility\BackendUtility::datetime($rec['crdate']) . '&nbsp;&nbsp;</td>
+					<td nowrap="nowrap">' . BackendUtility::datetime($rec['tstamp']) . '&nbsp;&nbsp;</td>
+					<td nowrap="nowrap">' . BackendUtility::datetime($rec['crdate']) . '&nbsp;&nbsp;</td>
 					</tr>';
 				}
 				$theCode .= '<h4>' . $GLOBALS['LANG']->getLL('wiz_currentPageOrder', TRUE) . '</h4>
@@ -120,7 +122,7 @@ class SortPagesWizardModuleFunction extends \TYPO3\CMS\Backend\Module\AbstractFu
 				$theCode .= $flashMessage->render();
 			}
 			// CSH:
-			$theCode .= \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('_MOD_web_func', 'tx_wizardsortpages', $GLOBALS['BACK_PATH'], '<br />|');
+			$theCode .= BackendUtility::cshItem('_MOD_web_func', 'tx_wizardsortpages', $GLOBALS['BACK_PATH'], '<br />|');
 			$out .= $this->pObj->doc->section('', $theCode, 0, 1);
 		} else {
 			$out .= $this->pObj->doc->section('', 'Sorry, this function is not available in the current draft workspace!', 0, 1, 1);

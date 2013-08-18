@@ -1,6 +1,5 @@
 <?php
 namespace TYPO3\CMS\Backend\Tests\Unit\Utility;
-use TYPO3\CMS\Backend\Utility;
 
 /***************************************************************
  * Copyright notice
@@ -25,6 +24,8 @@ use TYPO3\CMS\Backend\Utility;
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+
 /**
  * Testcase for \TYPO3\CMS\Core\Utility\BackendUtility
  *
@@ -38,7 +39,7 @@ class BackendUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	private $fixture;
 
 	public function setUp() {
-		$this->fixture = new Utility\BackendUtility();
+		$this->fixture = new BackendUtility();
 	}
 
 	public function tearDown() {
@@ -156,7 +157,7 @@ class BackendUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function getProcessedValueForGroupWithOneAllowedTable() {
-		/** @var \PHPUnit_Framework_MockObject_MockObject|Utility\BackendUtility $fixture */
+		/** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Backend\Utility\BackendUtility $fixture */
 		$fixture = $this->getMock('TYPO3\\CMS\\Backend\\Utility\\BackendUtility', array('getRecordWSOL'));
 		$fixture->staticExpects($this->at(0))->method('getRecordWSOL')->will($this->returnValue(array('title' => 'Page 1')));
 		$fixture->staticExpects($this->at(1))->method('getRecordWSOL')->will($this->returnValue(array('title' => 'Page 2')));
@@ -167,7 +168,7 @@ class BackendUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function getProcessedValueForGroupWithMultipleAllowedTables() {
-		/** @var \PHPUnit_Framework_MockObject_MockObject|Utility\BackendUtility $fixture */
+		/** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Backend\Utility\BackendUtility $fixture */
 		$fixture = $this->getMock('TYPO3\\CMS\\Backend\\Utility\\BackendUtility', array('getRecordWSOL'));
 		$fixture->staticExpects($this->at(0))->method('getRecordWSOL')->will($this->returnValue(array('title' => 'Page 1')));
 		$fixture->staticExpects($this->at(1))->method('getRecordWSOL')->will($this->returnValue(array('header' => 'Content 2')));
@@ -453,7 +454,7 @@ class BackendUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function getFuncCheckReturnsInputTagWithValueAttribute() {
-		$this->assertStringMatchesFormat('<input %Svalue="1"%S/>', Utility\BackendUtility::getFuncCheck('params', 'test', TRUE));
+		$this->assertStringMatchesFormat('<input %Svalue="1"%S/>', BackendUtility::getFuncCheck('params', 'test', TRUE));
 	}
 
 	/**
@@ -669,7 +670,7 @@ class BackendUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function getExcludeFieldsReturnsCorrectFieldList($tca, $expected) {
 		$GLOBALS['TCA'] = $tca;
-		$this->assertSame($expected, \TYPO3\CMS\Backend\Utility\BackendUtility::getExcludeFields());
+		$this->assertSame($expected, BackendUtility::getExcludeFields());
 	}
 
 	/**
@@ -682,7 +683,7 @@ class BackendUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function viewOnClickReturnsOnClickCodeWithAlternativeUrl() {
 		$alternativeUrl = 'https://typo3.org/about/typo3-the-cms/the-history-of-typo3/#section';
 		$onclickCode = 'var previewWin = window.open(\'' . $alternativeUrl . '\',\'newTYPO3frontendWindow\');';
-		$this->assertStringMatchesFormat($onclickCode, Utility\BackendUtility::viewOnClick(NULL, NULL, NULL, NULL, $alternativeUrl, NULL, FALSE));
+		$this->assertStringMatchesFormat($onclickCode, BackendUtility::viewOnClick(NULL, NULL, NULL, NULL, $alternativeUrl, NULL, FALSE));
 	}
 
 	/**
@@ -877,7 +878,7 @@ class BackendUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @dataProvider replaceMarkersInWhereClauseDataProvider
 	 */
 	public function replaceMarkersInWhereClauseReturnsValidWhereClause($whereClause, $tsConfig, $expected) {
-		$this->assertSame($expected, Utility\BackendUtility::replaceMarkersInWhereClause($whereClause, 'dummytable', 'dummyfield', $tsConfig));
+		$this->assertSame($expected, BackendUtility::replaceMarkersInWhereClause($whereClause, 'dummytable', 'dummyfield', $tsConfig));
 	}
 }
 ?>

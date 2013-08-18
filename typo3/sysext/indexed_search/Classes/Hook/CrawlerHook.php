@@ -27,6 +27,7 @@ namespace TYPO3\CMS\IndexedSearch\Hook;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -72,7 +73,7 @@ class CrawlerHook {
 				AND (starttime=0 OR starttime<=' . $GLOBALS['EXEC_TIME'] . ')
 				AND timer_next_indexing<' . $GLOBALS['EXEC_TIME'] . '
 				AND set_id=0
-				' . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('index_config'));
+				' . BackendUtility::deleteClause('index_config'));
 		// For each configuration, check if it should be executed and if so, start:
 		foreach ($indexingConfigurations as $cfgRec) {
 			// Generate a unique set-ID:
@@ -249,7 +250,7 @@ class CrawlerHook {
 			$rl = $this->getUidRootLineForClosestTemplate($cfgRec['pid']);
 			// Select
 			$recs = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', $cfgRec['table2index'], 'pid = ' . intval($pid) . '
-							AND uid > ' . intval($session_data['uid']) . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($cfgRec['table2index']) . \TYPO3\CMS\Backend\Utility\BackendUtility::BEenableFields($cfgRec['table2index']), '', 'uid', $numberOfRecords);
+							AND uid > ' . intval($session_data['uid']) . BackendUtility::deleteClause($cfgRec['table2index']) . BackendUtility::BEenableFields($cfgRec['table2index']), '', 'uid', $numberOfRecords);
 			// Traverse:
 			if (count($recs)) {
 				foreach ($recs as $r) {
@@ -388,7 +389,7 @@ class CrawlerHook {
 		// Base page uid:
 		$pageUid = intval($params['url']);
 		// Get array of URLs from page:
-		$pageRow = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('pages', $pageUid);
+		$pageRow = BackendUtility::getRecord('pages', $pageUid);
 		$res = $pObj->getUrlsForPageRow($pageRow);
 		$duplicateTrack = array();
 		// Registry for duplicates
@@ -403,7 +404,7 @@ class CrawlerHook {
 		// Add subpages to log now:
 		if ($params['depth'] < $cfgRec['depth']) {
 			// Subpages selected
-			$recs = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid,title', 'pages', 'pid = ' . intval($pageUid) . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('pages'));
+			$recs = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid,title', 'pages', 'pid = ' . intval($pageUid) . BackendUtility::deleteClause('pages'));
 			// Traverse subpages and add to queue:
 			if (count($recs)) {
 				foreach ($recs as $r) {
@@ -431,7 +432,7 @@ class CrawlerHook {
 	 */
 	public function cleanUpOldRunningConfigurations() {
 		// Lookup running index configurations:
-		$runningIndexingConfigurations = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid,set_id', 'index_config', 'set_id<>0' . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('index_config'));
+		$runningIndexingConfigurations = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid,set_id', 'index_config', 'set_id<>0' . BackendUtility::deleteClause('index_config'));
 		// For each running configuration, look up how many log entries there are which are scheduled for execution and if none, clear the "set_id" (means; Processing was DONE)
 		foreach ($runningIndexingConfigurations as $cfgRec) {
 			// Look for ended processes:
@@ -739,7 +740,7 @@ class CrawlerHook {
 				$this->deleteFromIndex($id);
 			}
 			// Get full record and if exists, search for indexing configurations:
-			$currentRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($table, $id);
+			$currentRecord = BackendUtility::getRecord($table, $id);
 			if (is_array($currentRecord)) {
 				// Select all (not running) indexing configurations of type "record" (1) and which points to this table and is located on the same page as the record or pointing to the right source PID
 				$indexingConfigurations = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'index_config', 'hidden=0
@@ -752,7 +753,7 @@ class CrawlerHook {
 								OR (alternative_source_pid=' . intval($currentRecord['pid']) . ')
 							)
 						AND records_indexonchange=1
-						' . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('index_config'));
+						' . BackendUtility::deleteClause('index_config'));
 				foreach ($indexingConfigurations as $cfgRec) {
 					$this->indexSingleRecord($currentRecord, $cfgRec);
 				}

@@ -27,6 +27,7 @@ namespace TYPO3\CMS\WizardCrpages\Controller;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -84,7 +85,7 @@ class CreatePagesWizardModuleFunctionController extends \TYPO3\CMS\Backend\Modul
 	public function main() {
 		$GLOBALS['LANG']->includeLLFile('EXT:wizard_crpages/locallang.xlf');
 		$theCode = '';
-		$this->tsConfig = \TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig($this->pObj->id);
+		$this->tsConfig = BackendUtility::getPagesTSconfig($this->pObj->id);
 		$this->pagesTsConfig = isset($this->tsConfig['TCEFORM.']['pages.']) ? $this->tsConfig['TCEFORM.']['pages.'] : array();
 		// Create loremIpsum code:
 		if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('lorem_ipsum')) {
@@ -92,7 +93,7 @@ class CreatePagesWizardModuleFunctionController extends \TYPO3\CMS\Backend\Modul
 		}
 		// Create new pages here?
 		$m_perms_clause = $GLOBALS['BE_USER']->getPagePermsClause(8);
-		$pRec = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('pages', $this->pObj->id, 'uid', ' AND ' . $m_perms_clause);
+		$pRec = BackendUtility::getRecord('pages', $this->pObj->id, 'uid', ' AND ' . $m_perms_clause);
 		$sys_pages = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
 		$menuItems = $sys_pages->getMenu($this->pObj->id, '*', 'sorting', '', 0);
 		if (is_array($pRec)) {
@@ -134,7 +135,7 @@ class CreatePagesWizardModuleFunctionController extends \TYPO3\CMS\Backend\Modul
 					}
 					$tce->start($data, array());
 					$tce->process_datamap();
-					\TYPO3\CMS\Backend\Utility\BackendUtility::setUpdateSignal('updatePageTree');
+					BackendUtility::setUpdateSignal('updatePageTree');
 					$flashMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', '', $GLOBALS['LANG']->getLL('wiz_newPages_create'));
 				} else {
 					$flashMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', '', $GLOBALS['LANG']->getLL('wiz_newPages_noCreate'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
@@ -144,9 +145,9 @@ class CreatePagesWizardModuleFunctionController extends \TYPO3\CMS\Backend\Modul
 				$menuItems = $sys_pages->getMenu($this->pObj->id, '*', 'sorting', '', 0);
 				$lines = array();
 				foreach ($menuItems as $rec) {
-					\TYPO3\CMS\Backend\Utility\BackendUtility::workspaceOL('pages', $rec);
+					BackendUtility::workspaceOL('pages', $rec);
 					if (is_array($rec)) {
-						$lines[] = '<nobr>' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('pages', $rec, array('title' => \TYPO3\CMS\Backend\Utility\BackendUtility::titleAttribForPages($rec, '', FALSE))) . htmlspecialchars(GeneralUtility::fixed_lgd_cs($rec['title'], $GLOBALS['BE_USER']->uc['titleLen'])) . '</nobr>';
+						$lines[] = '<nobr>' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('pages', $rec, array('title' => BackendUtility::titleAttribForPages($rec, '', FALSE))) . htmlspecialchars(GeneralUtility::fixed_lgd_cs($rec['title'], $GLOBALS['BE_USER']->uc['titleLen'])) . '</nobr>';
 					}
 				}
 				$theCode .= '<h4>' . $GLOBALS['LANG']->getLL('wiz_newPages_currentMenu') . '</h4>' . implode('<br />', $lines);
@@ -191,7 +192,7 @@ class CreatePagesWizardModuleFunctionController extends \TYPO3\CMS\Backend\Modul
 			$theCode .= GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', '', $GLOBALS['LANG']->getLL('wiz_newPages_errorMsg1'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR)->render();
 		}
 		// CSH
-		$theCode .= \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('_MOD_web_func', 'tx_wizardcrpages', $GLOBALS['BACK_PATH'], '<br />|');
+		$theCode .= BackendUtility::cshItem('_MOD_web_func', 'tx_wizardcrpages', $GLOBALS['BACK_PATH'], '<br />|');
 		$out = $this->pObj->doc->header($GLOBALS['LANG']->getLL('wiz_crMany'));
 		$out .= $this->pObj->doc->section('', $theCode, 0, 1);
 		return $out;

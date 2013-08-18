@@ -27,6 +27,7 @@ namespace TYPO3\CMS\Core\Utility\File;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -412,10 +413,10 @@ class ExtendedFileUtility extends \TYPO3\CMS\Core\Utility\File\BasicFileUtility 
 				foreach ($refIndexRecords as $fileReferenceRow) {
 					if ($fileReferenceRow['tablename'] === 'sys_file_reference') {
 						$row = $this->transformFileReferenceToRecordReference($fileReferenceRow);
-						$shortcutRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($row['tablename'], $row['recuid']);
+						$shortcutRecord = BackendUtility::getRecord($row['tablename'], $row['recuid']);
 						$icon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord($row['tablename'], $shortcutRecord);
 						$onClick = 'Clickmenu.show("' . $row['tablename'] . '", "' . $row['recuid'] . '", "1", "+info,history,edit", "|", "");return false;';
-						$shortcutContent[] = '<a href="#" oncontextmenu="' . htmlspecialchars($onClick) . '" onclick="' . htmlspecialchars($onClick) . '">' . $icon . '</a>' . htmlspecialchars((\TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle($row['tablename'], $shortcutRecord) . '  [' . \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordPath($shortcutRecord['pid'], '', 80) . ']'));
+						$shortcutContent[] = '<a href="#" oncontextmenu="' . htmlspecialchars($onClick) . '" onclick="' . htmlspecialchars($onClick) . '">' . $icon . '</a>' . htmlspecialchars((BackendUtility::getRecordTitle($row['tablename'], $shortcutRecord) . '  [' . BackendUtility::getRecordPath($shortcutRecord['pid'], '', 80) . ']'));
 					}
 				}
 

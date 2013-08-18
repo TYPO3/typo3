@@ -27,6 +27,7 @@ namespace TYPO3\CMS\Workspaces\ExtDirect;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -151,7 +152,7 @@ class ActionHandler extends \TYPO3\CMS\Workspaces\ExtDirect\AbstractHandler {
 	 * @return array
 	 */
 	public function sendToNextStageWindow($uid, $table, $t3ver_oid) {
-		$elementRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($table, $uid);
+		$elementRecord = BackendUtility::getRecord($table, $uid);
 		if (is_array($elementRecord)) {
 			$stageId = $elementRecord['t3ver_stage'];
 			if ($this->getStageService()->isValid($stageId)) {
@@ -180,7 +181,7 @@ class ActionHandler extends \TYPO3\CMS\Workspaces\ExtDirect\AbstractHandler {
 	 * @return array
 	 */
 	public function sendToPrevStageWindow($uid, $table) {
-		$elementRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($table, $uid);
+		$elementRecord = BackendUtility::getRecord($table, $uid);
 		if (is_array($elementRecord)) {
 			$stageId = $elementRecord['t3ver_stage'];
 			if ($this->getStageService()->isValid($stageId)) {
@@ -236,7 +237,7 @@ class ActionHandler extends \TYPO3\CMS\Workspaces\ExtDirect\AbstractHandler {
 		}
 		$recipients = array();
 		foreach ($uidOfRecipients as $userUid) {
-			$beUserRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('be_users', intval($userUid));
+			$beUserRecord = BackendUtility::getRecord('be_users', intval($userUid));
 			if (is_array($beUserRecord) && $beUserRecord['email'] !== '') {
 				$uc = $beUserRecord['uc'] ? unserialize($beUserRecord['uc']) : array();
 				$recipients[$beUserRecord['email']] = array(
@@ -498,7 +499,7 @@ class ActionHandler extends \TYPO3\CMS\Workspaces\ExtDirect\AbstractHandler {
 	 * @return array
 	 */
 	protected function getSentToStageWindow($nextStageId) {
-		$workspaceRec = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('sys_workspace', $this->getStageService()->getWorkspaceId());
+		$workspaceRec = BackendUtility::getRecord('sys_workspace', $this->getStageService()->getWorkspaceId());
 		$showNotificationFields = FALSE;
 		$stageTitle = $this->getStageService()->getStageTitle($nextStageId);
 		$result = array(
