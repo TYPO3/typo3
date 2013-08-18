@@ -25,7 +25,10 @@
 >
 	<testsuites>
 		<testsuite name="EXT:core tests">
-			<directory>../../../../typo3/sysext/core/Tests/Functional/Functional/</directory>
+			<directory>../../../../typo3/sysext/core/Tests/Functional/</directory>
+		</testsuite>
+		<testsuite name="EXT:workspaces tests">
+			<directory>../../../../typo3/sysext/workspaces/Tests/Functional/</directory>
 		</testsuite>
 	</testsuites>
 </phpunit>

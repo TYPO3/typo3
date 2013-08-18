@@ -48,23 +48,6 @@ abstract class BaseTestCase extends \PHPUnit_Framework_TestCase {
 	protected $backupStaticAttributes = FALSE;
 
 	/**
-	 * Returns absolute path to the Fixture folder if called with empty
-	 * $relativeFixturePath, returns path to a fixture file otherwise.
-	 *
-	 * Fixtures are expected to be located in a sub-folder called "Fixtures"
-	 * below the test case PHP file.
-	 *
-	 * @param string $relativeFixtureFile
-	 * @return string Absolute path with trailing slash
-	 */
-	protected function getFixturePath($relativeFixtureFile = '') {
-		$reflectionClass = new \ReflectionClass(get_class($this));
-		$fileLocationOfTestClass = $reflectionClass->getFileName();
-		$path = dirname($fileLocationOfTestClass) . '/Fixtures/' . $relativeFixtureFile;
-		return $path;
-	}
-
-	/**
 	 * Creates a mock object which allows for calling protected methods and access of protected properties.
 	 *
 	 * @param string $originalClassName name of class to create the mock object of, must not be empty
