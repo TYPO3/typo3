@@ -297,7 +297,7 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
 	 */
 	public function getContentElementCount($pageId, $sysLang) {
 		$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('uid', 'tt_content', 'pid=' . intval($pageId) . ' AND sys_language_uid=' . intval($sysLang) . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('tt_content') . \TYPO3\CMS\Backend\Utility\BackendUtility::versioningPlaceholderClause('tt_content'));
-		return $count ? $count : '-';
+		return $count ?: '-';
 	}
 
 }

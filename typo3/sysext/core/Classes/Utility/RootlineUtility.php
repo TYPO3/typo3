@@ -217,7 +217,7 @@ class RootlineUtility {
 				if ($this->languageUid > 0) {
 					$row = $this->pageContext->getPageOverlay($row, $this->languageUid);
 				}
-				$row = $this->enrichWithRelationFields(isset($row['_PAGES_OVERLAY_UID']) ? $row['_PAGES_OVERLAY_UID'] : $uid, $row);
+				$row = $this->enrichWithRelationFields($row['_PAGES_OVERLAY_UID'] ?: $uid, $row);
 				self::$pageRecordCache[$this->getCacheIdentifier($uid)] = $row;
 			}
 		}

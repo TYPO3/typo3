@@ -124,7 +124,7 @@ class StorageRepository extends AbstractRepository {
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 			'*',
 			$this->table,
-			($whereClause ? $whereClause : '1=1') . $this->getWhereClauseForEnabledFields()
+			($whereClause ?: '1=1') . $this->getWhereClauseForEnabledFields()
 		);
 
 		/** @var $driverRegistry Driver\DriverRegistry */

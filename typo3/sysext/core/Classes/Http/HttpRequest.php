@@ -79,10 +79,10 @@ class HttpRequest extends \HTTP_Request2 {
 			'ssl_verify_peer' => (bool) $GLOBALS['TYPO3_CONF_VARS']['HTTP']['ssl_verify_peer'],
 			'ssl_verify_host' => (bool) $GLOBALS['TYPO3_CONF_VARS']['HTTP']['ssl_verify_host'],
 			// we have to deal with Install Tool limitations and set this to NULL if it is empty
-			'ssl_cafile' => empty($GLOBALS['TYPO3_CONF_VARS']['HTTP']['ssl_cafile']) ? NULL : $GLOBALS['TYPO3_CONF_VARS']['HTTP']['ssl_cafile'],
-			'ssl_capath' => empty($GLOBALS['TYPO3_CONF_VARS']['HTTP']['ssl_capath']) ? NULL : $GLOBALS['TYPO3_CONF_VARS']['HTTP']['ssl_capath'],
-			'ssl_local_cert' => empty($GLOBALS['TYPO3_CONF_VARS']['HTTP']['ssl_local_cert']) ? NULL : $GLOBALS['TYPO3_CONF_VARS']['HTTP']['ssl_local_cert'],
-			'ssl_passphrase' => empty($GLOBALS['TYPO3_CONF_VARS']['HTTP']['ssl_passphrase']) ? NULL : $GLOBALS['TYPO3_CONF_VARS']['HTTP']['ssl_passphrase']
+			'ssl_cafile' => $GLOBALS['TYPO3_CONF_VARS']['HTTP']['ssl_cafile'] ?: NULL,
+			'ssl_capath' => $GLOBALS['TYPO3_CONF_VARS']['HTTP']['ssl_capath'] ?: NULL,
+			'ssl_local_cert' => $GLOBALS['TYPO3_CONF_VARS']['HTTP']['ssl_local_cert'] ?: NULL,
+			'ssl_passphrase' => $GLOBALS['TYPO3_CONF_VARS']['HTTP']['ssl_passphrase'] ?: NULL
 		);
 		$configuration = array_merge($default, $config);
 		$this->setConfig($configuration);

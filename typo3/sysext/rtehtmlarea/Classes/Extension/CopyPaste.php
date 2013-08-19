@@ -89,7 +89,7 @@ class CopyPaste extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 		$registerRTEinJavascriptString = '';
 		$button = 'paste';
 		if ($this->htmlAreaRTE->client['browser'] == 'gecko') {
-			$mozillaAllowClipboardURL = $this->thisConfig['buttons.'][$button . '.']['mozillaAllowClipboardURL'] ? $this->thisConfig['buttons.'][$button . '.']['mozillaAllowClipboardURL'] : $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extensionKey]['plugins']['CopyPaste']['mozillaAllowClipboardURL'];
+			$mozillaAllowClipboardURL = $this->thisConfig['buttons.'][$button . '.']['mozillaAllowClipboardURL'] ?: $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extensionKey]['plugins']['CopyPaste']['mozillaAllowClipboardURL'];
 			if ($mozillaAllowClipboardURL) {
 				if (!is_array($this->thisConfig['buttons.']) || !is_array($this->thisConfig['buttons.'][($button . '.')])) {
 					$registerRTEinJavascriptString .= '

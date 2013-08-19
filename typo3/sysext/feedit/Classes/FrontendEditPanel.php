@@ -290,7 +290,7 @@ class FrontendEditPanel {
 	protected function editPanelPreviewBorder($table, array $row, $content, $thick, array $conf = array()) {
 		if ($this->isDisabled($table, $row)) {
 			$thick = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($thick, 1, 100);
-			$color = $conf['color'] ? $conf['color'] : '#cccccc';
+			$color = $conf['color'] ?: '#cccccc';
 			if ($conf['innerWrap']) {
 				$content = $this->wrap($content, $conf['innerWrap']);
 			}

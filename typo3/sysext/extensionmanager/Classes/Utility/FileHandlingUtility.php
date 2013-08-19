@@ -199,12 +199,12 @@ class FileHandlingUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	protected function getAbsolutePathsToConfiguredDirectories(array $extension) {
 		$requestedDirectories = array();
-		$requestUploadFolder = isset($extension['uploadfolder']) ? (boolean)$extension['uploadfolder'] : FALSE;
+		$requestUploadFolder = (boolean) ($extension['uploadfolder'] ?: FALSE);
 		if ($requestUploadFolder) {
 			$requestedDirectories[] = $this->getAbsolutePath($this->getPathToUploadFolder($extension));
 		}
 
-		$requestCreateDirectories = empty($extension['createDirs']) ? FALSE : (string)$extension['createDirs'];
+		$requestCreateDirectories = $extension['createDirs'] ?: FALSE;
 		if ($requestCreateDirectories) {
 			foreach (GeneralUtility::trimExplode(',', $extension['createDirs']) as $directoryToCreate) {
 				$requestedDirectories[] = $this->getAbsolutePath($directoryToCreate);

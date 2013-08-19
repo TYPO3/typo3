@@ -216,7 +216,7 @@ class PhpassSalt extends \TYPO3\CMS\Saltedpasswords\Salt\AbstractSalt implements
 	 * @see setHashCount()
 	 */
 	public function getHashCount() {
-		return isset(self::$hashCount) ? self::$hashCount : self::HASH_COUNT;
+		return self::$hashCount ?: self::HASH_COUNT;
 	}
 
 	/**
@@ -255,7 +255,7 @@ class PhpassSalt extends \TYPO3\CMS\Saltedpasswords\Salt\AbstractSalt implements
 	 * @see setMaxHashCount()
 	 */
 	public function getMaxHashCount() {
-		return isset(self::$maxHashCount) ? self::$maxHashCount : self::MAX_HASH_COUNT;
+		return self::$maxHashCount ?: self::MAX_HASH_COUNT;
 	}
 
 	/**
@@ -267,7 +267,7 @@ class PhpassSalt extends \TYPO3\CMS\Saltedpasswords\Salt\AbstractSalt implements
 	 * @see setMinHashCount()
 	 */
 	public function getMinHashCount() {
-		return isset(self::$minHashCount) ? self::$minHashCount : self::MIN_HASH_COUNT;
+		return self::$minHashCount ?: self::MIN_HASH_COUNT;
 	}
 
 	/**
@@ -374,7 +374,7 @@ class PhpassSalt extends \TYPO3\CMS\Saltedpasswords\Salt\AbstractSalt implements
 	 * @see getMaxHashCount()
 	 */
 	public function setMaxHashCount($maxHashCount = NULL) {
-		self::$maxHashCount = !is_NULL($maxHashCount) && is_int($maxHashCount) ? $maxHashCount : self::MAX_HASH_COUNT;
+		self::$maxHashCount = intval($maxHashCount ?: self::MAX_HASH_COUNT);
 	}
 
 	/**
@@ -386,7 +386,7 @@ class PhpassSalt extends \TYPO3\CMS\Saltedpasswords\Salt\AbstractSalt implements
 	 * @see getMinHashCount()
 	 */
 	public function setMinHashCount($minHashCount = NULL) {
-		self::$minHashCount = !is_NULL($minHashCount) && is_int($minHashCount) ? $minHashCount : self::MIN_HASH_COUNT;
+		self::$minHashCount = intval($minHashCount ?: self::MIN_HASH_COUNT);
 	}
 
 }

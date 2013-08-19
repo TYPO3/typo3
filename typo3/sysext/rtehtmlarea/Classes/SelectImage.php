@@ -183,7 +183,7 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 	 * @return 	string		the path to the folder where RTE images are stored
 	 */
 	protected function getRTEImageStorageDir() {
-		return $this->imgPath ? $this->imgPath : $GLOBALS['TYPO3_CONF_VARS']['BE']['RTE_imageStorageDir'];
+		return $this->imgPath ?: $GLOBALS['TYPO3_CONF_VARS']['BE']['RTE_imageStorageDir'];
 	}
 
 	/**

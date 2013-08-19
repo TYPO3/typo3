@@ -254,7 +254,7 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 		// Initializing the target value
 		// Unset the target if it is set to a value different than default and if no class is selected and the target field is not displayed
 		// In other words, do not forward the target if we changed tab and the target field is not displayed
-		$this->defaultLinkTarget = isset($this->buttonConfig['properties.']['target.']['default']) ? $this->buttonConfig['properties.']['target.']['default'] : '';
+		$this->defaultLinkTarget = $this->buttonConfig['properties.']['target.']['default'] ?: '';
 		$this->setTarget = '';
 		if (isset($this->curUrlArray['target']) && !($this->curUrlArray['target'] != $this->defaultLinkTarget && !$classSelected[$this->act] && is_array($this->buttonConfig['targetSelector.']) && $this->buttonConfig['targetSelector.']['disabled'] && is_array($this->buttonConfig['popupSelector.']) && $this->buttonConfig['popupSelector.']['disabled'])) {
 			$this->setTarget = $this->curUrlArray['target'];
@@ -266,7 +266,7 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 		if ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rtehtmlarea']['plugins']['TYPO3Link']['additionalAttributes']) {
 			$addAttributes = GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rtehtmlarea']['plugins']['TYPO3Link']['additionalAttributes'], TRUE);
 			foreach ($addAttributes as $attribute) {
-				$this->additionalAttributes[$attribute] = isset($this->curUrlArray[$attribute]) ? $this->curUrlArray[$attribute] : '';
+				$this->additionalAttributes[$attribute] = $this->curUrlArray[$attribute] ?: '';
 			}
 		}
 	}
@@ -308,9 +308,9 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 		// Attributes setting functions
 		$JScode .= '
 			var cur_href="' . ($this->curUrlArray['href'] ? ($this->curUrlInfo['query'] ? substr($this->curUrlArray['href'], 0, -strlen($this->curUrlInfo['query'])) : $this->curUrlArray['href']) : '') . '";
-			var cur_target="' . ($this->setTarget ? $this->setTarget : '') . '";
-			var cur_class="' . ($this->setClass ? $this->setClass : '') . '";
-			var cur_title="' . ($this->setTitle ? $this->setTitle : '') . '";
+			var cur_target="' . ($this->setTarget ?: '') . '";
+			var cur_class="' . ($this->setClass ?: '') . '";
+			var cur_title="' . ($this->setTitle ?: '') . '";
 
 			function browse_links_setTarget(value) {
 				cur_target=value;
@@ -792,7 +792,7 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 						<tr>
 							<td>' . $GLOBALS['LANG']->getLL('query_parameters', TRUE) . ':</td>
 							<td colspan="3">
-								<input type="text" name="query_parameters" value="' . ($this->curUrlInfo['query'] ? $this->curUrlInfo['query'] : '') . '" ' . $this->doc->formWidth(30) . ' />
+								<input type="text" name="query_parameters" value="' . ($this->curUrlInfo['query'] ?: '') . '" ' . $this->doc->formWidth(30) . ' />
 							</td>
 						</tr>' : '';
 	}
@@ -910,7 +910,7 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 										browse_links_setTarget(anchorClass[\'target\']);
 									} else if (document.ltargetform.ltarget && document.getElementById(\'ltargetrow\').style.display == \'none\') {
 											// Reset target to default if field is not displayed and class has no configured target
-										document.ltargetform.ltarget.value = \'' . ($this->defaultLinkTarget ? $this->defaultLinkTarget : '') . '\';
+										document.ltargetform.ltarget.value = \'' . ($this->defaultLinkTarget ?: '') . '\';
 										browse_links_setTarget(document.ltargetform.ltarget.value);
 									}
 									break;
@@ -926,7 +926,7 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 	 * @todo Define visibility
 	 */
 	public function addTitleSelector() {
-		$title = $this->setTitle ? $this->setTitle : ($this->setClass || !$this->classesAnchorDefault[$this->act] ? '' : $this->classesAnchorDefaultTitle[$this->act]);
+		$title = $this->setTitle ?: ($this->setClass || !$this->classesAnchorDefault[$this->act] ? '' : $this->classesAnchorDefaultTitle[$this->act]);
 		$readOnly = $this->buttonConfig['properties.']['title.']['readOnly'] || $this->buttonConfig[$this->act . '.']['properties.']['title.']['readOnly'];
 		if ($readOnly) {
 			$title = $this->setClass ? $this->classesAnchorClassTitle[$this->setClass] : $this->classesAnchorDefaultTitle[$this->act];

@@ -255,7 +255,7 @@ class Locales implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @deprecated since TYPO3 4.6
 	 */
 	public function getTerLocaleDependencies($locale) {
-		$terLocale = isset($this->isoMapping[$locale]) ? $this->isoMapping[$locale] : $locale;
+		$terLocale = $this->isoMapping[$locale] ?: $locale;
 		return $this->convertToTerLocales($this->getLocaleDependencies($terLocale));
 	}
 
@@ -269,7 +269,7 @@ class Locales implements \TYPO3\CMS\Core\SingletonInterface {
 	protected function convertToTerLocales(array $locales) {
 		$terLocales = array();
 		foreach ($locales as $locale) {
-			$terLocales[] = isset($this->isoReverseMapping[$locale]) ? $this->isoReverseMapping[$locale] : $locale;
+			$terLocales[] = $this->isoReverseMapping[$locale] ?: $locale;
 		}
 		return $terLocales;
 	}

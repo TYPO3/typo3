@@ -1772,7 +1772,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 				// We now have a path with slash after and slash before (if unix)
 				if (@is_dir($path) && ($GLOBALS['TYPO3_CONF_VARS']['BE']['lockRootPath'] && GeneralUtility::isFirstPartOfStr($path, $GLOBALS['TYPO3_CONF_VARS']['BE']['lockRootPath']) || GeneralUtility::isFirstPartOfStr($path, $fdir))) {
 					// Alternative title?
-					$name = $title ? $title : $altTitle;
+					$name = $title ?: $altTitle;
 					// Adds the filemount. The same filemount with same name, type and path cannot be set up twice because of the hash string used as key.
 					$this->groupData['filemounts'][md5($name . '|' . $path . '|' . $type)] = array('name' => $name, 'path' => $path, 'type' => $type);
 					// Return TRUE - went well, success!
@@ -2066,7 +2066,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 */
 	public function writelog($type, $action, $error, $details_nr, $details, $data, $tablename = '', $recuid = '', $recpid = '', $event_pid = -1, $NEWid = '', $userId = 0) {
 		$fields_values = array(
-			'userid' => $userId ? $userId : intval($this->user['uid']),
+			'userid' => $userId ?: intval($this->user['uid']),
 			'type' => intval($type),
 			'action' => intval($action),
 			'error' => intval($error),

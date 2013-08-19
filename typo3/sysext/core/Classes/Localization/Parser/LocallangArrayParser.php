@@ -209,7 +209,7 @@ class LocallangArrayParser implements \TYPO3\CMS\Core\Localization\Parser\Locali
 	 * @return void
 	 */
 	protected function setCharsets($languageKey, $charset) {
-		$this->sourceCharset = $this->csConvObj->parse_charset($this->csConvObj->charSetArray[$languageKey] ? $this->csConvObj->charSetArray[$languageKey] : 'utf-8');
+		$this->sourceCharset = $this->csConvObj->parse_charset($this->csConvObj->charSetArray[$languageKey] ?: 'utf-8');
 		if ($charset) {
 			$this->targetCharset = $this->csConvObj->parse_charset($charset);
 		} else {

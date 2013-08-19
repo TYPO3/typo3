@@ -189,7 +189,7 @@ class Request implements \TYPO3\CMS\Core\SingletonInterface {
 		if ($key === NULL) {
 			return $_GET[$this->prefix];
 		}
-		return isset($_GET[$this->prefix][$key]) ? $_GET[$this->prefix][$key] : $default;
+		return $_GET[$this->prefix][$key] ?: $default;
 	}
 
 	/**
@@ -205,7 +205,7 @@ class Request implements \TYPO3\CMS\Core\SingletonInterface {
 		if ($key === NULL) {
 			return $_POST[$this->prefix];
 		}
-		return isset($_POST[$this->prefix][$key]) ? $_POST[$this->prefix][$key] : $default;
+		return $_POST[$this->prefix][$key] ?: $default;
 	}
 
 	/**
@@ -221,7 +221,7 @@ class Request implements \TYPO3\CMS\Core\SingletonInterface {
 		if ($key === NULL) {
 			return $this->sessionData;
 		}
-		return isset($this->sessionData[$key]) ? $this->sessionData[$key] : $default;
+		return $this->sessionData[$key] ?: $default;
 	}
 
 	/**

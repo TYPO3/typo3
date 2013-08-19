@@ -1898,7 +1898,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 				$outputStr = $GLOBALS['TSFE']->csConvObj->crop('utf-8', $row['item_description'], $lgd);
 				$outputStr = htmlspecialchars($outputStr);
 			}
-			$output = $this->utf8_to_currentCharset($outputStr ? $outputStr : $markedSW);
+			$output = $this->utf8_to_currentCharset($outputStr ?: $markedSW);
 		} else {
 			$output = '<span class="noResume">' . $this->pi_getLL('res_noResume', '', TRUE) . '</span>';
 		}
@@ -2009,7 +2009,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 		$tmplArray['size'] = GeneralUtility::formatSize($row['item_size']);
 		$tmplArray['created'] = $this->formatCreatedDate($row['item_crdate']);
 		$tmplArray['modified'] = $this->formatModifiedDate($row['item_mtime']);
-		$pathId = $row['data_page_id'] ? $row['data_page_id'] : $row['page_id'];
+		$pathId = $row['data_page_id'] ?: $row['page_id'];
 		$pathMP = $row['data_page_id'] ? $row['data_page_mp'] : '';
 		$pI = parse_url($row['data_filename']);
 		if ($pI['scheme']) {
@@ -2038,7 +2038,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 * @todo Define visibility
 	 */
 	public function getSpecialConfigForRow($row) {
-		$pathId = $row['data_page_id'] ? $row['data_page_id'] : $row['page_id'];
+		$pathId = $row['data_page_id'] ?: $row['page_id'];
 		$pathMP = $row['data_page_id'] ? $row['data_page_mp'] : '';
 		$rl = $this->getRootLine($pathId, $pathMP);
 		$specConf = $this->conf['specConfs.']['0.'];

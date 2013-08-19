@@ -89,7 +89,7 @@ class PageGenerator {
 		}
 		$GLOBALS['TSFE']->compensateFieldWidth = '' . $GLOBALS['TSFE']->config['config']['compensateFieldWidth'];
 		$GLOBALS['TSFE']->lockFilePath = '' . $GLOBALS['TSFE']->config['config']['lockFilePath'];
-		$GLOBALS['TSFE']->lockFilePath = $GLOBALS['TSFE']->lockFilePath ? $GLOBALS['TSFE']->lockFilePath : $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'];
+		$GLOBALS['TSFE']->lockFilePath = $GLOBALS['TSFE']->lockFilePath ?: $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'];
 		$GLOBALS['TYPO3_CONF_VARS']['GFX']['im_noScaleUp'] = isset($GLOBALS['TSFE']->config['config']['noScaleUp']) ? '' . $GLOBALS['TSFE']->config['config']['noScaleUp'] : $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_noScaleUp'];
 		$GLOBALS['TSFE']->TYPO3_CONF_VARS['GFX']['im_noScaleUp'] = $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_noScaleUp'];
 		$GLOBALS['TSFE']->ATagParams = trim($GLOBALS['TSFE']->config['config']['ATagParams']) ? ' ' . trim($GLOBALS['TSFE']->config['config']['ATagParams']) : '';
@@ -271,7 +271,7 @@ class PageGenerator {
 		// Reset the content variables:
 		$GLOBALS['TSFE']->content = '';
 		$htmlTagAttributes = array();
-		$htmlLang = $GLOBALS['TSFE']->config['config']['htmlTag_langKey'] ? $GLOBALS['TSFE']->config['config']['htmlTag_langKey'] : 'en';
+		$htmlLang = $GLOBALS['TSFE']->config['config']['htmlTag_langKey'] ?: 'en';
 		// Set content direction: (More info: http://www.tau.ac.il/~danon/Hebrew/HTML_and_Hebrew.html)
 		if ($GLOBALS['TSFE']->config['config']['htmlTag_dir']) {
 			$htmlTagAttributes['dir'] = htmlspecialchars($GLOBALS['TSFE']->config['config']['htmlTag_dir']);
@@ -395,7 +395,7 @@ class PageGenerator {
 		}
 		$pageRenderer->setHtmlTag($htmlTag);
 		// Head tag:
-		$headTag = $GLOBALS['TSFE']->pSetup['headTag'] ? $GLOBALS['TSFE']->pSetup['headTag'] : '<head>';
+		$headTag = $GLOBALS['TSFE']->pSetup['headTag'] ?: '<head>';
 		$pageRenderer->setHeadTag($headTag);
 		// Setting charset meta tag:
 		$pageRenderer->setCharSet($theCharset);
@@ -467,7 +467,7 @@ class PageGenerator {
 							}
 							$pageRenderer->addCssInlineBlock('import_' . $key, '@import url("' . htmlspecialchars($ss) . '") ' . htmlspecialchars($GLOBALS['TSFE']->pSetup['includeCSS.'][($key . '.')]['media']) . ';', empty($GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['disableCompression']), $GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['forceOnTop'] ? TRUE : FALSE, '');
 						} else {
-							$pageRenderer->addCssFile($ss, $GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['alternate'] ? 'alternate stylesheet' : 'stylesheet', $GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['media'] ? $GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['media'] : 'all', $GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['title'] ? $GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['title'] : '', empty($GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['disableCompression']), $GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['forceOnTop'] ? TRUE : FALSE, $GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['allWrap'], $GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['excludeFromConcatenation'] ? TRUE : FALSE);
+							$pageRenderer->addCssFile($ss, $GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['alternate'] ? 'alternate stylesheet' : 'stylesheet', $GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['media'] ?: 'all', $GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['title'] ?: '', empty($GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['disableCompression']), $GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['forceOnTop'] ? TRUE : FALSE, $GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['allWrap'], $GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['excludeFromConcatenation'] ? TRUE : FALSE);
 						}
 					}
 				}
@@ -541,7 +541,7 @@ class PageGenerator {
 				$pageRenderer->loadPrototype();
 			}
 			if ($GLOBALS['TSFE']->pSetup['javascriptLibs.']['Scriptaculous']) {
-				$modules = $GLOBALS['TSFE']->pSetup['javascriptLibs.']['Scriptaculous.']['modules'] ? $GLOBALS['TSFE']->pSetup['javascriptLibs.']['Scriptaculous.']['modules'] : '';
+				$modules = $GLOBALS['TSFE']->pSetup['javascriptLibs.']['Scriptaculous.']['modules'] ?: '';
 				$pageRenderer->loadScriptaculous($modules);
 			}
 			if ($GLOBALS['TSFE']->pSetup['javascriptLibs.']['ExtCore']) {
@@ -554,8 +554,8 @@ class PageGenerator {
 			if (!empty($GLOBALS['TSFE']->pSetup['javascriptLibs.']['jQuery'])) {
 				$jQueryTS = $GLOBALS['TSFE']->pSetup['javascriptLibs.']['jQuery.'];
 				// Check if version / source is set, if not set variable to "NULL" to use the default of the page renderer
-				$version = isset($jQueryTS['version']) ? $jQueryTS['version'] : NULL;
-				$source = isset($jQueryTS['source']) ? $jQueryTS['source'] : NULL;
+				$version = $jQueryTS['version'] ?: NULL;
+				$source = $jQueryTS['source'] ?: NULL;
 				// When "noConflict" is not set or "1" enable the default jQuery noConflict mode, otherwise disable the namespace
 				if (!isset($jQueryTS['noConflict']) || !empty($jQueryTS['noConflict'])) {
 					// Set namespace to the "noConflict.namespace" value if "noConflict.namespace" has a value
@@ -572,7 +572,7 @@ class PageGenerator {
 			if ($GLOBALS['TSFE']->pSetup['javascriptLibs.']['ExtJs']) {
 				$css = $GLOBALS['TSFE']->pSetup['javascriptLibs.']['ExtJs.']['css'] ? TRUE : FALSE;
 				$theme = $GLOBALS['TSFE']->pSetup['javascriptLibs.']['ExtJs.']['theme'] ? TRUE : FALSE;
-				$adapter = $GLOBALS['TSFE']->pSetup['javascriptLibs.']['ExtJs.']['adapter'] ? $GLOBALS['TSFE']->pSetup['javascriptLibs.']['ExtJs.']['adapter'] : '';
+				$adapter = $GLOBALS['TSFE']->pSetup['javascriptLibs.']['ExtJs.']['adapter'] ?: '';
 				$pageRenderer->loadExtJs($css, $theme, $adapter);
 				if ($GLOBALS['TSFE']->pSetup['javascriptLibs.']['ExtJs.']['debug']) {
 					$pageRenderer->enableExtJsDebug();

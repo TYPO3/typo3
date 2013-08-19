@@ -494,7 +494,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 		if (strlen($templateFile)) {
 			$this->templateFile = $templateFile;
 		}
-		$this->backPath = isset($backPath) ? $backPath : $GLOBALS['BACK_PATH'];
+		$this->backPath = $backPath ?: $GLOBALS['BACK_PATH'];
 		$this->inlineJavascriptWrap = array(
 			'<script type="text/javascript">' . LF . '/*<![CDATA[*/' . LF . '<!-- ' . LF,
 			'// -->' . LF . '/*]]>*/' . LF . '</script>' . LF
@@ -2146,7 +2146,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 			$localeMap['no'] = 'no_BO';
 			// Swedish
 			$localeMap['se'] = 'se_SV';
-			$extJsLang = isset($localeMap[$this->lang]) ? $localeMap[$this->lang] : $this->lang;
+			$extJsLang = $localeMap[$this->lang] ?: $this->lang;
 			// TODO autoconvert file from UTF8 to current BE charset if necessary!!!!
 			$extJsLocaleFile = $this->extJsPath . 'locale/ext-lang-' . $extJsLang . '.js';
 			if (file_exists(PATH_typo3 . $extJsLocaleFile)) {

@@ -443,7 +443,7 @@ class SetupModuleController {
 		$code = array();
 		$i = 0;
 		$fieldArray = $this->getFieldsFromShowItem();
-		$this->dividers2tabs = isset($GLOBALS['TYPO3_USER_SETTINGS']['ctrl']['dividers2tabs']) ? intval($GLOBALS['TYPO3_USER_SETTINGS']['ctrl']['dividers2tabs']) : 0;
+		$this->dividers2tabs = (int) $GLOBALS['TYPO3_USER_SETTINGS']['ctrl']['dividers2tabs'] ?: 0;
 		$tabLabel = '';
 		foreach ($fieldArray as $fieldName) {
 			$more = '';
@@ -474,7 +474,7 @@ class SetupModuleController {
 				continue;
 			}
 			$label = $this->getLabel($config['label'], $fieldName);
-			$label = $this->getCSH($config['csh'] ? $config['csh'] : $fieldName, $label);
+			$label = $this->getCSH($config['csh'] ?: $fieldName, $label);
 			$type = $config['type'];
 			$eval = $config['eval'];
 			$class = $config['class'];
@@ -727,11 +727,11 @@ class SetupModuleController {
 		} else {
 			$out = htmlspecialchars($str);
 		}
-		if (isset($this->overrideConf[$key ? $key : $str])) {
+		if (isset($this->overrideConf[$key ?: $str])) {
 			$out = '<span style="color:#999999">' . $out . '</span>';
 		}
 		if ($addLabelTag) {
-			$out = '<label for="' . ($altLabelTagId ? $altLabelTagId : 'field_' . $key) . '">' . $out . '</label>';
+			$out = '<label for="' . ($altLabelTagId ?: 'field_' . $key) . '">' . $out . '</label>';
 		}
 		return $out;
 	}

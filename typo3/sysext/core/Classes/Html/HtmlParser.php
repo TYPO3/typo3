@@ -1074,7 +1074,7 @@ class HtmlParser {
 		}
 		$content = implode('', $parts);
 		// Fix <style> section:
-		$prefix = isset($alternatives['style']) ? $alternatives['style'] : $main_prefix;
+		$prefix = $alternatives['style'] ?: $main_prefix;
 		if (strlen($prefix)) {
 			$parts = $this->splitIntoBlock('style', $content);
 			foreach ($parts as $k => &$part) {
@@ -1281,9 +1281,9 @@ class HtmlParser {
 					$attr .= '="' . htmlspecialchars($v) . '"';
 				}
 			} else {
-				$attr = $meta[$k]['origTag'] ? $meta[$k]['origTag'] : $k;
+				$attr = $meta[$k]['origTag'] ?: $k;
 				if (strcmp($v, '') || isset($meta[$k]['dashType'])) {
-					$dash = $meta[$k]['dashType'] ? $meta[$k]['dashType'] : (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($v) ? '' : '"');
+					$dash = $meta[$k]['dashType'] ?: (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($v) ? '' : '"');
 					$attr .= '=' . $dash . $v . $dash;
 				}
 			}

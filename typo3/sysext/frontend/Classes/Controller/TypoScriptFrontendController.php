@@ -1650,7 +1650,7 @@ class TypoScriptFrontendController {
 		if (!is_array($groupList)) {
 			$groupList = explode(',', $groupList);
 		}
-		$pageGroupList = explode(',', $row['fe_group'] ? $row['fe_group'] : 0);
+		$pageGroupList = explode(',', $row['fe_group'] ?: 0);
 		return count(array_intersect($groupList, $pageGroupList)) > 0;
 	}
 
@@ -1821,7 +1821,7 @@ class TypoScriptFrontendController {
 	 * @todo Define visibility
 	 */
 	public function pageUnavailableAndExit($reason = '', $header = '') {
-		$header = $header ? $header : $this->TYPO3_CONF_VARS['FE']['pageUnavailable_handling_statheader'];
+		$header = $header ?: $this->TYPO3_CONF_VARS['FE']['pageUnavailable_handling_statheader'];
 		$this->pageUnavailableHandler($this->TYPO3_CONF_VARS['FE']['pageUnavailable_handling'], $header, $reason);
 		die;
 	}
@@ -1835,7 +1835,7 @@ class TypoScriptFrontendController {
 	 * @todo Define visibility
 	 */
 	public function pageNotFoundAndExit($reason = '', $header = '') {
-		$header = $header ? $header : $this->TYPO3_CONF_VARS['FE']['pageNotFound_handling_statheader'];
+		$header = $header ?: $this->TYPO3_CONF_VARS['FE']['pageNotFound_handling_statheader'];
 		$this->pageNotFoundHandler($this->TYPO3_CONF_VARS['FE']['pageNotFound_handling'], $header, $reason);
 		die;
 	}
@@ -2396,7 +2396,7 @@ class TypoScriptFrontendController {
 					}
 					// Processing for the config_array:
 					$this->config['rootLine'] = $this->tmpl->rootLine;
-					$this->config['mainScript'] = trim($this->config['config']['mainScript']) ? trim($this->config['config']['mainScript']) : 'index.php';
+					$this->config['mainScript'] = trim($this->config['config']['mainScript']) ?: 'index.php';
 					// Class for render Header and Footer parts
 					$template = '';
 					if ($this->pSetup['pageHeaderFooterTemplateFile']) {
@@ -2791,7 +2791,7 @@ class TypoScriptFrontendController {
 		$fdef = array();
 		//|recipient_copy=hidden|karsten@localhost.localdomain
 		preg_match('/^[\\s]*\\|[\\s]*recipient_copy[\\s]*=[\\s]*hidden[\\s]*\\|(.*)$/m', $bodytext, $fdef);
-		$recipient_copy = !empty($fdef[1]) ? $fdef[1] : '';
+		$recipient_copy = $fdef[1] ?: '';
 		return $recipient_copy;
 	}
 
@@ -2853,7 +2853,7 @@ class TypoScriptFrontendController {
 						$absoluteFileName = GeneralUtility::getFileAbsFileName(\TYPO3\CMS\Core\Utility\GeneralUtility::resolveBackPath($this->jumpurl), FALSE);
 						if (\TYPO3\CMS\Core\Utility\GeneralUtility::isAllowedAbsPath($absoluteFileName) && GeneralUtility::verifyFilenameAgainstDenyPattern($absoluteFileName) && !\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($absoluteFileName, (PATH_site . 'typo3conf'))) {
 							if (@is_file($absoluteFileName)) {
-								$mimeType = $mimeType ? $mimeType : 'application/octet-stream';
+								$mimeType = $mimeType ?: 'application/octet-stream';
 								header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
 								header('Content-Type: ' . $mimeType);
 								header('Content-Disposition: attachment; filename="' . basename($absoluteFileName) . '"');
@@ -3569,7 +3569,7 @@ if (version == "n3") {
 	 * @todo Define visibility
 	 */
 	public function doLocalAnchorFix() {
-		return isset($this->config['config']['prefixLocalAnchors']) ? $this->config['config']['prefixLocalAnchors'] : NULL;
+		return $this->config['config']['prefixLocalAnchors'] ?: NULL;
 	}
 
 	/********************************************
@@ -3807,10 +3807,10 @@ if (version == "n3") {
 	 */
 	public function setParseTime() {
 		// Compensates for the time consumed with Back end user initialization.
-		$microtime_start = isset($GLOBALS['TYPO3_MISC']['microtime_start']) ? $GLOBALS['TYPO3_MISC']['microtime_start'] : NULL;
-		$microtime_end = isset($GLOBALS['TYPO3_MISC']['microtime_end']) ? $GLOBALS['TYPO3_MISC']['microtime_end'] : NULL;
-		$microtime_BE_USER_start = isset($GLOBALS['TYPO3_MISC']['microtime_BE_USER_start']) ? $GLOBALS['TYPO3_MISC']['microtime_BE_USER_start'] : NULL;
-		$microtime_BE_USER_end = isset($GLOBALS['TYPO3_MISC']['microtime_BE_USER_end']) ? $GLOBALS['TYPO3_MISC']['microtime_BE_USER_end'] : NULL;
+		$microtime_start = $GLOBALS['TYPO3_MISC']['microtime_start'] ?: NULL;
+		$microtime_end = $GLOBALS['TYPO3_MISC']['microtime_end'] ?: NULL;
+		$microtime_BE_USER_start = $GLOBALS['TYPO3_MISC']['microtime_BE_USER_start'] ?: NULL;
+		$microtime_BE_USER_end = $GLOBALS['TYPO3_MISC']['microtime_BE_USER_end'] ?: NULL;
 		$this->scriptParseTime = $GLOBALS['TT']->getMilliseconds($microtime_end) - $GLOBALS['TT']->getMilliseconds($microtime_start) - ($GLOBALS['TT']->getMilliseconds($microtime_BE_USER_end) - $GLOBALS['TT']->getMilliseconds($microtime_BE_USER_start));
 	}
 
@@ -3861,7 +3861,7 @@ if (version == "n3") {
 	 */
 	public function getLogUserName() {
 		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
-		$logUser = isset($this->config['config']['stat_logUser']) ? $this->config['config']['stat_logUser'] : TRUE;
+		$logUser = $this->config['config']['stat_logUser'] ?: TRUE;
 		if ($this->loginUser && $logUser) {
 			$userName = $this->fe_user->user['username'];
 		} else {
@@ -4524,7 +4524,7 @@ if (version == "n3") {
 		if ($urlmode) {
 			$message = GeneralUtility::substUrlsInPlainText($message, $urlmode);
 		}
-		$encoding = $this->config['config']['notification_email_encoding'] ? $this->config['config']['notification_email_encoding'] : '';
+		$encoding = $this->config['config']['notification_email_encoding'] ?: '';
 		$charset = $this->renderCharset;
 		$convCharset = FALSE;
 		// do we need to convert mail data?
@@ -4664,7 +4664,7 @@ if (version == "n3") {
 	 */
 	public function initLLvars() {
 		// Setting language key and split index:
-		$this->lang = $this->config['config']['language'] ? $this->config['config']['language'] : 'default';
+		$this->lang = $this->config['config']['language'] ?: 'default';
 		$this->getPageRenderer()->setLanguage($this->lang);
 
 		// Finding the requested language in this list based
@@ -4701,7 +4701,7 @@ if (version == "n3") {
 	public function csConv($str, $from = '') {
 		if ($from) {
 			$output = $this->csConvObj->conv($str, $this->csConvObj->parse_charset($from), $this->renderCharset, 1);
-			return $output ? $output : $str;
+			return $output ?: $str;
 		} else {
 			return $str;
 		}

@@ -406,9 +406,9 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 				}
 				// iLimit is set depending on whether we're in single- or multi-table mode
 				if ($this->table) {
-					$this->iLimit = isset($GLOBALS['TCA'][$tableName]['interface']['maxSingleDBListItems']) ? intval($GLOBALS['TCA'][$tableName]['interface']['maxSingleDBListItems']) : $this->itemsLimitSingleTable;
+					$this->iLimit = intval($GLOBALS['TCA'][$tableName]['interface']['maxSingleDBListItems'] ?: $this->itemsLimitSingleTable);
 				} else {
-					$this->iLimit = isset($GLOBALS['TCA'][$tableName]['interface']['maxDBListItems']) ? intval($GLOBALS['TCA'][$tableName]['interface']['maxDBListItems']) : $this->itemsLimitPerTable;
+					$this->iLimit = intval($GLOBALS['TCA'][$tableName]['interface']['maxDBListItems'] ?: $this->itemsLimitPerTable);
 				}
 				if ($this->showLimit) {
 					$this->iLimit = $this->showLimit;

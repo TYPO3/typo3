@@ -91,7 +91,7 @@ class SoftReferenceHook extends \TYPO3\CMS\Core\Database\SoftReferenceIndex {
 					$imgTags[$k] = str_replace('data-htmlarea-file-uid="' . $fileUid . '"', 'data-htmlarea-file-uid="{softref:' . $tokenID . '}"', $imgTags[$k]);
 					$elements[$k]['subst'] = array(
 						'type' => 'db',
-						'recordRef' => ($fileTable ? $fileTable : 'sys_file') . ':' . $fileUid,
+						'recordRef' => ($fileTable ?: 'sys_file') . ':' . $fileUid,
 						'tokenID' => $tokenID,
 						'tokenValue' => $fileUid
 					);

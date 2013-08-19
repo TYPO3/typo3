@@ -370,10 +370,10 @@ class ElementBrowser {
 			var add_params="' . ($this->bparams ? '&bparams=' . rawurlencode($this->bparams) : '') . '";
 
 			var cur_href="' . ($this->curUrlArray['href'] ? rawurlencode($this->curUrlArray['href']) : '') . '";
-			var cur_target="' . ($this->setTarget ? $this->setTarget : '') . '";
-			var cur_class = "' . ($this->setClass ? $this->setClass : '') . '";
-			var cur_title="' . ($this->setTitle ? $this->setTitle : '') . '";
-			var cur_params="' . ($this->setParams ? $this->setParams : '') . '";
+			var cur_target="' . ($this->setTarget ?: '') . '";
+			var cur_class = "' . ($this->setClass ?: '') . '";
+			var cur_title="' . ($this->setTitle ?: '') . '";
+			var cur_params="' . ($this->setParams ?: '') . '";
 
 			function browse_links_setTarget(target) {	//
 				cur_target=target;
@@ -1235,7 +1235,7 @@ class ElementBrowser {
 			$_MCONF['name'] = 'file_list';
 			$_MOD_SETTINGS = BackendUtility::getModuleData($_MOD_MENU, GeneralUtility::_GP('SET'), $_MCONF['name']);
 		}
-		$noThumbs = $noThumbs ? $noThumbs : !$_MOD_SETTINGS['displayThumbs'];
+		$noThumbs = $noThumbs ?: !$_MOD_SETTINGS['displayThumbs'];
 		// Create folder tree:
 		$foldertree = GeneralUtility::makeInstance('TBE_FolderTree');
 		$foldertree->thisScript = $this->thisScript;
@@ -2118,7 +2118,7 @@ class ElementBrowser {
 		}
 		// Read configuration of upload field count
 		$userSetting = $GLOBALS['BE_USER']->getTSConfigVal('options.folderTree.uploadFieldsInLinkBrowser');
-		$count = isset($userSetting) ? $userSetting : 3;
+		$count = $userSetting ?: 3;
 		if ($count === '0') {
 			return '';
 		}

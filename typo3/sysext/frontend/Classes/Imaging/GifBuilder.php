@@ -317,8 +317,8 @@ class GifBuilder extends \TYPO3\CMS\Core\Imaging\GraphicalFunctions {
 			$XY = GeneralUtility::intExplode(',', $this->setup['XY']);
 			$maxWidth = isset($this->setup['maxWidth.']) ? intval($this->cObj->stdWrap($this->setup['maxWidth'], $this->setup['maxWidth.'])) : intval($this->setup['maxWidth']);
 			$maxHeight = isset($this->setup['maxHeight.']) ? intval($this->cObj->stdWrap($this->setup['maxHeight'], $this->setup['maxHeight.'])) : intval($this->setup['maxHeight']);
-			$XY[0] = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($XY[0], 1, $maxWidth ? $maxWidth : 2000);
-			$XY[1] = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($XY[1], 1, $maxHeight ? $maxHeight : 2000);
+			$XY[0] = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($XY[0], 1, $maxWidth ?: 2000);
+			$XY[1] = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($XY[1], 1, $maxHeight ?: 2000);
 			$this->XY = $XY;
 			$this->w = $XY[0];
 			$this->h = $XY[1];
@@ -578,7 +578,7 @@ class GifBuilder extends \TYPO3\CMS\Core\Imaging\GraphicalFunctions {
 		$this->combinedTextStrings[] = strip_tags($conf['text']);
 		// Max length = 100 if automatic line braks are not defined:
 		if (!isset($conf['breakWidth']) || !$conf['breakWidth']) {
-			$tlen = intval($conf['textMaxLength']) ? intval($conf['textMaxLength']) : 100;
+			$tlen = intval($conf['textMaxLength']) ?: 100;
 			if ($this->nativeCharset) {
 				$conf['text'] = $this->csConvObj->substr($this->nativeCharset, $conf['text'], 0, $tlen);
 			} else {

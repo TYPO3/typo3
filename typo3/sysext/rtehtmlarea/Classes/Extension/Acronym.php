@@ -126,7 +126,7 @@ class Acronym extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 		$tableAB = $tableA . ' LEFT JOIN ' . $tableB . ' ON ' . $tableA . '.static_lang_isocode=' . $tableB . '.uid';
 		$whereClause = '1=1';
 		// Get all acronyms on pages to which the user has access
-		$lockBeUserToDBmounts = isset($this->thisConfig['buttons.'][$button . '.']['lockBeUserToDBmounts']) ? $this->thisConfig['buttons.'][$button . '.']['lockBeUserToDBmounts'] : $GLOBALS['TYPO3_CONF_VARS']['BE']['lockBeUserToDBmounts'];
+		$lockBeUserToDBmounts = $this->thisConfig['buttons.'][$button . '.']['lockBeUserToDBmounts'] ?: $GLOBALS['TYPO3_CONF_VARS']['BE']['lockBeUserToDBmounts'];
 		if (!$GLOBALS['BE_USER']->isAdmin() && $GLOBALS['TYPO3_CONF_VARS']['BE']['lockBeUserToDBmounts'] && $lockBeUserToDBmounts) {
 			// Temporarily setting alternative web browsing mounts
 			$altMountPoints = trim($GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.altElementBrowserMountPoints'));
@@ -160,7 +160,7 @@ class Acronym extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 				}
 				$pageTree .= $pageTreePrefix . $queryGenerator->getTreeList($val, $recursive, ($begin = 0), $perms_clause);
 			}
-			$whereClause .= ' AND ' . $tableA . '.pid IN (' . $GLOBALS['TYPO3_DB']->fullQuoteStr(($pageTree ? $pageTree : ''), $tableA) . ')';
+			$whereClause .= ' AND ' . $tableA . '.pid IN (' . $GLOBALS['TYPO3_DB']->fullQuoteStr(($pageTree ?: ''), $tableA) . ')';
 		}
 		// Restrict to acronyms applicable to the language of current content element
 		if ($this->htmlAreaRTE->contentLanguageUid > -1) {

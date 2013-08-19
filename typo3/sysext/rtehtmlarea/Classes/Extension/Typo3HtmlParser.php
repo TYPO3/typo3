@@ -80,7 +80,7 @@ class Typo3HtmlParser extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 			}
 			$registerRTEinJavascriptString .= '
 			RTEarea[' . $RTEcounter . '].buttons.' . $button . '.pathParseHtmlModule = "' . $this->htmlAreaRTE->extHttpPath . 'mod6/parse_html.php";
-			RTEarea[' . $RTEcounter . '].buttons.' . $button . '.hotKey = "' . ($this->thisConfig['enableWordClean.']['hotKey'] ? $this->thisConfig['enableWordClean.']['hotKey'] : '0') . '";';
+			RTEarea[' . $RTEcounter . '].buttons.' . $button . '.hotKey = "' . ($this->thisConfig['enableWordClean.']['hotKey'] ?: '0') . '";';
 		}
 		return $registerRTEinJavascriptString;
 	}

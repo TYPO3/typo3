@@ -109,7 +109,7 @@ $EM_CONF[$_EXTKEY] = ' . $emConf . ';
 				$emConf['constraints']['suggests'] = array();
 			}
 		} elseif (isset($emConf['constraints']) && isset($emConf['dependencies'])) {
-			$emConf['suggests'] = isset($emConf['suggests']) ? $emConf['suggests'] : array();
+			$emConf['suggests'] = $emConf['suggests'] ?: array();
 			$emConf['dependencies'] = $this->dependencyToString($emConf['constraints']);
 			$emConf['conflicts'] = $this->dependencyToString($emConf['constraints'], 'conflicts');
 		}

@@ -349,8 +349,8 @@ abstract class AbstractTreeView {
 	 * @todo Define visibility
 	 */
 	public function setTreeName($treeName = '') {
-		$this->treeName = $treeName ? $treeName : $this->treeName;
-		$this->treeName = $this->treeName ? $this->treeName : $this->table;
+		$this->treeName = $treeName ?: $this->treeName;
+		$this->treeName = $this->treeName ?: $this->table;
 		$this->treeName = str_replace('_', '', $this->treeName);
 	}
 
@@ -791,7 +791,7 @@ abstract class AbstractTreeView {
 			// Accumulate the id of the element in the internal arrays
 			$this->ids[] = ($idH[$row['uid']]['uid'] = $row['uid']);
 			$this->ids_hierarchy[$depth][] = $row['uid'];
-			$this->orig_ids_hierarchy[$depth][] = $row['_ORIG_uid'] ? $row['_ORIG_uid'] : $row['uid'];
+			$this->orig_ids_hierarchy[$depth][] = $row['_ORIG_uid'] ?: $row['uid'];
 			// Make a recursive call to the next level
 			$HTML_depthData = $depthData . '<img' . IconUtility::skinImg($this->backPath, ('gfx/ol/' . $LN . '.gif'), 'width="18" height="16"') . ' alt="" />';
 			if ($depth > 1 && $this->expandNext($newID) && !$row['php_tree_stop']) {

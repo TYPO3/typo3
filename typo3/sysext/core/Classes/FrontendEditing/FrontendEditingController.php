@@ -135,7 +135,7 @@ class FrontendEditingController {
 			// If the table is set as the first parameter, and does not match the table of the current record, then just return.
 			return $content;
 		}
-		$editUid = $dataArray['_LOCALIZED_UID'] ? $dataArray['_LOCALIZED_UID'] : $currentRecordUID;
+		$editUid = $dataArray['_LOCALIZED_UID'] ?: $currentRecordUID;
 		// Edit icons imply that the editing action is generally allowed, assuming page and content element permissions permit it.
 		if (!array_key_exists('allow', $conf)) {
 			$conf['allow'] = 'edit';

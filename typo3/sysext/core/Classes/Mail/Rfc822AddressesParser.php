@@ -594,7 +594,7 @@ class Rfc822AddressesParser {
 		$mbox = new \stdClass();
 		// Add the phrase (even if empty) and comments
 		$mbox->personal = $phrase;
-		$mbox->comment = isset($comments) ? $comments : array();
+		$mbox->comment = $comments ?: array();
 		if (isset($route_addr)) {
 			$mbox->mailbox = $route_addr['local_part'];
 			$mbox->host = $route_addr['domain'];
