@@ -432,8 +432,13 @@ class RedisBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend impleme
 	 * @api
 	 */
 	public function flushByTag($tag) {
-		if (!is_string($tag)) {
-			throw new \InvalidArgumentException('The specified tag is of type "' . gettype($tag) . '" but a string is expected.', 1279578078);
+		if (
+			!(
+				is_scalar($tag)
+				|| (is_object($tag) && method_exists($tag, '__toString'))
+			)
+		) {
+			throw new \InvalidArgumentException('The specified tag is of type "' . gettype($tag) . '" but a scalar is expected.', 1376934523);
 		}
 		if ($this->connected) {
 			$identifiers = $this->redis->sMembers(self::TAG_IDENTIFIERS_PREFIX . $tag);
