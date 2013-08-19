@@ -27,7 +27,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource\Driver;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-require_once dirname(__FILE__) . '/../BaseTestCase.php';
+require_once __DIR__ . '/../BaseTestCase.php';
 
 /**
  * Test case for the abstract driver.

@@ -31,8 +31,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use \org\bovigo\vfs\vfsStream;
 use \org\bovigo\vfs\vfsStreamWrapper;
 
-require_once dirname(dirname(__FILE__)) . '/BaseTestCase.php';
-require_once dirname(__FILE__) . '/Fixtures/LocalDriverFilenameFilter.php';
+require_once __DIR__ . '/../BaseTestCase.php';
+require_once __DIR__ . '/Fixtures/LocalDriverFilenameFilter.php';
 
 /**
  * Testcase for the local storage driver class of the TYPO3 VFS

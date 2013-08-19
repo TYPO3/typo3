@@ -29,7 +29,7 @@ namespace TYPO3\CMS\Core\Tests\Functional\Resource\Driver;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-require_once dirname(dirname(__FILE__)) . '/BaseTestCase.php';
+require_once __DIR__ . '/../BaseTestCase.php';
 
 /**
  * Test case

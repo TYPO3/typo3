@@ -105,7 +105,7 @@ define('TYPO3_MODE', 'BE');
 define('TYPO3_enterInstallScript', '1');
 
 // Bootstrap bare minimum: class loader, LocalConfiguration, but no extensions and such
-require __DIR__ . '/../../core/Classes/Core/Bootstrap.php';
+require_once __DIR__ . '/../../core/Classes/Core/Bootstrap.php';
 \TYPO3\CMS\Core\Core\Bootstrap::getInstance()
 	->baseSetup('typo3/sysext/install/Start/')
 	->startOutputBuffering()
