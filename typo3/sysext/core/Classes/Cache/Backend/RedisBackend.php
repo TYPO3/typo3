@@ -25,7 +25,7 @@ namespace TYPO3\CMS\Core\Cache\Backend;
  * @author Christian Kuhn <lolli@schwarzbu.ch>
  * @api
  */
-class RedisBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend implements \TYPO3\CMS\Core\Cache\Backend\TaggableBackendInterface {
+class RedisBackend extends AbstractBackend implements TaggableBackendInterface {
 
 	/**
 	 * Faked unlimited lifetime = 31536000 (1 Year).
@@ -261,8 +261,8 @@ class RedisBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend impleme
 	 * @api
 	 */
 	public function set($entryIdentifier, $data, array $tags = array(), $lifetime = NULL) {
-		if (!is_string($entryIdentifier)) {
-			throw new \InvalidArgumentException('The specified identifier is of type "' . gettype($entryIdentifier) . '" but a string is expected.', 1279470252);
+		if (!$this->canBeUsedInStringContext($entryIdentifier)) {
+			throw new \InvalidArgumentException('The specified identifier is of type "' . gettype($entryIdentifier) . '" which can\'t be converted to string.', 1377006651);
 		}
 		if (!is_string($data)) {
 			throw new \TYPO3\CMS\Core\Cache\Exception\InvalidDataException('The specified data is of type "' . gettype($data) . '" but a string is expected.', 1279469941);
@@ -313,8 +313,8 @@ class RedisBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend impleme
 	 * @api
 	 */
 	public function get($entryIdentifier) {
-		if (!is_string($entryIdentifier)) {
-			throw new \InvalidArgumentException('The specified identifier is of type "' . gettype($entryIdentifier) . '" but a string is expected.', 1279470253);
+		if (!$this->canBeUsedInStringContext($entryIdentifier)) {
+			throw new \InvalidArgumentException('The specified identifier is of type "' . gettype($entryIdentifier) . '" which can\'t be converted to string.', 1377006652);
 		}
 		$storedEntry = FALSE;
 		if ($this->connected) {
@@ -337,8 +337,8 @@ class RedisBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend impleme
 	 * @api
 	 */
 	public function has($entryIdentifier) {
-		if (!is_string($entryIdentifier)) {
-			throw new \InvalidArgumentException('The specified identifier is of type "' . gettype($entryIdentifier) . '" but a string is expected.', 1279470254);
+		if (!$this->canBeUsedInStringContext($entryIdentifier)) {
+			throw new \InvalidArgumentException('The specified identifier is of type "' . gettype($entryIdentifier) . '" which can\'t be converted to string.', 1377006653);
 		}
 		return $this->connected && $this->redis->exists(self::IDENTIFIER_DATA_PREFIX . $entryIdentifier);
 	}
@@ -355,8 +355,8 @@ class RedisBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend impleme
 	 * @api
 	 */
 	public function remove($entryIdentifier) {
-		if (!is_string($entryIdentifier)) {
-			throw new \InvalidArgumentException('The specified identifier is of type "' . gettype($entryIdentifier) . '" but a string is expected.', 1279470255);
+		if (!$this->canBeUsedInStringContext($entryIdentifier)) {
+			throw new \InvalidArgumentException('The specified identifier is of type "' . gettype($entryIdentifier) . '" which can\'t be converted to string.', 1377006654);
 		}
 		$elementsDeleted = FALSE;
 		if ($this->connected) {
@@ -387,8 +387,8 @@ class RedisBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend impleme
 	 * @api
 	 */
 	public function findIdentifiersByTag($tag) {
-		if (!is_string($tag)) {
-			throw new \InvalidArgumentException('The specified tag is of type "' . gettype($tag) . '" but a string is expected.', 1279569759);
+		if (!$this->canBeUsedInStringContext($tag)) {
+			throw new \InvalidArgumentException('The specified tag is of type "' . gettype($tag) . '" which can\'t be converted to string.', 1377006655);
 		}
 		$foundIdentifiers = array();
 		if ($this->connected) {
@@ -423,8 +423,8 @@ class RedisBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend impleme
 	 * @api
 	 */
 	public function flushByTag($tag) {
-		if (!is_string($tag)) {
-			throw new \InvalidArgumentException('The specified tag is of type "' . gettype($tag) . '" but a string is expected.', 1279578078);
+		if (!$this->canBeUsedInStringContext($tag)) {
+			throw new \InvalidArgumentException('The specified tag is of type "' . gettype($tag) . '" which can\'t be converted to string.', 1377006656);
 		}
 		if ($this->connected) {
 			$identifiers = $this->redis->sMembers(self::TAG_IDENTIFIERS_PREFIX . $tag);
@@ -500,6 +500,16 @@ class RedisBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend impleme
 		}
 		$queue->delete(array_merge($prefixedKeysToDelete, $prefixedIdentifierToTagsKeysToDelete));
 		$queue->exec();
+	}
+
+	/**
+	 * Helper method to catch invalid identifiers and tags
+	 *
+	 * @param mixed $variable Variable to be checked
+	 * @return boolean
+	 */
+	protected function canBeUsedInStringContext($variable) {
+		return is_scalar($variable) || (is_object($variable) && method_exists($variable, '__toString'));
 	}
 
 }
