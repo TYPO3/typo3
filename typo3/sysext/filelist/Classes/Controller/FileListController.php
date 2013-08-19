@@ -147,7 +147,7 @@ class FileListController {
 				$this->folderObject = $fileFactory->getFolderObjectFromCombinedIdentifier($combinedIdentifier);
 				// Disallow the rendering of the processing folder (e.g. could be called manually)
 				// and all folders without any defined storage
-				if ($this->folderObject && ($this->folderObject->getStorage()->getUid() == 0 || trim($this->folderObject->getStorage()->getProcessingFolder()->getIdentifier(), '/') === trim($this->folderObject->getIdentifier(), '/'))) {
+				if ($this->folderObject && ($this->folderObject->getStorage()->getUid() == 0 || $this->folderObject->isProcessingFolder())) {
 					$storage = $fileFactory->getStorageObjectFromCombinedIdentifier($combinedIdentifier);
 					$this->folderObject = $storage->getRootLevelFolder();
 				}
