@@ -3,24 +3,8 @@
 /* EXT:t3skin > structure/main_content.css */
 .lead { font-size: 1.3em; }
 
-/* EXT:t3skin > visual/main_content.css */
-a { color:rgb(50, 160, 255); }
-a:hover { text-decoration: underline; }
-
 /* EXT:t3skin > structure/main_content.css */
 ul,
 ol { padding-left: 24px; }
 
 ol { list-style-type: decimal; }
-
-/* EXT:t3skin > structure/main_content.css */
-h1,
-h4 { font-weight: normal; }
-
-h2,
-h3 { font-weight: bold; }
-
-h1 { font-size: 2.1em; }
-h2 { font-size: 1.4em; }
-h3 { font-size: 1.1em; }
-h4 { font-size: 1em; text-transform: uppercase; }
