@@ -64,6 +64,16 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class CharsetConverter {
 
 	/**
+	 * @var string Conversion-method; taken from $GLOBALS['TYPO3_CONF_VARS']['SYS']['t3lib_cs_convMethod'] or autodetection
+	 */
+	protected $convMethod;
+
+	/**
+	 * @var string Conversion-utils; taken from $GLOBALS['TYPO3_CONF_VARS']['SYS']['t3lib_cs_utils'] or autodetection
+	 */
+	protected $convUtils;
+
+	/**
 	 * @var \TYPO3\CMS\Core\Localization\Locales
 	 */
 	protected $locales;
@@ -619,6 +629,76 @@ class CharsetConverter {
 	 */
 	public function __construct() {
 		$this->locales = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Localization\\Locales');
+
+
+		$this->convMethod = NULL;
+		switch($GLOBALS['TYPO3_CONF_VARS']['SYS']['t3lib_cs_convMethod']) {
+			case 'mbstring':
+				if (extension_loaded('mbstring')) {
+					$this->convMethod = 'mbstring';
+				}
+				// else we might want to log a warning
+				break;
+			case 'iconv':
+				if (extension_loaded('iconv')) {
+					$this->convMethod = 'iconv';
+				}
+				// else we might want to log a warning
+				break;
+			case 'recode':
+				if (function_exists('recode_string')) {
+					$this->convMethod = 'recode';
+				}
+				// else we might want to log a warning
+				break;
+			case 'internal':
+				$this->convMethod = 'internal';
+				break;
+		}
+
+		// autodetection - default and also used as fallback if specified convMethod is not available
+		if ($this->convMethod === NULL) {
+			if (extension_loaded('mbstring')) {
+				$this->convMethod = 'mbstring';
+			} elseif (extension_loaded('iconv')) {
+				$this->convMethod = 'iconv';
+			} elseif (function_exists('recode_string')) {
+				$this->convMethod = 'recode';
+			} else {
+				$this->convMethod = 'internal';
+			}
+		}
+
+
+		$this->convUtils = NULL;
+		switch($GLOBALS['TYPO3_CONF_VARS']['SYS']['t3lib_cs_utils']) {
+			case 'mbstring':
+				if (extension_loaded('mbstring')) {
+					$this->convUtils = 'mbstring';
+				}
+				// else we might want to log a warning
+				break;
+			case 'iconv':
+				if (extension_loaded('iconv')) {
+					$this->convUtils = 'iconv';
+				}
+				// else we might want to log a warning
+				break;
+			case 'internal':
+				$this->convUtils = 'internal';
+				break;
+		}
+
+		// autodetection - default and also used as fallback if specified convMethod is not available
+		if ($this->convUtils === NULL) {
+			if (extension_loaded('mbstring')) {
+				$this->convUtils = 'mbstring';
+			} elseif (extension_loaded('iconv')) {
+				$this->convUtils = 'iconv';
+			} else {
+				$this->convUtils = 'internal';
+			}
+		}
 	}
 
 	/**
@@ -700,7 +780,7 @@ class CharsetConverter {
 		}
 		// PHP-libs don't support fallback to SGML entities, but UTF-8 handles everything
 		if ($toCS == 'utf-8' || !$useEntityForNoChar) {
-			switch ($GLOBALS['TYPO3_CONF_VARS']['SYS']['t3lib_cs_convMethod']) {
+			switch ($this->convMethod) {
 				case 'mbstring':
 					$conv_str = mb_convert_encoding($str, $toCS, $fromCS);
 					if (FALSE !== $conv_str) {
@@ -1561,7 +1641,7 @@ class CharsetConverter {
 		if ($len === 0 || $string === '') {
 			return '';
 		}
-		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['t3lib_cs_utils'] == 'mbstring') {
+		if ($this->convUtils == 'mbstring') {
 			// Cannot omit $len, when specifying charset
 			if ($len == NULL) {
 				// Save internal encoding
@@ -1574,7 +1654,7 @@ class CharsetConverter {
 			} else {
 				return mb_substr($string, $start, $len, $charset);
 			}
-		} elseif ($GLOBALS['TYPO3_CONF_VARS']['SYS']['t3lib_cs_utils'] == 'iconv') {
+		} elseif ($this->convUtils == 'iconv') {
 			// Cannot omit $len, when specifying charset
 			if ($len == NULL) {
 				// Save internal encoding
@@ -1611,9 +1691,9 @@ class CharsetConverter {
 	 * @todo Define visibility
 	 */
 	public function strlen($charset, $string) {
-		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['t3lib_cs_utils'] == 'mbstring') {
+		if ($this->convUtils == 'mbstring') {
 			return mb_strlen($string, $charset);
-		} elseif ($GLOBALS['TYPO3_CONF_VARS']['SYS']['t3lib_cs_utils'] == 'iconv') {
+		} elseif ($this->convUtils == 'iconv') {
 			return iconv_strlen($string, $charset);
 		} elseif ($charset == 'utf-8') {
 			return $this->utf8_strlen($string);
@@ -1663,7 +1743,7 @@ class CharsetConverter {
 	 * @todo Define visibility
 	 */
 	public function crop($charset, $string, $len, $crop = '') {
-		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['t3lib_cs_utils'] == 'mbstring') {
+		if ($this->convUtils == 'mbstring') {
 			return $this->cropMbstring($charset, $string, $len, $crop);
 		}
 		if (intval($len) == 0) {
@@ -1714,7 +1794,7 @@ class CharsetConverter {
 		if ($len <= 0) {
 			return '';
 		}
-		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['t3lib_cs_utils'] == 'mbstring') {
+		if ($this->convUtils == 'mbstring') {
 			return mb_strcut($string, 0, $len, $charset);
 		} elseif ($charset == 'utf-8') {
 			return $this->utf8_strtrunc($string, $len);
@@ -1749,7 +1829,7 @@ class CharsetConverter {
 	 * @todo Define visibility
 	 */
 	public function conv_case($charset, $string, $case) {
-		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['t3lib_cs_utils'] == 'mbstring') {
+		if ($this->convUtils == 'mbstring') {
 			if ($case == 'toLower') {
 				$string = mb_strtolower($string, $charset);
 			} else {
@@ -2011,9 +2091,9 @@ class CharsetConverter {
 	 * @todo Define visibility
 	 */
 	public function utf8_strpos($haystack, $needle, $offset = 0) {
-		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['t3lib_cs_utils'] == 'mbstring') {
+		if ($this->convUtils == 'mbstring') {
 			return mb_strpos($haystack, $needle, $offset, 'utf-8');
-		} elseif ($GLOBALS['TYPO3_CONF_VARS']['SYS']['t3lib_cs_utils'] == 'iconv') {
+		} elseif ($this->convUtils == 'iconv') {
 			return iconv_strpos($haystack, $needle, $offset, 'utf-8');
 		}
 		$byte_offset = $this->utf8_char2byte_pos($haystack, $offset);
@@ -2039,9 +2119,9 @@ class CharsetConverter {
 	 * @todo Define visibility
 	 */
 	public function utf8_strrpos($haystack, $needle) {
-		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['t3lib_cs_utils'] == 'mbstring') {
+		if ($this->convUtils == 'mbstring') {
 			return mb_strrpos($haystack, $needle, 'utf-8');
-		} elseif ($GLOBALS['TYPO3_CONF_VARS']['SYS']['t3lib_cs_utils'] == 'iconv') {
+		} elseif ($this->convUtils == 'iconv') {
 			return iconv_strrpos($haystack, $needle, 'utf-8');
 		}
 		$byte_pos = strrpos($haystack, $needle);
