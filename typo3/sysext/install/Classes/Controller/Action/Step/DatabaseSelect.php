@@ -115,14 +115,24 @@ class DatabaseSelect extends Action\AbstractAction implements StepInterface {
 	 */
 	public function handle() {
 		$this->initialize();
-		$this->view->assign('databaseList', $this->getDatabaseList());
+		$databaseList = $this->getDatabaseList();
+		$emptyDatabases = array();
+		foreach($databaseList as $databaseName => $databaseInformation) {
+			if ($databaseInformation['tableCount'] === 0) {
+				$emptyDatabases[$databaseName] = $databaseInformation;
+			}
+		}
+		$priviledges = $this->getDatabasePriviledges(array_keys($databaseList));
+
+		$this->view->assign('databaseCreateAllowed', $priviledges['createDatabase'] !== FALSE);
+		$this->view->assign('databaseList', array_keys($emptyDatabases));
 		return $this->view->render();
 	}
 
 	/**
 	 * Returns list of available databases (with access-check based on username/password)
 	 *
-	 * @return array List of available databases
+	 * @return array List of available databases. array-keys are database-names, array-values are array with additional attributes (like 'tableCount')
 	 */
 	protected function getDatabaseList() {
 		$this->initializeDatabaseConnection();
@@ -130,16 +140,29 @@ class DatabaseSelect extends Action\AbstractAction implements StepInterface {
 		// Remove mysql organizational tables from database list
 		$reservedDatabaseNames = array('mysql', 'information_schema', 'performance_schema');
 		$allPossibleDatabases = array_diff($databaseArray, $reservedDatabaseNames);
-		$databasesWithoutTables = array();
+		$databases = array();
 		foreach ($allPossibleDatabases as $database) {
+			$additionalInformation = array();
+
 			$this->databaseConnection->setDatabaseName($database);
 			$this->databaseConnection->sql_select_db();
 			$existingTables = $this->databaseConnection->admin_get_tables();
-			if (count($existingTables) === 0) {
-				$databasesWithoutTables[] = $database;
-			}
+			$additionalInformation['tableCount'] = count($existingTables);
+			$databases[$database] = $additionalInformation;
 		}
-		return $databasesWithoutTables;
+		return $databases;
+	}
+
+	/**
+	 * Returns list of available priviledges for the current database-user
+	 *
+	 * @param array<string>|NULL $listOfExistingDatabases List of databases as can be fetched with admin_get_dbs()
+	 * @return array List of available databases priviledges
+	 */
+	protected function getDatabasePriviledges($listOfExistingDatabases = NULL) {
+		$this->initializeDatabaseConnection();
+		$priviledges = $this->databaseConnection->admin_get_priviledges($listOfExistingDatabases);
+		return $priviledges;
 	}
 
 	/**
