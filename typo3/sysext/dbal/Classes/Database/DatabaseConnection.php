@@ -2762,6 +2762,30 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	}
 
 	/**
+	 * Returns privileges of the current database-user.
+	 *
+	 * For now this only contains:
+	 *  * create_database boolean|string   FALSE if creation of new databases is not allowed. TRUE indicates a general right to create databases. If this is an array of strings, list lists the names of databases allowed to create (may contain wildcards!)
+	 *
+	 * @param array<string>|NULL $listOfExistingDatabases List of databases as can be fetched with admin_get_dbs()
+	 * @return array Array with privileges
+	 */
+	public function admin_get_privileges($listOfExistingDatabases = NULL) {
+		$privileges = array();
+		switch ($this->handlerCfg['_DEFAULT']['type']) {
+			case 'native':
+				$privileges = parent::admin_get_privileges($listOfExistingDatabases);
+				break;
+			case 'default':
+				// Until further implementation for specific DBMS, return default-privileges
+				$privileges = array(
+					'createDatabase' => TRUE,
+				);
+		}
+		return $privileges;
+	}
+
+	/**
 	 * mysql() wrapper function, used by the Install Tool and EM for all queries regarding management of the database!
 	 *
 	 * @param 	string		Query to execute
