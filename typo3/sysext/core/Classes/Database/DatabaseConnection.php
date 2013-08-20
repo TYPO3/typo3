@@ -1399,6 +1399,80 @@ class DatabaseConnection {
 	}
 
 	/**
+	 * Returns priviledges of the current database-user.
+	 *
+	 * For now this only contains:
+	 *  * create_database boolean|string   FALSE if creation of new databases is not allowed. TRUE indicates a general right to create databases. If this is an array of strings, list lists the names of databases allowed to create (may contain wildcards!)
+	 *
+	 * @param array<string>|NULL $listOfExistingDatabases List of databases as can be fetched with admin_get_dbs()
+	 * @return array Array with priviledges
+	 */
+	public function admin_get_priviledges($listOfExistingDatabases = NULL) {
+		if (!$this->isConnected) {
+			$this->connectDB();
+		}
+		$priviledges = array(
+			'createDatabase' => FALSE
+		);
+		$columns_res = $this->link->query('SHOW GRANTS');
+		if ($columns_res !== FALSE) {
+			while ($row = $columns_res->fetch_row()) {
+				// extract db from GRANT ... ON *.* or GRANT ... ON db.*
+				$beforeAfterOn = explode(' ON ', $row[0], 2);
+				// length of 'GRANT ' is 6
+				$rights = substr($beforeAfterOn[0], 6);
+				// format: databasename.host
+				list($databaseName) = explode('.', $beforeAfterOn[1], 2);
+				// remove quotes if necessary
+				if (($databaseName[0] === '`') && (substr($databaseName[0], -1) === '`')) {
+					$databaseName = substr($databaseName, 1, -1);
+				}
+				// unescape name from LIKE-statement-syntax
+				// in LIKE-statements % and _ are escaped
+				$databaseName = str_replace(
+					array('\\%', '\\_'),
+					array('%', '_'),
+					$databaseName
+				);
+
+				if ($rights === 'ALL'
+					|| $rights === 'ALL PRIVILEGES'
+					|| $rights === 'CREATE'
+					|| strpos($rights, 'CREATE,') !== FALSE
+				) {
+					if ($rights === '*') {
+						// a global CREATE privilege
+						$priviledges['createDatabase'] = TRUE;
+					} else {
+						if ($matchesExistingDatabaseName === TRUE) {
+							// if global create-permission already found, don't proceed any further
+						}
+						$matchesExistingDatabaseName = FALSE;
+						// If no list of databases is supplied, this function cannot check if the database already exists. Otherwise create-priviledges for an already existing db would be filtered out
+						if (is_array($listOfExistingDatabases)) {
+							foreach($listOfExistingDatabases as $existingDatabaseName) {
+								if ($existingDatabaseName === $databaseName) {
+									$matchesExistingDatabaseName = TRUE;
+								}
+							}
+						}
+						// if allowed to create a database (might include wildcards)
+						// and that database does not yet exist
+						if ($matchesExistingDatabaseName === FALSE) {
+							if (!is_array($priviledges['createDatabase'])) {
+								$priviledges['createDatabase'] = array();
+							}
+							$priviledges['createDatabase'][] = $databaseName;
+						}
+					}
+				}
+			}
+			$columns_res->free();
+		}
+		return $priviledges;
+	}
+
+	/**
 	 * mysqli() wrapper function, used by the Install Tool and EM for all queries regarding management of the database!
 	 *
 	 * @param string $query Query to execute

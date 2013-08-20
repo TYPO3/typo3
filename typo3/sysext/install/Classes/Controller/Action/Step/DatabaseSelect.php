@@ -118,8 +118,13 @@ class DatabaseSelect extends Action\AbstractAction implements StepInterface {
 		/** @var $configurationManager \TYPO3\CMS\Core\Configuration\ConfigurationManager */
 		$configurationManager = $this->objectManager->get('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager');
 		$isInitialInstallationInProgress = $configurationManager->getConfigurationValueByPath('SYS/isInitialInstallationInProgress');
-		$this->view->assign('databaseList', $this->getDatabaseList($isInitialInstallationInProgress));
+
+		$databaseList = $this->getDatabaseList($isInitialInstallationInProgress);
+		$priviledges = $this->getDatabasePriviledges(array_keys($databaseList));
+
 		$this->view->assign('isInitialInstallationInProgress', $isInitialInstallationInProgress);
+		$this->view->assign('databaseCreateAllowed', $priviledges['createDatabase'] !== FALSE);
+		$this->view->assign('databaseList', $databaseList);
 		return $this->view->render();
 	}
 
@@ -152,6 +157,18 @@ class DatabaseSelect extends Action\AbstractAction implements StepInterface {
 			}
 			return $databasesWithoutTables;
 		}
+	}
+
+	/**
+	 * Returns list of available priviledges for the current database-user
+	 *
+	 * @param array<string>|NULL $listOfExistingDatabases List of databases as can be fetched with admin_get_dbs()
+	 * @return array List of available databases priviledges
+	 */
+	protected function getDatabasePriviledges($listOfExistingDatabases = NULL) {
+		$this->initializeDatabaseConnection();
+		$priviledges = $this->databaseConnection->admin_get_priviledges($listOfExistingDatabases);
+		return $priviledges;
 	}
 
 	/**
