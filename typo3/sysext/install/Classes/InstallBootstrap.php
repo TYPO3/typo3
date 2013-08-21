@@ -91,24 +91,45 @@ class InstallBootstrap {
 	}
 
 	/**
+	 * Exit the script with the message of the exception in install tool layout.
+	 *
+	 * @param \Exception $exception Exception to shown.
+	 * @return void
+	 */
+	static public function dieWithExceptionMessage(\Exception $exception) {
+		self::dieWithMessage(
+			'The Install Tool has encountered a problem.',
+			'
+				<p>
+					The Install Tool has encountered a problem. In order to fix it please read the following error message carefully:
+				</p>
+				<ul>
+					<li>
+						' . htmlspecialchars($exception->getMessage()) . '
+					</li>
+				</ul>
+				<p>
+					Usually the problem is a missing write permission for the webserver user to the <code>typo3conf</code> and/or
+					<code>typo3temp</code> directory.
+				</p>
+			' .
+			($exception->getCode() > 0
+				? '<p>More information regarding this error might be available <a href="' .
+					TYPO3_URL_EXCEPTION . $exception->getCode() . '" target="_blank">online</a>.</p>'
+				: ''
+			)
+		);
+	}
+
+	/**
 	 * Exit the script with a message that the install tool is locked.
 	 *
 	 * @return void
 	 */
 	static protected function dieWithLockedInstallToolMessage() {
-		require_once PATH_site . 'typo3/sysext/core/Classes/Html/HtmlParser.php';
-		// Define the stylesheet
-		$stylesheet = '<link rel="stylesheet" type="text/css" href="' . '../stylesheets/install/install.css" />';
-		$javascript = '<script type="text/javascript" src="' . '../contrib/prototype/prototype.js"></script>';
-		$javascript .= '<script type="text/javascript" src="' . '../sysext/install/Resources/Public/Javascript/install.js"></script>';
-		// Get the template file
-		$template = @file_get_contents((PATH_site . 'typo3/templates/install.html'));
-		// Define the markers content
-		$markers = array(
-			'styleSheet' => $stylesheet,
-			'javascript' => $javascript,
-			'title' => 'The Install Tool is locked',
-			'content' => '
+		self::dieWithMessage(
+			'The Install Tool is locked',
+			'
 				<p>
 					To enable the Install Tool, the file ENABLE_INSTALL_TOOL must be created.
 				</p>
@@ -132,6 +153,30 @@ class InstallBootstrap {
 				</p>
 			'
 		);
+	}
+
+	/**
+	 * Exit the script with given title and message in the install tool layout.
+	 *
+	 * @param string $title Title of the message.
+	 * @param string $content Content of the message to show.
+	 * @return void
+	 */
+	static protected function dieWithMessage($title, $content) {
+		require_once PATH_site . 'typo3/sysext/core/Classes/Html/HtmlParser.php';
+		// Define the stylesheet
+		$stylesheet = '<link rel="stylesheet" type="text/css" href="' . '../stylesheets/install/install.css" />';
+		$javascript = '<script type="text/javascript" src="' . '../contrib/prototype/prototype.js"></script>';
+		$javascript .= '<script type="text/javascript" src="' . '../sysext/install/Resources/Public/Javascript/install.js"></script>';
+		// Get the template file
+		$template = @file_get_contents(PATH_site . 'typo3/templates/install.html');
+		// Define the markers content
+		$markers = array(
+			'styleSheet' => $stylesheet,
+			'javascript' => $javascript,
+			'title' => $title,
+			'content' => $content,
+		);
 		// Fill the markers
 		$content = \TYPO3\CMS\Core\Html\HtmlParser::substituteMarkerArray($template, $markers, '###|###', 1, 1);
 		// Output the warning message and exit
@@ -143,6 +188,5 @@ class InstallBootstrap {
 	}
 
 }
-
 
 ?>
