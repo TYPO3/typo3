@@ -1456,6 +1456,17 @@ class TypoScriptFrontendController {
 			$this->page = $this->getPageShortcut($this->page['shortcut'], $this->page['shortcut_mode'], $this->page['uid']);
 			$this->id = $this->page['uid'];
 		}
+		// If linked by a Sym Link to this Mount Point and
+		// "Show Content from Mounted Page" is selected
+		if ($this->page['doktype'] == t3lib_pageSelect::DOKTYPE_MOUNTPOINT && $this->page['mount_pid_ol'] == 1) {
+			$arMpInfo = $this->sys_page->getMountPointInfo($this->id);
+			$this->originalShortcutPage = $this->page;
+			$this->MP = $arMpInfo['MPvar'];
+			$this->page = $this->getPageShortcut(
+				$arMpInfo['mount_pid'], 0, $this->id, $this->page['uid'], 20, array(), TRUE
+			);
+			$this->id = $this->page['uid'];
+		}
 		// Gets the rootLine
 		$this->rootLine = $this->sys_page->getRootLine($this->id, $this->MP);
 		// If not rootline we're off...
