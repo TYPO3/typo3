@@ -60,7 +60,7 @@ class PersistenceManager implements \TYPO3\CMS\Extbase\Persistence\PersistenceMa
 	protected $queryFactory;
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\Backend
+	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 	 */
 	protected $backend;
 
