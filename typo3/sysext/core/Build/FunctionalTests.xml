@@ -24,6 +24,9 @@
 	verbose="false"
 >
 	<testsuites>
+		<testsuite name="EXT:frontend tests">
+			<directory>../../../../typo3/sysext/frontend/Tests/Functional/</directory>
+		</testsuite>
 		<testsuite name="EXT:core tests">
 			<directory>../../../../typo3/sysext/core/Tests/Functional/</directory>
 		</testsuite>

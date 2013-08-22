@@ -110,7 +110,7 @@ class FunctionalTestCaseBootstrapUtility {
 	 * @return void
 	 */
 	protected function setUpInstancePath() {
-		$this->instancePath = ORIGINAL_ROOT . 'typo3temp/functional-' . $this->identifier;
+		$this->instancePath = ORIGINAL_ROOT . 'typo3temp/functional-' . $this->identifier . '/';
 	}
 
 	/**
@@ -159,8 +159,8 @@ class FunctionalTestCaseBootstrapUtility {
 	 */
 	protected function setUpInstanceCoreLinks() {
 		$linksToSet = array(
-			ORIGINAL_ROOT . 'typo3' => $this->instancePath . '/typo3',
-			ORIGINAL_ROOT . 'index.php' => $this->instancePath . '/index.php'
+			ORIGINAL_ROOT . 'typo3' => $this->instancePath . 'typo3',
+			ORIGINAL_ROOT . 'index.php' => $this->instancePath . 'index.php'
 		);
 		foreach ($linksToSet as $from => $to) {
 			$success = symlink($from,  $to);
@@ -189,7 +189,7 @@ class FunctionalTestCaseBootstrapUtility {
 				);
 			}
 			$absoluteExtensionPath = ORIGINAL_ROOT . $extensionPath;
-			$destinationPath = $this->instancePath . '/typo3conf/ext/'. basename($absoluteExtensionPath);
+			$destinationPath = $this->instancePath . 'typo3conf/ext/'. basename($absoluteExtensionPath);
 			$success = symlink($absoluteExtensionPath, $destinationPath);
 			if (!$success) {
 				throw new Exception(
@@ -228,7 +228,7 @@ class FunctionalTestCaseBootstrapUtility {
 		$finalConfigurationArray['EXT']['extListArray'] = $extensionsToLoad;
 
 		$result = $this->writeFile(
-			$this->instancePath . '/typo3conf/LocalConfiguration.php',
+			$this->instancePath . 'typo3conf/LocalConfiguration.php',
 			'<?php' . chr(10) .
 			'return ' .
 			$this->arrayExport(
@@ -248,16 +248,16 @@ class FunctionalTestCaseBootstrapUtility {
 	 * @return void
 	 */
 	protected function setUpBasicTypo3Bootstrap() {
-		$_SERVER['PWD'] = $this->instancePath;
-		$_SERVER['argv'][0] = 'index.php';
+		if (defined('TYPO3_cliMode')) {
+			$_SERVER['PWD'] = $this->instancePath;
+			$_SERVER['argv'][0] = 'index.php';
+			require $this->instancePath . 'typo3/sysext/core/Classes/Core/CliBootstrap.php';
+			\TYPO3\CMS\Core\Core\CliBootstrap::checkEnvironmentOrDie();
+		} else {
+			$_SERVER['SCRIPT_FILENAME'] = $this->instancePath . 'index.php';
+		}
 
-		define('TYPO3_MODE', 'BE');
-		define('TYPO3_cliMode', TRUE);
-
-		require $this->instancePath . '/typo3/sysext/core/Classes/Core/CliBootstrap.php';
-		\TYPO3\CMS\Core\Core\CliBootstrap::checkEnvironmentOrDie();
-
-		require $this->instancePath . '/typo3/sysext/core/Classes/Core/Bootstrap.php';
+		require $this->instancePath . 'typo3/sysext/core/Classes/Core/Bootstrap.php';
 		\TYPO3\CMS\Core\Core\Bootstrap::getInstance()
 			->baseSetup('')
 			->loadConfigurationAndInitialize(FALSE)

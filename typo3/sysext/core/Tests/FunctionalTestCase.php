@@ -33,7 +33,7 @@ namespace TYPO3\CMS\Core\Tests;
  * set up and destroy the test system.
  *
  * The functional test system creates a full new TYPO3 CMS instance
- * within typo3temp/ of the base system and the bootstraps this TYPO3 instance.
+ * within typo3temp/ of the base system and then bootstraps this TYPO3 instance.
  * This abstract class takes care of creating this instance with its
  * folder structure and a LocalConfiguration, creates an own database
  * for each test run and imports tables of loaded extensions.
@@ -41,7 +41,7 @@ namespace TYPO3\CMS\Core\Tests;
  * Functional tests must be run standalone (calling native phpunit
  * directly) and can not be executed by eg. the ext:phpunit backend module.
  * Additionally, the script must be called from the document root
- * of the instance, otherwise path calculation is not successfully.
+ * of the instance, otherwise path calculation is not successful.
  *
  * Call whole functional test suite, example:
  * - cd /var/www/t3master/foo  # Document root of CMS instance, here is index.php of frontend
@@ -55,6 +55,13 @@ namespace TYPO3\CMS\Core\Tests;
  *     typo3/sysext/core/Tests/Functional/Functional/FunctionalTestCaseTest.php
  */
 abstract class FunctionalTestCase extends BaseTestCase {
+
+	/**
+	 * This influences the bootstrap that is done.
+	 *
+	 * @var string "frontend", "backend" or "cli"
+	 */
+	protected $environment = 'backend';
 
 	/**
 	 * Core extensions to load.
@@ -116,8 +123,13 @@ abstract class FunctionalTestCase extends BaseTestCase {
 		if (!defined('ORIGINAL_ROOT')) {
 			$this->markTestSkipped('Functional tests must be called through phpunit on CLI');
 		}
+		$this->defineEnvironmentConstants();
 		$this->bootstrapUtility = new FunctionalTestCaseBootstrapUtility();
-		$this->bootstrapUtility->setUp(get_class($this), $this->coreExtensionsToLoad, $this->testExtensionsToLoad);
+		$this->bootstrapUtility->setUp(
+			get_class($this),
+			$this->coreExtensionsToLoad,
+			$this->testExtensionsToLoad
+		);
 	}
 
 	/**
@@ -198,6 +210,32 @@ abstract class FunctionalTestCase extends BaseTestCase {
 				$elementId = (string) $table['id'];
 				$foreignKeys[$tableName][$elementId] = $database->sql_insert_id();
 			}
+		}
+	}
+
+	/**
+	 * Define constants based on environment that should be bootstrapped.
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	private function defineEnvironmentConstants() {
+		switch ($this->environment) {
+			case 'frontend':
+				define('TYPO3_MODE', 'FE');
+				break;
+			case 'backend':
+				define('TYPO3_MODE', 'BE');
+				break;
+			case 'cli':
+				define('TYPO3_MODE', 'BE');
+				define('TYPO3_cliMode', TRUE);
+				break;
+			default:
+				throw new Exception(
+					'Environment must be set to "frontend", "backend" or "cli"',
+					1376852297
+				);
 		}
 	}
 }
