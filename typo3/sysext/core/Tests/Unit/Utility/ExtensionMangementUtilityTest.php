@@ -689,7 +689,6 @@ class ExtensionManagementUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 			'Typo3 relative path' => array('typo3RelPath', 'sysext/cms/'),
 			'Path ext_localconf.php' => array('ext_localconf.php', '/typo3/sysext/cms/ext_localconf.php'),
 			'Path ext_tables.php' => array('ext_tables.php', '/typo3/sysext/cms/ext_tables.php'),
-			'Path ext_tablps.sql' => array('ext_tables.sql', '/typo3/sysext/cms/ext_tables.sql')
 		);
 	}
 
@@ -702,6 +701,32 @@ class ExtensionManagementUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 	public function createTypo3LoadedExtensionInformationArrayReturnsExpectedInformationForCmsExtension($arrayKeyToTest, $expectedContent) {
 		$actualArray = ExtensionManagementUtilityAccessibleProxy::createTypo3LoadedExtensionInformationArray();
 		$this->assertStringEndsWith($expectedContent, $actualArray['cms'][$arrayKeyToTest]);
+	}
+
+	/**
+	 * Data provider for createTypo3LoadedExtensionInformationArrayReturnsExpectedInformationForFrontendExtension
+	 *
+	 * @return array
+	 */
+	public function createTypo3LoadedExtensionInformationArrayReturnsExpectedInformationForFrontendExtensionDataProvider() {
+		return array(
+			'System extension' => array('type', 'S'),
+			'Site relative path' => array('siteRelPath', 'typo3/sysext/frontend/'),
+			'Typo3 relative path' => array('typo3RelPath', 'sysext/frontend/'),
+			'Path ext_tables.sql' => array('ext_tables.sql', '/typo3/sysext/frontend/ext_tables.sql')
+		);
+	}
+
+	/**
+	 * @param string $arrayKeyToTest
+	 * @param string $expectedContent
+	 *
+	 * @test
+	 * @dataProvider createTypo3LoadedExtensionInformationArrayReturnsExpectedInformationForFrontendExtensionDataProvider
+	 */
+	public function createTypo3LoadedExtensionInformationArrayReturnsExpectedInformationForFrontendExtension($arrayKeyToTest, $expectedContent) {
+		$actualArray = ExtensionManagementUtilityAccessibleProxy::createTypo3LoadedExtensionInformationArray();
+		$this->assertStringEndsWith($expectedContent, $actualArray['frontend'][$arrayKeyToTest]);
 	}
 
 	/////////////////////////////////////////
