@@ -299,7 +299,7 @@ class FileListController {
 			// Set top JavaScript:
 			$this->doc->JScode = $this->doc->wrapScriptTags('
 
-			if (top.fsMod) top.fsMod.recentIds["file"] = unescape("' . rawurlencode($this->id) . '");
+			if (top.fsMod) top.fsMod.recentIds["file"] = "' . rawurlencode($this->id) . '";
 			function jumpToUrl(URL) {	//
 				window.location.href = URL;
 			}
