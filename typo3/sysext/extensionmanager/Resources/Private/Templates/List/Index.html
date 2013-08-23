@@ -76,7 +76,7 @@
 					{extension.version}
 				</td>
 				<td class="icons">
-					<em:configureExtension extension="{extension}"><f:be.buttons.icon uri="" icon="actions-system-extension-configure" title="{f:translate(key:'extensionList.configure')}" /></em:configureExtension>
+					<em:configureExtension extension="{extension}"><f:be.buttons.icon icon="actions-system-extension-configure" title="{f:translate(key:'extensionList.configure')}" /></em:configureExtension>
 					<em:updateScript extensionKey="{extension.key}" />
 					<em:removeExtension extension="{extension}" />
 					<f:be.buttons.icon uri="{f:uri.action(action:'downloadExtensionZip',controller:'Action',arguments:'{extension:extension.key}')}" icon="actions-system-extension-download" title="{f:translate(key:'extensionList.downloadzip')}"/>
