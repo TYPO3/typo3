@@ -732,8 +732,9 @@ class ContentObjectRenderer {
 			} else {
 				$hooked = FALSE;
 				// Application defined cObjects
-				foreach ($this->cObjHookObjectsArr as $cObjName => $hookObj) {
-					if ($name === $cObjName && method_exists($hookObj, 'cObjGetSingleExt')) {
+				if (!empty($this->cObjHookObjectsArr[$name])) {
+					$hookObj = $this->cObjHookObjectsArr[$name];
+					if (method_exists($hookObj, 'cObjGetSingleExt')) {
 						$content .= $hookObj->cObjGetSingleExt($name, $conf, $TSkey, $this);
 						$hooked = TRUE;
 					}
