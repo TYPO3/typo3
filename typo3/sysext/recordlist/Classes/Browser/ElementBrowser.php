@@ -1582,8 +1582,14 @@ class ElementBrowser {
 		$extensionList = $extensionList == '*' ? '' : $extensionList;
 		$content = '';
 		if ($folder->checkActionPermission('read')) {
+
+			$fileExtensionFilter = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\Filter\\FileExtensionFilter');
+			$fileExtensionFilter->setAllowedFileExtensions($extensionList);
+			$folder->getStorage()->addFileAndFolderNameFilter($fileExtensionFilter);
+
 			// Listing the files:
-			$files = $folder->getFiles($extensionList);
+			$files = $folder->getFiles();
+
 			$content = $this->fileList($files, $folder, $noThumbs);
 		}
 		// Return accumulated content for filelisting:
@@ -1927,6 +1933,7 @@ class ElementBrowser {
 	 * @todo Define visibility
 	 */
 	public function isReadOnlyFolder($folder) {
+		return false;
 		return $GLOBALS['FILEMOUNTS'][$this->fileProcessor->checkPathAgainstMounts(rtrim($folder, '/') . '/')]['type'] == 'readonly';
 	}
 
