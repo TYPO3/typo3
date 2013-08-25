@@ -2,11 +2,11 @@
 
 @font-face {
     font-family: 'Share';
-    src: url('../../../Resources/Public/Fonts/share-bold-webfont.eot');
-    src: url('../../../../../../../../ces/Public/Fonts/share-bold-webfont.eot?#iefix') format('embedded-opentype'),
-         url('../../../../../../../../ces/Public/Fonts/share-bold-webfont.woff') format('woff'),
-         url('../../../../../../../../ces/Public/Fonts/share-bold-webfont.ttf') format('truetype'),
-         url('../../../../../../../../ces/Public/Fonts/share-bold-webfont.svg#Share-BoldRegular') format('svg');
+    src: url('../../Fonts/share-bold-webfont.eot');
+    src: url('../../Fonts/share-bold-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../../Fonts/share-bold-webfont.woff') format('woff'),
+         url('../../Fonts/share-bold-webfont.ttf') format('truetype'),
+         url('../../Fonts/share-bold-webfont.svg#Share-BoldRegular') format('svg');
     font-weight: bold;
     font-style: normal;
 }
