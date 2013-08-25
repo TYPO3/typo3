@@ -712,6 +712,7 @@ class ExtendedFileUtility extends \TYPO3\CMS\Core\Utility\File\BasicFileUtility 
 			try {
 				// Try to rename the File
 				$resultObject = $sourceFileObject->rename($targetFile);
+				$this->writelog(5, 0, 1, 'File renamed from "%s" to "%s"', array($sourceFileObject->getName(), $targetFile));
 			} catch (\TYPO3\CMS\Core\Resource\Exception\InsufficientUserPermissionsException $e) {
 				$this->writelog(5, 1, 102, 'You are not allowed to rename files!', '');
 			} catch (\TYPO3\CMS\Core\Resource\Exception\IllegalFileExtensionException $e) {
@@ -723,12 +724,12 @@ class ExtendedFileUtility extends \TYPO3\CMS\Core\Utility\File\BasicFileUtility 
 			} catch (\RuntimeException $e) {
 				$this->writelog(5, 1, 100, 'File "%s" was not renamed! Write-permission problem in "%s"?', array($sourceFileObject->getName(), $targetFile));
 			}
-			$this->writelog(5, 0, 1, 'File renamed from "%s" to "%s"', array($sourceFileObject->getName(), $targetFile));
 		} else {
 			// Else means this is a Folder
 			try {
 				// Try to rename the Folder
 				$resultObject = $sourceFileObject->rename($targetFile);
+				$this->writelog(5, 0, 2, 'Directory renamed from "%s" to "%s"', array($sourceFileObject->getName(), $targetFile));
 			} catch (\TYPO3\CMS\Core\Resource\Exception\InsufficientUserPermissionsException $e) {
 				$this->writelog(5, 1, 111, 'You are not allowed to rename directories!', '');
 			} catch (\TYPO3\CMS\Core\Resource\Exception\ExistingTargetFileNameException $e) {
@@ -738,7 +739,6 @@ class ExtendedFileUtility extends \TYPO3\CMS\Core\Utility\File\BasicFileUtility 
 			} catch (\RuntimeException $e) {
 				$this->writelog(5, 1, 110, 'Directory "%s" was not renamed! Write-permission problem in "%s"?', array($sourceFileObject->getName(), $targetFile));
 			}
-			$this->writelog(5, 0, 2, 'Directory renamed from "%s" to "%s"', array($sourceFileObject->getName(), $targetFile));
 		}
 		return $resultObject;
 	}
