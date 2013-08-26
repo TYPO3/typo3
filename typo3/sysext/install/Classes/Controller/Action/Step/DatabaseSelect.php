@@ -115,31 +115,43 @@ class DatabaseSelect extends Action\AbstractAction implements StepInterface {
 	 */
 	public function handle() {
 		$this->initialize();
-		$this->view->assign('databaseList', $this->getDatabaseList());
+		/** @var $configurationManager \TYPO3\CMS\Core\Configuration\ConfigurationManager */
+		$configurationManager = $this->objectManager->get('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager');
+		$isInitialInstallationInProgress = $configurationManager->getConfigurationValueByPath('SYS/isInitialInstallationInProgress');
+		$this->view->assign('databaseList', $this->getDatabaseList($isInitialInstallationInProgress));
+		$this->view->assign('isInitialInstallationInProgress', $isInitialInstallationInProgress);
 		return $this->view->render();
 	}
 
 	/**
 	 * Returns list of available databases (with access-check based on username/password)
 	 *
+	 * @param boolean $initialInstallation TRUE if first installation is in progress, FALSE if upgrading or usual access
 	 * @return array List of available databases
 	 */
-	protected function getDatabaseList() {
+	protected function getDatabaseList($initialInstallation) {
 		$this->initializeDatabaseConnection();
 		$databaseArray = $this->databaseConnection->admin_get_dbs();
 		// Remove mysql organizational tables from database list
 		$reservedDatabaseNames = array('mysql', 'information_schema', 'performance_schema');
 		$allPossibleDatabases = array_diff($databaseArray, $reservedDatabaseNames);
-		$databasesWithoutTables = array();
-		foreach ($allPossibleDatabases as $database) {
-			$this->databaseConnection->setDatabaseName($database);
-			$this->databaseConnection->sql_select_db();
-			$existingTables = $this->databaseConnection->admin_get_tables();
-			if (count($existingTables) === 0) {
-				$databasesWithoutTables[] = $database;
+
+		// If we are upgrading we show *all* databases the user has access to
+		if ($initialInstallation === FALSE) {
+			return $allPossibleDatabases;
+		} else {
+			// In first installation we only show empty databases (no tables)
+			$databasesWithoutTables = array();
+			foreach ($allPossibleDatabases as $database) {
+				$this->databaseConnection->setDatabaseName($database);
+				$this->databaseConnection->sql_select_db();
+				$existingTables = $this->databaseConnection->admin_get_tables();
+				if (count($existingTables) === 0) {
+					$databasesWithoutTables[] = $database;
+				}
 			}
+			return $databasesWithoutTables;
 		}
-		return $databasesWithoutTables;
 	}
 
 	/**
