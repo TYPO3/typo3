@@ -105,6 +105,9 @@ class StepController extends AbstractController {
 		$this->executeOrOutputFirstInstallStepIfNeeded();
 		$this->removeObsoleteLocalConfigurationSettings();
 		$this->generateEncryptionKeyIfNeeded();
+		$this->checkRsaauthInstallation();
+		$this->checkBackendLoginSecurity();
+		$this->checkSaltedpasswordsInstallation();
 		$this->initializeSession();
 		$this->checkSessionToken();
 		$this->checkSessionLifetime();
@@ -378,6 +381,62 @@ class StepController extends AbstractController {
 			/** @var \TYPO3\CMS\Core\Configuration\ConfigurationManager $configurationManager */
 			$configurationManager = $this->objectManager->get('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager');
 			$configurationManager->setLocalConfigurationValueByPath('SYS/encryptionKey', $randomKey);
+			$this->redirect();
+		}
+	}
+
+	/**
+	 * "Silent" upgrade: If the extension rsaauth is loaded
+	 * the backend login security option is forced to use it.
+	 *
+	 * @return void
+	 */
+	protected function checkRsaauthInstallation() {
+		if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('rsaauth')
+			&& $GLOBALS['TYPO3_CONF_VARS']['BE']['loginSecurityLevel'] !== 'rsa')
+		{
+			$configurationManager = $this->objectManager->get('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager');
+			$configurationManager->setLocalConfigurationValueByPath('BE/loginSecurityLevel', 'rsa');
+			$this->redirect();
+		}
+	}
+
+	/**
+	 * "Silent" upgrade: If no backend login security is defined,
+	 * it is set to the default value "normal" to be able to use saltedpasswords.
+	 *
+	 * @return void
+	 */
+	protected function checkBackendLoginSecurity() {
+		if ($GLOBALS['TYPO3_CONF_VARS']['BE']['loginSecurityLevel'] === '') {
+			$configurationManager = $this->objectManager->get('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager');
+			$configurationManager->setLocalConfigurationValueByPath('BE/loginSecurityLevel', 'normal');
+			$this->redirect();
+		}
+	}
+
+	/**
+	 * "Silent" upgrade: Check the settings for saltedpasswords extension to
+	 * load it as a required extension.
+	 *
+	 * @return void
+	 */
+	protected function checkSaltedpasswordsInstallation() {
+		$extensionConfiguration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['saltedpasswords']);
+		if (isset($extensionConfiguration['BE.']['enabled'])) {
+			/** @var $configurationManager \TYPO3\CMS\Core\Configuration\ConfigurationManager */
+			$configurationManager = $this->objectManager->get('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager');
+			if ($extensionConfiguration['BE.']['enabled']) {
+				unset($extensionConfiguration['BE.']['enabled']);
+			} else {
+				$defaultConfiguration = $configurationManager->getDefaultConfiguration();
+				$defaultExtensionConfiguration = unserialize($defaultConfiguration['EXT']['extConf']['saltedpasswords']);
+				$extensionConfiguration['BE.'] = $defaultExtensionConfiguration['BE.'];
+			}
+			$configurationManager->setLocalConfigurationValueByPath(
+				'EXT/extConf/saltedpasswords',
+				serialize($extensionConfiguration)
+			);
 			$this->redirect();
 		}
 	}

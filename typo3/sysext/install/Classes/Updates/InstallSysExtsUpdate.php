@@ -61,6 +61,7 @@ class InstallSysExtsUpdate extends AbstractUpdate {
 		'scheduler',
 		'simulatestatic',
 		'documentation',
+		'rsaauth'
 	);
 
 	/**

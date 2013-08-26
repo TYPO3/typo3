@@ -10,9 +10,6 @@ FE.enabled = 1
 # cat=Basic/enable; type=user[EXT:saltedpasswords/Classes/Utility/ExtensionManagerConfigurationUtility.php:TYPO3\CMS\Saltedpasswords\Utility\ExtensionManagerConfigurationUtility->buildHashMethodSelectorFE]; label=Hashing method for the frontend: Defines salted hashing method to use. Choose "Portable PHP password hashing" to stay compatible with other CMS (e.g. Drupal, Wordpress). Choose "MD5 salted hashing" to reuse TYPO3 passwords for OS level authentication (other servers could use TYPO3 passwords). Choose "Blowfish salted hashing" for advanced security to reuse passwords on OS level (Blowfish might not be supported on your system TODO).
 FE.saltedPWHashingMethod = tx_saltedpasswords_salts_phpass
 
-# cat=Basic/enable; type=boolean; label=Enable BE: Enable SaltedPasswords in the backend
-BE.enabled = 1
-
 # cat=Basic/enable; type=user[EXT:saltedpasswords/Classes/Utility/ExtensionManagerConfigurationUtility.php:TYPO3\CMS\Saltedpasswords\Utility\ExtensionManagerConfigurationUtility->buildHashMethodSelectorBE]; label=Hashing method for the backend: Defines salted hashing method to use. Choose "Portable PHP password hashing" to stay compatible with other CMS (e.g. Drupal, Wordpress). Choose "MD5 salted hashing" to reuse TYPO3 passwords for OS level authentication (other servers could use TYPO3 passwords). Choose "Blowfish salted hashing" for advanced security to reuse passwords on OS level (Blowfish might not be supported on your system TODO).
 BE.saltedPWHashingMethod = tx_saltedpasswords_salts_phpass
 

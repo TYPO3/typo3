@@ -128,8 +128,8 @@ class SaltedPasswordsUtility {
 		// Login Security Level Recognition
 		$extConf = self::returnExtConf($mode);
 		$securityLevel = $GLOBALS['TYPO3_CONF_VARS'][$mode]['loginSecurityLevel'];
-		if ($mode == 'BE' && $extConf['enabled']) {
-			return $securityLevel == 'normal' && $GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSL'] > 0 || $securityLevel == 'rsa';
+		if ($mode == 'BE') {
+			return TRUE;
 		} elseif ($mode == 'FE' && $extConf['enabled']) {
 			return \TYPO3\CMS\Core\Utility\GeneralUtility::inList('normal,rsa', $securityLevel);
 		}
