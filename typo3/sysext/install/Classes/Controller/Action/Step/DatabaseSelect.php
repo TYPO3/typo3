@@ -34,9 +34,31 @@ use TYPO3\CMS\Install\Controller\Action;
 class DatabaseSelect extends Action\AbstractAction implements StepInterface {
 
 	/**
+	 * @var $configurationManager \TYPO3\CMS\Core\Configuration\ConfigurationManager
+	 */
+	protected $configurationManager = NULL;
+
+	/**
 	 * @var \TYPO3\CMS\Core\Database\DatabaseConnection
 	 */
 	protected $databaseConnection = NULL;
+
+	/**
+	 * @var $isInitialInstallInProgress boolean
+	 */
+	protected $isInitialInstallInProgress = FALSE;
+
+	/**
+	 * Initialize this action
+	 *
+	 * @return string content
+	 */
+	protected function initialize() {
+		parent::initialize();
+		$this->configurationManager = $this->objectManager->get('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager');
+		$this->isInitialInstallInProgress = $this->configurationManager->getConfigurationValueByPath('SYS/isInitialInstallationInProgress');
+
+	}
 
 	/**
 	 * Create database if needed, save selected db name in configuration
@@ -78,9 +100,7 @@ class DatabaseSelect extends Action\AbstractAction implements StepInterface {
 		}
 
 		if (!empty($localConfigurationPathValuePairs)) {
-			/** @var $configurationManager \TYPO3\CMS\Core\Configuration\ConfigurationManager */
-			$configurationManager = $this->objectManager->get('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager');
-			$configurationManager->setLocalConfigurationValuesByPathValuePairs($localConfigurationPathValuePairs);
+			$this->configurationManager->setLocalConfigurationValuesByPathValuePairs($localConfigurationPathValuePairs);
 		}
 
 		return $result;
@@ -116,6 +136,7 @@ class DatabaseSelect extends Action\AbstractAction implements StepInterface {
 	public function handle() {
 		$this->initialize();
 		$this->view->assign('databaseList', $this->getDatabaseList());
+		$this->view->assign('isInitialInstallInProgress', $this->isInitialInstallInProgress);
 		return $this->view->render();
 	}
 
@@ -130,16 +151,21 @@ class DatabaseSelect extends Action\AbstractAction implements StepInterface {
 		// Remove mysql organizational tables from database list
 		$reservedDatabaseNames = array('mysql', 'information_schema', 'performance_schema');
 		$allPossibleDatabases = array_diff($databaseArray, $reservedDatabaseNames);
-		$databasesWithoutTables = array();
-		foreach ($allPossibleDatabases as $database) {
-			$this->databaseConnection->setDatabaseName($database);
-			$this->databaseConnection->sql_select_db();
-			$existingTables = $this->databaseConnection->admin_get_tables();
-			if (count($existingTables) === 0) {
-				$databasesWithoutTables[] = $database;
+
+		if ($this->isInitialInstallInProgress === FALSE) {
+			return $allPossibleDatabases;
+		} else {
+			$databasesWithoutTables = array();
+			foreach ($allPossibleDatabases as $database) {
+				$this->databaseConnection->setDatabaseName($database);
+				$this->databaseConnection->sql_select_db();
+				$existingTables = $this->databaseConnection->admin_get_tables();
+				if (count($existingTables) === 0) {
+					$databasesWithoutTables[] = $database;
+				}
 			}
+			return $databasesWithoutTables;
 		}
-		return $databasesWithoutTables;
 	}
 
 	/**
