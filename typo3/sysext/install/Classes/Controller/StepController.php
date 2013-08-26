@@ -105,6 +105,8 @@ class StepController extends AbstractController {
 		$this->executeOrOutputFirstInstallStepIfNeeded();
 		$this->removeObsoleteLocalConfigurationSettings();
 		$this->generateEncryptionKeyIfNeeded();
+		$this->configureBackendLoginSecurity();
+		$this->configureSaltedpasswords();
 		$this->initializeSession();
 		$this->checkSessionToken();
 		$this->checkSessionLifetime();
@@ -378,6 +380,59 @@ class StepController extends AbstractController {
 			/** @var \TYPO3\CMS\Core\Configuration\ConfigurationManager $configurationManager */
 			$configurationManager = $this->objectManager->get('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager');
 			$configurationManager->setLocalConfigurationValueByPath('SYS/encryptionKey', $randomKey);
+			$this->redirect();
+		}
+	}
+
+	/**
+	 * "Silent" upgrade: Backend login security is set to rsa if rsaauth
+	 * is installed (but not used) otherwise the default value "normal" has to be used.
+	 *
+	 * @return void
+	 */
+	protected function configureBackendLoginSecurity() {
+		if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('rsaauth')
+			&& $GLOBALS['TYPO3_CONF_VARS']['BE']['loginSecurityLevel'] !== 'rsa')
+		{
+			$configurationManager = $this->objectManager->get('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager');
+			$configurationManager->setLocalConfigurationValueByPath('BE/loginSecurityLevel', 'rsa');
+			$this->redirect();
+		} elseif ($GLOBALS['TYPO3_CONF_VARS']['BE']['loginSecurityLevel'] !== 'normal') {
+			$configurationManager = $this->objectManager->get('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager');
+			$configurationManager->setLocalConfigurationValueByPath('BE/loginSecurityLevel', 'normal');
+			$this->redirect();
+		}
+	}
+
+	/**
+	 * "Silent" upgrade: Check the settings for saltedpasswords extension to
+	 * load it as a required extension.
+	 *
+	 * @return void
+	 */
+	protected function configureSaltedpasswords() {
+		$configurationManager = $this->objectManager->get('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager');
+		$defaultConfiguration = $configurationManager->getDefaultConfiguration();
+		$defaultExtensionConfiguration = unserialize($defaultConfiguration['EXT']['extConf']['saltedpasswords']);
+		$extensionConfiguration = @unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['saltedpasswords']);
+		if (is_array($extensionConfiguration) && !empty($extensionConfiguration)) {
+			if (isset($extensionConfiguration['BE.']['enabled'])) {
+				if ($extensionConfiguration['BE.']['enabled']) {
+					unset($extensionConfiguration['BE.']['enabled']);
+				} else {
+					$extensionConfiguration['BE.'] = $defaultExtensionConfiguration['BE.'];
+				}
+				$configurationManager->setLocalConfigurationValueByPath(
+					'EXT/extConf/saltedpasswords',
+					serialize($extensionConfiguration)
+				);
+				$this->redirect();
+			}
+		} else {
+			$configurationManager->setLocalConfigurationValueByPath(
+				'EXT/extConf/saltedpasswords',
+				serialize($defaultExtensionConfiguration)
+			);
 			$this->redirect();
 		}
 	}

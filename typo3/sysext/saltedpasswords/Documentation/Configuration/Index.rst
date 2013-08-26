@@ -39,13 +39,6 @@ Defines hashing method to use for TYPO3 frontend.
 
 ::
 
-   # Enable BE (boolean)
-   BE.enabled = 1
-
-Enables usage of salted user password records for the TYPO3 backend
-
-::
-
    # Hashing method for the backend (list)
    BE.saltedPWHashingMethod = tx_saltedpasswords_salts_phpass (Portable PHP password hashing)
 
