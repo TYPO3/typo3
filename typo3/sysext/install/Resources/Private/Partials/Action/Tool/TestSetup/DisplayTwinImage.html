@@ -28,7 +28,21 @@
 					<td>
 						<f:if condition="{test.outputFile}">
 							<f:then>
-								<img src="../../../../{test.outputFile -> i:file.relativePath()}?{time}" />
+								<f:if condition="{i:file.exists(file:test.outputFile)}">
+									<f:then>
+										<img src="../../../../{test.outputFile -> i:file.relativePath()}?{time}" />
+									</f:then>
+									<f:else>
+										<div class="typo3-message message-error" >
+											<div class="header-container">
+												<div class="message-header"><strong>No image</strong></div>
+											</div>
+											<div class="message-body">
+												Your system generated no image, it was probably unable to write the file. Do you have a permission problem?
+											</div>
+										</div>
+									</f:else>
+								</f:if>
 							</f:then>
 							<f:else>
 								<div class="typo3-message message-error" >
@@ -36,7 +50,7 @@
 										<div class="message-header"><strong>No image</strong></div>
 									</div>
 									<div class="message-body">
-										Your system generated no image at all. This is probaly a misconfiguration.
+										Your system generated no image at all. This is probably a misconfiguration.
 									</div>
 								</div>
 							</f:else>
@@ -52,9 +66,13 @@
 					<td>
 						<f:if condition="{test.outputFile}">
 							<f:then>
-								{test.outputFile -> i:file.size()}Bytes,
-								{test.outputFile -> i:file.imageDimension()}
-								x {test.outputFile -> i:file.imageDimension(dimension:'height')} pixel
+								<f:if condition="{i:file.exists(file:test.outputFile)}">
+									<f:then>
+										{test.outputFile -> i:file.size()}Bytes,
+										{test.outputFile -> i:file.imageDimension()}
+										x {test.outputFile -> i:file.imageDimension(dimension:'height')} pixel
+									</f:then>
+								</f:if>
 							</f:then>
 						</f:if>
 					</td>
