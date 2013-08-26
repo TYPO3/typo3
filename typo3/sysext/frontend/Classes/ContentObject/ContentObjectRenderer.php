@@ -2022,6 +2022,13 @@ class ContentObjectRenderer {
 						$isExecuted[$functionName] = TRUE;
 						$isExecuted[$functionProperties] = TRUE;
 					}
+				} elseif ($this->stopRendering[$this->stdWrapRecursionLevel]) {
+					// Hand over the whole $conf array to the stdWrapHookObjects
+					if ($functionType === 'hook') {
+						$singleConf = $conf;
+					}
+					$functionName = 'stdWrap_stdWrapPostProcess';
+					$content = $this->{$functionName}($content, $singleConf);
 				}
 			}
 			unset($this->stopRendering[$this->stdWrapRecursionLevel]);
