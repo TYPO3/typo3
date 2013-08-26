@@ -236,9 +236,28 @@ return array(
 			't3editor',
 			'felogin',
 			'feedit',
-			'recycler'
+			'recycler',
+			'saltedpasswords',
 		),
-		'extConf' => array()
+		'extConf' => array(
+			'saltedpasswords' => serialize(array(
+				'checkConfigurationFE' => 0,
+				'checkConfigurationBE' => 0,
+				'BE.' => array(
+					'saltedPWHashingMethod' => 'TYPO3\\CMS\\Saltedpasswords\\Salt\\PhpassSalt',
+					'forceSalted' => 0,
+					'onlyAuthService' => 0,
+					'updatePasswd' => 1,
+				),
+				'FE.' => array(
+					'enabled' => 0,
+					'saltedPWHashingMethod' => 'TYPO3\\CMS\\Saltedpasswords\\Salt\\PhpassSalt',
+					'forceSalted' => 0,
+					'onlyAuthService' => 0,
+					'updatePasswd' => 1,
+				),
+			)),
+		),
 	),
 	'BE' => array(
 		// Backend Configuration.
