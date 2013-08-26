@@ -147,95 +147,90 @@ your TYPO3 installation and the usability of the backend.';
 		// The backend is called over SSL
 		$SSL = ($GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSL'] > 0 ? TRUE : FALSE) && $GLOBALS['TYPO3_CONF_VARS']['BE']['loginSecurityLevel'] != 'superchallenged';
 		$rsaAuthLoaded = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('rsaauth');
-		if ($extConf['enabled']) {
-			// SSL configured?
-			if ($SSL) {
-				$this->setErrorLevel('ok');
-				$problems[] = 'The backend is configured to use SaltedPasswords over SSL.';
-			} elseif ($rsaAuthLoaded) {
-				if (trim($GLOBALS['TYPO3_CONF_VARS']['BE']['loginSecurityLevel']) === 'rsa') {
-					if ($this->isRsaAuthBackendAvailable()) {
-						$this->setErrorLevel('ok');
-						$problems[] = 'The backend is configured to use SaltedPasswords with RSA authentication.';
-					} else {
-						// This means that login would fail because rsaauth is not working properly
-						$this->setErrorLevel('error');
-						$problems[] = '<strong>Using the extension "rsaauth" is not possible, as no encryption backend ' . 'is available. Please install and configure the PHP extension "openssl". ' . 'See <a href="http://php.net/manual/en/openssl.installation.php" target="_blank">PHP.net</a></strong>.';
-					}
+		// SSL configured?
+		if ($SSL) {
+			$this->setErrorLevel('ok');
+			$problems[] = 'The backend is configured to use SaltedPasswords over SSL.';
+		} elseif ($rsaAuthLoaded) {
+			if (trim($GLOBALS['TYPO3_CONF_VARS']['BE']['loginSecurityLevel']) === 'rsa') {
+				if ($this->isRsaAuthBackendAvailable()) {
+					$this->setErrorLevel('ok');
+					$problems[] = 'The backend is configured to use SaltedPasswords with RSA authentication.';
 				} else {
-					// This means that we are not using saltedpasswords
+					// This means that login would fail because rsaauth is not working properly
 					$this->setErrorLevel('error');
-					$problems[] = 'The "rsaauth" extension is installed, but TYPO3 is not configured to use it during login.
-						Use the Install Tool to set the Login Security Level for the backend to "rsa"
-						($TYPO3_CONF_VARS[\'BE\'][\'loginSecurityLevel\'])';
+					$problems[] = '<strong>Using the extension "rsaauth" is not possible, as no encryption backend ' .
+						'is available. Please install and configure the PHP extension "openssl". ' .
+						'See <a href="http://php.net/manual/en/openssl.installation.php" target="_blank">PHP.net</a></strong>.';
 				}
 			} else {
-				// This means that we are not using saltedpasswords
-				$this->setErrorLevel('error');
-				$problems[] = 'Backend requirements for SaltedPasswords are not met, therefore the
-authentication will not work even if it was explicitly enabled for backend
-usage:<br />
+				// This means that rsaauth is enabled but not used
+				$this->setErrorLevel('warning');
+				$problems[] = 'The "rsaauth" extension is installed, but TYPO3 is not configured to use it during login.
+					Use the Install Tool to set the Login Security Level for the backend to "rsa"
+					($TYPO3_CONF_VARS[\'BE\'][\'loginSecurityLevel\'])';
+			}
+		} else {
+			// This means that we don't use any encryption method
+			$this->setErrorLevel('warning');
+			$problems[] = 'SaltedPasswords is used without any transfer encryption, this means your passwords are sent in plain text.
+Please install rsaauth to secure your passwords submits.<br />
 <ul>
-	<li>Install the "rsaauth" extension and use the Install Tool to set the
-		Login Security Level for the backend to "rsa"
-		($TYPO3_CONF_VARS[\'BE\'][\'loginSecurityLevel\'])</li>
+<li>Install the "rsaauth" extension and use the Install Tool to set the
+	Login Security Level for the backend to "rsa"
+	($TYPO3_CONF_VARS[\'BE\'][\'loginSecurityLevel\'])</li>
 
-	<li>If you have the option to use SSL, you can also configure your
-		backend for SSL usage:<br />
-		Use the Install Tool to set the Security-Level for the backend
-		to "normal" ($TYPO3_CONF_VARS[\'BE\'][\'loginSecurityLevel\']) and
-		the SSL-locking option to a value greater than "0"
-		(see description - $TYPO3_CONF_VARS[\'BE\'][\'lockSSL\'])</li>
+<li>If you have the option to use SSL, you can also configure your
+	backend for SSL usage:<br />
+	Use the Install Tool to set the Security-Level for the backend
+	to "normal" ($TYPO3_CONF_VARS[\'BE\'][\'loginSecurityLevel\']) and
+	the SSL-locking option to a value greater than "0"
+	(see description - $TYPO3_CONF_VARS[\'BE\'][\'lockSSL\'])</li>
 </ul>
 <br />
 It is also possible to use "lockSSL" and "rsa" Login Security Level at the same
 time.';
-			}
-			// Only saltedpasswords as authsservice
-			if ($extConf['onlyAuthService']) {
-				// Warn user that the combination with "forceSalted" may lock him out from Backend
-				if ($extConf['forceSalted']) {
-					$this->setErrorLevel('warning');
-					$problems[] = 'SaltedPasswords has been configured to be the only authentication service for
+		}
+		// Only saltedpasswords as authsservice
+		if ($extConf['onlyAuthService']) {
+			// Warn user that the combination with "forceSalted" may lock him out from Backend
+			if ($extConf['forceSalted']) {
+				$this->setErrorLevel('warning');
+				$problems[] = 'SaltedPasswords has been configured to be the only authentication service for
 the backend. Additionally, usage of salted passwords is enforced (forceSalted).
 The result is that there is no chance to login with users not having a salted
 password hash.<br />
 <strong><i>WARNING:</i></strong> This may lock you out of the backend!';
-				} else {
-					// Inform the user that things like openid won't work anymore
-					$this->setErrorLevel('info');
-					$problems[] = 'SaltedPasswords has been configured to be the only authentication service for
+			} else {
+				// Inform the user that things like openid won't work anymore
+				$this->setErrorLevel('info');
+				$problems[] = 'SaltedPasswords has been configured to be the only authentication service for
 the backend. This means that other services like "ipauth", "openid", etc. will
 be ignored (except "rsauth", which is implicitely used).';
-				}
 			}
-			// forceSalted is set
-			if ($extConf['forceSalted'] && !$extConf['onlyAuthService']) {
-				$this->setErrorLevel('info');
-				$problems[] = 'SaltedPasswords has been configured to enforce salted passwords (forceSalted).
+		}
+		// forceSalted is set
+		if ($extConf['forceSalted'] && !$extConf['onlyAuthService']) {
+			$this->setErrorLevel('info');
+			$problems[] = 'SaltedPasswords has been configured to enforce salted passwords (forceSalted).
 <br />
 This means that only passwords in the format of this extension will succeed for
 login.<br />
 <strong><i>IMPORTANT:</i></strong> This has the effect that passwords that are set from
 the Install Tool will not work!';
-			}
-			// updatePasswd wont work with "forceSalted"
-			if ($extConf['updatePasswd'] && $extConf['forceSalted']) {
-				$this->setErrorLevel('error');
-				$problems[] = 'SaltedPasswords is configured wrong and will not work as expected:<br />
+		}
+		// updatePasswd wont work with "forceSalted"
+		if ($extConf['updatePasswd'] && $extConf['forceSalted']) {
+			$this->setErrorLevel('error');
+			$problems[] = 'SaltedPasswords is configured wrong and will not work as expected:<br />
 It is not possible to set "updatePasswd" and "forceSalted" at the same time.
 Please disable either one of them.';
-			}
-			// Check if the configured hash-method is available on system
-			if (!($instance = \TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::getSaltingInstance(NULL, 'BE') || !$instance->isAvailable())) {
-				$this->setErrorLevel('error');
-				$problems[] = 'The selected method for hashing your salted passwords is not available on this
-system! Please check your configuration.';
-			}
-		} else {
-			// Not enabled warning
+		}
+		// Check if the configured hash-method is available on system
+		if (!($instance = \TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::getSaltingInstance(NULL, 'BE') || !$instance->isAvailable())) {
 			$this->setErrorLevel('error');
-			$problems[] = 'SaltedPasswords has been disabled for backend users.';
+			$problems[] = 'The selected method for hashing your salted passwords is not available on this
+system! Please check your configuration.';
 		}
 		$this->problems = $problems;
 		return $this->renderFlashMessage();
