@@ -143,8 +143,9 @@ function handleCheckExtensionsSuccess() {
 					var extension = extensions[i];
 					var unloadButton = $('<button />', {
 						text: 'Uninstall '+ $.trim(extension),
+						"class": $.trim(extension),
 						click: function(e) {
-							uninstallExtension($.trim(extension));
+							uninstallExtension($(this).attr('class'));
 							e.preventDefault();
 							return false;
 						}
