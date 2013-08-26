@@ -93,6 +93,48 @@ abstract class AbstractAction {
 	}
 
 	/**
+	 * HTTP redirect to self, preserving allowed GET variables.
+	 * WARNING: This exits the script execution!
+	 *
+	 * @param string $controller Can be set to 'tool' to redirect from step to tool controller
+	 * @param string $action Set specific action for next request, used in step controller to specify next step
+	 * @return void
+	 */
+	protected function redirect($controller = '', $action = '') {
+		$getPostValues = GeneralUtility::_GP('install');
+
+		$parameters = array();
+
+		// Add context parameter in case this script was called within backend scope
+		$context = 'install[context]=standalone';
+		if (isset($getPostValues['context']) && $getPostValues['context'] === 'backend') {
+			$context = 'install[context]=backend';
+		}
+		$parameters[] = $context;
+
+		// Add controller parameter
+		$controllerParameter = 'install[controller]=step';
+		if ((isset($getPostValues['controller']) && $getPostValues['controller'] === 'tool')
+			|| $controller === 'tool'
+		) {
+			$controllerParameter = 'install[controller]=tool';
+		}
+		$parameters[] = $controllerParameter;
+
+		// Add action if specified
+		if (strlen($action) > 0) {
+			$parameters[] = 'install[action]=' . $action;
+		}
+
+		$redirectLocation = 'Install.php?' . implode('&', $parameters);
+
+		\TYPO3\CMS\Core\Utility\HttpUtility::redirect(
+			$redirectLocation,
+			\TYPO3\CMS\Core\Utility\HttpUtility::HTTP_STATUS_303
+		);
+	}
+
+	/**
 	 * Set form protection token
 	 *
 	 * @param string $token Form protection token

@@ -210,6 +210,11 @@ class DatabaseConnect extends Action\AbstractAction implements StepInterface {
 		if (!isset($GLOBALS['TYPO3_CONF_VARS']['DB']['host'])
 			|| (!isset($GLOBALS['TYPO3_CONF_VARS']['DB']['port']) && $GLOBALS['TYPO3_CONF_VARS']['DB']['host'] !== 'localhost')
 		) {
+			if ($this->isConnectSuccessful()) {
+				$this->storeConfiguration();
+				$this->redirect();
+				return FALSE;
+			}
 			return TRUE;
 		}
 		return FALSE;
@@ -342,7 +347,7 @@ class DatabaseConnect extends Action\AbstractAction implements StepInterface {
 		$password = isset($GLOBALS['TYPO3_CONF_VARS']['DB']['password']) ? $GLOBALS['TYPO3_CONF_VARS']['DB']['password'] : '';
 		$databaseConnection->setDatabasePassword($password);
 		$databaseConnection->setDatabaseHost($this->getConfiguredHost());
-		$databaseConnection->setDatabasePort($this->getConfiguredPort());
+		$databaseConnection->setDatabasePort($this->getConfiguredOrDefaultPort());
 		$databaseConnection->setDatabaseSocket($this->getConfiguredSocket());
 
 		$result = FALSE;
@@ -482,7 +487,7 @@ class DatabaseConnect extends Action\AbstractAction implements StepInterface {
 	protected function getConfiguredHost() {
 		$host = isset($GLOBALS['TYPO3_CONF_VARS']['DB']['host']) ? $GLOBALS['TYPO3_CONF_VARS']['DB']['host'] : '';
 		$port = isset($GLOBALS['TYPO3_CONF_VARS']['DB']['port']) ? $GLOBALS['TYPO3_CONF_VARS']['DB']['port'] : '';
-		if (strlen($port) < 1 && strpos($host, ':') > 0) {
+		if (strlen($port) < 1 && substr_count($host, 0, ':') === 1) {
 			list($host) = explode(':', $host);
 		}
 		return $host;
@@ -496,7 +501,7 @@ class DatabaseConnect extends Action\AbstractAction implements StepInterface {
 	protected function getConfiguredPort() {
 		$host = isset($GLOBALS['TYPO3_CONF_VARS']['DB']['host']) ? $GLOBALS['TYPO3_CONF_VARS']['DB']['host'] : '';
 		$port = isset($GLOBALS['TYPO3_CONF_VARS']['DB']['port']) ? $GLOBALS['TYPO3_CONF_VARS']['DB']['port'] : '';
-		if (!strlen($port) > 0 && strpos($host, ':') > 0) {
+		if (!strlen($port) > 0 && substr_count($host, 0, ':') === 1) {
 			$hostPortArray = explode(':', $host);
 			$port = $hostPortArray[1];
 		}
@@ -511,6 +516,32 @@ class DatabaseConnect extends Action\AbstractAction implements StepInterface {
 	protected function getConfiguredSocket() {
 		$socket = isset($GLOBALS['TYPO3_CONF_VARS']['DB']['socket']) ? $GLOBALS['TYPO3_CONF_VARS']['DB']['socket'] : NULL;
 		return $socket;
+	}
+
+	/**
+	 * Stores detected connection configuration
+	 *
+	 * @return void
+	 */
+	protected function storeConfiguration() {
+		$localConfigurationPathValuePairs = array();
+		$host = $this->getConfiguredHost();
+		if ($host) {
+			$localConfigurationPathValuePairs['DB/host'] = $host;
+		}
+		$port = $this->getConfiguredOrDefaultPort();
+		if ($port) {
+			$localConfigurationPathValuePairs['DB/port'] = $port;
+		}
+		$socket = $this->getConfiguredSocket();
+		if ($socket) {
+			$localConfigurationPathValuePairs['DB/socket'] = $socket;
+		}
+		if (!empty($localConfigurationPathValuePairs)) {
+			/** @var $configurationManager \TYPO3\CMS\Core\Configuration\ConfigurationManager */
+			$configurationManager = $this->objectManager->get('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager');
+			$configurationManager->setLocalConfigurationValuesByPathValuePairs($localConfigurationPathValuePairs);
+		}
 	}
 }
 ?>
