@@ -159,7 +159,15 @@ class StepController extends AbstractController {
 		$stepAction->setToken($this->generateTokenForAction($action));
 		$stepAction->setPostValues($this->getPostValues());
 
-		if ($stepAction->needsExecution()) {
+		try {
+			// needsExecution() may throw a RedirectException to communicate that it changed
+			// configuration parameters and need an application reload.
+			$needsExecution = $stepAction->needsExecution();
+		} catch (Exception\RedirectException $e) {
+			$this->redirect();
+		}
+
+		if ($needsExecution) {
 			$stepAction->setMessages($this->session->getMessagesAndFlush());
 			$this->output($stepAction->handle());
 		} else {
@@ -345,7 +353,14 @@ class StepController extends AbstractController {
 
 		/** @var \TYPO3\CMS\Install\Controller\Action\Step\StepInterface $action */
 		$action = $this->objectManager->get('TYPO3\\CMS\\Install\\Controller\\Action\\Step\\EnvironmentAndFolders');
-		$needsExecution = $action->needsExecution();
+
+		try {
+			// needsExecution() may throw a RedirectException to communicate that it changed
+			// configuration parameters and need an application reload.
+			$needsExecution = $action->needsExecution();
+		} catch (Exception\RedirectException $e) {
+			$this->redirect();
+		}
 
 		if (!is_dir(PATH_typo3conf)
 			|| count($errorMessagesFromExecute) > 0
