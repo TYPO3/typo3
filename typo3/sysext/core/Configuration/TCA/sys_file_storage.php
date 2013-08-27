@@ -106,10 +106,18 @@ return array(
 				'ds_pointerField' => 'driver',
 				'ds' => array()
 			),
+		),
+		'configurationcheck' => array(
+			'exclude' => 0,
+			'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_storage.configurationcheck',
+			'config' => array(
+				'type' => 'user',
+				'userFunc' => 'TYPO3\CMS\Core\Resource\Hook\StorageConfigurationCheck->renderConfigurationCheck'
+			)
 		)
 	),
 	'types' => array(
-		'0' => array('showitem' => 'name, description, hidden, --div--;Configuration, driver, configuration, processingfolder, --div--;Access, --palette--;Capabilities;capabilities, is_online')
+		'0' => array('showitem' => 'name, description, hidden, --div--;Configuration, driver, configuration, configurationcheck, processingfolder, --div--;Access, --palette--;Capabilities;capabilities, is_online')
 	),
 	'palettes' => array(
 		'capabilities' => array('showitem' => 'is_browsable, is_public, is_writable', 'canNotCollapse' => TRUE)
