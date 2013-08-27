@@ -44,6 +44,37 @@ class SaltFactory {
 	static protected $instance = NULL;
 
 	/**
+	 * Stores if the default methods were merged already with
+	 * the global configuration
+	 *
+	 * @var boolean
+	 */
+	static protected $initialized = FALSE;
+
+	/**
+	 * Merges default salt methods with any other registered methods.
+	 */
+	static public function initialize() {
+		if (!static::$initialized) {
+			$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/saltedpasswords']['saltMethods'] = static::getDefaultSaltMethods();
+			static::$initialized = TRUE;
+		}
+	}
+
+	/**
+	 * Returns an array with default salt methods.
+	 *
+	 * @return array
+	 */
+	static protected function getDefaultSaltMethods() {
+		return array(
+			'TYPO3\\CMS\\Saltedpasswords\\Salt\\Md5Salt' => 'TYPO3\\CMS\\Saltedpasswords\\Salt\\Md5Salt',
+			'TYPO3\\CMS\\Saltedpasswords\\Salt\\BlowfishSalt' => 'TYPO3\\CMS\\Saltedpasswords\\Salt\\BlowfishSalt',
+			'TYPO3\\CMS\\Saltedpasswords\\Salt\\PhpassSalt' => 'TYPO3\\CMS\\Saltedpasswords\\Salt\\PhpassSalt'
+		);
+	}
+
+	/**
 	 * Obtains a salting hashing method instance.
 	 *
 	 * This function will return an instance of a class that implements
@@ -61,6 +92,7 @@ class SaltFactory {
 		// * a salted hash given to determine salted hashing method from
 		// * a NULL parameter given to reset instance back to default method
 		if (!is_object(self::$instance) || !empty($saltedHash) || is_NULL($saltedHash)) {
+			static::initialize();
 			// Determine method by checking the given hash
 			if (!empty($saltedHash)) {
 				$result = self::determineSaltingHashingMethod($saltedHash);
@@ -86,6 +118,7 @@ class SaltFactory {
 	 */
 	static public function determineSaltingHashingMethod($saltedHash) {
 		$methodFound = FALSE;
+		static::initialize();
 		$defaultMethods = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/saltedpasswords']['saltMethods'];
 		foreach ($defaultMethods as $method) {
 			$objectInstance = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($method, 'tx_');
