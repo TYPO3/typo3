@@ -287,7 +287,14 @@ class FunctionalTestCaseBootstrapUtility {
 		\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->initializeTypo3DbGlobal();
 		/** @var \TYPO3\CMS\Core\Database\DatabaseConnection $database */
 		$database = $GLOBALS['TYPO3_DB'];
-		$database->sql_pconnect();
+		if(!$database->sql_pconnect()) {
+			throw new Exception(
+				'TYPO3 Fatal Error: The current username, password or host was not accepted when the'
+				. ' connection to the database was attempted to be established!',
+				1377620117
+			);
+		}
+
 		// Drop database in case a previous test had a fatal and did not clean up properly
 		$database->admin_query('DROP DATABASE IF EXISTS `' . $this->databaseName . '`');
 		$createDatabaseResult = $database->admin_query('CREATE DATABASE `' . $this->databaseName . '`');
