@@ -350,7 +350,8 @@ Please disable either one of them.';
 		$propertyName = $params['propertyName'];
 		$unknownVariablePleaseRenameMe = '\'' . substr(md5($propertyName), 0, 10) . '\'';
 		$p_field = '';
-		foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/saltedpasswords']['saltMethods'] as $class => $reference) {
+		$registeredMethods = \TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::getRegisteredSaltedHashingMethods();
+		foreach ($registeredMethods as $class => $reference) {
 			$classInstance = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($reference, 'tx_');
 			if ($classInstance instanceof \TYPO3\CMS\Saltedpasswords\Salt\SaltInterface && $classInstance->isAvailable()) {
 				$sel = $this->extConf[$disposal]['saltedPWHashingMethod'] == $class ? ' selected="selected" ' : '';

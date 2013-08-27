@@ -44,6 +44,33 @@ class SaltFactory {
 	static protected $instance = NULL;
 
 	/**
+	 * Returns list of all registered hashing methods. Used eg. in
+	 * extension configuration to select the default hashing method.
+	 *
+	 * @return array
+	 */
+	static public function getRegisteredSaltedHashingMethods() {
+		return array_merge(
+			static::getDefaultSaltMethods(),
+			(array) $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/saltedpasswords']['saltMethods']
+		);
+	}
+
+	/**
+	 * Returns an array with default salt methods.
+	 *
+	 * @return array
+	 */
+	static protected function getDefaultSaltMethods() {
+		return array(
+			'TYPO3\\CMS\\Saltedpasswords\\Salt\\Md5Salt' => 'TYPO3\\CMS\\Saltedpasswords\\Salt\\Md5Salt',
+			'TYPO3\\CMS\\Saltedpasswords\\Salt\\BlowfishSalt' => 'TYPO3\\CMS\\Saltedpasswords\\Salt\\BlowfishSalt',
+			'TYPO3\\CMS\\Saltedpasswords\\Salt\\PhpassSalt' => 'TYPO3\\CMS\\Saltedpasswords\\Salt\\PhpassSalt'
+		);
+	}
+
+
+	/**
 	 * Obtains a salting hashing method instance.
 	 *
 	 * This function will return an instance of a class that implements
@@ -69,8 +96,8 @@ class SaltFactory {
 				}
 			} else {
 				$classNameToUse = \TYPO3\CMS\Saltedpasswords\Utility\SaltedPasswordsUtility::getDefaultSaltingHashingMethod($mode);
-				$availableClasses = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/saltedpasswords']['saltMethods'];
-				self::$instance = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($availableClasses[$classNameToUse], 'tx_');
+				$availableClasses = static::getRegisteredSaltedHashingMethods();
+				self::$instance = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($availableClasses[$classNameToUse]);
 			}
 		}
 		return self::$instance;
@@ -86,9 +113,9 @@ class SaltFactory {
 	 */
 	static public function determineSaltingHashingMethod($saltedHash) {
 		$methodFound = FALSE;
-		$defaultMethods = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/saltedpasswords']['saltMethods'];
-		foreach ($defaultMethods as $method) {
-			$objectInstance = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($method, 'tx_');
+		$registeredMethods = static::getRegisteredSaltedHashingMethods();
+		foreach ($registeredMethods as $method) {
+			$objectInstance = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($method);
 			if ($objectInstance instanceof \TYPO3\CMS\Saltedpasswords\Salt\SaltInterface) {
 				$methodFound = $objectInstance->isValidSaltedPW($saltedHash);
 				if ($methodFound) {
@@ -114,6 +141,5 @@ class SaltFactory {
 		}
 		return self::$instance;
 	}
-
 }
 ?>

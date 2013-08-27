@@ -111,7 +111,7 @@ class SaltedPasswordsUtility {
 	static public function getDefaultSaltingHashingMethod($mode = TYPO3_MODE) {
 		$extConf = self::returnExtConf($mode);
 		$classNameToUse = 'TYPO3\\CMS\\Saltedpasswords\\Salt\\Md5Salt';
-		if (in_array($extConf['saltedPWHashingMethod'], array_keys($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/saltedpasswords']['saltMethods']))) {
+		if (in_array($extConf['saltedPWHashingMethod'], array_keys(\TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::getRegisteredSaltedHashingMethods()))) {
 			$classNameToUse = $extConf['saltedPWHashingMethod'];
 		}
 		return $classNameToUse;
