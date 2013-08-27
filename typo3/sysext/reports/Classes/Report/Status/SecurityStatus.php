@@ -65,16 +65,11 @@ class SecurityStatus implements \TYPO3\CMS\Reports\StatusProviderInterface {
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid, username, password', 'be_users', $whereClause);
 		if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 			$secure = TRUE;
-			// Check against salted password
-			if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('saltedpasswords')) {
-				if (\TYPO3\CMS\Saltedpasswords\Utility\SaltedPasswordsUtility::isUsageEnabled('BE')) {
-					/** @var $saltingObject \TYPO3\CMS\Saltedpasswords\Salt\SaltInterface */
-					$saltingObject = \TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::getSaltingInstance($row['password']);
-					if (is_object($saltingObject)) {
-						if ($saltingObject->checkPassword('password', $row['password'])) {
-							$secure = FALSE;
-						}
-					}
+			/** @var $saltingObject \TYPO3\CMS\Saltedpasswords\Salt\SaltInterface */
+			$saltingObject = \TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::getSaltingInstance($row['password']);
+			if (is_object($saltingObject)) {
+				if ($saltingObject->checkPassword('password', $row['password'])) {
+					$secure = FALSE;
 				}
 			}
 			// Check against plain MD5
@@ -206,38 +201,32 @@ class SecurityStatus implements \TYPO3\CMS\Reports\StatusProviderInterface {
 		$value = $GLOBALS['LANG']->getLL('status_ok');
 		$message = '';
 		$severity = \TYPO3\CMS\Reports\Status::OK;
-		if (!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('saltedpasswords')) {
+		/** @var \TYPO3\CMS\Saltedpasswords\Utility\ExtensionManagerConfigurationUtility $configCheck */
+		$configCheck = GeneralUtility::makeInstance('TYPO3\\CMS\\Saltedpasswords\\Utility\\ExtensionManagerConfigurationUtility');
+		$message = '<p>' . $GLOBALS['LANG']->getLL('status_saltedPasswords_infoText') . '</p>';
+		$messageDetail = '';
+		$flashMessage = $configCheck->checkConfigurationBackend(array(), new \TYPO3\CMS\Core\TypoScript\ConfigurationForm());
+		if (strpos($flashMessage, 'message-error') !== FALSE) {
 			$value = $GLOBALS['LANG']->getLL('status_insecure');
 			$severity = \TYPO3\CMS\Reports\Status::ERROR;
-			$message .= $GLOBALS['LANG']->getLL('status_saltedPasswords_notInstalled');
-		} else {
-			/** @var \TYPO3\CMS\Saltedpasswords\Utility\ExtensionManagerConfigurationUtility $configCheck */
-			$configCheck = GeneralUtility::makeInstance('TYPO3\\CMS\\Saltedpasswords\\Utility\\ExtensionManagerConfigurationUtility');
-			$message = '<p>' . $GLOBALS['LANG']->getLL('status_saltedPasswords_infoText') . '</p>';
-			$messageDetail = '';
-			$flashMessage = $configCheck->checkConfigurationBackend(array(), new \TYPO3\CMS\Core\TypoScript\ConfigurationForm());
-			if (strpos($flashMessage, 'message-error') !== FALSE) {
-				$value = $GLOBALS['LANG']->getLL('status_insecure');
-				$severity = \TYPO3\CMS\Reports\Status::ERROR;
-				$messageDetail .= $flashMessage;
-			}
-			if (strpos($flashMessage, 'message-warning') !== FALSE) {
-				$severity = \TYPO3\CMS\Reports\Status::WARNING;
-				$messageDetail .= $flashMessage;
-			}
-			if (strpos($flashMessage, 'message-information') !== FALSE) {
-				$messageDetail .= $flashMessage;
-			}
-			$unsecureUserCount = \TYPO3\CMS\Saltedpasswords\Utility\SaltedPasswordsUtility::getNumberOfBackendUsersWithInsecurePassword();
-			if ($unsecureUserCount > 0) {
-				$value = $GLOBALS['LANG']->getLL('status_insecure');
-				$severity = \TYPO3\CMS\Reports\Status::ERROR;
-				$messageDetail .= '<div class="typo3-message message-warning">' . $GLOBALS['LANG']->getLL('status_saltedPasswords_notAllPasswordsHashed') . '</div>';
-			}
-			$message .= $messageDetail;
-			if (empty($messageDetail)) {
-				$message = '';
-			}
+			$messageDetail .= $flashMessage;
+		}
+		if (strpos($flashMessage, 'message-warning') !== FALSE) {
+			$severity = \TYPO3\CMS\Reports\Status::WARNING;
+			$messageDetail .= $flashMessage;
+		}
+		if (strpos($flashMessage, 'message-information') !== FALSE) {
+			$messageDetail .= $flashMessage;
+		}
+		$unsecureUserCount = \TYPO3\CMS\Saltedpasswords\Utility\SaltedPasswordsUtility::getNumberOfBackendUsersWithInsecurePassword();
+		if ($unsecureUserCount > 0) {
+			$value = $GLOBALS['LANG']->getLL('status_insecure');
+			$severity = \TYPO3\CMS\Reports\Status::ERROR;
+			$messageDetail .= '<div class="typo3-message message-warning">' . $GLOBALS['LANG']->getLL('status_saltedPasswords_notAllPasswordsHashed') . '</div>';
+		}
+		$message .= $messageDetail;
+		if (empty($messageDetail)) {
+			$message = '';
 		}
 		return GeneralUtility::makeInstance('TYPO3\\CMS\\Reports\\Status', $GLOBALS['LANG']->getLL('status_saltedPasswords'), $value, $message, $severity);
 	}
