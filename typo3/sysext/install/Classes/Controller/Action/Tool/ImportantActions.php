@@ -218,17 +218,8 @@ class ImportantActions extends Action\AbstractAction implements Action\ActionInt
 				$message->setTitle('Administrator user not created');
 				$message->setMessage('A user with username ' . $username . ' exists already.');
 			} else {
-				if (
-					\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('saltedpasswords')
-					&& \TYPO3\CMS\Saltedpasswords\Utility\SaltedPasswordsUtility::isUsageEnabled('BE')
-				) {
-					// Needed to initialize the "saltMethods", which are defined in ext_localconf.php
-					require(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('saltedpasswords') . 'ext_localconf.php');
-					$saltFactory = \TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::getSaltingInstance(NULL, 'BE');
-					$hashedPassword = $saltFactory->getHashedPassword($password);
-				} else {
-					$hashedPassword = md5($password);
-				}
+				$saltFactory = \TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::getSaltingInstance(NULL, 'BE');
+				$hashedPassword = $saltFactory->getHashedPassword($password);
 
 				$adminUserFields = array(
 					'username' => $username,
