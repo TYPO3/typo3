@@ -489,7 +489,7 @@ class DatabaseConnect extends Action\AbstractAction implements StepInterface {
 	protected function getConfiguredHost() {
 		$host = isset($GLOBALS['TYPO3_CONF_VARS']['DB']['host']) ? $GLOBALS['TYPO3_CONF_VARS']['DB']['host'] : '';
 		$port = isset($GLOBALS['TYPO3_CONF_VARS']['DB']['port']) ? $GLOBALS['TYPO3_CONF_VARS']['DB']['port'] : '';
-		if (strlen($port) < 1 && substr_count($host, 0, ':') === 1) {
+		if (strlen($port) < 1 && substr_count($host, ':') === 1) {
 			list($host) = explode(':', $host);
 		}
 		return $host;
@@ -503,7 +503,7 @@ class DatabaseConnect extends Action\AbstractAction implements StepInterface {
 	protected function getConfiguredPort() {
 		$host = isset($GLOBALS['TYPO3_CONF_VARS']['DB']['host']) ? $GLOBALS['TYPO3_CONF_VARS']['DB']['host'] : '';
 		$port = isset($GLOBALS['TYPO3_CONF_VARS']['DB']['port']) ? $GLOBALS['TYPO3_CONF_VARS']['DB']['port'] : '';
-		if (!strlen($port) > 0 && substr_count($host, 0, ':') === 1) {
+		if (!strlen($port) > 0 && substr_count($host, ':') === 1) {
 			$hostPortArray = explode(':', $host);
 			$port = $hostPortArray[1];
 		}
