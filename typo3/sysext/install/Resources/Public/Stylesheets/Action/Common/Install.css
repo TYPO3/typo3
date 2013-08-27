@@ -243,10 +243,6 @@ button span.t3-install-form-button-icon-negative {
 	background-image: url('../../../Images/Icon/Error.png');
 }
 
-button span.t3-install-form-button-icon-positive {
-	background-image: url('../../../Images/Icon/Ok.png');
-}
-
 .t3-install-hidden {
 	display: none;
 }
