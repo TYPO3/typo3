@@ -44,6 +44,24 @@ class SaltFactory {
 	static protected $instance = NULL;
 
 	/**
+	 * Stores if the default methods were merged already with
+	 * the global configuration
+	 *
+	 * @var boolean
+	 */
+	static protected $initialized = FALSE;
+
+	/**
+	 * Merges default salt methods with any other registered methods
+	 */
+	static public function initialize() {
+		if (!static::$initialized) {
+			$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/saltedpasswords']['saltMethods'] = static::getDefaultSaltMethods();
+			static::$initialized = TRUE;
+		}
+	}
+
+	/**
 	 * Obtains a salting hashing method instance.
 	 *
 	 * This function will return an instance of a class that implements
@@ -61,6 +79,7 @@ class SaltFactory {
 		// * a salted hash given to determine salted hashing method from
 		// * a NULL parameter given to reset instance back to default method
 		if (!is_object(self::$instance) || !empty($saltedHash) || is_NULL($saltedHash)) {
+			static::initialize();
 			// Determine method by checking the given hash
 			if (!empty($saltedHash)) {
 				$result = self::determineSaltingHashingMethod($saltedHash);
@@ -77,6 +96,18 @@ class SaltFactory {
 	}
 
 	/**
+	 *
+	 * @return array
+	 */
+	static protected function getDefaultSaltMethods() {
+		return array(
+			'TYPO3\\CMS\\Saltedpasswords\\Salt\\Md5Salt' => 'TYPO3\\CMS\\Saltedpasswords\\Salt\\Md5Salt',
+			'TYPO3\\CMS\\Saltedpasswords\\Salt\\BlowfishSalt' => 'TYPO3\\CMS\\Saltedpasswords\\Salt\\BlowfishSalt',
+			'TYPO3\\CMS\\Saltedpasswords\\Salt\\PhpassSalt' => 'TYPO3\\CMS\\Saltedpasswords\\Salt\\PhpassSalt'
+		);
+	}
+
+	/**
 	 * Method tries to determine the salting hashing method used for given salt.
 	 *
 	 * Method implicitly sets the instance of the found method object in the class property when found.
@@ -86,8 +117,8 @@ class SaltFactory {
 	 */
 	static public function determineSaltingHashingMethod($saltedHash) {
 		$methodFound = FALSE;
-		$defaultMethods = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/saltedpasswords']['saltMethods'];
-		foreach ($defaultMethods as $method) {
+		static::initialize();
+		foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/saltedpasswords']['saltMethods'] as $method) {
 			$objectInstance = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($method, 'tx_');
 			if ($objectInstance instanceof \TYPO3\CMS\Saltedpasswords\Salt\SaltInterface) {
 				$methodFound = $objectInstance->isValidSaltedPW($saltedHash);
