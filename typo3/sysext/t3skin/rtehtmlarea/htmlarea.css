@@ -42,7 +42,7 @@
 	border-bottom: 0;
 	margin: 0;
 	padding: 2px;
-	font-family: Verdana, Helvetica, Geneva, Arial, sans-serif;
+	font-family: Noto Sans, Verdana, Helvetica, Geneva, Arial, sans-serif;
 }
 .htmlarea .toolbar .tb-group {
 	clear:none;
@@ -200,7 +200,7 @@ body.ext-ie6 .htmlarea-context-menu .buttonActive,
 	margin: 0;
 	padding: 0 3px;
 	line-height: 20px;
-	font-family: Verdana, Helvetica, Geneva, Arial, sans-serif;
+	font-family: Noto Sans, Verdana, Helvetica, Geneva, Arial, sans-serif;
 }
 .htmlarea .statusBar .statusBarTree a {
 	color:#FFFFFF;
@@ -360,7 +360,7 @@ body.ext-ie6 .htmlarea-window .x-panel-icon {
 .htmlarea-context-menu {
 	background-color:#EFEFF4;
 	color:#212424;
-	font-family: Verdana, Helvetica, Geneva, Arial, sans-serif;
+	font-family: Noto Sans, Verdana, Helvetica, Geneva, Arial, sans-serif;
 	font-size:10px;
 }
 .htmlarea-context-menu ul {

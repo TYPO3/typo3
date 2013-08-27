@@ -1,6 +1,6 @@
 /* Selectors for the content area of the htmlArea RTE editor */
 .htmlarea-content-body {
-	font-family:Verdana, sans-serif;
+	font-family:Noto Sans, Verdana, sans-serif;
 	font-size:12px;
 	margin:0;
 	padding:3px;

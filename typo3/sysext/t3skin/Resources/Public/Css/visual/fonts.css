@@ -1,3 +1,8 @@
+/* Include Noto Sans webfont from Google
+ * @todo: include it locally */
+
+@import url('http://fonts.googleapis.com/css?family=Noto+Sans:400,700,400italic,700italic');
+
 /* Include Share webfont */
 
 @font-face {

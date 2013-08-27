@@ -7,7 +7,7 @@ h2,
 h3,
 h4 {
 	color: #555555;
-	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-family: Noto Sans, Verdana, Arial, Helvetica, sans-serif;
 	font-weight: bold;
 }
 
@@ -37,7 +37,7 @@ h4 {
 
 body {
 	color: black;
-	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-family: Noto Sans, Verdana, Arial, Helvetica, sans-serif;
 }
 
 /* Preformatted text - not used so much in TYPO3 */
