@@ -13,6 +13,9 @@
 		<li id="t3-install-menu-systemEnvironment" class="{f:if(condition:'{action} == \'systemEnvironment\'', then:'act')}">
 			<a href="Install.php?install[action]=systemEnvironment&install[context]={context}&install[controller]=tool">
 				System environment
+				<f:if condition="{statusObjectsWithErrorStatus}">
+					<span class="t3-install-menu-errorCount"><f:count>{statusObjectsWithErrorStatus}</f:count></span>
+				</f:if>
 			</a>
 		</li>
 		<li id="t3-install-menu-folderStructure" class="{f:if(condition:'{action} == \'folderStructure\'', then:'act')}">
