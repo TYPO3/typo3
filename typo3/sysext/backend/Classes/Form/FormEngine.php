@@ -3843,7 +3843,11 @@ function ' . $evalData . '(value) {
 					<td>' . ($params['thumbnails'] ? $this->wrapLabels($params['headers']['items']) : '') . '</td>
 				</tr>' : '') . '
 			<tr>
-				<td valign="top">' . $selector . $thumbnails . ($params['noList'] ? '' : '<span class="filetypes">' . $this->wrapLabels($params['info'])) . '</span></td>
+				<td valign="top">' . $selector . $thumbnails;
+		if (! $params['noList'] && $params['info'] !== '') {
+			$str .= '<span class="filetypes">' . $this->wrapLabels($params['info']) . '</span>';
+		}
+		$str .= '</td>
 					<td valign="top" class="icons">' . implode('<br />', $icons['L']) . '</td>
 					<td valign="top" class="icons">' . implode('<br />', $icons['R']) . '</td>
 					<td valign="top" class="thumbnails">' . $rightbox . '</td>
