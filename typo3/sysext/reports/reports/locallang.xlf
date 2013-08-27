@@ -96,9 +96,6 @@
 			<trans-unit id="status_saltedPasswords_infoText" xml:space="preserve">
 				<source>During the configuration check of saltedpasswords the following issues have been found:</source>
 			</trans-unit>
-			<trans-unit id="status_saltedPasswords_notInstalled" xml:space="preserve">
-				<source>The saltedpasswords extension is not installed. The passwords are only hashed with md5 which is considered to be insecure. Install and configure the saltedpasswords extension and run the scheduler task to convert all passwords to salted hashes.</source>
-			</trans-unit>
 			<trans-unit id="status_saltedPasswords_notAllPasswordsHashed" xml:space="preserve">
 				<source>Some backend user passwords are found to be only md5 hashed. Run the scheduler task to convert all passwords to salted hashes.</source>
 			</trans-unit>
