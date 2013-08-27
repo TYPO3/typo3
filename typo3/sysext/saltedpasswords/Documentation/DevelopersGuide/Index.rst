@@ -105,5 +105,5 @@ Steps to be done:
 
 - register your salting method class
   (:code:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/saltedpasswords']['saltMethods']`)
-  to make it available for the salt factory (see :file:`ext_localconf.php` for an example)
+  to make it available for the salt factory (see :file:`Classes\Salt\SaltFactory.php` for an example)
 
