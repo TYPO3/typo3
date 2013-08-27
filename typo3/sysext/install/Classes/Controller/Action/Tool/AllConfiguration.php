@@ -38,7 +38,7 @@ class AllConfiguration extends Action\AbstractAction implements Action\ActionInt
 	 * @return string content
 	 */
 	public function handle() {
-		$this->initialize();
+		$this->initializeHandle();
 
 		if (isset($this->postValues['set']['write'])) {
 			$this->view->assign('configurationValuesSaved', TRUE);

@@ -47,7 +47,7 @@ class UninstallExtension extends Action\AbstractAction implements Action\ActionI
 	 * @return string content
 	 */
 	public function handle() {
-		$this->initialize();
+		$this->initializeHandle();
 		return $this->uninstallExtensions();
 	}
 

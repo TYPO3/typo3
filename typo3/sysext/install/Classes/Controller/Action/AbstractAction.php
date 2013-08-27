@@ -69,11 +69,11 @@ abstract class AbstractAction {
 	protected $messages = array();
 
 	/**
-	 * Initialize this action
+	 * Initialize the handle action, sets up fluid stuff and assigns default variables.
 	 *
 	 * @return string content
 	 */
-	protected function initialize() {
+	protected function initializeHandle() {
 		$viewRootPath = GeneralUtility::getFileAbsFileName('EXT:install/Resources/Private/');
 		$controllerActionDirectoryName = ucfirst($this->controller);
 		$mainTemplate = ucfirst($this->action);

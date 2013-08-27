@@ -114,7 +114,7 @@ class DatabaseSelect extends Action\AbstractAction implements StepInterface {
 	 * @return string
 	 */
 	public function handle() {
-		$this->initialize();
+		$this->initializeHandle();
 		/** @var $configurationManager \TYPO3\CMS\Core\Configuration\ConfigurationManager */
 		$configurationManager = $this->objectManager->get('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager');
 		$isInitialInstallationInProgress = $configurationManager->getConfigurationValueByPath('SYS/isInitialInstallationInProgress');
