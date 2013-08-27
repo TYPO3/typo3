@@ -58,16 +58,14 @@ Checking a password
 When you want to check a plain-text password against a salted user
 password hash, these are the steps to be done:
 
-- check if salted user password hashes is enabled for the desired TYPO3
-  mode (frontend/backend)
+- check if salted user password hashes is enabled for the TYPO3
+  mode (frontend only)
 
 - let the factory deliver an instance of the according hashing class
 
 - compare plain-text password with salted user password hash
 
-Example implementation for TYPO3 backend (here the check for enabled
-salted user password hashed for a specific TYPO3 mode might be
-omitted):
+Example implementation for TYPO3 frontend:
 
 ::
 
@@ -78,12 +76,10 @@ omitted):
    // keeps status if plain-text password matches given salted user password hash
    $success = FALSE;
 
-   if (\TYPO3\CMS\Core\Utility\GeneralUtility::isLoaded('saltedpasswords')) {
-           if (\TYPO3\CMS\Saltedpasswords\Utility::SaltedPasswordsUtility::isUsageEnabled('BE')) {
-                   $objSalt = \TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::getSaltingInstance($saltedPassword);
-                   if (is_object($objSalt)) {
-                           $success = $objSalt->checkPassword($password, $saltedPassword);
-                   }
+   if (\TYPO3\CMS\Saltedpasswords\Utility\SaltedPasswordsUtility::isUsageEnabled('FE')) {
+           $objSalt = \TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::getSaltingInstance($saltedPassword);
+           if (is_object($objSalt)) {
+                   $success = $objSalt->checkPassword($password, $saltedPassword);
            }
    }
 
