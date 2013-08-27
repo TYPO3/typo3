@@ -114,7 +114,7 @@ class DatabaseSelect extends Action\AbstractAction implements StepInterface {
 	 * @return string
 	 */
 	public function handle() {
-		$this->initialize();
+		$this->initializeHandle();
 		$this->view->assign('databaseList', $this->getDatabaseList());
 		return $this->view->render();
 	}

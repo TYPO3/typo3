@@ -73,7 +73,7 @@ abstract class AbstractAction {
 	 *
 	 * @return string content
 	 */
-	protected function initialize() {
+	protected function initializeHandle() {
 		$viewRootPath = GeneralUtility::getFileAbsFileName('EXT:install/Resources/Private/');
 		$controllerActionDirectoryName = ucfirst($this->controller);
 		$mainTemplate = ucfirst($this->action);

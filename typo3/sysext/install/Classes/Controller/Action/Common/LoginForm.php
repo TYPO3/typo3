@@ -37,7 +37,7 @@ class LoginForm extends Action\AbstractAction implements Action\ActionInterface 
 	 * @return string content
 	 */
 	public function handle() {
-		$this->initialize();
+		$this->initializeHandle();
 		$this->view->assign('messages', $this->messages);
 		return $this->view->render();
 	}

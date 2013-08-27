@@ -221,7 +221,7 @@ class DatabaseConnect extends Action\AbstractAction implements StepInterface {
 	 * @return string
 	 */
 	public function handle() {
-		$this->initialize();
+		$this->initializeHandle();
 
 		$isDbalEnabled = $this->isDbalEnabled();
 		$this->view

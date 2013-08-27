@@ -83,7 +83,7 @@ class DefaultConfiguration extends Action\AbstractAction implements StepInterfac
 	 * @return string
 	 */
 	public function handle() {
-		$this->initialize();
+		$this->initializeHandle();
 		return $this->view->render();
 	}
 }

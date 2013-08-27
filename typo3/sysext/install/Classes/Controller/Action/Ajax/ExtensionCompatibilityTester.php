@@ -58,7 +58,7 @@ class ExtensionCompatibilityTester extends Action\AbstractAction implements Acti
 	 * @return string content
 	 */
 	public function handle() {
-		$this->initialize();
+		$this->initializeHandle();
 		return $this->checkLoadedExtensions();
 	}
 
