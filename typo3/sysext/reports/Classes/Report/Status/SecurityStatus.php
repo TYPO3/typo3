@@ -67,13 +67,11 @@ class SecurityStatus implements \TYPO3\CMS\Reports\StatusProviderInterface {
 			$secure = TRUE;
 			// Check against salted password
 			if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('saltedpasswords')) {
-				if (\TYPO3\CMS\Saltedpasswords\Utility\SaltedPasswordsUtility::isUsageEnabled('BE')) {
-					/** @var $saltingObject \TYPO3\CMS\Saltedpasswords\Salt\SaltInterface */
-					$saltingObject = \TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::getSaltingInstance($row['password']);
-					if (is_object($saltingObject)) {
-						if ($saltingObject->checkPassword('password', $row['password'])) {
-							$secure = FALSE;
-						}
+				/** @var $saltingObject \TYPO3\CMS\Saltedpasswords\Salt\SaltInterface */
+				$saltingObject = \TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::getSaltingInstance($row['password']);
+				if (is_object($saltingObject)) {
+					if ($saltingObject->checkPassword('password', $row['password'])) {
+						$secure = FALSE;
 					}
 				}
 			}
