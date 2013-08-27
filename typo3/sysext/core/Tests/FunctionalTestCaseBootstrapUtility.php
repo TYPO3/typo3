@@ -216,7 +216,19 @@ class FunctionalTestCaseBootstrapUtility {
 		$finalConfigurationArray['DB'] = $originalConfigurationArray['DB'];
 		// Calculate and set new database name
 		$this->originalDatabaseName = $originalConfigurationArray['DB']['database'];
-		$this->databaseName = $this->originalDatabaseName . '_test_' . $this->identifier;
+		$this->databaseName = $this->originalDatabaseName . '_ft' . $this->identifier;
+
+		// Maximum database name length for mysql is 64 characters
+		if (strlen($this->databaseName) > 64) {
+			$maximumOriginalDatabaseName = 64 - strlen('_ft' . $this->identifier);
+			throw new Exception(
+				'The name of the database that is used for the functional test (' . $this->databaseName . ')' .
+				' exceeds the maximum length of 64 character allowed by MySQL. You have to shorten your' .
+				' original database name to ' . $maximumOriginalDatabaseName . ' characters',
+				1377600104
+			);
+		}
+
 		$finalConfigurationArray['DB']['database'] = $this->databaseName;
 
 		// Determine list of additional extensions to load
@@ -285,7 +297,7 @@ class FunctionalTestCaseBootstrapUtility {
 			throw new Exception(
 				'Unable to create database with name ' . $this->databaseName . '. This is probably a permission problem.'
 				. ' For this instance this could be fixed executing'
-				. ' "GRANT ALL ON `' . $this->originalDatabaseName . '_test_%`.* TO `' . $user . '`@`' . $host . '`;"',
+				. ' "GRANT ALL ON `' . $this->originalDatabaseName . '_ft%`.* TO `' . $user . '`@`' . $host . '`;"',
 				1376579070
 			);
 		}
