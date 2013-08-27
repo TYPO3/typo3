@@ -287,13 +287,31 @@ class FunctionalTestCaseBootstrapUtility {
 		\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->initializeTypo3DbGlobal();
 		/** @var \TYPO3\CMS\Core\Database\DatabaseConnection $database */
 		$database = $GLOBALS['TYPO3_DB'];
-		$database->sql_pconnect();
+		if(!$database->sql_pconnect()) {
+			throw new Exception(
+				'TYPO3 Fatal Error: The current username, password or host was not accepted when the'
+				. ' connection to the database was attempted to be established!',
+				1377620117
+			);
+		}
+
+		$host = $GLOBALS['TYPO3_CONF_VARS']['DB']['host'];
+		$user = $GLOBALS['TYPO3_CONF_VARS']['DB']['username'];
+		$databasePrivileges = $database->admin_get_privileges();
+
+		if (empty($databasePrivileges['createDatabase'])) {
+			throw new Exception(
+				'TYPO3 Fatal Error: The current user is not allowed to create new databases which is'
+				. ' required to execute functional tests. For this instance this could be fixed executing'
+				. ' "GRANT ALL ON `' . $this->originalDatabaseName . '_ft%`.* TO `' . $user . '`@`' . $host . '`;"',
+				1377631754
+			);
+		}
+
 		// Drop database in case a previous test had a fatal and did not clean up properly
 		$database->admin_query('DROP DATABASE IF EXISTS `' . $this->databaseName . '`');
 		$createDatabaseResult = $database->admin_query('CREATE DATABASE `' . $this->databaseName . '`');
 		if (!$createDatabaseResult) {
-			$user = $GLOBALS['TYPO3_CONF_VARS']['DB']['username'];
-			$host = $GLOBALS['TYPO3_CONF_VARS']['DB']['host'];
 			throw new Exception(
 				'Unable to create database with name ' . $this->databaseName . '. This is probably a permission problem.'
 				. ' For this instance this could be fixed executing'
