@@ -32,6 +32,20 @@ namespace TYPO3\CMS\Core\Resource\Service;
 class FrontendContentAdapterService {
 
 	/**
+	 * Array containing all keys that are allowed in the migrateFields
+	 * array
+	 *
+	 * @var array
+	 */
+	static protected $availableMigrateFields = array(
+		'paths',
+		'titleTexts',
+		'captions',
+		'links',
+		'alternativeTexts'
+	);
+
+	/**
 	 * The name of the table
 	 *
 	 * @var string
@@ -130,6 +144,53 @@ class FrontendContentAdapterService {
 			}
 		}
 		$row['_MIGRATED'] = TRUE;
+	}
+
+	/**
+	 * Registers an additional record type for an existing migration
+	 * configuration.
+	 *
+	 * For use in ext_localconf.php files.
+	 *
+	 * @param string $table Name of the table in the migration configuration
+	 * @param string $field Name of the field in the migration configuration
+	 * @param string $additionalType the additional type for which the migration should be applied
+	 * @throws \RuntimeException
+	 * @return void
+	 */
+	static public function registerAdditionalTypeForMigration($table, $field, $additionalType) {
+
+		if (!isset(static::$migrateFields[$table][$field]['__typeMatch'])) {
+			throw new \RuntimeException('Additinal types can only be added when there is already an existing type match configuration for the given table and field.', 1377600978);
+		}
+
+		self::$migrateFields[$table][$field]['__typeMatch']['types'][] = $additionalType;
+	}
+
+	/**
+	 * Registers an additional field for migration.
+	 *
+	 * For use in ext_localconf.php files
+	 *
+	 * @param string $table Name of the table in the migration configuration
+	 * @param string $field Name of the field in the migration configuration
+	 * @param string $migrateField The file property that should be migrated, see $availableMigrateFields for available settings
+	 * @param string $oldFieldName The name of the field in which the file property should be available
+	 * @param string $typeField Optional field that switches the record type, will only have an effect if $types array is provided
+	 * @param array $types The record types for which the migration should be active
+	 * @throws \RuntimeException
+	 */
+	static public function registerFieldForMigration($table, $field, $migrateField, $oldFieldName, $typeField = NULL, $types = NULL) {
+
+		if (array_search($migrateField, static::$availableMigrateFields) === FALSE) {
+			throw new \RuntimeException('The value for $migrateFields is invalid. Valid values can be found in the $availableMigrateFields array.', 1377600978);
+		}
+
+		if (isset($typeField) && is_array($types)) {
+			self::$migrateFields[$table][$field]['__typeMatch']['types'] = $types;
+		}
+
+		self::$migrateFields[$table][$field][$migrateField] = $oldFieldName;
 	}
 
 	/**
