@@ -1,7 +1,27 @@
-Changelog since Version 4.x.x
-=============================
+Changelog
+=========
 
-4.3.0 (2012-01-08)
+5.0.1 (2013-06-17)
+------------------
+
+ * changed the spool to only start the transport when a mail has to be sent
+ * fixed compatibility with PHP 5.2
+ * fixed LICENSE file
+
+5.0.0 (2013-04-30)
+------------------
+
+ * changed the license from LGPL to MIT
+
+4.3.1 (2013-04-11)
+------------------
+
+ * removed usage of the native QP encoder when the charset is not UTF-8
+ * fixed usage of uniqid to avoid collisions
+ * made a performance improvement when tokenizing large headers
+ * fixed usage of the PHP native QP encoder on PHP 5.4.7+
+
+4.3.0 (2013-01-08)
 ------------------
 
  * made the temporary directory configurable via the TMPDIR env variable
