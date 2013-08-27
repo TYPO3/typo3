@@ -1054,11 +1054,6 @@ class GeneralUtility {
 	 * @return boolean Returns TRUE if the $email address (input string) is valid
 	 */
 	static public function validEmail($email) {
-		// Enforce maximum length to prevent libpcre recursion crash bug #52929 in PHP
-		// fixed in PHP 5.3.4; length restriction per SMTP RFC 2821
-		if (!is_string($email) || strlen($email) > 320) {
-			return FALSE;
-		}
 		require_once PATH_typo3 . 'contrib/idna/idna_convert.class.php';
 		$IDN = new \idna_convert(array('idn_version' => 2008));
 		return filter_var($IDN->encode($email), FILTER_VALIDATE_EMAIL) !== FALSE;
