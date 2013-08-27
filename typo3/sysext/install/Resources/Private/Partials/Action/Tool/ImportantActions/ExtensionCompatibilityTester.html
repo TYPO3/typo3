@@ -7,6 +7,9 @@
 	<f:render partial="Action/Common/HiddenFormFields" arguments="{_all}" />
 	<div id="checkExtensions" data-protocolurl="{extensionCompatibilityTesterProtocolFile}">
 		<f:render partial="Action/Common/StatusMessage" arguments="{
+					message: {severity:'loading', title:'', message:'Loading...'}
+		}" />
+		<f:render partial="Action/Common/StatusMessage" arguments="{
 			message: {severity:'error', title:'Incompatible extension found!', message:'Something went wrong and no protocol was written.'}
 		}" />
 		<f:render partial="Action/Common/StatusMessage" arguments="{
