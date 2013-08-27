@@ -9,15 +9,6 @@
 	font-size: 16px;
 }
 
-span.t3-install-form-button-icon-positive {
-	background: url("../../Images/Icon/Ok.png") no-repeat scroll 0 0 transparent;
-	display: inline-block;
-	float: none;
-	height: 16px;
-	margin-left: 0.6em;
-	width: 16px;
-}
-
 form#t3-install-form-unlock button {
 	background: url("../../Images/Background/Button.jpg") repeat-x scroll left bottom #F6F6F6;
 	border: 1px solid #7C7C7C;
