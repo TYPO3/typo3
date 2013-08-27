@@ -74,6 +74,12 @@ abstract class AbstractAction {
 	 * @return string content
 	 */
 	protected function initializeHandle() {
+			// Count of failed status checks will be displayed in the left navigation menu
+		$statusCheck = $this->objectManager->get('TYPO3\\CMS\\Install\\SystemEnvironment\\Check');
+		$statusObjects = $statusCheck->getStatus();
+		$statusUtility = $this->objectManager->get('TYPO3\\CMS\\Install\\Status\\StatusUtility');
+		$statusObjectsWithErrorStatus = $statusUtility->filterBySeverity($statusObjects, 'error');
+
 		$viewRootPath = GeneralUtility::getFileAbsFileName('EXT:install/Resources/Private/');
 		$controllerActionDirectoryName = ucfirst($this->controller);
 		$mainTemplate = ucfirst($this->action);
@@ -89,7 +95,8 @@ abstract class AbstractAction {
 			->assign('context', $this->getContext())
 			->assign('messages', $this->messages)
 			->assign('typo3Version', TYPO3_version)
-			->assign('siteName', $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']);
+			->assign('siteName', $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'])
+			->assign('statusObjectsWithErrorStatus', $statusObjectsWithErrorStatus);
 	}
 
 	/**

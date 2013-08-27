@@ -340,6 +340,17 @@ button span.t3-install-form-button-icon-negative {
 	background-image: url('../../../Images/Menu/Logout.gif');
 }
 
+#t3-install-menu .t3-install-menu-errorCount {
+	background-color: #dc4c42;
+	color:#ffffff;
+	font-weight: normal;
+	margin: 0 0 0 0.4em;
+	padding: 0 0.6em 0 0.6em;
+	-webkit-border-radius: 1em;
+	-moz-border-radius: 1em;
+	border-radius: 1em;
+}
+
 #t3-install-links {
 	margin: 2em 0 0 0.8em;
 	padding: 0;
