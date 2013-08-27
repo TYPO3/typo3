@@ -80,6 +80,9 @@ $(document).ready(function() {
 
 	$('.typo3-message', '#checkExtensions').hide();
 	$('button', '#checkExtensions').click(function(e) {
+		$('button', '#checkExtensions').hide();
+		$('.typo3-message', '#checkExtensions').hide();
+		$('.message-loading', '#checkExtensions').show();
 		checkExtensionsCompatibility(true);
 		e.preventDefault();
 		return false;
@@ -156,6 +159,7 @@ function handleCheckExtensionsSuccess() {
 				var unloadAllButton = $('<button />', {
 					text: 'Uninstall all incompatible extensions: '+ data,
 					click: function(e) {
+						$('.message-loading', '#checkExtensions').show();
 						uninstallExtension(data);
 						e.preventDefault();
 						return false;
@@ -165,18 +169,18 @@ function handleCheckExtensionsSuccess() {
 				var fullUnloadAllButton = unloadButtonWrapper.append(unloadAllButton);
 				$('.message-error .message-body', '#checkExtensions').append(fullUnloadAllButton);
 
-
+				$('.message-loading', '#checkExtensions').hide();
+				$('button', '#checkExtensions').show();
 				$('.message-error', '#checkExtensions').show();
 			} else {
-				$('.message-error', '#checkExtensions').hide();
+				$('.typo3-message', '#checkExtensions').hide();
 				$('.message-ok', '#checkExtensions').show();
-				$('button', '#checkExtensions').hide();
+
 			}
 		},
 		error: function(data) {
-			$('.message-error', '#checkExtensions').hide();
+			$('.typo3-message', '#checkExtensions').hide();
 			$('.message-ok', '#checkExtensions').show();
-			$('button', '#checkExtensions').hide();
 		}
 	})
 }
@@ -211,6 +215,7 @@ function uninstallExtension(extension) {
 				if (data.substring(data.length - 2) === 'OK') {
 					checkExtensionsCompatibility(true);
 				} else {
+					$('.message-loading', '#checkExtensions').hide();
 					$('.message-error .message-body', '#checkExtensions').html(
 						'Something went wrong. Check failed.'
 					);
