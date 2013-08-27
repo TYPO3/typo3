@@ -1352,7 +1352,11 @@ class TypoScriptFrontendController {
 				3 => 'ID was outside the domain',
 				4 => 'The requested page alias does not exist'
 			);
-			$this->pageNotFoundAndExit($pNotFoundMsg[$this->pageNotFound]);
+			if ($this->pageNotFound === 1 || $this->pageNotFound === 2) {
+				$this->pageForbiddenAndExit($pNotFoundMsg[$this->pageNotFound]);
+			} else {
+				$this->pageNotFoundAndExit($pNotFoundMsg[$this->pageNotFound]);
+			}
 		}
 		if ($this->page['url_scheme'] > 0) {
 			$newUrl = '';
@@ -1836,6 +1840,18 @@ class TypoScriptFrontendController {
 	 */
 	public function pageNotFoundAndExit($reason = '', $header = '') {
 		$header = $header ? $header : $this->TYPO3_CONF_VARS['FE']['pageNotFound_handling_statheader'];
+		$this->pageNotFoundHandler($this->TYPO3_CONF_VARS['FE']['pageNotFound_handling'], $header, $reason);
+		die;
+	}
+
+	/**
+	 * Page forbidden handler for use in frontend plugins from extensions.
+	 *
+	 * @param string $reason Reason text
+	 * @param string $header HTTP header to send
+	 */
+	public function pageForbiddenAndExit($reason = '', $header = '') {
+		$header = $header ? $header : $this->TYPO3_CONF_VARS['FE']['pageForbidden_handling_statheader'];
 		$this->pageNotFoundHandler($this->TYPO3_CONF_VARS['FE']['pageNotFound_handling'], $header, $reason);
 		die;
 	}
