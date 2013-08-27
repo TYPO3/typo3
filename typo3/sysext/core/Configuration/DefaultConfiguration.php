@@ -241,8 +241,10 @@ return array(
 		),
 		'extConf' => array(
 			'saltedpasswords' => serialize(array(
-				'checkConfigurationFE' => 0,
-				'checkConfigurationBE' => 0,
+				'checkConfigurationBE' => 1,
+				'checkConfigurationBE2' => 1,
+				'checkConfigurationFE' => 1,
+				'checkConfigurationFE2' => 1,
 				'BE.' => array(
 					'saltedPWHashingMethod' => 'TYPO3\\CMS\\Saltedpasswords\\Salt\\PhpassSalt',
 					'forceSalted' => 0,
