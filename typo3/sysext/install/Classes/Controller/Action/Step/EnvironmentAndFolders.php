@@ -85,7 +85,7 @@ class EnvironmentAndFolders extends Action\AbstractAction implements StepInterfa
 	 * @return string
 	 */
 	public function handle() {
-		$this->initialize();
+		$this->initializeHandle();
 
 		/** @var \TYPO3\CMS\Install\SystemEnvironment\Check $statusCheck */
 		$statusCheck = $this->objectManager->get('TYPO3\\CMS\\Install\\SystemEnvironment\\Check');

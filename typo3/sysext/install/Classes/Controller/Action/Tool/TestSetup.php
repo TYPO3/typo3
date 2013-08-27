@@ -43,7 +43,7 @@ class TestSetup extends Action\AbstractAction implements Action\ActionInterface 
 	 * @return string content
 	 */
 	public function handle() {
-		$this->initialize();
+		$this->initializeHandle();
 
 		$this->imageBasePath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('install') . 'Resources/Public/Images/';
 

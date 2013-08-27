@@ -38,7 +38,7 @@ class UpdateWizard extends Action\AbstractAction implements Action\ActionInterfa
 	 * @return string content
 	 */
 	public function handle() {
-		$this->initialize();
+		$this->initializeHandle();
 
 		// ext_localconf, db and ext_tables must be loaded for the upgrade wizards
 		$this->loadExtLocalconfDatabaseAndExtTables();

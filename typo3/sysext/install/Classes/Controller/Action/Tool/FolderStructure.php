@@ -37,7 +37,7 @@ class FolderStructure extends Action\AbstractAction implements Action\ActionInte
 	 * @return string content
 	 */
 	public function handle() {
-		$this->initialize();
+		$this->initializeHandle();
 
 		/** @var $folderStructureFactory \TYPO3\CMS\Install\FolderStructure\DefaultFactory */
 		$folderStructureFactory = $this->objectManager->get('TYPO3\\CMS\\Install\\FolderStructure\\DefaultFactory');

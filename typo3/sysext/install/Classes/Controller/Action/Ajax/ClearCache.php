@@ -43,7 +43,7 @@ class ClearCache extends Action\AbstractAction implements Action\ActionInterface
 	 * @return string content
 	 */
 	public function handle() {
-		$this->initialize();
+		$this->initializeHandle();
 		return $this->clearCache();
 	}
 

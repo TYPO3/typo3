@@ -104,7 +104,7 @@ class DatabaseData extends Action\AbstractAction implements StepInterface {
 	 * @return string
 	 */
 	public function handle() {
-		$this->initialize();
+		$this->initializeHandle();
 		return $this->view->render();
 	}
 

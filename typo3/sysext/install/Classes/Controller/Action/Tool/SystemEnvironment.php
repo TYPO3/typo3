@@ -37,7 +37,7 @@ class SystemEnvironment extends Action\AbstractAction implements Action\ActionIn
 	 * @return string content
 	 */
 	public function handle() {
-		$this->initialize();
+		$this->initializeHandle();
 
 		/** @var $statusCheck \TYPO3\CMS\Install\SystemEnvironment\Check */
 		$statusCheck = $this->objectManager->get('TYPO3\\CMS\\Install\\SystemEnvironment\\Check');
