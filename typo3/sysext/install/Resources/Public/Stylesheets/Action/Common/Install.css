@@ -434,6 +434,11 @@ button span.t3-install-form-button-icon-positive {
 	border-color: #dc4c42;
 }
 
+.message-loading {
+	background-image: url("../../../Images/Icon/SpinnerSmall.gif");
+	border-color: #606060;
+}
+
 #t3-install-copyright {
 	color: #797878;
 	border-top: 1px #5f5f5f solid;
