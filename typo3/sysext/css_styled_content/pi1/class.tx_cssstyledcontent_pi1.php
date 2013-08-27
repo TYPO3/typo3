@@ -699,7 +699,7 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 				$titleText = trim($this->cObj->stdWrap($imgConf['titleText'], $imgConf['titleText.']));
 				if ($titleText)	{
 						// This will be used by the IMAGE call later:
-					$GLOBALS['TSFE']->ATagParams .= ' title="'. $titleText .'"';
+					$GLOBALS['TSFE']->ATagParams .= ' title="'. htmlspecialchars($titleText) .'"';
 				}
 			}
 
