@@ -43,28 +43,28 @@ class ModulesController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
 	 */
 	public function indexAction() {
 
-        $warnings = array();
-        // Hook for additional warnings
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['displayWarningMessages'])) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['displayWarningMessages'] as $classRef) {
-                $hookObj = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($classRef);
-                if (method_exists($hookObj, 'displayWarningMessages_postProcess')) {
-                    $hookObj->displayWarningMessages_postProcess($warnings);
-                }
-            }
-        }
-        if (count($warnings)) {
-            if (count($warnings) > 1) {
-                $securityWarnings = '<ul><li>' . implode('</li><li>', $warnings) . '</li></ul>';
-            } else {
-                $securityWarnings = '<p>' . implode('', $warnings) . '</p>';
-            }
-            $securityMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $securityWarnings, $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:warning.header'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
-            $contentWarnings = '<div style="margin: 20px 0px;">' . $securityMessage->render() . '</div>';
-            unset($warnings);
-        }
+		$warnings = array();
+		// Hook for additional warnings
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['displayWarningMessages'])) {
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['displayWarningMessages'] as $classRef) {
+				$hookObj = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($classRef);
+				if (method_exists($hookObj, 'displayWarningMessages_postProcess')) {
+					$hookObj->displayWarningMessages_postProcess($warnings);
+				}
+			}
+		}
+		if (count($warnings)) {
+			if (count($warnings) > 1) {
+				$securityWarnings = '<ul><li>' . implode('</li><li>', $warnings) . '</li></ul>';
+			} else {
+				$securityWarnings = '<p>' . implode('', $warnings) . '</p>';
+			}
+			$securityMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $securityWarnings, $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:warning.header'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+			$contentWarnings = '<div style="margin: 20px 0px;">' . $securityMessage->render() . '</div>';
+			unset($warnings);
+		}
 
-        $this->view->assignMultiple(
+		$this->view->assignMultiple(
 			array(
 				'TYPO3Version' => TYPO3_version,
 				'copyRightNotice' => \TYPO3\CMS\Backend\Utility\BackendUtility::TYPO3_copyRightNotice(),

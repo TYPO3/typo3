@@ -3947,7 +3947,7 @@ class BackendUtility {
 	 */
 	static public function displayWarningMessages() {
 
-        \TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog('This function is deprecated with TYPO3 CMS 6.2 and will be removed two versions later.');
+        \TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
 
 		return '';
 	}
