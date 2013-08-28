@@ -76,6 +76,18 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	public $extensionRepository;
 
 	/**
+	 * @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
+	 * @inject
+	 */
+	protected $signalSlotDispatcher;
+
+	/**
+	 * @var \TYPO3\CMS\Core\Registry
+	 * @inject
+	 */
+	protected $registry;
+
+	/**
 	 * __construct
 	 */
 	public function __construct() {
@@ -215,11 +227,9 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface {
 		if ($extTablesSqlContent !== '') {
 			$this->updateDbWithExtTablesSql($extTablesSqlContent);
 		}
-		$extTablesStaticSqlFile = PATH_site . $extension['siteRelPath'] . '/ext_tables_static+adt.sql';
-		if (file_exists($extTablesStaticSqlFile)) {
-			$extTablesStaticSqlContent = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($extTablesStaticSqlFile);
-			$this->importStaticSql($extTablesStaticSqlContent);
-		}
+
+		$this->importStaticSqlFile($extension['siteRelPath']);
+		$this->importT3DFile($extension['siteRelPath']);
 	}
 
 	/**
@@ -380,6 +390,51 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface {
 		return FALSE;
 	}
 
+	/**
+	 * Uses the export import extension to import a T3DFile to PID 0
+	 * Execution state is saved in the this->registry, so it only happens once
+	 *
+	 * @param string $extensionSiteRelPath
+	 * @return void
+	 */
+	protected function importT3DFile($extensionSiteRelPath) {
+		$t3dImportRelFile = $extensionSiteRelPath . '/Initialisation/data.t3d';
+		if (!$this->registry->get('extensionDataImport', $t3dImportRelFile)) {
+			$t3dImportFile = PATH_site . $t3dImportRelFile;
+			if (file_exists($t3dImportFile)) {
+				$importExportUtility = $this->objectManager->get('TYPO3\\CMS\\Impexp\\Utility\\ImportExportUtility');
+				try {
+					$importResult = $importExportUtility->importT3DFile($t3dImportFile, 0);
+					$this->registry->set('extensionDataImport', $t3dImportRelFile, 1);
+					$this->signalSlotDispatcher->dispatch(__CLASS__, 'afterExtensionT3DImport', array($t3dImportRelFile, $importResult, $this));
+				} catch (\ErrorException $e) {
+					/** @var \TYPO3\CMS\Core\Log\Logger $logger */
+					$logger = $this->objectManager->get('TYPO3\\CMS\\Core\\Log\\LogManager')->getLogger(__CLASS__);
+					$logger->log(\TYPO3\CMS\Core\Log\LogLevel::WARNING, $e->getMessage());
+				}
+			}
+		}
+	}
+
+	/**
+	 * Imports a static tables SQL File (ext_tables_static+adt)
+	 * Execution state is saved in the this->registry, so it only happens once
+	 *
+	 * @param string $extensionSiteRelPath
+	 * @return void
+	 */
+	protected function importStaticSqlFile($extensionSiteRelPath) {
+		$extTablesStaticSqlRelFile = $extensionSiteRelPath . '/ext_tables_static+adt.sql';
+		if (!$this->registry->get('extensionDataImport', $extTablesStaticSqlRelFile)) {
+			$extTablesStaticSqlFile = PATH_site . $extTablesStaticSqlRelFile;
+			if (file_exists($extTablesStaticSqlFile)) {
+				$extTablesStaticSqlContent = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($extTablesStaticSqlFile);
+				$this->importStaticSql($extTablesStaticSqlContent);
+			}
+			$this->registry->set('extensionDataImport', $extTablesStaticSqlRelFile, 1);
+			$this->signalSlotDispatcher->dispatch(__CLASS__, 'afterExtensionStaticSqlImport', array($extTablesStaticSqlRelFile, $this));
+		}
+	}
 }
 
 
