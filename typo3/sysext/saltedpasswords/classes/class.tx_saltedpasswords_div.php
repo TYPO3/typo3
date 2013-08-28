@@ -57,7 +57,8 @@ class tx_saltedpasswords_div {
 			$userCount = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows(
 				'*',
 				'be_users',
-				'password NOT LIKE ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('$%', 'be_users')
+				'password != ""'
+					. ' AND password NOT LIKE ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('$%', 'be_users')
 					. ' AND password NOT LIKE ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('M$%', 'be_users')
 			);
 			return $userCount;
