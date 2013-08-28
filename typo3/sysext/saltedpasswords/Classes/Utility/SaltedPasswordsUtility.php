@@ -47,7 +47,13 @@ class SaltedPasswordsUtility {
 	 * @return integer
 	 */
 	static public function getNumberOfBackendUsersWithInsecurePassword() {
-		$userCount = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('*', 'be_users', 'password NOT LIKE ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('$%', 'be_users') . ' AND password NOT LIKE ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('M$%', 'be_users'));
+		$userCount = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows(
+			'*',
+			'be_users',
+			'password != ""'
+				. ' AND password NOT LIKE ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('$%', 'be_users')
+				. ' AND password NOT LIKE ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('M$%', 'be_users')
+		);
 		return $userCount;
 	}
 
