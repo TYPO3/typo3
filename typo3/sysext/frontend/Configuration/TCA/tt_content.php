@@ -1336,6 +1336,10 @@ return array(
 					array(
 						'LLL:EXT:cms/locallang_ttc.xlf:menu_type.I.7',
 						'6'
+					),
+					array(
+						'LLL:EXT:cms/locallang_ttc.xlf:menu_type.I.9',
+						'9'
 					)
 				),
 				'default' => '0'
@@ -1748,6 +1752,25 @@ return array(
 				'size' => '30',
 				'max' => '255'
 			)
+		),
+		'selected_categories' => array(
+			'label' => 'LLL:EXT:cms/locallang_ttc.xlf:selected_categories',
+			'config' => array(
+				'type' => 'select',
+				'foreign_table' => 'sys_category',
+				'foreign_table_where' => 'AND sys_category.sys_language_uid IN (0,-1) ORDER BY sys_category.title ASC',
+				'size' => 10,
+				'autoSizeMax' => 50,
+				'maxitems' => 9999,
+				'renderMode' => 'tree',
+				'treeConfig' => array(
+					'parentField' => 'parent',
+					'appearance' => array(
+						'expandAll' => TRUE,
+						'showHeader' => TRUE,
+					),
+				),
+			)
 		)
 	),
 	'types' => array(
@@ -1885,7 +1908,16 @@ return array(
 				--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.extended',
 			'subtype_value_field' => 'menu_type',
 			'subtypes_excludelist' => array(
-				'2' => 'pages'
+				'0' => 'selected_categories',
+				'1' => 'selected_categories',
+				'2' => 'pages, selected_categories',
+				'3' => 'selected_categories',
+				'4' => 'selected_categories',
+				'5' => 'selected_categories',
+				'6' => 'selected_categories',
+				'7' => 'selected_categories',
+				'8' => 'selected_categories',
+				'9' => 'pages',
 			)
 		),
 		'mailform' => array(
@@ -2068,7 +2100,7 @@ return array(
 			'canNotCollapse' => 1
 		),
 		'menu' => array(
-			'showitem' => 'menu_type;LLL:EXT:cms/locallang_ttc.xlf:menu_type_formlabel, --linebreak--, pages;LLL:EXT:cms/locallang_ttc.xlf:pages.ALT.menu_formlabel',
+			'showitem' => 'menu_type;LLL:EXT:cms/locallang_ttc.xlf:menu_type_formlabel, --linebreak--, pages;LLL:EXT:cms/locallang_ttc.xlf:pages.ALT.menu_formlabel, --linebreak--, selected_categories',
 			'canNotCollapse' => 1
 		),
 		'menu_accessibility' => array(
