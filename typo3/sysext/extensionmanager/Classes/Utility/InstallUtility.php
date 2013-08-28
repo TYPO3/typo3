@@ -109,6 +109,7 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface {
 		$extension = $this->enrichExtensionWithDetails($extensionKey);
 		$this->processDatabaseUpdates($extension);
 		$this->ensureConfiguredDirectoriesExist($extension);
+		$this->importInitialFiles($extension['siteRelPath'], $extensionKey);
 		if ($extension['clearcacheonload']) {
 			$GLOBALS['typo3CacheManager']->flushCaches();
 		}
@@ -433,6 +434,32 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface {
 			}
 			$this->registry->set('extensionDataImport', $extTablesStaticSqlRelFile, 1);
 			$this->signalSlotDispatcher->dispatch(__CLASS__, 'afterExtensionStaticSqlImport', array($extTablesStaticSqlRelFile, $this));
+		}
+	}
+
+	/**
+	 * Imports files from Initialisation/Files to fileadmin
+	 * via lowlevel copy directory method
+	 *
+	 * @param string $extensionSiteRelPath relative path to extension dir
+	 * @param string $extensionKey
+	 */
+	protected function importInitialFiles($extensionSiteRelPath, $extensionKey) {
+		$importRelFolder = $extensionSiteRelPath . '/Initialisation/Files';
+		if (!$this->registry->get('extensionDataImport', $importRelFolder)) {
+			$importFolder = PATH_site . $importRelFolder;
+			if (file_exists($importFolder)) {
+				$destinationRelPath = $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'] . $extensionKey;
+				$destinationAbsolutePath = PATH_site . $destinationRelPath;
+				if (!file_exists($destinationAbsolutePath) &&
+					\TYPO3\CMS\Core\Utility\GeneralUtility::isAllowedAbsPath($destinationAbsolutePath)
+				) {
+					\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir($destinationAbsolutePath);
+				}
+				\TYPO3\CMS\Core\Utility\GeneralUtility::copyDirectory($importRelFolder, $destinationRelPath);
+				$this->registry->set('extensionDataImport', $importRelFolder, 1);
+				$this->signalSlotDispatcher->dispatch(__CLASS__, 'afterExtensionFileImport', array($destinationAbsolutePath, $this));
+			}
 		}
 	}
 }

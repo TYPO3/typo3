@@ -66,6 +66,7 @@ class InstallUtilityTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 			'saveDefaultConfiguration',
 			'enrichExtensionWithDetails',
 			'ensureConfiguredDirectoriesExist',
+			'importInitialFiles'
 		));
 		$this->installMock->expects($this->any())
 				->method('enrichExtensionWithDetails')
