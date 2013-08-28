@@ -108,6 +108,9 @@
 			<trans-unit id="folderNotFoundMessage" xml:space="preserve">
 				<source>The folder "%s" cannot be accessed. Trying to use parent folder(s).</source>
 			</trans-unit>
+			<trans-unit id="driverFlexform_caseSensitive" xml:space="preserve">
+				<source>Uses case sensitive identifiers</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

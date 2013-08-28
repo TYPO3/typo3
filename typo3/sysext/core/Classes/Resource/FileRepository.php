@@ -104,11 +104,12 @@ class FileRepository extends AbstractRepository {
 	 */
 	public function getFileIndexStatus(File $fileObject) {
 		$storageUid = $fileObject->getStorage()->getUid();
-		$identifier = $fileObject->getIdentifier();
+		$identifierHash = $fileObject->getStorage()->hashFileIdentifier($fileObject->getIdentifier());
 		$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
 			'uid,storage,identifier',
 			$this->table,
-			sprintf('storage=%u AND identifier=%s', $storageUid, $GLOBALS['TYPO3_DB']->fullQuoteStr($identifier, $this->table))
+			sprintf('storage=%u AND identifier_hash=%s', $storageUid,
+				$GLOBALS['TYPO3_DB']->fullQuoteStr($identifierHash, $this->table))
 		);
 		if (!is_array($row)) {
 			return FALSE;
@@ -126,11 +127,11 @@ class FileRepository extends AbstractRepository {
 	 */
 	public function getFileIndexRecord(File $fileObject) {
 		$storageUid = $fileObject->getStorage()->getUid();
-		$identifier = $fileObject->getIdentifier();
+		$identifierHash = $fileObject->getStorage()->hashFileIdentifier($fileObject->getIdentifier());
 		$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
 			'*',
 			$this->table,
-			sprintf('storage=%u AND identifier=%s', $storageUid, $GLOBALS['TYPO3_DB']->fullQuoteStr($identifier, $this->table))
+			sprintf('storage=%u AND identifier_hash=%s', $storageUid, $GLOBALS['TYPO3_DB']->fullQuoteStr($identifierHash, $this->table))
 		);
 		if (!is_array($row)) {
 			return FALSE;
@@ -252,13 +253,18 @@ class FileRepository extends AbstractRepository {
 	 * @return void
 	 */
 	public function update($modifiedObject) {
-		// TODO check if $modifiedObject is an instance of AbstractFile
-		// TODO check if $modifiedObject is indexed
+		if (!$modifiedObject instanceof AbstractFile) {
+			return;
+		}
+
 		$changedProperties = $modifiedObject->getUpdatedProperties();
 		$properties = $modifiedObject->getProperties();
 		$updateFields = array();
 		foreach ($changedProperties as $propertyName) {
 			$updateFields[$propertyName] = $properties[$propertyName];
+		}
+		if (array_key_exists('identifier', $updateFields)) {
+			$updateFields['identifier_hash'] = $modifiedObject->getStorage()->hashFileIdentifier($modifiedObject->getIdentifier());
 		}
 		$GLOBALS['TYPO3_DB']->exec_UPDATEquery('sys_file', 'uid=' . $modifiedObject->getUid(), $updateFields);
 	}
