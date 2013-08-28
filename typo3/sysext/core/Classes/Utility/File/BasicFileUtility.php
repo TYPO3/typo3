@@ -496,10 +496,12 @@ class BasicFileUtility {
 	 * @todo Define visibility
 	 */
 	public function cleanFileName($fileName, $charset = '') {
+		// genericRegEx to exclude characters, not allowed in filenames
+		$genericRegEx = '\\x00-\\x2C\\/\\x3A-\\x3F\\x5B-\\x60\\x7B-\\xBF';
 		// Handle UTF-8 characters
 		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['UTF8filesystem']) {
 			// allow ".", "-", 0-9, a-z, A-Z and everything beyond U+C0 (latin capital letter a with grave)
-			$cleanFileName = preg_replace('/[\\x00-\\x2C\\/\\x3A-\\x3F\\x5B-\\x60\\x7B-\\xBF]/u', '_', trim($fileName));
+			$cleanFileName = preg_replace('/[' . $genericRegEx . ']/u', '_', trim($fileName));
 		} else {
 			// Get conversion object or initialize if needed
 			if (!is_object($this->csConvObj)) {
@@ -527,7 +529,7 @@ class BasicFileUtility {
 				$fileName = $this->csConvObj->specCharsToASCII($charset, $fileName);
 			}
 			// Replace unwanted characters by underscores
-			$cleanFileName = preg_replace('/[^\.0-9A-Za-z@_\-]/', '_', trim($fileName));
+			$cleanFileName = preg_replace('/[' . $genericRegEx . '\\xC0-\\xFF]/', '_', trim($fileName));
 		}
 		// Strip trailing dots and return
 		return preg_replace('/\\.*$/', '', $cleanFileName);
