@@ -97,8 +97,8 @@ class InstallUtilityTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 */
 	protected function createFakeExtension() {
 		$extKey = strtolower(uniqid('testing'));
-		$absExtPath = PATH_site . 'typo3temp/' . $extKey . '/';
-		$relPath = 'typo3temp/' . $extKey . '/';
+		$absExtPath = PATH_site . 'typo3temp/' . $extKey;
+		$relPath = 'typo3temp/' . $extKey;
 		\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir($absExtPath);
 		$this->fakedExtensions[$extKey] = array(
 			'siteRelPath' => $relPath
@@ -186,7 +186,10 @@ class InstallUtilityTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$extTablesFile = $extPath . 'ext_tables.sql';
 		$fileContent = 'DUMMY TEXT TO COMPARE';
 		file_put_contents($extTablesFile, $fileContent);
-		$installMock = $this->getMock('TYPO3\\CMS\\Extensionmanager\\Utility\\InstallUtility', array('updateDbWithExtTablesSql'));
+		$installMock = $this->getMock(
+			'TYPO3\\CMS\\Extensionmanager\\Utility\\InstallUtility',
+			array('updateDbWithExtTablesSql', 'importStaticSqlFile', 'importT3DFile')
+		);
 		$installMock->expects($this->once())->method('updateDbWithExtTablesSql')->with($this->stringStartsWith($fileContent));
 		$installMock->processDatabaseUpdates($this->fakedExtensions[$extKey]);
 	}
@@ -194,39 +197,56 @@ class InstallUtilityTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	/**
 	 * @test
 	 */
-	public function processDatabaseUpdatesCallsImportStaticSql() {
+	public function processDatabaseUpdatesCallsImportStaticSqlFile() {
 		$extKey = $this->createFakeExtension();
-		$extPath = PATH_site . 'typo3temp/' . $extKey . '/';
-		$extTablesFile = $extPath . 'ext_tables_static+adt.sql';
-		$fileContent = 'DUMMY TEXT TO COMPARE';
-		file_put_contents($extTablesFile, $fileContent);
-		$installMock = $this->getMock('TYPO3\\CMS\\Extensionmanager\\Utility\\InstallUtility', array('importStaticSql'));
-		$installMock->expects($this->once())->method('importStaticSql')->with($fileContent);
+		$extRelPath = 'typo3temp/' . $extKey;
+		$installMock = $this->getMock(
+			'TYPO3\\CMS\\Extensionmanager\\Utility\\InstallUtility',
+			array('importStaticSqlFile', 'updateDbWithExtTablesSql', 'importT3DFile')
+		);
+		$installMock->expects($this->once())->method('importStaticSqlFile')->with($extRelPath);
 		$installMock->processDatabaseUpdates($this->fakedExtensions[$extKey]);
 	}
 
 	/**
 	 * @test
 	 */
-	public function InstallCallsUpdateDbWithCachingFrameworkTables() {
+	public function processDatabaseUpdatesCallsImportT3DFile() {
 		$extKey = $this->createFakeExtension();
+		$absPath = PATH_site . $this->fakedExtensions[$extKey]['siteRelPath'];
+		\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir($absPath . '/Initialisation');
+		file_put_contents($absPath . '/Initialisation/data.t3d', 'DUMMY');
 		$installMock = $this->getMock(
 			'TYPO3\\CMS\\Extensionmanager\\Utility\\InstallUtility',
-			array(
-				'enrichExtensionWithDetails',
-				'ensureConfiguredDirectoriesExist',
-				'updateDbWithExtTablesSql'
-			)
+			array('updateDbWithExtTablesSql', 'importStaticSqlFile', 'importT3DFile')
 		);
-		$installMock->expects($this->any())
-			->method('enrichExtensionWithDetails')
-			->with($extKey)
-			->will($this->returnValue(array('key' => $extKey)));
-		$installMock->expects($this->at(2))
-			->method('updateDbWithExtTablesSql')
-			->with($this->stringContains('CREATE TABLE cf_cache_hash'));
-
-		$installMock->install($extKey);
+		$installMock->expects($this->once())->method('importT3DFile')->with($this->fakedExtensions[$extKey]['siteRelPath']);
+		$installMock->processDatabaseUpdates($this->fakedExtensions[$extKey]);
 	}
+
+	/**
+	 * @test
+	 */
+	public function importT3DFileDoesNotImportFileIfAlreadyImported() {
+		$extKey = $this->createFakeExtension();
+		$absPath = PATH_site . $this->fakedExtensions[$extKey]['siteRelPath'];
+		\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir($absPath . 'Initialisation');
+		file_put_contents($absPath . 'Initialisation/data.t3d', 'DUMMY');
+		$registryMock = $this->getMock('\\TYPO3\\CMS\\Core\\Registry', array('get', 'set'));
+		$registryMock
+			->expects($this->once())
+			->method('get')
+			->with('extensionDataImport', $this->fakedExtensions[$extKey]['siteRelPath'] . '/Initialisation/data.t3d')
+			->will($this->returnValue(TRUE)
+		);
+		$installMock = $this->getAccessibleMock(
+			'TYPO3\\CMS\\Extensionmanager\\Utility\\InstallUtility',
+			array('getRegistry', 'getImportExportUtility')
+		);
+		$installMock->_set('registry', $registryMock);
+		$installMock->expects($this->never())->method('getImportExportUtility');
+		$installMock->_call('importT3DFile', $this->fakedExtensions[$extKey]['siteRelPath']);
+	}
+
 }
 ?>
