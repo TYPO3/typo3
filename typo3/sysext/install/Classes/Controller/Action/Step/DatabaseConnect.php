@@ -201,22 +201,18 @@ class DatabaseConnect extends Action\AbstractAction implements StepInterface {
 	/**
 	 * Step needs to be executed if database connection is not successful.
 	 *
+	 * @throws \TYPO3\CMS\Install\Controller\Exception\RedirectException
 	 * @return boolean
 	 */
 	public function needsExecution() {
-		if (!$this->isConnectSuccessful()) {
-			return TRUE;
+		if (!$this->isConfigurationComplete() && !$this->isDbalEnabled()) {
+			$this->useDefaultValuesForUnconfiguredOptions();
+			throw new \TYPO3\CMS\Install\Controller\Exception\RedirectException(
+				'Configuration changed, redirect needed',
+				1377611168
+			);
 		}
-		if (!isset($GLOBALS['TYPO3_CONF_VARS']['DB']['host'])
-			|| (!isset($GLOBALS['TYPO3_CONF_VARS']['DB']['port']) && $GLOBALS['TYPO3_CONF_VARS']['DB']['host'] !== 'localhost')
-		) {
-			if ($this->isConnectSuccessful()) {
-				$this->storeConfiguration();
-				throw new \TYPO3\CMS\Install\Controller\Exception\RedirectException(
-					'Configuration changed, redirect needed',
-					1377611168
-				);
-			}
+		if (!$this->isConnectSuccessful()) {
 			return TRUE;
 		}
 		return FALSE;
@@ -233,10 +229,10 @@ class DatabaseConnect extends Action\AbstractAction implements StepInterface {
 		$isDbalEnabled = $this->isDbalEnabled();
 		$this->view
 			->assign('isDbalEnabled', $isDbalEnabled)
-			->assign('username', $GLOBALS['TYPO3_CONF_VARS']['DB']['username'] ?: '')
-			->assign('password', $GLOBALS['TYPO3_CONF_VARS']['DB']['password'] ?: '')
-			->assign('host', $this->getConfiguredHost() ?: '127.0.0.1')
-			->assign('port', $this->getConfiguredOrDefaultPort())
+			->assign('username', $this->getConfiguredUsername())
+			->assign('password', $this->getConfiguredPassword())
+			->assign('host', $this->getConfiguredHost())
+			->assign('port', $this->getConfiguredPort())
 			->assign('database', $GLOBALS['TYPO3_CONF_VARS']['DB']['database'] ?: '')
 			->assign('socket', $GLOBALS['TYPO3_CONF_VARS']['DB']['socket'] ?: '');
 
@@ -344,12 +340,10 @@ class DatabaseConnect extends Action\AbstractAction implements StepInterface {
 			}
 		}
 
-		$username = isset($GLOBALS['TYPO3_CONF_VARS']['DB']['username']) ? $GLOBALS['TYPO3_CONF_VARS']['DB']['username'] : '';
-		$databaseConnection->setDatabaseUsername($username);
-		$password = isset($GLOBALS['TYPO3_CONF_VARS']['DB']['password']) ? $GLOBALS['TYPO3_CONF_VARS']['DB']['password'] : '';
-		$databaseConnection->setDatabasePassword($password);
+		$databaseConnection->setDatabaseUsername($this->getConfiguredUsername());
+		$databaseConnection->setDatabasePassword($this->getConfiguredPassword());
 		$databaseConnection->setDatabaseHost($this->getConfiguredHost());
-		$databaseConnection->setDatabasePort($this->getConfiguredOrDefaultPort());
+		$databaseConnection->setDatabasePort($this->getConfiguredPort());
 		$databaseConnection->setDatabaseSocket($this->getConfiguredSocket());
 
 		$result = FALSE;
@@ -357,6 +351,28 @@ class DatabaseConnect extends Action\AbstractAction implements StepInterface {
 			$result = TRUE;
 		}
 		return $result;
+	}
+
+	/**
+	 * Check LocalConfiguration.php for required database settings
+	 *
+	 * @return boolean TRUE if required settings are present
+	 */
+	protected function isConfigurationComplete() {
+		$configurationComplete = TRUE;
+		if (!isset($GLOBALS['TYPO3_CONF_VARS']['DB']['host'])) {
+			$configurationComplete = FALSE;
+		}
+		if (!isset($GLOBALS['TYPO3_CONF_VARS']['DB']['port'])) {
+			$configurationComplete = FALSE;
+		}
+		if (!isset($GLOBALS['TYPO3_CONF_VARS']['DB']['username'])) {
+			$configurationComplete = FALSE;
+		}
+		if (!isset($GLOBALS['TYPO3_CONF_VARS']['DB']['password'])) {
+			$configurationComplete = FALSE;
+		}
+		return $configurationComplete;
 	}
 
 	/**
@@ -482,6 +498,26 @@ class DatabaseConnect extends Action\AbstractAction implements StepInterface {
 	}
 
 	/**
+	 * Returns configured username, if set
+	 *
+	 * @return string
+	 */
+	protected function getConfiguredUsername() {
+		$username = isset($GLOBALS['TYPO3_CONF_VARS']['DB']['username']) ? $GLOBALS['TYPO3_CONF_VARS']['DB']['username'] : '';
+		return $username;
+	}
+
+	/**
+	 * Returns configured password, if set
+	 *
+	 * @return string
+	 */
+	protected function getConfiguredPassword() {
+		$password = isset($GLOBALS['TYPO3_CONF_VARS']['DB']['password']) ? $GLOBALS['TYPO3_CONF_VARS']['DB']['password'] : '';
+		return $password;
+	}
+
+	/**
 	 * Returns configured host with port split off if given
 	 *
 	 * @return string
@@ -491,6 +527,19 @@ class DatabaseConnect extends Action\AbstractAction implements StepInterface {
 		$port = isset($GLOBALS['TYPO3_CONF_VARS']['DB']['port']) ? $GLOBALS['TYPO3_CONF_VARS']['DB']['port'] : '';
 		if (strlen($port) < 1 && substr_count($host, ':') === 1) {
 			list($host) = explode(':', $host);
+		}
+		return $host;
+	}
+
+	/**
+	 * Returns default host if configuration value is empty
+	 *
+	 * @return string
+	 */
+	protected function getConfiguredOrDefaultHost() {
+		$host = $this->getConfiguredHost();
+		if (!$host) {
+			$host = 'localhost';
 		}
 		return $host;
 	}
@@ -521,24 +570,25 @@ class DatabaseConnect extends Action\AbstractAction implements StepInterface {
 	}
 
 	/**
-	 * Stores detected connection configuration
+	 * Write DB settings to LocalConfiguration.php, using default values for unset options
 	 *
 	 * @return void
 	 */
-	protected function storeConfiguration() {
+	protected function useDefaultValuesForUnconfiguredOptions() {
 		$localConfigurationPathValuePairs = array();
-		$host = $this->getConfiguredHost();
-		if ($host) {
-			$localConfigurationPathValuePairs['DB/host'] = $host;
-		}
-		$port = $this->getConfiguredOrDefaultPort();
-		if ($port) {
-			$localConfigurationPathValuePairs['DB/port'] = $port;
-		}
+
+			// Mandatory settings will always be written to LocalConfiguration.php, username/password may be empty
+		$localConfigurationPathValuePairs['DB/username'] = $this->getConfiguredUsername();
+		$localConfigurationPathValuePairs['DB/password'] = $this->getConfiguredPassword();
+		$localConfigurationPathValuePairs['DB/host'] = $this->getConfiguredOrDefaultHost();
+		$localConfigurationPathValuePairs['DB/port'] = $this->getConfiguredOrDefaultPort();
+
+			// Optional settings
 		$socket = $this->getConfiguredSocket();
 		if ($socket) {
 			$localConfigurationPathValuePairs['DB/socket'] = $socket;
 		}
+
 		if (!empty($localConfigurationPathValuePairs)) {
 			/** @var $configurationManager \TYPO3\CMS\Core\Configuration\ConfigurationManager */
 			$configurationManager = $this->objectManager->get('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager');
