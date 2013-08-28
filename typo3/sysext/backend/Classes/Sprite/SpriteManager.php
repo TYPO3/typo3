@@ -67,7 +67,7 @@ class SpriteManager {
 				$codeCache->requireOnce($cacheIdentifier);
 			} else {
 				static::createSpriteCache();
-				$codeCache->requireOnce($cacheIdentifier);
+//				$codeCache->requireOnce($cacheIdentifier);
 			}
 			self::$isInitialized = TRUE;
 		}
@@ -115,6 +115,7 @@ class SpriteManager {
 		$iconNames = array_merge($availableSkinIcons, (array) $GLOBALS['TBE_STYLES']['spritemanager']['spriteIconsAvailable'], $handler->getAvailableIconNames());
 		$cacheString = addslashes(serialize($iconNames));
 		$cacheFileContent = '$GLOBALS[\'TBE_STYLES\'][\'spriteIconApi\'][\'iconsAvailable\'] = unserialize(stripslashes(\'' . $cacheString . '\'));';
+		$GLOBALS['TBE_STYLES']['spriteIconApi']['iconsAvailable'] = $iconNames;
 		/** @var $codeCache \TYPO3\CMS\Core\Cache\Frontend\PhpFrontend */
 		$GLOBALS['typo3CacheManager']->getCache('cache_core')->set(static::getCacheIdentifier(), $cacheFileContent);
 	}
