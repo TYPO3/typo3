@@ -43,8 +43,6 @@ class WarningMessagePostProcessor {
 		$registry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Registry');
 		$highestSeverity = $registry->get('tx_reports', 'status.highestSeverity', NULL);
 		if (!is_null($highestSeverity)) {
-			// Status update has run, so taking over control over the core messages
-			unset($warningMessages['install_password'], $warningMessages['backend_admin'], $warningMessages['install_enabled'], $warningMessages['install_encryption'], $warningMessages['file_deny_pattern'], $warningMessages['file_deny_htaccess'], $warningMessages['install_update'], $warningMessages['backend_reference'], $warningMessages['memcached']);
 			if ($highestSeverity > \TYPO3\CMS\Reports\Status::OK) {
 				// Display a message that there's something wrong and that
 				// the admin should take a look at the detailed status report
