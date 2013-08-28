@@ -3594,6 +3594,31 @@ Connection: close
 		return TRUE;
 	}
 
+
+	/**
+	 * Lowlevel utility function for copying directories
+	 *
+	 * @param string $source
+	 * @param string $destination
+	 */
+	public static function copyDirectory($source, $destination) {
+		$source = PATH_site . $source;
+		$destination = PATH_site . $destination;
+		if (\TYPO3\CMS\Core\Utility\GeneralUtility::isAllowedAbsPath($source) && \TYPO3\CMS\Core\Utility\GeneralUtility::isAllowedAbsPath($destination)) {
+			foreach (
+				$iterator = new \RecursiveIteratorIterator(
+					new \RecursiveDirectoryIterator($source, \RecursiveDirectoryIterator::SKIP_DOTS),
+					\RecursiveIteratorIterator::SELF_FIRST) as $item
+			) {
+				if ($item->isDir()) {
+					@mkdir($destination . DIRECTORY_SEPARATOR . $iterator->getSubPathName());
+				} else {
+					@copy($item, $destination . DIRECTORY_SEPARATOR . $iterator->getSubPathName());
+				}
+			}
+		}
+	}
+
 	/**
 	 * Checks if a given string is a valid frame URL to be loaded in the
 	 * backend.
