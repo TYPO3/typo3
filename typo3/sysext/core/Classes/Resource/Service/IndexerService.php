@@ -222,6 +222,7 @@ class IndexerService implements \TYPO3\CMS\Core\SingletonInterface {
 				'modification_date' => $info['mtime'],
 				'size' => $info['size'],
 				'identifier' => $file->getIdentifier(),
+				'identifier_hash' => $storage->hashFileIdentifier($file->getIdentifier()),
 				'storage' => $storage->getUid(),
 				'name' => $file->getName(),
 				'sha1' => $storage->hashFile($file, 'sha1'),

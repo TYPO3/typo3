@@ -301,6 +301,7 @@ CREATE TABLE sys_file (
 	type varchar(10) DEFAULT '' NOT NULL,
 	storage int(11) DEFAULT '0' NOT NULL,
 	identifier varchar(200) DEFAULT '' NOT NULL,
+	identifier_hash varchar(40) DEFAULT '' NOT NULL,
 	extension varchar(255) DEFAULT '' NOT NULL,
 	mime_type varchar(255) DEFAULT '' NOT NULL,
 	name tinytext,
@@ -318,7 +319,7 @@ CREATE TABLE sys_file (
 	PRIMARY KEY (uid),
 	KEY parent (pid,deleted),
 	KEY t3ver_oid (t3ver_oid,t3ver_wsid),
-	KEY sel01 (storage,identifier(20)),
+	KEY sel01 (storage,identifier_hash),
 	KEY sha1 (sha1(40))
 );
 
