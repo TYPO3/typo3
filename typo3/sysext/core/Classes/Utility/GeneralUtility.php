@@ -3594,6 +3594,31 @@ Connection: close
 		return TRUE;
 	}
 
+
+	/**
+	 * Low level utility function to copy directories and content recursive
+	 *
+	 * @param string $source Path to source directory, relative to document root
+	 * @param string $destination Path to destination directory, relative to document root
+	 */
+	public static function copyDirectory($source, $destination) {
+		$source = PATH_site . $source;
+		$destination = PATH_site . $destination;
+		if (static::isAllowedAbsPath($source) && static::isAllowedAbsPath($destination)) {
+			$iterator = new \RecursiveIteratorIterator(
+				new \RecursiveDirectoryIterator($source, \RecursiveDirectoryIterator::SKIP_DOTS),
+				\RecursiveIteratorIterator::SELF_FIRST
+			);
+			foreach ($iterator as $item) {
+				if ($item->isDir()) {
+					@mkdir($destination . '/' . $iterator->getSubPathName());
+				} else {
+					@copy($item, $destination . '/' . $iterator->getSubPathName());
+				}
+			}
+		}
+	}
+
 	/**
 	 * Checks if a given string is a valid frame URL to be loaded in the
 	 * backend.
