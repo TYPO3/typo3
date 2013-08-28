@@ -426,7 +426,11 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 						$defLanguageCount[$key] = array();
 					}
 					// Start wrapping div
-					$content[$key] .= '<div class="t3-page-ce-wrapper">';
+					$content[$key] .= '<div class="t3-page-ce-wrapper';
+					if (count($contentRecordsPerColumn[$key]) === 0) {
+						$content[$key] .= ' t3-page-ce-empty';
+					}
+					$content[$key] .= '">';
 					// Add new content at the top most position
 					$content[$key] .= '
 					<div class="t3-page-ce" id="' . uniqid() . '">
