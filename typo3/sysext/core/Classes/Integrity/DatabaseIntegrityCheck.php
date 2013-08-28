@@ -555,7 +555,7 @@ class DatabaseIntegrityCheck {
 		$this->checkFileRefs = $newCheckFileRefs;
 		foreach ($this->checkFileRefs as $folder => $fileArr) {
 			$path = PATH_site . $folder;
-			if (@is_dir($path)) {
+			if (@is_dir($path) && @is_readable($path)) {
 				$d = dir($path);
 				while ($entry = $d->read()) {
 					if (@is_file(($path . '/' . $entry))) {
