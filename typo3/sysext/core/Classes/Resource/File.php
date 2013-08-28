@@ -27,7 +27,6 @@ namespace TYPO3\CMS\Core\Resource;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use TYPO3\CMS\Core\Resource\Index\MetaDataRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -72,6 +71,11 @@ class File extends AbstractFile {
 	 * @var array
 	 */
 	protected $updatedProperties = array();
+
+	/**
+	 * @var \TYPO3\CMS\Core\Resource\Service\IndexerService
+	 */
+	protected $indexerService = NULL;
 
 	/**
 	 * Constructor for a file object. Should normally not be used directly, use

@@ -86,7 +86,7 @@ class FactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function getDriverObjectAcceptsDriverClassName() {
-		$mockedDriver = $this->getMock('TYPO3\\CMS\\Core\\Resource\\Driver\\AbstractDriver', array(), array(), '', FALSE);
+		$mockedDriver = $this->getMockForAbstractClass('TYPO3\\CMS\\Core\\Resource\\Driver\\AbstractDriver');
 		$driverFixtureClass = get_class($mockedDriver);
 		\TYPO3\CMS\Core\Utility\GeneralUtility::addInstance($driverFixtureClass, $mockedDriver);
 		$mockedMount = $this->getMock('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', array(), array(), '', FALSE);
@@ -125,13 +125,11 @@ class FactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function retrieveFileOrFolderObjectReturnsFileIfPathIsGiven() {
+		$this->fixture = $this->getAccessibleMock('TYPO3\\CMS\\Core\\Resource\\ResourceFactory', array('getFileObjectFromCombinedIdentifier'), array(), '', FALSE);
 		$filename = 'typo3temp/4711.txt';
-		$storage = $this->getMock('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', array('getFileInfoByIdentifier', 'getFolder'), array(), '', FALSE);
-		$storage->expects($this->once())
-			->method('getFileInfoByIdentifier')
-			->with($filename)
-			->will($this->returnValue(array('uid' => 4811)));
-		$this->fixture->_set('storageInstances', array(0 => $storage));
+		$this->fixture->expects($this->once())
+			->method('getFileObjectFromCombinedIdentifier')
+			->with($filename);
 		// Create and prepare test file
 		\TYPO3\CMS\Core\Utility\GeneralUtility::writeFileToTypo3tempDir(PATH_site . $filename, '42');
 		$this->filesCreated[] = PATH_site . $filename;

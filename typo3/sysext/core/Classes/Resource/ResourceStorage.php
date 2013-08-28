@@ -30,7 +30,6 @@ namespace TYPO3\CMS\Core\Resource;
 use TYPO3\CMS\Core\Resource\Index\FileIndexRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
-use TYPO3\CMS\Core\Resource\File;
 
 /**
  * A "mount point" inside the TYPO3 file handling.
@@ -396,6 +395,15 @@ class ResourceStorage {
 	 */
 	public function isBrowsable() {
 		return $this->isOnline() && $this->hasCapability(self::CAPABILITY_BROWSABLE);
+	}
+
+	/**
+	 * Returns TRUE if the identifiers used by this storage are case-sensitive
+	 *
+	 * @return boolean
+	 */
+	public function usesCaseSensitiveIdentifiers() {
+		return $this->driver->isCaseSensitiveFileSystem();
 	}
 
 	/**
@@ -997,22 +1005,29 @@ class ResourceStorage {
 	 *
 	 * @param FolderInterface $folderToCopy
 	 * @param FolderInterface $targetParentFolder
+	 * @return void
 	 *
 	 * @throws Exception
 	 * @throws Exception\InsufficientFolderWritePermissionsException
 	 * @throws Exception\IllegalFileExtensionException
 	 * @throws Exception\InsufficientFileReadPermissionsException
 	 * @throws Exception\InsufficientUserPermissionsException
-	 * @return void
+	 * @throws \RuntimeException
 	 */
 	protected function assureFolderCopyPermissions(FolderInterface $folderToCopy, FolderInterface $targetParentFolder) {
 		// Check if targetFolder is within this storage, this should never happen
 		if ($this->getUid() !== $targetParentFolder->getStorage()->getUid()) {
 			throw new Exception('The operation of the folder cannot be called by this storage "' . $this->getUid() . '"', 1377777624);
 		}
+		if (!$folderToCopy instanceof Folder) {
+			throw new \RuntimeException('The folder "' . $folderToCopy->getIdentifier() . '" to copy is not of type Folder.', 1384209020);
+		}
 		// Check if user is allowed to copy and the folder is readable
 		if (!$this->checkFolderActionPermission('copy', $folderToCopy)) {
 			throw new Exception\InsufficientFileReadPermissionsException('You are not allowed to copy the folder "' . $folderToCopy->getIdentifier() . '"', 1377777629);
+		}
+		if (!$targetParentFolder instanceof Folder) {
+			throw new \RuntimeException('The target folder "' . $targetParentFolder->getIdentifier() . '" is not of type Folder.', 1384209021);
 		}
 		// Check if targetFolder is writable
 		if (!$this->checkFolderActionPermission('write', $targetParentFolder)) {
@@ -1032,6 +1047,7 @@ class ResourceStorage {
 	 * @throws Exception\IllegalFileExtensionException
 	 * @throws Exception\InsufficientFileReadPermissionsException
 	 * @throws Exception\InsufficientUserPermissionsException
+	 * @throws \RuntimeException
 	 * @return void
 	 */
 	protected function assureFolderMovePermissions(FolderInterface $folderToMove, FolderInterface $targetParentFolder) {
@@ -1039,11 +1055,17 @@ class ResourceStorage {
 		if ($this->getUid() !== $targetParentFolder->getStorage()->getUid()) {
 			throw new \InvalidArgumentException('Cannot move a folder into a folder that does not belong to this storage.', 1325777289);
 		}
+		if (!$folderToMove instanceof Folder) {
+			throw new \RuntimeException('The folder "' . $folderToMove->getIdentifier() . '" to move is not of type Folder.', 1384209022);
+		}
 		// Check if user is allowed to move and the folder is writable
 		// In fact we would need to check if the parent folder of the folder to move is writable also
 		// But as of now we cannot extract the parent folder from this folder
 		if (!$this->checkFolderActionPermission('move', $folderToMove)) {
 			throw new Exception\InsufficientFileReadPermissionsException('You are not allowed to copy the folder "' . $folderToMove->getIdentifier() . '"', 1377778045);
+		}
+		if (!$targetParentFolder instanceof Folder) {
+			throw new \RuntimeException('The target folder "' . $targetParentFolder->getIdentifier() . '" is not of type Folder.', 1384209023);
 		}
 		// Check if targetFolder is writable
 		if (!$this->checkFolderActionPermission('write', $targetParentFolder)) {
@@ -1122,13 +1144,29 @@ class ResourceStorage {
 	}
 
 	/**
+	 * Hashes a file identifier, taking the case sensitivity of the file system
+	 * into account. This helps mitigating problems with case-insensitive
+	 * databases.
+	 *
+	 * @param string|FileInterface $file
+	 * @return string
+	 */
+	public function hashFileIdentifier($file) {
+		if (is_object($file) && $file instanceof FileInterface) {
+			/** @var FileInterface $file */
+			$file = $file->getIdentifier();
+		}
+		return $this->driver->hashIdentifier($file);
+	}
+
+	/**
 	 * Returns a publicly accessible URL for a file.
 	 *
 	 * WARNING: Access to the file may be restricted by further means, e.g.
 	 * some web-based authentication. You have to take care of this yourself.
 	 *
 	 * @param ResourceInterface $resourceObject The file or folder object
-	 * @param bool $relativeToCurrentScript Determines whether the URL returned should be relative to the current script, in case it is relative at all (only for the LocalDriver)
+	 * @param boolean $relativeToCurrentScript Determines whether the URL returned should be relative to the current script, in case it is relative at all (only for the LocalDriver)
 	 * @return string
 	 */
 	public function getPublicUrl(ResourceInterface $resourceObject, $relativeToCurrentScript = FALSE) {
@@ -1167,7 +1205,7 @@ class ResourceStorage {
 	 * Copies a file from the storage for local processing.
 	 *
 	 * @param FileInterface $fileObject
-	 * @param bool $writable
+	 * @param boolean $writable
 	 * @return string Path to local file (either original or copied to some temporary local location)
 	 */
 	public function getFileForLocalProcessing(FileInterface $fileObject, $writable = TRUE) {
@@ -1251,14 +1289,22 @@ class ResourceStorage {
 	}
 
 	/**
+	 * @param string $fileIdentifier
+	 *
+	 * @return string
+	 */
+	public function getFolderIdentifierFromFileIdentifier($fileIdentifier) {
+		return $this->driver->getFolderIdentifierForFile($fileIdentifier);
+	}
+	/**
 	 * Returns a list of files in a given path, filtered by some custom filter methods.
 	 *
 	 * @see getUnfilteredFileList(), getFileListWithDefaultFilters()
 	 * @param string $path The path to list
 	 * @param integer $start The position to start the listing; if not set or 0, start from the beginning
 	 * @param integer $numberOfItems The number of items to list; if not set, return all items
-	 * @param bool $useFilters If FALSE, the list is returned without any filtering; otherwise, the filters defined for this storage are used.
-	 * @param bool $loadIndexRecords If set to TRUE, the index records for all files are loaded from the database. This can greatly improve performance of this method, especially with a lot of files.
+	 * @param boolean $useFilters If FALSE, the list is returned without any filtering; otherwise, the filters defined for this storage are used.
+	 * @param boolean $loadIndexRecords If set to TRUE, the index records for all files are loaded from the database. This can greatly improve performance of this method, especially with a lot of files.
 	 * @param boolean $recursive
 	 * @return array Information about the files found.
 	 */
@@ -1439,6 +1485,7 @@ class ResourceStorage {
 	 * @param string $conflictMode "overrideExistingFile", "renameNewFile", "cancel
 	 *
 	 * @throws Exception\ExistingTargetFileNameException
+	 * @throws \RuntimeException
 	 * @return FileInterface
 	 */
 	public function moveFile($file, $targetFolder, $targetFileName = NULL, $conflictMode = 'renameNewFile') {
@@ -1461,6 +1508,9 @@ class ResourceStorage {
 		try {
 			if ($sourceStorage === $this) {
 				$newIdentifier = $this->driver->moveFileWithinStorage($file, $targetFolder, $targetFileName);
+				if (!$file instanceof AbstractFile) {
+					throw new \RuntimeException('The given file is not of type AbstractFile.', 1384209025);
+				}
 				$this->updateFile($file, $newIdentifier);
 			} else {
 				$tempPath = $file->getForLocalProcessing();
@@ -1624,8 +1674,8 @@ class ResourceStorage {
 	 * @throws \InvalidArgumentException
 	 * @return Folder
 	 */
-	// TODO add tests
 	public function moveFolder(Folder $folderToMove, Folder $targetParentFolder, $newFolderName = NULL, $conflictMode = 'renameNewFolder') {
+		// TODO add tests
 		$this->assureFolderMovePermissions($folderToMove, $targetParentFolder);
 		$sourceStorage = $folderToMove->getStorage();
 		$returnObject = NULL;

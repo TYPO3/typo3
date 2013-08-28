@@ -96,6 +96,9 @@
 			<trans-unit id="localDriverFlexform_pathType_absolute" xml:space="preserve">
 				<source>absolute</source>
 			</trans-unit>
+			<trans-unit id="localDriverFlexform_caseSensitive" xml:space="preserve">
+				<source>Uses case sensitive identifiers</source>
+			</trans-unit>
 			<trans-unit id="storageNotBrowsableTitle" xml:space="preserve">
 				<source>Access denied.</source>
 			</trans-unit>

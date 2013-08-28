@@ -165,6 +165,15 @@ abstract class AbstractFile implements FileInterface {
 	}
 
 	/**
+	 * Get hashed identifier
+	 *
+	 * @return string
+	 */
+	public function getHashedIdentifier() {
+		return $this->properties['identifier_hash'];
+	}
+
+	/**
 	 * Returns the name of this file
 	 *
 	 * @return string
@@ -349,10 +358,12 @@ abstract class AbstractFile implements FileInterface {
 	/****************************************
 	 * STORAGE AND MANAGEMENT RELATED METHDOS
 	 ****************************************/
+
 	/**
 	 * Get the storage this file is located in
 	 *
 	 * @return ResourceStorage
+	 * @throws \RuntimeException
 	 */
 	public function getStorage() {
 		if ($this->storage === NULL) {

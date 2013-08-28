@@ -35,6 +35,15 @@
 					</config>
 				</TCEforms>
 			</pathType>
+			<caseSensitive>
+				<TCEforms>
+					<label>LLL:EXT:lang/locallang_mod_file_list.xlf:localDriverFlexform_caseSensitive</label>
+					<config>
+						<type>check</type>
+						<default>1</default>
+					</config>
+				</TCEforms>
+			</caseSensitive>
 		</el>
 	</ROOT>
 </T3DataStructure>

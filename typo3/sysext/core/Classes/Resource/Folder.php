@@ -141,19 +141,22 @@ class Folder implements FolderInterface {
 	}
 
 	/**
+	 * Get hashed identifier
+	 *
+	 * @return string
+	 */
+	public function getHashedIdentifier() {
+		return $this->storage->hashFileIdentifier($this->identifier);
+	}
+
+	/**
 	 * Returns a combined identifier of this folder, i.e. the storage UID and
 	 * the folder identifier separated by a colon ":".
 	 *
 	 * @return string Combined storage and folder identifier, e.g. StorageUID:folder/path/
 	 */
 	public function getCombinedIdentifier() {
-		// @todo $this->properties is never defined nor used here
-		if (is_array($this->properties) && \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($this->properties['storage'])) {
-			$combinedIdentifier = $this->properties['storage'] . ':' . $this->getIdentifier();
-		} else {
-			$combinedIdentifier = $this->getStorage()->getUid() . ':' . $this->getIdentifier();
-		}
-		return $combinedIdentifier;
+		return $this->getStorage()->getUid() . ':' . $this->getIdentifier();
 	}
 
 	/**
@@ -179,16 +182,13 @@ class Folder implements FolderInterface {
 	 * @param integer $numberOfItems The number of items to return
 	 * @param integer $filterMode The filter mode to use for the file list.
 	 * @param boolean $recursive
-	 * @return File[]
+	 * @return \TYPO3\CMS\Core\Resource\File[]
 	 */
 	public function getFiles($start = 0, $numberOfItems = 0, $filterMode = self::FILTER_MODE_USE_OWN_AND_STORAGE_FILTERS, $recursive = FALSE) {
-		$useFilters = TRUE;
-
 		// Fallback for compatibility with the old method signature variable $useFilters that was used instead of $filterMode
-		if ($filterMode === TRUE) {
-			$filterMode = self::FILTER_MODE_USE_STORAGE_FILTERS;
-		} elseif ($filterMode === FALSE) {
+		if ($filterMode === FALSE) {
 			$useFilters = FALSE;
+			$backedUpFilters = array();
 		} else {
 			list($backedUpFilters, $useFilters) = $this->prepareFiltersInStorage($filterMode);
 		}

@@ -27,6 +27,8 @@ namespace TYPO3\CMS\Core\Resource\Driver;
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Resource\FileInterface;
+use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
@@ -56,14 +58,14 @@ abstract class AbstractDriver {
 	/**
 	 * The storage folder that forms the root of this FS tree
 	 *
-	 * @var \TYPO3\CMS\Core\Resource\Folder
+	 * @var Folder
 	 */
 	protected $rootLevelFolder;
 
 	/**
 	 * The default folder new files should be put into.
 	 *
-	 * @var \TYPO3\CMS\Core\Resource\Folder
+	 * @var Folder
 	 */
 	protected $defaultLevelFolder;
 
@@ -214,10 +216,10 @@ abstract class AbstractDriver {
 	/**
 	 * Returns a temporary path for a given file, including the file extension.
 	 *
-	 * @param \TYPO3\CMS\Core\Resource\FileInterface $file
+	 * @param FileInterface $file
 	 * @return string
 	 */
-	protected function getTemporaryPathForFile(\TYPO3\CMS\Core\Resource\FileInterface $file) {
+	protected function getTemporaryPathForFile(FileInterface $file) {
 		return \TYPO3\CMS\Core\Utility\GeneralUtility::tempnam('fal-tempfile-') . '.' . $file->getExtension();
 	}
 
@@ -244,21 +246,48 @@ abstract class AbstractDriver {
 	 * Creates a (cryptographic) hash for a file.
 	 *
 	 * @abstract
-	 * @param \TYPO3\CMS\Core\Resource\FileInterface $file
+	 * @param FileInterface $file
 	 * @param string $hashAlgorithm The hash algorithm to use
 	 * @return string
 	 */
-	abstract public function hash(\TYPO3\CMS\Core\Resource\FileInterface $file, $hashAlgorithm);
+	abstract public function hash(FileInterface $file, $hashAlgorithm);
+
+	/**
+	 * Hashes a file identifier, taking the case sensitivity of the file system
+	 * into account. This helps mitigating problems with case-insensitive
+	 * databases.
+	 *
+	 * @param string $identifier
+	 * @return string
+	 */
+	public function hashIdentifier($identifier) {
+		$identifier = $this->canonicalizeAndCheckFileIdentifier($identifier);
+		return sha1($this->getUniqueIdentifier($identifier));
+	}
+
+	/**
+	 * Calculate unique identifier by taking the case sensitivity of the file system
+	 * into account
+	 *
+	 * @param string $identifier
+	 * @return string
+	 */
+	protected function getUniqueIdentifier($identifier) {
+		if (!$this->isCaseSensitiveFileSystem()) {
+			$identifier = strtolower($identifier);
+		}
+		return $identifier;
+	}
 
 	/**
 	 * Creates a new file and returns the matching file object for it.
 	 *
 	 * @abstract
 	 * @param string $fileName
-	 * @param \TYPO3\CMS\Core\Resource\Folder $parentFolder
+	 * @param Folder $parentFolder
 	 * @return \TYPO3\CMS\Core\Resource\File
 	 */
-	abstract public function createFile($fileName, \TYPO3\CMS\Core\Resource\Folder $parentFolder);
+	abstract public function createFile($fileName, Folder $parentFolder);
 
 	/**
 	 * Returns the contents of a file. Beware that this requires to load the
@@ -266,20 +295,20 @@ abstract class AbstractDriver {
 	 * external location. So this might be an expensive operation (both in terms
 	 * of processing resources and money) for large files.
 	 *
-	 * @param \TYPO3\CMS\Core\Resource\FileInterface $file
+	 * @param FileInterface $file
 	 * @return string The file contents
 	 */
-	abstract public function getFileContents(\TYPO3\CMS\Core\Resource\FileInterface $file);
+	abstract public function getFileContents(FileInterface $file);
 
 	/**
 	 * Sets the contents of a file to the specified value.
 	 *
-	 * @param \TYPO3\CMS\Core\Resource\FileInterface $file
+	 * @param FileInterface $file
 	 * @param string $contents
 	 * @return integer The number of bytes written to the file
 	 * @throws \RuntimeException if the operation failed
 	 */
-	abstract public function setFileContents(\TYPO3\CMS\Core\Resource\FileInterface $file, $contents);
+	abstract public function setFileContents(FileInterface $file, $contents);
 
 	/**
 	 * Adds a file from the local server hard disk to a given path in TYPO3s virtual file system.
@@ -287,12 +316,12 @@ abstract class AbstractDriver {
 	 * This assumes that the local file exists, so no further check is done here!
 	 *
 	 * @param string $localFilePath
-	 * @param \TYPO3\CMS\Core\Resource\Folder $targetFolder
+	 * @param Folder $targetFolder
 	 * @param string $fileName The name to add the file under
 	 * @param \TYPO3\CMS\Core\Resource\AbstractFile $updateFileObject Optional file object to update (instead of creating a new object). With this parameter, this function can be used to "populate" a dummy file object with a real file underneath.
-	 * @return \TYPO3\CMS\Core\Resource\FileInterface
+	 * @return FileInterface
 	 */
-	abstract public function addFile($localFilePath, \TYPO3\CMS\Core\Resource\Folder $targetFolder, $fileName, \TYPO3\CMS\Core\Resource\AbstractFile $updateFileObject = NULL);
+	abstract public function addFile($localFilePath, Folder $targetFolder, $fileName, \TYPO3\CMS\Core\Resource\AbstractFile $updateFileObject = NULL);
 
 	/**
 	 * Checks if a resource exists - does not care for the type (file or folder).
@@ -316,51 +345,51 @@ abstract class AbstractDriver {
 	 *
 	 * @abstract
 	 * @param string $fileName
-	 * @param \TYPO3\CMS\Core\Resource\Folder $folder
+	 * @param Folder $folder
 	 * @return boolean
 	 */
-	abstract public function fileExistsInFolder($fileName, \TYPO3\CMS\Core\Resource\Folder $folder);
+	abstract public function fileExistsInFolder($fileName, Folder $folder);
 
 	/**
 	 * Returns a (local copy of) a file for processing it. When changing the
 	 * file, you have to take care of replacing the current version yourself!
 	 *
 	 * @abstract
-	 * @param \TYPO3\CMS\Core\Resource\FileInterface $file
+	 * @param FileInterface $file
 	 * @param bool $writable Set this to FALSE if you only need the file for read operations. This might speed up things, e.g. by using a cached local version. Never modify the file if you have set this flag!
 	 * @return string The path to the file on the local disk
 	 */
 	// TODO decide if this should return a file handle object
-	abstract public function getFileForLocalProcessing(\TYPO3\CMS\Core\Resource\FileInterface $file, $writable = TRUE);
+	abstract public function getFileForLocalProcessing(FileInterface $file, $writable = TRUE);
 
 	/**
 	 * Returns the permissions of a file as an array (keys r, w) of boolean flags
 	 *
 	 * @abstract
-	 * @param \TYPO3\CMS\Core\Resource\FileInterface $file
+	 * @param FileInterface $file
 	 * @return array
 	 */
-	abstract public function getFilePermissions(\TYPO3\CMS\Core\Resource\FileInterface $file);
+	abstract public function getFilePermissions(FileInterface $file);
 
 	/**
 	 * Returns the permissions of a folder as an array (keys r, w) of boolean flags
 	 *
 	 * @abstract
-	 * @param \TYPO3\CMS\Core\Resource\Folder $folder
+	 * @param Folder $folder
 	 * @return array
 	 */
-	abstract public function getFolderPermissions(\TYPO3\CMS\Core\Resource\Folder $folder);
+	abstract public function getFolderPermissions(Folder $folder);
 
 	/**
 	 * Renames a file
 	 *
 	 * @abstract
-	 * @param \TYPO3\CMS\Core\Resource\FileInterface $file
+	 * @param FileInterface $file
 	 * @param string $newName
 	 * @return string The new identifier of the file if the operation succeeds
 	 * @throws \RuntimeException if renaming the file failed
 	 */
-	abstract public function renameFile(\TYPO3\CMS\Core\Resource\FileInterface $file, $newName);
+	abstract public function renameFile(FileInterface $file, $newName);
 
 	/**
 	 * Replaces the contents (and file-specific metadata) of a file object with a local file.
@@ -396,11 +425,11 @@ abstract class AbstractDriver {
 	/**
 	 * Returns information about a file for a given file object.
 	 *
-	 * @param \TYPO3\CMS\Core\Resource\FileInterface $file
+	 * @param FileInterface $file
 	 * @param array $propertiesToExtract Array of properties which should be extracted, if empty all will be extracted
 	 * @return array
 	 */
-	public function getFileInfo(\TYPO3\CMS\Core\Resource\FileInterface $file, array $propertiesToExtract = array()) {
+	public function getFileInfo(FileInterface $file, array $propertiesToExtract = array()) {
 		return $this->getFileInfoByIdentifier($file->getIdentifier(), $propertiesToExtract);
 	}
 
@@ -409,7 +438,7 @@ abstract class AbstractDriver {
 	 *
 	 * @param string $identifier
 	 * @throws \TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException
-	 * @return \TYPO3\CMS\Core\Resource\FileInterface
+	 * @return FileInterface
 	 */
 	public function getFile($identifier) {
 		$fileObject = NULL;
@@ -436,7 +465,7 @@ abstract class AbstractDriver {
 	 * Returns a folder by its identifier.
 	 *
 	 * @param string $identifier
-	 * @return \TYPO3\CMS\Core\Resource\Folder
+	 * @return Folder
 	 */
 	public function getFolder($identifier) {
 		$name = $this->getNameFromIdentifier($identifier);
@@ -448,10 +477,10 @@ abstract class AbstractDriver {
 	 * on the identifiers because non-hierarchical storages might fail otherwise.
 	 *
 	 * @param $name
-	 * @param \TYPO3\CMS\Core\Resource\Folder $parentFolder
-	 * @return \TYPO3\CMS\Core\Resource\Folder
+	 * @param Folder $parentFolder
+	 * @return Folder
 	 */
-	abstract public function getFolderInFolder($name, \TYPO3\CMS\Core\Resource\Folder $parentFolder);
+	abstract public function getFolderInFolder($name, Folder $parentFolder);
 
 	/**
 	 * Applies a set of filter methods to a file name to find out if it should be used or not. This is e.g. used by
@@ -501,65 +530,65 @@ abstract class AbstractDriver {
 	 * Copies a file to a temporary path and returns that path.
 	 *
 	 * @abstract
-	 * @param \TYPO3\CMS\Core\Resource\FileInterface $file
+	 * @param FileInterface $file
 	 * @return string The temporary path
 	 */
-	abstract public function copyFileToTemporaryPath(\TYPO3\CMS\Core\Resource\FileInterface $file);
+	abstract public function copyFileToTemporaryPath(FileInterface $file);
 
 	/**
 	 * Moves a file *within* the current storage.
 	 * Note that this is only about an intra-storage move action, where a file is just
 	 * moved to another folder in the same storage.
 	 *
-	 * @param \TYPO3\CMS\Core\Resource\FileInterface $file
-	 * @param \TYPO3\CMS\Core\Resource\Folder $targetFolder
+	 * @param FileInterface $file
+	 * @param Folder $targetFolder
 	 * @param string $fileName
 	 * @return string The new identifier of the file
 	 */
-	abstract public function moveFileWithinStorage(\TYPO3\CMS\Core\Resource\FileInterface $file, \TYPO3\CMS\Core\Resource\Folder $targetFolder, $fileName);
+	abstract public function moveFileWithinStorage(FileInterface $file, Folder $targetFolder, $fileName);
 
 	/**
 	 * Copies a file *within* the current storage.
 	 * Note that this is only about an intra-storage copy action, where a file is just
 	 * copied to another folder in the same storage.
 	 *
-	 * @param \TYPO3\CMS\Core\Resource\FileInterface $file
-	 * @param \TYPO3\CMS\Core\Resource\Folder $targetFolder
+	 * @param FileInterface $file
+	 * @param Folder $targetFolder
 	 * @param string $fileName
-	 * @return \TYPO3\CMS\Core\Resource\FileInterface The new (copied) file object.
+	 * @return FileInterface The new (copied) file object.
 	 */
-	abstract public function copyFileWithinStorage(\TYPO3\CMS\Core\Resource\FileInterface $file, \TYPO3\CMS\Core\Resource\Folder $targetFolder, $fileName);
+	abstract public function copyFileWithinStorage(FileInterface $file, Folder $targetFolder, $fileName);
 
 	/**
 	 * Folder equivalent to moveFileWithinStorage().
 	 *
-	 * @param \TYPO3\CMS\Core\Resource\Folder $folderToMove
-	 * @param \TYPO3\CMS\Core\Resource\Folder $targetFolder
+	 * @param Folder $folderToMove
+	 * @param Folder $targetFolder
 	 * @param string $newFolderName
 	 * @return array A map of old to new file identifiers
 	 */
-	abstract public function moveFolderWithinStorage(\TYPO3\CMS\Core\Resource\Folder $folderToMove, \TYPO3\CMS\Core\Resource\Folder $targetFolder, $newFolderName);
+	abstract public function moveFolderWithinStorage(Folder $folderToMove, Folder $targetFolder, $newFolderName);
 
 	/**
 	 * Folder equivalent to copyFileWithinStorage().
 	 *
-	 * @param \TYPO3\CMS\Core\Resource\Folder $folderToCopy
-	 * @param \TYPO3\CMS\Core\Resource\Folder $targetFolder
+	 * @param Folder $folderToCopy
+	 * @param Folder $targetFolder
 	 * @param string $newFileName
 	 * @return boolean
 	 */
-	abstract public function copyFolderWithinStorage(\TYPO3\CMS\Core\Resource\Folder $folderToCopy, \TYPO3\CMS\Core\Resource\Folder $targetFolder, $newFileName);
+	abstract public function copyFolderWithinStorage(Folder $folderToCopy, Folder $targetFolder, $newFileName);
 
 	/**
 	 * Move a folder from another storage.
 	 *
-	 * @param \TYPO3\CMS\Core\Resource\Folder $folderToMove
-	 * @param \TYPO3\CMS\Core\Resource\Folder $targetParentFolder
+	 * @param Folder $folderToMove
+	 * @param Folder $targetParentFolder
 	 * @param string $newFolderName
 	 * @throws \BadMethodCallException
 	 * @return boolean
 	 */
-	public function moveFolderBetweenStorages(\TYPO3\CMS\Core\Resource\Folder $folderToMove, \TYPO3\CMS\Core\Resource\Folder $targetParentFolder, $newFolderName) {
+	public function moveFolderBetweenStorages(Folder $folderToMove, Folder $targetParentFolder, $newFolderName) {
 		// This is not implemented for now as moving files between storages might cause quite some headaches when
 		// something goes wrong. It is also not that common of a use case, so it does not hurt that much to leave it out
 		// for now.
@@ -569,13 +598,13 @@ abstract class AbstractDriver {
 	/**
 	 * Copy a folder from another storage.
 	 *
-	 * @param \TYPO3\CMS\Core\Resource\Folder $folderToCopy
-	 * @param \TYPO3\CMS\Core\Resource\Folder $targetParentFolder
+	 * @param Folder $folderToCopy
+	 * @param Folder $targetParentFolder
 	 * @param string $newFolderName
 	 * @throws \BadMethodCallException
 	 * @return boolean
 	 */
-	public function copyFolderBetweenStorages(\TYPO3\CMS\Core\Resource\Folder $folderToCopy, \TYPO3\CMS\Core\Resource\Folder $targetParentFolder, $newFolderName) {
+	public function copyFolderBetweenStorages(Folder $folderToCopy, Folder $targetParentFolder, $newFolderName) {
 		throw new \BadMethodCallException('Not yet implemented!', 1330262731);
 	}
 
@@ -585,31 +614,31 @@ abstract class AbstractDriver {
 	 * this has to be taken care of in the upper layers (e.g. the Storage)!
 	 *
 	 * @abstract
-	 * @param \TYPO3\CMS\Core\Resource\FileInterface $file
+	 * @param FileInterface $file
 	 * @return boolean TRUE if deleting the file succeeded
 	 */
-	abstract public function deleteFile(\TYPO3\CMS\Core\Resource\FileInterface $file);
+	abstract public function deleteFile(FileInterface $file);
 
 	/**
 	 * Removes a folder from this storage.
 	 *
-	 * @param \TYPO3\CMS\Core\Resource\Folder $folder
+	 * @param Folder $folder
 	 * @param boolean $deleteRecursively
 	 * @return boolean
 	 */
-	abstract public function deleteFolder(\TYPO3\CMS\Core\Resource\Folder $folder, $deleteRecursively = FALSE);
+	abstract public function deleteFolder(Folder $folder, $deleteRecursively = FALSE);
 
 	/**
 	 * Adds a file at the specified location. This should only be used internally.
 	 *
 	 * @abstract
 	 * @param string $localFilePath
-	 * @param \TYPO3\CMS\Core\Resource\Folder $targetFolder
+	 * @param Folder $targetFolder
 	 * @param string $targetFileName
 	 * @return string The new identifier of the file
 	 */
 	// TODO check if this is still necessary if we move more logic to the storage
-	abstract public function addFileRaw($localFilePath, \TYPO3\CMS\Core\Resource\Folder $targetFolder, $targetFileName);
+	abstract public function addFileRaw($localFilePath, Folder $targetFolder, $targetFileName);
 
 	/**
 	 * Deletes a file without access and usage checks.
@@ -632,7 +661,7 @@ abstract class AbstractDriver {
 	 * Returns the root level folder of the storage.
 	 *
 	 * @abstract
-	 * @return \TYPO3\CMS\Core\Resource\Folder
+	 * @return Folder
 	 */
 	abstract public function getRootLevelFolder();
 
@@ -640,7 +669,7 @@ abstract class AbstractDriver {
 	 * Returns the default folder new files should be put into.
 	 *
 	 * @abstract
-	 * @return \TYPO3\CMS\Core\Resource\Folder
+	 * @return Folder
 	 */
 	abstract public function getDefaultFolder();
 
@@ -648,10 +677,10 @@ abstract class AbstractDriver {
 	 * Creates a folder.
 	 *
 	 * @param string $newFolderName
-	 * @param \TYPO3\CMS\Core\Resource\Folder $parentFolder
-	 * @return \TYPO3\CMS\Core\Resource\Folder The new (created) folder object
+	 * @param Folder $parentFolder
+	 * @return Folder The new (created) folder object
 	 */
-	abstract public function createFolder($newFolderName, \TYPO3\CMS\Core\Resource\Folder $parentFolder);
+	abstract public function createFolder($newFolderName, Folder $parentFolder);
 
 	/**
 	 * Returns a list of all folders in a given path
@@ -681,20 +710,20 @@ abstract class AbstractDriver {
 	 *
 	 * @abstract
 	 * @param string $folderName
-	 * @param \TYPO3\CMS\Core\Resource\Folder $folder
+	 * @param Folder $folder
 	 * @return boolean
 	 */
-	abstract public function folderExistsInFolder($folderName, \TYPO3\CMS\Core\Resource\Folder $folder);
+	abstract public function folderExistsInFolder($folderName, Folder $folder);
 
 	/**
 	 * Renames a folder in this storage.
 	 *
-	 * @param \TYPO3\CMS\Core\Resource\Folder $folder
+	 * @param Folder $folder
 	 * @param string $newName The target path (including the file name!)
 	 * @return array A map of old to new file identifiers
 	 * @throws \RuntimeException if renaming the folder failed
 	 */
-	abstract public function renameFolder(\TYPO3\CMS\Core\Resource\Folder $folder, $newName);
+	abstract public function renameFolder(Folder $folder, $newName);
 
 	/**
 	 * Checks if a given object or identifier is within a container, e.g. if
@@ -702,18 +731,59 @@ abstract class AbstractDriver {
 	 * This can e.g. be used to check for webmounts.
 	 *
 	 * @abstract
-	 * @param \TYPO3\CMS\Core\Resource\Folder $container
+	 * @param Folder $container
 	 * @param mixed $content An object or an identifier to check
 	 * @return boolean TRUE if $content is within $container
 	 */
-	abstract public function isWithin(\TYPO3\CMS\Core\Resource\Folder $container, $content);
+	abstract public function isWithin(Folder $container, $content);
 
 	/**
 	 * Checks if a folder contains files and (if supported) other folders.
 	 *
-	 * @param \TYPO3\CMS\Core\Resource\Folder $folder
+	 * @param Folder $folder
 	 * @return boolean TRUE if there are no files and folders within $folder
 	 */
-	abstract public function isFolderEmpty(\TYPO3\CMS\Core\Resource\Folder $folder);
+	abstract public function isFolderEmpty(Folder $folder);
 
+	/**
+	 * Returns TRUE if this driver uses case-sensitive identifiers. NOTE: This
+	 * is a configurable setting, but the setting does not change the way the
+	 * underlying file system treats the identifiers; the setting should
+	 * therefore always reflect the file system and not try to change its
+	 * behaviour
+	 *
+	 * @return boolean
+	 */
+	public function isCaseSensitiveFileSystem() {
+		if (isset($this->configuration['caseSensitive'])) {
+			return (bool)$this->configuration['caseSensitive'];
+		}
+		return TRUE;
+	}
+
+	/**
+	 * Makes sure the path given as parameter is valid
+	 *
+	 * @param string $fileIdentifier The file path (most times filePath)
+	 * @return string
+	 * @throws \TYPO3\CMS\Core\Resource\Exception\InvalidPathException
+	 */
+	abstract protected function canonicalizeAndCheckFileIdentifier($fileIdentifier);
+
+	/**
+	 * Makes sure the path given as parameter is valid
+	 *
+	 * @param string $folderIdentifier The folder path (most times filePath)
+	 * @return string
+	 */
+	abstract protected function canonicalizeAndCheckFolderIdentifier($folderIdentifier);
+
+	/**
+	 * Returns the identifier of the folder the file resides in
+	 *
+	 * @param $fileIdentifier
+	 *
+	 * @return mixed
+	 */
+	abstract public function getFolderIdentifierForFile($fileIdentifier);
 }

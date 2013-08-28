@@ -53,4 +53,10 @@ interface ResourceInterface {
 	 */
 	public function getStorage();
 
+	/**
+	 * Get hashed identifier
+	 *
+	 * @return string
+	 */
+	public function getHashedIdentifier();
 }

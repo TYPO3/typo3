@@ -167,7 +167,7 @@ class ProcessedFileRepository extends AbstractRepository {
 
 	/**
 	 * @param FileInterface $file
-	 * @return array<ProcessedFile>
+	 * @return ProcessedFile[]
 	 * @throws \InvalidArgumentException
 	 */
 	public function findAllByOriginalFile(FileInterface $file) {

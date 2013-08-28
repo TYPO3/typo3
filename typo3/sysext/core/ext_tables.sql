@@ -292,7 +292,9 @@ CREATE TABLE sys_file (
 	metadata int(11) DEFAULT '0' NOT NULL,
 
 	# file info data
-	identifier varchar(200) DEFAULT '' NOT NULL,
+	identifier text,
+	identifier_hash varchar(40) DEFAULT '' NOT NULL,
+	folder_hash varchar(40) DEFAULT '' NOT NULL,
 	extension varchar(255) DEFAULT '' NOT NULL,
 	mime_type varchar(255) DEFAULT '' NOT NULL,
 	name tinytext,
@@ -302,7 +304,7 @@ CREATE TABLE sys_file (
 	modification_date int(11) DEFAULT '0' NOT NULL,
 
 	PRIMARY KEY (uid),
-	KEY sel01 (storage,identifier(20)),
+	KEY sel01 (storage,identifier_hash),
 	KEY sha1 (sha1(40))
 );
 

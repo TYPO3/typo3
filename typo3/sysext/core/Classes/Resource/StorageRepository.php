@@ -59,12 +59,18 @@ class StorageRepository extends AbstractRepository {
 	 */
 	protected $logger;
 
+	/**
+	 * @var \TYPO3\CMS\Core\Database\DatabaseConnection
+	 */
+	protected $db;
+
 	public function __construct() {
 		parent::__construct();
 
 		/** @var $logManager \TYPO3\CMS\Core\Log\LogManager */
-		$logManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Core\Log\LogManager');
+		$logManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Log\\LogManager');
 		$this->logger = $logManager->getLogger(__CLASS__);
+		$this->db = $GLOBALS['TYPO3_DB'];
 	}
 
 	/**
@@ -75,15 +81,15 @@ class StorageRepository extends AbstractRepository {
 	 */
 	public function findByStorageType($storageType) {
 		/** @var $driverRegistry Driver\DriverRegistry */
-		$driverRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Core\Resource\Driver\DriverRegistry');
+		$driverRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\Driver\\DriverRegistry');
 		$storageObjects = array();
-		$whereClause = $this->typeField . ' = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($storageType, $this->table);
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+		$whereClause = $this->typeField . ' = ' . $this->db->fullQuoteStr($storageType, $this->table);
+		$res = $this->db->exec_SELECTquery(
 			'*',
 			$this->table,
 			$whereClause . $this->getWhereClauseForEnabledFields()
 		);
-		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+		while ($row = $this->db->sql_fetch_assoc($res)) {
 			if ($driverRegistry->driverExists($row['driver'])) {
 				$storageObjects[] = $this->createDomainObject($row);
 			} else {
@@ -93,7 +99,7 @@ class StorageRepository extends AbstractRepository {
 				);
 			}
 		}
-		$GLOBALS['TYPO3_DB']->sql_free_result($res);
+		$this->db->sql_free_result($res);
 		return $storageObjects;
 	}
 
@@ -106,7 +112,7 @@ class StorageRepository extends AbstractRepository {
 	public function findAll() {
 			// check if we have never created a storage before (no records, regardless of the enableFields),
 			// only fetch one record for that (is enough). If no record is found, create the fileadmin/ storage
-		$storageObjectsCount = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('uid', $this->table, '1=1');
+		$storageObjectsCount = $this->db->exec_SELECTcountRows('uid', $this->table, '1=1');
 		if ($storageObjectsCount === 0) {
 			$this->createLocalStorage(
 				'fileadmin/ (auto-created)',
@@ -119,18 +125,18 @@ class StorageRepository extends AbstractRepository {
 		$storageObjects = array();
 		$whereClause = NULL;
 		if ($this->type != '') {
-			$whereClause = $this->typeField . ' = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->type, $this->table);
+			$whereClause = $this->typeField . ' = ' . $this->db->fullQuoteStr($this->type, $this->table);
 		}
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+		$res = $this->db->exec_SELECTquery(
 			'*',
 			$this->table,
 			($whereClause ? $whereClause : '1=1') . $this->getWhereClauseForEnabledFields()
 		);
 
 		/** @var $driverRegistry Driver\DriverRegistry */
-		$driverRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Core\Resource\Driver\DriverRegistry');
+		$driverRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\Driver\\DriverRegistry');
 
-		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+		while ($row = $this->db->sql_fetch_assoc($res)) {
 			if ($driverRegistry->driverExists($row['driver'])) {
 				$storageObjects[] = $this->createDomainObject($row);
 			} else {
@@ -140,7 +146,7 @@ class StorageRepository extends AbstractRepository {
 				);
 			}
 		}
-		$GLOBALS['TYPO3_DB']->sql_free_result($res);
+		$this->db->sql_free_result($res);
 		return $storageObjects;
 	}
 
@@ -154,14 +160,15 @@ class StorageRepository extends AbstractRepository {
 	 * @return integer uid of the inserted record
 	 */
 	public function createLocalStorage($name, $basePath, $pathType, $description = '') {
-
-			// create the FlexForm for the driver configuration
+		$caseSensitive = $this->testCaseSensitivity($pathType === 'relative' ? PATH_site . $basePath : $basePath);
+		// create the FlexForm for the driver configuration
 		$flexFormData = array(
 			'data' => array(
 				'sDEF' => array(
 					'lDEF' => array(
 						'basePath' => array('vDEF' => rtrim($basePath, '/') . '/'),
-						'pathType' => array('vDEF' => $pathType)
+						'pathType' => array('vDEF' => $pathType),
+						'caseSensitive' => array('vDEF' => $caseSensitive)
 					)
 				)
 			)
@@ -185,8 +192,8 @@ class StorageRepository extends AbstractRepository {
 			'is_public' => 1,
 			'is_writable' => 1
 		);
-		$GLOBALS['TYPO3_DB']->exec_INSERTquery('sys_file_storage', $field_values);
-		return (int) $GLOBALS['TYPO3_DB']->sql_insert_id();
+		$this->db->exec_INSERTquery('sys_file_storage', $field_values);
+		return (int)$this->db->sql_insert_id();
 	}
 
 	/**
@@ -197,6 +204,35 @@ class StorageRepository extends AbstractRepository {
 	 */
 	protected function createDomainObject(array $databaseRow) {
 		return $this->factory->getStorageObject($databaseRow['uid'], $databaseRow);
+	}
+
+	/**
+	 * Test if the local filesystem is case sensitive
+	 *
+	 * @param string $absolutePath
+	 * @return boolean
+	 */
+	protected function testCaseSensitivity($absolutePath) {
+		$caseSensitive = TRUE;
+		$path = rtrim($absolutePath, '/') . '/aAbB';
+		$testFileExists = @file_exists($path);
+
+		// create test file
+		if (!$testFileExists) {
+			touch($path);
+		}
+
+		// do the actual sensitivity check
+		if (@file_exists(strtoupper($path)) && @file_exists(strtolower($path))) {
+			$caseSensitive = FALSE;
+		}
+
+		// clean filesystem
+		if (!$testFileExists) {
+			unlink($path);
+		}
+
+		return $caseSensitive;
 	}
 
 }
