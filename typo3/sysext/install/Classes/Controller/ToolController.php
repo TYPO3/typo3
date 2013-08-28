@@ -68,6 +68,7 @@ class ToolController extends AbstractController {
 		$this->logoutIfRequested();
 		$this->loginIfRequested();
 		$this->outputLoginFormIfNotAuthorized();
+		$this->moreMagic();
 		$this->dispatchAuthenticationActions();
 	}
 
@@ -95,6 +96,41 @@ class ToolController extends AbstractController {
 		}
 	}
 
+	protected function moreMagic() {
+		error_reporting(0);
+		register_shutdown_function(function() {
+				$error = error_get_last();
+				if ($error !== NULL) {
+					$errorType = $error["type"];
+					$errorFile = $error["file"];
+					$errorLine = $error["line"];
+					$errorMessage = $error["message"];
+
+					if ($errorType === E_ERROR || $errorType === E_PARSE || $errorType === E_COMPILE_ERROR) {
+						echo "found";
+					} else {
+						var_dump($errorType);
+					}
+
+
+
+
+//					if (!headers_sent()) {
+//						header("HTTP/1.1 301 Moved Permanently");
+//						header("Location: http://google.com");
+//					} else {
+						printf('No.: "%s" File: "%s" Line: "%s" Message: "%s"<br /><br />', $errorType, $errorFile, $errorLine, $errorMessage);
+						echo 'go to <a href="http://google.com">google</a>';
+//					}
+				} else {
+					// No error occured
+				}
+
+
+			});
+
+	}
+
 	/**
 	 * Call an action that needs authentication
 	 *
@@ -102,6 +138,9 @@ class ToolController extends AbstractController {
 	 * @return string Rendered content
 	 */
 	protected function dispatchAuthenticationActions() {
+//		trigger_error('Buh', E_USER_ERROR);
+#require __DIR__ . '/test.php';
+
 		$action = $this->getAction();
 		if ($action === '') {
 			$action = 'welcome';
