@@ -251,6 +251,21 @@ abstract class AbstractDriver {
 	abstract public function hash(\TYPO3\CMS\Core\Resource\FileInterface $file, $hashAlgorithm);
 
 	/**
+	 * Hashes a file identifier, taking the case sensitivity of the file system
+	 * into account. This helps mitigating problems with case-insensitive
+	 * databases.
+	 *
+	 * @param string $identifier
+	 * @return string
+	 */
+	public function hashFileIdentifier($identifier) {
+		if (!$this->usesCaseSensitiveIdentifiers()) {
+			$identifier = strtolower($identifier);
+		}
+		return sha1($identifier);
+	}
+
+	/**
 	 * Creates a new file and returns the matching file object for it.
 	 *
 	 * @abstract
@@ -699,6 +714,19 @@ abstract class AbstractDriver {
 	 * @return boolean TRUE if there are no files and folders within $folder
 	 */
 	abstract public function isFolderEmpty(\TYPO3\CMS\Core\Resource\Folder $folder);
+
+	/**
+	 * Returns TRUE if this driver uses case-sensitive identifiers. NOTE: This
+	 * is a configurable setting, but the setting does not change the way the
+	 * underlying file system treats the identifiers; the setting should
+	 * therefore always reflect the file system and not try to change its
+	 * behaviour
+	 *
+	 * @return bool
+	 */
+	public function usesCaseSensitiveIdentifiers() {
+		return (array_key_exists('caseSensitive', $this->configuration) && (bool)$this->configuration['caseSensitive'] === TRUE);
+	}
 
 }
 

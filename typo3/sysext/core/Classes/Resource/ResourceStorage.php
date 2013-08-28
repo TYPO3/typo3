@@ -737,6 +737,22 @@ class ResourceStorage {
 	}
 
 	/**
+	 * Hashes a file identifier, taking the case sensitivity of the file system
+	 * into account. This helps mitigating problems with case-insensitive
+	 * databases.
+	 *
+	 * @param string|FileInterface $file
+	 * @return string
+	 */
+	public function hashFileIdentifier($file) {
+		if (is_object($file) && $file instanceof FileInterface) {
+			/** @var FileInterface $file */
+			$file = $file->getIdentifier();
+		}
+		return $this->driver->hashFileIdentifier($file);
+	}
+
+	/**
 	 * Returns a publicly accessible URL for a file.
 	 *
 	 * WARNING: Access to the file may be restricted by further means, e.g.
