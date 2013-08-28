@@ -1022,8 +1022,18 @@ class Bootstrap {
 		// might trigger code which relies on it. See: #45625
 		$GLOBALS['BE_USER'] = $backendUser;
 		$backendUser->start();
-		$backendUser->checkCLIuser();
-		$backendUser->backendCheckLogin();
+		return $this;
+	}
+
+	/**
+	 * Initializes and ensures authenticated access
+	 *
+	 * @internal This is not a public API method, do not use in own extensions
+	 * @return \TYPO3\CMS\Core\Core\Bootstrap
+	 */
+	public function initializeBackendAuthentication() {
+		$GLOBALS['BE_USER']->checkCLIuser();
+		$GLOBALS['BE_USER']->backendCheckLogin();
 		return $this;
 	}
 

@@ -69,6 +69,7 @@ require __DIR__ . '/sysext/core/Classes/Core/Bootstrap.php';
 	->loadExtensionTables(TRUE)
 	->initializeSpriteManager()
 	->initializeBackendUser()
+	->initializeBackendAuthentication()
 	->initializeBackendUserMounts()
 	->initializeLanguageObject()
 	->initializeModuleMenuObject()

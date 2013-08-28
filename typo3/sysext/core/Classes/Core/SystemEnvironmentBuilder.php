@@ -145,10 +145,14 @@ class SystemEnvironmentBuilder {
 		// All paths are unified between Windows and Unix, so the \ of Windows is substituted to a /
 		// Example "/var/www/instance-name/htdocs/typo3conf/ext/wec_map/mod1/index.php"
 		// Example "c:/var/www/instance-name/htdocs/typo3/backend.php" for a path in Windows
-		define('PATH_thisScript', self::getPathThisScript());
+		if (!defined('PATH_thisScript')) {
+			define('PATH_thisScript', self::getPathThisScript());
+		}
 		// Absolute path of the document root of the instance with trailing slash
 		// Example "/var/www/instance-name/htdocs/"
-		define('PATH_site', self::getPathSite($relativePathPart));
+		if (!defined('PATH_site')) {
+			define('PATH_site', self::getPathSite($relativePathPart));
+		}
 		// Absolute path of the typo3 directory of the instance with trailing slash
 		// Example "/var/www/instance-name/htdocs/typo3/"
 		define('PATH_typo3', PATH_site . TYPO3_mainDir);

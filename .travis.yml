@@ -54,7 +54,7 @@ script:
     if [[ "$PHPLINT" == "1" ]]; then
     	phpLint all
     elif [[ "$UNITTESTS" == "1" ]]; then
-    	php $PWD/typo3/cli_dispatch.phpsh phpunit -c typo3/sysext/core/Build/UnitTests.xml
+    	./typo3conf/ext/phpunit/Composer/vendor/bin/phpunit -c typo3/sysext/core/Build/UnitTests.xml
     elif [[ "$FUNCTIONALTESTS" == "1" ]]; then
     	./typo3conf/ext/phpunit/Composer/vendor/bin/phpunit -c typo3/sysext/core/Build/FunctionalTests.xml
     else
