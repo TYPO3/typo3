@@ -76,6 +76,10 @@ Web > Page
 	visibility: hidden;
 }
 
+.t3-page-ce-empty .t3-page-ce .t3-icon-document-new {
+	visibility: visible;
+}
+
 .t3-page-ce.active .t3-icon-document-new {
 	visibility: visible;
 }
