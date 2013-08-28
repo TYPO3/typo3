@@ -666,6 +666,11 @@ class AbstractMenuContentObject {
 							}
 						}
 						break;
+					case 'categories':
+						/** @var \TYPO3\CMS\Frontend\ContentObject\Menu\CategoryMenuUtility $categoryMenuUtility */
+						$categoryMenuUtility = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\Menu\\CategoryMenuUtility');
+						$temp = $categoryMenuUtility->collectPages($value, $this->conf['special.'], $this);
+						break;
 					case 'rootline':
 						$range = isset($this->conf['special.']['range.']) ? $this->parent_cObj->stdWrap($this->conf['special.']['range'], $this->conf['special.']['range.']) : $this->conf['special.']['range'];
 						$begin_end = explode('|', $range);
@@ -1791,6 +1796,23 @@ class AbstractMenuContentObject {
 		return $result;
 	}
 
+	/**
+	 * Returns the sys_page object
+	 *
+	 * @return \TYPO3\CMS\Frontend\Page\PageRepository
+	 */
+	public function getSysPage() {
+		return $this->sys_page;
+	}
+
+	/**
+	 * Returns the parent content object
+	 *
+	 * @return \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
+	 */
+	public function getParentContentObject() {
+		return $this->parent_cObj;
+	}
 }
 
 
