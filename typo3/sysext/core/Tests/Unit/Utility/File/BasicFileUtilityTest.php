@@ -193,11 +193,6 @@ class BasicFileUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				'utf-8',
 				'test.txt'
 			),
-			'test' => array(
-				chr(0xE4),
-				'ISO-8859-1',
-				'ae'
-			),
 		);
 	}
 
