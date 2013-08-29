@@ -1,0 +1,27 @@
+{namespace i=TYPO3\CMS\Install\ViewHelpers}
+
+<f:layout name="ToolAuthenticated" />
+
+<f:section name="Content">
+	<h3>Load extension configuration</h3>
+
+	<f:for each="{actionMessages}" as="statusMessage">
+		<f:render partial="Action/Common/StatusMessage" arguments="{message: statusMessage}" />
+	</f:for>
+
+	<p>
+		The system determined a serious problem during the last action. Your extensions are now checked for any compatibility issue.
+		Please uninstall all incompatible extensions and try turn return to your last action.
+	</p>
+
+	<hr />
+	<f:render partial="Action/Tool/ImportantActions/ExtensionCompatibilityTester" arguments="{_all}"/>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('button', '#checkExtensions').hide();
+			$('.typo3-message', '#checkExtensions').hide();
+			$('.message-loading', '#checkExtensions').show();
+			checkExtensionsCompatibility(true);
+		});
+	</script>
+</f:section>
