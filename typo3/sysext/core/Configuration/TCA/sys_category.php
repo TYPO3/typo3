@@ -75,14 +75,6 @@ return array(
 				'type' => 'passthrough'
 			)
 		),
-		't3ver_label' => array(
-			'displayCond' => 'FIELD:t3ver_label:REQ:true',
-			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.versionLabel',
-			'config' => array(
-				'type' => 'none',
-				'cols' => 27
-			)
-		),
 		'hidden' => array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.hidden',
