@@ -26,11 +26,7 @@ namespace TYPO3\CMS\Sv;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-/**
- * Service 'User authentication' for the 'sv' extension.
- *
- * @author René Fritz <r.fritz@colorcube.de>
- */
+
 /**
  * Authentication services class
  *
