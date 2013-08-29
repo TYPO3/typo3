@@ -376,18 +376,20 @@ abstract class AbstractDriver {
 	 * Returns information about a file for a given file identifier.
 	 *
 	 * @param string $identifier The (relative) path to the file.
+	 * @param array $propertiesToExtract If empty, all properties are extracted, if  given, only those information should be fetched and returned
 	 * @return array
 	 */
-	abstract public function getFileInfoByIdentifier($identifier);
+	abstract public function getFileInfoByIdentifier($identifier, array $propertiesToExtract = array());
 
 	/**
 	 * Returns information about a file for a given file object.
 	 *
 	 * @param \TYPO3\CMS\Core\Resource\FileInterface $file
+	 * @param array $propertiesToExtract If empty, all properties are extracted, if  given, only those information should be fetched and returned
 	 * @return array
 	 */
-	public function getFileInfo(\TYPO3\CMS\Core\Resource\FileInterface $file) {
-		return $this->getFileInfoByIdentifier($file->getIdentifier());
+	public function getFileInfo(\TYPO3\CMS\Core\Resource\FileInterface $file, array $propertiesToExtract = array()) {
+		return $this->getFileInfoByIdentifier($file->getIdentifier(), $propertiesToExtract);
 	}
 
 	/**
