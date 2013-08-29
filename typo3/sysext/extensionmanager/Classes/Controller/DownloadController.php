@@ -107,23 +107,43 @@ class DownloadController extends \TYPO3\CMS\Extensionmanager\Controller\Abstract
 	}
 
 	/**
-	 * Install an extension from TER
+	 * Install an extension from TER action
 	 *
 	 * @param \TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension
 	 * @param string $downloadPath
-	 * @throws \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException
 	 */
 	public function installFromTerAction(\TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension, $downloadPath) {
-		$result = FALSE;
-		$errorMessage = '';
-		try {
-			$this->downloadUtility->setDownloadPath($downloadPath);
-			$this->prepareExtensionForImport($extension);
-			$result = $this->managementService->resolveDependenciesAndInstall($extension);
-		} catch (\TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException $e) {
-			$errorMessage = $e->getMessage();
+		list($result, $errorMessage) = $this->installFromTer($extension, $downloadPath);
+		$this->view
+			->assign('result', $result)
+			->assign('extension', $extension)
+			->assign('errorMessage', $errorMessage);
+	}
+
+	/**
+	 * Action for installing a distribution -
+	 * redirects directly to configuration after installing
+	 *
+	 * @param \TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension
+	 * @return void
+	 */
+	public function installDistributionAction(\TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension) {
+		list($result, $errorMessage) = $this->installFromTer($extension);
+		if ($errorMessage) {
+			// @TODO: write Template
+			$this->view
+				->assign('result', $result)
+				->assign('errorMessage', $errorMessage);
+		} else {
+			$this->redirect(
+				'showConfigurationForm',
+				'Configuration',
+				NULL,
+				array(
+					'extension' => $this->installUtility->enrichExtensionWithDetails($extension->getExtensionKey())
+				)
+			);
 		}
-		$this->view->assign('result', $result)->assign('extension', $extension)->assign('errorMessage', $errorMessage);
 	}
 
 	/**
@@ -175,6 +195,27 @@ class DownloadController extends \TYPO3\CMS\Extensionmanager\Controller\Abstract
 			$updateComments[$updatableVersion->getVersion()] = $updatableVersion->getUpdateComment();
 		}
 		$this->view->assign('updateComments', $updateComments)->assign('extensionKey', $extensionKey);
+	}
+
+	/**
+	 * Install an action from TER
+	 * Downloads the extension, resolves dependencies and installs it
+	 *
+	 * @param \TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension
+	 * @param string $downloadPath
+	 * @return array
+	 */
+	protected function installFromTer(\TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension, $downloadPath = 'Local') {
+		$result = FALSE;
+		$errorMessage = '';
+		try {
+			$this->downloadUtility->setDownloadPath($downloadPath);
+			$this->prepareExtensionForImport($extension);
+			$result = $this->managementService->resolveDependenciesAndInstall($extension);
+		} catch (\TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException $e) {
+			$errorMessage = $e->getMessage();
+		}
+		return array($result, $errorMessage);
 	}
 }
 

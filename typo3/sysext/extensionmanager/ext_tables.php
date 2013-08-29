@@ -8,13 +8,14 @@ if (TYPO3_MODE === 'BE') {
 		'TYPO3.CMS.' . $_EXTKEY,
 		'tools',
 		'extensionmanager', '', array(
-			'List' => 'index,ter,showAllVersions',
+			'List' => 'index,ter,showAllVersions,distributions',
 			'Action' => 'toggleExtensionInstallationState,removeExtension,downloadExtensionZip,downloadExtensionData',
 			'Configuration' => 'showConfigurationForm,save',
-			'Download' => 'checkDependencies,installFromTer,updateExtension,updateCommentForUpdatableVersions',
+			'Download' => 'checkDependencies,installFromTer,installDistribution,updateExtension,updateCommentForUpdatableVersions',
 			'UpdateScript' => 'show',
 			'UpdateFromTer' => 'updateExtensionListFromTer',
-			'UploadExtensionFile' => 'form,extract'
+			'UploadExtensionFile' => 'form,extract',
+			'Distribution' => 'welcome'
 		),
 		array(
 			'access' => 'user,group',
