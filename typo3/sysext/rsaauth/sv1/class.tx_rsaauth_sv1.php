@@ -21,7 +21,7 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('sv') . 'class.tx_sv_auth.php';
+require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('sv') . 'Classes/AuthenticationService.php';
 /*
  * @deprecated since 6.0, the classname tx_rsaauth_sv1 and this file is obsolete
  * and will be removed with 6.2. The class was renamed and is now located at:
