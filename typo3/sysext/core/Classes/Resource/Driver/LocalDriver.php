@@ -306,7 +306,16 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 		// Fetch the files and folders and sort them by name; we have to do
 		// this here because the directory iterator does return them in
 		// an arbitrary order
-		$items = $this->getFileAndFoldernamesInPath($realPath, $recursive);
+		try {
+			$items = $this->getFileAndFoldernamesInPath($realPath, $recursive);
+		} catch (\Exception $e) {
+			if ($e instanceof \UnexpectedValueException) {
+					// If a directory is not readable it will get displayed as "locked"
+				return array();
+			} else {
+				throw $e;
+			}
+		}
 		uksort(
 			$items,
 			array('\\TYPO3\\CMS\\Core\\Utility\\ResourceUtility', 'recursiveFileListSortingHelper')
