@@ -21,6 +21,17 @@
 				datatable.fnFilter('');
 			}
 		});
+
+		$('.expandable').expander({
+			expandEffect: 'slideDown',
+			collapseEffect: 'slideUp',
+			beforeExpand: function() {
+				$(this).parent().css('z-index', 199);
+			},
+			afterCollapse: function() {
+				$(this).parent().css('z-index', 1);
+			}
+		});
 	});
 
 	function getUrlVars() {

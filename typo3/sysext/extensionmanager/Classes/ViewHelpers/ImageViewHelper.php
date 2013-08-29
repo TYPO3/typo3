@@ -26,6 +26,7 @@ namespace TYPO3\CMS\Extensionmanager\ViewHelpers;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Resizes a given image (if required) and renders the respective img tag
  * In general just calls the parent image view helper but catches
@@ -69,14 +70,20 @@ class ImageViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\ImageViewHelper {
 	 * @param integer $minHeight minimum height of the image
 	 * @param integer $maxWidth maximum width of the image
 	 * @param integer $maxHeight maximum height of the image
+	 * @param string $fallbackImage an optional fallback image if the $src image cannot be loaded
 	 * @return string rendered tag.
 	 */
-	public function render($src, $width = NULL, $height = NULL, $minWidth = NULL, $minHeight = NULL, $maxWidth = NULL, $maxHeight = NULL) {
+	public function render($src, $width = NULL, $height = NULL, $minWidth = NULL, $minHeight = NULL, $maxWidth = NULL, $maxHeight = NULL, $fallbackImage = '') {
 		$image = '';
 		try {
 			$image = parent::render($src, $width, $height, $minWidth, $minHeight, $maxWidth, $maxHeight);
 		} catch (\Exception $e) {
-
+			if ($fallbackImage !== '') {
+				$image = static::render($fallbackImage, $width, $height, $minWidth, $minHeight, $maxWidth, $maxHeight);
+			}
+			/** @var \TYPO3\CMS\Core\Log\Logger $logger */
+			$logger = $this->objectManager->get('TYPO3\\CMS\\Core\\Log\\LogManager')->getLogger(__CLASS__);
+			$logger->log(\TYPO3\CMS\Core\Log\LogLevel::WARNING, $e->getMessage());
 		}
 		return $image;
 	}
