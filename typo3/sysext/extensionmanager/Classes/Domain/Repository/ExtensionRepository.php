@@ -195,6 +195,22 @@ class ExtensionRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 	}
 
 	/**
+	 * Finds all extensions with category "distribution"
+	 *
+	 * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface
+	 */
+	public function findAllDistributions() {
+		$query = $this->createQuery();
+		$query->matching(
+			$query->logicalAnd(
+				$query->equals('category', \TYPO3\CMS\Extensionmanager\Domain\Model\Extension::DISTRIBUTION_CATEGORY),
+				$query->equals('currentVersion', 1)
+			)
+		);
+		return $query->execute();
+	}
+
+	/**
 	 * Count extensions with a certain key between a given version range
 	 *
 	 * @param string $extensionKey
