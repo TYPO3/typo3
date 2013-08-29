@@ -384,10 +384,11 @@ abstract class AbstractDriver {
 	 * Returns information about a file for a given file object.
 	 *
 	 * @param \TYPO3\CMS\Core\Resource\FileInterface $file
+	 * @param array $properties
 	 * @return array
 	 */
-	public function getFileInfo(\TYPO3\CMS\Core\Resource\FileInterface $file) {
-		return $this->getFileInfoByIdentifier($file->getIdentifier());
+	public function getFileInfo(\TYPO3\CMS\Core\Resource\FileInterface $file, array $properties = array()) {
+		return $this->getFileInfoByIdentifier($file->getIdentifier(), $properties);
 	}
 
 	/**
