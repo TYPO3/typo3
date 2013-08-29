@@ -1,0 +1,30 @@
+{namespace em=TYPO3\CMS\Extensionmanager\ViewHelpers}
+<f:layout name="main" />
+
+<f:section name="docheader-buttons">
+</f:section>
+
+<f:section name="module-headline">
+</f:section>
+
+<f:section name="Content">
+	<div class="em-distribution-welcome">
+		<h1>
+			<f:translate key="distribution.welcome.headline" />
+		</h1>
+		<em:image
+			src="EXT:{distribution.extensionKey}/Resources/Public/Images/DistributionWelcome.png" alt="{distribution.title}"
+			fallbackImage="EXT:extensionmanager/Resources/Public/Images/DistributionWelcome.png"
+		/>
+		<div class="em-distribution-welcome-text">
+			<f:translate key="distribution.welcome.message" /> <strong>{extension.extensionKey}</strong>
+			<h2><f:translate key="distribution.welcome.nextSteps" /></h2>
+			<ul>
+				<li><a href="#" class="distribution-openViewModule" onclick="top.goToModule('web_ViewpageView');"><f:translate key="distribution.welcome.openViewModule" /></a></li>
+				<li><a href="#" class="distribution-openPageModule" onclick="top.goToModule('web_page');">
+					<f:translate key="distribution.welcome.openPageModule" />
+				</a></li>
+			</ul>
+		</div>
+	</div>
+</f:section>

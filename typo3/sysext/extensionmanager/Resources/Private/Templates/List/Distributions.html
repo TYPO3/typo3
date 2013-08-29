@@ -1,0 +1,36 @@
+{namespace em=TYPO3\CMS\Extensionmanager\ViewHelpers}
+
+<f:layout name="main"/>
+
+<f:section name="docheader-buttons">
+</f:section>
+
+<f:section name="module-headline">
+	<h1><f:translate key="distributions">Get Distributions</f:translate></h1>
+</f:section>
+
+<f:section name="Content">
+	<f:flashMessages renderMode="div" />
+	<f:for each="{distributions}" as="distribution">
+		<div class="distribution">
+			<div class="distributionInner">
+				<div class="distributionName"><h2>{distribution.title}</h2></div>
+				<div class="distributionImage">
+					<em:image
+						src="EXT:{distribution.extensionKey}/Resources/Public/Images/Distribution.png" alt="{distribution.title}"
+						fallbackImage="EXT:extensionmanager/Resources/Public/Images/Distribution.png"
+						height="150px"
+						width="220px"
+					/>
+				</div>
+				<div class="distributionKey"><strong><f:translate key="extensionList.distribution.key" /> </strong>{distribution.extensionKey}</div>
+				<div class="distributionDescription expandable">{distribution.description} </div>
+				<div class="distributionInstall">
+					<f:link.action action="installDistribution" controller="Download" arguments="{extension:distribution}">
+						<f:translate key="extensionList.installDistribution">Install Distribution</f:translate>
+					</f:link.action>
+				</div>
+			</div>
+		</div>
+	</f:for>
+</f:section>

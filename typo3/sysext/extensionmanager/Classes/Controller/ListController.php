@@ -77,6 +77,7 @@ class ListController extends \TYPO3\CMS\Extensionmanager\Controller\AbstractCont
 	 * Either all extensions or depending on a search param
 	 *
 	 * @param string $search
+	 * @return void
 	 */
 	public function terAction($search = '') {
 		if (!empty($search)) {
@@ -91,9 +92,20 @@ class ListController extends \TYPO3\CMS\Extensionmanager\Controller\AbstractCont
 	}
 
 	/**
+	 * Action for listing all possible distributions
+	 *
+	 * @return void
+	 */
+	public function distributionsAction() {
+		$distributions = $this->extensionRepository->findAllDistributions();
+		$this->view->assign('distributions', $distributions);
+	}
+
+	/**
 	 * Shows all versions of a specific extension
 	 *
 	 * @param string $extensionKey
+	 * @return void
 	 */
 	public function showAllVersionsAction($extensionKey) {
 		$currentVersion = $this->extensionRepository->findOneByCurrentVersionByExtensionKey($extensionKey);
