@@ -520,6 +520,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 				$sqlResult = $this->handlerInstance[$this->lastHandlerKey]->exec_INSERTquery($table, $fields_values, $no_quote_fields);
 				break;
 		}
+		$this->logQueryInformation();
 		if ($this->printErrors && $this->sql_error()) {
 			debug(array($this->lastQuery, $this->sql_error()));
 		}
@@ -566,6 +567,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 				$res = $this->exec_INSERTquery($table, $fields_values, $no_quote_fields);
 			}
 		}
+		$this->logQueryInformation();
 		foreach ($this->postProcessHookObjects as $hookObject) {
 			$hookObject->exec_INSERTmultipleRows_postProcessAction($table, $fields, $rows, $no_quote_fields, $this);
 		}
@@ -643,6 +645,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 				$sqlResult = $this->handlerInstance[$this->lastHandlerKey]->exec_UPDATEquery($table, $where, $fields_values, $no_quote_fields);
 				break;
 		}
+		$this->logQueryInformation();
 		if ($this->printErrors && $this->sql_error()) {
 			debug(array($this->lastQuery, $this->sql_error()));
 		}
@@ -702,6 +705,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 				$sqlResult = $this->handlerInstance[$this->lastHandlerKey]->exec_DELETEquery($table, $where);
 				break;
 		}
+		$this->logQueryInformation();
 		if ($this->printErrors && $this->sql_error()) {
 			debug(array($this->lastQuery, $this->sql_error()));
 		}
@@ -806,6 +810,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 				}
 				break;
 		}
+		$this->logQueryInformation();
 		if ($this->printErrors && $this->sql_error()) {
 			debug(array($this->lastQuery, $this->sql_error()));
 		}
@@ -861,6 +866,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 				$sqlResult = $this->handlerInstance[$this->lastHandlerKey]->exec_TRUNCATEquery($table);
 				break;
 		}
+		$this->logQueryInformation();
 		if ($this->printErrors && $this->sql_error()) {
 			debug(array($this->lastQuery, $this->sql_error()));
 		}
@@ -1524,6 +1530,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 				}
 				break;
 		}
+		$this->logQueryInformation($query);
 		if ($this->printErrors && $this->sql_error()) {
 			debug(array($this->lastQuery, $this->sql_error()));
 		}
@@ -2439,6 +2446,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 				$sqlResult->TYPO3_DBAL_handlerType = 'userdefined';
 				break;
 		}
+		$this->logQueryInformation($query);
 		$this->lastHandlerKey = '_DEFAULT';
 		if ($this->printErrors && $this->sql_error()) {
 			debug(array($this->lastQuery, $this->sql_error()));
