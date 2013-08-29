@@ -45,7 +45,7 @@ class ServicesListReport implements \TYPO3\CMS\Reports\ReportInterface {
 	 */
 	public function __construct(\TYPO3\CMS\Reports\Controller\ReportController $reportsModule) {
 		$this->reportsModule = $reportsModule;
-		$GLOBALS['LANG']->includeLLFile('EXT:sv/reports/locallang.xlf');
+		$GLOBALS['LANG']->includeLLFile('EXT:sv/Resources/Private/Language/locallang.xlf');
 	}
 
 	/**

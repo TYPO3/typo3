@@ -10,7 +10,7 @@ if (!defined('TYPO3_MODE')) {
 	'subtype' => 'getUserFE,authUserFE,getUserBE,authUserBE',
 	'available' => TRUE,
 	'priority' => 75,
-	// Must be higher than for tx_sv_auth (50) or tx_sv_auth will deny request unconditionally
+	// Must be higher than for \TYPO3\CMS\Sv\AuthenticationService (50) or \TYPO3\CMS\Sv\AuthenticationService will deny request unconditionally
 	'quality' => 50,
 	'os' => '',
 	'exec' => '',

@@ -20,7 +20,7 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/saltedpasswords']['saltMethods'] 
 	'subtype' => 'authUserFE,authUserBE',
 	'available' => TRUE,
 	'priority' => 70,
-	// must be higher than tx_sv_auth (50) and rsaauth (60) but lower than OpenID (75)
+	// must be higher than \TYPO3\CMS\Sv\AuthenticationService (50) and rsaauth (60) but lower than OpenID (75)
 	'quality' => 70,
 	'os' => '',
 	'exec' => '',
