@@ -57,6 +57,23 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		}
 	}
 
+	/**
+	 * Helper method to test for an existing internet connection.
+	 * Some tests are skipped if there is no working uplink.
+	 *
+	 * @return boolean $isConnected
+	 */
+	public function isConnected() {
+		$isConnected = FALSE;
+		// Both port 80 and 443 are checked
+		$connected = @fsockopen("typo3.org", [80 | 443]);
+		if ($connected) {
+			$isConnected = TRUE;
+			fclose($connected);
+		}
+		return $isConnected;
+	}
+
 	///////////////////////////
 	// Tests concerning _GP
 	///////////////////////////
@@ -2565,10 +2582,14 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	///////////////////////////
 	// Tests concerning getUrl
 	///////////////////////////
+
 	/**
 	 * @test
 	 */
 	public function getUrlWithAdditionalRequestHeadersProvidesHttpHeaderOnError() {
+		if (!$this->isConnected()) {
+			$this->markTestSkipped('No internet connection detected');
+		}
 		$url = 'http://typo3.org/i-do-not-exist-' . time();
 		$report = array();
 		Utility\GeneralUtility::getUrl($url, 0, array(), $report);
@@ -2579,6 +2600,9 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function getUrlProvidesWithoutAdditionalRequestHeadersHttpHeaderOnError() {
+		if (!$this->isConnected()) {
+			$this->markTestSkipped('No internet connection detected');
+		}
 		$url = 'http://typo3.org/i-do-not-exist-' . time();
 		$report = array();
 		Utility\GeneralUtility::getUrl($url, 0, FALSE, $report);
