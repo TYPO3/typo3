@@ -302,16 +302,20 @@ class DatabaseConnect extends Action\AbstractAction implements StepInterface {
 			}
 		}
 
-		$databaseConnection->setDatabaseUsername($this->getConfiguredUsername());
+		$databaseUsername = $this->getConfiguredUsername();
+		$databaseConnection->setDatabaseUsername($databaseUsername);
 		$databaseConnection->setDatabasePassword($this->getConfiguredPassword());
 		$databaseConnection->setDatabaseHost($this->getConfiguredHost());
 		$databaseConnection->setDatabasePort($this->getConfiguredPort());
 		$databaseConnection->setDatabaseSocket($this->getConfiguredSocket());
 
 		$result = FALSE;
-		if (@$databaseConnection->sql_pconnect()) {
-			$result = TRUE;
+		if ($databaseUsername !== '') {
+			if (@$databaseConnection->sql_pconnect()) {
+				$result = TRUE;
+			}
 		}
+
 		return $result;
 	}
 
