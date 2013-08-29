@@ -44,6 +44,31 @@ Backend
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
+Frontend
+-------------------------------------------------------------------------------
+
+* The function \TYPO3\CMS\Frontend\ContentObjectRenderer->getTreeList() got some
+  cleanup. If it was used by the API, no difference should be detectable, but
+  even in the Core the usage was not completely correct.
+  So if you want to have the calling pageId included into the resulting string,
+  pass it as negative value. No need to append it manually in the calling function.
+  What has actually changed: The resulting string contained a comma in the end if
+  the calling pageId was passed as a positive value and thus not included in
+  the result. This will not happen anymore.
+
+  Before:
+  getTreeList(42, 4) // get pids for pageId 42, 4 levels deep
+  result: '0, 22, 11, 4,'
+
+  After:
+  getTreeList(42, 4)
+  result: '0, 22, 11, 4'
+
+  No change:
+  getTreeList(-42, 4)
+  result: '0, 22, 11, 4, 42)
+
+-------------------------------------------------------------------------------
 Administration / Customization
 -------------------------------------------------------------------------------
 
