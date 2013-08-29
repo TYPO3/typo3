@@ -217,9 +217,11 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 	 * Returns information about a file.
 	 *
 	 * @param string $fileIdentifier In the case of the LocalDriver, this is the (relative) path to the file.
+	 * @param array $propertiesToExtract Array of properties which should be extracted, if empty all will be extracted
 	 * @return array
+	 * @throws \InvalidArgumentException
 	 */
-	public function getFileInfoByIdentifier($fileIdentifier) {
+	public function getFileInfoByIdentifier($fileIdentifier, array $propertiesToExtract = array()) {
 		// Makes sure the Path given as parameter is valid
 		$fileIdentifier = $this->canonicalizeAndCheckFilePath($fileIdentifier);
 		$dirPath = PathUtility::dirname($fileIdentifier);
@@ -234,7 +236,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 		if (!file_exists($absoluteFilePath)) {
 			throw new \InvalidArgumentException('File ' . $fileIdentifier . ' does not exist.', 1314516809);
 		}
-		return $this->extractFileInformation($absoluteFilePath, $dirPath);
+		return $this->extractFileInformation($absoluteFilePath, $dirPath, $propertiesToExtract);
 	}
 
 
@@ -463,21 +465,51 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 	 *
 	 * @param string $filePath The absolute path to the file
 	 * @param string $containerPath The relative path to the file's container
+	 * @param array $propertiesToExtract array of properties which should be returned, if empty all will be extracted
 	 * @return array
 	 */
-	protected function extractFileInformation($filePath, $containerPath) {
-		$fileName = PathUtility::basename($filePath);
-		$fileInformation = array(
-			'size' => filesize($filePath),
-			'atime' => fileatime($filePath),
-			'mtime' => filemtime($filePath),
-			'ctime' => filectime($filePath),
-			'mimetype' => $this->getMimeTypeOfFile($filePath),
-			'name' => $fileName,
-			'identifier' => $containerPath . $fileName,
-			'storage' => $this->storage->getUid()
-		);
+	protected function extractFileInformation($filePath, $containerPath, array $propertiesToExtract = array()) {
+		if (count($propertiesToExtract) === 0) {
+			$propertiesToExtract = array('size', 'atime', 'atime', 'mtime', 'ctime', 'mimetype', 'name', 'identifier', 'storage');
+		}
+		$fileInformation = array();
+		foreach ($propertiesToExtract as $property) {
+			$fileInformation[$property] = $this->getSpecificFileInformation($filePath, $containerPath, $property);
+		}
 		return $fileInformation;
+	}
+
+	/**
+	 * Extracts a specific FileInformation from the FileSystems.
+	 *
+	 * @param string $filePath
+	 * @param string $containerPath
+	 * @param string $property
+	 *
+	 * @return bool|int|string
+	 * @throws \InvalidArgumentException
+	 */
+	public function getSpecificFileInformation($filePath, $containerPath, $property) {
+		switch ($property) {
+			case 'size':
+				return filesize($filePath);
+			case 'atime':
+				return fileatime($filePath);
+			case 'mtime':
+				return filemtime($filePath);
+			case 'ctime':
+				return filectime($filePath);
+			case 'name':
+				return PathUtility::basename($filePath);
+			case 'mimetype':
+				return $this->getMimeTypeOfFile($filePath);
+			case 'identifier':
+				return $containerPath . PathUtility::basename($filePath);
+			case 'storage':
+				return $this->storage->getUid();
+			default:
+				throw new \InvalidArgumentException(sprintf('The information "%s" is not available.', $property));
+		}
 	}
 
 	/**
@@ -526,32 +558,6 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 			throw new \RuntimeException('Type "' . gettype($file) . '" is not supported.', 1325191178);
 		}
 		return $path;
-	}
-
-	/**
-	 * Returns metadata of a file (size, times, mimetype)
-	 *
-	 * @param \TYPO3\CMS\Core\Resource\FileInterface $file
-	 * @return array
-	 */
-	public function getLowLevelFileInfo(\TYPO3\CMS\Core\Resource\FileInterface $file) {
-		// TODO define which data should be returned
-		// TODO write unit test
-		// TODO cache this info. Registry?
-		// TODO merge with extractFolderInformation() above?!
-		$filePath = $this->getAbsolutePath($file);
-		$fileStat = stat($filePath);
-		$mimeType = $this->getMimeTypeOfFile($filePath);
-		$stat = array(
-			'size' => filesize($filePath),
-			'atime' => $fileStat['atime'],
-			'mtime' => $fileStat['mtime'],
-			'ctime' => $fileStat['ctime'],
-			'nlink' => $fileStat['nlink'],
-			'type' => $mimeType,
-			'mimetype' => $mimeType
-		);
-		return $stat;
 	}
 
 	/**

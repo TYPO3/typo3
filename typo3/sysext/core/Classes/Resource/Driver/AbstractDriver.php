@@ -376,9 +376,10 @@ abstract class AbstractDriver {
 	 * Returns information about a file for a given file identifier.
 	 *
 	 * @param string $identifier The (relative) path to the file.
+	 * @param array $propertiesToExtract Array of properties which should be extracted, if empty all will be extracted
 	 * @return array
 	 */
-	abstract public function getFileInfoByIdentifier($identifier);
+	abstract public function getFileInfoByIdentifier($identifier, array $propertiesToExtract = array());
 
 	/**
 	 * Basic implementation of the method that does directly return the
@@ -396,16 +397,18 @@ abstract class AbstractDriver {
 	 * Returns information about a file for a given file object.
 	 *
 	 * @param \TYPO3\CMS\Core\Resource\FileInterface $file
+	 * @param array $propertiesToExtract Array of properties which should be extracted, if empty all will be extracted
 	 * @return array
 	 */
-	public function getFileInfo(\TYPO3\CMS\Core\Resource\FileInterface $file) {
-		return $this->getFileInfoByIdentifier($file->getIdentifier());
+	public function getFileInfo(\TYPO3\CMS\Core\Resource\FileInterface $file, array $propertiesToExtract = array()) {
+		return $this->getFileInfoByIdentifier($file->getIdentifier(), $propertiesToExtract);
 	}
 
 	/**
 	 * Returns a file object by its identifier.
 	 *
 	 * @param string $identifier
+	 * @throws \TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException
 	 * @return \TYPO3\CMS\Core\Resource\FileInterface
 	 */
 	public function getFile($identifier) {
@@ -459,6 +462,7 @@ abstract class AbstractDriver {
 	 * @param string $itemIdentifier
 	 * @param string $parentIdentifier
 	 * @param array $additionalInformation Additional information about the inspected item
+	 * @throws \RuntimeException
 	 * @return boolean
 	 */
 	protected function applyFilterMethodsToDirectoryItem(array $filterMethods, $itemName, $itemIdentifier, $parentIdentifier, array $additionalInformation = array()) {
