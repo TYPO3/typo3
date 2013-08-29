@@ -1,0 +1,26 @@
+<f:layout name="ToolAuthenticated" />
+
+<f:section name="Content">
+	<h3>Load extension configuration</h3>
+
+	<f:for each="{actionMessages}" as="statusMessage">
+		<f:render partial="Action/Common/StatusMessage" arguments="{message: statusMessage}" />
+	</f:for>
+
+	<p>
+		The system detected a fatal error during script execution and redirected to this module.
+		Your loaded extensions are now checked for possible problems. After incompatible extensions
+		are unloaded, you can restart the initial action to proceed your request.
+	</p>
+
+	<hr />
+	<f:render partial="Action/Tool/ImportantActions/ExtensionCompatibilityTester" arguments="{_all}"/>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('button', '#checkExtensions').hide();
+			$('.typo3-message', '#checkExtensions').hide();
+			$('.message-loading', '#checkExtensions').show();
+			checkExtensionsCompatibility(true);
+		});
+	</script>
+</f:section>
