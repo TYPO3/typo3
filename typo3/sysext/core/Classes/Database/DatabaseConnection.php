@@ -82,9 +82,15 @@ class DatabaseConnection {
 	 */
 	public $debug_lastBuiltQuery = '';
 
-	// Set "TRUE" if you want the last built query to be stored in $debug_lastBuiltQuery independent of $this->debugOutput
 	/**
-	 * @todo Define visibility
+	 * Internally: Set to last built query (not necessarily executed...)
+	 */
+	public $lastBuiltQuery = '';
+
+	/**
+	 * Set "TRUE" if you want the last built query to be stored in $debug_lastBuiltQuery independent of $this->debugOutput
+ 	 *
+	 * @deprecated
 	 */
 	public $store_lastBuiltQuery = FALSE;
 
@@ -167,6 +173,18 @@ class DatabaseConnection {
 	 */
 	protected $postProcessHookObjects = array();
 
+	/**
+	 * @var \TYPO3\CMS\Core\Log\Logger
+	 */
+	protected $logger;
+
+	/**
+	 * Constructor
+	 */
+	public function __construct() {
+		$this->logger = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Core\Log\LogManager')->getLogger(__CLASS__);
+	}
+
 	/************************************
 	 *
 	 * Query execution
@@ -194,6 +212,7 @@ class DatabaseConnection {
 			$this->connectDB();
 		}
 		$res = $this->link->query($this->INSERTquery($table, $fields_values, $no_quote_fields));
+		$this->logQueryInformation();
 		if ($this->debugOutput) {
 			$this->debug('exec_INSERTquery');
 		}
@@ -218,6 +237,7 @@ class DatabaseConnection {
 			$this->connectDB();
 		}
 		$res = $this->link->query($this->INSERTmultipleRows($table, $fields, $rows, $no_quote_fields));
+		$this->logQueryInformation();
 		if ($this->debugOutput) {
 			$this->debug('exec_INSERTmultipleRows');
 		}
@@ -243,6 +263,7 @@ class DatabaseConnection {
 			$this->connectDB();
 		}
 		$res = $this->link->query($this->UPDATEquery($table, $where, $fields_values, $no_quote_fields));
+		$this->logQueryInformation();
 		if ($this->debugOutput) {
 			$this->debug('exec_UPDATEquery');
 		}
@@ -265,6 +286,7 @@ class DatabaseConnection {
 			$this->connectDB();
 		}
 		$res = $this->link->query($this->DELETEquery($table, $where));
+		$this->logQueryInformation();
 		if ($this->debugOutput) {
 			$this->debug('exec_DELETEquery');
 		}
@@ -293,6 +315,7 @@ class DatabaseConnection {
 		}
 		$query = $this->SELECTquery($select_fields, $from_table, $where_clause, $groupBy, $orderBy, $limit);
 		$res = $this->link->query($query);
+		$this->logQueryInformation();
 		if ($this->debugOutput) {
 			$this->debug('exec_SELECTquery');
 		}
@@ -443,6 +466,7 @@ class DatabaseConnection {
 			$this->connectDB();
 		}
 		$res = $this->link->query($this->TRUNCATEquery($table));
+		$this->logQueryInformation();
 		if ($this->debugOutput) {
 			$this->debug('exec_TRUNCATEquery');
 		}
@@ -477,10 +501,13 @@ class DatabaseConnection {
 			$fields_values = $this->fullQuoteArray($fields_values, $table, $no_quote_fields);
 			// Build query
 			$query = 'INSERT INTO ' . $table . ' (' . implode(',', array_keys($fields_values)) . ') VALUES ' . '(' . implode(',', $fields_values) . ')';
-			// Return query
+
+			// store query for logging and debugging
+			$this->lastBuiltQuery = $query;
 			if ($this->debugOutput || $this->store_lastBuiltQuery) {
 				$this->debug_lastBuiltQuery = $query;
 			}
+			// Return query
 			return $query;
 		}
 	}
@@ -511,10 +538,13 @@ class DatabaseConnection {
 				$rowSQL[] = '(' . implode(', ', $row) . ')';
 			}
 			$query .= implode(', ', $rowSQL);
-			// Return query
+
+			// store query for logging and debugging
+			$this->lastBuiltQuery = $query;
 			if ($this->debugOutput || $this->store_lastBuiltQuery) {
 				$this->debug_lastBuiltQuery = $query;
 			}
+			// Return query
 			return $query;
 		}
 	}
@@ -548,6 +578,9 @@ class DatabaseConnection {
 			}
 			// Build query
 			$query = 'UPDATE ' . $table . ' SET ' . implode(',', $fields) . (strlen($where) > 0 ? ' WHERE ' . $where : '');
+
+			// store query for logging and debugging
+			$this->lastBuiltQuery = $query;
 			if ($this->debugOutput || $this->store_lastBuiltQuery) {
 				$this->debug_lastBuiltQuery = $query;
 			}
@@ -573,6 +606,9 @@ class DatabaseConnection {
 			}
 			// Table and fieldnames should be "SQL-injection-safe" when supplied to this function
 			$query = 'DELETE FROM ' . $table . (strlen($where) > 0 ? ' WHERE ' . $where : '');
+
+			// store query for logging and debugging
+			$this->lastBuiltQuery = $query;
 			if ($this->debugOutput || $this->store_lastBuiltQuery) {
 				$this->debug_lastBuiltQuery = $query;
 			}
@@ -607,10 +643,14 @@ class DatabaseConnection {
 		$query .= strlen($orderBy) > 0 ? ' ORDER BY ' . $orderBy : '';
 		// Group by
 		$query .= strlen($limit) > 0 ? ' LIMIT ' . $limit : '';
-		// Return query
+
+		// store query for logging and debugging
+		$this->lastBuiltQuery = $query;
+		// @deprecated code
 		if ($this->debugOutput || $this->store_lastBuiltQuery) {
 			$this->debug_lastBuiltQuery = $query;
 		}
+		// Return query
 		return $query;
 	}
 
@@ -627,10 +667,14 @@ class DatabaseConnection {
 		// Table and fieldnames should be "SQL-injection-safe" when supplied to this function
 		// Build basic query:
 		$query = 'SELECT ' . $select_fields . ' FROM ' . $from_table . (strlen($where_clause) > 0 ? ' WHERE ' . $where_clause : '');
-		// Return query
+
+		// store query for logging and debugging
+		$this->lastBuiltQuery = $query;
+		// @deprecated code
 		if ($this->debugOutput || $this->store_lastBuiltQuery) {
 			$this->debug_lastBuiltQuery = $query;
 		}
+		// Return query
 		return $query;
 	}
 
@@ -648,10 +692,13 @@ class DatabaseConnection {
 		// Table should be "SQL-injection-safe" when supplied to this function
 		// Build basic query:
 		$query = 'TRUNCATE TABLE ' . $table;
-		// Return query:
+		// store query for logging and debugging
+		$this->lastBuiltQuery = $query;
+		// @deprecated code
 		if ($this->debugOutput || $this->store_lastBuiltQuery) {
 			$this->debug_lastBuiltQuery = $query;
 		}
+		// Return query:
 		return $query;
 	}
 
@@ -761,6 +808,7 @@ class DatabaseConnection {
 			$this->connectDB();
 		}
 		$res = $this->link->query($query);
+		$this->logQueryInformation($query);
 		if ($this->debugOutput) {
 			$this->debug('stmt_execute', $query);
 		}
@@ -983,6 +1031,7 @@ class DatabaseConnection {
 			$this->connectDB();
 		}
 		$res = $this->link->query($query);
+		$this->logQueryInformation($query);
 		if ($this->debugOutput) {
 			$this->debug('sql_query', $query);
 		}
@@ -1722,6 +1771,32 @@ class DatabaseConnection {
 			\TYPO3\CMS\Core\Utility\GeneralUtility::devLog($msg . '.', 'Core/t3lib_db', 3, $debugLogData);
 		}
 		return FALSE;
+	}
+
+	/**
+	 * Logs the last build or given query and query errors to the logging framework
+	 */
+	protected function logQueryInformation($query = '') {
+		if ($query === '') {
+			$query = $this->lastBuiltQuery;
+		}
+
+		// log excecuted query and backtrace to debug
+		$this->logger->debug(
+			'SQL query executed',
+			array('Query' => $query, 'Backtrace' => \TYPO3\CMS\Core\Utility\DebugUtility::debugTrail())
+		);
+
+		// check for mysql errors and log them
+		if ($this->sql_errno()) {
+			$errorDetails = array(
+				'ErrorMessage' => $this->sql_error(),
+				'ErrorNumber' => $this->sql_errno(),
+				'Query' => $query,
+				'Backtrace' => \TYPO3\CMS\Core\Utility\DebugUtility::debugTrail()
+			);
+			$this->logger->error('Invalid database result detected', $errorDetails);
+		}
 	}
 
 	/**
