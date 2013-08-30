@@ -570,7 +570,7 @@ class AbstractPlugin {
 				if ($this->internal['showRange']) {
 					$pageText = ($a * $results_at_a_time + 1) . '-' . min($count, ($a + 1) * $results_at_a_time);
 				} else {
-					$pageText = trim($this->pi_getLL('pi_list_browseresults_page', 'Page', $hscText) . ' ' . ($a + 1));
+					$pageText = trim($this->pi_getLL('pi_list_browseresults_page', '', $hscText) . ' ' . ($a + 1));
 				}
 				// Current page
 				if ($pointer == $a) {
