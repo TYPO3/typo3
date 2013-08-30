@@ -23,12 +23,7 @@
  ***************************************************************/
 $LANG->includeLLFile('EXT:taskcenter/task/locallang.xlf');
 $BE_USER->modAccess($MCONF, 1);
-/*
- * @deprecated since 6.0, the classname SC_mod_user_task_index and this file is obsolete
- * and will be removed with 6.2. The class was renamed and is now located at:
- * typo3/sysext/taskcenter/Classes/Controller/TaskModuleController.php
- */
-require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('taskcenter') . 'Classes/Controller/TaskModuleController.php';
+
 // Make instance:
 $SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Taskcenter\\Controller\\TaskModuleController');
 // Include files?
