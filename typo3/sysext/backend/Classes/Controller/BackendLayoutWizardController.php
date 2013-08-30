@@ -176,7 +176,7 @@ class BackendLayoutWizardController {
 		$content .= '<a href="#" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.closeDoc', TRUE) . '" onclick="window.close();return true;">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-close') . '</a>';
 		$content .= $this->doc->spacer(10);
 		$content .= '
-		<table border="0" width="100%" height="100%" id="outer_container">
+		<table border="0" width="90%" height="90%" id="outer_container">
 			<tr>
 				<td class="editor_cell">
 					<div id="editor">
