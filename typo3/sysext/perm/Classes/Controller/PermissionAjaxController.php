@@ -52,6 +52,7 @@ class PermissionAjaxController {
 	 * The constructor of this class
 	 */
 	public function __construct() {
+		$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_mod_web_perm.xlf');
 		// Configuration, variable assignment
 		$this->conf['page'] = \TYPO3\CMS\Core\Utility\GeneralUtility::_POST('page');
 		$this->conf['who'] = \TYPO3\CMS\Core\Utility\GeneralUtility::_POST('who');
