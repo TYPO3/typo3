@@ -123,6 +123,7 @@ class SilentConfigurationUpgradeService {
 		$this->disableImageMagickAndGdlibIfImageProcessingIsDisabled();
 		$this->disableImageMagickDetailSettingsIfImageMagickIsDisabled();
 		$this->setImageMagickDetailSettings();
+		$this->addFileTableToDefaultCategorizedTablesIfAlreadyCustomized();
 		$this->removeObsoleteLocalConfigurationSettings();
 	}
 
@@ -400,6 +401,32 @@ class SilentConfigurationUpgradeService {
 		}
 		if (count($changedValues) > 0) {
 			$this->configurationManager->setLocalConfigurationValuesByPathValuePairs($changedValues);
+			$this->throwRedirectException();
+		}
+	}
+
+	/**
+	 * Make sure file table is categorized as of TYPO3 6.2. To enable DAM Migration
+	 * sys_file table is included in DefaultConfiguration.
+	 * If the setting already has been modified but does not contain sys_file: add it
+	 *
+	 * @return void
+	 */
+	protected function addFileTableToDefaultCategorizedTablesIfAlreadyCustomized() {
+		/** @var \TYPO3\CMS\Core\Configuration\ConfigurationManager $configurationManager */
+		$configurationManager = $this->objectManager->get('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager');
+
+		$default = $configurationManager->getDefaultConfigurationValueByPath('SYS/defaultCategorizedTables');
+		try {
+			$actual = $configurationManager->getLocalConfigurationValueByPath('SYS/defaultCategorizedTables');
+		} catch(\RuntimeException $e) {
+			$actual = '';
+		}
+
+		$tables =  GeneralUtility::trimExplode(',', $actual);
+		if ($actual !== '' && $actual !== $default && !in_array('sys_file', $tables)) {
+			$tables[] = 'sys_file';
+			$configurationManager->setLocalConfigurationValueByPath('SYS/defaultCategorizedTables', implode(',', $tables));
 			$this->throwRedirectException();
 		}
 	}
