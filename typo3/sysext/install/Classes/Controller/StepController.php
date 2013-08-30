@@ -104,6 +104,7 @@ class StepController extends AbstractController {
 		$this->outputInstallToolPasswordNotSetMessageIfNeeded();
 		$this->executeOrOutputFirstInstallStepIfNeeded();
 		$this->removeObsoleteLocalConfigurationSettings();
+		$this->addFileTableToDefaultCategorizedTablesIfAlreadyCustomized();
 		$this->generateEncryptionKeyIfNeeded();
 		$this->configureBackendLoginSecurity();
 		$this->configureSaltedpasswords();
@@ -319,6 +320,28 @@ class StepController extends AbstractController {
 		$removed = $configurationManager->removeLocalConfigurationKeysByPath($this->obsoleteLocalConfigurationSettings);
 		// If something was changed: Trigger a reload to have new values in next request
 		if ($removed) {
+			$this->redirect();
+		}
+	}
+
+	/**
+	 * Make sure file table is categorized as of TYPO3 6.2 to enable DAM Migration
+	 * sys_file table is included in DefaultConfiguration.
+	 * If the setting already has been modified but does not contain sys_file: add it
+	 */
+	protected function addFileTableToDefaultCategorizedTablesIfAlreadyCustomized() {
+		/** @var \TYPO3\CMS\Core\Configuration\ConfigurationManager $configurationManager */
+		$configurationManager = $this->objectManager->get('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager');
+
+		$default = $configurationManager->getDefaultConfigurationValueByPath('SYS.defaultCategorizedTables');
+		$actual = $configurationManager->getLocalConfigurationValueByPath('SYS.defaultCategorizedTables');
+
+		$tables =  GeneralUtility::trimExplode(',', $actual);
+		if ($actual !== $default && !in_array('sys_file', $tables)) {
+			$tables[] = 'sys_file';
+			$configurationManager->setLocalConfigurationValueByPath('SYS.defaultCategorizedTables', implode(',', $tables));
+
+			// If something was changed: Trigger a reload to have new values in next request
 			$this->redirect();
 		}
 	}
