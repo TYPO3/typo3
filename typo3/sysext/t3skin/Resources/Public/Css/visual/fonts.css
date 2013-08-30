@@ -32,3 +32,14 @@
     font-weight: normal;
     font-style: normal;
 }
+
+@font-face {
+    font-family: 'Share';
+    src: url('../../Fonts/share-bolditalic-webfont.eot');
+    src: url('../../Fonts/share-bolditalic-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../../Fonts/share-bolditalic-webfont.woff') format('woff'),
+         url('../../Fonts/share-bolditalic-webfont.ttf') format('truetype'),
+         url('../../Fonts/share-bolditalic-webfont.svg#Share-BoldItalicRegular') format('svg');
+    font-weight: bold;
+    font-style: italic;
+}
