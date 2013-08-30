@@ -47,6 +47,7 @@ class ActionToolbarMenu implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookInt
 	 * Constructor
 	 */
 	public function __construct(\TYPO3\CMS\Backend\Controller\BackendController &$backendReference = NULL) {
+		$GLOBALS['LANG']->includeLLFile('EXT:sys_action/locallang.xlf');
 		$this->backendReference = $backendReference;
 	}
 
