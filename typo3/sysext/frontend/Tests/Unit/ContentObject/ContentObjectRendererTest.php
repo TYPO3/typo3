@@ -89,10 +89,19 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function getImgResourceHookGetsCalled() {
-		$this->template->expects($this->atLeastOnce())->method('getFileName')->with('typo3/clear.gif')->will($this->returnValue('typo3/clear.gif'));
+		$this->template
+			->expects($this->atLeastOnce())
+			->method('getFileName')
+			->with('typo3/clear.gif')
+			->will($this->returnValue('typo3/clear.gif'));
+		// Reset some global variable to not trigger unrelated method code parts
+		$GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'] = '';
 		$className = uniqid('tx_coretest');
 		$getImgResourceHookMock = $this->getMock('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectGetImageResourceHookInterface', array('getImgResourcePostProcess'), array(), $className);
-		$getImgResourceHookMock->expects($this->once())->method('getImgResourcePostProcess')->will($this->returnCallback(array($this, 'isGetImgResourceHookCalledCallback')));
+		$getImgResourceHookMock
+			->expects($this->once())
+			->method('getImgResourcePostProcess')
+			->will($this->returnCallback(array($this, 'isGetImgResourceHookCalledCallback')));
 		$getImgResourceHookObjects = array($getImgResourceHookMock);
 		$this->cObj->_setRef('getImgResourceHookObjects', $getImgResourceHookObjects);
 		$this->cObj->IMAGE(array('file' => 'typo3/clear.gif'));
