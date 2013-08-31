@@ -902,7 +902,7 @@ class InlineElement {
 		}
 		// Create the link:
 		$icon = $icon ? IconUtility::getSpriteIcon($icon, array('title' => htmlspecialchars($title . $titleAddon))) : '';
-		$link = $this->wrapWithAnchor($icon . $title . $titleAddon, '#', $attributes);
+		$link = $this->wrapWithAnchor($icon . $title . ':' . $titleAddon, '#', $attributes);
 		return '<div' . ($className ? ' class="' . $className . '"' : '') . '>' . $link . '</div>';
 	}
 
