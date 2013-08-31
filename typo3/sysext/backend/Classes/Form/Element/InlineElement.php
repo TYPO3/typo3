@@ -883,7 +883,7 @@ class InlineElement {
 					$attributes['style'] = $conf['inline']['inlineNewButtonStyle'];
 				}
 				if (isset($conf['appearance']['newRecordLinkAddTitle']) && $conf['appearance']['newRecordLinkAddTitle']) {
-					$titleAddon = ' ' . $GLOBALS['LANG']->sL($GLOBALS['TCA'][$conf['foreign_table']]['ctrl']['title'], TRUE);
+					$titleAddon = ': ' . $GLOBALS['LANG']->sL($GLOBALS['TCA'][$conf['foreign_table']]['ctrl']['title'], TRUE);
 				}
 				break;
 			case 'localize':
