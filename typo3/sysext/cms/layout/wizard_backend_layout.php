@@ -229,7 +229,7 @@ class SC_wizard_backend_layout {
 		$content .= $this->doc->spacer(10);
 
 		$content .= '
-		<table border="0" width="100%" height="100%" id="outer_container">
+		<table border="0" width="90%" height="90%" id="outer_container">
 			<tr>
 				<td class="editor_cell">
 					<div id="editor">
