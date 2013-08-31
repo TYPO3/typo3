@@ -6622,11 +6622,11 @@ class ContentObjectRenderer {
 		} elseif ($absSeconds < 24 * 3600) {
 			$val = round($absSeconds / 3600);
 			$seconds = $sign * $val . ($val == 1 ? $labelArr[5] : $labelArr[1]);
-		} elseif ($absSeconds < 365 * 24 * 3600) {
+		} elseif ($absSeconds < 365.2425 * 24 * 3600) {
 			$val = round($absSeconds / (24 * 3600));
 			$seconds = $sign * $val . ($val == 1 ? $labelArr[6] : $labelArr[2]);
 		} else {
-			$val = round($absSeconds / (365 * 24 * 3600));
+			$val = round($absSeconds / (365.2425 * 24 * 3600));
 			$seconds = $sign * $val . ($val == 1 ? $labelArr[7] : $labelArr[3]);
 		}
 		return $seconds;
