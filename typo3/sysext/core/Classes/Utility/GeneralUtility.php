@@ -2340,6 +2340,9 @@ class GeneralUtility {
 			// (Proxy support implemented by Arco <arco@appeltaart.mine.nu>)
 			if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyServer']) {
 				curl_setopt($ch, CURLOPT_PROXY, $GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyServer']);
+				if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyNTLM']) {
+					curl_setopt($ch, CURLOPT_PROXYAUTH, CURLAUTH_NTLM);
+				}
 				if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyTunnel']) {
 					curl_setopt($ch, CURLOPT_HTTPPROXYTUNNEL, $GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyTunnel']);
 				}
