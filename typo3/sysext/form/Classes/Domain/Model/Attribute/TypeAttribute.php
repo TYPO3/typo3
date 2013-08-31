@@ -44,7 +44,20 @@ class TypeAttribute extends \TYPO3\CMS\Form\Domain\Model\Attribute\AbstractAttri
 		'file',
 		'hidden',
 		'image',
-		'button'
+		'button',
+		'email',
+		'url',
+		'tel',
+		'search',
+		'number',
+		'range',
+		'date',
+		'month',
+		'week',
+		'time',
+		'datetime',
+		'datetime-local',
+		'color'
 	);
 
 	/**
