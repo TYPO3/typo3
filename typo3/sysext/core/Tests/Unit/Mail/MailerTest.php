@@ -113,6 +113,35 @@ class MailerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->fixture->__construct();
 	}
 
+	/**
+	 * @test
+	 */
+	public function noPortSettingSetsPortTo25() {
+		$this->fixture->injectMailSettings(array('transport' => 'smtp', 'transport_smtp_server' => 'localhost'));
+		$this->fixture->__construct();
+		$port = $this->fixture->getTransport()->getPort();
+		$this->assertEquals(25, $port);
+	}
+
+	/**
+	 * @test
+	 */
+	public function emptyPortSettingSetsPortTo25() {
+		$this->fixture->injectMailSettings(array('transport' => 'smtp', 'transport_smtp_server' => 'localhost:'));
+		$this->fixture->__construct();
+		$port = $this->fixture->getTransport()->getPort();
+		$this->assertEquals(25, $port);
+	}
+
+	/**
+	 * @test
+	 */
+	public function givenPortSettingIsRespected() {
+		$this->fixture->injectMailSettings(array('transport' => 'smtp', 'transport_smtp_server' => 'localhost:12345'));
+		$this->fixture->__construct();
+		$port = $this->fixture->getTransport()->getPort();
+		$this->assertEquals(12345, $port);
+	}
 }
 
 ?>
