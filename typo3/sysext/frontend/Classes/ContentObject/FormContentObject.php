@@ -233,7 +233,20 @@ class FormContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractConten
 						$fieldCode = sprintf('<textarea name="%s"%s cols="%s" rows="%s"%s%s>%s</textarea>', $confData['fieldname'], $elementIdAttribute, $cols, $rows, $wrap, $addParams, GeneralUtility::formatForTextarea($default));
 						break;
 					case 'input':
-
+					case 'email':
+					case 'url':
+					case 'tel':
+					case 'search':
+					case 'number':
+					case 'range':
+					case 'date':
+					case 'month':
+					case 'week':
+					case 'time':
+					case 'datetime':
+					case 'datetime-local':
+					case 'color':
+					
 					case 'password':
 						$size = trim($fParts[1]) ? intval($fParts[1]) : 20;
 						$compensateFieldWidth = isset($conf['compensateFieldWidth.']) ? $this->cObj->stdWrap($conf['compensateFieldWidth'], $conf['compensateFieldWidth.']) : $conf['compensateFieldWidth'];
@@ -246,7 +259,11 @@ class FormContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractConten
 							$default = '';
 						}
 						$max = trim($fParts[2]) ? ' maxlength="' . \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($fParts[2], 1, 1000) . '"' : '';
-						$theType = $confData['type'] == 'input' ? 'text' : 'password';
+						if($confData['type'] == 'input') {
+							$theType = 'text';
+						} else {
+							$theType = $confData['type'];
+						}						
 						$fieldCode = sprintf('<input type="%s" name="%s"%s size="%s"%s value="%s"%s />', $theType, $confData['fieldname'], $elementIdAttribute, $size, $max, htmlspecialchars($default), $addParams);
 						break;
 					case 'file':
