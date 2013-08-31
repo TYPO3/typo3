@@ -97,7 +97,7 @@ class Mailer extends \Swift_Mailer {
 				if ($host === '') {
 					throw new \TYPO3\CMS\Core\Exception('$TYPO3_CONF_VARS[\'MAIL\'][\'transport_smtp_server\'] needs to be set when transport is set to "smtp"', 1291068606);
 				}
-				if ($port === '') {
+				if ($port == null || $port === '') {
 					$port = '25';
 				}
 				$useEncryption = $this->mailSettings['transport_smtp_encrypt'] ? $this->mailSettings['transport_smtp_encrypt'] : NULL;
