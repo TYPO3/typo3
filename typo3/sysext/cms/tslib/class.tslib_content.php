@@ -6740,7 +6740,7 @@ class tslib_cObj {
 			// Sends order emails:
 		$headers = array();
 		if ($email_from) {
-			$headers[] = 'From: ' . $email_fromName . ' <' . $email_from . '>';
+			$headers[] = 'From: "' . $email_fromName . '" <' . $email_from . '>';
 		}
 		if ($replyTo) {
 			$headers[] = 'Reply-To: ' . $replyTo;
