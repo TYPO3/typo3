@@ -96,7 +96,7 @@ class t3lib_mail_Mailer extends Swift_Mailer {
 						1291068606
 					);
 				}
-				if ($port === '') {
+				if ($port === NULL || $port === '') {
 					$port = '25';
 				}
 				$useEncryption = ($mailSettings['transport_smtp_encrypt'] ? $mailSettings['transport_smtp_encrypt'] : NULL);
