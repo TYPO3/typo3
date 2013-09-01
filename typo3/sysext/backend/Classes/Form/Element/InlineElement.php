@@ -513,15 +513,35 @@ class InlineElement {
 		$isOnSymmetricSide = RelationHandler::isOnSymmetricSide($parentUid, $config, $rec);
 		$hasForeignLabel = !$isOnSymmetricSide && $config['foreign_label'] ? TRUE : FALSE;
 		$hasSymmetricLabel = $isOnSymmetricSide && $config['symmetric_label'] ? TRUE : FALSE;
+
 		// Get the record title/label for a record:
-		// render using a self-defined user function
-		if ($GLOBALS['TCA'][$foreign_table]['ctrl']['label_userFunc']) {
+		// Try using a self-defined user function only for formatted labels
+		if (isset($GLOBALS['TCA'][$foreign_table]['ctrl']['formattedLabel_userFunc'])) {
 			$params = array(
 				'table' => $foreign_table,
 				'row' => $rec,
 				'title' => '',
 				'isOnSymmetricSide' => $isOnSymmetricSide,
-				'options' => isset($GLOBALS['TCA'][$foreign_table]['ctrl']['label_userFunc_options']) ? $GLOBALS['TCA'][$foreign_table]['ctrl']['label_userFunc_options'] : array(),
+				'options' => isset($GLOBALS['TCA'][$foreign_table]['ctrl']['formattedLabel_userFunc_options'])
+					? $GLOBALS['TCA'][$foreign_table]['ctrl']['formattedLabel_userFunc_options']
+					: array(),
+				'parent' => array(
+					'uid' => $parentUid,
+					'config' => $config
+				)
+			);
+			// callUserFunction requires a third parameter, but we don't want to give $this as reference!
+			$null = NULL;
+			GeneralUtility::callUserFunction($GLOBALS['TCA'][$foreign_table]['ctrl']['formattedLabel_userFunc'], $params, $null);
+			$recTitle = $params['title'];
+
+		// Try using a normal self-defined user function
+		} elseif (isset($GLOBALS['TCA'][$foreign_table]['ctrl']['label_userFunc'])) {
+			$params = array(
+				'table' => $foreign_table,
+				'row' => $rec,
+				'title' => '',
+				'isOnSymmetricSide' => $isOnSymmetricSide,
 				'parent' => array(
 					'uid' => $parentUid,
 					'config' => $config
