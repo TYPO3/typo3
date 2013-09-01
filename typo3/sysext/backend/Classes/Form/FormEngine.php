@@ -42,7 +42,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @coauthor René Fritz <r.fritz@colorcube.de>
  */
-class 	FormEngine {
+class FormEngine {
 
 	// variables not commented yet.... (do so...)
 	/**
@@ -1132,20 +1132,20 @@ class 	FormEngine {
 
 					if (isset($PA['fieldConf']['config']['mode']) && $PA['fieldConf']['config']['mode'] == 'useOrOverridePlaceholder') {
 						$placeholder = $this->getPlaceholderValue($table, $field, $PA['fieldConf']['config'], $row);
-						$onChange = htmlspecialchars(
-							'typo3form.fieldTogglePlaceholder(\'' . $PA['itemFormElName'] . '\', !this.checked)'
-						);
+						$onChange = 'typo3form.fieldTogglePlaceholder(' . GeneralUtility::quoteJSvalue($PA['itemFormElName']) . ', !this.checked)';
+
 
 						$isNull = ($PA['itemFormElValue'] === NULL);
 						$checked = (($isNull || $this->isNewRecord($table, $row)) ? '' : ' checked="checked"');
 
-						$this->additionalJS_post[] = 'typo3form.fieldTogglePlaceholder(\''
-							. $PA['itemFormElName'] . '\', ' . ($checked ? 'false' : 'true') . ');';
+						$this->additionalJS_post[] = 'typo3form.fieldTogglePlaceholder('
+							. GeneralUtility::quoteJSvalue($PA['itemFormElName']) . ', ' . ($checked ? 'false' : 'true') . ');';
 
 						$item = '<div class="t3-form-field-placeholder-override">'
 						. '<span class="t3-tceforms-placeholder-override-checkbox">' .
-							'<input type="hidden" name="' . $PA['itemFormElNameActive'] . '" value="0" />' .
-							'<input type="checkbox" name="' . $PA['itemFormElNameActive'] . '" value="1" id="tce-forms-textfield-use-override-' . $field . '-' . $row['uid'] . '" onchange="' . $onChange . '"' . $checked . ' /> <label for="tce-forms-textfield-use-override-' . $field . '-' . $row['uid'] . '">' . sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.placeholder.override'), $placeholder) . '</label>' .
+							'<input type="hidden" name="' . htmlspecialchars($PA['itemFormElNameActive']) . '" value="0" />' .
+							'<input type="checkbox" name="' . htmlspecialchars($PA['itemFormElNameActive']) . '" value="1" id="tce-forms-textfield-use-override-' . $field . '-' . $row['uid'] . '" onchange="' . htmlspecialchars($onChange) . '"' . $checked . ' />' .
+							'<label for="tce-forms-textfield-use-override-' . $field . '-' . $row['uid'] . '">' . htmlspecialchars(sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.placeholder.override'), $placeholder)) . '</label>' .
 						'</span>'
 						. '<div class="t3-form-placeholder-placeholder">' . $this->getSingleField_typeNone_render($PA['fieldConf']['config'], $placeholder) . '</div>'
 						. '<div class="t3-form-placeholder-formfield">' . $item . '</div>'
@@ -5956,7 +5956,7 @@ function ' . $evalData . '(value) {
 	 * @return bool
 	 */
 	protected function isNewRecord($table, $row) {
-		return !is_numeric($row['uid']);
+		return !MathUtility::canBeInterpretedAsInteger($row['uid']) && GeneralUtility::isFirstPartOfStr($row['uid'], 'NEW');
 	}
 
 	/**
