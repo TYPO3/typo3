@@ -115,6 +115,7 @@ class CreatePagesWizardModuleFunctionController extends \TYPO3\CMS\Backend\Modul
 						unset($data['pages'][$identifier]);
 					} else {
 						$data['pages'][$identifier]['hidden'] = GeneralUtility::_GP('hidePages') ? 1 : 0;
+						$data['pages'][$identifier]['nav_hide'] = GeneralUtility::_GP('hidePagesInMenus') ? 1 : 0;
 						if ($firstRecord) {
 							$firstRecord = FALSE;
 							$data['pages'][$identifier]['pid'] = $thePid;
@@ -159,7 +160,8 @@ class CreatePagesWizardModuleFunctionController extends \TYPO3\CMS\Backend\Modul
 				}
 				$theCode .= '<h4>' . $GLOBALS['LANG']->getLL('wiz_newPages') . ':</h4>' . '<div id="formFieldContainer">' . implode('', $lines) . '</div>' . '<br class="clearLeft" />' . '<input type="button" id="createNewFormFields" value="' . $GLOBALS['LANG']->getLL('wiz_newPages_addMoreLines') . '" />' . '<br /><br />
 				<input type="checkbox" name="createInListEnd" id="createInListEnd" value="1" /> <label for="createInListEnd">' . $GLOBALS['LANG']->getLL('wiz_newPages_listEnd') . '</label><br />
-				<input type="checkbox" name="hidePages" id="hidePages" value="1" /> <label for="hidePages">' . $GLOBALS['LANG']->getLL('wiz_newPages_hidePages') . '</label><br /><br />
+				<input type="checkbox" name="hidePages" id="hidePages" value="1" /> <label for="hidePages">' . $GLOBALS['LANG']->getLL('wiz_newPages_hidePages') . '</label><br />
+				<input type="checkbox" name="hidePagesInMenus" id="hidePagesInMenus" value="1" /> <label for="hidePagesInMenus">' . $GLOBALS['LANG']->getLL('wiz_newPages_hidePagesInMenus') . '</label><br /><br />
 				<input type="submit" name="create" value="' . $GLOBALS['LANG']->getLL('wiz_newPages_lCreate') . '" />&nbsp;<input type="reset" value="' . $GLOBALS['LANG']->getLL('wiz_newPages_lReset') . '" /><br />';
 				// Add ExtJS inline code
 				$extCode = '
