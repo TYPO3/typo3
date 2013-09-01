@@ -2421,8 +2421,7 @@ class TypoScriptFrontendController {
 				}
 			}
 		}
-		// Initialize charset settings etc.
-		$this->initLLvars();
+
 		// No cache
 		// Set $this->no_cache TRUE if the config.no_cache value is set!
 		if ($this->config['config']['no_cache']) {
@@ -2504,6 +2503,10 @@ class TypoScriptFrontendController {
 				\TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($_funcRef, $_params, $this);
 			}
 		}
+
+		// Initialize charset settings etc.
+		$this->initLLvars();
+
 		// Get values from TypoScript:
 		$this->sys_language_uid = ($this->sys_language_content = (int)$this->config['config']['sys_language_uid']);
 		list($this->sys_language_mode, $sys_language_content) = GeneralUtility::trimExplode(';', $this->config['config']['sys_language_mode']);
@@ -4701,6 +4704,8 @@ if (version == "n3") {
 	 * @todo Define visibility
 	 */
 	public function initLLvars() {
+		// Init languageDependencies list
+		$this->languageDependencies = array();
 		// Setting language key and split index:
 		$this->lang = $this->config['config']['language'] ?: 'default';
 		$this->getPageRenderer()->setLanguage($this->lang);
