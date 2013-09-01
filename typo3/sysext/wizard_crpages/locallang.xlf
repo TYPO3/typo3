@@ -30,6 +30,9 @@
 			<trans-unit id="wiz_newPages_hidePages" xml:space="preserve">
 				<source>Hide new pages</source>
 			</trans-unit>
+			<trans-unit id="wiz_newPages_hidePagesInMenus" xml:space="preserve">
+			    <source>Hide new pages in menus</source>
+			</trans-unit>
 			<trans-unit id="wiz_newPages_lCreate_msg1" xml:space="preserve">
 				<source>You're about to create many new pages. Are you sure you want to continue?</source>
 			</trans-unit>
