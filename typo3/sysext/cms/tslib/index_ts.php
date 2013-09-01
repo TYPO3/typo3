@@ -154,13 +154,13 @@ $TT->pull();
 // Get config if not already gotten
 // After this, we should have a valid config-array ready
 $TSFE->getConfigArray();
-// Convert POST data to internal "renderCharset" if different from the metaCharset
-$TSFE->convPOSTCharset();
 // Setting language and locale
 $TT->push('Setting language and locale', '');
 $TSFE->settingLanguage();
 $TSFE->settingLocale();
 $TT->pull();
+// Convert POST data to internal "renderCharset" if different from the metaCharset
+$TSFE->convPOSTCharset();
 // Check JumpUrl
 $TSFE->setExternalJumpUrl();
 $TSFE->checkJumpUrlReferer();
