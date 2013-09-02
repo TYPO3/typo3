@@ -858,6 +858,15 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				),
 				'__Alien___',
 			),
+			'pad string with padWith 0 and type both and length 10' => array(
+				'Alien',
+				array(
+					'length' => '10',
+					'padWith' => '0',
+					'type' => 'both',
+				),
+				'00Alien000',
+			),
 			'pad string with padWith ___ and type both and length 6' => array(
 				'Alien',
 				array(
