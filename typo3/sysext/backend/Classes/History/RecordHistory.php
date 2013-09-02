@@ -454,9 +454,9 @@ class RecordHistory {
 			// Show link to mark/unmark state
 			if (!$entry['action']) {
 				if ($entry['snapshot']) {
-					$image = '<img' . IconUtility::skinImg('', 'gfx/unmarkstate.gif') . ' align="top" alt="' . $GLOBALS['LANG']->getLL('unmarkState', 1) . '" title="' . $GLOBALS['LANG']->getLL('unmarkState', 1) . '" />';
+                    $image =  IconUtility::getSpriteIcon('actions-unmarkstate', array('title' => $GLOBALS['LANG']->getLL('unmarkState', TRUE)), array());
 				} else {
-					$image = '<img' . IconUtility::skinImg('', 'gfx/markstate.gif') . ' align="top" alt="' . $GLOBALS['LANG']->getLL('markState', 1) . '" title="' . $GLOBALS['LANG']->getLL('markState', 1) . '" />';
+                    $image =  IconUtility::getSpriteIcon('actions-markstate', array('title' => $GLOBALS['LANG']->getLL('markState', TRUE)), array());
 				}
 				$singleLine[] = $this->linkPage($image, array('highlight' => $entry['uid']));
 			} else {
