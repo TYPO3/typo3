@@ -2359,7 +2359,7 @@ class ContentObjectRenderer {
 			$length = isset($conf['strPad.']['length.']) ? $this->stdWrap($conf['strPad.']['length'], $conf['strPad.']['length.']) : $conf['strPad.']['length'];
 			$length = intval($length);
 		}
-		if (!empty($conf['strPad.']['padWith'])) {
+		if (isset($conf['strPad.']['type']) && strlen($conf['strPad.']['type']) > 0) {
 			$padWith = isset($conf['strPad.']['padWith.']) ? $this->stdWrap($conf['strPad.']['padWith'], $conf['strPad.']['padWith.']) : $conf['strPad.']['padWith'];
 		}
 		if (!empty($conf['strPad.']['type'])) {
