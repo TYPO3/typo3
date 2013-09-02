@@ -260,7 +260,7 @@ class FileRepository extends AbstractRepository {
 		foreach ($changedProperties as $propertyName) {
 			$updateFields[$propertyName] = $properties[$propertyName];
 		}
-		$GLOBALS['TYPO3_DB']->exec_UPDATEquery('sys_file', 'uid=' . $modifiedObject->getUid(), $updateFields);
+		$GLOBALS['TYPO3_DB']->exec_UPDATEquery('sys_file', 'uid=' . $modifiedObject->getUid(), $this->cleanUnavailableColumns($updateFields));
 	}
 
 	/**
@@ -271,6 +271,17 @@ class FileRepository extends AbstractRepository {
 	 */
 	protected function createFileReferenceObject(array $databaseRow) {
 		return $this->factory->getFileReferenceObject($databaseRow['uid'], $databaseRow);
+	}
+
+	/**
+	 * Removes all array keys which cannot be persisted
+	 *
+	 * @param array $data
+	 *
+	 * @return array
+	 */
+	protected function cleanUnavailableColumns(array $data) {
+		return array_intersect_key($data, $GLOBALS['TYPO3_DB']->admin_get_fields($this->table));
 	}
 
 }
