@@ -98,6 +98,8 @@ class AdminPanelView {
 			$GLOBALS['TSFE']->set_no_cache('Admin Panel: Display edit icons', TRUE);
 		} elseif ($GLOBALS['TSFE']->displayFieldEditIcons) {
 			$GLOBALS['TSFE']->set_no_cache('Admin Panel: Display field edit icons', TRUE);
+		} elseif (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('ADMCMD_view')) {
+			$GLOBALS['TSFE']->set_no_cache('Admin Panel: Display preview', TRUE);
 		}
 	}
 
