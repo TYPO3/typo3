@@ -6795,9 +6795,12 @@ class DataHandler {
 			$pageCache = $GLOBALS['typo3CacheManager']->getCache('cache_pages');
 			/** @var $pageSectionCache \TYPO3\CMS\Core\Cache\Frontend\AbstractFrontend */
 			$pageSectionCache = $GLOBALS['typo3CacheManager']->getCache('cache_pagesection');
+			/** @var $hashCache \TYPO3\CMS\Core\Cache\Frontend\AbstractFrontend */
+			$hashCache = $GLOBALS['typo3CacheManager']->getCache('cache_hash');
 			foreach ($tagsToFlush as $tag) {
 				$pageCache->flushByTag($tag);
 				$pageSectionCache->flushByTag($tag);
+				$hashCache->flushByTag($tag);
 			}
 		}
 		// Call post processing function for clear-cache:
