@@ -323,7 +323,7 @@ class ExtendedFileUtility extends \TYPO3\CMS\Core\Utility\File\BasicFileUtility 
 				\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR,
 				TRUE
 			);
-			$this->addFlashMessage($flashMessage);
+			\TYPO3\CMS\Core\Messaging\FlashMessageQueue::addMessage($flashMessage);
 		}
 		$GLOBALS['TYPO3_DB']->sql_free_result($res);
 	}
