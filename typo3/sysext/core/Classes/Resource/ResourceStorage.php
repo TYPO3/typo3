@@ -122,6 +122,16 @@ class ResourceStorage {
 	protected $fileProcessingService;
 
 	/**
+	 * Whether to check if file or folder is in user mounts
+	 * and the action is allowed for a user
+	 * Default is FALSE so that resources are accessible for
+	 * front end rendering or admins.
+	 *
+	 * @var boolean
+	 */
+	protected $evaluatePermissions = FALSE;
+
+	/**
 	 * User filemounts, added as an array, and used as filters
 	 *
 	 * @var array
@@ -500,29 +510,36 @@ class ResourceStorage {
 	 * @return boolean
 	 */
 	public function isWithinFileMountBoundaries($subject) {
-		$isWithinFilemount = TRUE;
-		if (is_array($this->fileMounts) && count($this->fileMounts)) {
-			$isWithinFilemount = FALSE;
-			if (!$subject) {
-				$subject = $this->getRootLevelFolder();
-			}
-			$identifier = $subject->getIdentifier();
+		if (!$this->evaluatePermissions) {
+			return TRUE;
+		}
+		$isWithinFilemount = FALSE;
+		if (!$subject) {
+			$subject = $this->getRootLevelFolder();
+		}
+		$identifier = $subject->getIdentifier();
 
-			// Allow access to processing folder
-			if ($this->driver->isWithin($this->getProcessingFolder(), $identifier)) {
-				$isWithinFilemount = TRUE;
-			} else {
-				// Check if the identifier of the subject is within at
-				// least one of the file mounts
-				foreach ($this->fileMounts as $fileMount) {
-					if ($this->driver->isWithin($fileMount['folder'], $identifier)) {
-						$isWithinFilemount = TRUE;
-						break;
-					}
+		// Allow access to processing folder
+		if ($this->driver->isWithin($this->getProcessingFolder(), $identifier)) {
+			$isWithinFilemount = TRUE;
+		} else {
+			// Check if the identifier of the subject is within at
+			// least one of the file mounts
+			foreach ($this->fileMounts as $fileMount) {
+				if ($this->driver->isWithin($fileMount['folder'], $identifier)) {
+					$isWithinFilemount = TRUE;
+					break;
 				}
 			}
 		}
 		return $isWithinFilemount;
+	}
+
+	/**
+	 * @param $evaluatePermissions
+	 */
+	public function setEvaluatePermissions($evaluatePermissions) {
+		$this->evaluatePermissions = (boolean) $evaluatePermissions;
 	}
 
 	/**
@@ -544,18 +561,16 @@ class ResourceStorage {
 	 * @return 	bool
 	 */
 	public function checkUserActionPermission($action, $type) {
-		// TODO decide if we should return TRUE if no permissions are set
-		if (!empty($this->userPermissions)) {
-			$action = strtolower($action);
-			$type = ucfirst(strtolower($type));
-			if ($this->userPermissions[$action . $type] == 0) {
-				return FALSE;
-			} else {
-				return TRUE;
-			}
+		if (!$this->evaluatePermissions) {
+			return TRUE;
 		}
-		// TODO should the default be really TRUE?
-		return TRUE;
+
+		$allow = FALSE;
+		if (!empty($this->userPermissions[strtolower($action) . ucfirst(strtolower($type))])) {
+			$allow = TRUE;
+		}
+
+		return $allow;
 	}
 
 	/**
@@ -583,7 +598,7 @@ class ResourceStorage {
 		}
 		// Check 3: Does the user have the right to perform the action?
 		// (= is he within the file mount borders)
-		if (!$isProcessedFile && is_array($this->fileMounts) && count($this->fileMounts) && !$this->isWithinFileMountBoundaries($file)) {
+		if (!$isProcessedFile && !$this->isWithinFileMountBoundaries($file)) {
 			return FALSE;
 		}
 		$isReadCheck = FALSE;
@@ -640,7 +655,7 @@ class ResourceStorage {
 
 		// Check 2: Does the user has the right to perform the action?
 		// (= is he within the file mount borders)
-		if (is_array($this->fileMounts) && count($this->fileMounts) && !$this->isWithinFileMountBoundaries($folder)) {
+		if (!$this->isWithinFileMountBoundaries($folder)) {
 			return FALSE;
 		}
 		$isReadCheck = FALSE;
@@ -677,6 +692,9 @@ class ResourceStorage {
 	 * @return boolean TRUE if extension/filename is allowed
 	 */
 	protected function checkFileExtensionPermission($fileName) {
+		if (!$this->evaluatePermissions) {
+			return TRUE;
+		}
 		$isAllowed = GeneralUtility::verifyFilenameAgainstDenyPattern($fileName);
 		if ($isAllowed) {
 			$fileInfo = GeneralUtility::split_fileref($fileName);
