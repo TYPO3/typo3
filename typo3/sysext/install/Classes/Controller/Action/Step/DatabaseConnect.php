@@ -353,7 +353,7 @@ class DatabaseConnect extends Action\AbstractAction implements StepInterface {
 		$databaseConnection->setDatabaseSocket($this->getConfiguredSocket());
 
 		$result = FALSE;
-		if (@$databaseConnection->sql_pconnect()) {
+		if (isset($GLOBALS['TYPO3_CONF_VARS']['DB']['username']) && @$databaseConnection->sql_pconnect()) {
 			$result = TRUE;
 		}
 		return $result;
