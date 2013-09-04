@@ -715,7 +715,7 @@ class ExtendedFileUtility extends \TYPO3\CMS\Core\Utility\File\BasicFileUtility 
 			} catch (\TYPO3\CMS\Core\Resource\Exception\InsufficientUserPermissionsException $e) {
 				$this->writelog(5, 1, 102, 'You are not allowed to rename files!', '');
 			} catch (\TYPO3\CMS\Core\Resource\Exception\IllegalFileExtensionException $e) {
-				$this->writelog(5, 1, 101, 'Extension of file name "%s" was not allowed!', array($targetFile));
+				$this->writelog(5, 1, 101, 'Extension of file name "%s" or "%s" was not allowed!', array($sourceFileObject->getName(), $targetFile));
 			} catch (\TYPO3\CMS\Core\Resource\Exception\ExistingTargetFileNameException $e) {
 				$this->writelog(5, 1, 120, 'Destination "%s" existed already!', array($targetFile));
 			} catch (\TYPO3\CMS\Core\Resource\Exception\NotInMountPointException $e) {

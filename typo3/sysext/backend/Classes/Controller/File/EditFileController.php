@@ -153,7 +153,10 @@ class EditFileController {
 		$pageContent .= $this->doc->spacer(2);
 		$code = '';
 		$extList = $GLOBALS['TYPO3_CONF_VARS']['SYS']['textfile_ext'];
-		if ($extList && GeneralUtility::inList($extList, $this->fileObject->getExtension())) {
+		try {
+			if (!$extList || !GeneralUtility::inList($extList, $this->fileObject->getExtension())) {
+				throw new \Exception('Files with that extension are not editable.');
+			}
 			// Read file content to edit:
 			$fileContent = $this->fileObject->getContents();
 			// Making the formfields
@@ -173,7 +176,7 @@ class EditFileController {
 			} else {
 				$docHeaderButtons['shortcut'] = '';
 			}
-		} else {
+		} catch (\Exception $e) {
 			$code .= sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:file_edit.php.coundNot'), $extList);
 		}
 		// Ending of section and outputting editing form:
