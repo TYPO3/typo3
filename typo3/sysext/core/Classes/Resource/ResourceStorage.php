@@ -501,7 +501,7 @@ class ResourceStorage {
 	 */
 	public function isWithinFileMountBoundaries($subject) {
 		$isWithinFilemount = TRUE;
-		if (is_array($this->fileMounts)) {
+		if (is_array($this->fileMounts) && count($this->fileMounts)) {
 			$isWithinFilemount = FALSE;
 			if (!$subject) {
 				$subject = $this->getRootLevelFolder();
@@ -577,24 +577,28 @@ class ResourceStorage {
 		if (!$isProcessedFile && $this->checkUserActionPermission($action, 'File') === FALSE) {
 			return FALSE;
 		}
-		// Check 2: Does the user have the right to perform the action?
+		// Check 2: No action allowed on files for denied file extensions
+		if (!$this->checkFileExtensionPermission($file->getName())) {
+			return FALSE;
+		}
+		// Check 3: Does the user have the right to perform the action?
 		// (= is he within the file mount borders)
 		if (!$isProcessedFile && is_array($this->fileMounts) && count($this->fileMounts) && !$this->isWithinFileMountBoundaries($file)) {
 			return FALSE;
 		}
 		$isReadCheck = FALSE;
-		if ($action === 'read') {
+		if (in_array($action, array('read', 'copy', 'move'), TRUE)) {
 			$isReadCheck = TRUE;
 		}
 		$isWriteCheck = FALSE;
-		if (in_array($action, array('add', 'edit', 'write', 'upload', 'move', 'rename', 'unzip', 'remove'))) {
+		if (in_array($action, array('add', 'write', 'move', 'rename', 'unzip', 'delete'), TRUE)) {
 			$isWriteCheck = TRUE;
 		}
-		// Check 3: Check the capabilities of the storage (and the driver)
+		// Check 4: Check the capabilities of the storage (and the driver)
 		if ($isWriteCheck && !$this->isWritable()) {
 			return FALSE;
 		}
-		// Check 4: "File permissions" of the driver
+		// Check 5: "File permissions" of the driver
 		$filePermissions = $this->driver->getFilePermissions($file);
 		if ($isReadCheck && !$filePermissions['r']) {
 			return FALSE;
@@ -620,17 +624,23 @@ class ResourceStorage {
 		if ($this->checkUserActionPermission($action, 'Folder') === FALSE) {
 			return FALSE;
 		}
+
+		// If we do not have a folder here, we cannot do further checks
+		if ($folder === NULL) {
+			return TRUE;
+		}
+
 		// Check 2: Does the user has the right to perform the action?
 		// (= is he within the file mount borders)
 		if (is_array($this->fileMounts) && count($this->fileMounts) && !$this->isWithinFileMountBoundaries($folder)) {
 			return FALSE;
 		}
 		$isReadCheck = FALSE;
-		if ($action === 'read') {
+		if (in_array($action, array('read', 'copy'), TRUE)) {
 			$isReadCheck = TRUE;
 		}
 		$isWriteCheck = FALSE;
-		if (in_array($action, array('add', 'move', 'write', 'remove', 'rename'))) {
+		if (in_array($action, array('add', 'move', 'write', 'delete', 'rename'), TRUE)) {
 			$isWriteCheck = TRUE;
 		}
 		// Check 3: Check the capabilities of the storage (and the driver)
@@ -691,6 +701,316 @@ class ResourceStorage {
 		return FALSE;
 	}
 
+	/**
+	 * @param Folder $folder If a folder is given, mountpoits are checked. If not only user folder read permissions are checked.
+	 *
+	 * @throws Exception\InsufficientFolderAccessPermissionsException
+	 */
+	protected function assureFolderReadPermission(Folder $folder = NULL) {
+		if (!$this->checkFolderActionPermission('read', $folder)) {
+			throw new Exception\InsufficientFolderAccessPermissionsException('You are not allowed to access the given folder', 1375955684);
+		}
+	}
+
+	/**
+	 * @param Folder $folder If a folder is given, mountpoits are checked. If not only user folder delete permissions are checked.
+	 * @param boolean $checkDeleteRecursively
+	 *
+	 * @throws Exception\InsufficientFolderAccessPermissionsException
+	 * @throws Exception\InsufficientFolderWritePermissionsException
+	 * @throws Exception\InsufficientUserPermissionsException
+	 */
+	protected function assureFolderDeletePermission(Folder $folder, $checkDeleteRecursively) {
+		// Check user permissions for recursive deletion if it is requested
+		if ($checkDeleteRecursively && !$this->checkUserActionPermission('recursivedelete', 'Folder')) {
+			throw new Exception\InsufficientUserPermissionsException('You are not allowed to delete folders recursively', 1377779423);
+		}
+		// Check user action permission
+		if (!$this->checkFolderActionPermission('delete', $folder)) {
+			throw new Exception\InsufficientFolderAccessPermissionsException('You are not allowed to delete the given folder', 1377779039);
+		}
+		// Check if the user has write permissions to folders
+		// Would be good if we could check for actual write permissions in the containig folder
+		// but we cannot since we have no access to the containing folder of this file.
+		if (!$this->checkUserActionPermission('write', 'Folder')) {
+			throw new Exception\InsufficientFolderWritePermissionsException('Writing to folders is not allowed.', 1377779111);
+		}
+	}
+
+	/**
+	 * @param FileInterface $file
+	 *
+	 * @throws Exception\InsufficientFileAccessPermissionsException
+	 * @throws Exception\IllegalFileExtensionException
+	 */
+	protected function assureFileReadPermission(FileInterface $file) {
+		if (!$this->checkFileActionPermission('read', $file)) {
+			throw new Exception\InsufficientFileAccessPermissionsException('You are not allowed to access that file.', 1375955429);
+		}
+		if (!$this->checkFileExtensionPermission($file->getName())) {
+			throw new Exception\IllegalFileExtensionException('You are not allowed to use that file extension', 1375955430);
+		}
+	}
+
+	/**
+	 * @param FileInterface $file
+	 *
+	 * @throws Exception\IllegalFileExtensionException
+	 * @throws Exception\InsufficientFileWritePermissionsException
+	 * @throws Exception\InsufficientUserPermissionsException
+	 */
+	protected function assureFileWritePermissions(FileInterface $file) {
+		// Check if user is allowed to write the file and $file is writable
+		if (!$this->checkFileActionPermission('write', $file)) {
+			throw new Exception\InsufficientFileWritePermissionsException('Writing to file "' . $file->getIdentifier() . '" is not allowed.', 1330121088);
+		}
+		if (!$this->checkFileExtensionPermission($file->getName())) {
+			throw new Exception\IllegalFileExtensionException('You are not allowed to edit a file with extension "' . $file->getExtension() . '"', 1366711933);
+		}
+	}
+
+	/**
+	 * @param FileInterface $file
+	 *
+	 * @throws Exception\IllegalFileExtensionException
+	 * @throws Exception\InsufficientFileWritePermissionsException
+	 * @throws Exception\InsufficientFolderWritePermissionsException
+	 */
+	protected function assureFileDeletePermissions(FileInterface $file) {
+		// Check for disallowed file extensions
+		if (!$this->checkFileExtensionPermission($file->getName())) {
+			throw new Exception\IllegalFileExtensionException('You are not allowed to delete a file with extension "' . $file->getExtension() . '"', 1377778916);
+		}
+		// Check further permissions if file is not a processed file
+		if (!$file instanceof ProcessedFile) {
+			// Check if user is allowed to delete the file and $file is writable
+			if (!$this->checkFileActionPermission('delete', $file)) {
+				throw new Exception\InsufficientFileWritePermissionsException('You are not allowed to delete the file "' . $file->getIdentifier() . '\'', 1319550425);
+			}
+			// Check if the user has write permissions to folders
+			// Would be good if we could check for actual write permissions in the containig folder
+			// but we cannot since we have no access to the containing folder of this file.
+			if (!$this->checkUserActionPermission('write', 'Folder')) {
+				throw new Exception\InsufficientFolderWritePermissionsException('Writing to folders is not allowed.', 1377778702);
+			}
+		}
+	}
+
+	/**
+	 * Check if a file has the permission to be uploaded to a Folder/Storage,
+	 * if not throw an exception
+	 *
+	 * @param string $localFilePath the temporary file name from $_FILES['file1']['tmp_name']
+	 * @param Folder $targetFolder
+	 * @param string $targetFileName the destination file name $_FILES['file1']['name']
+	 *
+	 * @throws Exception\InsufficientFolderWritePermissionsException
+	 * @throws Exception\UploadException
+	 * @throws Exception\IllegalFileExtensionException
+	 * @throws Exception\UploadSizeException
+	 * @throws Exception\InsufficientUserPermissionsException
+	 * @return void
+	 */
+	protected function assureFileAddPermissions($localFilePath, $targetFolder, $targetFileName) {
+		// Check for a valid file extension
+		if (!$this->checkFileExtensionPermission($targetFileName) || ($localFilePath && !$this->checkFileExtensionPermission($localFilePath))) {
+			throw new Exception\IllegalFileExtensionException('Extension of file name is not allowed in "' . $targetFileName . '"!', 1322120271);
+		}
+		// Makes sure the user is allowed to upload
+		if (!$this->checkUserActionPermission('add', 'File')) {
+			throw new Exception\InsufficientUserPermissionsException('You are not allowed to add files to this storage "' . $this->getUid() . '"', 1376992145);
+		}
+		// Check if targetFolder is writable
+		if (!$this->checkFolderActionPermission('write', $targetFolder)) {
+			throw new Exception\InsufficientFolderWritePermissionsException('You are not allowed to write to the target folder "' . $targetFolder->getIdentifier() . '"', 1322120356);
+		}
+	}
+
+	/**
+	 * Check if a file has the permission to be uploaded to a Folder/Storage,
+	 * if not throw an exception
+	 *
+	 * @param string $localFilePath the temporary file name from $_FILES['file1']['tmp_name']
+	 * @param Folder $targetFolder
+	 * @param string $targetFileName the destination file name $_FILES['file1']['name']
+	 * @param integer $uploadedFileSize
+	 *
+	 * @throws Exception\InsufficientFolderWritePermissionsException
+	 * @throws Exception\UploadException
+	 * @throws Exception\IllegalFileExtensionException
+	 * @throws Exception\UploadSizeException
+	 * @throws Exception\InsufficientUserPermissionsException
+	 * @return void
+	 */
+	protected function assureFileUploadPermissions($localFilePath, $targetFolder, $targetFileName, $uploadedFileSize) {
+		// Makes sure this is an uploaded file
+		if (!is_uploaded_file($localFilePath)) {
+			throw new Exception\UploadException('The upload has failed, no uploaded file found!', 1322110455);
+		}
+		// Max upload size (kb) for files.
+		$maxUploadFileSize = GeneralUtility::getMaxUploadFileSize() * 1024;
+		if ($uploadedFileSize >= $maxUploadFileSize) {
+			unlink($localFilePath);
+			throw new Exception\UploadSizeException('The uploaded file exceeds the size-limit of ' . $maxUploadFileSize . ' bytes', 1322110041);
+		}
+		$this->assureFileAddPermissions($localFilePath, $targetFolder, $targetFileName);
+	}
+
+	/**
+	 * Checks for permissions to move a file.
+	 *
+	 * @throws \RuntimeException
+	 * @throws Exception\InsufficientFileReadPermissionsException
+	 * @throws Exception\InsufficientFileWritePermissionsException
+	 * @throws Exception\InsufficientFolderAccessPermissionsException
+	 * @throws Exception\InsufficientUserPermissionsException
+	 * @param FileInterface $file
+	 * @param Folder $targetFolder
+	 * @param string $targetFileName
+	 * @return void
+	 */
+	protected function assureFileMovePermissions(FileInterface $file, Folder $targetFolder, $targetFileName) {
+		// Check if targetFolder is within this storage
+		if ($this->getUid() !== $targetFolder->getStorage()->getUid()) {
+			throw new \RuntimeException();
+		}
+		// Check for a valid file extension
+		if (!$this->checkFileExtensionPermission($targetFileName)) {
+			throw new Exception\IllegalFileExtensionException('Extension of file name is not allowed in "' . $targetFileName . '"!', 1378243279);
+		}
+		// Check if user is allowed to move and $file is readable and writable
+		if (!$this->checkFileActionPermission('move', $file)) {
+			throw new Exception\InsufficientUserPermissionsException('You are not allowed to move files to storage "' . $this->getUid() . '"', 1319219349);
+		}
+		// Check if target folder is writable
+		if (!$this->checkFolderActionPermission('write', $targetFolder)) {
+			throw new Exception\InsufficientFolderAccessPermissionsException('You are not allowed to write to the target folder "' . $targetFolder->getIdentifier() . '"', 1319219349);
+		}
+	}
+
+	/**
+	 * Checks for permissions to rename a file.
+	 *
+	 * @param FileInterface $file
+	 * @param string $targetFileName
+	 * @throws Exception\InsufficientFileWritePermissionsException
+	 * @throws Exception\IllegalFileExtensionException
+	 * @throws Exception\InsufficientFileReadPermissionsException
+	 * @throws Exception\InsufficientUserPermissionsException
+	 * @return void
+	 */
+	protected function assureFileRenamePermissions(FileInterface $file, $targetFileName) {
+		// Check if file extension is allowed
+		if (!$this->checkFileExtensionPermission($targetFileName) || !$this->checkFileExtensionPermission($file->getName())) {
+			throw new Exception\IllegalFileExtensionException('You are not allowed to rename a file with to this extension', 1371466663);
+		}
+		// Check if user is allowed to rename
+		if (!$this->checkFileActionPermission('rename', $file)) {
+			throw new Exception\InsufficientUserPermissionsException('You are not allowed to rename files."', 1319219349);
+		}
+		// Check if the user is allowed to write to folders
+		// Although it would be good to check, we cannot check here if the folder actually is writable
+		// because we do not know in which folder the file resides.
+		// So we rely on the driver to throw an exception in case the renaming failed.
+		if (!$this->checkFolderActionPermission('write')) {
+			throw new Exception\InsufficientFileWritePermissionsException('You are not allowed to write to folders', 1319219349);
+		}
+	}
+
+	/**
+	 * Check if a file has the permission to be copied on a File/Folder/Storage,
+	 * if not throw an exception
+	 *
+	 * @param FileInterface $file
+	 * @param Folder $targetFolder
+	 * @param string $targetFileName
+	 *
+	 * @throws Exception
+	 * @throws Exception\InsufficientFolderWritePermissionsException
+	 * @throws Exception\IllegalFileExtensionException
+	 * @throws Exception\InsufficientFileReadPermissionsException
+	 * @throws Exception\InsufficientUserPermissionsException
+	 * @return void
+	 */
+	protected function assureFileCopyPermissions(FileInterface $file, Folder $targetFolder, $targetFileName) {
+		// Check if targetFolder is within this storage, this should never happen
+		if ($this->getUid() != $targetFolder->getStorage()->getUid()) {
+			throw new Exception('The operation of the folder cannot be called by this storage "' . $this->getUid() . '"', 1319550405);
+		}
+		// Check if user is allowed to copy
+		if (!$this->checkFileActionPermission('copy', $file)) {
+			throw new Exception\InsufficientFileReadPermissionsException('You are not allowed to copy the file "' . $file->getIdentifier() . '\'', 1319550425);
+		}
+		// Check if targetFolder is writable
+		if (!$this->checkFolderActionPermission('write', $targetFolder)) {
+			throw new Exception\InsufficientFolderWritePermissionsException('You are not allowed to write to the target folder "' . $targetFolder->getIdentifier() . '"', 1319550435);
+		}
+		// Check for a valid file extension
+		if (!$this->checkFileExtensionPermission($targetFileName) || !$this->checkFileExtensionPermission($file->getName())) {
+			throw new Exception\IllegalFileExtensionException('You are not allowed to copy a file of that type.', 1319553317);
+		}
+	}
+
+	/**
+	 * Check if a file has the permission to be copied on a File/Folder/Storage,
+	 * if not throw an exception
+	 *
+	 * @param FolderInterface $folderToCopy
+	 * @param FolderInterface $targetParentFolder
+	 *
+	 * @throws Exception
+	 * @throws Exception\InsufficientFolderWritePermissionsException
+	 * @throws Exception\IllegalFileExtensionException
+	 * @throws Exception\InsufficientFileReadPermissionsException
+	 * @throws Exception\InsufficientUserPermissionsException
+	 * @return void
+	 */
+	protected function assureFolderCopyPermissions(FolderInterface $folderToCopy, FolderInterface $targetParentFolder) {
+		// Check if targetFolder is within this storage, this should never happen
+		if ($this->getUid() !== $targetParentFolder->getStorage()->getUid()) {
+			throw new Exception('The operation of the folder cannot be called by this storage "' . $this->getUid() . '"', 1377777624);
+		}
+		// Check if user is allowed to copy and the folder is readable
+		if (!$this->checkFolderActionPermission('copy', $folderToCopy)) {
+			throw new Exception\InsufficientFileReadPermissionsException('You are not allowed to copy the folder "' . $folderToCopy->getIdentifier() . '\'', 1377777629);
+		}
+		// Check if targetFolder is writable
+		if (!$this->checkFolderActionPermission('write', $targetParentFolder)) {
+			throw new Exception\InsufficientFolderWritePermissionsException('You are not allowed to write to the target folder "' . $targetParentFolder->getIdentifier() . '"', 1377777635);
+		}
+	}
+
+	/**
+	 * Check if a file has the permission to be copied on a File/Folder/Storage,
+	 * if not throw an exception
+	 *
+	 * @param FolderInterface $folderToMove
+	 * @param FolderInterface $targetParentFolder
+	 *
+	 * @throws \InvalidArgumentException
+	 * @throws Exception\InsufficientFolderWritePermissionsException
+	 * @throws Exception\IllegalFileExtensionException
+	 * @throws Exception\InsufficientFileReadPermissionsException
+	 * @throws Exception\InsufficientUserPermissionsException
+	 * @return void
+	 */
+	protected function assureFolderMovePermissions(FolderInterface $folderToMove, FolderInterface $targetParentFolder) {
+		// Check if targetFolder is within this storage, this should never happen
+		if ($this->getUid() !== $targetParentFolder->getStorage()->getUid()) {
+			throw new \InvalidArgumentException('Cannot move a folder into a folder that does not belong to this storage.', 1325777289);
+		}
+		// Check if user is allowed to move and the folder is writable
+		// In fact we would need to check if the parent folder of the folder to move is writable also
+		// But as of now we cannot extract the parent folder from this folder
+		if (!$this->checkFolderActionPermission('move', $folderToMove)) {
+			throw new Exception\InsufficientFileReadPermissionsException('You are not allowed to copy the folder "' . $folderToMove->getIdentifier() . '\'', 1377778045);
+		}
+		// Check if targetFolder is writable
+		if (!$this->checkFolderActionPermission('write', $targetParentFolder)) {
+			throw new Exception\InsufficientFolderWritePermissionsException('You are not allowed to write to the target folder "' . $targetParentFolder->getIdentifier() . '"', 1377778049);
+		}
+	}
+
 	/********************
 	 * FILE ACTIONS
 	 ********************/
@@ -699,29 +1019,29 @@ class ResourceStorage {
 	 *
 	 * @param string $localFilePath The file on the server's hard disk to add.
 	 * @param Folder $targetFolder The target path, without the fileName
-	 * @param string $fileName The fileName. If not set, the local file name is used.
+	 * @param string $targetFileName The fileName. If not set, the local file name is used.
 	 * @param string $conflictMode possible value are 'cancel', 'replace', 'changeName'
 	 *
 	 * @throws \InvalidArgumentException
 	 * @throws Exception\ExistingTargetFileNameException
 	 * @return FileInterface
 	 */
-	public function addFile($localFilePath, Folder $targetFolder, $fileName = '', $conflictMode = 'changeName') {
+	public function addFile($localFilePath, Folder $targetFolder, $targetFileName = '', $conflictMode = 'changeName') {
 		$localFilePath = PathUtility::getCanonicalPath($localFilePath);
-		// TODO check permissions (write on target, upload, ...)
 		if (!file_exists($localFilePath)) {
 			throw new \InvalidArgumentException('File "' . $localFilePath . '" does not exist.', 1319552745);
 		}
+		$this->assureFileAddPermissions($localFilePath, $targetFolder, $targetFileName);
 		$targetFolder = $targetFolder ? $targetFolder : $this->getDefaultFolder();
-		$fileName = $fileName ? $fileName : PathUtility::basename($localFilePath);
-		if ($conflictMode === 'cancel' && $this->driver->fileExistsInFolder($fileName, $targetFolder)) {
-			throw new Exception\ExistingTargetFileNameException('File "' . $fileName . '" already exists in folder ' . $targetFolder->getIdentifier(), 1322121068);
+		$targetFileName = $targetFileName ? $targetFileName : PathUtility::basename($localFilePath);
+		if ($conflictMode === 'cancel' && $this->driver->fileExistsInFolder($targetFileName, $targetFolder)) {
+			throw new Exception\ExistingTargetFileNameException('File "' . $targetFileName . '" already exists in folder ' . $targetFolder->getIdentifier(), 1322121068);
 		} elseif ($conflictMode === 'changeName') {
-			$fileName = $this->getUniqueName($targetFolder, $fileName);
+			$targetFileName = $this->getUniqueName($targetFolder, $targetFileName);
 		}
 		// We do not care whether the file exists if $conflictMode is "replace",
 		// so just use the name as is in that case
-		return $this->driver->addFile($localFilePath, $targetFolder, $fileName);
+		return $this->driver->addFile($localFilePath, $targetFolder, $targetFileName);
 	}
 
 	/**
@@ -893,9 +1213,11 @@ class ResourceStorage {
 	// TODO check if we should use a folder object instead of $path
 	// TODO add unit test for $loadIndexRecords
 	public function getFileList($path, $start = 0, $numberOfItems = 0, $useFilters = TRUE, $loadIndexRecords = TRUE, $recursive = FALSE) {
+		// This also checks for read permissions on folder
+		$folder = $this->getFolder($path);
 		$rows = array();
 		if ($loadIndexRecords) {
-			$rows = $this->getFileRepository()->getFileIndexRecordsForFolder($this->getFolder($path));
+			$rows = $this->getFileRepository()->getFileIndexRecordsForFolder($folder);
 		}
 		$filters = $useFilters == TRUE ? $this->fileAndFolderNameFilters : array();
 		$items = $this->driver->getFileList($path, $start, $numberOfItems, $filters, $rows, $recursive);
@@ -915,7 +1237,7 @@ class ResourceStorage {
 	 * @return boolean
 	 */
 	public function hasFile($identifier) {
-		// @todo: access check?
+		$this->assureFolderReadPermission();
 		return $this->driver->fileExists($identifier);
 	}
 
@@ -927,6 +1249,7 @@ class ResourceStorage {
 	 * @return boolean
 	 */
 	public function hasFileInFolder($fileName, Folder $folder) {
+		$this->assureFolderReadPermission($folder);
 		return $this->driver->fileExistsInFolder($fileName, $folder);
 	}
 
@@ -939,10 +1262,7 @@ class ResourceStorage {
 	 * @return string
 	 */
 	public function getFileContents($file) {
-		// Check if $file is readable
-		if (!$this->checkFileActionPermission('read', $file)) {
-			throw new Exception\InsufficientFileReadPermissionsException('Reading file "' . $file->getIdentifier() . '" is not allowed.', 1330121089);
-		}
+		$this->assureFileReadPermission($file);
 		return $this->driver->getFileContents($file);
 	}
 
@@ -958,18 +1278,9 @@ class ResourceStorage {
 	 * @return integer The number of bytes written to the file
 	 */
 	public function setFileContents(AbstractFile $file, $contents) {
-			// Check if user is allowed to edit
-		if (!$this->checkUserActionPermission('edit', 'File')) {
-			throw new Exception\InsufficientUserPermissionsException(('Updating file "' . $file->getIdentifier()) . '" not allowed for user.', 1330121117);
-		}
-			// Check if $file is writable
-		if (!$this->checkFileActionPermission('write', $file)) {
-			throw new Exception\InsufficientFileWritePermissionsException('Writing to file "' . $file->getIdentifier() . '" is not allowed.', 1330121088);
-		}
-		if ($this->checkFileExtensionPermission($file->getName()) === FALSE) {
-			throw new Exception\IllegalFileExtensionException('You are not allowed to edit a file with extension "' . $file->getExtension() . '"', 1366711933);
-		}
-			// Call driver method to update the file and update file properties afterwards
+		// Check if user is allowed to edit
+		$this->assureFileWritePermissions($file);
+		// Call driver method to update the file and update file properties afterwards
 		$result = $this->driver->setFileContents($file, $contents);
 		$fileInfo = $this->driver->getFileInfo($file);
 		$fileInfo['sha1'] = $this->driver->hash($file, 'sha1');
@@ -986,16 +1297,12 @@ class ResourceStorage {
 	 * @param string $fileName
 	 * @param Folder $targetFolderObject
 	 *
+	 * @throws Exception\IllegalFileExtensionException
 	 * @throws Exception\InsufficientFolderWritePermissionsException
 	 * @return FileInterface The file object
 	 */
 	public function createFile($fileName, Folder $targetFolderObject) {
-		if ($this->checkFileExtensionPermission($fileName) === FALSE) {
-			throw new Exception\IllegalFileExtensionException('You are not allowed to create a file with this extension on storage "' . $targetFolderObject->getCombinedIdentifier() . '"', 1366711745);
-		}
-		if (!$this->checkFolderActionPermission('add', $targetFolderObject)) {
-			throw new Exception\InsufficientFolderWritePermissionsException('You are not allowed to create directories on this storage "' . $targetFolderObject->getIdentifier() . '"', 1323059807);
-		}
+		$this->assureFileAddPermissions('', $targetFolderObject, $fileName);
 		return $this->driver->createFile($fileName, $targetFolderObject);
 	}
 
@@ -1008,9 +1315,7 @@ class ResourceStorage {
 	 * @return boolean TRUE if deletion succeeded
 	 */
 	public function deleteFile($fileObject) {
-		if (!$this->checkFileActionPermission('remove', $fileObject)) {
-			throw new Exception\InsufficientFileAccessPermissionsException('You are not allowed to delete the file "' . $fileObject->getIdentifier() . '\'', 1319550425);
-		}
+		$this->assureFileDeletePermissions($fileObject);
 
 		$this->emitPreFileDeleteSignal($fileObject);
 
@@ -1041,11 +1346,11 @@ class ResourceStorage {
 	 * @return FileInterface
 	 */
 	public function copyFile(FileInterface $file, Folder $targetFolder, $targetFileName = NULL, $conflictMode = 'renameNewFile') {
-		$this->emitPreFileCopySignal($file, $targetFolder);
-		$this->checkFileCopyPermissions($file, $targetFolder, $targetFileName);
 		if ($targetFileName === NULL) {
 			$targetFileName = $file->getName();
 		}
+		$this->assureFileCopyPermissions($file, $targetFolder, $targetFileName);
+		$this->emitPreFileCopySignal($file, $targetFolder);
 		// File exists and we should abort, let's abort
 		if ($conflictMode === 'cancel' && $targetFolder->hasFile($targetFileName)) {
 			throw new Exception\ExistingTargetFileNameException('The target file already exists.', 1320291063);
@@ -1068,84 +1373,6 @@ class ResourceStorage {
 	}
 
 	/**
-	 * Check if a file has the permission to be uploaded to a Folder/Storage,
-	 * if not throw an exception
-	 *
-	 * @param string $localFilePath the temporary file name from $_FILES['file1']['tmp_name']
-	 * @param Folder $targetFolder
-	 * @param string $targetFileName the destination file name $_FILES['file1']['name']
-	 * @param integer $uploadedFileSize
-	 *
-	 * @throws Exception\InsufficientFolderWritePermissionsException
-	 * @throws Exception\UploadException
-	 * @throws Exception\IllegalFileExtensionException
-	 * @throws Exception\UploadSizeException
-	 * @throws Exception\InsufficientUserPermissionsException
-	 * @return void
-	 */
-	protected function checkFileUploadPermissions($localFilePath, $targetFolder, $targetFileName, $uploadedFileSize) {
-		// Makes sure the user is allowed to upload
-		if (!$this->checkUserActionPermission('upload', 'File')) {
-			throw new Exception\InsufficientUserPermissionsException('You are not allowed to upload files to this storage "' . $this->getUid() . '"', 1322112430);
-		}
-		// Makes sure this is an uploaded file
-		if (!is_uploaded_file($localFilePath)) {
-			throw new Exception\UploadException('The upload has failed, no uploaded file found!', 1322110455);
-		}
-		// Max upload size (kb) for files.
-		$maxUploadFileSize = GeneralUtility::getMaxUploadFileSize() * 1024;
-		if ($uploadedFileSize >= $maxUploadFileSize) {
-			throw new Exception\UploadSizeException('The uploaded file exceeds the size-limit of ' . $maxUploadFileSize . ' bytes', 1322110041);
-		}
-		// Check if targetFolder is writable
-		if (!$this->checkFolderActionPermission('write', $targetFolder)) {
-			throw new Exception\InsufficientFolderWritePermissionsException('You are not allowed to write to the target folder "' . $targetFolder->getIdentifier() . '"', 1322120356);
-		}
-		// Check for a valid file extension
-		if (!$this->checkFileExtensionPermission($targetFileName)) {
-			throw new Exception\IllegalFileExtensionException('Extension of file name is not allowed in "' . $targetFileName . '"!', 1322120271);
-		}
-	}
-
-	/**
-	 * Check if a file has the permission to be copied on a File/Folder/Storage,
-	 * if not throw an exception
-	 *
-	 * @param FileInterface $file
-	 * @param Folder $targetFolder
-	 * @param string $targetFileName
-	 *
-	 * @throws Exception
-	 * @throws Exception\InsufficientFolderWritePermissionsException
-	 * @throws Exception\IllegalFileExtensionException
-	 * @throws Exception\InsufficientFileReadPermissionsException
-	 * @throws Exception\InsufficientUserPermissionsException
-	 * @return void
-	 */
-	protected function checkFileCopyPermissions(FileInterface $file, Folder $targetFolder, $targetFileName) {
-		// Check if targetFolder is within this storage, this should never happen
-		if ($this->getUid() != $targetFolder->getStorage()->getUid()) {
-			throw new Exception('The operation of the folder cannot be called by this storage "' . $this->getUid() . '"', 1319550405);
-		}
-		// Check if user is allowed to copy
-		if (!$this->checkUserActionPermission('copy', 'File')) {
-			throw new Exception\InsufficientUserPermissionsException('You are not allowed to copy files to this storage "' . $this->getUid() . '"', 1319550415);
-		}
-		// Check if $file is readable
-		if (!$this->checkFileActionPermission('read', $file)) {
-			throw new Exception\InsufficientFileReadPermissionsException('You are not allowed to read the file "' . $file->getIdentifier() . '\'', 1319550425);
-		}
-		// Check if targetFolder is writable
-		if (!$this->checkFolderActionPermission('write', $targetFolder)) {
-			throw new Exception\InsufficientFolderWritePermissionsException('You are not allowed to write to the target folder "' . $targetFolder->getIdentifier() . '"', 1319550435);
-		}
-		// Check for a valid file extension
-		if (!$this->checkFileExtensionPermission($targetFileName)) {
-			throw new Exception\IllegalFileExtensionException('You are not allowed to copy a file of that type.', 1319553317);
-		}
-	}
-
-	/**
 	 * Moves a $file into a $targetFolder
 	 * the target folder has to be part of this storage
 	 *
@@ -1160,10 +1387,10 @@ class ResourceStorage {
 	 * @return FileInterface
 	 */
 	public function moveFile($file, $targetFolder, $targetFileName = NULL, $conflictMode = 'renameNewFile') {
-		$this->checkFileMovePermissions($file, $targetFolder);
 		if ($targetFileName === NULL) {
 			$targetFileName = $file->getName();
 		}
+		$this->assureFileMovePermissions($file, $targetFolder, $targetFileName);
 		if ($targetFolder->hasFile($targetFileName)) {
 			// File exists and we should abort, let's abort
 			if ($conflictMode === 'renameNewFile') {
@@ -1225,41 +1452,6 @@ class ResourceStorage {
 	}
 
 	/**
-	 * Checks for permissions to move a file.
-	 *
-	 * @throws \RuntimeException
-	 * @throws Exception\InsufficientFileReadPermissionsException
-	 * @throws Exception\InsufficientFileWritePermissionsException
-	 * @throws Exception\InsufficientFolderAccessPermissionsException
-	 * @throws Exception\InsufficientUserPermissionsException
-	 * @param FileInterface $file
-	 * @param Folder $targetFolder
-	 * @return void
-	 */
-	protected function checkFileMovePermissions(FileInterface $file, Folder $targetFolder) {
-		// Check if targetFolder is within this storage
-		if ($this->getUid() != $targetFolder->getStorage()->getUid()) {
-			throw new \RuntimeException();
-		}
-		// Check if user is allowed to move
-		if (!$this->checkUserActionPermission('move', 'File')) {
-			throw new Exception\InsufficientUserPermissionsException('You are not allowed to move files to storage "' . $this->getUid() . '"', 1319219349);
-		}
-		// Check if $file is readable
-		if (!$this->checkFileActionPermission('read', $file)) {
-			throw new Exception\InsufficientFileReadPermissionsException('You are not allowed to read the file "' . $file->getIdentifier() . '\'', 1319219349);
-		}
-		// Check if $file is writable
-		if (!$this->checkFileActionPermission('write', $file)) {
-			throw new Exception\InsufficientFileWritePermissionsException('You are not allowed to move the file "' . $file->getIdentifier() . '\'', 1319219349);
-		}
-		// Check if targetFolder is writable
-		if (!$this->checkFolderActionPermission('write', $targetFolder)) {
-			throw new Exception\InsufficientFolderAccessPermissionsException('You are not allowed to write to the target folder "' . $targetFolder->getIdentifier() . '"', 1319219349);
-		}
-	}
-
-	/**
 	 * Previously in \TYPO3\CMS\Core\Utility\File\ExtendedFileUtility::func_rename()
 	 *
 	 * @param FileInterface $file
@@ -1273,26 +1465,10 @@ class ResourceStorage {
 	// TODO add $conflictMode setting
 	public function renameFile($file, $targetFileName) {
 		// The name should be different from the current.
-		if ($file->getIdentifier() == $targetFileName) {
+		if ($file->getName() === $targetFileName) {
 			return $file;
 		}
-		// Check if file extension is allowed
-		if ($this->checkFileExtensionPermission($targetFileName) === FALSE) {
-			throw new Exception\IllegalFileExtensionException('You are not allowed to rename a file with to this extension', 1371466663);
-		}
-		// Check if user is allowed to rename
-		if (!$this->checkUserActionPermission('rename', 'File')) {
-			throw new Exception\InsufficientUserPermissionsException('You are not allowed to rename files."', 1319219349);
-		}
-		// Check if $file is readable
-		if (!$this->checkFileActionPermission('read', $file)) {
-			throw new Exception\InsufficientFileReadPermissionsException('You are not allowed to read the file "' . $file->getIdentifier() . '\'', 1319219349);
-		}
-		// Check if $file is writable
-		if (!$this->checkFileActionPermission('write', $file)) {
-			throw new Exception\InsufficientFileWritePermissionsException('You are not allowed to rename the file "' . $file->getIdentifier() . '\'', 1319219349);
-		}
-
+		$this->assureFileRenamePermissions($file, $targetFileName);
 		$this->emitPreFileRenameSignal($file, $targetFileName);
 
 		// Call driver method to rename the file that also updates the file
@@ -1320,6 +1496,10 @@ class ResourceStorage {
 	 * @return FileInterface
 	 */
 	public function replaceFile(FileInterface $file, $localFilePath) {
+		$this->assureFileWritePermissions($file);
+		if (!$this->checkFileExtensionPermission($localFilePath)) {
+			throw new Exception\IllegalFileExtensionException('Sorce file extension not allowed', 1378132239);
+		}
 		if (!file_exists($localFilePath)) {
 			throw new \InvalidArgumentException('File "' . $localFilePath . '" does not exist.', 1325842622);
 		}
@@ -1348,7 +1528,7 @@ class ResourceStorage {
 			$targetFileName = $uploadedFileData['name'];
 		}
 		// Handling $conflictMode is delegated to addFile()
-		$this->checkFileUploadPermissions($localFilePath, $targetFolder, $targetFileName, $uploadedFileData['size']);
+		$this->assureFileUploadPermissions($localFilePath, $targetFolder, $targetFileName, $uploadedFileData['size']);
 		$resultObject = $this->addFile($localFilePath, $targetFolder, $targetFileName, $conflictMode);
 		return $resultObject;
 	}
@@ -1392,11 +1572,9 @@ class ResourceStorage {
 	 */
 	// TODO add tests
 	public function moveFolder(Folder $folderToMove, Folder $targetParentFolder, $newFolderName = NULL, $conflictMode = 'renameNewFolder') {
+		$this->assureFolderMovePermissions($folderToMove, $targetParentFolder);
 		$sourceStorage = $folderToMove->getStorage();
 		$returnObject = NULL;
-		if (!$targetParentFolder->getStorage() == $this) {
-			throw new \InvalidArgumentException('Cannot move a folder into a folder that does not belong to this storage.', 1325777289);
-		}
 		$newFolderName = $newFolderName ? $newFolderName : $folderToMove->getName();
 		// TODO check if folder already exists in $targetParentFolder, handle this conflict then
 		$this->emitPreFolderMoveSignal($folderToMove, $targetParentFolder, $newFolderName);
@@ -1434,15 +1612,15 @@ class ResourceStorage {
 	/**
 	 * Copy folder
 	 *
-	 * @param Folder $folderToCopy The folder to copy
-	 * @param Folder $targetParentFolder The target folder
+	 * @param FolderInterface $folderToCopy The folder to copy
+	 * @param FolderInterface $targetParentFolder The target folder
 	 * @param string $newFolderName
 	 * @param string $conflictMode  "overrideExistingFolder", "renameNewFolder", "cancel
 	 * @return Folder The new (copied) folder object
 	 */
-	public function copyFolder(Folder $folderToCopy, Folder $targetParentFolder, $newFolderName = NULL, $conflictMode = 'renameNewFolder') {
+	public function copyFolder(FolderInterface $folderToCopy, FolderInterface $targetParentFolder, $newFolderName = NULL, $conflictMode = 'renameNewFolder') {
 		// TODO implement the $conflictMode handling
-		// TODO permission checks
+		$this->assureFolderCopyPermissions($folderToCopy, $targetParentFolder);
 		$returnObject = NULL;
 		$newFolderName = $newFolderName ? $newFolderName : $folderToCopy->getName();
 		$this->emitPreFolderCopySignal($folderToCopy, $targetParentFolder, $newFolderName);
@@ -1488,6 +1666,8 @@ class ResourceStorage {
 	public function renameFolder($folderObject, $newName) {
 		// TODO unit tests
 
+		// Renaming the folder should check if the parent folder is writable
+		// We cannot do this however because we cannot extract the parent folder from a folder currently
 		if (!$this->checkFolderActionPermission('rename', $folderObject)) {
 			throw new \TYPO3\CMS\Core\Resource\Exception\InsufficientFileAccessPermissionsException('You are not allowed to rename the folder "' . $folderObject->getIdentifier() . '\'', 1357811441);
 		}
@@ -1517,17 +1697,15 @@ class ResourceStorage {
 	/**
 	 * Previously in \TYPO3\CMS\Core\Utility\File\ExtendedFileUtility::folder_delete()
 	 *
-	 * @param Folder    $folderObject
-	 * @param bool $deleteRecursively
+	 * @param Folder $folderObject
+	 * @param boolean $deleteRecursively
 	 * @throws \RuntimeException
-	 * @throws Exception\InsufficientFileAccessPermissionsException
 	 * @return boolean
 	 */
 	public function deleteFolder($folderObject, $deleteRecursively = FALSE) {
-		if (!$this->checkFolderActionPermission('remove', $folderObject)) {
-			throw new Exception\InsufficientFileAccessPermissionsException('You are not allowed to access the folder "' . $folderObject->getIdentifier() . '\'', 1323423953);
-		}
-		if (!$this->driver->isFolderEmpty($folderObject) && !$deleteRecursively) {
+		$isEmpty = $this->driver->isFolderEmpty($folderObject);
+		$this->assureFolderDeletePermission($folderObject, ($deleteRecursively && !$isEmpty));
+		if (!$isEmpty && !$deleteRecursively) {
 			throw new \RuntimeException('Could not delete folder "' . $folderObject->getIdentifier() . '" because it is not empty.', 1325952534);
 		}
 
@@ -1550,6 +1728,7 @@ class ResourceStorage {
 	 * @return array Information about the folders found.
 	 */
 	public function getFolderList($path, $start = 0, $numberOfItems = 0, $useFilters = TRUE) {
+		// Permissions are checked in $this->fetchFolderListFromDriver()
 		$filters = $useFilters === TRUE ? $this->fileAndFolderNameFilters : array();
 		return $this->fetchFolderListFromDriver($path, $start, $numberOfItems, $filters);
 	}
@@ -1563,6 +1742,10 @@ class ResourceStorage {
 	 * @return array
 	 */
 	public function fetchFolderListFromDriver($path, $start = 0, $numberOfItems = 0, array $folderFilterCallbacks = array(), $recursive = FALSE) {
+		// This also checks for access to that path and throws exceptions accordingly
+		if ($this->getFolder($path) === NULL) {
+			return array();
+		}
 		$items = $this->driver->getFolderList($path, $start, $numberOfItems, $folderFilterCallbacks, $recursive);
 		if (!empty($items)) {
 			// Exclude the _processed_ folder, so it won't get indexed etc
@@ -1590,6 +1773,7 @@ class ResourceStorage {
 	 * @return boolean
 	 */
 	public function hasFolder($identifier) {
+		$this->assureFolderReadPermission();
 		return $this->driver->folderExists($identifier);
 	}
 
@@ -1601,6 +1785,7 @@ class ResourceStorage {
 	 * @return boolean
 	 */
 	public function hasFolderInFolder($folderName, Folder $folder) {
+		$this->assureFolderReadPermission($folder);
 		return $this->driver->folderExistsInFolder($folderName, $folder);
 	}
 
@@ -1626,6 +1811,7 @@ class ResourceStorage {
 		if (!$this->checkFolderActionPermission('add', $parentFolder)) {
 			throw new Exception\InsufficientFolderWritePermissionsException('You are not allowed to create directories in the folder "' . $parentFolder->getIdentifier() . '"', 1323059807);
 		}
+		// TODO this only works with hirachical file systems
 		$folderParts = GeneralUtility::trimExplode('/', $folderName, TRUE);
 		foreach ($folderParts as $folder) {
 			// TODO check if folder creation succeeded
@@ -1658,12 +1844,10 @@ class ResourceStorage {
 		if (!$this->driver->folderExists($identifier)) {
 			throw new Exception\FolderDoesNotExistException('Folder ' . $identifier . ' does not exist.', 1320575630);
 		}
-		$folderObject = $this->driver->getFolder($identifier);
-		if ($this->fileMounts && !$this->isWithinFileMountBoundaries($folderObject)) {
-			throw new Exception\NotInMountPointException('Folder "' . $identifier . '" is not within your mount points.', 1330120649);
-		} else {
-			return $folderObject;
-		}
+		$folder = $this->driver->getFolder($identifier);
+		$this->assureFolderReadPermission($folder);
+
+		return $folder;
 	}
 
 	/**

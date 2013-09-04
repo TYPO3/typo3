@@ -67,7 +67,7 @@ class ResourceStorageTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCa
 	 * @return void
 	 */
 	protected function prepareFixture($configuration, $mockPermissionChecks = FALSE, $driverObject = NULL, array $storageRecord = array()) {
-		$permissionMethods = array('checkFolderActionPermission', 'checkFileActionPermission', 'checkUserActionPermission');
+		$permissionMethods = array('assureFileAddPermissions', 'checkFolderActionPermission', 'checkFileActionPermission', 'checkUserActionPermission', 'checkFileExtensionPermission', 'isWithinFileMountBoundaries');
 		$mockedMethods = NULL;
 		$configuration = $this->convertConfigurationArrayToFlexformXml($configuration);
 		$storageRecord = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($storageRecord, array(
@@ -240,7 +240,7 @@ class ResourceStorageTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCa
 		));
 		$this->initializeVfs();
 		$localFilePath = $this->getUrlInMount('file.ext');
-		$this->prepareFixture(array());
+		$this->prepareFixture(array(), TRUE);
 		/** @var $driver \TYPO3\CMS\Core\Resource\Driver\LocalDriver */
 		$driver = $this->getMock('TYPO3\\CMS\\Core\\Resource\\Driver\\LocalDriver', array('addFile'), array(array('basePath' => $this->getUrlInMount('targetFolder/'))));
 		$driver->expects($this->once())->method('addFile')->with($this->equalTo($localFilePath), $this->anything(), $this->equalTo('file.ext'));
@@ -261,7 +261,7 @@ class ResourceStorageTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCa
 			'file.ext' => 'ajslkd'
 		));
 		$this->initializeVfs();
-		$this->prepareFixture(array());
+		$this->prepareFixture(array(), TRUE);
 		/** @var $driver \TYPO3\CMS\Core\Resource\Driver\LocalDriver */
 		$driver = $this->getMock('TYPO3\\CMS\\Core\\Resource\\Driver\\LocalDriver', array('addFile', 'fileExistsInFolder'), array(array('basePath' => $this->getUrlInMount('targetFolder/'))));
 		$driver->expects($this->once())->method('addFile')->with($this->anything(), $this->anything(), $this->equalTo('file_02.ext'));
@@ -296,16 +296,17 @@ class ResourceStorageTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCa
 			'read action on readable/writable folder' => array(
 				'read',
 				array('r' => TRUE, 'w' => TRUE),
+				TRUE
 			),
 			'read action on unreadable folder' => array(
 				'read',
 				array('r' => FALSE, 'w' => TRUE),
-				'TYPO3\\CMS\\Core\\Resource\\Exception\\InsufficientFolderReadPermissionsException'
+				FALSE
 			),
 			'write action on read-only folder' => array(
 				'write',
 				array('r' => TRUE, 'w' => FALSE),
-				'TYPO3\\CMS\\Core\\Resource\\Exception\\InsufficientFolderWritePermissionsException'
+				FALSE
 			)
 		);
 	}
@@ -315,9 +316,9 @@ class ResourceStorageTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCa
 	 * @dataProvider checkFolderPermissionsFilesystemPermissionsDataProvider
 	 * @param string $action 'read' or 'write'
 	 * @param array $permissionsFromDriver The permissions as returned from the driver
-	 * @param boolean $expectedException
+	 * @param boolean $expectedResult
 	 */
-	public function checkFolderPermissionsRespectsFilesystemPermissions($action, $permissionsFromDriver, $expectedException = '') {
+	public function checkFolderPermissionsRespectsFilesystemPermissions($action, $permissionsFromDriver, $expectedResult) {
 		$mockedDriver = $this->getMock('TYPO3\\CMS\\Core\\Resource\\Driver\\LocalDriver');
 		$mockedDriver->expects($this->any())->method('getFolderPermissions')->will($this->returnValue($permissionsFromDriver));
 		$mockedFolder = $this->getMock('TYPO3\\CMS\\Core\\Resource\\Folder', array(), array(), '', FALSE);
@@ -328,13 +329,8 @@ class ResourceStorageTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCa
 		$fixture->expects($this->any())->method('isBrowsable')->will($this->returnValue(TRUE));
 		$fixture->expects($this->any())->method('checkUserActionPermission')->will($this->returnValue(TRUE));
 		$fixture->setDriver($mockedDriver);
-		if ($expectedException == '') {
-			$this->assertTrue($fixture->checkFolderActionPermission($action, $mockedFolder));
-		} else {
-			$this->markTestSkipped('The exception has been disable in TYPO3\\CMS\\Core\\Resource\\ResourceStorage');
-			$this->setExpectedException($expectedException);
-			$fixture->checkFolderActionPermission($action, $mockedFolder);
-		}
+
+		$this->assertSame($expectedResult, $fixture->checkFolderActionPermission($action, $mockedFolder));
 	}
 
 	/**
@@ -389,6 +385,7 @@ class ResourceStorageTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCa
 	 */
 	public function userActionIsDisallowedIfPermissionIsSetToFalse() {
 		$this->prepareFixture(array());
+		$this->fixture->setEvaluatePermissions(TRUE);
 		$this->fixture->setUserPermissions(array('readFolder' => FALSE));
 		$this->assertFalse($this->fixture->checkUserActionPermission('read', 'folder'));
 	}
@@ -398,6 +395,7 @@ class ResourceStorageTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCa
 	 */
 	public function userActionIsDisallowedIfPermissionIsNotSet() {
 		$this->prepareFixture(array());
+		$this->fixture->setEvaluatePermissions(TRUE);
 		$this->fixture->setUserPermissions(array('readFolder' => TRUE));
 		$this->assertFalse($this->fixture->checkUserActionPermission('write', 'folder'));
 	}
@@ -407,7 +405,6 @@ class ResourceStorageTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCa
 	 * @group integration
 	 */
 	public function setFileContentsUpdatesObjectProperties() {
-		$fileContents = 'asdf';
 		$this->initializeVfs();
 		$this->prepareFixture(array(), TRUE);
 		$fileProperties = array(
@@ -448,7 +445,7 @@ class ResourceStorageTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCa
 		$driver = $this->getMock('TYPO3\\CMS\\Core\\Resource\\Driver\\LocalDriver', array(), array(array('basePath' => $this->getMountRootUrl())));
 		$driver->expects($this->once())->method('addFileRaw')->with($localFilePath, $targetFolder, $this->equalTo('file.ext'))->will($this->returnValue('/targetFolder/file.ext'));
 		/** @var $fixture \TYPO3\CMS\Core\Resource\ResourceStorage */
-		$fixture = $this->getMock('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', array('checkFileMovePermissions', 'updateFile'), array($driver, array('configuration' => $configuration)));
+		$fixture = $this->getMock('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', array('assureFileMovePermissions', 'updateFile'), array($driver, array('configuration' => $configuration)));
 		$fixture->expects($this->once())->method('updateFile')->with($this->equalTo($sourceFile), $this->equalTo('/targetFolder/file.ext'));
 		$fixture->moveFile($sourceFile, $targetFolder, 'file.ext');
 	}
@@ -474,7 +471,7 @@ class ResourceStorageTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCa
 		$driver = $this->getMock('TYPO3\\CMS\\Core\\Resource\\Driver\\LocalDriver', array(), array(array('basePath' => $this->getMountRootUrl())));
 		$driver->expects($this->once())->method('addFile')->with($localFilePath, $targetFolder, $this->equalTo('file.ext'));
 		/** @var $fixture \TYPO3\CMS\Core\Resource\ResourceStorage */
-		$fixture = $this->getMock('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', array('checkFileCopyPermissions'), array($driver, array('configuration' => $storageConfiguration)));
+		$fixture = $this->getMock('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', array('assureFileCopyPermissions'), array($driver, array('configuration' => $storageConfiguration)));
 		$fixture->copyFile($sourceFile, $targetFolder, 'file.ext');
 	}
 
@@ -509,7 +506,7 @@ class ResourceStorageTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCa
 			'File' => '',
 			'fail' => ''
 		);
-		$this->prepareFixture(array());
+		$this->prepareFixture(array(), TRUE);
 		$driver = $this->createDriverMock(array('basePath' => $this->getMountRootUrl()), $this->fixture, array('getFileList'));
 		$driver->expects($this->once())->method('getFileList')->will($this->returnValue($fileList));
 		$fileList = $this->fixture->getFileList('/');
@@ -527,7 +524,7 @@ class ResourceStorageTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCa
 			'12345' => 'fdsa',
 			'IMG_1234.jpg' => 'asdf'
 		);
-		$this->prepareFixture(array());
+		$this->prepareFixture(array(), TRUE);
 		$driver = $this->createDriverMock(array(), $this->fixture, array('getFileList'));
 		$driver->expects($this->once())->method('getFileList')->will($this->returnValue($fileList));
 		$fileList = $this->fixture->getFileList('/');
@@ -657,7 +654,7 @@ class ResourceStorageTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCa
 	 * @test
 	 */
 	public function getFileListHandsOverRecursiveFALSEifNotExplicitlySet() {
-		$this->prepareFixture(array());
+		$this->prepareFixture(array(), TRUE);
 		$driver = $this->createDriverMock(array('basePath' => $this->getMountRootUrl()), $this->fixture, array('getFileList'));
 		$driver->expects($this->once())
 			->method('getFileList')
@@ -671,7 +668,7 @@ class ResourceStorageTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCa
 	 */
 	public function getFileListHandsOverRecursiveTRUEifSet() {
 
-		$this->prepareFixture(array());
+		$this->prepareFixture(array(), TRUE);
 		$driver = $this->createDriverMock(array('basePath' => $this->getMountRootUrl()), $this->fixture, array('getFileList'));
 		$driver->expects($this->once())
 			->method('getFileList')
@@ -804,12 +801,9 @@ class ResourceStorageTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCa
 	public function fetchFolderListFromDriverReturnsFolderWithoutProcessedFolder($path, $processingFolder, $folderList, $expectedItems) {
 		$driverMock = $this->createDriverMock(array(), NULL, array('getFolderList', 'folderExists'));
 		$driverMock->expects($this->once())->method('getFolderList')->will($this->returnValue($folderList));
-		if (!empty($expectedItems)) {
-			// This function is called only if there were any folders retrieved
-			$driverMock->expects($this->once())->method('folderExists')->will($this->returnValue(TRUE));
-		}
+		$driverMock->expects($this->any())->method('folderExists')->will($this->returnValue(TRUE));
 
-		$this->prepareFixture(array(), FALSE, $driverMock, array('processingfolder' => $processingFolder));
+		$this->prepareFixture(array(), TRUE, $driverMock, array('processingfolder' => $processingFolder));
 
 		$this->assertSame($expectedItems, $this->fixture->fetchFolderListFromDriver($path));
 	}

@@ -1547,29 +1547,27 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 * permissions.file.default {
 	 * addFile = 1
 	 * readFile = 1
-	 * editFile = 1
 	 * writeFile = 1
-	 * uploadFile = 1
 	 * copyFile = 1
 	 * moveFile = 1
 	 * renameFile = 1
 	 * unzipFile = 1
-	 * removeFile = 1
+	 * deleteFile = 1
 	 *
 	 * addFolder = 1
 	 * readFolder = 1
+	 * writeFolder = 1
 	 * copyFolder = 1
 	 * moveFolder = 1
-	 * writeFolder = 1
 	 * renameFolder = 1
-	 * removeFolder = 1
-	 * removeSubfolders = 1
+	 * deleteFolder = 1
+	 * recursivedeleteFolder = 1
 	 * }
 	 *
 	 * # overwrite settings for a specific storageObject
 	 * permissions.file.storage.StorageUid {
-	 * readFile = 0
-	 * removeSubfolders = 1
+	 * readFile = 1
+	 * recursivedeleteFolder = 0
 	 * }
 	 *
 	 * Please note that these permissions only apply, if the storage has the
@@ -1584,23 +1582,21 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 				// File permissions
 				'addFile' => TRUE,
 				'readFile' => TRUE,
-				'editFile' => TRUE,
 				'writeFile' => TRUE,
-				'uploadFile' => TRUE,
 				'copyFile' => TRUE,
 				'moveFile' => TRUE,
 				'renameFile' => TRUE,
 				'unzipFile' => TRUE,
-				'removeFile' => TRUE,
+				'deleteFile' => TRUE,
 				// Folder permissions
 				'addFolder' => TRUE,
 				'readFolder' => TRUE,
+				'writeFolder' => TRUE,
 				'copyFolder' => TRUE,
 				'moveFolder' => TRUE,
 				'renameFolder' => TRUE,
-				'writeFolder' => TRUE,
-				'removeFolder' => TRUE,
-				'removeSubfolders' => TRUE
+				'deleteFolder' => TRUE,
+				'recursivedeleteFolder' => TRUE
 			);
 			if (!$this->isAdmin()) {
 				$defaultPermissionsTsConfig = $this->getTSConfigProp('permissions.file.default');
@@ -1611,29 +1607,27 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 					// Lower permissions if the old file operation permissions are not set
 					if (!($oldFileOperationPermissions & 1)) {
 						$defaultOptions['addFile'] = FALSE;
-						$defaultOptions['uploadFile'] = FALSE;
+						$defaultOptions['writeFile'] = FALSE;
 						$defaultOptions['copyFile'] = FALSE;
 						$defaultOptions['moveFile'] = FALSE;
 						$defaultOptions['renameFile'] = FALSE;
-						$defaultOptions['removeFile'] = FALSE;
-						$defaultOptions['editFile'] = FALSE;
-						$defaultOptions['writeFile'] = FALSE;
+						$defaultOptions['deleteFile'] = FALSE;
 					}
 					if (!($oldFileOperationPermissions & 2)) {
 						$defaultOptions['unzipFile'] = FALSE;
 					}
 					if (!($oldFileOperationPermissions & 4)) {
 						$defaultOptions['addFolder'] = FALSE;
+						$defaultOptions['writeFolder'] = FALSE;
 						$defaultOptions['moveFolder'] = FALSE;
 						$defaultOptions['renameFolder'] = FALSE;
-						$defaultOptions['removeFolder'] = FALSE;
-						$defaultOptions['writeFolder'] = FALSE;
+						$defaultOptions['deleteFolder'] = FALSE;
 					}
 					if (!($oldFileOperationPermissions & 8)) {
 						$defaultOptions['copyFolder'] = FALSE;
 					}
 					if (!($oldFileOperationPermissions & 16)) {
-						$defaultOptions['removeSubfolders'] = FALSE;
+						$defaultOptions['recursivedeleteFolder'] = FALSE;
 					}
 				}
 			}
