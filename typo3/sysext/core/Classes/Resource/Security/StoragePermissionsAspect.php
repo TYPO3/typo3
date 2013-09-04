@@ -41,8 +41,6 @@ use TYPO3\CMS\Core\Resource\ResourceStorage;
  *
  * The aspect injects user permissions and mount points into the storage
  * based on user or group configuration.
- *
- * @package TYPO3\CMS\Core\Resource\Security
  */
 class StoragePermissionsAspect {
 
@@ -71,6 +69,7 @@ class StoragePermissionsAspect {
 	 *
 	 * @param ResourceFactory $resourceFactory
 	 * @param ResourceStorage $storage
+	 * @return void
 	 */
 	public function addUserPermissionsToStorage(ResourceFactory $resourceFactory, ResourceStorage $storage) {
 		if (!$this->backendUserAuthentication->isAdmin()) {
@@ -88,6 +87,7 @@ class StoragePermissionsAspect {
 	 * Adds file mounts from the user's file mount records
 	 *
 	 * @param ResourceStorage $storage
+	 * @return void
 	 */
 	protected function addFileMountsToStorage(ResourceStorage $storage) {
 		foreach ($this->backendUserAuthentication->getFileMountRecords() as $fileMountRow) {
@@ -101,3 +101,4 @@ class StoragePermissionsAspect {
 		}
 	}
 }
+?>
