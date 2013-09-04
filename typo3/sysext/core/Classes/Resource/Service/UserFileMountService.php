@@ -26,6 +26,8 @@ namespace TYPO3\CMS\Core\Resource\Service;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Service class for implementing the user filemounts,
@@ -56,16 +58,29 @@ class UserFileMountService {
 		}
 		if ($storageUid > 0) {
 			/** @var $storageRepository \TYPO3\CMS\Core\Resource\StorageRepository */
-			$storageRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\StorageRepository');
+			$storageRepository = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\StorageRepository');
 			/** @var $storage \TYPO3\CMS\Core\Resource\ResourceStorage */
 			$storage = $storageRepository->findByUid($storageUid);
-			$rootLevelFolder = $storage->getRootLevelFolder();
-			$folderItems = $this->getSubfoldersForOptionList($rootLevelFolder);
-			foreach ($folderItems as $item) {
-				$PA['items'][] = array(
-					htmlspecialchars($item->getIdentifier()),
-					htmlspecialchars($item->getIdentifier())
-				);
+			if ($storage->isBrowsable()) {
+				$rootLevelFolder = $storage->getRootLevelFolder();
+				$folderItems = $this->getSubfoldersForOptionList($rootLevelFolder);
+				foreach ($folderItems as $item) {
+					$PA['items'][] = array(
+						htmlspecialchars($item->getIdentifier()),
+						htmlspecialchars($item->getIdentifier())
+					);
+				}
+			} else {
+				/** @var \TYPO3\CMS\Core\Messaging\FlashMessageService $flashMessageService */
+				$flashMessageService = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessageService');
+				$queue = $flashMessageService->getMessageQueueByIdentifier();
+				$queue->enqueue(new FlashMessage('Storage "' . $storage->getName() . '" is not browsable. No folder is currently selectable.', '', FlashMessage::WARNING));
+				if (!count($PA['items'])) {
+					$PA['items'][] = array(
+						$PA['row'][$PA['field']],
+						$PA['row'][$PA['field']]
+					);
+				}
 			}
 		} else {
 			$PA['items'][] = array('', 'Please choose a FAL mount from above first.');
