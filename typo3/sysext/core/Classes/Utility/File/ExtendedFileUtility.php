@@ -520,7 +520,7 @@ class ExtendedFileUtility extends \TYPO3\CMS\Core\Utility\File\BasicFileUtility 
 			throw new \TYPO3\CMS\Core\Resource\Exception\InvalidFileException('The item ' . $identifier . ' was not a file or directory!!', 1320122453);
 		}
 		if ($object->getStorage()->getUid() === 0) {
-			throw new \TYPO3\CMS\Core\Resource\Exception\InsufficientFileAccessPermissionsException("You are not allowed to access files outside your storages", 1375889830);
+			throw new \TYPO3\CMS\Core\Resource\Exception\InsufficientFileAccessPermissionsException('You are not allowed to access files outside your storages', 1375889830);
 		}
 		return $object;
 	}

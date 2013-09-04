@@ -83,7 +83,7 @@ class CreateFolderController {
 			throw new \RuntimeException($title . ': ' . $message, 1294586843);
 		}
 		if ($this->folderObject->getStorage()->getUid() === 0) {
-			throw new \TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException("You are not allowed to access folders outside your storages", 1375889838);
+			throw new \TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException('You are not allowed to access folders outside your storages', 1375889838);
 		}
 
 		// Setting the title and the icon

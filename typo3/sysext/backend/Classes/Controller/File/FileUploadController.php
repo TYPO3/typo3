@@ -68,7 +68,7 @@ class FileUploadController {
 			$this->folderObject = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->retrieveFileOrFolderObject($this->target);
 		}
 		if ($this->folderObject->getStorage()->getUid() === 0) {
-			throw new \TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException("You are not allowed to access folders outside your storages", 1375889834);
+			throw new \TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException('You are not allowed to access folders outside your storages', 1375889834);
 		}
 
 		// Cleaning and checking target directory
