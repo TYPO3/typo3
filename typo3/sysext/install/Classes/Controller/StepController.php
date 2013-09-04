@@ -164,7 +164,7 @@ class StepController extends AbstractController {
 			// configuration parameters and need an application reload.
 			$needsExecution = $stepAction->needsExecution();
 		} catch (Exception\RedirectException $e) {
-			$this->redirect();
+			$needsExecution = false;
 		}
 
 		if ($needsExecution) {
@@ -359,7 +359,7 @@ class StepController extends AbstractController {
 			// configuration parameters and need an application reload.
 			$needsExecution = $action->needsExecution();
 		} catch (Exception\RedirectException $e) {
-			$this->redirect();
+			$needsExecution = false;
 		}
 
 		if (!is_dir(PATH_typo3conf)
