@@ -228,44 +228,40 @@ class BackendUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				array(
 					'addFile' => 0,
 					'readFile' => 1,
-					'editFile' => 0,
 					'writeFile' => 0,
-					'uploadFile' => 0,
 					'copyFile' => 0,
 					'moveFile' => 0,
 					'renameFile' => 0,
 					'unzipFile' => 0,
-					'removeFile' => 0,
+					'deleteFile' => 0,
 					'addFolder' => 0,
 					'readFolder' => 1,
 					'copyFolder' => 0,
 					'moveFolder' => 0,
 					'renameFolder' => 0,
 					'writeFolder' => 0,
-					'removeFolder' => 0,
-					'removeSubfolders' => 0
+					'deleteFolder' => 0,
+					'recursivedeleteFolder' => 0,
 				)
 			),
 			'Uploading allowed' => array(
 				array(
 					'addFile' => 1,
 					'readFile' => 1,
-					'editFile' => 1,
 					'writeFile' => 1,
-					'uploadFile' => 1,
 					'copyFile' => 1,
 					'moveFile' => 1,
 					'renameFile' => 1,
 					'unzipFile' => 0,
-					'removeFile' => 1,
+					'deleteFile' => 1,
 					'addFolder' => 0,
 					'readFolder' => 1,
 					'copyFolder' => 0,
 					'moveFolder' => 0,
 					'renameFolder' => 0,
 					'writeFolder' => 0,
-					'removeFolder' => 0,
-					'removeSubfolders' => 0
+					'deleteFolder' => 0,
+					'recursivedeleteFolder' => 0
 				)
 			),
 			'One value is enough' => array(
@@ -311,22 +307,20 @@ class BackendUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$defaultPermissions = array(
 			'addFile' => 1,
 			'readFile' => 1,
-			'editFile' => 1,
 			'writeFile' => 1,
-			'uploadFile' => 1,
 			'copyFile' => 1,
 			'moveFile' => 1,
 			'renameFile' => 1,
 			'unzipFile' => 1,
-			'removeFile' => 1,
+			'deleteFile' => 1,
 			'addFolder' => 1,
 			'readFolder' => 1,
 			'copyFolder' => 1,
 			'moveFolder' => 1,
 			'renameFolder' => 1,
 			'writeFolder' => 1,
-			'removeFolder' => 1,
-			'removeSubfolders' => 1
+			'deleteFolder' => 1,
+			'recursivedeleteFolder' => 1
 		);
 
 		return array(
@@ -335,27 +329,25 @@ class BackendUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				1,
 				array(
 					'addFile' => 0,
-					'removeSubfolders' =>0
+					'recursivedeleteFolder' =>0
 				),
 				array(
 					'addFile' => 0,
 					'readFile' => 1,
-					'editFile' => 1,
 					'writeFile' => 1,
-					'uploadFile' => 1,
 					'copyFile' => 1,
 					'moveFile' => 1,
 					'renameFile' => 1,
 					'unzipFile' => 1,
-					'removeFile' => 1,
+					'deleteFile' => 1,
 					'addFolder' => 1,
 					'readFolder' => 1,
 					'copyFolder' => 1,
 					'moveFolder' => 1,
 					'renameFolder' => 1,
 					'writeFolder' => 1,
-					'removeFolder' => 1,
-					'removeSubfolders' => 0
+					'deleteFolder' => 1,
+					'recursivedeleteFolder' => 0
 				)
 			),
 			'Overwrites given storage 0 permissions with default permissions' => array(
@@ -363,27 +355,25 @@ class BackendUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				0,
 				array(
 					'addFile' => 0,
-					'removeSubfolders' =>0
+					'recursivedeleteFolder' =>0
 				),
 				array(
 					'addFile' => 0,
 					'readFile' => 1,
-					'editFile' => 1,
 					'writeFile' => 1,
-					'uploadFile' => 1,
 					'copyFile' => 1,
 					'moveFile' => 1,
 					'renameFile' => 1,
 					'unzipFile' => 1,
-					'removeFile' => 1,
+					'deleteFile' => 1,
 					'addFolder' => 1,
 					'readFolder' => 1,
 					'copyFolder' => 1,
 					'moveFolder' => 1,
 					'renameFolder' => 1,
 					'writeFolder' => 1,
-					'removeFolder' => 1,
-					'removeSubfolders' => 0
+					'deleteFolder' => 1,
+					'recursivedeleteFolder' => 0
 				)
 			),
 			'Returns default permissions if no storage permissions are found' => array(
@@ -393,22 +383,20 @@ class BackendUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				array(
 					'addFile' => 1,
 					'readFile' => 1,
-					'editFile' => 1,
 					'writeFile' => 1,
-					'uploadFile' => 1,
 					'copyFile' => 1,
 					'moveFile' => 1,
 					'renameFile' => 1,
 					'unzipFile' => 1,
-					'removeFile' => 1,
+					'deleteFile' => 1,
 					'addFolder' => 1,
 					'readFolder' => 1,
 					'copyFolder' => 1,
 					'moveFolder' => 1,
 					'renameFolder' => 1,
 					'writeFolder' => 1,
-					'removeFolder' => 1,
-					'removeSubfolders' => 1
+					'deleteFolder' => 1,
+					'recursivedeleteFolder' => 1
 				)
 			),
 		);
@@ -495,22 +483,20 @@ class BackendUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				array(
 					'addFile' => 0,
 					'readFile' => 1,
-					'editFile' => 0,
 					'writeFile' => 0,
-					'uploadFile' => 0,
 					'copyFile' => 0,
 					'moveFile' => 0,
 					'renameFile' => 0,
 					'unzipFile' => 0,
-					'removeFile' => 0,
+					'deleteFile' => 0,
 					'addFolder' => 0,
 					'readFolder' => 1,
 					'copyFolder' => 0,
 					'moveFolder' => 0,
 					'renameFolder' => 0,
 					'writeFolder' => 0,
-					'removeFolder' => 0,
-					'removeSubfolders' => 0
+					'deleteFolder' => 0,
+					'recursivedeleteFolder' => 0
 				)
 			),
 			'Uploading allowed' => array(
@@ -518,22 +504,20 @@ class BackendUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				array(
 					'addFile' => 1,
 					'readFile' => 1,
-					'editFile' => 1,
 					'writeFile' => 1,
-					'uploadFile' => 1,
 					'copyFile' => 1,
 					'moveFile' => 1,
 					'renameFile' => 1,
 					'unzipFile' => 0,
-					'removeFile' => 1,
+					'deleteFile' => 1,
 					'addFolder' => 0,
 					'readFolder' => 1,
 					'copyFolder' => 0,
 					'moveFolder' => 0,
 					'renameFolder' => 0,
 					'writeFolder' => 0,
-					'removeFolder' => 0,
-					'removeSubfolders' => 0
+					'deleteFolder' => 0,
+					'recursivedeleteFolder' => 0
 				)
 			),
 			'Unzip allowed' => array(
@@ -541,22 +525,20 @@ class BackendUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				array(
 					'addFile' => 0,
 					'readFile' => 1,
-					'editFile' => 0,
 					'writeFile' => 0,
-					'uploadFile' => 0,
 					'copyFile' => 0,
 					'moveFile' => 0,
 					'renameFile' => 0,
 					'unzipFile' => 1,
-					'removeFile' => 0,
+					'deleteFile' => 0,
 					'addFolder' => 0,
 					'readFolder' => 1,
 					'copyFolder' => 0,
 					'moveFolder' => 0,
 					'renameFolder' => 0,
 					'writeFolder' => 0,
-					'removeFolder' => 0,
-					'removeSubfolders' => 0
+					'deleteFolder' => 0,
+					'recursivedeleteFolder' => 0
 				)
 			),
 			'Write folder allowed' => array(
@@ -564,22 +546,20 @@ class BackendUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				array(
 					'addFile' => 0,
 					'readFile' => 1,
-					'editFile' => 0,
 					'writeFile' => 0,
-					'uploadFile' => 0,
 					'copyFile' => 0,
 					'moveFile' => 0,
 					'renameFile' => 0,
 					'unzipFile' => 0,
-					'removeFile' => 0,
+					'deleteFile' => 0,
 					'addFolder' => 1,
 					'readFolder' => 1,
 					'copyFolder' => 0,
 					'moveFolder' => 1,
 					'renameFolder' => 1,
 					'writeFolder' => 1,
-					'removeFolder' => 1,
-					'removeSubfolders' => 0
+					'deleteFolder' => 1,
+					'recursivedeleteFolder' => 0
 				)
 			),
 			'Copy folder allowed' => array(
@@ -587,22 +567,20 @@ class BackendUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				array(
 					'addFile' => 0,
 					'readFile' => 1,
-					'editFile' => 0,
 					'writeFile' => 0,
-					'uploadFile' => 0,
 					'copyFile' => 0,
 					'moveFile' => 0,
 					'renameFile' => 0,
 					'unzipFile' => 0,
-					'removeFile' => 0,
+					'deleteFile' => 0,
 					'addFolder' => 0,
 					'readFolder' => 1,
 					'copyFolder' => 1,
 					'moveFolder' => 0,
 					'renameFolder' => 0,
 					'writeFolder' => 0,
-					'removeFolder' => 0,
-					'removeSubfolders' => 0
+					'deleteFolder' => 0,
+					'recursivedeleteFolder' => 0
 				)
 			),
 			'Copy folder and remove subfolders allowed' => array(
@@ -610,22 +588,20 @@ class BackendUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				array(
 					'addFile' => 0,
 					'readFile' => 1,
-					'editFile' => 0,
 					'writeFile' => 0,
-					'uploadFile' => 0,
 					'copyFile' => 0,
 					'moveFile' => 0,
 					'renameFile' => 0,
 					'unzipFile' => 0,
-					'removeFile' => 0,
+					'deleteFile' => 0,
 					'addFolder' => 0,
 					'readFolder' => 1,
 					'copyFolder' => 1,
 					'moveFolder' => 0,
 					'renameFolder' => 0,
 					'writeFolder' => 0,
-					'removeFolder' => 0,
-					'removeSubfolders' => 1
+					'deleteFolder' => 0,
+					'recursivedeleteFolder' => 1
 				)
 			),
 		);
@@ -666,22 +642,20 @@ class BackendUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$expectedPermissions = array(
 			'addFile' => TRUE,
 			'readFile' => TRUE,
-			'editFile' => TRUE,
 			'writeFile' => TRUE,
-			'uploadFile' => TRUE,
 			'copyFile' => TRUE,
 			'moveFile' => TRUE,
 			'renameFile' => TRUE,
 			'unzipFile' => TRUE,
-			'removeFile' => TRUE,
+			'deleteFile' => TRUE,
 			'addFolder' => TRUE,
 			'readFolder' => TRUE,
 			'copyFolder' => TRUE,
 			'moveFolder' => TRUE,
 			'renameFolder' => TRUE,
 			'writeFolder' => TRUE,
-			'removeFolder' => TRUE,
-			'removeSubfolders' => TRUE
+			'deleteFolder' => TRUE,
+			'recursivedeleteFolder' => TRUE
 		);
 
 		$this->assertEquals($expectedPermissions, $this->fixture->getFilePermissions());
