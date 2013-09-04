@@ -26,6 +26,9 @@ namespace TYPO3\CMS\Core\Authentication;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * TYPO3 backend user authentication
  * Contains most of the functions used for checking permissions, authenticating users,
@@ -1514,60 +1517,90 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 				$this->fileStorages[$storageObject->getUid()] = $storageObject;
 			}
 		} else {
-			// If userHomePath is set, we attempt to mount it
-			if ($GLOBALS['TYPO3_CONF_VARS']['BE']['userHomePath']) {
-				list($userHomeStorageUid, $userHomeFilter) = explode(':', $GLOBALS['TYPO3_CONF_VARS']['BE']['userHomePath'], 2);
-				$userHomeStorageUid = intval($userHomeStorageUid);
-				if ($userHomeStorageUid > 0) {
-					$storageObject = $storageRepository->findByUid($userHomeStorageUid);
-					// First try and mount with [uid]_[username]
-					$userHomeFilterIdentifier = $userHomeFilter . $this->user['uid'] . '_' . $this->user['username'] . $GLOBALS['TYPO3_CONF_VARS']['BE']['userUploadDir'];
-					$didMount = $storageObject->addFileMount($userHomeFilterIdentifier);
-					// If that failed, try and mount with only [uid]
-					if (!$didMount) {
-						$userHomeFilterIdentifier = $userHomeFilter . $this->user['uid'] . '_' . $this->user['username'] . $GLOBALS['TYPO3_CONF_VARS']['BE']['userUploadDir'];
-						$storageObject->addFileMount($userHomeFilterIdentifier);
-					}
-					$this->fileStorages[$storageObject->getUid()] = $storageObject;
-				}
-			}
-			// Mount group home-dirs
-			if (($this->user['options'] & 2) == 2 && $GLOBALS['TYPO3_CONF_VARS']['BE']['groupHomePath'] != '') {
-				// If groupHomePath is set, we attempt to mount it
-				list($groupHomeStorageUid, $groupHomeFilter) = explode(':', $GLOBALS['TYPO3_CONF_VARS']['BE']['groupHomePath'], 2);
-				$groupHomeStorageUid = intval($groupHomeStorageUid);
-				if ($groupHomeStorageUid > 0) {
-					$storageObject = $storageRepository->findByUid($groupHomeStorageUid);
-					foreach ($this->userGroups as $groupUid => $groupData) {
-						$groupHomeFilterIdentifier = $groupHomeFilter . $groupData['uid'];
-						$storageObject->addFileMount($groupHomeFilterIdentifier);
-					}
-					$this->fileStorages[$storageObject->getUid()] = $storageObject;
-				}
-			}
-			// Processing filemounts (both from the user and the groups)
-			$this->dataLists['filemount_list'] = \TYPO3\CMS\Core\Utility\GeneralUtility::uniqueList($this->dataLists['filemount_list']);
-			if ($this->dataLists['filemount_list']) {
-				$orderBy = $GLOBALS['TCA']['sys_filemounts']['ctrl']['default_sortby'] ? $GLOBALS['TYPO3_DB']->stripOrderBy($GLOBALS['TCA']['sys_filemounts']['ctrl']['default_sortby']) : 'sorting';
-				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_filemounts', 'deleted=0 AND hidden=0 AND pid=0 AND uid IN (' . $this->dataLists['filemount_list'] . ')', '', $orderBy);
-				while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+			// Regular users only have storages that are defined in their filemounts
+			// Permissions and file mounts for the storage are added in StoragePermissionAspect
+			foreach ($this->getFileMountRecords() as $row) {
+				if (!array_key_exists(intval($row['base']), $this->fileStorages)) {
 					$storageObject = $storageRepository->findByUid($row['base']);
-					$storageObject->addFileMount($row['path'], $row);
 					$this->fileStorages[$storageObject->getUid()] = $storageObject;
 				}
-				$GLOBALS['TYPO3_DB']->sql_free_result($res);
 			}
 		}
-		// Injects the users' permissions to each storage
-		foreach ($this->fileStorages as $storageObject) {
-			$storagePermissions = $this->getFilePermissionsForStorage($storageObject);
-			$storageObject->setUserPermissions($storagePermissions);
+
+		// This has to be called always in order to set certain filters
+		$this->evaluateUserSpecificFileFilterSettings();
+	}
+
+	/**
+	 * Returns an array of file mount records, taking workspaces and user home and group home directories into account
+	 * Needs to be called AFTER the groups have been loaded.
+	 *
+	 * @return array
+	 * @internal
+	 */
+	public function getFileMountRecords() {
+		static $fileMountRecords = array();
+
+		if (empty($fileMountRecords)) {
+			// Processing filemounts (both from the user and the groups)
+			$fileMountList = GeneralUtility::uniqueList($this->dataLists['filemount_list']);
+			$fileMounts = GeneralUtility::trimExplode(',', $fileMountList, TRUE);
+
+			// Limit filemounts if set in workspace record
+			if ($this->workspace > 0 && !empty($this->workspaceRec['file_mountpoints'])) {
+				$workspaceFileMounts = GeneralUtility::trimExplode(',', $this->workspaceRec['file_mountpoints'], TRUE);
+				$fileMounts = array_intersect($fileMounts, $workspaceFileMounts);
+				$fileMountList = implode(',', $fileMounts);
+			}
+
+			if (!empty($fileMountList)) {
+				$orderBy = $GLOBALS['TCA']['sys_filemounts']['ctrl']['default_sortby'] ? $GLOBALS['TYPO3_DB']->stripOrderBy($GLOBALS['TCA']['sys_filemounts']['ctrl']['default_sortby']) : 'sorting';
+				$fileMountRecords = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'sys_filemounts', 'deleted=0 AND hidden=0 AND pid=0 AND uid IN (' . $GLOBALS['TYPO3_DB']->cleanIntList($fileMountList) . ')', '', $orderBy);
+			}
+
+			// Personal or Group filemounts are not accessible if file mount list is set in workspace record
+			if ($this->workspace <= 0 || empty($this->workspaceRec['file_mountpoints'])) {
+				// If userHomePath is set, we attempt to mount it
+				if ($GLOBALS['TYPO3_CONF_VARS']['BE']['userHomePath']) {
+					list($userHomeStorageUid, $userHomeFilter) = explode(':', $GLOBALS['TYPO3_CONF_VARS']['BE']['userHomePath'], 2);
+					$userHomeStorageUid = intval($userHomeStorageUid);
+					$userHomeFilter = '/' . ltrim($userHomeFilter, '/');
+					if ($userHomeStorageUid > 0) {
+						// Try and mount with [uid]_[username]
+						$fileMountRecords[] = array(
+							'base' => $userHomeStorageUid,
+							'title' => $this->user['username'],
+							'path' => $userHomeFilter . $this->user['uid'] . '_' . $this->user['username'] . $GLOBALS['TYPO3_CONF_VARS']['BE']['userUploadDir']
+						);
+						// Try and mount with only [uid]
+						$fileMountRecords[] = array(
+							'base' => $userHomeStorageUid,
+							'title' => $this->user['username'],
+							'path' => $userHomeFilter . $this->user['uid'] . $GLOBALS['TYPO3_CONF_VARS']['BE']['userUploadDir']
+						);
+					}
+				}
+
+				// Mount group home-dirs
+				if (($this->user['options'] & 2) == 2 && $GLOBALS['TYPO3_CONF_VARS']['BE']['groupHomePath'] != '') {
+					// If groupHomePath is set, we attempt to mount it
+					list($groupHomeStorageUid, $groupHomeFilter) = explode(':', $GLOBALS['TYPO3_CONF_VARS']['BE']['groupHomePath'], 2);
+					$groupHomeStorageUid = intval($groupHomeStorageUid);
+					$groupHomeFilter = '/' . ltrim($groupHomeFilter, '/');
+					if ($groupHomeStorageUid > 0) {
+						foreach ($this->userGroups as $groupData) {
+							$fileMountRecords[] = array(
+								'base' => $groupHomeStorageUid,
+								'title' => $groupData['title'],
+								'path' => $groupHomeFilter . $groupData['uid']
+							);
+						}
+					}
+				}
+			}
 		}
-		// more narrowing down through the workspace
-		$this->initializeFileStoragesForWorkspace();
-		// this has to be called always in order to set certain filters
-		// @todo Should be in BE_USER object then
-		$GLOBALS['BE_USER']->evaluateUserSpecificFileFilterSettings();
+
+		return $fileMountRecords;
 	}
 
 	/**
@@ -1592,7 +1625,6 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 * but only when needed
 	 *
 	 * @return void
-	 * @todo Should be in BE_USER object then
 	 */
 	public function evaluateUserSpecificFileFilterSettings() {
 		// Add the option for also displaying the non-hidden files
@@ -1913,6 +1945,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	}
 
 	/**
+<<<<<<< HEAD
 	 * Adds more limitations for users who are no admins
 	 * this was previously in workspaceInit but has now been moved to "
 	 *
@@ -1950,6 +1983,8 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	}
 
 	/**
+=======
+>>>>>>> 7d7d385... [SECURITY] Refactor and fix FAL user permission handling
 	 * Checking if a workspace is allowed for backend user
 	 *
 	 * @param mixed $wsRec If integer, workspace record is looked up, if array it is seen as a Workspace record with at least uid, title, members and adminusers columns. Can be faked for workspaces uid 0 and -1 (online and offline)
