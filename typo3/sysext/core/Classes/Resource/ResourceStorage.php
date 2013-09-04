@@ -536,7 +536,7 @@ class ResourceStorage {
 	}
 
 	/**
-	 * @param $evaluatePermissions
+	 * @param boolean $evaluatePermissions
 	 */
 	public function setEvaluatePermissions($evaluatePermissions) {
 		$this->evaluatePermissions = (boolean) $evaluatePermissions;
@@ -558,7 +558,7 @@ class ResourceStorage {
 	 *
 	 * @param string $action
 	 * @param string $type either File or Folder
-	 * @return 	bool
+	 * @return boolean
 	 */
 	public function checkUserActionPermission($action, $type) {
 		if (!$this->evaluatePermissions) {
@@ -729,8 +729,10 @@ class ResourceStorage {
 	}
 
 	/**
-	 * @param Folder $folder If a folder is given, mountpoits are checked. If not only user folder read permissions are checked.
+	 * Assure read permission for given folder
 	 *
+	 * @param Folder $folder If a folder is given, mountpoits are checked. If not only user folder read permissions are checked.
+	 * @return void
 	 * @throws Exception\InsufficientFolderAccessPermissionsException
 	 */
 	protected function assureFolderReadPermission(Folder $folder = NULL) {
@@ -740,9 +742,11 @@ class ResourceStorage {
 	}
 
 	/**
+	 * Assure delete permission for given folder
+	 *
 	 * @param Folder $folder If a folder is given, mountpoits are checked. If not only user folder delete permissions are checked.
 	 * @param boolean $checkDeleteRecursively
-	 *
+	 * @return void
 	 * @throws Exception\InsufficientFolderAccessPermissionsException
 	 * @throws Exception\InsufficientFolderWritePermissionsException
 	 * @throws Exception\InsufficientUserPermissionsException
@@ -765,8 +769,10 @@ class ResourceStorage {
 	}
 
 	/**
-	 * @param FileInterface $file
+	 * Assure read permission for given file
 	 *
+	 * @param FileInterface $file
+	 * @return void
 	 * @throws Exception\InsufficientFileAccessPermissionsException
 	 * @throws Exception\IllegalFileExtensionException
 	 */
@@ -780,8 +786,10 @@ class ResourceStorage {
 	}
 
 	/**
-	 * @param FileInterface $file
+	 * Assure write permission for given file
 	 *
+	 * @param FileInterface $file
+	 * @return void
 	 * @throws Exception\IllegalFileExtensionException
 	 * @throws Exception\InsufficientFileWritePermissionsException
 	 * @throws Exception\InsufficientUserPermissionsException
@@ -797,8 +805,10 @@ class ResourceStorage {
 	}
 
 	/**
-	 * @param FileInterface $file
+	 * Assure delete permission for given file
 	 *
+	 * @param FileInterface $file
+	 * @return void
 	 * @throws Exception\IllegalFileExtensionException
 	 * @throws Exception\InsufficientFileWritePermissionsException
 	 * @throws Exception\InsufficientFolderWritePermissionsException
@@ -812,7 +822,7 @@ class ResourceStorage {
 		if (!$file instanceof ProcessedFile) {
 			// Check if user is allowed to delete the file and $file is writable
 			if (!$this->checkFileActionPermission('delete', $file)) {
-				throw new Exception\InsufficientFileWritePermissionsException('You are not allowed to delete the file "' . $file->getIdentifier() . '\'', 1319550425);
+				throw new Exception\InsufficientFileWritePermissionsException('You are not allowed to delete the file "' . $file->getIdentifier() . '"', 1319550425);
 			}
 			// Check if the user has write permissions to folders
 			// Would be good if we could check for actual write permissions in the containig folder
@@ -966,7 +976,7 @@ class ResourceStorage {
 		}
 		// Check if user is allowed to copy
 		if (!$this->checkFileActionPermission('copy', $file)) {
-			throw new Exception\InsufficientFileReadPermissionsException('You are not allowed to copy the file "' . $file->getIdentifier() . '\'', 1319550425);
+			throw new Exception\InsufficientFileReadPermissionsException('You are not allowed to copy the file "' . $file->getIdentifier() . '"', 1319550425);
 		}
 		// Check if targetFolder is writable
 		if (!$this->checkFolderActionPermission('write', $targetFolder)) {
@@ -999,7 +1009,7 @@ class ResourceStorage {
 		}
 		// Check if user is allowed to copy and the folder is readable
 		if (!$this->checkFolderActionPermission('copy', $folderToCopy)) {
-			throw new Exception\InsufficientFileReadPermissionsException('You are not allowed to copy the folder "' . $folderToCopy->getIdentifier() . '\'', 1377777629);
+			throw new Exception\InsufficientFileReadPermissionsException('You are not allowed to copy the folder "' . $folderToCopy->getIdentifier() . '"', 1377777629);
 		}
 		// Check if targetFolder is writable
 		if (!$this->checkFolderActionPermission('write', $targetParentFolder)) {
@@ -1030,7 +1040,7 @@ class ResourceStorage {
 		// In fact we would need to check if the parent folder of the folder to move is writable also
 		// But as of now we cannot extract the parent folder from this folder
 		if (!$this->checkFolderActionPermission('move', $folderToMove)) {
-			throw new Exception\InsufficientFileReadPermissionsException('You are not allowed to copy the folder "' . $folderToMove->getIdentifier() . '\'', 1377778045);
+			throw new Exception\InsufficientFileReadPermissionsException('You are not allowed to copy the folder "' . $folderToMove->getIdentifier() . '"', 1377778045);
 		}
 		// Check if targetFolder is writable
 		if (!$this->checkFolderActionPermission('write', $targetParentFolder)) {
