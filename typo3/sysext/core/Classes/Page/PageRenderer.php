@@ -1877,6 +1877,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	public function render($part = self::PART_COMPLETE) {
 		$this->prepareRendering();
 		list($jsLibs, $jsFiles, $jsFooterFiles, $cssFiles, $jsInline, $cssInline, $jsFooterInline, $jsFooterLibs) = $this->renderJavaScriptAndCss();
+		$this->executePostRenderHook($jsLibs, $jsFiles, $jsFooterFiles, $cssFiles, $jsInline, $cssInline, $jsFooterInline, $jsFooterLibs);
 		$metaTags = implode(LF, $this->metaTags);
 		$markerArray = $this->getPreparedMarkerArray($jsLibs, $jsFiles, $jsFooterFiles, $cssFiles, $jsInline, $cssInline, $jsFooterInline, $jsFooterLibs, $metaTags);
 		$template = $this->getTemplateForPart($part);
@@ -1893,6 +1894,8 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	public function renderPageWithUncachedObjects($substituteHash) {
 		$this->prepareRendering();
+		list($jsLibs, $jsFiles, $jsFooterFiles, $cssFiles, $jsInline, $cssInline, $jsFooterInline, $jsFooterLibs) = $this->renderJavaScriptAndCss();
+		$this->executePostRenderHook($jsLibs, $jsFiles, $jsFooterFiles, $cssFiles, $jsInline, $cssInline, $jsFooterInline, $jsFooterLibs);
 		$markerArray = $this->getPreparedMarkerArrayForPageWithUncachedObjects($substituteHash);
 		$template = $this->getTemplateForPart(self::PART_COMPLETE);
 		return trim(\TYPO3\CMS\Core\Html\HtmlParser::substituteMarkerArray($template, $markerArray, '###|###'));
@@ -1978,7 +1981,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 			$jsFooterInline = $jsInline . LF . $jsFooterInline;
 			$jsInline = '';
 		}
-		$this->executePostRenderHook($jsLibs, $jsFiles, $jsFooterFiles, $cssFiles, $jsInline, $cssInline, $jsFooterInline, $jsFooterLibs);
 		return array($jsLibs, $jsFiles, $jsFooterFiles, $cssFiles, $jsInline, $cssInline, $jsFooterInline, $jsFooterLibs);
 	}
 
