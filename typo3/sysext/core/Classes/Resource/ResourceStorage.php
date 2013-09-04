@@ -687,6 +687,7 @@ class ResourceStorage {
 		if (!$this->evaluatePermissions) {
 			return TRUE;
 		}
+		$fileName = $this->driver->sanitizeFileName($fileName);
 		$isAllowed = GeneralUtility::verifyFilenameAgainstDenyPattern($fileName);
 		if ($isAllowed) {
 			$fileInfo = GeneralUtility::split_fileref($fileName);

@@ -239,8 +239,9 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 	 * @param string $fileName Input string, typically the body of a fileName
 	 * @param string $charset Charset of the a fileName (defaults to current charset; depending on context)
 	 * @return string Output string with any characters not matching [.a-zA-Z0-9_-] is substituted by '_' and trailing dots removed
+	 * @throws \TYPO3\CMS\Core\Resource\Exception\InvalidFileNameException
 	 */
-	protected function sanitizeFileName($fileName, $charset = '') {
+	public function sanitizeFileName($fileName, $charset = '') {
 		// Handle UTF-8 characters
 		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['UTF8filesystem']) {
 			// Allow ".", "-", 0-9, a-z, A-Z and everything beyond U+C0 (latin capital letter a with grave)
