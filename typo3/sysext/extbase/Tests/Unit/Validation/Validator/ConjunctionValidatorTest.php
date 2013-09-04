@@ -36,7 +36,7 @@ class ConjunctionValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCas
 		$conjunctionValidator = new $proxyClassName(array());
 		$mockValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\ValidatorInterface');
 		$conjunctionValidator->addValidator($mockValidator);
-		$this->assertTrue($conjunctionValidator->_get('validators')->contains($mockValidator));
+		$this->assertTrue($conjunctionValidator->getValidators()->contains($mockValidator));
 	}
 
 	/**
@@ -103,8 +103,8 @@ class ConjunctionValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCas
 		$validatorConjunction->addValidator($validator1);
 		$validatorConjunction->addValidator($validator2);
 		$validatorConjunction->removeValidator($validator1);
-		$this->assertFalse($validatorConjunction->_get('validators')->contains($validator1));
-		$this->assertTrue($validatorConjunction->_get('validators')->contains($validator2));
+		$this->assertFalse($validatorConjunction->getValidators()->contains($validator1));
+		$this->assertTrue($validatorConjunction->getValidators()->contains($validator2));
 	}
 
 	/**

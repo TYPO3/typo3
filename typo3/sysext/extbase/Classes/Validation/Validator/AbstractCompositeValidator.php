@@ -108,6 +108,15 @@ abstract class AbstractCompositeValidator implements \TYPO3\CMS\Extbase\Validati
 	public function count() {
 		return count($this->validators);
 	}
+
+	/**
+	 * Returns the child validators of this Composite Validator
+	 *
+	 * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage
+	 */
+	public function getValidators() {
+		return $this->validators;
+	}
 }
 
 ?>
