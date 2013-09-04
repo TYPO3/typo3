@@ -1883,7 +1883,6 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	}
 
 	/**
-<<<<<<< HEAD
 	 * Adds more limitations for users who are no admins
 	 * this was previously in workspaceInit but has now been moved to "
 	 *
@@ -1921,8 +1920,6 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	}
 
 	/**
-=======
->>>>>>> 7d7d385... [SECURITY] Refactor and fix FAL user permission handling
 	 * Checking if a workspace is allowed for backend user
 	 *
 	 * @param mixed $wsRec If integer, workspace record is looked up, if array it is seen as a Workspace record with at least uid, title, members and adminusers columns. Can be faked for workspaces uid 0 and -1 (online and offline)
