@@ -1493,7 +1493,13 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 
 			if (!empty($fileMountList)) {
 				$orderBy = $GLOBALS['TCA']['sys_filemounts']['ctrl']['default_sortby'] ? $GLOBALS['TYPO3_DB']->stripOrderBy($GLOBALS['TCA']['sys_filemounts']['ctrl']['default_sortby']) : 'sorting';
-				$fileMountRecords = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'sys_filemounts', 'deleted=0 AND hidden=0 AND pid=0 AND uid IN (' . $GLOBALS['TYPO3_DB']->cleanIntList($fileMountList) . ')', '', $orderBy);
+				$fileMountRecords = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+					'*',
+					'sys_filemounts',
+					'deleted=0 AND hidden=0 AND pid=0 AND uid IN (' . implode(',', $fileMounts) . ')',
+					'',
+					$orderBy
+				);
 			}
 
 			// Personal or Group filemounts are not accessible if file mount list is set in workspace record
