@@ -108,7 +108,7 @@ class RenameFileController {
 			throw new \RuntimeException($title . ': ' . $message, 1294586844);
 		}
 		if ($this->fileOrFolderObject->getStorage()->getUid() === 0) {
-			throw new \TYPO3\CMS\Core\Resource\Exception\InsufficientFileAccessPermissionsException("You are not allowed to access files outside your storages", 1375889840);
+			throw new \TYPO3\CMS\Core\Resource\Exception\InsufficientFileAccessPermissionsException('You are not allowed to access files outside your storages', 1375889840);
 		}
 
 		// If a folder should be renamed, AND the returnURL should go to the old directory name, the redirect is forced
