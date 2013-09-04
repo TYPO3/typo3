@@ -7,7 +7,7 @@ return array(
 		'crdate' => 'crdate',
 		'cruser_id' => 'cruser_id',
 		'delete' => 'deleted',
-		'default_sortby' => 'ORDER BY title ASC',
+		'sortby' => 'sorting',
 		'dividers2tabs' => TRUE,
 		'versioningWS' => 2,
 		'rootLevel' => -1,
@@ -136,7 +136,7 @@ return array(
 				'type' => 'select',
 				'renderMode' => 'tree',
 				'foreign_table' => 'sys_category',
-				'foreign_table_where' => ' AND sys_category.sys_language_uid IN (-1,0) ORDER BY sys_category.title ASC',
+				'foreign_table_where' => ' AND sys_category.sys_language_uid IN (-1,0) ORDER BY sys_category.sorting ASC',
 				'treeConfig' => array(
 					'parentField' => 'parent'
 				)

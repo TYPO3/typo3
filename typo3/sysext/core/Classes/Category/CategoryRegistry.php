@@ -297,7 +297,7 @@ class CategoryRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 			$fieldConfiguration = array(
 				'type' => 'select',
 				'foreign_table' => 'sys_category',
-				'foreign_table_where' => ' AND sys_category.sys_language_uid IN (-1, 0) ORDER BY sys_category.title ASC',
+				'foreign_table_where' => ' AND sys_category.sys_language_uid IN (-1, 0) ORDER BY sys_category.sorting ASC',
 				'MM' => 'sys_category_record_mm',
 				'MM_opposite_field' => 'items',
 				'MM_match_fields' => array(
