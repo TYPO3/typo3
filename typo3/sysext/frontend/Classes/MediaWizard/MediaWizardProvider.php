@@ -53,6 +53,9 @@ class MediaWizardProvider implements \TYPO3\CMS\Frontend\MediaWizard\MediaWizard
 		'veoh'
 	);
 
+	public $testUrl = '';
+	public $testResult = '';
+
 	/**
 	 * Checks if we have a valid method for processing a given URL.
 	 *
@@ -114,15 +117,31 @@ class MediaWizardProvider implements \TYPO3\CMS\Frontend\MediaWizard\MediaWizard
 	 */
 	protected function process_youtube($url) {
 		$videoId = '';
-		if (strpos($url, '/user/') !== FALSE) {
-			// it's a channel
-			$parts = explode('/', $url);
-			$videoId = $parts[count($parts) - 1];
-		} elseif (preg_match('/(v=|v\\/|.be\\/)([^(\\&|$)]*)/', $url, $matches)) {
-			$videoId = $matches[2];
+$this->testUrl = $url;
+		$pattern = '%
+		^(?:https?://)?									# Optional URL scheme Either http or https
+		(?:www\.)?										# Optional www subdomain
+		(?:												# Group host alternatives:
+			youtu\.be/									#  Either youtu.be/,
+			|youtube(?:									#  or youtube.com/
+				-nocookie								#   optional nocookie domain
+			)?\.com/(?:
+				[^/]+/.+/								#   Either /something/other_params/ for channels,
+				|(?:v|e(?:								#   or v/ or e/,
+					mbed								#    optional mbed for embed/
+				)?)/
+				|.*[?&]v=								#   or ?v= or ?other_param&v=
+			)
+		)												# End host alternatives.
+		([^"&?/ ]{11})									# 11 characters (Length of Youtube video ids).
+		(?:.+)?$										# Optional other ending URL parameters.
+		%xs';
+		if (preg_match($pattern, $url, $matches)) {
+			$videoId = $matches[1];
 		}
+$this->testResult = $matches;
 		if ($videoId) {
-			$url = $this->getUrlSchema() . 'www.youtube.com/v/' . $videoId . '?fs=1';
+			$url = $this->getUrlSchema() . 'www.youtube.com/embed/' . $videoId . '?fs=1';
 		}
 		return $url;
 	}
