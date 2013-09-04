@@ -112,6 +112,10 @@ class EditFileController {
 			$message = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_file_list.xlf:targetNoDir', TRUE);
 			throw new \RuntimeException($title . ': ' . $message, 1294586841);
 		}
+		if ($this->fileObject->getStorage()->getUid() === 0) {
+			throw new \TYPO3\CMS\Core\Resource\Exception\InsufficientFileAccessPermissionsException("You are not allowed to access files outside your storages", 1375889832);
+		}
+
 		// Setting the title and the icon
 		$icon = IconUtility::getSpriteIcon('apps-filetree-root');
 		$this->title = $icon . htmlspecialchars($this->fileObject->getStorage()->getName()) . ': ' . htmlspecialchars($this->fileObject->getIdentifier());
