@@ -208,9 +208,9 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 	 */
 	public function createFolder($newFolderName, \TYPO3\CMS\Core\Resource\Folder $parentFolder) {
 		$newFolderName = trim($this->sanitizeFileName($newFolderName), '/');
-		$newFolderPath = $this->getAbsolutePath($parentFolder) . $newFolderName;
-		\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir($newFolderPath);
-		return \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->createFolderObject($this->storage, $parentFolder->getIdentifier() . $newFolderName, $newFolderName);
+		$newFolderPath = $this->canonicalizeAndCheckFolderPath($parentFolder->getIdentifier() . '/' . $newFolderName);
+		\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir($this->getAbsoluteBasePath() . $newFolderPath);
+		return \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->createFolderObject($this->storage, $newFolderPath, $newFolderName);
 	}
 
 	/**
@@ -295,7 +295,8 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 	 */
 	// TODO add unit tests
 	protected function getDirectoryItemList($basePath, $start, $numberOfItems, array $filterMethods, $itemHandlerMethod, $itemRows = array(), $recursive = FALSE) {
-		$realPath = rtrim(($this->absoluteBasePath . trim($basePath, '/')), '/') . '/';
+		$basePath = $this->canonicalizeAndCheckFolderPath($basePath);
+		$realPath = rtrim($this->absoluteBasePath . trim($basePath, '/'), '/') . '/';
 		if (!is_dir($realPath)) {
 			throw new \InvalidArgumentException('Cannot list items in directory ' . $basePath . ' - does not exist or is no directory', 1314349666);
 		}
@@ -371,7 +372,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 	 * @return array
 	 */
 	protected function getFileList_itemCallback($fileName, $path, array $fileRow = array()) {
-		$filePath = $this->getAbsolutePath($path . $fileName);
+		$filePath = $this->getAbsolutePath($this->canonicalizeAndCheckFilePath($path . $fileName));
 		if (!is_file($filePath)) {
 			return array('', array());
 		}
@@ -393,7 +394,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 	 * @return array
 	 */
 	protected function getFolderList_itemCallback($folderName, $parentPath, array $folderRow = array()) {
-		$folderPath = $this->getAbsolutePath($parentPath . $folderName);
+		$folderPath = $this->getAbsolutePath($this->canonicalizeAndCheckFolderPath($parentPath . $folderName));
 
 		if (!is_dir($folderPath)) {
 			return array('', array());
@@ -515,10 +516,10 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 	 */
 	public function getAbsolutePath($file) {
 		if ($file instanceof \TYPO3\CMS\Core\Resource\FileInterface) {
-			$path = $this->absoluteBasePath . ltrim($file->getIdentifier(), '/');
+			$path = $this->absoluteBasePath . $this->canonicalizeAndCheckFilePath(ltrim($file->getIdentifier(), '/'));
 		} elseif ($file instanceof \TYPO3\CMS\Core\Resource\Folder) {
 			// We can assume a trailing slash here because it is added by the folder object on construction.
-			$path = $this->absoluteBasePath . ltrim($file->getIdentifier(), '/');
+			$path = $this->absoluteBasePath . $this->canonicalizeAndCheckFolderPath(ltrim($file->getIdentifier(), '/'));
 		} elseif (is_string($file)) {
 			$path = $this->absoluteBasePath . ltrim($file, '/');
 		} else {
@@ -606,6 +607,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 	 * @return \TYPO3\CMS\Core\Resource\FileInterface
 	 */
 	public function addFile($localFilePath, \TYPO3\CMS\Core\Resource\Folder $targetFolder, $fileName, \TYPO3\CMS\Core\Resource\AbstractFile $updateFileObject = NULL) {
+		$localFilePath = $this->canonicalizeAndCheckFilePath($localFilePath);
 		// as for the "virtual storage" for backwards-compatibility, this check always fails, as the file probably lies under PATH_site
 		// thus, it is not checked here
 		if (\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($localFilePath, $this->absoluteBasePath) && $this->storage->getUid() > 0) {
@@ -642,7 +644,8 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 	 * @return boolean
 	 */
 	public function resourceExists($identifier) {
-		$absoluteResourcePath = $this->absoluteBasePath . ltrim($identifier, '/');
+		$identifier = $this->canonicalizeAndCheckFilePath(ltrim($identifier, '/'));
+		$absoluteResourcePath = $this->absoluteBasePath . $identifier;
 		return file_exists($absoluteResourcePath);
 	}
 
@@ -653,7 +656,8 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 	 * @return boolean
 	 */
 	public function fileExists($identifier) {
-		$absoluteFilePath = $this->absoluteBasePath . ltrim($identifier, '/');
+		$identifier = $this->canonicalizeAndCheckFilePath(ltrim($identifier, '/'));
+		$absoluteFilePath = $this->absoluteBasePath . $identifier;
 		return is_file($absoluteFilePath);
 	}
 
@@ -676,7 +680,8 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 	 * @return boolean
 	 */
 	public function folderExists($identifier) {
-		$absoluteFilePath = $this->absoluteBasePath . ltrim($identifier, '/');
+		$identifier = $this->canonicalizeAndCheckFilePath(ltrim($identifier, '/'));
+		$absoluteFilePath = $this->absoluteBasePath . $identifier;
 		return is_dir($absoluteFilePath);
 	}
 
@@ -689,6 +694,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 	 */
 	public function folderExistsInFolder($folderName, \TYPO3\CMS\Core\Resource\Folder $folder) {
 		$identifier = $folder->getIdentifier() . $folderName;
+		$identifier = $this->canonicalizeAndCheckFilePath($identifier);
 		return $this->folderExists($identifier);
 	}
 
@@ -751,7 +757,9 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 	 * @return bool TRUE if removing the file succeeded
 	 */
 	public function deleteFileRaw($identifier) {
-		$targetPath = $this->absoluteBasePath . ltrim($identifier, '/');
+		$identifier = $this->canonicalizeAndCheckFilePath(ltrim($identifier, '/'));
+
+		$targetPath = $this->absoluteBasePath . $identifier;
 		$result = unlink($targetPath);
 		if ($result === FALSE || file_exists($targetPath)) {
 			throw new \RuntimeException('Deleting file ' . $identifier . ' failed.', 1320381534);
@@ -773,6 +781,8 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 		// TODO add unit test
 		$sourcePath = $this->getAbsolutePath($file);
 		$targetPath = ltrim($targetFolder->getIdentifier(), '/') . $fileName;
+		$targetPath = $this->canonicalizeAndCheckFilePath($targetPath);
+
 		copy($sourcePath, $this->absoluteBasePath . $targetPath);
 		return $this->getFile($targetPath);
 	}
@@ -790,6 +800,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 	public function moveFileWithinStorage(\TYPO3\CMS\Core\Resource\FileInterface $file, \TYPO3\CMS\Core\Resource\Folder $targetFolder, $fileName) {
 		$sourcePath = $this->getAbsolutePath($file);
 		$targetIdentifier = $targetFolder->getIdentifier() . $fileName;
+		$targetIdentifier = $this->canonicalizeAndCheckFilePath($targetIdentifier);
 		$result = rename($sourcePath, $this->absoluteBasePath . $targetIdentifier);
 		if ($result === FALSE) {
 			throw new \RuntimeException('Moving file ' . $sourcePath . ' to ' . $targetIdentifier . ' failed.', 1315314712);
@@ -847,7 +858,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 	public function moveFolderWithinStorage(\TYPO3\CMS\Core\Resource\Folder $folderToMove, \TYPO3\CMS\Core\Resource\Folder $targetFolder, $newFolderName) {
 		$relativeSourcePath = $folderToMove->getIdentifier();
 		$sourcePath = $this->getAbsolutePath($relativeSourcePath);
-		$relativeTargetPath = $targetFolder->getIdentifier() . $newFolderName . '/';
+		$relativeTargetPath = $this->canonicalizeAndCheckFolderPath($targetFolder->getIdentifier() . $newFolderName);
 		$targetPath = $this->getAbsolutePath($relativeTargetPath);
 		// get all files and folders we are going to move, to have a map for updating later.
 		$filesAndFolders = $this->getFileAndFoldernamesInPath($sourcePath, TRUE);
@@ -872,7 +883,8 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 	public function copyFolderWithinStorage(\TYPO3\CMS\Core\Resource\Folder $folderToCopy, \TYPO3\CMS\Core\Resource\Folder $targetFolder, $newFolderName) {
 		// This target folder path already includes the topmost level, i.e. the folder this method knows as $folderToCopy.
 		// We can thus rely on this folder being present and just create the subfolder we want to copy to.
-		$targetFolderPath = $this->getAbsolutePath($targetFolder) . $newFolderName . '/';
+		$newFolderName = $this->canonicalizeAndCheckFolderPath($targetFolder->getIdentifier() . '/' . $newFolderName);
+		$targetFolderPath = $this->getAbsoluteBasePath() . $newFolderName . '/';
 		mkdir($targetFolderPath);
 		$sourceFolderPath = $this->getAbsolutePath($folderToCopy);
 		/** @var $iterator \RecursiveDirectoryIterator */
@@ -935,6 +947,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 	 */
 	public function renameFile(\TYPO3\CMS\Core\Resource\FileInterface $file, $newName) {
 		// Makes sure the Path given as parameter is valid
+		$newName = $this->canonicalizeAndCheckFilePath($newName);
 		$newName = $this->sanitizeFileName($newName);
 		$newIdentifier = rtrim(GeneralUtility::fixWindowsFilePath(PathUtility::dirname($file->getIdentifier())), '/') . '/' . $newName;
 		// The target should not exist already
@@ -962,9 +975,10 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 	public function renameFolder(\TYPO3\CMS\Core\Resource\Folder $folder, $newName) {
 		// Makes sure the path given as parameter is valid
 		$newName = $this->sanitizeFileName($newName);
+		$newName = $this->canonicalizeAndCheckFolderPath($newName);
 		$relativeSourcePath = $folder->getIdentifier();
 		$sourcePath = $this->getAbsolutePath($relativeSourcePath);
-		$relativeTargetPath = rtrim(GeneralUtility::fixWindowsFilePath(PathUtility::dirname($relativeSourcePath)), '/') . '/' . $newName . '/';
+		$relativeTargetPath = $this->canonicalizeAndCheckFolderPath(PathUtility::dirname($relativeSourcePath). '/' . $newName);
 		$targetPath = $this->getAbsolutePath($relativeTargetPath);
 		// get all files and folders we are going to move, to have a map for updating later.
 		$filesAndFolders = $this->getFileAndFoldernamesInPath($sourcePath, TRUE);

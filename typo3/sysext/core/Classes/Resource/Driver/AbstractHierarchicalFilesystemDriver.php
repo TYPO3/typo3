@@ -60,6 +60,16 @@ abstract class AbstractHierarchicalFilesystemDriver extends AbstractDriver {
 		}
 		return $filePath;
 	}
+
+	/**
+	 * Makes sure the Path given as parameter is valid
+	 *
+	 * @param string $folderPath The file path (including the file name!)
+	 * @return string
+	 */
+	protected function canonicalizeAndCheckFolderPath($folderPath) {
+		return $this->canonicalizeAndCheckFilePath($folderPath) . '/';
+	}
 }
 
 ?>
