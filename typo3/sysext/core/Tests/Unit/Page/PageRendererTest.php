@@ -153,8 +153,8 @@ class PageRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * test add JS library file
 	 */
 	public function testAddJsLibrary() {
-		$expectedRegExp = '#<script src="fileadmin/test\\.(js|\\d+\\.js|js\\?\\d+)" type="text/javascript"></script>#';
-		$this->fixture->addJsLibrary('test', 'fileadmin/test.js');
+		$expectedRegExp = '#wrapBefore<script src="fileadmin/test\\.(js|\\d+\\.js|js\\?\\d+)" type="text/javascript"></script>wrapAfter#';
+		$this->fixture->addJsLibrary('test', 'fileadmin/test.js', 'text/javascript', FALSE, FALSE, 'wrapBeforeXwrapAfter', FALSE, 'X');
 		$out = $this->fixture->render();
 		$this->assertRegExp($expectedRegExp, $out);
 	}
@@ -163,8 +163,8 @@ class PageRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * test add JS footer library file
 	 */
 	public function testAddJsFooterLibrary() {
-		$expectedRegExp = '#<script src="fileadmin/test\\.(js|\\d+\\.js|js\\?\\d+)" type="text/javascript"></script>#';
-		$this->fixture->addJsFooterLibrary('test', 'fileadmin/test.js');
+		$expectedRegExp = '#wrapBefore<script src="fileadmin/test\\.(js|\\d+\\.js|js\\?\\d+)" type="text/javascript"></script>wrapAfter#';
+		$this->fixture->addJsFooterLibrary('test', 'fileadmin/test.js', 'text/javascript', FALSE, FALSE, 'wrapBeforeXwrapAfter', FALSE, 'X');
 		$out = $this->fixture->render(\TYPO3\CMS\Core\Page\PageRenderer::PART_FOOTER);
 		$this->assertRegExp($expectedRegExp, $out);
 	}
@@ -173,8 +173,8 @@ class PageRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * test add JS file
 	 */
 	public function testAddJsFile() {
-		$expectedRegExp = '#<script src="fileadmin/test\\.(js|\\d+\\.js|js\\?\\d+)" type="text/javascript"></script>#';
-		$this->fixture->addJsFile('fileadmin/test.js');
+		$expectedRegExp = '#wrapBefore<script src="fileadmin/test\\.(js|\\d+\\.js|js\\?\\d+)" type="text/javascript"></script>wrapAfter#';
+		$this->fixture->addJsFile('fileadmin/test.js', 'text/javascript', FALSE, FALSE, 'wrapBeforeXwrapAfter', FALSE, 'X');
 		$out = $this->fixture->render();
 		$this->assertRegExp($expectedRegExp, $out);
 	}
@@ -183,8 +183,8 @@ class PageRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * test add JS file for footer
 	 */
 	public function testAddJsFooterFile() {
-		$expectedRegExp = '#<script src="fileadmin/test\\.(js|\\d+\\.js|js\\?\\d+)" type="text/javascript"></script>#';
-		$this->fixture->addJsFooterFile('fileadmin/test.js');
+		$expectedRegExp = '#wrapBefore<script src="fileadmin/test\\.(js|\\d+\\.js|js\\?\\d+)" type="text/javascript"></script>wrapAfter#';
+		$this->fixture->addJsFooterFile('fileadmin/test.js', 'text/javascript', FALSE, FALSE, 'wrapBeforeXwrapAfter', FALSE, 'X');
 		$out = $this->fixture->render(\TYPO3\CMS\Core\Page\PageRenderer::PART_FOOTER);
 		$this->assertRegExp($expectedRegExp, $out);
 	}
@@ -226,8 +226,8 @@ class PageRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * test add CSS file
 	 */
 	public function testAddCssFile() {
-		$expectedReturnValue = '<link rel="stylesheet" type="text/css" href="fileadmin/test.css" media="all" />';
-		$this->fixture->addCssFile('fileadmin/test.css');
+		$expectedReturnValue = 'wrapBefore<link rel="stylesheet" type="text/css" href="fileadmin/test.css" media="print" />wrapAfter';
+		$this->fixture->addCssFile('fileadmin/test.css', 'stylesheet', 'print', '', TRUE, FALSE, 'wrapBeforeXwrapAfter', FALSE, 'X');
 		$out = $this->fixture->render();
 		$this->assertContains($expectedReturnValue, $out);
 	}
