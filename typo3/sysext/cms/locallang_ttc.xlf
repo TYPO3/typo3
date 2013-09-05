@@ -567,6 +567,9 @@
 			<trans-unit id="menu_type.I.9" xml:space="preserve">
 				<source>Pages for selected categories</source>
 			</trans-unit>
+			<trans-unit id="menu_type.I.categorized_content" xml:space="preserve">
+				<source>Content elements for selected categories</source>
+			</trans-unit>
 			<trans-unit id="list_type" xml:space="preserve">
 				<source>Plugin:</source>
 			</trans-unit>

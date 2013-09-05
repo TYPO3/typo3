@@ -2108,6 +2108,22 @@ tt_content.menu {
 				outerWrap = <ul class="csc-menu csc-menu-9">|</ul>
 			}
 		}
+
+		# Menu of categorized content elements
+		categorized_content = RECORDS
+		categorized_content {
+			categories.field = selected_categories
+			categories.relation.field = category_field
+			tables = tt_content
+			conf.tt_content = TEXT
+			conf.tt_content {
+				field = header
+				typolink.parameter = {field:pid}#{field:uid}
+				typolink.parameter.insertData = 1
+				wrap = <li>|</li>
+			}
+			wrap = <ul>|</ul>
+		}
 	}
 
 	20.stdWrap {

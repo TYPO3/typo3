@@ -163,6 +163,12 @@ class RelationHandler {
 	protected $updateReferenceIndex = TRUE;
 
 	/**
+	 * Results of
+	 * @var array
+	 */
+	public $results = array();
+
+	/**
 	 * Initialization of the class.
 	 *
 	 * @param string $itemlist List of group/select items
@@ -837,7 +843,7 @@ class RelationHandler {
 	 * Reads all records from internal tableArray into the internal ->results array where keys are table names and for each table, records are stored with uids as their keys.
 	 * If $this->fetchAllFields is false you can save a little memory since only uid,pid and a few other fields are selected.
 	 *
-	 * @return 	void
+	 * @return 	array
 	 * @todo Define visibility
 	 */
 	public function getFromDB() {

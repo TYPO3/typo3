@@ -145,6 +145,8 @@ class CategoryRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 		// Define the table being looked up from the type of menu
 		if ($configuration['row']['menu_type'] == 9) {
 			$table = 'pages';
+		} elseif ($configuration['row']['menu_type'] == 'categorized_content') {
+			$table = 'tt_content';
 		}
 		// Return early if no table is defined
 		if (empty($table)) {
