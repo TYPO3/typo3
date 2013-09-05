@@ -13,10 +13,7 @@
 <f:section name="Content">
 	<f:flashMessages renderMode="div" />
 
-	<div class="uploadForm" style="display: none;">
-		<span class="spinner"></span>
-		<f:translate key="extensionList.loading"/>
-	</div>
+	<f:render partial="List/UploadForm" />
 
 	<div class="headerRow ui-helper-clearfix">
 		<div class="typo3-extensionmanager-headerRowLeft">
