@@ -1340,6 +1340,10 @@ return array(
 					array(
 						'LLL:EXT:cms/locallang_ttc.xlf:menu_type.I.9',
 						'9'
+					),
+					array(
+						'LLL:EXT:cms/locallang_ttc.xlf:menu_type.I.10',
+						'10'
 					)
 				),
 				'default' => '0'
@@ -1918,6 +1922,7 @@ return array(
 				'7' => 'selected_categories',
 				'8' => 'selected_categories',
 				'9' => 'pages',
+				'10' => 'pages',
 			)
 		),
 		'mailform' => array(
