@@ -29,6 +29,7 @@ namespace TYPO3\CMS\Backend\Form;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * Class for getting and transforming data for display in backend forms (TCEforms)
@@ -329,6 +330,7 @@ class DataPreprocessor {
 	 */
 	public function renderRecord_groupProc($data, $fieldConfig, $TSconfig, $table, $row, $field) {
 		switch ($fieldConfig['config']['internal_type']) {
+			case 'file_reference':
 			case 'file':
 				// Init array used to accumulate the files:
 				$dataAcc = array();
@@ -339,14 +341,14 @@ class DataPreprocessor {
 					// Setting dummy startup
 					foreach ($loadDB->itemArray as $value) {
 						if ($value['id']) {
-							$dataAcc[] = rawurlencode($value['id']) . '|' . rawurlencode($value['id']);
+							$dataAcc[] = rawurlencode($value['id']) . '|' . rawurlencode(PathUtility::basename($value['id']));
 						}
 					}
 				} else {
 					$fileList = GeneralUtility::trimExplode(',', $data, TRUE);
 					foreach ($fileList as $value) {
 						if ($value) {
-							$dataAcc[] = rawurlencode($value) . '|' . rawurlencode($value);
+							$dataAcc[] = rawurlencode($value) . '|' . rawurlencode(PathUtility::basename($value));
 						}
 					}
 				}
