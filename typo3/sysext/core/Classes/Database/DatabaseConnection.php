@@ -1289,17 +1289,19 @@ class DatabaseConnection {
 			$this->connectDB();
 		}
 		$dbArr = array();
-		$db_list = $this->link->query("SHOW DATABASES");
-		while ($row = $db_list->fetch_object()) {
-			try {
-				$this->setDatabaseName($row->Database);
-				if ($this->sql_select_db()) {
-					$dbArr[] = $row->Database;
+		$db_list = $this->link->query("SELECT SCHEMA_NAME FROM information_schema.SCHEMATA");
+		if ($db_list !== FALSE) {
+			while ($row = $db_list->fetch_object()) {
+				try {
+					$this->setDatabaseName($row->Database);
+					if ($this->sql_select_db()) {
+						$dbArr[] = $row->Database;
+					}
+				} catch (\RuntimeException $exception) {
+					// The exception happens if we cannot connect to the database
+					// (usually due to missing permissions). This is ok here.
+					// We catch the exception, skip the database and continue.
 				}
-			} catch (\RuntimeException $exception) {
-				// The exception happens if we cannot connect to the database
-				// (usually due to missing permissions). This is ok here.
-				// We catch the exception, skip the database and continue.
 			}
 		}
 		return $dbArr;
