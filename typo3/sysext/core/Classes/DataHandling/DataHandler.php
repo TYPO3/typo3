@@ -2437,7 +2437,7 @@ class DataHandler {
 					}
 					break;
 				case 'double2':
-					$value = preg_replace('/[^0-9,\\.-]/', '', $value);
+					$value = preg_replace('/[^0-9,\.\-]/', '', $value);
 					$negative = substr($value, 0, 1) == '-';
 					$value = strtr($value, array(',' => '.', '-' => ''));
 					if (strpos($value, '.') === FALSE) {
@@ -2496,7 +2496,7 @@ class DataHandler {
 					$value = preg_replace('/[^a-zA-Z0-9]/', '', $value);
 					break;
 				case 'alphanum_x':
-					$value = preg_replace('/[^a-zA-Z0-9_-]/', '', $value);
+					$value = preg_replace('/[^a-zA-Z0-9_\-]/', '', $value);
 					break;
 				case 'domainname':
 					if (!preg_match('/^[a-z0-9\\.\\-]*$/i', $value)) {
