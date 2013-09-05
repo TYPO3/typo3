@@ -332,6 +332,7 @@ class DataPreprocessor {
 	 */
 	public function renderRecord_groupProc($data, $fieldConfig, $TSconfig, $table, $row, $field) {
 		switch ($fieldConfig['config']['internal_type']) {
+		case 'file_reference':
 		case 'file':
 			// Init array used to accumulate the files:
 			$dataAcc = array();
@@ -342,14 +343,14 @@ class DataPreprocessor {
 				// Setting dummy startup
 				foreach ($loadDB->itemArray as $value) {
 					if ($value['id']) {
-						$dataAcc[] = rawurlencode($value['id']) . '|' . rawurlencode($value['id']);
+						$dataAcc[] = rawurlencode($value['id']) . '|' . rawurlencode(\TYPO3\CMS\Core\Utility\PathUtility::basename($value['id']));
 					}
 				}
 			} else {
-				$fileList = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $data, 1);
+				$fileList = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $data, TRUE);
 				foreach ($fileList as $value) {
 					if ($value) {
-						$dataAcc[] = rawurlencode($value) . '|' . rawurlencode($value);
+						$dataAcc[] = rawurlencode($value) . '|' . rawurlencode(\TYPO3\CMS\Core\Utility\PathUtility::basename($value));
 					}
 				}
 			}
