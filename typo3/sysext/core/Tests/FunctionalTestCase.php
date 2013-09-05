@@ -52,7 +52,7 @@ namespace TYPO3\CMS\Core\Tests;
  * - ./typo3conf/ext/phpunit/Composer/vendor/bin/phpunit \
  *     --process-isolation \
  *     --bootstrap typo3/sysext/core/Build/FunctionalTestsBootstrap.php \
- *     typo3/sysext/core/Tests/Functional/Functional/FunctionalTestCaseTest.php
+ *     typo3/sysext/core/Tests/Functional/DataHandling/DataHandlerTest.php
  */
 abstract class FunctionalTestCase extends BaseTestCase {
 
@@ -223,8 +223,13 @@ abstract class FunctionalTestCase extends BaseTestCase {
 			}
 
 			$tableName = $table->getName();
-			$database->exec_INSERTquery($tableName, $insertArray);
-
+			$result = $database->exec_INSERTquery($tableName, $insertArray);
+			if ($result === FALSE) {
+				throw new Exception(
+					'Error when processing fixture file: ' . $path . ' Can not insert data to table ' . $tableName,
+					1376746262
+				);
+			}
 			if (isset($table['id'])) {
 				$elementId = (string) $table['id'];
 				$foreignKeys[$tableName][$elementId] = $database->sql_insert_id();
