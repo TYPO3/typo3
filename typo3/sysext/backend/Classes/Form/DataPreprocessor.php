@@ -33,6 +33,7 @@ namespace TYPO3\CMS\Backend\Form;
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
+
 /**
  * Class for getting and transforming data for display in backend forms (TCEforms)
  *
@@ -335,24 +336,26 @@ class DataPreprocessor {
 	 */
 	public function renderRecord_groupProc($data, $fieldConfig, $TSconfig, $table, $row, $field) {
 		switch ($fieldConfig['config']['internal_type']) {
-		case 'file':
-			// Init array used to accumulate the files:
-			$dataAcc = array();
-			// Now, load the files into the $dataAcc array, whether stored by MM or as a list of filenames:
-			if ($fieldConfig['config']['MM']) {
-				$loadDB = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\RelationHandler');
-				$loadDB->start('', 'files', $fieldConfig['config']['MM'], $row['uid']);
-				// Setting dummy startup
-				foreach ($loadDB->itemArray as $value) {
-					if ($value['id']) {
-						$dataAcc[] = rawurlencode($value['id']) . '|' . rawurlencode($value['id']);
+			case 'file_reference':
+			case 'file':
+				// Init array used to accumulate the files:
+				$dataAcc = array();
+				// Now, load the files into the $dataAcc array, whether stored by MM or as a list of filenames:
+				if ($fieldConfig['config']['MM']) {
+					$loadDB = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\RelationHandler');
+					$loadDB->start('', 'files', $fieldConfig['config']['MM'], $row['uid']);
+					// Setting dummy startup
+					foreach ($loadDB->itemArray as $value) {
+						if ($value['id']) {
+							$dataAcc[] = rawurlencode($value['id']) . '|' . rawurlencode(\TYPO3\CMS\Core\Utility\PathUtility::basename($value['id']));
+						}
 					}
-				}
-			} else {
-				$fileList = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $data, 1);
-				foreach ($fileList as $value) {
-					if ($value) {
-						$dataAcc[] = rawurlencode($value) . '|' . rawurlencode($value);
+				} else {
+					$fileList = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $data, TRUE);
+					foreach ($fileList as $value) {
+						if ($value) {
+							$dataAcc[] = rawurlencode($value) . '|' . rawurlencode(\TYPO3\CMS\Core\Utility\PathUtility::basename($value));
+						}
 					}
 				}
 			}
