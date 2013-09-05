@@ -140,6 +140,21 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 	/**
+	 * @test
+	 */
+	public function evalCheckValueAlphanumX() {
+		$testData = array(
+			'A!B"C§' => 'ABC',
+			'tx_myExt_pi1' => 'tx_myExt_pi1',
+			'13-11=2' => '13-112'
+		);
+		foreach ($testData as $value => $expectedReturnValue) {
+			$returnValue = $this->fixture->checkValue_input_Eval($value, array('alphanum_x'), '');
+			$this->assertSame($returnValue['value'], $expectedReturnValue);
+		}
+	}
+
+	/**
 	 * Data provider for inputValueCheckRecognizesStringValuesAsIntegerValuesCorrectly
 	 *
 	 * @return array
