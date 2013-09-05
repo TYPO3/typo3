@@ -135,7 +135,9 @@ class BackendLayoutView {
 		if ($backendLayout) {
 			/** @var $parser \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser */
 			$parser = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\Parser\\TypoScriptParser');
-			$parser->parse($parser->checkIncludeLines($backendLayout['config']));
+			/** @var \TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher $conditionMatcher */
+			$conditionMatcher = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Configuration\\TypoScript\\ConditionMatching\\ConditionMatcher');
+			$parser->parse($parser->checkIncludeLines($backendLayout['config']), $conditionMatcher);
 			$backendLayout['__config'] = $parser->setup;
 			$backendLayout['__items'] = array();
 			$backendLayout['__colPosList'] = array();
