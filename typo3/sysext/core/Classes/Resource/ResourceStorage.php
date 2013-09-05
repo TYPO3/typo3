@@ -2255,6 +2255,8 @@ class ResourceStorage {
 			$processingFolder = '/' . trim($processingFolder, '/') . '/';
 			// this way, we also worry about deeplinked folders like typo3temp/_processed_
 			if ($this->driver->folderExists($processingFolder) === FALSE) {
+				// TODO: This assumes that we have a hirarchical storage.
+				// TODO: Recursive creation of folders should go to the driver, so that we can just call $this->driver->createFolder() here.
 				$processingFolderParts = explode('/', $processingFolder);
 				$parentFolder = $this->driver->getRootLevelFolder();
 				foreach ($processingFolderParts as $folderPart) {
@@ -2264,7 +2266,13 @@ class ResourceStorage {
 					if (!$this->driver->folderExistsInFolder($folderPart, $parentFolder)) {
 						$parentFolder = $this->driver->createFolder($folderPart, $parentFolder);
 					} else {
-						$parentFolder = $parentFolder->getSubfolder($folderPart);
+						// We do not use the Folder API here to get the subfolder
+						// Because permission checks are triggered then, which is not wanted
+						// Since the whole method assumes that folders are hirarchical,
+						// we can also asume it here to build the subfolder identifier
+						// and fetch it directly from the driver.
+						$subFolderIdentifier = $parentFolder->getIdentifier() . $folderPart;
+						$parentFolder = $this->driver->getFolder($subFolderIdentifier);
 					}
 				}
 			}
