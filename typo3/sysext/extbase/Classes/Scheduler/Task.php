@@ -59,6 +59,40 @@ class Task extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 	protected $taskExecutor;
 
 	/**
+	 * Intanciates the Object Manager
+	 */
+	public function __construct() {
+		parent::__construct();
+		$this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+		$this->commandManager = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Mvc\\Cli\\CommandManager');
+		$this->taskExecutor = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Scheduler\\TaskExecutor');
+	}
+
+	/**
+	 * Sleep
+	 *
+	 * @return array Properties to serialize
+	 */
+	public function __sleep() {
+		$properties = get_object_vars($this);
+		unset($properties['commandManager']);
+		unset($properties['objectManager']);
+		unset($properties['taskExecutor']);
+		return array_keys($properties);
+	}
+
+	/**
+	 * Wakeup
+	 *
+	 * @return void
+	 */
+	public function __wakeup() {
+		$this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+		$this->commandManager = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Mvc\\Cli\\CommandManager');
+		$this->taskExecutor = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Scheduler\\TaskExecutor');
+	}
+
+	/**
 	 * Function execute from the Scheduler
 	 *
 	 * @return boolean TRUE on successful execution, FALSE on error
