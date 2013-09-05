@@ -467,7 +467,7 @@ class PageGenerator {
 							}
 							$pageRenderer->addCssInlineBlock('import_' . $key, '@import url("' . htmlspecialchars($ss) . '") ' . htmlspecialchars($GLOBALS['TSFE']->pSetup['includeCSS.'][($key . '.')]['media']) . ';', empty($GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['disableCompression']), $GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['forceOnTop'] ? TRUE : FALSE, '');
 						} else {
-							$pageRenderer->addCssFile($ss, $GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['alternate'] ? 'alternate stylesheet' : 'stylesheet', $GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['media'] ? $GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['media'] : 'all', $GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['title'] ? $GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['title'] : '', empty($GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['disableCompression']), $GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['forceOnTop'] ? TRUE : FALSE, $GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['allWrap'], $GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['excludeFromConcatenation'] ? TRUE : FALSE);
+							$pageRenderer->addCssFile($ss, $GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['alternate'] ? 'alternate stylesheet' : 'stylesheet', $GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['media'] ? $GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['media'] : 'all', $GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['title'] ? $GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['title'] : '', empty($GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['disableCompression']), $GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['forceOnTop'] ? TRUE : FALSE, $GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['allWrap'], $GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['excludeFromConcatenation'] ? TRUE : FALSE, $GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['allWrap.']['splitChar']);
 						}
 					}
 				}
@@ -595,7 +595,7 @@ class PageGenerator {
 						if (!$type) {
 							$type = 'text/javascript';
 						}
-						$pageRenderer->addJsLibrary($key, $ss, $type, empty($GLOBALS['TSFE']->pSetup['includeJSlibs.'][$key . '.']['disableCompression']), $GLOBALS['TSFE']->pSetup['includeJSlibs.'][$key . '.']['forceOnTop'] ? TRUE : FALSE, $GLOBALS['TSFE']->pSetup['includeJSlibs.'][$key . '.']['allWrap'], $GLOBALS['TSFE']->pSetup['includeJSlibs.'][$key . '.']['excludeFromConcatenation'] ? TRUE : FALSE);
+						$pageRenderer->addJsLibrary($key, $ss, $type, empty($GLOBALS['TSFE']->pSetup['includeJSlibs.'][$key . '.']['disableCompression']), $GLOBALS['TSFE']->pSetup['includeJSlibs.'][$key . '.']['forceOnTop'] ? TRUE : FALSE, $GLOBALS['TSFE']->pSetup['includeJSlibs.'][$key . '.']['allWrap'], $GLOBALS['TSFE']->pSetup['includeJSlibs.'][$key . '.']['excludeFromConcatenation'] ? TRUE : FALSE, $GLOBALS['TSFE']->pSetup['includeJSlibs.'][$key . '.']['allWrap.']['splitChar']);
 					}
 				}
 			}
@@ -612,7 +612,7 @@ class PageGenerator {
 						if (!$type) {
 							$type = 'text/javascript';
 						}
-						$pageRenderer->addJsFooterLibrary($key, $ss, $type, empty($GLOBALS['TSFE']->pSetup['includeJSFooterlibs.'][$key . '.']['disableCompression']), $GLOBALS['TSFE']->pSetup['includeJSFooterlibs.'][$key . '.']['forceOnTop'] ? TRUE : FALSE, $GLOBALS['TSFE']->pSetup['includeJSFooterlibs.'][$key . '.']['allWrap'], $GLOBALS['TSFE']->pSetup['includeJSFooterlibs.'][$key . '.']['excludeFromConcatenation'] ? TRUE : FALSE);
+						$pageRenderer->addJsFooterLibrary($key, $ss, $type, empty($GLOBALS['TSFE']->pSetup['includeJSFooterlibs.'][$key . '.']['disableCompression']), $GLOBALS['TSFE']->pSetup['includeJSFooterlibs.'][$key . '.']['forceOnTop'] ? TRUE : FALSE, $GLOBALS['TSFE']->pSetup['includeJSFooterlibs.'][$key . '.']['allWrap'], $GLOBALS['TSFE']->pSetup['includeJSFooterlibs.'][$key . '.']['excludeFromConcatenation'] ? TRUE : FALSE, $GLOBALS['TSFE']->pSetup['includeJSFooterlibs.'][$key . '.']['allWrap.']['splitChar']);
 					}
 				}
 			}
@@ -630,7 +630,7 @@ class PageGenerator {
 						if (!$type) {
 							$type = 'text/javascript';
 						}
-						$pageRenderer->addJsFile($ss, $type, empty($GLOBALS['TSFE']->pSetup['includeJS.'][$key . '.']['disableCompression']), $GLOBALS['TSFE']->pSetup['includeJS.'][$key . '.']['forceOnTop'] ? TRUE : FALSE, $GLOBALS['TSFE']->pSetup['includeJS.'][$key . '.']['allWrap'], $GLOBALS['TSFE']->pSetup['includeJS.'][$key . '.']['excludeFromConcatenation'] ? TRUE : FALSE);
+						$pageRenderer->addJsFile($ss, $type, empty($GLOBALS['TSFE']->pSetup['includeJS.'][$key . '.']['disableCompression']), $GLOBALS['TSFE']->pSetup['includeJS.'][$key . '.']['forceOnTop'] ? TRUE : FALSE, $GLOBALS['TSFE']->pSetup['includeJS.'][$key . '.']['allWrap'], $GLOBALS['TSFE']->pSetup['includeJS.'][$key . '.']['excludeFromConcatenation'] ? TRUE : FALSE, $GLOBALS['TSFE']->pSetup['includeJS.'][$key . '.']['allWrap.']['splitChar']);
 					}
 				}
 			}
@@ -647,7 +647,7 @@ class PageGenerator {
 						if (!$type) {
 							$type = 'text/javascript';
 						}
-						$pageRenderer->addJsFooterFile($ss, $type, empty($GLOBALS['TSFE']->pSetup['includeJSFooter.'][$key . '.']['disableCompression']), $GLOBALS['TSFE']->pSetup['includeJSFooter.'][$key . '.']['forceOnTop'] ? TRUE : FALSE, $GLOBALS['TSFE']->pSetup['includeJSFooter.'][$key . '.']['allWrap'], $GLOBALS['TSFE']->pSetup['includeJSFooter.'][$key . '.']['excludeFromConcatenation'] ? TRUE : FALSE);
+						$pageRenderer->addJsFooterFile($ss, $type, empty($GLOBALS['TSFE']->pSetup['includeJSFooter.'][$key . '.']['disableCompression']), $GLOBALS['TSFE']->pSetup['includeJSFooter.'][$key . '.']['forceOnTop'] ? TRUE : FALSE, $GLOBALS['TSFE']->pSetup['includeJSFooter.'][$key . '.']['allWrap'], $GLOBALS['TSFE']->pSetup['includeJSFooter.'][$key . '.']['excludeFromConcatenation'] ? TRUE : FALSE, $GLOBALS['TSFE']->pSetup['includeJSFooter.'][$key . '.']['allWrap.']['splitChar']);
 					}
 				}
 			}

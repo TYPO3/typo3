@@ -1195,9 +1195,10 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @param boolean $forceOnTop Flag if added library should be inserted at begin of this block
 	 * @param string $allWrap
 	 * @param boolean $excludeFromConcatenation
+	 * @param string $splitChar The char used to split the allWrap value, default is "|"
 	 * @return void
 	 */
-	public function addJsLibrary($name, $file, $type = 'text/javascript', $compress = FALSE, $forceOnTop = FALSE, $allWrap = '', $excludeFromConcatenation = FALSE) {
+	public function addJsLibrary($name, $file, $type = 'text/javascript', $compress = FALSE, $forceOnTop = FALSE, $allWrap = '', $excludeFromConcatenation = FALSE, $splitChar = '|') {
 		if (!$type) {
 			$type = 'text/javascript';
 		}
@@ -1209,7 +1210,8 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 				'compress' => $compress,
 				'forceOnTop' => $forceOnTop,
 				'allWrap' => $allWrap,
-				'excludeFromConcatenation' => $excludeFromConcatenation
+				'excludeFromConcatenation' => $excludeFromConcatenation,
+				'splitChar' => $splitChar
 			);
 		}
 	}
@@ -1224,9 +1226,10 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @param boolean $forceOnTop Flag if added library should be inserted at begin of this block
 	 * @param string $allWrap
 	 * @param boolean $excludeFromConcatenation
+	 * @param string $splitChar The char used to split the allWrap value, default is "|"
 	 * @return void
 	 */
-	public function addJsFooterLibrary($name, $file, $type = 'text/javascript', $compress = FALSE, $forceOnTop = FALSE, $allWrap = '', $excludeFromConcatenation = FALSE) {
+	public function addJsFooterLibrary($name, $file, $type = 'text/javascript', $compress = FALSE, $forceOnTop = FALSE, $allWrap = '', $excludeFromConcatenation = FALSE, $splitChar = '|') {
 		if (!$type) {
 			$type = 'text/javascript';
 		}
@@ -1238,7 +1241,8 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 				'compress' => $compress,
 				'forceOnTop' => $forceOnTop,
 				'allWrap' => $allWrap,
-				'excludeFromConcatenation' => $excludeFromConcatenation
+				'excludeFromConcatenation' => $excludeFromConcatenation,
+				'splitChar' => $splitChar
 			);
 		}
 	}
@@ -1252,9 +1256,10 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @param boolean $forceOnTop
 	 * @param string $allWrap
 	 * @param boolean $excludeFromConcatenation
+	 * @param string $splitChar The char used to split the allWrap value, default is "|"
 	 * @return void
 	 */
-	public function addJsFile($file, $type = 'text/javascript', $compress = TRUE, $forceOnTop = FALSE, $allWrap = '', $excludeFromConcatenation = FALSE) {
+	public function addJsFile($file, $type = 'text/javascript', $compress = TRUE, $forceOnTop = FALSE, $allWrap = '', $excludeFromConcatenation = FALSE, $splitChar = '|') {
 		if (!$type) {
 			$type = 'text/javascript';
 		}
@@ -1269,7 +1274,8 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 				'compress' => $compress,
 				'forceOnTop' => $forceOnTop,
 				'allWrap' => $allWrap,
-				'excludeFromConcatenation' => $excludeFromConcatenation
+				'excludeFromConcatenation' => $excludeFromConcatenation,
+				'splitChar' => $splitChar
 			);
 		}
 	}
@@ -1283,9 +1289,10 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @param boolean $forceOnTop
 	 * @param string $allWrap
 	 * @param boolean $excludeFromConcatenation
+	 * @param string $splitChar The char used to split the allWrap value, default is "|"
 	 * @return void
 	 */
-	public function addJsFooterFile($file, $type = 'text/javascript', $compress = TRUE, $forceOnTop = FALSE, $allWrap = '', $excludeFromConcatenation = FALSE) {
+	public function addJsFooterFile($file, $type = 'text/javascript', $compress = TRUE, $forceOnTop = FALSE, $allWrap = '', $excludeFromConcatenation = FALSE, $splitChar = '|') {
 		if (!$type) {
 			$type = 'text/javascript';
 		}
@@ -1300,7 +1307,8 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 				'compress' => $compress,
 				'forceOnTop' => $forceOnTop,
 				'allWrap' => $allWrap,
-				'excludeFromConcatenation' => $excludeFromConcatenation
+				'excludeFromConcatenation' => $excludeFromConcatenation,
+				'splitChar' => $splitChar
 			);
 		}
 	}
@@ -1500,9 +1508,10 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @param boolean $forceOnTop
 	 * @param string $allWrap
 	 * @param boolean $excludeFromConcatenation
+	 * @param string $splitChar The char used to split the allWrap value, default is "|"
 	 * @return void
 	 */
-	public function addCssFile($file, $rel = 'stylesheet', $media = 'all', $title = '', $compress = TRUE, $forceOnTop = FALSE, $allWrap = '', $excludeFromConcatenation = FALSE) {
+	public function addCssFile($file, $rel = 'stylesheet', $media = 'all', $title = '', $compress = TRUE, $forceOnTop = FALSE, $allWrap = '', $excludeFromConcatenation = FALSE, $splitChar = '|') {
 		if (!isset($this->cssFiles[$file])) {
 			$this->cssFiles[$file] = array(
 				'file' => $file,
@@ -1512,7 +1521,8 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 				'compress' => $compress,
 				'forceOnTop' => $forceOnTop,
 				'allWrap' => $allWrap,
-				'excludeFromConcatenation' => $excludeFromConcatenation
+				'excludeFromConcatenation' => $excludeFromConcatenation,
+				'splitChar' => $splitChar
 			);
 		}
 	}
@@ -2271,8 +2281,9 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 				$file = GeneralUtility::resolveBackPath($file);
 				$file = GeneralUtility::createVersionNumberedFilename($file);
 				$tag = '<link rel="' . htmlspecialchars($properties['rel']) . '" type="text/css" href="' . htmlspecialchars($file) . '" media="' . htmlspecialchars($properties['media']) . '"' . ($properties['title'] ? ' title="' . htmlspecialchars($properties['title']) . '"' : '') . $this->endingSlash . '>';
-				if ($properties['allWrap'] && strpos($properties['allWrap'], '|') !== FALSE) {
-					$tag = str_replace('|', $tag, $properties['allWrap']);
+				if ($properties['allWrap']) {
+					$wrapArr = explode($properties['splitChar'] ? $properties['splitChar'] : '|', $properties['allWrap'], 2);
+					$tag = trim($wrapArr[0]) . $tag . trim($wrapArr[1]);
 				}
 				if ($properties['forceOnTop']) {
 					$cssFiles = $tag . LF . $cssFiles;
@@ -2317,8 +2328,9 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 				$properties['file'] = GeneralUtility::resolveBackPath($properties['file']);
 				$properties['file'] = GeneralUtility::createVersionNumberedFilename($properties['file']);
 				$tag = '<script src="' . htmlspecialchars($properties['file']) . '" type="' . htmlspecialchars($properties['type']) . '"></script>';
-				if ($properties['allWrap'] && strpos($properties['allWrap'], '|') !== FALSE) {
-					$tag = str_replace('|', $tag, $properties['allWrap']);
+				if ($properties['allWrap']) {
+					$wrapArr = explode($properties['splitChar'] ? $properties['splitChar'] : '|', $properties['allWrap'], 2);
+					$tag = trim($wrapArr[0]) . $tag . trim($wrapArr[1]);
 				}
 				if ($properties['forceOnTop']) {
 					if ($properties['section'] === self::PART_HEADER) {
@@ -2355,8 +2367,9 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 				$file = GeneralUtility::resolveBackPath($file);
 				$file = GeneralUtility::createVersionNumberedFilename($file);
 				$tag = '<script src="' . htmlspecialchars($file) . '" type="' . htmlspecialchars($properties['type']) . '"></script>';
-				if ($properties['allWrap'] && strpos($properties['allWrap'], '|') !== FALSE) {
-					$tag = str_replace('|', $tag, $properties['allWrap']);
+				if ($properties['allWrap']) {
+					$wrapArr = explode($properties['splitChar'] ? $properties['splitChar'] : '|', $properties['allWrap'], 2);
+					$tag = trim($wrapArr[0]) . $tag . trim($wrapArr[1]);
 				}
 				if ($properties['forceOnTop']) {
 					if ($properties['section'] === self::PART_HEADER) {
