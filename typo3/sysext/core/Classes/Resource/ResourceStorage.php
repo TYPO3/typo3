@@ -1256,7 +1256,10 @@ class ResourceStorage {
 	 * @return boolean
 	 */
 	public function hasFile($identifier) {
-		$this->assureFolderReadPermission();
+		// Allow if identifier is in processing folder
+		if (!$this->driver->isWithin($this->getProcessingFolder(), $identifier)) {
+			$this->assureFolderReadPermission();
+		}
 		return $this->driver->fileExists($identifier);
 	}
 
