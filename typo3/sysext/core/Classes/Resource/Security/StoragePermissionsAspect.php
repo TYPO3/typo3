@@ -55,6 +55,7 @@ class StoragePermissionsAspect {
 	 * @var array
 	 */
 	protected $defaultStorageZeroPermissions = array(
+		'readFolder' => TRUE,
 		'readFile' => TRUE
 	);
 
