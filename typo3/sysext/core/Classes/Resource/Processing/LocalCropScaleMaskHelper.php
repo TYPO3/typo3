@@ -66,6 +66,7 @@ class LocalCropScaleMaskHelper {
 		/** @var $gifBuilder \TYPO3\CMS\Frontend\Imaging\GifBuilder */
 		$gifBuilder = Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Imaging\\GifBuilder');
 		$gifBuilder->init();
+		$gifBuilder->absPrefix = PATH_site;
 
 		$configuration = $targetFile->getProcessingConfiguration();
 		$configuration['additionalParameters'] = $this->modifyImageMagickStripProfileParameters($configuration['additionalParameters'], $configuration);
