@@ -437,13 +437,10 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin 
 				}
 			}
 		}
-		// no RDCT - Links for security reasons
-		$oldSetting = $GLOBALS['TSFE']->config['config']['notification_email_urlmode'];
-		$GLOBALS['TSFE']->config['config']['notification_email_urlmode'] = 0;
-		// Send the email
-		$this->cObj->sendNotifyEmail($msg, $user['email'], '', $this->conf['email_from'], $this->conf['email_fromName'], $this->conf['replyTo']);
-		// Restore settings
-		$GLOBALS['TSFE']->config['config']['notification_email_urlmode'] = $oldSetting;
+		if ($user['email']) {
+			$this->cObj->sendNotifyEmail($msg, $user['email'], '', $this->conf['email_from'], $this->conf['email_fromName'], $this->conf['replyTo']);
+		}
+
 		return '';
 	}
 
