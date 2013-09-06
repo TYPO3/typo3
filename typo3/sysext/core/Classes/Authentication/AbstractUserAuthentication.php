@@ -28,6 +28,7 @@ namespace TYPO3\CMS\Core\Authentication;
  ***************************************************************/
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\HttpUtility;
 
 /**
  * Authentication of users in TYPO3
@@ -803,10 +804,11 @@ abstract class AbstractUserAuthentication {
 						// strip port from server
 						$server = str_replace($sslPortSuffix, '', $server);
 					}
-					\TYPO3\CMS\Core\Utility\HttpUtility::redirect('http://' . $server . '/' . $address . TYPO3_mainDir . $backendScript);
+					HttpUtility::redirect('http://' . $server . '/' . $address . TYPO3_mainDir . $backendScript);
 				}
 			}
 		} elseif ($activeLogin || count($tempuserArr)) {
+			HttpUtility::setResponseCode(HttpUtility::HTTP_STATUS_401);
 			$this->loginFailure = TRUE;
 			if ($this->writeDevLog && !count($tempuserArr) && $activeLogin) {
 				GeneralUtility::devLog('Login failed: ' . GeneralUtility::arrayToLogString($loginData), 'TYPO3\\CMS\\Core\\Authentication\\AbstractUserAuthentication', 2);
