@@ -392,6 +392,8 @@ class GraphicalFunctions {
 			$this->csConvObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Charset\\CharsetConverter');
 		}
 		$this->nativeCharset = 'utf-8';
+		// By default processed images are relative to TYPO3 web directory
+		$this->absPrefix = PATH_site;
 	}
 
 	/*************************************************
