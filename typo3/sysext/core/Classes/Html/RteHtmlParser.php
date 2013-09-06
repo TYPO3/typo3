@@ -376,6 +376,7 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 					$absRef = $siteUrl . $absRef;
 				}
 				// External image from another URL? In that case, fetch image (unless disabled feature).
+				// TODO: How do we handle this case?
 				if (!GeneralUtility::isFirstPartOfStr($absRef, $siteUrl) && !$this->procOptions['dontFetchExtPictures']) {
 					// Get it
 					$externalFile = $this->getUrl($absRef);
@@ -413,6 +414,7 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 				}
 				// Check image as local file (siteURL equals the one of the image)
 				if (GeneralUtility::isFirstPartOfStr($absRef, $siteUrl)) {
+					// TODO: Use processing API and not storage 0 fallback
 					// Rel-path, rawurldecoded for special characters.
 					$path = rawurldecode(substr($absRef, strlen($siteUrl)));
 					// Abs filepath, locked to relative path of this project.
@@ -547,6 +549,7 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 				$absRef = trim($attribArray['src']);
 				// Unless the src attribute is already pointing to an external URL:
 				if (strtolower(substr($absRef, 0, 4)) != 'http') {
+					// TODO: Use processing API and not storage 0 fallback
 					$isMagicImage = FALSE;
 					$fileFactory = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance();
 					$magicFolder = $fileFactory->getFolderObjectFromCombinedIdentifier(

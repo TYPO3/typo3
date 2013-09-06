@@ -239,12 +239,10 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 				'maxW' => $this->magicMaxWidth,
 				'maxH' => $this->magicMaxHeight
 			);
-			$magicImage = $magicImageService->createMagicImage($fileObject, $imageConfiguration, $this->getRTEImageStorageDir());
+			$magicImage = $magicImageService->createMagicImage($fileObject, $imageConfiguration);
 			if ($magicImage instanceof \TYPO3\CMS\Core\Resource\FileInterface) {
-				$filePath = $magicImage->getForLocalProcessing(FALSE);
-				$imageInfo = @getimagesize($filePath);
-				$imageUrl = $this->siteURL . substr($filePath, strlen(PATH_site));
-				$this->imageInsertJS($imageUrl, $imageInfo[0], $imageInfo[1], $altText, $titleText, $additionalParams);
+				$imageUrl = $this->siteURL . $magicImage->getPublicUrl();
+				$this->imageInsertJS($imageUrl, $magicImage->getProperty('width'), $magicImage->getProperty('height'), $altText, $titleText, $additionalParams);
 			}
 		} else {
 			GeneralUtility::sysLog('Attempt at creating a magic image failed due to absent RTE_imageStorageDir', $this->extKey . '/tx_rtehtmlarea_select_image', GeneralUtility::SYSLOG_SEVERITY_ERROR);
