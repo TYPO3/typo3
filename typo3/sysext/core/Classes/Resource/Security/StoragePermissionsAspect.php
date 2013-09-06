@@ -55,6 +55,7 @@ class StoragePermissionsAspect {
 	 * @var array
 	 */
 	protected $defaultStorageZeroPermissions = array(
+		'readFolder' => TRUE,
 		'readFile' => TRUE
 	);
 
@@ -78,7 +79,7 @@ class StoragePermissionsAspect {
 			if ($storage->getUid() > 0) {
 				$storage->setUserPermissions($this->backendUserAuthentication->getFilePermissionsForStorage($storage));
 			} else {
-				$storage->setUserPermissions($this->defaultStorageZeroPermissions);
+				$storage->setEvaluatePermissions(FALSE);
 			}
 			$this->addFileMountsToStorage($storage);
 		}

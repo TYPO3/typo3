@@ -127,9 +127,9 @@ class ResourceFactory implements \TYPO3\CMS\Core\SingletonInterface {
 					// legacy code
 					'configuration' => '',
 					'is_online' => TRUE,
-					'is_browsable' => FALSE,
+					'is_browsable' => TRUE,
 					'is_public' => TRUE,
-					'is_writable' => FALSE
+					'is_writable' => TRUE
 				);
 				$storageConfiguration = array(
 					'basePath' => '/',
