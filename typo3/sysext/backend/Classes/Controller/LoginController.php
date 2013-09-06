@@ -420,6 +420,7 @@ class LoginController {
 				');
 			}
 		} elseif (!$GLOBALS['BE_USER']->user['uid'] && $this->isLoginInProgress()) {
+			HttpUtility::setResponseCode(HttpUtility::HTTP_STATUS_401);
 			// Wrong password, wait for 5 seconds
 			sleep(5);
 		}
