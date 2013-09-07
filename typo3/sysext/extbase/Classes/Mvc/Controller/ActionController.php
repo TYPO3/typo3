@@ -60,15 +60,15 @@ class ActionController extends \TYPO3\CMS\Extbase\Mvc\Controller\AbstractControl
 	 *
 	 * @var string
 	 * @api
+	 * @deprecated since Extbase 6.2, will be removed two versions later
 	 */
-	protected $viewObjectNamePattern = '@vendor\@extension\View\@controller\@action@format';
+	protected $viewObjectNamePattern = 'Tx_@extension_View_@controller_@action@format';
 
 	/**
 	 * @var string
 	 * @api
-	 * @deprecated since Extbase 6.2, will be removed two versions later
 	 */
-	protected $deprecatedViewObjectNamePattern = 'Tx_@extension_View_@controller_@action@format';
+	protected $namespacesViewObjectNamePattern = '@vendor\@extension\View\@controller\@action@format';
 
 	/**
 	 * A list of formats and object names of the views which should render them.
@@ -410,9 +410,9 @@ class ActionController extends \TYPO3\CMS\Extbase\Mvc\Controller\AbstractControl
 		$vendorName = $this->request->getControllerVendorName();
 
 		if ($vendorName !== NULL) {
-			$possibleViewName = str_replace('@vendor', $vendorName, $this->viewObjectNamePattern);
+			$possibleViewName = str_replace('@vendor', $vendorName, $this->namespacesViewObjectNamePattern);
 		} else {
-			$possibleViewName = $this->deprecatedViewObjectNamePattern;
+			$possibleViewName = $this->viewObjectNamePattern;
 		}
 
 		$extensionName = $this->request->getControllerExtensionName();
