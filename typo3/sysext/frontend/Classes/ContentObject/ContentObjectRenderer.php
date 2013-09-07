@@ -1342,7 +1342,14 @@ class ContentObjectRenderer {
 			} else {
 				$params = isset($conf['params.']) ? ' ' . $this->stdWrap($conf['params'], $conf['params.']) : '';
 			}
-			$theValue = '<img src="' . htmlspecialchars($source) . '" width="' . $info[0] . '" height="' . $info[1] . '"' . $this->getBorderAttr(' border="' . intval($conf['border']) . '"') . $params . $altParam . (!empty($GLOBALS['TSFE']->xhtmlDoctype) ? ' /' : '') . '>';
+			
+			$noDimensions = isset($conf['noDimensions.']) ? $this->cObj->stdWrap($conf['noDimensions'], $conf['noDimensions.']) : $conf['noDimensions'];
+			$dimensions = '';
+			if (!$noDimensions) {
+				$dimensions = 'width="' . $info[0] . '" height="' . $info[1] . '" ';
+			}
+
+			$theValue = '<img src="' . htmlspecialchars($source) . '" ' . $dimensions . $this->getBorderAttr(' border="' . intval($conf['border']) . '"') . $params . $altParam . (!empty($GLOBALS['TSFE']->xhtmlDoctype) ? ' /' : '') . '>';
 			$linkWrap = isset($conf['linkWrap.']) ? $this->stdWrap($conf['linkWrap'], $conf['linkWrap.']) : $conf['linkWrap'];
 			if ($linkWrap) {
 				$theValue = $this->linkWrap($theValue, $linkWrap);
