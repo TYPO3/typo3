@@ -66,6 +66,12 @@ result: '0, 22, 11, 4'
 Administration / Customization
 -------------------------------------------------------------------------------
 
+* TypoScript - New imgResource option 'noDimensions'
+
+It can now be specified that an img tag shall be rendered without any
+dimension specification. This will strip the width and height attribute
+off the img tag.
+
 -------------------------------------------------------------------------------
 Extbase
 -------------------------------------------------------------------------------
