@@ -6977,7 +6977,7 @@ class DataHandler {
 	 * @todo Define visibility
 	 */
 	public function log($table, $recuid, $action, $recpid, $error, $details, $details_nr = -1, $data = array(), $event_pid = -1, $NEWid = '') {
-		if ($this->enableLogging) {
+		if ($this->enableLogging && is_object($this->BE_USER)) {
 			// Type value for tce_db.php
 			$type = 1;
 			if (!$this->storeLogMessages) {
