@@ -12,4 +12,11 @@ if (TYPO3_MODE === 'BE' && !(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_INSTALL)) {
 	);
 }
 
+\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\SignalSlot\\Dispatcher')->connect(
+	'TYPO3\\CMS\\Core\\Resource\\ResourceStorage',
+	\TYPO3\CMS\Core\Resource\ResourceStorage::SIGNAL_PreFileDelete,
+	'TYPO3\\CMS\\Core\\Resource\\Processing\\FileDeletedAspect',
+	'cleanupProcessedFiles'
+);
+
 ?>
