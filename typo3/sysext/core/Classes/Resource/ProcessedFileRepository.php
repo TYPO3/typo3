@@ -127,6 +127,16 @@ class ProcessedFileRepository extends AbstractRepository {
 	}
 
 	/**
+	 * @param object $processedFile
+	 */
+	public function remove($processedFile) {
+		if ($processedFile->isPersisted()) {
+			$uid = intval($processedFile->getUid());
+			$this->databaseConnection->exec_DELETEquery($this->table, 'uid=' . intval($uid));
+		}
+	}
+
+	/**
 	 * Updates an existing file object in the database
 	 *
 	 * @param ProcessedFile $processedFile
