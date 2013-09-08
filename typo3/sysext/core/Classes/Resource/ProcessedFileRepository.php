@@ -176,6 +176,24 @@ class ProcessedFileRepository extends AbstractRepository {
 	}
 
 	/**
+	 * @param FileInterface $file
+	 * @return array<ProcessedFile>
+	 */
+	public function findAllByOriginalFile(FileInterface $file) {
+		$itemList = array();
+
+		$whereClause = 'original=' . intval($file->getUid());
+		$whereClause .= $this->getWhereClauseForEnabledFields();
+
+		$res = $this->databaseConnection->exec_SELECTquery('*', $this->table, $whereClause);
+		while ($row = $this->databaseConnection->sql_fetch_assoc($res)) {
+			$itemList[] = $this->createDomainObject($row);
+		}
+		$this->databaseConnection->sql_free_result($res);
+		return $itemList;
+	}
+
+	/**
 	 * Removes all array keys which cannot be persisted
 	 *
 	 * @param array $data
