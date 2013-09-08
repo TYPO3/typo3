@@ -3887,7 +3887,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 */
-	public function copyDirectoryCopiesFilesAndDirectories() {
+	public function copyDirectoryCopiesFilesAndDirectoriesWithRelativePaths() {
 		$sourceDirectory = 'typo3temp/' . uniqid('test_') . '/';
 		$absoluteSourceDirectory = PATH_site . $sourceDirectory;
 		$this->testFilesToDelete[] = $absoluteSourceDirectory;
@@ -3903,6 +3903,30 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		Utility\GeneralUtility::writeFileToTypo3tempDir($absoluteSourceDirectory . 'foo/file', '42');
 
 		Utility\GeneralUtility::copyDirectory($sourceDirectory, $targetDirectory);
+
+		$this->assertFileExists($absoluteTargetDirectory . 'file');
+		$this->assertFileExists($absoluteTargetDirectory . 'foo/file');
+	}
+
+	/**
+	 * @test
+	 */
+	public function copyDirectoryCopiesFilesAndDirectoriesWithAbsolutePaths() {
+		$sourceDirectory = 'typo3temp/' . uniqid('test_') . '/';
+		$absoluteSourceDirectory = PATH_site . $sourceDirectory;
+		$this->testFilesToDelete[] = $absoluteSourceDirectory;
+		Utility\GeneralUtility::mkdir($absoluteSourceDirectory);
+
+		$targetDirectory = 'typo3temp/' . uniqid('test_') . '/';
+		$absoluteTargetDirectory = PATH_site . $targetDirectory;
+		$this->testFilesToDelete[] = $absoluteTargetDirectory;
+		Utility\GeneralUtility::mkdir($absoluteTargetDirectory);
+
+		Utility\GeneralUtility::writeFileToTypo3tempDir($absoluteSourceDirectory . 'file', '42');
+		Utility\GeneralUtility::mkdir($absoluteSourceDirectory . 'foo');
+		Utility\GeneralUtility::writeFileToTypo3tempDir($absoluteSourceDirectory . 'foo/file', '42');
+
+		Utility\GeneralUtility::copyDirectory($absoluteSourceDirectory, $absoluteTargetDirectory);
 
 		$this->assertFileExists($absoluteTargetDirectory . 'file');
 		$this->assertFileExists($absoluteTargetDirectory . 'foo/file');
