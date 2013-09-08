@@ -63,10 +63,6 @@ class DependencyUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	protected $availableExtensions = array();
 
-	/**
-	 * @var array
-	 */
-	protected $errors = array();
 
 	/**
 	 * @param \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager
@@ -177,14 +173,7 @@ class DependencyUtility implements \TYPO3\CMS\Core\SingletonInterface {
 			$identifier = strtolower($dependency->getIdentifier());
 			if (in_array($identifier, \TYPO3\CMS\Extensionmanager\Domain\Model\Dependency::$specialDependencies)) {
 				$methodname = 'check' . ucfirst($identifier) . 'Dependency';
-				try {
-					$this->{$methodname}($dependency);
-				} catch (\TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException $e) {
-					$this->errors[] = array(
-						'identifier' => $identifier,
-						'message' => $e->getMessage()
-					);
-				}
+				$this->{$methodname}($dependency);
 			} else {
 				if ($dependency->getType() === 'depends') {
 					$dependenciesToResolve = !(bool) $this->checkExtensionDependency($dependency);
