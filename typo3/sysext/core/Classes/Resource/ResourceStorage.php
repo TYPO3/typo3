@@ -1356,6 +1356,9 @@ class ResourceStorage {
 		// Mark the file object as deleted
 		$fileObject->setDeleted();
 
+		// remove file from repository
+		$this->getFileRepository()->remove($fileObject);
+
 		$this->emitPostFileDeleteSignal($fileObject);
 
 		return TRUE;
