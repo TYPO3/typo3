@@ -3602,8 +3602,12 @@ Connection: close
 	 * @param string $destination Path to destination directory, relative to document root
 	 */
 	public static function copyDirectory($source, $destination) {
-		$source = PATH_site . $source;
-		$destination = PATH_site . $destination;
+		if (strpos($source, PATH_site) === FALSE) {
+			$source = PATH_site . $source;
+		}
+		if (strpos($destination, PATH_site) === FALSE) {
+			$destination = PATH_site . $destination;
+		}
 		if (static::isAllowedAbsPath($source) && static::isAllowedAbsPath($destination)) {
 			$iterator = new \RecursiveIteratorIterator(
 				new \RecursiveDirectoryIterator($source, \RecursiveDirectoryIterator::SKIP_DOTS),
