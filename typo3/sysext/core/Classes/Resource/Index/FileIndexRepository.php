@@ -216,4 +216,14 @@ class FileIndexRepository implements SingletonInterface {
 		}
 		return $where;
 	}
+
+	/**
+	 * Remove a sys_file record from the database
+	 *
+	 * @param integer $fileUid
+	 * @return void
+	 */
+	public function remove($fileUid) {
+		$this->getDatabase()->exec_DELETEquery($this->table, 'uid=' . intval($fileUid));
+	}
 }

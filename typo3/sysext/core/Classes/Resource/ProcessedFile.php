@@ -403,10 +403,13 @@ class ProcessedFile extends AbstractFile {
 	}
 
 	/**
+	 * Delete processed file
+	 *
+	 * @param boolean $force
 	 * @return boolean
 	 */
-	public function delete() {
-		if ($this->isUnchanged()) {
+	public function delete($force = FALSE) {
+		if (!$force && $this->isUnchanged()) {
 			return FALSE;
 		}
 		return parent::delete();

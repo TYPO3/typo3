@@ -11,3 +11,10 @@ if (TYPO3_MODE === 'BE' && !(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_INSTALL)) {
 		'addUserPermissionsToStorage'
 	);
 }
+
+\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\SignalSlot\\Dispatcher')->connect(
+	'TYPO3\\CMS\\Core\\Resource\\ResourceStorage',
+	\TYPO3\CMS\Core\Resource\ResourceStorage::SIGNAL_PostFileDelete,
+	'TYPO3\\CMS\\Core\\Resource\\Processing\\FileDeletionAspect',
+	'removeFromRepository'
+);

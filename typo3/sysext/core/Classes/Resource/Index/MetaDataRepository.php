@@ -135,6 +135,15 @@ class MetaDataRepository implements SingletonInterface {
 		}
 	}
 
+	/**
+	 * Remove all metadata records for a certain file from the database
+	 *
+	 * @param integer $fileUid
+	 * @return void
+	 */
+	public function removeByFileUid($fileUid) {
+		$this->getDatabase()->exec_DELETEquery($this->tableName, 'file=' . intval($fileUid));
+	}
 
 	/**
 	 * Get the SignalSlot dispatcher
@@ -154,8 +163,6 @@ class MetaDataRepository implements SingletonInterface {
 		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
 	}
 
-
-
 	/**
 	 * Signal that is called after a record has been loaded from database
 	 * Allows other places to do extension of metadata at runtime or
@@ -167,5 +174,4 @@ class MetaDataRepository implements SingletonInterface {
 	protected function emitRecordPostRetrievalSignal(\ArrayObject $data) {
 		$this->getSignalSlotDispatcher()->dispatch('TYPO3\\CMS\\Core\\Resource\\Index\\MetaDataRepository', 'recordPostRetrieval', array($data));
 	}
-
 }
