@@ -506,9 +506,9 @@ class Extension extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 */
 	public function getDependencies() {
 		if (!is_object($this->dependencies)) {
-			/** @var $dependencyUtility \TYPO3\CMS\Extensionmanager\Utility\DependencyUtility */
-			$dependencyUtility = $this->objectManager->get('TYPO3\\CMS\\Extensionmanager\\Utility\\DependencyUtility');
-			$this->setDependencies($dependencyUtility->convertDependenciesToObjects($this->getSerializedDependencies()));
+			/** @var $extensionModelUtility \TYPO3\CMS\Extensionmanager\Utility\ExtensionModelUtility */
+			$extensionModelUtility = $this->objectManager->get('TYPO3\\CMS\\Extensionmanager\\Utility\\ExtensionModelUtility');
+			$this->setDependencies($extensionModelUtility->convertDependenciesToObjects($this->getSerializedDependencies()));
 		}
 		return $this->dependencies;
 	}
