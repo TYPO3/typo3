@@ -27,6 +27,7 @@ namespace TYPO3\CMS\Core\Resource\Processing;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 use TYPO3\CMS\Core\Resource\File;
+use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -58,17 +59,34 @@ class FileDeletedAspect {
 	}
 
 	/**
-	 * Cleanup database record for a deleted file
+	 * Remove a deleted file from the (database) repository
 	 *
 	 * @param FileInterface $fileObject
 	 */
 	public function removeFromRepository(FileInterface $fileObject) {
 
-		// remove file from repository
 		if ($fileObject instanceof File) {
 			$this->getFileRepository()->remove($fileObject);
 		} elseif ($fileObject instanceof ProcessedFile) {
 			$this->getProcessedFileRepository()->remove($fileObject);
+		}
+	}
+
+	/**
+	 * Remove all processed files that belong to the given File object
+	 *
+	 * @param FileInterface $fileObject
+	 */
+	public function cleanupProcessedFiles(FileInterface $fileObject) {
+
+		// only delete processed files of File objects
+		if (!$fileObject instanceof File) {
+			return;
+		}
+
+		/** @var $processedFile \TYPO3\CMS\Core\Resource\ProcessedFile */
+		foreach ($this->getProcessedFileRepository()->findAllByOriginalFile($fileObject) as $processedFile) {
+			$processedFile->delete(TRUE);
 		}
 	}
 }
