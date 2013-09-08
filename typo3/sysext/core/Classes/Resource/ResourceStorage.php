@@ -1356,6 +1356,13 @@ class ResourceStorage {
 		// Mark the file object as deleted
 		$fileObject->setDeleted();
 
+		// remove file from repository
+		if ($fileObject instanceof File) {
+			$this->getFileRepository()->remove($fileObject);
+		} elseif ($fileObject instanceof ProcessedFile) {
+			$this->getProcessedFileRepository()->remove($fileObject);
+		}
+
 		$this->emitPostFileDeleteSignal($fileObject);
 
 		return TRUE;
@@ -2210,6 +2217,13 @@ class ResourceStorage {
 	 */
 	protected function getFileRepository() {
 		return GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\FileRepository');
+	}
+
+	/**
+	 * @return \TYPO3\CMS\Core\Resource\ProcessedFileRepository
+	 */
+	protected function getProcessedFileRepository() {
+		return GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\ProcessedFileRepository');
 	}
 
 	/**

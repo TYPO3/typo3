@@ -246,6 +246,20 @@ class FileRepository extends AbstractRepository {
 	}
 
 	/**
+	 * Remove a file object form the database
+	 *
+	 * @param File $fileObject
+	 * @return void
+	 * @throws \InvalidArgumentException
+	 */
+	public function remove($fileObject) {
+		if (!$fileObject instanceof File) {
+			throw new \InvalidArgumentException('Parameter is no File object', 1378653060);
+		}
+		$GLOBALS['TYPO3_DB']->exec_DELETEquery('sys_file', 'uid=' . $fileObject->getUid());
+	}
+
+	/**
 	 * Updates an existing file object in the database
 	 *
 	 * @param AbstractFile $modifiedObject
