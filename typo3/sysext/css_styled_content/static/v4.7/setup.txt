@@ -133,7 +133,7 @@ lib.parseFunc_RTE {
 			# Recursive call to self but without wrapping non-wrapped cell content
 			default.stdWrap {
 				parseFunc =< lib.parseFunc_RTE
-				parseFunc.nonTypoTagStdWrap.encapsLines.nonWrappedTag = 
+				parseFunc.nonTypoTagStdWrap.encapsLines.nonWrappedTag =
 			}
 			addChr10BetweenParagraphs=1
 		}
@@ -1948,6 +1948,25 @@ tt_content.menu {
 				sectionIndex.type = header
 				wrap = <ul>|</ul>
 				NO.wrapItemAndSub = <li class="csc-section">|</li>
+			}
+		}
+
+		# "Sitemaps of selected pages - liststyle"
+		8 < .2
+		8 {
+			special = directory
+			special.value.field = pages
+		}
+
+		# Menu of categorized pages
+		9 < .default
+		9 {
+			special = categories
+			special.value.field = selected_categories
+			special.sorting = title
+			special.order = asc
+			stdWrap {
+				outerWrap = <ul class="csc-menu csc-menu-9">|</ul>
 			}
 		}
 	}

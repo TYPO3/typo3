@@ -1521,6 +1521,25 @@ tt_content.menu {
 				NO.wrapItemAndSub = <li class="csc-section">|</li>
 			}
 		}
+
+		# "Sitemaps of selected pages - liststyle"
+		8 < .2
+		8 {
+			special = directory
+			special.value.field = pages
+		}
+
+		# Menu of categorized pages
+		9 < .default
+		9 {
+			special = categories
+			special.value.field = selected_categories
+			special.sorting = title
+			special.order = asc
+			stdWrap {
+				outerWrap = <ul class="csc-menu csc-menu-9">|</ul>
+			}
+		}
 	}
 
 	20.stdWrap {
