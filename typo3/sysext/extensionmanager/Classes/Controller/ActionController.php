@@ -47,6 +47,12 @@ class ActionController extends \TYPO3\CMS\Extensionmanager\Controller\AbstractCo
 	protected $fileHandlingUtility;
 
 	/**
+	 * @var \TYPO3\CMS\Extensionmanager\Utility\ExtensionModelUtility
+	 * @inject
+	 */
+	protected $extensionModelUtility;
+
+	/**
 	 * @var \TYPO3\CMS\Extensionmanager\Service\ExtensionManagementService
 	 * @inject
 	 */
@@ -76,7 +82,9 @@ class ActionController extends \TYPO3\CMS\Extensionmanager\Controller\AbstractCo
 		} else {
 			// install
 			$this->managementService->resolveDependenciesAndInstall(
-				$this->installUtility->enrichExtensionWithDetails($extension)
+				$this->extensionModelUtility->mapExtensionArrayToModel(
+					$this->installUtility->enrichExtensionWithDetails($extension)
+				)
 			);
 		}
 		$this->redirect('index', 'List', NULL, array(self::TRIGGER_RefreshModuleMenu => TRUE));

@@ -72,6 +72,17 @@ class ExtensionManagementService implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 	/**
+	 * Mark an extension for copy
+	 *
+	 * @param string $extensionKey
+	 * @param string $sourceFolder
+	 * @return void
+	 */
+	public function markExtensionForCopy($extensionKey, $sourceFolder) {
+		$this->downloadQueue->addExtensionToCopyQueue($extensionKey, $sourceFolder);
+	}
+
+	/**
 	 * Mark an extension for download
 	 *
 	 * @param \TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension
@@ -92,27 +103,29 @@ class ExtensionManagementService implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 	/**
-	 * @param \TYPO3\CMS\Extensionmanager\Domain\Model\Extension|array $extension
+	 * Resolve an extensions dependencys (download, copy and install dependent
+	 * extensions) and install the extension
+	 *
+	 * @param \TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension
 	 * @return array
 	 */
-	public function resolveDependenciesAndInstall($extension) {
-		if (!is_array($extension) && !$extension instanceof \TYPO3\CMS\Extensionmanager\Domain\Model\Extension) {
-			throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException('Extension must be array or object.', 1350891642);
-		}
+	public function resolveDependenciesAndInstall(\TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension) {
+		$downloadedDependencies = $this->downloadMainExtension($extension);
+		$extensionKey = $extension->getExtensionKey();
+		$this->setInExtensionRepository($extensionKey);
 		$this->dependencyUtility->buildExtensionDependenciesTree($extension);
-		if ($extension instanceof \TYPO3\CMS\Extensionmanager\Domain\Model\Extension) {
-			// We have a TER Extension, which should be downloaded first.
-			$this->downloadQueue->addExtensionToQueue($extension);
-			$extensionKey = $extension->getExtensionKey();
-		} else {
-			$extensionKey = $extension['key'];
-		}
-		$queue = $this->downloadQueue->getExtensionQueue();
-		$downloadedDependencies = array();
+
 		$updatedDependencies = array();
 		$installedDependencies = array();
+		$queue = $this->downloadQueue->getExtensionQueue();
+		$copyQueue = $this->downloadQueue->getExtensionCopyStorage();
+
+		if (count($copyQueue) > 0) {
+			$this->copyDependencies($copyQueue);
+		}
+
 		if (array_key_exists('download', $queue)) {
-			$downloadedDependencies = $this->downloadDependencies($queue['download']);
+			$downloadedDependencies = array_merge($downloadedDependencies, $this->downloadDependencies($queue['download']));
 		}
 		if (array_key_exists('update', $queue)) {
 			$this->downloadDependencies($queue['update']);
@@ -125,6 +138,37 @@ class ExtensionManagementService implements \TYPO3\CMS\Core\SingletonInterface {
 			$installedDependencies = $this->installDependencies($installQueue);
 		}
 		return array_merge($downloadedDependencies, $updatedDependencies, $installedDependencies);
+	}
+
+	/**
+	 * Sets the path to the repository in an extension
+	 * (Initialisation/Extensions) depending on the extension
+	 * that is currently installed
+	 *
+	 * @param string $extensionKey
+	 */
+	protected function setInExtensionRepository($extensionKey) {
+		$paths = \TYPO3\CMS\Extensionmanager\Domain\Model\Extension::returnInstallPaths();
+		$path = $paths[$this->downloadUtility->getDownloadPath()];
+		$localExtensionStorage = $path . $extensionKey . '/Initialisation/Extensions/';
+		$this->dependencyUtility->setLocalExtensionStorage($localExtensionStorage);
+	}
+
+	/**
+	 * Copies locally provided extensions to typo3conf/ext
+	 *
+	 * @param array $copyQueue
+	 * @return void
+	 */
+	protected function copyDependencies(array $copyQueue) {
+		$installPaths = \TYPO3\CMS\Extensionmanager\Domain\Model\Extension::returnAllowedInstallPaths();
+		foreach ($copyQueue as $extensionKey => $sourceFolder) {
+			$destination = $installPaths['Local'] . $extensionKey;
+			\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir($destination);
+			\TYPO3\CMS\Core\Utility\GeneralUtility::copyDirectory($sourceFolder . $extensionKey, $destination);
+			$this->markExtensionForInstallation($extensionKey);
+			$this->downloadQueue->removeExtensionFromCopyQueue($extensionKey);
+		}
 	}
 
 	/**
@@ -192,6 +236,24 @@ class ExtensionManagementService implements \TYPO3\CMS\Core\SingletonInterface {
 			$installQueue = array('install' => $installQueue);
 		}
 		return array_merge($this->downloadQueue->getExtensionQueue(), $installQueue);
+	}
+
+	/**
+	 * Downloads the extension the user wants to install
+	 * This is separated from downloading the dependencies
+	 * as an extension is able to provide it's own dependencies
+	 *
+	 * @param \TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension
+	 * @return array
+	 */
+	public function downloadMainExtension(\TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension) {
+		$downloadedDependencies = array();
+		if ($extension->getUid()) {
+			$this->downloadQueue->addExtensionToQueue($extension);
+			$queue = $this->downloadQueue->getExtensionQueue();
+			$downloadedDependencies = $this->downloadDependencies($queue['download']);
+		}
+		return $downloadedDependencies;
 	}
 
 }
