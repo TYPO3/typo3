@@ -407,18 +407,33 @@ class ResourceStorageTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCa
 	public function setFileContentsUpdatesObjectProperties() {
 		$this->initializeVfs();
 		$this->prepareFixture(array(), TRUE);
-		$fileProperties = array(
-			'someProperty' => 'value',
-			'someOtherProperty' => 42
+		$fileInfo = array(
+			'storage' => 'A',
+			'identifier' => 'B',
+			'mtime' => 'C',
+			'ctime' => 'D',
+			'mimetype' => 'E',
+			'size' => 'F',
+			'name' => 'G',
+		);
+		$newProperties = array(
+			'storage' => $fileInfo['storage'],
+			'identifier' => $fileInfo['identifier'],
+			'tstamp' => $fileInfo['mtime'],
+			'crdate' => $fileInfo['ctime'],
+			'mime_type' => $fileInfo['mimetype'],
+			'size' => $fileInfo['size'],
+			'name' => $fileInfo['name']
 		);
 		$hash = 'asdfg';
 		$driver = $this->getMock('TYPO3\\CMS\\Core\\Resource\\Driver\\LocalDriver', array(), array(array('basePath' => $this->getMountRootUrl())));
-		$driver->expects($this->once())->method('getFileInfo')->will($this->returnValue($fileProperties));
+		$driver->expects($this->once())->method('getFileInfoByIdentifier')->will($this->returnValue($fileInfo));
 		$driver->expects($this->once())->method('hash')->will($this->returnValue($hash));
 		$this->fixture->setDriver($driver);
 		$mockedFile = $this->getMock('TYPO3\\CMS\\Core\\Resource\\File', array(), array(), '', FALSE);
 		$mockedFile->expects($this->any())->method('getIdentifier')->will($this->returnValue('/file.ext'));
-		$mockedFile->expects($this->once())->method('updateProperties')->with($this->equalTo(array_merge($fileProperties, array('sha1' => $hash))));
+		$mockedFile->expects($this->at(1))->method('updateProperties')->with($this->equalTo(array('sha1' => $hash)));
+		$mockedFile->expects($this->at(3))->method('updateProperties')->with($this->equalTo($newProperties));
 		$this->fixture->setFileContents($mockedFile, uniqid());
 	}
 
