@@ -687,6 +687,35 @@ class BackendUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$onclickCode = 'var previewWin = window.open(\'' . $alternativeUrl . '\',\'newTYPO3frontendWindow\');';
 		$this->assertStringMatchesFormat($onclickCode, Utility\BackendUtility::viewOnClick(NULL, NULL, NULL, NULL, $alternativeUrl, NULL, FALSE));
 	}
+
+	/**
+	 * @test
+	 */
+	public function getModTSconfigIgnoresValuesFromUserTsConfigIfNoSet() {
+		$completeConfiguration = array(
+			'value' => 'bar',
+			'properties' => array(
+				'permissions.' => array(
+					'file.' => array(
+						'default.' => array('readAction' => '1'),
+						'1.' => array('writeAction' => '1'),
+						'0.' => array('readAction' => '0'),
+					),
+				)
+			)
+		);
+
+		/** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Backend\Utility\BackendUtility $fixture */
+		$fixture = $this->getMock('TYPO3\\CMS\\Backend\\Utility\\BackendUtility', array('getPagesTSconfig'));
+
+		$GLOBALS['BE_USER'] = $this->getMock('TYPO3\\CMS\\Core\\Authentication\\BackendUserAuthentication');
+		$GLOBALS['BE_USER']->expects($this->at(0))->method('getTSConfig')->will($this->returnValue($completeConfiguration));
+		$GLOBALS['BE_USER']->expects($this->at(1))->method('getTSConfig')->will($this->returnValue(array('value' => NULL, 'properties' => NULL)));
+
+		$this->assertSame($completeConfiguration, $fixture->getModTSconfig(42, 'notrelevant'));
+	}
+
+
 }
 
 ?>

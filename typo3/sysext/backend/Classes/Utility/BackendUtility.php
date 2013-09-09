@@ -2644,6 +2644,9 @@ class BackendUtility {
 	static public function getModTSconfig($id, $TSref) {
 		$pageTS_modOptions = $GLOBALS['BE_USER']->getTSConfig($TSref, self::getPagesTSconfig($id));
 		$BE_USER_modOptions = $GLOBALS['BE_USER']->getTSConfig($TSref);
+		if (is_null($BE_USER_modOptions['value'])) {
+			unset($BE_USER_modOptions['value']);
+		}
 		$modTSconfig = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($pageTS_modOptions, $BE_USER_modOptions);
 		return $modTSconfig;
 	}
