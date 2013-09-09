@@ -549,6 +549,19 @@ return array(
 			mod.wizards.newRecord.pages.show.pageInside=1
 			mod.wizards.newRecord.pages.show.pageAfter=1
 			mod.wizards.newRecord.pages.show.pageSelectPosition=1
+			mod.web_view.previewFrameWidths {
+				1280.label = LLL:EXT:viewpage/Resources/Private/Language/locallang.xlf:computer
+				1024.label = LLL:EXT:viewpage/Resources/Private/Language/locallang.xlf:tablet
+				960.label = LLL:EXT:viewpage/Resources/Private/Language/locallang.xlf:mobile
+				800.label = LLL:EXT:viewpage/Resources/Private/Language/locallang.xlf:computer
+				768.label = LLL:EXT:viewpage/Resources/Private/Language/locallang.xlf:tablet
+				600.label = LLL:EXT:viewpage/Resources/Private/Language/locallang.xlf:tablet
+				640.label = LLL:EXT:viewpage/Resources/Private/Language/locallang.xlf:mobile
+				480.label = LLL:EXT:viewpage/Resources/Private/Language/locallang.xlf:mobile
+				400.label = LLL:EXT:viewpage/Resources/Private/Language/locallang.xlf:mobile
+				360.label = LLL:EXT:viewpage/Resources/Private/Language/locallang.xlf:mobile
+				300.label = LLL:EXT:viewpage/Resources/Private/Language/locallang.xlf:mobile
+			}
 		',
 		// String (exclude).Enter lines of default Page TSconfig.
 		'defaultPermissions' => array(),
