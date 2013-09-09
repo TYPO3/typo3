@@ -147,23 +147,37 @@ class ViewModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 	 * @return array
 	 */
 	protected function getPreviewFrameWidths() {
-		$autoSize = json_encode(array(
+		$pageId = intval(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id'));
+		$modTSconfig = BackendUtility::getModTSconfig($pageId, 'mod.web_view');
+		$data = json_encode(array(
 			'width' => '100%',
 			'height' => "100%"
 		));
-		return array(
-			$autoSize => $GLOBALS['LANG']->getLL('autoSize'),
-			json_encode(array('width' => '1280')) => '1280px ' . $GLOBALS['LANG']->getLL('computer'),
-			json_encode(array('width' => '1024')) => '1024px ' . $GLOBALS['LANG']->getLL('tablet'),
-			json_encode(array('width' => '960')) => '960px ' . $GLOBALS['LANG']->getLL('mobile'),
-			json_encode(array('width' => '800')) => '800px ' . $GLOBALS['LANG']->getLL('computer'),
-			json_encode(array('width' => '768')) => '768px ' . $GLOBALS['LANG']->getLL('tablet'),
-			json_encode(array('width' => '600')) => '600px ' . $GLOBALS['LANG']->getLL('tablet'),
-			json_encode(array('width' => '640')) => '640px ' . $GLOBALS['LANG']->getLL('mobile'),
-			json_encode(array('width' => '480')) => '480px ' . $GLOBALS['LANG']->getLL('mobile'),
-			json_encode(array('width' => '400')) => '400px ' . $GLOBALS['LANG']->getLL('mobile'),
-			json_encode(array('width' => '360')) => '360px ' . $GLOBALS['LANG']->getLL('mobile'),
-			json_encode(array('width' => '300')) => '300px ' . $GLOBALS['LANG']->getLL('mobile')
+		$widths = array(
+			$data => $GLOBALS['LANG']->getLL('autoSize')
 		);
+		if (is_array($modTSconfig['properties']['previewFrameWidths.'])) {
+			foreach ($modTSconfig['properties']['previewFrameWidths.'] as $item => $conf ){
+				$label = '';
+
+				$width = substr($item, 0, -1);
+				$data = array('width' => $width);
+				$label .= $width . 'px ';
+
+				//if height is set
+				if (isset($conf['height'])) {
+					$label .= ' × ' . $conf['height'] . 'px ';
+					$data['height'] = $conf['height'];
+				}
+
+				if (strcmp(substr($conf['label'], 0, 4), 'LLL:')) {
+					$label .= $conf['label'];
+				} else {
+					$label .= $GLOBALS['LANG']->sL(trim($conf['label']));
+				}
+				$widths[json_encode($data)] = $label;
+			}
+		}
+		return $widths;
 	}
 }

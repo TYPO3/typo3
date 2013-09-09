@@ -114,8 +114,8 @@
 
 		function getOptionLabel(data) {
 			var jsonObject = JSON.parse(data);
-			var height = jsonObject['height'] ? '×' + jsonObject['height'] : '';
-			return jsonObject['width'] + height + ' ' + TYPO3.lang['customWidth'];
+			var height = jsonObject['height'] ? ' × ' + jsonObject['height'] + 'px ' : '';
+			return jsonObject['width'] + 'px ' + height + TYPO3.lang['customWidth'];
 		}
 	};
 }(jQuery, Ext));
