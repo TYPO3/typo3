@@ -142,19 +142,22 @@ class ViewModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 	 * @return array
 	 */
 	protected function getPreviewFrameWidths() {
-		return array(
-			'1280' => '1280px ' . $GLOBALS['LANG']->getLL('computer'),
-			'1024' => '1024px ' . $GLOBALS['LANG']->getLL('tablet'),
-			'960' => '960px ' . $GLOBALS['LANG']->getLL('mobile'),
-			'800' => '800px ' . $GLOBALS['LANG']->getLL('computer'),
-			'768' => '768px ' . $GLOBALS['LANG']->getLL('tablet'),
-			'600' => '600px ' . $GLOBALS['LANG']->getLL('tablet'),
-			'640' => '640px ' . $GLOBALS['LANG']->getLL('mobile'),
-			'480' => '480px ' . $GLOBALS['LANG']->getLL('mobile'),
-			'400' => '400px ' . $GLOBALS['LANG']->getLL('mobile'),
-			'360' => '360px ' . $GLOBALS['LANG']->getLL('mobile'),
-			'300' => '300px ' . $GLOBALS['LANG']->getLL('mobile')
-		);
+		$pageId = intval(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id'));
+		$modTSconfig = BackendUtility::getModTSconfig($pageId, 'mod.web_view');
+		$widths = Array();
+		if (is_array($modTSconfig['properties']['PreviewFrameWidths.'])) {
+			foreach ($modTSconfig['properties']['PreviewFrameWidths.'] as $item => $conf ){
+				$width = intval(substr($item, 0, -1));
+
+				if (strcmp(substr($conf['label'], 0, 4), 'LLL:')) {
+					$widthLabel = $conf['label'];
+				} else {
+					$widthLabel = $GLOBALS['LANG']->sL(trim($conf['label']));
+				}
+				$widths[$width] = $width . 'px ' . $widthLabel;
+			}
+		}
+		return $widths;
 	}
 
 }
