@@ -385,7 +385,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 	 * @return array
 	 */
 	protected function getFolderList_itemCallback($folderName, $parentPath, array $folderRow = array()) {
-		$folderPath = $this->getAbsolutePath($this->canonicalizeAndCheckFolderPath($parentPath . $folderName));
+		$folderPath = $this->getAbsolutePath($this->canonicalizeAndCheckFilePath($parentPath . $folderName));
 
 		if (!is_dir($folderPath)) {
 			return array('', array());
