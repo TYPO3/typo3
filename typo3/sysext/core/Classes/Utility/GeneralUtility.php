@@ -4897,6 +4897,36 @@ Connection: close
 	}
 
 	/**
+	 * Use this method in public methods which are not intended for public usage
+	 *
+	 * @return void
+	 */
+	static public function logDeprecatedPublicMethodCall() {
+		if (!$GLOBALS['TYPO3_CONF_VARS']['SYS']['enableDeprecationLog']) {
+			return;
+		}
+		$trail = debug_backtrace();
+		if (!$trail[1]['type']) {
+			// called function is not a method
+			return;
+		}
+		if ($trail[1]['object'] === $trail[2]['object']) {
+			// if those objects are the same that means the called function was called from a function within the same
+			// object. That means the call was internal and not a public method call.
+			return;
+		}
+		$deprecationAnnotation = '';
+		$method = new \ReflectionMethod($trail[1]['class'], $trail[1]['function']);
+		if (preg_match('/@publicCallDeprecated\\s+(.*)/', $method->getDocComment(), $match)) {
+			$deprecationAnnotation = ' (' . $match[1] . ')';
+		}
+		$calledMethod = $trail[1]['class'] . $trail[1]['type'] . $trail[1]['function'] . '()';
+		$message = 'Deprecated public method call: ' . $calledMethod . ' was called publicly which is deprecated' . $deprecationAnnotation . '. ';
+		$message .= \TYPO3\CMS\Core\Utility\DebugUtility::debugTrail();
+		self::deprecationLog($message);
+	}
+
+	/**
 	 * Converts a one dimensional array to a one line string which can be used for logging or debugging output
 	 * Example: "loginType: FE; refInfo: Array; HTTP_HOST: www.example.org; REMOTE_ADDR: 192.168.1.5; REMOTE_HOST:; security_level:; showHiddenRecords: 0;"
 	 *
