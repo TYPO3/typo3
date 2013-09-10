@@ -728,7 +728,8 @@ class LoginController {
 	 * @return void
 	 */
 	protected function emitRenderLoginFormSignal(array &$markers) {
-		$this->getSignalSlotDispatcher()->dispatch('TYPO3\\CMS\\Backend\\Controller\\LoginController', self::SIGNAL_RenderLoginForm, array($this, $markers));
+		$signalArguments = $this->getSignalSlotDispatcher()->dispatch('TYPO3\\CMS\\Backend\\Controller\\LoginController', self::SIGNAL_RenderLoginForm, array($this, $markers));
+		$markers = $signalArguments[1];
 	}
 
 	/**
