@@ -21,10 +21,12 @@ namespace TYPO3\CMS\Fluid\ViewHelpers;
  * <f:switch expression="{person.gender}">
  *   <f:case value="male">Mr.</f:case>
  *   <f:case value="female">Mrs.</f:case>
+ *   <f:default>Sir or Madam</f:default>
  * </f:switch>
  * </code>
  * <output>
- * Mr. / Mrs. (depending on the value of {person.gender})
+ * Mr. / Mrs. (depending on the value of {person.gender},
+ * fallback to default if no case matches)
  * </output>
  *
  * Note: Using this view helper can be a sign of weak architecture. If you end up using it extensively
@@ -70,6 +72,7 @@ class SwitchViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelp
 	 */
 	public function render($expression) {
 		$content = '';
+		$defaultNode = NULL;
 		$this->backupSwitchState();
 		$templateVariableContainer = $this->renderingContext->getViewHelperVariableContainer();
 
@@ -80,13 +83,24 @@ class SwitchViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelp
 			if (
 				!$childNode instanceof \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode
 				|| $childNode->getViewHelperClassName() !== 'TYPO3\CMS\Fluid\ViewHelpers\CaseViewHelper'
+				&& $childNode->getViewHelperClassName() !== 'TYPO3\CMS\Fluid\ViewHelpers\DefaultViewHelper'
 			) {
+				continue;
+			}
+			if ($childNode->getViewHelperClassName() === 'TYPO3\CMS\Fluid\ViewHelpers\DefaultViewHelper') {
+				$defaultNode = $childNode;
 				continue;
 			}
 			$content = $childNode->evaluate($this->renderingContext);
 			if ($templateVariableContainer->get('TYPO3\CMS\Fluid\ViewHelpers\SwitchViewHelper', 'break') === TRUE) {
 				break;
 			}
+		}
+		if (
+			$templateVariableContainer->get('TYPO3\CMS\Fluid\ViewHelpers\SwitchViewHelper', 'break') === FALSE
+			&& $defaultNode !== NULL
+		) {
+			$content = $defaultNode->evaluate($this->renderingContext);
 		}
 
 		$templateVariableContainer->remove('TYPO3\CMS\Fluid\ViewHelpers\SwitchViewHelper', 'switchExpression');
