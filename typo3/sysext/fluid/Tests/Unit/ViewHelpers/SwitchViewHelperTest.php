@@ -43,8 +43,15 @@ class SwitchViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewH
 	 * @test
 	 */
 	public function renderRemovesSwitchExpressionFromViewHelperVariableContainerAfterInvocation() {
-		$this->viewHelperVariableContainer->expects($this->at(4))->method('remove')->with('TYPO3\CMS\Fluid\ViewHelpers\SwitchViewHelper', 'switchExpression');
+		$this->viewHelperVariableContainer->expects($this->at(5))->method('remove')->with('TYPO3\CMS\Fluid\ViewHelpers\SwitchViewHelper', 'switchExpression');
 		$this->viewHelper->render('switchExpression');
+	}
+
+	/**
+	 * @test
+	 */
+	public function defaultIsRenderedIfBreakIsFalseAndDefaultExistsAfterIteratingAllChildNodes() {
+		$this->markTestIncomplete();
 	}
 }
 
