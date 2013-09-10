@@ -2402,7 +2402,7 @@ class TypoScriptFrontendController {
 					if ($this->pSetup['pageHeaderFooterTemplateFile']) {
 						$file = $this->tmpl->getFileName($this->pSetup['pageHeaderFooterTemplateFile']);
 						if ($file) {
-							$this->setTemplateFile($file);
+							$this->getPageRenderer()->setTemplateFile($file);
 						}
 					}
 				}
