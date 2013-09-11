@@ -337,13 +337,17 @@ class ResourceFactory implements \TYPO3\CMS\Core\SingletonInterface {
 		if (!$this->fileInstances[$uid]) {
 			// Fetches data in case $fileData is empty
 			if (empty($fileData)) {
-				/** @var $GLOBALS['TYPO3_DB'] \TYPO3\CMS\Core\Database\DatabaseConnection */
-				$fileData = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', 'sys_file', 'uid=' . intval($uid));
-				if (!is_array($fileData)) {
+				/** @var FileRepository $fileRepository */
+				$fileRepository = GeneralUtility::makeInstance('TYPO3\CMS\Core\Resource\FileRepository');
+				$fileObject = $fileRepository->findByUid($uid);
+				if (!is_object($fileObject)) {
 					throw new \TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException('No file found for given UID.', 1317178604);
+				} else {
+					$this->fileInstances[$uid] = $fileObject;
 				}
+			} else {
+				$this->fileInstances[$uid] = $this->createFileObject($fileData);
 			}
-			$this->fileInstances[$uid] = $this->createFileObject($fileData);
 		}
 		return $this->fileInstances[$uid];
 	}
