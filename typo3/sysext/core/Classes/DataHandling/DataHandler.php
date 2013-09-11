@@ -942,7 +942,7 @@ class DataHandler {
 								if (isset($config['config']['dbType']) && GeneralUtility::inList('date,datetime', $config['config']['dbType'])) {
 									$emptyValue = $dateTimeFormats[$config['config']['dbType']]['empty'];
 									$format = $dateTimeFormats[$config['config']['dbType']]['format'];
-									$incomingFieldArray[$column] = $incomingFieldArray[$column] ? date($format, $incomingFieldArray[$column]) : $emptyValue;
+									$incomingFieldArray[$column] = $incomingFieldArray[$column] ? gmdate($format, $incomingFieldArray[$column]) : $emptyValue;
 								}
 							}
 						}
@@ -1638,8 +1638,11 @@ class DataHandler {
 		if (isset($tcaFieldConf['dbType']) && GeneralUtility::inList('date,datetime', $tcaFieldConf['dbType'])) {
 			// Convert the date/time into a timestamp for the sake of the checks
 			$emptyValue = $dateTimeFormats[$tcaFieldConf['dbType']]['empty'];
-			$timeOffset = $tcaFieldConf['dbType'] === 'date' ? 3600 * $GLOBALS['TYPO3_CONF_VARS']['SYS']['serverTimeZone'] : 0;
-			$value = $value === $emptyValue ? 0 : strtotime($value) + $timeOffset;
+			$format = $dateTimeFormats[$tcaFieldConf['dbType']]['format'];
+			// At this point in the processing, the timestamps are still based on UTC
+			$timeZone = new \DateTimeZone('UTC');
+			$dateTime = \DateTime::createFromFormat('!' . $format, $value, $timeZone);
+			$value = $value === $emptyValue ? 0 : $dateTime->getTimestamp();
 		}
 		// Secures the string-length to be less than max.
 		if (intval($tcaFieldConf['max']) > 0) {
