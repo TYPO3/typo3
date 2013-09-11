@@ -290,6 +290,16 @@ abstract class AbstractRepository implements \TYPO3\CMS\Extbase\Persistence\Repo
 		return $this->objectType;
 	}
 
+	/**
+	 * Function to return the current TYPO3_MODE.
+	 * This function can be mocked in unit tests to be able to test frontend behaviour.
+	 *
+	 * @return string
+	 */
+	protected function getEnvironmentMode() {
+		return TYPO3_MODE;
+	}
+
 }
 
 
