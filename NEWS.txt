@@ -45,6 +45,13 @@ PHP Framework Interop Group: http://www.php-fig.org/psr/3/
 Backend
 -------------------------------------------------------------------------------
 
+* Categorization API improvements
+
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::makeCategorizable() can now
+be used multiple times on the same table to add more than one field.
+The options array (the fourth parameter) now can contain a 'label' to set a
+custom label for each categories field.
+
 -------------------------------------------------------------------------------
 Frontend
 -------------------------------------------------------------------------------
