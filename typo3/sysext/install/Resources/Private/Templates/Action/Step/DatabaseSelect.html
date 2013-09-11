@@ -24,18 +24,42 @@
 						First installation
 					</f:comment>
 					<ul>
+                        <li>
+                            <input
+                                    id="t3-install-form-db-select-type-existing"
+                                    type="radio"
+                                    name="install[values][type]"
+                                    value="existing"
+                                    class="radio"
+                                    checked="checked"
+                                    />
+                            <div>
+                                <label for="t3-install-step-database-existing">Select an EMPTY existing database:</label>
+                                <p>Any tables used by TYPO3 will be overwritten.</p>
+                                <select
+                                        id="t3-install-step-database-existing"
+                                        name="install[values][existing]"
+                                        onfocus="document.getElementById('t3-install-form-db-select-type-existing').checked=true;"
+                                        >
+                                    <option value="">Select database</option>
+                                    <f:for each="{databaseList}" as="database" iteration="databaseIterator">
+                                        <option value="{database}"{f:if(condition: databaseIterator.isFirst ,then: ' selected="selected"')}>{database}</option>
+                                    </f:for>
+                                </select>
+                            </div>
+                        </li>
 						<li>
 							<input
 								id="t3-install-form-db-select-type-new"
 								type="radio"
 								name="install[values][type]"
 								value="new"
-								checked="checked"
 								class="radio"
 							/>
 							<div>
-								<label for="t3-install-step-database-new">Create a new database (recommended):</label>
-								<p>Enter a name for your TYPO3 database.</p>
+								<label for="t3-install-step-database-new">Create a new database:</label>
+                                <p><em>Attention: The database user must have sufficient privileges to create the whole structure.</em>
+                                    <br />Enter a name for your TYPO3 database.</p>
 								<input
 									id="t3-install-step-database-new"
 									class="t3-install-form-input-text"
@@ -44,29 +68,6 @@
 									checked="checked"
 									onfocus="document.getElementById('t3-install-form-db-select-type-new').checked=true;"
 								/>
-							</div>
-						</li>
-						<li>
-							<input
-								id="t3-install-form-db-select-type-existing"
-								type="radio"
-								name="install[values][type]"
-								value="existing"
-								class="radio"
-							/>
-							<div>
-								<label for="t3-install-step-database-existing">Select an EMPTY existing database:</label>
-								<p>Any tables used by TYPO3 will be overwritten.</p>
-								<select
-									id="t3-install-step-database-existing"
-									name="install[values][existing]"
-									onfocus="document.getElementById('t3-install-form-db-select-type-existing').checked=true;"
-								>
-									<option value="">Select database</option>
-									<f:for each="{databaseList}" as="database">
-										<option value="{database}">{database}</option>
-									</f:for>
-								</select>
 							</div>
 						</li>
 					</ul>
