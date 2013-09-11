@@ -1,0 +1,58 @@
+/**
+ * Style definitions for the whole viewpage module
+ */
+
+#typo3-inner-docbody  {
+    display: block;
+    position: absolute;
+    height: auto;
+    bottom: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 30px;
+}
+#resizeable {
+    height: 100%;
+}
+#tx_viewpage_iframe {
+    -webkit-box-shadow: 0px 0px 15px 0px #888888;
+    -moz-box-shadow: 0px 0px  15px 0px #888888;
+    box-shadow:0px 0px 15px 0px #888888;
+}
+
+/**
+ * adjust jquery-ui resize handles
+ */
+.ui-resizable-handle {
+    border: solid #dadada;
+}
+.ui-resizable-handle:hover {
+    border-color: #585858;
+}
+
+.ui-resizable-s {
+    cursor: row-resize;
+    height: 2px;
+    width: 40%;
+    bottom: -15px;
+    left: 30%;
+    border-width: 2px 0;
+}
+.ui-resizable-e {
+    cursor: col-resize;
+    width: 2px;
+    right: -15px;
+    top: 30%;
+    height: 40%;
+    border-width: 0 2px;
+}
+.ui-resizable-se {
+    cursor: nwse-resize;
+    width: 12px;
+    height: 12px;
+    right: -15px;
+    bottom: -15px;
+    background-position: -80px -224px;
+    border-width: 0;
+}
