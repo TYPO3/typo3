@@ -73,28 +73,10 @@ class CategoryRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 */
-	public function doesAddReturnTrueOnDefinedTable() {
-		$this->assertTrue($this->fixture->add('test_extension_a', $this->tables['first'], 'categories'));
-	}
-
-	/**
-	 * @test
-	 */
-	public function doesAddReturnFalseOnUndefinedTable() {
-		$this->fixture->add('test_extension_a', $this->tables['first'], 'categories');
-
-		$this->assertFalse(
-			$this->fixture->add('test_extension_a', $this->tables['first'], 'categories')
-		);
-	}
-
-	/**
-	 * @test
 	 * @expectedException \RuntimeException
 	 * @expectedExceptionCode 1369122038
 	 */
-	public function doesAddThrowExceptionOnEmptyAdds() {
+	public function doesAddThrowExceptionOnEmptyTablename() {
 		$this->fixture->add('test_extension_a', '', 'categories');
 	}
 
@@ -103,19 +85,12 @@ class CategoryRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function areMultipleElementsOfSameExtensionRegistered() {
 		$this->fixture->add('test_extension_a', $this->tables['first'], 'categories');
-		$this->fixture->add('test_extension_b', $this->tables['second'], 'categories');
+		$this->fixture->add('test_extension_a', $this->tables['second'], 'categories');
 		$registry = $this->fixture->get();
 		ob_flush();
 
-		$this->assertEquals(
-			'categories',
-			$registry['test_extension_a'][$this->tables['first']]['fieldName']
-		);
-
-		$this->assertEquals(
-			'categories',
-			$registry['test_extension_b'][$this->tables['second']]['fieldName']
-		);
+		$this->assertArrayHasKey('categories', $registry['test_extension_a'][$this->tables['first']]);
+		$this->assertArrayHasKey('categories', $registry['test_extension_a'][$this->tables['second']]);
 	}
 
 	/**
@@ -125,30 +100,34 @@ class CategoryRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->fixture->add('test_extension_a', $this->tables['first'], 'categories');
 		$this->fixture->add('test_extension_b', $this->tables['second'], 'categories');
 		$registry = $this->fixture->get();
+		ob_flush();
 
-		$this->assertEquals(
-			'categories',
-			$registry['test_extension_a'][$this->tables['first']]['fieldName']
-		);
-
-		$this->assertEquals(
-			'categories',
-			$registry['test_extension_b'][$this->tables['second']]['fieldName']
-		);
+		$this->assertArrayHasKey('categories', $registry['test_extension_a'][$this->tables['first']]);
+		$this->assertArrayHasKey('categories', $registry['test_extension_b'][$this->tables['second']]);
 	}
 
 	/**
 	 * @test
 	 */
-	public function areElementsOnSameTableOverridden() {
-		$this->fixture->add('test_extension_a', $this->tables['first'], $this->tables['first']);
-		$this->fixture->add('test_extension_b', $this->tables['second'], $this->tables['second']);
+	public function areElementsOfDifferentExtensionsOnSameTableRegistered() {
+		$this->fixture->add('test_extension_a', $this->tables['first'], 'categories1');
+		$this->fixture->add('test_extension_b', $this->tables['first'], 'categories2');
 		$registry = $this->fixture->get();
 
-		$this->assertEquals(
-			$this->tables['first'],
-			$registry['test_extension_a'][$this->tables['first']]['fieldName']
-		);
+		$this->assertArrayHasKey('categories1', $registry['test_extension_a'][$this->tables['first']]);
+		$this->assertArrayHasKey('categories2', $registry['test_extension_b'][$this->tables['first']]);
+	}
+
+	/**
+	 * @test
+	 */
+	public function areElementsOfSameExtensionOnSameTableRegistered() {
+		$this->fixture->add('test_extension_a', $this->tables['first'], 'categories1');
+		$this->fixture->add('test_extension_a', $this->tables['first'], 'categories2');
+		$registry = $this->fixture->get();
+
+		$this->assertArrayHasKey('categories1', $registry['test_extension_a'][$this->tables['first']]);
+		$this->assertArrayHasKey('categories2', $registry['test_extension_a'][$this->tables['first']]);
 	}
 
 	/**
@@ -227,6 +206,24 @@ class CategoryRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			$this->assertNotEmpty($GLOBALS['TCA'][$table]['columns']['categories']);
 		}
 	}
+
+	/**
+	 * @test
+	 */
+	public function isRegisteredReturnsTrueIfElementIsAlreadyRegistered() {
+		$this->fixture->add('test_extension_a', $this->tables['first'], 'categories');
+		$this->assertTrue($this->fixture->isRegistered($this->tables['first'], 'categories'));
+	}
+
+	/**
+	 * @test
+	 */
+	public function isRegisteredReturnsFalseIfElementIsNotRegistered() {
+		$this->fixture->add('test_extension_a', $this->tables['first'], 'categories');
+		$this->assertFalse($this->fixture->isRegistered($this->tables['first'], '_not_registered'));
+		$this->assertFalse($this->fixture->isRegistered($this->tables['second'], 'categories'));
+	}
+
 }
 
 ?>
