@@ -350,30 +350,30 @@ class ElementBrowser {
 			$this->thisConfig = BackendUtility::RTEsetup($RTEsetup['properties'], $RTEtsConfigParts[0], $RTEtsConfigParts[2], $RTEtsConfigParts[4]);
 		}
 		// Initializing the target value (RTE)
-		$this->setTarget = $this->curUrlArray['target'] != '-' ? rawurlencode($this->curUrlArray['target']) : '';
+		$this->setTarget = ($this->curUrlArray['target'] != '-') ? $this->curUrlArray['target'] : '';
 		if ($this->thisConfig['defaultLinkTarget'] && !isset($this->curUrlArray['target'])) {
 			$this->setTarget = $this->thisConfig['defaultLinkTarget'];
 		}
 		// Initializing the class value (RTE)
-		$this->setClass = $this->curUrlArray['class'] != '-' ? rawurlencode($this->curUrlArray['class']) : '';
+		$this->setClass = ($this->curUrlArray['class'] != '-') ? $this->curUrlArray['class'] : '';
 		// Initializing the title value (RTE)
-		$this->setTitle = $this->curUrlArray['title'] != '-' ? rawurlencode($this->curUrlArray['title']) : '';
+		$this->setTitle = ($this->curUrlArray['title'] != '-') ? $this->curUrlArray['title'] : '';
 		// Initializing the params value
-		$this->setParams = $this->curUrlArray['params'] != '-' ? rawurlencode($this->curUrlArray['params']) : '';
+		$this->setParams = ($this->curUrlArray['params'] != '-') ? $this->curUrlArray['params'] : '';
 		// BEGIN accumulation of header JavaScript:
 		$JScode = '
-				// This JavaScript is primarily for RTE/Link. jumpToUrl is used in the other cases as well...
-			var add_href="' . ($this->curUrlArray['href'] ? '&curUrl[href]=' . rawurlencode($this->curUrlArray['href']) : '') . '";
-			var add_target="' . ($this->setTarget ? '&curUrl[target]=' . rawurlencode($this->setTarget) : '') . '";
-			var add_class="' . ($this->setClass ? '&curUrl[class]=' . rawurlencode($this->setClass) : '') . '";
-			var add_title="' . ($this->setTitle ? '&curUrl[title]=' . rawurlencode($this->setTitle) : '') . '";
-			var add_params="' . ($this->bparams ? '&bparams=' . rawurlencode($this->bparams) : '') . '";
+			// This JavaScript is primarily for RTE/Link. jumpToUrl is used in the other cases as well...
+			var add_href=' . GeneralUtility::quoteJSvalue(($this->curUrlArray['href'] ? '&curUrl[href]=' . rawurlencode($this->curUrlArray['href']) : '')) . ';
+			var add_target=' . GeneralUtility::quoteJSvalue(($this->setTarget ? '&curUrl[target]=' . rawurlencode($this->setTarget) : '')) . ';
+			var add_class=' . GeneralUtility::quoteJSvalue(($this->setClass ? '&curUrl[class]=' . rawurlencode($this->setClass) : '')) . ';
+			var add_title=' . GeneralUtility::quoteJSvalue(($this->setTitle ? '&curUrl[title]=' . rawurlencode($this->setTitle) : '')) . ';
+			var add_params=' . GeneralUtility::quoteJSvalue(($this->bparams ? '&bparams=' . rawurlencode($this->bparams) : '')) . ';
 
-			var cur_href="' . ($this->curUrlArray['href'] ? rawurlencode($this->curUrlArray['href']) : '') . '";
-			var cur_target="' . ($this->setTarget ? $this->setTarget : '') . '";
-			var cur_class = "' . ($this->setClass ? $this->setClass : '') . '";
-			var cur_title="' . ($this->setTitle ? $this->setTitle : '') . '";
-			var cur_params="' . ($this->setParams ? $this->setParams : '') . '";
+			var cur_href=' . GeneralUtility::quoteJSvalue(($this->curUrlArray['href'] ? rawurlencode($this->curUrlArray['href']) : '')) . ';
+			var cur_target=' . GeneralUtility::quoteJSvalue(($this->setTarget ? GeneralUtility::quoteJSvalue($this->setTarget) : '')) . ';
+			var cur_class=' . GeneralUtility::quoteJSvalue(($this->setClass ? $this->setClass : '')) . ';
+			var cur_title=' . GeneralUtility::quoteJSvalue(($this->setTitle ? $this->setTitle : '')) . ';
+			var cur_params=' . GeneralUtility::quoteJSvalue(($this->setParams ? $this->setParams : '')) . ';
 
 			function browse_links_setTarget(target) {	//
 				cur_target=target;
@@ -516,7 +516,7 @@ class ElementBrowser {
 			function jumpToUrl(URL,anchor) {	//
 				var add_act = URL.indexOf("act=")==-1 ? "&act=' . $this->act . '" : "";
 				var add_mode = URL.indexOf("mode=")==-1 ? "&mode=' . $this->mode . '" : "";
-				var theLocation = URL + add_act + add_mode + add_href + add_target + add_class + add_title + add_params' . ($addPassOnParams ? '+"' . $addPassOnParams . '"' : '') . '+(anchor?anchor:"");
+				var theLocation = URL + add_act + add_mode + add_href + add_target + add_class + add_title + add_params' . ($addPassOnParams ? '+' . GeneralUtility::quoteJSvalue($addPassOnParams) : '') . '+(anchor?anchor:"");
 				window.location.href = theLocation;
 				return false;
 			}
@@ -897,13 +897,13 @@ class ElementBrowser {
 							// URL + onclick event:
 							$onClickEvent = '';
 							if (isset($v[$k2i . '.']['target'])) {
-								$onClickEvent .= 'browse_links_setTarget(\'' . $v[($k2i . '.')]['target'] . '\');';
+								$onClickEvent .= 'browse_links_setTarget(' . GeneralUtility::quoteJSvalue($v[($k2i . '.')]['target']) . ');';
 							}
 							$v[$k2i . '.']['url'] = str_replace('###_URL###', $this->siteURL, $v[$k2i . '.']['url']);
 							if (substr($v[$k2i . '.']['url'], 0, 7) == 'http://' || substr($v[$k2i . '.']['url'], 0, 7) == 'mailto:') {
-								$onClickEvent .= 'cur_href=unescape(\'' . rawurlencode($v[($k2i . '.')]['url']) . '\');link_current();';
+								$onClickEvent .= 'cur_href=' . GeneralUtility::quoteJSvalue($v[($k2i . '.')]['url']) . ');link_current();';
 							} else {
-								$onClickEvent .= 'link_spec(unescape(\'' . $this->siteURL . rawurlencode($v[($k2i . '.')]['url']) . '\'));';
+								$onClickEvent .= 'link_spec(' . GeneralUtility::quoteJSvalue($this->siteURL . $v[($k2i . '.')]['url']) . '));';
 							}
 							// Link:
 							$A = array('<a href="#" onclick="' . htmlspecialchars($onClickEvent) . 'return false;">', '</a>');
@@ -1388,7 +1388,7 @@ class ElementBrowser {
 						if ($skey % 3 == 2) {
 							// Putting list element HTML together:
 							$sval = substr($sval, 0, 100);
-							$out .= '<img' . IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/ol/line.gif', 'width="18" height="16"') . ' alt="" />' . '<img' . IconUtility::skinImg($GLOBALS['BACK_PATH'], ('gfx/ol/join' . ($skey + 3 > count($split) ? 'bottom' : '') . '.gif'), 'width="18" height="16"') . ' alt="" />' . '<a href="#" onclick="return link_typo3Page(\'' . $expPageId . '\',\'#' . rawurlencode($sval) . '\');">' . htmlspecialchars((' <A> ' . $sval)) . '</a><br />';
+							$out .= '<img' . IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/ol/line.gif', 'width="18" height="16"') . ' alt="" />' . '<img' . IconUtility::skinImg($GLOBALS['BACK_PATH'], ('gfx/ol/join' . ($skey + 3 > count($split) ? 'bottom' : '') . '.gif'), 'width="18" height="16"') . ' alt="" />' . '<a href="#" onclick="return link_typo3Page(' . GeneralUtility::quoteJSvalue($expPageId) . ',' . GeneralUtility::quoteJSvalue('#' . $sval) . ');">' . htmlspecialchars((' <A> ' . $sval)) . '</a><br />';
 						}
 					}
 				}
@@ -1726,7 +1726,7 @@ class ElementBrowser {
 				$aTag = ($aTag_alt = '<a href="#" onclick="alert(' . $errorMessage . ');return false;">');
 			} else {
 				// If foldername is OK, just add it:
-				$aTag = '<a href="#" onclick="return insertElement(\'\',\'' . rawurlencode($baseFolder) . '\', \'folder\', \'' . rawurlencode($baseFolder) . '\', unescape(\'' . rawurlencode($baseFolder) . '\'), \'' . $fI['extension'] . '\', \'' . $ficon . '\');">';
+				$aTag = '<a href="#" onclick="return insertElement(\'\',' . GeneralUtility::quoteJSvalue($baseFolder) . ', \'folder\', ' . GeneralUtility::quoteJSvalue($baseFolder) . ', ' . GeneralUtility::quoteJSvalue($baseFolder) . ', ' . GeneralUtility::quoteJSvalue($fI['extension']) . ', ' .GeneralUtility::quoteJSvalue($ficon) . ');">';
 				$aTag_alt = substr($aTag, 0, -4) . ',\'\',1);">';
 			}
 			$aTag_e = '</a>';
@@ -1748,9 +1748,9 @@ class ElementBrowser {
 					$icon = '<img src="clear.gif" width="16" height="16" alt="" /><img' . IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/i/_icon_webfolders.gif', 'width="16" height="16"') . ' title="' . htmlspecialchars(($pathInfo['basename'] . $size)) . '" class="absmiddle" alt="" />';
 					// Create links for adding the folder:
 					if ($this->P['itemName'] != '' && $this->P['formName'] != '') {
-						$aTag = '<a href="#" onclick="return set_folderpath(unescape(\'' . rawurlencode($folderPath) . '\'));">';
+						$aTag = '<a href="#" onclick="return set_folderpath(' . GeneralUtility::quoteJSvalue($folderPath) . ');">';
 					} else {
-						$aTag = '<a href="#" onclick="return insertElement(\'\',\'' . rawurlencode($folderPath) . '\', \'folder\', \'' . rawurlencode($folderPath) . '\', unescape(\'' . rawurlencode($folderPath) . '\'), \'' . $pathInfo['extension'] . '\', \'' . $ficon . '\');">';
+						$aTag = '<a href="#" onclick="return insertElement(\'\',' . GeneralUtility::quoteJSvalue($folderPath) . ', \'folder\', ' . GeneralUtility::quoteJSvalue($folderPath) . ', ' . GeneralUtility::quoteJSvalue($folderPath) . ', ' . GeneralUtility::quoteJSvalue($pathInfo['extension']) . ', ' . GeneralUtility::quoteJSvalue($ficon) . ');">';
 					}
 					if (strstr($folderPath, ',') || strstr($folderPath, '|')) {
 						// In case an invalid character is in the filepath, display error message:
@@ -1863,7 +1863,7 @@ class ElementBrowser {
 								</tr>';
 							$lines[] = '
 								<tr>
-									<td colspan="2"><img src="' . $iUrl . '" data-htmlarea-file-uid="' . $fileObject->getUid() . '" width="' . $IW . '" height="' . $IH . '" border="1" alt="" /></td>
+									<td colspan="2"><img src="' . htmlspecialchars($iUrl) . '" data-htmlarea-file-uid="' . $fileObject->getUid() . '" width="' . htmlspecialchars($IW) . '" height="' . htmlspecialchars($IH) . '" border="1" alt="" /></td>
 								</tr>';
 							$lines[] = '
 								<tr>
