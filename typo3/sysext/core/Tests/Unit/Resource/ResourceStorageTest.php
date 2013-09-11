@@ -241,9 +241,11 @@ class ResourceStorageTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCa
 		$this->initializeVfs();
 		$localFilePath = $this->getUrlInMount('file.ext');
 		$this->prepareFixture(array(), TRUE);
+		/** @var $file \TYPO3\CMS\Core\Resource\FileInterface */
+		$file = $this->getMock('TYPO3\\CMS\\Core\\Resource\\FileInterface', array(), array(), '', FALSE);
 		/** @var $driver \TYPO3\CMS\Core\Resource\Driver\LocalDriver */
 		$driver = $this->getMock('TYPO3\\CMS\\Core\\Resource\\Driver\\LocalDriver', array('addFile'), array(array('basePath' => $this->getUrlInMount('targetFolder/'))));
-		$driver->expects($this->once())->method('addFile')->with($this->equalTo($localFilePath), $this->anything(), $this->equalTo('file.ext'));
+		$driver->expects($this->once())->method('addFile')->with($this->equalTo($localFilePath), $this->anything(), $this->equalTo('file.ext'))->will($this->returnValue($file));
 		$this->fixture->setDriver($driver);
 		$this->fixture->addFile($localFilePath, $mockedFolder);
 	}
@@ -262,9 +264,11 @@ class ResourceStorageTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCa
 		));
 		$this->initializeVfs();
 		$this->prepareFixture(array(), TRUE);
+		/** @var $file \TYPO3\CMS\Core\Resource\FileInterface */
+		$file = $this->getMock('TYPO3\\CMS\\Core\\Resource\\FileInterface', array(), array(), '', FALSE);
 		/** @var $driver \TYPO3\CMS\Core\Resource\Driver\LocalDriver */
 		$driver = $this->getMock('TYPO3\\CMS\\Core\\Resource\\Driver\\LocalDriver', array('addFile', 'fileExistsInFolder'), array(array('basePath' => $this->getUrlInMount('targetFolder/'))));
-		$driver->expects($this->once())->method('addFile')->with($this->anything(), $this->anything(), $this->equalTo('file_02.ext'));
+		$driver->expects($this->once())->method('addFile')->with($this->anything(), $this->anything(), $this->equalTo('file_02.ext'))->will($this->returnValue($file));
 		$driver->expects($this->exactly(3))->method('fileExistsInFolder')->will($this->onConsecutiveCalls($this->returnValue(TRUE), $this->returnValue(TRUE), $this->returnValue(FALSE)));
 		$this->fixture->setDriver($driver);
 		$this->fixture->addFile($this->getUrlInMount('file.ext'), $mockedFolder);
