@@ -258,6 +258,16 @@ abstract class AbstractRepository implements \TYPO3\CMS\Extbase\Persistence\Repo
 		throw new \BadMethodCallException('Repository does not support the createQuery() method.', 1313185908);
 	}
 
+	/**
+	 * Function to return the current TYPO3_MODE.
+	 * This function can be mocked in unit tests to be able to test frontend behaviour.
+	 *
+	 * @return string
+	 */
+	protected function getEnvironmentMode() {
+		return TYPO3_MODE;
+	}
+
 }
 
 

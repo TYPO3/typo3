@@ -199,15 +199,6 @@ class StorageRepository extends AbstractRepository {
 		return $this->factory->getStorageObject($databaseRow['uid'], $databaseRow);
 	}
 
-	/**
-	 * Function to return the current TYPO3_MODE.
-	 * This function can be mocked in unit tests to be able to test frontend behaviour.
-	 *
-	 * @return string
-	 */
-	protected function getEnvironmentMode() {
-		return TYPO3_MODE;
-	}
 }
 
 
