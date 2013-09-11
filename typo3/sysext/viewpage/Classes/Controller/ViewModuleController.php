@@ -40,6 +40,11 @@ class ViewModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 		parent::__construct();
 
 		$GLOBALS['LANG']->includeLLFile('EXT:viewpage/Resources/Private/Language/locallang.xlf');
+		$this->pageRenderer = $GLOBALS['TBE_TEMPLATE']->getPageRenderer();
+		$this->pageRenderer->addInlineSettingArray('web_view', array(
+			'States' => $GLOBALS['BE_USER']->uc['moduleData']['web_view']['States'],
+		));
+		$this->pageRenderer->addInlineLanguageLabelFile('EXT:viewpage/Resources/Private/Language/locallang.xlf');
 	}
 
 	/**
@@ -142,7 +147,12 @@ class ViewModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 	 * @return array
 	 */
 	protected function getPreviewFrameWidths() {
+		$autoSize = json_encode(array(
+			'width' => '100%',
+			'height' => "100%"
+		));
 		return array(
+			$autoSize => $GLOBALS['LANG']->getLL('autoSize'),
 			'1280' => '1280px ' . $GLOBALS['LANG']->getLL('computer'),
 			'1024' => '1024px ' . $GLOBALS['LANG']->getLL('tablet'),
 			'960' => '960px ' . $GLOBALS['LANG']->getLL('mobile'),
@@ -156,7 +166,6 @@ class ViewModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 			'300' => '300px ' . $GLOBALS['LANG']->getLL('mobile')
 		);
 	}
-
 }
 
 ?>
