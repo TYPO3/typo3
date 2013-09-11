@@ -200,25 +200,6 @@ class StorageRepository extends AbstractRepository {
 	}
 
 	/**
-	 * get the WHERE clause for the enabled fields of this TCA table
-	 * depending on the context
-	 *
-	 * @return string the additional where clause, something like " AND deleted=0 AND hidden=0"
-	 */
-	protected function getWhereClauseForEnabledFields() {
-		if ($this->getEnvironmentMode() === 'FE') {
-			// frontend context
-			$whereClause = $GLOBALS['TSFE']->sys_page->enableFields($this->table);
-			$whereClause .= $GLOBALS['TSFE']->sys_page->deleteClause($this->table);
-		} else {
-			// backend context
-			$whereClause = \TYPO3\CMS\Backend\Utility\BackendUtility::BEenableFields($this->table);
-			$whereClause .= \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($this->table);
-		}
-		return $whereClause;
-	}
-
-	/**
 	 * Function to return the current TYPO3_MODE.
 	 * This function can be mocked in unit tests to be able to test frontend behaviour.
 	 *
