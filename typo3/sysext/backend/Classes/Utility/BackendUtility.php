@@ -736,6 +736,17 @@ class BackendUtility {
 			$typesConf = $GLOBALS['TCA'][$table]['types'][$fieldValue];
 			// Get fields list and traverse it
 			$fieldList = explode(',', $typesConf['showitem']);
+
+			// Add subtype fields e.g. for a valid RTE transformation
+			// The RTE runs the DB -> RTE transformation only, if the RTE field is part of the getTCAtypes array
+			if (isset($typesConf['subtype_value_field'])) {
+				$subType = $rec[$typesConf['subtype_value_field']];
+				if (isset($typesConf['subtypes_addlist'][$subType])) {
+					$subFields = GeneralUtility::trimExplode(',', $typesConf['subtypes_addlist'][$subType], TRUE);
+					$fieldList = array_merge($fieldList, $subFields);
+				}
+			}
+
 			$altFieldList = array();
 			// Traverse fields in types config and parse the configuration into a nice array:
 			foreach ($fieldList as $k => $v) {
