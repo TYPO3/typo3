@@ -402,6 +402,15 @@ button span.t3-install-form-button-icon-negative {
 	color: #111 !important;
 }
 
+#t3-install-box-body .toggleButton {
+    background: url('../../../Images/Icon/arrowright.png') no-repeat;
+    padding-left: 20px;
+    cursor: pointer;
+}
+#t3-install-box-body .expanded .toggleButton {
+    background-image: url('../../../Images/Icon/arrowdown.png');
+}
+
 .t3-install-tool-configuration-radio {
 	float: none;
 }
