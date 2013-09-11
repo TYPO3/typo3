@@ -316,7 +316,7 @@ CREATE TABLE sys_file (
 	alternative text,
 
 	PRIMARY KEY (uid),
-	KEY parent (pid,deleted),
+	KEY parent (pid),
 	KEY t3ver_oid (t3ver_oid,t3ver_wsid),
 	KEY sel01 (storage,identifier(20)),
 	KEY sha1 (sha1(40))
