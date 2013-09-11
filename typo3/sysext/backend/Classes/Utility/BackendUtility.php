@@ -3862,6 +3862,17 @@ class BackendUtility {
 						$rr['pid'] = $oidRec['pid'];
 					}
 				}
+				// Use target PID in case of move pointer
+				if (
+					!isset($rr['t3ver_state'])
+					|| VersionState::cast($rr['t3ver_state'])->equals(VersionState::MOVE_POINTER)
+				) {
+					$movePlaceholder = self::getMovePlaceholder($table, $oid, 'pid');
+					if ($movePlaceholder) {
+						$rr['_ORIG_pid'] = $rr['pid'];
+						$rr['pid'] = $movePlaceholder['pid'];
+					}
+				}
 			}
 		}
 	}
