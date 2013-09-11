@@ -15,6 +15,12 @@
 			<trans-unit id="computer" xml:space="preserve">
 				<source>Computer</source>
 			</trans-unit>
+			<trans-unit id="customWidth" xml:space="preserve">
+				<source>Custom Size</source>
+			</trans-unit>
+			<trans-unit id="autoSize" xml:space="preserve">
+				<source>Auto Size</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

@@ -1,7 +1,13 @@
 <f:be.container
 	loadJQuery="TRUE"
-	includeJsFiles="{
-		0:'{f:uri.resource(path:\'JavaScript/common.js\')}'
+    includeJsFiles="{
+		0:'{f:uri.resource(path:\'JavaScript/jquery-ui-1.10.3.custom.min.js\')}',
+		1:'{f:uri.resource(path:\'JavaScript/ExtDirect.StateProvider.js\', extensionName:\'backend\')}',
+		2:'{f:uri.resource(path:\'JavaScript/common.js\')}'
+	}"
+    includeCssFiles="{
+		0:'{f:uri.resource(path:\'Css/ui-lightness/jquery-ui-1.10.3.custom.min.css\')}',
+		1:'{f:uri.resource(path:\'Css/main.css\')}'
 	}"
 >
 	<div class="typo3-fullDoc">
@@ -30,7 +36,7 @@
 		</div>
 
 		<div id="typo3-docbody">
-			<div id="typo3-inner-docbody" style="height: 100%;">
+			<div id="typo3-inner-docbody" class="tx_viewpage">
 				<f:render section="Content" />
 			</div>
 		</div>
