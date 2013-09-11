@@ -300,18 +300,18 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 		$JScode .= '
 			var plugin = window.parent.RTEarea["' . $this->editorNo . '"].editor.getPlugin("TYPO3Link");
 			var HTMLArea = window.parent.HTMLArea;
-			var add_href="' . ($this->curUrlArray['href'] ? '&curUrl[href]=' . rawurlencode($this->curUrlArray['href']) : '') . '";
-			var add_target="' . ($this->setTarget ? '&curUrl[target]=' . rawurlencode($this->setTarget) : '') . '";
-			var add_class="' . ($this->setClass ? '&curUrl[class]=' . rawurlencode($this->setClass) : '') . '";
-			var add_title="' . ($this->setTitle ? '&curUrl[title]=' . rawurlencode($this->setTitle) : '') . '";
-			var add_params="' . ($this->bparams ? '&bparams=' . rawurlencode($this->bparams) : '') . '";
-			var additionalValues = ' . (count($this->additionalAttributes) ? json_encode($this->additionalAttributes) : '{}') . ';';
+			var add_href=' . GeneralUtility::quoteJSvalue(($this->curUrlArray['href'] ? '&curUrl[href]=' . rawurlencode($this->curUrlArray['href']) : '')) . ';
+			var add_target=' . GeneralUtility::quoteJSvalue(($this->setTarget ? '&curUrl[target]=' . rawurlencode($this->setTarget) : '')) . ';
+			var add_class=' . GeneralUtility::quoteJSvalue(($this->setClass ? '&curUrl[class]=' . rawurlencode($this->setClass) : '')) . ';
+			var add_title=' . GeneralUtility::quoteJSvalue(($this->setTitle ? '&curUrl[title]=' . rawurlencode($this->setTitle) : '')) . ';
+			var add_params=' . GeneralUtility::quoteJSvalue(($this->bparams ? '&bparams=' . rawurlencode($this->bparams) : '')) . ';
+			var additionalValues = ' . (count($this->additionalAttributes) ? json_encode($this->additionalAttributes, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) : '{}') . ';';
 		// Attributes setting functions
 		$JScode .= '
-			var cur_href="' . ($this->curUrlArray['href'] ? ($this->curUrlInfo['query'] ? substr($this->curUrlArray['href'], 0, -strlen($this->curUrlInfo['query'])) : $this->curUrlArray['href']) : '') . '";
-			var cur_target="' . ($this->setTarget ?: '') . '";
-			var cur_class="' . ($this->setClass ?: '') . '";
-			var cur_title="' . ($this->setTitle ?: '') . '";
+			var cur_href="' . GeneralUtility::quoteJSvalue($this->curUrlArray['href'] ? ($this->curUrlInfo['query'] ? substr($this->curUrlArray['href'], 0, -strlen($this->curUrlInfo['query'])) : $this->curUrlArray['href']) : '') . '";
+			var cur_target="' . GeneralUtility::quoteJSvalue($this->setTarget ?: '') . '";
+			var cur_class="' . GeneralUtility::quoteJSvalue($this->setClass ?: '') . '";
+			var cur_title="' . GeneralUtility::quoteJSvalue($this->setTitle ?: '') . '";
 
 			function browse_links_setTarget(value) {
 				cur_target=value;
@@ -410,6 +410,7 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 		';
 		// Hook to overwrite or extend javascript functions
 		if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/rtehtmlarea/mod3/class.tx_rtehtmlarea_browse_links.php']['extendJScode']) && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/rtehtmlarea/mod3/class.tx_rtehtmlarea_browse_links.php']['extendJScode'])) {
+			$conf = array();
 			$_params = array(
 				'conf' => &$conf
 			);
@@ -628,9 +629,9 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 							}
 							$v[$k2i . '.']['url'] = str_replace('###_URL###', $this->siteURL, $v[$k2i . '.']['url']);
 							if (substr($v[$k2i . '.']['url'], 0, 7) == 'http://' || substr($v[$k2i . '.']['url'], 0, 7) == 'mailto:') {
-								$onClickEvent .= 'cur_href=unescape(\'' . rawurlencode($v[($k2i . '.')]['url']) . '\');link_current();';
+								$onClickEvent .= 'cur_href=' . GeneralUtility::quoteJSvalue($v[($k2i . '.')]['url']) . ';link_current();';
 							} else {
-								$onClickEvent .= 'link_spec(unescape(\'' . $this->siteURL . rawurlencode($v[($k2i . '.')]['url']) . '\'));';
+								$onClickEvent .= 'link_spec(' . GeneralUtility::quoteJSvalue($this->siteURL . $v[($k2i . '.')]['url']) . ');';
 							}
 							// Link:
 							$A = array('<a href="#" onclick="' . htmlspecialchars($onClickEvent) . 'return false;">', '</a>');
@@ -713,6 +714,7 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 		$rel = $this->addRelField();
 		// additional fields for links
 		if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/rtehtmlarea/mod3/class.tx_rtehtmlarea_browse_links.php']['addAttributeFields']) && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/rtehtmlarea/mod3/class.tx_rtehtmlarea_browse_links.php']['addAttributeFields'])) {
+			$conf = array();
 			$_params = array(
 				'conf' => &$conf
 			);
