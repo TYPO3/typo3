@@ -99,7 +99,9 @@ class ConfigurationController extends \TYPO3\CMS\Extensionmanager\Controller\Abs
 		/** @var \TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension */
 		$extension = $this->extensionRepository->findOneByCurrentVersionByExtensionKey($extensionKey);
 		// Different handling for distribution installation
-		if ($extension->getCategory() === \TYPO3\CMS\Extensionmanager\Domain\Model\Extension::DISTRIBUTION_CATEGORY) {
+		if ($extension instanceof \TYPO3\CMS\Extensionmanager\Domain\Model\Extension &&
+			$extension->getCategory() === \TYPO3\CMS\Extensionmanager\Domain\Model\Extension::DISTRIBUTION_CATEGORY
+		) {
 			$this->redirect('welcome', 'Distribution', NULL, array('extension' => $extension->getUid()));
 		} else {
 			$this->redirect('showConfigurationForm', NULL, NULL, array('extension' => array('key' => $extensionKey)));
