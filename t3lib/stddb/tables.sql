@@ -284,7 +284,6 @@ CREATE TABLE sys_file (
 	tstamp int(11) DEFAULT '0' NOT NULL,
 	crdate int(11) DEFAULT '0' NOT NULL,
 	cruser_id int(11) DEFAULT '0' NOT NULL,
-	deleted tinyint(4) DEFAULT '0' NOT NULL,
 
 	# Versioning fields
 	t3ver_oid int(11) DEFAULT '0' NOT NULL,
