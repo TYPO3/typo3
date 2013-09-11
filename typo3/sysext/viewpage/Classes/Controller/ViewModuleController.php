@@ -40,6 +40,11 @@ class ViewModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 		parent::__construct();
 
 		$GLOBALS['LANG']->includeLLFile('EXT:viewpage/Resources/Private/Language/locallang.xlf');
+		$this->pageRenderer = $GLOBALS['TBE_TEMPLATE']->getPageRenderer();
+		$this->pageRenderer->addInlineSettingArray('web_view', array(
+			'States' => $GLOBALS['BE_USER']->uc['moduleData']['web_view']['States'],
+		));
+		$this->pageRenderer->addInlineLanguageLabelFile('EXT:viewpage/Resources/Private/Language/locallang.xlf');
 	}
 
 	/**
@@ -142,21 +147,25 @@ class ViewModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 	 * @return array
 	 */
 	protected function getPreviewFrameWidths() {
+		$autoSize = json_encode(array(
+			'width' => '100%',
+			'height' => "100%"
+		));
 		return array(
-			'1280' => '1280px ' . $GLOBALS['LANG']->getLL('computer'),
-			'1024' => '1024px ' . $GLOBALS['LANG']->getLL('tablet'),
-			'960' => '960px ' . $GLOBALS['LANG']->getLL('mobile'),
-			'800' => '800px ' . $GLOBALS['LANG']->getLL('computer'),
-			'768' => '768px ' . $GLOBALS['LANG']->getLL('tablet'),
-			'600' => '600px ' . $GLOBALS['LANG']->getLL('tablet'),
-			'640' => '640px ' . $GLOBALS['LANG']->getLL('mobile'),
-			'480' => '480px ' . $GLOBALS['LANG']->getLL('mobile'),
-			'400' => '400px ' . $GLOBALS['LANG']->getLL('mobile'),
-			'360' => '360px ' . $GLOBALS['LANG']->getLL('mobile'),
-			'300' => '300px ' . $GLOBALS['LANG']->getLL('mobile')
+			$autoSize => $GLOBALS['LANG']->getLL('autoSize'),
+			json_encode(array('width' => '1280')) => '1280px ' . $GLOBALS['LANG']->getLL('computer'),
+			json_encode(array('width' => '1024')) => '1024px ' . $GLOBALS['LANG']->getLL('tablet'),
+			json_encode(array('width' => '960')) => '960px ' . $GLOBALS['LANG']->getLL('mobile'),
+			json_encode(array('width' => '800')) => '800px ' . $GLOBALS['LANG']->getLL('computer'),
+			json_encode(array('width' => '768')) => '768px ' . $GLOBALS['LANG']->getLL('tablet'),
+			json_encode(array('width' => '600')) => '600px ' . $GLOBALS['LANG']->getLL('tablet'),
+			json_encode(array('width' => '640')) => '640px ' . $GLOBALS['LANG']->getLL('mobile'),
+			json_encode(array('width' => '480')) => '480px ' . $GLOBALS['LANG']->getLL('mobile'),
+			json_encode(array('width' => '400')) => '400px ' . $GLOBALS['LANG']->getLL('mobile'),
+			json_encode(array('width' => '360')) => '360px ' . $GLOBALS['LANG']->getLL('mobile'),
+			json_encode(array('width' => '300')) => '300px ' . $GLOBALS['LANG']->getLL('mobile')
 		);
 	}
-
 }
 
 ?>
