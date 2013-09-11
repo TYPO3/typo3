@@ -70,6 +70,7 @@ class CategoryRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 	 *              + fieldList: field configuration to be added to showitems
 	 *              + typesList: list of types that shall visualize the categories field
 	 *              + position: insert position of the categories field
+	 *              + label: backend label of the categories field
 	 *              + fieldConfiguration: TCA field config array to override defaults
 	 * @return boolean
 	 * @throws \RuntimeException
@@ -81,12 +82,13 @@ class CategoryRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 			throw new \RuntimeException('TYPO3\\CMS\\Core\\Category\\CategoryRegistry No tableName given.', 1369122038);
 		}
 
-			// Makes sure there is an existing table configuration and nothing registered yet:
-		if (!$this->isRegistered($tableName, $fieldName)) {
-			$this->registry[$extensionKey][$tableName] = array (
-				'fieldName' => $fieldName,
-				'options' => $options,
-			);
+		if (!is_array($options)) {
+			throw new \RuntimeException('TYPO3\\CMS\\Core\\Category\\CategoryRegistry options parameter must be an array', 1378976970);
+		}
+
+		// Makes sure there is an existing table configuration and nothing registered yet:
+		if (isset($GLOBALS['TCA'][$tableName]) && !$this->isRegistered($tableName, $fieldName)) {
+			$this->registry[$extensionKey][$tableName][$fieldName] = $options;
 			$result = TRUE;
 		}
 		return $result;
@@ -95,6 +97,7 @@ class CategoryRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Gets the registered category configurations.
 	 *
+	 * @internal The internal registry structure is only exposed to be used in the unit tests. It's not part of the API.
 	 * @return array
 	 */
 	public function get() {
@@ -135,7 +138,7 @@ class CategoryRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 	public function isRegistered($tableName, $fieldName = 'categories') {
 		$isRegistered = FALSE;
 		foreach ($this->registry as $configuration) {
-			if (!empty($configuration[$tableName]['fieldName']) && $configuration[$tableName]['fieldName'] === $fieldName) {
+			if (isset($configuration[$tableName][$fieldName])) {
 				$isRegistered = TRUE;
 				break;
 			}
@@ -168,8 +171,10 @@ class CategoryRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 		}
 		$sql = '';
 
-		foreach ($this->registry[$extensionKey] as $tableName => $tableInfo) {
-			$sql .= sprintf($this->template, $tableName, $tableInfo['fieldName']);
+		foreach ($this->registry[$extensionKey] as $tableName => $fields) {
+			foreach (array_keys($fields) as $fieldName) {
+				$sql .= sprintf($this->template, $tableName, $fieldName);
+			}
 		}
 		return $sql;
 	}
@@ -184,9 +189,11 @@ class CategoryRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 		$this->registerDefaultCategorizedTables();
 
 		foreach ($this->registry as $registry) {
-			foreach ($registry as $tableName => $tableInfo) {
-				$this->addTcaColumn($tableName, $tableInfo['fieldName'], $tableInfo['options']);
-				$this->addToAllTCAtypes($tableName, $tableInfo['fieldName'], $tableInfo['options']);
+			foreach ($registry as $tableName => $fields) {
+				foreach ($fields as $fieldName => $options) {
+					$this->addTcaColumn($tableName, $fieldName, $options);
+					$this->addToAllTCAtypes($tableName, $fieldName, $options);
+				}
 			}
 		}
 	}
@@ -253,6 +260,7 @@ class CategoryRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @param string $fieldName Name of the field to be used to store categories
 	 * @param array $options Additional configuration options
 	 *              + fieldConfiguration: TCA field config array to override defaults
+	 *              + label: backend label of the categories field
 	 * @return void
 	 */
 	protected function addTcaColumn($tableName, $fieldName, $options) {
@@ -267,7 +275,10 @@ class CategoryRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 				'foreign_table_where' => ' AND sys_category.sys_language_uid IN (-1, 0) ORDER BY sys_category.title ASC',
 				'MM' => 'sys_category_record_mm',
 				'MM_opposite_field' => 'items',
-				'MM_match_fields' => array('tablenames' => $tableName),
+				'MM_match_fields' => array(
+					'tablenames' => $tableName,
+					'fieldname' => $fieldName,
+				),
 				'size' => 10,
 				'autoSizeMax' => 50,
 				'maxitems' => 9999,
@@ -311,10 +322,14 @@ class CategoryRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 				);
 			}
 
+			if (empty($options['label'])) {
+				$options['label'] = 'LLL:EXT:lang/locallang_tca.xlf:sys_category.categories';
+			}
+
 			$columns = array(
 				$fieldName => array(
 					'exclude' => 0,
-					'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_category.categories',
+					'label' => $options['label'],
 					'config' => $fieldConfiguration,
 				),
 			);
