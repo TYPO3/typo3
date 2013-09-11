@@ -76,6 +76,50 @@ class AbstractRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->fixture->findByUid('123');
 	}
 
+	/**
+	 * test runs on a concrete implementation of AbstractRepository
+	 * to ease the pain of testing a protected method. Feel free to improve.
+	 *
+	 * @test
+	 */
+	public function getWhereClauseForEnabledFieldsIncludesDeletedCheckInBackend() {
+		unset($GLOBALS['TSFE']);
+		$storageRepositoryMock = $this->getAccessibleMock(
+			'TYPO3\\CMS\\Core\\Resource\\StorageRepository',
+			array('dummy'),
+			array(),
+			'',
+			FALSE
+		);
+		$result = $storageRepositoryMock->_call('getWhereClauseForEnabledFields');
+		$this->assertContains('sys_file_storage.deleted=0', $result);
+	}
+
+	/**
+	 * test runs on a concrete implementation of AbstractRepository
+	 * to ease the pain of testing a protected method. Feel free to improve.
+	 *
+	 * @test
+	 */
+	public function getWhereClauseForEnabledFieldsCallsSysPageForDeletedFlagInFrontend() {
+		$GLOBALS['TSFE'] = new \stdClass();
+		$sysPageMock = $this->getMock('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
+		$GLOBALS['TSFE']->sys_page = $sysPageMock;
+		$sysPageMock
+			->expects($this->once())
+			->method('deleteClause')
+			->with('sys_file_storage');
+		$storageRepositoryMock = $this->getAccessibleMock(
+			'TYPO3\\CMS\\Core\\Resource\\StorageRepository',
+			array('getEnvironmentMode'),
+			array(),
+			'',
+			FALSE
+		);
+		$storageRepositoryMock->expects($this->any())->method('getEnvironmentMode')->will($this->returnValue('FE'));
+		$storageRepositoryMock->_call('getWhereClauseForEnabledFields');
+	}
+
 }
 
 ?>
