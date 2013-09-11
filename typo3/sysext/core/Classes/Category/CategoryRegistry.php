@@ -83,7 +83,7 @@ class CategoryRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 
 			// Makes sure there is an existing table configuration and nothing registered yet:
 		if (!$this->isRegistered($tableName, $fieldName)) {
-			$this->registry[$extensionKey][$tableName] = array (
+			$this->registry[$extensionKey][$tableName][$fieldName] = array (
 				'fieldName' => $fieldName,
 				'options' => $options,
 			);
@@ -135,7 +135,7 @@ class CategoryRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 	public function isRegistered($tableName, $fieldName = 'categories') {
 		$isRegistered = FALSE;
 		foreach ($this->registry as $configuration) {
-			if (!empty($configuration[$tableName]['fieldName']) && $configuration[$tableName]['fieldName'] === $fieldName) {
+			if (!empty($configuration[$tableName][$fieldName])) {
 				$isRegistered = TRUE;
 				break;
 			}
@@ -168,8 +168,10 @@ class CategoryRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 		}
 		$sql = '';
 
-		foreach ($this->registry[$extensionKey] as $tableName => $tableInfo) {
-			$sql .= sprintf($this->template, $tableName, $tableInfo['fieldName']);
+		foreach ($this->registry[$extensionKey] as $tableName => $fields) {
+			foreach ($fields as $fieldName => $fieldInfo) {
+				$sql .= sprintf($this->template, $tableName, $fieldName);
+			}
 		}
 		return $sql;
 	}
@@ -184,9 +186,11 @@ class CategoryRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 		$this->registerDefaultCategorizedTables();
 
 		foreach ($this->registry as $registry) {
-			foreach ($registry as $tableName => $tableInfo) {
-				$this->addTcaColumn($tableName, $tableInfo['fieldName'], $tableInfo['options']);
-				$this->addToAllTCAtypes($tableName, $tableInfo['fieldName'], $tableInfo['options']);
+			foreach ($registry as $tableName => $fields) {
+				foreach ($fields as $fieldName => $fieldInfo) {
+					$this->addTcaColumn($tableName, $fieldName, $fieldInfo['options']);
+					$this->addToAllTCAtypes($tableName, $fieldName, $fieldInfo['options']);
+				}
 			}
 		}
 	}
