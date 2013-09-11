@@ -405,7 +405,6 @@ $TCA['sys_file'] = array(
 		'versioningWS' => TRUE,
 		'origUid' => 't3_origuid',
 		'default_sortby' => 'ORDER BY crdate DESC',
-		'delete' => 'deleted',
 		'dividers2tabs' => TRUE,
 		'typeicon_column' => 'type',
 		'typeicon_classes' => array(
