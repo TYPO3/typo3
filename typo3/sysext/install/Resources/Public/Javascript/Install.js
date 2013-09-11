@@ -34,7 +34,9 @@ $(document).ready(function() {
 
 	// Toggle open/close
 	$('.toggleButton').on('click', function() {
-		$(this).closest('.toggleGroup').find('.toggleData').toggle();
+		$toggleGroup = $(this).closest('.toggleGroup');
+		$toggleGroup.toggleClass('expanded');
+		$toggleGroup.find('.toggleData').toggle();
 	});
 
 	// Simple password strength indicator
