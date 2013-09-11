@@ -3634,6 +3634,10 @@ class BackendUtility {
 						$rr['_ORIG_pid'] = $rr['pid'];
 						$rr['pid'] = $oidRec['pid'];
 					}
+					// Changing PID in case of moving pointer:
+					if ($movePlhRec = self::getMovePlaceholder($table, $oid, 'pid')) {
+						$rr['pid'] = $movePlhRec['pid'];
+					}
 				}
 			}
 		}
