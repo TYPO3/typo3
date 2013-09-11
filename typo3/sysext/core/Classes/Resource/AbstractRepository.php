@@ -274,10 +274,12 @@ abstract class AbstractRepository implements \TYPO3\CMS\Extbase\Persistence\Repo
 	 *
 	 * @param string $method Name of the method
 	 * @param array $arguments The arguments
+	 *
+	 * @throws \BadMethodCallException
 	 * @return void
 	 */
 	public function __call($method, $arguments) {
-		// deliberately empty
+		throw new \BadMethodCallException('Repository method "' . $method . '" is not implemented.', 1378918410);
 	}
 
 	/**
