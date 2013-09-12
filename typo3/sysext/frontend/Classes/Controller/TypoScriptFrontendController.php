@@ -3445,7 +3445,7 @@ class TypoScriptFrontendController {
 	}
 
 	/**
-	 * Processes the INTinclude-scripts and substitue in content.
+	 * Processes the INTinclude-scripts and substitute in content.
 	 *
 	 * @param array $INTiS_config $GLOBALS['TSFE']->config['INTincScript'] or part of it
 	 * @return void
