@@ -1445,7 +1445,7 @@ class GeneralUtility {
 	 *
 	 * @param array $array The initial array to be filtered/reduced
 	 * @param mixed $keepItems The items which are allowed/kept in the array - accepts array or csv string
-	 * @param string $getValueFunc (optional) Unique function name set by create_function() used to get the value to keep
+	 * @param string $getValueFunc (optional) Callback function used to get the value to keep
 	 * @return array The filtered/reduced array with the kept items
 	 */
 	static public function keepItemsInArray(array $array, $keepItems, $getValueFunc = NULL) {
@@ -1454,8 +1454,8 @@ class GeneralUtility {
 			if (is_string($keepItems)) {
 				$keepItems = self::trimExplode(',', $keepItems);
 			}
-			// create_function() returns a string:
-			if (!is_string($getValueFunc)) {
+			// Check if valueFunc can be executed:
+			if (!is_callable($getValueFunc)) {
 				$getValueFunc = NULL;
 			}
 			// Do the filtering:

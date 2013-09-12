@@ -198,8 +198,7 @@ class FlexFormsHelper extends \TYPO3\CMS\Backend\Form\FormEngine {
 			// Getting the selector box items from system
 			$selItems = $this->addSelectOptionsToItemArray($this->initItemArray($field['TCEforms']), $field['TCEforms'], $this->setTSconfig($table, $tableRow), $tableField);
 			// Possibly filter some items
-			$keepItemsFunc = create_function('$value', 'return $value[1];');
-			$selItems = GeneralUtility::keepItemsInArray($selItems, $keepItems, $keepItemsFunc);
+			$selItems = GeneralUtility::keepItemsInArray($selItems, $keepItems, function($value){return $value[1];});
 			// Possibly add some items
 			$selItems = $this->addItems($selItems, $addItems);
 			// Process items by a user function

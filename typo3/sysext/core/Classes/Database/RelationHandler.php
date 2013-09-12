@@ -338,7 +338,9 @@ class RelationHandler {
 	public function sortList($sortby) {
 		// Sort directly without fetching addional data
 		if ($sortby == 'uid') {
-			usort($this->itemArray, create_function('$a,$b', 'return $a["id"] < $b["id"] ? -1 : 1;'));
+			usort($this->itemArray, function($a,$b){
+					return $a['id'] < $b['id'] ? -1 : 1;
+				});
 		} elseif (count($this->tableArray) == 1) {
 			reset($this->tableArray);
 			$table = key($this->tableArray);
