@@ -18,13 +18,15 @@
 					<div id="typo3-inner-docbody">
 						<div id="t3-install-outer">
 							<f:render partial="Action/Common/Head" arguments="{_all}" />
-							<f:render partial="Action/Common/Left" arguments="{_all}" />
-							<div id="t3-install-right">
-								<div id="t3-install-box-body">
-									<f:render section="Content" />
+							<div id="t3-install-center">
+								<f:render partial="Action/Common/Left" arguments="{_all}" />
+								<div id="t3-install-right">
+									<div id="t3-install-box-body">
+										<f:render section="Content" />
+									</div>
 								</div>
+								<f:render partial="Action/Common/Copyright" arguments="{_all}" />
 							</div>
-							<f:render partial="Action/Common/Copyright" arguments="{_all}" />
 						</div>
 					</div>
 				</div>
@@ -41,13 +43,15 @@
 			<body class="standalone">
 				<div id="t3-install-outer">
 					<f:render partial="Action/Common/Head" arguments="{_all}" />
-					<f:render partial="Action/Common/Left" arguments="{_all}" />
-					<div id="t3-install-right">
-						<div id="t3-install-box-body">
-							<f:render section="Content" />
+					<div id="t3-install-center">
+						<f:render partial="Action/Common/Left" arguments="{_all}" />
+						<div id="t3-install-right">
+							<div id="t3-install-box-body">
+								<f:render section="Content" />
+							</div>
 						</div>
+						<f:render partial="Action/Common/Copyright" arguments="{_all}" />
 					</div>
-					<f:render partial="Action/Common/Copyright" arguments="{_all}" />
 				</div>
 			</body>
 		</html>

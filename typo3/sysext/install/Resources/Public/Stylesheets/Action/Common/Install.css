@@ -94,7 +94,7 @@ fieldset li p {
 }
 
 h2 {
-	margin: 2.5em 0 1.7em 0.8em;
+	margin: 2.5em 0 1.7em 1.8em;
 	color: #585858;
 	font-size: 120%;
 	font-weight: bold;
@@ -256,10 +256,28 @@ button span.t3-install-form-button-icon-negative {
 	margin: 1em auto;
 }
 
-#t3-install-left {
-	float: left;
+#t3-install-head {
+	position: fixed;
+}
+
+#t3-install-logo {
 	width: 19em;
+	float: left;
+	height: 100px;
+}
+#t3-install-headline {
+	float: left;
+}
+
+#t3-install-center {
+	position: absolute;
 	clear: both;
+	top: 100px;
+}
+
+#t3-install-left {
+	width: 19em;
+	position: fixed;
 }
 
 #t3-install-right {
@@ -605,9 +623,6 @@ body.standalone h1 {
 }
 
 body.standalone h2 {
-	padding: 3.3em 0 3.7em 17.5em;
-	margin: 0;
-	height: auto;
 	color: #ffffff;
 }
 
