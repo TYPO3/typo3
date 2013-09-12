@@ -1742,8 +1742,7 @@ function ' . $evalData . '(value) {
 		// Getting the selector box items from the system
 		$selItems = $this->addSelectOptionsToItemArray($this->initItemArray($PA['fieldConf']), $PA['fieldConf'], $this->setTSconfig($table, $row), $field);
 		// Possibly filter some items:
-		$keepItemsFunc = create_function('$value', 'return $value[1];');
-		$selItems = GeneralUtility::keepItemsInArray($selItems, $PA['fieldTSConfig']['keepItems'], $keepItemsFunc);
+		$selItems = GeneralUtility::keepItemsInArray($selItems, $PA['fieldTSConfig']['keepItems'], function($value){return $value[1];});
 		// Possibly add some items:
 		$selItems = $this->addItems($selItems, $PA['fieldTSConfig']['addItems.']);
 		// Process items by a user function:
@@ -2226,8 +2225,10 @@ function ' . $evalData . '(value) {
 		// Get the array with selected items:
 		$itemArray = GeneralUtility::trimExplode(',', $PA['itemFormElValue'], TRUE);
 		// Possibly filter some items:
-		$keepItemsFunc = create_function('$value', '$parts=explode(\'|\',$value,2); return rawurldecode($parts[0]);');
-		$itemArray = GeneralUtility::keepItemsInArray($itemArray, $PA['fieldTSConfig']['keepItems'], $keepItemsFunc);
+		$itemArray = GeneralUtility::keepItemsInArray($itemArray, $PA['fieldTSConfig']['keepItems'], function($value){
+				$parts = explode('|', $value, 2);
+				return rawurldecode($parts[0]);
+			});
 		// Perform modification of the selected items array:
 		foreach ($itemArray as $tk => $tv) {
 			$tvP = explode('|', $tv, 2);
