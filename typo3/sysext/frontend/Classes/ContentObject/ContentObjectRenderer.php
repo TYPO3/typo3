@@ -1329,7 +1329,7 @@ class ContentObjectRenderer {
 		$info = $this->getImgResource($file, $conf['file.']);
 		$GLOBALS['TSFE']->lastImageInfo = $info;
 		if (is_array($info)) {
-			if (GeneralUtility::isAllowedAbsPath(PATH_site . $info['3'])) {
+			if (is_file(PATH_site . $info['3'])) {
 				$source = GeneralUtility::rawUrlEncodeFP(GeneralUtility::png_to_gif_by_imagemagick($info[3]));
 				$source = $GLOBALS['TSFE']->absRefPrefix . $source;
 			} else {
@@ -1518,8 +1518,8 @@ class ContentObjectRenderer {
 			if (isset($conf['file.'])) {
 				$imageFile = $this->stdWrap($imageFile, $conf['file.']);
 			}
-			// imageFileLink:
-			if ($content == $string && @is_file($imageFile)) {
+			// Create imageFileLink if not created with typolink
+			if ($content == $string) {
 				$parameterNames = array('width', 'height', 'effects', 'alternativeTempPath', 'bodyTag', 'title', 'wrap');
 				$parameters = array();
 				$sample = isset($conf['sample.']) ? $this->stdWrap($conf['sample'], $conf['sample.']) : $conf['sample'];
