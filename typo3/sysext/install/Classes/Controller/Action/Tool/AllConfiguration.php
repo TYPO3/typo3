@@ -57,7 +57,9 @@ class AllConfiguration extends Action\AbstractAction implements Action\ActionInt
 	 */
 	protected function setUpConfigurationData() {
 		$data = array();
-		foreach ($GLOBALS['TYPO3_CONF_VARS'] as $sectionName => $sectionData) {
+		$typo3ConfVars = $GLOBALS['TYPO3_CONF_VARS'];
+		ksort($typo3ConfVars);
+		foreach ($typo3ConfVars as $sectionName => $sectionData) {
 			$data[$sectionName] = array();
 
 			foreach ($sectionData as $key => $value) {
