@@ -1181,6 +1181,30 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->assertEquals($expected, $match);
 	}
 
+	/**
+	 * Similar to keepItemsInArrayCanUseCallbackOnSearchArray(),
+	 * but uses a closure instead of create_function()
+	 *
+	 * @test
+	 */
+	public function keepItemsInArrayCanUseClosure() {
+		$array = array(
+			'aa' => array('first', 'second'),
+			'bb' => array('third', 'fourth'),
+			'cc' => array('fifth', 'sixth')
+		);
+		$expected = array('bb' => array('third', 'fourth'));
+		$keepItems = 'third';
+		$match = Utility\GeneralUtility::keepItemsInArray(
+			$array,
+			$keepItems,
+			function ($value) {
+				return $value[0];
+			}
+		);
+		$this->assertEquals($expected, $match);
+	}
+
 	//////////////////////////////////
 	// Tests concerning implodeArrayForUrl / explodeUrl2Array
 	//////////////////////////////////
