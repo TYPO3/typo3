@@ -33,6 +33,16 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class AllConfiguration extends Action\AbstractAction implements Action\ActionInterface {
 
 	/**
+	 * @var array
+	 */
+	protected $phpErrorCodesSettings = array(
+		'errorHandlerErrors',
+		'exceptionalErrors',
+		'syslogErrorReporting',
+		'belogErrorReporting'
+	);
+
+	/**
 	 * Handle this action
 	 *
 	 * @return string content
@@ -93,8 +103,15 @@ class AllConfiguration extends Action\AbstractAction implements Action\ActionInt
 						$itemData['type'] = 'input';
 						$itemData['value'] = $value;
 					}
+
+					// Check if the setting is a PHP error code
+					if ($sectionName === 'SYS' && in_array($key, $this->phpErrorCodesSettings)) {
+						$itemData['phpErrorCode'] = TRUE;
+					}
 					$data[$sectionName][] = $itemData;
 				}
+
+
 			}
 		}
 		return $data;
