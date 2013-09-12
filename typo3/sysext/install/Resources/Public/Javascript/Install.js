@@ -89,6 +89,11 @@ $(document).ready(function() {
 		e.preventDefault();
 		return false;
 	});
+
+	// Make second submit-button for All Configuration form clickable
+	$('#all-configuration-extra-submit').on('click', function() {
+		$('#all-configuration').click();
+	});
 });
 
 /**
