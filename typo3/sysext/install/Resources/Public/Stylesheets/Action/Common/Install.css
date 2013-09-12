@@ -439,6 +439,11 @@ button span.t3-install-form-button-icon-negative {
     background-image: url('../../../Images/Icon/arrowdown.png');
 }
 
+#t3-install-box-body .fieldNote {
+	font-style: italic;
+	margin-top: 0.5em;
+}
+
 .t3-install-tool-configuration-radio {
 	float: none;
 }

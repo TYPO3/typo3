@@ -33,6 +33,20 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class AllConfiguration extends Action\AbstractAction implements Action\ActionInterface {
 
 	/**
+	 * Error handlers are a bit mask in PHP. This register hints the View to
+	 * add a fluid view helper resolving the bit mask to its representation
+	 * as constants again for the specified items in ['SYS'].
+	 *
+	 * @var array
+	 */
+	protected $phpErrorCodesSettings = array(
+		'errorHandlerErrors',
+		'exceptionalErrors',
+		'syslogErrorReporting',
+		'belogErrorReporting',
+	);
+
+	/**
 	 * Handle this action
 	 *
 	 * @return string content
@@ -93,6 +107,12 @@ class AllConfiguration extends Action\AbstractAction implements Action\ActionInt
 						$itemData['type'] = 'input';
 						$itemData['value'] = $value;
 					}
+
+					// Check if the setting is a PHP error code, will trigger a view helper in fluid
+					if ($sectionName === 'SYS' && in_array($key, $this->phpErrorCodesSettings)) {
+						$itemData['phpErrorCode'] = TRUE;
+					}
+
 					$data[$sectionName][] = $itemData;
 				}
 			}
