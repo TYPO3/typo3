@@ -57,10 +57,12 @@ class AllConfiguration extends Action\AbstractAction implements Action\ActionInt
 	 */
 	protected function setUpConfigurationData() {
 		$data = array();
-		foreach ($GLOBALS['TYPO3_CONF_VARS'] as $sectionName => $sectionData) {
+		$typo3ConfVars = array_keys($GLOBALS['TYPO3_CONF_VARS']);
+		sort($typo3ConfVars);
+		foreach ($typo3ConfVars as $sectionName) {
 			$data[$sectionName] = array();
 
-			foreach ($sectionData as $key => $value) {
+			foreach ($GLOBALS['TYPO3_CONF_VARS'][$sectionName] as $key => $value) {
 				if (isset($GLOBALS['TYPO3_CONF_VARS_extensionAdded'][$sectionName][$key])) {
 					// Don't allow editing stuff which is added by extensions
 					// Make sure we fix potentially duplicated entries from older setups
