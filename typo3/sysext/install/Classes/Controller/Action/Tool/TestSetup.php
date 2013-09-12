@@ -204,10 +204,15 @@ class TestSetup extends Action\AbstractAction implements Action\ActionInterface 
 				$inputFile = $this->imageBasePath . 'TestInput/Test.' . $formatToTest;
 				$imageProcessor->imageMagickConvert_forceFileNameBody = 'read-' . $formatToTest;
 				$imResult = $imageProcessor->imageMagickConvert($inputFile, 'jpg', '170', '', '', '', array(), TRUE);
-				$result['title'] = 'Read ' . $formatToTest;
-				$result['outputFile'] = $imResult[3];
-				$result['referenceFile'] = $this->imageBasePath . 'TestReference/Read-' . $formatToTest . '.jpg';
-				$result['command'] = $imageProcessor->IM_commands;
+				if ($imResult !== NULL) {
+					$result['title'] = 'Read ' . $formatToTest;
+					$result['outputFile'] = $imResult[3];
+					$result['referenceFile'] = $this->imageBasePath . 'TestReference/Read-' . $formatToTest . '.jpg';
+					$result['command'] = $imageProcessor->IM_commands;
+				} else {
+					$result['error'] = $this->imageMagickDisabledMessage();
+				}
+
 			}
 			$testResults[] = $result;
 		}
@@ -235,39 +240,47 @@ class TestSetup extends Action\AbstractAction implements Action\ActionInterface 
 		$inputFile = $this->imageBasePath . 'TestInput/Test.gif';
 		$imageProcessor->imageMagickConvert_forceFileNameBody = 'write-gif';
 		$imResult = $imageProcessor->imageMagickConvert($inputFile, 'gif', '', '', '', '', array(), TRUE);
-		if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['gif_compress']) {
-			clearstatcache();
-			$previousSize = GeneralUtility::formatSize(filesize($imResult[3]));
-			$methodUsed = GeneralUtility::gif_compress($imResult[3], '');
-			clearstatcache();
-			$compressedSize = GeneralUtility::formatSize(filesize($imResult[3]));
-			/** @var \TYPO3\CMS\Install\Status\StatusInterface $message */
-			$message = $this->objectManager->get('TYPO3\\CMS\\Install\\Status\\InfoStatus');
-			$message->setTitle('Compressed gif');
-			$message->setMessage(
-				'Method used by compress: ' . $methodUsed . LF
-				. ' Previous filesize: ' . $previousSize . '. Current filesize:' . $compressedSize
-			);
+		if ($imResult !== NULL) {
+			if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['gif_compress']) {
+				clearstatcache();
+				$previousSize = GeneralUtility::formatSize(filesize($imResult[3]));
+				$methodUsed = GeneralUtility::gif_compress($imResult[3], '');
+				clearstatcache();
+				$compressedSize = GeneralUtility::formatSize(filesize($imResult[3]));
+				/** @var \TYPO3\CMS\Install\Status\StatusInterface $message */
+				$message = $this->objectManager->get('TYPO3\\CMS\\Install\\Status\\InfoStatus');
+				$message->setTitle('Compressed gif');
+				$message->setMessage(
+					'Method used by compress: ' . $methodUsed . LF
+					. ' Previous filesize: ' . $previousSize . '. Current filesize:' . $compressedSize
+				);
+			} else {
+				/** @var \TYPO3\CMS\Install\Status\StatusInterface $message */
+				$message = $this->objectManager->get('TYPO3\\CMS\\Install\\Status\\InfoStatus');
+				$message->setTitle('Gif compression not enabled by [GFX][gif_compress]');
+			}
+			$testResults['gif']['message'] = $message;
+			$testResults['gif']['title'] = 'Write gif';
+			$testResults['gif']['outputFile'] = $imResult[3];
+			$testResults['gif']['referenceFile'] = $this->imageBasePath . 'TestReference/Write-gif.gif';
+			$testResults['gif']['command'] = $imageProcessor->IM_commands;
 		} else {
-			/** @var \TYPO3\CMS\Install\Status\StatusInterface $message */
-			$message = $this->objectManager->get('TYPO3\\CMS\\Install\\Status\\InfoStatus');
-			$message->setTitle('Gif compression not enabled by [GFX][gif_compress]');
+			$testResults['gif']['error'] = $this->imageMagickDisabledMessage();
 		}
-		$testResults['gif']['message'] = $message;
-		$testResults['gif']['title'] = 'Write gif';
-		$testResults['gif']['outputFile'] = $imResult[3];
-		$testResults['gif']['referenceFile'] = $this->imageBasePath . 'TestReference/Write-gif.gif';
-		$testResults['gif']['command'] = $imageProcessor->IM_commands;
 
 		// Png
 		$inputFile = $this->imageBasePath . 'TestInput/Test.png';
 		$imageProcessor->IM_commands = array();
 		$imageProcessor->imageMagickConvert_forceFileNameBody = 'write-png';
 		$imResult = $imageProcessor->imageMagickConvert($inputFile, 'png', '', '', '', '', array(), TRUE);
-		$testResults['png']['title'] = 'Write png';
-		$testResults['png']['outputFile'] = $imResult[3];
-		$testResults['png']['referenceFile'] = $this->imageBasePath . 'TestReference/Write-png.png';
-		$testResults['png']['command'] = $imageProcessor->IM_commands;
+		if ($imResult !== NULL) {
+			$testResults['png']['title'] = 'Write png';
+			$testResults['png']['outputFile'] = $imResult[3];
+			$testResults['png']['referenceFile'] = $this->imageBasePath . 'TestReference/Write-png.png';
+			$testResults['png']['command'] = $imageProcessor->IM_commands;
+		} else {
+			$testResults['png']['error'] = $this->imageMagickDisabledMessage();
+		}
 
 		$this->view->assign('testResults', $testResults);
 		return $this->imageTestDoneMessage(GeneralUtility::milliseconds() - $parseTimeStart);
@@ -293,28 +306,40 @@ class TestSetup extends Action\AbstractAction implements Action\ActionInterface 
 		$inputFile = $this->imageBasePath . 'TestInput/Transparent.gif';
 		$imageProcessor->imageMagickConvert_forceFileNameBody = 'scale-gif';
 		$imResult = $imageProcessor->imageMagickConvert($inputFile, 'gif', '150', '', '', '', array(), TRUE);
-		$testResults['gif-to-gif']['title'] = 'gif to gif';
-		$testResults['gif-to-gif']['outputFile'] = $imResult[3];
-		$testResults['gif-to-gif']['referenceFile'] = $this->imageBasePath . 'TestReference/Scale-gif.gif';
-		$testResults['gif-to-gif']['command'] = $imageProcessor->IM_commands;
+		if ($imResult !== NULL) {
+			$testResults['gif-to-gif']['title'] = 'gif to gif';
+			$testResults['gif-to-gif']['outputFile'] = $imResult[3];
+			$testResults['gif-to-gif']['referenceFile'] = $this->imageBasePath . 'TestReference/Scale-gif.gif';
+			$testResults['gif-to-gif']['command'] = $imageProcessor->IM_commands;
+		} else {
+			$testResults['gif-to-gif']['error'] = $this->imageMagickDisabledMessage();
+		}
 
 		$imageProcessor->IM_commands = array();
 		$inputFile = $this->imageBasePath . 'TestInput/Transparent.png';
 		$imageProcessor->imageMagickConvert_forceFileNameBody = 'scale-png';
 		$imResult = $imageProcessor->imageMagickConvert($inputFile, 'png', '150', '', '', '', array(), TRUE);
-		$testResults['png-to-png']['title'] = 'png to png';
-		$testResults['png-to-png']['outputFile'] = $imResult[3];
-		$testResults['png-to-png']['referenceFile'] = $this->imageBasePath . 'TestReference/Scale-png.png';
-		$testResults['png-to-png']['command'] = $imageProcessor->IM_commands;
+		if ($imResult !== NULL) {
+			$testResults['png-to-png']['title'] = 'png to png';
+			$testResults['png-to-png']['outputFile'] = $imResult[3];
+			$testResults['png-to-png']['referenceFile'] = $this->imageBasePath . 'TestReference/Scale-png.png';
+			$testResults['png-to-png']['command'] = $imageProcessor->IM_commands;
+		} else {
+			$testResults['png-to-png']['error'] = $this->imageMagickDisabledMessage();
+		}
 
 		$imageProcessor->IM_commands = array();
 		$inputFile = $this->imageBasePath . 'TestInput/Transparent.gif';
 		$imageProcessor->imageMagickConvert_forceFileNameBody = 'scale-jpg';
 		$imResult = $imageProcessor->imageMagickConvert($inputFile, 'jpg', '150', '', '', '', array(), TRUE);
-		$testResults['gif-to-jpg']['title'] = 'gif to jpg';
-		$testResults['gif-to-jpg']['outputFile'] = $imResult[3];
-		$testResults['gif-to-jpg']['referenceFile'] = $this->imageBasePath . 'TestReference/Scale-jpg.jpg';
-		$testResults['gif-to-jpg']['command'] = $imageProcessor->IM_commands;
+		if ($imResult !== NULL) {
+			$testResults['gif-to-jpg']['title'] = 'gif to jpg';
+			$testResults['gif-to-jpg']['outputFile'] = $imResult[3];
+			$testResults['gif-to-jpg']['referenceFile'] = $this->imageBasePath . 'TestReference/Scale-jpg.jpg';
+			$testResults['gif-to-jpg']['command'] = $imageProcessor->IM_commands;
+		} else {
+			$testResults['gif-to-jpg']['error'] = $this->imageMagickDisabledMessage();
+		}
 
 		$this->view->assign('testResults', $testResults);
 		return $this->imageTestDoneMessage(GeneralUtility::milliseconds() - $parseTimeStart);
@@ -342,10 +367,14 @@ class TestSetup extends Action\AbstractAction implements Action\ActionInterface 
 			. GeneralUtility::shortMD5(($imageProcessor->alternativeOutputKey . 'combine1')) . '.jpg';
 		$imageProcessor->combineExec($inputFile, $overlayFile, $maskFile, $resultFile, TRUE);
 		$result = $imageProcessor->getImageDimensions($resultFile);
-		$testResults['combine1']['title'] = 'Combine using a GIF mask with only black and white';
-		$testResults['combine1']['outputFile'] = $result[3];
-		$testResults['combine1']['referenceFile'] = $this->imageBasePath . 'TestReference/Combine-1.jpg';
-		$testResults['combine1']['command'] = $imageProcessor->IM_commands;
+		if ($result) {
+			$testResults['combine1']['title'] = 'Combine using a GIF mask with only black and white';
+			$testResults['combine1']['outputFile'] = $result[3];
+			$testResults['combine1']['referenceFile'] = $this->imageBasePath . 'TestReference/Combine-1.jpg';
+			$testResults['combine1']['command'] = $imageProcessor->IM_commands;
+		} else {
+			$testResults['combine1']['error'] = $this->imageMagickDisabledMessage();
+		}
 
 		$imageProcessor->IM_commands = array();
 		$inputFile = $this->imageBasePath . 'TestInput/BackgroundCombine.jpg';
@@ -355,10 +384,14 @@ class TestSetup extends Action\AbstractAction implements Action\ActionInterface 
 			. GeneralUtility::shortMD5(($imageProcessor->alternativeOutputKey . 'combine2')) . '.jpg';
 		$imageProcessor->combineExec($inputFile, $overlayFile, $maskFile, $resultFile, TRUE);
 		$result = $imageProcessor->getImageDimensions($resultFile);
-		$testResults['combine2']['title'] = 'Combine using a JPG mask with graylevels';
-		$testResults['combine2']['outputFile'] = $result[3];
-		$testResults['combine2']['referenceFile'] = $this->imageBasePath . 'TestReference/Combine-2.jpg';
-		$testResults['combine2']['command'] = $imageProcessor->IM_commands;
+		if ($result) {
+			$testResults['combine2']['title'] = 'Combine using a JPG mask with graylevels';
+			$testResults['combine2']['outputFile'] = $result[3];
+			$testResults['combine2']['referenceFile'] = $this->imageBasePath . 'TestReference/Combine-2.jpg';
+			$testResults['combine2']['command'] = $imageProcessor->IM_commands;
+		} else {
+			$testResults['combine2']['error'] = $this->imageMagickDisabledMessage();
+		}
 
 		$this->view->assign('testResults', $testResults);
 		return $this->imageTestDoneMessage(GeneralUtility::milliseconds() - $parseTimeStart);
