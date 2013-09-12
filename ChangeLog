@@ -1,3 +1,18 @@
+2013-09-12  a9335e4                  [RELEASE] Release of TYPO3 4.5.30 (TYPO3 Release Team)
+2013-08-31  cdebcfb  #50424          [BUGFIX] Backend Layout Grid Wizard not fully visible in Mac Firefox 22 (Philipp Gampe)
+2013-08-28  12685ed  #36244          [BUGFIX] Exclude empty passwords from password hashing check (Nicole Cordes)
+2013-08-27  4b98bb5  #50760          [BUGFIX] Escape title tag of image links (Alexander Stehlik)
+2013-08-27  19d3383  #25327,#37026   [BUGFIX] Page tree filtering broken in IE7 & IE8 (Aske Ertmann)
+2013-08-20  4571ca9  #30636          [BUGFIX] TCA: subtypes_addlist not processed (Ernesto Baschny)
+2013-08-20  3693037  #31295          [BUGFIX] Handle file_references properly in t3lib_befunc::thumbCode (Tolleiv Nietsch)
+2013-08-08  380fb85  #50868          [BUGFIX] number_format() expects parameter 1 to be double (Anja Leichsenring)
+2013-08-04  5d0ba16  #50466          [BUGFIX] MySQL: Use ENGINE (not TYPE) for storage-engine (Stefan Neufeind)
+2013-08-04  8f929db  #35274          [BUGFIX] Syntax error in class.tx_coreupdates_t3skin.php (Wouter Wolters)
+2013-08-03  9731f60  #46642          [BUGFIX] Fix fatal error in extension manager (Michael Stucki)
+2013-07-31  632ea14  #36031          [TASK] Provide information about import action in TCEmain to hooks (Stefan Galinski)
+2013-07-30  4f21ea2                  [TASK] Set TYPO3 version to 4.5.30-dev (TYPO3 Release Team)
+
+
 2013-07-30  48003fb                  [RELEASE] Release of TYPO3 4.5.29 (TYPO3 Release Team)
 2013-07-30  2c8786a  #49210          [SECURITY] XSS in 3rd party library Audio Player (Oliver Hader)
 2013-07-27  4201b11  #41487          [BUGFIX] Fix double-stdWrapping of GIFBUILDER's TEXT object (jyps)
