@@ -1507,9 +1507,16 @@ class InlineElement {
 		if ($foreignConfig['type'] == 'select') {
 			// Getting the selector box items from the system
 			$selItems = $this->fObj->addSelectOptionsToItemArray($this->fObj->initItemArray($PA['fieldConf']), $PA['fieldConf'], $this->fObj->setTSconfig($table, $row), $field);
+
 			// Possibly filter some items:
-			$keepItemsFunc = create_function('$value', 'return $value[1];');
-			$selItems = GeneralUtility::keepItemsInArray($selItems, $PA['fieldTSConfig']['keepItems'], $keepItemsFunc);
+			$selItems = GeneralUtility::keepItemsInArray(
+				$selItems,
+				$PA['fieldTSConfig']['keepItems'],
+				function ($value) {
+					return $value[1];
+				}
+			);
+
 			// Possibly add some items:
 			$selItems = $this->fObj->addItems($selItems, $PA['fieldTSConfig']['addItems.']);
 			if (isset($config['itemsProcFunc']) && $config['itemsProcFunc']) {
