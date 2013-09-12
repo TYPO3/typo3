@@ -384,6 +384,28 @@ button span.t3-install-form-button-icon-negative {
 	line-height: 1.5em;
 }
 
+#t3-install-all-configuration-extra-submit {
+	list-style: none;
+	margin: 11px 0 0.8em 0;
+	padding: 1em 0 0 0;
+	line-height: 2em;
+	font-size: 110%;
+	width: 18em;
+}
+
+#t3-install-all-configuration-extra-submit li.button {
+	padding-left: 3.5em;
+}
+
+#t3-install-all-configuration-extra-submit li.notice {
+	padding: 1em;
+}
+
+#t3-install-all-configuration-extra-submit li.notice span {
+	font-weight: bold;
+	text-transform: uppercase;
+}
+
 #t3-install-links {
 	margin: 2em 0 0 0.8em;
 	padding: 0;
@@ -524,7 +546,8 @@ body {
 }
 
 #t3-install-box-body,
-#t3-install-menu {
+#t3-install-menu,
+#t3-install-all-configuration-extra-submit {
 	border: 1px #dcdcdc solid;
 	background-color: #ffffff;
 }

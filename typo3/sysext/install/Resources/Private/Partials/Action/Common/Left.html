@@ -54,6 +54,18 @@
 			</a>
 		</li>
 	</ol>
+	<f:if condition="{action} == 'allConfiguration'">
+		<ol id="t3-install-all-configuration-extra-submit">
+			<li class="button">
+				<button type="submit" id="all-configuration-extra-submit">
+					Write configuration
+				</button>
+			</li>
+			<li class="notice">
+				<span>Notice:</span> By clicking this button, LocalConfiguration.php will be updated.
+			</li>
+		</ol>
+	</f:if>
 	<ol id="t3-install-links">
 		<li>
 			<a href="../../../index.php">Backend admin</a>
