@@ -1297,7 +1297,7 @@ tt_content.' . $key . $prefix . ' {
 
 	/**
 	 * Call this method to add an entry in the static template list found in sys_templates
-	 * FOR USE IN ext_localconf.php FILES
+	 * FOR USE IN ext_tables.php FILES
 	 *
 	 * @param string $extKey Is of course the extension key
 	 * @param string $path Is the path where the template files (fixed names) include_static.txt (integer list of uids from the table "static_templates"), constants.txt, setup.txt, and include_static_file.txt is found (relative to extPath, eg. 'static/'). The file include_static_file.txt, allows you to include other static templates defined in files, from your static template, and thus corresponds to the field 'include_static_file' in the sys_template table. The syntax for this is a commaseperated list of static templates to include, like:  EXT:css_styled_content/static/,EXT:da_newsletter_subscription/static/,EXT:cc_random_image/pi2/static/
