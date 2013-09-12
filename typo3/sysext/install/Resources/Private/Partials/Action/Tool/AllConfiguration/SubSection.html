@@ -21,6 +21,16 @@
 					{item.description -> f:format.raw()}
 					<br />
 
+					<f:comment>
+						If the setting is one of the PHP error code settings, call a
+						view helper to resolve the bit mask to constants again.
+					</f:comment>
+					<f:if condition="{item.phpErrorCode}">
+						<br />
+						<i:format.phpErrorCode phpErrorCode="{item.value}" />
+						<br />
+					</f:if>
+
 					<f:if condition="{item.type} == 'textarea'">
 						<textarea
 							rows="5"
