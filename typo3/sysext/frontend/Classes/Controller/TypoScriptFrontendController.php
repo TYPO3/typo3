@@ -3424,6 +3424,14 @@ class TypoScriptFrontendController {
 		$this->content = str_replace('<!--HD_' . $this->config['INTincScript_ext']['divKey'] . '-->', $this->convOutputCharset(implode(LF, $this->additionalHeaderData), 'HD'), $this->content);
 		$this->content = str_replace('<!--FD_' . $this->config['INTincScript_ext']['divKey'] . '-->', $this->convOutputCharset(implode(LF, $this->additionalFooterData), 'FD'), $this->content);
 		$this->content = str_replace('<!--TDS_' . $this->config['INTincScript_ext']['divKey'] . '-->', $this->convOutputCharset($this->divSection, 'TDS'), $this->content);
+		do {
+			$INTiS_config = $this->config['INTincScript'];
+			$this->INTincScript_includeLibs($INTiS_config);
+			$this->INTincScript_process($INTiS_config);
+			// Check if there were new items added to INTincScript during the previous execution:
+			$INTiS_config = array_diff_assoc($this->config['INTincScript'], $INTiS_config);
+			$reprocess = count($INTiS_config) ? TRUE : FALSE;
+		} while ($reprocess);
 		$this->setAbsRefPrefix();
 		$GLOBALS['TT']->pull();
 	}
