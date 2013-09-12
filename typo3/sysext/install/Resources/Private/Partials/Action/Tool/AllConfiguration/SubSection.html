@@ -20,7 +20,11 @@
 				<div class="message-body">
 					{item.description -> f:format.raw()}
 					<br />
-
+					<f:if condition="{item.phpErrorCode}">
+						<br />
+						<i:format.phpErrorCode phpErrorCode="{item.value}" />
+						<br />
+					</f:if>
 					<f:if condition="{item.type} == 'textarea'">
 						<textarea
 							rows="5"
