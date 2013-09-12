@@ -1897,7 +1897,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Render the page but not the JavaScript and CSS Files
 	 *
-	 * @param string $substituteHash The hash that is used for the placehoder markers
+	 * @param string $substituteHash The hash that is used for the placeholder markers
 	 * @access private
 	 * @return string Content of rendered section
 	 */
@@ -1913,13 +1913,14 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	 * of uncached content objects (USER_INT, COA_INT)
 	 *
 	 * @param string $cachedPageContent
-	 * @param string $substituteHash The hash that is used for the placehoder markers
+	 * @param string $substituteHash The hash that is used for the placeholder markers
 	 * @access private
 	 * @return string
 	 */
 	public function renderJavaScriptAndCssForProcessingOfUncachedContentObjects($cachedPageContent, $substituteHash) {
 		$this->prepareRendering();
 		list($jsLibs, $jsFiles, $jsFooterFiles, $cssFiles, $jsInline, $cssInline, $jsFooterInline, $jsFooterLibs) = $this->renderJavaScriptAndCss();
+		$this->headerData = array_diff_assoc($this->headerData, $this->savedHeaderData);
 		$markerArray = array(
 			'<!-- ###CSS_INCLUDE' . $substituteHash . '### -->' => $cssFiles,
 			'<!-- ###CSS_INLINE' . $substituteHash . '### -->' => $cssInline,
@@ -2062,6 +2063,15 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 			'JS_INCLUDE_FOOTER' => '<!-- ###JS_INCLUDE_FOOTER' . $substituteHash . '### -->',
 			'JS_INLINE_FOOTER' => '<!-- ###JS_INLINE_FOOTER' . $substituteHash . '### -->'
 		);
+		if ($this->headerData) {
+			$this->savedHeaderData = $this->headerData;
+			$markerArray['HEADERDATA'] .= LF . implode(LF, $this->headerData);
+			$this->headerData = array();
+		}
+		if ($this->footerData) {
+			$markerArray['FOOTERDATA'] .= LF . implode(LF, $this->footerData);
+			$this->footerData = array();
+		}
 		$markerArray = array_map('trim', $markerArray);
 		return $markerArray;
 	}
