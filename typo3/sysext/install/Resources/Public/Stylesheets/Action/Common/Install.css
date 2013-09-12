@@ -262,6 +262,10 @@ button span.t3-install-form-button-icon-negative {
 	clear: both;
 }
 
+#t3-install-left button.all-configuration {
+	margin: 30px 0px 0px 30px;
+}
+
 #t3-install-right {
 	padding-left: 19em;
 	width: 57em;

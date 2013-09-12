@@ -1,12 +1,26 @@
 <fieldset class="t3-install-form-submit">
 	<ol>
 		<li>
+		<f:if condition="{submitId}">
+			<f:then>
+			<button
+					id="{submitId}"
+					type="submit"
+					name="install[set][{name}]"
+					>
+				{text}
+			</button>
+			</f:then>
+			<f:else>
 			<button
 					type="submit"
 					name="install[set][{name}]"
 					>
 				{text}
 			</button>
+			</f:else>
+		</f:if>
+
 		</li>
 	</ol>
 </fieldset>

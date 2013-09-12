@@ -89,6 +89,12 @@ $(document).ready(function() {
 		e.preventDefault();
 		return false;
 	});
+
+	var clone = $('#all-configuration').clone().removeAttr('id').addClass('all-configuration');
+	$('#t3-install-menu').after(clone);
+	$('#t3-install-left .all-configuration').on('click', function() {
+		$('#all-configuration').click();
+	});
 });
 
 /**
