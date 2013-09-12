@@ -3403,6 +3403,25 @@ class TypoScriptFrontendController {
 		if (!empty($this->config['INTincScript_ext']['pageRenderer'])) {
 			$this->setPageRenderer(unserialize($this->config['INTincScript_ext']['pageRenderer']));
 		}
+		$this->recursivelyReplaceIntPlaceholdersInContent();
+		$GLOBALS['TT']->push('Substitute header section');
+		$this->INTincScript_loadJSCode();
+		$this->content = $this->getPageRenderer()->renderJavaScriptAndCssForProcessingOfUncachedContentObjects($this->content, $this->config['INTincScript_ext']['divKey']);
+		$this->content = str_replace('<!--HD_' . $this->config['INTincScript_ext']['divKey'] . '-->', $this->convOutputCharset(implode(LF, $this->additionalHeaderData), 'HD'), $this->content);
+		$this->content = str_replace('<!--FD_' . $this->config['INTincScript_ext']['divKey'] . '-->', $this->convOutputCharset(implode(LF, $this->additionalFooterData), 'FD'), $this->content);
+		$this->content = str_replace('<!--TDS_' . $this->config['INTincScript_ext']['divKey'] . '-->', $this->convOutputCharset($this->divSection, 'TDS'), $this->content);
+		// Replace again, because header and footer data and page renderer replacements may introduce additional placeholders (see #44825)
+		$this->recursivelyReplaceIntPlaceholdersInContent();
+		$this->setAbsRefPrefix();
+		$GLOBALS['TT']->pull();
+	}
+
+	/**
+	 * Replaces INT placeholders (COA_INT and USER_INT) in $this->content
+	 * In case the replacement adds additional placeholders, it loops
+	 * until no new placeholders are found any more.
+	 */
+	protected function recursivelyReplaceIntPlaceholdersInContent() {
 		do {
 			$INTiS_config = $this->config['INTincScript'];
 			$this->INTincScript_includeLibs($INTiS_config);
@@ -3411,14 +3430,6 @@ class TypoScriptFrontendController {
 			$INTiS_config = array_diff_assoc($this->config['INTincScript'], $INTiS_config);
 			$reprocess = count($INTiS_config) ? TRUE : FALSE;
 		} while ($reprocess);
-		$GLOBALS['TT']->push('Substitute header section');
-		$this->INTincScript_loadJSCode();
-		$this->content = $this->getPageRenderer()->renderJavaScriptAndCssForProcessingOfUncachedContentObjects($this->content, $this->config['INTincScript_ext']['divKey']);
-		$this->content = str_replace('<!--HD_' . $this->config['INTincScript_ext']['divKey'] . '-->', $this->convOutputCharset(implode(LF, $this->additionalHeaderData), 'HD'), $this->content);
-		$this->content = str_replace('<!--FD_' . $this->config['INTincScript_ext']['divKey'] . '-->', $this->convOutputCharset(implode(LF, $this->additionalFooterData), 'FD'), $this->content);
-		$this->content = str_replace('<!--TDS_' . $this->config['INTincScript_ext']['divKey'] . '-->', $this->convOutputCharset($this->divSection, 'TDS'), $this->content);
-		$this->setAbsRefPrefix();
-		$GLOBALS['TT']->pull();
 	}
 
 	/**
