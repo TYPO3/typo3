@@ -51,6 +51,13 @@
 							class="t3-install-form-input-text"
 						/>
 					</f:if>
+
+					<f:if condition="{item.phpErrorCode}">
+						<div class="fieldNote">
+							Current PHP error code <strong>{item.value}</strong> represents:<br/>
+							<code><i:format.phpErrorCode phpErrorCode="{item.value}" /></code>
+						</div>
+					</f:if>
 				</div>
 			</div>
 			<p></p>
