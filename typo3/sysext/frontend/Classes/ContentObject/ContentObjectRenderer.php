@@ -1328,7 +1328,7 @@ class ContentObjectRenderer {
 		$info = $this->getImgResource($file, $conf['file.']);
 		$GLOBALS['TSFE']->lastImageInfo = $info;
 		if (is_array($info)) {
-			if (GeneralUtility::isAllowedAbsPath(PATH_site . $info['3'])) {
+			if (is_file(PATH_site . $info['3'])) {
 				$source = GeneralUtility::rawUrlEncodeFP(GeneralUtility::png_to_gif_by_imagemagick($info[3]));
 				$source = $GLOBALS['TSFE']->absRefPrefix . $source;
 			} else {
