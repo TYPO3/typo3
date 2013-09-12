@@ -144,6 +144,20 @@ abstract class AbstractUpdate {
 	}
 
 	/**
+	 * Check if given table exists
+	 *
+	 * @param string $table
+	 * @return boolean
+	 */
+	public function checkIfTableExists($table) {
+		$databaseTables = $GLOBALS['TYPO3_DB']->admin_get_tables();
+		if (array_key_exists($table, $databaseTables)) {
+			return TRUE;
+		}
+		return FALSE;
+	}
+
+	/**
 	 * Checks whether updates are required.
 	 *
 	 * @param string &$description The description for the update
