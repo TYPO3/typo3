@@ -366,8 +366,12 @@ class MigrateWorkspacesUpdate extends InstallSysExtsUpdate {
 	 * @return boolean
 	 */
 	protected function hasElementsOnWorkspace($table, $workspaceId) {
-		$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('uid', $table, 't3ver_wsid=' . intval($workspaceId));
-		$this->sqlQueries[] = $GLOBALS['TYPO3_DB']->debug_lastBuiltQuery;
+		$count = 0;
+		if ($this->checkIfTableExists($table)) {
+			$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('uid', $table, 't3ver_wsid=' . intval($workspaceId));
+			$this->sqlQueries[] = $GLOBALS['TYPO3_DB']->debug_lastBuiltQuery;
+		}
+
 		return $count > 0;
 	}
 
