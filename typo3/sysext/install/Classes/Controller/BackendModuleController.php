@@ -27,6 +27,10 @@ namespace TYPO3\CMS\Install\Controller;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
+use TYPO3\CMS\Core\Utility\HttpUtility;
+
 /**
  * Backend module controller
  *
@@ -36,7 +40,25 @@ namespace TYPO3\CMS\Install\Controller;
  * This is a classic extbase module that does not interfere with the other code
  * within the install tool.
  */
-class BackendModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
+class BackendModuleController extends ActionController {
+
+	/**
+	 * @var \TYPO3\CMS\Install\Service\EnableFileService
+	 * @inject
+	 */
+	protected $enableFileService;
+
+	/**
+	 * @var \TYPO3\CMS\Core\FormProtection\AbstractFormProtection
+	 */
+	protected $formProtection;
+
+	/**
+	 * Set formprotection property
+	 */
+	public function initializeAction() {
+		$this->formProtection = FormProtectionFactory::get();
+	}
 
 	/**
 	 * Index action shows install tool / step installer or redirect to action to enable install tool
@@ -44,14 +66,12 @@ class BackendModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCo
 	 * @return void
 	 */
 	public function indexAction() {
-		/** @var $enableFileService \TYPO3\CMS\Install\Service\EnableFileService */
-		$enableFileService = $this->objectManager->get('TYPO3\\CMS\\Install\\Service\\EnableFileService');
-		if ($enableFileService->checkInstallToolEnableFile()) {
+		if ($this->enableFileService->checkInstallToolEnableFile()) {
 			// Install Tool is already enabled
-			$enableFileService->extendInstallToolEnableFileLifetime();
-			\TYPO3\CMS\Core\Utility\HttpUtility::redirect('sysext/install/Start/Install.php?install[context]=backend');
+			$this->enableFileService->extendInstallToolEnableFileLifetime();
+			$this->redirect('sysext/install/Start/Install.php?install[context]=backend');
 		} else {
-			$this->redirect('showEnableInstallToolButton');
+			$this->forward('showEnableInstallToolButton');
 		}
 	}
 
@@ -61,28 +81,35 @@ class BackendModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCo
 	 * @return void
 	 */
 	public function showEnableInstallToolButtonAction() {
-		$formProtection = \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get();
-		$token = $formProtection->generateToken('installTool');
+		$token = $this->formProtection->generateToken('installTool');
 		$this->view->assign('installToolEnableToken', $token);
 	}
 
 	/**
 	 * Enable the install tool
 	 *
+	 * @param string $installToolEnableToken
 	 * @throws \RuntimeException
 	 */
-	public function enableInstallToolAction() {
-		$token = $GLOBALS['_POST']['tx_install_system_installinstall']['installToolEnableToken'];
-		if (\TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get()->validateToken($token, 'installTool')) {
-			$installToolService = $this->objectManager->get('TYPO3\\CMS\\Install\\Service\\EnableFileService');
-			$installToolService->createInstallToolEnableFile();
-			$this->redirect('index');
+	public function enableInstallToolAction($installToolEnableToken) {
+		if ($this->formProtection->validateToken($installToolEnableToken, 'installTool')) {
+			$this->enableFileService->createInstallToolEnableFile();
+			$this->forward('index');
 		} else {
 			throw new \RuntimeException(
 				'Given form token was not valid',
 				1369161225
 			);
 		}
+	}
+
+	/**
+	 * Redirect to specified URI
+	 *
+	 * @param string $uri
+	 */
+	protected function redirect($uri) {
+		HttpUtility::redirect($uri);
 	}
 }
 
