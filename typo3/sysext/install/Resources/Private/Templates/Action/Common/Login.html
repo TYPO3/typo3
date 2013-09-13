@@ -7,46 +7,29 @@
 	if called by the backend, or a the standalone content if not.
 </f:comment>
 
-<f:if condition="{context} == 'backend'">
-	<f:then>
-		<!DOCTYPE html>
-		<html>
-		<head>
-			<title>Install tool login</title>
-			<f:render partial="Action/Common/Headers" arguments="{_all}" />
-			<link rel="stylesheet" type="text/css" href="../Resources/Public/Stylesheets/Action/Common/Login.css?{time}" />
-			<link rel="stylesheet" type="text/css" href="../../../sysext/t3skin/Resources/Public/Css/visual/element_docheader.css?{time}" />
-			<link rel="stylesheet" type="text/css" href="../../../sysext/t3skin/Resources/Public/Css/structure/element_docheader.css?{time}" />
-			<link rel="stylesheet" type="text/css" href="../../../sysext/t3skin/Resources/Public/Css/structure/main_body.css?{time}" />
-		</head>
-		<body>
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Install tool login</title>
+	<f:render partial="Action/Common/Headers" arguments="{_all}" />
+	<link rel="stylesheet" type="text/css" href="../Resources/Public/Stylesheets/Action/Common/Login.css?{time}" />
+	<f:if condition="{contextService.backendContext}">
+		<link rel="stylesheet" type="text/css" href="../../../sysext/t3skin/Resources/Public/Css/visual/element_docheader.css?{time}" />
+		<link rel="stylesheet" type="text/css" href="../../../sysext/t3skin/Resources/Public/Css/structure/element_docheader.css?{time}" />
+		<link rel="stylesheet" type="text/css" href="../../../sysext/t3skin/Resources/Public/Css/structure/main_body.css?{time}" />
+	</f:if>
+</head>
+<body class="{context}">
+	<f:if condition="{contextService.backendContext}">
 		<div id="typo3-docheader">
 			<div class="typo3-docheader-functions"></div>
 			<div class="typo3-docheader-buttons"></div>
 		</div>
-		<div id="typo3-docbody">
-			<div id="typo3-inner-docbody">
-				<div id="t3-install-outer" class="t3-install-login">
-					<f:render partial="Action/Common/LoginForm.html" arguments="{_all}" />
-				</div>
-			</div>
-		</div>
-		</body>
-		</html>
-	</f:then>
-	<f:else>
-		<!DOCTYPE html>
-		<html>
-		<head>
-			<title>Install tool login</title>
-			<f:render partial="Action/Common/Headers" arguments="{_all}" />
-			<link rel="stylesheet" type="text/css" href="../Resources/Public/Stylesheets/Action/Common/Login.css?{time}" />
-		</head>
-		<body class="standalone">
+	</f:if>
+	<div id="typo3-docbody">
 		<div id="t3-install-outer" class="t3-install-login">
 			<f:render partial="Action/Common/LoginForm.html" arguments="{_all}" />
 		</div>
-		</body>
-		</html>
-	</f:else>
-</f:if>
+	</div>
+</body>
+</html>
