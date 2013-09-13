@@ -139,7 +139,7 @@ class ContentContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractCon
 					}
 					$again = strlen($conf['select.']['pidInList']) ? TRUE : FALSE;
 				}
-			} while ($again && ($slide && !strlen($tmpValue) && $slideCollectFuzzy || $slide && $slideCollect));
+			} while ($again && ($slide && !strlen($theValue) && $slideCollectFuzzy || $slide && $slideCollect));
 		}
 		$wrap = isset($conf['wrap.']) ? $this->cObj->stdWrap($conf['wrap'], $conf['wrap.']) : $conf['wrap'];
 		if ($wrap) {
