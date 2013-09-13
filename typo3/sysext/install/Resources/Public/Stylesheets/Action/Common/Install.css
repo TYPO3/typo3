@@ -258,7 +258,7 @@ button span.t3-install-form-button-icon-negative {
 }
 
 #t3-install-outer {
-	width: 76em;
+	width: 78em;
 	margin: 1em auto;
 }
 
@@ -267,7 +267,7 @@ button span.t3-install-form-button-icon-negative {
 }
 
 #t3-install-logo {
-	width: 19em;
+	width: 21em;
 	float: left;
 	height: 100px;
 }
@@ -287,12 +287,12 @@ button span.t3-install-form-button-icon-negative {
 }
 
 #t3-install-left {
-	width: 19em;
+	width: 21em;
 	position: fixed;
 }
 
 #t3-install-right {
-	padding-left: 19em;
+	padding-left: 21em;
 	margin-bottom: 1em;
 	width: 57em;
 }
@@ -301,7 +301,7 @@ button span.t3-install-form-button-icon-negative {
 	margin: 0;
 	padding: 0;
 	list-style: none;
-	width: 16em;
+	width: 18em;
 	font-size: 110%;
 	line-height: 2em;
 }
@@ -312,7 +312,6 @@ button span.t3-install-form-button-icon-negative {
 
 #t3-install-menu li.act {
 	background-color: #585858;
-	line-height: 1.5em;
 }
 
 #t3-install-menu a {
@@ -376,14 +375,13 @@ button span.t3-install-form-button-icon-negative {
 
 #t3-install-menu .t3-install-menu-errorCount {
 	background-color: #dc4c42;
-	color:#ffffff;
+	color: #ffffff;
 	font-weight: normal;
-	margin: 0 0.2em 0 0;
+	margin: 3px 0.4em 0 0;
 	float: right;
-	padding: 0 0.6em 0 0.6em;
-	-webkit-border-radius: 1em;
-	-moz-border-radius: 1em;
-	border-radius: 1em;
+	padding: 0px 5px;
+	border-radius: 6px;
+	line-height: 1.5em;
 }
 
 #t3-install-links {
@@ -630,7 +628,7 @@ body.standalone h1 {
 	text-indent:-999em;
 	margin: 2.5em 0 3.7em 0;
 	height: 34px;
-	width: 19em;
+	width: 21em;
 	float: left;
 }
 
