@@ -79,6 +79,7 @@ abstract class AbstractAction {
 		$statusObjects = $statusCheck->getStatus();
 		$statusUtility = $this->objectManager->get('TYPO3\\CMS\\Install\\Status\\StatusUtility');
 		$statusObjectsWithErrorStatus = $statusUtility->filterBySeverity($statusObjects, 'error');
+		$contextService = $this->objectManager->get('TYPO3\\CMS\\Install\\Service\\ContextService');
 
 		$viewRootPath = GeneralUtility::getFileAbsFileName('EXT:install/Resources/Private/');
 		$controllerActionDirectoryName = ucfirst($this->controller);
@@ -92,7 +93,8 @@ abstract class AbstractAction {
 			->assign('action', $this->action)
 			->assign('controller', $this->controller)
 			->assign('token', $this->token)
-			->assign('context', $this->getContext())
+			->assign('context', $contextService->getContextString())
+			->assign('contextService', $contextService)
 			->assign('messages', $this->messages)
 			->assign('typo3Version', TYPO3_version)
 			->assign('siteName', $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'])

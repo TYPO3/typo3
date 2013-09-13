@@ -3,7 +3,14 @@
 <f:layout name="ToolAuthenticated" />
 
 <f:section name="Content">
-	<h3>Welcome</h3>
+	<f:if condition="{contextService.standaloneContext}">
+		<f:then>
+			<h3>Welcome</h3>
+		</f:then>
+		<f:else>
+			<h3>TYPO3 CMS {typo3Version} Install tool on site: {siteName}
+		</f:else>
+	</f:if>
 
 	<h4>How to configure TYPO3</h4>
 	<p>
