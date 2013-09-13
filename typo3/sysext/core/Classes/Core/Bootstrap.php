@@ -188,10 +188,8 @@ class Bootstrap {
 			->checkUtf8DatabaseSettingsOrDie()
 			->transferDeprecatedCurlSettings()
 			->setCacheHashOptions()
-			->enforceCorrectProxyAuthScheme()
 			->setDefaultTimezone()
 			->initializeL10nLocales()
-			->configureImageProcessingOptions()
 			->convertPageNotFoundHandlingToBoolean()
 			->registerGlobalDebugFunctions()
 			// SwiftMailerAdapter is
@@ -428,17 +426,6 @@ class Bootstrap {
 	}
 
 	/**
-	 * $GLOBALS['TYPO3_CONF_VARS']['HTTP']['proxy_auth_scheme'] must be either
-	 * 'digest' or 'basic' with fallback to 'basic'
-	 *
-	 * @return \TYPO3\CMS\Core\Core\Bootstrap
-	 */
-	protected function enforceCorrectProxyAuthScheme() {
-		$GLOBALS['TYPO3_CONF_VARS']['HTTP']['proxy_auth_scheme'] === 'digest' ?: ($GLOBALS['TYPO3_CONF_VARS']['HTTP']['proxy_auth_scheme'] = 'basic');
-		return $this;
-	}
-
-	/**
 	 * Set default timezone
 	 *
 	 * @return \TYPO3\CMS\Core\Core\Bootstrap
@@ -466,32 +453,6 @@ class Bootstrap {
 	 */
 	protected function initializeL10nLocales() {
 		\TYPO3\CMS\Core\Localization\Locales::initialize();
-		return $this;
-	}
-
-	/**
-	 * Based on the configuration of the image processing some options are forced
-	 * to simplify configuration settings and combinations
-	 *
-	 * @return \TYPO3\CMS\Core\Core\Bootstrap
-	 */
-	protected function configureImageProcessingOptions() {
-		if (!$GLOBALS['TYPO3_CONF_VARS']['GFX']['image_processing']) {
-			$GLOBALS['TYPO3_CONF_VARS']['GFX']['im'] = 0;
-			$GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib'] = 0;
-		}
-		if (!$GLOBALS['TYPO3_CONF_VARS']['GFX']['im']) {
-			$GLOBALS['TYPO3_CONF_VARS']['GFX']['im_path'] = '';
-			$GLOBALS['TYPO3_CONF_VARS']['GFX']['im_path_lzw'] = '';
-			$GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'] = 'gif,jpg,jpeg,png';
-			$GLOBALS['TYPO3_CONF_VARS']['GFX']['thumbnails'] = 0;
-		}
-		if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_version_5']) {
-			$GLOBALS['TYPO3_CONF_VARS']['GFX']['im_mask_temp_ext_gif'] = 1;
-			if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_version_5'] === 'gm') {
-				$GLOBALS['TYPO3_CONF_VARS']['GFX']['im_v5effects'] = -1;
-			}
-		}
 		return $this;
 	}
 
@@ -1060,8 +1021,5 @@ class Bootstrap {
 		$GLOBALS['TBE_TEMPLATE'] = Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
 		return $this;
 	}
-
 }
-
-
 ?>

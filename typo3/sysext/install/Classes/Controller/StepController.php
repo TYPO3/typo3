@@ -43,63 +43,6 @@ class StepController extends AbstractController {
 	);
 
 	/**
-	 * @var array List of obsolete configuration options in LocalConfiguration to be removed
-	 */
-	protected $obsoleteLocalConfigurationSettings = array(
-		// #34092
-		'BE/forceCharset',
-		// #26519
-		'BE/loginLabels',
-		// #44506
-		'BE/loginNews',
-		// #52013
-		'BE/TSconfigConditions',
-		// #30613
-		'BE/useOnContextMenuHandler',
-		// #48179
-		'EXT/em_mirrorListURL',
-		'EXT/em_wsdlURL',
-		// #43094
-		'EXT/extList',
-		// #35877
-		'EXT/extList_FE',
-		// #41813
-		'EXT/noEdit',
-		// #26090
-		'FE/defaultTypoScript_editorcfg',
-		'FE/defaultTypoScript_editorcfg.',
-		// #25099
-		'FE/simulateStaticDocuments',
-		// #52011
-		'GFX/im_combine_filename',
-		// #52088
-		'GFX/im_imvMaskState',
-		// #22687
-		'GFX/gdlib_2',
-		// #52012
-		'GFX/im_mask_temp_ext_noloss',
-		// #52088
-		'GFX/im_negate_mask',
-		// #52010
-		'GFX/im_no_effects',
-		// #18431
-		'GFX/noIconProc',
-		// #17606
-		'GFX/TTFLocaleConv',
-		// #39164
-		'SYS/additionalAllowedClassPrefixes',
-		// #27689
-		'SYS/caching/cacheBackends',
-		'SYS/caching/cacheFrontends',
-		// #38414
-		'SYS/extCache',
-		// #35923
-		'SYS/multiplyDBfieldSize',
-		// #46993
-		'SYS/T3instID',
-	);
-
-	/**
 	 * Index action acts a a dispatcher to different steps
 	 *
 	 * @throws Exception
@@ -115,10 +58,7 @@ class StepController extends AbstractController {
 		$this->migrateLocalconfToLocalConfigurationIfNeeded();
 		$this->outputInstallToolPasswordNotSetMessageIfNeeded();
 		$this->executeOrOutputFirstInstallStepIfNeeded();
-		$this->removeObsoleteLocalConfigurationSettings();
-		$this->generateEncryptionKeyIfNeeded();
-		$this->configureBackendLoginSecurity();
-		$this->configureSaltedpasswords();
+		$this->executeSilentConfigurationUpgradesIfNeeded();
 		$this->initializeSession();
 		$this->checkSessionToken();
 		$this->checkSessionLifetime();
@@ -318,24 +258,6 @@ class StepController extends AbstractController {
 	}
 
 	/**
-	 * Some settings in LocalConfiguration vanished in DefaultConfiguration
-	 * and have no impact on the core anymore.
-	 * To keep the configuration clean, those old settings are just silently
-	 * removed from LocalConfiguration if set.
-	 *
-	 * @return void
-	 */
-	protected function removeObsoleteLocalConfigurationSettings() {
-		/** @var \TYPO3\CMS\Core\Configuration\ConfigurationManager $configurationManager */
-		$configurationManager = $this->objectManager->get('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager');
-		$removed = $configurationManager->removeLocalConfigurationKeysByPath($this->obsoleteLocalConfigurationSettings);
-		// If something was changed: Trigger a reload to have new values in next request
-		if ($removed) {
-			$this->redirect();
-		}
-	}
-
-	/**
 	 * The first install step has a special standing and needs separate handling:
 	 * At this point no directory exists (no typo3conf, no typo3temp), so we can
 	 * not start the session handling (that stores the install tool session within typo3temp).
@@ -394,74 +316,18 @@ class StepController extends AbstractController {
 	}
 
 	/**
-	 * "Silent" upgrade: The encryption key is crucial for securing form tokens
-	 * and the whole TYPO3 link rendering later on. A random key is set here in
-	 * LocalConfiguration if it does not exist yet. This might possible happen
-	 * during upgrading and will happen during first install.
+	 * Call silent upgrade class, redirect to self if configuration was changed.
 	 *
 	 * @return void
 	 */
-	protected function generateEncryptionKeyIfNeeded() {
-		if (empty($GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'])) {
-			$randomKey = GeneralUtility::getRandomHexString(96);
-			/** @var \TYPO3\CMS\Core\Configuration\ConfigurationManager $configurationManager */
-			$configurationManager = $this->objectManager->get('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager');
-			$configurationManager->setLocalConfigurationValueByPath('SYS/encryptionKey', $randomKey);
-			$this->redirect();
-		}
-	}
-
-	/**
-	 * "Silent" upgrade: Backend login security is set to rsa if rsaauth
-	 * is installed (but not used) otherwise the default value "normal" has to be used.
-	 *
-	 * @return void
-	 */
-	protected function configureBackendLoginSecurity() {
-		if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('rsaauth')
-			&& $GLOBALS['TYPO3_CONF_VARS']['BE']['loginSecurityLevel'] !== 'rsa')
-		{
-			$configurationManager = $this->objectManager->get('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager');
-			$configurationManager->setLocalConfigurationValueByPath('BE/loginSecurityLevel', 'rsa');
-			$this->redirect();
-		} elseif (!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('rsaauth')
-			&& $GLOBALS['TYPO3_CONF_VARS']['BE']['loginSecurityLevel'] !== 'normal'
-		) {
-			$configurationManager = $this->objectManager->get('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager');
-			$configurationManager->setLocalConfigurationValueByPath('BE/loginSecurityLevel', 'normal');
-			$this->redirect();
-		}
-	}
-
-	/**
-	 * "Silent" upgrade: Check the settings for saltedpasswords extension to
-	 * load it as a required extension.
-	 *
-	 * @return void
-	 */
-	protected function configureSaltedpasswords() {
-		$configurationManager = $this->objectManager->get('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager');
-		$defaultConfiguration = $configurationManager->getDefaultConfiguration();
-		$defaultExtensionConfiguration = unserialize($defaultConfiguration['EXT']['extConf']['saltedpasswords']);
-		$extensionConfiguration = @unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['saltedpasswords']);
-		if (is_array($extensionConfiguration) && !empty($extensionConfiguration)) {
-			if (isset($extensionConfiguration['BE.']['enabled'])) {
-				if ($extensionConfiguration['BE.']['enabled']) {
-					unset($extensionConfiguration['BE.']['enabled']);
-				} else {
-					$extensionConfiguration['BE.'] = $defaultExtensionConfiguration['BE.'];
-				}
-				$configurationManager->setLocalConfigurationValueByPath(
-					'EXT/extConf/saltedpasswords',
-					serialize($extensionConfiguration)
-				);
-				$this->redirect();
-			}
-		} else {
-			$configurationManager->setLocalConfigurationValueByPath(
-				'EXT/extConf/saltedpasswords',
-				serialize($defaultExtensionConfiguration)
-			);
+	protected function executeSilentConfigurationUpgradesIfNeeded() {
+		/** @var \TYPO3\CMS\Install\Service\SilentConfigurationUpgradeService $upgradeService */
+		$upgradeService = $this->objectManager->get(
+			'TYPO3\\CMS\\Install\\Service\\SilentConfigurationUpgradeService'
+		);
+		try {
+			$upgradeService->execute();
+		} catch (Exception\RedirectException $e) {
 			$this->redirect();
 		}
 	}
