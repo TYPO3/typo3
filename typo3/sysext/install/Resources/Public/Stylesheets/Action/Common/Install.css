@@ -256,10 +256,33 @@ button span.t3-install-form-button-icon-negative {
 	margin: 1em auto;
 }
 
-#t3-install-left {
-	float: left;
+#t3-install-head {
+	position: fixed;
+}
+
+#t3-install-logo {
 	width: 19em;
+	float: left;
+	height: 100px;
+}
+
+#t3-install-headline {
+	width: 57em;
+	float: left;
+}
+
+#t3-install-center {
+	position: absolute;
 	clear: both;
+}
+
+.standalone #t3-install-center {
+	top: 100px;
+}
+
+#t3-install-left {
+	width: 19em;
+	position: fixed;
 }
 
 #t3-install-right {
@@ -480,7 +503,7 @@ body {
 	background-color: #f2f2f2;
 }
 
-h1,
+#t3-install-head,
 #t3-install-menu-border-top,
 #t3-install-menu-bottom,
 #t3-install-links,
@@ -575,7 +598,7 @@ body.standalone #t3-install-outer {
 	margin: 0 auto;
 }
 
-body.standalone h1,
+body.standalone #t3-install-head,
 body.standalone #t3-install-menu-border-top,
 body.standalone #t3-install-menu-bottom,
 body.standalone #t3-install-links,
@@ -598,15 +621,15 @@ body.standalone #t3-install-form-login .t3-install-form-submit {
 body.standalone h1 {
 	background: url('../../../Images/Background/Logo.gif') no-repeat scroll 0 0 transparent;
 	text-indent:-999em;
-	margin: 2em 0 3.7em 0;
+	margin: 2.5em 0 3.7em 0;
 	height: 34px;
 	width: 19em;
 	float: left;
 }
 
 body.standalone h2 {
-	padding: 3.3em 0 3.7em 17.5em;
-	margin: 0;
+	margin: 3.3em 0 0 1.8em;
+	padding: 0;
 	height: auto;
 	color: #ffffff;
 }
