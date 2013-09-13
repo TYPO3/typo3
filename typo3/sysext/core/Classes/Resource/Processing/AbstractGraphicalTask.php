@@ -100,7 +100,7 @@ abstract class AbstractGraphicalTask extends AbstractTask {
 			// Bit1: Even JPG's will be converted to png or gif (2=gif/3=png)
 
 			$targetFileExtensionConfiguration = $GLOBALS['TYPO3_CONF_VARS']['GFX']['thumbnails_png'];
-			if ($this->getSourceFile()->getExtension() === 'jpg') {
+			if ($this->getSourceFile()->getExtension() === 'jpg' || $this->getSourceFile()->getExtension() === 'jpeg') {
 				if ($targetFileExtensionConfiguration == 2) {
 					$targetFileExtension = 'gif';
 				} elseif ($targetFileExtensionConfiguration == 3) {
