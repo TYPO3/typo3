@@ -137,7 +137,7 @@ class InstallSysExtsUpdate extends AbstractUpdate {
 			</fieldset>';
 		$item = '
 			<li class="labelAfter">
-				<input type="checkbox" id="%1$s" name="%2$s[sysext][%1$s]" value="1" checked="checked" />
+				<input type="checkbox" id="%1$s" name="%2$s[sysext][%1$s]" value="1" />
 				<label for="%1$s"><strong>%3$s [%1$s]</strong><br />%4$s</label>
 			</li>';
 		$items = array();
