@@ -56,7 +56,6 @@ class ImageMagick6Preset extends AbstractImagePreset implements Configuration\Pr
 		'GFX/im_no_effects' => 1,
 		'GFX/im_v5effects' => 1,
 		'GFX/im_mask_temp_ext_gif' => 1,
-		'GFX/im_combine_filename' => 'composite',
 		'GFX/colorspace' => 'RGB',
 	);
 

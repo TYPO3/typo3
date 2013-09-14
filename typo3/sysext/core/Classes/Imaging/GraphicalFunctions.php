@@ -41,11 +41,6 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 class GraphicalFunctions {
 
 	// Internal configuration, set in init()
-	// The ImageMagick filename used for combining two images. This name changed during the versions.
-	/**
-	 * @todo Define visibility
-	 */
-	public $combineScript = 'combine';
 
 	// If set, there is no frame pointer prepended to the filenames.
 	/**
@@ -342,9 +337,6 @@ class GraphicalFunctions {
 		// Setting default JPG parameters:
 		$this->jpegQuality = MathUtility::forceIntegerInRange($gfxConf['jpg_quality'], 10, 100, 75);
 		$this->cmds['jpg'] = ($this->cmds['jpeg'] = '-colorspace ' . $this->colorspace . ' -sharpen 50 -quality ' . $this->jpegQuality);
-		if ($gfxConf['im_combine_filename']) {
-			$this->combineScript = $gfxConf['im_combine_filename'];
-		}
 		if ($gfxConf['im_noFramePrepended']) {
 			$this->noFramePrepended = 1;
 		}
