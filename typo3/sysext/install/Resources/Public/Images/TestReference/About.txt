@@ -13,7 +13,6 @@ $TYPO3_CONF_VARS['GFX']['im_version_5'] = 'im5';
 $TYPO3_CONF_VARS['GFX']['im_imvMaskState'] = '0';
 $TYPO3_CONF_VARS['GFX']['im_v5effects'] = '1';
 $TYPO3_CONF_VARS['GFX']['gdlib_2'] = 1;
-$TYPO3_CONF_VARS['GFX']['im_mask_temp_ext_noloss'] = 'png';
 
 - PHP / GD configuration:
 GD Support		enabled
