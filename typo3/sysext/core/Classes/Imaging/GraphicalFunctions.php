@@ -363,14 +363,14 @@ class GraphicalFunctions {
 			// Just set the flag if the masks works opposite the intension!
 			$this->maskNegate = ' -negate';
 		}
-		if ($gfxConf['im_no_effects']) {
-			// Boolean. This is necessary if using ImageMagick 5+.
-			// Effects in Imagemagick 5+ tends to render very slowly!!
-			// - therefore must be disabled in order not to perform sharpen, blurring and such.
-			$this->NO_IM_EFFECTS = 1;
-			$this->cmds['jpg'] = ($this->cmds['jpeg'] = '-colorspace ' . $this->colorspace . ' -quality ' . $this->jpegQuality);
-		}
-		// ... but if 'im_v5effects' is set, don't care about 'im_no_effects'
+
+		// Boolean. This is necessary if using ImageMagick 5+.
+		// Effects in Imagemagick 5+ tends to render very slowly!!
+		// - therefore must be disabled in order not to perform sharpen, blurring and such.
+		$this->NO_IM_EFFECTS = 1;
+		$this->cmds['jpg'] = ($this->cmds['jpeg'] = '-colorspace ' . $this->colorspace . ' -quality ' . $this->jpegQuality);
+
+		// ... but if 'im_v5effects' is set, enable effects
 		if ($gfxConf['im_v5effects']) {
 			$this->NO_IM_EFFECTS = 0;
 			$this->V5_EFFECTS = 1;

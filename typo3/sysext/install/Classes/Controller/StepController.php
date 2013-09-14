@@ -70,6 +70,8 @@ class StepController extends AbstractController {
 		'FE/simulateStaticDocuments',
 		// #22687
 		'GFX/gdlib_2',
+		// #52010
+		'GFX/im_no_effects',
 		// #18431
 		'GFX/noIconProc',
 		// #17606
