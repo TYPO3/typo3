@@ -1272,7 +1272,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 			$this->TSdataArray = \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser::checkIncludeLines_array($this->TSdataArray);
 			// Imploding with "[global]" will make sure that non-ended confinements with braces are ignored.
 			$this->userTS_text = implode(LF . '[GLOBAL]' . LF, $this->TSdataArray);
-			if ($GLOBALS['TYPO3_CONF_VARS']['BE']['TSconfigConditions'] && !$this->userTS_dontGetCached) {
+			if (!$this->userTS_dontGetCached) {
 				// Perform TS-Config parsing with condition matching
 				$parseObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Configuration\\TsConfigParser');
 				$res = $parseObj->parseTSconfig($this->userTS_text, 'userTS');

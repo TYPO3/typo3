@@ -52,6 +52,8 @@ class StepController extends AbstractController {
 		'BE/loginLabels',
 		// #44506
 		'BE/loginNews',
+		// #52013
+		'BE/TSconfigConditions',
 		// #30613
 		'BE/useOnContextMenuHandler',
 		// #48179
