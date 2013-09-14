@@ -126,7 +126,7 @@ class LocalCropScaleMaskHelper {
 					$tempScale['m_mask'] = $tmpStr . '_mask.' . $temporaryExtension;
 					$gifBuilder->imageMagickExec($maskImage->getForLocalProcessing(TRUE), $tempScale['m_mask'], $command . $negate);
 					//	m_bgImg
-					$tempScale['m_bgImg'] = $tmpStr . '_bgImg.' . trim($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_mask_temp_ext_noloss']);
+					$tempScale['m_bgImg'] = $tmpStr . '_bgImg.miff';
 					$gifBuilder->imageMagickExec($maskBackgroundImage->getForLocalProcessing(), $tempScale['m_bgImg'], $command);
 					//	m_bottomImg / m_bottomImg_mask
 					if ($maskBottomImage instanceof Resource\FileInterface && $maskBottomImageMask instanceof Resource\FileInterface) {

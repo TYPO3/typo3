@@ -74,6 +74,8 @@ class StepController extends AbstractController {
 		'GFX/im_combine_filename',
 		// #22687
 		'GFX/gdlib_2',
+		// #52012
+		'GFX/im_mask_temp_ext_noloss',
 		// #52010
 		'GFX/im_no_effects',
 		// #18431
