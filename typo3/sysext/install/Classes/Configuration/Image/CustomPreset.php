@@ -44,7 +44,6 @@ class CustomPreset extends Configuration\AbstractCustomPreset implements Configu
 		'GFX/im_imvMaskState' => 0,
 		'GFX/im_v5effects' => 0,
 		'GFX/im_mask_temp_ext_gif' => 0,
-		'GFX/im_combine_filename' => 'combine',
 		'GFX/colorspace' => '',
 	);
 }
