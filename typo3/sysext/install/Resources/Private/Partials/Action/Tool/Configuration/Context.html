@@ -5,16 +5,20 @@
 
 	<div class="toggleData" style="display:none">
 		<p>
-			A set of configuration options should be different if the current
-			environment is a development or a production system. The goal is
-			to configure a production instance with maximum performance and no
-			debug output that is possibly shown to users, while development
-			instances should enable error output.
+			TYPO3 can be run in a specific application context by using one of the
+			built-in contexts "Production" (default), "Development" or "Testing".
+			This can be used to provide specific configuration sets for each context.
+			The context can be defined with the environment variable "TYPO3_CONTEXT"
+			which is usually set through your webserver configuration (e.g. in htaccess).
 		</p>
 		<p>
-			The environment can be defined with the environment variable
-			"TYPO3_CONTEXT" set to "Production" or "Development". If no context
-			environment variable is set, "Production" is assumed.
+			However, if you don't set a context environment variable, you can still
+			use	the install tool to select a configuration preset for "Production"
+			or "Development" context. The goal is to configure a production instance
+			with maximum performance and no	debug output that is possibly shown to users,
+			while development instances should enable error output. The configuration
+			preset for "Production" is set by default.
+			As a third alternative, you can enter a custom configuration.
 		</p>
 
 		<f:for each="{feature.presetsOrderedByPriority}" as="preset">
