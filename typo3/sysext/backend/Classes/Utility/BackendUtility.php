@@ -1143,27 +1143,13 @@ class BackendUtility {
 		if ($returnPartArray) {
 			return $TSdataArray;
 		}
-		// Parsing the page TS-Config (or getting from cache)
+		// Parsing the page TS-Config
 		$pageTS = implode(LF . '[GLOBAL]' . LF, $TSdataArray);
-		if ($GLOBALS['TYPO3_CONF_VARS']['BE']['TSconfigConditions']) {
-			/* @var $parseObj \TYPO3\CMS\Backend\Configuration\TsConfigParser */
-			$parseObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Configuration\\TsConfigParser');
-			$res = $parseObj->parseTSconfig($pageTS, 'PAGES', $id, $rootLine);
-			if ($res) {
-				$TSconfig = $res['TSconfig'];
-			}
-		} else {
-			$hash = md5('pageTS:' . $pageTS);
-			$cachedContent = self::getHash($hash);
-			$TSconfig = array();
-			if (isset($cachedContent)) {
-				$TSconfig = unserialize($cachedContent);
-			} else {
-				$parseObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\Parser\\TypoScriptParser');
-				$parseObj->parse($pageTS);
-				$TSconfig = $parseObj->setup;
-				self::storeHash($hash, serialize($TSconfig), 'PAGES_TSconfig');
-			}
+		/* @var $parseObj \TYPO3\CMS\Backend\Configuration\TsConfigParser */
+		$parseObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Configuration\\TsConfigParser');
+		$res = $parseObj->parseTSconfig($pageTS, 'PAGES', $id, $rootLine);
+		if ($res) {
+			$TSconfig = $res['TSconfig'];
 		}
 		// Get User TSconfig overlay
 		$userTSconfig = $GLOBALS['BE_USER']->userTS['page.'];
