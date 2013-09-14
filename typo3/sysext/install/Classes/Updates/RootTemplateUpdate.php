@@ -125,7 +125,7 @@ class RootTemplateUpdate extends AbstractUpdate implements InstallerProcessInter
 			'uid'
 		);
 
-		if (is_array($rows)) {
+		if (is_array($rows) && !empty($rows)) {
 			$pages = $rows;
 		}
 
