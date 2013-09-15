@@ -26,6 +26,8 @@ namespace TYPO3\CMS\Core\Resource\Service;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Core\Resource\Index\FileIndexRepository;
+
 /**
  * Indexer for the virtual file system
  * should only be accessed through the FileRepository for now
@@ -63,6 +65,14 @@ class IndexerService implements \TYPO3\CMS\Core\SingletonInterface {
 		}
 		return $this->repository;
 	}
+
+	/**
+	 * @return \TYPO3\CMS\Core\Resource\Index\FileIndexRepository
+	 */
+	protected function getFileIndexRepository() {
+		return FileIndexRepository::getInstance();
+	}
+
 
 	/**
 	 * Setter function for the fileFactory
@@ -111,7 +121,7 @@ class IndexerService implements \TYPO3\CMS\Core\SingletonInterface {
 					$movedFile = TRUE;
 					$fileInfo['missing'] = 0;
 					$otherFile->updateProperties($fileInfo);
-					$this->getRepository()->update($otherFile);
+					$this->getFileIndexRepository()->update($otherFile);
 					$fileInfo['uid'] = $otherFile->getUid();
 					$fileObject = $otherFile;
 					// Skip the rest of the files here as we might have more files that are missing, but we can only
@@ -197,7 +207,7 @@ class IndexerService implements \TYPO3\CMS\Core\SingletonInterface {
 				/** @var $fileObject \TYPO3\CMS\Core\Resource\File */
 				$fileObject = $this->getRepository()->findByIdentifier($file['uid']);
 				$fileObject->setMissing(TRUE);
-				$this->getRepository()->update($fileObject);
+				$this->getFileIndexRepository()->update($fileObject);
 			}
 		}
 
