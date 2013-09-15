@@ -75,6 +75,11 @@ class ExtendedFileUtility extends \TYPO3\CMS\Core\Utility\File\BasicFileUtility 
 	 */
 	public $dontCheckForUnique = 0;
 
+	/**
+	 * @var \TYPO3\CMS\Core\Resource\Service\IndexerService
+	 */
+	protected $indexerService = NULL;
+
 	// This array is self-explaining (look in the class below).
 	// It grants access to the functions. This could be set from outside in order to enabled functions to users.
 	// See also the function init_actionPerms() which takes input directly from the user-record
@@ -934,7 +939,7 @@ class ExtendedFileUtility extends \TYPO3\CMS\Core\Utility\File\BasicFileUtility 
 				}
 				/** @var $fileObject File */
 				$fileObject = $targetFolderObject->addUploadedFile($fileInfo, $conflictMode);
-				$this->fileRepository->addToIndex($fileObject);
+				$this->getIndexerService()->indexFile($fileObject, FALSE);
 				$resultObjects[] = $fileObject;
 				$this->writelog(1, 0, 1, 'Uploading file "%s" to "%s"', array($fileInfo['name'], $targetFolderObject->getIdentifier()));
 			} catch (\TYPO3\CMS\Core\Resource\Exception\UploadException $e) {
@@ -1041,5 +1046,18 @@ class ExtendedFileUtility extends \TYPO3\CMS\Core\Utility\File\BasicFileUtility 
 	 */
 	protected function getBackendUser() {
 		return $GLOBALS['BE_USER'];
+	}
+
+	/**
+	 * Internal function to retrieve the indexer service,
+	 * if it does not exist, an instance will be created
+	 *
+	 * @return \TYPO3\CMS\Core\Resource\Service\IndexerService
+	 */
+	protected function getIndexerService() {
+		if ($this->indexerService === NULL) {
+			$this->indexerService = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\Service\\IndexerService');
+		}
+		return $this->indexerService;
 	}
 }

@@ -126,10 +126,11 @@ class FactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function retrieveFileOrFolderObjectReturnsFileIfPathIsGiven() {
 		$filename = 'typo3temp/4711.txt';
-		$storage = $this->getMock('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', array('getFile', 'getFolder'), array(), '', FALSE);
+		$storage = $this->getMock('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', array('getFileInfoByIdentifier', 'getFolder'), array(), '', FALSE);
 		$storage->expects($this->once())
-			->method('getFile')
-			->with($filename);
+			->method('getFileInfoByIdentifier')
+			->with($filename)
+			->will($this->returnValue(array('uid' => 4811)));
 		$this->fixture->_set('storageInstances', array(0 => $storage));
 		// Create and prepare test file
 		\TYPO3\CMS\Core\Utility\GeneralUtility::writeFileToTypo3tempDir(PATH_site . $filename, '42');

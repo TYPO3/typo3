@@ -26,6 +26,9 @@ namespace TYPO3\CMS\Core\Resource\Service;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Core\Resource\File;
+use TYPO3\CMS\Core\Resource\Index\FileIndexRepository;
+
 /**
  * Indexer for the virtual file system
  * should only be accessed through the FileRepository for now
@@ -65,6 +68,14 @@ class IndexerService implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 	/**
+	 * @return \TYPO3\CMS\Core\Resource\Index\FileIndexRepository
+	 */
+	protected function getFileIndexRepository() {
+		return FileIndexRepository::getInstance();
+	}
+
+
+	/**
 	 * Setter function for the fileFactory
 	 * returns the object itself for chaining purposes
 	 *
@@ -79,11 +90,12 @@ class IndexerService implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Creates or updates a file index entry from a file object.
 	 *
-	 * @param \TYPO3\CMS\Core\Resource\File $fileObject
+	 * @param File $fileObject
 	 * @param bool $updateObject Set this to FALSE to get the indexed values. You have to take care of updating the object yourself then!
-	 * @return \TYPO3\CMS\Core\Resource\File|array the indexed $fileObject or an array of indexed properties.
+	 * @return File|array the indexed $fileObject or an array of indexed properties.
+	 * @throws \RuntimeException
 	 */
-	public function indexFile(\TYPO3\CMS\Core\Resource\File $fileObject, $updateObject = TRUE) {
+	public function indexFile(File $fileObject, $updateObject = TRUE) {
 		// Get the file information of this object
 		$fileInfo = $this->gatherFileInformation($fileObject);
 		// Signal slot BEFORE the file was indexed
@@ -102,16 +114,21 @@ class IndexerService implements \TYPO3\CMS\Core\SingletonInterface {
 		} else {
 			// Check if a file has been moved outside of FAL -- we have some
 			// orphaned index record in this case we could update
-			$otherFiles = $this->getRepository()->findBySha1Hash($fileInfo['sha1']);
+			$resultRows = $this->getFileIndexRepository()->findByContentHash($fileInfo['sha1']);
+			$otherFiles = array();
+			foreach ($resultRows as $row) {
+				$otherFiles[] = $this->factory->getFileObject($row['uid'], $row);
+			}
+
 			$movedFile = FALSE;
-			/** @var $otherFile \TYPO3\CMS\Core\Resource\File */
+			/** @var $otherFile File */
 			foreach ($otherFiles as $otherFile) {
 				if (!$otherFile->exists()) {
 					// @todo: create a log entry
 					$movedFile = TRUE;
 					$fileInfo['missing'] = 0;
 					$otherFile->updateProperties($fileInfo);
-					$this->getRepository()->update($otherFile);
+					$this->getFileIndexRepository()->update($otherFile);
 					$fileInfo['uid'] = $otherFile->getUid();
 					$fileObject = $otherFile;
 					// Skip the rest of the files here as we might have more files that are missing, but we can only
@@ -156,7 +173,7 @@ class IndexerService implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Indexes an array of file objects
 	 * currently this is done in a simple way, however could be changed to be more performant
 	 *
-	 * @param \TYPO3\CMS\Core\Resource\File[] $fileObjects
+	 * @param File[] $fileObjects
 	 * @return void
 	 */
 	public function indexFiles(array $fileObjects) {
@@ -194,10 +211,10 @@ class IndexerService implements \TYPO3\CMS\Core\SingletonInterface {
 		// check for deleted files (file not found during indexing are marked as missing)
 		foreach ($this->getRepository()->getFileIndexRecordsForFolder($folder) as $file) {
 			if (!in_array($file['identifier'], $fileIdentifiers)) {
-				/** @var $fileObject \TYPO3\CMS\Core\Resource\File */
+				/** @var $fileObject File */
 				$fileObject = $this->getRepository()->findByIdentifier($file['uid']);
 				$fileObject->setMissing(TRUE);
-				$this->getRepository()->update($fileObject);
+				$this->getFileIndexRepository()->update($fileObject);
 			}
 		}
 
@@ -222,10 +239,10 @@ class IndexerService implements \TYPO3\CMS\Core\SingletonInterface {
 	 * this function shouldn't be used, if someone needs to fetch the file information
 	 * from a file object, should be done by getProperties etc
 	 *
-	 * @param \TYPO3\CMS\Core\Resource\File $file the file to fetch the information from
+	 * @param File $file the file to fetch the information from
 	 * @return array the file information as an array
 	 */
-	protected function gatherFileInformation(\TYPO3\CMS\Core\Resource\File $file) {
+	protected function gatherFileInformation(File $file) {
 		$fileInfo = new \ArrayObject(array());
 		$gatherDefaultInformation = new \stdClass();
 		$gatherDefaultInformation->getDefaultFileInfo = 1;
@@ -262,24 +279,24 @@ class IndexerService implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Signal that is called before the file information is fetched
 	 * helpful if somebody wants to preprocess the record information
 	 *
-	 * @param \TYPO3\CMS\Core\Resource\File $fileObject
+	 * @param File $fileObject
 	 * @param array $fileInfo
 	 * @param boolean $gatherDefaultInformation
 	 * @signal
 	 */
-	protected function emitPreGatherFileInformationSignal(\TYPO3\CMS\Core\Resource\File $fileObject, $fileInfo, $gatherDefaultInformation) {
+	protected function emitPreGatherFileInformationSignal(File $fileObject, $fileInfo, $gatherDefaultInformation) {
 		$this->getSignalSlotDispatcher()->dispatch('TYPO3\\CMS\\Core\\Resource\\Service\\IndexerService', 'preGatherFileInformation', array($fileObject, $fileInfo, $gatherDefaultInformation));
 	}
 
 	/**
 	 * Signal that is called after a file object was indexed
 	 *
-	 * @param \TYPO3\CMS\Core\Resource\File $fileObject
+	 * @param File $fileObject
 	 * @param array $fileInfo
 	 * @param boolean $hasGatheredDefaultInformation
 	 * @signal
 	 */
-	protected function emitPostGatherFileInformationSignal(\TYPO3\CMS\Core\Resource\File $fileObject, $fileInfo, $hasGatheredDefaultInformation) {
+	protected function emitPostGatherFileInformationSignal(File $fileObject, $fileInfo, $hasGatheredDefaultInformation) {
 		$this->getSignalSlotDispatcher()->dispatch('TYPO3\\CMS\\Core\\Resource\\Service\\IndexerService', 'postGatherFileInformation', array($fileObject, $fileInfo, $hasGatheredDefaultInformation));
 	}
 
@@ -306,22 +323,22 @@ class IndexerService implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Signal that is called before a file object was indexed
 	 *
-	 * @param \TYPO3\CMS\Core\Resource\File $fileObject
+	 * @param File $fileObject
 	 * @param array $fileInfo
 	 * @signal
 	 */
-	protected function emitPreFileIndexSignal(\TYPO3\CMS\Core\Resource\File $fileObject, $fileInfo) {
+	protected function emitPreFileIndexSignal(File $fileObject, $fileInfo) {
 		$this->getSignalSlotDispatcher()->dispatch('TYPO3\\CMS\\Core\\Resource\\Service\\IndexerService', 'preFileIndex', array($fileObject, $fileInfo));
 	}
 
 	/**
 	 * Signal that is called after a file object was indexed
 	 *
-	 * @param \TYPO3\CMS\Core\Resource\File $fileObject
+	 * @param File $fileObject
 	 * @param array $fileInfo
 	 * @signal
 	 */
-	protected function emitPostFileIndexSignal(\TYPO3\CMS\Core\Resource\File $fileObject, $fileInfo) {
+	protected function emitPostFileIndexSignal(File $fileObject, $fileInfo) {
 		$this->getSignalSlotDispatcher()->dispatch('TYPO3\\CMS\\Core\\Resource\\Service\\IndexerService', 'postFileIndex', array($fileObject, $fileInfo));
 	}
 

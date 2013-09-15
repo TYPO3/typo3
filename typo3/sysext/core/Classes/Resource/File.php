@@ -64,6 +64,11 @@ class File extends AbstractFile {
 	 */
 	protected $updatedProperties = array();
 
+	/**
+	 * @var Service\IndexerService
+	 */
+	protected $indexerService = NULL;
+
 	/*********************************************
 	 * GENERIC FILE TYPES
 	 * these are generic filetypes or -groups,
@@ -168,10 +173,11 @@ class File extends AbstractFile {
 		}
 		/** @var $repo FileRepository */
 		$repo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\FileRepository');
-		$indexRecord = $repo->getFileIndexRecord($this);
+
+		$indexRecord = Index\FileIndexRepository::getInstance()->findOneByFileObject($this);
 		if ($indexRecord === FALSE && $indexIfNotIndexed) {
 			$this->indexingInProgress = TRUE;
-			$indexRecord = $repo->addToIndex($this);
+			$indexRecord = $this->getIndexerService()->indexFile($this, FALSE);
 			$this->mergeIndexRecord($indexRecord);
 			$this->indexed = TRUE;
 			$this->indexingInProgress = FALSE;
@@ -374,4 +380,16 @@ class File extends AbstractFile {
 		}
 	}
 
+	/**
+	 * Internal function to retrieve the indexer service,
+	 * if it does not exist, an instance will be created
+	 *
+	 * @return Service\IndexerService
+	 */
+	protected function getIndexerService() {
+		if ($this->indexerService === NULL) {
+			$this->indexerService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\Service\\IndexerService');
+		}
+		return $this->indexerService;
+	}
 }
