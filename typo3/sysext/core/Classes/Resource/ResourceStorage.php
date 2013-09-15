@@ -27,6 +27,7 @@ namespace TYPO3\CMS\Core\Resource;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Resource\Index\FileIndexRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
@@ -1182,7 +1183,11 @@ class ResourceStorage {
 	 * @return FileInterface
 	 */
 	public function getFile($identifier) {
-		return $this->driver->getFile($identifier);
+		$file =  $this->getFileFactory()->getFileObjectByStorageAndIdentifier($this->getUid(), $identifier);
+		if (!$this->driver->fileExists($identifier)) {
+			$file->setMissing(TRUE);
+		}
+		return $file;
 	}
 
 	/**
@@ -1200,11 +1205,11 @@ class ResourceStorage {
 	 *
 	 * @param string $identifier
 	 *
-	 * @throws \BadMethodCallException
 	 * @return array
+	 * @internal
 	 */
 	public function getFileInfoByIdentifier($identifier) {
-		throw new \BadMethodCallException('The method ResourceStorage::getFileInfoByIdentifier() has been deprecated. Please fix your method call and use getFileInfo with the file object instead.', 1346577887);
+		return $this->driver->getFileInfoByIdentifier($identifier);
 	}
 
 	/**
@@ -1494,7 +1499,7 @@ class ResourceStorage {
 			$newProperties['storage'] = $storage->getUid();
 		}
 		$file->updateProperties($newProperties);
-		$this->getFileRepository()->update($file);
+		$this->getFileIndexRepository()->update($file);
 	}
 
 	/**
@@ -1522,7 +1527,7 @@ class ResourceStorage {
 		try {
 			$newIdentifier = $this->driver->renameFile($file, $targetFileName);
 			$this->updateFile($file, $newIdentifier);
-			$this->getFileRepository()->update($file);
+			$this->getFileIndexRepository()->update($file);
 		} catch (\RuntimeException $e) {
 
 		}
@@ -1635,7 +1640,7 @@ class ResourceStorage {
 		foreach ($fileObjects as $oldIdentifier => $fileObject) {
 			$newIdentifier = $fileMappings[$oldIdentifier];
 			$fileObject->updateProperties(array('storage' => $this, 'identifier' => $newIdentifier));
-			$this->getFileRepository()->update($fileObject);
+			$this->getFileIndexRepository()->update($fileObject);
 		}
 		$returnObject = $this->getFolder($fileMappings[$folderToMove->getIdentifier()]);
 		$this->emitPostFolderMoveSignal($folderToMove, $targetParentFolder, $newFolderName);
@@ -1731,7 +1736,7 @@ class ResourceStorage {
 		foreach ($fileObjects as $oldIdentifier => $fileObject) {
 			$newIdentifier = $fileMappings[$oldIdentifier];
 			$fileObject->updateProperties(array('identifier' => $newIdentifier));
-			$this->getFileRepository()->update($fileObject);
+			$this->getFileIndexRepository()->update($fileObject);
 		}
 		$returnObject = $this->getFolder($fileMappings[$folderObject->getIdentifier()]);
 
@@ -2248,6 +2253,13 @@ class ResourceStorage {
 	 */
 	protected function getFileRepository() {
 		return GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\FileRepository');
+	}
+
+	/**
+	 * @return \TYPO3\CMS\Core\Resource\Index\FileIndexRepository
+	 */
+	protected function getFileIndexRepository() {
+		return FileIndexRepository::getInstance();
 	}
 
 	/**

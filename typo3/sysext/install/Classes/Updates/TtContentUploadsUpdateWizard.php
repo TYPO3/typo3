@@ -50,9 +50,9 @@ class TtContentUploadsUpdateWizard extends AbstractUpdate {
 	protected $fileFactory;
 
 	/**
-	 * @var \TYPO3\CMS\Core\Resource\FileRepository
+	 * @var \TYPO3\CMS\Core\Resource\Index\FileIndexRepository
 	 */
-	protected $fileRepository;
+	protected $fileIndexRepository;
 
 	/**
 	 * @var \TYPO3\CMS\Core\Resource\ResourceStorage
@@ -83,7 +83,7 @@ class TtContentUploadsUpdateWizard extends AbstractUpdate {
 			throw new \RuntimeException('Local default storage could not be initialized - might be due to missing sys_file* tables.');
 		}
 		$this->fileFactory = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\ResourceFactory');
-		$this->fileRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\FileRepository');
+		$this->fileIndexRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\Index\\FileIndexRepository');
 		$this->targetDirectory = PATH_site . $fileadminDirectory . self::FOLDER_ContentUploads . '/';
 	}
 
@@ -165,7 +165,7 @@ class TtContentUploadsUpdateWizard extends AbstractUpdate {
 			if (file_exists(PATH_site . 'uploads/media/' . $file)) {
 				\TYPO3\CMS\Core\Utility\GeneralUtility::upload_copy_move(PATH_site . 'uploads/media/' . $file, $this->targetDirectory . $file);
 				$fileObject = $this->storage->getFile(self::FOLDER_ContentUploads . '/' . $file);
-				$this->fileRepository->addToIndex($fileObject);
+				$this->fileIndexRepository->add($fileObject);
 				$dataArray = array(
 					'uid_local' => $fileObject->getUid(),
 					'tablenames' => 'tt_content',
