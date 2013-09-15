@@ -26,6 +26,10 @@ namespace TYPO3\CMS\Core\Resource;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use TYPO3\CMS\Core\Resource\Index\FileIndexRepository;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Repository for accessing files
  * it also serves as the public API for the indexing part of files in general
@@ -83,12 +87,12 @@ class FileRepository extends AbstractRepository {
 	/**
 	 * Index a file object given as parameter
 	 *
-	 * @TODO : Check if the indexing functions really belong into the repository and shouldn't be part of an
-	 * @TODO : indexing service, right now it's fine that way as this function will serve as the public API
 	 * @param File $fileObject
 	 * @return array The indexed file data
+	 * @deprecated since TYPO3 6.2 - indexing should be handled transparently, not only upon request
 	 */
 	public function addToIndex(File $fileObject) {
+		GeneralUtility::logDeprecatedFunction();
 		return $this->getIndexerService()->indexFile($fileObject, FALSE);
 	}
 
@@ -96,20 +100,15 @@ class FileRepository extends AbstractRepository {
 	 * Checks the index status of a file and returns FALSE if the file is not
 	 * indexed, the uid otherwise.
 	 *
-	 * @TODO : Check if the indexing functions really belong into the repository and shouldn't be part of an
-	 * @TODO : indexing service, right now it's fine that way as this function will serve as the public API
-	 * @TODO : throw an exception if nothing found, for consistent handling as in AbstractRepository?
 	 * @param File $fileObject
 	 * @return boolean|integer
+	 * @deprecated since TYPO3 6.2; - use FileIndexRepository::isIndexed
 	 */
 	public function getFileIndexStatus(File $fileObject) {
+		GeneralUtility::logDeprecatedFunction();
 		$storageUid = $fileObject->getStorage()->getUid();
 		$identifier = $fileObject->getIdentifier();
-		$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
-			'uid,storage,identifier',
-			$this->table,
-			sprintf('storage=%u AND identifier=%s', $storageUid, $GLOBALS['TYPO3_DB']->fullQuoteStr($identifier, $this->table))
-		);
+		$row = $this->indexRecordRepository->findOneByStorageUidAndIdentifier($storageUid, $identifier);
 		if (!is_array($row)) {
 			return FALSE;
 		} else {
@@ -120,23 +119,15 @@ class FileRepository extends AbstractRepository {
 	/**
 	 * Returns an index record of a file, or FALSE if the file is not indexed.
 	 *
-	 * @TODO : throw an exception if nothing found, for consistent handling as in AbstractRepository?
 	 * @param File $fileObject
 	 * @return bool|array
+	 * @deprecated since TYPO3 6.2; use FileIndexRepository instead
 	 */
 	public function getFileIndexRecord(File $fileObject) {
+		GeneralUtility::logDeprecatedFunction();
 		$storageUid = $fileObject->getStorage()->getUid();
 		$identifier = $fileObject->getIdentifier();
-		$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
-			'*',
-			$this->table,
-			sprintf('storage=%u AND identifier=%s', $storageUid, $GLOBALS['TYPO3_DB']->fullQuoteStr($identifier, $this->table))
-		);
-		if (!is_array($row)) {
-			return FALSE;
-		} else {
-			return $row;
-		}
+		return FileIndexRepository::getInstance()->findOneByStorageUidAndIdentifier($storageUid, $identifier);
 	}
 
 	/**
@@ -170,16 +161,12 @@ class FileRepository extends AbstractRepository {
 	 *
 	 * @param string $hash A SHA1 hash of a file
 	 * @return array
+	 * @deprecated since TYPO3 6.2; use FileIndexRepository::findByContentHash
 	 */
 	public function findBySha1Hash($hash) {
-		if (preg_match('/[^a-f0-9]*/i', $hash)) {
+		GeneralUtility::logDeprecatedFunction();
+		$resultRows = $this->getFileIndexRepository()->findByContentHash($hash);
 
-		}
-		$resultRows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-			'*',
-			$this->table,
-			'sha1=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($hash, $this->table)
-		);
 		$objects = array();
 		foreach ($resultRows as $row) {
 			$objects[] = $this->createDomainObject($row);
@@ -250,17 +237,13 @@ class FileRepository extends AbstractRepository {
 	 *
 	 * @param AbstractFile $modifiedObject
 	 * @return void
+	 * @deprecated since TYPO3 6.2 LTS; use FileIndexRepository::update
 	 */
 	public function update($modifiedObject) {
-		// TODO check if $modifiedObject is an instance of AbstractFile
-		// TODO check if $modifiedObject is indexed
-		$changedProperties = $modifiedObject->getUpdatedProperties();
-		$properties = $modifiedObject->getProperties();
-		$updateFields = array();
-		foreach ($changedProperties as $propertyName) {
-			$updateFields[$propertyName] = $properties[$propertyName];
+		GeneralUtility::logDeprecatedFunction();
+		if ($modifiedObject instanceof File) {
+			$this->getFileIndexRepository()->update($modifiedObject);
 		}
-		$GLOBALS['TYPO3_DB']->exec_UPDATEquery('sys_file', 'uid=' . $modifiedObject->getUid(), $updateFields);
 	}
 
 	/**

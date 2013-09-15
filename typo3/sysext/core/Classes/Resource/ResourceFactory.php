@@ -27,6 +27,7 @@ namespace TYPO3\CMS\Core\Resource;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Resource\Index\FileIndexRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
@@ -337,17 +338,12 @@ class ResourceFactory implements \TYPO3\CMS\Core\SingletonInterface {
 		if (!$this->fileInstances[$uid]) {
 			// Fetches data in case $fileData is empty
 			if (empty($fileData)) {
-				/** @var FileRepository $fileRepository */
-				$fileRepository = GeneralUtility::makeInstance('TYPO3\CMS\Core\Resource\FileRepository');
-				$fileObject = $fileRepository->findByUid($uid);
-				if (!is_object($fileObject)) {
+				$fileData = $this->getFileIndexRepository()->findOneByUid($uid);
+				if ($fileData === FALSE) {
 					throw new \TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException('No file found for given UID.', 1317178604);
-				} else {
-					$this->fileInstances[$uid] = $fileObject;
 				}
-			} else {
-				$this->fileInstances[$uid] = $this->createFileObject($fileData);
 			}
+			$this->fileInstances[$uid] = $this->createFileObject($fileData);
 		}
 		return $this->fileInstances[$uid];
 	}
@@ -368,13 +364,34 @@ class ResourceFactory implements \TYPO3\CMS\Core\SingletonInterface {
 			// use virtual Storage (uid=0)
 			$storageUid = 0;
 			$fileIdentifier = $parts[0];
-
-			// please note that getStorageObject() might modify $fileIdentifier when
-			// auto-detecting the best-matching storage to use
 		}
-		return $this->getStorageObject($storageUid, array(), $fileIdentifier)->getFile($fileIdentifier);
+
+		// please note that getStorageObject() might modify $fileIdentifier when
+		// auto-detecting the best-matching storage to use
+		return $this->getFileObjectByStorageAndIdentifier($storageUid, $fileIdentifier);
 	}
 
+	/**
+	 * @param int $storageUid
+	 * @param string $fileIdentifier
+	 *
+	 * @return File
+	 */
+	public function getFileObjectByStorageAndIdentifier($storageUid, &$fileIdentifier) {
+		$storage = $this->getStorageObject($storageUid, array(), $fileIdentifier);
+		$fileData = $this->getFileIndexRepository()->findOneByStorageUidAndIdentifier($storage->getUid(), $fileIdentifier);
+		if ($fileData !== FALSE) {
+			$fileObject = $this->getFileObject($fileData['uid'], $fileData);
+		} else {
+			$fileData = $storage->getFileInfoByIdentifier($fileIdentifier);
+			$fileObject = $this->createFileObject($fileData);
+			if (!array_key_exists('uid', $fileData)) {
+				$this->getFileIndexRepository()->add($fileObject);
+			}
+			$this->fileInstances[$fileObject->getUid()] = $fileObject;
+		}
+		return $fileObject;
+	}
 	/**
 	 * Bulk function, can be used for anything to get a file or folder
 	 *
@@ -552,6 +569,15 @@ class ResourceFactory implements \TYPO3\CMS\Core\SingletonInterface {
 		/** @var FileReference $fileReferenceObject */
 		$fileReferenceObject = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\FileReference', $fileReferenceData);
 		return $fileReferenceObject;
+	}
+
+	/**
+	 * Returns an instance of the FileIndexRepository
+	 *
+	 * @return FileIndexRepository
+	 */
+	protected function getFileIndexRepository() {
+		return FileIndexRepository::getInstance();
 	}
 }
 
