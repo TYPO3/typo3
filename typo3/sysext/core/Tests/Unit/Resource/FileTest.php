@@ -107,8 +107,10 @@ class FileTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function fileAsksRepositoryForIndexStatus() {
 		$mockedRepository = $this->getMock('TYPO3\\CMS\\Core\\Resource\\Index\\FileIndexRepository');
-		$mockedRepository->expects($this->once())->method('findOneByFileObject')->will($this->returnValue(array()));
+		$mockedRepository->expects($this->once())->method('findOneByCombinedIdentifier')->will($this->returnValue(array('uid' => 1)));
+		$mockedRepository->expects($this->exactly(0))->method('add');
 		\TYPO3\CMS\Core\Utility\GeneralUtility::setSingletonInstance('TYPO3\\CMS\\Core\\Resource\\Index\\FileIndexRepository', $mockedRepository);
+
 		$fixture = new \TYPO3\CMS\Core\Resource\File(array(), $this->storageMock);
 		$this->assertTrue($fixture->isIndexed());
 	}
@@ -200,7 +202,7 @@ class FileTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function fetchingIndexedPropertyCausesFileObjectToLoadIndexRecord() {
 		$mockedRepository = $this->getMock('TYPO3\\CMS\\Core\\Resource\\Index\\FileIndexRepository');
-		$mockedRepository->expects($this->once())->method('findOneByFileObject')->will($this->returnValue(array('uid' => 10)));
+		$mockedRepository->expects($this->once())->method('findOneByCombinedIdentifier')->will($this->returnValue(array('uid' => 10)));
 		\TYPO3\CMS\Core\Utility\GeneralUtility::setSingletonInstance('TYPO3\\CMS\\Core\\Resource\\Index\\FileIndexRepository', $mockedRepository);
 
 		$fixture = new \TYPO3\CMS\Core\Resource\File(array('identifier' => '/test', 'storage' => 5), $this->storageMock);
@@ -211,14 +213,11 @@ class FileTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function isIndexedTriggersIndexingIfFileIsNotIndexedAlready() {
-		$fixture = new \TYPO3\CMS\Core\Resource\File(array('identifier' => '/test', 'storage' => 5), $this->storageMock);
-		$mockedRepository = $this->getMock('TYPO3\\CMS\\Core\\Resource\\Index\\FileIndexRepository');
-		$mockedRepository->expects($this->once())->method('findOneByFileObject')->will($this->returnValue(FALSE));
-		\TYPO3\CMS\Core\Utility\GeneralUtility::setSingletonInstance('TYPO3\\CMS\\Core\\Resource\\Index\\FileIndexRepository', $mockedRepository);
+		$fixture = $this->getMock('TYPO3\\CMS\\Core\\Resource\\File', array('loadMetadata'), array(array('identifier' => '/test', 'storage' => 5), $this->storageMock));
 
-		$indexerMock = $this->getMock('TYPO3\\CMS\\Core\\Resource\\Service\\IndexerService', array(), array(), '', FALSE);
-		$indexerMock->expects($this->once())->method('indexFile')->will($this->returnValue(array()));
-		\TYPO3\CMS\Core\Utility\GeneralUtility::setSingletonInstance('TYPO3\\CMS\\Core\\Resource\\Service\\IndexerService', $indexerMock);
+		$mockedRepository = $this->getMock('TYPO3\\CMS\\Core\\Resource\\Index\\FileIndexRepository');
+		$mockedRepository->expects($this->once())->method('findOneByCombinedIdentifier')->will($this->returnValue(FALSE));
+		\TYPO3\CMS\Core\Utility\GeneralUtility::setSingletonInstance('TYPO3\\CMS\\Core\\Resource\\Index\\FileIndexRepository', $mockedRepository);
 
 
 		$fixture->isIndexed();
@@ -228,17 +227,14 @@ class FileTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function fileIsAutomaticallyIndexedOnPropertyAccessIfNotAlreadyIndexed() {
-		$fixture = new \TYPO3\CMS\Core\Resource\File(array('identifier' => '/test', 'storage' => 5), $this->storageMock);
+		$fixture = $this->getMock('TYPO3\\CMS\\Core\\Resource\\File', array('loadMetadata'), array(array('identifier' => '/test', 'storage' => 5), $this->storageMock));
+
 		$mockedRepository = $this->getMock('TYPO3\\CMS\\Core\\Resource\\Index\\FileIndexRepository');
-		$mockedRepository->expects($this->once())->method('findOneByFileObject')->will($this->returnValue(FALSE));
+		$mockedRepository->expects($this->once())->method('findOneByCombinedIdentifier')->will($this->returnValue(FALSE));
+		$mockedRepository->expects($this->once())->method('add');
 		\TYPO3\CMS\Core\Utility\GeneralUtility::setSingletonInstance('TYPO3\\CMS\\Core\\Resource\\Index\\FileIndexRepository', $mockedRepository);
 
-		$indexerMock = $this->getMock('TYPO3\\CMS\\Core\\Resource\\Service\\IndexerService', array(), array(), '', FALSE);
-		$indexerMock->expects($this->once())->method('indexFile')->will($this->returnValue(array('uid' => 10)));
-		\TYPO3\CMS\Core\Utility\GeneralUtility::setSingletonInstance('TYPO3\\CMS\\Core\\Resource\\Service\\IndexerService', $indexerMock);
-
-
-		$this->assertEquals(10, $fixture->getProperty('uid'));
+		$fixture->getProperty('uid');
 	}
 
 	/**

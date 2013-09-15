@@ -53,9 +53,8 @@ class FileIndexRepository implements SingletonInterface {
 	 * @var array
 	 */
 	protected $fields = array(
-		'uid', 'pid',	'missing', 'type', 'storage', 'identifier',
-		'extension', 'mime_type', 'name', 'title', 'sha1', 'size', 'creation_date',
-		'modification_date', 'width', 'height', 'description', 'alternative'
+		'uid', 'pid', 'missing', 'type', 'storage', 'identifier', 'extension',
+		'mime_type', 'name', 'sha1', 'size', 'creation_date', 'modification_date',
 	);
 
 	/**
@@ -95,7 +94,7 @@ class FileIndexRepository implements SingletonInterface {
 	 */
 	public function findOneByUid($fileUid) {
 		$row = $this->getDatabase()->exec_SELECTgetSingleRow(
-			'*',
+			implode(',', $this->fields),
 			$this->table,
 			'uid=' . intval($fileUid)
 		);
@@ -113,7 +112,7 @@ class FileIndexRepository implements SingletonInterface {
 	 */
 	public function findOneByStorageUidAndIdentifier($storageUid, $identifier) {
 		$row = $this->getDatabase()->exec_SELECTgetSingleRow(
-			'*',
+			implode(',', $this->fields),
 			$this->table,
 			sprintf('storage=%u AND identifier=%s', intval($storageUid), $this->getDatabase()->fullQuoteStr($identifier, $this->table))
 		);
@@ -146,7 +145,7 @@ class FileIndexRepository implements SingletonInterface {
 			return array();
 		}
 		$resultRows = $this->getDatabase()->exec_SELECTgetRows(
-			'*',
+			implode(',', $this->fields),
 			$this->table,
 			'sha1=' . $this->getDatabase()->fullQuoteStr($hash, $this->table)
 		);

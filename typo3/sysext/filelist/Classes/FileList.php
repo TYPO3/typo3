@@ -726,8 +726,9 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 		// Edit metadata of file
 		try {
 			if (is_a($fileOrFolderObject, 'TYPO3\\CMS\\Core\\Resource\\File') && $fileOrFolderObject->isIndexed() && $fileOrFolderObject->checkActionPermission('write')) {
+				$metaData = $fileOrFolderObject->_getMetaData();
 				$data = array(
-					'sys_file' => array($fileOrFolderObject->getUid() => 'edit')
+					'sys_file_metadata' => array($metaData['uid'] => 'edit')
 				);
 				$editOnClick = BackendUtility::editOnClick(GeneralUtility::implodeArrayForUrl('edit', $data), $GLOBALS['BACK_PATH'], $this->listUrl());
 				$cells['editmetadata'] = '<a href="#" onclick="' . $editOnClick . '" title="Edit Metadata of this file">' . IconUtility::getSpriteIcon('actions-document-open') . '</a>';

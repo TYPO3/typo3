@@ -179,10 +179,11 @@ class ElementInformationController {
 			$this->fileObject = $fileOrFolderObject;
 			$this->access = $this->fileObject->checkActionPermission('read');
 			$this->type = 'file';
-			$this->table = 'sys_file';
+			$this->table = 'sys_file_metadata';
 
 			try {
-				$this->row = BackendUtility::getRecordWSOL($this->table, $this->fileObject->getUid());
+				$metaData = $fileOrFolderObject->_getMetaData();
+				$this->row = BackendUtility::getRecordWSOL($this->table, $metaData['uid']);
 			} catch (\Exception $e) {
 				$this->row = array();
 			}

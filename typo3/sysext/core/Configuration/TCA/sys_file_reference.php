@@ -161,7 +161,7 @@ return array(
 				'type' => 'input',
 				'size' => '20',
 				'eval' => 'null',
-				'placeholder' => '__row|uid_local|title',
+				'placeholder' => '__row|uid_local|metadata|title',
 				'mode' => 'useOrOverridePlaceholder',
 			)
 		),
@@ -194,7 +194,7 @@ return array(
 				'cols' => '20',
 				'rows' => '5',
 				'eval' => 'null',
-				'placeholder' => '__row|uid_local|description',
+				'placeholder' => '__row|uid_local|metadata|description',
 				'mode' => 'useOrOverridePlaceholder',
 			)
 		),
@@ -206,7 +206,7 @@ return array(
 				'type' => 'input',
 				'size' => '20',
 				'eval' => 'null',
-				'placeholder' => '__row|uid_local|alternative',
+				'placeholder' => '__row|uid_local|metadata|alternative',
 				'mode' => 'useOrOverridePlaceholder',
 			),
 		),

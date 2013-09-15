@@ -407,8 +407,8 @@ class SilentConfigurationUpgradeService {
 
 	/**
 	 * Make sure file table is categorized as of TYPO3 6.2. To enable DAM Migration
-	 * sys_file table is included in DefaultConfiguration.
-	 * If the setting already has been modified but does not contain sys_file: add it
+	 * sys_file_metadata table is included in DefaultConfiguration.
+	 * If the setting already has been modified but does not contain sys_file_metadata: add it
 	 *
 	 * @return void
 	 */
@@ -424,8 +424,8 @@ class SilentConfigurationUpgradeService {
 		}
 
 		$tables =  GeneralUtility::trimExplode(',', $actual);
-		if ($actual !== '' && $actual !== $default && !in_array('sys_file', $tables)) {
-			$tables[] = 'sys_file';
+		if ($actual !== '' && $actual !== $default && !in_array('sys_file_metadata', $tables)) {
+			$tables[] = 'sys_file_metadata';
 			$configurationManager->setLocalConfigurationValueByPath('SYS/defaultCategorizedTables', implode(',', $tables));
 			$this->throwRedirectException();
 		}

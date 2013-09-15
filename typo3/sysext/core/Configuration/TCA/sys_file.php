@@ -9,9 +9,7 @@ return array(
 		'type' => 'type',
 		'hideTable' => TRUE,
 		'rootLevel' => TRUE,
-		'versioningWS' => TRUE,
-		'origUid' => 't3_origuid',
-		'default_sortby' => 'ORDER BY crdate DESC',
+		'default_sortby' => 'ORDER BY name ASC',
 		'dividers2tabs' => TRUE,
 		'typeicon_column' => 'type',
 		'typeicon_classes' => array(
@@ -28,17 +26,9 @@ return array(
 		),
 	),
 	'interface' => array(
-		'showRecordFieldList' => 'storage, name, description, alternative, type, mime_type, size, sha1, missing'
+		'showRecordFieldList' => 'storage, name, type, mime_type, size, sha1, missing'
 	),
 	'columns' => array(
-		't3ver_label' => array(
-			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.versionLabel',
-			'config' => array(
-				'type' => 'input',
-				'size' => '30',
-				'max' => '30'
-			)
-		),
 		'fileinfo' => array(
 			'config' => array(
 				'type' => 'user',
@@ -74,37 +64,10 @@ return array(
 			'exclude' => 0,
 			'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file.name',
 			'config' => array(
+				'readOnly' => 1,
 				'type' => 'input',
 				'size' => '30',
 				'eval' => 'required',
-				'readOnly' => TRUE
-			)
-		),
-		'title' => array(
-			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file.title',
-			'config' => array(
-				'type' => 'input',
-				'size' => '30',
-				'placeholder' => '__row|name'
-			)
-		),
-		'description' => array(
-			'exclude' => 0,
-			'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file.description',
-			'config' => array(
-				'type' => 'text',
-				'cols' => '40',
-				'rows' => '3'
-			)
-		),
-		'alternative' => array(
-			'exclude' => 0,
-			'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file.alternative',
-			'config' => array(
-				'type' => 'text',
-				'cols' => '40',
-				'rows' => '3'
 			)
 		),
 		'type' => array(
@@ -160,12 +123,24 @@ return array(
 			'config' => array(
 				'readOnly' => 1,
 				'type' => 'check',
-				'default' => '0'
+				'default' => 0
+			)
+		),
+		'metadata' => array(
+			'exclude' => 0,
+			'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file.metadata',
+			'config' => array(
+				'readOnly' => 1,
+				'type' => 'select',
+				'foreign_table' => 'sys_file_metadata',
+				'foreign_field' => 'file',
+				'size' => 1,
+				'minitems' => 1
 			)
 		)
 	),
 	'types' => array(
-		'1' => array('showitem' => 'fileinfo, name, title, description, alternative, storage')
+		'1' => array('showitem' => 'fileinfo, storage, missing')
 	),
 	'palettes' => array()
 );

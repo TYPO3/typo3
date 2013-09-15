@@ -282,9 +282,37 @@ CREATE TABLE sys_file (
 	pid int(11) DEFAULT '0' NOT NULL,
 	# update timestamp of the database record, not the file!
 	tstamp int(11) DEFAULT '0' NOT NULL,
+
+	# management information
+	missing tinyint(4) DEFAULT '0' NOT NULL,
+	storage int(11) DEFAULT '0' NOT NULL,
+	type varchar(10) DEFAULT '' NOT NULL,
+	metadata int(11) DEFAULT '0' NOT NULL,
+
+	# file info data
+	identifier varchar(200) DEFAULT '' NOT NULL,
+	extension varchar(255) DEFAULT '' NOT NULL,
+	mime_type varchar(255) DEFAULT '' NOT NULL,
+	name tinytext,
+	sha1 tinytext,
+	size int(11) DEFAULT '0' NOT NULL,
+	creation_date int(11) DEFAULT '0' NOT NULL,
+	modification_date int(11) DEFAULT '0' NOT NULL,
+
+	PRIMARY KEY (uid),
+	KEY sel01 (storage,identifier(20)),
+	KEY sha1 (sha1(40))
+);
+
+#
+# Table structure for table 'sys_file_metadata'
+#
+CREATE TABLE sys_file_metadata (
+	uid int(11) NOT NULL auto_increment,
+	pid int(11) DEFAULT '0' NOT NULL,
+	tstamp int(11) DEFAULT '0' NOT NULL,
 	crdate int(11) DEFAULT '0' NOT NULL,
 	cruser_id int(11) DEFAULT '0' NOT NULL,
-	missing tinyint(4) DEFAULT '0' NOT NULL,
 
 	# Versioning fields
 	t3ver_oid int(11) DEFAULT '0' NOT NULL,
@@ -298,29 +326,18 @@ CREATE TABLE sys_file (
 	t3ver_move_id int(11) DEFAULT '0' NOT NULL,
 	t3_origuid int(11) DEFAULT '0' NOT NULL,
 
-	type varchar(10) DEFAULT '' NOT NULL,
-	storage int(11) DEFAULT '0' NOT NULL,
-	identifier varchar(512) DEFAULT '' NOT NULL,
-	extension varchar(255) DEFAULT '' NOT NULL,
-	mime_type varchar(255) DEFAULT '' NOT NULL,
-	name tinytext,
+	file int(11) DEFAULT '0' NOT NULL,
 	title tinytext,
-	sha1 tinytext,
-	size int(11) DEFAULT '0' NOT NULL,
-	# creation/modification date of the file (not the record!)
-	creation_date int(11) DEFAULT '0' NOT NULL,
-	modification_date int(11) DEFAULT '0' NOT NULL,
 	width int(11) DEFAULT '0' NOT NULL,
 	height int(11) DEFAULT '0' NOT NULL,
 	description text,
 	alternative text,
 
 	PRIMARY KEY (uid),
-	KEY parent (pid),
-	KEY t3ver_oid (t3ver_oid,t3ver_wsid),
-	KEY sel01 (storage,identifier(20)),
-	KEY sha1 (sha1(40))
+	KEY file (file),
+	KEY t3ver_oid (t3ver_oid,t3ver_wsid)
 );
+
 
 #
 # Table structure for table 'sys_file_processedfile'.

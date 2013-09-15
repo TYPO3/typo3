@@ -26,6 +26,10 @@ namespace TYPO3\CMS\Core\Resource\Hook;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use \TYPO3\CMS\Backend\Utility\BackendUtility;
+use \TYPO3\CMS\Core\Resource\ResourceFactory;
+
 /**
  * Utility class to render TCEforms information about a sys_file record
  *
@@ -36,32 +40,66 @@ class FileInfoHook {
 	/**
 	 * User function for sys_file (element)
 	 *
-	 * @param array $PA the array with additional configuration options.
+	 * @param array $propertyArray the array with additional configuration options.
 	 * @param \TYPO3\CMS\Backend\Form\FormEngine $tceformsObj the TCEforms parent object
 	 * @return string The HTML code for the TCEform field
 	 */
-	public function renderFileInfo(array $PA, \TYPO3\CMS\Backend\Form\FormEngine $tceformsObj) {
-		$fileRecord = $PA['row'];
+	public function renderFileInfo(array $propertyArray, \TYPO3\CMS\Backend\Form\FormEngine $tceformsObj) {
+		$fileRecord = $propertyArray['row'];
+		$fileObject = NULL;
 		if ($fileRecord['uid'] > 0) {
-			$fileObject = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getFileObject($fileRecord['uid']);
-			$processedFile = $fileObject->process(\TYPO3\CMS\Core\Resource\ProcessedFile::CONTEXT_IMAGEPREVIEW, array('width' => 150, 'height' => 150));
+			$fileObject = ResourceFactory::getInstance()->getFileObject(intval($fileRecord['uid']));
+
+		}
+		return $this->renderFileInformationContent($fileObject);
+	}
+
+	/**
+	 * User function for sys_file_meta (element)
+	 *
+	 * @param array $propertyArray the array with additional configuration options.
+	 * @param \TYPO3\CMS\Backend\Form\FormEngine $tceformsObj the TCEforms parent object
+	 * @return string The HTML code for the TCEform field
+	 */
+	public function renderFileMetadataInfo(array $propertyArray, \TYPO3\CMS\Backend\Form\FormEngine $tceformsObj) {
+		$fileMedadataRecord = $propertyArray['row'];
+		$fileObject = NULL;
+		if ($fileMedadataRecord['file'] > 0) {
+			$fileObject = ResourceFactory::getInstance()->getFileObject(intval($fileMedadataRecord['file']));
+		}
+
+		return $this->renderFileInformationContent($fileObject);
+	}
+
+
+	/**
+	 * Renders a HTML Block with file information
+	 *
+	 * @param \TYPO3\CMS\Core\Resource\File $file
+	 * @return string
+	 */
+	protected function renderFileInformationContent(\TYPO3\CMS\Core\Resource\File $file = NULL) {
+		if ($file !== NULL) {
+			$processedFile = $file->process(\TYPO3\CMS\Core\Resource\ProcessedFile::CONTEXT_IMAGEPREVIEW, array('width' => 150, 'height' => 150));
 			$previewImage = $processedFile->getPublicUrl(TRUE);
 			$content = '';
-			if ($fileObject->isMissing()) {
-				$flashMessage = \TYPO3\CMS\Core\Resource\Utility\BackendUtility::getFlashMessageForMissingFile($fileObject);
+			if ($file->isMissing()) {
+				$flashMessage = \TYPO3\CMS\Core\Resource\Utility\BackendUtility::getFlashMessageForMissingFile($file);
 				$content .= $flashMessage->render();
 			}
 			if ($previewImage) {
 				$content .= '<img src="' . htmlspecialchars($previewImage) . '" alt="" class="t3-tceforms-sysfile-imagepreview" />';
 			}
-			$content .= '<strong>' . htmlspecialchars($fileObject->getName()) . '</strong> (' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::formatSize($fileObject->getSize())) . ')<br />';
-			$content .= \TYPO3\CMS\Backend\Utility\BackendUtility::getProcessedValue($PA['table'], 'type', $fileObject->getType()) . ' (' . $fileObject->getMimeType() . ')<br />';
-			$content .= $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.xlf:fileMetaDataLocation', TRUE) . ': ' . htmlspecialchars($fileObject->getStorage()->getName()) . ' - ' . htmlspecialchars($fileObject->getIdentifier()) . '<br />';
+			$content .= '<strong>' . htmlspecialchars($file->getName()) . '</strong>';
+			$content .= '(' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::formatSize($file->getSize())) . 'bytes)<br />';
+			$content .= BackendUtility::getProcessedValue('sys_file', 'type', $file->getType()) . ' (' . $file->getMimeType() . ')<br />';
+			$content .= $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.xlf:fileMetaDataLocation', TRUE) . ': ';
+			$content .= htmlspecialchars($file->getStorage()->getName()) . ' - ' . htmlspecialchars($file->getIdentifier()) . '<br />';
 			$content .= '<br />';
 		} else {
 			$content = '<h2>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.xlf:fileMetaErrorInvalidRecord', TRUE) . '</h2>';
 		}
+
 		return $content;
 	}
-
 }

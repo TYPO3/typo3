@@ -408,6 +408,9 @@
 			<trans-unit id="sys_file.missing" xml:space="preserve">
 				<source>Marked as missing</source>
 			</trans-unit>
+			<trans-unit id="sys_file.metadata" xml:space="preserve">
+				<source>Metadata records</source>
+			</trans-unit>
 			<trans-unit id="sys_file_reference" xml:space="preserve">
 				<source>File Reference</source>
 			</trans-unit>

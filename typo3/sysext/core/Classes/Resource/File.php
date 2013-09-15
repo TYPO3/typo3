@@ -26,6 +26,10 @@ namespace TYPO3\CMS\Core\Resource;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use TYPO3\CMS\Core\Resource\Index\MetaDataRepository;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * File representation in the file abstraction layer.
  *
@@ -50,6 +54,11 @@ class File extends AbstractFile {
 	protected $indexable = TRUE;
 
 	/**
+	 * @var array
+	 */
+	protected $metaDataProperties = array();
+
+	/**
 	 * Set to TRUE while this file is being indexed - used to prevent some endless loops
 	 *
 	 * @var boolean
@@ -65,16 +74,6 @@ class File extends AbstractFile {
 	protected $updatedProperties = array();
 
 	/**
-	 * @var Service\IndexerService
-	 */
-	protected $indexerService = NULL;
-
-	/*********************************************
-	 * GENERIC FILE TYPES
-	 * these are generic filetypes or -groups,
-	 * don't mix it up with mime types
-	 *********************************************/
-	/**
 	 * Constructor for a file object. Should normally not be used directly, use
 	 * the corresponding factory methods instead.
 	 *
@@ -82,13 +81,15 @@ class File extends AbstractFile {
 	 * @param ResourceStorage $storage
 	 */
 	public function __construct(array $fileData, ResourceStorage $storage) {
-		if (isset($fileData['uid']) && intval($fileData['uid']) > 0) {
-			$this->indexed = TRUE;
-		}
 		$this->identifier = $fileData['identifier'];
 		$this->name = $fileData['name'];
 		$this->properties = $fileData;
 		$this->storage = $storage;
+
+		if (isset($fileData['uid']) && intval($fileData['uid']) > 0) {
+			$this->indexed = TRUE;
+			$this->loadMetaData();
+		}
 	}
 
 	/*******************************
@@ -104,7 +105,11 @@ class File extends AbstractFile {
 		if ($this->indexed === NULL) {
 			$this->loadIndexRecord();
 		}
-		return parent::getProperty($key);
+		if (parent::hasProperty($key)) {
+			return parent::getProperty($key);
+		} else {
+			return array_key_exists($key, $this->metaDataProperties) ? $this->metaDataProperties[$key] : NULL;
+		}
 	}
 
 	/**
@@ -116,7 +121,17 @@ class File extends AbstractFile {
 		if ($this->indexed === NULL) {
 			$this->loadIndexRecord();
 		}
-		return parent::getProperties();
+		return array_merge(parent::getProperties(), array_diff_key((array)$this->metaDataProperties, parent::getProperties()));
+	}
+
+	/**
+	 * Returns the MetaData
+	 *
+	 * @return array|null
+	 * @internal
+	 */
+	public function _getMetaData() {
+		return $this->metaDataProperties;
 	}
 
 	/******************
@@ -164,23 +179,33 @@ class File extends AbstractFile {
 	 * @return void
 	 */
 	protected function loadIndexRecord($indexIfNotIndexed = TRUE) {
-		if ($this->indexed !== NULL || !$this->indexable) {
+		if ($this->indexed !== NULL || !$this->indexable || $this->indexingInProgress) {
 			return;
 		}
+		$this->indexingInProgress = TRUE;
 
-		$indexRecord = Index\FileIndexRepository::getInstance()->findOneByFileObject($this);
+		$indexRecord = $this->getFileIndexRepository()->findOneByCombinedIdentifier($this->getCombinedIdentifier());
 		if ($indexRecord === FALSE && $indexIfNotIndexed) {
-			$this->indexingInProgress = TRUE;
+			// the IndexerService is not used at this place since, its not about additional MetaData anymore
 			$indexRecord = $this->getIndexerService()->indexFile($this, FALSE);
 			$this->mergeIndexRecord($indexRecord);
 			$this->indexed = TRUE;
-			$this->indexingInProgress = FALSE;
+			$this->loadMetaData();
 		} elseif ($indexRecord !== FALSE) {
 			$this->mergeIndexRecord($indexRecord);
 			$this->indexed = TRUE;
+			$this->loadMetaData();
 		} else {
 			throw new \RuntimeException('Could not load index record for "' . $this->getIdentifier() . '"', 1321288316);
 		}
+		$this->indexingInProgress = FALSE;
+	}
+
+	/**
+	 * Loads MetaData from Repository
+	 */
+	protected function loadMetaData() {
+		$this->metaDataProperties = $this->getMetaDataRepository()->findByFile($this);
 	}
 
 	/**
@@ -372,6 +397,20 @@ class File extends AbstractFile {
 		} else {
 			return $this->getStorage()->getPublicUrl($this, $relativeToCurrentScript);
 		}
+	}
+
+	/**
+	 * @return \TYPO3\CMS\Core\Resource\Index\MetaDataRepository
+	 */
+	protected function getMetaDataRepository() {
+		return GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\Index\\MetaDataRepository');
+	}
+
+	/**
+	 * @return \TYPO3\CMS\Core\Resource\Index\FileIndexRepository
+	 */
+	protected function getFileIndexRepository() {
+		return GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\Index\\FileIndexRepository');
 	}
 
 	/**
