@@ -208,6 +208,37 @@ class PathUtility {
 		return substr($path, 0, 1) === '/';
 	}
 
+	/**
+	 * Gets the (absolute) path of an include file based on the (absolute) path of a base file
+	 *
+	 * Does NOT do any sanity checks. This is a task for the calling function, e.g.
+	 * call GeneralUtility::getFileAbsFileName() on the result.
+	 * @see \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName()
+	 *
+	 * Resolves all dots and slashes between that paths of both files.
+	 * Whether the result is absolute or not, depends of the base file name.
+	 *
+	 * If the include file goes higher than a relative base file, then the result
+	 * will contain dots as a relative part.
+	 * <pre>
+	 *   base:    abc/one.txt
+	 *   include: ../../two.txt
+	 *   result:  ../two.txt
+	 * </pre>
+	 * The exact behavior, refer to getCanonicalPath().
+	 *
+	 * @param string $baseFileName The name of the file that serves as a base path
+	 * @param string $includeFileName The name of the file that is included in the file
+	 * @return string The (absolute) path of the include file
+	 */
+	static public function getAbsolutePathOfRelativeIncludeFile($baseFileName, $includeFileName) {
+		$fileName = static::basename($includeFileName);
+		$newDir = static::getCanonicalPath(static::dirname($baseFileName) . '/' . static::dirname($includeFileName));
+		// Avoid double slash on empty path
+		$result = (($newDir !== '/') ? $newDir : '') . '/' . $fileName;
+		return $result;
+	}
+
 
 	/*********************
 	 *

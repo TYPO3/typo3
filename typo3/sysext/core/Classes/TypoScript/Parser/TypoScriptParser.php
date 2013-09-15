@@ -27,6 +27,7 @@ namespace TYPO3\CMS\Core\TypoScript\Parser;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use \TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * The TypoScript parser
@@ -693,10 +694,11 @@ class TypoScriptParser {
 	 * @param string $string Unparsed TypoScript
 	 * @param integer $cycle_counter Counter for detecting endless loops
 	 * @param boolean $returnFiles When set an array containing the resulting typoscript and all included files will get returned
+	 * @param string $parentFilename The parent file for relative includes
 	 * @return string Complete TypoScript with includes added.
 	 * @static
 	 */
-	static public function checkIncludeLines($string, $cycle_counter = 1, $returnFiles = FALSE) {
+	static public function checkIncludeLines($string, $cycle_counter = 1, $returnFiles = FALSE, $parentFilename = '') {
 		$includedFiles = array();
 		if ($cycle_counter > 100) {
 			GeneralUtility::sysLog('It appears like TypoScript code is looping over itself. Check your templates for "&lt;INCLUDE_TYPOSCRIPT: ..." tags', 'Core', GeneralUtility::SYSLOG_SEVERITY_WARNING);
@@ -729,6 +731,12 @@ class TypoScriptParser {
 				$filename = $parts[$i + 1];
 				$optionalProperties = $parts[$i + 2];
 				$tsContentsTillNextInclude = $parts[$i + 3];
+
+				// Resolve a possible relative paths if a parent file is given
+				if ($parentFilename !== '' && GeneralUtility::isFirstPartOfStr($filename, '.')) {
+					$filename = PathUtility::getAbsolutePathOfRelativeIncludeFile($parentFilename, $filename);
+				}
+
 				// There must be a line-break char after - not sure why this check is necessary, kept it for being 100% backwards compatible
 				// An empty string is also ok (means that the next line is also a valid include_typoscript tag)
 				if (preg_match('/(^\s*\r?\n|^$)/', $tsContentsTillNextInclude) == FALSE) {
@@ -811,7 +819,7 @@ class TypoScriptParser {
 			} else {
 				$includedFiles[] = $absfilename;
 				// check for includes in included text
-				$included_text = self::checkIncludeLines(GeneralUtility::getUrl($absfilename), $cycle_counter + 1, $returnFiles);
+				$included_text = self::checkIncludeLines(GeneralUtility::getUrl($absfilename), $cycle_counter + 1, $returnFiles, $absfilename);
 				// If the method also has to return all included files, merge currently included
 				// files with files included by recursively calling itself
 				if ($returnFiles && is_array($included_text)) {
