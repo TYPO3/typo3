@@ -27,6 +27,7 @@ namespace TYPO3\CMS\Core\TypoScript\Parser;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use \TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * The TypoScript parser
@@ -693,10 +694,11 @@ class TypoScriptParser {
 	 * @param string $string Unparsed TypoScript
 	 * @param integer $cycle_counter Counter for detecting endless loops
 	 * @param boolean $returnFiles When set an array containing the resulting typoscript and all included files will get returned
+	 * @param string $parentFilenameOrPath The parent file (with absolute path) or path for relative includes
 	 * @return string Complete TypoScript with includes added.
 	 * @static
 	 */
-	static public function checkIncludeLines($string, $cycle_counter = 1, $returnFiles = FALSE) {
+	static public function checkIncludeLines($string, $cycle_counter = 1, $returnFiles = FALSE, $parentFilenameOrPath = '') {
 		$includedFiles = array();
 		if ($cycle_counter > 100) {
 			GeneralUtility::sysLog('It appears like TypoScript code is looping over itself. Check your templates for "&lt;INCLUDE_TYPOSCRIPT: ..." tags', 'Core', GeneralUtility::SYSLOG_SEVERITY_WARNING);
@@ -727,8 +729,15 @@ class TypoScriptParser {
 				// $parts[$i+3] next part of the typoscript string (part in between include-tags)
 				$includeType = $parts[$i];
 				$filename = $parts[$i + 1];
+				$originalFilename = $filename;
 				$optionalProperties = $parts[$i + 2];
 				$tsContentsTillNextInclude = $parts[$i + 3];
+
+				// Resolve a possible relative paths if a parent file is given
+				if ($parentFilenameOrPath !== '' && GeneralUtility::isFirstPartOfStr($filename, '.')) {
+					$filename = PathUtility::getAbsolutePathOfRelativeReferencedFileOrPath($parentFilenameOrPath, $filename);
+				}
+
 				// There must be a line-break char after - not sure why this check is necessary, kept it for being 100% backwards compatible
 				// An empty string is also ok (means that the next line is also a valid include_typoscript tag)
 				if (preg_match('/(^\s*\r?\n|^$)/', $tsContentsTillNextInclude) == FALSE) {
@@ -738,10 +747,10 @@ class TypoScriptParser {
 				} else {
 					switch (strtolower($includeType)) {
 						case 'file':
-							self::includeFile($filename, $cycle_counter, $returnFiles, $newString, $includedFiles);
+							self::includeFile($originalFilename, $cycle_counter, $returnFiles, $newString, $includedFiles, $optionalProperties, $parentFilenameOrPath);
 							break;
 						case 'dir':
-							self::includeDirectory($filename, $cycle_counter, $returnFiles, $newString, $includedFiles, $optionalProperties);
+							self::includeDirectory($originalFilename, $cycle_counter, $returnFiles, $newString, $includedFiles, $optionalProperties, $parentFilenameOrPath);
 							break;
 						default:
 							$newString .= self::typoscriptIncludeError('No valid option for INCLUDE_TYPOSCRIPT source property (valid options are FILE or DIR)');
@@ -796,11 +805,20 @@ class TypoScriptParser {
 	 * @param boolean $returnFiles When set, filenames of included files will be prepended to the array &$includedFiles
 	 * @param string &$newString The output string to which the content of the file will be prepended (referenced
 	 * @param array &$includedFiles Array to which the filenames of included files will be prepended (referenced)
+	 * @param string $optionalProperties
+	 * @param string $parentFilenameOrPath The parent file (with absolute path) or path for relative includes
 	 * @static
 	 */
-	public static function includeFile($filename, $cycle_counter = 1, $returnFiles = FALSE, &$newString = '', &$includedFiles = array()) {
-		$absfilename = GeneralUtility::getFileAbsFileName($filename);
-		$newString .= LF . '### <INCLUDE_TYPOSCRIPT: source="FILE:' . $filename . '"> BEGIN:' . LF;
+	public static function includeFile($filename, $cycle_counter = 1, $returnFiles = FALSE, &$newString = '', &$includedFiles = array(), $optionalProperties = '', $parentFilenameOrPath = '') {
+		// Resolve a possible relative paths if a parent file is given
+		if ($parentFilenameOrPath !== '' && GeneralUtility::isFirstPartOfStr($filename, '.')) {
+			$absfilename = PathUtility::getAbsolutePathOfRelativeReferencedFileOrPath($parentFilenameOrPath, $filename);
+		} else {
+			$absfilename = $filename;
+		}
+		$absfilename = GeneralUtility::getFileAbsFileName($absfilename);
+
+		$newString .= LF . '### <INCLUDE_TYPOSCRIPT: source="FILE:' . $filename . '"' . $optionalProperties . '> BEGIN:' . LF;
 		if (strcmp($filename, '')) {
 			// Must exist and must not contain '..' and must be relative
 			// Check for allowed files
@@ -811,7 +829,7 @@ class TypoScriptParser {
 			} else {
 				$includedFiles[] = $absfilename;
 				// check for includes in included text
-				$included_text = self::checkIncludeLines(GeneralUtility::getUrl($absfilename), $cycle_counter + 1, $returnFiles);
+				$included_text = self::checkIncludeLines(GeneralUtility::getUrl($absfilename), $cycle_counter + 1, $returnFiles, $absfilename);
 				// If the method also has to return all included files, merge currently included
 				// files with files included by recursively calling itself
 				if ($returnFiles && is_array($included_text)) {
@@ -821,7 +839,7 @@ class TypoScriptParser {
 				$newString .= $included_text . LF;
 			}
 		}
-		$newString .= '### <INCLUDE_TYPOSCRIPT: source="FILE:' . $filename . '"> END:' . LF . LF;
+		$newString .= '### <INCLUDE_TYPOSCRIPT: source="FILE:' . $filename . '"' . $optionalProperties . '> END:' . LF . LF;
 	}
 
 	/**
@@ -835,9 +853,11 @@ class TypoScriptParser {
 	 * @param boolean $returnFiles When set, filenames of included files will be prepended to the array &$includedFiles
 	 * @param string &$newString The output string to which the content of the file will be prepended (referenced)
 	 * @param array &$includedFiles Array to which the filenames of included files will be prepended (referenced)
+	 * @param string $optionalProperties
+	 * @param string $parentFilenameOrPath The parent file (with absolute path) or path for relative includes
 	 * @static
 	 */
-	protected static function includeDirectory($dirPath, $cycle_counter = 1, $returnFiles = FALSE, &$newString = '', &$includedFiles = array(), $optionalProperties = '') {
+	protected static function includeDirectory($dirPath, $cycle_counter = 1, $returnFiles = FALSE, &$newString = '', &$includedFiles = array(), $optionalProperties = '', $parentFilenameOrPath = '') {
 		// Extract the value of the property extensions="..."
 		$matches = preg_split('#(?i)extensions\s*=\s*"([^"]*)"(\s*|>)#', $optionalProperties, 2, PREG_SPLIT_DELIM_CAPTURE);
 		if (count($matches) > 1) {
@@ -845,7 +865,15 @@ class TypoScriptParser {
 		} else {
 			$includedFileExtensions = '';
 		}
-		$absDirPath = rtrim(GeneralUtility::getFileAbsFileName($dirPath), '/') . '/';
+
+		// Resolve a possible relative paths if a parent file is given
+		if ($parentFilenameOrPath !== '' && GeneralUtility::isFirstPartOfStr($dirPath, '.')) {
+			$absDirPath = PathUtility::getAbsolutePathOfRelativeReferencedFileOrPath($parentFilenameOrPath, $dirPath);
+		} else {
+			$absDirPath = $dirPath;
+		}
+		$absDirPath = rtrim(GeneralUtility::getFileAbsFileName($absDirPath), '/') . '/';
+
 		$newString .= LF . '### <INCLUDE_TYPOSCRIPT: source="DIR:' . $dirPath . '"' . $optionalProperties . '> BEGIN:' . LF;
 		// Get alphabetically sorted file index in array
 		$fileIndex = GeneralUtility::getAllFilesAndFoldersInPath(array(), $absDirPath, $includedFileExtensions);
@@ -853,7 +881,7 @@ class TypoScriptParser {
 		$prefixLenght = strlen(PATH_site);
 		foreach ($fileIndex as $absFileRef) {
 			$relFileRef = substr($absFileRef, $prefixLenght);
-			self::includeFile($relFileRef, $cycle_counter, $returnFiles, $newString, $includedFiles);
+			self::includeFile($relFileRef, $cycle_counter, $returnFiles, $newString, $includedFiles, '', $absDirPath);
 		}
 		$newString .= '### <INCLUDE_TYPOSCRIPT: source="DIR:' . $dirPath . '"' . $optionalProperties . '> END:' . LF . LF;
 	}
@@ -893,7 +921,7 @@ class TypoScriptParser {
 	 * @param array $extractedFileNames
 	 * @return string Template content with uncommented include statements
 	 */
-	static public function extractIncludes($string, $cycle_counter = 1, $extractedFileNames = array()) {
+	static public function extractIncludes($string, $cycle_counter = 1, $extractedFileNames = array(), $parentFilenameOrPath = '') {
 		if ($cycle_counter > 10) {
 			GeneralUtility::sysLog('It appears like TypoScript code is looping over itself. Check your templates for "&lt;INCLUDE_TYPOSCRIPT: ..." tags', 'Core', GeneralUtility::SYSLOG_SEVERITY_WARNING);
 			return '
@@ -949,8 +977,17 @@ class TypoScriptParser {
 				if (strpos($strippedLine, $expectedEndTag) !== FALSE) {
 					// Found the matching ending include statement
 					$fileContentString = implode(PHP_EOL, $fileContent);
+
 					// Write the content to the file
-					$realFileName = GeneralUtility::getFileAbsFileName($fileName);
+
+					// Resolve a possible relative paths if a parent file is given
+					if ($parentFilenameOrPath !== '' && GeneralUtility::isFirstPartOfStr($fileName, '.')) {
+						$realFileName = PathUtility::getAbsolutePathOfRelativeReferencedFileOrPath($parentFilenameOrPath, $fileName);
+					} else {
+						$realFileName = $fileName;
+					}
+					$realFileName = GeneralUtility::getFileAbsFileName($realFileName);
+
 					if ($inIncludePart === 'FILE') {
 						// Some file checks
 						if (empty($realFileName)) {
@@ -965,14 +1002,14 @@ class TypoScriptParser {
 						$extractedFileNames[] = $realFileName;
 
 						// Recursive call to detected nested commented include statements
-						$fileContentString = self::extractIncludes($fileContentString, $cycle_counter + 1, $extractedFileNames);
+						$fileContentString = self::extractIncludes($fileContentString, $cycle_counter + 1, $extractedFileNames, $realFileName);
 
 						// Write the content to the file
 						if (!GeneralUtility::writeFile($realFileName, $fileContentString)) {
 							throw new \RuntimeException(sprintf('Could not write file "%s"', $realFileName), 1294586444);
 						}
 						// Insert reference to the file in the rest content
-						$restContent[] = '<INCLUDE_TYPOSCRIPT: source="FILE:' . $fileName . '">';
+						$restContent[] = '<INCLUDE_TYPOSCRIPT: source="FILE:' . $fileName . '"' . $optionalProperties . '>';
 					} else {
 						// must be DIR
 
@@ -989,7 +1026,7 @@ class TypoScriptParser {
 						$extractedFileNames[] = $realFileName;
 
 						// Recursive call to detected nested commented include statements
-						$fileContentString = self::extractIncludes($fileContentString, $cycle_counter + 1, $extractedFileNames);
+						$fileContentString = self::extractIncludes($fileContentString, $cycle_counter + 1, $extractedFileNames, $realFileName);
 
 						// just drop content between tags since it should usually just contain individual files from that dir
 

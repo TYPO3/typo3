@@ -202,6 +202,48 @@ class PathUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 	/**
+	 * Data Provider for getAbsolutePathOfRelativeReferencedFileOrPathResolvesFileCorrectly
+	 *
+	 * @return array
+	 */
+	public function getAbsolutePathOfRelativeReferencedFileOrPathResolvesFileCorrectlyDataProvider() {
+		return array(
+			'basic' => array(
+				'/abc/def/one.txt',
+				'../two.txt',
+				'/abc/two.txt'
+			),
+			'same folder' => array(
+				'/abc/one.txt',
+				'./two.txt',
+				'/abc/two.txt'
+			),
+			'preserve relative path if path goes above start path' => array(
+				'abc/one.txt',
+				'../../two.txt',
+				'../two.txt'
+			),
+			'preserve absolute path even if path goes above start path' => array(
+				'/abc/one.txt',
+				'../../two.txt',
+				'/two.txt',
+			)
+		);
+	}
+
+	/**
+	 * @param $baseFileName
+	 * @param $includeFileName
+	 * @param $expectedFileName
+	 * @test
+	 * @dataProvider getAbsolutePathOfRelativeReferencedFileOrPathResolvesFileCorrectlyDataProvider
+	 */
+	public function getAbsolutePathOfRelativeReferencedFileOrPathResolvesFileCorrectly($baseFileName, $includeFileName, $expectedFileName) {
+		$resolvedFilename = \TYPO3\CMS\Core\Utility\PathUtility::getAbsolutePathOfRelativeReferencedFileOrPath($baseFileName, $includeFileName);
+		$this->assertEquals($expectedFileName, $resolvedFilename);
+	}
+
+	/**
 	 * Data provider for getCanonicalPathCorrectlyCleansPath
 	 *
 	 * @return array
