@@ -65,6 +65,14 @@ class IndexerService implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 	/**
+	 * @return \TYPO3\CMS\Core\Resource\Index\IndexRecordRepository
+	 */
+	protected function getIndexRecordRepository() {
+		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\Index\\IndexRecordRepository');
+	}
+
+
+	/**
 	 * Setter function for the fileFactory
 	 * returns the object itself for chaining purposes
 	 *
@@ -111,7 +119,7 @@ class IndexerService implements \TYPO3\CMS\Core\SingletonInterface {
 					$movedFile = TRUE;
 					$fileInfo['missing'] = 0;
 					$otherFile->updateProperties($fileInfo);
-					$this->getRepository()->update($otherFile);
+					$this->getIndexRecordRepository()->update($otherFile);
 					$fileInfo['uid'] = $otherFile->getUid();
 					$fileObject = $otherFile;
 					// Skip the rest of the files here as we might have more files that are missing, but we can only
@@ -197,7 +205,7 @@ class IndexerService implements \TYPO3\CMS\Core\SingletonInterface {
 				/** @var $fileObject \TYPO3\CMS\Core\Resource\File */
 				$fileObject = $this->getRepository()->findByIdentifier($file['uid']);
 				$fileObject->setMissing(TRUE);
-				$this->getRepository()->update($fileObject);
+				$this->getIndexRecordRepository()->update($fileObject);
 			}
 		}
 
