@@ -56,7 +56,7 @@ class GraphicsMagickPreset extends AbstractImagePreset implements Configuration\
 		'GFX/im_no_effects' => 1,
 		'GFX/im_v5effects' => -1,
 		'GFX/im_mask_temp_ext_gif' => 1,
-		'GFX/colorspace' => 'RGB',
+		'GFX/colorspace' => 'sRGB',
 	);
 
 	/**
