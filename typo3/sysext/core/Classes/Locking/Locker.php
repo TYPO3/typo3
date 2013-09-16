@@ -143,6 +143,7 @@ class Locker {
 	 * It is important to know that the lock will be acquired in any case, even if the request was blocked first. Therefore, the lock needs to be released in every situation.
 	 *
 	 * @return boolean Returns TRUE if lock could be acquired without waiting, FALSE otherwise.
+	 * @throws \RuntimeException
 	 */
 	public function acquire() {
 		// Default is TRUE, which means continue without caring for other clients. In the case of TYPO3s cache management, this has no negative effect except some resource overhead.
@@ -192,8 +193,12 @@ class Locker {
 				break;
 			case 'semaphore':
 				if (sem_acquire($this->resource)) {
-					// Unfortunately it seems not possible to find out if the request was blocked, so we return FALSE in any case to make sure the operation is tried again.
+					// Unfortunately it is not possible to find out if the request has blocked,
+					// as sem_acquire will block until we get the resource.
+					// So we return FALSE in any case.
 					$noWait = FALSE;
+				} else {
+					throw new \RuntimeException('Could not get lock on semaphore "' . $this->resource . '"', 1379502242);
 				}
 				break;
 			case 'disable':
