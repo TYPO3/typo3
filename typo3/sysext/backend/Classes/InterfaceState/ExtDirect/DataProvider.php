@@ -70,7 +70,9 @@ class DataProvider {
 	public function setState($parameter) {
 		$key = $parameter->params->key;
 		$data = json_decode($parameter->params->data);
-		$this->userSettings->set($key . '.' . $data[0]->name, $data[0]->value);
+		foreach ($data as $setting) {
+			$this->userSettings->set($key . '.' . $setting->name, $setting->value);
+		}
 		return array(
 			'success' => TRUE,
 			'params' => $parameter
