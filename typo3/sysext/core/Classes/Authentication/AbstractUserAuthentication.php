@@ -824,6 +824,13 @@ abstract class AbstractUserAuthentication {
 			}
 			$this->checkLogFailures($this->warningEmail, $this->warningPeriod, $this->warningMax);
 		}
+
+		if ($this->writeStdLog && $activeLogin && !$tempuser) {
+			$this->writelog(255, 3, 3, 1,
+				'Login-attempt from %s (%s), username \'%s\', username unknown!',
+				array(GeneralUtility::getIndpEnv('REMOTE_ADDR'), GeneralUtility::getIndpEnv('REMOTE_HOST'), $loginData['uname']),
+				'', 0, 0);
+		}
 	}
 
 	/**
