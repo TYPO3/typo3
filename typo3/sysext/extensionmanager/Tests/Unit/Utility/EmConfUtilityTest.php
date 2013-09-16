@@ -88,5 +88,36 @@ class EmConfUtilityTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$fixture = new \TYPO3\CMS\Extensionmanager\Utility\EmConfUtility();
 		$this->assertEquals($expected, $fixture->fixEmConf($input));
 	}
+
+	/**
+	 * @test
+	 */
+	public function dependencyToStringUnsetsDependencies() {
+		$config = array(
+			'depends' => array(
+				'php' => '5.0',
+				'something' => 'foo',
+				'anything' => 'bar'
+			)
+		);
+		$expected = 'something,anything';
+
+		/** @var \TYPO3\CMS\Extensionmanager\Utility\EmConfUtility $fixture */
+		$fixture = $fixture = new \TYPO3\CMS\Extensionmanager\Utility\EmConfUtility();
+		$result = $fixture::dependencyToString($config);
+		$this->assertEquals($expected, $result);
+	}
+
+	/**
+	 * @test
+	 */
+	public function dependencyToStringDealsWithInvalidInput() {
+		$input = array(
+			'depends' => 'hello world'
+		);
+		/** @var \TYPO3\CMS\Extensionmanager\Utility\EmConfUtility $fixture */
+		$fixture = $fixture = new \TYPO3\CMS\Extensionmanager\Utility\EmConfUtility();
+		$this->assertEquals('', $fixture::dependencyToString($input));
+	}
 }
 ?>
