@@ -982,7 +982,15 @@ class DatabaseConnection {
 		if (!$this->isConnected) {
 			$this->connectDB();
 		}
+		foreach ($this->preProcessHookObjects as $hookObject) {
+			/** @var $hookObject PreProcessQueryHookInterface */
+			$hookObject->sql_query_preProcessAction($select_fields, $from_table, $where_clause, $groupBy, $orderBy, $limit, $this);
+		}
 		$res = $this->link->query($query);
+		foreach ($this->postProcessHookObjects as $hookObject) {
+			/** @var $hookObject PostProcessQueryHookInterface */
+			$hookObject->sql_query_postProcessAction($query, $this);
+		}
 		if ($this->debugOutput) {
 			$this->debug('sql_query', $query);
 		}

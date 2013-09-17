@@ -101,6 +101,14 @@ interface PostProcessQueryHookInterface {
 	 */
 	public function exec_TRUNCATEquery_postProcessAction(&$table, \TYPO3\CMS\Core\Database\DatabaseConnection $parentObject);
 
+	/**
+	 * Post-processor for the sql_query method
+	 *
+	 * @param string $query Full SQL query
+	 * @param \TYPO3\CMS\Core\Database\DatabaseConnection $parentObject
+	 * @return void
+	 */
+	public function sql_query_postProcessAction($query, \TYPO3\CMS\Core\Database\DatabaseConnection $parentObject);
 }
 
 ?>
