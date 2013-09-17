@@ -493,9 +493,7 @@ class TestSetup extends Action\AbstractAction implements Action\ActionInterface 
 				'\'niceText\' is a concept that tries to improve the antialiasing of the rendered type by'
 				. ' actually rendering the textstring in double size on a black/white mask, downscaling the mask'
 				. ' and masking the text onto the image through this mask. This involves'
-				. ' ImageMagick \'combine\'/\'composite\' and \'convert\'.' . LF
-				. ' If the image has another background color than the image above (eg. dark background'
-				. ' color with light text) then you will have to set TYPO3_CONF_VARS[GFX][im_imvMaskState]=1'
+				. ' ImageMagick \'combine\'/\'composite\' and \'convert\'.'
 			);
 			$testResults['niceText']['message'] = $message;
 		} else {
@@ -597,7 +595,6 @@ class TestSetup extends Action\AbstractAction implements Action\ActionInterface 
 		$result['imageMagickPath'] = $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_path'];
 		$result['imageMagickVersion'] = $this->determineImageMagickVersion();
 		$result['imageMagick5Effecs'] = $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_v5effects'];
-		$result['imageMagickMaskInvert'] = $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_imvMaskState'];
 		$result['gdlibEnabled'] = $GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib'];
 		$result['gdlibPng'] = $GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib_png'];
 		$result['freeTypeDpi'] = $GLOBALS['TYPO3_CONF_VARS']['GFX']['TTFdpi'];
