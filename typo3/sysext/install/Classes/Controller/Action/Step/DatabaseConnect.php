@@ -208,7 +208,7 @@ class DatabaseConnect extends Action\AbstractAction implements StepInterface {
 		if ($this->isConnectSuccessful() && $this->isConfigurationComplete()) {
 			return FALSE;
 		}
-		if (!$this->isConfigurationComplete() && !$this->isDbalEnabled()) {
+		if (!$this->isHostConfigured() && !$this->isDbalEnabled()) {
 			$this->useDefaultValuesForNotConfiguredOptions();
 			throw new \TYPO3\CMS\Install\Controller\Exception\RedirectException(
 				'Wrote default settings to LocalConfiguration.php, redirect needed',
@@ -319,21 +319,33 @@ class DatabaseConnect extends Action\AbstractAction implements StepInterface {
 	 * Check LocalConfiguration.php for required database settings:
 	 * - 'host' is mandatory and must not be empty
 	 * - 'port' OR 'socket' is mandatory, but may be empty
-	 * - 'username' and 'password' are mandatory, but may be empty
 	 *
-	 * @return boolean TRUE if required settings are present
+	 * @return boolean TRUE if host is set
 	 */
-	protected function isConfigurationComplete() {
-		$configurationComplete = TRUE;
+	protected function isHostConfigured() {
+		$hostConfigured = TRUE;
 		if (empty($GLOBALS['TYPO3_CONF_VARS']['DB']['host'])) {
-			$configurationComplete = FALSE;
+			$hostConfigured = FALSE;
 		}
 		if (
 			!isset($GLOBALS['TYPO3_CONF_VARS']['DB']['port'])
 			&& !isset($GLOBALS['TYPO3_CONF_VARS']['DB']['socket'])
 		) {
-			$configurationComplete = FALSE;
+			$hostConfigured = FALSE;
 		}
+		return $hostConfigured;
+	}
+
+	/**
+	 * Check LocalConfiguration.php for required database settings:
+	 * - 'host' is mandatory and must not be empty
+	 * - 'port' OR 'socket' is mandatory, but may be empty
+	 * - 'username' and 'password' are mandatory, but may be empty
+	 *
+	 * @return boolean TRUE if required settings are present
+	 */
+	protected function isConfigurationComplete() {
+		$configurationComplete = $this->isHostConfigured();
 		if (!isset($GLOBALS['TYPO3_CONF_VARS']['DB']['username'])) {
 			$configurationComplete = FALSE;
 		}
@@ -361,10 +373,6 @@ class DatabaseConnect extends Action\AbstractAction implements StepInterface {
 	 */
 	protected function useDefaultValuesForNotConfiguredOptions() {
 		$localConfigurationPathValuePairs = array();
-
-		// Mandatory settings will always be written to LocalConfiguration.php, username/password may be empty
-		$localConfigurationPathValuePairs['DB/username'] = $this->getConfiguredUsername();
-		$localConfigurationPathValuePairs['DB/password'] = $this->getConfiguredPassword();
 
 		$localConfigurationPathValuePairs['DB/host'] = $this->getConfiguredHost();
 
