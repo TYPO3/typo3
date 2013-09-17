@@ -590,7 +590,7 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin 
 							$url = $this->referer;
 							// Is referring url allowed to redirect?
 							$match = array();
-							if (preg_match('/^http://([[:alnum:]._-]+)//', $url, $match)) {
+							if (preg_match('#^http://([[:alnum:]._-]+)/#', $url, $match)) {
 								$redirect_domain = $match[1];
 								$found = FALSE;
 								foreach (\TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->conf['domains'], TRUE) as $d) {
@@ -924,6 +924,5 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin 
 	}
 
 }
-
 
 ?>
