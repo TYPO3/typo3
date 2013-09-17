@@ -253,6 +253,7 @@ class TemplateParser {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
+	 * @inject
 	 */
 	protected $objectManager;
 
@@ -282,16 +283,6 @@ class TemplateParser {
 	 */
 	public function injectSettings(array $settings) {
 		$this->settings = $settings;
-	}
-
-	/**
-	 * Inject object factory
-	 *
-	 * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
-	 * @return void
-	 */
-	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager) {
-		$this->objectManager = $objectManager;
 	}
 
 	/**

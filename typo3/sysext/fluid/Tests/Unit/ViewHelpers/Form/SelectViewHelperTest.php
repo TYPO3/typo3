@@ -215,7 +215,7 @@ class SelectViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\
 	public function selectOnDomainObjectsCreatesExpectedOptions() {
 		$mockPersistenceManager = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\PersistenceManagerInterface');
 		$mockPersistenceManager->expects($this->any())->method('getIdentifierByObject')->will($this->returnValue(NULL));
-		$this->viewHelper->injectPersistenceManager($mockPersistenceManager);
+		$this->viewHelper->_set('persistenceManager', $mockPersistenceManager);
 
 		$this->tagBuilder->expects($this->once())->method('addAttribute')->with('name', 'myName');
 		$this->viewHelper->expects($this->once())->method('registerFieldNameForFormTokenGeneration')->with('myName');
@@ -287,7 +287,7 @@ class SelectViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\
 				return $object->getId();
 			}
 		));
-		$this->viewHelper->injectPersistenceManager($mockPersistenceManager);
+		$this->viewHelper->_set('persistenceManager', $mockPersistenceManager);
 
 		$this->tagBuilder = new \TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder();
 		$this->viewHelper->expects($this->exactly(3))->method('registerFieldNameForFormTokenGeneration')->with('myName[]');
@@ -322,7 +322,7 @@ class SelectViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\
 	public function selectWithoutFurtherConfigurationOnDomainObjectsUsesUuidForValueAndLabel() {
 		$mockPersistenceManager = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\PersistenceManagerInterface');
 		$mockPersistenceManager->expects($this->any())->method('getIdentifierByObject')->will($this->returnValue('fakeUID'));
-		$this->viewHelper->injectPersistenceManager($mockPersistenceManager);
+		$this->viewHelper->_set('persistenceManager', $mockPersistenceManager);
 
 		$this->tagBuilder->expects($this->once())->method('addAttribute')->with('name', 'myName');
 		$this->viewHelper->expects($this->once())->method('registerFieldNameForFormTokenGeneration')->with('myName');
@@ -347,7 +347,7 @@ class SelectViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\
 	public function selectWithoutFurtherConfigurationOnDomainObjectsUsesToStringForLabelIfAvailable() {
 		$mockPersistenceManager = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\PersistenceManagerInterface');
 		$mockPersistenceManager->expects($this->any())->method('getIdentifierByObject')->will($this->returnValue('fakeUID'));
-		$this->viewHelper->injectPersistenceManager($mockPersistenceManager);
+		$this->viewHelper->_set('persistenceManager', $mockPersistenceManager);
 
 		$this->tagBuilder->expects($this->once())->method('addAttribute')->with('name', 'myName');
 		$this->viewHelper->expects($this->once())->method('registerFieldNameForFormTokenGeneration')->with('myName');
@@ -374,7 +374,7 @@ class SelectViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\
 	public function selectOnDomainObjectsThrowsExceptionIfNoValueCanBeFound() {
 		$mockPersistenceManager = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\PersistenceManagerInterface');
 		$mockPersistenceManager->expects($this->any())->method('getIdentifierByObject')->will($this->returnValue(NULL));
-		$this->viewHelper->injectPersistenceManager($mockPersistenceManager);
+		$this->viewHelper->_set('persistenceManager', $mockPersistenceManager);
 
 		$user = new \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\Fixtures\UserDomainClass(1, 'Ingmar', 'Schlecht');
 

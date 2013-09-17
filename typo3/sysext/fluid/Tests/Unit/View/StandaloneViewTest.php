@@ -119,8 +119,8 @@ class StandaloneViewTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$this->mockRenderingContext = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\Rendering\\RenderingContext');
 		$this->mockRenderingContext->expects($this->any())->method('getControllerContext')->will($this->returnValue($this->mockControllerContext));
 		$this->mockRenderingContext->expects($this->any())->method('getViewHelperVariableContainer')->will($this->returnValue($this->mockViewHelperVariableContainer));
-		$this->view->injectTemplateParser($this->mockTemplateParser);
-		$this->view->injectObjectManager($this->mockObjectManager);
+		$this->view->_set('templateParser', $this->mockTemplateParser);
+		$this->view->_set('objectManager', $this->mockObjectManager);
 		$this->view->setRenderingContext($this->mockRenderingContext);
 		$this->mockTemplateCompiler = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\Compiler\\TemplateCompiler');
 		$this->view->_set('templateCompiler', $this->mockTemplateCompiler);

@@ -25,6 +25,7 @@ class RenderingContext implements \TYPO3\CMS\Fluid\Core\Rendering\RenderingConte
 	 * the whole syntax tree should be cacheable
 	 *
 	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
+	 * @inject
 	 */
 	protected $objectManager;
 
@@ -39,17 +40,9 @@ class RenderingContext implements \TYPO3\CMS\Fluid\Core\Rendering\RenderingConte
 	 * ViewHelper Variable Container
 	 *
 	 * @var \TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperVariableContainer
+	 * @inject
 	 */
 	protected $viewHelperVariableContainer;
-
-	/**
-	 * Inject the object manager
-	 *
-	 * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
-	 */
-	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager) {
-		$this->objectManager = $objectManager;
-	}
 
 	/**
 	 * Returns the object manager. Only the ViewHelperNode should do this.
@@ -61,7 +54,7 @@ class RenderingContext implements \TYPO3\CMS\Fluid\Core\Rendering\RenderingConte
 	}
 
 	/**
-	 * Injects the template variable container containing all variables available through ObjectAccessors
+	 * Injects the template variable container containing all variables available through Object Accessors
 	 * in the template
 	 *
 	 * @param \TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer $templateVariableContainer The template variable container to set
@@ -95,16 +88,6 @@ class RenderingContext implements \TYPO3\CMS\Fluid\Core\Rendering\RenderingConte
 	 */
 	public function getControllerContext() {
 		return $this->controllerContext;
-	}
-
-	/**
-	 * Set the ViewHelperVariableContainer
-	 *
-	 * @param \TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperVariableContainer $viewHelperVariableContainer
-	 * @return void
-	 */
-	public function injectViewHelperVariableContainer(\TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperVariableContainer $viewHelperVariableContainer) {
-		$this->viewHelperVariableContainer = $viewHelperVariableContainer;
 	}
 
 	/**

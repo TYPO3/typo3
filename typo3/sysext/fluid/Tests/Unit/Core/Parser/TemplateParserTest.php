@@ -228,7 +228,7 @@ class TemplateParserTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$mockObjectManager->expects($this->at(1))->method('get')->with('TYPO3\\CMS\\Fluid\\Core\\Parser\\SyntaxTree\\RootNode')->will($this->returnValue($mockRootNode));
 
 		$templateParser = $this->getAccessibleMock('TYPO3\\CMS\\Fluid\\Core\\Parser\\TemplateParser', array('dummy'));
-		$templateParser->injectObjectManager($mockObjectManager);
+		$templateParser->_set('objectManager', $mockObjectManager);
 		$templateParser->_call('buildObjectTree', array(), \TYPO3\CMS\Fluid\Core\Parser\TemplateParser::CONTEXT_OUTSIDE_VIEWHELPER_ARGUMENTS);
 	}
 
@@ -247,7 +247,7 @@ class TemplateParserTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$mockObjectManager->expects($this->at(1))->method('get')->with('TYPO3\\CMS\\Fluid\\Core\\Parser\\SyntaxTree\\RootNode')->will($this->returnValue($mockRootNode));
 
 		$templateParser = $this->getAccessibleMock('TYPO3\\CMS\\Fluid\\Core\\Parser\\TemplateParser', array('dummy'));
-		$templateParser->injectObjectManager($mockObjectManager);
+		$templateParser->_set('objectManager', $mockObjectManager);
 		$templateParser->_call('buildObjectTree', array(), \TYPO3\CMS\Fluid\Core\Parser\TemplateParser::CONTEXT_OUTSIDE_VIEWHELPER_ARGUMENTS);
 	}
 
@@ -263,7 +263,7 @@ class TemplateParserTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$mockObjectManager->expects($this->at(1))->method('get')->with('TYPO3\\CMS\\Fluid\\Core\\Parser\\SyntaxTree\\RootNode')->will($this->returnValue($mockRootNode));
 
 		$templateParser = $this->getAccessibleMock('TYPO3\\CMS\\Fluid\\Core\\Parser\\TemplateParser', array('textHandler', 'openingViewHelperTagHandler', 'closingViewHelperTagHandler', 'textAndShorthandSyntaxHandler'));
-		$templateParser->injectObjectManager($mockObjectManager);
+		$templateParser->_set('objectManager', $mockObjectManager);
 		$templateParser->expects($this->at(0))->method('textAndShorthandSyntaxHandler')->with($mockState, 'The first part is simple');
 		$templateParser->expects($this->at(1))->method('textHandler')->with($mockState, '<f:for each="{a: {a: 0, b: 2, c: 4}}" as="array"><f:for each="{array}" as="value">{value} </f:for>');
 		$templateParser->expects($this->at(2))->method('openingViewHelperTagHandler')->with($mockState, 'f', 'format.printf', ' arguments="{number : 362525200}"', FALSE);
@@ -320,7 +320,7 @@ class TemplateParserTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$mockState->expects($this->once())->method('pushNodeToStack')->with($mockViewHelperNode);
 
 		$templateParser = $this->getAccessibleMock('TYPO3\\CMS\\Fluid\\Core\\Parser\\TemplateParser', array('abortIfUnregisteredArgumentsExist', 'abortIfRequiredArgumentsAreMissing', 'rewriteBooleanNodesInArgumentsObjectTree'));
-		$templateParser->injectObjectManager($mockObjectManager);
+		$templateParser->_set('objectManager', $mockObjectManager);
 
 		$templateParser->_call('initializeViewHelperAndAddItToStack', $mockState, 'f', 'myown', array('arguments'));
 	}
@@ -346,7 +346,7 @@ class TemplateParserTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$mockState->expects($this->once())->method('getNodeFromStack')->will($this->returnValue($mockNodeOnStack));
 
 		$templateParser = $this->getAccessibleMock('TYPO3\\CMS\\Fluid\\Core\\Parser\\TemplateParser', array('abortIfUnregisteredArgumentsExist', 'abortIfRequiredArgumentsAreMissing', 'rewriteBooleanNodesInArgumentsObjectTree'));
-		$templateParser->injectObjectManager($mockObjectManager);
+		$templateParser->_set('objectManager', $mockObjectManager);
 		$templateParser->expects($this->once())->method('abortIfUnregisteredArgumentsExist')->with($expectedArguments, $argumentsObjectTree);
 		$templateParser->expects($this->once())->method('abortIfRequiredArgumentsAreMissing')->with($expectedArguments, $argumentsObjectTree);
 
@@ -372,7 +372,7 @@ class TemplateParserTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$mockState->expects($this->once())->method('getVariableContainer')->will($this->returnValue($this->getMock('TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\TemplateVariableContainer')));
 
 		$templateParser = $this->getAccessibleMock('TYPO3\\CMS\\Fluid\\Core\\Parser\\TemplateParser', array('abortIfUnregisteredArgumentsExist', 'abortIfRequiredArgumentsAreMissing', 'rewriteBooleanNodesInArgumentsObjectTree'));
-		$templateParser->injectObjectManager($mockObjectManager);
+		$templateParser->_set('objectManager', $mockObjectManager);
 
 		$templateParser->_call('initializeViewHelperAndAddItToStack', $mockState, 'f', 'myown', array('arguments'));
 		$this->assertTrue(\TYPO3\CMS\Fluid\Core\Parser\Fixtures\PostParseFacetViewHelper::$wasCalled, 'PostParse was not called!');
@@ -503,7 +503,7 @@ class TemplateParserTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$mockState->expects($this->once())->method('getNodeFromStack')->will($this->returnValue($mockNodeOnStack));
 
 		$templateParser = $this->getAccessibleMock('TYPO3\\CMS\\Fluid\\Core\\Parser\\TemplateParser', array('dummy'));
-		$templateParser->injectObjectManager($mockObjectManager);
+		$templateParser->_set('objectManager', $mockObjectManager);
 
 		$templateParser->_call('objectAccessorHandler', $mockState, 'objectAccessorString', '', '', '');
 	}
@@ -527,7 +527,7 @@ class TemplateParserTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$mockState->expects($this->once())->method('getNodeFromStack')->will($this->returnValue($mockNodeOnStack));
 
 		$templateParser = $this->getAccessibleMock('TYPO3\\CMS\\Fluid\\Core\\Parser\\TemplateParser', array('dummy'));
-		$templateParser->injectObjectManager($mockObjectManager);
+		$templateParser->_set('objectManager', $mockObjectManager);
 		$templateParser->_set('configuration', $parserConfiguration);
 
 		$templateParser->_call('objectAccessorHandler', $mockState, 'objectAccessorString', '', '', '');
@@ -564,7 +564,7 @@ class TemplateParserTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$mockObjectManager->expects($this->once())->method('get')->with('TYPO3\\CMS\\Fluid\\Core\\Parser\\SyntaxTree\\TextNode', 'a very plain string')->will($this->returnValue('theTextNode'));
 
 		$templateParser = $this->getAccessibleMock('TYPO3\\CMS\\Fluid\\Core\\Parser\\TemplateParser', array('dummy'));
-		$templateParser->injectObjectManager($mockObjectManager);
+		$templateParser->_set('objectManager', $mockObjectManager);
 
 		$this->assertEquals('theTextNode', $templateParser->_call('buildArgumentObjectTree', 'a very plain string'));
 	}
@@ -592,7 +592,7 @@ class TemplateParserTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$mockState = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\Parser\\ParsingState');
 
 		$templateParser = $this->getAccessibleMock('TYPO3\\CMS\\Fluid\\Core\\Parser\\TemplateParser', array('objectAccessorHandler', 'arrayHandler', 'textHandler'));
-		$templateParser->injectObjectManager($mockObjectManager);
+		$templateParser->_set('objectManager', $mockObjectManager);
 		$templateParser->expects($this->at(0))->method('objectAccessorHandler')->with($mockState, 'someThing.absolutely', '', '', '');
 		$templateParser->expects($this->at(1))->method('textHandler')->with($mockState, ' "fishy" is \'going\' ');
 		$templateParser->expects($this->at(2))->method('arrayHandler')->with($mockState, 'on: "here"');
@@ -615,7 +615,7 @@ class TemplateParserTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$mockObjectManager->expects($this->once())->method('get')->with('TYPO3\\CMS\\Fluid\\Core\\Parser\\SyntaxTree\\ArrayNode', 'processedArrayText')->will($this->returnValue($arrayNode));
 
 		$templateParser = $this->getAccessibleMock('TYPO3\\CMS\\Fluid\\Core\\Parser\\TemplateParser', array('recursiveArrayHandler'));
-		$templateParser->injectObjectManager($mockObjectManager);
+		$templateParser->_set('objectManager', $mockObjectManager);
 		$templateParser->expects($this->once())->method('recursiveArrayHandler')->with('arrayText')->will($this->returnValue('processedArrayText'));
 
 		$templateParser->_call('arrayHandler', $mockState, 'arrayText');
@@ -645,7 +645,7 @@ class TemplateParserTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$mockObjectManager->expects($this->any())->method('get')->will($this->returnArgument(1));
 
 		$templateParser = $this->getAccessibleMock('TYPO3\\CMS\\Fluid\\Core\\Parser\\TemplateParser', array('buildArgumentObjectTree'));
-		$templateParser->injectObjectManager($mockObjectManager);
+		$templateParser->_set('objectManager', $mockObjectManager);
 		$templateParser->expects($this->any())->method('buildArgumentObjectTree')->will($this->returnArgument(0));
 
 		$this->assertSame($expectedArray, $templateParser->_call('recursiveArrayHandler', $arrayText));
@@ -671,7 +671,7 @@ class TemplateParserTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$mockState->expects($this->once())->method('getNodeFromStack')->will($this->returnValue($mockNodeOnStack));
 
 		$templateParser = $this->getAccessibleMock('TYPO3\\CMS\\Fluid\\Core\\Parser\\TemplateParser', array('splitTemplateAtDynamicTags', 'buildObjectTree'));
-		$templateParser->injectObjectManager($mockObjectManager);
+		$templateParser->_set('objectManager', $mockObjectManager);
 		$templateParser->_set('configuration', $parserConfiguration);
 
 		$templateParser->_call('textHandler', $mockState, 'string');

@@ -32,11 +32,13 @@ abstract class AbstractTemplateView implements \TYPO3\CMS\Extbase\Mvc\View\ViewI
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
+	 * @inject
 	 */
 	protected $objectManager;
 
 	/**
 	 * @var \TYPO3\CMS\Fluid\Core\Parser\TemplateParser
+	 * @inject
 	 */
 	protected $templateParser;
 
@@ -70,26 +72,6 @@ abstract class AbstractTemplateView implements \TYPO3\CMS\Extbase\Mvc\View\ViewI
 	 * @var array
 	 */
 	protected $partialIdentifierCache = array();
-
-	/**
-	 * Injects the Object Manager
-	 *
-	 * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
-	 * @return void
-	 */
-	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager) {
-		$this->objectManager = $objectManager;
-	}
-
-	/**
-	 * Inject the Template Parser
-	 *
-	 * @param \TYPO3\CMS\Fluid\Core\Parser\TemplateParser $templateParser The template parser
-	 * @return void
-	 */
-	public function injectTemplateParser(\TYPO3\CMS\Fluid\Core\Parser\TemplateParser $templateParser) {
-		$this->templateParser = $templateParser;
-	}
 
 	/**
 	 * @param \TYPO3\CMS\Fluid\Core\Compiler\TemplateCompiler $templateCompiler

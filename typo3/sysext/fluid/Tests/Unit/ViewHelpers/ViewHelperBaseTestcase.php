@@ -86,9 +86,9 @@ abstract class ViewHelperBaseTestcase extends \TYPO3\CMS\Extbase\Tests\Unit\Base
 		$this->controllerContext->expects($this->any())->method('getRequest')->will($this->returnValue($this->request));
 		$this->tagBuilder = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\TagBuilder');
 		$this->arguments = array();
-		$this->renderingContext = new \TYPO3\CMS\Fluid\Core\Rendering\RenderingContext();
+		$this->renderingContext = $this->getAccessibleMock('TYPO3\\CMS\\Fluid\\Core\\Rendering\\RenderingContext', array('dummy'));
 		$this->renderingContext->injectTemplateVariableContainer($this->templateVariableContainer);
-		$this->renderingContext->injectViewHelperVariableContainer($this->viewHelperVariableContainer);
+		$this->renderingContext->_set('viewHelperVariableContainer', $this->viewHelperVariableContainer);
 		$this->renderingContext->setControllerContext($this->controllerContext);
 		$this->mvcPropertyMapperConfigurationService = $this->getAccessibleMock('TYPO3\CMS\Extbase\Mvc\Controller\MvcPropertyMappingConfigurationService', array('dummy'));
 	}
@@ -101,7 +101,7 @@ abstract class ViewHelperBaseTestcase extends \TYPO3\CMS\Extbase\Tests\Unit\Base
 		$viewHelper->setRenderingContext($this->renderingContext);
 		$viewHelper->setArguments($this->arguments);
 		if ($viewHelper instanceof \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper) {
-			$viewHelper->injectTagBuilder($this->tagBuilder);
+			$viewHelper->_set('tag', $this->tagBuilder);
 		}
 	}
 }
