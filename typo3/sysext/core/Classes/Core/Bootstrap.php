@@ -487,16 +487,10 @@ class Bootstrap {
 			$GLOBALS['TYPO3_CONF_VARS']['GFX']['thumbnails'] = 0;
 		}
 		if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_version_5']) {
-			$GLOBALS['TYPO3_CONF_VARS']['GFX']['im_negate_mask'] = 1;
 			$GLOBALS['TYPO3_CONF_VARS']['GFX']['im_mask_temp_ext_gif'] = 1;
 			if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_version_5'] === 'gm') {
-				$GLOBALS['TYPO3_CONF_VARS']['GFX']['im_negate_mask'] = 0;
-				$GLOBALS['TYPO3_CONF_VARS']['GFX']['im_imvMaskState'] = 0;
 				$GLOBALS['TYPO3_CONF_VARS']['GFX']['im_v5effects'] = -1;
 			}
-		}
-		if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_imvMaskState']) {
-			$GLOBALS['TYPO3_CONF_VARS']['GFX']['im_negate_mask'] = $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_negate_mask'] ? 0 : 1;
 		}
 		return $this;
 	}
