@@ -40,8 +40,6 @@ class CustomPreset extends Configuration\AbstractCustomPreset implements Configu
 		'GFX/im_path' => '',
 		'GFX/im_path_lzw' => '',
 		'GFX/im_version_5' => '',
-		'GFX/im_negate_mask' => 0,
-		'GFX/im_imvMaskState' => 0,
 		'GFX/im_v5effects' => 0,
 		'GFX/im_mask_temp_ext_gif' => 0,
 		'GFX/colorspace' => '',

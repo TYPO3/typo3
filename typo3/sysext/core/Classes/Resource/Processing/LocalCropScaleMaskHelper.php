@@ -94,7 +94,6 @@ class LocalCropScaleMaskHelper {
 			$maskImage = $configuration['maskImages']['maskImage'];
 			$maskBackgroundImage = $configuration['maskImages']['backgroundImage'];
 			if ($maskImage instanceof Resource\FileInterface && $maskBackgroundImage instanceof Resource\FileInterface) {
-				$negate = $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_negate_mask'] ? ' -negate' : '';
 				$temporaryExtension = 'png';
 				if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_mask_temp_ext_gif']) {
 					// If ImageMagick version 5+
@@ -124,7 +123,7 @@ class LocalCropScaleMaskHelper {
 					$tmpStr = $gifBuilder->randomName();
 					//	m_mask
 					$tempScale['m_mask'] = $tmpStr . '_mask.' . $temporaryExtension;
-					$gifBuilder->imageMagickExec($maskImage->getForLocalProcessing(TRUE), $tempScale['m_mask'], $command . $negate);
+					$gifBuilder->imageMagickExec($maskImage->getForLocalProcessing(TRUE), $tempScale['m_mask'], $command);
 					//	m_bgImg
 					$tempScale['m_bgImg'] = $tmpStr . '_bgImg.miff';
 					$gifBuilder->imageMagickExec($maskBackgroundImage->getForLocalProcessing(), $tempScale['m_bgImg'], $command);
@@ -133,7 +132,7 @@ class LocalCropScaleMaskHelper {
 						$tempScale['m_bottomImg'] = $tmpStr . '_bottomImg.' . $temporaryExtension;
 						$gifBuilder->imageMagickExec($maskBottomImage->getForLocalProcessing(), $tempScale['m_bottomImg'], $command);
 						$tempScale['m_bottomImg_mask'] = ($tmpStr . '_bottomImg_mask.') . $temporaryExtension;
-						$gifBuilder->imageMagickExec($maskBottomImageMask->getForLocalProcessing(), $tempScale['m_bottomImg_mask'], $command . $negate);
+						$gifBuilder->imageMagickExec($maskBottomImageMask->getForLocalProcessing(), $tempScale['m_bottomImg_mask'], $command);
 						// BEGIN combining:
 						// The image onto the background
 						$gifBuilder->combineExec($tempScale['m_bgImg'], $tempScale['m_bottomImg'], $tempScale['m_bottomImg_mask'], $tempScale['m_bgImg']);
