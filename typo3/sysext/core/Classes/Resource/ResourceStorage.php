@@ -1707,7 +1707,7 @@ class ResourceStorage {
 		// Renaming the folder should check if the parent folder is writable
 		// We cannot do this however because we cannot extract the parent folder from a folder currently
 		if (!$this->checkFolderActionPermission('rename', $folderObject)) {
-			throw new \TYPO3\CMS\Core\Resource\Exception\InsufficientFileAccessPermissionsException('You are not allowed to rename the folder "' . $folderObject->getIdentifier() . '\'', 1357811441);
+			throw new \TYPO3\CMS\Core\Resource\Exception\InsufficientUserPermissionsException('You are not allowed to rename the folder "' . $folderObject->getIdentifier() . '\'', 1357811441);
 		}
 
 		$returnObject = NULL;
