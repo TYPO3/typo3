@@ -347,14 +347,6 @@ class GraphicalFunctions {
 			$this->enable_typo3temp_db_tracking = $gfxConf['enable_typo3temp_db_tracking'];
 		}
 		$this->imageFileExt = $gfxConf['imagefile_ext'];
-		// This should be set if ImageMagick ver. 5+ is used.
-		if ($gfxConf['im_negate_mask']) {
-			// Boolean. Indicates if the mask images should be inverted first.
-			// This depends of the ImageMagick version. Below ver. 5.1 this should be FALSE.
-			// Above ImageMagick version 5.2+ it should be TRUE.
-			// Just set the flag if the masks works opposite the intension!
-			$this->maskNegate = ' -negate';
-		}
 
 		// Boolean. This is necessary if using ImageMagick 5+.
 		// Effects in Imagemagick 5+ tends to render very slowly!!

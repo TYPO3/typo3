@@ -70,12 +70,16 @@ class StepController extends AbstractController {
 		'FE/defaultTypoScript_editorcfg.',
 		// #25099
 		'FE/simulateStaticDocuments',
-		// 52011
+		// #52011
 		'GFX/im_combine_filename',
+		// #52088
+		'GFX/im_imvMaskState',
 		// #22687
 		'GFX/gdlib_2',
 		// #52012
 		'GFX/im_mask_temp_ext_noloss',
+		// #52088
+		'GFX/im_negate_mask',
 		// #52010
 		'GFX/im_no_effects',
 		// #18431

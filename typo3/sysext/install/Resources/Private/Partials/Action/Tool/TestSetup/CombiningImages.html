@@ -17,10 +17,6 @@
 				This verifies that the ImageMagick tool, 'combine'/'composite', is able to
 				combine two images through a grayscale mask.
 			</p>
-			<p>
-				If the masking seems to work but inverted, that just means you'll have to make
-				sure the invert flag is set (some combination of im_negate_mask/im_imvMaskState)
-			</p>
 
 			<f:for each="{testResults}" as="test">
 				<f:render partial="Action/Tool/TestSetup/DisplayTwinImage" arguments="{_all}"/>
