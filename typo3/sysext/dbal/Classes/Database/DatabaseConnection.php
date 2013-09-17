@@ -2421,6 +2421,10 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 		if ($globalConfig['sql_query.']['passthrough']) {
 			return parent::sql_query($query);
 		}
+		foreach ($this->preProcessHookObjects as $hookObject) {
+			/** @var $hookObject \TYPO3\CMS\Core\Database\PreProcessQueryHookInterface */
+			$hookObject->sql_query_preProcessAction($select_fields, $from_table, $where_clause, $groupBy, $orderBy, $limit, $this);
+		}
 		// This method is heavily used by Extbase, try to handle it with DBAL-native methods
 		$queryParts = $this->SQLparser->parseSQL($query);
 		if (is_array($queryParts) && GeneralUtility::inList('SELECT,UPDATE,INSERT,DELETE', $queryParts['type'])) {
@@ -2440,6 +2444,10 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 				break;
 		}
 		$this->lastHandlerKey = '_DEFAULT';
+		foreach ($this->postProcessHookObjects as $hookObject) {
+			/** @var $hookObject \TYPO3\CMS\Core\Database\PostProcessQueryHookInterface */
+			$hookObject->sql_query_postProcessAction($query, $this);
+		}
 		if ($this->printErrors && $this->sql_error()) {
 			debug(array($this->lastQuery, $this->sql_error()));
 		}

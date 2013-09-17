@@ -103,6 +103,14 @@ interface PreProcessQueryHookInterface {
 	 */
 	public function TRUNCATEquery_preProcessAction(&$table, \TYPO3\CMS\Core\Database\DatabaseConnection $parentObject);
 
+	/**
+	 * Pre-processor for the sql_query method
+	 *
+	 * @param string $query Full SQL query
+	 * @param \TYPO3\CMS\Core\Database\DatabaseConnection $parentObject
+	 * @return void
+	 */
+	public function sql_query_preProcessAction($query, \TYPO3\CMS\Core\Database\DatabaseConnection $parentObject);
 }
 
 ?>
