@@ -51,8 +51,6 @@ class ImageMagick6Preset extends AbstractImagePreset implements Configuration\Pr
 		'GFX/im_path' => '',
 		'GFX/im_path_lzw' => '',
 		'GFX/im_version_5' => 'im6',
-		'GFX/im_negate_mask' => 0,
-		'GFX/im_imvMaskState' => 1,
 		'GFX/im_v5effects' => 1,
 		'GFX/im_mask_temp_ext_gif' => 1,
 		'GFX/colorspace' => 'sRGB',
@@ -92,7 +90,7 @@ class ImageMagick6Preset extends AbstractImagePreset implements Configuration\Pr
 				if (strpos($firstResultLine, 'ImageMagick') !== FALSE) {
 					list(,$version) = explode('ImageMagick', $firstResultLine);
 					// Example: "6.6.0-4"
-					list($version) = explode(' ',trim($version));
+					list($version) = explode(' ', trim($version));
 					if (version_compare($version, '6.0.0') >= 0) {
 						$this->foundPath = $path;
 						$result = TRUE;
