@@ -22,7 +22,7 @@ class ForViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelp
 	public function setUp() {
 		parent::setUp();
 		$this->templateVariableContainer = new \TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer(array());
-		$this->renderingContext->injectTemplateVariableContainer($this->templateVariableContainer);
+		$this->renderingContext->_set('templateVariableContainer', $this->templateVariableContainer);
 
 		$this->arguments['reverse'] = NULL;
 		$this->arguments['key'] = '';

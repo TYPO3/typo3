@@ -51,16 +51,9 @@ class AutocompleteViewHelper extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidget
 
 	/**
 	 * @var \TYPO3\CMS\Fluid\ViewHelpers\Widget\Controller\AutocompleteController
+	 * @inject
 	 */
 	protected $controller;
-
-	/**
-	 * @param \TYPO3\CMS\Fluid\ViewHelpers\Widget\Controller\AutocompleteController $controller
-	 * @return void
-	 */
-	public function injectController(\TYPO3\CMS\Fluid\ViewHelpers\Widget\Controller\AutocompleteController $controller) {
-		$this->controller = $controller;
-	}
 
 	/**
 	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\QueryResult $objects

@@ -56,21 +56,25 @@ class FormViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormViewH
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Security\Channel\RequestHashService
+	 * @inject
 	 */
 	protected $requestHashService;
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Security\Cryptography\HashService
+	 * @inject
 	 */
 	protected $hashService;
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Mvc\Controller\MvcPropertyMappingConfigurationService
+	 * @inject
 	 */
 	protected $mvcPropertyMappingConfigurationService;
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Service\ExtensionService
+	 * @inject
 	 */
 	protected $extensionService;
 
@@ -84,49 +88,9 @@ class FormViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormViewH
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
+	 * @inject
 	 */
 	protected $configurationManager;
-
-	/**
-	 * Inject a request hash service
-	 *
-	 * @param \TYPO3\CMS\Extbase\Security\Channel\RequestHashService $requestHashService The request hash service
-	 * @return void
-	 */
-	public function injectRequestHashService(\TYPO3\CMS\Extbase\Security\Channel\RequestHashService $requestHashService) {
-		$this->requestHashService = $requestHashService;
-	}
-
-	/**
-	 * @param \TYPO3\CMS\Extbase\Security\Cryptography\HashService $hashService
-	 */
-	public function injectHashService(\TYPO3\CMS\Extbase\Security\Cryptography\HashService $hashService) {
-		$this->hashService = $hashService;
-	}
-
-	/**
-	 * @param \TYPO3\CMS\Extbase\Service\ExtensionService $extensionService
-	 * @return void
-	 */
-	public function injectExtensionService(\TYPO3\CMS\Extbase\Service\ExtensionService $extensionService) {
-		$this->extensionService = $extensionService;
-	}
-
-	/**
-	 * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
-	 * @return void
-	 */
-	public function injectConfigurationManager(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager) {
-		$this->configurationManager = $configurationManager;
-	}
-
-	/**
-	 * @param \TYPO3\CMS\Extbase\Mvc\Controller\MvcPropertyMappingConfigurationService $mvcPropertyMapperConfigurationService
-	 * @return void
-	 */
-	public function injectMvcPropertyMapperConfigurationService(\TYPO3\CMS\Extbase\Mvc\Controller\MvcPropertyMappingConfigurationService $mvcPropertyMapperConfigurationService) {
-		$this->mvcPropertyMappingConfigurationService = $mvcPropertyMapperConfigurationService;
-	}
 
 	/**
 	 * Initialize arguments.

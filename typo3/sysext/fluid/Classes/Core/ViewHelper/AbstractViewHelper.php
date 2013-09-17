@@ -101,6 +101,7 @@ abstract class AbstractViewHelper {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
+	 * @inject
 	 */
 	protected $objectManager;
 
@@ -110,14 +111,6 @@ abstract class AbstractViewHelper {
 	 * @var boolean
 	 */
 	protected $escapingInterceptorEnabled = TRUE;
-
-	/**
-	 * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
-	 * @return void
-	 */
-	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager) {
-		$this->objectManager = $objectManager;
-	}
 
 	/**
 	 * @param array $arguments

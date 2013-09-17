@@ -23,7 +23,7 @@ class RenderingContextTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	protected $renderingContext;
 
 	public function setUp() {
-		$this->renderingContext = new \TYPO3\CMS\Fluid\Core\Rendering\RenderingContext();
+		$this->renderingContext = $this->getAccessibleMock('TYPO3\\CMS\\Fluid\\Core\\Rendering\\RenderingContext', array('dummy'));
 	}
 
 	/**
@@ -31,7 +31,7 @@ class RenderingContextTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 */
 	public function templateVariableContainerCanBeReadCorrectly() {
 		$templateVariableContainer = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\TemplateVariableContainer');
-		$this->renderingContext->injectTemplateVariableContainer($templateVariableContainer);
+		$this->renderingContext->_set('templateVariableContainer', $templateVariableContainer);
 		$this->assertSame($this->renderingContext->getTemplateVariableContainer(), $templateVariableContainer, 'Template Variable Container could not be read out again.');
 	}
 
@@ -49,7 +49,7 @@ class RenderingContextTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 */
 	public function viewHelperVariableContainerCanBeReadCorrectly() {
 		$viewHelperVariableContainer = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\ViewHelperVariableContainer');
-		$this->renderingContext->injectViewHelperVariableContainer($viewHelperVariableContainer);
+		$this->renderingContext->_set('viewHelperVariableContainer', $viewHelperVariableContainer);
 		$this->assertSame($viewHelperVariableContainer, $this->renderingContext->getViewHelperVariableContainer());
 	}
 }

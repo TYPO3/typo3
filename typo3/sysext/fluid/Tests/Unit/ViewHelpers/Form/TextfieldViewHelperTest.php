@@ -39,7 +39,7 @@ class TextfieldViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Fo
 	public function renderCorrectlySetsTagName() {
 		$mockTagBuilder = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\TagBuilder', array('setTagName'), array(), '', FALSE);
 		$mockTagBuilder->expects($this->once())->method('setTagName')->with('input');
-		$this->viewHelper->injectTagBuilder($mockTagBuilder);
+		$this->viewHelper->_set('tag', $mockTagBuilder);
 
 		$this->viewHelper->initialize();
 		$this->viewHelper->render();
@@ -55,7 +55,7 @@ class TextfieldViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Fo
 		$this->viewHelper->expects($this->once())->method('registerFieldNameForFormTokenGeneration')->with('NameOfTextfield');
 		$mockTagBuilder->expects($this->at(2))->method('addAttribute')->with('value', 'Current value');
 		$mockTagBuilder->expects($this->once())->method('render');
-		$this->viewHelper->injectTagBuilder($mockTagBuilder);
+		$this->viewHelper->_set('tag', $mockTagBuilder);
 
 		$arguments = array(
 			'name' => 'NameOfTextfield',
@@ -86,7 +86,7 @@ class TextfieldViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Fo
 		$mockTagBuilder->expects($this->at(1))->method('addAttribute')->with('type', 'text');
 		$mockTagBuilder->expects($this->at(2))->method('addAttribute')->with('name', 'NameOfTextfield');
 		$mockTagBuilder->expects($this->once())->method('render');
-		$this->viewHelper->injectTagBuilder($mockTagBuilder);
+		$this->viewHelper->_set('tag', $mockTagBuilder);
 
 		$arguments = array(
 			'name' => 'NameOfTextfield',

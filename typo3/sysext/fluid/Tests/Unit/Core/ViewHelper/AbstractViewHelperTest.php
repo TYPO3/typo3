@@ -273,9 +273,9 @@ class AbstractViewHelperTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase 
 		$viewHelperVariableContainer = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\ViewHelperVariableContainer');
 		$controllerContext = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\ControllerContext', array(), array(), '', FALSE);
 
-		$renderingContext = new \TYPO3\CMS\Fluid\Core\Rendering\RenderingContext();
-		$renderingContext->injectTemplateVariableContainer($templateVariableContainer);
-		$renderingContext->injectViewHelperVariableContainer($viewHelperVariableContainer);
+		$renderingContext = $this->getAccessibleMock('TYPO3\\CMS\\Fluid\\Core\\Rendering\\RenderingContext', array('dummy'));
+		$renderingContext->_set('templateVariableContainer', $templateVariableContainer);
+		$renderingContext->_set('viewHelperVariableContainer', $viewHelperVariableContainer);
 		$renderingContext->setControllerContext($controllerContext);
 
 		$viewHelper = $this->getAccessibleMock('TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\AbstractViewHelper', array('render', 'prepareArguments'), array(), '', FALSE);
