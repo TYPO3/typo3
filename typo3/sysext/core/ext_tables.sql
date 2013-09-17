@@ -299,7 +299,7 @@ CREATE TABLE sys_file (
 
 	type varchar(10) DEFAULT '' NOT NULL,
 	storage int(11) DEFAULT '0' NOT NULL,
-	identifier varchar(200) DEFAULT '' NOT NULL,
+	identifier varchar(512) DEFAULT '' NOT NULL,
 	extension varchar(255) DEFAULT '' NOT NULL,
 	mime_type varchar(255) DEFAULT '' NOT NULL,
 	name tinytext,
@@ -334,7 +334,7 @@ CREATE TABLE sys_file_processedfile (
 
 	storage int(11) DEFAULT '0' NOT NULL,
 	original int(11) DEFAULT '0' NOT NULL,
-	identifier varchar(200) DEFAULT '' NOT NULL,
+	identifier varchar(512) DEFAULT '' NOT NULL,
 	name tinytext,
 	configuration text,
 	originalfilesha1 varchar(40) DEFAULT '' NOT NULL,
