@@ -1,5 +1,9 @@
 @charset "UTF-8";
 
+span.t3-icon-actions {
+	cursor: pointer;
+}
+
 div#typo3-inner-docbody {
 	height: 100%;
 	padding: 0;
