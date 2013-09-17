@@ -66,7 +66,7 @@ class AbstractWidgetViewHelperTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTes
 	public function setUp() {
 		$this->viewHelper = $this->getAccessibleMock('TYPO3\\CMS\\Fluid\\Core\\Widget\\AbstractWidgetViewHelper', array('validateArguments', 'initialize', 'callRenderMethod', 'getWidgetConfiguration', 'getRenderingContext'));
 		$this->mockExtensionService = $this->getMock('TYPO3\\CMS\\Extbase\\Service\\ExtensionService');
-		$this->viewHelper->injectExtensionService($this->mockExtensionService);
+		$this->viewHelper->_set('extensionService', $this->mockExtensionService);
 		$this->ajaxWidgetContextHolder = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\Widget\\AjaxWidgetContextHolder');
 		$this->viewHelper->injectAjaxWidgetContextHolder($this->ajaxWidgetContextHolder);
 		$this->widgetContext = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\Widget\\WidgetContext');

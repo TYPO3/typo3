@@ -55,6 +55,7 @@ abstract class AbstractWidgetViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Service\ExtensionService
+	 * @inject
 	 */
 	protected $extensionService;
 
@@ -78,14 +79,6 @@ abstract class AbstractWidgetViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper
 	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager) {
 		$this->objectManager = $objectManager;
 		$this->widgetContext = $this->objectManager->get('TYPO3\\CMS\\Fluid\\Core\\Widget\\WidgetContext');
-	}
-
-	/**
-	 * @param \TYPO3\CMS\Extbase\Service\ExtensionService $extensionService
-	 * @return void
-	 */
-	public function injectExtensionService(\TYPO3\CMS\Extbase\Service\ExtensionService $extensionService) {
-		$this->extensionService = $extensionService;
 	}
 
 	/**

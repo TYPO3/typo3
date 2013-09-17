@@ -51,10 +51,10 @@ class ViewHelperNodeTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * Setup fixture
 	 */
 	public function setUp() {
-		$this->renderingContext = new \TYPO3\CMS\Fluid\Core\Rendering\RenderingContext();
+		$this->renderingContext = $this->getAccessibleMock('TYPO3\\CMS\\Fluid\\Core\\Rendering\\RenderingContext');
 
 		$this->mockObjectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerInterface');
-		$this->renderingContext->injectObjectManager($this->mockObjectManager);
+		$this->renderingContext->_set('objectManager', $this->mockObjectManager);
 
 		$this->templateVariableContainer = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\TemplateVariableContainer');
 		$this->renderingContext->injectTemplateVariableContainer($this->templateVariableContainer);
@@ -63,7 +63,7 @@ class ViewHelperNodeTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$this->renderingContext->setControllerContext($this->controllerContext);
 
 		$this->viewHelperVariableContainer = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\ViewHelperVariableContainer');
-		$this->renderingContext->injectViewHelperVariableContainer($this->viewHelperVariableContainer);
+		$this->renderingContext->_set('viewHelperVariableContainer', $this->viewHelperVariableContainer);
 	}
 
 	/**

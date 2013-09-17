@@ -31,6 +31,7 @@ abstract class AbstractTagBasedViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelp
 	 * Tag builder instance
 	 *
 	 * @var \TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder
+	 * @inject
 	 * @api
 	 */
 	protected $tag = NULL;
@@ -42,16 +43,6 @@ abstract class AbstractTagBasedViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelp
 	 * @api
 	 */
 	protected $tagName = 'div';
-
-	/**
-	 * Inject a TagBuilder
-	 *
-	 * @param \TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder $tagBuilder Tag builder
-	 * @return void
-	 */
-	public function injectTagBuilder(\TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder $tagBuilder) {
-		$this->tag = $tagBuilder;
-	}
 
 	/**
 	 * Constructor

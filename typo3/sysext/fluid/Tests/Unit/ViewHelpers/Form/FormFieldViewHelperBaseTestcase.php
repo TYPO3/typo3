@@ -44,7 +44,7 @@ abstract class FormFieldViewHelperBaseTestcase extends \TYPO3\CMS\Fluid\Tests\Un
 	 * @return void
 	 */
 	protected function injectDependenciesIntoViewHelper(\TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper $viewHelper) {
-		$viewHelper->injectConfigurationManager($this->mockConfigurationManager);
+		$viewHelper->_set('configurationManager', $this->mockConfigurationManager);
 		parent::injectDependenciesIntoViewHelper($viewHelper);
 	}
 }

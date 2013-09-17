@@ -52,7 +52,7 @@ class UploadViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\
 		$this->viewHelper->expects($this->at(3))->method('registerFieldNameForFormTokenGeneration')->with('someName[error]');
 		$this->viewHelper->expects($this->at(4))->method('registerFieldNameForFormTokenGeneration')->with('someName[size]');
 		$mockTagBuilder->expects($this->once())->method('render');
-		$this->viewHelper->injectTagBuilder($mockTagBuilder);
+		$this->viewHelper->_set('tag', $mockTagBuilder);
 		$arguments = array(
 			'name' => 'someName'
 		);

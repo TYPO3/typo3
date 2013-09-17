@@ -30,39 +30,21 @@ class WidgetRequestHandler extends \TYPO3\CMS\Extbase\Mvc\Web\AbstractRequestHan
 
 	/**
 	 * @var \TYPO3\CMS\Fluid\Core\Widget\AjaxWidgetContextHolder
+	 * @inject
 	 */
 	protected $ajaxWidgetContextHolder;
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
+	 * @inject
 	 */
 	protected $configurationManager;
 
 	/**
-	 * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
-	 * @return void
+	 * @var \TYPO3\CMS\Fluid\Core\Widget\WidgetRequestBuilder
+	 * @inject
 	 */
-	public function injectConfigurationManager(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager) {
-		$this->configurationManager = $configurationManager;
-	}
-
-	/**
-	 * @param \TYPO3\CMS\Fluid\Core\Widget\AjaxWidgetContextHolder $ajaxWidgetContextHolder
-	 * @return void
-	 */
-	public function injectAjaxWidgetContextHolder(\TYPO3\CMS\Fluid\Core\Widget\AjaxWidgetContextHolder $ajaxWidgetContextHolder) {
-		$this->ajaxWidgetContextHolder = $ajaxWidgetContextHolder;
-	}
-
-	/**
-	 * Injects the request handler
-	 *
-	 * @param \TYPO3\CMS\Fluid\Core\Widget\WidgetRequestBuilder $requestBuilder
-	 * @return void
-	 */
-	public function injectRequestBuilder(\TYPO3\CMS\Fluid\Core\Widget\WidgetRequestBuilder $requestBuilder) {
-		$this->requestBuilder = $requestBuilder;
-	}
+	protected $requestBuilder;
 
 	/**
 	 * Handles the web request. The response will automatically be sent to the client.

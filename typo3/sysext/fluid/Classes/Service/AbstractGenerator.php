@@ -27,11 +27,13 @@ abstract class AbstractGenerator {
 	 * The doc comment parser.
 	 *
 	 * @var \TYPO3\CMS\Extbase\Reflection\DocCommentParser
+	 * @inject
 	 */
 	protected $docCommentParser;
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Reflection\ReflectionService
+	 * @inject
 	 */
 	protected $reflectionService;
 
@@ -43,23 +45,6 @@ abstract class AbstractGenerator {
 		\TYPO3\CMS\Fluid\Fluid::$debugMode = TRUE; // We want ViewHelper argument documentation
 		$this->abstractViewHelperReflectionClass = new \TYPO3\CMS\Extbase\Reflection\ClassReflection('TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper');
 	}
-
-	/**
-	 *
-	 * @param \TYPO3\CMS\Extbase\Reflection\DocCommentParser $docCommentParser
-	 */
-	public function injectDocCommentParser(\TYPO3\CMS\Extbase\Reflection\DocCommentParser $docCommentParser) {
-		$this->docCommentParser = $docCommentParser;
-	}
-
-	/**
-	 *
-	 * @param \TYPO3\CMS\Extbase\Reflection\ReflectionService $reflectionService
-	 */
-	public function injectReflectionService(\TYPO3\CMS\Extbase\Reflection\ReflectionService $reflectionService) {
-		$this->reflectionService = $reflectionService;
-	}
-
 
 	/**
 	 * Get all class names inside this namespace and return them as array.

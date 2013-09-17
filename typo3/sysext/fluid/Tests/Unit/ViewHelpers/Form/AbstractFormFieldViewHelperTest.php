@@ -33,7 +33,7 @@ class AbstractFormFieldViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHe
 
 		$formViewHelper = $this->getAccessibleMock('TYPO3\\CMS\\Fluid\\ViewHelpers\\Form\\AbstractFormFieldViewHelper', array('dummy'), array(), '', FALSE);
 		$this->injectDependenciesIntoViewHelper($formViewHelper);
-		$formViewHelper->injectPersistenceManager($mockPersistenceManager);
+		$formViewHelper->_set('persistenceManager', $mockPersistenceManager);
 
 		$arguments = array('name' => 'foo', 'value' => $object, 'property' => NULL);
 		$formViewHelper->_set('arguments', $arguments);
@@ -190,7 +190,7 @@ class AbstractFormFieldViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHe
 		$formViewHelper = $this->getAccessibleMock('TYPO3\\CMS\\Fluid\\ViewHelpers\\Form\\AbstractFormFieldViewHelper', array('isObjectAccessorMode'), array(), '', FALSE);
 		$formViewHelper->expects($this->any())->method('isObjectAccessorMode')->will($this->returnValue(FALSE));
 		$this->injectDependenciesIntoViewHelper($formViewHelper);
-		$formViewHelper->injectPersistenceManager($mockPersistenceManager);
+		$formViewHelper->_set('persistenceManager', $mockPersistenceManager);
 
 		$mockArguments = array('value' => $mockObject);
 		$formViewHelper->_set('arguments', $mockArguments);
@@ -210,7 +210,7 @@ class AbstractFormFieldViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHe
 		$formViewHelper = $this->getAccessibleMock('TYPO3\\CMS\\Fluid\\ViewHelpers\\Form\\AbstractFormFieldViewHelper', array('isObjectAccessorMode'), array(), '', FALSE);
 		$formViewHelper->expects($this->any())->method('isObjectAccessorMode')->will($this->returnValue(FALSE));
 		$this->injectDependenciesIntoViewHelper($formViewHelper);
-		$formViewHelper->injectPersistenceManager($mockPersistenceManager);
+		$formViewHelper->_set('persistenceManager', $mockPersistenceManager);
 
 		$mockArguments = array('value' => $mockObject);
 		$formViewHelper->_set('arguments', $mockArguments);

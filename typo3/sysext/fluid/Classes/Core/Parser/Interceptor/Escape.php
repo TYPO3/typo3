@@ -33,18 +33,9 @@ class Escape implements \TYPO3\CMS\Fluid\Core\Parser\InterceptorInterface {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
+	 * @inject
 	 */
 	protected $objectManager;
-
-	/**
-	 * Inject object manager
-	 *
-	 * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
-	 * @return void
-	 */
-	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager) {
-		$this->objectManager = $objectManager;
-	}
 
 	/**
 	 * Adds a ViewHelper node using the Format\HtmlspecialcharsViewHelper to the given node.

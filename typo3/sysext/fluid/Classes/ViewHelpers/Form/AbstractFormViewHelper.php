@@ -21,18 +21,9 @@ abstract class AbstractFormViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\A
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface
+	 * @inject
 	 */
 	protected $persistenceManager;
-
-	/**
-	 * Injects the Persistence Manager
-	 *
-	 * @param \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface $persistenceManager
-	 * @return void
-	 */
-	public function injectPersistenceManager(\TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface $persistenceManager) {
-		$this->persistenceManager = $persistenceManager;
-	}
 
 	/**
 	 * Prefixes / namespaces the given name with the form field prefix

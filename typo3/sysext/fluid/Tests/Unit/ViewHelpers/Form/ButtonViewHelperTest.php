@@ -42,7 +42,7 @@ class ButtonViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\
 
 		$this->viewHelper->expects($this->atLeastOnce())->method('renderChildren')->will($this->returnValue('Button Content'));
 
-		$this->viewHelper->injectTagBuilder($mockTagBuilder);
+		$this->viewHelper->_set('tag', $mockTagBuilder);
 
 		$this->viewHelper->initialize();
 		$this->viewHelper->render();

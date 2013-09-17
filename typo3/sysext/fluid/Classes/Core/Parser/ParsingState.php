@@ -37,6 +37,7 @@ class ParsingState implements \TYPO3\CMS\Fluid\Core\Parser\ParsedTemplateInterfa
 	 * store things in.
 	 *
 	 * @var \TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer
+	 * @inject
 	 */
 	protected $variableContainer;
 
@@ -51,17 +52,6 @@ class ParsingState implements \TYPO3\CMS\Fluid\Core\Parser\ParsedTemplateInterfa
 	 * @var boolean
 	 */
 	protected $compilable = TRUE;
-
-	/**
-	 * Injects a variable container. ViewHelpers implementing the PostParse
-	 * Facet can store information inside this variableContainer.
-	 *
-	 * @param \TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer $variableContainer
-	 * @return void
-	 */
-	public function injectVariableContainer(\TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer $variableContainer) {
-		$this->variableContainer = $variableContainer;
-	}
 
 	/**
 	 * Set root node of this parsing state
