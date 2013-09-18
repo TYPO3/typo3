@@ -356,7 +356,7 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 				var cur_width = selectedImageRef ? "&cWidth="+selectedImageRef.style.width : "";
 				var cur_height = selectedImageRef ? "&cHeight="+selectedImageRef.style.height : "";
 
-				var theLocation = URL+add_act+add_editorNo+add_sys_language_content+RTEtsConfigParams+cur_width+cur_height+(anchor?anchor:"");
+				var theLocation = URL+add_act+add_editorNo+add_sys_language_content+RTEtsConfigParams+cur_width+cur_height+(typeof(anchor)=="string"?anchor:"");
 				window.location.href = theLocation;
 				return false;
 			}
