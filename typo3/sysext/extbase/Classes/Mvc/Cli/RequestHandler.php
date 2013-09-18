@@ -58,7 +58,7 @@ class RequestHandler implements \TYPO3\CMS\Extbase\Mvc\RequestHandlerInterface {
 	/**
 	 * Handles the request
 	 *
-	 * @return void
+	 * @return \TYPO3\CMS\Extbase\Mvc\ResponseInterface
 	 */
 	public function handleRequest() {
 		$commandLine = isset($_SERVER['argv']) ? $_SERVER['argv'] : array();
@@ -67,6 +67,7 @@ class RequestHandler implements \TYPO3\CMS\Extbase\Mvc\RequestHandlerInterface {
 		$response = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Mvc\\Cli\\Response');
 		$this->dispatcher->dispatch($request, $response);
 		$response->send();
+		return $response;
 	}
 
 	/**
