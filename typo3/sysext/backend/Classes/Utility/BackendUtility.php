@@ -2018,6 +2018,7 @@ class BackendUtility {
 					$l = $GLOBALS['LANG']->sL($l);
 					break;
 				case 'select':
+				case 'group':
 					if ($theColConf['MM']) {
 						if ($uid) {
 							// Display the title of MM related records in lists
@@ -2052,53 +2053,53 @@ class BackendUtility {
 							$l = 'N/A';
 						}
 					} else {
-						$l = self::getLabelsFromItemsList($table, $col, $value);
-						if ($theColConf['foreign_table'] && !$l && $GLOBALS['TCA'][$theColConf['foreign_table']]) {
-							if ($noRecordLookup) {
-								$l = $value;
-							} else {
-								$rParts = GeneralUtility::trimExplode(',', $value, TRUE);
-								$lA = array();
-								foreach ($rParts as $rVal) {
-									$rVal = intval($rVal);
-									if ($rVal > 0) {
-										$r = self::getRecordWSOL($theColConf['foreign_table'], $rVal);
-									} else {
-										$r = self::getRecordWSOL($theColConf['neg_foreign_table'], -$rVal);
+						if ( $theColConf['type'] === 'select') {
+							$l = self::getLabelsFromItemsList($table, $col, $value);
+							if ($theColConf['foreign_table'] && !$l && $GLOBALS['TCA'][$theColConf['foreign_table']]) {
+								if ($noRecordLookup) {
+									$l = $value;
+								} else {
+									$rParts = GeneralUtility::trimExplode(',', $value, TRUE);
+									$lA = array();
+									foreach ($rParts as $rVal) {
+										$rVal = intval($rVal);
+										if ($rVal > 0) {
+											$r = self::getRecordWSOL($theColConf['foreign_table'], $rVal);
+										} else {
+											$r = self::getRecordWSOL($theColConf['neg_foreign_table'], -$rVal);
+										}
+										if (is_array($r)) {
+											$lA[] = $GLOBALS['LANG']->sL(($rVal > 0 ? $theColConf['foreign_table_prefix'] : $theColConf['neg_foreign_table_prefix'])) . self::getRecordTitle(($rVal > 0 ? $theColConf['foreign_table'] : $theColConf['neg_foreign_table']), $r, FALSE, $forceResult);
+										} else {
+											$lA[] = $rVal ? '[' . $rVal . '!]' : '';
+										}
 									}
-									if (is_array($r)) {
-										$lA[] = $GLOBALS['LANG']->sL(($rVal > 0 ? $theColConf['foreign_table_prefix'] : $theColConf['neg_foreign_table_prefix'])) . self::getRecordTitle(($rVal > 0 ? $theColConf['foreign_table'] : $theColConf['neg_foreign_table']), $r, FALSE, $forceResult);
-									} else {
-										$lA[] = $rVal ? '[' . $rVal . '!]' : '';
-									}
+									$l = implode(', ', $lA);
 								}
-								$l = implode(', ', $lA);
 							}
-						}
-					}
-					break;
-				case 'group':
-					// resolve the titles for DB records
-					if ($theColConf['internal_type'] === 'db') {
-						$finalValues = array();
-						$relationTableName = $theColConf['allowed'];
-						$explodedValues = GeneralUtility::trimExplode(',', $value, TRUE);
+						} else {
+							if ($theColConf['internal_type'] === 'db') {
+								$finalValues = array();
+								$relationTableName = $theColConf['allowed'];
+								$explodedValues = GeneralUtility::trimExplode(',', $value, TRUE);
 
-						foreach ($explodedValues as $explodedValue) {
+								foreach ($explodedValues as $explodedValue) {
 
-							if (MathUtility::canBeInterpretedAsInteger($explodedValue)) {
-								$relationTableNameForField = $relationTableName;
+									if (MathUtility::canBeInterpretedAsInteger($explodedValue)) {
+										$relationTableNameForField = $relationTableName;
+									} else {
+										list($relationTableNameForField, $explodedValue) = self::splitTable_Uid($explodedValue);
+									}
+
+									$relationRecord = self::getRecordWSOL($relationTableNameForField, $explodedValue);
+									$finalValues[] = self::getRecordTitle($relationTableNameForField, $relationRecord);
+								}
+
+								$l = implode(', ', $finalValues);
 							} else {
-								list($relationTableNameForField, $explodedValue) = self::splitTable_Uid($explodedValue);
+								$l = implode(', ', GeneralUtility::trimExplode(',', $value, TRUE));
 							}
-
-							$relationRecord = static::getRecordWSOL($relationTableNameForField, $explodedValue);
-							$finalValues[] = static::getRecordTitle($relationTableNameForField, $relationRecord);
 						}
-
-						$l = implode(', ', $finalValues);
-					} else {
-						$l = implode(', ', GeneralUtility::trimExplode(',', $value, TRUE));
 					}
 					break;
 				case 'check':
