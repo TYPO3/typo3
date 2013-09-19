@@ -179,8 +179,7 @@ TYPO3.BackendLiveSearch = Ext.extend(Ext.form.ComboBox, {
 					scope : this,
 					click : function () {
 							// go to db_list.php and search for given search value
-							// @todo the current selected page ID from the page tree is required, also we need the
-							// values of $GLOBALS['BE_USER']->returnWebmounts() to search only during the allowed pages
+							// @todo the current selected page ID from the page tree is required
 						TYPO3.ModuleMenu.App.showModule('web_list', this.getSearchResultsUrl(this.getValue()));
 						this.collapse();
 					}
@@ -319,8 +318,7 @@ Ext.onReady(function() {
 		helpTitle: TYPO3.LLL.liveSearch.helpTitle,
 		emptyText: TYPO3.LLL.liveSearch.emptyText,
 		loadingText: TYPO3.LLL.liveSearch.loadingText,
-		listEmptyText: TYPO3.LLL.liveSearch.listEmptyText,
-		searchResultsPid: TYPO3.configuration.firstWebmountPid
+		listEmptyText: TYPO3.LLL.liveSearch.listEmptyText
 	});
 
 	TYPO3LiveSearch.applyToMarkup(Ext.get('live-search-box'));
