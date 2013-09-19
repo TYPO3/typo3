@@ -1974,6 +1974,7 @@ class BackendUtility {
 				$l = self::getLabelFromItemlist($table, $col, $value);
 				$l = $GLOBALS['LANG']->sL($l);
 				break;
+			case 'inline':
 			case 'select':
 				if ($theColConf['MM']) {
 					if ($uid) {
@@ -1982,7 +1983,7 @@ class BackendUtility {
 							$MMfield = $theColConf['foreign_table'] . '.uid';
 						} else {
 							$MMfields = array($theColConf['foreign_table'] . '.' . $GLOBALS['TCA'][$theColConf['foreign_table']]['ctrl']['label']);
-							foreach (\TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $GLOBALS['TCA'][$theColConf['foreign_table']]['ctrl']['label_alt'], 1) as $f) {
+							foreach (GeneralUtility::trimExplode(',', $GLOBALS['TCA'][$theColConf['foreign_table']]['ctrl']['label_alt'], TRUE) as $f) {
 								$MMfields[] = $theColConf['foreign_table'] . '.' . $f;
 							}
 							$MMfield = join(',', $MMfields);
