@@ -6,55 +6,57 @@
 	</div>
 
 	<div class="toggleData" style="display:none">
-		<p>
-			TYPO3 is known for its ability to process images on the server.
-		</p>
-		<p>
-			In the backend interface (TBE) thumbnails are automatically generated
-			(by ImageMagick in thumbs.php) as well as icons, menu items and pane tabs (by GDLib).
-			In the frontend all kinds of graphical elements are processed. Typically images are
-			scaled down to fit the pages (by ImageMagick) and menu items, graphical headers and
-			such are generated automatically (by GDLib + ImageMagick). In addition TYPO3 is able
-			to handle many file formats (thanks to ImageMagick), for example TIF, BMP, PCX, TGA,
-			AI and PDF in addition to the standard web formats; JPG, GIF, PNG.
-		</p>
-		<p>
-			In order to do this, TYPO3 uses two sets of tools:
-		</p>
-		<strong>
-			ImageMagick / GraphicsMagick:
-		</strong>
-		<p>
-			For conversion of non-web formats to webformats, combining images with alpha-masks,
-			performing image-effects like blurring and sharpening.
-		</p>
-		<p>
-			ImageMagick is a collection of external programs on the server called by the exec()
-			function in PHP. TYPO3 uses three of these, namely 'convert' (converting fileformats,
-			scaling, effects), 'combine'/'composite' (combining images with masks) and 'identify'
-			(returns image information). GraphicsMagick is an alternative to ImageMagick and can
-			be enabled by setting [GFX][im_version_5] to 'gm'. This is recommended and enabled
-			by default. Because ImageMagick and Graphicsmagick are external programs, a requirement
-			must be met: The programs must be installed on the server and working. ImageMagick is
-			available for both Windows and Unix. The current version is 6+. ImageMagick homepage is
-			at <a href="http://www.imagemagick.org/">http://www.imagemagick.org/</a>
-		</p>
-		<strong>
-			GDLib:
-		</strong>
-		<p>
-			For drawing boxes and rendering text on images with truetype fonts. Also used for
-			icons, menuitems and generally the TypoScript GIFBUILDER object is based on GDlib,
-			but extensively utilizing ImageMagick to process intermediate results.
-		</p>
-		<p>
-			GDLib is accessed through internal functions in PHP, you'll need a version of PHP
-			with GDLib compiled in. Also in order to use TrueType fonts with GDLib you'll
-			need FreeType compiled in as well.
-		</p>
-		<p>
-			You can disable all image processing options in TYPO3 ([GFX][image_processing]=0),
-			but that would seriously disable TYPO3.
-		</p>
+		<div class="toggleDataContent">
+			<p>
+				TYPO3 is known for its ability to process images on the server.
+			</p>
+			<p>
+				In the backend interface (TBE) thumbnails are automatically generated
+				(by ImageMagick in thumbs.php) as well as icons, menu items and pane tabs (by GDLib).
+				In the frontend all kinds of graphical elements are processed. Typically images are
+				scaled down to fit the pages (by ImageMagick) and menu items, graphical headers and
+				such are generated automatically (by GDLib + ImageMagick). In addition TYPO3 is able
+				to handle many file formats (thanks to ImageMagick), for example TIF, BMP, PCX, TGA,
+				AI and PDF in addition to the standard web formats; JPG, GIF, PNG.
+			</p>
+			<p>
+				In order to do this, TYPO3 uses two sets of tools:
+			</p>
+			<strong>
+				ImageMagick / GraphicsMagick:
+			</strong>
+			<p>
+				For conversion of non-web formats to webformats, combining images with alpha-masks,
+				performing image-effects like blurring and sharpening.
+			</p>
+			<p>
+				ImageMagick is a collection of external programs on the server called by the exec()
+				function in PHP. TYPO3 uses three of these, namely 'convert' (converting fileformats,
+				scaling, effects), 'combine'/'composite' (combining images with masks) and 'identify'
+				(returns image information). GraphicsMagick is an alternative to ImageMagick and can
+				be enabled by setting [GFX][im_version_5] to 'gm'. This is recommended and enabled
+				by default. Because ImageMagick and Graphicsmagick are external programs, a requirement
+				must be met: The programs must be installed on the server and working. ImageMagick is
+				available for both Windows and Unix. The current version is 6+. ImageMagick homepage is
+				at <a href="http://www.imagemagick.org/">http://www.imagemagick.org/</a>
+			</p>
+			<strong>
+				GDLib:
+			</strong>
+			<p>
+				For drawing boxes and rendering text on images with truetype fonts. Also used for
+				icons, menuitems and generally the TypoScript GIFBUILDER object is based on GDlib,
+				but extensively utilizing ImageMagick to process intermediate results.
+			</p>
+			<p>
+				GDLib is accessed through internal functions in PHP, you'll need a version of PHP
+				with GDLib compiled in. Also in order to use TrueType fonts with GDLib you'll
+				need FreeType compiled in as well.
+			</p>
+			<p>
+				You can disable all image processing options in TYPO3 ([GFX][image_processing]=0),
+				but that would seriously disable TYPO3.
+			</p>
+		</div>
 	</div>
 </div>

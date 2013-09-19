@@ -4,21 +4,21 @@
 	</div>
 
 	<div class="toggleData" style="display:none">
-		<p>
-			To speed up object instantiation Extbase stores some cache data. This can lead
-			to lots of SELECT database queries on each page hit if the cache is configured
-			to use the default database cache backend.
-		</p>
-		<p>
-			This cache can not grow very big, it uses no tagging and is used multiple times
-			for one request. These characteristics make it well suited to be used in
-			combination with a APC cache backend.
-		</p>
+		<div class="toggleDataContent">
+			<p>
+				To speed up object instantiation Extbase stores some cache data. This can lead
+				to lots of SELECT database queries on each page hit if the cache is configured
+				to use the default database cache backend.
+			</p>
+			<p>
+				This cache can not grow very big, it uses no tagging and is used multiple times
+				for one request. These characteristics make it well suited to be used in
+				combination with a APC cache backend.
+			</p>
 
-		<f:for each="{feature.presetsOrderedByPriority}" as="preset">
-			<f:render partial="Action/Tool/Configuration/{feature.name}/{preset.name}" arguments="{_all}" />
-		</f:for>
+			<f:for each="{feature.presetsOrderedByPriority}" as="preset">
+				<f:render partial="Action/Tool/Configuration/{feature.name}/{preset.name}" arguments="{_all}" />
+			</f:for>
+		</div>
 	</div>
 </div>
-
-<hr />

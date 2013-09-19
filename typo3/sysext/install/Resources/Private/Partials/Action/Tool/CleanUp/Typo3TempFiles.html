@@ -5,22 +5,24 @@
 		<h4>About</h4>
 	</div>
 	<div class="toggleData" style="display:none">
-		<p>
-			TYPO3 uses this directory for temporary files, mainly processed and cached images.
-			The filenames are cryptic. They are unique representations of the file properties
-			made by md5-hashing a serialized array with information.
-		</p>
-		<p>
-			Anyway this directory may contain many thousand files and a lot of them may be of no use anymore.
-		</p>
-		<p>
-			With this action you can delete the files in this folder. When you do that, you
-			should also clear the cache database tables afterwards.
-		</p>
-		<p>
-			This tool will delete files only if the last 10 characters before the extension
-			(3 chars+'.') are hexadecimal valid ciphers, which are lowercase a-f and 0-9.
-		</p>
+		<div class="toggleDataContent">
+			<p>
+				TYPO3 uses this directory for temporary files, mainly processed and cached images.
+				The filenames are cryptic. They are unique representations of the file properties
+				made by md5-hashing a serialized array with information.
+			</p>
+			<p>
+				Anyway this directory may contain many thousand files and a lot of them may be of no use anymore.
+			</p>
+			<p>
+				With this action you can delete the files in this folder. When you do that, you
+				should also clear the cache database tables afterwards.
+			</p>
+			<p>
+				This tool will delete files only if the last 10 characters before the extension
+				(3 chars+'.') are hexadecimal valid ciphers, which are lowercase a-f and 0-9.
+			</p>
+		</div>
 	</div>
 </div>
 

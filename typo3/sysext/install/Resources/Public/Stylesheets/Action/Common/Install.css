@@ -227,13 +227,24 @@ button {
 	font-size: 1.1em;
 	padding: 0.3em 0.6em;
 	border: 1px solid #7c7c7c;
-	background: #f6f6f6 url('../../../Images/Background/Button.jpg') repeat-x left bottom;
+	background-color: #f6f6f6;
+	background: -moz-linear-gradient(top,  #f6f6f6 0%, #dadada 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f6f6f6), color-stop(100%,#dadada));
+	background: -webkit-linear-gradient(top,  #f6f6f6 0%,#dadada 100%);
+	background: -o-linear-gradient(top,  #f6f6f6 0%,#dadada 100%);
+	background: -ms-linear-gradient(top,  #f6f6f6 0%,#dadada 100%);
+	background: linear-gradient(to bottom,  #f6f6f6 0%,#dadada 100%);
 	cursor: pointer;
 }
 
 button:hover {
 	background-color: #ededed;
-	background-image: url('../../../Images/Background/ButtonHover.jpg');
+	background: -moz-linear-gradient(top,  #f6f6f6 0%, #aaa 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f6f6f6), color-stop(100%,#aaa));
+	background: -webkit-linear-gradient(top,  #f6f6f6 0%,#aaa 100%);
+	background: -o-linear-gradient(top,  #f6f6f6 0%,#aaa 100%);
+	background: -ms-linear-gradient(top,  #f6f6f6 0%,#aaa 100%);
+	background: linear-gradient(to bottom,  #f6f6f6 0%,#aaa 100%);
 }
 
 button span {
@@ -431,12 +442,69 @@ button span.t3-install-form-button-icon-negative {
 }
 
 #t3-install-box-body .toggleButton {
-    background: url('../../../Images/Icon/arrowright.png') no-repeat;
-    padding-left: 20px;
-    cursor: pointer;
+	background-image: url('../../../Images/Icon/arrowright-white.png');
+	background-repeat: no-repeat;
+	background-position-y: 8px;
+	background-position-x: 3px;
+	padding-left: 20px;
+	cursor: pointer;
 }
+
+#t3-install-box-body .toggleButton h4 {
+	border: 1px solid transparent;
+}
+
+#t3-install-box-body .expanded .toggleButton h4 {
+	border: none;
+}
+
 #t3-install-box-body .expanded .toggleButton {
-    background-image: url('../../../Images/Icon/arrowdown.png');
+	background-image: url('../../../Images/Icon/arrowdown-white.png');
+	border-bottom: 1px solid #666;
+}
+
+.toggleGroup {
+	margin: 1em 0;
+}
+
+#t3-install-box-body .toggleButton:hover {
+	background-color: #666;
+	color: #fff;
+}
+.toggleGroup .toggleButton {
+	background-color: #cacaca;
+	padding: 0.5em 0;
+}
+
+.toggleGroup.expanded .toggleButton {
+	background-color: #666;
+	color: white;
+	padding: 0.5em 0;
+}
+
+.toggleGroup.expanded {
+	border: 1px solid #a2aab8;
+}
+
+.toggleGroup .toggleDataContent {
+	padding: 0 1em;
+}
+
+.item {
+	padding: 1em 1em;
+}
+.item:nth-child(odd) {
+	background-color: #f7f7f7;
+}
+.item:hover {
+	background-color: #dedede;
+}
+h4.item-header {
+	font-weight: normal;
+}
+.item-description {
+	line-height: 1.4em;
+	margin: 0.5em 0;
 }
 
 #t3-install-box-body .fieldNote {
@@ -683,4 +751,54 @@ body.standalone .t3-install-login h2 {
 	clear: both;
 	margin: 0;
 	padding: 0.5em 0 0.5em 3.35em;
+}
+
+button.btn-save {
+	background-image: url('../../../Images/Icon/Save.png');
+	background-repeat: no-repeat;
+	background-position: 5px 4px, 0 0;
+	background-image: url('../../../Images/Icon/Save.png'), -moz-linear-gradient(top,  #f6f6f6 0%, #dadada 100%);
+	background-image: url('../../../Images/Icon/Save.png'), -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f6f6f6), color-stop(100%,#dadada));
+	background-image: url('../../../Images/Icon/Save.png'), -webkit-linear-gradient(top,  #f6f6f6 0%,#dadada 100%);
+	background-image: url('../../../Images/Icon/Save.png'), -o-linear-gradient(top,  #f6f6f6 0%,#dadada 100%);
+	background-image: url('../../../Images/Icon/Save.png'), -ms-linear-gradient(top,  #f6f6f6 0%,#dadada 100%);
+	background-image: url('../../../Images/Icon/Save.png'), linear-gradient(to bottom,  #f6f6f6 0%,#dadada 100%);
+	padding-left: 25px;
+}
+
+button.btn-save:hover {
+	background-color: #ededed;
+	background-image: url('../../../Images/Icon/Save.png'), -moz-linear-gradient(top,  #f6f6f6 0%, #aaa 100%);
+	background-image: url('../../../Images/Icon/Save.png'), -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f6f6f6), color-stop(100%,#aaa));
+	background-image: url('../../../Images/Icon/Save.png'), -webkit-linear-gradient(top,  #f6f6f6 0%,#aaa 100%);
+	background-image: url('../../../Images/Icon/Save.png'), -o-linear-gradient(top,  #f6f6f6 0%,#aaa 100%);
+	background-image: url('../../../Images/Icon/Save.png'), -ms-linear-gradient(top,  #f6f6f6 0%,#aaa 100%);
+	background-image: url('../../../Images/Icon/Save.png'), linear-gradient(to bottom,  #f6f6f6 0%,#aaa 100%);
+}
+
+#fixed-footer-fieldset fieldset li {
+	margin: 0 0;
+}
+#fixed-footer-fieldset fieldset {
+	margin: 0em -1.8em;
+	color: #fff;
+	text-align: center;
+	padding: 0.5em 0;
+}
+
+#fixed-footer-fieldset fieldset.fixed {
+	width: 51.7em;
+	bottom: 0;
+	position: fixed;
+	background-color: #666;
+}
+
+.standalone #fixed-footer-fieldset fieldset.fixed {
+	background-color: #dadada;
+	border-right: 1px solid #dadada;
+}
+
+#fixed-footer-fieldset {
+	height: 41px;
+	margin-top: 2em;
 }

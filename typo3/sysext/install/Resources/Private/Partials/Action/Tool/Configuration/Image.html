@@ -4,34 +4,34 @@
 	</div>
 
 	<div class="toggleData" style="display:none">
-		<p>
-			Advanced image handling in TYPO3 CMS uses the command line tools
-			GraphicsMagick or ImageMagick. The tools need to be configured
-			correctly depending on the version that is available on the system.
-		</p>
-		<p>
-			This module detects the available image handling versions and sets
-			the system accordingly. If everything is correctly set up the image
-			tests of the install tool section "Test setup" should be fine.
-		</p>
+		<div class="toggleDataContent">
+			<p>
+				Advanced image handling in TYPO3 CMS uses the command line tools
+				GraphicsMagick or ImageMagick. The tools need to be configured
+				correctly depending on the version that is available on the system.
+			</p>
+			<p>
+				This module detects the available image handling versions and sets
+				the system accordingly. If everything is correctly set up the image
+				tests of the install tool section "Test setup" should be fine.
+			</p>
 
-		<p>
-			If ImageMagick or GraphicsMagick executables are located at some
-			not standard place, add the absolute directory name here.
-		</p>
-		<p>
-			<input
-				type="input"
-				name="install[values][{feature.name}][additionalSearchPath]"
-				value="{feature.additionalSearchPath}"
-			/>
-			<button type="submit" name="install[set][ImageSearch]">Find executables in this directory</button>
-		</p>
+			<p>
+				If ImageMagick or GraphicsMagick executables are located at some
+				not standard place, add the absolute directory name here.
+			</p>
+			<p>
+				<input
+					type="input"
+					name="install[values][{feature.name}][additionalSearchPath]"
+					value="{feature.additionalSearchPath}"
+				/>
+				<button type="submit" name="install[set][ImageSearch]">Find executables in this directory</button>
+			</p>
 
-		<f:for each="{feature.presetsOrderedByPriority}" as="preset">
-			<f:render partial="Action/Tool/Configuration/{feature.name}/{preset.name}" arguments="{_all}" />
-		</f:for>
+			<f:for each="{feature.presetsOrderedByPriority}" as="preset">
+				<f:render partial="Action/Tool/Configuration/{feature.name}/{preset.name}" arguments="{_all}" />
+			</f:for>
+		</div>
 	</div>
 </div>
-
-<hr />

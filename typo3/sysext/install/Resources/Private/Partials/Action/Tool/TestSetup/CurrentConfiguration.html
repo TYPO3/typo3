@@ -6,69 +6,71 @@
 	</div>
 
 	<div class="toggleData" style="display:none">
-		<dl class="t3-install-definitionlist">
-			<dt>
-				{f:if(condition:'{imageConfiguration.imageMagickOrGraphicsMagick} == \'im\'', then:'ImageMagick', else:'GrapicsMagick')} enabled:
-			</dt>
-			<dd>
-				{f:if(condition:imageConfiguration.imageMagickEnabled, then:'Yes', else:'No')}
-			</dd>
+		<div class="toggleDataContent">
+			<dl class="t3-install-definitionlist">
+				<dt>
+					{f:if(condition:'{imageConfiguration.imageMagickOrGraphicsMagick} == \'im\'', then:'ImageMagick', else:'GrapicsMagick')} enabled:
+				</dt>
+				<dd>
+					{f:if(condition:imageConfiguration.imageMagickEnabled, then:'Yes', else:'No')}
+				</dd>
 
-			<dt>
-				ImageMagick or GraphicsMagick:
-			</dt>
-			<dd>
-				{f:if(condition:'{imageConfiguration.imageMagickOrGraphicsMagick} == \'im\'', then:'ImageMagick', else:'GrapicsMagick')}
-			</dd>
+				<dt>
+					ImageMagick or GraphicsMagick:
+				</dt>
+				<dd>
+					{f:if(condition:'{imageConfiguration.imageMagickOrGraphicsMagick} == \'im\'', then:'ImageMagick', else:'GrapicsMagick')}
+				</dd>
 
-			<dt>
-				{f:if(condition:'{imageConfiguration.imageMagickOrGraphicsMagick} == \'im\'', then:'ImageMagick', else:'GrapicsMagick')} path:
-			</dt>
-			<dd>
-				{imageConfiguration.imageMagickPath}
-			</dd>
+				<dt>
+					{f:if(condition:'{imageConfiguration.imageMagickOrGraphicsMagick} == \'im\'', then:'ImageMagick', else:'GrapicsMagick')} path:
+				</dt>
+				<dd>
+					{imageConfiguration.imageMagickPath}
+				</dd>
 
-			<dt>
-				{f:if(condition:'{imageConfiguration.imageMagickOrGraphicsMagick} == \'im\'', then:'ImageMagick', else:'GrapicsMagick')} version:
-			</dt>
-			<dd>
-				{imageConfiguration.imageMagickVersion}
-			</dd>
+				<dt>
+					{f:if(condition:'{imageConfiguration.imageMagickOrGraphicsMagick} == \'im\'', then:'ImageMagick', else:'GrapicsMagick')} version:
+				</dt>
+				<dd>
+					{imageConfiguration.imageMagickVersion}
+				</dd>
 
-			<dt>
-				IM5 effects enabled:
-			</dt>
-			<dd>
-				{imageConfiguration.imageMagick5Effecs} <span>(Blurring/Sharpening with IM 5+)</span>
-			</dd>
+				<dt>
+					IM5 effects enabled:
+				</dt>
+				<dd>
+					{imageConfiguration.imageMagick5Effecs} <span>(Blurring/Sharpening with IM 5+)</span>
+				</dd>
 
-			<dt>
-				GDLib enabled:
-			</dt>
-			<dd>
-				{f:if(condition:imageConfiguration.gdlibEnabled, then:'Yes', else:'No')}
-			</dd>
+				<dt>
+					GDLib enabled:
+				</dt>
+				<dd>
+					{f:if(condition:imageConfiguration.gdlibEnabled, then:'Yes', else:'No')}
+				</dd>
 
-			<dt>
-				GDLib using PNG:
-			</dt>
-			<dd>
-				{imageConfiguration.gdlibPng}
-			</dd>
+				<dt>
+					GDLib using PNG:
+				</dt>
+				<dd>
+					{imageConfiguration.gdlibPng}
+				</dd>
 
-			<dt>
-				Freetype DPI:
-			</dt>
-			<dd>
-				{imageConfiguration.freeTypeDpi} <span>(Should be 96 for Freetype 2)</span>
-			</dd>
+				<dt>
+					Freetype DPI:
+				</dt>
+				<dd>
+					{imageConfiguration.freeTypeDpi} <span>(Should be 96 for Freetype 2)</span>
+				</dd>
 
-			<dt>
-				File Formats:
-			</dt>
-			<dd>
-				{imageConfiguration.fileFormats}
-			</dd>
-		</dl>
+				<dt>
+					File Formats:
+				</dt>
+				<dd>
+					{imageConfiguration.fileFormats}
+				</dd>
+			</dl>
+		</div>
 	</div>
 </div>

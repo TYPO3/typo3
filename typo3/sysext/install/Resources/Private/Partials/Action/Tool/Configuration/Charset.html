@@ -4,17 +4,17 @@
 	</div>
 
 	<div class="toggleData" style="display:none">
-		<p>
-			Charset conversion is done at various places in the TYPO3 CMS core
-			and can lead to massive performance problems if not set right. In
-			general the first available setting should be selected for maximum
-			performance and least problems.
-		</p>
+		<div class="toggleDataContent">
+			<p>
+				Charset conversion is done at various places in the TYPO3 CMS core
+				and can lead to massive performance problems if not set right. In
+				general the first available setting should be selected for maximum
+				performance and least problems.
+			</p>
 
-		<f:for each="{feature.presetsOrderedByPriority}" as="preset">
-			<f:render partial="Action/Tool/Configuration/{feature.name}/{preset.name}" arguments="{_all}" />
-		</f:for>
+			<f:for each="{feature.presetsOrderedByPriority}" as="preset">
+				<f:render partial="Action/Tool/Configuration/{feature.name}/{preset.name}" arguments="{_all}" />
+			</f:for>
+		</div>
 	</div>
 </div>
-
-<hr />

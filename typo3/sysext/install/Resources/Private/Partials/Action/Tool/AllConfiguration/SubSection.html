@@ -2,25 +2,20 @@
 
 <div class="toggleGroup">
 	<div class="toggleButton">
-		<h4><strong>Section: $TYPO3_CONF_VARS['{sectionName}']</strong></h4>
+		<h4><strong>$TYPO3_CONF_VARS['{sectionName}']</strong></h4>
 	</div>
-	<p></p>
 
 	<div class="toggleData" style="display:none">
 		<f:for each="{sectionData}" as="item">
-			<div class="typo3-message message-ok" >
-				<div class="header-container">
-					<div class="message-header">
-						<strong>[{sectionName}][{item.key}] </strong>
-						<f:if condition="{item.value}">
-							= {item.value -> i:format.crop(maxCharacters: 40)}
-						</f:if>
-					</div>
-				</div>
-				<div class="message-body">
+			<div class="item">
+				<strong>[{sectionName}][{item.key}] </strong>
+				<f:if condition="{item.value}">
+					= {item.value -> i:format.crop(maxCharacters: 40)}
+				</f:if>
+				<div class="item-description">
 					{item.description -> f:format.raw()}
-					<br />
-
+				</div>
+				<div class="item-value">
 					<f:if condition="{item.type} == 'textarea'">
 						<textarea
 							rows="5"
@@ -60,9 +55,6 @@
 					</f:if>
 				</div>
 			</div>
-			<p></p>
 		</f:for>
 	</div>
 </div>
-
-<hr />

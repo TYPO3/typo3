@@ -46,7 +46,9 @@
 					</f:if>
 				</f:for>
 
-				<f:render partial="Action/Common/SubmitButton" arguments="{name:'write', text:'Write configuration'}"/>
+				<div id="fixed-footer-fieldset">
+					<f:render partial="Action/Common/SubmitButton" arguments="{name:'write', text:'Write configuration', className:'btn-save'}"/>
+				</div>
 			</form>
 		</f:else>
 	</f:if>

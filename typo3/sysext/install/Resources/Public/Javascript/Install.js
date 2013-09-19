@@ -37,6 +37,7 @@ $(document).ready(function() {
 		$toggleGroup = $(this).closest('.toggleGroup');
 		$toggleGroup.toggleClass('expanded');
 		$toggleGroup.find('.toggleData').toggle();
+		handleButtonScrolling();
 	});
 
 	// Simple password strength indicator
@@ -89,7 +90,33 @@ $(document).ready(function() {
 		e.preventDefault();
 		return false;
 	});
+
+	// Focus input field on click on item-div around it
+	$('.toggleGroup .item').on('click', function() {
+		$(this).find('input').focus();
+	});
+
+	if ($('#fixed-footer-fieldset').length > 0) {
+		$(window).scroll(handleButtonScrolling);
+		$('body.backend #typo3-docbody').scroll(handleButtonScrolling);
+	}
 });
+
+function handleButtonScrolling() {
+	if (!isScrolledIntoView($('#fixed-footer-fieldset'))) {
+		$('#fixed-footer-fieldset fieldset').addClass('fixed');
+	} else {
+		$('#fixed-footer-fieldset fieldset').removeClass('fixed');
+	}
+}
+function isScrolledIntoView(elem) {
+	var docViewTop = $(window).scrollTop();
+	var docViewBottom = docViewTop + $(window).height();
+	var elemTop = $(elem).offset().top;
+	var elemBottom = elemTop + $(elem).height();
+
+	return ((elemBottom <= docViewBottom) && (elemTop >= docViewTop));
+}
 
 /**
  * Checks extension compatibility by trying to load ext_tables and ext_localconf

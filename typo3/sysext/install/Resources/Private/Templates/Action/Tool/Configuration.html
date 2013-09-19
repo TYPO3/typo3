@@ -14,8 +14,6 @@
 		based on your system setup.
 	</p>
 
-	<hr />
-
 	<form method="post">
 		<f:render partial="Action/Common/HiddenFormFields" arguments="{_all}" />
 
@@ -23,6 +21,9 @@
 			<f:render partial="Action/Tool/Configuration/{feature.name}" arguments="{_all}" />
 		</f:for>
 
-		<f:render partial="Action/Common/SubmitButton" arguments="{name:'activate', text:'Activate'}"/>
+		<div id="fixed-footer-fieldset">
+			<f:render partial="Action/Common/SubmitButton" arguments="{name:'activate', text:'Activate', className:'btn-save'}"/>
+		</div>
+
 	</form>
 </f:section>
