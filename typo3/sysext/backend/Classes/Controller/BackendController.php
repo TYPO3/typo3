@@ -491,7 +491,6 @@ class BackendController {
 				'width' => 600,
 				'height' => 400
 			),
-			'firstWebmountPid' => intval($GLOBALS['WEBMOUNTS'][0])
 		);
 		$this->js .= '
 	TYPO3.configuration = ' . json_encode($t3Configuration) . ';
