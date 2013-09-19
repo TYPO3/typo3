@@ -176,12 +176,13 @@ class RecordList {
 		$this->imagemode = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('imagemode');
 		$this->table = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('table');
 		$this->search_field = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('search_field');
-		$this->search_levels = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('search_levels');
+		$this->search_levels = (int)\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('search_levels');
 		$this->showLimit = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('showLimit');
 		$this->returnUrl = \TYPO3\CMS\Core\Utility\GeneralUtility::sanitizeLocalUrl(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('returnUrl'));
 		$this->clear_cache = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('clear_cache');
 		$this->cmd = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('cmd');
 		$this->cmd_table = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('cmd_table');
+
 		// Initialize menu
 		$this->menuConfig();
 	}
@@ -306,8 +307,8 @@ class RecordList {
 		// This flag will prevent the clipboard panel in being shown.
 		// It is set, if the clickmenu-layer is active AND the extended view is not enabled.
 		$dblist->dontShowClipControlPanels = $GLOBALS['CLIENT']['FORMSTYLE'] && !$this->MOD_SETTINGS['bigControlPanel'] && $dblist->clipObj->current == 'normal' && !$this->modTSconfig['properties']['showClipControlPanelsDespiteOfCMlayers'];
-		// If there is access to the page, then render the list contents and set up the document template object:
-		if ($access) {
+		// If there is access to the page or root page is used for searching, then render the list contents and set up the document template object:
+		if ($access || ($this->id === 0 && $this->search_levels > 0 && strlen($this->search_field) > 0)) {
 			// Deleting records...:
 			// Has not to do with the clipboard but is simply the delete action. The clipboard object is used to clean up the submitted entries to only the selected table.
 			if ($this->cmd == 'delete') {

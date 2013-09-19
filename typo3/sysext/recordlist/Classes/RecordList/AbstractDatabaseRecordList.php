@@ -357,8 +357,8 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 			}
 		}
 		if ($searchLevels > 0) {
-			$tree = $this->getTreeObject($this->id, $searchLevels, $this->perms_clause);
-			$pidList = implode(',', $GLOBALS['TYPO3_DB']->cleanIntArray($tree->ids));
+			$allowedMounts = $this->getSearchableWebmounts($this->id, $searchLevels, $this->perms_clause);
+			$pidList = implode(',', $GLOBALS['TYPO3_DB']->cleanIntArray($allowedMounts));
 			$this->pidSelect = 'pid IN (' . $pidList . ')';
 		} elseif ($searchLevels < 0) {
 			// Search everywhere
@@ -928,8 +928,10 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 	 * @param string $perms_clause Select clause
 	 * @return \TYPO3\CMS\Backend\Tree\View\PageTreeView instance with created list of ids.
 	 * @todo Define visibility
+	 * @deprecated Deprecated since 6.2, will be removed 2 versions later
 	 */
 	public function getTreeObject($id, $depth, $perms_clause) {
+		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
 		$tree = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\View\\PageTreeView');
 		$tree->init('AND ' . $perms_clause);
 		$tree->makeHTML = 0;
@@ -939,6 +941,37 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 		}
 		$tree->ids[] = $id;
 		return $tree;
+	}
+
+	/**
+	 * Get all allowed mount pages to be searched in.
+	 *
+	 * @param integer $id Page id
+	 * @param integer $depth Depth to go down
+	 * @param string $perms_clause select clause
+	 * @return array
+	 */
+	protected function getSearchableWebmounts($id, $depth, $perms_clause) {
+		/** @var \TYPO3\CMS\Backend\Tree\View\PageTreeView $tree */
+		$tree = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\View\\PageTreeView');
+		$tree->init('AND ' . $perms_clause);
+		$tree->makeHTML = 0;
+		$tree->fieldArray = array('uid', 'php_tree_stop');
+		$idList = array();
+
+		$allowedMounts = !$GLOBALS['BE_USER']->isAdmin() && $id === 0
+			? $GLOBALS['BE_USER']->returnWebmounts()
+			: array($id);
+
+		foreach ($allowedMounts as $allowedMount) {
+			$idList[] = $allowedMount;
+			if ($depth) {
+				$tree->getTree($allowedMount, $depth, '');
+			}
+			$idList = array_merge($idList, $tree->ids);
+		}
+
+		return $idList;
 	}
 
 	/**
