@@ -2017,6 +2017,7 @@ class BackendUtility {
 					$l = self::getLabelFromItemlist($table, $col, $value);
 					$l = $GLOBALS['LANG']->sL($l);
 					break;
+				case 'inline':
 				case 'select':
 					if ($theColConf['MM']) {
 						if ($uid) {
