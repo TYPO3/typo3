@@ -33,6 +33,8 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['flagsFromSpr
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['addFlexformsToAcl'] = 'TYPO3\\CMS\\Install\\Updates\\AddFlexFormsToAclUpdate';
 // Version 4.5: Split tt_content image_link to newline by comma
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['imagelink'] = 'TYPO3\\CMS\\Install\\Updates\\ImagelinkUpdate';
+// TYPO3 6.2 - Add default backend user
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['backendUserTables'] = 'TYPO3\\CMS\\Install\\Updates\\BackendUserTables';
 // Version 6.0: Migrate files content elements to use File Abstraction Layer
 // Migrations of tt_content.image DB fields and captions, alt texts, etc. into sys_file_reference records.
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['sysext_file_init'] = 'TYPO3\\CMS\\Install\\Updates\\InitUpdateWizard';

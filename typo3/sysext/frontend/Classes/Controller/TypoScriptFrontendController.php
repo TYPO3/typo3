@@ -1098,6 +1098,9 @@ class TypoScriptFrontendController {
 			$GLOBALS['TT']->pull();
 			$GLOBALS['TYPO3_MISC']['microtime_BE_USER_end'] = microtime(TRUE);
 		}
+		if ($BE_USER === NULL) {
+			$BE_USER = $this->initializeDefaultBackendUser();
+		}
 		// POST BE_USER HOOK
 		if (is_array($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/index_ts.php']['postBeUser'])) {
 			$_params = array(
@@ -1106,6 +1109,29 @@ class TypoScriptFrontendController {
 			foreach ($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/index_ts.php']['postBeUser'] as $_funcRef) {
 				\TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($_funcRef, $_params, $this);
 			}
+		}
+		return $BE_USER;
+	}
+
+	/**
+	 * Initialize the default backend user for frontend context
+	 *
+	 * Having a backend user enables the use of certain features such as:
+	 * - use of DataHandler
+	 * - logging functions
+	 * - clear cache commands
+	 *
+	 * @return \TYPO3\CMS\Backend\FrontendBackendUserAuthentication
+	 */
+	private function initializeDefaultBackendUser() {
+		/** @var \TYPO3\CMS\Backend\FrontendBackendUserAuthentication $BE_USER */
+		$BE_USER = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\FrontendBackendUserAuthentication');
+		$BE_USER->setBeUserByName('_frontend');
+		$this->beUserLogin = 0;
+		if ($BE_USER->user['uid']) {
+			// Make sure the user is NOT an admin
+			$BE_USER->user['admin'] = $BE_USER->user['admin'] & ~1;
+			$BE_USER->fetchGroupData();
 		}
 		return $BE_USER;
 	}
