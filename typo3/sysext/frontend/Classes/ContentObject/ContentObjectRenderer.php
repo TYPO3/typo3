@@ -4321,7 +4321,7 @@ class ContentObjectRenderer {
 		$locationData = $GLOBALS['TSFE']->id . ':' . $this->currentRecord;
 		$rec = '&locationData=' . rawurlencode($locationData);
 		$hArr = array(
-			$jumpUrl,
+			rawurldecode($jumpUrl),
 			$locationData,
 			$mimetypeValue
 		);
