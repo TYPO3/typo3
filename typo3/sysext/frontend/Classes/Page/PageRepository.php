@@ -175,6 +175,15 @@ class PageRepository {
 			// Restrict to live and current workspaces
 			$this->where_hid_del .= ' AND (pages.t3ver_wsid=0 OR pages.t3ver_wsid=' . (int)$this->versioningWorkspaceId . ')';
 		}
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][PageRepository::class]['init'])) {
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][PageRepository::class]['init'] as $classRef) {
+				$hookObject = GeneralUtility::makeInstance($classRef);
+				if (!$hookObject instanceof PageRepositoryInitHookInterface) {
+					throw new \UnexpectedValueException($hookObject . ' must implement interface TYPO3\\CMS\\Frontend\\Page\\PageRepositoryInitHookInterface', 1379579812);
+				}
+				$hookObject->init_postProcess($this);
+			}
+		}
 	}
 
 	/**************************
