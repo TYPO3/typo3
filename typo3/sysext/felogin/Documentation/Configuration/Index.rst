@@ -183,6 +183,10 @@ showForgotPasswordLink
    Description
          If set, the section in the template to display the link to the forget
          password dialogue is visible.
+		 
+		 Be aware that having this option disabled, also prevents the plugin to
+		 display the forgot password form. (For instance if you access the link
+		 directly.)
 
 
 
