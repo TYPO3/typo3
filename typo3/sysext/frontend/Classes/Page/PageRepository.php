@@ -147,6 +147,15 @@ class PageRepository {
 			// Clear where_hid_del
 			$this->where_hid_del = ' AND pages.deleted=0 ';
 		}
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['TYPO3\CMS\Frontend\Page\PageRepository']['init'])) {
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['TYPO3\CMS\Frontend\Page\PageRepository']['init'] as $classRef) {
+				$hookObject = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($classRef);
+				if (!$hookObject instanceof PageRepositoryInitHookInterface) {
+					throw new \UnexpectedValueException('$hookObject must implement interface TYPO3\\CMS\\Frontend\\Page\\PageRepositoryInitHookInterface', 1379579812);
+				}
+				$hookObject->init_postProcess($this);
+			}
+		}
 	}
 
 	/*******************************************
