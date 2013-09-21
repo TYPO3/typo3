@@ -27,6 +27,9 @@ namespace TYPO3\CMS\Extbase\Mvc\Controller;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
+
 /**
  * A multi action controller. This is by far the most common base class for Controllers.
  *
@@ -49,7 +52,7 @@ class ActionController extends \TYPO3\CMS\Extbase\Mvc\Controller\AbstractControl
 	/**
 	 * The current view, as resolved by resolveView()
 	 *
-	 * @var \TYPO3\CMS\Extbase\Mvc\View\ViewInterface
+	 * @var ViewInterface
 	 * @api
 	 */
 	protected $view = NULL;
@@ -331,7 +334,7 @@ class ActionController extends \TYPO3\CMS\Extbase\Mvc\Controller\AbstractControl
 				$actionResult = call_user_func_array(array($this, $this->actionMethodName), $preparedArguments);
 			}
 		}
-		if ($actionResult === NULL && $this->view instanceof \TYPO3\CMS\Extbase\Mvc\View\ViewInterface) {
+		if ($actionResult === NULL && $this->view instanceof ViewInterface) {
 			$this->response->appendContent($this->view->render());
 		} elseif (is_string($actionResult) && strlen($actionResult) > 0) {
 			$this->response->appendContent($actionResult);
@@ -351,7 +354,7 @@ class ActionController extends \TYPO3\CMS\Extbase\Mvc\Controller\AbstractControl
 	protected function resolveView() {
 		$viewObjectName = $this->resolveViewObjectName();
 		if ($viewObjectName !== FALSE) {
-			/** @var $view \TYPO3\CMS\Extbase\Mvc\View\ViewInterface */
+			/** @var $view ViewInterface */
 			$view = $this->objectManager->get($viewObjectName);
 			$this->setViewConfiguration($view);
 			if ($view->canRender($this->controllerContext) === FALSE) {
@@ -359,7 +362,7 @@ class ActionController extends \TYPO3\CMS\Extbase\Mvc\Controller\AbstractControl
 			}
 		}
 		if (!isset($view) && $this->defaultViewObjectName != '') {
-			/** @var $view \TYPO3\CMS\Extbase\Mvc\View\ViewInterface */
+			/** @var $view ViewInterface */
 			$view = $this->objectManager->get($this->defaultViewObjectName);
 			$this->setViewConfiguration($view);
 			if ($view->canRender($this->controllerContext) === FALSE) {
@@ -383,20 +386,51 @@ class ActionController extends \TYPO3\CMS\Extbase\Mvc\Controller\AbstractControl
 	}
 
 	/**
-	 * @param \TYPO3\CMS\Extbase\Mvc\View\ViewInterface $view
+	 * @param ViewInterface $view
+	 *
 	 * @return void
 	 */
-	protected function setViewConfiguration(\TYPO3\CMS\Extbase\Mvc\View\ViewInterface $view) {
+	protected function setViewConfiguration(ViewInterface $view) {
 		// Template Path Override
-		$extbaseFrameworkConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
-		if (isset($extbaseFrameworkConfiguration['view']['templateRootPath']) && strlen($extbaseFrameworkConfiguration['view']['templateRootPath']) > 0 && method_exists($view, 'setTemplateRootPath')) {
-			$view->setTemplateRootPath(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($extbaseFrameworkConfiguration['view']['templateRootPath']));
+		$extbaseFrameworkConfiguration = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+		if (isset($extbaseFrameworkConfiguration['view']['templateRootPath'])
+			&& strlen($extbaseFrameworkConfiguration['view']['templateRootPath']) > 0
+			&& method_exists($view, 'setTemplateRootPath')
+		) {
+			$view->setTemplateRootPath($extbaseFrameworkConfiguration['view']['templateRootPath']);
+		} elseif (!empty($extbaseFrameworkConfiguration['view']['templateRootPaths'])
+			&& is_array($extbaseFrameworkConfiguration['view']['templateRootPaths'])
+			&& method_exists($view, 'setTemplateRootPaths')
+		) {
+			$paths = $extbaseFrameworkConfiguration['view']['templateRootPaths'];
+			krsort($paths);
+			$view->setTemplateRootPaths($paths);
 		}
-		if (isset($extbaseFrameworkConfiguration['view']['layoutRootPath']) && strlen($extbaseFrameworkConfiguration['view']['layoutRootPath']) > 0 && method_exists($view, 'setLayoutRootPath')) {
-			$view->setLayoutRootPath(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($extbaseFrameworkConfiguration['view']['layoutRootPath']));
+		if (isset($extbaseFrameworkConfiguration['view']['layoutRootPath'])
+			&& strlen($extbaseFrameworkConfiguration['view']['layoutRootPath']) > 0
+			&& method_exists($view, 'setLayoutRootPath')
+		) {
+			$view->setLayoutRootPath($extbaseFrameworkConfiguration['view']['layoutRootPath']);
+		} elseif (!empty($extbaseFrameworkConfiguration['view']['layoutRootPaths'])
+			&& is_array($extbaseFrameworkConfiguration['view']['layoutRootPaths'])
+			&& method_exists($view, 'layoutRootPaths')
+		) {
+			$paths = $extbaseFrameworkConfiguration['view']['layoutRootPaths'];
+			krsort($paths);
+			$view->setLayoutRootPaths($paths);
 		}
-		if (isset($extbaseFrameworkConfiguration['view']['partialRootPath']) && strlen($extbaseFrameworkConfiguration['view']['partialRootPath']) > 0 && method_exists($view, 'setPartialRootPath')) {
-			$view->setPartialRootPath(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($extbaseFrameworkConfiguration['view']['partialRootPath']));
+		if (isset($extbaseFrameworkConfiguration['view']['partialRootPath'])
+			&& strlen($extbaseFrameworkConfiguration['view']['partialRootPath']) > 0
+			&& method_exists($view, 'setPartialRootPath')
+		) {
+			$view->setPartialRootPath($extbaseFrameworkConfiguration['view']['partialRootPath']);
+		} elseif (!empty($extbaseFrameworkConfiguration['view']['partialRootPaths'])
+			&& is_array($extbaseFrameworkConfiguration['view']['partialRootPaths'])
+			&& method_exists($view, 'setPartialRootPaths')
+		) {
+			$paths = $extbaseFrameworkConfiguration['view']['partialRootPaths'];
+			krsort($paths);
+			$view->setPartialRootPaths($paths);
 		}
 	}
 
@@ -436,11 +470,11 @@ class ActionController extends \TYPO3\CMS\Extbase\Mvc\Controller\AbstractControl
 	 * Override this method to solve assign variables common for all actions
 	 * or prepare the view in another way before the action is called.
 	 *
-	 * @param \TYPO3\CMS\Extbase\Mvc\View\ViewInterface $view The view to be initialized
+	 * @param ViewInterface $view The view to be initialized
 	 * @return void
 	 * @api
 	 */
-	protected function initializeView(\TYPO3\CMS\Extbase\Mvc\View\ViewInterface $view) {
+	protected function initializeView(ViewInterface $view) {
 	}
 
 	/**
@@ -566,7 +600,7 @@ class ActionController extends \TYPO3\CMS\Extbase\Mvc\Controller\AbstractControl
 	 * @return void
 	 */
 	protected function clearCacheOnError() {
-		$extbaseSettings = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+		$extbaseSettings = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
 		if (isset($extbaseSettings['persistence']['enableAutomaticCacheClearing']) && $extbaseSettings['persistence']['enableAutomaticCacheClearing'] === '1') {
 			if (isset($GLOBALS['TSFE'])) {
 				$pageUid = $GLOBALS['TSFE']->id;
