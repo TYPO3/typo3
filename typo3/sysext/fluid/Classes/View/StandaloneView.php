@@ -256,7 +256,7 @@ class StandaloneView extends \TYPO3\CMS\Fluid\View\AbstractTemplateView {
 			throw new \TYPO3\CMS\Fluid\View\Exception\InvalidTemplateResourceException('No template has been specified. Use either setTemplateSource() or setTemplatePathAndFilename().', 1288085266);
 		}
 		if ($this->templateSource === NULL) {
-			if (!file_exists($this->templatePathAndFilename)) {
+			if (!is_file($this->templatePathAndFilename)) {
 				throw new \TYPO3\CMS\Fluid\View\Exception\InvalidTemplateResourceException('Template could not be found at "' . $this->templatePathAndFilename . '".', 1288087061);
 			}
 			$this->templateSource = file_get_contents($this->templatePathAndFilename);

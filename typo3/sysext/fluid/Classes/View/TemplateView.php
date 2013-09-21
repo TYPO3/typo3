@@ -470,7 +470,7 @@ class TemplateView extends AbstractTemplateView {
 		$paths = $this->expandGenericPathPattern($this->partialPathAndFilenamePattern, TRUE, TRUE);
 		foreach ($paths as &$partialPathAndFilename) {
 			$partialPathAndFilename = $this->resolveFileNamePath(str_replace('@partial', $partialName, $partialPathAndFilename));
-			if (@file_exists($partialPathAndFilename)) {
+			if (is_file($partialPathAndFilename)) {
 				return $partialPathAndFilename;
 			}
 		}
