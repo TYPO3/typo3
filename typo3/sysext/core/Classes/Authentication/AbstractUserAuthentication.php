@@ -29,6 +29,7 @@ namespace TYPO3\CMS\Core\Authentication;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
+use TYPO3\CMS\Core\Utility\IpUtility;
 
 /**
  * Authentication of users in TYPO3
@@ -607,6 +608,12 @@ abstract class AbstractUserAuthentication {
 	 * @todo Define visibility
 	 */
 	public function checkAuthentication() {
+		// If IP is blacklisted, throw exception, so authentication process exists here.
+		// @todo set error number
+		if (IpUtility::checkIpBlacklisted()) {
+			throw new \RuntimeException('TYPO3 Fatal Error: Your IP address is temporary blacklisted! Please try again later.', 1270853999);
+		}
+
 		// No user for now - will be searched by service below
 		$tempuserArr = array();
 		$tempuser = FALSE;

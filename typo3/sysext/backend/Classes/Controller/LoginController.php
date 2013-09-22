@@ -33,6 +33,7 @@ use TYPO3\CMS\Core\Html\HtmlParser;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
+use TYPO3\CMS\Core\Utility\IpUtility;
 
 /**
  * Script Class for rendering the login form
@@ -213,7 +214,13 @@ class LoginController {
 		// Creating form based on whether there is a login or not:
 		if (!$GLOBALS['BE_USER']->user['uid']) {
 			$GLOBALS['TBE_TEMPLATE']->form = $this->startForm();
-			$loginForm = $this->makeLoginForm();
+			// @todo make blacklist check configurable in install tool e.g. ['TYPO3_CONF_VARS']['BE']['broteForceCheck'] = 1
+			if (!IpUtility::checkIpBlacklisted()) {
+				$loginForm = $this->makeLoginForm();
+			} else {
+				// @todo Move message to language file
+				$loginForm = '<p>IP address temporarily blacklisted due to too many authentication failures. Please try again later.</p>';
+			}
 		} else {
 			$GLOBALS['TBE_TEMPLATE']->form = '
 				<form action="index.php" method="post" name="loginform">
@@ -420,6 +427,11 @@ class LoginController {
 				');
 			}
 		} elseif (!$GLOBALS['BE_USER']->user['uid'] && $this->isLoginInProgress()) {
+			// Increase IP blacklist counter
+			// @todo make blacklist check configurable in install tool and check here if enabled
+			// @todo e.g. ['TYPO3_CONF_VARS']['BE']['broteForceCheck'] = 1
+			IpUtility::increaseIpBlacklistCounter();
+
 			// Wrong password, wait for 5 seconds
 			sleep(5);
 		}

@@ -660,3 +660,15 @@ CREATE TABLE sys_category_record_mm (
 	KEY uid_local_foreign (uid_local,uid_foreign),
 	KEY uid_foreign_tablenames (uid_foreign,tablenames)
 );
+
+#
+# Table structure for table 'sys_ipblacklist'
+#
+CREATE TABLE sys_ipblacklist (
+  ip varchar(39) DEFAULT '' NOT NULL,
+  tstamp int(11) unsigned DEFAULT '0' NOT NULL,
+  numfailures int(11) DEFAULT '0' NOT NULL,
+  blacklisted tinyint(4) unsigned DEFAULT '0' NOT NULL,
+  expires int(11) unsigned DEFAULT '0' NOT NULL,
+  PRIMARY KEY (ip),
+);
