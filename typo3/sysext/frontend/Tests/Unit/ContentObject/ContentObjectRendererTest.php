@@ -1981,6 +1981,33 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$expectedResult = '0,42,719,321,17';
 		$this->assertEquals($expectedResult, $result);
 	}
+
+	/**
+	 * @test
+	 */
+	public function aTagParamsHasLeadingSpaceIfNotEmpty() {
+		$aTagParams = $this->cObj->getATagParams(array('ATagParams' => 'data-test="testdata"'));
+		$this->assertEquals(' data-test="testdata"', $aTagParams );
+	}
+
+	/**
+	 * @test
+	 */
+	public function aTagParamsHaveSpaceBetweenLocalAndGlobalParams() {
+		$GLOBALS['TSFE']->ATagParams = 'data-global="dataglobal"';
+		$aTagParams = $this->cObj->getATagParams(array('ATagParams' => 'data-test="testdata"'));
+		$this->assertEquals(' data-global="dataglobal" data-test="testdata"', $aTagParams );
+	}
+
+	/**
+	 * @test
+	 */
+	public function aTagParamsHasNoLeadingSpaceIfEmpty() {
+		// make sure global ATagParams are empty
+		$GLOBALS['TSFE']->ATagParams = '';
+		$aTagParams = $this->cObj->getATagParams(array('ATagParams' => ''));
+		$this->assertEquals('', $aTagParams);
+	}
 }
 
 ?>
