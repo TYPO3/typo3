@@ -1610,6 +1610,12 @@ class ContentObjectRenderer {
 				$aTagParams = $processor->process($_params, $this);
 			}
 		}
+
+		$aTagParams = trim($aTagParams);
+		if (!empty($aTagParams)) {
+			$aTagParams = ' ' . $aTagParams;
+		}
+
 		return $aTagParams;
 	}
 
