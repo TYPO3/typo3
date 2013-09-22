@@ -61,6 +61,13 @@ class Command {
 	protected $commandMethodReflection;
 
 	/**
+	 * Name of the extension to which this command belongs
+	 *
+	 * @var string
+	 */
+	protected $extensionName;
+
+	/**
 	 * Reflection service
 	 *
 	 * @var \TYPO3\CMS\Extbase\Reflection\ReflectionService
@@ -88,7 +95,8 @@ class Command {
 		if (count($classNameParts) !== 4 || strpos($classNameParts[3], 'CommandController') === FALSE) {
 			throw new \InvalidArgumentException('Invalid controller class name "' . $controllerClassName . '"', 1305100019);
 		}
-		$extensionKey = \TYPO3\CMS\Core\Utility\GeneralUtility::camelCaseToLowerCaseUnderscored($classNameParts[1]);
+		$this->extensionName = $classNameParts[1];
+		$extensionKey = \TYPO3\CMS\Core\Utility\GeneralUtility::camelCaseToLowerCaseUnderscored($this->extensionName);
 		$this->commandIdentifier = strtolower($extensionKey . ':' . substr($classNameParts[3], 0, -17) . ':' . $controllerCommandName);
 	}
 
@@ -113,6 +121,15 @@ class Command {
 	 */
 	public function getCommandIdentifier() {
 		return $this->commandIdentifier;
+	}
+
+	/**
+	 * Returns the name of the extension to which this command belongs
+	 *
+	 * @return string
+	 */
+	public function getExtensionName() {
+		return $this->extensionName;
 	}
 
 	/**
