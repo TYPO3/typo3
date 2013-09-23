@@ -1672,9 +1672,7 @@ tt_content.' . $key . $prefix . ' {
 	 * @return void
 	 */
 	static protected function createBaseTcaCacheFile() {
-		$phpCodeToCache = '$GLOBALS[\'TCA\'] = ';
-		$phpCodeToCache .= ArrayUtility::arrayExport($GLOBALS['TCA']);
-		$phpCodeToCache .= ';';
+		$phpCodeToCache = '$GLOBALS[\'TCA\'] = ' . var_export($GLOBALS['TCA'], TRUE) . ';';
 		/** @var $codeCache \TYPO3\CMS\Core\Cache\Frontend\PhpFrontend */
 		$codeCache = $GLOBALS['typo3CacheManager']->getCache('cache_core');
 		$codeCache->set(static::getBaseTcaCacheIdentifier(), $phpCodeToCache);
