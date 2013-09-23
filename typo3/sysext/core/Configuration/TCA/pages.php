@@ -768,7 +768,7 @@ return array(
 				'selicon_cols' => 5,
 				'size' => 1,
 				'maxitems' => 1,
-				'default' => ''
+				'default' => 0
 			)
 		),
 		'backend_layout_next_level' => array(
@@ -785,7 +785,7 @@ return array(
 				'selicon_cols' => 5,
 				'size' => 1,
 				'maxitems' => 1,
-				'default' => ''
+				'default' => 0
 			)
 		)
 	),
