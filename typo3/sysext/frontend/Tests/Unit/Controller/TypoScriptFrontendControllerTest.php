@@ -80,7 +80,7 @@ class TypoScriptFrontendControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
 			'INTincScript_loadJSCode',
 			'setAbsRefPrefix'
 		), array(), '', FALSE);
-		$tsfe->expects($this->once())->method('INTincScript_process')->will($this->returnCallback(array($this, 'INTincScript_processCallback')));
+		$tsfe->expects($this->exactly(2))->method('INTincScript_process')->will($this->returnCallback(array($this, 'INTincScript_processCallback')));
 		$tsfe->content = file_get_contents(__DIR__ . '/Fixtures/renderedPage.html');
 		$tsfe->config['INTincScript_ext']['divKey'] = '679b52796e75d474ccbbed486b6837ab';
 		$tsfe->config['INTincScript'] = array('INT_SCRIPT.679b52796e75d474ccbbed486b6837ab' => array());
