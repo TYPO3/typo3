@@ -113,8 +113,9 @@ class SpriteManager {
 		// registered "complete sprites" and the handler class
 		$iconNames = array_merge($availableSkinIcons, (array) $GLOBALS['TBE_STYLES']['spritemanager']['spriteIconsAvailable'], $handler->getAvailableIconNames());
 		$GLOBALS['TBE_STYLES']['spriteIconApi']['iconsAvailable'] = $iconNames;
-		$cacheString = addslashes(serialize($iconNames));
-		$cacheFileContent = '$GLOBALS[\'TBE_STYLES\'][\'spriteIconApi\'][\'iconsAvailable\'] = unserialize(stripslashes(\'' . $cacheString . '\'));';
+
+		$cacheFileContent = '$GLOBALS[\'TBE_STYLES\'][\'spriteIconApi\'][\'iconsAvailable\'] = ';
+		$cacheFileContent .= var_export($iconNames, TRUE) . ';';
 		/** @var $codeCache \TYPO3\CMS\Core\Cache\Frontend\PhpFrontend */
 		$GLOBALS['typo3CacheManager']->getCache('cache_core')->set(static::getCacheIdentifier(), $cacheFileContent);
 	}

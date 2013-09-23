@@ -857,9 +857,7 @@ class Bootstrap {
 			$codeCache->requireOnce($cacheIdentifier);
 		} else {
 			$this->loadExtensionTables(TRUE);
-			$phpCodeToCache = '$GLOBALS[\'TCA\'] = ';
-			$phpCodeToCache .= Utility\ArrayUtility::arrayExport($GLOBALS['TCA']);
-			$phpCodeToCache .= ';';
+			$phpCodeToCache = '$GLOBALS[\'TCA\'] = ' . var_export($GLOBALS['TCA'], TRUE) . ';';
 			$codeCache->set($cacheIdentifier, $phpCodeToCache);
 		}
 		return $this;
