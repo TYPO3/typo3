@@ -245,7 +245,7 @@ class DocumentTemplate {
 	 *
 	 * @var string
 	 */
-	protected $xUaCompatibilityVersion = 'IE=9';
+	protected $xUaCompatibilityVersion = 'IE=10';
 
 	// Skinning
 	// stylesheets from core
