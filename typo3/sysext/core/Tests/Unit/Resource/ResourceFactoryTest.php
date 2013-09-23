@@ -185,7 +185,17 @@ class FactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				array(1 => 'fileadmin/', 2 => 'fileadmin/public/'),
 				'fileadmin/public/Image.png',
 				2
-			)
+			),
+			'CommonPrefixButWrongPath' => array(
+				array(1 => 'fileadmin/', 2 => 'uploads/test/'),
+				'uploads/bogus/dummy.png',
+				0
+			),
+			'CommonPrefixRightPath' => array(
+				array(1 => 'fileadmin/', 2 => 'uploads/test/'),
+				'uploads/test/dummy.png',
+				2
+			),
 		);
 	}
 }
