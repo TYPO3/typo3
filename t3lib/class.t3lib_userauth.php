@@ -1253,8 +1253,14 @@ abstract class t3lib_userAuth {
 		$authInfo['db_user']['userident_column'] = $this->userident_column;
 		$authInfo['db_user']['usergroup_column'] = $this->usergroup_column;
 		$authInfo['db_user']['enable_clause'] = $this->user_where_clause();
-		$authInfo['db_user']['checkPidList'] = $this->checkPid ? $this->checkPid_value : '';
-		$authInfo['db_user']['check_pid_clause'] = $this->checkPid ? ' AND pid IN (' . $GLOBALS['TYPO3_DB']->cleanIntList($authInfo['db_user']['checkPidList']) . ')' : '';
+		if ($this->checkPid && $this->checkPid_value !== NULL) {
+			$authInfo['db_user']['checkPidList'] = $this->checkPid_value;
+			$authInfo['db_user']['check_pid_clause'] = ' AND pid IN (' .
+				$GLOBALS['TYPO3_DB']->cleanIntList($this->checkPid_value) . ')';
+		} else {
+			$authInfo['db_user']['checkPidList'] = '';
+			$authInfo['db_user']['check_pid_clause'] = '';
+		}
 		$authInfo['db_groups']['table'] = $this->usergroup_table;
 		return $authInfo;
 	}

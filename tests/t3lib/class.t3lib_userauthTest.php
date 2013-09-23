@@ -175,6 +175,21 @@ class t3lib_userauthTest extends tx_phpunit_testcase {
 		$this->assertEquals($mock->processLoginData($originalData, $passwordSubmissionStrategy), $processedData);
 
 	}
+
+	/**
+	 * @test
+	 */
+	public function getAuthInfoArrayReturnsEmptyPidListIfNoCheckPidValueIsGiven() {
+		$GLOBALS['TYPO3_DB'] = $this->getMock('t3lib_DB', array('cleanIntList'));
+		$GLOBALS['TYPO3_DB']->expects($this->never())->method('cleanIntList');
+
+		/** @var $mock \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication */
+		$mock = $this->getMock('t3lib_userauth', array('dummy'));
+		$mock->checkPid = TRUE;
+		$mock->checkPid_value = NULL;
+		$result = $mock->getAuthInfoArray();
+		$this->assertEquals('', $result['db_user']['checkPidList']);
+	}
 }
 
 
