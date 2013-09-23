@@ -1,28 +1,29 @@
+// Model/table mapping
+config.tx_extbase.persistence.classes {
+	TYPO3\CMS\Beuser\Domain\Model\BackendUser {
+		mapping {
+			tableName = be_users
+			columns {
+				allowed_languages.mapOnProperty = allowedLanguages
+				file_mountpoints.mapOnProperty = fileMountPoints
+				db_mountpoints.mapOnProperty = dbMountPoints
+				usergroup.mapOnProperty = backendUserGroups
+			}
+		}
+	}
+	TYPO3\CMS\Beuser\Domain\Model\BackendUserGroup {
+		mapping {
+			tableName = be_groups
+			columns {
+				subgroup.mapOnProperty = subGroups
+			}
+		}
+	}
+}
+
 module.tx_beuser {
 	persistence {
 		storagePid = 0
-
-		classes {
-			TYPO3\CMS\Beuser\Domain\Model\BackendUser {
-				mapping {
-					tableName = be_users
-					columns {
-						allowed_languages.mapOnProperty = allowedLanguages
-						file_mountpoints.mapOnProperty = fileMountPoints
-						db_mountpoints.mapOnProperty = dbMountPoints
-						usergroup.mapOnProperty = backendUserGroups
-					}
-				}
-			}
-			TYPO3\CMS\Beuser\Domain\Model\BackendUserGroup {
-				mapping {
-					tableName = be_groups
-					columns {
-						subgroup.mapOnProperty = subGroups
-					}
-				}
-			}
-		}
 	}
 
 	settings {
