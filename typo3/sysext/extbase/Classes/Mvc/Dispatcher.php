@@ -76,7 +76,7 @@ class Dispatcher implements \TYPO3\CMS\Core\SingletonInterface {
 		$dispatchLoopCount = 0;
 		while (!$request->isDispatched()) {
 			if ($dispatchLoopCount++ > 99) {
-				throw new \TYPO3\CMS\Extbase\Mvc\Exception\InfiniteLoopException('Could not ultimately dispatch the request after ' . $dispatchLoopCount . ' iterations. Most probably, a @dontvalidate annotation is missing on re-displaying a form with validation errors.', 1217839467);
+				throw new \TYPO3\CMS\Extbase\Mvc\Exception\InfiniteLoopException('Could not ultimately dispatch the request after ' . $dispatchLoopCount . ' iterations. Most probably, a @ignorevalidation or @dontvalidate (old propertymapper) annotation is missing on re-displaying a form with validation errors.', 1217839467);
 			}
 			$controller = $this->resolveController($request);
 			try {
