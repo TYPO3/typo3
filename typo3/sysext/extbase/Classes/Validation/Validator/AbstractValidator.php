@@ -27,10 +27,12 @@ namespace TYPO3\CMS\Extbase\Validation\Validator;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Extbase\Validation\Exception\InvalidValidationOptionsException;
+
 /**
  * Abstract validator
  */
-abstract class AbstractValidator implements \TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface {
+abstract class AbstractValidator implements ValidatorInterface {
 
 	/**
 	 * Specifies whether this validator accepts empty values.
@@ -67,13 +69,39 @@ abstract class AbstractValidator implements \TYPO3\CMS\Extbase\Validation\Valida
 	protected $result;
 
 	/**
-	 * Sets options for the validator
+	 * Constructs the validator and sets validation options
 	 *
-	 * @param array $validationOptions Options for the validator
+	 * @param array $options Options for the validator
+	 * @throws InvalidValidationOptionsException
 	 * @api
 	 */
-	public function __construct($validationOptions = array()) {
-		$this->options = $validationOptions;
+	public function __construct(array $options = array()) {
+		// check for options given but not supported
+		if (($unsupportedOptions = array_diff_key($options, $this->supportedOptions)) !== array()) {
+			throw new InvalidValidationOptionsException('Unsupported validation option(s) found: ' . implode(', ', array_keys($unsupportedOptions)), 1379981890);
+		}
+
+		// check for required options being set
+		array_walk(
+			$this->supportedOptions,
+			function($supportedOptionData, $supportedOptionName, $options) {
+				if (isset($supportedOptionData[3]) && $supportedOptionData[3] === TRUE && !array_key_exists($supportedOptionName, $options)) {
+					throw new InvalidValidationOptionsException('Required validation option not set: ' . $supportedOptionName, 1379981891);
+				}
+			},
+			$options
+		);
+
+		// merge with default values
+		$this->options = array_merge(
+			array_map(
+				function ($value) {
+					return $value[0];
+				},
+				$this->supportedOptions
+			),
+			$options
+		);
 	}
 
 	/**

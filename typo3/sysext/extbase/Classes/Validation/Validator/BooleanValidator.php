@@ -33,6 +33,19 @@ namespace TYPO3\CMS\Extbase\Validation\Validator;
 class BooleanValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator {
 
 	/**
+	 * @var array
+	 */
+	protected $supportedOptions = array(
+		// The default is set to NULL here, because we need to be backward compatible here, because this
+		// BooleanValidator is called automatically on boolean action arguments. If we would set it to TRUE,
+		// every FALSE value for an action argument would break.
+		// TODO with next patches: deprecate this BooleanValidator and introduce a BooleanValueValidator, like
+		// in Flow, which won't be called on boolean action arguments.
+		'is' => array(NULL, 'Boolean value', 'boolean|string|integer')
+	);
+
+
+	/**
 	 * Returns TRUE if the given property value is a boolean matching the expectation.
 	 *
 	 * If at least one error occurred, the result is FALSE.
@@ -44,7 +57,8 @@ class BooleanValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractV
 	 * @return boolean TRUE if the value is within the range, otherwise FALSE
 	 */
 	public function isValid($value) {
-		if (!isset($this->options['is'])) {
+		// see comment above, check if expectation is NULL, then nothing to do!
+		if ($this->options['is'] === NULL) {
 			return;
 		}
 		switch (strtolower((string)$this->options['is'])) {
