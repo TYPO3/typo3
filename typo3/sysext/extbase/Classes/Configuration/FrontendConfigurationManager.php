@@ -162,7 +162,7 @@ class FrontendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\Abst
 	 * @return array the framework configuration with overridden data from flexForm
 	 */
 	protected function overrideConfigurationFromFlexForm(array $frameworkConfiguration) {
-		if (strlen($this->contentObject->data['pi_flexform']) > 0) {
+		if (is_string($this->contentObject->data['pi_flexform']) && strlen($this->contentObject->data['pi_flexform']) > 0) {
 			$flexFormConfiguration = $this->flexFormService->convertFlexFormContentToArray($this->contentObject->data['pi_flexform']);
 			$frameworkConfiguration = $this->mergeConfigurationIntoFrameworkConfiguration($frameworkConfiguration, $flexFormConfiguration, 'settings');
 			$frameworkConfiguration = $this->mergeConfigurationIntoFrameworkConfiguration($frameworkConfiguration, $flexFormConfiguration, 'persistence');
