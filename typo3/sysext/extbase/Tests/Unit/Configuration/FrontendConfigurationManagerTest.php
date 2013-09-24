@@ -446,6 +446,21 @@ class FrontendConfigurationManagerTest extends \TYPO3\CMS\Extbase\Tests\Unit\Bas
 
 	/**
 	 * @test
+	 */
+	public function overrideConfigurationFromFlexFormChecksForDataIsString() {
+		/** @var $flexFormService \TYPO3\CMS\Extbase\Service\FlexFormService|\PHPUnit_Framework_MockObject_MockObject */
+		$flexFormService = $this->getMock('TYPO3\CMS\Extbase\Service\FlexFormService', array('convertFlexFormContentToArray'));
+		$flexFormService->expects($this->never())->method('convertFlexFormContentToArray');
+
+		$this->frontendConfigurationManager->_set('flexFormService', $flexFormService);
+		$this->mockContentObject->data = array('pi_flexform' => array('foo'));
+
+		$frameworkConfiguration = array('persistence' => array('storagePid' => '98'));
+		$this->frontendConfigurationManager->_call('overrideConfigurationFromFlexForm', $frameworkConfiguration);
+	}
+
+	/**
+	 * @test
 	 * @author Alexander Schnitzler <alex.schnitzler@typovision.de>
 	 */
 	public function overrideConfigurationFromFlexFormOverridesCorrectly() {
