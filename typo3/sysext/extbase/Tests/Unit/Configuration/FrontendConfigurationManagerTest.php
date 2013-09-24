@@ -333,6 +333,260 @@ class FrontendConfigurationManagerTest extends \TYPO3\CMS\Extbase\Tests\Unit\Bas
 		$actualResult = $frontendConfigurationManager->_call('getContextSpecificFrameworkConfiguration', $frameworkConfiguration);
 		$this->assertEquals($expectedResult, $actualResult);
 	}
+
+	/**
+	 * @test
+	 */
+	public function storagePidsAreExtendedIfRecursiveSearchIsConfigured() {
+		$storagePid = '3,5,9';
+		$recursive = 99;
+		/** @var $abstractConfigurationManager \TYPO3\CMS\Extbase\Configuration\FrontendConfigurationManager */
+		$abstractConfigurationManager = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Configuration\\FrontendConfigurationManager', array('overrideSwitchableControllerActions', 'getContextSpecificFrameworkConfiguration', 'getTypoScriptSetup', 'getPluginConfiguration', 'getSwitchableControllerActions'));
+		/** @var $cObjectMock \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer */
+		$cObjectMock = $this->getMock('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
+		$cObjectMock->expects($this->any())
+			->method('getTreeList')
+			->will($this->onConsecutiveCalls('4', '', '898,12'));
+		$abstractConfigurationManager->setContentObject($cObjectMock);
+
+		$expectedResult = '4,898,12';
+		$actualResult = $abstractConfigurationManager->_call('getRecursiveStoragePids', $storagePid, $recursive);
+		$this->assertEquals($expectedResult, $actualResult);
+	}
+
+	/**
+	 * @test
+	 */
+	public function storagePidsAreExtendedIfRecursiveSearchIsConfiguredAndWithPidIncludedForNegativePid() {
+		$storagePid = '-3,5,9';
+		$recursive = 99;
+		/** @var $abstractConfigurationManager \TYPO3\CMS\Extbase\Configuration\FrontendConfigurationManager */
+		$abstractConfigurationManager = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Configuration\\FrontendConfigurationManager', array('overrideSwitchableControllerActions', 'getContextSpecificFrameworkConfiguration', 'getTypoScriptSetup', 'getPluginConfiguration', 'getSwitchableControllerActions'));
+		/** @var $cObjectMock \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer */
+		$cObjectMock = $this->getMock('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
+		$cObjectMock->expects($this->any())
+			->method('getTreeList')
+			->will($this->onConsecutiveCalls('3,4', '', '898,12'));
+		$abstractConfigurationManager->setContentObject($cObjectMock);
+
+		$expectedResult = '3,4,898,12';
+		$actualResult = $abstractConfigurationManager->_call('getRecursiveStoragePids', $storagePid, $recursive);
+		$this->assertEquals($expectedResult, $actualResult);
+	}
+
+	/**
+	 * @test
+	 */
+	public function storagePidsAreNotExtendedIfRecursiveSearchIsNotConfigured() {
+		$storagePid = '1,2,3';
+
+		/** @var $abstractConfigurationManager \TYPO3\CMS\Extbase\Configuration\FrontendConfigurationManager */
+		$abstractConfigurationManager = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Configuration\\FrontendConfigurationManager', array('overrideSwitchableControllerActions', 'getContextSpecificFrameworkConfiguration', 'getTypoScriptSetup', 'getPluginConfiguration', 'getSwitchableControllerActions'));
+		/** @var $cObjectMock \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer */
+		$cObjectMock = $this->getMock('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
+		$cObjectMock->expects($this->never())->method('getTreeList');
+		$abstractConfigurationManager->setContentObject($cObjectMock);
+
+		$expectedResult = '1,2,3';
+		$actualResult = $abstractConfigurationManager->_call('getRecursiveStoragePids', $storagePid);
+		$this->assertEquals($expectedResult, $actualResult);
+	}
+
+	/**
+	 * @test
+	 */
+	public function storagePidsAreNotExtendedIfRecursiveSearchIsConfiguredForZeroLevels() {
+		$storagePid = '1,2,3';
+		$recursive = 0;
+
+		$abstractConfigurationManager = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Configuration\\FrontendConfigurationManager', array('overrideSwitchableControllerActions', 'getContextSpecificFrameworkConfiguration', 'getTypoScriptSetup', 'getPluginConfiguration', 'getSwitchableControllerActions'));
+
+		/** @var $cObjectMock \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer */
+		$cObjectMock = $this->getMock('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
+		$cObjectMock->expects($this->never())->method('getTreeList');
+		$abstractConfigurationManager->setContentObject($cObjectMock);
+
+		$expectedResult = '1,2,3';
+		$actualResult = $abstractConfigurationManager->_call('getRecursiveStoragePids', $storagePid, $recursive);
+		$this->assertEquals($expectedResult, $actualResult);
+	}
+
+	/**
+	 * @test
+	 * @author Alexander Schnitzler <alex.schnitzler@typovision.de>
+	 */
+	public function mergeConfigurationIntoFrameworkConfigurationWorksAsExpected() {
+		$configuration = array(
+			'persistence' => array(
+				'storagePid' => '0,1,2,3'
+			)
+		);
+
+		$frameworkConfiguration = array('persistence' => array('storagePid' => '98'));
+		$this->assertSame(
+			array('persistence' => array('storagePid' => '0,1,2,3')),
+			$this->frontendConfigurationManager->_call('mergeConfigurationIntoFrameworkConfiguration', $frameworkConfiguration, $configuration, 'persistence')
+		);
+	}
+
+	/**
+	 * @test
+	 * @author Alexander Schnitzler <alex.schnitzler@typovision.de>
+	 */
+	public function overrideStoragePidIfStartingPointIsSetOverridesCorrectly() {
+		$this->mockContentObject->expects($this->any())->method('getTreeList')->will($this->returnValue('1,2,3'));
+		$this->mockContentObject->data = array('pages' => '0', 'recursive' => 1);
+
+		$frameworkConfiguration = array('persistence' => array('storagePid' => '98'));
+		$this->assertSame(
+			array('persistence' => array('storagePid' => '0,1,2,3')),
+			$this->frontendConfigurationManager->_call('overrideStoragePidIfStartingPointIsSet', $frameworkConfiguration)
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function overrideConfigurationFromFlexFormChecksForDataIsString() {
+		/** @var $flexFormService \TYPO3\CMS\Extbase\Service\FlexFormService|\PHPUnit_Framework_MockObject_MockObject */
+		$flexFormService = $this->getMock('TYPO3\CMS\Extbase\Service\FlexFormService', array('convertFlexFormContentToArray'));
+		$flexFormService->expects($this->once())->method('convertFlexFormContentToArray')->will($this->returnValue(array(
+			'persistence' => array(
+				'storagePid' => '0,1,2,3'
+			)
+		)));
+
+		$this->frontendConfigurationManager->_set('flexFormService', $flexFormService);
+		$this->mockContentObject->data = array('pi_flexform' => '<XML_ARRAY>');
+
+		$frameworkConfiguration = array('persistence' => array('storagePid' => '98'));
+		$this->assertSame(
+			array('persistence' => array('storagePid' => '0,1,2,3')),
+			$this->frontendConfigurationManager->_call('overrideConfigurationFromFlexForm', $frameworkConfiguration)
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function overrideConfigurationFromFlexFormChecksForDataIsStringAndEmpty() {
+		/** @var $flexFormService \TYPO3\CMS\Extbase\Service\FlexFormService|\PHPUnit_Framework_MockObject_MockObject */
+		$flexFormService = $this->getMock('TYPO3\CMS\Extbase\Service\FlexFormService', array('convertFlexFormContentToArray'));
+		$flexFormService->expects($this->never())->method('convertFlexFormContentToArray');
+
+		$this->frontendConfigurationManager->_set('flexFormService', $flexFormService);
+		$this->mockContentObject->data = array('pi_flexform' => '');
+
+		$frameworkConfiguration = array('persistence' => array('storagePid' => '98'));
+		$this->assertSame(
+			array('persistence' => array('storagePid' => '98')),
+			$this->frontendConfigurationManager->_call('overrideConfigurationFromFlexForm', $frameworkConfiguration)
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function overrideConfigurationFromFlexFormChecksForDataIsArray() {
+		/** @var $flexFormService \TYPO3\CMS\Extbase\Service\FlexFormService|\PHPUnit_Framework_MockObject_MockObject */
+		$flexFormService = $this->getMock('TYPO3\CMS\Extbase\Service\FlexFormService', array('convertFlexFormContentToArray'));
+		$flexFormService->expects($this->never())->method('convertFlexFormContentToArray');
+
+		$this->frontendConfigurationManager->_set('flexFormService', $flexFormService);
+		$this->mockContentObject->data = array('pi_flexform' => array('persistence' => array('storagePid' => '0,1,2,3')));
+
+		$frameworkConfiguration = array('persistence' => array('storagePid' => '98'));
+		$this->assertSame(
+			array('persistence' => array('storagePid' => '0,1,2,3')),
+			$this->frontendConfigurationManager->_call('overrideConfigurationFromFlexForm', $frameworkConfiguration)
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function overrideConfigurationFromFlexFormChecksForDataIsArrayAndEmpty() {
+		/** @var $flexFormService \TYPO3\CMS\Extbase\Service\FlexFormService|\PHPUnit_Framework_MockObject_MockObject */
+		$flexFormService = $this->getMock('TYPO3\CMS\Extbase\Service\FlexFormService', array('convertFlexFormContentToArray'));
+		$flexFormService->expects($this->never())->method('convertFlexFormContentToArray');
+
+		$this->frontendConfigurationManager->_set('flexFormService', $flexFormService);
+		$this->mockContentObject->data = array('pi_flexform' => array());
+
+		$frameworkConfiguration = array('persistence' => array('storagePid' => '98'));
+		$this->assertSame(
+			array('persistence' => array('storagePid' => '98')),
+			$this->frontendConfigurationManager->_call('overrideConfigurationFromFlexForm', $frameworkConfiguration)
+		);
+	}
+
+	/**
+	 * @test
+	 * @author Alexander Schnitzler <alex.schnitzler@typovision.de>
+	 */
+	public function overrideConfigurationFromPluginOverridesCorrectly() {
+		/** @var $frontendConfigurationManager \TYPO3\CMS\Extbase\Configuration\FrontendConfigurationManager */
+		$frontendConfigurationManager = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Configuration\\FrontendConfigurationManager', array('getTypoScriptSetup'));
+		$frontendConfigurationManager->_set('contentObject', $this->mockContentObject);
+		$frontendConfigurationManager->injectTypoScriptService($this->mockTypoScriptService);
+
+		$this->mockTypoScriptService->expects($this->once())->method('convertTypoScriptArrayToPlainArray')->will($this->returnValue(array(
+			'persistence' => array(
+				'storagePid' => '0,1,2,3'
+			),
+			'settings' => array(
+				'foo' => 'bar'
+			),
+			'view' => array(
+				'foo' => 'bar'
+			),
+		)));
+		$frontendConfigurationManager->expects($this->any())->method('getTypoScriptSetup')->will($this->returnValue(array(
+			'plugin.' => array(
+				'tx_ext_pi1.' => array(
+					'persistence.' => array(
+						'storagePid' => '0,1,2,3'
+					),
+					'settings.' => array(
+						'foo' => 'bar'
+					),
+					'view.' => array(
+						'foo' => 'bar'
+					),
+				)
+			)
+		)));
+
+		$frameworkConfiguration = array(
+			'extensionName' => 'ext',
+			'pluginName' => 'pi1',
+			'persistence' => array(
+				'storagePid' => '1'
+			),
+			'settings' => array(
+				'foo' => 'qux'
+			),
+			'view' => array(
+				'foo' => 'qux'
+			),
+		);
+		$this->assertSame(
+			array(
+				'extensionName' => 'ext',
+				'pluginName' => 'pi1',
+				'persistence' => array(
+					'storagePid' => '0,1,2,3',
+				),
+				'settings' => array(
+					'foo' => 'bar'
+				),
+				'view' => array(
+					'foo' => 'bar'
+				),
+			),
+			$frontendConfigurationManager->_call('overrideConfigurationFromPlugin', $frameworkConfiguration)
+		);
+	}
 }
 
 ?>
