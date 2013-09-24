@@ -158,13 +158,14 @@ class ValidatorResolverTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 */
 	public function createValidatorResolvesAndReturnsAValidatorAndPassesTheGivenOptions() {
 		$className = uniqid('Test');
-		$mockValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\ObjectValidatorInterface', array('setOptions', 'canValidate', 'isPropertyValid', 'setValidatedInstancesContainer'), array(), $className);
-		$mockValidator->expects($this->once())->method('setOptions')->with(array('foo' => 'bar'));
-		$this->mockObjectManager->expects($this->any())->method('get')->with($className)->will($this->returnValue($mockValidator));
+		$validatorOptions = array('requiredOption' => 'foo', 'demoOption' => 'bar');
+		$mockValidator = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Tests\\Unit\\Validation\\Validator\\Fixture\\AbstractValidatorClass', array('dummy'), array($validatorOptions), $className);
+		$this->mockObjectManager->expects($this->any())->method('get')->with($className, $validatorOptions)->will($this->returnValue($mockValidator));
 		$validatorResolver = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Validation\\ValidatorResolver', array('resolveValidatorObjectName'));
 		$validatorResolver->_set('objectManager', $this->mockObjectManager);
 		$validatorResolver->expects($this->once())->method('resolveValidatorObjectName')->with($className)->will($this->returnValue($className));
-		$validator = $validatorResolver->createValidator($className, array('foo' => 'bar'));
+		$validator = $validatorResolver->createValidator($className, $validatorOptions);
+		$this->assertEquals($validatorOptions, $validator->_get('options'));
 		$this->assertSame($mockValidator, $validator);
 	}
 

@@ -30,6 +30,10 @@ class NotEmptyValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validation\Val
 
 	protected $validatorClassName = 'TYPO3\\CMS\\Extbase\\Validation\\Validator\\NotEmptyValidator';
 
+	public function setUp() {
+		$this->validator = $this->getValidator();
+	}
+
 	/**
 	 * @test
 	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>

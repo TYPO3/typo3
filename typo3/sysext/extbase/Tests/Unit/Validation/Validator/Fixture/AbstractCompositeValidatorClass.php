@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator;
+namespace TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator\Fixture;
 
 /*                                                                        *
- * This script belongs to the Extbase framework.                          *
+ * This script belongs to the Extbase framework.                            *
  *                                                                        *
  * It is free software; you can redistribute it and/or modify it under    *
  * the terms of the GNU Lesser General Public License as published by the *
@@ -22,48 +22,31 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator;
  *                                                                        */
 
 /**
- * Testcase for the string length validator
+ * Testcase for the abstract base-class of vvalidators
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class StringValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator\AbstractValidatorTestcase {
-
-	protected $validatorClassName = 'TYPO3\\CMS\\Extbase\\Validation\\Validator\\StringValidator';
-
-	public function setUp() {
-		$this->validator = $this->getValidator();
-	}
+class AbstractCompositeValidatorClass extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractCompositeValidator {
 
 	/**
-	 * @test
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @var array
 	 */
-	public function stringValidatorShouldValidateString() {
-		$this->assertFalse($this->validator->validate('Hello World')->hasErrors());
-	}
+	protected $supportedOptions = array(
+		'requiredOption' => array(0, 'Some value', 'integer', TRUE),
+		'demoOption' => array(PHP_INT_MAX, 'Some value', 'integer'),
+	);
 
 	/**
-	 * @test
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * Check if $value is valid. If it is not valid, needs to add an error
+	 * to Result.
+	 *
+	 * @param mixed $value
+	 * @return void
 	 */
-	public function stringValidatorShouldReturnErrorIfNumberIsGiven() {
-		$this->assertTrue($this->validator->validate(42)->hasErrors());
+	protected function isValid($value) {
+		// dummy
 	}
 
-	/**
-	 * @test
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 */
-	public function stringValidatorShouldReturnErrorIfObjectWithToStringMethodStringIsGiven() {
-		$className = 'TestClass' . md5(uniqid(mt_rand(), TRUE));
-		eval('
-			class ' . $className . ' {
-				public function __toString() {
-					return "ASDF";
-				}
-			}
-		');
-		$object = new $className();
-		$this->assertTrue($this->validator->validate($object)->hasErrors());
-	}
+
 }
+?>

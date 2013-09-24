@@ -30,6 +30,10 @@ class EmailAddressValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validation
 
 	protected $validatorClassName = 'TYPO3\\CMS\\Extbase\\Validation\\Validator\\EmailAddressValidator';
 
+	public function setUp() {
+		$this->validator = $this->getValidator();
+	}
+
 	/**
 	 * Data provider with valid email addresses
 	 *

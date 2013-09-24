@@ -34,10 +34,6 @@ abstract class AbstractValidatorTestcase extends \TYPO3\CMS\Extbase\Tests\Unit\B
 	 */
 	protected $validator;
 
-	public function setUp() {
-		$this->validator = $this->getValidator();
-	}
-
 	/**
 	 * @param array $options
 	 * @return mixed

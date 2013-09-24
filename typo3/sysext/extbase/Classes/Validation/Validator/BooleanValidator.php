@@ -32,6 +32,13 @@ namespace TYPO3\CMS\Extbase\Validation\Validator;
  */
 class BooleanValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator {
 
+        /**
+         * @var array
+         */
+        protected $supportedOptions = array(
+                'is' => array(TRUE, 'Boolean value', 'boolean|string|integer')
+        );
+
 	/**
 	 * Returns TRUE if the given property value is a boolean matching the expectation.
 	 *
@@ -44,9 +51,6 @@ class BooleanValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractV
 	 * @return boolean TRUE if the value is within the range, otherwise FALSE
 	 */
 	public function isValid($value) {
-		if (!isset($this->options['is'])) {
-			return;
-		}
 		switch (strtolower((string)$this->options['is'])) {
 			case 'true':
 			case '1':
