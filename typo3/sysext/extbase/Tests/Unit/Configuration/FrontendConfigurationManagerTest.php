@@ -333,6 +333,82 @@ class FrontendConfigurationManagerTest extends \TYPO3\CMS\Extbase\Tests\Unit\Bas
 		$actualResult = $frontendConfigurationManager->_call('getContextSpecificFrameworkConfiguration', $frameworkConfiguration);
 		$this->assertEquals($expectedResult, $actualResult);
 	}
+
+	/**
+	 * @test
+	 */
+	public function overrideConfigurationFromFlexFormChecksForDataIsString() {
+		/** @var $flexFormService \TYPO3\CMS\Extbase\Service\FlexFormService|\PHPUnit_Framework_MockObject_MockObject */
+		$flexFormService = $this->getMock('TYPO3\CMS\Extbase\Service\FlexFormService', array('convertFlexFormContentToArray'));
+		$flexFormService->expects($this->once())->method('convertFlexFormContentToArray')->will($this->returnValue(array(
+			'persistence' => array(
+				'storagePid' => '0,1,2,3'
+			)
+		)));
+
+		$this->frontendConfigurationManager->_set('flexFormService', $flexFormService);
+		$this->mockContentObject->data = array('pi_flexform' => '<XML_ARRAY>');
+
+		$frameworkConfiguration = array('persistence' => array('storagePid' => '98'));
+		$this->assertSame(
+			array('persistence' => array('storagePid' => '0,1,2,3')),
+			$this->frontendConfigurationManager->_call('overrideConfigurationFromFlexForm', $frameworkConfiguration)
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function overrideConfigurationFromFlexFormChecksForDataIsStringAndEmpty() {
+		/** @var $flexFormService \TYPO3\CMS\Extbase\Service\FlexFormService|\PHPUnit_Framework_MockObject_MockObject */
+		$flexFormService = $this->getMock('TYPO3\CMS\Extbase\Service\FlexFormService', array('convertFlexFormContentToArray'));
+		$flexFormService->expects($this->never())->method('convertFlexFormContentToArray');
+
+		$this->frontendConfigurationManager->_set('flexFormService', $flexFormService);
+		$this->mockContentObject->data = array('pi_flexform' => '');
+
+		$frameworkConfiguration = array('persistence' => array('storagePid' => '98'));
+		$this->assertSame(
+			array('persistence' => array('storagePid' => '98')),
+			$this->frontendConfigurationManager->_call('overrideConfigurationFromFlexForm', $frameworkConfiguration)
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function overrideConfigurationFromFlexFormChecksForDataIsArray() {
+		/** @var $flexFormService \TYPO3\CMS\Extbase\Service\FlexFormService|\PHPUnit_Framework_MockObject_MockObject */
+		$flexFormService = $this->getMock('TYPO3\CMS\Extbase\Service\FlexFormService', array('convertFlexFormContentToArray'));
+		$flexFormService->expects($this->never())->method('convertFlexFormContentToArray');
+
+		$this->frontendConfigurationManager->_set('flexFormService', $flexFormService);
+		$this->mockContentObject->data = array('pi_flexform' => array('persistence' => array('storagePid' => '0,1,2,3')));
+
+		$frameworkConfiguration = array('persistence' => array('storagePid' => '98'));
+		$this->assertSame(
+			array('persistence' => array('storagePid' => '0,1,2,3')),
+			$this->frontendConfigurationManager->_call('overrideConfigurationFromFlexForm', $frameworkConfiguration)
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function overrideConfigurationFromFlexFormChecksForDataIsArrayAndEmpty() {
+		/** @var $flexFormService \TYPO3\CMS\Extbase\Service\FlexFormService|\PHPUnit_Framework_MockObject_MockObject */
+		$flexFormService = $this->getMock('TYPO3\CMS\Extbase\Service\FlexFormService', array('convertFlexFormContentToArray'));
+		$flexFormService->expects($this->never())->method('convertFlexFormContentToArray');
+
+		$this->frontendConfigurationManager->_set('flexFormService', $flexFormService);
+		$this->mockContentObject->data = array('pi_flexform' => array());
+
+		$frameworkConfiguration = array('persistence' => array('storagePid' => '98'));
+		$this->assertSame(
+			array('persistence' => array('storagePid' => '98')),
+			$this->frontendConfigurationManager->_call('overrideConfigurationFromFlexForm', $frameworkConfiguration)
+		);
+	}
 }
 
 ?>
