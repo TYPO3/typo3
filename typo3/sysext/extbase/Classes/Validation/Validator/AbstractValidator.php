@@ -67,13 +67,38 @@ abstract class AbstractValidator implements \TYPO3\CMS\Extbase\Validation\Valida
 	protected $result;
 
 	/**
-	 * Sets options for the validator
+	 * Constructs the composite validator and sets validation options
 	 *
-	 * @param array $validationOptions Options for the validator
+	 * @param array $options Options for the validator
 	 * @api
 	 */
-	public function __construct($validationOptions = array()) {
-		$this->options = $validationOptions;
+	public function __construct(array $options = array()) {
+			// check for options given but not supported
+		if (($unsupportedOptions = array_diff_key($options, $this->supportedOptions)) !== array()) {
+			throw new \TYPO3\CMS\Extbase\Validation\Exception\InvalidValidationOptionsException('Unsupported validation option(s) found: ' . implode(', ', array_keys($unsupportedOptions)), 1339079804);
+		}
+
+			// check for required options being set
+		array_walk(
+			$this->supportedOptions,
+			function($supportedOptionData, $supportedOptionName, $options) {
+				if (isset($supportedOptionData[3]) && !array_key_exists($supportedOptionName, $options)) {
+					throw new \TYPO3\CMS\Extbase\Validation\Exception\InvalidValidationOptionsException('Required validation option not set: ' . $supportedOptionName, 1339163922);
+				}
+			},
+			$options
+		);
+
+			// merge with default values
+		$this->options = array_merge(
+			array_map(
+				function ($value) {
+					return $value[0];
+				},
+				$this->supportedOptions
+			),
+			$options
+		);
 	}
 
 	/**
