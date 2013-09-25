@@ -467,7 +467,37 @@ class TemplateParserTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$mockState = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\Parser\\ParsingState');
 		$mockState->expects($this->once())->method('popNodeFromStack')->will($this->returnValue($mockNodeOnStack));
 
+		$mockObjectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerInterface');
+
+		/** @var $templateParser \TYPO3\CMS\Fluid\Core\Parser\TemplateParser */
 		$templateParser = $this->getAccessibleMock('TYPO3\\CMS\\Fluid\\Core\\Parser\\TemplateParser', array('dummy'));
+		$templateParser->injectObjectManager($mockObjectManager);
+
+		$templateParser->_call('closingViewHelperTagHandler', $mockState, 'f', 'method');
+	}
+
+	/**
+	 * Tests alternative view helper implementation that can be registered via ObjectManager.
+	 *
+	 * @see http://forge.typo3.org/issues/52272
+	 * @test
+	 */
+	public function closingViewHelperTagHandlerDeterminesAlternativeImplementation() {
+		$mockViewHelper = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\AbstractViewHelper', array(), array(), '', FALSE);
+
+		$mockNodeOnStack = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\Parser\\SyntaxTree\\ViewHelperNode', array('getViewHelperClassName'), array(), '', FALSE);
+		$mockNodeOnStack->expects($this->once())->method('getViewHelperClassName')->will($this->returnValue(get_class($mockViewHelper)));
+
+		$mockState = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\Parser\\ParsingState');
+		$mockState->expects($this->once())->method('popNodeFromStack')->will($this->returnValue($mockNodeOnStack));
+
+		$mockObjectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerInterface');
+		$mockObjectManager->expects($this->once())->method('get')->with('TYPO3\\CMS\\Fluid\\ViewHelpers\\MethodViewHelper')->will($this->returnValue($mockViewHelper));
+
+		/** @var $templateParser \TYPO3\CMS\Fluid\Core\Parser\TemplateParser */
+		$templateParser = $this->getAccessibleMock('TYPO3\\CMS\\Fluid\\Core\\Parser\\TemplateParser', array('callInterceptor'));
+		$templateParser->injectObjectManager($mockObjectManager);
+		$templateParser->expects($this->once())->method('callInterceptor');
 
 		$templateParser->_call('closingViewHelperTagHandler', $mockState, 'f', 'method');
 	}

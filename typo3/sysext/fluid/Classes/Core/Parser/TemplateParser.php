@@ -599,8 +599,17 @@ class TemplateParser {
 		if (!($lastStackElement instanceof \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode)) {
 			throw new \TYPO3\CMS\Fluid\Core\Parser\Exception('You closed a templating tag which you never opened!', 1224485838);
 		}
-		if ($lastStackElement->getViewHelperClassName() != $this->resolveViewHelperName($namespaceIdentifier, $methodIdentifier)) {
-			throw new \TYPO3\CMS\Fluid\Core\Parser\Exception('Templating tags not properly nested. Expected: ' . $lastStackElement->getViewHelperClassName() . '; Actual: ' . $this->resolveViewHelperName($namespaceIdentifier, $methodIdentifier), 1224485398);
+		$viewHelperName = $this->resolveViewHelperName($namespaceIdentifier, $methodIdentifier);
+		$viewHelperClassName = $lastStackElement->getViewHelperClassName();
+		if (
+			$viewHelperClassName !== $viewHelperName
+			&& $viewHelperClassName !== get_class($this->objectManager->get($viewHelperName))
+		) {
+			throw new \TYPO3\CMS\Fluid\Core\Parser\Exception(
+				'Templating tags not properly nested. Expected: ' . $viewHelperClassName
+					. '; Actual: ' . $viewHelperName,
+				1224485398
+			);
 		}
 		$this->callInterceptor($lastStackElement, \TYPO3\CMS\Fluid\Core\Parser\InterceptorInterface::INTERCEPT_CLOSING_VIEWHELPER, $state);
 	}
