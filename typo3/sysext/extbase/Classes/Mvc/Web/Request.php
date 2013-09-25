@@ -205,6 +205,8 @@ class Request extends \TYPO3\CMS\Extbase\Mvc\Request {
 				$serializedArgumentsWithHmac = $referrerArray['arguments'];
 				$serializedArguments = $this->hashService->validateAndStripHmac($serializedArgumentsWithHmac);
 				$arguments = unserialize(base64_decode($serializedArguments));
+				$additionalArguments = array_diff_key($this->arguments, $arguments);
+				$arguments = \TYPO3\CMS\Extbase\Utility\ArrayUtility::arrayMergeRecursiveOverrule($arguments, $additionalArguments);
 				unset($referrerArray['arguments']);
 			}
 			$referringRequest->setArguments(\TYPO3\CMS\Extbase\Utility\ArrayUtility::arrayMergeRecursiveOverrule($arguments, $referrerArray));
