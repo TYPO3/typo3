@@ -2715,7 +2715,7 @@ class TypoScriptFrontendController {
 	 * @return void
 	 * @access private
 	 * @see checkDataSubmission()
-	 * @todo Define visibility
+	 * @todo Define visibility, will not work if record is a root page
 	 */
 	public function locDataCheck($locationData) {
 		$locData = explode(':', $locationData);
@@ -2836,94 +2836,9 @@ class TypoScriptFrontendController {
 	 */
 	public function jumpUrl() {
 		if ($this->jumpurl) {
-			if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('juSecure')) {
-				$locationData = (string) GeneralUtility::_GP('locationData');
-				// Need a type cast here because mimeType is optional!
-				$mimeType = (string) GeneralUtility::_GP('mimeType');
-				$hArr = array(
-					$this->jumpurl,
-					$locationData,
-					$mimeType
-				);
-				$calcJuHash = GeneralUtility::hmac(serialize($hArr));
-				$juHash = (string) GeneralUtility::_GP('juHash');
-				if ($juHash === $calcJuHash) {
-					if ($this->locDataCheck($locationData)) {
-						// 211002 - goes with cObj->filelink() rawurlencode() of filenames so spaces can be allowed.
-						$this->jumpurl = rawurldecode($this->jumpurl);
-						// Deny access to files that match TYPO3_CONF_VARS[SYS][fileDenyPattern] and whose parent directory is typo3conf/ (there could be a backup file in typo3conf/ which does not match against the fileDenyPattern)
-						$absoluteFileName = GeneralUtility::getFileAbsFileName(\TYPO3\CMS\Core\Utility\GeneralUtility::resolveBackPath($this->jumpurl), FALSE);
-						if (\TYPO3\CMS\Core\Utility\GeneralUtility::isAllowedAbsPath($absoluteFileName) && GeneralUtility::verifyFilenameAgainstDenyPattern($absoluteFileName) && !\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($absoluteFileName, (PATH_site . 'typo3conf'))) {
-							if (@is_file($absoluteFileName)) {
-								$mimeType = $mimeType ? $mimeType : 'application/octet-stream';
-								header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-								header('Content-Type: ' . $mimeType);
-								header('Content-Disposition: attachment; filename="' . basename($absoluteFileName) . '"');
-								header('Content-Length: ' . filesize($absoluteFileName));
-								\TYPO3\CMS\Core\Utility\GeneralUtility::flushOutputBuffers();
-								readfile($absoluteFileName);
-								die;
-							} else {
-								throw new \Exception('jumpurl Secure: "' . $this->jumpurl . '" was not a valid file!', 1294585193);
-							}
-						} else {
-							throw new \Exception('jumpurl Secure: The requested file was not allowed to be accessed through jumpUrl (path or file not allowed)!', 1294585194);
-						}
-					} else {
-						throw new \Exception('jumpurl Secure: locationData, ' . $locationData . ', was not accessible.', 1294585195);
-					}
-				} else {
-					throw new \Exception('jumpurl Secure: Calculated juHash did not match the submitted juHash.', 1294585196);
-				}
-			} else {
-				$TSConf = $this->getPagesTSconfig();
-				if ($TSConf['TSFE.']['jumpUrl_transferSession']) {
-					$uParts = parse_url($this->jumpurl);
-					$params = '&FE_SESSION_KEY=' . rawurlencode(($this->fe_user->id . '-' . md5(($this->fe_user->id . '/' . $this->TYPO3_CONF_VARS['SYS']['encryptionKey']))));
-					// Add the session parameter ...
-					$this->jumpurl .= ($uParts['query'] ? '' : '?') . $params;
-				}
-				if ($TSConf['TSFE.']['jumpURL_HTTPStatusCode']) {
-					switch (intval($TSConf['TSFE.']['jumpURL_HTTPStatusCode'])) {
-						case 301:
-							$statusCode = HttpUtility::HTTP_STATUS_301;
-							break;
-						case 302:
-							$statusCode = HttpUtility::HTTP_STATUS_302;
-							break;
-						case 307:
-							$statusCode = HttpUtility::HTTP_STATUS_307;
-							break;
-						case 303:
-
-						default:
-							$statusCode = HttpUtility::HTTP_STATUS_303;
-					}
-				}
-
-				$allowRedirect = FALSE;
-				if (\TYPO3\CMS\Core\Utility\GeneralUtility::hmac($this->jumpurl, 'jumpurl') === (string)\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('juHash')) {
-					$allowRedirect = TRUE;
-				} elseif (is_array($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['jumpurlRedirectHandler'])) {
-					foreach ($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['jumpurlRedirectHandler'] as $classReference) {
-						$hookObject = GeneralUtility::getUserObj($classReference);
-						$allowRedirectFromHook = FALSE;
-						if (method_exists($hookObject, 'jumpurlRedirectHandler')) {
-							$allowRedirectFromHook = $hookObject->jumpurlRedirectHandler($this->jumpurl, $this);
-						}
-						if ($allowRedirectFromHook === TRUE) {
-							$allowRedirect = TRUE;
-							break;
-						}
-					}
-				}
-
-				if ($allowRedirect) {
-					HttpUtility::redirect($this->jumpurl, $statusCode);
-				} else {
-					throw new \Exception('jumpurl: Calculated juHash did not match the submitted juHash.', 1359987599);
-				}
-			}
+			/** @var \TYPO3\CMS\Frontend\Utility\JumpurlUtility $jumpurlUtility */
+			$jumpurlUtility = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Utility\\JumpurlUtility');
+			$jumpurlUtility->handleJumpUrl($this->jumpurl);
 		}
 	}
 
