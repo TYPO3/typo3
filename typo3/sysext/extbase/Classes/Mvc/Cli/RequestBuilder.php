@@ -47,6 +47,11 @@ class RequestBuilder {
 	protected $commandManager;
 
 	/**
+	 * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
+	 */
+	protected $configurationManager;
+
+	/**
 	 * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
 	 * @return void
 	 */
@@ -71,6 +76,14 @@ class RequestBuilder {
 	}
 
 	/**
+	 * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
+	 * @return void
+	 */
+	public function injectConfigurationManager(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager) {
+		$this->configurationManager = $configurationManager;
+	}
+
+	/**
 	 * Builds a CLI request object from a command line.
 	 *
 	 * The given command line may be a string (e.g. "myextension:foo do-that-thing --force") or
@@ -91,6 +104,7 @@ class RequestBuilder {
 		$commandIdentifier = trim(array_shift($rawCommandLineArguments));
 		try {
 			$command = $this->commandManager->getCommandByIdentifier($commandIdentifier);
+			$this->configurationManager->setConfiguration(array('extensionName' => $command->getExtensionName()));
 		} catch (\TYPO3\CMS\Extbase\Mvc\Exception\CommandException $exception) {
 			$request->setArgument('exception', $exception);
 			$request->setControllerCommandName('error');

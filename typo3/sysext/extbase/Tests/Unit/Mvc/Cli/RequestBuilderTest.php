@@ -56,6 +56,11 @@ class RequestBuilderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	protected $mockReflectionService;
 
 	/**
+	 * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface|\PHPUnit_Framework_MockObject_MockObject
+	 */
+	protected $mockConfigurationManager;
+
+	/**
 	 * Sets up this test case
 	 *
 	 * @author Robert Lemke <robert@typo3.org>
@@ -70,10 +75,13 @@ class RequestBuilderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$this->mockCommandManager = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Cli\\CommandManager');
 		$this->mockCommandManager->expects($this->any())->method('getCommandByIdentifier')->with('some_extension_name:default:list')->will($this->returnValue($this->mockCommand));
 		$this->mockReflectionService = $this->getMock('TYPO3\\CMS\\Extbase\\Reflection\\ReflectionService');
-		$this->requestBuilder = new \TYPO3\CMS\Extbase\Mvc\Cli\RequestBuilder();
+		$this->mockConfigurationManager = $this->getMock('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManagerInterface');
+
+		$this->requestBuilder = $this->getAccessibleMock('TYPO3\CMS\Extbase\Mvc\Cli\RequestBuilder', array('dummy'));
 		$this->requestBuilder->injectObjectManager($this->mockObjectManager);
 		$this->requestBuilder->injectReflectionService($this->mockReflectionService);
 		$this->requestBuilder->injectCommandManager($this->mockCommandManager);
+		$this->requestBuilder->injectConfigurationManager($this->mockConfigurationManager);
 	}
 
 	/**
