@@ -137,7 +137,7 @@ class UploadExtensionFileController extends \TYPO3\CMS\Extensionmanager\Controll
 	 */
 	protected function getExtensionFromZipFile($file, $fileName, $overwrite = FALSE) {
 			// Remove version and ending from filename to determine extension key
-		$extensionKey = preg_replace('/_(\d+)(\.|\-)(\d+)(\.|\-)(\d+).*/i', '', strtolower($fileName));
+		$extensionKey = preg_replace('/_(\d+)(\.|\-)(\d+)(\.|\-)(\d+).*/i', '', strtolower(substr($fileName, 0, -4)));
 		if (!$overwrite && $this->installUtility->isAvailable($extensionKey)) {
 			throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException('Extension is already available and overwriting is disabled.', 1342864311);
 		}
