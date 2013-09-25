@@ -55,7 +55,7 @@ class FileCollectionRepository extends \TYPO3\CMS\Core\Collection\RecordCollecti
 	public function findByUid($uid) {
 		$object = parent::findByUid($uid);
 		if ($object === NULL) {
-			throw new \RuntimeException('Could not find row with uid "' . $uid . '" in table "' . $this->table . '"', 1314354065);
+			throw new \RuntimeException('Could not find row with uid "' . $uid . '" in table "' . $this->table . '"', 1314354066);
 		}
 		return $object;
 	}
