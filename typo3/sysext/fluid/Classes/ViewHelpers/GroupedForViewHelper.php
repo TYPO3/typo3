@@ -126,6 +126,9 @@ class GroupedForViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractView
 			}
 			$currentGroupKeyValue = $currentGroupIndex;
 			if (is_object($currentGroupIndex)) {
+				if ($currentGroupIndex instanceof \TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy) {
+					$currentGroupIndex = $currentGroupIndex->_loadRealInstance();
+				}
 				$currentGroupIndex = spl_object_hash($currentGroupIndex);
 			}
 			$groups['keys'][$currentGroupIndex] = $currentGroupKeyValue;
