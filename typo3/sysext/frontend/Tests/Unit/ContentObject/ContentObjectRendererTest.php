@@ -47,16 +47,25 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	protected $template = NULL;
 
 	/**
+	 * Used to store the current encryption key
+	 *
+	 * @var string
+	 */
+	protected $encryptionKeyBackup;
+
+	/**
 	 * Set up
 	 */
 	public function setUp() {
+		$this->encryptionKeyBackup = $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'];
+		$GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = '12345';
 		$GLOBALS['TYPO3_DB'] = $this->getMock('TYPO3\\CMS\\Core\\Database\\DatabaseConnection', array());
-		$this->template = $this->getMock('TYPO3\\CMS\\Core\\TypoScript\\TemplateService', array('getFileName', 'linkData'));
-		$this->tsfe = $this->getAccessibleMock('TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController', array('dummy'), array(), '', FALSE);
+		$this->template = $this->getMock('TYPO3\\CMS\\Core\\TypoScript\\TemplateService', array('getFileName'));
+		$this->tsfe = $this->getAccessibleMock('TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController', array('logDeprecatedTyposcript'), array(), '', FALSE);
 		$this->tsfe->tmpl = $this->template;
 		$this->tsfe->config = array();
 		$this->tsfe->page = array();
-		$sysPageMock = $this->getMock('TYPO3\\CMS\\Frontend\\Page\\PageRepository', array('getRawRecord'));
+		$sysPageMock = $this->getMock('TYPO3\\CMS\\Frontend\\Page\\PageRepository', array('getRawRecord', 'getPage'));
 		$this->tsfe->sys_page = $sysPageMock;
 		$GLOBALS['TSFE'] = $this->tsfe;
 		$GLOBALS['TSFE']->csConvObj = new \TYPO3\CMS\Core\Charset\CharsetConverter();
@@ -80,6 +89,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$GLOBALS['TSFE']->renderCharset = $charset;
 		$subject = $GLOBALS['TSFE']->csConvObj->conv($subject, 'iso-8859-1', $charset);
 		$expected = $GLOBALS['TSFE']->csConvObj->conv($expected, 'iso-8859-1', $charset);
+		$GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = $this->encryptionKeyBackup;
 	}
 
 	/////////////////////////////////////////////
@@ -2007,6 +2017,270 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$GLOBALS['TSFE']->ATagParams = '';
 		$aTagParams = $this->cObj->getATagParams(array('ATagParams' => ''));
 		$this->assertEquals('', $aTagParams);
+	}
+
+	/**
+	 * @test
+	 */
+	public function makeHttpLinksCreatesCorrectJumpUrlIfConfigured() {
+
+		$testData = $this->initializeJumpUrlTestEnvironment();
+
+		$testUrl = 'http://www.mytesturl.tld';
+		$expectedHash = '7d2261b12682a4b73402ae67415e09f294b29a55';
+
+		$expectedLinkFirstPart = $testData['absRefPrefix'] . $testData['mainScript'] . '?id=' . $testData['pageId'] . '&type=' . $testData['pageType'] . '&jumpurl=' . rawurlencode($testUrl);
+		$expectedLinkSecondPart = '&juHash=' . $expectedHash;
+
+		// due to a bug in the jump URL generation in the old version only
+		// the first part of the link is encoded which does not make much sense.
+		if ($this->jumpUrlPatchApplied()) {
+			$expectedLink = htmlspecialchars($expectedLinkFirstPart . $expectedLinkSecondPart);
+		} else {
+			$expectedLink = htmlspecialchars($expectedLinkFirstPart) . $expectedLinkSecondPart;
+		}
+
+		$result = $this->cObj->http_makelinks('teststring ' . $testUrl . ' anotherstring', array('keep' => 'scheme'));
+		$this->assertEquals('teststring <a href="' . $expectedLink . '">' . $testUrl . '</a> anotherstring', $result);
+	}
+
+	/**
+	 * @test
+	 */
+	public function makeMailtoLinksCreatesCorrectJumpUrlIfConfigured() {
+
+		$testData = $this->initializeJumpUrlTestEnvironment();
+
+		$testMail = 'mail@ddress.tld';
+		$testMailto = 'mailto:' . $testMail;
+		$expectedHash = 'bd82328dc40755f5d0411e2e16e7c0cbf33b51b7';
+		$expectedLink = htmlspecialchars($testData['absRefPrefix'] . $testData['mainScript'] . '?id=' . $testData['pageId'] . '&type=' . $testData['pageType'] . '&jumpurl=' . rawurlencode($testMailto) . '&juHash=' . $expectedHash);
+		$result = $this->cObj->mailto_makelinks('teststring ' . $testMailto . ' anotherstring', array());
+
+		$this->assertEquals('teststring <a href="' . $expectedLink . '">' . $testMail . '</a> anotherstring', $result);
+	}
+
+	/**
+	 * @test
+	 */
+	public function filelinkCreatesCorrectSecureJumpUrlIfConfigured() {
+
+		$testData = $this->initializeJumpUrlTestEnvironment($this->once());
+
+		$fileNameAndPath = PATH_site . 'typo3temp/phpunitJumpUrlTestFile.txt';
+		file_put_contents($fileNameAndPath, 'Some test data');
+		$relativeFileNameAndPath = substr($fileNameAndPath, strlen(PATH_site));
+		$fileName = substr($fileNameAndPath, strlen(PATH_site . 'typo3temp/'));
+
+		$expectedHash = '1933f3c181db8940acfcd4d16c74643947179948';
+		$expectedLink = htmlspecialchars($testData['absRefPrefix'] . $testData['mainScript'] . '?id=' . $testData['pageId'] . '&type=' . $testData['pageType'] . '&jumpurl=' . rawurlencode($relativeFileNameAndPath) . '&juSecure=1&locationData=' . rawurlencode($testData['locationData']) . '&juHash=' . $expectedHash);
+
+		$result = $this->cObj->filelink($fileName, array('path' => 'typo3temp/',  'jumpurl' => '1', 'jumpurl.' => array('secure' => 1)));
+		$this->assertEquals('<a href="' . $expectedLink . '">' . $fileName . '</a>', $result);
+
+		\TYPO3\CMS\Core\Utility\GeneralUtility::unlink_tempfile($fileNameAndPath);
+	}
+
+	/**
+	 * @test
+	 */
+	public function filelinkCreatesCorrectJumpUrlSecureForFileWithUrlEncodedSpecialChars() {
+
+		$testData = $this->initializeJumpUrlTestEnvironment($this->once());
+
+		$fileNameAndPath = PATH_site . 'typo3temp/phpunitJumpUrlTestFile with spaces & amps.txt';
+		file_put_contents($fileNameAndPath, 'Some test data');
+		$relativeFileNameAndPath = substr($fileNameAndPath, strlen(PATH_site));
+		$fileName = substr($fileNameAndPath, strlen(PATH_site . 'typo3temp/'));
+
+		$expectedHash = '304b8c8e022e92e6f4d34e97395da77705830818';
+		$expectedLink = htmlspecialchars($testData['absRefPrefix'] . $testData['mainScript'] . '?id=' . $testData['pageId'] . '&type=' . $testData['pageType'] . '&jumpurl=' . rawurlencode(str_replace('%2F', '/', rawurlencode($relativeFileNameAndPath))) . '&juSecure=1&locationData=' . rawurlencode($testData['locationData']) . '&juHash=' . $expectedHash);
+
+		$result = $this->cObj->filelink($fileName, array('path' => 'typo3temp/',  'jumpurl' => '1', 'jumpurl.' => array('secure' => 1)));
+		$this->assertEquals('<a href="' . $expectedLink . '">' . $fileName . '</a>', $result);
+
+		\TYPO3\CMS\Core\Utility\GeneralUtility::unlink_tempfile($fileNameAndPath);
+	}
+
+	/**
+	 * @test
+	 */
+	public function filelinkCreatesCorrectUrlForFileWithUrlEncodedSpecialChars() {
+
+		$testData = $this->initializeJumpUrlTestEnvironment($this->never());
+
+		$fileNameAndPath = PATH_site . 'typo3temp/phpunitJumpUrlTestFile with spaces & amps.txt';
+		file_put_contents($fileNameAndPath, 'Some test data');
+		$relativeFileNameAndPath = substr($fileNameAndPath, strlen(PATH_site));
+		$fileName = substr($fileNameAndPath, strlen(PATH_site . 'typo3temp/'));
+
+		$expectedLink = $testData['absRefPrefix'] . str_replace('%2F', '/', rawurlencode($relativeFileNameAndPath));
+		$result = $this->cObj->filelink($fileName, array('path' => 'typo3temp/', 'jumpurl' => 0));
+		$this->assertEquals('<a href="' . $expectedLink . '">' . $fileName . '</a>', $result);
+
+		\TYPO3\CMS\Core\Utility\GeneralUtility::unlink_tempfile($fileNameAndPath);
+	}
+
+	/**
+	 * @test
+	 */
+	public function filelinkDisablesGlobalJumpUrlIfConfigured() {
+
+		$testData = $this->initializeJumpUrlTestEnvironment($this->never());
+
+		$fileNameAndPath = PATH_site . 'typo3temp/phpunitJumpUrlTestFile.txt';
+		file_put_contents($fileNameAndPath, 'Some test data');
+		$relativeFileNameAndPath = substr($fileNameAndPath, strlen(PATH_site));
+		$fileName = substr($fileNameAndPath, strlen(PATH_site . 'typo3temp/'));
+
+		$expectedLink = $testData['absRefPrefix'] . $relativeFileNameAndPath;
+		$result = $this->cObj->filelink($fileName, array('path' => 'typo3temp/', 'jumpurl' => 0));
+		$this->assertEquals('<a href="' . $expectedLink . '">' . $fileName . '</a>', $result);
+
+		\TYPO3\CMS\Core\Utility\GeneralUtility::unlink_tempfile($fileNameAndPath);
+	}
+
+	/**
+	 * @test
+	 */
+	public function typoLinkCreatesCorrectJumpUrlForMail() {
+
+		$testData = $this->initializeJumpUrlTestEnvironment();
+
+		$testAddress = 'mail@ddress.tld';
+		$expectedHash = 'bd82328dc40755f5d0411e2e16e7c0cbf33b51b7';
+		$expectedUrl = $testData['absRefPrefix'] . $testData['mainScript'] . '?id=' . $testData['pageId'] . '&type=' . $testData['pageType'] . '&jumpurl=' . rawurlencode('mailto:' . $testAddress) . '&juHash=' . $expectedHash;
+		$generatedUrl = $this->cObj->typoLink_URL(array('parameter' => $testAddress));
+
+		$this->assertEquals($expectedUrl, $generatedUrl);
+	}
+
+	/**
+	 * @test
+	 */
+	public function typoLinkCreatesCorrectJumpUrlForExternalUrl() {
+
+		$testData = $this->initializeJumpUrlTestEnvironment();
+
+		$testAddress = 'http://external.domain.tld';
+		$expectedHash = '8591c573601d17f37e06aff4ac14c78f107dd49e';
+		$expectedUrl = $testData['absRefPrefix'] . $testData['mainScript'] . '?id=' . $testData['pageId'] . '&type=' . $testData['pageType'] . '&jumpurl=' . rawurlencode($testAddress) . '&juHash=' . $expectedHash;
+		$generatedUrl = $this->cObj->typoLink_URL(array('parameter' => $testAddress));
+
+		$this->assertEquals($expectedUrl, $generatedUrl);
+	}
+
+	/**
+	 * @test
+	 */
+	public function typoLinkCreatesCorrectJumpUrlForFile() {
+
+		$testData = $this->initializeJumpUrlTestEnvironment();
+
+		$fileNameAndPath = PATH_site . 'typo3temp/phpunitJumpUrlTestFile.txt';
+		file_put_contents($fileNameAndPath, 'Some test data');
+		$relativeFileNameAndPath = substr($fileNameAndPath, strlen(PATH_site));
+
+		$testAddress = $relativeFileNameAndPath;
+		$expectedHash = 'e36be153c32f4d4d0db1414e47a05cf3149923ae';
+		$expectedUrl = $testData['absRefPrefix'] . $testData['mainScript'] . '?id=' . $testData['pageId'] . '&type=' . $testData['pageType'] . '&jumpurl=' . rawurlencode($testAddress) . '&juHash=' . $expectedHash;
+		$generatedUrl = $this->cObj->typoLink_URL(array('parameter' => $testAddress));
+
+		$this->assertEquals($expectedUrl, $generatedUrl);
+
+		\TYPO3\CMS\Core\Utility\GeneralUtility::unlink_tempfile($fileNameAndPath);
+	}
+
+	/**
+	 * @test
+	 */
+	public function typoLinkCreatesCorrectJumpUrlForFileWithUrlEncodedSpecialChars() {
+
+		$testData = $this->initializeJumpUrlTestEnvironment();
+
+		$fileNameAndPath = PATH_site . 'typo3temp/phpunitJumpUrlTestFile with spaces & amps.txt';
+		file_put_contents($fileNameAndPath, 'Some test data');
+		$relativeFileNameAndPath = substr($fileNameAndPath, strlen(PATH_site));
+
+		$testFileLink = $relativeFileNameAndPath;
+		$expectedHash = '691dbf63a21181e2d69bf78e61f1c9fd023aef2c';
+		$expectedUrl = $testData['absRefPrefix'] . $testData['mainScript'] . '?id=' . $testData['pageId'] . '&type=' . $testData['pageType'] . '&jumpurl=' . rawurlencode(str_replace('%2F', '/', rawurlencode($testFileLink))) . '&juHash=' . $expectedHash;
+		$generatedUrl = $this->cObj->typoLink_URL(array('parameter' => rawurlencode($testFileLink)));
+
+		$this->assertEquals($expectedUrl, $generatedUrl);
+
+		\TYPO3\CMS\Core\Utility\GeneralUtility::unlink_tempfile($fileNameAndPath);
+	}
+
+	/**
+	 * @test
+	 */
+	public function typoLinkCreatesCorrectSecureJumpUrlForFile() {
+
+		$testData = $this->initializeJumpUrlTestEnvironment();
+
+		$fileNameAndPath = PATH_site . 'typo3temp/phpunitJumpUrlTestFile.txt';
+		file_put_contents($fileNameAndPath, 'Some test data');
+		$relativeFileNameAndPath = substr($fileNameAndPath, strlen(PATH_site));
+
+		$testAddress = $relativeFileNameAndPath;
+		$expectedHash = '1933f3c181db8940acfcd4d16c74643947179948';
+		$expectedUrl = $testData['absRefPrefix'] . $testData['mainScript'] . '?id=' . $testData['pageId'] . '&type=' . $testData['pageType'] . '&jumpurl=' . rawurlencode($testAddress) . '&juSecure=1&locationData=' . rawurlencode($testData['locationData']) . '&juHash=' . $expectedHash;
+		$generatedUrl = $this->cObj->typoLink_URL(array('parameter' => $testAddress, 'jumpurl.' => array('secure' => 1)));
+
+		$this->assertEquals($expectedUrl, $generatedUrl);
+
+		\TYPO3\CMS\Core\Utility\GeneralUtility::unlink_tempfile($fileNameAndPath);
+	}
+
+	/**
+	 * Initializes all required settings in $GLOBALS['TSFE'] and the current
+	 * content object renderer for testing jump URL functionality.
+	 *
+	 * @param $expectedGetPageCalls
+	 * @return array
+	 */
+	protected function initializeJumpUrlTestEnvironment($expectedGetPageCalls = NULL) {
+
+		if (!isset($expectedGetPageCalls)) {
+			$expectedGetPageCalls = $this->jumpUrlPatchApplied() ? $this->once() : $this->never();
+		}
+
+		$testData = array();
+
+		$this->tsfe->config['config']['jumpurl_enable'] = TRUE;
+
+		$testData['pageId'] = $this->tsfe->id = '1234';
+		$testData['pageType'] = $this->tsfe->type = '4';
+		$testData['mainScript'] =$this->tsfe->config['mainScript'] = 'index.php';
+		$testData['absRefPrefix'] = $this->tsfe->absRefPrefix = '/prefix/';
+		$this->cObj->currentRecord = 'tt_content:999';
+		$testData['locationData'] =  $testData['pageId'] . ':' . $this->cObj->currentRecord;
+
+		$this->tsfe->sys_page
+				->expects($expectedGetPageCalls)
+				->method('getPage')
+				->will($this->returnValue(
+						array(
+							'uid' => $testData['pageId'],
+							'doktype' => \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_DEFAULT,
+							'url_scheme' => 0,
+							'title' => 'testpage',
+						)
+					)
+				);
+
+		return $testData;
+	}
+
+	/**
+	 * Just a temporary helper function to test that after the jumpurl patch
+	 * was applied (almost) nothing has changed
+	 *
+	 * @return bool
+	 */
+	protected function jumpUrlPatchApplied() {
+		return class_exists('\\TYPO3\\CMS\\Frontend\\Utility\\JumpurlUtility');
 	}
 }
 
