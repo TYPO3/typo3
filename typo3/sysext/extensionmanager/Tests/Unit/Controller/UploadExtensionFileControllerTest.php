@@ -58,6 +58,10 @@ class UploadExtensionFileControllerTest extends \TYPO3\CMS\Extbase\Tests\Unit\Ba
 			'characters after version with extra space' => array(
 				'extension_1-2-3 (1).zip',
 				'extension'
+			),
+			'no version' => array(
+				'extension.zip',
+				'extension'
 			)
 		);
 	}
