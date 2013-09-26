@@ -197,6 +197,11 @@ class FactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				'uploads/test/dummy.png',
 				2
 			),
+			'FindStorageFromWindowsPath' => array(
+				array(1 => 'fileadmin/', 2 => 'uploads/test/'),
+				'uploads\\test\\dummy.png',
+				2
+			),
 		);
 	}
 }
