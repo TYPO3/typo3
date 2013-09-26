@@ -154,14 +154,19 @@ class Tx_Extbase_Configuration_FrontendConfigurationManager extends Tx_Extbase_C
 	 * @return array the framework configuration with overridden data from flexform
 	 */
 	protected function overrideConfigurationFromFlexform(array $frameworkConfiguration) {
-		if (strlen($this->contentObject->data['pi_flexform']) > 0) {
-			$flexformConfiguration = $this->convertFlexformContentToArray($this->contentObject->data['pi_flexform']);
-
-			$frameworkConfiguration = $this->mergeConfigurationIntoFrameworkConfiguration($frameworkConfiguration, $flexformConfiguration, 'settings');
-			$frameworkConfiguration = $this->mergeConfigurationIntoFrameworkConfiguration($frameworkConfiguration, $flexformConfiguration, 'persistence');
-			$frameworkConfiguration = $this->mergeConfigurationIntoFrameworkConfiguration($frameworkConfiguration, $flexformConfiguration, 'view');
-
-			$frameworkConfiguration = $this->overrideSwitchableControllerActionsFromFlexform($frameworkConfiguration, $flexformConfiguration);
+		$flexFormConfiguration = $this->contentObject->data['pi_flexform'];
+		if (is_string($flexFormConfiguration)) {
+			if (strlen($flexFormConfiguration) > 0) {
+				$flexFormConfiguration = $this->convertFlexformContentToArray($flexFormConfiguration);
+			} else {
+				$flexFormConfiguration = array();
+			}
+		}
+		if (is_array($flexFormConfiguration) && count($flexFormConfiguration)) {
+			$frameworkConfiguration = $this->mergeConfigurationIntoFrameworkConfiguration($frameworkConfiguration, $flexFormConfiguration, 'settings');
+			$frameworkConfiguration = $this->mergeConfigurationIntoFrameworkConfiguration($frameworkConfiguration, $flexFormConfiguration, 'persistence');
+			$frameworkConfiguration = $this->mergeConfigurationIntoFrameworkConfiguration($frameworkConfiguration, $flexFormConfiguration, 'view');
+			$frameworkConfiguration = $this->overrideSwitchableControllerActionsFromFlexform($frameworkConfiguration, $flexFormConfiguration);
 		}
 		return $frameworkConfiguration;
 	}
@@ -223,7 +228,7 @@ class Tx_Extbase_Configuration_FrontendConfigurationManager extends Tx_Extbase_C
 
 			foreach ($nodeArray as $nodeKey => $nodeValue) {
 				if ($nodeKey === $valuePointer) {
-					return $nodeValue;	
+					return $nodeValue;
 				}
 
 				if (in_array($nodeKey, array('el', '_arrayContainer'))) {
