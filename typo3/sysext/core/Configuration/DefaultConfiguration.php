@@ -57,10 +57,6 @@ return array(
 	'SYS' => array(
 		// System related concerning both frontend and backend.
 		'lang' => array(
-			'cache' => array(
-				'lifetime' => 86400,
-				'clear_menu' => FALSE
-			),
 			'format' => array(
 				'priority' => 'xlf,xml,php'
 			),
