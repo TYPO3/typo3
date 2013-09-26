@@ -243,7 +243,8 @@ class t3lib_cache_backend_FileBackend extends t3lib_cache_backend_AbstractBacken
 			);
 		}
 
-		$expiryTime = ($lifetime === NULL) ? 0 : ($GLOBALS['EXEC_TIME'] + $lifetime);
+		$lifetime = $lifetime === NULL ? $this->defaultLifetime : $lifetime;
+		$expiryTime = ($lifetime === 0) ? 0 : ($GLOBALS['EXEC_TIME'] + $lifetime);
 		$metaData = str_pad($expiryTime, self::EXPIRYTIME_LENGTH) . implode(' ', $tags) . str_pad(strlen($data), self::DATASIZE_DIGITS);
 		$result = file_put_contents($temporaryCacheEntryPathAndFilename, $data . $metaData);
 		t3lib_div::fixPermissions($temporaryCacheEntryPathAndFilename);
