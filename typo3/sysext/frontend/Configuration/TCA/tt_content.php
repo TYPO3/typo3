@@ -1771,6 +1771,17 @@ return array(
 					),
 				),
 			)
+		),
+		'category_field' => array(
+			'label' => 'LLL:EXT:cms/locallang_ttc.xlf:category_field',
+			'config' => array(
+				'type' => 'select',
+				'size' => 1,
+				'minitems' => 0,
+				'maxitems' => 1,
+				'suppress_icons' => 1,
+				'itemsProcFunc' => 'TYPO3\\CMS\\Core\\Category\\CategoryRegistry->getCategoryFieldsForTable',
+			)
 		)
 	),
 	'types' => array(
@@ -1908,15 +1919,15 @@ return array(
 				--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.extended',
 			'subtype_value_field' => 'menu_type',
 			'subtypes_excludelist' => array(
-				'0' => 'selected_categories',
-				'1' => 'selected_categories',
-				'2' => 'pages, selected_categories',
-				'3' => 'selected_categories',
-				'4' => 'selected_categories',
-				'5' => 'selected_categories',
-				'6' => 'selected_categories',
-				'7' => 'selected_categories',
-				'8' => 'selected_categories',
+				'0' => 'selected_categories, category_field',
+				'1' => 'selected_categories, category_field',
+				'2' => 'pages, selected_categories, category_field',
+				'3' => 'selected_categories, category_field',
+				'4' => 'selected_categories, category_field',
+				'5' => 'selected_categories, category_field',
+				'6' => 'selected_categories, category_field',
+				'7' => 'selected_categories, category_field',
+				'8' => 'selected_categories, category_field',
 				'9' => 'pages',
 			)
 		),
@@ -2100,7 +2111,7 @@ return array(
 			'canNotCollapse' => 1
 		),
 		'menu' => array(
-			'showitem' => 'menu_type;LLL:EXT:cms/locallang_ttc.xlf:menu_type_formlabel, --linebreak--, pages;LLL:EXT:cms/locallang_ttc.xlf:pages.ALT.menu_formlabel, --linebreak--, selected_categories',
+			'showitem' => 'menu_type;LLL:EXT:cms/locallang_ttc.xlf:menu_type_formlabel, --linebreak--, pages;LLL:EXT:cms/locallang_ttc.xlf:pages.ALT.menu_formlabel, --linebreak--, selected_categories, category_field',
 			'canNotCollapse' => 1
 		),
 		'menu_accessibility' => array(

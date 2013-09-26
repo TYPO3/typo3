@@ -53,13 +53,24 @@ class CategoryMenuUtility {
 	public function collectPages($selectedCategories, $configuration, $parentObject) {
 		$selectedPages = array();
 		$categoriesPerPage = array();
+		// Determine the name of the relation field
+		$relationField = '';
+		if (isset($configuration['relation.'])) {
+			$relationField = $parentObject->parent_cObj->stdWrap(
+				$configuration['relation'],
+				$configuration['relation.']
+			);
+		} elseif (isset($configuration['relation'])) {
+			$relationField = $configuration['relation'];
+		}
 		// Get the pages for each selected category
 		$selectedCategories = GeneralUtility::intExplode(',', $selectedCategories, TRUE);
 		foreach ($selectedCategories as $aCategory) {
 			$collection = \TYPO3\CMS\Core\Category\Collection\CategoryCollection::load(
 				$aCategory,
 				TRUE,
-				'pages'
+				'pages',
+				$relationField
 			);
 			$categoryUid = $collection->getUid();
 			// Loop on the results, overlay each page record found

@@ -330,6 +330,7 @@ CREATE TABLE tt_content (
 	l18n_parent int(11) DEFAULT '0' NOT NULL,
 	l18n_diffsource mediumblob,
 	selected_categories text,
+	category_field varchar(64) DEFAULT '' NOT NULL,
 
 	PRIMARY KEY (uid),
 	KEY t3ver_oid (t3ver_oid,t3ver_wsid),
