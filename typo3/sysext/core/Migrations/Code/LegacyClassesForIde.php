@@ -5509,16 +5509,6 @@ class Tx_Install_Updates_File_TtContentUploadsUpdateWizard extends \TYPO3\CMS\In
 /**
  * @deprecated since 6.0 will be removed in 7.0
  */
-class tx_lang_clearcachemenu extends \TYPO3\CMS\Lang\ClearLanguageCacheMenuItem {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class tx_lang_clearcache extends \TYPO3\CMS\Lang\LanguageCacheClearer {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
 class language extends \TYPO3\CMS\Lang\LanguageService {}
 
 /**
