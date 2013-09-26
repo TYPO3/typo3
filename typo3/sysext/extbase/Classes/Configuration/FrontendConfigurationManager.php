@@ -168,13 +168,18 @@ class Tx_Extbase_Configuration_FrontendConfigurationManager extends Tx_Extbase_C
 	 * @return array the framework configuration with overridden data from flexForm
 	 */
 	protected function overrideConfigurationFromFlexForm(array $frameworkConfiguration) {
-		if (strlen($this->contentObject->data['pi_flexform']) > 0) {
-			$flexFormConfiguration = $this->flexFormService->convertFlexFormContentToArray($this->contentObject->data['pi_flexform']);
-
+		$flexFormConfiguration = $this->contentObject->data['pi_flexform'];
+		if (is_string($flexFormConfiguration)) {
+			if (strlen($flexFormConfiguration) > 0) {
+				$flexFormConfiguration = $this->flexFormService->convertFlexFormContentToArray($flexFormConfiguration);
+			} else {
+				$flexFormConfiguration = array();
+			}
+		}
+		if (is_array($flexFormConfiguration) && count($flexFormConfiguration)) {
 			$frameworkConfiguration = $this->mergeConfigurationIntoFrameworkConfiguration($frameworkConfiguration, $flexFormConfiguration, 'settings');
 			$frameworkConfiguration = $this->mergeConfigurationIntoFrameworkConfiguration($frameworkConfiguration, $flexFormConfiguration, 'persistence');
 			$frameworkConfiguration = $this->mergeConfigurationIntoFrameworkConfiguration($frameworkConfiguration, $flexFormConfiguration, 'view');
-
 			$frameworkConfiguration = $this->overrideSwitchableControllerActionsFromFlexForm($frameworkConfiguration, $flexFormConfiguration);
 		}
 		return $frameworkConfiguration;
