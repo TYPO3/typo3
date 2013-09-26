@@ -135,6 +135,37 @@ class CategoryRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 	/**
+	 * Returns a list of category fields for a given table for populating selector "category_field"
+	 * in tt_content table (called as itemsProcFunc).
+	 *
+	 * @param array $configuration Current field configuration
+	 * @param \TYPO3\CMS\Backend\Form\FormEngine $formObject Back-reference to the calling object
+	 * @return void
+	 */
+	public function getCategoryFieldsForTable(&$configuration, $formObject) {
+		$table = '';
+		// Define the table being looked up from the type of menu
+		if ($configuration['row']['menu_type'] == 9) {
+			$table = 'pages';
+		}
+		// Return early if no table is defined
+		if (empty($table)) {
+			return;
+		}
+		// Loop on all registries and find entries for the correct table
+		foreach ($this->registry as $registry) {
+			foreach ($registry as $tableName => $fields) {
+				if ($tableName === $table) {
+					foreach ($fields as $fieldName => $options) {
+						$fieldLabel = $GLOBALS['LANG']->sL($GLOBALS['TCA'][$tableName]['columns'][$fieldName]['label']);
+						$configuration['items'][] = array($fieldLabel, $fieldName);
+					}
+				}
+			}
+		}
+	}
+
+	/**
 	 * Tells whether a table has a category configuration in the registry.
 	 *
 	 * @param string $tableName Name of the table to be looked up
@@ -326,7 +357,7 @@ class CategoryRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 						'popup_onlyOpenIfSelected' => 1,
 						'JSopenParams' => 'height=350,width=580,status=0,menubar=0,scrollbars=1',
 					),
-					'add' => Array(
+					'add' => array(
 						'type' => 'script',
 						'title' => 'Create new',
 						'icon' => 'add.gif',
