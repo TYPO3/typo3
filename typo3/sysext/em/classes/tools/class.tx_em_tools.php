@@ -386,17 +386,14 @@ final class tx_em_Tools {
 	 * @return	string		A simple dependency list for display
 	 */
 	public static function depToString($dep, $type = 'depends') {
-		if (is_array($dep)) {
-			if (isset($dep[$type]['php'])) {
-				unset($dep[$type]['php']);
-			}
-			if (isset($dep[$type]['typo3'])) {
-				unset($dep[$type]['typo3']);
-			}
-			$s = (count($dep[$type])) ? implode(',', array_keys($dep[$type])) : '';
-			return $s;
+		if (!is_array($dep) || !is_array($dep[$type])) {
+			return '';
 		}
-		return '';
+
+		unset($dep[$type]['php']);
+		unset($dep[$type]['typo3']);
+
+		return implode(',', array_keys($dep[$type]));
 	}
 
 	/**
