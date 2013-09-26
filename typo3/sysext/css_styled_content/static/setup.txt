@@ -2095,6 +2095,7 @@ tt_content.menu {
 		9 {
 			special = categories
 			special.value.field = selected_categories
+			special.relation.field = category_field
 			special.sorting = title
 			special.order = asc
 			stdWrap {

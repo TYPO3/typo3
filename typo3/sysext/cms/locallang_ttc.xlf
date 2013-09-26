@@ -786,6 +786,9 @@
 			<trans-unit id="selected_categories" xml:space="preserve">
 				<source>Selected categories</source>
 			</trans-unit>
+			<trans-unit id="category_field" xml:space="preserve">
+				<source>Category field</source>
+			</trans-unit>
 			<trans-unit id="ALT.imgOptions" xml:space="preserve">
 				<source>Image Options</source>
 			</trans-unit>

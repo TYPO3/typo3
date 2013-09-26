@@ -62,7 +62,8 @@ class CategoryRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Creates this object.
 	 */
 	public function __construct() {
-		$this->template = str_repeat(PHP_EOL, 3) . 'CREATE TABLE %s (' . PHP_EOL . '  %s int(11) DEFAULT \'0\' NOT NULL' . PHP_EOL . ');' . str_repeat(PHP_EOL, 3);
+		$this->template = str_repeat(PHP_EOL, 3) . 'CREATE TABLE %s (' . PHP_EOL
+			. '  %s int(11) DEFAULT \'0\' NOT NULL' . PHP_EOL . ');' . str_repeat(PHP_EOL, 3);
 	}
 
 	/**
@@ -80,7 +81,7 @@ class CategoryRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return boolean
 	 * @throws \InvalidArgumentException
 	 */
-	public function add($extensionKey, $tableName, $fieldName = 'categories', $options = array()) {
+	public function add($extensionKey, $tableName, $fieldName = 'categories', array $options = array()) {
 		$result = FALSE;
 
 		if ($tableName === '') {
@@ -132,6 +133,38 @@ class CategoryRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 		}
 
 		return $categorizedTables;
+	}
+
+	/**
+	 * Returns a list of category fields for a given table for populating selector "category_field"
+	 * in tt_content table (called as itemsProcFunc).
+	 *
+	 * @param array $configuration Current field configuration
+	 * @param \TYPO3\CMS\Backend\Form\FormEngine $formObject Back-reference to the calling object
+	 * @throws \UnexpectedValueException
+	 * @return void
+	 */
+	public function getCategoryFieldsForTable(array &$configuration, \TYPO3\CMS\Backend\Form\FormEngine $formObject) {
+		$table = '';
+		// Define the table being looked up from the type of menu
+		if ($configuration['row']['menu_type'] == 9) {
+			$table = 'pages';
+		}
+		// Return early if no table is defined
+		if (empty($table)) {
+			throw new \UnexpectedValueException('The given menu_type is not supported.', 1381823570);
+		}
+		// Loop on all registries and find entries for the correct table
+		foreach ($this->registry as $registry) {
+			foreach ($registry as $tableName => $fields) {
+				if ($tableName === $table) {
+					foreach ($fields as $fieldName => $options) {
+						$fieldLabel = $GLOBALS['LANG']->sL($GLOBALS['TCA'][$tableName]['columns'][$fieldName]['label']);
+						$configuration['items'][] = array($fieldLabel, $fieldName);
+					}
+				}
+			}
+		}
 	}
 
 	/**
@@ -233,7 +266,7 @@ class CategoryRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 	 *              + position: insert position of the categories field
 	 * @return void
 	 */
-	protected function addToAllTCAtypes($tableName, $fieldName, $options) {
+	protected function addToAllTCAtypes($tableName, $fieldName, array $options) {
 
 		// Makes sure to add more TCA to an existing structure
 		if (isset($GLOBALS['TCA'][$tableName]['columns'])) {
@@ -288,7 +321,7 @@ class CategoryRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 	 *              + label: backend label of the categories field
 	 * @return void
 	 */
-	protected function addTcaColumn($tableName, $fieldName, $options) {
+	protected function addTcaColumn($tableName, $fieldName, array $options) {
 
 		// Makes sure to add more TCA to an existing structure
 		if (isset($GLOBALS['TCA'][$tableName]['columns'])) {
