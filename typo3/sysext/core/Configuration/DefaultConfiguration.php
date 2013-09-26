@@ -179,6 +179,7 @@ return array(
 					'frontend' => 'TYPO3\CMS\Core\Cache\Frontend\VariableFrontend',
 					'backend' => 'TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend',
 					'options' => array(),
+				),
 				'extbase_object' => array(
 					'frontend' => 'TYPO3\CMS\Core\Cache\Frontend\VariableFrontend',
 					'backend' => 'TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend',
