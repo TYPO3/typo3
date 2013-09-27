@@ -70,9 +70,16 @@ class DocumentRepository {
 		/** @var $locales \TYPO3\CMS\Core\Localization\Locales */
 		$locales = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Localization\\Locales');
 		// Language is found. Configure it:
-		if (in_array($language, $locales->getLocales())) {
+		$shortLanguage = $language;
+		if (!in_array($shortLanguage, $locales->getLocales()) && strpos($shortLanguage, '_') !== FALSE) {
+			list($shortLanguage, $_) = explode('_', $shortLanguage);
+		}
+		if (in_array($shortLanguage, $locales->getLocales())) {
 			$languageDependencies[] = $language;
-			foreach ($locales->getLocaleDependencies($language) as $languageDependency) {
+			if ($language !== $shortLanguage) {
+				$languageDependencies[] = $shortLanguage;
+			}
+			foreach ($locales->getLocaleDependencies($shortLanguage) as $languageDependency) {
 				$languageDependencies[] = $languageDependency;
 			}
 		}
@@ -91,6 +98,20 @@ class DocumentRepository {
 				if ($languageIndex !== FALSE && $languageIndex < $highestPriorityLanguageIndex) {
 					$selectedTranslation = $translation;
 					$highestPriorityLanguageIndex = $languageIndex;
+				}
+			}
+			if ($selectedTranslation === NULL) {
+				// No exact translation found, perhaps another locale would fit as well. E.g., when requesting
+				// a documentation as fr_CA but only fr_FR exists
+				foreach ($translations as $translation) {
+					if (strpos($translation->getLanguage(), '_') !== FALSE) {
+						list($translationLanguage, $_) = explode('_', $translation->getLanguage());
+						$languageIndex = array_search($translationLanguage, $languageDependencies);
+						if ($languageIndex !== FALSE && $languageIndex < $highestPriorityLanguageIndex) {
+							$selectedTranslation = $translation;
+							$highestPriorityLanguageIndex = $languageIndex;
+						}
+					}
 				}
 			}
 

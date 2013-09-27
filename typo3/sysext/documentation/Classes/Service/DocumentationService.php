@@ -118,6 +118,12 @@ class DocumentationService {
 			// Step 1)
 			if (isset($packages[$version][$language])) {
 				return $this->fetchDocument($url, $key, $version, $language);
+			} else {
+				foreach ($packages[$version] as $locale => $_) {
+					if (\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($locale, $language)) {
+						return $this->fetchDocument($url, $key, $version, $locale);
+					}
+				}
 			}
 			// Step 2)
 			if (preg_match('/^(\d+\.\d+)\.\d+$/', $version, $matches)) {
@@ -151,7 +157,8 @@ class DocumentationService {
 		$url = rtrim($url, '/') . '/';
 
 		$packagePrefix = substr($key, strrpos($key, '.') + 1);
-		$packageName = sprintf('%s-%s-%s.zip', $packagePrefix, $version, $language);
+		$languageSegment = str_replace('_', '-', strtolower($language));
+		$packageName = sprintf('%s-%s-%s.zip', $packagePrefix, $version, $languageSegment);
 		$packageUrl = $url . 'packages/' . $packageName;
 		$absolutePathToZipFile = GeneralUtility::getFileAbsFileName('typo3temp' . DIRECTORY_SEPARATOR . $packageName);
 
