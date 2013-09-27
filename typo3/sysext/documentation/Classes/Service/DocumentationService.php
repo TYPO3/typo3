@@ -105,9 +105,12 @@ class DocumentationService {
 	 * @return boolean TRUE if fetch succeeded, otherwise FALSE
 	 */
 	public function fetchNearestDocument($url, $key, $version = 'latest', $language = 'default') {
+		// In case we could not find a working combination
+		$success = FALSE;
+
 		$packages = $this->getAvailablePackages($url);
 		if (count($packages) == 0) {
-			return FALSE;
+			return $success;
 		}
 
 		$languages = array($language);
@@ -117,24 +120,37 @@ class DocumentationService {
 		foreach ($languages as $language) {
 			// Step 1)
 			if (isset($packages[$version][$language])) {
-				return $this->fetchDocument($url, $key, $version, $language);
+				$success |= $this->fetchDocument($url, $key, $version, $language);
+				// Fetch next language
+				continue;
+			} else {
+				foreach ($packages[$version] as $locale => $_) {
+					if (\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($locale, $language)) {
+						$success |= $this->fetchDocument($url, $key, $version, $locale);
+						// Fetch next language (jump current foreach up to the loop of $languages)
+						continue 2;
+					}
+				}
 			}
 			// Step 2)
 			if (preg_match('/^(\d+\.\d+)\.\d+$/', $version, $matches)) {
 				// Instead of a 3-digit version, try to get it on 2 digits
 				$shortVersion = $matches[1];
 				if (isset($packages[$shortVersion][$language])) {
-					return $this->fetchDocument($url, $key, $shortVersion, $language);
+					$success |= $this->fetchDocument($url, $key, $shortVersion, $language);
+					// Fetch next language
+					continue;
 				}
 			}
 			// Step 3)
 			if ($version !== 'latest' && isset($packages['latest'][$language])) {
-				return $this->fetchDocument($url, $key, 'latest', $language);
+				$success |= $this->fetchDocument($url, $key, 'latest', $language);
+				// Fetch next language
+				continue;
 			}
 		}
 
-		// Could not find a working combination
-		return FALSE;
+		return $success;
 	}
 
 	/**
@@ -151,7 +167,8 @@ class DocumentationService {
 		$url = rtrim($url, '/') . '/';
 
 		$packagePrefix = substr($key, strrpos($key, '.') + 1);
-		$packageName = sprintf('%s-%s-%s.zip', $packagePrefix, $version, $language);
+		$languageSegment = str_replace('_', '-', strtolower($language));
+		$packageName = sprintf('%s-%s-%s.zip', $packagePrefix, $version, $languageSegment);
 		$packageUrl = $url . 'packages/' . $packageName;
 		$absolutePathToZipFile = GeneralUtility::getFileAbsFileName('typo3temp' . DIRECTORY_SEPARATOR . $packageName);
 

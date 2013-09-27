@@ -35,10 +35,12 @@ To be listed, documents should be stored within ``typo3conf/Documentation/<docum
 	Extensions use the documentation key ``typo3cms.extensions.<extension-key>``.
 
 ``language``
-	Either "default" (for English) or some (generally) two-letter ISO code identifying a translation of your document.
+	Either "default" (for English) or a proper locale identifying your translated documentation. E.g.,
+	``fr_FR``, ``fr_CA``, ``de_DE`` ...
 
 ``format``
-	Either ``html`` or ``pdf``. Additional formats may be supported by 3rd party extensions (such as EXT:sphinx).
+	Either ``html`` or ``pdf``. Additional formats may be supported by 3rd party extensions
+	(such as `EXT:sphinx <http://typo3.org/extensions/repository/view/sphinx>`_).
 
 
 Registering Custom Documents
@@ -82,4 +84,3 @@ mod.help_DocumentationDocumentation.documents.hide
 
 mod.help_DocumentationDocumentation.documents.show
   Comma-separated list of keys of documentation that should be shown to the user (others are implicitly hidden).
-

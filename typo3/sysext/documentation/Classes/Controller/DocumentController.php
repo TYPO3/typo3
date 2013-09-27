@@ -131,8 +131,9 @@ class DocumentController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 			$this->redirect('list');
 		}
 
+		$language = $this->languageUtility->getDocumentationLanguage();
 		try {
-			$result = $this->documentationService->fetchNearestDocument($url, $key, $version ?: 'latest');
+			$result = $this->documentationService->fetchNearestDocument($url, $key, $version ?: 'latest', $language);
 
 			if ($result) {
 				$this->controllerContext->getFlashMessageQueue()->enqueue(
