@@ -92,7 +92,8 @@ Recycler.TableStore = new Ext.data.Store({
 		{name: 'table', type: 'string'},
 		{name: 'records', type: 'int'},
 		{name: 'valueField', type: 'string'},
-		{name: 'tableTitle', type: 'string'}
+		{name: 'tableTitle', type: 'string'},
+		{name: 'tstamp', type: 'int'}
 	]),
 	listeners: {
 		'load': {
@@ -347,8 +348,9 @@ Recycler.GridContainer = Ext.extend(Ext.grid.GridPanel, {
 				Recycler.Expander,
 				{header: "UID", width: 10, sortable: true, dataIndex: 'uid'},
 				{header: "PID", width: 10, sortable: true, dataIndex: 'pid'},
-				{id: 'record', header: TYPO3.l10n.localize('records'), width: 60, sortable: true, dataIndex: 'record', renderer: Recycler.Utility.renderTopic},
-				{id: 'table', header: TYPO3.l10n.localize('table'), width: 20, sortable: true, dataIndex: 'tableTitle'}
+				{id: 'record', header: TYPO3.l10n.localize('records'), width: 50, sortable: true, dataIndex: 'record', renderer: Recycler.Utility.renderTopic},
+				{id: 'table', header: TYPO3.l10n.localize('table'), width: 15, sortable: true, dataIndex: 'tableTitle'},
+				{id: 'tstamp', header: TYPO3.l10n.localize('tstamp'), width: 15, sortable: true, dataIndex: 'tstamp'}
 			]),
 			viewConfig: {
 				forceFit: true
