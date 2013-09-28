@@ -113,6 +113,22 @@ class FileNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
+	 * @expectedException \TYPO3\CMS\Install\FolderStructure\Exception\InvalidArgumentException
+	 */
+	public function constructorThrowsExceptionIfBothTargetContentAndTargetContentFileAreSet() {
+		/** @var $node \TYPO3\CMS\Install\FolderStructure\FileNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+		$node = $this->getAccessibleMock('TYPO3\\CMS\\Install\\FolderStructure\\FileNode', array('dummy'), array(), '', FALSE);
+		$parent = $this->getMock('TYPO3\CMS\Install\FolderStructure\RootNodeInterface', array(), array(), '', FALSE);
+		$structure = array(
+			'name' => 'foo',
+			'targetContent' => 'foo',
+			'targetContentFile' => 'aPath',
+		);
+		$node->__construct($structure, $parent);
+	}
+
+	/**
+	 * @test
 	 */
 	public function constructorSetsTargetContent() {
 		/** @var $node \TYPO3\CMS\Install\FolderStructure\FileNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
@@ -125,6 +141,41 @@ class FileNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		);
 		$node->__construct($structure, $parent);
 		$this->assertSame($targetContent, $node->_get('targetContent'));
+	}
+
+	/**
+	 * @test
+	 */
+	public function constructorSetsTargetContentToContentOfTargetContentFile() {
+		/** @var $node \TYPO3\CMS\Install\FolderStructure\FileNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+		$node = $this->getAccessibleMock('TYPO3\\CMS\\Install\\FolderStructure\\FileNode', array('dummy'), array(), '', FALSE);
+		$parent = $this->getMock('TYPO3\CMS\Install\FolderStructure\RootNodeInterface', array(), array(), '', FALSE);
+		$targetFile = PATH_site . 'typo3temp/' . uniqid('test_');
+		$targetContent = uniqid('content_');
+		file_put_contents($targetFile, $targetContent);
+		$this->testNodesToDelete[] = $targetFile;
+		$structure = array(
+			'name' => 'foo',
+			'targetContentFile' => $targetFile,
+		);
+		$node->__construct($structure, $parent);
+		$this->assertSame($targetContent, $node->_get('targetContent'));
+	}
+
+	/**
+	 * @test
+	 * @expectedException \TYPO3\CMS\Install\FolderStructure\Exception\InvalidArgumentException
+	 */
+	public function constructorThrowsExceptionIfTargetContentFileDoesNotExist() {
+		/** @var $node \TYPO3\CMS\Install\FolderStructure\FileNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+		$node = $this->getAccessibleMock('TYPO3\\CMS\\Install\\FolderStructure\\FileNode', array('dummy'), array(), '', FALSE);
+		$parent = $this->getMock('TYPO3\CMS\Install\FolderStructure\RootNodeInterface', array(), array(), '', FALSE);
+		$targetFile = PATH_site . 'typo3temp/' . uniqid('test_');
+		$structure = array(
+			'name' => 'foo',
+			'targetContentFile' => $targetFile,
+		);
+		$node->__construct($structure, $parent);
 	}
 
 	/**
