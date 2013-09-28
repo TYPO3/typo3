@@ -153,14 +153,7 @@ class DefaultFactory {
 							'name' => 'index.html',
 							'type' => 'TYPO3\\CMS\\install\\FolderStructure\\FileNode',
 							'targetPermission' => $filePermission,
-							'targetContent' =>
-								'<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">' . LF .
-								'<HTML>' . LF .
-								'<HEAD>' . LF .
-								TAB . '<TITLE></TITLE>' . LF .
-								'<META http-equiv=Refresh Content="0; Url=../">' . LF .
-								'</HEAD>' . LF .
-								'</HTML>',
+							'targetContentFile' => PATH_site . 'typo3/sysext/install/Resources/Private/FolderStructureTemplateFiles/uploads-index.html',
 						),
 						array(
 							'name' => 'media',
@@ -217,26 +210,13 @@ class DefaultFactory {
 									'name' => '.htaccess',
 									'type' => 'TYPO3\\CMS\\install\\FolderStructure\\FileNode',
 									'targetPermission' => $filePermission,
-									'targetContent' =>
-										'# This file restricts access to the fileadmin/_temp_ directory. It is' . LF .
-										'# meant to protect temporary files which could contain sensible' . LF .
-										'# information. Please do not touch.' . LF .
-										LF .
-										'Order deny,allow' . LF .
-										'Deny from all' . LF,
+									'targetContentFile' => PATH_site . 'typo3/sysext/install/Resources/Private/FolderStructureTemplateFiles/fileadmin-temp-htaccess',
 								),
 								array(
 									'name' => 'index.html',
 									'type' => 'TYPO3\\CMS\\install\\FolderStructure\\FileNode',
 									'targetPermission' => $filePermission,
-									'targetContent' =>
-										'<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">' . LF .
-										'<HTML>' . LF .
-										'<HEAD>' . LF .
-										TAB . '<TITLE></TITLE>' . LF .
-										'<META http-equiv=Refresh Content="0; Url=/">' . LF .
-										'</HEAD>' . LF .
-										'</HTML>',
+									'targetContentFile' => PATH_site . 'typo3/sysext/install/Resources/Private/FolderStructureTemplateFiles/fileadmin-temp-index.html',
 								),
 							),
 						),
@@ -271,6 +251,5 @@ class DefaultFactory {
 			),
 		);
 	}
-
 }
 ?>

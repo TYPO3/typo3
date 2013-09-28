@@ -1,0 +1,6 @@
+# This file restricts access to the fileadmin/_temp_ directory. It is
+# meant to protect temporary files which could contain sensible
+# information. Please do not touch.
+
+Order deny,allow
+Deny from all
