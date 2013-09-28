@@ -70,6 +70,18 @@ class DependencyUtility implements \TYPO3\CMS\Core\SingletonInterface {
 
 
 	/**
+	 * @var string
+	 */
+	protected $localExtensionStorage = '';
+
+	/**
+	 * @param string $localExtensionStorage
+	 */
+	public function setLocalExtensionStorage($localExtensionStorage) {
+		$this->localExtensionStorage = $localExtensionStorage;
+	}
+
+	/**
 	 * Setter for available extensions
 	 * gets available extensions from list utility if not already done
 	 *
@@ -80,50 +92,12 @@ class DependencyUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 	/**
-	 * @param \TYPO3\CMS\Extensionmanager\Domain\Model\Extension|array $extension
+	 * @param \TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension
 	 * @throws \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException
 	 */
-	public function buildExtensionDependenciesTree($extension) {
-		if (!is_array($extension) && !$extension instanceof \TYPO3\CMS\Extensionmanager\Domain\Model\Extension) {
-			throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException('Extension must be array or object.', 1350891642);
-		}
-		if ($extension instanceof \TYPO3\CMS\Extensionmanager\Domain\Model\Extension) {
-			$dependencies = $extension->getDependencies();
-		} else {
-			$dependencies = $this->convertDependenciesToObjects(serialize($extension['constraints']));
-		}
+	public function buildExtensionDependenciesTree(\TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension) {
+		$dependencies = $extension->getDependencies();
 		$this->checkDependencies($dependencies);
-	}
-
-	/**
-	 * @param string $dependencies
-	 * @return \SplObjectStorage
-	 */
-	public function convertDependenciesToObjects($dependencies) {
-		$unserializedDependencies = unserialize($dependencies);
-		$dependenciesObject = new \SplObjectStorage();
-		foreach ($unserializedDependencies as $dependencyType => $dependencyValues) {
-			foreach ($dependencyValues as $dependency => $versions) {
-				if ($dependencyType && $dependency) {
-					$versionNumbers = \TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionsStringToVersionNumbers($versions);
-					$lowest = $versionNumbers[0];
-					if (count($versionNumbers) === 2) {
-						$highest = $versionNumbers[1];
-					} else {
-						$highest = '';
-					}
-					/** @var $dependencyObject \TYPO3\CMS\Extensionmanager\Domain\Model\Dependency */
-					$dependencyObject = $this->objectManager->get('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\Dependency');
-					$dependencyObject->setType($dependencyType);
-					$dependencyObject->setIdentifier($dependency);
-					$dependencyObject->setLowestVersion($lowest);
-					$dependencyObject->setHighestVersion($highest);
-					$dependenciesObject->attach($dependencyObject);
-					unset($dependencyObject);
-				}
-			}
-		}
-		return $dependenciesObject;
 	}
 
 	/**
@@ -181,13 +155,22 @@ class DependencyUtility implements \TYPO3\CMS\Core\SingletonInterface {
 		$lowerCaseIdentifier = strtolower($dependency->getIdentifier());
 		if ($lowerCaseIdentifier === 'php') {
 			if (!($dependency->getLowestVersion() === '') && version_compare(PHP_VERSION, $dependency->getLowestVersion()) === -1) {
-				throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException('Your PHP version is lower than necessary. You need at least PHP version ' . $dependency->getLowestVersion());
+				throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException(
+					'Your PHP version is lower than necessary. You need at least PHP version ' . $dependency->getLowestVersion(),
+					 1377977857
+				);
 			}
 			if (!($dependency->getHighestVersion() === '') && version_compare($dependency->getHighestVersion(), PHP_VERSION) === -1) {
-				throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException('Your PHP version is higher than allowed. You can use PHP versions ' . $dependency->getLowestVersion() . ' - ' . $dependency->getHighestVersion());
+				throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException(
+					'Your PHP version is higher than allowed. You can use PHP versions ' . $dependency->getLowestVersion() . ' - ' . $dependency->getHighestVersion(),
+					1377977856
+				);
 			}
 		} else {
-			throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException('checkPhpDependency can only check PHP dependencies. Found dependency with identifier "' . $dependency->getIdentifier() . '"');
+			throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException(
+				'checkPhpDependency can only check PHP dependencies. Found dependency with identifier "' . $dependency->getIdentifier() . '"',
+				1377977857
+			);
 		}
 		return TRUE;
 	}
@@ -211,7 +194,7 @@ class DependencyUtility implements \TYPO3\CMS\Core\SingletonInterface {
 			if ($isLoadedVersionCompatible === TRUE) {
 				return TRUE;
 			} else {
-				$this->getExtensionFromTer($extensionKey, $dependency);
+				$this->getExtensionFromRepository($extensionKey, $dependency);
 			}
 		} else {
 			$extensionIsAvailable = $this->isDependentExtensionAvailable($extensionKey);
@@ -220,10 +203,42 @@ class DependencyUtility implements \TYPO3\CMS\Core\SingletonInterface {
 				if ($isAvailableVersionCompatible) {
 					$this->managementService->markExtensionForInstallation($extensionKey);
 				} else {
-					$this->getExtensionFromTer($extensionKey, $dependency);
+					$this->getExtensionFromRepository($extensionKey, $dependency);
 				}
 			} else {
-				$this->getExtensionFromTer($extensionKey, $dependency);
+				$this->getExtensionFromRepository($extensionKey, $dependency);
+			}
+		}
+		return FALSE;
+	}
+
+	/**
+	 * Get an extension from a repository
+	 * (might be in the extension itself or the TER)
+	 *
+	 * @param string $extensionKey
+	 * @param \TYPO3\CMS\Extensionmanager\Domain\Model\Dependency $dependency
+	 * @return void
+	 */
+	protected function getExtensionFromRepository($extensionKey, \TYPO3\CMS\Extensionmanager\Domain\Model\Dependency $dependency) {
+		if (!$this->getExtensionFromInExtensionRepository($extensionKey, $dependency)) {
+			$this->getExtensionFromTer($extensionKey, $dependency);
+		}
+	}
+
+	/**
+	 * Gets an extension from the in extension repository
+	 * (the local extension storage)
+	 *
+	 * @param string $extensionKey
+	 * @return boolean
+	 */
+	protected function getExtensionFromInExtensionRepository($extensionKey) {
+		if ($this->localExtensionStorage !== '' && is_dir($this->localExtensionStorage)) {
+			$extList = \TYPO3\CMS\Core\Utility\GeneralUtility::get_dirs($this->localExtensionStorage);
+			if (in_array($extensionKey, $extList)) {
+				$this->managementService->markExtensionForCopy($extensionKey, $this->localExtensionStorage);
+				return TRUE;
 			}
 		}
 		return FALSE;
@@ -348,7 +363,11 @@ class DependencyUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	protected function getLatestCompatibleExtensionByIntegerVersionDependency(\TYPO3\CMS\Extensionmanager\Domain\Model\Dependency $dependency) {
 		$versions = $this->getLowestAndHighestIntegerVersions($dependency);
-		$compatibleDataSets = $this->extensionRepository->findByVersionRangeAndExtensionKeyOrderedByVersion($dependency->getIdentifier(), $versions['lowestIntegerVersion'], $versions['highestIntegerVersion']);
+		$compatibleDataSets = $this->extensionRepository->findByVersionRangeAndExtensionKeyOrderedByVersion(
+			$dependency->getIdentifier(),
+			$versions['lowestIntegerVersion'],
+			$versions['highestIntegerVersion']
+		);
 		return $compatibleDataSets->getFirst();
 	}
 
