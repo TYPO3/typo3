@@ -48,6 +48,13 @@ class DownloadQueue implements \TYPO3\CMS\Core\SingletonInterface {
 	protected $extensionInstallStorage = array();
 
 	/**
+	 * Storage for extensions to be copied
+	 *
+	 * @var array
+	 */
+	protected $extensionCopyStorage = array();
+
+	/**
 	 * @var \TYPO3\CMS\Extensionmanager\Utility\ListUtility
 	 * @inject
 	 */
@@ -124,12 +131,44 @@ class DownloadQueue implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 	/**
+	 * Adds an extension to the copy queue for later copying
+	 *
+	 * @param string $extensionKey
+	 * @param string $sourceFolder
+	 * @return void
+	 */
+	public function addExtensionToCopyQueue($extensionKey, $sourceFolder) {
+		$this->extensionCopyStorage[$extensionKey] = $sourceFolder;
+	}
+
+	/**
+	 * Remove an extension from extension copy storage
+	 *
+	 * @param $extensionKey
+	 * @return void
+	 */
+	public function removeExtensionFromCopyQueue($extensionKey) {
+		if (array_key_exists($extensionKey, $this->extensionCopyStorage)) {
+			unset($this->extensionCopyStorage[$extensionKey]);
+		}
+	}
+
+	/**
 	 * Gets the extension installation queue
 	 *
 	 * @return array
 	 */
 	public function getExtensionInstallStorage() {
 		return $this->extensionInstallStorage;
+	}
+
+	/**
+	 * Gets the extension copy queue
+	 *
+	 * @return array
+	 */
+	public function getExtensionCopyStorage() {
+		return $this->extensionCopyStorage;
 	}
 
 }
