@@ -37,6 +37,7 @@ namespace TYPO3\CMS\Extbase\Object\Container;
 class Container implements \TYPO3\CMS\Core\SingletonInterface {
 
 	const SCOPE_PROTOTYPE = 1;
+
 	const SCOPE_SINGLETON = 2;
 
 	/**
@@ -114,6 +115,7 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @param string $className
 	 * @param array $givenConstructorArguments the list of constructor arguments as array
+	 *
 	 * @return object the built object
 	 */
 	public function getInstance($className, $givenConstructorArguments = array()) {
@@ -125,6 +127,7 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Create an instance of $className without calling its constructor
 	 *
 	 * @param string $className
+	 *
 	 * @return object
 	 */
 	public function getEmptyObject($className) {
@@ -141,6 +144,7 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @param string $className
 	 * @param array $givenConstructorArguments the list of constructor arguments as array
+	 *
 	 * @throws \TYPO3\CMS\Extbase\Object\Exception
 	 * @throws \TYPO3\CMS\Extbase\Object\Exception\CannotBuildObjectException
 	 * @return object the built object
@@ -186,6 +190,7 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @param \TYPO3\CMS\Extbase\Object\Container\ClassInfo $classInfo
 	 * @param array $givenConstructorArguments
+	 *
 	 * @throws \TYPO3\CMS\Extbase\Object\Exception
 	 * @return object the new instance
 	 */
@@ -209,6 +214,7 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @param object $instance
 	 * @param \TYPO3\CMS\Extbase\Object\Container\ClassInfo $classInfo
+	 *
 	 * @return void
 	 */
 	protected function injectDependencies($instance, \TYPO3\CMS\Extbase\Object\Container\ClassInfo $classInfo) {
@@ -241,6 +247,7 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @param string $message Message (in english).
 	 * @param integer $severity Severity: 0 is info, 1 is notice, 2 is warning, 3 is fatal error, -1 is "OK" message
+	 *
 	 * @return void
 	 */
 	protected function log($message, $severity) {
@@ -264,6 +271,7 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @param string $className
 	 * @param \TYPO3\CMS\Extbase\Object\Container\ClassInfo $classInfo
 	 * @param array $givenConstructorArguments
+	 *
 	 * @throws \InvalidArgumentException
 	 * @return array
 	 */
@@ -275,7 +283,15 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface {
 			// AND the class has NOT been explicitely passed in
 			if (isset($argumentInformation['dependency']) && !(count($givenConstructorArguments) && is_a($givenConstructorArguments[0], $argumentInformation['dependency']))) {
 				// Inject parameter
-				$parameter = $this->getInstanceInternal($argumentInformation['dependency']);
+				try {
+					$parameter = $this->getInstanceInternal($argumentInformation['dependency']);
+				}
+				catch (\TYPO3\CMS\Extbase\Object\Container\Exception\UnknownObjectException $e) {
+					if ($givenConstructorArguments[0] === NULL) {
+						$parameter = $givenConstructorArguments[0];
+						array_shift($givenConstructorArguments);
+					}
+				}
 				if ($classInfo->getIsSingleton() && !$parameter instanceof \TYPO3\CMS\Core\SingletonInterface) {
 					$this->log('The singleton "' . $className . '" needs a prototype in the constructor. This is often a bad code smell; often you rather want to inject a singleton.', 1);
 				}
@@ -304,6 +320,7 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface {
 	 * class-extension API.
 	 *
 	 * @param string $className Base class name to evaluate
+	 *
 	 * @return string Final class name to instantiate with "new [classname]
 	 */
 	protected function getImplementationClassName($className) {
@@ -320,6 +337,7 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Gets Classinfos for the className - using the cache and the factory
 	 *
 	 * @param string $className
+	 *
 	 * @return \TYPO3\CMS\Extbase\Object\Container\ClassInfo
 	 */
 	private function getClassInfo($className) {
