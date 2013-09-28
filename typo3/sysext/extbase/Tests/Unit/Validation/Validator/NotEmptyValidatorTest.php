@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-require_once __DIR__ . '/AbstractValidatorTestcase.php';
 
 /**
  * Testcase for the not empty validator

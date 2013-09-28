@@ -25,8 +25,6 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Reflection;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-require_once __DIR__ . '/Fixture/DummyClassWithGettersAndSetters.php';
-require_once __DIR__ . '/Fixture/ArrayAccessClass.php';
 
 /**
  * Test Unit Test Base Class

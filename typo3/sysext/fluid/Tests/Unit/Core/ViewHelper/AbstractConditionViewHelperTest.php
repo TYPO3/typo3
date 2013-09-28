@@ -11,8 +11,6 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\Core\ViewHelper;
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
-require_once(__DIR__ . '/../../ViewHelpers/ViewHelperBaseTestcase.php');
-
 /**
  * Testcase for Condition ViewHelper
  */

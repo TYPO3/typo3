@@ -18,8 +18,6 @@ use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Fluid\ViewHelpers\Link\PageViewHelper;
 
-require_once __DIR__ . '/../ViewHelperBaseTestcase.php';
-
 /**
  * Test-case for Link\PageViewHelper
  */

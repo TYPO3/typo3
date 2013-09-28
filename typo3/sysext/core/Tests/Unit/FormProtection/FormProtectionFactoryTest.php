@@ -24,15 +24,13 @@ namespace TYPO3\CMS\Core\Tests\Unit\FormProtection;
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-require_once 'Fixtures/FormProtectionTesting.php';
-
 /**
  * Testcase
  *
  * @author Oliver Klee <typo3-coding@oliverklee.de>
  * @author Ernesto Baschny <ernst@cron-it.de>
  */
-class FormprotectionFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class FormProtectionFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	public function setUp() {
 

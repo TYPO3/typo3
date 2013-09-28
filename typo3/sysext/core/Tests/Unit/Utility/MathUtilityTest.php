@@ -24,8 +24,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Utility;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-require_once 'Fixtures/MathUtilityTestClassWithStringRepresentationFixture.php';
-
 /**
  * Testcase for class \TYPO3\CMS\Core\Utility\MathUtility
  *

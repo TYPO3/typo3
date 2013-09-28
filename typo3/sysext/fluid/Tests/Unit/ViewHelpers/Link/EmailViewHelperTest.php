@@ -13,7 +13,6 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Link;
  * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General      *
  * Public License for more details.                                       *
  *                                                                        */
-require_once __DIR__ . '/../ViewHelperBaseTestcase.php';
 
 /**
 

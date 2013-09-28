@@ -11,8 +11,6 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Link;
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
-require_once(__DIR__ . '/../ViewHelperBaseTestcase.php');
-
 /**
  * Test for \TYPO3\CMS\Fluid\ViewHelpers\Link\EmailViewHelper
  */

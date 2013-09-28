@@ -11,9 +11,6 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers;
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
-include_once(__DIR__ . '/Fixtures/ConstraintSyntaxTreeNode.php');
-require_once(__DIR__ . '/ViewHelperBaseTestcase.php');
-
 /**
  * Testcase for ForViewHelper
  */

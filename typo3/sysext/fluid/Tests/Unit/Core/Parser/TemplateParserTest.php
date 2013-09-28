@@ -11,8 +11,6 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\Core\Parser;
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
-require_once(__DIR__ . '/Fixtures/PostParseFacetViewHelper.php');
-
 /**
  * Testcase for TemplateParser.
  *
@@ -357,7 +355,7 @@ class TemplateParserTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @test
 	 */
 	public function initializeViewHelperAndAddItToStackHandlesPostParseFacets() {
-		$mockViewHelper = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\Parser\\Fixtures\\PostParseFacetViewHelper', array('prepareArguments'));
+		$mockViewHelper = $this->getMock('TYPO3\\CMS\\Fluid\\Tests\\Unit\\Core\\Parser\\Fixtures\\PostParseFacetViewHelper', array('prepareArguments'));
 		$mockViewHelperNode = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\Parser\\SyntaxTree\\ViewHelperNode', array(), array(), '', FALSE);
 
 		$mockNodeOnStack = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\Parser\\SyntaxTree\\NodeInterface');
@@ -375,7 +373,7 @@ class TemplateParserTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$templateParser->injectObjectManager($mockObjectManager);
 
 		$templateParser->_call('initializeViewHelperAndAddItToStack', $mockState, 'f', 'myown', array('arguments'));
-		$this->assertTrue(\TYPO3\CMS\Fluid\Core\Parser\Fixtures\PostParseFacetViewHelper::$wasCalled, 'PostParse was not called!');
+		$this->assertTrue(\TYPO3\CMS\Fluid\Tests\Unit\Core\Parser\Fixtures\PostParseFacetViewHelper::$wasCalled, 'PostParse was not called!');
 	}
 
 	/**

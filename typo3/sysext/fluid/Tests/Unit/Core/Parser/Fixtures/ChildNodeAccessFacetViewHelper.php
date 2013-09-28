@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Fluid\Core\Parser\Fixtures;
+namespace TYPO3\CMS\Fluid\Tests\Unit\Core\Parser\Fixtures;
 
 /*                                                                        *
  * This script is backported from the TYPO3 Flow package "TYPO3.Fluid".   *

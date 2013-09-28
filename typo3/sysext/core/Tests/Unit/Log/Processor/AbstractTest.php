@@ -24,8 +24,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Log\Processor;
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-require_once __DIR__ . DIRECTORY_SEPARATOR . '../Fixtures/ProcessorFixture.php';
-
 /**
  * Testcase for \TYPO3\CMS\Core\Log\Processor\Abstract
  *

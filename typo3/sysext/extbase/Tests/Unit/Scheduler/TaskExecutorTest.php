@@ -1,8 +1,6 @@
 <?php
 namespace TYPO3\CMS\Extbase\Tests\Unit\Scheduler;
 
-require_once __DIR__ . '/Fixtures/MockACommandController.php';
-
 /***************************************************************
  *  Copyright notice
  *
@@ -29,6 +27,7 @@ require_once __DIR__ . '/Fixtures/MockACommandController.php';
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * TaskExecutor Test Class
  */

@@ -24,8 +24,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Cache;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-require_once 'Backend/MockBackend.php';
-
 /**
  * Testcase for the TYPO3\CMS\Core\Cache\CacheFactory
  *

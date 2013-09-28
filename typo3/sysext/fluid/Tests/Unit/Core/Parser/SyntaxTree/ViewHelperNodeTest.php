@@ -11,9 +11,6 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\Core\Parser\SyntaxTree;
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
-require_once __DIR__ . '/../Fixtures/ChildNodeAccessFacetViewHelper.php';
-require_once __DIR__ . '/../../Fixtures/TestViewHelper.php';
-
 /**
  * Testcase for \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode
  */
@@ -87,7 +84,7 @@ class ViewHelperNodeTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	public function childNodeAccessFacetWorksAsExpected() {
 		$childNode = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\Parser\\SyntaxTree\\TextNode', array(), array('foo'));
 
-		$mockViewHelper = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\Parser\\Fixtures\\ChildNodeAccessFacetViewHelper', array('setChildNodes', 'initializeArguments', 'render', 'prepareArguments'));
+		$mockViewHelper = $this->getMock('TYPO3\\CMS\\Fluid\\Tests\\Unit\\Core\\Parser\\Fixtures\\ChildNodeAccessFacetViewHelper', array('setChildNodes', 'initializeArguments', 'render', 'prepareArguments'));
 
 		$viewHelperNode = new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode($mockViewHelper, array());
 		$viewHelperNode->addChildNode($childNode);

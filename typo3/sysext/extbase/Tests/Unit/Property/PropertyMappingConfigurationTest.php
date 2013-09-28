@@ -2,7 +2,7 @@
 namespace TYPO3\CMS\Extbase\Tests\Unit\Property;
 
 /*                                                                        *
- * This script belongs to the Extbase framework.                            *
+ * This script belongs to the Extbase framework.                          *
  *                                                                        *
  * It is free software; you can redistribute it and/or modify it under    *
  * the terms of the GNU Lesser General Public License as published by the *
@@ -20,8 +20,6 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Property;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
-require_once __DIR__ . '/../../Fixture/ClassWithSetters.php';
 
 /**
  * Testcase for the Property Mapper

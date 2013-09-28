@@ -27,9 +27,6 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence\Generic;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-require_once __DIR__ . '/../Fixture/Model/Entity3.php';
-require_once __DIR__ . '/../Fixture/Model/Entity2.php';
-
 /**
  * A PersistenceManager Test
  */
