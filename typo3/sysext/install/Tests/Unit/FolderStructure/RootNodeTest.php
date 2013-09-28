@@ -123,7 +123,7 @@ class RootNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			'name' => '/bar'
 		);
 		$node->__construct($structure, NULL);
-		$this->assertNull($node->getParent());
+		$this->assertNull($node->_call('getParent'));
 	}
 
 	/**
@@ -147,7 +147,7 @@ class RootNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			),
 		);
 		$node->__construct($structure, NULL);
-		$children = $node->getChildren();
+		$children = $node->_call('getChildren');
 		/** @var $child \TYPO3\CMS\install\FolderStructure\NodeInterface */
 		$child = $children[0];
 		$this->assertInstanceOf('TYPO3\\CMS\\install\\FolderStructure\\DirectoryNode', $child);
@@ -170,7 +170,7 @@ class RootNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			'targetPermission' => $targetPermission,
 		);
 		$node->__construct($structure, NULL);
-		$this->assertSame($targetPermission, $node->getTargetPermission());
+		$this->assertSame($targetPermission, $node->_call('getTargetPermission'));
 	}
 
 	/**
@@ -262,3 +262,4 @@ class RootNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->assertSame($path, $node->getAbsolutePath());
 	}
 }
+?>

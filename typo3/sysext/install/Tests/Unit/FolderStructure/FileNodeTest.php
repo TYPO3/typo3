@@ -80,7 +80,7 @@ class FileNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			'name' => 'foo',
 		);
 		$node->__construct($structure, $parent);
-		$this->assertSame($parent, $node->getParent());
+		$this->assertSame($parent, $node->_call('getParent'));
 	}
 
 	/**
@@ -96,7 +96,7 @@ class FileNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			'targetPermission' => $targetPermission,
 		);
 		$node->__construct($structure, $parent);
-		$this->assertSame($targetPermission, $node->getTargetPermission());
+		$this->assertSame($targetPermission, $node->_call('getTargetPermission'));
 	}
 
 	/**

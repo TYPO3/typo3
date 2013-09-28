@@ -65,7 +65,7 @@ abstract class AbstractNode {
 	 *
 	 * @return string Permission, eg. 2770
 	 */
-	public function getTargetPermission() {
+	protected function getTargetPermission() {
 		return $this->targetPermission;
 	}
 
@@ -74,7 +74,7 @@ abstract class AbstractNode {
 	 *
 	 * @return array
 	 */
-	public function getChildren() {
+	protected function getChildren() {
 		return $this->children;
 	}
 
@@ -83,7 +83,7 @@ abstract class AbstractNode {
 	 *
 	 * @return NULL|NodeInterface
 	 */
-	public function getParent() {
+	protected function getParent() {
 		return $this->parent;
 	}
 
@@ -93,7 +93,7 @@ abstract class AbstractNode {
 	 * @return string
 	 */
 	public function getAbsolutePath() {
-		return $this->parent->getAbsolutePath() . '/' . $this->name;
+		return $this->getParent()->getAbsolutePath() . '/' . $this->name;
 	}
 
 	/**
@@ -102,7 +102,7 @@ abstract class AbstractNode {
 	 * @return boolean TRUE if parent is writable
 	 */
 	public function isWritable() {
-		return $this->parent->isWritable();
+		return $this->getParent()->isWritable();
 	}
 
 	/**
@@ -133,7 +133,7 @@ abstract class AbstractNode {
 				1366744035
 			);
 		}
-		$result = @chmod($this->getAbsolutePath(), octdec($this->targetPermission));
+		$result = @chmod($this->getAbsolutePath(), octdec($this->getTargetPermission()));
 		if ($result === TRUE) {
 			$status = new Status\OkStatus();
 			$status->setTitle('Fixed permission on ' . $this->getRelativePathBelowSiteRoot() . '.');
@@ -157,7 +157,7 @@ abstract class AbstractNode {
 		if ($this->isWindowsOs()) {
 			return TRUE;
 		}
-		if ($this->getCurrentPermission() === $this->targetPermission) {
+		if ($this->getCurrentPermission() === $this->getTargetPermission()) {
 			return TRUE;
 		} else {
 			return FALSE;
