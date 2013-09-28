@@ -38,6 +38,13 @@ class AbstractUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 	protected $backupGlobals = TRUE;
 
 	/**
+	 * A backup of the global database
+	 *
+	 * @var \TYPO3\CMS\Core\Database\DatabaseConnection
+	 */
+	protected $databaseBackup = NULL;
+
+	/**
 	 * phpunit still needs some globals that are
 	 * reconstructed before $backupGlobals is handled. Those
 	 * important globals are handled in tearDown() directly.
@@ -47,12 +54,14 @@ class AbstractUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 	protected $globals = array();
 
 	public function setUp() {
+		$this->databaseBackup = $GLOBALS['TYPO3_DB'];
 		$this->globals = array(
 			'TYPO3_LOADED_EXT' => serialize($GLOBALS['TYPO3_LOADED_EXT'])
 		);
 	}
 
 	public function tearDown() {
+		$GLOBALS['TYPO3_DB'] = $this->databaseBackup;
 		foreach ($this->globals as $key => $value) {
 			$GLOBALS[$key] = unserialize($value);
 		}
