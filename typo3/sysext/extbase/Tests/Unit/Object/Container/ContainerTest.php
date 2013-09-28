@@ -23,8 +23,9 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Object\Container;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('extbase') . 'Tests/Unit/Object/Container/Fixtures/Testclasses.php';
-require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('extbase') . 'Tests/Unit/Object/Container/Fixtures/NamespaceTestclasses.php';
+
+require_once 'Fixtures/Testclasses.php';
+require_once 'Fixtures/ContainerConstructorInjectionTestFixtures.php';
 
 /**
  * Testcase for class t3lib_object_Container.
@@ -325,5 +326,589 @@ class ContainerTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	public function isPrototypeReturnsFalseForSingletonInstancesAndTrueForPrototypes() {
 		$this->assertFalse($this->container->isPrototype('TYPO3\CMS\Extbase\Object\Container\Container'));
 		$this->assertTrue($this->container->isPrototype('TYPO3\CMS\Extbase\Core\Bootstrap'));
+	}
+
+	/************************************************
+	 * Test regarding constructor argument injection
+	 ************************************************/
+
+	/**
+	 * test class SimpleTypeConstructorArgument
+	 * @test
+	 */
+	public function getInstanceGivesSimpleConstructorArgumentToClassInstance() {
+		$object = $this->container->getInstance(
+			'TYPO3\\CMS\\Extbase\\Tests\\Unit\\Object\\Container\\Fixtures\\SimpleTypeConstructorArgument',
+			array(TRUE)
+		);
+		$this->assertTrue($object->foo);
+	}
+
+	/**
+	 * test class SimpleTypeConstructorArgument
+	 * @test
+	 */
+	public function getInstanceDoesNotInfluenceSimpleTypeConstructorArgumentIfNotGiven() {
+		$object = $this->container->getInstance(
+			'TYPO3\\CMS\\Extbase\\Tests\\Unit\\Object\\Container\\Fixtures\\SimpleTypeConstructorArgument'
+		);
+		$this->assertFalse($object->foo);
+	}
+
+	/**
+	 * test class MandatoryConstructorArgument
+	 * @test
+	 */
+	public function getInstanceGivesExistingConstructorArgumentToClassInstance() {
+		$argumentTestClass = new Fixtures\ArgumentTestClass();
+		$object = $this->container->getInstance(
+			'TYPO3\\CMS\\Extbase\\Tests\\Unit\\Object\\Container\\Fixtures\\MandatoryConstructorArgument',
+			array($argumentTestClass)
+		);
+		$this->assertInstanceOf(
+			'TYPO3\\CMS\\Extbase\\Tests\\Unit\\Object\\Container\\Fixtures\\MandatoryConstructorArgument',
+			$object
+		);
+		$this->assertSame($argumentTestClass, $object->argumentTestClass);
+	}
+
+	/**
+	 * test class MandatoryConstructorArgument
+	 * @test
+	 */
+	public function getInstanceInjectsNewInstanceOfClassToClassIfArgumentIsMandatory() {
+		$object = $this->container->getInstance(
+			'TYPO3\\CMS\\Extbase\\Tests\\Unit\\Object\\Container\\Fixtures\\MandatoryConstructorArgument'
+		);
+		$this->assertInstanceOf(
+			'TYPO3\\CMS\\Extbase\\Tests\\Unit\\Object\\Container\\Fixtures\\MandatoryConstructorArgument',
+			$object
+		);
+		$this->assertInstanceOf(
+			'TYPO3\\CMS\\Extbase\\Tests\\Unit\\Object\\Container\\Fixtures\\ArgumentTestClass',
+			$object->argumentTestClass
+		);
+	}
+
+	/**
+	 * test class OptionalConstructorArgument
+	 * @test
+	 */
+	public function getInstanceDoesNotInjectAnOptionalArgumentIfNotGiven() {
+		$object = $this->container->getInstance(
+			'TYPO3\\CMS\\Extbase\\Tests\\Unit\\Object\\Container\\Fixtures\\OptionalConstructorArgument'
+		);
+		$this->assertInstanceOf(
+			'TYPO3\\CMS\\Extbase\\Tests\\Unit\\Object\\Container\\Fixtures\\OptionalConstructorArgument',
+			$object
+		);
+		$this->assertNull($object->argumentTestClass);
+	}
+
+	/**
+	 * test class OptionalConstructorArgument
+	 * @test
+	 */
+	public function getInstanceDoesNotInjectAnOptionalArgumentIfGivenArgumentIsNull() {
+		$object = $this->container->getInstance(
+			'TYPO3\\CMS\\Extbase\\Tests\\Unit\\Object\\Container\\Fixtures\\OptionalConstructorArgument',
+			array(NULL)
+		);
+		$this->assertInstanceOf(
+			'TYPO3\\CMS\\Extbase\\Tests\\Unit\\Object\\Container\\Fixtures\\OptionalConstructorArgument',
+			$object
+		);
+		$this->assertNull($object->argumentTestClass);
+	}
+
+	/**
+	 * test class OptionalConstructorArgument
+	 * @test
+	 */
+	public function getInstanceGivesExistingConstructorArgumentToClassInstanceIfArgumentIsGiven() {
+		$argumentTestClass = new Fixtures\ArgumentTestClass();
+		$object = $this->container->getInstance(
+			'TYPO3\\CMS\\Extbase\\Tests\\Unit\\Object\\Container\\Fixtures\\OptionalConstructorArgument',
+			array($argumentTestClass)
+		);
+		$this->assertInstanceOf(
+			'TYPO3\\CMS\\Extbase\\Tests\\Unit\\Object\\Container\\Fixtures\\OptionalConstructorArgument',
+			$object
+		);
+		$this->assertSame($argumentTestClass, $object->argumentTestClass);
+	}
+
+	/**
+	 * test class MandatoryConstructorArgumentTwo
+	 * @test
+	 */
+	public function getInstanceGivesTwoArgumentsToClassConstructor() {
+		$firstArgument = new Fixtures\ArgumentTestClass();
+		$secondArgument = new Fixtures\ArgumentTestClass();
+		$object = $this->container->getInstance(
+			'TYPO3\\CMS\\Extbase\\Tests\\Unit\\Object\\Container\\Fixtures\\MandatoryConstructorArgumentTwo',
+			array($firstArgument, $secondArgument)
+		);
+		$this->assertInstanceOf(
+			'TYPO3\\CMS\\Extbase\\Tests\\Unit\\Object\\Container\\Fixtures\\MandatoryConstructorArgumentTwo',
+			$object
+		);
+		$this->assertSame(
+			$firstArgument,
+			$object->argumentTestClass
+		);
+		$this->assertSame(
+			$secondArgument,
+			$object->argumentTestClassTwo
+		);
+	}
+
+	/**
+	 * test class MandatoryConstructorArgumentTwo
+	 * @test
+	 */
+	public function getInstanceInjectsTwoMandatoryArguments() {
+		$object = $this->container->getInstance(
+			'TYPO3\\CMS\\Extbase\\Tests\\Unit\\Object\\Container\\Fixtures\\MandatoryConstructorArgumentTwo'
+		);
+		$this->assertInstanceOf(
+			'TYPO3\\CMS\\Extbase\\Tests\\Unit\\Object\\Container\\Fixtures\\MandatoryConstructorArgumentTwo',
+			$object
+		);
+		$this->assertInstanceOf(
+			'TYPO3\\CMS\\Extbase\\Tests\\Unit\\Object\\Container\\Fixtures\\ArgumentTestClass',
+			$object->argumentTestClass
+		);
+		$this->assertInstanceOf(
+			'TYPO3\\CMS\\Extbase\\Tests\\Unit\\Object\\Container\\Fixtures\\ArgumentTestClass',
+			$object->argumentTestClassTwo
+		);
+		$this->assertNotSame(
+			$object->argumentTestClass,
+			$object->argumentTestClassTwo
+		);
+	}
+
+	/**
+	 * test class MandatoryConstructorArgumentTwo
+	 * @test
+	 */
+	public function getInstanceInjectsSecondMandatoryArgumentIfFirstIsGiven() {
+		$firstArgument = new Fixtures\ArgumentTestClass();
+		$object = $this->container->getInstance(
+			'TYPO3\\CMS\\Extbase\\Tests\\Unit\\Object\\Container\\Fixtures\\MandatoryConstructorArgumentTwo',
+			array($firstArgument)
+		);
+		$this->assertInstanceOf(
+			'TYPO3\\CMS\\Extbase\\Tests\\Unit\\Object\\Container\\Fixtures\\MandatoryConstructorArgumentTwo',
+			$object
+		);
+		$this->assertSame(
+			$firstArgument,
+			$object->argumentTestClass
+		);
+		$this->assertInstanceOf(
+			'TYPO3\\CMS\\Extbase\\Tests\\Unit\\Object\\Container\\Fixtures\\ArgumentTestClass',
+			$object->argumentTestClassTwo
+		);
+		$this->assertNotSame(
+			$object->argumentTestClass,
+			$object->argumentTestClassTwo
+		);
+	}
+
+	/**
+	 * test class MandatoryConstructorArgumentTwo
+	 * @test
+	 */
+	public function getInstanceInjectsFirstMandatoryArgumentIfSecondIsGiven() {
+		$secondArgument = new Fixtures\ArgumentTestClass();
+		$object = $this->container->getInstance(
+			'TYPO3\\CMS\\Extbase\\Tests\\Unit\\Object\\Container\\Fixtures\\MandatoryConstructorArgumentTwo',
+			array(NULL, $secondArgument)
+		);
+		$this->assertInstanceOf(
+			'TYPO3\\CMS\\Extbase\\Tests\\Unit\\Object\\Container\\Fixtures\\MandatoryConstructorArgumentTwo',
+			$object
+		);
+		$this->assertInstanceOf(
+			'TYPO3\\CMS\\Extbase\\Tests\\Unit\\Object\\Container\\Fixtures\\ArgumentTestClass',
+			$object->argumentTestClass
+		);
+		$this->assertInstanceOf(
+			'TYPO3\\CMS\\Extbase\\Tests\\Unit\\Object\\Container\\Fixtures\\ArgumentTestClass',
+			$object->argumentTestClassTwo
+		);
+		$this->assertSame(
+			$secondArgument,
+			$object->argumentTestClassTwo
+		);
+		$this->assertNotSame(
+			$object->argumentTestClass,
+			$object->argumentTestClassTwo
+		);
+	}
+
+	/**
+	 * test class TwoConstructorArgumentsSecondOptional
+	 * @test
+	 */
+	public function getInstanceGivesTwoArgumentsToClassConstructorIfSecondIsOptional() {
+		$firstArgument = new Fixtures\ArgumentTestClass();
+		$secondArgument = new Fixtures\ArgumentTestClass();
+		$object = $this->container->getInstance(
+			'TYPO3\\CMS\\Extbase\\Tests\\Unit\\Object\\Container\\Fixtures\\TwoConstructorArgumentsSecondOptional',
+			array($firstArgument, $secondArgument)
+		);
+		$this->assertInstanceOf(
+			'TYPO3\\CMS\\Extbase\\Tests\\Unit\\Object\\Container\\Fixtures\\TwoConstructorArgumentsSecondOptional',
+			$object
+		);
+		$this->assertSame(
+			$firstArgument,
+			$object->argumentTestClass
+		);
+		$this->assertSame(
+			$secondArgument,
+			$object->argumentTestClassTwo
+		);
+	}
+
+	/**
+	 * test class TwoConstructorArgumentsSecondOptional
+	 * @test
+	 */
+	public function getInstanceInjectsFirstMandatoryArgumentIfSecondIsOptionalAndNoneAreGiven() {
+		$object = $this->container->getInstance(
+			'TYPO3\\CMS\\Extbase\\Tests\\Unit\\Object\\Container\\Fixtures\\TwoConstructorArgumentsSecondOptional'
+		);
+		$this->assertInstanceOf(
+			'TYPO3\\CMS\\Extbase\\Tests\\Unit\\Object\\Container\\Fixtures\\TwoConstructorArgumentsSecondOptional',
+			$object
+		);
+		$this->assertInstanceOf(
+			'TYPO3\\CMS\\Extbase\\Tests\\Unit\\Object\\Container\\Fixtures\\ArgumentTestClass',
+			$object->argumentTestClass
+		);
+		$this->assertNull($object->argumentTestClassTwo);
+	}
+
+	/**
+	 * test class TwoConstructorArgumentsSecondOptional
+	 * @test
+	 */
+	public function getInstanceInjectsFirstMandatoryArgumentIfSecondIsOptionalAndBothAreGivenAsNull() {
+		$object = $this->container->getInstance(
+			'TYPO3\\CMS\\Extbase\\Tests\\Unit\\Object\\Container\\Fixtures\\TwoConstructorArgumentsSecondOptional',
+			array(NULL, NULL)
+		);
+		$this->assertInstanceOf(
+			'TYPO3\\CMS\\Extbase\\Tests\\Unit\\Object\\Container\\Fixtures\\TwoConstructorArgumentsSecondOptional',
+			$object
+		);
+		$this->assertInstanceOf(
+			'TYPO3\\CMS\\Extbase\\Tests\\Unit\\Object\\Container\\Fixtures\\ArgumentTestClass',
+			$object->argumentTestClass
+		);
+		$this->assertNull($object->argumentTestClassTwo);
+	}
+
+	/**
+	 * test class TwoConstructorArgumentsSecondOptional
+	 * @test
+	 */
+	public function getInstanceGivesFirstArgumentToConstructorIfSecondIsOptionalAndFirstIsGiven() {
+		$firstArgument = new Fixtures\ArgumentTestClass();
+		$object = $this->container->getInstance(
+			'TYPO3\\CMS\\Extbase\\Tests\\Unit\\Object\\Container\\Fixtures\\TwoConstructorArgumentsSecondOptional',
+			array($firstArgument)
+		);
+		$this->assertInstanceOf(
+			'TYPO3\\CMS\\Extbase\\Tests\\Unit\\Object\\Container\\Fixtures\\TwoConstructorArgumentsSecondOptional',
+			$object
+		);
+		$this->assertSame(
+			$firstArgument,
+			$object->argumentTestClass
+		);
+		$this->assertNull($object->argumentTestClassTwo);
+	}
+
+	/**
+	 * test class TwoConstructorArgumentsSecondOptional
+	 * @test
+	 */
+	public function getInstanceGivesFirstArgumentToConstructorIfSecondIsOptionalFirstIsGivenAndSecondIsGivenNull() {
+		$firstArgument = new Fixtures\ArgumentTestClass();
+		$object = $this->container->getInstance(
+			'TYPO3\\CMS\\Extbase\\Tests\\Unit\\Object\\Container\\Fixtures\\TwoConstructorArgumentsSecondOptional',
+			array($firstArgument, NULL)
+		);
+		$this->assertInstanceOf(
+			'TYPO3\\CMS\\Extbase\\Tests\\Unit\\Object\\Container\\Fixtures\\TwoConstructorArgumentsSecondOptional',
+			$object
+		);
+		$this->assertSame(
+			$firstArgument,
+			$object->argumentTestClass
+		);
+		$this->assertNull($object->argumentTestClassTwo);
+	}
+
+	/**
+	 * test class TwoConstructorArgumentsFirstOptional
+	 *
+	 * @test
+	 */
+	public function getInstanceOnFirstOptionalAndSecondMandatoryInjectsOnlySecondArgumentAndFirstArgumentIsNullIfNoArgumentsGiven() {
+		$object = $this->container->getInstance(
+			'TYPO3\\CMS\\Extbase\\Tests\\Unit\\Object\\Container\\Fixtures\\TwoConstructorArgumentsFirstOptional'
+		);
+		$this->assertInstanceOf(
+			'TYPO3\\CMS\\Extbase\\Tests\\Unit\\Object\\Container\\Fixtures\\TwoConstructorArgumentsFirstOptional',
+			$object
+		);
+		$this->assertNull($object->argumentTestClass);
+		$this->assertInstanceOf(
+			'TYPO3\\CMS\\Extbase\\Tests\\Unit\\Object\\Container\\Fixtures\\ArgumentTestClass',
+			$object->argumentTestClassTwo
+		);
+	}
+
+	/**
+	 * test class TwoConstructorArgumentsFirstOptional
+	 *
+	 * @test
+	 */
+	public function getInstanceOnFirstOptionalAndSecondMandatoryInjectsSecondArgumentIfFirstIsGivenAsNull() {
+		$object = $this->container->getInstance(
+			'TYPO3\\CMS\\Extbase\\Tests\\Unit\\Object\\Container\\Fixtures\\TwoConstructorArgumentsFirstOptional',
+			array(NULL)
+		);
+		$this->assertInstanceOf(
+			'TYPO3\\CMS\\Extbase\\Tests\\Unit\\Object\\Container\\Fixtures\\TwoConstructorArgumentsFirstOptional',
+			$object
+		);
+		$this->assertNull($object->argumentTestClass);
+		$this->assertInstanceOf(
+			'TYPO3\\CMS\\Extbase\\Tests\\Unit\\Object\\Container\\Fixtures\\ArgumentTestClass',
+			$object->argumentTestClassTwo
+		);
+	}
+
+	/**
+	 * test class TwoConstructorArgumentsFirstOptional
+	 * @test
+	 */
+	public function getInstanceOnFirstOptionalAndSecondMandatoryGivesTwoGivenArgumentsToConstructor() {
+		$first = new Fixtures\ArgumentTestClass();
+		$second = new Fixtures\ArgumentTestClass();
+		$object = $this->container->getInstance(
+			'TYPO3\\CMS\\Extbase\\Tests\\Unit\\Object\\Container\\Fixtures\\TwoConstructorArgumentsFirstOptional',
+			array($first, $second)
+		);
+		$this->assertInstanceOf(
+			'TYPO3\\CMS\\Extbase\\Tests\\Unit\\Object\\Container\\Fixtures\\TwoConstructorArgumentsFirstOptional',
+			$object
+		);
+		$this->assertSame(
+			$first,
+			$object->argumentTestClass
+		);
+		$this->assertSame(
+			$second,
+			$object->argumentTestClassTwo
+		);
+	}
+
+	/**
+	 * test class TwoConstructorArgumentsFirstOptional
+	 * @test
+	 */
+	public function getInstanceOnFirstOptionalAndSecondMandatoryInjectsSecondArgumentIfFirstIsGiven() {
+		$first = new Fixtures\ArgumentTestClass();
+		$object = $this->container->getInstance(
+			'TYPO3\\CMS\\Extbase\\Tests\\Unit\\Object\\Container\\Fixtures\\TwoConstructorArgumentsFirstOptional',
+			array($first)
+		);
+		$this->assertInstanceOf(
+			'TYPO3\\CMS\\Extbase\\Tests\\Unit\\Object\\Container\\Fixtures\\TwoConstructorArgumentsFirstOptional',
+			$object
+		);
+		$this->assertSame(
+			$first,
+			$object->argumentTestClass
+		);
+		$this->assertInstanceOf(
+			'TYPO3\\CMS\\Extbase\\Tests\\Unit\\Object\\Container\\Fixtures\\ArgumentTestClass',
+			$object->argumentTestClassTwo
+		);
+		$this->assertNotSame(
+			$object->argumentTestClass,
+			$object->argumentTestClassTwo
+		);
+	}
+
+	/**
+	 * test class TwoConstructorArgumentsFirstOptional
+	 *
+	 * @test
+	 */
+	public function getInstanceOnFirstOptionalAndSecondMandatoryGivesSecondArgumentAsIsIfFirstIsGivenAsNullAndSecondIsGiven() {
+		$second = new Fixtures\ArgumentTestClass();
+		$object = $this->container->getInstance(
+			'TYPO3\\CMS\\Extbase\\Tests\\Unit\\Object\\Container\\Fixtures\\TwoConstructorArgumentsFirstOptional',
+			array(NULL, $second)
+		);
+		$this->assertInstanceOf(
+			'TYPO3\\CMS\\Extbase\\Tests\\Unit\\Object\\Container\\Fixtures\\TwoConstructorArgumentsFirstOptional',
+			$object
+		);
+		$this->assertNull($object->argumentTestClass);
+		$this->assertSame(
+			$second,
+			$object->argumentTestClassTwo
+		);
+	}
+
+	/**
+	 * test class TwoConstructorArgumentsFirstOptional
+	 *
+	 * @test
+	 */
+	public function getInstanceOnFirstOptionalAndSecondMandatoryInjectsSecondArgumentIfFirstIsGivenAsNullAndSecondIsNull() {
+		$object = $this->container->getInstance(
+			'TYPO3\\CMS\\Extbase\\Tests\\Unit\\Object\\Container\\Fixtures\\TwoConstructorArgumentsFirstOptional',
+			array(NULL, NULL)
+		);
+		$this->assertInstanceOf(
+			'TYPO3\\CMS\\Extbase\\Tests\\Unit\\Object\\Container\\Fixtures\\TwoConstructorArgumentsFirstOptional',
+			$object
+		);
+		$this->assertNull($object->argumentTestClass);
+		$this->assertInstanceOf(
+			'TYPO3\\CMS\\Extbase\\Tests\\Unit\\Object\\Container\\Fixtures\\ArgumentTestClass',
+			$object->argumentTestClassTwo
+		);
+	}
+
+	/**
+	 * test class TwoConstructorArgumentsBothOptional
+	 * @test
+	 */
+	public function getInstanceOnTwoOptionalGivesTwoGivenArgumentsToConstructor() {
+		$first = new Fixtures\ArgumentTestClass();
+		$second = new Fixtures\ArgumentTestClass();
+		$object = $this->container->getInstance(
+			'TYPO3\\CMS\\Extbase\\Tests\\Unit\\Object\\Container\\Fixtures\\TwoConstructorArgumentsBothOptional',
+			array($first, $second)
+		);
+		$this->assertInstanceOf(
+			'TYPO3\\CMS\\Extbase\\Tests\\Unit\\Object\\Container\\Fixtures\\TwoConstructorArgumentsBothOptional',
+			$object
+		);
+		$this->assertSame(
+			$first,
+			$object->argumentTestClass
+		);
+		$this->assertSame(
+			$second,
+			$object->argumentTestClassTwo
+		);
+	}
+
+	/**
+	 * test class TwoConstructorArgumentsBothOptional
+	 * @test
+	 */
+	public function getInstanceOnTwoOptionalGivesNoArgumentsToConstructorIfArgumentsAreNull() {
+		$object = $this->container->getInstance(
+			'TYPO3\\CMS\\Extbase\\Tests\\Unit\\Object\\Container\\Fixtures\\TwoConstructorArgumentsBothOptional',
+			array(NULL, NULL)
+		);
+		$this->assertInstanceOf(
+			'TYPO3\\CMS\\Extbase\\Tests\\Unit\\Object\\Container\\Fixtures\\TwoConstructorArgumentsBothOptional',
+			$object
+		);
+		$this->assertNull($object->argumentTestClass);
+		$this->assertNull($object->argumentTestClassTwo);
+	}
+
+	/**
+	 * test class TwoConstructorArgumentsBothOptional
+	 * @test
+	 */
+	public function getInstanceOnTwoOptionalGivesNoArgumentsToConstructorIfNoneAreGiven() {
+		$object = $this->container->getInstance(
+			'TYPO3\\CMS\\Extbase\\Tests\\Unit\\Object\\Container\\Fixtures\\TwoConstructorArgumentsBothOptional');
+		$this->assertInstanceOf(
+			'TYPO3\\CMS\\Extbase\\Tests\\Unit\\Object\\Container\\Fixtures\\TwoConstructorArgumentsBothOptional',
+			$object
+		);
+		$this->assertNull($object->argumentTestClass);
+		$this->assertNull($object->argumentTestClassTwo);
+	}
+
+	/**
+	 * test class TwoConstructorArgumentsBothOptional
+	 * @test
+	 */
+	public function getInstanceOnTwoOptionalGivesOneArgumentToConstructorIfFirstIsObjectAndSecondIsNotGiven() {
+		$first = new Fixtures\ArgumentTestClass();
+		$object = $this->container->getInstance(
+			'TYPO3\\CMS\\Extbase\\Tests\\Unit\\Object\\Container\\Fixtures\\TwoConstructorArgumentsBothOptional',
+			array($first)
+		);
+		$this->assertInstanceOf(
+			'TYPO3\\CMS\\Extbase\\Tests\\Unit\\Object\\Container\\Fixtures\\TwoConstructorArgumentsBothOptional',
+			$object
+		);
+		$this->assertSame(
+			$first,
+			$object->argumentTestClass
+		);
+		$this->assertNull($object->argumentTestClassTwo);
+	}
+
+	/**
+	 * test class TwoConstructorArgumentsBothOptional
+	 * @test
+	 */
+	public function getInstanceOnTwoOptionalGivesOneArgumentToConstructorIfFirstIsObjectAndSecondIsNull() {
+		$first = new Fixtures\ArgumentTestClass();
+		$object = $this->container->getInstance(
+			'TYPO3\\CMS\\Extbase\\Tests\\Unit\\Object\\Container\\Fixtures\\TwoConstructorArgumentsBothOptional',
+			array($first, NULL)
+		);
+		$this->assertInstanceOf(
+			'TYPO3\\CMS\\Extbase\\Tests\\Unit\\Object\\Container\\Fixtures\\TwoConstructorArgumentsBothOptional',
+			$object
+		);
+		$this->assertSame(
+			$first,
+			$object->argumentTestClass
+		);
+		$this->assertNull($object->argumentTestClassTwo);
+	}
+
+	/**
+	 * test class TwoConstructorArgumentsBothOptional
+	 * @test
+	 */
+	public function getInstanceOnTwoOptionalGivesOneArgumentToConstructorIfFirstIsNullAndSecondIsObject() {
+		$second = new Fixtures\ArgumentTestClass();
+		$object = $this->container->getInstance(
+			'TYPO3\\CMS\\Extbase\\Tests\\Unit\\Object\\Container\\Fixtures\\TwoConstructorArgumentsBothOptional',
+			array(NULL, $second)
+		);
+		$this->assertInstanceOf(
+			'TYPO3\\CMS\\Extbase\\Tests\\Unit\\Object\\Container\\Fixtures\\TwoConstructorArgumentsBothOptional',
+			$object
+		);
+		$this->assertNull($object->argumentTestClass);
+		$this->assertSame(
+			$second,
+			$object->argumentTestClassTwo
+		);
 	}
 }

@@ -77,9 +77,11 @@ class ClassInfoFactory {
 			if ($reflectionParameter->getClass()) {
 				$info['dependency'] = $reflectionParameter->getClass()->getName();
 			}
-			if ($reflectionParameter->isOptional()) {
+
+			try {
 				$info['defaultValue'] = $reflectionParameter->getDefaultValue();
-			}
+			} catch (\ReflectionException $e) {}
+
 			$result[] = $info;
 		}
 		return $result;

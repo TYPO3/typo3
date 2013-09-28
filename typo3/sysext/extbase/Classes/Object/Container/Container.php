@@ -27,6 +27,7 @@ namespace TYPO3\CMS\Extbase\Object\Container;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Internal TYPO3 Dependency Injection container
  *
@@ -270,29 +271,21 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface {
 	private function getConstructorArguments($className, \TYPO3\CMS\Extbase\Object\Container\ClassInfo $classInfo, array $givenConstructorArguments) {
 		$parameters = array();
 		$constructorArgumentInformation = $classInfo->getConstructorArguments();
-		foreach ($constructorArgumentInformation as $argumentInformation) {
-			// We have a dependency we can automatically wire,
-			// AND the class has NOT been explicitely passed in
-			if (isset($argumentInformation['dependency']) && !(count($givenConstructorArguments) && is_a($givenConstructorArguments[0], $argumentInformation['dependency']))) {
-				// Inject parameter
-				$parameter = $this->getInstanceInternal($argumentInformation['dependency']);
-				if ($classInfo->getIsSingleton() && !$parameter instanceof \TYPO3\CMS\Core\SingletonInterface) {
-					$this->log('The singleton "' . $className . '" needs a prototype in the constructor. This is often a bad code smell; often you rather want to inject a singleton.', 1);
-				}
-			} elseif (count($givenConstructorArguments)) {
-				// EITHER:
-				// No dependency injectable anymore, but we still have
-				// an explicit constructor argument
-				// OR:
-				// the passed constructor argument matches the type for the dependency
-				// injection, and thus the passed constructor takes precendence over
-				// autowiring.
-				$parameter = array_shift($givenConstructorArguments);
-			} elseif (array_key_exists('defaultValue', $argumentInformation)) {
-				// no value to set anymore, we take default value
-				$parameter = $argumentInformation['defaultValue'];
+		foreach ($constructorArgumentInformation as $index => $argumentInformation) {
+			// Constructor argument given AND argument is a simple type OR instance of argument type
+			if (array_key_exists($index, $givenConstructorArguments) && (!isset($argumentInformation['dependency']) || is_a($givenConstructorArguments[$index], $argumentInformation['dependency']))) {
+				$parameter = $givenConstructorArguments[$index];
 			} else {
-				throw new \InvalidArgumentException('not a correct info array of constructor dependencies was passed!');
+				if (isset($argumentInformation['dependency']) && !array_key_exists('defaultValue', $argumentInformation)) {
+					$parameter = $this->getInstanceInternal($argumentInformation['dependency']);
+					if ($classInfo->getIsSingleton() && !$parameter instanceof \TYPO3\CMS\Core\SingletonInterface) {
+						$this->log('The singleton "' . $className . '" needs a prototype in the constructor. This is often a bad code smell; often you rather want to inject a singleton.', 1);
+					}
+				} elseif (array_key_exists('defaultValue', $argumentInformation)) {
+					$parameter = $argumentInformation['defaultValue'];
+				} else {
+					throw new \InvalidArgumentException('not a correct info array of constructor dependencies was passed!');
+				}
 			}
 			$parameters[] = $parameter;
 		}
