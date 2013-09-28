@@ -104,7 +104,7 @@ class DirectoryNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			'name' => 'foo',
 		);
 		$node->__construct($structure, $parent);
-		$this->assertSame($parent, $node->getParent());
+		$this->assertSame($parent, $node->_call('getParent'));
 	}
 
 	/**
@@ -120,7 +120,7 @@ class DirectoryNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			'targetPermission' => $targetPermission,
 		);
 		$node->__construct($structure, $parent);
-		$this->assertSame($targetPermission, $node->getTargetPermission());
+		$this->assertSame($targetPermission, $node->_call('getTargetPermission'));
 	}
 
 	/**
@@ -577,7 +577,7 @@ class DirectoryNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			),
 		);
 		$node->__construct($structure, $parent);
-		$children = $node->getChildren();
+		$children = $node->_call('getChildren');
 		/** @var $child \TYPO3\CMS\Install\FolderStructure\NodeInterface */
 		$child = $children[0];
 		$this->assertInstanceOf('TYPO3\\CMS\\install\\FolderStructure\\DirectoryNode', $children[0]);
