@@ -70,8 +70,24 @@ class FileNode extends AbstractNode implements NodeInterface {
 			$this->targetPermission = $structure['targetPermission'];
 		}
 
+		if (isset($structure['targetContent']) && isset($structure['targetContentFile'])) {
+			throw new \TYPO3\CMS\Install\FolderStructure\Exception\InvalidArgumentException(
+				'Either targetContent or targetContentFile can be set, but not both',
+				1380364361
+			);
+		}
+
 		if (isset($structure['targetContent'])) {
 			$this->targetContent = $structure['targetContent'];
+		}
+		if (isset($structure['targetContentFile'])) {
+			if (!is_readable($structure['targetContentFile'])) {
+				throw new \TYPO3\CMS\Install\FolderStructure\Exception\InvalidArgumentException(
+					'targetContentFile ' . $structure['targetContentFile'] . ' does not exist or can not be read',
+					1380364362
+				);
+			}
+			$this->targetContent = file_get_contents($structure['targetContentFile']);
 		}
 	}
 
