@@ -45,20 +45,6 @@ interface NodeInterface {
 	public function getName();
 
 	/**
-	 * Get target permission
-	 *
-	 * @return string Permission, eg. 2770
-	 */
-	public function getTargetPermission();
-
-	/**
-	 * Return children - root and directory, link and file always return empty array
-	 *
-	 * @return array Children
-	 */
-	public function getChildren();
-
-	/**
 	 * Get absolute path of node
 	 *
 	 * @return string Absolute path
