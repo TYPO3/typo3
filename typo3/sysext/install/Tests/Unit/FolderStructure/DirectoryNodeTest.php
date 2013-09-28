@@ -261,6 +261,33 @@ class DirectoryNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 */
+	public function getStatusReturnsArrayWithNoticeStatusIfDirectoryExistsButPermissionAreNotCorrectAndPermissionCheckIsRelaxed() {
+		/** @var $node \TYPO3\CMS\Install\FolderStructure\DirectoryNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+		$node = $this->getAccessibleMock(
+			'TYPO3\\CMS\\Install\\FolderStructure\\DirectoryNode',
+			array('getAbsolutePath', 'exists', 'isDirectory', 'isWritable', 'isPermissionCorrect', 'getTargetPermissionRelaxed'),
+			array(),
+			'',
+			FALSE
+		);
+		$path = PATH_site . 'typo3temp/' . uniqid('dir_');
+		touch ($path);
+		$this->testNodesToDelete[] = $path;
+		$node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($path));
+		$node->expects($this->any())->method('exists')->will($this->returnValue(TRUE));
+		$node->expects($this->any())->method('isDirectory')->will($this->returnValue(TRUE));
+		$node->expects($this->any())->method('isPermissionCorrect')->will($this->returnValue(FALSE));
+		$node->expects($this->any())->method('isWritable')->will($this->returnValue(TRUE));
+		$node->expects($this->once())->method('getTargetPermissionRelaxed')->will($this->returnValue(TRUE));
+		$statusArray = $node->getStatus();
+		/** @var $status \TYPO3\CMS\Install\Status\StatusInterface */
+		$status = $statusArray[0];
+		$this->assertInstanceOf('\TYPO3\CMS\Install\Status\NoticeStatus', $status);
+	}
+
+	/**
+	 * @test
+	 */
 	public function getStatusReturnsArrayWithOkStatusIfDirectoryExistsAndPermissionAreCorrect() {
 		/** @var $node \TYPO3\CMS\Install\FolderStructure\DirectoryNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
 		$node = $this->getAccessibleMock(
