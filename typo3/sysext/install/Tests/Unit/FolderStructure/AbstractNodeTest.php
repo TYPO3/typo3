@@ -67,7 +67,7 @@ class AbstractNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$node = $this->getAccessibleMock('TYPO3\\CMS\\Install\\FolderStructure\\AbstractNode', array('dummy'), array(), '', FALSE);
 		$permission = '1234';
 		$node->_set('targetPermission', $permission);
-		$this->assertSame($permission, $node->getTargetPermission());
+		$this->assertSame($permission, $node->_call('getTargetPermission'));
 	}
 
 	/**
@@ -78,7 +78,7 @@ class AbstractNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$node = $this->getAccessibleMock('TYPO3\\CMS\\Install\\FolderStructure\\AbstractNode', array('dummy'), array(), '', FALSE);
 		$children = array('1234');
 		$node->_set('children', $children);
-		$this->assertSame($children, $node->getChildren());
+		$this->assertSame($children, $node->_call('getChildren'));
 	}
 
 	/**
@@ -89,7 +89,7 @@ class AbstractNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$node = $this->getAccessibleMock('TYPO3\\CMS\\Install\\FolderStructure\\AbstractNode', array('dummy'), array(), '', FALSE);
 		$parent = $this->getMock('TYPO3\CMS\Install\FolderStructure\RootNodeInterface', array(), array(), '', FALSE);
 		$node->_set('parent', $parent);
-		$this->assertSame($parent, $node->getParent());
+		$this->assertSame($parent, $node->_call('getParent'));
 	}
 
 	/**
@@ -368,3 +368,4 @@ class AbstractNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->assertSame('/foo/bar', $result);
 	}
 }
+?>
