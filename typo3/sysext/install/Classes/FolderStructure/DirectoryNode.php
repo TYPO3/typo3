@@ -193,13 +193,23 @@ class DirectoryNode extends AbstractNode implements NodeInterface {
 			);
 			$result = $status;
 		} elseif (!$this->isPermissionCorrect()) {
-			$status = new Status\WarningStatus();
-			$status->setTitle($this->getRelativePathBelowSiteRoot() . ' has wrong permission');
-			$status->setMessage(
-				'Target permission are ' . $this->targetPermission .
-				' but current permission are ' . $this->getCurrentPermission()
-			);
-			$result = $status;
+			if ($this->getTargetPermissionRelaxed() === TRUE) {
+				$status = new Status\NoticeStatus();
+				$status->setTitle($this->getRelativePathBelowSiteRoot() . ' has wrong permission');
+				$status->setMessage(
+					'Target permission are ' . $this->targetPermission .
+					' but current permission are ' . $this->getCurrentPermission()
+				);
+				$result = $status;
+			} else {
+				$status = new Status\WarningStatus();
+				$status->setTitle($this->getRelativePathBelowSiteRoot() . ' has wrong permission');
+				$status->setMessage(
+					'Target permission are ' . $this->targetPermission .
+					' but current permission are ' . $this->getCurrentPermission()
+				);
+				$result = $status;
+			}
 		} else {
 			$status = new Status\OkStatus();
 			$status->setTitle($this->getRelativePathBelowSiteRoot());

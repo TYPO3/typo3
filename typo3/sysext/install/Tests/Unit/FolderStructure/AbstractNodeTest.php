@@ -73,6 +73,25 @@ class AbstractNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 */
+	public function getTargetPermissionRelaxedReturnsFalseByDefault() {
+		/** @var $node \TYPO3\CMS\Install\FolderStructure\AbstractNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+		$node = $this->getAccessibleMock('TYPO3\\CMS\\Install\\FolderStructure\\AbstractNode', array('dummy'), array(), '', FALSE);
+		$this->assertFalse($node->_call('getTargetPermissionRelaxed'));
+	}
+
+	/**
+	 * @test
+	 */
+	public function getTargetPermissionRelaxedReturnsTrueIfPermissionCheckIsRelaxed() {
+		/** @var $node \TYPO3\CMS\Install\FolderStructure\AbstractNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+		$node = $this->getAccessibleMock('TYPO3\\CMS\\Install\\FolderStructure\\AbstractNode', array('dummy'), array(), '', FALSE);
+		$node->_set('targetPermissionRelaxed', TRUE);
+		$this->assertTrue($node->_call('getTargetPermissionRelaxed'));
+	}
+
+	/**
+	 * @test
+	 */
 	public function getChildrenReturnsSetChildren() {
 		/** @var $node \TYPO3\CMS\Install\FolderStructure\AbstractNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
 		$node = $this->getAccessibleMock('TYPO3\\CMS\\Install\\FolderStructure\\AbstractNode', array('dummy'), array(), '', FALSE);
@@ -219,6 +238,39 @@ class AbstractNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($subPath));
 		$node->_set('targetPermission', '2770');
 		$this->assertInstanceOf('TYPO3\\CMS\\Install\\Status\\ErrorStatus', $node->_call('fixPermission'));
+		chmod($path, octdec(2770));
+	}
+
+	/**
+	 * @test
+	 */
+	public function fixPermissionReturnsNoticeStatusIfPermissionsCanNotBeChangedAndRelaxedPermissionCheckIsEnabled() {
+		if (TYPO3_OS === 'WIN') {
+			$this->markTestSkipped('Test not available on Windows OS.');
+		}
+		if (function_exists('posix_getegid') && posix_getegid() === 0) {
+			$this->markTestSkipped('Test skipped if run on linux as root');
+		}
+		/** @var $node \TYPO3\CMS\Install\FolderStructure\AbstractNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+		$node = $this->getAccessibleMock(
+			'TYPO3\\CMS\\Install\\FolderStructure\\AbstractNode',
+			array('isPermissionCorrect', 'getRelativePathBelowSiteRoot', 'getAbsolutePath'),
+			array(),
+			'',
+			FALSE
+		);
+		$node->expects($this->any())->method('getRelativePathBelowSiteRoot')->will($this->returnValue(''));
+		$node->expects($this->once())->method('isPermissionCorrect')->will($this->returnValue(FALSE));
+		$path = PATH_site . 'typo3temp/' . uniqid('root_');
+		mkdir($path);
+		$subPath = $path . '/' . uniqid('dir_');
+		mkdir($subPath);
+		chmod($path, octdec(2000));
+		$this->testNodesToDelete[] = $path;
+		$node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($subPath));
+		$node->_set('targetPermission', '2770');
+		$node->_set('targetPermissionRelaxed', TRUE);
+		$this->assertInstanceOf('TYPO3\\CMS\\Install\\Status\\NoticeStatus', $node->_call('fixPermission'));
 		chmod($path, octdec(2770));
 	}
 
