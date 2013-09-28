@@ -53,10 +53,16 @@ class FolderStructure extends Action\AbstractAction implements Action\ActionInte
 		/** @var $statusUtility \TYPO3\CMS\Install\Status\StatusUtility */
 		$statusUtility = $this->objectManager->get('TYPO3\\CMS\\Install\\Status\\StatusUtility');
 
+		$fixableStatus = array_merge(
+			$statusUtility->filterBySeverity($statusObjects, 'notice'),
+			$statusUtility->filterBySeverity($statusObjects, 'warning')
+		);
+
 		$this->view
 			->assign('fixedStatus', $fixedStatusObjects)
 			->assign('notFixableStatus', $statusUtility->filterBySeverity($statusObjects, 'error'))
-			->assign('fixableStatus', $statusUtility->filterBySeverity($statusObjects, 'warning'))
+			->assign('fixableStatus', $fixableStatus)
+			->assign('noticeStatus', $statusUtility->filterBySeverity($statusObjects, 'notice'))
 			->assign('okStatus', $statusUtility->filterBySeverity($statusObjects, 'ok'));
 
 		return $this->view->render();

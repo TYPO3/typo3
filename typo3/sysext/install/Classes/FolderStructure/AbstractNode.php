@@ -42,6 +42,11 @@ abstract class AbstractNode {
 	protected $targetPermission = NULL;
 
 	/**
+	 * @var boolean If TRUE, permission check and fix do not throw error level status if wrong
+	 */
+	protected $targetPermissionRelaxed = FALSE;
+
+	/**
 	 * @var NULL|NodeInterface Parent object of this structure node
 	 */
 	protected $parent = NULL;
@@ -67,6 +72,15 @@ abstract class AbstractNode {
 	 */
 	protected function getTargetPermission() {
 		return $this->targetPermission;
+	}
+
+	/**
+	 * Get target permission relaxed flag
+	 *
+	 * @return boolean TRUE if relaxed permission check should be done
+	 */
+	protected function getTargetPermissionRelaxed() {
+		return $this->targetPermissionRelaxed;
 	}
 
 	/**
@@ -138,12 +152,21 @@ abstract class AbstractNode {
 			$status = new Status\OkStatus();
 			$status->setTitle('Fixed permission on ' . $this->getRelativePathBelowSiteRoot() . '.');
 		} else {
-			$status = new Status\ErrorStatus();
-			$status->setTitle('Permission change on ' . $this->getRelativePathBelowSiteRoot() . ' not successful!');
-			$status->setMessage(
-				'Permissions could not be changed to ' . $this->targetPermission . '. There is probably some' .
-					' group or owner permission problem on the parent directory.'
-			);
+			if ($this->getTargetPermissionRelaxed() === TRUE) {
+				$status = new Status\NoticeStatus();
+				$status->setTitle('Permission change on ' . $this->getRelativePathBelowSiteRoot() . ' not successful');
+				$status->setMessage(
+					'Permissions could not be changed to ' . $this->targetPermission . '. This is not a problem as' .
+						' long as files and folders within this node can be written.'
+				);
+			} else {
+				$status = new Status\ErrorStatus();
+				$status->setTitle('Permission change on ' . $this->getRelativePathBelowSiteRoot() . ' not successful!');
+				$status->setMessage(
+					'Permissions could not be changed to ' . $this->targetPermission . '. There is probably some' .
+						' group or owner permission problem on the parent directory.'
+				);
+			}
 		}
 		return $status;
 	}

@@ -68,6 +68,7 @@ class DefaultFactory {
 			// Cut off trailing forward / from PATH_site, so root node has no trailing slash like all others
 			'name' => substr(PATH_site, 0, -1),
 			'targetPermission' => $directoryPermission,
+			'targetPermissionRelaxed' => TRUE,
 			'children' => array(
 				array(
 					'name' => 'typo3temp',
