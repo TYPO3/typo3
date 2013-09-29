@@ -296,8 +296,7 @@ class StepController extends AbstractController {
 			$this->redirect();
 		}
 
-		if (!is_dir(PATH_typo3conf)
-			|| count($errorMessagesFromExecute) > 0
+		if (!@is_dir(PATH_typo3conf)
 			|| $needsExecution
 		) {
 			/** @var \TYPO3\CMS\Install\Controller\Action\Step\StepInterface $action */

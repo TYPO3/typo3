@@ -139,10 +139,18 @@ class FileNode extends AbstractNode implements NodeInterface {
 		if (!$this->isFile()) {
 			$status = new Status\ErrorStatus();
 			$status->setTitle('Path ' . $this->getRelativePathBelowSiteRoot() . ' is not a file');
-			$status->setMessage(
-				'The target ' . $this->getRelativePathBelowSiteRoot() . ' should be a file,' .
-				' but is of type ' . filetype($this->getAbsolutePath()) . '. I can not fix this. Please investigate.'
-			);
+			$fileType = @filetype($this->getAbsolutePath());
+			if ($fileType) {
+				$status->setMessage(
+					'The target ' . $this->getRelativePathBelowSiteRoot() . ' should be a file,' .
+					' but is of type ' . $fileType . '. I can not fix this. Please investigate.'
+				);
+			} else {
+				$status->setMessage(
+					'The target ' . $this->getRelativePathBelowSiteRoot() . ' should be a file,' .
+					' but is of unknown type, probably because some upper level directory does not exist. Please investigate.'
+				);
+			}
 			$result[] = $status;
 		} elseif (!$this->isPermissionCorrect()) {
 			$result[] = $this->fixPermission();

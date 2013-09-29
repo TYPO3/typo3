@@ -52,8 +52,7 @@ class EnvironmentAndFolders extends Action\AbstractAction implements StepInterfa
 		$statusUtility = $this->objectManager->get('TYPO3\\CMS\\Install\\Status\\StatusUtility');
 		$errorsFromStructure = $statusUtility->filterBySeverity($structureFixMessages, 'error');
 
-		// Proceed with creating LocalConfiguration.php only if folder creation did not throw errors
-		if (empty($errorsFromStructure)) {
+		if (@is_dir(PATH_typo3conf)) {
 			/** @var \TYPO3\CMS\Core\Configuration\ConfigurationManager $configurationManager */
 			$configurationManager = $this->objectManager->get('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager');
 			$configurationManager->createLocalConfigurationFromFactoryConfiguration();
