@@ -24,6 +24,7 @@ namespace TYPO3\CMS\Install\Service;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -144,34 +145,50 @@ class SilentConfigurationUpgradeService {
 	/**
 	 * Backend login security is set to rsa if rsaauth
 	 * is installed (but not used) otherwise the default value "normal" has to be used.
+	 * This forces either 'normal' or 'rsa' to be set in LocalConfiguration.
 	 *
 	 * @return void
 	 */
 	protected function configureBackendLoginSecurity() {
-		if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('rsaauth')
-			&& $GLOBALS['TYPO3_CONF_VARS']['BE']['loginSecurityLevel'] !== 'rsa')
-		{
-			$this->configurationManager->setLocalConfigurationValueByPath('BE/loginSecurityLevel', 'rsa');
-			$this->throwRedirectException();
-		} elseif (!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('rsaauth')
-			&& $GLOBALS['TYPO3_CONF_VARS']['BE']['loginSecurityLevel'] !== 'normal'
-		) {
-			$configurationManager = $this->objectManager->get('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager');
-			$configurationManager->setLocalConfigurationValueByPath('BE/loginSecurityLevel', 'normal');
-			$this->throwRedirectException();
+		try {
+			$currentLoginSecurityLevelValue = $this->configurationManager->getLocalConfigurationValueByPath('BE/loginSecurityLevel');
+			if (ExtensionManagementUtility::isLoaded('rsaauth')
+				&& $currentLoginSecurityLevelValue !== 'rsa'
+			) {
+				$this->configurationManager->setLocalConfigurationValueByPath('BE/loginSecurityLevel', 'rsa');
+				$this->throwRedirectException();
+			} elseif (!ExtensionManagementUtility::isLoaded('rsaauth')
+				&& $currentLoginSecurityLevelValue !== 'normal'
+			) {
+				$this->configurationManager->setLocalConfigurationValueByPath('BE/loginSecurityLevel', 'normal');
+				$this->throwRedirectException();
+			}
+		} catch (\RuntimeException $e) {
+			// If an exception is thrown, the value is not set in LocalConfiguration
+			if (ExtensionManagementUtility::isLoaded('rsaauth')) {
+				$this->configurationManager->setLocalConfigurationValueByPath('BE/loginSecurityLevel', 'rsa');
+				$this->throwRedirectException();
+			} elseif (!ExtensionManagementUtility::isLoaded('rsaauth')) {
+				$this->configurationManager->setLocalConfigurationValueByPath('BE/loginSecurityLevel', 'normal');
+				$this->throwRedirectException();
+			}
 		}
 	}
 
 	/**
-	 * Check the settings for salted passwords extension to
-	 * load it as a required extension.
+	 * Check the settings for salted passwords extension to load it as a required extension.
+	 * Unset obsolete configuration options if given.
 	 *
 	 * @return void
 	 */
 	protected function configureSaltedPasswords() {
 		$defaultConfiguration = $this->configurationManager->getDefaultConfiguration();
 		$defaultExtensionConfiguration = unserialize($defaultConfiguration['EXT']['extConf']['saltedpasswords']);
-		$extensionConfiguration = @unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['saltedpasswords']);
+		try {
+			$extensionConfiguration = @unserialize($this->configurationManager->getLocalConfigurationValueByPath('EXT/extConf/saltedpasswords'));
+		} catch (\RuntimeException $e) {
+			$extensionConfiguration = array();
+		}
 		if (is_array($extensionConfiguration) && !empty($extensionConfiguration)) {
 			if (isset($extensionConfiguration['BE.']['enabled'])) {
 				if ($extensionConfiguration['BE.']['enabled']) {
@@ -203,7 +220,14 @@ class SilentConfigurationUpgradeService {
 	 * @return void
 	 */
 	protected function generateEncryptionKeyIfNeeded() {
-		if (empty($GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'])) {
+		try{
+			$currentValue = $this->configurationManager->getLocalConfigurationValueByPath('SYS/encryptionKey');
+		} catch (\RuntimeException $e) {
+			// If an exception is thrown, the value is not set in LocalConfiguration
+			$currentValue = '';
+		}
+
+		if (empty($currentValue)) {
 			$randomKey = GeneralUtility::getRandomHexString(96);
 			$this->configurationManager->setLocalConfigurationValueByPath('SYS/encryptionKey', $randomKey);
 			$this->throwRedirectException();
@@ -242,12 +266,27 @@ class SilentConfigurationUpgradeService {
 	 */
 	protected function disableImageMagickAndGdlibIfImageProcessingIsDisabled() {
 		$changedValues = array();
+		try {
+			$currentImageProcessingValue = $this->configurationManager->getLocalConfigurationValueByPath('GFX/image_processing');
+		} catch (\RuntimeException $e) {
+			$currentImageProcessingValue = $this->configurationManager->getDefaultConfigurationValueByPath('GFX/image_processing');
+		}
+		try {
+			$currentImValue = $this->configurationManager->getLocalConfigurationValueByPath('GFX/im');
+		} catch (\RuntimeException $e) {
+			$currentImValue = $this->configurationManager->getDefaultConfigurationValueByPath('GFX/im');
+		}
+		try {
+			$currentGdlibValue = $this->configurationManager->getLocalConfigurationValueByPath('GFX/gdlib');
+		} catch (\RuntimeException $e) {
+			$currentGdlibValue = $this->configurationManager->getDefaultConfigurationValueByPath('GFX/gdlib');
+		}
 		// If image processing is fully disabled, im and gdlib sub settings must be 0
-		if (!$GLOBALS['TYPO3_CONF_VARS']['GFX']['image_processing']) {
-			if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['im'] != 0) {
+		if (!$currentImageProcessingValue) {
+			if ($currentImValue != 0) {
 				$changedValues['GFX/im'] = 0;
 			}
-			if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib'] != 0) {
+			if ($currentGdlibValue != 0) {
 				$changedValues['GFX/gdlib'] = 0;
 			}
 		}
@@ -269,17 +308,47 @@ class SilentConfigurationUpgradeService {
 	 */
 	protected function disableImageMagickDetailSettingsIfImageMagickIsDisabled() {
 		$changedValues = array();
-		if (!$GLOBALS['TYPO3_CONF_VARS']['GFX']['im']) {
-			if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_path'] != '') {
+		try {
+			$currentImValue = $this->configurationManager->getLocalConfigurationValueByPath('GFX/im');
+		}
+		catch (\RuntimeException $e) {
+			$currentImValue = $this->configurationManager->getDefaultConfigurationValueByPath('GFX/im');
+		}
+		try {
+			$currentImPathValue = $this->configurationManager->getLocalConfigurationValueByPath('GFX/im_path');
+		}
+		catch (\RuntimeException $e) {
+			$currentImPathValue = $this->configurationManager->getDefaultConfigurationValueByPath('GFX/im_path');
+		}
+		try {
+			$currentImPathLzwValue = $this->configurationManager->getLocalConfigurationValueByPath('GFX/im_path_lzw');
+		}
+		catch (\RuntimeException $e) {
+			$currentImPathLzwValue = $this->configurationManager->getDefaultConfigurationValueByPath('GFX/im_path_lzw');
+		}
+		try {
+			$currentImageFileExtValue = $this->configurationManager->getLocalConfigurationValueByPath('GFX/imagefile_ext');
+		}
+		catch (\RuntimeException $e) {
+			$currentImageFileExtValue = $this->configurationManager->getDefaultConfigurationValueByPath('GFX/imagefile_ext');
+		}
+		try {
+			$currentThumbnailsValue = $this->configurationManager->getLocalConfigurationValueByPath('GFX/thumbnails');
+		}
+		catch (\RuntimeException $e) {
+			$currentThumbnailsValue = $this->configurationManager->getDefaultConfigurationValueByPath('GFX/thumbnails');
+		}
+		if (!$currentImValue) {
+			if ($currentImPathValue != '') {
 				$changedValues['GFX/im_path'] = '';
 			}
-			if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_path_lzw'] != '') {
+			if ($currentImPathLzwValue != '') {
 				$changedValues['GFX/im_path_lzw'] = '';
 			}
-			if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'] !== 'gif,jpg,jpeg,png') {
+			if ($currentImageFileExtValue !== 'gif,jpg,jpeg,png') {
 				$changedValues['GFX/imagefile_ext'] = 'gif,jpg,jpeg,png';
 			}
-			if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['thumbnails'] != 0) {
+			if ($currentThumbnailsValue != 0) {
 				$changedValues['GFX/thumbnails'] = 0;
 			}
 		}
@@ -301,14 +370,30 @@ class SilentConfigurationUpgradeService {
 	 */
 	protected function setImageMagickDetailSettings() {
 		$changedValues = array();
-		if (isset($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_version_5'])
-			&& strlen($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_version_5']) > 0
-		) {
-			if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_mask_temp_ext_gif'] != 1) {
+		try {
+			$currentIm5Value = $this->configurationManager->getLocalConfigurationValueByPath('GFX/im_version_5');
+		}
+		catch (\RuntimeException $e) {
+			$currentIm5Value = $this->configurationManager->getDefaultConfigurationValueByPath('GFX/im_version_5');
+		}
+		try {
+			$currentImMaskValue = $this->configurationManager->getLocalConfigurationValueByPath('GFX/im_mask_temp_ext_gif');
+		}
+		catch (\RuntimeException $e) {
+			$currentImMaskValue = $this->configurationManager->getDefaultConfigurationValueByPath('GFX/im_mask_temp_ext_gif');
+		}
+		try {
+			$currentIm5EffectsValue = $this->configurationManager->getLocalConfigurationValueByPath('GFX/im_v5effects');
+		}
+		catch (\RuntimeException $e) {
+			$currentIm5EffectsValue = $this->configurationManager->getDefaultConfigurationValueByPath('GFX/im_v5effects');
+		}
+		if (strlen($currentIm5Value) > 0) {
+			if ($currentImMaskValue != 1) {
 				$changedValues['GFX/im_mask_temp_ext_gif'] = 1;
 			}
-			if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_version_5'] === 'gm') {
-				if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_v5effects'] != -1) {
+			if ($currentIm5Value === 'gm') {
+				if ($currentIm5EffectsValue != -1) {
 					$changedValues['GFX/im_v5effects'] = -1;
 				}
 			}
