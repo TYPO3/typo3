@@ -82,7 +82,7 @@ class DirectoryNode extends AbstractNode implements NodeInterface {
 			$status->setTitle($this->getRelativePathBelowSiteRoot() . ' does not exist');
 			$result[] = $status;
 		} else {
-			$result[] = $this->getSelfStatus();
+			$result = $this->getSelfStatus();
 		}
 		$result = array_merge($result, $this->getChildrenStatus());
 		return $result;
@@ -180,10 +180,10 @@ class DirectoryNode extends AbstractNode implements NodeInterface {
 	/**
 	 * Get status of directory - used in root and directory node
 	 *
-	 * @return \TYPO3\CMS\Install\Status\StatusInterface
+	 * @return array<\TYPO3\CMS\Install\Status\StatusInterface>
 	 */
 	protected function getSelfStatus() {
-		$result = NULL;
+		$result = array();
 		if (!$this->isDirectory()) {
 			$status = new Status\ErrorStatus();
 			$status->setTitle($this->getRelativePathBelowSiteRoot() . ' is not a directory');
@@ -191,7 +191,7 @@ class DirectoryNode extends AbstractNode implements NodeInterface {
 				'Path ' . $this->getAbsolutePath() . ' should be a directory,' .
 				' but is of type ' . filetype($this->getAbsolutePath())
 			);
-			$result = $status;
+			$result[] = $status;
 		} elseif (!$this->isWritable()) {
 			$status = new Status\ErrorStatus();
 			$status->setTitle($this->getRelativePathBelowSiteRoot() . ' is not writable');
@@ -199,7 +199,7 @@ class DirectoryNode extends AbstractNode implements NodeInterface {
 				'Path ' . $this->getAbsolutePath() . ' exists, but no file below' .
 				' can be created.'
 			);
-			$result = $status;
+			$result[] = $status;
 		} elseif (!$this->isPermissionCorrect()) {
 			if ($this->getTargetPermissionRelaxed() === TRUE) {
 				$status = new Status\NoticeStatus();
@@ -208,7 +208,7 @@ class DirectoryNode extends AbstractNode implements NodeInterface {
 					'Target permission are ' . $this->targetPermission .
 					' but current permission are ' . $this->getCurrentPermission()
 				);
-				$result = $status;
+				$result[] = $status;
 			} else {
 				$status = new Status\WarningStatus();
 				$status->setTitle($this->getRelativePathBelowSiteRoot() . ' has wrong permission');
@@ -216,12 +216,12 @@ class DirectoryNode extends AbstractNode implements NodeInterface {
 					'Target permission are ' . $this->targetPermission .
 					' but current permission are ' . $this->getCurrentPermission()
 				);
-				$result = $status;
+				$result[] = $status;
 			}
 		} else {
 			$status = new Status\OkStatus();
 			$status->setTitle($this->getRelativePathBelowSiteRoot());
-			$result = $status;
+			$result[] = $status;
 		}
 		return $result;
 	}

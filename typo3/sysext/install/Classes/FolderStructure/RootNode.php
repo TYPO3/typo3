@@ -83,7 +83,7 @@ class RootNode extends DirectoryNode implements RootNodeInterface {
 			$status->setTitle($this->getAbsolutePath() . ' does not exist');
 			$result[] = $status;
 		} else {
-			$result[] = $this->getSelfStatus();
+			$result = $this->getSelfStatus();
 		}
 		$result = array_merge($result, $this->getChildrenStatus());
 		return $result;

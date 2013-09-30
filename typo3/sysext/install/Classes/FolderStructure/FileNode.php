@@ -105,7 +105,7 @@ class FileNode extends AbstractNode implements NodeInterface {
 			$status->setTitle($this->getRelativePathBelowSiteRoot() . ' does not exist');
 			$result[] = $status;
 		} else {
-			$result[] = $this->getSelfStatus();
+			$result = $this->getSelfStatus();
 		}
 		return $result;
 	}
@@ -189,10 +189,10 @@ class FileNode extends AbstractNode implements NodeInterface {
 	/**
 	 * Get status of file
 	 *
-	 * @return \TYPO3\CMS\Install\Status\StatusInterface
+	 * @return array<\TYPO3\CMS\Install\Status\StatusInterface>
 	 */
 	protected function getSelfStatus() {
-		$result = NULL;
+		$result = array();
 		if (!$this->isFile()) {
 			$status = new Status\ErrorStatus();
 			$status->setTitle($this->getRelativePathBelowSiteRoot() . ' is not a file');
@@ -200,7 +200,7 @@ class FileNode extends AbstractNode implements NodeInterface {
 				'Path ' . $this->getAbsolutePath() . ' should be a file,' .
 				' but is of type ' . filetype($this->getAbsolutePath())
 			);
-			$result = $status;
+			$result[] = $status;
 		} elseif (!$this->isWritable()) {
 			$status = new Status\WarningStatus();
 			$status->setTitle($this->getRelativePathBelowSiteRoot() . ' is not writable');
@@ -208,7 +208,7 @@ class FileNode extends AbstractNode implements NodeInterface {
 				'Path ' . $this->getAbsolutePath() . ' exists, but no file below' .
 				' can be created.'
 			);
-			$result = $status;
+			$result[] = $status;
 		} elseif (!$this->isPermissionCorrect()) {
 			$status = new Status\WarningStatus();
 			$status->setTitle($this->getRelativePathBelowSiteRoot() . ' has wrong permission');
@@ -216,19 +216,20 @@ class FileNode extends AbstractNode implements NodeInterface {
 				'Target permission are ' . $this->targetPermission .
 				' but current permission are ' . $this->getCurrentPermission()
 			);
-			$result = $status;
-		} elseif (!$this->isContentCorrect()) {
+			$result[] = $status;
+		}
+		if ($this->isFile() && !$this->isContentCorrect()) {
 			$status = new Status\ErrorStatus();
 			$status->setTitle($this->getRelativePathBelowSiteRoot() . ' content differs');
 			$status->setMessage(
 				'File content is not identical to target content. Probably, this file was' .
 				' changed manually. The content will not be fixed to not override your changes.'
 			);
-			$result = $status;
+			$result[] = $status;
 		} else {
 			$status = new Status\OkStatus();
 			$status->setTitle($this->getRelativePathBelowSiteRoot());
-			$result = $status;
+			$result[] = $status;
 		}
 		return $result;
 	}
