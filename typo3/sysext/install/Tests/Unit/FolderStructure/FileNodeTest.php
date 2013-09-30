@@ -252,7 +252,7 @@ class FileNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			FALSE
 		);
 		$path = PATH_site . 'typo3temp/' . uniqid('dir_');
-		touch ($path);
+		touch($path);
 		$this->testNodesToDelete[] = $path;
 		$node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($path));
 		$node->expects($this->any())->method('exists')->will($this->returnValue(TRUE));
@@ -279,7 +279,7 @@ class FileNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			FALSE
 		);
 		$path = PATH_site . 'typo3temp/' . uniqid('dir_');
-		touch ($path);
+		touch($path);
 		$this->testNodesToDelete[] = $path;
 		$node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($path));
 		$node->expects($this->any())->method('exists')->will($this->returnValue(TRUE));
@@ -333,7 +333,7 @@ class FileNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			FALSE
 		);
 		$path = PATH_site . 'typo3temp/' . uniqid('dir_');
-		touch ($path);
+		touch($path);
 		$this->testNodesToDelete[] = $path;
 		$node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($path));
 		$node->expects($this->any())->method('exists')->will($this->returnValue(TRUE));
@@ -360,7 +360,7 @@ class FileNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			FALSE
 		);
 		$path = PATH_site . 'typo3temp/' . uniqid('dir_');
-		touch ($path);
+		touch($path);
 		$this->testNodesToDelete[] = $path;
 		$node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($path));
 		$node->expects($this->any())->method('exists')->will($this->returnValue(TRUE));

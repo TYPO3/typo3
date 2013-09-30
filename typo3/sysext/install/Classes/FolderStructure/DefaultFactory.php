@@ -71,6 +71,20 @@ class DefaultFactory {
 			'targetPermissionRelaxed' => TRUE,
 			'children' => array(
 				array(
+					'name' => 'index.php',
+					'type' => 'TYPO3\\CMS\\install\\FolderStructure\\LinkNode',
+					'target' => 'typo3_src/index.php',
+				),
+				array(
+					'name' => 'typo3',
+					'type' => 'TYPO3\\CMS\\install\\FolderStructure\\LinkNode',
+					'target' => 'typo3_src/typo3',
+				),
+				array(
+					'name' => 'typo3_src',
+					'type' => 'TYPO3\\CMS\\install\\FolderStructure\\LinkNode',
+				),
+				array(
 					'name' => 'typo3temp',
 					'type' => 'TYPO3\\CMS\\install\\FolderStructure\\DirectoryNode',
 					'targetPermission' => $directoryPermission,

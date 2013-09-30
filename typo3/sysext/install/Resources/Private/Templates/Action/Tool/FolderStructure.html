@@ -13,7 +13,7 @@
 		<hr />
 	</f:if>
 
-	<f:if condition="{fixableStatus}">
+	<f:if condition="{errorStatus}">
 		<form method="post">
 			<f:render partial="Action/Common/HiddenFormFields" arguments="{_all}" />
 			<f:render partial="Action/Common/SubmitButton" arguments="{name:'fix', text:'Fix errors'}"/>
@@ -21,16 +21,9 @@
 		<hr />
 	</f:if>
 
-	<f:if condition="{notFixableStatus}">
-		<h4>These structure elements are not fixable:</h4>
-		<f:for each="{notFixableStatus}" as="statusMessage">
-			<f:render partial="Action/Common/StatusMessage" arguments="{message: statusMessage}" />
-		</f:for>
-	</f:if>
-
-	<f:if condition="{fixableStatus}">
-		<h4>These structure elements are fixable:</h4>
-		<f:for each="{fixableStatus}" as="statusMessage">
+	<f:if condition="{errorStatus}">
+		<h4>These files or folders have errors and may be automatically fixable:</h4>
+		<f:for each="{errorStatus}" as="statusMessage">
 			<f:render partial="Action/Common/StatusMessage" arguments="{message: statusMessage}" />
 		</f:for>
 	</f:if>
