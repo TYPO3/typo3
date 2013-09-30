@@ -130,6 +130,14 @@ class t3lib_TStemplate {
 	var $frames = array(); // Keys are frame names and values are type-values, which must be used to refer correctly to the content of the frames.
 	var $MPmap = ''; // Contains mapping of Page id numbers to MP variables.
 
+	/**
+	 * Set to TRUE after the default TypoScript was added during parsing.
+	 * This prevents double inclusion of the same TypoScript code.
+	 *
+	 * @see addDefaultTypoScript()
+	 * @var boolean
+	 */
+	protected $isDefaultTypoScriptAdded = FALSE;
 
 	/**
 	 * Initialize
@@ -290,8 +298,15 @@ class t3lib_TStemplate {
 			if ($setupData && !$this->forceTemplateParsing) {
 					// If TypoScript setup structure was cached we unserialize it here:
 				$this->setup = unserialize($setupData);
+				if ($this->tt_track) {
+					$GLOBALS['TT']->setTSLogMessage('Using cached TS template data');
+				}
 			} else {
-					// Make configuration
+				if ($this->tt_track) {
+					$GLOBALS['TT']->setTSLogMessage('Not using any cached TS data');
+				}
+
+				// Make configuration
 				$this->generateConfig();
 
 					// This stores the template hash thing
@@ -366,6 +381,7 @@ class t3lib_TStemplate {
 		$this->rowSum = array();
 		$this->hierarchyInfoToRoot = array();
 		$this->absoluteRootLine = $theRootLine; // Is the TOTAL rootline
+		$this->isDefaultTyposcriptAdded = FALSE;
 
 		reset($this->absoluteRootLine);
 		$c = count($this->absoluteRootLine);
@@ -398,6 +414,10 @@ class t3lib_TStemplate {
 			$GLOBALS['TYPO3_DB']->sql_free_result($res);
 			$this->rootLine[] = $this->absoluteRootLine[$a];
 		}
+
+			// Add the global default TypoScript from the TYPO3_CONF_VARS
+		$this->addDefaultTypoScript();
+
 		$this->processIncludes();
 	}
 
@@ -694,11 +714,10 @@ class t3lib_TStemplate {
 	 * @see t3lib_TSparser, start()
 	 */
 	function generateConfig() {
-			// Add default TS for all three code types:
-		array_unshift($this->constants, '' . $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_constants']); // Adding default TS/constants
-		array_unshift($this->config, '' . $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup']); // Adding default TS/setup
+			// Add default TS for all code types
+		$this->addDefaultTypoScript();
 
-			// Parse the TypoScript code text for include-instructions!
+		// Parse the TypoScript code text for include-instructions!
 		$this->processIncludes();
 
 			// These vars are also set lateron...
@@ -1497,6 +1516,28 @@ class t3lib_TStemplate {
 			}
 		}
 	}
+
+	/**
+	 * Adds the TypoScript from the global array.
+	 * The class property isDefaultTypoScriptAdded ensures
+	 * that the adding only happens once.
+	 *
+	 * @return void
+	 * @see isDefaultTypoScriptAdded
+	 */
+	protected function addDefaultTypoScript() {
+			// Add default TS for all code types, if not done already
+		if (!$this->isDefaultTypoScriptAdded) {
+			if (!empty($GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_constants'])) {
+				array_unshift($this->constants, (string)$GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_constants']);
+			}
+			if (!empty($GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup'])) {
+				array_unshift($this->config, (string)$GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup']);
+			}
+			$this->isDefaultTypoScriptAdded = TRUE;
+		}
+	}
+
 }
 
 
