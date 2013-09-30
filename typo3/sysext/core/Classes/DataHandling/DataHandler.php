@@ -27,6 +27,7 @@ namespace TYPO3\CMS\Core\DataHandling;
  ***************************************************************/
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Contains the TYPO3 Core Engine
@@ -5176,35 +5177,37 @@ class DataHandler {
 	 * Does not check for workspace, use BE_USER->workspaceAllowLiveRecordsInPID for this in addition to this function call.
 	 *
 	 * @param string $insertTable Tablename to check
-	 * @param integer $pid Integer PID
-	 * @param integer $action For logging: Action number.
-	 * @return boolean Returns TRUE if the user may insert a record from table $insertTable on page $pid
+	 * @param int $pid Integer PID
+	 * @param int $action For logging: Action number.
+	 * @return bool Returns TRUE if the user may insert a record from table $insertTable on page $pid
 	 * @todo Define visibility
 	 */
 	public function checkRecordInsertAccess($insertTable, $pid, $action = 1) {
-		$res = 0;
-		$pid = intval($pid);
-		if ($pid >= 0) {
-			// If information is cached, return it
-			if (isset($this->recInsertAccessCache[$insertTable][$pid])) {
-				return $this->recInsertAccessCache[$insertTable][$pid];
+		$pid = (int)$pid;
+		if ($pid < 0) {
+			return FALSE;
+		}
+		// If information is cached, return it
+		if (isset($this->recInsertAccessCache[$insertTable][$pid])) {
+			return $this->recInsertAccessCache[$insertTable][$pid];
+		}
+
+		$res = FALSE;
+		$pageExists = (bool)$this->doesRecordExist('pages', $pid, ($insertTable === 'pages' ? $this->pMap['new'] : $this->pMap['editcontent']));
+		// If either admin and root-level or if page record exists and 1) if 'pages' you may create new ones 2) if page-content, new content items may be inserted on the $pid page
+		if ($pageExists || $pid === 0 && ($this->admin || BackendUtility::isRootLevelRestrictionIgnored($insertTable))) {
+			// Check permissions
+			if ($this->isTableAllowedForThisPage($pid, $insertTable)) {
+				$res = TRUE;
+				// Cache the result
+				$this->recInsertAccessCache[$insertTable][$pid] = $res;
 			} else {
-				// If either admin and root-level or if page record exists and 1) if 'pages' you may create new ones 2) if page-content, new content items may be inserted on the $pid page
-				if (!$pid && $this->admin || $this->doesRecordExist('pages', $pid, ($insertTable == 'pages' ? $this->pMap['new'] : $this->pMap['editcontent']))) {
-					// Check permissions
-					if ($this->isTableAllowedForThisPage($pid, $insertTable)) {
-						$res = 1;
-						// Cache the result
-						$this->recInsertAccessCache[$insertTable][$pid] = $res;
-					} else {
-						$propArr = $this->getRecordProperties('pages', $pid);
-						$this->log($insertTable, $pid, $action, 0, 1, 'Attempt to insert record on page \'%s\' (%s) where this table, %s, is not allowed', 11, array($propArr['header'], $pid, $insertTable), $propArr['event_pid']);
-					}
-				} else {
-					$propArr = $this->getRecordProperties('pages', $pid);
-					$this->log($insertTable, $pid, $action, 0, 1, 'Attempt to insert a record on page \'%s\' (%s) from table \'%s\' without permissions. Or non-existing page.', 12, array($propArr['header'], $pid, $insertTable), $propArr['event_pid']);
-				}
+				$propArr = $this->getRecordProperties('pages', $pid);
+				$this->log($insertTable, $pid, $action, 0, 1, 'Attempt to insert record on page \'%s\' (%s) where this table, %s, is not allowed', 11, array($propArr['header'], $pid, $insertTable), $propArr['event_pid']);
 			}
+		} else {
+			$propArr = $this->getRecordProperties('pages', $pid);
+			$this->log($insertTable, $pid, $action, 0, 1, 'Attempt to insert a record on page \'%s\' (%s) from table \'%s\' without permissions. Or non-existing page.', 12, array($propArr['header'], $pid, $insertTable), $propArr['event_pid']);
 		}
 		return $res;
 	}
@@ -5214,47 +5217,53 @@ class DataHandler {
 	 *
 	 * @param integer $page_uid Page id for which to check, including 0 (zero) if checking for page tree root.
 	 * @param string $checkTable Table name to check
-	 * @return boolean TRUE if OK
+	 * @return bool TRUE if OK
 	 * @todo Define visibility
 	 */
 	public function isTableAllowedForThisPage($page_uid, $checkTable) {
-		$page_uid = intval($page_uid);
+		$page_uid = (int)$page_uid;
+		$rootLevelSetting = (int)$GLOBALS['TCA'][$checkTable]['ctrl']['rootLevel'];
 		// Check if rootLevel flag is set and we're trying to insert on rootLevel - and reversed - and that the table is not "pages" which are allowed anywhere.
-		if (($GLOBALS['TCA'][$checkTable]['ctrl']['rootLevel'] xor !$page_uid) && $GLOBALS['TCA'][$checkTable]['ctrl']['rootLevel'] != -1 && $checkTable != 'pages') {
+		if ($checkTable !== 'pages' && $rootLevelSetting !== -1 && ($rootLevelSetting xor !$page_uid)) {
 			return FALSE;
 		}
+		$allowed = FALSE;
 		// Check root-level
 		if (!$page_uid) {
-			if ($this->admin) {
-				return TRUE;
+			if ($this->admin || BackendUtility::isRootLevelRestrictionIgnored($checkTable)) {
+				$allowed = TRUE;
 			}
 		} else {
 			// Check non-root-level
 			$doktype = $this->pageInfo($page_uid, 'doktype');
-			$allowedTableList = isset($GLOBALS['PAGES_TYPES'][$doktype]['allowedTables']) ? $GLOBALS['PAGES_TYPES'][$doktype]['allowedTables'] : $GLOBALS['PAGES_TYPES']['default']['allowedTables'];
-			$allowedArray = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $allowedTableList, 1);
+			$allowedTableList = isset($GLOBALS['PAGES_TYPES'][$doktype]['allowedTables'])
+				? $GLOBALS['PAGES_TYPES'][$doktype]['allowedTables']
+				: $GLOBALS['PAGES_TYPES']['default']['allowedTables'];
+			$allowedArray = GeneralUtility::trimExplode(',', $allowedTableList, TRUE);
 			// If all tables or the table is listed as a allowed type, return TRUE
-			if (strstr($allowedTableList, '*') || in_array($checkTable, $allowedArray)) {
-				return TRUE;
+			if (strpos($allowedTableList, '*') !== FALSE || in_array($checkTable, $allowedArray)) {
+				$allowed = TRUE;
 			}
 		}
+		return $allowed;
 	}
 
 	/**
 	 * Checks if record can be selected based on given permission criteria
 	 *
 	 * @param string $table Record table name
-	 * @param integer $id Record UID
+	 * @param int $id Record UID
 	 * @param mixed $perms Permission restrictions to observe: Either an integer that will be bitwise AND'ed or a string, which points to a key in the ->pMap array
-	 * @return boolean Returns TRUE if the record given by $table, $id and $perms can be selected
+	 * @return bool Returns TRUE if the record given by $table, $id and $perms can be selected
+	 *
+	 * @throws \RuntimeException
 	 * @todo Define visibility
 	 */
 	public function doesRecordExist($table, $id, $perms) {
+		$id = (int)$id;
 		if ($this->bypassAccessCheckForRecords) {
-			return is_array(BackendUtility::getRecordRaw($table, 'uid=' . intval($id), 'uid'));
+			return is_array(BackendUtility::getRecordRaw($table, 'uid=' . $id, 'uid'));
 		}
-		$res = 0;
-		$id = intval($id);
 		// Processing the incoming $perms (from possible string to integer that can be AND'ed)
 		if (!\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($perms)) {
 			if ($table != 'pages') {
