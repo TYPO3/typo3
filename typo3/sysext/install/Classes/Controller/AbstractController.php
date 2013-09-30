@@ -511,6 +511,23 @@ class AbstractController {
 
 		$parameters = array();
 
+		// Current redirect count
+		if (isset($getPostValues['redirectCount'])) {
+			$redirectCount = (int)$getPostValues['redirectCount'] + 1;
+		} else {
+			$redirectCount = 0;
+		}
+		if ($redirectCount >= 10) {
+			// Abort a redirect loop by throwing an exception. Calling this method
+			// some times in a row is ok, but break a loop if this happens too often.
+			throw new Exception\RedirectLoopException(
+				'Redirect loop aborted. If this message is shown again after a reload,'
+					. ' your setup is so weird that the install tool is unable to handle it.',
+				1380581244
+			);
+		}
+		$parameters[] = 'install[redirectCount]=' . $redirectCount;
+
 		// Add context parameter in case this script was called within backend scope
 		$context = 'install[context]=standalone';
 		if (isset($getPostValues['context']) && $getPostValues['context'] === 'backend') {

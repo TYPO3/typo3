@@ -84,6 +84,11 @@
  *   Determine step and tool controller main action sanitized by step / tool controller and
  *   only executed if user is logged in. Form protection API relies on this.
  *
+ * - GET/POST "install[redirectCount]"
+ *   The install tool initiates redirects to itself if configuration parameters were changed.
+ *   This may lead to infinite redirect loops under rare circumstances. This parameter is
+ *   incremented for each redirect to break a loop after some iterations.
+ *
  * - POST "install[set]"
  *   Contains keys to determine which sub-action of the action is requested,
  *   eg. "change install tool password" in "important actions". Set to 'execute' if some
