@@ -209,7 +209,7 @@ class DirectoryNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 */
-	public function getStatusReturnsArrayWithWarningStatusIfDirectoryExistsButIsNotWritable() {
+	public function getStatusReturnsArrayWithErrorStatusIfDirectoryExistsButIsNotWritable() {
 		/** @var $node \TYPO3\CMS\Install\FolderStructure\DirectoryNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
 		$node = $this->getAccessibleMock(
 			'TYPO3\\CMS\\Install\\FolderStructure\\DirectoryNode',
@@ -229,7 +229,7 @@ class DirectoryNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$statusArray = $node->getStatus();
 		/** @var $status \TYPO3\CMS\Install\Status\StatusInterface */
 		$status = $statusArray[0];
-		$this->assertInstanceOf('\TYPO3\CMS\Install\Status\WarningStatus', $status);
+		$this->assertInstanceOf('\TYPO3\CMS\Install\Status\ErrorStatus', $status);
 	}
 
 	/**

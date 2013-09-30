@@ -193,7 +193,7 @@ class DirectoryNode extends AbstractNode implements NodeInterface {
 			);
 			$result = $status;
 		} elseif (!$this->isWritable()) {
-			$status = new Status\WarningStatus();
+			$status = new Status\ErrorStatus();
 			$status->setTitle($this->getRelativePathBelowSiteRoot() . ' is not writable');
 			$status->setMessage(
 				'Path ' . $this->getAbsolutePath() . ' exists, but no file below' .
