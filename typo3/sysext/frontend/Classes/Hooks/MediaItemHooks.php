@@ -65,6 +65,3 @@ class MediaItemHooks implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 }
-
-
-?>

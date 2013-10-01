@@ -81,6 +81,3 @@ class FileCollectionRepository extends \TYPO3\CMS\Core\Collection\RecordCollecti
 	}
 
 }
-
-
-?>

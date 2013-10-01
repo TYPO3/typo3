@@ -82,5 +82,3 @@ class TranslateLabelSelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\S
 	}
 
 }
-
-?>

@@ -37,4 +37,3 @@ class ErrorStatus extends AbstractStatus implements StatusInterface {
 	protected $severity = 'error';
 
 }
-?>

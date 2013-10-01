@@ -102,4 +102,3 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 		return $dataHandler;
 	}
 }
-?>

@@ -242,6 +242,3 @@ class ExtensionXmlPushParser extends \TYPO3\CMS\Extensionmanager\Utility\Parser\
 	}
 
 }
-
-
-?>

@@ -35,6 +35,3 @@ class InvalidXmlFileException extends \RuntimeException {
 
 
 }
-
-
-?>

@@ -136,5 +136,3 @@ class Message {
 		return $this->render();
 	}
 }
-
-?>

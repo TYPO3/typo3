@@ -75,5 +75,3 @@ class PaginateViewHelper extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetView
 		return $this->initiateSubRequest();
 	}
 }
-
-?>

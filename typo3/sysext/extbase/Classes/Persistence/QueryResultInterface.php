@@ -56,5 +56,3 @@ interface QueryResultInterface extends \Countable, \Iterator, \ArrayAccess {
 	 */
 	public function toArray();
 }
-
-?>

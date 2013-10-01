@@ -34,5 +34,3 @@ namespace TYPO3\CMS\Belog\Controller;
 class ToolsController extends \TYPO3\CMS\Belog\Controller\AbstractController {
 
 }
-
-?>

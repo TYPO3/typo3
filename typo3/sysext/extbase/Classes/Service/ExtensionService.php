@@ -214,5 +214,3 @@ class ExtensionService implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 }
-
-?>

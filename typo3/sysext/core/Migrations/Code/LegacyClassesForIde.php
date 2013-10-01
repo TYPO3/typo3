@@ -6595,4 +6595,3 @@ class Tx_Workspaces_Service_AutoPublishTask extends \TYPO3\CMS\Workspaces\Task\A
  * @deprecated since 6.0 will be removed in 7.0
  */
 class Tx_Workspaces_Service_CleanupPreviewLinkTask extends \TYPO3\CMS\Workspaces\Task\CleanupPreviewLinkTask {}
-?>

@@ -48,6 +48,3 @@ abstract class AbstractProcessor implements \TYPO3\CMS\Core\Log\Processor\Proces
 	}
 
 }
-
-
-?>

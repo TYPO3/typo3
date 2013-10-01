@@ -233,5 +233,3 @@ class Ter extends \TYPO3\CMS\Extensionmanager\Utility\Connection\TerUtility {
 		return $result;
 	}
 }
-
-?>

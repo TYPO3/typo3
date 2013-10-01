@@ -109,4 +109,3 @@ class IntegerConverterTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$this->assertEquals(array(), $this->converter->getSourceChildPropertiesToBeConverted('myString'));
 	}
 }
-?>

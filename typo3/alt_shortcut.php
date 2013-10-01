@@ -40,4 +40,3 @@ $shortcutFrameController->preprocess();
 $shortcutFrameController->init();
 $shortcutFrameController->main();
 $shortcutFrameController->printContent();
-?>

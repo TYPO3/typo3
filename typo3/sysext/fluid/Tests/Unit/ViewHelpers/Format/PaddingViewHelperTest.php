@@ -56,5 +56,3 @@ class PaddingViewHelperTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$this->assertEquals('12300', $actualResult);
 	}
 }
-
-?>

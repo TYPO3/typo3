@@ -74,6 +74,3 @@ class UpdateScriptViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Link\ActionVie
 	}
 
 }
-
-
-?>

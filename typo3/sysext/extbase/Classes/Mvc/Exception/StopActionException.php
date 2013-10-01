@@ -38,5 +38,3 @@ namespace TYPO3\CMS\Extbase\Mvc\Exception;
 class StopActionException extends \TYPO3\CMS\Extbase\Mvc\Exception {
 
 }
-
-?>

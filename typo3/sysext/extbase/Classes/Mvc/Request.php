@@ -574,5 +574,3 @@ class Request implements \TYPO3\CMS\Extbase\Mvc\RequestInterface {
 		return $this->internalArguments[$argumentName];
 	}
 }
-
-?>

@@ -26,4 +26,3 @@ $GLOBALS['TCA']['tt_content']['columns']['section_frame']['config']['items'][0] 
 $GLOBALS['TCA']['tt_content']['columns']['section_frame']['config']['items'][9] = array(
 	'LLL:EXT:css_styled_content/locallang_db.xlf:tt_content.tx_cssstyledcontent_section_frame.I.9', '66'
 );
-?>

@@ -72,5 +72,3 @@ class ModuleDataStorageService implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 }
-
-?>

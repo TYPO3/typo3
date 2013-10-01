@@ -1032,6 +1032,3 @@ class QueryView {
 	}
 
 }
-
-
-?>

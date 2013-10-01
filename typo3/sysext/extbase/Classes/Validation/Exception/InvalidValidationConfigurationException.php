@@ -33,5 +33,3 @@ namespace TYPO3\CMS\Extbase\Validation\Exception;
 class InvalidValidationConfigurationException extends \TYPO3\CMS\Extbase\Validation\Exception {
 
 }
-
-?>

@@ -41,5 +41,3 @@ class SmallDocumentTemplate extends \TYPO3\CMS\Backend\Template\DocumentTemplate
 	}
 
 }
-
-?>

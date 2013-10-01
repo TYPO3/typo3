@@ -350,5 +350,3 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface {
 		return !$this->isSingleton($className);
 	}
 }
-
-?>

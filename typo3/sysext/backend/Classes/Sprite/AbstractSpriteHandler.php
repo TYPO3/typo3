@@ -180,6 +180,3 @@ abstract class AbstractSpriteHandler implements \TYPO3\CMS\Backend\Sprite\Sprite
 	}
 
 }
-
-
-?>

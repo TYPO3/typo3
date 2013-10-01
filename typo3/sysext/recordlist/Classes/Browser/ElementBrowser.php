@@ -2267,6 +2267,3 @@ class ElementBrowser {
 	}
 
 }
-
-
-?>

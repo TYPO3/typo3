@@ -99,5 +99,3 @@ interface ValidatorInterface {
 	public function messageMustBeDisplayed();
 
 }
-
-?>

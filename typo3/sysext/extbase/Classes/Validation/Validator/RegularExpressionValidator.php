@@ -65,5 +65,3 @@ class RegularExpressionValidator extends AbstractValidator {
 		}
 	}
 }
-
-?>

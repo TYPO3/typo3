@@ -37,4 +37,3 @@ $SOBE->checkExtObj();
 $SOBE->clearCache();
 $SOBE->main();
 $SOBE->printContent();
-?>

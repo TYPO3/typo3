@@ -826,5 +826,3 @@ class ShortcutFrameController {
 	}
 
 }
-
-?>

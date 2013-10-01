@@ -74,5 +74,3 @@ class TextValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validation\Validat
 		$this->assertEquals($expected, $this->validator->validate('<span style="color: #BBBBBB;">a nice text</span>')->getErrors());
 	}
 }
-
-?>

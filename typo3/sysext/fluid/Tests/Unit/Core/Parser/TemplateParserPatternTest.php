@@ -365,5 +365,3 @@ class TemplateParserPatternTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCa
 		return str_replace('NAMESPACE', implode('|', $namespace), $regularExpression);
 	}
 }
-
-?>

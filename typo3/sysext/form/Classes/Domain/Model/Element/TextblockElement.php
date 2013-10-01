@@ -32,5 +32,3 @@ namespace TYPO3\CMS\Form\Domain\Model\Element;
 class TextblockElement extends \TYPO3\CMS\Form\Domain\Model\Element\AbstractPlainElement {
 
 }
-
-?>

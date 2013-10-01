@@ -140,5 +140,3 @@ class PaginateController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetCont
 		return $pagination;
 	}
 }
-
-?>

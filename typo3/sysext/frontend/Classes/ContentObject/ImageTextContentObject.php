@@ -483,6 +483,3 @@ class ImageTextContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractC
 	}
 
 }
-
-
-?>

@@ -130,6 +130,3 @@ class PhpBackend extends \TYPO3\CMS\Rsaauth\Backend\AbstractBackend {
 	}
 
 }
-
-
-?>

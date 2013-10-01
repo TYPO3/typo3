@@ -121,6 +121,3 @@ class UpdateFromTerControllerTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTest
 	}
 
 }
-
-
-?>

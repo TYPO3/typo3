@@ -7,4 +7,3 @@
  *
  * As real class TYPO3\CMS\IndexedSearch\Controller\IndexedPagesController is called.
  */
-?>

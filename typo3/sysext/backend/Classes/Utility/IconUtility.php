@@ -944,6 +944,3 @@ class IconUtility {
 	}
 
 }
-
-
-?>

@@ -12,4 +12,3 @@ if (TYPO3_MODE === 'BE') {
 		'icon' => 'EXT:sys_action/x-sys_action.png'
 	);
 }
-?>

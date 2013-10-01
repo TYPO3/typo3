@@ -398,5 +398,3 @@ class Typo3DatabaseBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend
 	}
 
 }
-
-?>

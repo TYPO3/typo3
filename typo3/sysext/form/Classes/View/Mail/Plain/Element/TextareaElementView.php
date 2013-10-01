@@ -71,5 +71,3 @@ class TextareaElementView extends \TYPO3\CMS\Form\View\Mail\Plain\Element\Abstra
 	}
 
 }
-
-?>

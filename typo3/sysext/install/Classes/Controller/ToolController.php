@@ -176,5 +176,3 @@ class ToolController extends AbstractController {
 		$this->output($toolAction->handle());
 	}
 }
-
-?>

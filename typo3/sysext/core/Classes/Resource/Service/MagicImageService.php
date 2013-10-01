@@ -116,6 +116,3 @@ class MagicImageService {
 	}
 
 }
-
-
-?>

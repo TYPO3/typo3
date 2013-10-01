@@ -129,5 +129,3 @@ class BytesViewHelperTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$this->assertEquals('12 KB', $actualResult);
 	}
 }
-
-?>

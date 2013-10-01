@@ -36,4 +36,3 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['TYPO3\\CMS\\Sal
 	'description' => 'LLL:EXT:' . $_EXTKEY . '/locallang.xlf:ext.saltedpasswords.tasks.bulkupdate.description',
 	'additionalFields' => 'TYPO3\\CMS\\Saltedpasswords\\Task\\BulkUpdateFieldProvider'
 );
-?>

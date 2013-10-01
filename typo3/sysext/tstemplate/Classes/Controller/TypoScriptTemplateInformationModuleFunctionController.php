@@ -419,5 +419,3 @@ class TypoScriptTemplateInformationModuleFunctionController extends \TYPO3\CMS\B
 	}
 
 }
-
-?>

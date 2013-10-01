@@ -66,5 +66,3 @@ interface ObjectValidatorInterface extends ValidatorInterface {
 	 */
 	public function setValidatedInstancesContainer(\SplObjectStorage $validatedInstancesContainer);
 }
-
-?>

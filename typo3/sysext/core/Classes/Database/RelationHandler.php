@@ -942,6 +942,3 @@ class RelationHandler {
 	}
 
 }
-
-
-?>

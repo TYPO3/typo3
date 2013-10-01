@@ -390,5 +390,3 @@ interface QueryInterface {
 	 */
 	public function isEmpty($propertyName);
 }
-
-?>

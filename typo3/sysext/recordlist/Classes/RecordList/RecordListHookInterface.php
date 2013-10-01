@@ -78,5 +78,3 @@ interface RecordListHookInterface
 	public function renderListHeaderActions($table, $currentIdList, $cells, &$parentObject);
 
 }
-
-?>

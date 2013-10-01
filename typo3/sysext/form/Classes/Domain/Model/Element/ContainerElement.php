@@ -59,5 +59,3 @@ class ContainerElement extends \TYPO3\CMS\Form\Domain\Model\Element\AbstractElem
 	}
 
 }
-
-?>

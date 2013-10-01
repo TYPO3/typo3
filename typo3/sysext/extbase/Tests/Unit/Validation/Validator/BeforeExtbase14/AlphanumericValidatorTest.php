@@ -63,5 +63,3 @@ class AlphanumericValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCa
 		$alphanumericValidator->isValid('adsf%&/$jklsfdö');
 	}
 }
-
-?>

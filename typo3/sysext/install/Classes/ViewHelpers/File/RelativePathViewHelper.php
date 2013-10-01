@@ -48,5 +48,3 @@ class RelativePathViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractVi
 		return substr($absolutePath, strlen(PATH_site));
 	}
 }
-
-?>

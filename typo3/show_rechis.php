@@ -35,4 +35,3 @@ require __DIR__ . '/init.php';
 $elementHistoryController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\ContentElement\\ElementHistoryController');
 $elementHistoryController->main();
 $elementHistoryController->printContent();
-?>

@@ -53,5 +53,3 @@ class DateTimeValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$dateTimeValidator->isValid('blah');
 	}
 }
-
-?>

@@ -86,5 +86,3 @@ class PageViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedVi
 		return $result;
 	}
 }
-
-?>

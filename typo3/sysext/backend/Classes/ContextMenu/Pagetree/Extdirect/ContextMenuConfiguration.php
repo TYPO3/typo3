@@ -65,5 +65,3 @@ class ContextMenuConfiguration extends \TYPO3\CMS\Backend\ContextMenu\Extdirect\
 	}
 
 }
-
-?>

@@ -141,5 +141,3 @@ abstract class AbstractTypeConverter implements \TYPO3\CMS\Extbase\Property\Type
 	public function getTypeOfChildProperty($targetType, $propertyName, \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration) {
 	}
 }
-
-?>

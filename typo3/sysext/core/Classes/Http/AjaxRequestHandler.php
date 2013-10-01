@@ -292,6 +292,3 @@ class AjaxRequestHandler {
 	}
 
 }
-
-
-?>

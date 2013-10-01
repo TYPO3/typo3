@@ -63,5 +63,3 @@ class OptionElementView extends \TYPO3\CMS\Form\View\Mail\Plain\Element\Abstract
 	}
 
 }
-
-?>

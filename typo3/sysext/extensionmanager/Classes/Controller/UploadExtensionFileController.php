@@ -147,5 +147,3 @@ class UploadExtensionFileController extends \TYPO3\CMS\Extensionmanager\Controll
 	}
 
 }
-
-?>

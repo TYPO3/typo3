@@ -475,6 +475,3 @@ class LiveSearch {
 	}
 
 }
-
-
-?>

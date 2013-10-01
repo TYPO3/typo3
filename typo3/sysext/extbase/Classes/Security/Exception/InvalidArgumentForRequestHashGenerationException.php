@@ -33,5 +33,3 @@ namespace TYPO3\CMS\Extbase\Security\Exception;
 class InvalidArgumentForRequestHashGenerationException extends \TYPO3\CMS\Extbase\Security\Exception {
 
 }
-
-?>

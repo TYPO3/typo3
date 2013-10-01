@@ -14,4 +14,3 @@ return array(
 	'wslib' => 'TYPO3\\CMS\\Version\\Utility\\WorkspacesUtility',
 	'tx_version_gui' => 'TYPO3\\CMS\\Version\\View\\VersionView',
 );
-?>

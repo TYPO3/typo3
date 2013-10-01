@@ -11,4 +11,3 @@ if (TYPO3_MODE === 'BE') {
 	);
 }
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('_MOD_web_info', 'EXT:info_pagetsconfig/locallang_csh_webinfo.xlf');
-?>

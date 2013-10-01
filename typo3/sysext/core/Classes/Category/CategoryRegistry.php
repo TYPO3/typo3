@@ -365,5 +365,3 @@ class CategoryRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 		}
 	}
 }
-
-?>

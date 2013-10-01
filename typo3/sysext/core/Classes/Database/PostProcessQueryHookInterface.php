@@ -102,5 +102,3 @@ interface PostProcessQueryHookInterface {
 	public function exec_TRUNCATEquery_postProcessAction(&$table, \TYPO3\CMS\Core\Database\DatabaseConnection $parentObject);
 
 }
-
-?>

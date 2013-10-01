@@ -66,5 +66,3 @@ class EnvironmentService {
 		return isset($_SERVER['REQUEST_METHOD']) && is_string($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : 'GET';
 	}
 }
-
-?>

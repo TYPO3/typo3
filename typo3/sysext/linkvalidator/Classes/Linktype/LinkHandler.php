@@ -129,4 +129,3 @@ class LinkHandler extends \TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktype {
 		return $response;
 	}
 }
-?>

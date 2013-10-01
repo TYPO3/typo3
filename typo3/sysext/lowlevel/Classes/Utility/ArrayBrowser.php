@@ -272,6 +272,3 @@ class ArrayBrowser {
 	}
 
 }
-
-
-?>

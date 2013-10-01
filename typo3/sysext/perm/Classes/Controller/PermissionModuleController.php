@@ -643,6 +643,3 @@ class PermissionModuleController {
 	}
 
 }
-
-
-?>

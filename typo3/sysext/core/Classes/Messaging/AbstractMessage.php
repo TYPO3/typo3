@@ -139,6 +139,3 @@ abstract class AbstractMessage {
 	}
 
 }
-
-
-?>

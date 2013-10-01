@@ -35,5 +35,3 @@ namespace TYPO3\CMS\Extbase\Reflection\Exception;
 class PropertyNotAccessibleException extends \TYPO3\CMS\Extbase\Reflection\Exception {
 
 }
-
-?>

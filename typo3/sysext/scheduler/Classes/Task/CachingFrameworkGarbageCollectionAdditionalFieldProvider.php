@@ -140,6 +140,3 @@ class CachingFrameworkGarbageCollectionAdditionalFieldProvider implements \TYPO3
 	}
 
 }
-
-
-?>

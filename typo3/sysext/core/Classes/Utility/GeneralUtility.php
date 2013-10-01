@@ -5047,4 +5047,3 @@ Connection: close
 		return static::$context;
 	}
 }
-?>

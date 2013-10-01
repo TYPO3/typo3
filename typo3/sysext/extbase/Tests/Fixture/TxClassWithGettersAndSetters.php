@@ -26,5 +26,3 @@
 class Tx_Extbase_Tests_Fixture_TxClassWithGettersAndSetters extends \TYPO3\CMS\Extbase\Tests\Fixture\ClassWithGettersAndSetters {
 
 }
-
-?>

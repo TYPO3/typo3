@@ -302,4 +302,3 @@ class FileNode extends AbstractNode implements NodeInterface {
 		return (!is_link($path) && is_file($path));
 	}
 }
-?>

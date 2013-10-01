@@ -52,6 +52,3 @@ class ImageContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractConte
 	}
 
 }
-
-
-?>

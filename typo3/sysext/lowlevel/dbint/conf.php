@@ -5,4 +5,3 @@ $MCONF['script'] = '_DISPATCH';
 $MCONF['access'] = 'admin';
 $MCONF['name'] = 'system_dbint';
 $MCONF['workspaces'] = 'online';
-?>

@@ -87,5 +87,3 @@ class RequestHandlerResolver {
 		return is_array($settings['mvc']['requestHandlers']) ? $settings['mvc']['requestHandlers'] : array();
 	}
 }
-
-?>

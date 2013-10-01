@@ -102,5 +102,3 @@ class MappingResults {
 		return count($this->warnings) > 0;
 	}
 }
-
-?>

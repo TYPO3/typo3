@@ -197,5 +197,3 @@ class BackendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\Abstr
 	}
 
 }
-
-?>

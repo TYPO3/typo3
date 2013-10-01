@@ -251,6 +251,3 @@ class ImageMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu\Abst
 	}
 
 }
-
-
-?>

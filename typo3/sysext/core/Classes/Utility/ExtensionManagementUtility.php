@@ -1988,4 +1988,3 @@ tt_content.' . $key . $prefix . ' {
 	}
 
 }
-?>

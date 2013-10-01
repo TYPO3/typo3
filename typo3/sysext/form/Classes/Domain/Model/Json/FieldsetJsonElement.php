@@ -90,5 +90,3 @@ class FieldsetJsonElement extends \TYPO3\CMS\Form\Domain\Model\Json\ContainerJso
 	}
 
 }
-
-?>

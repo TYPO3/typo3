@@ -668,6 +668,3 @@ class ShortcutToolbarItem implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookI
 	}
 
 }
-
-
-?>

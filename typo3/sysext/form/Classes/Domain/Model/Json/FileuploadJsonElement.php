@@ -77,5 +77,3 @@ class FileuploadJsonElement extends \TYPO3\CMS\Form\Domain\Model\Json\AbstractJs
 	);
 
 }
-
-?>

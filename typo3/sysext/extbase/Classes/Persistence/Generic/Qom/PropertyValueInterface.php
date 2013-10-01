@@ -54,5 +54,3 @@ interface PropertyValueInterface extends \TYPO3\CMS\Extbase\Persistence\Generic\
 	 */
 	public function getPropertyName();
 }
-
-?>

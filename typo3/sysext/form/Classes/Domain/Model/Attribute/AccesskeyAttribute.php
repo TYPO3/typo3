@@ -56,5 +56,3 @@ class AccesskeyAttribute extends \TYPO3\CMS\Form\Domain\Model\Attribute\Abstract
 	}
 
 }
-
-?>

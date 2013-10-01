@@ -15,4 +15,3 @@ if (TYPO3_MODE === 'BE') {
 		'EXT:wizard_sortpages/locallang_csh.xlf'
 	);
 }
-?>

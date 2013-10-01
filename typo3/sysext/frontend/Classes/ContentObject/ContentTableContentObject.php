@@ -86,6 +86,3 @@ class ContentTableContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstra
 	}
 
 }
-
-
-?>

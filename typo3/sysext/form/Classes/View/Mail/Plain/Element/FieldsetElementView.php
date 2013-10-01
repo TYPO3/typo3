@@ -54,5 +54,3 @@ class FieldsetElementView extends \TYPO3\CMS\Form\View\Mail\Plain\Element\Contai
 	}
 
 }
-
-?>

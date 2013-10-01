@@ -392,5 +392,3 @@ class PropertyMappingConfiguration implements \TYPO3\CMS\Extbase\Property\Proper
 		return $this;
 	}
 }
-
-?>

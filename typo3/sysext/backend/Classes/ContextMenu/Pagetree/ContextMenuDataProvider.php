@@ -98,5 +98,3 @@ class ContextMenuDataProvider extends \TYPO3\CMS\Backend\ContextMenu\AbstractCon
 	}
 
 }
-
-?>

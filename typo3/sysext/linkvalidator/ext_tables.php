@@ -16,4 +16,3 @@ if (TYPO3_MODE === 'BE') {
 	'linkvalidator',
 	'EXT:linkvalidator/Resources/Private/Language/Module/locallang_csh.xlf'
 );
-?>

@@ -67,4 +67,3 @@ class DatabaseConnectionMock {
 		return '';
 	}
 }
-?>

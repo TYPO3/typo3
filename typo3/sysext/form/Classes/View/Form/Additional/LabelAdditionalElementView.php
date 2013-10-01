@@ -45,5 +45,3 @@ class LabelAdditionalElementView extends \TYPO3\CMS\Form\View\Form\Additional\Ad
 	';
 
 }
-
-?>

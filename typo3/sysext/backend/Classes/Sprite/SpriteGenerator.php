@@ -537,6 +537,3 @@ class SpriteGenerator {
 	}
 
 }
-
-
-?>

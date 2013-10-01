@@ -90,5 +90,3 @@ class CommandControllerTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$this->commandController->_call('quit', 123);
 	}
 }
-
-?>

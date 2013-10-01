@@ -180,6 +180,3 @@ class FormProtectionFactory {
 	}
 
 }
-
-
-?>

@@ -109,6 +109,3 @@ class SoftReferenceHook extends \TYPO3\CMS\Core\Database\SoftReferenceIndex {
 	}
 
 }
-
-
-?>

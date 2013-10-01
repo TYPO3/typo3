@@ -136,6 +136,3 @@ abstract class AbstractBackend implements \TYPO3\CMS\Core\Cache\Backend\BackendI
 	}
 
 }
-
-
-?>

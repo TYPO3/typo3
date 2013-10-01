@@ -183,5 +183,3 @@ class CscSplitUpdate extends AbstractUpdate {
 	}
 
 }
-
-?>

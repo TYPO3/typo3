@@ -156,6 +156,3 @@ class AbstractRte {
 	}
 
 }
-
-
-?>

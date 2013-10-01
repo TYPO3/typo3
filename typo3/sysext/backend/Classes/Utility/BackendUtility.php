@@ -4063,4 +4063,3 @@ class BackendUtility {
 	}
 
 }
-?>

@@ -80,5 +80,3 @@ class FrontendRequestHandler extends \TYPO3\CMS\Extbase\Mvc\Web\AbstractRequestH
 		return $this->environmentService->isEnvironmentInFrontendMode();
 	}
 }
-
-?>

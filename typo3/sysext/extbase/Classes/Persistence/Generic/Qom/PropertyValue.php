@@ -79,5 +79,3 @@ class PropertyValue extends \TYPO3\CMS\Extbase\Persistence\Generic\Qom\DynamicOp
 		return $this->propertyName;
 	}
 }
-
-?>

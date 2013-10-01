@@ -186,6 +186,3 @@ class BackendUserSettingsDataProvider {
 	}
 
 }
-
-
-?>

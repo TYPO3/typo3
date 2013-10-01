@@ -65,5 +65,3 @@ class MvcPropertyMappingConfiguration extends \TYPO3\CMS\Extbase\Property\Proper
 		$this->forProperty($propertyPath)->setTypeConverterOption('TYPO3\\CMS\\Extbase\\Property\\TypeConverter\\PersistentObjectConverter', \TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_TARGET_TYPE, $targetType);
 	}
 }
-
-?>

@@ -48,5 +48,3 @@ class EmailValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator {
 	}
 
 }
-
-?>

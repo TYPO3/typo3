@@ -143,5 +143,3 @@ class SortPagesWizardModuleFunction extends \TYPO3\CMS\Backend\Module\AbstractFu
 	}
 
 }
-
-?>

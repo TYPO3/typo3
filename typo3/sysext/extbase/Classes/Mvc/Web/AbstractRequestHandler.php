@@ -75,5 +75,3 @@ abstract class AbstractRequestHandler implements \TYPO3\CMS\Extbase\Mvc\RequestH
 		return 100;
 	}
 }
-
-?>

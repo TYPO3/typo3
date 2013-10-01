@@ -301,5 +301,3 @@ class DocumentationService {
 	}
 
 }
-
-?>

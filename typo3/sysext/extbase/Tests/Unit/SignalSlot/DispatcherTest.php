@@ -311,5 +311,3 @@ class DispatcherTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$this->assertSame(NULL, $this->signalSlotDispatcher->dispatch('ClassA', 'emitSomeSignal'));
 	}
 }
-
-?>

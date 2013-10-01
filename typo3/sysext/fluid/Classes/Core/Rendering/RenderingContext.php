@@ -116,5 +116,3 @@ class RenderingContext implements \TYPO3\CMS\Fluid\Core\Rendering\RenderingConte
 		return $this->viewHelperVariableContainer;
 	}
 }
-
-?>

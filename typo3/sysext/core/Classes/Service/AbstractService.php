@@ -577,6 +577,3 @@ abstract class AbstractService {
 	}
 
 }
-
-
-?>

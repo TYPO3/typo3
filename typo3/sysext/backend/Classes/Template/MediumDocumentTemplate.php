@@ -41,5 +41,3 @@ class MediumDocumentTemplate extends \TYPO3\CMS\Backend\Template\DocumentTemplat
 	}
 
 }
-
-?>

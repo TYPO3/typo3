@@ -170,6 +170,3 @@ class TemplateContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractCo
 	}
 
 }
-
-
-?>

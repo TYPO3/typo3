@@ -1073,6 +1073,3 @@ class PageGenerator {
 	}
 
 }
-
-
-?>

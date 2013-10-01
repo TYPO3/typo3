@@ -327,5 +327,3 @@ class ContainerTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$this->assertTrue($this->container->isPrototype('TYPO3\CMS\Extbase\Core\Bootstrap'));
 	}
 }
-
-?>

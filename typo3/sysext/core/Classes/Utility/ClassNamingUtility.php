@@ -118,5 +118,3 @@ class ClassNamingUtility {
 		return $matches;
 	}
 }
-
-?>

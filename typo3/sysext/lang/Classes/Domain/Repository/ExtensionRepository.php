@@ -115,5 +115,3 @@ class ExtensionRepository {
 		return $extensionIcon;
 	}
 }
-
-?>

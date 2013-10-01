@@ -44,5 +44,3 @@ interface ContentObjectGetImageResourceHookInterface {
 	public function getImgResourcePostProcess($file, array $configuration, array $imageResource, \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $parent);
 
 }
-
-?>

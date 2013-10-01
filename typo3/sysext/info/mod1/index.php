@@ -43,4 +43,3 @@ $SOBE->checkExtObj();
 $SOBE->checkSubExtObj();
 $SOBE->main();
 $SOBE->printContent();
-?>

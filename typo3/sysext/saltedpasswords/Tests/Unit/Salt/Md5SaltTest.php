@@ -252,6 +252,3 @@ class Md5SaltTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 }
-
-
-?>

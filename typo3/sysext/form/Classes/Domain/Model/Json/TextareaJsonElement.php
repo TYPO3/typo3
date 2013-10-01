@@ -78,5 +78,3 @@ class TextareaJsonElement extends \TYPO3\CMS\Form\Domain\Model\Json\AbstractJson
 	);
 
 }
-
-?>

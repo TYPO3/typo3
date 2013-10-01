@@ -52,6 +52,3 @@ class UpdateScriptController extends \TYPO3\CMS\Extensionmanager\Controller\Abst
 			->assign('extensionKey', $extensionKey);
 	}
 }
-
-
-?>

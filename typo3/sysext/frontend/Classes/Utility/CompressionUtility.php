@@ -72,6 +72,3 @@ class CompressionUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 }
-
-
-?>

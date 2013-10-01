@@ -147,5 +147,3 @@ class ExtensionModelUtilityTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCa
 		$dependencyUtility->convertDependenciesToObjects($serializedDependencies);
 	}
 }
-
-?>

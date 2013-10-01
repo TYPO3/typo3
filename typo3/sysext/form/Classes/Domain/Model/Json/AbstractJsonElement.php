@@ -182,5 +182,3 @@ class AbstractJsonElement {
 	}
 
 }
-
-?>

@@ -54,5 +54,3 @@ interface ControllerInterface {
 	 */
 	public function processRequest(\TYPO3\CMS\Extbase\Mvc\RequestInterface $request, \TYPO3\CMS\Extbase\Mvc\ResponseInterface $response);
 }
-
-?>

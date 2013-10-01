@@ -89,5 +89,3 @@ class FlagsFromSpriteUpdate extends AbstractUpdate {
 	}
 
 }
-
-?>

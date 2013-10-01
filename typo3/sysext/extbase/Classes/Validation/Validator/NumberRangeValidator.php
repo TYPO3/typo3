@@ -92,5 +92,3 @@ class NumberRangeValidator extends AbstractValidator {
 		}
 	}
 }
-
-?>

@@ -207,5 +207,3 @@ class ValidatorUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 }
-
-?>

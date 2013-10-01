@@ -59,6 +59,3 @@ class ContentObjectArrayInternalContentObject extends \TYPO3\CMS\Frontend\Conten
 	}
 
 }
-
-
-?>

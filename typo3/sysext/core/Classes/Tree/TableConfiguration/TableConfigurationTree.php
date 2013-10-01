@@ -52,6 +52,3 @@ class TableConfigurationTree extends \TYPO3\CMS\Backend\Tree\AbstractTree {
 	}
 
 }
-
-
-?>

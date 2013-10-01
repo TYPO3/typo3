@@ -45,4 +45,3 @@ interface StepInterface extends Action\ActionInterface {
 	 */
 	public function needsExecution();
 }
-?>

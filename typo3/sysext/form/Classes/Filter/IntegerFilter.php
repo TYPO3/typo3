@@ -42,5 +42,3 @@ class IntegerFilter implements \TYPO3\CMS\Form\Filter\FilterInterface {
 	}
 
 }
-
-?>

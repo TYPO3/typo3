@@ -33,5 +33,3 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
 class DynamicOperand extends \TYPO3\CMS\Extbase\Persistence\Generic\Qom\Operand implements \TYPO3\CMS\Extbase\Persistence\Generic\Qom\DynamicOperandInterface {
 
 }
-
-?>

@@ -104,5 +104,3 @@ class HtmlView extends \TYPO3\CMS\Form\View\Mail\Html\Element\ContainerElementVi
 	}
 
 }
-
-?>

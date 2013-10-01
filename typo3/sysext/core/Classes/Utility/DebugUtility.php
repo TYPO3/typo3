@@ -361,6 +361,3 @@ class DebugUtility {
 		return self::$javaScriptEncoder;
 	}
 }
-
-
-?>

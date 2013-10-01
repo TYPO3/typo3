@@ -1212,4 +1212,3 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 	}
 
 }
-?>

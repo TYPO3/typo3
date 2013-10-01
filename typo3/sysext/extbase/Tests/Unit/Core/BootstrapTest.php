@@ -110,5 +110,3 @@ class BootstrapTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$bootstrap->run('', array());
 	}
 }
-
-?>

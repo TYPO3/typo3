@@ -44,5 +44,3 @@ class SelectElementView extends \TYPO3\CMS\Form\View\Form\Element\ContainerEleme
 	';
 
 }
-
-?>

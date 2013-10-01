@@ -253,4 +253,3 @@ class ValidatorTaskAdditionalFieldProvider implements \TYPO3\CMS\Scheduler\Addit
 	}
 
 }
-?>

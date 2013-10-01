@@ -169,5 +169,3 @@ class FieldProviderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$this->assertEquals($expectedAdditionalFields, $this->fieldProvider->getAdditionalFields($taskInfo, $task, $schedulerModule));
 	}
 }
-
-?>

@@ -299,5 +299,3 @@ abstract class AbstractConfigurationManager implements \TYPO3\CMS\Core\Singleton
 	abstract protected function getRecursiveStoragePids($storagePid, $recursionDepth = 0);
 
 }
-
-?>

@@ -61,4 +61,3 @@ return array(
 		'mount' => array('showitem' => 'title,hidden', 'canNotCollapse' => 1)
 	),
 );
-?>

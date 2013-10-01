@@ -64,6 +64,3 @@ class PdoHelper {
 	}
 
 }
-
-
-?>

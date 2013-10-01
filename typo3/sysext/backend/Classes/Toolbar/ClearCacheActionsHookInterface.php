@@ -42,5 +42,3 @@ interface ClearCacheActionsHookInterface {
 	public function manipulateCacheActions(&$cacheActions, &$optionValues);
 
 }
-
-?>

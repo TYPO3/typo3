@@ -254,6 +254,3 @@ class AuthenticationService extends \TYPO3\CMS\Sv\AbstractAuthenticationService 
 	}
 
 }
-
-
-?>

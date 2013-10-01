@@ -35,5 +35,3 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
 class Constraint implements \TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface {
 
 }
-
-?>

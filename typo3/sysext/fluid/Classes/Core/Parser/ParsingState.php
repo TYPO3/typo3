@@ -206,5 +206,3 @@ class ParsingState implements \TYPO3\CMS\Fluid\Core\Parser\ParsedTemplateInterfa
 		return FALSE;
 	}
 }
-
-?>

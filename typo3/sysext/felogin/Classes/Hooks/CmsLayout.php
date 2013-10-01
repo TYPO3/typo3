@@ -48,5 +48,3 @@ class CmsLayout implements \TYPO3\CMS\Backend\View\PageLayoutViewDrawItemHookInt
 	}
 
 }
-
-?>

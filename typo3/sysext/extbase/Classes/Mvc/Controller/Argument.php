@@ -515,5 +515,3 @@ class Argument {
 		return (string) $this->value;
 	}
 }
-
-?>

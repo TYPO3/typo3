@@ -31,6 +31,3 @@ class NotInMountPointException extends \TYPO3\CMS\Core\Resource\Exception {
 
 
 }
-
-
-?>

@@ -34,6 +34,3 @@ class NoSuchCacheException extends \TYPO3\CMS\Core\Cache\Exception {
 
 
 }
-
-
-?>

@@ -49,6 +49,3 @@ class AutoPublishTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 	}
 
 }
-
-
-?>

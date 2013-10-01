@@ -61,5 +61,3 @@ interface ToolbarItemHookInterface {
 	public function getAdditionalAttributes();
 
 }
-
-?>

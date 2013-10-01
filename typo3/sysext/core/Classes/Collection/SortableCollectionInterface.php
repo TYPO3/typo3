@@ -64,5 +64,3 @@ interface SortableCollectionInterface
 	public function moveItemAt($currentPosition, $newPosition = 0);
 
 }
-
-?>

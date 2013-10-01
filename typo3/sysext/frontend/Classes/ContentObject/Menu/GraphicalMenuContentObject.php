@@ -566,6 +566,3 @@ class GraphicalMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu\
 	}
 
 }
-
-
-?>

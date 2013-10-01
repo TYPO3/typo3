@@ -62,5 +62,3 @@ class NumberValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$numberValidator->isValid('this is not a number');
 	}
 }
-
-?>

@@ -102,5 +102,3 @@ class BooleanValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validation\Vali
 		$this->assertFalse($this->validator->validate(TRUE)->hasErrors());
 	}
 }
-
-?>

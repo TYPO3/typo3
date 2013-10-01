@@ -421,5 +421,3 @@ class ColorpickerController {
 	}
 
 }
-
-?>

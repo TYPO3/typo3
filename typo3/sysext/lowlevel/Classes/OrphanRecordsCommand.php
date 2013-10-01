@@ -154,6 +154,3 @@ Will report orphan uids from TCA tables.';
 	}
 
 }
-
-
-?>

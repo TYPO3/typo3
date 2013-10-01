@@ -74,4 +74,3 @@ interface LinktypeInterface {
 	public function getErrorMessage($errorParams);
 
 }
-?>

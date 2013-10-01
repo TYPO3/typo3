@@ -86,5 +86,3 @@ class NotInMenuUpdate extends AbstractUpdate {
 	}
 
 }
-
-?>

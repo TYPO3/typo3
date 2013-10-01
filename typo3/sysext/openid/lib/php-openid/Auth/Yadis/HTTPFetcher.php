@@ -171,4 +171,3 @@ class Auth_Yadis_HTTPFetcher {
         trigger_error("not implemented", E_USER_ERROR);
     }
 }
-

@@ -183,6 +183,3 @@ class ContentParser {
 	}
 
 }
-
-
-?>

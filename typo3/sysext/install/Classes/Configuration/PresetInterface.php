@@ -91,4 +91,3 @@ interface PresetInterface {
 	 */
 	public function getConfigurationValues();
 }
-?>

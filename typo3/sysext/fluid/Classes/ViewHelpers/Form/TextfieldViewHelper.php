@@ -80,5 +80,3 @@ class TextfieldViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractForm
 		return $this->tag->render();
 	}
 }
-
-?>

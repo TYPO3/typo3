@@ -512,6 +512,3 @@ class RedisBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend impleme
 	}
 
 }
-
-
-?>

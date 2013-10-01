@@ -53,6 +53,3 @@ class MemoryUsageProcessor extends \TYPO3\CMS\Core\Log\Processor\AbstractMemoryP
 	}
 
 }
-
-
-?>

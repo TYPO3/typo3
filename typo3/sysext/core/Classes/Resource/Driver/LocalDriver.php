@@ -1217,5 +1217,3 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 	}
 
 }
-
-?>

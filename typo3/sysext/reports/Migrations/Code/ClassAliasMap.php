@@ -15,4 +15,3 @@ return array(
 	'Tx_Reports_ViewHelpers_ActionMenuItemViewHelper' => 'TYPO3\\CMS\\Reports\\ViewHelpers\\ActionMenuItemViewHelper',
 	'Tx_Reports_ViewHelpers_IconViewHelper' => 'TYPO3\\CMS\\Reports\\ViewHelpers\\IconViewHelper',
 );
-?>

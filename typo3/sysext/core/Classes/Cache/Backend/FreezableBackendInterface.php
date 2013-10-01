@@ -38,5 +38,3 @@ interface FreezableBackendInterface extends \TYPO3\CMS\Core\Cache\Backend\Backen
 	public function isFrozen();
 
 }
-
-?>

@@ -98,5 +98,3 @@ class DisjunctionValidator extends AbstractCompositeValidator {
 		return $result;
 	}
 }
-
-?>

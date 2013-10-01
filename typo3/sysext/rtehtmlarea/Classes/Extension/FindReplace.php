@@ -73,6 +73,3 @@ class FindReplace extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 	}
 
 }
-
-
-?>

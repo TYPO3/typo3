@@ -48,5 +48,3 @@ class UriValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator {
 	}
 
 }
-
-?>

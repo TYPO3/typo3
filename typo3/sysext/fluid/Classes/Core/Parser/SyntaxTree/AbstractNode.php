@@ -79,5 +79,3 @@ abstract class AbstractNode implements \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\N
 		$this->childNodes[] = $childNode;
 	}
 }
-
-?>

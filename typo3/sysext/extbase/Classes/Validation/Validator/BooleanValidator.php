@@ -76,5 +76,3 @@ class BooleanValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractV
 	}
 
 }
-
-?>

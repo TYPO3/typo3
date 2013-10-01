@@ -10,4 +10,3 @@ if (TYPO3_MODE === 'BE') {
 		'report' => 'TYPO3\\CMS\\Sv\\Report\\ServicesListReport'
 	);
 }
-?>

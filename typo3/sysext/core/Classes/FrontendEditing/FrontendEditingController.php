@@ -578,6 +578,3 @@ class FrontendEditingController {
 	}
 
 }
-
-
-?>

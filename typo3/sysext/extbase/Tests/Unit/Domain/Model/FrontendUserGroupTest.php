@@ -140,5 +140,3 @@ class FrontendUserGroupTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$this->assertSame($subgroup, $this->fixture->getSubgroup());
 	}
 }
-
-?>

@@ -2024,6 +2024,3 @@ class SqlParser {
 	}
 
 }
-
-
-?>

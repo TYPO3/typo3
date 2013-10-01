@@ -228,6 +228,3 @@ class BackendFormProtection extends \TYPO3\CMS\Core\FormProtection\AbstractFormP
 	}
 
 }
-
-
-?>

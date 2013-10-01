@@ -1205,6 +1205,3 @@ class PageRepository {
 	}
 
 }
-
-
-?>

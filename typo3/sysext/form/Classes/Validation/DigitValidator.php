@@ -52,5 +52,3 @@ class DigitValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator {
 	}
 
 }
-
-?>

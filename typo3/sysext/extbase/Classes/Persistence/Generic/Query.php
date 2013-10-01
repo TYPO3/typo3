@@ -567,5 +567,3 @@ class Query implements \TYPO3\CMS\Extbase\Persistence\QueryInterface {
 		throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\NotImplementedException(__METHOD__);
 	}
 }
-
-?>

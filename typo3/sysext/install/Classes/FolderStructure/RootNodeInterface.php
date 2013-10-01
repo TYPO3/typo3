@@ -30,4 +30,3 @@ namespace TYPO3\CMS\Install\FolderStructure;
 interface RootNodeInterface extends NodeInterface {
 
 }
-?>

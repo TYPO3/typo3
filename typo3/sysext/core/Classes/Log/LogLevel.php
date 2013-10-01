@@ -162,6 +162,3 @@ class LogLevel {
 	}
 
 }
-
-
-?>

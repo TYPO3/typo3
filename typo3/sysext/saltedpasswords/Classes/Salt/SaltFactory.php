@@ -142,4 +142,3 @@ class SaltFactory {
 		return self::$instance;
 	}
 }
-?>

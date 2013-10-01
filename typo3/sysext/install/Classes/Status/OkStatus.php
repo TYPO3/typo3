@@ -37,4 +37,3 @@ class OkStatus extends AbstractStatus implements StatusInterface {
 	protected $severity = 'ok';
 
 }
-?>

@@ -41,5 +41,3 @@ interface BindVariableValueInterface extends \TYPO3\CMS\Extbase\Persistence\Gene
 	 */
 	public function getBindVariableName();
 }
-
-?>

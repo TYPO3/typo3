@@ -1448,6 +1448,3 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 	}
 
 }
-
-
-?>

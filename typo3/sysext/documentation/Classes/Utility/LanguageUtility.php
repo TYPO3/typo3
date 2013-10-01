@@ -42,5 +42,3 @@ class LanguageUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 }
-
-?>

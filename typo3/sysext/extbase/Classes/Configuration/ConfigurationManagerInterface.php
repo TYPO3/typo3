@@ -85,5 +85,3 @@ interface ConfigurationManagerInterface extends \TYPO3\CMS\Core\SingletonInterfa
 	 */
 	public function isFeatureEnabled($featureName);
 }
-
-?>

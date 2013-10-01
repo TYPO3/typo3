@@ -34,5 +34,3 @@ class Warning extends \TYPO3\CMS\Extbase\Error\Message {
 	 */
 	protected $message = 'Unknown warning';
 }
-
-?>

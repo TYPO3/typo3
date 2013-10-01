@@ -7,4 +7,3 @@ if (TYPO3_MODE === 'BE') {
 		'name' => 'TYPO3\\CMS\\ExtraPageCmOptions\\ExtraPageContextMenuOptions',
 	);
 }
-?>

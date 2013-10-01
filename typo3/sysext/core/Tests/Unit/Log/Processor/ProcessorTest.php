@@ -61,5 +61,3 @@ class ProcessorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase implements \TYPO3
 	}
 
 }
-
-?>

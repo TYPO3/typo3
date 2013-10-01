@@ -485,6 +485,3 @@ class FileReference implements FileInterface {
 	}
 
 }
-
-
-?>

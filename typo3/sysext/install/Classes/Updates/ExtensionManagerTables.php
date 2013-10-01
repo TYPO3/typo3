@@ -164,5 +164,3 @@ class ExtensionManagerTables extends AbstractUpdate {
 	}
 
 }
-
-?>

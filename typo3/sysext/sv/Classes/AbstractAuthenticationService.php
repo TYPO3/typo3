@@ -171,6 +171,3 @@ class AbstractAuthenticationService extends \TYPO3\CMS\Core\Service\AbstractServ
 	}
 
 }
-
-
-?>

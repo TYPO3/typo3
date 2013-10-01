@@ -169,5 +169,3 @@ class TypoScriptToJsonConverter {
 	}
 
 }
-
-?>

@@ -80,5 +80,3 @@ class WidgetContextTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$this->assertSame($renderingContext, $this->widgetContext->getViewHelperChildNodeRenderingContext());
 	}
 }
-
-?>

@@ -52,5 +52,3 @@ class StandaloneView extends \TYPO3\CMS\Fluid\View\StandaloneView {
 		$this->templateCompiler->setTemplateCache($GLOBALS['typo3CacheManager']->getCache('fluid_template'));
 	}
 }
-
-?>

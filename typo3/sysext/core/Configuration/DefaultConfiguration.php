@@ -766,4 +766,3 @@ return array(
 	),
 	'SVCONF' => array()
 );
-?>

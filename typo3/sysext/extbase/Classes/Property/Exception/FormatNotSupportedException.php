@@ -29,5 +29,3 @@ namespace TYPO3\CMS\Extbase\Property\Exception;
 class FormatNotSupportedException extends \TYPO3\CMS\Extbase\Property\Exception {
 
 }
-
-?>

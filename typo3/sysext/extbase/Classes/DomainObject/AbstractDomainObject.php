@@ -344,5 +344,3 @@ abstract class AbstractDomainObject implements \TYPO3\CMS\Extbase\DomainObject\D
 		return get_class($this) . ':' . (string) $this->uid;
 	}
 }
-
-?>

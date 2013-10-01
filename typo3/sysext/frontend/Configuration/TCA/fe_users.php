@@ -292,4 +292,3 @@ return array(
 		'2' => array('showitem' => 'first_name,--linebreak--,middle_name,--linebreak--,last_name')
 	)
 );
-?>

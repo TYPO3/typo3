@@ -45,5 +45,3 @@ class LegendAdditionalElementView extends \TYPO3\CMS\Form\View\Form\Additional\A
 	';
 
 }
-
-?>

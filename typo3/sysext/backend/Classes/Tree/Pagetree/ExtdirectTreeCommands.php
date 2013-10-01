@@ -386,6 +386,3 @@ class ExtdirectTreeCommands {
 	}
 
 }
-
-
-?>

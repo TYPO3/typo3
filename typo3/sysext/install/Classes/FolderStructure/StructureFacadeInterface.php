@@ -50,4 +50,3 @@ interface StructureFacadeInterface {
 	 */
 	public function fix();
 }
-?>

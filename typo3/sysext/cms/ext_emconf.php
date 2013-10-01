@@ -42,4 +42,3 @@ This should probably not be disabled. But the point is that Typo3 is able to wor
 	),
 	'suggests' => array()
 );
-?>

@@ -168,5 +168,3 @@ class TaskTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$this->assertSame('foo qux=quux', $this->task->getAdditionalInformation());
 	}
 }
-
-?>

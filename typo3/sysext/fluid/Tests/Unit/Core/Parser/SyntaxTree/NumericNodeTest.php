@@ -52,4 +52,3 @@ class NumericNodeTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$node->addChildNode(clone $node);
 	}
 }
-?>

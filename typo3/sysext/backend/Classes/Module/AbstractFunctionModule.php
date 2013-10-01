@@ -280,6 +280,3 @@ abstract class AbstractFunctionModule {
 	}
 
 }
-
-
-?>

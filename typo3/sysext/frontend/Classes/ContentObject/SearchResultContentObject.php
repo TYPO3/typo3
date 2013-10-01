@@ -654,6 +654,3 @@ class SearchResultContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstra
 	}
 
 }
-
-
-?>

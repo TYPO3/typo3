@@ -90,5 +90,3 @@ class ActionList extends \TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList {
 	}
 
 }
-
-?>

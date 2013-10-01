@@ -194,6 +194,3 @@ class ErrorHandler implements \TYPO3\CMS\Core\Error\ErrorHandlerInterface {
 	}
 
 }
-
-
-?>

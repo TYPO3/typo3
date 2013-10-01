@@ -99,5 +99,3 @@ class InitUpdateWizard extends AbstractUpdate {
 	}
 
 }
-
-?>

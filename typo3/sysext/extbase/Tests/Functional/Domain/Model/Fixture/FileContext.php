@@ -310,5 +310,3 @@ class FileContext extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 		$this->folders->detach($folder);
 	}
 }
-
-?>

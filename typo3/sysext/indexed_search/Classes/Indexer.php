@@ -2156,6 +2156,3 @@ class Indexer {
 	}
 
 }
-
-
-?>

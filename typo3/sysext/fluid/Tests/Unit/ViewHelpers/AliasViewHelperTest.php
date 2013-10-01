@@ -72,5 +72,3 @@ class AliasViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHe
 		$this->assertEquals('foo', $viewHelper->render(array()));
 	}
 }
-
-?>

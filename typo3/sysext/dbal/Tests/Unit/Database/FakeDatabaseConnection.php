@@ -53,6 +53,3 @@ class FakeDatabaseConnection {
 	}
 
 }
-
-
-?>

@@ -120,4 +120,3 @@ class ListController extends \TYPO3\CMS\Extensionmanager\Controller\AbstractCont
 		);
 	}
 }
-?>

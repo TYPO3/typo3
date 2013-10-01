@@ -49,5 +49,3 @@ class ExternalViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHe
 		return $uri;
 	}
 }
-
-?>

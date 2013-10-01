@@ -128,4 +128,3 @@ class SqlExpectedSchemaService {
 		return $sqlString;
 	}
 }
-?>

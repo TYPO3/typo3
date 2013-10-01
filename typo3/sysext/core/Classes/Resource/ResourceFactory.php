@@ -557,6 +557,3 @@ class ResourceFactory implements \TYPO3\CMS\Core\SingletonInterface {
 		return $fileReferenceObject;
 	}
 }
-
-
-?>

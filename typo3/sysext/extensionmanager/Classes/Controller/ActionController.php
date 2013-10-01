@@ -139,4 +139,3 @@ class ActionController extends \TYPO3\CMS\Extensionmanager\Controller\AbstractCo
 		$this->fileHandlingUtility->sendSqlDumpFileToBrowserAndDelete($filePath, $fileName);
 	}
 }
-?>

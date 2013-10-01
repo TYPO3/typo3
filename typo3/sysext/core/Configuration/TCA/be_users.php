@@ -335,4 +335,3 @@ return array(
 			--div--;LLL:EXT:lang/locallang_tca.xlf:be_users.tabs.extended')
 	)
 );
-?>

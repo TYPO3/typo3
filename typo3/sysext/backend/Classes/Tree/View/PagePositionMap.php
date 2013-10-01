@@ -571,6 +571,3 @@ class PagePositionMap {
 	}
 
 }
-
-
-?>

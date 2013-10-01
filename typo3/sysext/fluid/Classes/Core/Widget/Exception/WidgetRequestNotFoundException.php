@@ -26,5 +26,3 @@ namespace TYPO3\CMS\Fluid\Core\Widget\Exception;
 class WidgetRequestNotFoundException extends \TYPO3\CMS\Fluid\Core\Widget\Exception {
 
 }
-
-?>

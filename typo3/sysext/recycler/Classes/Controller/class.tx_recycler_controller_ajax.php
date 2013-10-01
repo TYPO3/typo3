@@ -32,4 +32,3 @@ require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('recycl
  * typo3/sysext/recycler/Classes/Controller/RecyclerAjaxController.php
  */
 require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('recycler') . 'Classes/Controller/RecyclerAjaxController.php';
-?>

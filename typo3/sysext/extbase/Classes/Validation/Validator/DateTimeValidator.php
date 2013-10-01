@@ -58,5 +58,3 @@ class DateTimeValidator extends AbstractValidator {
 			), 1238087674, array(gettype($value)));
 	}
 }
-
-?>

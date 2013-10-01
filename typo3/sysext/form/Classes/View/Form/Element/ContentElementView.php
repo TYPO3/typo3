@@ -41,5 +41,3 @@ class ContentElementView extends \TYPO3\CMS\Form\View\Form\Element\AbstractEleme
 	';
 
 }
-
-?>

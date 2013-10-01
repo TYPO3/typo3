@@ -86,5 +86,3 @@ class CountViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHe
 		$this->viewHelper->render($object);
 	}
 }
-
-?>

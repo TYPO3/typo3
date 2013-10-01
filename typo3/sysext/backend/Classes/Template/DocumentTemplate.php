@@ -2092,6 +2092,3 @@ class DocumentTemplate {
 		return IconUtility::skinImg($this->backPath, 'gfx/favicon.ico', '', 1);
 	}
 }
-
-
-?>

@@ -273,6 +273,3 @@ class BulkUpdateTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 	}
 
 }
-
-
-?>

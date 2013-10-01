@@ -45,5 +45,3 @@ interface ContentObjectGetDataHookInterface {
 	public function getDataExtension($getDataString, array $fields, $sectionValue, $returnValue, \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer &$parentObject);
 
 }
-
-?>

@@ -32,4 +32,3 @@ require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('openid
  * typo3/sysext/openid/Classes/OpenidService.php
  */
 require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('openid') . 'Classes/OpenidService.php';
-?>

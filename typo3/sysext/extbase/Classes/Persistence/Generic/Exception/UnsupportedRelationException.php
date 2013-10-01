@@ -33,5 +33,3 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Exception;
 class UnsupportedRelationException extends \TYPO3\CMS\Extbase\Persistence\Generic\Exception {
 
 }
-
-?>

@@ -55,5 +55,3 @@ interface SelectorInterface extends \TYPO3\CMS\Extbase\Persistence\Generic\Qom\S
 	 */
 	public function getSelectorName();
 }
-
-?>

@@ -48,5 +48,3 @@ interface ProcessorInterface {
 	 */
 	public function processTask(TaskInterface $task);
 }
-
-?>

@@ -2789,6 +2789,3 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 }
-
-
-?>

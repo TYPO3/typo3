@@ -96,5 +96,3 @@ class ImagelinkUpdate extends AbstractUpdate {
 	}
 
 }
-
-?>

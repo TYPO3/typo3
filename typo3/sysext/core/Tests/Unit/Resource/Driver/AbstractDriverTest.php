@@ -125,5 +125,3 @@ class AbstractDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCas
 	}
 
 }
-
-?>

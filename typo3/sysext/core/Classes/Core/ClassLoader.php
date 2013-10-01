@@ -439,6 +439,3 @@ class ClassLoader {
 	}
 
 }
-
-
-?>

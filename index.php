@@ -39,4 +39,3 @@ require __DIR__ . '/typo3/sysext/core/Classes/Core/Bootstrap.php';
 	->redirectToInstallerIfLocalConfigurationFileDoesNotExist();
 
 require(PATH_tslib . 'index_ts.php');
-?>

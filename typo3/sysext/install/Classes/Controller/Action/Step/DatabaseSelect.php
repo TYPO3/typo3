@@ -169,4 +169,3 @@ class DatabaseSelect extends Action\AbstractAction implements StepInterface {
 		$this->databaseConnection->sql_pconnect();
 	}
 }
-?>

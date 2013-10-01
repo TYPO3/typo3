@@ -30,4 +30,3 @@ namespace TYPO3\CMS\Install\Controller;
 class Exception extends \TYPO3\CMS\Install\Exception {
 
 }
-?>

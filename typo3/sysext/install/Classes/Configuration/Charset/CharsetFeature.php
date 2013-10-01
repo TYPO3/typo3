@@ -46,4 +46,3 @@ class CharsetFeature extends Configuration\AbstractFeature implements Configurat
 		'TYPO3\\CMS\\Install\\Configuration\\Charset\\CustomPreset',
 	);
 }
-?>

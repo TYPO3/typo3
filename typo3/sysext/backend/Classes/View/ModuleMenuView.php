@@ -334,6 +334,3 @@ class ModuleMenuView {
 	}
 
 }
-
-
-?>

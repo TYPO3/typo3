@@ -217,6 +217,3 @@ class MathUtility {
 	}
 
 }
-
-
-?>

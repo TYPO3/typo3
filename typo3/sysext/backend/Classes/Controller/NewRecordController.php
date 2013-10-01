@@ -662,5 +662,3 @@ class NewRecordController {
 	}
 
 }
-
-?>

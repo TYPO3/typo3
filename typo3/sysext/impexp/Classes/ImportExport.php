@@ -3168,5 +3168,3 @@ class ImportExport {
 	}
 
 }
-
-?>

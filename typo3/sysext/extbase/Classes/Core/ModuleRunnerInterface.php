@@ -42,5 +42,3 @@ interface ModuleRunnerInterface {
 	 */
 	public function callModule($moduleSignature);
 }
-
-?>

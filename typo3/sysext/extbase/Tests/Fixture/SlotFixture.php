@@ -27,5 +27,3 @@ namespace TYPO3\CMS\Extbase\Tests\Fixture;
 class SlotFixture {
 	public function slot() {}
 }
-
-?>

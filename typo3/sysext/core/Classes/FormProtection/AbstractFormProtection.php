@@ -150,6 +150,3 @@ abstract class AbstractFormProtection {
 	abstract public function persistSessionToken();
 
 }
-
-
-?>

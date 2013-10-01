@@ -268,5 +268,3 @@ class WidgetContext {
 		return array('widgetIdentifier', 'ajaxWidgetIdentifier', 'widgetConfiguration', 'controllerObjectName', 'parentPluginNamespace', 'parentExtensionName', 'parentPluginName', 'widgetViewHelperClassName');
 	}
 }
-
-?>

@@ -3693,6 +3693,3 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	}
 
 }
-
-
-?>

@@ -178,6 +178,3 @@ Will report lost files.';
 	}
 
 }
-
-
-?>

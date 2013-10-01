@@ -176,5 +176,3 @@ class RequestHashService implements \TYPO3\CMS\Core\SingletonInterface {
 		return TRUE;
 	}
 }
-
-?>

@@ -43,5 +43,3 @@ interface DataHandlerProcessUploadHookInterface {
 	public function processUpload_postProcessAction(&$filename, \TYPO3\CMS\Core\DataHandling\DataHandler $parentObject);
 
 }
-
-?>

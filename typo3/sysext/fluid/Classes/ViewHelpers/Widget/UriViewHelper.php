@@ -93,5 +93,3 @@ class UriViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper 
 		return $uriBuilder->reset()->setArguments(array($argumentPrefix => $arguments))->setSection($this->arguments['section'])->setAddQueryString(TRUE)->setArgumentsToBeExcludedFromQueryString(array($argumentPrefix, 'cHash'))->setFormat($this->arguments['format'])->build();
 	}
 }
-
-?>

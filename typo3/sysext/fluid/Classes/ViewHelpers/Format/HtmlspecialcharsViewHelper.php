@@ -84,5 +84,3 @@ class HtmlspecialcharsViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Format\Abs
 				$valueVariableName, $valueVariableName, $valueVariableName, $argumentsVariableName, $argumentsVariableName, $argumentsVariableName, $argumentsVariableName);
 	}
 }
-
-?>

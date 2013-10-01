@@ -140,5 +140,3 @@ class TypeHandlingUtility {
 		return $binaryData;
 	}
 }
-
-?>

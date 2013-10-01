@@ -27,5 +27,3 @@ interface RenderingContextAwareInterface {
 	public function setRenderingContext(\TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext);
 
 }
-
-?>

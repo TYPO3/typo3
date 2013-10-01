@@ -70,5 +70,3 @@ class PageInfoViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackend
 		return $pageInfo;
 	}
 }
-
-?>

@@ -1967,5 +1967,3 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	}
 
 }
-
-?>

@@ -42,4 +42,3 @@ $EM_CONF[$_EXTKEY] = array(
 	'_md5_values_when_last_written' => '',
 	'suggests' => array()
 );
-?>

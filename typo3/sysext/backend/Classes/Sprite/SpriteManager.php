@@ -182,6 +182,3 @@ class SpriteManager {
 	}
 
 }
-
-
-?>

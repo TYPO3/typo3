@@ -71,5 +71,3 @@ abstract class AbstractHierarchicalFilesystemDriver extends AbstractDriver {
 		return $this->canonicalizeAndCheckFilePath($folderPath) . '/';
 	}
 }
-
-?>

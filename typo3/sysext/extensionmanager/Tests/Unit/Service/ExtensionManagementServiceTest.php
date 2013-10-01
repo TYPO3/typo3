@@ -241,5 +241,3 @@ class ExtensionManagementServiceTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseT
 	}
 
 }
-
-?>

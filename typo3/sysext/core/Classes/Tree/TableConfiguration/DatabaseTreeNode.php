@@ -172,6 +172,3 @@ class DatabaseTreeNode extends \TYPO3\CMS\Backend\Tree\TreeRepresentationNode {
 	}
 
 }
-
-
-?>

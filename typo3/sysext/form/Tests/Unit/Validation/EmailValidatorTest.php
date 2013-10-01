@@ -97,4 +97,3 @@ class EmailValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		);
 	}
 }
-?>

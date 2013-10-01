@@ -118,5 +118,3 @@ class HtmlspecialcharsViewHelperTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseT
 		$this->assertSame($source, $actualResult);
 	}
 }
-
-?>

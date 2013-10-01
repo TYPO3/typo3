@@ -100,6 +100,3 @@ class RecyclerGarbageCollectionAdditionalFieldProvider implements \TYPO3\CMS\Sch
 	}
 
 }
-
-
-?>

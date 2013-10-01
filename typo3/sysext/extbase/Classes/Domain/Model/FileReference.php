@@ -51,5 +51,3 @@ class FileReference extends \TYPO3\CMS\Extbase\Domain\Model\AbstractFileFolder {
 		return $this->originalResource;
 	}
 }
-
-?>

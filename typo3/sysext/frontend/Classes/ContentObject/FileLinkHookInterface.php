@@ -43,5 +43,3 @@ interface FileLinkHookInterface {
 	public function getPreviewImage(\TYPO3\CMS\Core\Resource\File $file);
 
 }
-
-?>

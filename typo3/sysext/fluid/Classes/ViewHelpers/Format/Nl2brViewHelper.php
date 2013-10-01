@@ -46,5 +46,3 @@ class Nl2brViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelpe
 		return nl2br($content);
 	}
 }
-
-?>

@@ -157,5 +157,3 @@ class ConfirmationView extends \TYPO3\CMS\Form\View\Confirmation\Element\Contain
 	}
 
 }
-
-?>

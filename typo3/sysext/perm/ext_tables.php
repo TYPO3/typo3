@@ -11,4 +11,3 @@ if (TYPO3_MODE === 'BE') {
 	);
 	$GLOBALS['TYPO3_CONF_VARS']['BE']['AJAX']['PermissionAjaxController::dispatch'] = 'TYPO3\\CMS\\Perm\\Controller\\PermissionAjaxController->dispatch';
 }
-?>

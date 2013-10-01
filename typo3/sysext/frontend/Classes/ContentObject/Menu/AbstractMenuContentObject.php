@@ -1814,6 +1814,3 @@ class AbstractMenuContentObject {
 		return $this->parent_cObj;
 	}
 }
-
-
-?>

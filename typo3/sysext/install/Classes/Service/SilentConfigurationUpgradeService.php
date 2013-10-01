@@ -331,4 +331,3 @@ class SilentConfigurationUpgradeService {
 		);
 	}
 }
-?>

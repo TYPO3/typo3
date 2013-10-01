@@ -61,5 +61,3 @@ class UrlencodeViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewH
 		return rawurlencode($value);
 	}
 }
-
-?>

@@ -43,5 +43,3 @@ interface AdminPanelViewHookInterface {
 	public function extendAdminPanel($moduleContent, \TYPO3\CMS\Frontend\View\AdminPanelView $obj);
 
 }
-
-?>

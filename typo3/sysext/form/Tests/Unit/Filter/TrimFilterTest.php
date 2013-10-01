@@ -94,4 +94,3 @@ some text ', 'some text', '
 		);
 	}
 }
-?>

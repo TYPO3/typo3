@@ -302,5 +302,3 @@ class ArgumentTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$argument->_set('configurationManager', $mockConfigurationManager);
 	}
 }
-
-?>

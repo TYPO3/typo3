@@ -92,6 +92,3 @@ class DatabaseRecordList extends \TYPO3\CMS\Recordlist\RecordList\DatabaseRecord
 	}
 
 }
-
-
-?>

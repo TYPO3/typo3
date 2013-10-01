@@ -84,5 +84,3 @@ abstract class BaseTestCase extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		}
 	}
 }
-
-?>

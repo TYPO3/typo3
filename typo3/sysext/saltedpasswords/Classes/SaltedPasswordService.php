@@ -279,6 +279,3 @@ class SaltedPasswordService extends \TYPO3\CMS\Sv\AbstractAuthenticationService 
 	}
 
 }
-
-
-?>

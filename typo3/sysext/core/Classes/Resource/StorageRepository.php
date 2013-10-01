@@ -200,6 +200,3 @@ class StorageRepository extends AbstractRepository {
 	}
 
 }
-
-
-?>

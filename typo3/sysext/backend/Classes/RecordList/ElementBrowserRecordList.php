@@ -178,6 +178,3 @@ class ElementBrowserRecordList extends \TYPO3\CMS\Recordlist\RecordList\Database
 	}
 
 }
-
-
-?>

@@ -31,6 +31,3 @@ abstract class AbstractFileOperationException extends \TYPO3\CMS\Core\Resource\E
 
 
 }
-
-
-?>

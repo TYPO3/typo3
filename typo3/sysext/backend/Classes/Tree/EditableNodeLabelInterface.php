@@ -44,5 +44,3 @@ interface EditableNodeLabelInterface
 	public function setLabel($label);
 
 }
-
-?>

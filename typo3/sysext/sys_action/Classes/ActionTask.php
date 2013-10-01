@@ -863,6 +863,3 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 	}
 
 }
-
-
-?>

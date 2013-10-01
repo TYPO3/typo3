@@ -51,5 +51,3 @@ class AlphanumericValidator extends AbstractValidator {
 		}
 	}
 }
-
-?>

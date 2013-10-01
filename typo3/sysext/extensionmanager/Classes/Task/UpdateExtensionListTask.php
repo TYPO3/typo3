@@ -62,4 +62,3 @@ class UpdateExtensionListTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 		$persistenceManager->persistAll();
 	}
 }
-?>

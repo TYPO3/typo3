@@ -194,6 +194,3 @@ class SelectFont extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 	}
 
 }
-
-
-?>

@@ -59,5 +59,3 @@ class SysFileMountsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractV
 	}
 
 }
-
-?>

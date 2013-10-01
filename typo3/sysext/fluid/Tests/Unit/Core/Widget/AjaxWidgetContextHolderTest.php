@@ -34,5 +34,3 @@ class AjaxWidgetContextHolderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTest
 		$ajaxWidgetContextHolder->get(42);
 	}
 }
-
-?>

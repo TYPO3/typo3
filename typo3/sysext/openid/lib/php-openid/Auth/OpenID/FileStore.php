@@ -614,5 +614,3 @@ class Auth_OpenID_FileStore extends Auth_OpenID_OpenIDStore {
         return $removed;
     }
 }
-
-

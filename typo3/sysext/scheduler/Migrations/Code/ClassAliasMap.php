@@ -19,4 +19,3 @@ return array(
 	'tx_scheduler_TableGarbageCollection_AdditionalFieldProvider' => 'TYPO3\\CMS\\Scheduler\\Task\\TableGarbageCollectionAdditionalFieldProvider',
 	'tx_scheduler_TableGarbageCollection' => 'TYPO3\\CMS\\Scheduler\\Task\\TableGarbageCollectionTask',
 );
-?>

@@ -2394,6 +2394,3 @@ This is a dump of the failures:
 	}
 
 }
-
-
-?>

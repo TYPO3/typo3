@@ -16,4 +16,3 @@ return array(
 	'SC_mod_tools_config_index' => 'TYPO3\\CMS\\Lowlevel\\View\\ConfigurationView',
 	'SC_mod_tools_dbint_index' => 'TYPO3\\CMS\\Lowlevel\\View\\DatabaseIntegrityView',
 );
-?>

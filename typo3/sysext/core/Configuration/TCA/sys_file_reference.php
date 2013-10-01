@@ -266,4 +266,3 @@ return array(
 		)
 	)
 );
-?>

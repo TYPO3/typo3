@@ -81,4 +81,3 @@ return array(
 	'tslib_AdminPanel' => 'TYPO3\\CMS\\Frontend\\View\\AdminPanelView',
 	'tslib_adminPanelHook' => 'TYPO3\\CMS\\Frontend\\View\\AdminPanelViewHookInterface',
 );
-?>

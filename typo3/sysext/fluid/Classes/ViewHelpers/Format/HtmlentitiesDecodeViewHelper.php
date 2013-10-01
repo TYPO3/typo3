@@ -67,5 +67,3 @@ class HtmlentitiesDecodeViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Format\A
 		return html_entity_decode($value, $flags, $encoding);
 	}
 }
-
-?>

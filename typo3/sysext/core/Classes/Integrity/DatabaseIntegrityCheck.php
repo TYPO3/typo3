@@ -712,6 +712,3 @@ class DatabaseIntegrityCheck {
 	}
 
 }
-
-
-?>

@@ -68,4 +68,3 @@ interface StatusInterface {
 	 */
 	public function setMessage($message);
 }
-?>

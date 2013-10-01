@@ -159,6 +159,3 @@ class RecyclerAjaxController {
 	}
 
 }
-
-
-?>

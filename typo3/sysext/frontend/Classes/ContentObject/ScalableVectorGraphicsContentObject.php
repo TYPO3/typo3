@@ -92,6 +92,3 @@ class ScalableVectorGraphicsContentObject extends \TYPO3\CMS\Frontend\ContentObj
 	}
 
 }
-
-
-?>

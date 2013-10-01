@@ -439,5 +439,3 @@ class StandaloneViewTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$this->assertEquals($expectedResult, $actualResult);
 	}
 }
-
-?>

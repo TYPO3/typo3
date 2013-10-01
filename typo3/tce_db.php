@@ -43,4 +43,3 @@ if ($formprotection->validateToken(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('
 	$simpleDataHandlerController->main();
 }
 $simpleDataHandlerController->finish();
-?>

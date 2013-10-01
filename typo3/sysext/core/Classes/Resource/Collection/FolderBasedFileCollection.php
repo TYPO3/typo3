@@ -123,6 +123,3 @@ class FolderBasedFileCollection extends \TYPO3\CMS\Core\Resource\Collection\Abst
 	}
 
 }
-
-
-?>

@@ -81,5 +81,3 @@ class ConjunctionValidator extends AbstractCompositeValidator {
 		return $result;
 	}
 }
-
-?>

@@ -118,5 +118,3 @@ class FileMount extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 		$this->isAbsolutePath = $value;
 	}
 }
-
-?>

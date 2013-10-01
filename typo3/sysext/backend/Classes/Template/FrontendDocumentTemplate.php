@@ -66,6 +66,3 @@ class FrontendDocumentTemplate extends \TYPO3\CMS\Backend\Template\DocumentTempl
 	}
 
 }
-
-
-?>

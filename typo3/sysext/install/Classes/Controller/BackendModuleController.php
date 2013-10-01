@@ -104,5 +104,3 @@ class BackendModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCo
 		\TYPO3\CMS\Core\Utility\HttpUtility::redirect($uri);
 	}
 }
-
-?>

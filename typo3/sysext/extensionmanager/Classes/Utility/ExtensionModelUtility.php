@@ -92,5 +92,3 @@ class ExtensionModelUtility {
 		return $dependenciesObject;
 	}
 }
-
-?>

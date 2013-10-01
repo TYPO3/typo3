@@ -318,5 +318,3 @@ class Mapper implements \TYPO3\CMS\Core\SingletonInterface {
 		return $query->matching($query->equals('uid', intval($uid)))->execute()->getFirst();
 	}
 }
-
-?>

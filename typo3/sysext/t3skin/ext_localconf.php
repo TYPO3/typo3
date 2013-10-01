@@ -6,4 +6,3 @@ if (!defined('TYPO3_MODE')) {
 	RTE.default.skin = EXT:' . $_EXTKEY . '/rtehtmlarea/htmlarea.css
 	RTE.default.FE.skin = EXT:' . $_EXTKEY . '/rtehtmlarea/htmlarea.css
 ');
-?>

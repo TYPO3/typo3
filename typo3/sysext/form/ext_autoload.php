@@ -5,4 +5,3 @@ $extensionClassesPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extP
 return array(
 	'tx_form_controller_wizard' => $extensionClassesPath . 'Controller/Wizard.php',
 );
-?>

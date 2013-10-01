@@ -98,6 +98,3 @@ class TestTaskAdditionalFieldProvider implements \TYPO3\CMS\Scheduler\Additional
 	}
 
 }
-
-
-?>

@@ -185,5 +185,3 @@ class ImportExportTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 	}
 
 }
-
-?>

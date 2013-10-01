@@ -403,6 +403,3 @@ class SuggestDefaultReceiver {
 	}
 
 }
-
-
-?>

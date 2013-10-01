@@ -288,5 +288,3 @@ class UpdateWizard extends Action\AbstractAction implements Action\ActionInterfa
 		return $GLOBALS['TYPO3_DB'];
 	}
 }
-
-?>

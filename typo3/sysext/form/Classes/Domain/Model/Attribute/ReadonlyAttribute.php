@@ -58,5 +58,3 @@ class ReadonlyAttribute extends \TYPO3\CMS\Form\Domain\Model\Attribute\AbstractA
 	}
 
 }
-
-?>

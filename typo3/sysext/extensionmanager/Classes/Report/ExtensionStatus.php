@@ -308,4 +308,3 @@ class ExtensionStatus implements \TYPO3\CMS\Reports\StatusProviderInterface {
 		return $result;
 	}
 }
-?>

@@ -49,5 +49,3 @@ interface TaskInterface {
 	public function getOverview();
 
 }
-
-?>

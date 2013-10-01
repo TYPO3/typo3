@@ -31,6 +31,3 @@ class ExistingTargetFolderException extends \TYPO3\CMS\Core\Resource\Exception {
 
 
 }
-
-
-?>

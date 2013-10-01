@@ -246,4 +246,3 @@ Value 2.2
 		$this->assertSame($expected, $this->fixture->substituteMarkerAndSubpartArrayRecursive($template, $markersAndSubparts, $wrap, $uppercase, $deleteUnused));
 	}
 }
-?>

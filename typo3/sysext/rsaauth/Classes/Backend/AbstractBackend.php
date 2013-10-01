@@ -85,6 +85,3 @@ abstract class AbstractBackend {
 	}
 
 }
-
-
-?>

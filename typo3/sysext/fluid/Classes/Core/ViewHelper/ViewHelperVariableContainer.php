@@ -140,5 +140,3 @@ class ViewHelperVariableContainer {
 		return array('objects');
 	}
 }
-
-?>

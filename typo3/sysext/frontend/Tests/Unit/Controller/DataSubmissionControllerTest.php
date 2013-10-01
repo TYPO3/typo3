@@ -79,4 +79,3 @@ class DataSubmissionControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->assertTrue($fileExists);
 	}
 }
-?>

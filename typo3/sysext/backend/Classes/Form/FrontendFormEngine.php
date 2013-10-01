@@ -156,6 +156,3 @@ class FrontendFormEngine extends \TYPO3\CMS\Backend\Form\FormEngine {
 	}
 
 }
-
-
-?>

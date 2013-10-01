@@ -34,5 +34,3 @@ class ArgumentDefinitionTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase 
 		$this->assertEquals($argumentDefinition->isMethodParameter(), $isMethodParameter, 'isMethodParameter flag could not be retrieved correctly.');
 	}
 }
-
-?>

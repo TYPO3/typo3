@@ -48,5 +48,3 @@ class RemoveXssFilter implements \TYPO3\CMS\Form\Filter\FilterInterface {
 	}
 
 }
-
-?>

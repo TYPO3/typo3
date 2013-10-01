@@ -60,5 +60,3 @@ class ArrayNode extends \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode {
 		return $this->internalArray;
 	}
 }
-
-?>

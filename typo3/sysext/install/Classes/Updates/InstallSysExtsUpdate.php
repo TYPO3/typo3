@@ -346,5 +346,3 @@ class InstallSysExtsUpdate extends AbstractUpdate {
 		return FALSE;
 	}
 }
-
-?>

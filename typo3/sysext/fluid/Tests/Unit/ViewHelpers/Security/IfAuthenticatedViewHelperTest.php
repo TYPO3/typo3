@@ -70,5 +70,3 @@ class IfAuthenticatedViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelp
 		$this->assertEquals('else child', $actualResult);
 	}
 }
-
-?>

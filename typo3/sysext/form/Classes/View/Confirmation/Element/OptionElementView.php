@@ -50,5 +50,3 @@ class OptionElementView extends \TYPO3\CMS\Form\View\Confirmation\Element\Abstra
 	}
 
 }
-
-?>

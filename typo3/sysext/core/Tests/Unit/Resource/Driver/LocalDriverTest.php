@@ -1648,4 +1648,3 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 	}
 
 }
-?>

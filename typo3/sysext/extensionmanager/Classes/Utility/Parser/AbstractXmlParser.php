@@ -82,5 +82,3 @@ abstract class AbstractXmlParser {
 	 */
 	abstract protected function createParser();
 }
-
-?>

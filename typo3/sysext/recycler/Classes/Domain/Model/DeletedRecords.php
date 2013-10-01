@@ -375,6 +375,3 @@ class DeletedRecords {
 	}
 
 }
-
-
-?>

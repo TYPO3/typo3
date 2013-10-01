@@ -6442,5 +6442,3 @@ function ' . $evalData . '(value) {
 	}
 
 }
-
-?>

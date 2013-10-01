@@ -93,5 +93,3 @@ class PropertyError extends \TYPO3\CMS\Extbase\Validation\Error {
 		return $this->propertyName;
 	}
 }
-
-?>

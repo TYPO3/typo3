@@ -819,6 +819,3 @@ class GifBuilder extends \TYPO3\CMS\Core\Imaging\GraphicalFunctions {
 	}
 
 }
-
-
-?>

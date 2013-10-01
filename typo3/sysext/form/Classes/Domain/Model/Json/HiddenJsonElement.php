@@ -71,5 +71,3 @@ class HiddenJsonElement extends \TYPO3\CMS\Form\Domain\Model\Json\AbstractJsonEl
 	);
 
 }
-
-?>

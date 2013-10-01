@@ -409,6 +409,3 @@ Please disable either one of them.';
 	}
 
 }
-
-
-?>

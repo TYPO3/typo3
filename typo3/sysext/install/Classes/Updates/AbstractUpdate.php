@@ -207,5 +207,3 @@ abstract class AbstractUpdate {
 	}
 
 }
-
-?>

@@ -51,5 +51,3 @@ class OptgroupElementView extends \TYPO3\CMS\Form\View\Form\Element\ContainerEle
 	protected $noWrap = TRUE;
 
 }
-
-?>

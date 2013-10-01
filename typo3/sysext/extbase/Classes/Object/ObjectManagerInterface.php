@@ -80,5 +80,3 @@ interface ObjectManagerInterface extends \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	public function getScope($objectName);
 }
-
-?>

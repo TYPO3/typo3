@@ -73,6 +73,3 @@ class DeletedRecordsController {
 	}
 
 }
-
-
-?>

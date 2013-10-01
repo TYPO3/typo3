@@ -47,6 +47,3 @@ class WebProcessor extends \TYPO3\CMS\Core\Log\Processor\AbstractProcessor {
 	}
 
 }
-
-
-?>

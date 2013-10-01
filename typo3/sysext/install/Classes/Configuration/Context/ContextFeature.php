@@ -45,4 +45,3 @@ class ContextFeature extends Configuration\AbstractFeature implements Configurat
 		'TYPO3\\CMS\\Install\\Configuration\\Context\\CustomPreset',
 	);
 }
-?>

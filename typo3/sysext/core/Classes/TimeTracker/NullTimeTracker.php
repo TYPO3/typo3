@@ -138,6 +138,3 @@ class NullTimeTracker {
 	}
 
 }
-
-
-?>

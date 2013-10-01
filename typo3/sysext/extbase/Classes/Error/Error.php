@@ -34,5 +34,3 @@ class Error extends \TYPO3\CMS\Extbase\Error\Message {
 	 */
 	protected $message = 'Unknown error';
 }
-
-?>

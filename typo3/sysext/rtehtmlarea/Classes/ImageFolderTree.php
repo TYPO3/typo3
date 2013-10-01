@@ -93,6 +93,3 @@ class ImageFolderTree extends \TBE_FolderTree {
 	}
 
 }
-
-
-?>

@@ -205,5 +205,3 @@ abstract class AbstractWidgetViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper
 		$this->widgetContext->setWidgetIdentifier($widgetIdentifier);
 	}
 }
-
-?>

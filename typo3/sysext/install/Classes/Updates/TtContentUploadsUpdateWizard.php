@@ -224,5 +224,3 @@ class TtContentUploadsUpdateWizard extends AbstractUpdate {
 	}
 
 }
-
-?>

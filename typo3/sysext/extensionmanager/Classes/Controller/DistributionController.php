@@ -42,4 +42,3 @@ class DistributionController extends \TYPO3\CMS\Extensionmanager\Controller\Abst
 		$this->view->assign('extension', $extension);
 	}
 }
-?>

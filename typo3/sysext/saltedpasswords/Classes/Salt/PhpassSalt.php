@@ -390,6 +390,3 @@ class PhpassSalt extends \TYPO3\CMS\Saltedpasswords\Salt\AbstractSalt implements
 	}
 
 }
-
-
-?>

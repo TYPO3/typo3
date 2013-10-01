@@ -273,5 +273,3 @@ class GenericObjectValidator extends AbstractValidator implements ObjectValidato
 		$this->validatedInstancesContainer = $validatedInstancesContainer;
 	}
 }
-
-?>

@@ -96,5 +96,3 @@ class Layout implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 }
-
-?>

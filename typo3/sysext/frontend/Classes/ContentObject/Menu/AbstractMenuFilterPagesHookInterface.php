@@ -45,5 +45,3 @@ interface AbstractMenuFilterPagesHookInterface {
 	public function processFilter(array &$data, array $banUidArray, $spacer, \TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject $obj);
 
 }
-
-?>

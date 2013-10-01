@@ -70,5 +70,3 @@ abstract class AbstractWidgetController extends \TYPO3\CMS\Extbase\Mvc\Controlle
 		}
 	}
 }
-
-?>

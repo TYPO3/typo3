@@ -588,5 +588,3 @@ class FrontendConfigurationManagerTest extends \TYPO3\CMS\Extbase\Tests\Unit\Bas
 		);
 	}
 }
-
-?>

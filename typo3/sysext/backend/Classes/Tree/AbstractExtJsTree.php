@@ -65,6 +65,3 @@ abstract class AbstractExtJsTree extends \TYPO3\CMS\Backend\Tree\AbstractTree {
 	abstract public function getNextTreeLevel($nodeId, $nodeData);
 
 }
-
-
-?>

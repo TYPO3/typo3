@@ -5,4 +5,3 @@
  * typo3/sysext/recycler/Classes/Utility/RecyclerUtility.php
  */
 require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('recycler') . 'Classes/Utility/RecyclerUtility.php';
-?>

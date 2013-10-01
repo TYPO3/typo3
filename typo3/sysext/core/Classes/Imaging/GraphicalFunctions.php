@@ -2989,5 +2989,3 @@ class GraphicalFunctions {
 	}
 
 }
-
-?>

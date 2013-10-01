@@ -263,5 +263,3 @@ abstract class AbstractValidator implements \TYPO3\CMS\Form\Validation\Validator
 	}
 
 }
-
-?>

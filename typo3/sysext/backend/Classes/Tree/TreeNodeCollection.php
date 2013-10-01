@@ -124,6 +124,3 @@ class TreeNodeCollection extends \ArrayObject {
 	}
 
 }
-
-
-?>

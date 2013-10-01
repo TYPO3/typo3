@@ -104,6 +104,3 @@ class UserSetupHook {
 	}
 
 }
-
-
-?>

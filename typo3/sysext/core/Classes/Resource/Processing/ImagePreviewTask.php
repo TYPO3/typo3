@@ -84,5 +84,3 @@ class ImagePreviewTask extends AbstractGraphicalTask {
 		 */
 	}
 }
-
-?>

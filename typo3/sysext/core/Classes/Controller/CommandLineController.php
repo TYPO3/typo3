@@ -316,6 +316,3 @@ class CommandLineController {
 	}
 
 }
-
-
-?>

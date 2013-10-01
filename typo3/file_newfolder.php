@@ -35,4 +35,3 @@ require __DIR__ . '/init.php';
 $createFolderController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\File\\CreateFolderController');
 $createFolderController->main();
 $createFolderController->printContent();
-?>

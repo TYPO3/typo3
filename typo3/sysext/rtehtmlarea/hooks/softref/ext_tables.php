@@ -20,4 +20,3 @@ foreach ($tempTables as $table) {
 	}
 }
 unset($tempTables);
-?>

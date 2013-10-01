@@ -169,5 +169,3 @@ class TypoScriptTemplateConstantEditorModuleFunctionController extends \TYPO3\CM
 	}
 
 }
-
-?>

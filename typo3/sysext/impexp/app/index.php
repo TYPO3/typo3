@@ -76,4 +76,3 @@ $SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Impexp
 $SOBE->init();
 $SOBE->main();
 $SOBE->printContent();
-?>

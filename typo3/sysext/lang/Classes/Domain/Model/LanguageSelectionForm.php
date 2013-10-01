@@ -95,4 +95,3 @@ class LanguageSelectionForm extends \TYPO3\CMS\Extbase\DomainObject\AbstractEnti
 	}
 
 }
-?>

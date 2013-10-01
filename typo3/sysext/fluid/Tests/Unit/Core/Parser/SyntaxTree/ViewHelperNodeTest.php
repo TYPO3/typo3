@@ -156,5 +156,3 @@ class ViewHelperNodeTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$viewHelperNode->evaluate($this->renderingContext);
 	}
 }
-
-?>

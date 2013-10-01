@@ -903,6 +903,3 @@ class ReferenceIndex {
 	}
 
 }
-
-
-?>

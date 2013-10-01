@@ -53,5 +53,3 @@ abstract class AbstractFileFolder extends \TYPO3\CMS\Extbase\DomainObject\Abstra
 		return $this->originalResource;
 	}
 }
-
-?>

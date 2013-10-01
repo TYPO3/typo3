@@ -34,6 +34,3 @@ class InvalidDataException extends \TYPO3\CMS\Core\Cache\Exception {
 
 
 }
-
-
-?>

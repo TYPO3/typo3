@@ -32,4 +32,3 @@ namespace TYPO3\CMS\Install\Controller\Exception;
 class RedirectException extends \TYPO3\CMS\Install\Exception {
 
 }
-?>

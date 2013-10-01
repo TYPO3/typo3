@@ -375,5 +375,3 @@ class File extends AbstractFile {
 	}
 
 }
-
-?>

@@ -335,6 +335,3 @@ class LogRecord implements \ArrayAccess {
 	}
 
 }
-
-
-?>

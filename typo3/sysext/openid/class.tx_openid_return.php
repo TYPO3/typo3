@@ -36,4 +36,3 @@ require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('openid
 $module = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Openid\\OpenidReturn');
 /* @var \TYPO3\CMS\Openid\OpenidReturn $module */
 $module->main();
-?>

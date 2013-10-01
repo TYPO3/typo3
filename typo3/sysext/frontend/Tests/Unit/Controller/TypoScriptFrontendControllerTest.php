@@ -181,5 +181,3 @@ class TypoScriptFrontendControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
 	}
 
 }
-
-?>

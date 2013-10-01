@@ -43,4 +43,3 @@ require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('adodb'
 // Make instance:
 $SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Adodb\\View\\CheckConnectionWizardView');
 $SOBE->main();
-?>

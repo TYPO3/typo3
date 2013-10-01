@@ -369,5 +369,3 @@ class PropertyType {
 		return $value;
 	}
 }
-
-?>

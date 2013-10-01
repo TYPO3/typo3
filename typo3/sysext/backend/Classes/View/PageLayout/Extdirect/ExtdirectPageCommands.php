@@ -100,4 +100,3 @@ class ExtdirectPageCommands {
 		return array('success' => TRUE);
 	}
 }
-?>

@@ -31,6 +31,3 @@ class FileOperationErrorException extends \TYPO3\CMS\Core\Resource\Exception\Abs
 
 
 }
-
-
-?>

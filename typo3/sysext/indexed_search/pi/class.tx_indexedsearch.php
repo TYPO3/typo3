@@ -35,4 +35,3 @@
  * it is added addPItoST43 in ext_localconf.php to TypoScript and instantiated as its
  * alias tx_indexedsearch
  */
-?>

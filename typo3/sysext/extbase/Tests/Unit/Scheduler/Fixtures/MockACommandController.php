@@ -42,5 +42,3 @@ class MockACommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\CommandCo
 		return 'Foo';
 	}
 }
-
-?>

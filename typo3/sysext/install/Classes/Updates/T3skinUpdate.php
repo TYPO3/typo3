@@ -92,5 +92,3 @@ class T3skinUpdate extends AbstractUpdate {
 	}
 
 }
-
-?>

@@ -66,6 +66,3 @@ class ClearGifContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractCo
 	}
 
 }
-
-
-?>

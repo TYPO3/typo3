@@ -406,5 +406,3 @@ class ArrayUtilityTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$this->assertSame($expected, \TYPO3\CMS\Extbase\Utility\ArrayUtility::integerExplode(',', $inputString));
 	}
 }
-
-?>

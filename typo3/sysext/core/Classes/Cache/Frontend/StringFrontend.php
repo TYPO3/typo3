@@ -96,6 +96,3 @@ class StringFrontend extends \TYPO3\CMS\Core\Cache\Frontend\AbstractFrontend {
 	}
 
 }
-
-
-?>

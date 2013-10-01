@@ -274,6 +274,3 @@ class SecurityStatus implements \TYPO3\CMS\Reports\StatusProviderInterface {
 	}
 
 }
-
-
-?>

@@ -124,4 +124,3 @@ class InstallToolFormProtectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->fixture->_call('createValidationErrorMessage');
 	}
 }
-?>

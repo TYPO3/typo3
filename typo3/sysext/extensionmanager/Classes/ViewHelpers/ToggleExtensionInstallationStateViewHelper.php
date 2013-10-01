@@ -67,6 +67,3 @@ class ToggleExtensionInstallationStateViewHelper extends \TYPO3\CMS\Fluid\ViewHe
 	}
 
 }
-
-
-?>

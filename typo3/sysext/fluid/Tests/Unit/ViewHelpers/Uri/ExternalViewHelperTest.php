@@ -70,5 +70,3 @@ class ExternalViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Vie
 		$this->assertEquals('some-domain.tld', $actualResult);
 	}
 }
-
-?>

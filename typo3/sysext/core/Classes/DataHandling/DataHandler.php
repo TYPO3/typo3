@@ -7350,6 +7350,3 @@ class DataHandler {
 		return GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\RelationHandler');
 	}
 }
-
-
-?>

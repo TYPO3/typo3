@@ -1551,6 +1551,3 @@ class HtmlParser {
 	}
 
 }
-
-
-?>

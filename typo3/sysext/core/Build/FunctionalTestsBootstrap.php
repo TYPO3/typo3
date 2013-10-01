@@ -48,4 +48,3 @@ require_once(__DIR__ . '/../Tests/Exception.php');
 if (!defined('ORIGINAL_ROOT')) {
 	define('ORIGINAL_ROOT', $_SERVER['PWD'] . '/');
 }
-?>

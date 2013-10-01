@@ -42,5 +42,3 @@ class FileuploadElementView extends \TYPO3\CMS\Form\View\Form\Element\AbstractEl
 	';
 
 }
-
-?>

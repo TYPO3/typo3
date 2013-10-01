@@ -40,5 +40,3 @@ interface InterceptorInterface {
 	 */
 	public function getInterceptionPoints();
 }
-
-?>

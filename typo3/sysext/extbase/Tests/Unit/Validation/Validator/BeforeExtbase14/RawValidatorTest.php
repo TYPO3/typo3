@@ -48,5 +48,3 @@ class RawValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$rawValidator->isValid(new \ArrayObject());
 	}
 }
-
-?>

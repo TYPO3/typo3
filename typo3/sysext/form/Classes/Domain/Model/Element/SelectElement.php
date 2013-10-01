@@ -95,5 +95,3 @@ class SelectElement extends \TYPO3\CMS\Form\Domain\Model\Element\ContainerElemen
 	}
 
 }
-
-?>

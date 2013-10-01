@@ -53,5 +53,3 @@ class MethodAttribute extends \TYPO3\CMS\Form\Domain\Model\Attribute\AbstractAtt
 	}
 
 }
-
-?>

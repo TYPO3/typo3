@@ -295,5 +295,3 @@ class FormViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHel
 		$this->assertEquals($expectedResults, $results);
 	}
 }
-
-?>

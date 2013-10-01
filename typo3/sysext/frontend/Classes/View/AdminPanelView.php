@@ -667,6 +667,3 @@ class AdminPanelView {
 	}
 
 }
-
-
-?>

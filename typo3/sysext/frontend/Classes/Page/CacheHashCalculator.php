@@ -267,6 +267,3 @@ class CacheHashCalculator implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 }
-
-
-?>

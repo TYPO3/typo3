@@ -56,5 +56,3 @@ interface PageRepositoryGetRecordOverlayHookInterface {
 	public function getRecordOverlay_postProcess($table, &$row, &$sys_language_content, $OLmode, \TYPO3\CMS\Frontend\Page\PageRepository $parent);
 
 }
-
-?>

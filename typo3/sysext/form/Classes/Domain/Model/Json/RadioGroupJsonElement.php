@@ -123,5 +123,3 @@ class RadioGroupJsonElement extends \TYPO3\CMS\Form\Domain\Model\Json\FieldsetJs
 	}
 
 }
-
-?>

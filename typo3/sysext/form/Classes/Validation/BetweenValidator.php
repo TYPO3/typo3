@@ -154,5 +154,3 @@ class BetweenValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator impl
 	}
 
 }
-
-?>

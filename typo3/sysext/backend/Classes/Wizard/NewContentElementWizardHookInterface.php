@@ -42,5 +42,3 @@ interface NewContentElementWizardHookInterface {
 	public function manipulateWizardItems(&$wizardItems, &$parentObject);
 
 }
-
-?>

@@ -63,5 +63,3 @@ class AlphanumericValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validation
 		$this->assertFalse($this->validator->validate('12ssDF34daweidfäøüößØœ你好')->hasErrors());
 	}
 }
-
-?>

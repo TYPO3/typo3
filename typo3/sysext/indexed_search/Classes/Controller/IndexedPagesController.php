@@ -1070,6 +1070,3 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 	}
 
 }
-
-
-?>

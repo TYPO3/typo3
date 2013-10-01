@@ -75,5 +75,3 @@ class ClassWithGettersAndSetters {
 		return $this->property2;
 	}
 }
-
-?>

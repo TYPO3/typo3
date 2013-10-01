@@ -101,6 +101,3 @@ class FileIndexingTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 	}
 
 }
-
-
-?>

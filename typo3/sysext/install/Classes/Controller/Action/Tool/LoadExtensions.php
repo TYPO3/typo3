@@ -44,4 +44,3 @@ class LoadExtensions extends Action\AbstractAction implements Action\ActionInter
 		return $this->view->render();
 	}
 }
-?>

@@ -55,5 +55,3 @@ class MaxlengthAttribute extends \TYPO3\CMS\Form\Domain\Model\Attribute\Abstract
 	}
 
 }
-
-?>

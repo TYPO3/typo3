@@ -236,6 +236,3 @@ class Md5Salt extends \TYPO3\CMS\Saltedpasswords\Salt\AbstractSalt implements \T
 	}
 
 }
-
-
-?>

@@ -39,4 +39,3 @@ if (!(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_AJAX)) {
 	$pageTreeNavigationController->main();
 	$pageTreeNavigationController->printContent();
 }
-?>

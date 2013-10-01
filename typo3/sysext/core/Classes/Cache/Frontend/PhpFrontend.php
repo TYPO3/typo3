@@ -83,6 +83,3 @@ class PhpFrontend extends \TYPO3\CMS\Core\Cache\Frontend\StringFrontend {
 	}
 
 }
-
-
-?>

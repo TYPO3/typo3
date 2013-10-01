@@ -481,5 +481,3 @@ class Folder implements FolderInterface {
 		return $this->storage->getRole($this);
 	}
 }
-
-?>

@@ -107,4 +107,3 @@ return array(
 		)
 	)
 );
-?>

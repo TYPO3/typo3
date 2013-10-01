@@ -2508,6 +2508,3 @@ class InlineElement {
 	}
 
 }
-
-
-?>

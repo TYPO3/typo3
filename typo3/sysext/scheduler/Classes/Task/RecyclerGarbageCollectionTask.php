@@ -105,6 +105,3 @@ class RecyclerGarbageCollectionTask extends \TYPO3\CMS\Scheduler\Task\AbstractTa
 	}
 
 }
-
-
-?>

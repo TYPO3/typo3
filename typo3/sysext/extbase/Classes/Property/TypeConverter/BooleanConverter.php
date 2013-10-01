@@ -56,4 +56,3 @@ class BooleanConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\Abstrac
 		return (boolean) $source;
 	}
 }
-?>

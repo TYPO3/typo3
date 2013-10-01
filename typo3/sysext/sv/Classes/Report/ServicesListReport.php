@@ -249,6 +249,3 @@ class ServicesListReport implements \TYPO3\CMS\Reports\ReportInterface {
 	}
 
 }
-
-
-?>

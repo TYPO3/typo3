@@ -42,5 +42,3 @@ class TextlineElementView extends \TYPO3\CMS\Form\View\Form\Element\AbstractElem
 	';
 
 }
-
-?>

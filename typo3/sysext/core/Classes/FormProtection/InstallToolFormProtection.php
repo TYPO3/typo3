@@ -141,6 +141,3 @@ class InstallToolFormProtection extends AbstractFormProtection {
 	}
 
 }
-
-
-?>

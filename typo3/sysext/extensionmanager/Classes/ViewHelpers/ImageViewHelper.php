@@ -89,6 +89,3 @@ class ImageViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\ImageViewHelper {
 	}
 
 }
-
-
-?>

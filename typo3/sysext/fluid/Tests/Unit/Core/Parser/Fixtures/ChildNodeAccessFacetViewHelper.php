@@ -17,5 +17,3 @@ namespace TYPO3\CMS\Fluid\Core\Parser\Fixtures;
 abstract class ChildNodeAccessFacetViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper implements \TYPO3\CMS\Fluid\Core\ViewHelper\Facets\ChildNodeAccessInterface {
 
 }
-
-?>

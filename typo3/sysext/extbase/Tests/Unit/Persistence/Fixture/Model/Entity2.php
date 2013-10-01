@@ -57,4 +57,3 @@ class Entity2 extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	public $someReferenceArray = array();
 
 }
-?>

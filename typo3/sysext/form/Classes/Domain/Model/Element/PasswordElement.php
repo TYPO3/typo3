@@ -83,5 +83,3 @@ class PasswordElement extends \TYPO3\CMS\Form\Domain\Model\Element\AbstractEleme
 	}
 
 }
-
-?>

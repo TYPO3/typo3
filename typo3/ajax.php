@@ -76,4 +76,3 @@ if (empty($ajaxID)) {
 
 // Outputting the content (and setting the X-JSON-Header)
 $ajaxObj->render();
-?>

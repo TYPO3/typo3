@@ -119,5 +119,3 @@ class HttpRequest extends \HTTP_Request2 {
 	}
 
 }
-
-?>

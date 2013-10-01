@@ -620,6 +620,3 @@ class ExtDirectNode extends \TYPO3\CMS\Backend\Tree\TreeNode {
 	}
 
 }
-
-
-?>

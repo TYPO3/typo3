@@ -244,5 +244,3 @@ class BackendLayoutWizardController {
 	}
 
 }
-
-?>

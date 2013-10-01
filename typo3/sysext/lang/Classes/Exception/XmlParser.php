@@ -30,5 +30,3 @@ namespace TYPO3\CMS\Lang\Exception;
  */
 class XmlParser extends \TYPO3\CMS\Core\Exception {
 }
-
-?>

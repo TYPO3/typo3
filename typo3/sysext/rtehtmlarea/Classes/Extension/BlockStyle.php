@@ -69,6 +69,3 @@ class BlockStyle extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 	protected $requiresClassesConfiguration = TRUE;
 
 }
-
-
-?>

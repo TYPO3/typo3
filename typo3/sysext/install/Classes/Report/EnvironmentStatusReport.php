@@ -83,5 +83,3 @@ class EnvironmentStatusReport implements \TYPO3\CMS\Reports\StatusProviderInterf
 		return $statusArray;
 	}
 }
-
-?>

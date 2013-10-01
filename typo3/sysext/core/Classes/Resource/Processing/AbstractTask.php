@@ -231,5 +231,3 @@ abstract class AbstractTask implements TaskInterface {
 		return $this->successful;
 	}
 }
-
-?>

@@ -464,6 +464,3 @@ class ModuleSettings {
 	}
 
 }
-
-
-?>

@@ -161,5 +161,3 @@ class Demand extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	}
 
 }
-
-?>

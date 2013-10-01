@@ -43,5 +43,3 @@ interface ContentObjectGetPublicUrlForFileHookInterface {
 	public function postProcess(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $parent, array $configuration, \TYPO3\CMS\Core\Resource\File $file, &$pubicUrl);
 
 }
-
-?>

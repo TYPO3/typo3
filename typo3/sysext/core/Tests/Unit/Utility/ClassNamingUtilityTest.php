@@ -258,5 +258,3 @@ class ClassNamingUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->assertSame($expectedMatches, $actualMatches);
 	}
 }
-
-?>

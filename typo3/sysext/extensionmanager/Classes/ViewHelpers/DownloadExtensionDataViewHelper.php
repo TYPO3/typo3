@@ -63,6 +63,3 @@ class DownloadExtensionDataViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Link\
 	}
 
 }
-
-
-?>

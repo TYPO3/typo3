@@ -7,4 +7,3 @@ return array(
 	'tx_impexp_localPageTree' => 'TYPO3\\CMS\\Impexp\\LocalPageTree',
 	'tx_impexp_task' => 'TYPO3\\CMS\\Impexp\\Task\\ImportExportTask',
 );
-?>

@@ -86,6 +86,3 @@ class HorizontalRulerContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abs
 	}
 
 }
-
-
-?>

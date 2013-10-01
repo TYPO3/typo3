@@ -127,6 +127,3 @@ class PageTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 	}
 
 }
-
-
-?>

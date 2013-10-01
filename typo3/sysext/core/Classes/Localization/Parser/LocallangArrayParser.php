@@ -232,6 +232,3 @@ class LocallangArrayParser implements \TYPO3\CMS\Core\Localization\Parser\Locali
 	}
 
 }
-
-
-?>

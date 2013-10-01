@@ -56,4 +56,3 @@ $GLOBALS['TYPO3_CONF_VARS']['FE']['contentRenderingTemplates'] = array(
 	'cssstyledcontent/static/v3.9/',
 	'cssstyledcontent/static/v3.8/'
 );
-?>

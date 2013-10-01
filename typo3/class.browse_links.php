@@ -344,5 +344,3 @@ class TBE_FolderTree extends localFolderTree {
 	}
 
 }
-
-?>

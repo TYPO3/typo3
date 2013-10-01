@@ -648,4 +648,3 @@ class DatabaseConnect extends Action\AbstractAction implements StepInterface {
 		return $socket;
 	}
 }
-?>

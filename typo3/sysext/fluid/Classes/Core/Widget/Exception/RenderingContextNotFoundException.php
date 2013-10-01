@@ -26,5 +26,3 @@ namespace TYPO3\CMS\Fluid\Core\Widget\Exception;
 class RenderingContextNotFoundException extends \TYPO3\CMS\Fluid\Core\Widget\Exception {
 
 }
-
-?>

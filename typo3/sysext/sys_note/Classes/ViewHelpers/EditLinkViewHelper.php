@@ -41,6 +41,3 @@ class EditLinkViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHe
 	}
 
 }
-
-
-?>

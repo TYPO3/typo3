@@ -303,6 +303,3 @@ class ExtDirectServer extends \TYPO3\CMS\Workspaces\ExtDirect\AbstractHandler {
 	}
 
 }
-
-
-?>

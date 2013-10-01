@@ -98,5 +98,3 @@ class EscapeTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$this->assertSame($this->mockNode, $actualResult);
 	}
 }
-
-?>

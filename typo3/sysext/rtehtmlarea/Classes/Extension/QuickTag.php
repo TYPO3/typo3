@@ -72,6 +72,3 @@ class QuickTag extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 	}
 
 }
-
-
-?>

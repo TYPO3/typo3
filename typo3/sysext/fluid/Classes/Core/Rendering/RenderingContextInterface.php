@@ -34,5 +34,3 @@ interface RenderingContextInterface {
 	 */
 	public function getViewHelperVariableContainer();
 }
-
-?>

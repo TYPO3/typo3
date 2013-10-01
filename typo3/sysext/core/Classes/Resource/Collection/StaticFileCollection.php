@@ -71,6 +71,3 @@ class StaticFileCollection extends \TYPO3\CMS\Core\Resource\Collection\AbstractF
 	}
 
 }
-
-
-?>

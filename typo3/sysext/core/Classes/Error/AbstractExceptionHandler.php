@@ -142,6 +142,3 @@ abstract class AbstractExceptionHandler implements \TYPO3\CMS\Core\Error\Excepti
 	}
 
 }
-
-
-?>

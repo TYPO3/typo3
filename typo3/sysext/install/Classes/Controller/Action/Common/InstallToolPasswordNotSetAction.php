@@ -41,4 +41,3 @@ class InstallToolPasswordNotSetAction extends Action\AbstractAction implements A
 		return $this->view->render();
 	}
 }
-?>

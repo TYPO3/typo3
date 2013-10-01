@@ -42,5 +42,3 @@ class ButtonElementView extends \TYPO3\CMS\Form\View\Form\Element\AbstractElemen
 	';
 
 }
-
-?>

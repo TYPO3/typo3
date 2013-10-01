@@ -242,6 +242,3 @@ class CategoryCollection extends \TYPO3\CMS\Core\Collection\AbstractRecordCollec
 	}
 
 }
-
-
-?>

@@ -69,5 +69,3 @@ class LoadWizardView extends \TYPO3\CMS\Form\View\Wizard\AbstractWizardView {
 	}
 
 }
-
-?>

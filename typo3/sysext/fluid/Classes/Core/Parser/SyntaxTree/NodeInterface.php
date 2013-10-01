@@ -47,5 +47,3 @@ interface NodeInterface {
 	 */
 	public function evaluate(\TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext);
 }
-
-?>

@@ -178,6 +178,3 @@ abstract class AbstractFrontend implements \TYPO3\CMS\Core\Cache\Frontend\Fronte
 	}
 
 }
-
-
-?>

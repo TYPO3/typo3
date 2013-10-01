@@ -74,5 +74,3 @@ class ActionViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBased
 		return $this->tag->render();
 	}
 }
-
-?>

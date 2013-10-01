@@ -31,5 +31,3 @@ class TemplateParserBuilder {
 		return $templateParser;
 	}
 }
-
-?>

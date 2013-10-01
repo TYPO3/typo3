@@ -231,5 +231,3 @@ class ClickMenuController {
 	}
 
 }
-
-?>

@@ -66,5 +66,3 @@ class ImageCropScaleMaskTask extends AbstractGraphicalTask {
 		// TODO: Implement fileNeedsProcessing() method.
 	}
 }
-
-?>

@@ -256,6 +256,3 @@ class ConfigurationItemRepository {
 	}
 
 }
-
-
-?>

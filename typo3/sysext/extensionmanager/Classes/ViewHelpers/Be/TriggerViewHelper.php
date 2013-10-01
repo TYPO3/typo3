@@ -66,5 +66,3 @@ class TriggerViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendV
 	}
 
 }
-
-?>

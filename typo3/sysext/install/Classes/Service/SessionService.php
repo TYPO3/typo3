@@ -429,4 +429,3 @@ class SessionService implements \TYPO3\CMS\Core\SingletonInterface {
 		session_write_close();
 	}
 }
-?>

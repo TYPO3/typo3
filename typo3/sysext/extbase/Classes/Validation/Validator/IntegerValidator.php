@@ -52,5 +52,3 @@ class IntegerValidator extends AbstractValidator {
 		}
 	}
 }
-
-?>

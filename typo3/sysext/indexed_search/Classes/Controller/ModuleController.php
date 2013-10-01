@@ -507,6 +507,3 @@ class ModuleController {
 	}
 
 }
-
-
-?>

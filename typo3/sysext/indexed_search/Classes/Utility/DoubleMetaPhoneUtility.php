@@ -833,6 +833,3 @@ class DoubleMetaPhoneUtility {
 	}
 
 }
-
-
-?>

@@ -276,5 +276,3 @@ class FlashMessageQueue extends \SplQueue {
 		}
 	}
 }
-
-?>

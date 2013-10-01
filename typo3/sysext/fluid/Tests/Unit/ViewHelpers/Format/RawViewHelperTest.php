@@ -52,5 +52,3 @@ class RawViewHelperTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$this->assertEquals($childNodes, $actualResult);
 	}
 }
-
-?>

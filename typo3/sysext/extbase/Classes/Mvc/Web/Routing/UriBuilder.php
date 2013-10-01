@@ -690,5 +690,3 @@ class UriBuilder {
 	}
 
 }
-
-?>

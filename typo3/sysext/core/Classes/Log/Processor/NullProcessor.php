@@ -41,6 +41,3 @@ class NullProcessor extends \TYPO3\CMS\Core\Log\Processor\AbstractProcessor {
 	}
 
 }
-
-
-?>

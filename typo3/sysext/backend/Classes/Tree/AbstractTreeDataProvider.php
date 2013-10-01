@@ -57,6 +57,3 @@ abstract class AbstractTreeDataProvider {
 	abstract public function getNodes(\TYPO3\CMS\Backend\Tree\TreeNode $node);
 
 }
-
-
-?>

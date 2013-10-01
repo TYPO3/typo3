@@ -208,6 +208,3 @@ class LogManager implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 }
-
-
-?>

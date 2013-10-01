@@ -299,5 +299,3 @@ class XcacheBackend extends AbstractBackend implements TaggableBackendInterface 
 		return php_sapi_name() === 'cli' || empty($varSize);
 	}
 }
-
-?>

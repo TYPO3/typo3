@@ -57,6 +57,3 @@ class UserInternalContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstra
 	}
 
 }
-
-
-?>

@@ -50,5 +50,3 @@ interface ObjectMonitoringInterface {
 	 */
 	public function _isDirty();
 }
-
-?>

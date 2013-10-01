@@ -64,5 +64,3 @@ interface ErrorHandlerInterface {
 	public function handleError($errorLevel, $errorMessage, $errorFile, $errorLine);
 
 }
-
-?>

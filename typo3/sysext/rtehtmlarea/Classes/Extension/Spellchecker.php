@@ -103,6 +103,3 @@ class Spellchecker extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 	}
 
 }
-
-
-?>

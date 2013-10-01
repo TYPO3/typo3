@@ -162,6 +162,3 @@ class ClearCacheToolbarItem implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHoo
 	}
 
 }
-
-
-?>

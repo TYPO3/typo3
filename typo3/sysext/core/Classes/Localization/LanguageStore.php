@@ -233,6 +233,3 @@ class LanguageStore implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 }
-
-
-?>

@@ -1765,6 +1765,3 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 	}
 
 }
-
-
-?>

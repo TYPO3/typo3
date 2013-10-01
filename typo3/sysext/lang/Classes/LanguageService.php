@@ -493,5 +493,3 @@ class LanguageService {
 		}
 	}
 }
-
-?>

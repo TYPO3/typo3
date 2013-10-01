@@ -155,4 +155,3 @@ $GLOBALS['TYPO3_USER_SETTINGS'] = array(
 			--div--;LLL:EXT:setup/mod/locallang.xlf:editFunctionsTab,edit_RTE,edit_wideDocument,edit_docModuleUpload,showHiddenFilesAndFolders,resizeTextareas,resizeTextareas_Flexible,resizeTextareas_MaxHeight,copyLevels,recursiveDelete,resetConfiguration,clearSessionVars,
 			--div--;LLL:EXT:setup/mod/locallang.xlf:adminFunctions,simulate,debugInWindow'
 );
-?>

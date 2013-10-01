@@ -972,6 +972,3 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 	}
 
 }
-
-
-?>

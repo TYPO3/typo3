@@ -282,6 +282,3 @@ class Execution {
 	}
 
 }
-
-
-?>

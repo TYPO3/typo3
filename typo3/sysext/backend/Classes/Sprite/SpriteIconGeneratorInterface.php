@@ -51,5 +51,3 @@ interface SpriteIconGeneratorInterface
 	public function getAvailableIconNames();
 
 }
-
-?>

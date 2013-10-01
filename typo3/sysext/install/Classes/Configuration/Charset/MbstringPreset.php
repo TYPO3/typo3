@@ -62,4 +62,3 @@ class MbstringPreset extends Configuration\AbstractPreset implements Configurati
 		return $result;
 	}
 }
-?>

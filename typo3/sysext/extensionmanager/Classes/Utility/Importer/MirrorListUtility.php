@@ -101,6 +101,3 @@ class MirrorListUtility implements \SplObserver {
 	}
 
 }
-
-
-?>

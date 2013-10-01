@@ -72,6 +72,3 @@ class CachingFrameworkGarbageCollectionTest extends \TYPO3\CMS\Core\Tests\UnitTe
 	}
 
 }
-
-
-?>

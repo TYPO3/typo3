@@ -29,5 +29,3 @@ class BaseViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHel
 		$this->assertSame($expectedResult, $actualResult);
 	}
 }
-
-?>

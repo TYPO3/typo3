@@ -334,6 +334,3 @@ class TreelistCacheUpdateHooks {
 	}
 
 }
-
-
-?>

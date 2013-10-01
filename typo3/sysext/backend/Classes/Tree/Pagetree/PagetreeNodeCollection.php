@@ -45,6 +45,3 @@ class PagetreeNodeCollection extends \TYPO3\CMS\Backend\Tree\TreeNodeCollection 
 	}
 
 }
-
-
-?>

@@ -51,4 +51,3 @@ return array(
 	'tx_rtehtmlarea_select_image' => 'TYPO3\\CMS\\Rtehtmlarea\\SelectImage',
 	'tx_rtehtmlarea_user' => 'TYPO3\\CMS\\Rtehtmlarea\\User',
 );
-?>

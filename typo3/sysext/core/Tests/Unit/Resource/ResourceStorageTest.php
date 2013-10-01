@@ -827,5 +827,3 @@ class ResourceStorageTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCa
 		$this->assertSame($expectedItems, $this->fixture->fetchFolderListFromDriver($path));
 	}
 }
-
-?>

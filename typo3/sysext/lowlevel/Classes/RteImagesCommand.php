@@ -261,6 +261,3 @@ Reports problems with RTE images';
 	}
 
 }
-
-
-?>

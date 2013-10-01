@@ -1472,6 +1472,3 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 	}
 
 }
-
-
-?>

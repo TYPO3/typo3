@@ -5,4 +5,3 @@ return array(
 	'Tx_About_Domain_Repository_ExtensionRepository' => 'TYPO3\\CMS\\About\\Domain\\Repository\\ExtensionRepository',
 	'Tx_About_ViewHelpers_SkinImageViewHelper' => 'TYPO3\\CMS\\About\\ViewHelpers\\SkinImageViewHelper',
 );
-?>

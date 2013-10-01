@@ -539,6 +539,3 @@ updateQryForm(\'' . $input['QUERY'] . '\');
 	}
 
 }
-
-
-?>

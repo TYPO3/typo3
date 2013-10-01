@@ -88,6 +88,3 @@ class LoginFormHook {
 	}
 
 }
-
-
-?>

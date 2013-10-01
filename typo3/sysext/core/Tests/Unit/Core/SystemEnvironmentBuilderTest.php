@@ -280,5 +280,3 @@ class SystemEnvironmentBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 }
-
-?>

@@ -713,6 +713,3 @@ abstract class AbstractDriver {
 	abstract public function isFolderEmpty(\TYPO3\CMS\Core\Resource\Folder $folder);
 
 }
-
-
-?>

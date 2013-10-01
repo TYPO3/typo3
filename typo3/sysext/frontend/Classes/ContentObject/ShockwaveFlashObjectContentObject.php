@@ -135,6 +135,3 @@ class ShockwaveFlashObjectContentObject extends \TYPO3\CMS\Frontend\ContentObjec
 	}
 
 }
-
-
-?>

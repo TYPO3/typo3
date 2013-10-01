@@ -5,4 +5,3 @@
  * typo3/sysext/openid/Classes/OpenidModuleSetup.php
  */
 require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('openid') . 'Classes/OpenidModuleSetup.php';
-?>

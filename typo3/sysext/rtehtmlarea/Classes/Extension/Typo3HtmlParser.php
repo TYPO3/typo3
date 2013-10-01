@@ -97,6 +97,3 @@ class Typo3HtmlParser extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 	}
 
 }
-
-
-?>

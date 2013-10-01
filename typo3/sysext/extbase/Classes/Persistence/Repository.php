@@ -316,5 +316,3 @@ class Repository implements \TYPO3\CMS\Extbase\Persistence\RepositoryInterface, 
 		return get_class($this);
 	}
 }
-
-?>

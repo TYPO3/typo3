@@ -102,6 +102,3 @@ class CacheFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 }
-
-
-?>

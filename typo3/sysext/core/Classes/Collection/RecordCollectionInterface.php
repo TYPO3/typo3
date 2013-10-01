@@ -49,5 +49,3 @@ interface RecordCollectionInterface extends \TYPO3\CMS\Core\Collection\Collectio
 	public function getItemTableName();
 
 }
-
-?>

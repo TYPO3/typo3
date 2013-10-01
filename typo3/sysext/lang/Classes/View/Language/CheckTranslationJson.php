@@ -41,4 +41,3 @@ class CheckTranslationJson extends \TYPO3\CMS\Extbase\Mvc\View\AbstractView {
 	}
 
 }
-?>

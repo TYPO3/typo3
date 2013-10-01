@@ -91,5 +91,3 @@ class ActionMenuViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagB
 		return '<div class="docheader-funcmenu">' . $this->tag->render() . '</div>';
 	}
 }
-
-?>

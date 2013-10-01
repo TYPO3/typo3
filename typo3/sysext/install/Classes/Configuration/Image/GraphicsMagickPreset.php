@@ -96,4 +96,3 @@ class GraphicsMagickPreset extends AbstractImagePreset implements Configuration\
 		return $result;
 	}
 }
-?>

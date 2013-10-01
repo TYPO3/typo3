@@ -142,6 +142,3 @@ class TsConfigParser extends \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser 
 	}
 
 }
-
-
-?>

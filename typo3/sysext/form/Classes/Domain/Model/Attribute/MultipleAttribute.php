@@ -49,5 +49,3 @@ class MultipleAttribute extends \TYPO3\CMS\Form\Domain\Model\Attribute\AbstractA
 	}
 
 }
-
-?>

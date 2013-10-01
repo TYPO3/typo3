@@ -22,4 +22,3 @@ if (TYPO3_MODE == 'BE') {
 	# tx_version.workspaces.stageNotificationEmail.additionalHeaders =
 ');
 }
-?>

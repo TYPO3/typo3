@@ -253,4 +253,3 @@ abstract class AbstractTableConfigurationTreeDataProvider extends \TYPO3\CMS\Bac
 	}
 
 }
-?>

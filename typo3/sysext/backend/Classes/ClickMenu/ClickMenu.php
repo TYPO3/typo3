@@ -1418,6 +1418,3 @@ class ClickMenu {
 	}
 
 }
-
-
-?>

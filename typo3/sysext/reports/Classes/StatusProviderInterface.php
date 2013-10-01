@@ -42,5 +42,3 @@ interface StatusProviderInterface {
 	public function getStatus();
 
 }
-
-?>

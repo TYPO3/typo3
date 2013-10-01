@@ -61,6 +61,3 @@ abstract class AbstractTreeRenderer {
 	abstract public function renderTree(\TYPO3\CMS\Backend\Tree\AbstractTree $tree, $recursive = TRUE);
 
 }
-
-
-?>

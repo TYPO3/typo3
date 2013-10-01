@@ -132,6 +132,3 @@ class ProductionExceptionHandler extends \TYPO3\CMS\Core\Error\AbstractException
 	}
 
 }
-
-
-?>

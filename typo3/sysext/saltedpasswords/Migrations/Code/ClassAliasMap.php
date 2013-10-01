@@ -16,4 +16,3 @@ return array(
 	'tx_saltedpasswords_emconfhelper' => 'TYPO3\\CMS\\Saltedpasswords\\Utility\\ExtensionManagerConfigurationUtility',
 	'tx_saltedpasswords_div' => 'TYPO3\\CMS\\Saltedpasswords\\Utility\\SaltedPasswordsUtility',
 );
-?>

@@ -72,5 +72,3 @@ class UninstallExtension extends Action\AbstractAction implements Action\ActionI
 	}
 
 }
-
-?>

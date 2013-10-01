@@ -51,6 +51,3 @@ class EditPanelContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractC
 	}
 
 }
-
-
-?>

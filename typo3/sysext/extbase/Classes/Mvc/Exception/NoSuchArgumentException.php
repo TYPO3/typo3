@@ -33,5 +33,3 @@ namespace TYPO3\CMS\Extbase\Mvc\Exception;
 class NoSuchArgumentException extends \TYPO3\CMS\Extbase\Mvc\Exception {
 
 }
-
-?>

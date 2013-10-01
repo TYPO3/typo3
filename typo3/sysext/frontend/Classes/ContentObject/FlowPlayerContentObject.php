@@ -715,6 +715,3 @@ class FlowPlayerContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstract
 	}
 
 }
-
-
-?>

@@ -289,6 +289,3 @@ class SuggestElement {
 	}
 
 }
-
-
-?>

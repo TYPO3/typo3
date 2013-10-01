@@ -5,4 +5,3 @@
  * typo3/sysext/lang/Classes/LanguageService.php
  */
 require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('lang') . 'Classes/LanguageService.php';
-?>

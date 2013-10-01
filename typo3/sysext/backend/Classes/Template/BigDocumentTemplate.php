@@ -43,6 +43,3 @@ class BigDocumentTemplate extends \TYPO3\CMS\Backend\Template\DocumentTemplate {
 	public $divClass = 'typo3-bigDoc';
 
 }
-
-
-?>

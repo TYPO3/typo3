@@ -35,4 +35,3 @@ require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('form')
  */
 $wizard = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Form\\Controller\\WizardController');
 $wizard->dispatch();
-?>

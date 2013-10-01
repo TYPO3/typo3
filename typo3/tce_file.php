@@ -39,4 +39,3 @@ require __DIR__ . '/init.php';
 $fileController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\File\\FileController');
 $fileController->main();
 $fileController->finish();
-?>

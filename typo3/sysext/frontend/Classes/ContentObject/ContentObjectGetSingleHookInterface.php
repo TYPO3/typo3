@@ -45,5 +45,3 @@ interface ContentObjectGetSingleHookInterface
 	public function getSingleContentObject($contentObjectName, array $configuration, $TypoScriptKey, \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer &$parentObject);
 
 }
-
-?>

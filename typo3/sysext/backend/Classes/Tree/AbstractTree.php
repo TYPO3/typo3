@@ -85,6 +85,3 @@ abstract class AbstractTree {
 	abstract public function getRoot();
 
 }
-
-
-?>

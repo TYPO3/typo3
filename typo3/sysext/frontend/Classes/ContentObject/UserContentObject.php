@@ -67,6 +67,3 @@ class UserContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractConten
 	}
 
 }
-
-
-?>

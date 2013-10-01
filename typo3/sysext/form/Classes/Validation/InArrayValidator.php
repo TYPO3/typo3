@@ -94,5 +94,3 @@ class InArrayValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator {
 	}
 
 }
-
-?>

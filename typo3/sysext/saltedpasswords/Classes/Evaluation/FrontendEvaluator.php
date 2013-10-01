@@ -44,6 +44,3 @@ class FrontendEvaluator extends \TYPO3\CMS\Saltedpasswords\Evaluation\Evaluator 
 	}
 
 }
-
-
-?>

@@ -72,5 +72,3 @@ interface DraggableAndDropableNodeInterface
 	public function copyNodeAfterDestinationNode($node, $destination);
 
 }
-
-?>

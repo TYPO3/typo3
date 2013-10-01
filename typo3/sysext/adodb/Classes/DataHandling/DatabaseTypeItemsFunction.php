@@ -54,6 +54,3 @@ class DatabaseTypeItemsFunction {
 	}
 
 }
-
-
-?>

@@ -729,6 +729,3 @@ FROM pages WHERE pid IN (1,2,3,4)';
 	}
 
 }
-
-
-?>

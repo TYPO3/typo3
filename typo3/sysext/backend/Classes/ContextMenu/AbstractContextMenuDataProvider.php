@@ -212,5 +212,3 @@ abstract class AbstractContextMenuDataProvider {
 	}
 
 }
-
-?>

@@ -41,4 +41,3 @@ class Welcome extends Action\AbstractAction implements Action\ActionInterface {
 		return $this->view->render();
 	}
 }
-?>

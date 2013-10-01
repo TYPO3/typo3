@@ -112,6 +112,3 @@ class SortedTreeNodeCollection extends \TYPO3\CMS\Backend\Tree\TreeNodeCollectio
 	}
 
 }
-
-
-?>

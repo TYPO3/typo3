@@ -163,6 +163,3 @@ class TransientMemoryBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBacke
 	}
 
 }
-
-
-?>

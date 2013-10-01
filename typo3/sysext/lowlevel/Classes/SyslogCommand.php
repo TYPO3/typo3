@@ -89,6 +89,3 @@ Showing last 25 hour entries from the syslog. More features pending. This is the
 	}
 
 }
-
-
-?>

@@ -58,5 +58,3 @@ class ModuleDataStorageServiceTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTes
 	}
 
 }
-
-?>

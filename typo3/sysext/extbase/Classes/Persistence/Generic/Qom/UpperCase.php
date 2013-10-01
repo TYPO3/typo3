@@ -63,5 +63,3 @@ class UpperCase implements \TYPO3\CMS\Extbase\Persistence\Generic\Qom\UpperCaseI
 		return $this->operand;
 	}
 }
-
-?>

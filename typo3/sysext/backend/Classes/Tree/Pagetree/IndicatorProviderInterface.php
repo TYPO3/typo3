@@ -42,5 +42,3 @@ interface IndicatorProviderInterface
 	public function getIndicator();
 
 }
-
-?>

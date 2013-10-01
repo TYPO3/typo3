@@ -73,6 +73,3 @@ class AboutEditor extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 	}
 
 }
-
-
-?>

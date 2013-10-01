@@ -96,4 +96,3 @@ class FileMaximumSizeValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTes
 		);
 	}
 }
-?>

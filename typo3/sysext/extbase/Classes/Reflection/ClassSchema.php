@@ -251,5 +251,3 @@ class ClassSchema {
 		return $this->identityProperties;
 	}
 }
-
-?>

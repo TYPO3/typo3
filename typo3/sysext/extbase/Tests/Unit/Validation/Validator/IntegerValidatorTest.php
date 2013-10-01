@@ -88,5 +88,3 @@ class IntegerValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validation\Vali
 		$this->assertEquals(1, count($this->validator->validate('not a number')->getErrors()));
 	}
 }
-
-?>

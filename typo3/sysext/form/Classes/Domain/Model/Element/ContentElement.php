@@ -85,5 +85,3 @@ class ContentElement extends \TYPO3\CMS\Form\Domain\Model\Element\AbstractElemen
 	}
 
 }
-
-?>

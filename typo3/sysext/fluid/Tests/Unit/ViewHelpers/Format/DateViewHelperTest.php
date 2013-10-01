@@ -228,5 +228,3 @@ class DateViewHelperTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		setlocale(LC_TIME, $locale);
 	}
 }
-
-?>

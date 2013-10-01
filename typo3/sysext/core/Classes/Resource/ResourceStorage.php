@@ -2322,5 +2322,3 @@ class ResourceStorage {
 		return $this->processingFolder;
 	}
 }
-
-?>

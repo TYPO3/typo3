@@ -129,6 +129,3 @@ class Status {
 	}
 
 }
-
-
-?>

@@ -62,5 +62,3 @@ class UserDomainClass {
 		return $this->lastName;
 	}
 }
-
-?>

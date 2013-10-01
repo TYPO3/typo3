@@ -60,5 +60,3 @@ class DirAttribute extends \TYPO3\CMS\Form\Domain\Model\Attribute\AbstractAttrib
 	}
 
 }
-
-?>

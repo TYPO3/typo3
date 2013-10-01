@@ -97,4 +97,3 @@ class FileAllowedTypesValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTe
 		);
 	}
 }
-?>

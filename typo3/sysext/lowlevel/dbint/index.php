@@ -38,4 +38,3 @@ $SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Lowlev
 $SOBE->init();
 $SOBE->main();
 $SOBE->printContent();
-?>

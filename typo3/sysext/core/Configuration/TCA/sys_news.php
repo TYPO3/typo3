@@ -90,4 +90,3 @@ return array(
 			--div--;LLL:EXT:lang/locallang_tca.xlf:sys_news.tabs.access, starttime, endtime')
 	)
 );
-?>

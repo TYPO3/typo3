@@ -196,6 +196,3 @@ class FilesContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractConte
 	}
 
 }
-
-
-?>

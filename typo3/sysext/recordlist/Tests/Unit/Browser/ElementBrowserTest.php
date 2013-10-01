@@ -39,4 +39,3 @@ class ElementBrowserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->assertContains('Teststring', $result);
 	}
 }
-?>

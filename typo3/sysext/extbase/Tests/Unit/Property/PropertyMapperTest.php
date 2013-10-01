@@ -421,5 +421,3 @@ class PropertyMapperTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$propertyMapper->convert($source, 'stdClass', $configuration->allowProperties('firstProperty')->skipUnknownProperties());
 	}
 }
-
-?>

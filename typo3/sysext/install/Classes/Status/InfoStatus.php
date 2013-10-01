@@ -37,4 +37,3 @@ class InfoStatus extends AbstractStatus implements StatusInterface {
 	protected $severity = 'information';
 
 }
-?>

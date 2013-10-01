@@ -363,6 +363,3 @@ class SimpleFileBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend im
 	}
 
 }
-
-
-?>

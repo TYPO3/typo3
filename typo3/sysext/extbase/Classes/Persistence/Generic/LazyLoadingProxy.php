@@ -212,5 +212,3 @@ class LazyLoadingProxy implements \Iterator, \TYPO3\CMS\Extbase\Persistence\Gene
 		return $this->current() !== FALSE;
 	}
 }
-
-?>

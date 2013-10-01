@@ -236,5 +236,3 @@ class LocalCropScaleMaskHelper {
 		return $parameters;
 	}
 }
-
-?>

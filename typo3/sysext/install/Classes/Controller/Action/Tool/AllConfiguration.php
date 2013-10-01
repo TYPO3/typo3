@@ -212,4 +212,3 @@ class AllConfiguration extends Action\AbstractAction implements Action\ActionInt
 		return $commentArray;
 	}
 }
-?>

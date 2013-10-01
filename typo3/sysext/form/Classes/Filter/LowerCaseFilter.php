@@ -42,5 +42,3 @@ class LowerCaseFilter implements \TYPO3\CMS\Form\Filter\FilterInterface {
 	}
 
 }
-
-?>

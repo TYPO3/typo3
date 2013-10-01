@@ -36,4 +36,3 @@ require __DIR__ . '/init.php';
 $tableController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\Wizard\\TableController');
 $tableController->main();
 $tableController->printContent();
-?>

@@ -43,5 +43,3 @@ class MandatoryAdditionalElementView extends \TYPO3\CMS\Form\View\Form\Additiona
 	';
 
 }
-
-?>

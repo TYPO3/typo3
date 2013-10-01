@@ -413,4 +413,3 @@ class MigrateWorkspacesUpdate extends InstallSysExtsUpdate {
 		return $done;
 	}
 }
-?>

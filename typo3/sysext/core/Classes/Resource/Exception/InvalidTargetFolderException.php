@@ -31,6 +31,3 @@ class InvalidTargetFolderException extends \TYPO3\CMS\Core\Resource\Exception {
 
 
 }
-
-
-?>

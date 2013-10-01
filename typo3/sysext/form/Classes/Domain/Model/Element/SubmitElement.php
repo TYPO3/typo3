@@ -89,5 +89,3 @@ class SubmitElement extends \TYPO3\CMS\Form\Domain\Model\Element\AbstractElement
 	}
 
 }
-
-?>

@@ -71,5 +71,3 @@ class ResourceUtility {
 		return $result;
 	}
 }
-
-?>

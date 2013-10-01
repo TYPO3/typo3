@@ -133,6 +133,3 @@ class TerUtility {
 	}
 
 }
-
-
-?>

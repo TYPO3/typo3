@@ -447,5 +447,3 @@ function Auth_OpenID_noMathSupport()
 {
     return defined('Auth_OpenID_NO_MATH_SUPPORT');
 }
-
-

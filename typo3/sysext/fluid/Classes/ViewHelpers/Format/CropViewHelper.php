@@ -142,5 +142,3 @@ class CropViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 		$GLOBALS['TSFE'] = $this->tsfeBackup;
 	}
 }
-
-?>

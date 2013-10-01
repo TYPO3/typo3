@@ -47,5 +47,3 @@ interface PostProcessorInterface {
 	public function process();
 
 }
-
-?>

@@ -191,5 +191,3 @@ interface QuerySettingsInterface {
 	 */
 	public function getReturnRawQueryResult();
 }
-
-?>

@@ -36,5 +36,3 @@ namespace TYPO3\CMS\Install\Updates;
 interface InstallerProcessInterface {
 
 }
-
-?>

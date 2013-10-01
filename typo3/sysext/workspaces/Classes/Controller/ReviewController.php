@@ -180,6 +180,3 @@ class ReviewController extends \TYPO3\CMS\Workspaces\Controller\AbstractControll
 	}
 
 }
-
-
-?>

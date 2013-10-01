@@ -73,6 +73,3 @@ class InsertSmiley extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 	}
 
 }
-
-
-?>

@@ -39,4 +39,3 @@ class CustomPreset extends Configuration\AbstractCustomPreset implements Configu
 		'SYS/t3lib_cs_utils' => '',
 	);
 }
-?>

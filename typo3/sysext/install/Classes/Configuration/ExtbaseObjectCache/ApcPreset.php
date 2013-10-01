@@ -72,4 +72,3 @@ class ApcPreset extends Configuration\AbstractPreset implements Configuration\Pr
 		return $result;
 	}
 }
-?>

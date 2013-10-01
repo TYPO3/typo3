@@ -119,4 +119,3 @@ interface TypeConverterInterface {
 	 */
 	public function convertFrom($source, $targetType, array $convertedChildProperties = array(), \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration = NULL);
 }
-?>

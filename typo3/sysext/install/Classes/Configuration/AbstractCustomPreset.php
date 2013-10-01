@@ -101,4 +101,3 @@ abstract class AbstractCustomPreset extends AbstractPreset {
 		return $configurationValues;
 	}
 }
-?>

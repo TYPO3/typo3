@@ -126,6 +126,3 @@ class FramesetRenderer {
 	}
 
 }
-
-
-?>

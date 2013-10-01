@@ -9,4 +9,3 @@ return array(
 	'tx_rtehtmlarea_pi3' => $rtehtmlareaExtensionPath . 'pi3/class.tx_rtehtmlarea_pi3.php',
 	'AccessibilityLinkController' => $rtehtmlareaExtensionPath . 'Classes/Controller/AccessibilityLinkController.php',
 );
-?>

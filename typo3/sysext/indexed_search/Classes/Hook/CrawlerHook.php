@@ -762,6 +762,3 @@ class CrawlerHook {
 	}
 
 }
-
-
-?>

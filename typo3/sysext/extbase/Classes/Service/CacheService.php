@@ -117,5 +117,3 @@ class CacheService implements \TYPO3\CMS\Core\SingletonInterface {
 		}
 	}
 }
-
-?>

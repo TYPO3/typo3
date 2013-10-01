@@ -187,6 +187,3 @@ class ConditionMatcher extends \TYPO3\CMS\Core\Configuration\TypoScript\Conditio
 	}
 
 }
-
-
-?>

@@ -1640,5 +1640,3 @@ class TemplateService {
 	}
 
 }
-
-?>

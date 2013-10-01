@@ -56,5 +56,3 @@ class BackendUserGroupRepositoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseT
 		$fixture->initializeObject();
 	}
 }
-
-?>

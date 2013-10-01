@@ -167,5 +167,3 @@ class ViewModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 		);
 	}
 }
-
-?>

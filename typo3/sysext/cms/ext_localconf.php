@@ -202,4 +202,3 @@ $GLOBALS['TYPO3_CONF_VARS']['SYS']['livesearch']['page'] = 'pages';
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['livesearch']['content'] = 'tt_content';
 // Register hook to show preview info
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['hook_previewInfo']['cms'] = 'TYPO3\\CMS\\Frontend\\Hooks\\FrontendHooks->hook_previewInfo';
-?>

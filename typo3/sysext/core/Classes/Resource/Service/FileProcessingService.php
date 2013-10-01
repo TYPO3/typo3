@@ -179,6 +179,3 @@ class FileProcessingService {
 		$this->getSignalSlotDispatcher()->dispatch('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', self::SIGNAL_PostFileProcess, array($this, $this->driver, $processedFile, $file, $context, $configuration));
 	}
 }
-
-
-?>

@@ -50,6 +50,3 @@ abstract class AbstractTreeStateProvider {
 	abstract public function getState();
 
 }
-
-
-?>

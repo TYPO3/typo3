@@ -150,6 +150,3 @@ class ExtDirectRouter {
 	}
 
 }
-
-
-?>

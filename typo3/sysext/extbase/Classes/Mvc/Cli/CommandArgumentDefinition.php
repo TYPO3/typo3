@@ -91,5 +91,3 @@ class CommandArgumentDefinition {
 		return $this->required;
 	}
 }
-
-?>

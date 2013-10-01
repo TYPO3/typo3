@@ -208,6 +208,3 @@ class MirrorXmlPushParser extends \TYPO3\CMS\Extensionmanager\Utility\Parser\Abs
 	}
 
 }
-
-
-?>

@@ -115,4 +115,3 @@ return array(
 		'capabilities' => array('showitem' => 'is_browsable, is_public, is_writable', 'canNotCollapse' => TRUE)
 	)
 );
-?>

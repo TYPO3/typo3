@@ -44,5 +44,3 @@ class IsExtensionLoadedViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstr
 	}
 
 }
-
-?>

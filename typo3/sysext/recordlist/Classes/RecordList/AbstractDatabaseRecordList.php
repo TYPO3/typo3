@@ -969,6 +969,3 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 	}
 
 }
-
-
-?>

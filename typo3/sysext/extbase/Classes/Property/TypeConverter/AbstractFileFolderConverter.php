@@ -79,5 +79,3 @@ abstract class AbstractFileFolderConverter extends \TYPO3\CMS\Extbase\Property\T
 	 */
 	abstract protected function getOriginalResource($source);
 }
-
-?>

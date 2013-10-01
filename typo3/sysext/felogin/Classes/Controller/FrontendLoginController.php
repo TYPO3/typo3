@@ -1020,5 +1020,3 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin 
 	}
 
 }
-
-?>

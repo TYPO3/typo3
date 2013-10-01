@@ -76,4 +76,3 @@ class RepositoryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 		return $typo3OrgRepository;
 	}
 }
-?>

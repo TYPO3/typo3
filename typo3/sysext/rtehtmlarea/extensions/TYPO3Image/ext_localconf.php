@@ -21,4 +21,3 @@ if (!defined('TYPO3_MODE')) {
 		}
 	}
 ', 43);
-?>

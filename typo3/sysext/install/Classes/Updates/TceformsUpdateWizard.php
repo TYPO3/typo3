@@ -286,5 +286,3 @@ class TceformsUpdateWizard extends AbstractUpdate {
 	}
 
 }
-
-?>

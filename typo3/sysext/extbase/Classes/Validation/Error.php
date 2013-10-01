@@ -44,5 +44,3 @@ class Error extends \TYPO3\CMS\Extbase\Error\Error {
 	 */
 	protected $code = 1201447005;
 }
-
-?>

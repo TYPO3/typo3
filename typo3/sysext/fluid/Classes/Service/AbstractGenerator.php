@@ -124,4 +124,3 @@ abstract class AbstractGenerator {
 	}
 
 }
-?>

@@ -41,5 +41,3 @@ class StandardDocumentTemplate extends \TYPO3\CMS\Backend\Template\DocumentTempl
 	}
 
 }
-
-?>

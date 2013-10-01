@@ -73,6 +73,3 @@ class UndoRedo extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 	}
 
 }
-
-
-?>

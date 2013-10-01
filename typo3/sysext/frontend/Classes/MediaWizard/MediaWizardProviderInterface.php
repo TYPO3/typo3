@@ -50,5 +50,3 @@ interface MediaWizardProviderInterface {
 	public function rewriteUrl($url);
 
 }
-
-?>

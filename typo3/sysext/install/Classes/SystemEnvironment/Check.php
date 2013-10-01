@@ -1166,4 +1166,3 @@ class Check {
 		return $bytes;
 	}
 }
-?>

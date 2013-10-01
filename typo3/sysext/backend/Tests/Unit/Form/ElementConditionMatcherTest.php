@@ -407,4 +407,3 @@ class ElementConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->assertFalse($this->fixture->match('HIDE_L10N_SIBLINGS:except_admin'), array(), 'vEN');
 	}
 }
-?>

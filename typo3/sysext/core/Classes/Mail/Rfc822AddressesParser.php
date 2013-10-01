@@ -799,6 +799,3 @@ class Rfc822AddressesParser {
 	}
 
 }
-
-
-?>

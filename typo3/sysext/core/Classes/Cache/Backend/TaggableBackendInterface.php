@@ -36,5 +36,3 @@ interface TaggableBackendInterface extends \TYPO3\CMS\Core\Cache\Backend\Backend
 	public function findIdentifiersByTag($tag);
 
 }
-
-?>

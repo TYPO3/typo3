@@ -453,6 +453,3 @@ class FileHandlingUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 }
-
-
-?>

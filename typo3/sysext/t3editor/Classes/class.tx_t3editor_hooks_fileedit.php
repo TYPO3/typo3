@@ -31,4 +31,3 @@ require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('t3edit
  * typo3/sysext/t3editor/Classes/Hook/FileEditHook.php
  */
 require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('t3editor') . 'Classes/Hook/FileEditHook.php';
-?>

@@ -249,6 +249,3 @@ abstract class RteHtmlAreaApi {
 	}
 
 }
-
-
-?>

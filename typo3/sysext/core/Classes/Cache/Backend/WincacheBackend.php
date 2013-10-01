@@ -252,6 +252,3 @@ class WincacheBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend impl
 	}
 
 }
-
-
-?>

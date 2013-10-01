@@ -89,5 +89,3 @@ interface FolderInterface extends ResourceInterface
 	public function delete();
 
 }
-
-?>

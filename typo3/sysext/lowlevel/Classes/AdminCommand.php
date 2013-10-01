@@ -124,6 +124,3 @@ class AdminCommand extends \TYPO3\CMS\Core\Controller\CommandLineController {
 	}
 
 }
-
-
-?>

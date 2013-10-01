@@ -246,6 +246,3 @@ class TreeNode implements \TYPO3\CMS\Backend\Tree\ComparableNodeInterface, \Seri
 	}
 
 }
-
-
-?>

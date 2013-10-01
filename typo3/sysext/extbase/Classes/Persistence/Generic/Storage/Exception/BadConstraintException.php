@@ -33,5 +33,3 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Storage\Exception;
 class BadConstraintException extends \TYPO3\CMS\Extbase\Persistence\Generic\Exception {
 
 }
-
-?>

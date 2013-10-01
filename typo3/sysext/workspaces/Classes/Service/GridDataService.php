@@ -569,6 +569,3 @@ class GridDataService {
 	}
 
 }
-
-
-?>

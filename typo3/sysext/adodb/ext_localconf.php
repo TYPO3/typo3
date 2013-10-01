@@ -9,4 +9,3 @@ if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('datasources'))
 	$dataSourcesMainObj = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj('EXT:datasources/class.tx_datasources_main.php:&tx_datasources_main');
 	$dataSourcesMainObj->registerApplication('ADOdb', 'adodb');
 }
-?>

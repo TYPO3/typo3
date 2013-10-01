@@ -69,5 +69,3 @@ interface NameableCollectionInterface
 	public function getDescription();
 
 }
-
-?>

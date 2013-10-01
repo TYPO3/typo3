@@ -68,6 +68,3 @@ class AutoPublishService {
 	}
 
 }
-
-
-?>

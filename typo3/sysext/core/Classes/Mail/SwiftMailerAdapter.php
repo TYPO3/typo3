@@ -341,5 +341,3 @@ class SwiftMailerAdapter implements \TYPO3\CMS\Core\Mail\MailerAdapterInterface 
 	}
 
 }
-
-?>

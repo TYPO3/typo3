@@ -67,5 +67,3 @@ abstract class Tx_Extbase_Tests_Functional_BaseTestCase extends Tx_Phpunit_Datab
 		$this->dropDatabase();
 	}
 }
-
-?>

@@ -140,4 +140,3 @@ abstract class AbstractPreset {
 		return $this->configurationValues;
 	}
 }
-?>

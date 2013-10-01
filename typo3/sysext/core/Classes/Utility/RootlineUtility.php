@@ -393,6 +393,3 @@ class RootlineUtility {
 	}
 
 }
-
-
-?>

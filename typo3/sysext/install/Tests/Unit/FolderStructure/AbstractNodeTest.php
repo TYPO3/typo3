@@ -420,4 +420,3 @@ class AbstractNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->assertSame('/foo/bar', $result);
 	}
 }
-?>

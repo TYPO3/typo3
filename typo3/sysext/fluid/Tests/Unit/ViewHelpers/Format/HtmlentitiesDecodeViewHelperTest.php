@@ -98,5 +98,3 @@ class HtmlentitiesDecodeViewHelperTest extends \TYPO3\CMS\Extbase\Tests\Unit\Bas
 		$this->assertSame($source, $actualResult);
 	}
 }
-
-?>

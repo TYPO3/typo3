@@ -93,5 +93,3 @@ abstract class AbstractBackendViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelpe
 		return $doc;
 	}
 }
-
-?>

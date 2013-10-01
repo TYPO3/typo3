@@ -45,6 +45,3 @@ abstract class AbstractStorage {
 	abstract public function put($key);
 
 }
-
-
-?>

@@ -14,4 +14,3 @@ $typo3Classes = array(
 	'Psr\\Log\\InvalidArgumentException' => PATH_typo3 . 'contrib/Psr/Log/InvalidArgumentException.php',
 );
 return $typo3Classes;
-?>

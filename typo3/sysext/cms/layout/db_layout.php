@@ -140,4 +140,3 @@ foreach ($SOBE->include_once as $INC_FILE) {
 $SOBE->clearCache();
 $SOBE->main();
 $SOBE->printContent();
-?>

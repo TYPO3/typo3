@@ -717,5 +717,3 @@ class HelpModuleController {
 	}
 
 }
-
-?>

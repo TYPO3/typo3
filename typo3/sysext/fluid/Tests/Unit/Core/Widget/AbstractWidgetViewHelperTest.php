@@ -182,5 +182,3 @@ class AbstractWidgetViewHelperTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTes
 		$this->assertSame($response, $output);
 	}
 }
-
-?>

@@ -51,4 +51,3 @@ require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('rtehtm
 $SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Rtehtmlarea\\Controller\\BrowseLinksController');
 $SOBE->main();
 $SOBE->printContent();
-?>

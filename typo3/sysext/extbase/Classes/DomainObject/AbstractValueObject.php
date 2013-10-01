@@ -42,5 +42,3 @@ abstract class AbstractValueObject extends \TYPO3\CMS\Extbase\DomainObject\Abstr
 		return $this->__toString();
 	}
 }
-
-?>

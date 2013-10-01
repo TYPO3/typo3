@@ -127,4 +127,3 @@ if (isset($getPost['controller']) && $getPost['controller'] === 'tool') {
 	);
 }
 $controller->execute();
-?>

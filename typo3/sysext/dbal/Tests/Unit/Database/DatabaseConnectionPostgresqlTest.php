@@ -172,6 +172,3 @@ class DatabaseConnectionPostgresqlTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
 	}
 
 }
-
-
-?>

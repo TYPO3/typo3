@@ -364,6 +364,3 @@ class PagetreeNode extends \TYPO3\CMS\Backend\Tree\ExtDirectNode {
 	}
 
 }
-
-
-?>

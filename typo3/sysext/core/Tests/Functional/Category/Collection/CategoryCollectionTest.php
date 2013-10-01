@@ -324,5 +324,3 @@ class CategoryCollectionTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 	}
 
 }
-
-?>

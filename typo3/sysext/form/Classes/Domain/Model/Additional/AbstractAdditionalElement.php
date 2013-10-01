@@ -98,5 +98,3 @@ abstract class AbstractAdditionalElement {
 	abstract public function getValue();
 
 }
-
-?>

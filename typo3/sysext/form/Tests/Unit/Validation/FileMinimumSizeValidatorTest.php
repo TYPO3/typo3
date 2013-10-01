@@ -97,4 +97,3 @@ class FileMinimumSizeValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTes
 		);
 	}
 }
-?>

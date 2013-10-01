@@ -67,6 +67,3 @@ class SessionStorage extends \TYPO3\CMS\Rsaauth\Storage\AbstractStorage {
 	}
 
 }
-
-
-?>

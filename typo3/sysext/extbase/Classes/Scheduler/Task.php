@@ -190,5 +190,3 @@ class Task extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 		\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog($e->getMessage(), $this->commandIdentifier, 3);
 	}
 }
-
-?>

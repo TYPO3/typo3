@@ -113,5 +113,3 @@ class IdentityMap implements \TYPO3\CMS\Core\SingletonInterface {
 		$this->persistenceSession->unregisterObject($object);
 	}
 }
-
-?>

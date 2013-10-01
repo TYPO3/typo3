@@ -88,5 +88,3 @@ class ResetElement extends \TYPO3\CMS\Form\Domain\Model\Element\AbstractElement 
 	}
 
 }
-
-?>

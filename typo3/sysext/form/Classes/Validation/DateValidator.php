@@ -125,5 +125,3 @@ class DateValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator {
 	}
 
 }
-
-?>

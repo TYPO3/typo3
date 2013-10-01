@@ -31,6 +31,3 @@ class InsufficientFolderReadPermissionsException extends \TYPO3\CMS\Core\Resourc
 
 
 }
-
-
-?>

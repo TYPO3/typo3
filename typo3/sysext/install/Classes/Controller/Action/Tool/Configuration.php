@@ -90,4 +90,3 @@ class Configuration extends Action\AbstractAction implements Action\ActionInterf
 		return $message;
 	}
 }
-?>

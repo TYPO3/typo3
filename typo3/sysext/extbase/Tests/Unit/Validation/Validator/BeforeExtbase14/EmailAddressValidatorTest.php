@@ -98,5 +98,3 @@ class EmailAddressValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCa
 		$emailAddressValidator->isValid('notAValidMail@Address');
 	}
 }
-
-?>

@@ -29,5 +29,3 @@ namespace TYPO3\CMS\Extbase\Property\Exception;
 class TargetNotFoundException extends \TYPO3\CMS\Extbase\Property\Exception {
 
 }
-
-?>

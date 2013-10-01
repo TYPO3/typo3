@@ -184,5 +184,3 @@ class ImageViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedV
 		chdir($this->workingDirectoryBackup);
 	}
 }
-
-?>

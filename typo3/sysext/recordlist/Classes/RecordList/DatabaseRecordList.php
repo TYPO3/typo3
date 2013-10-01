@@ -1556,6 +1556,3 @@ class DatabaseRecordList extends \TYPO3\CMS\Recordlist\RecordList\AbstractDataba
 	}
 
 }
-
-
-?>

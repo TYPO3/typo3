@@ -11,4 +11,3 @@ return array(
 	'tx_linkvalidator_tasks_Validator' => 'TYPO3\\CMS\\Linkvalidator\\Task\\ValidatorTask',
 	'tx_linkvalidator_tasks_ValidatorAdditionalFieldProvider' => 'TYPO3\\CMS\\Linkvalidator\\Task\\ValidatorTaskAdditionalFieldProvider',
 );
-?>

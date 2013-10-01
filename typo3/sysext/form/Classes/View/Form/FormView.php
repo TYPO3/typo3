@@ -70,5 +70,3 @@ class FormView extends \TYPO3\CMS\Form\View\Form\Element\ContainerElementView {
 	}
 
 }
-
-?>

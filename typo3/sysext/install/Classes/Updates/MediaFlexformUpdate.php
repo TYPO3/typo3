@@ -112,5 +112,3 @@ class MediaFlexformUpdate extends AbstractUpdate {
 	}
 
 }
-
-?>

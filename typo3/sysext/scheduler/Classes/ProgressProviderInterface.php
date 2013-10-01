@@ -37,5 +37,3 @@ interface ProgressProviderInterface {
 	public function getProgress();
 
 }
-
-?>

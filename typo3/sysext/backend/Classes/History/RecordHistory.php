@@ -961,6 +961,3 @@ class RecordHistory {
 	}
 
 }
-
-
-?>

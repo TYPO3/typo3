@@ -35,5 +35,3 @@ namespace TYPO3\CMS\Extbase\Domain\Model;
 class StaticFileCollection extends \TYPO3\CMS\Extbase\Domain\Model\AbstractFileCollection {
 
 }
-
-?>

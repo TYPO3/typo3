@@ -44,5 +44,3 @@ interface LocalizationParserInterface
 	public function getParsedData($sourcePath, $languageKey, $charset = '');
 
 }
-
-?>

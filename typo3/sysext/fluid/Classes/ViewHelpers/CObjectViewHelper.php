@@ -141,5 +141,3 @@ class CObjectViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHel
 		$GLOBALS['TSFE'] = $this->tsfeBackup;
 	}
 }
-
-?>

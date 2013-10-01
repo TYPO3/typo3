@@ -51,5 +51,3 @@ interface DatabaseFileIconsHookInterface
 	public function dbFileIcons_postProcess(array &$params, &$selector, &$thumbnails, array &$icons, &$rightbox, &$fName, array &$uidList, array $additionalParams, \TYPO3\CMS\Backend\Form\FormEngine $parentObject);
 
 }
-
-?>

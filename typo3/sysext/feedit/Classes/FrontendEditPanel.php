@@ -396,5 +396,3 @@ class FrontendEditPanel {
 	}
 
 }
-
-?>

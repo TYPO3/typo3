@@ -132,5 +132,3 @@ class BackendUserRepository extends \TYPO3\CMS\Extbase\Domain\Repository\Backend
 	}
 
 }
-
-?>

@@ -62,5 +62,3 @@ interface ExceptionHandlerInterface
 	public function echoExceptionCLI(\Exception $exception);
 
 }
-
-?>

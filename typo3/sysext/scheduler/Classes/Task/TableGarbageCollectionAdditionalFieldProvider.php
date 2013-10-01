@@ -258,6 +258,3 @@ class TableGarbageCollectionAdditionalFieldProvider implements \TYPO3\CMS\Schedu
 	}
 
 }
-
-
-?>

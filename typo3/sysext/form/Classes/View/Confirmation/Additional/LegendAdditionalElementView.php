@@ -43,5 +43,3 @@ class LegendAdditionalElementView extends \TYPO3\CMS\Form\View\Confirmation\Addi
 	';
 
 }
-
-?>

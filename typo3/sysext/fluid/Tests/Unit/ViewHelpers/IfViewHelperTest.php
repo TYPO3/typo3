@@ -55,5 +55,3 @@ class IfViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelpe
 		$this->assertEquals('foo', $actualResult);
 	}
 }
-
-?>

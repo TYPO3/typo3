@@ -480,5 +480,3 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends \TYPO3\CMS
 	}
 
 }
-
-?>

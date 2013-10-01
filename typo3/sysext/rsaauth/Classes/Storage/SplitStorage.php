@@ -105,6 +105,3 @@ class SplitStorage extends \TYPO3\CMS\Rsaauth\Storage\AbstractStorage {
 	}
 
 }
-
-
-?>

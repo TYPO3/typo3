@@ -115,5 +115,3 @@ class ArgumentsValidator extends \TYPO3\CMS\Extbase\Validation\Validator\Abstrac
 		$this->errors[$argumentName]->addErrors($errors);
 	}
 }
-
-?>

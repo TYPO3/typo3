@@ -48,5 +48,3 @@ interface PageLayoutViewDrawItemHookInterface {
 	public function preProcess(\TYPO3\CMS\Backend\View\PageLayoutView &$parentObject, &$drawItem, &$headerContent, &$itemContent, array &$row);
 
 }
-
-?>

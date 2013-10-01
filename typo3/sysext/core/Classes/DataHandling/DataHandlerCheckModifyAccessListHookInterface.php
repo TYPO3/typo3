@@ -45,5 +45,3 @@ interface DataHandlerCheckModifyAccessListHookInterface {
 	public function checkModifyAccessList(&$accessAllowed, $table, \TYPO3\CMS\Core\DataHandling\DataHandler $parent);
 
 }
-
-?>

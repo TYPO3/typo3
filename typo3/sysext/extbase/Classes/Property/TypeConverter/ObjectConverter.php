@@ -239,4 +239,3 @@ class ObjectConverter extends AbstractTypeConverter implements \TYPO3\CMS\Core\S
 	}
 
 }
-?>

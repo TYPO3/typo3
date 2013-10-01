@@ -316,4 +316,3 @@ return array(
 	'Tx_Extbase_Validation_Validator_ValidatorInterface' => 'TYPO3\\CMS\\Extbase\\Validation\\Validator\\ValidatorInterface',
 	'Tx_Extbase_Validation_ValidatorResolver' => 'TYPO3\\CMS\\Extbase\\Validation\\ValidatorResolver',
 );
-?>

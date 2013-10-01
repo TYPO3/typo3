@@ -53,5 +53,3 @@ class LogoutController {
 	}
 
 }
-
-?>

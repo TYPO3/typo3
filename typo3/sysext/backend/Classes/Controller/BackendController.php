@@ -707,5 +707,3 @@ class BackendController {
 	}
 
 }
-
-?>

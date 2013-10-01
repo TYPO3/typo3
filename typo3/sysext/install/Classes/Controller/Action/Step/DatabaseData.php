@@ -148,4 +148,3 @@ class DatabaseData extends Action\AbstractAction implements StepInterface {
 		}
 	}
 }
-?>

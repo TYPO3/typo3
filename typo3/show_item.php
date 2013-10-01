@@ -32,4 +32,3 @@ $elementInformationController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInst
 );
 $elementInformationController->main();
 $elementInformationController->printContent();
-?>

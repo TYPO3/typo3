@@ -439,5 +439,3 @@ abstract class AbstractTemplateView implements \TYPO3\CMS\Extbase\Mvc\View\ViewI
 		return TRUE;
 	}
 }
-
-?>

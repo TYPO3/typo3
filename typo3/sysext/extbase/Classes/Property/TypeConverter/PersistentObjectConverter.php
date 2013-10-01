@@ -213,5 +213,3 @@ class PersistentObjectConverter extends ObjectConverter {
 	}
 
 }
-
-?>

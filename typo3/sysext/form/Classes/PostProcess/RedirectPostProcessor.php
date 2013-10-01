@@ -98,5 +98,3 @@ class RedirectPostProcessor implements \TYPO3\CMS\Form\PostProcess\PostProcessor
 		return '';
 	}
 }
-
-?>

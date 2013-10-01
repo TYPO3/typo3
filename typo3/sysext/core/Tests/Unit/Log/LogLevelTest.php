@@ -91,5 +91,3 @@ class LevelTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->assertEquals($levelString, \TYPO3\CMS\Core\Log\LogLevel::normalizeLevel($levelString));
 	}
 }
-
-?>

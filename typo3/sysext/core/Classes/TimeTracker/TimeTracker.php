@@ -511,6 +511,3 @@ class TimeTracker {
 	}
 
 }
-
-
-?>

@@ -172,5 +172,3 @@ class ClassInfoFactory {
 		return method_exists($classname, 'initializeObject');
 	}
 }
-
-?>

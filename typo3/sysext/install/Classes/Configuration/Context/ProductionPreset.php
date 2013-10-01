@@ -78,4 +78,3 @@ class ProductionPreset extends Configuration\AbstractPreset implements Configura
 		return $priority;
 	}
 }
-?>

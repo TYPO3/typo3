@@ -52,4 +52,3 @@ foreach ($SOBE->include_once as $INC_FILE) {
 
 $clickMenuController->main();
 $clickMenuController->printContent();
-?>

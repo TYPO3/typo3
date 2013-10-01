@@ -409,4 +409,3 @@ class ImportantActions extends Action\AbstractAction implements Action\ActionInt
 		return $message;
 	}
 }
-?>

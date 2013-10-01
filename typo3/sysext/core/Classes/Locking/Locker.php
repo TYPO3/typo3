@@ -319,6 +319,3 @@ class Locker {
 	}
 
 }
-
-
-?>

@@ -308,6 +308,3 @@ class ElementEntity {
 	}
 
 }
-
-
-?>

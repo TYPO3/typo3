@@ -30,4 +30,3 @@ namespace TYPO3\CMS\Install\FolderStructure\Exception;
 class RootNodeException extends \TYPO3\CMS\Install\FolderStructure\Exception {
 
 }
-?>

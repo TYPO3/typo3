@@ -313,6 +313,3 @@ class Logger implements \Psr\Log\LoggerInterface {
 	}
 
 }
-
-
-?>

@@ -39,4 +39,3 @@ require __DIR__ . '/init.php';
 $SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\View\\ThumbnailView');
 $SOBE->init();
 $SOBE->main();
-?>

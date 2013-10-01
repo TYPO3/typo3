@@ -36,4 +36,3 @@
 			$GLOBALS['error']->debugEnd();
 		}
 	}
-?>

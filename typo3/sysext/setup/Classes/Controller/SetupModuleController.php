@@ -774,6 +774,3 @@ class SetupModuleController {
 	}
 
 }
-
-
-?>

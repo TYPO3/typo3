@@ -774,4 +774,3 @@ class FileNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->assertFalse($node->_call('isFile'));
 	}
 }
-?>

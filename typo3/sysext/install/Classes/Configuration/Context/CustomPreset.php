@@ -44,4 +44,3 @@ class CustomPreset extends Configuration\AbstractCustomPreset implements Configu
 		'SYS/systemLogLevel' => '',
 	);
 }
-?>

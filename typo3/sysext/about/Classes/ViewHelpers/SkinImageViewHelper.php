@@ -55,6 +55,3 @@ class SkinImageViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\ImageViewHelper {
 	}
 
 }
-
-
-?>

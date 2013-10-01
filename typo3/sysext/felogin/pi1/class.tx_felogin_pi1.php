@@ -5,4 +5,3 @@
  * typo3/sysext/felogin/Classes/Controller/FrontendLoginController.php
  */
 require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('felogin') . 'Classes/Controller/FrontendLoginController.php';
-?>

@@ -85,5 +85,3 @@ class NotFoundView extends \TYPO3\CMS\Extbase\Mvc\View\AbstractView {
 	public function __call($methodName, array $arguments) {
 	}
 }
-
-?>

@@ -46,5 +46,3 @@ class MandatoryAdditionalElement extends \TYPO3\CMS\Form\Domain\Model\Additional
 	}
 
 }
-
-?>

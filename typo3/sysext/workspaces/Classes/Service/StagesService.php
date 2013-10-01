@@ -771,6 +771,3 @@ class StagesService {
 	}
 
 }
-
-
-?>

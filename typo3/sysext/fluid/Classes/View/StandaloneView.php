@@ -393,5 +393,3 @@ class StandaloneView extends \TYPO3\CMS\Fluid\View\AbstractTemplateView {
 		return $templateIdentifier;
 	}
 }
-
-?>

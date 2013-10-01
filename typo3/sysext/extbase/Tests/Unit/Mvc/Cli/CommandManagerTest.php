@@ -128,5 +128,3 @@ class CommandManagerTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$this->commandManager->getCommandByIdentifier('controller:command');
 	}
 }
-
-?>

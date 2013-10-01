@@ -103,5 +103,3 @@ class Join implements \TYPO3\CMS\Extbase\Persistence\Generic\Qom\JoinInterface {
 		return $this->joinCondition;
 	}
 }
-
-?>

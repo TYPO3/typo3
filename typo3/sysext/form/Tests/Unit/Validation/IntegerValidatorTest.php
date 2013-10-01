@@ -96,4 +96,3 @@ class IntegerValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		);
 	}
 }
-?>

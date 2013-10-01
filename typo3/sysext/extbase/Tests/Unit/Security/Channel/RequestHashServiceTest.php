@@ -425,5 +425,3 @@ class RequestHashServiceTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase 
 		$this->assertEquals($expectedResult, $requestHashService->_call('checkFieldNameInclusion', $requestArguments, $allowedFields));
 	}
 }
-
-?>

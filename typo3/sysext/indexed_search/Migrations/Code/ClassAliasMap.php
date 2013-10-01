@@ -18,4 +18,3 @@ return array(
 	'Tx_IndexedSearch_ViewHelpers_PageBrowsingResultsViewHelper' => 'TYPO3\\CMS\\IndexedSearch\\ViewHelpers\\PageBrowsingResultsViewHelper',
 	'Tx_IndexedSearch_ViewHelpers_PageBrowsingViewHelper' => 'TYPO3\\CMS\\IndexedSearch\\ViewHelpers\\PageBrowsingViewHelper',
 );
-?>

@@ -28,5 +28,3 @@ class DummyClass {
 	public function someMethod() {
 	}
 }
-
-?>

@@ -33,5 +33,3 @@ namespace TYPO3\CMS\Frontend;
 class Exception extends \Exception {
 
 }
-
-?>

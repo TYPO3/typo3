@@ -68,5 +68,3 @@ interface CollectionProcessorInterface
 	public function postProcessGetTreeMounts($searchFilter, $nodeCollection);
 
 }
-
-?>

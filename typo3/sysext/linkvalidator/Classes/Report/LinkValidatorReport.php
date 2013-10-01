@@ -717,5 +717,3 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
 	}
 
 }
-
-?>

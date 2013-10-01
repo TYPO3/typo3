@@ -172,5 +172,3 @@ class FilemountUpdateWizard extends AbstractUpdate {
 	}
 
 }
-
-?>

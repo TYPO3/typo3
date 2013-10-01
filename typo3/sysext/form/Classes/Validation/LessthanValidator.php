@@ -88,5 +88,3 @@ class LessthanValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator {
 	}
 
 }
-
-?>

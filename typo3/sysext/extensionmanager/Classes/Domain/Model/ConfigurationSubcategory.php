@@ -120,6 +120,3 @@ class ConfigurationSubcategory extends \TYPO3\CMS\Extbase\DomainObject\AbstractE
 	}
 
 }
-
-
-?>

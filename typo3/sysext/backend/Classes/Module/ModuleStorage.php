@@ -75,6 +75,3 @@ class ModuleStorage implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 }
-
-
-?>

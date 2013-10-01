@@ -213,5 +213,3 @@ abstract class AbstractCompositeValidator implements ObjectValidatorInterface, \
 		// deliberately empty
 	}
 }
-
-?>

@@ -270,5 +270,3 @@ tt_content.' . $pluginSignature . ' {
 		$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['typeConverters'][] = $typeConverterClassName;
 	}
 }
-
-?>

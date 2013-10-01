@@ -2009,5 +2009,3 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->assertEquals('', $aTagParams);
 	}
 }
-
-?>

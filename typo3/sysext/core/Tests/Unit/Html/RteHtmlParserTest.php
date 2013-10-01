@@ -661,4 +661,3 @@ class RteHtmlParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->assertEquals($expectedResult, $this->fixture->RTE_transform($this->fixture->RTE_transform($content, array(), 'db', $thisConfig), array(), 'rte', $thisConfig));
 	}
 }
-?>

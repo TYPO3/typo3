@@ -31,6 +31,3 @@ class FolderDoesNotExistException extends ResourceDoesNotExistException {
 
 
 }
-
-
-?>

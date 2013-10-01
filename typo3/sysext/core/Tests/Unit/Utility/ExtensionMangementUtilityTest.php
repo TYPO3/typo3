@@ -1460,4 +1460,3 @@ class ExtensionManagementUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 	}
 
 }
-?>

@@ -81,4 +81,3 @@ class UpdateFromTerController extends \TYPO3\CMS\Extensionmanager\Controller\Abs
 				->assign('errorMessage', $errorMessage);
 	}
 }
-?>

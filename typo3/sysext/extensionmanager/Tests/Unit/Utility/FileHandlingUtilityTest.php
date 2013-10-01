@@ -499,5 +499,3 @@ class FileHandlingUtilityTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase
 		$this->assertEquals($archive->numFiles, 5, 'Too many or too less files in archive');
 	}
 }
-
-?>

@@ -83,5 +83,3 @@ class ImagecolsUpdate extends AbstractUpdate {
 	}
 
 }
-
-?>

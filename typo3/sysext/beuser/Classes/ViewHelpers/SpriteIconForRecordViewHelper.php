@@ -66,5 +66,3 @@ class SpriteIconForRecordViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\Abst
 	}
 
 }
-
-?>

@@ -27,4 +27,3 @@ return array(
 	'Tx_Install_Updates_File_TceformsUpdateWizard' => 'TYPO3\\CMS\\Install\\Updates\\TceformsUpdateWizard',
 	'Tx_Install_Updates_File_TtContentUploadsUpdateWizard' => 'TYPO3\\CMS\\Install\\Updates\\TtContentUploadsUpdateWizard',
 );
-?>

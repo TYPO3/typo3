@@ -67,5 +67,3 @@ class FileuploadElementView extends \TYPO3\CMS\Form\View\Mail\Plain\Element\Cont
 	}
 
 }
-
-?>

@@ -31,5 +31,3 @@ namespace TYPO3\CMS\Lang\Exception;
 class Lang extends \TYPO3\CMS\Core\Exception {
 
 }
-
-?>

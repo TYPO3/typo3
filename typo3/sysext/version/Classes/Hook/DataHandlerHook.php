@@ -1307,6 +1307,3 @@ class DataHandlerHook {
 	}
 
 }
-
-
-?>

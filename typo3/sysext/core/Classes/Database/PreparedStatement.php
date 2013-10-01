@@ -516,6 +516,3 @@ class PreparedStatement {
 	}
 
 }
-
-
-?>

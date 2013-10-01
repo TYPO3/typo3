@@ -98,4 +98,3 @@ class GreaterThanValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCas
 		);
 	}
 }
-?>

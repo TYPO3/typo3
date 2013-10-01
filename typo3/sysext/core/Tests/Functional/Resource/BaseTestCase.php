@@ -41,5 +41,3 @@ class BaseTestCase extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 		), array('basePath' => $this->getMountRootUrl()));
 	}
 }
-
-?>

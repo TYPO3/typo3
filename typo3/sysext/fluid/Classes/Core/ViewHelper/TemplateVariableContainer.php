@@ -183,5 +183,3 @@ class TemplateVariableContainer implements \ArrayAccess {
 		return $this->get($identifier);
 	}
 }
-
-?>

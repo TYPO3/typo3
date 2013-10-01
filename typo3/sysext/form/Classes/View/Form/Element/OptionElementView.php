@@ -49,5 +49,3 @@ class OptionElementView extends \TYPO3\CMS\Form\View\Form\Element\AbstractElemen
 	protected $noWrap = TRUE;
 
 }
-
-?>

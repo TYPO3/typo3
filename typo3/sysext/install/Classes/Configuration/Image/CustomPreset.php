@@ -45,4 +45,3 @@ class CustomPreset extends Configuration\AbstractCustomPreset implements Configu
 		'GFX/colorspace' => '',
 	);
 }
-?>

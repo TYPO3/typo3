@@ -153,6 +153,3 @@ abstract class AbstractStandaloneMessage extends \TYPO3\CMS\Core\Messaging\Abstr
 	}
 
 }
-
-
-?>

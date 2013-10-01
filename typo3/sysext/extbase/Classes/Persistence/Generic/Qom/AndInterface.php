@@ -49,5 +49,3 @@ interface AndInterface extends \TYPO3\CMS\Extbase\Persistence\Generic\Qom\Constr
 	 */
 	public function getConstraint2();
 }
-
-?>

@@ -76,6 +76,3 @@ class StorageFactory {
 	}
 
 }
-
-
-?>

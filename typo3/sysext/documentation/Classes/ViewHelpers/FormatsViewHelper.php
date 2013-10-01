@@ -59,5 +59,3 @@ class FormatsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHel
 	}
 
 }
-
-?>

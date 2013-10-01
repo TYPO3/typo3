@@ -193,6 +193,3 @@ abstract class AbstractMirrorXmlParser extends \TYPO3\CMS\Extensionmanager\Utili
 	}
 
 }
-
-
-?>

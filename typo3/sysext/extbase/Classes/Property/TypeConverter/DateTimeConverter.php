@@ -219,4 +219,3 @@ class DateTimeConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\Abstra
 	}
 
 }
-?>

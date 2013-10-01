@@ -245,5 +245,3 @@ class DocumentRepository {
 	}
 
 }
-
-?>

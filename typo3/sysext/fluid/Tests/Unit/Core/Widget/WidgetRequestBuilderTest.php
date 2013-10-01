@@ -166,5 +166,3 @@ class WidgetRequestBuilderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCas
 		$this->assertSame($expected, $actual);
 	}
 }
-
-?>

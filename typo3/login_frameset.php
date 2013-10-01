@@ -39,4 +39,3 @@ require __DIR__ . '/init.php';
 $loginFramesetController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\LoginFramesetController');
 $loginFramesetController->main();
 $loginFramesetController->printContent();
-?>

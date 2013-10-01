@@ -33,5 +33,3 @@ namespace TYPO3\CMS\Extbase\Persistence\Exception;
 class UnknownObjectException extends \TYPO3\CMS\Extbase\Persistence\Exception {
 
 }
-
-?>

@@ -85,5 +85,3 @@ class AbstractWidgetControllerTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTes
 		$this->assertEquals(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName('EXT:fluid/Resources/Private/DummyTestTemplates'), $view->_call('getTemplateRootPath'));
 	}
 }
-
-?>

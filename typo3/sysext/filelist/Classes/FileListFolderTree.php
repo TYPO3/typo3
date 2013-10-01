@@ -72,5 +72,3 @@ class FileListFolderTree extends \TYPO3\CMS\Backend\Tree\View\FolderTreeView {
 	}
 
 }
-
-?>

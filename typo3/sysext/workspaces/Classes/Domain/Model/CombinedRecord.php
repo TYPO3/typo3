@@ -165,6 +165,3 @@ class CombinedRecord {
 	}
 
 }
-
-
-?>

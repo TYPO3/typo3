@@ -123,6 +123,3 @@ abstract class AbstractXmlParser implements \TYPO3\CMS\Core\Localization\Parser\
 	abstract protected function doParsingFromRoot(\SimpleXMLElement $root);
 
 }
-
-
-?>

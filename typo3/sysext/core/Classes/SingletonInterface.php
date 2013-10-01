@@ -35,5 +35,3 @@ namespace TYPO3\CMS\Core;
 interface SingletonInterface {
 
 }
-
-?>

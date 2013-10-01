@@ -220,5 +220,3 @@ class Session implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 }
-
-?>

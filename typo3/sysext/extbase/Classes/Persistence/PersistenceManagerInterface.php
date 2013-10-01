@@ -185,5 +185,3 @@ interface PersistenceManagerInterface {
 	 */
 	public function createQueryForType($type);
 }
-
-?>

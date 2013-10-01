@@ -78,4 +78,3 @@ class DevelopmentPreset extends Configuration\AbstractPreset implements Configur
 		return $priority;
 	}
 }
-?>

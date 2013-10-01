@@ -30,4 +30,3 @@ if ($extDirectEidInstance->actionIsAllowed()) {
 	$extDirectEidInstance->routeAction();
 	$extDirectEidInstance->render();
 }
-?>

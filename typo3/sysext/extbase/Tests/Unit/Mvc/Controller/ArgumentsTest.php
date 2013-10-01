@@ -246,5 +246,3 @@ class ArgumentsTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$this->assertFalse($arguments->hasArgument('argumentName2'));
 	}
 }
-
-?>

@@ -554,4 +554,3 @@ class AbstractController {
 		die;
 	}
 }
-?>

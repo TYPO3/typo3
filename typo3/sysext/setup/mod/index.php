@@ -31,4 +31,3 @@ $SOBE->storeIncomingData();
 $SOBE->init();
 $SOBE->main();
 $SOBE->printContent();
-?>

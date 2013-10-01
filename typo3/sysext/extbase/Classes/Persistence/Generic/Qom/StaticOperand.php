@@ -34,5 +34,3 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
 class StaticOperand extends \TYPO3\CMS\Extbase\Persistence\Generic\Qom\Operand implements \TYPO3\CMS\Extbase\Persistence\Generic\Qom\StaticOperandInterface {
 
 }
-
-?>

@@ -107,5 +107,3 @@ class NameJsonElement extends \TYPO3\CMS\Form\Domain\Model\Json\FieldsetJsonElem
 	}
 
 }
-
-?>

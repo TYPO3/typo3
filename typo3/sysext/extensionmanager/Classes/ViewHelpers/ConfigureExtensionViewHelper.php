@@ -67,6 +67,3 @@ class ConfigureExtensionViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Link\Act
 	}
 
 }
-
-
-?>

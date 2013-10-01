@@ -51,5 +51,3 @@ class RadioElementView extends \TYPO3\CMS\Form\View\Confirmation\Element\Abstrac
 	}
 
 }
-
-?>

@@ -69,6 +69,3 @@ class FrontendLoginHook {
 	}
 
 }
-
-
-?>

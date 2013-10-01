@@ -342,5 +342,3 @@ class ElementConditionMatcher {
 		return $GLOBALS['BE_USER'];
 	}
 }
-
-?>

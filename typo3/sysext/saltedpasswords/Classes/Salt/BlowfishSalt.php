@@ -300,6 +300,3 @@ class BlowfishSalt extends \TYPO3\CMS\Saltedpasswords\Salt\Md5Salt {
 	}
 
 }
-
-
-?>

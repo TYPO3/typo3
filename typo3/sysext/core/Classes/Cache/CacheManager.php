@@ -321,6 +321,3 @@ class CacheManager implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 }
-
-
-?>

@@ -18,5 +18,3 @@ namespace TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 class RenderingContextNotAccessibleException extends \TYPO3\CMS\Fluid\Core\ViewHelper\Exception {
 
 }
-
-?>

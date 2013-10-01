@@ -198,6 +198,3 @@ class BackendLayoutView {
 	}
 
 }
-
-
-?>

@@ -53,5 +53,3 @@ class RadioGroupElementView extends \TYPO3\CMS\Form\View\Confirmation\Element\Fi
 	}
 
 }
-
-?>

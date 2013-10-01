@@ -34,5 +34,3 @@ namespace TYPO3\CMS\Extbase\DomainObject;
 abstract class AbstractEntity extends \TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject {
 
 }
-
-?>

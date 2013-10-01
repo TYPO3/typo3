@@ -80,5 +80,3 @@ class Selector implements \TYPO3\CMS\Extbase\Persistence\Generic\Qom\SelectorInt
 		return $this->selectorName;
 	}
 }
-
-?>

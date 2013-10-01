@@ -324,4 +324,3 @@ class ConfigurationUtilityTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCas
 		$this->assertEquals($expected, $fixture->convertNestedToValuedConfiguration($configuration));
 	}
 }
-?>

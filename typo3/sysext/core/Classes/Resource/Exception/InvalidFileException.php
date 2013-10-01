@@ -31,6 +31,3 @@ class InvalidFileException extends \TYPO3\CMS\Core\Resource\Exception {
 
 
 }
-
-
-?>

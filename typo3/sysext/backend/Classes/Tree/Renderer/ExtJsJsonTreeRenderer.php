@@ -112,6 +112,3 @@ class ExtJsJsonTreeRenderer extends \TYPO3\CMS\Backend\Tree\Renderer\AbstractTre
 	}
 
 }
-
-
-?>

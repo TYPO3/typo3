@@ -160,6 +160,3 @@ class Mailer extends \Swift_Mailer {
 	}
 
 }
-
-
-?>

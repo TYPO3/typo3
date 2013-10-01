@@ -48,4 +48,3 @@ interface CustomPresetInterface extends PresetInterface {
 	 */
 	public function setActive();
 }
-?>

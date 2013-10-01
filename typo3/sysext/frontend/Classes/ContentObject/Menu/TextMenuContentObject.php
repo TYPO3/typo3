@@ -353,6 +353,3 @@ class TextMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu\Abstr
 	}
 
 }
-
-
-?>

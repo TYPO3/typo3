@@ -284,5 +284,3 @@ class Arguments extends \ArrayObject {
 		return $results;
 	}
 }
-
-?>

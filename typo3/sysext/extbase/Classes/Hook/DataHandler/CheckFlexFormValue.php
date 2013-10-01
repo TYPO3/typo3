@@ -61,5 +61,3 @@ class CheckFlexFormValue {
 		return $r;
 	}
 }
-
-?>

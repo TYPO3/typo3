@@ -414,6 +414,3 @@ abstract class AbstractExtensionXmlParser extends \TYPO3\CMS\Extensionmanager\Ut
 	}
 
 }
-
-
-?>

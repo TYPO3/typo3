@@ -55,5 +55,3 @@ class RowsAttribute extends \TYPO3\CMS\Form\Domain\Model\Attribute\AbstractAttri
 	}
 
 }
-
-?>

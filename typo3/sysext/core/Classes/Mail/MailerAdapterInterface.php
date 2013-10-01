@@ -46,5 +46,3 @@ interface MailerAdapterInterface {
 	public function mail($to, $subject, $messageBody, $additionalHeaders = NULL, $additionalParameters = NULL, $fakeSending = FALSE);
 
 }
-
-?>

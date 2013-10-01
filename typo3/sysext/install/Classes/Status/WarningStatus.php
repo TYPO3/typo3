@@ -37,4 +37,3 @@ class WarningStatus extends AbstractStatus implements StatusInterface {
 	protected $severity = 'warning';
 
 }
-?>

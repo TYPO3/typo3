@@ -66,5 +66,3 @@ class DebugExceptionHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 }
-
-?>

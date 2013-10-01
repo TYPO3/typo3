@@ -329,5 +329,3 @@ class PersistenceManager implements \TYPO3\CMS\Extbase\Persistence\PersistenceMa
 	}
 
 }
-
-?>

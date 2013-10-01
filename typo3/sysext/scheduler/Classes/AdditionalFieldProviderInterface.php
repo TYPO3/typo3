@@ -59,5 +59,3 @@ interface AdditionalFieldProviderInterface
 	public function saveAdditionalFields(array $submittedData, \TYPO3\CMS\Scheduler\Task\AbstractTask $task);
 
 }
-
-?>

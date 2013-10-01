@@ -629,6 +629,3 @@ class WorkspaceService implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 }
-
-
-?>

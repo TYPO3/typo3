@@ -177,6 +177,3 @@ class LocallangXmlParser extends \TYPO3\CMS\Core\Localization\Parser\AbstractXml
 	}
 
 }
-
-
-?>

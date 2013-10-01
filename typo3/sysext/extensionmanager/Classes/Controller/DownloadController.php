@@ -218,6 +218,3 @@ class DownloadController extends \TYPO3\CMS\Extensionmanager\Controller\Abstract
 		return array($result, $errorMessage);
 	}
 }
-
-
-?>

@@ -143,5 +143,3 @@ class ViewHelperNode extends \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNod
 		return array('viewHelperClassName', 'arguments', 'childNodes');
 	}
 }
-
-?>

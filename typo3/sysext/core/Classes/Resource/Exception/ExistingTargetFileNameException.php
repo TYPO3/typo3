@@ -31,6 +31,3 @@ class ExistingTargetFileNameException extends \TYPO3\CMS\Core\Resource\Exception
 
 
 }
-
-
-?>

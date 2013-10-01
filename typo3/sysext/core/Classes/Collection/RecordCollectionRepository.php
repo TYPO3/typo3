@@ -187,6 +187,3 @@ class RecordCollectionRepository {
 	}
 
 }
-
-
-?>

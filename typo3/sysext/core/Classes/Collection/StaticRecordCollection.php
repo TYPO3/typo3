@@ -175,6 +175,3 @@ class StaticRecordCollection extends \TYPO3\CMS\Core\Collection\AbstractRecordCo
 	}
 
 }
-
-
-?>

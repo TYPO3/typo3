@@ -580,5 +580,3 @@ class OpenidService extends \TYPO3\CMS\Core\Service\AbstractService {
 	}
 
 }
-
-?>

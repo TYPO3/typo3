@@ -112,5 +112,3 @@ class EmptyView implements \TYPO3\CMS\Extbase\Mvc\View\ViewInterface {
 	public function initializeView() {
 	}
 }
-
-?>

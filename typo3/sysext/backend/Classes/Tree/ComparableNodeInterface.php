@@ -58,5 +58,3 @@ interface ComparableNodeInterface
 	public function compareTo($other);
 
 }
-
-?>

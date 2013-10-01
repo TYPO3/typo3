@@ -50,4 +50,3 @@ $SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Fronte
 $SOBE->init();
 $SOBE->main();
 $SOBE->printContent();
-?>

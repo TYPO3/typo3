@@ -33,5 +33,3 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
 class Operand implements \TYPO3\CMS\Extbase\Persistence\Generic\Qom\OperandInterface {
 
 }
-
-?>

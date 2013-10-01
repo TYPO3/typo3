@@ -89,5 +89,3 @@ AddEncoding gzip .gzip
 	}
 
 }
-
-?>

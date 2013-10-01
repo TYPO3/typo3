@@ -98,6 +98,3 @@ class BackendUtilityHook implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 }
-
-
-?>

@@ -504,4 +504,3 @@ class FunctionalTestCaseBootstrapUtility {
 		return $lines;
 	}
 }
-?>

@@ -66,5 +66,3 @@ class ContainerElementView extends \TYPO3\CMS\Form\View\Mail\Plain\Element\Abstr
 	}
 
 }
-
-?>

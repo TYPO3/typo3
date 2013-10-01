@@ -89,5 +89,3 @@ class CategoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$this->assertSame($parent, $this->fixture->getParent());
 	}
 }
-
-?>

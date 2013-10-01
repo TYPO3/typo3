@@ -152,4 +152,3 @@ return array(
 	't3lib_utility_PhpOptions' => 'TYPO3\\CMS\\Core\\Utility\\PhpOptionsUtility',
 	't3lib_utility_VersionNumber' => 'TYPO3\\CMS\\Core\\Utility\\VersionNumberUtility',
 );
-?>

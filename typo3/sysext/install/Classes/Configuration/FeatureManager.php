@@ -133,4 +133,3 @@ class FeatureManager {
 		return $localConfigurationValuesToSet;
 	}
 }
-?>

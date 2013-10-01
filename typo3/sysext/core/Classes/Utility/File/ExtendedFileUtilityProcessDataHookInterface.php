@@ -44,5 +44,3 @@ interface ExtendedFileUtilityProcessDataHookInterface {
 	public function processData_postProcessAction($action, array $cmdArr, array $result, \TYPO3\CMS\Core\Utility\File\ExtendedFileUtility $parentObject);
 
 }
-
-?>

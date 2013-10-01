@@ -52,4 +52,3 @@ class ClassWithSettersAndConstructor {
 		$this->property2 = $property2;
 	}
 }
-?>

@@ -237,4 +237,3 @@ abstract class AbstractAction {
 		return $saltFactory->getHashedPassword($password);
 	}
 }
-?>

@@ -41,4 +41,3 @@ class UpdateTranslationJson extends CheckTranslationJson {
 	}
 
 }
-?>

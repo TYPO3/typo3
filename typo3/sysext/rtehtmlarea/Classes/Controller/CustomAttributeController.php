@@ -128,6 +128,3 @@ class CustomAttributeController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugi
 	}
 
 }
-
-
-?>

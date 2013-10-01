@@ -293,6 +293,3 @@ class PathUtility {
 	}
 
 }
-
-
-?>

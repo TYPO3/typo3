@@ -83,5 +83,3 @@ class MergeAdvancedUpdate extends AbstractUpdate {
 	}
 
 }
-
-?>

@@ -258,5 +258,3 @@ class MailUtility {
 		return $addressList;
 	}
 }
-
-?>

@@ -1139,6 +1139,3 @@ class TypoScriptParser {
 	}
 
 }
-
-
-?>

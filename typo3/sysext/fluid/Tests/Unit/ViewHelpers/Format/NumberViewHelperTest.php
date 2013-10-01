@@ -36,5 +36,3 @@ class NumberViewHelperTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$this->assertEquals('3.333,333', $actualResult);
 	}
 }
-
-?>

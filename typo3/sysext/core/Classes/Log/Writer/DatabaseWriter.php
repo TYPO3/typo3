@@ -80,6 +80,3 @@ class DatabaseWriter extends \TYPO3\CMS\Core\Log\Writer\AbstractWriter {
 	}
 
 }
-
-
-?>

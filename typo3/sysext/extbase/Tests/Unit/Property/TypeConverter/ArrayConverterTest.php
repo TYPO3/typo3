@@ -94,4 +94,3 @@ class ArrayConverterTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$this->assertSame($expectedResult, $this->converter->canConvertFrom($source, 'array'));
 	}
 }
-?>

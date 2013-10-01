@@ -410,6 +410,3 @@ class FlexFormTools {
 	}
 
 }
-
-
-?>

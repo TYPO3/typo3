@@ -16,4 +16,3 @@ if (TYPO3_MODE === 'BE') {
 	$GLOBALS['TYPO3_CONF_VARS']['BE']['AJAX']['Taskcenter::saveCollapseState'] = 'EXT:taskcenter/Classes/TaskStatus.php:TYPO3\\CMS\\Taskcenter\\TaskStatus->saveCollapseState';
 	$GLOBALS['TYPO3_CONF_VARS']['BE']['AJAX']['Taskcenter::saveSortingState'] = 'EXT:taskcenter/Classes/TaskStatus.php:TYPO3\\CMS\\Taskcenter\\TaskStatus->saveSortingState';
 }
-?>

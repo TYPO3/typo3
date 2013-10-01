@@ -102,5 +102,3 @@ interface BackendInterface {
 	public function isNewObject($object);
 
 }
-
-?>

@@ -74,4 +74,3 @@ class EqualsValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		);
 	}
 }
-?>

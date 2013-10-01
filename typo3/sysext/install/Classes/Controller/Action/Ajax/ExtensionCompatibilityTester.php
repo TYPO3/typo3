@@ -218,5 +218,3 @@ class ExtensionCompatibilityTester extends Action\AbstractAction implements Acti
 		Utility\GeneralUtility::writeFile($this->protocolFile, implode(', ', $extensionsForFile));
 	}
 }
-
-?>

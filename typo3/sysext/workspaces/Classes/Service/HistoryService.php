@@ -169,6 +169,3 @@ class HistoryService implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 }
-
-
-?>

@@ -407,5 +407,3 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 }
-
-?>

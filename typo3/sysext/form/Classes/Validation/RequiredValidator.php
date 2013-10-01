@@ -48,5 +48,3 @@ class RequiredValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator {
 	}
 
 }
-
-?>

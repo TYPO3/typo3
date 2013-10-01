@@ -45,5 +45,3 @@ class FieldsetElement extends \TYPO3\CMS\Form\Domain\Model\Element\ContainerElem
 	);
 
 }
-
-?>

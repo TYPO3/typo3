@@ -625,5 +625,3 @@ class ActionControllerTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$actionController->injectConfigurationManager($mockConfigurationManager);
 	}
 }
-
-?>

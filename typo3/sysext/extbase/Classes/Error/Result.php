@@ -468,5 +468,3 @@ class Result {
 		return $this->propertyResults;
 	}
 }
-
-?>

@@ -84,6 +84,3 @@ class FileNameFilter {
 	}
 
 }
-
-
-?>

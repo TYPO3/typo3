@@ -169,5 +169,3 @@ class ActionToolbarMenu implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookInt
 	}
 
 }
-
-?>

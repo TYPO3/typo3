@@ -363,5 +363,3 @@ class MailPostProcessor implements \TYPO3\CMS\Form\PostProcess\PostProcessorInte
 	}
 
 }
-
-?>

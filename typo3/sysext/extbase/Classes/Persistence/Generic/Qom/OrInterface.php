@@ -51,5 +51,3 @@ interface OrInterface extends \TYPO3\CMS\Extbase\Persistence\Generic\Qom\Constra
 	 */
 	public function getConstraint2();
 }
-
-?>

@@ -111,6 +111,3 @@ abstract class AbstractSalt {
 	}
 
 }
-
-
-?>

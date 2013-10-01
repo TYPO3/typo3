@@ -91,4 +91,3 @@ class ObjectStorageConverter extends AbstractTypeConverter {
 		return $parsedTargetType['elementType'];
 	}
 }
-?>

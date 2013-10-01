@@ -1172,5 +1172,3 @@ class PageLayoutController {
 	}
 
 }
-
-?>

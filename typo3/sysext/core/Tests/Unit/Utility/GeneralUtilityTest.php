@@ -4242,5 +4242,3 @@ text with a ' . $urlMatch . '$|s'),
 	}
 
 }
-
-?>

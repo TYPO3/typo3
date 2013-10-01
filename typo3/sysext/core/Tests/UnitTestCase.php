@@ -36,4 +36,3 @@ namespace TYPO3\CMS\Core\Tests;
 abstract class UnitTestCase extends BaseTestCase {
 
 }
-?>

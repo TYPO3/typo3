@@ -543,5 +543,3 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$mockDataHandler->deleteRecord_procBasedOnFieldType($table, 42, 'foo', 'bar', $conf);
 	}
 }
-
-?>

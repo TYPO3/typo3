@@ -263,5 +263,3 @@ class CommandController implements \TYPO3\CMS\Extbase\Mvc\Controller\CommandCont
 		die($exitCode);
 	}
 }
-
-?>

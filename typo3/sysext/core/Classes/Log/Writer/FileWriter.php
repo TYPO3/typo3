@@ -190,6 +190,3 @@ class FileWriter extends \TYPO3\CMS\Core\Log\Writer\AbstractWriter {
 	}
 
 }
-
-
-?>

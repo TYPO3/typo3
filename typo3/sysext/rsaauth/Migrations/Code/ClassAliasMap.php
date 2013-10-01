@@ -15,4 +15,3 @@ return array(
 	'tx_rsaauth_split_storage' => 'TYPO3\\CMS\\Rsaauth\\Storage\\SplitStorage',
 	'tx_rsaauth_storagefactory' => 'TYPO3\\CMS\\Rsaauth\\Storage\\StorageFactory',
 );
-?>

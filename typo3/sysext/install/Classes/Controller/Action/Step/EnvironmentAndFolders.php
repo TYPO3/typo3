@@ -113,4 +113,3 @@ class EnvironmentAndFolders extends Action\AbstractAction implements StepInterfa
 		return $this->view->render();
 	}
 }
-?>

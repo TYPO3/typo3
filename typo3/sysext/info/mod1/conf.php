@@ -6,4 +6,3 @@ $MLANG['default']['ll_ref'] = 'LLL:EXT:lang/locallang_mod_web_info.xlf';
 $MCONF['script'] = 'index.php';
 $MCONF['access'] = 'user,group';
 $MCONF['name'] = 'web_info';
-?>

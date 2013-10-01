@@ -29,5 +29,3 @@ namespace TYPO3\CMS\Extbase\Property\Exception;
 class InvalidPropertyMappingConfigurationException extends \TYPO3\CMS\Extbase\Property\Exception {
 
 }
-
-?>

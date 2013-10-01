@@ -59,6 +59,3 @@ class BadRequestException extends \TYPO3\CMS\Core\Error\Http\AbstractClientError
 	}
 
 }
-
-
-?>

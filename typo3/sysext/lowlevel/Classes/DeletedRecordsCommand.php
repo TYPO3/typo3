@@ -130,6 +130,3 @@ Although deleted records are not errors to be repaired, this tool allows you to 
 	}
 
 }
-
-
-?>

@@ -173,4 +173,3 @@ return array(
 		'5' => array('showitem' => 'hidden;;;;1-1-1,type,title;;;;2-2-2,description;;;;3-3-3,assign_to_groups,--div--,t3_listPid;Where to create records:;;;5-5-5,t3_tables;Create records in table:')
 	)
 );
-?>

@@ -44,5 +44,3 @@ class RadioGroupElementView extends \TYPO3\CMS\Form\View\Form\Element\FieldsetEl
 	';
 
 }
-
-?>

@@ -259,6 +259,3 @@ class TableRenderer {
 	}
 
 }
-
-
-?>

@@ -183,5 +183,3 @@ class TranslationConfigurationProvider {
 	}
 
 }
-
-?>

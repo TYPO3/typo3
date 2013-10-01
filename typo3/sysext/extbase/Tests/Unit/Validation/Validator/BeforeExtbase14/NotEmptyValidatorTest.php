@@ -80,5 +80,3 @@ class NotEmptyValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$notEmptyValidator->isValid(NULL);
 	}
 }
-
-?>

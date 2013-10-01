@@ -181,6 +181,3 @@ class TreeRepresentationNode extends \TYPO3\CMS\Backend\Tree\TreeNode {
 	}
 
 }
-
-
-?>

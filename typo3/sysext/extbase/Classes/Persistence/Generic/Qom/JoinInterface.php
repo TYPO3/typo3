@@ -60,5 +60,3 @@ interface JoinInterface extends \TYPO3\CMS\Extbase\Persistence\Generic\Qom\Sourc
 	 */
 	public function getJoinCondition();
 }
-
-?>

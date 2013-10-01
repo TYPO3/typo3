@@ -51,5 +51,3 @@ class FlashMessagesViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelper
 		$this->assertEmpty($this->viewHelper->render());
 	}
 }
-
-?>

@@ -288,6 +288,3 @@ class AbstractMenuContentObjectTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTe
 		$this->assertEquals($expectedResult, $this->fixture->isItemState('IFSUB', 0));
 	}
 }
-
-
-?>

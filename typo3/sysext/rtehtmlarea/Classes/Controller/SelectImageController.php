@@ -94,6 +94,3 @@ class SelectImageController {
 	}
 
 }
-
-
-?>

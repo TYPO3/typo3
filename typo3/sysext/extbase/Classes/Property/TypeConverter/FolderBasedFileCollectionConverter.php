@@ -57,5 +57,3 @@ class FolderBasedFileCollectionConverter extends \TYPO3\CMS\Extbase\Property\Typ
 		return $this->fileFactory->getCollectionObject($source);
 	}
 }
-
-?>

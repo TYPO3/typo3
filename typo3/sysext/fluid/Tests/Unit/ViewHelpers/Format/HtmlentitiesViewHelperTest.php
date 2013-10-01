@@ -119,5 +119,3 @@ class HtmlentitiesViewHelperTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestC
 		$this->assertSame($source, $actualResult);
 	}
 }
-
-?>

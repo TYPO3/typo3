@@ -132,6 +132,3 @@ class SystemStatus implements \TYPO3\CMS\Reports\StatusProviderInterface {
 	}
 
 }
-
-
-?>

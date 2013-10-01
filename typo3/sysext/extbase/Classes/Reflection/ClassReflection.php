@@ -196,5 +196,3 @@ class ClassReflection extends \ReflectionClass {
 		return $this->docCommentParser;
 	}
 }
-
-?>

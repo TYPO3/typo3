@@ -16,4 +16,3 @@ if (TYPO3_MODE === 'BE') {
 		'EXT:wizard_crpages/locallang_csh.xlf'
 	);
 }
-?>

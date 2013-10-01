@@ -8,4 +8,3 @@ return array(
 	'localRecordList' => 'TYPO3\\CMS\\Recordlist\\RecordList\\DatabaseRecordList',
 	'localRecordList_actionsHook' => 'TYPO3\\CMS\\Recordlist\\RecordList\\RecordListHookInterface',
 );
-?>

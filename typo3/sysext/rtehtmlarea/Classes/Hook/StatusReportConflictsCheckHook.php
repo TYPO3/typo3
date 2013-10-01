@@ -68,6 +68,3 @@ class StatusReportConflictsCheckHook implements \TYPO3\CMS\Reports\StatusProvide
 	}
 
 }
-
-
-?>

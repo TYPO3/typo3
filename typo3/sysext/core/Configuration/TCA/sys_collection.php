@@ -179,4 +179,3 @@ return array(
 		'1' => array('showitem' => 'starttime, endtime, fe_group, sys_language_uid, l10n_parent, l10n_diffsource, hidden')
 	)
 );
-?>

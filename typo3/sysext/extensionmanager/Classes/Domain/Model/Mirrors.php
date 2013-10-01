@@ -130,6 +130,3 @@ class Mirrors extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	}
 
 }
-
-
-?>

@@ -32,6 +32,3 @@ class ExtensionManagerException extends \TYPO3\CMS\Core\Exception {
 
 
 }
-
-
-?>

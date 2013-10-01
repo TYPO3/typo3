@@ -90,6 +90,3 @@ class PagetreeCollectionsProcessor implements \TYPO3\CMS\Backend\Tree\Pagetree\C
 	}
 
 }
-
-
-?>

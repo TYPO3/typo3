@@ -51,5 +51,3 @@ class RegularExpressionValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Valid
 		$this->assertEquals(array(new \TYPO3\CMS\Extbase\Validation\Error('The given subject did not match the pattern.', 1221565130)), $errors);
 	}
 }
-
-?>

@@ -47,5 +47,3 @@ class ImageMagickCommandsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abs
 		return '<textarea rows="' . count($result) . '">' . implode(LF, $result) . '</textarea>';
 	}
 }
-
-?>

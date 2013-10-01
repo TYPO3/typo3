@@ -85,5 +85,3 @@ class LogicalOr implements \TYPO3\CMS\Extbase\Persistence\Generic\Qom\OrInterfac
 		return $this->constraint2;
 	}
 }
-
-?>

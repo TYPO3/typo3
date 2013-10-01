@@ -90,6 +90,3 @@ class Evaluator {
 	}
 
 }
-
-
-?>

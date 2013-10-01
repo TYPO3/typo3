@@ -165,4 +165,3 @@ return array(
 		'1' => array('showitem' => 'hidden, starttime, endtime')
 	)
 );
-?>

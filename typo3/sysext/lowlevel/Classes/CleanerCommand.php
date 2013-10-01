@@ -578,6 +578,3 @@ NOW Running --AUTOFIX on result. OK?' . ($this->cli_isArg('--dryrun') ? ' (--dry
 	}
 
 }
-
-
-?>

@@ -35,6 +35,3 @@ class InvalidParserException extends \RuntimeException {
 
 
 }
-
-
-?>

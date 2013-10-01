@@ -47,5 +47,3 @@ class LegendAdditionalElementView extends \TYPO3\CMS\Form\View\Mail\Html\Additio
 	';
 
 }
-
-?>

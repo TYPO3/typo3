@@ -318,5 +318,3 @@ class RteFileLinksUpdateWizard extends AbstractUpdate {
 	}
 
 }
-
-?>

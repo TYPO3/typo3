@@ -1022,4 +1022,3 @@ class Bootstrap {
 		return $this;
 	}
 }
-?>

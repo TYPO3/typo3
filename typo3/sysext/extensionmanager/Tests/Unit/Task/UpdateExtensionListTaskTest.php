@@ -115,4 +115,3 @@ class UpdateExtensionListTaskTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTest
 		$task->execute();
 	}
 }
-?>

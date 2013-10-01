@@ -252,4 +252,3 @@ class ExtensionCompatibilityTesterTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
 		$this->assertEquals($expectedExtensions, $fileContent);
 	}
 }
-?>

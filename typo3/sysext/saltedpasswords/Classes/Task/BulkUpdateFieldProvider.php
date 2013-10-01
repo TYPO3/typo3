@@ -131,6 +131,3 @@ class BulkUpdateFieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldPro
 	}
 
 }
-
-
-?>

@@ -153,5 +153,3 @@ class CurrencyViewHelperTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase 
 		$this->assertEquals('54.321,000', $actualResult);
 	}
 }
-
-?>

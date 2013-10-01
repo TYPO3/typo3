@@ -293,6 +293,3 @@ class MediaWizardProvider implements \TYPO3\CMS\Frontend\MediaWizard\MediaWizard
 	}
 
 }
-
-
-?>

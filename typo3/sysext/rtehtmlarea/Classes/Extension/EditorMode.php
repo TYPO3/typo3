@@ -71,6 +71,3 @@ class EditorMode extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 	}
 
 }
-
-
-?>

@@ -42,4 +42,3 @@ class LoginForm extends Action\AbstractAction implements Action\ActionInterface 
 		return $this->view->render();
 	}
 }
-?>

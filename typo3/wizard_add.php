@@ -34,4 +34,3 @@ require __DIR__ . '/init.php';
 
 $addController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\Wizard\\AddController');
 $addController->main();
-?>

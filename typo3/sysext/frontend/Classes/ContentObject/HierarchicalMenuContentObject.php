@@ -71,6 +71,3 @@ class HierarchicalMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Ab
 	}
 
 }
-
-
-?>

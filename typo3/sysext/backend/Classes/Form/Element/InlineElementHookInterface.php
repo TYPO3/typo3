@@ -69,5 +69,3 @@ interface InlineElementHookInterface {
 	public function renderForeignRecordHeaderControl_postProcess($parentUid, $foreignTable, array $childRecord, array $childConfig, $isVirtual, array &$controlItems);
 
 }
-
-?>

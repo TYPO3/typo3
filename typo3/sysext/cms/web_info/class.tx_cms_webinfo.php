@@ -36,4 +36,3 @@ require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('cms') 
  * typo3/sysext/frontend/Classes/Controller/PageInformationController.php
  */
 require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('frontend') . 'Classes/Controller/PageInformationController.php';
-?>

@@ -112,5 +112,3 @@ class AbstractFormViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers
 		$this->assertSame('somePrefix[foo][someFieldName][bar]', $viewHelper->_call('prefixFieldName', 'someFieldName[bar]'));
 	}
 }
-
-?>

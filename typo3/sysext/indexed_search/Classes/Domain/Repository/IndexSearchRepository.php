@@ -780,6 +780,3 @@ class IndexSearchRepository {
 	}
 
 }
-
-
-?>

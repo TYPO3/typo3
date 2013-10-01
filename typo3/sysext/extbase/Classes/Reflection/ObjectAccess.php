@@ -377,5 +377,3 @@ class ObjectAccess {
 		return 'set' . ucfirst($propertyName);
 	}
 }
-
-?>

@@ -93,5 +93,3 @@ class Response implements \TYPO3\CMS\Extbase\Mvc\ResponseInterface {
 		return $this->getContent();
 	}
 }
-
-?>

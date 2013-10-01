@@ -56,6 +56,3 @@ class InstallationStateCssClassViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelp
 	}
 
 }
-
-
-?>

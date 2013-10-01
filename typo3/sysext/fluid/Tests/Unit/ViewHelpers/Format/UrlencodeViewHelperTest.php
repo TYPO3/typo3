@@ -78,5 +78,3 @@ class UrlencodeViewHelperTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase
 		$this->assertSame($source, $actualResult);
 	}
 }
-
-?>

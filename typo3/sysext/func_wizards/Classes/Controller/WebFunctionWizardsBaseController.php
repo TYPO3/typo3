@@ -100,5 +100,3 @@ class WebFunctionWizardsBaseController extends \TYPO3\CMS\Backend\Module\Abstrac
 	}
 
 }
-
-?>

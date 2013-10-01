@@ -46,4 +46,3 @@ $_EXTCONF = unserialize($_EXTCONF);
 if (isset($_EXTCONF['enableMetaphoneSearch']) && intval($_EXTCONF['enableMetaphoneSearch']) == 2) {
 	$TYPO3_CONF_VARS['EXTCONF']['indexed_search']['metaphone'] = '&TYPO3\\CMS\\IndexedSearch\\Utility\\DoubleMetaPhoneUtility';
 }
-?>

@@ -69,5 +69,3 @@ interface EditableCollectionInterface
 	public function removeAll();
 
 }
-
-?>

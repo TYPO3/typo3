@@ -23,5 +23,3 @@ namespace TYPO3\CMS\Fluid\Core\ViewHelper;
 interface ViewHelperInterface {
 
 }
-
-?>

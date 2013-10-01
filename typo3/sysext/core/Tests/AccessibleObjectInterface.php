@@ -108,4 +108,3 @@ interface AccessibleObjectInterface {
 	 */
 	public function _getStatic($propertyName);
 }
-?>

@@ -490,5 +490,3 @@ class ExtendedFileUtilityTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 	}
 
 }
-
-?>

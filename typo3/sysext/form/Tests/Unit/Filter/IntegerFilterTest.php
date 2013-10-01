@@ -68,4 +68,3 @@ class IntegerFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		);
 	}
 }
-?>

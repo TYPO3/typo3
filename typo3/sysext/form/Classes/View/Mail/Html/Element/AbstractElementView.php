@@ -368,5 +368,3 @@ abstract class AbstractElementView {
 	}
 
 }
-
-?>

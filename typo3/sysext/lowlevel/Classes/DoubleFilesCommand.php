@@ -191,6 +191,3 @@ This will check the system for double files relations.';
 	}
 
 }
-
-
-?>

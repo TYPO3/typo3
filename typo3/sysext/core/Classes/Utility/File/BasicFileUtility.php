@@ -534,6 +534,3 @@ class BasicFileUtility {
 	}
 
 }
-
-
-?>

@@ -105,5 +105,3 @@ class AjaxWidgetContextHolder implements \TYPO3\CMS\Core\SingletonInterface {
 		}
 	}
 }
-
-?>

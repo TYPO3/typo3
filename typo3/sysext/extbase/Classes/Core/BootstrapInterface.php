@@ -43,5 +43,3 @@ interface BootstrapInterface {
 	 */
 	public function run($content, $configuration);
 }
-
-?>

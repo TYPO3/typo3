@@ -5,4 +5,3 @@
  * typo3/sysext/frontend/Classes/Controller/TranslationStatusController.php
  */
 require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('frontend') . 'Classes/Controller/TranslationStatusController.php';
-?>

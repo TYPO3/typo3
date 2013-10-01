@@ -90,5 +90,3 @@ class FileMaximumSizeValidator extends \TYPO3\CMS\Form\Validation\AbstractValida
 	}
 
 }
-
-?>

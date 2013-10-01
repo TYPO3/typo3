@@ -45,5 +45,3 @@ abstract class AbstractObjectValidator extends \TYPO3\CMS\Extbase\Validation\Val
 		// deliberately empty
 	}
 }
-
-?>

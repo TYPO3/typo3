@@ -40,5 +40,3 @@ class ClassWithInjectProperties {
 	 */
 	protected $secondDummyClass;
 }
-
-?>

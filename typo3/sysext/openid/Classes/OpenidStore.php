@@ -233,6 +233,3 @@ class OpenidStore extends \Auth_OpenID_OpenIDStore {
 	}
 
 }
-
-
-?>

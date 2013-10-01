@@ -629,6 +629,3 @@ class DatabaseIntegrityView {
 	}
 
 }
-
-
-?>

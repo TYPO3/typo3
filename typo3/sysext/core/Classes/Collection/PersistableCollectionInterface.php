@@ -91,5 +91,3 @@ interface PersistableCollectionInterface {
 	public function loadContents();
 
 }
-
-?>

@@ -282,4 +282,3 @@ class CleanUp extends Action\AbstractAction implements Action\ActionInterface {
 		return $data;
 	}
 }
-?>

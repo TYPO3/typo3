@@ -85,5 +85,3 @@ abstract class AbstractAttribute {
 	abstract public function getValue();
 
 }
-
-?>

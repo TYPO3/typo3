@@ -45,5 +45,3 @@ interface LowerCaseInterface extends \TYPO3\CMS\Extbase\Persistence\Generic\Qom\
 	 */
 	public function getOperand();
 }
-
-?>

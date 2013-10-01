@@ -57,4 +57,3 @@ class DatabasePreset extends Configuration\AbstractPreset implements Configurati
 		return TRUE;
 	}
 }
-?>

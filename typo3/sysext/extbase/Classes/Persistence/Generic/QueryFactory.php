@@ -72,5 +72,3 @@ class QueryFactory implements \TYPO3\CMS\Extbase\Persistence\Generic\QueryFactor
 		return $query;
 	}
 }
-
-?>

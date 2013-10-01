@@ -275,5 +275,3 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFie
 		return $output;
 	}
 }
-
-?>

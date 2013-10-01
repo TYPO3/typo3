@@ -515,5 +515,3 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass 
 		return $adminLink;
 	}
 }
-
-?>

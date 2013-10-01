@@ -432,5 +432,3 @@ abstract class AbstractController implements \TYPO3\CMS\Extbase\Mvc\Controller\C
 		}
 	}
 }
-
-?>

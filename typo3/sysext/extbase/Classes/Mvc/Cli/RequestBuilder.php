@@ -212,5 +212,3 @@ class RequestBuilder {
 		return $value;
 	}
 }
-
-?>

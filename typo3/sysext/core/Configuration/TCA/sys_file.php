@@ -169,4 +169,3 @@ return array(
 	),
 	'palettes' => array()
 );
-?>

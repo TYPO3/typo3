@@ -188,5 +188,3 @@ class GenericObjectValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validatio
 		$this->assertSame(array('b.uuid' => array($error1), 'uuid' => array($error1)), $aValidator->validate($A)->getFlattenedErrors());
 	}
 }
-
-?>

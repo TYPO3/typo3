@@ -1846,4 +1846,3 @@ class DatabaseConnection {
 		);
 	}
 }
-?>

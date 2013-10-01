@@ -259,4 +259,3 @@ class ObjectStorageTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$this->assertTrue($objectStorage->isRelationDirty($object2));
 	}
 }
-?>

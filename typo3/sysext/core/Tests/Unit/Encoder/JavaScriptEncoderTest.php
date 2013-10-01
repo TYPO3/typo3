@@ -101,5 +101,3 @@ class JavaScriptEncoderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 }
-
-?>

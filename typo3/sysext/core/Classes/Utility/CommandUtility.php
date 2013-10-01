@@ -436,6 +436,3 @@ class CommandUtility {
 	}
 
 }
-
-
-?>

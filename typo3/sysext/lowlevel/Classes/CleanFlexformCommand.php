@@ -164,6 +164,3 @@ Cleaning XML for FlexForm fields.
 	}
 
 }
-
-
-?>

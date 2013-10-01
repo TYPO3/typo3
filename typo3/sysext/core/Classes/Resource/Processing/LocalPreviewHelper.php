@@ -95,5 +95,3 @@ class LocalPreviewHelper {
 		);
 	}
 }
-
-?>

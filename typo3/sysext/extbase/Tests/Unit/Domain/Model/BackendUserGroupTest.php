@@ -479,5 +479,3 @@ class BackendUserGroupTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$this->assertSame($tsConfig, $this->fixture->getTsConfig());
 	}
 }
-
-?>

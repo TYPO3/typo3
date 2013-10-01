@@ -75,5 +75,3 @@ class CheckFlexFormValueTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase 
 		$this->assertSame($expectedFlexFormDataArray, $currentFlexFormDataArray);
 	}
 }
-
-?>

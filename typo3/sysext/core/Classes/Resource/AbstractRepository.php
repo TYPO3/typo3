@@ -303,6 +303,3 @@ abstract class AbstractRepository implements \TYPO3\CMS\Extbase\Persistence\Repo
 	}
 
 }
-
-
-?>

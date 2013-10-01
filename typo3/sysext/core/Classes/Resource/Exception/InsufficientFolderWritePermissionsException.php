@@ -31,6 +31,3 @@ class InsufficientFolderWritePermissionsException extends \TYPO3\CMS\Core\Resour
 
 
 }
-
-
-?>

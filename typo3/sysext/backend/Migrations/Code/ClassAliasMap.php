@@ -133,4 +133,3 @@ return array(
 	't3lib_extjs_ExtDirectApi' => 'TYPO3\\CMS\\Core\\ExtDirect\\ExtDirectApi',
 	't3lib_extjs_ExtDirectDebug' => 'TYPO3\\CMS\\Core\\ExtDirect\\ExtDirectDebug',
 );
-?>

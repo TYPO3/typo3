@@ -243,6 +243,3 @@ class DeprecatedRteProperties extends \TYPO3\CMS\Install\Updates\AbstractUpdate 
 	}
 
 }
-
-
-?>

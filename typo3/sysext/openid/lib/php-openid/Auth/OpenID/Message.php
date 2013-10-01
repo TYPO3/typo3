@@ -916,5 +916,3 @@ class Auth_OpenID_Message {
         return $this->getArg($ns, $key, $default);
     }
 }
-
-

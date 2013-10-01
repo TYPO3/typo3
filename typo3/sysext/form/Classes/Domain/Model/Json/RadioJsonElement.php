@@ -77,5 +77,3 @@ class RadioJsonElement extends \TYPO3\CMS\Form\Domain\Model\Json\AbstractJsonEle
 	);
 
 }
-
-?>

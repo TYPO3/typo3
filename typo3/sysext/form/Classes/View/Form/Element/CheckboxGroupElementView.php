@@ -44,5 +44,3 @@ class CheckboxGroupElementView extends \TYPO3\CMS\Form\View\Form\Element\Fieldse
 	';
 
 }
-
-?>

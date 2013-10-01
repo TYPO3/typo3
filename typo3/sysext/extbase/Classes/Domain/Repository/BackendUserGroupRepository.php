@@ -46,5 +46,3 @@ class BackendUserGroupRepository extends \TYPO3\CMS\Extbase\Persistence\Reposito
 		$this->setDefaultQuerySettings($querySettings);
 	}
 }
-
-?>

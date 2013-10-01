@@ -71,5 +71,3 @@ class WidgetRequestHandlerTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCas
 		$this->assertTrue($this->widgetRequestHandler->getPriority() > $defaultWebRequestHandler->getPriority());
 	}
 }
-
-?>

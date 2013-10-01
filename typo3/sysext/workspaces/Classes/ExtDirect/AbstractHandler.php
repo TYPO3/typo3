@@ -130,6 +130,3 @@ abstract class AbstractHandler {
 	}
 
 }
-
-
-?>

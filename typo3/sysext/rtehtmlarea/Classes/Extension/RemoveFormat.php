@@ -73,6 +73,3 @@ class RemoveFormat extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 	}
 
 }
-
-
-?>

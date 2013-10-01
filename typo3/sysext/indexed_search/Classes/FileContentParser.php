@@ -729,6 +729,3 @@ class FileContentParser {
 	}
 
 }
-
-
-?>

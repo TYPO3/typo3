@@ -47,5 +47,3 @@ interface OrderingInterface {
 	 */
 	public function getOrder();
 }
-
-?>

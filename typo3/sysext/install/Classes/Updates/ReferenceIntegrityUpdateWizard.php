@@ -137,5 +137,3 @@ class ReferenceIntegrityUpdateWizard extends AbstractUpdate {
 		return $inproperConnectedReferences;
 	}
 }
-
-?>

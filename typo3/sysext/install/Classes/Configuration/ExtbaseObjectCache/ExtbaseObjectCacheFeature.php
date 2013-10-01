@@ -44,4 +44,3 @@ class ExtbaseObjectCacheFeature extends Configuration\AbstractFeature implements
 		'TYPO3\\CMS\\Install\\Configuration\\ExtbaseObjectCache\\ApcPreset',
 	);
 }
-?>

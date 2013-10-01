@@ -58,5 +58,3 @@ class HiddenElementView extends \TYPO3\CMS\Form\View\Mail\Html\Element\AbstractE
 	}
 
 }
-
-?>

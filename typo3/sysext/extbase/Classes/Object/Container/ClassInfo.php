@@ -174,5 +174,3 @@ class ClassInfo {
 		return count($this->injectProperties) > 0;
 	}
 }
-
-?>

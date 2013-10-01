@@ -114,6 +114,3 @@ class CliBootstrap {
 	}
 
 }
-
-
-?>

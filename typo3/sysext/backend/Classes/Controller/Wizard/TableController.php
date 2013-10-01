@@ -598,5 +598,3 @@ class TableController {
 	}
 
 }
-
-?>

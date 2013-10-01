@@ -115,5 +115,3 @@ class FlexFormServiceTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$this->assertSame($expectedFlexFormArray, $convertedFlexFormArray);
 	}
 }
-
-?>

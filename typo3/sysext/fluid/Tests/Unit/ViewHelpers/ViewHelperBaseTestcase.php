@@ -105,5 +105,3 @@ abstract class ViewHelperBaseTestcase extends \TYPO3\CMS\Extbase\Tests\Unit\Base
 		}
 	}
 }
-
-?>

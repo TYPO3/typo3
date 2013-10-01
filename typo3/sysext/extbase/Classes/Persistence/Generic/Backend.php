@@ -1001,5 +1001,3 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 		}
 	}
 }
-
-?>

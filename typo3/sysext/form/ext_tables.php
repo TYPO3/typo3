@@ -29,4 +29,3 @@ $GLOBALS['TCA']['tt_content']['types']['mailform']['showitem'] = '
 	endtime,
 	fe_group
 ';
-?>

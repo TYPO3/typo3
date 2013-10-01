@@ -486,6 +486,3 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider {
 	}
 
 }
-
-
-?>

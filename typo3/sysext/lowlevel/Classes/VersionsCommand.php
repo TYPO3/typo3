@@ -244,6 +244,3 @@ Automatic Repair:
 	}
 
 }
-
-
-?>

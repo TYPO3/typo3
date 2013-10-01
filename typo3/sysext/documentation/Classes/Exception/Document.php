@@ -32,5 +32,3 @@ namespace TYPO3\CMS\Documentation\Exception;
 class Document extends \TYPO3\CMS\Core\Exception {
 
 }
-
-?>

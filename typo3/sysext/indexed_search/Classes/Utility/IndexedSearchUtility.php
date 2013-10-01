@@ -60,4 +60,3 @@ class IndexedSearchUtility {
 		return hexdec(substr(md5($stringToHash), 0, 7));
 	}
 }
-?>

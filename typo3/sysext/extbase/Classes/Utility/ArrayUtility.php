@@ -313,5 +313,3 @@ class ArrayUtility {
 		return $result;
 	}
 }
-
-?>

@@ -35,5 +35,3 @@ namespace TYPO3\CMS\Extbase\Reflection\Exception;
 class InvalidPropertyTypeException extends \TYPO3\CMS\Extbase\Reflection\Exception {
 
 }
-
-?>

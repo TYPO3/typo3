@@ -143,6 +143,3 @@ class IndexerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 }
-
-
-?>

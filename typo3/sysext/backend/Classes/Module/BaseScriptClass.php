@@ -357,6 +357,3 @@ class BaseScriptClass {
 	}
 
 }
-
-
-?>

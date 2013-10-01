@@ -144,5 +144,3 @@ class DemandTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	}
 
 }
-
-?>

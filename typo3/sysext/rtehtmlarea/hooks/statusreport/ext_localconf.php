@@ -8,4 +8,3 @@ if (TYPO3_MODE == 'BE') {
 	// Register Status Report Hook
 	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports']['tx_reports']['status']['providers']['htmlArea RTE'][] = 'TYPO3\\CMS\\Rtehtmlarea\\Hook\\StatusReportConflictsCheckHook';
 }
-?>

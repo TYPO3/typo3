@@ -127,4 +127,3 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Functional\Resource\BaseTest
 		return $driver;
 	}
 }
-?>

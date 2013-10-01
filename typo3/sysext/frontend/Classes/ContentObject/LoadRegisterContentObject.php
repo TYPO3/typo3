@@ -64,6 +64,3 @@ class LoadRegisterContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstra
 	}
 
 }
-
-
-?>

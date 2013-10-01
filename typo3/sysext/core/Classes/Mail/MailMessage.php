@@ -102,6 +102,3 @@ class MailMessage extends \Swift_Message {
 	}
 
 }
-
-
-?>

@@ -64,5 +64,3 @@ interface ParsedTemplateInterface {
 	 */
 	public function isCompiled();
 }
-
-?>

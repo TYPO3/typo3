@@ -41,4 +41,3 @@ class InstallToolDisabledAction extends Action\AbstractAction implements Action\
 		return $this->view->render();
 	}
 }
-?>

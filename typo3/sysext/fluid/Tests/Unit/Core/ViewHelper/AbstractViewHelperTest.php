@@ -287,5 +287,3 @@ class AbstractViewHelperTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase 
 		$this->assertSame($viewHelper->_get('controllerContext'), $controllerContext);
 	}
 }
-
-?>

@@ -117,5 +117,3 @@ class FlashMessageContainer implements \TYPO3\CMS\Core\SingletonInterface {
 		return $this->controllerContext->getFlashMessageQueue()->getAllMessagesAndFlush();
 	}
 }
-
-?>

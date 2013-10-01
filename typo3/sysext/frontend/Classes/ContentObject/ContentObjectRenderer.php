@@ -7933,5 +7933,3 @@ class ContentObjectRenderer {
 	}
 
 }
-
-?>

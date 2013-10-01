@@ -68,5 +68,3 @@ class HtmlentitiesViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Format\Abstrac
 		return htmlentities($value, $flags, $encoding, $doubleEncode);
 	}
 }
-
-?>

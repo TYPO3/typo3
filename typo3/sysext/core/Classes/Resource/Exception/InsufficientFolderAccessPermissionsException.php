@@ -31,6 +31,3 @@ class InsufficientFolderAccessPermissionsException extends \TYPO3\CMS\Core\Resou
 
 
 }
-
-
-?>

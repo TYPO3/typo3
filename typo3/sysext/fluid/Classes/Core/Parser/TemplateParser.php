@@ -874,5 +874,3 @@ class TemplateParser {
 		$state->getNodeFromStack()->addChildNode($node);
 	}
 }
-
-?>

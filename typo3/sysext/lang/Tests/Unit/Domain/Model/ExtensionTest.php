@@ -227,4 +227,3 @@ class ExtensionTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	}
 
 }
-?>

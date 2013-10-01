@@ -74,5 +74,3 @@ class ShortcutViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackend
 
 	}
 }
-
-?>

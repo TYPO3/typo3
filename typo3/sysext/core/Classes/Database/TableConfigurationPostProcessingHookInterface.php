@@ -41,5 +41,3 @@ interface TableConfigurationPostProcessingHookInterface {
 	public function processData();
 
 }
-
-?>

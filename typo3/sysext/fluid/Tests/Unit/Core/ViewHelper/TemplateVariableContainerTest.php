@@ -133,5 +133,3 @@ class TemplateVariableContainerTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTe
 		$this->variableContainer->add('_all', 'foo');
 	}
 }
-
-?>

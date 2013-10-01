@@ -295,5 +295,3 @@ abstract class AbstractFormFieldViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\
 		return '';
 	}
 }
-
-?>

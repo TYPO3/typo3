@@ -166,4 +166,3 @@ class WorkspaceSelectorToolbarItem implements \TYPO3\CMS\Backend\Toolbar\Toolbar
 if (!(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_AJAX)) {
 	$GLOBALS['TYPO3backend']->addToolbarItem('workSpaceSelector', 'TYPO3\\CMS\\Workspaces\\ExtDirect\\WorkspaceSelectorToolbarItem');
 }
-?>

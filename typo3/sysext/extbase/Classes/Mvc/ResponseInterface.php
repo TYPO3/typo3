@@ -68,5 +68,3 @@ interface ResponseInterface {
 	 */
 	public function shutdown();
 }
-
-?>

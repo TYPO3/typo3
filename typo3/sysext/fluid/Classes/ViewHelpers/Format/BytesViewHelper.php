@@ -76,5 +76,3 @@ class BytesViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelpe
 	}
 
 }
-
-?>

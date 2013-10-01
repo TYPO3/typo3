@@ -122,4 +122,3 @@ class AccessibilityLinkController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlu
 		return  \TYPO3\CMS\Core\Utility\GeneralUtility::resolveBackPath($newFilename);
 	}
 }
-?>

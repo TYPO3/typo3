@@ -5,4 +5,3 @@ $MCONF['script'] = '_DISPATCH';
 $MCONF['access'] = 'user,group';
 $MCONF['name'] = 'file_list';
 $MCONF['workspaces'] = 'online,custom';
-?>

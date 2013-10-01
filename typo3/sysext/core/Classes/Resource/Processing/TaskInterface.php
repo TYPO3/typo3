@@ -139,5 +139,3 @@ interface TaskInterface {
 	 */
 	public function isSuccessful();
 }
-
-?>

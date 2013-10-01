@@ -90,4 +90,3 @@ return array(
 		')
 	)
 );
-?>

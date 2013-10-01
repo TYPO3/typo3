@@ -509,5 +509,3 @@ class Typo3DatabaseBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 }
-
-?>

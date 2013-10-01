@@ -97,5 +97,3 @@ class Arguments implements \ArrayAccess {
 		return $this->offsetExists($argumentName) && $this->arguments[$argumentName] !== NULL;
 	}
 }
-
-?>

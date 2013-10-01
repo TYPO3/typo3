@@ -172,6 +172,3 @@ Reports missing relations';
 	}
 
 }
-
-
-?>

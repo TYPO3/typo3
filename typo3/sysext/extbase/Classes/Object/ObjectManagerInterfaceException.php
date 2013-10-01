@@ -79,5 +79,3 @@ interface ObjectManagerInterfaceException extends \TYPO3\CMS\Core\SingletonInter
 	 */
 	public function getEmptyObject($className);
 }
-
-?>

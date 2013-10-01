@@ -237,4 +237,3 @@ abstract class FunctionalTestCase extends BaseTestCase {
 		}
 	}
 }
-?>

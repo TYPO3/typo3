@@ -296,5 +296,3 @@ class RootlineUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->assertSame($pageDataTranslated, $this->fixture->_call('getRecordArray', 1));
 	}
 }
-
-?>

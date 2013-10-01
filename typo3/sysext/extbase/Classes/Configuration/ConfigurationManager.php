@@ -144,5 +144,3 @@ class ConfigurationManager implements \TYPO3\CMS\Extbase\Configuration\Configura
 		return (boolean) (isset($configuration['features'][$featureName]) && $configuration['features'][$featureName]);
 	}
 }
-
-?>

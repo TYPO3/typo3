@@ -87,6 +87,3 @@ class SimpleSpriteHandler extends \TYPO3\CMS\Backend\Sprite\AbstractSpriteHandle
 	}
 
 }
-
-
-?>

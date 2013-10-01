@@ -42,5 +42,3 @@ class ProcessorFixture extends \TYPO3\CMS\Core\Log\Processor\AbstractProcessor {
 	}
 
 }
-
-?>

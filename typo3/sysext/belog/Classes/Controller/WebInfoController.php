@@ -44,5 +44,3 @@ class WebInfoController extends \TYPO3\CMS\Belog\Controller\AbstractController {
 	}
 
 }
-
-?>

@@ -231,6 +231,3 @@ class CronCommand {
 	}
 
 }
-
-
-?>

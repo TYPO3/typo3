@@ -29,5 +29,3 @@ class FE_loadDBGroup extends \TYPO3\CMS\Core\Database\RelationHandler {
 	}
 
 }
-
-?>

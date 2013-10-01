@@ -400,4 +400,3 @@ if (TYPO3_MODE == 'BE' || TYPO3_MODE == 'FE' && isset($GLOBALS['BE_USER'])) {
 	}
 	unset($flagNames, $flagName);
 }
-?>

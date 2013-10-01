@@ -176,6 +176,3 @@ class ProcessedFileRepository extends AbstractRepository {
 		return array_intersect_key($data, $this->databaseConnection->admin_get_fields($this->table));
 	}
 }
-
-
-?>

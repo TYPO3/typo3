@@ -287,5 +287,3 @@ class BackendUser extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 		$this->lastLoginDateAndTime = $dateAndTime;
 	}
 }
-
-?>

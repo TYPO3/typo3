@@ -4915,5 +4915,3 @@ if (version == "n3") {
 		return $domainData ? $domainData['domainName'] : NULL;
 	}
 }
-
-?>

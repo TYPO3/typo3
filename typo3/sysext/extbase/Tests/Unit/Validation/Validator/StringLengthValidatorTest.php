@@ -200,5 +200,3 @@ class StringLengthValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validation
 		$this->markTestSkipped('Validator needs to be adjusted regarding multibyte char lenghts.');
 	}
 }
-
-?>

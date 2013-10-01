@@ -110,6 +110,3 @@ class BrowseLinksController {
 	}
 
 }
-
-
-?>

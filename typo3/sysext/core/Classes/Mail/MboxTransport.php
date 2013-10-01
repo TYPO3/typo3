@@ -139,6 +139,3 @@ class MboxTransport implements \Swift_Transport {
 	}
 
 }
-
-
-?>

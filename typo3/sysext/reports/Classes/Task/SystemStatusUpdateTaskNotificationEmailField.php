@@ -122,5 +122,3 @@ class SystemStatusUpdateTaskNotificationEmailField implements \TYPO3\CMS\Schedul
 	}
 
 }
-
-?>

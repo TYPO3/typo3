@@ -632,6 +632,3 @@ class FormContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractConten
 	}
 
 }
-
-
-?>

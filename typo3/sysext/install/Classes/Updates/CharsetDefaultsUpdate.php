@@ -80,5 +80,3 @@ class CharsetDefaultsUpdate extends AbstractUpdate {
 	}
 
 }
-
-?>

@@ -28,4 +28,3 @@ require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('recycl
  * typo3/sysext/recycler/Classes/Domain/Model/DeletedRecords.php
  */
 require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('recycler') . 'Classes/Domain/Model/DeletedRecords.php';
-?>

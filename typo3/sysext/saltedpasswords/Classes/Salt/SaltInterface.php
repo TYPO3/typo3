@@ -100,5 +100,3 @@ interface SaltInterface {
 	public function isValidSaltedPW($saltedPW);
 
 }
-
-?>

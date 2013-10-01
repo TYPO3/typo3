@@ -31,4 +31,3 @@ $GLOBALS['LANG']->includeLLFile('EXT:t3editor/locallang.xlf');
  * typo3/sysext/t3editor/Classes/CodeCompletion.php
  */
 require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('t3editor') . 'Classes/CodeCompletion.php';
-?>

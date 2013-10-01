@@ -41,5 +41,3 @@ class CategoryCollectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		new \TYPO3\CMS\Core\Category\Collection\CategoryCollection();
 	}
 }
-
-?>

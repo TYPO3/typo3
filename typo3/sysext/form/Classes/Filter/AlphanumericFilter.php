@@ -72,5 +72,3 @@ class AlphanumericFilter implements \TYPO3\CMS\Form\Filter\FilterInterface {
 	}
 
 }
-
-?>

@@ -43,5 +43,3 @@ class WriterFailing implements \TYPO3\CMS\Core\Log\Writer\WriterInterface {
 	}
 
 }
-
-?>

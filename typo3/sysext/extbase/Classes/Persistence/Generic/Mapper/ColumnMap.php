@@ -393,5 +393,3 @@ class ColumnMap {
 		return $this->dateTimeStorageFormat;
 	}
 }
-
-?>

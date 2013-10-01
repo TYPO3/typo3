@@ -275,4 +275,3 @@ return array(
 			--div--;LLL:EXT:lang/locallang_tca.xlf:sys_filemounts.tabs.other,freeze,live_edit,disable_autocreate,swap_modes,publish_access')
 	)
 );
-?>

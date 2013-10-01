@@ -395,6 +395,3 @@ class MemcachedBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend imp
 	}
 
 }
-
-
-?>

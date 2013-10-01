@@ -247,4 +247,3 @@ class PropertyMappingConfigurationTest extends \TYPO3\CMS\Extbase\Tests\Unit\Bas
 	}
 
 }
-?>

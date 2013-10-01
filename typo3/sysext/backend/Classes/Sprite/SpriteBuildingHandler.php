@@ -61,6 +61,3 @@ class SpriteBuildingHandler extends \TYPO3\CMS\Backend\Sprite\AbstractSpriteHand
 	}
 
 }
-
-
-?>

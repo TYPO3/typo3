@@ -35,5 +35,3 @@ namespace TYPO3\CMS\Extbase\Domain\Model;
 class FolderBasedFileCollection extends \TYPO3\CMS\Extbase\Domain\Model\AbstractFileCollection {
 
 }
-
-?>

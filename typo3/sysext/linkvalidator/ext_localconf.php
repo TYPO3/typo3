@@ -22,4 +22,3 @@ $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks']['db'] = 'T
 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks']['file'] = 'TYPO3\\CMS\\Linkvalidator\\Linktype\\FileLinktype';
 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks']['external'] = 'TYPO3\\CMS\\Linkvalidator\\Linktype\\ExternalLinktype';
 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks']['linkhandler'] = 'TYPO3\\CMS\\Linkvalidator\\Linktype\\LinkHandler';
-?>

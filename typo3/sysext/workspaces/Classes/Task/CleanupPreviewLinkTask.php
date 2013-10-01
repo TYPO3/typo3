@@ -42,6 +42,3 @@ class CleanupPreviewLinkTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 	}
 
 }
-
-
-?>

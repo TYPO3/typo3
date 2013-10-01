@@ -159,6 +159,3 @@ class FrontendContentAdapterServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCa
 	}
 
 }
-
-
-?>

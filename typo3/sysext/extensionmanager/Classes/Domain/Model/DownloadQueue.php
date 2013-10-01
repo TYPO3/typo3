@@ -172,6 +172,3 @@ class DownloadQueue implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 }
-
-
-?>

@@ -90,5 +90,3 @@ class TypeHandlingService implements \TYPO3\CMS\Core\SingletonInterface {
 		return TypeHandlingUtility::isSimpleType($type);
 	}
 }
-
-?>

@@ -258,6 +258,3 @@ class PreviewHook implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 }
-
-
-?>

@@ -218,5 +218,3 @@ class TemplateAnalyzerModuleFunctionController extends \TYPO3\CMS\Backend\Module
 	}
 
 }
-
-?>

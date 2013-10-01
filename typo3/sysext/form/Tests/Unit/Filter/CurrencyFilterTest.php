@@ -84,4 +84,3 @@ class CurrencyFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->assertSame($expected, $this->fixture->filter($input));
 	}
 }
-?>

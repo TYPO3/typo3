@@ -267,4 +267,3 @@ if (TYPO3_DLOG) {
 	\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('END of FRONTEND session', 'cms', 0, array('_FLUSH' => TRUE));
 }
 \TYPO3\CMS\Core\Core\Bootstrap::getInstance()->shutdown();
-?>

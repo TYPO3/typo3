@@ -173,4 +173,3 @@ class SysNote extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	}
 
 }
-?>

@@ -34,4 +34,3 @@ require __DIR__ . '/init.php';
 
 $editController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\Wizard\\EditController');
 $editController->main();
-?>

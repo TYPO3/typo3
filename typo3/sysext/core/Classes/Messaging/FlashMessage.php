@@ -110,6 +110,3 @@ class FlashMessage extends \TYPO3\CMS\Core\Messaging\AbstractMessage {
 	}
 
 }
-
-
-?>

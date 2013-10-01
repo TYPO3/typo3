@@ -46,5 +46,3 @@ interface RecordListGetTableHookInterface
 	public function getDBlistQuery($table, $pageId, &$additionalWhereClause, &$selectedFieldsList, &$parentObject);
 
 }
-
-?>

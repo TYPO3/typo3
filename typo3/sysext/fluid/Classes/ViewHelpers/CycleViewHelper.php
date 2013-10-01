@@ -107,5 +107,3 @@ class CycleViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelpe
 		$this->currentCycleIndex = 0;
 	}
 }
-
-?>

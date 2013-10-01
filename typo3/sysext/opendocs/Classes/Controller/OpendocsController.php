@@ -275,5 +275,3 @@ class OpendocsController implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookIn
 	}
 
 }
-
-?>

@@ -62,5 +62,3 @@ abstract class AbstractContextMenuRenderer {
 	abstract public function renderContextMenu(\TYPO3\CMS\Backend\ContextMenu\AbstractContextMenu $contextMenu, $recursive = FALSE);
 
 }
-
-?>

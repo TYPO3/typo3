@@ -84,5 +84,3 @@ class ModuleRunner implements ModuleRunnerInterface {
 		return TRUE;
 	}
 }
-
-?>

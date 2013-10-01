@@ -94,5 +94,3 @@ interface QueryObjectModelConstantsInterface {
 	 */
 	const JCR_ORDER_DESCENDING = '{http://www.jcp.org/jcr/1.0}orderDescending';
 }
-
-?>

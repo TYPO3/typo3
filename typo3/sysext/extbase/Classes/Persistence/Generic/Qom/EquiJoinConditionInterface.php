@@ -50,5 +50,3 @@ interface EquiJoinConditionInterface extends \TYPO3\CMS\Extbase\Persistence\Gene
 	 */
 	public function getParentSelectorName();
 }
-
-?>

@@ -159,6 +159,3 @@ class Registry implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 }
-
-
-?>

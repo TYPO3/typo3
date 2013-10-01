@@ -70,5 +70,3 @@ abstract class AbstractWizardView {
 	abstract public function render();
 
 }
-
-?>

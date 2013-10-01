@@ -30,4 +30,3 @@ $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['loginFormOnSubmitFuncs'][$_EX
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['displayWarningMessages'][$_EXTKEY] = 'TYPO3\\CMS\\Rsaauth\\BackendWarnings';
 // Use popup window to refresh login instead of the AJAX relogin:
 $TYPO3_CONF_VARS['BE']['showRefreshLoginPopup'] = 1;
-?>

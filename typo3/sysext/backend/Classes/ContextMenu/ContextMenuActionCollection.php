@@ -50,5 +50,3 @@ class ContextMenuActionCollection extends \ArrayObject {
 	}
 
 }
-
-?>

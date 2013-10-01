@@ -91,5 +91,3 @@ class FloatValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validation\Valida
 		$this->assertEquals(1, count($this->validator->validate(123456)->getErrors()));
 	}
 }
-
-?>

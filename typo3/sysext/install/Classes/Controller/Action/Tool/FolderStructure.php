@@ -67,4 +67,3 @@ class FolderStructure extends Action\AbstractAction implements Action\ActionInte
 		return $this->view->render();
 	}
 }
-?>

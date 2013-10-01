@@ -123,4 +123,3 @@ class ContainerViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBacken
 		return $output;
 	}
 }
-?>

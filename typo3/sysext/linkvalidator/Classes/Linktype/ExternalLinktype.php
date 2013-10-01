@@ -171,4 +171,3 @@ class ExternalLinktype extends \TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktyp
 	}
 
 }
-?>

@@ -72,6 +72,3 @@ abstract class AbstractContentObject {
 		return $this->cObj;
 	}
 }
-
-
-?>

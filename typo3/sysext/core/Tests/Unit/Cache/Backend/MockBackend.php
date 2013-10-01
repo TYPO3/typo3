@@ -59,5 +59,3 @@ class MockBackend extends \TYPO3\CMS\Core\Cache\Backend\NullBackend {
 	}
 
 }
-
-?>

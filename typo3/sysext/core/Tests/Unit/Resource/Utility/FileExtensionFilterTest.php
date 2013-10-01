@@ -154,5 +154,3 @@ class FileExtensionFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->assertEquals($isAllowed, $result);
 	}
 }
-
-?>

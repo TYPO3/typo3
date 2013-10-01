@@ -50,5 +50,3 @@ class DebugViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelpe
 		return \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($this->renderChildren(), $title, $maxDepth, (boolean) $plainText, (boolean) $ansiColors, (boolean) $inline, $blacklistedClassNames, $blacklistedPropertyNames);
 	}
 }
-
-?>

@@ -104,5 +104,3 @@ class IfHasRoleViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractCondi
 		return FALSE;
 	}
 }
-
-?>

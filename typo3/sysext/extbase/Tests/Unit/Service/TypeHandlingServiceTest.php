@@ -204,5 +204,3 @@ class TypeHandlingServiceTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase
 		$this->assertSame($result, $this->typeHandlingService->isSimpleType($type));
 	}
 }
-
-?>

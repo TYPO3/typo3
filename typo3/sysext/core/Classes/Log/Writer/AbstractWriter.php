@@ -48,6 +48,3 @@ abstract class AbstractWriter implements \TYPO3\CMS\Core\Log\Writer\WriterInterf
 	}
 
 }
-
-
-?>

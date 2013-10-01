@@ -5,4 +5,3 @@
  * typo3/sysext/rtehtmlarea/Classes/Controller/FrontendRteController.php
  */
 require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('rtehtmlarea') . 'Classes/Controller/FrontendRteController.php';
-?>

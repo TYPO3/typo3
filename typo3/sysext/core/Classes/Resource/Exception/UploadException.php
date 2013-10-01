@@ -31,6 +31,3 @@ class UploadException extends \TYPO3\CMS\Core\Resource\Exception\AbstractFileOpe
 
 
 }
-
-
-?>

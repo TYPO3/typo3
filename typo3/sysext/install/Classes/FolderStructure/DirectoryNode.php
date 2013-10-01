@@ -298,4 +298,3 @@ class DirectoryNode extends AbstractNode implements NodeInterface {
 		}
 	}
 }
-?>

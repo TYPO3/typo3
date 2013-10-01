@@ -95,5 +95,3 @@ class ExtensionTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$this->assertEquals($expected, $extension->getCategoryIndexFromStringOrNumber($input));
 	}
 }
-
-?>

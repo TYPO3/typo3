@@ -169,5 +169,3 @@ class FileReferenceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$fixture->getReferenceProperty('file_only_property');
 	}
 }
-
-?>

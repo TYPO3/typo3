@@ -90,6 +90,3 @@ class UnorderedListTreeRenderer extends \TYPO3\CMS\Backend\Tree\Renderer\Abstrac
 	}
 
 }
-
-
-?>

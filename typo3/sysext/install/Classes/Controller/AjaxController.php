@@ -170,4 +170,3 @@ class AjaxController extends AbstractController {
 		die;
 	}
 }
-?>

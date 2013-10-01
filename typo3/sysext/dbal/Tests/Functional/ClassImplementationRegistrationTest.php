@@ -62,5 +62,3 @@ class ClassImplementationRegistrationTest extends \TYPO3\CMS\Core\Tests\Function
 		);
 	}
 }
-
-?>

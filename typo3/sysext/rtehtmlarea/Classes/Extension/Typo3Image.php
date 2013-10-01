@@ -89,6 +89,3 @@ class Typo3Image extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 	}
 
 }
-
-
-?>

@@ -26,5 +26,3 @@ namespace TYPO3\CMS\Extbase\Tests\Fixture;
 class SecondDummyClass {
 
 }
-
-?>

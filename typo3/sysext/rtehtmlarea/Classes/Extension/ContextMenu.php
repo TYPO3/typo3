@@ -87,6 +87,3 @@ class ContextMenu extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 	}
 
 }
-
-
-?>

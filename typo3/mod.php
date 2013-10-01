@@ -55,4 +55,3 @@ if ($isDispatched === FALSE) {
 	throw new UnexpectedValueException('No module "' . htmlspecialchars($temp_M) . '" could be found.', 1294585070);
 }
 \TYPO3\CMS\Core\Core\Bootstrap::getInstance()->shutdown();
-?>

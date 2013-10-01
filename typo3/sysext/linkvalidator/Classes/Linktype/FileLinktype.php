@@ -70,4 +70,3 @@ class FileLinktype extends \TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktype {
 		return $brokenUrl;
 	}
 }
-?>

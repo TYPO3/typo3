@@ -112,5 +112,3 @@ interface RequestInterface {
 	 */
 	public function getArguments();
 }
-
-?>

@@ -93,5 +93,3 @@ class DocbookGeneratorService extends \TYPO3\CMS\Fluid\Service\DocbookGenerator 
 	}
 
 }
-
-?>

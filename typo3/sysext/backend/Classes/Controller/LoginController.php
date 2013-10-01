@@ -753,5 +753,3 @@ class LoginController {
 	}
 
 }
-
-?>

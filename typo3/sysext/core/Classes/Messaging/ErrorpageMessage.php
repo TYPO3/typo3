@@ -47,6 +47,3 @@ class ErrorpageMessage extends \TYPO3\CMS\Core\Messaging\AbstractStandaloneMessa
 	}
 
 }
-
-
-?>

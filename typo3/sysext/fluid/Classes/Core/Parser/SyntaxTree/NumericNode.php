@@ -66,5 +66,3 @@ class NumericNode extends \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode {
 		throw new \TYPO3\CMS\Fluid\Core\Parser\Exception('Numeric nodes may not contain child nodes, tried to add "' . get_class($childNode) . '".', 1360414193);
 	}
 }
-
-?>

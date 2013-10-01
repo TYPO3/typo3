@@ -79,5 +79,3 @@ abstract class AbstractFileCollectionConverter extends \TYPO3\CMS\Extbase\Proper
 	 */
 	abstract protected function getObject($source);
 }
-
-?>

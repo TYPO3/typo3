@@ -65,5 +65,3 @@ class EmailViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHe
 		$this->viewHelper->render('some@email.tld');
 	}
 }
-
-?>

@@ -92,5 +92,3 @@ class Statement {
 		return $this->language;
 	}
 }
-
-?>

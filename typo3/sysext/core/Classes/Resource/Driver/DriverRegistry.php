@@ -134,6 +134,3 @@ class DriverRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 		return array_key_exists($shortName, $this->drivers);
 	}
 }
-
-
-?>

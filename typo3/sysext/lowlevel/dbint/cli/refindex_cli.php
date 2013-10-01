@@ -16,4 +16,3 @@ Options:
 ';
 	die;
 }
-?>

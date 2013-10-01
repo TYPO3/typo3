@@ -5,4 +5,3 @@
  * typo3/sysext/css_styled_content/Classes/Controller/CssStyledContentController.php
  */
 require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('css_styled_content') . 'Classes/Controller/CssStyledContentController.php';
-?>

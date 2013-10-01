@@ -244,5 +244,3 @@ class FileContextTest extends \Tx_Extbase_Tests_Functional_BaseTestCase {
 		$this->assertEquals(1, $fixture->getFolderBasedFileCollections()->current()->getObject()->getUid());
 	}
 }
-
-?>

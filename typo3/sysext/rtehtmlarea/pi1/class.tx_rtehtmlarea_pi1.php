@@ -9,4 +9,3 @@ if (TYPO3_MODE == 'FE') {
 	$spellChecker = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Rtehtmlarea\\Controller\\SpellCheckingController');
 	$spellChecker->main();
 }
-?>

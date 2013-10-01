@@ -356,4 +356,3 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, \TYPO3\CMS\E
 		return $this->addedObjectsPositions[spl_object_hash($object)];
 	}
 }
-?>

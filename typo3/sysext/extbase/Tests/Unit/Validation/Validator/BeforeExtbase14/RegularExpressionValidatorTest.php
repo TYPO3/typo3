@@ -56,5 +56,3 @@ class RegularExpressionValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseT
 		$regularExpressionValidator->isValid('some subject that will not match');
 	}
 }
-
-?>

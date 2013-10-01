@@ -108,5 +108,3 @@ class EquiJoinCondition implements \TYPO3\CMS\Extbase\Persistence\Generic\Qom\Jo
 		return $this->property2Name;
 	}
 }
-
-?>

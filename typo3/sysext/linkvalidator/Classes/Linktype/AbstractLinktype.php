@@ -83,5 +83,3 @@ abstract class AbstractLinktype implements \TYPO3\CMS\Linkvalidator\Linktype\Lin
 	}
 
 }
-
-?>

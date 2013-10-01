@@ -45,5 +45,3 @@ interface PageRepositoryGetPageHookInterface {
 	public function getPage_preProcess(&$uid, &$disableGroupAccessCheck, \TYPO3\CMS\Frontend\Page\PageRepository $parentObject);
 
 }
-
-?>

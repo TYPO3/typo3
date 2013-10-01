@@ -88,4 +88,3 @@ return array(
 		'1' => array('showitem' => 'redirectTo, redirectHttpStatusCode')
 	)
 );
-?>

@@ -294,6 +294,3 @@ class PreviewController extends \TYPO3\CMS\Workspaces\Controller\AbstractControl
 	}
 
 }
-
-
-?>

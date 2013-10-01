@@ -57,4 +57,3 @@ return array(
 		'0' => array('showitem' => 'category;;;;2-2-2, personal, subject;;;;3-3-3, message')
 	)
 );
-?>

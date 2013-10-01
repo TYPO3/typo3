@@ -238,4 +238,3 @@ return array(
 			--div--;LLL:EXT:cms/locallang_tca.xlf:sys_template.tabs.access, starttime, endtime')
 	)
 );
-?>

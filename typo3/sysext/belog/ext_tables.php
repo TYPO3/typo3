@@ -30,4 +30,3 @@ if (TYPO3_MODE === 'BE' && !(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_INSTALL)) {
 		)
 	);
 }
-?>

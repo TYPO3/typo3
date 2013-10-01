@@ -72,5 +72,3 @@ class AutocompleteViewHelper extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidget
 		return $this->initiateSubRequest();
 	}
 }
-
-?>

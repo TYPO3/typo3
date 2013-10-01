@@ -523,5 +523,3 @@ class ProcessedFile extends AbstractFile {
 	}
 
 }
-
-?>

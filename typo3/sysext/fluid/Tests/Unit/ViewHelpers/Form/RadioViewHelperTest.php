@@ -158,5 +158,3 @@ class RadioViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\F
 		$this->viewHelper->render();
 	}
 }
-
-?>

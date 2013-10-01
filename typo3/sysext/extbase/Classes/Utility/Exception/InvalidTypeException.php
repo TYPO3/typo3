@@ -28,4 +28,3 @@ namespace TYPO3\CMS\Extbase\Utility\Exception;
 class InvalidTypeException extends \TYPO3\CMS\Extbase\Exception {
 
 }
-?>

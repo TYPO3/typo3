@@ -32,6 +32,3 @@ abstract class AbstractClientErrorException extends \TYPO3\CMS\Core\Error\Http\S
 
 
 }
-
-
-?>

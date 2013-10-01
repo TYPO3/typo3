@@ -64,5 +64,3 @@ class CshViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewH
 		return '<div class="docheader-csh">' . $cshButton . '</div>';
 	}
 }
-
-?>

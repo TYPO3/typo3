@@ -5,4 +5,3 @@ return array(
 	'fileList_editIconHook' => 'TYPO3\\CMS\\Filelist\\FileListEditIconHookInterface',
 	'filelistFolderTree' => 'TYPO3\\CMS\\Filelist\\FileListFolderTree',
 );
-?>

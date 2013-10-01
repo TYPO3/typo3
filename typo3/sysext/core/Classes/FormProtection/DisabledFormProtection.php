@@ -78,6 +78,3 @@ class DisabledFormProtection extends \TYPO3\CMS\Core\FormProtection\AbstractForm
 	}
 
 }
-
-
-?>

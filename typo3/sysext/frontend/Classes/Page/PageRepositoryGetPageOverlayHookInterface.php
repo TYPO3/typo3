@@ -45,5 +45,3 @@ interface PageRepositoryGetPageOverlayHookInterface {
 	public function getPageOverlay_preProcess(&$pageInput, &$lUid, \TYPO3\CMS\Frontend\Page\PageRepository $parent);
 
 }
-
-?>

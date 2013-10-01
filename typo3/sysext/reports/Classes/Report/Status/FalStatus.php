@@ -105,5 +105,3 @@ class FalStatus implements \TYPO3\CMS\Reports\StatusProviderInterface {
 		return GeneralUtility::makeInstance('TYPO3\\CMS\\Reports\\Status', $GLOBALS['LANG']->getLL('status_missingFiles'), $value, $message, $severity);
 	}
 }
-
-?>

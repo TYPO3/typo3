@@ -87,6 +87,3 @@ class StatusException extends \TYPO3\CMS\Core\Error\Exception {
 	}
 
 }
-
-
-?>

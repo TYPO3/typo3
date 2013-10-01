@@ -4,4 +4,3 @@ $MCONF['defaultMod'] = 'list';
 $MCONF['navFrameScript'] = '../../alt_db_navframe.php';
 $MCONF['name'] = 'web';
 $MCONF['access'] = 'user,group';
-?>

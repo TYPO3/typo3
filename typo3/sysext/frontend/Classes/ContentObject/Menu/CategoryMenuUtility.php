@@ -139,5 +139,3 @@ class CategoryMenuUtility {
 		return strnatcasecmp($pageA[self::$sortingField], $pageB[self::$sortingField]);
 	}
 }
-
-?>

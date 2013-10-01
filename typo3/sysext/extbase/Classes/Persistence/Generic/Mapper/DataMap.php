@@ -514,5 +514,3 @@ class DataMap {
 		return $this->rootLevel;
 	}
 }
-
-?>

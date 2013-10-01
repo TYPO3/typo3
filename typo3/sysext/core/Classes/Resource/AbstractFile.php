@@ -564,6 +564,3 @@ abstract class AbstractFile implements FileInterface {
 	abstract public function updateProperties(array $properties);
 
 }
-
-
-?>

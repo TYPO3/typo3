@@ -102,5 +102,3 @@ class AbstractEntityTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$this->assertFalse($domainObject->_isDirty());
 	}
 }
-
-?>

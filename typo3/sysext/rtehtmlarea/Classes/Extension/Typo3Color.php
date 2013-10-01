@@ -121,6 +121,3 @@ class Typo3Color extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 	}
 
 }
-
-
-?>

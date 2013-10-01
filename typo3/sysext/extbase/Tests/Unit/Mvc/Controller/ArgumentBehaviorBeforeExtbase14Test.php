@@ -188,5 +188,3 @@ class ArgumentBehaviorBeforeExtbase14Test extends \TYPO3\CMS\Extbase\Tests\Unit\
 		$argument->_set('configurationManager', $mockConfigurationManager);
 	}
 }
-
-?>

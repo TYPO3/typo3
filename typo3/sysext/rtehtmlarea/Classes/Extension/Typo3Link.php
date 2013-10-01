@@ -153,6 +153,3 @@ class Typo3Link extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 	}
 
 }
-
-
-?>

@@ -37,4 +37,3 @@ class NoticeStatus extends AbstractStatus implements StatusInterface {
 	protected $severity = 'notice';
 
 }
-?>

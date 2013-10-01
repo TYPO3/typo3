@@ -301,6 +301,3 @@ class FrontendBackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\B
 	}
 
 }
-
-
-?>

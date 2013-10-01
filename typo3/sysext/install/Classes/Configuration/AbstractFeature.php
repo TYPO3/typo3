@@ -140,4 +140,3 @@ abstract class AbstractFeature {
 		return $this->name;
 	}
 }
-?>

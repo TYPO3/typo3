@@ -30,4 +30,3 @@ class Entity3 extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	public $someInteger;
 
 }
-?>

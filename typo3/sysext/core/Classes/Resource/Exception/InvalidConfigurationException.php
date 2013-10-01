@@ -31,6 +31,3 @@ class InvalidConfigurationException extends \TYPO3\CMS\Core\Resource\Exception {
 
 
 }
-
-
-?>

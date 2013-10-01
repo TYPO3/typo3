@@ -143,6 +143,3 @@ class DatabaseUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 }
-
-
-?>

@@ -171,6 +171,3 @@ class IndexingStatisticsController extends \TYPO3\CMS\Backend\Module\AbstractFun
 	}
 
 }
-
-
-?>

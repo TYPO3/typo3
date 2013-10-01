@@ -1545,6 +1545,3 @@ class QueryGenerator {
 	}
 
 }
-
-
-?>

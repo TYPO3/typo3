@@ -33,5 +33,3 @@ namespace TYPO3\CMS\Extbase\Persistence;
 class Exception extends \TYPO3\CMS\Extbase\Exception {
 
 }
-
-?>

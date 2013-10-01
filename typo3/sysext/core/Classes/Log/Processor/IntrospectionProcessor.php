@@ -62,6 +62,3 @@ class IntrospectionProcessor extends \TYPO3\CMS\Core\Log\Processor\AbstractProce
 	}
 
 }
-
-
-?>

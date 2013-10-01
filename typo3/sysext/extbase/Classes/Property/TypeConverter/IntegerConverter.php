@@ -62,4 +62,3 @@ class IntegerConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\Abstrac
 		return (integer)$source;
 	}
 }
-?>

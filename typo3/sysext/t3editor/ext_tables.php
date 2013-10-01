@@ -25,4 +25,3 @@ if (TYPO3_MODE === 'BE') {
 	// Activate the t3editor only for type html
 	$TCA['tt_content']['types']['html']['showitem'] = str_replace('bodytext,', 'bodytext;LLL:EXT:cms/locallang_ttc.xlf:bodytext.ALT.html_formlabel;;nowrap:wizards[t3editor],', $TCA['tt_content']['types']['html']['showitem']);
 }
-?>

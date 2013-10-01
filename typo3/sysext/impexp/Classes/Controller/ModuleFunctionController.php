@@ -157,5 +157,3 @@ class ModuleFunctionController extends mod_user_task {
 	}
 
 }
-
-?>

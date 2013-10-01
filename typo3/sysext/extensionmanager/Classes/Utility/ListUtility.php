@@ -145,6 +145,3 @@ class ListUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 }
-
-
-?>

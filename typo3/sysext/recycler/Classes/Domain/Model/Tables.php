@@ -79,6 +79,3 @@ class Tables {
 	}
 
 }
-
-
-?>

@@ -76,5 +76,3 @@ class EmailViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedV
 		return $this->tag->render();
 	}
 }
-
-?>

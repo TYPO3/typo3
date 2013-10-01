@@ -67,6 +67,3 @@ class ExtJsArrayTreeRenderer extends \TYPO3\CMS\Backend\Tree\Renderer\ExtJsJsonT
 	}
 
 }
-
-
-?>

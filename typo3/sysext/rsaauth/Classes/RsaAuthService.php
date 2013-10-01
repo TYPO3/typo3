@@ -123,6 +123,3 @@ class RsaAuthService extends \TYPO3\CMS\Sv\AuthenticationService {
 	}
 
 }
-
-
-?>

@@ -926,6 +926,3 @@ class DataPreprocessor {
 	}
 
 }
-
-
-?>

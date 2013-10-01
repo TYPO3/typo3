@@ -49,5 +49,3 @@ abstract class FormFieldViewHelperBaseTestcase extends \TYPO3\CMS\Fluid\Tests\Un
 		parent::injectDependenciesIntoViewHelper($viewHelper);
 	}
 }
-
-?>

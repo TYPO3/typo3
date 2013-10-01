@@ -103,5 +103,3 @@ interface BackendInterface
 	public function collectGarbage();
 
 }
-
-?>

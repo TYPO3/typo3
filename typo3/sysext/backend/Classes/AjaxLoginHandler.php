@@ -157,6 +157,3 @@ class AjaxLoginHandler {
 	}
 
 }
-
-
-?>

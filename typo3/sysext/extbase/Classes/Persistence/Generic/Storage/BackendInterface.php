@@ -99,5 +99,3 @@ interface BackendInterface {
 	 */
 	public function getObjectDataByQuery(\TYPO3\CMS\Extbase\Persistence\QueryInterface $query);
 }
-
-?>

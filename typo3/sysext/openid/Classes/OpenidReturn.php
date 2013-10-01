@@ -45,6 +45,3 @@ class OpenidReturn {
 	}
 
 }
-
-
-?>

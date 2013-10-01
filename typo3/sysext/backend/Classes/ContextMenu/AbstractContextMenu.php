@@ -65,5 +65,3 @@ abstract class AbstractContextMenu {
 	abstract public function getActionsForNode(\TYPO3\CMS\Backend\Tree\TreeNode $node);
 
 }
-
-?>

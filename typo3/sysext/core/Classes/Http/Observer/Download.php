@@ -180,5 +180,3 @@ class Download implements \SplObserver {
 	}
 
 }
-
-?>

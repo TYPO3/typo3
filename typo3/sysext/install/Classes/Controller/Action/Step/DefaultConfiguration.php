@@ -93,4 +93,3 @@ class DefaultConfiguration extends Action\AbstractAction implements StepInterfac
 		return $this->view->render();
 	}
 }
-?>

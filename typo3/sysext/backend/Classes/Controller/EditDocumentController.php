@@ -1444,5 +1444,3 @@ class EditDocumentController {
 	}
 
 }
-
-?>

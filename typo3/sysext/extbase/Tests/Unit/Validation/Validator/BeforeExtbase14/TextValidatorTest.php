@@ -84,5 +84,3 @@ Ke kille Minutt d\'Kirmes net. Hir Wand Lann Gaas da, wÃ¤r hu Heck Gart zÃ«n
 		$textValidator->isValid('<span style="color: #BBBBBB;">a nice text</span>');
 	}
 }
-
-?>

@@ -250,6 +250,3 @@ class ConfigurationForm extends \TYPO3\CMS\Core\TypoScript\ExtendedTemplateServi
 	}
 
 }
-
-
-?>

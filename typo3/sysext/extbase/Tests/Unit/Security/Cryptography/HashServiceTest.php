@@ -152,5 +152,3 @@ class HashServiceTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$this->assertSame($string, $actualResult);
 	}
 }
-
-?>

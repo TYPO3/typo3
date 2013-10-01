@@ -149,6 +149,3 @@ class FrontendContentAdapterService {
 		}
 	}
 }
-
-
-?>

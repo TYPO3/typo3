@@ -44,5 +44,3 @@ interface PhpCapableBackendInterface extends \TYPO3\CMS\Core\Cache\Backend\Backe
 	public function requireOnce($entryIdentifier);
 
 }
-
-?>

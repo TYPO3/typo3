@@ -275,6 +275,3 @@ class Locales implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 }
-
-
-?>

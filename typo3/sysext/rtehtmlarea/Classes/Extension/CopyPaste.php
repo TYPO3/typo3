@@ -118,6 +118,3 @@ class CopyPaste extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 	}
 
 }
-
-
-?>

@@ -58,4 +58,3 @@ class CoreInternalPreset extends Configuration\AbstractPreset implements Configu
 		return TRUE;
 	}
 }
-?>

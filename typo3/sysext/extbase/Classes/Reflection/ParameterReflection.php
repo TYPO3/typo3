@@ -65,5 +65,3 @@ class ParameterReflection extends \ReflectionParameter {
 		return is_object($class) ? new \TYPO3\CMS\Extbase\Reflection\ClassReflection($class->getName()) : NULL;
 	}
 }
-
-?>

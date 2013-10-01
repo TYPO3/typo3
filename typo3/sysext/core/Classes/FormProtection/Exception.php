@@ -32,6 +32,3 @@ class Exception extends \UnexpectedValueException {
 
 
 }
-
-
-?>

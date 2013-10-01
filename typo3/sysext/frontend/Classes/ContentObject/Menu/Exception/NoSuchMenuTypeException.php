@@ -33,5 +33,3 @@ namespace TYPO3\CMS\Frontend\ContentObject\Menu\Exception;
 class NoSuchMenuTypeException extends \TYPO3\CMS\Frontend\Exception {
 
 }
-
-?>

@@ -254,5 +254,3 @@ class QueryResult implements \TYPO3\CMS\Extbase\Persistence\QueryResultInterface
 		return array('query');
 	}
 }
-
-?>

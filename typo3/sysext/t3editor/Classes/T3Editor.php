@@ -439,5 +439,3 @@ class T3Editor implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 }
-
-?>

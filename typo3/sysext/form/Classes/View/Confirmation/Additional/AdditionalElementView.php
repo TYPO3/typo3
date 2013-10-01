@@ -57,5 +57,3 @@ class AdditionalElementView extends \TYPO3\CMS\Form\View\Confirmation\Element\Ab
 	}
 
 }
-
-?>

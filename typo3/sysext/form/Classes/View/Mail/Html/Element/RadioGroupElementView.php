@@ -55,5 +55,3 @@ class RadioGroupElementView extends \TYPO3\CMS\Form\View\Mail\Html\Element\Field
 	}
 
 }
-
-?>

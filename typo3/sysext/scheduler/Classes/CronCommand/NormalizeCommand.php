@@ -359,6 +359,3 @@ class NormalizeCommand {
 	}
 
 }
-
-
-?>

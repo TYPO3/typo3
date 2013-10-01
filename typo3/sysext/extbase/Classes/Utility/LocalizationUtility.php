@@ -303,5 +303,3 @@ class LocalizationUtility {
 		return $configurationManager;
 	}
 }
-
-?>

@@ -241,5 +241,3 @@ class CompatVersionUpdate extends AbstractUpdate {
 	}
 
 }
-
-?>

@@ -666,6 +666,3 @@ abstract class AbstractConditionMatcher {
 	abstract protected function log($message);
 
 }
-
-
-?>

@@ -40,5 +40,3 @@ interface ReportInterface {
 	public function getReport();
 
 }
-
-?>

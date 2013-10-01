@@ -597,5 +597,3 @@ class ActionController extends \TYPO3\CMS\Extbase\Mvc\Controller\AbstractControl
 		return $result;
 	}
 }
-
-?>

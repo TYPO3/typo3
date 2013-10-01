@@ -215,6 +215,3 @@ class DiffUtility {
 	}
 
 }
-
-
-?>

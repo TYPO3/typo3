@@ -216,5 +216,3 @@ class FolderTest extends BaseTestCase {
 
 	// TODO implement the other tests from getFiles
 }
-
-?>

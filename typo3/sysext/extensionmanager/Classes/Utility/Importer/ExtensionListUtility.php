@@ -214,6 +214,3 @@ class ExtensionListUtility implements \SplObserver {
 	}
 
 }
-
-
-?>

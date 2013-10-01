@@ -46,5 +46,3 @@ class StyleAttribute extends \TYPO3\CMS\Form\Domain\Model\Attribute\AbstractAttr
 	}
 
 }
-
-?>

@@ -78,5 +78,3 @@ class DebuggerUtilityTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$this->debugger->var_dump($arguments, NULL, 8, TRUE, FALSE, TRUE);
 	}
 }
-
-?>

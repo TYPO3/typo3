@@ -463,6 +463,3 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface {
 		}
 	}
 }
-
-
-?>

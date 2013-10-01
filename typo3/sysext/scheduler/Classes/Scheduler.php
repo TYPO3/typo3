@@ -444,6 +444,3 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 }
-
-
-?>

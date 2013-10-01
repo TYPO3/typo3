@@ -1272,5 +1272,3 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 		}
 	}
 }
-
-?>

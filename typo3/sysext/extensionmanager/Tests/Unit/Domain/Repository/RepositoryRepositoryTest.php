@@ -83,6 +83,3 @@ class RepositoryRepositoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCas
 		$this->assertSame($mockModelTwo, $this->fixture->findOneTypo3OrgRepository());
 	}
 }
-
-
-?>

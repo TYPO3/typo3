@@ -37,4 +37,3 @@ require __DIR__ . '/init.php';
 $noDocumentsOpenController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Backend\Controller\NoDocumentsOpenController');
 $noDocumentsOpenController->main();
 $noDocumentsOpenController->printContent();
-?>

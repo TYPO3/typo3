@@ -32,5 +32,3 @@ namespace TYPO3\CMS\Extbase\Mvc\Controller;
 interface CommandControllerInterface extends \TYPO3\CMS\Extbase\Mvc\Controller\ControllerInterface {
 
 }
-
-?>

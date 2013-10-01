@@ -62,4 +62,3 @@ class IconvPreset extends Configuration\AbstractPreset implements Configuration\
 		return $result;
 	}
 }
-?>

@@ -33,5 +33,3 @@ namespace TYPO3\CMS\Extbase\Validation\Exception;
 class InvalidTypeHintException extends \TYPO3\CMS\Extbase\Validation\Exception {
 
 }
-
-?>

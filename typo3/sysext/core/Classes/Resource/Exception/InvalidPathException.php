@@ -31,6 +31,3 @@ class InvalidPathException extends \TYPO3\CMS\Core\Resource\Exception {
 
 
 }
-
-
-?>

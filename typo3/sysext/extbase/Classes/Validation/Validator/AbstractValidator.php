@@ -157,5 +157,3 @@ abstract class AbstractValidator implements \TYPO3\CMS\Extbase\Validation\Valida
 		return $value === NULL || $value === '';
 	}
 }
-
-?>

@@ -617,5 +617,3 @@ class ElementInformationController {
 	}
 
 }
-
-?>

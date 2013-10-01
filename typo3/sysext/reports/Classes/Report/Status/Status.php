@@ -234,6 +234,3 @@ class Status implements \TYPO3\CMS\Reports\ReportInterface {
 	}
 
 }
-
-
-?>

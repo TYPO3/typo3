@@ -65,5 +65,3 @@ class LogicalNot implements \TYPO3\CMS\Extbase\Persistence\Generic\Qom\NotInterf
 		return $this->constraint;
 	}
 }
-
-?>

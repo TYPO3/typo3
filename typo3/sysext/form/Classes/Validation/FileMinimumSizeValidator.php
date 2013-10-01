@@ -89,5 +89,3 @@ class FileMinimumSizeValidator extends \TYPO3\CMS\Form\Validation\AbstractValida
 	}
 
 }
-
-?>

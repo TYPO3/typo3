@@ -62,5 +62,3 @@ class GenericObjectValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestC
 		$validator->isValid($mockObject);
 	}
 }
-
-?>

@@ -7,4 +7,3 @@ return array(
 	'tx_recycler_model_tables' => 'TYPO3\\CMS\\Recycler\\Domain\\Model\\Tables',
 	'tx_recycler_helper' => 'TYPO3\\CMS\\Recycler\\Utility\\RecyclerUtility',
 );
-?>

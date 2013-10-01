@@ -67,4 +67,3 @@ class ExtensionCommandController extends CommandController {
 	}
 
 }
-?>

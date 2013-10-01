@@ -538,5 +538,3 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface {
 		return $validateAnnotations;
 	}
 }
-
-?>

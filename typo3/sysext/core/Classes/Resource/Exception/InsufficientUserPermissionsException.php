@@ -31,6 +31,3 @@ class InsufficientUserPermissionsException extends \TYPO3\CMS\Core\Resource\Exce
 
 
 }
-
-
-?>

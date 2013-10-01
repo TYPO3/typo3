@@ -35,4 +35,3 @@ require __DIR__ . '/init.php';
 $dummyController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\DummyController');
 $dummyController->main();
 $dummyController->printContent();
-?>

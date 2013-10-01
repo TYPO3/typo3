@@ -88,5 +88,3 @@ class GreaterThanValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator 
 	}
 
 }
-
-?>

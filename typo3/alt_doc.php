@@ -51,4 +51,3 @@ if ($editDocumentController->doProcessData()) {
 $editDocumentController->init();
 $editDocumentController->main();
 $editDocumentController->printContent();
-?>

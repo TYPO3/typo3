@@ -486,6 +486,3 @@ class RecordList {
 	}
 
 }
-
-
-?>

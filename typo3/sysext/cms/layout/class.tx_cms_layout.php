@@ -5,4 +5,3 @@
  * typo3/sysext/backend/Classes/View/PageLayoutView.php
  */
 require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('backend') . 'Classes/View/PageLayoutView.php';
-?>

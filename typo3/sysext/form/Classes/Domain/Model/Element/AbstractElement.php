@@ -524,5 +524,3 @@ abstract class AbstractElement {
 	}
 
 }
-
-?>

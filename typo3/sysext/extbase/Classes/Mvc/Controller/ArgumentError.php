@@ -45,5 +45,3 @@ class ArgumentError extends \TYPO3\CMS\Extbase\Validation\PropertyError {
 	 */
 	protected $code = 1245107351;
 }
-
-?>

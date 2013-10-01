@@ -31,6 +31,3 @@ class InvalidFolderException extends \TYPO3\CMS\Core\Resource\Exception {
 
 
 }
-
-
-?>

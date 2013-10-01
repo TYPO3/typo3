@@ -54,5 +54,3 @@ interface ResourceInterface {
 	public function getStorage();
 
 }
-
-?>

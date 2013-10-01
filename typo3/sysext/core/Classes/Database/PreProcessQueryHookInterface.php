@@ -104,5 +104,3 @@ interface PreProcessQueryHookInterface {
 	public function TRUNCATEquery_preProcessAction(&$table, \TYPO3\CMS\Core\Database\DatabaseConnection $parentObject);
 
 }
-
-?>

@@ -699,6 +699,3 @@ class ActionHandler extends \TYPO3\CMS\Workspaces\ExtDirect\AbstractHandler {
 	}
 
 }
-
-
-?>

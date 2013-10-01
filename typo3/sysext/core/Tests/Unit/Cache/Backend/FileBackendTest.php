@@ -605,4 +605,3 @@ class FileBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->assertFalse($backend->isFrozen());
 	}
 }
-?>

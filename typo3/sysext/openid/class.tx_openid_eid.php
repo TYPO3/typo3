@@ -8,4 +8,3 @@ require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('openid
 $module = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Openid\\OpenidEid');
 /* @var \TYPO3\CMS\Openid\OpenidEid $module */
 $module->main();
-?>

@@ -140,4 +140,3 @@ return array(
 	'Tx_Fluid_ViewHelpers_Widget_PaginateViewHelper' => 'TYPO3\\CMS\\Fluid\\ViewHelpers\\Widget\\PaginateViewHelper',
 	'Tx_Fluid_ViewHelpers_Widget_UriViewHelper' => 'TYPO3\\CMS\\Fluid\\ViewHelpers\\Widget\\UriViewHelper',
 );
-?>

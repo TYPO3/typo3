@@ -589,4 +589,3 @@ class ConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->assertFalse($fixture->_call('isValidLocalConfigurationPath', 'bar/baz'));
 	}
 }
-?>

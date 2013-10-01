@@ -180,5 +180,3 @@ class InfoModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	}
 
 }
-
-?>

@@ -79,4 +79,3 @@ if ((!isset($GLOBALS['TYPO3_CONF_VARS']['INSTALL']['wizardDone']['Tx_Install_Upd
 		'minitems' => '0'
 	);
 }
-?>

@@ -87,5 +87,3 @@ interface ViewInterface {
 	 */
 	public function initializeView();
 }
-
-?>

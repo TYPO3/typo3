@@ -98,6 +98,3 @@ class SleepTaskAdditionalFieldProvider implements \TYPO3\CMS\Scheduler\Additiona
 	}
 
 }
-
-
-?>

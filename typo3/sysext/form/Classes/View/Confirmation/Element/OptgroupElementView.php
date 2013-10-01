@@ -58,5 +58,3 @@ class OptgroupElementView extends \TYPO3\CMS\Form\View\Confirmation\Element\Cont
 	}
 
 }
-
-?>

@@ -57,5 +57,3 @@ class HistoryEntryRepositoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestC
 	}
 
 }
-
-?>

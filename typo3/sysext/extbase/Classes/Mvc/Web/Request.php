@@ -213,5 +213,3 @@ class Request extends \TYPO3\CMS\Extbase\Mvc\Request {
 		return NULL;
 	}
 }
-
-?>

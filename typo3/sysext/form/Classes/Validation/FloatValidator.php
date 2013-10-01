@@ -53,5 +53,3 @@ class FloatValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator {
 	}
 
 }
-
-?>

@@ -171,5 +171,3 @@ class MvcPropertyMappingConfigurationService implements \TYPO3\CMS\Core\Singleto
 		}
 	}
 }
-
-?>

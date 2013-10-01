@@ -32,5 +32,3 @@ interface ChildNodeAccessInterface {
 	 */
 	public function setChildNodes(array $childNodes);
 }
-
-?>

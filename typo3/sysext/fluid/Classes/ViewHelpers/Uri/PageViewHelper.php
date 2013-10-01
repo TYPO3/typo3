@@ -63,5 +63,3 @@ class PageViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 		return $uri;
 	}
 }
-
-?>

@@ -146,6 +146,3 @@ class BrowseTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 	}
 
 }
-
-
-?>

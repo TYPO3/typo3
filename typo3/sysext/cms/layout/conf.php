@@ -6,4 +6,3 @@ $MLANG['default']['ll_ref'] = 'LLL:EXT:cms/layout/locallang_mod.xlf';
 $MCONF['script'] = 'db_layout.php';
 $MCONF['access'] = 'user,group';
 $MCONF['name'] = 'web_layout';
-?>

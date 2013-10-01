@@ -55,5 +55,3 @@ class WidgetRequest extends \TYPO3\CMS\Extbase\Mvc\Web\Request {
 		return $this->widgetContext->getParentPluginNamespace() . '[' . $this->widgetContext->getWidgetIdentifier() . ']';
 	}
 }
-
-?>

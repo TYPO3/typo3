@@ -59,6 +59,3 @@ class CaseContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractConten
 	}
 
 }
-
-
-?>

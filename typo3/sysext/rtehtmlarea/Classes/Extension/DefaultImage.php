@@ -79,6 +79,3 @@ class DefaultImage extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 	}
 
 }
-
-
-?>

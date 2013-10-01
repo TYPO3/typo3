@@ -161,5 +161,3 @@ class RootTemplateUpdate extends AbstractUpdate implements InstallerProcessInter
 		return $templates;
 	}
 }
-
-?>

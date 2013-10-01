@@ -90,6 +90,3 @@ abstract class AbstractMemoryProcessor extends \TYPO3\CMS\Core\Log\Processor\Abs
 	}
 
 }
-
-
-?>

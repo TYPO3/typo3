@@ -47,5 +47,3 @@ class SwitchViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewH
 		$this->viewHelper->render('switchExpression');
 	}
 }
-
-?>

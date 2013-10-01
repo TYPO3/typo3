@@ -74,5 +74,3 @@ abstract class AbstractExtdirectContextMenu extends \TYPO3\CMS\Backend\ContextMe
 	}
 
 }
-
-?>

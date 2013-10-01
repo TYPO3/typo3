@@ -212,6 +212,3 @@ class ExtdirectTreeDataProvider extends \TYPO3\CMS\Backend\Tree\AbstractExtJsTre
 	}
 
 }
-
-
-?>

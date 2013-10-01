@@ -274,5 +274,3 @@ class FileRepository extends AbstractRepository {
 	}
 
 }
-
-?>

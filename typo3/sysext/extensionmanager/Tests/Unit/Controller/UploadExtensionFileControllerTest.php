@@ -82,5 +82,3 @@ class UploadExtensionFileControllerTest extends \TYPO3\CMS\Extbase\Tests\Unit\Ba
 	}
 
 }
-
-?>

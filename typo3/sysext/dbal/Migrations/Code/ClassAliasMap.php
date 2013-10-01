@@ -6,4 +6,3 @@ return array(
 	'ux_t3lib_sqlparser' => 'TYPO3\\CMS\\Dbal\\Database\\SqlParser',
 	'ux_localRecordList' => 'TYPO3\\CMS\\Dbal\\RecordList\\DatabaseRecordList',
 );
-?>

@@ -154,6 +154,3 @@ class ContentContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractCon
 	}
 
 }
-
-
-?>

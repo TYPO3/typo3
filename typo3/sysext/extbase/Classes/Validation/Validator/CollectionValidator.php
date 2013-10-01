@@ -117,5 +117,3 @@ class CollectionValidator extends GenericObjectValidator {
 		}
 	}
 }
-
-?>

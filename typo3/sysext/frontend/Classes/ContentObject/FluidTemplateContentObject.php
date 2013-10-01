@@ -283,4 +283,3 @@ class FluidTemplateContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstr
 	}
 
 }
-?>

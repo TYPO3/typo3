@@ -657,4 +657,3 @@ class TestSetup extends Action\AbstractAction implements Action\ActionInterface 
 		$GLOBALS['TYPO3_DB'] = $database;
 	}
 }
-?>

@@ -61,5 +61,3 @@ class AdditionalElementView extends \TYPO3\CMS\Form\View\Mail\Html\Element\Abstr
 	}
 
 }
-
-?>

@@ -81,5 +81,3 @@ class RenderViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewH
 		$this->assertEquals($expected, $actual);
 	}
 }
-
-?>

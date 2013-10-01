@@ -59,6 +59,3 @@ class ServiceUnavailableException extends \TYPO3\CMS\Core\Error\Http\AbstractSer
 	}
 
 }
-
-
-?>

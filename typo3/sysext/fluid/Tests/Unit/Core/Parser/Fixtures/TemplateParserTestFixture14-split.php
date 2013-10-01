@@ -5,5 +5,3 @@ return array(
 	'%.3e',
 	'</f:format.printf>'
 );
-
-?>

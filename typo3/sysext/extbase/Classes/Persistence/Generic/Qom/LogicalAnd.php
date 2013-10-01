@@ -83,5 +83,3 @@ class LogicalAnd implements \TYPO3\CMS\Extbase\Persistence\Generic\Qom\AndInterf
 		return $this->constraint2;
 	}
 }
-
-?>

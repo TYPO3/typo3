@@ -45,6 +45,3 @@ class FolderTree extends \rteFolderTree {
 	}
 
 }
-
-
-?>

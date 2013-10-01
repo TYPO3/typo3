@@ -42,6 +42,3 @@ class NullWriter extends \TYPO3\CMS\Core\Log\Writer\AbstractWriter {
 	}
 
 }
-
-
-?>

@@ -40,4 +40,3 @@ class CaseViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 		return '';
 	}
 }
-?>

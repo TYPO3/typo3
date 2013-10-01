@@ -41,5 +41,3 @@ interface ProcessorInterface {
 	public function processLogRecord(\TYPO3\CMS\Core\Log\LogRecord $logRecord);
 
 }
-
-?>

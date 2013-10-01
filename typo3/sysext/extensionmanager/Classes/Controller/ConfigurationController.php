@@ -109,6 +109,3 @@ class ConfigurationController extends \TYPO3\CMS\Extensionmanager\Controller\Abs
 	}
 
 }
-
-
-?>

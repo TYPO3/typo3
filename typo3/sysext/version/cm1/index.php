@@ -30,4 +30,3 @@ $SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Versio
 $SOBE->init();
 $SOBE->main();
 $SOBE->printContent();
-?>

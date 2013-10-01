@@ -69,6 +69,3 @@ class TextStyle extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 	protected $requiresClassesConfiguration = TRUE;
 
 }
-
-
-?>

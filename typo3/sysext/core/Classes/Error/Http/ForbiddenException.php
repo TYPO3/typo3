@@ -59,6 +59,3 @@ class ForbiddenException extends \TYPO3\CMS\Core\Error\Http\AbstractClientErrorE
 	}
 
 }
-
-
-?>

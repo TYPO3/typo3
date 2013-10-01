@@ -178,5 +178,3 @@ interface FileInterface extends ResourceInterface {
 	public function toArray();
 
 }
-
-?>

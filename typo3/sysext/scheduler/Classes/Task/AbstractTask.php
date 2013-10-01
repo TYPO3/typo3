@@ -440,6 +440,3 @@ abstract class AbstractTask {
 	}
 
 }
-
-
-?>

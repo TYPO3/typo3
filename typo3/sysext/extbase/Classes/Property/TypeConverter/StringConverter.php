@@ -57,5 +57,3 @@ class StringConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\Abstract
 		return (string) $source;
 	}
 }
-
-?>

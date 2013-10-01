@@ -1588,6 +1588,3 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 	}
 
 }
-
-
-?>

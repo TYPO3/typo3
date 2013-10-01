@@ -10,4 +10,3 @@ require_once PATH_site . 'typo3/sysext/saltedpasswords/Classes/Autoloader.php';
  */
 $SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Saltedpasswords\\Autoloader');
 $SOBE->execute($this);
-?>

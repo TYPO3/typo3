@@ -115,6 +115,3 @@ class ColumnsContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractCon
 	}
 
 }
-
-
-?>

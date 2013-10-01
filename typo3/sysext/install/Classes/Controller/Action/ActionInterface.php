@@ -76,4 +76,3 @@ interface ActionInterface {
 	 */
 	public function setMessages(array $messages = array());
 }
-?>

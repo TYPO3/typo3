@@ -31,6 +31,3 @@ class Exception extends \TYPO3\CMS\Core\Exception {
 
 
 }
-
-
-?>

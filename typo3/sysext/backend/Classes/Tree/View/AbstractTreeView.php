@@ -1024,6 +1024,3 @@ abstract class AbstractTreeView {
 	}
 
 }
-
-
-?>

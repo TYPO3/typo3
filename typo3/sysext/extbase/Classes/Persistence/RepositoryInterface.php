@@ -134,5 +134,3 @@ interface RepositoryInterface {
 	 */
 	public function createQuery();
 }
-
-?>

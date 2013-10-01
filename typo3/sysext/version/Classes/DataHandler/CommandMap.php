@@ -918,6 +918,3 @@ class CommandMap {
 	}
 
 }
-
-
-?>

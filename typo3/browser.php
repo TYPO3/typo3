@@ -35,4 +35,3 @@ require __DIR__ . '/init.php';
 $elementBrowserFramesetController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Recordlist\\Controller\\ElementBrowserFramesetController');
 $elementBrowserFramesetController->main();
 $elementBrowserFramesetController->printContent();
-?>

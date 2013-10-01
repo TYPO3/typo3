@@ -33,4 +33,3 @@ class Auth_OpenID_ServerRequest {
         $this->mode = null;
     }
 }
-

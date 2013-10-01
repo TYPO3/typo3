@@ -298,6 +298,3 @@ class ConfigurationStatus implements \TYPO3\CMS\Reports\StatusProviderInterface 
 	}
 
 }
-
-
-?>

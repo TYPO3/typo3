@@ -424,5 +424,3 @@ class FileTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->assertNull($fixture->isIndexed());
 	}
 }
-
-?>

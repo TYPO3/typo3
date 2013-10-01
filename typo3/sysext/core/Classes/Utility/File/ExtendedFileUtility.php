@@ -1043,5 +1043,3 @@ class ExtendedFileUtility extends \TYPO3\CMS\Core\Utility\File\BasicFileUtility 
 		return $GLOBALS['BE_USER'];
 	}
 }
-
-?>

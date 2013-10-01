@@ -44,5 +44,3 @@ interface FileListEditIconHookInterface {
 	public function manipulateEditIcons(&$cells, &$parentObject);
 
 }
-
-?>

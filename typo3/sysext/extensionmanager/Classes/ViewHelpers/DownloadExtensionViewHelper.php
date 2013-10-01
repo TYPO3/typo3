@@ -73,6 +73,3 @@ class DownloadExtensionViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\FormViewH
 	}
 
 }
-
-
-?>

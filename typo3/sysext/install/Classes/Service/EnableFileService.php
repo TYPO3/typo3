@@ -113,5 +113,3 @@ class EnableFileService {
 		return PATH_site . self::INSTALL_TOOL_ENABLE_FILE_PATH;
 	}
 }
-
-?>

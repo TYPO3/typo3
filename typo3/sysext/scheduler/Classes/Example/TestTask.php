@@ -98,6 +98,3 @@ class TestTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 	}
 
 }
-
-
-?>

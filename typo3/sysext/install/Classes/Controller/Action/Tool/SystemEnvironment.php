@@ -51,4 +51,3 @@ class SystemEnvironment extends Action\AbstractAction implements Action\ActionIn
 		return $this->view->render();
 	}
 }
-?>

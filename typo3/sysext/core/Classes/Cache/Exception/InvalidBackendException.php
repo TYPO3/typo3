@@ -34,6 +34,3 @@ class InvalidBackendException extends \TYPO3\CMS\Core\Cache\Exception {
 
 
 }
-
-
-?>

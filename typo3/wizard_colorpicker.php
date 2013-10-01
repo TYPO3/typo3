@@ -37,4 +37,3 @@ require __DIR__ . '/init.php';
 $colorpickerController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\Wizard\\ColorpickerController');
 $colorpickerController->main();
 $colorpickerController->printContent();
-?>

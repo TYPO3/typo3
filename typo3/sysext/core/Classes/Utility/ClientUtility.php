@@ -225,6 +225,3 @@ class ClientUtility {
 	}
 
 }
-
-
-?>

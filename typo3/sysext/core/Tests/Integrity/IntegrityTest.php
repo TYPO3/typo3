@@ -61,5 +61,3 @@ class IntegrityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->assertArrayHasKey('TYPO3\CMS\Core\Cache\CacheManager', $registeredSingletons);
 	}
 }
-
-?>

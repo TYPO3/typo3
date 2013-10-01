@@ -129,6 +129,3 @@ class Typo3Status implements \TYPO3\CMS\Reports\StatusProviderInterface {
 	}
 
 }
-
-
-?>

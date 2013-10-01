@@ -396,6 +396,3 @@ class FileBackend extends \TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend implem
 	}
 
 }
-
-
-?>

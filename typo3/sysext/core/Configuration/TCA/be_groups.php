@@ -288,4 +288,3 @@ return array(
 			--div--;LLL:EXT:lang/locallang_tca.xlf:be_groups.tabs.extended')
 	)
 );
-?>

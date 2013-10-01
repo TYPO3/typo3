@@ -43,5 +43,3 @@ class ErrorAdditionalElementView extends \TYPO3\CMS\Form\View\Form\Additional\Ad
 	';
 
 }
-
-?>

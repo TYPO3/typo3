@@ -108,5 +108,3 @@ class AbstractTagBasedViewHelperTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseT
 		$this->viewHelper->_call('registerTagAttribute', 'foo', 'string', 'Description', FALSE);
 	}
 }
-
-?>

@@ -956,5 +956,3 @@ class Clipboard {
 	}
 
 }
-
-?>

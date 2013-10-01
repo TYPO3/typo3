@@ -33,5 +33,3 @@ namespace TYPO3\CMS\Extbase\Object\Container\Exception;
 class UnknownObjectException extends \TYPO3\CMS\Extbase\Object\Exception {
 
 }
-
-?>

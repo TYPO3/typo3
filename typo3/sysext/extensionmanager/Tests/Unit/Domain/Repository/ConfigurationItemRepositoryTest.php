@@ -444,6 +444,3 @@ class ConfigurationItemRepositoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\Base
 		$this->assertEquals($expectedResult, $actualResult);
 	}
 }
-
-
-?>

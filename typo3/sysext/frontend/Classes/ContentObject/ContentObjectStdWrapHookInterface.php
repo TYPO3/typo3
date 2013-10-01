@@ -73,5 +73,3 @@ interface ContentObjectStdWrapHookInterface {
 	public function stdWrapPostProcess($content, array $configuration, \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer &$parentObject);
 
 }
-
-?>

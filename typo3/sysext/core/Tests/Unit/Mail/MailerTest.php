@@ -143,5 +143,3 @@ class MailerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->assertEquals(12345, $port);
 	}
 }
-
-?>

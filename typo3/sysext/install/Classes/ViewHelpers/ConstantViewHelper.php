@@ -39,5 +39,3 @@ class ConstantViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHe
 		return constant($name);
 	}
 }
-
-?>

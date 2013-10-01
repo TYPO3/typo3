@@ -72,5 +72,3 @@ class ContextService {
 		return ( $this->isBackendContext() ? 'backend' : 'standalone' );
 	}
 }
-
-?>

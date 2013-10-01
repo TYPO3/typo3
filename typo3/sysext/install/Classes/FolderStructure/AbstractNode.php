@@ -241,4 +241,3 @@ abstract class AbstractNode {
 		return $relativePath;
 	}
 }
-?>

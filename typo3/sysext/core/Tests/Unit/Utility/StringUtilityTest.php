@@ -108,5 +108,3 @@ class StringUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->assertFalse(\TYPO3\CMS\Core\Utility\StringUtility::isLastPartOfString($string, $part));
 	}
 }
-
-?>

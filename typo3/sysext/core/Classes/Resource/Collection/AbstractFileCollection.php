@@ -242,6 +242,3 @@ abstract class AbstractFileCollection extends \TYPO3\CMS\Core\Collection\Abstrac
 	}
 
 }
-
-
-?>

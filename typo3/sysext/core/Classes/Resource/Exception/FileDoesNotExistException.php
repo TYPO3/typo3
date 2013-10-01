@@ -31,6 +31,3 @@ class FileDoesNotExistException extends ResourceDoesNotExistException {
 
 
 }
-
-
-?>

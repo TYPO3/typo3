@@ -29,4 +29,3 @@ namespace TYPO3\CMS\Core\Tests;
  */
 class Exception extends \Exception {
 }
-?>

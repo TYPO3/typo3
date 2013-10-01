@@ -62,5 +62,3 @@ class PrintfViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelp
 		return vsprintf($format, $arguments);
 	}
 }
-
-?>

@@ -539,5 +539,3 @@ page.10.value = HELLO WORLD!
 	}
 
 }
-
-?>

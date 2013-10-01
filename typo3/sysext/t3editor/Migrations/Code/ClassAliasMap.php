@@ -7,4 +7,3 @@ return array(
 	'tx_t3editor' => 'TYPO3\\CMS\\T3Editor\\T3Editor',
 	'tx_t3editor_TSrefLoader' => 'TYPO3\\CMS\\T3Editor\\TypoScriptReferenceLoader',
 );
-?>

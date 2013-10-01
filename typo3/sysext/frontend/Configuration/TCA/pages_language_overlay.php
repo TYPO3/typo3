@@ -375,4 +375,3 @@ return array(
 		)
 	)
 );
-?>

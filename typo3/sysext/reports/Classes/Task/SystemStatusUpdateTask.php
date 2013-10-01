@@ -117,5 +117,3 @@ class SystemStatusUpdateTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 	}
 
 }
-
-?>

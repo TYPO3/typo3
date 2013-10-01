@@ -81,4 +81,3 @@ class Helper extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		return isset($this->mockData[$key]);
 	}
 }
-?>

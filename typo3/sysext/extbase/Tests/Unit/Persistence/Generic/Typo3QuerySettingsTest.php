@@ -225,5 +225,3 @@ class Typo3QuerySettingsTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase 
 		$this->assertTrue($this->typo3QuerySettings->setReturnRawQueryResult(TRUE) instanceof \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface);
 	}
 }
-
-?>

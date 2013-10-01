@@ -155,4 +155,3 @@ return array(
 		)
 	)
 );
-?>

@@ -631,4 +631,3 @@ $GLOBALS['TBE_STYLES']['spriteIconApi']['spriteIconRecordOverlayNames'] = array(
 	'translated' => 'status-overlay-translated',
 	'protectedSection' => 'status-overlay-includes-subpages'
 );
-?>

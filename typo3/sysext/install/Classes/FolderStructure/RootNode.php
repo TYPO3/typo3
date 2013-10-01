@@ -98,4 +98,3 @@ class RootNode extends DirectoryNode implements RootNodeInterface {
 		return $this->name;
 	}
 }
-?>

@@ -2384,6 +2384,3 @@ class CharsetConverter {
 	}
 
 }
-
-
-?>

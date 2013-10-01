@@ -120,5 +120,3 @@ class FilterUtility implements \TYPO3\CMS\Form\Filter\FilterInterface {
 	}
 
 }
-
-?>

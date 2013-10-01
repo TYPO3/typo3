@@ -65,6 +65,3 @@ class CachingFrameworkGarbageCollectionTask extends \TYPO3\CMS\Scheduler\Task\Ab
 	}
 
 }
-
-
-?>

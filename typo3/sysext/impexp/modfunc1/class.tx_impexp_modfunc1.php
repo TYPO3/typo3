@@ -36,4 +36,3 @@
  * typo3/sysext/impexp/Classes/Controller/ModuleFunctionController.php
  */
 require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('impexp') . 'classes/Controller/ModuleFunctionController.php';
-?>

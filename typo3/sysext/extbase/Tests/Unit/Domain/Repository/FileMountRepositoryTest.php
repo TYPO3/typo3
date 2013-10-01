@@ -56,5 +56,3 @@ class FileMountRepositoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase
 		$fixture->initializeObject();
 	}
 }
-
-?>

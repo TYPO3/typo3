@@ -52,4 +52,3 @@ if (TYPO3_MODE === 'BE') {
 	// register help command
 	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['extbase']['commandControllers'][] = 'TYPO3\\CMS\\Extbase\\Command\\HelpCommandController';
 }
-?>

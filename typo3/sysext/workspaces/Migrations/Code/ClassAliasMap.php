@@ -24,4 +24,3 @@ return array(
 	'Tx_Workspaces_Service_AutoPublishTask' => 'TYPO3\\CMS\\Workspaces\\Task\\AutoPublishTask',
 	'Tx_Workspaces_Service_CleanupPreviewLinkTask' => 'TYPO3\\CMS\\Workspaces\\Task\\CleanupPreviewLinkTask',
 );
-?>

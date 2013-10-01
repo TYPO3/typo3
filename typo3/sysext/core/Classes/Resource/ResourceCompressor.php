@@ -697,6 +697,3 @@ class ResourceCompressor {
 	}
 
 }
-
-
-?>

@@ -29,4 +29,3 @@ namespace TYPO3\CMS\Core\Resource\Exception;
 class ResourceDoesNotExistException extends \TYPO3\CMS\Core\Resource\Exception {
 
 }
-?>

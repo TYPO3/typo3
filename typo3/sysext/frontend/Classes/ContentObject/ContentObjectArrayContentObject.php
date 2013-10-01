@@ -62,6 +62,3 @@ class ContentObjectArrayContentObject extends \TYPO3\CMS\Frontend\ContentObject\
 	}
 
 }
-
-
-?>

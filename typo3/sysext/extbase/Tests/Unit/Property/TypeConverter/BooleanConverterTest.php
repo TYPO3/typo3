@@ -68,4 +68,3 @@ class BooleanConverterTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$this->assertSame(TRUE, $this->converter->convertFrom($source, 'boolean'));
 	}
 }
-?>

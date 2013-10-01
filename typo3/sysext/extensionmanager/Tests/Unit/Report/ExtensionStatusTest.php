@@ -457,4 +457,3 @@ class ExtensionStatusTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$this->assertSame(\TYPO3\CMS\Reports\Status::WARNING, $existingResult->getSeverity());
 	}
 }
-?>

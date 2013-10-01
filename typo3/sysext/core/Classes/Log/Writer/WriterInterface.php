@@ -39,5 +39,3 @@ interface WriterInterface {
 	public function writeLog(\TYPO3\CMS\Core\Log\LogRecord $record);
 
 }
-
-?>

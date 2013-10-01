@@ -386,5 +386,3 @@ class AbstractFormFieldViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHe
 		$this->assertEquals($expected, $actual);
 	}
 }
-
-?>

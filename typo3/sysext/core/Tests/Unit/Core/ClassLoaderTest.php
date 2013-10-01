@@ -351,5 +351,3 @@ class ClassLoaderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		\TYPO3\CMS\Core\Core\ClassLoader::unregisterAutoloader();
 	}
 }
-
-?>

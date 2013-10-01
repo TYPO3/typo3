@@ -42,4 +42,3 @@ $EM_CONF[$_EXTKEY] = array(
 	),
 	'suggests' => array('sys_action')
 );
-?>

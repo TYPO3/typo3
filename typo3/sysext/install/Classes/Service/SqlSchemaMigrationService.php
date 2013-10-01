@@ -639,4 +639,3 @@ class SqlSchemaMigrationService {
 		return $whichTables;
 	}
 }
-?>

@@ -109,5 +109,3 @@ class AlphabeticValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator {
 	}
 
 }
-
-?>

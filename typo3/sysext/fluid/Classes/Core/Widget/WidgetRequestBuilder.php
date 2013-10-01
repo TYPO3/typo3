@@ -63,5 +63,3 @@ class WidgetRequestBuilder extends \TYPO3\CMS\Extbase\Mvc\Web\RequestBuilder {
 		return $request;
 	}
 }
-
-?>

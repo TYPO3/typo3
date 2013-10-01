@@ -11,4 +11,3 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['TYPO3\\CMS\\Rep
 );
 
 $TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['displayWarningMessages']['tx_reports_WarningMessagePostProcessor'] = 'TYPO3\\CMS\\Reports\\Report\\Status\\WarningMessagePostProcessor';
-?>

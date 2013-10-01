@@ -255,4 +255,3 @@ class Auth_Yadis_ParseHTML {
         return null;
     }
 }
-

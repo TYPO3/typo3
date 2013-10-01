@@ -214,6 +214,3 @@ Uncaught TYPO3 Exception ' . $exceptionCodeNumber . $exception->getMessage() . L
 	}
 
 }
-
-
-?>

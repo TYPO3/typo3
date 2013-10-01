@@ -52,5 +52,3 @@ class SelectElementView extends \TYPO3\CMS\Form\View\Confirmation\Element\Contai
 	}
 
 }
-
-?>

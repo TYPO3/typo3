@@ -658,6 +658,3 @@ var selectedDictionary = "' . $this->dictionary . '";
 	}
 
 }
-
-
-?>

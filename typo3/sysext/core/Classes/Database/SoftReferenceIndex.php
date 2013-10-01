@@ -802,6 +802,3 @@ class SoftReferenceIndex {
 	}
 
 }
-
-
-?>

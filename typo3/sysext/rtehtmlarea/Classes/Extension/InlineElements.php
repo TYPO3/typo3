@@ -211,6 +211,3 @@ class InlineElements extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 	}
 
 }
-
-
-?>

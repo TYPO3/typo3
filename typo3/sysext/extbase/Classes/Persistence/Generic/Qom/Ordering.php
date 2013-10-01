@@ -72,5 +72,3 @@ class Ordering implements \TYPO3\CMS\Extbase\Persistence\Generic\Qom\OrderingInt
 		return $this->order;
 	}
 }
-
-?>

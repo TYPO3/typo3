@@ -101,5 +101,3 @@ abstract class AbstractFormViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\A
 		$this->viewHelperVariableContainer->addOrUpdate('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper', 'formFieldNames', $formFieldNames);
 	}
 }
-
-?>

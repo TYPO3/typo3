@@ -31,6 +31,3 @@ class InsufficientFileWritePermissionsException extends \TYPO3\CMS\Core\Resource
 
 
 }
-
-
-?>

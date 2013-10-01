@@ -22,4 +22,3 @@ if (!defined('TYPO3_MODE')) {
 // Add hooks to the backend login form
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/index.php']['loginFormHook'][$_EXTKEY] = 'TYPO3\\CMS\\Sv\\LoginFormHook->getLoginFormTag';
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/index.php']['loginScriptHook'][$_EXTKEY] = 'TYPO3\\CMS\\Sv\\LoginFormHook->getLoginScripts';
-?>

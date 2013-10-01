@@ -65,4 +65,3 @@ class StructureFacade implements StructureFacadeInterface {
 		return $this->structure->fix();
 	}
 }
-?>

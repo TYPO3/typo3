@@ -6,4 +6,3 @@ return array(
 	'tx_tstemplateinfo' => 'TYPO3\\CMS\\Tstemplate\\Controller\\TypoScriptTemplateInformationModuleFunctionController',
 	'tx_tstemplateobjbrowser' => 'TYPO3\\CMS\\Tstemplate\\Controller\\TypoScriptTemplateObjectBrowserModuleFunctionController',
 );
-?>

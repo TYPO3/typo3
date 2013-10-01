@@ -64,6 +64,3 @@ class ActionMenuItemViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstract
 	}
 
 }
-
-
-?>

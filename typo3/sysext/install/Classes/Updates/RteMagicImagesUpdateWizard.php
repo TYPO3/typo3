@@ -234,5 +234,3 @@ class RteMagicImagesUpdateWizard extends AbstractUpdate {
 	}
 
 }
-
-?>

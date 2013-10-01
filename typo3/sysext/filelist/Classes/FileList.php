@@ -822,5 +822,3 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 	}
 
 }
-
-?>

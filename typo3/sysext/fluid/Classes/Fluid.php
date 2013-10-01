@@ -31,5 +31,3 @@ class Fluid {
 	 */
 	static public $debugMode = FALSE;
 }
-
-?>

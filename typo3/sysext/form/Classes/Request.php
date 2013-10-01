@@ -335,5 +335,3 @@ class Request implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 }
-
-?>

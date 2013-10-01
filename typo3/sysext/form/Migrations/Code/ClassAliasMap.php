@@ -240,4 +240,3 @@ return array(
 	'tx_form_View_Wizard_Save' => 'TYPO3\\CMS\\Form\\View\\Wizard\\SaveWizardView',
 	'tx_form_View_Wizard_Wizard' => 'TYPO3\\CMS\\Form\\View\\Wizard\\WizardView',
 );
-?>

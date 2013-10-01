@@ -4,4 +4,3 @@ return array(
 	'tx_taskcenter_Task' => 'TYPO3\\CMS\\Taskcenter\\TaskInterface',
 	'tx_taskcenter_status' => 'TYPO3\\CMS\\Taskcenter\\TaskStatus',
 );
-?>

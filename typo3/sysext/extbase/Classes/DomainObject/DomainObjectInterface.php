@@ -90,5 +90,3 @@ interface DomainObjectInterface {
 	 */
 	public function _getProperties();
 }
-
-?>

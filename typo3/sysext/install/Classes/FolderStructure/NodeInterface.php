@@ -72,4 +72,3 @@ interface NodeInterface {
 	 */
 	public function fix();
 }
-?>

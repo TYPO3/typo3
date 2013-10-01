@@ -42,5 +42,3 @@ interface ContentObjectPostInitHookInterface {
 	public function postProcessContentObjectInitialization(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer &$parentObject);
 
 }
-
-?>

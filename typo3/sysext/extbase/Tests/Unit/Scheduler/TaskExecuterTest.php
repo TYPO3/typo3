@@ -120,5 +120,3 @@ class TaskExecutorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$this->assertSame('Foo', $this->taskExecuter->_get('response')->getContent());
 	}
 }
-
-?>

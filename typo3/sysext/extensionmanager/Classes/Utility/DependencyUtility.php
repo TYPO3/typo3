@@ -404,6 +404,3 @@ class DependencyUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 }
-
-
-?>

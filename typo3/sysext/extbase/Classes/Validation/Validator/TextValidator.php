@@ -58,5 +58,3 @@ class TextValidator extends AbstractValidator {
 		}
 	}
 }
-
-?>

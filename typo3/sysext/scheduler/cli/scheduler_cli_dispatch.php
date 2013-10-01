@@ -84,4 +84,3 @@ if (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI && basename(PATH_thisScript) == 'c
 } else {
 	die('This script must be included by the "CLI module dispatcher"');
 }
-?>

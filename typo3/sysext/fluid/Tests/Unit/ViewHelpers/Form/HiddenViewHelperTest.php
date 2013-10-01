@@ -49,5 +49,3 @@ class HiddenViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\
 		$this->viewHelper->render();
 	}
 }
-
-?>

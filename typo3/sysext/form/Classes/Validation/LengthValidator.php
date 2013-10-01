@@ -141,5 +141,3 @@ class LengthValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator {
 	}
 
 }
-
-?>

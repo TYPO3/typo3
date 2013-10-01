@@ -83,5 +83,3 @@ class ContainerElementView extends \TYPO3\CMS\Form\View\Form\Element\AbstractEle
 	}
 
 }
-
-?>

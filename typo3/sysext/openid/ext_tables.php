@@ -37,4 +37,3 @@ $GLOBALS['TYPO3_USER_SETTINGS']['columns']['tx_openid_openid'] = array(
 );
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addFieldsToUserSettings('tx_openid_openid', 'after:password2');
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('_MOD_user_setup', 'EXT:openid/locallang_csh_mod.xlf');
-?>

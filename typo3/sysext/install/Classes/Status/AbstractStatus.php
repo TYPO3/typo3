@@ -89,4 +89,3 @@ abstract class AbstractStatus implements StatusInterface {
 		$this->message = $message;
 	}
 }
-?>

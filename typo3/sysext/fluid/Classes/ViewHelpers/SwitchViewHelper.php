@@ -128,4 +128,3 @@ class SwitchViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelp
 		}
 	}
 }
-?>

@@ -89,5 +89,3 @@ class RequestHandler implements \TYPO3\CMS\Extbase\Mvc\RequestHandlerInterface {
 		return 100;
 	}
 }
-
-?>

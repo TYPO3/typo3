@@ -76,5 +76,3 @@ interface ElementBrowserHookInterface {
 	public function parseCurrentUrl($href, $siteUrl, $info);
 
 }
-
-?>

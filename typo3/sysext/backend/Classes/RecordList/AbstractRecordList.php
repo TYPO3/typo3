@@ -459,6 +459,3 @@ abstract class AbstractRecordList {
 	}
 
 }
-
-
-?>

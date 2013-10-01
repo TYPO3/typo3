@@ -207,5 +207,3 @@ class InfoPageTyposcriptConfigController extends \TYPO3\CMS\Backend\Module\Abstr
 	}
 
 }
-
-?>

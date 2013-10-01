@@ -147,5 +147,3 @@ class CommandTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$this->assertSame($expectedResult, $actualResult);
 	}
 }
-
-?>

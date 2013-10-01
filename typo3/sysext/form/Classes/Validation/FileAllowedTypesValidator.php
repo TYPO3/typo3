@@ -91,5 +91,3 @@ class FileAllowedTypesValidator extends \TYPO3\CMS\Form\Validation\AbstractValid
 	}
 
 }
-
-?>

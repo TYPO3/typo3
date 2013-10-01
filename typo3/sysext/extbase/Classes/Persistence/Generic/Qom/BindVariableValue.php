@@ -65,5 +65,3 @@ class BindVariableValue extends \TYPO3\CMS\Extbase\Persistence\Generic\Qom\Stati
 		return $this->variableName;
 	}
 }
-
-?>

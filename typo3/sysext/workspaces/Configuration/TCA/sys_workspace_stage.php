@@ -110,4 +110,3 @@ return array(
 			--div--;LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:tabs.notification_settings,notification_mode,notification_defaults,allow_notificaton_settings,default_mailcomment')
 	)
 );
-?>
