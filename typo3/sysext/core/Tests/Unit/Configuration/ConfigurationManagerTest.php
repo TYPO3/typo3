@@ -331,7 +331,27 @@ class ConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$currentLocalConfiguration = array(
 			'notChanged' => 23,
 		);
-		$expectedConfiguration = array(
+		$this->createFixtureWithMockedMethods(
+			array(
+				'getLocalConfiguration',
+				'writeLocalConfiguration',
+			)
+		);
+		$this->fixture->expects($this->once())
+			->method('getLocalConfiguration')
+			->will($this->returnValue($currentLocalConfiguration));
+		$this->fixture->expects($this->never())
+			->method('writeLocalConfiguration');
+
+		$removeNothing = array();
+		$this->assertFalse($this->fixture->removeLocalConfigurationKeysByPath($removeNothing));
+	}
+
+	/**
+	 * @test
+	 */
+	public function removeLocalConfigurationKeysByPathReturnsFalseIfSomethingInexistentIsRemoved() {
+		$currentLocalConfiguration = array(
 			'notChanged' => 23,
 		);
 		$this->createFixtureWithMockedMethods(
@@ -343,12 +363,11 @@ class ConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->fixture->expects($this->once())
 			->method('getLocalConfiguration')
 			->will($this->returnValue($currentLocalConfiguration));
-		$this->fixture->expects($this->once())
-			->method('writeLocalConfiguration')
-			->with($expectedConfiguration);
+		$this->fixture->expects($this->never())
+			->method('writeLocalConfiguration');
 
-		$removePaths = array();
-		$this->assertFalse($this->fixture->removeLocalConfigurationKeysByPath($removePaths));
+		$removeNonExisting = array('notPresent');
+		$this->assertFalse($this->fixture->removeLocalConfigurationKeysByPath($removeNonExisting));
 	}
 
 	/**

@@ -252,7 +252,9 @@ class ConfigurationManager {
 				$localConfiguration = Utility\ArrayUtility::removeByPath($localConfiguration, $path);
 			}
 		}
-		$this->writeLocalConfiguration($localConfiguration);
+		if ($result) {
+			$this->writeLocalConfiguration($localConfiguration);
+		}
 		return $result;
 	}
 
