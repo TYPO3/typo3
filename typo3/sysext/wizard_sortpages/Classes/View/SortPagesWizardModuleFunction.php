@@ -98,7 +98,7 @@ class SortPagesWizardModuleFunction extends \TYPO3\CMS\Backend\Module\AbstractFu
 					$m_perms_clause = $GLOBALS['BE_USER']->getPagePermsClause(2);
 					// edit permissions for that page!
 					$pRec = BackendUtility::getRecord('pages', $rec['uid'], 'uid', ' AND ' . $m_perms_clause);
-					$lines[] = '<tr><td nowrap="nowrap">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('pages', $rec) . (!is_array($pRec) ? $GLOBALS['TBE_TEMPLATE']->rfw('<strong>' . $GLOBALS['LANG']->getLL('wiz_W', TRUE) . '</strong> ') : '') . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($rec['title'], $GLOBALS['BE_USER']->uc['titleLen'])) . '&nbsp;</td>
+					$lines[] = '<tr class="db_list_normal"><td nowrap="nowrap">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('pages', $rec) . (!is_array($pRec) ? $GLOBALS['TBE_TEMPLATE']->rfw('<strong>' . $GLOBALS['LANG']->getLL('wiz_W', TRUE) . '</strong> ') : '') . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($rec['title'], $GLOBALS['BE_USER']->uc['titleLen'])) . '&nbsp;</td>
 					' . (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('cms') ? '<td nowrap="nowrap">' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($rec['subtitle'], $GLOBALS['BE_USER']->uc['titleLen'])) . '&nbsp;</td>' : '') . '
 					<td nowrap="nowrap">' . BackendUtility::datetime($rec['tstamp']) . '&nbsp;&nbsp;</td>
 					<td nowrap="nowrap">' . BackendUtility::datetime($rec['crdate']) . '&nbsp;&nbsp;</td>
