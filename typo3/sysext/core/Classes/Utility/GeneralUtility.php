@@ -4381,8 +4381,6 @@ Connection: close
 					if ($obj->init()) {
 						// create persistent object
 						$GLOBALS['T3_VAR']['makeInstanceService'][$info['className']] = $obj;
-						// needed to delete temp files
-						register_shutdown_function(array(&$obj, '__destruct'));
 						return $obj;
 					}
 					$error = $obj->getLastErrorArray();

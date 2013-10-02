@@ -91,6 +91,11 @@ abstract class AbstractService {
 	public $tempFiles = array();
 
 	/**
+	 * @var array list of registered shutdown functions; should be used to prevent registering the same function multiple times
+	 */
+	protected $shutdownRegistry = array();
+
+	/**
 	 * @var string Prefix for temporary files
 	 */
 	protected $prefixId = '';
@@ -396,6 +401,10 @@ abstract class AbstractService {
 	 * @todo Define visibility
 	 */
 	public function registerTempFile($absFile) {
+		if (!isset($this->shutdownRegistry[__METHOD__])) {
+			register_shutdown_function(array($this, 'unlinkTempFiles'));
+			$this->shutdownRegistry[__METHOD__] = TRUE;
+		}
 		$this->tempFiles[] = $absFile;
 	}
 
@@ -534,9 +543,6 @@ abstract class AbstractService {
 	 * @todo Define visibility
 	 */
 	public function init() {
-		// Does not work :-(  but will not hurt
-		// use it as inspiration for a service based on this class
-		register_shutdown_function(array(&$this, '__destruct'));
 		// look in makeInstanceService()
 		$this->reset();
 		// Check for external programs which are defined by $info['exec']
