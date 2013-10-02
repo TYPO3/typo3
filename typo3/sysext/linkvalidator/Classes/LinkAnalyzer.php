@@ -224,6 +224,8 @@ class LinkAnalyzer {
 	 * @return void
 	 */
 	public function analyzeRecord(array &$results, $table, array $fields, array $record) {
+		list($results, $record) = $this->emitBeforeAnalyzeRecordSignal($results, $record, $table, $fields);
+
 		// Put together content of all relevant fields
 		$haystack = '';
 		/** @var $htmlParser HtmlParser */
@@ -461,6 +463,37 @@ class LinkAnalyzer {
 			}
 		}
 		return $hidden;
+	}
+
+	/**
+	 * Emits a signal before the record is analyzed
+	 *
+	 * @param array $results Array of broken links
+	 * @param array $record Record to analyse
+	 * @param string $table Table name of the record
+	 * @param array $fields Array of fields to analyze
+	 * @return array
+	 */
+	protected function emitBeforeAnalyzeRecordSignal($results, $record, $table, $fields) {
+		return $this->getSignalSlotDispatcher()->dispatch(
+			self::class,
+			'beforeAnalyzeRecord',
+			array($results, $record, $table, $fields, $this)
+		);
+	}
+
+	/**
+	 * @return \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
+	 */
+	protected function getSignalSlotDispatcher() {
+		return $this->getObjectManager()->get(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class);
+	}
+
+	/**
+	 * @return \TYPO3\CMS\Extbase\Object\ObjectManager
+	 */
+	protected function getObjectManager() {
+		return GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
 	}
 
 	/**
