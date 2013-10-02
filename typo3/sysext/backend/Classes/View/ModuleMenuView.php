@@ -166,6 +166,33 @@ class ModuleMenuView {
 	}
 
 	/**
+	 * Reads User configuration from options.hideModules and removes
+	 * modules from $this->loadedModules accordingly.
+	 *
+	 * @return void
+	 */
+	protected function unsetHiddenModules() {
+		// Hide modules if set in userTS.
+		$hiddenModules = $GLOBALS['BE_USER']->getTSConfig('options.hideModules');
+		if (!empty($hiddenModules['value'])) {
+			$hiddenMainModules = GeneralUtility::trimExplode(',', $hiddenModules['value'], TRUE);
+			foreach ($hiddenMainModules as $hiddenMainModule) {
+				unset($this->loadedModules[$hiddenMainModule]);
+			}
+		}
+
+		// Hide sub-modules if set in userTS.
+		if (!empty($hiddenModules['properties']) && is_array($hiddenModules['properties'])) {
+			foreach ($hiddenModules['properties'] as $mainModuleName => $subModules) {
+				$hiddenSubModules = GeneralUtility::trimExplode(',', $subModules, TRUE);
+				foreach ($hiddenSubModules as $hiddenSubModule) {
+					unset($this->loadedModules[$mainModuleName]['sub'][$hiddenSubModule]);
+				}
+			}
+		}
+	}
+
+	/**
 	 * gets the raw module data
 	 *
 	 * @return array Multi dimension array with module data
@@ -176,6 +203,10 @@ class ModuleMenuView {
 		if ($GLOBALS['BE_USER']->getTSConfigVal('options.disableDocModuleInAB')) {
 			unset($this->loadedModules['doc']);
 		}
+
+		// Unset modules that are meant to be hidden from the menu.
+		$this->unsetHiddenModules();
+
 		foreach ($this->loadedModules as $moduleName => $moduleData) {
 			$moduleLink = '';
 			if (!is_array($moduleData['sub'])) {
