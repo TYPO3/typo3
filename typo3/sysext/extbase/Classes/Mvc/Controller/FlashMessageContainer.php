@@ -87,7 +87,7 @@ class FlashMessageContainer implements \TYPO3\CMS\Core\SingletonInterface {
 		$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
 			'TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $message, $title, $severity, TRUE
 		);
-		$this->controllerContext->getFlashMessageQueue()->addMessage($flashMessage);
+		$this->controllerContext->getFlashMessageQueue()->enqueue($flashMessage);
 	}
 
 	/**
