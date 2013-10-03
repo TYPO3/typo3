@@ -32,14 +32,10 @@ namespace TYPO3\CMS\Backend\View;
  * @author Ingo Renner <ingo@typo3.org>
  */
 class LogoView {
+	protected $logo = '';
 
-	protected $logo;
-
-	/**
-	 * constructor
-	 */
 	public function __construct() {
-		$this->logo = NULL;
+		$this->logo = 'gfx/typo3-topbar@2x.png';
 	}
 
 	/**
@@ -48,20 +44,26 @@ class LogoView {
 	 * @return string Logo html code snippet to use in the backend
 	 */
 	public function render() {
-		// Default
-		$logoFile = 'gfx/alt_backend_logo.gif';
-		if (is_string($this->logo)) {
-			// Overwrite
-			$logoFile = $this->logo;
-		}
-		$imgInfo = getimagesize(PATH_site . TYPO3_mainDir . $logoFile);
-		$logo = '<a href="' . TYPO3_URL_GENERAL . '" target="_blank">' . '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg('', $logoFile, $imgInfo[3]) . ' title="TYPO3 Content Management System" alt="" />' . '</a>';
+		$imgInfo = getimagesize(PATH_site . TYPO3_mainDir . $this->logo);
+		$imgUrl = $this->logo;
+
 		// Overwrite with custom logo
 		if ($GLOBALS['TBE_STYLES']['logo']) {
 			$imgInfo = @getimagesize(\TYPO3\CMS\Core\Utility\GeneralUtility::resolveBackPath((PATH_typo3 . $GLOBALS['TBE_STYLES']['logo']), 3));
-			$logo = '<a href="' . TYPO3_URL_GENERAL . '" target="_blank">' . '<img src="' . $GLOBALS['TBE_STYLES']['logo'] . '" ' . $imgInfo[3] . ' title="TYPO3 Content Management System" alt="" />' . '</a>';
+			$imgUrl = $GLOBALS['TBE_STYLES']['logo'];
 		}
-		return $logo;
+
+		// High-res?
+		$width = $imgInfo[0];
+		$height = $imgInfo[1];
+
+		if (strpos($imgUrl, '@2x.')) {
+			$width = $width/2;
+			$height = $height/2;
+		}
+
+		$logoTag = '<img src="' . $imgUrl . '" width="' . $width . '" height="' . $height . '" title="TYPO3 Content Management System" alt="" />';
+		return '<a href="' . TYPO3_URL_GENERAL . '" target="_blank">' . $logoTag . '</a>';
 	}
 
 	/**
