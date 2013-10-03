@@ -7,7 +7,7 @@ html {
 }
 
 body {
-	font-size: 11px;
+	font-size: 12px;
 	line-height: 1.5em;
 }
 
@@ -24,23 +24,26 @@ div {
 
 /* Occasionally used, eg. in About Modules: */
 h1 {
-	margin: 6px 0 24px 0;
+	font-size: 2.3em;
+	margin: 0 0 30px 0;
 	line-height: 1.1em;
 }
 
 h2 {
-	margin: 2px 0 20px 0;
+	font-size: 1.4em;
+	margin: 24px 0 12px 0;
 }
 
 /* Normal section headers */
 h3 {
-	padding: 2px 0;
-	margin: 8px 0 10px;
+	font-size: 1.3em;
+	margin: 24px 0 12px 0;
 }
 
 /* Discrete section headers (no background) */
 h4 {
-	margin: 6px 0;
+	font-size: 1.2em;
+	margin: 12px 0 12px 0;
 }
 
 p,
@@ -62,7 +65,9 @@ div.hr {
 	height: 1px;
 }
 
-.lead { font-size: 1.3em; }
+.lead {
+	font-size: 1.2em;
+}
 
 /** .uppercase is kept for backwards-compatibility, use .divider */
 .divider,

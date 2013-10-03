@@ -6,12 +6,13 @@ form {
 	margin: 0;
 }
 
-#typo3-docbody form { margin-bottom: 1.25em; }
+#typo3-docbody form {
+	margin-bottom: 1.25em;
+}
 
-input[type="submit"],
-input[type="reset"],
-input[type="button"] {
-	padding: 2px 4px 2px 4px;
+input,
+textarea {
+	padding: 2px;
 }
 
 label {
