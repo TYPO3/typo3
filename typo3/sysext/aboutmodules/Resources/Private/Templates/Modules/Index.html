@@ -5,11 +5,9 @@
 		<f:translate key="LLL:EXT:lang/locallang_alt_intro.xlf:introtext" />
 	</h1>
 
-	<p>{copyRightNotice -> f:format.raw()}</p>
-
 	{warningMessages -> f:format.raw()}
 
-	<p>
+	<p class="lead">
 		<f:translate key="LLL:EXT:lang/locallang_alt_intro.xlf:introtext2" />
 	</p>
 
@@ -35,31 +33,24 @@
 								href="#"
 								onclick="top.goToModule('{mainModule.name}_{subModule.name}'); return false;"
 								title="{subModule.shortDescription}"
+								class="icon"
 							>
 								<f:image src="{subModule.icon}" alt="{subModule.label}" />
 							</a>
 						</td>
-						<td>
-							<a
-								href="#"
-								onclick="top.goToModule('{mainModule.name}_{subModule.name}'); return false;"
-								title="{subModule.shortDescription}"
-							>
-								{subModule.label}
-							</a>
-						</td>
 						<td class="module-description">
+							<strong>
+								<a
+									href="#"
+									onclick="top.goToModule('{mainModule.name}_{subModule.name}'); return false;"
+									title="{subModule.shortDescription}"
+								>{subModule.label}</a>
+							</strong>
+
+							<br />
+
 							<f:if condition="{subModule.shortDescription}">
-								<strong>
-									<a
-										href="#"
-										onclick="top.goToModule('{mainModule.name}'); return false;"
-										title="{subModule.shortDescription}"
-									>
-										{subModule.shortDescription}
-									</a>
-								</strong>
-								<br />
+								{subModule.shortDescription} /
 							</f:if>
 
 							{subModule.longDescription -> f:format.raw()}
@@ -74,14 +65,12 @@
 		</tbody>
 	</table>
 
-	<br />
-
 	<p>
 		<em>
 			(<f:translate key="LLL:EXT:lang/locallang_alt_intro.xlf:endText" />)
 		</em>
 	</p>
 
-	<br />
+	<p>{copyRightNotice -> f:format.raw()}</p>
 
 </f:section>
