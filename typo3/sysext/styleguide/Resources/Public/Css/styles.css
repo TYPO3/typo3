@@ -1,8 +1,28 @@
 /** Styles only for EXT: styleguide */
 
-body { background-color: rgb(245, 245, 245); }
+body {
+	background-color: rgb(245, 245, 245);
+}
 
-.example { background-color: #fff; border: 1px solid rgb(237, 237, 237); padding: 12px; margin-bottom: 12px; }
+.example {
+	background-color: #fff;
+	border: 1px solid rgb(237, 237, 237);
+	padding: 12px;
+	margin-bottom: 12px;
+}
 
-.ci-color { background-color: rgb(255, 134, 0); }
-.highlight-color { background-color: rgb(50, 160, 255); }
+	.example:before {
+		content: 'EXAMPLE';
+		color: rgb(200, 200, 200);
+		display: block;
+		font-weight: normal;
+		font-size: 0.9em;
+		margin-bottom: 12px;
+	}
+
+.ci-color {
+	background-color: rgb(255, 134, 0);
+}
+.highlight-color {
+	background-color: rgb(50, 160, 255);
+}
