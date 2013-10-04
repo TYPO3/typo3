@@ -210,11 +210,28 @@ class DataHandlerHook {
 						$liveRec = \TYPO3\CMS\Backend\Utility\BackendUtility::getLiveVersionOfRecord($table, $id, 'uid,t3ver_state');
 						// Processing can be skipped if a delete placeholder shall be swapped/published
 						// during the current request. Thus it will be deleted later on...
-						if ($record['t3ver_state'] == 2 && !empty($liveRec['uid']) && !empty($tcemainObj->cmdmap[$table][$liveRec['uid']]['version']['action']) && !empty($tcemainObj->cmdmap[$table][$liveRec['uid']]['version']['swapWith']) && $tcemainObj->cmdmap[$table][$liveRec['uid']]['version']['action'] === 'swap' && $tcemainObj->cmdmap[$table][$liveRec['uid']]['version']['swapWith'] == $id) {
+						if ($record['t3ver_state'] == 2 && !empty($liveRec['uid'])
+							&& !empty($tcemainObj->cmdmap[$table][$liveRec['uid']]['version']['action'])
+							&& !empty($tcemainObj->cmdmap[$table][$liveRec['uid']]['version']['swapWith'])
+							&& $tcemainObj->cmdmap[$table][$liveRec['uid']]['version']['action'] === 'swap'
+							&& $tcemainObj->cmdmap[$table][$liveRec['uid']]['version']['swapWith'] == $id) {
+
 							return NULL;
 						}
-						// Delete those in WS 0 + if their live records state was not "Placeholder".
-						if ($record['t3ver_wsid'] == 0 || (int) $liveRec['t3ver_state'] <= 0) {
+
+						if ($record['t3ver_wsid'] > 0 && $record['t3ver_state'] == 0) {
+							// Change normal versioned record to delete placeholder
+							// Happens when an edited record is deleted
+							$updateFields = array(
+								't3ver_label' => 'DELETED!',
+								't3ver_state' => 2,
+							);
+							$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid=' . $id, $updateFields);
+							// Delete localization overlays:
+							$tcemainObj->deleteL10nOverlayRecords($table, $id);
+
+						} elseif ($record['t3ver_wsid'] == 0 || (int) $liveRec['t3ver_state'] <= 0) {
+							// Delete those in WS 0 + if their live records state was not "Placeholder".
 							$tcemainObj->deleteEl($table, $id);
 						} else {
 							// If live record was placeholder (new/deleted), rather clear
