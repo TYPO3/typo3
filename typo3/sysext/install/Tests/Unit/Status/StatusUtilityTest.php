@@ -24,6 +24,8 @@ namespace TYPO3\CMS\Install\Tests\Unit\Status;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use \TYPO3\CMS\Install\Status\StatusUtility;
+
 /**
  * Test case
  */
@@ -38,7 +40,7 @@ class StatusUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$okMock = $this->getMock('TYPO3\\CMS\\Install\\Status\\OkStatus', array('dummy'));
 		$infoMock = $this->getMock('TYPO3\\CMS\\Install\\Status\\InfoStatus', array('dummy'));
 		$noticeMock = $this->getMock('TYPO3\\CMS\\Install\\Status\\NoticeStatus', array('dummy'));
-		$statusUtility = new \TYPO3\CMS\Install\Status\StatusUtility();
+		$statusUtility = new StatusUtility();
 		$return = $statusUtility->sortBySeverity(array($noticeMock, $infoMock, $okMock, $warningMock, $errorMock));
 		$this->assertSame(array($errorMock), $return['error']);
 		$this->assertSame(array($warningMock), $return['warning']);
@@ -52,7 +54,7 @@ class StatusUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @expectedException \TYPO3\CMS\Install\Status\Exception
 	 */
 	public function filterBySeverityThrowsExceptionIfObjectNotImplementingStatusInterfaceIsGiven() {
-		$statusUtility = new \TYPO3\CMS\Install\Status\StatusUtility();
+		$statusUtility = new StatusUtility();
 		$statusUtility->filterBySeverity(array(new \stdClass()));
 	}
 
@@ -62,7 +64,7 @@ class StatusUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function filterBySeverityReturnsSpecificSeverityOnly() {
 		$errorMock = $this->getMock('TYPO3\\CMS\\Install\\Status\\ErrorStatus', array('dummy'));
 		$warningMock = $this->getMock('TYPO3\\CMS\\Install\\Status\\WarningStatus', array('dummy'));
-		$statusUtility = new \TYPO3\CMS\Install\Status\StatusUtility();
+		$statusUtility = new StatusUtility();
 		$return = $statusUtility->filterBySeverity(array($errorMock, $warningMock), 'error');
 		$this->assertSame(array($errorMock), $return);
 	}

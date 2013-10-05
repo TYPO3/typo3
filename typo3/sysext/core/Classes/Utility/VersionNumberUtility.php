@@ -95,7 +95,6 @@ class VersionNumberUtility {
 	 * Removes -dev -alpha -beta -RC states from a version number
 	 * and replaces them by .0
 	 *
-	 * @static
 	 * @return string
 	 */
 	static public function getNumericTypo3Version() {
@@ -111,10 +110,9 @@ class VersionNumberUtility {
 	 * Wrapper function for TYPO3_version constant to make functions using
 	 * the constant unit testable
 	 *
-	 * @static
 	 * @return string
 	 */
-	static protected function getCurrentTypo3Version() {
+	static public function getCurrentTypo3Version() {
 		return TYPO3_version;
 	}
 

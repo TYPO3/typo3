@@ -22,10 +22,273 @@
  ***************************************************************/
 
 /**
- * Small javascript helpers of the install tool based on jquery
- *
- * @author Wouter Wolters <typo3@wouterwolters.nl>
+ * Handle core update
  */
+var TYPO3 = {};
+TYPO3.Install = {};
+TYPO3.Install.coreUpdate = {
+	/**
+	 * The action queue defines what actions are called in which order
+	 */
+	actionQueue: {
+		coreUpdateUpdateVersionMatrix: {
+			loadingMessage: 'Fetching list of released versions from typo3.org',
+			finishMessage: 'Fetched list of released versions',
+			nextActionName: 'coreUpdateIsUpdateAvailable'
+		},
+		coreUpdateIsUpdateAvailable: {
+			loadingMessage: 'Checking for possible regular or security update',
+			finishMessage: undefined,
+			nextActionName: undefined
+		},
+		coreUpdateCheckPreConditions: {
+			loadingMessage: 'Checking if update is possible',
+			finishMessage: 'System can be updated',
+			nextActionName: 'coreUpdateDownload'
+		},
+		coreUpdateDownload: {
+			loadingMessage: 'Downloading new core',
+			finishMessage: 'Core download finished',
+			nextActionName: 'coreUpdateUnpack'
+		},
+		coreUpdateUnpack: {
+			loadingMessage: 'Unpacking core',
+			finishMessage: 'Unpacking core successful',
+			nextActionName: 'coreUpdateMove'
+		},
+		coreUpdateMove: {
+			loadingMessage: 'Moving core',
+			finishMessage: 'Moved core to final location',
+			nextActionName: 'clearCache'
+		},
+		clearCache: {
+			loadingMessage: 'Clearing caches',
+			finishMessage: 'Caches cleared',
+			nextActionName: 'coreUpdateActivate'
+		},
+		coreUpdateActivate: {
+			loadingMessage: 'Activating core',
+			finishMessage: 'Core updated - please reload your browser',
+			nextActionName: undefined
+		}
+	},
+
+	/**
+	 * Clone of a DOM object acts as message template
+	 */
+	messageTemplate: null,
+
+	/**
+	 * Clone of a DOM object acts as button template
+	 */
+	buttonTemplate: null,
+
+	/**
+	 * Fetching the templates out of the DOM
+	 */
+	initialize: function() {
+		var messageTemplateSection = $('#messageTemplate');
+		var buttonTemplateSection = $('#buttonTemplate');
+		this.messageTemplate = messageTemplateSection.children().clone();
+		this.buttonTemplate = buttonTemplateSection.children().clone();
+		messageTemplateSection.remove();
+	},
+
+	/**
+	 * Public method checkForUpdate
+	 */
+	checkForUpdate: function() {
+		this.callAction('coreUpdateUpdateVersionMatrix');
+	},
+
+	/**
+	 * Public method updateDevelopment
+	 */
+	updateDevelopment: function() {
+		this.update('development');
+	},
+
+	/**
+	 * Public method updateRegular
+	 */
+	updateRegular: function() {
+		this.update('regular');
+	},
+
+	/**
+	 * Execute core update.
+	 *
+	 * @param type Either 'development' or 'regular'
+	 */
+	update: function(type) {
+		if (type !== "development") {
+			type = 'regular';
+		}
+		this.callAction('coreUpdateCheckPreConditions', type);
+	},
+
+	/**
+	 * Generic method to call actions from the queue
+	 *
+	 * @param actionName Name of the action to be called
+	 * @param type Update type (optional)
+	 */
+	callAction: function(actionName, type) {
+		var self = this;
+		var arguments = {
+			install: {
+				controller: 'ajax',
+				action: actionName
+			}
+		};
+		if (type !== undefined) {
+			arguments.install["type"] = type;
+		}
+		this.addLoadingMessage(this.actionQueue[actionName].loadingMessage);
+		$.ajax({
+			url: location.href,
+			data: arguments,
+			cache: false,
+			success: function(result) {
+				canContinue = self.handleResult(result, self.actionQueue[actionName].finishMessage);
+				if (canContinue === true && (self.actionQueue[actionName].nextActionName !== undefined)) {
+					self.callAction(self.actionQueue[actionName].nextActionName, type);
+				}
+			},
+			error: function(result) {
+				self.handleResult(result);
+			}
+		});
+	},
+
+	/**
+	 * Handle ajax result of core update step.
+	 *
+	 * @param data
+	 * @param successMessage Optional success message
+	 */
+	handleResult: function(data, successMessage) {
+		var canContinue = false;
+		this.removeLoadingMessage();
+		if (data.success === true) {
+			canContinue = true;
+			if (data.status && typeof(data.status) === 'object') {
+				this.showStatusMessages(data.status);
+			}
+			if (data.action && typeof(data.action) === 'object') {
+				this.showActionButton(data.action);
+			}
+			if (successMessage) {
+				this.addMessage('ok', successMessage);
+			}
+		} else {
+			// Handle clearcache until it uses the new view object
+			if (data === "OK") {
+				canContinue = true;
+				if (successMessage) {
+					this.addMessage('ok', successMessage);
+				}
+			} else {
+				canContinue = false;
+				if (data.status && typeof(data.status) === 'object') {
+					this.showStatusMessages(data.status);
+				} else {
+					this.addMessage('error', 'General error');
+				}
+			}
+		}
+		return canContinue;
+	},
+
+	/**
+	 * Add a loading message with some text.
+	 *
+	 * @param messageTitle
+	 */
+	addLoadingMessage: function(messageTitle) {
+		var domMessage = this.messageTemplate.clone();
+		domMessage.find('.message-header strong').html(messageTitle);
+		domMessage.addClass('message-loading');
+		$('#coreUpdate').append(domMessage);
+	},
+
+	/**
+	 * Remove an enabled loading message
+	 */
+	removeLoadingMessage: function() {
+		$('#coreUpdate .message-loading').closest('.typo3-message').remove();
+	},
+
+	/**
+	 * Show a list of status messages
+	 *
+	 * @param messages
+	 */
+	showStatusMessages: function(messages) {
+		var self = this;
+		$.each(messages, function(index, element) {
+			var title = false;
+			var severity = false;
+			var message = false;
+			if (element.severity) {
+				severity = element.severity;
+			}
+			if (element.title) {
+				title = element.title;
+			}
+			if (element.message) {
+				message = element.message;
+			}
+			self.addMessage(severity, title, message);
+		});
+	},
+
+	/**
+	 * Show an action button
+	 *
+	 * @param button
+	 */
+	showActionButton: function(button) {
+		var title = false;
+		var action = false;
+		if (button.title) {
+			title = button.title;
+		}
+		if (button.action) {
+			action = button.action;
+		}
+		var domButton = this.buttonTemplate;
+		if (action) {
+			domButton.find('button').data('action', action);
+		}
+		if (title) {
+			domButton.find('button').html(title);
+		}
+		$('#coreUpdate').append(domButton);
+	},
+
+	/**
+	 * Show a status message
+	 *
+	 * @param severity
+	 * @param title
+	 * @param message
+	 */
+	addMessage: function(severity, title, message) {
+		var domMessage = this.messageTemplate.clone();
+		if (severity) {
+			domMessage.addClass('message-' + severity);
+		}
+		if (title) {
+			domMessage.find('.message-header strong').html(title);
+		}
+		if (message) {
+			domMessage.find('.message-body').html(message);
+		}
+		$('#coreUpdate').append(domMessage);
+	}
+};
+
 $(document).ready(function() {
 	// Used in database compare section to select/deselect checkboxes
 	$('.checkall').on('click', function() {
@@ -60,6 +323,7 @@ $(document).ready(function() {
 		}
 	});
 
+	// Install step database settings
 	$('#t3-install-step-type').change(function() {
 		var connectionType = $(this).val(),
 			hostField = $('#t3-install-step-host'),
@@ -81,6 +345,7 @@ $(document).ready(function() {
 		}
 	}).trigger('change');
 
+	// Extension compatibility check
 	$('.typo3-message', '#checkExtensions').hide();
 	$('button', '#checkExtensions').click(function(e) {
 		$('button', '#checkExtensions').hide();
@@ -96,9 +361,22 @@ $(document).ready(function() {
 		$(this).find('input').focus();
 	});
 
+	// Footer scrolling and visibility
 	if ($('#fixed-footer-fieldset').length > 0) {
 		$(window).scroll(handleButtonScrolling);
 		$('body.backend #typo3-docbody').scroll(handleButtonScrolling);
+	}
+
+	// Handle core update
+	var $coreUpdateSection = $('#coreUpdate');
+	if ($coreUpdateSection) {
+		TYPO3.Install.coreUpdate.initialize();
+		$coreUpdateSection.on('click', 'button', (function(e) {
+			e.preventDefault();
+			var action = $(e.target).data('action');
+			TYPO3.Install.coreUpdate[action]();
+			$(e.target).closest('.t3-install-form-submit').remove();
+		}));
 	}
 });
 

@@ -44,7 +44,14 @@ class AjaxController extends AbstractController {
 	protected $authenticationActions = array(
 		'extensionCompatibilityTester',
 		'uninstallExtension',
-		'clearCache'
+		'clearCache',
+		'coreUpdateUpdateVersionMatrix',
+		'coreUpdateIsUpdateAvailable',
+		'coreUpdateCheckPreConditions',
+		'coreUpdateDownload',
+		'coreUpdateUnpack',
+		'coreUpdateMove',
+		'coreUpdateActivate',
 	);
 
 	/**
@@ -163,10 +170,10 @@ class AjaxController extends AbstractController {
 	 * @param string $content Content to output
 	 */
 	protected function output($content = '') {
-		header('Content-Type: text/html; charset=utf-8');
+		header('Content-Type: application/json; charset=utf-8');
 		header('Cache-Control: no-cache, must-revalidate');
 		header('Pragma: no-cache');
-		echo $content;
+		echo json_encode($content);
 		die;
 	}
 }

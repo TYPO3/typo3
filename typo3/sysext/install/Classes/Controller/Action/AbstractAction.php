@@ -74,6 +74,7 @@ abstract class AbstractAction {
 	 * @return string content
 	 */
 	protected function initializeHandle() {
+		/** @var \TYPO3\CMS\Install\Status\StatusUtility $statusUtility */
 		$statusUtility = $this->objectManager->get('TYPO3\\CMS\\Install\\Status\\StatusUtility');
 
 		// Count of failed environment checks are displayed in the left navigation menu
