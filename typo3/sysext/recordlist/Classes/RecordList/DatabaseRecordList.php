@@ -27,6 +27,7 @@ namespace TYPO3\CMS\Recordlist\RecordList;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
@@ -224,8 +225,8 @@ class DatabaseRecordList extends \TYPO3\CMS\Recordlist\RecordList\AbstractDataba
 				// CSV
 				$buttons['csv'] = '<a href="' . htmlspecialchars(($this->listURL() . '&csv=1')) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.csv', TRUE) . '">' . IconUtility::getSpriteIcon('mimetypes-text-csv') . '</a>';
 				// Export
-				if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('impexp')) {
-					$url = $this->backPath . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('impexp') . 'app/index.php?tx_impexp[action]=export';
+				if (ExtensionManagementUtility::isLoaded('impexp')) {
+					$url = $this->backPath . ExtensionManagementUtility::extRelPath('impexp') . 'app/index.php?tx_impexp[action]=export';
 					$buttons['export'] = '<a href="' . htmlspecialchars(($url . '&tx_impexp[list][]=' . rawurlencode(($this->table . ':' . $this->id)))) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:rm.export', TRUE) . '">' . IconUtility::getSpriteIcon('actions-document-export-t3d') . '</a>';
 				}
 			}
@@ -311,7 +312,7 @@ class DatabaseRecordList extends \TYPO3\CMS\Recordlist\RecordList\AbstractDataba
 			$selectFields[] = $thumbsCol;
 		}
 		if ($table == 'pages') {
-			if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('cms')) {
+			if (ExtensionManagementUtility::isLoaded('cms')) {
 				$selectFields[] = 'module';
 				$selectFields[] = 'extendToSubpages';
 				$selectFields[] = 'nav_hide';
@@ -810,7 +811,7 @@ class DatabaseRecordList extends \TYPO3\CMS\Recordlist\RecordList\AbstractDataba
 								//  If mod.web_list.newContentWiz.overrideWithExtension is set, use that extension's create new content wizard instead:
 								$tmpTSc = BackendUtility::getModTSconfig($this->pageinfo['uid'], 'mod.web_list');
 								$tmpTSc = $tmpTSc['properties']['newContentWiz.']['overrideWithExtension'];
-								$newContentWizScriptPath = $this->backPath . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($tmpTSc) ? \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($tmpTSc) . 'mod1/db_new_content_el.php' : 'sysext/cms/layout/db_new_content_el.php';
+								$newContentWizScriptPath = $this->backPath . ExtensionManagementUtility::isLoaded($tmpTSc) ? ExtensionManagementUtility::extRelPath($tmpTSc) . 'mod1/db_new_content_el.php' : 'sysext/cms/layout/db_new_content_el.php';
 								$icon = '<a href="#" onclick="' . htmlspecialchars(('return jumpExt(\'' . $newContentWizScriptPath . '?id=' . $this->id . '\');')) . '" title="' . $GLOBALS['LANG']->getLL('new', TRUE) . '">' . ($table == 'pages' ? IconUtility::getSpriteIcon('actions-page-new') : IconUtility::getSpriteIcon('actions-document-new')) . '</a>';
 							} elseif ($table == 'pages' && $this->newWizards) {
 								$icon = '<a href="' . htmlspecialchars(($this->backPath . 'db_new.php?id=' . $this->id . '&pagesOnly=1&returnUrl=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI')))) . '" title="' . $GLOBALS['LANG']->getLL('new', TRUE) . '">' . ($table == 'pages' ? IconUtility::getSpriteIcon('actions-page-new') : IconUtility::getSpriteIcon('actions-document-new')) . '</a>';
@@ -998,7 +999,7 @@ class DatabaseRecordList extends \TYPO3\CMS\Recordlist\RecordList\AbstractDataba
 			return '';
 		}
 		$rowUid = $row['uid'];
-		if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('version') && isset($row['_ORIG_uid'])) {
+		if (ExtensionManagementUtility::isLoaded('version') && isset($row['_ORIG_uid'])) {
 			$rowUid = $row['_ORIG_uid'];
 		}
 		$cells = array();
@@ -1037,7 +1038,7 @@ class DatabaseRecordList extends \TYPO3\CMS\Recordlist\RecordList\AbstractDataba
 				// "Revert" link (history/undo)
 				$cells['history'] = '<a href="#" onclick="' . htmlspecialchars(('return jumpExt(\'' . $this->backPath . 'show_rechis.php?element=' . rawurlencode(($table . ':' . $row['uid'])) . '\',\'#latest\');')) . '" title="' . $GLOBALS['LANG']->getLL('history', TRUE) . '">' . IconUtility::getSpriteIcon('actions-document-history-open') . '</a>';
 				// Versioning:
-				if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('version') && !\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('workspaces')) {
+				if (ExtensionManagementUtility::isLoaded('version') && !ExtensionManagementUtility::isLoaded('workspaces')) {
 					$vers = BackendUtility::selectVersionsOfRecord($table, $row['uid'], 'uid', $GLOBALS['BE_USER']->workspace, FALSE, $row);
 					// If table can be versionized.
 					if (is_array($vers)) {
@@ -1045,13 +1046,13 @@ class DatabaseRecordList extends \TYPO3\CMS\Recordlist\RecordList\AbstractDataba
 						if (count($vers) > 1) {
 							$versionIcon = count($vers) - 1;
 						}
-						$cells['version'] = '<a href="' . htmlspecialchars(($this->backPath . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('version') . 'cm1/index.php?table=' . rawurlencode($table) . '&uid=' . rawurlencode($row['uid']))) . '" title="' . $GLOBALS['LANG']->getLL('displayVersions', TRUE) . '">' . IconUtility::getSpriteIcon(('status-version-' . $versionIcon)) . '</a>';
+						$cells['version'] = '<a href="' . htmlspecialchars(($this->backPath . ExtensionManagementUtility::extRelPath('version') . 'cm1/index.php?table=' . rawurlencode($table) . '&uid=' . rawurlencode($row['uid']))) . '" title="' . $GLOBALS['LANG']->getLL('displayVersions', TRUE) . '">' . IconUtility::getSpriteIcon(('status-version-' . $versionIcon)) . '</a>';
 					} elseif (!$this->table) {
 						$cells['version'] = $this->spaceIcon;
 					}
 				}
 				// "Edit Perms" link:
-				if ($table == 'pages' && $GLOBALS['BE_USER']->check('modules', 'web_perm') && \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('perm')) {
+				if ($table == 'pages' && $GLOBALS['BE_USER']->check('modules', 'web_perm') && ExtensionManagementUtility::isLoaded('perm')) {
 					$cells['perms'] = '<a href="' . htmlspecialchars((BackendUtility::getModuleUrl('web_perm') . '&id=' . $row['uid'] . '&return_id=' . $row['uid'] . '&edit=1')) . '" title="' . $GLOBALS['LANG']->getLL('permissions', TRUE) . '">' . IconUtility::getSpriteIcon('status-status-locked') . '</a>';
 				} elseif (!$this->table && $GLOBALS['BE_USER']->check('modules', 'web_perm')) {
 					$cells['perms'] = $this->spaceIcon;
@@ -1102,11 +1103,36 @@ class DatabaseRecordList extends \TYPO3\CMS\Recordlist\RecordList\AbstractDataba
 				}
 				// "Delete" link:
 				if ($table == 'pages' && $localCalcPerms & 4 || $table != 'pages' && $this->calcPerms & 16) {
+					// Check if the record version is in "deleted" state, because that will switch the action to "restore"
+					if ($GLOBALS['BE_USER']->workspace > 0 && isset($row['t3ver_state']) && (int)$row['t3ver_state'] === 2) {
+						$actionName = 'restore';
+						$refCountMsg = '';
+					} else {
+						$actionName = 'delete';
+						$refCountMsg = BackendUtility::referenceCount(
+								$table,
+								$row['uid'],
+								' ' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.referencesToRecord'),
+								$this->getReferenceCount($table, $row['uid'])) . BackendUtility::translationCount($table, $row['uid'],
+								' ' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.translationsOfRecord')
+							);
+					}
+
 					$titleOrig = BackendUtility::getRecordTitle($table, $row, FALSE, TRUE);
 					$title = GeneralUtility::slashJS(GeneralUtility::fixed_lgd_cs($titleOrig, $this->fixedL), 1);
+					$warningText = $GLOBALS['LANG']->JScharCode(
+						$GLOBALS['LANG']->getLL($actionName . 'Warning') . ' "' . $title . '" ' . $refCountMsg
+					);
+
 					$params = '&cmd[' . $table . '][' . $row['uid'] . '][delete]=1';
-					$refCountMsg = BackendUtility::referenceCount($table, $row['uid'], (' ' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.referencesToRecord')), $this->getReferenceCount($table, $row['uid'])) . BackendUtility::translationCount($table, $row['uid'], (' ' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.translationsOfRecord')));
-					$cells['delete'] = '<a href="#" onclick="' . htmlspecialchars(('if (confirm(' . $GLOBALS['LANG']->JScharCode(($GLOBALS['LANG']->getLL('deleteWarning') . ' "' . $title . '" ' . $refCountMsg)) . ')) {jumpToUrl(\'' . $GLOBALS['SOBE']->doc->issueCommand($params, -1) . '\');} return false;')) . '" title="' . $GLOBALS['LANG']->getLL('delete', TRUE) . '">' . IconUtility::getSpriteIcon('actions-edit-delete') . '</a>';
+					$onClick = htmlspecialchars(
+						('if (confirm(' . $warningText . ')) {jumpToUrl(\''
+						. $GLOBALS['SOBE']->doc->issueCommand($params, -1) . '\');} return false;')
+					);
+
+					$icon = IconUtility::getSpriteIcon('actions-edit-' . $actionName);
+					$linkTitle = $GLOBALS['LANG']->getLL($actionName, TRUE);
+					$cells['delete'] = '<a href="#" onclick="' . $onClick . '" title="' . $linkTitle . '">' . $icon . '</a>';
 				} elseif (!$this->table) {
 					$cells['delete'] = $this->spaceIcon;
 				}
