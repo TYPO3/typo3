@@ -73,6 +73,7 @@ class AllConfiguration extends Action\AbstractAction implements Action\ActionInt
 		$data = array();
 		$typo3ConfVars = array_keys($GLOBALS['TYPO3_CONF_VARS']);
 		sort($typo3ConfVars);
+		$commentArray = $this->getDefaultConfigArrayComments();
 		foreach ($typo3ConfVars as $sectionName) {
 			$data[$sectionName] = array();
 
@@ -87,7 +88,6 @@ class AllConfiguration extends Action\AbstractAction implements Action\ActionInt
 					$value = $potentialValue;
 				}
 
-				$commentArray = $this->getDefaultConfigArrayComments();
 				$description = trim($commentArray[$sectionName][$key]);
 				$isTextarea = preg_match('/^(<.*?>)?string \\(textarea\\)/i', $description) ? TRUE : FALSE;
 				$doNotRender = preg_match('/^(<.*?>)?string \\(exclude\\)/i', $description) ? TRUE : FALSE;
