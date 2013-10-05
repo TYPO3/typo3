@@ -151,6 +151,20 @@ abstract class Enumeration {
 	}
 
 	/**
+	 * Compare if the value of the current object value equals the given value
+	 *
+	 * @param mixed $value default
+	 * @return boolean
+	 */
+	public function equals($value) {
+		$currentClass = get_class($this);
+		if (!is_object($value) || get_class($value) !== $currentClass) {
+			$value = new $currentClass($value);
+		}
+		return $this === $value;
+	}
+
+	/**
 	 * @return string
 	 */
 	public function __toString() {

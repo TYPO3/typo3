@@ -28,6 +28,7 @@ namespace TYPO3\CMS\Backend\Utility;
  ***************************************************************/
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Versioning\VersionState;
 
 /**
  * Contains class for icon generation in the backend
@@ -155,17 +156,17 @@ class IconUtility {
 		$doNotRenderUserGroupNumber = TRUE;
 		// Shadow
 		if ($GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
-			switch ((int) $row['t3ver_state']) {
-				case 1:
+			switch (VersionState::cast($row['t3ver_state'])) {
+				case new VersionState(VersionState::NEW_PLACEHOLDER):
 					return 'gfx/i/shadow_hide.png';
 					break;
-				case 2:
+				case new VersionState(VersionState::DELETE_PLACEHOLDER):
 					return 'gfx/i/shadow_delete.png';
 					break;
-				case 3:
+				case new VersionState(VersionState::MOVE_PLACEHOLDER):
 					return 'gfx/i/shadow_moveto_plh.png';
 					break;
-				case 4:
+				case new VersionState(VersionState::MOVE_POINTER):
 					return 'gfx/i/shadow_moveto_pointer.png';
 					break;
 			}

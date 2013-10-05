@@ -29,6 +29,7 @@ namespace TYPO3\CMS\Frontend\ContentObject;
  ***************************************************************/
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Versioning\VersionState;
 
 /**
  * This class contains all main TypoScript features.
@@ -7416,10 +7417,11 @@ class ContentObjectRenderer {
 			);
 			if (is_array($rows)) {
 				foreach ($rows as $row) {
+					$versionState = VersionState::cast($row['t3ver_state']);
 					$GLOBALS['TSFE']->sys_page->versionOL('pages', $row);
 					if ($row['doktype'] == \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_RECYCLER
 						|| $row['doktype'] == \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_BE_USER_SECTION
-						|| $row['t3ver_state'] > 0
+						|| $versionState->indicatesPlaceholder()
 					) {
 						// Doing this after the overlay to make sure changes
 						// in the overlay are respected.
@@ -7443,7 +7445,7 @@ class ContentObjectRenderer {
 						$GLOBALS['TSFE']->sys_page->versionOL('pages', $row);
 						if ($row['doktype'] == \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_RECYCLER
 							|| $row['doktype'] == \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_BE_USER_SECTION
-							|| $row['t3ver_state'] > 0
+							|| $versionState->indicatesPlaceholder()
 						) {
 							// Doing this after the overlay to make sure
 							// changes in the overlay are respected.

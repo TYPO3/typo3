@@ -26,9 +26,9 @@ namespace TYPO3\CMS\Core\DataHandling;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Versioning\VersionState;
 
 /**
  * The main data handler class which takes care of correctly updating and inserting records.
@@ -1193,7 +1193,7 @@ class DataHandler {
 									if ($createNewVersion) {
 										$newVersion_placeholderFieldArray['t3ver_label'] = 'INITIAL PLACEHOLDER';
 										// Setting placeholder state value for temporary record
-										$newVersion_placeholderFieldArray['t3ver_state'] = 1;
+										$newVersion_placeholderFieldArray['t3ver_state'] = (string)new VersionState(VersionState::NEW_PLACEHOLDER);
 										// Setting workspace - only so display of place holders can filter out those from other workspaces.
 										$newVersion_placeholderFieldArray['t3ver_wsid'] = $this->BE_USER->workspace;
 										$newVersion_placeholderFieldArray[$GLOBALS['TCA'][$table]['ctrl']['label']] = '[PLACEHOLDER, WS#' . $this->BE_USER->workspace . ']';
@@ -1204,7 +1204,7 @@ class DataHandler {
 										$fieldArray['t3ver_oid'] = $this->substNEWwithIDs[$id];
 										$fieldArray['t3ver_id'] = 1;
 										// Setting placeholder state value for version (so it can know it is currently a new version...)
-										$fieldArray['t3ver_state'] = -1;
+										$fieldArray['t3ver_state'] = (string)new VersionState(VersionState::NEW_PLACEHOLDER_VERSION);
 										$fieldArray['t3ver_label'] = 'First draft version';
 										$fieldArray['t3ver_wsid'] = $this->BE_USER->workspace;
 										// When inserted, $this->substNEWwithIDs[$id] will be changed to the uid of THIS version and so the interface will pick it up just nice!
@@ -1258,7 +1258,7 @@ class DataHandler {
 	 */
 	public function placeholderShadowing($table, $id) {
 		if ($liveRec = BackendUtility::getLiveVersionOfRecord($table, $id, '*')) {
-			if ((int) $liveRec['t3ver_state'] > 0) {
+			if (VersionState::cast($liveRec['t3ver_state'])->indicatesPlaceholder()) {
 				$justStoredRecord = BackendUtility::getRecord($table, $id);
 				$newRecord = array();
 				$shadowCols = $GLOBALS['TCA'][$table]['ctrl']['shadowColumnsForNewPlaceholders'];
@@ -4664,7 +4664,7 @@ class DataHandler {
 					// Record must be online record
 					if ($row['pid'] >= 0) {
 						// Record must not be placeholder for moving.
-						if ($row['t3ver_state'] != 3) {
+						if (!VersionState::cast($row['t3ver_state'])->equals(VersionState::MOVE_PLACEHOLDER)) {
 							if (!$delete || !$this->cannotDeleteRecord($table, $id)) {
 								// Look for next version number:
 								$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('t3ver_id', $table, '((pid=-1 && t3ver_oid=' . $id . ') OR uid=' . $id . ')' . $this->deleteClause($table), '', 't3ver_id DESC', '1');
@@ -4678,7 +4678,7 @@ class DataHandler {
 									't3ver_oid' => $id,
 									't3ver_label' => $label ? $label : $subVer . ' / ' . date('d-m-Y H:m:s'),
 									't3ver_wsid' => $this->BE_USER->workspace,
-									't3ver_state' => $delete ? 2 : 0,
+									't3ver_state' => (string)($delete ? new VersionState(VersionState::DELETE_PLACEHOLDER) : new VersionState(VersionState::DEFAULT_STATE)),
 									't3ver_count' => 0,
 									't3ver_stage' => 0,
 									't3ver_tstamp' => 0

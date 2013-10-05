@@ -67,7 +67,7 @@ class BrowseTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 			$hideList = explode(',', $pidList);
 			$this->MOUNTS = array_diff($this->MOUNTS, $hideList);
 		}
-		$this->fieldArray = array_merge($this->fieldArray, array('doktype', 'php_tree_stop', 't3ver_id', 't3ver_state', 't3ver_wsid', 't3ver_state', 't3ver_move_id'));
+		$this->fieldArray = array_merge($this->fieldArray, array('doktype', 'php_tree_stop', 't3ver_id', 't3ver_state', 't3ver_wsid', 't3ver_move_id'));
 		if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('cms')) {
 			$this->fieldArray = array_merge($this->fieldArray, array('hidden', 'starttime', 'endtime', 'fe_group', 'module', 'extendToSubpages', 'is_siteroot', 'nav_hide'));
 		}

@@ -28,6 +28,7 @@ namespace TYPO3\CMS\Workspaces\Service;
  ***************************************************************/
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Versioning\VersionState;
 
 /**
  * Workspace service
@@ -253,7 +254,7 @@ class WorkspaceService implements \TYPO3\CMS\Core\SingletonInterface {
 		}
 		$from = $table . ' A,' . $table . ' B';
 		// Table A is the offline version and pid=-1 defines offline
-		$where = 'A.pid=-1 AND A.t3ver_state!=4';
+		$where = 'A.pid=-1 AND A.t3ver_state!=' . new VersionState(VersionState::MOVE_POINTER);
 		if ($pageList) {
 			$pidField = $table === 'pages' ? 'uid' : 'pid';
 			$pidConstraint = strstr($pageList, ',') ? ' IN (' . $pageList . ')' : '=' . $pageList;
@@ -309,7 +310,9 @@ class WorkspaceService implements \TYPO3\CMS\Core\SingletonInterface {
 		// C - moveFrom placeholder
 		$fields = 'A.pid AS wspid, B.uid AS t3ver_oid, C.uid AS uid, B.pid AS livepid';
 		$from = $table . ' A, ' . $table . ' B,' . $table . ' C';
-		$where = 'A.t3ver_state=3 AND B.pid>0 AND B.t3ver_state=0 AND B.t3ver_wsid=0 AND C.pid=-1 AND C.t3ver_state=4';
+		$where = 'A.t3ver_state=' . new VersionState(VersionState::MOVE_PLACEHOLDER) . ' AND B.pid>0 AND B.t3ver_state='
+			. new VersionState(VersionState::DEFAULT_STATE) . ' AND B.t3ver_wsid=0 AND C.pid=-1 AND C.t3ver_state='
+			. new VersionState(VersionState::MOVE_POINTER);
 		if ($wsid > self::SELECT_ALL_WORKSPACES) {
 			$where .= ' AND A.t3ver_wsid=' . $wsid . ' AND C.t3ver_wsid=' . $wsid;
 		} elseif ($wsid === self::SELECT_ALL_WORKSPACES) {
@@ -481,12 +484,12 @@ class WorkspaceService implements \TYPO3\CMS\Core\SingletonInterface {
 			$whereClause .= BackendUtility::deleteClause('pages_language_overlay');
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('t3ver_state', 'pages_language_overlay', $whereClause);
 			if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-				$isNewPage = (int) $row['t3ver_state'] === 1;
+				$isNewPage = VersionState::cast($row['t3ver_state'])->equals(VersionState::NEW_PLACEHOLDER);
 			}
 		} else {
 			$rec = BackendUtility::getRecord('pages', $id, 't3ver_state');
 			if (is_array($rec)) {
-				$isNewPage = (int) $rec['t3ver_state'] === 1;
+				$isNewPage = VersionState::cast($rec['t3ver_state'])->equals(VersionState::NEW_PLACEHOLDER);
 			}
 		}
 		return $isNewPage;

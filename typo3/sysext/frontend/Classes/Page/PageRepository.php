@@ -28,6 +28,7 @@ namespace TYPO3\CMS\Frontend\Page;
  ***************************************************************/
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Versioning\VersionState;
 
 /**
  * Page functions, a lot of sql/pages-related functions
@@ -139,7 +140,7 @@ class PageRepository {
 		$this->where_hid_del .= 'AND pages.starttime<=' . $GLOBALS['SIM_ACCESS_TIME'] . ' AND (pages.endtime=0 OR pages.endtime>' . $GLOBALS['SIM_ACCESS_TIME'] . ') ';
 		// Filter out new/deleted place-holder pages in case we are NOT in a versioning preview (that means we are online!)
 		if (!$this->versioningPreview) {
-			$this->where_hid_del .= ' AND NOT pages.t3ver_state>0';
+			$this->where_hid_del .= ' AND NOT pages.t3ver_state>' . new VersionState(VersionState::DEFAULT_STATE);
 		} else {
 			// For version previewing, make sure that enable-fields are not de-selecting hidden
 			// pages - we need versionOL() to unset them only if the overlay record instructs us to.
@@ -874,7 +875,7 @@ class PageRepository {
 				if (!$this->versioningPreview) {
 					// Filter out placeholder records (new/moved/deleted items)
 					// in case we are NOT in a versioning preview (that means we are online!)
-					$query .= ' AND ' . $table . '.t3ver_state<=0';
+					$query .= ' AND ' . $table . '.t3ver_state<=' . new VersionState(VersionState::DEFAULT_STATE);
 				} else {
 					if ($table !== 'pages') {
 						// show only records of live and of the current workspace
@@ -1045,20 +1046,28 @@ class PageRepository {
 					// Changing input record to the workspace version alternative:
 					$row = $wsAlt;
 					// Check if it is deleted/new
-					if ((int) $row['t3ver_state'] === 1 || (int) $row['t3ver_state'] === 2) {
+					$rowVersionState = VersionState::cast($row['t3ver_state']);
+					if (
+						$rowVersionState->equals(VersionState::NEW_PLACEHOLDER)
+						|| $rowVersionState->equals(VersionState::DELETE_PLACEHOLDER)
+					) {
 						// Unset record if it turned out to be deleted in workspace
 						$row = FALSE;
 					}
 					// Check if move-pointer in workspace (unless if a move-placeholder is the reason why it appears!):
 					// You have to specifically set $unsetMovePointers in order to clear these because it is normally a display issue if it should be shown or not.
-					if (((int) $row['t3ver_state'] === 4 && !$movePldSwap) && $unsetMovePointers) {
+					if (
+						($rowVersionState->equals(VersionState::MOVE_POINTER)
+							&& !$movePldSwap
+						) && $unsetMovePointers
+					) {
 						// Unset record if it turned out to be deleted in workspace
 						$row = FALSE;
 					}
 				} else {
-					// No version found, then check if t3ver_state =1 (online version is dummy-representation)
+					// No version found, then check if t3ver_state = VersionState::NEW_PLACEHOLDER (online version is dummy-representation)
 					// Notice, that unless $bypassEnableFieldsCheck is TRUE, the $row is unset if enablefields for BOTH the version AND the online record deselects it. See note for $bypassEnableFieldsCheck
-					if ($wsAlt <= -1 || (int) $row['t3ver_state'] > 0) {
+					if ($wsAlt <= -1 || VersionState::cast($row['t3ver_state'])->indicatesPlaceholder()) {
 						// Unset record if it turned out to be "hidden"
 						$row = FALSE;
 					}
@@ -1068,8 +1077,8 @@ class PageRepository {
 	}
 
 	/**
-	 * Checks if record is a move-placeholder (t3ver_state==3) and if so it will set $row to be the pointed-to live record (and return TRUE)
-	 * Used from versionOL
+	 * Checks if record is a move-placeholder (t3ver_state==VersionState::MOVE_PLACEHOLDER) and if so
+	 * it will set $row to be the pointed-to live record (and return TRUE) Used from versionOL
 	 *
 	 * @param string $table Table name
 	 * @param array $row Row (passed by reference) - only online records...
@@ -1078,7 +1087,11 @@ class PageRepository {
 	 * @todo Define visibility
 	 */
 	public function movePlhOL($table, &$row) {
-		if (($table == 'pages' || (int) $GLOBALS['TCA'][$table]['ctrl']['versioningWS'] >= 2) && (int) $row['t3ver_state'] === 3) {
+		if (
+			($table == 'pages'
+				|| (int) $GLOBALS['TCA'][$table]['ctrl']['versioningWS'] >= 2
+			) && (int) VersionState::cast($row['t3ver_state'])->equals(VersionState::MOVE_PLACEHOLDER)
+		) {
 			// Only for WS ver 2... (moving)
 			// If t3ver_move_id is not found, then find it... (but we like best if it is here...)
 			if (!isset($row['t3ver_move_id'])) {
@@ -1117,7 +1130,7 @@ class PageRepository {
 			if (($table == 'pages' || (int) $GLOBALS['TCA'][$table]['ctrl']['versioningWS'] >= 2) && $workspace !== 0) {
 				// Select workspace version of record:
 				$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow($fields, $table, 'pid<>-1 AND
-						t3ver_state=3 AND
+						t3ver_state=' . new VersionState(VersionState::MOVE_PLACEHOLDER) . ' AND
 						t3ver_move_id=' . intval($uid) . ' AND
 						t3ver_wsid=' . intval($workspace) . $this->deleteClause($table));
 				if (is_array($row)) {

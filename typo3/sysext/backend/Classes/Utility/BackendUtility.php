@@ -35,6 +35,7 @@ use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Core\Versioning\VersionState;
 use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
@@ -1649,20 +1650,20 @@ class BackendUtility {
 		if ($row['pid'] < 0) {
 			$parts[] = 'v#1.' . $row['t3ver_id'];
 		}
-		switch ($row['t3ver_state']) {
-			case 1:
+		switch (VersionState::cast($row['t3ver_state'])) {
+			case new VersionState(VersionState::NEW_PLACEHOLDER):
 				$parts[] = 'PLH WSID#' . $row['t3ver_wsid'];
 				break;
-			case 2:
+			case new VersionState(VersionState::DELETE_PLACEHOLDER):
 				$parts[] = 'Deleted element!';
 				break;
-			case 3:
+			case new VersionState(VersionState::MOVE_PLACEHOLDER):
 				$parts[] = 'NEW LOCATION (PLH) WSID#' . $row['t3ver_wsid'];
 				break;
-			case 4:
+			case new VersionState(VersionState::MOVE_POINTER):
 				$parts[] = 'OLD LOCATION (PNT) WSID#' . $row['t3ver_wsid'];
 				break;
-			case -1:
+			case new VersionState(VersionState::NEW_PLACEHOLDER_VERSION):
 				$parts[] = 'New element!';
 				break;
 		}
@@ -1744,20 +1745,20 @@ class BackendUtility {
 				$out .= ' - v#1.' . $row['t3ver_id'];
 			}
 			if ($GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
-				switch ($row['t3ver_state']) {
-					case 1:
+				switch (VersionState::cast($row['t3ver_state'])) {
+					case new VersionState(VersionState::NEW_PLACEHOLDER):
 						$out .= ' - PLH WSID#' . $row['t3ver_wsid'];
 						break;
-					case 2:
+					case new VersionState(VersionState::DELETE_PLACEHOLDER):
 						$out .= ' - Deleted element!';
 						break;
-					case 3:
+					case new VersionState(VersionState::MOVE_PLACEHOLDER):
 						$out .= ' - NEW LOCATION (PLH) WSID#' . $row['t3ver_wsid'];
 						break;
-					case 4:
+					case new VersionState(VersionState::MOVE_POINTER):
 						$out .= ' - OLD LOCATION (PNT)  WSID#' . $row['t3ver_wsid'];
 						break;
-					case -1:
+					case new VersionState(VersionState::NEW_PLACEHOLDER_VERSION):
 						$out .= ' - New element!';
 						break;
 				}
@@ -3670,11 +3671,11 @@ class BackendUtility {
 						// If t3ver_state is not found, then find it... (but we like best if it is here...)
 						if (!isset($wsAlt['t3ver_state'])) {
 							$stateRec = self::getRecord($table, $wsAlt['uid'], 't3ver_state');
-							$state = $stateRec['t3ver_state'];
+							$versionState = VersionState::cast($stateRec['t3ver_state']);
 						} else {
-							$state = $wsAlt['t3ver_state'];
+							$versionState = VersionState::cast($wsAlt['t3ver_state']);
 						}
-						if ((int) $state === 4) {
+						if ($versionState->equals(VersionState::MOVE_POINTER)) {
 							// TODO: Same problem as frontend in versionOL(). See TODO point there.
 							$row = FALSE;
 							return;
@@ -3701,14 +3702,15 @@ class BackendUtility {
 					$row['_MOVE_PLH_uid'] = $orig_uid;
 					$row['_MOVE_PLH_pid'] = $orig_pid;
 					// For display; To make the icon right for the placeholder vs. the original
-					$row['t3ver_state'] = 3;
+					$row['t3ver_state'] = (string)new VersionState(VersionState::MOVE_PLACEHOLDER);
 				}
 			}
 		}
 	}
 
 	/**
-	 * Checks if record is a move-placeholder (t3ver_state==3) and if so it will set $row to be the pointed-to live record (and return TRUE)
+	 * Checks if record is a move-placeholder (t3ver_state==VersionState::MOVE_PLACEHOLDER) and if so
+	 * it will set $row to be the pointed-to live record (and return TRUE)
 	 *
 	 * @param string $table Table name
 	 * @param array $row Row (passed by reference) - must be online record!
@@ -3722,13 +3724,13 @@ class BackendUtility {
 			if (!isset($row['t3ver_move_id']) || !isset($row['t3ver_state'])) {
 				$moveIDRec = self::getRecord($table, $row['uid'], 't3ver_move_id, t3ver_state');
 				$moveID = $moveIDRec['t3ver_move_id'];
-				$state = $moveIDRec['t3ver_state'];
+				$versionState = VersionState::cast($moveIDRec['t3ver_state']);
 			} else {
 				$moveID = $row['t3ver_move_id'];
-				$state = $row['t3ver_state'];
+				$versionState = VersionState::cast($row['t3ver_state']);
 			}
 			// Find pointed-to record.
-			if ((int) $state === 3 && $moveID) {
+			if ($versionState->equals(VersionState::MOVE_PLACEHOLDER) && $moveID) {
 				if ($origRow = self::getRecord($table, $moveID, implode(',', array_keys($row)))) {
 					$row = $origRow;
 					return TRUE;
@@ -3803,7 +3805,7 @@ class BackendUtility {
 	static public function versioningPlaceholderClause($table) {
 		if ($GLOBALS['TCA'][$table] && $GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
 			$currentWorkspace = intval($GLOBALS['BE_USER']->workspace);
-			return ' AND (' . $table . '.t3ver_state <= 0 OR ' . $table . '.t3ver_wsid = ' . $currentWorkspace . ')';
+			return ' AND (' . $table . '.t3ver_state <= ' . new VersionState(VersionState::DEFAULT_STATE) . ' OR ' . $table . '.t3ver_wsid = ' . $currentWorkspace . ')';
 		}
 	}
 
@@ -3878,7 +3880,12 @@ class BackendUtility {
 		$workspace = $GLOBALS['BE_USER']->workspace;
 		if ($workspace !== 0 && $GLOBALS['TCA'][$table] && (int) $GLOBALS['TCA'][$table]['ctrl']['versioningWS'] >= 2) {
 			// Select workspace version of record:
-			$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow($fields, $table, 'pid<>-1 AND ' . 't3ver_state=3 AND ' . 't3ver_move_id=' . intval($uid) . ' AND ' . 't3ver_wsid=' . intval($workspace) . self::deleteClause($table));
+			$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
+				$fields,
+				$table,
+				'pid<>-1 AND t3ver_state=' . new VersionState(VersionState::MOVE_PLACEHOLDER) . ' AND t3ver_move_id='
+					. intval($uid) . ' AND t3ver_wsid=' . intval($workspace) . self::deleteClause($table)
+			);
 			if (is_array($row)) {
 				return $row;
 			}

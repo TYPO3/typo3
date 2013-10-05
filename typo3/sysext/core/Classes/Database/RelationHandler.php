@@ -28,6 +28,7 @@ namespace TYPO3\CMS\Core\Database;
  ***************************************************************/
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Versioning\VersionState;
 
 /**
  * Load database groups (relations)
@@ -772,7 +773,11 @@ class RelationHandler {
 				}
 				// Update accordant fields in the database for workspaces overlays/placeholders:
 				if (count($workspaceValues) && $considerWorkspaces) {
-					if (isset($row['t3ver_oid']) && $row['t3ver_oid'] && $row['t3ver_state'] == -1) {
+					if (
+						isset($row['t3ver_oid'])
+						&& $row['t3ver_oid']
+						&& VersionState::cast($row['t3ver_state'])->equals(VersionState::NEW_PLACEHOLDER_VERSION)
+					) {
 						$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid=' . intval($row['t3ver_oid']), $workspaceValues);
 					}
 				}

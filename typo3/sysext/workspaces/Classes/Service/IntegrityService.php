@@ -28,6 +28,7 @@ namespace TYPO3\CMS\Workspaces\Service;
  ***************************************************************/
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Versioning\VersionState;
 
 /**
  * Service for integrity
@@ -142,7 +143,7 @@ class IntegrityService {
 				// Get localization parent from live workspace:
 				$languageParentRecord = BackendUtility::getRecord($table, $versionRow[$languageParentField], 'uid,t3ver_state');
 				// If localization parent is a "new placeholder" record:
-				if ($languageParentRecord['t3ver_state'] == 1) {
+				if (VersionState::cast($languageParentRecord['t3ver_state'])->equals(\TYPO3\CMS\Core\Type\VersionState::NEW_PLACEHOLDER)) {
 					$title = BackendUtility::getRecordTitle($table, $versionRow);
 					// Add warning for current versionized record:
 					$this->addIssue($element->getLiveRecord()->getIdentifier(), self::STATUS_Warning, sprintf(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('integrity.dependsOnDefaultLanguageRecord', 'workspaces'), $title));

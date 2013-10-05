@@ -27,6 +27,7 @@ namespace TYPO3\CMS\Version\Hook;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Core\Versioning\VersionState;
 
 /**
  * Implements a hook for \TYPO3\CMS\Backend\Utility\IconUtility
@@ -42,7 +43,12 @@ class IconUtilityHook {
 	 * @return void
 	 */
 	public function overrideIconOverlay($table, array $row, array &$status) {
-		if (isset($row['t3ver_state']) && $row['t3ver_state'] == 2) {
+		if (
+			isset($row['t3ver_state'])
+			&& VersionState::cast($row['t3ver_state'])->equals(
+				\TYPO3\CMS\Core\Versioning\VersionState::DELETE_PLACEHOLDER
+			)
+		) {
 			$status['deleted'] = TRUE;
 		}
 	}

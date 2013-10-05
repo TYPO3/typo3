@@ -31,6 +31,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Core\Versioning\VersionState;
 
 /**
  * Page Tree and Context Menu Commands
@@ -363,10 +364,17 @@ class Commands {
 			$spriteIconCode = IconUtility::getSpriteIcon('apps-pagetree-root');
 		}
 		$subNode->setSpriteIconCode($spriteIconCode);
-		if (!$subNode->canCreateNewPages() || intval($record['t3ver_state']) === 2) {
+		if (
+			!$subNode->canCreateNewPages()
+			|| VersionState::cast($record['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER)
+		) {
 			$subNode->setIsDropTarget(FALSE);
 		}
-		if (!$subNode->canBeEdited() || !$subNode->canBeRemoved() || intval($record['t3ver_state']) === 2) {
+		if (
+			!$subNode->canBeEdited()
+			|| !$subNode->canBeRemoved()
+			|| VersionState::cast($record['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER)
+		) {
 			$subNode->setDraggable(FALSE);
 		}
 		return $subNode;

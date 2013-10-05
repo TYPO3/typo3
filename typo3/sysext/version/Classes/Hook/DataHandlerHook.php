@@ -29,8 +29,10 @@ namespace TYPO3\CMS\Version\Hook;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\DataHandling\DataHandler;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Versioning\VersionState;
 
 /**
  * Contains some parts for staging, versioning and workspaces
@@ -67,10 +69,10 @@ class DataHandlerHook {
 	/**
 	 * hook that is called before any cmd of the commandmap is executed
 	 *
-	 * @param \TYPO3\CMS\Core\DataHandling\DataHandler $tcemainObj reference to the main tcemain object
+	 * @param DataHandler $tcemainObj reference to the main tcemain object
 	 * @return void
 	 */
-	public function processCmdmap_beforeStart(\TYPO3\CMS\Core\DataHandling\DataHandler $tcemainObj) {
+	public function processCmdmap_beforeStart(DataHandler $tcemainObj) {
 		// Reset notification array
 		$this->notificationEmailInfo = array();
 		// Resolve dependencies of version/workspaces actions:
@@ -85,10 +87,10 @@ class DataHandlerHook {
 	 * @param integer $id the ID of the record
 	 * @param mixed $value the value containing the data
 	 * @param boolean $commandIsProcessed can be set so that other hooks or
-	 * @param \TYPO3\CMS\Core\DataHandling\DataHandler $tcemainObj reference to the main tcemain object
+	 * @param DataHandler $tcemainObj reference to the main tcemain object
 	 * @return 	void
 	 */
-	public function processCmdmap($command, $table, $id, $value, &$commandIsProcessed, \TYPO3\CMS\Core\DataHandling\DataHandler $tcemainObj) {
+	public function processCmdmap($command, $table, $id, $value, &$commandIsProcessed, DataHandler $tcemainObj) {
 		// custom command "version"
 		if ($command == 'version') {
 			$commandIsProcessed = TRUE;
@@ -152,9 +154,9 @@ class DataHandlerHook {
 	 * @param string $table
 	 * @param integer $id
 	 * @param mixed $value
-	 * @param \TYPO3\CMS\Core\DataHandling\DataHandler $tcemain
+	 * @param DataHandler $tcemain
 	 */
-	public function processCmdmap_postProcess($command, $table, $id, $value, \TYPO3\CMS\Core\DataHandling\DataHandler $tcemain) {
+	public function processCmdmap_postProcess($command, $table, $id, $value, DataHandler $tcemain) {
 		if ($command === 'move') {
 			if ($value < 0) {
 				$movePlaceHolder = BackendUtility::getMovePlaceholder($table, abs($value), 'uid');
@@ -170,10 +172,10 @@ class DataHandlerHook {
 	 * hook that is called AFTER all commands of the commandmap was
 	 * executed
 	 *
-	 * @param \TYPO3\CMS\Core\DataHandling\DataHandler $tcemainObj reference to the main tcemain object
+	 * @param DataHandler $tcemainObj reference to the main tcemain object
 	 * @return 	void
 	 */
-	public function processCmdmap_afterFinish(\TYPO3\CMS\Core\DataHandling\DataHandler $tcemainObj) {
+	public function processCmdmap_afterFinish(DataHandler $tcemainObj) {
 		// Empty accumulation array:
 		foreach ($this->notificationEmailInfo as $notifItem) {
 			$this->notifyStageChange($notifItem['shared'][0], $notifItem['shared'][1], implode(', ', $notifItem['elements']), 0, $notifItem['shared'][2], $tcemainObj, $notifItem['alternativeRecipients']);
@@ -192,10 +194,10 @@ class DataHandlerHook {
 	 * @param integer $id the ID of the record
 	 * @param array $record The accordant database record
 	 * @param boolean $recordWasDeleted can be set so that other hooks or
-	 * @param \TYPO3\CMS\Core\DataHandling\DataHandler $tcemainObj reference to the main tcemain object
+	 * @param DataHandler $tcemainObj reference to the main tcemain object
 	 * @return 	void
 	 */
-	public function processCmdmap_deleteAction($table, $id, array $record, &$recordWasDeleted, \TYPO3\CMS\Core\DataHandling\DataHandler $tcemainObj) {
+	public function processCmdmap_deleteAction($table, $id, array $record, &$recordWasDeleted, DataHandler $tcemainObj) {
 		// only process the hook if it wasn't processed
 		// by someone else before
 		if (!$recordWasDeleted) {
@@ -208,6 +210,7 @@ class DataHandlerHook {
 					$id = $record['uid'];
 				}
 			}
+			$recordVersionState = VersionState::cast($record['t3ver_state']);
 			// Look, if record is an offline version, then delete directly:
 			if ($record['pid'] == -1) {
 				if ($GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
@@ -216,16 +219,17 @@ class DataHandlerHook {
 						$liveRec = BackendUtility::getLiveVersionOfRecord($table, $id, 'uid,t3ver_state');
 						// Processing can be skipped if a delete placeholder shall be swapped/published
 						// during the current request. Thus it will be deleted later on...
-						if ($record['t3ver_state'] == 2 && !empty($liveRec['uid'])
+						$liveRecordVersionState = VersionState::cast($liveRec['t3ver_state']);
+						if ($recordVersionState->equals(VersionState::DELETE_PLACEHOLDER) && !empty($liveRec['uid'])
 							&& !empty($tcemainObj->cmdmap[$table][$liveRec['uid']]['version']['action'])
 							&& !empty($tcemainObj->cmdmap[$table][$liveRec['uid']]['version']['swapWith'])
 							&& $tcemainObj->cmdmap[$table][$liveRec['uid']]['version']['action'] === 'swap'
-							&& $tcemainObj->cmdmap[$table][$liveRec['uid']]['version']['swapWith'] == $id) {
-
+							&& $tcemainObj->cmdmap[$table][$liveRec['uid']]['version']['swapWith'] == $id
+						) {
 							return NULL;
 						}
 
-						if ($record['t3ver_wsid'] > 0 && $record['t3ver_state'] == 0) {
+						if ($record['t3ver_wsid'] > 0 && $recordVersionState->equals(VersionState::DEFAULT_STATE)) {
 							// Change normal versioned record to delete placeholder
 							// Happens when an edited record is deleted
 							$updateFields = array(
@@ -236,7 +240,7 @@ class DataHandlerHook {
 							// Delete localization overlays:
 							$tcemainObj->deleteL10nOverlayRecords($table, $id);
 
-						} elseif ($record['t3ver_wsid'] == 0 || (int) $liveRec['t3ver_state'] <= 0) {
+						} elseif ($record['t3ver_wsid'] == 0 || !$liveRecordVersionState->indicatesPlaceholder()) {
 							// Delete those in WS 0 + if their live records state was not "Placeholder".
 							$tcemainObj->deleteEl($table, $id);
 						} else {
@@ -257,14 +261,14 @@ class DataHandlerHook {
 				} else {
 					$tcemainObj->newlog('Stage of root point did not allow for deletion', 1);
 				}
-			} elseif ((int) $record['t3ver_state'] === 3) {
+			} elseif ($recordVersionState->equals(VersionState::MOVE_PLACEHOLDER)) {
 				// Placeholders for moving operations are deletable directly.
 				// Get record which its a placeholder for and reset the t3ver_state of that:
 				if ($wsRec = BackendUtility::getWorkspaceVersionOfRecord($record['t3ver_wsid'], $table, $record['t3ver_move_id'], 'uid')) {
 					// Clear the state flag of the workspace version of the record
 					// Setting placeholder state value for version (so it can know it is currently a new version...)
 					$updateFields = array(
-						't3ver_state' => 0
+						't3ver_state' => (string)new VersionState(VersionState::DEFAULT_STATE)
 					);
 					$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid=' . intval($wsRec['uid']), $updateFields);
 				}
@@ -299,21 +303,26 @@ class DataHandlerHook {
 	 * @param boolean $recordWasMoved can be set so that other hooks or
 	 * @param 	$table	the table
 	 */
-	public function moveRecord($table, $uid, $destPid, array $propArr, array $moveRec, $resolvedPid, &$recordWasMoved, \TYPO3\CMS\Core\DataHandling\DataHandler $tcemainObj) {
+	public function moveRecord($table, $uid, $destPid, array $propArr, array $moveRec, $resolvedPid, &$recordWasMoved, DataHandler $tcemainObj) {
 		// Only do something in Draft workspace
 		if ($tcemainObj->BE_USER->workspace !== 0) {
 			$recordWasMoved = TRUE;
+			$moveRecVersionState = VersionState::cast($moveRec['t3ver_state']);
 			// Get workspace version of the source record, if any:
 			$WSversion = BackendUtility::getWorkspaceVersionOfRecord($tcemainObj->BE_USER->workspace, $table, $uid, 'uid,t3ver_oid');
 			// If no version exists and versioningWS is in version 2, a new placeholder is made automatically:
-			if (!$WSversion['uid'] && (int) $GLOBALS['TCA'][$table]['ctrl']['versioningWS'] >= 2 && (int) $moveRec['t3ver_state'] != 3) {
+			if (
+				!$WSversion['uid']
+				&& (int) $GLOBALS['TCA'][$table]['ctrl']['versioningWS'] >= 2
+				&& !$moveRecVersionState->equals(VersionState::MOVE_PLACEHOLDER)
+			) {
 				$tcemainObj->versionizeRecord($table, $uid, 'Placeholder version for moving record');
 				$WSversion = BackendUtility::getWorkspaceVersionOfRecord($tcemainObj->BE_USER->workspace, $table, $uid, 'uid,t3ver_oid');
 			}
 			// Check workspace permissions:
 			$workspaceAccessBlocked = array();
 			// Element was in "New/Deleted/Moved" so it can be moved...
-			$recIsNewVersion = (int) $moveRec['t3ver_state'] > 0;
+			$recIsNewVersion = $moveRecVersionState->indicatesPlaceholder();
 			$destRes = $tcemainObj->BE_USER->workspaceAllowLiveRecordsInPID($resolvedPid, $table);
 			$canMoveRecord = $recIsNewVersion || (int) $GLOBALS['TCA'][$table]['ctrl']['versioningWS'] >= 2;
 			// Workspace source check:
@@ -361,11 +370,11 @@ class DataHandlerHook {
 	 * @param string $table Table name of element (or list of element names if $id is zero)
 	 * @param integer $id Record uid of element (if zero, then $table is used as reference to element(s) alone)
 	 * @param string $comment User comment sent along with action
-	 * @param \TYPO3\CMS\Core\DataHandling\DataHandler $tcemainObj TCEmain object
+	 * @param DataHandler $tcemainObj TCEmain object
 	 * @param array $notificationAlternativeRecipients List of recipients to notify instead of be_users selected by sys_workspace, list is generated by workspace extension module
 	 * @return void
 	 */
-	protected function notifyStageChange(array $stat, $stageId, $table, $id, $comment, \TYPO3\CMS\Core\DataHandling\DataHandler $tcemainObj, array $notificationAlternativeRecipients = array()) {
+	protected function notifyStageChange(array $stat, $stageId, $table, $id, $comment, DataHandler $tcemainObj, array $notificationAlternativeRecipients = array()) {
 		$workspaceRec = BackendUtility::getRecord('sys_workspace', $stat['uid']);
 		// So, if $id is not set, then $table is taken to be the complete element name!
 		$elementName = $id ? $table . ':' . $id : $table;
@@ -601,11 +610,11 @@ class DataHandlerHook {
 	 * @param integer $stageId Stage ID to set
 	 * @param string $comment Comment that goes into log
 	 * @param boolean $notificationEmailInfo Accumulate state changes in memory for compiled notification email?
-	 * @param \TYPO3\CMS\Core\DataHandling\DataHandler $tcemainObj TCEmain object
+	 * @param DataHandler $tcemainObj TCEmain object
 	 * @param array $notificationAlternativeRecipients comma separated list of recipients to notify instead of normal be_users
 	 * @return void
 	 */
-	protected function version_setStage($table, $id, $stageId, $comment = '', $notificationEmailInfo = FALSE, \TYPO3\CMS\Core\DataHandling\DataHandler $tcemainObj, array $notificationAlternativeRecipients = array()) {
+	protected function version_setStage($table, $id, $stageId, $comment = '', $notificationEmailInfo = FALSE, DataHandler $tcemainObj, array $notificationAlternativeRecipients = array()) {
 		if ($errorCode = $tcemainObj->BE_USER->workspaceCannotEditOfflineVersion($table, $id)) {
 			$tcemainObj->newlog('Attempt to set stage for record failed: ' . $errorCode, 1);
 		} elseif ($tcemainObj->checkRecordUpdateAccess($table, $id)) {
@@ -647,11 +656,11 @@ class DataHandlerHook {
 	 * @param integer $uid Page uid to create new version of.
 	 * @param string $label Version label
 	 * @param integer $versionizeTree Indicating "treeLevel" - "page" (0) or "branch" (>=1) ["element" type must call versionizeRecord() directly]
-	 * @param \TYPO3\CMS\Core\DataHandling\DataHandler $tcemainObj TCEmain object
+	 * @param DataHandler $tcemainObj TCEmain object
 	 * @return void
 	 * @see copyPages()
 	 */
-	protected function versionizePages($uid, $label, $versionizeTree, \TYPO3\CMS\Core\DataHandling\DataHandler $tcemainObj) {
+	protected function versionizePages($uid, $label, $versionizeTree, DataHandler $tcemainObj) {
 		$uid = intval($uid);
 		// returns the branch
 		$brExist = $tcemainObj->doesBranchExist('', $uid, $tcemainObj->pMap['show'], 1);
@@ -708,13 +717,13 @@ class DataHandlerHook {
 	 * @param integer $id UID of the online record to swap
 	 * @param integer $swapWith UID of the archived version to swap with!
 	 * @param boolean $swapIntoWS If set, swaps online into workspace instead of publishing out of workspace.
-	 * @param \TYPO3\CMS\Core\DataHandling\DataHandler $tcemainObj TCEmain object
+	 * @param DataHandler $tcemainObj TCEmain object
 	 * @param string $comment Notification comment
 	 * @param boolean $notificationEmailInfo Accumulate state changes in memory for compiled notification email?
 	 * @param array $notificationAlternativeRecipients comma separated list of recipients to notificate instead of normal be_users
 	 * @return void
 	 */
-	protected function version_swap($table, $id, $swapWith, $swapIntoWS = 0, \TYPO3\CMS\Core\DataHandling\DataHandler $tcemainObj, $comment = '', $notificationEmailInfo = FALSE, $notificationAlternativeRecipients = array()) {
+	protected function version_swap($table, $id, $swapWith, $swapIntoWS = 0, DataHandler $tcemainObj, $comment = '', $notificationEmailInfo = FALSE, $notificationAlternativeRecipients = array()) {
 		// First, check if we may actually edit the online record
 		if ($tcemainObj->checkRecordUpdateAccess($table, $id)) {
 			// Select the two versions:
@@ -783,7 +792,7 @@ class DataHandlerHook {
 										$swapVersion['t3ver_tstamp'] = $GLOBALS['EXEC_TIME'];
 										$swapVersion['t3ver_stage'] = 0;
 										if (!$swapIntoWS) {
-											$swapVersion['t3ver_state'] = 0;
+											$swapVersion['t3ver_state'] = (string)new VersionState(VersionState::DEFAULT_STATE);
 										}
 										// Moving element.
 										if ((int) $GLOBALS['TCA'][$table]['ctrl']['versioningWS'] >= 2) {
@@ -793,7 +802,7 @@ class DataHandlerHook {
 												$movePlh['pid'] = $swapVersion['pid'];
 												$swapVersion['pid'] = intval($plhRec['pid']);
 												$curVersion['t3ver_state'] = intval($swapVersion['t3ver_state']);
-												$swapVersion['t3ver_state'] = 0;
+												$swapVersion['t3ver_state'] = (string)new VersionState(VersionState::DEFAULT_STATE);
 												if ($GLOBALS['TCA'][$table]['ctrl']['sortby']) {
 													// sortby is a "keepFields" which is why this will work...
 													$movePlh[$GLOBALS['TCA'][$table]['ctrl']['sortby']] = $swapVersion[$GLOBALS['TCA'][$table]['ctrl']['sortby']];
@@ -819,7 +828,7 @@ class DataHandlerHook {
 										// Increment lifecycle counter
 										$curVersion['t3ver_stage'] = 0;
 										if (!$swapIntoWS) {
-											$curVersion['t3ver_state'] = 0;
+											$curVersion['t3ver_state'] = (string)new VersionState(VersionState::DEFAULT_STATE);
 										}
 										// Registering and swapping MM relations in current and swap records:
 										$tcemainObj->version_remapMMForVersionSwap($table, $id, $swapWith);
@@ -942,10 +951,10 @@ class DataHandlerHook {
 	 * @param array $conf: TCA configuration of current field
 	 * @param array $curVersion: Reference to the current (original) record
 	 * @param array $swapVersion: Reference to the record (workspace/versionized) to publish in or swap with
-	 * @param \TYPO3\CMS\Core\DataHandling\DataHandler $tcemainObj TCEmain object
+	 * @param DataHandler $tcemainObj TCEmain object
 	 * @return void
 	 */
-	protected function version_swap_procBasedOnFieldType($table, $field, array $conf, array &$curVersion, array &$swapVersion, \TYPO3\CMS\Core\DataHandling\DataHandler $tcemainObj) {
+	protected function version_swap_procBasedOnFieldType($table, $field, array $conf, array &$curVersion, array &$swapVersion, DataHandler $tcemainObj) {
 		$inlineType = $tcemainObj->getInlineFieldType($conf);
 		// Process pointer fields on normalized database:
 		if ($inlineType == 'field') {
@@ -1002,10 +1011,10 @@ class DataHandlerHook {
 	 * @param string $table Table name
 	 * @param integer $id Record UID
 	 * @param boolean $flush If set, will completely delete element
-	 * @param \TYPO3\CMS\Core\DataHandling\DataHandler $tcemainObj TCEmain object
+	 * @param DataHandler $tcemainObj TCEmain object
 	 * @return 	void
 	 */
-	protected function version_clearWSID($table, $id, $flush = FALSE, \TYPO3\CMS\Core\DataHandling\DataHandler $tcemainObj) {
+	protected function version_clearWSID($table, $id, $flush = FALSE, DataHandler $tcemainObj) {
 		if ($errorCode = $tcemainObj->BE_USER->workspaceCannotEditOfflineVersion($table, $id)) {
 			$tcemainObj->newlog('Attempt to reset workspace for record failed: ' . $errorCode, 1);
 		} elseif ($tcemainObj->checkRecordUpdateAccess($table, $id)) {
@@ -1017,7 +1026,10 @@ class DataHandlerHook {
 				);
 				$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid=' . intval($id), $updateData);
 				// Clear workspace ID for live version AND DELETE IT as well because it is a new record!
-				if ((int) $liveRec['t3ver_state'] == 1 || (int) $liveRec['t3ver_state'] == 2) {
+				if (
+					VersionState::cast($liveRec['t3ver_state'])->equals(VersionState::NEW_PLACEHOLDER)
+					|| VersionState::cast($liveRec['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER)
+				) {
 					$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid=' . intval($liveRec['uid']), $updateData);
 					// THIS assumes that the record was placeholder ONLY for ONE record (namely $id)
 					$tcemainObj->deleteEl($table, $liveRec['uid'], TRUE);
@@ -1025,7 +1037,13 @@ class DataHandlerHook {
 				// If "deleted" flag is set for the version that got released
 				// it doesn't make sense to keep that "placeholder" anymore and we delete it completly.
 				$wsRec = BackendUtility::getRecord($table, $id);
-				if ($flush || ((int) $wsRec['t3ver_state'] == 1 || (int) $wsRec['t3ver_state'] == 2)) {
+				if (
+					$flush
+					|| (
+						VersionState::cast($wsRec['t3ver_state'])->equals(VersionState::NEW_PLACEHOLDER)
+						|| VersionState::cast($wsRec['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER)
+					)
+				) {
 					$tcemainObj->deleteEl($table, $id, TRUE, TRUE);
 				}
 				// Remove the move-placeholder if found for live record.
@@ -1050,11 +1068,11 @@ class DataHandlerHook {
 	 * @param integer $oldPageId Current page id.
 	 * @param integer $newPageId New page id
 	 * @param array $copyTablesArray Array of tables from which to copy
-	 * @param \TYPO3\CMS\Core\DataHandling\DataHandler $tcemainObj TCEmain object
+	 * @param DataHandler $tcemainObj TCEmain object
 	 * @return void
 	 * @see versionizePages()
 	 */
-	protected function rawCopyPageContent($oldPageId, $newPageId, array $copyTablesArray, \TYPO3\CMS\Core\DataHandling\DataHandler $tcemainObj) {
+	protected function rawCopyPageContent($oldPageId, $newPageId, array $copyTablesArray, DataHandler $tcemainObj) {
 		if ($newPageId) {
 			foreach ($copyTablesArray as $table) {
 				// all records under the page is copied.
@@ -1191,18 +1209,18 @@ class DataHandlerHook {
 	/**
 	 * Creates a move placeholder for workspaces.
 	 * USE ONLY INTERNALLY
-	 * Moving placeholder: Can be done because the system sees it as a placeholder for NEW elements like t3ver_state=1
+	 * Moving placeholder: Can be done because the system sees it as a placeholder for NEW elements like t3ver_state=VersionState::NEW_PLACEHOLDER
 	 * Moving original: Will either create the placeholder if it doesn't exist or move existing placeholder in workspace.
 	 *
 	 * @param string $table Table name to move
 	 * @param integer $uid Record uid to move (online record)
 	 * @param integer $destPid Position to move to: $destPid: >=0 then it points to a page-id on which to insert the record (as the first element). <0 then it points to a uid from its own table after which to insert it (works if
 	 * @param integer $wsUid UID of offline version of online record
-	 * @param \TYPO3\CMS\Core\DataHandling\DataHandler $tcemainObj TCEmain object
+	 * @param DataHandler $tcemainObj TCEmain object
 	 * @return void
 	 * @see moveRecord()
 	 */
-	protected function moveRecord_wsPlaceholders($table, $uid, $destPid, $wsUid, \TYPO3\CMS\Core\DataHandling\DataHandler $tcemainObj) {
+	protected function moveRecord_wsPlaceholders($table, $uid, $destPid, $wsUid, DataHandler $tcemainObj) {
 		// If a record gets moved after a record that already has a placeholder record
 		// then the new placeholder record needs to be after the existing one
 		$originalRecordDestinationPid = $destPid;
@@ -1241,7 +1259,7 @@ class DataHandlerHook {
 			$newVersion_placeholderFieldArray['t3ver_label'] = 'MOVE-TO PLACEHOLDER for #' . $uid;
 			$newVersion_placeholderFieldArray['t3ver_move_id'] = $uid;
 			// Setting placeholder state value for temporary record
-			$newVersion_placeholderFieldArray['t3ver_state'] = 3;
+			$newVersion_placeholderFieldArray['t3ver_state'] = (string)new VersionState(VersionState::MOVE_PLACEHOLDER);
 			// Setting workspace - only so display of place holders can filter out those from other workspaces.
 			$newVersion_placeholderFieldArray['t3ver_wsid'] = $tcemainObj->BE_USER->workspace;
 			$newVersion_placeholderFieldArray[$GLOBALS['TCA'][$table]['ctrl']['label']] = '[MOVE-TO PLACEHOLDER for #' . $uid . ', WS#' . $tcemainObj->BE_USER->workspace . ']';
@@ -1262,7 +1280,7 @@ class DataHandlerHook {
 			// Move the workspace-version of the original to be the version of the move-to-placeholder:
 			// Setting placeholder state value for version (so it can know it is currently a new version...)
 			$updateFields = array(
-				't3ver_state' => 4
+				't3ver_state' => (string)new VersionState(VersionState::MOVE_POINTER)
 			);
 			$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid=' . intval($wsUid), $updateFields);
 		}
@@ -1294,11 +1312,11 @@ class DataHandlerHook {
 	/**
 	 * Gets an instance of the command map helper.
 	 *
-	 * @param \TYPO3\CMS\Core\DataHandling\DataHandler $tceMain TCEmain object
+	 * @param DataHandler $tceMain TCEmain object
 	 * @param array $commandMap The command map as submitted to \TYPO3\CMS\Core\DataHandling\DataHandler
 	 * @return \TYPO3\CMS\Version\DataHandler\CommandMap
 	 */
-	public function getCommandMap(\TYPO3\CMS\Core\DataHandling\DataHandler $tceMain, array $commandMap) {
+	public function getCommandMap(DataHandler $tceMain, array $commandMap) {
 		return GeneralUtility::makeInstance('TYPO3\\CMS\\Version\\DataHandler\\CommandMap', $this, $tceMain, $commandMap);
 	}
 

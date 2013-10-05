@@ -28,6 +28,7 @@ namespace TYPO3\CMS\Version\DataHandler;
  ***************************************************************/
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Versioning\VersionState;
 
 /**
  * Handles the \TYPO3\CMS\Core\DataHandling\DataHandler command map and is
@@ -740,7 +741,7 @@ class CommandMap {
 			/** @var $reference \TYPO3\CMS\Version\Dependency\ReferenceEntity */
 			$reference = $callerArguments['reference'];
 			$record = $reference->getElement()->getRecord();
-			if ($record['t3ver_state'] != 2) {
+			if (!VersionState::cast($record['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER)) {
 				$response = \TYPO3\CMS\Version\Dependency\ElementEntity::RESPONSE_Skip;
 			}
 		}
@@ -763,7 +764,7 @@ class CommandMap {
 			/** @var $reference \TYPO3\CMS\Version\Dependency\ReferenceEntity */
 			$reference = $callerArguments['reference'];
 			$record = $reference->getElement()->getRecord();
-			if ($record['t3ver_state'] != 2) {
+			if (!VersionState::cast($record['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER)) {
 				$response = \TYPO3\CMS\Version\Dependency\ElementEntity::RESPONSE_Skip;
 			}
 		}

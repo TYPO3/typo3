@@ -31,6 +31,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Versioning\VersionState;
 
 /**
  * Child class for the Web > Page module
@@ -450,7 +451,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 								$languageColumn[$key][$lP] .= '<br /><br />' . $this->newLanguageButton($this->getNonTranslatedTTcontentUids($defLanguageCount[$key], $id, $lP), $lP);
 							}
 						}
-						if (is_array($row) && (int) $row['t3ver_state'] != 2) {
+						if (is_array($row) && !VersionState::cast($row['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER)) {
 							$singleElementHTML = '';
 							if (!$lP && ($this->defLangBinding || $row['sys_language_uid'] != -1)) {
 								$defLanguageCount[$key][] = $row['uid'];
@@ -696,7 +697,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 					}
 					// Traverse any selected elements:
 					foreach ($rowArr as $rKey => $row) {
-						if (is_array($row) && (int) $row['t3ver_state'] != 2) {
+						if (is_array($row) && !VersionState::cast($row['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER)) {
 							$c++;
 							$editUidList .= $row['uid'] . ',';
 							$isRTE = $RTE && $this->isRTEforField('tt_content', $row, 'bodytext');
