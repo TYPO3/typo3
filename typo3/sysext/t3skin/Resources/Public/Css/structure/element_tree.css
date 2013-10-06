@@ -83,7 +83,7 @@ ul.tree ul li {
 
 ul.tree div.treeLinkItem {
 	display: block;
-	height: 16px;
+	min-height: 16px;
 	padding-right: 2px;
 }
 

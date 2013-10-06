@@ -1,10 +1,10 @@
 /* - - - - - - - - - - - - - - - - - - - - -
 Web > List
-
 - - - - - - - - - - - - - - - - - - - - - */
 
+/** @deprecated styles */
 table.typo3-dblist {
-	margin-bottom: 12px;
+	margin-bottom: 1.5em;
 	width: 100%;
 }
 
@@ -13,7 +13,7 @@ table.typo3-dblist img {
 }
 
 table.typo3-dblist tr td {
-	padding: 3px 1px 3px 6px;
+	padding: 6px;
 }
 
 table.typo3-dblist tr.db_list_normal td {
@@ -36,7 +36,7 @@ table.typo3-dblist tr td div.typo3-DBctrl {
 }
 
 tr.t3-row-header td {
-	padding: 3px 7px;
+	padding: 6px;
 }
 
 * html table.typo3-dblist tr td div.typo3-DBctrl {

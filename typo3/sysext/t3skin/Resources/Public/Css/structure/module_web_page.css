@@ -2,6 +2,10 @@
 Web > Page
 - - - - - - - - - - - - - - - - - - - - - */
 
+.t3-page-ce-wrapper .t3-row-header {
+	height: 16px;
+}
+
 .t3-lang-gridContainer {
 	margin: 0 -12px;
 }
