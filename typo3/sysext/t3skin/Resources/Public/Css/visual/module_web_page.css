@@ -15,7 +15,6 @@ Web > Page
 	background: none;
 	color: #999999;
 	font-family: Verdana, sans-serif;
-	font-size: 13px;
 	text-align: left;
 }
 
@@ -62,7 +61,6 @@ Web > Page
 	background-color: #ffffff;
 	border: 1px solid #ffffff;
 	border-top: none;
-	font-size: 10px;
 }
 
 .t3-page-ce.active .t3-page-ce-body {
@@ -168,6 +166,7 @@ td.t3-gridCell-unassigned {
 .t3-page-ce-wrapper .t3-row-header {
 	background-image: none;
 	background-color: #cacaca;
+	min-height: 20px;
 }
 
 td.t3-gridCell-restricted div.t3-row-header {

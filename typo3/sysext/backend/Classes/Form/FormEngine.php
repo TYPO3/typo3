@@ -65,7 +65,6 @@ class FormEngine {
 	 */
 	public $paletteMargin = 1;
 
-	// 'font-family:Verdana;font-size:10px;';
 	/**
 	 * @todo Define visibility
 	 */

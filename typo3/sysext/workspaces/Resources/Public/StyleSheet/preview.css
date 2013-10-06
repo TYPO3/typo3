@@ -140,8 +140,6 @@ ul.x-tab-strip-top {
 }
 
 #visual-mode-selector td button {
-	font-size: 11px;
-	line-height: 12px;
 	text-decoration: none;
 }
 
@@ -159,9 +157,6 @@ ul.x-tab-strip-top {
 	padding-right: 2px;
 }
 
-#visual-mode-options .x-btn-text {
-	font-size: 11px;
-}
 #visual-mode-options.x-btn-menu-active .x-btn-text {
 	color: black;
 }
@@ -285,15 +280,11 @@ ul.x-tab-strip-top {
 	-moz-border-radius: 1px;
 	-webkit-border-radius: 1px;
 	border-radius: 1px;
-	height: 13px;
-	line-height: 8px;
 	margin-right: 10px;
-	font-size: 13px;
 	margin-top:0px;
 }
 #feToolbarButtonNextStage.x-btn .x-btn-text, #feToolbarButtonPreviousStage.x-btn .x-btn-text, #feToolbarButtonDiscardStage.x-btn .x-btn-text {
 	color: #FFF;
-	font-size: 11px;
 	line-height: 8px;
 	height: 13px;
 	padding: 0 3px 0 3px;

@@ -28,10 +28,8 @@
 
 #tx-sys-action-menu li a {
 	text-decoration: none;
-	line-height: 12px;
 	vertical-align: middle;
 	display: block;
 	padding-bottom: 2px;
 	padding-left: 3px;
-	font-size: 11px;
 }

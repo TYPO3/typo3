@@ -22,7 +22,6 @@ div {
 	margin: 0px;
 }
 
-/* Occasionally used, eg. in About Modules: */
 h1 {
 	font-size: 2.3em;
 	margin: 0 0 30px 0;
@@ -34,13 +33,11 @@ h2 {
 	margin: 24px 0 12px 0;
 }
 
-/* Normal section headers */
 h3 {
 	font-size: 1.3em;
 	margin: 24px 0 12px 0;
 }
 
-/* Discrete section headers (no background) */
 h4 {
 	font-size: 1.2em;
 	margin: 12px 0 12px 0;

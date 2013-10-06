@@ -7,7 +7,5 @@ Clear-Cache menu inside the toolbar
 }
 
 #clear-cache-actions-menu li a {
-	font-size: 11px;
-	line-height: 12px;
 	text-decoration: none;
 }

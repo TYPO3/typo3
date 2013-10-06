@@ -25,6 +25,7 @@ Module menu
 }
 
 #typo3-menu li div.modgroup {
+	font-size: 0.9em;
 	padding-left: 24px;
 	margin-bottom: 3px;
 }

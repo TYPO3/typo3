@@ -4,16 +4,6 @@ Form
 
 textarea.fixed-font {
 	font-family: "Lucida Console", "Lucida Sans Typewriter", "Bitstream Vera Sans Mono", monospace;
-	font-size: 11px;
-}
-
-input,
-textarea,
-select,
-button {
-	font-family: Verdana, Arial, Helvetica, sans-serif;
-	font-size: 11px;
-	line-height: 16px;
 }
 
 textarea {

@@ -18,6 +18,7 @@ Description : styles the Open Documents toolbar item
 	background-image: url('../Images/toolbar_item_active_bg.png');
 }
 
+/* Small counter box in topbar / toolbar icon */
 #tx-opendocs-menu input {
 	font-size: 9px;
 	height: 12px;

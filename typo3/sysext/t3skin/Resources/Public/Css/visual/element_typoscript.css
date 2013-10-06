@@ -4,7 +4,6 @@ TypoScript Highlighting
 
 pre.ts-hl {
 	font-family: "Lucida Console", "Lucida Sans Typewriter", "Bitsream Vera Sans Mono", monospace;
-	font-size: 11px;
 }
 
 pre.ts-hl .ts-operator {

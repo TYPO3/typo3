@@ -61,9 +61,6 @@ div.dataTables_wrapper div.dataTables_scroll {
 div.dataTables_wrapper div.dataTables_scrollHead {
 	background-color: #666;
 	color: white;
-	font-size: 10px;
-	line-height: 19px;
-	height: 20px;
 	font-weight: bold;
 }
 
@@ -140,9 +137,7 @@ div.dataTables_wrapper td.waiting label {
 
 div.dataTables_wrapper td label {
 	display: block;
-	height: 24px;
 	width: 100%;
-	line-height: 24px;
 }
 
 div.dataTables_wrapper tbody td {

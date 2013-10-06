@@ -29,8 +29,6 @@ span.item-state-deleted {
 }
 .legend dd, .legend dt {
 	display: inline;
-	font-size: 11px;
-	line-height: 13px;
 	overflow: hidden;
 }
 .legend dd span {
