@@ -103,16 +103,15 @@ class DatabaseIntegrityView {
 			}
 		</script>
 		';
-		$this->doc->table_TABLE = '<table border="0" cellspacing="0" cellpadding="0" class="typo3-dblist" style="width:400px!important;">
-			<colgroup><col width="24"><col width="300"><col width="76"></colgroup>';
+		$this->doc->table_TABLE = '<table class="t3-table">
+			<colgroup><col width="24"><col><col width="150"></colgroup>';
 		$this->doc->tableLayout = array(
 			'0' => array(
-				'defCol' => array('<td class="t3-row-header"><img src="' . $this->doc->backPath . 'clear.gif" width="10" height="1" alt="" /></td><td valign="top" class="t3-row-header"><strong>', '</strong></td>')
+				'tr' => array('<thead><tr>', '</tr></thead>'),
+				'defCol' => array('<th>', '</th>')
 			),
 			'defRow' => array(
-				'0' => array('<td valign="top">', '</td>'),
-				'1' => array('<td valign="top">', '</td>'),
-				'defCol' => array('<td><img src="' . $this->doc->backPath . 'clear.gif" width="15" height="1" alt="" /></td><td valign="top">', '</td>')
+				'defCol' => array('<td>', '</td>')
 			)
 		);
 	}
@@ -407,9 +406,10 @@ class DatabaseIntegrityView {
 		$admin->backPath = $GLOBALS['BACK_PATH'];
 		$admin->genTree(0, '');
 		$this->content .= $this->doc->header($GLOBALS['LANG']->getLL('records'));
+
 		// Pages stat
 		$codeArr = array();
-		$codeArr['tableheader'] = array('', $GLOBALS['LANG']->getLL('count'));
+		$codeArr['tableheader'] = array('', '', $GLOBALS['LANG']->getLL('count'));
 		$i++;
 		$codeArr[$i][] = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('pages', array());
 		$codeArr[$i][] = $GLOBALS['LANG']->getLL('total_pages');
@@ -424,10 +424,11 @@ class DatabaseIntegrityView {
 		$codeArr[$i][] = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('pages', array('deleted' => 1));
 		$codeArr[$i][] = $GLOBALS['LANG']->getLL('deleted_pages');
 		$codeArr[$i][] = count($admin->recStats['deleted']['pages']);
-		$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('pages'), $this->doc->table($codeArr), FALSE, TRUE);
+		$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('pages'), $this->doc->table($codeArr), TRUE, TRUE);
+
 		// Doktype
 		$codeArr = array();
-		$codeArr['tableheader'] = array($GLOBALS['LANG']->getLL('doktype_value'), $GLOBALS['LANG']->getLL('count'));
+		$codeArr['tableheader'] = array('', $GLOBALS['LANG']->getLL('doktype_value'), $GLOBALS['LANG']->getLL('count'));
 		$doktype = $GLOBALS['TCA']['pages']['columns']['doktype']['config']['items'];
 		if (is_array($doktype)) {
 			foreach ($doktype as $n => $setup) {
@@ -437,8 +438,9 @@ class DatabaseIntegrityView {
 					$codeArr[$n][] = intval($admin->recStats['doktype'][$setup[1]]);
 				}
 			}
-			$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('doktype'), $this->doc->table($codeArr), FALSE, TRUE);
+			$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('doktype'), $this->doc->table($codeArr), TRUE, TRUE);
 		}
+
 		// Tables and lost records
 		$id_list = '-1,0,' . implode(',', array_keys($admin->page_idArray));
 		$id_list = rtrim($id_list, ',');
@@ -451,9 +453,9 @@ class DatabaseIntegrityView {
 			$id_list = rtrim($id_list, ',');
 			$admin->lostRecords($id_list);
 		}
-		$this->doc->table_TABLE = '<table border="0" cellspacing="0" cellpadding="0" class="typo3-dblist" style="width:700px!important;">';
 		$codeArr = array();
 		$codeArr['tableheader'] = array(
+			'',
 			$GLOBALS['LANG']->getLL('label'),
 			$GLOBALS['LANG']->getLL('tablename'),
 			$GLOBALS['LANG']->getLL('total_lost'),
@@ -510,24 +512,27 @@ class DatabaseIntegrityView {
 		$fkey_arrays = $admin->getGroupFields('');
 		$admin->selectNonEmptyRecordsWithFkeys($fkey_arrays);
 		$fileTest = $admin->testFileRefs();
+
 		$code = '';
 		if (is_array($fileTest['noReferences'])) {
 			foreach ($fileTest['noReferences'] as $val) {
 				$code .= '<nobr>' . $val[0] . '/<strong>' . $val[1] . '</strong></nobr><br>';
 			}
 		} else {
-			$code = $GLOBALS['LANG']->getLL('no_files_found');
+			$code = '<p>' . $GLOBALS['LANG']->getLL('no_files_found') . '</p>';
 		}
-		$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('files_no_ref'), $code, FALSE, TRUE);
+		$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('files_no_ref'), $code, TRUE, TRUE);
+
 		$code = '';
 		if (is_array($fileTest['moreReferences'])) {
 			foreach ($fileTest['moreReferences'] as $val) {
 				$code .= '<nobr>' . $val[0] . '/<strong>' . $val[1] . '</strong>: ' . $val[2] . ' ' . $GLOBALS['LANG']->getLL('references') . '</nobr><br>' . $val[3] . '<br><br>';
 			}
 		} else {
-			$code = $GLOBALS['LANG']->getLL('no_files_found');
+			$code = '<p>' . $GLOBALS['LANG']->getLL('no_files_found') . '</p>';
 		}
-		$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('files_many_ref'), $code, FALSE, TRUE);
+		$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('files_many_ref'), $code, TRUE, TRUE);
+
 		$code = '';
 		if (is_array($fileTest['noFile'])) {
 			ksort($fileTest['noFile']);
@@ -535,11 +540,12 @@ class DatabaseIntegrityView {
 				$code .= '<nobr>' . $val[0] . '/<strong>' . $val[1] . '</strong> ' . $GLOBALS['LANG']->getLL('isMissing') . ' </nobr><br>' . $GLOBALS['LANG']->getLL('referencedFrom') . $val[2] . '<br><br>';
 			}
 		} else {
-			$code = $GLOBALS['LANG']->getLL('no_files_found');
+			$code = '<p>' . $GLOBALS['LANG']->getLL('no_files_found') . '</p>';
 		}
-		$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('files_no_file'), $code, FALSE, TRUE);
-		$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('select_db'), $admin->testDBRefs($admin->checkSelectDBRefs), FALSE, TRUE);
-		$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('group_db'), $admin->testDBRefs($admin->checkGroupDBRefs), FALSE, TRUE);
+
+		$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('files_no_file'), $code, TRUE, TRUE);
+		$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('select_db'), $admin->testDBRefs($admin->checkSelectDBRefs), TRUE, TRUE);
+		$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('group_db'), $admin->testDBRefs($admin->checkGroupDBRefs), TRUE, TRUE);
 	}
 
 	/**

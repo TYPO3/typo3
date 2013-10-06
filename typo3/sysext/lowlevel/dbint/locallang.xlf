@@ -46,13 +46,13 @@
 				<source>XML Export</source>
 			</trans-unit>
 			<trans-unit id="clickToUpdateRefIndex" xml:space="preserve">
-				<source>Click here to update reference index:</source>
+				<source>Click here to update reference index</source>
 			</trans-unit>
 			<trans-unit id="updateNow" xml:space="preserve">
 				<source>Update now!</source>
 			</trans-unit>
 			<trans-unit id="clickToTestRefIndex" xml:space="preserve">
-				<source>Click here to test reference index:</source>
+				<source>Click here to test reference index</source>
 			</trans-unit>
 			<trans-unit id="referenceIndex_description" xml:space="preserve">
 				<source>TYPO3's reference index keeps track of the relations between records. As it can happen that the reference index contains outdated values, you can check and update it here.</source>
@@ -73,13 +73,13 @@
 				<source>You can also run the check as a shell script using CLI if the processing takes longer than the PHP max_execution_time allows.</source>
 			</trans-unit>
 			<trans-unit id="checkScript_check_description" xml:space="preserve">
-				<source>To check the reference index use:</source>
+				<source>To check the reference index use</source>
 			</trans-unit>
 			<trans-unit id="checkScript_check_example" xml:space="preserve">
 				<source>php /path/to/your/typo3/cli_dispatch.phpsh lowlevel_refindex -c</source>
 			</trans-unit>
 			<trans-unit id="checkScript_update_description" xml:space="preserve">
-				<source>To update the reference index use:</source>
+				<source>To update the reference index use</source>
 			</trans-unit>
 			<trans-unit id="checkScript_update_example" xml:space="preserve">
 				<source>php /path/to/your/typo3/cli_dispatch.phpsh lowlevel_refindex -e</source>
@@ -91,7 +91,7 @@
 				<source>If you run these commands from the command line, make sure that a BE user with the name _cli_lowlevel exists.</source>
 			</trans-unit>
 			<trans-unit id="checkScript_moreDetails" xml:space="preserve">
-				<source>For more details see:</source>
+				<source>For more details see</source>
 			</trans-unit>
 			<trans-unit id="updateRefIndex" xml:space="preserve">
 				<source>Update reference index</source>
@@ -112,25 +112,25 @@
 				<source>Show even deleted entries (with undelete buttons)</source>
 			</trans-unit>
 			<trans-unit id="searchOptions" xml:space="preserve">
-				<source>Search options:</source>
+				<source>Search options</source>
 			</trans-unit>
 			<trans-unit id="result" xml:space="preserve">
-				<source>Result:</source>
+				<source>Result</source>
 			</trans-unit>
 			<trans-unit id="tables" xml:space="preserve">
-				<source>Tables:</source>
+				<source>Tables</source>
 			</trans-unit>
 			<trans-unit id="references" xml:space="preserve">
-				<source>references:</source>
+				<source>references</source>
 			</trans-unit>
 			<trans-unit id="isMissing" xml:space="preserve">
 				<source>is missing!</source>
 			</trans-unit>
 			<trans-unit id="referencedFrom" xml:space="preserve">
-				<source>Referenced from:</source>
+				<source>Referenced from</source>
 			</trans-unit>
 			<trans-unit id="enterRegexPattern" xml:space="preserve">
-				<source>Enter regex pattern:</source>
+				<source>Enter regex pattern</source>
 			</trans-unit>
 			<trans-unit id="searchButton" xml:space="preserve">
 				<source>Search</source>
@@ -142,43 +142,43 @@
 				<source>being checked...</source>
 			</trans-unit>
 			<trans-unit id="directories" xml:space="preserve">
-				<source>Dirs:</source>
+				<source>Dirs</source>
 			</trans-unit>
 			<trans-unit id="directoriesTooDeep" xml:space="preserve">
-				<source>ERROR: Directories deeper than the following number of levels:</source>
+				<source>ERROR: Directories deeper than the following number of levels</source>
 			</trans-unit>
 			<trans-unit id="files" xml:space="preserve">
-				<source>Files:</source>
+				<source>Files</source>
 			</trans-unit>
 			<trans-unit id="matchingFiles" xml:space="preserve">
-				<source>Matching files:</source>
+				<source>Matching files</source>
 			</trans-unit>
 			<trans-unit id="notChecked" xml:space="preserve">
 				<source>not checked.</source>
 			</trans-unit>
 			<trans-unit id="searchingForFilenames" xml:space="preserve">
-				<source>Searching for filenames:</source>
+				<source>Searching for filenames</source>
 			</trans-unit>
 			<trans-unit id="fixLostRecord" xml:space="preserve">
 				<source>Click to move this lost record to rootlevel (pid=0)</source>
 			</trans-unit>
 			<trans-unit id="doktype" xml:space="preserve">
-				<source>Document types:</source>
+				<source>Document types</source>
 			</trans-unit>
 			<trans-unit id="doktype_value" xml:space="preserve">
 				<source>Document types (value)</source>
 			</trans-unit>
 			<trans-unit id="pages" xml:space="preserve">
-				<source>Pages:</source>
+				<source>Pages</source>
 			</trans-unit>
 			<trans-unit id="total_pages" xml:space="preserve">
-				<source>Total number of pages:</source>
+				<source>Total number of pages</source>
 			</trans-unit>
 			<trans-unit id="deleted_pages" xml:space="preserve">
-				<source>Marked-deleted pages:</source>
+				<source>Marked-deleted pages</source>
 			</trans-unit>
 			<trans-unit id="hidden_pages" xml:space="preserve">
-				<source>Hidden pages:</source>
+				<source>Hidden pages</source>
 			</trans-unit>
 			<trans-unit id="count" xml:space="preserve">
 				<source>Count</source>
@@ -199,25 +199,25 @@
 				<source>This will analyse the content of the tables and check if there are 'empty' relations between records or if files are missing from their expected position.</source>
 			</trans-unit>
 			<trans-unit id="files_many_ref" xml:space="preserve">
-				<source>Files referenced from more than one record:</source>
+				<source>Files referenced from more than one record</source>
 			</trans-unit>
 			<trans-unit id="no_files_found" xml:space="preserve">
 				<source>No files found.</source>
 			</trans-unit>
 			<trans-unit id="files_no_ref" xml:space="preserve">
-				<source>Files with no references at all (delete them!):</source>
+				<source>Files with no references at all (delete them!)</source>
 			</trans-unit>
 			<trans-unit id="files_no_file" xml:space="preserve">
-				<source>Missing files:</source>
+				<source>Missing files</source>
 			</trans-unit>
 			<trans-unit id="select_db" xml:space="preserve">
-				<source>Select fields:</source>
+				<source>Select fields</source>
 			</trans-unit>
 			<trans-unit id="group_db" xml:space="preserve">
-				<source>Group fields:</source>
+				<source>Group fields</source>
 			</trans-unit>
 			<trans-unit id="tree" xml:space="preserve">
-				<source>The Page Tree:</source>
+				<source>The Page Tree</source>
 			</trans-unit>
 			<trans-unit id="tree_description" xml:space="preserve">
 				<source>This shows all pages in the system in one large tree. Beware that this will probably result in a very long document which will also take some time for the server to compute!</source>
