@@ -413,13 +413,13 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 		} else {
 			// Initialise table layout
 			$tableLayout = array(
-				'table' => array('<table border="0" cellspacing="0" cellpadding="0" class="typo3-dblist">', '</table>'),
+				'table' => array('<table class="t3-table">', '</table>'),
 				'0' => array(
-					'tr' => array('<tr class="t3-row-header" valign="top">', '</tr>'),
+					'tr' => array('<thead><tr>', '</tr></thead>'),
 					'defCol' => array('<td>', '</td>')
 				),
 				'defRow' => array(
-					'tr' => array('<tr class="db_list_normal">', '</tr>'),
+					'tr' => array('<tr>', '</tr>'),
 					'defCol' => array('<td>', '</td>')
 				)
 			);
@@ -888,11 +888,11 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 			// Initialise table layout
 			$tableLayout = array(
 				'table' => array(
-					'<table border="0" cellspacing="0" cellpadding="0" class="typo3-dblist">',
+					'<table class="t3-table">',
 					'</table>'
 				),
 				'0' => array(
-					'tr' => array('<tr class="t3-row-header">', '</tr>'),
+					'tr' => array('<thead><tr>', '</tr></thead>'),
 					'defCol' => array('<td>', '</td>'),
 					'1' => array('<td style="width: 56px;">', '</td>'),
 					'3' => array('<td colspan="2">', '</td>')
