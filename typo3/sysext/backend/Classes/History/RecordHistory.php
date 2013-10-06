@@ -385,15 +385,15 @@ class RecordHistory {
 	public function displayHistory() {
 		$lines = array();
 		// Initialize:
-		$lines[] = '<tr class="t3-row-header">
-				<td> </td>
-				<td>' . $GLOBALS['LANG']->getLL('time', 1) . '</td>
-				<td>' . $GLOBALS['LANG']->getLL('age', 1) . '</td>
-				<td>' . $GLOBALS['LANG']->getLL('user', 1) . '</td>
-				<td>' . $GLOBALS['LANG']->getLL('tableUid', 1) . '</td>
-				<td>' . $GLOBALS['LANG']->getLL('differences', 1) . '</td>
-				<td>&nbsp;</td>
-			</tr>';
+		$lines[] = '<thead><tr>
+				<th> </th>
+				<th>' . $GLOBALS['LANG']->getLL('time', 1) . '</th>
+				<th>' . $GLOBALS['LANG']->getLL('age', 1) . '</th>
+				<th>' . $GLOBALS['LANG']->getLL('user', 1) . '</th>
+				<th>' . $GLOBALS['LANG']->getLL('tableUid', 1) . '</th>
+				<th>' . $GLOBALS['LANG']->getLL('differences', 1) . '</th>
+				<th>&nbsp;</th>
+			</tr></thead>';
 		$be_user_array = BackendUtility::getUserNames();
 		// Traverse changelog array:
 		if (!$this->changeLog) {
@@ -464,7 +464,7 @@ class RecordHistory {
 			}
 			// put line together
 			$lines[] = '
-				<tr class="db_list_normal">
+				<tr>
 					<td>' . implode('</td><td>', $singleLine) . '</td>
 				</tr>';
 		}
@@ -473,7 +473,7 @@ class RecordHistory {
 			<!--
 				History (list):
 			-->
-			<table class="typo3-dblist" border="0" cellpadding="0" cellspacing="0" id="typo3-history">
+			<table class="t3-table" id="typo3-history">
 				' . implode('', $lines) . '
 			</table>';
 		if ($this->lastSyslogId) {
