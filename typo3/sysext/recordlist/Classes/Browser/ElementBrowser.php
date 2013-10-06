@@ -1600,7 +1600,7 @@ class ElementBrowser {
 					$imageUrl = $fileObject->process(\TYPO3\CMS\Core\Resource\ProcessedFile::CONTEXT_IMAGEPREVIEW, array('width' => 64, 'height' => 64))->getPublicUrl(TRUE);
 					$imgInfo = $imgObj->getImageDimensions($fileObject->getForLocalProcessing(FALSE));
 					$pDim = $imgInfo[0] . 'x' . $imgInfo[1] . ' pixels';
-					$clickIcon = '<img src="' . $imageUrl . '" hspace="5" vspace="5" border="1"';
+					$clickIcon = '<img src="' . $imageUrl . '" hspace="5" vspace="5" border="1" />';
 				} else {
 					$clickIcon = '';
 					$pDim = '';
