@@ -165,7 +165,14 @@ class DocumentRepository {
 					$documentFile = '';
 					switch ($format) {
 						case 'html':
-							$documentFile = 'Index.html';
+							// Try to find a valid index file
+							$indexFiles = array('Index.html', 'index.html', 'index.htm');
+							foreach ($indexFiles as $indexFile) {
+								if (file_exists(PATH_site . $formatPath . $format . '/' . $indexFile)) {
+									$documentFile = $indexFile;
+									break;
+								}
+							}
 							break;
 						case 'pdf':
 							// Retrieve first PDF
@@ -175,7 +182,7 @@ class DocumentRepository {
 							}
 							break;
 					}
-					if (!empty($documentFile) && is_file(PATH_site . $formatPath . $format . '/' . $documentFile)) {
+					if (!empty($documentFile)) {
 						/** @var \TYPO3\CMS\Documentation\Domain\Model\DocumentFormat $documentFormat */
 						$documentFormat = $this->objectManager->get('TYPO3\\CMS\\Documentation\\Domain\\Model\\DocumentFormat')
 							->setFormat($format)
