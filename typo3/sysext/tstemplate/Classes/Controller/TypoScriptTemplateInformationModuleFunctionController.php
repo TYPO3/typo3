@@ -59,7 +59,7 @@ class TypoScriptTemplateInformationModuleFunctionController extends \TYPO3\CMS\B
 			'id' => $this->pObj->id
 		);
 		$aHref = BackendUtility::getModuleUrl('web_ts', $urlParameters);
-		$ret .= '<a href="' . htmlspecialchars(($aHref . '&e[' . $field . ']=1')) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open', array('title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xlf:editField', TRUE))) . '<strong>' . $label . '&nbsp;&nbsp;</strong></a>';
+		$ret .= '<a href="' . htmlspecialchars(($aHref . '&e[' . $field . ']=1')) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open', array('title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xlf:editField', TRUE))) . '<strong>' . $label . '</strong></a>';
 		$ret .= '</td><td width="80%" class="bgColor4">' . $data . '&nbsp;</td></tr>';
 		return $ret;
 	}
@@ -392,7 +392,7 @@ class TypoScriptTemplateInformationModuleFunctionController extends \TYPO3\CMS\B
 			$outCode .= $this->tableRow($GLOBALS['LANG']->getLL('description'), nl2br(htmlspecialchars($tplRow['description'])), 'description');
 			$outCode .= $this->tableRow($GLOBALS['LANG']->getLL('constants'), sprintf($GLOBALS['LANG']->getLL('editToView'), trim($tplRow[constants]) ? count(explode(LF, $tplRow[constants])) : 0), 'constants');
 			$outCode .= $this->tableRow($GLOBALS['LANG']->getLL('setup'), sprintf($GLOBALS['LANG']->getLL('editToView'), trim($tplRow[config]) ? count(explode(LF, $tplRow[config])) : 0), 'config');
-			$outCode = '<table class="t3-table-info">' . $outCode . '</table>';
+			$outCode = '<table class="t3-table">' . $outCode . '</table>';
 			// Edit all icon:
 			$outCode .= '<br /><a href="#" onClick="' . BackendUtility::editOnClick((rawurlencode('&createExtension=0') . '&amp;edit[sys_template][' . $tplRow['uid'] . ']=edit'), $BACK_PATH, '') . '"><strong>' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open', array('title' => $GLOBALS['LANG']->getLL('editTemplateRecord'))) . $GLOBALS['LANG']->getLL('editTemplateRecord') . '</strong></a>';
 			$theOutput .= $this->pObj->doc->section('', $outCode);

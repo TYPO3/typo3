@@ -132,6 +132,7 @@ class TypoScriptTemplateModuleController extends \TYPO3\CMS\Backend\Module\BaseS
 			'FUNC_MENU' => '',
 			'CONTENT' => ''
 		);
+
 		// Access check...
 		// The page will show only if there is a valid page and if this page may be viewed by the user
 		$this->pageinfo = BackendUtility::readPageAccess($this->id, $this->perms_clause);
@@ -139,6 +140,7 @@ class TypoScriptTemplateModuleController extends \TYPO3\CMS\Backend\Module\BaseS
 		$this->doc = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->setModuleTemplate('EXT:tstemplate/Resources/Private/Templates/tstemplate.html');
+
 		if ($this->id && $this->access) {
 			$urlParameters = array(
 				'id' => $this->id,
@@ -146,6 +148,7 @@ class TypoScriptTemplateModuleController extends \TYPO3\CMS\Backend\Module\BaseS
 			);
 			$aHref = BackendUtility::getModuleUrl('web_ts', $urlParameters);
 			$this->doc->form = '<form action="' . htmlspecialchars($aHref) . '" method="post" enctype="' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'] . '" name="editForm">';
+
 			// JavaScript
 			$this->doc->JScode = '
 		<script language="javascript" type="text/javascript">
@@ -172,9 +175,6 @@ class TypoScriptTemplateModuleController extends \TYPO3\CMS\Backend\Module\BaseS
 				TABLE#typo3-objectBrowser { width: 100%; margin-bottom: 24px; }
 				TABLE#typo3-objectBrowser A { text-decoration: none; }
 				TABLE#typo3-objectBrowser .comment { color: maroon; font-weight: bold; }
-				TABLE#ts-analyzer { width: 100% }
-				TABLE#ts-analyzer tr td {padding: 0 4px;}
-				TABLE#ts-analyzer tr.t3-row-header td { padding: 2px 4px; font-weight:bold; color: #fff; }
 				.ts-typoscript { width: 100%; }
 				.tsob-menu label, .tsob-menu-row2 label, .tsob-conditions label { padding: 0 5px 0 0; vertical-align: text-top;}
 				.tsob-menu-row2 {margin-top: 10px;}
@@ -182,7 +182,6 @@ class TypoScriptTemplateModuleController extends \TYPO3\CMS\Backend\Module\BaseS
 				.tsob-search-submit {margin-left: 3px; margin-right: 3px;}
 				.tst-analyzer-options { margin:5px 0; }
 				.tst-analyzer-options label {padding-left:5px; vertical-align:text-top; }
-				.bgColor0 {background-color:#fff; color: #000; }
 			';
 			// Setting up the context sensitive menu:
 			$this->doc->getContextMenuCode();
@@ -194,12 +193,6 @@ class TypoScriptTemplateModuleController extends \TYPO3\CMS\Backend\Module\BaseS
 			$markers['FUNC_MENU'] = BackendUtility::getFuncMenu($this->id, 'SET[function]', $this->MOD_SETTINGS['function'], $this->MOD_MENU['function']);
 			$markers['CONTENT'] = $this->content;
 		} else {
-			// If no access or if ID == zero
-			$this->doc->inDocStylesArray[] = '
-				TABLE#ts-overview tr.t3-row-header { background-color: #A2AAB8; }
-				TABLE#ts-overview tr td {padding: 2px;}
-				TABLE#ts-overview tr.t3-row-header td { padding: 2px 4px; font-weight:bold; color: #fff; }
-			';
 			// Template pages:
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('pages.uid, count(*) AS count, max(sys_template.root) AS root_max_val, min(sys_template.root) AS root_min_val', 'pages,sys_template', 'pages.uid=sys_template.pid' . BackendUtility::deleteClause('pages') . BackendUtility::versioningPlaceholderClause('pages') . BackendUtility::deleteClause('sys_template') . BackendUtility::versioningPlaceholderClause('sys_template'), 'pages.uid');
 			$templateArray = array();
@@ -208,25 +201,28 @@ class TypoScriptTemplateModuleController extends \TYPO3\CMS\Backend\Module\BaseS
 				$this->setInPageArray($pArray, BackendUtility::BEgetRootLine($row['uid'], 'AND 1=1'), $row);
 			}
 			$GLOBALS['TYPO3_DB']->sql_free_result($res);
-			$lines = array();
-			$lines[] = '<tr class="t3-row-header">
-				<td nowrap>' . $GLOBALS['LANG']->getLL('pageName') . '</td>
-				<td nowrap>' . $GLOBALS['LANG']->getLL('templates') . '</td>
-				<td nowrap>' . $GLOBALS['LANG']->getLL('isRoot') . '</td>
-				<td nowrap>' . $GLOBALS['LANG']->getLL('isExt') . '</td>
-				</tr>';
-			$lines = array_merge($lines, $this->renderList($pArray));
-			$table = '<table border="0" cellpadding="0" cellspacing="1" id="ts-overview">' . implode('', $lines) . '</table>';
+
+			$table = '<table class="t3-table" id="ts-overview">' .
+					'<thead>' .
+					'<tr>' .
+					'<th>' . $GLOBALS['LANG']->getLL('pageName') . '</th>' .
+					'<th>' . $GLOBALS['LANG']->getLL('templates') . '</th>' .
+					'<th>' . $GLOBALS['LANG']->getLL('isRoot') . '</th>' .
+					'<th>' . $GLOBALS['LANG']->getLL('isExt') . '</th>' .
+					'</tr>' .
+					'</thead>' .
+					'<tbody>' . implode('', $this->renderList($pArray)) . '</tbody>' .
+					'</table>';
+
 			$this->content = $this->doc->header($GLOBALS['LANG']->getLL('moduleTitle'));
-			$this->content .= $this->doc->section('', '
-			<br />
-			' . $GLOBALS['LANG']->getLL('overview') . '
-			<br /><br />' . $table);
+			$this->content .= $this->doc->section('', '<p class="lead">' . $GLOBALS['LANG']->getLL('overview') . '</p>' . $table);
+
 			// RENDER LIST of pages with templates, END
 			// Setting up the buttons and markers for docheader
 			$docHeaderButtons = $this->getButtons();
 			$markers['CONTENT'] = $this->content;
 		}
+
 		// Build the <body> for the module
 		$this->content = $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
 		// Renders the module page
@@ -519,16 +515,16 @@ page.10.value = HELLO WORLD!
 					if (isset($pArray[$k . '_'])) {
 						$lines[] = '<tr class="' . ($i++ % 2 == 0 ? 'bgColor4' : 'bgColor6') . '">
 							<td nowrap><img src="clear.gif" width="1" height="1" hspace=' . $c * 10 . ' align="top">' . '<a href="' . GeneralUtility::linkThisScript(array('id' => $k)) . '">' . IconUtility::getSpriteIconForRecord('pages', BackendUtility::getRecordWSOL('pages', $k), array('title' => ('ID: ' . $k))) . GeneralUtility::fixed_lgd_cs($pArray[$k], 30) . '</a></td>
-							<td align="center">' . $pArray[($k . '_')]['count'] . '</td>
-							<td align="center" class="bgColor5">' . ($pArray[$k . '_']['root_max_val'] > 0 ? IconUtility::getSpriteIcon('status-status-checked') : '&nbsp;') . '</td>
-							<td align="center">' . ($pArray[$k . '_']['root_min_val'] == 0 ? IconUtility::getSpriteIcon('status-status-checked') : '&nbsp;') . '</td>
+							<td>' . $pArray[($k . '_')]['count'] . '</td>
+							<td>' . ($pArray[$k . '_']['root_max_val'] > 0 ? IconUtility::getSpriteIcon('status-status-checked') : '&nbsp;') . '</td>
+							<td>' . ($pArray[$k . '_']['root_min_val'] == 0 ? IconUtility::getSpriteIcon('status-status-checked') : '&nbsp;') . '</td>
 							</tr>';
 					} else {
 						$lines[] = '<tr class="' . ($i++ % 2 == 0 ? 'bgColor4' : 'bgColor6') . '">
 							<td nowrap ><img src="clear.gif" width="1" height="1" hspace=' . $c * 10 . ' align=top>' . IconUtility::getSpriteIconForRecord('pages', BackendUtility::getRecordWSOL('pages', $k)) . GeneralUtility::fixed_lgd_cs($pArray[$k], 30) . '</td>
-							<td align="center"></td>
-							<td align="center" class="bgColor5"></td>
-							<td align="center"></td>
+							<td></td>
+							<td></td>
+							<td></td>
 							</tr>';
 					}
 					$lines = $this->renderList($pArray[$k . '.'], $lines, $c + 1);

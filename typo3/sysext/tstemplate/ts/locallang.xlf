@@ -25,7 +25,7 @@
 				<source>Page name</source>
 			</trans-unit>
 			<trans-unit id="templates" xml:space="preserve">
-				<source># Templates</source>
+				<source>Templates</source>
 			</trans-unit>
 			<trans-unit id="isRoot" xml:space="preserve">
 				<source>Is Root?</source>

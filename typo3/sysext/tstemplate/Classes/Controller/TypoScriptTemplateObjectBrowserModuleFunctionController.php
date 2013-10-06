@@ -419,22 +419,27 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends \TYPO3\CMS
 				$theOutput .= $flashMessage->render();
 			}
 			if (isset($this->pObj->MOD_SETTINGS['ts_browser_TLKeys_' . $bType][$theKey])) {
-				$remove = '<td width="1%" nowrap><a href="' . htmlspecialchars(($aHref . '&addKey[' . $theKey . ']=0&SET[ts_browser_toplevel_' . $bType . ']=0')) . '"><strong>' . $GLOBALS['LANG']->getLL('removeKey') . '</strong></a></td>';
+				$remove = '<th><a href="' . htmlspecialchars(($aHref . '&addKey[' . $theKey . ']=0&SET[ts_browser_toplevel_' . $bType . ']=0')) . '">' . $GLOBALS['LANG']->getLL('removeKey') . '</a></th>';
 			} else {
 				$remove = '';
 			}
 			$label = $theKey ? $theKey : ($bType == 'setup' ? $GLOBALS['LANG']->csConvObj->conv_case($GLOBALS['LANG']->charSet, $GLOBALS['LANG']->getLL('setupRoot'), 'toUpper') : $GLOBALS['LANG']->csConvObj->conv_case($GLOBALS['LANG']->charSet, $GLOBALS['LANG']->getLL('constantRoot'), 'toUpper'));
 			$theOutput .= $this->pObj->doc->spacer(15);
 			$theOutput .= $this->pObj->doc->sectionEnd();
-			$theOutput .= '<table border="0" id="typo3-objectBrowser">
-					<tr class="t3-row-header">
-						<td nowrap="nowrap" width="99%"><strong>' . $label . '</strong></td>' . $remove . '
-					</tr>
-					<tr>
-						<td class="bgColor4" nowrap="nowrap">' . $tree . '</td>' . ($remove ? '<td></td>' : '') . '
-					</tr>
-				</table>
-			';
+			$theOutput .= '<table class="t3-table" id="typo3-objectBrowser">
+	<thead>
+		<tr>
+			<th>' . $label . '</th>' .
+			$remove .
+		'</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>' . $tree . '</td>' .
+			($remove ? '<td></td>' : '') . '
+		</tr>
+	</tbody>
+</table>';
 			// second row options
 			$menu = '<div class="tsob-menu-row2">';
 			$menu .= BackendUtility::getFuncCheck($this->pObj->id, 'SET[ts_browser_showComments]', $this->pObj->MOD_SETTINGS['ts_browser_showComments'], '', '', 'id="checkTs_browser_showComments"');
