@@ -96,5 +96,44 @@ class BackendTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$this->assertEquals('2013-04-15', $fixture->_call('getPlainValue', $input, $columnMap));
 	}
 
+	/**
+	 * @test
+	 */
+	public function getIdentifierByObjectReturnsIdentifierForNonlazyObject() {
+		$fakeUuid = 'fakeUuid';
+		$configurationManager = $this->getMock('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManagerInterface');
+		$session = $this->getMock('stdClass', array('getIdentifierByObject'), array(), '', FALSE);
+		$object = new \stdClass();
+
+		$session->expects($this->once())->method('getIdentifierByObject')->with($object)->will($this->returnValue($fakeUuid));
+
+		/** @var \TYPO3\CMS\Extbase\Persistence\Generic\Backend $backend */
+		$backend = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Backend', array('dummy'), array($configurationManager));
+		$backend->_set('session', $session);
+
+		$this->assertEquals($backend->getIdentifierByObject($object), $fakeUuid);
+	}
+
+	/**
+	 * @test
+	 */
+	public function getIdentifierByObjectReturnsIdentifierForLazyObject() {
+		$fakeUuid = 'fakeUuid';
+		$configurationManager = $this->getMock('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManagerInterface');
+		$parentObject = new \stdClass();
+		$proxy = $this->getMock('TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy', array('_loadRealInstance'), array($parentObject, 'y', 'z'), '', FALSE);
+		$session = $this->getMock('stdClass', array('getIdentifierByObject'), array(), '', FALSE);
+		$object = new \stdClass();
+
+		$proxy->expects($this->once())->method('_loadRealInstance')->will($this->returnValue($object));
+		$session->expects($this->once())->method('getIdentifierByObject')->with($object)->will($this->returnValue($fakeUuid));
+
+		/** @var \TYPO3\CMS\Extbase\Persistence\Generic\Backend $backend */
+		$backend = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Backend', array('dummy'), array($configurationManager));
+		$backend->_set('session', $session);
+
+		$this->assertEquals($backend->getIdentifierByObject($proxy), $fakeUuid);
+	}
+
 }
 ?>
