@@ -155,7 +155,7 @@ return array(
 		),
 		'title' => array(
 			'l10n_mode' => 'mergeIfNotBlank',
-			'exclude' => 0,
+			'exclude' => 1,
 			'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.title',
 			'config' => array(
 				'type' => 'input',
