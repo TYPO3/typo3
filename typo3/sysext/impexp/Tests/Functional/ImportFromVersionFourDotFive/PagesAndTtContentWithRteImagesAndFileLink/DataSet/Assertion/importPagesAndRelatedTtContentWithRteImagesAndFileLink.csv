@@ -1,0 +1,20 @@
+"pages"
+,"uid","pid","sorting","deleted","title"
+,1,0,256,0,"Content Image in RTE"
+"tt_content"
+,"uid","pid","sorting","deleted","header"
+,1,1,256,0,""
+"sys_file"
+,"uid","pid","storage","type","identifier","identifier_hash","folder_hash","extension","mime_type","name","sha1","size"
+,1,0,1,2,"/user_upload/_imported/fileadmin/user_upload/typo3_image4.jpg","a330d6b04ff223d1a7ac8536eff3f0af97cf663f","eb6df7c76ff158aabb50b417535512ad0cc83569","jpg","image/jpeg","typo3_image4.jpg","c5671a5b7df16f677f5dff2a142867767bf4978e","6758"
+,2,0,1,2,"/user_upload/_imported/uploads/RTEmagicC_typo3_image2.jpg.jpg","da275898dd12ae8b3f468597559aa69760bff5d9","f75491913dc27f8abe7587f8ee2d6951f65d2634","jpg","image/jpeg","RTEmagicC_typo3_image2.jpg.jpg","cc074e6230fbc57fdafa313ba667ebd1f8fb365e","5951"
+,3,0,1,2,"/user_upload/_imported/RTEmagicP_typo3_image2.jpg","223841171aa5d8e7ff9dcb7cbef80243466f9743","d62c2c9935d7b7e4f3ed493282bf8287abd80f93","jpg","image/jpeg","RTEmagicP_typo3_image2.jpg","da9acdf1e105784a57bbffec9520969578287797","7958"
+,4,0,1,2,"/user_upload/_imported/fileadmin/user_upload/typo3_image3.jpg","84844f504e23958430fca903a1fef12096429ce0","eb6df7c76ff158aabb50b417535512ad0cc83569","jpg","image/jpeg","typo3_image3.jpg","e873c1e2ffd0f191e183a1057de3eef4d62e782d","5565"
+"sys_file_metadata"
+,"uid","pid","file","title","width","height","description","alternative","sys_language_uid","l10n_parent"
+,1,0,1,\NULL,400,267,\NULL,\NULL,0,0
+,2,0,2,\NULL,280,210,\NULL,\NULL,0,0
+,3,0,3,\NULL,400,300,\NULL,\NULL,0,0
+,4,0,4,\NULL,400,267,\NULL,\NULL,0,0
+
+

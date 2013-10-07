@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3RecordDocument>
+	<header type="array">
+		<charset>utf-8</charset>
+		<XMLversion>1.0</XMLversion>
+		<meta type="array">
+			<TYPO3_version>4.5.32</TYPO3_version>
+		</meta>
+		<pagetree type="array">
+			<node index="7" type="array">
+				<uid>7</uid>
+			</node>
+		</pagetree>
+		<records type="array">
+			<table index="pages" type="array">
+				<rec index="7" type="array">
+					<uid>7</uid>
+					<pid>2</pid>
+					<title>Pages Overlay Media</title>
+					<size>1737</size>
+					<relations index="rels" type="array">
+					</relations>
+					<softrefs type="array">
+					</softrefs>
+				</rec>
+			</table>
+			<table index="pages_language_overlay" type="array">
+				<rec index="1" type="array">
+					<uid>1</uid>
+					<pid>7</pid>
+					<title>Pages Overlay Media</title>
+					<size>1152</size>
+					<relations index="rels" type="array">
+						<element index="sys_language:1" type="array">
+							<id>1</id>
+							<table>sys_language</table>
+						</element>
+					</relations>
+					<softrefs type="array">
+					</softrefs>
+					<filerefs type="array">
+						<file index="0">c350a838df6c4791dda258ed01cd72f1</file>
+					</filerefs>
+				</rec>
+			</table>
+			<table index="sys_language" type="array">
+				<rec index="1" type="array">
+					<uid>1</uid>
+					<pid>0</pid>
+					<title>deutsch</title>
+					<size>175</size>
+					<relationLevel>1</relationLevel>
+					<relations index="rels" type="array">
+					</relations>
+					<softrefs type="array">
+					</softrefs>
+				</rec>
+			</table>
+		</records>
+		<pid_lookup type="array">
+			<page_contents index="2" type="array">
+				<table index="pages" type="array">
+					<item index="7">1</item>
+				</table>
+			</page_contents>
+			<page_contents index="7" type="array">
+				<table index="pages_language_overlay" type="array">
+					<item index="1">1</item>
+				</table>
+			</page_contents>
+			<page_contents index="0" type="array">
+				<table index="sys_language" type="array">
+					<item index="1">1</item>
+				</table>
+			</page_contents>
+		</pid_lookup>
+		<files type="array">
+			<file index="c350a838df6c4791dda258ed01cd72f1" type="array">
+				<filesize>5565</filesize>
+				<filename>typo3_image3.jpg</filename>
+				<filemtime>1395067102</filemtime>
+				<relFileRef>uploads/media/typo3_image3.jpg</relFileRef>
+				<record_ref>pages_language_overlay:1/media</record_ref>
+			</file>
+		</files>
+	</header>
+	<records type="array">
+		<tablerow index="pages:7" type="array">
+			<fieldlist index="data" type="array">
+				<field index="uid">7</field>
+				<field index="pid">2</field>
+				<field index="sorting">384</field>
+				<field index="deleted">0</field>
+				<field index="hidden">0</field>
+				<field index="title">Pages Overlay Media</field>
+				<field index="doktype">1</field>
+			</fieldlist>
+			<related index="rels" type="array">
+			</related>
+		</tablerow>
+		<tablerow index="pages_language_overlay:1" type="array">
+			<fieldlist index="data" type="array">
+				<field index="uid">1</field>
+				<field index="pid">7</field>
+				<field index="doktype">1</field>
+				<field index="sys_language_uid">1</field>
+				<field index="title">Pages Overlay Media</field>
+				<field index="hidden">0</field>
+				<field index="starttime">0</field>
+				<field index="endtime">0</field>
+				<field index="deleted">0</field>
+				<field index="media">typo3_image3.jpg</field>
+			</fieldlist>
+			<related index="rels" type="array">
+				<field index="sys_language_uid" type="array">
+					<type>db</type>
+					<relations index="itemArray" type="array">
+						<element index="0" type="array">
+							<id>1</id>
+							<table>sys_language</table>
+						</element>
+					</relations>
+				</field>
+				<field index="media" type="array">
+					<type>file</type>
+					<filerefs index="newValueFiles" type="array">
+						<file index="0" type="array">
+							<filename>typo3_image3.jpg</filename>
+							<ID>c350a838df6c4791dda258ed01cd72f1</ID>
+						</file>
+					</filerefs>
+				</field>
+			</related>
+		</tablerow>
+		<tablerow index="sys_language:1" type="array">
+			<fieldlist index="data" type="array">
+				<field index="uid">1</field>
+				<field index="pid">0</field>
+				<field index="hidden">0</field>
+				<field index="title">deutsch</field>
+				<field index="flag">de</field>
+			</fieldlist>
+			<related index="rels" type="array">
+			</related>
+		</tablerow>
+	</records>
+	<files type="array">
+		<file index="c350a838df6c4791dda258ed01cd72f1" type="array">
+			<filesize>5565</filesize>
+			<filename>typo3_image3.jpg</filename>
+			<filemtime>1395067102</filemtime>
+			<relFileRef>uploads/media/typo3_image3.jpg</relFileRef>
+			<record_ref>pages_language_overlay:1/media</record_ref>
+			<content base64="1">
+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
+</content>
+			<content_md5>3ac1b81d683a30e87da725712cb26e83</content_md5>
+		</file>
+	</files>
+</T3RecordDocument>

@@ -1,0 +1,16 @@
+"pages"
+,"uid","pid","sorting","deleted","title","media"
+,1,0,256,0,"Page Media","1"
+"tt_content"
+,"uid","pid","sorting","deleted","header","image","bodytext"
+,1,1,256,0,"Test content",0,"Some bodytext"
+"sys_file"
+,"uid","pid","storage","type","identifier","identifier_hash","folder_hash","extension","mime_type","name","sha1","size"
+,1,0,1,2,"/user_upload/_imported/typo3_image2.jpg","7fd3cc09da3cca1114cb9d2864a37f0085973c2c","d62c2c9935d7b7e4f3ed493282bf8287abd80f93","jpg","image/jpeg","typo3_image2.jpg","da9acdf1e105784a57bbffec9520969578287797","7958"
+"sys_file_reference"
+,"uid","pid","uid_local","uid_foreign","tablenames","fieldname","table_local"
+,1,1,1,1,"pages","media","sys_file"
+"sys_file_metadata"
+,"uid","pid","file","title","width","height","description","alternative","sys_language_uid","l10n_parent"
+,1,0,1,\NULL,400,300,\NULL,\NULL,0,0
+

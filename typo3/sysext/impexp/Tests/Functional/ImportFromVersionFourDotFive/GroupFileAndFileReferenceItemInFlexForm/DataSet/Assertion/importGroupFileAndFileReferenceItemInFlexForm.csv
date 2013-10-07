@@ -1,0 +1,17 @@
+"pages"
+,"uid","pid","sorting","deleted","title"
+,1,0,256,0,"Group File Reference in FlexForm"
+"sys_file_storage"
+,"uid","pid","name","driver"
+,1,0,"fileadmin/ (auto-created)","Local"
+"sys_file"
+,"uid","pid","storage","type","identifier","identifier_hash","folder_hash","extension","mime_type","name","sha1","size"
+,1,0,1,2,"/user_upload/typo3_image5.jpg","8180e85d25c96697ec9d2004683216831b91ffc1","19669f1e02c2f16705ec7587044c66443be70725","jpg","image/jpeg","typo3_image5.jpg","c3511df85d21bc578faf71c6a19eeb3ff44af370","7425"
+,2,0,1,2,"/user_upload/_imported/fileadmin/user_upload/typo3_image3.jpg","84844f504e23958430fca903a1fef12096429ce0","eb6df7c76ff158aabb50b417535512ad0cc83569","jpg","image/jpeg","typo3_image3.jpg","e873c1e2ffd0f191e183a1057de3eef4d62e782d","5565"
+"tx_impexpgroupfiles_item"
+,"uid","pid","title","deleted","hidden","images","image_references","flexform"
+,1,1,"Test FlexForm",0,0,"","",<?xml version="1.0" encoding="utf-8" standalone="yes" ?><T3FlexForms><data><sheet index="sDEF"><language index="lDEF"><field index="link"><value index="vDEF">file:2</value></field><field index="images"><value index="vDEF">typo3_image4.jpg</value></field><field index="image_references"><value index="vDEF">fileadmin/user_upload/typo3_image5.jpg</value></field></language></sheet></data></T3FlexForms>
+"sys_file_metadata"
+,"uid","pid","file","title","width","height","description","alternative","sys_language_uid","l10n_parent"
+,1,0,1,\NULL,300,200,\NULL,\NULL,0,0
+,2,0,2,\NULL,400,267,\NULL,\NULL,0,0

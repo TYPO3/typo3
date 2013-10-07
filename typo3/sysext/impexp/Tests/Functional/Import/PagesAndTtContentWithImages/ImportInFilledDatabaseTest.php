@@ -59,8 +59,8 @@ class ImportInFilledDatabaseTest extends \TYPO3\CMS\Impexp\Tests\Functional\Impo
 
 		$this->assertAssertionDataSet('importPagesAndRelatedTtContentWithDifferentImageToExistingData');
 
-		$this->assertFileEquals(__DIR__ . '/../../Fixtures/Folders/fileadmin/user_upload/typo3_image2.jpg', PATH_site . '/fileadmin/user_upload/typo3_image2.jpg');
-		$this->assertFileEquals(__DIR__ . '/Folders/Assertion/fileadmin/user_upload/typo3_image2_01.jpg', PATH_site . '/fileadmin/user_upload/typo3_image2_01.jpg');
+		$this->assertFileEquals(__DIR__ . '/../../Fixtures/Folders/fileadmin/user_upload/typo3_image2.jpg', PATH_site . 'fileadmin/user_upload/typo3_image2.jpg');
+		$this->assertFileEquals(__DIR__ . '/Folders/Assertion/fileadmin/user_upload/typo3_image2_01.jpg', PATH_site . 'fileadmin/user_upload/typo3_image2_01.jpg');
 
 	}
 
@@ -82,7 +82,7 @@ class ImportInFilledDatabaseTest extends \TYPO3\CMS\Impexp\Tests\Functional\Impo
 
 		$this->assertAssertionDataSet('importPagesAndRelatedTtContentWithSameImageToExistingData');
 
-		$this->assertFileEquals(__DIR__ . '/../../Fixtures/Folders/fileadmin/user_upload/typo3_image2.jpg', PATH_site . '/fileadmin/user_upload/typo3_image2.jpg');
+		$this->assertFileEquals(__DIR__ . '/../../Fixtures/Folders/fileadmin/user_upload/typo3_image2.jpg', PATH_site . 'fileadmin/user_upload/typo3_image2.jpg');
 
 	}
 

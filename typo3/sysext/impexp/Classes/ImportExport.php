@@ -27,9 +27,10 @@ namespace TYPO3\CMS\Impexp;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * EXAMPLE for using the impexp-class for exporting stuff:
@@ -345,6 +346,60 @@ class ImportExport {
 	 */
 	protected $storageObjects = array();
 
+	/**
+	 * Is set, if the import file has a TYPO3 version below 6.0
+	 *
+	 * @var bool
+	 */
+	protected $legacyImport = FALSE;
+
+	/**
+	 * @var \TYPO3\CMS\Core\Resource\Folder
+	 */
+	protected $legacyImportFolder = NULL;
+
+	/**
+	 * Related to the default storage root
+	 *
+	 * @var string
+	 */
+	protected $legacyImportTargetPath = '_imported/';
+
+	/**
+	 * Table fields to migrate
+	 *
+	 * @var array
+	 */
+	protected $legacyImportMigrationTables = array(
+		'tt_content' => array(
+			'image' => array(
+				'titleTexts' => 'titleText',
+				'description' => 'imagecaption',
+				'links' => 'image_link',
+				'alternativeTexts' => 'altText'
+			),
+			'media' => array(
+				'description' => 'imagecaption',
+			)
+		),
+		'pages' => array(
+			'media' => array()
+		),
+		'pages_language_overlay' => array(
+			'media' => array()
+		)
+	);
+
+
+	/**
+	 * Records to be migrated after all
+	 * Multidimensional array [table][uid][field] = array([related sys_file_reference uids])
+	 *
+	 * @var array
+	 */
+	protected $legacyImportMigrationRecords = array();
+
+
 	/**************************
 	 * Initialize
 	 *************************/
@@ -451,7 +506,7 @@ class ImportExport {
 					'content' => $fileContent,
 					'filesize' => strlen($fileContent),
 					'filemtime' => filemtime($imgFilepath),
-					'filename' => basename($imgFilepath)
+					'filename' => PathUtility::basename($imgFilepath)
 				);
 			}
 		}
@@ -828,7 +883,7 @@ class ImportExport {
 												if ($ID_absFile) {
 													if (!$this->dat['files'][$ID]) {
 														$fI = array(
-															'filename' => basename($ID_absFile),
+															'filename' => PathUtility::basename($ID_absFile),
 															'ID_absFile' => $ID_absFile,
 															'ID' => $ID,
 															'relFileName' => $el['subst']['relFileName']
@@ -854,7 +909,7 @@ class ImportExport {
 										if ($ID_absFile) {
 											if (!$this->dat['files'][$ID]) {
 												$fI = array(
-													'filename' => basename($ID_absFile),
+													'filename' => PathUtility::basename($ID_absFile),
 													'ID_absFile' => $ID_absFile,
 													'ID' => $ID,
 													'relFileName' => $el['subst']['relFileName']
@@ -945,7 +1000,7 @@ class ImportExport {
 				$fileInfo = stat($fI['ID_absFile']);
 				$fileRec = array();
 				$fileRec['filesize'] = $fileInfo['size'];
-				$fileRec['filename'] = basename($fI['ID_absFile']);
+				$fileRec['filename'] = PathUtility::basename($fI['ID_absFile']);
 				$fileRec['filemtime'] = $fileInfo['mtime'];
 				//for internal type file_reference
 				$fileRec['relFileRef'] = \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($fI['ID_absFile']);
@@ -972,14 +1027,14 @@ class ImportExport {
 				// For soft references, do further processing:
 				if ($recordRef === '_SOFTREF_') {
 					// RTE files?
-					if ($RTEoriginal = $this->getRTEoriginalFilename(basename($fI['ID_absFile']))) {
-						$RTEoriginal_absPath = dirname($fI['ID_absFile']) . '/' . $RTEoriginal;
+					if ($RTEoriginal = $this->getRTEoriginalFilename(PathUtility::basename($fI['ID_absFile']))) {
+						$RTEoriginal_absPath = PathUtility::dirname($fI['ID_absFile']) . '/' . $RTEoriginal;
 						if (@is_file($RTEoriginal_absPath)) {
 							$RTEoriginal_ID = md5($RTEoriginal_absPath);
 							$fileInfo = stat($RTEoriginal_absPath);
 							$fileRec = array();
 							$fileRec['filesize'] = $fileInfo['size'];
-							$fileRec['filename'] = basename($RTEoriginal_absPath);
+							$fileRec['filename'] = PathUtility::basename($RTEoriginal_absPath);
 							$fileRec['filemtime'] = $fileInfo['mtime'];
 							$fileRec['record_ref'] = '_RTE_COPY_ID:' . $fI['ID'];
 							$this->dat['header']['files'][$fI['ID']]['RTE_ORIG_ID'] = $RTEoriginal_ID;
@@ -995,7 +1050,7 @@ class ImportExport {
 					}
 					// Files with external media?
 					// This is only done with files grabbed by a softreference parser since it is deemed improbable that hard-referenced files should undergo this treatment.
-					$html_fI = pathinfo(basename($fI['ID_absFile']));
+					$html_fI = pathinfo(PathUtility::basename($fI['ID_absFile']));
 					if ($this->includeExtFileResources && GeneralUtility::inList($this->extFileResourceExtensions, strtolower($html_fI['extension']))) {
 						$uniquePrefix = '###' . md5($GLOBALS['EXEC_TIME']) . '###';
 						if (strtolower($html_fI['extension']) === 'css') {
@@ -1008,7 +1063,7 @@ class ImportExport {
 						$htmlResourceCaptured = FALSE;
 						foreach ($prefixedMedias as $k => $v) {
 							if ($k % 2) {
-								$EXTres_absPath = GeneralUtility::resolveBackPath(dirname($fI['ID_absFile']) . '/' . $v);
+								$EXTres_absPath = GeneralUtility::resolveBackPath(PathUtility::dirname($fI['ID_absFile']) . '/' . $v);
 								$EXTres_absPath = GeneralUtility::getFileAbsFileName($EXTres_absPath);
 								if ($EXTres_absPath && GeneralUtility::isFirstPartOfStr($EXTres_absPath, PATH_site . $this->fileadminFolderName . '/') && @is_file($EXTres_absPath)) {
 									$htmlResourceCaptured = TRUE;
@@ -1020,7 +1075,7 @@ class ImportExport {
 										$fileInfo = stat($EXTres_absPath);
 										$fileRec = array();
 										$fileRec['filesize'] = $fileInfo['size'];
-										$fileRec['filename'] = basename($EXTres_absPath);
+										$fileRec['filename'] = PathUtility::basename($EXTres_absPath);
 										$fileRec['filemtime'] = $fileInfo['mtime'];
 										$fileRec['record_ref'] = '_EXT_PARENT_:' . $fI['ID'];
 										// Media relative to the HTML file.
@@ -1361,6 +1416,10 @@ class ImportExport {
 		$this->unlinkTempFiles();
 		// Finally, traverse all records and process softreferences with substitution attributes.
 		$this->processSoftReferences();
+		// After all migrate records using sys_file_reference now
+		if ($this->legacyImport) {
+			$this->migrateLegacyImportRecords();
+		}
 	}
 
 	/**
@@ -1500,7 +1559,7 @@ class ImportExport {
 
 			if ($newFile === NULL) {
 
-				$folderName = dirname(ltrim($fileRecord['identifier'], '/'));
+				$folderName = PathUtility::dirname(ltrim($fileRecord['identifier'], '/'));
 				if (!$storage->hasFolder($folderName)) {
 					try {
 						$storage->createFolder($folderName);
@@ -1563,6 +1622,29 @@ class ImportExport {
 				$this->dat['records']['sys_file_reference:' . $sysFileReferenceUid]['data'] = $fileReferenceRecord;
 			}
 		}
+	}
+
+	/**
+	 * Initializes the folder for legacy imports as subfolder of backend users default upload folder
+	 *
+	 * @return void
+	 */
+	protected function initializeLegacyImportFolder() {
+		/** @var \TYPO3\CMS\Core\Resource\Folder $folder */
+		$folder = $GLOBALS['BE_USER']->getDefaultUploadFolder();
+		if ($folder === FALSE) {
+			$this->error('Error: the backend users default upload folder is missing! No files will be imported!');
+		}
+		if (!$folder->hasFolder($this->legacyImportTargetPath)) {
+			try {
+				$this->legacyImportFolder = $folder->createFolder($this->legacyImportTargetPath);
+			} catch (\TYPO3\CMS\Core\Exception $e) {
+				$this->error('Error: the import folder in the default upload folder could not be created! No files will be imported!');
+			}
+		} else {
+			$this->legacyImportFolder = $folder->getSubFolder($this->legacyImportTargetPath);
+		}
+
 	}
 
 	/**
@@ -1994,6 +2076,14 @@ class ImportExport {
 			if (is_array($this->import_mapId[$table]) && isset($this->import_mapId[$table][$uid])) {
 				$thisNewUid = BackendUtility::wsMapId($table, $this->import_mapId[$table][$uid]);
 				if (is_array($this->dat['records'][$table . ':' . $uid]['rels'])) {
+					if ($this->legacyImport) {
+						if ($table != 'pages') {
+							$oldPid = $this->dat['records'][$table . ':' . $uid]['data']['pid'];
+							$thisNewPageUid = \TYPO3\CMS\Backend\Utility\BackendUtility::wsMapId($table, $this->import_mapId['pages'][$oldPid]);
+						} else {
+							$thisNewPageUid = $thisNewUid;
+						}
+					}
 					// Traverse relation fields of each record
 					foreach ($this->dat['records'][$table . ':' . $uid]['rels'] as $field => $config) {
 						// uid_local of sys_file_reference needs no update because the correct reference uid was already written
@@ -2015,7 +2105,51 @@ class ImportExport {
 									foreach ($config['newValueFiles'] as $fI) {
 										$valArr[] = $this->import_addFileNameToBeCopied($fI);
 									}
-									$updateData[$table][$thisNewUid][$field] = implode(',', $valArr);
+									if ($this->legacyImport && $this->legacyImportFolder === NULL && isset($this->legacyImportMigrationTables[$table][$field])) {
+										// Do nothing - the legacy import folder is missing
+									} elseif ($this->legacyImport && $this->legacyImportFolder !== NULL && isset($this->legacyImportMigrationTables[$table][$field])) {
+										$refIds = array();
+										foreach ($valArr as $tempFile) {
+											$fileName = $this->alternativeFileName[$tempFile];
+											$fileObject = NULL;
+
+											try {
+												// check, if there is alreay the same file in the folder
+												if ($this->legacyImportFolder->hasFile($fileName)) {
+													$file = $this->legacyImportFolder->getFile($fileName);
+													if ($file->getSha1() === sha1_file($tempFile)) {
+														$fileObject = $file;
+													}
+												}
+											} catch (Exception $e) {}
+
+											if ($fileObject === NULL) {
+												try {
+													$fileObject = $this->legacyImportFolder->addFile($tempFile, $fileName, 'changeName');
+												} catch (\TYPO3\CMS\Core\Exception $e) {
+													$this->error('Error: no file could be added to the storage for file name' . $this->alternativeFileName[$tempFile]);
+												}
+											}
+											if ($fileObject !== NULL) {
+												$refId = uniqid('NEW');
+												$refIds[] = $refId;
+												$updateData['sys_file_reference'][$refId] = array(
+													'uid_local' => $fileObject->getUid(),
+													'uid_foreign' => $thisNewUid, // uid of your content record
+													'tablenames' => $table,
+													'fieldname' => $field,
+													'pid' => $thisNewPageUid, // parent id of the parent page
+													'table_local' => 'sys_file',
+												);
+											}
+										}
+										$updateData[$table][$thisNewUid][$field] = implode(',', $refIds);
+										if (!empty($this->legacyImportMigrationTables[$table][$field])) {
+											$this->legacyImportMigrationRecords[$table][$thisNewUid][$field] = $refIds;
+										}
+									} else {
+										$updateData[$table][$thisNewUid][$field] = implode(',', $valArr);
+									}
 								}
 								break;
 						}
@@ -2036,6 +2170,16 @@ class ImportExport {
 			));
 			$tce->start($updateData, array());
 			$tce->process_datamap();
+			// Replace the temporary "NEW" ids with the final ones.
+			foreach ($this->legacyImportMigrationRecords as $table => $records) {
+				foreach ($records as $uid => $fields) {
+					foreach ($fields as $field => $referenceIds) {
+						foreach ($referenceIds as $key => $referenceId) {
+							$this->legacyImportMigrationRecords[$table][$uid][$field][$key] = $tce->substNEWwithIDs[$referenceId];
+						}
+					}
+				}
+			}
 			$this->callHook('after_setRelations', array(
 				'tce' => &$tce
 			));
@@ -2389,8 +2533,8 @@ class ImportExport {
 	public function processSoftReferences_saveFile($relFileName, $cfg, $table, $uid) {
 		if ($fileHeaderInfo = $this->dat['header']['files'][$cfg['file_ID']]) {
 			// Initialize; Get directory prefix for file and find possible RTE filename
-			$dirPrefix = dirname($relFileName) . '/';
-			$rteOrigName = $this->getRTEoriginalFilename(basename($relFileName));
+			$dirPrefix = PathUtility::dirname($relFileName) . '/';
+			$rteOrigName = $this->getRTEoriginalFilename(PathUtility::basename($relFileName));
 			// If filename looks like an RTE file, and the directory is in "uploads/", then process as a RTE file!
 			if ($rteOrigName && GeneralUtility::isFirstPartOfStr($dirPrefix, 'uploads/')) {
 				// RTE:
@@ -2401,14 +2545,23 @@ class ImportExport {
 					$origDestName = $fileProcObj->getUniqueName($rteOrigName, PATH_site . $dirPrefix);
 					// Create copy file name:
 					$pI = pathinfo($relFileName);
-					$copyDestName = dirname($origDestName) . '/RTEmagicC_' . substr(basename($origDestName), 10) . '.' . $pI['extension'];
+					$copyDestName = PathUtility::dirname($origDestName) . '/RTEmagicC_' . substr(PathUtility::basename($origDestName), 10) . '.' . $pI['extension'];
 					if (!@is_file($copyDestName) && !@is_file($origDestName) && $origDestName === GeneralUtility::getFileAbsFileName($origDestName) && $copyDestName === GeneralUtility::getFileAbsFileName($copyDestName)) {
 						if ($this->dat['header']['files'][$fileHeaderInfo['RTE_ORIG_ID']]) {
-							// Write the copy and original RTE file to the respective filenames:
-							$this->writeFileVerify($copyDestName, $cfg['file_ID'], TRUE);
-							$this->writeFileVerify($origDestName, $fileHeaderInfo['RTE_ORIG_ID'], TRUE);
-							// Return the relative path of the copy file name:
-							return \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($copyDestName);
+							if ($this->legacyImport) {
+								$fileName = PathUtility::basename($copyDestName);
+								$this->writeSysFileResourceForLegacyImport($fileName, $cfg['file_ID']);
+								$relFileName = $this->filePathMap[$cfg['file_ID']] . '" data-htmlarea-file-uid="' . $fileName . '" data-htmlarea-file-table="sys_file';
+								// Also save the original file
+								$originalFileName = PathUtility::basename($origDestName);
+								$this->writeSysFileResourceForLegacyImport($originalFileName, $fileHeaderInfo['RTE_ORIG_ID']);
+							} else {
+								// Write the copy and original RTE file to the respective filenames:
+								$this->writeFileVerify($copyDestName, $cfg['file_ID'], TRUE);
+								$this->writeFileVerify($origDestName, $fileHeaderInfo['RTE_ORIG_ID'], TRUE);
+								// Return the relative path of the copy file name:
+								return \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($copyDestName);
+							}
 						} else {
 							$this->error('ERROR: Could not find original file ID');
 						}
@@ -2421,7 +2574,7 @@ class ImportExport {
 			} elseif (GeneralUtility::isFirstPartOfStr($dirPrefix, $this->fileadminFolderName . '/')) {
 				// File in fileadmin/ folder:
 				// Create file (and possible resources)
-				$newFileName = $this->processSoftReferences_saveFile_createRelFile($dirPrefix, basename($relFileName), $cfg['file_ID'], $table, $uid);
+				$newFileName = $this->processSoftReferences_saveFile_createRelFile($dirPrefix, PathUtility::basename($relFileName), $cfg['file_ID'], $table, $uid);
 				if (strlen($newFileName)) {
 					$relFileName = $newFileName;
 				} else {
@@ -2450,72 +2603,87 @@ class ImportExport {
 	 */
 	public function processSoftReferences_saveFile_createRelFile($origDirPrefix, $fileName, $fileID, $table, $uid) {
 		// If the fileID map contains an entry for this fileID then just return the relative filename of that entry; we don't want to write another unique filename for this one!
-		if ($this->fileIDMap[$fileID]) {
+		if (isset($this->fileIDMap[$fileID])) {
 			return \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($this->fileIDMap[$fileID]);
 		}
-		// Verify FileMount access to dir-prefix. Returns the best alternative relative path if any
-		$dirPrefix = $this->verifyFolderAccess($origDirPrefix);
+		if ($this->legacyImport) {
+			// set dirPrefix to fileadmin because the right target folder is set and checked for permissions later
+			$dirPrefix = $this->fileadminFolderName . '/';
+		} else {
+			// Verify FileMount access to dir-prefix. Returns the best alternative relative path if any
+			$dirPrefix = $this->verifyFolderAccess($origDirPrefix);
+		}
 		if ($dirPrefix && (!$this->update || $origDirPrefix === $dirPrefix) && $this->checkOrCreateDir($dirPrefix)) {
 			$fileHeaderInfo = $this->dat['header']['files'][$fileID];
 			$updMode = $this->update && $this->import_mapId[$table][$uid] === $uid && $this->import_mode[$table . ':' . $uid] !== 'as_new';
 			// Create new name for file:
 			// Must have same ID in map array (just for security, is not really needed) and NOT be set "as_new".
-			if ($updMode) {
-				$newName = PATH_site . $dirPrefix . $fileName;
-			} else {
-				// Create unique filename:
-				$fileProcObj = $this->getFileProcObj();
-				$newName = $fileProcObj->getUniqueName($fileName, PATH_site . $dirPrefix);
-			}
+
 			// Write main file:
-			if ($this->writeFileVerify($newName, $fileID)) {
-				// If the resource was an HTML/CSS file with resources attached, we will write those as well!
-				if (is_array($fileHeaderInfo['EXT_RES_ID'])) {
-					$tokenizedContent = $this->dat['files'][$fileID]['tokenizedContent'];
-					$tokenSubstituted = FALSE;
+			if ($this->legacyImport) {
+				$fileWritten = $this->writeSysFileResourceForLegacyImport($fileName, $fileID);
+				if ($fileWritten) {
+					$newName = 'file:' . $fileName;
+					return $newName;
+					// no support for HTML/CSS file resources attached ATM - see below
+				}
+			} else {
+				if ($updMode) {
+					$newName = PATH_site . $dirPrefix . $fileName;
+				} else {
+					// Create unique filename:
 					$fileProcObj = $this->getFileProcObj();
-					if ($updMode) {
-						foreach ($fileHeaderInfo['EXT_RES_ID'] as $res_fileID) {
-							if ($this->dat['files'][$res_fileID]['filename']) {
-								// Resolve original filename:
-								$relResourceFileName = $this->dat['files'][$res_fileID]['parentRelFileName'];
-								$absResourceFileName = GeneralUtility::resolveBackPath(PATH_site . $origDirPrefix . $relResourceFileName);
-								$absResourceFileName = GeneralUtility::getFileAbsFileName($absResourceFileName);
-								if ($absResourceFileName && GeneralUtility::isFirstPartOfStr($absResourceFileName, PATH_site . $this->fileadminFolderName . '/')) {
-									$destDir = \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix(dirname($absResourceFileName) . '/');
-									if ($this->verifyFolderAccess($destDir, TRUE) && $this->checkOrCreateDir($destDir)) {
-										$this->writeFileVerify($absResourceFileName, $res_fileID);
-									} else {
-										$this->error('ERROR: Could not create file in directory "' . $destDir . '"');
-									}
-								} else {
-									$this->error('ERROR: Could not resolve path for "' . $relResourceFileName . '"');
-								}
-								$tokenizedContent = str_replace('{EXT_RES_ID:' . $res_fileID . '}', $relResourceFileName, $tokenizedContent);
-								$tokenSubstituted = TRUE;
-							}
-						}
-					} else {
-						// Create the resouces directory name (filename without extension, suffixed "_FILES")
-						$resourceDir = dirname($newName) . '/' . preg_replace('/\\.[^.]*$/', '', basename($newName)) . '_FILES';
-						if (GeneralUtility::mkdir($resourceDir)) {
+					$newName = $fileProcObj->getUniqueName($fileName, PATH_site . $dirPrefix);
+				}
+				if ($this->writeFileVerify($newName, $fileID)) {
+					// If the resource was an HTML/CSS file with resources attached, we will write those as well!
+					if (is_array($fileHeaderInfo['EXT_RES_ID'])) {
+						$tokenizedContent = $this->dat['files'][$fileID]['tokenizedContent'];
+						$tokenSubstituted = FALSE;
+						$fileProcObj = $this->getFileProcObj();
+						if ($updMode) {
 							foreach ($fileHeaderInfo['EXT_RES_ID'] as $res_fileID) {
 								if ($this->dat['files'][$res_fileID]['filename']) {
-									$absResourceFileName = $fileProcObj->getUniqueName($this->dat['files'][$res_fileID]['filename'], $resourceDir);
-									$relResourceFileName = substr($absResourceFileName, strlen(dirname($resourceDir)) + 1);
-									$this->writeFileVerify($absResourceFileName, $res_fileID);
+									// Resolve original filename:
+									$relResourceFileName = $this->dat['files'][$res_fileID]['parentRelFileName'];
+									$absResourceFileName = GeneralUtility::resolveBackPath(PATH_site . $origDirPrefix . $relResourceFileName);
+									$absResourceFileName = GeneralUtility::getFileAbsFileName($absResourceFileName);
+									if ($absResourceFileName && GeneralUtility::isFirstPartOfStr($absResourceFileName, PATH_site . $this->fileadminFolderName . '/')) {
+										$destDir = \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix(PathUtility::dirname($absResourceFileName) . '/');
+										if ($this->verifyFolderAccess($destDir, TRUE) && $this->checkOrCreateDir($destDir)) {
+											$this->writeFileVerify($absResourceFileName, $res_fileID);
+										} else {
+											$this->error('ERROR: Could not create file in directory "' . $destDir . '"');
+										}
+									} else {
+										$this->error('ERROR: Could not resolve path for "' . $relResourceFileName . '"');
+									}
 									$tokenizedContent = str_replace('{EXT_RES_ID:' . $res_fileID . '}', $relResourceFileName, $tokenizedContent);
 									$tokenSubstituted = TRUE;
 								}
 							}
+						} else {
+							// Create the resouces directory name (filename without extension, suffixed "_FILES")
+							$resourceDir = PathUtility::dirname($newName) . '/' . preg_replace('/\\.[^.]*$/', '', PathUtility::basename($newName)) . '_FILES';
+							if (GeneralUtility::mkdir($resourceDir)) {
+								foreach ($fileHeaderInfo['EXT_RES_ID'] as $res_fileID) {
+									if ($this->dat['files'][$res_fileID]['filename']) {
+										$absResourceFileName = $fileProcObj->getUniqueName($this->dat['files'][$res_fileID]['filename'], $resourceDir);
+										$relResourceFileName = substr($absResourceFileName, strlen(PathUtility::dirname($resourceDir)) + 1);
+										$this->writeFileVerify($absResourceFileName, $res_fileID);
+										$tokenizedContent = str_replace('{EXT_RES_ID:' . $res_fileID . '}', $relResourceFileName, $tokenizedContent);
+										$tokenSubstituted = TRUE;
+									}
+								}
+							}
+						}
+						// If substitutions has been made, write the content to the file again:
+						if ($tokenSubstituted) {
+							GeneralUtility::writeFile($newName, $tokenizedContent);
 						}
 					}
-					// If substitutions has been made, write the content to the file again:
-					if ($tokenSubstituted) {
-						GeneralUtility::writeFile($newName, $tokenizedContent);
-					}
+					return \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($newName);
 				}
-				return \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($newName);
 			}
 		}
 	}
@@ -2560,6 +2728,151 @@ class ImportExport {
 		} else {
 			$this->error('ERROR: You did not have sufficient permissions to write the file "' . $fileName . '"');
 		}
+	}
+
+
+	/**
+	 * Writes the file with the is $fileId to the legacy import folder. The file name will used from
+	 * argument $fileName and the file was successfully created or an identical file was already found,
+	 * $fileName will held the uid of the new created file record.
+	 *
+	 * @param $fileName The file name for the new file. Value would be changed to the uid of the new created file record.
+	 * @param $fileID The id of the file in data array
+	 * @return bool
+	 */
+	protected function writeSysFileResourceForLegacyImport(&$fileName, $fileId) {
+		if ($this->legacyImportFolder === NULL) {
+			return FALSE;
+		}
+
+		if (!isset($this->dat['files'][$fileId])) {
+			$this->error('ERROR: File ID "' . $fileId . '" could not be found');
+			return FALSE;
+		}
+
+		$temporaryFile = $this->writeTemporaryFileFromData($fileId, 'files');
+		if ($temporaryFile === NULL) {
+			// error on writing the file. Error message was already added
+			return FALSE;
+		}
+
+		$importFolder = $this->legacyImportFolder;
+
+		if (isset($this->dat['files'][$fileId]['relFileName'])) {
+			$relativeFilePath = PathUtility::dirname($this->dat['files'][$fileId]['relFileName']);
+
+			if (!$this->legacyImportFolder->hasFolder($relativeFilePath)) {
+				$this->legacyImportFolder->createFolder($relativeFilePath);
+			}
+			$importFolder = $this->legacyImportFolder->getSubfolder($relativeFilePath);
+		}
+
+		$fileObject = NULL;
+
+		try {
+			// check, if there is alreay the same file in the folder
+			if ($importFolder->hasFile($fileName)) {
+				$file = $importFolder->getFile($fileName);
+				if ($file->getSha1() === sha1_file($temporaryFile)) {
+					$fileObject = $file;
+				}
+			}
+		} catch (Exception $e) {}
+
+		if ($fileObject === NULL) {
+			try {
+				$fileObject = $importFolder->addFile($temporaryFile, $fileName, 'changeName');
+			} catch (\TYPO3\CMS\Core\Exception $e) {
+				$this->error('Error: no file could be added to the storage for file name ' . $this->alternativeFileName[$temporaryFile]);
+			}
+		}
+
+		if (md5_file(PATH_site . $fileObject->getPublicUrl()) == $this->dat['files'][$fileId]['content_md5']) {
+			$fileName = $fileObject->getUid();
+			$this->fileIDMap[$fileId] = $fileName;
+			$this->filePathMap[$fileId] = $fileObject->getPublicUrl();
+			return TRUE;
+		} else {
+			$this->error('ERROR: File content "' . $this->dat['files'][$fileId]['relFileName'] . '" was corrupted');
+		}
+
+		return FALSE;
+	}
+
+	/**
+	 * Migrate legacy import records
+	 *
+	 * @return void
+	 */
+	protected function migrateLegacyImportRecords() {
+		$updateData= array();
+
+		foreach ($this->legacyImportMigrationRecords as $table => $records) {
+			foreach ($records as $uid => $fields) {
+
+				$row = BackendUtility::getRecord($table, $uid);
+				if (empty($row)) {
+					continue;
+				}
+
+				foreach ($fields as $field => $referenceIds) {
+
+					$fieldConfiguration = $this->legacyImportMigrationTables[$table][$field];
+
+					if (isset($fieldConfiguration['titleTexts'])) {
+						$titleTextField = $fieldConfiguration['titleTexts'];
+						if ($row[$titleTextField] !== '') {
+							$titleTextContents = explode(LF, $row[$titleTextField]);
+							$updateData[$table][$uid][$titleTextField] = '';
+						}
+					}
+
+					if (isset($fieldConfiguration['alternativeTexts'])) {
+						$alternativeTextField = $fieldConfiguration['alternativeTexts'];
+						if ($row[$alternativeTextField] !== '') {
+							$alternativeTextContents = explode(LF, $row[$alternativeTextField]);
+							$updateData[$table][$uid][$alternativeTextField] = '';
+						}
+					}
+					if (isset($fieldConfiguration['description'])) {
+						$descriptionField = $fieldConfiguration['description'];
+						if ($row[$descriptionField] !== '') {
+							$descriptionContents = explode(LF, $row[$descriptionField]);
+							$updateData[$table][$uid][$descriptionField] = '';
+						}
+					}
+					if (isset($fieldConfiguration['links'])) {
+						$linkField = $fieldConfiguration['links'];
+						if ($row[$linkField] !== '') {
+							$linkContents = explode(LF, $row[$linkField]);
+							$updateData[$table][$uid][$linkField] = '';
+						}
+					}
+
+					foreach ($referenceIds as $key => $referenceId) {
+						if (isset($titleTextContents[$key])) {
+							$updateData['sys_file_reference'][$referenceId]['title'] = trim($titleTextContents[$key]);
+						}
+						if (isset($alternativeTextContents[$key])) {
+							$updateData['sys_file_reference'][$referenceId]['alternative'] = trim($alternativeTextContents[$key]);
+						}
+						if (isset($descriptionContents[$key])) {
+							$updateData['sys_file_reference'][$referenceId]['description'] = trim($descriptionContents[$key]);
+						}
+						if (isset($linkContents[$key])) {
+							$updateData['sys_file_reference'][$referenceId]['link'] = trim($linkContents[$key]);
+						}
+					}
+				}
+			}
+		}
+
+		// update
+		$tce = $this->getNewTCE();
+		$tce->isImporting = TRUE;
+		$tce->start($updateData, array());
+		$tce->process_datamap();
+
 	}
 
 	/**
@@ -2785,6 +3098,10 @@ class ImportExport {
 		$this->softrefCfg = (array) $this->dat['header']['softrefCfg'];
 		$this->extensionDependencies = (array) $this->dat['header']['extensionDependencies'];
 		$this->fixCharsets();
+		if (isset($this->dat['header']['meta']['TYPO3_version']) && \TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionNumberToInteger($this->dat['header']['meta']['TYPO3_version']) < 6000000){
+			$this->legacyImport = TRUE;
+			$this->initializeLegacyImportFolder();
+		}
 	}
 
 	/**
@@ -3258,7 +3575,7 @@ class ImportExport {
 				if (isset($fI['parentRelFileName'])) {
 					$pInfo['msg'] = 'Seems like this file is already referenced from within an HTML/CSS file. That takes precedence. ';
 				} else {
-					$testDirPrefix = dirname($fI['relFileName']) . '/';
+					$testDirPrefix = PathUtility::dirname($fI['relFileName']) . '/';
 					$testDirPrefix2 = $this->verifyFolderAccess($testDirPrefix);
 					if (!$testDirPrefix2) {
 						$pInfo['msg'] = 'ERROR: There are no available filemounts to write file in! ';

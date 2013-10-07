@@ -1,0 +1,23 @@
+"pages"
+,"uid","pid","sorting","deleted","title"
+,1,0,256,0,"Content Image"
+"tt_content"
+,"uid","pid","sorting","deleted","header","header_link","image",image_link,imagecaption
+,1,1,256,0,"Test content","file:3",2,,
+"sys_file"
+,"uid","pid","storage","type","identifier","identifier_hash","folder_hash","extension","mime_type","name","sha1","size"
+,1,0,1,2,"/user_upload/_imported/typo3_image2.jpg","7fd3cc09da3cca1114cb9d2864a37f0085973c2c","d62c2c9935d7b7e4f3ed493282bf8287abd80f93","jpg","image/jpeg","typo3_image2.jpg","da9acdf1e105784a57bbffec9520969578287797","7958"
+,2,0,1,2,"/user_upload/_imported/typo3_image3.jpg","6fe0d531fb52945d0b943b54aa20116e5533284a","d62c2c9935d7b7e4f3ed493282bf8287abd80f93","jpg","image/jpeg","typo3_image3.jpg","e873c1e2ffd0f191e183a1057de3eef4d62e782d","5565"
+,3,0,1,2,"/user_upload/_imported/fileadmin/user_upload/typo3_image5.jpg","b631fe3476a47d2cfc3082de20a8dfc691343e59","eb6df7c76ff158aabb50b417535512ad0cc83569","jpg","image/jpeg","typo3_image5.jpg","c3511df85d21bc578faf71c6a19eeb3ff44af370","7425"
+,4,0,1,2,"/user_upload/_imported/fileadmin/user_upload/typo3_image4.jpg","a330d6b04ff223d1a7ac8536eff3f0af97cf663f","eb6df7c76ff158aabb50b417535512ad0cc83569","jpg","image/jpeg","typo3_image4.jpg","c5671a5b7df16f677f5dff2a142867767bf4978e","6758"
+"sys_file_reference"
+,"uid","pid","uid_local","uid_foreign","tablenames","fieldname","table_local","title","description","alternative","link"
+,1,1,1,1,"tt_content","image","sys_file",\NULL,"Description 1","Alternative text one",1
+,2,1,2,1,"tt_content","image","sys_file",\NULL,"Description 2","Alternative text two","file:4"
+"sys_file_metadata"
+,"uid","pid","file","title","width","height","description","alternative","sys_language_uid","l10n_parent"
+,1,0,1,\NULL,400,300,\NULL,\NULL,0,0
+,2,0,2,\NULL,400,267,\NULL,\NULL,0,0
+,3,0,3,\NULL,300,200,\NULL,\NULL,0,0
+,4,0,4,\NULL,400,267,\NULL,\NULL,0,0
+
