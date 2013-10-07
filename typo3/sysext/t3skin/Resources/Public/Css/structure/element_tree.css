@@ -150,3 +150,16 @@ ul.tree div.treeLinkItem span.dragIcon {
 #typo3-alt-file-navframe-php #typo3-docheader img {
 	margin: 2px;
 }
+
+/* Sprite icons for tree lines. Single lines need 6px padding. Can also be used directly inside .t3-table */
+
+.t3-icon-treeline {
+	display: block;
+	float: left;
+	margin-top: -6px;
+	margin-bottom: -6px;
+	padding: 0;
+	height: 30px;
+	white-space: nowrap;
+	overflow: hidden;
+}

@@ -46,7 +46,9 @@ table.t3-table-info td {
  *   </thead>
  *   <tbody>
  *     <tr>
- *       <td class="t3-table-tree">Icon</td>
+ *       <td>
+ *         <span class="t3-icon t3-icon-treeline t3-icon-treeline-join t3-icon-join">&nbsp;</span>
+ *       </td>
  *       <td>...</td>
  *     </tr>
  *   </tbody>
@@ -63,23 +65,6 @@ table.t3-table td {
 	padding: 6px;
 	/** Height of sprite icon */
 	min-height: 16px;
-}
-
-/**
- * This is the special annotation for tree icon columns
- */
-table.t3-table td.t3-table-tree {
-	padding-top: 0;
-	padding-bottom: 0;
-
-	/* white space by next column */
-	padding-right: 0;
-	vertical-align: middle;
-	line-height: 28px;
-
-	/* width is expanded by content */
-	width: 16px;
-	white-space: nowrap;
 }
 
 table.t3-table tr th:first-child,
