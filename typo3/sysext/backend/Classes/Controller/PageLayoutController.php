@@ -953,6 +953,16 @@ class PageLayoutController {
 		// END: traverse tables
 		// For Context Sensitive Menus:
 		$this->doc->getContextMenuCode();
+		// Init the content
+		$content = '';
+		// Additional header content
+		$headerContentHook = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/db_layout.php']['drawHeaderHook'];
+		if (is_array($headerContentHook)) {
+			foreach ($headerContentHook as $hook) {
+				$params = array();
+				$content .= GeneralUtility::callUserFunction($hook, $params, $this);
+			}
+		}
 		// Add the content for each table we have rendered (traversing $tableOutput variable)
 		foreach ($tableOutput as $table => $output) {
 			$content .= $this->doc->section('', $output, TRUE, TRUE, 0, TRUE);
