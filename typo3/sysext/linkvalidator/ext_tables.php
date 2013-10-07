@@ -7,7 +7,7 @@ if (TYPO3_MODE === 'BE') {
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(
 		'web_info',
 		'TYPO3\\CMS\\Linkvalidator\\Report\\LinkValidatorReport',
-		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('linkvalidator') . 'Classes/Report/LinkValidatorReport.php',
+		NULL,
 		'LLL:EXT:linkvalidator/Resources/Private/Language/locallang.xlf:mod_linkvalidator'
 	);
 }

@@ -6,7 +6,7 @@ if (TYPO3_MODE === 'BE') {
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(
 		'web_func',
 		'TYPO3\\CMS\\WizardCrpages\\Controller\\CreatePagesWizardModuleFunctionController',
-		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Classes/Controller/CreatePagesWizardModuleFunctionController.php',
+		NULL,
 		'LLL:EXT:wizard_crpages/locallang.xlf:wiz_crMany',
 		'wiz'
 	);

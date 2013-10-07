@@ -30,6 +30,7 @@ $BE_USER->modAccess($MCONF, 1);
 $SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Scheduler\\Controller\\SchedulerModuleController');
 $SOBE->init();
 // Include files?
+// @deprecated since 6.2 (see ExtensionManagementUtility::insertModuleFunction)
 foreach ($SOBE->include_once as $INC_FILE) {
 	include_once $INC_FILE;
 }

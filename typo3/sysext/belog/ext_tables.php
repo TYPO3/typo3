@@ -9,7 +9,7 @@ if (TYPO3_MODE === 'BE' && !(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_INSTALL)) {
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(
 		'web_info',
 		'TYPO3\\CMS\\Belog\\Module\\BackendLogModuleBootstrap',
-		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Classes/Module/BackendLogModuleBootstrap.php',
+		NULL,
 		'Log'
 	);
 

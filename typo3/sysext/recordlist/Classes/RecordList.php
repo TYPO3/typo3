@@ -150,12 +150,6 @@ class RecordList {
 	 */
 	public $MOD_SETTINGS = array();
 
-	// Array, where files to include is accumulated in the init() function
-	/**
-	 * @todo Define visibility
-	 */
-	public $include_once = array();
-
 	// Internal, dynamic:
 	// Module output accumulation
 	/**

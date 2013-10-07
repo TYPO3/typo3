@@ -40,10 +40,6 @@
 
 $SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Recordlist\\RecordList');
 $SOBE->init();
-// Include files?
-foreach ($SOBE->include_once as $INC_FILE) {
-	include_once $INC_FILE;
-}
 $SOBE->clearCache();
 $SOBE->main();
 $SOBE->printContent();

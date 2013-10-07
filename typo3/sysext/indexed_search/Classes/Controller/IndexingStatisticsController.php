@@ -32,6 +32,13 @@ namespace TYPO3\CMS\IndexedSearch\Controller;
 class IndexingStatisticsController extends \TYPO3\CMS\Backend\Module\AbstractFunctionModule {
 
 	/**
+	 * Default constructor loads additional locallang
+	 */
+	public function __construct() {
+		$GLOBALS['LANG']->includeLLFile('EXT:indexed_search/modfunc2/locallang.xlf');
+	}
+
+	/**
 	 * Calls showStats to generate output.
 	 *
 	 * @return 	string		html table with results from showStats()

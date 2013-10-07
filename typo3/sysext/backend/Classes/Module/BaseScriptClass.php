@@ -70,6 +70,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * AFTER INIT THE INTERNAL ARRAY ->include_once MAY HOLD FILENAMES TO INCLUDE
  * foreach($SOBE->include_once as $INC_FILE)	include_once($INC_FILE);
+ * Note: This "include_once" is deprecated since TYPO3 6.2: use auto-loading instead!
  *
  * THEN WE WILL CHECK IF THERE IS A 'SUBMODULE' REGISTERED TO BE INITIALIZED AS WELL:
  * $SOBE->checkExtObj();
@@ -180,6 +181,7 @@ class BaseScriptClass {
 	 * Contains absolute paths to class files to include from the global scope. This is done in the module index.php files after calling the init() function
 	 *
 	 * @see handleExternalFunctionValue()
+	 * @deprecated since 6.2. Instead of this include_once array, extensions should use auto-loading
 	 * @todo Define visibility
 	 */
 	public $include_once = array();
@@ -271,6 +273,7 @@ class BaseScriptClass {
 	 * @param string $MS_value The value-key to fetch from the config array. If NULL (default) MOD_SETTINGS[$MM_key] will be used. This is useful if you want to force another function than the one defined in MOD_SETTINGS[function]. Call this in init() function of your Script Class: handleExternalFunctionValue('function', $forcedSubModKey)
 	 * @return void
 	 * @see getExternalItemConfig(), $include_once, init()
+	 * @deprecated since 6.2. Instead of this include_once array, extensions should use auto-loading
 	 * @todo Define visibility
 	 */
 	public function handleExternalFunctionValue($MM_key = 'function', $MS_value = NULL) {

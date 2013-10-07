@@ -89,6 +89,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * $SOBE->init();
  *
  * Include files?
+ * Note: This "include_once" is deprecated since TYPO3 6.2: use auto-loading instead!
  * foreach($SOBE->include_once as $INC_FILE)	include_once($INC_FILE);
  * $SOBE->checkExtObj();	// Checking for first level external objects
  *
@@ -196,9 +197,10 @@ abstract class AbstractFunctionModule {
 	public function init(&$pObj, $conf) {
 		$this->pObj = $pObj;
 		// Path of this script:
-		$this->thisPath = dirname($conf['path']);
+		$reflector = new \ReflectionObject($this);
+		$this->thisPath = dirname($reflector->getFilename());
 		if (!@is_dir($this->thisPath)) {
-			throw new \RuntimeException('TYPO3 Fatal Error: Extension "' . $this->thisPath . ' was not a directory as expected...', 1270853912);
+			throw new \RuntimeException('TYPO3 Fatal Error: Could not find path for class ' . get_class($this), 1381164687);
 		}
 		// Local lang:
 		$this->incLocalLang();
@@ -211,6 +213,7 @@ abstract class AbstractFunctionModule {
 	 *
 	 * @return void
 	 * @see $function_key, \TYPO3\CMS\FuncWizards\Controller\WebFunctionWizardsBaseController::init()
+	 * @deprecated since 6.2. Instead of this include_once array, extensions should use auto-loading
 	 * @todo Define visibility
 	 */
 	public function handleExternalFunctionValue() {

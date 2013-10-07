@@ -78,6 +78,13 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 	protected $maxListPerPage;
 
 	/**
+	 * Default constructor loads additional locallang
+	 */
+	public function __construct() {
+		$GLOBALS['LANG']->includeLLFile('EXT:indexed_search/modfunc1/locallang.xlf');
+	}
+
+	/**
 	 * Initialize menu array internally
 	 *
 	 * @return 	void

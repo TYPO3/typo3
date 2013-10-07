@@ -934,7 +934,7 @@ class ExtensionManagementUtility {
 	 *
 	 * @param string $modname Module name
 	 * @param string $className Class name
-	 * @param string $classPath Class path
+	 * @param string $classPath Class path, deprecated since 6.2, use auto-loading instead
 	 * @param string $title Title of module
 	 * @param string $MM_key Menu array key - default is "function
 	 * @param string $WS Workspace conditions. Blank means all workspaces, any other string can be a comma list of "online", "offline" and "custom
@@ -942,6 +942,14 @@ class ExtensionManagementUtility {
 	 * @see \TYPO3\CMS\Backend\Module\BaseScriptClass::mergeExternalItems()
 	 */
 	static public function insertModuleFunction($modname, $className, $classPath, $title, $MM_key = 'function', $WS = '') {
+		if (!empty($classPath)) {
+			GeneralUtility::deprecationLog(
+				sprintf('insertModuleFunction(%s, %s, ...): Use auto-loading for the class and pass NULL as $classPath since 6.2.',
+					$modname,
+					$className
+				)
+			);
+		}
 		$GLOBALS['TBE_MODULES_EXT'][$modname]['MOD_MENU'][$MM_key][$className] = array(
 			'name' => $className,
 			'path' => $classPath,
