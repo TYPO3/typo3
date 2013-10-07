@@ -105,7 +105,7 @@ class CoreUpdateService {
 	 */
 	protected function setDownloadTargetPath($downloadTargetPath) {
 		if (!is_dir($downloadTargetPath)) {
-			GeneralUtility::mkdir_deep($this->downloadTargetPath);
+			GeneralUtility::mkdir_deep($downloadTargetPath);
 		}
 		$this->downloadTargetPath = $downloadTargetPath;
 	}
