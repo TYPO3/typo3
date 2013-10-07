@@ -363,7 +363,7 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 			} elseif ($propertyValue instanceof \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface) {
 				if ($object->_isDirty($propertyName)) {
 					if ($propertyValue->_isNew()) {
-						$this->insertObject($propertyValue);
+						$this->insertObject($propertyValue, $object, $propertyName);
 					}
 					$row[$columnMap->getColumnName()] = $this->getPlainValue($propertyValue);
 				}
@@ -551,6 +551,10 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 			if ($parentTableFieldName !== NULL) {
 				$row[$parentTableFieldName] = $parentDataMap->getTableName();
 			}
+			$relationTableMatchFields = $parentColumnMap->getRelationTableMatchFields();
+			if (is_array($relationTableMatchFields) && count($relationTableMatchFields)) {
+				$row = array_merge($relationTableMatchFields, $row);
+			}
 		}
 		$childSortByFieldName = $parentColumnMap->getChildSortByFieldName();
 		if (!empty($childSortByFieldName)) {
@@ -598,9 +602,11 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 	 * Inserts an object in the storage backend
 	 *
 	 * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object The object to be insterted in the storage
+	 * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject The parentobject.
+	 * @param string $parentPropertyName
 	 * @return void
 	 */
-	protected function insertObject(\TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object) {
+	protected function insertObject(\TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object, \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject = NULL, $parentPropertyName = '') {
 		if ($object instanceof \TYPO3\CMS\Extbase\DomainObject\AbstractValueObject) {
 			$result = $this->getUidOfAlreadyPersistedValueObject($object);
 			if ($result !== FALSE) {
@@ -613,6 +619,16 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 		$this->addCommonFieldsToRow($object, $row);
 		if ($dataMap->getLanguageIdColumnName() !== NULL) {
 			$row[$dataMap->getLanguageIdColumnName()] = -1;
+		}
+		if ($parentObject !== NULL && $parentPropertyName) {
+			$parentColumnDataMap = $this->dataMapper->getDataMap(get_class($parentObject))->getColumnMap($parentPropertyName);
+			$relationTableMatchFields = $parentColumnDataMap->getRelationTableMatchFields();
+			if (is_array($relationTableMatchFields) && count($relationTableMatchFields) > 0) {
+				$row = array_merge($relationTableMatchFields, $row);
+			}
+			if ($parentColumnDataMap->getParentKeyFieldName() !== NULL) {
+				$row[$parentColumnDataMap->getParentKeyFieldName()] = (int)$parentObject->getUid();
+			}
 		}
 		$uid = $this->storageBackend->addRow($dataMap->getTableName(), $row);
 		$object->_setProperty('uid', (integer) $uid);
