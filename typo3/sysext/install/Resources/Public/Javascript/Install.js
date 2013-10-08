@@ -49,6 +49,11 @@ TYPO3.Install.coreUpdate = {
 		coreUpdateDownload: {
 			loadingMessage: 'Downloading new core',
 			finishMessage: 'Core download finished',
+			nextActionName: 'coreUpdateVerifyChecksum'
+		},
+		coreUpdateVerifyChecksum: {
+			loadingMessage: 'Verifying checksum of downloaded core',
+			finishMessage: 'Checksum verified',
 			nextActionName: 'coreUpdateUnpack'
 		},
 		coreUpdateUnpack: {

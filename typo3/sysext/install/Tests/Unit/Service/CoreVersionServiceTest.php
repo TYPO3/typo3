@@ -87,6 +87,49 @@ class CoreVersionServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 	/**
+	 * @test
+	 * @expectedException \TYPO3\CMS\Install\Service\Exception\CoreVersionServiceException
+	 */
+	public function getTarGzSha1OfVersionThrowsExceptionIfSha1DoesNotExistInMatrix() {
+		/** @var $instance \TYPO3\CMS\Install\Service\CoreVersionService|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+		$instance = $this->getAccessibleMock(
+			'TYPO3\\CMS\\Install\\Service\\CoreVersionService',
+			array('getVersionMatrix', 'getMinorVersion', 'ensureVersionExistsInMatrix'),
+			array(),
+			'',
+			FALSE
+		);
+		$versionMatrix = array(
+			'6.2' => array(
+				'releases' => array(
+					'6.2.42' => array(),
+				),
+			),
+		);
+		$instance->expects($this->once())->method('getMinorVersion')->will($this->returnValue('6.2'));
+		$instance->expects($this->any())->method('getVersionMatrix')->will($this->returnValue($versionMatrix));
+		$this->assertTrue($instance->getTarGzSha1OfVersion('6.2.42'));
+	}
+
+	/**
+	 * @test
+	 */
+	public function getTarGzSha1OfVersionReturnsSha1OfSpecifiedVersion() {
+		$versionMatrixFixtureFile = __DIR__ . '/Fixtures/VersionMatrixFixture.php';
+		/** @var $instance \TYPO3\CMS\Install\Service\CoreVersionService|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+		$instance = $this->getAccessibleMock(
+			'TYPO3\\CMS\\Install\\Service\\CoreVersionService',
+			array('getVersionMatrix', 'getMinorVersion', 'ensureVersionExistsInMatrix'),
+			array(),
+			'',
+			FALSE
+		);
+		$instance->expects($this->any())->method('getMinorVersion')->will($this->returnValue('6.2'));
+		$instance->expects($this->any())->method('getVersionMatrix')->will($this->returnValue(require($versionMatrixFixtureFile)));
+		$this->assertSame('3dc156eed4b99577232f537d798a8691493f8a83', $instance->getTarGzSha1OfVersion('6.2.0alpha3'));
+	}
+
+	/**
 	 * Whitebox test of API method: This tests multiple methods, only 'current version' and 'version matrix' are mocked.
 	 *
 	 * @test

@@ -239,7 +239,7 @@ class CoreUpdateService {
 	 */
 	public function downloadVersion($version) {
 		$downloadUri = $this->downloadBaseUri . $version;
-		$fileLocation = $this->downloadTargetPath . $version . '.tar.gz';
+		$fileLocation = $this->getDownloadTarGzTargetPath($version);
 
 		$messages = array();
 		$success = TRUE;
@@ -267,6 +267,45 @@ class CoreUpdateService {
 					$message->setTitle('Unable to store download content');
 					$messages[] = $message;
 				}
+			}
+		}
+		$this->messages = $messages;
+		return $success;
+	}
+
+	/**
+	 * Verify checksum of downloaded version
+	 *
+	 * @param string $version A downloaded version to check
+	 * @return boolean TRUE on success
+	 */
+	public function verifyFileChecksum($version) {
+		$fileLocation = $this->getDownloadTarGzTargetPath($version);
+		$expectedChecksum = $this->coreVersionService->getTarGzSha1OfVersion($version);
+
+		$messages = array();
+		$success = TRUE;
+
+		if (!file_exists($fileLocation)) {
+			$success = FALSE;
+			/** @var $message \TYPO3\CMS\Install\Status\StatusInterface */
+			$message = $this->objectManager->get('TYPO3\\CMS\\Install\\Status\\ErrorStatus');
+			$message->setTitle('Downloaded core not found');
+			$messages[] = $message;
+		} else {
+			$actualChecksum = sha1_file($fileLocation);
+			if ($actualChecksum !== $expectedChecksum) {
+				$success = FALSE;
+				/** @var $message \TYPO3\CMS\Install\Status\StatusInterface */
+				$message = $this->objectManager->get('TYPO3\\CMS\\Install\\Status\\ErrorStatus');
+				$message->setTitle('New core checksum mismatch');
+				$message->setMessage(
+					'The official TYPO3 CMS version system on https://get.typo3.org expects a sha1 checksum of '
+					. $expectedChecksum . ' from the content of the downloaded new core version ' . $version . '.'
+					. ' The actual checksum is ' . $actualChecksum . '. The update is stopped. This may be a'
+					. ' failed download, an attack, or an issue with the typo3.org infrastructure.'
+				);
+				$messages[] = $message;
 			}
 		}
 		$this->messages = $messages;
@@ -407,5 +446,15 @@ class CoreUpdateService {
 
 		$this->messages = $messages;
 		return $success;
+	}
+
+	/**
+	 * Absolute path of downloaded .tar.gz
+	 *
+	 * @param string $version A version number
+	 * @return string
+	 */
+	protected function getDownloadTarGzTargetPath($version) {
+		return $this->downloadTargetPath . $version . '.tar.gz';
 	}
 }

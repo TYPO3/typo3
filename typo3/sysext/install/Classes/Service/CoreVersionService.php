@@ -99,6 +99,30 @@ class CoreVersionService {
 	}
 
 	/**
+	 * Get sha1 of a version from version matrix
+	 *
+	 * @param string $version A version to get sha1 of
+	 * @return string sha1 of version
+	 * @throws Exception\CoreVersionServiceException
+	 */
+	public function getTarGzSha1OfVersion($version) {
+		$this->ensureVersionExistsInMatrix($version);
+
+		$minorVersion = $this->getMinorVersion($version);
+		$versionMatrix = $this->getVersionMatrix();
+
+		if (empty($versionMatrix[$minorVersion]['releases'][$version]['checksums']['tar']['sha1'])) {
+			throw new Exception\CoreVersionServiceException(
+				'Release sha1 of version ' . $version . ' not found in version matrix.'
+				. ' This is probably a bug on get.typo3.org.',
+				1381263173
+			);
+		}
+
+		return $versionMatrix[$minorVersion]['releases'][$version]['checksums']['tar']['sha1'];
+	}
+
+	/**
 	 * Get current installed version number
 	 *
 	 * @return string

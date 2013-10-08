@@ -49,6 +49,7 @@ class AjaxController extends AbstractController {
 		'coreUpdateIsUpdateAvailable',
 		'coreUpdateCheckPreConditions',
 		'coreUpdateDownload',
+		'coreUpdateVerifyChecksum',
 		'coreUpdateUnpack',
 		'coreUpdateMove',
 		'coreUpdateActivate',
