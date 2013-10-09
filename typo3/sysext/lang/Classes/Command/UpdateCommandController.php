@@ -30,49 +30,16 @@ namespace TYPO3\CMS\Lang\Command;
 class UpdateCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\CommandController {
 
 	/**
-	 * @var \TYPO3\CMS\Core\Package\PackageManager
-	 * @inject
-	 */
-	protected $packageManager;
-
-	/**
-	 * @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
-	 * @inject
-	 */
-	protected $signalSlotDispatcher;
-
-	/**
 	 * Update language file for each extension
 	 *
 	 * @param string $localesToUpdate Comma separated list of locales that needs to be updated
 	 * @return void
+	 * @deprecated Use LanguageCommandController (language:update) instead. will be removed two versions after 6.2
 	 */
 	public function updateCommand($localesToUpdate = '') {
-		/** @var $updateTranslationService \TYPO3\CMS\Lang\Service\UpdateTranslationService */
-		$updateTranslationService = $this->objectManager->get('TYPO3\\CMS\\Lang\Service\\UpdateTranslationService');
-		/** @var $languageRepository \TYPO3\CMS\Lang\Domain\Repository\LanguageRepository */
-		$languageRepository = $this->objectManager->get('TYPO3\\CMS\\Lang\\Domain\\Repository\\LanguageRepository');
-
-		$locales = array();
-		if (!empty($localesToUpdate)) {
-			$locales = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $localesToUpdate, TRUE);
-		} else {
-			$languages = $languageRepository->findSelected();
-			foreach ($languages as $language) {
-				$locales[] = $language->getLocale();
-			}
-		}
-		$this->packageManager = $this->objectManager->get('TYPO3\\CMS\\Core\\Package\\PackageManager');
-		$this->emitPackagesMayHaveChanged();
-		foreach ($this->packageManager->getAvailablePackages() as $package) {
-			$updateTranslationService->updateTranslation($package->getPackageKey(), $locales);
-		}
-	}
-
-	/**
-	 * Emits packages may have changed signal
-	 */
-	protected function emitPackagesMayHaveChanged() {
-		$this->signalSlotDispatcher->dispatch('PackageManagement', 'packagesMayHaveChanged');
+		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
+		$this->outputLine('Calling update:update is deprecated since 6.2, use language:update instead');
+		$languageCommandController = $this->objectManager->get('TYPO3\\CMS\\Lang\\Command\\LanguageCommandController');
+		$languageCommandController->updateCommand($localesToUpdate);
 	}
 }
