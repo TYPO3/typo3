@@ -166,15 +166,12 @@ class ExtDirectApi {
 		$cacheIdentifier = 'ExtDirectApi';
 		$cacheHash = md5($cacheIdentifier . implode(',', $filterNamespaces) . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SSL') . serialize($this->settings) . TYPO3_MODE . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('HTTP_HOST'));
 		// With no_cache always generate the javascript content
-		$cacheContent = $noCache ? '' : \TYPO3\CMS\Frontend\Page\PageRepository::getHash($cacheHash);
 		// Generate the javascript content if it wasn't found inside the cache and cache it!
-		if (!$cacheContent) {
+		if ($noCache || !is_array(($javascriptNamespaces = \TYPO3\CMS\Frontend\Page\PageRepository::getHash($cacheHash)))) {
 			$javascriptNamespaces = $this->generateAPI($filterNamespaces);
 			if (count($javascriptNamespaces)) {
-				\TYPO3\CMS\Frontend\Page\PageRepository::storeHash($cacheHash, serialize($javascriptNamespaces), $cacheIdentifier);
+				\TYPO3\CMS\Frontend\Page\PageRepository::storeHash($cacheHash, $javascriptNamespaces, $cacheIdentifier);
 			}
-		} else {
-			$javascriptNamespaces = unserialize($cacheContent);
 		}
 		return $javascriptNamespaces;
 	}

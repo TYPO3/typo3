@@ -4336,13 +4336,13 @@ if (version == "n3") {
 			$userTS = implode(LF . '[GLOBAL]' . LF, $TSdataArray);
 			$hash = md5('pageTS:' . $userTS);
 			$cachedContent = $this->sys_page->getHash($hash);
-			if (isset($cachedContent)) {
-				$this->pagesTSconfig = unserialize($cachedContent);
+			if (is_array($cachedContent)) {
+				$this->pagesTSconfig = $cachedContent;
 			} else {
 				$parseObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\Parser\\TypoScriptParser');
 				$parseObj->parse($userTS);
 				$this->pagesTSconfig = $parseObj->setup;
-				$this->sys_page->storeHash($hash, serialize($this->pagesTSconfig), 'PAGES_TSconfig');
+				$this->sys_page->storeHash($hash, $this->pagesTSconfig, 'PAGES_TSconfig');
 			}
 		}
 		return $this->pagesTSconfig;

@@ -464,9 +464,9 @@ class TemplateService {
 				// If currentPageData was not there, we first find $rowSum (freshly generated). After that we try to see, if it is stored with a list of all conditions. If so we match the result.
 				$rowSumHash = md5('ROWSUM:' . serialize($this->rowSum));
 				$result = \TYPO3\CMS\Frontend\Page\PageRepository::getHash($rowSumHash);
-				if ($result) {
+				if (is_array($result)) {
 					$cc = array();
-					$cc['all'] = unserialize($result);
+					$cc['all'] = $result;
 					$cc['rowSum'] = $this->rowSum;
 					$cc = $this->matching($cc);
 					ksort($cc);
@@ -477,9 +477,9 @@ class TemplateService {
 				// Get TypoScript setup array
 				$setupData = \TYPO3\CMS\Frontend\Page\PageRepository::getHash($hash);
 			}
-			if ($setupData && !$this->forceTemplateParsing) {
+			if (is_array($setupData) && !$this->forceTemplateParsing) {
 				// If TypoScript setup structure was cached we unserialize it here:
-				$this->setup = unserialize($setupData);
+				$this->setup = $setupData;
 				if ($this->tt_track) {
 					$GLOBALS['TT']->setTSLogMessage('Using cached TS template data');
 				}
@@ -500,12 +500,12 @@ class TemplateService {
 				ksort($cc);
 				$hash = md5(serialize($cc));
 				// This stores the data.
-				\TYPO3\CMS\Frontend\Page\PageRepository::storeHash($hash, serialize($this->setup), 'TS_TEMPLATE');
+				\TYPO3\CMS\Frontend\Page\PageRepository::storeHash($hash, $this->setup, 'TS_TEMPLATE');
 				if ($this->tt_track) {
 					$GLOBALS['TT']->setTSlogMessage('TS template size, serialized: ' . strlen(serialize($this->setup)) . ' bytes');
 				}
 				$rowSumHash = md5('ROWSUM:' . serialize($this->rowSum));
-				\TYPO3\CMS\Frontend\Page\PageRepository::storeHash($rowSumHash, serialize($cc['all']), 'TMPL_CONDITIONS_ALL');
+				\TYPO3\CMS\Frontend\Page\PageRepository::storeHash($rowSumHash, $cc['all'], 'TMPL_CONDITIONS_ALL');
 			}
 			// Add rootLine
 			$cc['rootLine'] = $this->rootLine;

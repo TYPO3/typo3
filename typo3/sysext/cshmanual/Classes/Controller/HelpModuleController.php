@@ -636,9 +636,11 @@ class HelpModuleController {
 	public function createGlossaryIndex() {
 		// Create hash string and try to retrieve glossary array:
 		$hash = md5('typo3/mod.php?M=help_cshmanual:glossary');
-		list($this->glossaryWords, $this->substWords) = unserialize(BackendUtility::getHash($hash));
+		$cachedData = BackendUtility::getHash($hash);
 		// Generate glossary words if not found:
-		if (!is_array($this->glossaryWords)) {
+		if (is_array($cachedData)) {
+			list($this->glossaryWords, $this->substWords) = $cachedData;
+		} else {
 			// Initialize:
 			$this->glossaryWords = array();
 			$this->substWords = array();
@@ -670,7 +672,7 @@ class HelpModuleController {
 				}
 			}
 			krsort($this->substWords);
-			BackendUtility::storeHash($hash, serialize(array($this->glossaryWords, $this->substWords)), 'Glossary');
+			BackendUtility::storeHash($hash, array($this->glossaryWords, $this->substWords), 'Glossary');
 		}
 	}
 

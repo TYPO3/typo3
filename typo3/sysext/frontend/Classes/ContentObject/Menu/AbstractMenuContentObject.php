@@ -892,12 +892,12 @@ class AbstractMenuContentObject {
 			} else {
 				$cacheTimeout = $GLOBALS['TSFE']->get_cache_timeout();
 			}
-			$serData = $this->sys_page->getHash($this->hash);
-			if (!$serData) {
+			$cachedData = $this->sys_page->getHash($this->hash);
+			if (!is_array($cachedData)) {
 				$this->generate();
-				$this->sys_page->storeHash($this->hash, serialize($this->result), 'MENUDATA', $cacheTimeout);
+				$this->sys_page->storeHash($this->hash, $this->result, 'MENUDATA', $cacheTimeout);
 			} else {
-				$this->result = unserialize($serData);
+				$this->result = $cachedData;
 			}
 			// End showAccessRestrictedPages
 			if ($this->mconf['showAccessRestrictedPages']) {

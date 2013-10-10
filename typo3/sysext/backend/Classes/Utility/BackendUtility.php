@@ -1080,12 +1080,13 @@ class BackendUtility {
 	 *
 	 *******************************************/
 	/**
-	 * Stores the string value $data in the 'cache_hash' cache with the
-	 * hash key, $hash, and visual/symbolic identification, $ident
+	 * Stores $data in the 'cache_hash' cache with the hash key, $hash
+	 * and visual/symbolic identification, $ident
+	 *
 	 * IDENTICAL to the function by same name found in \TYPO3\CMS\Frontend\Page\PageRepository
 	 *
 	 * @param string $hash 32 bit hash string (eg. a md5 hash of a serialized array identifying the data being stored)
-	 * @param string $data The data string. If you want to store an array, then just serialize it first.
+	 * @param mixed $data The data to store
 	 * @param string $ident $ident is just a textual identification in order to inform about the content!
 	 * @return 	void
 	 */
@@ -1094,14 +1095,14 @@ class BackendUtility {
 	}
 
 	/**
-	 * Returns string value stored for the hash string in the cache "cache_hash"
-	 * Can be used to retrieved a cached value
+	 * Returns data stored for the hash string in the cache "cache_hash"
+	 * Can be used to retrieved a cached value, array or object
 	 *
 	 * IDENTICAL to the function by same name found in \TYPO3\CMS\Frontend\Page\PageRepository
 	 *
 	 * @param string $hash The hash-string which was used to store the data value
 	 * @param integer $expTime Variabele is not used in the function
-	 * @return string
+	 * @return mixed The "data" from the cache
 	 */
 	static public function getHash($hash, $expTime = 0) {
 		$hashContent = NULL;

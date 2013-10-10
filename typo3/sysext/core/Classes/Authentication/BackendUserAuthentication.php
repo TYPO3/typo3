@@ -1284,13 +1284,13 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 				// Parsing the user TSconfig (or getting from cache)
 				$hash = md5('userTS:' . $this->userTS_text);
 				$cachedContent = BackendUtility::getHash($hash);
-				if (isset($cachedContent) && !$this->userTS_dontGetCached) {
-					$this->userTS = unserialize($cachedContent);
+				if (is_array($cachedContent) && !$this->userTS_dontGetCached) {
+					$this->userTS = $cachedContent;
 				} else {
 					$parseObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\Parser\\TypoScriptParser');
 					$parseObj->parse($this->userTS_text);
 					$this->userTS = $parseObj->setup;
-					BackendUtility::storeHash($hash, serialize($this->userTS), 'BE_USER_TSconfig');
+					BackendUtility::storeHash($hash, $this->userTS, 'BE_USER_TSconfig');
 					// Update UC:
 					$this->userTSUpdated = 1;
 				}

@@ -2092,11 +2092,10 @@ class GeneralUtility {
 			$array = $firstLevelCache[$identifier];
 		} else {
 			// Look up in second level cache
-			$cacheContent = \TYPO3\CMS\Frontend\Page\PageRepository::getHash($identifier, 0);
-			$array = unserialize($cacheContent);
-			if ($array === FALSE) {
+			$array = \TYPO3\CMS\Frontend\Page\PageRepository::getHash($identifier, 0);
+			if (!is_array($array)) {
 				$array = self::xml2arrayProcess($string, $NSprefix, $reportDocTag);
-				\TYPO3\CMS\Frontend\Page\PageRepository::storeHash($identifier, serialize($array), 'ident_xml2array');
+				\TYPO3\CMS\Frontend\Page\PageRepository::storeHash($identifier, $array, 'ident_xml2array');
 			}
 			// Store content in first level cache
 			$firstLevelCache[$identifier] = $array;

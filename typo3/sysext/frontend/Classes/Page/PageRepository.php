@@ -780,15 +780,15 @@ class PageRepository {
 	 *
 	 **********************************/
 	/**
-	 * Returns string value stored for the hash string in the cache "cache_hash"
-	 * Can be used to retrieved a cached value
+	 * Returns data stored for the hash string in the cache "cache_hash"
+	 * Can be used to retrieved a cached value, array or object
 	 * Can be used from your frontend plugins if you like. It is also used to
 	 * store the parsed TypoScript template structures. You can call it directly
 	 * like \TYPO3\CMS\Frontend\Page\PageRepository::getHash()
 	 *
 	 * @param string $hash The hash-string which was used to store the data value
 	 * @param integer The expiration time (not used anymore)
-	 * @return string The "content" field of the "cache_hash" cache entry.
+	 * @return mixed The "data" from the cache
 	 * @see tslib_TStemplate::start(), storeHash()
 	 */
 	static public function getHash($hash, $expTime = 0) {
@@ -804,12 +804,13 @@ class PageRepository {
 	}
 
 	/**
-	 * Stores a string value in the cache_hash cache identified by $hash.
+	 * Stores $data in the 'cache_hash' cache with the hash key, $hash
+	 * and visual/symbolic identification, $ident
 	 * Can be used from your frontend plugins if you like. You can call it
 	 * directly like \TYPO3\CMS\Frontend\Page\PageRepository::storeHash()
 	 *
 	 * @param string $hash 32 bit hash string (eg. a md5 hash of a serialized array identifying the data being stored)
-	 * @param string $data The data string. If you want to store an array, then just serialize it first.
+	 * @param mixed $data The data to store
 	 * @param string $ident Is just a textual identification in order to inform about the content!
 	 * @param integer $lifetime The lifetime for the cache entry in seconds
 	 * @return void

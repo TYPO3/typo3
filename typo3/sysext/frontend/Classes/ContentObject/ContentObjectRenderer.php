@@ -1898,7 +1898,12 @@ class ContentObjectRenderer {
 			$GLOBALS['TT']->setTSlogMessage('Cached', 0);
 		} else {
 			$storeArrDat = $GLOBALS['TSFE']->sys_page->getHash($storeKey);
-			if (!isset($storeArrDat)) {
+			if (is_array($storeArrDat)) {
+				$storeArr = $storeArrDat;
+				// Setting cache:
+				$this->substMarkerCache[$storeKey] = $storeArr;
+				$GLOBALS['TT']->setTSlogMessage('Cached from DB', 0);
+			} else {
 				// Initialize storeArr
 				$storeArr = array();
 				// Finding subparts and substituting them with the subpart as a marker
@@ -1924,14 +1929,8 @@ class ContentObjectRenderer {
 				// Setting cache:
 				$this->substMarkerCache[$storeKey] = $storeArr;
 				// Storing the cached data:
-				$GLOBALS['TSFE']->sys_page->storeHash($storeKey, serialize($storeArr), 'substMarkArrayCached');
+				$GLOBALS['TSFE']->sys_page->storeHash($storeKey, $storeArr, 'substMarkArrayCached');
 				$GLOBALS['TT']->setTSlogMessage('Parsing', 0);
-			} else {
-				// Unserializing
-				$storeArr = unserialize($storeArrDat);
-				// Setting cache:
-				$this->substMarkerCache[$storeKey] = $storeArr;
-				$GLOBALS['TT']->setTSlogMessage('Cached from DB', 0);
 			}
 		}
 		// Substitution/Merging:

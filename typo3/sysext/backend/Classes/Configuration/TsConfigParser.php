@@ -57,9 +57,9 @@ class TsConfigParser extends \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser 
 		$this->rootLine = $rootLine;
 		$hash = md5($type . ':' . $TStext);
 		$cachedContent = BackendUtility::getHash($hash);
-		if ($cachedContent) {
-			$storedData = unserialize($cachedContent);
-			$storedMD5 = substr($cachedContent, -strlen($hash));
+		if (is_array($cachedContent)) {
+			$storedData = $cachedContent[0];
+			$storedMD5 = $cachedContent[1];
 			$storedData['match'] = array();
 			$storedData = $this->matching($storedData);
 			$checkMD5 = md5(serialize($storedData));
@@ -71,16 +71,15 @@ class TsConfigParser extends \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser 
 			} else {
 				$shash = md5($checkMD5 . $hash);
 				$cachedSpec = BackendUtility::getHash($shash);
-				if ($cachedSpec) {
-					$storedData = unserialize($cachedSpec);
+				if (is_array($cachedSpec)) {
+					$storedData = $cachedSpec;
 					$res = array(
 						'TSconfig' => $storedData['TSconfig'],
 						'cached' => 1
 					);
 				} else {
 					$storeData = $this->parseWithConditions($TStext);
-					$serData = serialize($storeData);
-					BackendUtility::storeHash($shash, $serData, $type . '_TSconfig');
+					BackendUtility::storeHash($shash, $storeData, $type . '_TSconfig');
 					$res = array(
 						'TSconfig' => $storeData['TSconfig'],
 						'cached' => 0
@@ -89,9 +88,8 @@ class TsConfigParser extends \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser 
 			}
 		} else {
 			$storeData = $this->parseWithConditions($TStext);
-			$serData = serialize($storeData);
-			$md5 = md5($serData);
-			BackendUtility::storeHash($hash, $serData . $md5, $type . '_TSconfig');
+			$md5 = md5(serialize($storeData));
+			BackendUtility::storeHash($hash, array($storeData, $md5), $type . '_TSconfig');
 			$res = array(
 				'TSconfig' => $storeData['TSconfig'],
 				'cached' => 0
