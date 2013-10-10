@@ -24,6 +24,8 @@ namespace TYPO3\CMS\Documentation\Utility;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+
 /**
  * General utility.
  *
@@ -40,7 +42,7 @@ class GeneralUtility {
 	static public function getExtensionMetaData($extensionKey) {
 		$_EXTKEY = $extensionKey;
 		$EM_CONF = array();
-		$extPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extensionKey);
+		$extPath = ExtensionManagementUtility::extPath($extensionKey);
 		include($extPath . 'ext_emconf.php');
 
 		$release = $EM_CONF[$_EXTKEY]['version'];
@@ -67,13 +69,15 @@ class GeneralUtility {
 		$documentPath = $basePath . $documentKey . '/';
 
 		// Fallback icon
-		$icon = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('documentation') . 'ext_icon.gif';
+		$icon = ExtensionManagementUtility::siteRelPath('documentation') . 'ext_icon.gif';
 
 		if (\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($documentKey, 'typo3cms.extensions.')) {
 			// Standard extension icon
 			$extensionKey = substr($documentKey, 20);
-			if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($extensionKey)) {
-				$icon = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath($extensionKey) . 'ext_icon.gif';
+			if (ExtensionManagementUtility::isLoaded($extensionKey)) {
+				$extensionPath = ExtensionManagementUtility::extPath($extensionKey);
+				$siteRelativePath = ExtensionManagementUtility::siteRelPath($extensionKey);
+				$icon = $siteRelativePath . ExtensionManagementUtility::getExtensionIcon($extensionPath);
 			}
 		} elseif (is_file(PATH_site . $documentPath . 'icon.png')) {
 			$icon = $documentPath . 'icon.png';
