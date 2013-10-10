@@ -1458,8 +1458,10 @@ class ContentObjectRenderer {
 					if ($dimension) {
 						if (strstr($dimension, 'c') !== FALSE && ($dimensionKey === 'width' || $dimensionKey === 'height')) {
 							$dimensionParts = explode('c', $dimension, 2);
-							$dimension =  intval($dimensionParts[0] * $pixelDensity) . 'c';
-							if ($dimensionParts[1]) $dimension .= $dimensionParts[1];
+							$dimension = intval($dimensionParts[0] * $pixelDensity) . 'c';
+							if ($dimensionParts[1]) {
+								$dimension .= $dimensionParts[1];
+							}
 						} else {
 							$dimension = intval($dimension * $pixelDensity);
 						}
