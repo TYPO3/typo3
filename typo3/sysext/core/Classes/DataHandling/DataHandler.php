@@ -4386,14 +4386,57 @@ class DataHandler {
 				if ($table != 'pages') {
 					$mres = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', $table, 'pid=' . intval($uid) . $this->deleteClause($table));
 					while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($mres)) {
+						$this->copyMovedRecordToNewLocation($table, $row['uid']);
 						$this->deleteVersionsForRecord($table, $row['uid'], $forceHardDelete);
 						$this->deleteRecord($table, $row['uid'], TRUE, $forceHardDelete);
 					}
 					$GLOBALS['TYPO3_DB']->sql_free_result($mres);
 				}
 			}
+			$this->copyMovedRecordToNewLocation('pages', $uid);
 			$this->deleteVersionsForRecord('pages', $uid, $forceHardDelete);
 			$this->deleteRecord('pages', $uid, TRUE, $forceHardDelete);
+		}
+	}
+
+	/**
+	 * Copies the move placeholder of a record to its new location (pid).
+	 * This will create a "new" placeholder at the new location and
+	 * a version for this new placeholder. The original move placeholder
+	 * is then deleted because it is not needed anymore.
+	 *
+	 * This method is used to assure that moved records are not deleted
+	 * when the origin page is deleted.
+	 *
+	 * @param string $table Record table
+	 * @param int $uid Record uid
+	 * @return void
+	 */
+	protected function copyMovedRecordToNewLocation($table, $uid) {
+		if ($this->BE_USER->workspace > 0) {
+			// Check move placeholder at workspace
+			$movePlaceholder = BackendUtility::getMovePlaceholder($table, $uid);
+			if ($movePlaceholder !== FALSE) {
+				// If move placeholder exists, copy to new location
+				// This will create a New placeholder on the new location
+				// and a version for this new placeholder
+				$command = array(
+					$table => array(
+						$uid => array(
+							'copy' => '-' . $movePlaceholder['uid']
+						)
+					)
+				);
+				$dataHandler = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+				$dataHandler->stripslashes_values = FALSE;
+				$dataHandler->neverHideAtCopy = TRUE;
+				$dataHandler->start(array(), $command);
+				$dataHandler->process_cmdmap();
+				unset($dataHandler);
+
+				// Delete move placeholder
+				$this->deleteRecord($table, $movePlaceholder['uid'], TRUE, TRUE);
+			}
 		}
 	}
 
