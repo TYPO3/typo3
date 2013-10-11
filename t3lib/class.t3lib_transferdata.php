@@ -784,6 +784,8 @@ class t3lib_transferData {
 			// foreign_table
 		$subres = t3lib_BEfunc::exec_foreign_table_where_query($fieldConfig, $field, $TSconfig);
 		while ($subrow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($subres)) {
+			// Resolve move-placeholder, to check the right uid against $dataIds
+			t3lib_BEfunc::workspaceOL($fieldConfig['config']['foreign_table'], $subrow);
 			$recordList[$subrow['uid']] = t3lib_BEfunc::getRecordTitle($fieldConfig['config']['foreign_table'], $subrow);
 		}
 
@@ -791,6 +793,8 @@ class t3lib_transferData {
 		if (is_array($GLOBALS['TCA'][$fieldConfig['config']['neg_foreign_table']])) {
 			$subres = t3lib_BEfunc::exec_foreign_table_where_query($fieldConfig, $field, $TSconfig, 'neg_');
 			while ($subrow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($subres)) {
+				// Resolve move-placeholder, to check the right uid against $dataIds
+				t3lib_BEfunc::workspaceOL($fieldConfig['config']['nes_foreign_table'], $subrow);
 				$recordList[-$subrow['uid']] = t3lib_BEfunc::getRecordTitle($fieldConfig['config']['neg_foreign_table'], $subrow);
 			}
 		}
