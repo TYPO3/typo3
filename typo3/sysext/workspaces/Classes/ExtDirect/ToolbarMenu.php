@@ -49,11 +49,26 @@ class tx_Workspaces_ExtDirect_ToolbarMenu {
 	 */
 	public function setWorkspace($parameter) {
 		$workspaceId = intval($parameter->workSpaceId);
+		$pageId = intval($parameter->pageId);
 
 		$GLOBALS['BE_USER']->setWorkspace($workspaceId);
+
+		while ($pageId) {
+			$page = t3lib_BEfunc::getRecordWSOL('pages', $pageId, '*', ' AND pages.t3ver_wsid IN (0, ' . $workspaceId . ')');
+			if ($page) {
+				if ($GLOBALS['BE_USER']->doesUserHaveAccess($page, 1)) {
+					break;
+				}
+			} else {
+				$page = t3lib_BEfunc::getRecord('pages', $pageId);
+			}
+			$pageId = $page['pid'];
+		}
+
 		return array(
 			'title' => tx_Workspaces_Service_Workspaces::getWorkspaceTitle($workspaceId),
-			'id' => $workspaceId
+			'id' => $workspaceId,
+			'page' => ($parameter->pageId == $page['uid']) ? NULL : intval($page['uid'])
 		);
 	}
 }

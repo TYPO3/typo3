@@ -120,25 +120,36 @@ var WorkspaceMenu = Class.create({
 		var clickedElement = Event.element(event);
 		var workspaceId = clickedElement.identify().substring(3);
 
-		TYPO3.Ajax.ExtDirect.ToolbarMenu.setWorkspace({'workSpaceId': workspaceId }, function(response) {
-			if (!response.id) {
-				response.id = 0;
-			}
-
-			TYPO3BackendWorkspaceMenu.performWorkspaceSwitch(response.id, response.title);
-
-			// when in web module reload, otherwise send the user to the web module
-			if (currentModuleLoaded.startsWith('web_')) {
-				top.TYPO3.Backend.NavigationContainer.PageTree.refreshTree();
-				top.TYPO3.ModuleMenu.App.reloadFrames();
-			} else {
-				if (TYPO3.configuration.pageModule) {
-					top.TYPO3.ModuleMenu.App.showModule(TYPO3.configuration.pageModule);
+		TYPO3.Ajax.ExtDirect.ToolbarMenu.setWorkspace({
+				'workSpaceId': workspaceId,
+				'pageId': fsMod.recentIds['web']
+			},function(response) {
+				if (!response.id) {
+					response.id = 0;
 				}
-			}
 
-			// reload the module menu
-			TYPO3ModuleMenu.refreshMenu();
+				if (Ext.isNumber(response.page)) {
+					fsMod.recentIds['web'] = parseInt(response.page, 10);
+					var url = TYPO3.Backend.ContentContainer.getUrl().split('?');
+					var parameters = Ext.urlDecode(url[1]);
+					parameters.id = fsMod.recentIds['web'];
+					TYPO3.Backend.ContentContainer.setUrl(Ext.urlAppend(url[0], Ext.urlEncode(parameters)));
+				}
+
+				TYPO3BackendWorkspaceMenu.performWorkspaceSwitch(response.id, response.title);
+
+				// when in web module reload, otherwise send the user to the web module
+				if (currentModuleLoaded.startsWith('web_')) {
+					top.TYPO3.Backend.NavigationContainer.PageTree.refreshTree();
+					top.TYPO3.ModuleMenu.App.reloadFrames();
+				} else {
+					if (TYPO3.configuration.pageModule) {
+						top.TYPO3.ModuleMenu.App.showModule(TYPO3.configuration.pageModule);
+					}
+				}
+
+				// reload the module menu
+				TYPO3ModuleMenu.refreshMenu();
 		});
 
 		TYPO3BackendWorkspaceMenu.toggleMenu(event);
