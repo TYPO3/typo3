@@ -28,6 +28,7 @@ namespace TYPO3\CMS\Frontend\ContentObject;
  ***************************************************************/
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * Contains FILES content object
@@ -156,9 +157,34 @@ class FilesContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractConte
 			});
 		}
 
-		$GLOBALS['TSFE']->register['FILES_COUNT'] = count($fileObjects);
+		$availableFileObjectCount = count($fileObjects);
+
+		$start = 0;
+		if (array_key_exists('begin', $conf)) {
+			$start = intval($conf['begin']);
+		}
+		if (array_key_exists('begin.', $conf)) {
+			$start = intval($this->cObj->stdWrap($start, $conf['begin.']));
+		}
+		$start = MathUtility::forceIntegerInRange($start, 0, $availableFileObjectCount);
+
+		$limit = $availableFileObjectCount;
+		if (array_key_exists('maxItems', $conf)) {
+			$limit = intval($conf['maxItems']);
+		}
+		if (array_key_exists('maxItems.', $conf)) {
+			$limit = intval($this->cObj->stdWrap($limit, $conf['maxItems.']));
+		}
+
+		$end = MathUtility::forceIntegerInRange($start + $limit, 0, $availableFileObjectCount);
+
+		$GLOBALS['TSFE']->register['FILES_COUNT'] = $limit < $availableFileObjectCount ? $limit : $availableFileObjectCount;
 		$fileObjectCounter = 0;
-		foreach ($fileObjects as $key => $fileObject) {
+		$keys = array_keys($fileObjects);
+		for ($i = $start; $i < $end; $i++) {
+			$key = $keys[$i];
+			$fileObject = $fileObjects[$key];
+
 			$GLOBALS['TSFE']->register['FILE_NUM_CURRENT'] = $fileObjectCounter;
 			$this->cObj->setCurrentFile($fileObject);
 			$content .= $this->cObj->cObjGetSingle($splitConf[$key]['renderObj'], $splitConf[$key]['renderObj.']);
