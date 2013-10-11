@@ -280,6 +280,9 @@ class ResourceFactory implements \TYPO3\CMS\Core\SingletonInterface {
 			case 'folder':
 				$collection = Collection\FolderBasedFileCollection::create($collectionData);
 				break;
+			case 'category':
+				$collection = Collection\CategoryBasedFileCollection::create($collectionData);
+				break;
 			default:
 				$collection = NULL;
 		}

@@ -113,7 +113,8 @@ return array(
 				'type' => 'select',
 				'items' => array(
 					array('Static selection of files', 'static'),
-					array('Folder from Storage', 'folder')
+					array('Folder from Storage', 'folder'),
+					array('Select by category', 'category')
 				)
 			)
 		),
@@ -154,12 +155,32 @@ return array(
 				'items' => array(),
 				'itemsProcFunc' => 'typo3/sysext/core/Classes/Resource/Service/UserFileMountService.php:TYPO3\CMS\Core\Resource\Service\UserFileMountService->renderTceformsSelectDropdown',
 			)
+		),
+		'category' => array(
+			'exclude' => 0,
+			'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_collection.category',
+			'config' => array(
+				'minitems' => 0,
+				'maxitems' => 1,
+				'type' => 'select',
+				'renderMode' => 'tree',
+				'foreign_table' => 'sys_category',
+				'foreign_table_where' => ' AND sys_category.sys_language_uid IN (-1,0) ORDER BY sys_category.sorting ASC',
+				'treeConfig' => array(
+					'parentField' => 'parent',
+					'appearance' => array(
+						'expandAll' => TRUE,
+						'showHeader' => TRUE,
+					)
+				)
+			)
 		)
 	),
 	'types' => array(
 		'0' => array('showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, title;;1, type, files'),
 		'static' => array('showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, title;;1, type, files'),
-		'folder' => array('showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, title;;1, type, storage, folder')
+		'folder' => array('showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, title;;1, type, storage, folder'),
+		'category' => array('showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, title;;1, type, category')
 	),
 	'palettes' => array(
 		'1' => array('showitem' => 'hidden, starttime, endtime')

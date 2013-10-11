@@ -447,7 +447,7 @@ CREATE TABLE sys_file_collection (
 	# Actual fields
 	title tinytext,
 	description text,
-	type varchar(6) DEFAULT 'static' NOT NULL,
+	type varchar(30) DEFAULT 'static' NOT NULL,
 
 	# for type=static
 	files int(11) DEFAULT '0' NOT NULL,
@@ -455,6 +455,9 @@ CREATE TABLE sys_file_collection (
 	# for type=folder:
 	storage int(11) DEFAULT '0' NOT NULL,
 	folder text NOT NULL,
+
+	# for type=category:
+	category int(11) DEFAULT '0' NOT NULL,
 
 	PRIMARY KEY (uid),
 	KEY parent (pid,deleted),

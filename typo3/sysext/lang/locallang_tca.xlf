@@ -555,6 +555,9 @@
 			<trans-unit id="sys_file_collection.folder" xml:space="preserve">
 				<source>Folder</source>
 			</trans-unit>
+			<trans-unit id="sys_file_collection.category" xml:space="preserve">
+				<source>Category</source>
+			</trans-unit>
 			<trans-unit id="sys_language" xml:space="preserve">
 				<source>Website Language</source>
 			</trans-unit>
