@@ -521,8 +521,10 @@ class AbstractController {
 			// Abort a redirect loop by throwing an exception. Calling this method
 			// some times in a row is ok, but break a loop if this happens too often.
 			throw new Exception\RedirectLoopException(
-				'Redirect loop aborted. If this message is shown again after a reload,'
-					. ' your setup is so weird that the install tool is unable to handle it.',
+				'Redirect loop aborted. If this message is shown again after a reload,' .
+					' your setup is so weird that the install tool is unable to handle it.' .
+					' Please make sure to remove the "install[redirectCount]" parameter from your request or' .
+					' restart the install tool from the backend navigation.',
 				1380581244
 			);
 		}
