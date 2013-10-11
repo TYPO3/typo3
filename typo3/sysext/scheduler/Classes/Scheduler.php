@@ -233,6 +233,7 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface {
 			$fields = array(
 				'nextexecution' => $executionTime,
 				'disable' => $task->isDisabled(),
+				'description' => $task->getDescription(),
 				'serialized_task_object' => serialize($task)
 			);
 			$result = $GLOBALS['TYPO3_DB']->exec_UPDATEquery('tx_scheduler_task', 'uid = ' . $taskUid, $fields);

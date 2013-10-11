@@ -9,3 +9,6 @@ showSampleTasks = 1
 
 # cat=basic//; type=boolean; label=Use "at"-daemon: This allows automatic scheduling of the next execution of the scheduler. Your system must have the at daemon installed and configured for the user PHP runs with.
 useAtdaemon = 0
+
+# cat=basic//; type=boolean; label=Show description of tasks as hover: If disabled descriptions of tasks will be shown below the job-name in the scheduler-list
+listShowTaskDescriptionAsHover = 1

@@ -69,6 +69,13 @@ abstract class AbstractTask {
 	protected $executionTime = 0;
 
 	/**
+	 * Description for the task
+	 *
+	 * @var string
+	 */
+	protected $description = '';
+
+	/**
 	 * Constructor
 	 */
 	public function __construct() {
@@ -185,6 +192,25 @@ abstract class AbstractTask {
 	 */
 	public function getExecutionTime() {
 		return $this->executionTime;
+	}
+
+	/**
+	 * This method is used to set the description of the task
+	 *
+	 * @param string $description Description
+	 * @return void
+	 */
+	public function setDescription($description) {
+		$this->description = $description;
+	}
+
+	/**
+	 * This method returns the description of the task
+	 *
+	 * @return string Description
+	 */
+	public function getDescription() {
+		return $this->description;
 	}
 
 	/**

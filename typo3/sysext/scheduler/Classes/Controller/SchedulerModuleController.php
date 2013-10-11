@@ -565,6 +565,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 				$task = unserialize($taskRecord['serialized_task_object']);
 				// Set some task information
 				$taskInfo['disable'] = $taskRecord['disable'];
+				$taskInfo['description'] = $taskRecord['description'];
 				// Check that the task object is valid
 				if ($this->scheduler->isValidTaskObject($task)) {
 					// The task object is valid, process with fetching current data
@@ -771,6 +772,16 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 			 <input type="checkbox" name="tx_scheduler[multiple]" value="1" id="task_multiple"' . ($taskInfo['multiple'] == 1 ? ' checked="checked"' : '') . ' />';
 		$tableLayout[$tr] = array(
 			'tr' => array('<tr id="task_multiple_row"' . $style . '>', '</tr>'),
+			'defCol' => $defaultCell,
+			'0' => array('<td class="td-label">', '</td>')
+		);
+		$tr++;
+		// Description
+		$label = '<label for="task_description">' . $GLOBALS['LANG']->getLL('label.description') . '</label>';
+		$table[$tr][] = BackendUtility::wrapInHelp($this->cshKey, 'task_description', $label);
+		$table[$tr][] = '<textarea name="tx_scheduler[description]">' . htmlspecialchars($taskInfo['description']) . '</textarea>';
+		$tableLayout[$tr] = array(
+			'tr' => array('<tr id="task_description_row">', '</tr>'),
 			'defCol' => $defaultCell,
 			'0' => array('<td class="td-label">', '</td>')
 		);
@@ -1056,7 +1067,15 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 					$table[$tr][] = $actions;
 					$table[$tr][] = $schedulerRecord['uid'];
 					$table[$tr][] = $executionStatusOutput;
-					$table[$tr][] = $name;
+					if ($schedulerRecord['description'] !== '') {
+						if (!empty($this->scheduler->extConf['listShowTaskDescriptionAsHover'])) {
+							$table[$tr][] = '<span title="' . htmlspecialchars($schedulerRecord['description']) . '">' . $name . '</span>';
+						} else {
+							$table[$tr][] = $name . '<br />' . nl2br(htmlspecialchars($schedulerRecord['description'])) . '<br />';
+						}
+					} else {
+						$table[$tr][] = $name;
+					}
 					$table[$tr][] = $execType;
 					$table[$tr][] = $frequency;
 					$table[$tr][] = $multiple;
@@ -1139,6 +1158,8 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 			}
 			// Set disable flag
 			$task->setDisabled($this->submittedData['disable']);
+			// Set description
+			$task->setDescription($this->submittedData['description']);
 			// Save additional input values
 			if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][$this->submittedData['class']]['additionalFields'])) {
 				/** @var $providerObject \TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface */
@@ -1176,6 +1197,8 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 			}
 			// Set disable flag
 			$task->setDisabled($this->submittedData['disable']);
+			// Set description
+			$task->setDescription($this->submittedData['description']);
 			// Add to database
 			$result = $this->scheduler->addTask($task);
 			if ($result) {
