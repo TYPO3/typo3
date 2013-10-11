@@ -81,11 +81,38 @@
 			<trans-unit id="be_users.fileoper_perms" xml:space="preserve">
 				<source>Fileoperation permissions:</source>
 			</trans-unit>
-			<trans-unit id="be_users.fileoper_perms_general" xml:space="preserve">
-				<source>Files: Upload,Copy,Move,Delete,Rename,New,Edit</source>
+			<trans-unit id="be_users.file_permissions.files" xml:space="preserve">
+				<source>Files:</source>
+			</trans-unit>
+			<trans-unit id="be_users.file_permissions.files_read" xml:space="preserve">
+				<source>Files: Read</source>
+			</trans-unit>
+			<trans-unit id="be_users.file_permissions.files_write" xml:space="preserve">
+				<source>Files: Write</source>
+			</trans-unit>
+			<trans-unit id="be_users.file_permissions.files_add" xml:space="preserve">
+				<source>Files: Add</source>
+			</trans-unit>
+			<trans-unit id="be_users.file_permissions.files_upload" xml:space="preserve">
+				<source>Files: Upload</source>
+			</trans-unit>
+			<trans-unit id="be_users.file_permissions.files_rename" xml:space="preserve">
+				<source>Files: Rename</source>
+			</trans-unit>
+			<trans-unit id="be_users.file_permissions.files_move" xml:space="preserve">
+				<source>Files: Move</source>
+			</trans-unit>
+			<trans-unit id="be_users.file_permissions.files_copy" xml:space="preserve">
+				<source>Files: Copy</source>
 			</trans-unit>
 			<trans-unit id="be_users.fileoper_perms_unzip" xml:space="preserve">
 				<source>Files: Unzip</source>
+			</trans-unit>
+			<trans-unit id="be_users.file_permissions.file_delete" xml:space="preserve">
+				<source>Files: Delete</source>
+			</trans-unit>
+			<trans-unit id="be_users.fileoper_perms_general" xml:space="preserve">
+				<source>Files: Upload,Copy,Move,Delete,Rename,New,Edit</source>
 			</trans-unit>
 			<trans-unit id="be_users.fileoper_perms_diroper_perms" xml:space="preserve">
 				<source>Directory: Move,Delete,Rename,New</source>
@@ -153,11 +180,68 @@
 			<trans-unit id="be_groups.fileoper_perms" xml:space="preserve">
 				<source>Fileoperation permissions:</source>
 			</trans-unit>
-			<trans-unit id="be_groups.fileoper_perms_general" xml:space="preserve">
-				<source>Files: Upload,Copy,Move,Delete,Rename,New,Edit</source>
+			<trans-unit id="be_groups.file_permissions.folder" xml:space="preserve">
+				<source>Directory:</source>
+			</trans-unit>
+			<trans-unit id="be_groups.file_permissions.folder_read" xml:space="preserve">
+				<source>Directory: Read</source>
+			</trans-unit>
+			<trans-unit id="be_groups.file_permissions.folder_write" xml:space="preserve">
+				<source>Directory: Write</source>
+			</trans-unit>
+			<trans-unit id="be_groups.file_permissions.folder_add" xml:space="preserve">
+				<source>Directory: Add</source>
+			</trans-unit>
+			<trans-unit id="be_groups.file_permissions.folder_rename" xml:space="preserve">
+				<source>Directory: Rename</source>
+			</trans-unit>
+			<trans-unit id="be_groups.file_permissions.folder_move" xml:space="preserve">
+				<source>Directory: Move</source>
+			</trans-unit>
+			<trans-unit id="be_groups.file_permissions.folder_copy" xml:space="preserve">
+				<source>Directory: Copy</source>
+			</trans-unit>
+			<trans-unit id="be_groups.file_permissions.folder_delete" xml:space="preserve">
+				<source>Directory: Delete</source>
+			</trans-unit>
+			<trans-unit id="be_groups.file_permissions.folder_recursivedelete" xml:space="preserve">
+				<source>Directory: Delete recursively</source>
+			</trans-unit>
+			<trans-unit id="be_groups.file_permissions.files" xml:space="preserve">
+				<source>Files:</source>
+			</trans-unit>
+			<trans-unit id="be_groups.file_permissions.files_read" xml:space="preserve">
+				<source>Files: Read</source>
+			</trans-unit>
+			<trans-unit id="be_groups.file_permissions.files_write" xml:space="preserve">
+				<source>Files: Write</source>
+			</trans-unit>
+			<trans-unit id="be_groups.file_permissions.files_edit" xml:space="preserve">
+				<source>Files: Edit</source>
+			</trans-unit>
+			<trans-unit id="be_groups.file_permissions.files_add" xml:space="preserve">
+				<source>Files: Add</source>
+			</trans-unit>
+			<trans-unit id="be_groups.file_permissions.files_upload" xml:space="preserve">
+				<source>Files: Upload</source>
+			</trans-unit>
+			<trans-unit id="be_groups.file_permissions.files_rename" xml:space="preserve">
+				<source>Files: Rename</source>
+			</trans-unit>
+			<trans-unit id="be_groups.file_permissions.files_move" xml:space="preserve">
+				<source>Files: Move</source>
+			</trans-unit>
+			<trans-unit id="be_groups.file_permissions.files_copy" xml:space="preserve">
+				<source>Files: Copy</source>
 			</trans-unit>
 			<trans-unit id="be_groups.fileoper_perms_unzip" xml:space="preserve">
 				<source>Files: Unzip</source>
+			</trans-unit>
+			<trans-unit id="be_groups.file_permissions.files_delete" xml:space="preserve">
+				<source>Files: Delete</source>
+			</trans-unit>
+			<trans-unit id="be_groups.fileoper_perms_general" xml:space="preserve">
+				<source>Files: Upload,Copy,Move,Delete,Rename,New,Edit</source>
 			</trans-unit>
 			<trans-unit id="be_groups.fileoper_perms_diroper_perms" xml:space="preserve">
 				<source>Directory: Move,Delete,Rename,New</source>

@@ -280,7 +280,7 @@ class FileListController {
 					// Init file processing object for deleting and pass the cmd array.
 					$fileProcessor = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Utility\\File\\ExtendedFileUtility');
 					$fileProcessor->init($GLOBALS['FILEMOUNTS'], $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
-					$fileProcessor->init_actionPerms($GLOBALS['BE_USER']->getFileoperationPermissions());
+					$fileProcessor->setActionPermissions();
 					$fileProcessor->dontCheckForUnique = $this->overwriteExistingFiles ? 1 : 0;
 					$fileProcessor->start($FILE);
 					$fileProcessor->processData();

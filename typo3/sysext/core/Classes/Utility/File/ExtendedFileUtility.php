@@ -80,30 +80,30 @@ class ExtendedFileUtility extends \TYPO3\CMS\Core\Utility\File\BasicFileUtility 
 	 */
 	protected $indexerService = NULL;
 
-	// This array is self-explaining (look in the class below).
-	// It grants access to the functions. This could be set from outside in order to enabled functions to users.
-	// See also the function init_actionPerms() which takes input directly from the user-record
 	/**
-	 * @todo Define visibility
+	 * This array is self-explaining (look in the class below).
+	 * It grants access to the functions. This could be set from outside in order to enabled functions to users.
+	 * See also the function setActionPermissions() which takes input directly from the user-record
 	 */
 	public $actionPerms = array(
-		'deleteFile' => 0,
-		// Deleting files physically
-		'deleteFolder' => 0,
-		// Deleting folders physically
-		'deleteFolderRecursively' => 0,
-		// normally folders are deleted by the PHP-function rmdir(), but with this option a user deletes with 'rm -Rf ....' which is pretty wild!
-		'moveFile' => 0,
-		'moveFolder' => 0,
-		'copyFile' => 0,
-		'copyFolder' => 0,
-		'newFolder' => 0,
-		'newFile' => 0,
-		'editFile' => 0,
-		'unzipFile' => 0,
-		'uploadFile' => 0,
-		'renameFile' => 0,
-		'renameFolder' => 0
+		// File permissions
+		'addFile' => FALSE,
+		'readFile' => FALSE,
+		'writeFile' => FALSE,
+		'copyFile' => FALSE,
+		'moveFile' => FALSE,
+		'renameFile' => FALSE,
+		'unzipFile' => FALSE,
+		'deleteFile' => FALSE,
+		// Folder permissions
+		'addFolder' => FALSE,
+		'readFolder' => FALSE,
+		'writeFolder' => FALSE,
+		'copyFolder' => FALSE,
+		'moveFolder' => FALSE,
+		'renameFolder' => FALSE,
+		'deleteFolder' => FALSE,
+		'recursivedeleteFolder' => FALSE
 	);
 
 	// This is regarded to be the recycler folder
@@ -177,40 +177,25 @@ class ExtendedFileUtility extends \TYPO3\CMS\Core\Utility\File\BasicFileUtility 
 	 * Sets up permission to perform file/directory operations.
 	 * See below or the be_user-table for the significance of the various bits in $setup.
 	 *
-	 * @param integer $setup File permission integer from BE_USER OR'ed with permissions of back-end groups this user is a member of
 	 * @return void
-	 * @todo Define visibility
+	 * @deprecated since 6.2 will be removed two versions later. Use ExtendedFileUtility::setActionPermissions() instead
 	 */
-	public function init_actionPerms($setup) {
-		// Files: Upload,Copy,Move,Delete,Rename
-		if (($setup & 1) == 1) {
-			$this->actionPerms['uploadFile'] = 1;
-			$this->actionPerms['copyFile'] = 1;
-			$this->actionPerms['moveFile'] = 1;
-			$this->actionPerms['deleteFile'] = 1;
-			$this->actionPerms['renameFile'] = 1;
-			$this->actionPerms['editFile'] = 1;
-			$this->actionPerms['newFile'] = 1;
+	public function init_actionPerms() {
+		GeneralUtility::logDeprecatedFunction();
+		$this->setActionPermissions();
+	}
+
+	/**
+	 * Sets the file action permissions.
+	 * If no argument is given, permissions of the currently logged in backend user are taken into account.
+	 *
+	 * @param array $permissions File Permissions.
+	 */
+	public function setActionPermissions(array $permissions = array()) {
+		if (empty($permissions)) {
+			$permissions = $GLOBALS['BE_USER']->getFilePermissions();
 		}
-		// Files: Unzip
-		if (($setup & 2) == 2) {
-			$this->actionPerms['unzipFile'] = 1;
-		}
-		// Directory: Move,Delete,Rename,New
-		if (($setup & 4) == 4) {
-			$this->actionPerms['moveFolder'] = 1;
-			$this->actionPerms['deleteFolder'] = 1;
-			$this->actionPerms['renameFolder'] = 1;
-			$this->actionPerms['newFolder'] = 1;
-		}
-		// Directory: Copy
-		if (($setup & 8) == 8) {
-			$this->actionPerms['copyFolder'] = 1;
-		}
-		// Directory: Delete recursively (rm -Rf)
-		if (($setup & 16) == 16) {
-			$this->actionPerms['deleteFolderRecursively'] = 1;
-		}
+		$this->actionPerms = $permissions;
 	}
 
 	/**

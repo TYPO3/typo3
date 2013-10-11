@@ -99,7 +99,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	public $dataLists = array(
 		'webmount_list' => '',
 		'filemount_list' => '',
-		'fileoper_perms' => 0,
+		'file_permissions' => '',
 		'modList' => '',
 		'tables_select' => '',
 		'tables_modify' => '',
@@ -1241,7 +1241,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 			// File mountpoints
 			$this->dataLists['filemount_list'] = $this->user['file_mountpoints'];
 			// Fileoperation permissions
-			$this->dataLists['fileoper_perms'] = (int) $this->user['fileoper_perms'];
+			$this->dataLists['file_permissions'] = $this->user['file_permissions'];
 			// Setting default User TSconfig:
 			$this->TSdataArray[] = $this->addTScomment('From $GLOBALS["TYPO3_CONF_VARS"]["BE"]["defaultUserTSconfig"]:') . $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultUserTSconfig'];
 			// Default TSconfig for admin-users
@@ -1310,7 +1310,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 			$this->groupData['allowed_languages'] = GeneralUtility::uniqueList($this->dataLists['allowed_languages']);
 			$this->groupData['custom_options'] = GeneralUtility::uniqueList($this->dataLists['custom_options']);
 			$this->groupData['modules'] = GeneralUtility::uniqueList($this->dataLists['modList']);
-			$this->groupData['fileoper_perms'] = $this->dataLists['fileoper_perms'];
+			$this->groupData['file_permissions'] = GeneralUtility::uniqueList($this->dataLists['file_permissions']);
 			$this->groupData['workspace_perms'] = $this->dataLists['workspace_perms'];
 			// Populating the $this->userGroupsUID -array with the groups in the order in which they were LAST included.!!
 			$this->userGroupsUID = array_reverse(array_unique(array_reverse($this->includeGroupArray)));
@@ -1404,8 +1404,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 					$this->dataLists['allowed_languages'] .= ',' . $row['allowed_languages'];
 					$this->dataLists['custom_options'] .= ',' . $row['custom_options'];
 				}
-				// Setting fileoperation permissions
-				$this->dataLists['fileoper_perms'] |= (int) $row['fileoper_perms'];
+				$this->dataLists['file_permissions'] .= ',' . $row['file_permissions'];
 				// Setting workspace permissions:
 				$this->dataLists['workspace_perms'] |= $row['workspace_perms'];
 				// If this function is processing the users OWN group-list (not subgroups) AND if the ->firstMainGroup is not set, then the ->firstMainGroup will be set.
@@ -1576,9 +1575,9 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	}
 
 	/**
-	 * Returns the information about file permissions
-	 * previously, this was stored in the DB fields (fileoper_perms)
-	 * but is now handled via userTSconfig
+	 * Returns the information about file permissions.
+	 * Previously, this was stored in the DB field fileoper_perms now it is file_permissions.
+	 * Besides it can be handled via userTSconfig
 	 *
 	 * permissions.file.default {
 	 * addFile = 1
@@ -1614,60 +1613,49 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 */
 	public function getFilePermissions() {
 		if (!isset($this->filePermissions)) {
-			$defaultOptions = array(
+			$filePermissions = array(
 				// File permissions
-				'addFile' => TRUE,
-				'readFile' => TRUE,
-				'writeFile' => TRUE,
-				'copyFile' => TRUE,
-				'moveFile' => TRUE,
-				'renameFile' => TRUE,
-				'unzipFile' => TRUE,
-				'deleteFile' => TRUE,
+				'addFile' => FALSE,
+				'readFile' => FALSE,
+				'writeFile' => FALSE,
+				'copyFile' => FALSE,
+				'moveFile' => FALSE,
+				'renameFile' => FALSE,
+				'unzipFile' => FALSE,
+				'deleteFile' => FALSE,
 				// Folder permissions
-				'addFolder' => TRUE,
-				'readFolder' => TRUE,
-				'writeFolder' => TRUE,
-				'copyFolder' => TRUE,
-				'moveFolder' => TRUE,
-				'renameFolder' => TRUE,
-				'deleteFolder' => TRUE,
-				'recursivedeleteFolder' => TRUE
+				'addFolder' => FALSE,
+				'readFolder' => FALSE,
+				'writeFolder' => FALSE,
+				'copyFolder' => FALSE,
+				'moveFolder' => FALSE,
+				'renameFolder' => FALSE,
+				'deleteFolder' => FALSE,
+				'recursivedeleteFolder' => FALSE
 			);
-			if (!$this->isAdmin()) {
-				$defaultPermissionsTsConfig = $this->getTSConfigProp('permissions.file.default');
-				if (!empty($defaultPermissionsTsConfig)) {
-					$defaultOptions = $defaultPermissionsTsConfig;
-				} else {
-					$oldFileOperationPermissions = $this->getFileoperationPermissions();
-					// Lower permissions if the old file operation permissions are not set
-					if (!($oldFileOperationPermissions & 1)) {
-						$defaultOptions['addFile'] = FALSE;
-						$defaultOptions['writeFile'] = FALSE;
-						$defaultOptions['copyFile'] = FALSE;
-						$defaultOptions['moveFile'] = FALSE;
-						$defaultOptions['renameFile'] = FALSE;
-						$defaultOptions['deleteFile'] = FALSE;
+			if ($this->isAdmin()) {
+				$filePermissions = array_map('is_bool', $filePermissions);
+			} else {
+				$userGroupRecordPermissions = GeneralUtility::trimExplode(',', $this->groupData['file_permissions'], TRUE);
+				array_walk(
+					$userGroupRecordPermissions,
+					function($permission) use (&$filePermissions) {
+						$filePermissions[$permission] = TRUE;
 					}
-					if (!($oldFileOperationPermissions & 2)) {
-						$defaultOptions['unzipFile'] = FALSE;
-					}
-					if (!($oldFileOperationPermissions & 4)) {
-						$defaultOptions['addFolder'] = FALSE;
-						$defaultOptions['writeFolder'] = FALSE;
-						$defaultOptions['moveFolder'] = FALSE;
-						$defaultOptions['renameFolder'] = FALSE;
-						$defaultOptions['deleteFolder'] = FALSE;
-					}
-					if (!($oldFileOperationPermissions & 8)) {
-						$defaultOptions['copyFolder'] = FALSE;
-					}
-					if (!($oldFileOperationPermissions & 16)) {
-						$defaultOptions['recursivedeleteFolder'] = FALSE;
-					}
+				);
+
+				// Finally overlay any userTSconfig
+				$permissionsTsConfig = $this->getTSConfigProp('permissions.file.default');
+				if (!empty($permissionsTsConfig)) {
+					array_walk(
+						$permissionsTsConfig,
+						function($value, $permission) use (&$filePermissions) {
+							$filePermissions[$permission] = (bool) $value;
+						}
+					);
 				}
 			}
-			$this->filePermissions = $defaultOptions;
+			$this->filePermissions = $filePermissions;
 		}
 		return $this->filePermissions;
 	}
@@ -1687,7 +1675,12 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 		if (!$this->isAdmin()) {
 			$storageFilePermissions = $this->getTSConfigProp('permissions.file.storage.' . $storageObject->getUid());
 			if (!empty($storageFilePermissions)) {
-				$finalUserPermissions = array_merge($finalUserPermissions, $storageFilePermissions);
+				array_walk(
+					$storageFilePermissions,
+					function($value, $permission) use (&$finalUserPermissions) {
+						$finalUserPermissions[$permission] = (bool) $value;
+					}
+				);
 			}
 		}
 		return $finalUserPermissions;
@@ -1723,29 +1716,6 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 			return $uploadFolder;
 		} else {
 			return FALSE;
-		}
-	}
-
-	/**
-	 * Returns an integer bitmask that represents the permissions for file operations.
-	 * Permissions of the user and groups the user is a member of were combined by a logical OR.
-	 *
-	 * Meaning of each bit:
-	 * 1 - Files: Upload,Copy,Move,Delete,Rename
-	 * 2 - Files: Unzip
-	 * 4 - Directory: Move,Delete,Rename,New
-	 * 8 - Directory: Copy
-	 * 16 - Directory: Delete recursively (rm -Rf)
-	 *
-	 * @return integer File operation permission bitmask
-	 * @deprecated since TYPO3 6.0, use the TSconfig settings instead
-	 */
-	public function getFileoperationPermissions() {
-		GeneralUtility::logDeprecatedFunction();
-		if ($this->isAdmin()) {
-			return 31;
-		} else {
-			return $this->groupData['fileoper_perms'];
 		}
 	}
 

@@ -95,6 +95,20 @@ This is the page tree of the "admin" user. Notice the folder "user_upload" which
 This shows the mounted folder as seen by a user who was member of the group.
 Filemount records are also created in the page tree root.</source>
 			</trans-unit>
+			<trans-unit id="file_permissions.description" xml:space="preserve">
+				<source>Select file operation permissions for the group members.</source>
+			</trans-unit>
+			<trans-unit id="file_permissions.details" xml:space="preserve">
+				<source>These settings relate to the functions found in the File&gt;Filelist module as well as general upload of files.
+
+&lt;strong&gt;Notice&lt;/strong&gt; that these settings apply to all members of this group and extend the users permissions accordingly.</source>
+			</trans-unit>
+			<trans-unit id="file_permissions.seeAlso" xml:space="preserve">
+				<source>be_groups:file_mountpoints,
+be_users:file_mountpoints,
+be_users:file_permissions</source>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+			</trans-unit>
 			<trans-unit id="fileoper_perms.description" xml:space="preserve">
 				<source>Select file operation permissions for the group members.</source>
 			</trans-unit>
@@ -106,7 +120,7 @@ Filemount records are also created in the page tree root.</source>
 			<trans-unit id="_fileoper_perms.seeAlso" xml:space="preserve">
 				<source>be_groups:file_mountpoints,
 be_users:file_mountpoints,
-be_users:fileoper_perms</source>
+be_users:file_permissions</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="pagetypes_select.description" xml:space="preserve">

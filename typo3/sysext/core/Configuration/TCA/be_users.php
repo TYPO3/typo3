@@ -27,13 +27,13 @@ return array(
 			'default' => 'status-user-backend'
 		),
 		'mainpalette' => '1',
-		'useColumnsForDefaultValues' => 'usergroup,lockToDomain,options,db_mountpoints,file_mountpoints,fileoper_perms,userMods',
+		'useColumnsForDefaultValues' => 'usergroup,lockToDomain,options,db_mountpoints,file_mountpoints,file_permissions,userMods',
 		'dividers2tabs' => TRUE,
 		'versioningWS_alwaysAllowLiveEdit' => TRUE,
 		'searchFields' => 'username,email,realName'
 	),
 	'interface' => array(
-		'showRecordFieldList' => 'username,usergroup,db_mountpoints,file_mountpoints,admin,options,fileoper_perms,userMods,lockToDomain,realName,email,disable,starttime,endtime,lastlogin'
+		'showRecordFieldList' => 'username,usergroup,db_mountpoints,file_mountpoints,admin,options,file_permissions,userMods,lockToDomain,realName,email,disable,starttime,endtime,lastlogin'
 	),
 	'columns' => array(
 		'username' => array(
@@ -219,18 +219,36 @@ return array(
 				'default' => '3'
 			)
 		),
-		'fileoper_perms' => array(
-			'label' => 'LLL:EXT:lang/locallang_tca.xlf:be_users.fileoper_perms',
+		'file_permissions' => array(
+			'label' => 'LLL:EXT:lang/locallang_tca.xlf:be_groups.fileoper_perms',
 			'config' => array(
-				'type' => 'check',
+				'type' => 'select',
 				'items' => array(
-					array('LLL:EXT:lang/locallang_tca.xlf:be_users.fileoper_perms_general', 0),
-					array('LLL:EXT:lang/locallang_tca.xlf:be_users.fileoper_perms_unzip', 0),
-					array('LLL:EXT:lang/locallang_tca.xlf:be_users.fileoper_perms_diroper_perms', 0),
-					array('LLL:EXT:lang/locallang_tca.xlf:be_users.fileoper_perms_diroper_perms_copy', 0),
-					array('LLL:EXT:lang/locallang_tca.xlf:be_users.fileoper_perms_diroper_perms_delete', 0)
+					array('LLL:EXT:lang/locallang_tca.xlf:be_groups.file_permissions.folder', '--div--', 'apps-filetree-folder-default'),
+					array('LLL:EXT:lang/locallang_tca.xlf:be_groups.file_permissions.folder_read', 'readFolder', 'apps-filetree-folder-default'),
+					array('LLL:EXT:lang/locallang_tca.xlf:be_groups.file_permissions.folder_write', 'writeFolder', 'apps-filetree-folder-default'),
+					array('LLL:EXT:lang/locallang_tca.xlf:be_groups.file_permissions.folder_add', 'addFolder', 'apps-filetree-folder-default'),
+					array('LLL:EXT:lang/locallang_tca.xlf:be_groups.file_permissions.folder_rename', 'renameFolder', 'apps-filetree-folder-default'),
+					array('LLL:EXT:lang/locallang_tca.xlf:be_groups.file_permissions.folder_move', 'moveFolder', 'apps-filetree-folder-default'),
+					array('LLL:EXT:lang/locallang_tca.xlf:be_groups.file_permissions.folder_copy', 'copyFolder', 'apps-filetree-folder-default'),
+					array('LLL:EXT:lang/locallang_tca.xlf:be_groups.file_permissions.folder_delete', 'deleteFolder', 'apps-filetree-folder-default'),
+					array('LLL:EXT:lang/locallang_tca.xlf:be_groups.file_permissions.folder_recursivedelete', 'folder_recursivedelete', 'apps-filetree-folder-default'),
+					array('LLL:EXT:lang/locallang_tca.xlf:be_groups.file_permissions.files', '--div--', 'mimetypes-other-other'),
+					array('LLL:EXT:lang/locallang_tca.xlf:be_groups.file_permissions.files_read', 'readFile', 'mimetypes-other-other'),
+					array('LLL:EXT:lang/locallang_tca.xlf:be_groups.file_permissions.files_write', 'writeFile', 'mimetypes-other-other'),
+					array('LLL:EXT:lang/locallang_tca.xlf:be_groups.file_permissions.files_add', 'addFile', 'mimetypes-other-other'),
+					array('LLL:EXT:lang/locallang_tca.xlf:be_groups.file_permissions.files_upload', 'files_upload', 'mimetypes-other-other'),
+					array('LLL:EXT:lang/locallang_tca.xlf:be_groups.file_permissions.files_rename', 'renameFile', 'mimetypes-other-other'),
+					array('LLL:EXT:lang/locallang_tca.xlf:be_groups.file_permissions.files_move', 'moveFile', 'mimetypes-other-other'),
+					array('LLL:EXT:lang/locallang_tca.xlf:be_groups.file_permissions.files_copy', 'copyFile', 'mimetypes-other-other'),
+					array('LLL:EXT:lang/locallang_tca.xlf:be_groups.fileoper_perms_unzip', 'unzipFile', 'mimetypes-other-other'),
+					array('LLL:EXT:lang/locallang_tca.xlf:be_groups.file_permissions.files_delete', 'deleteFile', 'mimetypes-other-other')
 				),
-				'default' => '0'
+				'renderMode' => $GLOBALS['TYPO3_CONF_VARS']['BE']['accessListRenderMode'],
+				'size' => 16,
+				'maxitems' => 16,
+				'itemListStyle' => 'width:500px',
+				'default' => 'readFolder,writeFolder,addFolder,renameFolder,moveFolder,deleteFolder,readFile,writeFile,addFile,renameFile,moveFile,files_copy,deleteFile'
 			)
 		),
 		'workspace_perms' => array(
@@ -325,7 +343,7 @@ return array(
 	'types' => array(
 		'0' => array('showitem' => 'disable;;;;1-1-1, username;;;;2-2-2, password, usergroup;;;;3-3-3, admin;;;;1-1-1, realName;;;;3-3-3, email, lang, lastlogin;;;;1-1-1,
 			--div--;LLL:EXT:lang/locallang_tca.xlf:be_users.tabs.rights, userMods;;;;2-2-2, allowed_languages,
-			--div--;LLL:EXT:lang/locallang_tca.xlf:be_users.tabs.mounts_and_workspaces, workspace_perms;;;;1-1-1, db_mountpoints;;;;2-2-2, options, file_mountpoints;;;;3-3-3, fileoper_perms,
+			--div--;LLL:EXT:lang/locallang_tca.xlf:be_users.tabs.mounts_and_workspaces, workspace_perms;;;;1-1-1, db_mountpoints;;;;2-2-2, options, file_mountpoints;;;;3-3-3, file_permissions,
 			--div--;LLL:EXT:lang/locallang_tca.xlf:be_users.tabs.options, lockToDomain;;;;1-1-1, disableIPlock, TSconfig;;;;2-2-2,
 			--div--;LLL:EXT:lang/locallang_tca.xlf:be_users.tabs.access, starttime;;;;1-1-1,endtime,
 			--div--;LLL:EXT:lang/locallang_tca.xlf:be_users.tabs.extended'),

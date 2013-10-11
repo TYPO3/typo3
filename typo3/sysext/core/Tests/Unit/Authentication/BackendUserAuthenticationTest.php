@@ -30,6 +30,30 @@ namespace TYPO3\CMS\Core\Tests\Unit\Authentication;
  * @author Oliver Klee <typo3-coding@oliverklee.de>
  */
 class BackendUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+	/**
+	 * @var array
+	 */
+	protected $defaultFilePermissions = array(
+		// File permissions
+		'addFile' => FALSE,
+		'readFile' => FALSE,
+		'writeFile' => FALSE,
+		'copyFile' => FALSE,
+		'moveFile' => FALSE,
+		'renameFile' => FALSE,
+		'unzipFile' => FALSE,
+		'deleteFile' => FALSE,
+		// Folder permissions
+		'addFolder' => FALSE,
+		'readFolder' => FALSE,
+		'writeFolder' => FALSE,
+		'copyFolder' => FALSE,
+		'moveFolder' => FALSE,
+		'renameFolder' => FALSE,
+		'deleteFolder' => FALSE,
+		'recursivedeleteFolder' => FALSE
+	);
+
 
 	/**
 	 * @var \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
@@ -266,28 +290,32 @@ class BackendUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 	/**
-	 * @param array $expectedPermissions
+	 * @param array $userTsConfiguration
 	 * @test
 	 * @dataProvider getFilePermissionsTakesUserDefaultAndStoragePermissionsIntoAccountIfUserIsNotAdminDataProvider
 	 */
-	public function getFilePermissionsTakesUserDefaultPermissionsFromTsConfigIntoAccountIfUserIsNotAdmin(array $expectedPermissions) {
-		$this->fixture = $this->getMock('TYPO3\\CMS\\Core\\Authentication\\BackendUserAuthentication', array('isAdmin', 'getFileoperationPermissions'));
+	public function getFilePermissionsTakesUserDefaultPermissionsFromTsConfigIntoAccountIfUserIsNotAdmin(array $userTsConfiguration) {
+		$this->fixture = $this->getMock('TYPO3\\CMS\\Core\\Authentication\\BackendUserAuthentication', array('isAdmin'));
 
 		$this->fixture
 			->expects($this->any())
 			->method('isAdmin')
 			->will($this->returnValue(FALSE));
 
-		$this->fixture
-			->expects($this->never())
-			->method('getFileoperationPermissions');
-
 		$this->fixture->userTS = array(
 			'permissions.' => array(
 				'file.' => array(
-					'default.' => $expectedPermissions
+					'default.' => $userTsConfiguration
 				),
 			)
+		);
+
+		$expectedPermissions = array_merge($this->defaultFilePermissions, $userTsConfiguration);
+		array_walk(
+			$expectedPermissions,
+			function(&$value) {
+				$value = (bool) $value;
+			}
 		);
 
 		$this->assertEquals($expectedPermissions, $this->fixture->getFilePermissions());
@@ -298,22 +326,22 @@ class BackendUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function getFilePermissionsFromStorageDataProvider() {
 		$defaultPermissions = array(
-			'addFile' => 1,
-			'readFile' => 1,
-			'writeFile' => 1,
-			'copyFile' => 1,
-			'moveFile' => 1,
-			'renameFile' => 1,
-			'unzipFile' => 1,
-			'deleteFile' => 1,
-			'addFolder' => 1,
-			'readFolder' => 1,
-			'copyFolder' => 1,
-			'moveFolder' => 1,
-			'renameFolder' => 1,
-			'writeFolder' => 1,
-			'deleteFolder' => 1,
-			'recursivedeleteFolder' => 1
+			'addFile' => TRUE,
+			'readFile' => TRUE,
+			'writeFile' => TRUE,
+			'copyFile' => TRUE,
+			'moveFile' => TRUE,
+			'renameFile' => TRUE,
+			'unzipFile' => TRUE,
+			'deleteFile' => TRUE,
+			'addFolder' => TRUE,
+			'readFolder' => TRUE,
+			'copyFolder' => TRUE,
+			'moveFolder' => TRUE,
+			'renameFolder' => TRUE,
+			'writeFolder' => TRUE,
+			'deleteFolder' => TRUE,
+			'recursivedeleteFolder' => TRUE
 		);
 
 		return array(
@@ -351,22 +379,22 @@ class BackendUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 					'recursivedeleteFolder' =>0
 				),
 				array(
-					'addFile' => 0,
-					'readFile' => 1,
-					'writeFile' => 1,
-					'copyFile' => 1,
-					'moveFile' => 1,
-					'renameFile' => 1,
-					'unzipFile' => 1,
-					'deleteFile' => 1,
-					'addFolder' => 1,
-					'readFolder' => 1,
-					'copyFolder' => 1,
-					'moveFolder' => 1,
-					'renameFolder' => 1,
-					'writeFolder' => 1,
-					'deleteFolder' => 1,
-					'recursivedeleteFolder' => 0
+					'addFile' => FALSE,
+					'readFile' => TRUE,
+					'writeFile' => TRUE,
+					'copyFile' => TRUE,
+					'moveFile' => TRUE,
+					'renameFile' => TRUE,
+					'unzipFile' => TRUE,
+					'deleteFile' => TRUE,
+					'addFolder' => TRUE,
+					'readFolder' => TRUE,
+					'copyFolder' => TRUE,
+					'moveFolder' => TRUE,
+					'renameFolder' => TRUE,
+					'writeFolder' => TRUE,
+					'deleteFolder' => TRUE,
+					'recursivedeleteFolder' => FALSE
 				)
 			),
 			'Returns default permissions if no storage permissions are found' => array(
@@ -374,22 +402,22 @@ class BackendUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				1,
 				array(),
 				array(
-					'addFile' => 1,
-					'readFile' => 1,
-					'writeFile' => 1,
-					'copyFile' => 1,
-					'moveFile' => 1,
-					'renameFile' => 1,
-					'unzipFile' => 1,
-					'deleteFile' => 1,
-					'addFolder' => 1,
-					'readFolder' => 1,
-					'copyFolder' => 1,
-					'moveFolder' => 1,
-					'renameFolder' => 1,
-					'writeFolder' => 1,
-					'deleteFolder' => 1,
-					'recursivedeleteFolder' => 1
+					'addFile' => TRUE,
+					'readFile' => TRUE,
+					'writeFile' => TRUE,
+					'copyFile' => TRUE,
+					'moveFile' => TRUE,
+					'renameFile' => TRUE,
+					'unzipFile' => TRUE,
+					'deleteFile' => TRUE,
+					'addFolder' => TRUE,
+					'readFolder' => TRUE,
+					'copyFolder' => TRUE,
+					'moveFolder' => TRUE,
+					'renameFolder' => TRUE,
+					'writeFolder' => TRUE,
+					'deleteFolder' => TRUE,
+					'recursivedeleteFolder' => TRUE
 				)
 			),
 		);
@@ -471,130 +499,130 @@ class BackendUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function getFilePermissionsTakesUserDefaultPermissionsFromRecordIntoAccountIfUserIsNotAdminDataProvider() {
 		return array(
-			'No old permission' => array(
-				0,
+			'No permission' => array(
+				'',
 				array(
-					'addFile' => 0,
-					'readFile' => 1,
-					'writeFile' => 0,
-					'copyFile' => 0,
-					'moveFile' => 0,
-					'renameFile' => 0,
-					'unzipFile' => 0,
-					'deleteFile' => 0,
-					'addFolder' => 0,
-					'readFolder' => 1,
-					'copyFolder' => 0,
-					'moveFolder' => 0,
-					'renameFolder' => 0,
-					'writeFolder' => 0,
-					'deleteFolder' => 0,
-					'recursivedeleteFolder' => 0
+					'addFile' => FALSE,
+					'readFile' => FALSE,
+					'writeFile' => FALSE,
+					'copyFile' => FALSE,
+					'moveFile' => FALSE,
+					'renameFile' => FALSE,
+					'unzipFile' => FALSE,
+					'deleteFile' => FALSE,
+					'addFolder' => FALSE,
+					'readFolder' => FALSE,
+					'copyFolder' => FALSE,
+					'moveFolder' => FALSE,
+					'renameFolder' => FALSE,
+					'writeFolder' => FALSE,
+					'deleteFolder' => FALSE,
+					'recursivedeleteFolder' => FALSE
 				)
 			),
-			'Uploading allowed' => array(
-				1,
+			'Standard file permissions' => array(
+				'addFile,readFile,writeFile,copyFile,moveFile,renameFile,deleteFile',
 				array(
-					'addFile' => 1,
-					'readFile' => 1,
-					'writeFile' => 1,
-					'copyFile' => 1,
-					'moveFile' => 1,
-					'renameFile' => 1,
-					'unzipFile' => 0,
-					'deleteFile' => 1,
-					'addFolder' => 0,
-					'readFolder' => 1,
-					'copyFolder' => 0,
-					'moveFolder' => 0,
-					'renameFolder' => 0,
-					'writeFolder' => 0,
-					'deleteFolder' => 0,
-					'recursivedeleteFolder' => 0
+					'addFile' => TRUE,
+					'readFile' => TRUE,
+					'writeFile' => TRUE,
+					'copyFile' => TRUE,
+					'moveFile' => TRUE,
+					'renameFile' => TRUE,
+					'unzipFile' => FALSE,
+					'deleteFile' => TRUE,
+					'addFolder' => FALSE,
+					'readFolder' => FALSE,
+					'copyFolder' => FALSE,
+					'moveFolder' => FALSE,
+					'renameFolder' => FALSE,
+					'writeFolder' => FALSE,
+					'deleteFolder' => FALSE,
+					'recursivedeleteFolder' => FALSE
 				)
 			),
 			'Unzip allowed' => array(
-				2,
+				'readFile,unzipFile',
 				array(
-					'addFile' => 0,
-					'readFile' => 1,
-					'writeFile' => 0,
-					'copyFile' => 0,
-					'moveFile' => 0,
-					'renameFile' => 0,
-					'unzipFile' => 1,
-					'deleteFile' => 0,
-					'addFolder' => 0,
-					'readFolder' => 1,
-					'copyFolder' => 0,
-					'moveFolder' => 0,
-					'renameFolder' => 0,
-					'writeFolder' => 0,
-					'deleteFolder' => 0,
-					'recursivedeleteFolder' => 0
+					'addFile' => FALSE,
+					'readFile' => TRUE,
+					'writeFile' => FALSE,
+					'copyFile' => FALSE,
+					'moveFile' => FALSE,
+					'renameFile' => FALSE,
+					'unzipFile' => TRUE,
+					'deleteFile' => FALSE,
+					'addFolder' => FALSE,
+					'readFolder' => FALSE,
+					'writeFolder' => FALSE,
+					'copyFolder' => FALSE,
+					'moveFolder' => FALSE,
+					'renameFolder' => FALSE,
+					'deleteFolder' => FALSE,
+					'recursivedeleteFolder' => FALSE
 				)
 			),
-			'Write folder allowed' => array(
-				4,
+			'Standard folder permissions' => array(
+				'addFolder,readFolder,moveFolder,renameFolder,writeFolder,deleteFolder',
 				array(
-					'addFile' => 0,
-					'readFile' => 1,
-					'writeFile' => 0,
-					'copyFile' => 0,
-					'moveFile' => 0,
-					'renameFile' => 0,
-					'unzipFile' => 0,
-					'deleteFile' => 0,
-					'addFolder' => 1,
-					'readFolder' => 1,
-					'copyFolder' => 0,
-					'moveFolder' => 1,
-					'renameFolder' => 1,
-					'writeFolder' => 1,
-					'deleteFolder' => 1,
-					'recursivedeleteFolder' => 0
+					'addFile' => FALSE,
+					'readFile' => FALSE,
+					'writeFile' => FALSE,
+					'copyFile' => FALSE,
+					'moveFile' => FALSE,
+					'renameFile' => FALSE,
+					'unzipFile' => FALSE,
+					'deleteFile' => FALSE,
+					'addFolder' => TRUE,
+					'readFolder' => TRUE,
+					'writeFolder' => TRUE,
+					'copyFolder' => FALSE,
+					'moveFolder' => TRUE,
+					'renameFolder' => TRUE,
+					'deleteFolder' => TRUE,
+					'recursivedeleteFolder' => FALSE
 				)
 			),
 			'Copy folder allowed' => array(
-				8,
+				'readFolder,copyFolder',
 				array(
-					'addFile' => 0,
-					'readFile' => 1,
-					'writeFile' => 0,
-					'copyFile' => 0,
-					'moveFile' => 0,
-					'renameFile' => 0,
-					'unzipFile' => 0,
-					'deleteFile' => 0,
-					'addFolder' => 0,
-					'readFolder' => 1,
-					'copyFolder' => 1,
-					'moveFolder' => 0,
-					'renameFolder' => 0,
-					'writeFolder' => 0,
-					'deleteFolder' => 0,
-					'recursivedeleteFolder' => 0
+					'addFile' => FALSE,
+					'readFile' => FALSE,
+					'writeFile' => FALSE,
+					'copyFile' => FALSE,
+					'moveFile' => FALSE,
+					'renameFile' => FALSE,
+					'unzipFile' => FALSE,
+					'deleteFile' => FALSE,
+					'addFolder' => FALSE,
+					'readFolder' => TRUE,
+					'writeFolder' => FALSE,
+					'copyFolder' => TRUE,
+					'moveFolder' => FALSE,
+					'renameFolder' => FALSE,
+					'deleteFolder' => FALSE,
+					'recursivedeleteFolder' => FALSE
 				)
 			),
 			'Copy folder and remove subfolders allowed' => array(
-				24,
+				'readFolder,copyFolder,recursivedeleteFolder',
 				array(
-					'addFile' => 0,
-					'readFile' => 1,
-					'writeFile' => 0,
-					'copyFile' => 0,
-					'moveFile' => 0,
-					'renameFile' => 0,
-					'unzipFile' => 0,
-					'deleteFile' => 0,
-					'addFolder' => 0,
-					'readFolder' => 1,
-					'copyFolder' => 1,
-					'moveFolder' => 0,
-					'renameFolder' => 0,
-					'writeFolder' => 0,
-					'deleteFolder' => 0,
-					'recursivedeleteFolder' => 1
+					'addFile' => FALSE,
+					'readFile' => FALSE,
+					'writeFile' => FALSE,
+					'copyFile' => FALSE,
+					'moveFile' => FALSE,
+					'renameFile' => FALSE,
+					'unzipFile' => FALSE,
+					'deleteFile' => FALSE,
+					'addFolder' => FALSE,
+					'readFolder' => TRUE,
+					'writeFolder' => FALSE,
+					'copyFolder' => TRUE,
+					'moveFolder' => FALSE,
+					'renameFolder' => FALSE,
+					'deleteFolder' => FALSE,
+					'recursivedeleteFolder' => TRUE
 				)
 			),
 		);
@@ -604,20 +632,16 @@ class BackendUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 * @dataProvider getFilePermissionsTakesUserDefaultPermissionsFromRecordIntoAccountIfUserIsNotAdminDataProvider
 	 */
-	public function getFilePermissionsTakesUserDefaultPermissionsFromRecordIntoAccountIfUserIsNotAdmin($oldPermissionValue, $expectedPermissions) {
-		$this->fixture = $this->getMock('TYPO3\\CMS\\Core\\Authentication\\BackendUserAuthentication', array('isAdmin', 'getFileoperationPermissions'));
+	public function getFilePermissionsTakesUserDefaultPermissionsFromRecordIntoAccountIfUserIsNotAdmin($permissionValue, $expectedPermissions) {
+		$this->fixture = $this->getMock('TYPO3\\CMS\\Core\\Authentication\\BackendUserAuthentication', array('isAdmin'));
 
 		$this->fixture
 			->expects($this->any())
 			->method('isAdmin')
 			->will($this->returnValue(FALSE));
 
-		$this->fixture
-			->expects($this->any())
-			->method('getFileoperationPermissions')
-			->will($this->returnValue($oldPermissionValue));
-
 		$this->fixture->userTS = array();
+		$this->fixture->groupData['file_permissions'] = $permissionValue;
 		$this->assertEquals($expectedPermissions, $this->fixture->getFilePermissions());
 	}
 
@@ -625,7 +649,7 @@ class BackendUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function getFilePermissionsGrantsAllPermissionsToAdminUsers() {
-		$this->fixture = $this->getMock('TYPO3\\CMS\\Core\\Authentication\\BackendUserAuthentication', array('isAdmin', 'getFileoperationPermissions'));
+		$this->fixture = $this->getMock('TYPO3\\CMS\\Core\\Authentication\\BackendUserAuthentication', array('isAdmin'));
 
 		$this->fixture
 			->expects($this->any())
@@ -643,10 +667,10 @@ class BackendUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			'deleteFile' => TRUE,
 			'addFolder' => TRUE,
 			'readFolder' => TRUE,
+			'writeFolder' => TRUE,
 			'copyFolder' => TRUE,
 			'moveFolder' => TRUE,
 			'renameFolder' => TRUE,
-			'writeFolder' => TRUE,
 			'deleteFolder' => TRUE,
 			'recursivedeleteFolder' => TRUE
 		);

@@ -60,7 +60,7 @@ config.tx_extbase {
 						allowed_languages.mapOnProperty = allowedLanguages
 						workspace_perms.mapOnProperty = workspacePermission
 						db_mountpoints.mapOnProperty = databaseMounts
-						fileoper_perms.mapOnProperty = fileOperationPermissions
+						file_permissions.mapOnProperty = fileOperationPermissions
 						lockToDomain.mapOnProperty = lockToDomain
 						hide_in_lists.mapOnProperty = hideInList
 						TSconfig.mapOnProperty = tsConfig

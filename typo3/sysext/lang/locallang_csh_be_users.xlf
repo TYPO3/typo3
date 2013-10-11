@@ -193,6 +193,19 @@ If you don't check these options, you must make sure the mount points for the pa
 be_users:file_mountpoints</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
+			<trans-unit id="file_permissions.description" xml:space="preserve">
+				<source>Select file operation permissions for the user.</source>
+			</trans-unit>
+			<trans-unit id="file_permissions.details" xml:space="preserve">
+				<source>These settings relate to the functions found in the File&gt;List module as well as general upload of files.
+
+&lt;strong&gt;Notice&lt;/strong&gt; that backend user groups also have file operation permissions which automatically apply to the user if he's member of an accordant group. So if you want a group of users share identical file operation permissions, you should probably define them in a backend user group instead.</source>
+			</trans-unit>
+			<trans-unit id="file_permissions.seeAlso" xml:space="preserve">
+				<source>be_users:file_mountpoints,
+be_group:file_permissions</source>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+			</trans-unit>
 			<trans-unit id="fileoper_perms.description" xml:space="preserve">
 				<source>Select file operation permissions for the user.</source>
 			</trans-unit>
@@ -203,7 +216,7 @@ be_users:file_mountpoints</source>
 			</trans-unit>
 			<trans-unit id="_fileoper_perms.seeAlso" xml:space="preserve">
 				<source>be_users:file_mountpoints,
-be_group:fileoper_perms</source>
+be_group:file_permissions</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="starttime.description" xml:space="preserve">

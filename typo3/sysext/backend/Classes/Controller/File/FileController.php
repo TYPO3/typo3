@@ -118,7 +118,7 @@ class FileController {
 		// Initializing:
 		$this->fileProcessor = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Utility\\File\\ExtendedFileUtility');
 		$this->fileProcessor->init($GLOBALS['FILEMOUNTS'], $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
-		$this->fileProcessor->init_actionPerms($GLOBALS['BE_USER']->getFileoperationPermissions());
+		$this->fileProcessor->setActionPermissions();
 		$this->fileProcessor->dontCheckForUnique = $this->overwriteExistingFiles ? 1 : 0;
 		// Checking referrer / executing:
 		$refInfo = parse_url(GeneralUtility::getIndpEnv('HTTP_REFERER'));

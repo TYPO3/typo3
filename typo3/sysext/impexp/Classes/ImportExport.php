@@ -2025,7 +2025,7 @@ class ImportExport {
 	 */
 	public function writeFileVerify($fileName, $fileID, $bypassMountCheck = FALSE) {
 		$fileProcObj = $this->getFileProcObj();
-		if ($fileProcObj->actionPerms['newFile']) {
+		if ($fileProcObj->actionPerms['addFile']) {
 			// Just for security, check again. Should actually not be necessary.
 			if ($fileProcObj->checkPathAgainstMounts($fileName) || $bypassMountCheck) {
 				$fI = GeneralUtility::split_fileref($fileName);
@@ -2759,7 +2759,7 @@ class ImportExport {
 				}
 				// Check extension:
 				$fileProcObj = $this->getFileProcObj();
-				if ($fileProcObj->actionPerms['newFile']) {
+				if ($fileProcObj->actionPerms['addFile']) {
 					$testFI = GeneralUtility::split_fileref(PATH_site . $fI['relFileName']);
 					if (!$this->allowPHPScripts && !$fileProcObj->checkIfAllowed($testFI['fileext'], $testFI['path'], $testFI['file'])) {
 						$pInfo['msg'] .= 'File extension was not allowed!';
@@ -3122,7 +3122,7 @@ class ImportExport {
 		if (!is_object($this->fileProcObj)) {
 			$this->fileProcObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Utility\\File\\ExtendedFileUtility');
 			$this->fileProcObj->init($GLOBALS['FILEMOUNTS'], $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
-			$this->fileProcObj->init_actionPerms($GLOBALS['BE_USER']->getFileoperationPermissions());
+			$this->fileProcObj->setActionPermissions();
 		}
 		return $this->fileProcObj;
 	}
