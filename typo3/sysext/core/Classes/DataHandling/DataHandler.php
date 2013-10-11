@@ -6717,7 +6717,12 @@ class DataHandler {
 					if (is_array($list_cache)) {
 						$pageIds = $GLOBALS['TYPO3_DB']->cleanIntArray($list_cache);
 						foreach ($pageIds as $pageId) {
-							$GLOBALS['typo3CacheManager']->flushCachesByTag('pageId_' . $pageId);
+							// Workspaces always use "-1" as the page id which do not
+							// point to real pages and caches at all. Flushing caches for
+							// those records does not make sense and decreases performance
+							if ($pageId >= 0) {
+								$GLOBALS['typo3CacheManager']->flushCachesByTag('pageId_' . $pageId);
+							}
 						}
 					}
 				}
