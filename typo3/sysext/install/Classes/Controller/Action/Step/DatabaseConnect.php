@@ -379,21 +379,27 @@ class DatabaseConnect extends Action\AbstractAction implements StepInterface {
 		// If host is "local" either by upgrading or by first install, we try a socket
 		// connection first and use TCP/IP as fallback
 		if ($localConfigurationPathValuePairs['DB/host'] === 'localhost'
-			|| $localConfigurationPathValuePairs['DB/host'] === '127.0.0.1'
+			|| \TYPO3\CMS\Core\Utility\GeneralUtility::cmpIP($localConfigurationPathValuePairs['DB/host'], '127.*.*.*')
 			|| strlen($localConfigurationPathValuePairs['DB/host']) === 0
 		) {
 			if ($this->isConnectionWithUnixDomainSocketPossible()) {
 				$localConfigurationPathValuePairs['DB/host'] = 'localhost';
 				$localConfigurationPathValuePairs['DB/socket'] = $this->getConfiguredSocket();
 			} else {
-				$localConfigurationPathValuePairs['DB/host'] = '127.0.0.1';
-				// Preserve port if already configured in LocalConfiguration.php
-				$port = $this->getConfiguredPort();
-				if ($port > 0) {
-					$localConfigurationPathValuePairs['DB/port'] = $port;
-				} else {
-					$localConfigurationPathValuePairs['DB/port'] = $this->getConfiguredOrDefaultPort();
+				if (!\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($localConfigurationPathValuePairs['DB/host'], '127.')) {
+					$localConfigurationPathValuePairs['DB/host'] = '127.0.0.1';
 				}
+			}
+		}
+
+		if (!isset($localConfigurationPathValuePairs['DB/socket'])) {
+			// Make sure a default port is set if not configured yet
+			// This is independent from any host configuration
+			$port = $this->getConfiguredPort();
+			if ($port > 0) {
+				$localConfigurationPathValuePairs['DB/port'] = $port;
+			} else {
+				$localConfigurationPathValuePairs['DB/port'] = $this->getConfiguredOrDefaultPort();
 			}
 		}
 
