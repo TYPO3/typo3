@@ -70,7 +70,7 @@ class DevelopmentPreset extends Configuration\AbstractPreset implements Configur
 	 * @return integer Priority of preset
 	 */
 	public function getPriority() {
-		$context = \TYPO3\CMS\Core\Utility\GeneralUtility::getContext();
+		$context = \TYPO3\CMS\Core\Utility\GeneralUtility::getApplicationContext();
 		$priority = $this->priority;
 		if ($context->isDevelopment()) {
 			$priority = $priority + 20;

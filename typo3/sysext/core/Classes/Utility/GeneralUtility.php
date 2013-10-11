@@ -68,7 +68,7 @@ class GeneralUtility {
 	 *
 	 * @var \TYPO3\CMS\Core\Core\ApplicationContext
 	 */
-	static protected $context = NULL;
+	static protected $applicationContext = NULL;
 
 	/*************************
 	 *
@@ -5023,18 +5023,18 @@ Connection: close
 	/**
 	 * Set the ApplicationContext
 	 *
-	 * This function is used by the Bootstrap to hand over the context. It must not be used anywhere else,
+	 * This function is used by the Bootstrap to hand over the application context. It must not be used anywhere else,
 	 * because the context shall never be changed on runtime!
 	 *
-	 * @param \TYPO3\CMS\Core\Core\ApplicationContext $context
-	 * @throws \RuntimeException if context is overriden
+	 * @param \TYPO3\CMS\Core\Core\ApplicationContext $applicationContext
+	 * @throws \RuntimeException if applicationContext is overriden
 	 * @internal This is not a public API method, do not use in own extensions
 	 */
-	static public function presetContext(\TYPO3\CMS\Core\Core\ApplicationContext $context) {
-		if (is_null(static::$context)) {
-			static::$context = $context;
+	static public function presetApplicationContext(\TYPO3\CMS\Core\Core\ApplicationContext $applicationContext) {
+		if (is_null(static::$applicationContext)) {
+			static::$applicationContext = $applicationContext;
 		} else {
-			throw new \RuntimeException('Trying to override context which has already been defined!', 1376084316);
+			throw new \RuntimeException('Trying to override applicationContext which has already been defined!', 1376084316);
 		}
 	}
 
@@ -5043,7 +5043,7 @@ Connection: close
 	 *
 	 * @return \TYPO3\CMS\Core\Core\ApplicationContext
 	 */
-	static public function getContext() {
-		return static::$context;
+	static public function getApplicationContext() {
+		return static::$applicationContext;
 	}
 }

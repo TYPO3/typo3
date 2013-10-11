@@ -63,7 +63,7 @@ class Bootstrap {
 	 *
 	 * @var \TYPO3\CMS\Core\Core\ApplicationContext
 	 */
-	protected $context;
+	protected $applicationContext;
 
 	/**
 	 * Disable direct creation of this object.
@@ -71,9 +71,9 @@ class Bootstrap {
 	 *
 	 * @var string Application context
 	 */
-	protected function __construct($context) {
+	protected function __construct($applicationContext) {
 		$this->requestId = uniqid();
-		$this->context = new ApplicationContext($context);
+		$this->applicationContext = new ApplicationContext($applicationContext);
 	}
 
 	/**
@@ -92,8 +92,8 @@ class Bootstrap {
 	static public function getInstance() {
 		if (is_null(self::$instance)) {
 			require_once(__DIR__ . '/ApplicationContext.php');
-			$context = trim(getenv('TYPO3_CONTEXT'), '"\' ') ? : 'Production';
-			self::$instance = new \TYPO3\CMS\Core\Core\Bootstrap($context);
+			$applicationContext = trim(getenv('TYPO3_CONTEXT'), '"\' ') ? : 'Production';
+			self::$instance = new \TYPO3\CMS\Core\Core\Bootstrap($applicationContext);
 		}
 		return self::$instance;
 	}
@@ -109,13 +109,14 @@ class Bootstrap {
 	}
 
 	/**
-	 * Returns the context this bootstrap was started in.
+	 * Returns the application context this bootstrap was started in.
 	 *
-	 * @return \TYPO3\CMS\Core\Core\ApplicationContext The context encapsulated in an object
-	 * @internal This is not a public API method, do not use in own extensions. Use \TYPO3\CMS\Core\Utility\GeneralUtility::getContext() instead
+	 * @return \TYPO3\CMS\Core\Core\ApplicationContext The application context encapsulated in an object
+	 * @internal This is not a public API method, do not use in own extensions.
+	 * Use \TYPO3\CMS\Core\Utility\GeneralUtility::getApplicationContext() instead
 	 */
-	public function getContext() {
-		return $this->context;
+	public function getApplicationContext() {
+		return $this->applicationContext;
 	}
 
 	/**
@@ -142,7 +143,7 @@ class Bootstrap {
 	 */
 	public function baseSetup($relativePathPart = '') {
 		\TYPO3\CMS\Core\Core\SystemEnvironmentBuilder::run($relativePathPart);
-		Utility\GeneralUtility::presetContext($this->context);
+		Utility\GeneralUtility::presetApplicationContext($this->applicationContext);
 		return $this;
 	}
 
