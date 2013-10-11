@@ -413,8 +413,11 @@ class DataMapFactoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	public function classNameTableNameMappings() {
 		return array(
 			'Core classes' => array('TYPO3\\CMS\\Belog\\Domain\\Model\\LogEntry', 'tx_belog_domain_model_logentry'),
+			'Core classes with namespaces and leading backslash' => array('\\TYPO3\\CMS\\Belog\\Domain\\Model\\LogEntry', 'tx_belog_domain_model_logentry'),
 			'Extension classes' => array('ExtbaseTeam\\BlogExample\\Domain\\Model\\Blog', 'tx_blogexample_domain_model_blog'),
+			'Extension classes with namespaces and leading backslash' => array('\\ExtbaseTeam\\BlogExample\\Domain\\Model\\Blog', 'tx_blogexample_domain_model_blog'),
 			'Extension classes without namespace' => array('Tx_News_Domain_Model_News', 'tx_news_domain_model_news'),
+			'Extension classes without namespace but leading slash' => array('\\Tx_News_Domain_Model_News', 'tx_news_domain_model_news'),
 		);
 	}
 
