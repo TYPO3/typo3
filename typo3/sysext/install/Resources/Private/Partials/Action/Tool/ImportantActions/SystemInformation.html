@@ -15,10 +15,23 @@
 	<dd>{databaseUsername} </dd>
 	<dt>Database host:</dt>
 	<dd>{databaseHost} </dd>
-	<dt>Database port:</dt>
-	<dd>{databasePort} </dd>
-	<dt>Database socket:</dt>
-	<dd>{databaseSocket} </dd>
+	<f:if condition="{databasePort}">
+		<f:then>
+			<dt>Database port:</dt>
+			<dd>{databasePort} </dd>
+		</f:then>
+		<f:else>
+			<dt>Database socket:</dt>
+			<f:if condition="{databaseSocket}">
+				<f:then>
+					<dd>{databaseSocket} </dd>
+				</f:then>
+				<f:else>
+					<dd><em>default socket</em> </dd>
+				</f:else>
+			</f:if>
+		</f:else>
+	</f:if>
 	<dt>Database tables:</dt>
 	<dd>{databaseNumberOfTables} </dd>
 </dl>
