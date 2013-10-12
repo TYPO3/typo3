@@ -1540,6 +1540,11 @@ class BackendUtility {
 			foreach ($referenceUids as $referenceUid) {
 				$fileReferenceObject = ResourceFactory::getInstance()->getFileReferenceObject($referenceUid['uid']);
 				$fileObject = $fileReferenceObject->getOriginalFile();
+				$fileAlternative = $fileReferenceObject->getAlternative();
+				$fileTitle = $fileReferenceObject->getTitle();
+				if ($fileTitle === '') {
+					$fileTitle = $fileReferenceObject->getName();
+				}
 
 				if ($fileObject->isMissing()) {
 					$flashMessage = \TYPO3\CMS\Core\Resource\Utility\BackendUtility::getFlashMessageForMissingFile($fileObject);
@@ -1553,10 +1558,16 @@ class BackendUtility {
 						'width' => $sizeParts[0],
 						'height' => $sizeParts[1]
 					))->getPublicUrl(TRUE);
-					$imgTag = '<img src="' . $imageUrl . '" alt="' . htmlspecialchars($fileReferenceObject->getName()) . '" />';
+					$imgTag = '<img src="' . $imageUrl . '" alt="' . htmlspecialchars($fileAlternative) . '" title="' . htmlspecialchars($fileTitle) . '" />';
 				} else {
 					// Icon
-					$imgTag = IconUtility::getSpriteIconForFile(strtolower($fileObject->getExtension()), array('title' => $fileObject->getName()));
+					$imgTag = IconUtility::getSpriteIconForFile(
+						strtolower($fileObject->getExtension()),
+						array(
+							'title' => $fileTitle,
+							'alt'=> $fileAlternative
+						)
+					);
 				}
 				if ($linkInfoPopup) {
 					$onClick = 'top.launchView(\'_FILE\',\'' . $fileObject->getUid() . '\',\'' . $backPath . '\'); return false;';
@@ -1579,6 +1590,11 @@ class BackendUtility {
 					$fileName = trim($uploaddir . '/' . $theFile, '/');
 					$fileObject = ResourceFactory::getInstance()->retrieveFileOrFolderObject($fileName);
 					$fileExtension = $fileObject->getExtension();
+					$fileAlternative = $fileObject->getAlternative();
+					$fileTitle = $fileObject->getTitle();
+					if ($fileTitle === '') {
+						$fileTitle = $fileObject->getName();
+					}
 
 					if ($fileObject->isMissing()) {
 						$flashMessage = \TYPO3\CMS\Core\Resource\Utility\BackendUtility::getFlashMessageForMissingFile($fileObject);
@@ -1591,7 +1607,7 @@ class BackendUtility {
 							'width' => $sizeParts[0],
 							'height' => $sizeParts[1]
 						))->getPublicUrl(TRUE);
-						$image = '<img src="' . htmlspecialchars($imageUrl) . '" hspace="2" border="0" title="' . htmlspecialchars($fileObject->getName()) . '"' . $tparams . ' alt="" />';
+						$image = '<img src="' . htmlspecialchars($imageUrl) . '" hspace="2" border="0" title="' . htmlspecialchars($fileTitle) . '"' . $tparams . ' alt="' . htmlspecialchars($fileAlternative) . '" />';
 						if ($linkInfoPopup) {
 							$onClick = 'top.launchView(\'_FILE\', \'' . $fileName . '\',\'\',\'' . $backPath . '\');return false;';
 							$thumbData .= '<a href="#" onclick="' . htmlspecialchars($onClick) . '">' . $image . '</a> ';
@@ -1600,7 +1616,13 @@ class BackendUtility {
 						}
 					} else {
 						// Gets the icon
-						$fileIcon = IconUtility::getSpriteIconForFile($fileExtension, array('title' => $fileObject->getName()));
+						$fileIcon = IconUtility::getSpriteIconForFile(
+							$fileExtension,
+							array(
+								'title' => $fileTitle,
+								'alt' => $fileAlternative
+							)
+						);
 						if ($linkInfoPopup) {
 							$onClick = 'top.launchView(\'_FILE\', \'' . $fileName . '\',\'\',\'' . $backPath . '\'); return false;';
 							$thumbData .= '<a href="#" onclick="' . htmlspecialchars($onClick) . '">' . $fileIcon . '</a> ';
