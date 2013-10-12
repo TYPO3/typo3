@@ -1,6 +1,5 @@
 <?php
 namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence\Generic\Mapper;
-
 /***************************************************************
  *  Copyright notice
  *
@@ -27,6 +26,12 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence\Generic\Mapper;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use TYPO3\CMS\Core\Tests\AccessibleObjectInterface;
+use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap;
+use TYPO3\CMS\Core\DataHandling\TableColumnType;
+use TYPO3\CMS\Core\DataHandling\TableColumnSubType;
+
 class DataMapFactoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
@@ -444,4 +449,47 @@ class DataMapFactoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		);
 	}
 
+	/**
+	 * @return array
+	 */
+	public function tcaConfigurationsContainingTypeAndInternalType() {
+		return array(
+			array(array('type' => 'input'), TableColumnType::INPUT, NULL),
+			array(array('type' => 'text'), TableColumnType::TEXT, NULL),
+			array(array('type' => 'check'), TableColumnType::CHECK, NULL),
+			array(array('type' => 'radio'), TableColumnType::RADIO, NULL),
+			array(array('type' => 'select'), TableColumnType::SELECT, NULL),
+			array(array('type' => 'group', 'internal_type' => 'db'), TableColumnType::GROUP, TableColumnSubType::DB),
+			array(array('type' => 'group', 'internal_type' => 'file'), TableColumnType::GROUP, TableColumnSubType::FILE),
+			array(array('type' => 'group', 'internal_type' => 'file_reference'), TableColumnType::GROUP, TableColumnSubType::FILE_REFERENCE),
+			array(array('type' => 'group', 'internal_type' => 'folder'), TableColumnType::GROUP, TableColumnSubType::FOLDER),
+			array(array('type' => 'none'), TableColumnType::NONE, NULL),
+			array(array('type' => 'passthrough'), TableColumnType::PASSTHROUGH, NULL),
+			array(array('type' => 'user'), TableColumnType::USER, NULL),
+			array(array('type' => 'flex'), TableColumnType::FLEX, NULL),
+			array(array('type' => 'inline'), TableColumnType::INLINE, NULL),
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider tcaConfigurationsContainingTypeAndInternalType
+	 *
+	 * @param array $columnConfiguration
+	 * @param string $type
+	 * @param string $internalType
+	 */
+	public function setTypeDetectsTypeAndInternalTypeProperly(array $columnConfiguration, $type, $internalType) {
+		/** @var $dataMapFactory \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory | AccessibleObjectInterface */
+		$dataMapFactory = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Mapper\\DataMapFactory', array('dummy'));
+		$dataMapFactory->_set('objectManager', $this->objectManager);
+
+		/** @var \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap $columnMap */
+		$columnMap = $this->getAccessibleMock('TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap', array('dummy'), array(), '', FALSE);
+
+		$dataMapFactory->_call('setType', $columnMap, $columnConfiguration);
+
+		$this->assertEquals($type, (string) $columnMap->getType());
+		$this->assertEquals($internalType, (string) $columnMap->getInternalType());
+	}
 }

@@ -31,7 +31,6 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Mapper;
  * A column map to map a column configured in $TCA on a property of a domain object.
  */
 class ColumnMap {
-
 	/**
 	 * Constants reflecting the type of relation
 	 */
@@ -169,6 +168,16 @@ class ColumnMap {
 	 * @var string
 	 */
 	protected $dateTimeStorageFormat;
+
+	/**
+	 * @var \TYPO3\CMS\Core\DataHandling\TableColumnType
+	 */
+	protected $type;
+
+	/**
+	 * @var \TYPO3\CMS\Core\DataHandling\TableColumnSubType
+	 */
+	protected $internalType;
 
 	/**
 	 * Constructs a Column Map
@@ -391,5 +400,33 @@ class ColumnMap {
 	 */
 	public function getDateTimeStorageFormat() {
 		return $this->dateTimeStorageFormat;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Core\DataHandling\TableColumnSubType $internalType
+	 */
+	public function setInternalType($internalType) {
+		$this->internalType = $internalType;
+	}
+
+	/**
+	 * @return \TYPO3\CMS\Core\DataHandling\TableColumnSubType
+	 */
+	public function getInternalType() {
+		return $this->internalType;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Core\DataHandling\TableColumnType $type
+	 */
+	public function setType($type) {
+		$this->type = $type;
+	}
+
+	/**
+	 * @return \TYPO3\CMS\Core\DataHandling\TableColumnType
+	 */
+	public function getType() {
+		return $this->type;
 	}
 }
