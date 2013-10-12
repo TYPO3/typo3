@@ -27,6 +27,8 @@ namespace TYPO3\CMS\Core\Type;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Type\Exception;
+
 /**
  * Abstract class for Enumeration.
  * Inspired by SplEnum.
@@ -37,7 +39,7 @@ namespace TYPO3\CMS\Core\Type;
 abstract class Enumeration {
 
 	/**
-	 * @var string
+	 * @var mixed
 	 */
 	protected $value;
 
@@ -48,19 +50,24 @@ abstract class Enumeration {
 
 	/**
 	 * @param mixed $value
-	 * @throws \DomainException
-	 * @throws \UnexpectedValueException
+	 * @throws Exception\InvalidEnumerationValueException
 	 */
 	public function __construct($value = NULL) {
-		if (!defined('static::__default')) {
-			throw new \DomainException(sprintf("Required constant __default for Enum %s is not defined", __CLASS__), 1381512753);
+		if ($value === NULL && !defined('static::__default')) {
+			throw new Exception\InvalidEnumerationValueException(
+				sprintf('A value for %s is required if no __default is defined.', __CLASS__),
+				1381512753
+			);
 		}
 		if ($value === NULL) {
 			$value = static::__default;
 		}
 		$this->loadValues();
 		if (!$this->isValid($value)) {
-			throw new \UnexpectedValueException(sprintf("Invalid enumeration %s for Enum %s", $value, __CLASS__), 1381512761);
+			throw new Exception\InvalidEnumerationValueException(
+				sprintf('Invalid value %s for %s', $value, __CLASS__),
+				1381512761
+			);
 		}
 		$this->setValue($value);
 	}
@@ -77,12 +84,14 @@ abstract class Enumeration {
 		}
 
 		$reflection = new \ReflectionClass($class);
-		$constants  = $reflection->getConstants();
+		$constants = $reflection->getConstants();
+		$defaultValue = NULL;
 		if (isset($constants['__default'])) {
+			$defaultValue = $constants['__default'];
 			unset($constants['__default']);
 		}
 		if (empty($constants)) {
-			throw new \Exception(
+			throw new Exception\InvalidEnumerationValueException(
 				sprintf(
 					'No enumeration constants defined for "%s"', $class
 				),
@@ -91,7 +100,7 @@ abstract class Enumeration {
 		}
 		foreach ($constants as $constant => $value) {
 			if (!is_int($value) && !is_string($value)) {
-				throw new \Exception(
+				throw new Exception\InvalidEnumerationDefinitionException(
 					sprintf(
 						'Constant value must be of type integer or string; constant=%s; type=%s',
 						$constant,
@@ -106,7 +115,7 @@ abstract class Enumeration {
 		$constantValueCount = current($constantValueCounts);
 		$constant = key($constantValueCounts);
 		if ($constantValueCount > 1) {
-			throw new \Exception(
+			throw new Exception\InvalidEnumerationDefinitionException(
 				sprintf(
 					'Constant value is not unique; constant=%s; value=%s; enum=%s',
 					$constant, $constantValueCount, $class
@@ -114,14 +123,28 @@ abstract class Enumeration {
 				1381512859
 			);
 		}
+		if ($defaultValue !== NULL) {
+			$constants['__default'] = $defaultValue;
+		}
 		static::$enumConstants[$class] = $constants;
 	}
 
 	/**
+	 * Set the Enumeration value to the associated enumeration value by a loose comparison.
+	 * The value, that is used as the enumeration value, will be of the same type like defined in the enumeration
+	 *
 	 * @param mixed $value
+	 * @throws Exception\InvalidEnumerationValueException
 	 */
 	protected function setValue($value) {
-		$this->value = $value;
+		$enumKey = array_search($value, static::$enumConstants[get_called_class()]);
+		if ($enumKey === FALSE) {
+			throw new Exception\InvalidEnumerationValueException(
+				sprintf('Invalid value %s for %s', $value, __CLASS__),
+				1381615295
+			);
+		}
+		$this->value = static::$enumConstants[get_called_class()][$enumKey];
 	}
 
 	/**
@@ -151,17 +174,28 @@ abstract class Enumeration {
 	}
 
 	/**
+	 * Cast value to enumeration type
+	 *
+	 * @param mixed $value Value that has to be casted
+	 * @return Enumeration
+	 */
+	public static function cast($value) {
+		$currentClass = get_called_class();
+		if (!is_object($value) || get_class($value) !== $currentClass) {
+			$value = new $currentClass($value);
+		}
+		return $value;
+	}
+
+	/**
 	 * Compare if the value of the current object value equals the given value
 	 *
 	 * @param mixed $value default
 	 * @return boolean
 	 */
 	public function equals($value) {
-		$currentClass = get_class($this);
-		if (!is_object($value) || get_class($value) !== $currentClass) {
-			$value = new $currentClass($value);
-		}
-		return $this === $value;
+		$value = static::cast($value);
+		return $this == $value;
 	}
 
 	/**

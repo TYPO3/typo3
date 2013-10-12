@@ -85,29 +85,6 @@ class VersionState extends \TYPO3\CMS\Core\Type\Enumeration {
 	const MOVE_POINTER = 4;
 
 	/**
-	 * @param mixed $value
-	 */
-	public function __construct($value = NULL) {
-		if($value !== NULL) {
-			$value = (int)$value;
-		}
-		parent::__construct($value);
-	}
-
-	/**
-	 * Cast value to VersionState Object
-	 *
-	 * @param mixed $versionState A value that is casted to a VersionState or a VersionState object that is returned
-	 * @return VersionState
-	 */
-	public static function cast($versionState) {
-		if (!$versionState instanceof VersionState) {
-			$versionState = new VersionState($versionState);
-		}
-		return $versionState;
-	}
-
-	/**
 	 * @return boolean
 	 */
 	public function indicatesPlaceholder() {
