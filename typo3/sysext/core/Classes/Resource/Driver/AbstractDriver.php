@@ -428,7 +428,7 @@ abstract class AbstractDriver {
 	 * @return \TYPO3\CMS\Core\Resource\File
 	 */
 	protected function getFileObject(array $fileData) {
-		$fileObject = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->createFileObject($fileData);
+		$fileObject = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->createFileObject($fileData, $this->storage);
 		return $fileObject;
 	}
 

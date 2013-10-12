@@ -198,7 +198,7 @@ class Folder implements FolderInterface {
 		$fileArray = $this->storage->getFileList($this->identifier, $start, $numberOfItems, $useFilters, TRUE, $recursive);
 		$fileObjects = array();
 		foreach ($fileArray as $fileInfo) {
-			$fileObject = $factory->createFileObject($fileInfo);
+			$fileObject = $factory->createFileObject($fileInfo, $this->storage);
 
 			// we might have duplicate filenames when fetching a recursive list, so don't use the filename as array key
 			if ($recursive == TRUE) {

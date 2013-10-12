@@ -29,6 +29,7 @@ namespace TYPO3\CMS\Core\Resource;
 
 use TYPO3\CMS\Core\Resource\Index\FileIndexRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
 // TODO implement constructor-level caching
@@ -387,7 +388,7 @@ class ResourceFactory implements \TYPO3\CMS\Core\SingletonInterface {
 			$fileObject = $this->getFileObject($fileData['uid'], $fileData);
 		} else {
 			$fileData = $storage->getFileInfoByIdentifier($fileIdentifier);
-			$fileObject = $this->createFileObject($fileData);
+			$fileObject = $this->createFileObject($fileData, $storage);
 			if (!array_key_exists('uid', $fileData)) {
 				$this->getFileIndexRepository()->add($fileObject);
 			}
@@ -512,15 +513,20 @@ class ResourceFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	 * row to be fetched.
 	 *
 	 * @param array $fileData
+	 * @param ResourceStorage $storage
 	 * @return File
 	 */
-	public function createFileObject(array $fileData) {
+	public function createFileObject(array $fileData, ResourceStorage $storage = NULL) {
 		/** @var File $fileObject */
-		$fileObject = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\File', $fileData);
-		if (is_numeric($fileData['storage'])) {
-			$storageObject = $this->getStorageObject($fileData['storage']);
-			$fileObject->setStorage($storageObject);
+		if (array_key_exists('storage', $fileData) && MathUtility::canBeInterpretedAsInteger($fileData['storage'])) {
+			$storageObject = $this->getStorageObject(intval($fileData['storage']));
+		} elseif ($storage !== NULL) {
+			$storageObject = $storage;
+			$fileData['storage'] = $storage->getUid();
+		} else {
+			throw new \RuntimeException('A file needs to reside in a Storage', 1381570997);
 		}
+		$fileObject = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\File', $fileData, $storageObject);
 		return $fileObject;
 	}
 

@@ -1552,7 +1552,9 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			uniqid() => uniqid(),
 			'uid' => $uid
 		);
-		$file = new \TYPO3\CMS\Core\Resource\File($properties);
+		$file = new \TYPO3\CMS\Core\Resource\File($properties,
+			$this->getMock('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', array(), array(), '', FALSE)
+		);
 		$this->cObj->setCurrentFile($file);
 
 		$this->assertEquals($uid, $this->cObj->getData('file:current:uid'));

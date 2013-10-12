@@ -1140,7 +1140,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 		if (!$storage) {
 			$storage = $this->getMock('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', array(), array(), '', FALSE);
 		}
-		$fileObject = new \TYPO3\CMS\Core\Resource\File(array('identifier' => $identifier, 'name' => basename($identifier), 'storage' => $storage));
+		$fileObject = new \TYPO3\CMS\Core\Resource\File(array('identifier' => $identifier, 'name' => basename($identifier), 'storage' => $storage), $storage);
 		return $fileObject;
 	}
 

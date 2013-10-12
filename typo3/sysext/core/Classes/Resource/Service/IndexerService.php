@@ -28,6 +28,7 @@ namespace TYPO3\CMS\Core\Resource\Service;
  ***************************************************************/
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Index\FileIndexRepository;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Indexer for the virtual file system
@@ -41,11 +42,6 @@ class IndexerService implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @var \TYPO3\CMS\Core\Resource\FileRepository
 	 */
 	protected $repository;
-
-	/**
-	 * @var \TYPO3\CMS\Core\Resource\ResourceFactory
-	 */
-	protected $factory;
 
 	/**
 	 * empty constructor, nothing to do here yet
@@ -62,7 +58,7 @@ class IndexerService implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	protected function getRepository() {
 		if ($this->repository === NULL) {
-			$this->repository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\FileRepository');
+			$this->repository = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\FileRepository');
 		}
 		return $this->repository;
 	}
@@ -71,20 +67,17 @@ class IndexerService implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return \TYPO3\CMS\Core\Resource\Index\FileIndexRepository
 	 */
 	protected function getFileIndexRepository() {
-		return FileIndexRepository::getInstance();
+		return GeneralUtility::makeInstance('TYPO3\CMS\Core\Resource\Index\FileIndexRepository');
 	}
 
 
 	/**
-	 * Setter function for the fileFactory
-	 * returns the object itself for chaining purposes
+	 * Getter function for the fileFactory
 	 *
-	 * @param \TYPO3\CMS\Core\Resource\ResourceFactory $factory
-	 * @return \TYPO3\CMS\Core\Resource\Service\IndexerService
+	 * @return \TYPO3\CMS\Core\Resource\ResourceFactory
 	 */
-	public function setFactory(\TYPO3\CMS\Core\Resource\ResourceFactory $factory) {
-		$this->factory = $factory;
-		return $this;
+	public function getFactory() {
+		return GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\ResourceFactory');
 	}
 
 	/**
@@ -117,7 +110,7 @@ class IndexerService implements \TYPO3\CMS\Core\SingletonInterface {
 			$resultRows = $this->getFileIndexRepository()->findByContentHash($fileInfo['sha1']);
 			$otherFiles = array();
 			foreach ($resultRows as $row) {
-				$otherFiles[] = $this->factory->getFileObject($row['uid'], $row);
+				$otherFiles[] = $this->getFactory()->getFileObject($row['uid'], $row);
 			}
 
 			$movedFile = FALSE;

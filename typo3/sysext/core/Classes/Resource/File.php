@@ -81,18 +81,14 @@ class File extends AbstractFile {
 	 * @param array $fileData
 	 * @param ResourceStorage $storage
 	 */
-	public function __construct(array $fileData, $storage = NULL) {
+	public function __construct(array $fileData, ResourceStorage $storage) {
 		if (isset($fileData['uid']) && intval($fileData['uid']) > 0) {
 			$this->indexed = TRUE;
 		}
 		$this->identifier = $fileData['identifier'];
 		$this->name = $fileData['name'];
 		$this->properties = $fileData;
-		if (is_object($storage)) {
-			$this->storage = $storage;
-		} elseif (isset($fileData['storage']) && is_object($fileData['storage'])) {
-			$this->storage = $fileData['storage'];
-		}
+		$this->storage = $storage;
 	}
 
 	/*******************************
@@ -171,8 +167,6 @@ class File extends AbstractFile {
 		if ($this->indexed !== NULL || !$this->indexable) {
 			return;
 		}
-		/** @var $repo FileRepository */
-		$repo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\FileRepository');
 
 		$indexRecord = Index\FileIndexRepository::getInstance()->findOneByFileObject($this);
 		if ($indexRecord === FALSE && $indexIfNotIndexed) {
@@ -246,8 +240,8 @@ class File extends AbstractFile {
 		if (isset($properties['uid']) && intval($properties['uid']) > 0) {
 			$this->indexed = TRUE;
 		}
-		if (isset($properties['storage'])) {
-			$this->loadStorage();
+		if (array_key_exists('storage', $properties) && in_array('storage', $this->updatedProperties)) {
+			$this->storage = ResourceFactory::getInstance()->getStorageObject($properties['storage']);
 		}
 	}
 
@@ -326,7 +320,7 @@ class File extends AbstractFile {
 		foreach ($this->properties as $key => $value) {
 			$array[$key] = $value;
 		}
-		$stat = $this->storage->getFileInfo($this);
+		$stat = $this->getStorage()->getFileInfo($this);
 		foreach ($stat as $key => $value) {
 			$array[$key] = $value;
 		}

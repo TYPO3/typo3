@@ -356,23 +356,9 @@ abstract class AbstractFile implements FileInterface {
 	 */
 	public function getStorage() {
 		if ($this->storage === NULL) {
-			$this->loadStorage();
+			throw new \RuntimeException('You\'re using fileObjects without a storage.', 1381570091);
 		}
 		return $this->storage;
-	}
-
-	/**
-	 * Loads the storage object of this file object.
-	 *
-	 * @return void
-	 */
-	protected function loadStorage() {
-		$storageUid = $this->getProperty('storage');
-		if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($storageUid)) {
-			/** @var $fileFactory ResourceFactory */
-			$fileFactory = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\ResourceFactory');
-			$this->storage = $fileFactory->getStorageObject($storageUid);
-		}
 	}
 
 	/**
@@ -394,18 +380,12 @@ abstract class AbstractFile implements FileInterface {
 	 * \TYPO3\CMS\Core\Resource-internal usage; don't use it to move files.
 	 *
 	 * @internal Should only be used by other parts of the File API (e.g. drivers after moving a file)
-	 * @param integer|ResourceStorage $storage
+	 * @param ResourceStorage $storage
 	 * @return File
 	 */
-	public function setStorage($storage) {
-		// Do not check for deleted file here as we might need this method for the recycler later on
-		if (is_object($storage) && $storage instanceof ResourceStorage) {
-			$this->storage = $storage;
-			$this->properties['storage'] = $storage->getUid();
-		} else {
-			$this->properties['storage'] = $storage;
-			$this->storage = NULL;
-		}
+	public function setStorage(ResourceStorage $storage) {
+		$this->storage = $storage;
+		$this->properties['storage'] = $storage->getUid();
 		return $this;
 	}
 
@@ -414,10 +394,11 @@ abstract class AbstractFile implements FileInterface {
 	 *
 	 * @internal Should only be used by other parts of the File API (e.g. drivers after moving a file)
 	 * @param string $identifier
-	 * @return string
+	 * @return File
 	 */
 	public function setIdentifier($identifier) {
 		$this->identifier = $identifier;
+		return $this;
 	}
 
 	/**

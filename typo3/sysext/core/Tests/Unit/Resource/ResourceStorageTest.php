@@ -410,7 +410,9 @@ class ResourceStorageTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCa
 	 */
 	public function setFileContentsUpdatesObjectProperties() {
 		$this->initializeVfs();
-		$this->prepareFixture(array(), TRUE);
+		$driverObject = $this->getMockForAbstractClass('TYPO3\\CMS\\Core\\Resource\\Driver\\AbstractDriver', array(), '', FALSE);
+		$this->fixture = $this->getMock('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', array('getFileIndexRepository', 'checkFileActionPermission'), array($driverObject, array()));
+		$this->fixture->expects($this->any())->method('checkFileActionPermission')->will($this->returnValue(TRUE));
 		$fileInfo = array(
 			'storage' => 'A',
 			'identifier' => 'B',
@@ -434,10 +436,12 @@ class ResourceStorageTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCa
 		$driver->expects($this->once())->method('getFileInfoByIdentifier')->will($this->returnValue($fileInfo));
 		$driver->expects($this->once())->method('hash')->will($this->returnValue($hash));
 		$this->fixture->setDriver($driver);
+		$indexFileRepositoryMock = $this->getMock('TYPO3\\CMS\\Core\\Resource\\Index\\FileIndexRepository');
+		$this->fixture->expects($this->any())->method('getFileIndexRepository')->will($this->returnValue($indexFileRepositoryMock));
 		$mockedFile = $this->getMock('TYPO3\\CMS\\Core\\Resource\\File', array(), array(), '', FALSE);
-		$mockedFile->expects($this->any())->method('getIdentifier')->will($this->returnValue('/file.ext'));
 		$mockedFile->expects($this->at(1))->method('updateProperties')->with($this->equalTo(array('sha1' => $hash)));
 		$mockedFile->expects($this->at(3))->method('updateProperties')->with($this->equalTo($newProperties));
+		$indexFileRepositoryMock->expects($this->once())->method('update')->with($mockedFile);
 		$this->fixture->setFileContents($mockedFile, uniqid());
 	}
 

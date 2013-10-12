@@ -59,12 +59,6 @@ class FileIndexRepository implements SingletonInterface {
 	);
 
 	/**
-	 * @var FileIndexRepository
-	 */
-	protected static $instance = NULL;
-
-
-	/**
 	 * Gets database instance
 	 *
 	 * @return \TYPO3\CMS\Core\Database\DatabaseConnection
@@ -79,10 +73,7 @@ class FileIndexRepository implements SingletonInterface {
 	 * @return FileIndexRepository
 	 */
 	public static function getInstance() {
-		if (static::$instance === NULL) {
-			static::$instance = GeneralUtility::makeInstance('TYPO3\CMS\Core\Resource\Index\FileIndexRepository');
-		}
-		return static::$instance;
+		return GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\Index\\FileIndexRepository');
 	}
 
 	/**
