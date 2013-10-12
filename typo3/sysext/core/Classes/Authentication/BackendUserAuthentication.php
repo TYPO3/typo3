@@ -1469,6 +1469,37 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	}
 
 	/**
+	 * Returns an array of category mount points. The category permissions from BE Groups are also taken into consideration
+	 * and are merged into User permissions.
+	 *
+	 * @return array
+	 */
+	public function getCategoryMountPoints() {
+		$categoryMountPoints = '';
+
+		// Category mounts of the groups
+		if (is_array($this->userGroups)) {
+			foreach ($this->userGroups as $group) {
+				if ($group['category_perms']) {
+					$categoryMountPoints .= ',' . $group['category_perms'];
+				}
+			}
+		}
+
+		// Category mounts of the user record
+		if ($this->user['category_perms']) {
+			$categoryMountPoints .= ',' . $this->user['category_perms'];
+		}
+
+		// Make the ids unique
+		$categoryMountPoints = GeneralUtility::trimExplode(',', $categoryMountPoints);
+		$categoryMountPoints = array_filter($categoryMountPoints); // remove empty value
+		$categoryMountPoints = array_unique($categoryMountPoints); // remove unique value
+
+		return $categoryMountPoints;
+	}
+
+	/**
 	 * Returns an array of file mount records, taking workspaces and user home and group home directories into account
 	 * Needs to be called AFTER the groups have been loaded.
 	 *

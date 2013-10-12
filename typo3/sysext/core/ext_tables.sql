@@ -30,6 +30,7 @@ CREATE TABLE be_groups (
   subgroup text,
   hide_in_lists tinyint(4) DEFAULT '0' NOT NULL,
   workspace_perms tinyint(3) DEFAULT '1' NOT NULL,
+  category_perms varchar(255) DEFAULT '' NOT NULL,
   PRIMARY KEY (uid),
   KEY parent (pid)
 );
@@ -86,6 +87,7 @@ CREATE TABLE be_users (
   usergroup_cached_list text,
   workspace_id int(11) DEFAULT '0' NOT NULL,
   workspace_preview tinyint(3) DEFAULT '1' NOT NULL,
+  category_perms varchar(255) DEFAULT '' NOT NULL,
   PRIMARY KEY (uid),
   KEY parent (pid),
   KEY username (username)

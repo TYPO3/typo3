@@ -26,6 +26,8 @@ namespace TYPO3\CMS\Core\Tree\TableConfiguration;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * TCA tree data provider
  *
@@ -33,6 +35,7 @@ namespace TYPO3\CMS\Core\Tree\TableConfiguration;
  */
 class DatabaseTreeDataProvider extends \TYPO3\CMS\Core\Tree\TableConfiguration\AbstractTableConfigurationTreeDataProvider {
 
+	const SIGNAL_PostProcessTreeData = 'PostProcessTreeData';
 	const MODE_CHILDREN = 1;
 	const MODE_PARENT = 2;
 	/**
@@ -93,6 +96,11 @@ class DatabaseTreeDataProvider extends \TYPO3\CMS\Core\Tree\TableConfiguration\A
 	 * @var array TCEforms compiled TSConfig array
 	 */
 	protected $generatedTSConfig = array();
+
+	/**
+	 * @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
+	 */
+	protected $signalSlotDispatcher;
 
 	/**
 	 * Sets the label field
@@ -289,6 +297,8 @@ class DatabaseTreeDataProvider extends \TYPO3\CMS\Core\Tree\TableConfiguration\A
 		if ($childNodes !== NULL) {
 			$this->treeData->setChildNodes($childNodes);
 		}
+
+		$this->emitPostProcessTreeDataSignal();
 	}
 
 	/**
@@ -430,6 +440,39 @@ class DatabaseTreeDataProvider extends \TYPO3\CMS\Core\Tree\TableConfiguration\A
 			$uidArray[] = $record['uid'];
 		}
 		return $uidArray;
+	}
+
+	/**
+	 * Emits the post processing tree data signal.
+	 *
+	 * @return void
+	 */
+	protected function emitPostProcessTreeDataSignal() {
+		$this->getSignalSlotDispatcher()->dispatch('TYPO3\\CMS\\Core\\Tree\\TableConfiguration\\TableConfiguration\\DatabaseTreeDataProvider',
+			self::SIGNAL_PostProcessTreeData,
+			array($this, $this->treeData)
+		);
+	}
+
+	/**
+	 * Get the SignalSlot dispatcher
+	 *
+	 * @return \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
+	 */
+	protected function getSignalSlotDispatcher() {
+		if (!isset($this->signalSlotDispatcher)) {
+			$this->signalSlotDispatcher = $this->getObjectManager()->get('TYPO3\\CMS\\Extbase\\SignalSlot\\Dispatcher');
+		}
+		return $this->signalSlotDispatcher;
+	}
+
+	/**
+	 * Get the ObjectManager
+	 *
+	 * @return \TYPO3\CMS\Extbase\Object\ObjectManager
+	 */
+	protected function getObjectManager() {
+		return GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
 	}
 
 }

@@ -24,6 +24,9 @@
 			<trans-unit id="allowed_languages" xml:space="preserve">
 				<source>Limit to languages:</source>
 			</trans-unit>
+			<trans-unit id="category_perms" xml:space="preserve">
+				<source>Category Mounts:</source>
+			</trans-unit>
 			<trans-unit id="workspace_perms" xml:space="preserve">
 				<source>Workspace permissions:</source>
 			</trans-unit>
