@@ -542,4 +542,54 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$mockDataHandler->expects($this->never())->method('deleteAction');
 		$mockDataHandler->deleteRecord_procBasedOnFieldType($table, 42, 'foo', 'bar', $conf);
 	}
+
+	/**
+	 * @return array
+	 */
+	public function checkValue_checkReturnsExpectedValuesDataProvider() {
+		return array(
+			'None item selected' => array(
+				0,
+				0
+			),
+			'All items selected' => array(
+				7,
+				7
+			),
+			'Item 1 and 2 are selected' => array(
+				3,
+				3
+			),
+			'Value is higher than allowed' => array(
+				15,
+				7
+			),
+			'Negative value' => array(
+				-5,
+				0
+			)
+		);
+	}
+
+	/**
+	 * @param string $value
+	 * @param string $expectedValue
+	 *
+	 * @dataProvider checkValue_checkReturnsExpectedValuesDataProvider
+	 * @test
+	 */
+	public function checkValue_checkReturnsExpectedValues($value, $expectedValue) {
+		$expectedResult = array(
+			'value' => $expectedValue
+		);
+		$result = array();
+		$tcaFieldConfiguration = array(
+			'items' => array(
+				array('Item 1', 0),
+				array('Item 2', 0),
+				array('Item 3', 0)
+			)
+		);
+		$this->assertSame($expectedResult, $this->fixture->checkValue_check($result, $value, $tcaFieldConfiguration, array()));
+	}
 }
