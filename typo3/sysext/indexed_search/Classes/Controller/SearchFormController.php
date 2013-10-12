@@ -15,6 +15,7 @@ namespace TYPO3\CMS\IndexedSearch\Controller;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\DateTimeUtility;
 
 /**
  * Index search frontend
@@ -491,20 +492,20 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 		$accumulatedContent = '';
 		foreach ($indexCfgs as $freeIndexUid) {
 			// Get result rows:
-			$pt1 = GeneralUtility::milliseconds();
+			$pt1 = DateTimeUtility::milliseconds();
 			if ($hookObj = $this->hookRequest('getResultRows')) {
 				$resData = $hookObj->getResultRows($sWArr, $freeIndexUid);
 			} else {
 				$resData = $this->getResultRows($sWArr, $freeIndexUid);
 			}
 			// Display search results:
-			$pt2 = GeneralUtility::milliseconds();
+			$pt2 = DateTimeUtility::milliseconds();
 			if ($hookObj = $this->hookRequest('getDisplayResults')) {
 				$content = $hookObj->getDisplayResults($sWArr, $resData, $freeIndexUid);
 			} else {
 				$content = $this->getDisplayResults($sWArr, $resData, $freeIndexUid);
 			}
-			$pt3 = GeneralUtility::milliseconds();
+			$pt3 = DateTimeUtility::milliseconds();
 			// Create header if we are searching more than one indexing configuration:
 			if (count($indexCfgs) > 1) {
 				if ($freeIndexUid > 0) {
@@ -1872,16 +1873,17 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 				break;
 			case 'crdate':
 				// Based on creation date
-				return $this->cObj->calcAge($GLOBALS['EXEC_TIME'] - $row['item_crdate'], 0);
+				return DateTimeUtility::getSimpleAgeString($row['item_crdate']);
 				break;
 			case 'mtime':
 				// Based on modification time
-				return $this->cObj->calcAge($GLOBALS['EXEC_TIME'] - $row['item_mtime'], 0);
+				return DateTimeUtility::getSimpleAgeString($row['item_mtime']);
 				break;
 			default:
 				// fx. title
 				return '&nbsp;';
 		}
+		return '';
 	}
 
 	/**

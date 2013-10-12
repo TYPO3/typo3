@@ -3249,7 +3249,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 					$value = '';
 				}
 				if ($config['format.']['appendAge']) {
-					$value .= ' (' . BackendUtility::calcAge(($GLOBALS['EXEC_TIME'] - $itemValue), $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.minutesHoursDaysYears')) . ')';
+					$value .= ' (' . \TYPO3\CMS\Core\Utility\DateTimeUtility::getAgeStringUnix($itemValue) . ')';
 				}
 				$itemValue = $value;
 				break;

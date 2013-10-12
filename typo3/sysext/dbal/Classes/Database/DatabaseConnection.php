@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Dbal\Database;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\DateTimeUtility;
 
 /**
  * TYPO3 database abstraction layer
@@ -445,7 +446,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	 * @throws \RuntimeException
 	 */
 	public function exec_INSERTquery($table, $fields_values, $no_quote_fields = FALSE) {
-		$pt = $this->debug ? GeneralUtility::milliseconds() : 0;
+		$pt = $this->debug ? DateTimeUtility::milliseconds() : 0;
 		// Do field mapping if needed:
 		$ORIG_tableName = $table;
 		if ($tableArray = $this->map_needMapping($table)) {
@@ -559,7 +560,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 			debug(array($this->lastQuery, $this->sql_error()));
 		}
 		if ($this->debug) {
-			$this->debugHandler('exec_INSERTquery', GeneralUtility::milliseconds() - $pt, array(
+			$this->debugHandler('exec_INSERTquery', DateTimeUtility::milliseconds() - $pt, array(
 				'handlerType' => $hType,
 				'args' => array($table, $fields_values),
 				'ORIG_tablename' => $ORIG_tableName
@@ -612,7 +613,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	 * @return boolean|\mysqli_result|object MySQLi result object / DBAL object
 	 */
 	public function exec_UPDATEquery($table, $where, $fields_values, $no_quote_fields = FALSE) {
-		$pt = $this->debug ? GeneralUtility::milliseconds() : 0;
+		$pt = $this->debug ? DateTimeUtility::milliseconds() : 0;
 		// Do table/field mapping:
 		$ORIG_tableName = $table;
 		if ($tableArray = $this->map_needMapping($table)) {
@@ -674,7 +675,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 			debug(array($this->lastQuery, $this->sql_error()));
 		}
 		if ($this->debug) {
-			$this->debugHandler('exec_UPDATEquery', GeneralUtility::milliseconds() - $pt, array(
+			$this->debugHandler('exec_UPDATEquery', DateTimeUtility::milliseconds() - $pt, array(
 				'handlerType' => $hType,
 				'args' => array($table, $where, $fields_values),
 				'ORIG_from_table' => $ORIG_tableName
@@ -695,7 +696,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	 * @return boolean|\mysqli_result|object MySQLi result object / DBAL object
 	 */
 	public function exec_DELETEquery($table, $where) {
-		$pt = $this->debug ? GeneralUtility::milliseconds() : 0;
+		$pt = $this->debug ? DateTimeUtility::milliseconds() : 0;
 		// Do table/field mapping:
 		$ORIG_tableName = $table;
 		if ($tableArray = $this->map_needMapping($table)) {
@@ -729,7 +730,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 			debug(array($this->lastQuery, $this->sql_error()));
 		}
 		if ($this->debug) {
-			$this->debugHandler('exec_DELETEquery', GeneralUtility::milliseconds() - $pt, array(
+			$this->debugHandler('exec_DELETEquery', DateTimeUtility::milliseconds() - $pt, array(
 				'handlerType' => $hType,
 				'args' => array($table, $where),
 				'ORIG_from_table' => $ORIG_tableName
@@ -755,7 +756,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	 * @return boolean|\mysqli_result|object MySQLi result object / DBAL object
 	 */
 	public function exec_SELECTquery($select_fields, $from_table, $where_clause, $groupBy = '', $orderBy = '', $limit = '') {
-		$pt = $this->debug ? GeneralUtility::milliseconds() : 0;
+		$pt = $this->debug ? DateTimeUtility::milliseconds() : 0;
 		// Map table / field names if needed:
 		$ORIG_tableName = $from_table;
 		// Saving table names in $ORIG_from_table since $from_table is transformed beneath:
@@ -838,7 +839,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 			if ($this->conf['debugOptions']['numberRows']) {
 				$data['numberRows'] = $this->sql_num_rows($sqlResult);
 			}
-			$this->debugHandler('exec_SELECTquery', GeneralUtility::milliseconds() - $pt, $data);
+			$this->debugHandler('exec_SELECTquery', DateTimeUtility::milliseconds() - $pt, $data);
 		}
 		// Return handler.
 		return $sqlResult;
@@ -851,7 +852,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	 * @return mixed Result from handler
 	 */
 	public function exec_TRUNCATEquery($table) {
-		$pt = $this->debug ? GeneralUtility::milliseconds() : 0;
+		$pt = $this->debug ? DateTimeUtility::milliseconds() : 0;
 		// Do table/field mapping:
 		$ORIG_tableName = $table;
 		if ($tableArray = $this->map_needMapping($table)) {
@@ -881,7 +882,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 			debug(array($this->lastQuery, $this->sql_error()));
 		}
 		if ($this->debug) {
-			$this->debugHandler('exec_TRUNCATEquery', GeneralUtility::milliseconds() - $pt, array(
+			$this->debugHandler('exec_TRUNCATEquery', DateTimeUtility::milliseconds() - $pt, array(
 				'handlerType' => $hType,
 				'args' => array($table),
 				'ORIG_from_table' => $ORIG_tableName
@@ -1308,7 +1309,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	 * @return \TYPO3\CMS\Core\Database\PreparedStatement Prepared statement
 	 */
 	public function prepare_SELECTquery($select_fields, $from_table, $where_clause, $groupBy = '', $orderBy = '', $limit = '', array $input_parameters = array()) {
-		$pt = $this->debug ? GeneralUtility::milliseconds() : 0;
+		$pt = $this->debug ? DateTimeUtility::milliseconds() : 0;
 		$precompiledParts = array();
 		if ($this->queryCache) {
 			$cacheKey = 'prepare_SELECTquery-' . \TYPO3\CMS\Dbal\QueryCache::getCacheKey(array(
@@ -1326,7 +1327,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 						'args' => array($from_table, $select_fields, $where_clause, $groupBy, $orderBy, $limit, $input_parameters),
 						'precompiledParts' => $precompiledParts
 					);
-					$this->debugHandler('prepare_SELECTquery (cache hit)', GeneralUtility::milliseconds() - $pt, $data);
+					$this->debugHandler('prepare_SELECTquery (cache hit)', DateTimeUtility::milliseconds() - $pt, $data);
 				}
 			}
 		}
@@ -1380,7 +1381,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 				'args' => array($from_table, $select_fields, $where_clause, $groupBy, $orderBy, $limit, $input_parameters),
 				'ORIG_from_table' => $ORIG_tableName
 			);
-			$this->debugHandler('prepare_SELECTquery', GeneralUtility::milliseconds() - $pt, $data);
+			$this->debugHandler('prepare_SELECTquery', DateTimeUtility::milliseconds() - $pt, $data);
 		}
 		// Return prepared statement
 		return $preparedStatement;
@@ -1499,7 +1500,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	 * @internal This method may only be called by \TYPO3\CMS\Core\Database\PreparedStatement
 	 */
 	public function prepare_PREPAREDquery($query, array $queryComponents) {
-		$pt = $this->debug ? GeneralUtility::milliseconds() : 0;
+		$pt = $this->debug ? DateTimeUtility::milliseconds() : 0;
 		// Get handler key and select API:
 		$preparedStatement = NULL;
 		switch ($queryComponents['handler']) {
@@ -1537,7 +1538,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 				'args' => $queryComponents,
 				'ORIG_from_table' => $queryComponents['ORIG_tableName']
 			);
-			$this->debugHandler('prepare_PREPAREDquery', GeneralUtility::milliseconds() - $pt, $data);
+			$this->debugHandler('prepare_PREPAREDquery', DateTimeUtility::milliseconds() - $pt, $data);
 		}
 		// Return result handler.
 		return $preparedStatement;

@@ -67,7 +67,6 @@ class PageInformationController extends \TYPO3\CMS\Backend\Module\AbstractFuncti
 		$dblist->script = BackendUtility::getModuleUrl('web_info');
 		$dblist->showIcon = 0;
 		$dblist->setLMargin = 0;
-		$dblist->agePrefixes = $LANG->sL('LLL:EXT:lang/locallang_core.xlf:labels.minutesHoursDaysYears');
 		$dblist->pI_showUser = 1;
 		// PAGES:
 		$this->pObj->MOD_SETTINGS['pages_levels'] = $this->pObj->MOD_SETTINGS['depth'];

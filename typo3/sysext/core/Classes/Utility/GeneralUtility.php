@@ -24,7 +24,7 @@ namespace TYPO3\CMS\Core\Utility;
  * USE:
  * The class is intended to be used without creating an instance of it.
  * So: Don't instantiate - call functions with "\TYPO3\CMS\Core\Utility\GeneralUtility::" prefixed the function name.
- * So use \TYPO3\CMS\Core\Utility\GeneralUtility::[method-name] to refer to the functions, eg. '\TYPO3\CMS\Core\Utility\GeneralUtility::milliseconds()'
+ * So use \TYPO3\CMS\Core\Utility\GeneralUtility::[method-name] to refer to the functions, eg. '\TYPO3\CMS\Core\Utility\GeneralUtility::_GP()'
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
@@ -995,10 +995,11 @@ class GeneralUtility {
 	 *
 	 * @param string $microtime Microtime
 	 * @return integer Microtime input string converted to an integer (milliseconds)
+	 * @deprecated since 6.2, will be removed two versions later, use DateTimeUtility::convertMicrotime
 	 */
 	static public function convertMicrotime($microtime) {
-		$parts = explode(' ', $microtime);
-		return round(($parts[0] + $parts[1]) * 1000);
+		static::logDeprecatedFunction();
+		return DateTimeUtility::convertMicrotime($microtime);
 	}
 
 	/**
@@ -3597,9 +3598,11 @@ Connection: close
 	 * Gets the unixtime as milliseconds.
 	 *
 	 * @return integer The unixtime as milliseconds
+	 * @deprecated since 6.2, will be removed two versions later, use DateTimeUtility::milliseconds
 	 */
 	static public function milliseconds() {
-		return round(microtime(TRUE) * 1000);
+		static::logDeprecatedFunction();
+		return DateTimeUtility::milliseconds();
 	}
 
 	/**
