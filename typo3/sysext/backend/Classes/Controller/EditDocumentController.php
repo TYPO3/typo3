@@ -998,7 +998,15 @@ class EditDocumentController {
 								)
 							)
 						) . '; return false;';
-					$buttons['undo'] = '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '"' . ' title="' . htmlspecialchars(sprintf($GLOBALS['LANG']->getLL('undoLastChange'), BackendUtility::calcAge(($GLOBALS['EXEC_TIME'] - $undoButtonR['tstamp']), $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.minutesHoursDaysYears')))) . '">' . IconUtility::getSpriteIcon('actions-edit-undo') . '</a>';
+					// Undo button
+					$buttons['undo'] = '<a href="#"
+						onclick="' . htmlspecialchars($aOnClick) . '"
+						title="' . htmlspecialchars(
+							sprintf(
+								$GLOBALS['LANG']->getLL('undoLastChange'),
+								\TYPO3\CMS\Core\Utility\DateTimeUtility::getAgeStringUnix($undoButtonR['tstamp'])
+							)
+						) . '">' . IconUtility::getSpriteIcon('actions-edit-undo') . '</a>';
 				}
 				if ($this->getNewIconMode($this->firstEl['table'], 'showHistory')) {
 					$aOnClick = 'window.location.href=' .

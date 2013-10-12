@@ -726,9 +726,12 @@ function jumpToUrl(URL) {
 	 */
 	public function parseTime() {
 		if ($this->parseTimeFlag && $GLOBALS['BE_USER']->isAdmin()) {
-			return '<p>(ParseTime: ' . (GeneralUtility::milliseconds() - $GLOBALS['PARSETIME_START']) . ' ms</p>
-					<p>REQUEST_URI-length: ' . strlen(GeneralUtility::getIndpEnv('REQUEST_URI')) . ')</p>';
+			return '<p>(ParseTime: ' .
+				(\TYPO3\CMS\Core\Utility\DateTimeUtility::milliseconds() - $GLOBALS['PARSETIME_START']) . ' ms</p>' .
+				'<p>REQUEST_URI-length: ' . strlen(GeneralUtility::getIndpEnv('REQUEST_URI')) . ')</p>';
 		}
+
+		return '';
 	}
 
 	/**

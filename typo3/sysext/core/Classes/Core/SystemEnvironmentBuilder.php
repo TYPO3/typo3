@@ -193,6 +193,7 @@ class SystemEnvironmentBuilder {
 	 */
 	static protected function requireBaseClasses() {
 		require_once __DIR__ . '/../Utility/GeneralUtility.php';
+		require_once __DIR__ . '/../Utility/DateTimeUtility.php';
 		require_once __DIR__ . '/../Utility/ArrayUtility.php';
 		require_once __DIR__ . '/../Utility/PathUtility.php';
 		require_once __DIR__ . '/../SingletonInterface.php';
@@ -267,7 +268,7 @@ class SystemEnvironmentBuilder {
 	 */
 	static protected function initializeGlobalTimeTrackingVariables() {
 		// Set PARSETIME_START to the system time in milliseconds.
-		$GLOBALS['PARSETIME_START'] = \TYPO3\CMS\Core\Utility\GeneralUtility::milliseconds();
+		$GLOBALS['PARSETIME_START'] = \TYPO3\CMS\Core\Utility\DateTimeUtility::milliseconds();
 		// Microtime of (nearly) script start
 		$GLOBALS['TYPO3_MISC']['microtime_start'] = microtime(TRUE);
 		// EXEC_TIME is set so that the rest of the script has a common value for the script execution time
