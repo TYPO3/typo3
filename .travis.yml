@@ -12,7 +12,7 @@ services:
 
 before_script:
 # Install build dependencies
-  - git clone --single-branch --branch master --depth 1 git://github.com/typo3-ci/TYPO3-Travis-Integration.git build-environment
+  - git clone --single-branch --branch TYPO3_6-1 --depth 1 git://github.com/typo3-ci/TYPO3-Travis-Integration.git build-environment
   - source build-environment/install-helper.sh
   - installPhpModule igbinary
   - installPhpModule -y memcache
