@@ -80,7 +80,7 @@ class SaltFactory {
 	 *
 	 * @param string $saltedHash (optional) Salted hashed password to determine the type of used method from or NULL to reset the factory
 	 * @param string $mode (optional) The TYPO3 mode (FE or BE) saltedpasswords shall be used for
-	 * @return \TYPO3\CMS\Saltedpasswords\Salt\AbstractSalt An instance of salting hashing method object
+	 * @return \TYPO3\CMS\Saltedpasswords\Salt\SaltInterface An instance of salting hashing method object
 	 */
 	static public function getSaltingInstance($saltedHash = '', $mode = TYPO3_MODE) {
 		// Creating new instance when
