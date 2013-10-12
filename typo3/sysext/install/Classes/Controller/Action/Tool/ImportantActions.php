@@ -79,6 +79,7 @@ class ImportantActions extends Action\AbstractAction implements Action\ActionInt
 			: FALSE;
 
 		$this->view
+			->assign('enableCoreUpdate', $this->isCoreUpdateEnabled())
 			->assign('operatingSystem', $operatingSystem)
 			->assign('cgiDetected', $cgiDetected)
 			->assign('databaseName', $GLOBALS['TYPO3_CONF_VARS']['DB']['database'])
@@ -90,6 +91,15 @@ class ImportantActions extends Action\AbstractAction implements Action\ActionInt
 			->assign('extensionCompatibilityTesterProtocolFile', GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . 'typo3temp/ExtensionCompatibilityTester.txt');
 
 		return $this->view->render();
+	}
+
+	/**
+	 * Check if this installation wants to enable the core updater
+	 *
+	 * @return boolean
+	 */
+	protected function isCoreUpdateEnabled() {
+		return (getenv('TYPO3_DISABLE_CORE_UPDATER') !== '1');
 	}
 
 	/**

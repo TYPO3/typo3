@@ -4,28 +4,45 @@
 	The install tool can automatically update the TYPO3 CMS core to its latest
 	minor release if certain criteria are met.
 </p>
+
 <div id="coreUpdate">
-	<div id="messageTemplate">
-		<div class="typo3-message">
-			<div class="header-container">
-				<div class="message-header">
-					<strong></strong>
+	<f:if condition="{enableCoreUpdate}">
+		<f:then>
+			<div id="messageTemplate">
+				<div class="typo3-message">
+					<div class="header-container">
+						<div class="message-header">
+							<strong></strong>
+						</div>
+					</div>
+					<div class="message-body">
+					</div>
+				</div>
+				<p></p>
+			</div>
+			<div id="buttonTemplate">
+				<fieldset class="t3-install-form-submit">
+					<ol>
+						<li>
+							<button class="btn" type="submit" name="coreUpdateCheckForUpdate" data-action="checkForUpdate">
+								Check for core updates
+							</button>
+						</li>
+					</ol>
+				</fieldset>
+			</div>
+		</f:then>
+		<f:else>
+			<div class="typo3-message message-notice">
+				<div class="header-container">
+					<div class="message-header">
+						<strong>Disabled</strong>
+					</div>
+				</div>
+				<div class="message-body">
+					This feature is disabled in this installation (through the environment variable <code>TYPO3_DISABLE_CORE_UPDATER=1</code>)
 				</div>
 			</div>
-			<div class="message-body">
-			</div>
-		</div>
-		<p></p>
-	</div>
-	<div id="buttonTemplate">
-		<fieldset class="t3-install-form-submit">
-			<ol>
-				<li>
-					<button class="btn" type="submit" name="coreUpdateCheckForUpdate" data-action="checkForUpdate">
-						Check for core updates
-					</button>
-				</li>
-			</ol>
-		</fieldset>
-	</div>
+		</f:else>
+	</f:if>
 </div>
