@@ -547,6 +547,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 	 */
 	protected function editTask() {
 		$registeredClasses = self::getRegisteredClasses();
+		$registeredTaskGroups = self::getRegisteredTaskGroups();
 		$content = '';
 		$taskInfo = array();
 		$task = NULL;
@@ -566,6 +567,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 				// Set some task information
 				$taskInfo['disable'] = $taskRecord['disable'];
 				$taskInfo['description'] = $taskRecord['description'];
+				$taskInfo['task_group'] = $taskRecord['task_group'];
 				// Check that the task object is valid
 				if ($this->scheduler->isValidTaskObject($task)) {
 					// The task object is valid, process with fetching current data
@@ -726,6 +728,26 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 			'0' => array('<td class="td-label">', '</td>')
 		);
 		$tr++;
+		// Task group selector
+		$label = '<label for="task_group">' . $GLOBALS['LANG']->getLL('label.group') . '</label>';
+		$table[$tr][] = BackendUtility::wrapInHelp($this->cshKey, 'task_group', $label);
+		$cell = '<select name="tx_scheduler[task_group]" id="task_class" class="wide">';
+		// Loop on all groups to display a selector
+		$cell .= '<option value="0" title=""></option>';
+		foreach ($registeredTaskGroups as $taskGroup) {
+			$selected = $taskGroup['uid'] == $taskInfo['task_group'] ? ' selected="selected"' : '';
+			$cell .= '<option value="' . $taskGroup['uid'] . '"' . 'title="';
+			$cell .= htmlspecialchars($taskGroup['groupName']) . '"' . $selected . '>';
+			$cell .= htmlspecialchars($taskGroup['groupName']) . '</option>';
+		}
+		$cell .= '</select>';
+		$table[$tr][] = $cell;
+		$tableLayout[$tr] = array(
+			'tr' => array('<tr id="task_group_row">', '</tr>'),
+			'defCol' => $defaultCell,
+			'0' => array('<td class="td-label">', '</td>')
+		);
+		$tr++;
 		// Start date/time field
 		// NOTE: datetime fields need a special id naming scheme
 		$label = '<label for="tceforms-datetimefield-task_start">' . $GLOBALS['LANG']->getLL('label.start') . '</label>';
@@ -876,15 +898,25 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 		$content = '';
 		// Get list of registered classes
 		$registeredClasses = self::getRegisteredClasses();
+		// Get list of registered task groups
+		$registeredTaskGroups = self::getRegisteredTaskGroups();
+
+		// add an empty entry for non-grouped tasks
+		// add in front of list
+		array_unshift($registeredTaskGroups, array('uid' => 0, 'groupName' => ''));
+
 		// Get all registered tasks
+		// Just to get the number of entries
 		$query = array(
 			'SELECT' => '*',
 			'FROM' => 'tx_scheduler_task',
 			'WHERE' => '1=1',
-			'ORDERBY' => 'nextexecution'
+			'ORDERBY' => ''
 		);
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECT_queryArray($query);
 		$numRows = $GLOBALS['TYPO3_DB']->sql_num_rows($res);
+		$GLOBALS['TYPO3_DB']->sql_free_result($res);
+
 		// No tasks defined, display information message
 		if ($numRows == 0) {
 			/** @var $flashMessage \TYPO3\CMS\Core\Messaging\FlashMessage */
@@ -928,6 +960,11 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 				'2' => array('<td class="right">', '</td>'),
 				'3' => array('<td colspan="6">', '</td>')
 			);
+			$taskGroupRow = array(
+				'tr' => array('<tr class="db_list_normal">', '</tr>'),
+				'defCol' => array('<td>', '</td>'),
+				'0' => array('<td colspan="10">', '</td>')
+			);
 			$table = array();
 			$tr = 0;
 			// Header row
@@ -941,158 +978,188 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 			$table[$tr][] = $GLOBALS['LANG']->getLL('label.lastExecution');
 			$table[$tr][] = $GLOBALS['LANG']->getLL('label.nextExecution');
 			$tr++;
-			// Loop on all tasks
-			while ($schedulerRecord = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-				// Define action icons
-				$editAction = '<a href="' . $GLOBALS['MCONF']['_'] . '&CMD=edit&tx_scheduler[uid]=' . $schedulerRecord['uid'] . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xlf:edit', TRUE) . '" class="icon">' . IconUtility::getSpriteIcon('actions-document-open') . '</a>';
-				$deleteAction = '<a href="' . $GLOBALS['MCONF']['_'] . '&CMD=delete&tx_scheduler[uid]=' . $schedulerRecord['uid'] . '" onclick="return confirm(\'' . $GLOBALS['LANG']->getLL('msg.delete') . '\');" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xlf:delete', TRUE) . '" class="icon">' . IconUtility::getSpriteIcon('actions-edit-delete') . '</a>';
-				$stopAction = '<a href="' . $GLOBALS['MCONF']['_'] . '&CMD=stop&tx_scheduler[uid]=' . $schedulerRecord['uid'] . '" onclick="return confirm(\'' . $GLOBALS['LANG']->getLL('msg.stop') . '\');" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xlf:stop', TRUE) . '" class="icon"><img ' . IconUtility::skinImg($this->backPath, (ExtensionManagementUtility::extRelPath('scheduler') . '/res/gfx/stop.png')) . ' alt="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xlf:stop') . '" /></a>';
-				$runAction = '<a href="' . $GLOBALS['MCONF']['_'] . '&tx_scheduler[execute][]=' . $schedulerRecord['uid'] . '" title="' . $GLOBALS['LANG']->getLL('action.run_task') . '" class="icon">' . IconUtility::getSpriteIcon('extensions-scheduler-run-task') . '</a>';
-				// Define some default values
-				$lastExecution = '-';
-				$isRunning = FALSE;
-				$executionStatus = 'scheduled';
-				$executionStatusOutput = '';
-				$name = '';
-				$nextDate = '-';
-				$execType = '-';
-				$frequency = '-';
-				$multiple = '-';
-				$startExecutionElement = '&nbsp;';
-				// Restore the serialized task and pass it a reference to the scheduler object
-				/** @var $task \TYPO3\CMS\Scheduler\Task\AbstractTask|\TYPO3\CMS\Scheduler\ProgressProviderInterface */
-				$task = unserialize($schedulerRecord['serialized_task_object']);
-				$class = get_class($task);
-				if ($class === '__PHP_Incomplete_Class' && preg_match('/^O:[0-9]+:"(?P<classname>.+?)"/', $schedulerRecord['serialized_task_object'], $matches) === 1) {
-					$class = $matches['classname'];
+
+			foreach ($registeredTaskGroups as $taskGroup) {
+				$query = array(
+					'SELECT' => '*',
+					'FROM' => 'tx_scheduler_task',
+					'WHERE' => 'task_group=' . $taskGroup['uid'],
+					'ORDERBY' => 'nextexecution'
+				);
+
+				$res = $GLOBALS['TYPO3_DB']->exec_SELECT_queryArray($query);
+				$numRows = $GLOBALS['TYPO3_DB']->sql_num_rows($res);
+
+				if ($numRows === 0) {
+					continue;
 				}
-				// Assemble information about last execution
-				$context = '';
-				if (!empty($schedulerRecord['lastexecution_time'])) {
-					$lastExecution = date($dateFormat, $schedulerRecord['lastexecution_time']);
-					if ($schedulerRecord['lastexecution_context'] == 'CLI') {
-						$context = $GLOBALS['LANG']->getLL('label.cron');
-					} else {
-						$context = $GLOBALS['LANG']->getLL('label.manual');
+
+				if ($taskGroup['groupName'] !== '') {
+					$tableLayout[$tr] = $taskGroupRow;
+					$groupText = '<strong>' . htmlspecialchars($taskGroup['groupName']) . '</strong>';
+					if (!empty($taskGroup['description'])) {
+						$groupText .= '<br />' . nl2br(htmlspecialchars($taskGroup['description']));
 					}
-					$lastExecution .= ' (' . $context . ')';
+					$table[$tr][] = $groupText;
+					$tr++;
 				}
-				if ($this->scheduler->isValidTaskObject($task)) {
-					// The task object is valid
-					$name = htmlspecialchars($registeredClasses[$class]['title'] . ' (' . $registeredClasses[$class]['extension'] . ')');
-					$additionalInformation = $task->getAdditionalInformation();
-					if ($task instanceof \TYPO3\CMS\Scheduler\ProgressProviderInterface) {
-						$progress = round(floatval($task->getProgress()), 2);
-						$name .= '<br />' . $this->renderTaskProgressBar($progress);
+
+				// Loop on all tasks
+				while ($schedulerRecord = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+					// Define action icons
+					$editAction = '<a href="' . $GLOBALS['MCONF']['_'] . '&CMD=edit&tx_scheduler[uid]=' . $schedulerRecord['uid'] . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xlf:edit', TRUE) . '" class="icon">' . IconUtility::getSpriteIcon('actions-document-open') . '</a>';
+					$deleteAction = '<a href="' . $GLOBALS['MCONF']['_'] . '&CMD=delete&tx_scheduler[uid]=' . $schedulerRecord['uid'] . '" onclick="return confirm(\'' . $GLOBALS['LANG']->getLL('msg.delete') . '\');" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xlf:delete', TRUE) . '" class="icon">' . IconUtility::getSpriteIcon('actions-edit-delete') . '</a>';
+					$stopAction = '<a href="' . $GLOBALS['MCONF']['_'] . '&CMD=stop&tx_scheduler[uid]=' . $schedulerRecord['uid'] . '" onclick="return confirm(\'' . $GLOBALS['LANG']->getLL('msg.stop') . '\');" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xlf:stop', TRUE) . '" class="icon"><img ' . IconUtility::skinImg($this->backPath, (ExtensionManagementUtility::extRelPath('scheduler') . '/res/gfx/stop.png')) . ' alt="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xlf:stop') . '" /></a>';
+					$runAction = '<a href="' . $GLOBALS['MCONF']['_'] . '&tx_scheduler[execute][]=' . $schedulerRecord['uid'] . '" title="' . $GLOBALS['LANG']->getLL('action.run_task') . '" class="icon">' . IconUtility::getSpriteIcon('extensions-scheduler-run-task') . '</a>';
+					// Define some default values
+					$lastExecution = '-';
+					$isRunning = FALSE;
+					$executionStatus = 'scheduled';
+					$executionStatusOutput = '';
+					$name = '';
+					$nextDate = '-';
+					$execType = '-';
+					$frequency = '-';
+					$multiple = '-';
+					$startExecutionElement = '&nbsp;';
+					// Restore the serialized task and pass it a reference to the scheduler object
+					/** @var $task \TYPO3\CMS\Scheduler\Task\AbstractTask|\TYPO3\CMS\Scheduler\ProgressProviderInterface */
+					$task = unserialize($schedulerRecord['serialized_task_object']);
+					$class = get_class($task);
+					if ($class === '__PHP_Incomplete_Class' && preg_match('/^O:[0-9]+:"(?P<classname>.+?)"/', $schedulerRecord['serialized_task_object'], $matches) === 1) {
+						$class = $matches['classname'];
 					}
-					if (!empty($additionalInformation)) {
-						$name .= '<br />[' . htmlspecialchars($additionalInformation) . ']';
-					}
-					// Check if task currently has a running execution
-					if (!empty($schedulerRecord['serialized_executions'])) {
-						$isRunning = TRUE;
-						$executionStatus = 'running';
-					}
-					// Prepare display of next execution date
-					// If task is currently running, date is not displayed (as next hasn't been calculated yet)
-					// Also hide the date if task is disabled (the information doesn't make sense, as it will not run anyway)
-					if ($isRunning || $schedulerRecord['disable'] == 1) {
-						$nextDate = '-';
-					} else {
-						$nextDate = date($dateFormat, $schedulerRecord['nextexecution']);
-						if (empty($schedulerRecord['nextexecution'])) {
-							$nextDate = $GLOBALS['LANG']->getLL('none');
-						} elseif ($schedulerRecord['nextexecution'] < $GLOBALS['EXEC_TIME']) {
-							// Next execution is overdue, highlight date
-							$nextDate = '<span class="late" title="' . $GLOBALS['LANG']->getLL('status.legend.scheduled') . '">' . $nextDate . '</span>';
-							$executionStatus = 'late';
-						}
-					}
-					// Get execution type
-					if ($task->getExecution()->getInterval() == 0 && $task->getExecution()->getCronCmd() == '') {
-						$execType = $GLOBALS['LANG']->getLL('label.type.single');
-						$frequency = '-';
-					} else {
-						$execType = $GLOBALS['LANG']->getLL('label.type.recurring');
-						if ($task->getExecution()->getCronCmd() == '') {
-							$frequency = $task->getExecution()->getInterval();
+					// Assemble information about last execution
+					$context = '';
+					if (!empty($schedulerRecord['lastexecution_time'])) {
+						$lastExecution = date($dateFormat, $schedulerRecord['lastexecution_time']);
+						if ($schedulerRecord['lastexecution_context'] == 'CLI') {
+							$context = $GLOBALS['LANG']->getLL('label.cron');
 						} else {
-							$frequency = $task->getExecution()->getCronCmd();
+							$context = $GLOBALS['LANG']->getLL('label.manual');
 						}
-					}
-					// Get multiple executions setting
-					if ($task->getExecution()->getMultiple()) {
-						$multiple = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xlf:yes');
-					} else {
-						$multiple = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xlf:no');
-					}
-					// Define checkbox
-					$startExecutionElement = '<input type="checkbox" name="tx_scheduler[execute][]" value="' . $schedulerRecord['uid'] . '" id="task_' . $schedulerRecord['uid'] . '" class="checkboxes" />';
-
-					$actions = $editAction . $deleteAction;
-
-					// Check the disable status
-					// Row is shown dimmed if task is disabled, unless it is still running
-					if ($schedulerRecord['disable'] == 1 && !$isRunning) {
-						$tableLayout[$tr] = $disabledTaskRow;
-						$executionStatus = 'disabled';
+						$lastExecution .= ' (' . $context . ')';
 					}
 
-					// Show no action links (edit, delete) if task is running
-					if ($isRunning) {
-						$actions = $stopAction;
-					} else {
-						$actions .= $runAction;
-					}
+					if ($this->scheduler->isValidTaskObject($task)) {
+						// The task object is valid
+						$name = htmlspecialchars($registeredClasses[$class]['title'] . ' (' . $registeredClasses[$class]['extension'] . ')');
+						$additionalInformation = $task->getAdditionalInformation();
+						if ($task instanceof \TYPO3\CMS\Scheduler\ProgressProviderInterface) {
+							$progress = round(floatval($task->getProgress()), 2);
+							$name .= '<br />' . $this->renderTaskProgressBar($progress);
+						}
+						if (!empty($additionalInformation)) {
+							$name .= '<br />[' . htmlspecialchars($additionalInformation) . ']';
+						}
+						// Check if task currently has a running execution
+						if (!empty($schedulerRecord['serialized_executions'])) {
+							$isRunning = TRUE;
+							$executionStatus = 'running';
+						}
 
-					// Check if the last run failed
-					$failureOutput = '';
-					if (!empty($schedulerRecord['lastexecution_failure'])) {
-						// Try to get the stored exception object
-						/** @var $exception \Exception */
-						$exception = unserialize($schedulerRecord['lastexecution_failure']);
-						// If the exception could not be unserialized, issue a default error message
-						if ($exception === FALSE || $exception instanceof \__PHP_Incomplete_Class) {
-							$failureDetail = $GLOBALS['LANG']->getLL('msg.executionFailureDefault');
+						// Prepare display of next execution date
+						// If task is currently running, date is not displayed (as next hasn't been calculated yet)
+						// Also hide the date if task is disabled (the information doesn't make sense, as it will not run anyway)
+						if ($isRunning || $schedulerRecord['disable'] == 1) {
+							$nextDate = '-';
 						} else {
-							$failureDetail = sprintf($GLOBALS['LANG']->getLL('msg.executionFailureReport'), $exception->getCode(), $exception->getMessage());
+							$nextDate = date($dateFormat, $schedulerRecord['nextexecution']);
+							if (empty($schedulerRecord['nextexecution'])) {
+								$nextDate = $GLOBALS['LANG']->getLL('none');
+							} elseif ($schedulerRecord['nextexecution'] < $GLOBALS['EXEC_TIME']) {
+								// Next execution is overdue, highlight date
+								$nextDate = '<span class="late" title="' . $GLOBALS['LANG']->getLL('status.legend.scheduled') . '">' . $nextDate . '</span>';
+								$executionStatus = 'late';
+							}
 						}
-						$failureOutput = ' <img ' . IconUtility::skinImg(ExtensionManagementUtility::extRelPath('scheduler'), 'res/gfx/status_failure.png') . ' alt="' . htmlspecialchars($GLOBALS['LANG']->getLL('status.failure')) . '" title="' . htmlspecialchars($failureDetail) . '" />';
-					}
-					// Format the execution status,
-					// including failure feedback, if any
-					$executionStatusOutput = '<img ' . IconUtility::skinImg(ExtensionManagementUtility::extRelPath('scheduler'), ('res/gfx/status_' . $executionStatus . '.png')) . ' id="executionstatus_' . $schedulerRecord['uid'] . '" alt="' . htmlspecialchars($GLOBALS['LANG']->getLL(('status.' . $executionStatus))) . '" title="' . htmlspecialchars($GLOBALS['LANG']->getLL(('status.legend.' . $executionStatus))) . '" />' . $failureOutput;
-					$table[$tr][] = $startExecutionElement;
-					$table[$tr][] = $actions;
-					$table[$tr][] = $schedulerRecord['uid'];
-					$table[$tr][] = $executionStatusOutput;
-					if ($schedulerRecord['description'] !== '') {
-						if (!empty($this->scheduler->extConf['listShowTaskDescriptionAsHover'])) {
-							$table[$tr][] = '<span title="' . htmlspecialchars($schedulerRecord['description']) . '">' . $name . '</span>';
+						// Get execution type
+						if ($task->getExecution()->getInterval() == 0 && $task->getExecution()->getCronCmd() == '') {
+							$execType = $GLOBALS['LANG']->getLL('label.type.single');
+							$frequency = '-';
 						} else {
-							$table[$tr][] = $name . '<br />' . nl2br(htmlspecialchars($schedulerRecord['description'])) . '<br />';
+							$execType = $GLOBALS['LANG']->getLL('label.type.recurring');
+							if ($task->getExecution()->getCronCmd() == '') {
+								$frequency = $task->getExecution()->getInterval();
+							} else {
+								$frequency = $task->getExecution()->getCronCmd();
+							}
 						}
+						// Get multiple executions setting
+						if ($task->getExecution()->getMultiple()) {
+							$multiple = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xlf:yes');
+						} else {
+							$multiple = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xlf:no');
+						}
+						// Define checkbox
+						$startExecutionElement = '<input type="checkbox" name="tx_scheduler[execute][]" value="' . $schedulerRecord['uid'] . '" id="task_' . $schedulerRecord['uid'] . '" class="checkboxes" />';
+
+						$actions = $editAction . $deleteAction;
+
+						// Check the disable status
+						// Row is shown dimmed if task is disabled, unless it is still running
+						if ($schedulerRecord['disable'] == 1 && !$isRunning) {
+							$tableLayout[$tr] = $disabledTaskRow;
+							$executionStatus = 'disabled';
+						}
+
+						// Show no action links (edit, delete) if task is running
+						if ($isRunning) {
+							$actions = $stopAction;
+						} else {
+							$actions .= $runAction;
+						}
+
+						// Check if the last run failed
+						$failureOutput = '';
+						if (!empty($schedulerRecord['lastexecution_failure'])) {
+							// Try to get the stored exception object
+							/** @var $exception \Exception */
+							$exception = unserialize($schedulerRecord['lastexecution_failure']);
+							// If the exception could not be unserialized, issue a default error message
+							if ($exception === FALSE || $exception instanceof \__PHP_Incomplete_Class) {
+								$failureDetail = $GLOBALS['LANG']->getLL('msg.executionFailureDefault');
+							} else {
+								$failureDetail = sprintf($GLOBALS['LANG']->getLL('msg.executionFailureReport'), $exception->getCode(), $exception->getMessage());
+							}
+							$failureOutput = ' <img ' . IconUtility::skinImg(ExtensionManagementUtility::extRelPath('scheduler'), 'res/gfx/status_failure.png') . ' alt="' . htmlspecialchars($GLOBALS['LANG']->getLL('status.failure')) . '" title="' . htmlspecialchars($failureDetail) . '" />';
+						}
+						// Format the execution status,
+						// including failure feedback, if any
+						$executionStatusOutput = '<img ' . IconUtility::skinImg(ExtensionManagementUtility::extRelPath('scheduler'), ('res/gfx/status_' . $executionStatus . '.png')) . ' id="executionstatus_' . $schedulerRecord['uid'] . '" alt="' . htmlspecialchars($GLOBALS['LANG']->getLL(('status.' . $executionStatus))) . '" title="' . htmlspecialchars($GLOBALS['LANG']->getLL(('status.legend.' . $executionStatus))) . '" />' . $failureOutput;
+						$table[$tr][] = $startExecutionElement;
+						$table[$tr][] = $actions;
+						$table[$tr][] = $schedulerRecord['uid'];
+						$table[$tr][] = $executionStatusOutput;
+						if ($schedulerRecord['description'] !== '') {
+							if (!empty($this->scheduler->extConf['listShowTaskDescriptionAsHover'])) {
+								$table[$tr][] = '<span title="' . htmlspecialchars($schedulerRecord['description']) . '">' . $name . '</span>';
+							} else {
+								$table[$tr][] = $name . '<br />' . nl2br(htmlspecialchars($schedulerRecord['description'])) . '<br />';
+							}
+						} else {
+							$table[$tr][] = $name;
+						}
+						$table[$tr][] = $execType;
+						$table[$tr][] = $frequency;
+						$table[$tr][] = $multiple;
+						$table[$tr][] = $lastExecution;
+						$table[$tr][] = $nextDate;
 					} else {
-						$table[$tr][] = $name;
+						// The task object is not valid
+						// Prepare to issue an error
+						/** @var $flashMessage \TYPO3\CMS\Core\Messaging\FlashMessage */
+						$flashMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', sprintf($GLOBALS['LANG']->getLL('msg.invalidTaskClass'), $class), '', \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+						$executionStatusOutput = $flashMessage->render();
+						$tableLayout[$tr] = $rowWithSpan;
+						$table[$tr][] = $startExecutionElement;
+						$table[$tr][] = $deleteAction;
+						$table[$tr][] = $schedulerRecord['uid'];
+						$table[$tr][] = $executionStatusOutput;
 					}
-					$table[$tr][] = $execType;
-					$table[$tr][] = $frequency;
-					$table[$tr][] = $multiple;
-					$table[$tr][] = $lastExecution;
-					$table[$tr][] = $nextDate;
-				} else {
-					// The task object is not valid
-					// Prepare to issue an error
-					/** @var $flashMessage \TYPO3\CMS\Core\Messaging\FlashMessage */
-					$flashMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', sprintf($GLOBALS['LANG']->getLL('msg.invalidTaskClass'), $class), '', \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
-					$executionStatusOutput = $flashMessage->render();
-					$tableLayout[$tr] = $rowWithSpan;
-					$table[$tr][] = $startExecutionElement;
-					$table[$tr][] = $deleteAction;
-					$table[$tr][] = $schedulerRecord['uid'];
-					$table[$tr][] = $executionStatusOutput;
+					$tr++;
 				}
-				$tr++;
+				$GLOBALS['TYPO3_DB']->sql_free_result($res);
 			}
 			// Render table
 			$content .= $this->doc->table($table, $tableLayout);
@@ -1117,7 +1184,6 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 			</ul>';
 			$content .= $this->displayServerTime();
 		}
-		$GLOBALS['TYPO3_DB']->sql_free_result($res);
 		return $content;
 	}
 
@@ -1159,6 +1225,8 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 			$task->setDisabled($this->submittedData['disable']);
 			// Set description
 			$task->setDescription($this->submittedData['description']);
+			// Set task group
+			$task->setTaskGroup($this->submittedData['task_group']);
 			// Save additional input values
 			if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][$this->submittedData['class']]['additionalFields'])) {
 				/** @var $providerObject \TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface */
@@ -1198,6 +1266,8 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 			$task->setDisabled($this->submittedData['disable']);
 			// Set description
 			$task->setDescription($this->submittedData['description']);
+			// Set description
+			$task->setTaskGroup($this->submittedData['task_group']);
 			// Add to database
 			$result = $this->scheduler->addTask($task);
 			if ($result) {
@@ -1363,7 +1433,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 	}
 
 	/**
-	 * This method a list of all classes that have been registered with the Scheduler
+	 * This method fetches a list of all classes that have been registered with the Scheduler
 	 * For each item the following information is provided, as an associative array:
 	 *
 	 * ['extension']	=>	Key of the extension which provides the class
@@ -1389,6 +1459,31 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 				);
 			}
 		}
+		return $list;
+	}
+
+	/**
+	 * This method fetches list of all group that have been registered with the Scheduler
+	 *
+	 * @return array List of registered groups
+	 */
+	static protected function getRegisteredTaskGroups() {
+		$list = array();
+
+		// Get all registered task groups
+		$query = array(
+			'SELECT' => '*',
+			'FROM' => 'tx_scheduler_task_group',
+			'WHERE' => '1=1' . \TYPO3\CMS\Backend\Utility\BackendUtility::BEenableFields('tx_scheduler_task_group'),
+			'ORDERBY' => 'sorting'
+		);
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECT_queryArray($query);
+
+		while (($groupRecord = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) !== FALSE) {
+			$list[] = $groupRecord;
+		}
+		$GLOBALS['TYPO3_DB']->sql_free_result($res);
+
 		return $list;
 	}
 

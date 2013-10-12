@@ -70,6 +70,7 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface {
 				'crdate' => $GLOBALS['EXEC_TIME'],
 				'disable' => $task->isDisabled(),
 				'description' => $task->getDescription(),
+				'task_group' => $task->getTaskGroup(),
 				'serialized_task_object' => 'RESERVED'
 			);
 			$result = $GLOBALS['TYPO3_DB']->exec_INSERTquery('tx_scheduler_task', $fields);
@@ -235,6 +236,7 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface {
 				'nextexecution' => $executionTime,
 				'disable' => $task->isDisabled(),
 				'description' => $task->getDescription(),
+				'task_group' => $task->getTaskGroup(),
 				'serialized_task_object' => serialize($task)
 			);
 			$result = $GLOBALS['TYPO3_DB']->exec_UPDATEquery('tx_scheduler_task', 'uid = ' . $taskUid, $fields);
@@ -259,16 +261,21 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface {
 		// Define where clause
 		// If no uid is given, take any non-disabled task which has a next execution time in the past
 		if (empty($uid)) {
-			$whereClause = 'disable = 0 AND nextexecution != 0 AND nextexecution <= ' . $GLOBALS['EXEC_TIME'];
+			$queryArray = array(
+				'SELECT' => 'tx_scheduler_task.uid AS uid, serialized_task_object',
+				'FROM' => 'tx_scheduler_task LEFT JOIN tx_scheduler_task_group ON (tx_scheduler_task.task_group = tx_scheduler_task_group.uid)',
+				'WHERE' => 'disable = 0 AND nextexecution != 0 AND nextexecution <= ' . $GLOBALS['EXEC_TIME'] . ' AND (tx_scheduler_task_group.hidden = 0 OR tx_scheduler_task_group.hidden IS NULL)',
+				'LIMIT' => 1
+			);
 		} else {
-			$whereClause = 'uid = ' . intval($uid);
+			$queryArray = array(
+				'SELECT' => 'uid, serialized_task_object',
+				'FROM' => 'tx_scheduler_task',
+				'WHERE' => 'uid = ' . intval($uid),
+				'LIMIT' => 1
+			);
 		}
-		$queryArray = array(
-			'SELECT' => 'uid, serialized_task_object',
-			'FROM' => 'tx_scheduler_task',
-			'WHERE' => $whereClause,
-			'LIMIT' => 1
-		);
+
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECT_queryArray($queryArray);
 		// If there are no available tasks, thrown an exception
 		if ($GLOBALS['TYPO3_DB']->sql_num_rows($res) == 0) {

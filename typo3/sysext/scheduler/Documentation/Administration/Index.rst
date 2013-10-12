@@ -25,6 +25,7 @@ one for actually managing the tasks.
    BackendModule/Index
    EditTask/Index
    DeleteTask/Index
+   GroupTask/Index
    StopTask/Index
    ManualExecution/Index
 

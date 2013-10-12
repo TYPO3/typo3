@@ -43,14 +43,14 @@ abstract class AbstractTask {
 	/**
 	 * The unique id of the task used to identify it in the database
 	 *
-	 * @var int
+	 * @var integer
 	 */
 	protected $taskUid;
 
 	/**
 	 * Disable flag, TRUE if task is disabled, FALSE otherwise
 	 *
-	 * @var 	boolean
+	 * @var boolean
 	 */
 	protected $disabled = FALSE;
 
@@ -74,6 +74,13 @@ abstract class AbstractTask {
 	 * @var string
 	 */
 	protected $description = '';
+
+	/**
+	 * Task group for this task
+	 *
+	 * @var integer
+	 */
+	protected $taskGroup;
 
 	/**
 	 * Constructor
@@ -183,6 +190,25 @@ abstract class AbstractTask {
 	 */
 	public function setExecutionTime($timestamp) {
 		$this->executionTime = intval($timestamp);
+	}
+
+	/**
+	 * This method returns the task group (uid) of the task
+	 *
+	 * @return integer Uid of task group
+	 */
+	public function getTaskGroup() {
+		return $this->taskGroup;
+	}
+
+	/**
+	 * This method is used to set the task group (uid) of the task
+	 *
+	 * @param integer $timestamp Uid of task group
+	 * @return void
+	 */
+	public function setTaskGroup($taskGroup) {
+		$this->taskGroup = intval($taskGroup);
 	}
 
 	/**

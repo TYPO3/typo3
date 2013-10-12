@@ -135,6 +135,9 @@
 			<trans-unit id="label.type.single" xml:space="preserve">
 				<source>Single</source>
 			</trans-unit>
+			<trans-unit id="label.group" xml:space="preserve">
+				<source>Task group</source>
+			</trans-unit>
 			<trans-unit id="msg.addError" xml:space="preserve">
 				<source>The task could not be added.</source>
 			</trans-unit>
