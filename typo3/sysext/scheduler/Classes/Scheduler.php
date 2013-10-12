@@ -69,6 +69,7 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface {
 			$fields = array(
 				'crdate' => $GLOBALS['EXEC_TIME'],
 				'disable' => $task->isDisabled(),
+				'description' => $task->getDescription(),
 				'serialized_task_object' => 'RESERVED'
 			);
 			$result = $GLOBALS['TYPO3_DB']->exec_INSERTquery('tx_scheduler_task', $fields);
