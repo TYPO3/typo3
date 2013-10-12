@@ -1541,7 +1541,7 @@ class DataHandler {
 		if (!$itemC) {
 			$itemC = 1;
 		}
-		$maxV = pow(2, $itemC);
+		$maxV = pow(2, $itemC) - 1;
 		if ($value < 0) {
 			$value = 0;
 		}
