@@ -24,12 +24,10 @@ namespace TYPO3\CMS\Install\Controller\Action\Step;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use TYPO3\CMS\Install\Controller\Action;
-
 /**
  * Populate base tables, insert admin user, set install tool password
  */
-class DatabaseData extends Action\AbstractAction implements StepInterface {
+class DatabaseData extends AbstractStepAction {
 
 	/**
 	 * Import tables and data, create admin user, create install tool password
@@ -98,12 +96,11 @@ class DatabaseData extends Action\AbstractAction implements StepInterface {
 	}
 
 	/**
-	 * Render this step
+	 * Executes the step
 	 *
-	 * @return string
+	 * @return string Rendered content
 	 */
-	public function handle() {
-		$this->initializeHandle();
+	protected function executeAction() {
 		return $this->view->render();
 	}
 

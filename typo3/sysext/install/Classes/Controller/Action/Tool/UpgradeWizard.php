@@ -30,7 +30,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Handle update wizards
  */
-class UpgradeWizard extends Action\AbstractAction implements Action\ActionInterface {
+class UpgradeWizard extends Action\AbstractAction {
 
 	/**
 	 * There are tables and fields missing in the database
@@ -40,13 +40,11 @@ class UpgradeWizard extends Action\AbstractAction implements Action\ActionInterf
 	protected $needsInitialUpdateDatabaseSchema = FALSE;
 
 	/**
-	 * Handle this action
+	 * Executes the tool
 	 *
-	 * @return string content
+	 * @return string Rendered content
 	 */
-	public function handle() {
-		$this->initializeHandle();
-
+	protected function executeAction() {
 		// ext_localconf, db and ext_tables must be loaded for the upgrade wizards
 		$this->loadExtLocalconfDatabaseAndExtTables();
 

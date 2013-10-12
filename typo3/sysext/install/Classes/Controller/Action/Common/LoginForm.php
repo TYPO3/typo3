@@ -29,15 +29,14 @@ use TYPO3\CMS\Install\Controller\Action;
 /**
  * Show login form
  */
-class LoginForm extends Action\AbstractAction implements Action\ActionInterface {
+class LoginForm extends Action\AbstractAction {
 
 	/**
-	 * Handle this action
+	 * Executes the action
 	 *
-	 * @return string content
+	 * @return string Rendered content
 	 */
-	public function handle() {
-		$this->initializeHandle();
+	protected function executeAction() {
 		$this->view->assign('messages', $this->messages);
 		return $this->view->render();
 	}

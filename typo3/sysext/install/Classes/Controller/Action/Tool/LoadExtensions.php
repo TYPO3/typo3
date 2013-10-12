@@ -29,15 +29,14 @@ use TYPO3\CMS\Install\Controller\Action;
 /**
  * Welcome page
  */
-class LoadExtensions extends Action\AbstractAction implements Action\ActionInterface {
+class LoadExtensions extends Action\AbstractAction {
 
 	/**
-	 * Handle this action
+	 * Executes the tool
 	 *
-	 * @return string content
+	 * @return string Rendered content
 	 */
-	public function handle() {
-		$this->initializeHandle();
+	protected function executeAction() {
 		$extensionCompatibilityTesterFile = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . 'typo3temp/ExtensionCompatibilityTester.txt';
 		$this->view->assign('extensionCompatibilityTesterProtocolFile', $extensionCompatibilityTesterFile);
 

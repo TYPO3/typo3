@@ -29,16 +29,14 @@ use TYPO3\CMS\Install\Controller\Action;
 /**
  * Show system environment check results
  */
-class SystemEnvironment extends Action\AbstractAction implements Action\ActionInterface {
+class SystemEnvironment extends Action\AbstractAction {
 
 	/**
-	 * Handle this action
+	 * Executes the tool
 	 *
-	 * @return string content
+	 * @return string Rendered content
 	 */
-	public function handle() {
-		$this->initializeHandle();
-
+	protected function executeAction() {
 		/** @var $statusCheck \TYPO3\CMS\Install\SystemEnvironment\Check */
 		$statusCheck = $this->objectManager->get('TYPO3\\CMS\\Install\\SystemEnvironment\\Check');
 		$statusObjects = $statusCheck->getStatus();

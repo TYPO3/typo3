@@ -29,8 +29,7 @@ use TYPO3\CMS\Install\Controller\Action;
 /**
  * Interface implemented by single steps
  */
-interface StepInterface extends Action\ActionInterface {
-
+interface StepInterface {
 	/**
 	 * Execute a step
 	 *

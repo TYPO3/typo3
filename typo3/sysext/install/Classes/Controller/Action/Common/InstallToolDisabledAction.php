@@ -29,15 +29,14 @@ use TYPO3\CMS\Install\Controller\Action;
 /**
  * Welcome page
  */
-class InstallToolDisabledAction extends Action\AbstractAction implements Action\ActionInterface {
+class InstallToolDisabledAction extends Action\AbstractAction {
 
 	/**
-	 * Handle this action
+	 * Executes the action
 	 *
-	 * @return string content
+	 * @return string Rendered content
 	 */
-	public function handle() {
-		$this->initializeHandle();
+	protected function executeAction() {
 		return $this->view->render();
 	}
 }

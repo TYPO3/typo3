@@ -24,7 +24,6 @@ namespace TYPO3\CMS\Install\Controller\Action\Ajax;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use TYPO3\CMS\Install\Controller\Action;
 use TYPO3\CMS\Core\Utility;
 
 /**
@@ -39,26 +38,16 @@ use TYPO3\CMS\Core\Utility;
  * to take care of changed cache configurations due to no longer installed extensions.
  * Use the clearCache ajax action afterwards.
  */
-class UninstallExtension extends Action\AbstractAction implements Action\ActionInterface {
-
-	/**
-	 * Handle this action
-	 *
-	 * @return string content
-	 */
-	public function handle() {
-		$this->initializeHandle();
-		return $this->uninstallExtensions();
-	}
+class UninstallExtension extends AbstractAjaxAction {
 
 	/**
 	 * Uninstall one or multiple extensions
 	 * Extension keys are read from get vars, more than one extension has to be comma separated
 	 * Cache is cleared "hard" after uninstalling
 	 *
-	 * @return string
+	 * @return string "OK"
 	 */
-	public function uninstallExtensions() {
+	protected function executeAction() {
 		$getVars = Utility\GeneralUtility::_GET('install');
 		if (isset($getVars['uninstallExtension']) && isset($getVars['uninstallExtension']['extensions'])) {
 			$extensionsToUninstall = Utility\GeneralUtility::trimExplode(',', $getVars['uninstallExtension']['extensions']);

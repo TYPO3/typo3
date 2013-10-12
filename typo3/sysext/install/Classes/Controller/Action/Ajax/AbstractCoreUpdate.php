@@ -24,13 +24,11 @@ namespace TYPO3\CMS\Install\Controller\Action\Ajax;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use TYPO3\CMS\Install\Controller\Action;
-
 /**
  * Abstract core update class contains general core update
  * related methods
  */
-abstract class AbstractCoreUpdate extends Action\AbstractAction {
+abstract class AbstractCoreUpdate extends AbstractAjaxAction {
 
 	/**
 	 * @var \TYPO3\CMS\Install\View\JsonView
@@ -60,6 +58,7 @@ abstract class AbstractCoreUpdate extends Action\AbstractAction {
 	 * Common stuff to be done before performing update tasks
 	 *
 	 * @return void
+	 * @throws \TYPO3\CMS\Install\Controller\Exception
 	 */
 	protected function initializeCoreUpdate() {
 		if (!$this->coreUpdateService->isCoreUpdateEnabled()) {

@@ -30,7 +30,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Test various system setup settings
  */
-class TestSetup extends Action\AbstractAction implements Action\ActionInterface {
+class TestSetup extends Action\AbstractAction {
 
 	/**
 	 * @var string Absolute path to image folder
@@ -38,13 +38,11 @@ class TestSetup extends Action\AbstractAction implements Action\ActionInterface 
 	protected $imageBasePath = '';
 
 	/**
-	 * Handle this action
+	 * Executes the tool
 	 *
-	 * @return string content
+	 * @return string Rendered content
 	 */
-	public function handle() {
-		$this->initializeHandle();
-
+	protected function executeAction() {
 		$this->imageBasePath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('install') . 'Resources/Public/Images/';
 
 		$actionMessages = array();

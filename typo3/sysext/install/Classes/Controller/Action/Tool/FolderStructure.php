@@ -29,16 +29,14 @@ use TYPO3\CMS\Install\Controller\Action;
 /**
  * Handle folder structure
  */
-class FolderStructure extends Action\AbstractAction implements Action\ActionInterface {
+class FolderStructure extends Action\AbstractAction {
 
 	/**
-	 * Handle this action
+	 * Executes the tool
 	 *
-	 * @return string content
+	 * @return string Rendered content
 	 */
-	public function handle() {
-		$this->initializeHandle();
-
+	protected function executeAction() {
 		/** @var $folderStructureFactory \TYPO3\CMS\Install\FolderStructure\DefaultFactory */
 		$folderStructureFactory = $this->objectManager->get('TYPO3\\CMS\\Install\\FolderStructure\\DefaultFactory');
 		/** @var $structureFacade \TYPO3\CMS\Install\FolderStructure\StructureFacade */

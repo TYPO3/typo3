@@ -24,9 +24,6 @@ namespace TYPO3\CMS\Install\Controller\Action\Ajax;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use TYPO3\CMS\Install\Controller\Action;
-use TYPO3\CMS\Core\Utility;
-
 /**
  * Clear Cache
  *
@@ -35,24 +32,14 @@ use TYPO3\CMS\Core\Utility;
  *
  * @see \TYPO3\CMS\Install\Service\ClearCacheService
  */
-class ClearCache extends Action\AbstractAction implements Action\ActionInterface {
+class ClearCache extends AbstractAjaxAction {
 
 	/**
-	 * Handle this action
+	 * Executes the action
 	 *
-	 * @return string content
+	 * @return string Rendered content
 	 */
-	public function handle() {
-		$this->initializeHandle();
-		return $this->clearCache();
-	}
-
-	/**
-	 * Wraps the cache service
-	 *
-	 * @return string
-	 */
-	protected function clearCache() {
+	protected function executeAction() {
 		/** @var \TYPO3\CMS\Install\Service\ClearCacheService $clearCacheService */
 		$clearCacheService = $this->objectManager->get('TYPO3\\CMS\\Install\\Service\\ClearCacheService');
 		$clearCacheService->clearAll();

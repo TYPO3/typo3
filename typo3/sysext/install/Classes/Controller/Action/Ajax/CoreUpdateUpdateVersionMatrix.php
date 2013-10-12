@@ -24,19 +24,17 @@ namespace TYPO3\CMS\Install\Controller\Action\Ajax;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use TYPO3\CMS\Install\Controller\Action;
-
 /**
  * Update version matrix from get.typo3.org
  */
-class CoreUpdateUpdateVersionMatrix extends AbstractCoreUpdate implements Action\ActionInterface {
+class CoreUpdateUpdateVersionMatrix extends AbstractCoreUpdate {
+
 	/**
-	 * Handle this action
+	 * Executes the action
 	 *
-	 * @return string content
+	 * @return array Rendered content
 	 */
-	public function handle() {
-		$this->initializeCoreUpdate();
+	protected function executeAction() {
 		$this->view->assignMultiple(array(
 				'success' => $this->coreUpdateService->updateVersionMatrix(),
 				'status' => $this->coreUpdateService->getMessages(),

@@ -29,7 +29,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * General purpose controller action helper methods and bootstrap
  */
-abstract class AbstractAction {
+abstract class AbstractAction implements ActionInterface {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Object\ObjectManager
@@ -74,6 +74,16 @@ abstract class AbstractAction {
 	protected $messages = array();
 
 	/**
+	 * Handles the action
+	 *
+	 * @return string Rendered content
+	 */
+	public function handle() {
+		$this->initializeHandle();
+		return $this->executeAction();
+	}
+
+	/**
 	 * Initialize the handle action, sets up fluid stuff and assigns default variables.
 	 *
 	 * @return string content
@@ -115,6 +125,13 @@ abstract class AbstractAction {
 			->assign('environmentErrors', $environmentErrors)
 			->assign('folderStructureErrors', $folderStructureErrors);
 	}
+
+	/**
+	 * Executes the action
+	 *
+	 * @return string|array Rendered content
+	 */
+	abstract protected function executeAction();
 
 	/**
 	 * Set form protection token

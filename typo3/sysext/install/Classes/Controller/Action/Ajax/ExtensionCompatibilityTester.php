@@ -24,7 +24,6 @@ namespace TYPO3\CMS\Install\Controller\Action\Ajax;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use TYPO3\CMS\Install\Controller\Action;
 use TYPO3\CMS\Core\Utility;
 
 /**
@@ -35,7 +34,7 @@ use TYPO3\CMS\Core\Utility;
  * the fatal and initiates another run that will leave out the fataling extension
  * to check the rest.
  */
-class ExtensionCompatibilityTester extends Action\AbstractAction implements Action\ActionInterface {
+class ExtensionCompatibilityTester extends AbstractAjaxAction {
 
 	/**
 	 * Store extension loading protocol
@@ -53,23 +52,13 @@ class ExtensionCompatibilityTester extends Action\AbstractAction implements Acti
 	}
 
 	/**
-	 * Handle this action
-	 *
-	 * @return string content
-	 */
-	public function handle() {
-		$this->initializeHandle();
-		return $this->checkLoadedExtensions();
-	}
-
-	/**
 	 * Main entry point for checking extensions to load,
 	 * setting up the checks (deleting protocol), and returning
 	 * OK if process run through without errors
 	 *
-	 * @return string
+	 * @return string "OK" if process ran through without errors
 	 */
-	protected function checkLoadedExtensions() {
+	protected function executeAction() {
 		$getVars = Utility\GeneralUtility::_GET('install');
 		if (isset($getVars['extensionCompatibilityTester']) && isset($getVars['extensionCompatibilityTester']['forceCheck']) && ($getVars['extensionCompatibilityTester']['forceCheck'] == 1)) {
 			$this->deleteProtocolFile();

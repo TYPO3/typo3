@@ -1,10 +1,10 @@
 <?php
-namespace TYPO3\CMS\Install\Controller\Action\Common;
+namespace TYPO3\CMS\Install\Controller\Action\Ajax;
 
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013 Christian Kuhn <lolli@schwarzbu.ch>
+ *  (c) 2013 Markus Klein <klein.t3@mfc-linz.at>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -24,19 +24,19 @@ namespace TYPO3\CMS\Install\Controller\Action\Common;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use TYPO3\CMS\Install\Controller\Action;
-
 /**
- * Welcome page
+ * General purpose AJAX controller action helper methods and bootstrap
  */
-class InstallToolPasswordNotSetAction extends Action\AbstractAction {
+abstract class AbstractAjaxAction extends \TYPO3\CMS\Install\Controller\Action\AbstractAction {
 
 	/**
-	 * Executes the action
+	 * Handles the action
 	 *
 	 * @return string Rendered content
 	 */
-	protected function executeAction() {
-		return $this->view->render();
+	public function handle() {
+		$this->initializeHandle();
+		return json_encode($this->executeAction());
 	}
+
 }

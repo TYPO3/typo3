@@ -29,7 +29,7 @@ namespace TYPO3\CMS\Install\Controller;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Controller abstract for shared parts of Tool and Step controller
+ * Controller abstract for shared parts of Tool, Step and Ajax controller
  */
 class AbstractController {
 

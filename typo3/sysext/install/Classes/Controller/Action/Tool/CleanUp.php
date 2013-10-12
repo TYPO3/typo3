@@ -30,7 +30,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Clean up page
  */
-class CleanUp extends Action\AbstractAction implements Action\ActionInterface {
+class CleanUp extends Action\AbstractAction {
 
 	/**
 	 * Status messages of submitted actions
@@ -40,13 +40,11 @@ class CleanUp extends Action\AbstractAction implements Action\ActionInterface {
 	protected $actionMessages = array();
 
 	/**
-	 * Handle this action
+	 * Executes the tool
 	 *
-	 * @return string content
+	 * @return string Rendered content
 	 */
-	public function handle() {
-		$this->initializeHandle();
-
+	protected function executeAction() {
 		if (isset($this->postValues['set']['clearTables'])) {
 			$this->actionMessages[] = $this->clearSelectedTables();
 		}

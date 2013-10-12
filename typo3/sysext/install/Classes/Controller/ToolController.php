@@ -186,7 +186,7 @@ class ToolController extends AbstractController {
 		$actionClass = ucfirst($action);
 		/** @var \TYPO3\CMS\Install\Controller\Action\ActionInterface $toolAction */
 		$toolAction = $this->objectManager->get('TYPO3\\CMS\\Install\\Controller\\Action\\Tool\\' . $actionClass);
-		if (!($toolAction instanceof \TYPO3\CMS\Install\Controller\Action\ActionInterface)) {
+		if (!($toolAction instanceof Action\ActionInterface)) {
 			throw new Exception(
 				$action . ' does not implement ActionInterface',
 				1369474309

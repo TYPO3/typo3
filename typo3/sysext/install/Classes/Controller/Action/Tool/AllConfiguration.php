@@ -30,7 +30,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Show system environment check results
  */
-class AllConfiguration extends Action\AbstractAction implements Action\ActionInterface {
+class AllConfiguration extends Action\AbstractAction {
 
 	/**
 	 * Error handlers are a bit mask in PHP. This register hints the View to
@@ -47,13 +47,11 @@ class AllConfiguration extends Action\AbstractAction implements Action\ActionInt
 	);
 
 	/**
-	 * Handle this action
+	 * Executes the tool
 	 *
-	 * @return string content
+	 * @return string Rendered content
 	 */
-	public function handle() {
-		$this->initializeHandle();
-
+	protected function executeAction() {
 		if (isset($this->postValues['set']['write'])) {
 			$this->view->assign('configurationValuesSaved', TRUE);
 			$this->view->assign('savedConfigurationValueMessages', $this->updateLocalConfigurationValues());

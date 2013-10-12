@@ -24,14 +24,13 @@ namespace TYPO3\CMS\Install\Controller\Action\Step;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use TYPO3\CMS\Install\Controller\Action;
 
 /**
  * Database select step.
  * This step is only rendered if database is mysql. With dbal,
  * database name is submitted by previous step already.
  */
-class DatabaseSelect extends Action\AbstractAction implements StepInterface {
+class DatabaseSelect extends AbstractStepAction {
 
 	/**
 	 * @var \TYPO3\CMS\Core\Database\DatabaseConnection
@@ -122,12 +121,11 @@ class DatabaseSelect extends Action\AbstractAction implements StepInterface {
 	}
 
 	/**
-	 * Render this step
+	 * Executes the step
 	 *
-	 * @return string
+	 * @return string Rendered content
 	 */
-	public function handle() {
-		$this->initializeHandle();
+	protected function executeAction() {
 		/** @var $configurationManager \TYPO3\CMS\Core\Configuration\ConfigurationManager */
 		$configurationManager = $this->objectManager->get('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager');
 		$isInitialInstallationInProgress = $configurationManager->getConfigurationValueByPath('SYS/isInitialInstallationInProgress');

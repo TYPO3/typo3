@@ -29,7 +29,7 @@ use TYPO3\CMS\Install\Controller\Action;
 /**
  * Show configuration features and handle presets
  */
-class Configuration extends Action\AbstractAction implements Action\ActionInterface {
+class Configuration extends Action\AbstractAction {
 
 	/**
 	 * @var \TYPO3\CMS\Install\Configuration\FeatureManager
@@ -44,13 +44,11 @@ class Configuration extends Action\AbstractAction implements Action\ActionInterf
 	protected $configurationManager = NULL;
 
 	/**
-	 * Handle this action
+	 * Executes the tool
 	 *
-	 * @return string content
+	 * @return string Rendered content
 	 */
-	public function handle() {
-		$this->initializeHandle();
-
+	protected function executeAction() {
 		$actionMessages = array();
 		if (isset($this->postValues['set']['activate'])) {
 			$actionMessages[] = $this->activate();

@@ -30,16 +30,14 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Handle important actions
  */
-class ImportantActions extends Action\AbstractAction implements Action\ActionInterface {
+class ImportantActions extends Action\AbstractAction {
 
 	/**
-	 * Handle this action
+	 * Executes the tool
 	 *
-	 * @return string content
+	 * @return string Rendered content
 	 */
-	public function handle() {
-		$this->initializeHandle();
-
+	protected function executeAction() {
 		if (isset($this->postValues['set']['changeEncryptionKey'])) {
 			$this->setNewEncryptionKeyAndLogOut();
 		}

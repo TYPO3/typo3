@@ -113,6 +113,7 @@ class StepController extends AbstractController {
 		$stepAction->setToken($this->generateTokenForAction($action));
 		$stepAction->setPostValues($this->getPostValues());
 
+		$needsExecution = TRUE;
 		try {
 			// needsExecution() may throw a RedirectException to communicate that it changed
 			// configuration parameters and need an application reload.
@@ -370,6 +371,7 @@ class StepController extends AbstractController {
 		/** @var \TYPO3\CMS\Install\Controller\Action\Step\StepInterface $action */
 		$action = $this->objectManager->get('TYPO3\\CMS\\Install\\Controller\\Action\\Step\\EnvironmentAndFolders');
 
+		$needsExecution = TRUE;
 		try {
 			// needsExecution() may throw a RedirectException to communicate that it changed
 			// configuration parameters and need an application reload.

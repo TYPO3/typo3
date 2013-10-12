@@ -151,7 +151,7 @@ class AjaxController extends AbstractController {
 		$actionClass = ucfirst($action);
 		/** @var \TYPO3\CMS\Install\Controller\Action\ActionInterface $toolAction */
 		$toolAction = $this->objectManager->get('TYPO3\\CMS\\Install\\Controller\\Action\\Ajax\\' . $actionClass);
-		if (!($toolAction instanceof \TYPO3\CMS\Install\Controller\Action\ActionInterface)) {
+		if (!($toolAction instanceof Action\ActionInterface)) {
 			throw new Exception(
 				$action . ' does not implement ActionInterface',
 				1369474308
@@ -168,14 +168,14 @@ class AjaxController extends AbstractController {
 	 * Output content.
 	 * WARNING: This exits the script execution!
 	 *
-	 * @param string $content Content to output
+	 * @param string $content JSON encoded content to output
 	 */
 	protected function output($content = '') {
 		ob_clean();
 		header('Content-Type: application/json; charset=utf-8');
 		header('Cache-Control: no-cache, must-revalidate');
 		header('Pragma: no-cache');
-		echo json_encode($content);
+		echo $content;
 		die;
 	}
 }

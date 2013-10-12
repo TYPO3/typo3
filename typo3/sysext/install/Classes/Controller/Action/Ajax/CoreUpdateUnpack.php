@@ -24,19 +24,17 @@ namespace TYPO3\CMS\Install\Controller\Action\Ajax;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use TYPO3\CMS\Install\Controller\Action;
-
 /**
  * Unpack a downloaded core
  */
-class CoreUpdateUnpack extends AbstractCoreUpdate implements Action\ActionInterface {
+class CoreUpdateUnpack extends AbstractCoreUpdate {
+
 	/**
-	 * Handle this action
+	 * Executes the action
 	 *
-	 * @return string content
+	 * @return array Rendered content
 	 */
-	public function handle() {
-		$this->initializeCoreUpdate();
+	protected function executeAction() {
 		$this->view->assignMultiple(array(
 				'success' => $this->coreUpdateService->unpackVersion($this->getVersionToHandle()),
 				'status' => $this->coreUpdateService->getMessages(),

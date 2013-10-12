@@ -32,7 +32,7 @@ interface ActionInterface {
 	/**
 	 * Handle this action
 	 *
-	 * @return string rendered content
+	 * @return string Rendered content
 	 */
 	public function handle();
 
