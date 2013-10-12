@@ -62,6 +62,12 @@ abstract class AbstractCoreUpdate extends Action\AbstractAction {
 	 * @return void
 	 */
 	protected function initializeCoreUpdate() {
+		if (!$this->coreUpdateService->isCoreUpdateEnabled()) {
+			throw new \TYPO3\CMS\Install\Controller\Exception(
+				'Core Update disabled in this environment',
+				1381609294
+			);
+		}
 		$this->loadExtLocalconfDatabaseAndExtTables();
 	}
 

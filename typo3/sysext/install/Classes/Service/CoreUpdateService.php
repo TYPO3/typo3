@@ -89,6 +89,15 @@ class CoreUpdateService {
 	}
 
 	/**
+	 * Check if this installation wants to enable the core updater
+	 *
+	 * @return boolean
+	 */
+	public function isCoreUpdateEnabled() {
+		return (getenv('TYPO3_DISABLE_CORE_UPDATER') !== '1');
+	}
+
+	/**
 	 * In future implementations we might implement some sarter logic here
 	 *
 	 * @return string
