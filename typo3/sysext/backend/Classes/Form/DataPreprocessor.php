@@ -26,6 +26,7 @@ namespace TYPO3\CMS\Backend\Form;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Contains class for getting and transforming data for display in backend forms (TCEforms)
  *
@@ -33,6 +34,8 @@ namespace TYPO3\CMS\Backend\Form;
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+
 /**
  * Class for getting and transforming data for display in backend forms (TCEforms)
  *
@@ -132,13 +135,13 @@ class DataPreprocessor {
 							}
 						}
 						if ($id < 0) {
-							$record = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($table, abs($id), 'pid');
+							$record = BackendUtility::getRecord($table, abs($id), 'pid');
 							$pid = $record['pid'];
 							unset($record);
 						} else {
 							$pid = intval($id);
 						}
-						$pageTS = \TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig($pid);
+						$pageTS = BackendUtility::getPagesTSconfig($pid);
 						if (isset($pageTS['TCAdefaults.'])) {
 							$TCAPageTSOverride = $pageTS['TCAdefaults.'];
 							if (is_array($TCAPageTSOverride[$table . '.'])) {
@@ -160,7 +163,7 @@ class DataPreprocessor {
 						// Fetch default values if a previous record exists
 						if ($id < 0 && $GLOBALS['TCA'][$table]['ctrl']['useColumnsForDefaultValues']) {
 							// Fetches the previous record:
-							$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $table, 'uid=' . abs($id) . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($table));
+							$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $table, 'uid=' . abs($id) . BackendUtility::deleteClause($table));
 							if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 								// Gets the list of fields to copy from the previous record.
 								$fArr = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $GLOBALS['TCA'][$table]['ctrl']['useColumnsForDefaultValues'], 1);
@@ -177,9 +180,9 @@ class DataPreprocessor {
 					} else {
 						$id = intval($id);
 						// Fetch database values
-						$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $table, 'uid=' . intval($id) . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($table));
+						$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $table, 'uid=' . intval($id) . BackendUtility::deleteClause($table));
 						if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-							\TYPO3\CMS\Backend\Utility\BackendUtility::fixVersioningPid($table, $row);
+							BackendUtility::fixVersioningPid($table, $row);
 							$this->renderRecord($table, $id, $row['pid'], $row);
 							$contentTable = $GLOBALS['TYPO3_CONF_VARS']['SYS']['contentTable'];
 							$this->lockRecord($table, $id, $contentTable == $table ? $row['pid'] : 0);
@@ -216,8 +219,8 @@ class DataPreprocessor {
 		// Init:
 		$uniqueItemRef = $table . '_' . $id;
 		// Fetches the true PAGE TSconfig pid to use later, if needed. (Until now, only for the RTE, but later..., who knows?)
-		list($tscPID) = \TYPO3\CMS\Backend\Utility\BackendUtility::getTSCpid($table, $id, $pid);
-		$TSconfig = \TYPO3\CMS\Backend\Utility\BackendUtility::getTCEFORM_TSconfig($table, array_merge($row, array('uid' => $id, 'pid' => $pid)));
+		list($tscPID) = BackendUtility::getTSCpid($table, $id, $pid);
+		$TSconfig = BackendUtility::getTCEFORM_TSconfig($table, array_merge($row, array('uid' => $id, 'pid' => $pid)));
 		// If the record has not already been loaded (in which case we DON'T do it again)...
 		if (!$this->regTableItems[$uniqueItemRef]) {
 			$this->regTableItems[$uniqueItemRef] = 1;
@@ -273,7 +276,7 @@ class DataPreprocessor {
 		}
 		// Further processing may apply for each field in the record depending on the settings in the "types" configuration (the list of fields to currently display for a record in TCEforms).
 		// For instance this could be processing instructions for the Rich Text Editor.
-		$types_fieldConfig = \TYPO3\CMS\Backend\Utility\BackendUtility::getTCAtypes($table, $totalRecordContent);
+		$types_fieldConfig = BackendUtility::getTCAtypes($table, $totalRecordContent);
 		if (is_array($types_fieldConfig)) {
 			$totalRecordContent = $this->renderRecord_typesProc($totalRecordContent, $types_fieldConfig, $tscPID, $table, $pid);
 		}
@@ -448,7 +451,7 @@ class DataPreprocessor {
 		$currentValueArray = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($data);
 		if (is_array($currentValueArray)) {
 			// Get current value array:
-			$dataStructArray = \TYPO3\CMS\Backend\Utility\BackendUtility::getFlexFormDS($fieldConfig['config'], $row, $table, $field);
+			$dataStructArray = BackendUtility::getFlexFormDS($fieldConfig['config'], $row, $table, $field);
 			// Manipulate Flexform DS via TSConfig and group access lists
 			if (is_array($dataStructArray)) {
 				$flexFormHelper = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Form\\FlexFormsHelper');
@@ -656,7 +659,7 @@ class DataPreprocessor {
 			}
 			break;
 		case 'exclude':
-			$theExcludeFields = \TYPO3\CMS\Backend\Utility\BackendUtility::getExcludeFields();
+			$theExcludeFields = BackendUtility::getExcludeFields();
 			if (is_array($theExcludeFields)) {
 				foreach ($theExcludeFields as $theExcludeFieldsArrays) {
 					foreach ($elements as $eKey => $value) {
@@ -668,7 +671,7 @@ class DataPreprocessor {
 			}
 			break;
 		case 'explicitValues':
-			$theTypes = \TYPO3\CMS\Backend\Utility\BackendUtility::getExplicitAuthFieldValues();
+			$theTypes = BackendUtility::getExplicitAuthFieldValues();
 			foreach ($theTypes as $tableFieldKey => $theTypeArrays) {
 				if (is_array($theTypeArrays['items'])) {
 					foreach ($theTypeArrays['items'] as $itemValue => $itemContent) {
@@ -682,7 +685,7 @@ class DataPreprocessor {
 			}
 			break;
 		case 'languages':
-			$theLangs = \TYPO3\CMS\Backend\Utility\BackendUtility::getSystemLanguages();
+			$theLangs = BackendUtility::getSystemLanguages();
 			foreach ($theLangs as $lCfg) {
 				foreach ($elements as $eKey => $value) {
 					if (!strcmp($lCfg[1], $value)) {
@@ -755,7 +758,7 @@ class DataPreprocessor {
 		// Init:
 		$recordList = array();
 		// Foreign_table
-		$subres = \TYPO3\CMS\Backend\Utility\BackendUtility::exec_foreign_table_where_query($fieldConfig, $field, $TSconfig);
+		$subres = BackendUtility::exec_foreign_table_where_query($fieldConfig, $field, $TSconfig);
 		while ($subrow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($subres)) {
 			// Resolve move-placeholder, to check the right uid against $dataIds
 			BackendUtility::workspaceOL($fieldConfig['config']['foreign_table'], $subrow);
@@ -764,7 +767,7 @@ class DataPreprocessor {
 		$GLOBALS['TYPO3_DB']->sql_free_result($subres);
 		// neg_foreign_table
 		if (is_array($GLOBALS['TCA'][$fieldConfig['config']['neg_foreign_table']])) {
-			$subres = \TYPO3\CMS\Backend\Utility\BackendUtility::exec_foreign_table_where_query($fieldConfig, $field, $TSconfig, 'neg_');
+			$subres = BackendUtility::exec_foreign_table_where_query($fieldConfig, $field, $TSconfig, 'neg_');
 			while ($subrow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($subres)) {
 				// Resolve move-placeholder, to check the right uid against $dataIds
 				BackendUtility::workspaceOL($fieldConfig['config']['nes_foreign_table'], $subrow);
@@ -899,7 +902,7 @@ class DataPreprocessor {
 	 */
 	public function lockRecord($table, $id, $pid = 0) {
 		if ($this->lockRecords) {
-			\TYPO3\CMS\Backend\Utility\BackendUtility::lockRecords($table, $id, $pid);
+			BackendUtility::lockRecords($table, $id, $pid);
 		}
 	}
 
