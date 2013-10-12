@@ -219,6 +219,7 @@ class FileListController {
 		$this->doc->getPageRenderer()->loadPrototype();
 		$this->doc->getPageRenderer()->loadJQuery();
 		$this->doc->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/DragUploader');
+		$this->doc->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/FileListLocalisation');
 		$this->doc->getPageRenderer()->addInlineLanguagelabelFile(
 			\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('lang') . 'locallang_core.xlf',
 			'file_upload'

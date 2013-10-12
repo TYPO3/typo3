@@ -575,13 +575,14 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 	 */
 	public function formatFileList(array $files) {
 		$out = '';
+		// first two keys are "0" (default) and "-1" (multiple), after that comes the "other languages"
+		$systemLanguages = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Configuration\\TranslationConfigurationProvider')->getSystemLanguages();
 		foreach ($files as $fileObject) {
 			list($flag, $code) = $this->fwd_rwd_nav();
 			$out .= $code;
 			if ($flag) {
 				// Initialization
 				$this->counter++;
-				$fileInfo = $fileObject->getStorage()->getFileInfo($fileObject);
 				$this->totalbytes += $fileObject->getSize();
 				$ext = $fileObject->getExtension();
 				$fileName = trim($fileObject->getName());
@@ -604,7 +605,7 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 							$theData[$field] = strtoupper($ext);
 							break;
 						case 'tstamp':
-							$theData[$field] = BackendUtility::date($fileInfo['mtime']);
+							$theData[$field] = BackendUtility::date($fileObject->getProperty('modification_date'));
 							break;
 						case '_CLIPBOARD_':
 							$temp = '';
@@ -612,6 +613,10 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 								$temp .= $this->makeEdit($fileObject);
 							}
 							$temp .= $this->makeClip($fileObject);
+							if (count($systemLanguages) > 2) {
+								$temp .= '<a class="filelist-translationToggler" data-fileid="' . $fileObject->getUid() . '">' .
+									IconUtility::getSpriteIcon('mimetypes-x-content-page-language-overlay') . '</a>';
+							}
 							$theData[$field] = $temp;
 							break;
 						case '_REF_':
@@ -633,15 +638,70 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 							}
 							break;
 						default:
-							// @todo: fix the access on the array
-							$theData[$field] = htmlspecialchars(GeneralUtility::fixed_lgd_cs($theFile[$field], $this->fixedL));
+							$theData[$field] = '';
+							if ($fileObject->hasProperty($field)) {
+								$theData[$field] = htmlspecialchars(GeneralUtility::fixed_lgd_cs($fileObject->getProperty($field), $this->fixedL));
+							}
 					}
 				}
 				$out .= $this->addelement(1, $theIcon, $theData, ' class="file_list_normal"');
+
+				$metaDataRecord = $fileObject->_getMetaData();
+				$translations = $this->getTranslationsForMetaData($metaDataRecord);
+				if (count($systemLanguages) > 2) {
+					$code = IconUtility::getSpriteIcon('empty-empty');
+					foreach ($systemLanguages as $language) {
+						$languageId = $language['uid'];
+						if ($languageId == -1 || $languageId == 0) {
+							continue;
+						}
+						$flagIcon = $language['flagIcon'];
+						if (array_key_exists($languageId, $translations)) {
+
+							$theIcon = IconUtility::getSpriteIcon(
+								'actions-document-open',
+								array('title' => $fileName),
+								array($flagIcon . '-overlay' => array()));
+							$data = array(
+								'sys_file_metadata' => array($translations[$languageId]['uid'] => 'edit')
+							);
+							$editOnClick = BackendUtility::editOnClick(GeneralUtility::implodeArrayForUrl('edit', $data), $GLOBALS['BACK_PATH'], $this->listUrl());
+							$code .= sprintf('<a href="#" onclick="%s">%s</a>', htmlspecialchars($editOnClick), $theIcon);
+
+						} else {
+							$href = $GLOBALS['SOBE']->doc->issueCommand(
+								'&cmd[sys_file_metadata][' . $metaDataRecord['uid'] . '][localize]=' . $languageId,
+								$this->backPath . 'alt_doc.php?justLocalized=' . rawurlencode(('sys_file_metadata:' . $metaDataRecord['uid'] . ':' . $languageId)) .
+								'&returnUrl=' . rawurlencode($this->listURL()) . BackendUtility::getUrlToken('editRecord')
+							);
+							$theIcon = IconUtility::getSpriteIcon($flagIcon);
+
+							$code .= sprintf('<a href="%s">%s</a>', htmlspecialchars($href), $theIcon);
+						}
+					}
+					$out .= '<tr class="file_list_normal localisationData" data-fileid="' . $fileObject->getUid() . '"><td></td><td colspan="' . count($this->fieldArray) . '">' . $code . '</td></tr>';
+				}
 			}
 			$this->eCounter++;
 		}
 		return $out;
+	}
+
+	/**
+	 * Fetch the translations for a sys_file_metadata record
+	 *
+	 * @param $metaDataRecord
+	 * @return array keys are the sys_language uids, values are the $rows
+	 */
+	protected function getTranslationsForMetaData($metaDataRecord) {
+		$where = $GLOBALS['TCA']['sys_file_metadata']['ctrl']['transOrigPointerField'] . '=' . intval($metaDataRecord['uid']) .
+			' AND ' . $GLOBALS['TCA']['sys_file_metadata']['ctrl']['languageField'] . '>0';
+		$translationRecords = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'sys_file_metadata', $where);
+		$translations = array();
+		foreach ($translationRecords as $record) {
+			$translations[$record[$GLOBALS['TCA']['sys_file_metadata']['ctrl']['languageField']]] = $record;
+		}
+		return $translations;
 	}
 
 	/**
