@@ -2661,7 +2661,12 @@ class BackendUtility {
 			if ($page['url_scheme'] == \TYPO3\CMS\Core\Utility\HttpUtility::SCHEME_HTTPS || $page['url_scheme'] == 0 && GeneralUtility::getIndpEnv('TYPO3_SSL')) {
 				$protocol = 'https';
 			}
-			$domainName = self::firstDomainRecord($rootLine);
+			$previewDomainConfig = $GLOBALS['BE_USER']->getTSConfig('TCEMAIN.previewDomain', self::getPagesTSconfig($pageId));
+			if ($previewDomainConfig['value']) {
+				$domainName = $previewDomainConfig['value'];
+			} else {
+				$domainName = self::firstDomainRecord($rootLine);
+			}
 			if ($domainName) {
 				$domain = $domainName;
 			} else {
