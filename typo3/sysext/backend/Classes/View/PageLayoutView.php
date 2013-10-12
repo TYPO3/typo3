@@ -336,34 +336,12 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	 * Returns the backend layout which should be used for this page.
 	 *
 	 * @param integer $id Uid of the current page
-	 * @return mixed Uid of the backend layout record or NULL if no layout should be used
-	 * @todo Define visibility
+	 * @return boolean|string Identifier of the backend layout to be used, or FALSE if none
+	 * @deprecated since TYPO3 CMS 6.2, will be removed two versions later
 	 */
 	public function getSelectedBackendLayoutUid($id) {
-		// uid and pid are needed for workspaceOL()
-		$page = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('uid, pid, backend_layout', 'pages', 'uid=' . $id);
-		BackendUtility::workspaceOL('pages', $page);
-		$backendLayoutUid = intval($page['backend_layout']);
-		if ($backendLayoutUid == -1) {
-			// If it is set to "none" - don't use any
-			$backendLayoutUid = NULL;
-		} elseif ($backendLayoutUid == 0) {
-			// If it not set check the rootline for a layout on next level and use this
-			$rootline = BackendUtility::BEgetRootLine($id, '', TRUE);
-			for ($i = count($rootline) - 2; $i > 0; $i--) {
-				$backendLayoutUid = intval($rootline[$i]['backend_layout_next_level']);
-				if ($backendLayoutUid > 0) {
-					// Stop searching if a layout for "next level" is set
-					break;
-				} elseif ($backendLayoutUid == -1) {
-					// If layout for "next level" is set to "none" - don't use any and stop searching
-					$backendLayoutUid = NULL;
-					break;
-				}
-			}
-		}
-		// If it is set to a positive value use this
-		return $backendLayoutUid;
+		GeneralUtility::logDeprecatedFunction();
+		return $this->getBackendLayoutView()->getSelectedCombinedIdentifier($id);
 	}
 
 	/**
@@ -527,18 +505,12 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 						}
 					}
 				} else {
-					$backendLayoutRecord = $this->getBackendLayoutConfiguration();
+					$backendLayout = $this->getBackendLayoutView()->getSelectedBackendLayout($this->id);
 					// GRID VIEW:
-					// Initialize TS parser to parse config to array
-					/** @var \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser $parser */
-					$parser = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\Parser\\TypoScriptParser');
-					/** @var \TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher $conditionMatcher */
-					$conditionMatcher = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Configuration\\TypoScript\\ConditionMatching\\ConditionMatcher');
-					$parser->parse($parser->checkIncludeLines($backendLayoutRecord['config']), $conditionMatcher);
 					$grid .= '<div class="t3-gridContainer"><table border="0" cellspacing="0" cellpadding="0" width="100%" height="100%" class="t3-page-columns t3-gridTable">';
 					// Add colgroups
-					$colCount = intval($parser->setup['backend_layout.']['colCount']);
-					$rowCount = intval($parser->setup['backend_layout.']['rowCount']);
+					$colCount = intval($backendLayout['__config']['backend_layout.']['colCount']);
+					$rowCount = intval($backendLayout['__config']['backend_layout.']['rowCount']);
 					$grid .= '<colgroup>';
 					for ($i = 0; $i < $colCount; $i++) {
 						$grid .= '<col style="width:' . 100 / $colCount . '%"></col>';
@@ -546,7 +518,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 					$grid .= '</colgroup>';
 					// Cycle through rows
 					for ($row = 1; $row <= $rowCount; $row++) {
-						$rowConfig = $parser->setup['backend_layout.']['rows.'][$row . '.'];
+						$rowConfig = $backendLayout['__config']['backend_layout.']['rows.'][$row . '.'];
 						if (!isset($rowConfig)) {
 							continue;
 						}
@@ -793,15 +765,11 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	 * Get backend layout configuration
 	 *
 	 * @return array
+	 * @deprecated since TYPO3 CMS 6.2, will be removed two versions later
 	 */
 	public function getBackendLayoutConfiguration() {
-		$backendLayoutUid = $this->getSelectedBackendLayoutUid($this->id);
-		if (!$backendLayoutUid) {
-			return array(
-				'config' => \TYPO3\CMS\Backend\View\BackendLayoutView::getDefaultColumnLayout()
-			);
-		}
-		return BackendUtility::getRecord('backend_layout', intval($backendLayoutUid));
+		GeneralUtility::logDeprecatedFunction();
+		return $this->getBackendLayoutView()->getSelectedBackendLayout($this->id);
 	}
 
 	/**********************************
@@ -1965,6 +1933,15 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 		}
 		$content = preg_replace('/<br.?\\/?>/', LF, $content);
 		return strip_tags($content);
+	}
+
+	/**
+	 * @return BackendLayoutView
+	 */
+	protected function getBackendLayoutView() {
+		return GeneralUtility::makeInstance(
+			'TYPO3\\CMS\\Backend\\View\\BackendLayoutView'
+		);
 	}
 
 }

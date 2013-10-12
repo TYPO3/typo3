@@ -447,6 +447,9 @@
 			<trans-unit id="pages.backend_layout.none" xml:space="preserve">
 				<source>None</source>
 			</trans-unit>
+			<trans-unit id="pages.backend_layout.default" xml:space="preserve">
+				<source>Default</source>
+			</trans-unit>
 			<trans-unit id="tt_content" xml:space="preserve">
 				<source>Page Content</source>
 			</trans-unit>
