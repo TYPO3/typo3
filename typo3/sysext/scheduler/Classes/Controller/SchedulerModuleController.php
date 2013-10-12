@@ -961,14 +961,13 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 				if ($this->scheduler->isValidTaskObject($task)) {
 					// The task object is valid
 					$name = htmlspecialchars($registeredClasses[$class]['title'] . ' (' . $registeredClasses[$class]['extension'] . ')');
-					$name .= '<br /> ';
 					$additionalInformation = $task->getAdditionalInformation();
 					if ($task instanceof \TYPO3\CMS\Scheduler\ProgressProviderInterface) {
 						$progress = round(floatval($task->getProgress()), 2);
-						$name .= $this->renderTaskProgressBar($progress);
+						$name .= '<br />' . $this->renderTaskProgressBar($progress);
 					}
 					if (!empty($additionalInformation)) {
-						$name .= '[' . htmlspecialchars($additionalInformation) . ']';
+						$name .= '<br />[' . htmlspecialchars($additionalInformation) . ']';
 					}
 					// Check if task currently has a running execution
 					if (!empty($schedulerRecord['serialized_executions'])) {
