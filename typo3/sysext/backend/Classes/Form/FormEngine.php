@@ -559,6 +559,11 @@ class FormEngine {
 
 	public $templateFile = '';
 
+	/**
+	 * @var int
+	 */
+	protected $multiSelectFilterCount = 0;
+
 	// Form templates, relative to typo3 directory
 	/**
 	 * Constructor function, setting internal variables, loading the styles used.
@@ -2265,6 +2270,8 @@ function ' . $evalData . '(value) {
 			$itemArray[$tk] = implode('|', $tvP);
 		}
 		$itemsToSelect = '';
+		$filterTextfield = '';
+		$filterSelectbox = '';
 		if (!$disabled) {
 			// Create option tags:
 			$opt = array();
@@ -2285,11 +2292,37 @@ function ' . $evalData . '(value) {
 				$sOnChange = 'setFormValueFromBrowseWin(\'' . $PA['itemFormElName'] . '\',this.options[this.selectedIndex].value, this.options[this.selectedIndex].text, this.options[this.selectedIndex].title); ';
 			}
 			$sOnChange .= implode('', $PA['fieldChangeFunc']);
+			$multiSelectId = uniqid('tceforms-multiselect-');
 			$itemsToSelect = '
-				<select id="' . uniqid('tceforms-multiselect-') . '" name="' . $PA['itemFormElName'] . '_sel"' . $this->insertDefStyle('select', 'tceforms-multiselect tceforms-itemstoselect') . ($size ? ' size="' . $size . '"' : '') . ' onchange="' . htmlspecialchars($sOnChange) . '"' . $PA['onFocus'] . $selector_itemListStyle . '>
+				<select id="' . $multiSelectId . '" name="' . $PA['itemFormElName'] . '_sel"' . $this->insertDefStyle('select', 'tceforms-multiselect tceforms-itemstoselect') . ($size ? ' size="' . $size . '"' : '') . ' onchange="' . htmlspecialchars($sOnChange) . '"' . $PA['onFocus'] . $selector_itemListStyle . '>
 					' . implode('
 					', $opt) . '
 				</select>';
+
+			if ($config['enableMultiSelectFilterTextfield'] || $config['multiSelectFilterItems']) {
+				$this->multiSelectFilterCount++;
+				$jsSelectBoxFilterName = str_replace(' ', '', ucwords(str_replace('-', ' ', GeneralUtility::strtolower($multiSelectId))));
+				$this->additionalJS_post[] = '
+					var '. $jsSelectBoxFilterName . ' = new TCEForms.SelectBoxFilter("' . $multiSelectId . '");
+				';
+			}
+
+			if ($config['enableMultiSelectFilterTextfield']) {
+				// add input field for filter
+				$filterTextfield = '<input class="typo3-TCEforms-suggest-search typo3-TCEforms-multiselect-filter" id="' . $multiSelectId . '_filtertextfield" value="" style="width: 104px;" />';
+			}
+
+			if (isset($config['multiSelectFilterItems']) && is_array($config['multiSelectFilterItems']) && count($config['multiSelectFilterItems']) > 1) {
+				$filterDropDownOptions = array();
+				foreach($config['multiSelectFilterItems'] as $optionElement) {
+					$filterDropDownOptions[] = '<option value="' . htmlspecialchars($this->sL($optionElement[0])) . '">' . htmlspecialchars((isset($optionElement[1]) && $optionElement[1] != '') ? $this->sL($optionElement[1]) : $this->sL($optionElement[0])) . '</option>';
+				}
+				$filterSelectbox = '
+					<select id="' . $multiSelectId . '_filterdropdown">
+						' . implode('
+						', $filterDropDownOptions) . '
+					</select>';
+			}
 		}
 		// Pass to "dbFileIcons" function:
 		$params = array(
@@ -2301,7 +2334,7 @@ function ' . $evalData . '(value) {
 			'info' => '',
 			'headers' => array(
 				'selector' => $this->getLL('l_selected') . ':<br />',
-				'items' => $this->getLL('l_items') . ':<br />'
+				'items' => $this->getLL('l_items') . ': ' . $filterSelectbox . $filterTextfield . '<br />'
 			),
 			'noBrowser' => 1,
 			'thumbnails' => $itemsToSelect,
@@ -5434,11 +5467,16 @@ function ' . $evalData . '(value) {
 				';
 				// Always include JS functions for Suggest fields as we don't know what will come
 				$this->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/jsfunc.tceforms_suggest.js');
+				$this->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/jsfunc.tceforms_selectboxfilter.js');
 			} else {
 				// If Suggest fields were processed, add the JS functions
 				if ($this->suggest->suggestCount > 0) {
 					$pageRenderer->loadScriptaculous();
 					$this->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/jsfunc.tceforms_suggest.js');
+				}
+				if ($this->multiSelectFilterCount > 0) {
+					$pageRenderer->loadScriptaculous();
+					$this->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/jsfunc.tceforms_selectboxfilter.js');
 				}
 			}
 			// Toggle icons:
