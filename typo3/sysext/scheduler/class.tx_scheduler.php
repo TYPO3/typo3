@@ -113,7 +113,7 @@ class tx_scheduler implements t3lib_Singleton {
 					if (($tstamp - $task) < $maxDuration) {
 						$executions[] = $task;
 					} else {
-						$logMessage = 'Removing logged execution, assuming that the process is dead. Execution of \'' . $row['classname'] . '\' (UID: ' . $row['uid']. ') was started at '.date('Y-m-d H:i:s', $task);
+						$logMessage = 'Removing logged execution, assuming that the process is dead. Execution of \'' . $row['classname'] . '\' (UID: ' . $row['uid']. ') was started at ' . date('Y-m-d H:i:s', $task->getExecutionTime());
 						$this->log($logMessage);
 					}
 				}
