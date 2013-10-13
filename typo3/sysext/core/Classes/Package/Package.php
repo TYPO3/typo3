@@ -125,7 +125,11 @@ class Package extends \TYPO3\Flow\Package\Package implements PackageInterface {
 			if (isset($extensionManagerConfiguration['constraints']['conflicts']) && is_array($extensionManagerConfiguration['constraints']['conflicts'])) {
 				$composerManifest->conflict = new \stdClass();
 				foreach ($extensionManagerConfiguration['constraints']['conflicts'] as $conflictingPackageKey => $conflictingPackageVersion) {
-					$composerManifest->conflict->$conflictingPackageKey = $conflictingPackageVersion;
+					if (!empty($conflictingPackageKey)) {
+						$composerManifest->conflict->$conflictingPackageKey = $conflictingPackageVersion;
+					} else {
+						// TODO: throw meaningful exception or fail silently?
+					}
 				}
 			}
 		}
