@@ -213,28 +213,41 @@ class FileTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function isIndexedTriggersIndexingIfFileIsNotIndexedAlready() {
-		$fixture = $this->getMock('TYPO3\\CMS\\Core\\Resource\\File', array('loadMetadata'), array(array('identifier' => '/test', 'storage' => 5), $this->storageMock));
+		$sut = $this->getAccessibleMock(
+			'TYPO3\\CMS\\Core\\Resource\\File',
+			array('loadIndexRecord'),
+			array(),
+			'',
+			FALSE
+		);
+		$sut->_set('indexed', NULL);
+		$sut->_set('indexingInProgress', FALSE);
 
-		$mockedRepository = $this->getMock('TYPO3\\CMS\\Core\\Resource\\Index\\FileIndexRepository');
-		$mockedRepository->expects($this->once())->method('findOneByCombinedIdentifier')->will($this->returnValue(FALSE));
-		\TYPO3\CMS\Core\Utility\GeneralUtility::setSingletonInstance('TYPO3\\CMS\\Core\\Resource\\Index\\FileIndexRepository', $mockedRepository);
-
-
-		$fixture->isIndexed();
+		$sut
+			->expects($this->once())
+			->method('loadIndexRecord');
+		$sut->isIndexed();
 	}
 
 	/**
 	 * @test
 	 */
 	public function fileIsAutomaticallyIndexedOnPropertyAccessIfNotAlreadyIndexed() {
-		$fixture = $this->getMock('TYPO3\\CMS\\Core\\Resource\\File', array('loadMetadata'), array(array('identifier' => '/test', 'storage' => 5), $this->storageMock));
+		$sut = $this->getAccessibleMock(
+			'TYPO3\\CMS\\Core\\Resource\\File',
+			array('loadIndexRecord'),
+			array(),
+			'',
+			FALSE
+		);
+		$sut->_set('metaDataProperties', array());
+		$sut->_set('properties', array());
 
-		$mockedRepository = $this->getMock('TYPO3\\CMS\\Core\\Resource\\Index\\FileIndexRepository');
-		$mockedRepository->expects($this->once())->method('findOneByCombinedIdentifier')->will($this->returnValue(FALSE));
-		$mockedRepository->expects($this->once())->method('add');
-		\TYPO3\CMS\Core\Utility\GeneralUtility::setSingletonInstance('TYPO3\\CMS\\Core\\Resource\\Index\\FileIndexRepository', $mockedRepository);
-
-		$fixture->getProperty('uid');
+		$sut->_set('indexed', NULL);
+		$sut
+			->expects($this->once())
+			->method('loadIndexRecord');
+		$sut->getProperty('foo');
 	}
 
 	/**
