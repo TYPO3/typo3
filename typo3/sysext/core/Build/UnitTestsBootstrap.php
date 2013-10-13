@@ -48,7 +48,7 @@ namespace TYPO3\CMS\Core\Build;
 /**
  * Find out web path by environment variable or current working directory
  */
-if (getenv('ENV_TYPO3_SITE_PATH')) {
+if (getenv('TYPO3_PATH_WEB')) {
 	$webRoot = realpath(getenv('TYPO3_PATH_WEB')) . '/';
 } else {
 	$webRoot = getcwd() . '/';
