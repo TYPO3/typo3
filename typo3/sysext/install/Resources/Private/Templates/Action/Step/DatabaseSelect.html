@@ -41,8 +41,15 @@
 									onfocus="document.getElementById('t3-install-form-db-select-type-existing').checked=true;"
 								>
 									<option value="">Select database</option>
-									<f:for each="{databaseList}" as="database" iteration="databaseIterator">
-										<option value="{database}"{f:if(condition: databaseIterator.isFirst ,then: ' selected="selected"')}>{database}</option>
+									<f:for each="{databaseList}" as="database">
+										<f:if condition="{database.tables}">
+											<f:then>
+												<option value="{database.name}" disabled="disabled">{database.name} ({database.tables} Tables)</option>
+											</f:then>
+											<f:else>
+												<option value="{database.name}">{database.name}</option>
+											</f:else>
+										</f:if>
 									</f:for>
 								</select>
 							</div>

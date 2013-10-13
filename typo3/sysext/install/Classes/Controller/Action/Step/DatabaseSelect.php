@@ -48,6 +48,8 @@ class DatabaseSelect extends Action\AbstractAction implements StepInterface {
 		$this->initializeDatabaseConnection();
 		$postValues = $this->postValues['values'];
 		$localConfigurationPathValuePairs = array();
+		/** @var $configurationManager \TYPO3\CMS\Core\Configuration\ConfigurationManager */
+		$configurationManager = $this->objectManager->get('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager');
 		if ($postValues['type'] === 'new') {
 			$newDatabaseName = $postValues['new'];
 			if (strlen($newDatabaseName) <= 50) {
@@ -74,12 +76,17 @@ class DatabaseSelect extends Action\AbstractAction implements StepInterface {
 				$result[] = $errorStatus;
 			}
 		} elseif ($postValues['type'] === 'existing') {
-			$localConfigurationPathValuePairs['DB/database'] = $postValues['existing'];
+			// Only store database information when it's empty
+			$this->databaseConnection->setDatabaseName($postValues['existing']);
+			$this->databaseConnection->sql_select_db();
+			$existingTables = $this->databaseConnection->admin_get_tables();
+			$isInitialInstallation = $configurationManager->getConfigurationValueByPath('SYS/isInitialInstallationInProgress');
+			if (!$isInitialInstallation || count($existingTables) === 0) {
+				$localConfigurationPathValuePairs['DB/database'] = $postValues['existing'];
+			}
 		}
 
 		if (!empty($localConfigurationPathValuePairs)) {
-			/** @var $configurationManager \TYPO3\CMS\Core\Configuration\ConfigurationManager */
-			$configurationManager = $this->objectManager->get('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager');
 			$configurationManager->setLocalConfigurationValuesByPathValuePairs($localConfigurationPathValuePairs);
 		}
 
@@ -140,17 +147,18 @@ class DatabaseSelect extends Action\AbstractAction implements StepInterface {
 		if ($initialInstallation === FALSE) {
 			return $allPossibleDatabases;
 		} else {
-			// In first installation we only show empty databases (no tables)
-			$databasesWithoutTables = array();
+			// In first installation we show all databases but disable not empty ones (with tables)
+			$databases = array();
 			foreach ($allPossibleDatabases as $database) {
 				$this->databaseConnection->setDatabaseName($database);
 				$this->databaseConnection->sql_select_db();
 				$existingTables = $this->databaseConnection->admin_get_tables();
-				if (count($existingTables) === 0) {
-					$databasesWithoutTables[] = $database;
-				}
+				$databases[] = array(
+					'name' => $database,
+					'tables' => count($existingTables),
+				);
 			}
-			return $databasesWithoutTables;
+			return $databases;
 		}
 	}
 
