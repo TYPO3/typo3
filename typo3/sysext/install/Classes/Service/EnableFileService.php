@@ -98,8 +98,10 @@ class EnableFileService {
 		if (is_file($enableFile)) {
 			$couldTouch = @touch($enableFile);
 			if (!$couldTouch) {
-				self::removeInstallToolEnableFile();
-				self::createInstallToolEnableFile();
+				// If we can't remove the creation method will call us again.
+				if (self::removeInstallToolEnableFile()) {
+					self::createInstallToolEnableFile();
+				}
 			}
 		}
 	}
