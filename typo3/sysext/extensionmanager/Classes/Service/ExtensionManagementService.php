@@ -194,6 +194,9 @@ class ExtensionManagementService implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return array
 	 */
 	protected function installDependencies(array $installQueue) {
+		if (!empty($installQueue)) {
+			$this->emitWillInstallExtensions($installQueue);
+		}
 		$resolvedDependencies = array();
 		foreach ($installQueue as $extensionKey => $extensionDetails) {
 			$this->installUtility->install($extensionDetails);
@@ -254,6 +257,26 @@ class ExtensionManagementService implements \TYPO3\CMS\Core\SingletonInterface {
 			$downloadedDependencies = $this->downloadDependencies($queue['download']);
 		}
 		return $downloadedDependencies;
+	}
+
+	/**
+	 * @param array $installQueue
+	 */
+	protected function emitWillInstallExtensions(array $installQueue) {
+		$this->getSignalSlotDispatcher()->dispatch(__CLASS__, 'willInstallExtensions', array($installQueue));
+	}
+
+	/**
+	 * Get the SignalSlot dispatcher
+	 *
+	 * @return \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
+	 */
+	protected function getSignalSlotDispatcher() {
+		if (!isset($this->signalSlotDispatcher)) {
+			$this->signalSlotDispatcher = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager')
+				->get('TYPO3\\CMS\\Extbase\\SignalSlot\\Dispatcher');
+		}
+		return $this->signalSlotDispatcher;
 	}
 
 }

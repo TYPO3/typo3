@@ -170,7 +170,7 @@ class PackageManager extends \TYPO3\Flow\Package\PackageManager implements \TYPO
 	protected function saveToPackageCache() {
 		$cacheEntryIdentifier = $this->getCacheEntryIdentifier();
 		if ($cacheEntryIdentifier !== NULL && !$this->coreCache->has($cacheEntryIdentifier)) {
-			$cacheEntryPath = $this->coreCache->getBackend()->getCacheDirectory();
+			$cacheEntryPath = rtrim($this->coreCache->getBackend()->getCacheDirectory(), '/\\');
 			// Package objects get their own cache entry, so PHP does not have to parse the serialized string
 			$packageObjectsCacheEntryIdentifier = uniqid('PackageObjects_');
 			// Build cache file
@@ -237,7 +237,7 @@ class PackageManager extends \TYPO3\Flow\Package\PackageManager implements \TYPO
 	 * @return void
 	 * @throws \TYPO3\Flow\Package\Exception\DuplicatePackageException
 	 */
-	protected function scanAvailablePackages() {
+	public function scanAvailablePackages() {
 		$previousPackageStatesConfiguration = $this->packageStatesConfiguration;
 
 		if (isset($this->packageStatesConfiguration['packages'])) {
@@ -290,7 +290,7 @@ class PackageManager extends \TYPO3\Flow\Package\PackageManager implements \TYPO
 			$this->packageStatesConfiguration['packages'][$packageKey]['classesPath'] = \TYPO3\Flow\Package\Package::DIRECTORY_CLASSES;
 		}
 
-		$this->registerPackagesFromConfiguration();
+		$this->registerPackagesFromConfiguration(!empty($this->packages));
 		if ($this->packageStatesConfiguration != $previousPackageStatesConfiguration) {
 			$this->sortAndsavePackageStates();
 		}
@@ -339,11 +339,16 @@ class PackageManager extends \TYPO3\Flow\Package\PackageManager implements \TYPO
 	/**
 	 * Requires and registers all packages which were defined in packageStatesConfiguration
 	 *
+	 * @param boolean $registerOnlyNewPackages
 	 * @return void
 	 * @throws \TYPO3\Flow\Package\Exception\CorruptPackageException
 	 */
-	protected function registerPackagesFromConfiguration() {
+	protected function registerPackagesFromConfiguration($registerOnlyNewPackages = FALSE) {
 		foreach ($this->packageStatesConfiguration['packages'] as $packageKey => $stateConfiguration) {
+
+			if ($registerOnlyNewPackages && $this->isPackageAvailable($packageKey)) {
+				continue;
+			}
 
 			$packagePath = isset($stateConfiguration['packagePath']) ? $stateConfiguration['packagePath'] : NULL;
 			$classesPath = isset($stateConfiguration['classesPath']) ? $stateConfiguration['classesPath'] : NULL;

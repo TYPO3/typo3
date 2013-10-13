@@ -309,10 +309,11 @@ class Bootstrap {
 	protected function initializePackageManagement($packageManagerClassName) {
 		$packageManager = new $packageManagerClassName();
 		$this->setEarlyInstance('TYPO3\\Flow\\Package\\PackageManager', $packageManager);
-		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::setPackageManager($packageManager);
+		Utility\ExtensionManagementUtility::setPackageManager($packageManager);
 		$packageManager->injectClassLoader($this->getEarlyInstance('TYPO3\\CMS\\Core\\Core\\ClassLoader'));
 		$packageManager->injectCoreCache($this->getEarlyInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->getCache('cache_core'));
 		$packageManager->initialize($this, PATH_site);
+		Utility\GeneralUtility::setSingletonInstance($packageManagerClassName, $packageManager);
 		$GLOBALS['TYPO3_LOADED_EXT'] = new \TYPO3\CMS\Core\Compatibility\LoadedExtensionsArray($packageManager);
 		return $this;
 	}

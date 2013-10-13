@@ -154,6 +154,9 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface {
 		if ($className === 'TYPO3\\CMS\\Core\\Cache\\CacheManager') {
 			return $GLOBALS['typo3CacheManager'];
 		}
+		if ($className === 'TYPO3\\CMS\\Core\\Package\\PackageManager') {
+			return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Package\\PackageManager');
+		}
 		$className = \TYPO3\CMS\Core\Core\ClassLoader::getClassNameForAlias($className);
 		if (isset($this->singletonInstances[$className])) {
 			if (count($givenConstructorArguments) > 0) {
