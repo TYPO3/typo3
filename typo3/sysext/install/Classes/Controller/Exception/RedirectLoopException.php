@@ -27,6 +27,6 @@ namespace TYPO3\CMS\Install\Controller\Exception;
 /**
  * A controller exception thrown if a redirect loop is detected
  */
-class RedirectLoopException extends \TYPO3\CMS\Install\Exception {
+class RedirectLoopException extends \TYPO3\CMS\Install\Controller\Exception {
 
 }
