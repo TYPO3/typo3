@@ -107,7 +107,7 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface {
 						$executions[] = $task;
 					} else {
 						$task = unserialize($row['serialized_task_object']);
-						$logMessage = 'Removing logged execution, assuming that the process is dead. Execution of \'' . get_class($task) . '\' (UID: ' . $row['uid'] . ') was started at ' . date('Y-m-d H:i:s', $task);
+						$logMessage = 'Removing logged execution, assuming that the process is dead. Execution of \'' . get_class($task) . '\' (UID: ' . $row['uid'] . ') was started at ' . date('Y-m-d H:i:s', $task->getExecutionTime());
 						$this->log($logMessage);
 					}
 				}
