@@ -48,15 +48,12 @@ class TemplateServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	protected $templateServiceMock;
 
-	protected $backupTypo3LoadedExt;
-
 	/**
 	 * Sets up this test case.
 	 *
 	 * @return void
 	 */
 	protected function setUp() {
-		$this->backupTypo3LoadedExt = $GLOBALS['TYPO3_LOADED_EXT'];
 		$GLOBALS['TYPO3_LOADED_EXT'] = array();
 		$this->templateService = new \TYPO3\CMS\Core\TypoScript\TemplateService();
 		$this->templateServiceMock = $this->getAccessibleMock('\\TYPO3\\CMS\\Core\\TypoScript\\TemplateService', array('dummy'));
@@ -68,7 +65,6 @@ class TemplateServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return void
 	 */
 	protected function tearDown() {
-		$GLOBALS['TYPO3_LOADED_EXT'] = $this->backupTypo3LoadedExt;
 		unset($this->templateService);
 		unset($this->templateServiceMock);
 	}
