@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2012-10-17T17:55:17Z"
+	      product-name="local lang">
+		<header/>
+		<body>
+
+			<!-- sys_file_metadata fields -->
+			<trans-unit id="sys_file_metadata.visible">
+				<source>Visible</source>
+			</trans-unit>
+			<trans-unit id="sys_file_metadata.status">
+				<source>Status</source>
+			</trans-unit>
+			<trans-unit id="sys_file_metadata.status.1">
+				<source>Ok</source>
+			</trans-unit>
+			<trans-unit id="sys_file_metadata.status.2">
+				<source>Pending</source>
+			</trans-unit>
+			<trans-unit id="sys_file_metadata.status.3">
+				<source>Under review</source>
+			</trans-unit>
+			<trans-unit id="sys_file_metadata.keywords">
+				<source>Keywords</source>
+			</trans-unit>
+			<trans-unit id="sys_file_metadata.caption">
+				<source>Caption</source>
+			</trans-unit>
+			<trans-unit id="sys_file_metadata.creator_tool">
+				<source>Creator Tool</source>
+			</trans-unit>
+			<trans-unit id="sys_file_metadata.download_name">
+				<source>Download Name</source>
+			</trans-unit>
+			<trans-unit id="sys_file_metadata.creator">
+				<source>Creator</source>
+			</trans-unit>
+			<trans-unit id="sys_file_metadata.publisher">
+				<source>Publisher</source>
+			</trans-unit>
+			<trans-unit id="sys_file_metadata.source">
+				<source>Source</source>
+			</trans-unit>
+			<trans-unit id="sys_file_metadata.location_country">
+				<source>Country</source>
+			</trans-unit>
+			<trans-unit id="sys_file_metadata.location_region">
+				<source>Region</source>
+			</trans-unit>
+			<trans-unit id="sys_file_metadata.location_city">
+				<source>City</source>
+			</trans-unit>
+			<trans-unit id="sys_file_metadata.latitude">
+				<source>Latitude</source>
+			</trans-unit>
+			<trans-unit id="sys_file_metadata.longitude">
+				<source>Longitude</source>
+			</trans-unit>
+			<trans-unit id="sys_file_metadata.ranking">
+				<source>Ranking</source>
+			</trans-unit>
+			<trans-unit id="sys_file_metadata.content_creation_date">
+				<source>Content Creation Date</source>
+			</trans-unit>
+			<trans-unit id="sys_file_metadata.content_modification_date">
+				<source>Content Modification Date</source>
+			</trans-unit>
+			<trans-unit id="sys_file_metadata.note">
+				<source>Note</source>
+			</trans-unit>
+			<trans-unit id="sys_file_metadata.unit">
+				<source>Unit</source>
+			</trans-unit>
+			<trans-unit id="sys_file_metadata.duration">
+				<source>Duration</source>
+			</trans-unit>
+			<trans-unit id="sys_file_metadata.color_space">
+				<source>Color Space</source>
+			</trans-unit>
+			<trans-unit id="sys_file_metadata.pages">
+				<source>Number of Pages</source>
+			</trans-unit>
+			<trans-unit id="sys_file_metadata.language">
+				<source>File Language</source>
+			</trans-unit>
+			<trans-unit id="sys_file_metadata.fe_groups">
+				<source>Frontend Permission</source>
+			</trans-unit>
+			<trans-unit id="sys_file_metadata.width">
+				<source>Width</source>
+			</trans-unit>
+			<trans-unit id="sys_file_metadata.height">
+				<source>Height</source>
+			</trans-unit>
+
+			<!-- sys_file_metadata tabs -->
+			<trans-unit id="tabs.metadata">
+				<source>Metadata</source>
+			</trans-unit>
+
+			<!-- sys_file_metadata placeholder -->
+			<trans-unit id="placeholder.keywords">
+				<source>Keywords1, keywords2, ...</source>
+			</trans-unit>
+
+			<!-- sys_file_metadata palette -->
+			<trans-unit id="palette.metrics">
+				<source>Metrics</source>
+			</trans-unit>
+			<trans-unit id="palette.geo_location">
+				<source>Geo Location</source>
+			</trans-unit>
+			<trans-unit id="palette.visibility">
+				<source>Visibility</source>
+			</trans-unit>
+			<trans-unit id="palette.content_date">
+				<source>Content Date</source>
+			</trans-unit>
+
+			<!-- fe_groups fields -->
+			<trans-unit id="fe_groups.files">
+				<source>Allowed files</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>
