@@ -313,7 +313,9 @@ class PackageManager extends \TYPO3\Flow\Package\PackageManager implements \TYPO
 				$filename = $fileInfo->getFilename();
 				if ($filename[0] !== '.') {
 					$currentPath = \TYPO3\Flow\Utility\Files::getUnixStylePath($fileInfo->getPathName()) . '/';
-					$collectedExtensionPaths[$currentPath] = $currentPath;
+					if (file_exists($currentPath . 'ext_emconf.php')) {
+						$collectedExtensionPaths[$currentPath] = $currentPath;
+					}
 				}
 			}
 		}
