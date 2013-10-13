@@ -49,7 +49,7 @@ class DocumentationService {
 			}
 
 			// Cache file locally to be able to create a composer.json file when fetching a document
-			$absoluteCacheFilename = GeneralUtility::getFileAbsFileName('typo3temp' . DIRECTORY_SEPARATOR . 'documents.json');
+			$absoluteCacheFilename = GeneralUtility::getFileAbsFileName('typo3temp/documents.json');
 			GeneralUtility::writeFile($absoluteCacheFilename, $json);
 		}
 		return $documents;
@@ -170,7 +170,7 @@ class DocumentationService {
 		$languageSegment = str_replace('_', '-', strtolower($language));
 		$packageName = sprintf('%s-%s-%s.zip', $packagePrefix, $version, $languageSegment);
 		$packageUrl = $url . 'packages/' . $packageName;
-		$absolutePathToZipFile = GeneralUtility::getFileAbsFileName('typo3temp' . DIRECTORY_SEPARATOR . $packageName);
+		$absolutePathToZipFile = GeneralUtility::getFileAbsFileName('typo3temp/' . $packageName);
 
 		$packages = $this->getAvailablePackages($url);
 		if (count($packages) == 0 || !isset($packages[$version][$language])) {
@@ -195,12 +195,12 @@ class DocumentationService {
 		}
 
 		if (is_file($absolutePathToZipFile)) {
-			$absoluteDocumentPath = GeneralUtility::getFileAbsFileName('typo3conf' . DIRECTORY_SEPARATOR . 'Documentation' . DIRECTORY_SEPARATOR);
+			$absoluteDocumentPath = GeneralUtility::getFileAbsFileName('typo3conf/Documentation/');
 
 			$result = $this->unzipDocumentPackage($absolutePathToZipFile, $absoluteDocumentPath);
 
 			// Create a composer.json file
-			$absoluteCacheFilename = GeneralUtility::getFileAbsFileName('typo3temp' . DIRECTORY_SEPARATOR . 'documents.json');
+			$absoluteCacheFilename = GeneralUtility::getFileAbsFileName('typo3temp/documents.json');
 			$documents = json_decode(file_get_contents($absoluteCacheFilename), TRUE);
 			foreach ($documents as $document) {
 				if ($document['key'] === $key) {
@@ -209,8 +209,8 @@ class DocumentationService {
 						'type' => 'documentation',
 						'description' => 'TYPO3 ' . $document['type'],
 					);
-					$relativeComposerFilename = $key . DIRECTORY_SEPARATOR . $language . DIRECTORY_SEPARATOR . 'composer.json';
-					$absoluteComposerFilename = GeneralUtility::getFileAbsFileName('typo3conf' . DIRECTORY_SEPARATOR . 'Documentation' . DIRECTORY_SEPARATOR . $relativeComposerFilename);
+					$relativeComposerFilename = $key . '/' . $language . '/composer.json';
+					$absoluteComposerFilename = GeneralUtility::getFileAbsFileName('typo3conf/Documentation/' . $relativeComposerFilename);
 					GeneralUtility::writeFile($absoluteComposerFilename, json_encode($composerData));
 					break;
 				}
