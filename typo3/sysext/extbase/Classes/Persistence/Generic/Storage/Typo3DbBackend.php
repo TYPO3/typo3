@@ -29,6 +29,7 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Storage;
  ***************************************************************/
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Extbase\Utility\TypeHandlingUtility;
 
 /**
  * A Storage backend
@@ -664,6 +665,8 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 		}
 		if ($input instanceof \DateTime) {
 			return $input->format('U');
+		} elseif (TypeHandlingUtility::isCoreType($input)) {
+			return (string) $input;
 		} elseif (is_object($input)) {
 			if ($input instanceof \TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy) {
 				$realInput = $input->_loadRealInstance();

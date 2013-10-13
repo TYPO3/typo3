@@ -104,6 +104,16 @@ class TypeHandlingUtility {
 	}
 
 	/**
+	 * Returns TRUE if the $type is a CMS core type object.
+	 *
+	 * @param string $type
+	 * @return boolean
+	 */
+	static public function isCoreType($type) {
+		return is_subclass_of($type, 'TYPO3\\CMS\\Core\\Type\\TypeInterface');
+	}
+
+	/**
 	 * Returns TRUE if the $type is a collection type.
 	 *
 	 * @param string $type

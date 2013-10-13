@@ -132,25 +132,79 @@ class EnumerationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 	/**
-	 * @test
+	 * Array of value pairs and expected comparison result
 	 */
-	public function isValueReturnsTrueIfValueIsValid() {
-		$enumeration = $this->getAccessibleMock(
-			'TYPO3\\CMS\\Core\\Tests\\Unit\\Type\Fixture\\Enumeration\\CompleteEnumeration',
-			array('dummy')
+	public function isValidComparisonExpectations() {
+		return array(
+			array(
+				1,
+				1,
+				TRUE
+			),
+			array(
+				1,
+				'1',
+				TRUE
+			),
+			array(
+				'1',
+				1,
+				TRUE
+			),
+			array(
+				'a1',
+				1,
+				FALSE
+			),
+			array(
+				1,
+				'a1',
+				FALSE
+			),
+			array(
+				'1a',
+				1,
+				FALSE
+			),
+			array(
+				1,
+				'1a',
+				FALSE
+			),
+			array(
+				'foo',
+				'foo',
+				TRUE
+			),
+			array(
+				'foo',
+				'bar',
+				FALSE
+			),
+			array(
+				'foo',
+				'foobar',
+				FALSE
+			)
 		);
-		$this->assertTrue($enumeration->_call('isValid', 1));
 	}
 
 	/**
 	 * @test
+	 * @dataProvider isValidComparisonExpectations
 	 */
-	public function isValueReturnsFalseIfValueIsValid() {
+	public function isValidDoesTypeLooseComparison($enumerationValue, $testValue, $expectation) {
+		$mockName = uniqid('CompleteEnumerationMock');
 		$enumeration = $this->getAccessibleMock(
 			'TYPO3\\CMS\\Core\\Tests\\Unit\\Type\Fixture\\Enumeration\\CompleteEnumeration',
-			array('dummy')
+			array('dummy'),
+			array(),
+			$mockName,
+			FALSE
 		);
-		$this->assertFalse($enumeration->_call('isValid', 2));
+		$enumeration->_setStatic('enumConstants', array($mockName => array('CONSTANT_NAME' => $enumerationValue)));
+		$enumeration->_set('value', $enumerationValue);
+		$this->assertSame($expectation, $enumeration->_call('isValid', $testValue));
 	}
 
 	/**

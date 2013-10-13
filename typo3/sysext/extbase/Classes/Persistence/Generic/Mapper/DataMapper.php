@@ -27,6 +27,9 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Mapper;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Core\Type\TypeInterface;
+use TYPO3\CMS\Extbase\Utility\TypeHandlingUtility;
+
 /**
  * A mapper to map database tables configured in $TCA on domain objects.
  */
@@ -219,6 +222,9 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface {
 					case 'TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage':
 						$propertyValue = $this->mapResultToPropertyValue($object, $propertyName, $this->fetchRelated($object, $propertyName, $row[$columnName]));
 						break;
+					case TypeHandlingUtility::isCoreType($propertyData['type']):
+						$propertyValue = $this->mapCoreType($propertyData['type'], $row[$columnName]);
+						break;
 					default:
 						if ($propertyData['type'] === 'DateTime' || in_array('DateTime', class_parents($propertyData['type']))) {
 							$propertyValue = $this->mapDateTime($row[$columnName], $columnMap->getDateTimeStorageFormat());
@@ -231,6 +237,17 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface {
 				$object->_setProperty($propertyName, $propertyValue);
 			}
 		}
+	}
+
+	/**
+	 * Map value to a core type
+	 *
+	 * @param string $type
+	 * @param mixed $value
+	 * @return \TYPO3\CMS\Core\Type\TypeInterface
+	 */
+	protected function mapCoreType($type, $value) {
+		return new $type($value);
 	}
 
 	/**

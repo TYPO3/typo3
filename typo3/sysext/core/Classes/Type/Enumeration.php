@@ -36,7 +36,7 @@ use TYPO3\CMS\Core\Type\Exception;
  * The prefix "Abstract" has been left out by intention because
  * a "type" is abstract by definition.
  */
-abstract class Enumeration {
+abstract class Enumeration implements TypeInterface {
 
 	/**
 	 * @var mixed
@@ -55,7 +55,7 @@ abstract class Enumeration {
 	public function __construct($value = NULL) {
 		if ($value === NULL && !defined('static::__default')) {
 			throw new Exception\InvalidEnumerationValueException(
-				sprintf('A value for %s is required if no __default is defined.', __CLASS__),
+				sprintf('A value for %s is required if no __default is defined.', get_class($this)),
 				1381512753
 			);
 		}
@@ -65,7 +65,7 @@ abstract class Enumeration {
 		$this->loadValues();
 		if (!$this->isValid($value)) {
 			throw new Exception\InvalidEnumerationValueException(
-				sprintf('Invalid value %s for %s', $value, __CLASS__),
+				sprintf('Invalid value %s for %s', $value, get_class($this)),
 				1381512761
 			);
 		}
@@ -77,7 +77,7 @@ abstract class Enumeration {
 	 * @internal param string $class
 	 */
 	protected function loadValues() {
-		$class = get_called_class();
+		$class = get_class($this);
 
 		if (isset(static::$enumConstants[$class])) {
 			return;
@@ -137,14 +137,14 @@ abstract class Enumeration {
 	 * @throws Exception\InvalidEnumerationValueException
 	 */
 	protected function setValue($value) {
-		$enumKey = array_search($value, static::$enumConstants[get_called_class()]);
+		$enumKey = array_search($value, static::$enumConstants[get_class($this)]);
 		if ($enumKey === FALSE) {
 			throw new Exception\InvalidEnumerationValueException(
 				sprintf('Invalid value %s for %s', $value, __CLASS__),
 				1381615295
 			);
 		}
-		$this->value = static::$enumConstants[get_called_class()][$enumKey];
+		$this->value = static::$enumConstants[get_class($this)][$enumKey];
 	}
 
 	/**
@@ -154,7 +154,13 @@ abstract class Enumeration {
 	 * @return boolean
 	 */
 	protected function isValid($value) {
-		return in_array($value, static::$enumConstants[get_called_class()]);
+		$value = (string) $value;
+		foreach (static::$enumConstants[get_class($this)] as $constantValue) {
+			if ($value === (string) $constantValue) {
+				return TRUE;
+			}
+		}
+		return FALSE;
 	}
 
 	/**
@@ -166,7 +172,7 @@ abstract class Enumeration {
 	 * @return array
 	 */
 	public function getConstants($include_default = FALSE) {
-		$enumConstants = static::$enumConstants[get_called_class()];
+		$enumConstants = static::$enumConstants[get_class($this)];
 		if (!$include_default) {
 			unset($enumConstants['__default']);
 		}
