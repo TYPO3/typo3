@@ -47,8 +47,6 @@ class FileTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->singletonInstances = \TYPO3\CMS\Core\Utility\GeneralUtility::getSingletonInstances();
 		$this->storageMock = $this->getMock('TYPO3\CMS\Core\Resource\ResourceStorage', array(), array(), '', FALSE);
 		$this->storageMock->expects($this->any())->method('getUid')->will($this->returnValue(5));
-
-		\TYPO3\CMS\Core\Utility\GeneralUtility::purgeInstances();
 	}
 
 	public function tearDown() {
@@ -186,15 +184,25 @@ class FileTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function updatePropertiesReloadsStorageObjectIfStorageChanges() {
+		$fileProperties = array(
+			'uid' => 1,
+			'storage' => 'first',
+		);
+		$sut = $this->getMock(
+			'TYPO3\\CMS\\Core\\Resource\\File',
+			array('loadStorage'),
+			array($fileProperties, $this->storageMock)
+		);
 		$mockedNewStorage = $this->getMock('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', array(), array(), '', FALSE);
-		$mockedOldStorage = $this->getMock('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', array(), array(), '', FALSE);
-		$mockedOldStorage->expects($this->any())->method('getUid')->will($this->returnValue(1));
-		$fixture = new \TYPO3\CMS\Core\Resource\File(array('uid' => 1, 'foo' => 'asdf', 'baz' => 'fdsw', 'identifier' => '/test', 'storage' => 1), $mockedOldStorage);
 		$mockedResourceFactory = $this->getMock('TYPO3\\CMS\\Core\\Resource\\ResourceFactory');
-		$mockedResourceFactory->expects($this->once())->method('getStorageObject')->with(2)->will($this->returnValue($mockedNewStorage));
+		$mockedResourceFactory
+			->expects($this->once())
+			->method('getStorageObject')
+			->will($this->returnValue($mockedNewStorage));
 		\TYPO3\CMS\Core\Utility\GeneralUtility::setSingletonInstance('TYPO3\\CMS\\Core\\Resource\\ResourceFactory', $mockedResourceFactory);
-		$fixture->updateProperties(array('storage' => 2));
-		$this->assertSame($mockedNewStorage, $fixture->getStorage());
+
+		$sut->updateProperties(array('storage' => 'different'));
+		$this->assertSame($mockedNewStorage, $sut->getStorage());
 	}
 
 	/**
