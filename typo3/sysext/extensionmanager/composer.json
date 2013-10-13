@@ -1,0 +1,15 @@
+{
+	"name": "typo3/cms/extensionmanager",
+	"type": "typo3cms-framework",
+	"description": "TYPO3 Core",
+	"homepage": "http://typo3.org",
+	"license": ["GPL-2.0+"],
+	"version": "6.2.0",
+
+	"require": {
+		"typo3/cms/core": "*"
+	},
+	"replace": {
+		"extensionmanager": "*"
+	}
+}
