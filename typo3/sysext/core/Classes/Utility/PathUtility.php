@@ -201,7 +201,7 @@ class PathUtility {
 	 */
 	static public function isAbsolutePath($path) {
 		// On Windows also a path starting with a drive letter is absolute: X:/
-		if (static::isWindows() && substr($path, 1, 2) === ':/') {
+		if (static::isWindows() && (substr($path, 1, 2) === ':/' || substr($path, 1, 2) === ':\\')) {
 			return TRUE;
 		}
 		// Path starting with a / is always absolute, on every system

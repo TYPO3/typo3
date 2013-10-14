@@ -3554,7 +3554,7 @@ Connection: close
 	 */
 	static public function isAbsPath($path) {
 		// On Windows also a path starting with a drive letter is absolute: X:/
-		if (TYPO3_OS === 'WIN' && substr($path, 1, 2) === ':/') {
+		if (TYPO3_OS === 'WIN' && (substr($path, 1, 2) === ':/' || substr($path, 1, 2) === ':\\')) {
 			return TRUE;
 		}
 		// Path starting with a / is always absolute, on every system
