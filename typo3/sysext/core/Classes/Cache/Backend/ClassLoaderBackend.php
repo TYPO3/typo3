@@ -60,11 +60,11 @@ class ClassLoaderBackend extends SimpleFileBackend {
 		if ($entryIdentifier !== basename($entryIdentifier)) {
 			throw new \InvalidArgumentException('The specified entry identifier (' . $entryIdentifier . ') must not contain a path segment.', 1364205166);
 		}
-		if ($filePath[0] === '/' && \TYPO3\CMS\Core\Utility\GeneralUtility::isAllowedAbsPath($filePath)) {
+		if (\TYPO3\CMS\Core\Utility\GeneralUtility::isAllowedAbsPath($filePath)) {
 			// Make relative if absolute to prevent wrong entries if the whole installation is moved or copied
 			$filePath = \TYPO3\CMS\Core\Utility\PathUtility::getRelativePath($this->cacheDirectory, dirname($filePath)) . basename($filePath);
 		}
-		if ($filePath[0] === '/') {
+		if (PathUtility::isAbsolutePath($filePath)) {
 			$this->set($entryIdentifier, '<?php require \'' . $filePath . '\';');
 		} else {
 			$this->set($entryIdentifier, '<?php require __DIR__ . \'/' . $filePath . '\';');
