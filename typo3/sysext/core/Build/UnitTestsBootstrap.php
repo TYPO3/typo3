@@ -46,6 +46,20 @@ namespace TYPO3\CMS\Core\Build;
  */
 
 /**
+ * Be nice and give a hint if someone is executing the tests with cli dispatch
+ */
+if (defined('TYPO3_MODE')) {
+	array_shift($_SERVER['argv']);
+	echo 'Please run the unit tests using the following command:' . chr(10);
+	echo sprintf(
+		'typo3conf/ext/phpunit/Composer/vendor/bin/phpunit %s',
+		implode(' ', $_SERVER['argv'])
+	) . chr(10);
+	echo chr(10);
+	exit(1);
+}
+
+/**
  * Find out web path by environment variable or current working directory
  */
 if (getenv('TYPO3_PATH_WEB')) {
