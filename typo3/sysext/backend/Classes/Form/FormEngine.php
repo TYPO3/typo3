@@ -560,7 +560,7 @@ class FormEngine {
 	public $templateFile = '';
 
 	/**
-	 * @var int
+	 * @var integer
 	 */
 	protected $multiSelectFilterCount = 0;
 
@@ -2314,7 +2314,7 @@ function ' . $evalData . '(value) {
 
 			if (isset($config['multiSelectFilterItems']) && is_array($config['multiSelectFilterItems']) && count($config['multiSelectFilterItems']) > 1) {
 				$filterDropDownOptions = array();
-				foreach($config['multiSelectFilterItems'] as $optionElement) {
+				foreach ($config['multiSelectFilterItems'] as $optionElement) {
 					$filterDropDownOptions[] = '<option value="' . htmlspecialchars($this->sL($optionElement[0])) . '">' . htmlspecialchars((isset($optionElement[1]) && $optionElement[1] != '') ? $this->sL($optionElement[1]) : $this->sL($optionElement[0])) . '</option>';
 				}
 				$filterSelectbox = '
