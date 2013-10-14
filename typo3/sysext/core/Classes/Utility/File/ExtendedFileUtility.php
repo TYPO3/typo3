@@ -924,7 +924,7 @@ class ExtendedFileUtility extends \TYPO3\CMS\Core\Utility\File\BasicFileUtility 
 				}
 				/** @var $fileObject File */
 				$fileObject = $targetFolderObject->addUploadedFile($fileInfo, $conflictMode);
-				$this->getIndexerService()->indexFile($fileObject, FALSE);
+				$fileObject = $this->getIndexerService()->indexFile($fileObject);
 				$resultObjects[] = $fileObject;
 				$this->writelog(1, 0, 1, 'Uploading file "%s" to "%s"', array($fileInfo['name'], $targetFolderObject->getIdentifier()));
 			} catch (\TYPO3\CMS\Core\Resource\Exception\UploadException $e) {

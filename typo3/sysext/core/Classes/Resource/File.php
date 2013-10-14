@@ -425,4 +425,21 @@ class File extends AbstractFile {
 		}
 		return $this->indexerService;
 	}
+
+	/**
+	 * @param boolean $indexingState
+	 * @internal Only for usage in Indexer
+	 */
+	public function setIndexingInProgess($indexingState) {
+		$this->indexingInProgress = (boolean)$indexingState;
+	}
+
+	/**
+	 * @param $key
+	 * @internal Only for use in Repositories and indexer
+	 * @return mixed
+	 */
+	public function _getPropertyRaw($key) {
+		return parent::getProperty($key);
+	}
 }

@@ -89,21 +89,18 @@ class IndexerService implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @throws \RuntimeException
 	 */
 	public function indexFile(File $fileObject, $updateObject = TRUE) {
+		$fileObject->setIndexingInProgess(TRUE);
 		// Get the file information of this object
 		$fileInfo = $this->gatherFileInformation($fileObject);
 		// Signal slot BEFORE the file was indexed
 		$this->emitPreFileIndexSignal($fileObject, $fileInfo);
-		// @todo: this should be done via services in the future
-		// @todo: this should take remote services into account
-		if ($fileInfo['type'] == $fileObject::FILETYPE_IMAGE && !$fileInfo['width']) {
-			$rawFileLocation = $fileObject->getForLocalProcessing(FALSE);
-			list($fileInfo['width'], $fileInfo['height']) = getimagesize($rawFileLocation);
-		}
+
 		// If the file is already indexed, then the file information will
 		// be updated on the existing record
 		if ($fileObject->isIndexed()) {
 			$fileInfo['missing'] = 0;
-			$GLOBALS['TYPO3_DB']->exec_UPDATEquery('sys_file', sprintf('uid = %d', $fileObject->getUid()), $fileInfo);
+			$fileObject->updateProperties($fileInfo);
+			$this->getFileIndexRepository()->update($fileObject);
 		} else {
 			// Check if a file has been moved outside of FAL -- we have some
 			// orphaned index record in this case we could update
@@ -143,8 +140,8 @@ class IndexerService implements \TYPO3\CMS\Core\SingletonInterface {
 				}
 				$indexRecord = array_merge($fileInfo, $additionalInfo);
 
-				$GLOBALS['TYPO3_DB']->exec_INSERTquery('sys_file', $indexRecord);
-				$fileInfo['uid'] = $GLOBALS['TYPO3_DB']->sql_insert_id();
+				$fileObject->updateProperties($indexRecord);
+				$this->getFileIndexRepository()->add($fileObject);
 			}
 		}
 		// Check for an error during the execution and throw an exception
@@ -152,10 +149,16 @@ class IndexerService implements \TYPO3\CMS\Core\SingletonInterface {
 		if ($error) {
 			throw new \RuntimeException('Error during file indexing: "' . $error . '"', 1314455642);
 		}
+		if ($fileInfo['type'] == $fileObject::FILETYPE_IMAGE) {
+			$rawFileLocation = $fileObject->getForLocalProcessing(FALSE);
+			$metaData = array();
+			list($metaData['width'], $metaData['height']) = getimagesize($rawFileLocation);
+			$this->getMetaDataRepository()->update($fileObject->getUid(), $metaData);
+		}
 		// Signal slot AFTER the file was indexed
 		$this->emitPostFileIndexSignal($fileObject, $fileInfo);
+		$fileObject->setIndexingInProgess(FALSE);
 		if ($updateObject) {
-			$fileObject->updateProperties($fileInfo);
 			return $fileObject;
 		} else {
 			return $fileInfo;
@@ -351,6 +354,13 @@ class IndexerService implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	protected function getObjectManager() {
 		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+	}
+
+	/**
+	 * @return \TYPO3\CMS\Core\Resource\Index\MetaDataRepository
+	 */
+	protected function getMetaDataRepository() {
+		return GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\Index\\MetaDataRepository');
 	}
 
 }

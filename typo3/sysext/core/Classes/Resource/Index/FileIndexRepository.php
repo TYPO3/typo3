@@ -160,6 +160,9 @@ class FileIndexRepository implements SingletonInterface {
 	public function add(File $file) {
 		if ($this->hasIndexRecord($file)) {
 			$this->update($file);
+			if ($file->_getPropertyRaw('uid') === NULL) {
+				$file->updateProperties($this->findOneByFileObject($file));
+			}
 		} else {
 			$data = array_intersect_key($file->getProperties(), array_flip($this->fields));
 			$this->getDatabase()->exec_INSERTquery($this->table, $data);
@@ -174,17 +177,7 @@ class FileIndexRepository implements SingletonInterface {
 	 * @return bool
 	 */
 	public function hasIndexRecord(File $file) {
-		if (intval($file->getUid()) > 0) {
-			$where = 'uid=' . intval($file->getUid());
-
-		} else {
-			$where = sprintf(
-				'storage=%u AND identifier=%s',
-				intval($file->getStorage()->getUid()),
-				$this->getDatabase()->fullQuoteStr($file->getIdentifier(), $this->table)
-			);
-		}
-		return $this->getDatabase()->exec_SELECTcountRows('uid', $this->table, $where) === 1;
+		return $this->getDatabase()->exec_SELECTcountRows('uid', $this->table, $this->getWhereClauseForFile($file)) === 1;
 	}
 
 	/**
@@ -200,7 +193,27 @@ class FileIndexRepository implements SingletonInterface {
 		}
 		if (count($updateRow) > 0) {
 			$updateRow['tstamp'] = time();
-			$this->getDatabase()->exec_UPDATEquery($this->table, 'uid=' . intval($file->getUid()), $updateRow);
+			$this->getDatabase()->exec_UPDATEquery($this->table, $this->getWhereClauseForFile($file), $updateRow);
 		}
+	}
+
+	/**
+	 * Returns a where clause to find a file in database
+	 *
+	 * @param File $file
+	 *
+	 * @return string
+	 */
+	protected function getWhereClauseForFile(File $file) {
+		if (intval($file->_getPropertyRaw('uid')) > 0) {
+			$where = 'uid=' . intval($file->getUid());
+		} else {
+			$where = sprintf(
+				'storage=%u AND identifier=%s',
+				intval($file->getStorage()->getUid()),
+				$this->getDatabase()->fullQuoteStr($file->_getPropertyRaw('identifier'), $this->table)
+			);
+		}
+		return $where;
 	}
 }

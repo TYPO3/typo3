@@ -113,4 +113,23 @@ class MetaDataRepository implements SingletonInterface {
 
 		return $record;
 	}
+
+	/**
+	 * Updates the metadata record in the database
+	 *
+	 * @internal
+	 * @param int $fileUid the file uid to update
+	 * @param array $data Data to update
+	 */
+	public function update($fileUid, array $data) {
+		$updateRow = array_intersect_key($data, $this->getDatabase()->admin_get_fields($this->tableName));
+		if (array_key_exists('uid', $data)) {
+			unset($data['uid']);
+		}
+		$row = $this->findByFileUid($fileUid);
+		if (count($updateRow) > 0) {
+			$updateRow['tstamp'] = time();
+			$this->getDatabase()->exec_UPDATEquery($this->tableName, 'uid = ' . intval($row['uid']), $updateRow);
+		}
+	}
 }
