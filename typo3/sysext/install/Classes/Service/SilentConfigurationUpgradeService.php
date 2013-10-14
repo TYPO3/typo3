@@ -80,6 +80,8 @@ class SilentConfigurationUpgradeService {
 		'FE/defaultTypoScript_editorcfg.',
 		// #25099
 		'FE/simulateStaticDocuments',
+		// #52786
+		'FE/logfile_dir',
 		// #52011
 		'GFX/im_combine_filename',
 		// #52088
