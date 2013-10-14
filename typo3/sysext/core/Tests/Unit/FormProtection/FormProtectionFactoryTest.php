@@ -63,6 +63,8 @@ class FormProtectionFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function getForTypeBackEndWithExistingBackEndReturnsBackEndFormProtection() {
+		$GLOBALS['BE_USER'] = $this->getMock('TYPO3\CMS\Core\Authentication\BackendUserAuthentication', array(), array(), '', FALSE);
+		$GLOBALS['BE_USER']->user = array('uid' => uniqid());
 		$this->assertTrue(\TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get('TYPO3\\CMS\\Core\\FormProtection\\BackendFormProtection') instanceof \TYPO3\CMS\Core\FormProtection\BackendFormProtection);
 	}
 
@@ -70,6 +72,8 @@ class FormProtectionFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function getForTypeBackEndCalledTwoTimesReturnsTheSameInstance() {
+		$GLOBALS['BE_USER'] = $this->getMock('TYPO3\CMS\Core\Authentication\BackendUserAuthentication', array(), array(), '', FALSE);
+		$GLOBALS['BE_USER']->user = array('uid' => uniqid());
 		$this->assertSame(\TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get('TYPO3\\CMS\\Core\\FormProtection\\BackendFormProtection'), \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get('TYPO3\\CMS\\Core\\FormProtection\\BackendFormProtection'));
 	}
 
@@ -91,6 +95,8 @@ class FormProtectionFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function getForTypesInstallToolAndBackEndReturnsDifferentInstances() {
+		$GLOBALS['BE_USER'] = $this->getMock('TYPO3\CMS\Core\Authentication\BackendUserAuthentication', array(), array(), '', FALSE);
+		$GLOBALS['BE_USER']->user = array('uid' => uniqid());
 		$this->assertNotSame(\TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get('TYPO3\\CMS\\Core\\FormProtection\\InstallToolFormProtection'), \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get('TYPO3\\CMS\\Core\\FormProtection\\BackendFormProtection'));
 	}
 

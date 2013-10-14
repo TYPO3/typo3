@@ -108,12 +108,3 @@ require PATH_site . '/typo3/sysext/core/Classes/Core/Bootstrap.php';
 	->initializeBackendUserMounts()
 	// TODO: Needed at least for FormProtection tests
 	->initializeLanguageObject();
-
-/**
- * This is needed for some tests (e.g. FormProtection)
- * TODO: properly mock these tests
- */
-$GLOBALS['BE_USER']->user = array(
-	'uid' => 42,
-	'username' => 'unit_test_fake_user',
-);

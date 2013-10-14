@@ -77,10 +77,23 @@ class BackendUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 */
-	public function logoffCleansFormProtection() {
-		$formProtection = $this->getMock('TYPO3\\CMS\\Core\\FormProtection\\BackendFormProtection', array('clean'));
-		$formProtection->expects($this->atLeastOnce())->method('clean');
-		\TYPO3\CMS\Core\FormProtection\FormProtectionFactory::set('TYPO3\\CMS\\Core\\FormProtection\\BackendFormProtection', $formProtection);
+	public function logoffCleansFormProtectionIfBackendUserIsLoggedIn() {
+		$formProtection = $this->getMock(
+			'TYPO3\\CMS\\Core\\FormProtection\\BackendFormProtection',
+			array('clean'),
+			array(),
+			'',
+			FALSE
+		);
+		\TYPO3\CMS\Core\FormProtection\FormProtectionFactory::set(
+			'TYPO3\\CMS\\Core\\FormProtection\\BackendFormProtection',
+			$formProtection
+		);
+		// logoff() call the static factory that has a dependency to a valid BE_USER object. Mock this away
+		$GLOBALS['BE_USER'] = $this->getMock('TYPO3\CMS\Core\Authentication\BackendUserAuthentication', array(), array(), '', FALSE);
+		$GLOBALS['BE_USER']->user = array('uid' => uniqid());
+
+		$formProtection->expects($this->once())->method('clean');
 		$this->fixture->logoff();
 	}
 
