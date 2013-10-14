@@ -1103,11 +1103,40 @@ class DatabaseRecordList extends \TYPO3\CMS\Recordlist\RecordList\AbstractDataba
 				}
 				// "Delete" link:
 				if ($table == 'pages' && $localCalcPerms & 4 || $table != 'pages' && $this->calcPerms & 16) {
+					// Check if the record version is in "deleted" state, because that will switch the action to "restore"
+					if ($GLOBALS['BE_USER']->workspace > 0 && isset($row['t3ver_state']) && (int)$row['t3ver_state'] === 2) {
+						$actionName = 'restore';
+						$refCountMsg = '';
+					} else {
+						$actionName = 'delete';
+						$refCountMsg = \TYPO3\CMS\Backend\Utility\BackendUtility::referenceCount(
+							$table,
+							$row['uid'],
+							' ' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.referencesToRecord'),
+							$this->getReferenceCount($table, $row['uid'])
+						)
+						. \TYPO3\CMS\Backend\Utility\BackendUtility::translationCount(
+							$table,
+							$row['uid'],
+							' ' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.translationsOfRecord')
+						);
+					}
+
 					$titleOrig = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle($table, $row, FALSE, TRUE);
 					$title = \TYPO3\CMS\Core\Utility\GeneralUtility::slashJS(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($titleOrig, $this->fixedL), 1);
+					$warningText = $GLOBALS['LANG']->JScharCode(
+						$GLOBALS['LANG']->getLL($actionName . 'Warning') . ' "' . $title . '" ' . $refCountMsg
+					);
+
 					$params = '&cmd[' . $table . '][' . $row['uid'] . '][delete]=1';
-					$refCountMsg = \TYPO3\CMS\Backend\Utility\BackendUtility::referenceCount($table, $row['uid'], (' ' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.referencesToRecord')), $this->getReferenceCount($table, $row['uid'])) . \TYPO3\CMS\Backend\Utility\BackendUtility::translationCount($table, $row['uid'], (' ' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.translationsOfRecord')));
-					$cells['delete'] = '<a href="#" onclick="' . htmlspecialchars(('if (confirm(' . $GLOBALS['LANG']->JScharCode(($GLOBALS['LANG']->getLL('deleteWarning') . ' "' . $title . '" ' . $refCountMsg)) . ')) {jumpToUrl(\'' . $GLOBALS['SOBE']->doc->issueCommand($params, -1) . '\');} return false;')) . '" title="' . $GLOBALS['LANG']->getLL('delete', TRUE) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-edit-delete') . '</a>';
+					$onClick = htmlspecialchars(
+						('if (confirm(' . $warningText . ')) {jumpToUrl(\''
+							. $GLOBALS['SOBE']->doc->issueCommand($params, -1) . '\');} return false;')
+					);
+
+					$icon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-edit-' . $actionName);
+					$linkTitle = $GLOBALS['LANG']->getLL($actionName, TRUE);
+					$cells['delete'] = '<a href="#" onclick="' . $onClick . '" title="' . $linkTitle . '">' . $icon . '</a>';
 				} elseif (!$this->table) {
 					$cells['delete'] = $this->spaceIcon;
 				}
