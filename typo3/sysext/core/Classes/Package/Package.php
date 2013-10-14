@@ -19,7 +19,7 @@ namespace TYPO3\CMS\Core\Package;
  */
 class Package extends \TYPO3\Flow\Package\Package implements PackageInterface {
 
-	const PATTERN_MATCH_EXTENSIONKEY = '/^[0-9a-z_]+$/i';
+	const PATTERN_MATCH_EXTENSIONKEY = '/^[0-9a-z_-]+$/i';
 
 	/**
 	 * @var array

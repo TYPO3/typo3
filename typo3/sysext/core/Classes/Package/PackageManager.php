@@ -59,7 +59,7 @@ class PackageManager extends \TYPO3\Flow\Package\PackageManager implements \TYPO
 	protected $packageAliasMap = array();
 
 	/**
-	 *
+	 * Constructor
 	 */
 	public function __construct() {
 		$this->packagesBasePaths = array(
@@ -170,7 +170,7 @@ class PackageManager extends \TYPO3\Flow\Package\PackageManager implements \TYPO
 	protected function saveToPackageCache() {
 		$cacheEntryIdentifier = $this->getCacheEntryIdentifier();
 		if ($cacheEntryIdentifier !== NULL && !$this->coreCache->has($cacheEntryIdentifier)) {
-			$cacheEntryPath = rtrim($this->coreCache->getBackend()->getCacheDirectory(), '/\\');
+			$cacheEntryPath = rtrim(\TYPO3\CMS\Core\Utility\GeneralUtility::fixWindowsFilePath($this->coreCache->getBackend()->getCacheDirectory()), '/');
 			// Package objects get their own cache entry, so PHP does not have to parse the serialized string
 			$packageObjectsCacheEntryIdentifier = uniqid('PackageObjects_');
 			// Build cache file
@@ -275,10 +275,11 @@ class PackageManager extends \TYPO3\Flow\Package\PackageManager implements \TYPO
 				$this->composerNameToPackageKeyMap[strtolower($composerManifest->name)] = $packageKey;
 				$this->packageStatesConfiguration['packages'][$packageKey]['manifestPath'] = substr($composerManifestPath, strlen($packagePath)) ? : '';
 				$this->packageStatesConfiguration['packages'][$packageKey]['composerName'] = $composerManifest->name;
-			}
-			catch (\TYPO3\Flow\Package\Exception\MissingPackageManifestException $exception) {
+			} catch (\TYPO3\Flow\Package\Exception\MissingPackageManifestException $exception) {
 				$relativePackagePath = substr($packagePath, strlen($packagesBasePath));
 				$packageKey = substr($relativePackagePath, strpos($relativePackagePath, '/') + 1, -1);
+			} catch (\TYPO3\Flow\Package\Exception\InvalidPackageKeyException $exception) {
+				continue;
 			}
 			if (!isset($this->packageStatesConfiguration['packages'][$packageKey]['state'])) {
 				$this->packageStatesConfiguration['packages'][$packageKey]['state'] = 'inactive';
@@ -290,7 +291,8 @@ class PackageManager extends \TYPO3\Flow\Package\PackageManager implements \TYPO
 			$this->packageStatesConfiguration['packages'][$packageKey]['classesPath'] = \TYPO3\Flow\Package\Package::DIRECTORY_CLASSES;
 		}
 
-		$this->registerPackagesFromConfiguration(!empty($this->packages));
+		$registerOnlyNewPackages = !empty($this->packages);
+		$this->registerPackagesFromConfiguration($registerOnlyNewPackages);
 		if ($this->packageStatesConfiguration != $previousPackageStatesConfiguration) {
 			$this->sortAndsavePackageStates();
 		}
@@ -357,6 +359,9 @@ class PackageManager extends \TYPO3\Flow\Package\PackageManager implements \TYPO
 			try {
 				$package = $this->packageFactory->create($this->packagesBasePath, $packagePath, $packageKey, $classesPath, $manifestPath);
 			} catch (\TYPO3\Flow\Package\Exception\InvalidPackagePathException $exception) {
+				$this->unregisterPackageByPackageKey($packageKey);
+				continue;
+			} catch (\TYPO3\Flow\Package\Exception\InvalidPackageKeyException $exception) {
 				$this->unregisterPackageByPackageKey($packageKey);
 				continue;
 			}
