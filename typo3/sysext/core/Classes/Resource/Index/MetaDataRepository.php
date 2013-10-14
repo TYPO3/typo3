@@ -81,7 +81,9 @@ class MetaDataRepository implements SingletonInterface {
 			$record = $this->createMetaDataRecord($uid);
 		}
 
-		return $record;
+		$passedData = new \ArrayObject($record);
+		$this->emitRecordPostRetrievalSignal($passedData);
+		return $passedData->getArrayCopy();
 	}
 
 	/**
@@ -132,4 +134,38 @@ class MetaDataRepository implements SingletonInterface {
 			$this->getDatabase()->exec_UPDATEquery($this->tableName, 'uid = ' . intval($row['uid']), $updateRow);
 		}
 	}
+
+
+	/**
+	 * Get the SignalSlot dispatcher
+	 *
+	 * @return \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
+	 */
+	protected function getSignalSlotDispatcher() {
+		return $this->getObjectManager()->get('TYPO3\\CMS\\Extbase\\SignalSlot\\Dispatcher');
+	}
+
+	/**
+	 * Get the ObjectManager
+	 *
+	 * @return \TYPO3\CMS\Extbase\Object\ObjectManager
+	 */
+	protected function getObjectManager() {
+		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+	}
+
+
+
+	/**
+	 * Signal that is called after a record has been loaded from database
+	 * Allows other places to do extension of metadata at runtime or
+	 * for example translation and workspace overlay
+	 *
+	 * @param \ArrayObject $data
+	 * @signal
+	 */
+	protected function emitRecordPostRetrievalSignal(\ArrayObject $data) {
+		$this->getSignalSlotDispatcher()->dispatch('TYPO3\\CMS\\Core\\Resource\\Index\\MetaDataRepository', 'recordPostRetrieval', array($data));
+	}
+
 }
