@@ -154,7 +154,7 @@ class ProcessedFileRepository extends AbstractRepository {
 			$this->table,
 			'original=' . intval($file->getUid()) .
 				' AND task_type=' . $this->databaseConnection->fullQuoteStr($taskType, $this->table) .
-				' AND configuration=' . $this->databaseConnection->fullQuoteStr(serialize($configuration), $this->table)
+				' AND configurationsha1=' . $this->databaseConnection->fullQuoteStr(sha1(serialize($configuration)), $this->table)
 		);
 
 		if (is_array($databaseRow)) {

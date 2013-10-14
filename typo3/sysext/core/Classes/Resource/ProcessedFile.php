@@ -357,11 +357,13 @@ class ProcessedFile extends AbstractFile {
 			$properties['name'] = $this->getName();
 		}
 
+		$properties['configuration'] = serialize($this->processingConfiguration);
+
 		return array_merge($properties, array(
 			'storage' => $this->getStorage()->getUid(),
 			'checksum' => $this->calculateChecksum(),
 			'task_type' => $this->taskType,
-			'configuration' => serialize($this->processingConfiguration),
+			'configurationsha1' => sha1($properties['configuration']),
 			'original' => $this->originalFile->getUid(),
 			'originalfilesha1' => $this->originalFileSha1
 		));

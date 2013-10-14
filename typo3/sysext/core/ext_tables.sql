@@ -362,6 +362,7 @@ CREATE TABLE sys_file_processedfile (
 	identifier varchar(512) DEFAULT '' NOT NULL,
 	name tinytext,
 	configuration text,
+	configurationsha1 varchar(40) DEFAULT '' NOT NULL,
 	originalfilesha1 varchar(40) DEFAULT '' NOT NULL,
 	task_type varchar(200) DEFAULT '' NOT NULL,
 	checksum varchar(255) DEFAULT '' NOT NULL,
