@@ -31,7 +31,6 @@ namespace TYPO3\CMS\Core\Resource\Index;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\SingletonInterface;
 
-
 /**
  * Repository Class as an abstraction layer to sys_file_metadata
  *
@@ -76,7 +75,7 @@ class MetaDataRepository implements SingletonInterface {
 		if ($uid <= 0) {
 			throw new \RuntimeException('Metadata can only be retrieved for indexed files.', 1381590731);
 		}
-		$record = $this->getDatabase()->exec_SELECTgetSingleRow('*', $this->tableName, 'file = ' . $uid);
+		$record = $this->getDatabase()->exec_SELECTgetSingleRow('*', $this->tableName, 'file = ' . $uid . $this->getGeneralWhereClause());
 
 		if ($record === FALSE) {
 			$record = $this->createMetaDataRecord($uid);
@@ -91,8 +90,9 @@ class MetaDataRepository implements SingletonInterface {
 	 * @return string
 	 */
 	protected function getGeneralWhereClause() {
-		return ' AND 1=1';
+		return ' AND sys_language_uid IN (0,-1) AND pid=0';
 	}
+
 	/**
 	 * Create empty
 	 *

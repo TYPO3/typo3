@@ -9,17 +9,14 @@ return array(
 		'type' => 'type',
 		'hideTable' => TRUE,
 		'rootLevel' => TRUE,
+		'languageField' => 'sys_language_uid',
+		'transOrigPointerField' => 'l10n_parent',
+		'transOrigDiffSourceField' => 'l10n_diffsource',
 		'versioningWS' => TRUE,
 		'origUid' => 't3_origuid',
 		'default_sortby' => 'ORDER BY crdate DESC',
 		'dividers2tabs' => TRUE,
-		'typeicon_column' => '__row|file|type',
 		'typeicon_classes' => array(
-			'1' => 'mimetypes-text-text',
-			'2' => 'mimetypes-media-image',
-			'3' => 'mimetypes-media-audio',
-			'4' => 'mimetypes-media-video',
-			'5' => 'mimetypes-application',
 			'default' => 'mimetypes-other-other'
 		),
 		'security' => array(
@@ -31,6 +28,38 @@ return array(
 		'showRecordFieldList' => 'file, title, description, alternative'
 	),
 	'columns' => array(
+		'sys_language_uid' => array(
+			'exclude' => 0,
+			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.language',
+			'config' => array(
+				'type' => 'select',
+				'foreign_table' => 'sys_language',
+				'foreign_table_where' => 'ORDER BY sys_language.title',
+				'items' => array(
+					array('LLL:EXT:lang/locallang_general.xlf:LGL.allLanguages', -1),
+					array('LLL:EXT:lang/locallang_general.xlf:LGL.default_value', 0)
+				)
+			)
+		),
+		'l10n_parent' => array(
+			'displayCond' => 'FIELD:sys_language_uid:>:0',
+			'exclude' => 0,
+			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.l18n_parent',
+			'config' => array(
+				'type' => 'select',
+				'items' => array(
+					array('', 0)
+				),
+				'foreign_table' => 'sys_file_reference',
+				'foreign_table_where' => 'AND sys_file_reference.uid=###REC_FIELD_l10n_parent### AND sys_file_reference.sys_language_uid IN (-1,0)'
+			)
+		),
+		'l10n_diffsource' => array(
+			'exclude' => 0,
+			'config' => array(
+				'type' => 'passthrough'
+			)
+		),
 		't3ver_label' => array(
 			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.versionLabel',
 			'config' => array(
@@ -46,6 +75,7 @@ return array(
 			)
 		),
 		'file' => array(
+			'displayCond' => 'FIELD:sys_language_uid:=:0',
 			'exclude' => 0,
 			'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file',
 			'config' => array(
@@ -60,6 +90,7 @@ return array(
 		'title' => array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file.title',
+			'l10n_mode' => 'prefixLangTitle',
 			'config' => array(
 				'type' => 'input',
 				'size' => '30',
@@ -69,6 +100,7 @@ return array(
 		'description' => array(
 			'exclude' => 0,
 			'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file.description',
+			'l10n_mode' => 'prefixLangTitle',
 			'config' => array(
 				'type' => 'text',
 				'cols' => '40',
@@ -84,6 +116,14 @@ return array(
 				'rows' => '3'
 			)
 		),
+		'width' => array(
+			'exclude' => 0,
+			'l10n_mode' => 'exclude'
+		),
+		'height' => array(
+			'exclude' => 0,
+			'l10n_mode' => 'exclude'
+		)
 	),
 	'types' => array(
 		'1' => array('showitem' => 'fileinfo, title, description, alternative')

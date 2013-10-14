@@ -477,9 +477,10 @@ class ExtensionManagementUtility {
 					'width' => '64',
 					'height' => '64',
 				),
-				'showPossibleLocalizationRecords' => TRUE,
-				'showRemovedLocalizationRecords' => TRUE,
-				'showSynchronizationLink' => TRUE,
+				'showPossibleLocalizationRecords' => FALSE,
+				'showRemovedLocalizationRecords' => FALSE,
+				'showSynchronizationLink' => FALSE,
+				'showAllLocalizationLink' => FALSE,
 
 				'enabledControls' => array(
 					'info' => FALSE,
