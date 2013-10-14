@@ -117,9 +117,3 @@ $GLOBALS['BE_USER']->user = array(
 	'uid' => 42,
 	'username' => 'unit_test_fake_user',
 );
-
-/**
- * This is needed for the viewOnClick test not to fail if workspace extension is installed
- * TODO: properly mock these tests
- */
-$GLOBALS['BE_USER']->workspace = 0;

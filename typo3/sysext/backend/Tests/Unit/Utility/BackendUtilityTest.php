@@ -681,9 +681,16 @@ class BackendUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function viewOnClickReturnsOnClickCodeWithAlternativeUrl() {
+		// Make sure the hook inside viewOnClick is not fired. This may be removed if unit tests
+		// bootstrap does not initialize TYPO3_CONF_VARS anymore.
+		unset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['viewOnClickClass']);
+
 		$alternativeUrl = 'https://typo3.org/about/typo3-the-cms/the-history-of-typo3/#section';
 		$onclickCode = 'var previewWin = window.open(\'' . $alternativeUrl . '\',\'newTYPO3frontendWindow\');';
-		$this->assertStringMatchesFormat($onclickCode, BackendUtility::viewOnClick(NULL, NULL, NULL, NULL, $alternativeUrl, NULL, FALSE));
+		$this->assertStringMatchesFormat(
+			$onclickCode,
+			BackendUtility::viewOnClick(NULL, NULL, NULL, NULL, $alternativeUrl, NULL, FALSE)
+		);
 	}
 
 	/**
