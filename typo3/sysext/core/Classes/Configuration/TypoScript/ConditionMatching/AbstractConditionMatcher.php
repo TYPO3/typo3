@@ -305,6 +305,10 @@ abstract class AbstractConditionMatcher {
 				}
 				break;
 			case 'IP':
+				if ($value === 'devIP') {
+					$value = trim($GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask']);
+				}
+
 				if (GeneralUtility::cmpIP(GeneralUtility::getIndpEnv('REMOTE_ADDR'), $value)) {
 					return TRUE;
 				}
