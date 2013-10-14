@@ -41,6 +41,14 @@ class Document extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	protected $packageKey;
 
 	/**
+	 * extensionKey
+	 *
+	 * @var string
+	 * @validate NotEmpty
+	 */
+	protected $extensionKey;
+
+	/**
 	 * icon
 	 *
 	 * @var string
@@ -93,6 +101,26 @@ class Document extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 */
 	public function setPackageKey($packageKey) {
 		$this->packageKey = $packageKey;
+		return $this;
+	}
+
+	/**
+	 * Returns the extension key.
+	 *
+	 * @return string $extensionKey
+	 */
+	public function getExtensionKey() {
+		return $this->extensionKey;
+	}
+
+	/**
+	 * Sets the extension key.
+	 *
+	 * @param string $extensionKey
+	 * @return Document
+	 */
+	public function setExtensionKey($extensionKey) {
+		$this->extensionKey = $extensionKey;
 		return $this;
 	}
 

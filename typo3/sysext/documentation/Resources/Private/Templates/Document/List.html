@@ -23,6 +23,7 @@
 		<thead>
 			<tr>
 				<th><f:translate key="tx_documentation_domain_model_document.title" /></th>
+				<th><f:translate key="tx_documentation_domain_model_document.extension_key" /></th>
 				<th><f:translate key="tx_documentation_domain_model_documenttranslation.description" /></th>
 				<th><f:translate key="tx_documentation_domain_model_documenttranslation.formats" /></th>
 			</tr>
@@ -35,6 +36,7 @@
 							<img src="../{document.icon}" title="{translation.title}" alt="{translation.title}" />
 							{translation.title}
 						</td>
+						<td>{document.extensionKey}</td>
 						<td>{translation.description}</td>
 						<td class="formats">
 							<doc:formats documentTranslation="{translation}" />

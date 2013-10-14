@@ -152,6 +152,9 @@ class DocumentRepository {
 			$languages = \TYPO3\CMS\Core\Utility\GeneralUtility::get_dirs(PATH_site . $languagePath);
 			foreach ($languages as $language) {
 				$metadata = $this->getMetadata($documentKey, $language);
+				if (!empty($metadata['extensionKey'])) {
+					$document->setExtensionKey($metadata['extensionKey']);
+				}
 
 				/** @var \TYPO3\CMS\Documentation\Domain\Model\DocumentTranslation $documentTranslation */
 				$documentTranslation = $this->objectManager->get('TYPO3\\CMS\\Documentation\\Domain\\Model\\DocumentTranslation')
@@ -220,6 +223,7 @@ class DocumentRepository {
 				/** @var \TYPO3\CMS\Documentation\Domain\Model\Document $document */
 				$document = $this->objectManager->get('TYPO3\\CMS\\Documentation\\Domain\\Model\\Document')
 					->setPackageKey($documentKey)
+					->setExtensionKey($extensionKey)
 					->setIcon($icon);
 
 				$metadata = $this->getMetadata($documentKey, $language);

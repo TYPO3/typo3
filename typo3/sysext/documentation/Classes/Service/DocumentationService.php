@@ -79,6 +79,7 @@ class DocumentationService {
 					'icon'    => \TYPO3\CMS\Documentation\Utility\GeneralUtility::getIcon($documentKey),
 					'type'    => 'Extension',
 					'key'     => $documentKey,
+					'shortcut' => $extensionKey,
 					'url'     => 'http://docs.typo3.org/typo3cms/extensions/' . $extensionKey . '/',
 					'version' => $version,
 				);
