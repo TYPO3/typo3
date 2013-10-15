@@ -62,7 +62,10 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$GLOBALS['TSFE']->csConvObj = new \TYPO3\CMS\Core\Charset\CharsetConverter();
 		$GLOBALS['TSFE']->renderCharset = 'utf-8';
 		$GLOBALS['TYPO3_CONF_VARS']['SYS']['TYPO3\\CMS\\Core\\Charset\\CharsetConverter_utils'] = 'mbstring';
-		$this->cObj = $this->getAccessibleMock('\\TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer', array('dummy'));
+		$this->cObj = $this->getAccessibleMock(
+			'TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer',
+			array('getResourceFactory')
+		);
 		$this->cObj->start(array(), 'tt_content');
 	}
 
@@ -88,14 +91,16 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 */
-	public function getImgResourceHookGetsCalled() {
+	public function getImgResourceCallsGetImgResourcePostProcessHook() {
 		$this->template
 			->expects($this->atLeastOnce())
 			->method('getFileName')
 			->with('typo3/clear.gif')
 			->will($this->returnValue('typo3/clear.gif'));
-		// Reset some global variable to not trigger unrelated method code parts
-		$GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'] = '';
+
+		$resourceFactory = $this->getMock('TYPO3\\CMS\\Core\\Resource\\ResourceFactory', array(), array(), '', FALSE);
+		$this->cObj->expects($this->any())->method('getResourceFactory')->will($this->returnValue($resourceFactory));
+
 		$className = uniqid('tx_coretest');
 		$getImgResourceHookMock = $this->getMock('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectGetImageResourceHookInterface', array('getImgResourcePostProcess'), array(), $className);
 		$getImgResourceHookMock
@@ -104,7 +109,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			->will($this->returnCallback(array($this, 'isGetImgResourceHookCalledCallback')));
 		$getImgResourceHookObjects = array($getImgResourceHookMock);
 		$this->cObj->_setRef('getImgResourceHookObjects', $getImgResourceHookObjects);
-		$this->cObj->IMAGE(array('file' => 'typo3/clear.gif'));
+		$this->cObj->getImgResource('typo3/clear.gif', array());
 	}
 
 	/**
@@ -2355,6 +2360,9 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->cObj->expects($this->any())
 			->method('getImgResource')
 			->will($this->returnValue(array(100, 100, NULL, 'bar-file.jpg')));
+
+		$resourceFactory = $this->getMock('TYPO3\\CMS\\Core\\Resource\\ResourceFactory', array(), array(), '', FALSE);
+		$this->cObj->expects($this->any())->method('getResourceFactory')->will($this->returnValue($resourceFactory));
 
 		$className = uniqid('tx_coretest_getImageSourceCollectionHookCalled');
 		$getImageSourceCollectionHookMock = $this->getMock('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectOneSourceCollectionHookInterface', array('getOneSourceCollection'), array(), $className);

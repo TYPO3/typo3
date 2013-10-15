@@ -5301,19 +5301,19 @@ class ContentObjectRenderer {
 
 					if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($file)) {
 						if (!empty($fileArray['treatIdAsReference'])) {
-							$fileObject = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getFileReferenceObject($file)->getOriginalFile();
+							$fileObject = $this->getResourceFactory()->getFileReferenceObject($file)->getOriginalFile();
 						} else {
-							$fileObject = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getFileObject($file);
+							$fileObject = $this->getResourceFactory()->getFileObject($file);
 						}
 					} elseif (preg_match('/^(0|[1-9][0-9]*):/', $file)) { // combined identifier
-						$fileObject = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->retrieveFileOrFolderObject($file);
+						$fileObject = $this->getResourceFactory()->retrieveFileOrFolderObject($file);
 					} else {
 						if (isset($importedFile) && !empty($importedFile) && !empty($fileArray['import'])) {
 							$file = $fileArray['import'] . $file;
 						}
 						// clean ../ sections of the path and resolve to proper string. This is necessary for the Tx_File_BackwardsCompatibility_TslibContentAdapter to work.
 						$file = GeneralUtility::resolveBackPath($file);
-						$fileObject = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->retrieveFileOrFolderObject($file);
+						$fileObject = $this->getResourceFactory()->retrieveFileOrFolderObject($file);
 					}
 				} catch(\TYPO3\CMS\Core\Resource\Exception $exception) {
 					/** @var \TYPO3\CMS\Core\Log\Logger $logger */
@@ -5804,7 +5804,7 @@ class ContentObjectRenderer {
 			// Resolve FAL-api "file:UID-of-sys_file-record" and "file:combined-identifier"
 			if ($linkHandlerKeyword === 'file') {
 				try {
-					$fileOrFolderObject = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->retrieveFileOrFolderObject($linkHandlerValue);
+					$fileOrFolderObject = $this->getResourceFactory()->retrieveFileOrFolderObject($linkHandlerValue);
 					// Link to a folder or file
 					if ($fileOrFolderObject instanceof \TYPO3\CMS\Core\Resource\ResourceInterface) {
 						$link_paramA[0] = $fileOrFolderObject->getPublicUrl();
@@ -8072,4 +8072,12 @@ class ContentObjectRenderer {
 		}
 	}
 
+	/**
+	 * Get instance of FAL resource factory
+	 *
+	 * @return \TYPO3\CMS\Core\Resource\ResourceFactory
+	 */
+	protected function getResourceFactory() {
+		return \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance();
+	}
 }
