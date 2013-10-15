@@ -232,4 +232,20 @@ class Package extends \TYPO3\Flow\Package\Package implements PackageInterface {
 		}
 		return $this->classAliases;
 	}
+
+	/**
+	 * Check whether the given package requirement (like "typo3/flow" or "php") is a composer package or not
+	 *
+	 * @param string $requirement the composer requirement string
+	 * @return boolean TRUE if $requirement is a composer package (contains a slash), FALSE otherwise
+	 */
+	protected function packageRequirementIsComposerPackage($requirement) {
+		//@TODO remove this workaround once extensionmanager can handle composer packages natively
+		if ($requirement === 'composer/installers') {
+			return FALSE;
+		}
+		return parent::packageRequirementIsComposerPackage($requirement);
+	}
+
+
 }

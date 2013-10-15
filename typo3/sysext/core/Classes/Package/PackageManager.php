@@ -428,7 +428,11 @@ class PackageManager extends \TYPO3\Flow\Package\PackageManager implements \TYPO
 		if (isset($this->packageAliasMap[$composerName])) {
 			return $this->packageAliasMap[$composerName];
 		}
-		return parent::getPackageKeyFromComposerName($composerName);
+		try {
+			return parent::getPackageKeyFromComposerName($composerName);
+		} catch (\TYPO3\Flow\Package\Exception\InvalidPackageStateException $exception) {
+			return $composerName;
+		}
 	}
 
 	/**

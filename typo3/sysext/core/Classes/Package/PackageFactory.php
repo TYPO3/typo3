@@ -94,7 +94,7 @@ class PackageFactory extends \TYPO3\Flow\Package\PackageFactory {
 			/**
 			 * @todo check that manifest name and directory follows convention
 			 */
-			$packageKey = preg_replace('/[^A-Za-z0-9._]/', '', $packageKey);
+			$packageKey = preg_replace('/[^A-Za-z0-9._-]/', '', $packageKey);
 			return $packageKey;
 		} else {
 			return parent::getPackageKeyFromManifest($manifest, $packagePath, $packagesBasePath);
