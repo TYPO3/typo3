@@ -1541,22 +1541,15 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 	/**
-	 * Checks if getData() works with type "file"
+	 * Basic check if getData gets the uid of a file object
 	 *
 	 * @test
 	 */
-	public function getDataWithTypeFile() {
-		$uid = rand();
-		$properties = array(
-			uniqid() => uniqid(),
-			uniqid() => uniqid(),
-			'uid' => $uid
-		);
-		$file = new \TYPO3\CMS\Core\Resource\File($properties,
-			$this->getMock('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', array(), array(), '', FALSE)
-		);
+	public function getDataWithTypeFileReturnsUidOfFileObject() {
+		$uid = uniqid();
+		$file = $this->getMock('TYPO3\\CMS\\Core\\Resource\File', array(), array(), '', FALSE);
+		$file->expects($this->once())->method('getUid')->will($this->returnValue($uid));
 		$this->cObj->setCurrentFile($file);
-
 		$this->assertEquals($uid, $this->cObj->getData('file:current:uid'));
 	}
 
