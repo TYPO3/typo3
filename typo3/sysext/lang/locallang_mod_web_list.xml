@@ -36,6 +36,7 @@
 			<label index="prevLevel">Move this page to the position after the current parent page (Inwards)</label>
 			<label index="nextLevel">Move this page to be a subpage of the page above (Outwards)</label>
 			<label index="delete">Delete record (!)</label>
+			<label index="restore">Restore record (!)</label>
 			<label index="history">Display change history / Un-do</label>
 			<label index="displayVersions">Display versions</label>
 			<label index="permissions">Set permissions for page</label>
@@ -46,6 +47,7 @@
 			<label index="editShownColumns">Edit all shown fields of the listed records</label>
 			<label index="editThisColumn">Edit the '%s' field of the listed records</label>
 			<label index="deleteWarning">Are you sure you want to delete this record?</label>
+			<label index="restoreWarning">Are you sure you want to restore this record by reverting the delete status?</label>
 			<label index="localization">Localization view</label>
 			<label index="defaultLanguage">Default</label>
 			<label index="multipleLanguages">All languages</label>

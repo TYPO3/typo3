@@ -1290,22 +1290,36 @@ class localRecordList extends recordList {
 
 					// "Delete" link:
 				if (($table=='pages' && ($localCalcPerms&4)) || ($table!='pages' && ($this->calcPerms&16))) {
+					// Check if the record version is in "deleted" state, because that will switch the action to "restore"
+					if ($GLOBALS['BE_USER']->workspace > 0 && isset($row['t3ver_state']) && (int)$row['t3ver_state'] === 2) {
+						$actionName = 'restore';
+						$refCountMsg = '';
+					} else {
+						$actionName = 'delete';
+						$refCountMsg = t3lib_BEfunc::referenceCount(
+							$table,
+							$row['uid'],
+							' ' . $GLOBALS['LANG']->sL(
+								'LLL:EXT:lang/locallang_core.xml:labels.referencesToRecord'
+							),
+							$this->getReferenceCount($table, $row['uid'])
+						) .
+						t3lib_BEfunc::translationCount($table, $row['uid'], ' ' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.translationsOfRecord'));
+					}
+
 					$titleOrig = t3lib_BEfunc::getRecordTitle($table,$row,FALSE,TRUE);
 					$title = t3lib_div::slashJS(t3lib_div::fixed_lgd_cs($titleOrig, $this->fixedL), 1);
-					$params = '&cmd['.$table.']['.$row['uid'].'][delete]=1';
+					$warningText = $LANG->JScharCode(
+						$LANG->getLL($actionName . 'Warning') . ' "' . $title . '" ' . $refCountMsg
+					);
 
-					$refCountMsg = t3lib_BEfunc::referenceCount(
-						$table,
-						$row['uid'],
-						' ' . $GLOBALS['LANG']->sL(
-							'LLL:EXT:lang/locallang_core.xml:labels.referencesToRecord'
-						),
-						$this->getReferenceCount($table, $row['uid'])
-					) .
-						t3lib_BEfunc::translationCount($table, $row['uid'], ' ' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.translationsOfRecord'));
-					$cells['delete']='<a href="#" onclick="'.htmlspecialchars('if (confirm('.$LANG->JScharCode($LANG->getLL('deleteWarning').' "'. $title.'" '.$refCountMsg).')) {jumpToUrl(\''.$SOBE->doc->issueCommand($params,-1).'\');} return false;').'" title="' . $LANG->getLL('delete', TRUE) . '">' .
-							t3lib_iconWorks::getSpriteIcon('actions-edit-delete') .
-							'</a>';
+					$params = '&cmd['.$table.']['.$row['uid'].'][delete]=1';
+					$onClick = htmlspecialchars(
+						'if (confirm(' . $warningText . ')) {jumpToUrl(\'' . $SOBE->doc->issueCommand($params, -1) . '\');} return false;'
+					);
+					$icon = t3lib_iconWorks::getSpriteIcon('actions-edit-' . $actionName);
+					$linkTitle = $LANG->getLL($actionName, TRUE);
+					$cells['delete']='<a href="#" onclick="' . $onClick . '" title="' . $linkTitle . '">' . $icon . '</a>';
 				} elseif(!$this->table) {
 					$cells['delete'] = $this->spaceIcon;
 				}
