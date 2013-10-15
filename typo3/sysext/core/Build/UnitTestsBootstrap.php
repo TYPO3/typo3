@@ -63,7 +63,7 @@ if (defined('TYPO3_MODE')) {
  * Find out web path by environment variable or current working directory
  */
 if (getenv('TYPO3_PATH_WEB')) {
-	$webRoot = realpath(getenv('TYPO3_PATH_WEB')) . '/';
+	$webRoot = getenv('TYPO3_PATH_WEB') . '/';
 } else {
 	$webRoot = getcwd() . '/';
 }
