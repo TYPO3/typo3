@@ -4678,7 +4678,34 @@ function ' . $evalData . '(value) {
 		$params['table'] = $table;
 		$params['row'] = $row;
 		$params['field'] = $field;
-		GeneralUtility::callUserFunction($config['itemsProcFunc'], $params, $this);
+		// The itemsProcFunc method may throw an exception.
+		// If it does display an error message and return items unchanged.
+		try {
+			GeneralUtility::callUserFunction($config['itemsProcFunc'], $params, $this);
+		} catch (\Exception $exception) {
+			$fieldLabel = $field;
+			if (isset($GLOBALS['TCA'][$table]['columns'][$field]['label'])) {
+				$fieldLabel = $this->sL($GLOBALS['TCA'][$table]['columns'][$field]['label']);
+			}
+			$message = sprintf(
+				$this->sL('LLL:EXT:lang/locallang_core.xlf:error.items_proc_func_error'),
+				$fieldLabel,
+				$exception->getMessage()
+			);
+			/** @var $flashMessage FlashMessage */
+			$flashMessage = GeneralUtility::makeInstance(
+				'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
+				htmlspecialchars($message),
+				'',
+				FlashMessage::ERROR,
+				TRUE
+			);
+			$class = 'TYPO3\\CMS\\Core\\Messaging\\FlashMessageService';
+			/** @var $flashMessageService \TYPO3\CMS\Core\Messaging\FlashMessageService */
+			$flashMessageService = GeneralUtility::makeInstance($class);
+			$defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
+			$defaultFlashMessageQueue->enqueue($flashMessage);
+		}
 		return $items;
 	}
 

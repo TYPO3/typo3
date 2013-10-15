@@ -996,6 +996,9 @@ Check also the following points:\n
 			<trans-unit id="error.database_schema_mismatch_title" xml:space="preserve">
 				<source>Database Error</source>
 			</trans-unit>
+			<trans-unit id="error.items_proc_func_error" xml:space="preserve">
+				<source>An error occurred trying to process items for field "%1$s" (%2$s).</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
