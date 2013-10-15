@@ -243,7 +243,6 @@ class ExtensionManagementUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 	public function extPathThrowsExceptionIfExtensionIsNotLoadedAndTypo3LoadedExtensionsIsEmpty() {
 		unset($GLOBALS['TYPO3_LOADED_EXT']);
 		$GLOBALS['TYPO3_CONF_VARS']['EXT']['requiredExt'] = '';
-		$GLOBALS['TYPO3_CONF_VARS']['EXT']['extList'] = '';
 		ExtensionManagementUtility::extPath('bar');
 	}
 
@@ -254,7 +253,6 @@ class ExtensionManagementUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 		$this->setExpectedException('BadFunctionCallException', '', 1365429656);
 		unset($GLOBALS['TYPO3_LOADED_EXT']);
 		$GLOBALS['TYPO3_CONF_VARS']['EXT']['requiredExt'] = 'foo';
-		$GLOBALS['TYPO3_CONF_VARS']['EXT']['extList'] = '';
 		ExtensionManagementUtility::extPath('foo');
 	}
 
@@ -265,7 +263,6 @@ class ExtensionManagementUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 		$this->setExpectedException('BadFunctionCallException', '', 1365429656);
 		unset($GLOBALS['TYPO3_LOADED_EXT']);
 		$GLOBALS['TYPO3_CONF_VARS']['EXT']['requiredExt'] = '';
-		$GLOBALS['TYPO3_CONF_VARS']['EXT']['extListArray'] = array('foo');
 		ExtensionManagementUtility::extPath('foo');
 	}
 
