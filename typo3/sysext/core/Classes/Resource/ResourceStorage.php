@@ -1642,7 +1642,7 @@ class ResourceStorage {
 		// Update the identifier and storage of all file objects
 		foreach ($fileObjects as $oldIdentifier => $fileObject) {
 			$newIdentifier = $fileMappings[$oldIdentifier];
-			$fileObject->updateProperties(array('storage' => $this, 'identifier' => $newIdentifier));
+			$fileObject->updateProperties(array('storage' => $this->getUid(), 'identifier' => $newIdentifier));
 			$this->getFileIndexRepository()->update($fileObject);
 		}
 		$returnObject = $this->getFolder($fileMappings[$folderToMove->getIdentifier()]);
