@@ -300,6 +300,7 @@ class ElementInformationController {
 	 */
 	protected function renderPropertiesAsTable() {
 		$tableRows = array();
+		$extraFields = array();
 
 		if ($this->type !== 'folder') {
 			$extraFields = array(
