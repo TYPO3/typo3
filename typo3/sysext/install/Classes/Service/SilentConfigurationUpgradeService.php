@@ -109,6 +109,8 @@ class SilentConfigurationUpgradeService {
 		'SYS/multiplyDBfieldSize',
 		// #46993
 		'SYS/T3instID',
+		// #52857
+		'SYS/forceReturnPath',
 	);
 
 	/**
