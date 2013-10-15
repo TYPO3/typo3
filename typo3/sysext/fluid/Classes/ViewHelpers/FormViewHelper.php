@@ -233,11 +233,15 @@ class FormViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormViewH
 	protected function renderHiddenReferrerFields() {
 		$request = $this->controllerContext->getRequest();
 		$extensionName = $request->getControllerExtensionName();
+		$vendorName = $request->getControllerVendorName();
 		$controllerName = $request->getControllerName();
 		$actionName = $request->getControllerActionName();
 		$result = chr(10);
 		if ($this->configurationManager->isFeatureEnabled('rewrittenPropertyMapper')) {
 			$result .= '<input type="hidden" name="' . $this->prefixFieldName('__referrer[@extension]') . '" value="' . $extensionName . '" />' . chr(10);
+			if ($vendorName !== NULL) {
+				$result .= '<input type="hidden" name="' . $this->prefixFieldName('__referrer[@vendor]') . '" value="' . $vendorName . '" />' . chr(10);
+			}
 			$result .= '<input type="hidden" name="' . $this->prefixFieldName('__referrer[@controller]') . '" value="' . $controllerName . '" />' . chr(10);
 			$result .= '<input type="hidden" name="' . $this->prefixFieldName('__referrer[@action]') . '" value="' . $actionName . '" />' . chr(10);
 			$result .= '<input type="hidden" name="' . $this->prefixFieldName('__referrer[arguments]') . '" value="' . htmlspecialchars($this->hashService->appendHmac(base64_encode(serialize($request->getArguments())))) . '" />' . chr(10);
