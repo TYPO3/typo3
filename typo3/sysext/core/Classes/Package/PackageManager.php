@@ -250,9 +250,9 @@ class PackageManager extends \TYPO3\Flow\Package\PackageManager implements \TYPO
 			$this->packageStatesConfiguration['packages'] = array();
 		}
 
-		foreach ($this->packagesBasePaths as $packagesBasePath) {
+		foreach ($this->packagesBasePaths as $key => $packagesBasePath) {
 			if (!is_dir($packagesBasePath)) {
-				\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep($packagesBasePath);
+				unset($this->packagesBasePaths[$key]);
 			}
 		}
 
