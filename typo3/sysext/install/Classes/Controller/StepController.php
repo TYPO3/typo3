@@ -267,7 +267,11 @@ class StepController extends AbstractController {
 	 */
 	protected function migrateExtensionListToPackageStatesFile() {
 		try {
-			if (file_exists(PATH_typo3conf . 'PackageStates.php')) {
+			/** @var \TYPO3\CMS\Core\Configuration\ConfigurationManager $configurationManager */
+			$configurationManager = $this->objectManager->get('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager');
+			$localConfigurationFileLocation = $configurationManager->getLocalConfigurationFileLocation();
+			$localConfigurationFileExists = is_file($localConfigurationFileLocation);
+			if (!is_dir(PATH_typo3conf) || (is_dir(PATH_typo3conf) && !$localConfigurationFileExists) || file_exists(PATH_typo3conf . 'PackageStates.php')) {
 				return;
 			}
 			$bootstrap = \TYPO3\CMS\Core\Core\Bootstrap::getInstance();
