@@ -109,7 +109,7 @@ class Package extends \TYPO3\Flow\Package\Package implements PackageInterface {
 			$extensionManagerConfiguration = $this->extensionManagerConfiguration;
 			$composerManifest = $this->composerManifest = new \stdClass();
 			$composerManifest->name = $this->getPackageKey();
-			$composerManifest->type = 'typo3cms-extension';
+			$composerManifest->type = 'typo3-cms-extension';
 			$composerManifest->description = $extensionManagerConfiguration['title'];
 			$composerManifest->version = $extensionManagerConfiguration['version'];
 			if (isset($extensionManagerConfiguration['constraints']['depends']) && is_array($extensionManagerConfiguration['constraints']['depends'])) {

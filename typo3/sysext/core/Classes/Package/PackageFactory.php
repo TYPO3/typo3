@@ -88,7 +88,7 @@ class PackageFactory extends \TYPO3\Flow\Package\PackageFactory {
 		if (!is_object($manifest)) {
 			throw new  \TYPO3\Flow\Package\Exception\InvalidPackageManifestException('Invalid composer manifest.', 1348146450);
 		}
-		if (isset($manifest->type) && substr($manifest->type, 0, 9) === 'typo3cms-') {
+		if (isset($manifest->type) && substr($manifest->type, 0, 10) === 'typo3-cms-') {
 			$relativePackagePath = substr($packagePath, strlen($packagesBasePath));
 			$packageKey = substr($relativePackagePath, strpos($relativePackagePath, '/') + 1, -1);
 			/**
