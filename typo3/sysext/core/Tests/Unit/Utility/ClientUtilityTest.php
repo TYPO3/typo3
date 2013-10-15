@@ -193,6 +193,25 @@ class ClientUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 */
+	public function getBrowserInfoReturnsCorrectSystemValueForUserAgentStringOfWindows8() {
+		$userAgentString = 'Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.2; Trident/6.0)';
+		$infoArray = \TYPO3\CMS\Core\Utility\ClientUtility::getBrowserInfo($userAgentString);
+		$this->assertContains('win8', $infoArray['all_systems']);
+	}
+
+
+	/**
+	 * @test
+	 */
+	public function getBrowserInfoReturnsCorrectSystemValueForUserAgentStringOfWindows8rev1() {
+		$userAgentString = 'Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.3; Trident/6.0)';
+		$infoArray = \TYPO3\CMS\Core\Utility\ClientUtility::getBrowserInfo($userAgentString);
+		$this->assertContains('win8', $infoArray['all_systems']);
+	}
+
+	/**
+	 * @test
+	 */
 	public function getBrowserInfoReturnsCorrectSystemValueForUserAgentStringOfWindows7() {
 		$userAgentString = 'Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; Trident/4.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0)';
 		$infoArray = \TYPO3\CMS\Core\Utility\ClientUtility::getBrowserInfo($userAgentString);

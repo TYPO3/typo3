@@ -117,7 +117,10 @@ class ClientUtility {
 		$browserInfo['all_systems'] = array();
 		if (strstr($userAgent, 'Win')) {
 			// Windows
-			if (strstr($userAgent, 'Windows NT 6.1')) {
+			if (strstr($userAgent, 'Windows NT 6.2') || strstr($userAgent, 'Windows NT 6.3')) {
+				$browserInfo['all_systems'][] = 'win8';
+				$browserInfo['all_systems'][] = 'winNT';
+			} elseif (strstr($userAgent, 'Windows NT 6.1')) {
 				$browserInfo['all_systems'][] = 'win7';
 				$browserInfo['all_systems'][] = 'winNT';
 			} elseif (strstr($userAgent, 'Windows NT 6.0')) {
