@@ -822,7 +822,10 @@ class ElementBrowser {
 				// Create upload/create folder forms, if a path is given
 				if ($this->expandFolder) {
 					$selectedFolder = FALSE;
-					$fileOrFolderObject = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->retrieveFileOrFolderObject($this->expandFolder);
+					try {
+						$fileOrFolderObject = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->retrieveFileOrFolderObject($this->expandFolder);
+					} catch (\Exception $e) {
+					}
 
 					if ($fileOrFolderObject instanceof \TYPO3\CMS\Core\Resource\Folder) {
 						// It's a folder
