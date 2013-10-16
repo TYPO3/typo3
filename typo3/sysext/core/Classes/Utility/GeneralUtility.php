@@ -2057,8 +2057,11 @@ class GeneralUtility {
 					}
 				}
 			}
-			// Add the element to the output string:
-			$output .= ($spaceInd >= 0 ? str_pad('', ($level + 1) * $indentN, $indentChar) : '') . '<' . $NSprefix . $tagName . $attr . '>' . $content . '</' . $NSprefix . $tagName . '>' . $nl;
+			if ((string)$tagName !== '') {
+				// Add the element to the output string:
+				$output .= ($spaceInd >= 0 ? str_pad('', ($level + 1) * $indentN, $indentChar) : '')
+					. '<' . $NSprefix . $tagName . $attr . '>' . $content . '</' . $NSprefix . $tagName . '>' . $nl;
+			}
 		}
 		// If we are at the outer-most level, then we finally wrap it all in the document tags and return that as the value:
 		if (!$level) {
