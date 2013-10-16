@@ -26,6 +26,8 @@ namespace TYPO3\CMS\Core\DataHandling;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+
 /**
  * Contains the TYPO3 Core Engine
  *
@@ -916,7 +918,7 @@ class DataHandler {
 										$recordAccess = FALSE;
 										// Versioning is required and it must be offline version!
 										// Check if there already is a workspace version
-										$WSversion = \TYPO3\CMS\Backend\Utility\BackendUtility::getWorkspaceVersionOfRecord($this->BE_USER->workspace, $table, $id, 'uid,t3ver_oid');
+										$WSversion = BackendUtility::getWorkspaceVersionOfRecord($this->BE_USER->workspace, $table, $id, 'uid,t3ver_oid');
 										if ($WSversion) {
 											$id = $WSversion['uid'];
 											$recordAccess = TRUE;
@@ -969,7 +971,7 @@ class DataHandler {
 						// If access was granted above, proceed to create or update record:
 						if ($recordAccess) {
 							// Here the "pid" is set IF NOT the old pid was a string pointing to a place in the subst-id array.
-							list($tscPID) = \TYPO3\CMS\Backend\Utility\BackendUtility::getTSCpid($table, $id, $old_pid_value ? $old_pid_value : $fieldArray['pid']);
+							list($tscPID) = BackendUtility::getTSCpid($table, $id, $old_pid_value ? $old_pid_value : $fieldArray['pid']);
 							$TSConfig = $this->getTCEMAIN_TSconfig($tscPID);
 							if ($status == 'new' && $table == 'pages' && is_array($TSConfig['permissions.'])) {
 								$fieldArray = $this->setTSconfigPermissions($fieldArray, $TSConfig['permissions.']);
@@ -1093,9 +1095,9 @@ class DataHandler {
 	 * @todo Define visibility
 	 */
 	public function placeholderShadowing($table, $id) {
-		if ($liveRec = \TYPO3\CMS\Backend\Utility\BackendUtility::getLiveVersionOfRecord($table, $id, '*')) {
+		if ($liveRec = BackendUtility::getLiveVersionOfRecord($table, $id, '*')) {
 			if ((int) $liveRec['t3ver_state'] > 0) {
-				$justStoredRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($table, $id);
+				$justStoredRecord = BackendUtility::getRecord($table, $id);
 				$newRecord = array();
 				$shadowCols = $GLOBALS['TCA'][$table]['ctrl']['shadowColumnsForNewPlaceholders'];
 				$shadowCols .= ',' . $GLOBALS['TCA'][$table]['ctrl']['languageField'];
@@ -1148,12 +1150,12 @@ class DataHandler {
 			// We must use the current values as basis for this!
 			$currentRecord = ($checkValueRecord = $this->recordInfo($table, $id, '*'));
 			// This is done to make the pid positive for offline versions; Necessary to have diff-view for pages_language_overlay in workspaces.
-			\TYPO3\CMS\Backend\Utility\BackendUtility::fixVersioningPid($table, $currentRecord);
+			BackendUtility::fixVersioningPid($table, $currentRecord);
 			// Get original language record if available:
 			if (is_array($currentRecord) && $GLOBALS['TCA'][$table]['ctrl']['transOrigDiffSourceField'] && $GLOBALS['TCA'][$table]['ctrl']['languageField'] && $currentRecord[$GLOBALS['TCA'][$table]['ctrl']['languageField']] > 0 && $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] && intval($currentRecord[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']]) > 0) {
 				$lookUpTable = $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerTable'] ? $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerTable'] : $table;
 				$originalLanguageRecord = $this->recordInfo($lookUpTable, $currentRecord[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']], '*');
-				\TYPO3\CMS\Backend\Utility\BackendUtility::workspaceOL($lookUpTable, $originalLanguageRecord);
+				BackendUtility::workspaceOL($lookUpTable, $originalLanguageRecord);
 				$originalLanguage_diffStorage = unserialize($currentRecord[$GLOBALS['TCA'][$table]['ctrl']['transOrigDiffSourceField']]);
 			}
 		}
@@ -1265,8 +1267,8 @@ class DataHandler {
 			$fieldArray[$GLOBALS['TCA'][$table]['ctrl']['transOrigDiffSourceField']] = serialize($originalLanguage_diffStorage);
 		}
 		// Checking for RTE-transformations of fields:
-		$types_fieldConfig = \TYPO3\CMS\Backend\Utility\BackendUtility::getTCAtypes($table, $currentRecord);
-		$theTypeString = \TYPO3\CMS\Backend\Utility\BackendUtility::getTCAtypeValue($table, $currentRecord);
+		$types_fieldConfig = BackendUtility::getTCAtypes($table, $currentRecord);
+		$theTypeString = BackendUtility::getTCAtypeValue($table, $currentRecord);
 		if (is_array($types_fieldConfig)) {
 			foreach ($types_fieldConfig as $vconf) {
 				// Write file configuration:
@@ -1278,12 +1280,12 @@ class DataHandler {
 						// Look for transformation flag:
 						switch ((string) $incomingFieldArray[('_TRANSFORM_' . $vconf['field'])]) {
 						case 'RTE':
-							$RTEsetup = $this->BE_USER->getTSConfig('RTE', \TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig($tscPID));
-							$thisConfig = \TYPO3\CMS\Backend\Utility\BackendUtility::RTEsetup($RTEsetup['properties'], $table, $vconf['field'], $theTypeString);
+							$RTEsetup = $this->BE_USER->getTSConfig('RTE', BackendUtility::getPagesTSconfig($tscPID));
+							$thisConfig = BackendUtility::RTEsetup($RTEsetup['properties'], $table, $vconf['field'], $theTypeString);
 							// Set alternative relative path for RTE images/links:
 							$RTErelPath = is_array($eFile) ? dirname($eFile['relEditFile']) : '';
 							// Get RTE object, draw form and set flag:
-							$RTEobj = \TYPO3\CMS\Backend\Utility\BackendUtility::RTEgetObj();
+							$RTEobj = BackendUtility::RTEgetObj();
 							if (is_object($RTEobj)) {
 								$fieldArray[$vconf['field']] = $RTEobj->transformContent('db', $fieldArray[$vconf['field']], $table, $vconf['field'], $currentRecord, $vconf['spec'], $thisConfig, $RTErelPath, $currentRecord['pid']);
 							} else {
@@ -1984,10 +1986,10 @@ class DataHandler {
 
 		if (is_array($value)) {
 			// This value is necessary for flex form processing to happen on flexform fields in page records when they are copied.
-			// The problem is, that when copying a page, flexfrom XML comes along in the array for the new record - but since $this->checkValue_currentRecord does not have a uid or pid for that sake, the \TYPO3\CMS\Backend\Utility\BackendUtility::getFlexFormDS() function returns no good DS. For new records we do know the expected PID so therefore we send that with this special parameter. Only active when larger than zero.
+			// The problem is, that when copying a page, flexfrom XML comes along in the array for the new record - but since $this->checkValue_currentRecord does not have a uid or pid for that sake, the BackendUtility::getFlexFormDS() function returns no good DS. For new records we do know the expected PID so therefore we send that with this special parameter. Only active when larger than zero.
 			$newRecordPidValue = $status == 'new' ? $realPid : 0;
 			// Get current value array:
-			$dataStructArray = \TYPO3\CMS\Backend\Utility\BackendUtility::getFlexFormDS($tcaFieldConf, $this->checkValue_currentRecord, $table, $field, TRUE, $newRecordPidValue);
+			$dataStructArray = BackendUtility::getFlexFormDS($tcaFieldConf, $this->checkValue_currentRecord, $table, $field, TRUE, $newRecordPidValue);
 			$currentValueArray = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($curValue);
 			if (!is_array($currentValueArray)) {
 				$currentValueArray = array();
@@ -2528,13 +2530,13 @@ class DataHandler {
 									if (isset($res['value'])) {
 										// Calculating/Retrieving some values here:
 										list(, , $recFieldName) = explode(':', $CVrecFID);
-										$theTypeString = \TYPO3\CMS\Backend\Utility\BackendUtility::getTCAtypeValue($CVtable, $this->checkValue_currentRecord);
-										$specConf = \TYPO3\CMS\Backend\Utility\BackendUtility::getSpecConfParts('', $dsConf['TCEforms']['defaultExtras']);
+										$theTypeString = BackendUtility::getTCAtypeValue($CVtable, $this->checkValue_currentRecord);
+										$specConf = BackendUtility::getSpecConfParts('', $dsConf['TCEforms']['defaultExtras']);
 										// Find, thisConfig:
-										$RTEsetup = $this->BE_USER->getTSConfig('RTE', \TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig($CVtscPID));
-										$thisConfig = \TYPO3\CMS\Backend\Utility\BackendUtility::RTEsetup($RTEsetup['properties'], $CVtable, $recFieldName, $theTypeString);
+										$RTEsetup = $this->BE_USER->getTSConfig('RTE', BackendUtility::getPagesTSconfig($CVtscPID));
+										$thisConfig = BackendUtility::RTEsetup($RTEsetup['properties'], $CVtable, $recFieldName, $theTypeString);
 										// Get RTE object, draw form and set flag:
-										$RTEobj = \TYPO3\CMS\Backend\Utility\BackendUtility::RTEgetObj();
+										$RTEobj = BackendUtility::RTEgetObj();
 										if (is_object($RTEobj)) {
 											$res['value'] = $RTEobj->transformContent('db', $res['value'], $CVtable, $recFieldName, $this->checkValue_currentRecord, $specConf, $thisConfig, '', $CVrealPid);
 										} else {
@@ -2592,10 +2594,10 @@ class DataHandler {
 		$dbAnalysis = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\RelationHandler');
 		$dbAnalysis->start(implode(',', $valueArray), $foreignTable, '', 0, $table, $tcaFieldConf);
 		// If the localizationMode is set to 'keep', the children for the localized parent are kept as in the original untranslated record:
-		$localizationMode = \TYPO3\CMS\Backend\Utility\BackendUtility::getInlineLocalizationMode($table, $tcaFieldConf);
+		$localizationMode = BackendUtility::getInlineLocalizationMode($table, $tcaFieldConf);
 		if ($localizationMode == 'keep' && $status == 'update') {
 			// Fetch the current record and determine the original record:
-			$row = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL($table, $id);
+			$row = BackendUtility::getRecordWSOL($table, $id);
 			if (is_array($row)) {
 				$language = intval($row[$GLOBALS['TCA'][$table]['ctrl']['languageField']]);
 				$transOrigPointer = intval($row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']]);
@@ -2781,7 +2783,7 @@ class DataHandler {
 					$data = array();
 					$nonFields = array_unique(\TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', 'uid,perms_userid,perms_groupid,perms_user,perms_group,perms_everybody,t3ver_oid,t3ver_wsid,t3ver_id,t3ver_label,t3ver_state,t3ver_count,t3ver_stage,t3ver_tstamp,' . $excludeFields, 1));
 					// So it copies (and localized) content from workspace...
-					$row = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL($table, $uid);
+					$row = BackendUtility::getRecordWSOL($table, $uid);
 					if (is_array($row)) {
 						// Initializing:
 						$theNewID = uniqid('NEW');
@@ -2792,8 +2794,8 @@ class DataHandler {
 						// Getting "copy-after" fields if applicable:
 						$copyAfterFields = $destPid < 0 ? $this->fixCopyAfterDuplFields($table, $uid, abs($destPid), 0) : array();
 						// Page TSconfig related:
-						// NOT using \TYPO3\CMS\Backend\Utility\BackendUtility::getTSCpid() because we need the real pid - not the ID of a page, if the input is a page...
-						$tscPID = \TYPO3\CMS\Backend\Utility\BackendUtility::getTSconfig_pidValue($table, $uid, $destPid);
+						// NOT using BackendUtility::getTSCpid() because we need the real pid - not the ID of a page, if the input is a page...
+						$tscPID = BackendUtility::getTSconfig_pidValue($table, $uid, $destPid);
 						$TSConfig = $this->getTCEMAIN_TSconfig($tscPID);
 						$tE = $this->getTableEntries($table, $TSConfig);
 						// Traverse ALL fields of the selected record:
@@ -2851,7 +2853,7 @@ class DataHandler {
 						// Getting the new UID:
 						$theNewSQLID = $copyTCE->substNEWwithIDs[$theNewID];
 						if ($theNewSQLID) {
-							$this->copyRecord_fixRTEmagicImages($table, \TYPO3\CMS\Backend\Utility\BackendUtility::wsMapId($table, $theNewSQLID));
+							$this->copyRecord_fixRTEmagicImages($table, BackendUtility::wsMapId($table, $theNewSQLID));
 							$this->copyMappingArray[$table][$origUid] = $theNewSQLID;
 							// Keep automatically versionized record information:
 							if (isset($copyTCE->autoVersionIdMap[$table][$theNewSQLID])) {
@@ -3017,7 +3019,7 @@ class DataHandler {
 					if ($theNewSQLID) {
 						$this->dbAnalysisStoreExec();
 						$this->dbAnalysisStore = array();
-						$this->copyRecord_fixRTEmagicImages($table, \TYPO3\CMS\Backend\Utility\BackendUtility::wsMapId($table, $theNewSQLID));
+						$this->copyRecord_fixRTEmagicImages($table, BackendUtility::wsMapId($table, $theNewSQLID));
 						return $this->copyMappingArray[$table][$uid] = $theNewSQLID;
 					}
 				} else {
@@ -3096,13 +3098,13 @@ class DataHandler {
 		$value = $this->copyRecord_procFilesRefs($conf, $uid, $value);
 		$inlineSubType = $this->getInlineFieldType($conf);
 		// Get the localization mode for the current (parent) record (keep|select):
-		$localizationMode = \TYPO3\CMS\Backend\Utility\BackendUtility::getInlineLocalizationMode($table, $field);
+		$localizationMode = BackendUtility::getInlineLocalizationMode($table, $field);
 		// Register if there are references to take care of or MM is used on an inline field (no change to value):
 		if ($this->isReferenceField($conf) || $inlineSubType == 'mm') {
 			$allowedTables = $conf['type'] == 'group' ? $conf['allowed'] : $conf['foreign_table'] . ',' . $conf['neg_foreign_table'];
 			$prependName = $conf['type'] == 'group' ? $conf['prepend_tname'] : $conf['neg_foreign_table'];
 			$mmTable = isset($conf['MM']) && $conf['MM'] ? $conf['MM'] : '';
-			$localizeForeignTable = isset($conf['foreign_table']) && \TYPO3\CMS\Backend\Utility\BackendUtility::isTableLocalizable($conf['foreign_table']);
+			$localizeForeignTable = isset($conf['foreign_table']) && BackendUtility::isTableLocalizable($conf['foreign_table']);
 			$localizeReferences = $localizeForeignTable && isset($conf['localizeReferencesAtParentLocalization']) && $conf['localizeReferencesAtParentLocalization'];
 			$localizeChildren = $localizeForeignTable && isset($conf['behaviour']['localizeChildrenAtParentLocalization']) && $conf['behaviour']['localizeChildrenAtParentLocalization'];
 			/** @var $dbAnalysis \TYPO3\CMS\Core\Database\RelationHandler */
@@ -3112,7 +3114,7 @@ class DataHandler {
 			if ($language > 0 && ($localizeReferences && empty($mmTable) || $localizeChildren && $localizationMode === 'select' && $inlineSubType === 'mm')) {
 				foreach ($dbAnalysis->itemArray as $index => $item) {
 					// Since select fields can reference many records, check whether there's already a localization:
-					$recordLocalization = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordLocalization($item['table'], $item['id'], $language);
+					$recordLocalization = BackendUtility::getRecordLocalization($item['table'], $item['id'], $language);
 					if ($recordLocalization) {
 						$dbAnalysis->itemArray[$index]['id'] = $recordLocalization[0]['uid'];
 					} elseif ($this->isNestedElementCallRegistered($item['table'], $item['id'], 'localize') === FALSE) {
@@ -3123,7 +3125,7 @@ class DataHandler {
 			} elseif ($language > 0 && $localizeChildren === FALSE && $localizationMode === 'select' && $inlineSubType === 'mm') {
 				foreach ($dbAnalysis->itemArray as $index => $item) {
 					// Since select fields can reference many records, check whether there's already a localization:
-					$recordLocalization = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordLocalization($item['table'], $item['id'], $language);
+					$recordLocalization = BackendUtility::getRecordLocalization($item['table'], $item['id'], $language);
 					if ($recordLocalization) {
 						$dbAnalysis->itemArray[$index]['id'] = $recordLocalization[0]['uid'];
 					} elseif ($this->isNestedElementCallRegistered($item['table'], $item['id'], 'localize') === FALSE) {
@@ -3150,7 +3152,7 @@ class DataHandler {
 				// Walk through the items, copy them and remember the new id:
 				foreach ($dbAnalysis->itemArray as $k => $v) {
 					// If language is set and differs from original record, this isn't a copy action but a localization of our parent/ancestor:
-					if ($language > 0 && \TYPO3\CMS\Backend\Utility\BackendUtility::isTableLocalizable($table) && $language != $row[$GLOBALS['TCA'][$table]['ctrl']['languageField']]) {
+					if ($language > 0 && BackendUtility::isTableLocalizable($table) && $language != $row[$GLOBALS['TCA'][$table]['ctrl']['languageField']]) {
 						// If children should be localized when the parent gets localized the first time, just do it:
 						if ($localizationMode != FALSE && isset($conf['behaviour']['localizeChildrenAtParentLocalization']) && $conf['behaviour']['localizeChildrenAtParentLocalization']) {
 							$newId = $this->localize($v['table'], $v['id'], $language);
@@ -3158,8 +3160,8 @@ class DataHandler {
 					} else {
 						if (!\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($realDestPid)) {
 							$newId = $this->copyRecord($v['table'], $v['id'], -$v['id']);
-						} elseif ($realDestPid == -1 && \TYPO3\CMS\Backend\Utility\BackendUtility::isTableWorkspaceEnabled($v['table'])) {
-							$workspaceVersion = \TYPO3\CMS\Backend\Utility\BackendUtility::getWorkspaceVersionOfRecord($this->BE_USER->workspace, $v['table'], $v['id'], 'uid');
+						} elseif ($realDestPid == -1 && BackendUtility::isTableWorkspaceEnabled($v['table'])) {
+							$workspaceVersion = BackendUtility::getWorkspaceVersionOfRecord($this->BE_USER->workspace, $v['table'], $v['id'], 'uid');
 							// If workspace version does not exist, create a new one:
 							if ($workspaceVersion === FALSE) {
 								$newId = $this->versionizeRecord($v['table'], $v['id'], isset($workspaceOptions['label']) ? $workspaceOptions['label'] : 'Auto-created for WS #' . $this->BE_USER->workspace, isset($workspaceOptions['delete']) ? $workspaceOptions['delete'] : FALSE);
@@ -3186,7 +3188,7 @@ class DataHandler {
 		// For "flex" fieldtypes we need to traverse the structure for two reasons: If there are file references they have to be prepended with absolute paths and if there are database reference they MIGHT need to be remapped (still done in remapListedDBRecords())
 		if ($conf['type'] == 'flex') {
 			// Get current value array:
-			$dataStructArray = \TYPO3\CMS\Backend\Utility\BackendUtility::getFlexFormDS($conf, $row, $table);
+			$dataStructArray = BackendUtility::getFlexFormDS($conf, $row, $table);
 			$currentValueArray = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($value);
 			// Traversing the XML structure, processing files:
 			if (is_array($currentValueArray)) {
@@ -3357,7 +3359,7 @@ class DataHandler {
 	 */
 	public function copyL10nOverlayRecords($table, $uid, $destPid, $first = 0, $overrideValues = array(), $excludeFields = '') {
 		// There's no need to perform this for page-records or for tables that are not localizeable
-		if (!\TYPO3\CMS\Backend\Utility\BackendUtility::isTableLocalizable($table) || !empty($GLOBALS['TCA'][$table]['ctrl']['transForeignTable']) || !empty($GLOBALS['TCA'][$table]['ctrl']['transOrigPointerTable'])) {
+		if (!BackendUtility::isTableLocalizable($table) || !empty($GLOBALS['TCA'][$table]['ctrl']['transForeignTable']) || !empty($GLOBALS['TCA'][$table]['ctrl']['transOrigPointerTable'])) {
 			return;
 		}
 		$where = '';
@@ -3365,15 +3367,15 @@ class DataHandler {
 			$where = ' AND t3ver_oid=0';
 		}
 		// If $destPid is < 0, get the pid of the record with uid equal to abs($destPid)
-		$tscPID = \TYPO3\CMS\Backend\Utility\BackendUtility::getTSconfig_pidValue($table, $uid, $destPid);
+		$tscPID = BackendUtility::getTSconfig_pidValue($table, $uid, $destPid);
 		// Get the localized records to be copied
-		$l10nRecords = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordsByField($table, $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'], $uid, $where);
+		$l10nRecords = BackendUtility::getRecordsByField($table, $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'], $uid, $where);
 		if (is_array($l10nRecords)) {
 			// If $destPid < 0, then it is the uid of the original language record we are inserting after
 			if ($destPid < 0) {
 				$localizedDestPids = array();
 				// Get the localized records of the record we are inserting after
-				$destL10nRecords = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordsByField($table, $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'], abs($destPid), $where);
+				$destL10nRecords = BackendUtility::getRecordsByField($table, $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'], abs($destPid), $where);
 				// Index the localized record uids by language
 				if (is_array($destL10nRecords)) {
 					foreach ($destL10nRecords as $record) {
@@ -3414,7 +3416,7 @@ class DataHandler {
 			// happens for pages with "branch" versioning type)
 			// @deprecated note: as "branch" versioning is deprecated since TYPO3 4.2, this
 			// functionality will be removed in TYPO3 4.7 (note by benni: a hook could replace this)
-			if ($lookForLiveVersion = \TYPO3\CMS\Backend\Utility\BackendUtility::getLiveVersionOfRecord($table, $uid, 'uid')) {
+			if ($lookForLiveVersion = BackendUtility::getLiveVersionOfRecord($table, $uid, 'uid')) {
 				$uid = $lookForLiveVersion['uid'];
 			}
 			// Initialize:
@@ -3629,7 +3631,7 @@ class DataHandler {
 	 */
 	public function moveRecord_procFields($table, $uid, $destPid) {
 		$conf = $GLOBALS['TCA'][$table]['columns'];
-		$row = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL($table, $uid);
+		$row = BackendUtility::getRecordWSOL($table, $uid);
 		if (is_array($row)) {
 			foreach ($row as $field => $value) {
 				$this->moveRecord_procBasedOnFieldType($table, $uid, $destPid, $field, $value, $conf[$field]['config']);
@@ -3691,20 +3693,20 @@ class DataHandler {
 	 */
 	public function moveL10nOverlayRecords($table, $uid, $destPid, $originalRecordDestinationPid) {
 		// There's no need to perform this for page-records or not localizeable tables
-		if (!\TYPO3\CMS\Backend\Utility\BackendUtility::isTableLocalizable($table) || !empty($GLOBALS['TCA'][$table]['ctrl']['transForeignTable']) || !empty($GLOBALS['TCA'][$table]['ctrl']['transOrigPointerTable'])) {
+		if (!BackendUtility::isTableLocalizable($table) || !empty($GLOBALS['TCA'][$table]['ctrl']['transForeignTable']) || !empty($GLOBALS['TCA'][$table]['ctrl']['transOrigPointerTable'])) {
 			return;
 		}
 		$where = '';
 		if (isset($GLOBALS['TCA'][$table]['ctrl']['versioningWS']) && $GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
 			$where = ' AND t3ver_oid=0';
 		}
-		$l10nRecords = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordsByField($table, $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'], $uid, $where);
+		$l10nRecords = BackendUtility::getRecordsByField($table, $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'], $uid, $where);
 		if (is_array($l10nRecords)) {
 			// If $$originalRecordDestinationPid < 0, then it is the uid of the original language record we are inserting after
 			if ($originalRecordDestinationPid < 0) {
 				$localizedDestPids = array();
 				// Get the localized records of the record we are inserting after
-				$destL10nRecords = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordsByField($table, $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'], abs($originalRecordDestinationPid), $where);
+				$destL10nRecords = BackendUtility::getRecordsByField($table, $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'], abs($originalRecordDestinationPid), $where);
 				// Index the localized record uids by language
 				if (is_array($destL10nRecords)) {
 					foreach ($destL10nRecords as $record) {
@@ -3740,18 +3742,18 @@ class DataHandler {
 		if ($GLOBALS['TCA'][$table] && $uid && $this->isNestedElementCallRegistered($table, $uid, 'localize') === FALSE) {
 			$this->registerNestedElementCall($table, $uid, 'localize');
 			if ($GLOBALS['TCA'][$table]['ctrl']['languageField'] && $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] && !$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerTable'] || $table === 'pages') {
-				if ($langRec = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('sys_language', intval($language), 'uid,title')) {
+				if ($langRec = BackendUtility::getRecord('sys_language', intval($language), 'uid,title')) {
 					if ($this->doesRecordExist($table, $uid, 'show')) {
 						// Getting workspace overlay if possible - this will localize versions in workspace if any
-						$row = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL($table, $uid);
+						$row = BackendUtility::getRecordWSOL($table, $uid);
 						if (is_array($row)) {
 							if ($row[$GLOBALS['TCA'][$table]['ctrl']['languageField']] <= 0 || $table === 'pages') {
 								if ($row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']] == 0 || $table === 'pages') {
 									if ($table === 'pages') {
-										$pass = $GLOBALS['TCA'][$table]['ctrl']['transForeignTable'] === 'pages_language_overlay' && !\TYPO3\CMS\Backend\Utility\BackendUtility::getRecordsByField('pages_language_overlay', 'pid', $uid, (' AND ' . $GLOBALS['TCA']['pages_language_overlay']['ctrl']['languageField'] . '=' . intval($langRec['uid'])));
+										$pass = $GLOBALS['TCA'][$table]['ctrl']['transForeignTable'] === 'pages_language_overlay' && !BackendUtility::getRecordsByField('pages_language_overlay', 'pid', $uid, (' AND ' . $GLOBALS['TCA']['pages_language_overlay']['ctrl']['languageField'] . '=' . intval($langRec['uid'])));
 										$Ttable = 'pages_language_overlay';
 									} else {
-										$pass = !\TYPO3\CMS\Backend\Utility\BackendUtility::getRecordLocalization($table, $uid, $langRec['uid'], ('AND pid=' . intval($row['pid'])));
+										$pass = !BackendUtility::getRecordLocalization($table, $uid, $langRec['uid'], ('AND pid=' . intval($row['pid'])));
 										$Ttable = $table;
 									}
 									if ($pass) {
@@ -3770,7 +3772,7 @@ class DataHandler {
 											// Check if we are just prefixing:
 											if ($fCfg['l10n_mode'] == 'prefixLangTitle') {
 												if (($fCfg['config']['type'] == 'text' || $fCfg['config']['type'] == 'input') && strlen($row[$fN])) {
-													list($tscPID) = \TYPO3\CMS\Backend\Utility\BackendUtility::getTSCpid($table, $uid, '');
+													list($tscPID) = BackendUtility::getTSCpid($table, $uid, '');
 													$TSConfig = $this->getTCEMAIN_TSconfig($tscPID);
 													if (isset($TSConfig['translateToMessage']) && strlen($TSConfig['translateToMessage'])) {
 														$translateToMsg = @sprintf($TSConfig['translateToMessage'], $langRec['title']);
@@ -3855,17 +3857,17 @@ class DataHandler {
 		if ($field && (\TYPO3\CMS\Core\Utility\GeneralUtility::inList('localize,synchronize', $type) || \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($type)) && isset($GLOBALS['TCA'][$table]['columns'][$field]['config'])) {
 			$config = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
 			$foreignTable = $config['foreign_table'];
-			$localizationMode = \TYPO3\CMS\Backend\Utility\BackendUtility::getInlineLocalizationMode($table, $config);
+			$localizationMode = BackendUtility::getInlineLocalizationMode($table, $config);
 			if ($localizationMode == 'select') {
-				$parentRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL($table, $id);
+				$parentRecord = BackendUtility::getRecordWSOL($table, $id);
 				$language = intval($parentRecord[$GLOBALS['TCA'][$table]['ctrl']['languageField']]);
 				$transOrigPointer = intval($parentRecord[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']]);
-				$transOrigTable = \TYPO3\CMS\Backend\Utility\BackendUtility::getOriginalTranslationTable($table);
+				$transOrigTable = BackendUtility::getOriginalTranslationTable($table);
 				$childTransOrigPointerField = $GLOBALS['TCA'][$foreignTable]['ctrl']['transOrigPointerField'];
 
 				if ($parentRecord && is_array($parentRecord) && $language > 0 && $transOrigPointer) {
 					$inlineSubType = $this->getInlineFieldType($config);
-					$transOrigRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL($transOrigTable, $transOrigPointer);
+					$transOrigRecord = BackendUtility::getRecordWSOL($transOrigTable, $transOrigPointer);
 
 					if ($inlineSubType !== FALSE) {
 						$removeArray = array();
@@ -3886,7 +3888,7 @@ class DataHandler {
 						// Perform synchronization: Possibly removal of already localized records:
 						if ($type == 'synchronize') {
 							foreach ($dbAnalysisCurrent->itemArray as $index => $item) {
-								$childRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL($item['table'], $item['id']);
+								$childRecord = BackendUtility::getRecordWSOL($item['table'], $item['id']);
 								if (isset($childRecord[$childTransOrigPointerField]) && $childRecord[$childTransOrigPointerField] > 0) {
 									$childTransOrigPointer = $childRecord[$childTransOrigPointerField];
 									// If snychronization is requested, child record was translated once, but original record does not exist anymore, remove it:
@@ -3955,7 +3957,7 @@ class DataHandler {
 	 * @todo Define visibility
 	 */
 	public function deleteAction($table, $id) {
-		$recordToDelete = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($table, $id);
+		$recordToDelete = BackendUtility::getRecord($table, $id);
 		// Record asked to be deleted was found:
 		if (is_array($recordToDelete)) {
 			$recordWasDeleted = FALSE;
@@ -4003,7 +4005,7 @@ class DataHandler {
 	 * @todo Define visibility
 	 */
 	public function deleteVersionsForRecord($table, $uid, $forceHardDelete) {
-		$versions = \TYPO3\CMS\Backend\Utility\BackendUtility::selectVersionsOfRecord($table, $uid, 'uid,pid');
+		$versions = BackendUtility::selectVersionsOfRecord($table, $uid, 'uid,pid');
 		if (is_array($versions)) {
 			foreach ($versions as $verRec) {
 				if (!$verRec['_CURRENT_VERSION']) {
@@ -4084,7 +4086,7 @@ class DataHandler {
 							switch ($conf['type']) {
 							case 'flex':
 								$flexObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\FlexForm\\FlexFormTools');
-								$flexObj->traverseFlexFormXMLData($table, $fieldName, \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordRaw($table, 'uid=' . intval($uid)), $this, 'deleteRecord_flexFormCallBack');
+								$flexObj->traverseFlexFormXMLData($table, $fieldName, BackendUtility::getRecordRaw($table, 'uid=' . intval($uid)), $this, 'deleteRecord_flexFormCallBack');
 								break;
 							}
 						}
@@ -4348,9 +4350,9 @@ class DataHandler {
 	 */
 	public function isRecordUndeletable($table, $uid) {
 		$result = FALSE;
-		$record = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($table, $uid, 'pid', '', FALSE);
+		$record = BackendUtility::getRecord($table, $uid, 'pid', '', FALSE);
 		if ($record['pid']) {
-			$page = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('pages', $record['pid'], 'deleted, title, uid', '', FALSE);
+			$page = BackendUtility::getRecord('pages', $record['pid'], 'deleted, title, uid', '', FALSE);
 			// The page containing the record is not deleted, thus the record can be undeleted:
 			if (!$page['deleted']) {
 				$result = TRUE;
@@ -4377,7 +4379,7 @@ class DataHandler {
 	 */
 	public function deleteRecord_procFields($table, $uid, $undeleteRecord = FALSE) {
 		$conf = $GLOBALS['TCA'][$table]['columns'];
-		$row = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($table, $uid, '*', '', FALSE);
+		$row = BackendUtility::getRecord($table, $uid, '*', '', FALSE);
 		foreach ($row as $field => $value) {
 			$this->deleteRecord_procBasedOnFieldType($table, $uid, $field, $value, $conf[$field]['config'], $undeleteRecord);
 		}
@@ -4437,14 +4439,14 @@ class DataHandler {
 	 */
 	public function deleteL10nOverlayRecords($table, $uid) {
 		// Check whether table can be localized or has a different table defined to store localizations:
-		if (!\TYPO3\CMS\Backend\Utility\BackendUtility::isTableLocalizable($table) || !empty($GLOBALS['TCA'][$table]['ctrl']['transForeignTable']) || !empty($GLOBALS['TCA'][$table]['ctrl']['transOrigPointerTable'])) {
+		if (!BackendUtility::isTableLocalizable($table) || !empty($GLOBALS['TCA'][$table]['ctrl']['transForeignTable']) || !empty($GLOBALS['TCA'][$table]['ctrl']['transOrigPointerTable'])) {
 			return;
 		}
 		$where = '';
 		if (isset($GLOBALS['TCA'][$table]['ctrl']['versioningWS']) && $GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
 			$where = ' AND t3ver_oid=0';
 		}
-		$l10nRecords = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordsByField($table, $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'], $uid, $where);
+		$l10nRecords = BackendUtility::getRecordsByField($table, $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'], $uid, $where);
 		if (is_array($l10nRecords)) {
 			foreach ($l10nRecords as $record) {
 				$this->deleteAction($table, intval($record['t3ver_oid']) > 0 ? intval($record['t3ver_oid']) : intval($record['uid']));
@@ -4510,7 +4512,7 @@ class DataHandler {
 								$workspaceCheck = TRUE;
 								if ($this->BE_USER->workspace !== 0) {
 									// Look for version already in workspace:
-									$workspaceCheck = \TYPO3\CMS\Backend\Utility\BackendUtility::getWorkspaceVersionOfRecord($this->BE_USER->workspace, $table, $id, 'uid') ? FALSE : TRUE;
+									$workspaceCheck = BackendUtility::getWorkspaceVersionOfRecord($this->BE_USER->workspace, $table, $id, 'uid') ? FALSE : TRUE;
 								}
 								if ($workspaceCheck) {
 									// Create raw-copy and return result:
@@ -4559,8 +4561,8 @@ class DataHandler {
 	 */
 	public function version_remapMMForVersionSwap($table, $id, $swapWith) {
 		// Actually, selecting the records fully is only need if flexforms are found inside... This could be optimized ...
-		$currentRec = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($table, $id);
-		$swapRec = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($table, $swapWith);
+		$currentRec = BackendUtility::getRecord($table, $id);
+		$swapRec = BackendUtility::getRecord($table, $swapWith);
 		$this->version_remapMMForVersionSwap_reg = array();
 		foreach ($GLOBALS['TCA'][$table]['columns'] as $field => $fConf) {
 			$conf = $fConf['config'];
@@ -4583,13 +4585,13 @@ class DataHandler {
 				}
 			} elseif ($conf['type'] == 'flex') {
 				// Current record
-				$dataStructArray = \TYPO3\CMS\Backend\Utility\BackendUtility::getFlexFormDS($conf, $currentRec, $table);
+				$dataStructArray = BackendUtility::getFlexFormDS($conf, $currentRec, $table);
 				$currentValueArray = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($currentRec[$field]);
 				if (is_array($currentValueArray)) {
 					$this->checkValue_flex_procInData($currentValueArray['data'], array(), array(), $dataStructArray, array($table, $id, $field), 'version_remapMMForVersionSwap_flexFormCallBack');
 				}
 				// Swap record
-				$dataStructArray = \TYPO3\CMS\Backend\Utility\BackendUtility::getFlexFormDS($conf, $swapRec, $table);
+				$dataStructArray = BackendUtility::getFlexFormDS($conf, $swapRec, $table);
 				$currentValueArray = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($swapRec[$field]);
 				if (is_array($currentValueArray)) {
 					$this->checkValue_flex_procInData($currentValueArray['data'], array(), array(), $dataStructArray, array($table, $swapWith, $field), 'version_remapMMForVersionSwap_flexFormCallBack');
@@ -4674,7 +4676,7 @@ class DataHandler {
 				foreach ($records as $uid => $fields) {
 					$newData = array();
 					$theUidToUpdate = $this->copyMappingArray_merged[$table][$uid];
-					$theUidToUpdate_saveTo = \TYPO3\CMS\Backend\Utility\BackendUtility::wsMapId($table, $theUidToUpdate);
+					$theUidToUpdate_saveTo = BackendUtility::wsMapId($table, $theUidToUpdate);
 					foreach ($fields as $fieldName => $value) {
 						$conf = $GLOBALS['TCA'][$table]['columns'][$fieldName]['config'];
 						switch ($conf['type']) {
@@ -4691,9 +4693,9 @@ class DataHandler {
 								// This will fetch the new row for the element
 								$origRecordRow = $this->recordInfo($table, $theUidToUpdate, '*');
 								if (is_array($origRecordRow)) {
-									\TYPO3\CMS\Backend\Utility\BackendUtility::workspaceOL($table, $origRecordRow);
+									BackendUtility::workspaceOL($table, $origRecordRow);
 									// Get current data structure and value array:
-									$dataStructArray = \TYPO3\CMS\Backend\Utility\BackendUtility::getFlexFormDS($conf, $origRecordRow, $table);
+									$dataStructArray = BackendUtility::getFlexFormDS($conf, $origRecordRow, $table);
 									$currentValueArray = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($origRecordRow[$fieldName]);
 									// Do recursive processing of the XML data:
 									$currentValueArray['data'] = $this->checkValue_flex_procInData($currentValueArray['data'], array(), array(), $dataStructArray, array($table, $theUidToUpdate, $fieldName), 'remapListedDBRecords_flexFormCallBack');
@@ -4829,7 +4831,7 @@ class DataHandler {
 				if ($thePidToUpdate) {
 					$updateValues = array('pid' => $thePidToUpdate);
 					foreach ($dbAnalysis->itemArray as $v) {
-						if ($v['id'] && $v['table'] && is_null(\TYPO3\CMS\Backend\Utility\BackendUtility::getLiveVersionIdOfRecord($v['table'], $v['id']))) {
+						if ($v['id'] && $v['table'] && is_null(BackendUtility::getLiveVersionIdOfRecord($v['table'], $v['id']))) {
 							$GLOBALS['TYPO3_DB']->exec_UPDATEquery($v['table'], 'uid=' . intval($v['id']), $updateValues);
 						}
 					}
@@ -4968,7 +4970,7 @@ class DataHandler {
 			return;
 		}
 
-		\TYPO3\CMS\Backend\Utility\BackendUtility::workspaceOL($table, $record);
+		BackendUtility::workspaceOL($table, $record);
 
 		// Get current data structure and value array:
 		$valueStructure = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($record[$field]);
@@ -5250,7 +5252,7 @@ class DataHandler {
 	 */
 	public function doesRecordExist($table, $id, $perms) {
 		if ($this->bypassAccessCheckForRecords) {
-			return is_array(\TYPO3\CMS\Backend\Utility\BackendUtility::getRecordRaw($table, 'uid=' . intval($id), 'uid'));
+			return is_array(BackendUtility::getRecordRaw($table, 'uid=' . intval($id), 'uid'));
 		}
 		$res = 0;
 		$id = intval($id);
@@ -5276,21 +5278,21 @@ class DataHandler {
 			throw new \RuntimeException('Internal ERROR: no permissions to check for non-admin user', 1270853920);
 		}
 		// For all tables: Check if record exists:
-		$isWebMountRestrictionIgnored = \TYPO3\CMS\Backend\Utility\BackendUtility::isWebMountRestrictionIgnored($table);
+		$isWebMountRestrictionIgnored = BackendUtility::isWebMountRestrictionIgnored($table);
 		if (is_array($GLOBALS['TCA'][$table]) && $id > 0 && ($isWebMountRestrictionIgnored || $this->isRecordInWebMount($table, $id) || $this->admin)) {
 			if ($table != 'pages') {
 				// Find record without checking page:
 				$mres = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,pid', $table, 'uid=' . intval($id) . $this->deleteClause($table));
 				// THIS SHOULD CHECK FOR editlock I think!
 				$output = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($mres);
-				\TYPO3\CMS\Backend\Utility\BackendUtility::fixVersioningPid($table, $output, TRUE);
+				BackendUtility::fixVersioningPid($table, $output, TRUE);
 				// If record found, check page as well:
 				if (is_array($output)) {
 					// Looking up the page for record:
 					$mres = $this->doesRecordExist_pageLookUp($output['pid'], $perms);
 					$pageRec = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($mres);
 					// Return TRUE if either a page was found OR if the PID is zero AND the user is ADMIN (in which case the record is at root-level):
-					$isRootLevelRestrictionIgnored = \TYPO3\CMS\Backend\Utility\BackendUtility::isRootLevelRestrictionIgnored($table);
+					$isRootLevelRestrictionIgnored = BackendUtility::isRootLevelRestrictionIgnored($table);
 					if (is_array($pageRec) || !$output['pid'] && ($isRootLevelRestrictionIgnored || $this->admin)) {
 						return TRUE;
 					}
@@ -5401,7 +5403,7 @@ class DataHandler {
 			$loopCheck--;
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('pid, uid, t3ver_oid,t3ver_wsid', 'pages', 'uid=' . intval($dest) . $this->deleteClause('pages'));
 			if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-				\TYPO3\CMS\Backend\Utility\BackendUtility::fixVersioningPid('pages', $row);
+				BackendUtility::fixVersioningPid('pages', $row);
 				if ($row['pid'] == $id) {
 					return FALSE;
 				} else {
@@ -5531,7 +5533,7 @@ class DataHandler {
 	public function getRecordProperties($table, $id, $noWSOL = FALSE) {
 		$row = $table == 'pages' && !$id ? array('title' => '[root-level]', 'uid' => 0, 'pid' => 0) : $this->recordInfo($table, $id, '*');
 		if (!$noWSOL) {
-			\TYPO3\CMS\Backend\Utility\BackendUtility::workspaceOL($table, $row);
+			BackendUtility::workspaceOL($table, $row);
 		}
 		return $this->getRecordPropertiesFromRow($table, $row);
 	}
@@ -5546,9 +5548,9 @@ class DataHandler {
 	 */
 	public function getRecordPropertiesFromRow($table, $row) {
 		if ($GLOBALS['TCA'][$table]) {
-			\TYPO3\CMS\Backend\Utility\BackendUtility::fixVersioningPid($table, $row);
+			BackendUtility::fixVersioningPid($table, $row);
 			$out = array(
-				'header' => \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle($table, $row),
+				'header' => BackendUtility::getRecordTitle($table, $row),
 				'pid' => $row['pid'],
 				'event_pid' => $this->eventPid($table, isset($row['_ORIG_pid']) ? $row['t3ver_oid'] : $row['uid'], $row['pid']),
 				't3ver_state' => $GLOBALS['TCA'][$table]['ctrl']['versioningWS'] ? $row['t3ver_state'] : '',
@@ -5807,7 +5809,7 @@ class DataHandler {
 				// There was a record
 				if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 					// Look, if the record UID happens to be an offline record. If so, find its live version. Offline uids will be used when a page is versionized as "branch" so this is when we must correct - otherwise a pid of "-1" and a wrong sort-row number is returned which we don't want.
-					if ($lookForLiveVersion = \TYPO3\CMS\Backend\Utility\BackendUtility::getLiveVersionOfRecord($table, $row['uid'], $sortRow . ',pid,uid')) {
+					if ($lookForLiveVersion = BackendUtility::getLiveVersionOfRecord($table, $row['uid'], $sortRow . ',pid,uid')) {
 						$row = $lookForLiveVersion;
 					}
 					// If the record should be inserted after itself, keep the current sorting information:
@@ -5905,7 +5907,7 @@ class DataHandler {
 				$select .= ',colPos';
 			}
 			// Get the sort value of the default language record
-			$row = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($table, $uid, $select);
+			$row = BackendUtility::getRecord($table, $uid, $select);
 			if (is_array($row)) {
 				// Find the previous record in default language on the same page
 				$where = 'pid=' . intval($pid) . ' AND ' . 'sys_language_uid=0' . ' AND ' . $sortRow . '<' . intval($row[$sortRow]);
@@ -5916,7 +5918,7 @@ class DataHandler {
 				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($select, $table, $where . $this->deleteClause($table), '', $sortRow . ' DESC', '1');
 				// If there is an element, find its localized record in specified localization language
 				if ($previousRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-					$previousLocalizedRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordLocalization($table, $previousRow['uid'], $language);
+					$previousLocalizedRecord = BackendUtility::getRecordLocalization($table, $previousRow['uid'], $language);
 					if (is_array($previousLocalizedRecord[0])) {
 						$previousLocalizedRecordUid = $previousLocalizedRecord[0]['uid'];
 					}
@@ -5998,7 +6000,7 @@ class DataHandler {
 		if ($GLOBALS['TCA'][$table]['ctrl']['languageField']) {
 			if (!isset($incomingFieldArray[$GLOBALS['TCA'][$table]['ctrl']['languageField']])) {
 				// Language field must be found in input row - otherwise it does not make sense.
-				$rows = array_merge(array(array('uid' => 0)), $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid', 'sys_language', 'pid=0' . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('sys_language')), array(array('uid' => -1)));
+				$rows = array_merge(array(array('uid' => 0)), $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid', 'sys_language', 'pid=0' . BackendUtility::deleteClause('sys_language')), array(array('uid' => -1)));
 				foreach ($rows as $r) {
 					if ($this->BE_USER->checkLanguageAccess($r['uid'])) {
 						$incomingFieldArray[$GLOBALS['TCA'][$table]['ctrl']['languageField']] = $r['uid'];
@@ -6213,7 +6215,7 @@ class DataHandler {
 	 */
 	public function getTCEMAIN_TSconfig($tscPID) {
 		if (!isset($this->cachedTSconfig[$tscPID])) {
-			$this->cachedTSconfig[$tscPID] = $this->BE_USER->getTSConfig('TCEMAIN', \TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig($tscPID));
+			$this->cachedTSconfig[$tscPID] = $this->BE_USER->getTSConfig('TCEMAIN', BackendUtility::getPagesTSconfig($tscPID));
 		}
 		return $this->cachedTSconfig[$tscPID]['properties'];
 	}
@@ -6257,7 +6259,7 @@ class DataHandler {
 	 */
 	public function dbAnalysisStoreExec() {
 		foreach ($this->dbAnalysisStore as $action) {
-			$id = \TYPO3\CMS\Backend\Utility\BackendUtility::wsMapId($action[4], \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($action[2]) ? $action[2] : $this->substNEWwithIDs[$action[2]]);
+			$id = BackendUtility::wsMapId($action[4], \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($action[2]) ? $action[2] : $this->substNEWwithIDs[$action[2]]);
 			if ($id) {
 				$action[0]->writeMM($action[1], $id, $action[3]);
 			}
@@ -6527,7 +6529,7 @@ class DataHandler {
 			// Offline uids will be used when a page is versionized as "branch" so this is when we
 			// must correct - otherwise a pid of "-1" and a wrong sort-row number
 			// is returned which we don't want.
-			if ($lookForLiveVersion = \TYPO3\CMS\Backend\Utility\BackendUtility::getLiveVersionOfRecord($table, abs($pid), 'pid')) {
+			if ($lookForLiveVersion = BackendUtility::getLiveVersionOfRecord($table, abs($pid), 'pid')) {
 				$row = $lookForLiveVersion;
 			}
 			$pid = intval($row['pid']);
@@ -6591,7 +6593,7 @@ class DataHandler {
 		$inList = trim($this->rmComma(trim($inList)));
 		if ($inList && !$this->admin) {
 			foreach (array_keys($GLOBALS['TCA']) as $table) {
-				$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('uid', $table, 'pid IN (' . $inList . ')' . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($table));
+				$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('uid', $table, 'pid IN (' . $inList . ')' . BackendUtility::deleteClause($table));
 				if ($count && ($this->tableReadOnly($table) || !$this->checkModifyAccessList($table))) {
 					return FALSE;
 				}
@@ -6638,7 +6640,7 @@ class DataHandler {
 		$pageUid = 0;
 		if (is_array($GLOBALS['TCA'][$table]) && $uid > 0) {
 			// Get Page TSconfig relavant:
-			list($tscPID) = \TYPO3\CMS\Backend\Utility\BackendUtility::getTSCpid($table, $uid, '');
+			list($tscPID) = BackendUtility::getTSCpid($table, $uid, '');
 			$TSConfig = $this->getTCEMAIN_TSconfig($tscPID);
 			if (!$TSConfig['clearCache_disable']) {
 				// If table is "pages":
