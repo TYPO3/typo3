@@ -192,9 +192,12 @@ class ClassAliasMap implements \TYPO3\CMS\Core\SingletonInterface {
 		foreach ($classNameToAliasMapping as $originalClassName => $aliasClassNames) {
 			$originalClassNameCacheEntryIdentifier = str_replace('\\', '_', strtolower($originalClassName));
 			// Trigger autoloading for all aliased class names, so a cache entry is created
-			if ($this->classLoader->loadClass($originalClassName, FALSE) && $originalClassTarget = $cacheBackend->getTargetOfLinkedCacheEntry($originalClassNameCacheEntryIdentifier)) {
+			if (
+				$this->classLoader->loadClass($originalClassName, FALSE)
+				&& ($requiredFile = $cacheBackend->getPathOfRequiredFileInCacheEntry($originalClassNameCacheEntryIdentifier))
+			) {
 				$proxyContent = array(
-					$this->buildRequireOnceCommand($originalClassTarget),
+					$this->buildRequireOnceCommand($requiredFile),
 					$this->buildClassLoaderCommand(),
 				);
 				foreach ($aliasClassNames as $aliasClassName) {
@@ -262,13 +265,13 @@ class ClassAliasMap implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 	/**
-	 * String command to build class alias
+	 * Creates a require_once command for the given file.
 	 *
-	 * @param string $classFilePath
+	 * @param string $requiredFile
 	 * @return string
 	 */
-	protected function buildRequireOnceCommand($classFilePath) {
-		return sprintf('require_once __DIR__ . \'/%s\';', $classFilePath);
+	protected function buildRequireOnceCommand($requiredFile) {
+		return sprintf('require_once \'%s\';', $requiredFile);
 	}
 
 	/**

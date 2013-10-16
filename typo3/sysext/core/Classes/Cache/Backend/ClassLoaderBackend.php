@@ -27,7 +27,6 @@ namespace TYPO3\CMS\Core\Cache\Backend;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
@@ -37,6 +36,14 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  * @internal
  */
 class ClassLoaderBackend extends SimpleFileBackend {
+
+	/**
+	 * This string will be used for writing the require statement in the
+	 * cache file and for getting the required path via regex.
+	 *
+	 * @var string
+	 */
+	protected $requireFileTemplate = '<?php require \'%s\';';
 
 	/**
 	 * Set a class loader cache content
@@ -51,24 +58,20 @@ class ClassLoaderBackend extends SimpleFileBackend {
 		if ($entryIdentifier === '') {
 			throw new \InvalidArgumentException('The specified entry identifier must not be empty.', 1364205170);
 		}
+		if (!PathUtility::isAbsolutePath($filePath)) {
+			throw new \InvalidArgumentException('Only absolute paths are allowed for the class loader, given path was: ' . $filePath, 1381923089);
+		}
 		if (!@file_exists($filePath)) {
 			throw new \InvalidArgumentException('The specified file path (' . $filePath . ') must exist.', 1364205235);
 		}
-		if (strtolower(substr($filePath, -3)) !== 'php') {
+		if (strtolower(substr($filePath, -4)) !== '.php') {
 			throw new \InvalidArgumentException('The specified file (' . $filePath . ') must be a php file.', 1364205377);
 		}
 		if ($entryIdentifier !== basename($entryIdentifier)) {
 			throw new \InvalidArgumentException('The specified entry identifier (' . $entryIdentifier . ') must not contain a path segment.', 1364205166);
 		}
-		if (\TYPO3\CMS\Core\Utility\GeneralUtility::isAllowedAbsPath($filePath)) {
-			// Make relative if absolute to prevent wrong entries if the whole installation is moved or copied
-			$filePath = \TYPO3\CMS\Core\Utility\PathUtility::getRelativePath($this->cacheDirectory, dirname($filePath)) . basename($filePath);
-		}
-		if (PathUtility::isAbsolutePath($filePath)) {
-			$this->set($entryIdentifier, '<?php require \'' . $filePath . '\';');
-		} else {
-			$this->set($entryIdentifier, '<?php require __DIR__ . \'/' . $filePath . '\';');
-		}
+
+		$this->set($entryIdentifier, sprintf($this->requireFileTemplate, $filePath));
 	}
 
 	/**
@@ -104,31 +107,26 @@ class ClassLoaderBackend extends SimpleFileBackend {
 	}
 
 	/**
-	 * Retrieves the target of the a linked cache entry
+	 * Retrieves the path and filename that is passed to the require
+	 * command in the cache entry with the given identifier.
 	 *
-	 * @TODO: Rename method
 	 * @param string $entryIdentifier
-	 * @return bool|string
+	 * @return boolean|string FALSE if required path can not be retrieved or the required file path on success
 	 * @internal
 	 */
-	public function getTargetOfLinkedCacheEntry($entryIdentifier) {
-		$pathAndFilename = $this->cacheDirectory . $entryIdentifier . $this->cacheEntryFileExtension;
-		if (@file_exists($pathAndFilename)) {
-			// If not a link
-			$fileContent = file_get_contents($pathAndFilename);
-			$pattern = "!^\<\?php require ((__DIR__) \. )?'([\/\.\_a-z0-9]+)';!i";
+	public function getPathOfRequiredFileInCacheEntry($entryIdentifier) {
+		$result = FALSE;
+
+		$fileContent = $this->get($entryIdentifier);
+		if ($fileContent !== FALSE) {
+			$pattern = '!^' . sprintf(preg_quote($this->requireFileTemplate), '(.+)') . '!i';
 			$matches = array();
-			if (preg_match($pattern, $fileContent, $matches) !== FALSE) {
-				if (!empty($matches[3])) {
-					$targetPath = $matches[3];
-					if (!empty($matches[2]) && $matches[2] == '__DIR__') {
-						$targetPath = dirname($pathAndFilename) . $targetPath;
-					}
-					return \TYPO3\CMS\Core\Utility\PathUtility::getRelativePath($this->cacheDirectory, dirname($targetPath)) . basename($targetPath);
-				}
+			if (preg_match($pattern, $fileContent, $matches) === 1) {
+				$requireString = $matches[1];
+				$result = $requireString;
 			}
 		}
-		return FALSE;
+		return $result;
 	}
 
 	/**
