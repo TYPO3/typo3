@@ -29,7 +29,7 @@ use TYPO3\CMS\Install\Configuration;
 /**
  * Development preset
  */
-class DevelopmentPreset extends Configuration\AbstractPreset implements Configuration\PresetInterface {
+class DevelopmentPreset extends Configuration\AbstractPreset {
 
 	/**
 	 * @var string Name of preset

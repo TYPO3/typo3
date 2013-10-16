@@ -29,7 +29,7 @@ use TYPO3\CMS\Install\Configuration;
 /**
  * Mbstring charset preset
  */
-class MbstringPreset extends Configuration\AbstractPreset implements Configuration\PresetInterface {
+class MbstringPreset extends Configuration\AbstractPreset {
 
 	/**
 	 * @var string Name of preset

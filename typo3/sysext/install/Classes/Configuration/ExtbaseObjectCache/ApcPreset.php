@@ -29,7 +29,7 @@ use TYPO3\CMS\Install\Configuration;
 /**
  * APC preset
  */
-class ApcPreset extends Configuration\AbstractPreset implements Configuration\PresetInterface {
+class ApcPreset extends Configuration\AbstractPreset {
 
 	/**
 	 * @var string Name of preset

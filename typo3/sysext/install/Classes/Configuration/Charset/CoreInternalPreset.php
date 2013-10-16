@@ -29,7 +29,7 @@ use TYPO3\CMS\Install\Configuration;
 /**
  * Internal core charset handling preset
  */
-class CoreInternalPreset extends Configuration\AbstractPreset implements Configuration\PresetInterface {
+class CoreInternalPreset extends Configuration\AbstractPreset {
 
 	/**
 	 * @var string Name of preset

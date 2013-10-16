@@ -29,7 +29,7 @@ use TYPO3\CMS\Install\Configuration;
 /**
  * Iconv charset preset
  */
-class IconvPreset extends Configuration\AbstractPreset implements Configuration\PresetInterface {
+class IconvPreset extends Configuration\AbstractPreset {
 
 	/**
 	 * @var string Name of preset

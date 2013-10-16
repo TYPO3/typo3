@@ -29,7 +29,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Abstract preset class implements common preset code
  */
-abstract class AbstractPreset {
+abstract class AbstractPreset implements PresetInterface {
 
 	/**
 	 * @var \TYPO3\CMS\Core\Configuration\ConfigurationManager
@@ -66,13 +66,6 @@ abstract class AbstractPreset {
 	public function setPostValues(array $postValues) {
 		$this->postValues = $postValues;
 	}
-
-	/**
-	 * Check if preset is available on the system
-	 *
-	 * @return boolean TRUE if preset is available
-	 */
-	abstract public function isAvailable();
 
 	/**
 	 * Wrapper for isAvailable, used in fluid

@@ -29,7 +29,7 @@ use TYPO3\CMS\Install\Configuration;
 /**
  * Database preset
  */
-class DatabasePreset extends Configuration\AbstractPreset implements Configuration\PresetInterface {
+class DatabasePreset extends Configuration\AbstractPreset {
 
 	/**
 	 * @var string Name of preset
