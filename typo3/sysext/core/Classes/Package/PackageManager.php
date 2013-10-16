@@ -59,6 +59,20 @@ class PackageManager extends \TYPO3\Flow\Package\PackageManager implements \TYPO
 	protected $packageAliasMap = array();
 
 	/**
+	 * Adjacency matrix for the dependency graph (DAG)
+	 *
+	 * Example structure is:
+	 *    A => (A => FALSE, B => TRUE,  C => FALSE)
+	 *    B => (A => FALSE, B => FALSE, C => FALSE)
+	 *    C => (A => TRUE,  B => FALSE, C => FALSE)
+	 *
+	 *    A depends on B, C depends on A, B is independent
+	 *
+	 * @var array<array<boolean>>
+	 */
+	protected $dependencyGraph;
+
+	/**
 	 * Constructor
 	 */
 	public function __construct() {
@@ -558,4 +572,188 @@ class PackageManager extends \TYPO3\Flow\Package\PackageManager implements \TYPO
 		parent::refreezePackage($package->getPackageKey());
 	}
 
+
+	/**
+	 * Get packages of specific type
+	 *
+	 * @param string $type Type of package. Empty string for all types
+	 * @param array $excludedTypes Array of package types to exclude
+	 * @return array List of packages
+	 */
+	protected function getPackageKeysOfType($type, array $excludedTypes = array()) {
+		$packageKeys = array();
+		foreach ($this->packages as $packageKey => $package) {
+			$packageType = $package->getComposerManifest('type');
+			if (($type === '' || $packageType === $type) && !in_array($packageType, $excludedTypes)) {
+				$packageKeys[] = $packageKey;
+			}
+		}
+		return $packageKeys;
+	}
+
+	/**
+	 * Build the dependency graph for the given packages
+	 *
+	 * @param array $packageKeys
+	 * @return void
+	 * @throws \UnexpectedValueException
+	 */
+	protected function buildDependencyGraphForPackages(array $packageKeys) {
+		// Initialize the dependencies with FALSE
+		$this->dependencyGraph = array_fill_keys($packageKeys, array_fill_keys($packageKeys, FALSE));
+		foreach ($packageKeys as $packageKey) {
+			$dependentPackageKeys = $this->packageStatesConfiguration['packages'][$packageKey]['dependencies'];
+			foreach ($dependentPackageKeys as $dependentPackageKey) {
+				if (!in_array($dependentPackageKey, $packageKeys)) {
+					throw new \UnexpectedValueException(
+						'The package "' . $packageKey .'" depends on "'
+						. $dependentPackageKey . '" which is not present in the system.',
+						1382276561);
+				}
+				$this->dependencyGraph[$packageKey][$dependentPackageKey] = TRUE;
+			}
+		}
+	}
+
+	/**
+	 * Adds all root packages of current dependency graph as dependency
+	 * to all extensions
+	 *
+	 * @return void
+	 */
+	protected function addDependencyToFrameworkToAllExtensions() {
+		$rootPackageKeys = array();
+		foreach (array_keys($this->dependencyGraph) as $packageKey) {
+			if (!$this->getIncomingEdgeCount($packageKey)) {
+				$rootPackageKeys[] = $packageKey;
+			}
+		}
+		$extensionPackageKeys = $this->getPackageKeysOfType('', array('typo3-cms-framework'));
+		$frameworkPackageKeys = $this->getPackageKeysOfType('typo3-cms-framework');
+		foreach ($extensionPackageKeys as $packageKey) {
+			// Remove framework packages from list
+			$packageKeysWithoutFramework = array_diff(
+				$this->packageStatesConfiguration['packages'][$packageKey]['dependencies'],
+				$frameworkPackageKeys
+			);
+			// The order of the array_merge is crucial here,
+			// we want the framework first
+			$this->packageStatesConfiguration['packages'][$packageKey]['dependencies'] = array_merge(
+				$rootPackageKeys, $packageKeysWithoutFramework
+			);
+		}
+	}
+
+	/**
+	 * Builds the dependency graph for all packages
+	 *
+	 * This method also introduces dependencies among the dependencies
+	 * to ensure the loading order is exactly as specified in the list.
+	 *
+	 * @return void
+	 */
+	protected function buildDependencyGraph() {
+		$this->resolvePackageDependencies();
+
+		$frameworkPackageKeys = $this->getPackageKeysOfType('typo3-cms-framework');
+		$this->buildDependencyGraphForPackages($frameworkPackageKeys);
+
+		$this->addDependencyToFrameworkToAllExtensions();
+
+		$packageKeys = array_keys($this->packages);
+		$this->buildDependencyGraphForPackages($packageKeys);
+	}
+
+	/**
+	 * Get the number of incoming edges in the dependency graph
+	 * for given package key.
+	 *
+	 * @param string $packageKey
+	 * @return integer
+	 */
+	protected function getIncomingEdgeCount($packageKey) {
+		$incomingEdgeCount = 0;
+		foreach ($this->dependencyGraph as $dependencies) {
+			if ($dependencies[$packageKey]) {
+				$incomingEdgeCount++;
+			}
+		}
+		return $incomingEdgeCount;
+	}
+
+	/**
+	 * Get the loading order for packages
+	 *
+	 * @return array The properly sorted loading order
+	 * @throws \UnexpectedValueException
+	 */
+	protected function getAvailablePackageLoadingOrder() {
+		$this->buildDependencyGraph();
+
+		// This will contain our final result
+		$sortedPackageKeys = array();
+
+		$rootPackageKeys = array();
+		// Filter extensions with no incoming edge
+		foreach (array_keys($this->dependencyGraph) as $packageKey) {
+			if (!$this->getIncomingEdgeCount($packageKey)) {
+				$rootPackageKeys[] = $packageKey;
+			}
+		}
+
+		while (count($rootPackageKeys)) {
+			$currentPackageKey = array_shift($rootPackageKeys);
+			array_push($sortedPackageKeys, $currentPackageKey);
+
+			$dependingPackageKeys = array_keys(array_filter($this->dependencyGraph[$currentPackageKey]));
+			foreach ($dependingPackageKeys as $dependingPackageKey) {
+				// Remove the edge to this dependency
+				$this->dependencyGraph[$currentPackageKey][$dependingPackageKey] = FALSE;
+				if (!$this->getIncomingEdgeCount($dependingPackageKey)) {
+					// We found a new root, lets add it
+					array_unshift($rootPackageKeys, $dependingPackageKey);
+				}
+			}
+		}
+
+		// Check for remaining edges in the graph
+		$cycles = array();
+		array_walk($this->dependencyGraph, function($dependencies, $packageKeyFrom) use(&$cycles) {
+			array_walk($dependencies, function($dependency, $packageKeyTo) use(&$cycles, $packageKeyFrom) {
+				if ($dependency) {
+					$cycles[] = $packageKeyFrom . '->' . $packageKeyTo;
+				}
+			});
+		});
+		if (count($cycles)) {
+			throw new \UnexpectedValueException('Your dependencies have cycles. That will not work out. Cycles found: ' . implode(', ', $cycles), 1381960493);
+		}
+
+		// We built now a list of dependencies
+		// Reverse the list to get the correct loading order
+		return array_reverse($sortedPackageKeys);
+	}
+
+	/**
+	 * Orders all packages by comparing their dependencies. By this, the packages
+	 * and package configurations arrays holds all packages in the correct
+	 * initialization order.
+	 *
+	 * @return void
+	 */
+	protected function sortAvailablePackagesByDependencies() {
+		$newPackages = array();
+		$newPackageStatesConfiguration = array();
+
+		$sortedPackageKeys = $this->getAvailablePackageLoadingOrder();
+
+		// Reorder the packages according to the loading order
+		foreach ($sortedPackageKeys as $packageKey) {
+			$newPackages[$packageKey] = $this->packages[$packageKey];
+			$newPackageStatesConfiguration[$packageKey] = $this->packageStatesConfiguration['packages'][$packageKey];
+		}
+
+		$this->packages = $newPackages;
+		$this->packageStatesConfiguration['packages'] = $newPackageStatesConfiguration;
+	}
 }

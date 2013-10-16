@@ -7,7 +7,9 @@
 	"version": "6.2.0",
 
 	"require": {
-		"typo3/cms/core": "*"
+		"typo3/cms/core": "*",
+		"typo3/cms/sv": "*",
+		"typo3/cms/setup": "*"
 	},
 	"replace": {
 		"openid": "*"
