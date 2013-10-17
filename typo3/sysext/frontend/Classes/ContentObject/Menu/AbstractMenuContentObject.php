@@ -1856,7 +1856,7 @@ class AbstractMenuContentObject {
 			if ($this->mconf['sectionIndex.']['type'] !== 'all') {
 				$doIncludeInSectionIndex = $row['sectionIndex'] >= 1;
 				$doHeaderCheck = $this->mconf['sectionIndex.']['type'] === 'header';
-				$isValidHeader = (int)$row['header_layout'] !== 100 && trim($row['header']) !== '';
+				$isValidHeader = ((int)$row['header_layout'] !== 100 || !empty($this->mconf['sectionIndex.']['includeHiddenHeaders'])) && trim($row['header']) !== '';
 				if (!$doIncludeInSectionIndex || $doHeaderCheck && !$isValidHeader) {
 					continue;
 				}
