@@ -260,6 +260,14 @@ class DocumentTemplate {
 	 * @var array
 	 */
 	protected $jsFiles = array(
+	);
+
+	/**
+	 * JavaScript files loaded for every page in the Backend, but explicitly excluded from concatenation (useful for libraries etc.)
+	 *
+	 * @var array
+	 */
+	protected $jsFilesNoConcatenation = array(
 		'modernizr' => 'contrib/modernizr/modernizr.min.js'
 	);
 
@@ -411,6 +419,17 @@ class DocumentTemplate {
 			$this->pageRenderer->enableConcatenateFiles();
 			$this->pageRenderer->enableCompressCss();
 			$this->pageRenderer->enableCompressJavascript();
+			// Add all JavaScript files defined in $this->jsFiles to the PageRenderer
+			foreach ($this->jsFilesNoConcatenation as $file) {
+				$this->pageRenderer->addJsFile(
+					$GLOBALS['BACK_PATH'] . $file,
+					'text/javascript',
+					TRUE,
+					FALSE,
+					'',
+					TRUE
+				);
+			}
 			// Add all JavaScript files defined in $this->jsFiles to the PageRenderer
 			foreach ($this->jsFiles as $file) {
 				$this->pageRenderer->addJsFile($GLOBALS['BACK_PATH'] . $file);
