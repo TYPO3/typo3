@@ -24,7 +24,7 @@ TYPO3.DocumentationApplication = {
 	},
 	// Initializes the list view
 	documentationListView: function(getVars) {
-		this.datatable = $('#typo3-documentation-list').dataTable({
+		this.datatable = jQuery('#typo3-documentation-list').dataTable({
 			'bPaginate': false,
 			'bJQueryUI': true,
 			'bLengthChange': false,
@@ -39,7 +39,7 @@ TYPO3.DocumentationApplication = {
 	},
 	// Initializes the management view
 	documentationManageView: function(getVars) {
-		this.datatable = $('#typo3-documentation-manage').dataTable({
+		this.datatable = jQuery('#typo3-documentation-manage').dataTable({
 			'bPaginate': false,
 			'bJQueryUI': true,
 			'bLengthChange': false,

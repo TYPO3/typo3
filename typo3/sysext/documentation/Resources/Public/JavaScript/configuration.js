@@ -3,7 +3,6 @@
 
 	$(document).ready(function() {
 		configurationFieldSupport();
-		$('.validate').validator();
 	});
 
 	function configurationFieldSupport() {
