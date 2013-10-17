@@ -35,7 +35,11 @@ var languageModule = {
 		aoColumnDefs: [{
 			bSortable: false,
 			aTargets: ['notSortable']
-		}]
+		}],
+		"fnCookieCallback": function (sNameFile, oData, sExpires, sPath) {
+			// append mod.php to cookiePath to avoid sending cookie-data to images etc. without reason
+			return sNameFile + "=" + encodeURIComponent($.fn.dataTableExt.oApi._fnJsonString(oData)) + "; expires=" + sExpires +"; path=" + sPath + "mod.php";
+		}
 	},
 
 	/**

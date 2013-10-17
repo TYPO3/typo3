@@ -47,6 +47,10 @@
 			"oLanguage": {"sSearch": TYPO3.l10n.localize('extensionList.search')},
 			"bStateSave":true,
 			"fnDrawCallback": bindActions,
+			"fnCookieCallback": function (sNameFile, oData, sExpires, sPath) {
+				// append mod.php to cookiePath to avoid sending cookie-data to images etc. without reason
+				return sNameFile + "=" + encodeURIComponent($.fn.dataTableExt.oApi._fnJsonString(oData)) + "; expires=" + sExpires +"; path=" + sPath + "mod.php";
+			},
 			'aoColumns': [
 				null,
 				null,

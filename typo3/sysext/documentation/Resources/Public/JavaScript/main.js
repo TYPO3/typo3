@@ -29,7 +29,11 @@ TYPO3.DocumentationApplication = {
 			'bJQueryUI': true,
 			'bLengthChange': false,
 			'iDisplayLength': 15,
-			'bStateSave': true
+			'bStateSave': true,
+			"fnCookieCallback": function (sNameFile, oData, sExpires, sPath) {
+				// append mod.php to cookiePath to avoid sending cookie-data to images etc. without reason
+				return sNameFile + "=" + encodeURIComponent($.fn.dataTableExt.oApi._fnJsonString(oData)) + "; expires=" + sExpires +"; path=" + sPath + "mod.php";
+			}
 		});
 
 		// restore filter
@@ -45,7 +49,11 @@ TYPO3.DocumentationApplication = {
 			'bLengthChange': false,
 			'iDisplayLength': 15,
 			'bStateSave': true,
-			'aaSorting': [[ 1, 'asc' ]]
+			'aaSorting': [[ 1, 'asc' ]],
+			"fnCookieCallback": function (sNameFile, oData, sExpires, sPath) {
+				// append mod.php to cookiePath to avoid sending cookie-data to images etc. without reason
+				return sNameFile + "=" + encodeURIComponent($.fn.dataTableExt.oApi._fnJsonString(oData)) + "; expires=" + sExpires +"; path=" + sPath + "mod.php";
+			}
 		});
 
 		// restore filter

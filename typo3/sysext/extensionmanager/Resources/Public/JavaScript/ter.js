@@ -11,7 +11,11 @@
 			"bPaginate": false,
 			"bFilter": false,
 			"bSort": false,
-			"fnDrawCallback": bindDownload
+			"fnDrawCallback": bindDownload,
+			"fnCookieCallback": function (sNameFile, oData, sExpires, sPath) {
+				// append mod.php to cookiePath to avoid sending cookie-data to images etc. without reason
+				return sNameFile + "=" + encodeURIComponent($.fn.dataTableExt.oApi._fnJsonString(oData)) + "; expires=" + sExpires +"; path=" + sPath + "mod.php";
+			}
 		});
 
 		$('#terVersionTable').dataTable({
@@ -23,6 +27,10 @@
 			"bPaginate":false,
 			"bFilter":false,
 			"fnDrawCallback":bindDownload,
+			"fnCookieCallback": function (sNameFile, oData, sExpires, sPath) {
+				// append mod.php to cookiePath to avoid sending cookie-data to images etc. without reason
+				return sNameFile + "=" + encodeURIComponent($.fn.dataTableExt.oApi._fnJsonString(oData)) + "; expires=" + sExpires +"; path=" + sPath + "mod.php";
+			},
 			"aaSorting": [
 				[2, 'asc']
 			],
@@ -47,7 +55,11 @@
 				"sSearch": "Filter results:"
 			},
 			"bSort": false,
-			"fnDrawCallback": bindDownload
+			"fnDrawCallback": bindDownload,
+			"fnCookieCallback": function (sNameFile, oData, sExpires, sPath) {
+				// append mod.php to cookiePath to avoid sending cookie-data to images etc. without reason
+				return sNameFile + "=" + encodeURIComponent($.fn.dataTableExt.oApi._fnJsonString(oData)) + "; expires=" + sExpires +"; path=" + sPath + "mod.php";
+			}
 		});
 
 		bindDownload();
