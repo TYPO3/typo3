@@ -26,6 +26,13 @@
 	.spinner {
 		display: inline-block;
 	}
+
+	.ui-icon {
+		width: 16px;
+		height: 16px;
+		background-image: url('../Images/ui-icons_222222_256x240.png');
+		background-position: -64px -16px;
+	}
 }
 
 .time-since-last-update {

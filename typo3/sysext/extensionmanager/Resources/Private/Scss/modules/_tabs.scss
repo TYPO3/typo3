@@ -12,34 +12,42 @@
 		clear: both;
 	}
 
-	// Each tab
-	a {
-		@include border-radius(4px 4px 0 0);
+	> li {
 
-		float: left;
-		height: 15px;
-		background: #dadada;
+		cursor: pointer;
 
-		padding: 7px 15px;
-		margin-top: -1px;
-		margin-right: 2px;
-		border: 1px solid #adadad;
-
-		color: #606060;
-
-		&:hover {
-			background-color: #eee;
-			border-color: #adadad;
-			color: #606060;
-		}
-
-		&.current {
-			background: #fff;
-			color: #000;
+		&.ui-tabs-active a,
+		a.current {
+			background: white;
+			color: black;
 			border-bottom: 0;
 
 			padding-top: 8px;
+
+			cursor: default;
+		}
+
+		a {
+			@include border-radius(4px 4px 0 0);
+
+			float: left;
+			height: 15px;
+			background: #dadada;
+
+			padding: 7px 15px;
+			margin-top: -1px;
+			margin-right: 2px;
+			border: 1px solid #adadad;
+
+			color: #606060;
+
+			outline: none;
+
+			&:hover {
+				background-color: #eee;
+				border-color: #adadad;
+				color: #606060;
+			}
 		}
 	}
-
 }

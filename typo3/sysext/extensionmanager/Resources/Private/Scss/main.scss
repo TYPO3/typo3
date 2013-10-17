@@ -2,7 +2,7 @@
  *  Created: 2012-08-13
  *
  *  CSS in SASS's SCSS dialect for
- *  TYPO3 Extension Manager v4.8.0
+ *  TYPO3 Extension Manager
  *  Questions can be submitted to info@drublic.de
  *
  */
@@ -11,8 +11,7 @@
 @import "helpers/mixins";
 
 // Import Modules
-@import "modules/jquery-ui.custom.scss",
-		"modules/tabs";
+@import "modules/tabs";
 
 // Appearance of the page
 @import "page/base",
