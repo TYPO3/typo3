@@ -95,15 +95,6 @@ class CategoryRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @expectedException \InvalidArgumentException
-	 * @expectedExceptionCode 1378976970
-	 */
-	public function doesAddThrowExceptionIfOptionsIsNotAnArray() {
-		$this->fixture->add('test_extension_a', $this->tables['first'], 'categories', 'not_an_array');
-	}
-
-	/**
-	 * @test
 	 */
 	public function areMultipleElementsOfSameExtensionRegistered() {
 		$this->fixture->add('test_extension_a', $this->tables['first'], 'categories');

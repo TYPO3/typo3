@@ -88,10 +88,6 @@ class CategoryRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 			throw new \InvalidArgumentException('TYPO3\\CMS\\Core\\Category\\CategoryRegistry No tableName given.', 1369122038);
 		}
 
-		if (!is_array($options)) {
-			throw new \InvalidArgumentException('TYPO3\\CMS\\Core\\Category\\CategoryRegistry options parameter must be an array', 1378976970);
-		}
-
 		// Makes sure there is an existing table configuration and nothing registered yet:
 		if (isset($GLOBALS['TCA'][$tableName]) && !$this->isRegistered($tableName, $fieldName)) {
 			$this->registry[$extensionKey][$tableName][$fieldName] = $options;
