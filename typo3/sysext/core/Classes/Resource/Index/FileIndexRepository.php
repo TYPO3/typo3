@@ -177,7 +177,7 @@ class FileIndexRepository implements SingletonInterface {
 	 * @return bool
 	 */
 	public function hasIndexRecord(File $file) {
-		return $this->getDatabase()->exec_SELECTcountRows('uid', $this->table, $this->getWhereClauseForFile($file)) === 1;
+		return $this->getDatabase()->exec_SELECTcountRows('uid', $this->table, $this->getWhereClauseForFile($file)) >= 1;
 	}
 
 	/**

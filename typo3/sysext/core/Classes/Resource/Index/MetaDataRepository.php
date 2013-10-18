@@ -125,8 +125,8 @@ class MetaDataRepository implements SingletonInterface {
 	 */
 	public function update($fileUid, array $data) {
 		$updateRow = array_intersect_key($data, $this->getDatabase()->admin_get_fields($this->tableName));
-		if (array_key_exists('uid', $data)) {
-			unset($data['uid']);
+		if (array_key_exists('uid', $updateRow)) {
+			unset($updateRow['uid']);
 		}
 		$row = $this->findByFileUid($fileUid);
 		if (count($updateRow) > 0) {
