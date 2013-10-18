@@ -62,8 +62,6 @@
   width: 140px; }
   .typo3-documentation-list td.formats a {
     padding: 2px; }
-    .typo3-documentation-list td.formats a:hover {
-      border: 1px solid #333; }
 
 .headerTooltip,
 .tooltip {
