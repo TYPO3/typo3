@@ -113,6 +113,8 @@ class MetaDataRepository implements SingletonInterface {
 		$record = $emptyRecord;
 		$record['uid'] = $this->getDatabase()->sql_insert_id();
 
+		$this->emitRecordCreated($record);
+
 		return $record;
 	}
 
@@ -132,6 +134,8 @@ class MetaDataRepository implements SingletonInterface {
 		if (count($updateRow) > 0) {
 			$updateRow['tstamp'] = time();
 			$this->getDatabase()->exec_UPDATEquery($this->tableName, 'uid = ' . intval($row['uid']), $updateRow);
+
+			$this->emitRecordUpdated(array_merge($row, $updateRow));
 		}
 	}
 
@@ -143,6 +147,7 @@ class MetaDataRepository implements SingletonInterface {
 	 */
 	public function removeByFileUid($fileUid) {
 		$this->getDatabase()->exec_DELETEquery($this->tableName, 'file=' . intval($fileUid));
+		$this->emitRecordDeleted($fileUid);
 	}
 
 	/**
@@ -173,5 +178,35 @@ class MetaDataRepository implements SingletonInterface {
 	 */
 	protected function emitRecordPostRetrievalSignal(\ArrayObject $data) {
 		$this->getSignalSlotDispatcher()->dispatch('TYPO3\\CMS\\Core\\Resource\\Index\\MetaDataRepository', 'recordPostRetrieval', array($data));
+	}
+
+	/**
+	 * Signal that is called after an IndexRecord is updated
+	 *
+	 * @param array $data
+	 * @signal
+	 */
+	protected function emitRecordUpdated(array $data) {
+		$this->getSignalSlotDispatcher()->dispatch('TYPO3\\CMS\\Core\\Resource\\Index\\MetaDataRepository', 'recordUpdated', array($data));
+	}
+
+	/**
+	 * Signal that is called after an IndexRecord is created
+	 *
+	 * @param array $data
+	 * @signal
+	 */
+	protected function emitRecordCreated(array $data) {
+		$this->getSignalSlotDispatcher()->dispatch('TYPO3\\CMS\\Core\\Resource\\Index\\MetaDataRepository', 'recordCreated', array($data));
+	}
+
+	/**
+	 * Signal that is called after an IndexRecord is deleted
+	 *
+	 * @param integer $fileUid
+	 * @signal
+	 */
+	protected function emitRecordDeleted($fileUid) {
+		$this->getSignalSlotDispatcher()->dispatch('TYPO3\\CMS\\Core\\Resource\\Index\\MetaDataRepository', 'recordDeleted', array($fileUid));
 	}
 }
