@@ -117,7 +117,7 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface {
 
 			return $validator;
 		} catch (NoSuchValidatorException $e) {
-			GeneralUtility::sysLog($e->getMessage(), 'extbase', GeneralUtility::SYSLOG_SEVERITY_INFO);
+			GeneralUtility::devLog($e->getMessage(), 'extbase', GeneralUtility::SYSLOG_SEVERITY_INFO);
 			return NULL;
 		}
 	}
