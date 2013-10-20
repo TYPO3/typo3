@@ -75,7 +75,7 @@ class DefaultDataProvider implements DataProviderInterface {
 		$data = $this->getDatabaseConnection()->exec_SELECTgetSingleRow(
 			'*',
 			'backend_layout',
-			'uid=' . intval($identifier) . BackendUtility::BEenableFields('backend_layout')
+			'uid=' . intval($identifier) . BackendUtility::BEenableFields('backend_layout') . BackendUtility::deleteClause('backend_layout')
 		);
 		if (is_array($data)) {
 			$backendLayout = $this->createBackendLayout($data);
@@ -147,7 +147,7 @@ class DefaultDataProvider implements DataProviderInterface {
 					( ' . intval($pageTsConfigId[$fieldName]) . ' = 0 AND ' . intval($storagePid) . ' = 0 )
 					OR ( backend_layout.pid = ' . intval($pageTsConfigId[$fieldName]) . ' OR backend_layout.pid = ' . intval($storagePid) . ' )
 					OR ( ' . intval($pageTsConfigId[$fieldName]) . ' = 0 AND backend_layout.pid = ' . intval($pageUid) . ' )
-				)' . BackendUtility::BEenableFields('backend_layout'),
+				) ' . BackendUtility::BEenableFields('backend_layout') . BackendUtility::deleteClause('backend_layout'),
 			'',
 			'sorting ASC'
 		);
