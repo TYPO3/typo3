@@ -760,7 +760,7 @@ return array(
 			'config' => array(
 				'type' => 'select',
 				'items' => array(
-					array('', 0),
+					array('', ''),
 					array('LLL:EXT:cms/locallang_tca.xlf:pages.backend_layout.none', -1)
 				),
 				'itemsProcFunc' => 'TYPO3\\CMS\\Backend\\View\\BackendLayoutView->addBackendLayoutItems',
@@ -775,7 +775,7 @@ return array(
 			'config' => array(
 				'type' => 'select',
 				'items' => array(
-					array('', 0),
+					array('', ''),
 					array('LLL:EXT:cms/locallang_tca.xlf:pages.backend_layout.none', -1)
 				),
 				'itemsProcFunc' => 'TYPO3\\CMS\\Backend\\View\\BackendLayoutView->addBackendLayoutItems',

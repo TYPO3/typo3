@@ -188,7 +188,7 @@ class BackendLayoutView implements \TYPO3\CMS\Core\SingletonInterface {
 			if ($this->selectedCombinedIdentifier[$pageId] === '-1') {
 				// If it is set to "none" - don't use any
 				$this->selectedCombinedIdentifier[$pageId] = FALSE;
-			} elseif ($this->selectedCombinedIdentifier[$pageId] === '0') {
+			} elseif ($this->selectedCombinedIdentifier[$pageId] === '' || $this->selectedCombinedIdentifier[$pageId] === '0') {
 				// If it not set check the root-line for a layout on next level and use this
 				// (root-line starts with current page and has page "0" at the end)
 				$rootLine = $this->getRootLine($pageId);
@@ -201,7 +201,7 @@ class BackendLayoutView implements \TYPO3\CMS\Core\SingletonInterface {
 						// If layout for "next level" is set to "none" - don't use any and stop searching
 						$this->selectedCombinedIdentifier[$pageId] = FALSE;
 						break;
-					} elseif ($this->selectedCombinedIdentifier[$pageId] !== '0') {
+					} elseif ($this->selectedCombinedIdentifier[$pageId] !== '' && $this->selectedCombinedIdentifier[$pageId] !== '0') {
 						// Stop searching if a layout for "next level" is set
 						break;
 					}
