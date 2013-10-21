@@ -904,6 +904,8 @@ class InlineElement {
 				}
 				if (isset($conf['appearance']['newRecordLinkAddTitle']) && $conf['appearance']['newRecordLinkAddTitle']) {
 					$titleAddon = ' ' . $GLOBALS['LANG']->sL($GLOBALS['TCA'][$conf['foreign_table']]['ctrl']['title'], TRUE);
+				} elseif (isset($conf['appearance']['newRecordLinkTitle']) && strlen($conf['appearance']['newRecordLinkTitle'])) {
+					$title = $GLOBALS['LANG']->sL($conf['appearance']['newRecordLinkTitle'], TRUE);
 				}
 				break;
 			case 'localize':
