@@ -1352,10 +1352,12 @@ class DatabaseConnection {
 		}
 		$output = array();
 		$columns_res = $this->link->query('SHOW COLUMNS FROM `' . $tableName . '`');
-		while ($fieldRow = $columns_res->fetch_assoc()) {
-			$output[$fieldRow['Field']] = $fieldRow;
+		if ($columns_res !== FALSE) {
+			while ($fieldRow = $columns_res->fetch_assoc()) {
+				$output[$fieldRow['Field']] = $fieldRow;
+			}
+			$columns_res->free();
 		}
-		$columns_res->free();
 		return $output;
 	}
 
@@ -1372,10 +1374,12 @@ class DatabaseConnection {
 		}
 		$output = array();
 		$keyRes = $this->link->query('SHOW KEYS FROM `' . $tableName . '`');
-		while ($keyRow = $keyRes->fetch_assoc()) {
-			$output[] = $keyRow;
+		if ($keyRes !== FALSE) {
+			while ($keyRow = $keyRes->fetch_assoc()) {
+				$output[] = $keyRow;
+			}
+			$keyRes->free();
 		}
-		$keyRes->free();
 		return $output;
 	}
 
