@@ -79,13 +79,6 @@ class CategoryRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 */
-	public function doesAddReturnFalseOnUndefinedTable() {
-		$this->assertFalse($this->fixture->add('test_extension_a', 'undefined_table', 'categories'));
-	}
-
-	/**
-	 * @test
 	 * @expectedException \InvalidArgumentException
 	 * @expectedExceptionCode 1369122038
 	 */
