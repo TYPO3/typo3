@@ -139,7 +139,8 @@ class Package extends \TYPO3\Flow\Package\Package implements PackageInterface {
 	 * @return array
 	 */
 	public function getPackageReplacementKeys() {
-		return $this->getComposerManifest('replace') ?: array();
+		// The cast to array is required since the manifest returns data with type mixed
+		return (array)$this->getComposerManifest('replace') ?: array();
 	}
 
 	/**

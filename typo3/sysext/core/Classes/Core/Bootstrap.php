@@ -227,7 +227,8 @@ class Bootstrap {
 			->populateLocalConfiguration()
 			->initializeCachingFramework()
 			->initializeClassLoaderCaches()
-			->initializePackageManagement($packageManagerClassName);
+			->initializePackageManagement($packageManagerClassName)
+			->initializeRuntimeActivatedPackagesFromConfiguration();
 
 		// @TODO dig into this
 		if (!$allowCaching) {
@@ -261,7 +262,7 @@ class Bootstrap {
 	protected function initializeClassLoader() {
 		$classLoader = new ClassLoader($this->applicationContext);
 		$this->setEarlyInstance('TYPO3\\CMS\\Core\\Core\\ClassLoader', $classLoader);
-		$classLoader->setEarlyClassInformationsFromAutoloadRegistry((array) include __DIR__ . '/../../ext_autoload.php');
+		$classLoader->setRuntimeClassLoadingInformationFromAutoloadRegistry((array) include __DIR__ . '/../../ext_autoload.php');
 		$classAliasMap = new \TYPO3\CMS\Core\Core\ClassAliasMap();
 		$classAliasMap->injectClassLoader($classLoader);
 		$this->setEarlyInstance('TYPO3\\CMS\\Core\\Core\\ClassAliasMap', $classAliasMap);
@@ -319,6 +320,23 @@ class Bootstrap {
 		$packageManager->initialize($this, PATH_site);
 		Utility\GeneralUtility::setSingletonInstance('TYPO3\\CMS\\Core\\Package\\PackageManager', $packageManager);
 		$GLOBALS['TYPO3_LOADED_EXT'] = new \TYPO3\CMS\Core\Compatibility\LoadedExtensionsArray($packageManager);
+		return $this;
+	}
+
+	/**
+	 * Activates a package during runtime. This is used in AdditionalConfiguration.php
+	 * to enable extensions under conditions.
+	 *
+	 * @return Bootstrap
+	 */
+	protected function initializeRuntimeActivatedPackagesFromConfiguration() {
+		if (isset($GLOBALS['TYPO3_CONF_VARS']['EXT']['runtimeActivatedPackages']) && is_array($GLOBALS['TYPO3_CONF_VARS']['EXT']['runtimeActivatedPackages'])) {
+			/** @var \TYPO3\CMS\Core\Package\PackageManager $packageManager */
+			$packageManager = $this->getEarlyInstance('TYPO3\\Flow\\Package\\PackageManager');
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['EXT']['runtimeActivatedPackages'] as $runtimeAddedPackageKey) {
+				$packageManager->activatePackageDuringRuntime($runtimeAddedPackageKey);
+			}
+		}
 		return $this;
 	}
 

@@ -123,24 +123,11 @@ class ClassAliasMap implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Set packages
 	 *
 	 * @param array $packages
+	 * @return ClassAliasMap
 	 */
 	public function setPackages(array $packages) {
 		$this->packages = $packages;
-		if (!$this->loadEarlyInstanceMappingFromCache()) {
-			$classNameToAliasMapping = $this->buildMappingAndInitializeEarlyInstanceMapping();
-			$this->buildMappingFiles($classNameToAliasMapping);
-		}
-	}
-
-	/**
-	 * Return class name to alias mapping
-	 *
-	 * @param array $packages
-	 * @return array
-	 */
-	public function setPackagesButDontBuildMappingFilesReturnClassNameToAliasMappingInstead(array $packages) {
-		$this->packages = $packages;
-		return $this->buildMappingAndInitializeEarlyInstanceMapping();
+		return $this;
 	}
 
 	/**
@@ -148,10 +135,10 @@ class ClassAliasMap implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @return boolean
 	 */
-	protected function loadEarlyInstanceMappingFromCache() {
+	public function loadEarlyInstanceMappingFromCache() {
 		$cacheEntryIdentifier = $this->getCacheEntryIdentifier();
 		if (!$cacheEntryIdentifier !== NULL && $this->coreCache->has($cacheEntryIdentifier)) {
-			return (bool) $this->coreCache->requireOnce($cacheEntryIdentifier);
+			return (boolean)$this->coreCache->requireOnce($cacheEntryIdentifier);
 		}
 		return FALSE;
 	}
@@ -161,7 +148,7 @@ class ClassAliasMap implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @return array
 	 */
-	protected function buildMappingAndInitializeEarlyInstanceMapping() {
+	public function buildMappingAndInitializeEarlyInstanceMapping() {
 		$aliasToClassNameMapping = array();
 		foreach ($this->packages as $package) {
 			if ($package instanceof \TYPO3\CMS\Core\Package\Package) {

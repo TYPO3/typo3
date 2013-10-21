@@ -59,6 +59,11 @@ class PackageManager extends \TYPO3\Flow\Package\PackageManager implements \TYPO
 	protected $packageAliasMap = array();
 
 	/**
+	 * @var array
+	 */
+	protected $runtimeActivatedPackages = array();
+
+	/**
 	 * Adjacency matrix for the dependency graph (DAG)
 	 *
 	 * Example structure is:
@@ -511,7 +516,7 @@ class PackageManager extends \TYPO3\Flow\Package\PackageManager implements \TYPO
 		if (isset($this->packageAliasMap[$lowercasedPackageKey = strtolower($packageKey)])) {
 			$packageKey = $this->packageAliasMap[$lowercasedPackageKey];
 		}
-		return parent::isPackageActive($packageKey);
+		return parent::isPackageActive($packageKey) || isset($this->runtimeActivatedPackages[$packageKey]);
 	}
 
 	/**
@@ -528,6 +533,18 @@ class PackageManager extends \TYPO3\Flow\Package\PackageManager implements \TYPO
 	public function activatePackage($packageKey) {
 		$package = $this->getPackage($packageKey);
 		parent::activatePackage($package->getPackageKey());
+	}
+
+	/**
+	 * Enables packages during runtime, but no class aliases will be available
+	 *
+	 * @param string $packageKey
+	 * @api
+	 */
+	public function activatePackageDuringRuntime($packageKey) {
+		$package = $this->getPackage($packageKey);
+		$this->runtimeActivatedPackages[$package->getPackageKey()] = $package;
+		$this->classLoader->addRuntimeActivatedPackage($package);
 	}
 
 
@@ -572,6 +589,17 @@ class PackageManager extends \TYPO3\Flow\Package\PackageManager implements \TYPO
 		parent::refreezePackage($package->getPackageKey());
 	}
 
+	/**
+	 * Returns an array of \TYPO3\Flow\Package objects of all active packages.
+	 * A package is active, if it is available and has been activated in the package
+	 * manager settings. This method returns runtime activated packages too
+	 *
+	 * @return array Array of \TYPO3\Flow\Package\PackageInterface
+	 * @api
+	 */
+	public function getActivePackages() {
+		return array_merge(parent::getActivePackages(), $this->runtimeActivatedPackages);
+	}
 
 	/**
 	 * Get packages of specific type

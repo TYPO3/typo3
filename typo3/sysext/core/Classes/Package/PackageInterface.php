@@ -16,11 +16,16 @@ namespace TYPO3\CMS\Core\Package;
  *
  * @api
  */
-interface PackageInterface {
+interface PackageInterface extends \TYPO3\Flow\Package\PackageInterface {
 
 	/**
 	 * @return array
 	 */
 	public function getPackageReplacementKeys();
+
+	/**
+	 * @return array
+	 */
+	public function getClassFilesFromAutoloadRegistry();
 
 }
