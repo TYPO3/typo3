@@ -690,7 +690,11 @@ tt_content.image.20 {
 				dataKey = small
 			}
 			smallRetina {
-				if.directReturn = 0
+				if {
+					value = {$styles.content.imgtext.layoutKey}
+					equals = default
+					negate = 1
+				}
 
 				width = 200
 				pixelDensity = 2
