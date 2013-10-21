@@ -2691,7 +2691,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	/*                                                   */
 	/*****************************************************/
 	/**
-	 * Execute PreRenderHook for possible manuipulation
+	 * Execute PreRenderHook for possible manipulation
 	 *
 	 * @return void
 	 */
@@ -2716,7 +2716,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 	/**
-	 * PostTransform for possible manuipulation of concatenated and compressed files
+	 * PostTransform for possible manipulation of concatenated and compressed files
 	 *
 	 * @return void
 	 */
