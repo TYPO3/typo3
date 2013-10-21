@@ -60,6 +60,7 @@ class InstallUtilityTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$this->installMock = $this->getAccessibleMock(
 			'TYPO3\\CMS\\Extensionmanager\\Utility\\InstallUtility',
 			array(
+				'isLoaded',
 				'loadExtension',
 				'unloadExtension',
 				'processDatabaseUpdates',
