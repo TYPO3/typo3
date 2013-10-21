@@ -64,6 +64,7 @@ class InstallUtilityTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 				'loadExtension',
 				'unloadExtension',
 				'processDatabaseUpdates',
+				'processRuntimeDatabaseUpdates',
 				'reloadCaches',
 				'processCachingFrameworkUpdates',
 				'saveDefaultConfiguration',
@@ -120,20 +121,10 @@ class InstallUtilityTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	/**
 	 * @test
 	 */
-	public function installCallsProcessDatabaseUpdates() {
+	public function installCallsProcessRuntimeDatabaseUpdates() {
 		$this->installMock->expects($this->once())
-			->method('processDatabaseUpdates')
-			->with($this->extensionData);
-
-		$this->installMock->install($this->extensionKey);
-	}
-
-	/**
-	 * @test
-	 */
-	public function installCallsProcessCachingFrameworkUpdates() {
-		$this->installMock->expects($this->once())
-			->method('processCachingFrameworkUpdates');
+			->method('processRuntimeDatabaseUpdates')
+			->with($this->extensionKey);
 
 		$this->installMock->install($this->extensionKey);
 	}
