@@ -269,6 +269,7 @@ class GifBuilder extends \TYPO3\CMS\Core\Imaging\GraphicalFunctions {
 						case 'IMAGE':
 							if (isset($this->setup[$theKey . '.']['offset.'])) {
 								$this->setup[$theKey . '.']['offset'] = $this->cObj->stdWrap($this->setup[$theKey . '.']['offset'], $this->setup[$theKey . '.']['offset.']);
+								unset($this->setup[$theKey . '.']['offset.']);
 							}
 							if ($this->setup[$theKey . '.']['offset']) {
 								$this->setup[$theKey . '.']['offset'] = $this->calcOffset($this->setup[$theKey . '.']['offset']);
@@ -279,6 +280,7 @@ class GifBuilder extends \TYPO3\CMS\Core\Imaging\GraphicalFunctions {
 						case 'ELLIPSE':
 							if (isset($this->setup[$theKey . '.']['dimensions.'])) {
 								$this->setup[$theKey . '.']['dimensions'] = $this->cObj->stdWrap($this->setup[$theKey . '.']['dimensions'], $this->setup[$theKey . '.']['dimensions.']);
+								unset($this->setup[$theKey . '.']['dimensions.']);
 							}
 							if ($this->setup[$theKey . '.']['dimensions']) {
 								$this->setup[$theKey . '.']['dimensions'] = $this->calcOffset($this->setup[$theKey . '.']['dimensions']);
@@ -287,6 +289,7 @@ class GifBuilder extends \TYPO3\CMS\Core\Imaging\GraphicalFunctions {
 						case 'WORKAREA':
 							if (isset($this->setup[$theKey . '.']['set.'])) {
 								$this->setup[$theKey . '.']['set'] = $this->cObj->stdWrap($this->setup[$theKey . '.']['set'], $this->setup[$theKey . '.']['set.']);
+								unset($this->setup[$theKey . '.']['set.']);
 							}
 							if ($this->setup[$theKey . '.']['set']) {
 								$this->setup[$theKey . '.']['set'] = $this->calcOffset($this->setup[$theKey . '.']['set']);
@@ -295,6 +298,7 @@ class GifBuilder extends \TYPO3\CMS\Core\Imaging\GraphicalFunctions {
 						case 'CROP':
 							if (isset($this->setup[$theKey . '.']['crop.'])) {
 								$this->setup[$theKey . '.']['crop'] = $this->cObj->stdWrap($this->setup[$theKey . '.']['crop'], $this->setup[$theKey . '.']['crop.']);
+								unset($this->setup[$theKey . '.']['crop.']);
 							}
 							if ($this->setup[$theKey . '.']['crop']) {
 								$this->setup[$theKey . '.']['crop'] = $this->calcOffset($this->setup[$theKey . '.']['crop']);
@@ -303,12 +307,14 @@ class GifBuilder extends \TYPO3\CMS\Core\Imaging\GraphicalFunctions {
 						case 'SCALE':
 							if (isset($this->setup[$theKey . '.']['width.'])) {
 								$this->setup[$theKey . '.']['width'] = $this->cObj->stdWrap($this->setup[$theKey . '.']['width'], $this->setup[$theKey . '.']['width.']);
+								unset($this->setup[$theKey . '.']['width.']);
 							}
 							if ($this->setup[$theKey . '.']['width']) {
 								$this->setup[$theKey . '.']['width'] = $this->calcOffset($this->setup[$theKey . '.']['width']);
 							}
 							if (isset($this->setup[$theKey . '.']['height.'])) {
 								$this->setup[$theKey . '.']['height'] = $this->cObj->stdWrap($this->setup[$theKey . '.']['height'], $this->setup[$theKey . '.']['height.']);
+								unset($this->setup[$theKey . '.']['height.']);
 							}
 							if ($this->setup[$theKey . '.']['height']) {
 								$this->setup[$theKey . '.']['height'] = $this->calcOffset($this->setup[$theKey . '.']['height']);
