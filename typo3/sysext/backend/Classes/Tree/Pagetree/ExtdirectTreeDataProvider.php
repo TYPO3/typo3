@@ -113,16 +113,13 @@ class ExtdirectTreeDataProvider extends \TYPO3\CMS\Backend\Tree\AbstractExtJsTre
 	 * @return array
 	 */
 	public function getNodeTypes() {
-		$map = array(
-			1 => 'LLL:EXT:lang/locallang_tca.xlf:doktype.I.0',
-			3 => 'LLL:EXT:cms/locallang_tca.xlf:pages.doktype.I.8',
-			4 => 'LLL:EXT:cms/locallang_tca.xlf:pages.doktype.I.2',
-			6 => 'LLL:EXT:cms/locallang_tca.xlf:pages.doktype.I.4',
-			7 => 'LLL:EXT:cms/locallang_tca.xlf:pages.doktype.I.5',
-			199 => 'LLL:EXT:cms/locallang_tca.xlf:pages.doktype.I.7',
-			254 => 'LLL:EXT:lang/locallang_tca.xlf:doktype.I.folder',
-			255 => 'LLL:EXT:lang/locallang_tca.xlf:doktype.I.2'
-		);
+		$doktypeLabelMap = array();
+		foreach ($GLOBALS['TCA']['pages']['columns']['doktype']['config']['items'] as $doktypeItemConfig) {
+			if ($doktypeItemConfig[1] === '--div--') {
+				continue;
+			}
+			$doktypeLabelMap[$doktypeItemConfig[1]] = $doktypeItemConfig[0];
+		}
 		$doktypes = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.doktypesToShowInNewPageDragArea'));
 		$output = array();
 		$allowedDoktypes = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $GLOBALS['BE_USER']->groupData['pagetypes_select']);
@@ -131,7 +128,7 @@ class ExtdirectTreeDataProvider extends \TYPO3\CMS\Backend\Tree\AbstractExtJsTre
 			if (!$isAdmin && !in_array($doktype, $allowedDoktypes)) {
 				continue;
 			}
-			$label = $GLOBALS['LANG']->sL($map[$doktype], TRUE);
+			$label = $GLOBALS['LANG']->sL($doktypeLabelMap[$doktype], TRUE);
 			$spriteIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconClasses($GLOBALS['TCA']['pages']['ctrl']['typeicon_classes'][$doktype]);
 			$output[] = array(
 				'nodeType' => $doktype,
