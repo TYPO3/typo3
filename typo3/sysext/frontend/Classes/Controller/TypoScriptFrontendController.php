@@ -4524,11 +4524,11 @@ if (version == "n3") {
 				if ($midnightTime > $GLOBALS['EXEC_TIME']) {
 					$cacheTimeout = $midnightTime - $GLOBALS['EXEC_TIME'];
 				}
-			} else {
-				// If cache_clearAtMidnight is not set calculate the timeout time for records on the page
-				$calculatedCacheTimeout = $this->calculatePageCacheTimeout();
-				$cacheTimeout = $calculatedCacheTimeout < $cacheTimeout ? $calculatedCacheTimeout : $cacheTimeout;
 			}
+
+			// Calculate the timeout time for records on the page and adjust cache timeout if necessary
+			$cacheTimeout = min($this->calculatePageCacheTimeout(), $cacheTimeout);
+
 			if (is_array($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['get_cache_timeout'])) {
 				foreach ($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['get_cache_timeout'] as $_funcRef) {
 					$params = array('cacheTimeout' => $cacheTimeout);
