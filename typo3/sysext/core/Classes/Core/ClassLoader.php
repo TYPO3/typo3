@@ -36,8 +36,6 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
  */
 class ClassLoader {
 
-	const VALID_CLASSNAME_PATTERN = '/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9\\\\_\x7f-\xff]*$/';
-
 	/**
 	 * @var ClassAliasMap
 	 */
@@ -133,7 +131,7 @@ class ClassLoader {
 
 		// Loads any known class via caching framework
 		if ($require) {
-			if ($this->classesCache->has($cacheEntryIdentifier) && $this->classesCache->requireOnce($cacheEntryIdentifier) !== FALSE) {
+			if ($this->classesCache->requireOnce($cacheEntryIdentifier) !== FALSE) {
 				$cacheEntryCreated = TRUE;
 			}
 		}
@@ -155,7 +153,7 @@ class ClassLoader {
 		}
 
 		if ($cacheEntryCreated && $require) {
-			if ($this->classesCache->has($cacheEntryIdentifier) && $this->classesCache->requireOnce($cacheEntryIdentifier) !== FALSE) {
+			if ($this->classesCache->requireOnce($cacheEntryIdentifier) !== FALSE) {
 				$cacheEntryCreated = TRUE;
 			}
 		}
@@ -170,7 +168,7 @@ class ClassLoader {
 	 * @return bool
 	 */
 	protected function isValidClassname($className) {
-		return (bool) preg_match(self::VALID_CLASSNAME_PATTERN, $className);
+		return strpos($className, ' ') === FALSE;
 	}
 
 	/**

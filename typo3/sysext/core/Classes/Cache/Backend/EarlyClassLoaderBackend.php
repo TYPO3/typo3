@@ -140,7 +140,7 @@ class EarlyClassLoaderBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBack
 	 * @api
 	 */
 	public function requireOnce($entryIdentifier) {
-		return require_once ($this->memoryBackend[$entryIdentifier]);
+		return isset($this->memoryBackend[$entryIdentifier]) ? require_once ($this->memoryBackend[$entryIdentifier]) : FALSE;
 	}
 
 	/**

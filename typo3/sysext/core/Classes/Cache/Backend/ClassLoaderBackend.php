@@ -179,9 +179,6 @@ class ClassLoaderBackend extends SimpleFileBackend {
 	 */
 	public function requireOnce($entryIdentifier) {
 		$pathAndFilename = $this->cacheDirectory . $entryIdentifier . $this->cacheEntryFileExtension;
-		if ($entryIdentifier !== basename($entryIdentifier)) {
-			throw new \InvalidArgumentException('The specified entry identifier must not contain a path segment.', 1282073036);
-		}
 		return @file_exists($pathAndFilename) ? require_once $pathAndFilename : FALSE;
 	}
 
