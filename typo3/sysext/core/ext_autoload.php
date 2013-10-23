@@ -26,6 +26,7 @@ $flowClasses = array(
 	'typo3\flow\package\exception\missingpackagemanifestexception' => $flowClassesPath . 'TYPO3/Flow/Package/Exception/MissingPackageManifestException.php',
 	'typo3\flow\package\exception\packagekeyalreadyexistsexception' => $flowClassesPath . 'TYPO3/Flow/Package/Exception/PackageKeyAlreadyExistsException.php',
 	'typo3\flow\package\exception\packagerepositoryexception' => $flowClassesPath . 'TYPO3/Flow/Package/Exception/PackageRepositoryException.php',
+	'typo3\flow\package\exception\packagestatesfilenotwritableexception' => $flowClassesPath . 'TYPO3/Flow/Package/Exception/PackageStatesFileNotWritableException.php',
 	'typo3\flow\package\exception\protectedpackagekeyexception' => $flowClassesPath . 'TYPO3/Flow/Package/Exception/ProtectedPackageKeyException.php',
 	'typo3\flow\package\exception\unknownpackageexception' => $flowClassesPath . 'TYPO3/Flow/Package/Exception/UnknownPackageException.php',
 	'typo3\flow\package\exception' => $flowClassesPath . 'TYPO3/Flow/Package/Exception.php',

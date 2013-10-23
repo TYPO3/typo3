@@ -85,6 +85,14 @@ class ActionController extends \TYPO3\CMS\Extensionmanager\Controller\AbstractCo
 				\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR,
 				TRUE
 			);
+		} catch (\TYPO3\Flow\Package\Exception\PackageStatesFileNotWritableException $e) {
+			$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+				'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
+				htmlspecialchars($e->getMessage()),
+				'',
+				\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR,
+				TRUE
+			);
 			$this->getControllerContext()->getFlashMessageQueue()->enqueue($flashMessage);
 		}
 		$this->redirect('index', 'List', NULL, array(self::TRIGGER_RefreshModuleMenu => TRUE));
