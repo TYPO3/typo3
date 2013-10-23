@@ -46,6 +46,10 @@ class ExtensionCommandController extends CommandController {
 	 * @return void
 	 */
 	public function installCommand($extensionKey) {
+		/** @var $packageManager \TYPO3\CMS\Core\Package\PackageManager */
+		$packageManager = $this->objectManager->get('TYPO3\\CMS\\Core\\Package\\PackageManager');
+		$packageManager->scanAvailablePackages();
+
 		/** @var $service \TYPO3\CMS\Extensionmanager\Utility\InstallUtility */
 		$service = $this->objectManager->get('TYPO3\\CMS\\Extensionmanager\\Utility\\InstallUtility');
 		$service->install($extensionKey);
