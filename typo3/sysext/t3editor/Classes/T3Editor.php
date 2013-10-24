@@ -405,15 +405,20 @@ class T3Editor implements \TYPO3\CMS\Core\SingletonInterface {
 			$ajaxObj->setContentFormat('json');
 			$codeType = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('t3editor_savetype');
 			$savingsuccess = FALSE;
-			if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/t3editor/classes/class.tx_t3editor.php']['ajaxSaveCode'])) {
-				$_params = array(
-					'pObj' => &$this,
-					'type' => $codeType,
-					'ajaxObj' => &$ajaxObj
-				);
-				foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/t3editor/classes/class.tx_t3editor.php']['ajaxSaveCode'] as $key => $_funcRef) {
-					$savingsuccess = \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($_funcRef, $_params, $this) || $savingsuccess;
+			try {
+				if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/t3editor/classes/class.tx_t3editor.php']['ajaxSaveCode'])) {
+					$_params = array(
+						'pObj' => &$this,
+						'type' => $codeType,
+						'ajaxObj' => &$ajaxObj
+					);
+					foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/t3editor/classes/class.tx_t3editor.php']['ajaxSaveCode'] as $key => $_funcRef) {
+						$savingsuccess = \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($_funcRef, $_params, $this) || $savingsuccess;
+					}
 				}
+			} catch (\Exception $e) {
+				$ajaxObj->setContent(array('result' => FALSE, 'exceptionMessage' => htmlspecialchars($e->getMessage()), 'exceptionCode' => $e->getCode()));
+				return;
 			}
 			$ajaxObj->setContent(array('result' => $savingsuccess));
 		}
