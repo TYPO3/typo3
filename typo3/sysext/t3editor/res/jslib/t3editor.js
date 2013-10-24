@@ -181,11 +181,15 @@ T3editor.prototype = {
 		},
 
 		// callback if saving was successful
-		saveFunctionComplete: function(wasSuccessful) {
+		saveFunctionComplete: function(wasSuccessful,returnedData) {
 			if (wasSuccessful) {
 				this.textModified = false;
 			} else {
-				alert(T3editor.lang.errorWhileSaving);
+				if (typeof returnedData.exceptionMessage != 'undefined') {
+					TYPO3.Flashmessage.display(4, T3editor.lang.errorWhileSaving[0]['target'], returnedData.exceptionMessage);
+				} else {
+					TYPO3.Flashmessage.display(4, T3editor.lang.errorWhileSaving[0]['target']);
+				}
 			}
 			this.modalOverlay.hide();
 		},
@@ -335,7 +339,7 @@ if (!Prototype.Browser.MobileSafari) {
 								onComplete: function(ajaxrequest) {
 									var wasSuccessful = ajaxrequest.status == 200
 									&& ajaxrequest.headerJSON.result == true
-									event.memo.t3editor.saveFunctionComplete(wasSuccessful);
+									event.memo.t3editor.saveFunctionComplete(wasSuccessful,ajaxrequest.headerJSON);
 								}
 							}
 						);
