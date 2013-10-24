@@ -118,11 +118,11 @@ class CacheHashCalculatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				'key1=v&key2=v',
 				array('encryptionKey', 'key1', 'key2')
 			),
-			'System and exclude paramters should be omitted' => array(
+			'System and exclude parameters should be omitted' => array(
 				'id=1&type=3&exclude1=x&no_cache=1',
 				array()
 			),
-			'System and exclude paramters should be omitted' => array(
+			'System and exclude parameters should be omitted' => array(
 				'id=1&type=3&key=x&no_cache=1',
 				array('encryptionKey', 'key')
 			)

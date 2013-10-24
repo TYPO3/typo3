@@ -16787,7 +16787,7 @@
 2007-05-02  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed: IRRE does not work with workspaces (fix only for CSV & foreign field cases)
-	* Fixed: isses with previous fix discovered my Michael Stucki
+	* Fixed: issues with previous fix discovered by Michael Stucki
 
 2007-05-01  Martin Kutschker  <masi@typo3.org>
 
@@ -19974,7 +19974,7 @@
 
 2004-09-13  Kasper Skaarhoj  <kasper@typo3.com>
 
-	* Changed little more in uniqueList, among others that a fixed number of paramters are supported only now!
+	* Changed little more in uniqueList, among others that a fixed number of parameters are supported only now!
 
 2004-09-13  Michael Stucki  <mundaun@gmx.ch>
 

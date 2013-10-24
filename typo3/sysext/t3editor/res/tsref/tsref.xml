@@ -6447,7 +6447,7 @@ If this is set, it'll substitute the use of the thumbs-script for display of thu
 		</property>
 		<property name="jumpurl" type="filelink.jumpurl">
 			<description><![CDATA[boolean
-			Decides if the link should call the script with the jumpurl paramter in order to register any clicks in the stat.
+			Decides if the link should call the script with the jumpurl parameter in order to register any clicks in the stat.
 This has the advantage that any clicks on the file will register in the stat.
 The disadvantage is, that users cant right-click and select "Save Target As" in the browser.
 

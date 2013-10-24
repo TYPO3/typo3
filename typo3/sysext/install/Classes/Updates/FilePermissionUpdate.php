@@ -37,7 +37,7 @@ class FilePermissionUpdate extends AbstractUpdate {
 	/**
 	 * @var string
 	 */
-	protected $title = 'Rewrites binary file permissions into detailed list';
+	protected $title = 'Rewrite binary file permissions into detailed list';
 
 	/**
 	 * Constructor function.

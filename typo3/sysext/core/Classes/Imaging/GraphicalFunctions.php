@@ -1618,7 +1618,7 @@ class GraphicalFunctions {
 	}
 
 	/**
-	 * Creating ImageMagick paramters from TypoScript property
+	 * Creating ImageMagick parameters from TypoScript property
 	 *
 	 * @param string $setup A string with effect keywords=value pairs separated by "|
 	 * @return string ImageMagick prepared parameters.
