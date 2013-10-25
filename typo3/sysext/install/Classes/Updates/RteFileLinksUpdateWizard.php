@@ -204,7 +204,12 @@ class RteFileLinksUpdateWizard extends AbstractUpdate {
 	 */
 	protected function convertFileLinks(array $reference, array $record) {
 		// First of all, try to get the referenced file. Continue only if found.
-		$fileObject = $this->fetchReferencedFile($reference['ref_string'], $reference);
+		try {
+			$fileObject = $this->fetchReferencedFile($reference['ref_string'], $reference);
+		} catch (\InvalidArgumentException $exception) {
+			$fileObject = NULL;
+			$this->errors[] = $reference['ref_string'] . ' could not be replaced. File does not exist.';
+		}
 		if ($fileObject instanceof \TYPO3\CMS\Core\Resource\AbstractFile) {
 			// Next, match the reference path in the content to be sure it's present inside a <link> tag
 			$content = $record[$reference['field']];
