@@ -677,6 +677,8 @@ tt_content.image.20 {
 			data {
 				element = <img src="###SRC###" ###SOURCECOLLECTION### ###PARAMS### ###ALTPARAMS######SELFCLOSINGTAGSLASH###>
 				source = data-###DATAKEY###="###SRC###"
+				source.noTrimWrap = ;; ;
+				source.noTrimWrap.splitChar = ;
 			}
 		}
 		# Default sourceCollection as an example
