@@ -138,7 +138,7 @@ class FilesContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractConte
 					try {
 						$folder = $this->getFileFactory()->getFolderObjectFromCombinedIdentifier($folderIdentifier);
 						if ($folder instanceof \TYPO3\CMS\Core\Resource\Folder) {
-							$this->addToArray($folder->getFiles(), $fileObjects);
+							$this->addToArray(array_values($folder->getFiles()), $fileObjects);
 						}
 					} catch (\TYPO3\CMS\Core\Resource\Exception $e) {
 						/** @var \TYPO3\CMS\Core\Log\Logger $logger */
