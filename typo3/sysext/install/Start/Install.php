@@ -124,11 +124,11 @@ if (isset($getPost['controller']) && $getPost['controller'] === 'tool') {
 	);
 } elseif ($getPost['controller'] === 'ajax') {
 	$controller = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-		'TYPO3\CMS\install\Controller\AjaxController'
+		'TYPO3\\CMS\\Install\\Controller\\AjaxController'
 	);
 } else {
 	$controller = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-		'TYPO3\CMS\install\Controller\StepController'
+		'TYPO3\\CMS\\Install\\Controller\\StepController'
 	);
 }
 $controller->execute();
