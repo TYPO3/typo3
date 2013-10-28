@@ -1367,8 +1367,7 @@ class FormEngine {
 			$evalObj = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tce']['formevals'][$evalData] . ':&' . $evalData);
 			if (is_object($evalObj) && method_exists($evalObj, 'returnFieldJS')) {
 				$this->extJSCODE .= '
-
-function ' . $evalData . '(value) {
+TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 ' . $evalObj->returnFieldJS() . '
 }
 ';
@@ -5473,6 +5472,9 @@ function ' . $evalData . '(value) {
 			TBE_EDITOR.labels.onChangeAlert = ' . $GLOBALS['LANG']->JScharCode($this->getLL('m_onChangeAlert')) . ';
 			evalFunc.USmode = ' . ($GLOBALS['TYPO3_CONF_VARS']['SYS']['USdateFormat'] ? '1' : '0') . ';
 			TBE_EDITOR.backend_interface = "' . $GLOBALS['BE_USER']->uc['interfaceSetup'] . '";
+
+			TBE_EDITOR.customEvalFunctions = {};
+
 			';
 		}
 		// Add JS required for inline fields

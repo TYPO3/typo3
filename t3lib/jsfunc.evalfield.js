@@ -62,10 +62,8 @@ function evalFunc_evalObjValue(FObj,value) {
 	var theEvalType = (FObj.evallist) ? this.split(evallist, ",", index) : false;
 	var newValue=value;
 	while (theEvalType) {
-		if (theEvalType.slice(0, 3) == 'tx_' || theEvalType.slice(0, 3) == 'Tx_') {
-			if(typeof window[theEvalType] == 'function') {
-				newValue = window[theEvalType](newValue);	// variable function call, calling functions like tx_myext_myeval(value)
-			}
+		if (TBE_EDITOR.customEvalFunctions[theEvalType] && typeof TBE_EDITOR.customEvalFunctions[theEvalType] == 'function') {
+			newValue = TBE_EDITOR.customEvalFunctions[theEvalType](newValue);
 		} else {
 			newValue = evalFunc.input(theEvalType, newValue);
 		}
