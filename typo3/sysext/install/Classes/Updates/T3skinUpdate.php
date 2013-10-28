@@ -37,7 +37,7 @@ class T3skinUpdate extends AbstractUpdate {
 	/**
 	 * @var string
 	 */
-	protected $title = 'Install the new TYPO3 Skin "t3skin"';
+	protected $title = 'Install the TYPO3 Skin "t3skin"';
 
 	/**
 	 * Checks if t3skin is not installed.
@@ -47,9 +47,8 @@ class T3skinUpdate extends AbstractUpdate {
 	 */
 	public function checkForUpdate(&$description) {
 		$result = FALSE;
-		$description[] = '<strong>The backend skin "t3skin" is not loaded.</strong>
-		TYPO3 4.4 introduced many changes in backend skinning and old backend skins are now incompatible.
-		<strong>Without "t3skin" the backend may be unusable.</strong> Install extension "t3skin".';
+		$description = '<strong>The backend skin "t3skin" is not loaded.</strong>
+		Without "t3skin" the backend may be unusable. Install extension "t3skin".';
 		if (!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('t3skin')) {
 			$result = TRUE;
 		}
