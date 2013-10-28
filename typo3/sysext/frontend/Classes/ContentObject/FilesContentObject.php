@@ -166,6 +166,9 @@ class FilesContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractConte
 					return 0;
 				}
 			});
+			if (is_array($conf['sorting.']) && isset($conf['sorting.']['direction']) && strtolower($conf['sorting.']['direction']) === 'desc') {
+				$fileObjects = array_reverse($fileObjects);
+			}
 		}
 
 		$availableFileObjectCount = count($fileObjects);
