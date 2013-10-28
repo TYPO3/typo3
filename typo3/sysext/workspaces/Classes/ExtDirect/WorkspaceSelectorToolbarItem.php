@@ -28,6 +28,8 @@ namespace TYPO3\CMS\Workspaces\ExtDirect;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 if (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_AJAX) {
 	require_once \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('backend') . 'Classes/Toolbar/ToolbarItemHookInterface.php';
 }
@@ -59,9 +61,9 @@ class WorkspaceSelectorToolbarItem implements \TYPO3\CMS\Backend\Toolbar\Toolbar
 	 */
 	public function __construct(\TYPO3\CMS\Backend\Controller\BackendController &$backendReference = NULL) {
 		$this->backendReference = $backendReference;
-		$this->changeWorkspace = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('changeWorkspace');
-		$this->changeWorkspacePreview = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('changeWorkspacePreview');
-		$pageRenderer = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Page\\PageRenderer');
+		$this->changeWorkspace = GeneralUtility::_GP('changeWorkspace');
+		$this->changeWorkspacePreview = GeneralUtility::_GP('changeWorkspacePreview');
+		$pageRenderer = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Page\\PageRenderer');
 		$this->backendReference->addJavaScript('TYPO3.Workspaces = { workspaceTitle : \'' . addslashes(\TYPO3\CMS\Workspaces\Service\WorkspaceService::getWorkspaceTitle($GLOBALS['BE_USER']->workspace)) . '\'};
 ');
 	}
@@ -69,22 +71,25 @@ class WorkspaceSelectorToolbarItem implements \TYPO3\CMS\Backend\Toolbar\Toolbar
 	/**
 	 * checks whether the user has access to this toolbar item
 	 *
-	 * @see 		typo3/alt_shortcut.php
-	 * @return boolean  TRUE if user has access, FALSE if not
+	 * @see typo3/alt_shortcut.php
+	 * @return boolean TRUE if user has access, FALSE if not
 	 */
 	public function checkAccess() {
-		if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('workspaces')) {
-			if ($this->checkAccess == NULL) {
-				$availableWorkspaces = \TYPO3\CMS\Workspaces\Service\WorkspaceService::getAvailableWorkspaces();
-				if (count($availableWorkspaces) > 0) {
-					$this->checkAccess = TRUE;
-				} else {
-					$this->checkAccess = FALSE;
-				}
-			}
-			return $this->checkAccess;
+		if (!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('workspaces')) {
+			return FALSE;
 		}
-		return FALSE;
+
+		if ($this->checkAccess == NULL) {
+			/** @var \TYPO3\CMS\Workspaces\Service\WorkspaceService $wsService */
+			$wsService = GeneralUtility::makeInstance('TYPO3\\CMS\\Workspaces\\Service\\WorkspaceService');
+			$availableWorkspaces = $wsService->getAvailableWorkspaces();
+			if (count($availableWorkspaces) > 0) {
+				$this->checkAccess = TRUE;
+			} else {
+				$this->checkAccess = FALSE;
+			}
+		}
+		return $this->checkAccess;
 	}
 
 	/**
