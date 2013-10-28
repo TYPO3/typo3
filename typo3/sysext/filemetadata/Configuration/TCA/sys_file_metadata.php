@@ -3,16 +3,7 @@ if (!defined('TYPO3_MODE')) die ('Access denied.');
 
 $tca = array(
 	'ctrl' => array(
-		'type' => 'type',
-		'typeicon_column' => 'type',
-		'typeicon_classes' => array(
-			'1' => 'mimetypes-text-text',
-			'2' => 'mimetypes-media-image',
-			'3' => 'mimetypes-media-audio',
-			'4' => 'mimetypes-media-video',
-			'5' => 'mimetypes-application',
-			'default' => 'mimetypes-other-other'
-		),
+		'type' => 'file:type',
 	),
 	'types' => array(
 		TYPO3\CMS\Core\Resource\File::FILETYPE_UNKNOWN => array('showitem' => '

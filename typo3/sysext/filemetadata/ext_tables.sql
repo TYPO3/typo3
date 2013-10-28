@@ -2,8 +2,6 @@
 # Table structure for table 'sys_file_metadata'
 #
 CREATE TABLE sys_file_metadata (
-
-	type varchar(10) DEFAULT '' NOT NULL,
 	visible int(11) unsigned DEfAULT '0' NOT NULL,
 	status varchar(24) DEFAULT '' NOT NULL,
 	keywords text NOT NULL,
