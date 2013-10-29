@@ -61,11 +61,11 @@ class UserFileInlineLabelService {
 			$value = '';
 			if ($field === 'title') {
 				$value = isset($params['row']['title'])
-					? $params['row']['title']
+					? htmlspecialchars($params['row']['title'])
 					: BackendUtility::getRecordTitle('sys_file', $fileRecord, TRUE);
 			} else {
 				if (isset($params['row'][$field])) {
-					$value = $params['row'][$field];
+					$value = htmlspecialchars($params['row'][$field]);
 				} elseif (isset($fileRecord[$field])) {
 					$value = BackendUtility::getRecordTitlePrep($fileRecord[$field]);
 				}
@@ -74,7 +74,7 @@ class UserFileInlineLabelService {
 				continue;
 			}
 			$labelText = LocalizationUtility::translate('LLL:EXT:lang/locallang_tca.xlf:sys_file.' . $field, 'lang');
-			$title[] = '<dt>' . htmlspecialchars($labelText) . '</dt>' . '<dd>' . htmlspecialchars($value) . '</dd>';
+			$title[] = '<dt>' . htmlspecialchars($labelText) . '</dt>' . '<dd>' . $value . '</dd>';
 		}
 		$params['title'] = '<dl>' . implode('', $title) . '</dl>';
 	}
