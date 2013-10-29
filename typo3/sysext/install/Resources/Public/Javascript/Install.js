@@ -312,8 +312,8 @@ $(document).ready(function() {
 	$('.t3-install-form-password-strength').on('keyup', function() {
 		var value = $(this).val();
 		var strongRegex = new RegExp('^(?=.{8,})(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*\\W).*$', 'g');
-		var mediumRegex = new RegExp('^(?=.{7,})(((?=.*[A-Z])(?=.*[a-z]))|((?=.*[A-Z])(?=.*[0-9]))|((?=.*[a-z])(?=.*[0-9]))).*$', 'g');
-		var enoughRegex = new RegExp('(?=.{6,}).*', 'g');
+		var mediumRegex = new RegExp('^(?=.{8,})(((?=.*[A-Z])(?=.*[a-z]))|((?=.*[A-Z])(?=.*[0-9]))|((?=.*[a-z])(?=.*[0-9]))).*$', 'g');
+		var enoughRegex = new RegExp('(?=.{8,}).*', 'g');
 
 		if (value.length == 0) {
 			$(this).attr('style', 'background-color:#FBB19B; border:1px solid #DC4C42');
