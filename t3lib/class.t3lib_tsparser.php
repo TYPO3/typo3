@@ -685,6 +685,10 @@ class t3lib_TSparser {
 					$realFileName = t3lib_div::getFileAbsFileName($fileName);
 
 						// some file checks
+					if (!t3lib_div::verifyFilenameAgainstDenyPattern($realFileName)) {
+						throw new UnexpectedValueException(sprintf('File "%s" was not included since it is not allowed due to fileDenyPattern.', $fileName), 1382651858);
+					}
+
 					if (empty($realFileName)) {
 						throw new UnexpectedValueException(sprintf('"%s" is not a valid file location.', $fileName), 1294586441);
 					}
