@@ -990,6 +990,9 @@ class TypoScriptParser {
 
 					if ($inIncludePart === 'FILE') {
 						// Some file checks
+						if (!GeneralUtility::verifyFilenameAgainstDenyPattern($realFileName)) {
+							throw new \UnexpectedValueException(sprintf('File "%s" was not included since it is not allowed due to fileDenyPattern.', $fileName), 1382651858);
+						}
 						if (empty($realFileName)) {
 							throw new \UnexpectedValueException(sprintf('"%s" is not a valid file location.', $fileName), 1294586441);
 						}
