@@ -101,6 +101,7 @@ class Bootstrap {
 	 */
 	static public function getInstance() {
 		if (is_null(static::$instance)) {
+			require_once(__DIR__ . '/../Exception.php');
 			require_once(__DIR__ . '/ApplicationContext.php');
 			$applicationContext = trim(getenv('TYPO3_CONTEXT'), '"\' ') ? : 'Production';
 			self::$instance = new static($applicationContext);
