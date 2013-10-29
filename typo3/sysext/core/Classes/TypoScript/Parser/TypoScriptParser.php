@@ -857,6 +857,9 @@ class TypoScriptParser {
 					// Write the content to the file
 					$realFileName = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($fileName);
 					// Some file checks
+					if (!GeneralUtility::verifyFilenameAgainstDenyPattern($realFileName)) {
+						throw new \UnexpectedValueException(sprintf('File "%s" was not included since it is not allowed due to fileDenyPattern.', $fileName), 1382651858);
+					}
 					if (empty($realFileName)) {
 						throw new \UnexpectedValueException(sprintf('"%s" is not a valid file location.', $fileName), 1294586441);
 					}
