@@ -1375,7 +1375,7 @@ color denotes the color of the border.]]></description>
 
 If no alttext is specified, it will use an empty alttext]]></description>
 			<default><![CDATA[
-]]></default>
+				]]></default>
 		</property>
 		<property name="emptyTitleHandling" type="string">
 			<description><![CDATA[Value can be "keepEmpty" to preserve an empty title attribute, or "useAlt" to use the alt attribute instead.
@@ -1388,32 +1388,84 @@ If no alttext is specified, it will use an empty alttext]]></description>
 			If the resource is jpg,gif,jpeg,png the image is inserted as an image-tag. Al other formats is read and inserted into the HTML-code.
 The maximum filesize of documents to be read is set to 1024 kb internally!]]></description>
 			<default><![CDATA[
-]]></default>
+				]]></default>
 		</property>
 		<property name="linkWrap" type="stdWrap">
 			<description><![CDATA[wrap/stdWrap
 			(before ".wrap")]]></description>
 			<default><![CDATA[
-]]></default>
+				]]></default>
 		</property>
 		<property name="longdescURL" type="stdWrap">
 			<description><![CDATA[For <img> output only!
 
 "longdesc" attribute (URL pointing to document with extensive details about image).]]></description>
 			<default><![CDATA[
-]]></default>
+				]]></default>
 		</property>
 		<property name="stdWrap" type="stdWrap">
 			<description><![CDATA[
-]]></description>
+				]]></description>
 			<default><![CDATA[
-]]></default>
+				]]></default>
 		</property>
 		<property name="wrap" type="stdWrap">
 			<description><![CDATA[wrap/stdWrap
 ]]></description>
 			<default><![CDATA[
-]]></default>
+				]]></default>
+		</property>
+	</type>
+	<type id="FILES">
+		<property name="references" type="stdWrap">
+			<description><![CDATA[string/stdWrap or array
+			Provides a way to load files from a file field (of type IRRE with sys_file_reference as child table).
+			You can either provide a UID or a comma-separated list of UIDs from the database table sys_file_reference
+			or you have to specify a table, uid and field name in the according sub-properties of "references".
+			See further documentation of these sub-properties in the table below.]]></description>
+			<default><![CDATA[]]></default>
+		</property>
+		<property name="files" type="stdWrap">
+			<description><![CDATA[string/stdWrap
+			Comma-separated list of sys_file UIDs, which are loaded into the FILES object.]]></description>
+			<default><![CDATA[]]></default>
+		</property>
+		<property name="collections" type="stdWrap">
+			<description><![CDATA[string/stdWrap
+			Comma-separated list of sys_file_collection UIDs, which are loaded into the FILES object.]]></description>
+			<default><![CDATA[]]></default>
+		</property>
+		<property name="folders" type="stdWrap">
+			<description><![CDATA[string/stdWrap
+			Comma-separated list of combined folder identifiers which are loaded into the FILES object.
+			A combined folder identifier looks like this: [storageUid]:[folderIdentifier].
+			The first part is the UID of the storage and the second part the identifier of the folder.
+			The identifier of the folder is often equivalent to the relative path of the folder.]]></description>
+			<default><![CDATA[]]></default>
+		</property>
+		<property name="sorting" type="stdWrap">
+			<description><![CDATA[string/stdWrap
+			You can sort in revers order with: sorting.direction = DESC]]></description>
+			<default><![CDATA[]]></default>
+		</property>
+		<property name="begin" type="integer">
+			<description><![CDATA[integer]]></description>
+			<default><![CDATA[]]></default>
+		</property>
+		<property name="maxItems" type="integer">
+			<description><![CDATA[integer]]></description>
+			<default><![CDATA[]]></default>
+		</property>
+		<property name="renderObj" type="cObj">
+			<description><![CDATA[cObject + optionSplit
+			The cObject used for rendering the files. It is executed once for every file.
+			Note that during each execution you can find information about the current file using
+			the getText property "file" with the "current" keyword.]]></description>
+			<default><![CDATA[]]></default>
+		</property>
+		<property name="stdWrap" type="stdWrap">
+			<description><![CDATA[stdWrap]]></description>
+			<default><![CDATA[]]></default>
 		</property>
 	</type>
 	<type id="FORM_dataArray">
