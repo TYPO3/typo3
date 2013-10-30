@@ -1343,10 +1343,11 @@ class ContentObjectRenderer {
 			// This array is used to collect the image-refs on the page...
 			$GLOBALS['TSFE']->imagesOnPage[] = $source;
 			$altParam = $this->getAltParam($conf);
+			$params = '';
 			if ($conf['params'] && !isset($conf['params.'])) {
 				$params = ' ' . $conf['params'];
-			} else {
-				$params = isset($conf['params.']) ? ' ' . $this->stdWrap($conf['params'], $conf['params.']) : '';
+			} elseif ($conf['params'] && is_array($conf['params.'])) {
+				$params = ' ' . $this->stdWrap($conf['params'], $conf['params.']);
 			}
 
 			$imageTagValues = array(
