@@ -1457,7 +1457,7 @@ class ContentObjectRenderer {
 				$dimensionKeys = array('width', 'height', 'maxW', 'minW', 'maxH', 'minH');
 				foreach ($dimensionKeys as $dimensionKey) {
 					$dimension = $this->stdWrap($sourceConfiguration[$dimensionKey], $sourceConfiguration[$dimensionKey . '.']);
-					if (!$dimension && isset($conf['file.'][$dimensionKey])) {
+					if (!$dimension) {
 						$dimension = $this->stdWrap($conf['file.'][$dimensionKey], $conf['file.'][$dimensionKey . '.']);
 					}
 					if ($dimension) {
@@ -1471,9 +1471,10 @@ class ContentObjectRenderer {
 							$dimension = (int)($dimension * $pixelDensity);
 						}
 						$sourceRenderConfiguration['file.'][$dimensionKey] = $dimension;
+						// Remove the stdWrap properties for dimension as they have been processed already above.
+						unset($sourceRenderConfiguration['file.'][$dimensionKey . '.']);
 					}
 				}
-
 				$sourceInfo = $this->getImgResource($sourceRenderConfiguration['file'], $sourceRenderConfiguration['file.']);
 				$sourceConfiguration['width'] = $sourceInfo[0];
 				$sourceConfiguration['height'] = $sourceInfo[1];
