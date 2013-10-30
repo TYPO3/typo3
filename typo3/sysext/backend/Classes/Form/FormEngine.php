@@ -1743,42 +1743,8 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 		}
 		// "Extra" configuration; Returns configuration for the field based on settings found in the "types" fieldlist. See http://typo3.org/documentation/document-library/doc_core_api/Wizards_Configuratio/.
 		$specConf = $this->getSpecConfFromString($PA['extra'], $PA['fieldConf']['defaultExtras']);
-		// Getting the selector box items from the system
-		$selItems = $this->addSelectOptionsToItemArray($this->initItemArray($PA['fieldConf']), $PA['fieldConf'], $this->setTSconfig($table, $row), $field);
+		$selItems = $this->getSelectItems($table, $field, $row, $PA);
 
-		// Possibly filter some items:
-		$selItems = GeneralUtility::keepItemsInArray(
-			$selItems,
-			$PA['fieldTSConfig']['keepItems'],
-			function ($value) {
-				return $value[1];
-			}
-		);
-
-		// Possibly add some items:
-		$selItems = $this->addItems($selItems, $PA['fieldTSConfig']['addItems.']);
-		// Process items by a user function:
-		if (isset($config['itemsProcFunc']) && $config['itemsProcFunc']) {
-			$selItems = $this->procItems($selItems, $PA['fieldTSConfig']['itemsProcFunc.'], $config, $table, $row, $field);
-		}
-		// Possibly remove some items:
-		$removeItems = GeneralUtility::trimExplode(',', $PA['fieldTSConfig']['removeItems'], TRUE);
-		foreach ($selItems as $tk => $p) {
-			// Checking languages and authMode:
-			$languageDeny = $GLOBALS['TCA'][$table]['ctrl']['languageField'] && !strcmp($GLOBALS['TCA'][$table]['ctrl']['languageField'], $field) && !$GLOBALS['BE_USER']->checkLanguageAccess($p[1]);
-			$authModeDeny = $config['form_type'] == 'select' && $config['authMode'] && !$GLOBALS['BE_USER']->checkAuthMode($table, $field, $p[1], $config['authMode']);
-			if (in_array($p[1], $removeItems) || $languageDeny || $authModeDeny) {
-				unset($selItems[$tk]);
-			} elseif (isset($PA['fieldTSConfig']['altLabels.'][$p[1]])) {
-				$selItems[$tk][0] = htmlspecialchars($this->sL($PA['fieldTSConfig']['altLabels.'][$p[1]]));
-			}
-			// Removing doktypes with no access:
-			if (($table === 'pages' || $table === 'pages_language_overlay') && $field === 'doktype') {
-				if (!($GLOBALS['BE_USER']->isAdmin() || GeneralUtility::inList($GLOBALS['BE_USER']->groupData['pagetypes_select'], $p[1]))) {
-					unset($selItems[$tk]);
-				}
-			}
-		}
 		// Creating the label for the "No Matching Value" entry.
 		$nMV_label = isset($PA['fieldTSConfig']['noMatchingValue_label']) ? $this->sL($PA['fieldTSConfig']['noMatchingValue_label']) : '[ ' . $this->getLL('l_noMatchingValue') . ' ]';
 		// Prepare some values:
@@ -1809,6 +1775,85 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 			$item = $this->renderWizards(array($item, $altItem), $config['wizards'], $table, $row, $field, $PA, $PA['itemFormElName'], $specConf);
 		}
 		return $item;
+	}
+
+	/**
+	 * Collects the items for a select field by reading the configured
+	 * select items from the configuration and / or by collecting them
+	 * from a foreign table.
+	 *
+	 * @param string $table The table name of the record
+	 * @param string $fieldName The select field name
+	 * @param array $row The record data array where the value(s) for the field can be found
+	 * @param array $PA An array with additional configuration options.
+	 * @return array
+	 */
+	public function getSelectItems($table, $fieldName, array $row, array $PA) {
+		$config = $PA['fieldConf']['config'];
+
+		// Getting the selector box items from the system
+		$selectItems = $this->addSelectOptionsToItemArray(
+			$this->initItemArray($PA['fieldConf']),
+			$PA['fieldConf'],
+			$this->setTSconfig($table, $row),
+			$fieldName
+		);
+
+		// Possibly filter some items:
+		$selectItems = GeneralUtility::keepItemsInArray(
+			$selectItems,
+			$PA['fieldTSConfig']['keepItems'],
+			function ($value) {
+				return $value[1];
+			}
+		);
+
+		// Possibly add some items:
+		$selectItems = $this->addItems($selectItems, $PA['fieldTSConfig']['addItems.']);
+
+		// Process items by a user function:
+		if (isset($config['itemsProcFunc']) && $config['itemsProcFunc']) {
+			$selectItems = $this->procItems($selectItems, $PA['fieldTSConfig']['itemsProcFunc.'], $config, $table, $row, $fieldName);
+		}
+
+		// Possibly remove some items:
+		$removeItems = GeneralUtility::trimExplode(',', $PA['fieldTSConfig']['removeItems'], TRUE);
+		foreach ($selectItems as $selectItemIndex => $selectItem) {
+
+			// Checking languages and authMode:
+			$languageDeny = FALSE;
+			if (
+				$GLOBALS['TCA'][$table]['ctrl']['languageField']
+				&& !strcmp($GLOBALS['TCA'][$table]['ctrl']['languageField'], $fieldName)
+				&& !$GLOBALS['BE_USER']->checkLanguageAccess($selectItem[1])
+			) {
+				$languageDeny = TRUE;
+			}
+
+			$authModeDeny = FALSE;
+			if (
+				($config['form_type'] === 'select')
+				&& $config['authMode']
+				&& !$GLOBALS['BE_USER']->checkAuthMode($table, $fieldName, $selectItem[1], $config['authMode'])
+			) {
+				$authModeDeny = TRUE;
+			}
+
+			if (in_array($selectItem[1], $removeItems) || $languageDeny || $authModeDeny) {
+				unset($selectItems[$selectItemIndex]);
+			} elseif (isset($PA['fieldTSConfig']['altLabels.'][$selectItem[1]])) {
+				$selectItems[$selectItemIndex][0] = htmlspecialchars($this->sL($PA['fieldTSConfig']['altLabels.'][$selectItem[1]]));
+			}
+
+			// Removing doktypes with no access:
+			if (($table === 'pages' || $table === 'pages_language_overlay') && $fieldName === 'doktype') {
+				if (!($GLOBALS['BE_USER']->isAdmin() || GeneralUtility::inList($GLOBALS['BE_USER']->groupData['pagetypes_select'], $selectItem[1]))) {
+					unset($selectItems[$selectItemIndex]);
+				}
+			}
+		}
+
+		return $selectItems;
 	}
 
 	/**
@@ -6468,28 +6513,10 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 		}
 		// Check if we have a reference to another field value from the current record
 		if (substr($value, 0, 6) === '__row|') {
-			$keySegments = GeneralUtility::trimExplode('|', substr($value, 6));
-			if (isset($row[$keySegments[0]])) {
-				// First segment (fieldname) exists in the current row
-				$value = $row[$keySegments[0]];
-				$fieldConf = $GLOBALS['TCA'][$table]['columns'][$keySegments[0]];
-				if ($fieldConf['config']['type'] === 'group' && $fieldConf['config']['internal_type'] === 'db') {
-					// The field is a relation to another record
-					list($foreignIdentifier, $foreignTitle) = GeneralUtility::trimExplode('|', $value);
-					// Use the foreign title
-					$value = $foreignTitle;
-					if (!empty($keySegments[1])) {
-						// Use any field in the foreign record
-						list($foreignTable, $foreignUid) = BackendUtility::splitTable_Uid($foreignIdentifier);
-						$foreignRecord = BackendUtility::getRecord($foreignTable, $foreignUid);
-						if (isset($foreignRecord[$keySegments[1]])) {
-							$value = $foreignRecord[$keySegments[1]];
-						}
-					}
-				} elseif (!empty($keySegments[1]) && isset($row[$keySegments[0]][$keySegments[1]])) {
-					$value = $row[$keySegments[0]][$keySegments[1]];
-				}
-			}
+			/** @var \TYPO3\CMS\Backend\Form\FormDataTraverser $traverser */
+			$traverseFields = GeneralUtility::trimExplode('|', substr($value, 6));
+			$traverser = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Form\\FormDataTraverser', $this);
+			$value = $traverser->getTraversedFieldValue($traverseFields, $table, $row);
 		}
 
 		return $value;
@@ -6507,5 +6534,4 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 	public function addStyleSheet($key, $href, $title = '', $relation = 'stylesheet') {
 		$GLOBALS['SOBE']->doc->addStyleSheet($key, $href, $title, $relation);
 	}
-
 }
