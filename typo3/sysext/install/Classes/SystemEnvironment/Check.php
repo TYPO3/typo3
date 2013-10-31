@@ -118,6 +118,7 @@ class Check {
 		$statusArray[] = $this->checkGdLibFreeTypeSupport();
 		$statusArray[] = $this->checkPhpMagicQuotes();
 		$statusArray[] = $this->checkRegisterGlobals();
+		$statusArray[] = $this->checkLibXmlBug();
 		$statusArray[] = $this->isTrueTypeFontDpiStandard();
 		return $statusArray;
 	}
@@ -395,7 +396,7 @@ class Check {
 				'These function(s) are disabled. TYPO3 uses currently none of those, so you are good to go.'
 			);
 		} else {
-			$status  = new Status\OkStatus();
+			$status = new Status\OkStatus();
 			$status->setTitle('No disabled PHP functions');
 		}
 		return $status;
@@ -922,7 +923,7 @@ class Check {
 			$status = new Status\OkStatus();
 			$status->setTitle('PHP GD library has jpg support');
 		} else {
-			$status= new Status\ErrorStatus();
+			$status = new Status\ErrorStatus();
 			$status->setTitle('PHP GD library jpg support missing');
 			$status->setMessage(
 				'GD must be compiled with jpg support. This is essential for' .
@@ -1084,6 +1085,33 @@ class Check {
 		} else {
 			$status = new Status\OkStatus();
 			$status->setTitle('PHP register globals off');
+		}
+		return $status;
+	}
+
+	/**
+	 * Check for bug in libxml
+	 *
+	 * @return Status\StatusInterface
+	 */
+	protected function checkLibXmlBug() {
+		$sampleArray = array('Test>><<Data');
+
+		$xmlContent = '<numIndex index="0">Test&gt;&gt;&lt;&lt;Data</numIndex>' . LF;
+
+		$xml = \TYPO3\CMS\Core\Utility\GeneralUtility::array2xml($sampleArray, '', -1);
+
+		if ($xmlContent !== $xml) {
+			$status = new Status\ErrorStatus();
+			$status->setTitle('PHP libxml bug present');
+			$status->setMessage(
+				'Some hosts have problems saving ">><<" in a flexform.' .
+				' To fix this, enable [BE][flexformForceCDATA] in' .
+				' All Configuration.'
+			);
+		} else {
+			$status = new Status\OkStatus();
+			$status->setTitle('PHP libxml bug not present');
 		}
 		return $status;
 	}
