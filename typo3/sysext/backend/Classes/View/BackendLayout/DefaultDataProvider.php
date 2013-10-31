@@ -121,7 +121,7 @@ class DefaultDataProvider implements DataProviderInterface {
 
 		if (!empty($icon)) {
 			$path = rtrim($GLOBALS['TCA']['backend_layout']['ctrl']['selicon_field_path'], '/') . '/';
-			$iconPath = $path . $icon;
+			$iconPath = '../' . $path . $icon;
 		}
 
 		return $iconPath;
