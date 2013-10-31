@@ -105,9 +105,10 @@ class DataProviderCollection implements \TYPO3\CMS\Core\SingletonInterface {
 	 * the accordant backend layout.
 	 *
 	 * @param string $combinedIdentifier
+	 * @param integer $pageId
 	 * @return NULL|BackendLayout
 	 */
-	public function getBackendLayout($combinedIdentifier) {
+	public function getBackendLayout($combinedIdentifier, $pageId) {
 		$backendLayout = NULL;
 
 		if (strpos($combinedIdentifier, '__') === FALSE) {
@@ -118,7 +119,7 @@ class DataProviderCollection implements \TYPO3\CMS\Core\SingletonInterface {
 		}
 
 		if (isset($this->dataProviders[$dataProviderIdentifier])) {
-			$backendLayout = $this->dataProviders[$dataProviderIdentifier]->getBackendLayout($backendLayoutIdentifier);
+			$backendLayout = $this->dataProviders[$dataProviderIdentifier]->getBackendLayout($backendLayoutIdentifier, $pageId);
 		}
 
 		return $backendLayout;

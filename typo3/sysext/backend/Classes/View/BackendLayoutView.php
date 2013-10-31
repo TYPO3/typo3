@@ -309,7 +309,7 @@ class BackendLayoutView implements \TYPO3\CMS\Core\SingletonInterface {
 			$selectedCombinedIdentifier = 'default';
 		}
 
-		$backendLayout = $this->getDataProviderCollection()->getBackendLayout($selectedCombinedIdentifier);
+		$backendLayout = $this->getDataProviderCollection()->getBackendLayout($selectedCombinedIdentifier, $pageId);
 
 		if (!empty($backendLayout)) {
 			/** @var $parser \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser */

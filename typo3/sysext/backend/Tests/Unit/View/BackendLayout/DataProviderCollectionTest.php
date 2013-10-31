@@ -87,7 +87,7 @@ class DataProviderCollectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$dataProviderMock->expects($this->once())->method('getBackendLayout')->will($this->returnValue($backendLayoutMock));
 
 		$this->dataProviderCollection->add('default', $dataProviderMock);
-		$providedBackendLayout = $this->dataProviderCollection->getBackendLayout($backendLayoutIdentifier);
+		$providedBackendLayout = $this->dataProviderCollection->getBackendLayout($backendLayoutIdentifier, 123);
 
 		$this->assertNotNull($providedBackendLayout);
 		$this->assertEquals($backendLayoutIdentifier, $providedBackendLayout->getIdentifier());
@@ -106,7 +106,7 @@ class DataProviderCollectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$dataProviderMock->expects($this->once())->method('getBackendLayout')->will($this->returnValue($backendLayoutMock));
 
 		$this->dataProviderCollection->add($dataProviderIdentifier, $dataProviderMock);
-		$providedBackendLayout = $this->dataProviderCollection->getBackendLayout($dataProviderIdentifier . '__' . $backendLayoutIdentifier);
+		$providedBackendLayout = $this->dataProviderCollection->getBackendLayout($dataProviderIdentifier . '__' . $backendLayoutIdentifier, 123);
 
 		$this->assertNotNull($providedBackendLayout);
 		$this->assertEquals($backendLayoutIdentifier, $providedBackendLayout->getIdentifier());

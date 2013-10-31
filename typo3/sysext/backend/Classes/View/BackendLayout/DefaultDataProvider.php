@@ -63,9 +63,10 @@ class DefaultDataProvider implements DataProviderInterface {
 	 * Gets a backend layout by (regular) identifier.
 	 *
 	 * @param string $identifier
+	 * @param integer $pageId
 	 * @return NULL|BackendLayout
 	 */
-	public function getBackendLayout($identifier) {
+	public function getBackendLayout($identifier, $pageId) {
 		$backendLayout = NULL;
 
 		if ((string) $identifier === 'default') {
