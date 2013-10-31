@@ -214,7 +214,6 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 			'TITLE' => ''
 		);
 		$buttons = array(
-			'level_up' => '',
 			'refresh' => '',
 			'title' => '',
 			'page_icon' => '',
@@ -230,7 +229,6 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 			if ($folderObject->getStorage()->isWithinFileMountBoundaries($folderObject)) {
 				// The icon with link
 				$otherMarkers['PAGE_ICON'] = IconUtility::getSpriteIcon($icon, array('title' => $title));
-				$buttons['level_up'] = $this->linkWrapDir(IconUtility::getSpriteIcon('actions-view-go-up', array('title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.upOneLevel', TRUE))), $folderObject);
 				// No HTML specialchars here - HTML like <strong> </strong> is allowed
 				$otherMarkers['TITLE'] .= GeneralUtility::removeXSS(GeneralUtility::fixed_lgd_cs($title, -($this->fixedL + 20)));
 			} else {
