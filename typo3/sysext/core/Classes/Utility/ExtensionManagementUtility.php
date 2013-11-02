@@ -265,7 +265,8 @@ class ExtensionManagementUtility {
 								}
 							}
 						} else {
-							if (strpos($typeDetails['showitem'], $str) !== FALSE) {
+							$fieldsArray = GeneralUtility::trimExplode(',', $typeDetails['showitem']);
+							if (in_array($str, $fieldsArray, TRUE)) {
 								$fieldExists = TRUE;
 							} else {
 								foreach ($GLOBALS['TCA'][$table]['palettes'] as $palette => $paletteDetails) {
@@ -276,7 +277,8 @@ class ExtensionManagementUtility {
 							}
 						}
 					} else {
-						if (strpos($typeDetails['showitem'], $str) !== FALSE) {
+						$fieldsArray = GeneralUtility::trimExplode(',', $typeDetails['showitem']);
+						if (in_array($str, $fieldsArray, TRUE)) {
 							$fieldExists = TRUE;
 						} elseif (is_array($GLOBALS['TCA'][$table]['palettes'])) {
 							foreach ($GLOBALS['TCA'][$table]['palettes'] as $palette => $paletteDetails) {
