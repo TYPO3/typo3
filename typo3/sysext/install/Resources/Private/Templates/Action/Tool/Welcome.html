@@ -12,7 +12,7 @@
 		</f:else>
 	</f:if>
 
-	<h4>How to configure TYPO3</h4>
+	<h4>How to configure TYPO3 CMS</h4>
 	<p>
 		Local configuration is done by overriding default values in the
 		included file, typo3conf/LocalConfiguration.php. In this file you enter the
@@ -33,76 +33,89 @@
 
 	<h4>Using this script</h4>
 	<p>
-		There are three primary steps for you to take:
+		These are the primary steps for you to take:
 	</p>
 	<p>
-		<strong>1: Basic Configuration</strong>
+		<strong>1: Important actions</strong>
 		<br />
-		In this step your PHP-configuration is checked. If
-		there are any settings that will prevent TYPO3 from
-		running correctly you'll get warnings and errors
-		with a description of the problem.
+		This step provides an overview of the main system information
+		(operating system, PHP information and database).
 		<br />
-		You'll have to enter a database username, password
-		and hostname. Then you can choose to create a new
-		database or select an existing one.
-		<br />
-		Finally the image processing settings are entered
-		and verified and you can choose to let the script
-		update the configuration with the suggested settings.
+		The following actions are available here:
+		<ul>
+			<li><strong>Database Analyzer</strong> - compares the database table and field definitions of the
+				current database with the specification from all loaded extensions' ext_tables.sql.</li>
+			<li><strong>Clear all cache</strong> - works similar to the cache clearing in the backend, but
+				follows a more straight ahead approach and the according backend hooks are not executed.</li>
+			<li><strong>Check for broken extensions</strong> - checks whether the local extensions' ext_tables
+				and ext_localconf files can be included without errors, meaning they can be loaded without
+				breaking the system.</li>
+			<li><strong>Core update</strong> - automatically update the TYPO3 CMS core to its latest bugfix
+				release if certain criteria are met. <strong>Note:</strong> This is not supported on Windows hosts.</li>
+			<li><strong>Change install tool password</strong></li>
+			<li><strong>Change site name</strong></li>
+			<li><strong>Change encryption key</strong></li>
+			<li><strong>Create backend administrator user</strong> - you should use this function only if there
+				are no admin users in the database, for instance if this is a blank database</li>
+		</ul>
 	</p>
 	<p>
-		<strong>2: Database Analyser</strong>
+		<strong>2: System environment</strong>
 		<br />
-		In this step you can either install a new database
-		or update the database from any previous TYPO3
-		version.
-		<br />
-		You can also get an overview of extra/missing
-		fields/tables in the database compared to a raw
-		sql-file.
-		<br />
-		The database is also verified against your
-		configuration ($TCA) and you can
-		even see suggestions for entries in $TCA or new
-		fields in the database.
+		In this step your system environment is checked. If there are any settings that will prevent TYPO3 CMS from
+		running correctly, you'll get warnings and errors with a description of the problem.
 	</p>
 	<p>
-		<strong>3: Upgrade Wizard</strong>
+		<strong>3: Configuration presets</strong>
 		<br />
-		Here you will find update methods taking care of
-		changes to the TYPO3 core which are not backwards
-		compatible.
-		<br />
-		It is recommended to run this wizard after every
-		update to make sure everything will still work
-		flawlessly.
+		The following configuration preset groups are available here:
+		<ul>
+			<li><strong>Character set conversion settings</strong> - charset conversion.</li>
+			<li><strong>Development / Production settings</strong> - context can be defined with the environment
+				variable "TYPO3_CONTEXT" which is usually set through your webserver configuration
+				(e.g. in htaccess).</li>
+			<li><strong>Image handling settings</strong> - this module detects the available image handling
+				tools and configures the system.</li>
+			<li><strong>Extbase object cache</strong> - choose between APC / Database cache backend</li>
+		</ul>
 	</p>
 	<p>
-		<strong>4: Image Processing</strong>
+		<strong>4: Folder structure</strong>
 		<br />
-		This step is a visual guide to verify your
-		configuration of the image processing software.
-		<br />
-		You'll be presented to a list of images that should
-		all match in pairs. If some irregularity appears,
-		you'll get a warning. Thus you're able to track an
-		error before you'll discover it on your website.
+		This step checks the folder structure of your TYPO3 CMS installation and fixes errors that you might have
+		with files or folders.
 	</p>
 	<p>
-		<strong>5: All Configuration</strong>
+		<strong>5: Test setup</strong>
 		<br />
-		This gives you access to any of the configuration
-		options in the TYPO3_CONF_VARS array. Every option
-		is also presented with a comment explaining what it
-		does.
+		This gives you a set of tests for your TYPO3 CMS installation in order to test system settings:
+		<ul>
+			<li>Mail setup</li>
+			<li>True type font dpi settings</li>
+			<li>Convert image formats to jpg</li>
+			<li>Writing gif and png</li>
+			<li>Scaling images</li>
+			<li>Combining images</li>
+			<li>GDlib</li>
+		</ul>
 	</p>
 	<p>
-		<strong>6: Cleanup</strong>
+		<strong>6: Update wizard</strong>
 		<br />
-		Here you can clean up the temporary files in typo3temp/
-		folder and the tables used for caching of data in
-		your database.
+		If you upgrade your TYPO3 CMS installation from one version to another (e.g. 6.1 to 6.2),
+		then the Upgrade Wizards guide you through the necessary steps to upgrade your database records
+		or explicitly install extensions that ship with the latest TYPO3 CMS version.
+	</p>
+	<p>
+		<strong>7: All configuration</strong>
+		<br />
+		In this step you can change the configuration values of your TYPO3 CMS installation.
+	</p>
+	<p>
+		<strong>8: Clean up</strong>
+		<br />
+		Here you can clean up temporary files in the typo3temp/ folder and the database tables used for
+		caching. Furthermore you can reset the preferences of all backend users.
 	</p>
 	<hr />
 
