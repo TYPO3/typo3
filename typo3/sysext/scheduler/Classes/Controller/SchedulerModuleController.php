@@ -433,9 +433,9 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 			$tr++;
 			// Display information about each service
 			foreach ($registeredClasses as $class => $classInfo) {
-				$table[$tr][] = $classInfo['title'];
-				$table[$tr][] = $classInfo['extension'];
-				$table[$tr][] = $classInfo['description'];
+				$table[$tr][] = htmlspecialchars($classInfo['title']);
+				$table[$tr][] = htmlspecialchars($classInfo['extension']);
+				$table[$tr][] = htmlspecialchars($classInfo['description']);
 				$link = $GLOBALS['MCONF']['_'] . '&SET[function]=list&CMD=add&tx_scheduler[class]=' . $class;
 				$table[$tr][] = '<a href="' . htmlspecialchars($link) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xlf:new', TRUE) . '" class="icon">' . IconUtility::getSpriteIcon('actions-document-new') . '</a>';
 				$tr++;
@@ -701,10 +701,10 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 			ksort($groupedClasses);
 			// Loop on all grouped classes to display a selector
 			foreach ($groupedClasses as $extension => $class) {
-				$cell .= '<optgroup label="' . $extension . '">';
+				$cell .= '<optgroup label="' . htmlspecialchars($extension) . '">';
 				foreach ($groupedClasses[$extension] as $class => $classInfo) {
 					$selected = $class == $taskInfo['class'] ? ' selected="selected"' : '';
-					$cell .= '<option value="' . $class . '"' . 'title="' . $classInfo['description'] . '"' . $selected . '>' . $classInfo['title'] . '</option>';
+					$cell .= '<option value="' . $class . '"' . 'title="' . htmlspecialchars($classInfo['description']) . '"' . $selected . '>' . htmlspecialchars($classInfo['title']) . '</option>';
 				}
 				$cell .= '</optgroup>';
 			}
