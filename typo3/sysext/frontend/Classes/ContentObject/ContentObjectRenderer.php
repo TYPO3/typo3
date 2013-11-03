@@ -1508,7 +1508,7 @@ class ContentObjectRenderer {
 				if ($sourceInfo) {
 					$sourceConfiguration['width'] = $sourceInfo[0];
 					$sourceConfiguration['height'] = $sourceInfo[1];
-					$sourceConfiguration['src'] = htmlspecialchars($sourceInfo[3]);
+					$sourceConfiguration['src'] = htmlspecialchars($GLOBALS['TSFE']->absRefPrefix . $sourceInfo[3]);
 					$sourceConfiguration['selfClosingTagSlash'] = (!empty($GLOBALS['TSFE']->xhtmlDoctype) ? ' /' : '');
 
 					$oneSourceCollection = $this->substituteMarkerArray($sourceLayout, $sourceConfiguration, '###|###', TRUE, TRUE);
