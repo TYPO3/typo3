@@ -171,6 +171,7 @@ class AjaxController extends AbstractController {
 	 * @param string $content Content to output
 	 */
 	protected function output($content = '') {
+		ob_clean();
 		header('Content-Type: application/json; charset=utf-8');
 		header('Cache-Control: no-cache, must-revalidate');
 		header('Pragma: no-cache');
