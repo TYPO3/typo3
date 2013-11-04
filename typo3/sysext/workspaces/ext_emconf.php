@@ -22,7 +22,6 @@ $EM_CONF[$_EXTKEY] = array(
 	'state' => 'stable',
 	'internal' => '',
 	'uploadfolder' => 0,
-	'docPath' => 'Documentation',
 	'createDirs' => '',
 	'modify_tables' => '',
 	'clearCacheOnLoad' => 1,
