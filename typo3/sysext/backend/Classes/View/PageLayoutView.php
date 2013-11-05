@@ -167,6 +167,13 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	 */
 	public $itemLabels = array();
 
+	/**
+	 * Used to store the RTE setup of a particular page
+	 *
+	 * @var array
+	 */
+	protected $rteSetup = array();
+
 	/*****************************************
 	 *
 	 * Renderings
@@ -1740,9 +1747,11 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 			list($tscPID, $thePidValue) = BackendUtility::getTSCpid($table, $row['uid'], $row['pid']);
 			// If the pid-value is not negative (that is, a pid could NOT be fetched)
 			if ($thePidValue >= 0) {
-				$RTEsetup = $GLOBALS['BE_USER']->getTSConfig('RTE', BackendUtility::getPagesTSconfig($tscPID));
+				if (!isset($this->rteSetup[$tscPID])) {
+					$this->rteSetup[$tscPID] = $GLOBALS['BE_USER']->getTSConfig('RTE', BackendUtility::getPagesTSconfig($tscPID));
+				}
 				$RTEtypeVal = BackendUtility::getTCAtypeValue($table, $row);
-				$thisConfig = BackendUtility::RTEsetup($RTEsetup['properties'], $table, $field, $RTEtypeVal);
+				$thisConfig = BackendUtility::RTEsetup($this->rteSetup[$tscPID]['properties'], $table, $field, $RTEtypeVal);
 				if (!$thisConfig['disabled']) {
 					return TRUE;
 				}
