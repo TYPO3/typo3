@@ -46,6 +46,11 @@ class Category extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	protected $description = '';
 
 	/**
+	 * @var string
+	 */
+	protected $icon = '';
+
+	/**
 	 * @var \TYPO3\CMS\Extbase\Domain\Model\Category|NULL
 	 * @lazy
 	 */
@@ -91,6 +96,27 @@ class Category extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 */
 	public function setDescription($description) {
 		$this->description = $description;
+	}
+
+	/**
+	 * Returns the icon
+	 *
+	 * @return string $icon
+	 * @api
+	 */
+	public function getIcon() {
+		return $this->icon;
+	}
+
+	/**
+	 * Sets the icon
+	 *
+	 * @param string $icon
+	 * @return void
+	 * @api
+	 */
+	public function setIcon($icon) {
+		$this->icon = $icon;
 	}
 
 	/**
