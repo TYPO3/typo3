@@ -244,7 +244,7 @@ class BackendLayoutView implements \TYPO3\CMS\Core\SingletonInterface {
 		$pageId = $this->determinePageId($parameters['table'], $parameters['row']);
 
 		if ($pageId !== NULL) {
-			$params['items'] = $this->addColPosListLayoutItems($pageId, $parameters['items']);
+			$parameters['items'] = $this->addColPosListLayoutItems($pageId, $parameters['items']);
 		}
 	}
 
