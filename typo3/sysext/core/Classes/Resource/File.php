@@ -264,6 +264,7 @@ class File extends AbstractFile {
 		// Updating indexing status
 		if (isset($properties['uid']) && intval($properties['uid']) > 0) {
 			$this->indexed = TRUE;
+			$this->loadMetaData();
 		}
 		if (array_key_exists('storage', $properties) && in_array('storage', $this->updatedProperties)) {
 			$this->storage = ResourceFactory::getInstance()->getStorageObject($properties['storage']);
