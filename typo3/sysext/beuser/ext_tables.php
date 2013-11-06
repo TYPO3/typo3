@@ -13,7 +13,7 @@ if (TYPO3_MODE === 'BE') {
 			'BackendUser' => 'index, addToCompareList, removeFromCompareList, compare, online, terminateBackendUserSession'
 		),
 		array(
-			'access' => 'user,group',
+			'access' => 'admin',
 			'icon' => 'EXT:' . $_EXTKEY . '/ext_icon.gif',
 			'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_mod.xlf'
 		)

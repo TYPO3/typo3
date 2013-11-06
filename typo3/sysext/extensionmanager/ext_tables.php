@@ -18,7 +18,7 @@ if (TYPO3_MODE === 'BE') {
 			'Distribution' => 'welcome'
 		),
 		array(
-			'access' => 'user,group',
+			'access' => 'admin',
 			'icon' => 'EXT:' . $_EXTKEY . '/Resources/Public/Icons/module.png',
 			'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_mod.xlf',
 		)
