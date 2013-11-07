@@ -663,6 +663,14 @@ class DataHandler {
 	protected $outerMostInstance = NULL;
 
 	/**
+	 * Internal cache for collecting records that should trigger cache clearing
+	 *
+	 * @var array
+	 */
+	protected static $recordsToClearCacheFor = array();
+
+
+	/**
 	 * @param array $control
 	 */
 	public function setControl(array $control) {
@@ -1244,6 +1252,7 @@ class DataHandler {
 			}
 		}
 		if ($this->isOuterMostInstance()) {
+			$this->processClearCacheQueue();
 			$this->resetElementsToBeDeleted();
 		}
 	}
@@ -2981,6 +2990,7 @@ class DataHandler {
 			}
 		}
 		if ($this->isOuterMostInstance()) {
+			$this->processClearCacheQueue();
 			$this->resetNestedElementCalls();
 		}
 	}
@@ -3764,7 +3774,7 @@ class DataHandler {
 		if ($destPid >= 0) {
 			if ($table != 'pages' || $this->destNotInsideSelf($destPid, $uid)) {
 				// Clear cache before moving
-				$this->clear_cache($table, $uid);
+				$this->registerRecordIdForPageCacheClearing($table, $uid);
 				// Setting PID
 				$updateFields['pid'] = $destPid;
 				// Table is sorted by 'sortby'
@@ -3798,7 +3808,7 @@ class DataHandler {
 					$this->log($table, $uid, 4, $destPid, 0, 'Moved record \'%s\' (%s) on page \'%s\' (%s)', 4, array($propArr['header'], $table . ':' . $uid, $oldpagePropArr['header'], $propArr['pid']), $destPid);
 				}
 				// Clear cache after moving
-				$this->clear_cache($table, $uid);
+				$this->registerRecordIdForPageCacheClearing($table, $uid);
 				$this->fixUniqueInPid($table, $uid);
 				// fixCopyAfterDuplFields
 				if ($origDestPid < 0) {
@@ -3821,7 +3831,7 @@ class DataHandler {
 				if (is_array($sortInfo)) {
 					if ($table != 'pages' || $this->destNotInsideSelf($destPid, $uid)) {
 						// clear cache before moving
-						$this->clear_cache($table, $uid);
+						$this->registerRecordIdForPageCacheClearing($table, $uid);
 						// We now update the pid and sortnumber
 						$updateFields['pid'] = $destPid;
 						$updateFields[$sortRow] = $sortInfo['sortNumber'];
@@ -3851,7 +3861,7 @@ class DataHandler {
 							$this->log($table, $uid, 4, 0, 0, 'Moved record \'%s\' (%s) on page \'%s\' (%s)', 4, array($propArr['header'], $table . ':' . $uid, $oldpagePropArr['header'], $propArr['pid']), $destPid);
 						}
 						// Clear cache after moving
-						$this->clear_cache($table, $uid);
+						$this->registerRecordIdForPageCacheClearing($table, $uid);
 						// fixUniqueInPid
 						$this->fixUniqueInPid($table, $uid);
 						// fixCopyAfterDuplFields
@@ -4301,7 +4311,7 @@ class DataHandler {
 			if ($mayEditAccess) {
 				if ($noRecordCheck || $this->doesRecordExist($table, $uid, 'delete')) {
 					// Clear cache before deleting the record, else the correct page cannot be identified by clear_cache
-					$this->clear_cache($table, $uid);
+					$this->registerRecordIdForPageCacheClearing($table, $uid);
 					$propArr = $this->getRecordProperties($table, $uid);
 					$pagePropArr = $this->getRecordProperties('pages', $propArr['pid']);
 					$deleteRow = $GLOBALS['TCA'][$table]['ctrl']['delete'];
@@ -5923,7 +5933,7 @@ class DataHandler {
 					// Set History data:
 					$this->setHistory($table, $id, $theLogId);
 					// Clear cache for relevant pages:
-					$this->clear_cache($table, $id);
+					$this->registerRecordIdForPageCacheClearing($table, $id);
 					// Unset the pageCache for the id if table was page.
 					if ($table == 'pages') {
 						unset($this->pageCache[$id]);
@@ -5993,7 +6003,7 @@ class DataHandler {
 						$page_propArr = $this->getRecordProperties('pages', $propArr['pid']);
 						$this->log($table, $id, 1, 0, 0, 'Record \'%s\' (%s) was inserted on page \'%s\' (%s)', 10, array($propArr['header'], $table . ':' . $id, $page_propArr['header'], $newRow['pid']), $newRow['pid'], $NEW_id);
 						// Clear cache for relavant pages:
-						$this->clear_cache($table, $id);
+						$this->registerRecordIdForPageCacheClearing($table, $id);
 					}
 					return $id;
 				} else {
@@ -6934,6 +6944,7 @@ class DataHandler {
 	 * Clearing cache
 	 *
 	 ******************************/
+
 	/**
 	 * Clearing the cache based on a page being updated
 	 * If the $table is 'pages' then cache is cleared for all pages on the same level (and subsequent?)
@@ -6942,94 +6953,146 @@ class DataHandler {
 	 * @param string $table Table name of record that was just updated.
 	 * @param integer $uid UID of updated / inserted record
 	 * @return void
-	 * @todo Define visibility
+	 * @internal This method is not meant to be called directly but only from the core itself or from hooks
+	 */
+	public function registerRecordIdForPageCacheClearing($table, $uid) {
+		if (!is_array(static::$recordsToClearCacheFor[$table])) {
+			static::$recordsToClearCacheFor[$table] = array();
+		}
+		static::$recordsToClearCacheFor[$table][] = (int)$uid;
+	}
+
+	/**
+	 * Clearing the cache based on a page being updated
+	 * If the $table is 'pages' then cache is cleared for all pages on the same level (and subsequent?)
+	 * Else just clear the cache for the parent page of the record.
+	 *
+	 * @param string $table Table name of record that was just updated.
+	 * @param integer $uid UID of updated / inserted record
+	 * @return void
+	 * @deprecated since 6.2 will be removed 2 versions later. Use ->clear_cacheCmd instead. Alternatively you can call ->registerPageCacheClearing from a hook to not immediatly clear the cache but register clearing after DataHandler operation finishes.
 	 */
 	public function clear_cache($table, $uid) {
-		$uid = (int)$uid;
-		$pageUid = 0;
-		if (!isset($GLOBALS['TCA'][$table]) || $uid <= 0) {
-			return;
-		}
-		// Get Page TSconfig relavant:
-		list($tscPID) = BackendUtility::getTSCpid($table, $uid, '');
-		$TSConfig = $this->getTCEMAIN_TSconfig($tscPID);
-		if (empty($TSConfig['clearCache_disable'])) {
-			// If table is "pages":
-			$list_cache = array();
-			if ($table === 'pages' || $table === 'pages_language_overlay') {
-				if ($table === 'pages_language_overlay') {
-					$pageUid = $this->getPID($table, $uid);
-				} else {
-					$pageUid = $uid;
+		GeneralUtility::logDeprecatedFunction();
+		$originalValues = static::$recordsToClearCacheFor;
+		// Clear the queue temporarily
+		static::$recordsToClearCacheFor = array();
+		static::$recordsToClearCacheFor[$table] = array();
+		static::$recordsToClearCacheFor[$table][] = (int)$uid;
+
+		$this->processClearCacheQueue();
+		// Reset the queue to its original value again
+		static::$recordsToClearCacheFor = $originalValues;
+	}
+
+	/**
+	 * Do the actual clear cache
+	 * @return void
+	 */
+	protected function processClearCacheQueue() {
+		$tagsToClear = array();
+		$clearCacheCommands = array();
+		foreach (static::$recordsToClearCacheFor as $table => $uids) {
+			foreach (array_unique($uids) as $uid) {
+				$pageUid = 0;
+				if (!isset($GLOBALS['TCA'][$table]) || $uid <= 0) {
+					return;
 				}
-				// Builds list of pages on the SAME level as this page (siblings)
-				$res_tmp = $GLOBALS['TYPO3_DB']->exec_SELECTquery('A.pid AS pid, B.uid AS uid', 'pages A, pages B', 'A.uid=' . (int)$pageUid . ' AND B.pid=A.pid AND B.deleted=0');
-				$pid_tmp = 0;
-				while ($row_tmp = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res_tmp)) {
-					$list_cache[] = $row_tmp['uid'];
-					$pid_tmp = $row_tmp['pid'];
-					// Add children as well:
-					if ($TSConfig['clearCache_pageSiblingChildren']) {
-						$res_tmp2 = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'pages', 'pid=' . (int)$row_tmp['uid'] . ' AND deleted=0');
-						while ($row_tmp2 = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res_tmp2)) {
-							$list_cache[] = $row_tmp2['uid'];
+				// Get Page TSconfig relavant:
+				list($tscPID) = BackendUtility::getTSCpid($table, $uid, '');
+				$TSConfig = $this->getTCEMAIN_TSconfig($tscPID);
+				if (empty($TSConfig['clearCache_disable'])) {
+					// If table is "pages":
+					$pageIdsThatNeedCacheFlush = array();
+					if ($table === 'pages' || $table === 'pages_language_overlay') {
+						if ($table === 'pages_language_overlay') {
+							$pageUid = $this->getPID($table, $uid);
+						} else {
+							$pageUid = $uid;
 						}
-						$GLOBALS['TYPO3_DB']->sql_free_result($res_tmp2);
+						// Builds list of pages on the SAME level as this page (siblings)
+						$res_tmp = $GLOBALS['TYPO3_DB']->exec_SELECTquery('A.pid AS pid, B.uid AS uid', 'pages A, pages B', 'A.uid=' . (int)$pageUid . ' AND B.pid=A.pid AND B.deleted=0');
+						$pid_tmp = 0;
+						while ($row_tmp = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res_tmp)) {
+							$pageIdsThatNeedCacheFlush[] = (int)$row_tmp['uid'];
+							$pid_tmp = $row_tmp['pid'];
+							// Add children as well:
+							if ($TSConfig['clearCache_pageSiblingChildren']) {
+								$res_tmp2 = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'pages', 'pid=' . (int)$row_tmp['uid'] . ' AND deleted=0');
+								while ($row_tmp2 = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res_tmp2)) {
+									$pageIdsThatNeedCacheFlush[] = (int)$row_tmp2['uid'];
+								}
+								$GLOBALS['TYPO3_DB']->sql_free_result($res_tmp2);
+							}
+						}
+						$GLOBALS['TYPO3_DB']->sql_free_result($res_tmp);
+						// Finally, add the parent page as well:
+						$pageIdsThatNeedCacheFlush[] = (int)$pid_tmp;
+						// Add grand-parent as well:
+						if ($TSConfig['clearCache_pageGrandParent']) {
+							$res_tmp = $GLOBALS['TYPO3_DB']->exec_SELECTquery('pid', 'pages', 'uid=' . (int)$pid_tmp);
+							if ($row_tmp = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res_tmp)) {
+								$pageIdsThatNeedCacheFlush[] = (int)$row_tmp['pid'];
+							}
+							$GLOBALS['TYPO3_DB']->sql_free_result($res_tmp);
+						}
+					} else {
+						// For other tables than "pages", delete cache for the records "parent page".
+						$pageIdsThatNeedCacheFlush[] = $pageUid = (int)$this->getPID($table, $uid);
+					}
+					// Call pre-processing function for clearing of cache for page ids:
+					if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearPageCacheEval'])) {
+						foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearPageCacheEval'] as $funcName) {
+							$_params = array('pageIdArray' => &$pageIdsThatNeedCacheFlush, 'table' => $table, 'uid' => $uid, 'functionID' => 'clear_cache()');
+							// Returns the array of ids to clear, FALSE if nothing should be cleared! Never an empty array!
+							GeneralUtility::callUserFunction($funcName, $_params, $this);
+						}
+					}
+					// Delete cache for selected pages:
+					foreach ($pageIdsThatNeedCacheFlush as $pageId) {
+						// Workspaces always use "-1" as the page id which do not
+						// point to real pages and caches at all. Flushing caches for
+						// those records does not make sense and decreases performance
+						if ($pageId >= 0) {
+							$tagsToClear[] = 'pageId_' . $pageId;
+						}
+					}
+					// Queue delete cache for current table and record
+					$tagsToClear[] = $table;
+					$tagsToClear[] = $table . '_' . $uid;
+					$tagsToClear = array_unique($tagsToClear);
+				}
+				// Clear cache for pages entered in TSconfig:
+				if (!empty($TSConfig['clearCacheCmd'])) {
+					$commands = GeneralUtility::trimExplode(',', $TSConfig['clearCacheCmd'], TRUE);
+					$clearCacheCommands = array_unique($commands);
+					unset($commands);
+				}
+				// Call post processing function for clear-cache:
+				if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc'])) {
+					$_params = array('table' => $table, 'uid' => $uid, 'uid_page' => $pageUid, 'TSConfig' => $TSConfig);
+					foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc'] as $_funcRef) {
+						GeneralUtility::callUserFunction($_funcRef, $_params, $this);
 					}
 				}
-				$GLOBALS['TYPO3_DB']->sql_free_result($res_tmp);
-				// Finally, add the parent page as well:
-				$list_cache[] = $pid_tmp;
-				// Add grand-parent as well:
-				if ($TSConfig['clearCache_pageGrandParent']) {
-					$res_tmp = $GLOBALS['TYPO3_DB']->exec_SELECTquery('pid', 'pages', 'uid=' . (int)$pid_tmp);
-					if ($row_tmp = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res_tmp)) {
-						$list_cache[] = $row_tmp['pid'];
-					}
-					$GLOBALS['TYPO3_DB']->sql_free_result($res_tmp);
-				}
-			} else {
-				// For other tables than "pages", delete cache for the records "parent page".
-				$list_cache[] = $pageUid = (int)$this->getPID($table, $uid);
-			}
-			// Call pre-processing function for clearing of cache for page ids:
-			if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearPageCacheEval'])) {
-				foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearPageCacheEval'] as $funcName) {
-					$_params = array('pageIdArray' => &$list_cache, 'table' => $table, 'uid' => $uid, 'functionID' => 'clear_cache()');
-					// Returns the array of ids to clear, FALSE if nothing should be cleared! Never an empty array!
-					GeneralUtility::callUserFunction($funcName, $_params, $this);
-				}
-			}
-			$cacheManger = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager');
-			// Delete cache for selected pages:
-			$pageIds = $GLOBALS['TYPO3_DB']->cleanIntArray($list_cache);
-			foreach ($pageIds as $pageId) {
-				// Workspaces always use "-1" as the page id which do not
-				// point to real pages and caches at all. Flushing caches for
-				// those records does not make sense and decreases performance
-				if ($pageId >= 0) {
-					$cacheManger->flushCachesByTag('pageId_' . $pageId);
-				}
-			}
-			// Delete cache for current table and record
-			$cacheManger->flushCachesByTag($table);
-			$cacheManger->flushCachesByTag($table . '_' . $uid);
-		}
-		// Clear cache for pages entered in TSconfig:
-		if (!empty($TSConfig['clearCacheCmd'])) {
-			$Commands = GeneralUtility::trimExplode(',', $TSConfig['clearCacheCmd'], TRUE);
-			$Commands = array_unique($Commands);
-			foreach ($Commands as $cmdPart) {
-				$this->clear_cacheCmd($cmdPart);
 			}
 		}
-		// Call post processing function for clear-cache:
-		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc'])) {
-			$_params = array('table' => $table, 'uid' => $uid, 'uid_page' => $pageUid, 'TSConfig' => $TSConfig);
-			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc'] as $_funcRef) {
-				GeneralUtility::callUserFunction($_funcRef, $_params, $this);
-			}
+
+		/** @var \TYPO3\CMS\Core\Cache\CacheManager $cacheManager */
+		$cacheManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager');
+		foreach ($tagsToClear as $tag) {
+			$cacheManager->flushCachesInGroupByTag('pages', $tag);
 		}
+
+		// Execute collected clear cache commands from page TSConfig
+		foreach ($clearCacheCommands as $command) {
+			$this->clear_cacheCmd($command);
+		}
+
+		// Reset the cache clearing array
+		static::$recordsToClearCacheFor = array();
+
+
 	}
 
 	/**
@@ -7135,7 +7198,7 @@ class DataHandler {
 		}
 		// process caching framwork operations
 		if (count($tagsToFlush) > 0) {
-			foreach ($tagsToFlush as $tag) {
+			foreach (array_unique($tagsToFlush) as $tag) {
 				GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->flushCachesInGroupByTag('pages', $tag);
 			}
 		}

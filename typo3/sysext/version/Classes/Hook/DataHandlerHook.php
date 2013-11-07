@@ -952,7 +952,7 @@ class DataHandlerHook {
 											$tcemainObj->log($table, $id, 6, 0, 0, 'Published', 30, array('comment' => $comment, 'stage' => $stageId));
 
 											// Clear cache:
-											$tcemainObj->clear_cache($table, $id);
+											$tcemainObj->registerRecordIdForPageCacheClearing($table, $id);
 											// Checking for "new-placeholder" and if found, delete it (BUT FIRST after swapping!):
 											if (!$swapIntoWS && $t3ver_state['curVersion'] > 0) {
 												// For delete + completely delete!
