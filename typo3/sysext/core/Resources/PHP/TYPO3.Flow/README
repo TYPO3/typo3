@@ -4,6 +4,7 @@ package management to work.
 The following has been changed:
 * TYPO3\Flow\Exception now extends TYPO3\CMS\Core\Exception
 * TYPO3\Flow\Package\Package has magic sleep and wakeup methods
+* TYPO3\Flow\Package\PackageManager::sortAndSavePackageStates throws error if write access to PackageState file is missing
 
 It has been imported from this commmit hash:
 

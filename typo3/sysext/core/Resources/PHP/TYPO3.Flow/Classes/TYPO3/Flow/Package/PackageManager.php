@@ -930,10 +930,15 @@ class PackageManager implements \TYPO3\Flow\Package\PackageManagerInterface {
 			}
 		}
 		if (!@is_writable($this->packageStatesPathAndFilename)) {
-			throw new \TYPO3\Flow\Package\Exception\PackageStatesFileNotWritableException(
-				sprintf('We could not update the list of installed packages because the file %s is not writable. Please, check the file system permissions for this file and make sure that the web server can update it.', $this->packageStatesPathAndFilename),
-				1382449759
-			);
+			// If file does not exists try to create it
+			$fileHandle = @fopen($this->packageStatesPathAndFilename, 'x');
+			if (!$fileHandle) {
+				throw new \TYPO3\Flow\Package\Exception\PackageStatesFileNotWritableException(
+					sprintf('We could not update the list of installed packages because the file %s is not writable. Please, check the file system permissions for this file and make sure that the web server can update it.', $this->packageStatesPathAndFilename),
+					1382449759
+				);
+			}
+			fclose($fileHandle);
 		}
 		$packageStatesCode = "<?php\n$fileDescription\nreturn " . var_export($this->packageStatesConfiguration, TRUE) . "\n ?>";
 		@file_put_contents($this->packageStatesPathAndFilename, $packageStatesCode);
