@@ -1128,35 +1128,53 @@ class BackendUtility {
 	 * @return array Page TSconfig
 	 * @see \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser
 	 */
-	static public function getPagesTSconfig($id, $rootLine = '', $returnPartArray = 0) {
+	static public function getPagesTSconfig($id, $rootLine = NULL, $returnPartArray = FALSE) {
+		static $pagesTSconfig_cache = array();
+
 		$id = intval($id);
-		if (!is_array($rootLine)) {
-			$rootLine = self::BEgetRootLine($id, '', TRUE);
-		}
-		// Order correctly
-		ksort($rootLine);
-		$TSdataArray = array();
-		// Setting default configuration
-		$TSdataArray['defaultPageTSconfig'] = $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultPageTSconfig'];
-		foreach ($rootLine as $k => $v) {
-			$TSdataArray['uid_' . $v['uid']] = $v['TSconfig'];
-		}
-		$TSdataArray = TypoScriptParser::checkIncludeLines_array($TSdataArray);
-		if ($returnPartArray) {
-			return $TSdataArray;
-		}
-		// Parsing the page TS-Config
-		$pageTS = implode(LF . '[GLOBAL]' . LF, $TSdataArray);
-		/* @var $parseObj \TYPO3\CMS\Backend\Configuration\TsConfigParser */
-		$parseObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Configuration\\TsConfigParser');
-		$res = $parseObj->parseTSconfig($pageTS, 'PAGES', $id, $rootLine);
-		if ($res) {
-			$TSconfig = $res['TSconfig'];
-		}
-		// Get User TSconfig overlay
-		$userTSconfig = $GLOBALS['BE_USER']->userTS['page.'];
-		if (is_array($userTSconfig)) {
-			$TSconfig = GeneralUtility::array_merge_recursive_overrule($TSconfig, $userTSconfig);
+		if ($returnPartArray === FALSE
+			&& $rootLine === NULL
+			&& isset($pagesTSconfig_cache[$id])
+		) {
+			return $pagesTSconfig_cache[$id];
+		} else {
+			$TSconfig = array();
+			if (!is_array($rootLine)) {
+				$useCacheForCurrentPageId = TRUE;
+				$rootLine = self::BEgetRootLine($id, '', TRUE);
+			} else {
+				$useCacheForCurrentPageId = FALSE;
+			}
+
+			// Order correctly
+			ksort($rootLine);
+			$TSdataArray = array();
+			// Setting default configuration
+			$TSdataArray['defaultPageTSconfig'] = $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultPageTSconfig'];
+			foreach ($rootLine as $k => $v) {
+				$TSdataArray['uid_' . $v['uid']] = $v['TSconfig'];
+			}
+			$TSdataArray = TypoScriptParser::checkIncludeLines_array($TSdataArray);
+			if ($returnPartArray) {
+				return $TSdataArray;
+			}
+			// Parsing the page TS-Config
+			$pageTS = implode(LF . '[GLOBAL]' . LF, $TSdataArray);
+			/* @var $parseObj \TYPO3\CMS\Backend\Configuration\TsConfigParser */
+			$parseObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Configuration\\TsConfigParser');
+			$res = $parseObj->parseTSconfig($pageTS, 'PAGES', $id, $rootLine);
+			if ($res) {
+				$TSconfig = $res['TSconfig'];
+			}
+			// Get User TSconfig overlay
+			$userTSconfig = $GLOBALS['BE_USER']->userTS['page.'];
+			if (is_array($userTSconfig)) {
+				$TSconfig = GeneralUtility::array_merge_recursive_overrule($TSconfig, $userTSconfig);
+			}
+
+			if ($useCacheForCurrentPageId) {
+				$pagesTSconfig_cache[$id] = $TSconfig;
+			}
 		}
 		return $TSconfig;
 	}
