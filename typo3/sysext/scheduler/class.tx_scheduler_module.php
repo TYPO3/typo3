@@ -492,9 +492,9 @@ class tx_scheduler_Module extends t3lib_SCbase {
 
 				// Display information about each service
 			foreach ($registeredClasses as $class => $classInfo) {
-				$table[$tr][] = $classInfo['title'];
-				$table[$tr][] = $classInfo['extension'];
-				$table[$tr][] = $classInfo['description'];
+				$table[$tr][] = htmlspecialchars($classInfo['title']);
+				$table[$tr][] = htmlspecialchars($classInfo['extension']);
+				$table[$tr][] = htmlspecialchars($classInfo['description']);
 				$link = $GLOBALS['MCONF']['_'] . '&SET[function]=list&CMD=add&tx_scheduler[class]=' . $class;
 				$table[$tr][] = '<a href="' . htmlspecialchars($link) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:new', TRUE) . '" class="icon">' . t3lib_iconWorks::getSpriteIcon('actions-document-new') . '</a>';
 				$tr++;
@@ -767,7 +767,7 @@ class tx_scheduler_Module extends t3lib_SCbase {
 				// Loop on all registered classes to display a selector
 			foreach ($registeredClasses as $class => $classInfo) {
 				$selected = ($class == $taskInfo['class']) ? ' selected="selected"' : '';
-				$cell .= '<option value="' . $class . '"' . $selected . '>' . $classInfo['title'] . ' (' . $classInfo['extension'] . ')' . '</option>';
+				$cell .= '<option value="' . $class . '"' . $selected . '>' . htmlspecialchars($classInfo['title']) . ' (' . htmlspecialchars($classInfo['extension']) . ')' . '</option>';
 			}
 			$cell .= '</select>';
 		}
