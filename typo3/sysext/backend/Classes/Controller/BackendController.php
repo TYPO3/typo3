@@ -216,7 +216,7 @@ class BackendController {
 			TYPO3.ContextHelpWindow.init();';
 		$this->pageRenderer->addExtOnReadyCode($extOnReadyCode);
 		// Set document title:
-		$title = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] ? $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . ' [TYPO3 ' . TYPO3_version . ']' : 'TYPO3 ' . TYPO3_version;
+		$title = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] ? $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . ' [TYPO3 CMS ' . TYPO3_version . ']' : 'TYPO3 CMS ' . TYPO3_version;
 		$this->content = $backendScaffolding;
 		// Renders the module page
 		$this->content = $GLOBALS['TBE_TEMPLATE']->render($title, $this->content);

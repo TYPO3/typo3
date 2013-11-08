@@ -228,7 +228,7 @@ class LoginController {
 			$loginForm = $this->makeLogoutForm();
 		}
 		// Starting page:
-		$this->content .= $GLOBALS['TBE_TEMPLATE']->startPage('TYPO3 Login: ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'], FALSE);
+		$this->content .= $GLOBALS['TBE_TEMPLATE']->startPage('TYPO3 CMS Login: ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'], FALSE);
 		// Add login form:
 		$this->content .= $this->wrapLoginForm($loginForm);
 		$this->content .= $GLOBALS['TBE_TEMPLATE']->endPage();
