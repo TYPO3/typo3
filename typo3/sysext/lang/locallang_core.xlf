@@ -811,6 +811,9 @@ Would you like to save now in order to refresh the display?</source>
 			<trans-unit id="cm.createnew" xml:space="preserve">
 				<source>Create new</source>
 			</trans-unit>
+			<trans-unit id="cm.createnew.link" xml:space="preserve">
+				<source>Create new %s</source>
+			</trans-unit>
 			<trans-unit id="cm.tempMountPoint" xml:space="preserve">
 				<source>Mount as treeroot</source>
 			</trans-unit>

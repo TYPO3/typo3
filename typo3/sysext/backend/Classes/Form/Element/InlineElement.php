@@ -912,12 +912,15 @@ class InlineElement {
 				$className = 'typo3-newRecordLink';
 				$attributes['class'] = 't3-button inlineNewButton ' . $this->inlineData['config'][$nameObject]['md5'];
 				$attributes['onclick'] = 'return inline.createNewRecord(\'' . $objectPrefix . '\')';
-				if (isset($conf['inline']['inlineNewButtonStyle']) && $conf['inline']['inlineNewButtonStyle']) {
+				if (!empty($conf['inline']['inlineNewButtonStyle'])) {
 					$attributes['style'] = $conf['inline']['inlineNewButtonStyle'];
 				}
-				if (isset($conf['appearance']['newRecordLinkAddTitle']) && $conf['appearance']['newRecordLinkAddTitle']) {
-					$titleAddon = ' ' . $GLOBALS['LANG']->sL($GLOBALS['TCA'][$conf['foreign_table']]['ctrl']['title'], TRUE);
-				} elseif (isset($conf['appearance']['newRecordLinkTitle']) && strlen($conf['appearance']['newRecordLinkTitle'])) {
+				if (!empty($conf['appearance']['newRecordLinkAddTitle'])) {
+					$title = sprintf(
+						$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:cm.createnew.link', TRUE),
+						$GLOBALS['LANG']->sL($GLOBALS['TCA'][$conf['foreign_table']]['ctrl']['title'], TRUE)
+					);
+				} elseif (isset($conf['appearance']['newRecordLinkTitle']) && $conf['appearance']['newRecordLinkTitle'] !== '') {
 					$title = $GLOBALS['LANG']->sL($conf['appearance']['newRecordLinkTitle'], TRUE);
 				}
 				break;
@@ -935,10 +938,14 @@ class InlineElement {
 				$attributes['class'] = 't3-button inlineNewButton ' . $this->inlineData['config'][$nameObject]['md5'];
 				$attributes['onclick'] = 'return inline.synchronizeLocalizeRecords(\'' . $objectPrefix . '\', \'synchronize\')';
 				break;
+			default:
+				$title = '';
+				$icon = '';
+				$className = '';
 		}
 		// Create the link:
-		$icon = $icon ? IconUtility::getSpriteIcon($icon, array('title' => htmlspecialchars($title . $titleAddon))) : '';
-		$link = $this->wrapWithAnchor($icon . $title . $titleAddon, '#', $attributes);
+		$icon = $icon ? IconUtility::getSpriteIcon($icon, array('title' => htmlspecialchars($title))) : '';
+		$link = $this->wrapWithAnchor($icon . $title, '#', $attributes);
 		return '<div' . ($className ? ' class="' . $className . '"' : '') . '>' . $link . '</div>';
 	}
 
