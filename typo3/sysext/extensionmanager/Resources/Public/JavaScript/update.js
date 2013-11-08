@@ -58,8 +58,8 @@
 
 				if (data.updated) {
 					$.ajax({
-						url: window.location.href + '&tx_extensionmanager_tools_extensionmanagerextensionmanager%5Bformat%5D=json',
-						dataType: 'json',
+						url: window.location.href,
+						dataType: 'html',
 						success: function(data) {
 							$('#terTableWrapper').html(
 								data
