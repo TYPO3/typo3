@@ -350,6 +350,70 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 	/**
+	 * @test
+	 */
+	public function getQueryArgumentsWithMethodPostGetMergesParameters() {
+		$_POST = array(
+			'key1' => 'POST1',
+			'key2' => 'POST2',
+			'key3' => array(
+				'key31' => 'POST31',
+				'key32' => 'POST32',
+				'key33' => array(
+					'key331' => 'POST331',
+					'key332' => 'POST332',
+				)
+			)
+		);
+		$_GET = array(
+			'key2' => 'GET2',
+			'key3' => array(
+				'key32' => 'GET32',
+				'key33' => array(
+					'key331' => 'GET331',
+				)
+			)
+		);
+		$getQueryArgumentsConfiguration = array();
+		$getQueryArgumentsConfiguration['method'] = 'POST,GET';
+		$expectedResult = $this->rawUrlEncodeSquareBracketsInUrl('&key1=POST1&key2=GET2&key3[key31]=POST31&key3[key32]=GET32&key3[key33][key331]=GET331&key3[key33][key332]=POST332');
+		$actualResult = $this->cObj->getQueryArguments($getQueryArgumentsConfiguration);
+		$this->assertEquals($expectedResult, $actualResult);
+	}
+
+	/**
+	 * @test
+	 */
+	public function getQueryArgumentsWithMethodGetPostMergesParameters() {
+		$_GET = array(
+			'key1' => 'GET1',
+			'key2' => 'GET2',
+			'key3' => array(
+				'key31' => 'GET31',
+				'key32' => 'GET32',
+				'key33' => array(
+					'key331' => 'GET331',
+					'key332' => 'GET332',
+				)
+			)
+		);
+		$_POST = array(
+			'key2' => 'POST2',
+			'key3' => array(
+				'key32' => 'POST32',
+				'key33' => array(
+					'key331' => 'POST331',
+				)
+			)
+		);
+		$getQueryArgumentsConfiguration = array();
+		$getQueryArgumentsConfiguration['method'] = 'GET,POST';
+		$expectedResult = $this->rawUrlEncodeSquareBracketsInUrl('&key1=GET1&key2=POST2&key3[key31]=GET31&key3[key32]=POST32&key3[key33][key331]=POST331&key3[key33][key332]=GET332');
+		$actualResult = $this->cObj->getQueryArguments($getQueryArgumentsConfiguration);
+		$this->assertEquals($expectedResult, $actualResult);
+	}
+
+	/**
 	 * Encodes square brackets in URL.
 	 *
 	 * @param string $string

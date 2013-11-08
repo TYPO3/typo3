@@ -587,10 +587,10 @@ class UriBuilder {
 						$arguments = \TYPO3\CMS\Core\Utility\GeneralUtility::_POST();
 						break;
 					case 'GET,POST':
-						$arguments = array_merge(\TYPO3\CMS\Core\Utility\GeneralUtility::_GET(), \TYPO3\CMS\Core\Utility\GeneralUtility::_POST());
+						$arguments = array_replace_recursive(\TYPO3\CMS\Core\Utility\GeneralUtility::_GET(), \TYPO3\CMS\Core\Utility\GeneralUtility::_POST());
 						break;
 					case 'POST,GET':
-						$arguments = array_merge(\TYPO3\CMS\Core\Utility\GeneralUtility::_POST(), \TYPO3\CMS\Core\Utility\GeneralUtility::_GET());
+						$arguments = array_replace_recursive(\TYPO3\CMS\Core\Utility\GeneralUtility::_POST(), \TYPO3\CMS\Core\Utility\GeneralUtility::_GET());
 						break;
 					default:
 						$arguments = \TYPO3\CMS\Core\Utility\GeneralUtility::explodeUrl2Array(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('QUERY_STRING'), TRUE);

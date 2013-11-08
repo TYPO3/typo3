@@ -349,6 +349,80 @@ class UriBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 */
+	public function buildBackendUriWithQueryStringMethodPostGetMergesParameters() {
+		$_POST = array(
+			'key1' => 'POST1',
+			'key2' => 'POST2',
+			'key3' => array(
+				'key31' => 'POST31',
+				'key32' => 'POST32',
+				'key33' => array(
+					'key331' => 'POST331',
+					'key332' => 'POST332',
+				)
+			),
+		);
+		$_GET = array(
+			'key2' => 'GET2',
+			'key3' => array(
+				'key32' => 'GET32',
+				'key33' => array(
+					'key331' => 'GET331',
+				)
+			)
+		);
+		$this->uriBuilder->setAddQueryString(TRUE);
+		$this->uriBuilder->setAddQueryStringMethod('POST,GET');
+		$expectedResult = $this->rawUrlEncodeSquareBracketsInUrl('mod.php?moduleToken=dummyToken&key1=POST1&key2=GET2&key3[key31]=POST31&key3[key32]=GET32&key3[key33][key331]=GET331&key3[key33][key332]=POST332');
+		$actualResult = $this->uriBuilder->buildBackendUri();
+		$this->assertEquals($expectedResult, $actualResult);
+	}
+
+	/**
+	 * @test
+	 */
+	public function buildBackendUriWithQueryStringMethodGetPostMergesParameters() {
+		$_GET = array(
+			'key1' => 'GET1',
+			'key2' => 'GET2',
+			'key3' => array(
+				'key31' => 'GET31',
+				'key32' => 'GET32',
+				'key33' => array(
+					'key331' => 'GET331',
+					'key332' => 'GET332',
+				)
+			),
+		);
+		$_POST = array(
+			'key2' => 'POST2',
+			'key3' => array(
+				'key32' => 'POST32',
+				'key33' => array(
+					'key331' => 'POST331',
+				)
+			)
+		);
+		$this->uriBuilder->setAddQueryString(TRUE);
+		$this->uriBuilder->setAddQueryStringMethod('GET,POST');
+		$expectedResult = $this->rawUrlEncodeSquareBracketsInUrl('mod.php?moduleToken=dummyToken&key1=GET1&key2=POST2&key3[key31]=GET31&key3[key32]=POST32&key3[key33][key331]=POST331&key3[key33][key332]=GET332');
+		$actualResult = $this->uriBuilder->buildBackendUri();
+		$this->assertEquals($expectedResult, $actualResult);
+	}
+
+	/**
+	 * Encodes square brackets in URL.
+	 *
+	 * @param string $string
+	 * @return string
+	 */
+	private function rawUrlEncodeSquareBracketsInUrl($string) {
+		return str_replace(array('[', ']'), array('%5B', '%5D'), $string);
+	}
+
+	/**
+	 * @test
+	 */
 	public function buildFrontendUriCreatesTypoLink() {
 		/** @var \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
 		$uriBuilder = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Mvc\\Web\\Routing\\UriBuilder', array('buildTypolinkConfiguration'));

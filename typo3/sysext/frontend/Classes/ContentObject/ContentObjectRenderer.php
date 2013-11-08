@@ -6424,10 +6424,12 @@ class ContentObjectRenderer {
 				$currentQueryArray = GeneralUtility::_POST();
 				break;
 			case 'GET,POST':
-				$currentQueryArray = array_merge(GeneralUtility::_GET(), GeneralUtility::_POST());
+				$currentQueryArray = GeneralUtility::_GET();
+				\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($currentQueryArray, GeneralUtility::_POST());
 				break;
 			case 'POST,GET':
-				$currentQueryArray = array_merge(GeneralUtility::_POST(), GeneralUtility::_GET());
+				$currentQueryArray = GeneralUtility::_POST();
+				\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($currentQueryArray, GeneralUtility::_GET());
 				break;
 			default:
 				$currentQueryArray = GeneralUtility::explodeUrl2Array(GeneralUtility::getIndpEnv('QUERY_STRING'), TRUE);
