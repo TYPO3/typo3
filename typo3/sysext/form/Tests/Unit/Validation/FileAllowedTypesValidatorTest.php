@@ -25,9 +25,7 @@ namespace TYPO3\CMS\Form\Tests\Unit\Validation;
 ***************************************************************/
 
 /**
- * Test case for class \TYPO3\CMS\Form\Validation\FileAllowedTypesValidator.
- *
- * @author Andreas Lappe <a.lappe@kuehlhaus.com>
+ * Test case
  */
 class FileAllowedTypesValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	/**
@@ -38,15 +36,15 @@ class FileAllowedTypesValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTe
 	/**
 	 * @var \TYPO3\CMS\Form\Validation\FileAllowedTypesValidator
 	 */
-	protected $fixture;
+	protected $subject;
 
 	public function setUp() {
 		$this->helper = new \TYPO3\CMS\Form\Tests\Unit\Validation\Helper();
-		$this->fixture = new \TYPO3\CMS\Form\Validation\FileAllowedTypesValidator(array());
+		$this->subject = $this->getMock('TYPO3\\CMS\\Form\\Validation\\FileAllowedTypesValidator', array('dummy'), array(), '', FALSE);
 	}
 
 	public function tearDown() {
-		unset($this->helper, $this->fixture);
+		unset($this->helper, $this->subject);
 	}
 
 	public function validTypesProvider() {
@@ -68,15 +66,15 @@ class FileAllowedTypesValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTe
 	 * @dataProvider validTypesProvider
 	 */
 	public function isValidForValidInputReturnsTrue($input) {
-		$this->fixture->setFieldName('myFile');
-		$this->fixture->setAllowedTypes($input[0]);
+		$this->subject->setFieldName('myFile');
+		$this->subject->setAllowedTypes($input[0]);
 		$requestHandlerMock = $this->helper->getRequestHandler(array(
 			'myFile' => array('type' => $input[1])
 		));
-		$this->fixture->injectRequestHandler($requestHandlerMock);
+		$this->subject->injectRequestHandler($requestHandlerMock);
 
 		$this->assertTrue(
-			$this->fixture->isValid()
+			$this->subject->isValid()
 		);
 	}
 
@@ -85,15 +83,15 @@ class FileAllowedTypesValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTe
 	 * @dataProvider invalidTypesProvider
 	 */
 	public function isValidForInvalidInputReturnsFalse($input) {
-		$this->fixture->setFieldName('myFile');
-		$this->fixture->setAllowedTypes($input[0]);
+		$this->subject->setFieldName('myFile');
+		$this->subject->setAllowedTypes($input[0]);
 		$requestHandlerMock = $this->helper->getRequestHandler(array(
 			'myFile' => array('type' => $input[1])
 		));
-		$this->fixture->injectRequestHandler($requestHandlerMock);
+		$this->subject->injectRequestHandler($requestHandlerMock);
 
 		$this->assertFalse(
-			$this->fixture->isValid()
+			$this->subject->isValid()
 		);
 	}
 }

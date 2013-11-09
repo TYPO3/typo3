@@ -580,7 +580,7 @@ class ConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function treeLevelConditionMatchesCurrentPageIdWhileEditingNewPage() {
-		$GLOBALS['SOBE'] = $this->getMock('TYPO3\\CMS\\Backend\\Controller\\EditDocumentController', array());
+		$GLOBALS['SOBE'] = $this->getMock('TYPO3\\CMS\\Backend\\Controller\\EditDocumentController', array(), array(), '', FALSE);
 		$GLOBALS['SOBE']->elementsData = array(
 			array(
 				'table' => 'pages',
@@ -602,7 +602,7 @@ class ConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function treeLevelConditionMatchesCurrentPageIdWhileSavingNewPage() {
-		$GLOBALS['SOBE'] = $this->getMock('TYPO3\\CMS\\Backend\\Controller\\EditDocumentController', array());
+		$GLOBALS['SOBE'] = $this->getMock('TYPO3\\CMS\\Backend\\Controller\\EditDocumentController', array(), array(), '', FALSE);
 		$GLOBALS['SOBE']->elementsData = array(
 			array(
 				'table' => 'pages',
@@ -675,7 +675,7 @@ class ConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function PIDupinRootlineConditionMatchesCurrentPageIdWhileEditingNewPage() {
-		$GLOBALS['SOBE'] = $this->getMock('TYPO3\\CMS\\Backend\\Controller\\EditDocumentController', array());
+		$GLOBALS['SOBE'] = $this->getMock('TYPO3\\CMS\\Backend\\Controller\\EditDocumentController', array(), array(), '', FALSE);
 		$GLOBALS['SOBE']->elementsData = array(
 			array(
 				'table' => 'pages',
@@ -697,7 +697,7 @@ class ConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function PIDupinRootlineConditionMatchesCurrentPageIdWhileSavingNewPage() {
-		$GLOBALS['SOBE'] = $this->getMock('TYPO3\\CMS\\Backend\\Controller\\EditDocumentController', array());
+		$GLOBALS['SOBE'] = $this->getMock('TYPO3\\CMS\\Backend\\Controller\\EditDocumentController', array(), array(), '', FALSE);
 		$GLOBALS['SOBE']->elementsData = array(
 			array(
 				'table' => 'pages',

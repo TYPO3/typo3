@@ -25,11 +25,10 @@ namespace TYPO3\CMS\Form\Tests\Unit\Validation;
 ***************************************************************/
 
 /**
- * Test case for class \TYPO3\CMS\Form\Validation\RegExpValidator.
- *
- * @author Andreas Lappe <a.lappe@kuehlhaus.com>
+ * Test case
  */
 class RegExpValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+
 	/**
 	 * @var \TYPO3\CMS\Form\Tests\Unit\Validation\Helper
 	 */
@@ -38,15 +37,15 @@ class RegExpValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	/**
 	 * @var \TYPO3\CMS\Form\Validation\RegExpValidator
 	 */
-	protected $fixture;
+	protected $subject;
 
 	public function setUp() {
 		$this->helper = new \TYPO3\CMS\Form\Tests\Unit\Validation\Helper();
-		$this->fixture = new \TYPO3\CMS\Form\Validation\RegExpValidator(array('expression' => ''));
+		$this->subject = $this->getMock('TYPO3\\CMS\\Form\\Validation\\RegExpValidator', array('dummy'), array(), '', FALSE);
 	}
 
 	public function tearDown() {
-		unset($this->helper, $this->fixture);
+		unset($this->helper, $this->subject);
 	}
 
 	public function validDataProvider() {
@@ -66,15 +65,15 @@ class RegExpValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @dataProvider validDataProvider
 	 */
 	public function isValidForValidInputReturnsTrue($input) {
-		$this->fixture->setFieldName('myRegexp');
-		$this->fixture->setRegularExpression($input[0]);
+		$this->subject->setFieldName('myRegexp');
+		$this->subject->setRegularExpression($input[0]);
 		$requestHandlerMock = $this->helper->getRequestHandler(array(
 			'myRegexp' => $input[1]
 		));
-		$this->fixture->injectRequestHandler($requestHandlerMock);
+		$this->subject->injectRequestHandler($requestHandlerMock);
 
 		$this->assertTrue(
-			$this->fixture->isValid()
+			$this->subject->isValid()
 		);
 	}
 
@@ -83,15 +82,15 @@ class RegExpValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @dataProvider invalidDataProvider
 	 */
 	public function isValidForInvalidInputReturnsFalse($input) {
-		$this->fixture->setFieldName('myRegexp');
-		$this->fixture->setRegularExpression($input[0]);
+		$this->subject->setFieldName('myRegexp');
+		$this->subject->setRegularExpression($input[0]);
 		$requestHandlerMock = $this->helper->getRequestHandler(array(
 			'myRegexp' => $input[1]
 		));
-		$this->fixture->injectRequestHandler($requestHandlerMock);
+		$this->subject->injectRequestHandler($requestHandlerMock);
 
 		$this->assertFalse(
-			$this->fixture->isValid()
+			$this->subject->isValid()
 		);
 	}
 }

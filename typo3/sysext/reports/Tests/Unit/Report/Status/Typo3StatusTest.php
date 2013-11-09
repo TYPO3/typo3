@@ -4,7 +4,7 @@ namespace TYPO3\CMS\Reports\Tests\Unit\Report\Status;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013 Christian Kuhn
+ *  (c) 2013 Christian Kuhn <lolli@schwarzbu.ch>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -28,6 +28,13 @@ namespace TYPO3\CMS\Reports\Tests\Unit\Report\Status;
  * Test case
  */
 class Typo3StatusTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+
+	/**
+	 * Set up
+	 */
+	public function setUp() {
+		$GLOBALS['LANG'] = $this->getMock('TYPO3\\CMS\\Lang\\LanguageService', array(), array(), '', FALSE);
+	}
 
 	/**
 	 * @test

@@ -33,7 +33,7 @@ class FilesContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @var \TYPO3\CMS\Frontend\ContentObject\FilesContentObject|\PHPUnit_Framework_MockObject_MockObject
 	 */
-	protected $sut = NULL;
+	protected $subject = NULL;
 
 	/**
 	 * @var \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
@@ -56,14 +56,14 @@ class FilesContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$GLOBALS['TSFE']->renderCharset = 'utf-8';
 
 		$contentObject = $this->getMock('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer', array('dummy'));
-		$this->sut = $this->getMock('TYPO3\CMS\Frontend\ContentObject\FilesContentObject', array('dummy'), array($contentObject));
+		$this->subject = $this->getMock('TYPO3\CMS\Frontend\ContentObject\FilesContentObject', array('dummy'), array($contentObject));
 	}
 
 	/**
 	 * Tear down
 	 */
 	public function tearDown() {
-		unset($this->sut, $this->tsfe);
+		unset($this->subject, $this->tsfe);
 	}
 
 	/**
@@ -231,9 +231,9 @@ class FilesContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$fileRepository->expects($this->any())
 			->method('findFileReferenceByUid')
 			->will($this->returnValueMap($fileReferenceMap));
-		$this->sut->setFileRepository($fileRepository);
+		$this->subject->setFileRepository($fileRepository);
 
-		$this->assertSame($expected, $this->sut->render($configuration));
+		$this->assertSame($expected, $this->subject->render($configuration));
 	}
 
 	/**
@@ -401,9 +401,9 @@ class FilesContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$fileRepository->expects($this->any())
 			->method('findByUid')
 			->will($this->returnValueMap($fileMap));
-		$this->sut->setFileRepository($fileRepository);
+		$this->subject->setFileRepository($fileRepository);
 
-		$this->assertSame($expected, $this->sut->render($configuration));
+		$this->assertSame($expected, $this->subject->render($configuration));
 	}
 
 	/**
@@ -620,9 +620,9 @@ class FilesContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$collectionRepository->expects($this->any())
 			->method('findByUid')
 			->will($this->returnValueMap($collectionMap));
-		$this->sut->setCollectionRepository($collectionRepository);
+		$this->subject->setCollectionRepository($collectionRepository);
 
-		$this->assertSame($expected, $this->sut->render($configuration));
+		$this->assertSame($expected, $this->subject->render($configuration));
 	}
 
 	/**
@@ -839,8 +839,8 @@ class FilesContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$fileFactory->expects($this->any())
 			->method('getFolderObjectFromCombinedIdentifier')
 			->will($this->returnValueMap($folderMap));
-		$this->sut->setFileFactory($fileFactory);
+		$this->subject->setFileFactory($fileFactory);
 
-		$this->assertSame($expected, $this->sut->render($configuration));
+		$this->assertSame($expected, $this->subject->render($configuration));
 	}
 }

@@ -23,12 +23,18 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\View;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
- * Testcase for TYPO3\CMS\Frontend\View\AdminPanelView
- *
- * @author Christian Kuhn <lolli@schwarzbu.ch>
+ * Test case
  */
 class AdminPanelViewTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+
+	/**
+	 * Set up
+	 */
+	public function setUp() {
+		$GLOBALS['LANG'] = $this->getMock('TYPO3\\CMS\\Lang\\LanguageService', array(), array(), '', FALSE);
+	}
 
 	/////////////////////////////////////////////
 	// Test concerning extendAdminPanel hook
@@ -56,7 +62,7 @@ class AdminPanelViewTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$GLOBALS['T3_VAR']['getUserObj'][$hookClass] = $hookMock;
 		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_adminpanel.php']['extendAdminPanel'][] = $hookClass;
 		/** @var $adminPanelMock \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Frontend\View\AdminPanelView */
-		$adminPanelMock = $this->getMock('TYPO3\\CMS\\Frontend\\View\\AdminPanelView', array('dummy'), array(), '', FALSE);
+		$adminPanelMock = $this->getMock('TYPO3\\CMS\\Frontend\\View\\AdminPanelView', array('extGetLL'), array(), '', FALSE);
 		$hookMock->expects($this->once())->method('extendAdminPanel')->with($this->isType('string'), $this->isInstanceOf('TYPO3\\CMS\\Frontend\\View\\AdminPanelView'));
 		$adminPanelMock->display();
 	}

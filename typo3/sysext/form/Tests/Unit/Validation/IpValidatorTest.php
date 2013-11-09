@@ -25,11 +25,10 @@ namespace TYPO3\CMS\Form\Tests\Unit\Validation;
 ***************************************************************/
 
 /**
- * Test case for class \TYPO3\CMS\Form\Validation\IpValidator.
- *
- * @author Andreas Lappe <a.lappe@kuehlhaus.com>
+ * Test case
  */
 class IpValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+
 	/**
 	 * @var \TYPO3\CMS\Form\Tests\Unit\Validation\Helper
 	 */
@@ -38,16 +37,16 @@ class IpValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	/**
 	 * @var \TYPO3\CMS\Form\Validation\IpValidator
 	 */
-	protected $fixture;
+	protected $subject;
 
 	public function setUp() {
 		$this->helper = new \TYPO3\CMS\Form\Tests\Unit\Validation\Helper();
-		$this->fixture = new \TYPO3\CMS\Form\Validation\IpValidator(array());
+		$this->subject = $this->getMock('TYPO3\\CMS\\Form\\Validation\\IpValidator', array('dummy'), array(), '', FALSE);
 	}
 
 	public function tearDown() {
 		unset($this->helper);
-		unset($this->fixture);
+		unset($this->subject);
 	}
 
 	public function validIpv4Provider() {
@@ -71,14 +70,14 @@ class IpValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @dataProvider validIpv4Provider
 	 */
 	public function isValidForValidInputReturnsTrue($input) {
-		$this->fixture->setFieldName('myIp');
+		$this->subject->setFieldName('myIp');
 		$requestHandlerMock = $this->helper->getRequestHandler(array(
 			'myIp' => $input
 		));
-		$this->fixture->injectRequestHandler($requestHandlerMock);
+		$this->subject->injectRequestHandler($requestHandlerMock);
 
 		$this->assertTrue(
-			$this->fixture->isValid()
+			$this->subject->isValid()
 		);
 	}
 
@@ -87,14 +86,14 @@ class IpValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @dataProvider invalidIpv4Provider
 	 */
 	public function isValidForInvalidInputReturnsFalse($input) {
-		$this->fixture->setFieldName('myIp');
+		$this->subject->setFieldName('myIp');
 		$requestHandlerMock = $this->helper->getRequestHandler(array(
 			'myIp' => $input
 		));
-		$this->fixture->injectRequestHandler($requestHandlerMock);
+		$this->subject->injectRequestHandler($requestHandlerMock);
 
 		$this->assertFalse(
-			$this->fixture->isValid()
+			$this->subject->isValid()
 		);
 	}
 }

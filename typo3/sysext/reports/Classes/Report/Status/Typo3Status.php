@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Reports\Report\Status;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Performs basic checks about the TYPO3 install
  *

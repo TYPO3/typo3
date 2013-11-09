@@ -25,9 +25,7 @@ namespace TYPO3\CMS\Form\Tests\Unit\Validation;
 ***************************************************************/
 
 /**
- * Test case for class \TYPO3\CMS\Form\Validation\IntegerValidator.
- *
- * @author Andreas Lappe <a.lappe@kuehlhaus.com>
+ * Test case
  */
 class IntegerValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	/**
@@ -38,15 +36,15 @@ class IntegerValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	/**
 	 * @var \TYPO3\CMS\Form\Validation\IntegerValidator
 	 */
-	protected $fixture;
+	protected $subject;
 
 	public function setUp() {
 		$this->helper = new \TYPO3\CMS\Form\Tests\Unit\Validation\Helper();
-		$this->fixture = new \TYPO3\CMS\Form\Validation\IntegerValidator(array());
+		$this->subject = $this->getMock('TYPO3\\CMS\\Form\\Validation\\IntegerValidator', array('dummy'), array(), '', FALSE);
 	}
 
 	public function tearDown() {
-		unset($this->helper, $this->fixture);
+		unset($this->helper, $this->subject);
 	}
 
 	public function validIntegerProvider() {
@@ -67,15 +65,15 @@ class IntegerValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @dataProvider validIntegerProvider
 	 */
 	public function isValidForValidInputReturnsTrue($input) {
-		$this->fixture->setFieldName('myFile');
+		$this->subject->setFieldName('myFile');
 		setlocale(LC_NUMERIC, $input[1]);
 		$requestHandlerMock = $this->helper->getRequestHandler(array(
 			'myFile' => $input[0]
 		));
-		$this->fixture->injectRequestHandler($requestHandlerMock);
+		$this->subject->injectRequestHandler($requestHandlerMock);
 
 		$this->assertTrue(
-			$this->fixture->isValid()
+			$this->subject->isValid()
 		);
 	}
 
@@ -84,15 +82,15 @@ class IntegerValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @dataProvider invalidIntegerProvider
 	 */
 	public function isValidForInvalidInputReturnsFalse($input) {
-		$this->fixture->setFieldName('myFile');
+		$this->subject->setFieldName('myFile');
 		setlocale(LC_NUMERIC, $input[1]);
 		$requestHandlerMock = $this->helper->getRequestHandler(array(
 			'myFile' => $input[0]
 		));
-		$this->fixture->injectRequestHandler($requestHandlerMock);
+		$this->subject->injectRequestHandler($requestHandlerMock);
 
 		$this->assertFalse(
-			$this->fixture->isValid()
+			$this->subject->isValid()
 		);
 	}
 }

@@ -26,20 +26,21 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Module;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
- * Test class for module menu utilities
+ * Test case
  *
  * @author Susanne Moog <typo3@susannemoog.de>
  */
 class ModuleControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
-	 * @var \TYPO3\CMS\Backend\Module\ModuleController
+	 * @var \TYPO3\CMS\Backend\Module\ModuleController|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface
 	 */
 	protected $moduleController;
 
 	protected function setUp() {
-		$this->moduleController = new \TYPO3\CMS\Backend\Module\ModuleController();
+		$this->moduleController = $this->getAccessibleMock('TYPO3\\CMS\\Backend\\Module\\ModuleController', array('getLanguageService'), array(), '', FALSE);
 	}
 
 	protected function tearDown() {
@@ -50,7 +51,7 @@ class ModuleControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function createEntryFromRawDataGeneratesMenuEntry() {
-		$entry = $this->callInaccessibleMethod($this->moduleController, 'createEntryFromRawData', array());
+		$entry = $this->moduleController->_call('createEntryFromRawData', array());
 		$this->assertInstanceOf('TYPO3\\CMS\\Backend\\Domain\\Model\\Module\\BackendModule', $entry);
 	}
 
@@ -69,8 +70,13 @@ class ModuleControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			'description' => 'descriptionTest',
 			'navigationComponentId' => 'navigationComponentIdTest'
 		);
+
+		$languageServiceMock = $this->getMock('TYPO3\\CMS\\Lang\\LanguageService', array(), array(), '', FALSE);
+		$languageServiceMock->expects($this->once())->method('sL')->will($this->returnValue('titleTest'));
+		$this->moduleController->expects($this->once())->method('getLanguageService')->will($this->returnValue($languageServiceMock));
+
 		/** @var $entry \TYPO3\CMS\Backend\Domain\Model\Module\BackendModule */
-		$entry = $this->callInaccessibleMethod($this->moduleController, 'createEntryFromRawData', $rawModule);
+		$entry = $this->moduleController->_call('createEntryFromRawData', $rawModule);
 		$this->assertEquals('nameTest', $entry->getName());
 		$this->assertEquals('titleTest', $entry->getTitle());
 		$this->assertEquals('linkTest', $entry->getLink());
@@ -88,7 +94,7 @@ class ModuleControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			'path' => 'pathTest'
 		);
 		/** @var $entry \TYPO3\CMS\Backend\Domain\Model\Module\BackendModule */
-		$entry = $this->callInaccessibleMethod($this->moduleController, 'createEntryFromRawData', $rawModule);
+		$entry = $this->moduleController->_call('createEntryFromRawData', $rawModule);
 		$this->assertEquals('pathTest', $entry->getLink());
 	}
 

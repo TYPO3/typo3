@@ -33,9 +33,10 @@ class ElementBrowserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function printCurrentUrlWithAnyTextReturnsThatText() {
-		$fixture = new \TYPO3\CMS\Recordlist\Browser\ElementBrowser();
-		$fixture->act = 'file';
-		$result = $fixture->printCurrentUrl('Teststring');
+		$GLOBALS['LANG'] = $this->getMock('TYPO3\\CMS\\Lang\\LanguageService', array(), array(), '', FALSE);
+		$subject = new \TYPO3\CMS\Recordlist\Browser\ElementBrowser();
+		$subject->act = 'file';
+		$result = $subject->printCurrentUrl('Teststring');
 		$this->assertContains('Teststring', $result);
 	}
 }

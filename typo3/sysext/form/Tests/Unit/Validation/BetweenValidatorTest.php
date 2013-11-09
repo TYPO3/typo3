@@ -26,9 +26,7 @@ namespace TYPO3\CMS\Form\Tests\Unit\Validation;
 ***************************************************************/
 
 /**
- * Test case for class \TYPO3\CMS\Form\Validation\BetweenValidator.
- *
- * @author Andreas Lappe <a.lappe@kuehlhaus.com>
+ * Test case
  */
 class BetweenValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	/**
@@ -39,15 +37,15 @@ class BetweenValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	/**
 	 * @var \TYPO3\CMS\Form\Validation\BetweenValidator
 	 */
-	protected $fixture;
+	protected $subject;
 
 	public function setUp() {
 		$this->helper = new \TYPO3\CMS\Form\Tests\Unit\Validation\Helper();
-		$this->fixture = new \TYPO3\CMS\Form\Validation\BetweenValidator(array());
+		$this->subject = $this->getMock('TYPO3\\CMS\\Form\\Validation\\BetweenValidator', array('dummy'), array(), '', FALSE);
 	}
 
 	public function tearDown() {
-		unset($this->helper, $this->fixture);
+		unset($this->helper, $this->subject);
 	}
 
 	public function validNonInclusiveDataProvider() {
@@ -92,16 +90,16 @@ class BetweenValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @dataProvider validNonInclusiveDataProvider
 	 */
 	public function isValidWithValidInputAndWithoutInclusiveReturnsTrue($input) {
-		$this->fixture->setMinimum($input[0]);
-		$this->fixture->setMaximum($input[2]);
-		$this->fixture->setFieldName('numericValue');
+		$this->subject->setMinimum($input[0]);
+		$this->subject->setMaximum($input[2]);
+		$this->subject->setFieldName('numericValue');
 		$requestHandlerMock = $this->helper->getRequestHandler(array(
 			'numericValue' => $input[1]
 		));
-		$this->fixture->injectRequestHandler($requestHandlerMock);
+		$this->subject->injectRequestHandler($requestHandlerMock);
 
 		$this->assertTrue(
-			$this->fixture->isValid()
+			$this->subject->isValid()
 		);
 	}
 
@@ -110,17 +108,17 @@ class BetweenValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @dataProvider validInclusiveDataProvider
 	 */
 	public function isValidWithValidInputAndWithInclusiveReturnsTrue($input) {
-		$this->fixture->setMinimum($input[0]);
-		$this->fixture->setMaximum($input[2]);
-		$this->fixture->setFieldName('numericValue');
-		$this->fixture->setInclusive(TRUE);
+		$this->subject->setMinimum($input[0]);
+		$this->subject->setMaximum($input[2]);
+		$this->subject->setFieldName('numericValue');
+		$this->subject->setInclusive(TRUE);
 		$requestHandlerMock = $this->helper->getRequestHandler(array(
 			'numericValue' => $input[1]
 		));
-		$this->fixture->injectRequestHandler($requestHandlerMock);
+		$this->subject->injectRequestHandler($requestHandlerMock);
 
 		$this->assertTrue(
-			$this->fixture->isValid()
+			$this->subject->isValid()
 		);
 	}
 
@@ -129,16 +127,16 @@ class BetweenValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @dataProvider invalidNonInclusiveDataProvider
 	 */
 	public function isValidWithInvalidInputAndWithoutInclusiveReturnsFalse($input) {
-		$this->fixture->setMinimum($input[0]);
-		$this->fixture->setMaximum($input[2]);
-		$this->fixture->setFieldName('numericValue');
+		$this->subject->setMinimum($input[0]);
+		$this->subject->setMaximum($input[2]);
+		$this->subject->setFieldName('numericValue');
 		$requestHandlerMock = $this->helper->getRequestHandler(array(
 			'numericValue' => $input[1]
 		));
-		$this->fixture->injectRequestHandler($requestHandlerMock);
+		$this->subject->injectRequestHandler($requestHandlerMock);
 
 		$this->assertFalse(
-			$this->fixture->isValid()
+			$this->subject->isValid()
 		);
 	}
 
@@ -147,17 +145,17 @@ class BetweenValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @dataProvider invalidInclusiveDataProvider
 	 */
 	public function isValidWithInvalidInputAndWithInclusiveReturnsFalse($input) {
-		$this->fixture->setMinimum($input[0]);
-		$this->fixture->setMaximum($input[2]);
-		$this->fixture->setFieldName('numericValue');
-		$this->fixture->setInclusive(TRUE);
+		$this->subject->setMinimum($input[0]);
+		$this->subject->setMaximum($input[2]);
+		$this->subject->setFieldName('numericValue');
+		$this->subject->setInclusive(TRUE);
 		$requestHandlerMock = $this->helper->getRequestHandler(array(
 			'numericValue' => $input[1]
 		));
-		$this->fixture->injectRequestHandler($requestHandlerMock);
+		$this->subject->injectRequestHandler($requestHandlerMock);
 
 		$this->assertFalse(
-			$this->fixture->isValid()
+			$this->subject->isValid()
 		);
 	}
 }

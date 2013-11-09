@@ -25,11 +25,10 @@ namespace TYPO3\CMS\Form\Tests\Unit\Validation;
 ***************************************************************/
 
 /**
- * Test case for class \TYPO3\CMS\Form\Validation\LengthValidator.
- *
- * @author Andreas Lappe <a.lappe@kuehlhaus.com>
+ * Test case
  */
 class LengthValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+
 	/**
 	 * @var \TYPO3\CMS\Form\Tests\Unit\Validation\Helper
 	 */
@@ -38,30 +37,46 @@ class LengthValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	/**
 	 * @var \TYPO3\CMS\Form\Validation\LengthValidator
 	 */
-	protected $fixture;
+	protected $subject;
 
+	/**
+	 * Set up
+	 */
 	public function setUp() {
 		$this->helper = new \TYPO3\CMS\Form\Tests\Unit\Validation\Helper();
-		$this->fixture = new \TYPO3\CMS\Form\Validation\LengthValidator(array('minimum' => 0, 'maximum' => 0));
+		$charsetConverterMock = $this->getMock('TYPO3\\CMS\\Core\\Charset\\CharsetConverter', array(), array(), '', FALSE);
+		$charsetConverterMock->expects($this->any())->method('strlen')
+			->will($this->returnCallback(function ($charset, $value) {
+				return mb_strlen($value, $charset);
+			}));
+		$this->subject = $this->getAccessibleMock('TYPO3\\CMS\\Form\\Validation\\LengthValidator', array('dummy'), array(), '', FALSE);
+		$this->subject->_set('charsetConverter', $charsetConverterMock);
 	}
 
+	/**
+	 * Tear down
+	 */
 	public function tearDown() {
-		unset($this->helper, $this->fixture);
+		unset($this->helper, $this->subject);
 	}
 
+	/**
+	 * @return array
+	 */
 	public function validLengthProvider() {
 		return array(
-			'4 ≤ length(myString) ≤ 8' => array(array(4, 8, 'mäString')),
-			'8 ≤ length(myString) ≤ 8' => array(array(8, 8, 'möString')),
-			'4 ≤ length(myString)'       => array(array(4, NULL, 'myString')),
-			'4 ≤ length(asdf) ≤ 4'     => array(array(4, 4, 'asdf')),
-		);
-	}
-
-	public function invalidLengthProvider() {
-		return array(
-			'4 ≤ length(my) ≤ 12'             => array(array(4, 12, 'my')),
-			'4 ≤ length(my long string) ≤ 12' => array(array(4, 12, 'my long string')),
+			'4 ≤ length(myString) ≤ 8' => array(
+				array(4, 8, 'mäString')
+			),
+			'8 ≤ length(myString) ≤ 8' => array(
+				array(8, 8, 'möString')
+			),
+			'4 ≤ length(myString)' => array(
+				array(4, NULL, 'myString')
+			),
+			'4 ≤ length(asdf) ≤ 4' => array(
+				array(4, 4, 'asdf')
+			),
 		);
 	}
 
@@ -70,16 +85,30 @@ class LengthValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @dataProvider validLengthProvider
 	 */
 	public function isValidForValidInputReturnsTrue($input) {
-		$this->fixture->setFieldName('myLength');
-		$this->fixture->setMinimum($input[0]);
-		$this->fixture->setMaximum($input[1]);
+		$this->subject->setFieldName('myLength');
+		$this->subject->setMinimum($input[0]);
+		$this->subject->setMaximum($input[1]);
 		$requestHandlerMock = $this->helper->getRequestHandler(array(
 			'myLength' => $input[2]
 		));
-		$this->fixture->injectRequestHandler($requestHandlerMock);
+		$this->subject->injectRequestHandler($requestHandlerMock);
 
 		$this->assertTrue(
-			$this->fixture->isValid()
+			$this->subject->isValid()
+		);
+	}
+
+	/**
+	 * @return array
+	 */
+	public function invalidLengthProvider() {
+		return array(
+			'4 ≤ length(my) ≤ 12' => array(
+				array(4, 12, 'my')
+			),
+			'4 ≤ length(my long string) ≤ 12' => array(
+				array(4, 12, 'my long string')
+			),
 		);
 	}
 
@@ -88,16 +117,16 @@ class LengthValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @dataProvider invalidLengthProvider
 	 */
 	public function isValidForInvalidInputReturnsFalse($input) {
-		$this->fixture->setFieldName('myLength');
-		$this->fixture->setMinimum($input[0]);
-		$this->fixture->setMaximum($input[1]);
+		$this->subject->setFieldName('myLength');
+		$this->subject->setMinimum($input[0]);
+		$this->subject->setMaximum($input[1]);
 		$requestHandlerMock = $this->helper->getRequestHandler(array(
 			'myLength' => $input[2]
 		));
-		$this->fixture->injectRequestHandler($requestHandlerMock);
+		$this->subject->injectRequestHandler($requestHandlerMock);
 
 		$this->assertFalse(
-			$this->fixture->isValid()
+			$this->subject->isValid()
 		);
 	}
 }

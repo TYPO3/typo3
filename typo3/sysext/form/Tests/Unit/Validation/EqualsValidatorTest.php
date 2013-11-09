@@ -25,11 +25,10 @@ namespace TYPO3\CMS\Form\Tests\Unit\Validation;
 ***************************************************************/
 
 /**
- * Test case for class \TYPO3\CMS\Form\Validation\EqualsValidator.
- *
- * @author Andreas Lappe <a.lappe@kuehlhaus.com>
+ * Test case
  */
 class EqualsValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+
 	/**
 	 * @var \TYPO3\CMS\Form\Tests\Unit\Validation\Helper
 	 */
@@ -38,15 +37,15 @@ class EqualsValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	/**
 	 * @var \TYPO3\CMS\Form\Validation\EqualsValidator
 	 */
-	protected $fixture;
+	protected $subject;
 
 	public function setUp() {
 		$this->helper = new \TYPO3\CMS\Form\Tests\Unit\Validation\Helper();
-		$this->fixture = new \TYPO3\CMS\Form\Validation\EqualsValidator(array());
+		$this->subject = $this->getMock('TYPO3\\CMS\\Form\\Validation\\EqualsValidator', array('dummy'), array(), '', FALSE);
 	}
 
 	public function tearDown() {
-		unset($this->helper, $this->fixture);
+		unset($this->helper, $this->subject);
 	}
 
 	public function invalidPairProvider() {
@@ -61,16 +60,16 @@ class EqualsValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @dataProvider invalidPairProvider
 	 */
 	public function isValidForInvalidInputReturnsFalse($input) {
-		$this->fixture->setFieldName('myField');
-		$this->fixture->setField($input[0]);
+		$this->subject->setFieldName('myField');
+		$this->subject->setField($input[0]);
 		$requestHandlerMock = $this->helper->getRequestHandler(array(
 			'myField' => $input[1],
 			$input[0] => TRUE
 		));
-		$this->fixture->injectRequestHandler($requestHandlerMock);
+		$this->subject->injectRequestHandler($requestHandlerMock);
 
 		$this->assertFalse(
-			$this->fixture->isValid()
+			$this->subject->isValid()
 		);
 	}
 }

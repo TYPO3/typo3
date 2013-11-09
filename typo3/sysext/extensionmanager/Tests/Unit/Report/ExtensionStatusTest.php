@@ -28,8 +28,6 @@ use TYPO3\CMS\Extensionmanager\Report;
 
 /**
  * Test case
- *
- * @author Christian Kuhn <lolli@schwarzbu.ch>
  */
 class ExtensionStatusTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
@@ -43,10 +41,19 @@ class ExtensionStatusTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 */
 	protected $mockRepositoryRepository;
 
+	/**
+	 * @var \TYPO3\CMS\Lang\LanguageService
+	 */
+	protected $mockLanguageService;
+
+	/**
+	 * Set up
+	 */
 	public function setUp() {
 		$this->mockObjectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerInterface');
 		/** @var $mockRepositoryRepository \TYPO3\CMS\Extensionmanager\Domain\Repository\RepositoryRepository|\PHPUnit_Framework_MockObject_MockObject */
 		$this->mockRepositoryRepository = $this->getMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Repository\\RepositoryRepository', array(), array($this->mockObjectManager));
+		$this->mockLanguageService = $this->getMock('TYPO3\\CMS\\Lang\\LanguageService', array(), array(), '', FALSE);
 	}
 
 	/**
@@ -115,14 +122,17 @@ class ExtensionStatusTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 			->expects($this->once())
 			->method('getAvailableAndInstalledExtensionsWithAdditionalInformation')
 			->will($this->returnValue($mockExtensionList));
+
 		/** @var $mockReport \TYPO3\CMS\Extensionmanager\Report\ExtensionStatus|\PHPUnit_Framework_MockObject_MockObject */
 		$mockReport = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Report\\ExtensionStatus', array('getMainRepositoryStatus'), array(), '', FALSE);
 		$mockReport->_set('objectManager', $this->mockObjectManager);
 		$mockReport->_set('listUtility', $mockListUtility);
+		$mockReport->_set('languageService', $this->mockLanguageService);
 		$mockReport
 			->expects($this->once())
 			->method('getMainRepositoryStatus')
 			->will($this->returnValue('foo'));
+
 		$result = $mockReport->getStatus();
 		$this->assertSame('foo', $result['mainRepositoryStatus']);
 	}
@@ -140,6 +150,7 @@ class ExtensionStatusTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$mockReport = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Report\\ExtensionStatus', array('dummy'), array(), '', FALSE);
 		$mockReport->_set('objectManager', $this->objectManager);
 		$mockReport->_set('repositoryRepository', $this->mockRepositoryRepository);
+		$mockReport->_set('languageService', $this->mockLanguageService);
 
 		/** @var $result \TYPO3\CMS\Reports\Status */
 		$result = $mockReport->_call('getMainRepositoryStatus');
@@ -166,6 +177,7 @@ class ExtensionStatusTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$mockReport = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Report\\ExtensionStatus', array('dummy'), array(), '', FALSE);
 		$mockReport->_set('objectManager', $this->objectManager);
 		$mockReport->_set('repositoryRepository', $this->mockRepositoryRepository);
+		$mockReport->_set('languageService', $this->mockLanguageService);
 
 		/** @var $result \TYPO3\CMS\Reports\Status */
 		$result = $mockReport->_call('getMainRepositoryStatus');
@@ -192,6 +204,7 @@ class ExtensionStatusTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$mockReport = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Report\\ExtensionStatus', array('dummy'), array(), '', FALSE);
 		$mockReport->_set('objectManager', $this->objectManager);
 		$mockReport->_set('repositoryRepository', $this->mockRepositoryRepository);
+		$mockReport->_set('languageService', $this->mockLanguageService);
 
 		/** @var $result \TYPO3\CMS\Reports\Status */
 		$result = $mockReport->_call('getMainRepositoryStatus');
@@ -229,6 +242,7 @@ class ExtensionStatusTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$mockReport = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Report\\ExtensionStatus', array('dummy'), array(), '', FALSE);
 		$mockReport->_set('objectManager', $this->objectManager);
 		$mockReport->_set('listUtility', $mockListUtility);
+		$mockReport->_set('languageService', $this->mockLanguageService);
 
 		$result = $mockReport->_call('getSecurityStatusOfExtensions');
 		/** @var $loadedResult \TYPO3\CMS\Reports\Status */
@@ -267,6 +281,7 @@ class ExtensionStatusTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$mockReport = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Report\\ExtensionStatus', array('dummy'), array(), '', FALSE);
 		$mockReport->_set('objectManager', $this->objectManager);
 		$mockReport->_set('listUtility', $mockListUtility);
+		$mockReport->_set('languageService', $this->mockLanguageService);
 
 		$result = $mockReport->_call('getSecurityStatusOfExtensions');
 		/** @var $loadedResult \TYPO3\CMS\Reports\Status */
@@ -304,6 +319,7 @@ class ExtensionStatusTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$mockReport = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Report\\ExtensionStatus', array('dummy'), array(), '', FALSE);
 		$mockReport->_set('objectManager', $this->objectManager);
 		$mockReport->_set('listUtility', $mockListUtility);
+		$mockReport->_set('languageService', $this->mockLanguageService);
 
 		$result = $mockReport->_call('getSecurityStatusOfExtensions');
 		/** @var $existingResult \TYPO3\CMS\Reports\Status */
@@ -341,6 +357,7 @@ class ExtensionStatusTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$mockReport = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Report\\ExtensionStatus', array('dummy'), array(), '', FALSE);
 		$mockReport->_set('objectManager', $this->objectManager);
 		$mockReport->_set('listUtility', $mockListUtility);
+		$mockReport->_set('languageService', $this->mockLanguageService);
 
 		$result = $mockReport->_call('getSecurityStatusOfExtensions');
 		/** @var $existingResult \TYPO3\CMS\Reports\Status */
@@ -379,6 +396,7 @@ class ExtensionStatusTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$mockReport = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Report\\ExtensionStatus', array('dummy'), array(), '', FALSE);
 		$mockReport->_set('objectManager', $this->objectManager);
 		$mockReport->_set('listUtility', $mockListUtility);
+		$mockReport->_set('languageService', $this->mockLanguageService);
 
 		$result = $mockReport->_call('getSecurityStatusOfExtensions');
 		/** @var $loadedResult \TYPO3\CMS\Reports\Status */
@@ -417,6 +435,7 @@ class ExtensionStatusTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$mockReport = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Report\\ExtensionStatus', array('dummy'), array(), '', FALSE);
 		$mockReport->_set('objectManager', $this->objectManager);
 		$mockReport->_set('listUtility', $mockListUtility);
+		$mockReport->_set('languageService', $this->mockLanguageService);
 
 		$result = $mockReport->_call('getSecurityStatusOfExtensions');
 		/** @var $loadedResult \TYPO3\CMS\Reports\Status */
@@ -454,6 +473,7 @@ class ExtensionStatusTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$mockReport = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Report\\ExtensionStatus', array('dummy'), array(), '', FALSE);
 		$mockReport->_set('objectManager', $this->objectManager);
 		$mockReport->_set('listUtility', $mockListUtility);
+		$mockReport->_set('languageService', $this->mockLanguageService);
 
 		$result = $mockReport->_call('getSecurityStatusOfExtensions');
 		/** @var $existingResult \TYPO3\CMS\Reports\Status */
@@ -491,6 +511,7 @@ class ExtensionStatusTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$mockReport = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Report\\ExtensionStatus', array('dummy'), array(), '', FALSE);
 		$mockReport->_set('objectManager', $this->objectManager);
 		$mockReport->_set('listUtility', $mockListUtility);
+		$mockReport->_set('languageService', $this->mockLanguageService);
 
 		$result = $mockReport->_call('getSecurityStatusOfExtensions');
 		/** @var $existingResult \TYPO3\CMS\Reports\Status */

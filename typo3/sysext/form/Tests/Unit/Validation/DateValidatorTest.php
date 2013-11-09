@@ -25,11 +25,10 @@ namespace TYPO3\CMS\Form\Tests\Unit\Validation;
 ***************************************************************/
 
 /**
- * Test case for class \TYPO3\CMS\Form\Validation\DateValidator.
- *
- * @author Andreas Lappe <a.lappe@kuehlhaus.com>
+ * Test case
  */
 class DateValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+
 	/**
 	 * @var \TYPO3\CMS\Form\Tests\Unit\Validation\Helper
 	 */
@@ -38,15 +37,15 @@ class DateValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	/**
 	 * @var \TYPO3\CMS\Form\Validation\DateValidator
 	 */
-	protected $fixture;
+	protected $subject;
 
 	public function setUp() {
 		$this->helper = new \TYPO3\CMS\Form\Tests\Unit\Validation\Helper();
-		$this->fixture = new \TYPO3\CMS\Form\Validation\DateValidator(array());
+		$this->subject = $this->getMock('TYPO3\\CMS\\Form\\Validation\\DateValidator', array('dummy'), array(), '', FALSE);
 	}
 
 	public function tearDown() {
-		unset($this->helper, $this->fixture);
+		unset($this->helper, $this->subject);
 	}
 
 	public function validDateProvider() {
@@ -70,15 +69,15 @@ class DateValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @dataProvider validDateProvider
 	 */
 	public function isValidForValidInputReturnsTrue($input) {
-		$this->fixture->setFormat($input[0]);
-		$this->fixture->setFieldName('myDate');
+		$this->subject->setFormat($input[0]);
+		$this->subject->setFieldName('myDate');
 		$requestHandlerMock = $this->helper->getRequestHandler(array(
 			'myDate' => $input[1]
 		));
-		$this->fixture->injectRequestHandler($requestHandlerMock);
+		$this->subject->injectRequestHandler($requestHandlerMock);
 
 		$this->assertTrue(
-			$this->fixture->isValid()
+			$this->subject->isValid()
 		);
 	}
 
@@ -87,15 +86,15 @@ class DateValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @dataProvider invalidDateProvider
 	 */
 	public function isValidForInvalidInputReturnsFalse($input) {
-		$this->fixture->setFormat($input[0]);
-		$this->fixture->setFieldName('myDate');
+		$this->subject->setFormat($input[0]);
+		$this->subject->setFieldName('myDate');
 		$requestHandlerMock = $this->helper->getRequestHandler(array(
 			'myDate' => $input[1]
 		));
-		$this->fixture->injectRequestHandler($requestHandlerMock);
+		$this->subject->injectRequestHandler($requestHandlerMock);
 
 		$this->assertFalse(
-			$this->fixture->isValid()
+			$this->subject->isValid()
 		);
 	}
 }

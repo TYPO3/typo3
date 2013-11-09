@@ -670,6 +670,16 @@ class BackendUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function getExcludeFieldsReturnsCorrectFieldList($tca, $expected) {
 		$GLOBALS['TCA'] = $tca;
+
+		// Stub LanguageService and let sL() return the same value that came in again
+		$GLOBALS['LANG'] = $this->getMock('TYPO3\\CMS\\Lang\\LanguageService', array(), array(), '', FALSE);
+		$GLOBALS['LANG']->expects($this->any())->method('sL')
+			->will($this->returnCallback(
+				function($name) {
+					return $name;
+				}
+			));
+
 		$this->assertSame($expected, BackendUtility::getExcludeFields());
 	}
 

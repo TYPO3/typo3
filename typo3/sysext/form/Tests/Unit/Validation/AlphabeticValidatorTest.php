@@ -26,9 +26,7 @@ namespace TYPO3\CMS\Form\Tests\Unit\Validation;
 ***************************************************************/
 
 /**
- * Test case for class \TYPO3\CMS\Form\System\Validation\AlphabeticValidator.
- *
- * @author Andreas Lappe <a.lappe@kuehlhaus.com>
+ * Test case
  */
 class AlphabeticValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	/**
@@ -39,17 +37,26 @@ class AlphabeticValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase
 	/**
 	 * @var \TYPO3\CMS\Form\Validation\AlphabeticValidator
 	 */
-	protected $fixture;
+	protected $subject;
 
+	/**
+	 * Set up
+	 */
 	public function setUp() {
 		$this->helper = new \TYPO3\CMS\Form\Tests\Unit\Validation\Helper();
-		$this->fixture = new \TYPO3\CMS\Form\Validation\AlphabeticValidator();
+		$this->subject = $this->getMock('TYPO3\\CMS\\Form\\Validation\\AlphabeticValidator', array('dummy'), array(), '', FALSE);
 	}
 
+	/**
+	 * Tear down
+	 */
 	public function tearDown() {
-		unset($this->helper, $this->fixture);
+		unset($this->helper, $this->subject);
 	}
 
+	/**
+	 * @return array
+	 */
 	public function validDataProviderWithoutWhitespace() {
 		return array(
 			'ascii without spaces' => array('thisismyinput'),
@@ -59,6 +66,9 @@ class AlphabeticValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase
 		);
 	}
 
+	/**
+	 * @return array
+	 */
 	public function validDataProviderWithWhitespace() {
 		return array(
 			'ascii with spaces' => array('This is my input'),
@@ -69,6 +79,9 @@ class AlphabeticValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase
 		);
 	}
 
+	/**
+	 * @return array
+	 */
 	public function invalidDataProviderWithoutWhitespace() {
 		return array(
 			'ascii with dash' => array('my-name'),
@@ -78,6 +91,9 @@ class AlphabeticValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase
 		);
 	}
 
+	/**
+	 * @return array
+	 */
 	public function invalidDataProviderWithWhitespace() {
 		return array(
 			'ascii with spaces and dashes' => array('This is my-name'),
@@ -95,11 +111,11 @@ class AlphabeticValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase
 			'name' => $input
 		));
 
-		$this->fixture->setFieldName('name');
-		$this->fixture->injectRequestHandler($requestHandlerMock);
+		$this->subject->setFieldName('name');
+		$this->subject->injectRequestHandler($requestHandlerMock);
 
 		$this->assertTrue(
-			$this->fixture->isValid()
+			$this->subject->isValid()
 		);
 	}
 
@@ -112,12 +128,12 @@ class AlphabeticValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase
 			'name' => $input
 		));
 
-		$this->fixture->setAllowWhiteSpace(TRUE);
-		$this->fixture->setFieldName('name');
-		$this->fixture->injectRequestHandler($requestHandlerMock);
+		$this->subject->setAllowWhiteSpace(TRUE);
+		$this->subject->setFieldName('name');
+		$this->subject->injectRequestHandler($requestHandlerMock);
 
 		$this->assertTrue(
-			$this->fixture->isValid()
+			$this->subject->isValid()
 		);
 	}
 
@@ -130,11 +146,11 @@ class AlphabeticValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase
 			'name' => $input
 		));
 
-		$this->fixture->setFieldName('name');
-		$this->fixture->injectRequestHandler($requestHandlerMock);
+		$this->subject->setFieldName('name');
+		$this->subject->injectRequestHandler($requestHandlerMock);
 
 		$this->assertFalse(
-			$this->fixture->isValid()
+			$this->subject->isValid()
 		);
 	}
 
@@ -147,12 +163,12 @@ class AlphabeticValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase
 			'name' => $input
 		));
 
-		$this->fixture->setAllowWhiteSpace(TRUE);
-		$this->fixture->setFieldName('name');
-		$this->fixture->injectRequestHandler($requestHandlerMock);
+		$this->subject->setAllowWhiteSpace(TRUE);
+		$this->subject->setFieldName('name');
+		$this->subject->injectRequestHandler($requestHandlerMock);
 
 		$this->assertFalse(
-			$this->fixture->isValid()
+			$this->subject->isValid()
 		);
 	}
 }

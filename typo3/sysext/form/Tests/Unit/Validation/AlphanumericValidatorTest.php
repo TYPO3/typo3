@@ -25,9 +25,7 @@ namespace TYPO3\CMS\Form\Tests\Unit\Validation;
 ***************************************************************/
 
 /**
- * Test case for class \TYPO3\CMS\Form\Validation\AlphanumericValidator.
- *
- * @author Andreas Lappe <a.lappe@kuehlhaus.com>
+ * Test case
  */
 class AlphanumericValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	/**
@@ -38,15 +36,15 @@ class AlphanumericValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCa
 	/**
 	 * @var \TYPO3\CMS\Form\Validation\AlphanumericValidator
 	 */
-	protected $fixture;
+	protected $subject;
 
 	public function setUp() {
 		$this->helper = new \TYPO3\CMS\Form\Tests\Unit\Validation\Helper();
-		$this->fixture = new \TYPO3\CMS\Form\Validation\AlphanumericValidator(array());
+		$this->subject = $this->getMock('TYPO3\\CMS\\Form\\Validation\\AlphanumericValidator', array('dummy'), array(), '', FALSE);
 	}
 
 	public function tearDown() {
-		unset($this->helper, $this->fixture);
+		unset($this->helper, $this->subject);
 	}
 
 	public function validDataProviderWithoutWhitespace() {
@@ -94,11 +92,11 @@ class AlphanumericValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCa
 			'name' => $input
 		));
 
-		$this->fixture->setFieldName('name');
-		$this->fixture->injectRequestHandler($requestHandlerMock);
+		$this->subject->setFieldName('name');
+		$this->subject->injectRequestHandler($requestHandlerMock);
 
 		$this->assertTrue(
-			$this->fixture->isValid()
+			$this->subject->isValid()
 		);
 	}
 
@@ -111,12 +109,12 @@ class AlphanumericValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCa
 			'name' => $input
 		));
 
-		$this->fixture->setAllowWhiteSpace(TRUE);
-		$this->fixture->setFieldName('name');
-		$this->fixture->injectRequestHandler($requestHandlerMock);
+		$this->subject->setAllowWhiteSpace(TRUE);
+		$this->subject->setFieldName('name');
+		$this->subject->injectRequestHandler($requestHandlerMock);
 
 		$this->assertTrue(
-			$this->fixture->isValid()
+			$this->subject->isValid()
 		);
 	}
 
@@ -129,11 +127,11 @@ class AlphanumericValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCa
 			'name' => $input
 		));
 
-		$this->fixture->setFieldName('name');
-		$this->fixture->injectRequestHandler($requestHandlerMock);
+		$this->subject->setFieldName('name');
+		$this->subject->injectRequestHandler($requestHandlerMock);
 
 		$this->assertFalse(
-			$this->fixture->isValid()
+			$this->subject->isValid()
 		);
 	}
 
@@ -146,12 +144,12 @@ class AlphanumericValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCa
 			'name' => $input
 		));
 
-		$this->fixture->setAllowWhiteSpace(TRUE);
-		$this->fixture->setFieldName('name');
-		$this->fixture->injectRequestHandler($requestHandlerMock);
+		$this->subject->setAllowWhiteSpace(TRUE);
+		$this->subject->setFieldName('name');
+		$this->subject->injectRequestHandler($requestHandlerMock);
 
 		$this->assertFalse(
-			$this->fixture->isValid()
+			$this->subject->isValid()
 		);
 	}
 }

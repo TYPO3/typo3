@@ -25,11 +25,10 @@ namespace TYPO3\CMS\Form\Tests\Unit\Validation;
 ***************************************************************/
 
 /**
- * Test case for class \TYPO3\CMS\Form\Validation\RequiredValidator.
- *
- * @author Andreas Lappe <a.lappe@kuehlhaus.com>
+ * Test case
  */
 class RequiredValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+
 	/**
 	 * @var \TYPO3\CMS\Form\Tests\Unit\Validation\Helper
 	 */
@@ -38,15 +37,15 @@ class RequiredValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	/**
 	 * @var \TYPO3\CMS\Form\Validation\RequiredValidator
 	 */
-	protected $fixture;
+	protected $subject;
 
 	public function setUp() {
 		$this->helper = new \TYPO3\CMS\Form\Tests\Unit\Validation\Helper();
-		$this->fixture = new \TYPO3\CMS\Form\Validation\RequiredValidator(array());
+		$this->subject = $this->getMock('TYPO3\\CMS\\Form\\Validation\\RequiredValidator', array('dummy'), array(), '', FALSE);
 	}
 
 	public function tearDown() {
-		unset($this->helper, $this->fixture);
+		unset($this->helper, $this->subject);
 	}
 
 	public function validDataProvider() {
@@ -69,14 +68,14 @@ class RequiredValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @dataProvider validDataProvider
 	 */
 	public function isValidForValidDataReturnsTrue($input) {
-		$this->fixture->setFieldName('myRequired');
+		$this->subject->setFieldName('myRequired');
 		$requestHandlerMock = $this->helper->getRequestHandler(array(
 			'myRequired' => $input
 		));
-		$this->fixture->injectRequestHandler($requestHandlerMock);
+		$this->subject->injectRequestHandler($requestHandlerMock);
 
 		$this->assertTrue(
-			$this->fixture->isValid()
+			$this->subject->isValid()
 		);
 	}
 
@@ -85,14 +84,14 @@ class RequiredValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @dataProvider invalidDataProvider
 	 */
 	public function isValidForInvalidDataReturnsFalse($input) {
-		$this->fixture->setFieldName('myRequired');
+		$this->subject->setFieldName('myRequired');
 		$requestHandlerMock = $this->helper->getRequestHandler(array(
 			'myRequired' => $input
 		));
-		$this->fixture->injectRequestHandler($requestHandlerMock);
+		$this->subject->injectRequestHandler($requestHandlerMock);
 
 		$this->assertFalse(
-			$this->fixture->isValid()
+			$this->subject->isValid()
 		);
 	}
 }

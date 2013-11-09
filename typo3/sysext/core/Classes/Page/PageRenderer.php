@@ -2192,7 +2192,13 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 			}
 			$out .= $this->inlineJavascriptWrap[0] . '
 				Ext.ns("TYPO3");
-				Ext.BLANK_IMAGE_URL = "' . htmlspecialchars(GeneralUtility::locationHeaderUrl(($this->backPath . 'gfx/clear.gif'))) . '";' . LF . $inlineSettings . 'Ext.onReady(function() {' . ($this->enableExtJSQuickTips ? 'Ext.QuickTips.init();' . LF : '') . $code . ' });' . $this->inlineJavascriptWrap[1];
+				Ext.BLANK_IMAGE_URL = "' . htmlspecialchars(GeneralUtility::locationHeaderUrl(($this->backPath . 'gfx/clear.gif'))) . '";' . LF
+				. $inlineSettings
+				. 'Ext.onReady(function() {'
+					. ($this->enableExtJSQuickTips ? 'Ext.QuickTips.init();' . LF : '')
+					. $code
+				. ' });'
+				. $this->inlineJavascriptWrap[1];
 			unset($this->extOnReadyCode);
 			// Include TYPO3.l10n object
 			if (TYPO3_MODE === 'BE') {
@@ -2465,7 +2471,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 				if ($selectionPrefix === '') {
 					$labelsFromFile[$label] = $value;
 				} elseif (strpos($label, $selectionPrefix) === 0) {
-					$key = preg_replace($labelPattern, '', $label);
+					preg_replace($labelPattern, '', $label);
 					$labelsFromFile[$label] = $value;
 				}
 			}

@@ -25,9 +25,7 @@ namespace TYPO3\CMS\Form\Tests\Unit\Validation;
 ***************************************************************/
 
 /**
- * Test case for class \TYPO3\CMS\Form\Validation\FileMaximumSizeValidator.
- *
- * @author Andreas Lappe <a.lappe@kuehlhaus.com>
+ * Test case
  */
 class FileMaximumSizeValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	/**
@@ -38,15 +36,15 @@ class FileMaximumSizeValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTes
 	/**
 	 * @var \TYPO3\CMS\Form\Validation\FileMaximumSizeValidator
 	 */
-	protected $fixture;
+	protected $subject;
 
 	public function setUp() {
 		$this->helper = new \TYPO3\CMS\Form\Tests\Unit\Validation\Helper();
-		$this->fixture = new \TYPO3\CMS\Form\Validation\FileMaximumSizeValidator(array());
+		$this->subject = $this->getMock('TYPO3\\CMS\\Form\\Validation\\FileMaximumSizeValidator', array('dummy'), array(), '', FALSE);
 	}
 
 	public function tearDown() {
-		unset($this->helper, $this->fixture);
+		unset($this->helper, $this->subject);
 	}
 
 	public function validSizesProvider() {
@@ -67,15 +65,15 @@ class FileMaximumSizeValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTes
 	 * @dataProvider validSizesProvider
 	 */
 	public function isValidForValidInputReturnsTrue($input) {
-		$this->fixture->setFieldName('myFile');
-		$this->fixture->setMaximum($input[0]);
+		$this->subject->setFieldName('myFile');
+		$this->subject->setMaximum($input[0]);
 		$requestHandlerMock = $this->helper->getRequestHandler(array(
 			'myFile' => array('size' => $input[1])
 		));
-		$this->fixture->injectRequestHandler($requestHandlerMock);
+		$this->subject->injectRequestHandler($requestHandlerMock);
 
 		$this->assertTrue(
-			$this->fixture->isValid()
+			$this->subject->isValid()
 		);
 	}
 
@@ -84,15 +82,15 @@ class FileMaximumSizeValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTes
 	 * @dataProvider inValidSizesProvider
 	 */
 	public function isValidForInvalidInputReturnsFalse($input) {
-		$this->fixture->setFieldName('myFile');
-		$this->fixture->setMaximum($input[0]);
+		$this->subject->setFieldName('myFile');
+		$this->subject->setMaximum($input[0]);
 		$requestHandlerMock = $this->helper->getRequestHandler(array(
 			'myFile' => array('size' => $input[1])
 		));
-		$this->fixture->injectRequestHandler($requestHandlerMock);
+		$this->subject->injectRequestHandler($requestHandlerMock);
 
 		$this->assertFalse(
-			$this->fixture->isValid()
+			$this->subject->isValid()
 		);
 	}
 }

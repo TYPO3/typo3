@@ -25,11 +25,10 @@ namespace TYPO3\CMS\Form\Tests\Unit\Validation;
 ***************************************************************/
 
 /**
- * Test case for class \TYPO3\CMS\Form\Validation\InArrayValidator.
- *
- * @author Andreas Lappe <a.lappe@kuehlhaus.com>
+ * Test case
  */
 class InArrayValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+
 	/**
 	 * @var \TYPO3\CMS\Form\Tests\Unit\Validation\Helper
 	 */
@@ -38,15 +37,15 @@ class InArrayValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	/**
 	 * @var \TYPO3\CMS\Form\Validation\InArrayValidator
 	 */
-	protected $fixture;
+	protected $subject;
 
 	public function setUp() {
 		$this->helper = new \TYPO3\CMS\Form\Tests\Unit\Validation\Helper();
-		$this->fixture = new \TYPO3\CMS\Form\Validation\InArrayValidator(array('array.' => array(), 'strict' => FALSE));
+		$this->subject = $this->getMock('TYPO3\\CMS\\Form\\Validation\\InArrayValidator', array('dummy'), array(), '', FALSE);
 	}
 
 	public function tearDown() {
-		unset($this->helper, $this->fixture);
+		unset($this->helper, $this->subject);
 	}
 
 	public function validArrayProvider() {
@@ -66,15 +65,15 @@ class InArrayValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @dataProvider validArrayProvider
 	 */
 	public function isValidForValidInputReturnsTrue($input) {
-		$this->fixture->setFieldName('myfield');
-		$this->fixture->setArray($input[0]);
+		$this->subject->setFieldName('myfield');
+		$this->subject->setArray($input[0]);
 		$requestHandlerMock = $this->helper->getRequestHandler(array(
 			'myfield' => $input[1]
 		));
-		$this->fixture->injectRequestHandler($requestHandlerMock);
+		$this->subject->injectRequestHandler($requestHandlerMock);
 
 		$this->assertTrue(
-			$this->fixture->isValid()
+			$this->subject->isValid()
 		);
 	}
 
@@ -83,15 +82,15 @@ class InArrayValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @dataProvider invalidArrayProvider
 	 */
 	public function isValidForInvalidInputReturnsFalse($input) {
-		$this->fixture->setFieldName('myfield');
-		$this->fixture->setArray($input[0]);
+		$this->subject->setFieldName('myfield');
+		$this->subject->setArray($input[0]);
 		$requestHandlerMock = $this->helper->getRequestHandler(array(
 			'myfield' => $input[1]
 		));
-		$this->fixture->injectRequestHandler($requestHandlerMock);
+		$this->subject->injectRequestHandler($requestHandlerMock);
 
 		$this->assertFalse(
-			$this->fixture->isValid()
+			$this->subject->isValid()
 		);
 	}
 
@@ -100,16 +99,16 @@ class InArrayValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @dataProvider validArrayProvider
 	 */
 	public function isValidForValidInputWithStrictComparisonReturnsTrue($input) {
-		$this->fixture->setFieldName('myfield');
-		$this->fixture->setArray($input[0]);
-		$this->fixture->setStrict(TRUE);
+		$this->subject->setFieldName('myfield');
+		$this->subject->setArray($input[0]);
+		$this->subject->setStrict(TRUE);
 		$requestHandlerMock = $this->helper->getRequestHandler(array(
 			'myfield' => $input[1]
 		));
-		$this->fixture->injectRequestHandler($requestHandlerMock);
+		$this->subject->injectRequestHandler($requestHandlerMock);
 
 		$this->assertTrue(
-			$this->fixture->isValid()
+			$this->subject->isValid()
 		);
 	}
 
@@ -118,16 +117,16 @@ class InArrayValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @dataProvider invalidArrayProvider
 	 */
 	public function isValidForInvalidInputWithStrictComparisonReturnsFalse($input) {
-		$this->fixture->setFieldName('myfield');
-		$this->fixture->setArray($input[0]);
-		$this->fixture->setStrict(TRUE);
+		$this->subject->setFieldName('myfield');
+		$this->subject->setArray($input[0]);
+		$this->subject->setStrict(TRUE);
 		$requestHandlerMock = $this->helper->getRequestHandler(array(
 			'myfield' => $input[1]
 		));
-		$this->fixture->injectRequestHandler($requestHandlerMock);
+		$this->subject->injectRequestHandler($requestHandlerMock);
 
 		$this->assertFalse(
-			$this->fixture->isValid()
+			$this->subject->isValid()
 		);
 	}
 }

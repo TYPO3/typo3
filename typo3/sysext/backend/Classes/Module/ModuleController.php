@@ -102,7 +102,7 @@ class ModuleController {
 			$entry->setName($module['name']);
 		}
 		if (!empty($module['title']) && is_string($module['title'])) {
-			$entry->setTitle($GLOBALS['LANG']->sL($module['title']));
+			$entry->setTitle($this->getLanguageService()->sL($module['title']));
 		}
 		if (!empty($module['onclick']) && is_string($module['onclick'])) {
 			$entry->setOnClick($module['onclick']);
@@ -152,4 +152,12 @@ class ModuleController {
 		}
 	}
 
+	/**
+	 * Return language service instance
+	 *
+	 * @return \TYPO3\CMS\Lang\LanguageService
+	 */
+	protected function getLanguageService() {
+		return $GLOBALS['LANG'];
+	}
 }
