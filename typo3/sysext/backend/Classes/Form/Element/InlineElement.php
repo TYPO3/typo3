@@ -1610,7 +1610,7 @@ class InlineElement {
 	 */
 	protected function getNewRecordPid($table, $parentPid = NULL) {
 		$newRecordPid = $this->inlineFirstPid;
-		$pageTS = BackendUtility::getPagesTSconfig($parentPid, TRUE);
+		$pageTS = BackendUtility::getPagesTSconfig($parentPid);
 		if (isset($pageTS['TCAdefaults.'][$table . '.']['pid']) && MathUtility::canBeInterpretedAsInteger($pageTS['TCAdefaults.'][$table . '.']['pid'])) {
 			$newRecordPid = $pageTS['TCAdefaults.'][$table . '.']['pid'];
 		} elseif (isset($parentPid) && MathUtility::canBeInterpretedAsInteger($parentPid)) {

@@ -88,7 +88,7 @@ class InfoPageTyposcriptConfigController extends \TYPO3\CMS\Backend\Module\Abstr
 		$theOutput = $this->pObj->doc->header($GLOBALS['LANG']->getLL('tsconf_title'));
 
 		if ($this->pObj->MOD_SETTINGS['tsconf_parts'] == 99) {
-			$TSparts = BackendUtility::getPagesTSconfig($this->pObj->id, '', TRUE);
+			$TSparts = BackendUtility::getPagesTSconfig($this->pObj->id, NULL, TRUE);
 			$lines = array();
 			$pUids = array();
 			foreach ($TSparts as $k => $v) {

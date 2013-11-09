@@ -3245,9 +3245,8 @@ class BackendUtility {
 		$typeVal = self::getTCAtypeValue($table, $row);
 		// Get main config for the table
 		list($TScID, $cPid) = self::getTSCpid($table, $row['uid'], $row['pid']);
-		$rootLine = self::BEgetRootLine($TScID, '', TRUE);
 		if ($TScID >= 0) {
-			$tempConf = $GLOBALS['BE_USER']->getTSConfig('TCEFORM.' . $table, self::getPagesTSconfig($TScID, $rootLine));
+			$tempConf = $GLOBALS['BE_USER']->getTSConfig('TCEFORM.' . $table, self::getPagesTSconfig($TScID));
 			if (is_array($tempConf['properties'])) {
 				foreach ($tempConf['properties'] as $key => $val) {
 					if (is_array($val)) {
@@ -3266,6 +3265,7 @@ class BackendUtility {
 		$res['_THIS_CID'] = $row['cid'];
 		// So the row will be passed to foreign_table_where_query()
 		$res['_THIS_ROW'] = $row;
+		$rootLine = self::BEgetRootLine($TScID, '', TRUE);
 		foreach ($rootLine as $rC) {
 			if (!$res['_STORAGE_PID']) {
 				$res['_STORAGE_PID'] = intval($rC['storage_pid']);
