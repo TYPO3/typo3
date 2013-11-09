@@ -198,7 +198,7 @@ class t3lib_TCEforms {
 			'input' => array('size', 'max'),
 			'text' => array('cols', 'rows', 'wrap'),
 			'check' => array('cols', 'showIfRTE'),
-			'select' => array('size', 'autoSizeMax', 'maxitems', 'minitems'),
+			'select' => array('size', 'autoSizeMax', 'maxitems', 'minitems', 'treeConfig'),
 			'group' => array('size', 'autoSizeMax', 'max_size', 'show_thumbs', 'maxitems', 'minitems', 'disable_controls'),
 			'inline' => array('appearance', 'behaviour', 'foreign_label', 'foreign_selector', 'foreign_unique', 'maxitems', 'minitems', 'size', 'autoSizeMax', 'symmetric_label'),
 		);
