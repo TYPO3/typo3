@@ -1180,64 +1180,6 @@ class BackendUtility {
 	}
 
 	/**
-	 * Updates Page TSconfig for a page with $id
-	 * The function seems to take $pageTS as an array with properties and compare the values with those that already exists for the "object string", $TSconfPrefix, for the page, then sets those values which were not present.
-	 * $impParams can be supplied as already known Page TSconfig, otherwise it's calculated.
-	 *
-	 * THIS DOES NOT CHECK ANY PERMISSIONS. SHOULD IT?
-	 * More documentation is needed.
-	 *
-	 * @param integer $id Page id
-	 * @param array $pageTS Page TS array to write
-	 * @param string $TSconfPrefix Prefix for object paths
-	 * @param array $impParams [Description needed.]
-	 * @return 	void
-	 * @internal
-	 * @see implodeTSParams(), getPagesTSconfig()
-	 */
-	static public function updatePagesTSconfig($id, $pageTS, $TSconfPrefix, $impParams = '') {
-		$id = (int)$id;
-		if (is_array($pageTS) && $id > 0) {
-			if (!is_array($impParams)) {
-				$impParams = self::implodeTSParams(self::getPagesTSconfig($id));
-			}
-			$set = array();
-			foreach ($pageTS as $f => $v) {
-				$f = $TSconfPrefix . $f;
-				if (!isset($impParams[$f]) && trim($v) || trim($impParams[$f]) !== trim($v)) {
-					$set[$f] = trim($v);
-				}
-			}
-			if (count($set)) {
-				// Get page record and TS config lines
-				$pRec = self::getRecord('pages', $id);
-				$TSlines = explode(LF, $pRec['TSconfig']);
-				$TSlines = array_reverse($TSlines);
-				// Reset the set of changes.
-				foreach ($set as $f => $v) {
-					$inserted = 0;
-					foreach ($TSlines as $ki => $kv) {
-						if (substr($kv, 0, strlen($f) + 1) == $f . '=') {
-							$TSlines[$ki] = $f . '=' . $v;
-							$inserted = 1;
-							break;
-						}
-					}
-					if (!$inserted) {
-						$TSlines = array_reverse($TSlines);
-						$TSlines[] = $f . '=' . $v;
-						$TSlines = array_reverse($TSlines);
-					}
-				}
-				$TSlines = array_reverse($TSlines);
-				// Store those changes
-				$TSconf = implode(LF, $TSlines);
-				$GLOBALS['TYPO3_DB']->exec_UPDATEquery('pages', 'uid=' . (int)$id, array('TSconfig' => $TSconf));
-			}
-		}
-	}
-
-	/**
 	 * Implodes a multi dimensional TypoScript array, $p, into a one-dimentional array (return value)
 	 *
 	 * @param array $p TypoScript structure
