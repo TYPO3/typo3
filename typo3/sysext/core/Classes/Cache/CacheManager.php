@@ -234,11 +234,11 @@ class CacheManager implements \TYPO3\CMS\Core\SingletonInterface {
 					if (!in_array($filename, array('Policy.yaml', 'Routes.yaml'))) {
 						continue;
 					}
-					if ($policyChangeDetected === FALSE && basename($pathAndFilename) === 'Policy.yaml') {
+					if ($policyChangeDetected === FALSE && $filename === 'Policy.yaml') {
 						$this->systemLogger->log('The security policies have changed, flushing the policy cache.', LOG_INFO);
 						$this->getCache('FLOW3_Security_Policy')->flush();
 						$policyChangeDetected = TRUE;
-					} elseif ($routesChangeDetected === FALSE && basename($pathAndFilename) === 'Routes.yaml') {
+					} elseif ($routesChangeDetected === FALSE && $filename === 'Routes.yaml') {
 						$this->systemLogger->log('A Routes.yaml file has been changed, flushing the routing cache.', LOG_INFO);
 						$this->getCache('FLOW3_Mvc_Routing_FindMatchResults')->flush();
 						$this->getCache('FLOW3_Mvc_Routing_Resolve')->flush();
