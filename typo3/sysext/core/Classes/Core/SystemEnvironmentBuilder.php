@@ -515,7 +515,7 @@ class SystemEnvironmentBuilder {
 	 * @return string Absolute path to document root of installation
 	 */
 	static protected function getPathSiteByTypo3ModulePath() {
-		if (substr(TYPO3_MOD_PATH, 0, strlen('sysext/')) === 'sysext/' || substr(TYPO3_MOD_PATH, 0, strlen('ext/')) === 'ext/' || substr(TYPO3_MOD_PATH, 0, strlen('install/')) === 'install/') {
+		if (substr(TYPO3_MOD_PATH, 0, 7) === 'sysext/' || substr(TYPO3_MOD_PATH, 0, 4) === 'ext/' || substr(TYPO3_MOD_PATH, 0, 8) === 'install/') {
 			$pathPartRelativeToDocumentRoot = TYPO3_mainDir . TYPO3_MOD_PATH;
 		} elseif (substr(TYPO3_MOD_PATH, 0, strlen('../typo3conf/')) === '../typo3conf/') {
 			$pathPartRelativeToDocumentRoot = substr(TYPO3_MOD_PATH, 3);
