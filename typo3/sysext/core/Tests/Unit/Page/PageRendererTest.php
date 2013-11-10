@@ -23,389 +23,23 @@ namespace TYPO3\CMS\Core\Tests\Unit\Page;
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
- * Testcase for \TYPO3\CMS\Core\Page\PageRenderer
+ * Unit test case
  *
- * @author Steffen Kamper (info@sk-typo3.de)
+ * @see According functional test case
  */
 class PageRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
-
-	/**
-	 * @var \TYPO3\CMS\Core\Page\PageRenderer
-	 */
-	private $fixture;
-
-	public function setUp() {
-		$this->fixture = new \TYPO3\CMS\Core\Page\PageRenderer();
-		$this->fixture->setCharSet($GLOBALS['LANG']->charSet);
-	}
-
-	public function tearDown() {
-		unset($this->fixture);
-	}
-
-	//////////////////////////////////////
-	// Tests for the basic functionality
-	//////////////////////////////////////
-	/**
-	 * @test
-	 */
-	public function fixtureCanBeCreated() {
-		$this->assertTrue($this->fixture instanceof \TYPO3\CMS\Core\Page\PageRenderer);
-	}
-
-	//////////////////////
-	// test functions
-	//////////////////////
-	/**
-	 * test set xml prolog and doctype
-	 */
-	public function testSetXmlPrologAndDocType() {
-		$expectedReturnValue = '<?xml version="1.0" encoding="utf-8" ?>';
-		$this->fixture->setXmlPrologAndDocType('<?xml version="1.0" encoding="utf-8" ?>');
-		$out = $this->fixture->render();
-		$this->assertContains($expectedReturnValue, $out);
-	}
-
-	/**
-	 * test set title
-	 */
-	public function testSetTitle() {
-		$expectedReturnValue = '<title>This is the title</title>';
-		$this->fixture->setTitle('This is the title');
-		$out = $this->fixture->render();
-		$this->assertContains($expectedReturnValue, $out);
-	}
-
-	/**
-	 * test set charset
-	 */
-	public function testSetCharset() {
-		$expectedReturnValue = '<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />';
-		$this->fixture->setCharset('utf-8');
-		$out = $this->fixture->render();
-		$this->assertContains($expectedReturnValue, $out);
-	}
-
-	/**
-	 * test set favicon
-	 */
-	public function testSetFavIcon() {
-		$expectedReturnValue1 = '<link rel="shortcut icon" href="http://google.com/favicon.ico" />';
-		$expectedReturnValue2 = '<link rel="icon" href="http://google.com/favicon.ico" />';
-		$this->fixture->setFavIcon('http://google.com/favicon.ico');
-		$out = $this->fixture->render();
-		$this->assertContains($expectedReturnValue1, $out);
-		$this->assertContains($expectedReturnValue2, $out);
-	}
-
-	/**
-	 * test set baseUrl
-	 */
-	public function testSetBaseUrl() {
-		$expectedReturnValue = '<base href="http://ggogle.com/" />';
-		$this->fixture->setBaseUrl('http://ggogle.com/');
-		$out = $this->fixture->render();
-		$this->assertContains($expectedReturnValue, $out);
-	}
-
-	/**
-	 * test add meta tag
-	 */
-	public function testAddMetaTag() {
-		$expectedReturnValue = '<meta name="author" content="Anna Lyse">';
-		$this->fixture->addMetaTag('<meta name="author" content="Anna Lyse">');
-		$out = $this->fixture->render();
-		$this->assertContains($expectedReturnValue, $out);
-	}
-
-	/**
-	 * test add inline comment
-	 */
-	public function testAddInlineComment() {
-		$expectedReturnValue = 'this is an inline comment written by unit test';
-		$this->fixture->addInlineComment('this is an inline comment written by unit test');
-		$out = $this->fixture->render();
-		$this->assertContains($expectedReturnValue, $out);
-	}
-
-	/**
-	 * test add header data
-	 */
-	public function testAddHeaderData() {
-		$expectedReturnValue = '<tag method="private" name="test" />';
-		$this->fixture->addHeaderData('<tag method="private" name="test" />');
-		$out = $this->fixture->render();
-		$this->assertContains($expectedReturnValue, $out);
-	}
-
-	/**
-	 * test add footer data
-	 */
-	public function testAddFooterData() {
-		$expectedReturnValue = '<tag method="private" name="test" />';
-		$this->fixture->addFooterData('<tag method="private" name="test" />');
-		$out = $this->fixture->render(\TYPO3\CMS\Core\Page\PageRenderer::PART_FOOTER);
-		$this->assertContains($expectedReturnValue, $out);
-	}
-
-	/**
-	 * test add JS library file
-	 */
-	public function testAddJsLibrary() {
-		$expectedRegExp = '#wrapBefore<script src="fileadmin/test\\.(js|\\d+\\.js|js\\?\\d+)" type="text/javascript"></script>wrapAfter#';
-		$this->fixture->addJsLibrary('test', 'fileadmin/test.js', 'text/javascript', FALSE, FALSE, 'wrapBeforeXwrapAfter', FALSE, 'X');
-		$out = $this->fixture->render();
-		$this->assertRegExp($expectedRegExp, $out);
-	}
-
-	/**
-	 * test add JS footer library file
-	 */
-	public function testAddJsFooterLibrary() {
-		$expectedRegExp = '#wrapBefore<script src="fileadmin/test\\.(js|\\d+\\.js|js\\?\\d+)" type="text/javascript"></script>wrapAfter#';
-		$this->fixture->addJsFooterLibrary('test', 'fileadmin/test.js', 'text/javascript', FALSE, FALSE, 'wrapBeforeXwrapAfter', FALSE, 'X');
-		$out = $this->fixture->render(\TYPO3\CMS\Core\Page\PageRenderer::PART_FOOTER);
-		$this->assertRegExp($expectedRegExp, $out);
-	}
-
-	/**
-	 * test add JS file
-	 */
-	public function testAddJsFile() {
-		$expectedRegExp = '#wrapBefore<script src="fileadmin/test\\.(js|\\d+\\.js|js\\?\\d+)" type="text/javascript"></script>wrapAfter#';
-		$this->fixture->addJsFile('fileadmin/test.js', 'text/javascript', FALSE, FALSE, 'wrapBeforeXwrapAfter', FALSE, 'X');
-		$out = $this->fixture->render();
-		$this->assertRegExp($expectedRegExp, $out);
-	}
-
-	/**
-	 * test add JS file for footer
-	 */
-	public function testAddJsFooterFile() {
-		$expectedRegExp = '#wrapBefore<script src="fileadmin/test\\.(js|\\d+\\.js|js\\?\\d+)" type="text/javascript"></script>wrapAfter#';
-		$this->fixture->addJsFooterFile('fileadmin/test.js', 'text/javascript', FALSE, FALSE, 'wrapBeforeXwrapAfter', FALSE, 'X');
-		$out = $this->fixture->render(\TYPO3\CMS\Core\Page\PageRenderer::PART_FOOTER);
-		$this->assertRegExp($expectedRegExp, $out);
-	}
-
-	/**
-	 * test add JS inline
-	 */
-	public function testAddJsInlineCode() {
-		$expectedReturnValue = 'var x = "testvar"';
-		$this->fixture->addJsInlineCode('test', 'var x = "testvar"');
-		$out = $this->fixture->render();
-		$this->assertContains($expectedReturnValue, $out);
-	}
-
-	/**
-	 * test add JS inline for footer
-	 */
-	public function testAddJsFooterInlineCode() {
-		$expectedReturnValue = 'var x = "testvar"';
-		$this->fixture->addJsFooterInlineCode('test', 'var x = "testvar"');
-		$out = $this->fixture->render(\TYPO3\CMS\Core\Page\PageRenderer::PART_FOOTER);
-		$this->assertContains($expectedReturnValue, $out);
-	}
-
-	/**
-	 * test add JS handler
-	 */
-	public function testAddExtOnReadyCode() {
-		$expectedReturnValue1 = 'Ext.onReady(function() {';
-		$expectedReturnValue2 = 'var x = "testvar";';
-		$this->fixture->loadExtJS();
-		$this->fixture->addExtOnReadyCode('var x = "testvar";');
-		$out = $this->fixture->render();
-		$this->assertContains($expectedReturnValue1, $out);
-		$this->assertContains($expectedReturnValue2, $out);
-	}
-
-	/**
-	 * test add CSS file
-	 */
-	public function testAddCssFile() {
-		$expectedReturnValue = 'wrapBefore<link rel="stylesheet" type="text/css" href="fileadmin/test.css" media="print" />wrapAfter';
-		$this->fixture->addCssFile('fileadmin/test.css', 'stylesheet', 'print', '', TRUE, FALSE, 'wrapBeforeXwrapAfter', FALSE, 'X');
-		$out = $this->fixture->render();
-		$this->assertContains($expectedReturnValue, $out);
-	}
-
-	/**
-	 * test add CSS inline
-	 */
-	public function testAddCssInlineBlock() {
-		$expectedReturnValue = 'body {margin:20px;}';
-		$this->fixture->addCssInlineBlock('general', 'body {margin:20px;}');
-		$out = $this->fixture->render();
-		$this->assertContains($expectedReturnValue, $out);
-	}
-
-	/**
-	 * test add CSS inline and force on top
-	 */
-	public function testAddCssInlineBlockForceOnTop() {
-		$expectedReturnValue = '/*general1*/' . LF . 'h1 {margin:20px;}' . LF . '/*general*/' . LF . 'body {margin:20px;}';
-		$this->fixture->addCssInlineBlock('general', 'body {margin:20px;}');
-		$this->fixture->addCssInlineBlock('general1', 'h1 {margin:20px;}', NULL, TRUE);
-		$out = $this->fixture->render();
-		$this->assertContains($expectedReturnValue, $out);
-	}
-
-	/**
-	 * test load prototype
-	 */
-	public function testLoadPrototype() {
-		$expectedRegExp = '#<script src="contrib/prototype/prototype\\.(js|\\d+\\.js|js\\?\\d+)" type="text/javascript"></script>#';
-		$this->fixture->loadPrototype();
-		$out = $this->fixture->render();
-		$this->assertRegExp($expectedRegExp, $out);
-	}
-
-	/**
-	 * test load Scriptaculous
-	 */
-	public function testLoadScriptaculous() {
-		$this->fixture->loadScriptaculous('slider,controls');
-		$out = $this->fixture->render();
-		$this->assertContains('<script src="contrib/scriptaculous/scriptaculous.js" type="text/javascript"></script>', $out);
-		$this->assertContains('<script src="contrib/scriptaculous/effects.js" type="text/javascript"></script>', $out);
-		$this->assertContains('<script src="contrib/scriptaculous/controls.js" type="text/javascript"></script>', $out);
-		$this->assertContains('<script src="contrib/scriptaculous/slider.js" type="text/javascript"></script>', $out);
-	}
-
-	/**
-	 * Tests whether scriptaculous is loaded correctly when compression is enabled.
-	 *
-	 * @test
-	 */
-	public function isScriptaculousLoadedCompressedIfConfiguredAndClientIsCapable() {
-		$_SERVER['HTTP_ACCEPT_ENCODING'] = 'gzip,deflate';
-		$GLOBALS['TYPO3_CONF_VARS']['BE']['compressionLevel'] = '5';
-		$this->fixture->loadScriptaculous('slider,controls');
-		$this->fixture->enableCompressJavascript();
-		$out = $this->fixture->render();
-		$this->assertRegExp('#<script src="[^"]*/typo3temp/compressor/scriptaculous-[a-f0-9]+.js.gzip" type="text/javascript"></script>#', $out);
-		$this->assertRegExp('#<script src="[^"]*/typo3temp/compressor/effects-[a-f0-9]+.js.gzip" type="text/javascript"></script>#', $out);
-		$this->assertRegExp('#<script src="[^"]*/typo3temp/compressor/controls-[a-f0-9]+.js.gzip" type="text/javascript"></script>#', $out);
-		$this->assertRegExp('#<script src="[^"]*/typo3temp/compressor/slider-[a-f0-9]+.js.gzip" type="text/javascript"></script>#', $out);
-	}
-
-	/**
-	 * Tests whether scriptaculous is correctly loaded, but without compression
-	 * if the browser did not send the appropriate headers.
-	 *
-	 * @test
-	 */
-	public function isScriptaculousNotLoadedCompressedIfClientCannotHandleCompression() {
-		$_SERVER['HTTP_ACCEPT_ENCODING'] = '';
-		$GLOBALS['TYPO3_CONF_VARS']['BE']['compressionLevel'] = '5';
-		$this->fixture->loadScriptaculous('slider,controls');
-		$this->fixture->enableCompressJavascript();
-		$out = $this->fixture->render();
-		$this->assertRegExp('#<script src="[^"]*/typo3temp/compressor/scriptaculous-[a-f0-9]+.js" type="text/javascript"></script>#', $out);
-		$this->assertRegExp('#<script src="[^"]*/typo3temp/compressor/effects-[a-f0-9]+.js" type="text/javascript"></script>#', $out);
-		$this->assertRegExp('#<script src="[^"]*/typo3temp/compressor/controls-[a-f0-9]+.js" type="text/javascript"></script>#', $out);
-		$this->assertRegExp('#<script src="[^"]*/typo3temp/compressor/slider-[a-f0-9]+.js" type="text/javascript"></script>#', $out);
-	}
-
-	/**
-	 * Tests whether scriptaculous is correctly loaded, but without compression
-	 * if no compression is configured.
-	 *
-	 * @test
-	 */
-	public function isScriptaculousNotLoadedCompressedIfCompressionIsNotConfigured() {
-		$_SERVER['HTTP_ACCEPT_ENCODING'] = 'gzip,deflate';
-		$GLOBALS['TYPO3_CONF_VARS']['BE']['compressionLevel'] = '';
-		$this->fixture->loadScriptaculous('slider,controls');
-		$this->fixture->enableCompressJavascript();
-		$out = $this->fixture->render();
-		$this->assertRegExp('#<script src="[^"]*/typo3temp/compressor/scriptaculous-[a-f0-9]+.js" type="text/javascript"></script>#', $out);
-		$this->assertRegExp('#<script src="[^"]*/typo3temp/compressor/effects-[a-f0-9]+.js" type="text/javascript"></script>#', $out);
-		$this->assertRegExp('#<script src="[^"]*/typo3temp/compressor/controls-[a-f0-9]+.js" type="text/javascript"></script>#', $out);
-		$this->assertRegExp('#<script src="[^"]*/typo3temp/compressor/slider-[a-f0-9]+.js" type="text/javascript"></script>#', $out);
-	}
-
-	/**
-	 * test load jQuery
-	 *
-	 * @test
-	 */
-	public function loadJqueryLoadsTheLatestJqueryMinifiedVersionInNoConflictMode() {
-		$expectedRegExp = '#<script src="contrib/jquery/jquery-' . \TYPO3\CMS\Core\Page\PageRenderer::JQUERY_VERSION_LATEST . '\\.min\\.(js|\\d+\\.js|js\\?\\d+)" type="text/javascript"></script>#';
-		$expectedStatement = 'var TYPO3 = TYPO3 || {}; TYPO3.jQuery = jQuery.noConflict(true);';
-		$this->fixture->loadJquery();
-		$out = $this->fixture->render();
-		$this->assertRegExp($expectedRegExp, $out);
-		$this->assertContains($expectedStatement, $out);
-	}
-
-	/**
-	 * test load jQuery
-	 *
-	 * @test
-	 */
-	public function loadJqueryRespectsGivenNamespace() {
-		$expectedRegExp = '#<script src="contrib/jquery/jquery-' . \TYPO3\CMS\Core\Page\PageRenderer::JQUERY_VERSION_LATEST . '\\.min\\.(js|\\d+\\.js|js\\?\\d+)" type="text/javascript"></script>#';
-		$expectedStatement = 'var TYPO3 = TYPO3 || {}; TYPO3.MyNameSpace = jQuery.noConflict(true);';
-		$this->fixture->loadJquery(NULL, NULL, 'MyNameSpace');
-		$out = $this->fixture->render();
-		$this->assertRegExp($expectedRegExp, $out);
-		$this->assertContains($expectedStatement, $out);
-	}
-
-	/**
-	 * test load jQuery
-	 *
-	 * @test
-	 */
-	public function loadJqueryWithDefaultNoConflictModeDoesNotSetNamespace() {
-		$expectedRegExp = '#<script src="contrib/jquery/jquery-' . \TYPO3\CMS\Core\Page\PageRenderer::JQUERY_VERSION_LATEST . '\\.min\\.(js|\\d+\\.js|js\\?\\d+)" type="text/javascript"></script>#';
-		$expectedStatement = 'jQuery.noConflict();';
-		$this->fixture->loadJquery(NULL, NULL, \TYPO3\CMS\Core\Page\PageRenderer::JQUERY_NAMESPACE_DEFAULT_NOCONFLICT);
-		$out = $this->fixture->render();
-		$this->assertRegExp($expectedRegExp, $out);
-		$this->assertContains($expectedStatement, $out);
-		$this->assertNotContains('var TYPO3 = TYPO3 || {}; TYPO3.', $out);
-	}
-
-	/**
-	 * test load jQuery
-	 *
-	 * @test
-	 */
-	public function loadJqueryWithNamespaceNoneDoesNotIncludeNoConflictHandling() {
-		$expectedRegExp = '#<script src="contrib/jquery/jquery-' . \TYPO3\CMS\Core\Page\PageRenderer::JQUERY_VERSION_LATEST . '\\.min\\.(js|\\d+\\.js|js\\?\\d+)" type="text/javascript"></script>#';
-		$this->fixture->loadJquery(NULL, NULL, \TYPO3\CMS\Core\Page\PageRenderer::JQUERY_NAMESPACE_NONE);
-		$out = $this->fixture->render();
-		$this->assertRegExp($expectedRegExp, $out);
-		$this->assertNotContains('jQuery.noConflict', $out);
-	}
-
-	/**
-	 * test load jQuery
-	 *
-	 * @test
-	 */
-	public function loadJqueryLoadsTheLatestJqueryVersionInNoConflictModeUncompressedInDebugMode() {
-		$expectedRegExp = '#<script src="contrib/jquery/jquery-' . \TYPO3\CMS\Core\Page\PageRenderer::JQUERY_VERSION_LATEST . '\\.(js|\\d+\\.js|js\\?\\d+)" type="text/javascript"></script>#';
-		$expectedStatement = 'var TYPO3 = TYPO3 || {}; TYPO3.jQuery = jQuery.noConflict(true);';
-		$this->fixture->loadJquery();
-		$this->fixture->enableDebugMode();
-		$out = $this->fixture->render();
-		$this->assertRegExp($expectedRegExp, $out);
-		$this->assertContains($expectedStatement, $out);
-	}
 
 	/**
 	 * @expectedException \UnexpectedValueException
 	 * @test
 	 */
 	public function includingNotAvailableLocalJqueryVersionThrowsException() {
-		$this->fixture->loadJquery('1.3.34');
-		$this->fixture->render();
+		/** @var \TYPO3\CMS\Core\Page\PageRenderer|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $subject */
+		$subject = $this->getAccessibleMock('TYPO3\\CMS\\Core\\Page\\PageRenderer', array('dummy'), array(), '', FALSE);
+		$subject->_set('availableLocalJqueryVersions', array('1.1.1'));
+		$subject->loadJquery('2.2.2');
 	}
 
 	/**
@@ -413,269 +47,100 @@ class PageRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function includingJqueryWithNonAlphnumericNamespaceThrowsException() {
-		$this->fixture->loadJquery(NULL, NULL, '12sd.12fsd');
-		$this->fixture->render();
+		/** @var \TYPO3\CMS\Core\Page\PageRenderer|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $subject */
+		$subject = $this->getAccessibleMock('TYPO3\\CMS\\Core\\Page\\PageRenderer', array('dummy'), array(), '', FALSE);
+		$subject->loadJquery(NULL, NULL, '12sd.12fsd');
+		$subject->render();
 	}
 
 	/**
-	 * @return array
-	 */
-	public function loadJqueryFromSourceDataProvider() {
-		$specificVersion = '1.6.3';
-		return array(
-			'google with no version number' => array(NULL, 'google', '#<script src="//ajax.googleapis.com/ajax/libs/jquery/' . \TYPO3\CMS\Core\Page\PageRenderer::JQUERY_VERSION_LATEST . '/jquery.js" type="text/javascript"></script>#'),
-			'google with version number' => array($specificVersion, 'google', '#<script src="//ajax.googleapis.com/ajax/libs/jquery/' . $specificVersion . '/jquery.js" type="text/javascript"></script>#'),
-			'msn with no version number' => array(NULL, 'msn', '#<script src="//ajax.aspnetcdn.com/ajax/jQuery/jquery-' . \TYPO3\CMS\Core\Page\PageRenderer::JQUERY_VERSION_LATEST . '.js" type="text/javascript"></script>#'),
-			'msn with version number' => array($specificVersion, 'msn', '#<script src="//ajax.aspnetcdn.com/ajax/jQuery/jquery-' . $specificVersion . '.js" type="text/javascript"></script>#'),
-			'jquery with no version number' => array(NULL, 'jquery', '#<script src="http://code.jquery.com/jquery-' . \TYPO3\CMS\Core\Page\PageRenderer::JQUERY_VERSION_LATEST . '.js" type="text/javascript"></script>#'),
-			'jquery with version number' => array($specificVersion, 'jquery', '#<script src="http://code.jquery.com/jquery-' . $specificVersion . '.js" type="text/javascript"></script>#'),
-			'jquery with custom URL' => array($specificVersion, 'http://my.cool.cdn/foo/jquery.js', '#<script src="http://my.cool.cdn/foo/jquery.js" type="text/javascript"></script>#')
-		);
-	}
-
-	/**
-	 * Tests whether jQuery is correctly loaded, from the respective CDNs
-	 *
-	 * @dataProvider loadJqueryFromSourceDataProvider
 	 * @test
 	 */
-	public function isJqueryLoadedFromSourceUncompressedIfDebugModeIsEnabled($version, $source, $regex) {
-		$this->fixture->loadJquery($version, $source);
-		$this->fixture->enableDebugMode();
-		$out = $this->fixture->render();
-		$this->assertRegExp($regex, $out);
-	}
-
-	/**
-	 * @return array
-	 */
-	public function loadJqueryMinifiedFromSourceDataProvider() {
-		$specificVersion = '1.6.3';
-		return array(
-			'google with no version number' => array(NULL, 'google', '#<script src="//ajax.googleapis.com/ajax/libs/jquery/' . \TYPO3\CMS\Core\Page\PageRenderer::JQUERY_VERSION_LATEST . '/jquery.min.js" type="text/javascript"></script>#'),
-			'google with version number' => array($specificVersion, 'google', '#<script src="//ajax.googleapis.com/ajax/libs/jquery/' . $specificVersion . '/jquery.min.js" type="text/javascript"></script>#'),
-			'msn with no version number' => array(NULL, 'msn', '#<script src="//ajax.aspnetcdn.com/ajax/jQuery/jquery-' . \TYPO3\CMS\Core\Page\PageRenderer::JQUERY_VERSION_LATEST . '.min.js" type="text/javascript"></script>#'),
-			'msn with version number' => array($specificVersion, 'msn', '#<script src="//ajax.aspnetcdn.com/ajax/jQuery/jquery-' . $specificVersion . '.min.js" type="text/javascript"></script>#'),
-			'jquery with no version number' => array(NULL, 'jquery', '#<script src="http://code.jquery.com/jquery-' . \TYPO3\CMS\Core\Page\PageRenderer::JQUERY_VERSION_LATEST . '.min.js" type="text/javascript"></script>#'),
-			'jquery with version number' => array($specificVersion, 'jquery', '#<script src="http://code.jquery.com/jquery-' . $specificVersion . '.min.js" type="text/javascript"></script>#')
-		);
-	}
-
-	/**
-	 * Tests whether jQuery is correctly loaded, from the respective CDNs
-	 *
-	 * @dataProvider loadJqueryMinifiedFromSourceDataProvider
-	 * @test
-	 */
-	public function isJqueryLoadedMinifiedFromSourceByDefault($version, $cdn, $regex) {
-		$this->fixture->loadJquery($version, $cdn);
-		$out = $this->fixture->render();
-		$this->assertRegExp($regex, $out);
-	}
-
-	/**
-	 * test load ExtJS
-	 */
-	public function testLoadExtJS() {
-		$expectedRegExp = '#<script src="contrib/extjs/adapter/jquery/ext-jquery-adapter\\.(js|\\d+\\.js|js\\?\\d+)" type="text/javascript"></script>' . LF . '<script src="contrib/extjs/ext-all\\.(js|\\d+\\.js|js\\?\\d+)" type="text/javascript"></script>#m';
-		$this->fixture->loadExtJS(TRUE, TRUE, 'jquery');
-		$out = $this->fixture->render();
-		$this->assertRegExp($expectedRegExp, $out);
-	}
-
-	/**
-	 * test load ExtCore
-	 */
-	public function testLoadExtCore() {
-		$expectedRegExp = '#<script src="contrib/extjs/ext-core\\.(js|\\d+\\.js|js\\?\\d+)" type="text/javascript"></script>#';
-		$this->fixture->loadExtCore();
-		$out = $this->fixture->render();
-		$this->assertRegExp($expectedRegExp, $out);
-	}
-
-	/**
-	 * test enable ExtJsDebug
-	 */
-	public function testEnableExtJsDebug() {
-		$expectedRegExp = '#<script src="contrib/extjs/ext-all-debug\\.(js|\\d+\\.js|js\\?\\d+)" type="text/javascript"></script>#';
-		$this->fixture->loadExtJS(TRUE, TRUE, 'jquery');
-		$this->fixture->enableExtJsDebug();
-		$out = $this->fixture->render();
-		$this->assertRegExp($expectedRegExp, $out);
-	}
-
-	/**
-	 * test enable ExtCoreDebug
-	 */
-	public function testEnableExtCoreDebug() {
-		$expectedRegExp = '#<script src="contrib/extjs/ext-core-debug\\.(js|\\d+\\.js|js\\?\\d+)" type="text/javascript"></script>#';
-		$this->fixture->loadExtCore();
-		$this->fixture->enableExtCoreDebug();
-		$out = $this->fixture->render();
-		$this->assertRegExp($expectedRegExp, $out);
-	}
-
-	/**
-	 * test inline language label
-	 */
-	public function testAddInlineLanguageLabel() {
-		$expectedReturnValue = 'TYPO3.lang = {"myKey":"myValue"}';
-		$this->fixture->loadExtJS();
-		$this->fixture->addInlineLanguageLabel('myKey', 'myValue');
-		$this->fixture->enableMoveJsFromHeaderToFooter();
-		$out = $this->fixture->render(\TYPO3\CMS\Core\Page\PageRenderer::PART_FOOTER);
-		$this->assertContains($expectedReturnValue, $out);
-	}
-
-	/**
-	 * test inline language label as array
-	 */
-	public function testAddInlineLanguageLabelArray() {
-		$expectedReturnValue = 'TYPO3.lang = {"myKey1":"myValue1","myKey2":"myValue2"}';
-		$this->fixture->loadExtJS();
-		$this->fixture->addInlineLanguageLabelArray(array('myKey1' => 'myValue1', 'myKey2' => 'myValue2'));
-		$this->fixture->enableMoveJsFromHeaderToFooter();
-		$out = $this->fixture->render(\TYPO3\CMS\Core\Page\PageRenderer::PART_FOOTER);
-		$this->assertContains($expectedReturnValue, $out);
-	}
-
-	/**
-	 * test inline language label as array get merged
-	 */
-	public function testAddInlineLanguageLabelArrayMerged() {
-		$expectedReturnValue = 'TYPO3.lang = {"myKey1":"myValue1","myKey2":"myValue2"}';
-		$this->fixture->loadExtJS();
-		$this->fixture->addInlineLanguageLabelArray(array('myKey1' => 'myValue1'));
-		$this->fixture->addInlineLanguageLabelArray(array('myKey2' => 'myValue2'));
-		$this->fixture->enableMoveJsFromHeaderToFooter();
-		$out = $this->fixture->render(\TYPO3\CMS\Core\Page\PageRenderer::PART_FOOTER);
-		$this->assertContains($expectedReturnValue, $out);
-	}
-
-	/**
-	 * test inline setting
-	 */
-	public function testAddInlineSetting() {
-		$expectedReturnValue = 'TYPO3.settings = {"myApp":{"myKey":"myValue"}};';
-		$this->fixture->loadExtJS();
-		$this->fixture->addInlineSetting('myApp', 'myKey', 'myValue');
-		$this->fixture->enableMoveJsFromHeaderToFooter();
-		$out = $this->fixture->render(\TYPO3\CMS\Core\Page\PageRenderer::PART_FOOTER);
-		$this->assertContains($expectedReturnValue, $out);
-	}
-
-	/**
-	 * test inline settings with array
-	 */
-	public function testAddInlineSettingArray() {
-		$expectedReturnValue = 'TYPO3.settings = {"myApp":{"myKey1":"myValue1","myKey2":"myValue2"}};';
-		$this->fixture->loadExtJS();
-		$this->fixture->addInlineSettingArray('myApp', array('myKey1' => 'myValue1', 'myKey2' => 'myValue2'));
-		$this->fixture->enableMoveJsFromHeaderToFooter();
-		$out = $this->fixture->render(\TYPO3\CMS\Core\Page\PageRenderer::PART_FOOTER);
-		$this->assertContains($expectedReturnValue, $out);
-	}
-
-	/**
-	 * test inline settings with array get merged
-	 */
-	public function testAddInlineSettingArrayMerged() {
-		$expectedReturnValue = 'TYPO3.settings = {"myApp":{"myKey1":"myValue1","myKey2":"myValue2"}};';
-		$this->fixture->loadExtJS();
-		$this->fixture->addInlineSettingArray('myApp', array('myKey1' => 'myValue1'));
-		$this->fixture->addInlineSettingArray('myApp', array('myKey2' => 'myValue2'));
-		$this->fixture->enableMoveJsFromHeaderToFooter();
-		$out = $this->fixture->render(\TYPO3\CMS\Core\Page\PageRenderer::PART_FOOTER);
-		$this->assertContains($expectedReturnValue, $out);
-	}
-
-	/**
-	 * test add body content
-	 */
-	public function testAddBodyContent() {
+	public function addBodyContentAddsContent() {
+		/** @var \TYPO3\CMS\Core\Page\PageRenderer|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $subject */
+		$subject = $this->getAccessibleMock('TYPO3\\CMS\\Core\\Page\\PageRenderer', array('dummy'), array(), '', FALSE);
 		$expectedReturnValue = 'ABCDE';
-		$this->fixture->addBodyContent('A');
-		$this->fixture->addBodyContent('B');
-		$this->fixture->addBodyContent('C');
-		$this->fixture->addBodyContent('D');
-		$this->fixture->addBodyContent('E');
-		$out = $this->fixture->getBodyContent();
+		$subject->addBodyContent('A');
+		$subject->addBodyContent('B');
+		$subject->addBodyContent('C');
+		$subject->addBodyContent('D');
+		$subject->addBodyContent('E');
+		$out = $subject->getBodyContent();
 		$this->assertEquals($expectedReturnValue, $out);
 	}
 
 	/**
-	 * test set body content
+	 * @test
 	 */
-	public function testSetBodyContent() {
-		$expectedReturnValue = 'ABCDE';
-		$this->fixture->setBodyContent('ABCDE');
-		$out = $this->fixture->getBodyContent();
-		$this->assertEquals($expectedReturnValue, $out);
-		$out = $this->fixture->render();
-		$this->assertContains($expectedReturnValue, $out);
+	public function addInlineLanguageLabelFileSetsInlineLanguageLabelFiles() {
+		/** @var \TYPO3\CMS\Core\Page\PageRenderer|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $subject */
+		$subject = $this->getAccessibleMock('TYPO3\\CMS\\Core\\Page\\PageRenderer', array('dummy'), array(), '', FALSE);
+		$fileReference = uniqid('file_');
+		$selectionPrefix = uniqid('prefix_');
+		$stripFromSelectionName = uniqid('strip_');
+		$errorMode = 0;
+
+		$expectedInlineLanguageLabelFile = array(
+			'fileRef' => $fileReference,
+			'selectionPrefix' => $selectionPrefix,
+			'stripFromSelectionName' => $stripFromSelectionName,
+			'errorMode' => $errorMode
+		);
+
+		$subject->addInlineLanguageLabelFile($fileReference, $selectionPrefix, $stripFromSelectionName, $errorMode);
+		$actualResult = $subject->getInlineLanguageLabelFiles();
+
+		$this->assertSame($expectedInlineLanguageLabelFile, array_pop($actualResult));
 	}
 
 	/**
-	 * Tests the addInlineLanguageLabelFile() method.
-	 *
 	 * @test
-	 * @expectedException \RuntimeException
 	 */
-	public function areInlineLanguageLabelsNotProcessable() {
-		$this->fixture->setLanguage(NULL);
-		$this->fixture->addInlineLanguageLabelFile('EXT:lang/locallang_core.xlf');
-		$out = $this->fixture->render();
+	public function addInlineLanguageLabelFileSetsTwoDifferentInlineLanguageLabelFiles() {
+		/** @var \TYPO3\CMS\Core\Page\PageRenderer|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $subject */
+		$subject = $this->getAccessibleMock('TYPO3\\CMS\\Core\\Page\\PageRenderer', array('dummy'), array(), '', FALSE);
+		$fileReference1 = uniqid('file1_');
+		$selectionPrefix1 = uniqid('prefix1_');
+		$stripFromSelectionName1 = uniqid('strip1_');
+		$errorMode1 = 0;
+		$expectedInlineLanguageLabelFile1 = array(
+			'fileRef' => $fileReference1,
+			'selectionPrefix' => $selectionPrefix1,
+			'stripFromSelectionName' => $stripFromSelectionName1,
+			'errorMode' => $errorMode1
+		);
+		$fileReference2 = uniqid('file2_');
+		$selectionPrefix2 = uniqid('prefix2_');
+		$stripFromSelectionName2 = uniqid('strip2_');
+		$errorMode2 = 0;
+		$expectedInlineLanguageLabelFile2 = array(
+			'fileRef' => $fileReference2,
+			'selectionPrefix' => $selectionPrefix2,
+			'stripFromSelectionName' => $stripFromSelectionName2,
+			'errorMode' => $errorMode2
+		);
+
+		$subject->addInlineLanguageLabelFile($fileReference1, $selectionPrefix1, $stripFromSelectionName1, $errorMode1);
+		$subject->addInlineLanguageLabelFile($fileReference2, $selectionPrefix2, $stripFromSelectionName2, $errorMode2);
+		$actualResult = $subject->getInlineLanguageLabelFiles();
+
+		$this->assertSame($expectedInlineLanguageLabelFile2, array_pop($actualResult));
+		$this->assertSame($expectedInlineLanguageLabelFile1, array_pop($actualResult));
 	}
 
 	/**
-	 * Tests the addInlineLanguageLabelFile() method.
-	 *
 	 * @test
 	 */
-	public function areInlineLanguageLabelsPassed() {
-		$this->fixture->setLanguage($GLOBALS['LANG']->lang);
-		$this->fixture->addInlineLanguageLabelFile('EXT:lang/locallang_core.xlf');
-		$out = $this->fixture->render();
-		$this->assertContains('labels.beUser', $out);
-		$this->assertContains('labels.feUser', $out);
-	}
+	public function addInlineLanguageLabelFileDoesNotSetSameLanguageFileTwice() {
+		/** @var \TYPO3\CMS\Core\Page\PageRenderer|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $subject */
+		$subject = $this->getAccessibleMock('TYPO3\\CMS\\Core\\Page\\PageRenderer', array('dummy'), array(), '', FALSE);
+		$fileReference = uniqid('file2_');
+		$selectionPrefix = uniqid('prefix2_');
+		$stripFromSelectionName = uniqid('strip2_');
+		$errorMode = 0;
 
-	/**
-	 * Tests the addInlineLanguageLabelFile() method.
-	 *
-	 * @test
-	 */
-	public function areInlineLanguageLabelsEmptyOnNonExistingFile() {
-		$this->fixture->addInlineLanguageLabelFile('');
-		$inlineLanguageLabelFiles = $this->fixture->getInlineLanguageLabelFiles();
-		$this->assertEquals(array(), $inlineLanguageLabelFiles);
+		$subject->addInlineLanguageLabelFile($fileReference, $selectionPrefix, $stripFromSelectionName, $errorMode);
+		$subject->addInlineLanguageLabelFile($fileReference, $selectionPrefix, $stripFromSelectionName, $errorMode);
+		$this->assertSame(1, count($subject->getInlineLanguageLabelFiles()));
 	}
-
-	/**
-	 * Tests the addInlineLanguageLabelFile() method.
-	 *
-	 * @test
-	 */
-	public function areInlineLanguageLabelsSelected() {
-		$this->fixture->setLanguage($GLOBALS['LANG']->lang);
-		$this->fixture->addInlineLanguageLabelFile('EXT:lang/locallang_core.xlf', 'labels.');
-		$out = $this->fixture->render();
-		$this->assertContains('labels.beUser', $out);
-		$this->assertContains('labels.feUser', $out);
-	}
-
-	/**
-	 * Tests the addInlineLanguageLabelFile() method.
-	 *
-	 * @test
-	 */
-	public function areInlineLanguageLabelsSelectedAndStripped() {
-		$this->fixture->setLanguage($GLOBALS['LANG']->lang);
-		$this->fixture->addInlineLanguageLabelFile('EXT:lang/locallang_core.xlf', 'labels.', 'lock');
-		$out = $this->fixture->render();
-		$this->assertContains('edRecord', $out);
-		$this->assertContains('edRecord_content', $out);
-		$this->assertContains('edRecordUser', $out);
-	}
-
 }

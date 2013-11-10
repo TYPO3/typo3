@@ -105,6 +105,4 @@ require PATH_site . '/typo3/sysext/core/Classes/Core/Bootstrap.php';
 	->loadExtensionTables(TRUE)
 	->initializeBackendUser()
 	// TODO: Fix FAL tests which fatal without initialized storages
-	->initializeBackendUserMounts()
-	// TODO: Needed at least for FormProtection tests
-	->initializeLanguageObject();
+	->initializeBackendUserMounts();
