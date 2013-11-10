@@ -140,6 +140,69 @@ class DataMapperTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	}
 
 	/**
+	 * Test if fetchRelatedEager method returns NULL when $fieldValue = ''
+	 * and relation type == RELATION_HAS_ONE without calling fetchRelated
+	 *
+	 * @test
+	 */
+	public function mapObjectToClassPropertyReturnsNullForEmptyRelationHasOne() {
+		$columnMap = new \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap('columnName', 'propertyName');
+		$columnMap->setTypeOfRelation(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap::RELATION_HAS_ONE);
+		$dataMap = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Mapper\\DataMap', array('getColumnMap'), array(), '', FALSE);
+		$dataMap->expects($this->any())->method('getColumnMap')->will($this->returnValue($columnMap));
+		$dataMapper = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Mapper\\DataMapper', array('getDataMap', 'fetchRelated'));
+		$dataMapper->expects($this->any())->method('getDataMap')->will($this->returnValue($dataMap));
+		$dataMapper->expects($this->never())->method('fetchRelated');
+		$result = $dataMapper->_call('mapObjectToClassProperty', $this->getMock('TYPO3\\CMS\\Extbase\\DomainObject\\AbstractEntity'), 'SomeName', '');
+		$this->assertEquals(NULL, $result);
+	}
+
+	/**
+	 * Test if mapObjectToClassProperty method returns objects
+	 * that are already registered in the persistence session
+	 * without query it from the persistence layer
+	 *
+	 * @test
+	 */
+	public function mapObjectToClassPropertyReturnsExistingObjectWithoutCallingFetchRelated() {
+		$columnMap = new \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap('columnName', 'propertyName');
+		$columnMap->setTypeOfRelation(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap::RELATION_HAS_ONE);
+		$dataMap = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Mapper\\DataMap', array('getColumnMap'), array(), '', FALSE);
+
+		$className = 'Class1' . md5(uniqid(mt_rand(), TRUE));
+		$classNameWithNS = __NAMESPACE__ . '\\' . $className;
+		eval('namespace ' . __NAMESPACE__ . '; class ' . $className . ' extends \\TYPO3\\CMS\\Extbase\\DomainObject\\AbstractEntity { public $relationProperty; }');
+		$object = new $classNameWithNS();
+		$classSchema1 = $this->getAccessibleMock('TYPO3\CMS\Extbase\Reflection\ClassSchema', array('dummy'), array($classNameWithNS));
+		$classSchema1->_set('typeHandlingService', new \TYPO3\CMS\Extbase\Service\TypeHandlingService());
+
+		$className2 = 'Class2' . md5(uniqid(mt_rand(), TRUE));
+		$className2WithNS = __NAMESPACE__ . '\\' . $className2;
+		eval('namespace ' . __NAMESPACE__ . '; class ' . $className2 . ' extends \\TYPO3\\CMS\\Extbase\\DomainObject\\AbstractEntity { }');
+		$child = new $className2WithNS();
+		$classSchema2 = $this->getAccessibleMock('TYPO3\CMS\Extbase\Reflection\ClassSchema', array('dummy'), array($className2WithNS));
+		$classSchema2->_set('typeHandlingService', new \TYPO3\CMS\Extbase\Service\TypeHandlingService());
+
+		$classSchema1->addProperty('relationProperty', $className2WithNS);
+		$identifier = 1;
+
+		$session = new \TYPO3\CMS\Extbase\Persistence\Generic\Session();
+		$session->registerObject($child, $identifier);
+
+		$mockReflectionService = $this->getMock('\TYPO3\CMS\Extbase\Reflection\ReflectionService', array('getClassSchema'), array(), '', FALSE);
+		$mockReflectionService->expects($this->any())->method('getClassSchema')->will($this->returnValue($classSchema1));
+
+		$dataMap->expects($this->any())->method('getColumnMap')->will($this->returnValue($columnMap));
+		$dataMapper = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Mapper\\DataMapper', array('getDataMap', 'getNonEmptyRelationValue'));
+		$dataMapper->_set('reflectionService', $mockReflectionService);
+		$dataMapper->_set('persistenceSession', $session);
+		$dataMapper->expects($this->any())->method('getDataMap')->will($this->returnValue($dataMap));
+		$dataMapper->expects($this->never())->method('getNonEmptyRelationValue');
+		$result = $dataMapper->_call('mapObjectToClassProperty', $object, 'relationProperty', $identifier);
+		$this->assertEquals($child, $result);
+	}
+
+	/**
 	 * Data provider for date checks. Date will be stored based on UTC in
 	 * the database. That's why it's not possible to check for explicit date
 	 * strings but using the date('c') conversion instead, which considers the
