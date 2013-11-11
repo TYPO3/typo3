@@ -112,9 +112,9 @@ return array(
 			'config' => array(
 				'type' => 'select',
 				'items' => array(
-					array('Static selection of files', 'static'),
-					array('Folder from Storage', 'folder'),
-					array('Select by category', 'category')
+					array('LLL:EXT:lang/locallang_tca.xlf:sys_file_collection.type.0', 'static'),
+					array('LLL:EXT:lang/locallang_tca.xlf:sys_file_collection.type.1', 'folder'),
+					array('LLL:EXT:lang/locallang_tca.xlf:sys_file_collection.type.2', 'category')
 				)
 			)
 		),
