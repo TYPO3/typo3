@@ -456,6 +456,12 @@
 			<trans-unit id="sys_file_collection.type" xml:space="preserve">
 				<source>Type</source>
 			</trans-unit>
+			<trans-unit id="sys_file_collection.type.0" xml:space="preserve">
+				<source>Static selection of files</source>
+			</trans-unit>
+			<trans-unit id="sys_file_collection.type.1" xml:space="preserve">
+				<source>Folder from Storage</source>
+			</trans-unit>
 			<trans-unit id="sys_file_collection.storage" xml:space="preserve">
 				<source>File Storage</source>
 			</trans-unit>
