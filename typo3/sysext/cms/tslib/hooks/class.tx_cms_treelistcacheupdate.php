@@ -67,7 +67,7 @@ class tx_cms_treelistCacheUpdate {
 				true
 			);
 
-			$this->updateRequiringFields += $additionalTreelistUpdateFields;
+			$this->updateRequiringFields = array_merge($this->updateRequiringFields, $additionalTreelistUpdateFields);
 		}
 
 	}
