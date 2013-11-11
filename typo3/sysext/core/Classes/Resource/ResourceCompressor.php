@@ -305,7 +305,11 @@ class ResourceCompressor {
 				$filename = $filesToInclude[$key];
 			}
 			$filepath = GeneralUtility::resolveBackPath($this->rootPath . $filename);
-			$unique .= $filename . filemtime($filepath) . filesize($filepath);
+			if (@file_exists($filepath)) {
+				$unique = $filepath . filemtime($filepath) . filesize($filepath);
+			} else {
+				$unique = $filepath;
+			}
 		}
 		$targetFile = $this->targetDirectory . 'merged-' . md5($unique) . '.' . $type;
 		// if the file doesn't already exist, we create it
@@ -365,7 +369,12 @@ class ResourceCompressor {
 	public function compressCssFile($filename) {
 		// generate the unique name of the file
 		$filenameAbsolute = GeneralUtility::resolveBackPath($this->rootPath . $this->getFilenameFromMainDir($filename));
-		$unique = $filenameAbsolute . filemtime($filenameAbsolute) . filesize($filenameAbsolute);
+		if (@file_exists($filenameAbsolute)) {
+			$unique = $filenameAbsolute . filemtime($filenameAbsolute) . filesize($filenameAbsolute);
+		} else {
+			$unique = $filenameAbsolute;
+		}
+
 		$pathinfo = PathUtility::pathinfo($filename);
 		$targetFile = $this->targetDirectory . $pathinfo['filename'] . '-' . md5($unique) . '.css';
 		// only create it, if it doesn't exist, yet
@@ -502,7 +511,11 @@ class ResourceCompressor {
 	public function compressJsFile($filename) {
 		// generate the unique name of the file
 		$filenameAbsolute = GeneralUtility::resolveBackPath($this->rootPath . $this->getFilenameFromMainDir($filename));
-		$unique = $filenameAbsolute . filemtime($filenameAbsolute) . filesize($filenameAbsolute);
+		if (@file_exists($filenameAbsolute)) {
+			$unique = $filenameAbsolute . filemtime($filenameAbsolute) . filesize($filenameAbsolute);
+		} else {
+			$unique = $filenameAbsolute;
+		}
 		$pathinfo = PathUtility::pathinfo($filename);
 		$targetFile = $this->targetDirectory . $pathinfo['filename'] . '-' . md5($unique) . '.js';
 		// only create it, if it doesn't exist, yet
