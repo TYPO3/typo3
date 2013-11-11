@@ -352,6 +352,10 @@ button span.t3-install-form-button-icon-negative {
 	background-image: url('../../../Images/Menu/SystemEnvironment.png');
 }
 
+#t3-install-menu  .act a:link {
+	background-color: #585858;
+}
+
 #t3-install-menu #t3-install-menu-configuration {
 	background-image: url('../../../Images/Menu/Configuration.png');
 }
@@ -705,6 +709,12 @@ body.standalone h1 {
 	float: left;
 }
 
+body.standalone .toggleDataContent h1 {
+	background: none;
+	margin: 10px;
+	text-indent: inherit;
+}
+
 body.standalone h2 {
 	margin: 3.3em 0 0 1.8em;
 	padding: 0;
@@ -741,10 +751,22 @@ body.standalone #t3-install-menu {
 	background: #ebebeb url('../../../Images/Background/Menu.gif') repeat-x left bottom;
 }
 
+body.standalone #t3-install-menu a:link {
+	background: none;
+}
+
 body.standalone #t3-install-menu-bottom {
 	width: 17.6em;
 	height: 3px;
 	background: #3e3e3e url('../../../Images/Background/ContentBottom.png') no-repeat center bottom;
+}
+
+body.standalone #t3-install-links a:link {
+	background: none;
+}
+
+body.standalone #t3-install-copyright a:link {
+	background: none;
 }
 
 body.standalone .t3-install-login h2 {
@@ -801,4 +823,22 @@ button.btn-save:hover {
 #fixed-footer-fieldset {
 	height: 41px;
 	margin-top: 2em;
+}
+
+.phpinfo {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+}
+.phpinfo hr, .phpinfo table {
+	width: 500px;
+}
+.phpinfo td, .phpinfo th {
+	font-size: 11px;
+}
+.phpinfo td.v {
+	word-break: break-all;
+	word-wrap: break-word;
+}
+.phpinfo .toggleDataContent {
+	margin: 1em 0;
+	overflow: scroll;
 }

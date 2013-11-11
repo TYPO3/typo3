@@ -48,6 +48,11 @@ class SystemEnvironment extends Action\AbstractAction implements Action\ActionIn
 		$sortedStatusObjects = $statusUtility->sortBySeverity($statusObjects);
 		$this->view->assign('statusObjectsBySeverity', $sortedStatusObjects);
 
+		ob_start();
+		phpinfo();
+		$phpInfo = ob_get_clean();
+		$this->view->assign('phpInfo', $phpInfo);
+
 		return $this->view->render();
 	}
 }

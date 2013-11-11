@@ -10,4 +10,16 @@
 			<f:render partial="Action/Common/StatusMessage" arguments="{message: statusMessage}" />
 		</f:for>
 	</f:for>
+
+	<div class="toggleGroup phpinfo">
+		<div class="toggleButton">
+			<h4>PHP Info</h4>
+		</div>
+
+		<div class="toggleData" style="display:none">
+			<div class="toggleDataContent">
+				<f:format.raw>{phpInfo}</f:format.raw>
+			</div>
+		</div>
+	</div>
 </f:section>
