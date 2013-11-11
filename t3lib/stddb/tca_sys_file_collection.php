@@ -90,8 +90,8 @@ $TCA['sys_file_collection'] = array(
 			'config' => array(
 				'type' => 'select',
 				'items' => array(
-					array('Static selection of files', 'static'),
-					array('Folder from Storage', 'folder')
+					array('LLL:EXT:lang/locallang_tca.xlf:sys_file_collection.type.0', 'static'),
+					array('LLL:EXT:lang/locallang_tca.xlf:sys_file_collection.type.1', 'folder')
 				)
 			)
 		),
