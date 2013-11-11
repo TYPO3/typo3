@@ -26,7 +26,7 @@
 						Uri was added by javascript window.open and not a simple <a href>
 						because f:be.buttons.icon does not support the target parameter.
 					</f:comment>
-					<f:be.buttons.icon uri="javascript:window.open('{url}', '');" icon="actions-document-view" />
+					<f:be.buttons.icon uri="{url}" additionalAttributes="{onclick: 'window.open(this.href,\'newTYPO3frontendWindow\').focus();return false;'}" icon="actions-document-view" />
 				</div>
 				<div class="right">
 					<f:be.buttons.icon
