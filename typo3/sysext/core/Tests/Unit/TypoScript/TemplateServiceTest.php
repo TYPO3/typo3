@@ -48,7 +48,9 @@ class TemplateServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	protected function setUp() {
 		$GLOBALS['TYPO3_LOADED_EXT'] = array();
 		$this->templateService = new \TYPO3\CMS\Core\TypoScript\TemplateService();
+		$this->templateService->tt_track = FALSE;
 		$this->templateServiceMock = $this->getAccessibleMock('\\TYPO3\\CMS\\Core\\TypoScript\\TemplateService', array('dummy'));
+		$this->templateServiceMock->tt_track = FALSE;
 	}
 
 	/**
@@ -156,6 +158,36 @@ class TemplateServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 		$this->templateServiceMock->_set('rootLine', $originalRootline);
 		$this->templateServiceMock->updateRootlineData($newInvalidRootline);
+	}
+
+	/**
+	 * @test
+	 */
+	public function getFileNameReturnsUrlCorrectly() {
+		$this->assertSame('http://example.com', $this->templateService->getFileName('http://example.com'));
+		$this->assertSame('https://example.com', $this->templateService->getFileName('https://example.com'));
+	}
+
+	/**
+	 * @test
+	 */
+	public function getFileNameReturnsFileCorrectly() {
+		$this->assertSame('typo3/index.php', $this->templateService->getFileName('typo3/index.php'));
+	}
+
+	/**
+	 * @test
+	 */
+	public function getFileNameReturnsNullIfDirectory() {
+		$this->assertNull($this->templateService->getFileName(__DIR__));
+	}
+
+	/**
+	 * @test
+	 */
+	public function getFileNameReturnsNullWithInvalidFileName() {
+		$this->assertNull($this->templateService->getFileName('  '));
+		$this->assertNull($this->templateService->getFileName('something/../else'));
 	}
 
 }

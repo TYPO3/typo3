@@ -1281,7 +1281,7 @@ class TemplateService {
 				$file = $newFile;
 			}
 		}
-		if (parse_url($file) !== FALSE) {
+		if (parse_url($file) !== FALSE || is_file(PATH_site . $file)) {
 			return $file;
 		}
 		// Find
