@@ -24,6 +24,9 @@ return array(
 		),
 		'typeicon_classes' => array(
 			'default' => 'mimetypes-x-sys_category'
+		),
+		'security' => array(
+			'ignoreRootLevelRestriction' => TRUE,
 		)
 	),
 	'interface' => array(
