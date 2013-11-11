@@ -47,6 +47,16 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Be\Buttons;
 class IconViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper {
 
 	/**
+	 * Initialize arguments
+	 *
+	 * @return void
+	 * @api
+	 */
+	public function initializeArguments() {
+		$this->registerArgument('additionalAttributes', 'array', 'Additional tag attributes. They will be added directly to the resulting HTML tag.', FALSE);
+	}
+
+	/**
 	 * Renders a linked icon as known from the TYPO3 backend.
 	 *
 	 * If the URI is left empty, the icon is rendered without link.
@@ -57,11 +67,17 @@ class IconViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendView
 	 * @return string The rendered icon with or without link
 	 */
 	public function render($uri = '', $icon = 'actions-document-close', $title = '') {
+		$additionalAttributes = '';
+		if ($this->hasArgument('additionalAttributes') && is_array($this->arguments['additionalAttributes'])) {
+			foreach ($this->arguments['additionalAttributes'] as $argumentKey => $argumentValue) {
+				$additionalAttributes .= ' ' . $argumentKey . '="' . $argumentValue . '"';
+			}
+		}
 		$icon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon($icon, array('title' => $title));
 		if (empty($uri)) {
 			return $icon;
 		} else {
-			return '<a href="' . $uri . '">' . $icon . '</a>';
+			return '<a href="' . $uri . '"' . $additionalAttributes . '>' . $icon . '</a>';
 		}
 	}
 }
