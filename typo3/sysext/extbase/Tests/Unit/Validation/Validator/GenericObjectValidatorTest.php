@@ -36,7 +36,7 @@ class GenericObjectValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validatio
 	protected $configurationManager;
 
 	public function setUp() {
-		$this->validator = $this->getValidator();
+		parent::setUp();
 
 		$this->configurationManager = $this->getMock('TYPO3\CMS\Extbase\Configuration\ConfigurationManager', array('isFeatureEnabled'), array(), '', FALSE);
 		$this->configurationManager->expects($this->any())->method('isFeatureEnabled')->with('rewrittenPropertyMapper')->will($this->returnValue(TRUE));

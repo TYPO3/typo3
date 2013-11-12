@@ -30,10 +30,6 @@ class FloatValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validation\Valida
 
 	protected $validatorClassName = 'TYPO3\\CMS\\Extbase\\Validation\\Validator\\FloatValidator';
 
-	public function setUp() {
-		$this->validator = $this->getValidator();
-	}
-
 	/**
 	 * Data provider with valid floats
 	 *

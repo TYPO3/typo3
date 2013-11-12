@@ -105,7 +105,11 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface {
 			 */
 			$validatorObjectName = $this->resolveValidatorObjectName($validatorType);
 
-			$validator = $this->objectManager->get($validatorObjectName, $validatorOptions);
+			$validator = $this->objectManager->get($validatorObjectName);
+			if (method_exists($validator, 'setOptions')) {
+				// @deprecated since Extbase 1.4.0, will be removed two versions after Extbase 6.1
+				$validator->setOptions($validatorOptions);
+			}
 
 			if (!($validator instanceof \TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface)) {
 				throw new Exception\NoSuchValidatorException('The validator "' . $validatorObjectName . '" does not implement TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface!', 1300694875);

@@ -30,10 +30,6 @@ class AlphanumericValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validation
 
 	protected $validatorClassName = 'TYPO3\\CMS\\Extbase\\Validation\\Validator\\AlphanumericValidator';
 
-	public function setUp() {
-		$this->validator = $this->getValidator();
-	}
-
 	/**
 	 * @test
 	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>

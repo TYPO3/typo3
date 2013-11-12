@@ -30,10 +30,6 @@ class StringValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validation\Valid
 
 	protected $validatorClassName = 'TYPO3\\CMS\\Extbase\\Validation\\Validator\\StringValidator';
 
-	public function setUp() {
-		$this->validator = $this->getValidator();
-	}
-
 	/**
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
