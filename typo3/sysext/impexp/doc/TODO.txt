@@ -12,21 +12,6 @@ Import of files:
 IMPORT:
 - Better logging to system
 
-TemplateArchive:
-- Add the modfunc module which will import a template from archive.
-	- Project group for this?
-	- Available repositories:
-		- typo3.org text list?
-		- Local configuration of URLs in localconf.
-	- Available templates
-		- Apache file list
-			file / icon / description.txt
-		- index.php gives XML with
-			- file-ref (rel/abs)
-			- icon-ref (rel/abs)
-			- title / description
-			- testUrl
-
 *********
 NOTES:
 *********

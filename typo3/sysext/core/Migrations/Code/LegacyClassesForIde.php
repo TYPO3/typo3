@@ -5254,11 +5254,6 @@ class SC_mod_tools_log_index extends \TYPO3\CMS\Impexp\Controller\ImportExportCo
 /**
  * @deprecated since 6.0 will be removed in 7.0
  */
-class tx_impexp_modfunc1 extends \TYPO3\CMS\Impexp\Controller\ModuleFunctionController {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
 class tx_impexp extends \TYPO3\CMS\Impexp\ImportExport {}
 
 /**
