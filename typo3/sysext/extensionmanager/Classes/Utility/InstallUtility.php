@@ -378,6 +378,7 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return boolean
 	 */
 	public function isUpdateAvailable(\TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extensionData) {
+		$isUpdateAvailable = FALSE;
 		// Only check for update for TER extensions
 		$version = $extensionData->getIntegerVersion();
 		/** @var $highestTerVersionExtension \TYPO3\CMS\Extensionmanager\Domain\Model\Extension */
@@ -385,10 +386,14 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface {
 		if ($highestTerVersionExtension instanceof \TYPO3\CMS\Extensionmanager\Domain\Model\Extension) {
 			$highestVersion = $highestTerVersionExtension->getIntegerVersion();
 			if ($highestVersion > $version) {
-				return TRUE;
+				try {
+					$this->dependencyUtility->buildExtensionDependenciesTree($highestTerVersionExtension);
+					$isUpdateAvailable = TRUE;
+				} catch (\TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException $e) {
+				}
 			}
 		}
-		return FALSE;
+		return $isUpdateAvailable;
 	}
 
 	/**
