@@ -80,6 +80,7 @@
 			});
 		} else {
 			if(data.hasErrors) {
+				$('.typo3-extension-manager').unmask();
 				TYPO3.Flashmessage.display(TYPO3.Severity.error, data.title, data.message, 10);
 			} else {
 				var button = 'yes';
