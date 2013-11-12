@@ -131,7 +131,7 @@ return array(
 			'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file.metadata',
 			'config' => array(
 				'readOnly' => 1,
-				'type' => 'select',
+				'type' => 'inline',
 				'foreign_table' => 'sys_file_metadata',
 				'foreign_field' => 'file',
 				'size' => 1,
