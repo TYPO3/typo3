@@ -43,6 +43,11 @@ use TYPO3\CMS\Lang\LanguageService;
 class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 
 	/**
+	 * @var array|\TYPO3\CMS\Core\Resource\File[]
+	 */
+	protected $uploadedFiles = array();
+
+	/**
 	 * Array containing the current page.
 	 *
 	 * @todo Define visibility
@@ -115,19 +120,18 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		switch ((string) $inData['action']) {
 			case 'export':
 				// Finally: If upload went well, set the new file as the thumbnail in the $inData array:
-				if (is_object($this->fileProcessor) && $this->fileProcessor->internalUploadMap[1]) {
-					$inData['meta']['thumbnail'] = md5($this->fileProcessor->internalUploadMap[1]);
+				if (!empty($this->uploadedFiles[0])) {
+					$inData['meta']['thumbnail'] = $this->uploadedFiles[0]->getCombinedIdentifier();
 				}
 				// Call export interface
 				$this->exportData($inData);
 				break;
 			case 'import':
 				// Finally: If upload went well, set the new file as the import file:
-				if (is_object($this->fileProcessor) && $this->fileProcessor->internalUploadMap[1]) {
-					$fI = pathinfo($this->fileProcessor->internalUploadMap[1]);
+				if (!empty($this->uploadedFiles[0])) {
 					// Only allowed extensions....
-					if (GeneralUtility::inList('t3d,xml', strtolower($fI['extension']))) {
-						$inData['file'] = $this->fileProcessor->internalUploadMap[1];
+					if (GeneralUtility::inList('t3d,xml', $this->uploadedFiles[0]->getExtension())) {
+						$inData['file'] = $this->uploadedFiles[0]->getCombinedIdentifier();
 					}
 				}
 				// Call import interface:
@@ -245,13 +249,9 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 			$beUser->user['email']
 		);
 		if ($inData['meta']['thumbnail']) {
-			$tempDir = $this->userTempFolder();
-			if ($tempDir) {
-				$thumbnails = GeneralUtility::getFilesInDir($tempDir, 'png,gif,jpg', 1);
-				$theThumb = $thumbnails[$inData['meta']['thumbnail']];
-				if ($theThumb) {
-					$this->export->addThumbnail($theThumb);
-				}
+			$theThumb = $this->getFile($inData['meta']['thumbnail']);
+			if ($theThumb !== NULL && $theThumb->exists()) {
+				$this->export->addThumbnail($theThumb->getForLocalProcessing(FALSE));
 			}
 		}
 		// Configure which records to export
@@ -373,23 +373,15 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 			}
 			// Export by saving:
 			if ($inData['save_export']) {
-				$savePath = $this->userSaveFolder();
-				$fullName = $savePath . $dlFile;
-				if (
-					GeneralUtility::isAllowedAbsPath($savePath)
-					&& @is_dir(dirname($fullName))
-					&& GeneralUtility::isAllowedAbsPath($fullName)
-				) {
-					GeneralUtility::writeFile($fullName, $out);
-					$filePath = sprintf(
-						$this->lang->getLL('exportdata_savedInSBytes', TRUE),
-						PathUtility::stripPathSitePrefix($savePath . $dlFile),
-						GeneralUtility::formatSize(strlen($out))
-					);
-					$this->content .= $this->doc->section($this->lang->getLL('exportdata_savedFile'), $filePath, 0, 1);
+				$saveFolder = $this->getDefaultImportExportFolder();
+				if ($saveFolder !== FALSE && $saveFolder->checkActionPermission('write')) {
+					$temporaryFileName = GeneralUtility::tempnam('export');
+					file_put_contents($temporaryFileName, $out);
+					$file = $saveFolder->addFile($temporaryFileName, $dlFile, 'replace');
+					$file = $this->getIndexerService()->indexFile($file);
+					$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('exportdata_savedFile'), sprintf($GLOBALS['LANG']->getLL('exportdata_savedInSBytes', TRUE), $file->getPublicUrl(), GeneralUtility::formatSize(strlen($out))), 0, 1);
 				} else {
-					$badPath = sprintf($this->lang->getLL('exportdata_badPathS', TRUE), $fullName);
-					$this->content .= $this->doc->section($this->lang->getLL('exportdata_problemsSavingFile'), $badPath, 0, 1, 2);
+					$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('exportdata_problemsSavingFile'), sprintf($GLOBALS['LANG']->getLL('exportdata_badPathS', TRUE), $this->getTemporaryFolderPath()), 0, 1, 2);
 				}
 			}
 		}
@@ -776,42 +768,38 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 				<td colspan="2">' . $this->lang->getLL('makesavefo_outputOptions', TRUE) . '</td>
 			</tr>';
 		// Meta data:
-		$tempDir = $this->userTempFolder();
-		if ($tempDir) {
-			$thumbnails = GeneralUtility::getFilesInDir($tempDir, 'png,gif,jpg');
-			array_unshift($thumbnails, '');
-		} else {
-			$thumbnails = FALSE;
+		$thumbnailFiles = array();
+		foreach ($this->getThumbnailFiles() as $thumbnailFile) {
+			$thumbnailFiles[$thumbnailFile->getCombinedIdentifier()] = $thumbnailFile->getName();
 		}
+		if (!empty($thumbnailFiles)) {
+			array_unshift($thumbnailFiles, '');
+		}
+		$thumbnail = $this->getFile($inData['meta']['thumbnail']);
+		$saveFolder = $this->getDefaultImportExportFolder();
+
 		$row[] = '
 				<tr class="bgColor4">
 					<td><strong>' . $this->lang->getLL('makesavefo_metaData', TRUE) . '</strong>'
 						. BackendUtility::cshItem('xMOD_tx_impexp', 'metadata', $GLOBALS['BACK_PATH'], '') . '</td>
 					<td>
 							' . $this->lang->getLL('makesavefo_title', TRUE) . ' <br/>
-							<input type="text" name="tx_impexp[meta][title]" value="'
-								. htmlspecialchars($inData['meta']['title']) . '"' . $this->doc->formWidth(30) . ' /><br/>
+							<input type="text" name="tx_impexp[meta][title]" value="' . htmlspecialchars($inData['meta']['title']) . '"' . $this->doc->formWidth(30) . ' /><br/>
 							' . $this->lang->getLL('makesavefo_description', TRUE) . ' <br/>
-							<input type="text" name="tx_impexp[meta][description]" value="'
-								. htmlspecialchars($inData['meta']['description']) . '"' . $this->doc->formWidth(30) . ' /><br/>
+							<input type="text" name="tx_impexp[meta][description]" value="' . htmlspecialchars($inData['meta']['description']) . '"' . $this->doc->formWidth(30) . ' /><br/>
 							' . $this->lang->getLL('makesavefo_notes', TRUE) . ' <br/>
-							<textarea name="tx_impexp[meta][notes]"' . $this->doc->formWidth(30, 1) . '>'
-								. GeneralUtility::formatForTextarea($inData['meta']['notes']) . '</textarea><br/>
-							' . (is_array($thumbnails) ? '
+							<textarea name="tx_impexp[meta][notes]"' . $this->doc->formWidth(30, 1) . '>' . GeneralUtility::formatForTextarea($inData['meta']['notes']) . '</textarea><br/>
+							' . (!empty($thumbnailFiles) ? '
 							' . $this->lang->getLL('makesavefo_thumbnail', TRUE) . '<br/>
-							' . $this->renderSelectBox('tx_impexp[meta][thumbnail]', $inData['meta']['thumbnail'], $thumbnails) . '<br/>
-							' . ($inData['meta']['thumbnail'] ? '<img src="' . $this->doc->backPath . '../'
-								. PathUtility::stripPathSitePrefix($tempDir) . $thumbnails[$inData['meta']['thumbnail']]
-								. '" vspace="5" style="border: solid black 1px;" alt="" /><br/>' : '') . '
+							' . $this->renderSelectBox('tx_impexp[meta][thumbnail]', $inData['meta']['thumbnail'], $thumbnailFiles) : '') . '<br/>
+							' . ($thumbnail ? '<img src="' . htmlspecialchars($thumbnail->getPublicUrl(TRUE)) . '" vspace="5" style="border: solid black 1px;" alt="" /><br/>' : '') . '
 							' . $this->lang->getLL('makesavefo_uploadThumbnail', TRUE) . '<br/>
-							<input type="file" name="upload_1" ' . $this->doc->formWidth(30) . ' size="30" /><br/>
-								<input type="hidden" name="file[upload][1][target]" value="' . htmlspecialchars($tempDir) . '" />
-								<input type="hidden" name="file[upload][1][data]" value="1" /><br />
-							' : '') . '
+							' . ($saveFolder ? '<input type="file" name="upload_1" ' . $this->doc->formWidth(30) . ' size="30" /><br/>
+								<input type="hidden" name="file[upload][1][target]" value="' . htmlspecialchars($saveFolder->getCombinedIdentifier()) . '" />
+								<input type="hidden" name="file[upload][1][data]" value="1" /><br />' : '') . '
 						</td>
 				</tr>';
 		// Add file options:
-		$savePath = $this->userSaveFolder();
 		$opt = array();
 		if ($this->export->compress) {
 			$opt['t3d_compressed'] = $this->lang->getLL('makesavefo_t3dFileCompressed');
@@ -819,8 +807,8 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		$opt['t3d'] = $this->lang->getLL('makesavefo_t3dFile');
 		$opt['xml'] = $this->lang->getLL('makesavefo_xml');
 		$fileName = '';
-		if ($savePath) {
-			$fileName = sprintf($this->lang->getLL('makesavefo_filenameSavedInS', TRUE), PathUtility::stripPathSitePrefix($savePath))
+		if ($saveFolder) {
+			$fileName = sprintf($this->lang->getLL('makesavefo_filenameSavedInS', TRUE), $saveFolder->getCombinedIdentifier())
 				. '<br/>
 						<input type="text" name="tx_impexp[filename]" value="'
 				. htmlspecialchars($inData['filename']) . '"' . $this->doc->formWidth(30) . ' /><br/>';
@@ -832,7 +820,7 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 					<td>' . $this->renderSelectBox('tx_impexp[filetype]', $inData['filetype'], $opt) . '<br/>
 						' . $this->lang->getLL('makesavefo_maxSizeOfFiles', TRUE) . '<br/>
 						<input type="text" name="tx_impexp[maxFileSize]" value="'
-							. htmlspecialchars($inData['maxFileSize']) . '"' . $this->doc->formWidth(10) . ' /><br/>
+				. htmlspecialchars($inData['maxFileSize']) . '"' . $this->doc->formWidth(10) . ' /><br/>
 						' . $fileName . '
 					</td>
 				</tr>';
@@ -842,7 +830,7 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 					<td>&nbsp;</td>
 					<td><input type="submit" value="' . $this->lang->getLL('makesavefo_update', TRUE)
 						. '" /> - <input type="submit" value="' . $this->lang->getLL('makesavefo_downloadExport', TRUE)
-						. '" name="tx_impexp[download_export]" />' . ($savePath ? ' - <input type="submit" value="'
+						. '" name="tx_impexp[download_export]" />' . ($saveFolder ? ' - <input type="submit" value="'
 						. $this->lang->getLL('importdata_saveToFilename', TRUE) . '" name="tx_impexp[save_export]" />' : '') . '</td>
 				</tr>';
 	}
@@ -883,25 +871,13 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 			$menuItems = array();
 			// Make input selector:
 			// must have trailing slash.
-			$path = $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'];
-			$filesInDir = GeneralUtility::getFilesInDir(PATH_site . $path, 't3d,xml', 1, 1);
-			$userPath = $this->userSaveFolder();
-			//Files from User-Dir
-			$filesInUserDir = GeneralUtility::getFilesInDir($userPath, 't3d,xml', 1, 1);
-			$filesInDir = array_merge($filesInUserDir, $filesInDir);
-			if (is_dir(PATH_site . $path . 'export/')) {
-				$filesInDir = array_merge($filesInDir, GeneralUtility::getFilesInDir(PATH_site . $path . 'export/', 't3d,xml', 1, 1));
-			}
-			$tempFolder = $this->userTempFolder();
-			if ($tempFolder) {
-				$temp_filesInDir = GeneralUtility::getFilesInDir($tempFolder, 't3d,xml', 1, 1);
-				$filesInDir = array_merge($filesInDir, $temp_filesInDir);
-			}
+			$path = $this->getDefaultImportExportFolder();
+			$exportFiles = $this->getExportFiles();
 			// Configuration
 			$row = array();
-			$opt = array('');
-			foreach ($filesInDir as $file) {
-				$opt[$file] = PathUtility::stripPathSitePrefix($file);
+			$selectOptions = array('');
+			foreach ($exportFiles as $file) {
+				$selectOptions[$file->getCombinedIdentifier()] = $file->getPublicUrl();
 			}
 			$row[] = '<tr class="bgColor5">
 					<td colspan="2"><strong>' . $this->lang->getLL('importdata_selectFileToImport', TRUE) . '</strong></td>
@@ -912,8 +888,8 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 			$row[] = '<tr class="bgColor4">
 				<td><strong>' . $this->lang->getLL('importdata_file', TRUE) . '</strong>'
 					. BackendUtility::cshItem('xMOD_tx_impexp', 'importFile', $GLOBALS['BACK_PATH'], '') . '</td>
-				<td>' . $this->renderSelectBox('tx_impexp[file]', $inData['file'], $opt) . '<br />'
-					. sprintf($this->lang->getLL('importdata_fromPathS', TRUE), $path) .
+				<td>' . $this->renderSelectBox('tx_impexp[file]', $inData['file'], $selectOptions) . '<br />'
+					. sprintf($this->lang->getLL('importdata_fromPathS', TRUE), $path ? $path->getCombinedIdentifier() : $this->lang->getLL('importdata_no_accessible_file_mount', TRUE)) .
 				$noCompressorAvailable . '</td>
 				</tr>';
 			$row[] = '<tr class="bgColor5">
@@ -995,7 +971,7 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 				'
 			);
 			// Upload file:
-			$tempFolder = $this->userTempFolder();
+			$tempFolder = $this->getDefaultImportExportFolder();
 			if ($tempFolder) {
 				$row = array();
 				$row[] = '<tr class="bgColor5">
@@ -1007,7 +983,7 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 						<td>
 
 								<input type="file" name="upload_1"' . $this->doc->formWidth(35) . ' size="40" />
-								<input type="hidden" name="file[upload][1][target]" value="' . htmlspecialchars($tempFolder) . '" />
+								<input type="hidden" name="file[upload][1][target]" value="' . htmlspecialchars($tempFolder->getCombinedIdentifier()) . '" />
 								<input type="hidden" name="file[upload][1][data]" value="1" /><br />
 
 								<input type="submit" name="_upload" value="' . $this->lang->sL('LLL:EXT:lang/locallang_core.xlf:file_upload.php.submit', TRUE) . '" />
@@ -1017,7 +993,7 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 					</tr>';
 				if (GeneralUtility::_POST('_upload')) {
 					$noFileUploaded = $this->fileProcessor->internalUploadMap[1]
-						? $this->lang->getLL('importdata_success', TRUE) . ' ' . PathUtility::stripPathSitePrefix($this->fileProcessor->internalUploadMap[1])
+						? $this->lang->getLL('importdata_success', TRUE) . ' ' . $this->uploadedFiles[0]->getName()
 						: '<span class="typo3-red">' . $this->lang->getLL('importdata_failureNoFileUploaded', TRUE) . '</span>';
 					$row[] = '<tr class="bgColor4">
 							<td>' . $this->lang->getLL('importdata_uploadStatus', TRUE) . '</td>
@@ -1037,10 +1013,10 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 			// Perform import or preview depending:
 			$overviewContent = '';
 			$extensionInstallationMessage = '';
-			$inFile = GeneralUtility::getFileAbsFileName($inData['file']);
-			if ($inFile && @is_file($inFile)) {
+			$inFile = $this->getFile($inData['file']);
+			if ($inFile !== NULL && $inFile->exists()) {
 				$trow = array();
-				if ($import->loadFile($inFile, 1)) {
+				if ($import->loadFile($inFile->getForLocalProcessing(FALSE), 1)) {
 					// Check extension dependencies:
 					$extKeysToInstall = array();
 					if (is_array($import->dat['header']['extensionDependencies'])) {
@@ -1067,10 +1043,6 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 				$trow[] = '<tr class="bgColor5">
 						<td colspan="2"><strong>' . $this->lang->getLL('importdata_metaData', TRUE) . '</strong></td>
 					</tr>';
-				$opt = array('');
-				foreach ($filesInDir as $file) {
-					$opt[$file] = PathUtility::stripPathSitePrefix($file);
-				}
 				$trow[] = '<tr class="bgColor4">
 					<td><strong>' . $this->lang->getLL('importdata_title', TRUE) . '</strong></td>
 					<td width="95%">' . nl2br(htmlspecialchars($import->dat['header']['meta']['title'])) . '</td>
@@ -1260,34 +1232,55 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 ****************************/
 
 	/**
-	 * Returns first temporary folder of the user account
+	 * Gets the default folder path for temporary uploads,
+	 * e.g. 'fileadmin/user_uploads/_temp_/importexport/'
 	 *
-	 * @return string Absolute path to first "_temp_" folder of the current user, otherwise blank.
-	 * @todo Define visibility
+	 * @return boolean|string Path or FALSE otherwise
+	 * @deprecated since TYPO3 CMS 6.2, will be removed two versions later - use getDefaultImportExportFolder() instead
 	 */
 	public function userTempFolder() {
-		/** @var $folder \TYPO3\CMS\Core\Resource\Folder */
-		$folder = $this->getBackendUser()->getDefaultUploadFolder();
-		if ($folder !== FALSE) {
-			return PATH_site . $folder->getPublicUrl();
-		}
-		return '';
+		GeneralUtility::logDeprecatedFunction();
+		return $this->getDefaultImportExportFolder()->getPublicUrl();
 	}
 
 	/**
-	 * Returns folder where user can save export files.
+	 * Gets the default folder path for temporary uploads,
+	 * e.g. 'fileadmin/user_uploads/_temp_/importexport/'
 	 *
 	 * @return string Absolute path to folder where export files can be saved.
-	 * @todo Define visib
+	 * @deprecated since TYPO3 CMS 6.2, will be removed two versions later - use getDefaultImportExportFolder() instead
 	 */
 	public function userSaveFolder() {
-		/** @var $folder \TYPO3\CMS\Core\Resource\Folder */
-		$folder = $this->getBackendUser()->getDefaultUploadFolder();
-		if ($folder !== FALSE) {
-			return PATH_site . $folder->getPublicUrl();
-		}
-		return '';
+		GeneralUtility::logDeprecatedFunction();
+		return $this->getDefaultImportExportFolder()->getPublicUrl();
 	}
+
+	/**
+	 * Returns a \TYPO3\CMS\Core\Resource\Folder object for saving export files
+	 * to the server and is also used for uploading import files.
+	 *
+	 * @return NULL|\TYPO3\CMS\Core\Resource\Folder
+	 */
+	protected function getDefaultImportExportFolder() {
+		$defaultImportExportFolder = NULL;
+
+		$defaultTemporaryFolder = $this->getBackendUser()->getDefaultUploadTemporaryFolder();
+		if ($defaultTemporaryFolder !== NULL) {
+
+			$importExportFolderName = 'importexport';
+			$createFolder = !$defaultTemporaryFolder->hasFolder($importExportFolderName);
+			if ($createFolder === TRUE) {
+				try {
+					$defaultImportExportFolder = $defaultTemporaryFolder->createFolder($importExportFolderName);
+				} catch (\TYPO3\CMS\Core\Resource\Exception $folderAccessException) {}
+			} else {
+				$defaultImportExportFolder = $defaultTemporaryFolder->getSubfolder($importExportFolderName);
+			}
+		}
+
+		return $defaultImportExportFolder;
+	}
+
 
 
 	/**
@@ -1314,7 +1307,12 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 			$this->fileProcessor->writeLog(0, 2, 1, 'Referer host "%s" and server host "%s" did not match!', array($refInfo['host'], $httpHost));
 		} else {
 			$this->fileProcessor->start($file);
-			$this->fileProcessor->processData();
+			$result = $this->fileProcessor->processData();
+			if (!empty($result['upload'])) {
+				foreach ($result['upload'] as $uploadedFiles) {
+					$this->uploadedFiles += $uploadedFiles;
+				}
+			}
 		}
 	}
 
@@ -1449,4 +1447,76 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	protected function getLanguageService() {
 		return $GLOBALS['LANG'];
 	}
+
+	/**
+	 * Gets thumbnail files.
+	 *
+	 * @return array|\TYPO3\CMS\Core\Resource\File[]
+	 */
+	protected function getThumbnailFiles() {
+		$thumbnailFiles = array();
+		$defaultTemporaryFolder = $this->getDefaultImportExportFolder();
+
+		if ($defaultTemporaryFolder === FALSE) {
+			return $thumbnailFiles;
+		}
+
+		/** @var $filter \TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter */
+		$filter = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\Filter\\FileExtensionFilter');
+		$filter->setAllowedFileExtensions(array('png', 'gif', 'jpg'));
+		$defaultTemporaryFolder->getStorage()->addFileAndFolderNameFilter(array($filter, 'filterFileList'));
+		$thumbnailFiles = $defaultTemporaryFolder->getFiles();
+
+		return $thumbnailFiles;
+	}
+
+	/**
+	 * Gets all export files.
+	 *
+	 * @return array|\TYPO3\CMS\Core\Resource\File[]
+	 */
+	protected function getExportFiles() {
+		$exportFiles = array();
+
+		$folder = $this->getDefaultImportExportFolder();
+		if ($folder !== FALSE) {
+
+			/** @var $filter \TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter */
+			$filter = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\Filter\\FileExtensionFilter');
+			$filter->setAllowedFileExtensions(array('t3d', 'xml'));
+			$folder->getStorage()->addFileAndFolderNameFilter(array($filter, 'filterFileList'));
+
+			$exportFiles = $folder->getFiles();
+		}
+
+		return $exportFiles;
+	}
+
+	/**
+	 * Gets a file by combined identifier.
+	 *
+	 * @param string $combinedIdentifier
+	 * @return NULL|\TYPO3\CMS\Core\Resource\File
+	 */
+	protected function getFile($combinedIdentifier) {
+		try {
+			$file = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getFileObjectFromCombinedIdentifier($combinedIdentifier);
+		} catch (\Exception $exception) {
+			$file = NULL;
+		}
+
+		return $file;
+	}
+
+	/**
+	 * Internal function to retrieve the indexer service,
+	 * if it does not exist, an instance will be created
+	 *
+	 * @return \TYPO3\CMS\Core\Resource\Service\IndexerService
+	 */
+	protected function getIndexerService() {
+		return GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\Service\\IndexerService');
+	}
+
+
 }

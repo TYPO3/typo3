@@ -250,6 +250,25 @@ class DefaultFactory {
 											'targetPermission' => $filePermission,
 											'targetContent' => '',
 										),
+										array(
+											'name' => 'importexport',
+											'type' => 'TYPO3\\CMS\\install\\FolderStructure\\DirectoryNode',
+											'targetPermission' => $directoryPermission,
+											'children' => array(
+												array(
+													'name' => '.htaccess',
+													'type' => 'TYPO3\\CMS\\install\\FolderStructure\\FileNode',
+													'targetPermission' => $filePermission,
+													'targetContentFile' => PATH_site . 'typo3/sysext/install/Resources/Private/FolderStructureTemplateFiles/fileadmin-user_upload-temp-importexport-htaccess',
+												),
+												array(
+													'name' => 'index.html',
+													'type' => 'TYPO3\\CMS\\install\\FolderStructure\\FileNode',
+													'targetPermission' => $filePermission,
+													'targetContentFile' => PATH_site . 'typo3/sysext/install/Resources/Private/FolderStructureTemplateFiles/fileadmin-temp-index.html',
+												),
+											),
+										),
 									),
 								),
 								array(

@@ -336,6 +336,9 @@
 			<trans-unit id="importdata_structureHasBeenImported" xml:space="preserve">
 				<source>Structure has been imported, here is the result:</source>
 			</trans-unit>
+			<trans-unit id="importdata_no_accessible_file_mount" xml:space="preserve">
+				<source>No accessible file_mount</source>
+			</trans-unit>
 			<trans-unit id="filterpage_structureToBeImported" xml:space="preserve">
 				<source>Structure to be imported:</source>
 			</trans-unit>

@@ -1864,6 +1864,33 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	}
 
 	/**
+	* Returns a \TYPO3\CMS\Core\Resource\Folder object that could be used for uploading
+	* temporary files in user context. The folder _temp_ below the default upload folder
+	* of the user is used.
+	*
+	* @return NULL|\TYPO3\CMS\Core\Resource\Folder
+	* @see \TYPO3\CMS\Core\Authentication\BackendUserAuthentication::getDefaultUploadFolder();
+	*/
+	public function getDefaultUploadTemporaryFolder() {
+		$defaultTemporaryFolder = NULL;
+		$defaultFolder = $this->getDefaultUploadFolder();
+
+		if ($defaultFolder !== FALSE) {
+			$tempFolderName = '_temp_';
+			$createFolder = !$defaultFolder->hasFolder($tempFolderName);
+			if ($createFolder === TRUE) {
+				try {
+					$defaultTemporaryFolder = $defaultFolder->createFolder($tempFolderName);
+				} catch (\TYPO3\CMS\Core\Resource\Exception $folderAccessException) {}
+			} else {
+				$defaultTemporaryFolder = $defaultFolder->getSubfolder($tempFolderName);
+			}
+		}
+
+		return $defaultTemporaryFolder;
+	}
+
+	/**
 	 * Creates a TypoScript comment with the string text inside.
 	 *
 	 * @param string $str The text to wrap in comment prefixes and delimiters.
