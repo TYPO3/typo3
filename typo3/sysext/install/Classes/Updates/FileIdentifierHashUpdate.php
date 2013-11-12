@@ -35,7 +35,7 @@ class FileIdentifierHashUpdate extends AbstractUpdate {
 	/**
 	 * @var string
 	 */
-	protected $title = 'Add the file identifier hash to existing sys_file records and detects the settings for local storages';
+	protected $title = 'Add the file identifier hash to existing sys_file records and update the settings for local storages';
 
 	/**
 	 * @var \TYPO3\CMS\Core\Database\DatabaseConnection
@@ -48,7 +48,7 @@ class FileIdentifierHashUpdate extends AbstractUpdate {
 	protected $sqlQueries = array();
 
 	/**
-	 * @var array<\TYPO3\CMS\Core\Resource\ResourceStorage>
+	 * @var ResourceStorage[]
 	 */
 	protected $storages;
 
@@ -70,6 +70,8 @@ class FileIdentifierHashUpdate extends AbstractUpdate {
 	public function init() {
 		$this->storageRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\StorageRepository');
 		$this->storages = $this->storageRepository->findAll();
+		// Add default storage for core files
+		$this->storages[] = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getStorageObject(0);
 	}
 
 	/**
@@ -79,7 +81,7 @@ class FileIdentifierHashUpdate extends AbstractUpdate {
 	 * @return boolean TRUE if an update is needed, FALSE otherwise
 	 */
 	public function checkForUpdate(&$description) {
-		$description = 'Add file identifier hash where it is missing.';
+		$description = 'Add file identifier hash to sys_file records, where it is missing. Additionally upgrade storage configurations.';
 		$unhashedFileCount = $this->db->exec_SELECTcountRows(
 			'uid',
 			'sys_file',
@@ -92,7 +94,7 @@ class FileIdentifierHashUpdate extends AbstractUpdate {
 			'driver = "Local" AND configuration NOT LIKE "%caseSensitive%"'
 		);
 
-		return ($unhashedFileCount > 0 || $unmigratedStorageCount > 0) && !$this->isWizardDone();
+		return $unhashedFileCount > 0 || $unmigratedStorageCount > 0;
 	}
 
 	/**
@@ -170,7 +172,11 @@ class FileIdentifierHashUpdate extends AbstractUpdate {
 			} else {
 				$updateCall = 'SHA1(LOWER(identifier))';
 			}
-			$queries[] = $query = sprintf('UPDATE sys_file SET identifier_hash = %s WHERE storage=%d', $updateCall, $storage);
+			$queries[] = $query = sprintf(
+				'UPDATE sys_file SET identifier_hash = %s WHERE storage=%d',
+				$updateCall,
+				$storage->getUid()
+			);
 			$this->db->sql_query($query);
 
 			// folder hashes cannot be done with one call: so do it manually
@@ -231,7 +237,7 @@ class FileIdentifierHashUpdate extends AbstractUpdate {
 
 		// create test file
 		if (!$testFileExists) {
-			touch($path);
+			@touch($path);
 		}
 
 		// do the actual sensitivity check
@@ -241,7 +247,7 @@ class FileIdentifierHashUpdate extends AbstractUpdate {
 
 		// clean filesystem
 		if (!$testFileExists) {
-			unlink($path);
+			@unlink($path);
 		}
 
 		return $caseSensitive;
