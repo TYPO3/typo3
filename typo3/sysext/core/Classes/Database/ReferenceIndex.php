@@ -847,7 +847,7 @@ class ReferenceIndex {
 		$tableNames = array();
 		$recCount = 0;
 		$tableCount = 0;
-		$headerContent = $testOnly ? 'Reference Index being TESTED (nothing written, use "-e" to update)' : 'Reference Index being Updated';
+		$headerContent = $testOnly ? 'Reference Index being TESTED (nothing written, use "--refindex update" to update)' : 'Reference Index being Updated';
 		if ($cli_echo) {
 			echo '*******************************************' . LF . $headerContent . LF . '*******************************************' . LF;
 		}
