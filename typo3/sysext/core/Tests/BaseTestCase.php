@@ -90,6 +90,40 @@ abstract class BaseTestCase extends \PHPUnit_Framework_TestCase {
 	}
 
 	/**
+	 * Returns a mock object which allows for calling protected methods and access
+	 * of protected properties.
+	 *
+	 * @param string $originalClassName Full qualified name of the original class
+	 * @param array $arguments
+	 * @param string $mockClassName
+	 * @param boolean $callOriginalConstructor
+	 * @param boolean $callOriginalClone
+	 * @param boolean $callAutoload
+	 *
+	 * @throws \InvalidArgumentException
+	 *
+	 * @return \PHPUnit_Framework_MockObject_MockObject|AccessibleObjectInterface
+	 *
+	 */
+	protected function getAccessibleMockForAbstractClass(
+		$originalClassName, array $arguments = array(), $mockClassName = '',
+		$callOriginalConstructor = TRUE, $callOriginalClone = TRUE, $callAutoload = TRUE
+	) {
+		if ($originalClassName === '') {
+			throw new \InvalidArgumentException('$originalClassName must not be empty.', 1384268260);
+		}
+
+		return $this->getMockForAbstractClass(
+			$this->buildAccessibleProxy($originalClassName),
+			$arguments,
+			$mockClassName,
+			$callOriginalConstructor,
+			$callOriginalClone,
+			$callAutoload
+		);
+	}
+
+	/**
 	 * Creates a proxy class of the specified class which allows
 	 * for calling even protected methods and access of protected properties.
 	 *
