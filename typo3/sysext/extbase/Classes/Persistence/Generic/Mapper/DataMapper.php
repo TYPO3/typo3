@@ -643,10 +643,12 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface {
 			$parameter = implode(',', $plainValueArray);
 		} elseif ($input instanceof DomainObjectInterface) {
 			$parameter = (int)$input->getUid();
-		} elseif (TypeHandlingUtility::isCoreType($input)) {
-			$parameter = $this->getPlainStringValue($input, $parseStringValueCallback, $parseStringValueCallbackParameters);
 		} elseif (is_object($input)) {
-			throw new UnexpectedTypeException('An object of class "' . get_class($input) . '" could not be converted to a plain value.', 1274799934);
+			if (TypeHandlingUtility::isCoreType($input)) {
+				$parameter = $this->getPlainStringValue($input, $parseStringValueCallback, $parseStringValueCallbackParameters);
+			} else {
+				throw new UnexpectedTypeException('An object of class "' . get_class($input) . '" could not be converted to a plain value.', 1274799934);
+			}
 		} else {
 			$parameter = $this->getPlainStringValue($input, $parseStringValueCallback, $parseStringValueCallbackParameters);
 		}
