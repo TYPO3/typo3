@@ -50,97 +50,95 @@ class ContentContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractCon
 			$GLOBALS['TSFE']->recordRegister[$originalRec]++;
 		}
 		$conf['table'] = isset($conf['table.']) ? trim($this->cObj->stdWrap($conf['table'], $conf['table.'])) : trim($conf['table']);
-		$tablePrefix = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('_', $conf['table'], TRUE);
-		if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList('pages,tt,fe,tx,ttx,user,static', $tablePrefix[0])) {
-			$renderObjName = $conf['renderObj'] ? $conf['renderObj'] : '<' . $conf['table'];
-			$renderObjKey = $conf['renderObj'] ? 'renderObj' : '';
-			$renderObjConf = $conf['renderObj.'];
-			$slide = isset($conf['slide.']) ? intval($this->cObj->stdWrap($conf['slide'], $conf['slide.'])) : intval($conf['slide']);
-			if (!$slide) {
-				$slide = 0;
-			}
-			$slideCollect = isset($conf['slide.']['collect.']) ? intval($this->cObj->stdWrap($conf['slide.']['collect'], $conf['slide.']['collect.'])) : intval($conf['slide.']['collect']);
-			if (!$slideCollect) {
-				$slideCollect = 0;
-			}
-			$slideCollectReverse = isset($conf['slide.']['collectReverse.']) ? intval($this->cObj->stdWrap($conf['slide.']['collectReverse'], $conf['slide.']['collectReverse.'])) : intval($conf['slide.']['collectReverse']);
-			$slideCollectReverse = $slideCollectReverse ? TRUE : FALSE;
-			$slideCollectFuzzy = isset($conf['slide.']['collectFuzzy.']) ? intval($this->cObj->stdWrap($conf['slide.']['collectFuzzy'], $conf['slide.']['collectFuzzy.'])) : intval($conf['slide.']['collectFuzzy']);
-			if ($slideCollectFuzzy) {
-				$slideCollectFuzzy = TRUE;
-			} else {
-				$slideCollectFuzzy = FALSE;
-			}
-			if (!$slideCollect) {
-				$slideCollectFuzzy = TRUE;
-			}
-			$again = FALSE;
-			do {
-				$res = $this->cObj->exec_getQuery($conf['table'], $conf['select.']);
-				if ($error = $GLOBALS['TYPO3_DB']->sql_error()) {
-					$GLOBALS['TT']->setTSlogMessage($error, 3);
-				} else {
-					$this->cObj->currentRecordTotal = $GLOBALS['TYPO3_DB']->sql_num_rows($res);
-					$GLOBALS['TT']->setTSlogMessage('NUMROWS: ' . $GLOBALS['TYPO3_DB']->sql_num_rows($res));
-					/** @var $cObj \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer */
-					$cObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
-					$cObj->setParent($this->cObj->data, $this->cObj->currentRecord);
-					$this->cObj->currentRecordNumber = 0;
-					$cobjValue = '';
-					while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-						// Versioning preview:
-						$GLOBALS['TSFE']->sys_page->versionOL($conf['table'], $row, TRUE);
-						// Language overlay:
-						if (is_array($row) && $GLOBALS['TSFE']->sys_language_contentOL) {
-							if ($conf['table'] == 'pages') {
-								$row = $GLOBALS['TSFE']->sys_page->getPageOverlay($row);
-							} else {
-								$row = $GLOBALS['TSFE']->sys_page->getRecordOverlay($conf['table'], $row, $GLOBALS['TSFE']->sys_language_content, $GLOBALS['TSFE']->sys_language_contentOL);
-							}
-						}
-						// Might be unset in the sys_language_contentOL
-						if (is_array($row)) {
-							// Call hook for possible manipulation of database row for cObj->data
-							if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content_content.php']['modifyDBRow'])) {
-								foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content_content.php']['modifyDBRow'] as $_classRef) {
-									$_procObj = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($_classRef);
-									$_procObj->modifyDBRow($row, $conf['table']);
-								}
-							}
-							\TYPO3\CMS\Core\Resource\Service\FrontendContentAdapterService::modifyDBRow($row, $conf['table']);
-							if (!$GLOBALS['TSFE']->recordRegister[($conf['table'] . ':' . $row['uid'])]) {
-								$this->cObj->currentRecordNumber++;
-								$cObj->parentRecordNumber = $this->cObj->currentRecordNumber;
-								$GLOBALS['TSFE']->currentRecord = $conf['table'] . ':' . $row['uid'];
-								$this->cObj->lastChanged($row['tstamp']);
-								$cObj->start($row, $conf['table']);
-								$tmpValue = $cObj->cObjGetSingle($renderObjName, $renderObjConf, $renderObjKey);
-								$cobjValue .= $tmpValue;
-							}
-						}
-					}
-					$GLOBALS['TYPO3_DB']->sql_free_result($res);
-				}
-				if ($slideCollectReverse) {
-					$theValue = $cobjValue . $theValue;
-				} else {
-					$theValue .= $cobjValue;
-				}
-				if ($slideCollect > 0) {
-					$slideCollect--;
-				}
-				if ($slide) {
-					if ($slide > 0) {
-						$slide--;
-					}
-					$conf['select.']['pidInList'] = $this->cObj->getSlidePids($conf['select.']['pidInList'], $conf['select.']['pidInList.']);
-					if (isset($conf['select.']['pidInList.'])) {
-						unset($conf['select.']['pidInList.']);
-					}
-					$again = strlen($conf['select.']['pidInList']) ? TRUE : FALSE;
-				}
-			} while ($again && ($slide && !strlen($tmpValue) && $slideCollectFuzzy || $slide && $slideCollect));
+		$renderObjName = $conf['renderObj'] ? $conf['renderObj'] : '<' . $conf['table'];
+		$renderObjKey = $conf['renderObj'] ? 'renderObj' : '';
+		$renderObjConf = $conf['renderObj.'];
+		$slide = isset($conf['slide.']) ? intval($this->cObj->stdWrap($conf['slide'], $conf['slide.'])) : intval($conf['slide']);
+		if (!$slide) {
+			$slide = 0;
 		}
+		$slideCollect = isset($conf['slide.']['collect.']) ? intval($this->cObj->stdWrap($conf['slide.']['collect'], $conf['slide.']['collect.'])) : intval($conf['slide.']['collect']);
+		if (!$slideCollect) {
+			$slideCollect = 0;
+		}
+		$slideCollectReverse = isset($conf['slide.']['collectReverse.']) ? intval($this->cObj->stdWrap($conf['slide.']['collectReverse'], $conf['slide.']['collectReverse.'])) : intval($conf['slide.']['collectReverse']);
+		$slideCollectReverse = $slideCollectReverse ? TRUE : FALSE;
+		$slideCollectFuzzy = isset($conf['slide.']['collectFuzzy.']) ? intval($this->cObj->stdWrap($conf['slide.']['collectFuzzy'], $conf['slide.']['collectFuzzy.'])) : intval($conf['slide.']['collectFuzzy']);
+		if ($slideCollectFuzzy) {
+			$slideCollectFuzzy = TRUE;
+		} else {
+			$slideCollectFuzzy = FALSE;
+		}
+		if (!$slideCollect) {
+			$slideCollectFuzzy = TRUE;
+		}
+		$again = FALSE;
+		do {
+			$res = $this->cObj->exec_getQuery($conf['table'], $conf['select.']);
+			if ($error = $GLOBALS['TYPO3_DB']->sql_error()) {
+				$GLOBALS['TT']->setTSlogMessage($error, 3);
+			} else {
+				$this->cObj->currentRecordTotal = $GLOBALS['TYPO3_DB']->sql_num_rows($res);
+				$GLOBALS['TT']->setTSlogMessage('NUMROWS: ' . $GLOBALS['TYPO3_DB']->sql_num_rows($res));
+				/** @var $cObj \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer */
+				$cObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
+				$cObj->setParent($this->cObj->data, $this->cObj->currentRecord);
+				$this->cObj->currentRecordNumber = 0;
+				$cobjValue = '';
+				while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+					// Versioning preview:
+					$GLOBALS['TSFE']->sys_page->versionOL($conf['table'], $row, TRUE);
+					// Language overlay:
+					if (is_array($row) && $GLOBALS['TSFE']->sys_language_contentOL) {
+						if ($conf['table'] == 'pages') {
+							$row = $GLOBALS['TSFE']->sys_page->getPageOverlay($row);
+						} else {
+							$row = $GLOBALS['TSFE']->sys_page->getRecordOverlay($conf['table'], $row, $GLOBALS['TSFE']->sys_language_content, $GLOBALS['TSFE']->sys_language_contentOL);
+						}
+					}
+					// Might be unset in the sys_language_contentOL
+					if (is_array($row)) {
+						// Call hook for possible manipulation of database row for cObj->data
+						if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content_content.php']['modifyDBRow'])) {
+							foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content_content.php']['modifyDBRow'] as $_classRef) {
+								$_procObj = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($_classRef);
+								$_procObj->modifyDBRow($row, $conf['table']);
+							}
+						}
+						\TYPO3\CMS\Core\Resource\Service\FrontendContentAdapterService::modifyDBRow($row, $conf['table']);
+						if (!$GLOBALS['TSFE']->recordRegister[($conf['table'] . ':' . $row['uid'])]) {
+							$this->cObj->currentRecordNumber++;
+							$cObj->parentRecordNumber = $this->cObj->currentRecordNumber;
+							$GLOBALS['TSFE']->currentRecord = $conf['table'] . ':' . $row['uid'];
+							$this->cObj->lastChanged($row['tstamp']);
+							$cObj->start($row, $conf['table']);
+							$tmpValue = $cObj->cObjGetSingle($renderObjName, $renderObjConf, $renderObjKey);
+							$cobjValue .= $tmpValue;
+						}
+					}
+				}
+				$GLOBALS['TYPO3_DB']->sql_free_result($res);
+			}
+			if ($slideCollectReverse) {
+				$theValue = $cobjValue . $theValue;
+			} else {
+				$theValue .= $cobjValue;
+			}
+			if ($slideCollect > 0) {
+				$slideCollect--;
+			}
+			if ($slide) {
+				if ($slide > 0) {
+					$slide--;
+				}
+				$conf['select.']['pidInList'] = $this->cObj->getSlidePids($conf['select.']['pidInList'], $conf['select.']['pidInList.']);
+				if (isset($conf['select.']['pidInList.'])) {
+					unset($conf['select.']['pidInList.']);
+				}
+				$again = strlen($conf['select.']['pidInList']) ? TRUE : FALSE;
+			}
+		} while ($again && ($slide && !strlen($tmpValue) && $slideCollectFuzzy || $slide && $slideCollect));
+
 		$wrap = isset($conf['wrap.']) ? $this->cObj->stdWrap($conf['wrap'], $conf['wrap.']) : $conf['wrap'];
 		if ($wrap) {
 			$theValue = $this->cObj->wrap($theValue, $wrap);
