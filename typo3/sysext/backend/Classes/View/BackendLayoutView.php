@@ -299,17 +299,20 @@ class BackendLayoutView implements \TYPO3\CMS\Core\SingletonInterface {
 		if (isset($this->selectedBackendLayout[$pageId])) {
 			return $this->selectedBackendLayout[$pageId];
 		}
-
 		$backendLayoutData = NULL;
 
 		$selectedCombinedIdentifier = $this->getSelectedCombinedIdentifier($pageId);
-
 		// If no backend layout is selected, use default
 		if (empty($selectedCombinedIdentifier)) {
 			$selectedCombinedIdentifier = 'default';
 		}
 
 		$backendLayout = $this->getDataProviderCollection()->getBackendLayout($selectedCombinedIdentifier, $pageId);
+		// If backend layout is not found available anymore, use default
+		if (is_null($backendLayout)) {
+			$selectedCombinedIdentifier = 'default';
+			$backendLayout = $this->getDataProviderCollection()->getBackendLayout($selectedCombinedIdentifier, $pageId);
+		}
 
 		if (!empty($backendLayout)) {
 			/** @var $parser \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser */
