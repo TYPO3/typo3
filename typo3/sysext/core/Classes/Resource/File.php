@@ -190,11 +190,8 @@ class File extends AbstractFile {
 
 		$indexRecord = $this->getFileIndexRepository()->findOneByCombinedIdentifier($this->getCombinedIdentifier());
 		if ($indexRecord === FALSE && $indexIfNotIndexed) {
-			// the IndexerService is not used at this place since, its not about additional MetaData anymore
-			$indexRecord = $this->getIndexerService()->indexFile($this, FALSE);
-			$this->mergeIndexRecord($indexRecord);
-			$this->indexed = TRUE;
-			$this->loadMetaData();
+			$this->getIndexerService()->updateIndexEntry($this);
+			$this->updatedProperties = array();
 		} elseif ($indexRecord !== FALSE) {
 			$this->mergeIndexRecord($indexRecord);
 			$this->indexed = TRUE;
@@ -422,11 +419,11 @@ class File extends AbstractFile {
 	 * Internal function to retrieve the indexer service,
 	 * if it does not exist, an instance will be created
 	 *
-	 * @return Service\IndexerService
+	 * @return Index\Indexer
 	 */
 	protected function getIndexerService() {
 		if ($this->indexerService === NULL) {
-			$this->indexerService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\Service\\IndexerService');
+			$this->indexerService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\Index\\Indexer', $this->storage);
 		}
 		return $this->indexerService;
 	}

@@ -76,11 +76,6 @@ class ExtendedFileUtility extends \TYPO3\CMS\Core\Utility\File\BasicFileUtility 
 	public $dontCheckForUnique = 0;
 
 	/**
-	 * @var \TYPO3\CMS\Core\Resource\Service\IndexerService
-	 */
-	protected $indexerService = NULL;
-
-	/**
 	 * This array is self-explaining (look in the class below).
 	 * It grants access to the functions. This could be set from outside in order to enabled functions to users.
 	 * See also the function setActionPermissions() which takes input directly from the user-record
@@ -924,7 +919,10 @@ class ExtendedFileUtility extends \TYPO3\CMS\Core\Utility\File\BasicFileUtility 
 				}
 				/** @var $fileObject File */
 				$fileObject = $targetFolderObject->addUploadedFile($fileInfo, $conflictMode);
-				$fileObject = $this->getIndexerService()->indexFile($fileObject);
+				$fileObject = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getFileObjectByStorageAndIdentifier($targetFolderObject->getStorage()->getUid(), $fileObject->getIdentifier());
+				if ($conflictMode === 'replace') {
+					$this->getIndexer($fileObject->getStorage())->updateIndexEntry($fileObject);
+				}
 				$resultObjects[] = $fileObject;
 				$this->writelog(1, 0, 1, 'Uploading file "%s" to "%s"', array($fileInfo['name'], $targetFolderObject->getIdentifier()));
 			} catch (\TYPO3\CMS\Core\Resource\Exception\UploadException $e) {
@@ -1016,6 +1014,15 @@ class ExtendedFileUtility extends \TYPO3\CMS\Core\Utility\File\BasicFileUtility 
 		$defaultFlashMessageQueue->enqueue($flashMessage);
 	}
 
+	/**
+	 * Gets Indexer
+	 *
+	 * @param \TYPO3\CMS\Core\Resource\ResourceStorage $storage
+	 * @return \TYPO3\CMS\Core\Resource\Index\Indexer
+	 */
+	protected function getIndexer(\TYPO3\CMS\Core\Resource\ResourceStorage $storage) {
+		return GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\Index\\Indexer', $storage);
+	}
 
 	/**
 	 * Get database connection
@@ -1033,16 +1040,4 @@ class ExtendedFileUtility extends \TYPO3\CMS\Core\Utility\File\BasicFileUtility 
 		return $GLOBALS['BE_USER'];
 	}
 
-	/**
-	 * Internal function to retrieve the indexer service,
-	 * if it does not exist, an instance will be created
-	 *
-	 * @return \TYPO3\CMS\Core\Resource\Service\IndexerService
-	 */
-	protected function getIndexerService() {
-		if ($this->indexerService === NULL) {
-			$this->indexerService = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\Service\\IndexerService');
-		}
-		return $this->indexerService;
-	}
 }

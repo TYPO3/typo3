@@ -35,6 +35,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * should only be accessed through the FileRepository for now
  *
  * @author Andreas Wolf <andreas.wolf@ikt-werk.de>
+ * @deprecated since TYPO3 CMS 6.2 LTS - will be removed 2 versions later
  */
 class IndexerService implements \TYPO3\CMS\Core\SingletonInterface {
 

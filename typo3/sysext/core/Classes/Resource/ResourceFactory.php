@@ -385,18 +385,14 @@ class ResourceFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	public function getFileObjectByStorageAndIdentifier($storageUid, &$fileIdentifier) {
 		$storage = $this->getStorageObject($storageUid, array(), $fileIdentifier);
 		$fileData = $this->getFileIndexRepository()->findOneByStorageUidAndIdentifier($storage->getUid(), $fileIdentifier);
-		if ($fileData !== FALSE) {
-			$fileObject = $this->getFileObject($fileData['uid'], $fileData);
+		if ($fileData === FALSE) {
+			$fileObject = $this->getIndexer($storage)->createIndexEntry($fileIdentifier);
 		} else {
-			$fileData = $storage->getFileInfoByIdentifier($fileIdentifier);
-			$fileObject = $this->createFileObject($fileData, $storage);
-			if (!array_key_exists('uid', $fileData)) {
-				$this->getFileIndexRepository()->add($fileObject);
-			}
-			$this->fileInstances[$fileObject->getUid()] = $fileObject;
+			$fileObject = $this->getFileObject($fileData['uid'], $fileData);
 		}
 		return $fileObject;
 	}
+
 	/**
 	 * Bulk function, can be used for anything to get a file or folder
 	 *
@@ -591,4 +587,14 @@ class ResourceFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	protected function getFileIndexRepository() {
 		return FileIndexRepository::getInstance();
 	}
+
+	/**
+	 * Returns an instance of the Indexer
+	 *
+	 * @return \TYPO3\CMS\Core\Resource\Index\Indexer
+	 */
+	protected function getIndexer(ResourceStorage $storage) {
+		return GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\Index\\Indexer', $storage);
+	}
+
 }
