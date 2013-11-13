@@ -6504,7 +6504,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 	 * @param string $field
 	 * @param array $config
 	 * @param array $row
-	 * @return string
+	 * @return mixed
 	 */
 	protected function getPlaceholderValue($table, $field, array $config, array $row) {
 		$value = trim($config['placeholder']);

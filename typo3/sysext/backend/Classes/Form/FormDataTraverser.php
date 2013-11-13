@@ -99,7 +99,7 @@ class FormDataTraverser {
 	 * @param array $fieldNameArray The field names that should be traversed.
 	 * @param string $tableName The starting table name.
 	 * @param array $row The starting record row.
-	 * @return string The value of the last field in the chain.
+	 * @return mixed The value of the last field in the chain.
 	 */
 	public function getTraversedFieldValue(array $fieldNameArray, $tableName, array $row) {
 		$this->currentTable = $tableName;
@@ -133,14 +133,15 @@ class FormDataTraverser {
 	 * the field values.
 	 *
 	 * @param array $fieldNameArray The field names that should be traversed.
-	 * @return string The value of the last field.
+	 * @return mixed The value of the last field.
 	 */
 	protected function getFieldValueRecursive(array $fieldNameArray) {
 		$value = '';
 
 		foreach ($fieldNameArray as $fieldName) {
+			// Skip if a defined field was actually not present in the database row
+			// Using array_key_exists here, since TYPO3 supports NULL values as well
 			if (!array_key_exists($fieldName, $this->currentRow)) {
-				// if an invalid field was configured reset the value
 				$value = '';
 				break;
 			}
