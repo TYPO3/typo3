@@ -1235,10 +1235,14 @@ class ElementBrowser {
 		$foldertree->ext_noTempRecyclerDirs = $this->mode == 'filedrag';
 		$tree = $foldertree->getBrowsableTree();
 		list(, , $specUid) = explode('_', $this->PM);
-		if ($this->mode == 'filedrag') {
-			$files = $this->TBE_dragNDrop($this->selectedFolder, $pArr[3]);
+		if ($this->selectedFolder) {
+			if ($this->mode == 'filedrag') {
+				$files = $this->TBE_dragNDrop($this->selectedFolder, $pArr[3]);
+			} else {
+				$files = $this->TBE_expandFolder($this->selectedFolder, $pArr[3], $noThumbs);
+			}
 		} else {
-			$files = $this->TBE_expandFolder($this->selectedFolder, $pArr[3], $noThumbs);
+			$files = '';
 		}
 		// Putting the parts together, side by side:
 		$content .= '
