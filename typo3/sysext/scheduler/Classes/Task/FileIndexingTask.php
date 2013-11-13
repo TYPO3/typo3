@@ -27,6 +27,7 @@ namespace TYPO3\CMS\Scheduler\Task;
  * This class provides Scheduler plugin implementation
  *
  * @author Lorenz Ulrich <lorenz.ulrich@visol.ch>
+ * @deprecated since TYPO3 CMS 6.2 LTS - will be removed 2 versions later
  */
 class FileIndexingTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 
@@ -79,26 +80,21 @@ class FileIndexingTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 	}
 
 	/**
+	 * Hardcode disabled state
+	 *
+	 * @return boolean TRUE if task is disabled, FALSE otherwise
+	 */
+	public function isDisabled() {
+		return TRUE;
+	}
+
+	/**
 	 * Function execute from the Scheduler
 	 *
 	 * @return boolean TRUE on successful execution, FALSE on error
 	 */
 	public function execute() {
-		$successfullyExecuted = TRUE;
-
-		/** @var $fileFactory \TYPO3\CMS\Core\Resource\ResourceFactory */
-		$fileFactory = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\ResourceFactory');
-		/** @var $indexerService \TYPO3\CMS\Core\Resource\Service\IndexerService */
-		$indexerService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\Service\\IndexerService');
-
-		// run indexing of every storage
-		$storageRecords = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'sys_file_storage', 'deleted = 0');
-		foreach ($storageRecords as $storageRecord) {
-			$storageObject = $fileFactory->getStorageObject($storageRecord['uid'], $storageRecord);
-			$folder = $storageObject->getRootLevelFolder();
-			$indexerService->indexFilesInFolder($folder);
-		}
-		return $successfullyExecuted;
+		return FALSE;
 	}
 
 }

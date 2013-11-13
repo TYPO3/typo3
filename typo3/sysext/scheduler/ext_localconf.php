@@ -38,6 +38,24 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['TYPO3\\CMS\\Sch
 	'title' => 'LLL:EXT:' . $_EXTKEY . '/locallang.xlf:fileIndexing.name',
 	'description' => 'LLL:EXT:' . $_EXTKEY . '/locallang.xlf:fileIndexing.description'
 );
+
+// Add task to index file in a storage
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['TYPO3\\CMS\\Scheduler\\Task\\FileStorageIndexingTask'] = array(
+	'extension' => $_EXTKEY,
+	'title' => 'LLL:EXT:' . $_EXTKEY . '/locallang.xlf:fileStorageIndexing.name',
+	'description' => 'LLL:EXT:' . $_EXTKEY . '/locallang.xlf:fileStorageIndexing.description',
+	'additionalFields' => 'TYPO3\\CMS\\Scheduler\\Task\\FileStorageIndexingAdditionalFieldProvider'
+);
+
+// Add task for extracting metadata from files in a storage
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['TYPO3\\CMS\\Scheduler\\Task\\FileStorageExtractionTask'] = array(
+	'extension' => $_EXTKEY,
+	'title' => 'LLL:EXT:' . $_EXTKEY . '/locallang.xlf:fileStorageExtraction.name',
+	'description' => 'LLL:EXT:' . $_EXTKEY . '/locallang.xlf:fileStorageExtraction.description',
+	'additionalFields' => 'TYPO3\\CMS\\Scheduler\\Task\\FileStorageExtractionAdditionalFieldProvider'
+
+);
+
 // Add recycler directory cleanup task. Windows is not supported
 // because "filectime" does not change after moving a file
 if (TYPO3_OS != 'WIN') {
@@ -48,6 +66,7 @@ if (TYPO3_OS != 'WIN') {
 		'additionalFields' => 'TYPO3\\CMS\\Scheduler\\Task\\RecyclerGarbageCollectionAdditionalFieldProvider'
 	);
 }
+
 // Add table garbage collection task
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['TYPO3\\CMS\\Scheduler\\Task\\TableGarbageCollectionTask'] = array(
 	'extension' => $_EXTKEY,

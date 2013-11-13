@@ -111,6 +111,12 @@
 			<trans-unit id="label.start" xml:space="preserve">
 				<source>Start (HH:MM DD-MM-YYYY)</source>
 			</trans-unit>
+			<trans-unit id="label.fileStorageIndexing.storage" xml:space="preserve">
+				<source>Storage to index</source>
+			</trans-unit>
+			<trans-unit id="label.fileStorageExtraction.fileCount" xml:space="preserve">
+				<source>Number of files per run</source>
+			</trans-unit>
 			<trans-unit id="label.tableGarbageCollection.allTables" xml:space="preserve">
 				<source>Clean all available tables</source>
 			</trans-unit>
