@@ -1429,7 +1429,7 @@ class ElementBrowser {
 	/**
 	 * For RTE: This displays all files from folder. No thumbnails shown
 	 *
-	 * @param string $folder The folder path to expand
+	 * @param \TYPO3\CMS\Core\Resource\Folder $folder The folder path to expand
 	 * @param string $extensionList List of fileextensions to show
 	 * @return string HTML output
 	 * @todo Define visibility
@@ -1458,11 +1458,7 @@ class ElementBrowser {
 			if ($renderFolders) {
 				$items = $folder->getSubfolders();
 			} else {
-				$filter = new \TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter();
-				$filter->setAllowedFileExtensions($extensionList);
-				$folder->getStorage()->setFileAndFolderNameFilters(array(array($filter, 'filterFileList')));
-
-				$items = $folder->getFiles();
+				$items = $this->getFilesInFolder($folder, $extensionList);
 			}
 			$c = 0;
 			$totalItems = count($items);
@@ -1503,16 +1499,13 @@ class ElementBrowser {
 	 * @return string HTML output
 	 * @todo Define visibility
 	 */
-	public function TBE_expandFolder(\TYPO3\CMS\Core\Resource\Folder $folder, $extensionList = '', $noThumbs = 0) {
-		$extensionList = $extensionList == '*' ? '' : $extensionList;
-		$content = '';
-		if ($folder->checkActionPermission('read')) {
-			// Listing the files:
-			$files = $folder->getFiles($extensionList);
-			$content = $this->fileList($files, $folder, $noThumbs);
+	public function TBE_expandFolder(\TYPO3\CMS\Core\Resource\Folder $folder, $extensionList = '', $noThumbs = FALSE) {
+		if (!$folder->checkActionPermission('read')) {
+			return '';
 		}
-		// Return accumulated content for filelisting:
-		return $content;
+		$extensionList = $extensionList == '*' ? '' : $extensionList;
+		$files = $this->getFilesInFolder($folder, $extensionList);
+		return $this->fileList($files, $folder, $noThumbs);
 	}
 
 	/**
@@ -1732,86 +1725,85 @@ class ElementBrowser {
 	 * @todo Define visibility
 	 */
 	public function TBE_dragNDrop(\TYPO3\CMS\Core\Resource\Folder $folder, $extensionList = '') {
-		$extensionList = $extensionList == '*' ? '' : $extensionList;
+		if (!$folder) {
+			return '';
+		}
 		$out = '';
-		if ($folder) {
-			if ($folder->getStorage()->isPublic()) {
-				// Read files from directory:
-				$files = $folder->getFiles($extensionList);
-				if (is_array($files)) {
-					$out .= $this->barheader(sprintf($GLOBALS['LANG']->getLL('files') . ' (%s):', count($files)));
-					$titleLen = intval($GLOBALS['BE_USER']->uc['titleLen']);
-					$picon = '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/i/_icon_webfolders.gif', 'width="18" height="16"') . ' alt="" />';
-					$picon .= htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs(basename($folder->getName()), $titleLen));
-					$out .= $picon . '<br />';
-					// Init row-array:
-					$lines = array();
-					// Add "drag-n-drop" message:
+		if ($folder->getStorage()->isPublic()) {
+			// Read files from directory:
+			$extensionList = $extensionList == '*' ? '' : $extensionList;
+			$files = $this->getFilesInFolder($folder, $extensionList);
+			$out .= $this->barheader(sprintf($GLOBALS['LANG']->getLL('files') . ' (%s):', count($files)));
+			$titleLen = intval($GLOBALS['BE_USER']->uc['titleLen']);
+			$picon = '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/i/_icon_webfolders.gif', 'width="18" height="16"') . ' alt="" />';
+			$picon .= htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs(basename($folder->getName()), $titleLen));
+			$out .= $picon . '<br />';
+			// Init row-array:
+			$lines = array();
+			// Add "drag-n-drop" message:
+			$lines[] = '
+				<tr>
+					<td colspan="2">' . $this->getMsgBox($GLOBALS['LANG']->getLL('findDragDrop')) . '</td>
+				</tr>';
+			// Traverse files:
+			foreach ($files as $fileObject) {
+				$fileInfo = $fileObject->getStorage()->getFileInfo($fileObject);
+				// URL of image:
+				$iUrl = \TYPO3\CMS\Core\Utility\GeneralUtility::rawurlencodeFP($fileObject->getPublicUrl(TRUE));
+				// Show only web-images
+				$fileExtension = strtolower($fileObject->getExtension());
+				if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList('gif,jpeg,jpg,png', $fileExtension)) {
+					$imgInfo = @getimagesize($fileObject->getForLocalProcessing(FALSE));
+					$pDim = $imgInfo[0] . 'x' . $imgInfo[1] . ' pixels';
+					$size = ' (' . \TYPO3\CMS\Core\Utility\GeneralUtility::formatSize($fileObject->getSize()) . 'bytes' . ($pDim ? ', ' . $pDim : '') . ')';
+					$filenameAndIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForFile($fileExtension, array('title' => $fileObject->getName() . $size));
+					if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('noLimit')) {
+						$maxW = 10000;
+						$maxH = 10000;
+					} else {
+						$maxW = 380;
+						$maxH = 500;
+					}
+					$IW = $imgInfo[0];
+					$IH = $imgInfo[1];
+					if ($IW > $maxW) {
+						$IH = ceil($IH / $IW * $maxW);
+						$IW = $maxW;
+					}
+					if ($IH > $maxH) {
+						$IW = ceil($IW / $IH * $maxH);
+						$IH = $maxH;
+					}
+					// Make row:
+					$lines[] = '
+						<tr class="bgColor4">
+							<td nowrap="nowrap">' . $filenameAndIcon . '&nbsp;</td>
+							<td nowrap="nowrap">' . ($imgInfo[0] != $IW ? '<a href="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array('noLimit' => '1'))) . '">' . '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/icon_warning2.gif', 'width="18" height="16"') . ' title="' . $GLOBALS['LANG']->getLL('clickToRedrawFullSize', TRUE) . '" alt="" />' . '</a>' : '') . $pDim . '&nbsp;</td>
+						</tr>';
 					$lines[] = '
 						<tr>
-							<td colspan="2">' . $this->getMsgBox($GLOBALS['LANG']->getLL('findDragDrop')) . '</td>
+							<td colspan="2"><img src="' . $iUrl . '" data-htmlarea-file-uid="' . $fileObject->getUid() . '" width="' . $IW . '" height="' . $IH . '" border="1" alt="" /></td>
 						</tr>';
-					// Traverse files:
-					foreach ($files as $fileObject) {
-						$fileInfo = $fileObject->getStorage()->getFileInfo($fileObject);
-						// URL of image:
-						$iUrl = \TYPO3\CMS\Core\Utility\GeneralUtility::rawurlencodeFP($fileObject->getPublicUrl(TRUE));
-						// Show only web-images
-						$fileExtension = strtolower($fileObject->getExtension());
-						if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList('gif,jpeg,jpg,png', $fileExtension)) {
-							$imgInfo = @getimagesize($fileObject->getForLocalProcessing(FALSE));
-							$pDim = $imgInfo[0] . 'x' . $imgInfo[1] . ' pixels';
-							$size = ' (' . \TYPO3\CMS\Core\Utility\GeneralUtility::formatSize($fileObject->getSize()) . 'bytes' . ($pDim ? ', ' . $pDim : '') . ')';
-							$filenameAndIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForFile($fileExtension, array('title' => $fileObject->getName() . $size));
-							if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('noLimit')) {
-								$maxW = 10000;
-								$maxH = 10000;
-							} else {
-								$maxW = 380;
-								$maxH = 500;
-							}
-							$IW = $imgInfo[0];
-							$IH = $imgInfo[1];
-							if ($IW > $maxW) {
-								$IH = ceil($IH / $IW * $maxW);
-								$IW = $maxW;
-							}
-							if ($IH > $maxH) {
-								$IW = ceil($IW / $IH * $maxH);
-								$IH = $maxH;
-							}
-							// Make row:
-							$lines[] = '
-								<tr class="bgColor4">
-									<td nowrap="nowrap">' . $filenameAndIcon . '&nbsp;</td>
-									<td nowrap="nowrap">' . ($imgInfo[0] != $IW ? '<a href="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array('noLimit' => '1'))) . '">' . '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/icon_warning2.gif', 'width="18" height="16"') . ' title="' . $GLOBALS['LANG']->getLL('clickToRedrawFullSize', 1) . '" alt="" />' . '</a>' : '') . $pDim . '&nbsp;</td>
-								</tr>';
-							$lines[] = '
-								<tr>
-									<td colspan="2"><img src="' . $iUrl . '" data-htmlarea-file-uid="' . $fileObject->getUid() . '" width="' . $IW . '" height="' . $IH . '" border="1" alt="" /></td>
-								</tr>';
-							$lines[] = '
-								<tr>
-									<td colspan="2"><img src="clear.gif" width="1" height="3" alt="" /></td>
-								</tr>';
-						}
-					}
-					// Finally, wrap all rows in a table tag:
-					$out .= '
-
-
-			<!--
-				File listing / Drag-n-drop
-			-->
-						<table border="0" cellpadding="0" cellspacing="1" id="typo3-dragBox">
-							' . implode('', $lines) . '
-						</table>';
+					$lines[] = '
+						<tr>
+							<td colspan="2"><img src="clear.gif" width="1" height="3" alt="" /></td>
+						</tr>';
 				}
-			} else {
-				// Print this warning if the folder is NOT a web folder:
-				$out .= $this->barheader($GLOBALS['LANG']->getLL('files'));
-				$out .= $this->getMsgBox($GLOBALS['LANG']->getLL('noWebFolder'), 'icon_warning2');
 			}
+			// Finally, wrap all rows in a table tag:
+			$out .= '
+
+
+	<!--
+		File listing / Drag-n-drop
+	-->
+				<table border="0" cellpadding="0" cellspacing="1" id="typo3-dragBox">
+					' . implode('', $lines) . '
+				</table>';
+		} else {
+			// Print this warning if the folder is NOT a web folder:
+			$out .= $this->barheader($GLOBALS['LANG']->getLL('files'));
+			$out .= $this->getMsgBox($GLOBALS['LANG']->getLL('noWebFolder'), 'icon_warning2');
 		}
 		return $out;
 	}
@@ -2166,6 +2158,23 @@ class ElementBrowser {
 			$result = $this->P['fieldChangeFuncHash'] === \TYPO3\CMS\Core\Utility\GeneralUtility::hmac(serialize($fieldChangeFunctions));
 		}
 		return $result;
+	}
+
+	/**
+	 * Get a list of Files in a folder filtered by extension
+	 *
+	 * @param \TYPO3\CMS\Core\Resource\Folder $folder
+	 * @param string $extensionList
+	 * @return \TYPO3\CMS\Core\Resource\File[]
+	 */
+	protected function getFilesInFolder(\TYPO3\CMS\Core\Resource\Folder $folder, $extensionList) {
+		if ($extensionList !== '') {
+			/** @var \TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter $filter */
+			$filter = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\Filter\\FileExtensionFilter');
+			$filter->setAllowedFileExtensions($extensionList);
+			$folder->setFileAndFolderNameFilters(array(array($filter, 'filterFileList')));
+		}
+		return $folder->getFiles();
 	}
 
 }
