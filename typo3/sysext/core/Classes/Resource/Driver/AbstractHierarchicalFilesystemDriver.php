@@ -52,7 +52,7 @@ abstract class AbstractHierarchicalFilesystemDriver extends AbstractDriver {
 	 * @return string
 	 * @throws \TYPO3\CMS\Core\Resource\Exception\InvalidPathException
 	 */
-	protected function canonicalizeAndCheckFileIdentifier($filePath) {
+	protected function canonicalizeAndCheckFilePath($filePath) {
 		$filePath = \TYPO3\CMS\Core\Utility\PathUtility::getCanonicalPath($filePath);
 
 		// filePath must be valid
@@ -60,6 +60,21 @@ abstract class AbstractHierarchicalFilesystemDriver extends AbstractDriver {
 			throw new \TYPO3\CMS\Core\Resource\Exception\InvalidPathException('File ' . $filePath . ' is not valid (".." and "//" is not allowed in path).', 1320286857);
 		}
 		return $filePath;
+	}
+
+	/**
+	 * Makes sure the Path given as parameter is valid
+	 *
+	 * @param string $fileIdentifier The file path (including the file name!)
+	 * @return string
+	 */
+	protected function canonicalizeAndCheckFileIdentifier($fileIdentifier) {
+		$fileIdentifier = $this->canonicalizeAndCheckFilePath($fileIdentifier);
+		$fileIdentifier = '/' . ltrim($fileIdentifier, '/');
+		if (!$this->isCaseSensitiveFileSystem()) {
+			$fileIdentifier = strtolower($fileIdentifier);
+		}
+		return $fileIdentifier;
 	}
 
 	/**

@@ -262,21 +262,7 @@ abstract class AbstractDriver {
 	 */
 	public function hashIdentifier($identifier) {
 		$identifier = $this->canonicalizeAndCheckFileIdentifier($identifier);
-		return sha1($this->getUniqueIdentifier($identifier));
-	}
-
-	/**
-	 * Calculate unique identifier by taking the case sensitivity of the file system
-	 * into account
-	 *
-	 * @param string $identifier
-	 * @return string
-	 */
-	protected function getUniqueIdentifier($identifier) {
-		if (!$this->isCaseSensitiveFileSystem()) {
-			$identifier = strtolower($identifier);
-		}
-		return $identifier;
+		return sha1($identifier);
 	}
 
 	/**
@@ -776,16 +762,24 @@ abstract class AbstractDriver {
 	/**
 	 * Makes sure the path given as parameter is valid
 	 *
-	 * @param string $fileIdentifier The file path (most times filePath)
+	 * @param string $filePath The file path (most times filePath)
+	 * @return string
+	 */
+	abstract protected function canonicalizeAndCheckFilePath($filePath);
+
+	/**
+	 * Makes sure the identifier given as parameter is valid
+	 *
+	 * @param string $fileIdentifier The file Identifier
 	 * @return string
 	 * @throws \TYPO3\CMS\Core\Resource\Exception\InvalidPathException
 	 */
 	abstract protected function canonicalizeAndCheckFileIdentifier($fileIdentifier);
 
 	/**
-	 * Makes sure the path given as parameter is valid
+	 * Makes sure the identifier given as parameter is valid
 	 *
-	 * @param string $folderIdentifier The folder path (most times filePath)
+	 * @param string $folderIdentifier The folder identifier
 	 * @return string
 	 */
 	abstract protected function canonicalizeAndCheckFolderIdentifier($folderIdentifier);

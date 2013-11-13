@@ -227,15 +227,10 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 	 * @throws \InvalidArgumentException
 	 */
 	public function getFileInfoByIdentifier($fileIdentifier, array $propertiesToExtract = array()) {
-		// Makes sure the Path given as parameter is valid
-		$fileIdentifier = $this->canonicalizeAndCheckFileIdentifier($fileIdentifier);
 		$dirPath = PathUtility::dirname($fileIdentifier);
-		if ($dirPath === '' || $dirPath === '.') {
-			$dirPath = '/';
-		} elseif ($dirPath !== '/') {
-			$dirPath = '/' . trim($dirPath, '/') . '/';
-		}
-		$absoluteFilePath = $this->absoluteBasePath . ltrim($fileIdentifier, '/');
+		$dirPath = $this->canonicalizeAndCheckFolderIdentifier($dirPath);
+
+		$absoluteFilePath = $this->getAbsolutePath($fileIdentifier);
 		// don't use $this->fileExists() because we need the absolute path to the file anyways, so we can directly
 		// use PHP's filesystem method.
 		if (!file_exists($absoluteFilePath)) {
@@ -420,7 +415,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 	 * @return array
 	 */
 	protected function getFileList_itemCallback($fileName, $path, array $fileRow = array()) {
-		$filePath = $this->getAbsolutePath($this->canonicalizeAndCheckFileIdentifier($path . $fileName));
+		$filePath = $this->getAbsolutePath($path . $fileName);
 		if (!is_file($filePath)) {
 			return array('', array());
 		}
@@ -442,7 +437,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 	 * @return array
 	 */
 	protected function getFolderList_itemCallback($folderName, $parentPath, array $folderRow = array()) {
-		$folderPath = $this->getAbsolutePath($this->canonicalizeAndCheckFileIdentifier($parentPath . $folderName));
+		$folderPath = $this->getAbsolutePath($parentPath . $folderName);
 
 		if (!is_dir($folderPath)) {
 			return array('', array());
@@ -536,7 +531,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 	 * @throws \InvalidArgumentException
 	 */
 	public function getSpecificFileInformation($filePath, $containerPath, $property) {
-		$identifier = $this->getUniqueIdentifier($containerPath . PathUtility::basename($filePath));
+		$identifier = $this->canonicalizeAndCheckFileIdentifier($containerPath . PathUtility::basename($filePath));
 
 		switch ($property) {
 			case 'size':
@@ -573,12 +568,12 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 	 */
 	protected function extractFolderInformation($folderPath, $containerPath) {
 		$folderName = PathUtility::basename($folderPath);
-		$identifier = $this->getUniqueIdentifier($containerPath . PathUtility::basename($folderName));
+		$identifier = $this->canonicalizeAndCheckFolderIdentifier($containerPath . $folderName);
 		$folderInformation = array(
 			'ctime' => filectime($folderPath),
 			'mtime' => filemtime($folderPath),
 			'name' => $folderName,
-			'identifier' => $identifier . '/',
+			'identifier' => $identifier,
 			'storage' => $this->storage->getUid()
 		);
 		return $folderInformation;
@@ -602,10 +597,10 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 	 */
 	public function getAbsolutePath($file) {
 		if ($file instanceof FileInterface) {
-			$path = $this->absoluteBasePath . $this->canonicalizeAndCheckFileIdentifier(ltrim($file->getIdentifier(), '/'));
+			$path = $this->absoluteBasePath . ltrim($this->canonicalizeAndCheckFileIdentifier($file->getIdentifier()), '/');
 		} elseif ($file instanceof Folder) {
 			// We can assume a trailing slash here because it is added by the folder object on construction.
-			$path = $this->absoluteBasePath . $this->canonicalizeAndCheckFolderIdentifier(ltrim($file->getIdentifier(), '/'));
+			$path = $this->absoluteBasePath . ltrim($this->canonicalizeAndCheckFolderIdentifier($file->getIdentifier()), '/');
 		} elseif (is_string($file)) {
 			$path = $this->absoluteBasePath . ltrim($file, '/');
 		} else {
@@ -671,7 +666,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 	 * @throws \InvalidArgumentException
 	 */
 	public function addFile($localFilePath, Folder $targetFolder, $fileName, \TYPO3\CMS\Core\Resource\AbstractFile $updateFileObject = NULL) {
-		$localFilePath = $this->canonicalizeAndCheckFileIdentifier($localFilePath);
+		$localFilePath = $this->canonicalizeAndCheckFilePath($localFilePath);
 		// as for the "virtual storage" for backwards-compatibility, this check always fails, as the file probably lies under PATH_site
 		// thus, it is not checked here
 		if (GeneralUtility::isFirstPartOfStr($localFilePath, $this->absoluteBasePath) && $this->storage->getUid() > 0) {
@@ -708,8 +703,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 	 * @return boolean
 	 */
 	public function resourceExists($identifier) {
-		$identifier = $this->canonicalizeAndCheckFileIdentifier(ltrim($identifier, '/'));
-		$absoluteResourcePath = $this->absoluteBasePath . $identifier;
+		$absoluteResourcePath = $this->getAbsolutePath($identifier);
 		return file_exists($absoluteResourcePath);
 	}
 
@@ -720,8 +714,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 	 * @return boolean
 	 */
 	public function fileExists($identifier) {
-		$identifier = $this->canonicalizeAndCheckFileIdentifier(ltrim($identifier, '/'));
-		$absoluteFilePath = $this->absoluteBasePath . $identifier;
+		$absoluteFilePath = $this->getAbsolutePath($identifier);
 		return is_file($absoluteFilePath);
 	}
 
@@ -744,8 +737,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 	 * @return boolean
 	 */
 	public function folderExists($identifier) {
-		$identifier = $this->canonicalizeAndCheckFileIdentifier(ltrim($identifier, '/'));
-		$absoluteFilePath = $this->absoluteBasePath . $identifier;
+		$absoluteFilePath = $this->getAbsolutePath($identifier);
 		return is_dir($absoluteFilePath);
 	}
 
@@ -758,7 +750,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 	 */
 	public function folderExistsInFolder($folderName, Folder $folder) {
 		$identifier = $folder->getIdentifier() . $folderName;
-		$identifier = $this->canonicalizeAndCheckFileIdentifier($identifier);
+		$identifier = $this->canonicalizeAndCheckFolderIdentifier($identifier);
 		return $this->folderExists($identifier);
 	}
 
@@ -805,7 +797,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 	 */
 	public function addFileRaw($localFilePath, Folder $targetFolder, $targetFileName) {
 		$fileIdentifier = $targetFolder->getIdentifier() . $targetFileName;
-		$absoluteFilePath = $this->absoluteBasePath . $fileIdentifier;
+		$absoluteFilePath = $this->getAbsolutePath($fileIdentifier);
 		$result = copy($localFilePath, $absoluteFilePath);
 		if ($result === FALSE || !file_exists($absoluteFilePath)) {
 			throw new \RuntimeException('Adding file ' . $localFilePath . ' at ' . $fileIdentifier . ' failed.');
@@ -824,9 +816,8 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 	 * @throws \RuntimeException
 	 */
 	public function deleteFileRaw($identifier) {
-		$identifier = $this->canonicalizeAndCheckFileIdentifier(ltrim($identifier, '/'));
+		$targetPath = $this->getAbsolutePath($identifier);
 
-		$targetPath = $this->absoluteBasePath . $identifier;
 		$result = unlink($targetPath);
 		if ($result === FALSE || file_exists($targetPath)) {
 			throw new \RuntimeException('Deleting file ' . $identifier . ' failed.', 1320381534);
@@ -847,7 +838,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 	public function copyFileWithinStorage(FileInterface $file, Folder $targetFolder, $fileName) {
 		// TODO add unit test
 		$sourcePath = $this->getAbsolutePath($file);
-		$targetPath = ltrim($targetFolder->getIdentifier(), '/') . $fileName;
+		$targetPath = $targetFolder->getIdentifier() . $fileName;
 		$targetPath = $this->canonicalizeAndCheckFileIdentifier($targetPath);
 
 		copy($sourcePath, $this->absoluteBasePath . $targetPath);
@@ -869,7 +860,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 		$sourcePath = $this->getAbsolutePath($file);
 		$targetIdentifier = $targetFolder->getIdentifier() . $fileName;
 		$targetIdentifier = $this->canonicalizeAndCheckFileIdentifier($targetIdentifier);
-		$result = rename($sourcePath, $this->absoluteBasePath . $targetIdentifier);
+		$result = rename($sourcePath, $this->getAbsolutePath($targetIdentifier));
 		if ($result === FALSE) {
 			throw new \RuntimeException('Moving file ' . $sourcePath . ' to ' . $targetIdentifier . ' failed.', 1315314712);
 		}
@@ -1020,15 +1011,15 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 	 */
 	public function renameFile(FileInterface $file, $newName) {
 		// Makes sure the Path given as parameter is valid
-		$newName = $this->canonicalizeAndCheckFileIdentifier($newName);
 		$newName = $this->sanitizeFileName($newName);
 		$newIdentifier = rtrim(GeneralUtility::fixWindowsFilePath(PathUtility::dirname($file->getIdentifier())), '/') . '/' . $newName;
+		$newIdentifier = $this->canonicalizeAndCheckFileIdentifier($newIdentifier);
 		// The target should not exist already
 		if ($this->fileExists($newIdentifier)) {
 			throw new \TYPO3\CMS\Core\Resource\Exception\ExistingTargetFileNameException('The target file already exists.', 1320291063);
 		}
 		$sourcePath = $this->getAbsolutePath($file);
-		$targetPath = $this->absoluteBasePath . '/' . ltrim($newIdentifier, '/');
+		$targetPath = $this->getAbsolutePath($newIdentifier);
 		$result = rename($sourcePath, $targetPath);
 		if ($result === FALSE) {
 			throw new \RuntimeException('Renaming file ' . $sourcePath . ' to ' . $targetPath . ' failed.', 1320375115);
@@ -1216,8 +1207,9 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 			throw new \TYPO3\CMS\Core\Resource\Exception\InvalidFileNameException('Invalid characters in fileName "' . $fileName . '"', 1320572272);
 		}
 		$filePath = $parentFolder->getIdentifier() . $this->sanitizeFileName(ltrim($fileName, '/'));
-		$result = touch($this->absoluteBasePath . $filePath);
-		GeneralUtility::fixPermissions($this->absoluteBasePath . ltrim($filePath, '/'));
+		$absoluteFilePath = $this->getAbsolutePath($filePath);
+		$result = touch($absoluteFilePath);
+		GeneralUtility::fixPermissions($absoluteFilePath);
 		clearstatcache();
 		if ($result !== TRUE) {
 			throw new \RuntimeException('Creating file ' . $filePath . ' failed.', 1320569854);
