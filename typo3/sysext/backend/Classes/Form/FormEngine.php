@@ -6517,7 +6517,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 	 * @return string
 	 */
 	protected function getPlaceholderAttribute($table, $field, array $config, array $row) {
-		if (isset($config['mode']) && $config['mode'] === 'useOrOverridePlaceholder') {
+		if (!isset($config['mode']) || $config['mode'] !== 'useOrOverridePlaceholder') {
 			return '';
 		}
 
