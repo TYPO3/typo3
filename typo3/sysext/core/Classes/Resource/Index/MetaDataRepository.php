@@ -99,9 +99,10 @@ class MetaDataRepository implements SingletonInterface {
 	 * Create empty
 	 *
 	 * @param int $fileUid
+	 * @param array $additionalFields
 	 * @return array
 	 */
-	protected function createMetaDataRecord($fileUid) {
+	public function createMetaDataRecord($fileUid, array $additionalFields = array()) {
 		$emptyRecord =  array(
 			'file' => intval($fileUid),
 			'pid' => 0,
@@ -109,6 +110,7 @@ class MetaDataRepository implements SingletonInterface {
 			'tstamp' => $GLOBALS['EXEC_TIME'],
 			'cruser_id' => TYPO3_MODE == 'BE' ? $GLOBALS['BE_USER']->user['uid'] : 0
 		);
+		$emptyRecord = array_merge($emptyRecord, $additionalFields);
 		$this->getDatabase()->exec_INSERTquery($this->tableName, $emptyRecord);
 		$record = $emptyRecord;
 		$record['uid'] = $this->getDatabase()->sql_insert_id();
@@ -208,5 +210,12 @@ class MetaDataRepository implements SingletonInterface {
 	 */
 	protected function emitRecordDeleted($fileUid) {
 		$this->getSignalSlotDispatcher()->dispatch('TYPO3\\CMS\\Core\\Resource\\Index\\MetaDataRepository', 'recordDeleted', array($fileUid));
+	}
+
+	/**
+	 * @return \TYPO3\CMS\Core\Resource\Index\MetaDataRepository
+	 */
+	public static function getInstance() {
+		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\Index\\MetaDataRepository');
 	}
 }

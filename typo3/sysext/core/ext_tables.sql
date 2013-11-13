@@ -284,6 +284,7 @@ CREATE TABLE sys_file (
 	pid int(11) DEFAULT '0' NOT NULL,
 	# update timestamp of the database record, not the file!
 	tstamp int(11) DEFAULT '0' NOT NULL,
+	last_indexed int(11) DEFAULT '0' NOT NULL,
 
 	# management information
 	missing tinyint(4) DEFAULT '0' NOT NULL,
@@ -305,6 +306,8 @@ CREATE TABLE sys_file (
 
 	PRIMARY KEY (uid),
 	KEY sel01 (storage,identifier_hash),
+	KEY tstamp (tstamp),
+	KEY lastindex (last_indexed),
 	KEY sha1 (sha1(40))
 );
 

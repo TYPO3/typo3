@@ -180,6 +180,7 @@ class FileIndexRepository implements SingletonInterface {
 	 * Adds a file to the index
 	 *
 	 * @param File $file
+	 * @return void
 	 */
 	public function add(File $file) {
 		if ($this->hasIndexRecord($file)) {
@@ -188,14 +189,36 @@ class FileIndexRepository implements SingletonInterface {
 				$file->updateProperties($this->findOneByFileObject($file));
 			}
 		} else {
-			$data = array_intersect_key($file->getProperties(), array_flip($this->fields));
-			$this->getDatabase()->exec_INSERTquery($this->table, $data);
-			$data['uid'] = $this->getDatabase()->sql_insert_id();
-			$file->updateProperties(array('uid' => $data['uid']));
-			$this->emitRecordCreated($data);
+			$file->updateProperties(array('uid' => $this->insertRecord($file->getProperties())));
 		}
 	}
 
+	/**
+	 * Add data from record (at indexing time)
+	 *
+	 * @param array $data
+	 * @return array
+	 */
+	public function addRaw(array $data) {
+		$data['uid'] = $this->insertRecord($data);
+		return $data;
+	}
+
+	/**
+	 * Helper to reduce code duplication
+	 *
+	 * @param array $data
+	 *
+	 * @return integer
+	 */
+	protected function insertRecord(array $data) {
+		$data = array_intersect_key($data, array_flip($this->fields));
+		$data['tstamp'] = time();
+		$this->getDatabase()->exec_INSERTquery($this->table, $data);
+		$data['uid'] = $this->getDatabase()->sql_insert_id();
+		$this->emitRecordCreated($data);
+		return $data['uid'];
+	}
 	/**
 	 * Checks if a file is indexed
 	 *
@@ -210,6 +233,7 @@ class FileIndexRepository implements SingletonInterface {
 	 * Updates the index record in the database
 	 *
 	 * @param File $file
+	 * @return void
 	 */
 	public function update(File $file) {
 		$updatedProperties = array_intersect($this->fields, $file->getUpdatedProperties());
@@ -222,6 +246,63 @@ class FileIndexRepository implements SingletonInterface {
 			$this->getDatabase()->exec_UPDATEquery($this->table, $this->getWhereClauseForFile($file), $updateRow);
 			$this->emitRecordUpdated(array_intersect_key($file->getProperties(), array_flip($this->fields)));
 		}
+	}
+
+	/**
+	 * Finds the files needed for second indexer step
+	 *
+	 * @param \TYPO3\CMS\Core\Resource\ResourceStorage $storage
+	 * @param integer $limit
+	 * @return array
+	 */
+	public function findInStorageWithIndexOutstanding(\TYPO3\CMS\Core\Resource\ResourceStorage $storage, $limit = -1) {
+		return $this->getDatabase()->exec_SELECTgetRows(
+			implode(',', $this->fields),
+			$this->table,
+			'tstamp > last_indexed AND storage = ' . intval($storage->getUid()),
+			'',
+			'tstamp ASC',
+			intval($limit) > 0 ? intval($limit) : ''
+		);
+	}
+
+
+	/**
+	 * Helper function for the Indexer to detect missing files
+	 *
+	 * @param \TYPO3\CMS\Core\Resource\ResourceStorage $storage
+	 * @param array $uidList
+	 * @return array
+	 */
+	public function findInStorageAndNotInUidList(\TYPO3\CMS\Core\Resource\ResourceStorage $storage, array $uidList) {
+		array_walk($uidList, 'intval');
+		$uidList = array_unique($uidList);
+
+		return $this->getDatabase()->exec_SELECTgetRows(
+			implode(',', $this->fields),
+			$this->table,
+			'storage = ' . intval($storage->getUid()) . ' AND uid NOT IN (' . implode(',', $uidList) . ')'
+		);
+	}
+
+	/**
+	 * Updates the timestamp when the file indexer extracted metadata
+	 *
+	 * @param integer $fileUid
+	 * @return void
+	 */
+	public function updateIndexingTime($fileUid) {
+		$this->getDatabase()->exec_UPDATEquery($this->table, 'uid = ' . intval($fileUid), array('last_indexed' => time()));
+	}
+
+	/**
+	 * Marks given file as missing in sys_file
+	 *
+	 * @param integer $fileUid
+	 * @return void
+	 */
+	public function markFileAsMissing($fileUid) {
+		$this->getDatabase()->exec_UPDATEquery($this->table, 'uid = ' . intval($fileUid), array('missing' => 1));
 	}
 
 	/**
