@@ -380,6 +380,38 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 	}
 
 	/**
+	 * Returns a list of files inside the specified path
+	 *
+	 * @param string $folderIdentifier
+	 * @param boolean $recursive
+	 * @param array $filenameFilterCallbacks The method callbacks to use for filtering the items
+	 *
+	 * @return array of FileIdentifiers
+	 */
+	public function getFileIdentifierListInFolder($folderIdentifier, $recursive = FALSE, array $filenameFilterCallbacks = array()) {
+		return array_values($this->getDirectoryItemList($folderIdentifier, 0, 0, $filenameFilterCallbacks, 'getFileList_itemCallbackIdentifierOnly', array(), $recursive));
+	}
+
+
+	/**
+	 * Handler for items in a file list.
+	 *
+	 * @param string $fileName
+	 * @param string $path
+	 * @return array
+	 */
+	protected function getFileList_itemCallbackIdentifierOnly($fileName, $path) {
+		$file = $path . $fileName;
+		$filePath = $this->getAbsolutePath($file);
+		if (!is_file($filePath)) {
+			return array('', array());
+		}
+		return array($file, $file);
+	}
+
+
+
+	/**
 	 * Handler for items in a file list.
 	 *
 	 * @param string $fileName
@@ -601,22 +633,22 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 	/**
 	 * Creates a (cryptographic) hash for a file.
 	 *
-	 * @param FileInterface $file
+	 * @param string $fileIdentifier
 	 * @param string $hashAlgorithm The hash algorithm to use
 	 * @return string
 	 * @throws \RuntimeException
 	 * @throws \InvalidArgumentException
 	 */
-	public function hash(FileInterface $file, $hashAlgorithm) {
+	public function hash($fileIdentifier, $hashAlgorithm) {
 		if (!in_array($hashAlgorithm, $this->getSupportedHashAlgorithms())) {
 			throw new \InvalidArgumentException('Hash algorithm "' . $hashAlgorithm . '" is not supported.', 1304964032);
 		}
 		switch ($hashAlgorithm) {
 			case 'sha1':
-				$hash = sha1_file($this->getAbsolutePath($file));
+				$hash = sha1_file($this->getAbsolutePath($fileIdentifier));
 				break;
 			case 'md5':
-				$hash = md5_file($this->getAbsolutePath($file));
+				$hash = md5_file($this->getAbsolutePath($fileIdentifier));
 				break;
 			default:
 				throw new \RuntimeException('Hash algorithm ' . $hashAlgorithm . ' is not implemented.', 1329644451);

@@ -246,11 +246,11 @@ abstract class AbstractDriver {
 	 * Creates a (cryptographic) hash for a file.
 	 *
 	 * @abstract
-	 * @param FileInterface $file
+	 * @param string $fileIdentifier
 	 * @param string $hashAlgorithm The hash algorithm to use
 	 * @return string
 	 */
-	abstract public function hash(FileInterface $file, $hashAlgorithm);
+	abstract public function hash($fileIdentifier, $hashAlgorithm);
 
 	/**
 	 * Hashes a file identifier, taking the case sensitivity of the file system
@@ -519,12 +519,24 @@ abstract class AbstractDriver {
 	 * @param array $filenameFilterCallbacks The method callbacks to use for filtering the items
 	 * @param array $fileData Two-dimensional, identifier-indexed array of file index records from the database
 	 * @param boolean $recursive
+	 * @deprecated since TYPO3 CMS 6.2 LTS, will be removed 2 versions Later
 	 * @return array
 	 */
-	// TODO add unit tests
 	public function getFileList($path, $start = 0, $numberOfItems = 0, array $filenameFilterCallbacks = array(), $fileData = array(), $recursive = FALSE) {
+		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
 		return $this->getDirectoryItemList($path, $start, $numberOfItems, $filenameFilterCallbacks, $this->fileListCallbackMethod, $fileData, $recursive);
 	}
+
+	/**
+	 * Returns a list of files inside the specified path
+	 *
+	 * @param string $folderIdentifier
+	 * @param boolean $recursive
+	 * @param array $filenameFilterCallbacks The method callbacks to use for filtering the items
+	 * @return array of FileIdentifiers
+	 */
+	abstract public function getFileIdentifierListInFolder($folderIdentifier, $recursive = FALSE, array $filenameFilterCallbacks = array());
+
 
 	/**
 	 * Copies a file to a temporary path and returns that path.

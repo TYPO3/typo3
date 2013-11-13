@@ -1136,11 +1136,23 @@ class ResourceStorage {
 	 * Creates a (cryptographic) hash for a file.
 	 *
 	 * @param FileInterface $fileObject
-	 * @param $hash
+	 * @param string $hash
 	 * @return string
 	 */
 	public function hashFile(FileInterface $fileObject, $hash) {
-		return $this->driver->hash($fileObject, $hash);
+		return $this->hashFileByIdentifier($fileObject->getIdentifier(), $hash);
+	}
+
+	/**
+	 * Creates a (cryptographic) hash for a fileIdentifier.
+
+	 * @param string $fileIdentifier
+	 * @param string $hash
+	 *
+	 * @return string
+	 */
+	public function hashFileByIdentifier($fileIdentifier, $hash) {
+		return $this->driver->hash($fileIdentifier, $hash);
 	}
 
 	/**
@@ -1235,6 +1247,7 @@ class ResourceStorage {
 	 *
 	 * @param FileInterface $fileObject
 	 * @return array
+	 * @internal
 	 */
 	public function getFileInfo(FileInterface $fileObject) {
 		return $this->driver->getFileInfo($fileObject);
@@ -1244,12 +1257,12 @@ class ResourceStorage {
 	 * Get information about a file by its identifier
 	 *
 	 * @param string $identifier
-	 *
+	 * @param array $propertiesToExtract
 	 * @return array
 	 * @internal
 	 */
-	public function getFileInfoByIdentifier($identifier) {
-		return $this->driver->getFileInfoByIdentifier($identifier);
+	public function getFileInfoByIdentifier($identifier, array $propertiesToExtract = array()) {
+		return $this->driver->getFileInfoByIdentifier($identifier, $propertiesToExtract);
 	}
 
 	/**
@@ -1326,6 +1339,19 @@ class ResourceStorage {
 		}
 
 		return $items;
+	}
+
+
+	/**
+	 * @param string $folderIdentifier
+	 * @param boolean $useFilters
+	 * @param boolean $recursive
+	 *
+	 * @return array
+	 */
+	public function getFileIdentifiersInFolder($folderIdentifier, $useFilters = TRUE, $recursive = FALSE) {
+		$filters = $useFilters == TRUE ? $this->fileAndFolderNameFilters : array();
+		return $this->driver->getFileIdentifierListInFolder($folderIdentifier, $recursive, $filters);
 	}
 
 	/**
@@ -2385,5 +2411,14 @@ class ResourceStorage {
 			$this->processingFolder = $this->driver->getFolder($processingFolder);
 		}
 		return $this->processingFolder;
+	}
+
+	/**
+	 * Gets the driver Type configured for this storage
+	 *
+	 * @return string
+	 */
+	public function getDriverType() {
+		return $this->storageRecord['driver'];
 	}
 }
