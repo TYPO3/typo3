@@ -302,6 +302,9 @@ p {
     background: #f7f7f7; }
   .typo3-extension-list tr:hover {
     background: #ececec; }
+  .typo3-extension-list .ext-icon {
+    max-height: 16px;
+    width: auto; }
 
 .dataTables_info {
   display: none; }
