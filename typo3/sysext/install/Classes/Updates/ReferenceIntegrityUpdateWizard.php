@@ -26,9 +26,12 @@ namespace TYPO3\CMS\Install\Updates;
 
 /**
  * Performs certain DB updates in order to ensure that the DB fields
- * are set properly. Currently this is used for ensuring that there
- * are no sys_file_reference records with PID=0 where the connected
- * parent records (e.g. a tt_content record) are not on PID=0
+ * are set properly.
+ * 1) Ensure that there are no sys_file_reference records with PID=0
+ *    where the connected parent records (e.g. a tt_content record) are
+ *    not on PID=0.
+ * 2) Make sure that all sys_file_references point to tables that still
+ *    exist.
  *
  * @author Benni Mack <benni@typo3.org>
  */
@@ -46,7 +49,9 @@ class ReferenceIntegrityUpdateWizard extends AbstractUpdate {
 	 * @return boolean TRUE if an update is needed, FALSE otherwise
 	 */
 	public function checkForUpdate(&$description) {
-		$description = 'Checks if there are file references that are on the root level. This could have happened due to a misconfigured previous migration.';
+		$description = 'Checks if there are file references that are on the root level. ' .
+			'This could have happened due to a misconfigured previous migration. ' .
+			'This migration will also remove references to tables that no longer exist.';
 		return count($this->getRequiredUpdates()) > 0;
 	}
 
@@ -59,8 +64,18 @@ class ReferenceIntegrityUpdateWizard extends AbstractUpdate {
 	 */
 	public function performUpdate(array &$dbQueries, &$customMessages) {
 		$updates = $this->getRequiredUpdates();
-		if (isset($updates['inproperConnectedFileReferences'])) {
-			foreach ($updates['inproperConnectedFileReferences'] as $fileReferenceRecord) {
+		if (isset($updates['referenceToMissingTables'])) {
+			foreach ($updates['referenceToMissingTables'] as $missingTable) {
+				$deleteQuery = $GLOBALS['TYPO3_DB']->DELETEquery(
+					'sys_file_reference',
+					'tablenames=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($missingTable, 'sys_file_reference')
+				);
+				$GLOBALS['TYPO3_DB']->sql_query($deleteQuery);
+				$dbQueries[] = $deleteQuery;
+			}
+		}
+		if (isset($updates['improperConnectedFileReferences'])) {
+			foreach ($updates['improperConnectedFileReferences'] as $fileReferenceRecord) {
 				if ($fileReferenceRecord['newpid'] > 0) {
 					$updateQuery = $GLOBALS['TYPO3_DB']->UPDATEquery(
 						'sys_file_reference',
@@ -82,11 +97,33 @@ class ReferenceIntegrityUpdateWizard extends AbstractUpdate {
 	 */
 	protected function getRequiredUpdates() {
 		$requiredUpdates = array();
-		$inproperConnectedFileReferences = $this->getInproperConnectedFileReferences();
-		if (count($inproperConnectedFileReferences) > 0) {
-			$requiredUpdates['inproperConnectedFileReferences'] = $inproperConnectedFileReferences;
+		$referenceToMissingTables = $this->getFileReferencesPointingToMissingTables();
+		if (count($referenceToMissingTables) > 0) {
+			$requiredUpdates['referenceToMissingTables'] = $referenceToMissingTables;
+		}
+		$improperConnectedFileReferences = $this->getImproperConnectedFileReferences($referenceToMissingTables);
+		if (count($improperConnectedFileReferences) > 0) {
+			$requiredUpdates['improperConnectedFileReferences'] = $improperConnectedFileReferences;
 		}
 		return $requiredUpdates;
+	}
+
+	/**
+	 * A list of tables that are referenced by sys_file_reference that are no longer existing
+	 *
+	 * @return array
+	 */
+	protected function getFileReferencesPointingToMissingTables() {
+		$existingTables = array_flip(array_keys($GLOBALS['TYPO3_DB']->admin_get_tables()));
+		$missingTables = array();
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('DISTINCT tablenames', 'sys_file_reference');
+		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+			$thisTablename = $row['tablenames'];
+			if (!isset($existingTables[$thisTablename])) {
+				$missingTables[] = $thisTablename;
+			}
+		}
+		return $missingTables;
 	}
 
 	/**
@@ -106,13 +143,18 @@ class ReferenceIntegrityUpdateWizard extends AbstractUpdate {
 	 * Fetches all sys_file_reference records that are on PID=0 BUT their counter parts (the target record)
 	 * is NOT on pid=0
 	 *
+	 * @param array $skipTables Table names to skip checking
 	 * @return array
 	 */
-	protected function getInproperConnectedFileReferences() {
-		$inproperConnectedReferences = array();
+	protected function getImproperConnectedFileReferences(array $skipTables = array()) {
+		$improperConnectedReferences = array();
 		// fetch all references on root level
 		$sysFileReferences = $this->getFileReferencesOnRootlevel();
 		foreach ($sysFileReferences as $fileReferenceRecord) {
+			$tableName = $fileReferenceRecord['targettable'];
+			if (in_array($tableName, $skipTables)) {
+				continue;
+			}
 			// if the target table is pages (e.g. when adding a file reference to the pages->media
 			// record, then the
 			$whereClause = 'uid=' . (int)$fileReferenceRecord['targetuid'];
@@ -125,15 +167,15 @@ class ReferenceIntegrityUpdateWizard extends AbstractUpdate {
 			// check the target table, if the target record is NOT on the rootlevel
 			$targetRecord = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
 				'uid, pid',
-				$fileReferenceRecord['targettable'],
+				$tableName,
 				$whereClause
 			);
 			// only add the file reference if the target record is not on PID=0
 			if ($targetRecord !== NULL) {
 				$fileReferenceRecord['newpid'] = ($isPageReference ? $targetRecord['uid'] : $targetRecord['pid']);
-				$inproperConnectedReferences[] = $fileReferenceRecord;
+				$improperConnectedReferences[] = $fileReferenceRecord;
 			}
 		}
-		return $inproperConnectedReferences;
+		return $improperConnectedReferences;
 	}
 }
