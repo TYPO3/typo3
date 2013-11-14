@@ -434,6 +434,9 @@ class ResourceFactory implements \TYPO3\CMS\Core\SingletonInterface {
 				return $this->getObjectFromCombinedIdentifier($input);
 			} elseif ($prefix == 'EXT') {
 				$input = GeneralUtility::getFileAbsFileName($input);
+				if (empty($input)) {
+					return NULL;
+				}
 				$input = PathUtility::getRelativePath(PATH_site, dirname($input)) . basename($input);
 				return $this->getFileObjectFromCombinedIdentifier($input);
 			} else {
