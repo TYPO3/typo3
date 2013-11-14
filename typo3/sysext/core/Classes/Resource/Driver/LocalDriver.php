@@ -40,6 +40,11 @@ use TYPO3\CMS\Core\Utility\PathUtility;
 class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 
 	/**
+	 * @var string
+	 */
+	const UNSAFE_FILENAME_CHARACTER_EXPRESSION = '\\x00-\\x2C\\/\\x3A-\\x3F\\x5B-\\x60\\x7B-\\xBF';
+
+	/**
 	 * The absolute base path. It always contains a trailing slash.
 	 *
 	 * @var string
@@ -279,7 +284,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 		// Handle UTF-8 characters
 		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['UTF8filesystem']) {
 			// Allow ".", "-", 0-9, a-z, A-Z and everything beyond U+C0 (latin capital letter a with grave)
-			$cleanFileName = preg_replace('/[\\x00-\\x2C\\/\\x3A-\\x3F\\x5B-\\x60\\x7B-\\xBF]/u', '_', trim($fileName));
+			$cleanFileName = preg_replace('/[' . self::UNSAFE_FILENAME_CHARACTER_EXPRESSION . ']/u', '_', trim($fileName));
 		} else {
 			// Define character set
 			if (!$charset) {
@@ -295,7 +300,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 				$fileName = $this->getCharsetConversion()->specCharsToASCII($charset, $fileName);
 			}
 			// Replace unwanted characters by underscores
-			$cleanFileName = preg_replace('/[^.[:alnum:]_-]/', '_', trim($fileName));
+			$cleanFileName = preg_replace('/[' . self::UNSAFE_FILENAME_CHARACTER_EXPRESSION . '\\xC0-\\xFF]/', '_', trim($fileName));
 		}
 		// Strip trailing dots and return
 		$cleanFileName = preg_replace('/\\.*$/', '', $cleanFileName);

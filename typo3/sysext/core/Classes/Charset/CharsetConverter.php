@@ -1791,7 +1791,7 @@ class CharsetConverter {
 	 * @todo Define visibility
 	 */
 	public function specCharsToASCII($charset, $string) {
-		if ($charset == 'utf-8') {
+		if ($charset === 'utf-8') {
 			$string = $this->utf8_char_mapping($string, 'ascii');
 		} elseif (isset($this->eucBasedSets[$charset])) {
 			$string = $this->euc_char_mapping($string, $charset, 'ascii');
