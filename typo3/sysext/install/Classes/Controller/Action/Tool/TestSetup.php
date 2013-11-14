@@ -204,8 +204,8 @@ class TestSetup extends Action\AbstractAction implements Action\ActionInterface 
 				$inputFile = $this->imageBasePath . 'TestInput/Test.' . $formatToTest;
 				$imageProcessor->imageMagickConvert_forceFileNameBody = uniqid('read') . '-' . $formatToTest;
 				$imResult = $imageProcessor->imageMagickConvert($inputFile, 'jpg', '170', '', '', '', array(), TRUE);
+				$result['title'] = 'Read ' . $formatToTest;
 				if ($imResult !== NULL) {
-					$result['title'] = 'Read ' . $formatToTest;
 					$result['outputFile'] = $imResult[3];
 					$result['referenceFile'] = $this->imageBasePath . 'TestReference/Read-' . $formatToTest . '.jpg';
 					$result['command'] = $imageProcessor->IM_commands;
