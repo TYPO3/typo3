@@ -115,7 +115,14 @@ abstract class AbstractAction implements ActionInterface {
 		// Count of folder structure errors are displayed in left navigation menu
 		/** @var $folderStructureFacade \TYPO3\CMS\Install\FolderStructure\StructureFacade */
 		$folderStructureFacade = $this->objectManager->get('TYPO3\\CMS\\Install\\FolderStructure\\DefaultFactory')->getStructure();
-		$folderStructureErrors = $statusUtility->filterBySeverity($folderStructureFacade->getStatus(), 'error');
+		$folderStatus = $folderStructureFacade->getStatus();
+
+		/** @var $permissionCheck \TYPO3\CMS\Install\FolderStructure\DefaultPermissionsCheck */
+		$permissionCheck = $this->objectManager->get('TYPO3\\CMS\\Install\\FolderStructure\\DefaultPermissionsCheck');
+		$folderStatus[] = $permissionCheck->getMaskStatus('fileCreateMask');
+		$folderStatus[] = $permissionCheck->getMaskStatus('folderCreateMask');
+
+		$folderStructureErrors = $statusUtility->filterBySeverity($folderStatus, 'error');
 
 		// Context service distinguishes between standalone and backend context
 		$contextService = $this->objectManager->get('TYPO3\\CMS\\Install\\Service\\ContextService');

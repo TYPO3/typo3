@@ -3,33 +3,37 @@
 <f:layout name="ToolAuthenticated" />
 
 <f:section name="Content">
-	<h3>File and folder status below <i:constant name="PATH_site" /></h3>
+	<h3>Folder Structure</h3>
+	<p>Root Directory: <strong><i:constant name="PATH_site" /></strong></p>
 
 	<f:if condition="{fixedStatus}">
+		<hr />
 		<h4>Fix action results:</h4>
 		<f:for each="{fixedStatus}" as="statusMessage">
 			<f:render partial="Action/Common/StatusMessage" arguments="{message: statusMessage}" />
 		</f:for>
-		<hr />
 	</f:if>
 
 	<f:if condition="{errorStatus}">
-		<form method="post">
-			<f:render partial="Action/Common/HiddenFormFields" arguments="{_all}" />
-			<f:render partial="Action/Common/SubmitButton" arguments="{name:'fix', text:'Fix file and folder permissions'}"/>
-		</form>
 		<hr />
-	</f:if>
-
-	<f:if condition="{errorStatus}">
-		<h4>These files or folders have errors and may be automatically fixable:</h4>
+		<h4>These files or folders have errors and may be fixed automatically:</h4>
 		<f:for each="{errorStatus}" as="statusMessage">
 			<f:render partial="Action/Common/StatusMessage" arguments="{message: statusMessage}" />
 		</f:for>
+		<form method="post">
+			<f:render partial="Action/Common/HiddenFormFields" arguments="{_all}" />
+			<f:render partial="Action/Common/SubmitButton" arguments="{name:'fix', text:'Try to fix file and folder permissions'}"/>
+		</form>
 	</f:if>
 
+	<hr />
+	<h4>Default File and Directory permissions</h4>
+	<f:render partial="Action/Common/StatusMessage" arguments="{message: filePermissionStatus}" />
+	<f:render partial="Action/Common/StatusMessage" arguments="{message: directoryPermissionStatus}" />
+
 	<f:if condition="{okStatus}">
-		<h4>These structures are ok:</h4>
+		<hr />
+		<h4>These structures don't need to be fixed:</h4>
 		<f:for each="{okStatus}" as="statusMessage">
 			<f:render partial="Action/Common/StatusMessage" arguments="{message: statusMessage}" />
 		</f:for>

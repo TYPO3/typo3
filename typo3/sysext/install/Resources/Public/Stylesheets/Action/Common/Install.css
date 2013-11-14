@@ -107,13 +107,13 @@ h2 {
 }
 
 h3 {
-	font-size: 120%;
+	font-size: 140%;
 	margin: 0.7em 0 1.5em
 }
 
 h4 {
 	font-size: 110%;
-	margin: 0;
+	margin: 1.5em 0 1.2em;
 }
 
 .clearfix:after {
@@ -450,7 +450,7 @@ body.standalone #t3-install-menu-logout a {
 }
 
 #t3-install-box-body h3 {
-	margin: 0.75em 0 2em;
+	margin: 0.75em 0 1.5em;
 }
 
 .t3-install-login #t3-install-box-body h3 {
@@ -477,6 +477,7 @@ body.standalone #t3-install-menu-logout a {
 
 #t3-install-box-body .toggleButton h4 {
 	border: 1px solid transparent;
+	margin: 0 0;
 }
 
 #t3-install-box-body .expanded .toggleButton h4 {

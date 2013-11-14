@@ -74,25 +74,6 @@ class AbstractNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 */
-	public function getTargetPermissionRelaxedReturnsFalseByDefault() {
-		/** @var $node \TYPO3\CMS\Install\FolderStructure\AbstractNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
-		$node = $this->getAccessibleMock('TYPO3\\CMS\\Install\\FolderStructure\\AbstractNode', array('dummy'), array(), '', FALSE);
-		$this->assertFalse($node->_call('getTargetPermissionRelaxed'));
-	}
-
-	/**
-	 * @test
-	 */
-	public function getTargetPermissionRelaxedReturnsTrueIfPermissionCheckIsRelaxed() {
-		/** @var $node \TYPO3\CMS\Install\FolderStructure\AbstractNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
-		$node = $this->getAccessibleMock('TYPO3\\CMS\\Install\\FolderStructure\\AbstractNode', array('dummy'), array(), '', FALSE);
-		$node->_set('targetPermissionRelaxed', TRUE);
-		$this->assertTrue($node->_call('getTargetPermissionRelaxed'));
-	}
-
-	/**
-	 * @test
-	 */
 	public function getChildrenReturnsSetChildren() {
 		/** @var $node \TYPO3\CMS\Install\FolderStructure\AbstractNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
 		$node = $this->getAccessibleMock('TYPO3\\CMS\\Install\\FolderStructure\\AbstractNode', array('dummy'), array(), '', FALSE);
@@ -213,7 +194,7 @@ class AbstractNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 */
-	public function fixPermissionReturnsErrorStatusIfPermissionCanNotBeChanged() {
+	public function fixPermissionReturnsNoticeStatusIfPermissionCanNotBeChanged() {
 		if (TYPO3_OS === 'WIN') {
 			$this->markTestSkipped('Test not available on Windows OS.');
 		}
@@ -234,18 +215,18 @@ class AbstractNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		mkdir($path);
 		$subPath = $path . '/' . uniqid('dir_');
 		mkdir($subPath);
-		chmod($path, octdec(2000));
+		chmod($path, 02000);
 		$this->testNodesToDelete[] = $path;
 		$node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($subPath));
 		$node->_set('targetPermission', '2770');
-		$this->assertInstanceOf('TYPO3\\CMS\\Install\\Status\\ErrorStatus', $node->_call('fixPermission'));
-		chmod($path, octdec(2770));
+		$this->assertInstanceOf('TYPO3\\CMS\\Install\\Status\\NoticeStatus', $node->_call('fixPermission'));
+		chmod($path, 02770);
 	}
 
 	/**
 	 * @test
 	 */
-	public function fixPermissionReturnsNoticeStatusIfPermissionsCanNotBeChangedAndRelaxedPermissionCheckIsEnabled() {
+	public function fixPermissionReturnsNoticeStatusIfPermissionsCanNotBeChanged() {
 		if (TYPO3_OS === 'WIN') {
 			$this->markTestSkipped('Test not available on Windows OS.');
 		}
@@ -266,13 +247,12 @@ class AbstractNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		mkdir($path);
 		$subPath = $path . '/' . uniqid('dir_');
 		mkdir($subPath);
-		chmod($path, octdec(2000));
+		chmod($path, 02000);
 		$this->testNodesToDelete[] = $path;
 		$node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($subPath));
 		$node->_set('targetPermission', '2770');
-		$node->_set('targetPermissionRelaxed', TRUE);
 		$this->assertInstanceOf('TYPO3\\CMS\\Install\\Status\\NoticeStatus', $node->_call('fixPermission'));
-		chmod($path, octdec(2770));
+		chmod($path, 02770);
 	}
 
 	/**
@@ -296,13 +276,13 @@ class AbstractNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		mkdir($path);
 		$subPath = $path . '/' . uniqid('dir_');
 		mkdir($subPath);
-		chmod($path, octdec(2770));
+		chmod($path, 02770);
 		$this->testNodesToDelete[] = $path;
-		$node->_set('targetPermission', '2775');
+		$node->_set('targetPermission', '2770');
 		$node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($subPath));
 		$this->assertInstanceOf('TYPO3\\CMS\\Install\\Status\\OkStatus', $node->_call('fixPermission'));
 		$resultDirectoryPermissions = substr(decoct(fileperms($subPath)), 1);
-		$this->assertSame('2775', $resultDirectoryPermissions);
+		$this->assertSame('2770', $resultDirectoryPermissions);
 	}
 
 	/**
@@ -312,18 +292,6 @@ class AbstractNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		/** @var $node \TYPO3\CMS\Install\FolderStructure\AbstractNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
 		$node = $this->getAccessibleMock('TYPO3\\CMS\\Install\\FolderStructure\\AbstractNode', array('isWindowsOs'), array(), '', FALSE);
 		$node->expects($this->once())->method('isWindowsOs')->will($this->returnValue(TRUE));
-		$this->assertTrue($node->_call('isPermissionCorrect'));
-	}
-
-	/**
-	 * @test
-	 */
-	public function isPermissionCorrectReturnsTrueIfTargetPermissionAndCurrentPermissionAreIdentical() {
-		/** @var $node \TYPO3\CMS\Install\FolderStructure\AbstractNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
-		$node = $this->getAccessibleMock('TYPO3\\CMS\\Install\\FolderStructure\\AbstractNode', array('isWindowsOs', 'getCurrentPermission'), array(), '', FALSE);
-		$node->expects($this->any())->method('isWindowsOs')->will($this->returnValue(FALSE));
-		$node->expects($this->any())->method('getCurrentPermission')->will($this->returnValue('foo'));
-		$node->_set('targetPermission', 'foo');
 		$this->assertTrue($node->_call('isPermissionCorrect'));
 	}
 
@@ -351,7 +319,7 @@ class AbstractNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$path = PATH_site . 'typo3temp/' . uniqid('dir_');
 		\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep($path);
 		$this->testNodesToDelete[] = $path;
-		chmod($path, octdec(2775));
+		chmod($path, 02775);
 		clearstatcache();
 		$node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($path));
 		$this->assertSame('2775', $node->_call('getCurrentPermission'));
@@ -369,7 +337,7 @@ class AbstractNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$file = PATH_site . 'typo3temp/' . uniqid('file_');
 		touch($file);
 		$this->testNodesToDelete[] = $file;
-		chmod($file, octdec(770));
+		chmod($file, 0770);
 		clearstatcache();
 		$node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($file));
 		$this->assertSame('0770', $node->_call('getCurrentPermission'));
@@ -420,4 +388,5 @@ class AbstractNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$result = $node->_call('getRelativePathBelowSiteRoot', PATH_site . 'foo/bar');
 		$this->assertSame('/foo/bar', $result);
 	}
+
 }

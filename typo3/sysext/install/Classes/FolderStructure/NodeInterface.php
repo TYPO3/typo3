@@ -68,6 +68,8 @@ interface NodeInterface {
 	/**
 	 * Fix structure
 	 *
+	 * If there is nothing to fix, returns an empty array
+	 *
 	 * @return array<\TYPO3\CMS\Install\Status\StatusInterface>
 	 */
 	public function fix();

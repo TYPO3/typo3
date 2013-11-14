@@ -92,13 +92,13 @@ class LinkNode extends AbstractNode implements NodeInterface {
 		}
 
 		if (!$this->isLink()) {
-			$status = new Status\ErrorStatus();
+			$status = new Status\WarningStatus();
 			$status->setTitle('Path ' . $this->getRelativePathBelowSiteRoot() . ' is not a link');
 			$type = @filetype($this->getAbsolutePath());
 			if ($type) {
 				$status->setMessage(
 					'The target ' . $this->getRelativePathBelowSiteRoot() . ' should be a link,' .
-					' but is of type ' . $type . '. This cannot be fixed. Please investigate.'
+					' but is of type ' . $type . '. This cannot be fixed automatically. Please investigate.'
 				);
 			} else {
 				$status->setMessage(
@@ -119,19 +119,24 @@ class LinkNode extends AbstractNode implements NodeInterface {
 		}
 
 		$status = new Status\OkStatus();
+		$message = 'Is a link';
+		if ($this->getTarget() !== '') {
+			$message .= ' and correctly points to target ' . $this->getTarget();
+		}
 		$status->setTitle($this->getRelativePathBelowSiteRoot());
+		$status->setMessage($message);
 		return array($status);
 	}
 
 	/**
 	 * Fix structure
 	 *
+	 * If there is nothing to fix, returns an empty array
+	 *
 	 * @return array<\TYPO3\CMS\Install\Status\StatusInterface>
 	 */
 	public function fix() {
-		$status = new Status\NoticeStatus();
-		$status->setTitle('Fixing link ' . $this->getRelativePathBelowSiteRoot() . ' is not implemented');
-		return array($status);
+		return array();
 	}
 
 	/**

@@ -177,21 +177,6 @@ class RootNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 */
-	public function constructorSetsRelaxedPermissionCheckIfGiven() {
-		/** @var $node \TYPO3\CMS\Install\FolderStructure\RootNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
-		$node = $this->getAccessibleMock('TYPO3\\CMS\\Install\\FolderStructure\\RootNode', array('isWindowsOs'), array(), '', FALSE);
-		$node->expects($this->any())->method('isWindowsOs')->will($this->returnValue(FALSE));
-		$structure = array(
-			'name' => '/foo',
-			'targetPermissionRelaxed' => TRUE,
-		);
-		$node->__construct($structure, NULL);
-		$this->assertTrue($node->_call('getTargetPermissionRelaxed'));
-	}
-
-	/**
-	 * @test
-	 */
 	public function constructorSetsName() {
 		/** @var $node \TYPO3\CMS\Install\FolderStructure\RootNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
 		$node = $this->getAccessibleMock('TYPO3\\CMS\\Install\\FolderStructure\\RootNode', array('isWindowsOs'), array(), '', FALSE);

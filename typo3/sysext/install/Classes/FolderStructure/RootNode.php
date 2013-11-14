@@ -59,11 +59,7 @@ class RootNode extends DirectoryNode implements RootNodeInterface {
 		$this->name = $structure['name'];
 
 		if (isset($structure['targetPermission'])) {
-			$this->targetPermission = $structure['targetPermission'];
-		}
-
-		if (isset($structure['targetPermissionRelaxed']) && $structure['targetPermissionRelaxed'] === TRUE) {
-			$this->targetPermissionRelaxed = TRUE;
+			$this->setTargetPermission($structure['targetPermission']);
 		}
 
 		if (array_key_exists('children', $structure)) {

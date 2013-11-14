@@ -91,7 +91,7 @@ class FileNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$parent = $this->getMock('TYPO3\CMS\Install\FolderStructure\NodeInterface', array(), array(), '', FALSE);
 		/** @var $node \TYPO3\CMS\Install\FolderStructure\FileNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
 		$node = $this->getAccessibleMock('TYPO3\\CMS\\Install\\FolderStructure\\FileNode', array('dummy'), array(), '', FALSE);
-		$targetPermission = '660';
+		$targetPermission = '0660';
 		$structure = array(
 			'name' => 'foo',
 			'targetPermission' => $targetPermission,
@@ -270,7 +270,7 @@ class FileNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 */
-	public function getStatusReturnsArrayWithWarningStatusIfFileExistsButIsNotWritable() {
+	public function getStatusReturnsArrayNoticeStatusIfFileExistsButIsNotWritable() {
 		/** @var $node \TYPO3\CMS\Install\FolderStructure\FileNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
 		$node = $this->getAccessibleMock(
 			'TYPO3\\CMS\\Install\\FolderStructure\\FileNode',
@@ -291,13 +291,13 @@ class FileNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$statusArray = $node->getStatus();
 		/** @var $status \TYPO3\CMS\Install\Status\StatusInterface */
 		$status = $statusArray[0];
-		$this->assertInstanceOf('\TYPO3\CMS\Install\Status\WarningStatus', $status);
+		$this->assertInstanceOf('\TYPO3\CMS\Install\Status\NoticeStatus', $status);
 	}
 
 	/**
 	 * @test
 	 */
-	public function getStatusReturnsArrayWithWarningStatusIfFileExistsButPermissionAreNotCorrect() {
+	public function getStatusReturnsArrayWithNoticeStatusIfFileExistsButPermissionAreNotCorrect() {
 		/** @var $node \TYPO3\CMS\Install\FolderStructure\FileNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
 		$node = $this->getAccessibleMock(
 			'TYPO3\\CMS\\Install\\FolderStructure\\FileNode',
@@ -318,13 +318,13 @@ class FileNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$statusArray = $node->getStatus();
 		/** @var $status \TYPO3\CMS\Install\Status\StatusInterface */
 		$status = $statusArray[0];
-		$this->assertInstanceOf('\TYPO3\CMS\Install\Status\WarningStatus', $status);
+		$this->assertInstanceOf('\TYPO3\CMS\Install\Status\NoticeStatus', $status);
 	}
 
 	/**
 	 * @test
 	 */
-	public function getStatusReturnsArrayWithErrorStatusIfFileExistsButContentIsNotCorrect() {
+	public function getStatusReturnsArrayWithNoticeStatusIfFileExistsButContentIsNotCorrect() {
 		/** @var $node \TYPO3\CMS\Install\FolderStructure\FileNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
 		$node = $this->getAccessibleMock(
 			'TYPO3\\CMS\\Install\\FolderStructure\\FileNode',
@@ -345,7 +345,7 @@ class FileNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$statusArray = $node->getStatus();
 		/** @var $status \TYPO3\CMS\Install\Status\StatusInterface */
 		$status = $statusArray[0];
-		$this->assertInstanceOf('\TYPO3\CMS\Install\Status\ErrorStatus', $status);
+		$this->assertInstanceOf('\TYPO3\CMS\Install\Status\NoticeStatus', $status);
 	}
 
 	/**
@@ -589,7 +589,7 @@ class FileNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$node = $this->getAccessibleMock('TYPO3\\CMS\\Install\\FolderStructure\\FileNode', array('exists', 'getAbsolutePath'), array(), '', FALSE);
 		$path = PATH_site . 'typo3temp/' . uniqid('root_');
 		mkdir($path);
-		chmod($path, octdec(2550));
+		chmod($path, 02550);
 		$subPath = $path . '/' . uniqid('file_');
 		$this->testNodesToDelete[] = $path;
 		$node->expects($this->once())->method('exists')->will($this->returnValue(FALSE));
@@ -654,6 +654,24 @@ class FileNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($path));
 		$node->_set('targetContent', $targetContent);
 		$this->assertFalse($node->_call('isContentCorrect'));
+	}
+
+	/**
+	 * @test
+	 */
+	public function isPermissionCorrectReturnsTrueIfTargetPermissionAndCurrentPermissionAreIdentical() {
+		$parent = $this->getMock('TYPO3\CMS\Install\FolderStructure\NodeInterface', array(), array(), '', FALSE);
+		/** @var $node \TYPO3\CMS\Install\FolderStructure\FileNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+		$node = $this->getAccessibleMock('TYPO3\\CMS\\Install\\FolderStructure\\FileNode', array('getCurrentPermission', 'isWindowsOs'), array(), '', FALSE);
+		$node->expects($this->any())->method('isWindowsOs')->will($this->returnValue(FALSE));
+		$node->expects($this->any())->method('getCurrentPermission')->will($this->returnValue('0664'));
+		$targetPermission = '0664';
+		$structure = array(
+			'name' => 'foo',
+			'targetPermission' => $targetPermission,
+		);
+		$node->__construct($structure, $parent);
+		$this->assertTrue($node->_call('isPermissionCorrect'));
 	}
 
 	/**
@@ -734,7 +752,7 @@ class FileNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		mkdir($dir);
 		$file = $dir . '/' . uniqid('file_');
 		touch($file);
-		chmod($file, octdec(0440));
+		chmod($file, 0440);
 		$this->testNodesToDelete[] = $dir;
 		$node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($file));
 		$targetContent = uniqid('content_');

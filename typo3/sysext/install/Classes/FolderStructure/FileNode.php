@@ -32,9 +32,9 @@ use TYPO3\CMS\Install\Status;
 class FileNode extends AbstractNode implements NodeInterface {
 
 	/**
-	 * @var NULL|string Default for files is 0660
+	 * @var NULL|integer Default for files is octal 0664 == decimal 436
 	 */
-	protected $targetPermission = '0660';
+	protected $targetPermission = '0664';
 
 	/**
 	 * @var string|NULL Target content of file. If NULL, target content is ignored
@@ -67,7 +67,7 @@ class FileNode extends AbstractNode implements NodeInterface {
 		$this->name = $structure['name'];
 
 		if (isset($structure['targetPermission'])) {
-			$this->targetPermission = $structure['targetPermission'];
+			$this->setTargetPermission($structure['targetPermission']);
 		}
 
 		if (isset($structure['targetContent']) && isset($structure['targetContentFile'])) {
@@ -102,7 +102,8 @@ class FileNode extends AbstractNode implements NodeInterface {
 		$result = array();
 		if (!$this->exists()) {
 			$status = new Status\WarningStatus();
-			$status->setTitle($this->getRelativePathBelowSiteRoot() . ' does not exist');
+			$status->setTitle('File ' . $this->getRelativePathBelowSiteRoot() . ' does not exist');
+			$status->setMessage('By using "Try to fix errors" we can try to create it');
 			$result[] = $status;
 		} else {
 			$result = $this->getSelfStatus();
@@ -112,6 +113,8 @@ class FileNode extends AbstractNode implements NodeInterface {
 
 	/**
 	 * Fix structure
+	 *
+	 * If there is nothing to fix, returns an empty array
 	 *
 	 * @return array<\TYPO3\CMS\Install\Status\StatusInterface>
 	 */
@@ -134,16 +137,18 @@ class FileNode extends AbstractNode implements NodeInterface {
 				&& !is_null($this->targetContent)
 			) {
 				$result[] = $this->setContent();
+				if (!$this->isPermissionCorrect()) {
+					$result[] = $this->fixPermission();
+				}
 			}
-		}
-		if (!$this->isFile()) {
+		} elseif (!$this->isFile()) {
 			$status = new Status\ErrorStatus();
 			$status->setTitle('Path ' . $this->getRelativePathBelowSiteRoot() . ' is not a file');
 			$fileType = @filetype($this->getAbsolutePath());
 			if ($fileType) {
 				$status->setMessage(
 					'The target ' . $this->getRelativePathBelowSiteRoot() . ' should be a file,' .
-					' but is of type ' . $fileType . '. I cannot fix this. Please investigate.'
+					' but is of type ' . $fileType . '. This cannot be fixed automatically. Please investigate.'
 				);
 			} else {
 				$status->setMessage(
@@ -167,7 +172,7 @@ class FileNode extends AbstractNode implements NodeInterface {
 	protected function createFile() {
 		if ($this->exists()) {
 			throw new Exception(
-				'File ' . $this->getAbsolutePath() . ' already exists',
+				'File ' . $this->getRelativePathBelowSiteRoot() . ' already exists',
 				1367048077
 			);
 		}
@@ -202,25 +207,24 @@ class FileNode extends AbstractNode implements NodeInterface {
 			);
 			$result[] = $status;
 		} elseif (!$this->isWritable()) {
-			$status = new Status\WarningStatus();
-			$status->setTitle($this->getRelativePathBelowSiteRoot() . ' is not writable');
+			$status = new Status\NoticeStatus();
+			$status->setTitle('File ' . $this->getRelativePathBelowSiteRoot() . ' is not writable');
 			$status->setMessage(
-				'Path ' . $this->getAbsolutePath() . ' exists, but no file beneath it' .
-				' can be created.'
+				'File ' . $this->getRelativePathBelowSiteRoot() . ' exists, but is not writeable.'
 			);
 			$result[] = $status;
 		} elseif (!$this->isPermissionCorrect()) {
-			$status = new Status\WarningStatus();
-			$status->setTitle($this->getRelativePathBelowSiteRoot() . ' has wrong permissions');
+			$status = new Status\NoticeStatus();
+			$status->setTitle('File ' . $this->getRelativePathBelowSiteRoot() . ' permissions mismatch');
 			$status->setMessage(
-				'Target permissions are ' . $this->targetPermission .
-				' but current permissions are ' . $this->getCurrentPermission()
+				'Default configured permissions are ' . $this->getTargetPermission() .
+				' but file permissions are ' . $this->getCurrentPermission()
 			);
 			$result[] = $status;
 		}
 		if ($this->isFile() && !$this->isContentCorrect()) {
-			$status = new Status\ErrorStatus();
-			$status->setTitle($this->getRelativePathBelowSiteRoot() . ' content differs');
+			$status = new Status\NoticeStatus();
+			$status->setTitle('File ' . $this->getRelativePathBelowSiteRoot() . ' content differs');
 			$status->setMessage(
 				'File content is not identical to default content. This file may have been changed manually.' .
 				' The Install Tool will not overwrite the current version!'
@@ -228,7 +232,10 @@ class FileNode extends AbstractNode implements NodeInterface {
 			$result[] = $status;
 		} else {
 			$status = new Status\OkStatus();
-			$status->setTitle($this->getRelativePathBelowSiteRoot());
+			$status->setTitle('File ' . $this->getRelativePathBelowSiteRoot());
+			$status->setMessage(
+				'Is a file with the default content and configured permissions of ' . $this->getTargetPermission()
+			);
 			$result[] = $status;
 		}
 		return $result;

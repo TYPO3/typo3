@@ -171,7 +171,7 @@ class LinkNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 */
-	public function getStatusReturnsArrayWithErrorStatusIfNodeIsNotALink() {
+	public function getStatusReturnsArrayWithWarningStatusIfNodeIsNotALink() {
 		/** @var $node \TYPO3\CMS\Install\FolderStructure\LinkNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
 		$node = $this->getAccessibleMock(
 			'TYPO3\\CMS\\Install\\FolderStructure\\LinkNode',
@@ -186,7 +186,7 @@ class LinkNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$statusArray = $node->getStatus();
 		/** @var $status \TYPO3\CMS\Install\Status\StatusInterface */
 		$status = $statusArray[0];
-		$this->assertInstanceOf('\TYPO3\CMS\Install\Status\ErrorStatus', $status);
+		$this->assertInstanceOf('\TYPO3\CMS\Install\Status\WarningStatus', $status);
 	}
 
 	/**
@@ -237,7 +237,7 @@ class LinkNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 */
-	public function fixReturnsNoticeStatus() {
+	public function fixReturnsEmptyArray() {
 		/** @var $node \TYPO3\CMS\Install\FolderStructure\LinkNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
 		$node = $this->getAccessibleMock(
 			'TYPO3\\CMS\\Install\\FolderStructure\\LinkNode',
@@ -247,9 +247,7 @@ class LinkNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			FALSE
 		);
 		$statusArray = $node->fix();
-		/** @var $status \TYPO3\CMS\Install\Status\StatusInterface */
-		$status = $statusArray[0];
-		$this->assertInstanceOf('\TYPO3\CMS\Install\Status\NoticeStatus', $status);
+		$this->assertEmpty($statusArray);
 	}
 
 	/**

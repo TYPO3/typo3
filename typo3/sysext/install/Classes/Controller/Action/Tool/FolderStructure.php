@@ -53,15 +53,25 @@ class FolderStructure extends Action\AbstractAction {
 
 		$errorStatus = array_merge(
 			$statusUtility->filterBySeverity($statusObjects, 'error'),
-			$statusUtility->filterBySeverity($statusObjects, 'warning'),
+			$statusUtility->filterBySeverity($statusObjects, 'warning')
+		);
+		$okStatus = array_merge(
 			$statusUtility->filterBySeverity($statusObjects, 'notice'),
-			$statusUtility->filterBySeverity($statusObjects, 'information')
+			$statusUtility->filterBySeverity($statusObjects, 'information'),
+			$statusUtility->filterBySeverity($statusObjects, 'ok')
 		);
 
+		/** @var \TYPO3\CMS\Install\FolderStructure\DefaultPermissionsCheck $permissionCheck */
+		$permissionCheck = $this->objectManager->get('TYPO3\\CMS\\Install\\FolderStructure\\DefaultPermissionsCheck');
+		$filePermissionStatus = $permissionCheck->getMaskStatus('fileCreateMask');
+		$directoryPermissionStatus = $permissionCheck->getMaskStatus('folderCreateMask');
+
 		$this->view
+			->assign('filePermissionStatus', $filePermissionStatus)
+			->assign('directoryPermissionStatus', $directoryPermissionStatus)
 			->assign('fixedStatus', $fixedStatusObjects)
 			->assign('errorStatus', $errorStatus)
-			->assign('okStatus', $statusUtility->filterBySeverity($statusObjects, 'ok'));
+			->assign('okStatus', $okStatus);
 
 		return $this->view->render();
 	}
