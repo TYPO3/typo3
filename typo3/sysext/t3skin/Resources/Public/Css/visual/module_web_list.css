@@ -59,6 +59,7 @@ table.typo3-dblist tr.db_list_normal:nth-child(even) td {
 }
 
 table.typo3-dblist tr.db_list_normal:hover td,
+table.typo3-dblist tr.db_list_alt:hover td,
 table.typo3-dblist tr.c-headLine:hover td {
 	background-color: #dedede;
 }
