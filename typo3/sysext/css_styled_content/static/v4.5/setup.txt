@@ -1670,7 +1670,8 @@ tt_content.html = TEXT
 tt_content.html {
 	field = bodytext
 
-	editIcons = tt_content: pages
+	editIcons = tt_content:bodytext
+	editIcons.beforeLastTag = 1
 	editIcons.iconTitle.data = LLL:EXT:css_styled_content/pi1/locallang.xml:eIcon.html
 
 	prefixComment = 2 | Raw HTML content:
