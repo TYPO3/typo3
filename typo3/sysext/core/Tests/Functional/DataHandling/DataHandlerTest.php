@@ -44,7 +44,7 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 		$backendUser->workspace = 0;
 		$GLOBALS['BE_USER'] = $backendUser;
 		\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->initializeLanguageObject();
-		$this->importDataSet(dirname(__FILE__) . '/../Fixtures/pages.xml');
+		$this->importDataSet(__DIR__ . '/../Fixtures/pages.xml');
 	}
 
 	/**
@@ -82,9 +82,9 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 	 * @test
 	 */
 	public function canLocalizeTtContent() {
-		$this->importDataSet(dirname(__FILE__) . '/../Fixtures/sys_language.xml');
-		$this->importDataSet(dirname(__FILE__) . '/../Fixtures/pages_language_overlay.xml');
-		$this->importDataSet(dirname(__FILE__) . '/../Fixtures/tt_content.xml');
+		$this->importDataSet(__DIR__. '/../Fixtures/sys_language.xml');
+		$this->importDataSet(__DIR__ . '/../Fixtures/pages_language_overlay.xml');
+		$this->importDataSet(__DIR__ . '/../Fixtures/tt_content.xml');
 
 		$dataHandler = $this->getDataHandler();
 		$originalRecordId  = 1;

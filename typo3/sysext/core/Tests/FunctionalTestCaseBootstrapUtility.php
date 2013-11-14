@@ -303,10 +303,10 @@ class FunctionalTestCaseBootstrapUtility {
 		define('TYPO3_MODE', 'BE');
 		define('TYPO3_cliMode', TRUE);
 
-		require $this->instancePath . '/typo3/sysext/core/Classes/Core/CliBootstrap.php';
+		require_once $this->instancePath . '/typo3/sysext/core/Classes/Core/CliBootstrap.php';
 		\TYPO3\CMS\Core\Core\CliBootstrap::checkEnvironmentOrDie();
 
-		require $this->instancePath . '/typo3/sysext/core/Classes/Core/Bootstrap.php';
+		require_once $this->instancePath . '/typo3/sysext/core/Classes/Core/Bootstrap.php';
 		\TYPO3\CMS\Core\Core\Bootstrap::getInstance()
 			->baseSetup('')
 			->loadConfigurationAndInitialize(FALSE)
