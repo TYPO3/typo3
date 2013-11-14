@@ -78,6 +78,31 @@ Module menu
 	text-transform: uppercase;
 }
 
+#typo3-menu li div.collapsed {
+	background-image: url('../../../../images/arrows/module-menu-left-gray.png');
+	background-position: right 23px top 7px;
+	background-position: 90% 50%\9; /* IE8 hack */
+	background-repeat: no-repeat;
+}
+
+#typo3-menu li div.expanded {
+	background-image: url('../../../../images/arrows/module-menu-down-gray.png');
+	background-position: right 22px top 9px;
+	background-position: 90% 50%\9; /* IE8 hack */
+	background-repeat: no-repeat;
+}
+
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+	.backgroundsize #typo3-menu li div.collapsed {
+		background-image: url('../../../../images/arrows/module-menu-left-gray@2x.png');
+		background-size: 6px 7px;
+	}
+	.backgroundsize #typo3-menu li div.expanded {
+		background-image: url('../../../../images/arrows/module-menu-down-gray@2x.png');
+		background-size: 7px 6px;
+	}
+}
+
 #typo3-menu li ul li {
 	cursor: pointer;
 	font-weight: normal;
