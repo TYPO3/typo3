@@ -324,12 +324,6 @@ class TypoScriptFrontendController {
 	 */
 	public $cHash_array = array();
 
-	// Loaded with the serialized array that is used for generating a hashstring for the cache
-	/**
-	 * @todo Define visibility
-	 */
-	public $hash_base = '';
-
 	// May be set to the pagesTSconfig
 	/**
 	 * @todo Define visibility
@@ -2279,14 +2273,13 @@ class TypoScriptFrontendController {
 	 * This hash is unique to the template, the variables ->id, ->type, ->gr_list (list of groups), ->MP (Mount Points) and cHash array
 	 * Used to get and later store the cached data.
 	 *
-	 * @return string MD5 hash of $this->hash_base which is a serialized version of there variables.
+	 * @return string MD5 hash of serialized hash base from createHashBase()
 	 * @access private
 	 * @see getFromCache(), getLockHash()
 	 * @todo Define visibility
 	 */
 	public function getHash() {
-		$this->hash_base = $this->createHashBase(FALSE);
-		return md5($this->hash_base);
+		return md5($this->createHashBase(FALSE));
 	}
 
 	/**
@@ -3276,8 +3269,6 @@ class TypoScriptFrontendController {
 		// Same codeline as in getFromCache(). But $this->all has been changed by
 		// \TYPO3\CMS\Core\TypoScript\TemplateService::start() in the meantime, so this must be called again!
 		$this->newHash = $this->getHash();
-		// For cache management informational purposes.
-		$this->config['hash_base'] = $this->hash_base;
 		if (!is_object($this->pages_lockObj) || $this->pages_lockObj->getLockStatus() == FALSE) {
 			// Here we put some temporary stuff in the cache in order to let the first hit generate the page. The temporary cache will expire after a few seconds (typ. 30) or will be cleared by the rendered page, which will also clear and rewrite the cache.
 			$this->tempPageCacheContent();
