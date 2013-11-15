@@ -439,8 +439,9 @@ class ResourceStorageTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCa
 		$indexFileRepositoryMock = $this->getMock('TYPO3\\CMS\\Core\\Resource\\Index\\FileIndexRepository');
 		$this->fixture->expects($this->any())->method('getFileIndexRepository')->will($this->returnValue($indexFileRepositoryMock));
 		$mockedFile = $this->getMock('TYPO3\\CMS\\Core\\Resource\\File', array(), array(), '', FALSE);
+		$mockedFile->expects($this->any())->method('getIdentifier')->will($this->returnValue($fileInfo['identifier']));
 		$mockedFile->expects($this->at(1))->method('updateProperties')->with($this->equalTo(array('sha1' => $hash)));
-		$mockedFile->expects($this->at(3))->method('updateProperties')->with($this->equalTo($newProperties));
+		$mockedFile->expects($this->at(4))->method('updateProperties')->with($this->equalTo($newProperties));
 		$indexFileRepositoryMock->expects($this->once())->method('update')->with($mockedFile);
 		$this->fixture->setFileContents($mockedFile, uniqid());
 	}

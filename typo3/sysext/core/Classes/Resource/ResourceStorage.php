@@ -1578,6 +1578,13 @@ class ResourceStorage {
 		if ($storage !== NULL) {
 			$newProperties['storage'] = $storage->getUid();
 		}
+		if ($identifier !== $file->getIdentifier()) {
+			if ($storage === NULL) {
+				$storage = $file->getStorage();
+			}
+			$newProperties['identifier_hash'] = $storage->hashFileIdentifier($identifier);
+			$newProperties['folder_hash'] = $storage->hashFileIdentifier($storage->getFolderIdentifierFromFileIdentifier($identifier));
+		}
 		$file->updateProperties($newProperties);
 		$this->getFileIndexRepository()->update($file);
 	}
