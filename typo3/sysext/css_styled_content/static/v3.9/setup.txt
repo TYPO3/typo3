@@ -1343,7 +1343,7 @@ plugin.tx_cssstyledcontent._CSS_DEFAULT_STYLE (
 	DIV.csc-textpic DIV.csc-textpic-imagewrap .csc-textpic-firstcol { margin-left: 0px !important; }
 	DIV.csc-textpic DIV.csc-textpic-imagewrap .csc-textpic-lastcol { margin-right: 0px !important; }
 
-	/* Add margin from image-block to text (in case of "Text w/ images") */
+	/* Add margin from image-block to text (in case of "Text & Images") */
 	DIV.csc-textpic-intext-left DIV.csc-textpic-imagewrap,
 	DIV.csc-textpic-intext-left-nowrap DIV.csc-textpic-imagewrap {
 		margin-right: {$styles.content.imgtext.textMargin}px !important;

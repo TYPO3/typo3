@@ -2139,7 +2139,7 @@ plugin.tx_cssstyledcontent._CSS_DEFAULT_STYLE (
 	DIV.csc-textpic-imagecolumn, TD.csc-textpic-imagecolumn .csc-textpic-image { margin-right: {$styles.content.imgtext.colSpace}px; }
 	DIV.csc-textpic-imagecolumn.csc-textpic-lastcol, TD.csc-textpic-imagecolumn.csc-textpic-lastcol .csc-textpic-image { margin-right: 0; }
 
-	/* Add margin from image-block to text (in case of "Text w/ images") */
+	/* Add margin from image-block to text (in case of "Text & Images") */
 	DIV.csc-textpic-intext-left .csc-textpic-imagewrap,
 	DIV.csc-textpic-intext-left-nowrap .csc-textpic-imagewrap {
 		margin-right: {$styles.content.imgtext.textMargin}px;

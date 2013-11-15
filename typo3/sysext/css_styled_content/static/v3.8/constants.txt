@@ -37,11 +37,11 @@ styles.content.imgtext {
   borderColor = black
     # cat=content/cImage/b; type=int[0-100]; label= Image border thickness: Thickness of border around images in content elements when "Border"-option for element is set.
   borderThick = 2
-    # cat=content/cImage/x; type=int[0-100]; label= Advanced, Column space: Horizontal distance between images in a block in content elements of type "Image" or "Text w/Image".
+    # cat=content/cImage/x; type=int[0-100]; label= Advanced, Column space: Horizontal distance between images in a block in content elements of type "Images" or "Text & Images".
   colSpace = 10
-    # cat=content/cImage/x; type=int[0-100]; label= Advanced, Row space: Vertical distance between images in a block in content elements of type "Image" or "Text w/Image".
+    # cat=content/cImage/x; type=int[0-100]; label= Advanced, Row space: Vertical distance between images in a block in content elements of type "Images" or "Text & Images".
   rowSpace = 10
-    # cat=content/cImage/x; type=int[0-100]; label= Advanced, Margin to text: Horizontal distance between an imageblock and text in content elements of type "Text w/Image".
+    # cat=content/cImage/x; type=int[0-100]; label= Advanced, Margin to text: Horizontal distance between an imageblock and text in content elements of type "Text & Images".
   textMargin = 10
   linkWrap.width = 800m
   linkWrap.height = 600m

@@ -39,11 +39,11 @@ Almost all the other types described below also includes the header with the exa
 &lt;strong&gt;Text&lt;/strong&gt;
 The Text type allows you to insert regular page content.
 
-&lt;strong&gt;Text w/image&lt;/strong&gt;
+&lt;strong&gt;Text &amp; Images&lt;/strong&gt;
 This is the same as the Text type (regular page content) but with the option of attaching images.
 
-&lt;strong&gt;Image&lt;/strong&gt;
-The same as Text w/image but without the text field - so only images.
+&lt;strong&gt;Images&lt;/strong&gt;
+The same as Text &amp; Images but without the text field - so only images.
 
 &lt;strong&gt;Bullet list&lt;/strong&gt;
 Lets you create a bullet list. Each line in the text-field will appear as a single line in the bulletlist.
@@ -254,7 +254,7 @@ tt_content:bodytext</source>
 				<source>Here you enter the body text of the content element. Usually you can use some HTML formatting tags, if you're using Internet Explorer you can even format the content visually.
 The field is reused in most other types and so switching between the content element types will bring the value of this field with it.
 
-When you're using this field with the "Text" and "Text w/image" types, the content is used as ordinary body text. Each linebreak normally signifies a new paragraph, you can use the special TYPO3 tag, &amp;lt;LINK&amp;gt;, for making links. You can use many HTML tags but there are limitations as well. This will depend on the implementation.
+When you're using this field with the "Text" and "Text &amp; Images" types, the content is used as ordinary body text. Each linebreak normally signifies a new paragraph, you can use the special TYPO3 tag, &amp;lt;LINK&amp;gt;, for making links. You can use many HTML tags but there are limitations as well. This will depend on the implementation.
 
 &lt;b&gt;Bulletlists:&lt;/b&gt;
 If the type is "Bulletlist" each line in this field is a bulletlist entry.
@@ -266,7 +266,7 @@ If the type is "Table" each line represents a table row. Within each line you di
 Types like "Script", "Form" and "Multimedia" use this field for parameters you can pass to the element. And the "HTML" type accepts any input as raw HTML which is simply displayed on the website without any preprocessing.
 
 &lt;strong&gt;Rich Text Editor:&lt;/strong&gt;
-With the types "Text" and "Text w/image" the Rich Text editor is used for editing if your browser supports it and the editor is generally enabled in the system. Be aware that the content is "cleansed" before it goes into the database when you're using the "Text" and "Text w/image" types.
+With the types "Text" and "Text &amp; Images" the Rich Text editor is used for editing if your browser supports it and the editor is generally enabled in the system. Be aware that the content is "cleansed" before it goes into the database when you're using the "Text" and "Text &amp; Images" types.
 
 &lt;b&gt;Making a mail form:&lt;/b&gt;
 When you have selected the content element type "Form" you should enter lines of parameters into this field. This is a brief example:
@@ -366,7 +366,7 @@ tt_content:bodytext</source>
 				<source>You can attach images to the content element and almost as many as you like.
 Depending on the configuration of TYPO3 you can even attach them in any format you like. Especially you do not need to worry about size and compression because these factors are normally handled by TYPO3 internally.
 
-When you use the "Text w/image" type, it's important to select a proper position of the image block. For this purpose, use the Position selector which is displayed below (or if you click in the image list field in the Classic backend). See link to "Page content / Position" below.
+When you use the "Text &amp; Images" type, it's important to select a proper position of the image block. For this purpose, use the Position selector which is displayed below (or if you click in the image list field in the Classic backend). See link to "Page content / Position" below.
 You can also display images in multiple columns and enable an option which enables a link so you can click the image and see a bigger version. Just to name a few options.
 Most likely you don't have all options available. This depends on your permissions in the system.</source>
 			</trans-unit>
@@ -702,7 +702,7 @@ tt_content:spaceBefore</source>
 				<source>If checked, a little "To top" link will be inserted after the content element.</source>
 			</trans-unit>
 			<trans-unit id="rte_enabled.description" xml:space="preserve">
-				<source>If checked, the Rich Text Editor will be disabled for the "Text" and "Text w/Image" types (&lt;em&gt;in this element only&lt;/em&gt;).</source>
+				<source>If checked, the Rich Text Editor will be disabled for the "Text" and "Text &amp; Image" types (&lt;em&gt;in this element only&lt;/em&gt;).</source>
 			</trans-unit>
 			<trans-unit id="_rte_enabled.seeAlso" xml:space="preserve">
 				<source>tt_content:bodytext</source>

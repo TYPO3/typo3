@@ -420,8 +420,8 @@ colSpace
          int
 
    Description
-         Horizontal distance between images in content elements of type "Image"
-         or "Text w/Image". If you change this manually in your CSS, you need
+         Horizontal distance between images in content elements of type "Images"
+         or "Text & Images". If you change this manually in your CSS, you need
          to adjust this setting accordingly.
 
    Default
@@ -443,8 +443,8 @@ rowSpace
          int
 
    Description
-         Vertical distance after image rows in content elements of type "Image"
-         or "Text w/Image". If you change this manually in your CSS, you need
+         Vertical distance after image rows in content elements of type "Images"
+         or "Text & Images". If you change this manually in your CSS, you need
          to adjust this setting accordingly.
 
    Default
@@ -467,7 +467,7 @@ textMargin
 
    Description
          Horizontal distance between images and text in content elements of
-         type "Text w/Image".
+         type "Text & Images".
 
    Default
          10

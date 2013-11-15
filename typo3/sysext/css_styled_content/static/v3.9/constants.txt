@@ -50,11 +50,11 @@ styles.content.imgtext {
     # cat=content/cImage/e4; type=boolean; label= Images, title in link and IMG: If you have the title in the <a>-tag (titleInLink=true), you don't get the 'title' in the <img>-tag. IE will not show the tooltip anymore. So to get the 'title' in <img> too (to keep IE happy), set this too. Recommended for accessibility is "false". For correct tooltips on IE, set this to "true".
   titleInLinkAndImg = 0
 
-    # cat=content/cImage/g1; type=int[0-100]; label= Advanced, Column space: Horizontal distance between images in a block in content elements of type "Image" or "Text w/Image". If you change this manually in your CSS, you need to adjust this setting accordingly.
+    # cat=content/cImage/g1; type=int[0-100]; label= Advanced, Column space: Horizontal distance between images in a block in content elements of type "Images" or "Text & Images". If you change this manually in your CSS, you need to adjust this setting accordingly.
   colSpace = 10
-    # cat=content/cImage/g2; type=int[0-100]; label= Advanced, Row space: Vertical distance between images in a block in content elements of type "Image" or "Text w/Image". If you change this manually in your CSS, you need to adjust this setting accordingly.
+    # cat=content/cImage/g2; type=int[0-100]; label= Advanced, Row space: Vertical distance between images in a block in content elements of type "Images" or "Text & Images". If you change this manually in your CSS, you need to adjust this setting accordingly.
   rowSpace = 5
-    # cat=content/cImage/g3; type=int[0-100]; label= Advanced, Margin to text: Horizontal distance between an imageblock and text in content elements of type "Text w/Image".
+    # cat=content/cImage/g3; type=int[0-100]; label= Advanced, Margin to text: Horizontal distance between an imageblock and text in content elements of type "Text & Images".
   textMargin = 10
 
     # cat=content/cImage/i1; type=color; label= Image border, color: Bordercolor of images in content elements when "Border"-option for element is set.
