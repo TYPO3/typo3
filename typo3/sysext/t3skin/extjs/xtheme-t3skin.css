@@ -1688,6 +1688,10 @@ td.x-date-mp-sep {
 	background-image:url(images/menu/menu.gif);
 }
 
+ul.x-menu-list {
+	margin-bottom: 0;
+}
+
 .x-menu-nosep {
 	background-image:none;
 }
