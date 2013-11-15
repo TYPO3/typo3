@@ -389,7 +389,7 @@ class DatabaseConnection {
 				$hookObject->INSERTquery_preProcessAction($table, $fields_values, $no_quote_fields, $this);
 			}
 			// Quote and escape values
-			$fields_values = $this->fullQuoteArray($fields_values, $table, $no_quote_fields);
+			$fields_values = $this->fullQuoteArray($fields_values, $table, $no_quote_fields, TRUE);
 			// Build query
 			$query = 'INSERT INTO ' . $table . ' (' . implode(',', array_keys($fields_values)) . ') VALUES ' . '(' . implode(',', $fields_values) . ')';
 			// Return query
