@@ -72,8 +72,8 @@ class VariableFrontend extends \TYPO3\CMS\Core\Cache\Frontend\AbstractFrontend {
 				throw new \InvalidArgumentException('"' . $tag . '" is not a valid tag for a cache entry.', 1233058269);
 			}
 		}
-		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/cache/frontend/class.t3lib_Cache\Frontend\VariableFrontend.php']['set'])) {
-			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/cache/frontend/class.t3lib_Cache\Frontend\VariableFrontend.php']['set'] as $_funcRef) {
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/cache/frontend/class.t3lib_cache_frontend_variablefrontend.php']['set'])) {
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/cache/frontend/class.t3lib_cache_frontend_variablefrontend.php']['set'] as $_funcRef) {
 				$params = array(
 					'entryIdentifier' => &$entryIdentifier,
 					'variable' => &$variable,
