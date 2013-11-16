@@ -387,12 +387,14 @@ class ExtendedFileUtility extends \TYPO3\CMS\Core\Utility\File\BasicFileUtility 
 		// @todo implement the recycler feature which has been removed from the original implementation
 		// checks to delete the file
 		if ($fileObject instanceof File) {
+			// check if the file still has references
+			// Exclude sys_file_metadata records as these are no use references
 			$refIndexRecords = $this->getDatabaseConnection()->exec_SELECTgetRows(
 				'*',
 				'sys_refindex',
 				'deleted=0 AND ref_table="sys_file" AND ref_uid=' . intval($fileObject->getUid())
+				. ' AND tablename != "sys_file_metadata"'
 			);
-			// check if the file still has references
 			if (count($refIndexRecords) > 0) {
 				$shortcutContent = array();
 				foreach ($refIndexRecords as $fileReferenceRow) {

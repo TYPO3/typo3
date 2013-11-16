@@ -875,8 +875,9 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 		if ($fileOrFolderObject instanceof \TYPO3\CMS\Core\Resource\FolderInterface) {
 			return '-';
 		}
-		// Look up the path:
-		$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'sys_refindex', 'ref_table=\'sys_file\' AND ref_uid = ' . (integer)$fileOrFolderObject->getUid() . ' AND deleted=0');
+		// Look up the file in the sys_refindex.
+		// Exclude sys_file_metadata records as these are no use references
+		$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'sys_refindex', 'ref_table=\'sys_file\' AND ref_uid = ' . (integer)$fileOrFolderObject->getUid() . ' AND deleted=0 AND tablename != "sys_file_metadata"');
 		return $this->generateReferenceToolTip($rows, '\'_FILE\', ' . GeneralUtility::quoteJSvalue($fileOrFolderObject->getCombinedIdentifier()));
 	}
 
