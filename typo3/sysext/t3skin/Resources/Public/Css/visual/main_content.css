@@ -46,6 +46,10 @@ tr:hover a {
 	text-decoration: underline;
 }
 
+tr:hover .t3-page-ce a {
+	text-decoration: none;
+}
+
 a.t3-link {
 	text-decoration: underline;
 }
