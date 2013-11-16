@@ -314,7 +314,7 @@ class Bootstrap {
 		$packageManager->injectClassLoader($this->getEarlyInstance('TYPO3\\CMS\\Core\\Core\\ClassLoader'));
 		$packageManager->injectCoreCache($this->getEarlyInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->getCache('cache_core'));
 		$packageManager->initialize($this, PATH_site);
-		Utility\GeneralUtility::setSingletonInstance($packageManagerClassName, $packageManager);
+		Utility\GeneralUtility::setSingletonInstance('TYPO3\\CMS\\Core\\Package\\PackageManager', $packageManager);
 		$GLOBALS['TYPO3_LOADED_EXT'] = new \TYPO3\CMS\Core\Compatibility\LoadedExtensionsArray($packageManager);
 		return $this;
 	}
