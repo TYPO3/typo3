@@ -45,6 +45,13 @@ class MetaDataRepository implements SingletonInterface {
 	protected $tableName = 'sys_file_metadata';
 
 	/**
+	 * Internal storage for database table fields
+	 *
+	 * @var array
+	 */
+	protected $tableFields = array();
+
+	/**
 	 * Wrapper method for getting DatabaseConnection
 	 *
 	 * @return \TYPO3\CMS\Core\Database\DatabaseConnection
@@ -123,12 +130,16 @@ class MetaDataRepository implements SingletonInterface {
 	/**
 	 * Updates the metadata record in the database
 	 *
-	 * @internal
 	 * @param int $fileUid the file uid to update
 	 * @param array $data Data to update
+	 * @return void
+	 * @internal
 	 */
 	public function update($fileUid, array $data) {
-		$updateRow = array_intersect_key($data, $this->getDatabase()->admin_get_fields($this->tableName));
+		if (count($this->tableFields) === 0) {
+			$this->tableFields = $this->getDatabase()->admin_get_fields($this->tableName);
+		}
+		$updateRow = array_intersect_key($data, $this->tableFields);
 		if (array_key_exists('uid', $updateRow)) {
 			unset($updateRow['uid']);
 		}
