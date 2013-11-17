@@ -26,3 +26,15 @@ span.t3-icon {
 	width:16px;
 	height:16px;
 }
+
+.typo3-newRecord-treeline {
+	padding-right: 20px;
+}
+
+.typo3-newRecord-treeline img {
+	vertical-align: middle;
+}
+
+#typo3-newRecord tr {
+	line-height: 13px;
+}

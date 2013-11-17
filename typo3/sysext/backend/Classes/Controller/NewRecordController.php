@@ -357,10 +357,10 @@ class NewRecordController {
 		// tree images
 		$halfLine = '<img' . IconUtility::skinImg($this->doc->backPath, 'gfx/ol/line.gif', 'width="18" height="16"') . ' alt="" />';
 		$firstLevel = '<img' . IconUtility::skinImg($this->doc->backPath, 'gfx/ol/join.gif', 'width="18" height="16"') . ' alt="" />';
-		$secondLevel = '<img' . IconUtility::skinImg($this->doc->backPath, 'gfx/ol/line.gif', 'width="18" height="16"') . ' alt="" />
-						<img' . IconUtility::skinImg($this->doc->backPath, 'gfx/ol/join.gif', 'width="18" height="16"') . ' alt="" />';
-		$secondLevelLast = '<img' . IconUtility::skinImg($this->doc->backPath, 'gfx/ol/line.gif', 'width="18" height="16"') . ' alt="" />
-						<img' . IconUtility::skinImg($this->doc->backPath, 'gfx/ol/joinbottom.gif', 'width="18" height="16"') . ' alt="" />';
+		$secondLevel = '<img' . IconUtility::skinImg($this->doc->backPath, 'gfx/ol/line.gif', 'width="18" height="16"') . ' alt="" />' .
+						'<img' . IconUtility::skinImg($this->doc->backPath, 'gfx/ol/join.gif', 'width="18" height="16"') . ' alt="" />';
+		$secondLevelLast = '<img' . IconUtility::skinImg($this->doc->backPath, 'gfx/ol/line.gif', 'width="18" height="16"') . ' alt="" />' .
+						'<img' . IconUtility::skinImg($this->doc->backPath, 'gfx/ol/joinbottom.gif', 'width="18" height="16"') . ' alt="" />';
 		// Get TSconfig for current page
 		$pageTS = BackendUtility::getPagesTSconfig($this->id);
 		// Finish initializing new pages options with TSconfig
@@ -371,7 +371,7 @@ class NewRecordController {
 		$this->newPagesInto = !empty($pageTS['mod.']['wizards.']['newRecord.']['pages.']['show.']['pageInside']) ? 1 : 0;
 		$this->newPagesAfter = !empty($pageTS['mod.']['wizards.']['newRecord.']['pages.']['show.']['pageAfter']) ? 1 : 0;
 		// Slight spacer from header:
-		$this->code .= $halfLine;
+		$this->code .= '<div class="typo3-newRecord-treeline">' . $halfLine . '</div>';
 		// New Page
 		$table = 'pages';
 		$v = $GLOBALS['TCA'][$table];
@@ -402,12 +402,13 @@ class NewRecordController {
 			} else {
 				$treeComponent = $secondLevel;
 			}
-			$rowContent .= '<br />' . $treeComponent . $newPageLinks[$i];
+			$rowContent .= '<div class="typo3-newRecord-treeline">' . $treeComponent . $newPageLinks[$i] . '</div>';
 		}
 		// Add row header and half-line if not empty
 		if (!empty($rowContent)) {
-			$rowContent .= '<br />' . $halfLine;
-			$rowContent = $firstLevel . $newPageIcon . '&nbsp;<strong>' . $GLOBALS['LANG']->getLL('createNewPage') . '</strong>' . $rowContent;
+			$rowContent .= '<div class="typo3-newRecord-treeline">' . $halfLine . '</div>';
+			$rowContent = '<div class="typo3-newRecord-treeline">' . $firstLevel . $newPageIcon . '&nbsp;<strong>' .
+				$GLOBALS['LANG']->getLL('createNewPage') . '</strong></div>' . $rowContent;
 		}
 		// Compile table row to show the icon for "new page (select position)"
 		$startRows = array();
@@ -428,7 +429,13 @@ class NewRecordController {
 				foreach ($GLOBALS['TCA'] as $table => $v) {
 					$count = count($GLOBALS['TCA'][$table]);
 					$counter = 1;
-					if ($table != 'pages' && $this->showNewRecLink($table) && $this->isTableAllowedForThisPage($this->pageinfo, $table) && $GLOBALS['BE_USER']->check('tables_modify', $table) && (($v['ctrl']['rootLevel'] xor $this->id) || $v['ctrl']['rootLevel'] == -1) && $GLOBALS['BE_USER']->workspaceCreateNewRecord(($this->pageinfo['_ORIG_uid'] ? $this->pageinfo['_ORIG_uid'] : $this->id), $table)) {
+					if ($table != 'pages'
+						&& $this->showNewRecLink($table)
+						&& $this->isTableAllowedForThisPage($this->pageinfo, $table)
+						&& $GLOBALS['BE_USER']->check('tables_modify', $table)
+						&& (($v['ctrl']['rootLevel'] xor $this->id) || $v['ctrl']['rootLevel'] == -1)
+						&& $GLOBALS['BE_USER']->workspaceCreateNewRecord(($this->pageinfo['_ORIG_uid'] ? $this->pageinfo['_ORIG_uid'] : $this->id), $table)
+					) {
 						$newRecordIcon = IconUtility::getSpriteIconForRecord($table, array());
 						$rowContent = '';
 						// Create new link for record:
@@ -436,14 +443,14 @@ class NewRecordController {
 						// If the table is 'tt_content' (from "cms" extension), create link to wizard
 						if ($table == 'tt_content') {
 							$groupName = $GLOBALS['LANG']->getLL('createNewContent');
-							$rowContent = $firstLevel . $newContentIcon . '&nbsp;<strong>' . $GLOBALS['LANG']->getLL('createNewContent') . '</strong>';
+							$rowContent = '<div class="typo3-newRecord-treeline">' . $firstLevel . $newContentIcon . '&nbsp;<strong>' . $GLOBALS['LANG']->getLL('createNewContent') . '</strong></div>';
 							// If mod.web_list.newContentWiz.overrideWithExtension is set, use that extension's wizard instead:
 							$overrideExt = $this->web_list_modTSconfig['properties']['newContentWiz.']['overrideWithExtension'];
 							$pathToWizard = ExtensionManagementUtility::isLoaded($overrideExt) ? ExtensionManagementUtility::extRelPath($overrideExt) . 'mod1/db_new_content_el.php' : 'sysext/cms/layout/db_new_content_el.php';
 							$href = $pathToWizard . '?id=' . $this->id . '&returnUrl=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI'));
-							$rowContent .= '<br />' . $secondLevel . $newLink . '<br />' . $secondLevelLast . '<a href="' . htmlspecialchars($href) . '">' . $newContentIcon . htmlspecialchars($GLOBALS['LANG']->getLL('clickForWizard')) . '</a>';
+							$rowContent .= '<div class="typo3-newRecord-treeline">' . $secondLevel . $newLink . '</div><div class="typo3-newRecord-treeline">' . $secondLevelLast . '<a href="' . htmlspecialchars($href) . '">' . $newContentIcon . htmlspecialchars($GLOBALS['LANG']->getLL('clickForWizard')) . '</a></div>';
 							// Half-line added:
-							$rowContent .= '<br />' . $halfLine;
+							$rowContent .= '<div class="typo3-newRecord-treeline">' . $halfLine . '</div>';
 						} else {
 							// Get the title
 							if ($v['ctrl']['readOnly'] || $v['ctrl']['hideTable'] || $v['ctrl']['is_static']) {
@@ -515,13 +522,14 @@ class NewRecordController {
 		$finalRows[] = implode('', $startRows);
 		foreach ($this->tRows as $key => $value) {
 			$row = '<tr>
-						<td nowrap="nowrap">' . $halfLine . '<br />' . $firstLevel . '' . $iconFile[$key] . '&nbsp;<strong>' . $value['title'] . '</strong>' . '</td><td>&nbsp;<br />' . BackendUtility::wrapInHelp($key, '') . '</td>
+						<td nowrap="nowrap"><div class="typo3-newRecord-treeline">' . $halfLine . '</div><div class="typo3-newRecord-treeline">' . $firstLevel .
+				$iconFile[$key] . '&nbsp;<strong>' . $value['title'] . '</strong></div></td><td>&nbsp;<br />' . BackendUtility::wrapInHelp($key, '') . '</td>
 						</tr>';
 			$count = count($value['html']) - 1;
 			foreach ($value['html'] as $recordKey => $record) {
 				$row .= '
 					<tr>
-						<td nowrap="nowrap">' . ($recordKey < $count ? $secondLevel : $secondLevelLast) . $record . '</td>
+						<td nowrap="nowrap"><div class="typo3-newRecord-treeline">' . ($recordKey < $count ? $secondLevel : $secondLevelLast) . $record . '</div></td>
 						<td>' . BackendUtility::wrapInHelp($value['table'][$recordKey], '') . '</td>
 					</tr>';
 			}
