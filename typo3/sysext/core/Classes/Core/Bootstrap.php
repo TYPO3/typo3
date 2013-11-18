@@ -914,11 +914,11 @@ class Bootstrap {
 		/** @var $codeCache \TYPO3\CMS\Core\Cache\Frontend\PhpFrontend */
 		$codeCache = $GLOBALS['typo3CacheManager']->getCache('cache_core');
 		if ($codeCache->has($cacheIdentifier)) {
-			$codeCache->requireOnce($cacheIdentifier);
+			// substr is necessary, because the php frontend wraps php code around the cache value
+			$GLOBALS['TCA'] = unserialize(substr($codeCache->get($cacheIdentifier), 6, -2));
 		} else {
 			$this->loadExtensionTables(TRUE);
-			$phpCodeToCache = '$GLOBALS[\'TCA\'] = ' . var_export($GLOBALS['TCA'], TRUE) . ';';
-			$codeCache->set($cacheIdentifier, $phpCodeToCache);
+			$codeCache->set($cacheIdentifier, serialize($GLOBALS['TCA']));
 		}
 		return $this;
 	}

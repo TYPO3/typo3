@@ -68,7 +68,7 @@ class BootstrapTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			->will($this->returnValue(TRUE));
 		$mockCache
 			->expects($this->once())
-			->method('requireOnce');
+			->method('get');
 		$bootstrapInstance->loadCachedTca();
 	}
 

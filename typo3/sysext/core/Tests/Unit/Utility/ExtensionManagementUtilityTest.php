@@ -845,7 +845,7 @@ class ExtensionManagementUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 		$GLOBALS['typo3CacheManager'] = $this->getMock('TYPO3\\CMS\\Core\\Cache\\CacheManager', array('getCache'));
 		$GLOBALS['typo3CacheManager']->expects($this->any())->method('getCache')->will($this->returnValue($mockCache));
 		$mockCache->expects($this->any())->method('has')->will($this->returnValue(TRUE));
-		$mockCache->expects($this->once())->method('requireOnce');
+		$mockCache->expects($this->once())->method('get');
 		ExtensionManagementUtility::loadBaseTca(TRUE);
 	}
 
