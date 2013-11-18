@@ -1407,10 +1407,9 @@ class ResourceStorage {
 	public function setFileContents(AbstractFile $file, $contents) {
 		// Check if user is allowed to edit
 		$this->assureFileWritePermissions($file);
-		// Call driver method to update the file and update file properties afterwards
+		// Call driver method to update the file and update file index entry afterwards
 		$result = $this->driver->setFileContents($file, $contents);
-		$file->updateProperties(array('sha1' => $this->driver->hash($file, 'sha1')));
-		$this->updateFile($file);
+		$this->getIndexer()->updateIndexEntry($file);
 		return $result;
 	}
 
@@ -1529,64 +1528,26 @@ class ResourceStorage {
 		}
 		$this->emitPreFileMoveSignal($file, $targetFolder);
 		$sourceStorage = $file->getStorage();
-		// Call driver method to move the file that also updates the file
-		// object properties
+		// Call driver method to move the file and update the index entry
 		try {
 			if ($sourceStorage === $this) {
 				$newIdentifier = $this->driver->moveFileWithinStorage($file, $targetFolder, $targetFileName);
 				if (!$file instanceof AbstractFile) {
 					throw new \RuntimeException('The given file is not of type AbstractFile.', 1384209025);
 				}
-				$this->updateFile($file, $newIdentifier);
+				$file->updateProperties(array('identifier' => $newIdentifier));
 			} else {
 				$tempPath = $file->getForLocalProcessing();
 				$newIdentifier = $this->driver->addFileRaw($tempPath, $targetFolder, $targetFileName);
 				$sourceStorage->driver->deleteFileRaw($file->getIdentifier());
-				$this->updateFile($file, $newIdentifier, $this);
+				$file->updateProperties(array('storage' => $this->getUid(), 'identifier' => $newIdentifier));
 			}
+			$this->getIndexer()->updateIndexEntry($file);
 		} catch (\TYPO3\CMS\Core\Exception $e) {
 			echo $e->getMessage();
 		}
 		$this->emitPostFileMoveSignal($file, $targetFolder);
 		return $file;
-	}
-
-	/**
-	 * Updates the properties of a file object with some that are freshly
-	 * fetched from the driver.
-	 *
-	 * @param AbstractFile $file
-	 * @param string $identifier The identifier of the file. If set, this will overwrite the file object's identifier (use e.g. after moving a file)
-	 * @param ResourceStorage $storage
-	 * @return void
-	 */
-	protected function updateFile(AbstractFile $file, $identifier = '', $storage = NULL) {
-		if ($identifier === '') {
-			$identifier = $file->getIdentifier();
-		}
-		$fileInfo = $this->driver->getFileInfoByIdentifier($identifier);
-		// TODO extend mapping
-		$newProperties = array(
-			'storage' => $fileInfo['storage'],
-			'identifier' => $fileInfo['identifier'],
-			'tstamp' => $fileInfo['mtime'],
-			'crdate' => $fileInfo['ctime'],
-			'mime_type' => $fileInfo['mimetype'],
-			'size' => $fileInfo['size'],
-			'name' => $fileInfo['name']
-		);
-		if ($storage !== NULL) {
-			$newProperties['storage'] = $storage->getUid();
-		}
-		if ($identifier !== $file->getIdentifier()) {
-			if ($storage === NULL) {
-				$storage = $file->getStorage();
-			}
-			$newProperties['identifier_hash'] = $storage->hashFileIdentifier($identifier);
-			$newProperties['folder_hash'] = $storage->hashFileIdentifier($storage->getFolderIdentifierFromFileIdentifier($identifier));
-		}
-		$file->updateProperties($newProperties);
-		$this->getFileIndexRepository()->update($file);
 	}
 
 	/**
@@ -1609,11 +1570,11 @@ class ResourceStorage {
 		$this->assureFileRenamePermissions($file, $targetFileName);
 		$this->emitPreFileRenameSignal($file, $targetFileName);
 
-		// Call driver method to rename the file that also updates the file
-		// object properties
+		// Call driver method to rename the file and update the index entry
 		try {
 			$newIdentifier = $this->driver->renameFile($file, $targetFileName);
-			$this->updateFile($file, $newIdentifier);
+			$file->updateProperties(array('identifier' => $newIdentifier));
+			$this->getIndexer()->updateIndexEntry($file);
 		} catch (\RuntimeException $e) {
 
 		}
@@ -1643,6 +1604,7 @@ class ResourceStorage {
 		// TODO check permissions
 		$this->emitPreFileReplaceSignal($file, $localFilePath);
 		$result = $this->driver->replaceFile($file, $localFilePath);
+		$this->getIndexer()->updateIndexEntry($file);
 		$this->emitPostFileReplaceSignal($file, $localFilePath);
 		return $result;
 	}
@@ -1726,7 +1688,7 @@ class ResourceStorage {
 		foreach ($fileObjects as $oldIdentifier => $fileObject) {
 			$newIdentifier = $fileMappings[$oldIdentifier];
 			$fileObject->updateProperties(array('storage' => $this->getUid(), 'identifier' => $newIdentifier));
-			$this->getFileIndexRepository()->update($fileObject);
+			$this->getIndexer()->updateIndexEntry($fileObject);
 		}
 		$returnObject = $this->getFolder($fileMappings[$folderToMove->getIdentifier()]);
 		$this->emitPostFolderMoveSignal($folderToMove, $targetParentFolder, $newFolderName);
@@ -1822,7 +1784,7 @@ class ResourceStorage {
 		foreach ($fileObjects as $oldIdentifier => $fileObject) {
 			$newIdentifier = $fileMappings[$oldIdentifier];
 			$fileObject->updateProperties(array('identifier' => $newIdentifier));
-			$this->getFileIndexRepository()->update($fileObject);
+			$this->getIndexer()->updateIndexEntry($fileObject);
 		}
 		$returnObject = $this->getFolder($fileMappings[$folderObject->getIdentifier()]);
 
@@ -2427,5 +2389,14 @@ class ResourceStorage {
 	 */
 	public function getDriverType() {
 		return $this->storageRecord['driver'];
+	}
+
+	/**
+	 * Gets Indexer
+	 *
+	 * @return \TYPO3\CMS\Core\Resource\Index\Indexer
+	 */
+	protected function getIndexer() {
+		return GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\Index\\Indexer', $this);
 	}
 }

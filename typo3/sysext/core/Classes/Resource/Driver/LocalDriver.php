@@ -780,9 +780,6 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 		if ($result === FALSE) {
 			throw new \RuntimeException('Replacing file ' . $filePath . ' with ' . $localFilePath . ' failed.', 1315314711);
 		}
-		$fileInfo = $this->getFileInfoByIdentifier($file->getIdentifier());
-		$file->updateProperties($fileInfo);
-		// TODO update index
 		return $result;
 	}
 
