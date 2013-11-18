@@ -198,10 +198,12 @@ class SystemEnvironmentBuilder {
 		require_once __DIR__ . '/../Cache/Frontend/AbstractFrontend.php';
 		require_once __DIR__ . '/../Cache/Frontend/StringFrontend.php';
 		require_once __DIR__ . '/../Cache/Frontend/PhpFrontend.php';
+		require_once __DIR__ . '/../Cache/Frontend/VariableFrontend.php';
 		require_once __DIR__ . '/../Cache/Backend/BackendInterface.php';
 		require_once __DIR__ . '/../Cache/Backend/PhpCapableBackendInterface.php';
+		require_once __DIR__ . '/../Cache/Backend/TaggableBackendInterface.php';
 		require_once __DIR__ . '/../Cache/Backend/AbstractBackend.php';
-		require_once __DIR__ . '/../Cache/Backend/EarlyClassLoaderBackend.php';
+		require_once __DIR__ . '/../Cache/Backend/TransientMemoryBackend.php';
 		require_once __DIR__ . '/ClassLoader.php';
 		require_once __DIR__ . '/ClassAliasMap.php';
 	}

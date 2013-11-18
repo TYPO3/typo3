@@ -81,7 +81,7 @@ class ClassLoaderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$mockClassAliasMap->expects($this->any())->method('setPackagesButDontBuildMappingFilesReturnClassNameToAliasMappingInstead')->will($this->returnValue(array()));
 
 		$this->orinalClassAliasMap = \TYPO3\CMS\Core\Core\Bootstrap::getInstance()->getEarlyInstance('TYPO3\\CMS\\Core\\Core\\ClassAliasMap');
-		$this->classLoader = new \TYPO3\CMS\Core\Core\ClassLoader();
+		$this->classLoader = new \TYPO3\CMS\Core\Core\ClassLoader(\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->getApplicationContext());
 		$this->classLoader->injectClassAliasMap($mockClassAliasMap);
 		$this->classLoader->setPackages(array('Acme.MyApp' => $package1, 'Acme.MyAppAddon' => $package2));
 	}

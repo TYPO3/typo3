@@ -46,12 +46,17 @@ class ClassAliasMap implements \TYPO3\CMS\Core\SingletonInterface {
 	protected $classNameToAliasMapping = array();
 
 	/**
-	 * @var \TYPO3\CMS\Core\Cache\Frontend\PhpFrontend
+	 * @var \TYPO3\CMS\Core\Cache\Frontend\StringFrontend
 	 */
 	protected $classesCache;
 
 	/**
-	 * @var \TYPO3\CMS\Core\Core\ClassLoader
+	 * @var \TYPO3\CMS\Core\Cache\Frontend\PhpFrontend
+	 */
+	protected $coreCache;
+
+	/**
+	 * @var ClassLoader
 	 */
 	protected $classLoader;
 
@@ -61,21 +66,28 @@ class ClassAliasMap implements \TYPO3\CMS\Core\SingletonInterface {
 	protected $cacheIdentifier;
 
 	/**
-	 * @var array<\TYPO3\Flow\Package\Package>
+	 * @var \TYPO3\Flow\Package\Package[]
 	 */
 	protected $packages = array();
 
 	/**
-	 * @param \TYPO3\CMS\Core\Cache\Frontend\PhpFrontend $classesCache
+	 * @param \TYPO3\CMS\Core\Cache\Frontend\StringFrontend $classesCache
 	 */
-	public function injectClassesCache(\TYPO3\CMS\Core\Cache\Frontend\PhpFrontend $classesCache) {
+	public function injectClassesCache(\TYPO3\CMS\Core\Cache\Frontend\StringFrontend $classesCache) {
 		$this->classesCache = $classesCache;
 	}
 
 	/**
-	 * @param \TYPO3\CMS\Core\Core\ClassLoader
+	 * @param \TYPO3\CMS\Core\Cache\Frontend\PhpFrontend $coreCache
 	 */
-	public function injectClassLoader(\TYPO3\CMS\Core\Core\ClassLoader $classLoader) {
+	public function injectCoreCache(\TYPO3\CMS\Core\Cache\Frontend\PhpFrontend $coreCache) {
+		$this->coreCache = $coreCache;
+	}
+
+	/**
+	 * @param ClassLoader
+	 */
+	public function injectClassLoader(ClassLoader $classLoader) {
 		$this->classLoader = $classLoader;
 	}
 
@@ -138,8 +150,8 @@ class ClassAliasMap implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	protected function loadEarlyInstanceMappingFromCache() {
 		$cacheEntryIdentifier = $this->getCacheEntryIdentifier();
-		if (!$cacheEntryIdentifier !== NULL && $this->classesCache->has($cacheEntryIdentifier)) {
-			return (bool) $this->classesCache->requireOnce($cacheEntryIdentifier);
+		if (!$cacheEntryIdentifier !== NULL && $this->coreCache->has($cacheEntryIdentifier)) {
+			return (bool) $this->coreCache->requireOnce($cacheEntryIdentifier);
 		}
 		return FALSE;
 	}
@@ -151,7 +163,7 @@ class ClassAliasMap implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	protected function buildMappingAndInitializeEarlyInstanceMapping() {
 		$aliasToClassNameMapping = array();
-			foreach ($this->packages as $package) {
+		foreach ($this->packages as $package) {
 			if ($package instanceof \TYPO3\CMS\Core\Package\Package) {
 				$aliasToClassNameMapping = array_merge($aliasToClassNameMapping, $package->getClassAliases());
 			}
@@ -187,35 +199,16 @@ class ClassAliasMap implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return void
 	 */
 	public function buildMappingFiles(array $classNameToAliasMapping) {
-		/** @var $cacheBackend \TYPO3\CMS\Core\Cache\Backend\ClassLoaderBackend */
-		$cacheBackend = $this->classesCache->getBackend();
 		foreach ($classNameToAliasMapping as $originalClassName => $aliasClassNames) {
 			$originalClassNameCacheEntryIdentifier = str_replace('\\', '_', strtolower($originalClassName));
 			// Trigger autoloading for all aliased class names, so a cache entry is created
-			if (
-				$this->classLoader->loadClass($originalClassName, FALSE)
-				&& ($requiredFile = $cacheBackend->getPathOfRequiredFileInCacheEntry($originalClassNameCacheEntryIdentifier))
-			) {
-				$proxyContent = array(
-					$this->buildRequireOnceCommand($requiredFile),
-					$this->buildClassLoaderCommand(),
-				);
+			$classLoadingInformation = $this->classLoader->buildClassLoadingInformation($originalClassName);
+			if (NULL !== $classLoadingInformation) {
+				$classLoadingInformation = implode("\xff", array_merge($classLoadingInformation, $aliasClassNames));
+				$this->classesCache->set($originalClassNameCacheEntryIdentifier, $classLoadingInformation);
 				foreach ($aliasClassNames as $aliasClassName) {
-					$proxyContent[] = $this->buildAliasCommand($aliasClassName, $originalClassName);
-				}
-				$this->classesCache->set($originalClassNameCacheEntryIdentifier, implode(LF, $proxyContent));
-			}
-		}
-		foreach ($classNameToAliasMapping as $originalClassName => $aliasClassNames) {
-			foreach ($aliasClassNames as $aliasClassName) {
-				$aliasClassNameCacheEntryIdentifier = str_replace('\\', '_', strtolower($aliasClassName));
-				$originalClassNameCacheEntryIdentifier = str_replace('\\', '_', strtolower($originalClassName));
-				if ($this->classesCache->has($aliasClassNameCacheEntryIdentifier)) {
-					$this->classesCache->remove($aliasClassNameCacheEntryIdentifier);
-				}
-				// Link all aliases to original cache entry
-				if ($this->classesCache->has($originalClassNameCacheEntryIdentifier)) {
-					$cacheBackend->setLinkToOtherCacheEntry($aliasClassNameCacheEntryIdentifier, $originalClassNameCacheEntryIdentifier);
+					$aliasClassNameCacheEntryIdentifier = str_replace('\\', '_', strtolower($aliasClassName));
+					$this->classesCache->set($aliasClassNameCacheEntryIdentifier, $classLoadingInformation);
 				}
 			}
 		}
@@ -236,8 +229,8 @@ class ClassAliasMap implements \TYPO3\CMS\Core\SingletonInterface {
 			}
 			$cacheEntryIdentifier = $this->getCacheEntryIdentifier();
 			if ($cacheEntryIdentifier !== NULL) {
-				$this->classesCache->set($this->getCacheEntryIdentifier(), implode(LF, $proxyContent));
-				$this->classesCache->requireOnce($cacheEntryIdentifier);
+				$this->coreCache->set($this->getCacheEntryIdentifier(), implode(LF, $proxyContent));
+				$this->coreCache->requireOnce($cacheEntryIdentifier);
 			} else {
 				eval(implode(PHP_EOL, $proxyContent));
 			}

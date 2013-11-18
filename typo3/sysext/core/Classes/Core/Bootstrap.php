@@ -226,7 +226,7 @@ class Bootstrap {
 			->initializeClassLoader()
 			->populateLocalConfiguration()
 			->initializeCachingFramework()
-			->initializeClassLoaderCache()
+			->initializeClassLoaderCaches()
 			->initializePackageManagement($packageManagerClassName);
 
 		// @TODO dig into this
@@ -259,9 +259,9 @@ class Bootstrap {
 	 * @return Bootstrap
 	 */
 	protected function initializeClassLoader() {
-		$classLoader = new \TYPO3\CMS\Core\Core\ClassLoader();
+		$classLoader = new ClassLoader($this->applicationContext);
 		$this->setEarlyInstance('TYPO3\\CMS\\Core\\Core\\ClassLoader', $classLoader);
-		$classLoader->setEarlyClassFileAutoloadRegistry((array) include __DIR__ . '/../../ext_autoload.php');
+		$classLoader->setEarlyClassInformationsFromAutoloadRegistry((array) include __DIR__ . '/../../ext_autoload.php');
 		$classAliasMap = new \TYPO3\CMS\Core\Core\ClassAliasMap();
 		$classAliasMap->injectClassLoader($classLoader);
 		$this->setEarlyInstance('TYPO3\\CMS\\Core\\Core\\ClassAliasMap', $classAliasMap);
@@ -274,6 +274,7 @@ class Bootstrap {
 	 * Reinitializes the class loader during clear cache actions
 	 * Beware! This is not public API and necessary for edge cases in the install tool
 	 *
+	 * @param string $packageManagerClassName
 	 * @return void
 	 */
 	public function reinitializeClassLoaderAndCachesAndPackageManagement($packageManagerClassName = 'TYPO3\\CMS\\Core\\Package\\PackageManager') {
@@ -284,7 +285,7 @@ class Bootstrap {
 			->initializeClassLoader()
 			->populateLocalConfiguration()
 			->initializeCachingFramework()
-			->initializeClassLoaderCache()
+			->initializeClassLoaderCaches()
 			->initializePackageManagement($packageManagerClassName);
 	}
 
@@ -293,9 +294,10 @@ class Bootstrap {
 	 *
 	 * @return Bootstrap
 	 */
-	protected function initializeClassLoaderCache() {
-		/** @var $classLoader \TYPO3\CMS\Core\Core\ClassLoader */
+	protected function initializeClassLoaderCaches() {
+		/** @var $classLoader ClassLoader */
 		$classLoader = $this->getEarlyInstance('TYPO3\\CMS\\Core\\Core\\ClassLoader');
+		$classLoader->injectCoreCache($this->getEarlyInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->getCache('cache_core'));
 		$classLoader->injectClassesCache($this->getEarlyInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->getCache('cache_classes'));
 		return $this;
 	}
@@ -308,6 +310,7 @@ class Bootstrap {
 	 * @return Bootstrap
 	 */
 	protected function initializePackageManagement($packageManagerClassName) {
+		/** @var \TYPO3\CMS\Core\Package\PackageManager $packageManager */
 		$packageManager = new $packageManagerClassName();
 		$this->setEarlyInstance('TYPO3\\Flow\\Package\\PackageManager', $packageManager);
 		Utility\ExtensionManagementUtility::setPackageManager($packageManager);
@@ -336,7 +339,6 @@ class Bootstrap {
 	 * Load TYPO3_LOADED_EXT, recreate class loader registry and load ext_localconf
 	 *
 	 * @TODO: This method was changed with the package manager patch, do we still need it?
-	 * @param boolean $allowCaching
 	 * @return Bootstrap
 	 * @internal This is not a public API method, do not use in own extensions
 	 */
@@ -751,7 +753,6 @@ class Bootstrap {
 	/**
 	 * Initialize database connection in $GLOBALS and connect if requested
 	 *
-	 * @param boolean $connect Whether db should be connected
 	 * @return \TYPO3\CMS\Core\Core\Bootstrap
 	 * @internal This is not a public API method, do not use in own extensions
 	 */

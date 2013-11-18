@@ -44,7 +44,7 @@ class PackageManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		mkdir('vfs://Test/Configuration');
 		file_put_contents('vfs://Test/Configuration/PackageStates.php', "<?php return array ('packages' => array(), 'version' => 4); ");
 
-		$mockClassLoader = $this->getMock('TYPO3\CMS\Core\Core\ClassLoader');
+		$mockClassLoader = $this->getMock('TYPO3\CMS\Core\Core\ClassLoader', array(), array(\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->getApplicationContext()));
 		$mockClassLoader->expects($this->any())->method('setCacheIdentifier')->will($this->returnSelf());
 
 		$composerNameToPackageKeyMap = array(
