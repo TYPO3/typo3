@@ -70,7 +70,7 @@ class IconViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendView
 		$additionalAttributes = '';
 		if ($this->hasArgument('additionalAttributes') && is_array($this->arguments['additionalAttributes'])) {
 			foreach ($this->arguments['additionalAttributes'] as $argumentKey => $argumentValue) {
-				$additionalAttributes .= ' ' . $argumentKey . '="' . $argumentValue . '"';
+				$additionalAttributes .= ' ' . $argumentKey . '="' . htmlspecialchars($argumentValue) . '"';
 			}
 		}
 		$icon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon($icon, array('title' => $title));
