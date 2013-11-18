@@ -700,7 +700,12 @@ class FormsController {
 					$thisLine[1] = str_replace('|', '', $thisLine[1]);
 					// Default:
 					if ($vv['type'] == 'select' || $vv['type'] == 'radio') {
-						$thisLine[2] = str_replace(LF, ', ', str_replace(',', '', $vv['options']));
+						$options = str_replace(',', '', $vv['options']);
+						$options = str_replace(
+							array(CR . LF, CR, LF),
+							', ',
+							$options);
+						$thisLine[2] = $options;
 					} elseif ($vv['type'] == 'check') {
 						if ($vv['default']) {
 							$thisLine[2] = 1;
