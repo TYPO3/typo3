@@ -59,7 +59,7 @@ class ApcPreset extends Configuration\AbstractPreset {
 	public function isAvailable() {
 		$result = FALSE;
 		if (extension_loaded('apc')) {
-			$memoryInfo = apc_sma_info();
+			$memoryInfo = @apc_sma_info();
 			$totalMemory = $memoryInfo['num_seg'] * $memoryInfo['seg_size'];
 			$availableMemory = $memoryInfo['avail_mem'];
 
