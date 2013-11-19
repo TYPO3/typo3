@@ -47,7 +47,7 @@ class RecordsContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractCon
 		// If the currentRecord is set, we register, that this record has invoked this function.
 		// It's should not be allowed to do this again then!!
 		if ($originalRec) {
-			$GLOBALS['TSFE']->recordRegister[$originalRec]++;
+			++$GLOBALS['TSFE']->recordRegister[$originalRec];
 		}
 		$tables = isset($conf['tables.']) ? $this->cObj->stdWrap($conf['tables'], $conf['tables.']) : $conf['tables'];
 		$source = isset($conf['source.']) ? $this->cObj->stdWrap($conf['source'], $conf['source.']) : $conf['source'];
@@ -118,6 +118,9 @@ class RecordsContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractCon
 		}
 		// Restore
 		$GLOBALS['TSFE']->currentRecord = $originalRec;
+		if ($originalRec) {
+			--$GLOBALS['TSFE']->recordRegister[$originalRec];
+		}
 		return $theValue;
 	}
 
