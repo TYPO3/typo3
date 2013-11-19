@@ -398,7 +398,7 @@ class Typo3QuerySettings implements \TYPO3\CMS\Extbase\Persistence\Generic\Query
 	 * @deprecated since Extbase 6.2, will be removed two versions later. Please use argument in query->execute() instead.
 	 */
 	public function getReturnRawQueryResult() {
-		GeneralUtility::logDeprecatedFunction();
+		// We do not log this call intentionally, otherwise the deprecation log would be filled up
 		return $this->returnRawQueryResult;
 	}
 }
