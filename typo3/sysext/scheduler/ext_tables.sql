@@ -2,7 +2,7 @@
 # Table structure for table 'tx_scheduler_task'
 #
 CREATE TABLE tx_scheduler_task (
-	uid int(11) unsigned DEFAULT '0' NOT NULL auto_increment,
+	uid int(11) unsigned NOT NULL auto_increment,
 	crdate int(11) unsigned DEFAULT '0' NOT NULL,
 	disable tinyint(4) unsigned DEFAULT '0' NOT NULL,
 	nextexecution int(11) unsigned DEFAULT '0' NOT NULL,
