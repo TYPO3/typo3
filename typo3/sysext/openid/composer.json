@@ -1,5 +1,5 @@
 {
-	"name": "typo3/cms/openid",
+	"name": "typo3/cms-openid",
 	"type": "typo3-cms-framework",
 	"description": "TYPO3 Core",
 	"homepage": "http://typo3.org",
@@ -7,9 +7,9 @@
 	"version": "6.2.0",
 
 	"require": {
-		"typo3/cms/core": "*",
-		"typo3/cms/sv": "*",
-		"typo3/cms/setup": "*"
+		"typo3/cms-core": "*",
+		"typo3/cms-sv": "*",
+		"typo3/cms-setup": "*"
 	},
 	"replace": {
 		"openid": "*"
