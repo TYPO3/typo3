@@ -47,7 +47,7 @@ class ContentContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractCon
 		// If the currentRecord is set, we register, that this record has invoked this function.
 		// It's should not be allowed to do this again then!!
 		if ($originalRec) {
-			$GLOBALS['TSFE']->recordRegister[$originalRec]++;
+			++$GLOBALS['TSFE']->recordRegister[$originalRec];
 		}
 		$conf['table'] = isset($conf['table.']) ? trim($this->cObj->stdWrap($conf['table'], $conf['table.'])) : trim($conf['table']);
 		$tablePrefix = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('_', $conf['table'], TRUE);
@@ -150,6 +150,9 @@ class ContentContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractCon
 		}
 		// Restore
 		$GLOBALS['TSFE']->currentRecord = $originalRec;
+		if ($originalRec) {
+			--$GLOBALS['TSFE']->recordRegister[$originalRec];
+		}
 		return $theValue;
 	}
 
