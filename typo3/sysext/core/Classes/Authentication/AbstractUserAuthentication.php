@@ -289,11 +289,12 @@ abstract class AbstractUserAuthentication {
 	 */
 	public $loginSessionStarted = FALSE;
 
-	// Internal: Will contain user- AND session-data from database (joined tables)
 	/**
+	 * @var array|NULL contains user- AND session-data from database (joined tables)
 	 * @todo Define visibility
+	 * @internal
 	 */
-	public $user;
+	public $user = NULL;
 
 	// Internal: Will will be set to the url--ready (eg. '&login=ab7ef8d...')
 	//GET-auth-var if getFallBack is TRUE. Should be inserted in links!
@@ -418,7 +419,7 @@ abstract class AbstractUserAuthentication {
 		// Set session hashKey lock keywords from configuration; currently only 'useragent' can be used.
 		$this->lockHashKeyWords = $GLOBALS['TYPO3_CONF_VARS'][$this->loginType]['lockHashKeyWords'];
 		// Make certain that NO user is set initially
-		$this->user = '';
+		$this->user = NULL;
 		// Set all possible headers that could ensure that the script is not cached on the client-side
 		if ($this->sendNoCacheHeaders) {
 			header('Expires: 0');
@@ -438,28 +439,9 @@ abstract class AbstractUserAuthentication {
 			header('Cache-Control: ' . $cacheControlHeader);
 			header('Pragma: ' . $pragmaHeader);
 		}
-		// Check to see if anyone has submitted login-information and if so register
+		// Load user session, check to see if anyone has submitted login-information and if so authenticate
 		// the user with the session. $this->user[uid] may be used to write log...
 		$this->checkAuthentication();
-		// Make certain that NO user is set initially. ->check_authentication may
-		// have set a session-record which will provide us with a user record in the next section:
-		unset($this->user);
-		// Determine whether we need to skip session update.
-		// This is used mainly for checking session timeout without
-		// refreshing the session itself while checking.
-		if (GeneralUtility::_GP('skipSessionUpdate')) {
-			$skipSessionUpdate = TRUE;
-		} else {
-			$skipSessionUpdate = FALSE;
-		}
-		// Re-read user session
-		$this->user = $this->fetchUserSession($skipSessionUpdate);
-		if ($this->writeDevLog && is_array($this->user)) {
-			GeneralUtility::devLog('User session finally read: ' . GeneralUtility::arrayToLogString($this->user, array($this->userid_column, $this->username_column)), 'TYPO3\\CMS\\Core\\Authentication\\AbstractUserAuthentication', -1);
-		}
-		if ($this->writeDevLog && !is_array($this->user)) {
-			GeneralUtility::devLog('No user session found.', 'TYPO3\\CMS\\Core\\Authentication\\AbstractUserAuthentication', 2);
-		}
 		// Setting cookies
 		if (!$this->dontSetCookie) {
 			$this->setSessionCookie();
@@ -670,12 +652,17 @@ abstract class AbstractUserAuthentication {
 		} else {
 			$skipSessionUpdate = FALSE;
 		}
-		// Re-read user session
-		$authInfo['userSession'] = $this->fetchUserSession($skipSessionUpdate);
-		$haveSession = is_array($authInfo['userSession']) ? TRUE : FALSE;
+		$haveSession = FALSE;
+		if (!$this->newSessionID) {
+			// Read user session
+			$authInfo['userSession'] = $this->fetchUserSession($skipSessionUpdate);
+			$haveSession = is_array($authInfo['userSession']) ? TRUE : FALSE;
+		}
 		if ($this->writeDevLog) {
 			if ($haveSession) {
 				GeneralUtility::devLog('User session found: ' . GeneralUtility::arrayToLogString($authInfo['userSession'], array($this->userid_column, $this->username_column)), 'TYPO3\\CMS\\Core\\Authentication\\AbstractUserAuthentication', 0);
+			} else {
+				GeneralUtility::devLog('No user session found.', 'TYPO3\\CMS\\Core\\Authentication\\AbstractUserAuthentication', 2);
 			}
 			if (is_array($this->svConfig['setup'])) {
 				GeneralUtility::devLog('SV setup: ' . GeneralUtility::arrayToLogString($this->svConfig['setup']), 'TYPO3\\CMS\\Core\\Authentication\\AbstractUserAuthentication', 0);
@@ -779,9 +766,20 @@ abstract class AbstractUserAuthentication {
 			$this->loginFailure = FALSE;
 			// Insert session record if needed:
 			if (!($haveSession && ($tempuser['ses_id'] == $this->id || $tempuser['uid'] == $authInfo['userSession']['ses_userid']))) {
-				$this->createUserSession($tempuser);
+				$sessionData = $this->createUserSession($tempuser);
+				if ($sessionData) {
+					$this->user = array_merge(
+						$tempuser,
+						$sessionData
+					);
+				}
 				// The login session is started.
 				$this->loginSessionStarted = TRUE;
+				if ($this->writeDevLog && is_array($this->user)) {
+					GeneralUtility::devLog('User session finally read: ' . GeneralUtility::arrayToLogString($this->user, array($this->userid_column, $this->username_column)), 'TYPO3\\CMS\\Core\\Authentication\\AbstractUserAuthentication', -1);
+				}
+			} elseif ($haveSession) {
+				$this->user = $authInfo['userSession'];
 			}
 			// User logged in - write that to the log!
 			if ($this->writeStdLog && $activeLogin) {
@@ -841,10 +839,11 @@ abstract class AbstractUserAuthentication {
 	 *
 	 *************************/
 	/**
-	 * Creates a user session record.
+	 * Creates a user session record and returns its values.
 	 *
 	 * @param array $tempuser User data array
-	 * @return void
+	 *
+	 * @return array The session data for the newly created session.
 	 * @todo Define visibility
 	 */
 	public function createUserSession($tempuser) {
@@ -852,15 +851,31 @@ abstract class AbstractUserAuthentication {
 			GeneralUtility::devLog('Create session ses_id = ' . $this->id, 'TYPO3\\CMS\\Core\\Authentication\\AbstractUserAuthentication');
 		}
 		// Delete session entry first
-		$GLOBALS['TYPO3_DB']->exec_DELETEquery($this->session_table, 'ses_id = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->id, $this->session_table) . '
-						AND ses_name = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->name, $this->session_table));
+		$GLOBALS['TYPO3_DB']->exec_DELETEquery(
+			$this->session_table,
+			'ses_id = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->id, $this->session_table)
+				. ' AND ses_name = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->name, $this->session_table)
+		);
 		// Re-create session entry
 		$insertFields = $this->getNewSessionRecord($tempuser);
-		$GLOBALS['TYPO3_DB']->exec_INSERTquery($this->session_table, $insertFields);
-		// Updating lastLogin_column carrying information about last login.
-		if ($this->lastLogin_column) {
-			$GLOBALS['TYPO3_DB']->exec_UPDATEquery($this->user_table, $this->userid_column . '=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($tempuser[$this->userid_column], $this->user_table), array($this->lastLogin_column => $GLOBALS['EXEC_TIME']));
+		$inserted = (boolean) $GLOBALS['TYPO3_DB']->exec_INSERTquery($this->session_table, $insertFields);
+		if (!$inserted) {
+			$message = 'Session data could not be written to DB. Error: ' . $GLOBALS['TYPO3_DB']->sql_error();
+			GeneralUtility::sysLog($message, 'Core', GeneralUtility::SYSLOG_SEVERITY_WARNING);
+			if ($this->writeDevLog) {
+				GeneralUtility::devLog($message, 'TYPO3\\CMS\\Core\\Authentication\\AbstractUserAuthentication', 2);
+			}
 		}
+		// Updating lastLogin_column carrying information about last login.
+		if ($this->lastLogin_column && $inserted) {
+			$GLOBALS['TYPO3_DB']->exec_UPDATEquery(
+				$this->user_table,
+				$this->userid_column . '=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($tempuser[$this->userid_column], $this->user_table),
+				array($this->lastLogin_column => $GLOBALS['EXEC_TIME'])
+			);
+		}
+
+		return $inserted ? $insertFields : array();
 	}
 
 	/**
@@ -890,19 +905,20 @@ abstract class AbstractUserAuthentication {
 	 * @todo Define visibility
 	 */
 	public function fetchUserSession($skipSessionUpdate = FALSE) {
-		$user = '';
+		$user = FALSE;
 		if ($this->writeDevLog) {
 			GeneralUtility::devLog('Fetch session ses_id = ' . $this->id, 'TYPO3\\CMS\\Core\\Authentication\\AbstractUserAuthentication');
 		}
+
 		// Fetch the user session from the DB
 		$statement = $this->fetchUserSessionFromDB();
-		$user = FALSE;
+
 		if ($statement) {
 			$statement->execute();
 			$user = $statement->fetch();
 			$statement->free();
 		}
-		if ($statement && $user) {
+		if ($user) {
 			// A user was found
 			if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($this->auth_timeout_field)) {
 				// Get timeout from object
@@ -924,9 +940,6 @@ abstract class AbstractUserAuthentication {
 				// Delete any user set...
 				$this->logoff();
 			}
-		} else {
-			// Delete any user set...
-			$this->logoff();
 		}
 		return $user;
 	}
