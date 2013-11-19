@@ -71,7 +71,7 @@ var languageModule = {
 
 			// Resize tables on window resize
 		jQuery(window).resize(function() {
-			$('div.dataTables_scrollBody').css('height', languageModule.calculateTableHeight());
+			jQuery('div.dataTables_scrollBody').css('height', languageModule.calculateTableHeight());
 		});
 	},
 
