@@ -17,7 +17,7 @@
 				data-updateurl="<f:uri.action action="updateTranslation" arguments="{extension:'{extension.key}', locales:'{languageSelectionForm.selectedLanguagesLocaleList}'}" />"
 			>
 				<td class="icon">
-					<f:if condition="{extension.icon}"><f:image src="{extension.icon}" alt="{extension.key}" /></f:if>
+					<f:if condition="{extension.icon}"><img class="ext-icon" src="{extension.icon}" alt="{extension.key}" /></f:if>
 				</td>
 				<td class="extension">{extension.key}</td>
 				<f:for each="{languageSelectionForm.selectedLanguages}" as="selectedLanguage">
