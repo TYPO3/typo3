@@ -187,8 +187,7 @@ class DataHandlerHook {
 	}
 
 	/**
-	 * hook that is called AFTER all commands of the commandmap was
-	 * executed
+	 * hook that is called when an element shall get deleted
 	 *
 	 * @param string $table the table of the record
 	 * @param integer $id the ID of the record
