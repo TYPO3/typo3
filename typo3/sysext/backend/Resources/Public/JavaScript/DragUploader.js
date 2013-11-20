@@ -33,6 +33,7 @@ define('TYPO3/CMS/Backend/DragUploader', ['jquery'], function($) {
 		me.$progress = $('<div />').addClass('DragUpload-ProgressInformation').hide().appendTo(me.$body);
 		me.uploadCompletedCount = 0;
 		me.fileQueue = [];
+		me.filesOnServer = [];
 
 		me.fileDenyPattern = new RegExp($('[data-file-deny-pattern]').attr('data-file-deny-pattern'), 'i');
 		me.maxFileSize = parseInt($('[data-max-file-size]').attr('data-max-file-size'));
@@ -87,8 +88,27 @@ define('TYPO3/CMS/Backend/DragUploader', ['jquery'], function($) {
 			}
 			me.ignoreDrop(event);
 
-			// ask user if we should override files
-			var override = confirm(TYPO3.l10n.localize('file_upload.overwriteExistingFiles'));
+			// collect files which would be overridden
+			var filesToOverride = [];
+			$.each(event.dataTransfer.files, function(i, file) {
+				if($.inArray(file.name, me.filesOnServer) > -1) {
+					filesToOverride.push(file.name);
+				}
+			});
+
+			var override = false;
+			if (filesToOverride.length > 0) {
+				var message = TYPO3.l10n.localize('file_upload.overwriteExistingFiles')
+					+ "\n\n" + filesToOverride.join("\n");
+
+				// ask user if we should override files
+				override = confirm(message);
+
+				if (override === false) {
+					// user canceled upload, do not proceed
+					return false;
+				}
+			}
 
 			// Add each file to queue and trigger upload
 			$.each(event.dataTransfer.files, function(i, file) {
@@ -125,6 +145,7 @@ define('TYPO3/CMS/Backend/DragUploader', ['jquery'], function($) {
 					xhr.onload = function () {
 						me.uploadCompletedCount++;
 						me.updateProgress();
+						me.filesOnServer.push(file.name);
 					};
 					xhr.onerror = function() {
 						TYPO3.Flashmessage.display(
@@ -185,6 +206,11 @@ define('TYPO3/CMS/Backend/DragUploader', ['jquery'], function($) {
 					}
 				});
 			}
+
+			// initialize the files which are already present on server
+			$('[data-file-name]').each(function(index, row) {
+				me.filesOnServer.push($(row).data('file-name'));
+			});
 		}
 
 
