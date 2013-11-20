@@ -549,20 +549,11 @@ class Clipboard {
 	 * @param string $table Tablename (_FILE for files)
 	 * @param mixed $uid "destination": can be positive or negative indicating how the paste is done (paste into / paste after)
 	 * @param boolean $setRedirect If set, then the redirect URL will point back to the current script, but with CB reset.
-	 * @param array|NULL $update Additional key/value pairs which should get set in the moved/copied record (via DataHandler)
 	 * @return string
 	 * @todo Define visibility
 	 */
-	public function pasteUrl($table, $uid, $setRedirect = TRUE, array $update = NULL) {
-		$rU = $this->backPath . ($table == '_FILE' ? 'tce_file.php' : 'tce_db.php') . '?' .
-			($setRedirect ? 'redirect=' . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array('CB' => ''))) : '') .
-			'&vC=' . $GLOBALS['BE_USER']->veriCode() .
-			'&prErr=1&uPT=1' .
-			'&CB[paste]=' .
-			rawurlencode(($table . '|' . $uid)) .
-			'&CB[pad]=' . $this->current .
-			(is_array($update) ? '&CB[update]=' . rawurlencode(serialize($update)) : '') .
-			\TYPO3\CMS\Backend\Utility\BackendUtility::getUrlToken('tceAction');
+	public function pasteUrl($table, $uid, $setRedirect = 1) {
+		$rU = $this->backPath . ($table == '_FILE' ? 'tce_file.php' : 'tce_db.php') . '?' . ($setRedirect ? 'redirect=' . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array('CB' => ''))) : '') . '&vC=' . $GLOBALS['BE_USER']->veriCode() . '&prErr=1&uPT=1' . '&CB[paste]=' . rawurlencode(($table . '|' . $uid)) . '&CB[pad]=' . $this->current . \TYPO3\CMS\Backend\Utility\BackendUtility::getUrlToken('tceAction');
 		return $rU;
 	}
 
@@ -619,14 +610,13 @@ class Clipboard {
 	 * @param mixed $rec For records its an array, for files its a string (path)
 	 * @param string $type Type-code
 	 * @param array $clElements Array of selected elements
-	 * @param string $columnLabel Name of the content column
 	 * @return string JavaScript "confirm" message
 	 * @todo Define visibility
 	 */
-	public function confirmMsg($table, $rec, $type, $clElements, $columnLabel = '') {
+	public function confirmMsg($table, $rec, $type, $clElements) {
 		if ($GLOBALS['BE_USER']->jsConfirmation(2)) {
 			$labelKey = 'LLL:EXT:lang/locallang_core.xlf:mess.' . ($this->currentMode() == 'copy' ? 'copy' : 'move') . ($this->current == 'normal' ? '' : 'cb') . '_' . $type;
-			$msg = $GLOBALS['LANG']->sL($labelKey . ($columnLabel ? '_colPos': ''));
+			$msg = $GLOBALS['LANG']->sL($labelKey);
 			if ($table == '_FILE') {
 				$thisRecTitle = basename($rec);
 				if ($this->current == 'normal') {
@@ -644,16 +634,8 @@ class Clipboard {
 					$selRecTitle = count($clElements);
 				}
 			}
-			// @TODO
-			// This can get removed as soon as the "_colPos" label is translated
-			// into all available locallang languages.
-			if (!$msg && $columnLabel) {
-				$thisRecTitle .= ' | ' . $columnLabel;
-				$msg = $GLOBALS['LANG']->sL($labelKey);
-			}
-
 			// Message
-			$conf = 'confirm(' . $GLOBALS['LANG']->JScharCode(sprintf($msg, \TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($selRecTitle, 30), \TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($thisRecTitle, 30), \TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($columnLabel, 30))) . ')';
+			$conf = 'confirm(' . $GLOBALS['LANG']->JScharCode(sprintf($msg, \TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($selRecTitle, 30), \TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($thisRecTitle, 30))) . ')';
 		} else {
 			$conf = '';
 		}
@@ -875,11 +857,10 @@ class Clipboard {
 	 *
 	 * @param string $ref [tablename]:[paste-uid], see description
 	 * @param array $CMD Command-array
-	 * @param NULL|array If additional values should get set in the copied/moved record this will be an array containing key=>value pairs
 	 * @return array Modified Command-array
 	 * @todo Define visibility
 	 */
-	public function makePasteCmdArray($ref, $CMD, array $update = NULL) {
+	public function makePasteCmdArray($ref, $CMD) {
 		list($pTable, $pUid) = explode('|', $ref);
 		$pUid = intval($pUid);
 		// pUid must be set and if pTable is not set (that means paste ALL elements)
@@ -895,14 +876,7 @@ class Clipboard {
 				if (!is_array($CMD[$table])) {
 					$CMD[$table] = array();
 				}
-				if (is_array($update)) {
-					$CMD[$table][$uid][$mode] = array(
-						'target' => $pUid,
-						'update' => $update,
-					);
-				} else {
-					$CMD[$table][$uid][$mode] = $pUid;
-				}
+				$CMD[$table][$uid][$mode] = $pUid;
 				if ($mode == 'move') {
 					$this->removeElement($tP);
 				}

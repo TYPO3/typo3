@@ -18,7 +18,7 @@
  */
 
 /**
- * new clickmenu code to make an AJAX call and render the
+ * new clickmenu code to make an AJAX call and render the 
  * AJAX result in a layer next to the mouse cursor
  */
 var Clickmenu = {
@@ -54,8 +54,8 @@ var Clickmenu = {
 	 *
  	 * @param	params	parameters added to the URL
 	 * @return	nothing
-	 */
-	callURL: function(params) {
+	 */ 
+	callURL: function(params) {	
 		if (this.ajax && Ajax.getTransport()) { // run with AJAX
 			params += '&ajax=1';
 			var call = new Ajax.Request(this.clickURL, {
@@ -63,21 +63,13 @@ var Clickmenu = {
 				parameters: params,
 				onComplete: function(xhr) {
 					var response = xhr.responseXML;
-
 					if (!response.getElementsByTagName('data')[0]) {
-						var res = params.match(/&reloadListFrame=(0|1|2)(&|$)/);
-						var reloadListFrame = parseInt(res[1], 0);
-						if (reloadListFrame) {
-							var doc = (reloadListFrame != 2) ? top.content.list_frame : top.content;
-							doc.location.reload(true);
-						}
 						return;
 					}
 					var menu  = response.getElementsByTagName('data')[0].getElementsByTagName('clickmenu')[0];
 					var data  = menu.getElementsByTagName('htmltable')[0].firstChild.data;
 					var level = menu.getElementsByTagName('cmlevel')[0].firstChild.data;
 					this.populateData(data, level);
-
 				}.bind(this)
 			});
 		}
@@ -262,7 +254,7 @@ function hideSpecific(level) {
 	if (level === 0 || level === 1) {
 		Clickmenu.hide('contentMenu'+level);
 	}
-}
+} 
 function showHideSelectorBoxes(action) {
 	toggleSelectorBoxes(action);
 }

@@ -558,17 +558,11 @@ Would you like to save now in order to refresh the display?</source>
 			<trans-unit id="mess.move_into" xml:space="preserve">
 				<source>Move "%s" into "%s"?</source>
 			</trans-unit>
-			<trans-unit id="mess.move_into_colPos" xml:space="preserve">
-				<source>Move "%1$s" into column "%3$s" on page "%2$s"?</source>
-			</trans-unit>
 			<trans-unit id="mess.move_after" xml:space="preserve">
 				<source>Move "%s" to after "%s"?</source>
 			</trans-unit>
 			<trans-unit id="mess.copy_into" xml:space="preserve">
 				<source>Copy "%s" into "%s"?</source>
-			</trans-unit>
-			<trans-unit id="mess.copy_into_colPos" xml:space="preserve">
-				<source>Copy "%1$s" into column "%3$s" on page "%2$s"?</source>
 			</trans-unit>
 			<trans-unit id="mess.copy_after" xml:space="preserve">
 				<source>Copy "%s" to after "%s"?</source>
