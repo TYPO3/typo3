@@ -2836,6 +2836,7 @@ class DataHandler {
 				$hookObjectsArr[] = $hookObj;
 			}
 		}
+		$pasteDatamap = array();
 		// Traverse command map:
 		foreach (array_keys($this->cmdmap) as $table) {
 			// Check if the table may be modified!
@@ -2849,15 +2850,23 @@ class DataHandler {
 			if (isset($GLOBALS['TCA'][$table]) && !$this->tableReadOnly($table) && is_array($this->cmdmap[$table]) && $modifyAccessList) {
 				// Traverse the command map:
 				foreach ($this->cmdmap[$table] as $id => $incomingCmdArray) {
+					$pasteUpdate = FALSE;
 					if (is_array($incomingCmdArray)) {
 						// have found a command.
 						// Get command and value (notice, only one command is observed at a time!):
 						reset($incomingCmdArray);
 						$command = key($incomingCmdArray);
 						$value = current($incomingCmdArray);
+						if (is_array($value) && isset($value['action']) && $value['action'] === 'paste') {
+							// Extended paste command: $command is set to "move" or "copy"
+							// $value['update'] holds field/value pairs which should be updated after copy/move operation
+							// $value['target'] holds original $value (target of move/copy)
+							$pasteUpdate = $value['update'];
+							$value = $value['target'];
+						}
 						foreach ($hookObjectsArr as $hookObj) {
 							if (method_exists($hookObj, 'processCmdmap_preProcess')) {
-								$hookObj->processCmdmap_preProcess($command, $table, $id, $value, $this);
+								$hookObj->processCmdmap_preProcess($command, $table, $id, $value, $this, $pasteUpdate);
 							}
 						}
 						// Init copyMapping array:
@@ -2868,11 +2877,12 @@ class DataHandler {
 						$commandIsProcessed = FALSE;
 						foreach ($hookObjectsArr as $hookObj) {
 							if (method_exists($hookObj, 'processCmdmap')) {
-								$hookObj->processCmdmap($command, $table, $id, $value, $commandIsProcessed, $this);
+								$hookObj->processCmdmap($command, $table, $id, $value, $commandIsProcessed, $this, $pasteUpdate);
 							}
 						}
 						// Only execute default commands if a hook hasn't been processed the command already
 						if (!$commandIsProcessed) {
+							$procId = $id;
 							// Branch, based on command
 							switch ($command) {
 								case 'move':
@@ -2884,6 +2894,7 @@ class DataHandler {
 									} else {
 										$this->copyRecord($table, $id, $value, 1);
 									}
+									$procId = $this->copyMappingArray[$table][$id];
 									break;
 								case 'localize':
 									$this->localize($table, $id, $value);
@@ -2898,10 +2909,13 @@ class DataHandler {
 									$this->undeleteRecord($table, $id);
 									break;
 							}
+							if (is_array($pasteUpdate)) {
+								$pasteDatamap[$table][$procId] = $pasteUpdate;
+							}
 						}
 						foreach ($hookObjectsArr as $hookObj) {
 							if (method_exists($hookObj, 'processCmdmap_postProcess')) {
-								$hookObj->processCmdmap_postProcess($command, $table, $id, $value, $this);
+								$hookObj->processCmdmap_postProcess($command, $table, $id, $value, $this, $pasteUpdate, $pasteDatamap);
 							}
 						}
 						// Merging the copy-array info together for remapping purposes.
@@ -2910,6 +2924,13 @@ class DataHandler {
 				}
 			}
 		}
+		/** @var $copyTCE \TYPO3\CMS\Core\DataHandling\DataHandler */
+		$copyTCE = $this->getLocalTCE();
+		$copyTCE->start($pasteDatamap, '', $this->BE_USER);
+		$copyTCE->process_datamap();
+		$this->errorLog = array_merge($this->errorLog, $copyTCE->errorLog);
+		unset($copyTCE);
+
 		// Finally, before exit, check if there are ID references to remap.
 		// This might be the case if versioning or copying has taken place!
 		$this->remapListedDBRecords();
@@ -3012,13 +3033,7 @@ class DataHandler {
 						}
 						// Do the copy by simply submitting the array through TCEmain:
 						/** @var $copyTCE \TYPO3\CMS\Core\DataHandling\DataHandler */
-						$copyTCE = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
-						$copyTCE->stripslashes_values = 0;
-						$copyTCE->copyTree = $this->copyTree;
-						// Copy forth the cached TSconfig
-						$copyTCE->cachedTSconfig = $this->cachedTSconfig;
-						// Transformations should NOT be carried out during copy
-						$copyTCE->dontProcessTransformations = 1;
+						$copyTCE = $this->getLocalTCE();
 						$copyTCE->start($data, '', $this->BE_USER);
 						$copyTCE->process_datamap();
 						// Getting the new UID:
@@ -3971,12 +3986,7 @@ class DataHandler {
 										} else {
 											// Create new record:
 											/** @var $copyTCE \TYPO3\CMS\Core\DataHandling\DataHandler */
-											$copyTCE = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
-											// Copy forth the cached TSconfig
-											$copyTCE->stripslashes_values = 0;
-											$copyTCE->cachedTSconfig = $this->cachedTSconfig;
-											// Transformations should NOT be carried out during copy
-											$copyTCE->dontProcessTransformations = 1;
+											$copyTCE = $this->getLocalTCE();
 											$copyTCE->start(array($Ttable => array('NEW' => $overrideValues)), '', $this->BE_USER);
 											$copyTCE->process_datamap();
 											// Getting the new UID as if it had been copied:
@@ -4845,6 +4855,25 @@ class DataHandler {
 	 * Cmd: Helper functions
 	 *
 	 ********************************************/
+
+	/**
+	 * Returns a instance of TCEmain for handling local datamaps/cmdmaps
+	 *
+	 * @param boolean $stripslashesValues If TRUE, incoming values in the data-array have their slashes stripped.
+	 * @param boolean $dontProcessTransformations If set, then transformations are NOT performed on the input.
+	 * @return DataHandler
+	 */
+	protected function getLocalTCE($stripslashesValues = FALSE, $dontProcessTransformations = TRUE) {
+		$copyTCE = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+		$copyTCE->stripslashes_values = $stripslashesValues;
+		$copyTCE->copyTree = $this->copyTree;
+		// Copy forth the cached TSconfig
+		$copyTCE->cachedTSconfig = $this->cachedTSconfig;
+		// Transformations should NOT be carried out during copy
+		$copyTCE->dontProcessTransformations = $dontProcessTransformations;
+		return $copyTCE;
+	}
+
 	/**
 	 * Processes the fields with references as registered during the copy process. This includes all FlexForm fields which had references.
 	 *
