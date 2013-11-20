@@ -27,7 +27,6 @@ namespace TYPO3\CMS\Backend\Sprite;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use TYPO3\CMS\Backend\Sprite\SpriteManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -35,10 +34,10 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @author Steffen Ritter <info@steffen-ritter.net>
  */
-class SpriteBuildingHandler extends \TYPO3\CMS\Backend\Sprite\AbstractSpriteHandler {
+class SpriteBuildingHandler extends AbstractSpriteHandler {
 
 	/**
-	 * @var \TYPO3\CMS\Backend\Sprite\SpriteGenerator
+	 * @var SpriteGenerator
 	 */
 	protected $generatorInstance = NULL;
 
@@ -50,7 +49,11 @@ class SpriteBuildingHandler extends \TYPO3\CMS\Backend\Sprite\AbstractSpriteHand
 	 */
 	public function generate() {
 		$this->generatorInstance = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Sprite\\SpriteGenerator', 'GeneratorHandler');
-		$this->generatorInstance->setOmmitSpriteNameInIconName(TRUE)->setIncludeTimestampInCSS(TRUE)->setSpriteFolder(SpriteManager::$tempPath)->setCSSFolder(SpriteManager::$tempPath);
+		$this->generatorInstance
+			->setOmitSpriteNameInIconName(TRUE)
+			->setIncludeTimestampInCSS(TRUE)
+			->setSpriteFolder(SpriteManager::$tempPath)
+			->setCSSFolder(SpriteManager::$tempPath);
 		$iconsToProcess = array_merge((array) $GLOBALS['TBE_STYLES']['spritemanager']['singleIcons'], $this->collectTcaSpriteIcons());
 		foreach ($iconsToProcess as $iconName => $iconFile) {
 			$iconsToProcess[$iconName] = GeneralUtility::resolveBackPath('typo3/' . $iconFile);
