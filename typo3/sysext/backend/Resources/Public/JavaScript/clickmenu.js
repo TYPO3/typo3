@@ -63,21 +63,13 @@ var Clickmenu = {
 				parameters: params,
 				onComplete: function(xhr) {
 					var response = xhr.responseXML;
-
 					if (!response.getElementsByTagName('data')[0]) {
-						var res = params.match(/&reloadListFrame=(0|1|2)(&|$)/);
-						var reloadListFrame = parseInt(res[1], 0);
-						if (reloadListFrame) {
-							var doc = (reloadListFrame != 2) ? top.content.list_frame : top.content;
-							doc.location.reload(true);
-						}
 						return;
 					}
 					var menu  = response.getElementsByTagName('data')[0].getElementsByTagName('clickmenu')[0];
 					var data  = menu.getElementsByTagName('htmltable')[0].firstChild.data;
 					var level = menu.getElementsByTagName('cmlevel')[0].firstChild.data;
 					this.populateData(data, level);
-
 				}.bind(this)
 			});
 		}
