@@ -927,7 +927,7 @@ class ResourceStorage {
 			throw new Exception\IllegalFileExtensionException('Extension of file name is not allowed in "' . $targetFileName . '"!', 1378243279);
 		}
 		// Check if user is allowed to move and $file is readable and writable
-		if (!$this->checkFileActionPermission('move', $file)) {
+		if (!$file->getStorage()->checkFileActionPermission('move', $file)) {
 			throw new Exception\InsufficientUserPermissionsException('You are not allowed to move files to storage "' . $this->getUid() . '"', 1319219349);
 		}
 		// Check if target folder is writable
@@ -986,7 +986,7 @@ class ResourceStorage {
 			throw new Exception('The operation of the folder cannot be called by this storage "' . $this->getUid() . '"', 1319550405);
 		}
 		// Check if user is allowed to copy
-		if (!$this->checkFileActionPermission('copy', $file)) {
+		if (!$file->getStorage()->checkFileActionPermission('copy', $file)) {
 			throw new Exception\InsufficientFileReadPermissionsException('You are not allowed to copy the file "' . $file->getIdentifier() . '"', 1319550425);
 		}
 		// Check if targetFolder is writable
@@ -1023,7 +1023,7 @@ class ResourceStorage {
 			throw new \RuntimeException('The folder "' . $folderToCopy->getIdentifier() . '" to copy is not of type Folder.', 1384209020);
 		}
 		// Check if user is allowed to copy and the folder is readable
-		if (!$this->checkFolderActionPermission('copy', $folderToCopy)) {
+		if (!$folderToCopy->getStorage()->checkFolderActionPermission('copy', $folderToCopy)) {
 			throw new Exception\InsufficientFileReadPermissionsException('You are not allowed to copy the folder "' . $folderToCopy->getIdentifier() . '"', 1377777629);
 		}
 		if (!$targetParentFolder instanceof Folder) {
@@ -1061,7 +1061,7 @@ class ResourceStorage {
 		// Check if user is allowed to move and the folder is writable
 		// In fact we would need to check if the parent folder of the folder to move is writable also
 		// But as of now we cannot extract the parent folder from this folder
-		if (!$this->checkFolderActionPermission('move', $folderToMove)) {
+		if (!$folderToMove->getStorage()->checkFolderActionPermission('move', $folderToMove)) {
 			throw new Exception\InsufficientFileReadPermissionsException('You are not allowed to copy the folder "' . $folderToMove->getIdentifier() . '"', 1377778045);
 		}
 		if (!$targetParentFolder instanceof Folder) {
