@@ -1801,94 +1801,6 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	 * External renderings
 	 *
 	 *****************************************/
-	/**
-	 * Creates an info-box for the current page (identified by input record).
-	 *
-	 * @param array $rec Page record
-	 * @param boolean $edit If set, there will be shown an edit icon, linking to editing of the page properties.
-	 * @return string HTML for the box.
-	 * @deprecated and unused since 6.0, will be removed two versions later
-	 * @todo Define visibility
-	 */
-	public function getPageInfoBox($rec, $edit = 0) {
-		GeneralUtility::logDeprecatedFunction();
-		// If editing of the page properties is allowed:
-		if ($edit) {
-			$params = '&edit[pages][' . $rec['uid'] . ']=edit';
-			$editIcon = '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick($params, $this->backPath)) . '" title="' . $GLOBALS['LANG']->getLL('edit', TRUE) . '">' . IconUtility::getSpriteIcon('actions-document-open') . '</a>';
-		} else {
-			$editIcon = $this->noEditIcon('noEditPage');
-		}
-		// Setting page icon, link, title:
-		$outPutContent = IconUtility::getSpriteIconForRecord('pages', $rec, array('title' => BackendUtility::titleAttribForPages($rec))) . $editIcon . '&nbsp;' . htmlspecialchars($rec['title']);
-		// Init array where infomation is accumulated as label/value pairs.
-		$lines = array();
-		// Owner user/group:
-		if ($this->pI_showUser) {
-			// User:
-			$users = BackendUtility::getUserNames('username,usergroup,usergroup_cached_list,uid,realName');
-			$groupArray = explode(',', $GLOBALS['BE_USER']->user['usergroup_cached_list']);
-			$users = BackendUtility::blindUserNames($users, $groupArray);
-			$lines[] = array($GLOBALS['LANG']->getLL('pI_crUser') . ':', htmlspecialchars($users[$rec['cruser_id']]['username']) . ' (' . $users[$rec['cruser_id']]['realName'] . ')');
-		}
-		// Created:
-		$lines[] = array(
-			$GLOBALS['LANG']->getLL('pI_crDate') . ':',
-			BackendUtility::datetime($rec['crdate']) . ' (' . BackendUtility::calcAge(($GLOBALS['EXEC_TIME'] - $rec['crdate']), $this->agePrefixes) . ')'
-		);
-		// Last change:
-		$lines[] = array(
-			$GLOBALS['LANG']->getLL('pI_lastChange') . ':',
-			BackendUtility::datetime($rec['tstamp']) . ' (' . BackendUtility::calcAge(($GLOBALS['EXEC_TIME'] - $rec['tstamp']), $this->agePrefixes) . ')'
-		);
-		// Last change of content:
-		if ($rec['SYS_LASTCHANGED']) {
-			$lines[] = array(
-				$GLOBALS['LANG']->getLL('pI_lastChangeContent') . ':',
-				BackendUtility::datetime($rec['SYS_LASTCHANGED']) . ' (' . BackendUtility::calcAge(($GLOBALS['EXEC_TIME'] - $rec['SYS_LASTCHANGED']), $this->agePrefixes) . ')'
-			);
-		}
-		// Spacer:
-		$lines[] = '';
-		// Display contents of certain page fields, if any value:
-		$dfields = explode(',', 'alias,target,hidden,starttime,endtime,fe_group,no_cache,cache_timeout,newUntil,lastUpdated,subtitle,keywords,description,abstract,author,author_email');
-		foreach ($dfields as $fV) {
-			if ($rec[$fV]) {
-				$lines[] = array($GLOBALS['LANG']->sL(BackendUtility::getItemLabel('pages', $fV)), BackendUtility::getProcessedValue('pages', $fV, $rec[$fV]));
-			}
-		}
-		// Finally, wrap the elements in the $lines array in table cells/rows
-		foreach ($lines as $fV) {
-			if (is_array($fV)) {
-				if (!$fV[2]) {
-					$fV[1] = htmlspecialchars($fV[1]);
-				}
-				$out .= '
-				<tr>
-					<td class="bgColor4" nowrap="nowrap"><strong>' . htmlspecialchars($fV[0]) . '&nbsp;&nbsp;</strong></td>
-					<td class="bgColor4">' . $fV[1] . '</td>
-				</tr>';
-			} else {
-				$out .= '
-				<tr>
-					<td colspan="2"><img src="clear.gif" width="1" height="3" alt="" /></td>
-				</tr>';
-			}
-		}
-		// Wrap table tags around...
-		$outPutContent .= '
-
-
-
-			<!--
-				Page info box:
-			-->
-			<table border="0" cellpadding="0" cellspacing="1" id="typo3-page-info">
-				' . $out . '
-			</table>';
-		// ... and return it.
-		return $outPutContent;
-	}
 
 	/**
 	 * Creates a menu of the tables that can be listed by this function
@@ -1934,25 +1846,6 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 			</table>';
 		// Return the content:
 		return $out;
-	}
-
-	/**
-	 * Enhancement for the strip_tags function that provides the feature to fill in empty tags.
-	 * Example <link email@hostname.com></link> is accepted by TYPO3 but would not displayed in the Backend otherwise.
-	 *
-	 * @param string $content Input string
-	 * @param boolean $fillEmptyContent If TRUE, empty tags will be filled with the first attribute of the tag before.
-	 * @return string Input string with all HTML and PHP tags stripped
-	 * @deprecated since TYPO3 4.6, deprecationLog since 6.0, will be removed two versions later - use php-function strip_tags instead
-	 * @todo Define visibility
-	 */
-	public function strip_tags($content, $fillEmptyContent = FALSE) {
-		GeneralUtility::logDeprecatedFunction();
-		if ($fillEmptyContent && strstr($content, '><')) {
-			$content = preg_replace('/(<[^ >]* )([^ >]*)([^>]*>)(<\\/[^>]*>)/', '$1$2$3$2$4', $content);
-		}
-		$content = preg_replace('/<br.?\\/?>/', LF, $content);
-		return strip_tags($content);
 	}
 
 	/**
