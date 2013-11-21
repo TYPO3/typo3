@@ -28,131 +28,180 @@ namespace TYPO3\CMS\Core\Database;
  ***************************************************************/
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 
 /**
  * Load database groups (relations)
- * Used to process the relations created by the TCA element types "group" and "select" for database records. Manages MM-relations as well.
+ * Used to process the relations created by the TCA element types "group" and "select" for database records.
+ * Manages MM-relations as well.
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class RelationHandler {
 
 	/**
-	 * @var boolean $fetchAllFields if false getFromDB() fetches only uid, pid, thumbnail and label fields (as defined in TCA)
+	 * $fetchAllFields if false getFromDB() fetches only uid, pid, thumbnail and label fields (as defined in TCA)
+	 *
+	 * @var boolean
 	 */
 	protected $fetchAllFields = FALSE;
 
-	// If set, values that are not ids in tables are normally discarded. By this options they will be preserved.
 	/**
+	 * If set, values that are not ids in tables are normally discarded. By this options they will be preserved.
 	 * @todo Define visibility
 	 */
 	public $registerNonTableValues = 0;
 
-	// Internal, dynamic:
-	// Contains the table names as keys. The values are the id-values for each table. Should ONLY contain proper table names.
 	/**
+	 * Contains the table names as keys. The values are the id-values for each table.
+	 * Should ONLY contain proper table names.
+	 *
+	 * @var array
 	 * @todo Define visibility
 	 */
 	public $tableArray = array();
 
-	// Contains items in an numeric array (table/id for each). Tablenames here might be "_NO_TABLE"
 	/**
+	 * Contains items in an numeric array (table/id for each). Tablenames here might be "_NO_TABLE"
+	 *
+	 * @var array
 	 * @todo Define visibility
 	 */
 	public $itemArray = array();
 
-	// Array for NON-table elements
 	/**
+	 * Array for NON-table elements
+	 *
+	 * @var array
 	 * @todo Define visibility
 	 */
 	public $nonTableArray = array();
 
 	/**
+	 * @var array
 	 * @todo Define visibility
 	 */
 	public $additionalWhere = array();
 
-	// Deleted-column is added to additionalWhere... if this is set...
 	/**
+	 * Deleted-column is added to additionalWhere... if this is set...
+	 *
+	 * @var boolean
 	 * @todo Define visibility
 	 */
-	public $checkIfDeleted = 1;
+	public $checkIfDeleted = TRUE;
 
 	/**
+	 * @var array
 	 * @todo Define visibility
 	 */
 	public $dbPaths = array();
 
-	// Will contain the first table name in the $tablelist (for positive ids)
 	/**
+	 * Will contain the first table name in the $tablelist (for positive ids)
+	 *
+	 * @var string
 	 * @todo Define visibility
 	 */
 	public $firstTable = '';
 
-	// Will contain the second table name in the $tablelist (for negative ids)
 	/**
+	 * Will contain the second table name in the $tablelist (for negative ids)
+	 *
+	 * @var string
 	 * @todo Define visibility
 	 */
 	public $secondTable = '';
 
-	// private
-	// Boolean - if 1, uid_local and uid_foreign are switched, and the current table is inserted as tablename - this means you display a foreign relation "from the opposite side"
 	/**
+	 * If TRUE, uid_local and uid_foreign are switched, and the current table
+	 * is inserted as tablename - this means you display a foreign relation "from the opposite side"
+	 *
+	 * @var boolean
 	 * @todo Define visibility
 	 */
-	public $MM_is_foreign = 0;
+	public $MM_is_foreign = FALSE;
 
-	// Field name at the "local" side of the MM relation
 	/**
+	 * Field name at the "local" side of the MM relation
+	 *
+	 * @var string
 	 * @todo Define visibility
 	 */
 	public $MM_oppositeField = '';
 
-	// Only set if MM_is_foreign is set
 	/**
+	 * Only set if MM_is_foreign is set
+	 *
+	 * @var string
 	 * @todo Define visibility
 	 */
 	public $MM_oppositeTable = '';
 
-	// Only set if MM_is_foreign is set
 	/**
+	 * Only set if MM_is_foreign is set
+	 *
+	 * @var string
 	 * @todo Define visibility
 	 */
 	public $MM_oppositeFieldConf = '';
 
-	// Is empty by default; if MM_is_foreign is set and there is more than one table allowed (on the "local" side), then it contains the first table (as a fallback)
 	/**
+	 * Is empty by default; if MM_is_foreign is set and there is more than one table
+	 * allowed (on the "local" side), then it contains the first table (as a fallback)
 	 * @todo Define visibility
+	 * @var string
 	 */
-	public $MM_isMultiTableRelationship = 0;
+	public $MM_isMultiTableRelationship = '';
 
-	// Current table => Only needed for reverse relations
 	/**
+	 * Current table => Only needed for reverse relations
+	 *
+	 * @var string
 	 * @todo Define visibility
 	 */
 	public $currentTable;
 
-	// If a record should be undeleted (so do not use the $useDeleteClause on \TYPO3\CMS\Backend\Utility\BackendUtility)
 	/**
+	 * If a record should be undeleted
+	 * (so do not use the $useDeleteClause on \TYPO3\CMS\Backend\Utility\BackendUtility)
+	 *
+	 * @var boolean
 	 * @todo Define visibility
 	 */
 	public $undeleteRecord;
 
-	// Array of fields value pairs that should match while SELECT and will be written into MM table if $MM_insert_fields is not set
 	/**
+	 * Array of fields value pairs that should match while SELECT
+	 * and will be written into MM table if $MM_insert_fields is not set
+	 *
+	 * @var array
 	 * @todo Define visibility
 	 */
 	public $MM_match_fields = array();
 
-	// Array of fields and value pairs used for insert in MM table
 	/**
+	 * This is set to TRUE if the MM table has a UID field.
+	 *
+	 * @var boolean
+	 * @todo Define visibility
+	 */
+	public $MM_hasUidField;
+
+	/**
+	 * Array of fields and value pairs used for insert in MM table
+	 *
+	 * @var array
 	 * @todo Define visibility
 	 */
 	public $MM_insert_fields = array();
 
-	// Extra MM table where
 	/**
+	 * Extra MM table where
+	 *
+	 * @var string
 	 * @todo Define visibility
 	 */
 	public $MM_table_where = '';
@@ -163,7 +212,8 @@ class RelationHandler {
 	protected $updateReferenceIndex = TRUE;
 
 	/**
-	 * Results of
+	 * This array will be filled by getFromDB().
+	 *
 	 * @var array
 	 */
 	public $results = array();
@@ -176,13 +226,13 @@ class RelationHandler {
 	 * @param string $MMtable Name of a MM table.
 	 * @param integer $MMuid Local UID for MM lookup
 	 * @param string $currentTable Current table name
-	 * @param integer $conf TCA configuration for current field
+	 * @param array $conf TCA configuration for current field
 	 * @return void
 	 * @todo Define visibility
 	 */
 	public function start($itemlist, $tablelist, $MMtable = '', $MMuid = 0, $currentTable = '', $conf = array()) {
 		// SECTION: MM reverse relations
-		$this->MM_is_foreign = $conf['MM_opposite_field'] ? 1 : 0;
+		$this->MM_is_foreign = (boolean)$conf['MM_opposite_field'];
 		$this->MM_oppositeField = $conf['MM_opposite_field'];
 		$this->MM_table_where = $conf['MM_table_where'];
 		$this->MM_hasUidField = $conf['MM_hasUidField'];
@@ -191,8 +241,10 @@ class RelationHandler {
 		$this->currentTable = $currentTable;
 		if ($this->MM_is_foreign) {
 			$tmp = $conf['type'] === 'group' ? $conf['allowed'] : $conf['foreign_table'];
-			// Normally, $conf['allowed'] can contain a list of tables, but as we are looking at a MM relation from the foreign side, it only makes sense to allow one one table in $conf['allowed']
-			$tmp = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $tmp);
+			// Normally, $conf['allowed'] can contain a list of tables,
+			// but as we are looking at a MM relation from the foreign side,
+			// it only makes sense to allow one one table in $conf['allowed']
+			$tmp = GeneralUtility::trimExplode(',', $tmp);
 			$this->MM_oppositeTable = $tmp[0];
 			unset($tmp);
 			// Only add the current table name if there is more than one allowed field
@@ -211,8 +263,8 @@ class RelationHandler {
 			$tablelist = implode(',', array_keys($GLOBALS['TCA']));
 		}
 		// The tables are traversed and internal arrays are initialized:
-		$tempTableArray = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $tablelist, TRUE);
-		foreach ($tempTableArray as $key => $val) {
+		$tempTableArray = GeneralUtility::trimExplode(',', $tablelist, TRUE);
+		foreach ($tempTableArray as $val) {
 			$tName = trim($val);
 			$this->tableArray[$tName] = array();
 			if ($this->checkIfDeleted && $GLOBALS['TCA'][$tName]['ctrl']['delete']) {
@@ -223,13 +275,15 @@ class RelationHandler {
 		if (is_array($this->tableArray)) {
 			reset($this->tableArray);
 		} else {
-			return 'No tables!';
+			// No tables
+			return;
 		}
 		// Set first and second tables:
 		// Is the first table
 		$this->firstTable = key($this->tableArray);
 		next($this->tableArray);
-		// If the second table is set and the ID number is less than zero (later) then the record is regarded to come from the second table...
+		// If the second table is set and the ID number is less than zero (later)
+		// then the record is regarded to come from the second table...
 		$this->secondTable = key($this->tableArray);
 		// Now, populate the internal itemArray and tableArray arrays:
 		// If MM, then call this function to do that:
@@ -263,7 +317,7 @@ class RelationHandler {
 	 */
 	public function __set($name, $value) {
 		if($name === 'fromTC') {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog(
+			GeneralUtility::deprecationLog(
 				'$fromTC is protected since TYPO3 6.1. Use setFetchAllFields() instead!'
 			);
 			$this->setFetchAllFields(!$value);
@@ -276,7 +330,7 @@ class RelationHandler {
 	 * @param boolean $allFields enables fetching of all fields in getFromDB()
 	 */
 	public function setFetchAllFields($allFields) {
-		$this->fetchAllFields = (bool)$allFields;
+		$this->fetchAllFields = (boolean)$allFields;
 	}
 
 	/**
@@ -286,7 +340,7 @@ class RelationHandler {
 	 * @return void
 	 */
 	public function setUpdateReferenceIndex($updateReferenceIndex) {
-		$this->updateReferenceIndex = (bool) $updateReferenceIndex;
+		$this->updateReferenceIndex = (boolean)$updateReferenceIndex;
 	}
 
 	/**
@@ -298,20 +352,25 @@ class RelationHandler {
 	 */
 	public function readList($itemlist) {
 		if ((string) trim($itemlist) != '') {
-			$tempItemArray = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $itemlist);
-			// Changed to trimExplode 31/3 04; HMENU special type "list" didn't work if there were spaces in the list... I suppose this is better overall...
+			$tempItemArray = GeneralUtility::trimExplode(',', $itemlist);
+			// Changed to trimExplode 31/3 04; HMENU special type "list" didn't work
+			// if there were spaces in the list... I suppose this is better overall...
 			foreach ($tempItemArray as $key => $val) {
 				// Will be set to "1" if the entry was a real table/id:
 				$isSet = 0;
-				// Extract table name and id. This is un the formular [tablename]_[id] where table name MIGHT contain "_", hence the reversion of the string!
+				// Extract table name and id. This is un the formular [tablename]_[id]
+				// where table name MIGHT contain "_", hence the reversion of the string!
 				$val = strrev($val);
 				$parts = explode('_', $val, 2);
 				$theID = strrev($parts[0]);
 				// Check that the id IS an integer:
-				if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($theID)) {
-					// Get the table name: If a part of the exploded string, use that. Otherwise if the id number is LESS than zero, use the second table, otherwise the first table
-					$theTable = trim($parts[1]) ? strrev(trim($parts[1])) : ($this->secondTable && $theID < 0 ? $this->secondTable : $this->firstTable);
-					// If the ID is not blank and the table name is among the names in the inputted tableList, then proceed:
+				if (MathUtility::canBeInterpretedAsInteger($theID)) {
+					// Get the table name: If a part of the exploded string, use that.
+					// Otherwise if the id number is LESS than zero, use the second table, otherwise the first table
+					$theTable = trim($parts[1])
+						? strrev(trim($parts[1]))
+						: ($this->secondTable && $theID < 0 ? $this->secondTable : $this->firstTable);
+					// If the ID is not blank and the table name is among the names in the inputted tableList
 					if (((string) $theID != '' && $theID) && $theTable && isset($this->tableArray[$theTable])) {
 						// Get ID as the right value:
 						$theID = $this->secondTable ? abs(intval($theID)) : intval($theID);
@@ -323,7 +382,8 @@ class RelationHandler {
 						$isSet = 1;
 					}
 				}
-				// If it turns out that the value from the list was NOT a valid reference to a table-record, then we might still set it as a NO_TABLE value:
+				// If it turns out that the value from the list was NOT a valid reference to a table-record,
+				// then we might still set it as a NO_TABLE value:
 				if (!$isSet && $this->registerNonTableValues) {
 					$this->itemArray[$key]['id'] = $tempItemArray[$key];
 					$this->itemArray[$key]['table'] = '_NO_TABLE';
@@ -380,6 +440,7 @@ class RelationHandler {
 	public function readMM($tableName, $uid) {
 		$key = 0;
 		$additionalWhere = '';
+		$theTable = NULL;
 		// In case of a reverse relation
 		if ($this->MM_is_foreign) {
 			$uidLocal_field = 'uid_foreign';
@@ -387,7 +448,8 @@ class RelationHandler {
 			$sorting_field = 'sorting_foreign';
 			if ($this->MM_isMultiTableRelationship) {
 				$additionalWhere .= ' AND ( tablenames=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->currentTable, $tableName);
-				// Be backwards compatible! When allowing more than one table after having previously allowed only one table, this case applies.
+				// Be backwards compatible! When allowing more than one table after
+				// having previously allowed only one table, this case applies.
 				if ($this->currentTable == $this->MM_isMultiTableRelationship) {
 					$additionalWhere .= ' OR tablenames=\'\'';
 				}
@@ -407,7 +469,8 @@ class RelationHandler {
 			$additionalWhere .= ' AND ' . $field . '=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($value, $tableName);
 		}
 		// Select all MM relations:
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $tableName, $uidLocal_field . '=' . intval($uid) . $additionalWhere, '', $sorting_field);
+		$where = $uidLocal_field . '=' . intval($uid) . $additionalWhere;
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $tableName, $where, '', $sorting_field);
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 			// Default
 			if (!$this->MM_is_foreign) {
@@ -437,7 +500,7 @@ class RelationHandler {
 	 * @return void
 	 * @todo Define visibility
 	 */
-	public function writeMM($MM_tableName, $uid, $prependTableName = 0) {
+	public function writeMM($MM_tableName, $uid, $prependTableName = FALSE) {
 		// In case of a reverse relation
 		if ($this->MM_is_foreign) {
 			$uidLocal_field = 'uid_foreign';
@@ -468,7 +531,13 @@ class RelationHandler {
 			foreach ($this->MM_match_fields as $field => $value) {
 				$additionalWhere .= ' AND ' . $field . '=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($value, $MM_tableName);
 			}
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($uidForeign_field . ($prep ? ', tablenames' : '') . ($this->MM_hasUidField ? ', uid' : ''), $MM_tableName, $uidLocal_field . '=' . $uid . $additionalWhere_tablenames . $additionalWhere, '', $sorting_field);
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+				$uidForeign_field . ($prep ? ', tablenames' : '') . ($this->MM_hasUidField ? ', uid' : ''),
+				$MM_tableName,
+				$uidLocal_field . '=' . $uid . $additionalWhere_tablenames . $additionalWhere,
+				'',
+				$sorting_field
+			);
 			$oldMMs = array();
 			// This array is similar to $oldMMs but also holds the uid of the MM-records, if any (configured by MM_hasUidField).
 			// If the UID is present it will be used to update sorting and delete MM-records.
@@ -504,15 +573,20 @@ class RelationHandler {
 				}
 				if (in_array($item, $oldMMs)) {
 					$oldMMs_index = array_search($item, $oldMMs);
-					// In principle, selecting on the UID is all we need to do if a uid field is available since that is unique! But as long as it "doesn't hurt" we just add it to the where clause. It should all match up.
-					$whereClause = $uidLocal_field . '=' . $uid . ' AND ' . $uidForeign_field . '=' . $val['id'] . ($this->MM_hasUidField ? ' AND uid=' . intval($oldMMs_inclUid[$oldMMs_index][2]) : '');
+					// In principle, selecting on the UID is all we need to do
+					// if a uid field is available since that is unique!
+					// But as long as it "doesn't hurt" we just add it to the where clause. It should all match up.
+					$whereClause = $uidLocal_field . '=' . $uid . ' AND ' . $uidForeign_field . '=' . $val['id']
+						. ($this->MM_hasUidField ? ' AND uid=' . intval($oldMMs_inclUid[$oldMMs_index][2]) : '');
 					if ($tablename) {
 						$whereClause .= ' AND tablenames=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($tablename, $MM_tableName);
 					}
 					$GLOBALS['TYPO3_DB']->exec_UPDATEquery($MM_tableName, $whereClause . $additionalWhere, array($sorting_field => $c));
-					// Remove the item from the $oldMMs array so after this foreach loop only the ones that need to be deleted are in there.
+					// Remove the item from the $oldMMs array so after this
+					// foreach loop only the ones that need to be deleted are in there.
 					unset($oldMMs[$oldMMs_index]);
-					// Remove the item from the $oldMMs array so after this foreach loop only the ones that need to be deleted are in there.
+					// Remove the item from the $oldMMs_inclUid array so after this
+					// foreach loop only the ones that need to be deleted are in there.
 					unset($oldMMs_inclUid[$oldMMs_index]);
 				} else {
 					$insertFields = $this->MM_insert_fields;
@@ -536,10 +610,10 @@ class RelationHandler {
 					// If UID field is present, of course we need only use that for deleting.
 					if ($this->MM_hasUidField) {
 						$removeClauses[] = 'uid=' . intval($oldMMs_inclUid[$oldMM_key][2]);
-						$elDelete = $oldMMs_inclUid[$oldMM_key];
 					} else {
 						if (is_array($mmItem)) {
-							$removeClauses[] = 'tablenames=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($mmItem[0], $MM_tableName) . ' AND ' . $uidForeign_field . '=' . $mmItem[1];
+							$removeClauses[] = 'tablenames=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($mmItem[0], $MM_tableName)
+								. ' AND ' . $uidForeign_field . '=' . $mmItem[1];
 						} else {
 							$removeClauses[] = $uidForeign_field . '=' . $mmItem;
 						}
@@ -553,13 +627,15 @@ class RelationHandler {
 					}
 				}
 				$deleteAddWhere = ' AND (' . implode(' OR ', $removeClauses) . ')';
-				$GLOBALS['TYPO3_DB']->exec_DELETEquery($MM_tableName, $uidLocal_field . '=' . intval($uid) . $deleteAddWhere . $additionalWhere_tablenames . $additionalWhere);
+				$where = $uidLocal_field . '=' . intval($uid) . $deleteAddWhere . $additionalWhere_tablenames . $additionalWhere;
+				$GLOBALS['TYPO3_DB']->exec_DELETEquery($MM_tableName, $where);
 				// Update ref index:
 				foreach ($updateRefIndex_records as $pair) {
 					$this->updateRefIndex($pair[0], $pair[1]);
 				}
 			}
-			// Update ref index; In tcemain it is not certain that this will happen because if only the MM field is changed the record itself is not updated and so the ref-index is not either.
+			// Update ref index; In tcemain it is not certain that this will happen because
+			// if only the MM field is changed the record itself is not updated and so the ref-index is not either.
 			// This could also have been fixed in updateDB in tcemain, however I decided to do it here ...
 			$this->updateRefIndex($this->currentTable, $uid);
 		}
@@ -576,7 +652,7 @@ class RelationHandler {
 	 * @return void
 	 * @todo Define visibility
 	 */
-	public function remapMM($MM_tableName, $uid, $newUid, $prependTableName = 0) {
+	public function remapMM($MM_tableName, $uid, $newUid, $prependTableName = FALSE) {
 		// In case of a reverse relation
 		if ($this->MM_is_foreign) {
 			$uidLocal_field = 'uid_foreign';
@@ -588,8 +664,7 @@ class RelationHandler {
 		$tableC = count($this->tableArray);
 		if ($tableC) {
 			// Boolean: does the field "tablename" need to be filled?
-			$prep = $tableC > 1 || $prependTableName || $this->MM_isMultiTableRelationship ? 1 : 0;
-			$c = 0;
+			$prep = $tableC > 1 || $prependTableName || $this->MM_isMultiTableRelationship;
 			$additionalWhere_tablenames = '';
 			if ($this->MM_is_foreign && $prep) {
 				$additionalWhere_tablenames = ' AND tablenames=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->currentTable, $MM_tableName);
@@ -603,7 +678,8 @@ class RelationHandler {
 			foreach ($this->MM_match_fields as $field => $value) {
 				$additionalWhere .= ' AND ' . $field . '=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($value, $MM_tableName);
 			}
-			$GLOBALS['TYPO3_DB']->exec_UPDATEquery($MM_tableName, $uidLocal_field . '=' . intval($uid) . $additionalWhere_tablenames . $additionalWhere, array($uidLocal_field => $newUid));
+			$where = $uidLocal_field . '=' . intval($uid) . $additionalWhere_tablenames . $additionalWhere;
+			$GLOBALS['TYPO3_DB']->exec_UPDATEquery($MM_tableName, $where, array($uidLocal_field => $newUid));
 		}
 	}
 
@@ -649,6 +725,7 @@ class RelationHandler {
 		}
 		// Get the correct sorting field
 		// Specific manual sortby for data handled by this field
+		$sortby = '';
 		if ($conf['foreign_sortby']) {
 			if ($conf['symmetric_sortby'] && $conf['symmetric_field']) {
 				// Sorting depends on, from which side of the relation we're looking at it
@@ -691,7 +768,7 @@ class RelationHandler {
 	 *
 	 * @param array $conf TCA configuration for current field
 	 * @param integer $parentUid The uid of the parent record
-	 * @param boolean $updateToUid Whether to update the foreign field with the $parentUid (on Copy)
+	 * @param integer $updateToUid If this is larger than zero it will be used as foreign UID instead of the given $parentUid (on Copy)
 	 * @param boolean $skipSorting Do not update the sorting columns, this could happen for imported values
 	 * @return void
 	 * @todo Define visibility
@@ -704,9 +781,9 @@ class RelationHandler {
 		$foreign_table_field = $conf['foreign_table_field'];
 		$foreign_match_fields = is_array($conf['foreign_match_fields']) ? $conf['foreign_match_fields'] : array();
 		// If there are table items and we have a proper $parentUid
-		if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($parentUid) && count($this->tableArray)) {
+		if (MathUtility::canBeInterpretedAsInteger($parentUid) && count($this->tableArray)) {
 			// If updateToUid is not a positive integer, set it to '0', so it will be ignored
-			if (!(\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($updateToUid) && $updateToUid > 0)) {
+			if (!(MathUtility::canBeInterpretedAsInteger($updateToUid) && $updateToUid > 0)) {
 				$updateToUid = 0;
 			}
 			$considerWorkspaces = $GLOBALS['BE_USER']->workspace !== 0 && BackendUtility::isTableWorkspaceEnabled($foreign_table);
@@ -723,10 +800,12 @@ class RelationHandler {
 			foreach ($this->itemArray as $val) {
 				$uid = $val['id'];
 				$table = $val['table'];
+				$row = array();
 				// Fetch the current (not overwritten) relation record if we should handle symmetric relations
 				if ($symmetric_field || $considerWorkspaces) {
 					$row = BackendUtility::getRecord($table, $uid, $fields, '', FALSE);
 				}
+				$isOnSymmetricSide = FALSE;
 				if ($symmetric_field) {
 					$isOnSymmetricSide = self::isOnSymmetricSide($parentUid, $conf, $row);
 				}
@@ -749,13 +828,15 @@ class RelationHandler {
 					if (!$skipSorting) {
 						// Get the correct sorting field
 						// Specific manual sortby for data handled by this field
+						$sortby = '';
 						if ($conf['foreign_sortby']) {
 							$sortby = $conf['foreign_sortby'];
 						} elseif ($GLOBALS['TCA'][$foreign_table]['ctrl']['sortby']) {
 							// manual sortby for all table records
 							$sortby = $GLOBALS['TCA'][$foreign_table]['ctrl']['sortby'];
 						}
-						// Apply sorting on the symmetric side (it depends on who created the relation, so what uid is in the symmetric_field):
+						// Apply sorting on the symmetric side
+						// (it depends on who created the relation, so what uid is in the symmetric_field):
 						if ($isOnSymmetricSide && isset($conf['symmetric_sortby']) && $conf['symmetric_sortby']) {
 							$sortby = $conf['symmetric_sortby'];
 						} else {
@@ -798,14 +879,14 @@ class RelationHandler {
 	 * @return array A numeric array.
 	 * @todo Define visibility
 	 */
-	public function getValueArray($prependTableName = '') {
+	public function getValueArray($prependTableName = FALSE) {
 		// INIT:
 		$valueArray = array();
 		$tableC = count($this->tableArray);
 		// If there are tables in the table array:
 		if ($tableC) {
 			// If there are more than ONE table in the table array, then always prepend table names:
-			$prep = $tableC > 1 || $prependTableName ? 1 : 0;
+			$prep = $tableC > 1 || $prependTableName;
 			// Traverse the array of items:
 			foreach ($this->itemArray as $val) {
 				$valueArray[] = ($prep && $val['table'] != '_NO_TABLE' ? $val['table'] . '_' : '') . $val['id'];
@@ -831,7 +912,9 @@ class RelationHandler {
 				$parts = explode('_', $val, 2);
 				$theID = strrev($parts[0]);
 				$theTable = strrev($parts[1]);
-				if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($theID) && (!$theTable || !strcmp($theTable, $fTable) || !strcmp($theTable, $nfTable))) {
+				if (MathUtility::canBeInterpretedAsInteger($theID)
+					&& (!$theTable || !strcmp($theTable, $fTable) || !strcmp($theTable, $nfTable))
+				) {
 					$valueArray[$key] = $theTable && strcmp($theTable, $fTable) ? $theID * -1 : $theID;
 				}
 			}
@@ -840,10 +923,12 @@ class RelationHandler {
 	}
 
 	/**
-	 * Reads all records from internal tableArray into the internal ->results array where keys are table names and for each table, records are stored with uids as their keys.
-	 * If $this->fetchAllFields is false you can save a little memory since only uid,pid and a few other fields are selected.
+	 * Reads all records from internal tableArray into the internal ->results array
+	 * where keys are table names and for each table, records are stored with uids as their keys.
+	 * If $this->fetchAllFields is false you can save a little memory
+	 * since only uid,pid and a few other fields are selected.
 	 *
-	 * @return 	array
+	 * @return array
 	 * @todo Define visibility
 	 */
 	public function getFromDB() {
@@ -891,13 +976,11 @@ class RelationHandler {
 			return FALSE;
 		}
 		$output = array();
-		// For use when getting the paths
-		$perms_clause = $GLOBALS['BE_USER']->getPagePermsClause(1);
 		$titleLen = intval($GLOBALS['BE_USER']->uc['titleLen']);
-		foreach ($this->itemArray as $key => $val) {
+		foreach ($this->itemArray as $val) {
 			$theRow = $this->results[$val['table']][$val['id']];
 			if ($theRow && is_array($GLOBALS['TCA'][$val['table']])) {
-				$label = \TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs(strip_tags(
+				$label = GeneralUtility::fixed_lgd_cs(strip_tags(
 						BackendUtility::getRecordTitle($val['table'], $theRow)), $titleLen);
 				$label = $label ? $label : '[...]';
 				$output[] = str_replace(',', '', $val['table'] . '_' . $val['id'] . '|' . rawurlencode($label));
@@ -932,11 +1015,13 @@ class RelationHandler {
 	 * @todo Define visibility
 	 */
 	public function updateRefIndex($table, $id) {
-		if ($this->updateReferenceIndex === TRUE) {
+		$statisticsArray = array();
+		if ($this->updateReferenceIndex) {
 			/** @var $refIndexObj \TYPO3\CMS\Core\Database\ReferenceIndex */
-			$refIndexObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\ReferenceIndex');
-			return $refIndexObj->updateRefIndexTable($table, $id);
+			$refIndexObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\ReferenceIndex');
+			$statisticsArray = $refIndexObj->updateRefIndexTable($table, $id);
 		}
+		return $statisticsArray;
 	}
 
 	/**
@@ -949,7 +1034,8 @@ class RelationHandler {
 	 * @todo Define visibility
 	 */
 	public function isOnSymmetricSide($parentUid, $parentConf, $childRec) {
-		return \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($childRec['uid']) && $parentConf['symmetric_field'] && $parentUid == $childRec[$parentConf['symmetric_field']] ? TRUE : FALSE;
+		return MathUtility::canBeInterpretedAsInteger($childRec['uid'])
+			&& $parentConf['symmetric_field']
+			&& $parentUid == $childRec[$parentConf['symmetric_field']];
 	}
-
 }
