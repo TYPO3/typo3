@@ -90,7 +90,7 @@ class RteMagicImagesUpdateWizard extends AbstractUpdate {
 	 * @return boolean TRUE if an update is needed, FALSE otherwise
 	 */
 	public function checkForUpdate(&$description) {
-		$description = 'This update wizard goes through all magic images, located in ' . \TYPO3\CMS\Core\Utility\PathUtility::dirname($this->oldPrefix) . '., and moves the files to fileadmin/_migrated/RTE/.';
+		$description = 'This update wizard goes through all magic images, located in "' . htmlspecialchars($this->oldPrefix) . '", and moves the files to fileadmin/_migrated/RTE/.';
 		$description .= '<br />It also moves the files from uploads/ to the fileadmin/_migrated/ path.';
 		// Issue warning about sys_refindex needing to be up to date
 		/** @var \TYPO3\CMS\Core\Messaging\FlashMessage $message */
@@ -150,23 +150,26 @@ class RteMagicImagesUpdateWizard extends AbstractUpdate {
 			// Full directory
 			$fullTargetFileName = $fullTargetDirectory . \TYPO3\CMS\Core\Utility\PathUtility::basename($refRecord['ref_string']);
 
-			// If the source file does not exist, we should just continue, but leave a message in the docs;
-			// ideally, the user would be informed after the update as well.
-			if (!file_exists(PATH_site . $sourceFileName)) {
-				$this->logger->notice('File ' . $sourceFileName . ' does not exist. Reference was not migrated.', array());
+			// maybe the file has been moved previously
+			if (!file_exists($fullTargetFileName)) {
+				// If the source file does not exist, we should just continue, but leave a message in the docs;
+				// ideally, the user would be informed after the update as well.
+				if (!file_exists(PATH_site . $sourceFileName)) {
+					$this->logger->notice('File ' . $sourceFileName . ' does not exist. Reference was not migrated.', array());
 
-				$format = 'File \'%s\' does not exist. Referencing field: %s.%d.%s. The reference was not migrated.';
-				$message = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('\TYPO3\CMS\Core\Messaging\FlashMessage',
-					sprintf($format, $sourceFileName, $refRecord['tablename'], $refRecord['recuid'], $refRecord['field']),
-					'', \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING
-				);
-				/** @var \TYPO3\CMS\Core\Messaging\FlashMessage $message */
-				$customMessages .= '<br />' . $message->render();
+					$format = 'File \'%s\' does not exist. Referencing field: %s.%d.%s. The reference was not migrated.';
+					$message = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('\TYPO3\CMS\Core\Messaging\FlashMessage',
+						sprintf($format, $sourceFileName, $refRecord['tablename'], $refRecord['recuid'], $refRecord['field']),
+						'', \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING
+					);
+					/** @var \TYPO3\CMS\Core\Messaging\FlashMessage $message */
+					$customMessages .= '<br />' . $message->render();
 
-				continue;
+					continue;
+				}
+
+				rename($fullSourceFileName, $fullTargetFileName);
 			}
-
-			rename($fullSourceFileName, $fullTargetFileName);
 
 			// Get the File object
 			$file = $this->storage->getFile($targetFileName);
