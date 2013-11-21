@@ -304,11 +304,11 @@ class ResourceCompressor {
 				}
 				$filename = $filesToInclude[$key];
 			}
-			$filepath = GeneralUtility::resolveBackPath($this->rootPath . $filename);
-			if (@file_exists($filepath)) {
-				$unique = $filepath . filemtime($filepath) . filesize($filepath);
+			$filenameAbsolute = GeneralUtility::resolveBackPath($this->rootPath . $filename);
+			if (@file_exists($filenameAbsolute)) {
+				$unique .= $filenameAbsolute . filemtime($filenameAbsolute) . filesize($filenameAbsolute);
 			} else {
-				$unique = $filepath;
+				$unique .= $filenameAbsolute;
 			}
 		}
 		$targetFile = $this->targetDirectory . 'merged-' . md5($unique) . '.' . $type;
