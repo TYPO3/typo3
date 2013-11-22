@@ -1026,7 +1026,6 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			// 'dot in local part' => array('firstname.lastname@employee.2something.com'),
 			// Fix / change if TYPO3 php requirement changed: Address ok with 5.2.6, but not ok with 5.3.2
 			// 'dash as local part' => array('-@foo.com'),
-			'umlauts in local part' => array('äöüfoo@bar.com'),
 			'umlauts in domain part' => array('foo@äöüfoo.com')
 		);
 	}
@@ -1071,6 +1070,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			'dot at beginning of domain part' => array('test@.com'),
 			// Fix / change if TYPO3 php requirement changed: Address ok with 5.2.6, but not ok with 5.3.2
 			// 'local part ends with dot' => array('e.x.a.m.p.l.e.@example.com'),
+			'umlauts in local part' => array('äöüfoo@bar.com'),
 			'trailing whitespace' => array('test@example.com '),
 			'trailing carriage return' => array('test@example.com' . CR),
 			'trailing linefeed' => array('test@example.com' . LF),
@@ -1722,9 +1722,9 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * Data provider for valid isValidUrl's
 	 *
-	 * @return array Valid ressource
+	 * @return array Valid resource
 	 */
-	public function validUrlValidRessourceDataProvider() {
+	public function validUrlValidResourceDataProvider() {
 		return array(
 			'http' => array('http://www.example.org/'),
 			'http without trailing slash' => array('http://qwe'),
@@ -1745,15 +1745,14 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			'http punicode subdomain' => array('http://xn--h-zfa.oebb.at'),
 			'http domain-name umlauts' => array('http://www.öbb.at'),
 			'http subdomain umlauts' => array('http://äh.oebb.at'),
-			'http directory umlauts' => array('http://www.oebb.at/äöü/')
 		);
 	}
 
 	/**
 	 * @test
-	 * @dataProvider validUrlValidRessourceDataProvider
+	 * @dataProvider validUrlValidResourceDataProvider
 	 */
-	public function validURLReturnsTrueForValidRessource($url) {
+	public function validURLReturnsTrueForValidResource($url) {
 		$this->assertTrue(Utility\GeneralUtility::isValidUrl($url));
 	}
 
@@ -1776,7 +1775,8 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			'empty string' => array(''),
 			'string -1' => array('-1'),
 			'string array()' => array('array()'),
-			'random string' => array('qwe')
+			'random string' => array('qwe'),
+			'http directory umlauts' => array('http://www.oebb.at/äöü/'),
 		);
 	}
 

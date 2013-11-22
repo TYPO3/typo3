@@ -5912,11 +5912,8 @@ class ContentObjectRenderer {
 							}
 							$LD['target'] = $target;
 							// Convert IDNA-like domain (if any)
-							if (!preg_match('/^[a-z0-9\\.\\-]*$/i', $targetDomain)) {
-								require_once PATH_typo3 . 'contrib/idna/idna_convert.class.php';
-								$IDN = new \idna_convert();
-								$targetDomain = $IDN->encode($targetDomain);
-								unset($IDN);
+							if (!preg_match('/^[a-z0-9.\\-]*$/i', $targetDomain)) {
+								$targetDomain =  GeneralUtility::idnaEncode($targetDomain);
 							}
 							$this->lastTypoLinkUrl = $this->URLqMark(($absoluteUrlScheme . '://' . $targetDomain . '/index.php?id=' . $page['uid']), $addQueryParams) . $sectionMark;
 						} else {
