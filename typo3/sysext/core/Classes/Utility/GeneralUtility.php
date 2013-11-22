@@ -70,6 +70,20 @@ class GeneralUtility {
 	 */
 	static protected $applicationContext = NULL;
 
+	/**
+	 * IDNA string cache
+	 *
+	 * @var array<string>
+	 */
+	static protected $idnaStringCache = array();
+
+	/**
+	 * IDNA converter
+	 *
+	 * @var \idna_convert
+	 */
+	static protected $idnaConverter = NULL;
+
 	/*************************
 	 *
 	 * GET/POST Variables
@@ -1050,6 +1064,18 @@ class GeneralUtility {
 	/**
 	 * Checking syntax of input email address
 	 *
+	 * http://tools.ietf.org/html/rfc3696
+	 * International characters are allowed in email. So the whole address needs
+	 * to be converted to punicode before passing it to filter_var(). We convert
+	 * the user- and domain part separately to increase the chance of hitting an
+	 * entry in self::$idnaStringCache.
+	 *
+	 * Also the @ sign may appear multiple times in an address. If not used as
+	 * a boundary marker between the user- and domain part, it must be escaped
+	 * with a backslash: \@. This mean we can not just explode on the @ sign and
+	 * expect to get just two parts. So we pop off the domain and then glue the
+	 * rest together again.
+	 *
 	 * @param string $email Input string to evaluate
 	 * @return boolean Returns TRUE if the $email address (input string) is valid
 	 */
@@ -1058,9 +1084,17 @@ class GeneralUtility {
 		if (!is_string($email)) {
 			return FALSE;
 		}
-		require_once PATH_typo3 . 'contrib/idna/idna_convert.class.php';
-		$IDN = new \idna_convert(array('idn_version' => 2008));
-		return filter_var($IDN->encode($email), FILTER_VALIDATE_EMAIL) !== FALSE;
+		$atPosition = strrpos($email, '@');
+		if (!$atPosition || $atPosition + 1 === strlen($email)) {
+			// Return if no @ found or it is placed at the very beginning or end of the email
+			return FALSE;
+		}
+		$domain = substr($email, $atPosition + 1);
+		$user = substr($email, 0, $atPosition);
+		if (!preg_match('/^[a-z0-9.\\-]*$/i', $domain)) {
+			$domain = self::idnaEncode($domain);
+		}
+		return filter_var($user . '@' . $domain, FILTER_VALIDATE_EMAIL) !== FALSE;
 	}
 
 	/**
@@ -1239,6 +1273,25 @@ class GeneralUtility {
 	}
 
 	/**
+	 * Returns an ASCII string (punicode) representation of $value
+	 *
+	 * @param string $value
+	 * @return string An ASCII encoded (punicode) string
+	 */
+	static public function idnaEncode($value) {
+		if (isset(self::$idnaStringCache[$value])) {
+			return self::$idnaStringCache[$value];
+		} else {
+			if (!self::$idnaConverter) {
+				require_once PATH_typo3 . 'contrib/idna/idna_convert.class.php';
+				self::$idnaConverter = new \idna_convert(array('idn_version' => 2008));
+			}
+			self::$idnaStringCache[$value] = self::$idnaConverter->encode($value);
+			return self::$idnaStringCache[$value];
+		}
+	}
+
+	/**
 	 * Returns a hex representation of a random byte string.
 	 *
 	 * @param integer $count Number of hex characters to return
@@ -1298,13 +1351,48 @@ class GeneralUtility {
 	/**
 	 * Checks if a given string is a Uniform Resource Locator (URL).
 	 *
+	 * On seriously malformed URLs, parse_url may return FALSE and emit an
+	 * E_WARNING.
+	 *
+	 * filter_var() requires a scheme to be present.
+	 *
+	 * http://www.faqs.org/rfcs/rfc2396.html
+	 * Scheme names consist of a sequence of characters beginning with a
+	 * lower case letter and followed by any combination of lower case letters,
+	 * digits, plus ("+"), period ("."), or hyphen ("-").  For resiliency,
+	 * programs interpreting URI should treat upper case letters as equivalent to
+	 * lower case in scheme names (e.g., allow "HTTP" as well as "http").
+	 * scheme = alpha *( alpha | digit | "+" | "-" | "." )
+	 *
+	 * Convert the domain part to punicode if it does not look like a regular
+	 * domain name. Only the domain part because RFC3986 specifies the the rest of
+	 * the url may not contain special characters:
+	 * http://tools.ietf.org/html/rfc3986#appendix-A
+	 *
 	 * @param string $url The URL to be validated
 	 * @return boolean Whether the given URL is valid
 	 */
 	static public function isValidUrl($url) {
-		require_once PATH_typo3 . 'contrib/idna/idna_convert.class.php';
-		$IDN = new \idna_convert(array('idn_version' => 2008));
-		return filter_var($IDN->encode($url), FILTER_VALIDATE_URL, FILTER_FLAG_SCHEME_REQUIRED) !== FALSE;
+		$parsedUrl = parse_url($url);
+		if (!$parsedUrl || !isset($parsedUrl['scheme'])) {
+			return FALSE;
+		}
+		// HttpUtility::buildUrl() will always build urls with <scheme>://
+		// our original $url might only contain <scheme>: (e.g. mail:)
+		// so we convert that to the double-slashed version to ensure
+		// our check against the $recomposedUrl is proper
+		if (!self::isFirstPartOfStr($url, $parsedUrl['scheme'] . '://')) {
+			$url = str_replace($parsedUrl['scheme'] . ':', $parsedUrl['scheme'] . '://', $url);
+		}
+		$recomposedUrl = HttpUtility::buildUrl($parsedUrl);
+		if ($recomposedUrl !== $url) {
+			// The parse_url() had to modify characters, so the URL is invalid
+			return FALSE;
+		}
+		if (isset($parsedUrl['host']) && !preg_match('/^[a-z0-9.\\-]*$/i', $parsedUrl['host'])) {
+			$parsedUrl['host'] = self::idnaEncode($parsedUrl['host']);
+		}
+		return filter_var(HttpUtility::buildUrl($parsedUrl), FILTER_VALIDATE_URL) !== FALSE;
 	}
 
 	/*************************
