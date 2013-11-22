@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Rsaauth\Backend;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * This class contains a PHP OpenSSL backend for the TYPO3 RSA authentication
  * service. See class \TYPO3\CMS\Rsaauth\Backend\AbstractBackend for the information on using
@@ -31,17 +32,23 @@ namespace TYPO3\CMS\Rsaauth\Backend;
  * @author Dmitry Dulepov <dmitry@typo3.org>
  */
 class PhpBackend extends \TYPO3\CMS\Rsaauth\Backend\AbstractBackend {
-
 	/**
-	 * Creates a new public/private key pair using PHP OpenSSL extension.
+	 * Creates a new key pair for the encryption or gets the existing key pair (if one already has been generated).
 	 *
-	 * @return \TYPO3\CMS\Rsaauth\Keypair A new key pair or NULL in case of error
-	 * @see \TYPO3\CMS\Rsaauth\Backend\AbstractBackend::createNewKeyPair()
+	 * There should only be one key pair per request because the second private key would overwrites the first private
+	 * key. So the submitting the form with the first public key would not work anymore.
+	 *
+	 * @return \TYPO3\CMS\Rsaauth\Keypair|NULL a key pair or NULL in case of error
 	 */
 	public function createNewKeyPair() {
-		$result = NULL;
+		/** @var $keyPair \TYPO3\CMS\Rsaauth\Keypair */
+		$keyPair = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Rsaauth\\Keypair');
+		if ($keyPair->isReady()) {
+			return $keyPair;
+		}
+
 		$privateKey = @openssl_pkey_new();
-		if ($privateKey) {
+		if ($privateKey !== FALSE) {
 			// Create private key as string
 			$privateKeyStr = '';
 			openssl_pkey_export($privateKey, $privateKeyStr);
@@ -52,16 +59,17 @@ class PhpBackend extends \TYPO3\CMS\Rsaauth\Backend\AbstractBackend {
 			// Get public key (in fact modulus) and exponent
 			$publicKey = $this->extractPublicKeyModulus($exportedData);
 			$exponent = $this->extractExponent($exportedData);
-			// Create result object
-			$result = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Rsaauth\\Keypair');
-			/** @var $result \TYPO3\CMS\Rsaauth\Keypair */
-			$result->setExponent($exponent);
-			$result->setPrivateKey($privateKeyStr);
-			$result->setPublicKey($publicKey);
+
+			$keyPair->setExponent($exponent);
+			$keyPair->setPrivateKey($privateKeyStr);
+			$keyPair->setPublicKey($publicKey);
 			// Clean up all resources
 			openssl_free_key($privateKey);
+		} else {
+			$keyPair = NULL;
 		}
-		return $result;
+
+		return $keyPair;
 	}
 
 	/**

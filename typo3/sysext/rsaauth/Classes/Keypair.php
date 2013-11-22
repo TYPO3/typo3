@@ -23,20 +23,20 @@ namespace TYPO3\CMS\Rsaauth;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
- * This class contain an RSA keypair class. Its purpose is to keep to keys
- * and trasnfer these keys between other PHP classes.
+ * This class contain an RSA key pair. Its purpose is to keep to keys
+ * and transfer these keys between other PHP classes.
  *
  * @author Dmitry Dulepov <dmitry@typo3.org>
  */
-class Keypair {
-
+class Keypair implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * RSA public exponent (3 or 0x10001)
 	 *
 	 * @var integer
 	 */
-	protected $exponent = 65537;
+	protected $exponent = 0;
 
 	/**
 	 * The private key
@@ -48,27 +48,54 @@ class Keypair {
 	/**
 	 * The public key modulus
 	 *
-	 * @var string
+	 * @var integer
 	 */
-	protected $publicKeyModulus = '';
+	protected $publicKeyModulus = 0;
+
+	/**
+	 * Checks if this key pair already has been provided with all data.
+	 *
+	 * @return boolean
+	 */
+	public function isReady() {
+		return $this->hasExponent() && $this->hasPrivateKey() && $this->hasPublicKeyModulus();
+	}
 
 	/**
 	 * Retrieves the exponent.
 	 *
-	 * @return string The exponent
+	 * @return integer the exponent
 	 */
 	public function getExponent() {
 		return $this->exponent;
 	}
 
 	/**
-	 * Sets the private key
+	 * Sets the exponent
 	 *
-	 * @param string $privateKey The new private key
+	 * Note: This method must not be called more than one time.
+	 *
+	 * @param integer $exponent the new exponent
+	 *
 	 * @return void
+	 *
+	 * @throws \BadMethodCallException if the method was called more than one time
 	 */
 	public function setExponent($exponent) {
+		if ($this->hasExponent()) {
+			throw new \BadMethodCallException('setExponent() must not be called more than one time.', 1296062830);
+		}
+
 		$this->exponent = $exponent;
+	}
+
+	/**
+	 * Checks whether an exponent already has been set.
+	 *
+	 * @return boolean
+	 */
+	protected function hasExponent() {
+		return $this->getExponent() !== 0;
 	}
 
 	/**
@@ -81,32 +108,67 @@ class Keypair {
 	}
 
 	/**
-	 * Sets the private key
+	 * Sets the private key.
+	 *
+	 * Note: This method must not be called more than one time.
 	 *
 	 * @param string $privateKey The new private key
+	 *
 	 * @return void
+	 *
+	 * @throws \BadMethodCallException if the method was called more than one time
 	 */
 	public function setPrivateKey($privateKey) {
+		if ($this->hasPrivateKey()) {
+			throw new \BadMethodCallException('setPrivateKey() must not be called more than one time.', 1296062831);
+		}
+
 		$this->privateKey = $privateKey;
+	}
+
+	/**
+	 * Checks whether a private key already has been set.
+	 *
+	 * @return boolean
+	 */
+	protected function hasPrivateKey() {
+		return $this->getPrivateKey() !== '';
 	}
 
 	/**
 	 * Retrieves the public key modulus
 	 *
-	 * @return string The public key modulus
+	 * @return integer the public key modulus
 	 */
 	public function getPublicKeyModulus() {
 		return $this->publicKeyModulus;
 	}
 
 	/**
-	 * Sets the public key modulus
+	 * Sets the public key modulus.
 	 *
-	 * @param string $publicKeyModulus The new public key modulus
+	 * Note: This method must not be called more than one time.
+	 *
+	 * @param integer $publicKeyModulus the new public key modulus
+	 *
 	 * @return void
+	 *
+	 * @throws \BadMethodCallException if the method was called more than one time
 	 */
 	public function setPublicKey($publicKeyModulus) {
+		if ($this->hasPublicKeyModulus()) {
+			throw new \BadMethodCallException('setPublicKey() must not be called more than one time.', 1296062832);
+		}
+
 		$this->publicKeyModulus = $publicKeyModulus;
 	}
 
+	/**
+	 * Checks whether a public key modulus already has been set.
+	 *
+	 * @return boolean
+	 */
+	protected function hasPublicKeyModulus() {
+		return $this->getPublicKeyModulus() !== 0;
+	}
 }

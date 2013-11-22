@@ -53,9 +53,12 @@ abstract class AbstractBackend {
 	protected $error = '';
 
 	/**
-	 * Creates a new key pair for the encryption.
+	 * Creates a new key pair for the encryption or gets the existing key pair (if one already has been generated).
 	 *
-	 * @return \TYPO3\CMS\Rsaauth\Keypair A new key pair or NULL in case of error
+	 * There should only be one key pair per request because the second private key would overwrites the first private
+	 * key. So the submitting the form with the first public key would not work anymore.
+	 *
+	 * @return \TYPO3\CMS\Rsaauth\Keypair|NULL a key pair or NULL in case of error
 	 */
 	abstract public function createNewKeyPair();
 

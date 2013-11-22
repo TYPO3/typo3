@@ -23,6 +23,9 @@ namespace TYPO3\CMS\Rsaauth\Backend;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * This class contains a OpenSSL backend for the TYPO3 RSA authentication
  * service. It uses shell version of OpenSSL to perform tasks. See class
@@ -31,6 +34,10 @@ namespace TYPO3\CMS\Rsaauth\Backend;
  * @author Dmitry Dulepov <dmitry@typo3.org>
  */
 class CommandLineBackend extends \TYPO3\CMS\Rsaauth\Backend\AbstractBackend {
+	/**
+	 * @var integer
+	 */
+	const DEFAULT_EXPONENT = 65537;
 
 	/**
 	 * A path to the openssl binary or FALSE if the binary does not exist
@@ -41,7 +48,7 @@ class CommandLineBackend extends \TYPO3\CMS\Rsaauth\Backend\AbstractBackend {
 
 	/**
 	 * Temporary directory. It is best of it is outside of the web site root and
-	 * not publically readable.
+	 * not publicly readable.
 	 * For now we use typo3temp/.
 	 *
 	 * @var string
@@ -51,8 +58,6 @@ class CommandLineBackend extends \TYPO3\CMS\Rsaauth\Backend\AbstractBackend {
 	/**
 	 * Creates an instance of this class. It obtains a path to the OpenSSL
 	 * binary.
-	 *
-	 * @return void
 	 */
 	public function __construct() {
 		$this->opensslPath = \TYPO3\CMS\Core\Utility\CommandUtility::getCommand('openssl');
@@ -65,13 +70,23 @@ class CommandLineBackend extends \TYPO3\CMS\Rsaauth\Backend\AbstractBackend {
 	}
 
 	/**
-	 * @return \TYPO3\CMS\Rsaauth\Keypair A new key pair or NULL in case of error
-	 * @see \TYPO3\CMS\Rsaauth\Backend\AbstractBackend::createNewKeyPair()
+	 * Creates a new key pair for the encryption or gets the existing key pair (if one already has been generated).
+	 *
+	 * There should only be one key pair per request because the second private key would overwrites the first private
+	 * key. So the submitting the form with the first public key would not work anymore.
+	 *
+	 * @return \TYPO3\CMS\Rsaauth\Keypair|NULL a key pair or NULL in case of error
 	 */
 	public function createNewKeyPair() {
-		$result = NULL;
+		/** @var $keyPair \TYPO3\CMS\Rsaauth\Keypair */
+		$keyPair = GeneralUtility::makeInstance('TYPO3\\CMS\\Rsaauth\\Keypair');
+		if ($keyPair->isReady()) {
+			return $keyPair;
+		}
+
 		// Create a temporary file. Security: tempnam() sets permissions to 0600
 		$privateKeyFile = tempnam($this->temporaryDirectory, uniqid());
+
 		// Generate the private key.
 		//
 		// PHP generates 1024 bit key files. We force command line version
@@ -87,16 +102,17 @@ class CommandLineBackend extends \TYPO3\CMS\Rsaauth\Backend\AbstractBackend {
 			$value = \TYPO3\CMS\Core\Utility\CommandUtility::exec($command);
 			if (substr($value, 0, 8) === 'Modulus=') {
 				$publicKey = substr($value, 8);
-				// Create a result object
-				$result = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Rsaauth\\Keypair');
-				/** @var $result tx_rsa_keypair */
-				$result->setExponent(65537);
-				$result->setPrivateKey($privateKey);
-				$result->setPublicKey($publicKey);
+
+				$keyPair->setExponent(self::DEFAULT_EXPONENT);
+				$keyPair->setPrivateKey($privateKey);
+				$keyPair->setPublicKey($publicKey);
 			}
+		} else {
+			$keyPair = NULL;
 		}
+
 		@unlink($privateKeyFile);
-		return $result;
+		return $keyPair;
 	}
 
 	/**

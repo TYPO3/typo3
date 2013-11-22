@@ -51,9 +51,13 @@ class FrontendLoginHook {
 					'jsbn/base64.js',
 					'rsaauth_min.js'
 				);
+
+				$additionalHeader = '';
 				foreach ($files as $file) {
-					$result[1] .= '<script type="text/javascript" src="' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . $javascriptPath . $file . '"></script>';
+					$additionalHeader .= '<script type="text/javascript" src="' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . $javascriptPath . $file . '"></script>';
 				}
+				$GLOBALS['TSFE']->additionalHeaderData['rsaauth_js'] = $additionalHeader;
+
 				// Generate a new key pair
 				$keyPair = $backend->createNewKeyPair();
 				// Save private key
