@@ -92,4 +92,12 @@ class FailsafePackageManager extends \TYPO3\CMS\Core\Package\PackageManager {
 			parent::sortAndSavePackageStates();
 		}
 	}
+
+	/**
+	 * To enable writing of the package states file the package states
+	 * migration needs to override eventual failsafe blocks.
+	 */
+	public function forceSortAndSavePackageStates() {
+		parent::sortAndSavePackageStates();
+	}
 }

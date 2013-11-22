@@ -274,9 +274,41 @@ class StepController extends AbstractController {
 			if (!is_dir(PATH_typo3conf) || (is_dir(PATH_typo3conf) && !$localConfigurationFileExists) || file_exists(PATH_typo3conf . 'PackageStates.php')) {
 				return;
 			}
-			$bootstrap = \TYPO3\CMS\Core\Core\Bootstrap::getInstance();
-			$packageManager = new \TYPO3\CMS\Install\Updates\UpdatePackageManager($bootstrap->getEarlyInstance('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager'));
-			$packageManager->createPackageStatesFile($bootstrap, PATH_site, PATH_typo3conf . 'PackageStates.php');
+			$loadedExtensions = array();
+			try {
+				// Extensions in extListArray
+				$loadedExtensions = $configurationManager->getLocalConfigurationValueByPath('EXT/extListArray');
+			} catch (\RuntimeException $exception) {
+				// Fallback handling if extlist is still a string and not an array
+				// @deprecated since 6.2, will be removed two versions later without a substitute
+				try {
+					$loadedExtensions = GeneralUtility::trimExplode(',', $configurationManager->getLocalConfigurationValueByPath('EXT/extList'));
+				} catch (\RuntimeException $exception) {
+				}
+			}
+			/** @var \TYPO3\CMS\Core\Package\FailsafePackageManager $packageManager */
+			$packageManager = \TYPO3\CMS\Core\Core\Bootstrap::getInstance()->getEarlyInstance('TYPO3\\Flow\\Package\\PackageManager');
+			foreach ($loadedExtensions as $loadedExtension) {
+				try {
+					$packageManager->activatePackage($loadedExtension);
+				} catch (\TYPO3\Flow\Package\Exception\UnknownPackageException $exception) {
+					// Skip unavailable packages silently
+				}
+			}
+			$packageManager->forceSortAndSavePackageStates();
+
+			// Backup LocalConfiguration.php
+			copy(
+				$configurationManager->getLocalConfigurationFileLocation(),
+				preg_replace('/\.php$/', '.beforePackageStatesMigration.php', $configurationManager->getLocalConfigurationFileLocation())
+			);
+			$configurationManager->updateLocalConfiguration(array(
+				'EXT' => array(
+					'extListArray' => '__UNSET',
+					'extList' => '__UNSET',
+					'requiredExt' => '__UNSET',
+				),
+			));
 
 			// Perform a reload to self, so bootstrap now uses new PackageStates.php
 			$this->redirect();
