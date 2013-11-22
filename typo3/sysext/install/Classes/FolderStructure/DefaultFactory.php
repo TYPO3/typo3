@@ -212,7 +212,7 @@ class DefaultFactory {
 					),
 				),
 				array(
-					'name' => 'fileadmin',
+					'name' => !empty($GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir']) ? rtrim($GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'], '/') : 'fileadmin',
 					'type' => 'TYPO3\\CMS\\install\\FolderStructure\\DirectoryNode',
 					'targetPermission' => $directoryPermission,
 					'children' => array(
