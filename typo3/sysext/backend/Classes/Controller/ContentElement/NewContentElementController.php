@@ -224,7 +224,7 @@ class NewContentElementController {
 					if (!$this->onClickEvent) {
 						// Radio button:
 						$oC = 'document.editForm.defValues.value=unescape(\'' . rawurlencode($wInfo['params']) . '\');goToalt_doc();' . (!$this->onClickEvent ? 'window.location.hash=\'#sel2\';' : '');
-						$content .= '<div class="input"><input type="radio" name="tempB" value="' . htmlspecialchars($k) . '" onclick="' . htmlspecialchars($oC) . '" /></div>';
+						$content .= '<div class="contentelement-wizard-item-input"><input type="radio" name="tempB" value="' . htmlspecialchars($k) . '" onclick="' . htmlspecialchars($oC) . '" /></div>';
 						// Onclick action for icon/title:
 						$aOnClick = 'document.getElementsByName(\'tempB\')[' . $cc . '].checked=1;' . $oC . 'return false;';
 					} else {
@@ -233,17 +233,19 @@ class NewContentElementController {
 
 					$menuItems[$key]['content'] .=
 						'<li>
-							' . $content . '
-							<div class="icon">
-								<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">
-									<img' . IconUtility::skinImg($this->doc->backPath, $wInfo['icon'], '') . ' alt="" />
-								</a>
-							</div>
-							<div class="text">
-								<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">
-									<strong>' . htmlspecialchars($wInfo['title']) . '</strong>
-									<br />' . nl2br(htmlspecialchars(trim($wInfo['description']))) .
-								'</a>
+							<div class="contentelement-wizard-item">
+								' . $content . '
+								<div class="contentelement-wizard-item-icon">
+									<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">
+										<img' . IconUtility::skinImg($this->doc->backPath, $wInfo['icon'], '') . ' alt="" />
+									</a>
+								</div>
+								<div class="contentelement-wizard-item-text">
+									<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">
+										<strong>' . htmlspecialchars($wInfo['title']) . '</strong>
+										<br />' . nl2br(htmlspecialchars(trim($wInfo['description']))) .
+									'</a>
+								</div>
 							</div>
 						</li>';
 					$cc++;
