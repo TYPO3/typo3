@@ -36,7 +36,7 @@
  * simple strings and complete email addresses as well. That means, that you might
  * use any of the following notations:
  *
- * - www.nörgler.com
+ * - www.n√∂rgler.com
  * - xn--nrgler-wxa
  * - xn--brse-5qa.xn--knrz-1ra.info
  *
@@ -48,7 +48,7 @@
  *
  * @author  Matthias Sommerfeld <mso@phlylabs.de>
  * @copyright 2004-2011 phlyLabs Berlin, http://phlylabs.de
- * @version 0.8.0 2011-03-11
+ * @version 0.8.1 2011-12-19
  */
 class idna_convert
 {
@@ -780,6 +780,9 @@ class idna_convert
     protected function _combine($input)
     {
         $inp_len = count($input);
+        if (0 == $inp_len) {
+            return false;
+        }
         foreach (self::$NP['replacemaps'] as $np_src => $np_target) {
             if ($np_target[0] != $input[0]) continue;
             if (count($np_target) != $inp_len) continue;
@@ -904,8 +907,6 @@ class idna_convert
                 $output .= chr(224+($v >> 12)).chr(128+(($v >> 6) & 63)).chr(128+($v & 63));
             } elseif ($v < (1 << 21)) { // 4 bytes
                 $output .= chr(240+($v >> 18)).chr(128+(($v >> 12) & 63)).chr(128+(($v >> 6) & 63)).chr(128+($v & 63));
-            } elseif (self::$safe_mode) {
-                $output .= self::$safe_char;
             } else {
                 $this->_error('Conversion from UCS-4 to UTF-8 failed: malformed input at byte '.$k);
                 return false;
