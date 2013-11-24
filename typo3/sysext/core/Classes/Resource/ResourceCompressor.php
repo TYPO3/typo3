@@ -666,13 +666,13 @@ class ResourceCompressor {
 		if (stripos($contents, '@charset') === FALSE && stripos($contents, '@import') === FALSE && stripos($contents, '@namespace') === FALSE) {
 			return $contents;
 		}
-		$regex = '/@(charset|import|namespace)\\s*(url)?\\s*\\(?\\s*["\']?[^"\']+["\']?\\s*\\)?.*;/i';
+		$regex = '/@(charset|import|namespace)\\s*(url)?\\s*\\(?\\s*["\']?[^"\'\\)]+["\']?\\s*\\)?\\s*;/i';
 		preg_match_all($regex, $contents, $matches);
 		if (!empty($matches[0])) {
 			// remove existing statements
 			$contents = str_replace($matches[0], '', $contents);
 			// add statements to the top of contents in the order they occur in original file
-			$contents = $comment . implode($comment, $matches[0]) . LF . $contents;
+			$contents = $comment . implode($comment, $matches[0]) . LF . trim($contents);
 		}
 		return $contents;
 	}
