@@ -153,14 +153,19 @@ class ClassLoader {
 		}
 
 		$cacheEntryIdentifier = strtolower(str_replace('\\', '_', $className));
+		$classLoadingInformation = NULL;
 		try {
 			$rawClassLoadingInformation = $this->classesCache->get($cacheEntryIdentifier);
 			if ($rawClassLoadingInformation !== FALSE) {
-				$classLoadingInformation = explode("\xff", $rawClassLoadingInformation);
+				if ($rawClassLoadingInformation !== '') {
+					$classLoadingInformation = explode("\xff", $rawClassLoadingInformation);
+				}
 			} else {
 				$classLoadingInformation = $this->buildClassLoadingInformation($className);
 				if ($classLoadingInformation !== NULL) {
 					$this->classesCache->set($cacheEntryIdentifier, implode("\xff", $classLoadingInformation), $this->isEarlyCache ? array('early') : array());
+				} elseif (!$this->isEarlyCache) {
+					$this->classesCache->set($cacheEntryIdentifier, '');
 				}
 			}
 		} catch (\InvalidArgumentException $exception) {
