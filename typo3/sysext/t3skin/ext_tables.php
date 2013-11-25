@@ -392,12 +392,12 @@ if (TYPO3_MODE == 'BE' || TYPO3_MODE == 'FE' && isset($GLOBALS['BE_USER'])) {
 	// Adding HTML template for login screen
 	$TBE_STYLES['htmlTemplates']['templates/login.html'] = 'sysext/t3skin/templates/login.html';
 	$GLOBALS['TBE_STYLES']['stylesheets']['admPanel'] = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('t3skin') . 'stylesheets/standalone/admin_panel.css';
+	$flagIcons = array();
 	foreach ($flagNames as $flagName) {
-		\TYPO3\CMS\Backend\Sprite\SpriteManager::addIconSprite(array(
-			'flags-' . $flagName,
-			'flags-' . $flagName . '-overlay'
-		));
+		$flagIcons[] = 'flags-' . $flagName;
+		$flagIcons[] = 'flags-' . $flagName . '-overlay';
 	}
-	unset($flagNames, $flagName);
+	\TYPO3\CMS\Backend\Sprite\SpriteManager::addIconSprite($flagIcons);
+	unset($flagNames, $flagName, $flagIcons);
 }
 ?>
