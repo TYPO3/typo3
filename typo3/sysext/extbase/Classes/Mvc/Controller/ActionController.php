@@ -124,6 +124,7 @@ class ActionController extends \TYPO3\CMS\Extbase\Mvc\Controller\AbstractControl
 	 * method.
 	 *
 	 * @param \TYPO3\CMS\Extbase\Mvc\RequestInterface $request The current request
+	 *
 	 * @return boolean TRUE if this request type is supported, otherwise FALSE
 	 */
 	public function canProcessRequest(\TYPO3\CMS\Extbase\Mvc\RequestInterface $request) {
@@ -135,6 +136,7 @@ class ActionController extends \TYPO3\CMS\Extbase\Mvc\Controller\AbstractControl
 	 *
 	 * @param \TYPO3\CMS\Extbase\Mvc\RequestInterface $request The request object
 	 * @param \TYPO3\CMS\Extbase\Mvc\ResponseInterface $response The response, modified by this handler
+	 *
 	 * @throws \TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException
 	 * @return void
 	 */
@@ -339,7 +341,7 @@ class ActionController extends \TYPO3\CMS\Extbase\Mvc\Controller\AbstractControl
 		} elseif (is_string($actionResult) && strlen($actionResult) > 0) {
 			$this->response->appendContent($actionResult);
 		} elseif (is_object($actionResult) && method_exists($actionResult, '__toString')) {
-			$this->response->appendContent((string) $actionResult);
+			$this->response->appendContent((string)$actionResult);
 		}
 	}
 
@@ -392,46 +394,81 @@ class ActionController extends \TYPO3\CMS\Extbase\Mvc\Controller\AbstractControl
 	 */
 	protected function setViewConfiguration(ViewInterface $view) {
 		// Template Path Override
-		$extbaseFrameworkConfiguration = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
-		if (isset($extbaseFrameworkConfiguration['view']['templateRootPath'])
-			&& strlen($extbaseFrameworkConfiguration['view']['templateRootPath']) > 0
-			&& method_exists($view, 'setTemplateRootPath')
-		) {
-			$view->setTemplateRootPath($extbaseFrameworkConfiguration['view']['templateRootPath']);
-		} elseif (!empty($extbaseFrameworkConfiguration['view']['templateRootPaths'])
-			&& is_array($extbaseFrameworkConfiguration['view']['templateRootPaths'])
-			&& method_exists($view, 'setTemplateRootPaths')
-		) {
-			$paths = $extbaseFrameworkConfiguration['view']['templateRootPaths'];
-			krsort($paths);
-			$view->setTemplateRootPaths($paths);
+		$extbaseFrameworkConfiguration = $this->configurationManager->getConfiguration(
+			ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK
+		);
+
+		// set TemplateRootPaths
+		$viewFunctionName = 'setTemplateRootPaths';
+		if (method_exists($view, $viewFunctionName)) {
+			$deprecatedSetting = 'templateRootPath';
+			$setting = 'templateRootPaths';
+			$parameter = $this->getViewProperty($extbaseFrameworkConfiguration, $setting, $deprecatedSetting);
+			// no need to bother if there is nothing to set
+			if ($parameter) {
+				$view->$viewFunctionName($parameter);
+			}
 		}
-		if (isset($extbaseFrameworkConfiguration['view']['layoutRootPath'])
-			&& strlen($extbaseFrameworkConfiguration['view']['layoutRootPath']) > 0
-			&& method_exists($view, 'setLayoutRootPath')
-		) {
-			$view->setLayoutRootPath($extbaseFrameworkConfiguration['view']['layoutRootPath']);
-		} elseif (!empty($extbaseFrameworkConfiguration['view']['layoutRootPaths'])
-			&& is_array($extbaseFrameworkConfiguration['view']['layoutRootPaths'])
-			&& method_exists($view, 'layoutRootPaths')
-		) {
-			$paths = $extbaseFrameworkConfiguration['view']['layoutRootPaths'];
-			krsort($paths);
-			$view->setLayoutRootPaths($paths);
+
+		// set LayoutRootPaths
+		$viewFunctionName = 'setLayoutRootPaths';
+		if (method_exists($view, $viewFunctionName)) {
+			$deprecatedSetting = 'layoutRootPath';
+			$setting = 'layoutRootPaths';
+			$parameter = $this->getViewProperty($extbaseFrameworkConfiguration, $setting, $deprecatedSetting);
+			// no need to bother if there is nothing to set
+			if ($parameter) {
+				$view->$viewFunctionName($parameter);
+			}
 		}
-		if (isset($extbaseFrameworkConfiguration['view']['partialRootPath'])
-			&& strlen($extbaseFrameworkConfiguration['view']['partialRootPath']) > 0
-			&& method_exists($view, 'setPartialRootPath')
-		) {
-			$view->setPartialRootPath($extbaseFrameworkConfiguration['view']['partialRootPath']);
-		} elseif (!empty($extbaseFrameworkConfiguration['view']['partialRootPaths'])
-			&& is_array($extbaseFrameworkConfiguration['view']['partialRootPaths'])
-			&& method_exists($view, 'setPartialRootPaths')
-		) {
-			$paths = $extbaseFrameworkConfiguration['view']['partialRootPaths'];
-			krsort($paths);
-			$view->setPartialRootPaths($paths);
+
+		// set PartialRootPaths
+		$viewFunctionName = 'setPartialRootPaths';
+		if (method_exists($view, $viewFunctionName)) {
+			$deprecatedSetting = 'partialRootPath';
+			$setting = 'partialRootPaths';
+			$parameter = $this->getViewProperty($extbaseFrameworkConfiguration, $setting, $deprecatedSetting);
+			// no need to bother if there is nothing to set
+			if ($parameter) {
+				$view->$viewFunctionName($parameter);
+			}
 		}
+	}
+
+	/**
+	 * Handles the path resolving for *rootPath(s)
+	 * singular one is deprecated and will be removed two versions after 6.2
+	 * if deprecated setting is found, use it as the very last fallback target
+	 *
+	 * numerical arrays get ordered by key ascending
+	 *
+	 * @param array $extbaseFrameworkConfiguration
+	 * @param string $setting parameter name from TypoScript
+	 * @param string $deprecatedSetting parameter name from TypoScript
+	 *
+	 * @return array
+	 */
+	protected function getViewProperty($extbaseFrameworkConfiguration, $setting, $deprecatedSetting = '') {
+
+		$values = array();
+
+		if (
+			!empty($extbaseFrameworkConfiguration['view'][$setting])
+			&& is_array($extbaseFrameworkConfiguration['view'][$setting])
+		) {
+			$values = \TYPO3\CMS\Extbase\Utility\ArrayUtility::sortArrayWithIntegerKeys($extbaseFrameworkConfiguration['view'][$setting]);
+			$values = array_reverse($values, TRUE);
+		}
+
+		// @todo remove handling of deprecatedSetting two versions after 6.2
+		if (
+			isset($extbaseFrameworkConfiguration['view'][$deprecatedSetting])
+			&& strlen($extbaseFrameworkConfiguration['view'][$deprecatedSetting]) > 0
+		) {
+			$values[] = $extbaseFrameworkConfiguration['view'][$deprecatedSetting];
+		}
+
+		return $values;
 	}
 
 	/**
@@ -471,6 +508,7 @@ class ActionController extends \TYPO3\CMS\Extbase\Mvc\Controller\AbstractControl
 	 * or prepare the view in another way before the action is called.
 	 *
 	 * @param ViewInterface $view The view to be initialized
+	 *
 	 * @return void
 	 * @api
 	 */
@@ -612,6 +650,7 @@ class ActionController extends \TYPO3\CMS\Extbase\Mvc\Controller\AbstractControl
 	 * Returns a map of action method names and their parameters.
 	 *
 	 * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
+	 *
 	 * @return array Array of method parameters by action name
 	 */
 	static public function getActionMethodParameters($objectManager) {

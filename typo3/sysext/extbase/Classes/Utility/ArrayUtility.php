@@ -312,4 +312,25 @@ class ArrayUtility {
 		}
 		return $result;
 	}
+
+	/**
+	 * If the array contains numerical keys only, sort it in ascending order
+	 *
+	 * @param array $array
+	 *
+	 * @return array
+	 */
+	public static function sortArrayWithIntegerKeys($array) {
+		$containsNumericalKeysOnly = TRUE;
+		array_walk($array, function($value, $key) use (&$containsNumericalKeysOnly) {
+			if (!is_integer($key)) {
+				$containsNumericalKeysOnly = FALSE;
+				return;
+			}
+		});
+		if ($containsNumericalKeysOnly === TRUE) {
+			ksort($array);
+		}
+		return $array;
+	}
 }

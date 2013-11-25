@@ -624,4 +624,405 @@ class ActionControllerTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$mockConfigurationManager->expects($this->any())->method('isFeatureEnabled')->with('rewrittenPropertyMapper')->will($this->returnValue(FALSE));
 		$actionController->injectConfigurationManager($mockConfigurationManager);
 	}
+
+	/**
+	 * @test
+	 * @dataProvider templateRootPathDataProvider
+	 * @param array $configuration
+	 * @param array $expected
+	 */
+	public function setViewConfigurationResolvesTemplateRootPathsForTemplateRootPath($configuration, $expected) {
+		$mockController = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\ActionController', array('dummy'), array(), '', FALSE);
+		$mockConfigurationManager = $this->getMock('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManagerInterface');
+		$mockConfigurationManager->expects($this->any())->method('getConfiguration')->will($this->returnValue($configuration));
+		$mockController->injectConfigurationManager($mockConfigurationManager);
+		$mockController->_set('request', $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Request'), array('getControllerExtensionKey'));
+		$view = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\View\\ViewInterface', array('setControllerContext', 'assign', 'assignMultiple', 'canRender', 'render', 'initializeView', 'setTemplateRootPaths'));
+		$view->expects($this->once())->method('setTemplateRootPaths')->with($expected);
+		$mockController->_call('setViewConfiguration', $view);
+	}
+
+	/**
+	 * @return array
+	 */
+	public function templateRootPathDataProvider() {
+		return array(
+			'old behaviour only' => array(
+				array(
+					'view' => array(
+						'templateRootPath' => 'some path'
+					)
+				),
+				array('some path')
+			),
+			'new behaviour only with text keys' => array(
+				array(
+					'view' => array(
+						'templateRootPaths' => array(
+							'default' => 'some path',
+							'extended' => 'some other path'
+						)
+					)
+				),
+				array(
+					'extended' => 'some other path',
+					'default' => 'some path'
+				)
+			),
+			'new behaviour only with numerical keys' => array(
+				array(
+					'view' => array(
+						'templateRootPaths' => array(
+							'10' => 'some path',
+							'20' => 'some other path',
+							'15' => 'intermediate specific path'
+						)
+					)
+				),
+				array(
+					'20' => 'some other path',
+					'15' => 'intermediate specific path',
+					'10' => 'some path'
+				)
+			),
+			'new behaviour only with mixed keys' => array(
+				array(
+					'view' => array(
+						'templateRootPaths' => array(
+							'10' => 'some path',
+							'very_specific' => 'some other path',
+							'15' => 'intermediate specific path'
+						)
+					)
+				),
+				array(
+					'15' => 'intermediate specific path',
+					'very_specific' => 'some other path',
+					'10' => 'some path'
+				)
+			),
+			'old and new behaviour mixed with text keys' => array(
+				array(
+					'view' => array(
+						'templateRootPaths' => array(
+							'default' => 'some path',
+							'specific' => 'intermediate specific path',
+							'very_specific' => 'some other path'
+						),
+						'templateRootPath' => 'old path'
+					)
+				),
+				array(
+					'very_specific' => 'some other path',
+					'specific' => 'intermediate specific path',
+					'default' => 'some path',
+					'0' => 'old path'
+				)
+			),
+			'old and new behaviour mixed with numerical keys' => array(
+				array(
+					'view' => array(
+						'templateRootPaths' => array(
+							'10' => 'some path',
+							'20' => 'intermediate specific path',
+							'30' => 'some other path'
+						),
+						'templateRootPath' => 'old path'
+					)
+				),
+				array(
+					'30' => 'some other path',
+					'20' => 'intermediate specific path',
+					'10' => 'some path',
+					'31' => 'old path'
+				)
+			),
+			'old and new behaviour mixed with mixed keys' => array(
+				array(
+					'view' => array(
+						'templateRootPaths' => array(
+							'10' => 'some path',
+							'very_specific' => 'some other path',
+							'15' => 'intermediate specific path'
+						),
+						'templateRootPath' => 'old path'
+					)
+				),
+				array(
+					'15' => 'intermediate specific path',
+					'very_specific' => 'some other path',
+					'10' => 'some path',
+					'16' => 'old path'
+				)
+			)
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider layoutRootPathDataProvider
+	 *
+	 * @param array $configuration
+	 * @param array $expected
+	 */
+	public function setViewConfigurationResolvesLayoutRootPathsForLayoutRootPath($configuration, $expected) {
+		$mockController = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\ActionController', array('dummy'), array(), '', FALSE);
+		$mockConfigurationManager = $this->getMock('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManagerInterface');
+		$mockConfigurationManager->expects($this->any())->method('getConfiguration')->will($this->returnValue($configuration));
+		$mockController->injectConfigurationManager($mockConfigurationManager);
+		$mockController->_set('request', $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Request'), array('getControllerExtensionKey'));
+		$view = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\View\\ViewInterface', array('setControllerContext', 'assign', 'assignMultiple', 'canRender', 'render', 'initializeView', 'setlayoutRootPaths'));
+		$view->expects($this->once())->method('setlayoutRootPaths')->with($expected);
+		$mockController->_call('setViewConfiguration', $view);
+	}
+
+	/**
+	 * @return array
+	 */
+	public function layoutRootPathDataProvider() {
+		return array(
+			'old behaviour only' => array(
+				array(
+					'view' => array(
+						'layoutRootPath' => 'some path'
+					)
+				),
+				array('some path')
+			),
+			'new behaviour only with text keys' => array(
+				array(
+					'view' => array(
+						'layoutRootPaths' => array(
+							'default' => 'some path',
+							'extended' => 'some other path'
+						)
+					)
+				),
+				array(
+					'extended' => 'some other path',
+					'default' => 'some path'
+				)
+			),
+			'new behaviour only with numerical keys' => array(
+				array(
+					'view' => array(
+						'layoutRootPaths' => array(
+							'10' => 'some path',
+							'20' => 'some other path',
+							'15' => 'intermediate specific path'
+						)
+					)
+				),
+				array(
+					'20' => 'some other path',
+					'15' => 'intermediate specific path',
+					'10' => 'some path'
+				)
+			),
+			'new behaviour only with mixed keys' => array(
+				array(
+					'view' => array(
+						'layoutRootPaths' => array(
+							'10' => 'some path',
+							'very_specific' => 'some other path',
+							'15' => 'intermediate specific path'
+						)
+					)
+				),
+				array(
+					'15' => 'intermediate specific path',
+					'very_specific' => 'some other path',
+					'10' => 'some path'
+				)
+			),
+			'old and new behaviour mixed with text keys' => array(
+				array(
+					'view' => array(
+						'layoutRootPaths' => array(
+							'default' => 'some path',
+							'specific' => 'intermediate specific path',
+							'very_specific' => 'some other path'
+						),
+						'layoutRootPath' => 'old path'
+					)
+				),
+				array(
+					'very_specific' => 'some other path',
+					'specific' => 'intermediate specific path',
+					'default' => 'some path',
+					'0' => 'old path'
+				)
+			),
+			'old and new behaviour mixed with numerical keys' => array(
+				array(
+					'view' => array(
+						'layoutRootPaths' => array(
+							'10' => 'some path',
+							'20' => 'intermediate specific path',
+							'30' => 'some other path'
+						),
+						'layoutRootPath' => 'old path'
+					)
+				),
+				array(
+					'30' => 'some other path',
+					'20' => 'intermediate specific path',
+					'10' => 'some path',
+					'31' => 'old path'
+				)
+			),
+			'old and new behaviour mixed with mixed keys' => array(
+				array(
+					'view' => array(
+						'layoutRootPaths' => array(
+							'10' => 'some path',
+							'very_specific' => 'some other path',
+							'15' => 'intermediate specific path'
+						),
+						'layoutRootPath' => 'old path'
+					)
+				),
+				array(
+					'15' => 'intermediate specific path',
+					'very_specific' => 'some other path',
+					'10' => 'some path',
+					'16' => 'old path'
+				)
+			)
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider partialRootPathDataProvider
+	 *
+	 * @param array $configuration
+	 * @param array $expected
+	 */
+	public function setViewConfigurationResolvesPartialRootPathsForPartialRootPath($configuration, $expected) {
+		$mockController = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\ActionController', array('dummy'), array(), '', FALSE);
+		$mockConfigurationManager = $this->getMock('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManagerInterface');
+		$mockConfigurationManager->expects($this->any())->method('getConfiguration')->will($this->returnValue($configuration));
+		$mockController->injectConfigurationManager($mockConfigurationManager);
+		$mockController->_set('request', $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Request'), array('getControllerExtensionKey'));
+		$view = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\View\\ViewInterface', array('setControllerContext', 'assign', 'assignMultiple', 'canRender', 'render', 'initializeView', 'setpartialRootPaths'));
+		$view->expects($this->once())->method('setpartialRootPaths')->with($expected);
+		$mockController->_call('setViewConfiguration', $view);
+	}
+
+	/**
+	 * @return array
+	 */
+	public function partialRootPathDataProvider() {
+		return array(
+			'old behaviour only' => array(
+				array(
+					'view' => array(
+						'partialRootPath' => 'some path'
+					)
+				),
+				array('some path')
+			),
+			'new behaviour only with text keys' => array(
+				array(
+					'view' => array(
+						'partialRootPaths' => array(
+							'default' => 'some path',
+							'extended' => 'some other path'
+						)
+					)
+				),
+				array(
+					'extended' => 'some other path',
+					'default' => 'some path'
+				)
+			),
+			'new behaviour only with numerical keys' => array(
+				array(
+					'view' => array(
+						'partialRootPaths' => array(
+							'10' => 'some path',
+							'20' => 'some other path',
+							'15' => 'intermediate specific path'
+						)
+					)
+				),
+				array(
+					'20' => 'some other path',
+					'15' => 'intermediate specific path',
+					'10' => 'some path'
+				)
+			),
+			'new behaviour only with mixed keys' => array(
+				array(
+					'view' => array(
+						'partialRootPaths' => array(
+							'10' => 'some path',
+							'very_specific' => 'some other path',
+							'15' => 'intermediate specific path'
+						)
+					)
+				),
+				array(
+					'15' => 'intermediate specific path',
+					'very_specific' => 'some other path',
+					'10' => 'some path'
+				)
+			),
+			'old and new behaviour mixed with text keys' => array(
+				array(
+					'view' => array(
+						'partialRootPath' => 'old path',
+						'partialRootPaths' => array(
+							'default' => 'some path',
+							'specific' => 'intermediate specific path',
+							'very_specific' => 'some other path'
+						)
+					)
+				),
+				array(
+					'very_specific' => 'some other path',
+					'specific' => 'intermediate specific path',
+					'default' => 'some path',
+					'0' => 'old path'
+				)
+			),
+			'old and new behaviour mixed with numerical keys' => array(
+				array(
+					'view' => array(
+						'partialRootPaths' => array(
+							'10' => 'some path',
+							'20' => 'intermediate specific path',
+							'30' => 'some other path'
+						),
+						'partialRootPath' => 'old path'
+					)
+				),
+				array(
+					'30' => 'some other path',
+					'20' => 'intermediate specific path',
+					'10' => 'some path',
+					'31' => 'old path'
+				)
+			),
+			'old and new behaviour mixed with mixed keys' => array(
+				array(
+					'view' => array(
+						'partialRootPaths' => array(
+							'10' => 'some path',
+							'very_specific' => 'some other path',
+							'15' => 'intermediate specific path'
+						),
+						'partialRootPath' => 'old path'
+					)
+				),
+				array(
+					'15' => 'intermediate specific path',
+					'very_specific' => 'some other path',
+					'10' => 'some path',
+					'16' => 'old path'
+				)
+			)
+		);
+	}
 }

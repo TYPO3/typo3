@@ -90,9 +90,15 @@ class ExtensionUtility {
 		}
 	}
 	view {
-		templateRootPath =
-		layoutRootPath =
-		partialRootPath =
+		templateRootPaths {
+			#example: fooKey = EXT:bar/foo
+		}
+		layoutRootPaths {
+			#example: fooKey = EXT:bar/foo
+		}
+		partialRootPaths {
+			#example: fooKey = EXT:bar/foo
+		}
 		 # with defaultPid you can specify the default page uid of this plugin. If you set this to the string "auto" the target page will be determined automatically. Defaults to an empty string that expects the target page to be the current page.
 		defaultPid =
 	}

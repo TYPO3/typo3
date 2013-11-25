@@ -377,11 +377,13 @@ class ArrayUtilityTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
 	 * @test
+	 *
 	 * @param array $inputArray1
 	 * @param array $inputArray2
 	 * @param boolean $dontAddNewKeys
 	 * @param boolean $emptyValuesOverride
 	 * @param array $expected
+	 *
 	 * @dataProvider arrayMergeRecursiveOverruleData
 	 */
 	public function arrayMergeRecursiveOverruleMergesSimpleArrays(array $inputArray1, array $inputArray2, $dontAddNewKeys, $emptyValuesOverride, array $expected) {
@@ -404,5 +406,65 @@ class ArrayUtilityTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$inputString = '1,abc,3,,5';
 		$expected = array(1, 0, 3, 0, 5);
 		$this->assertSame($expected, \TYPO3\CMS\Extbase\Utility\ArrayUtility::integerExplode(',', $inputString));
+	}
+
+	/**
+	 * dataProvider for sortArrayWithIntegerKeys
+	 *
+	 * @return array
+	 */
+	public function sortArrayWithIntegerKeysDataProvider() {
+		return array(
+			array(
+				array(
+					'20' => 'test1',
+					'11' => 'test2',
+					'16' => 'test3',
+				),
+				array(
+					'11' => 'test2',
+					'16' => 'test3',
+					'20' => 'test1',
+				)
+			),
+			array(
+				array(
+					'20' => 'test1',
+					'16.5' => 'test2',
+					'16' => 'test3',
+				),
+				array(
+					'20' => 'test1',
+					'16.5' => 'test2',
+					'16' => 'test3',
+				)
+			),
+			array(
+				array(
+					'20' => 'test20',
+					'somestring' => 'teststring',
+					'16' => 'test16',
+				),
+				array(
+					'20' => 'test20',
+					'somestring' => 'teststring',
+					'16' => 'test16',
+				)
+			),
+		);
+	}
+
+	/**
+	 * @test
+	 *
+	 * @param array $arrayToSort
+	 * @param array $expectedArray
+	 *
+	 * @dataProvider sortArrayWithIntegerKeysDataProvider
+	 */
+
+	public function sortArrayWithIntegerKeysSortsNumericArrays(array $arrayToSort, array $expectedArray) {
+		$sortedArray = \TYPO3\CMS\Extbase\Utility\ArrayUtility::sortArrayWithIntegerKeys($arrayToSort);
+		$this->assertSame($sortedArray, $expectedArray);
 	}
 }
