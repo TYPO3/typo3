@@ -199,10 +199,6 @@ class ModuleMenuView {
 	 */
 	public function getRawModuleData() {
 		$modules = array();
-		// Remove the 'doc' module?
-		if ($GLOBALS['BE_USER']->getTSConfigVal('options.disableDocModuleInAB')) {
-			unset($this->loadedModules['doc']);
-		}
 
 		// Unset modules that are meant to be hidden from the menu.
 		$this->unsetHiddenModules();
