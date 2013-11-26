@@ -4612,6 +4612,7 @@ if (version == "n3") {
 		// on the $lang key being inputted to this function.
 		/** @var $locales \TYPO3\CMS\Core\Localization\Locales */
 		$locales = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Localization\\Locales');
+		$locales->initialize();
 
 		// Language is found. Configure it:
 		if (in_array($this->lang, $locales->getLocales())) {
