@@ -57,6 +57,11 @@ class FolderTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 	protected $ajaxStatus = FALSE;
 
 	/**
+	 * @var array
+	 */
+	protected $scope;
+
+	/**
 	 * Constructor function of the class
 	 */
 	public function __construct() {
@@ -101,15 +106,23 @@ class FolderTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 	 * @internal
 	 */
 	public function PMiconATagWrap($icon, $cmd, $isExpand = TRUE) {
+
+		if (empty($this->scope)) {
+			$this->scope = array(
+				'class' => get_class($this),
+				'script' => $this->thisScript,
+				'ext_noTempRecyclerDirs' => $this->ext_noTempRecyclerDirs,
+				'browser' => array(
+					'mode' => $GLOBALS['SOBE']->browser->mode,
+					'act' => $GLOBALS['SOBE']->browser->act,
+				),
+			);
+		}
+
 		if ($this->thisScript) {
 			// Activates dynamic AJAX based tree
-			$scopeData = '';
-			$scopeHash = '';
-			// $this->scope is defined in TBE_FolderTree
-			if (!empty($this->scope)) {
-				$scopeData = serialize($this->scope);
-				$scopeHash = \TYPO3\CMS\Core\Utility\GeneralUtility::hmac($scopeData);
-			}
+			$scopeData = serialize($this->scope);
+			$scopeHash = \TYPO3\CMS\Core\Utility\GeneralUtility::hmac($scopeData);
 			$js = htmlspecialchars('Tree.load(\'' . $cmd . '\', ' . intval($isExpand) . ', this, \'' . $scopeData . '\', \'' . $scopeHash . '\');');
 			return '<a class="pm" onclick="' . $js . '">' . $icon . '</a>';
 		} else {
