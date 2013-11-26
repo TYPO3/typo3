@@ -284,11 +284,6 @@ class TBE_FolderTree extends localFolderTree {
 	public $ext_noTempRecyclerDirs = 0;
 
 	/**
-	 * @var array
-	 */
-	protected $scope;
-
-	/**
 	 * Returns TRUE if the input "record" contains a folder which can be linked.
 	 *
 	 * @param \TYPO3\CMS\Core\Resource\Folder $folderObject object with information about the folder element. Contains keys like title, uid, path, _title
@@ -318,29 +313,6 @@ class TBE_FolderTree extends localFolderTree {
 		} else {
 			return '<span class="typo3-dimmed">' . $title . '</span>';
 		}
-	}
-
-	/**
-	 * Wrap the plus/minus icon in a link
-	 *
-	 * @param string $icon HTML string to wrap, probably an image tag.
-	 * @param string $cmd Command for 'PM' get var
-	 * @param boolean $isExpand Whether to be expanded
-	 * @return string Link-wrapped input string
-	 * @internal
-	 */
-	public function PMiconATagWrap($icon, $cmd, $isExpand = TRUE) {
-		$this->scope = array(
-			'class' => get_class($this),
-			'script' => $this->thisScript,
-			'ext_noTempRecyclerDirs' => $this->ext_noTempRecyclerDirs,
-			'browser' => array(
-				'mode' => $GLOBALS['SOBE']->browser->mode,
-				'act' => $GLOBALS['SOBE']->browser->act,
-			),
-		);
-
-		return parent::PMiconATagWrap($icon, $cmd, $isExpand);
 	}
 
 }
