@@ -575,11 +575,9 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 			// Build the file upload and folder creation forms
 			$uploadForm = '';
 			$createFolder = '';
-			if ($selectedFolder && !$this->isReadOnlyFolder($selectedFolder)) {
+			if ($selectedFolder) {
 				$uploadForm = $this->act === 'file' ? $this->uploadForm($selectedFolder) : '';
-				if ($GLOBALS['BE_USER']->isAdmin() || $GLOBALS['BE_USER']->getTSConfigVal('options.createFoldersInEB')) {
-					$createFolder = $this->createFolder($selectedFolder);
-				}
+				$createFolder = $this->createFolder($selectedFolder);
 			}
 			// Insert the upload form on top, if so configured
 			if ($GLOBALS['BE_USER']->getTSConfigVal('options.uploadFieldsInTopOfEB')) {
