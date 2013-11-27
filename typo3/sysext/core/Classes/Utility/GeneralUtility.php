@@ -681,7 +681,7 @@ class GeneralUtility {
 	 * @return boolean TRUE if $item is in $list
 	 */
 	static public function inList($list, $item) {
-		return strpos(',' . $list . ',', ',' . $item . ',') !== FALSE ? TRUE : FALSE;
+		return strpos(',' . $list . ',', ',' . $item . ',') !== FALSE;
 	}
 
 	/**
