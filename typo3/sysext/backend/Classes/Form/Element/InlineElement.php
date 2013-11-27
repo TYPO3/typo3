@@ -380,7 +380,7 @@ class InlineElement {
 		// e.g. data[<curTable>][<curId>][<curField>] => data-<pid>-<parentTable>-<parentId>-<parentField>-<curTable>-<curId>-<curField>
 		$this->inlineData['map'][$this->inlineNames['form']] = $this->inlineNames['object'];
 		// Set this variable if we handle a brand new unsaved record:
-		$isNewRecord = MathUtility::canBeInterpretedAsInteger($rec['uid']) ? FALSE : TRUE;
+		$isNewRecord = !MathUtility::canBeInterpretedAsInteger($rec['uid']);
 		// Set this variable if the record is virtual and only show with header and not editable fields:
 		$isVirtualRecord = isset($rec['__virtual']) && $rec['__virtual'];
 		// If there is a selector field, normalize it:
