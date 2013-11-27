@@ -265,17 +265,8 @@ class ConfigurationManager {
 	 * @access private
 	 */
 	public function canWriteConfiguration() {
-		$result = TRUE;
-		if (!@is_writable($this->pathTypo3Conf)) {
-			$result = FALSE;
-		}
-		if (
-			file_exists($this->getLocalConfigurationFileLocation())
-			&& !@is_writable($this->getLocalConfigurationFileLocation())
-		) {
-			$result = FALSE;
-		}
-		return $result;
+		$fileLocation = $this->getLocalConfigurationFileLocation();
+		return @is_writable($this->pathTypo3Conf) && (!file_exists($fileLocation) || @is_writable($fileLocation));
 	}
 
 	/**
@@ -318,7 +309,7 @@ class ConfigurationManager {
 			);
 		}
 		$configuration = Utility\ArrayUtility::sortByKeyRecursive($configuration);
-		$result = Utility\GeneralUtility::writeFile(
+		return Utility\GeneralUtility::writeFile(
 			$localConfigurationFile,
 			'<?php' . LF .
 				'return ' .
@@ -329,7 +320,6 @@ class ConfigurationManager {
 			'?>',
 			TRUE
 		);
-		return $result === FALSE ? FALSE : TRUE;
 	}
 
 	/**
@@ -341,13 +331,12 @@ class ConfigurationManager {
 	 * @access private
 	 */
 	public function writeAdditionalConfiguration(array $additionalConfigurationLines) {
-		$result = Utility\GeneralUtility::writeFile(
+		return Utility\GeneralUtility::writeFile(
 			PATH_site . $this->additionalConfigurationFile,
 			'<?php' . LF .
 				implode(LF, $additionalConfigurationLines) . LF .
 			'?>'
 		);
-		return $result === FALSE ? FALSE : TRUE;
 	}
 
 	/**
