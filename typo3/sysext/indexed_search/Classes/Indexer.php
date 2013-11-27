@@ -2148,7 +2148,7 @@ class Indexer {
 	 *
 	 * @param string $keywordList
 	 * @return string
-	 * @see http://bugs.typo3.org/view.php?id=1436
+	 * @see http://forge.typo3.org/issues/14959
 	 */
 	protected function addSpacesToKeywordList($keywordList) {
 		$keywords = GeneralUtility::trimExplode(',', $keywordList);

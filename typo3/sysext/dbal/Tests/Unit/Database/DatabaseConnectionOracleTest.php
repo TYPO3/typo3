@@ -93,7 +93,7 @@ class DatabaseConnectionOracleTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=12897
+	 * @see http://forge.typo3.org/issues/21780
 	 */
 	public function sqlHintIsRemoved() {
 		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery('/*! SQL_NO_CACHE */ content', 'tx_realurl_urlencodecache', '1=1'));
@@ -160,7 +160,7 @@ class DatabaseConnectionOracleTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=15535
+	 * @see http://forge.typo3.org/issues/23431
 	 */
 	public function groupConditionsAreProperlyTransformed() {
 		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery('*', 'pages', 'pid=0 AND pages.deleted=0 AND pages.hidden=0 AND pages.starttime<=1281620460 ' . 'AND (pages.endtime=0 OR pages.endtime>1281620460) AND NOT pages.t3ver_state>0 ' . 'AND pages.doktype<200 AND (pages.fe_group=\'\' OR pages.fe_group IS NULL OR ' . 'pages.fe_group=\'0\' OR FIND_IN_SET(\'0\',pages.fe_group) OR FIND_IN_SET(\'-1\',pages.fe_group))'));
@@ -191,7 +191,7 @@ class DatabaseConnectionOracleTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=2438
+	 * @see http://forge.typo3.org/issues/15535
 	 */
 	public function distinctFieldIsProperlyQuoted() {
 		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery('COUNT(DISTINCT pid)', 'tt_content', '1=1'));
@@ -201,7 +201,7 @@ class DatabaseConnectionOracleTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=10411
+	 * @see http://forge.typo3.org/issues/19999
 	 * @remark Remapping is not expected here
 	 */
 	public function multipleInnerJoinsAreProperlyQuoted() {
@@ -215,7 +215,7 @@ class DatabaseConnectionOracleTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=6198
+	 * @see http://forge.typo3.org/issues/17554
 	 */
 	public function stringsWithinInClauseAreProperlyQuoted() {
 		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery('COUNT(DISTINCT tx_dam.uid) AS count', 'tx_dam', 'tx_dam.pid IN (1) AND tx_dam.file_type IN (\'gif\',\'png\',\'jpg\',\'jpeg\') AND tx_dam.deleted = 0'));
@@ -226,7 +226,7 @@ class DatabaseConnectionOracleTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=12515
+	 * @see http://forge.typo3.org/issues/21502
 	 * @remark Remapping is not expected here
 	 */
 	public function concatAfterLikeOperatorIsProperlyQuoted() {
@@ -238,7 +238,7 @@ class DatabaseConnectionOracleTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=12231
+	 * @see http://forge.typo3.org/issues/21268
 	 */
 	public function cachingFrameworkQueryIsProperlyQuoted() {
 		$currentTime = time();
@@ -249,7 +249,7 @@ class DatabaseConnectionOracleTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=12231
+	 * @see http://forge.typo3.org/issues/21268
 	 */
 	public function calculatedFieldsAreProperlyQuoted() {
 		$currentTime = time();
@@ -272,7 +272,7 @@ class DatabaseConnectionOracleTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	///////////////////////////////////////
 	/**
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=10411
+	 * @see http://forge.typo3.org/issues/19999
 	 * @remark Remapping is expected here
 	 */
 	public function tablesAndFieldsAreRemappedInMultipleJoins() {
@@ -292,7 +292,7 @@ class DatabaseConnectionOracleTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=6953
+	 * @see http://forge.typo3.org/issues/17918
 	 */
 	public function fieldWithinSqlFunctionIsRemapped() {
 		$selectFields = 'tstamp, script, SUM(exec_time) AS calc_sum, COUNT(*) AS qrycount, MAX(errorFlag) AS error';
@@ -308,7 +308,7 @@ class DatabaseConnectionOracleTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=6953
+	 * @see http://forge.typo3.org/issues/17918
 	 */
 	public function tableAndFieldWithinSqlFunctionIsRemapped() {
 		$selectFields = 'MAX(tt_news_cat.uid) AS biggest_id';
@@ -326,7 +326,7 @@ class DatabaseConnectionOracleTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=12515
+	 * @see http://forge.typo3.org/issues/21502
 	 * @remark Remapping is expected here
 	 */
 	public function concatAfterLikeOperatorIsRemapped() {
@@ -344,7 +344,7 @@ class DatabaseConnectionOracleTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=5708
+	 * @see http://forge.typo3.org/issues/17341
 	 */
 	public function fieldIsMappedOnRightSideOfAJoinCondition() {
 		$selectFields = 'cpg_categories.uid, cpg_categories.name';
@@ -361,7 +361,7 @@ class DatabaseConnectionOracleTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=14372
+	 * @see http://forge.typo3.org/issues/22640
 	 */
 	public function fieldFromAliasIsRemapped() {
 		$selectFields = 'news.uid';
@@ -380,7 +380,7 @@ class DatabaseConnectionOracleTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * (see tests/fixtures/oci8.config.php) which is used as alias name.
 	 *
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=14372
+	 * @see http://forge.typo3.org/issues/22640
 	 */
 	public function fieldFromAliasIsRemappedWithoutBeingTricked() {
 		$selectFields = 'tt_news_cat.uid';
@@ -396,7 +396,7 @@ class DatabaseConnectionOracleTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=14372
+	 * @see http://forge.typo3.org/issues/22640
 	 */
 	public function aliasRemappingDoesNotAlterFurtherQueries() {
 		$selectFields = 'foo.uid';
@@ -419,7 +419,7 @@ class DatabaseConnectionOracleTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=14372
+	 * @see http://forge.typo3.org/issues/22640
 	 */
 	public function fieldFromAliasInJoinIsRemapped() {
 		$selectFields = 'cat.uid, cat_mm.uid_local, news.uid';
@@ -439,7 +439,7 @@ class DatabaseConnectionOracleTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=14372
+	 * @see http://forge.typo3.org/issues/22640
 	 */
 	public function aliasRemappingWithInSubqueryDoesNotAffectMainQuery() {
 		$selectFields = 'foo.uid';
@@ -460,7 +460,7 @@ class DatabaseConnectionOracleTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=14372
+	 * @see http://forge.typo3.org/issues/22640
 	 */
 	public function aliasRemappingWithExistsSubqueryDoesNotAffectMainQuery() {
 		$selectFields = 'foo.uid';
@@ -481,7 +481,7 @@ class DatabaseConnectionOracleTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=14372
+	 * @see http://forge.typo3.org/issues/22640
 	 */
 	public function aliasRemappingSupportsNestedSubqueries() {
 		$selectFields = 'foo.uid';
@@ -502,7 +502,7 @@ class DatabaseConnectionOracleTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=14372
+	 * @see http://forge.typo3.org/issues/22640
 	 */
 	public function remappingDoesNotMixUpAliasesInSubquery() {
 		$selectFields = 'pages.uid';
@@ -523,7 +523,7 @@ class DatabaseConnectionOracleTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=14479
+	 * @see http://forge.typo3.org/issues/22716
 	 */
 	public function likeIsRemappedAccordingToFieldType() {
 		$select = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery('*', 'tt_content', 'tt_content.bodytext LIKE \'foo%\''));
@@ -536,7 +536,7 @@ class DatabaseConnectionOracleTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=15253
+	 * @see http://forge.typo3.org/issues/23282
 	 */
 	public function notLikeIsRemappedAccordingToFieldType() {
 		$select = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery('*', 'tt_content', 'tt_content.bodytext NOT LIKE \'foo%\''));
@@ -549,7 +549,7 @@ class DatabaseConnectionOracleTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=14479
+	 * @see http://forge.typo3.org/issues/22716
 	 */
 	public function instrIsUsedForCEOnPages() {
 		$select = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery('*', 'tt_content', 'uid IN (62) AND tt_content.deleted=0 AND tt_content.t3ver_state<=0' . ' AND tt_content.hidden=0 AND (tt_content.starttime<=1264487640)' . ' AND (tt_content.endtime=0 OR tt_content.endtime>1264487640)' . ' AND (tt_content.fe_group=\'\' OR tt_content.fe_group IS NULL OR tt_content.fe_group=\'0\'' . ' OR (tt_content.fe_group LIKE \'%,0,%\' OR tt_content.fe_group LIKE \'0,%\' OR tt_content.fe_group LIKE \'%,0\'' . ' OR tt_content.fe_group=\'0\')' . ' OR (tt_content.fe_group LIKE\'%,-1,%\' OR tt_content.fe_group LIKE \'-1,%\' OR tt_content.fe_group LIKE \'%,-1\'' . ' OR tt_content.fe_group=\'-1\'))'));
@@ -574,7 +574,7 @@ class DatabaseConnectionOracleTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	///////////////////////////////////////
 	/**
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=12670
+	 * @see http://forge.typo3.org/issues/21616
 	 */
 	public function notNullableColumnsWithDefaultEmptyStringAreCreatedAsNullable() {
 		$parseString = '
@@ -619,8 +619,8 @@ class DatabaseConnectionOracleTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=11142
-	 * @see http://bugs.typo3.org/view.php?id=12670
+	 * @see http://forge.typo3.org/issues/20470
+	 * @see http://forge.typo3.org/issues/21616
 	 */
 	public function defaultValueIsProperlyQuotedInCreateTable() {
 		$parseString = '
@@ -658,7 +658,7 @@ class DatabaseConnectionOracleTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	///////////////////////////////////////
 	/**
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=12758
+	 * @see http://forge.typo3.org/issues/21688
 	 */
 	public function inWhereClauseWithSubqueryIsProperlyQuoted() {
 		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery('*', 'tx_crawler_queue', 'process_id IN (SELECT process_id FROM tx_crawler_process WHERE active=0 AND deleted=0)'));
@@ -668,7 +668,7 @@ class DatabaseConnectionOracleTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=12758
+	 * @see http://forge.typo3.org/issues/21688
 	 */
 	public function subqueryIsRemappedForInWhereClause() {
 		$selectFields = '*';
@@ -684,7 +684,7 @@ class DatabaseConnectionOracleTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=12800
+	 * @see http://forge.typo3.org/issues/21718
 	 */
 	public function cachingFrameworkQueryIsSupported() {
 		$currentTime = time();
@@ -697,7 +697,7 @@ class DatabaseConnectionOracleTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=12800
+	 * @see http://forge.typo3.org/issues/21718
 	 */
 	public function cachingFrameworkQueryIsRemapped() {
 		$currentTime = time();
@@ -723,7 +723,7 @@ class DatabaseConnectionOracleTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=12758
+	 * @see http://forge.typo3.org/issues/21688
 	 */
 	public function existsWhereClauseIsProperlyQuoted() {
 		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery('*', 'tx_crawler_process', 'active = 0 AND NOT EXISTS (' . $GLOBALS['TYPO3_DB']->SELECTsubquery('*', 'tx_crawler_queue', 'tx_crawler_queue.process_id = tx_crawler_process.process_id AND tx_crawler_queue.exec_time = 0)') . ')'));
@@ -735,7 +735,7 @@ class DatabaseConnectionOracleTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=12758
+	 * @see http://forge.typo3.org/issues/21688
 	 */
 	public function subqueryIsRemappedForExistsWhereClause() {
 		$selectFields = '*';
@@ -756,7 +756,7 @@ class DatabaseConnectionOracleTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	///////////////////////////////////////
 	/**
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=13135
+	 * @see http://forge.typo3.org/issues/21903
 	 */
 	public function caseStatementIsProperlyQuoted() {
 		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery('process_id, CASE active' . ' WHEN 1 THEN ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('one', 'tx_crawler_process') . ' WHEN 2 THEN ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('two', 'tx_crawler_process') . ' ELSE ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('out of range', 'tx_crawler_process') . ' END AS number', 'tx_crawler_process', '1=1'));
@@ -766,7 +766,7 @@ class DatabaseConnectionOracleTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=13135
+	 * @see http://forge.typo3.org/issues/21903
 	 */
 	public function caseStatementIsProperlyRemapped() {
 		$selectFields = 'process_id, CASE active' . ' WHEN 1 THEN ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('one', 'tx_crawler_process') . ' WHEN 2 THEN ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('two', 'tx_crawler_process') . ' ELSE ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('out of range', 'tx_crawler_process') . ' END AS number';
@@ -783,7 +783,7 @@ class DatabaseConnectionOracleTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=13135
+	 * @see http://forge.typo3.org/issues/21903
 	 */
 	public function caseStatementWithExternalTableIsProperlyRemapped() {
 		$selectFields = 'process_id, CASE tt_news.uid' . ' WHEN 1 THEN ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('one', 'tt_news') . ' WHEN 2 THEN ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('two', 'tt_news') . ' ELSE ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('out of range', 'tt_news') . ' END AS number';
@@ -800,7 +800,7 @@ class DatabaseConnectionOracleTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=13134
+	 * @see http://forge.typo3.org/issues/21902
 	 */
 	public function locateStatementIsProperlyQuoted() {
 		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery('*, CASE WHEN' . ' LOCATE(' . $GLOBALS['TYPO3_DB']->fullQuoteStr('(fce)', 'tx_templavoila_tmplobj') . ', datastructure)>0 THEN 2' . ' ELSE 1' . ' END AS scope', 'tx_templavoila_tmplobj', '1=1'));
@@ -810,7 +810,7 @@ class DatabaseConnectionOracleTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=13134
+	 * @see http://forge.typo3.org/issues/21902
 	 */
 	public function locateStatementWithPositionIsProperlyQuoted() {
 		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery('*, CASE WHEN' . ' LOCATE(' . $GLOBALS['TYPO3_DB']->fullQuoteStr('(fce)', 'tx_templavoila_tmplobj') . ', datastructure, 4)>0 THEN 2' . ' ELSE 1' . ' END AS scope', 'tx_templavoila_tmplobj', '1=1'));
@@ -820,7 +820,7 @@ class DatabaseConnectionOracleTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=6196
+	 * @see http://forge.typo3.org/issues/17552
 	 */
 	public function IfNullIsProperlyRemapped() {
 		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery('*', 'tt_news_cat_mm', 'IFNULL(tt_news_cat_mm.uid_foreign,0) IN (21,22)'));
@@ -830,7 +830,7 @@ class DatabaseConnectionOracleTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=14985
+	 * @see http://forge.typo3.org/issues/23087
 	 */
 	public function findInSetIsProperlyRemapped() {
 		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery('*', 'fe_users', 'FIND_IN_SET(10, usergroup)'));
@@ -840,7 +840,7 @@ class DatabaseConnectionOracleTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=14985
+	 * @see http://forge.typo3.org/issues/23087
 	 */
 	public function findInSetFieldIsProperlyRemapped() {
 		$selectFields = 'fe_group';
@@ -856,7 +856,7 @@ class DatabaseConnectionOracleTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=14818
+	 * @see http://forge.typo3.org/issues/22959
 	 */
 	public function listQueryIsProperlyRemapped() {
 		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery('*', 'fe_users', $GLOBALS['TYPO3_DB']->listQuery('usergroup', 10, 'fe_users')));
@@ -866,7 +866,7 @@ class DatabaseConnectionOracleTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=12535
+	 * @see http://forge.typo3.org/issues/21514
 	 */
 	public function likeBinaryOperatorIsRemoved() {
 		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery('*', 'tt_content', 'bodytext LIKE BINARY \'test\''));

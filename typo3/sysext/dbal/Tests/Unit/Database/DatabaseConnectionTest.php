@@ -90,7 +90,7 @@ class DatabaseConnectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=12515
+	 * @see http://forge.typo3.org/issues/21502
 	 */
 	public function concatCanBeParsedAfterLikeOperator() {
 		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery('*', 'sys_refindex, tx_dam_file_tracking', 'sys_refindex.tablename = \'tx_dam_file_tracking\'' . ' AND sys_refindex.ref_string LIKE CONCAT(tx_dam_file_tracking.file_path, tx_dam_file_tracking.file_name)'));
@@ -101,7 +101,7 @@ class DatabaseConnectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=10965
+	 * @see http://forge.typo3.org/issues/20346
 	 */
 	public function floatNumberCanBeStoredInDatabase() {
 		$this->createFakeExtension('
@@ -121,7 +121,7 @@ class DatabaseConnectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=11093
+	 * @see http://forge.typo3.org/issues/20427
 	 */
 	public function positive64BitIntegerIsSupported() {
 		$this->createFakeExtension('
@@ -141,7 +141,7 @@ class DatabaseConnectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=11093
+	 * @see http://forge.typo3.org/issues/20427
 	 */
 	public function negative64BitIntegerIsSupported() {
 		$this->createFakeExtension('
@@ -179,7 +179,7 @@ class DatabaseConnectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=4493
+	 * @see http://forge.typo3.org/issues/16708
 	 */
 	public function minFunctionAndInOperatorCanBeParsed() {
 		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery('*', 'pages', 'MIN(uid) IN (1,2,3,4)'));
@@ -189,7 +189,7 @@ class DatabaseConnectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=4493
+	 * @see http://forge.typo3.org/issues/16708
 	 */
 	public function maxFunctionAndInOperatorCanBeParsed() {
 		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery('*', 'pages', 'MAX(uid) IN (1,2,3,4)'));
@@ -199,7 +199,7 @@ class DatabaseConnectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=12535
+	 * @see http://forge.typo3.org/issues/21514
 	 */
 	public function likeBinaryOperatorIsKept() {
 		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery('*', 'tt_content', 'bodytext LIKE BINARY \'test\''));
@@ -209,7 +209,7 @@ class DatabaseConnectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=12535
+	 * @see http://forge.typo3.org/issues/21514
 	 */
 	public function notLikeBinaryOperatorIsKept() {
 		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery('*', 'tt_content', 'bodytext NOT LIKE BINARY \'test\''));
@@ -222,7 +222,7 @@ class DatabaseConnectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	///////////////////////////////////////
 	/**
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=15457
+	 * @see http://forge.typo3.org/issues/23374
 	 */
 	public function similarNamedParametersAreProperlyReplaced() {
 		$sql = 'SELECT * FROM cache WHERE tag = :tag1 OR tag = :tag10 OR tag = :tag100';

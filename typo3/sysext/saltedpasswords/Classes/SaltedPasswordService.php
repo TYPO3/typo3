@@ -79,7 +79,7 @@ class SaltedPasswordService extends \TYPO3\CMS\Sv\AbstractAuthenticationService 
 	 * Indicates whether the salted password authentication has failed.
 	 *
 	 * Prevents authentication bypass. See vulnerability report:
-	 * { @link http://bugs.typo3.org/view.php?id=13372 }
+	 * { @link http://forge.typo3.org/issues/22030 }
 	 *
 	 * @var boolean
 	 */

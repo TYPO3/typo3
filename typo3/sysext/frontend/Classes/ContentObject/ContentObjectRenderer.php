@@ -573,7 +573,7 @@ class ContentObjectRenderer {
 	 * would back-reference to the original ContentObjectRender instance instead of the
 	 * newly cloned ContentObjectRender instance.
 	 *
-	 * @see http://bugs.typo3.org/view.php?id=16568
+	 * @see http://forge.typo3.org/issues/24204
 	 */
 	public function __clone() {
 		$this->contentObjects = array();
@@ -6042,7 +6042,7 @@ class ContentObjectRenderer {
 							$addQueryParams = '';
 						}
 						if ($conf['useCacheHash']) {
-							// Mind the order below! See http://bugs.typo3.org/view.php?id=5117
+							// Mind the order below! See http://forge.typo3.org/issues/17070
 							$params = $GLOBALS['TSFE']->linkVars . $addQueryParams;
 							if (trim($params, '& ') != '') {
 								/** @var $cacheHash \TYPO3\CMS\Frontend\Page\CacheHashCalculator */
@@ -7058,7 +7058,7 @@ class ContentObjectRenderer {
 	 * @param string $className The name of the PHP class to be checked
 	 * @param array $config TypoScript configuration (naturally of a USER or COA cObject)
 	 * @return boolean Whether the class is available
-	 * @link http://bugs.typo3.org/view.php?id=9654
+	 * @link http://forge.typo3.org/issues/19510
 	 * @TODO This method was introduced in TYPO3 4.3 and can be removed if the autoload was integrated
 	 */
 	protected function isClassAvailable($className, array $config = NULL) {

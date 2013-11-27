@@ -93,7 +93,7 @@ class DatabaseConnectionPostgresqlTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
 
 	/**
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=2367
+	 * @see http://forge.typo3.org/issues/15492
 	 */
 	public function limitIsProperlyRemapped() {
 		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery('*', 'be_users', '1=1', '', '', '20'));
@@ -103,7 +103,7 @@ class DatabaseConnectionPostgresqlTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
 
 	/**
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=2367
+	 * @see http://forge.typo3.org/issues/15492
 	 */
 	public function limitWithSkipIsProperlyRemapped() {
 		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery('*', 'be_users', '1=1', '', '', '20,40'));
@@ -113,7 +113,7 @@ class DatabaseConnectionPostgresqlTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
 
 	/**
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=14985
+	 * @see http://forge.typo3.org/issues/23087
 	 */
 	public function findInSetIsProperlyRemapped() {
 		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery('*', 'fe_users', 'FIND_IN_SET(10, usergroup)'));
@@ -123,7 +123,7 @@ class DatabaseConnectionPostgresqlTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
 
 	/**
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=12535
+	 * @see http://forge.typo3.org/issues/21514
 	 */
 	public function likeBinaryOperatorIsRemappedToLike() {
 		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery('*', 'tt_content', 'bodytext LIKE BINARY \'test\''));
@@ -133,7 +133,7 @@ class DatabaseConnectionPostgresqlTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
 
 	/**
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=12535
+	 * @see http://forge.typo3.org/issues/21514
 	 */
 	public function notLikeBinaryOperatorIsRemappedToNotLike() {
 		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery('*', 'tt_content', 'bodytext NOT LIKE BINARY \'test\''));
@@ -143,7 +143,7 @@ class DatabaseConnectionPostgresqlTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
 
 	/**
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=12535
+	 * @see http://forge.typo3.org/issues/21514
 	 */
 	public function likeOperatorIsRemappedToIlike() {
 		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery('*', 'tt_content', 'bodytext LIKE \'test\''));
@@ -153,7 +153,7 @@ class DatabaseConnectionPostgresqlTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
 
 	/**
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=12535
+	 * @see http://forge.typo3.org/issues/21514
 	 */
 	public function notLikeOperatorIsRemappedToNotIlike() {
 		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery('*', 'tt_content', 'bodytext NOT LIKE \'test\''));

@@ -140,7 +140,7 @@ class BackendUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	///////////////////////////////////////
 	/**
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=11875
+	 * @see http://forge.typo3.org/issues/20994
 	 */
 	public function getProcessedValueForZeroStringIsZero() {
 		$this->assertEquals('0', $this->fixture->getProcessedValue('tt_content', 'header', '0'));

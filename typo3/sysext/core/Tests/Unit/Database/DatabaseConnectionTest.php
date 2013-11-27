@@ -87,7 +87,7 @@ class DatabaseConnectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	////////////////////////////////
 	/**
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=15211
+	 * @see http://forge.typo3.org/issues/23253
 	 */
 	public function listQueryWithIntegerCommaAsValue() {
 		// Note: 44 = ord(',')

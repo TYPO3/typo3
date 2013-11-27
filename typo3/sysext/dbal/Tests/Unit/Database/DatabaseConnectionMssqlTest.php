@@ -93,7 +93,7 @@ class DatabaseConnectionMssqlTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=14985
+	 * @see http://forge.typo3.org/issues/23087
 	 */
 	public function findInSetIsProperlyRemapped() {
 		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery('*', 'fe_users', 'FIND_IN_SET(10, usergroup)'));
@@ -118,7 +118,7 @@ class DatabaseConnectionMssqlTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	///////////////////////////////////////
 	/**
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=13490
+	 * @see http://forge.typo3.org/issues/22096
 	 */
 	public function canRemapPidToZero() {
 		$selectFields = 'uid, FirstName, LastName';
@@ -137,7 +137,7 @@ class DatabaseConnectionMssqlTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	///////////////////////////////////////
 	/**
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=13134
+	 * @see http://forge.typo3.org/issues/21902
 	 */
 	public function locateStatementIsProperlyQuoted() {
 		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery('*, CASE WHEN' . ' LOCATE(' . $GLOBALS['TYPO3_DB']->fullQuoteStr('(fce)', 'tx_templavoila_tmplobj') . ', datastructure)>0 THEN 2' . ' ELSE 1' . ' END AS scope', 'tx_templavoila_tmplobj', '1=1'));
@@ -147,7 +147,7 @@ class DatabaseConnectionMssqlTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=13134
+	 * @see http://forge.typo3.org/issues/21902
 	 */
 	public function locateStatementWithPositionIsProperlyQuoted() {
 		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery('*, CASE WHEN' . ' LOCATE(' . $GLOBALS['TYPO3_DB']->fullQuoteStr('(fce)', 'tx_templavoila_tmplobj') . ', datastructure, 4)>0 THEN 2' . ' ELSE 1' . ' END AS scope', 'tx_templavoila_tmplobj', '1=1'));
@@ -157,7 +157,7 @@ class DatabaseConnectionMssqlTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=13134
+	 * @see http://forge.typo3.org/issues/21902
 	 */
 	public function locateStatementIsProperlyRemapped() {
 		$selectFields = '*, CASE WHEN' . ' LOCATE(' . $GLOBALS['TYPO3_DB']->fullQuoteStr('(fce)', 'tx_templavoila_tmplobj') . ', datastructure, 4)>0 THEN 2' . ' ELSE 1' . ' END AS scope';
@@ -173,7 +173,7 @@ class DatabaseConnectionMssqlTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=13134
+	 * @see http://forge.typo3.org/issues/21902
 	 */
 	public function locateStatementWithExternalTableIsProperlyRemapped() {
 		$selectFields = '*, CASE WHEN' . ' LOCATE(' . $GLOBALS['TYPO3_DB']->fullQuoteStr('(fce)', 'tx_templavoila_tmplobj') . ', tx_templavoila_tmplobj.datastructure, 4)>0 THEN 2' . ' ELSE 1' . ' END AS scope';
@@ -189,7 +189,7 @@ class DatabaseConnectionMssqlTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=6196
+	 * @see http://forge.typo3.org/issues/17552
 	 */
 	public function IfNullIsProperlyRemapped() {
 		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery('*', 'tt_news_cat_mm', 'IFNULL(tt_news_cat_mm.uid_foreign,0) IN (21,22)'));

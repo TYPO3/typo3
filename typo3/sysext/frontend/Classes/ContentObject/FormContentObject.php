@@ -602,7 +602,7 @@ class FormContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractConten
 				}
 			}
 		}
-		// Wrap all hidden fields in a div tag (see http://bugs.typo3.org/view.php?id=678)
+		// Wrap all hidden fields in a div tag (see http://forge.typo3.org/issues/14491)
 		$hiddenfields = isset($conf['hiddenFields.']['stdWrap.']) ? $this->cObj->stdWrap($hiddenfields, $conf['hiddenFields.']['stdWrap.']) : '<div style="display:none;">' . $hiddenfields . '</div>';
 		if ($conf['REQ']) {
 			$goodMess = isset($conf['goodMess.']) ? $this->cObj->stdWrap($conf['goodMess'], $conf['goodMess.']) : $conf['goodMess'];

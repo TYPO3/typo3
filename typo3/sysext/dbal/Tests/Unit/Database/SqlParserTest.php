@@ -96,7 +96,7 @@ FROM pages WHERE pid IN (1,2,3,4)';
 
 	/**
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=13104
+	 * @see http://forge.typo3.org/issues/21887
 	 */
 	public function canGetStringValue() {
 		$parseString = '"some owner\\\'s string"';
@@ -107,7 +107,7 @@ FROM pages WHERE pid IN (1,2,3,4)';
 
 	/**
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=13104
+	 * @see http://forge.typo3.org/issues/21887
 	 */
 	public function canGetStringValueWithSingleQuote() {
 		$parseString = '\'some owner\\\'s string\'';
@@ -118,7 +118,7 @@ FROM pages WHERE pid IN (1,2,3,4)';
 
 	/**
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=13104
+	 * @see http://forge.typo3.org/issues/21887
 	 */
 	public function canGetStringValueWithDoubleQuote() {
 		$parseString = '"the \\"owner\\" is here"';
@@ -175,7 +175,7 @@ FROM pages WHERE pid IN (1,2,3,4)';
 
 	/**
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=13412
+	 * @see http://forge.typo3.org/issues/22049
 	 */
 	public function canParseAndCompileBetweenOperator() {
 		$parseString = '((scheduled BETWEEN 1265068628 AND 1265068828 ) OR scheduled <= 1265068728) AND NOT exec_time AND NOT process_id AND page_id=1 AND parameters_hash = \'854e9a2a77\'';
@@ -253,7 +253,7 @@ FROM pages WHERE pid IN (1,2,3,4)';
 
 	/**
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=6196
+	 * @see http://forge.typo3.org/issues/17552
 	 */
 	public function canParseIfNullOperator() {
 		$parseString = 'IFNULL(tt_news_cat_mm.uid_foreign,0) IN (21,22)';
@@ -264,7 +264,7 @@ FROM pages WHERE pid IN (1,2,3,4)';
 
 	/**
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=6196
+	 * @see http://forge.typo3.org/issues/17552
 	 */
 	public function canParseIfNullOperatorWithAdditionalClauses() {
 		$parseString = '1=1 AND IFNULL(tt_news_cat_mm.uid_foreign,0) IN (21,22) AND tt_news.sys_language_uid IN (0,-1) ';
@@ -281,7 +281,7 @@ FROM pages WHERE pid IN (1,2,3,4)';
 
 	/**
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=6196
+	 * @see http://forge.typo3.org/issues/17552
 	 */
 	public function canCompileIfNullOperator() {
 		$parseString = 'SELECT * FROM tx_irfaq_q_cat_mm WHERE IFNULL(tx_irfaq_q_cat_mm.uid_foreign,0) = 1';
@@ -294,7 +294,7 @@ FROM pages WHERE pid IN (1,2,3,4)';
 
 	/**
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=14456
+	 * @see http://forge.typo3.org/issues/22695
 	 */
 	public function canParseAlterEngineStatement() {
 		$parseString = 'ALTER TABLE tx_realurl_pathcache ENGINE=InnoDB';
@@ -308,7 +308,7 @@ FROM pages WHERE pid IN (1,2,3,4)';
 
 	/**
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=14496
+	 * @see http://forge.typo3.org/issues/22731
 	 */
 	public function canParseAlterCharacterSetStatement() {
 		$parseString = 'ALTER TABLE `index_phash` DEFAULT CHARACTER SET utf8';
@@ -322,7 +322,7 @@ FROM pages WHERE pid IN (1,2,3,4)';
 
 	/**
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=14985
+	 * @see http://forge.typo3.org/issues/23087
 	 */
 	public function canParseFindInSetStatement() {
 		$parseString = 'SELECT * FROM fe_users WHERE FIND_IN_SET(10, usergroup)';
@@ -369,7 +369,7 @@ FROM pages WHERE pid IN (1,2,3,4)';
 
 	/**
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=12596
+	 * @see http://forge.typo3.org/issues/21555
 	 */
 	public function parseFromTablesWithRightOuterJoinReturnsArray() {
 		$parseString = 'tx_powermail_fieldsets RIGHT JOIN tt_content ON tx_powermail_fieldsets.tt_content = tt_content.uid';
@@ -390,7 +390,7 @@ FROM pages WHERE pid IN (1,2,3,4)';
 
 	/**
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=12596
+	 * @see http://forge.typo3.org/issues/21555
 	 */
 	public function parseFromTablesWithMultipleJoinsAndParenthesesReturnsArray() {
 		$parseString = 'tx_powermail_fieldsets RIGHT JOIN tt_content ON tx_powermail_fieldsets.tt_content = tt_content.uid LEFT JOIN tx_powermail_fields ON tx_powermail_fieldsets.uid = tx_powermail_fields.fieldset';
@@ -421,7 +421,7 @@ FROM pages WHERE pid IN (1,2,3,4)';
 
 	/**
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=14182
+	 * @see http://forge.typo3.org/issues/22501
 	 */
 	public function canParseMultipleJoinConditions() {
 		$sql = 'SELECT * FROM T1 LEFT OUTER JOIN T2 ON T2.pid = T1.uid AND T2.size = 4 WHERE T1.cr_userid = 1';
@@ -432,7 +432,7 @@ FROM pages WHERE pid IN (1,2,3,4)';
 
 	/**
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=14182
+	 * @see http://forge.typo3.org/issues/22501
 	 */
 	public function canParseMultipleJoinConditionsWithLessThanOperator() {
 		$sql = 'SELECT * FROM T1 LEFT OUTER JOIN T2 ON T2.size < 4 OR T2.pid = T1.uid WHERE T1.cr_userid = 1';
@@ -446,7 +446,7 @@ FROM pages WHERE pid IN (1,2,3,4)';
 	///////////////////////////////////////
 	/**
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=4466
+	 * @see http://forge.typo3.org/issues/16689
 	 */
 	public function indexMayContainALengthRestrictionInCreateTable() {
 		$parseString = '
@@ -473,7 +473,7 @@ FROM pages WHERE pid IN (1,2,3,4)';
 
 	/**
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=16501
+	 * @see http://forge.typo3.org/issues/24156
 	 */
 	public function indexMayBeCreatedOnMultipleColumns() {
 		$sql = '
@@ -495,7 +495,7 @@ FROM pages WHERE pid IN (1,2,3,4)';
 
 	/**
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=12829
+	 * @see http://forge.typo3.org/issues/21730
 	 */
 	public function indexMayContainALengthRestrictionInAlterTable() {
 		$parseString = 'ALTER TABLE tx_realurl_uniqalias ADD KEY bk_realurl02 (tablename,field_alias,field_id,value_alias(220),expire)';
@@ -505,7 +505,7 @@ FROM pages WHERE pid IN (1,2,3,4)';
 
 	/**
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=2186
+	 * @see http://forge.typo3.org/issues/15366
 	 */
 	public function canParseUniqueIndexCreation() {
 		$sql = 'ALTER TABLE static_territories ADD UNIQUE uid (uid)';
@@ -522,7 +522,7 @@ FROM pages WHERE pid IN (1,2,3,4)';
 	///////////////////////////////////////
 	/**
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=12758
+	 * @see http://forge.typo3.org/issues/21688
 	 */
 	public function inWhereClauseSupportsSubquery() {
 		$parseString = 'process_id IN (SELECT process_id FROM tx_crawler_process WHERE active=0 AND deleted=0)';
@@ -533,7 +533,7 @@ FROM pages WHERE pid IN (1,2,3,4)';
 
 	/**
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=12758
+	 * @see http://forge.typo3.org/issues/21688
 	 */
 	public function inWhereClauseWithSubqueryIsProperlyCompiled() {
 		$sql = 'SELECT * FROM tx_crawler_queue WHERE process_id IN (SELECT process_id FROM tx_crawler_process WHERE active=0 AND deleted=0)';
@@ -544,7 +544,7 @@ FROM pages WHERE pid IN (1,2,3,4)';
 
 	/**
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=12758
+	 * @see http://forge.typo3.org/issues/21688
 	 */
 	public function whereClauseSupportsExistsKeyword() {
 		$parseString = 'EXISTS (SELECT * FROM tx_crawler_queue WHERE tx_crawler_queue.process_id = tx_crawler_process.process_id AND tx_crawler_queue.exec_time = 0)';
@@ -555,7 +555,7 @@ FROM pages WHERE pid IN (1,2,3,4)';
 
 	/**
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=12758
+	 * @see http://forge.typo3.org/issues/21688
 	 */
 	public function existsClauseIsProperlyCompiled() {
 		$sql = 'SELECT * FROM tx_crawler_process WHERE active = 0 AND NOT EXISTS (SELECT * FROM tx_crawler_queue WHERE tx_crawler_queue.process_id = tx_crawler_process.process_id AND tx_crawler_queue.exec_time = 0)';
@@ -569,7 +569,7 @@ FROM pages WHERE pid IN (1,2,3,4)';
 	///////////////////////////////////////
 	/**
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=13135
+	 * @see http://forge.typo3.org/issues/21903
 	 */
 	public function caseWithBooleanConditionIsSupportedInFields() {
 		$parseString = 'CASE WHEN 1>0 THEN 2 ELSE 1 END AS foo, other_column';
@@ -580,7 +580,7 @@ FROM pages WHERE pid IN (1,2,3,4)';
 
 	/**
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=13135
+	 * @see http://forge.typo3.org/issues/21903
 	 */
 	public function caseWithBooleanConditionIsProperlyCompiled() {
 		$sql = 'SELECT CASE WHEN 1>0 THEN 2 ELSE 1 END AS foo, other_column FROM mytable';
@@ -591,7 +591,7 @@ FROM pages WHERE pid IN (1,2,3,4)';
 
 	/**
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=13135
+	 * @see http://forge.typo3.org/issues/21903
 	 */
 	public function caseWithMultipleWhenIsSupportedInFields() {
 		$parseString = 'CASE column WHEN 1 THEN \'one\' WHEN 2 THEN \'two\' ELSE \'out of range\' END AS number';
@@ -602,7 +602,7 @@ FROM pages WHERE pid IN (1,2,3,4)';
 
 	/**
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=13135
+	 * @see http://forge.typo3.org/issues/21903
 	 */
 	public function caseWithMultipleWhenIsProperlyCompiled() {
 		$sql = 'SELECT CASE column WHEN 1 THEN \'one\' WHEN 2 THEN \'two\' ELSE \'out of range\' END AS number FROM mytable';
@@ -613,7 +613,7 @@ FROM pages WHERE pid IN (1,2,3,4)';
 
 	/**
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=13134
+	 * @see http://forge.typo3.org/issues/21902
 	 */
 	public function locateIsSupported() {
 		$sql = 'SELECT * FROM tx_templavoila_tmplobj WHERE LOCATE(\'(fce)\', datastructure)>0';
@@ -624,7 +624,7 @@ FROM pages WHERE pid IN (1,2,3,4)';
 
 	/**
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=13134
+	 * @see http://forge.typo3.org/issues/21902
 	 */
 	public function locateWithPositionIsSupported() {
 		$sql = 'SELECT * FROM tx_templavoila_tmplobj WHERE LOCATE(\'(fce)\'  , datastructure  ,10)>0';
@@ -635,8 +635,8 @@ FROM pages WHERE pid IN (1,2,3,4)';
 
 	/**
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=13134
-	 * @see http://bugs.typo3.org/view.php?id=13135
+	 * @see http://forge.typo3.org/issues/21902
+	 * @see http://forge.typo3.org/issues/21903
 	 */
 	public function locateWithinCaseIsSupported() {
 		$sql = 'SELECT *, CASE WHEN LOCATE(\'(fce)\', datastructure)>0 THEN 2 ELSE 1 END AS scope FROM tx_templavoila_tmplobj';
@@ -650,7 +650,7 @@ FROM pages WHERE pid IN (1,2,3,4)';
 	///////////////////////////////////////
 	/**
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=15457
+	 * @see http://forge.typo3.org/issues/23374
 	 */
 	public function namedPlaceholderIsSupported() {
 		$sql = 'SELECT * FROM pages WHERE pid = :pid ORDER BY title';
@@ -661,7 +661,7 @@ FROM pages WHERE pid IN (1,2,3,4)';
 
 	/**
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=15457
+	 * @see http://forge.typo3.org/issues/23374
 	 */
 	public function questionMarkPlaceholderIsSupported() {
 		$sql = 'SELECT * FROM pages WHERE pid = ? ORDER BY title';
@@ -672,7 +672,7 @@ FROM pages WHERE pid IN (1,2,3,4)';
 
 	/**
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=15457
+	 * @see http://forge.typo3.org/issues/23374
 	 */
 	public function parametersAreReferenced() {
 		$sql = 'SELECT * FROM pages WHERE pid = :pid1 OR pid = :pid2';
@@ -686,7 +686,7 @@ FROM pages WHERE pid IN (1,2,3,4)';
 
 	/**
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=15457
+	 * @see http://forge.typo3.org/issues/23374
 	 */
 	public function sameParameterIsReferencedInSubquery() {
 		$sql = 'SELECT * FROM pages WHERE uid = :pageId OR uid IN (SELECT uid FROM pages WHERE pid = :pageId)';
@@ -700,7 +700,7 @@ FROM pages WHERE pid IN (1,2,3,4)';
 
 	/**
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=15457
+	 * @see http://forge.typo3.org/issues/23374
 	 */
 	public function namedParametersMayBeSafelyReplaced() {
 		$sql = 'SELECT * FROM pages WHERE pid = :pid AND title NOT LIKE \':pid\'';
@@ -714,7 +714,7 @@ FROM pages WHERE pid IN (1,2,3,4)';
 
 	/**
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=15457
+	 * @see http://forge.typo3.org/issues/23374
 	 */
 	public function questionMarkParametersMayBeSafelyReplaced() {
 		$sql = 'SELECT * FROM pages WHERE pid = ? AND timestamp < ? AND title != \'How to test?\'';

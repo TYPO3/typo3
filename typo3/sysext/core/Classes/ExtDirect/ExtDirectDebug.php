@@ -46,7 +46,6 @@ class ExtDirectDebug {
 	 * Currently empty, but automatically registered and called during
 	 * ExtDirect shutdown.
 	 *
-	 * @see http://bugs.typo3.org/view.php?id=17891
 	 * @see http://forge.typo3.org/issues/25278
 	 */
 	public function __destruct() {
