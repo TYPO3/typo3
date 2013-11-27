@@ -845,11 +845,9 @@ class ElementBrowser {
 				// Build the file upload and folder creation form
 				$uploadForm = '';
 				$createFolder = '';
-				if ($selectedFolder && !$this->isReadOnlyFolder($selectedFolder)) {
+				if ($selectedFolder) {
 					$uploadForm = ($this->act === 'file') ? $this->uploadForm($selectedFolder) : '';
-					if ($GLOBALS['BE_USER']->isAdmin() || $GLOBALS['BE_USER']->getTSConfigVal('options.createFoldersInEB')) {
-						$createFolder = $this->createFolder($selectedFolder);
-					}
+					$createFolder = $this->createFolder($selectedFolder);
 				}
 				// Insert the upload form on top, if so configured
 				if ($GLOBALS['BE_USER']->getTSConfigVal('options.uploadFieldsInTopOfEB')) {
@@ -1214,17 +1212,9 @@ class ElementBrowser {
 			// Build the file upload and folder creation form
 		$uploadForm = '';
 		$createFolder = '';
-		if ($this->selectedFolder && !$this->isReadOnlyFolder($this->selectedFolder)) {
-			$uploadForm = ($this->act === 'file') ? $this->uploadForm($this->selectedFolder) : '';
-			if ($GLOBALS['BE_USER']->isAdmin() || $GLOBALS['BE_USER']->getTSConfigVal('options.createFoldersInEB')) {
-				$createFolder =  $this->createFolder($this->selectedFolder);
-			}
-		}
 		if ($this->selectedFolder) {
 			$uploadForm = $this->uploadForm($this->selectedFolder);
 			$createFolder = $this->createFolder($this->selectedFolder);
-		} else {
-			$uploadForm = $createFolder = '';
 		}
 		// Insert the upload form on top, if so configured
 		if ($GLOBALS['BE_USER']->getTSConfigVal('options.uploadFieldsInTopOfEB')) {
@@ -1298,7 +1288,7 @@ class ElementBrowser {
 		if ($this->expandFolder) {
 			$this->selectedFolder = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getFolderObjectFromCombinedIdentifier($this->expandFolder);
 		}
-		if ($this->selectedFolder && !$this->isReadOnlyFolder($this->selectedFolder)) {
+		if ($this->selectedFolder) {
 			$createFolder = $this->createFolder($this->selectedFolder);
 		} else {
 			$createFolder = '';
@@ -1328,9 +1318,7 @@ class ElementBrowser {
 			</table>
 			';
 		// Adding create folder if applicable:
-		if ($GLOBALS['BE_USER']->isAdmin() || $GLOBALS['BE_USER']->getTSConfigVal('options.createFoldersInEB')) {
-			$content .= $createFolder;
-		}
+		$content .= $createFolder;
 		// Add some space
 		$content .= '<br /><br />';
 		// Ending page, returning content:
@@ -1923,17 +1911,6 @@ class ElementBrowser {
 	}
 
 	/**
-	 * Checks, if a path is within a read-only mountpoint of the backend user
-	 *
-	 * @param string $folder Absolute filepath
-	 * @return boolean If the input path is found in the backend users filemounts and if the filemount is of type readonly, then return TRUE.
-	 * @todo Define visibility
-	 */
-	public function isReadOnlyFolder($folder) {
-		return $GLOBALS['FILEMOUNTS'][$this->fileProcessor->checkPathAgainstMounts(rtrim($folder, '/') . '/')]['type'] == 'readonly';
-	}
-
-	/**
 	 * Prints a 'header' where string is in a tablecell
 	 *
 	 * @param string $str The string to print in the header. The value is htmlspecialchars()'ed before output.
@@ -2175,6 +2152,9 @@ class ElementBrowser {
 	 */
 	public function createFolder(\TYPO3\CMS\Core\Resource\Folder $folderObject) {
 		if (!$folderObject->checkActionPermission('write')) {
+			return '';
+		}
+		if (!($GLOBALS['BE_USER']->isAdmin() || $GLOBALS['BE_USER']->getTSConfigVal('options.createFoldersInEB'))) {
 			return '';
 		}
 		// Don't show Folder-create form if it's denied
