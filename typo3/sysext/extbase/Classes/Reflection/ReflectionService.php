@@ -472,10 +472,10 @@ class ReflectionService implements \TYPO3\CMS\Core\SingletonInterface {
 	protected function convertParameterReflectionToArray(\ReflectionParameter $parameter, $parameterPosition, \ReflectionMethod $method = NULL) {
 		$parameterInformation = array(
 			'position' => $parameterPosition,
-			'byReference' => $parameter->isPassedByReference() ? TRUE : FALSE,
-			'array' => $parameter->isArray() ? TRUE : FALSE,
-			'optional' => $parameter->isOptional() ? TRUE : FALSE,
-			'allowsNull' => $parameter->allowsNull() ? TRUE : FALSE
+			'byReference' => $parameter->isPassedByReference(),
+			'array' => $parameter->isArray(),
+			'optional' => $parameter->isOptional(),
+			'allowsNull' => $parameter->allowsNull()
 		);
 		$parameterClass = $parameter->getClass();
 		$parameterInformation['class'] = $parameterClass !== NULL ? $parameterClass->getName() : NULL;
