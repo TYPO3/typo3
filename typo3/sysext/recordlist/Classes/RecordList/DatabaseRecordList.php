@@ -259,7 +259,7 @@ class DatabaseRecordList extends \TYPO3\CMS\Recordlist\RecordList\AbstractDataba
 		$titleCol = $GLOBALS['TCA'][$table]['ctrl']['label'];
 		$thumbsCol = $GLOBALS['TCA'][$table]['ctrl']['thumbnail'];
 		$l10nEnabled = $GLOBALS['TCA'][$table]['ctrl']['languageField'] && $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] && !$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerTable'];
-		$tableCollapsed = !$this->tablesCollapsed[$table] ? FALSE : TRUE;
+		$tableCollapsed = (boolean)$this->tablesCollapsed[$table];
 		// prepare space icon
 		$this->spaceIcon = IconUtility::getSpriteIcon('empty-empty', array('style' => 'background-position: 0 10px;'));
 		// Cleaning rowlist for duplicates and place the $titleCol as the first column always!
