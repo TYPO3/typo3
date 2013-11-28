@@ -697,7 +697,7 @@ class RelationHandler {
 		$uid = intval($uid);
 		$foreign_table = $conf['foreign_table'];
 		$foreign_table_field = $conf['foreign_table_field'];
-		$useDeleteClause = $this->undeleteRecord ? FALSE : TRUE;
+		$useDeleteClause = !$this->undeleteRecord;
 		$foreign_match_fields = is_array($conf['foreign_match_fields']) ? $conf['foreign_match_fields'] : array();
 		// Search for $uid in foreign_field, and if we have symmetric relations, do this also on symmetric_field
 		if ($conf['symmetric_field']) {
