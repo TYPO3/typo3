@@ -298,7 +298,7 @@ class IndexSearchRepository {
 					*/
 					$indexerObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\IndexedSearch\\Indexer');
 					// Perform metaphone search
-					$storeMetaphoneInfoAsWords = $this->isTableUsed('index_words') ? FALSE : TRUE;
+					$storeMetaphoneInfoAsWords = !$this->isTableUsed('index_words');
 					$res = $this->searchMetaphone($indexerObj->metaphone($sWord, $storeMetaphoneInfoAsWords));
 					unset($indexerObj);
 					break;
