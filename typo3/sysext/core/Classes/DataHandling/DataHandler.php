@@ -4703,7 +4703,7 @@ class DataHandler {
 								$workspaceCheck = TRUE;
 								if ($this->BE_USER->workspace !== 0) {
 									// Look for version already in workspace:
-									$workspaceCheck = BackendUtility::getWorkspaceVersionOfRecord($this->BE_USER->workspace, $table, $id, 'uid') ? FALSE : TRUE;
+									$workspaceCheck = !BackendUtility::getWorkspaceVersionOfRecord($this->BE_USER->workspace, $table, $id, 'uid');
 								}
 								if ($workspaceCheck) {
 									// Create raw-copy and return result:
