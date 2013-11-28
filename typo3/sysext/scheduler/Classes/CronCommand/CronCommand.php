@@ -171,8 +171,8 @@ class CronCommand {
 		// If both fields are restricted (i.e., aren't  *),  the  command will be run when either field
 		// matches the current time.  For example, `30 4 1,15 * 5' would cause
 		// a command to be run at 4:30 am on the 1st and 15th of each month, plus every Friday.
-		$isDayOfMonthRestricted = (string) $this->cronCommandSections[2] === '*' ? FALSE : TRUE;
-		$isDayOfWeekRestricted = (string) $this->cronCommandSections[4] === '*' ? FALSE : TRUE;
+		$isDayOfMonthRestricted = (string)$this->cronCommandSections[2] !== '*';
+		$isDayOfWeekRestricted = (string)$this->cronCommandSections[4] !== '*';
 		$commandMatch = FALSE;
 		if ($isInMonth) {
 			if ($isInDayOfMonth && $isDayOfMonthRestricted || $isInDayOfWeek && $isDayOfWeekRestricted || $isInDayOfMonth && !$isDayOfMonthRestricted && $isInDayOfWeek && !$isDayOfWeekRestricted) {
