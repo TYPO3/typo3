@@ -73,7 +73,7 @@ class FlashMessageContainer implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @param integer $severity optional severity code. One of the \TYPO3\CMS\Core\Messaging\FlashMessage constants
 	 * @throws \InvalidArgumentException
 	 * @return void
-	 * @deprecated since 6.1, will be removed 2 versions later
+	 * @deprecated since 6.1, will be removed 2 versions later use Mvc\Controller\AbstractController->addFlashMessage instead
 	 */
 	public function add($message, $title = '', $severity = \TYPO3\CMS\Core\Messaging\FlashMessage::OK) {
 		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
