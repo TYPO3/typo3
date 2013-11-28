@@ -715,13 +715,14 @@ class GeneralUtility {
 	 * @return string New comma-separated list of items
 	 */
 	static public function rmFromList($element, $list) {
-		$items = explode(',', $list);
-		foreach ($items as $k => $v) {
-			if ($v == $element) {
-				unset($items[$k]);
-			}
-		}
-		return implode(',', $items);
+		return trim(
+			str_replace(
+				',' . $element . ',',
+				',',
+				',' . $list . ','
+			),
+			','
+		);
 	}
 
 	/**

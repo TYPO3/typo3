@@ -684,7 +684,9 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			'Element at end of list' => array('one,two,removeme', 'one,two'),
 			'One item list' => array('removeme', ''),
 			'Element not contained in list' => array('one,two,three', 'one,two,three'),
-			'Empty list' => array('', '')
+			'Empty list' => array('', ''),
+			'List with leading comma is trimmed afterwards' => array(',one,two,removeme', 'one,two'),
+			'List with trailing comma is trimmed afterwards' => array('one,two,removeme,', 'one,two'),
 		);
 	}
 
