@@ -5024,16 +5024,6 @@ class tslib_gmenu extends \TYPO3\CMS\Frontend\ContentObject\Menu\GraphicalMenuCo
 /**
  * @deprecated since 6.0 will be removed in 7.0
  */
-class tslib_gmenu_foldout extends \TYPO3\CMS\Frontend\ContentObject\Menu\GraphicalMenuFoldoutContentObject {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class tslib_gmenu_layers extends \TYPO3\CMS\Frontend\ContentObject\Menu\GraphicalMenuLayersContentObject {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
 class tslib_imgmenu extends \TYPO3\CMS\Frontend\ContentObject\Menu\ImageMenuContentObject {}
 
 /**
@@ -5045,11 +5035,6 @@ class tslib_jsmenu extends \TYPO3\CMS\Frontend\ContentObject\Menu\JavaScriptMenu
  * @deprecated since 6.0 will be removed in 7.0
  */
 class tslib_tmenu extends \TYPO3\CMS\Frontend\ContentObject\Menu\TextMenuContentObject {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class tslib_tmenu_layers extends \TYPO3\CMS\Frontend\ContentObject\Menu\TextMenuLayersContentObject {}
 
 /**
  * @deprecated since 6.0 will be removed in 7.0
@@ -5384,72 +5369,72 @@ class tx_infopagetsconfig_webinfo extends \TYPO3\CMS\InfoPagetsconfig\Controller
 /**
  * @deprecated since 6.0 will be removed in 7.0
  */
-class tx_coreupdates_addflexformstoacl extends \TYPO3\CMS\Install\CoreUpdates\AddFlexFormsToAclUpdate {}
+class tx_coreupdates_addflexformstoacl extends \TYPO3\CMS\Install\Updates\AddFlexFormsToAclUpdate {}
 
 /**
  * @deprecated since 6.0 will be removed in 7.0
  */
-class tx_coreupdates_charsetDefaults extends \TYPO3\CMS\Install\CoreUpdates\CharsetDefaultsUpdate {}
+class tx_coreupdates_charsetDefaults extends \TYPO3\CMS\Install\Updates\CharsetDefaultsUpdate {}
 
 /**
  * @deprecated since 6.0 will be removed in 7.0
  */
-class tx_coreupdates_compatversion extends \TYPO3\CMS\Install\CoreUpdates\CompatVersionUpdate {}
+class tx_coreupdates_compatversion extends \TYPO3\CMS\Install\Updates\CompatVersionUpdate {}
 
 /**
  * @deprecated since 6.0 will be removed in 7.0
  */
-class tx_coreupdates_compressionlevel extends \TYPO3\CMS\Install\CoreUpdates\CompressionLevelUpdate {}
+class tx_coreupdates_compressionlevel extends \TYPO3\CMS\Install\Updates\CompressionLevelUpdate {}
 
 /**
  * @deprecated since 6.0 will be removed in 7.0
  */
-class tx_coreupdates_cscsplit extends \TYPO3\CMS\Install\CoreUpdates\CscSplitUpdate {}
+class tx_coreupdates_cscsplit extends \TYPO3\CMS\Install\Updates\CscSplitUpdate {}
 
 /**
  * @deprecated since 6.0 will be removed in 7.0
  */
-class tx_coreupdates_flagsfromsprite extends \TYPO3\CMS\Install\CoreUpdates\FlagsFromSpriteUpdate {}
+class tx_coreupdates_flagsfromsprite extends \TYPO3\CMS\Install\Updates\FlagsFromSpriteUpdate {}
 
 /**
  * @deprecated since 6.0 will be removed in 7.0
  */
-class tx_coreupdates_imagecols extends \TYPO3\CMS\Install\CoreUpdates\ImagecolsUpdate {}
+class tx_coreupdates_imagecols extends \TYPO3\CMS\Install\Updates\ImagecolsUpdate {}
 
 /**
  * @deprecated since 6.0 will be removed in 7.0
  */
-class tx_coreupdates_imagelink extends \TYPO3\CMS\Install\CoreUpdates\ImagelinkUpdate {}
+class tx_coreupdates_imagelink extends \TYPO3\CMS\Install\Updates\ImagelinkUpdate {}
 
 /**
  * @deprecated since 6.0 will be removed in 7.0
  */
-class tx_coreupdates_installsysexts extends \TYPO3\CMS\Install\CoreUpdates\InstallSysExtsUpdate {}
+class tx_coreupdates_installsysexts extends \TYPO3\CMS\Install\Updates\InstallSysExtsUpdate {}
 
 /**
  * @deprecated since 6.0 will be removed in 7.0
  */
-class tx_coreupdates_mediaFlexform extends \TYPO3\CMS\Install\CoreUpdates\MediaFlexformUpdate {}
+class tx_coreupdates_mediaFlexform extends \TYPO3\CMS\Install\Updates\MediaFlexformUpdate {}
 
 /**
  * @deprecated since 6.0 will be removed in 7.0
  */
-class tx_coreupdates_mergeadvanced extends \TYPO3\CMS\Install\CoreUpdates\MergeAdvancedUpdate {}
+class tx_coreupdates_mergeadvanced extends \TYPO3\CMS\Install\Updates\MergeAdvancedUpdate {}
 
 /**
  * @deprecated since 6.0 will be removed in 7.0
  */
-class tx_coreupdates_migrateworkspaces extends \TYPO3\CMS\Install\CoreUpdates\MigrateWorkspacesUpdate {}
+class tx_coreupdates_migrateworkspaces extends \TYPO3\CMS\Install\Updates\MigrateWorkspacesUpdate {}
 
 /**
  * @deprecated since 6.0 will be removed in 7.0
  */
-class tx_coreupdates_notinmenu extends \TYPO3\CMS\Install\CoreUpdates\NotInMenuUpdate {}
+class tx_coreupdates_notinmenu extends \TYPO3\CMS\Install\Updates\NotInMenuUpdate {}
 
 /**
  * @deprecated since 6.0 will be removed in 7.0
  */
-class tx_coreupdates_t3skin extends \TYPO3\CMS\Install\CoreUpdates\T3skinUpdate {}
+class tx_coreupdates_t3skin extends \TYPO3\CMS\Install\Updates\T3skinUpdate {}
 
 /**
  * @deprecated since 6.0 will be removed in 7.0
