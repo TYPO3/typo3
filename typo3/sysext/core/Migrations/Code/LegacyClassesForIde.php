@@ -29,16 +29,6 @@ class Tx_Aboutmodules_Controller_ModulesController extends \TYPO3\CMS\Aboutmodul
 /**
  * @deprecated since 6.0 will be removed in 7.0
  */
-class tx_adodb_tceforms extends \TYPO3\CMS\Adodb\DataHandling\DatabaseTypeItemsFunction {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class tx_adodb_checkconnectionwizard extends \TYPO3\CMS\Adodb\View\CheckConnectionWizardView {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
 class AjaxLogin extends \TYPO3\CMS\Backend\AjaxLoginHandler {}
 
 /**
