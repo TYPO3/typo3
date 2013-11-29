@@ -56,7 +56,7 @@ class tx_adodb_checkconnectionwizard {
 
 		$conf['md5ID'];
 
-		if ($conf['table'] == 'tx_datasources_datasource') {
+		if (($conf['table'] === 'tx_datasources_datasource') && $GLOBALS['BE_USER']->isAdmin()) {
 			$dsRecord = t3lib_beFunc::getRecord($conf['table'], intval($conf['uid']));
 
 			if (is_array ($dsRecord)) {
