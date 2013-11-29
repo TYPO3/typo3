@@ -2884,57 +2884,65 @@ Connection: close
 	}
 
 	/**
-	 * Returns an array with the names of files in a specific path
+	 * Finds all files in a given path and returns them as an array. Each
+	 * array key is a md5 hash of the full path to the file. This is done because
+	 * 'some' extensions like the import/export extension depend on this.
 	 *
-	 * @param string $path Is the path to the file
-	 * @param string $extensionList is the comma list of extensions to read only (blank = all)
-	 * @param boolean $prependPath If set, then the path is prepended the file names. Otherwise only the file names are returned in the array
-	 * @param string $order is sorting: 1= sort alphabetically, 'mtime' = sort by modification time.
-	 * @param string $excludePattern A comma separated list of file names to exclude, no wildcards
-	 * @return array Array of the files found
+	 * @param string $path The path to retrieve the files from.
+	 * @param string $extensionList A comma-separated list of file extensions. Only files of the specified types will be retrieved. When left blank, files of any type will be retrieved.
+	 * @param boolean $prependPath If TRUE, the full path to the file is returned. If FALSE only the file name is returned.
+	 * @param string $order The sorting order. The default sorting order is alphabetical. Setting $order to 'mtime' will sort the files by modification time.
+	 * @param string $excludePattern A regular expression pattern of file names to exclude. For example: 'clear.gif' or '(clear.gif|.htaccess)'. The pattern will be wrapped with: '/^' and '$/'.
+	 * @return array|string Array of the files found, or an error message in case the path could not be opened.
 	 */
 	static public function getFilesInDir($path, $extensionList = '', $prependPath = FALSE, $order = '', $excludePattern = '') {
-		// Initialize variables:
-		$filearray = array();
-		$sortarray = array();
+		$excludePattern = (string)$excludePattern;
 		$path = rtrim($path, '/');
-		// Find files+directories:
-		if (@is_dir($path)) {
-			$extensionList = strtolower($extensionList);
-			$d = dir($path);
-			if (is_object($d)) {
-				while ($entry = $d->read()) {
-					if (@is_file(($path . '/' . $entry))) {
-						$fI = pathinfo($entry);
-						// Don't change this ever - extensions may depend on the fact that the hash is an md5 of the path! (import/export extension)
-						$key = md5($path . '/' . $entry);
-						if ((!strlen($extensionList) || self::inList($extensionList, strtolower($fI['extension']))) && (!strlen($excludePattern) || !preg_match(('/^' . $excludePattern . '$/'), $entry))) {
-							$filearray[$key] = ($prependPath ? $path . '/' : '') . $entry;
-							if ($order == 'mtime') {
-								$sortarray[$key] = filemtime($path . '/' . $entry);
-							} elseif ($order) {
-								$sortarray[$key] = strtolower($entry);
-							}
-						}
-					}
+		if (!@is_dir($path)) {
+			return array();
+		}
+
+		$rawFileList = scandir($path);
+		if ($rawFileList === FALSE) {
+			return 'error opening path: "' . $path . '"';
+		}
+
+		$pathPrefix = $path . '/';
+		$extensionList = ',' . $extensionList . ',';
+		$files = array();
+		foreach ($rawFileList as $entry) {
+			$completePathToEntry = $pathPrefix . $entry;
+			if (!@is_file($completePathToEntry)) {
+				continue;
+			}
+
+			if (
+				($extensionList === ',,' || stripos($extensionList, ',' . pathinfo($entry, PATHINFO_EXTENSION) . ',') !== FALSE)
+				&& ($excludePattern === '' || !preg_match(('/^' . $excludePattern . '$/'), $entry))
+			) {
+				if ($order !== 'mtime') {
+					$files[] = $entry;
+				} else {
+					// Store the value in the key so we can do a fast asort later.
+					$files[$entry] = filemtime($completePathToEntry);
 				}
-				$d->close();
-			} else {
-				return 'error opening path: "' . $path . '"';
 			}
 		}
-		// Sort them:
-		if ($order) {
-			asort($sortarray);
-			$newArr = array();
-			foreach ($sortarray as $k => $v) {
-				$newArr[$k] = $filearray[$k];
-			}
-			$filearray = $newArr;
+
+		$valueName = 'value';
+		if ($order === 'mtime') {
+			asort($files);
+			$valueName = 'key';
 		}
-		// Return result
-		reset($filearray);
-		return $filearray;
+
+		$valuePathPrefix = $prependPath ? $pathPrefix : '';
+		$foundFiles = array();
+		foreach ($files as $key => $value) {
+			// Don't change this ever - extensions may depend on the fact that the hash is an md5 of the path! (import/export extension)
+			$foundFiles[md5($pathPrefix . ${$valueName})] = $valuePathPrefix . ${$valueName};
+		}
+
+		return $foundFiles;
 	}
 
 	/**
