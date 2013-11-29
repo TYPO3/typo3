@@ -38,7 +38,7 @@ class CheckConnectionWizardView {
 		$content = '<html><body>';
 		$conf = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('P');
 		$conf['md5ID'];
-		if ($conf['table'] == 'tx_datasources_datasource') {
+		if (($conf['table'] === 'tx_datasources_datasource') && $GLOBALS['BE_USER']->isAdmin()) {
 			$dsRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($conf['table'], intval($conf['uid']));
 			if (is_array($dsRecord)) {
 				$dsArr = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($dsRecord['configuration']);
