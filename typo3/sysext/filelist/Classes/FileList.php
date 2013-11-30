@@ -214,6 +214,7 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 			'TITLE' => ''
 		);
 		$buttons = array(
+			'level_up' => $this->getLinkToParentFolder($folderObject),
 			'refresh' => '',
 			'title' => '',
 			'page_icon' => '',
@@ -377,7 +378,7 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 			}
 
 			if (!empty($iOut)) {
-				$out .= '<thead>' . $this->addelement(1, $levelUp, $theData, ' class="t3-row-header"', '') . '</thead>';
+				$out .= '<thead>' . $this->addelement(1, '&nbsp;', $theData, ' class="t3-row-header"', '') . '</thead>';
 				$out .= '<tbody>' . $iOut . '</tbody>';
 				// half line is drawn
 				// finish
@@ -397,6 +398,33 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 		return $out;
 	}
 
+
+	/**
+	 * If there is a parent folder and user has access to it, return an icon
+	 * which is linked to the filelist of the parent folder.
+	 *
+	 * @param \TYPO3\CMS\Core\Resource\Folder $currentFolder
+	 * @return string
+	 */
+	protected function getLinkToParentFolder(\TYPO3\CMS\Core\Resource\Folder $currentFolder) {
+		$levelUp = '';
+		try {
+			$currentStorage = $currentFolder->getStorage();
+			$parentFolder = $currentStorage->getFolder(
+				$currentStorage->getFolderIdentifierFromFileIdentifier($this->folderObject->getIdentifier())
+			);
+			if ($parentFolder->getIdentifier() !== $currentFolder->getIdentifier() && $currentStorage->isWithinFileMountBoundaries($parentFolder)) {
+				$levelUp = $this->linkWrapDir(
+					IconUtility::getSpriteIcon(
+						'actions-view-go-up',
+						array('title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.upOneLevel', TRUE))
+					),
+					$parentFolder
+				);
+			}
+		} catch (\Exception $e) {}
+		return $levelUp;
+	}
 	/**
 	 * Gets the number of files and total size of a folder
 	 *
