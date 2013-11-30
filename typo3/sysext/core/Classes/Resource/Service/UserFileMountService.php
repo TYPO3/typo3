@@ -65,8 +65,8 @@ class UserFileMountService {
 				$folderItems = $this->getSubfoldersForOptionList($rootLevelFolder);
 				foreach ($folderItems as $item) {
 					$PA['items'][] = array(
-						htmlspecialchars($item->getIdentifier()),
-						htmlspecialchars($item->getIdentifier())
+						$item->getIdentifier(),
+						$item->getIdentifier()
 					);
 				}
 			} else {
