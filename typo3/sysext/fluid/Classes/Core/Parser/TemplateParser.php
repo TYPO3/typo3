@@ -512,6 +512,7 @@ class TemplateParser {
 		}
 		$className .= 'ViewHelper';
 		$name = $this->namespaces[$namespaceIdentifier] . $namespaceSeparator . $className;
+		$name = \TYPO3\CMS\Core\Core\ClassLoader::getClassNameForAlias($name);
 		return $name;
 	}
 
