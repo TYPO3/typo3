@@ -132,7 +132,7 @@ class ColorpickerController {
 	 */
 	protected function init() {
 		// Setting GET vars (used in frameset script):
-		$this->P = GeneralUtility::_GP('P', 1);
+		$this->P = GeneralUtility::_GP('P');
 		// Setting GET vars (used in colorpicker script):
 		$this->colorValue = GeneralUtility::_GP('colorValue');
 		$this->fieldChangeFunc = GeneralUtility::_GP('fieldChangeFunc');

@@ -66,7 +66,7 @@ class BackendLayoutWizardController {
 	 */
 	public function init() {
 		// Setting GET vars (used in frameset script):
-		$this->P = GeneralUtility::_GP('P', 1);
+		$this->P = GeneralUtility::_GP('P');
 		$this->formName = $this->P['formName'];
 		$this->fieldName = $this->P['itemName'];
 		$this->md5ID = $this->P['md5ID'];
