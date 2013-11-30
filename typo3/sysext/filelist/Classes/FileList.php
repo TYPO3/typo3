@@ -827,7 +827,7 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 		// Edit file content (if editable)
 		if (is_a($fileOrFolderObject, 'TYPO3\\CMS\\Core\\Resource\\File') && $fileOrFolderObject->checkActionPermission('write') && GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['SYS']['textfile_ext'], $fileOrFolderObject->getExtension())) {
 			$editOnClick = 'top.content.list_frame.location.href=top.TS.PATH_typo3+\'file_edit.php?target=' . rawurlencode($fullIdentifier) . '&returnUrl=\'+top.rawurlencode(top.content.list_frame.document.location.pathname+top.content.list_frame.document.location.search);return false;';
-			$cells['edit'] = '<a href="#" onclick="' . $editOnClick . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:cm.edit') . '">' . IconUtility::getSpriteIcon('actions-page-open') . '</a>';
+			$cells['edit'] = '<a href="#" onclick="' . $editOnClick . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:cm.editcontent') . '">' . IconUtility::getSpriteIcon('actions-page-open') . '</a>';
 		} else {
 			$cells['edit'] = IconUtility::getSpriteIcon('empty-empty');
 		}

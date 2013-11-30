@@ -780,8 +780,12 @@ class ClickMenu {
 			}
 			// Edit
 			if (!in_array('edit', $this->disabledItems)) {
+				if (!$folder && !$isStorageRoot) {
+					$metaData = $fileObject->_getMetaData();
+					$menuItems['edit2'] = $this->DB_edit('sys_file_metadata', $metaData['uid']);
+				}
 				if (!$folder && GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['SYS']['textfile_ext'], $fileObject->getExtension())) {
-					$menuItems['edit'] = $this->FILE_launch($identifier, 'file_edit.php', 'edit', 'edit_file.gif');
+					$menuItems['edit'] = $this->FILE_launch($identifier, 'file_edit.php', 'editcontent', 'edit_file.gif');
 				} elseif ($isStorageRoot && $userMayEditStorage) {
 					$menuItems['edit'] = $this->DB_edit('sys_file_storage', $fileObject->getStorage()->getUid());
 				}
