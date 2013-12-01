@@ -243,7 +243,7 @@ class FrontendRteController extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaBase {
 		 * LOAD JS, CSS and more
 		 * =======================================
 		 */
-		$this->pageRenderer = $this->getPageRenderer();
+		$this->getPageRenderer();
 		// Preloading the pageStyle and including RTE skin stylesheets
 		$this->addPageStyle();
 		$this->addSkin();

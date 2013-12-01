@@ -191,7 +191,6 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
 		$GLOBALS['BE_USER']->pushModuleData('web_info', $this->pObj->MOD_SETTINGS);
 		$this->initialize();
 
-		$this->pageRenderer = $this->doc->getPageRenderer();
 		// Localization
 		$this->pageRenderer->addInlineLanguageLabelFile(
 			\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('linkvalidator', 'Resources/Private/Language/Module/locallang.xlf')
@@ -296,6 +295,7 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
 		$this->doc->setModuleTemplate(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('linkvalidator') . 'Resources/Private/Templates/mod_template.html');
 		$this->relativePath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('linkvalidator');
 		$this->pageRecord = BackendUtility::readPageAccess($this->pObj->id, $GLOBALS['BE_USER']->getPagePermsClause(1));
+		$this->pageRenderer = $this->doc->getPageRenderer();
 		$this->isAccessibleForCurrentUser = FALSE;
 		if ($this->pObj->id && is_array($this->pageRecord) || !$this->pObj->id && $this->isCurrentUserAdmin()) {
 			$this->isAccessibleForCurrentUser = TRUE;
@@ -637,7 +637,7 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
 	 */
 	protected function loadHeaderData() {
 		$this->doc->addStyleSheet('linkvalidator', $this->relativePath . 'Resources/Public/Css/linkvalidator.css', 'linkvalidator');
-		$this->doc->getPageRenderer()->addJsFile($this->doc->backPath . 'js/extjs/ux/Ext.ux.FitToParent.js');
+		$this->pageRenderer->addJsFile($this->doc->backPath . 'js/extjs/ux/Ext.ux.FitToParent.js');
 	}
 
 	/**

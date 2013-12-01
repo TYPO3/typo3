@@ -206,9 +206,11 @@ class LoginController {
 		// Initialize template object:
 		$GLOBALS['TBE_TEMPLATE']->bodyTagAdditions = ' onload="startUp();"';
 		$GLOBALS['TBE_TEMPLATE']->moduleTemplate = $GLOBALS['TBE_TEMPLATE']->getHtmlTemplate('EXT:backend/Resources/Private/Templates/login.html');
-		$GLOBALS['TBE_TEMPLATE']->getPageRenderer()->loadExtJS();
-		$GLOBALS['TBE_TEMPLATE']->getPageRenderer()->loadPrototype();
-		$GLOBALS['TBE_TEMPLATE']->getPageRenderer()->loadScriptaculous();
+		/** @var $pageRenderer \TYPO3\CMS\Core\Page\PageRenderer */
+		$pageRenderer = $GLOBALS['TBE_TEMPLATE']->getPageRenderer();
+		$pageRenderer->loadExtJS();
+		$pageRenderer->loadPrototype();
+		$pageRenderer->loadScriptaculous();
 		// Set JavaScript for creating a MD5 hash of the password:
 		$GLOBALS['TBE_TEMPLATE']->JScode .= $this->getJScode();
 		// Checking, if we should make a redirect.

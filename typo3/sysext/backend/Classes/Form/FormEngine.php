@@ -5531,7 +5531,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 			$this->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/tceforms.js');
 			// If IRRE fields were processed, add the JavaScript functions:
 			if ($this->inline->inlineCount) {
-				$GLOBALS['SOBE']->doc->getPageRenderer()->loadScriptaculous();
+				$pageRenderer->loadScriptaculous();
 				$this->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/jsfunc.inline.js');
 				$out .= '
 				inline.setPrependFormFieldNames("' . $this->inline->prependNaming . '");

@@ -51,8 +51,11 @@ class ShockwaveFlashObjectContentObject extends \TYPO3\CMS\Frontend\ContentObjec
 		}
 		$type = isset($conf['type.']) ? $this->cObj->stdWrap($conf['type'], $conf['type.']) : $conf['type'];
 		$typeConf = $conf[$type . '.'];
+		/** @var $pageRenderer \TYPO3\CMS\Core\Page\PageRenderer */
+		$pageRenderer = $GLOBALS['TSFE']->getPageRenderer();
+
 		// Add SWFobject js-file
-		$GLOBALS['TSFE']->getPageRenderer()->addJsFile(TYPO3_mainDir . 'contrib/flashmedia/swfobject/swfobject.js');
+		$pageRenderer->addJsFile(TYPO3_mainDir . 'contrib/flashmedia/swfobject/swfobject.js');
 		$player = isset($typeConf['player.']) ? $this->cObj->stdWrap($typeConf['player'], $typeConf['player.']) : $typeConf['player'];
 		$installUrl = isset($conf['installUrl.']) ? $this->cObj->stdWrap($conf['installUrl'], $conf['installUrl.']) : $conf['installUrl'];
 		if (!$installUrl) {
@@ -127,7 +130,7 @@ class ShockwaveFlashObjectContentObject extends \TYPO3\CMS\Frontend\ContentObjec
 		$embed = 'swfobject.embedSWF("' . $conf['player'] . '", "' . $replaceElementIdString . '", "' . $width . '", "' . $height . '",
 				"' . $flashVersion . '", "' . $installUrl . '", ' . $conf['embedParams'] . ');';
 		$script = $flashvars . $params . $attributes . $embed;
-		$GLOBALS['TSFE']->getPageRenderer()->addJsInlineCode($replaceElementIdString, $script);
+		$pageRenderer->addJsInlineCode($replaceElementIdString, $script);
 		if (isset($conf['stdWrap.'])) {
 			$content = $this->cObj->stdWrap($content, $conf['stdWrap.']);
 		}

@@ -792,7 +792,7 @@ class DocumentTemplate {
 				$headerStart = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">';
 				$htmlTag = '<html>';
 				// Disable rendering of XHTML tags
-				$this->getPageRenderer()->setRenderXhtml(FALSE);
+				$this->pageRenderer->setRenderXhtml(FALSE);
 				break;
 			case 'xhtml_strict':
 				$headerStart = '<!DOCTYPE html
@@ -816,7 +816,7 @@ class DocumentTemplate {
 				$headerStart = '<!DOCTYPE html>' . LF;
 				$htmlTag = '<html>';
 				// Disable rendering of XHTML tags
-				$this->getPageRenderer()->setRenderXhtml(FALSE);
+				$this->pageRenderer->setRenderXhtml(FALSE);
 		}
 		$this->pageRenderer->setHtmlTag($htmlTag);
 		// This loads the tabulator-in-textarea feature. It automatically modifies

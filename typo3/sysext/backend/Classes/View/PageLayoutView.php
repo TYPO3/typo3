@@ -371,8 +371,10 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 		$lMarg = 1;
 		$showHidden = $this->tt_contentConfig['showHidden'] ? '' : BackendUtility::BEenableFields('tt_content');
 		$pageTitleParamForAltDoc = '&recTitle=' . rawurlencode(BackendUtility::getRecordTitle('pages', BackendUtility::getRecordWSOL('pages', $id), TRUE));
-		$GLOBALS['SOBE']->doc->getPageRenderer()->loadExtJs();
-		$GLOBALS['SOBE']->doc->getPageRenderer()->addJsFile($GLOBALS['BACK_PATH'] . 'sysext/cms/layout/js/typo3pageModule.js');
+		/** @var $pageRenderer \TYPO3\CMS\Core\Page\PageRenderer */
+		$pageRenderer = $GLOBALS['SOBE']->doc->getPageRenderer();
+		$pageRenderer->loadExtJs();
+		$pageRenderer->addJsFile($GLOBALS['BACK_PATH'] . 'sysext/cms/layout/js/typo3pageModule.js');
 		// Get labels for CTypes and tt_content element fields in general:
 		$this->CType_labels = array();
 		foreach ($GLOBALS['TCA']['tt_content']['columns']['CType']['config']['items'] as $val) {

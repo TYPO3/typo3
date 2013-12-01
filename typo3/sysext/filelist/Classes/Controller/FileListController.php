@@ -216,11 +216,13 @@ class FileListController {
 		$this->doc = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->setModuleTemplate('EXT:filelist/Resources/Private/Templates/file_list.html');
-		$this->doc->getPageRenderer()->loadPrototype();
-		$this->doc->getPageRenderer()->loadJQuery();
-		$this->doc->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/DragUploader');
-		$this->doc->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/FileListLocalisation');
-		$this->doc->getPageRenderer()->addInlineLanguagelabelFile(
+		/** @var $pageRenderer \TYPO3\CMS\Core\Page\PageRenderer */
+		$pageRenderer = $this->doc->getPageRenderer();
+		$pageRenderer->loadPrototype();
+		$pageRenderer->loadJQuery();
+		$pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/DragUploader');
+		$pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/FileListLocalisation');
+		$pageRenderer->addInlineLanguagelabelFile(
 			\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('lang') . 'locallang_core.xlf',
 			'file_upload'
 		);

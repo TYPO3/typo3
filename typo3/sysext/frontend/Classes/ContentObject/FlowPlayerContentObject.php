@@ -205,6 +205,8 @@ class FlowPlayerContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstract
 	 * @return string Output
 	 */
 	public function render($conf = array()) {
+		/** @var $pageRenderer \TYPO3\CMS\Core\Page\PageRenderer */
+		$pageRenderer = $GLOBALS['TSFE']->getPageRenderer();
 		$prefix = '';
 		if ($GLOBALS['TSFE']->baseUrl) {
 			$prefix = $GLOBALS['TSFE']->baseUrl;
@@ -220,18 +222,18 @@ class FlowPlayerContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstract
 		$type = isset($conf['type.']) ? $this->cObj->stdWrap($conf['type'], $conf['type.']) : $conf['type'];
 		$typeConf = $conf[$type . '.'];
 		// Add Flowplayer js-file
-		$GLOBALS['TSFE']->getPageRenderer()->addJsFile(TYPO3_mainDir . 'contrib/flowplayer/flowplayer-3.2.12.min.js');
+		$pageRenderer->addJsFile(TYPO3_mainDir . 'contrib/flowplayer/flowplayer-3.2.12.min.js');
 		// Add Flowpayer css for exprss install
-		$GLOBALS['TSFE']->getPageRenderer()->addCssFile(TYPO3_mainDir . 'contrib/flowplayer/express-install/express-install.css');
+		$pageRenderer->addCssFile(TYPO3_mainDir . 'contrib/flowplayer/express-install/express-install.css');
 		// Add videoJS js-file
-		$GLOBALS['TSFE']->getPageRenderer()->addJsFile(TYPO3_mainDir . 'contrib/videojs/video-js/video.js');
+		$pageRenderer->addJsFile(TYPO3_mainDir . 'contrib/videojs/video-js/video.js');
 		// Add videoJS js-file
-		$GLOBALS['TSFE']->getPageRenderer()->addJsFile(TYPO3_mainDir . 'contrib/videojs/video-js/video.js');
+		$pageRenderer->addJsFile(TYPO3_mainDir . 'contrib/videojs/video-js/video.js');
 		// Add videoJS css-file
-		$GLOBALS['TSFE']->getPageRenderer()->addCssFile(TYPO3_mainDir . 'contrib/videojs/video-js/video-js.css');
+		$pageRenderer->addCssFile(TYPO3_mainDir . 'contrib/videojs/video-js/video-js.css');
 		// Add extended videoJS control bar
-		$GLOBALS['TSFE']->getPageRenderer()->addJsFile(TYPO3_mainDir . 'contrib/videojs/video-js/controls/control-bar.js');
-		$GLOBALS['TSFE']->getPageRenderer()->addCssFile(TYPO3_mainDir . 'contrib/videojs/video-js/controls/control-bar.css');
+		$pageRenderer->addJsFile(TYPO3_mainDir . 'contrib/videojs/video-js/controls/control-bar.js');
+		$pageRenderer->addCssFile(TYPO3_mainDir . 'contrib/videojs/video-js/controls/control-bar.css');
 		// Build Flash configuration
 		$player = isset($typeConf['player.']) ? $this->cObj->stdWrap($typeConf['player'], $typeConf['player.']) : $typeConf['player'];
 		if (!$player) {
@@ -346,7 +348,7 @@ class FlowPlayerContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstract
 			// Assemble captions track tag
 			$videoCaptions = '<track id="' . $replaceElementIdString . '_captions_track" kind="captions" src="' . $conf['caption'] . '"></track>' . LF;
 			// Add videoJS extension for captions
-			$GLOBALS['TSFE']->getPageRenderer()->addJsFile(TYPO3_mainDir . 'contrib/videojs/video-js/controls/captions.js');
+			$pageRenderer->addJsFile(TYPO3_mainDir . 'contrib/videojs/video-js/controls/captions.js');
 			// Flowplayer captions
 			$conf['videoflashvars']['captionUrl'] = $conf['caption'];
 			// Flowplayer captions plugin configuration
@@ -360,7 +362,7 @@ class FlowPlayerContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstract
 		if ($conf['type'] == 'video') {
 			if (is_array($conf['audioSources']) && count($conf['audioSources'])) {
 				// Add videoJS audio description toggle
-				$GLOBALS['TSFE']->getPageRenderer()->addJsFile(TYPO3_mainDir . 'contrib/videojs/video-js/controls/audio-description.js');
+				$pageRenderer->addJsFile(TYPO3_mainDir . 'contrib/videojs/video-js/controls/audio-description.js');
 			}
 			if (isset($conf['audioFallback'])) {
 				// Audio description flowplayer config (remove controls)
@@ -707,7 +709,7 @@ class FlowPlayerContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstract
 		if ($jsInlineCode) {
 			$jsInlineCode = 'VideoJS.DOMReady(function(){' . $jsInlineCode . LF . '});';
 		}
-		$GLOBALS['TSFE']->getPageRenderer()->addJsInlineCode($replaceElementIdString, $jsInlineCode);
+		$pageRenderer->addJsInlineCode($replaceElementIdString, $jsInlineCode);
 		if (isset($conf['stdWrap.'])) {
 			$content = $this->cObj->stdWrap($content, $conf['stdWrap.']);
 		}
