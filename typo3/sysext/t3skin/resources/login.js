@@ -170,7 +170,7 @@ TYPO3BackendLogin = {
 			TYPO3BackendLogin.showCookieWarning()
 		}
 
-		Ext.util.Cookies.clear('typo3-login-cookiecheck');
+		Ext.util.Cookies.set('typo3-login-cookiecheck', '', new Date(0));
 	},
 
 	/**
