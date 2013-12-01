@@ -68,19 +68,16 @@ class t3lib_utility_clientTest extends tx_phpunit_testcase {
 	 * @param array $expectedMembers array with expected browser/version for given userAgent strings
 	 */
 	private function analyzeUserAgentStrings($browserStrings, $expectedMembers) {
-		$compare = $expected = array();
+		$actual = $expected = array();
 		foreach ($browserStrings as $browserString) {
 			$infoArray = t3lib_utility_Client::getBrowserInfo($browserString);
 			$expected[] = $expectedMembers;
-			$compare[] = array(
+			$actual[] = array(
 				'browser' => $infoArray['browser'],
-				'version' => substr($infoArray['version'], 0, 1)
+				'version' => array_shift(explode('.', $infoArray['version']))
 			);
 		}
-		$this->assertEquals(
-		 	$expected,
-		 	$compare
-		);
+		$this->assertSame($expected, $actual);
 	}
 
 
@@ -146,7 +143,9 @@ class t3lib_utility_clientTest extends tx_phpunit_testcase {
 			'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.0; YPC 3.2.0; SLCC1; .NET CLR 2.0.50727; .NET CLR 3.0.04506)',
 			'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.0; WOW64; SLCC1; Media Center PC 5.0; .NET CLR 2.0.50727)',
 			'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.0; WOW64; SLCC1; .NET CLR 3.0.04506)',
-			'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.0; WOW64; SLCC1; .NET CLR 2.0.50727; Media Center PC 5.0; InfoPath.2; .NET CLR 3.5.30729; .NET CLR 3.0.30618; .NET CLR 1.1.4322)'
+			'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.0; WOW64; SLCC1; .NET CLR 2.0.50727; Media Center PC 5.0; InfoPath.2; .NET CLR 3.5.30729; .NET CLR 3.0.30618; .NET CLR 1.1.4322)',
+			'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.3; Trident/7.0; .NET4.0E; .NET4.0C)',
+			'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.0; Trident/5.0)',
 		);
 		$expectedMembers = array(
 			'browser' => 'msie',
@@ -185,6 +184,49 @@ class t3lib_utility_clientTest extends tx_phpunit_testcase {
 		$expectedMembers = array(
 			'browser' => 'msie',
 			'version' => '8'
+		);
+		$this->analyzeUserAgentStrings($browserStrings, $expectedMembers);
+	}
+
+	/**
+	 * @test
+	 */
+	public function checkBrowserInfoIE9() {
+		$browserStrings = array(
+			'Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0)',
+		);
+		$expectedMembers = array(
+			'browser' => 'msie',
+			'version' => '9'
+		);
+		$this->analyzeUserAgentStrings($browserStrings, $expectedMembers);
+	}
+
+	/**
+	 * @test
+	 */
+	public function checkBrowserInfoIE10() {
+		$browserStrings = array(
+			'Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.2; Trident/6.0)',
+		);
+		$expectedMembers = array(
+			'browser' => 'msie',
+			'version' => '10'
+		);
+		$this->analyzeUserAgentStrings($browserStrings, $expectedMembers);
+	}
+
+	/**
+	 * @test
+	 */
+	public function checkBrowserInfoIE11() {
+		$browserStrings = array(
+			'Mozilla/5.0 (Windows NT 6.3; Trident/7.0; rv:11.0) like Gecko',
+			'Mozilla/5.0 (Windows NT 6.3; Trident/7.0; .NET4.0E; .NET4.0C; rv:11.0) like Gecko',
+		);
+		$expectedMembers = array(
+			'browser' => 'msie',
+			'version' => '11'
 		);
 		$this->analyzeUserAgentStrings($browserStrings, $expectedMembers);
 	}
