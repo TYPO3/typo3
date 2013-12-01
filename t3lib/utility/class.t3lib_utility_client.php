@@ -75,9 +75,21 @@ final class t3lib_utility_Client {
 		$pattern = '#(?P<browser>' . join('|', $known) . ')[/ ]+(?P<version>[0-9]+(?:\.[0-9]+)?)#';
 			// Find all phrases (or return empty array if none found)
 		if (!preg_match_all($pattern, strtolower($userAgent), $matches)) {
-			$browserInfo['browser'] = 'unknown';
-			$browserInfo['version'] = '';
-			$browserInfo['all'] = array();
+				// Microsoft Internet-Explorer 11 does not have a sign of "MSIE" or so in the useragent.
+				// All checks from the pattern above fail here. Look for a special combination of
+				// "Mozilla/5.0" in front, "Trident/7.0" in the middle and "like Gecko" at the end.
+				// The version (revision) is given as "; rv:11.0" in the useragent then.
+			unset($matches);
+			$pattern = '#mozilla/5\\.0 \\(.*trident/7\\.0.*; rv:(?P<version>[0-9]+(?:\\.[0-9]+)?)\\) like gecko#i';
+			if (preg_match_all($pattern, $userAgent, $matches)) {
+				$browserInfo['browser'] = 'msie';
+				$browserInfo['version'] = $matches['version'][0];
+				$browserInfo['all'] = array('msie' => $matches['version'][0]);
+			} else {
+				$browserInfo['browser'] = 'unknown';
+				$browserInfo['version'] = '';
+				$browserInfo['all'] = array();
+			}
 		} else {
 				// Since some UAs have more than one phrase (e.g Firefox has a Gecko phrase,
 				// Opera 7,8 have a MSIE phrase), use the last one found (the right-most one
@@ -87,6 +99,7 @@ final class t3lib_utility_Client {
 			$browserInfo['browser'] = $matches['browser'][$lastIndex];
 			$browserInfo['version'] = $browserInfo['browser'] === 'msie' ? $matches['version'][0] : $matches['version'][$lastIndex];
 				//But return all parsed browsers / version in an extra array
+			$browserInfo['all'] = array();
 			for ($i = 0; $i <= $lastIndex; $i++) {
 				if (!isset($browserInfo['all'][$matches['browser'][$i]])) {
 					$browserInfo['all'][$matches['browser'][$i]] = $matches['version'][$i];
