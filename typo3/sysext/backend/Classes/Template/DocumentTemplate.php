@@ -599,7 +599,7 @@ class DocumentTemplate {
 		if (preg_match('/typo3\\/mod\\.php$/', $pathInfo['path']) && isset($GLOBALS['TBE_MODULES']['_PATHS'][$modName])) {
 			$storeUrl = '&M=' . $modName . $storeUrl;
 		}
-		if (!strcmp($motherModName, '1')) {
+		if ($motherModName === '1') {
 			$mMN = '&motherModName=\'+top.currentModuleLoaded+\'';
 		} elseif ($motherModName) {
 			$mMN = '&motherModName=' . rawurlencode($motherModName);
@@ -1261,7 +1261,7 @@ class DocumentTemplate {
 					// for EXT:myskin/stylesheets/ syntax
 					if (substr($stylesheetDir, 0, 4) === 'EXT:') {
 						list($extKey, $path) = explode('/', substr($stylesheetDir, 4), 2);
-						if (strcmp($extKey, '') && ExtensionManagementUtility::isLoaded($extKey) && strcmp($path, '')) {
+						if (!empty($extKey) && ExtensionManagementUtility::isLoaded($extKey) && !empty($path)) {
 							$stylesheetDirectories[] = ExtensionManagementUtility::extRelPath($extKey) . $path;
 						}
 					} else {
@@ -1630,7 +1630,7 @@ class DocumentTemplate {
 			}
 			$menuDef = array();
 			foreach ($menuItems as $value => $label) {
-				$menuDef[$value]['isActive'] = !strcmp($currentValue, $value);
+				$menuDef[$value]['isActive'] = (string)$currentValue === (string)$value;
 				$menuDef[$value]['label'] = GeneralUtility::deHSCentities(htmlspecialchars($label));
 				$menuDef[$value]['url'] = $script . '?' . $mainParams . $addparams . '&' . $elementName . '=' . $value;
 			}
@@ -1730,7 +1730,7 @@ class DocumentTemplate {
 				} else {
 					$onclick = 'this.blur(); DTM_activate("' . $id . '","' . $index . '", ' . ($toggle < 0 ? 1 : 0) . '); return false;';
 				}
-				$isEmpty = !(strcmp(trim($def['content']), '') || strcmp(trim($def['icon']), ''));
+				$isEmpty = trim($def['content']) === '' && trim($def['icon']) === '';
 				// "Removes" empty tabs
 				if ($isEmpty && $dividers2tabs == 1) {
 					continue;

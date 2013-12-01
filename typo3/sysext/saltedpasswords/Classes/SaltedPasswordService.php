@@ -119,9 +119,9 @@ class SaltedPasswordService extends \TYPO3\CMS\Sv\AbstractAuthenticationService 
 	public function compareUident(array $user, array $loginData, $security_level = 'normal') {
 		$validPasswd = FALSE;
 		// Could be merged; still here to clarify
-		if (!strcmp(TYPO3_MODE, 'BE')) {
+		if (TYPO3_MODE === 'BE') {
 			$password = $loginData['uident_text'];
-		} elseif (!strcmp(TYPO3_MODE, 'FE')) {
+		} elseif (TYPO3_MODE === 'FE') {
 			$password = $loginData['uident_text'];
 		}
 		// Determine method used for given salted hashed password
@@ -151,7 +151,7 @@ class SaltedPasswordService extends \TYPO3\CMS\Sv\AbstractAuthenticationService 
 				// Instanciate default method class
 				$this->objInstanceSaltedPW = \TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::getSaltingInstance(substr($user['password'], 1));
 				// md5
-				if (!strcmp(substr($user['password'], 0, 1), 'M')) {
+				if (substr($user['password'], 0, 1) === 'M') {
 					$validPasswd = $this->objInstanceSaltedPW->checkPassword(md5($password), substr($user['password'], 1));
 				} else {
 					$validPasswd = $this->objInstanceSaltedPW->checkPassword($password, substr($user['password'], 1));
@@ -161,13 +161,13 @@ class SaltedPasswordService extends \TYPO3\CMS\Sv\AbstractAuthenticationService 
 					$this->authenticationFailed = TRUE;
 				}
 			} elseif (preg_match('/[0-9abcdef]{32,32}/', $user['password'])) {
-				$validPasswd = !strcmp(md5($password), $user['password']) ? TRUE : FALSE;
+				$validPasswd = md5($password) === (string)$user['password'];
 				// Skip further authentication methods
 				if (!$validPasswd) {
 					$this->authenticationFailed = TRUE;
 				}
 			} else {
-				$validPasswd = !strcmp($password, $user['password']) ? TRUE : FALSE;
+				$validPasswd = (string)$password === (string)$user['password'];
 			}
 			// Should we store the new format value in DB?
 			if ($validPasswd && intval($this->extConf['updatePasswd'])) {

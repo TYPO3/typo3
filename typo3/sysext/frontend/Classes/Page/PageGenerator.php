@@ -384,7 +384,7 @@ class PageGenerator {
 			$pageRenderer->setXmlPrologAndDocType(implode(LF, $docTypeParts));
 		}
 		// Begin header section:
-		if (strcmp($GLOBALS['TSFE']->config['config']['htmlTag_setParams'], 'none')) {
+		if ($GLOBALS['TSFE']->config['config']['htmlTag_setParams'] !== 'none') {
 			$_attr = $GLOBALS['TSFE']->config['config']['htmlTag_setParams'] ? $GLOBALS['TSFE']->config['config']['htmlTag_setParams'] : GeneralUtility::implodeAttributes($htmlTagAttributes);
 		} else {
 			$_attr = '';
@@ -1074,7 +1074,7 @@ class PageGenerator {
 			if (strstr('|' . $needle . '|', '|' . $haystack . '|')) {
 				$OK = TRUE;
 			}
-		} elseif (!strcmp($needle, $haystack)) {
+		} elseif ((string)$needle === (string)$haystack) {
 			// String comparison
 			$OK = TRUE;
 		}

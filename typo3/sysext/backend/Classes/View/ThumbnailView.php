@@ -162,8 +162,7 @@ class ThumbnailView {
 			if ($mTime) {
 				// Always use the absolute path for this check!
 				$check = basename($relativeFilePath) . ':' . $mTime . ':' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'];
-				$md5_real = GeneralUtility::shortMD5($check);
-				if (!strcmp($md5_real, $md5sum)) {
+				if (GeneralUtility::shortMD5($check) === (string)$md5sum) {
 					$OK = TRUE;
 				}
 			}

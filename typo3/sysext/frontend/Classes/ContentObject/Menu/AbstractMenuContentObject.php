@@ -851,7 +851,7 @@ class AbstractMenuContentObject {
 			// Fill in the menuArr with elements that should go into the menu:
 			$this->menuArr = array();
 			foreach ($temp as $data) {
-				$spacer = GeneralUtility::inList($this->spacerIDList, $data['doktype']) || !strcmp($data['ITEM_STATE'], 'SPC') ? 1 : 0;
+				$spacer = GeneralUtility::inList($this->spacerIDList, $data['doktype']) || $data['ITEM_STATE'] === 'SPC' ? 1 : 0;
 				// if item is a spacer, $spacer is set
 				if ($this->filterMenuPages($data, $banUidArray, $spacer)) {
 					$c_b++;
@@ -1479,7 +1479,7 @@ class AbstractMenuContentObject {
 	 */
 	public function isCurrent($uid, $MPvar = '') {
 		$testUid = $uid . ($MPvar ? ':' . $MPvar : '');
-		if ($uid && !strcmp(end($this->rL_uidRegister), ('ITEM:' . $testUid))) {
+		if ($uid && end($this->rL_uidRegister) === 'ITEM:' . $testUid) {
 			return TRUE;
 		}
 	}
@@ -1548,7 +1548,7 @@ class AbstractMenuContentObject {
 		$natVal = 0;
 		// If any value is set for ITEM_STATE the normal evaluation is discarded
 		if ($this->menuArr[$key]['ITEM_STATE']) {
-			if (!strcmp($this->menuArr[$key]['ITEM_STATE'], $kind)) {
+			if ((string)$this->menuArr[$key]['ITEM_STATE'] === (string)$kind) {
 				$natVal = 1;
 			}
 		} else {
@@ -1646,7 +1646,7 @@ class AbstractMenuContentObject {
 	 * @todo Define visibility
 	 */
 	public function getPageTitle($title, $nav_title) {
-		return strcmp(trim($nav_title), '') ? $nav_title : $title;
+		return trim($nav_title) !== '' ? $nav_title : $title;
 	}
 
 	/**

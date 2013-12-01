@@ -63,7 +63,7 @@ class ArrayUtility {
 		$chunksArr = explode($delimiter, $string);
 		$newChunksArr = array();
 		foreach ($chunksArr as $value) {
-			if ($onlyNonEmptyValues === FALSE || strcmp('', trim($value))) {
+			if ($onlyNonEmptyValues === FALSE || trim($value) !== '') {
 				$newChunksArr[] = trim($value);
 			}
 		}

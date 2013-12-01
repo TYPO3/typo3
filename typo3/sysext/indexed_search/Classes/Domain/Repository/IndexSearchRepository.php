@@ -674,7 +674,7 @@ class IndexSearchRepository {
 			}
 		} else {
 			// Ordinary TYPO3 pages:
-			if (strcmp($row['gr_list'], $this->frontendUserGroupList)) {
+			if ((string)$row['gr_list'] !== (string)$this->frontendUserGroupList) {
 				// Selecting for the grlist records belonging to the phash-row where the current users gr_list exists. If it is found it is proof that this user has direct access to the phash-rows content although he did not himself initiate the indexing...
 				if ($this->isTableUsed('index_grlist')) {
 					$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('phash', 'index_grlist', 'phash=' . intval($row['phash']) . ' AND gr_list=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->frontendUserGroupList, 'index_grlist'));

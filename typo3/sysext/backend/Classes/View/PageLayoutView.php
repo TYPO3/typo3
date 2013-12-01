@@ -1351,7 +1351,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 							$hookOut .= GeneralUtility::callUserFunction($_funcRef, $_params, $this);
 						}
 					}
-					if (strcmp($hookOut, '')) {
+					if ((string)$hookOut !== '') {
 						$out .= $hookOut;
 					} elseif (!empty($row['list_type'])) {
 						$label = BackendUtility::getLabelFromItemlist('tt_content', 'list_type', $row['list_type']);

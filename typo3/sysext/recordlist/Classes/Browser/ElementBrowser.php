@@ -1108,7 +1108,7 @@ class ElementBrowser {
 		// Making the browsable pagetree:
 		$pagetree = GeneralUtility::makeInstance('TBE_PageTree');
 		$pagetree->thisScript = $this->thisScript;
-		$pagetree->ext_pArrPages = !strcmp($tables, 'pages') ? 1 : 0;
+		$pagetree->ext_pArrPages = $tables === 'pages' ? 1 : 0;
 		$pagetree->ext_showNavTitle = $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.showNavTitle');
 		$pagetree->ext_showPageId = $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.showPageIdWithTitle');
 
@@ -1411,7 +1411,7 @@ class ElementBrowser {
 		$out = '';
 		if ($this->expandPage >= 0 && \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($this->expandPage) && $GLOBALS['BE_USER']->isInWebMount($this->expandPage)) {
 			// Set array with table names to list:
-			if (!strcmp(trim($tables), '*')) {
+			if (trim($tables) === '*') {
 				$tablesArr = array_keys($GLOBALS['TCA']);
 			} else {
 				$tablesArr = GeneralUtility::trimExplode(',', $tables, TRUE);

@@ -768,13 +768,13 @@ class HtmlParser {
 							// If NOT an endtag, do attribute processing (added dec. 2003)
 							if (!$endTag) {
 								// Override attributes
-								if (strcmp($tags[$tagName]['overrideAttribs'], '')) {
+								if ((string)$tags[$tagName]['overrideAttribs'] !== '') {
 									$tagParts[1] = $tags[$tagName]['overrideAttribs'];
 								}
 								// Allowed tags
-								if (strcmp($tags[$tagName]['allowedAttribs'], '')) {
+								if ((string)$tags[$tagName]['allowedAttribs'] !== '') {
 									// No attribs allowed
-									if (!strcmp($tags[$tagName]['allowedAttribs'], '0')) {
+									if ((string)$tags[$tagName]['allowedAttribs'] === '0') {
 										$tagParts[1] = '';
 									} elseif (trim($tagParts[1])) {
 										$tagAttrib = $this->get_tag_attributes($tagParts[1]);
@@ -803,7 +803,7 @@ class HtmlParser {
 										if (isset($params['unset']) && !empty($params['unset'])) {
 											unset($tagAttrib[0][$attr]);
 										}
-										if (strcmp($params['default'], '') && !isset($tagAttrib[0][$attr])) {
+										if (!isset($tagAttrib[0][$attr]) && (string)$params['default'] !== '') {
 											$tagAttrib[0][$attr] = $params['default'];
 										}
 										if ($params['always'] || isset($tagAttrib[0][$attr])) {
@@ -848,10 +848,10 @@ class HtmlParser {
 													}
 												}
 											}
-											if ($params['removeIfFalse'] && $params['removeIfFalse'] != 'blank' && !$tagAttrib[0][$attr] || $params['removeIfFalse'] == 'blank' && !strcmp($tagAttrib[0][$attr], '')) {
+											if ($params['removeIfFalse'] && $params['removeIfFalse'] != 'blank' && !$tagAttrib[0][$attr] || $params['removeIfFalse'] == 'blank' && (string)$tagAttrib[0][$attr] === '') {
 												unset($tagAttrib[0][$attr]);
 											}
-											if (strcmp($params['removeIfEquals'], '') && !strcmp($this->caseShift($tagAttrib[0][$attr], $params['casesensitiveComp']), $this->caseShift($params['removeIfEquals'], $params['casesensitiveComp']))) {
+											if ((string)$params['removeIfEquals'] !== '' && $this->caseShift($tagAttrib[0][$attr], $params['casesensitiveComp']) === $this->caseShift($params['removeIfEquals'], $params['casesensitiveComp'])) {
 												unset($tagAttrib[0][$attr]);
 											}
 											if ($params['prefixLocalAnchors']) {
@@ -908,9 +908,9 @@ class HtmlParser {
 										$correctTag = 1;
 										if ($tags[$tagName]['nesting'] == 'global') {
 											$lastEl = end($tagStack);
-											if (strcmp($tagName, $lastEl)) {
+											if ($tagName !== $lastEl) {
 												if (in_array($tagName, $tagStack)) {
-													while (count($tagStack) && strcmp($tagName, $lastEl)) {
+													while (count($tagStack) && $tagName !== $lastEl) {
 														$elPos = end($tagRegister[$lastEl]);
 														unset($newContent[$elPos]);
 														array_pop($tagRegister[$lastEl]);
@@ -948,7 +948,7 @@ class HtmlParser {
 						}
 					} elseif ($keepAll) {
 						// This is if the tag was not defined in the array for processing:
-						if (!strcmp($keepAll, 'protect')) {
+						if ($keepAll === 'protect') {
 							$lt = '&lt;';
 							$gt = '&gt;';
 						} else {
@@ -1184,7 +1184,7 @@ class HtmlParser {
 		// bypass the first
 		while (list($k, $tok) = each($contentParts)) {
 			$firstChar = substr($tok, 0, 1);
-			if (strcmp(trim($firstChar), '')) {
+			if (trim($firstChar) !== '') {
 				$subparts = explode('&gt;', $tok, 2);
 				$tagEnd = strlen($subparts[0]);
 				if (strlen($tok) != $tagEnd) {
@@ -1192,7 +1192,7 @@ class HtmlParser {
 					$tagContent = substr($tok, $endTag, $tagEnd - $endTag);
 					$tagParts = preg_split('/\\s+/s', $tagContent, 2);
 					$tagName = strtolower($tagParts[0]);
-					if (!strcmp($tagList, '') || in_array($tagName, $tagsArray)) {
+					if ((string)$tagList === '' || in_array($tagName, $tagsArray)) {
 						$contentParts[$k] = '<' . $subparts[0] . '>' . $subparts[1];
 					} else {
 						$contentParts[$k] = '&lt;' . $tok;
@@ -1279,12 +1279,12 @@ class HtmlParser {
 		foreach ($tagAttrib as $k => $v) {
 			if ($xhtmlClean) {
 				$attr = strtolower($k);
-				if (strcmp($v, '') || isset($meta[$k]['dashType'])) {
+				if ((string)$v !== '' || isset($meta[$k]['dashType'])) {
 					$attr .= '="' . htmlspecialchars($v) . '"';
 				}
 			} else {
 				$attr = $meta[$k]['origTag'] ? $meta[$k]['origTag'] : $k;
-				if (strcmp($v, '') || isset($meta[$k]['dashType'])) {
+				if ((string)$v !== '' || isset($meta[$k]['dashType'])) {
 					$dash = $meta[$k]['dashType'] ? $meta[$k]['dashType'] : (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($v) ? '' : '"');
 					$attr .= '=' . $dash . $v . $dash;
 				}
@@ -1344,10 +1344,10 @@ class HtmlParser {
 		if (is_array($TSconfig['tags.'])) {
 			foreach ($TSconfig['tags.'] as $key => $tagC) {
 				if (!is_array($tagC) && $key == strtolower($key)) {
-					if (!strcmp($tagC, '0')) {
+					if ((string)$tagC === '0') {
 						unset($keepTags[$key]);
 					}
-					if (!strcmp($tagC, '1') && !isset($keepTags[$key])) {
+					if ((string)$tagC === '1' && !isset($keepTags[$key])) {
 						$keepTags[$key] = 1;
 					}
 				}
@@ -1367,10 +1367,10 @@ class HtmlParser {
 								}
 								$keepTags[$key]['fixAttrib'][$atName] = array_merge($keepTags[$key]['fixAttrib'][$atName], $atConfig);
 								// Candidate for \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge() if integer-keys will some day make trouble...
-								if (strcmp($keepTags[$key]['fixAttrib'][$atName]['range'], '')) {
+								if ((string)$keepTags[$key]['fixAttrib'][$atName]['range'] !== '') {
 									$keepTags[$key]['fixAttrib'][$atName]['range'] = GeneralUtility::trimExplode(',', $keepTags[$key]['fixAttrib'][$atName]['range']);
 								}
-								if (strcmp($keepTags[$key]['fixAttrib'][$atName]['list'], '')) {
+								if ((string)$keepTags[$key]['fixAttrib'][$atName]['list'] !== '') {
 									$keepTags[$key]['fixAttrib'][$atName]['list'] = GeneralUtility::trimExplode(',', $keepTags[$key]['fixAttrib'][$atName]['list']);
 								}
 							}
@@ -1509,11 +1509,11 @@ class HtmlParser {
 				$tagName = strtolower($tagName);
 				// Process attributes
 				$tagAttrib = $this->get_tag_attributes($tagP);
-				if (!strcmp($tagName, 'img') && !isset($tagAttrib[0]['alt'])) {
+				if ($tagName === 'img' && !isset($tagAttrib[0]['alt'])) {
 					$tagAttrib[0]['alt'] = '';
 				}
 				// Set alt attribute for all images (not XHTML though...)
-				if (!strcmp($tagName, 'script') && !isset($tagAttrib[0]['type'])) {
+				if ($tagName === 'script' && !isset($tagAttrib[0]['type'])) {
 					$tagAttrib[0]['type'] = 'text/javascript';
 				}
 				// Set type attribute for all script-tags

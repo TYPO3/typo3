@@ -911,7 +911,7 @@ class TypoScriptFrontendController {
 		if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('FE_SESSION_KEY')) {
 			$fe_sParts = explode('-', GeneralUtility::_GP('FE_SESSION_KEY'));
 			// If the session key hash check is OK:
-			if (!strcmp(md5(($fe_sParts[0] . '/' . $this->TYPO3_CONF_VARS['SYS']['encryptionKey'])), $fe_sParts[1])) {
+			if (md5(($fe_sParts[0] . '/' . $this->TYPO3_CONF_VARS['SYS']['encryptionKey'])) === (string)$fe_sParts[1]) {
 				$cookieName = \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication::getCookieName();
 				$_COOKIE[$cookieName] = $fe_sParts[0];
 				if (isset($_SERVER['HTTP_COOKIE'])) {
@@ -1902,7 +1902,7 @@ class TypoScriptFrontendController {
 		}
 		// Create response:
 		// Simply boolean; Just shows TYPO3 error page with reason:
-		if (gettype($code) == 'boolean' || !strcmp($code, 1)) {
+		if (gettype($code) == 'boolean' || (string)$code === '1') {
 			$title = 'Page Not Found';
 			$message = 'The page did not exist or was inaccessible.' . ($reason ? ' Reason: ' . htmlspecialchars($reason) : '');
 			$messagePage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\ErrorpageMessage', $message, $title);
@@ -2526,7 +2526,7 @@ class TypoScriptFrontendController {
 							case 'content_fallback':
 								$fallBackOrder = GeneralUtility::intExplode(',', $sys_language_content);
 								foreach ($fallBackOrder as $orderValue) {
-									if (!strcmp($orderValue, '0') || count($this->sys_page->getPageOverlay($this->id, $orderValue))) {
+									if ((string)$orderValue === '0' || count($this->sys_page->getPageOverlay($this->id, $orderValue))) {
 										$this->sys_language_content = $orderValue;
 										// Setting content uid (but leaving the sys_language_uid)
 										break;
@@ -2974,7 +2974,7 @@ class TypoScriptFrontendController {
 				}
 				$value = '&' . $linkVar . '=' . $temp;
 			} else {
-				if ($test !== '' && strcmp('array', $test)) {
+				if ($test !== '' && $test !== 'array') {
 					// Error: This key must not be an array!
 					continue;
 				}
@@ -3047,7 +3047,7 @@ class TypoScriptFrontendController {
 		<strong>Page is being generated.</strong><br />
 		If this message does not disappear within ' . $seconds . ' seconds, please reload.';
 			$message = $this->config['config']['message_page_is_being_generated'];
-			if (strcmp('', $message)) {
+			if ((string)$message !== '') {
 				// This page is always encoded as UTF-8
 				$message = $this->csConvObj->utf8_encode($message, $this->renderCharset);
 				$message = str_replace('###TITLE###', $title, $message);
@@ -4046,7 +4046,7 @@ if (version == "n3") {
 		if ($decode) {
 			list($md5Hash, $str) = explode(':', $string, 2);
 			$newHash = substr(md5($this->TYPO3_CONF_VARS['SYS']['encryptionKey'] . ':' . $str), 0, 10);
-			if (!strcmp($md5Hash, $newHash)) {
+			if ($md5Hash === $newHash) {
 				$str = base64_decode($str);
 				$str = $this->roundTripCryptString($str);
 				return $str;
@@ -4634,7 +4634,7 @@ if (version == "n3") {
 		if (!isset($this->LL_labels_cache[$this->lang][$input])) {
 			$restStr = trim(substr($input, 4));
 			$extPrfx = '';
-			if (!strcmp(substr($restStr, 0, 4), 'EXT:')) {
+			if (substr($restStr, 0, 4) === 'EXT:') {
 				$restStr = trim(substr($restStr, 4));
 				$extPrfx = 'EXT:';
 			}

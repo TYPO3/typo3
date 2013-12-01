@@ -170,7 +170,7 @@ class ViewModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 					$data['height'] = $conf['height'];
 				}
 
-				if (strcmp(substr($conf['label'], 0, 4), 'LLL:')) {
+				if (substr($conf['label'], 0, 4) !== 'LLL:') {
 					$label .= $conf['label'];
 				} else {
 					$label .= $GLOBALS['LANG']->sL(trim($conf['label']));

@@ -74,7 +74,7 @@ class BlowfishSaltTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function hasCorrectBaseClass() {
-		$hasCorrectBaseClass = 0 === strcmp('TYPO3\\CMS\\Saltedpasswords\\Salt\\BlowfishSalt', get_class($this->objectInstance)) ? TRUE : FALSE;
+		$hasCorrectBaseClass = get_class($this->objectInstance) === 'TYPO3\\CMS\\Saltedpasswords\\Salt\\BlowfishSalt';
 		// XCLASS ?
 		if (!$hasCorrectBaseClass && FALSE != get_parent_class($this->objectInstance)) {
 			$hasCorrectBaseClass = is_subclass_of($this->objectInstance, 'TYPO3\\CMS\\Saltedpasswords\\Salt\\BlowfishSalt');
@@ -257,7 +257,7 @@ class BlowfishSaltTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			$password = str_repeat($pad, max($i, 1));
 			$saltedHashPasswordPrevious = $saltedHashPasswordCurrent;
 			$saltedHashPasswordCurrent = $this->objectInstance->getHashedPassword($password, $salt);
-			if ($i > 0 && 0 == strcmp($saltedHashPasswordPrevious, $saltedHashPasswordCurrent)) {
+			if ($i > 0 && $saltedHashPasswordPrevious === $saltedHashPasswordCurrent) {
 				$criticalPwLength = $i;
 				break;
 			}

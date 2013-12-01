@@ -377,7 +377,7 @@ class TimeTracker {
 			if ($flag_queries && is_array($data['selectQuery'])) {
 				$msgArr[] = \TYPO3\CMS\Core\Utility\DebugUtility::viewArray($data['selectQuery']);
 			}
-			if ($flag_content && strcmp($data['content'], '')) {
+			if ($flag_content && (string)$data['content'] !== '') {
 				$maxlen = 120;
 				// Break lines which are too longer than $maxlen chars (can happen if content contains long paths...)
 				if (preg_match_all('/(\\S{' . $maxlen . ',})/', $data['content'], $reg)) {

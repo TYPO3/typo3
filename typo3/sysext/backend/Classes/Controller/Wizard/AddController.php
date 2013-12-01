@@ -115,7 +115,7 @@ class AddController {
 			$this->pid = intval($this->P['params']['pid']);
 		}
 		// Return if new record as parent (not possibly/allowed)
-		if (!strcmp($this->pid, '')) {
+		if ($this->pid > 0) {
 			HttpUtility::redirect(GeneralUtility::sanitizeLocalUrl($this->P['returnUrl']));
 		}
 		// Else proceed:

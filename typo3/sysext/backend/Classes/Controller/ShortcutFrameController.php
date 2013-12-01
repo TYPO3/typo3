@@ -253,10 +253,8 @@ class ShortcutFrameController {
 		// Selection-clause for users - so users can deleted only their own shortcuts (except admins)
 		$addUSERWhere = !$GLOBALS['BE_USER']->isAdmin() ? ' AND userid=' . intval($GLOBALS['BE_USER']->user['uid']) : '';
 		// Deleting shortcuts:
-		if (strcmp($this->deleteCategory, '')) {
-			if (MathUtility::canBeInterpretedAsInteger($this->deleteCategory)) {
-				$GLOBALS['TYPO3_DB']->exec_DELETEquery('sys_be_shortcuts', 'sc_group=' . intval($this->deleteCategory) . $addUSERWhere);
-			}
+		if (MathUtility::canBeInterpretedAsInteger($this->deleteCategory)) {
+			$GLOBALS['TYPO3_DB']->exec_DELETEquery('sys_be_shortcuts', 'sc_group=' . intval($this->deleteCategory) . $addUSERWhere);
 		}
 		// If other changes in post-vars:
 		if (is_array($_POST)) {
@@ -344,7 +342,7 @@ class ShortcutFrameController {
 		$bookmarkGroups = $GLOBALS['BE_USER']->getTSConfigProp('options.bookmarkGroups');
 		if (is_array($bookmarkGroups) && count($bookmarkGroups)) {
 			foreach ($bookmarkGroups as $k => $v) {
-				if (strcmp('', $v) && strcmp('0', $v)) {
+				if ((int)$v !== 0) {
 					$this->groupLabels[$k] = (string) $v;
 				} elseif ($GLOBALS['BE_USER']->isAdmin()) {
 					unset($this->groupLabels[$k]);
@@ -396,9 +394,9 @@ class ShortcutFrameController {
 				$this->editSC_rec = $row;
 			}
 			$sc_group = $row['sc_group'];
-			if ($sc_group && strcmp($formerGr, $sc_group)) {
+			if ($sc_group && $formerGr !== $sc_group) {
 				if ($sc_group != -100) {
-					if ($this->groupLabels[abs($sc_group)] && strcmp('1', $this->groupLabels[abs($sc_group)])) {
+					if ($this->groupLabels[abs($sc_group)] && $this->groupLabels[abs($sc_group)] !== '1') {
 						$label = $this->groupLabels[abs($sc_group)];
 					} else {
 						$label = $GLOBALS['LANG']->getLL('shortcut_group_' . abs($sc_group), TRUE);
@@ -502,6 +500,7 @@ class ShortcutFrameController {
 	/**
 	 * Creates lines for the editing form.
 	 *
+	 *
 	 * @return void
 	 * @todo Define visibility
 	 */
@@ -514,7 +513,7 @@ class ShortcutFrameController {
 			$opt = array();
 			$opt[] = '<option value="0"></option>';
 			foreach ($this->groupLabels as $k => $v) {
-				if ($v && strcmp('1', $v)) {
+				if ((int)$v > 1) {
 					$label = $v;
 				} else {
 					$label = $GLOBALS['LANG']->getLL('bookmark_group_' . $k, TRUE);
@@ -523,11 +522,11 @@ class ShortcutFrameController {
 						$label = $GLOBALS['LANG']->getLL('bookmark_group', TRUE) . ' ' . $k;
 					}
 				}
-				$opt[] = '<option value="' . $k . '"' . (!strcmp($this->editSC_rec['sc_group'], $k) ? ' selected="selected"' : '') . '>' . $label . '</option>';
+				$opt[] = '<option value="' . $k . '"' . ((string)$this->editSC_rec['sc_group'] === (string)$k ? ' selected="selected"' : '') . '>' . $label . '</option>';
 			}
 			if ($GLOBALS['BE_USER']->isAdmin()) {
 				foreach ($this->groupLabels as $k => $v) {
-					if ($v && strcmp('1', $v)) {
+					if (intval($v) > 1) {
 						$label = $v;
 					} else {
 						$label = $GLOBALS['LANG']->getLL('bookmark_group_' . $k, TRUE);
@@ -538,9 +537,9 @@ class ShortcutFrameController {
 					}
 					// Add a prefix for global groups
 					$label = $GLOBALS['LANG']->getLL('bookmark_global', TRUE) . ': ' . $label;
-					$opt[] = '<option value="-' . $k . '"' . (!strcmp($this->editSC_rec['sc_group'], ('-' . $k)) ? ' selected="selected"' : '') . '>' . $label . '</option>';
+					$opt[] = '<option value="-' . $k . '"' . ((int)$this->editSC_rec['sc_group'] === -((int)$k) ? ' selected="selected"' : '') . '>' . $label . '</option>';
 				}
-				$opt[] = '<option value="-100"' . (!strcmp($this->editSC_rec['sc_group'], '-100') ? ' selected="selected"' : '') . '>' . $GLOBALS['LANG']->getLL('bookmark_global', TRUE) . ': ' . $GLOBALS['LANG']->getLL('bookmark_all', TRUE) . '</option>';
+				$opt[] = '<option value="-100"' . ((int)$this->editSC_rec['sc_group'] === -100 ? ' selected="selected"' : '') . '>' . $GLOBALS['LANG']->getLL('bookmark_global', TRUE) . ': ' . $GLOBALS['LANG']->getLL('bookmark_all', TRUE) . '</option>';
 			}
 			// border="0" hspace="2" width="21" height="16" - not XHTML compliant in <input type="image" ...>
 			$manageForm = '

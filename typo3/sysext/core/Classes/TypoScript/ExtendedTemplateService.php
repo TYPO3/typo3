@@ -352,14 +352,14 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 	 */
 	public function ext_getSetup($theSetup, $theKey) {
 		$parts = explode('.', $theKey, 2);
-		if (strcmp($parts[0], '') && is_array($theSetup[$parts[0] . '.'])) {
-			if (strcmp(trim($parts[1]), '')) {
+		if ((string)$parts[0] !== '' && is_array($theSetup[$parts[0] . '.'])) {
+			if (trim($parts[1]) !== '') {
 				return $this->ext_getSetup($theSetup[$parts[0] . '.'], trim($parts[1]));
 			} else {
 				return array($theSetup[$parts[0] . '.'], $theSetup[$parts[0]]);
 			}
 		} else {
-			if (strcmp(trim($theKey), '')) {
+			if (trim($theKey) !== '') {
 				return array(array(), $theSetup[$theKey]);
 			} else {
 				return array($theSetup, '');
@@ -675,7 +675,7 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 							<td align="center">' . ($row['clConf'] ? \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-status-checked') : '') . '&nbsp;&nbsp;' . '</td>
 							<td align="center">' . ($row['clConst'] ? \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-status-checked') : '') . '&nbsp;&nbsp;' . '</td>
 							<td align="center">' . ($row['pid'] ? $row['pid'] : '') . '</td>
-							<td align="center">' . (strcmp($RL, '') ? $RL : '') . '</td>
+							<td align="center">' . ((string)$RL !== '' ? $RL : '') . '</td>
 							<td>' . ($row['next'] ? '&nbsp;' . $row['next'] . '&nbsp;&nbsp;' : '') . '</td>
 						</tr>';
 			if ($deeper) {
@@ -1546,7 +1546,7 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 								}
 								break;
 						}
-						if ($this->ext_printAll || strcmp($theConstants[$key]['value'], $var)) {
+						if ($this->ext_printAll || (string)$theConstants[$key]['value'] !== (string)$var) {
 							// Put value in, if changed.
 							$this->ext_putValueInConf($key, $var);
 						}

@@ -1965,7 +1965,7 @@ class SqlParser {
 	}
 
 	/**
-	 * Compare two query strins by stripping away whitespace.
+	 * Compare two query strings by stripping away whitespace.
 	 *
 	 * @param string $str SQL String 1
 	 * @param string $newStr SQL string 2
@@ -1987,10 +1987,11 @@ class SqlParser {
 		$str1 = str_replace($search, $replace, $str1);
 		$str2 = str_replace($search, $replace, $str2);
 
-		if (strcmp(str_replace(array(' ', TAB, CR, LF), '', $this->trimSQL($str1)), str_replace(array(' ', TAB, CR, LF), '', $this->trimSQL($str2)))) {
+		$search = array(' ', TAB, CR, LF);
+		if (str_replace($search, '', $this->trimSQL($str1)) !== str_replace($search, '', $this->trimSQL($str2))) {
 			return array(
-				str_replace(array(' ', TAB, CR, LF), ' ', $str),
-				str_replace(array(' ', TAB, CR, LF), ' ', $newStr),
+				str_replace($search, ' ', $str),
+				str_replace($search, ' ', $newStr),
 			);
 		}
 	}

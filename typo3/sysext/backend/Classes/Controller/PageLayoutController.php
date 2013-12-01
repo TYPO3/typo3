@@ -647,7 +647,7 @@ class PageLayoutController {
 		}
 		// Selecting all content elements from this language and allowed colPos:
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'tt_content', 'pid=' . intval($this->id) . ' AND sys_language_uid=' . intval($this->current_sys_language) . ' AND colPos IN (' . $this->colPosList . ')' . ($this->MOD_SETTINGS['tt_content_showHidden'] ? '' : BackendUtility::BEenableFields('tt_content')) . BackendUtility::deleteClause('tt_content') . BackendUtility::versioningPlaceholderClause('tt_content'), '', 'colPos,sorting');
-		$colPos = '';
+		$colPos = NULL;
 		$first = 1;
 		// Page is the pid if no record to put this after.
 		$prev = $this->id;
@@ -660,7 +660,7 @@ class PageLayoutController {
 					}
 					$first = 0;
 				}
-				if (strcmp($cRow['colPos'], $colPos)) {
+				if (!isset($colPos) || $cRow['colPos'] !== $colPos) {
 					$colPos = $cRow['colPos'];
 					$opt[] = '<option value=""></option>';
 					$opt[] = '<option value="_EDIT_COL:' . $colPos . '">__' . $GLOBALS['LANG']->sL(BackendUtility::getLabelFromItemlist('tt_content', 'colPos', $colPos), TRUE) . ':__</option>';
@@ -749,7 +749,7 @@ class PageLayoutController {
 			}
 			if (!$recordAccess) {
 				// If no edit access, print error message:
-				$content .= $this->doc->section($GLOBALS['LANG']->getLL('noAccess'), $GLOBALS['LANG']->getLL('noAccess_msg') . '<br /><br />' . ($GLOBALS['BE_USER']->errorMsg ? 'Reason: ' . $GLOBALS['BE_USER']->errorMsg . '<br /><br />' : ''), 0, 1);
+				$content = $this->doc->section($GLOBALS['LANG']->getLL('noAccess'), $GLOBALS['LANG']->getLL('noAccess_msg') . '<br /><br />' . ($GLOBALS['BE_USER']->errorMsg ? 'Reason: ' . $GLOBALS['BE_USER']->errorMsg . '<br /><br />' : ''), 0, 1);
 			} elseif (is_array($rec)) {
 				// If the record is an array (which it will always be... :-)
 				// Create instance of TCEforms, setting defaults:
@@ -792,11 +792,11 @@ class PageLayoutController {
 					$defaultFlashMessageQueue->enqueue($flashMessage);
 				}
 				// Add whole form as a document section:
-				$content .= $this->doc->section('', $theCode);
+				$content = $this->doc->section('', $theCode);
 			}
 		} else {
 			// If no edit access, print error message:
-			$content .= $this->doc->section($GLOBALS['LANG']->getLL('noAccess'), $GLOBALS['LANG']->getLL('noAccess_msg') . '<br /><br />', 0, 1);
+			$content = $this->doc->section($GLOBALS['LANG']->getLL('noAccess'), $GLOBALS['LANG']->getLL('noAccess_msg') . '<br /><br />', 0, 1);
 		}
 		// Bottom controls (function menus):
 		$q_count = $this->getNumberOfHiddenElements();
@@ -900,7 +900,7 @@ class PageLayoutController {
 					// ... should be impossible that colPos has no array. But this is the fallback should it make any sense:
 					$colList = array('1', '0', '2', '3');
 				}
-				if (strcmp($this->colPosList, '')) {
+				if ($this->colPosList !== '') {
 					$colList = array_intersect(GeneralUtility::intExplode(',', $this->colPosList), $colList);
 				}
 				// If only one column found, display the single-column view.

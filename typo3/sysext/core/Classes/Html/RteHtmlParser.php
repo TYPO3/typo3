@@ -213,7 +213,7 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 		// Get parameters for rte_transformation:
 		$p = ($this->rte_p = BackendUtility::getSpecConfParametersFromArray($specConf['rte_transform']['parameters']));
 		// Setting modes:
-		if (strcmp($this->procOptions['overruleMode'], '')) {
+		if ((string)$this->procOptions['overruleMode'] !== '') {
 			$modes = array_unique(GeneralUtility::trimExplode(',', $this->procOptions['overruleMode']));
 		} else {
 			$modes = array_unique(GeneralUtility::trimExplode('-', $p['mode']));
@@ -803,7 +803,7 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 							$link_params_parts = explode('#', $idPart);
 							$idPart = trim($link_params_parts[0]);
 							$sectionMark = trim($link_params_parts[1]);
-							if (!strcmp($idPart, '')) {
+							if ((string)$idPart === '') {
 								$idPart = $this->recPid;
 							}
 							// If no id or alias is given, set it to class record pid
@@ -920,7 +920,7 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 		$cc = 0;
 		$aC = count($blockSplit);
 		// Avoid superfluous linebreaks by transform_db after ending headListTag
-		while ($aC && !strcmp(trim($blockSplit[($aC - 1)]), '')) {
+		while ($aC && trim($blockSplit[($aC - 1)]) === '') {
 			unset($blockSplit[$aC - 1]);
 			$aC = count($blockSplit);
 		}
@@ -1019,7 +1019,7 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 				}
 			} else {
 				// NON-block:
-				if (strcmp(trim($blockSplit[$k]), '')) {
+				if (trim($blockSplit[$k]) !== '') {
 					$blockSplit[$k] = preg_replace('/<hr\\/>/', '<hr />', $blockSplit[$k]);
 					// Remove linebreaks preceding hr tags
 					$blockSplit[$k] = preg_replace('/[' . LF . CR . ']+<(hr)(\\s[^>\\/]*)?[[:space:]]*\\/?>/', '<$1$2/>', $blockSplit[$k]);
@@ -1148,7 +1148,7 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 					}
 				}
 				// If $blockSplit[$k] is blank then unset the line, unless the line only contained linebreaks
-				if (!strcmp($blockSplit[$k], '') && !$onlyLineBreaks) {
+				if ((string)$blockSplit[$k] === '' && !$onlyLineBreaks) {
 					unset($blockSplit[$k]);
 				} else {
 					$blockSplit[$k] = $this->setDivTags($blockSplit[$k], $this->procOptions['useDIVasParagraphTagForRTE'] ? 'div' : 'p');
@@ -1231,7 +1231,7 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 		if (!is_array($this->getKeepTags_cache[$direction]) || $tagList) {
 			// Setting up allowed tags:
 			// If the $tagList input var is set, this will take precedence
-			if (strcmp($tagList, '')) {
+			if ((string)$tagList !== '') {
 				$keepTags = array_flip(GeneralUtility::trimExplode(',', $tagList, TRUE));
 			} else {
 				// Default is to get allowed/denied tags from internal array of processing options:
@@ -1403,13 +1403,13 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 							}
 						}
 						// ALIGN attribute:
-						if (!$this->procOptions['skipAlign'] && strcmp(trim($attribs[0]['align']), '') && strtolower($attribs[0]['align']) != 'left') {
+						if (!$this->procOptions['skipAlign'] && trim($attribs[0]['align']) !== '' && strtolower($attribs[0]['align']) != 'left') {
 							// Set to value, but not 'left'
 							$newAttribs['align'] = strtolower($attribs[0]['align']);
 						}
 						// CLASS attribute:
 						// Set to whatever value
-						if (!$this->procOptions['skipClass'] && strcmp(trim($attribs[0]['class']), '')) {
+						if (!$this->procOptions['skipClass'] && trim($attribs[0]['class']) !== '') {
 							if (!count($this->allowedClasses) || in_array($attribs[0]['class'], $this->allowedClasses)) {
 								$newAttribs['class'] = $attribs[0]['class'];
 							} else {
@@ -1428,11 +1428,11 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 						// Remove any line break char (10 or 13)
 						$subLines[$sk] = preg_replace('/' . LF . '|' . CR . '/', '', $subLines[$sk]);
 						// If there are any attributes or if we are supposed to remap the tag, then do so:
-						if (count($newAttribs) && strcmp($remapParagraphTag, '1')) {
-							if ($remapParagraphTag == 'P') {
+						if (count($newAttribs) && $remapParagraphTag !== '1') {
+							if ($remapParagraphTag === 'P') {
 								$tagName = 'p';
 							}
-							if ($remapParagraphTag == 'DIV') {
+							if ($remapParagraphTag === 'DIV') {
 								$tagName = 'div';
 							}
 							$subLines[$sk] = '<' . trim(($tagName . ' ' . $this->compileTagAttribs($newAttribs))) . '>' . $subLines[$sk] . '</' . $tagName . '>';
@@ -1455,7 +1455,7 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 				$divSplit[$k] = preg_replace('/<(hr)(\\s[^>\\/]*)?[[:space:]]*\\/?>/i', LF . '<$1$2/>' . LF, $divSplit[$k]);
 				$divSplit[$k] = preg_replace('/' . LF . LF . '/i', LF, $divSplit[$k]);
 				$divSplit[$k] = preg_replace('/(^' . LF . ')|(' . LF . '$)/i', '', $divSplit[$k]);
-				if (!strcmp($divSplit[$k], '')) {
+				if ((string)$divSplit[$k] === '') {
 					unset($divSplit[$k]);
 				}
 			}
@@ -1487,7 +1487,7 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 		foreach ($parts as $k => $v) {
 			// Processing of line content:
 			// If the line is blank, set it to &nbsp;
-			if (!strcmp(trim($parts[$k]), '')) {
+			if (trim($parts[$k]) === '') {
 				$parts[$k] = '&nbsp;';
 			} else {
 				// Clean the line content:
@@ -1699,10 +1699,10 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 				// If the script path seems to match or is empty (FE-EDIT)
 				// New processing order 100502
 				$uP = parse_url($info['relUrl']);
-				if (!strcmp(('#' . $siteUrl_parts['fragment']), $info['relUrl'])) {
+				if ($info['relUrl'] === '#' . $siteUrl_parts['fragment']) {
 					$info['url'] = $info['relUrl'];
 					$info['type'] = 'anchor';
-				} elseif (!trim($uP['path']) || !strcmp($uP['path'], 'index.php')) {
+				} elseif (!trim($uP['path']) || $uP['path'] === 'index.php') {
 					// URL is a page (id parameter)
 					$pp = preg_split('/^id=/', $uP['query']);
 					$pp[1] = preg_replace('/&id=[^&]*/', '', $pp[1]);

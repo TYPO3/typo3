@@ -92,7 +92,7 @@ class FormContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractConten
 						if (is_array($singleKeyArray['valueArray.'])) {
 							$temp_accumulated = array();
 							foreach ($singleKeyArray['valueArray.'] as $singleKey => $singleKey_valueArray) {
-								if (is_array($singleKey_valueArray) && !strcmp((intval($singleKey) . '.'), $singleKey)) {
+								if (is_array($singleKey_valueArray) && (int)$singleKey . '.' === (string)$singleKey) {
 									$temp_valueArray = array();
 									$valueArrayLabel = isset($singleKey_valueArray['label.']) ? $this->cObj->stdWrap($singleKey_valueArray['label'], $singleKey_valueArray['label.']) : $singleKey_valueArray['label'];
 									list($temp_valueArray[0]) = explode('=', $valueArrayLabel);
@@ -193,7 +193,7 @@ class FormContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractConten
 					} else {
 						$addParams = isset($conf['params.']) ? trim($this->cObj->stdWrap($conf['params'], $conf['params.'])) : trim($conf['params']);
 					}
-					if (strcmp('', $addParams)) {
+					if ((string)$addParams !== '') {
 						$addParams = ' ' . $addParams;
 					}
 				} else {
@@ -354,7 +354,7 @@ class FormContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractConten
 							} else {
 								$radioLabelIdAttribute = '';
 							}
-							$optionParts .= '<input type="radio" name="' . $confData['fieldname'] . '"' . $radioLabelIdAttribute . ' value="' . $items[$a][1] . '"' . (!strcmp($items[$a][1], $default) ? ' checked="checked"' : '') . $addParams . ' />';
+							$optionParts .= '<input type="radio" name="' . $confData['fieldname'] . '"' . $radioLabelIdAttribute . ' value="' . $items[$a][1] . '"' . ((string)$items[$a][1] === (string)$default ? ' checked="checked"' : '') . $addParams . ' />';
 							if ($accessibility) {
 								$label = isset($conf['radioWrap.']) ? $this->cObj->stdWrap(trim($items[$a][0]), $conf['radioWrap.']) : trim($items[$a][0]);
 								$optionParts .= '<label for="' . $radioId . '">' . $label . '</label>';

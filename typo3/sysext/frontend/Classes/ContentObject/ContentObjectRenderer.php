@@ -1278,7 +1278,7 @@ class ContentObjectRenderer {
 	 */
 	public function getSlidePids($pidList, $pidConf) {
 		$pidList = isset($pidConf) ? trim($this->stdWrap($pidList, $pidConf)) : trim($pidList);
-		if (!strcmp($pidList, '')) {
+		if ($pidList === '') {
 			$pidList = 'this';
 		}
 		if (trim($pidList)) {
@@ -4223,11 +4223,11 @@ class ContentObjectRenderer {
 			// adds/overrides attributes
 			foreach ($conf as $pkey => $val) {
 				if (substr($pkey, -1) != '.' && substr($pkey, 0, 1) != '_') {
-					$tmpVal = isset($conf[$pkey . '.']) ? $this->stdWrap($conf[$pkey], $conf[$pkey . '.']) : $conf[$pkey];
+					$tmpVal = isset($conf[$pkey . '.']) ? $this->stdWrap($conf[$pkey], $conf[$pkey . '.']) : (string)$val;
 					if ($lowerCaseAttributes) {
 						$pkey = strtolower($pkey);
 					}
-					if (strcmp($tmpVal, '')) {
+					if ($tmpVal !== '') {
 						$attribs[$pkey] = $tmpVal;
 					}
 				}
@@ -4688,7 +4688,7 @@ class ContentObjectRenderer {
 			$conf = $temp_conf['parseFunc.'];
 		}
 		// Process:
-		if (strcmp($conf['externalBlocks'], '')) {
+		if ((string)$conf['externalBlocks'] !== '') {
 			$tags = strtolower(implode(',', GeneralUtility::trimExplode(',', $conf['externalBlocks'])));
 			$htmlParser = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Html\\HtmlParser');
 			$parts = $htmlParser->splitIntoBlock($tags, $theValue);
@@ -5005,7 +5005,7 @@ class ContentObjectRenderer {
 		$encapTags = GeneralUtility::trimExplode(',', strtolower($conf['encapsTagList']), TRUE);
 		$nonWrappedTag = $conf['nonWrappedTag'];
 		$defaultAlign = isset($conf['defaultAlign.']) ? trim($this->stdWrap($conf['defaultAlign'], $conf['defaultAlign.'])) : trim($conf['defaultAlign']);
-		if (!strcmp('', $theValue)) {
+		if ((string)$theValue === '') {
 			return '';
 		}
 		foreach ($lParts as $k => $l) {
@@ -5054,7 +5054,7 @@ class ContentObjectRenderer {
 					foreach ($conf['addAttributes.'][$uTagName . '.'] as $kk => $vv) {
 						if (!is_array($vv)) {
 							if ((string) $conf['addAttributes.'][($uTagName . '.')][($kk . '.')]['setOnly'] == 'blank') {
-								if (!strcmp($attrib[$kk], '')) {
+								if ((string)$attrib[$kk] === '') {
 									$attrib[$kk] = $vv;
 								}
 							} elseif ((string) $conf['addAttributes.'][($uTagName . '.')][($kk . '.')]['setOnly'] == 'exists') {
@@ -5364,7 +5364,7 @@ class ContentObjectRenderer {
 		} else {
 			$sections = GeneralUtility::trimExplode('//', $field, TRUE);
 			foreach ($sections as $k) {
-				if (strcmp($this->data[$k], '')) {
+				if ((string)$this->data[$k] !== '') {
 					return $this->data[$k];
 				}
 			}
@@ -5698,7 +5698,7 @@ class ContentObjectRenderer {
 				// Traverse the items-array...
 				foreach ($GLOBALS['TCA'][$table]['columns'][$field]['config']['items'] as $item) {
 					// ... and return the first found label where the value was equal to $key
-					if (!strcmp($item[1], trim($value))) {
+					if ((string)$item[1] === trim($value)) {
 						$output[] = $GLOBALS['TSFE']->sL($item[0]);
 					}
 				}
@@ -5745,7 +5745,7 @@ class ContentObjectRenderer {
 			$link_paramA = GeneralUtility::unQuoteFilenames($link_param, TRUE);
 			// Check for link-handler keyword:
 			list($linkHandlerKeyword, $linkHandlerValue) = explode(':', trim($link_paramA[0]), 2);
-			if ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['typolinkLinkHandler'][$linkHandlerKeyword] && strcmp($linkHandlerValue, '')) {
+			if ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['typolinkLinkHandler'][$linkHandlerKeyword] && (string)$linkHandlerValue !== '') {
 				$linkHandlerObj = GeneralUtility::getUserObj($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['typolinkLinkHandler'][$linkHandlerKeyword]);
 				if (method_exists($linkHandlerObj, 'main')) {
 					return $linkHandlerObj->main($linktxt, $conf, $linkHandlerKeyword, $linkHandlerValue, $link_param, $this);
@@ -5937,7 +5937,7 @@ class ContentObjectRenderer {
 					// Link-data del
 					$link_param = trim($link_params_parts[0]);
 					// If no id or alias is given
-					if (!strcmp($link_param, '')) {
+					if ($link_param === '') {
 						$link_param = $GLOBALS['TSFE']->id;
 					}
 					if ($link_params_parts[1] && !$sectionMark) {
@@ -6339,7 +6339,7 @@ class ContentObjectRenderer {
 		// MountPoints:
 		if ($GLOBALS['TYPO3_CONF_VARS']['FE']['enable_mount_pids'] && $GLOBALS['TSFE']->MP) {
 			// Same page as current.
-			if (!strcmp($GLOBALS['TSFE']->id, $pageId)) {
+			if ((int)$GLOBALS['TSFE']->id === (int)$pageId) {
 				$MP = $GLOBALS['TSFE']->MP;
 			} else {
 				// ... otherwise find closest meeting point:
@@ -6391,7 +6391,7 @@ class ContentObjectRenderer {
 	 * @todo Define visibility
 	 */
 	public function getMailTo($mailAddress, $linktxt, $initP = '?') {
-		if (!strcmp($linktxt, '')) {
+		if ((string)$linktxt === '') {
 			$linktxt = $mailAddress;
 		}
 		$mailToUrl = 'mailto:' . $mailAddress;
@@ -7189,7 +7189,7 @@ class ContentObjectRenderer {
 				}
 			}
 			// If $feEditSelf is set, fe_users may always edit them selves...
-			if ($feEditSelf && $table == 'fe_users' && !strcmp($feUserRow['uid'], $row['uid'])) {
+			if ($feEditSelf && $table == 'fe_users' && (int)$feUserRow['uid'] === (int)$row['uid']) {
 				$ok = 1;
 			}
 			// Points to the field (integer) that holds the fe_group-id of the creator fe_user's first group
@@ -7626,7 +7626,7 @@ class ContentObjectRenderer {
 				$conf['pidInList'] = implode(',', $expandedPidList);
 			}
 		}
-		if (!strcmp($conf['pidInList'], '')) {
+		if ((string)$conf['pidInList'] === '') {
 			$conf['pidInList'] = 'this';
 		}
 		$queryParts = $this->getWhere($table, $conf, TRUE);

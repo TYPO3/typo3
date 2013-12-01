@@ -114,7 +114,7 @@ class DiffUtility {
 						$outString .= '<' . $wrapTag . ' class="diff-g">' . htmlspecialchars(implode(' ', $diffResArray[($a + 1)]['new'])) . '</' . $wrapTag . '> ';
 					}
 					$chInfParts = explode(',', $diffResArray[$a + 1]['changeInfo']);
-					if (!strcmp($chInfParts[0], ($a + 1))) {
+					if ((string)$chInfParts[0] === (string)($a + 1)) {
 						$newLine = intval($chInfParts[1]) - 1;
 						if ($newLine > $a) {
 							$a = $newLine;

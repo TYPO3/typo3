@@ -373,7 +373,7 @@ class PagePositionMap {
 		$colPosArray = GeneralUtility::trimExplode(',', $colPosList, TRUE);
 		$lines = array();
 		foreach ($colPosArray as $kk => $vv) {
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'tt_content', 'pid=' . intval($pid) . ($showHidden ? '' : BackendUtility::BEenableFields('tt_content')) . ' AND colPos=' . intval($vv) . (strcmp($this->cur_sys_language, '') ? ' AND sys_language_uid=' . intval($this->cur_sys_language) : '') . BackendUtility::deleteClause('tt_content') . BackendUtility::versioningPlaceholderClause('tt_content'), '', 'sorting');
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'tt_content', 'pid=' . intval($pid) . ($showHidden ? '' : BackendUtility::BEenableFields('tt_content')) . ' AND colPos=' . intval($vv) . ((string)$this->cur_sys_language !== '' ? ' AND sys_language_uid=' . intval($this->cur_sys_language) : '') . BackendUtility::deleteClause('tt_content') . BackendUtility::versioningPlaceholderClause('tt_content'), '', 'sorting');
 			$lines[$vv] = array();
 			$lines[$vv][] = $this->insertPositionIcon('', $vv, $kk, $moveUid, $pid);
 			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {

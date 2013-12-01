@@ -377,7 +377,7 @@ class HelpModuleController {
 			$parts[0] = '';
 			// Traverse table columns as listed in TCA_DESCR
 			foreach ($GLOBALS['TCA_DESCR'][$key]['columns'] as $field => $_) {
-				$fieldValue = isset($GLOBALS['TCA'][$key]) && strcmp($field, '') ? $GLOBALS['TCA'][$key]['columns'][$field] : array();
+				$fieldValue = isset($GLOBALS['TCA'][$key]) && (string)$field !== '' ? $GLOBALS['TCA'][$key]['columns'][$field] : array();
 				if (is_array($fieldValue) && (!$this->limitAccess || !$fieldValue['exclude'] || $GLOBALS['BE_USER']->check('non_exclude_fields', $table . ':' . $field))) {
 					if (!$field) {
 						// Header

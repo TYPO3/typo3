@@ -205,7 +205,7 @@ class ReferenceIndex {
 				}
 				// Word indexing:
 				foreach ($GLOBALS['TCA'][$table]['columns'] as $field => $conf) {
-					if (GeneralUtility::inList('input,text', $conf['config']['type']) && strcmp($record[$field], '') && !\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($record[$field])) {
+					if (GeneralUtility::inList('input,text', $conf['config']['type']) && (string)$record[$field] !== '' && !\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($record[$field])) {
 						$this->words_strings[$field] = $record[$field];
 					}
 				}
@@ -405,7 +405,7 @@ class ReferenceIndex {
 							}
 						}
 					}
-					if (is_array($outRow[$field]['softrefs']) && count($outRow[$field]['softrefs']) && strcmp($value, $softRefValue) && strstr($softRefValue, '{softref:')) {
+					if (is_array($outRow[$field]['softrefs']) && count($outRow[$field]['softrefs']) && (string)$value !== (string)$softRefValue && strstr($softRefValue, '{softref:')) {
 						$outRow[$field]['softrefs']['tokenizedContent'] = $softRefValue;
 					}
 				}
@@ -457,7 +457,7 @@ class ReferenceIndex {
 					}
 				}
 			}
-			if (count($this->temp_flexRelations['softrefs']) && strcmp($dataValue, $softRefValue)) {
+			if (count($this->temp_flexRelations['softrefs']) && (string)$dataValue !== (string)$softRefValue) {
 				$this->temp_flexRelations['softrefs'][$structurePath]['tokenizedContent'] = $softRefValue;
 			}
 		}
@@ -692,7 +692,7 @@ class ReferenceIndex {
 	 * @todo Define visibility
 	 */
 	public function setReferenceValue_dbRels($refRec, $itemArray, $newValue, &$dataArray, $flexpointer = '') {
-		if (!strcmp($itemArray[$refRec['sorting']]['id'], $refRec['ref_uid']) && !strcmp($itemArray[$refRec['sorting']]['table'], $refRec['ref_table'])) {
+		if ((int)$itemArray[$refRec['sorting']]['id'] === (int)$refRec['ref_uid'] && (string)$itemArray[$refRec['sorting']]['table'] === (string)$refRec['ref_table']) {
 			// Setting or removing value:
 			// Remove value:
 			if ($newValue === NULL) {
@@ -730,7 +730,8 @@ class ReferenceIndex {
 	 * @todo Define visibility
 	 */
 	public function setReferenceValue_fileRels($refRec, $itemArray, $newValue, &$dataArray, $flexpointer = '') {
-		if (!strcmp(\TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($itemArray[$refRec['sorting']]['ID_absFile']), $refRec['ref_string']) && !strcmp('_FILE', $refRec['ref_table'])) {
+		$ID_absFile = \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($itemArray[$refRec['sorting']]['ID_absFile']);
+		if ($ID_absFile === (string)$refRec['ref_string'] && $refRec['ref_table'] === '_FILE') {
 			// Setting or removing value:
 			// Remove value:
 			if ($newValue === NULL) {

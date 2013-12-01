@@ -565,7 +565,7 @@ class InlineElement {
 				$recTitle = BackendUtility::getRecordTitle($itemParts[0], $recTemp, FALSE);
 			}
 			$recTitle = BackendUtility::getRecordTitlePrep($recTitle);
-			if (!strcmp(trim($recTitle), '')) {
+			if (trim($recTitle) === '') {
 				$recTitle = BackendUtility::getNoRecordTitle(TRUE);
 			}
 		} else {
@@ -1548,7 +1548,7 @@ class InlineElement {
 			$removeItems = GeneralUtility::trimExplode(',', $PA['fieldTSConfig']['removeItems'], TRUE);
 			foreach ($selItems as $tk => $p) {
 				// Checking languages and authMode:
-				$languageDeny = $tcaTableCtrl['languageField'] && !strcmp($tcaTableCtrl['languageField'], $field) && !$GLOBALS['BE_USER']->checkLanguageAccess($p[1]);
+				$languageDeny = $tcaTableCtrl['languageField'] && (string)$tcaTableCtrl['languageField'] === $field && !$GLOBALS['BE_USER']->checkLanguageAccess($p[1]);
 				$authModeDeny = $config['form_type'] == 'select' && $config['authMode'] && !$GLOBALS['BE_USER']->checkAuthMode($table, $field, $p[1], $config['authMode']);
 				if (in_array($p[1], $removeItems) || $languageDeny || $authModeDeny) {
 					unset($selItems[$tk]);

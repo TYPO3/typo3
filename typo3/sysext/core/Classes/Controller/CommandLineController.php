@@ -93,10 +93,10 @@ class CommandLineController {
 	 * @todo Define visibility
 	 */
 	public function cli_getArgArray($option, $argv) {
-		while (count($argv) && strcmp($argv[0], $option)) {
+		while (count($argv) && (string)$argv[0] !== (string)$option) {
 			array_shift($argv);
 		}
-		if (!strcmp($argv[0], $option)) {
+		if ((string)$argv[0] === (string)$option) {
 			array_shift($argv);
 			return count($argv) ? $argv : array('');
 		}

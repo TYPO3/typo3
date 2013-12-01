@@ -533,7 +533,7 @@ class ImportExport {
 	 */
 	public function export_addRecord($table, $row, $relationLevel = 0) {
 		BackendUtility::workspaceOL($table, $row);
-		if (strcmp($table, '') && is_array($row) && $row['uid'] > 0 && !$this->excludeMap[($table . ':' . $row['uid'])]) {
+		if ((string)$table !== '' && is_array($row) && $row['uid'] > 0 && !$this->excludeMap[($table . ':' . $row['uid'])]) {
 			if ($this->checkPID($table === 'pages' ? $row['uid'] : $row['pid'])) {
 				if (!isset($this->dat['records'][($table . ':' . $row['uid'])])) {
 					// Prepare header info:
@@ -2191,10 +2191,10 @@ class ImportExport {
 		$initStr = fread($fd, $initStrLen);
 		$initStrDat = explode(':', $initStr);
 		if (strstr($initStrDat[0], 'Warning') == FALSE) {
-			if (!strcmp($initStrDat[3], '')) {
+			if ((string)$initStrDat[3] === '') {
 				$datString = fread($fd, intval($initStrDat[2]));
 				fread($fd, 1);
-				if (!strcmp(md5($datString), $initStrDat[0])) {
+				if (md5($datString) === $initStrDat[0]) {
 					if ($initStrDat[1]) {
 						if ($this->compress) {
 							$datString = gzuncompress($datString);
@@ -2246,10 +2246,10 @@ class ImportExport {
 		$initStr = substr($filecontent, $pointer, $initStrLen);
 		$pointer += $initStrLen;
 		$initStrDat = explode(':', $initStr);
-		if (!strcmp($initStrDat[3], '')) {
+		if ((string)$initStrDat[3] === '') {
 			$datString = substr($filecontent, $pointer, intval($initStrDat[2]));
 			$pointer += intval($initStrDat[2]) + 1;
-			if (!strcmp(md5($datString), $initStrDat[0])) {
+			if (md5($datString) === $initStrDat[0]) {
 				if ($initStrDat[1]) {
 					if ($this->compress) {
 						$datString = gzuncompress($datString);
@@ -2745,7 +2745,7 @@ class ImportExport {
 					$testDirPrefix2 = $this->verifyFolderAccess($testDirPrefix);
 					if (!$testDirPrefix2) {
 						$pInfo['msg'] = 'ERROR: There are no available filemounts to write file in! ';
-					} elseif (strcmp($testDirPrefix, $testDirPrefix2)) {
+					} elseif ($testDirPrefix !== $testDirPrefix2) {
 						$pInfo['msg'] = 'File will be attempted written to "' . $testDirPrefix2 . '". ';
 					}
 				}
@@ -3027,13 +3027,13 @@ class ImportExport {
 		$opt = array();
 		$isSelFlag = 0;
 		foreach ($optValues as $k => $v) {
-			$sel = !strcmp($k, $value) ? ' selected="selected"' : '';
+			$sel = (string)$k === (string)$value ? ' selected="selected"' : '';
 			if ($sel) {
 				$isSelFlag++;
 			}
 			$opt[] = '<option value="' . htmlspecialchars($k) . '"' . $sel . '>' . htmlspecialchars($v) . '</option>';
 		}
-		if (!$isSelFlag && strcmp('', $value)) {
+		if (!$isSelFlag && (string)$value !== '') {
 			$opt[] = '<option value="' . htmlspecialchars($value) . '" selected="selected">' . htmlspecialchars(('[\'' . $value . '\']')) . '</option>';
 		}
 		return '<select name="' . $prefix . '">' . implode('', $opt) . '</select>';
@@ -3060,7 +3060,7 @@ class ImportExport {
 			foreach ($databaseRecord as $fN => $value) {
 				if (is_array($GLOBALS['TCA'][$table]['columns'][$fN]) && $GLOBALS['TCA'][$table]['columns'][$fN]['config']['type'] != 'passthrough') {
 					if (isset($importRecord[$fN])) {
-						if (strcmp(trim($databaseRecord[$fN]), trim($importRecord[$fN]))) {
+						if (trim($databaseRecord[$fN]) !== trim($importRecord[$fN])) {
 							// Create diff-result:
 							$output[$fN] = $t3lib_diff_Obj->makeDiffDisplay(BackendUtility::getProcessedValue($table, $fN, !$inverseDiff ? $importRecord[$fN] : $databaseRecord[$fN], 0, 1, 1), BackendUtility::getProcessedValue($table, $fN, !$inverseDiff ? $databaseRecord[$fN] : $importRecord[$fN], 0, 1, 1));
 						}

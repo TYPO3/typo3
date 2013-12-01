@@ -738,7 +738,7 @@ class FormsController {
 						if ($vv['default']) {
 							$thisLine[2] = 1;
 						}
-					} elseif (strcmp(trim($vv['default']), '')) {
+					} elseif (trim($vv['default']) !== '') {
 						$thisLine[2] = $vv['default'];
 					}
 					if (isset($thisLine[2])) {
@@ -852,7 +852,7 @@ class FormsController {
 	 */
 	public function cleanT($tArr) {
 		for ($a = count($tArr); $a > 0; $a--) {
-			if (strcmp($tArr[$a - 1], '')) {
+			if ((string)$tArr[$a - 1] !== '') {
 				break;
 			} else {
 				unset($tArr[$a - 1]);

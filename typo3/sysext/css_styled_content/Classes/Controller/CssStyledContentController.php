@@ -82,7 +82,7 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 			// Get bodytext field content, returning blank if empty:
 			$field = isset($conf['field']) && trim($conf['field']) ? trim($conf['field']) : 'bodytext';
 			$content = trim($this->cObj->data[$field]);
-			if (!strcmp($content, '')) {
+			if ($content === '') {
 				return '';
 			}
 			// Split into single lines:
@@ -119,7 +119,7 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 			// Get bodytext field content
 			$field = isset($conf['field']) && trim($conf['field']) ? trim($conf['field']) : 'bodytext';
 			$content = trim($this->cObj->data[$field]);
-			if (!strcmp($content, '')) {
+			if ($content === '') {
 				return '';
 			}
 			// get flexform values
@@ -158,7 +158,7 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 				$cells = str_getcsv($v, $delimiter, $quotedInput);
 				$newCells = array();
 				for ($a = 0; $a < $cols; $a++) {
-					if (!strcmp(trim($cells[$a]), '')) {
+					if (trim($cells[$a]) === '') {
 						$cells[$a] = '&nbsp;';
 					}
 					$cellAttribs = $noStyles ? '' : ($a > 0 && $cols - 1 == $a ? ' class="td-last td-' . $a . '"' : ' class="td-' . $a . '"');

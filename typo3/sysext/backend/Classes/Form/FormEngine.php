@@ -674,7 +674,7 @@ class FormEngine {
 					foreach ($fields as $fieldInfo) {
 						$parts = explode(';', $fieldInfo);
 						$theField = trim($parts[0]);
-						if (!in_array($theField, $excludeElements) && !strcmp($theField, $theFieldToReturn)) {
+						if (!in_array($theField, $excludeElements) && (string)$theField === (string)$theFieldToReturn) {
 							if ($GLOBALS['TCA'][$table]['columns'][$theField]) {
 								$sField = $this->getSingleField($table, $theField, $row, $parts[1], 1, $parts[3], $parts[2]);
 								return $sField['ITEM'];
@@ -762,16 +762,16 @@ class FormEngine {
 						$parts = explode(';', $fieldInfo);
 						// Getting the style information out:
 						$color_style_parts = GeneralUtility::trimExplode('-', $parts[4]);
-						if (strcmp($color_style_parts[0], '')) {
+						if ($color_style_parts[0] !== '') {
 							$this->setColorScheme($GLOBALS['TBE_STYLES']['colorschemes'][intval($color_style_parts[0])]);
 						}
-						if (strcmp($color_style_parts[1], '')) {
+						if ($color_style_parts[1] !== '') {
 							$this->fieldStyle = $GLOBALS['TBE_STYLES']['styleschemes'][intval($color_style_parts[1])];
 							if (!isset($this->fieldStyle)) {
 								$this->fieldStyle = $GLOBALS['TBE_STYLES']['styleschemes'][0];
 							}
 						}
-						if (strcmp($color_style_parts[2], '')) {
+						if ($color_style_parts[2] !== '') {
 							$this->wrapBorder($out_array[$out_sheet], $out_pointer);
 							$this->borderStyle = $GLOBALS['TBE_STYLES']['borderschemes'][intval($color_style_parts[2])];
 							if (!isset($this->borderStyle)) {
@@ -1036,7 +1036,7 @@ class FormEngine {
 			&& $PA['fieldConf']['config']['form_type'] != 'passthrough'
 			&& ($this->RTEenabled || !$PA['fieldConf']['config']['showIfRTE'])
 			&& $displayConditionResult
-			&& (!$GLOBALS['TCA'][$table]['ctrl']['languageField'] || $PA['fieldConf']['l10n_display'] || strcmp($PA['fieldConf']['l10n_mode'], 'exclude') || $row[$GLOBALS['TCA'][$table]['ctrl']['languageField']] <= 0)
+			&& (!$GLOBALS['TCA'][$table]['ctrl']['languageField'] || $PA['fieldConf']['l10n_display'] || ($PA['fieldConf']['l10n_mode'] !== 'exclude') || $row[$GLOBALS['TCA'][$table]['ctrl']['languageField']] <= 0)
 			&& (!$GLOBALS['TCA'][$table]['ctrl']['languageField'] || !$this->localizationMode || $this->localizationMode === $PA['fieldConf']['l10n_cat'])
 		) {
 			// Fetching the TSconfig for the current table/field. This includes the $row which means that
@@ -1067,9 +1067,9 @@ class FormEngine {
 				}
 				// Create a JavaScript code line which will ask the user to save/update the form due to changing the element. This is used for eg. "type" fields and others configured with "requestUpdate"
 				if (
-					$GLOBALS['TCA'][$table]['ctrl']['type']
-					&& !strcmp($field, $typeField)
-					|| $GLOBALS['TCA'][$table]['ctrl']['requestUpdate']
+					!empty($GLOBALS['TCA'][$table]['ctrl']['type'])
+					&& $field === $typeField
+					|| !empty($GLOBALS['TCA'][$table]['ctrl']['requestUpdate'])
 					&& GeneralUtility::inList(str_replace(' ', '', $GLOBALS['TCA'][$table]['ctrl']['requestUpdate']), $field)
 				) {
 					if ($GLOBALS['BE_USER']->jsConfirmation(1)) {
@@ -1715,7 +1715,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 			$p = $selItems[$c];
 			$rID = $PA['itemFormElID'] . '_' . $c;
 			$rOnClick = implode('', $PA['fieldChangeFunc']);
-			$rChecked = !strcmp($p[1], $PA['itemFormElValue']) ? ' checked="checked"' : '';
+			$rChecked = (string)$p[1] === (string)$PA['itemFormElValue'] ? ' checked="checked"' : '';
 			$item .= '<input type="radio"' . $this->insertDefStyle('radio') . ' name="' . $PA['itemFormElName'] . '" value="' . htmlspecialchars($p[1]) . '" onclick="' . htmlspecialchars($rOnClick) . '"' . $rChecked . $PA['onFocus'] . $disabled . ' id="' . $rID . '" />
 					<label for="' . $rID . '">' . htmlspecialchars($p[0]) . '</label>
 					<br />';
@@ -1752,13 +1752,13 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 		// If a SINGLE selector box...
 		if ($maxitems <= 1 && $config['renderMode'] !== 'tree') {
 			$item = $this->getSingleField_typeSelect_single($table, $field, $row, $PA, $config, $selItems, $nMV_label);
-		} elseif (!strcmp($config['renderMode'], 'checkbox')) {
+		} elseif ($config['renderMode'] === 'checkbox') {
 			// Checkbox renderMode
 			$item = $this->getSingleField_typeSelect_checkbox($table, $field, $row, $PA, $config, $selItems, $nMV_label);
-		} elseif (!strcmp($config['renderMode'], 'singlebox')) {
+		} elseif ($config['renderMode'] === 'singlebox') {
 			// Single selector box renderMode
 			$item = $this->getSingleField_typeSelect_singlebox($table, $field, $row, $PA, $config, $selItems, $nMV_label);
-		} elseif (!strcmp($config['renderMode'], 'tree')) {
+		} elseif ($config['renderMode'] === 'tree') {
 			// Tree renderMode
 			$treeClass = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Form\\Element\\TreeElement', $this);
 			$item = $treeClass->renderField($table, $field, $row, $PA, $config, $selItems, $nMV_label);
@@ -1823,8 +1823,8 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 			// Checking languages and authMode:
 			$languageDeny = FALSE;
 			if (
-				$GLOBALS['TCA'][$table]['ctrl']['languageField']
-				&& !strcmp($GLOBALS['TCA'][$table]['ctrl']['languageField'], $fieldName)
+				!empty($GLOBALS['TCA'][$table]['ctrl']['languageField'])
+				&& $GLOBALS['TCA'][$table]['ctrl']['languageField'] === $fieldName
 				&& !$GLOBALS['BE_USER']->checkLanguageAccess($selectItem[1])
 			) {
 				$languageDeny = TRUE;
@@ -1918,7 +1918,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 		$optGroupOpen = FALSE;
 		$classesForSelectTag = array();
 		foreach ($selItems as $p) {
-			$sM = !strcmp($PA['itemFormElValue'], $p[1]) ? ' selected="selected"' : '';
+			$sM = (string)$PA['itemFormElValue'] === (string)$p[1] ? ' selected="selected"' : '';
 			if ($sM) {
 				$sI = $c;
 				$noMatchingValue = 0;
@@ -1936,7 +1936,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 			}
 			// Compiling the <option> tag:
 			if (!($p[1] != $PA['itemFormElValue'] && is_array($uniqueIds) && in_array($p[1], $uniqueIds))) {
-				if (!strcmp($p[1], '--div--')) {
+				if ($p[1] === '--div--') {
 					$optGroupStart[0] = $p[0];
 					if ($config['iconsInOptionTags']) {
 						$optGroupStart[1] = $this->optgroupTagStyle($p[2]);
@@ -2057,7 +2057,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 			$unSetAll = array();
 			foreach ($selItems as $p) {
 				// Non-selectable element:
-				if (!strcmp($p[1], '--div--')) {
+				if ($p[1] === '--div--') {
 					$selIcon = '';
 					if (isset($p[2]) && $p[2] != 'empty-emtpy') {
 						$selIcon = $this->getIconHtml($p[2]);
@@ -2194,7 +2194,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 			}
 			// Non-selectable element:
 			$nonSel = '';
-			if (!strcmp($p[1], '--div--')) {
+			if ((string) $p[1] === '--div--') {
 				$nonSel = ' onclick="this.selected=0;" class="c-divider"';
 			}
 			// Icon style for option tag:
@@ -2581,7 +2581,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 			// If the element is of the internal type "db":
 			// Creating string showing allowed types:
 			$tempFT = GeneralUtility::trimExplode(',', $allowed, TRUE);
-			if (!strcmp(trim($tempFT[0]), '*')) {
+			if (trim($tempFT[0]) === '*') {
 				$onlySingleTableAllowed = FALSE;
 				$info .= '<span class="nobr">' . htmlspecialchars($this->getLL('l_allTables')) . '</span><br />';
 			} elseif ($tempFT) {
@@ -2708,7 +2708,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 			$width = ceil($cols * $this->form_rowsToStylewidth);
 			// Overflow:auto crashes mozilla here. Title tag is useful when text is longer than the div box (overflow:hidden).
 			$item = '
-				<div style="overflow:hidden; width:' . $width . 'px;" class="t3-tceforms-fieldReadOnly" title="' . $itemValue . '">' . '<span class="nobr">' . (strcmp($itemValue, '') ? $itemValue : '&nbsp;') . '</span>' . IconUtility::getSpriteIcon('status-status-readonly') . '</div>';
+				<div style="overflow:hidden; width:' . $width . 'px;" class="t3-tceforms-fieldReadOnly" title="' . $itemValue . '">' . '<span class="nobr">' . ((string)$itemValue !== '' ? $itemValue : '&nbsp;') . '</span>' . IconUtility::getSpriteIcon('status-status-readonly') . '</div>';
 		}
 		return $item;
 	}
@@ -3118,7 +3118,10 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 										'rows' => 2
 									);
 								}
-								if ($fakePA['fieldConf']['onChange'] == 'reload' || $GLOBALS['TCA'][$table]['ctrl']['type'] && !strcmp($key, $GLOBALS['TCA'][$table]['ctrl']['type']) || $GLOBALS['TCA'][$table]['ctrl']['requestUpdate'] && GeneralUtility::inList($GLOBALS['TCA'][$table]['ctrl']['requestUpdate'], $key)) {
+								if ($fakePA['fieldConf']['onChange'] === 'reload'
+									|| !empty($GLOBALS['TCA'][$table]['ctrl']['type']) && (string)$key === $GLOBALS['TCA'][$table]['ctrl']['type']
+									|| !empty($GLOBALS['TCA'][$table]['ctrl']['requestUpdate']) && GeneralUtility::inList($GLOBALS['TCA'][$table]['ctrl']['requestUpdate'], $key)
+								) {
 									if ($GLOBALS['BE_USER']->jsConfirmation(1)) {
 										$alertMsgOnChange = 'if (confirm(TBE_EDITOR.labels.onChangeAlert) && TBE_EDITOR.checkSubmit(-1)){ TBE_EDITOR.submitForm() };';
 									} else {
@@ -3351,7 +3354,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 				$typeNum = $this->getLanguageOverlayRawValue($table, $row, $field, $typeFieldConfig);
 			}
 		}
-		if (!strcmp($typeNum, '')) {
+		if (empty($typeNum)) {
 			// If that value is an empty string, set it to "0" (zero)
 			$typeNum = 0;
 		}
@@ -3681,7 +3684,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 	public function getLanguageOverlayRawValue($table, $row, $field, $fieldConf) {
 		$value = $row[$field];
 		if (is_array($this->defaultLanguageData[$table . ':' . $row['uid']])) {
-			if ($fieldConf['l10n_mode'] == 'exclude' || $fieldConf['l10n_mode'] == 'mergeIfNotBlank' && strcmp(trim($this->defaultLanguageData[$table . ':' . $row['uid']][$field]), '')) {
+			if ($fieldConf['l10n_mode'] == 'exclude' || $fieldConf['l10n_mode'] == 'mergeIfNotBlank' && trim($this->defaultLanguageData[$table . ':' . $row['uid']][$field]) !== '') {
 				$value = $this->defaultLanguageData[$table . ':' . $row['uid']][$field];
 			}
 		}
@@ -3742,7 +3745,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 			);
 			// There must be diff-data:
 			if (isset($dLVal['old'][$field])) {
-				if (strcmp($dLVal['old'][$field], $dLVal['new'][$field])) {
+				if ((string)$dLVal['old'][$field] !== (string)$dLVal['new'][$field]) {
 					// Create diff-result:
 					$t3lib_diff_Obj = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Utility\\DiffUtility');
 					$diffres = $t3lib_diff_Obj->makeDiffDisplay(BackendUtility::getProcessedValue($table, $field, $dLVal['old'][$field], 0, 1), BackendUtility::getProcessedValue($table, $field, $dLVal['new'][$field], 0, 1));
@@ -3764,7 +3767,9 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 	 */
 	public function renderVDEFDiff($vArray, $vDEFkey) {
 		$item = NULL;
-		if ($GLOBALS['TYPO3_CONF_VARS']['BE']['flexFormXMLincludeDiffBase'] && isset($vArray[$vDEFkey . '.vDEFbase']) && strcmp($vArray[$vDEFkey . '.vDEFbase'], $vArray['vDEF'])) {
+		if ($GLOBALS['TYPO3_CONF_VARS']['BE']['flexFormXMLincludeDiffBase'] && isset($vArray[$vDEFkey . '.vDEFbase'])
+			&& (string)$vArray[$vDEFkey . '.vDEFbase'] !== (string)$vArray['vDEF']
+		) {
 			// Create diff-result:
 			$t3lib_diff_Obj = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Utility\\DiffUtility');
 			$diffres = $t3lib_diff_Obj->makeDiffDisplay($vArray[$vDEFkey . '.vDEFbase'], $vArray['vDEF']);
@@ -4016,7 +4021,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 				case 'db':
 					$allowedTables = GeneralUtility::trimExplode(',', $allowed, TRUE);
 					// All tables allowed for relation:
-					if (!strcmp(trim($allowedTables[0]), '*')) {
+					if (trim($allowedTables[0]) === '*') {
 						$output = $this->clipObj->elFromTable('');
 					} else {
 						// Only some tables, filter them:
@@ -4127,7 +4132,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 								$params['md5ID'] = $md5ID;
 								$params['returnUrl'] = $this->thisReturnUrl();
 								// Resolving script filename and setting URL.
-								if (!strcmp(substr($wConf['script'], 0, 4), 'EXT:')) {
+								if (substr($wConf['script'], 0, 4) === 'EXT:') {
 									$wScript = GeneralUtility::getFileAbsFileName($wConf['script']);
 									if ($wScript) {
 										$wScript = '../' . \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($wScript);
@@ -4237,7 +4242,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 						$color = $PA['itemFormElValue'] ? ' bgcolor="' . htmlspecialchars($PA['itemFormElValue']) . '"' : '';
 						$outArr[] = '<table border="0" cellpadding="0" cellspacing="0" id="' . $md5ID . '"' . $color . ' style="' . htmlspecialchars($wConf['tableStyle']) . '">
 									<tr>
-										<td>' . $colorBoxLinks[0] . '<img ' . IconUtility::skinImg($this->backPath, (strlen(trim($color)) == 0 || strcmp(trim($color), '0') == 0 ? 'gfx/colorpicker_empty.png' : 'gfx/colorpicker.png'), ('width="' . $dX . '" height="' . $dY . '"' . BackendUtility::titleAltAttrib(trim(($iTitle . ' ' . $PA['itemFormElValue']))) . ' border="0"')) . '>' . $colorBoxLinks[1] . '</td>
+										<td>' . $colorBoxLinks[0] . '<img ' . IconUtility::skinImg($this->backPath, ($color === '' ? 'gfx/colorpicker_empty.png' : 'gfx/colorpicker.png'), ('width="' . $dX . '" height="' . $dY . '"' . BackendUtility::titleAltAttrib(trim(($iTitle . ' ' . $PA['itemFormElValue']))) . ' border="0"')) . '>' . $colorBoxLinks[1] . '</td>
 									</tr>
 								</table>';
 					}
@@ -4263,11 +4268,11 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 				} else {
 					$outStr = implode('', $outArr);
 				}
-				if (!strcmp($wizConf['_POSITION'], 'left')) {
+				if ($wizConf['_POSITION'] === 'left') {
 					$outStr = '<tr><td' . $vAlign . '>' . $outStr . '</td><td' . $vAlign . '>' . $item . '</td></tr>';
-				} elseif (!strcmp($wizConf['_POSITION'], 'top')) {
+				} elseif ($wizConf['_POSITION'] === 'top') {
 					$outStr = '<tr><td>' . $outStr . '</td></tr><tr><td>' . $item . '</td></tr>';
-				} elseif (!strcmp($wizConf['_POSITION'], 'bottom')) {
+				} elseif ($wizConf['_POSITION'] === 'bottom') {
 					$outStr = '<tr><td>' . $item . '</td></tr><tr><td>' . $outStr . '</td></tr>';
 				} else {
 					$outStr = '<tr><td' . $vAlign . '>' . $item . '</td><td' . $vAlign . '>' . $outStr . '</td></tr>';

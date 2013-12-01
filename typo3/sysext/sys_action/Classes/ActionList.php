@@ -46,7 +46,7 @@ class ActionList extends \TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList {
 	 */
 	public function listURL($alternativeId = '', $table = -1, $excludeList = '') {
 		$urlParameters = array();
-		if (strcmp($alternativeId, '')) {
+		if ((string)$alternativeId !== '') {
 			$urlParameters['id'] = $alternativeId;
 		} else {
 			$urlParameters['id'] = $this->id;

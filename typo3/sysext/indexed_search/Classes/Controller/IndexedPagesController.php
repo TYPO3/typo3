@@ -1012,7 +1012,7 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 		$lines = array();
 		$isRemoved = 0;
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-			if (!$isRemoved && !strcmp($row['gr_list'], $gr_list)) {
+			if (!$isRemoved && (string)$row['gr_list'] === (string)$gr_list) {
 				$isRemoved = 1;
 			} else {
 				$lines[] = $row;

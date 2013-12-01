@@ -23,6 +23,8 @@ namespace TYPO3\CMS\Scheduler\CronCommand;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Core\Utility\MathUtility;
+
 /**
  * Validate and normalize a cron command.
  *
@@ -185,7 +187,7 @@ class NormalizeCommand {
 					$fieldArray[] = self::reduceListOfValuesByStepValue($leftList . '/' . $right);
 				} elseif (strpos($listElement, '-') !== FALSE) {
 					$fieldArray[] = self::convertRangeToListOfValues($listElement);
-				} elseif (strcmp(intval($listElement), $listElement) === 0) {
+				} elseif (MathUtility::canBeInterpretedAsInteger($listElement)) {
 					$fieldArray[] = $listElement;
 				} else {
 					throw new \InvalidArgumentException('Unable to normalize integer field.', 1291429389);
@@ -225,7 +227,7 @@ class NormalizeCommand {
 		$rangeArray = explode('-', $range);
 		// Sanitize fields and cast to integer
 		foreach ($rangeArray as $fieldNumber => $fieldValue) {
-			if (strcmp(intval($fieldValue), $fieldValue) !== 0) {
+			if (!MathUtility::canBeInterpretedAsInteger($fieldValue)) {
 				throw new \InvalidArgumentException('Unable to convert value to integer.', 1291237668);
 			}
 			$rangeArray[$fieldNumber] = (int) $fieldValue;
@@ -276,7 +278,7 @@ class NormalizeCommand {
 		if (strlen($stepValuesAndStepArray[1]) === 0) {
 			throw new \InvalidArgumentException('Unable to convert step values: Right part of / is empty.', 1291414956);
 		}
-		if (strcmp(intval($right), $right) !== 0) {
+		if (!MathUtility::canBeInterpretedAsInteger($right)) {
 			throw new \InvalidArgumentException('Unable to convert step values: Right part must be a single integer.', 1291414957);
 		}
 		$right = (int) $right;
@@ -284,7 +286,7 @@ class NormalizeCommand {
 		$validValues = array();
 		$currentStep = $right;
 		foreach ($leftArray as $leftValue) {
-			if (strcmp(intval($leftValue), $leftValue) !== 0) {
+			if (!MathUtility::canBeInterpretedAsInteger($leftValue)) {
 				throw new \InvalidArgumentException('Unable to convert step values: Left part must be a single integer or comma separated list of integers.', 1291414958);
 			}
 			if ($currentStep === 0) {

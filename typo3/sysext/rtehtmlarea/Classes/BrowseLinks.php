@@ -959,7 +959,7 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 	 * @return string Localized string.
 	 */
 	public function getPageConfigLabel($string, $JScharCode = 1) {
-		if (strcmp(substr($string, 0, 4), 'LLL:')) {
+		if (substr($string, 0, 4) !== 'LLL:') {
 			$label = $string;
 		} else {
 			$label = $GLOBALS['LANG']->sL(trim($string));

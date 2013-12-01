@@ -295,7 +295,7 @@ class LanguageService {
 			$restStr = trim(substr($input, 4));
 			$extPrfx = '';
 				// ll-file refered to is found in an extension.
-			if (!strcmp(substr($restStr, 0, 4), 'EXT:')) {
+			if (substr($restStr, 0, 4) === 'EXT:') {
 				$restStr = trim(substr($restStr, 4));
 				$extPrfx = 'EXT:';
 			}

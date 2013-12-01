@@ -106,7 +106,7 @@ class DataPreprocessor {
 	 * @todo Define visibility
 	 */
 	public function fetchRecord($table, $idList, $operation) {
-		if ((string) $idList == 'prev') {
+		if ((string)$idList == 'prev') {
 			$idList = $this->prevPageID;
 		}
 		if ($GLOBALS['TCA'][$table]) {
@@ -114,7 +114,7 @@ class DataPreprocessor {
 			$ids = GeneralUtility::trimExplode(',', $idList, TRUE);
 			foreach ($ids as $id) {
 				// If ID is not blank:
-				if (strcmp($id, '')) {
+				if ((string)$id !== '') {
 					// For new records to be created, find default values:
 					if ($operation == 'new') {
 						// Default values:
@@ -260,11 +260,11 @@ class DataPreprocessor {
 		foreach ($copyOfColumns as $field => $fieldConfig) {
 			// Set $data variable for the field, either inputted value from $row - or if not found, the default value as defined in the "config" array
 			if (isset($row[$field])) {
-				$data = (string) $row[$field];
+				$data = (string)$row[$field];
 			} elseif (array_key_exists($field, $row) && !empty($fieldConfig['config']['eval']) && GeneralUtility::inList($fieldConfig['config']['eval'], 'null')) {
 				$data = NULL;
 			} else {
-				$data = (string) $fieldConfig['config']['default'];
+				$data = (string)$fieldConfig['config']['default'];
 			}
 			$data = $this->renderRecord_SW($data, $fieldConfig, $TSconfig, $table, $row, $field);
 			$totalRecordContent[$field] = $data;
@@ -297,7 +297,7 @@ class DataPreprocessor {
 	 * @todo Define visibility
 	 */
 	public function renderRecord_SW($data, $fieldConfig, $TSconfig, $table, $row, $field) {
-		switch ((string) $fieldConfig['config']['type']) {
+		switch ((string)$fieldConfig['config']['type']) {
 			case 'group':
 				$data = $this->renderRecord_groupProc($data, $fieldConfig, $TSconfig, $table, $row, $field);
 				break;
@@ -395,7 +395,7 @@ class DataPreprocessor {
 			$fieldConfig['config']['items'] = $this->procesItemArray($fieldConfig['config']['items'], $fieldConfig['config'], $TSconfig[$field], $table, $row, $field);
 			foreach ($fieldConfig['config']['items'] as $pvpv) {
 				foreach ($elements as $eKey => $value) {
-					if (!strcmp($value, $pvpv[1])) {
+					if ((string)$value === (string)$pvpv[1]) {
 						$dataAcc[$eKey] = rawurlencode($pvpv[1]) . '|' . rawurlencode($this->sL($pvpv[0]));
 					}
 				}
@@ -522,7 +522,7 @@ class DataPreprocessor {
 				$dataAcc[] = $theId;
 			} else {
 				foreach ($elements as $eKey => $value) {
-					if (!strcmp($theId, $value)) {
+					if ((int)$theId === (int)$value) {
 						$dataAcc[$eKey] = $theId;
 					}
 				}
@@ -630,12 +630,12 @@ class DataPreprocessor {
 	 */
 	public function selectAddSpecial($dataAcc, $elements, $specialKey) {
 		// Special select types:
-		switch ((string) $specialKey) {
+		switch ((string)$specialKey) {
 			case 'tables':
 				$tNames = array_keys($GLOBALS['TCA']);
 				foreach ($tNames as $tableName) {
 					foreach ($elements as $eKey => $value) {
-						if (!strcmp($tableName, $value)) {
+						if ((string)$tableName === (string)$value) {
 							$dataAcc[$eKey] = rawurlencode($value) . '|' . rawurlencode($this->sL($GLOBALS['TCA'][$value]['ctrl']['title']));
 						}
 					}
@@ -646,7 +646,7 @@ class DataPreprocessor {
 				if (is_array($theTypes)) {
 					foreach ($theTypes as $theTypesArrays) {
 						foreach ($elements as $eKey => $value) {
-							if (!strcmp($theTypesArrays[1], $value)) {
+							if ((string)$theTypesArrays[1] === (string)$value) {
 								$dataAcc[$eKey] = rawurlencode($value) . '|' . rawurlencode($this->sL($theTypesArrays[0]));
 							}
 						}
@@ -658,7 +658,7 @@ class DataPreprocessor {
 				if (is_array($theExcludeFields)) {
 					foreach ($theExcludeFields as $theExcludeFieldsArrays) {
 						foreach ($elements as $eKey => $value) {
-							if (!strcmp($theExcludeFieldsArrays[1], $value)) {
+							if ((string)$theExcludeFieldsArrays[1] === (string)$value) {
 								$dataAcc[$eKey] = rawurlencode($value) . '|' . rawurlencode(rtrim($theExcludeFieldsArrays[0], ':'));
 							}
 						}
@@ -671,7 +671,7 @@ class DataPreprocessor {
 					if (is_array($theTypeArrays['items'])) {
 						foreach ($theTypeArrays['items'] as $itemValue => $itemContent) {
 							foreach ($elements as $eKey => $value) {
-								if (!strcmp(($tableFieldKey . ':' . $itemValue . ':' . $itemContent[0]), $value)) {
+								if (($tableFieldKey . ':' . $itemValue . ':' . $itemContent[0]) === (string)$value) {
 									$dataAcc[$eKey] = rawurlencode($value) . '|' . rawurlencode(('[' . $itemContent[2] . '] ' . $itemContent[1]));
 								}
 							}
@@ -683,7 +683,7 @@ class DataPreprocessor {
 				$theLangs = BackendUtility::getSystemLanguages();
 				foreach ($theLangs as $lCfg) {
 					foreach ($elements as $eKey => $value) {
-						if (!strcmp($lCfg[1], $value)) {
+						if ((string)$lCfg[1] === (string)$value) {
 							$dataAcc[$eKey] = rawurlencode($value) . '|' . rawurlencode($lCfg[0]);
 						}
 					}
@@ -697,7 +697,7 @@ class DataPreprocessor {
 							// Traverse items:
 							foreach ($coValue['items'] as $itemKey => $itemCfg) {
 								foreach ($elements as $eKey => $value) {
-									if (!strcmp(($coKey . ':' . $itemKey), $value)) {
+									if (($coKey . ':' . $itemKey) === (string)$value) {
 										$dataAcc[$eKey] = rawurlencode($value) . '|' . rawurlencode($this->sL($itemCfg[0]));
 									}
 								}
@@ -724,7 +724,7 @@ class DataPreprocessor {
 						}
 						// Add modules own label now:
 						$label .= $GLOBALS['LANG']->moduleLabels['tabs'][$value . '_tab'];
-						if (!strcmp($theModName, $value)) {
+						if ((string)$theModName === (string)$value) {
 							$dataAcc[$eKey] = rawurlencode($value) . '|' . rawurlencode($label);
 						}
 					}
@@ -785,7 +785,7 @@ class DataPreprocessor {
 					$dataAcc[] = rawurlencode($theId) . '|' . rawurlencode(GeneralUtility::fixed_lgd_cs(($lPrefix . strip_tags($recordList[$theId])), $GLOBALS['BE_USER']->uc['titleLen']));
 				} else {
 					foreach ($elements as $eKey => $value) {
-						if (!strcmp($theId, $value)) {
+						if ((int)$theId === (int)$value) {
 							$dataAcc[$eKey] = rawurlencode($theId) . '|' . rawurlencode(GeneralUtility::fixed_lgd_cs(($lPrefix . strip_tags($recordList[$theId])), $GLOBALS['BE_USER']->uc['titleLen']));
 						}
 					}

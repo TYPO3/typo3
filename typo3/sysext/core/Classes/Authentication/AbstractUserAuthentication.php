@@ -565,7 +565,7 @@ abstract class AbstractUserAuthentication {
 			$cookies = GeneralUtility::trimExplode(';', $_SERVER['HTTP_COOKIE']);
 			foreach ($cookies as $cookie) {
 				list($name, $value) = GeneralUtility::trimExplode('=', $cookie);
-				if (strcmp(trim($name), $cookieName) == 0) {
+				if (trim($name) === (string)$cookieName) {
 					// Use the last one
 					$cookieValue = urldecode($value);
 				}

@@ -406,7 +406,7 @@ class GeneralUtility {
 					$firstpart = substr($binnet, 0, $mask);
 					$binip = str_pad(decbin($lip), 32, '0', STR_PAD_LEFT);
 					$firstip = substr($binip, 0, $mask);
-					$yes = strcmp($firstpart, $firstip) == 0;
+					$yes = $firstpart === $firstip;
 				} else {
 					// "192.168.*.*"
 					$IPparts = explode('.', $test);
@@ -1427,7 +1427,7 @@ class GeneralUtility {
 	 */
 	static public function inArray(array $in_array, $item) {
 		foreach ($in_array as $val) {
-			if (!is_array($val) && !strcmp($val, $item)) {
+			if (!is_array($val) && (string)$val === (string)$item) {
 				return TRUE;
 			}
 		}
@@ -1509,7 +1509,7 @@ class GeneralUtility {
 		foreach ($array as $k => $v) {
 			if (is_array($v)) {
 				$array[$k] = self::removeArrayEntryByValue($v, $cmpValue);
-			} elseif (!strcmp($v, $cmpValue)) {
+			} elseif ((string)$v === (string)$cmpValue) {
 				unset($array[$k]);
 			}
 		}
@@ -1580,7 +1580,7 @@ class GeneralUtility {
 			if (is_array($AVal)) {
 				$str = self::implodeArrayForUrl($thisKeyName, $AVal, $str, $skipBlank, $rawurlencodeParamName);
 			} else {
-				if (!$skipBlank || strcmp($AVal, '')) {
+				if (!$skipBlank || (string)$AVal !== '') {
 					$str .= '&' . ($rawurlencodeParamName ? rawurlencode($thisKeyName) : $thisKeyName) . '=' . rawurlencode($AVal);
 				}
 			}
@@ -1872,13 +1872,13 @@ class GeneralUtility {
 		$tag_tmp = trim(rtrim($tag_tmp, '>'));
 		$value = array();
 		// Compared with empty string instead , 030102
-		while (strcmp($tag_tmp, '')) {
+		while ($tag_tmp !== '') {
 			$firstChar = substr($tag_tmp, 0, 1);
-			if (!strcmp($firstChar, '"') || !strcmp($firstChar, '\'')) {
+			if ($firstChar === '"' || $firstChar === '\'') {
 				$reg = explode($firstChar, $tag_tmp, 3);
 				$value[] = $reg[1];
 				$tag_tmp = trim($reg[2]);
-			} elseif (!strcmp($firstChar, '=')) {
+			} elseif ($firstChar === '=') {
 				$value[] = '=';
 				// Removes = chars.
 				$tag_tmp = trim(substr($tag_tmp, 1));
@@ -1913,7 +1913,7 @@ class GeneralUtility {
 		}
 		$list = array();
 		foreach ($arr as $p => $v) {
-			if (strcmp($v, '') || $dontOmitBlankAttribs) {
+			if ((string)$v !== '' || $dontOmitBlankAttribs) {
 				$list[] = $p . '="' . $v . '"';
 			}
 		}
@@ -2082,7 +2082,7 @@ class GeneralUtility {
 				// Use tag based on parent tag name:
 				$attr .= ' index="' . htmlspecialchars($tagName) . '"';
 				$tagName = (string) $options['parentTagMap'][$stackData['parentTagName']];
-			} elseif (!strcmp(intval($tagName), $tagName)) {
+			} elseif (MathUtility::canBeInterpretedAsInteger($tagName)) {
 				// If integer...;
 				if ($options['useNindex']) {
 					// If numeric key, prefix "n"
@@ -2232,7 +2232,7 @@ class GeneralUtility {
 			// Test for numeric tag, encoded on the form "nXXX":
 			$testNtag = substr($tagName, 1);
 			// Closing tag.
-			$tagName = substr($tagName, 0, 1) == 'n' && !strcmp(intval($testNtag), $testNtag) ? intval($testNtag) : $tagName;
+			$tagName = substr($tagName, 0, 1) == 'n' && MathUtility::canBeInterpretedAsInteger($testNtag) ? (int)$testNtag : $tagName;
 			// Test for alternative index value:
 			if (strlen($val['attributes']['index'])) {
 				$tagName = $val['attributes']['index'];
@@ -3353,14 +3353,14 @@ Connection: close
 				$SFN_A = explode('/', strrev($SFN));
 				$acc = array();
 				foreach ($SN_A as $kk => $vv) {
-					if (!strcmp($SFN_A[$kk], $vv)) {
+					if ((string)$SFN_A[$kk] === (string)$vv) {
 						$acc[] = $vv;
 					} else {
 						break;
 					}
 				}
 				$commonEnd = strrev(implode('/', $acc));
-				if (strcmp($commonEnd, '')) {
+				if ((string)$commonEnd !== '') {
 					$DR = substr($SFN, 0, -(strlen($commonEnd) + 1));
 				}
 				$retVal = $DR;
@@ -3413,7 +3413,7 @@ Connection: close
 				if (self::cmpIP(self::getIndpEnv('REMOTE_ADDR'), $proxySSL)) {
 					$retVal = TRUE;
 				} else {
-					$retVal = $_SERVER['SSL_SESSION_ID'] || !strcasecmp($_SERVER['HTTPS'], 'on') || !strcmp($_SERVER['HTTPS'], '1') ? TRUE : FALSE;
+					$retVal = $_SERVER['SSL_SESSION_ID'] || strtolower($_SERVER['HTTPS']) === 'on' || (string)$_SERVER['HTTPS'] === '1' ? TRUE : FALSE;
 				}
 				break;
 			case '_ARRAY':
@@ -3580,7 +3580,7 @@ Connection: close
 	 * @return string Returns the absolute filename of $filename IF valid, otherwise blank string.
 	 */
 	static public function getFileAbsFileName($filename, $onlyRelative = TRUE, $relToTYPO3_mainDir = FALSE) {
-		if (!strcmp($filename, '')) {
+		if ((string)$filename === '') {
 			return '';
 		}
 		if ($relToTYPO3_mainDir) {
@@ -3595,7 +3595,7 @@ Connection: close
 		if (substr($filename, 0, 4) == 'EXT:') {
 			list($extKey, $local) = explode('/', substr($filename, 4), 2);
 			$filename = '';
-			if (strcmp($extKey, '') && \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($extKey) && strcmp($local, '')) {
+			if ((string)$extKey !== '' && \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($extKey) && (string)$local !== '') {
 				$filename = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extKey) . $local;
 			}
 		} elseif (!self::isAbsPath($filename)) {
@@ -3605,7 +3605,7 @@ Connection: close
 			// absolute, but set to blank if not allowed
 			$filename = '';
 		}
-		if (strcmp($filename, '') && self::validPathStr($filename)) {
+		if ((string)$filename !== '' && self::validPathStr($filename)) {
 			// checks backpath.
 			return $filename;
 		}
@@ -3668,7 +3668,7 @@ Connection: close
 		if (preg_match('/[[:cntrl:]]/', $filename)) {
 			return FALSE;
 		}
-		if (strcmp($filename, '') && strcmp($GLOBALS['TYPO3_CONF_VARS']['BE']['fileDenyPattern'], '')) {
+		if ((string)$filename !== '' && (string)$GLOBALS['TYPO3_CONF_VARS']['BE']['fileDenyPattern'] !== '') {
 			$result = preg_match('/' . $GLOBALS['TYPO3_CONF_VARS']['BE']['fileDenyPattern'] . '/i', $filename);
 			if ($result) {
 				return FALSE;

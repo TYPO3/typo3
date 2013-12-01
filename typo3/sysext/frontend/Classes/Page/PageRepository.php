@@ -842,7 +842,7 @@ class PageRepository {
 	 */
 	public function deleteClause($table) {
 		// Hardcode for pages because TCA might not be loaded yet (early frontend initialization)
-		if (!strcmp($table, 'pages')) {
+		if ($table === 'pages') {
 			return ' AND pages.deleted=0';
 		} else {
 			return $GLOBALS['TCA'][$table]['ctrl']['delete'] ? ' AND ' . $table . '.' . $GLOBALS['TCA'][$table]['ctrl']['delete'] . '=0' : '';
@@ -999,7 +999,7 @@ class PageRepository {
 				}
 			}
 			// If workspace ids matches and ID of current online version is found, look up the PID value of that:
-			if ($oid && ($this->versioningWorkspaceId == 0 && $this->checkWorkspaceAccess($wsid) || !strcmp((int) $wsid, $this->versioningWorkspaceId))) {
+			if ($oid && ((int)$this->versioningWorkspaceId === 0 && $this->checkWorkspaceAccess($wsid) || (int)$wsid === (int)$this->versioningWorkspaceId)) {
 				$oidRec = $this->getRawRecord($table, $oid, 'pid', TRUE);
 				if (is_array($oidRec)) {
 					// SWAP uid as well? Well no, because when fixing a versioning PID happens it is assumed that this is a "branch" type page and therefore the uid should be kept (like in versionOL()).

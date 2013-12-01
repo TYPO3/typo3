@@ -156,7 +156,7 @@ class RteController {
 			$rec['pid'] = $rawRec['pid'];
 			// TSconfig, setting width:
 			$fieldTSConfig = $tceforms->setTSconfig($this->P['table'], $rec, $this->P['field']);
-			if (strcmp($fieldTSConfig['RTEfullScreenWidth'], '')) {
+			if ((string)$fieldTSConfig['RTEfullScreenWidth'] !== '') {
 				$width = $fieldTSConfig['RTEfullScreenWidth'];
 			} else {
 				$width = '100%';

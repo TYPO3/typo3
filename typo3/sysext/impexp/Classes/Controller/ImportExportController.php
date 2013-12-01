@@ -1165,13 +1165,13 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		$opt = array();
 		$isSelFlag = 0;
 		foreach ($optValues as $k => $v) {
-			$sel = !strcmp($k, $value) ? ' selected="selected"' : '';
+			$sel = (string)$k === (string)$value ? ' selected="selected"' : '';
 			if ($sel) {
 				$isSelFlag++;
 			}
 			$opt[] = '<option value="' . htmlspecialchars($k) . '"' . $sel . '>' . htmlspecialchars($v) . '</option>';
 		}
-		if (!$isSelFlag && strcmp('', $value)) {
+		if (!$isSelFlag && (string)$value !== '') {
 			$opt[] = '<option value="' . htmlspecialchars($value) . '" selected="selected">' . htmlspecialchars(('[\'' . $value . '\']')) . '</option>';
 		}
 		return '<select name="' . $prefix . '">' . implode('', $opt) . '</select>';

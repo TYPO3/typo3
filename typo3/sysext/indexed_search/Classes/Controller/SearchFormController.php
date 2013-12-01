@@ -1235,7 +1235,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 			}
 		} else {
 			// Ordinary TYPO3 pages:
-			if (strcmp($row['gr_list'], $GLOBALS['TSFE']->gr_list)) {
+			if ((string)$row['gr_list'] !== (string)$GLOBALS['TSFE']->gr_list) {
 				// Selecting for the grlist records belonging to the phash-row where the current users gr_list exists. If it is found it is proof that this user has direct access to the phash-rows content although he did not himself initiate the indexing...
 				if (\TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility::isTableUsed('index_grlist')) {
 					$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('phash', 'index_grlist', 'phash=' . intval($row['phash']) . ' AND gr_list=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($GLOBALS['TSFE']->gr_list, 'index_grlist'));
@@ -1473,7 +1473,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 			$opt = array();
 			$isSelFlag = 0;
 			foreach ($optValues as $k => $v) {
-				$sel = !strcmp($k, $value) ? ' selected="selected"' : '';
+				$sel = (string)$k === (string)$value ? ' selected="selected"' : '';
 				if ($sel) {
 					$isSelFlag++;
 				}
@@ -1778,7 +1778,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 			$opt = array();
 			$isSelFlag = 0;
 			foreach ($optValues as $k => $v) {
-				$sel = !strcmp($k, $value) ? ' selected="selected"' : '';
+				$sel = (string)$k === (string)$value ? ' selected="selected"' : '';
 				if ($sel) {
 					$isSelFlag++;
 				}

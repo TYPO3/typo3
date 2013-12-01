@@ -77,7 +77,7 @@ class ExtraPageContextMenuOptions {
 			$deleteFound = FALSE;
 			foreach ($menuItems as $key => $value) {
 				$c++;
-				if (!strcmp($key, 'delete')) {
+				if ($key === 'delete') {
 					$deleteFound = TRUE;
 					break;
 				}

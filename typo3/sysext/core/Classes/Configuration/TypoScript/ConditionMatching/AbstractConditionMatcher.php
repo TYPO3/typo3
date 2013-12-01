@@ -375,7 +375,7 @@ abstract class AbstractConditionMatcher {
 				if ($this->isUserLoggedIn()) {
 					$values = GeneralUtility::trimExplode(',', $value, TRUE);
 					foreach ($values as $test) {
-						if ($test == '*' || !strcmp($this->getUserId(), $test)) {
+						if ($test == '*' || (string)$this->getUserId() === (string)$test) {
 							return TRUE;
 						}
 					}
@@ -387,10 +387,8 @@ abstract class AbstractConditionMatcher {
 				if ($keyParts[1]) {
 					$page = $this->getPage();
 					$property = $keyParts[1];
-					if (!empty($page) && isset($page[$property])) {
-						if (strcmp($page[$property], $value) === 0) {
-							return TRUE;
-						}
+					if (!empty($page) && isset($page[$property]) && (string)$page[$property] === (string)$value) {
+						return TRUE;
 					}
 				}
 				break;

@@ -559,7 +559,7 @@ class DatabaseIntegrityView {
 		$pcontent = $GLOBALS['LANG']->getLL('enterRegexPattern') . ' <input type="text" name="pattern" value="' . htmlspecialchars(($pattern ? $pattern : $GLOBALS['TYPO3_CONF_VARS']['BE']['fileDenyPattern'])) . '"> <input type="submit" name="' . $GLOBALS['LANG']->getLL('SearchButton') . '">';
 		$this->content .= $this->doc->header($GLOBALS['LANG']->getLL('findFilename'));
 		$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('pattern'), $pcontent, FALSE, TRUE);
-		if (strcmp($pattern, '')) {
+		if ((string)$pattern !== '') {
 			$dirs = GeneralUtility::get_dirs(PATH_site);
 			$lines = array();
 			$depth = 10;

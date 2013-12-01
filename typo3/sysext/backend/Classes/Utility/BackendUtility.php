@@ -556,7 +556,7 @@ class BackendUtility {
 							// Check for items:
 							foreach ($fCfg['items'] as $iVal) {
 								// Values '' is not controlled by this setting.
-								if (strcmp($iVal[1], '')) {
+								if ((string)$iVal[1] !== '') {
 									// Find iMode
 									$iMode = '';
 									switch ((string) $fCfg['authMode']) {
@@ -567,9 +567,9 @@ class BackendUtility {
 											$iMode = 'DENY';
 											break;
 										case 'individual':
-											if (!strcmp($iVal[4], 'EXPL_ALLOW')) {
+											if ($iVal[4] === 'EXPL_ALLOW') {
 												$iMode = 'ALLOW';
-											} elseif (!strcmp($iVal[4], 'EXPL_DENY')) {
+											} elseif ($iVal[4] === 'EXPL_DENY') {
 												$iMode = 'DENY';
 											}
 											break;
@@ -792,7 +792,7 @@ class BackendUtility {
 				$typeNum = $row[$field];
 			}
 			// If that value is an empty string, set it to "0" (zero)
-			if (!strcmp($typeNum, '')) {
+			if (empty($typeNum)) {
 				$typeNum = 0;
 			}
 		}
@@ -1204,7 +1204,7 @@ class BackendUtility {
 			$set = array();
 			foreach ($pageTS as $f => $v) {
 				$f = $TSconfPrefix . $f;
-				if (!isset($impParams[$f]) && trim($v) || strcmp(trim($impParams[$f]), trim($v))) {
+				if (!isset($impParams[$f]) && trim($v) || trim($impParams[$f]) !== trim($v)) {
 					$set[$f] = trim($v);
 				}
 			}
@@ -1811,7 +1811,7 @@ class BackendUtility {
 			// Traverse the items-array...
 			foreach ($GLOBALS['TCA'][$table]['columns'][$col]['config']['items'] as $k => $v) {
 				// ... and return the first found label where the value was equal to $key
-				if (!strcmp($v[1], $key)) {
+				if ((string)$v[1] === (string)$key) {
 					return $v[0];
 				}
 			}
@@ -1926,7 +1926,7 @@ class BackendUtility {
 			} else {
 				// No userFunc: Build label
 				$t = self::getProcessedValue($table, $GLOBALS['TCA'][$table]['ctrl']['label'], $row[$GLOBALS['TCA'][$table]['ctrl']['label']], 0, 0, FALSE, $row['uid'], $forceResult);
-				if ($GLOBALS['TCA'][$table]['ctrl']['label_alt'] && ($GLOBALS['TCA'][$table]['ctrl']['label_alt_force'] || !strcmp($t, ''))) {
+				if ($GLOBALS['TCA'][$table]['ctrl']['label_alt'] && ($GLOBALS['TCA'][$table]['ctrl']['label_alt_force'] || (string)$t === '')) {
 					$altFields = GeneralUtility::trimExplode(',', $GLOBALS['TCA'][$table]['ctrl']['label_alt'], TRUE);
 					$tA = array();
 					if (!empty($t)) {
@@ -1934,7 +1934,7 @@ class BackendUtility {
 					}
 					foreach ($altFields as $fN) {
 						$t = trim(strip_tags($row[$fN]));
-						if (strcmp($t, '')) {
+						if ((string)$t !== '') {
 							$t = self::getProcessedValue($table, $fN, $t, 0, 0, FALSE, $row['uid']);
 							if (!$GLOBALS['TCA'][$table]['ctrl']['label_alt_force']) {
 								break;
@@ -1952,7 +1952,7 @@ class BackendUtility {
 				if ($prep) {
 					$t = self::getRecordTitlePrep($t);
 				}
-				if (!strcmp(trim($t), '')) {
+				if (trim($t) === '') {
 					$t = self::getNoRecordTitle($prep);
 				}
 			}
@@ -2736,7 +2736,7 @@ class BackendUtility {
 		}
 		$options = array();
 		foreach ($menuItems as $value => $label) {
-			$options[] = '<option value="' . htmlspecialchars($value) . '"' . (!strcmp($currentValue, $value) ? ' selected="selected"' : '') . '>' . GeneralUtility::deHSCentities(htmlspecialchars($label)) . '</option>';
+			$options[] = '<option value="' . htmlspecialchars($value) . '"' . ((string)$currentValue === (string)$value ? ' selected="selected"' : '') . '>' . GeneralUtility::deHSCentities(htmlspecialchars($label)) . '</option>';
 		}
 		if (count($options)) {
 			$onChange = 'jumpToUrl(\'' . $script . '?' . $mainParams . $addparams . '&' . $elementName . '=\'+this.options[this.selectedIndex].value,this);';
@@ -2943,12 +2943,12 @@ class BackendUtility {
 					if (is_array($CHANGED_SETTINGS) && isset($CHANGED_SETTINGS[$key])) {
 						if (is_array($CHANGED_SETTINGS[$key])) {
 							$serializedSettings = serialize($CHANGED_SETTINGS[$key]);
-							if (strcmp($settings[$key], $serializedSettings)) {
+							if ((string)$settings[$key] !== $serializedSettings) {
 								$settings[$key] = $serializedSettings;
 								$changed = 1;
 							}
 						} else {
-							if (strcmp($settings[$key], $CHANGED_SETTINGS[$key])) {
+							if ((string)$settings[$key] !== (string)$CHANGED_SETTINGS[$key]) {
 								$settings[$key] = $CHANGED_SETTINGS[$key];
 								$changed = 1;
 							}
@@ -3254,7 +3254,7 @@ class BackendUtility {
 						$fieldN = substr($key, 0, -1);
 						$res[$fieldN] = $val;
 						unset($res[$fieldN]['types.']);
-						if (strcmp($typeVal, '') && is_array($val['types.'][$typeVal . '.'])) {
+						if ((string)$typeVal !== '' && is_array($val['types.'][$typeVal . '.'])) {
 							\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($res[$fieldN], $val['types.'][$typeVal . '.']);
 						}
 					}
@@ -3660,7 +3660,7 @@ class BackendUtility {
 					}
 				}
 				// If ID of current online version is found, look up the PID value of that:
-				if ($oid && ($ignoreWorkspaceMatch || !strcmp((int) $wsid, $GLOBALS['BE_USER']->workspace))) {
+				if ($oid && ($ignoreWorkspaceMatch || (int)$wsid === (int)$GLOBALS['BE_USER']->workspace)) {
 					$oidRec = self::getRecord($table, $oid, 'pid');
 					if (is_array($oidRec)) {
 						$rr['_ORIG_pid'] = $rr['pid'];

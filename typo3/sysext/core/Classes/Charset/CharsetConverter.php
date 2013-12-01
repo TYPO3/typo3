@@ -1918,7 +1918,7 @@ class CharsetConverter {
 	 * @todo Define visibility
 	 */
 	public function utf8_substr($str, $start, $len = NULL) {
-		if (!strcmp($len, '0')) {
+		if ((string)$len === '0') {
 			return '';
 		}
 		$byte_start = $this->utf8_char2byte_pos($str, $start);

@@ -733,11 +733,11 @@ class DataHandlerHook {
 			if (is_array($curVersion) && is_array($swapVersion)) {
 				if ($tcemainObj->BE_USER->workspacePublishAccess($swapVersion['t3ver_wsid'])) {
 					$wsAccess = $tcemainObj->BE_USER->checkWorkspace($swapVersion['t3ver_wsid']);
-					if ($swapVersion['t3ver_wsid'] <= 0 || !($wsAccess['publish_access'] & 1) || (int) $swapVersion['t3ver_stage'] === -10) {
+					if ($swapVersion['t3ver_wsid'] <= 0 || !($wsAccess['publish_access'] & 1) || (int)$swapVersion['t3ver_stage'] === -10) {
 						if ($tcemainObj->doesRecordExist($table, $swapWith, 'show') && $tcemainObj->checkRecordUpdateAccess($table, $swapWith)) {
 							if (!$swapIntoWS || $tcemainObj->BE_USER->workspaceSwapAccess()) {
 								// Check if the swapWith record really IS a version of the original!
-								if (((int) $swapVersion['pid'] == -1 && (int) $curVersion['pid'] >= 0) && !strcmp($swapVersion['t3ver_oid'], $id)) {
+								if (((int)$swapVersion['pid'] == -1 && (int)$curVersion['pid'] >= 0) && (int)$swapVersion['t3ver_oid'] === (int)$id) {
 									// Lock file name:
 									$lockFileName = PATH_site . 'typo3temp/swap_locking/' . $table . ':' . $id . '.ser';
 									if (!@is_file($lockFileName)) {

@@ -415,6 +415,14 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				TRUE,
 				'', '0', 'int', FALSE
 			),
+			'integer value "" vs. 0' => array(
+				TRUE,
+				'', 0, 'int', FALSE
+			),
+			'integer value "0" vs. 0' => array(
+				TRUE,
+				'0', 0, 'int', FALSE
+			),
 			'integer value 1 vs. 1' => array(
 				TRUE,
 				1, 1, 'int', FALSE
@@ -422,6 +430,14 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			'integer value 1 vs. "1"' => array(
 				TRUE,
 				1, '1', 'int', FALSE
+			),
+			'integer value "1" vs. "1"' => array(
+				TRUE,
+				'1', '1', 'int', FALSE
+			),
+			'integer value "1" vs. 1' => array(
+				TRUE,
+				'1', 1, 'int', FALSE
 			),
 			'integer value "0" vs. "1"' => array(
 				FALSE,
@@ -477,9 +493,25 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				TRUE,
 				'', '0', 'int', TRUE
 			),
+			'integer with allowed null value "" vs. 0' => array(
+				TRUE,
+				'', 0, 'int', TRUE
+			),
+			'integer with allowed null value "0" vs. 0' => array(
+				TRUE,
+				'0', 0, 'int', TRUE
+			),
 			'integer with allowed null value 1 vs. 1' => array(
 				TRUE,
 				1, 1, 'int', TRUE
+			),
+			'integer with allowed null value "1" vs. "1"' => array(
+				TRUE,
+				'1', '1', 'int', TRUE
+			),
+			'integer with allowed null value "1" vs. 1' => array(
+				TRUE,
+				'1', 1, 'int', TRUE
 			),
 			'integer with allowed null value 1 vs. "1"' => array(
 				TRUE,
@@ -504,6 +536,10 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			'integer with allowed null value null vs. "0"' => array(
 				FALSE,
 				NULL, '0', 'int', TRUE
+			),
+			'integer with allowed null value null vs. 0' => array(
+				FALSE,
+				NULL, 0, 'int', TRUE
 			),
 			'integer with allowed null value "0" vs. null' => array(
 				FALSE,

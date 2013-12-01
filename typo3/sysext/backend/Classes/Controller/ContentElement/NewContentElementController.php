@@ -277,7 +277,7 @@ class NewContentElementController {
 				$code = $GLOBALS['LANG']->getLL('sel2', 1) . '<br /><br />';
 				// Load SHARED page-TSconfig settings and retrieve column list from there, if applicable:
 				$modTSconfig_SHARED = BackendUtility::getModTSconfig($this->id, 'mod.SHARED');
-				$colPosList = strcmp(trim($modTSconfig_SHARED['properties']['colPos_list']), '') ? trim($modTSconfig_SHARED['properties']['colPos_list']) : '1,0,2,3';
+				$colPosList = trim($modTSconfig_SHARED['properties']['colPos_list']) !== '' ? trim($modTSconfig_SHARED['properties']['colPos_list']) : '1,0,2,3';
 				$colPosList = implode(',', array_unique(GeneralUtility::intExplode(',', $colPosList)));
 				// Removing duplicates, if any
 				// Finally, add the content of the column selector to the content:
@@ -365,7 +365,7 @@ class NewContentElementController {
 			foreach ($wizards as $groupKey => $wizardGroup) {
 				$groupKey = preg_replace('/\\.$/', '', $groupKey);
 				$showItems = GeneralUtility::trimExplode(',', $wizardGroup['show'], TRUE);
-				$showAll = strcmp($wizardGroup['show'], '*') ? FALSE : TRUE;
+				$showAll = $wizardGroup['show'] === '*';
 				$groupItems = array();
 				if (is_array($appendWizards[$groupKey . '.']['elements.'])) {
 					$wizardElements = array_merge((array) $wizardGroup['elements.'], $appendWizards[$groupKey . '.']['elements.']);

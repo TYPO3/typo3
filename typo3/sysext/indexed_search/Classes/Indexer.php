@@ -258,7 +258,7 @@ class Indexer {
 			if (!$indexerConfig['disableFrontendIndexing'] || $this->crawlerActive) {
 				if (!$pObj->page['no_search']) {
 					if (!$pObj->no_cache) {
-						if (!strcmp($pObj->sys_language_uid, $pObj->sys_language_content)) {
+						if ((int)$pObj->sys_language_uid === (int)$pObj->sys_language_content) {
 							// Setting up internal configuration from config array:
 							$this->conf = array();
 							// Information about page for which the indexing takes place

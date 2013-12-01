@@ -506,7 +506,7 @@ class TypoScriptParser {
 				$newValue = str_replace($fromStr, $toStr, $currentValue);
 				break;
 			case 'addToList':
-				$newValue = (strcmp('', $currentValue) ? $currentValue . ',' : '') . trim($modifierArgument);
+				$newValue = ((string)$currentValue !== '' ? $currentValue . ',' : '') . trim($modifierArgument);
 				break;
 			case 'removeFromList':
 				$existingElements = GeneralUtility::trimExplode(',', $currentValue);
@@ -819,7 +819,7 @@ class TypoScriptParser {
 		$absfilename = GeneralUtility::getFileAbsFileName($absfilename);
 
 		$newString .= LF . '### <INCLUDE_TYPOSCRIPT: source="FILE:' . $filename . '"' . $optionalProperties . '> BEGIN:' . LF;
-		if (strcmp($filename, '')) {
+		if ((string)$filename !== '') {
 			// Must exist and must not contain '..' and must be relative
 			// Check for allowed files
 			if (!GeneralUtility::verifyFilenameAgainstDenyPattern($absfilename)) {
@@ -1164,7 +1164,7 @@ class TypoScriptParser {
 				$lineC .= $this->highLightStyles['error'][0] . '<strong> - ERROR:</strong> ' . htmlspecialchars(implode(';', $errA[$rawP])) . $this->highLightStyles['error'][1];
 			}
 			if ($highlightBlockMode && $this->highLightData_bracelevel[$rawP]) {
-				$lineC = str_pad('', $this->highLightData_bracelevel[$rawP] * 2, ' ', STR_PAD_LEFT) . '<span style="' . $this->highLightBlockStyles . ($this->highLightBlockStyles_basecolor ? 'background-color: ' . GeneralUtility::modifyHTMLColorAll($this->highLightBlockStyles_basecolor, -$this->highLightData_bracelevel[$rawP] * 16) : '') . '">' . (strcmp($lineC, '') ? $lineC : '&nbsp;') . '</span>';
+				$lineC = str_pad('', $this->highLightData_bracelevel[$rawP] * 2, ' ', STR_PAD_LEFT) . '<span style="' . $this->highLightBlockStyles . ($this->highLightBlockStyles_basecolor ? 'background-color: ' . GeneralUtility::modifyHTMLColorAll($this->highLightBlockStyles_basecolor, -$this->highLightData_bracelevel[$rawP] * 16) : '') . '">' . ($lineC !== '' ? $lineC : '&nbsp;') . '</span>';
 			}
 			if (is_array($lineNumDat)) {
 				$lineNum = $rawP + $lineNumDat[0];

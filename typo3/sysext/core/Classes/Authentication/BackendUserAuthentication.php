@@ -632,7 +632,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 			return TRUE;
 		}
 		// Allow all blank values:
-		if (!strcmp($value, '')) {
+		if ((string)$value === '') {
 			return TRUE;
 		}
 		// Certain characters are not allowed in the value
@@ -659,8 +659,8 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 					$items = $GLOBALS['TCA'][$table]['columns'][$field]['config']['items'];
 					if (is_array($items)) {
 						foreach ($items as $iCfg) {
-							if (!strcmp($iCfg[1], $value) && $iCfg[4]) {
-								switch ((string) $iCfg[4]) {
+							if ((string)$iCfg[1] === (string)$value && $iCfg[4]) {
+								switch ((string)$iCfg[4]) {
 									case 'EXPL_ALLOW':
 										if (!GeneralUtility::inList($this->groupData['explicit_allowdeny'], ($testValue . ':ALLOW'))) {
 											$out = FALSE;
@@ -691,7 +691,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 */
 	public function checkLanguageAccess($langValue) {
 		// The users language list must be non-blank - otherwise all languages are allowed.
-		if (strcmp(trim($this->groupData['allowed_languages']), '')) {
+		if (trim($this->groupData['allowed_languages']) !== '') {
 			$langValue = intval($langValue);
 			// Language must either be explicitly allowed OR the lang Value be "-1" (all languages)
 			if ($langValue != -1 && !$this->check('allowed_languages', $langValue)) {
@@ -789,7 +789,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 			if (is_array($GLOBALS['TCA'][$table]['columns'])) {
 				foreach ($GLOBALS['TCA'][$table]['columns'] as $fieldName => $fieldValue) {
 					if (isset($idOrRow[$fieldName])) {
-						if ($fieldValue['config']['type'] == 'select' && $fieldValue['config']['authMode'] && !strcmp($fieldValue['config']['authMode_enforce'], 'strict')) {
+						if ($fieldValue['config']['type'] === 'select' && $fieldValue['config']['authMode'] && $fieldValue['config']['authMode_enforce'] === 'strict') {
 							if (!$this->checkAuthMode($table, $fieldName, $idOrRow[$fieldName], $fieldValue['config']['authMode'])) {
 								$this->errorMsg = 'ERROR: authMode "' . $fieldValue['config']['authMode'] . '" failed for field "' . $fieldName . '" with value "' . $idOrRow[$fieldName] . '" evaluated';
 								return FALSE;
@@ -1408,7 +1408,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 				// Setting workspace permissions:
 				$this->dataLists['workspace_perms'] |= $row['workspace_perms'];
 				// If this function is processing the users OWN group-list (not subgroups) AND if the ->firstMainGroup is not set, then the ->firstMainGroup will be set.
-				if (!strcmp($idList, '') && !$this->firstMainGroup) {
+				if ((string)$idList !== '' && !$this->firstMainGroup) {
 					$this->firstMainGroup = $uid;
 				}
 			}
@@ -1984,7 +1984,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 		// Unset access cache:
 		unset($this->checkWorkspaceCurrent_cache);
 		// If ID is different from the stored one, change it:
-		if (strcmp($this->workspace, $this->user['workspace_id'])) {
+		if ((int)$this->workspace !== (int)$this->user['workspace_id']) {
 			$this->user['workspace_id'] = $this->workspace;
 			$GLOBALS['TYPO3_DB']->exec_UPDATEquery('be_users', 'uid=' . intval($this->user['uid']), array('workspace_id' => $this->user['workspace_id']));
 			$this->simplelog('User changed workspace to "' . $this->workspace . '"');

@@ -1269,7 +1269,7 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 	public function getPageConfigLabel($string, $JScharCode = 1) {
 		global $LANG, $TSFE, $TYPO3_CONF_VARS;
 		if ($this->is_FE()) {
-			if (strcmp(substr($string, 0, 4), 'LLL:')) {
+			if (substr($string, 0, 4) !== 'LLL:') {
 				// A pure string coming from Page TSConfig must be in utf-8
 				$label = $TSFE->csConvObj->conv($TSFE->sL(trim($string)), 'utf-8', $this->OutputCharset);
 			} else {
@@ -1278,7 +1278,7 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 			$label = str_replace('"', '\\"', str_replace('\\\'', '\'', $label));
 			$label = $JScharCode ? $this->feJScharCode($label) : $label;
 		} else {
-			if (strcmp(substr($string, 0, 4), 'LLL:')) {
+			if (substr($string, 0, 4) !== 'LLL:') {
 				$label = $string;
 			} else {
 				$label = $LANG->sL(trim($string));
@@ -1307,7 +1307,7 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 			// extension
 			list($extKey, $local) = explode('/', substr($filename, 4), 2);
 			$newFilename = '';
-			if (strcmp($extKey, '') && \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($extKey) && strcmp($local, '')) {
+			if ((string)$extKey !== '' && \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($extKey) && (string)$local !== '') {
 				$newFilename = ($this->is_FE() || $this->isFrontendEditActive() ? \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath($extKey) : $this->backPath . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($extKey)) . $local;
 			}
 		} elseif (substr($filename, 0, 1) != '/') {
@@ -1451,7 +1451,7 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 			if ($pp[0] && $pp[1]) {
 				foreach ($matchParts as $el) {
 					$star = substr($el, -1) == '*';
-					if (!strcmp($pp[0], $el) || $star && GeneralUtility::isFirstPartOfStr($pp[0], substr($el, 0, -1))) {
+					if ($pp[0] === (string)$el || $star && GeneralUtility::isFirstPartOfStr($pp[0], substr($el, 0, -1))) {
 						$nStyle[] = $pp[0] . ':' . $pp[1];
 					} else {
 						unset($styleParts[$k]);

@@ -1268,7 +1268,7 @@ class DataHandler {
 				$shadowCols .= ',' . $GLOBALS['TCA'][$table]['ctrl']['label'];
 				$shadowColumns = array_unique(GeneralUtility::trimExplode(',', $shadowCols, TRUE));
 				foreach ($shadowColumns as $fieldName) {
-					if (strcmp($justStoredRecord[$fieldName], $liveRec[$fieldName]) && isset($GLOBALS['TCA'][$table]['columns'][$fieldName]) && $fieldName !== 'uid' && $fieldName !== 'pid') {
+					if ((string)$justStoredRecord[$fieldName] !== (string)$liveRec[$fieldName] && isset($GLOBALS['TCA'][$table]['columns'][$fieldName]) && $fieldName !== 'uid' && $fieldName !== 'pid') {
 						$newRecord[$fieldName] = $justStoredRecord[$fieldName];
 					}
 				}
@@ -1332,7 +1332,7 @@ class DataHandler {
 			if (!in_array(($table . '-' . $field), $this->exclude_array) && !$this->data_disableFields[$table][$id][$field]) {
 				// The field must be editable.
 				// Checking if a value for language can be changed:
-				$languageDeny = $GLOBALS['TCA'][$table]['ctrl']['languageField'] && !strcmp($GLOBALS['TCA'][$table]['ctrl']['languageField'], $field) && !$this->BE_USER->checkLanguageAccess($fieldValue);
+				$languageDeny = $GLOBALS['TCA'][$table]['ctrl']['languageField'] && (string)$GLOBALS['TCA'][$table]['ctrl']['languageField'] === (string)$field && !$this->BE_USER->checkLanguageAccess($fieldValue);
 				if (!$languageDeny) {
 					// Stripping slashes - will probably be removed the day $this->stripslashes_values is removed as an option...
 					if ($this->stripslashes_values) {
@@ -1721,7 +1721,7 @@ class DataHandler {
 		list($table, $id, $curValue, $status, $realPid, $recFID) = $PP;
 		if (is_array($tcaFieldConf['items'])) {
 			foreach ($tcaFieldConf['items'] as $set) {
-				if (!strcmp($set[1], $value)) {
+				if ((string)$set[1] === (string)$value) {
 					$res['value'] = $value;
 					break;
 				}
@@ -2721,7 +2721,7 @@ class DataHandler {
 							if (substr($vKey, -9) != '.vDEFbase') {
 								if ($this->clear_flexFormData_vDEFbase) {
 									$dataValues[$key][$vKey . '.vDEFbase'] = '';
-								} elseif ($this->updateModeL10NdiffData && $GLOBALS['TYPO3_CONF_VARS']['BE']['flexFormXMLincludeDiffBase'] && $vKey !== 'vDEF' && (strcmp($dataValues[$key][$vKey], $dataValues_current[$key][$vKey]) || !isset($dataValues_current[$key][($vKey . '.vDEFbase')]) || $this->updateModeL10NdiffData === 'FORCE_FFUPD')) {
+								} elseif ($this->updateModeL10NdiffData && $GLOBALS['TYPO3_CONF_VARS']['BE']['flexFormXMLincludeDiffBase'] && $vKey !== 'vDEF' && ((string)$dataValues[$key][$vKey] !== (string)$dataValues_current[$key][$vKey] || !isset($dataValues_current[$key][($vKey . '.vDEFbase')]) || $this->updateModeL10NdiffData === 'FORCE_FFUPD')) {
 									// Now, check if a vDEF value is submitted in the input data, if so we expect this has been processed prior to this operation (normally the case since those fields are higher in the form) and we can use that:
 									if (isset($dataValues[$key]['vDEF'])) {
 										$diffValue = $dataValues[$key]['vDEF'];
@@ -5913,7 +5913,7 @@ class DataHandler {
 				foreach ($fieldArray as $key => $value) {
 					if ($this->checkStoredRecords_loose && !$value && !$row[$key]) {
 
-					} elseif (strcmp($value, $row[$key])) {
+					} elseif ((string)$value !== (string)$row[$key]) {
 						$errorString[] = $key;
 					}
 				}
@@ -6144,19 +6144,19 @@ class DataHandler {
 	 * @todo Define visibility
 	 */
 	public function setTSconfigPermissions($fieldArray, $TSConfig_p) {
-		if (strcmp($TSConfig_p['userid'], '')) {
-			$fieldArray['perms_userid'] = intval($TSConfig_p['userid']);
+		if ((string)$TSConfig_p['userid'] !== '') {
+			$fieldArray['perms_userid'] = (int)$TSConfig_p['userid'];
 		}
-		if (strcmp($TSConfig_p['groupid'], '')) {
-			$fieldArray['perms_groupid'] = intval($TSConfig_p['groupid']);
+		if ((string)$TSConfig_p['groupid'] !== '') {
+			$fieldArray['perms_groupid'] = (int)$TSConfig_p['groupid'];
 		}
-		if (strcmp($TSConfig_p['user'], '')) {
+		if ((string)$TSConfig_p['user'] !== '') {
 			$fieldArray['perms_user'] = \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($TSConfig_p['user']) ? $TSConfig_p['user'] : $this->assemblePermissions($TSConfig_p['user']);
 		}
-		if (strcmp($TSConfig_p['group'], '')) {
+		if ((string)$TSConfig_p['group'] !== '') {
 			$fieldArray['perms_group'] = \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($TSConfig_p['group']) ? $TSConfig_p['group'] : $this->assemblePermissions($TSConfig_p['group']);
 		}
-		if (strcmp($TSConfig_p['everybody'], '')) {
+		if ((string)$TSConfig_p['everybody'] !== '') {
 			$fieldArray['perms_everybody'] = \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($TSConfig_p['everybody']) ? $TSConfig_p['everybody'] : $this->assemblePermissions($TSConfig_p['everybody']);
 		}
 		return $fieldArray;
@@ -6301,10 +6301,7 @@ class DataHandler {
 		// No NULL values are allowed, this is the regular behaviour.
 		// Thus, check whether strings are the same or whether integer values are empty ("0" or "").
 		if (!$allowNull) {
-			$result = (
-				!strcmp($submittedValue, $storedValue)
-				|| $storedType == 'int' && $storedValue == 0 && !strcmp($submittedValue, '')
-			);
+			$result = (string)$submittedValue === (string)$storedValue || $storedType === 'int' && (int)$storedValue === (int)$submittedValue;
 		// Null values are allowed, but currently there's a real (not NULL) value.
 		// Thus, ensure no NULL value was submitted and fallback to the regular behaviour.
 		} elseif ($storedValue !== NULL) {
@@ -6552,7 +6549,7 @@ class DataHandler {
 					$evalCodesArray = GeneralUtility::trimExplode(',', $conf['config']['eval'], TRUE);
 					if (in_array('uniqueInPid', $evalCodesArray)) {
 						$newV = $this->getUnique($table, $field, $curData[$field], $uid, $curData['pid']);
-						if (strcmp($newV, $curData[$field])) {
+						if ((string)$newV !== (string)$curData[$field]) {
 							$newData[$field] = $newV;
 						}
 					}

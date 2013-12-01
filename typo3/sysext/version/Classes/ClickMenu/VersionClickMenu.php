@@ -56,7 +56,7 @@ class VersionClickMenu {
 			$c = 0;
 			foreach ($menuItems as $k => $value) {
 				$c++;
-				if (!strcmp($k, 'delete')) {
+				if ($k === 'delete') {
 					break;
 				}
 			}

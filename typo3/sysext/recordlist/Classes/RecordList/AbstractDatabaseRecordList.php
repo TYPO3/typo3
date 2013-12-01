@@ -577,7 +577,7 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 			'LIMIT' => $limit
 		);
 		// Filter out records that are translated, if TSconfig mod.web_list.hideTranslations is set
-		if ((in_array($table, GeneralUtility::trimExplode(',', $this->hideTranslations)) || $this->hideTranslations === '*') && !empty($GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']) && strcmp($table, 'pages_language_overlay')) {
+		if ((in_array($table, GeneralUtility::trimExplode(',', $this->hideTranslations)) || $this->hideTranslations === '*') && !empty($GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']) && $table !== 'pages_language_overlay') {
 			$queryParts['WHERE'] .= ' AND ' . $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] . '=0 ';
 		}
 		// Apply hook as requested in http://forge.typo3.org/issues/16634
@@ -740,7 +740,7 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 	public function linkWrapItems($table, $uid, $code, $row) {
 		$origCode = $code;
 		// If the title is blank, make a "no title" label:
-		if (!strcmp($code, '')) {
+		if ((string)$code === '') {
 			$code = '<i>[' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.no_title', 1) . ']</i> - ' . htmlspecialchars(GeneralUtility::fixed_lgd_cs(
 						BackendUtility::getRecordTitle($table, $row), $GLOBALS['BE_USER']->uc['titleLen']));
 		} else {
@@ -822,7 +822,7 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 	 */
 	public function listURL($altId = '', $table = -1, $exclList = '') {
 		$urlParameters = array();
-		if (strcmp($altId, '')) {
+		if ((string)$altId !== '') {
 			$urlParameters['id'] = $altId;
 		} else {
 			$urlParameters['id'] = $this->id;

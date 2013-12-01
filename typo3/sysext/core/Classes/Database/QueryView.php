@@ -91,11 +91,10 @@ class QueryView {
 	public function makeStoreControl() {
 		// Load/Save
 		$storeArray = $this->initStoreArray();
-		$cur = '';
 		// Store Array:
 		$opt = array();
 		foreach ($storeArray as $k => $v) {
-			$opt[] = '<option value="' . $k . '"' . (!strcmp($cur, $v) ? ' selected' : '') . '>' . htmlspecialchars($v) . '</option>';
+			$opt[] = '<option value="' . $k . '">' . htmlspecialchars($v) . '</option>';
 		}
 		// Actions:
 		if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('sys_action') && $GLOBALS['BE_USER']->isAdmin()) {
@@ -103,7 +102,7 @@ class QueryView {
 			if ($GLOBALS['TYPO3_DB']->sql_num_rows($res)) {
 				$opt[] = '<option value="0">__Save to Action:__</option>';
 				while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-					$opt[] = '<option value="-' . $row['uid'] . '"' . (!strcmp($cur, ('-' . $row['uid'])) ? ' selected' : '') . '>' . htmlspecialchars(($row['title'] . ' [' . $row['uid'] . ']')) . '</option>';
+					$opt[] = '<option value="-' . $row['uid'] . '">' . htmlspecialchars(($row['title'] . ' [' . $row['uid'] . ']')) . '</option>';
 				}
 			}
 			$GLOBALS['TYPO3_DB']->sql_free_result($res);

@@ -259,7 +259,7 @@ class RelationHandler {
 		}
 		// SECTION:	normal MM relations
 		// If the table list is "*" then all tables are used in the list:
-		if (!strcmp(trim($tablelist), '*')) {
+		if (trim($tablelist) === '*') {
 			$tablelist = implode(',', array_keys($GLOBALS['TCA']));
 		}
 		// The tables are traversed and internal arrays are initialized:
@@ -913,9 +913,9 @@ class RelationHandler {
 				$theID = strrev($parts[0]);
 				$theTable = strrev($parts[1]);
 				if (MathUtility::canBeInterpretedAsInteger($theID)
-					&& (!$theTable || !strcmp($theTable, $fTable) || !strcmp($theTable, $nfTable))
+					&& (!$theTable || $theTable === (string)$fTable || $theTable === (string)$nfTable)
 				) {
-					$valueArray[$key] = $theTable && strcmp($theTable, $fTable) ? $theID * -1 : $theID;
+					$valueArray[$key] = $theTable && $theTable !== (string)$fTable ? $theID * -1 : $theID;
 				}
 			}
 		}

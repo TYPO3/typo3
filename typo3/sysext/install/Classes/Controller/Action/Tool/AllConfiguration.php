@@ -101,7 +101,7 @@ class AllConfiguration extends Action\AbstractAction implements Action\ActionInt
 						$itemData['value'] = str_replace(array('\'.chr(10).\'', '\' . LF . \''), array(LF, LF), $value);
 					} elseif (preg_match('/^(<.*?>)?boolean/i', $description)) {
 						$itemData['type'] = 'checkbox';
-						$itemData['value'] = $value && strcmp($value, '0') ? $value : 1;
+						$itemData['value'] = !empty($value) ? $value : 1;
 						$itemData['checked'] = $value ? TRUE : FALSE;
 					} else {
 						$itemData['type'] = 'input';
@@ -153,7 +153,7 @@ class AllConfiguration extends Action\AbstractAction implements Action\ActionInt
 								}
 							}
 							// Save if value changed
-							if (strcmp($GLOBALS['TYPO3_CONF_VARS'][$section][$valueKey], $value)) {
+							if ((string)$GLOBALS['TYPO3_CONF_VARS'][$section][$valueKey] !== (string)$value) {
 								$configurationPathValuePairs[$section . '/' . $valueKey] = $value;
 								/** @var $message \TYPO3\CMS\Install\Status\StatusInterface */
 								$status = $this->objectManager->get('TYPO3\\CMS\\Install\\Status\\OkStatus');
@@ -191,13 +191,13 @@ class AllConfiguration extends Action\AbstractAction implements Action\ActionInt
 		foreach ($lines as $lc) {
 			$lc = trim($lc);
 			if ($in) {
-				if (!strcmp($lc, ');')) {
+				if ($lc === ');') {
 					$in = 0;
 				} else {
 					if (preg_match('/["\']([[:alnum:]_-]*)["\'][[:space:]]*=>(.*)/i', $lc, $reg)) {
 						preg_match('/,[\\t\\s]*\\/\\/(.*)/i', $reg[2], $creg);
 						$theComment = trim($creg[1]);
-						if (substr(strtolower(trim($reg[2])), 0, 5) == 'array' && !strcmp($reg[1], strtoupper($reg[1]))) {
+						if (substr(strtolower(trim($reg[2])), 0, 5) == 'array' && $reg[1] === strtoupper($reg[1])) {
 							$mainKey = trim($reg[1]);
 						} elseif ($mainKey) {
 							$commentArray[$mainKey][$reg[1]] = $theComment;
@@ -205,7 +205,7 @@ class AllConfiguration extends Action\AbstractAction implements Action\ActionInt
 					}
 				}
 			}
-			if (!strcmp($lc, 'return array(')) {
+			if ($lc === 'return array(') {
 				$in = 1;
 			}
 		}

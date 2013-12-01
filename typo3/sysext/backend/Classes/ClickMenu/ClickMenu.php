@@ -158,9 +158,8 @@ class ClickMenu {
 			@ini_set('display_errors', 0);
 		}
 		// Deal with Drag&Drop context menus
-		if (strcmp(GeneralUtility::_GP('dragDrop'), '')) {
-			$CMcontent = $this->printDragDropClickMenu(GeneralUtility::_GP('dragDrop'), GeneralUtility::_GP('srcId'), GeneralUtility::_GP('dstId'));
-			return $CMcontent;
+		if ((string)GeneralUtility::_GP('dragDrop') !== '') {
+			return $this->printDragDropClickMenu(GeneralUtility::_GP('dragDrop'), GeneralUtility::_GP('srcId'), GeneralUtility::_GP('dstId'));
 		}
 		// Can be set differently as well
 		$this->iParts[0] = GeneralUtility::_GP('table');
@@ -174,7 +173,7 @@ class ClickMenu {
 		if ($GLOBALS['BE_USER']->uc['condensedMode'] || $this->iParts[2] == 2) {
 			$this->alwaysContentFrame = 1;
 		}
-		if (strcmp($this->iParts[1], '')) {
+		if (isset($this->iParts[1]) && $this->iParts[1] !== '') {
 			$this->isDBmenu = 1;
 		}
 		$TSkey = ($this->isDBmenu ? 'page' : 'folder') . ($this->listFrame ? 'List' : 'Tree');
@@ -224,17 +223,18 @@ class ClickMenu {
 	 * @todo Define visibility
 	 */
 	public function printDBClickMenu($table, $uid) {
+		$uid = intval($uid);
 		// Get record:
 		$this->rec = BackendUtility::getRecordWSOL($table, $uid);
 		$menuItems = array();
 		$root = 0;
 		$DBmount = FALSE;
 		// Rootlevel
-		if ($table == 'pages' && !strcmp($uid, '0')) {
+		if ($table === 'pages' && $uid === 0) {
 			$root = 1;
 		}
 		// DB mount
-		if ($table == 'pages' && in_array($uid, $GLOBALS['BE_USER']->returnWebmounts())) {
+		if ($table === 'pages' && in_array($uid, $GLOBALS['BE_USER']->returnWebmounts())) {
 			$DBmount = TRUE;
 		}
 		// Used to hide cut,copy icons for l10n-records
@@ -249,10 +249,10 @@ class ClickMenu {
 			$lCP = $GLOBALS['BE_USER']->calcPerms(BackendUtility::getRecord('pages', $table == 'pages' ? $this->rec['uid'] : $this->rec['pid']));
 			// View
 			if (!in_array('view', $this->disabledItems)) {
-				if ($table == 'pages') {
+				if ($table === 'pages') {
 					$menuItems['view'] = $this->DB_view($uid);
 				}
-				if ($table == $GLOBALS['TYPO3_CONF_VARS']['SYS']['contentTable']) {
+				if ($table === $GLOBALS['TYPO3_CONF_VARS']['SYS']['contentTable']) {
 					$ws_rec = BackendUtility::getRecordWSOL($table, $this->rec['uid']);
 					$menuItems['view'] = $this->DB_view($ws_rec['pid']);
 				}
@@ -290,7 +290,7 @@ class ClickMenu {
 					$root ? $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] : GeneralUtility::fixed_lgd_cs(BackendUtility::getRecordTitle($table, $this->rec), $GLOBALS['BE_USER']->uc['titleLen']),
 					$this->clipObj->currentMode()
 				);
-				if ($table == 'pages' && $lCP & 8) {
+				if ($table === 'pages' && $lCP & 8) {
 					if ($elFromAllTables) {
 						$menuItems['pasteinto'] = $this->DB_paste('', $uid, 'into', $elInfo);
 					}
@@ -330,12 +330,13 @@ class ClickMenu {
 	 * @todo Define visibility
 	 */
 	public function printNewDBLevel($table, $uid) {
+		$uid = (int)$uid;
 		// Setting internal record to the table/uid :
 		$this->rec = BackendUtility::getRecordWSOL($table, $uid);
 		$menuItems = array();
 		$root = 0;
 		// Rootlevel
-		if ($table == 'pages' && !strcmp($uid, '0')) {
+		if ($table === 'pages' && $uid === 0) {
 			$root = 1;
 		}
 		// If record was found, check permissions and get menu items.
@@ -1226,7 +1227,7 @@ class ClickMenu {
 									$p = 1;
 									reset($menuItems);
 									while (TRUE) {
-										if (!strcmp(key($menuItems), $menuEntry)) {
+										if ((string)key($menuItems) === $menuEntry) {
 											$pointer = $p;
 											$found = TRUE;
 											break;
@@ -1310,7 +1311,7 @@ class ClickMenu {
 	 * @todo Define visibility
 	 */
 	public function excludeIcon($iconCode) {
-		return $GLOBALS['BE_USER']->uc['noMenuMode'] && strcmp($GLOBALS['BE_USER']->uc['noMenuMode'], 'icons') ? '' : ' ' . $iconCode;
+		return $GLOBALS['BE_USER']->uc['noMenuMode'] && $GLOBALS['BE_USER']->uc['noMenuMode'] !== 'icons' ? '' : ' ' . $iconCode;
 	}
 
 	/**

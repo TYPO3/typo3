@@ -80,7 +80,7 @@ class ElementBrowserRecordList extends \TYPO3\CMS\Recordlist\RecordList\Database
 	 * @todo Define visibility
 	 */
 	public function listURL($altId = '', $table = -1, $exclList = '') {
-		return $this->thisScript . '?id=' . (strcmp($altId, '') ? $altId : $this->id) . '&table=' . rawurlencode(($table == -1 ? $this->table : $table)) . ($this->thumbs ? '&imagemode=' . $this->thumbs : '') . ($this->searchString ? '&search_field=' . rawurlencode($this->searchString) : '') . ($this->searchLevels ? '&search_levels=' . rawurlencode($this->searchLevels) : '') . ((!$exclList || !GeneralUtility::inList($exclList, 'sortField')) && $this->sortField ? '&sortField=' . rawurlencode($this->sortField) : '') . ((!$exclList || !GeneralUtility::inList($exclList, 'sortRev')) && $this->sortRev ? '&sortRev=' . rawurlencode($this->sortRev) : '') . $this->ext_addP();
+		return $this->thisScript . '?id=' . ($altId !== '' ? $altId : $this->id) . '&table=' . rawurlencode(($table == -1 ? $this->table : $table)) . ($this->thumbs ? '&imagemode=' . $this->thumbs : '') . ($this->searchString ? '&search_field=' . rawurlencode($this->searchString) : '') . ($this->searchLevels ? '&search_levels=' . rawurlencode($this->searchLevels) : '') . ((!$exclList || !GeneralUtility::inList($exclList, 'sortField')) && $this->sortField ? '&sortField=' . rawurlencode($this->sortField) : '') . ((!$exclList || !GeneralUtility::inList($exclList, 'sortRev')) && $this->sortRev ? '&sortRev=' . rawurlencode($this->sortRev) : '') . $this->ext_addP();
 	}
 
 	/**

@@ -141,9 +141,9 @@ class TreeElement {
 		// Create a JavaScript code line which will ask the user to save/update the form due to changing the element.
 		// This is used for eg. "type" fields and others configured with "requestUpdate"
 		if (
-			$GLOBALS['TCA'][$table]['ctrl']['type']
-			&& !strcmp($field, $GLOBALS['TCA'][$table]['ctrl']['type'])
-			|| $GLOBALS['TCA'][$table]['ctrl']['requestUpdate']
+			!empty($GLOBALS['TCA'][$table]['ctrl']['type'])
+			&& $field === $GLOBALS['TCA'][$table]['ctrl']['type']
+			|| !empty($GLOBALS['TCA'][$table]['ctrl']['requestUpdate'])
 			&& GeneralUtility::inList(str_replace(' ', '', $GLOBALS['TCA'][$table]['ctrl']['requestUpdate']), $field)
 		) {
 			if ($GLOBALS['BE_USER']->jsConfirmation(1)) {

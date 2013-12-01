@@ -439,11 +439,11 @@ class TemplateService {
 			if ($GLOBALS['TSFE']->all) {
 				$cc = $GLOBALS['TSFE']->all;
 				// The two rowSums must NOT be different from each other - which they will be if start/endtime or hidden has changed!
-				if (strcmp(serialize($this->rowSum), serialize($cc['rowSum']))) {
+				if (serialize($this->rowSum) !== serialize($cc['rowSum'])) {
 					unset($cc);
 				} else {
 					// If $TSFE->all contains valid data, we don't need to update cache_pagesection (because this data was fetched from there already)
-					if (!strcmp(serialize($this->rootLine), serialize($cc['rootLine']))) {
+					if (serialize($this->rootLine) === serialize($cc['rootLine'])) {
 						$isCached = TRUE;
 					}
 					// When the data is serialized below (ROWSUM hash), it must not contain the rootline by concept. So this must be removed (and added again later)...
@@ -782,7 +782,7 @@ class TemplateService {
 			foreach ($include_static_fileArr as $ISF_file) {
 				if (substr($ISF_file, 0, 4) == 'EXT:') {
 					list($ISF_extKey, $ISF_localPath) = explode('/', substr($ISF_file, 4), 2);
-					if (strcmp($ISF_extKey, '') && \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($ISF_extKey) && strcmp($ISF_localPath, '')) {
+					if ((string)$ISF_extKey !== '' && \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($ISF_extKey) && (string)$ISF_localPath !== '') {
 						$ISF_localPath = rtrim($ISF_localPath, '/') . '/';
 						$ISF_filePath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($ISF_extKey) . $ISF_localPath;
 						if (@is_dir($ISF_filePath)) {
@@ -1240,7 +1240,7 @@ class TemplateService {
 		if (isset($this->fileCache[$hash])) {
 			return $this->fileCache[$hash];
 		}
-		if (!strcmp(substr($file, 0, 4), 'EXT:')) {
+		if (substr($file, 0, 4) === 'EXT:') {
 			$newFile = '';
 			list($extKey, $script) = explode('/', substr($file, 4), 2);
 			if ($extKey && \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($extKey)) {
@@ -1473,7 +1473,7 @@ class TemplateService {
 		if (!\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($typeOverride) && intval($GLOBALS['TSFE']->config['config']['forceTypeValue'])) {
 			$typeOverride = intval($GLOBALS['TSFE']->config['config']['forceTypeValue']);
 		}
-		if (strcmp($typeOverride, '')) {
+		if ((string)$typeOverride !== '') {
 			$typeNum = $typeOverride;
 		}
 		// Override...

@@ -293,7 +293,7 @@ class BaseScriptClass {
 	 * @todo Define visibility
 	 */
 	public function getExternalItemConfig($modName, $menuKey, $value = '') {
-		return strcmp($value, '') ? $GLOBALS['TBE_MODULES_EXT'][$modName]['MOD_MENU'][$menuKey][$value] : $GLOBALS['TBE_MODULES_EXT'][$modName]['MOD_MENU'][$menuKey];
+		return (string)$value !== '' ? $GLOBALS['TBE_MODULES_EXT'][$modName]['MOD_MENU'][$menuKey][$value] : $GLOBALS['TBE_MODULES_EXT'][$modName]['MOD_MENU'][$menuKey];
 	}
 
 	/**

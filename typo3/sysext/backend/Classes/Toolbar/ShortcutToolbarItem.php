@@ -269,7 +269,7 @@ class ShortcutToolbarItem implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookI
 				}
 			}
 			$shortcutGroup = $row['sc_group'];
-			if ($shortcutGroup && strcmp($lastGroup, $shortcutGroup) && $shortcutGroup != -100) {
+			if ($shortcutGroup && (string)$lastGroup !== (string)$shortcutGroup && $shortcutGroup != -100) {
 				$shortcut['groupLabel'] = $this->getShortcutGroupLabel($shortcutGroup);
 			}
 			if ($row['description']) {
@@ -333,8 +333,8 @@ class ShortcutToolbarItem implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookI
 		$bookmarkGroups = $GLOBALS['BE_USER']->getTSConfigProp('options.bookmarkGroups');
 		if (is_array($bookmarkGroups) && count($bookmarkGroups)) {
 			foreach ($bookmarkGroups as $groupId => $label) {
-				if (strcmp('', $label) && strcmp('0', $label)) {
-					$this->shortcutGroups[$groupId] = (string) $label;
+				if (!empty($label)) {
+					$this->shortcutGroups[$groupId] = (string)$label;
 				} elseif ($GLOBALS['BE_USER']->isAdmin()) {
 					unset($this->shortcutGroups[$groupId]);
 				}

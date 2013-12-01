@@ -340,7 +340,7 @@ abstract class AbstractRecordList {
 	 * @todo Define visibility
 	 */
 	public function listURL($altId = '') {
-		return $this->script . '?id=' . (strcmp($altId, '') ? $altId : $this->id);
+		return $this->script . '?id=' . ($altId !== '' ? $altId : $this->id);
 	}
 
 	/**

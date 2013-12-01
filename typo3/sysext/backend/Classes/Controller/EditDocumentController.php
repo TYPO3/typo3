@@ -679,14 +679,14 @@ class EditDocumentController {
 			if ($editForm) {
 				$this->firstEl = reset($this->elementsData);
 				// Checking if the currently open document is stored in the list of "open documents" - if not, then add it:
-				if ((strcmp($this->docDat[1], $this->storeUrlMd5) || !isset($this->docHandler[$this->storeUrlMd5])) && !$this->dontStoreDocumentRef) {
+				if (($this->docDat[1] !== $this->storeUrlMd5 || !isset($this->docHandler[$this->storeUrlMd5])) && !$this->dontStoreDocumentRef) {
 					$this->docHandler[$this->storeUrlMd5] = array($this->storeTitle, $this->storeArray, $this->storeUrl, $this->firstEl);
 					$GLOBALS['BE_USER']->pushModuleData('alt_doc.php', array($this->docHandler, $this->storeUrlMd5));
 					BackendUtility::setUpdateSignal('OpendocsController::updateNumber', count($this->docHandler));
 				}
 				// Module configuration
 				$this->modTSconfig = $this->viewId ? BackendUtility::getModTSconfig($this->viewId, 'mod.xMOD_alt_doc') : array();
-				$body .= $this->tceforms->printNeededJSFunctions_top();
+				$body = $this->tceforms->printNeededJSFunctions_top();
 				$body .= $this->compileForm($editForm);
 				$body .= $this->tceforms->printNeededJSFunctions();
 				$body .= $this->functionMenus();
@@ -1439,7 +1439,7 @@ class EditDocumentController {
 	 * @todo Define visibility
 	 */
 	public function setDocument($currentDocFromHandlerMD5 = '', $retUrl = 'alt_doc_nodoc.php') {
-		if (!ExtensionManagementUtility::isLoaded('cms') && !strcmp($retUrl, 'alt_doc_nodoc.php')) {
+		if (!ExtensionManagementUtility::isLoaded('cms') && $retUrl === 'alt_doc_nodoc.php') {
 			return;
 		}
 		if (!$this->modTSconfig['properties']['disableDocSelector'] && is_array($this->docHandler) && count($this->docHandler)) {

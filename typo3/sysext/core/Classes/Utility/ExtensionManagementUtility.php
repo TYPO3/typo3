@@ -816,7 +816,7 @@ class ExtensionManagementUtility {
 						$pointer = 0;
 						$found = FALSE;
 						foreach ($mods as $k => $m) {
-							if (!strcmp($m, $modRef)) {
+							if ($m === $modRef) {
 								$pointer = strtolower($place) == 'after' ? $k + 1 : $k;
 								$found = TRUE;
 							}
@@ -1186,7 +1186,7 @@ class ExtensionManagementUtility {
 		}
 		if (is_array($GLOBALS['TCA']['tt_content']['columns']) && is_array($GLOBALS['TCA']['tt_content']['columns'][$type]['config']['items'])) {
 			foreach ($GLOBALS['TCA']['tt_content']['columns'][$type]['config']['items'] as $k => $v) {
-				if (!strcmp($v[1], $itemArray[1])) {
+				if ((string)$v[1] === (string)$itemArray[1]) {
 					$GLOBALS['TCA']['tt_content']['columns'][$type]['config']['items'][$k] = $itemArray;
 					return;
 				}

@@ -127,7 +127,7 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
 			$tCells = array();
 			$langRecUids[0][] = $data['row']['uid'];
 			// Page icons / titles etc.
-			$tCells[] = '<td' . ($data['row']['_CSSCLASS'] ? ' class="' . $data['row']['_CSSCLASS'] . '"' : '') . '>' . $data['HTML'] . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($data['row']['title'], $titleLen)) . (strcmp($data['row']['nav_title'], '') ? ' [Nav: <em>' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($data['row']['nav_title'], $titleLen)) . '</em>]' : '') . '</td>';
+			$tCells[] = '<td' . ($data['row']['_CSSCLASS'] ? ' class="' . $data['row']['_CSSCLASS'] . '"' : '') . '>' . $data['HTML'] . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($data['row']['title'], $titleLen)) . ((string)$data['row']['nav_title'] !== '' ? ' [Nav: <em>' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($data['row']['nav_title'], $titleLen)) . '</em>]' : '') . '</td>';
 			// DEFAULT language:
 			// "View page" link is created:
 			$viewPageLink = '<a href="#" onclick="' . htmlspecialchars(
@@ -162,7 +162,7 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
 							$row,
 							array('class' => 'c-recIcon')
 						);
-						$info = $icon . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($row['title'], $titleLen)) . (strcmp($row['nav_title'], '') ? ' [Nav: <em>' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($row['nav_title'], $titleLen)) . '</em>]' : '') . ($row['_COUNT'] > 1 ? '<div>' . $LANG->getLL('lang_renderl10n_badThingThereAre', TRUE) . '</div>' : '');
+						$info = $icon . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($row['title'], $titleLen)) . ((string)$row['nav_title'] !== '' ? ' [Nav: <em>' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($row['nav_title'], $titleLen)) . '</em>]' : '') . ($row['_COUNT'] > 1 ? '<div>' . $LANG->getLL('lang_renderl10n_badThingThereAre', TRUE) . '</div>' : '');
 						$tCells[] = '<td class="' . $status . ' c-leftLine">' . $info . '</td>';
 						// Edit whole record:
 						$info = '';

@@ -93,7 +93,7 @@ class ListController {
 		}
 		// Make redirect:
 		// If pid is blank OR if id is set, then return...
-		if (!strcmp($this->pid, '') || strcmp($this->id, '')) {
+		if ((string)$this->id !== '') {
 			$redirectUrl = GeneralUtility::sanitizeLocalUrl($this->P['returnUrl']);
 		} else {
 			// Otherwise, show the list:
