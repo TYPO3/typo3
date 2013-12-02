@@ -457,6 +457,65 @@ class BackendUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 	/**
+	 * Tests concerning getLabelsFromItemsList
+	 */
+
+	/**
+	 * @test
+	 */
+	public function getLabelsFromItemsListReturnsValueIfItemIsFound() {
+		$table = 'foobar';
+		$col = 'someColumn';
+		$tca = array(
+			'columns' => array(
+				'someColumn' => array(
+					'config' => array(
+						'items' => array(
+							'0' => array('aFooLabel', 'foo'),
+							'1' => array('aBarLabel', 'bar')
+						)
+					)
+				)
+			)
+		);
+
+		$tcaBackup = $GLOBALS['TCA'][$table];
+		unset($GLOBALS['TCA'][$table]);
+		$GLOBALS['TCA'][$table] = $tca;
+		$label = $this->fixture->getLabelsFromItemsList($table, $col, 'foo,bar');
+		unset($GLOBALS['TCA'][$table]);
+		$GLOBALS['TCA'][$table] = $tcaBackup;
+		$this->assertEquals('aFooLabel, aBarLabel', $label);
+	}
+
+	/**
+	 * @test
+	 */
+	public function getLabelsFromItemsListReturnsPlainValueIfItemIsNotFound() {
+		$table = 'foobar';
+		$col = 'someColumn';
+		$tca = array(
+			'columns' => array(
+				'someColumn' => array(
+					'config' => array(
+						'items' => array(
+							'0' => array('aFooLabel', 'foo')
+						)
+					)
+				)
+			)
+		);
+
+		$tcaBackup = $GLOBALS['TCA'][$table];
+		unset($GLOBALS['TCA'][$table]);
+		$GLOBALS['TCA'][$table] = $tca;
+		$label = $this->fixture->getLabelsFromItemsList($table, $col, 'foo,something,missing');
+		unset($GLOBALS['TCA'][$table]);
+		$GLOBALS['TCA'][$table] = $tcaBackup;
+		$this->assertEquals('aFooLabel, something, missing', $label);
+	}
+
+	/**
 	 * Tests concerning getExcludeFields
 	 */
 
