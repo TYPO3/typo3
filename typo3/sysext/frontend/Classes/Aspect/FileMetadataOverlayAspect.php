@@ -27,7 +27,6 @@ namespace TYPO3\CMS\Frontend\Aspect;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-
 /**
  * Class FileMetadataTranslationAspect
  *
@@ -53,7 +52,9 @@ class FileMetadataOverlayAspect {
 			$this->getTsfe()->sys_language_content,
 			$this->getTsfe()->sys_language_contentOL
 		);
-		$data->exchangeArray($overlayedMetaData);
+		if ($overlayedMetaData !== NULL) {
+			$data->exchangeArray($overlayedMetaData);
+		}
 	}
 
 	/**
