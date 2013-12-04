@@ -1178,7 +1178,7 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 					&& $GLOBALS['TCA'][$tableName]['ctrl']['languageField'] !== ''
 				) {
 					if (in_array($row[$GLOBALS['TCA'][$tableName]['ctrl']['languageField']], array(-1, 0))) {
-						$overlayMode = $languageMode === 'strict' ? 'hideNonTranslated' : '';
+						$overlayMode = $querySettings->getLanguageMode() === 'strict' ? 'hideNonTranslated' : '';
 						$row = $pageRepository->getRecordOverlay($tableName, $row, $querySettings->getLanguageUid(), $overlayMode);
 					}
 				}
