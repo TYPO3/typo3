@@ -162,9 +162,6 @@ class HelpModuleController {
 	 * @todo Define visibility
 	 */
 	public function main() {
-		// Start HTML output accumulation:
-		$GLOBALS['TBE_TEMPLATE']->divClass = 'typo3-view-help';
-		$this->content .= $GLOBALS['TBE_TEMPLATE']->startPage($GLOBALS['LANG']->getLL('title'));
 		if ($this->field == '*') {
 			// If ALL fields is supposed to be shown:
 			$this->createGlossaryIndex();
@@ -177,9 +174,15 @@ class HelpModuleController {
 			// Render Table Of Contents if nothing else:
 			$this->content .= $this->render_TOC();
 		}
-		// End page:
-		$this->content .= '<br/>';
-		$this->content .= $GLOBALS['TBE_TEMPLATE']->endPage();
+
+		$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
+		$this->doc->backPath = $GLOBALS['BACK_PATH'];
+		$this->doc->setModuleTemplate('EXT:cshmanual/Resources/Private/Templates/cshmanual.html');
+
+		$markers = array('CONTENT' => $this->content);
+
+		$this->content = $this->doc->moduleBody(array(), array(), $markers);
+		$this->content = $this->doc->render($GLOBALS['LANG']->getLL('title'), $this->content);
 	}
 
 	/**
