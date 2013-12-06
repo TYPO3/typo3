@@ -97,11 +97,11 @@ class DocumentController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 	}
 
 	/**
-	 * Manages the documents.
+	 * Shows documents to be downloaded/fetched from a remote location.
 	 *
 	 * @return void
 	 */
-	public function manageAction() {
+	public function downloadAction() {
 		// This action is reserved for admin users. Redirect to default view if not.
 		if (!$this->getBackendUser()->isAdmin()) {
 			$this->redirect('list');
@@ -118,14 +118,14 @@ class DocumentController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 	}
 
 	/**
-	 * Downloads a document.
+	 * Fetches a document from a remote URL.
 	 *
 	 * @param string $url
 	 * @param string $key
 	 * @param string $version
 	 * @return void
 	 */
-	public function downloadAction($url, $key, $version = NULL) {
+	public function fetchAction($url, $key, $version = NULL) {
 		// This action is reserved for admin users. Redirect to default view if not.
 		if (!$this->getBackendUser()->isAdmin()) {
 			$this->redirect('list');
@@ -187,7 +187,7 @@ class DocumentController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 				)
 			);
 		}
-		$this->redirect('manage');
+		$this->redirect('download');
 	}
 
 	/**

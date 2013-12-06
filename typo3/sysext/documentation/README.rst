@@ -16,7 +16,7 @@ documents.
 The Backend module features two actions:
 
 #. Show Documentation
-#. Manage Documentation
+#. Download Documentation
 
 
 Show Documentation
@@ -67,8 +67,8 @@ Registering Custom Documents
    ``typo3conf/Documentation/<documentation-key>/``
 
 
-Manage Documentation
-====================
+Download Documentation
+======================
 
 This view is only accessible to TYPO3 administrators. It shows a form to retrieve rendered documentation for loaded
 extensions and to fetch a copy of official TYPO3 manuals, guides and references from http://docs.typo3.org.

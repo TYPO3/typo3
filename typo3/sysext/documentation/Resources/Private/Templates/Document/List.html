@@ -23,9 +23,8 @@
 		<thead>
 			<tr>
 				<th><f:translate key="tx_documentation_domain_model_document.title" /></th>
-				<th><f:translate key="tx_documentation_domain_model_document.extension_key" /></th>
 				<th><f:translate key="tx_documentation_domain_model_documenttranslation.description" /></th>
-				<th><f:translate key="tx_documentation_domain_model_documenttranslation.formats" /></th>
+				<th><f:translate key="tx_documentation_domain_model_documenttranslation.actions" /></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -35,10 +34,10 @@
 						<td class="title">
 							<img src="../{document.icon}" title="{translation.title}" alt="{translation.title}" />
 							{translation.title}
+							<f:if condition="{document.extensionKey}">({document.extensionKey})</f:if>
 						</td>
-						<td>{document.extensionKey}</td>
 						<td>{translation.description}</td>
-						<td class="formats">
+						<td class="actions icons">
 							<doc:formats documentTranslation="{translation}" />
 						</td>
 					</tr>

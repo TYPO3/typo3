@@ -58,9 +58,9 @@
 .typo3-documentation-list tr:hover .icons a {
   display: inline; }
 
-.typo3-documentation-list td.formats {
+.typo3-documentation-list td.actions {
   width: 140px; }
-  .typo3-documentation-list td.formats a {
+  .typo3-documentation-list td.actions a {
     padding: 2px; }
 
 .headerTooltip,

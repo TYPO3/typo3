@@ -16,8 +16,8 @@ TYPO3.DocumentationApplication = {
 		var getVars = this.getUrlVars();
 		// getVars[1] contains the name of the action key
 		// List view is the default view
-		if (getVars[getVars[1]] == 'manage') {
-			this.documentationManageView(getVars);
+		if (getVars[getVars[1]] == 'download') {
+			this.documentationDownloadView(getVars);
 		} else {
 			this.documentationListView(getVars);
 		}
@@ -41,9 +41,9 @@ TYPO3.DocumentationApplication = {
 			this.datatable.fnFilter(getVars['search']);
 		}
 	},
-	// Initializes the management view
-	documentationManageView: function(getVars) {
-		this.datatable = jQuery('#typo3-documentation-manage').dataTable({
+	// Initializes the download view
+	documentationDownloadView: function(getVars) {
+		this.datatable = jQuery('#typo3-documentation-download').dataTable({
 			'bPaginate': false,
 			'bJQueryUI': true,
 			'bLengthChange': false,

@@ -55,8 +55,8 @@
 			<trans-unit id="tx_documentation_domain_model_documenttranslation.description">
 				<source>Description</source>
 			</trans-unit>
-			<trans-unit id="tx_documentation_domain_model_documenttranslation.formats">
-				<source>Formats</source>
+			<trans-unit id="tx_documentation_domain_model_documenttranslation.actions">
+				<source>Actions</source>
 			</trans-unit>
 
 			<trans-unit id="tx_documentation_domain_model_documentformat">
@@ -68,12 +68,15 @@
 			<trans-unit id="tx_documentation_domain_model_documentformat.path">
 				<source>Path</source>
 			</trans-unit>
+			<trans-unit id="tx_documentation_domain_model_documentformat.format.title">
+				<source>Show documentation as %s</source>
+			</trans-unit>
 
 			<trans-unit id="showDocumentation" xml:space="preserve">
 				<source>Show Documentation</source>
 			</trans-unit>
-			<trans-unit id="manageDocumentation" xml:space="preserve">
-				<source>Manage Documentation</source>
+			<trans-unit id="downloadDocumentation" xml:space="preserve">
+				<source>Download Documentation</source>
 			</trans-unit>
 			<trans-unit id="searchTemplate.submitButton" xml:space="preserve">
 				<source>Go</source>

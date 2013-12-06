@@ -7,11 +7,11 @@ if (TYPO3_MODE === 'BE') {
 	// Registers a Backend Module
 	\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
 		'TYPO3.CMS.' . $_EXTKEY,
-		'help',	 			// Make module a submodule of 'help'
-		'documentation',	// Submodule key
-		'top',				// Position
+		'help',
+		'documentation',
+		'top',
 		array(
-			'Document' => 'list, manage, download',
+			'Document' => 'list, download, fetch',
 		),
 		array(
 			'access' => 'user,group',
