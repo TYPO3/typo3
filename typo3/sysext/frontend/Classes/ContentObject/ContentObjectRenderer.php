@@ -5450,7 +5450,9 @@ class ContentObjectRenderer {
 				switch ($type) {
 					case 'gp':
 						// Merge GET and POST and get $key out of the merged array
-						$retVal = $this->getGlobal($key, GeneralUtility::array_merge_recursive_overrule(GeneralUtility::_GET(), GeneralUtility::_POST()));
+						$getPostArray = GeneralUtility::_GET();
+						\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($getPostArray, GeneralUtility::_POST());
+						$retVal = $this->getGlobal($key, $getPostArray);
 						break;
 					case 'tsfe':
 						$retVal = $this->getGlobal('TSFE|' . $key);
@@ -6504,9 +6506,9 @@ class ContentObjectRenderer {
 			$newQueryArray = $currentQueryArray;
 		}
 		if ($forceOverruleArguments) {
-			$newQueryArray = GeneralUtility::array_merge_recursive_overrule($newQueryArray, $overruleQueryArguments);
+			\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($newQueryArray, $overruleQueryArguments);
 		} else {
-			$newQueryArray = GeneralUtility::array_merge_recursive_overrule($newQueryArray, $overruleQueryArguments, TRUE);
+			\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($newQueryArray, $overruleQueryArguments, FALSE);
 		}
 		return GeneralUtility::implodeArrayForUrl('', $newQueryArray, '', FALSE, TRUE);
 	}

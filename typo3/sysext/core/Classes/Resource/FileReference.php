@@ -166,10 +166,11 @@ class FileReference implements FileInterface {
 	 */
 	public function getProperties() {
 		if (empty($this->mergedProperties)) {
-			$this->mergedProperties = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule(
-				$this->propertiesOfFileReference,
+			$this->mergedProperties = $this->propertiesOfFileReference;
+			\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule(
+				$this->mergedProperties,
 				$this->originalFile->getProperties(),
-				FALSE,
+				TRUE,
 				TRUE,
 				FALSE
 			);

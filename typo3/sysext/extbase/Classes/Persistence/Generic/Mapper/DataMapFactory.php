@@ -126,7 +126,7 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface {
 				$currentClassSettings = $frameworkConfiguration['persistence']['classes'][$currentClassName];
 				if ($currentClassSettings !== NULL) {
 					if (isset($currentClassSettings['mapping']['columns']) && is_array($currentClassSettings['mapping']['columns'])) {
-						$columnMapping = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($columnMapping, $currentClassSettings['mapping']['columns'], 0, FALSE);
+						\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($columnMapping, $currentClassSettings['mapping']['columns'], TRUE, FALSE);
 					}
 				}
 			}
@@ -136,7 +136,7 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface {
 		$dataMap = $this->addMetaDataColumnNames($dataMap, $tableName);
 		// $classPropertyNames = $this->reflectionService->getClassPropertyNames($className);
 		$tcaColumnsDefinition = $this->getColumnsDefinition($tableName);
-		$tcaColumnsDefinition = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($tcaColumnsDefinition, $columnMapping);
+		\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($tcaColumnsDefinition, $columnMapping);
 		// TODO Is this is too powerful?
 
 		foreach ($tcaColumnsDefinition as $columnName => $columnDefinition) {

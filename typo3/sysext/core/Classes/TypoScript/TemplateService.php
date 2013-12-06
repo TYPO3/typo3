@@ -1073,7 +1073,7 @@ class TemplateService {
 		$parseObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\Parser\\TypoScriptParser');
 		$parseObj->parse($userTS);
 		if (is_array($parseObj->setup['TSFE.']['constants.'])) {
-			$constArray = GeneralUtility::array_merge_recursive_overrule($constArray, $parseObj->setup['TSFE.']['constants.']);
+			\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($constArray, $parseObj->setup['TSFE.']['constants.']);
 		}
 		return $constArray;
 	}

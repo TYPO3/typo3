@@ -98,7 +98,8 @@ class FormController {
 				/** @var $typoScriptParser \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser */
 				$typoScriptParser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\Parser\\TypoScriptParser');
 				$typoScriptParser->parse($bodytext);
-				$mergedTypoScript = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule((array) $typoScriptParser->setup, (array) $typoScript);
+				$mergedTypoScript = (array)$typoScriptParser->setup;
+				\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($mergedTypoScript, (array)$typoScript);
 				// Disables content elements since TypoScript is handled that could contain insecure settings:
 				$mergedTypoScript[\TYPO3\CMS\Form\Domain\Factory\TypoScriptFactory::PROPERTY_DisableContentElement] = TRUE;
 			}

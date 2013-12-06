@@ -3545,7 +3545,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 				}
 				// Override $GLOBALS['TCA'] field config by remaining TSconfig['config']:
 				if (count($TSconfig['config'])) {
-					$fieldConfig = GeneralUtility::array_merge_recursive_overrule($fieldConfig, $TSconfig['config']);
+					\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($fieldConfig, $TSconfig['config']);
 				}
 			}
 		}

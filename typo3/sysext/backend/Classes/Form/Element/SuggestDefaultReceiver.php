@@ -121,7 +121,7 @@ class SuggestDefaultReceiver {
 			$depth = intval($config['pidDepth']);
 			foreach ($pageIds as $pageId) {
 				if ($pageId > 0) {
-					$allowedPages = GeneralUtility::array_merge_recursive_overrule($allowedPages, $this->getAllSubpagesOfPage($pageId, $depth));
+					\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($allowedPages, $this->getAllSubpagesOfPage($pageId, $depth));
 				}
 			}
 			$this->allowedPages = array_unique($allowedPages);

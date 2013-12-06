@@ -94,7 +94,8 @@ class BackendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\Abstr
 		if ($pluginName !== NULL) {
 			$pluginSignature = strtolower($extensionName . '_' . $pluginName);
 			if (is_array($setup['module.']['tx_' . $pluginSignature . '.'])) {
-				$pluginConfiguration = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($pluginConfiguration, $this->typoScriptService->convertTypoScriptArrayToPlainArray($setup['module.']['tx_' . $pluginSignature . '.']));
+				$overruleConfiguration = $this->typoScriptService->convertTypoScriptArrayToPlainArray($setup['module.']['tx_' . $pluginSignature . '.']);
+				\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($pluginConfiguration, $overruleConfiguration);
 			}
 		}
 		return $pluginConfiguration;

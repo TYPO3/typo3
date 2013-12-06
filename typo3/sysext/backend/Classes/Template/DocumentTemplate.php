@@ -361,7 +361,7 @@ class DocumentTemplate {
 			// Make copy
 			$ovr = $GLOBALS['TBE_STYLES']['scriptIDindex'][$this->scriptID];
 			// merge styles.
-			$GLOBALS['TBE_STYLES'] = GeneralUtility::array_merge_recursive_overrule($GLOBALS['TBE_STYLES'], $ovr);
+			\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($GLOBALS['TBE_STYLES'], $ovr);
 			// Have to unset - otherwise the second instantiation will do it again!
 			unset($GLOBALS['TBE_STYLES']['scriptIDindex'][$this->scriptID]);
 		}

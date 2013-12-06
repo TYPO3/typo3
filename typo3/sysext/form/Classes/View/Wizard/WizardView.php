@@ -272,8 +272,8 @@ class WizardView extends \TYPO3\CMS\Form\View\Wizard\AbstractWizardView {
 	protected function loadLocalization() {
 		$wizardLabels = $GLOBALS['LANG']->includeLLFile('EXT:form/Resources/Private/Language/locallang_wizard.xlf', FALSE, TRUE);
 		$controllerLabels = $GLOBALS['LANG']->includeLLFile('EXT:form/Resources/Private/Language/locallang_controller.xlf', FALSE, TRUE);
-		$labels = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($controllerLabels, $wizardLabels);
-		$this->pageRenderer->addInlineLanguageLabelArray($labels['default']);
+		\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($controllerLabels, $wizardLabels);
+		$this->pageRenderer->addInlineLanguageLabelArray($controllerLabels['default']);
 	}
 
 	/**

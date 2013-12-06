@@ -103,7 +103,13 @@ abstract class RteHtmlAreaApi {
 		// Localization array must be initialized here
 		if ($this->relativePathToLocallangFile) {
 			if ($this->htmlAreaRTE->is_FE()) {
-				$this->LOCAL_LANG = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($this->LOCAL_LANG, \TYPO3\CMS\Core\Utility\GeneralUtility::readLLfile('EXT:' . $this->extensionKey . '/' . $this->relativePathToLocallangFile, $this->htmlAreaRTE->language));
+				\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule(
+					$this->LOCAL_LANG,
+					\TYPO3\CMS\Core\Utility\GeneralUtility::readLLfile(
+						'EXT:' . $this->extensionKey . '/' . $this->relativePathToLocallangFile,
+						$this->htmlAreaRTE->language
+					)
+				);
 			} else {
 				$LANG->includeLLFile('EXT:' . $this->extensionKey . '/' . $this->relativePathToLocallangFile);
 			}

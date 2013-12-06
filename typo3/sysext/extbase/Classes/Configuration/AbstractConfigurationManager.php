@@ -144,7 +144,7 @@ abstract class AbstractConfigurationManager implements \TYPO3\CMS\Core\Singleton
 		// only merge $this->configuration and override switchableControllerActions when retrieving configuration of the current plugin
 		if ($extensionName === NULL || $extensionName === $this->extensionName && $pluginName === $this->pluginName) {
 			$pluginConfiguration = $this->getPluginConfiguration($this->extensionName, $this->pluginName);
-			$pluginConfiguration = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($pluginConfiguration, $this->configuration);
+			\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($pluginConfiguration, $this->configuration);
 			$pluginConfiguration['controllerConfiguration'] = $this->getSwitchableControllerActions($this->extensionName, $this->pluginName);
 			if (isset($this->configuration['switchableControllerActions'])) {
 				$this->overrideSwitchableControllerActions($pluginConfiguration, $this->configuration['switchableControllerActions']);
@@ -153,7 +153,7 @@ abstract class AbstractConfigurationManager implements \TYPO3\CMS\Core\Singleton
 			$pluginConfiguration = $this->getPluginConfiguration($extensionName, $pluginName);
 			$pluginConfiguration['controllerConfiguration'] = $this->getSwitchableControllerActions($extensionName, $pluginName);
 		}
-		$frameworkConfiguration = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($frameworkConfiguration, $pluginConfiguration);
+		\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($frameworkConfiguration, $pluginConfiguration);
 		// only load context specific configuration when retrieving configuration of the current plugin
 		if ($extensionName === NULL || $extensionName === $this->extensionName && $pluginName === $this->pluginName) {
 			$frameworkConfiguration = $this->getContextSpecificFrameworkConfiguration($frameworkConfiguration);

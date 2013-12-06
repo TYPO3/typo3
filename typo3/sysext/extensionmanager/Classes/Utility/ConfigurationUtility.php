@@ -81,15 +81,15 @@ class ConfigurationUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return array
 	 */
 	public function getCurrentConfiguration($extensionKey) {
-		$defaultConfiguration = $this->getDefaultConfigurationFromExtConfTemplateAsValuedArray($extensionKey);
+		$mergedConfiguration = $this->getDefaultConfigurationFromExtConfTemplateAsValuedArray($extensionKey);
 		$currentExtensionConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$extensionKey]);
 		$currentExtensionConfig = is_array($currentExtensionConfig) ? $currentExtensionConfig : array();
 		$currentExtensionConfig = $this->convertNestedToValuedConfiguration($currentExtensionConfig);
-		$currentFullConfiguration = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule(
-			$defaultConfiguration,
+		\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule(
+			$mergedConfiguration,
 			$currentExtensionConfig
 		);
-		return $currentFullConfiguration;
+		return $mergedConfiguration;
 	}
 
 	/**

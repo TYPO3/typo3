@@ -1109,7 +1109,9 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 		foreach ($labelsArray as $labels => $subArray) {
 			$LOCAL_LANG = GeneralUtility::readLLfile('EXT:' . $this->ID . '/htmlarea/locallang_' . $labels . '.xlf', $this->language, 'utf-8');
 			if (!empty($LOCAL_LANG[$this->language])) {
-				$LOCAL_LANG[$this->language] = GeneralUtility::array_merge_recursive_overrule($LOCAL_LANG['default'], $LOCAL_LANG[$this->language], FALSE, FALSE);
+				$mergedLocalLang = $LOCAL_LANG['default'];
+				\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($mergedLocalLang, $LOCAL_LANG[$this->language], TRUE, FALSE);
+				$LOCAL_LANG[$this->language] = $mergedLocalLang;
 			} else {
 				$LOCAL_LANG[$this->language] = $LOCAL_LANG['default'];
 			}
@@ -1180,13 +1182,14 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 	 * @todo Define visibility
 	 */
 	public function buildJSLangArray($plugin) {
-		$LOCAL_LANG = FALSE;
 		$extensionKey = is_object($this->registeredPlugins[$plugin]) ? $this->registeredPlugins[$plugin]->getExtensionKey() : $this->ID;
 		$LOCAL_LANG = GeneralUtility::readLLfile('EXT:' . $extensionKey . '/htmlarea/plugins/' . $plugin . '/locallang.xlf', $this->language, 'utf-8', 1);
 		$JSLanguageArray = 'HTMLArea.I18N["' . $plugin . '"] = new Object();' . LF;
 		if (is_array($LOCAL_LANG)) {
 			if (!empty($LOCAL_LANG[$this->language])) {
-				$LOCAL_LANG[$this->language] = GeneralUtility::array_merge_recursive_overrule($LOCAL_LANG['default'], $LOCAL_LANG[$this->language], FALSE, FALSE);
+				$defaultLocalLang = $LOCAL_LANG['default'];
+				\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($defaultLocalLang, $LOCAL_LANG[$this->language], TRUE, FALSE);
+				$LOCAL_LANG[$this->language] = $defaultLocalLang;
 			} else {
 				$LOCAL_LANG[$this->language] = $LOCAL_LANG['default'];
 			}

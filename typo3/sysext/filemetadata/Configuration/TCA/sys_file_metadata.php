@@ -440,5 +440,4 @@ $tca = array(
 	),
 );
 
-
-return \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($GLOBALS['TCA']['sys_file_metadata'], $tca);
+return array_replace_recursive($GLOBALS['TCA']['sys_file_metadata'], $tca);

@@ -63,7 +63,8 @@ class LocallangXmlParser extends \TYPO3\CMS\Core\Localization\Parser\AbstractXml
 			$parsedTarget = $this->getParsedTargetData($this->sourcePath);
 		}
 		$LOCAL_LANG = array();
-		$LOCAL_LANG[$languageKey] = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($parsedSource, $parsedTarget);
+		$LOCAL_LANG[$languageKey] = $parsedSource;
+		\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($LOCAL_LANG[$languageKey], $parsedTarget);
 		return $LOCAL_LANG;
 	}
 

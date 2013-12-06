@@ -349,7 +349,7 @@ class CategoryRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 			);
 
 			if (!empty($options['fieldConfiguration'])) {
-				$fieldConfiguration = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule(
+				\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule(
 					$fieldConfiguration,
 					$options['fieldConfiguration']
 				);

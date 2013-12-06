@@ -626,7 +626,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 		if (count($this->submittedData) > 0) {
 			// If some data was already submitted, use it to override
 			// existing data
-			$taskInfo = GeneralUtility::array_merge_recursive_overrule($taskInfo, $this->submittedData);
+			\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($taskInfo, $this->submittedData);
 		}
 		// Get the extra fields to display for each task that needs some
 		$allAdditionalFields = array();

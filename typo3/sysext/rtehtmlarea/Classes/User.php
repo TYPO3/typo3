@@ -215,7 +215,8 @@ class User {
 						}
 						if (is_array($mArray)) {
 							if ($v['merge']) {
-								$v = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($mArray, $v);
+								\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($mArray, $v);
+								$v = $mArray;
 							} else {
 								$v = $mArray;
 							}

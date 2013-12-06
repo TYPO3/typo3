@@ -64,10 +64,12 @@ class ConfigurationItemRepository {
 			$configuration = $this->mergeWithExistingConfiguration($defaultConfiguration, $extensionKey);
 			$hierarchicConfiguration = array();
 			foreach ($configuration as $configurationOption) {
-				$hierarchicConfiguration = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule(
-					$this->buildConfigurationArray($configurationOption, $extensionKey),
+				$originalConfiguration = $this->buildConfigurationArray($configurationOption, $extensionKey);
+				\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule(
+					$originalConfiguration,
 					$hierarchicConfiguration
 				);
+				$hierarchicConfiguration = $originalConfiguration;
 			}
 
 			// Flip category array as it was merged the other way around
@@ -84,7 +86,8 @@ class ConfigurationItemRepository {
 			}
 			unset($tempConfiguration);
 
-			$resultArray = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($hierarchicConfiguration, $metaInformation);
+			 \TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($hierarchicConfiguration, $metaInformation);
+			$resultArray = $hierarchicConfiguration;
 		}
 
 		return $resultArray;
@@ -183,8 +186,8 @@ class ConfigurationItemRepository {
 		foreach ($flatExtensionConfig as $key => $value) {
 			$valuedCurrentExtensionConfig[$key]['value'] = $value;
 		}
-		$configuration = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($defaultConfiguration, $valuedCurrentExtensionConfig);
-		return $configuration;
+		\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($defaultConfiguration, $valuedCurrentExtensionConfig);
+		return $defaultConfiguration;
 	}
 
 	/**

@@ -499,7 +499,8 @@ class ExtensionManagementUtility {
 				'localizeChildrenAtParentLocalization' => TRUE,
 			),
 		);
-		return GeneralUtility::array_merge_recursive_overrule($fileFieldTCAConfig, $customSettingOverride);
+		\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($fileFieldTCAConfig, $customSettingOverride);
+		return $fileFieldTCAConfig;
 	}
 
 	/**
@@ -739,7 +740,8 @@ class ExtensionManagementUtility {
 		if ($mainModuleName === 'web') {
 			$defaultModuleConfiguration['navigationComponentId'] = 'typo3-pagetree';
 		}
-		$moduleConfiguration = GeneralUtility::array_merge_recursive_overrule($defaultModuleConfiguration, $moduleConfiguration);
+		\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($defaultModuleConfiguration, $moduleConfiguration);
+		$moduleConfiguration = $defaultModuleConfiguration;
 		if (strlen($subModuleName) > 0) {
 			$moduleSignature = $mainModuleName . '_' . $subModuleName;
 		} else {

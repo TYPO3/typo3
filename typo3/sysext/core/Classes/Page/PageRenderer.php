@@ -2507,7 +2507,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 			if ($this->lang !== 'default' && isset($tempLL[$language])) {
 				// Merge current language labels onto labels from previous language
 				// This way we have a labels with fall back applied
-				$localLanguage[$this->lang] = GeneralUtility::array_merge_recursive_overrule($localLanguage[$this->lang], $tempLL[$language], FALSE, FALSE);
+				\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($localLanguage[$this->lang], $tempLL[$language], TRUE, FALSE);
 			}
 		}
 

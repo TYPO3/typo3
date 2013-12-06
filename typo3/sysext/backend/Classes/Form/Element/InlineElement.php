@@ -2260,7 +2260,7 @@ class InlineElement {
 			$PA = array();
 			$PA['fieldConf'] = $GLOBALS['TCA'][$foreign_table]['columns'][$field];
 			if ($PA['fieldConf'] && $conf['foreign_selector_fieldTcaOverride']) {
-				$PA['fieldConf'] = GeneralUtility::array_merge_recursive_overrule($PA['fieldConf'], $conf['foreign_selector_fieldTcaOverride']);
+				\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($PA['fieldConf'], $conf['foreign_selector_fieldTcaOverride']);
 			}
 			$PA['fieldConf']['config']['form_type'] = $PA['fieldConf']['config']['form_type'] ? $PA['fieldConf']['config']['form_type'] : $PA['fieldConf']['config']['type'];
 			// Using "form_type" locally in this script

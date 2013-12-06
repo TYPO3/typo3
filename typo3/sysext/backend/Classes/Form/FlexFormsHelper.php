@@ -189,7 +189,8 @@ class FlexFormsHelper extends \TYPO3\CMS\Backend\Form\FormEngine {
 			unset($fieldConf['addItems']);
 			// Manipulate field
 			if (!empty($field['TCEforms']) && is_array($field['TCEforms'])) {
-				$sheet[$fieldName]['TCEforms'] = GeneralUtility::array_merge_recursive_overrule($field['TCEforms'], $fieldConf);
+				$sheet[$fieldName]['TCEforms'] = $field['TCEforms'];
+				\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($sheet[$fieldName]['TCEforms'], $fieldConf);
 			}
 			// Manipulate only select fields, other field types will stop here
 			if (empty($field['TCEforms']['config']['type']) || $field['TCEforms']['config']['type'] != 'select') {

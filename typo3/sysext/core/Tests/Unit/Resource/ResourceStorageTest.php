@@ -70,9 +70,8 @@ class ResourceStorageTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCa
 		$permissionMethods = array('assureFileAddPermissions', 'checkFolderActionPermission', 'checkFileActionPermission', 'checkUserActionPermission', 'checkFileExtensionPermission', 'isWithinFileMountBoundaries');
 		$mockedMethods = NULL;
 		$configuration = $this->convertConfigurationArrayToFlexformXml($configuration);
-		$storageRecord = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($storageRecord, array(
-			'configuration' => $configuration
-		));
+		$overruleArray = array('configuration' => $configuration);
+		\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($storageRecord, $overruleArray);
 		if ($driverObject == NULL) {
 			/** @var $mockedDriver \TYPO3\CMS\Core\Resource\Driver\AbstractDriver */
 			$driverObject = $this->getMockForAbstractClass('TYPO3\\CMS\\Core\\Resource\\Driver\\AbstractDriver', array(), '', FALSE);

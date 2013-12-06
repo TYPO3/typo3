@@ -513,4 +513,45 @@ class ArrayUtility {
 		return $renumberedArray;
 	}
 
+
+	/**
+	 * Merges two arrays recursively and "binary safe" (integer keys are
+	 * overridden as well), overruling similar values in the original array
+	 * with the values of the overrule array.
+	 * In case of identical keys, ie. keeping the values of the overrule array.
+	 *
+	 * This method takes the original array by reference for speed optimization with large arrays
+	 *
+	 * The differences to the existing PHP function array_merge_recursive() are:
+	 *  * Keys of the original array can be unset via the overrule array. ($enableUnsetFeature)
+	 *  * Much more control over what is actually merged. ($addKeys, $includeEmptyValues)
+	 *  * Elements or the original array get overwritten if the same key is present in the overrule array.
+	 *
+	 * @param array $original Original array. It will be *modified* by this method and contains the result afterwards!
+	 * @param array $overrule Overrule array, overruling the original array
+	 * @param boolean $addKeys If set to FALSE, keys that are NOT found in $original will not be set. Thus only existing value can/will be overruled from overrule array.
+	 * @param boolean $includeEmptyValues If set, values from $overrule will overrule if they are empty or zero.
+	 * @param boolean $enableUnsetFeature If set, special values "__UNSET" can be used in the overrule array in order to unset array keys in the original array.
+	 * @return void
+	 */
+	static public function mergeRecursiveWithOverrule(array &$original, array $overrule, $addKeys = TRUE, $includeEmptyValues = TRUE, $enableUnsetFeature = TRUE) {
+		foreach (array_keys($overrule) as $key) {
+			if ($enableUnsetFeature && $overrule[$key] === '__UNSET') {
+				unset($original[$key]);
+				continue;
+			}
+			if (isset($original[$key]) && is_array($original[$key])) {
+				if (is_array($overrule[$key])) {
+					self::mergeRecursiveWithOverrule($original[$key], $overrule[$key], $addKeys, $includeEmptyValues, $enableUnsetFeature);
+				}
+			} elseif (
+				($addKeys || isset($original[$key])) &&
+				($includeEmptyValues || $overrule[$key])
+			) {
+				$original[$key] = $overrule[$key];
+			}
+		}
+		// This line is kept for backward compatibility reasons.
+		reset($original);
+	}
 }

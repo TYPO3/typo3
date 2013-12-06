@@ -234,7 +234,8 @@ abstract class AbstractFunctionModule {
 		if ($this->localLangFile && (@is_file(($this->thisPath . '/' . $this->localLangFile)) || @is_file(($this->thisPath . '/' . substr($this->localLangFile, 0, -4) . '.xml')) || @is_file(($this->thisPath . '/' . substr($this->localLangFile, 0, -4) . '.xlf')))) {
 			$LOCAL_LANG = $GLOBALS['LANG']->includeLLFile($this->thisPath . '/' . $this->localLangFile, FALSE);
 			if (is_array($LOCAL_LANG)) {
-				$GLOBALS['LOCAL_LANG'] = GeneralUtility::array_merge_recursive_overrule((array) $GLOBALS['LOCAL_LANG'], $LOCAL_LANG);
+				$GLOBALS['LOCAL_LANG'] = (array)$GLOBALS['LOCAL_LANG'];
+				\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($GLOBALS['LOCAL_LANG'], $LOCAL_LANG);
 			}
 		}
 	}

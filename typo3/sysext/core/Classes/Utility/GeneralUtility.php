@@ -129,7 +129,8 @@ class GeneralUtility {
 	static public function _GPmerged($parameter) {
 		$postParameter = isset($_POST[$parameter]) && is_array($_POST[$parameter]) ? $_POST[$parameter] : array();
 		$getParameter = isset($_GET[$parameter]) && is_array($_GET[$parameter]) ? $_GET[$parameter] : array();
-		$mergedParameters = self::array_merge_recursive_overrule($getParameter, $postParameter);
+		$mergedParameters = $getParameter;
+		ArrayUtility::mergeRecursiveWithOverrule($mergedParameters, $postParameter);
 		self::stripSlashesOnArray($mergedParameters);
 		return $mergedParameters;
 	}
@@ -200,7 +201,8 @@ class GeneralUtility {
 					$pointer = &$pointer[$piece];
 				}
 				$pointer = $inputGet;
-				$mergedGet = self::array_merge_recursive_overrule($_GET, $newGet);
+				$mergedGet = $_GET;
+				ArrayUtility::mergeRecursiveWithOverrule($mergedGet, $newGet);
 				$_GET = $mergedGet;
 				$GLOBALS['HTTP_GET_VARS'] = $mergedGet;
 			} else {
@@ -1719,25 +1721,12 @@ class GeneralUtility {
 	 * @param boolean $includeEmptyValues If set, values from $arr1 will overrule if they are empty or zero. Default: TRUE
 	 * @param boolean $enableUnsetFeature If set, special values "__UNSET" can be used in the second array in order to unset array keys in the resulting array.
 	 * @return array Resulting array where $arr1 values has overruled $arr0 values
+	 * @deprecated since 6.2 - will be removed two versions later: use ArrayUtility::mergeRecursiveWithOverrule instead. Consider that the first array is directly modified there. (better performance)
 	 */
 	static public function array_merge_recursive_overrule(array $arr0, array $arr1, $notAddKeys = FALSE, $includeEmptyValues = TRUE, $enableUnsetFeature = TRUE) {
-		foreach ($arr1 as $key => $val) {
-			if ($enableUnsetFeature && $val === '__UNSET') {
-				unset($arr0[$key]);
-				continue;
-			}
-			if (is_array($arr0[$key])) {
-				if (is_array($arr1[$key])) {
-					$arr0[$key] = self::array_merge_recursive_overrule($arr0[$key], $arr1[$key], $notAddKeys, $includeEmptyValues, $enableUnsetFeature);
-				}
-			} elseif (
-				(!$notAddKeys || isset($arr0[$key])) &&
-				($includeEmptyValues || $val)
-			) {
-				$arr0[$key] = $val;
-			}
-		}
-		reset($arr0);
+		self::logDeprecatedFunction();
+		ArrayUtility::mergeRecursiveWithOverrule($arr0, $arr1, !$notAddKeys, $includeEmptyValues, $enableUnsetFeature);
+		// Our local $arr0 has been modified now, so return it as result
 		return $arr0;
 	}
 
@@ -3183,7 +3172,7 @@ Connection: close
 		if ($parts['query']) {
 			parse_str($parts['query'], $getP);
 		}
-		$getP = self::array_merge_recursive_overrule($getP, $getParams);
+		ArrayUtility::mergeRecursiveWithOverrule($getP, $getParams);
 		$uP = explode('?', $url);
 		$params = self::implodeArrayForUrl('', $getP);
 		$outurl = $uP[0] . ($params ? '?' . substr($params, 1) : '');

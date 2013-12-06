@@ -2046,7 +2046,7 @@ class TypoScriptFrontendController {
 				$realGet = array();
 			}
 			// Merge new values on top:
-			$realGet = GeneralUtility::array_merge_recursive_overrule($realGet, $GET_VARS);
+			\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($realGet, $GET_VARS);
 			// Write values back to $_GET:
 			\TYPO3\CMS\Core\Utility\GeneralUtility::_GETset($realGet);
 			// Setting these specifically (like in the init-function):
@@ -2370,7 +2370,7 @@ class TypoScriptFrontendController {
 					}
 					// override it with the page/type-specific "config."
 					if (is_array($this->pSetup['config.'])) {
-						$this->config['config'] = GeneralUtility::array_merge_recursive_overrule($this->config['config'], $this->pSetup['config.']);
+						\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($this->config['config'], $this->pSetup['config.']);
 					}
 					if ($this->config['config']['typolinkEnableLinksAcrossDomains']) {
 						$this->config['config']['typolinkCheckRootline'] = TRUE;
@@ -2419,8 +2419,9 @@ class TypoScriptFrontendController {
 		}
 		// Merge GET with defaultGetVars
 		if (!empty($this->config['config']['defaultGetVars.'])) {
-			$modifiedGetVars = GeneralUtility::array_merge_recursive_overrule(\TYPO3\CMS\Core\Utility\GeneralUtility::removeDotsFromTS($this->config['config']['defaultGetVars.']), GeneralUtility::_GET());
-			\TYPO3\CMS\Core\Utility\GeneralUtility::_GETset($modifiedGetVars);
+			$modifiedGetVars = GeneralUtility::removeDotsFromTS($this->config['config']['defaultGetVars.']);
+			\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($modifiedGetVars, GeneralUtility::_GET());
+			GeneralUtility::_GETset($modifiedGetVars);
 		}
 		// Hook for postProcessing the configuration array
 		if (is_array($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['configArrayPostProc'])) {
@@ -4642,7 +4643,7 @@ if (version == "n3") {
 			if ($this->lang !== 'default' && isset($tempLL[$language])) {
 				// Merge current language labels onto labels from previous language
 				// This way we have a label with fall back applied
-				$localLanguage[$this->lang] = GeneralUtility::array_merge_recursive_overrule($localLanguage[$this->lang], $tempLL[$language], FALSE, FALSE);
+				\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($localLanguage[$this->lang], $tempLL[$language], TRUE, FALSE);
 			}
 		}
 

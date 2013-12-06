@@ -1169,7 +1169,7 @@ class BackendUtility {
 			// Get User TSconfig overlay
 			$userTSconfig = $GLOBALS['BE_USER']->userTS['page.'];
 			if (is_array($userTSconfig)) {
-				$TSconfig = GeneralUtility::array_merge_recursive_overrule($TSconfig, $userTSconfig);
+				\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($TSconfig, $userTSconfig);
 			}
 
 			if ($useCacheForCurrentPageId) {
@@ -2704,8 +2704,8 @@ class BackendUtility {
 		if (is_null($BE_USER_modOptions['value'])) {
 			unset($BE_USER_modOptions['value']);
 		}
-		$modTSconfig = GeneralUtility::array_merge_recursive_overrule($pageTS_modOptions, $BE_USER_modOptions);
-		return $modTSconfig;
+		\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($pageTS_modOptions, $BE_USER_modOptions);
+		return $pageTS_modOptions;
 	}
 
 	/**
@@ -3242,7 +3242,7 @@ class BackendUtility {
 						$res[$fieldN] = $val;
 						unset($res[$fieldN]['types.']);
 						if (strcmp($typeVal, '') && is_array($val['types.'][$typeVal . '.'])) {
-							$res[$fieldN] = GeneralUtility::array_merge_recursive_overrule($res[$fieldN], $val['types.'][$typeVal . '.']);
+							\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($res[$fieldN], $val['types.'][$typeVal . '.']);
 						}
 					}
 				}
@@ -3400,10 +3400,10 @@ class BackendUtility {
 		$thisFieldConf = $RTEprop['config.'][$table . '.'][$field . '.'];
 		if (is_array($thisFieldConf)) {
 			unset($thisFieldConf['types.']);
-			$thisConfig = GeneralUtility::array_merge_recursive_overrule($thisConfig, $thisFieldConf);
+			\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($thisConfig, $thisFieldConf);
 		}
 		if ($type && is_array($RTEprop['config.'][$table . '.'][$field . '.']['types.'][$type . '.'])) {
-			$thisConfig = GeneralUtility::array_merge_recursive_overrule($thisConfig, $RTEprop['config.'][$table . '.'][$field . '.']['types.'][$type . '.']);
+			\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($thisConfig, $RTEprop['config.'][$table . '.'][$field . '.']['types.'][$type . '.']);
 		}
 		return $thisConfig;
 	}

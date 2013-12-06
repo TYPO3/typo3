@@ -291,7 +291,9 @@ class AbstractPlugin {
 	public function pi_setPiVarDefaults() {
 		if (isset($this->conf['_DEFAULT_PI_VARS.']) && is_array($this->conf['_DEFAULT_PI_VARS.'])) {
 			$this->conf['_DEFAULT_PI_VARS.'] = $this->applyStdWrapRecursive($this->conf['_DEFAULT_PI_VARS.']);
-			$this->piVars = GeneralUtility::array_merge_recursive_overrule($this->conf['_DEFAULT_PI_VARS.'], is_array($this->piVars) ? $this->piVars : array());
+			$tmp = $this->conf['_DEFAULT_PI_VARS.'];
+			\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($tmp, is_array($this->piVars) ? $this->piVars : array());
+			$this->piVars = $tmp;
 		}
 	}
 
@@ -375,7 +377,8 @@ class AbstractPlugin {
 		if (is_array($this->piVars) && is_array($overrulePIvars) && !$clearAnyway) {
 			$piVars = $this->piVars;
 			unset($piVars['DATA']);
-			$overrulePIvars = GeneralUtility::array_merge_recursive_overrule($piVars, $overrulePIvars);
+			\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($piVars, $overrulePIvars);
+			$overrulePIvars = $piVars;
 			if ($this->pi_autoCacheEn) {
 				$cache = $this->pi_autoCache($overrulePIvars);
 			}

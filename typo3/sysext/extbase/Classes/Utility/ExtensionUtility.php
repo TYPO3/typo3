@@ -237,7 +237,8 @@ tt_content.' . $pluginSignature . ' {
 		if ($mainModuleName === 'web') {
 			$defaultModuleConfiguration['navigationComponentId'] = 'typo3-pagetree';
 		}
-		$moduleConfiguration = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($defaultModuleConfiguration, $moduleConfiguration);
+		\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($defaultModuleConfiguration, $moduleConfiguration);
+		$moduleConfiguration = $defaultModuleConfiguration;
 		$moduleSignature = $mainModuleName;
 		if (strlen($subModuleName) > 0) {
 			$subModuleName = $extensionName . \TYPO3\CMS\Core\Utility\GeneralUtility::underscoredToUpperCamelCase($subModuleName);

@@ -1107,7 +1107,7 @@ class DataHandler {
 														$this->autoVersionIdMap[$origTable][$origId] = $newId;
 													}
 												}
-												$this->RTEmagic_copyIndex = GeneralUtility::array_merge_recursive_overrule($this->RTEmagic_copyIndex, $tce->RTEmagic_copyIndex);
+												\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($this->RTEmagic_copyIndex, $tce->RTEmagic_copyIndex);
 												// See where RTEmagic_copyIndex is used inside fillInFieldArray() for more information...
 												// Update registerDBList, that holds the copied relations to child records:
 												$registerDBList = array_merge($registerDBList, $tce->registerDBList);
@@ -1306,7 +1306,7 @@ class DataHandler {
 			// IF $incomingFieldArray is an array, overlay it.
 			// The point is that when new records are created as copies with flex type fields there might be a field containing information about which DataStructure to use and without that information the flexforms cannot be correctly processed.... This should be OK since the $checkValueRecord is used by the flexform evaluation only anyways...
 			if (is_array($incomingFieldArray) && is_array($checkValueRecord)) {
-				$checkValueRecord = GeneralUtility::array_merge_recursive_overrule($checkValueRecord, $incomingFieldArray);
+				\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($checkValueRecord, $incomingFieldArray);
 			}
 		} else {
 			// We must use the current values as basis for this!
@@ -2184,8 +2184,8 @@ class DataHandler {
 					}
 				}
 
-				$arrValue = GeneralUtility::array_merge_recursive_overrule($currentValueArray, $arrValue);
-				$xmlValue = $this->checkValue_flexArray2Xml($arrValue, TRUE);
+				\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($currentValueArray, $arrValue);
+				$xmlValue = $this->checkValue_flexArray2Xml($currentValueArray, TRUE);
 			}
 			// Action commands (sorting order and removals of elements)
 			$actionCMDs = GeneralUtility::_GP('_ACTION_FLEX_FORMdata');
@@ -2915,7 +2915,7 @@ class DataHandler {
 							}
 						}
 						// Merging the copy-array info together for remapping purposes.
-						$this->copyMappingArray_merged = GeneralUtility::array_merge_recursive_overrule($this->copyMappingArray_merged, $this->copyMappingArray);
+						\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($this->copyMappingArray_merged, $this->copyMappingArray);
 					}
 				}
 			}
@@ -6437,7 +6437,8 @@ class DataHandler {
 	public function getTableEntries($table, $TSconfig) {
 		$tA = is_array($TSconfig['table.'][$table . '.']) ? $TSconfig['table.'][$table . '.'] : array();
 		$dA = is_array($TSconfig['default.']) ? $TSconfig['default.'] : array();
-		return GeneralUtility::array_merge_recursive_overrule($dA, $tA);
+		\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($dA, $tA);
+		return $dA;
 	}
 
 	/**

@@ -89,8 +89,8 @@ class ConfigurationController extends \TYPO3\CMS\Extensionmanager\Controller\Abs
 	public function saveAction(array $config, $extensionKey) {
 		/** @var $configurationUtility \TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility */
 		$configurationUtility = $this->objectManager->get('TYPO3\\CMS\\Extensionmanager\\Utility\\ConfigurationUtility');
-		$currentFullConfiguration = $configurationUtility->getCurrentConfiguration($extensionKey);
-		$newConfiguration = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($currentFullConfiguration, $config);
+		$newConfiguration = $configurationUtility->getCurrentConfiguration($extensionKey);
+		\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($newConfiguration, $config);
 		$configurationUtility->writeConfiguration(
 			$configurationUtility->convertValuedToNestedConfiguration($newConfiguration),
 			$extensionKey

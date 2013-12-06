@@ -66,7 +66,10 @@ class FrontendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\Abst
 		if ($pluginName !== NULL) {
 			$pluginSignature = strtolower($extensionName . '_' . $pluginName);
 			if (is_array($setup['plugin.']['tx_' . $pluginSignature . '.'])) {
-				$pluginConfiguration = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($pluginConfiguration, $this->typoScriptService->convertTypoScriptArrayToPlainArray($setup['plugin.']['tx_' . $pluginSignature . '.']));
+				\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule(
+					$pluginConfiguration,
+					$this->typoScriptService->convertTypoScriptArrayToPlainArray($setup['plugin.']['tx_' . $pluginSignature . '.'])
+				);
 			}
 		}
 		return $pluginConfiguration;
@@ -126,7 +129,7 @@ class FrontendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\Abst
 			if (count($list) > 0) {
 				$pages = $pages . ',' . implode(',', $list);
 			}
-			$frameworkConfiguration = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($frameworkConfiguration, array(
+			\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($frameworkConfiguration, array(
 				'persistence' => array(
 					'storagePid' => $pages
 				)
@@ -189,7 +192,7 @@ class FrontendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\Abst
 	 */
 	protected function mergeConfigurationIntoFrameworkConfiguration(array $frameworkConfiguration, array $configuration, $configurationPartName) {
 		if (is_array($frameworkConfiguration[$configurationPartName]) && is_array($configuration[$configurationPartName])) {
-			$frameworkConfiguration[$configurationPartName] = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($frameworkConfiguration[$configurationPartName], $configuration[$configurationPartName]);
+			\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($frameworkConfiguration[$configurationPartName], $configuration[$configurationPartName]);
 		}
 		return $frameworkConfiguration;
 	}

@@ -185,7 +185,7 @@ class Locales implements \TYPO3\CMS\Core\SingletonInterface {
 		}
 		// Merge user-provided locale dependencies
 		if (isset($GLOBALS['TYPO3_CONF_VARS']['SYS']['localization']['locales']['dependencies']) && is_array($GLOBALS['TYPO3_CONF_VARS']['SYS']['localization']['locales']['dependencies'])) {
-			$instance->localeDependencies = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($instance->localeDependencies, $GLOBALS['TYPO3_CONF_VARS']['SYS']['localization']['locales']['dependencies']);
+			\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($instance->localeDependencies, $GLOBALS['TYPO3_CONF_VARS']['SYS']['localization']['locales']['dependencies']);
 		}
 	}
 

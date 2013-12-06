@@ -345,7 +345,7 @@ class ValidatorTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 		$modTs = $modTs['properties'];
 		$overrideTs = $tsConfig['mod.']['tx_linkvalidator.'];
 		if (is_array($overrideTs)) {
-			$modTs = GeneralUtility::array_merge_recursive_overrule($modTs, $overrideTs);
+			\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($modTs, $overrideTs);
 		}
 		return $modTs;
 	}

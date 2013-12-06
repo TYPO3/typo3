@@ -520,7 +520,7 @@ class UriBuilder {
 			$pluginNamespace = $this->extensionService->getPluginNamespace($extensionName, $pluginName);
 			$prefixedControllerArguments = array($pluginNamespace => $controllerArguments);
 		}
-		$this->arguments = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($this->arguments, $prefixedControllerArguments);
+		\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($this->arguments, $prefixedControllerArguments);
 		return $this->build();
 	}
 
@@ -606,7 +606,7 @@ class UriBuilder {
 				'id' => \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id')
 			);
 		}
-		$arguments = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($arguments, $this->arguments);
+		\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($arguments, $this->arguments);
 		$arguments = $this->convertDomainObjectsToIdentityArrays($arguments);
 		$this->lastArguments = $arguments;
 		$uri = 'mod.php?' . http_build_query($arguments, NULL, '&');

@@ -58,7 +58,7 @@ abstract class BaseTestCase extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 	protected function mergeToVfsContents($contents) {
-		$this->vfsContents = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($this->vfsContents, $contents);
+		\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($this->vfsContents, $contents);
 	}
 
 	protected function initializeVfs() {

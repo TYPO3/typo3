@@ -532,7 +532,8 @@ class CommandMap {
 	 * @return void
 	 */
 	protected function mergeToTop(array $commandMap) {
-		$this->commandMap = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($commandMap, $this->commandMap);
+		\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($commandMap, $this->commandMap);
+		$this->commandMap = $commandMap;
 	}
 
 	/**
@@ -542,7 +543,7 @@ class CommandMap {
 	 * @return void
 	 */
 	protected function mergeToBottom(array $commandMap) {
-		$this->commandMap = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($this->commandMap, $commandMap);
+		\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($this->commandMap, $commandMap);
 	}
 
 	/**
