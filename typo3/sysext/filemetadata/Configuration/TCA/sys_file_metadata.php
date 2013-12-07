@@ -79,7 +79,7 @@ $tca = array(
 	),
 	'palettes' => array(
 		'10' => array('showitem' => 'visible, status, ranking', 'canNotCollapse' => '1'),
-		'20' => array('showitem' => 'publisher, source', 'canNotCollapse' => '1'),
+		'20' => array('showitem' => 'creator_tool, publisher, source', 'canNotCollapse' => '1'),
 		'30' => array('showitem' => 'latitude, longitude', 'canNotCollapse' => '1'),
 		'40' => array('showitem' => 'location_country, location_region, location_city', 'canNotCollapse' => '1'),
 		'50' => array('showitem' => 'width, height, unit, color_space', 'canNotCollapse' => '1'),
