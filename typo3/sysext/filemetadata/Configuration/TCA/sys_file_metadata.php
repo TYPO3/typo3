@@ -413,18 +413,29 @@ $tca = array(
 		),
 		'fe_groups' => array(
 			'exclude' => 1,
-			'l10n_mode' => 'exclude',
-			'label' => 'LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:sys_file_metadata.fe_groups',
+			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.fe_group',
 			'config' => array(
 				'type' => 'select',
-				'size' => 10,
-				'minitems' => 0,
-				'maxitems' => 9999,
-				'autoSizeMax' => 30,
-				'multiple' => 0,
+				'size' => 5,
+				'maxitems' => 20,
+				'items' => array(
+					array(
+						'LLL:EXT:lang/locallang_general.xlf:LGL.hide_at_login',
+						-1
+					),
+					array(
+						'LLL:EXT:lang/locallang_general.xlf:LGL.any_login',
+						-2
+					),
+					array(
+						'LLL:EXT:lang/locallang_general.xlf:LGL.usergroups',
+						'--div--'
+					)
+				),
+				'exclusiveKeys' => '-1,-2',
 				'foreign_table' => 'fe_groups',
-				'MM' => 'sys_file_fegroups_mm',
-			),
+				'foreign_table_where' => 'ORDER BY fe_groups.title'
+			)
 		),
 	),
 );

@@ -39,18 +39,5 @@ CREATE TABLE sys_file_metadata (
 	language varchar(12) DEFAULT '' NOT NULL,
 
 	# FE permissions
-	fe_groups int(11) unsigned DEfAULT '0' NOT NULL,
-);
-
-#
-# Table structure for table 'sys_file_fegroups_mm'
-#
-CREATE TABLE sys_file_fegroups_mm (
-	uid_local int(11) unsigned DEFAULT '0' NOT NULL,
-	uid_foreign int(11) unsigned DEFAULT '0' NOT NULL,
-	sorting int(11) unsigned DEFAULT '0' NOT NULL,
-	sorting_foreign int(11) unsigned DEFAULT '0' NOT NULL,
-
-	KEY uid_local (uid_local),
-	KEY uid_foreign (uid_foreign)
+	fe_groups tinytext NOT NULL,
 );
