@@ -21,11 +21,10 @@ namespace TYPO3\CMS\Fluid\ViewHelpers;
  * <f:switch expression="{person.gender}">
  *   <f:case value="male">Mr.</f:case>
  *   <f:case value="female">Mrs.</f:case>
- *   <f:case default="TRUE">Mrs. or Mr.</f:case>
  * </f:switch>
  * </code>
  * <output>
- * Mr. / Mrs. (depending on the value of {person.gender}) or if no value evaluates to TRUE, default case
+ * Mr. / Mrs. (depending on the value of {person.gender})
  * </output>
  *
  * Note: Using this view helper can be a sign of weak architecture. If you end up using it extensively
