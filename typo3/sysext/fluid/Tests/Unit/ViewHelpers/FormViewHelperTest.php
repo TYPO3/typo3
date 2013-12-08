@@ -161,8 +161,6 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_FormViewHelperTest extends Tx_Fluid_ViewHe
 	 */
 	public function renderWrapsHiddenFieldsWithDivAndAnAdditionalClassForXhtmlCompatibilityWithDeprecatedPropertyMapper() {
 		$viewHelper = $this->getMock($this->buildAccessibleProxy('Tx_Fluid_ViewHelpers_FormViewHelper'), array('renderChildren', 'renderHiddenIdentityField', 'renderAdditionalIdentityFields', 'renderHiddenReferrerFields', 'renderTrustedPropertiesField', 'renderRequestHashField'), array(), '', FALSE);
-		$configurationManager = $this->getMock('Tx_Extbase_Configuration_ConfigurationManager', array('isFeatureEnabled'));
-		$viewHelper->injectConfigurationManager($configurationManager);
 		parent::injectDependenciesIntoViewHelper($viewHelper);
 		$viewHelper->expects($this->once())->method('renderHiddenIdentityField')->will($this->returnValue('hiddenIdentityField'));
 		$viewHelper->expects($this->once())->method('renderAdditionalIdentityFields')->will($this->returnValue('additionalIdentityFields'));
@@ -170,7 +168,7 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_FormViewHelperTest extends Tx_Fluid_ViewHe
 		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue('formContent'));
 		$expectedResult = LF . '<div class="hidden">' . 'hiddenIdentityFieldadditionalIdentityFieldshiddenReferrerFields' . LF . '</div>' . LF . 'formContent';
 		$this->tagBuilder->expects($this->once())->method('setContent')->with($expectedResult);
-		$viewHelper->setArguments(array('hiddenFieldClassName' => 'hidden'));
+		$viewHelper->setArguments(new Tx_Fluid_Core_ViewHelper_Arguments(array('hiddenFieldClassName' => 'hidden')));
 		$viewHelper->render();
 	}
 
