@@ -337,7 +337,7 @@ class Tx_Extbase_Tests_Unit_Persistence_Mapper_DataMapFactoryTest extends Tx_Ext
 		$mockDataMapFactory = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_Persistence_Mapper_DataMapFactory'), array('getControlSection'), array(), '', FALSE);
 		$mockDataMapFactory->buildDataMap('UnknownObject');
 	}
-	
+
 	/**
 	 * @test
 	 */
@@ -377,7 +377,6 @@ class Tx_Extbase_Tests_Unit_Persistence_Mapper_DataMapFactoryTest extends Tx_Ext
 
 		$dataMapFactory = new Tx_Extbase_Persistence_Mapper_DataMapFactory();
 		$dataMapFactory->injectReflectionService(new Tx_Extbase_Reflection_Service());
-		$dataMapFactory->injectObjectManager(new Tx_Extbase_Object_ObjectManager());
 		$dataMapFactory->injectConfigurationManager($configurationManager);
 		$dataMap = $dataMapFactory->buildDataMap('Tx_Extbase_Domain_Model_FrontendUser');
 
