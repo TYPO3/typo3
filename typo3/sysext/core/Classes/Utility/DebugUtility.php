@@ -210,7 +210,7 @@ class DebugUtility {
 			$pathFragment = $dat['class'] . $dat['type'] . $dat['function'];
 			// add the path of the included file
 			if (in_array($dat['function'], array('require', 'include', 'require_once', 'include_once'))) {
-				$pathFragment .= '(' . substr($dat['args'][0], strlen(PATH_site)) . '),' . substr($dat['file'], strlen(PATH_site));
+				$pathFragment .= '(' . \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($dat['args'][0]) . '),' . \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($dat['file']);
 			}
 			$path[] = $pathFragment . '#' . $dat['line'];
 		}

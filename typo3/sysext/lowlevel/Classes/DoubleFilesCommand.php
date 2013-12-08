@@ -161,7 +161,7 @@ This will check the system for double files relations.';
 						// Create unique name for file:
 						$fileFunc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Utility\\File\\BasicFileUtility');
 						$newName = $fileFunc->getUniqueName(basename($key), dirname($absFileName));
-						echo '	Copying ' . $key . ' to ' . substr($newName, strlen(PATH_site)) . ' for record "' . $recReference . '": ';
+						echo '	Copying ' . $key . ' to ' . \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($newName) . ' for record "' . $recReference . '": ';
 						if ($bypass = $this->cli_noExecutionCheck($recReference)) {
 							echo $bypass;
 						} else {

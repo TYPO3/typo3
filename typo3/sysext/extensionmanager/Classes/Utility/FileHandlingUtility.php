@@ -293,7 +293,7 @@ class FileHandlingUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return string
 	 */
 	protected function getRelativePath($absolutePath) {
-		return substr($absolutePath, strlen(PATH_site));
+		return \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($absolutePath);
 	}
 
 	/**

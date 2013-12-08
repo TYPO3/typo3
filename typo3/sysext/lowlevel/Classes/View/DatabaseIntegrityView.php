@@ -608,7 +608,7 @@ class DatabaseIntegrityView {
 			$regExpPattern = str_replace('/', '\\/', $pattern);
 			foreach ($files as $value) {
 				if (preg_match('/' . $regExpPattern . '/i', basename($value))) {
-					$matching_files[] = substr($value, strlen(PATH_site));
+					$matching_files[] = \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($value);
 				}
 			}
 		}

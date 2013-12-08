@@ -1816,7 +1816,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 					$fullPath = GeneralUtility::getFileAbsFileName($icon);
 					if ($fullPath) {
 						$info = @getimagesize($fullPath);
-						$iconPath = substr($fullPath, strlen(PATH_site));
+						$iconPath = \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($fullPath);
 						$this->iconFileNameCache[$it] = is_array($info) ? '<img src="' . $iconPath . '" ' . $info[3] . ' title="' . htmlspecialchars($alt) . '" alt="" />' : '';
 					}
 				}
@@ -2082,7 +2082,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 				$flag = $rowDat['flag'];
 				if ($flag) {
 					// FIXME not all flags from typo3/gfx/flags are available in media/flags/
-					$file = substr(PATH_tslib, strlen(PATH_site)) . 'media/flags/flag_' . $flag;
+					$file = \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix(PATH_tslib) . 'media/flags/flag_' . $flag;
 					$imgInfo = @getimagesize((PATH_site . $file));
 					if (is_array($imgInfo)) {
 						$output = '<img src="' . $file . '" ' . $imgInfo[3] . ' title="' . htmlspecialchars($rowDat['title']) . '" alt="' . htmlspecialchars($rowDat['title']) . '" />';

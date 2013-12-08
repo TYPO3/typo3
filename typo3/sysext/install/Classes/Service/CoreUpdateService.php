@@ -257,7 +257,7 @@ class CoreUpdateService {
 			$success = FALSE;
 			/** @var $message \TYPO3\CMS\Install\Status\StatusInterface */
 			$message = $this->objectManager->get('TYPO3\\CMS\\Install\\Status\\ErrorStatus');
-			$message->setTitle('Core download exists in download location: ' . substr($this->downloadTargetPath, strlen(PATH_site)));
+			$message->setTitle('Core download exists in download location: ' . \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($this->downloadTargetPath));
 			$messages[] = $message;
 		} else {
 			$fileContent = GeneralUtility::getUrl($downloadUri);
@@ -343,7 +343,7 @@ class CoreUpdateService {
 			$success = FALSE;
 			/** @var $message \TYPO3\CMS\Install\Status\StatusInterface */
 			$message = $this->objectManager->get('TYPO3\\CMS\\Install\\Status\\ErrorStatus');
-			$message->setTitle('Unpacked core exists in download location: ' . substr($this->downloadTargetPath, strlen(PATH_site)));
+			$message->setTitle('Unpacked core exists in download location: ' . \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($this->downloadTargetPath));
 			$messages[] = $message;
 		} else {
 			$unpackCommand = 'tar xf ' . escapeshellarg($fileLocation) . ' -C ' . escapeshellarg($this->downloadTargetPath) . ' 2>&1';

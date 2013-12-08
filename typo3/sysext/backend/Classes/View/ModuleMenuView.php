@@ -314,7 +314,7 @@ class ModuleMenuView {
 	 */
 	protected function getModuleIconRelative($iconFilename) {
 		if (GeneralUtility::isAbsPath($iconFilename)) {
-			$iconFilename = '../' . substr($iconFilename, strlen(PATH_site));
+			$iconFilename = '../' . \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($iconFilename);
 		}
 		return $this->backPath . $iconFilename;
 	}

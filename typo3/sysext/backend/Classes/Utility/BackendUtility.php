@@ -3531,7 +3531,7 @@ class BackendUtility {
 			// Look up the path:
 			if ($table == '_FILE') {
 				if (GeneralUtility::isFirstPartOfStr($ref, PATH_site)) {
-					$ref = substr($ref, strlen(PATH_site));
+					$ref = \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($ref);
 					$condition = 'ref_string=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($ref, 'sys_refindex');
 				} else {
 					return '';

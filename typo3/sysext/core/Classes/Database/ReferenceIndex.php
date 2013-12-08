@@ -282,7 +282,7 @@ class ReferenceIndex {
 		foreach ($items as $sort => $i) {
 			$filePath = $i['ID_absFile'];
 			if (GeneralUtility::isFirstPartOfStr($filePath, PATH_site)) {
-				$filePath = substr($filePath, strlen(PATH_site));
+				$filePath = \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($filePath);
 			}
 			$this->relations[] = $this->createEntryData($table, $uid, $fieldname, $flexpointer, $deleted, '_FILE', 0, $filePath, $sort);
 		}
@@ -730,7 +730,7 @@ class ReferenceIndex {
 	 * @todo Define visibility
 	 */
 	public function setReferenceValue_fileRels($refRec, $itemArray, $newValue, &$dataArray, $flexpointer = '') {
-		if (!strcmp(substr($itemArray[$refRec['sorting']]['ID_absFile'], strlen(PATH_site)), $refRec['ref_string']) && !strcmp('_FILE', $refRec['ref_table'])) {
+		if (!strcmp(\TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($itemArray[$refRec['sorting']]['ID_absFile']), $refRec['ref_string']) && !strcmp('_FILE', $refRec['ref_table'])) {
 			// Setting or removing value:
 			// Remove value:
 			if ($newValue === NULL) {

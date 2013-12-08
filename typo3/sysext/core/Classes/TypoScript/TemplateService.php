@@ -1245,7 +1245,7 @@ class TemplateService {
 			list($extKey, $script) = explode('/', substr($file, 4), 2);
 			if ($extKey && \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($extKey)) {
 				$extPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extKey);
-				$newFile = substr($extPath, strlen(PATH_site)) . $script;
+				$newFile = \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($extPath) . $script;
 			}
 			if (!@is_file((PATH_site . $newFile))) {
 				if ($this->tt_track) {

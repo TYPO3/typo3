@@ -371,7 +371,7 @@ class ColorpickerController {
 				}
 				$pickerFormImage = '
 				<p class="c-head">' . $GLOBALS['LANG']->getLL('colorpicker_fromImage', TRUE) . '</p>
-				<input type="image" src="../' . substr($this->pickerImage, strlen(PATH_site)) . '" name="coords" style="cursor:crosshair;" /><br />';
+				<input type="image" src="../' . \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($this->pickerImage) . '" name="coords" style="cursor:crosshair;" /><br />';
 			} else {
 				$pickerFormImage = '';
 			}

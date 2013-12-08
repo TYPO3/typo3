@@ -136,7 +136,7 @@ class ExtensionManagementUtility {
 	 * @return string
 	 */
 	static public function siteRelPath($key) {
-		return substr(self::extPath($key), strlen(PATH_site));
+		return \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix(self::extPath($key));
 	}
 
 	/**

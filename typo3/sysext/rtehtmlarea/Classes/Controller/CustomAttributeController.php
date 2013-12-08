@@ -86,7 +86,7 @@ class CustomAttributeController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugi
 		if ($fileUid) {
 			$fileObject = $fileFactory->getFileObject($fileUid);
 			$filePath = $fileObject->getForLocalProcessing(FALSE);
-			$file = substr($filePath, strlen(PATH_site));
+			$file = \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($filePath);
 		} else {
 			// Pre-FAL backward compatibility
 			$path = $this->cObj->parameters['src'];

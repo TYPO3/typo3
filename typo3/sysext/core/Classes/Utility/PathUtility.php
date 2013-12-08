@@ -308,6 +308,22 @@ class PathUtility {
 		return $protocol . $absolutePathPrefix . implode('/', $theDirParts);
 	}
 
+	/**
+	 * Strip first part of a path, equal to the length of PATH_site
+	 *
+	 * @param string $path
+	 * @return array
+	 */
+	static public function stripPathSitePrefix($path) {
+		static $pathSiteLength = NULL;
+
+		// calculate length when first needed
+		if (!isset($pathSiteLength)) {
+			$pathSiteLength = strlen(PATH_site);
+		}
+		return substr($path, $pathSiteLength);
+	}
+
 	/*********************
 	 *
 	 * Helper methods

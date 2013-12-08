@@ -119,7 +119,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 		if (GeneralUtility::isFirstPartOfStr($this->absoluteBasePath, PATH_site)) {
 			// use site-relative URLs
 			// TODO add unit test
-			$this->baseUri = substr($this->absoluteBasePath, strlen(PATH_site));
+			$this->baseUri = \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($this->absoluteBasePath);
 		} elseif (isset($this->configuration['baseUri']) && GeneralUtility::isValidUrl($this->configuration['baseUri'])) {
 			$this->baseUri = rtrim($this->configuration['baseUri'], '/') . '/';
 		} else {

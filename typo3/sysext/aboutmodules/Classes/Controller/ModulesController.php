@@ -116,7 +116,7 @@ class ModulesController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
 			$subModuleKey = $moduleName . '_' . $subModuleName . '_tab';
 			$subModuleData = array();
 			$subModuleData['name'] = $subModuleName;
-			$subModuleData['icon'] = substr($GLOBALS['LANG']->moduleLabels['tabs_images'][$subModuleKey], strlen(PATH_site));
+			$subModuleData['icon'] = \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($GLOBALS['LANG']->moduleLabels['tabs_images'][$subModuleKey]);
 			$subModuleData['label'] = $GLOBALS['LANG']->moduleLabels['tabs'][$subModuleKey];
 			$subModuleData['shortDescription'] = $GLOBALS['LANG']->moduleLabels['labels'][$subModuleKey . 'label'];
 			$subModuleData['longDescription'] = $GLOBALS['LANG']->moduleLabels['labels'][$subModuleKey . 'descr'];

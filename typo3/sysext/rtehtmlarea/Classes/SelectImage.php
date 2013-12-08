@@ -243,7 +243,7 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 			if ($magicImage instanceof \TYPO3\CMS\Core\Resource\FileInterface) {
 				$filePath = $magicImage->getForLocalProcessing(FALSE);
 				$imageInfo = @getimagesize($filePath);
-				$imageUrl = $this->siteURL . substr($filePath, strlen(PATH_site));
+				$imageUrl = $this->siteURL . \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($filePath);
 				$this->imageInsertJS($imageUrl, $imageInfo[0], $imageInfo[1], $altText, $titleText, $additionalParams);
 			}
 		} else {
@@ -263,7 +263,7 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 	public function insertPlainImage(\TYPO3\CMS\Core\Resource\FileInterface $fileObject, $altText = '', $titleText = '', $additionalParams = '') {
 		$filePath = $fileObject->getForLocalProcessing(FALSE);
 		$imageInfo = @getimagesize($filePath);
-		$imageUrl = $this->siteURL . substr($filePath, strlen(PATH_site));
+		$imageUrl = $this->siteURL . \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($filePath);
 		$this->imageInsertJS($imageUrl, $imageInfo[0], $imageInfo[1], $altText, $titleText, $additionalParams);
 	}
 

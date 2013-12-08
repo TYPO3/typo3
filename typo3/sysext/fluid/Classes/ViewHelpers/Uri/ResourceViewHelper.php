@@ -43,7 +43,7 @@ class ResourceViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHe
 		}
 		$uri = 'EXT:' . \TYPO3\CMS\Core\Utility\GeneralUtility::camelCaseToLowerCaseUnderscored($extensionName) . '/Resources/Public/' . $path;
 		$uri = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($uri);
-		$uri = substr($uri, strlen(PATH_site));
+		$uri = \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($uri);
 		if (TYPO3_MODE === 'BE' && $absolute === FALSE && $uri !== FALSE) {
 			$uri = '../' . $uri;
 		}

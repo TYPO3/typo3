@@ -307,7 +307,7 @@ class ElementBrowser {
 					$currentLinkParts[0] = rawurldecode(substr($this->curUrlArray['href'], 5));
 				} elseif (file_exists(PATH_site . rawurldecode($this->curUrlArray['href']))) {
 					if (\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($this->curUrlArray['href'], PATH_site)) {
-						$currentLinkParts[0] = substr($this->curUrlArray['href'], strlen(PATH_site));
+						$currentLinkParts[0] = \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($this->curUrlArray['href']);
 					}
 					$this->curUrlInfo = $this->parseCurUrl($this->siteURL . $this->curUrlArray['href'], $this->siteURL);
 				} elseif (strstr($this->curUrlArray['href'], '@')) {

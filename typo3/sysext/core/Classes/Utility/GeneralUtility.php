@@ -3312,7 +3312,7 @@ Connection: close
 				break;
 			case 'TYPO3_SITE_URL':
 				if (defined('PATH_thisScript') && defined('PATH_site')) {
-					$lPath = substr(dirname(PATH_thisScript), strlen(PATH_site)) . '/';
+					$lPath = \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix(dirname(PATH_thisScript)) . '/';
 					$url = self::getIndpEnv('TYPO3_REQUEST_DIR');
 					$siteUrl = substr($url, 0, -strlen($lPath));
 					if (substr($siteUrl, -1) != '/') {
@@ -4939,7 +4939,7 @@ Connection: close
 			// Write a longer message to the deprecation log: <function> <annotion> - <trace> (<source>)
 		$logMsg = $trail[1]['class'] . $trail[1]['type'] . $trail[1]['function'];
 		$logMsg .= '() - ' . $msg . ' - ' . \TYPO3\CMS\Core\Utility\DebugUtility::debugTrail();
-		$logMsg .= ' (' . substr($function->getFileName(), strlen(PATH_site)) . '#' . $function->getStartLine() . ')';
+		$logMsg .= ' (' . \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($function->getFileName()) . '#' . $function->getStartLine() . ')';
 		self::deprecationLog($logMsg);
 	}
 

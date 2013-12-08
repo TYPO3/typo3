@@ -194,7 +194,7 @@ Reports problems with RTE images';
 											clearstatcache();
 											if (@is_file($copyDestName)) {
 												$sysRefObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\ReferenceIndex');
-												$error = $sysRefObj->setReferenceValue($hash, substr($copyDestName, strlen(PATH_site)));
+												$error = $sysRefObj->setReferenceValue($hash, \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($copyDestName));
 												if ($error) {
 													echo '	- ERROR:	TYPO3\\CMS\\Core\\Database\\ReferenceIndex::setReferenceValue(): ' . $error . LF;
 													die;

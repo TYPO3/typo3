@@ -622,7 +622,7 @@ class ShortcutToolbarItem implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookI
 					// Change icon of fileadmin references - otherwise it doesn't differ with Web->List
 					$icon = str_replace('mod/file/list/list.gif', 'mod/file/file.gif', $icon);
 					if (GeneralUtility::isAbsPath($icon)) {
-						$icon = '../' . substr($icon, strlen(PATH_site));
+						$icon = '../' . \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($icon);
 					}
 				} else {
 					$icon = 'gfx/dummy_module.gif';

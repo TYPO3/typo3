@@ -456,7 +456,7 @@ class HelpModuleController {
 				} elseif (substr($iPUrl[1], 0, 5) == 'FILE:') {
 					$fileName = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName(substr($iPUrl[1], 5), 1, 1);
 					if ($fileName && @is_file($fileName)) {
-						$fileName = '../' . substr($fileName, strlen(PATH_site));
+						$fileName = '../' . \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($fileName);
 						$lines[] = '<a href="' . htmlspecialchars($fileName) . '" target="_blank"><em>' . htmlspecialchars($iPUrl[0]) . '</em></a>';
 					}
 				} else {
@@ -494,7 +494,7 @@ class HelpModuleController {
 				$descr = $descrArray[$k];
 				$absImagePath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($image, 1, 1);
 				if ($absImagePath && @is_file($absImagePath)) {
-					$imgFile = substr($absImagePath, strlen(PATH_site));
+					$imgFile = \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($absImagePath);
 					$imgInfo = @getimagesize($absImagePath);
 					if (is_array($imgInfo)) {
 						$imgFile = '../' . $imgFile;

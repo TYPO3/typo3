@@ -4130,7 +4130,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 								if (!strcmp(substr($wConf['script'], 0, 4), 'EXT:')) {
 									$wScript = GeneralUtility::getFileAbsFileName($wConf['script']);
 									if ($wScript) {
-										$wScript = '../' . substr($wScript, strlen(PATH_site));
+										$wScript = '../' . \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($wScript);
 									} else {
 										break;
 									}
@@ -4289,7 +4289,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 		if (substr($icon, 0, 4) == 'EXT:') {
 			$file = GeneralUtility::getFileAbsFileName($icon);
 			if ($file) {
-				$file = substr($file, strlen(PATH_site));
+				$file = \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($file);
 				$selIconFile = $this->backPath . '../' . $file;
 				$selIconInfo = @getimagesize((PATH_site . $file));
 			}
@@ -4785,7 +4785,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 				$fileArr = GeneralUtility::removePrefixPathFromList($fileArr, $fileFolder);
 				foreach ($fileArr as $fileRef) {
 					$fI = pathinfo($fileRef);
-					$icon = GeneralUtility::inList('gif,png,jpeg,jpg', strtolower($fI['extension'])) ? '../' . substr($fileFolder, strlen(PATH_site)) . $fileRef : '';
+					$icon = GeneralUtility::inList('gif,png,jpeg,jpg', strtolower($fI['extension'])) ? '../' . \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($fileFolder) . $fileRef : '';
 					$items[] = array(
 						$fileRef,
 						$fileRef,
@@ -4945,7 +4945,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 							// Icon:
 							$icon = $GLOBALS['LANG']->moduleLabels['tabs_images'][$theMod . '_tab'];
 							if ($icon) {
-								$icon = '../' . substr($icon, strlen(PATH_site));
+								$icon = '../' . \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($icon);
 							}
 							// Add help text
 							$helpText = array(

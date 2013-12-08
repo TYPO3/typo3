@@ -2122,7 +2122,7 @@ class DataHandler {
 						}
 						$theFile = GeneralUtility::fixWindowsFilePath($theFile);
 						if (GeneralUtility::isFirstPartOfStr($theFile, PATH_site)) {
-							$theFile = substr($theFile, strlen(PATH_site));
+							$theFile = \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($theFile);
 						}
 					}
 					unset($theFile);
@@ -3506,11 +3506,11 @@ class DataHandler {
 								GeneralUtility::upload_copy_move(PATH_site . $rec['ref_string'], $copyDestName);
 								clearstatcache();
 								// Register this:
-								$this->RTEmagic_copyIndex[$rec['tablename']][$rec['recuid']][$rec['field']][$rec['ref_string']] = substr($copyDestName, strlen(PATH_site));
+								$this->RTEmagic_copyIndex[$rec['tablename']][$rec['recuid']][$rec['field']][$rec['ref_string']] = \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($copyDestName);
 								// Check and update the record using \TYPO3\CMS\Core\Database\ReferenceIndex
 								if (@is_file($copyDestName)) {
 									$sysRefObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\ReferenceIndex');
-									$error = $sysRefObj->setReferenceValue($rec['hash'], substr($copyDestName, strlen(PATH_site)), FALSE, TRUE);
+									$error = $sysRefObj->setReferenceValue($rec['hash'], \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($copyDestName), FALSE, TRUE);
 									if ($error) {
 										echo $this->newlog('TYPO3\\CMS\\Core\\Database\\ReferenceIndex::setReferenceValue(): ' . $error, 1);
 									}

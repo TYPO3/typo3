@@ -349,7 +349,7 @@ class DocumentTemplate {
 		if (($temp_M = (string) GeneralUtility::_GET('M')) && $GLOBALS['TBE_MODULES']['_PATHS'][$temp_M]) {
 			$this->scriptID = preg_replace('/^.*\\/(sysext|ext)\\//', 'ext/', $GLOBALS['TBE_MODULES']['_PATHS'][$temp_M] . 'index.php');
 		} else {
-			$this->scriptID = preg_replace('/^.*\\/(sysext|ext)\\//', 'ext/', substr(PATH_thisScript, strlen(PATH_site)));
+			$this->scriptID = preg_replace('/^.*\\/(sysext|ext)\\//', 'ext/', \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix(PATH_thisScript));
 		}
 		if (TYPO3_mainDir != 'typo3/' && substr($this->scriptID, 0, strlen(TYPO3_mainDir)) == TYPO3_mainDir) {
 			// This fixes if TYPO3_mainDir has been changed so the script ids are STILL "typo3/..."

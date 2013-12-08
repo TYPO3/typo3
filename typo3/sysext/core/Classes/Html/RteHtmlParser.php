@@ -402,7 +402,7 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 									$attribArray['width'] = $imageInfo[0];
 									$attribArray['height'] = $imageInfo[1];
 									$attribArray['data-htmlarea-file-uid'] = $fileObject->getUid();
-									$absRef = $siteUrl . substr($filePath, strlen(PATH_site));
+									$absRef = $siteUrl . \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($filePath);
 								}
 								$attribArray['src'] = $absRef;
 								$params = GeneralUtility::implodeAttributes($attribArray, 1);
@@ -464,7 +464,7 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 											$attribArray['style'] = preg_replace('/((?:^|)\\s*(?:width|height)\\s*:[^;]*(?:$|;))/si', '', $attribArray['style']);
 											$attribArray['width'] = $imageInfo[0];
 											$attribArray['height'] = $imageInfo[1];
-											$attribArray['src'] = $this->siteURL() . substr($filePath, strlen(PATH_site));
+											$attribArray['src'] = $this->siteURL() . \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($filePath);
 											$params = GeneralUtility::implodeAttributes($attribArray, 1);
 											$imgSplit[$k] = '<img ' . $params . ' />';
 										}
@@ -562,7 +562,7 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 					if ($attribArray['data-htmlarea-file-uid'] && !$isMagicImage) {
 						$fileObject = $fileFactory->getFileObject($attribArray['data-htmlarea-file-uid']);
 						$filePath = $fileObject->getForLocalProcessing(FALSE);
-						$attribArray['src'] = $siteUrl . substr($filePath, strlen(PATH_site));
+						$attribArray['src'] = $siteUrl . \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($filePath);
 					} else {
 						$attribArray['src'] = substr($attribArray['src'], strlen($this->relBackPath));
 						// if site is in a subpath (eg. /~user_jim/) this path needs to be removed because it will be added with $siteUrl

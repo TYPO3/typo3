@@ -215,7 +215,7 @@ class ModuleLoader {
 	 */
 	public function checkExtensionModule($name) {
 		if (isset($this->absPathArray[$name])) {
-			return rtrim(substr($this->absPathArray[$name], strlen(PATH_site)), '/');
+			return rtrim(\TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($this->absPathArray[$name]), '/');
 		}
 	}
 

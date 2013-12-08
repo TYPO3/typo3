@@ -312,7 +312,7 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 				$fullName = $savePath . $dlFile;
 				if (GeneralUtility::isAllowedAbsPath($savePath) && @is_dir(dirname($fullName)) && GeneralUtility::isAllowedAbsPath($fullName)) {
 					GeneralUtility::writeFile($fullName, $out);
-					$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('exportdata_savedFile'), sprintf($GLOBALS['LANG']->getLL('exportdata_savedInSBytes', TRUE), substr($savePath . $dlFile, strlen(PATH_site)), GeneralUtility::formatSize(strlen($out))), 0, 1);
+					$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('exportdata_savedFile'), sprintf($GLOBALS['LANG']->getLL('exportdata_savedInSBytes', TRUE), \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($savePath . $dlFile), GeneralUtility::formatSize(strlen($out))), 0, 1);
 				} else {
 					$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('exportdata_problemsSavingFile'), sprintf($GLOBALS['LANG']->getLL('exportdata_badPathS', TRUE), $fullName), 0, 1, 2);
 				}
@@ -681,7 +681,7 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 							' . (is_array($thumbnails) ? '
 							' . $LANG->getLL('makesavefo_thumbnail', TRUE) . '<br/>
 							' . $this->renderSelectBox('tx_impexp[meta][thumbnail]', $inData['meta']['thumbnail'], $thumbnails) . '<br/>
-							' . ($inData['meta']['thumbnail'] ? '<img src="' . $this->doc->backPath . '../' . substr($tempDir, strlen(PATH_site)) . $thumbnails[$inData['meta']['thumbnail']] . '" vspace="5" style="border: solid black 1px;" alt="" /><br/>' : '') . '
+							' . ($inData['meta']['thumbnail'] ? '<img src="' . $this->doc->backPath . '../' . \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($tempDir) . $thumbnails[$inData['meta']['thumbnail']] . '" vspace="5" style="border: solid black 1px;" alt="" /><br/>' : '') . '
 							' . $LANG->getLL('makesavefo_uploadThumbnail', TRUE) . '<br/>
 							<input type="file" name="upload_1" ' . $this->doc->formWidth(30) . ' size="30" /><br/>
 								<input type="hidden" name="file[upload][1][target]" value="' . htmlspecialchars($tempDir) . '" />
@@ -703,7 +703,7 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 					<td>' . $this->renderSelectBox('tx_impexp[filetype]', $inData['filetype'], $opt) . '<br/>
 						' . $LANG->getLL('makesavefo_maxSizeOfFiles', TRUE) . '<br/>
 						<input type="text" name="tx_impexp[maxFileSize]" value="' . htmlspecialchars($inData['maxFileSize']) . '"' . $this->doc->formWidth(10) . ' /><br/>
-						' . ($savePath ? sprintf($LANG->getLL('makesavefo_filenameSavedInS', TRUE), substr($savePath, strlen(PATH_site))) . '<br/>
+						' . ($savePath ? sprintf($LANG->getLL('makesavefo_filenameSavedInS', TRUE), \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($savePath)) . '<br/>
 						<input type="text" name="tx_impexp[filename]" value="' . htmlspecialchars($inData['filename']) . '"' . $this->doc->formWidth(30) . ' /><br/>' : '') . '
 					</td>
 				</tr>';
@@ -769,7 +769,7 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 			$row = array();
 			$opt = array('');
 			foreach ($filesInDir as $file) {
-				$opt[$file] = substr($file, strlen(PATH_site));
+				$opt[$file] = \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($file);
 			}
 			$row[] = '<tr class="bgColor5">
 					<td colspan="2"><strong>' . $LANG->getLL('importdata_selectFileToImport', TRUE) . '</strong></td>
@@ -853,7 +853,7 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 				if (GeneralUtility::_POST('_upload')) {
 					$row[] = '<tr class="bgColor4">
 							<td>' . $LANG->getLL('importdata_uploadStatus', TRUE) . '</td>
-							<td>' . ($this->fileProcessor->internalUploadMap[1] ? $LANG->getLL('importdata_success', TRUE) . ' ' . substr($this->fileProcessor->internalUploadMap[1], strlen(PATH_site)) : '<span class="typo3-red">' . $LANG->getLL('importdata_failureNoFileUploaded', TRUE) . '</span>') . '</td>
+							<td>' . ($this->fileProcessor->internalUploadMap[1] ? $LANG->getLL('importdata_success', TRUE) . ' ' . \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($this->fileProcessor->internalUploadMap[1]) : '<span class="typo3-red">' . $LANG->getLL('importdata_failureNoFileUploaded', TRUE) . '</span>') . '</td>
 						</tr>';
 				}
 				$menuItems[] = array(
@@ -908,7 +908,7 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 					</tr>';
 				$opt = array('');
 				foreach ($filesInDir as $file) {
-					$opt[$file] = substr($file, strlen(PATH_site));
+					$opt[$file] = \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($file);
 				}
 				$trow[] = '<tr class="bgColor4">
 					<td><strong>' . $LANG->getLL('importdata_title', TRUE) . '</strong></td>
@@ -937,7 +937,7 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 						// Check that the image really is an image and not a malicious PHP script...
 						if (getimagesize($fileName)) {
 							// Create icon tag:
-							$iconTag = '<img src="' . $this->doc->backPath . '../' . substr($fileName, strlen(PATH_site)) . '" ' . $import->dat['header']['thumbnail']['imgInfo'][3] . ' vspace="5" style="border: solid black 1px;" alt="" />';
+							$iconTag = '<img src="' . $this->doc->backPath . '../' . \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($fileName) . '" ' . $import->dat['header']['thumbnail']['imgInfo'][3] . ' vspace="5" style="border: solid black 1px;" alt="" />';
 							$trow[] = '<tr class="bgColor4">
 								<td><strong>' . $LANG->getLL('importdata_icon', TRUE) . '</strong></td>
 								<td>' . $iconTag . '</td>

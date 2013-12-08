@@ -802,7 +802,7 @@ class ImportExport {
 				$fileRec['filename'] = basename($fI['ID_absFile']);
 				$fileRec['filemtime'] = filemtime($fI['ID_absFile']);
 				//for internal type file_reference
-				$fileRec['relFileRef'] = substr($fI['ID_absFile'], strlen(PATH_site));
+				$fileRec['relFileRef'] = \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($fI['ID_absFile']);
 				if ($recordRef) {
 					$fileRec['record_ref'] = $recordRef . '/' . $fieldname;
 				}
@@ -843,7 +843,7 @@ class ImportExport {
 							$fileRec['content_md5'] = md5($fileRec['content']);
 							$this->dat['files'][$RTEoriginal_ID] = $fileRec;
 						} else {
-							$this->error('RTE original file "' . substr($RTEoriginal_absPath, strlen(PATH_site)) . '" was not found!');
+							$this->error('RTE original file "' . \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($RTEoriginal_absPath) . '" was not found!');
 						}
 					}
 					// Files with external media?
@@ -1902,7 +1902,7 @@ class ImportExport {
 							$this->writeFileVerify($copyDestName, $cfg['file_ID'], TRUE);
 							$this->writeFileVerify($origDestName, $fileHeaderInfo['RTE_ORIG_ID'], TRUE);
 							// Return the relative path of the copy file name:
-							return substr($copyDestName, strlen(PATH_site));
+							return \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($copyDestName);
 						} else {
 							$this->error('ERROR: Could not find original file ID');
 						}
@@ -1945,7 +1945,7 @@ class ImportExport {
 	public function processSoftReferences_saveFile_createRelFile($origDirPrefix, $fileName, $fileID, $table, $uid) {
 		// If the fileID map contains an entry for this fileID then just return the relative filename of that entry; we don't want to write another unique filename for this one!
 		if ($this->fileIDMap[$fileID]) {
-			return substr($this->fileIDMap[$fileID], strlen(PATH_site));
+			return \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($this->fileIDMap[$fileID]);
 		}
 		// Verify FileMount access to dir-prefix. Returns the best alternative relative path if any
 		$dirPrefix = $this->verifyFolderAccess($origDirPrefix);
@@ -1976,7 +1976,7 @@ class ImportExport {
 								$absResourceFileName = GeneralUtility::resolveBackPath(PATH_site . $origDirPrefix . $relResourceFileName);
 								$absResourceFileName = GeneralUtility::getFileAbsFileName($absResourceFileName);
 								if ($absResourceFileName && GeneralUtility::isFirstPartOfStr($absResourceFileName, PATH_site . $this->fileadminFolderName . '/')) {
-									$destDir = substr(dirname($absResourceFileName) . '/', strlen(PATH_site));
+									$destDir = \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix(dirname($absResourceFileName) . '/');
 									if ($this->verifyFolderAccess($destDir, TRUE) && $this->checkOrCreateDir($destDir)) {
 										$this->writeFileVerify($absResourceFileName, $res_fileID);
 									} else {
@@ -2009,7 +2009,7 @@ class ImportExport {
 						GeneralUtility::writeFile($newName, $tokenizedContent);
 					}
 				}
-				return substr($newName, strlen(PATH_site));
+				return \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($newName);
 			}
 		}
 	}
@@ -2113,7 +2113,7 @@ class ImportExport {
 				if (GeneralUtility::isFirstPartOfStr($dirPrefix, $this->fileadminFolderName . '/')) {
 					$dirPrefix = substr($dirPrefix, strlen($this->fileadminFolderName . '/'));
 				}
-				return substr($fileProcObj->mounts[$result]['path'] . $dirPrefix, strlen(PATH_site));
+				return \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($fileProcObj->mounts[$result]['path'] . $dirPrefix);
 			}
 		} else {
 			return $dirPrefix;
@@ -2768,7 +2768,7 @@ class ImportExport {
 					$pInfo['msg'] = 'You user profile does not allow you to create files on the server!';
 				}
 			}
-			$pInfo['showDiffContent'] = substr($this->fileIDMap[$ID], strlen(PATH_site));
+			$pInfo['showDiffContent'] = \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($this->fileIDMap[$ID]);
 			$lines[] = $pInfo;
 			unset($this->remainHeader['files'][$ID]);
 			// RTE originals:
@@ -2780,7 +2780,7 @@ class ImportExport {
 					$pInfo['msg'] = 'MISSING RTE original FILE: ' . $ID;
 					$this->error('MISSING RTE original FILE: ' . $ID, 1);
 				}
-				$pInfo['showDiffContent'] = substr($this->fileIDMap[$ID], strlen(PATH_site));
+				$pInfo['showDiffContent'] = \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($this->fileIDMap[$ID]);
 				$pInfo['preCode'] = $preCode . '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-reference-file');
 				$pInfo['title'] = htmlspecialchars($fI['filename']) . ' <em>(Original)</em>';
 				$pInfo['ref'] = 'FILE';
@@ -2801,7 +2801,7 @@ class ImportExport {
 					} else {
 						$pInfo['updatePath'] = $fI['parentRelFileName'];
 					}
-					$pInfo['showDiffContent'] = substr($this->fileIDMap[$ID], strlen(PATH_site));
+					$pInfo['showDiffContent'] = \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($this->fileIDMap[$ID]);
 					$pInfo['preCode'] = $preCode . '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-insert-reference');
 					$pInfo['title'] = htmlspecialchars($fI['filename']) . ' <em>(Resource)</em>';
 					$pInfo['ref'] = 'FILE';

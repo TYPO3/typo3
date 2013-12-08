@@ -749,7 +749,7 @@ class ShortcutFrameController {
 		// Change icon of fileadmin references - otherwise it doesn't differ with Web->List
 		$Ifilename = str_replace('mod/file/list/list.gif', 'mod/file/file.gif', $Ifilename);
 		if (GeneralUtility::isAbsPath($Ifilename)) {
-			$Ifilename = '../' . substr($Ifilename, strlen(PATH_site));
+			$Ifilename = '../' . \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($Ifilename);
 		}
 		return $backPath . $Ifilename;
 	}

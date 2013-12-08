@@ -3520,7 +3520,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	 */
 	public function debugHandler($function, $execTime, $inData) {
 		// we don't want to log our own log/debug SQL
-		$script = substr(PATH_thisScript, strlen(PATH_site));
+		$script = \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix(PATH_thisScript);
 		if (substr($script, -strlen('dbal/mod1/index.php')) != 'dbal/mod1/index.php' && !strstr($inData['args'][0], 'tx_dbal_debuglog')) {
 			$data = array();
 			$errorFlag = 0;

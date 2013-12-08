@@ -252,7 +252,7 @@ class ConfigurationStatus implements \TYPO3\CMS\Reports\StatusProviderInterface 
 	 */
 	protected function getDeprecationLogFileLink() {
 		$logFile = GeneralUtility::getDeprecationLogFileName();
-		$relativePath = GeneralUtility::resolveBackPath($this->backPath . substr($logFile, strlen(PATH_site)));
+		$relativePath = GeneralUtility::resolveBackPath($this->backPath . \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($logFile));
 		$link = '<a href="' . $relativePath . '">' . $logFile . '</a>';
 		return $link;
 	}

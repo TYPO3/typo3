@@ -470,7 +470,7 @@ class ResourceFactory implements \TYPO3\CMS\Core\SingletonInterface {
 			$folderIdentifier = $parts[0];
 			// make sure to not use an absolute path, and remove PATH_site if it is prepended
 			if (GeneralUtility::isFirstPartOfStr($folderIdentifier, PATH_site)) {
-				$folderIdentifier = substr($parts[0], strlen(PATH_site));
+				$folderIdentifier = \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($parts[0]);
 			}
 		}
 		return $this->getStorageObject($storageUid, array(), $folderIdentifier)->getFolder($folderIdentifier);

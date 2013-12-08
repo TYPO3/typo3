@@ -1079,7 +1079,7 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 		} elseif (substr($imgConf, 0, 4) == 'EXT:') {
 			$iFile = GeneralUtility::getFileAbsFileName($imgConf);
 			if ($iFile) {
-				$f = substr($iFile, strlen(PATH_site));
+				$f = \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($iFile);
 				$tFile = $GLOBALS['BACK_PATH'] . '../' . $f;
 			}
 		}
