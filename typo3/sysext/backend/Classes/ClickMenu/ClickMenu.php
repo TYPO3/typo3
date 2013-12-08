@@ -1190,7 +1190,7 @@ class ClickMenu {
 				}
 				$CSM = ' oncontextmenu="this.click();return false;"';
 				$out[] = '
-					<tr class="typo3-CSM-itemRow" onclick="' . htmlspecialchars($onClick) . '" onmouseover="this.bgColor=\'' . $GLOBALS['TBE_TEMPLATE']->bgColor5 . '\';" onmouseout="this.bgColor=\'\';"' . $CSM . '>
+					<tr class="typo3-CSM-itemRow" onclick="' . htmlspecialchars($onClick) . '"' . $CSM . '>
 						' . (!$this->leftIcons ? '<td class="typo3-CSM-item">' . $i[1] . '</td><td align="center">' . $i[2] . '</td>' : '<td align="center">' . $i[2] . '</td><td class="typo3-CSM-item">' . $i[1] . '</td>') . '
 					</tr>';
 			}
