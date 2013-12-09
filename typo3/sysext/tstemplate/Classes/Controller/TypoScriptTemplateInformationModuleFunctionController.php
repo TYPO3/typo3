@@ -314,8 +314,7 @@ class TypoScriptTemplateInformationModuleFunctionController extends \TYPO3\CMS\B
 					}
 				}
 			}
-			$content = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('sys_template', $tplRow, array('oncontextmenu' => "Clickmenu.show(
-'sys_template', '" . $tplRow['uid'] . "', '1', '', '', ''); return false;", 'onclick' => "Clickmenu.show('sys_template', '" . $tplRow['uid'] . "', '1', '','', ''); return false;")) . '<strong>' . htmlspecialchars($tplRow['title']) . '</strong>' . htmlspecialchars((trim($tplRow['sitetitle']) ? ' (' . $tplRow['sitetitle'] . ')' : ''));
+			$content = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('sys_template', $tplRow, array('oncontextmenu' => "this.click();return false;", 'onclick' => "Clickmenu.show('sys_template', '" . $tplRow['uid'] . "', '1', '','', ''); return false;")) . '<strong>' . htmlspecialchars($tplRow['title']) . '</strong>' . htmlspecialchars((trim($tplRow['sitetitle']) ? ' (' . $tplRow['sitetitle'] . ')' : ''));
 			$theOutput .= $this->pObj->doc->section($GLOBALS['LANG']->getLL('templateInformation'), $content, 0, 1);
 			if ($manyTemplatesMenu) {
 				$theOutput .= $this->pObj->doc->section('', $manyTemplatesMenu);

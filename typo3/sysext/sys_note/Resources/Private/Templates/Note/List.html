@@ -9,7 +9,7 @@
 			<f:for each="{notes}" as="note">
 				<div class="single-note category-{note.category}">
 					<div class="header">
-						<span class="typeicon" oncontextmenu="Clickmenu.show('sys_note', '{note.uid}', '1', '', '', ''); return false;" onclick="Clickmenu.show('sys_note', '{note.uid}', '1', '','', ''); return false;"></span>
+						<span class="typeicon" oncontextmenu="this.click();return false;" onclick="Clickmenu.show('sys_note', '{note.uid}', '1', '','', ''); return false;"></span>
 						<span><f:translate key="author" /></span>
 						<f:if condition="{note.author.realName}">
 							<f:then>{note.author.realName}</f:then>

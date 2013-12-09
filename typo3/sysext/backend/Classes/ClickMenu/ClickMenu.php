@@ -1187,7 +1187,7 @@ class ClickMenu {
 				if (!$i[5]) {
 					$onClick .= 'Clickmenu.hideAll();';
 				}
-				$CSM = ' oncontextmenu="' . htmlspecialchars($onClick) . ';return false;"';
+				$CSM = ' oncontextmenu="this.click();return false;"';
 				$out[] = '
 					<tr class="typo3-CSM-itemRow" onclick="' . htmlspecialchars($onClick) . '" onmouseover="this.bgColor=\'' . $GLOBALS['TBE_TEMPLATE']->bgColor5 . '\';" onmouseout="this.bgColor=\'\';"' . $CSM . '>
 						' . (!$this->leftIcons ? '<td class="typo3-CSM-item">' . $i[1] . '</td><td align="center">' . $i[2] . '</td>' : '<td align="center">' . $i[2] . '</td><td class="typo3-CSM-item">' . $i[1] . '</td>') . '
