@@ -55,6 +55,12 @@ Pagetree
 	border: none;
 }
 
+#typo3-pagetree .x-unselectable,
+#typo3-pagetree .x-unselectable * {
+	/* restore behaviour from x-tree-node-el which gets overwritten by x-unselectable in default-css */
+	cursor: pointer;
+}
+
 /**
  *
  * @section drag and drop
