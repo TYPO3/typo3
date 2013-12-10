@@ -3999,6 +3999,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 								// ... else types "popup", "colorbox" and "userFunc" will need additional parameters:
 								$params['formName'] = $this->formName;
 								$params['itemName'] = $itemName;
+								$params['hmac'] = \TYPO3\CMS\Core\Utility\GeneralUtility::hmac($params['formName'] . $params['itemName'], 'wizard_js');
 								$params['fieldChangeFunc'] = $fieldChangeFunc;
 								$params['fieldChangeFuncHash'] = \TYPO3\CMS\Core\Utility\GeneralUtility::hmac(serialize($fieldChangeFunc));
 								switch ((string) $wConf['type']) {
