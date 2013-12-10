@@ -1243,6 +1243,10 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 	public function setFileContents(FileInterface $file, $contents) {
 		$filePath = $this->getAbsolutePath($file);
 		$result = file_put_contents($filePath, $contents);
+
+		// Make sure later calls to filesize() etc. return correct values.
+		clearstatcache(TRUE, $filePath);
+
 		if ($result === FALSE) {
 			throw new \RuntimeException('Setting contents of file "' . $file->getIdentifier() . '" failed.', 1325419305);
 		}
