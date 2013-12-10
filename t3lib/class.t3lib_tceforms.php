@@ -4062,6 +4062,7 @@ class t3lib_TCEforms {
 										// ... else types "popup", "colorbox" and "userFunc" will need additional parameters:
 									$params['formName'] = $this->formName;
 									$params['itemName'] = $itemName;
+									$params['hmac'] = t3lib_div::hmac($params['formName'] . $params['itemName'], 'wizard_js');
 									$params['fieldChangeFunc'] = $fieldChangeFunc;
 									$params['fieldChangeFuncHash'] = t3lib_div::hmac(serialize($fieldChangeFunc));
 
