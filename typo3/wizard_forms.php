@@ -313,7 +313,9 @@ class SC_wizard_forms {
 	 * @return	string		HTML content for the form.
 	 */
 	function formsWizard()	{
-
+		if (!$this->checkEditAccess($this->P['table'], $this->P['uid'])) {
+		   throw new RuntimeException('Wizard Error: No access', 1385807526);
+		}
 			// First, check the references by selecting the record:
 		$row = t3lib_BEfunc::getRecord($this->P['table'],$this->P['uid']);
 		if (!is_array($row)) {
@@ -328,6 +330,37 @@ class SC_wizard_forms {
 
 			// Return content:
 		return $content;
+	}
+
+	/**
+	 * Checks access for element
+	 *
+	 * @param string $table Table name
+	 * @param integer $uid Record uid
+	 * @return boolean
+	 * @todo: Refactor to remove duplicate code (see wizard_table, wizard_rte)
+	 */
+  protected function checkEditAccess($table, $uid) {
+		$calcPRec = t3lib_BEfunc::getRecord($table, $uid);
+		t3lib_BEfunc::fixVersioningPid($table, $calcPRec);
+		if (is_array($calcPRec)) {
+			// If pages:
+			if ($table == 'pages') {
+				$CALC_PERMS = $GLOBALS['BE_USER']->calcPerms($calcPRec);
+				$hasAccess = $CALC_PERMS & 2 ? TRUE : FALSE;
+			} else {
+				// Fetching pid-record first.
+				$CALC_PERMS = $GLOBALS['BE_USER']->calcPerms(t3lib_BEfunc::getRecord('pages', $calcPRec['pid']));
+				$hasAccess = $CALC_PERMS & 16 ? TRUE : FALSE;
+			}
+			// Check internals regarding access:
+			if ($hasAccess) {
+				$hasAccess = $GLOBALS['BE_USER']->recordEditAccessInternals($table, $calcPRec);
+			}
+		} else {
+			$hasAccess = FALSE;
+		}
+		return $hasAccess;
 	}
 
 
