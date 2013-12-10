@@ -243,8 +243,9 @@ class RteController {
 	 *
 	 * @param string $table Table name
 	 * @param integer $uid Record uid
-	 * @return void
+	 * @return boolean
 	 * @todo Define visibility
+	 * @todo: Refactor to remove duplicate code (see FormsController, TableController)
 	 */
 	public function checkEditAccess($table, $uid) {
 		$calcPRec = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($table, $uid);
