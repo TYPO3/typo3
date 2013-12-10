@@ -222,7 +222,7 @@ class SC_wizard_colorpicker {
 				// If the save/close button is clicked, then close:
 			if(t3lib_div::_GP('save_close')) {
 				$content.=$this->doc->wrapScriptTags('
-					setValue(\''.$this->colorValue.'\');
+					setValue('.t3lib_div::quoteJSvalue($this->colorValue).');
 					parent.close();
 				');
 			}
