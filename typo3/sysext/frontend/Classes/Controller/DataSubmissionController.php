@@ -135,7 +135,7 @@ class DataSubmissionController {
 			if ($this->autoRespondMessage !== '') {
 				// Check if the value of the auto responder message has been modified with evil intentions
 				$autoRespondChecksum = $valueList['auto_respond_checksum'];
-				$correctHmacChecksum = Utility\GeneralUtility::hmac($this->autoRespondMessage);
+				$correctHmacChecksum = Utility\GeneralUtility::hmac($this->autoRespondMessage, 'content_form');
 				if ($autoRespondChecksum !== $correctHmacChecksum) {
 					Utility\GeneralUtility::sysLog('Possible misuse of DataSubmissionController auto respond method. Subject: ' . $valueList['subject'], 'Core', Utility\GeneralUtility::SYSLOG_SEVERITY_ERROR);
 					return;
