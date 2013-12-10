@@ -47,9 +47,20 @@ class OpenidEid {
 		\TYPO3\CMS\Frontend\Utility\EidUtility::initFeUser();
 		// Redirect to the original location in any case (authenticated or not)
 		@ob_end_clean();
-		\TYPO3\CMS\Core\Utility\HttpUtility::redirect(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('tx_openid_location'), \TYPO3\CMS\Core\Utility\HttpUtility::HTTP_STATUS_303);
+		if ($this->getSignature(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('tx_openid_location')) === \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('tx_openid_location_signature')) {
+			\TYPO3\CMS\Core\Utility\HttpUtility::redirect(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('tx_openid_location'), \TYPO3\CMS\Core\Utility\HttpUtility::HTTP_STATUS_303);
+		}
 	}
 
+	/**
+	 * Signs a GET parameter.
+	 *
+	 * @param string $parameter
+	 * @return string
+	 */
+	protected function getSignature($parameter) {
+		return \TYPO3\CMS\Core\Utility\GeneralUtility::hmac($parameter, 'openid');
+	}
 }
 
 
