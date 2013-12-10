@@ -114,7 +114,7 @@ class AddController {
 		// Else proceed:
 		// If a new id has returned from a newly created record...
 		if ($this->returnEditConf) {
-			$eC = unserialize($this->returnEditConf);
+			$eC = json_decode($this->returnEditConf, TRUE);
 			if (is_array($eC[$this->table]) && \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($this->P['uid'])) {
 				// Getting id and cmd from returning editConf array.
 				reset($eC[$this->table]);
