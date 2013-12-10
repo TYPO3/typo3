@@ -385,7 +385,7 @@ class FormContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractConten
 						// If this form includes an auto responder message, include a HMAC checksum field
 						// in order to verify potential abuse of this feature.
 						if (strlen($value) && GeneralUtility::inList($confData['fieldname'], 'auto_respond_msg')) {
-							$hmacChecksum = GeneralUtility::hmac($value);
+							$hmacChecksum = GeneralUtility::hmac($value, 'content_form');
 							$hiddenfields .= sprintf('<input type="hidden" name="auto_respond_checksum" id="%sauto_respond_checksum" value="%s" />', $prefix, $hmacChecksum);
 						}
 						if (strlen($value) && GeneralUtility::inList('recipient_copy,recipient', $confData['fieldname']) && $GLOBALS['TYPO3_CONF_VARS']['FE']['secureFormmail']) {
