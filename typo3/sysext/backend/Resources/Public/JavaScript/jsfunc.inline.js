@@ -192,12 +192,12 @@ var inline = {
 		var max, url='', urlParams='', options={};
 		if (method && params && params.length && this.lockAjaxMethod(method, lock)) {
 			url = TBE_EDITOR.getBackendPath() + 'ajax.php';
-			urlParams = '&ajaxID=t3lib_TCEforms_inline::'+method;
+			urlParams = '&ajaxID=' + encodeURIComponent('t3lib_TCEforms_inline::' + method);
 			for (var i=0, max=params.length; i<max; i++) {
-				urlParams += '&ajax['+i+']='+params[i];
+				urlParams += '&ajax[' + i + ']=' + encodeURIComponent(params[i]);
 			}
 			if (context) {
-				urlParams += '&ajax[context]=' + Object.toJSON(context);
+				urlParams += '&ajax[context]=' + encodeURIComponent(Object.toJSON(context));
 			}
 			options = {
 				method:		'post',
