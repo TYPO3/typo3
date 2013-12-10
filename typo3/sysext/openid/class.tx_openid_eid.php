@@ -61,7 +61,19 @@ class tx_openid_eID {
 
 		// Redirect to the original location in any case (authenticated or not)
 		@ob_end_clean();
-		t3lib_utility_Http::redirect(t3lib_div::_GP('tx_openid_location'), t3lib_utility_Http::HTTP_STATUS_303);
+		if ($this->getSignature(t3lib_div::_GP('tx_openid_location')) === t3lib_div::_GP('tx_openid_location_signature')) {
+			t3lib_utility_Http::redirect(t3lib_div::_GP('tx_openid_location'), t3lib_utility_Http::HTTP_STATUS_303);
+		}
+	}
+
+	/**
+	 * Signs a GET parameter.
+	 *
+	 * @param string $parameter
+	 * @return string
+     */
+	protected function getSignature($parameter) {
+		return t3lib_div::hmac($parameter, 'openid');
 	}
 }
 
