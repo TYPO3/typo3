@@ -151,6 +151,7 @@ class tx_em_Extensions_Details {
 			$createDirs = array_unique(t3lib_div::trimExplode(',', $extInfo['EM_CONF']['createDirs'], 1));
 
 			foreach ($createDirs as $crDir) {
+				$crDir = tx_em_Tools::sanitizeDirectoryName($crDir);
 				if (!@is_dir(PATH_site . $crDir)) {
 					if (t3lib_div::_POST('_createDir_' . md5($crDir))) { // CREATE dir:
 
@@ -254,15 +255,15 @@ class tx_em_Extensions_Details {
 						substr($emConfFileName, strlen($absPath)));
 				} else {
 					return '<strong>' . sprintf($GLOBALS['LANG']->getLL('updateLocalEM_CONF_not_writable'),
-						$emConfFileName) . '</strong>';
+						htmlspecialchars($emConfFileName)) . '</strong>';
 				}
 			} else {
 				return ('<strong>' . sprintf($GLOBALS['LANG']->getLL('updateLocalEM_CONF_not_found'),
-					$emConfFileName) . '</strong>');
+					htmlspecialchars($emConfFileName)) . '</strong>');
 			}
 		} else {
 			return sprintf($GLOBALS['LANG']->getLL('updateLocalEM_CONF_no_content'),
-				substr($emConfFileName, strlen($absPath)));
+				htmlspecialchars(substr($emConfFileName, strlen($absPath))));
 		}
 	}
 
@@ -420,7 +421,7 @@ $EM_CONF[$_EXTKEY] = ' . tx_em_Tools::arrayToCode($EM_CONF, 0) . ';
 
 		// row for the extension title
 		$key = 'title';
-		$dataCol = $emConf['_icon'] . $emConf[$key];
+		$dataCol = $emConf['_icon'] . htmlspecialchars($emConf[$key]);
 		$lines[] = array(
 			$this->headerCol($key),
 			$dataCol
@@ -438,7 +439,7 @@ $EM_CONF[$_EXTKEY] = ' . tx_em_Tools::arrayToCode($EM_CONF, 0) . ';
 		$key = 'author';
 		$dataCol = tx_em_Tools::wrapEmail($emConf['author'] . ($emConf['author_email'] ? ' <' . $emConf['author_email'] . '>' : ''), $emConf['author_email']);
 		if ($emConf['author_company']) {
-			$dataCol .= ', ' . $emConf['author_company'];
+			$dataCol .= ', ' . htmlspecialchars($emConf['author_company']);
 		}
 		$lines[] = array(
 			$this->headerCol($key),
@@ -447,7 +448,7 @@ $EM_CONF[$_EXTKEY] = ' . tx_em_Tools::arrayToCode($EM_CONF, 0) . ';
 
 		// row for the version
 		$key = 'version';
-		$dataCol = $emConf[$key];
+		$dataCol = htmlspecialchars($emConf[$key]);
 		$lines[] = array(
 			$this->headerCol($key),
 			$dataCol
@@ -496,7 +497,7 @@ $EM_CONF[$_EXTKEY] = ' . tx_em_Tools::arrayToCode($EM_CONF, 0) . ';
 		// row for the dependencies
 		$headerCol = $GLOBALS['LANG']->getLL('extInfoArray_depends_on');
 		$headerCol = t3lib_BEfunc::wrapInHelp($this->descrTable, 'emconf_dependencies', $headerCol);
-		$dataCol = tx_em_Tools::depToString($emConf['constraints']);
+		$dataCol = htmlspecialchars(tx_em_Tools::depToString($emConf['constraints']));
 		$lines[] = array(
 			$headerCol,
 			$dataCol
@@ -505,7 +506,7 @@ $EM_CONF[$_EXTKEY] = ' . tx_em_Tools::arrayToCode($EM_CONF, 0) . ';
 		// row for the conflicts
 		$headerCol = $GLOBALS['LANG']->getLL('extInfoArray_conflicts_with');
 		$headerCol = t3lib_BEfunc::wrapInHelp($this->descrTable, 'emconf_conflicts', $headerCol);
-		$dataCol = tx_em_Tools::depToString($emConf['constraints'], 'conflicts');
+		$dataCol = htmlspecialchars(tx_em_Tools::depToString($emConf['constraints'], 'conflicts'));
 		$lines[] = array(
 			$headerCol,
 			$dataCol
@@ -514,7 +515,7 @@ $EM_CONF[$_EXTKEY] = ' . tx_em_Tools::arrayToCode($EM_CONF, 0) . ';
 		// row for the suggestions
 		$headerCol = $GLOBALS['LANG']->getLL('extInfoArray_suggests');
 		$headerCol = t3lib_BEfunc::wrapInHelp($this->descrTable, 'emconf_conflicts', $headerCol);
-		$dataCol = tx_em_Tools::depToString($emConf['constraints'], 'suggests');
+		$dataCol = htmlspecialchars(tx_em_Tools::depToString($emConf['constraints'], 'suggests'));
 		$lines[] = array(
 			$this->headerCol('suggests'),
 			$dataCol
@@ -525,7 +526,7 @@ $EM_CONF[$_EXTKEY] = ' . tx_em_Tools::arrayToCode($EM_CONF, 0) . ';
 			$key = 'priority';
 			$lines[] = array(
 				$this->headerCol($key),
-				$emConf[$key]
+				htmlspecialchars($emConf[$key])
 			);
 
 
@@ -546,7 +547,7 @@ $EM_CONF[$_EXTKEY] = ' . tx_em_Tools::arrayToCode($EM_CONF, 0) . ';
 			$headerCol = t3lib_BEfunc::wrapInHelp($this->descrTable, 'emconf_module', $headerCol);
 			$lines[] = array(
 				$headerCol,
-				$emConf[$key]
+				htmlspecialchars($emConf[$key])
 			);
 
 			$key = 'lockType';
@@ -554,7 +555,7 @@ $EM_CONF[$_EXTKEY] = ' . tx_em_Tools::arrayToCode($EM_CONF, 0) . ';
 			$headerCol = t3lib_BEfunc::wrapInHelp($this->descrTable, 'emconf_lockType', $headerCol);
 			$lines[] = array(
 				$headerCol,
-				($emConf[$key] ? $emConf[$key] : '')
+				($emConf[$key] ? htmlspecialchars($emConf[$key]) : '')
 			);
 
 			$key = 'doNotLoadInFE';
@@ -575,7 +576,7 @@ $EM_CONF[$_EXTKEY] = ' . tx_em_Tools::arrayToCode($EM_CONF, 0) . ';
 			$headerCol = t3lib_BEfunc::wrapInHelp($this->descrTable, 'emconf_modify_tables', $headerCol);
 			$lines[] = array(
 				$headerCol,
-				$emConf[$key]
+				htmlspecialchars($emConf[$key])
 			);
 
 
@@ -601,7 +602,7 @@ $EM_CONF[$_EXTKEY] = ' . tx_em_Tools::arrayToCode($EM_CONF, 0) . ';
 				sort($extInfo['files']);
 				$headerCol = $GLOBALS['LANG']->getLL('extInfoArray_root_files');
 				$headerCol = t3lib_BEfunc::wrapInHelp($this->descrTable, 'emconf_rootfiles', $headerCol);
-				$dataCol = implode('<br />', $extInfo['files']);
+				$dataCol = tx_em_Tools::arrayToView($extInfo['files']);
 				$lines[] = array($headerCol, $dataCol);
 			}
 
@@ -630,7 +631,7 @@ $EM_CONF[$_EXTKEY] = ' . tx_em_Tools::arrayToCode($EM_CONF, 0) . ';
 
 			$headerCol = $GLOBALS['LANG']->getLL('extInfoArray_flags');
 			$headerCol = t3lib_BEfunc::wrapInHelp($this->descrTable, 'emconf_flags', $headerCol);
-			$dataCol = (is_array($techInfo['flags']) ? implode('<br />', $techInfo['flags']) : '');
+			$dataCol = (is_array($techInfo['flags']) ? tx_em_Tools::arrayToView($techInfo['flags']) : '');
 			$lines[] = array($headerCol, $dataCol);
 
 			$headerCol = $GLOBALS['LANG']->getLL('extInfoArray_config_template');
@@ -645,27 +646,27 @@ $EM_CONF[$_EXTKEY] = ' . tx_em_Tools::arrayToCode($EM_CONF, 0) . ';
 
 			$headerCol = $GLOBALS['LANG']->getLL('extInfoArray_language_files');
 			$headerCol = t3lib_BEfunc::wrapInHelp($this->descrTable, 'emconf_locallang', $headerCol);
-			$dataCol = (is_array($techInfo['locallang']) ? implode('<br />', $techInfo['locallang']) : '');
+			$dataCol = (is_array($techInfo['locallang']) ? tx_em_Tools::arrayToView($techInfo['locallang']) : '');
 			$lines[] = array($headerCol, $dataCol);
 
 			$headerCol = $GLOBALS['LANG']->getLL('extInfoArray_upload_folder');
 			$headerCol = t3lib_BEfunc::wrapInHelp($this->descrTable, 'emconf_uploadfolder', $headerCol);
-			$dataCol = ($techInfo['uploadfolder'] ? $techInfo['uploadfolder'] : '');
+			$dataCol = ($techInfo['uploadfolder'] ? htmlspecialchars($techInfo['uploadfolder']) : '');
 			$lines[] = array($headerCol, $dataCol);
 
 			$headerCol = $GLOBALS['LANG']->getLL('extInfoArray_create_directories');
 			$headerCol = t3lib_BEfunc::wrapInHelp($this->descrTable, 'emconf_createDirs', $headerCol);
-			$dataCol = (is_array($techInfo['createDirs']) ? implode('<br />', $techInfo['createDirs']) : '');
+			$dataCol = (is_array($techInfo['createDirs']) ? tx_em_Tools::arrayToView($techInfo['createDirs']) : '');
 			$lines[] = array($headerCol, $dataCol);
 
 			$headerCol = $GLOBALS['LANG']->getLL('extInfoArray_module_names');
 			$headerCol = t3lib_BEfunc::wrapInHelp($this->descrTable, 'emconf_moduleNames', $headerCol);
-			$dataCol = (is_array($techInfo['moduleNames']) ? implode('<br />', $techInfo['moduleNames']) : '');
+			$dataCol = (is_array($techInfo['moduleNames']) ? tx_em_Tools::arrayToView($techInfo['moduleNames']) : '');
 			$lines[] = array($headerCol, $dataCol);
 
 			$headerCol = $GLOBALS['LANG']->getLL('extInfoArray_class_names');
 			$headerCol = t3lib_BEfunc::wrapInHelp($this->descrTable, 'emconf_classNames', $headerCol);
-			$dataCol = (is_array($techInfo['classes']) ? implode('<br />', $techInfo['classes']) : '');
+			$dataCol = (is_array($techInfo['classes']) ? tx_em_Tools::arrayToView($techInfo['classes']) : '');
 			$lines[] = array($headerCol, $dataCol);
 
 			$currentMd5Array = $this->serverExtensionMD5array($extKey, $extInfo);
@@ -676,7 +677,7 @@ $EM_CONF[$_EXTKEY] = ' . tx_em_Tools::arrayToCode($EM_CONF, 0) . ';
 				$affectedFiles = tx_em_Tools::findMD5ArrayDiff($currentMd5Array, unserialize($extInfo['EM_CONF']['_md5_values_when_last_written']));
 				if (count($affectedFiles)) {
 					$msgLines[] = '<br /><strong>' . $GLOBALS['LANG']->getLL('extInfoArray_modified_files') . '</strong><br />' .
-							tx_em_Tools::rfw(implode('<br />', $affectedFiles));
+							tx_em_Tools::rfw(tx_em_Tools::arrayToView($affectedFiles));
 				}
 			}
 

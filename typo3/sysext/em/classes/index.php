@@ -1613,7 +1613,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 								$messageLabel = 'ext_details_ext_' . $action . '_with_key';
 								$flashMessage = t3lib_div::makeInstance(
 									't3lib_FlashMessage',
-									sprintf($GLOBALS['LANG']->getLL($messageLabel), $extKey),
+									sprintf($GLOBALS['LANG']->getLL($messageLabel), htmlspecialchars($extKey)),
 									'',
 									t3lib_FlashMessage::OK,
 									TRUE
@@ -2161,7 +2161,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 					'CMD[showExt]' => $extKey,
 					'CMD[downloadFile]' => rawurlencode($file)
 				))) . '" title="' . $GLOBALS['LANG']->getLL('extFileList_download') . '">' .
-						substr($file, strlen($extPath)) . '</a></td>
+						htmlspecialchars(substr($file, strlen($extPath))) . '</a></td>
 					<td>' . t3lib_div::formatSize(filesize($file)) . '</td>
 					<td>' . (!in_array($extKey, $this->requiredExt) &&
 						t3lib_div::inList($this->editTextExtensions,
@@ -2184,7 +2184,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 				</tr>';
 
 			$content = '
-			Path: ' . $extPath . '<br /><br />
+			Path: ' . htmlspecialchars($extPath) . '<br /><br />
 			<table border="0" cellpadding="1" cellspacing="2">' . implode('', $lines) . '</table>';
 		}
 
@@ -2218,7 +2218,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 					' return false;"><strong>' . $updateEMConf . '</strong> ' .
 					sprintf($GLOBALS['LANG']->getLL('extDelete_from_location'),
 						$this->typeLabels[$extInfo['type']],
-						substr($absPath, strlen(PATH_site))
+						htmlspecialchars(substr($absPath, strlen(PATH_site)))
 					) . '</a>';
 			return $content;
 		}
@@ -2236,6 +2236,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 		if (is_array($uArr)) {
 			$backUpData = $this->terConnection->makeUploadDataFromarray($uArr);
 			$filename = 'T3X_' . $extKey . '-' . str_replace('.', '_', $extInfo['EM_CONF']['version']) . '-z-' . date('YmdHi') . '.t3x';
+			$filename = tx_em_Tools::sanitizeFileName($filename);
 			if (intval($this->CMD['doBackup']) == 1) {
 				t3lib_div::cleanOutputBuffers();
 				header('Content-Type: application/octet-stream');
@@ -2268,7 +2269,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 					'CMD[showExt]' => $extKey
 				))) .
 						'">' . sprintf($GLOBALS['LANG']->getLL('extBackup_download'),
-					$extKey
+					htmlspecialchars($extKey)
 				) . '</a><br />
 					(' . $filename . ', <br />' .
 						t3lib_div::formatSize(strlen($backUpData)) . ', <br />' .
@@ -2369,7 +2370,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 		$imgInfo = @getImageSize(tx_em_Tools::getExtPath($extKey, $extInfo['type']) . '/ext_icon.gif');
 		$out = '';
 		if (is_array($imgInfo)) {
-			$out .= '<img src="' . $GLOBALS['BACK_PATH'] . tx_em_Tools::typeRelPath($extInfo['type']) . $extKey . '/ext_icon.gif" ' . $imgInfo[3] . ' align="' . $align . '" alt="" />';
+			$out .= '<img src="' . $GLOBALS['BACK_PATH'] . tx_em_Tools::typeRelPath($extInfo['type']) . rawurlencode($extKey) . '/ext_icon.gif" ' . $imgInfo[3] . ' align="' . $align . '" alt="" />';
 		}
 		$out .= $extInfo['EM_CONF']['title'] ? htmlspecialchars(t3lib_div::fixed_lgd_cs($extInfo['EM_CONF']['title'], 40)) : '<em>' . htmlspecialchars($extKey) . '</em>';
 		return $out;

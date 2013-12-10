@@ -431,8 +431,8 @@ class tx_em_Install {
 			foreach ($conf['constraints']['depends'] as $depK => $depV) {
 				if ($depsolver['ignore'][$depK]) {
 					$msg[] = '<br />' . sprintf($GLOBALS['LANG']->getLL('checkDependencies_ignored'),
-						$depK) . '
-						<input type="hidden" value="1" name="depsolver[ignore][' . $depK . ']" />';
+						htmlspecialchars($depK)) . '
+						<input type="hidden" value="1" name="depsolver[ignore][' . htmlspecialchars($depK) . ']" />';
 					$depIgnore = TRUE;
 					continue;
 				}
@@ -445,15 +445,15 @@ class tx_em_Install {
 					if ($versionRange[0] != '0.0.0' && version_compare($phpv, $versionRange[0], '<')) {
 						$msg[] = '<br />' . sprintf($GLOBALS['LANG']->getLL('checkDependencies_php_too_low'),
 							$phpv, $versionRange[0]);
-						$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[ignore][' . $depK . ']" id="checkIgnore_' . $depK . '" />
-							<label for="checkIgnore_' . $depK . '">' . $GLOBALS['LANG']->getLL('checkDependencies_ignore_requirement') . '</label>';
+						$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[ignore][' . htmlspecialchars($depK) . ']" id="checkIgnore_' . htmlspecialchars($depK) . '" />
+							<label for="checkIgnore_' . htmlspecialchars($depK) . '">' . $GLOBALS['LANG']->getLL('checkDependencies_ignore_requirement') . '</label>';
 						$depError = TRUE;
 						continue;
 					} elseif ($versionRange[1] != '0.0.0' && version_compare($phpv, $versionRange[1], '>')) {
 						$msg[] = '<br />' . sprintf($GLOBALS['LANG']->getLL('checkDependencies_php_too_high'),
 							$phpv, $versionRange[1]);
-						$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[ignore][' . $depK . ']" id="checkIgnore_' . $depK . '" />
-							<label for="checkIgnore_' . $depK . '">' . $GLOBALS['LANG']->getLL('checkDependencies_ignore_requirement') . '</label>';
+						$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[ignore][' . htmlspecialchars($depK) . ']" id="checkIgnore_' . htmlspecialchars($depK) . '" />
+							<label for="checkIgnore_' . htmlspecialchars($depK) . '">' . $GLOBALS['LANG']->getLL('checkDependencies_ignore_requirement') . '</label>';
 						$depError = TRUE;
 						continue;
 					}
@@ -478,60 +478,60 @@ class tx_em_Install {
 					if ($versionRange[0] != '0.0.0' && version_compare($t3version, $versionRange[0], '<')) {
 						$msg[] = '<br />' . sprintf($GLOBALS['LANG']->getLL('checkDependencies_typo3_too_low'),
 							$t3version, $versionRange[0]);
-						$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[ignore][' . $depK . ']" id="checkIgnore_' . $depK . '" />
-							<label for="checkIgnore_' . $depK . '">' . $GLOBALS['LANG']->getLL('checkDependencies_ignore_requirement') . '</label>';
+						$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[ignore][' . htmlspecialchars($depK) . ']" id="checkIgnore_' . htmlspecialchars($depK) . '" />
+							<label for="checkIgnore_' . htmlspecialchars($depK) . '">' . $GLOBALS['LANG']->getLL('checkDependencies_ignore_requirement') . '</label>';
 						$depError = TRUE;
 						continue;
 					} elseif ($versionRange[1] != '0.0.0' && version_compare($t3version, $versionRange[1], '>')) {
 						$msg[] = '<br />' . sprintf($GLOBALS['LANG']->getLL('checkDependencies_typo3_too_high'),
 							$t3version, $versionRange[1]);
-						$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[ignore][' . $depK . ']" id="checkIgnore_' . $depK . '" />
-							<label for="checkIgnore_' . $depK . '">' . $GLOBALS['LANG']->getLL('checkDependencies_ignore_requirement') . '</label>';
+						$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[ignore][' . htmlspecialchars($depK) . ']" id="checkIgnore_' . htmlspecialchars($depK) . '" />
+							<label for="checkIgnore_' . htmlspecialchars($depK) . '">' . $GLOBALS['LANG']->getLL('checkDependencies_ignore_requirement') . '</label>';
 						$depError = TRUE;
 						continue;
 					}
 				} elseif (strlen($depK) && !t3lib_extMgm::isLoaded($depK)) { // strlen check for braindead empty dependencies coming from extensions...
 					if (!isset($instExtInfo[$depK])) {
 						$msg[] = '<br />' . sprintf($GLOBALS['LANG']->getLL('checkDependencies_ext_not_available'),
-							$depK);
+							htmlspecialchars($depK));
 						$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;' . t3lib_iconWorks::getSpriteIcon('actions-system-extension-import', array('title' => $GLOBALS['LANG']->getLL('checkDependencies_import_ext'))) . '&nbsp;
-							<a href="#" onclick="window.open(\'' . t3lib_div::linkThisUrl($this->parentObject->script, array(
+							<a href="#" onclick="window.open(' . t3lib_div::quoteJSvalue(t3lib_div::linkThisUrl($this->parentObject->script, array(
 							'CMD[importExt]' => $depK,
 							'CMD[loc]' => 'L',
 							'CMD[standAlone]' => 1
-						)) . '\', \'' . md5($instExtInfo[$depK]['EM_CONF']['title']) . '\', \'width=650,height=500,scrollbars=yes\'); return false;" target="_blank">' . $GLOBALS['LANG']->getLL('checkDependencies_import_now') . '</a>';
-						$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[ignore][' . $depK . ']" id="checkIgnore_' . $depK . '" />
-							<label for="checkIgnore_' . $depK . '">' . $GLOBALS['LANG']->getLL('checkDependencies_ignore_ext_requirement') . '</label>';
+						))) . ', \'' . md5($instExtInfo[$depK]['EM_CONF']['title']) . '\', \'width=650,height=500,scrollbars=yes\'); return false;" target="_blank">' . $GLOBALS['LANG']->getLL('checkDependencies_import_now') . '</a>';
+						$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[ignore][' . htmlspecialchars($depK) . ']" id="checkIgnore_' . htmlspecialchars($depK) . '" />
+							<label for="checkIgnore_' . htmlspecialchars($depK) . '">' . $GLOBALS['LANG']->getLL('checkDependencies_ignore_ext_requirement') . '</label>';
 					} else {
 						$msg[] = '<br />' . sprintf($GLOBALS['LANG']->getLL('checkDependencies_ext_not_installed'),
-							$depK, $instExtInfo[$depK]['EM_CONF']['title']);
+							htmlspecialchars($depK), htmlspecialchars($instExtInfo[$depK]['EM_CONF']['title']));
 						$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;' . tx_em_Tools::installButton() . '&nbsp;
-							<a href="#" onclick="window.open(\'' . t3lib_div::linkThisUrl($this->parentObject->script, array(
+							<a href="#" onclick="window.open(' . t3lib_div::quoteJSvalue(t3lib_div::linkThisUrl($this->parentObject->script, array(
 							'CMD[showExt]' => $depK,
 							'CMD[load]' => 1,
 							'CMD[clrCmd]' => 1,
 							'CMD[standAlone]' => 1,
 							'SET[singleDetails]' => 'info'
-						)) .
-								'\', \'' . md5($instExtInfo[$depK]['EM_CONF']['title']) . '\', \'width=650,height=500,scrollbars=yes\'); return false; " target="_blank">' . $GLOBALS['LANG']->getLL('checkDependencies_install_now') . '</a>';
-						$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[ignore][' . $depK . ']" id="checkIgnore_' . $depK . '" />
-							<label for="checkIgnore_' . $depK . '">' . $GLOBALS['LANG']->getLL('checkDependencies_ignore_ext_requirement') . '</label>';
+						))) .
+								', \'' . md5($instExtInfo[$depK]['EM_CONF']['title']) . '\', \'width=650,height=500,scrollbars=yes\'); return false; " target="_blank">' . $GLOBALS['LANG']->getLL('checkDependencies_install_now') . '</a>';
+						$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[ignore][' . htmlspecialchars($depK) . ']" id="checkIgnore_' . htmlspecialchars($depK) . '" />
+							<label for="checkIgnore_' . htmlspecialchars($depK) . '">' . $GLOBALS['LANG']->getLL('checkDependencies_ignore_ext_requirement') . '</label>';
 					}
 					$depError = TRUE;
 				} else {
 					$versionRange = tx_em_Tools::splitVersionRange($depV);
 					if ($versionRange[0] != '0.0.0' && version_compare($instExtInfo[$depK]['EM_CONF']['version'], $versionRange[0], '<')) {
 						$msg[] = '<br />' . sprintf($GLOBALS['LANG']->getLL('checkDependencies_ext_too_low'),
-							$depK, $instExtInfo[$depK]['EM_CONF']['version'], $versionRange[0]);
-						$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[ignore][' . $depK . ']" id="checkIgnore_' . $depK . '" />
-							<label for="checkIgnore_' . $depK . '">' . $GLOBALS['LANG']->getLL('checkDependencies_ignore_requirement') . '</label>';
+							htmlspecialchars($depK), htmlspecialchars($instExtInfo[$depK]['EM_CONF']['version']), $versionRange[0]);
+						$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[ignore][' . htmlspecialchars($depK) . ']" id="checkIgnore_' . htmlspecialchars($depK) . '" />
+							<label for="checkIgnore_' . htmlspecialchars($depK) . '">' . $GLOBALS['LANG']->getLL('checkDependencies_ignore_requirement') . '</label>';
 						$depError = TRUE;
 						continue;
 					} elseif ($versionRange[1] != '0.0.0' && version_compare($instExtInfo[$depK]['EM_CONF']['version'], $versionRange[1], '>')) {
 						$msg[] = '<br />' . sprintf($GLOBALS['LANG']->getLL('checkDependencies_ext_too_high'),
-							$depK, $instExtInfo[$depK]['EM_CONF']['version'], $versionRange[1]);
-						$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[ignore][' . $depK . ']" id="checkIgnore_' . $depK . '" />
-							<label for="checkIgnore_' . $depK . '">' . $GLOBALS['LANG']->getLL('checkDependencies_ignore_requirement') . '</label>';
+							htmlspecialchars($depK), htmlspecialchars($instExtInfo[$depK]['EM_CONF']['version']), $versionRange[1]);
+						$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[ignore][' . htmlspecialchars($depK) . ']" id="checkIgnore_' . htmlspecialchars($depK) . '" />
+							<label for="checkIgnore_' . htmlspecialchars($depK) . '">' . $GLOBALS['LANG']->getLL('checkDependencies_ignore_requirement') . '</label>';
 						$depError = TRUE;
 						continue;
 					}
@@ -564,8 +564,8 @@ class tx_em_Install {
 			foreach ((array) $conf['constraints']['conflicts'] as $conflictK => $conflictV) {
 				if ($depsolver['ignore'][$conflictK]) {
 					$msg[] = '<br />' . sprintf($GLOBALS['LANG']->getLL('checkDependencies_conflict_ignored'),
-						$conflictK) . '
-						<input type="hidden" value="1" name="depsolver[ignore][' . $conflictK . ']" />';
+						htmlspecialchars($conflictK)) . '
+						<input type="hidden" value="1" name="depsolver[ignore][' . htmlspecialchars($conflictK) . ']" />';
 					$conflictIgnore = TRUE;
 					continue;
 				}
@@ -578,7 +578,7 @@ class tx_em_Install {
 						continue;
 					}
 					$msg[] = sprintf($GLOBALS['LANG']->getLL('checkDependencies_conflict_remove'),
-						$extKey, $conflictK, $instExtInfo[$conflictK]['EM_CONF']['title'], $conflictK, $extKey);
+						htmlspecialchars($extKey), htmlspecialchars($conflictK), htmlspecialchars($instExtInfo[$conflictK]['EM_CONF']['title']), htmlspecialchars($conflictK), htmlspecialchars($extKey));
 					$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;' . tx_em_Tools::removeButton() . '&nbsp;
 						<a href="' . htmlspecialchars(t3lib_div::linkThisScript(array(
 						'CMD[showExt]' => $conflictK,
@@ -588,8 +588,8 @@ class tx_em_Install {
 						'SET[singleDetails]' => 'info'
 					))) .
 							'" target="_blank">' . $GLOBALS['LANG']->getLL('checkDependencies_remove_now') . '</a>';
-					$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[ignore][' . $conflictK . ']" id="checkIgnore_' . $conflictK . '" />
-						<label for="checkIgnore_' . $conflictK . '">' . $GLOBALS['LANG']->getLL('checkDependencies_ignore_conflict') . '</label>';
+					$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[ignore][' . htmlspecialchars($conflictK) . ']" id="checkIgnore_' . htmlspecialchars($conflictK) . '" />
+						<label for="checkIgnore_' . htmlspecialchars($conflictK) . '">' . $GLOBALS['LANG']->getLL('checkDependencies_ignore_conflict') . '</label>';
 					$conflictError = TRUE;
 				}
 			}
@@ -618,26 +618,26 @@ class tx_em_Install {
 			foreach ($conf['constraints']['suggests'] as $suggestK => $suggestV) {
 				if ($depsolver['ignore'][$suggestK]) {
 					$msg[] = '<br />' . sprintf($GLOBALS['LANG']->getLL('checkDependencies_suggestion_ignored'),
-						$suggestK) . '
-				<input type="hidden" value="1" name="depsolver[ignore][' . $suggestK . ']" />';
+						htmlspecialchars($suggestK)) . '
+				<input type="hidden" value="1" name="depsolver[ignore][' . htmlspecialchars($suggestK) . ']" />';
 					$suggestionIgnore = TRUE;
 					continue;
 				}
 				if (!t3lib_extMgm::isLoaded($suggestK)) {
 					if (!isset($instExtInfo[$suggestK])) {
 						$msg[] = sprintf($GLOBALS['LANG']->getLL('checkDependencies_suggest_import'),
-							$suggestK);
+							htmlspecialchars($suggestK));
 						$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;' . t3lib_iconWorks::getSpriteIcon('actions-system-extension-import', array('title' => $GLOBALS['LANG']->getLL('checkDependencies_import_ext'))) . '&nbsp;
-							<a href="#" onclick="window.open(\'' . t3lib_div::linkThisScript(array(
+							<a href="#" onclick="window.open(' . t3lib_div::quoteJSvalue(t3lib_div::linkThisScript(array(
 							'CMD[importExt]' => $suggestK,
 							'CMD[loc]' => 'L',
 							'CMD[standAlone]' => 1
-						)) . '\', \'' . md5($suggestK) . '\', \'width=650,height=500,scrollbars=yes\'); return false; " target="_blank">' . $GLOBALS['LANG']->getLL('checkDependencies_import_now') . '</a>';
-						$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[ignore][' . $suggestK . ']" id="checkIgnore_' . $suggestK . '" />
-							<label for="checkIgnore_' . $suggestK . '">' . $GLOBALS['LANG']->getLL('checkDependencies_ignore_suggestion') . '</label>';
+						))) . ', \'' . md5($suggestK) . '\', \'width=650,height=500,scrollbars=yes\'); return false; " target="_blank">' . $GLOBALS['LANG']->getLL('checkDependencies_import_now') . '</a>';
+						$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[ignore][' . htmlspecialchars($suggestK) . ']" id="checkIgnore_' . htmlspecialchars($suggestK) . '" />
+							<label for="checkIgnore_' . htmlspecialchars($suggestK) . '">' . $GLOBALS['LANG']->getLL('checkDependencies_ignore_suggestion') . '</label>';
 					} else {
 						$msg[] = sprintf($GLOBALS['LANG']->getLL('checkDependencies_suggest_installation'),
-							$suggestK, $instExtInfo[$suggestK]['EM_CONF']['title']);
+							htmlspecialchars($suggestK), htmlspecialchars($instExtInfo[$suggestK]['EM_CONF']['title']));
 						$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;' . tx_em_Tools::installButton() . '&nbsp;
 							<a href="#" onclick="window.open(\''  . htmlspecialchars(t3lib_div::linkThisScript(array(
 							'CMD[showExt]' => $suggestK,
@@ -647,8 +647,8 @@ class tx_em_Install {
 							'SET[singleDetails]' => 'info'
 						))) .
 								'\', \'' . md5($suggestK) . '\', \'width=650,height=500,scrollbars=yes\'); return false; " target="_blank">' . $GLOBALS['LANG']->getLL('checkDependencies_install_now') . '</a>';
-						$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[ignore][' . $suggestK . ']" id="checkIgnore_' . $suggestK . '" />
-							<label for="checkIgnore_' . $suggestK . '">' . $GLOBALS['LANG']->getLL('checkDependencies_ignore_suggestion') . '</label>';
+						$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[ignore][' . htmlspecialchars($suggestK) . ']" id="checkIgnore_' . htmlspecialchars($suggestK) . '" />
+							<label for="checkIgnore_' . htmlspecialchars($suggestK) . '">' . $GLOBALS['LANG']->getLL('checkDependencies_ignore_suggestion') . '</label>';
 					}
 					$suggestion = TRUE;
 				}
@@ -660,7 +660,7 @@ class tx_em_Install {
 				if ($this->parentObject instanceof SC_mod_tools_em_index) {
 						// we're in the lucky position to ask the user to uninstall the extension again
 					$content .= $this->parentObject->doc->section(
-						sprintf($GLOBALS['LANG']->getLL('checkDependencies_exts_suggested_by_ext'), $extKey),
+						sprintf($GLOBALS['LANG']->getLL('checkDependencies_exts_suggested_by_ext'), htmlspecialchars($extKey)),
 						implode('<br />', $msg), 0, 1, 1
 					);
 				} elseif ($this->parentObject instanceof tx_em_Connection_ExtDirectServer) {
@@ -747,7 +747,7 @@ class tx_em_Install {
 						' return false;"><strong>' . $deleteFromServer . '</strong> ' .
 						sprintf($GLOBALS['LANG']->getLL('extDelete_from_location'),
 							$this->api->typeLabels[$extInfo['type']],
-							substr($absPath, strlen(PATH_site))
+							htmlspecialchars(substr($absPath, strlen(PATH_site)))
 						) . '</a>';
 				$content .= '<br /><br />' . $GLOBALS['LANG']->getLL('extDelete_backup');
 				return $content;
@@ -1204,12 +1204,12 @@ class tx_em_Install {
 					}
 				} else  {
 					$infoArray['errors'][] = sprintf($GLOBALS['LANG']->getLL('detailedExtAnalysis_be_module_conf_missing'),
-							$mod . '/conf.php'
+							htmlspecialchars($mod) . '/conf.php'
 					);
 				}
 			} else {
 				$infoArray['errors'][] = sprintf($GLOBALS['LANG']->getLL('detailedExtAnalysis_module_folder_missing'),
-						$mod . '/'
+						htmlspecialchars($mod) . '/'
 				);
 			}
 		}
@@ -1303,7 +1303,7 @@ class tx_em_Install {
 			$infoArray['uploadfolder'] = tx_em_Tools::uploadFolder($extKey);
 			if (!@is_dir(PATH_site . $infoArray['uploadfolder'])) {
 				$infoArray['errors'][] = sprintf($GLOBALS['LANG']->getLL('detailedExtAnalysis_no_upload_folder'),
-					$infoArray['uploadfolder']
+					htmlspecialchars($infoArray['uploadfolder'])
 				);
 				$infoArray['uploadfolder'] = '';
 			}
@@ -1315,7 +1315,7 @@ class tx_em_Install {
 			foreach ($infoArray['createDirs'] as $crDir) {
 				if (!@is_dir(PATH_site . $crDir)) {
 					$infoArray['errors'][] = sprintf($GLOBALS['LANG']->getLL('detailedExtAnalysis_no_upload_folder'),
-						$crDir
+						htmlspecialchars($crDir)
 					);
 				}
 			}
