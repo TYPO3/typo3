@@ -435,25 +435,21 @@ class tx_openid_sv1 extends t3lib_svbase {
 			$claimedIdentifier = $this->openIDIdentifier;
 		}
 		$returnURL .= 'tx_openid_location=' . rawurlencode($requestURL) . '&' .
-						'tx_openid_mode=finish&' .
-						'tx_openid_claimed=' . rawurlencode($claimedIdentifier) . '&' .
-						'tx_openid_signature=' . $this->getSignature($claimedIdentifier);
+			'tx_openid_location_signature=' . $this->getSignature($requestURL) . '&' .
+			'tx_openid_mode=finish&' .
+			'tx_openid_claimed=' . rawurlencode($claimedIdentifier) . '&' .
+			'tx_openid_signature=' . $this->getSignature($claimedIdentifier);
 		return t3lib_div::locationHeaderUrl($returnURL);
 	}
 
 	/**
-	 * Signs claimed id.
+	 * Signs a GET parameter.
 	 *
-	 * @param string $claimedIdentifier
+	 * @param string $parameter
 	 * @return string
 	 */
-	protected function getSignature($claimedIdentifier) {
-		// You can also increase security by using sha1 (beware of too long URLs!)
-		return md5(implode('/', array(
-			$claimedIdentifier,
-			strval(strlen($claimedIdentifier)),
-			$GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']
-		)));
+	protected function getSignature($parameter) {
+		return t3lib_div::hmac($parameter, $this->extKey);
 	}
 
 	/**
