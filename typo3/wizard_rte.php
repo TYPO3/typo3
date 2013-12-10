@@ -282,7 +282,10 @@ class SC_wizard_rte {
 	 *
 	 * @param	string		Table name
 	 * @param	integer		Record uid
-	 * @return	void
+	 *
+	 *@return	boolean
+	 *
+	 * @todo: Refactor to remove duplicate code (see wizard_form, wizard_table)
 	 */
 	function checkEditAccess($table,$uid)	{
 		$calcPRec = t3lib_BEfunc::getRecord($table,$uid);
