@@ -513,7 +513,7 @@ class tslib_content_Form extends tslib_content_Abstract {
 							// If this form includes an auto responder message, include a HMAC checksum field
 							// in order to verify potential abuse of this feature.
 						if (strlen($value) && t3lib_div::inList($confData['fieldname'], 'auto_respond_msg')) {
-							$hmacChecksum = t3lib_div::hmac($value);
+							$hmacChecksum = t3lib_div::hmac($value, 'content_form');
 							$hiddenfields .= sprintf(
 								'<input type="hidden" name="auto_respond_checksum" id="%sauto_respond_checksum" value="%s" />',
 								$prefix,
