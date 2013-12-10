@@ -45,7 +45,7 @@ class SwitchUserViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractView
 			return '';
 		}
 		$title = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate(($emulate ? 'switchBackMode' : 'changeToMode'), 'beuser');
-		return '<a href="' . \TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array('SwitchUser' => $backendUser->getUid(), 'switchBackUser' => $emulate)) . '" target="_top" title="' . htmlspecialchars($title) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon(('actions-system-backend-user-' . ($emulate ? 'emulate' : 'switch'))) . '</a>';
+		return '<a href="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array('SwitchUser' => $backendUser->getUid(), 'switchBackUser' => $emulate))) . '" target="_top" title="' . htmlspecialchars($title) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon(('actions-system-backend-user-' . ($emulate ? 'emulate' : 'switch'))) . '</a>';
 	}
 
 }
