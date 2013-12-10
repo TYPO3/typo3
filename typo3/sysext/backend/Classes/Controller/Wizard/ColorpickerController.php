@@ -225,7 +225,7 @@ class ColorpickerController {
 			// If the save/close button is clicked, then close:
 			if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('save_close')) {
 				$content .= $this->doc->wrapScriptTags('
-					setValue(\'' . $this->colorValue . '\');
+					setValue(' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue($this->colorValue) . ');
 					parent.close();
 				');
 			}
