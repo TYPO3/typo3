@@ -235,7 +235,7 @@ class ColorpickerController {
 			// If the save/close button is clicked, then close:
 			if (GeneralUtility::_GP('save_close')) {
 				$content .= $this->doc->wrapScriptTags('
-					setValue(\'' . $this->colorValue . '\');
+					setValue(' . GeneralUtility::quoteJSvalue($this->colorValue) . ');
 					parent.close();
 				');
 			}
