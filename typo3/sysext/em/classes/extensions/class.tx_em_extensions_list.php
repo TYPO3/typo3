@@ -558,7 +558,7 @@ EXTENSION KEYS:
 		// Icon:
 		$imgInfo = @getImageSize(tx_em_Tools::getExtPath($extKey, $extInfo['type']) . '/ext_icon.gif');
 		if (is_array($imgInfo)) {
-			$cells[] = '<td><img src="' . $GLOBALS['BACK_PATH'] . tx_em_Tools::typeRelPath($extInfo['type']) . $extKey . '/ext_icon.gif' . '" ' . $imgInfo[3] . ' alt="" /></td>';
+			$cells[] = '<td><img src="' . $GLOBALS['BACK_PATH'] . tx_em_Tools::typeRelPath($extInfo['type']) . rawurlencode($extKey) . '/ext_icon.gif' . '" ' . $imgInfo[3] . ' alt="" /></td>';
 		} elseif ($extInfo['_ICON']) {
 			$cells[] = '<td>' . $extInfo['_ICON'] . '</td>';
 		} else {
@@ -577,9 +577,9 @@ EXTENSION KEYS:
 			$cells[] = '<td>' . htmlspecialchars(t3lib_div::fixed_lgd_cs($extInfo['EM_CONF']['description'], 400)) . '<br /><img src="clear.gif" width="300" height="1" alt="" /></td>';
 			$cells[] = '<td nowrap="nowrap">' . ($extInfo['EM_CONF']['author_email'] ? '<a href="mailto:' . htmlspecialchars($extInfo['EM_CONF']['author_email']) . '">' : '') . htmlspecialchars($extInfo['EM_CONF']['author']) . (htmlspecialchars($extInfo['EM_CONF']['author_email']) ? '</a>' : '') . ($extInfo['EM_CONF']['author_company'] ? '<br />' . htmlspecialchars($extInfo['EM_CONF']['author_company']) : '') . '</td>';
 		} elseif ($this->parentObject->MOD_SETTINGS['display_details'] == 2) {
-			$cells[] = '<td nowrap="nowrap">' . $extInfo['EM_CONF']['priority'] . '</td>';
-			$cells[] = '<td nowrap="nowrap">' . implode('<br />', t3lib_div::trimExplode(',', $extInfo['EM_CONF']['modify_tables'], 1)) . '</td>';
-			$cells[] = '<td nowrap="nowrap">' . $extInfo['EM_CONF']['module'] . '</td>';
+			$cells[] = '<td nowrap="nowrap">' . htmlspecialchars($extInfo['EM_CONF']['priority']) . '</td>';
+			$cells[] = '<td nowrap="nowrap">' . tx_em_Tools::arrayToView(t3lib_div::trimExplode(',', $extInfo['EM_CONF']['modify_tables'], TRUE)) . '</td>';
+			$cells[] = '<td nowrap="nowrap">' . htmlspecialchars($extInfo['EM_CONF']['module']) . '</td>';
 			$cells[] = '<td nowrap="nowrap">' . ($extInfo['EM_CONF']['clearCacheOnLoad'] ? $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:yes') : '') . '</td>';
 			$cells[] = '<td nowrap="nowrap">' . ($extInfo['EM_CONF']['internal'] ? $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:yes') : '') . '</td>';
 			$cells[] = '<td nowrap="nowrap">' . ($extInfo['EM_CONF']['shy'] ? $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:yes') : '') . '</td>';
@@ -590,7 +590,7 @@ EXTENSION KEYS:
 					'</td>';
 			$cells[] = '<td nowrap="nowrap">' . (is_array($techInfo['TSfiles']) ? implode('<br />', $techInfo['TSfiles']) : '') . '</td>';
 			$cells[] = '<td nowrap="nowrap">' . (is_array($techInfo['flags']) ? implode('<br />', $techInfo['flags']) : '') . '</td>';
-			$cells[] = '<td nowrap="nowrap">' . (is_array($techInfo['moduleNames']) ? implode('<br />', $techInfo['moduleNames']) : '') . '</td>';
+			$cells[] = '<td nowrap="nowrap">' . (is_array($techInfo['moduleNames']) ? tx_em_Tools::arrayToView($techInfo['moduleNames']) : '') . '</td>';
 			$cells[] = '<td nowrap="nowrap">' . ($techInfo['conf'] ? $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:yes') : '') . '</td>';
 			$cells[] = '<td>' .
 					tx_em_Tools::rfw((t3lib_extMgm::isLoaded($extKey) && $techInfo['tables_error'] ?
@@ -628,8 +628,8 @@ EXTENSION KEYS:
 			// Default view:
 			$verDiff = $inst_list[$extKey] && tx_em_Tools::versionDifference($extInfo['EM_CONF']['version'], $inst_list[$extKey]['EM_CONF']['version'], $this->parentObject->versionDiffFactor);
 
-			$cells[] = '<td nowrap="nowrap"><em>' . $extKey . '</em></td>';
-			$cells[] = '<td nowrap="nowrap">' . ($verDiff ? '<strong>' . tx_em_Tools::rfw(htmlspecialchars($extInfo['EM_CONF']['version'])) . '</strong>' : $extInfo['EM_CONF']['version']) . '</td>';
+			$cells[] = '<td nowrap="nowrap"><em>' . htmlspecialchars($extKey) . '</em></td>';
+			$cells[] = '<td nowrap="nowrap">' . ($verDiff ? '<strong>' . tx_em_Tools::rfw(htmlspecialchars($extInfo['EM_CONF']['version'])) . '</strong>' : htmlspecialchars($extInfo['EM_CONF']['version'])) . '</td>';
 			if (!$import) { // Listing extension on LOCAL server:
 				// Extension Download:
 				$cells[] = '<td nowrap="nowrap"><a href="' . htmlspecialchars(t3lib_div::linkThisScript(array(
@@ -762,7 +762,7 @@ EXTENSION KEYS:
 
 				$imgInfo = @getImageSize(tx_em_Tools::getExtPath($name, $data['type']) . '/ext_icon.gif');
 				if (is_array($imgInfo)) {
-					$icon = '<img src="' . $GLOBALS['BACK_PATH'] . tx_em_Tools::typeRelPath($data['type']) . $name . '/ext_icon.gif' . '" ' . $imgInfo[3] . ' alt="" />';
+					$icon = '<img src="' . $GLOBALS['BACK_PATH'] . tx_em_Tools::typeRelPath($data['type']) . rawurlencode($name) . '/ext_icon.gif' . '" ' . $imgInfo[3] . ' alt="" />';
 				} elseif ($data['_ICON']) { //TODO: see if this can be removed, seems to be wrong in this context
 					$icon = $data['_ICON'];
 				} else {
