@@ -478,11 +478,6 @@ class ActionController extends \TYPO3\CMS\Extbase\Mvc\Controller\AbstractControl
 				$this->forward($referringRequest->getControllerActionName(), $referringRequest->getControllerName(), $referringRequest->getControllerExtensionName(), $referringRequest->getArguments());
 			}
 			$message = 'An error occurred while trying to call ' . get_class($this) . '->' . $this->actionMethodName . '().' . PHP_EOL;
-			foreach ($this->arguments->getValidationResults()->getFlattenedErrors() as $propertyPath => $errors) {
-				foreach ($errors as $error) {
-					$message .= 'Error for ' . $propertyPath . ':  ' . $error->render() . PHP_EOL;
-				}
-			}
 			return $message;
 		} else {
 			// @deprecated since Extbase 1.4.0, will be removed two versions after Extbase 6.1
@@ -501,12 +496,6 @@ class ActionController extends \TYPO3\CMS\Extbase\Mvc\Controller\AbstractControl
 				$this->forward($referrer['actionName'], $referrer['controllerName'], $referrer['extensionName'], $this->request->getArguments());
 			}
 			$message = 'An error occurred while trying to call ' . get_class($this) . '->' . $this->actionMethodName . '().' . PHP_EOL;
-			foreach ($this->argumentsMappingResults->getErrors() as $error) {
-				$message .= 'Error:   ' . $error->getMessage() . PHP_EOL;
-			}
-			foreach ($this->argumentsMappingResults->getWarnings() as $warning) {
-				$message .= 'Warning: ' . $warning->getMessage() . PHP_EOL;
-			}
 			return $message;
 		}
 	}
