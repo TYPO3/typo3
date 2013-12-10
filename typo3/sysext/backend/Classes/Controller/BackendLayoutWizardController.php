@@ -69,6 +69,10 @@ class BackendLayoutWizardController {
 		$this->P = GeneralUtility::_GP('P');
 		$this->formName = $this->P['formName'];
 		$this->fieldName = $this->P['itemName'];
+		$hmac_validate = GeneralUtility::hmac($this->formName . $this->fieldName, 'wizard_js');
+		if (!$this->P['hmac'] || ($this->P['hmac'] !== $hmac_validate)) {
+			throw new \InvalidArgumentException('Hmac Validation failed for backend_layout wizard', 1385811397);
+		}
 		$this->md5ID = $this->P['md5ID'];
 		$uid = intval($this->P['uid']);
 		// Initialize document object:
@@ -78,8 +82,8 @@ class BackendLayoutWizardController {
 		$pageRenderer->addJsFile($GLOBALS['BACK_PATH'] . TYPO3_MOD_PATH . 'res/grideditor.js');
 		$pageRenderer->addJsInlineCode('storeData', '
 			function storeData(data) {
-				if (parent.opener && parent.opener.document && parent.opener.document.' . $this->formName . ' && parent.opener.document.' . $this->formName . '["' . $this->fieldName . '"]) {
-					parent.opener.document.' . $this->formName . '["' . $this->fieldName . '"].value = data;
+				if (parent.opener && parent.opener.document && parent.opener.document.' . $this->formName . ' && parent.opener.document.' . $this->formName . '[' . GeneralUtility::quoteJSvalue($this->fieldName) . ']) {
+					parent.opener.document.' . $this->formName . '[' . GeneralUtility::quoteJSvalue($this->fieldName) . '].value = data;
 					parent.opener.TBE_EDITOR.fieldChanged("backend_layout","' . $uid . '","config","data[backend_layout][' . $uid . '][config]");
 				}
 			}
