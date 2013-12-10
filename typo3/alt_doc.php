@@ -1389,8 +1389,8 @@ class SC_alt_doc {
 
 
 			// If ->returnEditConf is set, then add the current content of editconf to the ->retUrl variable: (used by other scripts, like wizard_add, to know which records was created or so...)
-		if ($this->returnEditConf && $this->retUrl!='dummy.php')	{
-			$this->retUrl.='&returnEditConf='.rawurlencode(serialize($this->editconf));
+		if ($this->returnEditConf && $this->retUrl!='dummy.php') {
+			$this->retUrl .= '&returnEditConf=' . rawurlencode(json_encode($this->editconf));
 		}
 
 			// If code is NOT set OR set to 1, then make a header location redirect to $this->retUrl

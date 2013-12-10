@@ -112,8 +112,8 @@ class SC_wizard_add {
 		}
 
 			// Else proceed:
-		if ($this->returnEditConf)	{	// If a new id has returned from a newly created record...
-			$eC = unserialize($this->returnEditConf);
+		if ($this->returnEditConf) {	// If a new id has returned from a newly created record...
+			$eC = json_decode($this->returnEditConf, TRUE);
 			if (is_array($eC[$this->table]) && t3lib_utility_Math::canBeInterpretedAsInteger($this->P['uid']))	{
 
 					// Getting id and cmd from returning editConf array.
