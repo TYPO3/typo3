@@ -277,6 +277,9 @@ class FormsController {
 	 * @todo Define visibility
 	 */
 	public function formsWizard() {
+		if (!$this->checkEditAccess($this->P['table'], $this->P['uid'])) {
+			throw new \RuntimeException('Wizard Error: No access', 1385807526);
+		}
 		// First, check the references by selecting the record:
 		$row = BackendUtility::getRecord($this->P['table'], $this->P['uid']);
 		if (!is_array($row)) {
@@ -884,4 +887,34 @@ class FormsController {
 			</table>';
 	}
 
+	/**
+	 * Checks access for element
+	 *
+	 * @param string $table Table name
+	 * @param integer $uid Record uid
+	 * @return boolean
+	 * @todo: Refactor to remove duplicate code (see TableController, RteController)
+	 */
+	protected function checkEditAccess($table, $uid) {
+		$calcPRec = BackendUtility::getRecord($table, $uid);
+		BackendUtility::fixVersioningPid($table, $calcPRec);
+		if (is_array($calcPRec)) {
+			// If pages:
+			if ($table == 'pages') {
+				$CALC_PERMS = $GLOBALS['BE_USER']->calcPerms($calcPRec);
+				$hasAccess = $CALC_PERMS & 2 ? TRUE : FALSE;
+			} else {
+				// Fetching pid-record first.
+				$CALC_PERMS = $GLOBALS['BE_USER']->calcPerms(BackendUtility::getRecord('pages', $calcPRec['pid']));
+				$hasAccess = $CALC_PERMS & 16 ? TRUE : FALSE;
+			}
+			// Check internals regarding access:
+			if ($hasAccess) {
+				$hasAccess = $GLOBALS['BE_USER']->recordEditAccessInternals($table, $calcPRec);
+			}
+		} else {
+			$hasAccess = FALSE;
+		}
+		return $hasAccess;
+	}
 }
