@@ -100,15 +100,9 @@ return array(
 			'exclude' => 0,
 			'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.uid_foreign',
 			'config' => array(
-				'type' => 'select',
-				'items' => array(
-					array('', 0)
-				),
-				'foreign_table' => 'tt_content',
-				'foreign_table_where' => 'ORDER BY tt_content.uid',
-				'size' => 1,
-				'minitems' => 0,
-				'maxitems' => 1
+				'type' => 'input',
+				'size' => '10',
+				'eval' => 'int'
 			)
 		),
 		'tablenames' => array(

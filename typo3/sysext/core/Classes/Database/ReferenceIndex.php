@@ -542,10 +542,10 @@ class ReferenceIndex {
 			$dbAnalysis->start($value, $allowedTables, $conf['MM'], $uid, $table, $conf);
 			return $dbAnalysis->itemArray;
 		} elseif ($conf['type'] == 'inline' && $conf['foreign_table'] == 'sys_file_reference') {
-			$files = (array) $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid_local', 'sys_file_reference', ('tablenames=\'' . $table . '\' AND fieldname=\'' . $field . '\' AND uid_foreign=' . $uid));
-			$fileArray = array('0' => array());
+			$files = (array)$GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid_local', 'sys_file_reference', ('tablenames=\'' . $table . '\' AND fieldname=\'' . $field . '\' AND uid_foreign=' . $uid . ' AND deleted=0'));
+			$fileArray = array();
 			foreach ($files as $fileUid) {
-				$fileArray[0][] = array('table' => 'sys_file', 'id' => $fileUid);
+				$fileArray[] = array('table' => 'sys_file', 'id' => $fileUid['uid_local']);
 			}
 			return $fileArray;
 		} elseif ($conf['type'] == 'input' && isset($conf['wizards']['link']) && trim($value)) {
@@ -807,7 +807,13 @@ class ReferenceIndex {
 	 * @todo Define visibility
 	 */
 	public function isReferenceField($conf) {
-		return $conf['type'] == 'group' && $conf['internal_type'] == 'db' || ($conf['type'] == 'select' || $conf['type'] == 'inline') && $conf['foreign_table'] && $conf['foreign_table'] !== 'sys_file_reference';
+		return (
+			($conf['type'] == 'group' && $conf['internal_type'] == 'db')
+			|| (
+				($conf['type'] == 'select' || $conf['type'] == 'inline')
+				&& $conf['foreign_table']
+			)
+		);
 	}
 
 	/**
