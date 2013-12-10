@@ -1085,13 +1085,20 @@ class user_feAdmin	{
 			$fD = t3lib_div::_GP('fD');
 			$sFK = t3lib_div::_GP('sFK');
 
+			$valuesConfiguredInTypoScript = isset($this->conf['setfixed.'][$sFK . '.']) ? $this->conf['setfixed.'][$sFK . '.'] : array();
+			$fields = $valuesConfiguredInTypoScript;
+			unset($fields['_FIELDLIST']);
+			$fields = array_keys($fields);
+			if (isset($valuesConfiguredInTypoScript['_FIELDLIST'])) {
+				$fields = array_merge($fields, t3lib_div::trimExplode(',', $valuesConfiguredInTypoScript['_FIELDLIST']));
+			}
+			$valuesConfiguredInTypoScript['_FIELDLIST'] = implode(',', array_unique($fields));
+
 			$fieldArr=array();
-			if (is_array($fD) || $sFK=='DELETE')	{
-				if (is_array($fD))	{
-					foreach ($fD as $field => $value) {
-						$origArr[$field]=$value;
-						$fieldArr[]=$field;
-					}
+			if (!empty($valuesConfiguredInTypoScript) || $sFK=='DELETE')	{
+				foreach ($valuesConfiguredInTypoScript as $field => $value) {
+					$origArr[$field]=$value;
+					$fieldArr[]=$field;
 				}
 				$theCode = $this->setfixedHash($origArr,$origArr['_FIELDLIST']);
 				if (!strcmp($this->authCode,$theCode))	{
@@ -1099,7 +1106,8 @@ class user_feAdmin	{
 						$this->cObj->DBgetDelete($this->theTable, $theUid, TRUE);
 					} else {
 						$newFieldList = implode(',',array_intersect(t3lib_div::trimExplode(',',$this->fieldList),t3lib_div::trimExplode(',',implode($fieldArr,','),1)));
-						$this->cObj->DBgetUpdate($this->theTable, $theUid, $fD, $newFieldList, TRUE);
+						unset($valuesConfiguredInTypoScript['_FIELDLIST']);
+						$this->cObj->DBgetUpdate($this->theTable, $theUid, $valuesConfiguredInTypoScript, $newFieldList, TRUE);
 						$this->currentArr = $GLOBALS['TSFE']->sys_page->getRawRecord($this->theTable,$theUid);
 						$this->userProcess_alt($this->conf['setfixed.']['userFunc_afterSave'],$this->conf['setfixed.']['userFunc_afterSave.'],array('rec'=>$this->currentArr, 'origRec'=>$origArr));
 					}
@@ -1617,6 +1625,13 @@ class user_feAdmin	{
 					$markerArray['###SYS_SETFIXED_DELETE###'] = $string;
 					$markerArray['###SYS_SETFIXED_HSC_DELETE###'] = htmlspecialchars($string);
 				} elseif (strstr($theKey,'.'))	{
+					$fields = $data;
+					unset($fields['_FIELDLIST']);
+					$fields = array_keys($fields);
+					if (isset($data['_FIELDLIST'])) {
+						$fields = array_merge($fields, t3lib_div::trimExplode(',', $data['_FIELDLIST']));
+					}
+					$data['_FIELDLIST'] = implode(',', array_unique($fields));
 					$theKey = substr($theKey,0,-1);
 					if (is_array($data))	{
 						$recCopy = $r;
