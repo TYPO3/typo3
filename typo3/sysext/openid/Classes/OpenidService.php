@@ -422,21 +422,18 @@ class OpenidService extends \TYPO3\CMS\Core\Service\AbstractService {
 		} else {
 			$requestURL = GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL');
 		}
-		$returnURL .= 'tx_openid_location=' . rawurlencode($requestURL) . '&' . 'tx_openid_mode=finish&' . 'tx_openid_claimed=' . rawurlencode($claimedIdentifier) . '&' . 'tx_openid_signature=' . $this->getSignature($claimedIdentifier);
+		$returnURL .= 'tx_openid_location=' . rawurlencode($requestURL) . '&tx_openid_location_signature=' . $this->getSignature($requestURL) . '&tx_openid_mode=finish&tx_openid_claimed=' . rawurlencode($claimedIdentifier) . '&tx_openid_signature=' . $this->getSignature($claimedIdentifier);
 		return GeneralUtility::locationHeaderUrl($returnURL);
 	}
 
 	/**
-	 * Signs claimed id.
+	 * Signs a GET parameter.
 	 *
-	 * @param string $claimedIdentifier
+	 * @param string $parameter
 	 * @return string
 	 */
-	protected function getSignature($claimedIdentifier) {
-		return GeneralUtility::hmac(
-			implode('/', array($claimedIdentifier, strval(strlen($claimedIdentifier)))),
-			$this->extKey
-		);
+	protected function getSignature($parameter) {
+		return GeneralUtility::hmac($parameter, $this->extKey);
 	}
 
 	/**
