@@ -282,15 +282,16 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 		// TODO use folder methods directly when they support filters
 		$storage = $this->folderObject->getStorage();
 		$storage->resetFileAndFolderNameFiltersToDefault();
-		$folders = $storage->getFolderList($this->folderObject->getIdentifier());
-		$files = $storage->getFileList($this->folderObject->getIdentifier());
+
 		// Only render the contents of a browsable storage
+
 		if ($this->folderObject->getStorage()->isBrowsable()) {
+			$folders = $storage->getFolderList($this->folderObject->getIdentifier());
+			$files = $this->folderObject->getFiles();
 			$this->sort = trim($this->sort);
 			if ($this->sort !== '') {
 				$filesToSort = array();
-				foreach ($files as $file) {
-					$fileObject = $storage->getFile($file['identifier']);
+				foreach ($files as $fileObject) {
 					switch ($this->sort) {
 						case 'size':
 							$sortingKey = $fileObject->getSize();

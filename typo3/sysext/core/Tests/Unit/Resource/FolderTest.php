@@ -96,7 +96,7 @@ class FolderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function getFilesReturnsArrayWithFilenamesAsKeys() {
 		$mockedStorage = $this->getMock('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', array(), array(), '', FALSE);
-		$mockedStorage->expects($this->once())->method('getFileList')->will($this->returnValue(array(
+		$mockedStorage->expects($this->once())->method('getFilesInFolder')->will($this->returnValue(array(
 				'somefile.png' => array(
 					'name' => 'somefile.png'
 				),
@@ -119,8 +119,8 @@ class FolderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$mockedStorage = $this->getMock('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', array(), array(), '', FALSE);
 		$mockedStorage
 			->expects($this->once())
-			->method('getFileList')
-			->with($this->anything(), $this->anything(), $this->anything(), $this->anything(), $this->anything(), FALSE)
+			->method('getFilesInFolder')
+			->with($this->anything(), $this->anything(), $this->anything(), $this->anything(), FALSE)
 			->will($this->returnValue(array()));
 
 		$fixture = $this->createFolderFixture('/somePath', 'someName', $mockedStorage);
@@ -134,8 +134,8 @@ class FolderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$mockedStorage = $this->getMock('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', array(), array(), '', FALSE);
 		$mockedStorage
 			->expects($this->once())
-			->method('getFileList')
-			->with($this->anything(), $this->anything(), $this->anything(), $this->anything(), $this->anything(), TRUE)
+			->method('getFilesInFolder')
+			->with($this->anything(), $this->anything(), $this->anything(), $this->anything(), TRUE)
 			->will($this->returnValue(array()));
 
 		$fixture = $this->createFolderFixture('/somePath', 'someName', $mockedStorage);

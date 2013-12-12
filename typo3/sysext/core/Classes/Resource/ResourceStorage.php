@@ -1320,10 +1320,10 @@ class ResourceStorage {
 	 * @param boolean $loadIndexRecords If set to TRUE, the index records for all files are loaded from the database. This can greatly improve performance of this method, especially with a lot of files.
 	 * @param boolean $recursive
 	 * @return array Information about the files found.
+	 * @deprecated since 6.2, will be removed two versions later
 	 */
-	// TODO check if we should use a folder object instead of $path
-	// TODO add unit test for $loadIndexRecords
 	public function getFileList($path, $start = 0, $numberOfItems = 0, $useFilters = TRUE, $loadIndexRecords = TRUE, $recursive = FALSE) {
+		GeneralUtility::logDeprecatedFunction();
 		// This also checks for read permissions on folder
 		$folder = $this->getFolder($path);
 		$rows = array();
@@ -1341,6 +1341,44 @@ class ResourceStorage {
 		return $items;
 	}
 
+	/**
+	 * @param Folder $folder
+	 * @param int $start
+	 * @param int $maxNumberOfItems
+	 * @param bool $useFilters
+	 * @param bool $recursive
+	 * @return File[]
+	 */
+	public function getFilesInFolder(Folder $folder, $start = 0, $maxNumberOfItems = 0, $useFilters = TRUE, $recursive = FALSE) {
+		$this->assureFolderReadPermission($folder);
+
+		$rows = $this->getFileIndexRepository()->findByFolder($folder);
+
+		$filters = $useFilters == TRUE ? $this->fileAndFolderNameFilters : array();
+		$fileIdentifiers = $this->driver->getFileIdentifierListInFolder($folder->getIdentifier(), $recursive, $filters);
+		$fileIdentifiersCount = count($fileIdentifiers);
+		$items = array();
+		if ($maxNumberOfItems === 0) {
+			$maxNumberOfItems = $fileIdentifiersCount;
+		}
+		$end = min($fileIdentifiersCount, $start + $maxNumberOfItems);
+		for ($i = $start; $i < $end; $i++) {
+			$identifier = $fileIdentifiers[$i];
+			if (isset($rows[$identifier])) {
+				$fileObject = $this->getFileFactory()->getFileObject($rows[$identifier]['uid'], $rows[$identifier]);
+			} else {
+				$fileObject = $this->getFileFactory()->getFileObjectByStorageAndIdentifier($this->getUid(), $identifier);
+			}
+			$key = $fileObject->getName();
+			while (isset($items[$key])) {
+				$key .= 'z';
+			}
+			$items[$key] = $fileObject;
+		}
+		uksort($items, 'strnatcasecmp');
+
+		return $items;
+	}
 
 	/**
 	 * @param string $folderIdentifier

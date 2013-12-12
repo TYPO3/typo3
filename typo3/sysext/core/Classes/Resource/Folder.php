@@ -193,20 +193,7 @@ class Folder implements FolderInterface {
 			list($backedUpFilters, $useFilters) = $this->prepareFiltersInStorage($filterMode);
 		}
 
-		/** @var $factory ResourceFactory */
-		$factory = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\ResourceFactory');
-		$fileArray = $this->storage->getFileList($this->identifier, $start, $numberOfItems, $useFilters, TRUE, $recursive);
-		$fileObjects = array();
-		foreach ($fileArray as $fileInfo) {
-			$fileObject = $factory->createFileObject($fileInfo, $this->storage);
-
-			// we might have duplicate filenames when fetching a recursive list, so don't use the filename as array key
-			if ($recursive == TRUE) {
-				$fileObjects[] = $fileObject;
-			} else {
-				$fileObjects[$fileInfo['name']] = $fileObject;
-			}
-		}
+		$fileObjects = $this->storage->getFilesInFolder($this, $start, $numberOfItems, $useFilters, $recursive);
 
 		$this->restoreBackedUpFiltersInStorage($backedUpFilters);
 
@@ -223,8 +210,7 @@ class Folder implements FolderInterface {
 	 * @return integer
 	 */
 	public function getFileCount(array $filterMethods = array(), $recursive = FALSE) {
-		// TODO replace by call to count()
-		return count($this->storage->getFileList($this->identifier, 0, 0, $filterMethods, FALSE, $recursive));
+		return count($this->storage->getFileIdentifiersInFolder($this->identifier, TRUE, $recursive));
 	}
 
 	/**
