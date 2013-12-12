@@ -4142,15 +4142,7 @@ Connection: close
 			return array_shift(self::$nonSingletonInstances[$finalClassName]);
 		}
 		// Create new instance and call constructor with parameters
-		if (func_num_args() > 1) {
-			$constructorArguments = func_get_args();
-			array_shift($constructorArguments);
-			$reflectedClass = new \ReflectionClass($finalClassName);
-			$instance = $reflectedClass->newInstanceArgs($constructorArguments);
-		} else {
-			$fullyQualifiedClassName = '\\' . $finalClassName;
-			$instance = new $fullyQualifiedClassName();
-		}
+		$instance = static::instantiateClass($finalClassName, func_get_args());
 		// Create alias if not present
 		$alias = \TYPO3\CMS\Core\Core\ClassLoader::getAliasForClassName($finalClassName);
 		if ($finalClassName !== $alias && !class_exists($alias, FALSE)) {
@@ -4159,6 +4151,51 @@ Connection: close
 		// Register new singleton instance
 		if ($instance instanceof \TYPO3\CMS\Core\SingletonInterface) {
 			self::$singletonInstances[$finalClassName] = $instance;
+		}
+		return $instance;
+	}
+
+	/**
+	 * Speed optimized alternative to ReflectionClass::newInstanceArgs()
+	 *
+	 * @param string $className
+	 * @param array $arguments
+	 * @return mixed
+	 */
+	protected static function instantiateClass($className, $arguments) {
+		switch (count($arguments)) {
+			case 1:
+				$instance = new $className();
+				break;
+			case 2:
+				$instance = new $className($arguments[1]);
+				break;
+			case 3:
+				$instance = new $className($arguments[1], $arguments[2]);
+				break;
+			case 4:
+				$instance = new $className($arguments[1], $arguments[2], $arguments[3]);
+				break;
+			case 5:
+				$instance = new $className($arguments[1], $arguments[2], $arguments[3], $arguments[4]);
+				break;
+			case 6:
+				$instance = new $className($arguments[1], $arguments[2], $arguments[3], $arguments[4], $arguments[5]);
+				break;
+			case 7:
+				$instance = new $className($arguments[1], $arguments[2], $arguments[3], $arguments[4], $arguments[5], $arguments[6]);
+				break;
+			case 8:
+				$instance = new $className($arguments[1], $arguments[2], $arguments[3], $arguments[4], $arguments[5], $arguments[6], $arguments[7]);
+				break;
+			case 9:
+				$instance = new $className($arguments[1], $arguments[2], $arguments[3], $arguments[4], $arguments[5], $arguments[6], $arguments[7], $arguments[8]);
+				break;
+			default:
+				$class = new \ReflectionClass($className);
+				array_shift($arguments);
+				$instance = $class->newInstanceArgs($arguments);
+				return $instance;
 		}
 		return $instance;
 	}
