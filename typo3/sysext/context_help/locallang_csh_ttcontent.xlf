@@ -718,6 +718,15 @@ tt_content:spaceBefore</source>
 				<source>tt_content:list_type</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
+			<trans-unit id="selected_categories.description" xml:space="preserve">
+				<source>Pages or content elements from the selected categories will be displayed in the menu.</source>
+			</trans-unit>
+			<trans-unit id="category_field.description" xml:space="preserve">
+				<source>Choose which category-relation field to refer to.</source>
+			</trans-unit>
+			<trans-unit id="category_field.details" xml:space="preserve">
+				<source>Depending on your setup there may be more than one field for building relations between categories and pages or content elements. To create a proper selection for the menu, the appropriate field must be chosen.</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
