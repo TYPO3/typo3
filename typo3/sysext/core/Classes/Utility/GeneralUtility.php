@@ -4104,15 +4104,7 @@ Connection: close
 			return array_shift(self::$nonSingletonInstances[$finalClassName]);
 		}
 		// Create new instance and call constructor with parameters
-		if (func_num_args() > 1) {
-			$constructorArguments = func_get_args();
-			array_shift($constructorArguments);
-			$reflectedClass = new \ReflectionClass($finalClassName);
-			$instance = $reflectedClass->newInstanceArgs($constructorArguments);
-		} else {
-			$fullyQualifiedClassName = '\\' . $finalClassName;
-			$instance = new $fullyQualifiedClassName();
-		}
+		$instance = static::instantiateClass($finalClassName, func_get_args());
 		// Create alias if not present
 		$alias = \TYPO3\CMS\Core\Core\ClassLoader::getAliasForClassName($finalClassName);
 		if ($finalClassName !== $alias && !class_exists($alias, FALSE)) {
@@ -4126,8 +4118,56 @@ Connection: close
 	}
 
 	/**
+	 * Speed optimized alternative to ReflectionClass::newInstanceArgs()
+	 *
+	 * @param string $className Name of the class to instantiate
+	 * @param array $arguments Arguments passed to self::makeInstance() thus the first one with index 0 holds the requested class name
+	 * @return mixed
+	 */
+	protected static function instantiateClass($className, $arguments) {
+		switch (count($arguments)) {
+			case 1:
+				$instance = new $className();
+				break;
+			case 2:
+				$instance = new $className($arguments[1]);
+				break;
+			case 3:
+				$instance = new $className($arguments[1], $arguments[2]);
+				break;
+			case 4:
+				$instance = new $className($arguments[1], $arguments[2], $arguments[3]);
+				break;
+			case 5:
+				$instance = new $className($arguments[1], $arguments[2], $arguments[3], $arguments[4]);
+				break;
+			case 6:
+				$instance = new $className($arguments[1], $arguments[2], $arguments[3], $arguments[4], $arguments[5]);
+				break;
+			case 7:
+				$instance = new $className($arguments[1], $arguments[2], $arguments[3], $arguments[4], $arguments[5], $arguments[6]);
+				break;
+			case 8:
+				$instance = new $className($arguments[1], $arguments[2], $arguments[3], $arguments[4], $arguments[5], $arguments[6], $arguments[7]);
+				break;
+			case 9:
+				$instance = new $className($arguments[1], $arguments[2], $arguments[3], $arguments[4], $arguments[5], $arguments[6], $arguments[7], $arguments[8]);
+				break;
+			default:
+				// The default case for classes with constructors that have more than 8 arguments.
+				// This will fail when one of the arguments shall be passed by reference.
+				// In case we really need to support this edge case, we can implement the solution from here: https://review.typo3.org/26344
+				$class = new \ReflectionClass($className);
+				array_shift($arguments);
+				$instance = $class->newInstanceArgs($arguments);
+				return $instance;
+		}
+		return $instance;
+	}
+
+	/**
 	 * Returns the class name for a new instance, taking into account
-	 * registered implemetations for this class
+	 * registered implementations for this class
 	 *
 	 * @param string $className Base class name to evaluate
 	 * @return string Final class name to instantiate with "new [classname]
