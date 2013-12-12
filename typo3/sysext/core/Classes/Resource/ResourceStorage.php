@@ -1328,7 +1328,7 @@ class ResourceStorage {
 		$folder = $this->getFolder($path);
 		$rows = array();
 		if ($loadIndexRecords) {
-			$rows = $this->getFileRepository()->getFileIndexRecordsForFolder($folder);
+			$rows = $this->getFileIndexRepository()->findByFolder($folder);
 		}
 		$filters = $useFilters == TRUE ? $this->fileAndFolderNameFilters : array();
 		$items = $this->driver->getFileList($path, $start, $numberOfItems, $filters, $rows, $recursive);

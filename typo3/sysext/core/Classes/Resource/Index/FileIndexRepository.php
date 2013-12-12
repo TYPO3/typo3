@@ -177,6 +177,25 @@ class FileIndexRepository implements SingletonInterface {
 	}
 
 	/**
+	 * Find all records for files in a Folder
+	 *
+	 * @param \TYPO3\CMS\Core\Resource\Folder $folder
+	 * @return array|NULL
+	 */
+	public function findByFolder(\TYPO3\CMS\Core\Resource\Folder $folder) {
+		$resultRows = $this->getDatabase()->exec_SELECTgetRows(
+			implode(',', $this->fields),
+			$this->table,
+			'folder_hash = ' . $this->getDatabase()->fullQuoteStr($folder->getHashedIdentifier(), $this->table) .
+				' AND storage  = ' . (int)$folder->getStorage()->getUid(),
+			'',
+			'',
+			'',
+			'identifier'
+		);
+		return $resultRows;
+	}
+	/**
 	 * Adds a file to the index
 	 *
 	 * @param File $file

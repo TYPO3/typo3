@@ -306,6 +306,7 @@ CREATE TABLE sys_file (
 
 	PRIMARY KEY (uid),
 	KEY sel01 (storage,identifier_hash),
+	KEY folder (storage,folder_hash),
 	KEY tstamp (tstamp),
 	KEY lastindex (last_indexed),
 	KEY sha1 (sha1(40))

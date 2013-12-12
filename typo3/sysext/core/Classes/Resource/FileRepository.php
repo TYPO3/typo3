@@ -129,24 +129,11 @@ class FileRepository extends AbstractRepository {
 	 *
 	 * @param Folder $folder
 	 * @return array
+	 * @deprecated since 6.2 - will be removed 2 versions later
 	 */
 	public function getFileIndexRecordsForFolder(Folder $folder) {
-		$identifier = $folder->getIdentifier();
-		$storage = $folder->getStorage()->getUid();
-		$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-			'*',
-			$this->table,
-			sprintf('storage=%u AND missing = 0 AND identifier LIKE %s AND NOT identifier LIKE %s',
-					$storage,
-					$GLOBALS['TYPO3_DB']->fullQuoteStr($GLOBALS['TYPO3_DB']->escapeStrForLike($identifier, $this->table) . '%', $this->table),
-					$GLOBALS['TYPO3_DB']->fullQuoteStr($GLOBALS['TYPO3_DB']->escapeStrForLike($identifier, $this->table) . '%/%', $this->table)
-			),
-			'',
-			'',
-			'',
-			'identifier'
-		);
-		return (array) $rows;
+		GeneralUtility::logDeprecatedFunction();
+		return $this->getFileIndexRepository()->findByFolder($folder);
 	}
 
 	/**

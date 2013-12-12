@@ -206,7 +206,8 @@ class IndexerService implements \TYPO3\CMS\Core\SingletonInterface {
 		}
 
 		// check for deleted files (file not found during indexing are marked as missing)
-		foreach ($this->getRepository()->getFileIndexRecordsForFolder($folder) as $file) {
+		$fileIndexRecords = $this->getFileIndexRepository()->findByFolder($folder);
+		foreach ($fileIndexRecords as $file) {
 			if (!in_array($file['identifier'], $fileIdentifiers)) {
 				/** @var $fileObject File */
 				$fileObject = $this->getRepository()->findByIdentifier($file['uid']);
