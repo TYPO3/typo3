@@ -104,3 +104,14 @@ Example:
     <img src="fileadmin/xxxx.jpg" alt="Alt-Attribute" />
   and not
     <img src="fileadmin/xxxx.jpg" alt="Alt-Attribute" title="Alt-Attribute" />
+
+### System categories
+
+* Activated by default
+
+Pages and content elements are now categorizable by default.
+
+* New menu types
+
+The "Special Menus" content element type now offers the possibility to display
+a list of categorized pages or content elements.
