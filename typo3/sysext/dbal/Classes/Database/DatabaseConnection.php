@@ -2500,7 +2500,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 		$dbArr = array();
 		switch ($this->handlerCfg['_DEFAULT']['type']) {
 			case 'native':
-				$db_list = mysql_list_dbs($this->link);
+				$db_list = mysql_query('SHOW DATABASES', $this->link);
 				while ($row = mysql_fetch_object($db_list)) {
 					if ($this->sql_select_db($row->Database)) {
 						$dbArr[] = $row->Database;
