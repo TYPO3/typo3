@@ -180,9 +180,9 @@ class Indexer {
 				if (count($files) > 0) {
 					foreach ($files as $fileIndexEntry) {
 						if ($fileIndexEntry['missing']) {
-							$fileObject = $this->getResourceFactory()->getFileObject($data['uid'], $data);
+							$fileObject = $this->getResourceFactory()->getFileObject($fileIndexEntry['uid'], $fileIndexEntry);
 							$fileObject->updateProperties(array(
-								'identifier'
+								'identifier' => $identifier
 							));
 							$this->updateIndexEntry($fileObject);
 							$this->identifiedFileUids[] = $fileObject->getUid();
