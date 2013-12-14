@@ -71,7 +71,7 @@ class DriverRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function registerDriverClassThrowsExceptionIfShortnameIsAlreadyTakenByAnotherDriverClass() {
 		$this->setExpectedException('InvalidArgumentException', '', 1314979451);
 		$className = get_class($this->getMockForAbstractClass('TYPO3\\CMS\\Core\\Resource\\Driver\\AbstractDriver'));
-		$className2 = '\stdClass';
+		$className2 = get_class($this->getMockForAbstractClass('TYPO3\\CMS\\Core\\Resource\\Driver\\DriverInterface'));
 		$this->fixture->registerDriverClass($className, 'foobar');
 		$this->fixture->registerDriverClass($className2, 'foobar');
 	}

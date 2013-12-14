@@ -62,11 +62,16 @@ class DriverRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @param string $label
 	 * @param string $flexFormDataStructurePathAndFilename
 	 * @return boolean TRUE if registering succeeded
+	 * @throws \InvalidArgumentException
 	 */
 	public function registerDriverClass($className, $shortName = NULL, $label = NULL, $flexFormDataStructurePathAndFilename = NULL) {
 		// check if the class is available for TYPO3 before registering the driver
 		if (!class_exists($className)) {
 			throw new \InvalidArgumentException('Class ' . $className . ' does not exist.', 1314979197);
+		}
+
+		if (!in_array('TYPO3\CMS\Core\Resource\Driver\DriverInterface', class_implements($className), TRUE)) {
+			throw new \InvalidArgumentException('Driver ' . $className . ' needs to implement the DriverInterface.', 1387619575);
 		}
 		if ($shortName === '') {
 			$shortName = $className;
@@ -113,6 +118,7 @@ class DriverRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @param string $shortName
 	 * @return string The class name
+	 * @throws \InvalidArgumentException
 	 */
 	public function getDriverClass($shortName) {
 		if (in_array($shortName, $this->drivers) && class_exists($shortName)) {

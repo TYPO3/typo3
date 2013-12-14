@@ -241,19 +241,8 @@ class Folder implements FolderInterface {
 	 */
 	public function getSubfolders($start = 0, $numberOfItems = 0, $filterMode = self::FILTER_MODE_USE_OWN_AND_STORAGE_FILTERS) {
 		list($backedUpFilters, $useFilters) = $this->prepareFiltersInStorage($filterMode);
-
-		$folderObjects = array();
-		$folderArray = $this->storage->getFolderList($this->identifier, $start, $numberOfItems, $useFilters);
-		if (count($folderArray) > 0) {
-			/** @var $factory ResourceFactory */
-			$factory = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\ResourceFactory');
-			foreach ($folderArray as $folder) {
-				$folderObjects[$folder['name']] = $factory->createFolderObject($this->storage, $folder['identifier'], $folder['name']);
-			}
-		}
-
+		$folderObjects = $this->storage->getFoldersInFolder($this, $start, $numberOfItems, $useFilters);
 		$this->restoreBackedUpFiltersInStorage($backedUpFilters);
-
 		return $folderObjects;
 	}
 

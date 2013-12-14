@@ -50,10 +50,10 @@ class FileNameFilter {
 	 * @param string $itemIdentifier
 	 * @param string $parentIdentifier
 	 * @param array $additionalInformation Additional information (driver dependent) about the inspected item
-	 * @param \TYPO3\CMS\Core\Resource\Driver\AbstractDriver $driverInstance
+	 * @param \TYPO3\CMS\Core\Resource\Driver\DriverInterface $driverInstance
 	 * @return boolean|integer -1 if the file should not be included in a listing
 	 */
-	static public function filterHiddenFilesAndFolders($itemName, $itemIdentifier, $parentIdentifier, array $additionalInformation, \TYPO3\CMS\Core\Resource\Driver\AbstractDriver $driverInstance) {
+	static public function filterHiddenFilesAndFolders($itemName, $itemIdentifier, $parentIdentifier, array $additionalInformation, \TYPO3\CMS\Core\Resource\Driver\DriverInterface $driverInstance) {
 		// Only apply the filter if you want to hide the hidden files
 		if (self::$showHiddenFilesAndFolders === FALSE && substr($itemName, 0, 1) == '.') {
 			return -1;

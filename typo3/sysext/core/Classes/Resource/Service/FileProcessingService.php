@@ -43,7 +43,7 @@ class FileProcessingService {
 	protected $storage;
 
 	/**
-	 * @var Resource\Driver\AbstractDriver
+	 * @var Resource\Driver\DriverInterface
 	 */
 	protected $driver;
 
@@ -64,9 +64,9 @@ class FileProcessingService {
 	 * Creates this object.
 	 *
 	 * @param Resource\ResourceStorage $storage
-	 * @param Resource\Driver\AbstractDriver $driver
+	 * @param Resource\Driver\DriverInterface $driver
 	 */
-	public function __construct(Resource\ResourceStorage $storage, Resource\Driver\AbstractDriver $driver) {
+	public function __construct(Resource\ResourceStorage $storage, Resource\Driver\DriverInterface $driver) {
 		$this->storage = $storage;
 		$this->driver = $driver;
 

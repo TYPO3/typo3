@@ -69,10 +69,12 @@ abstract class AbstractHierarchicalFilesystemDriver extends AbstractDriver {
 	 * @return string
 	 */
 	protected function canonicalizeAndCheckFileIdentifier($fileIdentifier) {
-		$fileIdentifier = $this->canonicalizeAndCheckFilePath($fileIdentifier);
-		$fileIdentifier = '/' . ltrim($fileIdentifier, '/');
-		if (!$this->isCaseSensitiveFileSystem()) {
-			$fileIdentifier = strtolower($fileIdentifier);
+		if ($fileIdentifier !== '') {
+			$fileIdentifier = $this->canonicalizeAndCheckFilePath($fileIdentifier);
+			$fileIdentifier = '/' . ltrim($fileIdentifier, '/');
+			if (!$this->isCaseSensitiveFileSystem()) {
+				$fileIdentifier = strtolower($fileIdentifier);
+			}
 		}
 		return $fileIdentifier;
 	}
@@ -93,7 +95,7 @@ abstract class AbstractHierarchicalFilesystemDriver extends AbstractDriver {
 	 * @param string $fileIdentifier
 	 * @return mixed
 	 */
-	public function getFolderIdentifierForFile($fileIdentifier) {
+	public function getParentFolderIdentifierOfIdentifier($fileIdentifier) {
 		$fileIdentifier = $this->canonicalizeAndCheckFileIdentifier($fileIdentifier);
 		return \TYPO3\CMS\Core\Utility\PathUtility::dirname($fileIdentifier) . '/';
 	}

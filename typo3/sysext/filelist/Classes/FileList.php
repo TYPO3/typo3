@@ -286,7 +286,7 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 		// Only render the contents of a browsable storage
 
 		if ($this->folderObject->getStorage()->isBrowsable()) {
-			$folders = $storage->getFolderList($this->folderObject->getIdentifier());
+			$folders = $storage->getFolderIdentifiersInFolder($this->folderObject->getIdentifier());
 			$files = $this->folderObject->getFiles();
 			$this->sort = trim($this->sort);
 			if ($this->sort !== '') {
@@ -338,7 +338,7 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 			$this->fieldArray = explode(',', $rowlist);
 			$folderObjects = array();
 			foreach ($folders as $folder) {
-				$folderObjects[] = $storage->getFolder($folder['identifier']);
+				$folderObjects[] = $storage->getFolder($folder);
 			}
 
 			$folderObjects = \TYPO3\CMS\Core\Resource\Utility\ListUtility::resolveSpecialFolderNames($folderObjects);
