@@ -816,12 +816,13 @@ class ContentObjectRenderer {
 		);
 		$name = $classMapping[$name];
 		if (!array_key_exists($name, $this->contentObjects)) {
-			try {
+			$fullyQualifiedClassName = 'TYPO3\\CMS\\Frontend\\ContentObject\\' . $name . 'ContentObject';
+			if (class_exists($fullyQualifiedClassName)) {
 				$this->contentObjects[$name] = GeneralUtility::makeInstance(
-					'TYPO3\\CMS\\Frontend\\ContentObject\\' . $name . 'ContentObject',
+					$fullyQualifiedClassName,
 					$this
 				);
-			} catch (\ReflectionException $e) {
+			} else {
 				$this->contentObjects[$name] = NULL;
 			}
 		}

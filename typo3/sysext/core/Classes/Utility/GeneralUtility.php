@@ -4158,8 +4158,8 @@ Connection: close
 	/**
 	 * Speed optimized alternative to ReflectionClass::newInstanceArgs()
 	 *
-	 * @param string $className
-	 * @param array $arguments
+	 * @param string $className Name of the class to instantiate
+	 * @param array $arguments Arguments passed to self::makeInstance() thus the first one with index 0 holds the requested class name
 	 * @return mixed
 	 */
 	protected static function instantiateClass($className, $arguments) {
@@ -4192,6 +4192,9 @@ Connection: close
 				$instance = new $className($arguments[1], $arguments[2], $arguments[3], $arguments[4], $arguments[5], $arguments[6], $arguments[7], $arguments[8]);
 				break;
 			default:
+				// The default case for classes with constructors that have more than 8 arguments.
+				// This will fail when one of the arguments shall be passed by reference.
+				// In case we really need to support this edge case, we can implement the solution from here: https://review.typo3.org/26344
 				$class = new \ReflectionClass($className);
 				array_shift($arguments);
 				$instance = $class->newInstanceArgs($arguments);
@@ -4202,7 +4205,7 @@ Connection: close
 
 	/**
 	 * Returns the class name for a new instance, taking into account
-	 * registered implemetations for this class
+	 * registered implementations for this class
 	 *
 	 * @param string $className Base class name to evaluate
 	 * @return string Final class name to instantiate with "new [classname]
