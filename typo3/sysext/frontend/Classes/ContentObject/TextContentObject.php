@@ -42,10 +42,17 @@ class TextContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractConten
 	 * @return string Output
 	 */
 	public function render($conf = array()) {
+		if (!is_array($conf)) {
+			return '';
+		}
 		$content = '';
-		if (is_array($conf) && isset($conf['value'])) {
+		if (isset($conf['value'])) {
 			$content = $conf['value'];
 			unset($conf['value']);
+		}
+		if (isset($conf['value.'])) {
+			$content = $this->cObj->stdWrap($content, $conf['value.']);
+			unset($conf['value.']);
 		}
 		if (count($conf)) {
 			$content = $this->cObj->stdWrap($content, $conf);
