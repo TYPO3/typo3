@@ -24,6 +24,7 @@ namespace TYPO3\CMS\Install\Updates;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -33,6 +34,12 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @author Ingmar Schlecht <ingmar@typo3.org>
  */
 class TceformsUpdateWizard extends AbstractUpdate {
+
+	/**
+	 * Number of records fetched per database query
+	 * Used to prevent memory overflows for huge databases
+	 */
+	const RECORDS_PER_QUERY = 1000;
 
 	/**
 	 * @var string
@@ -50,12 +57,50 @@ class TceformsUpdateWizard extends AbstractUpdate {
 	protected $logger;
 
 	/**
+	 * @var DatabaseConnection
+	 */
+	protected $database;
+
+	/**
+	 * Table fields to migrate
+	 * @var array
+	 */
+	protected $tables = array(
+		'tt_content' => array(
+			'image' => array(
+				'sourcePath' => 'uploads/pics/',
+				// Relative to fileadmin
+				'targetPath' => '_migrated/pics/',
+				'titleTexts' => 'titleText',
+				'captions' => 'imagecaption',
+				'links' => 'image_link',
+				'alternativeTexts' => 'altText'
+			)
+		),
+		'pages' => array(
+			'media' => array(
+				'sourcePath' => 'uploads/media/',
+				// Relative to fileadmin
+				'targetPath' => '_migrated/media/'
+			)
+		),
+		'pages_language_overlay' => array(
+			'media' => array(
+				'sourcePath' => 'uploads/media/',
+				// Relative to fileadmin
+				'targetPath' => '_migrated/media/'
+			)
+		)
+	);
+
+	/**
 	 * Constructor
 	 */
 	public function __construct() {
 		/** @var $logManager \TYPO3\CMS\Core\Log\LogManager */
-		$logManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Log\\LogManager');
+		$logManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Log\\LogManager');
 		$this->logger = $logManager->getLogger(__CLASS__);
+		$this->database = $GLOBALS['TYPO3_DB'];
 	}
 
 	/**
@@ -63,7 +108,7 @@ class TceformsUpdateWizard extends AbstractUpdate {
 	 */
 	public function init() {
 		/** @var $storageRepository \TYPO3\CMS\Core\Resource\StorageRepository */
-		$storageRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\StorageRepository');
+		$storageRepository = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\StorageRepository');
 		$storages = $storageRepository->findAll();
 		$this->storage = $storages[0];
 	}
@@ -75,9 +120,33 @@ class TceformsUpdateWizard extends AbstractUpdate {
 	 * @return boolean TRUE if an update is needed, FALSE otherwise
 	 */
 	public function checkForUpdate(&$description) {
-		$description = 'This update wizard goes through all files that are referenced in the tt_content.image and pages.media / pages_language_overlay.media filed and adds the files to the new File Index.<br />It also moves the files from uploads/ to the fileadmin/_migrated/ path.<br /><br />This update wizard can be called multiple times in case it didn\'t finish after running once.';
-		// Make this wizard always available
-		return TRUE;
+		$description = 'This update wizard goes through all files that are referenced in the tt_content.image and '
+			. 'pages.media / pages_language_overlay.media field and adds the files to the new File Index.<br />'
+			. 'It also moves the files from uploads/ to the fileadmin/_migrated/ path.<br /><br />'
+			. 'This update wizard can be called multiple times in case it didn\'t finish after running once.';
+
+		if ($this->versionNumber < 6000000) {
+			// Nothing to do
+			return FALSE;
+		}
+
+		$finishedFields = $this->getFinishedFields();
+		if (count($finishedFields) === 0) {
+			// Nothing done yet, so there's plenty of work left
+			return TRUE;
+		}
+
+		$numberOfFieldsToMigrate = 0;
+		foreach ($this->tables as $table => $tableConfiguration) {
+			// find all additional fields we should get from the database
+			foreach (array_keys($tableConfiguration) as $fieldToMigrate) {
+				$fieldKey = $table . ':' . $fieldToMigrate;
+				if (!in_array($fieldKey, $finishedFields)) {
+					$numberOfFieldsToMigrate++;
+				}
+			}
+		}
+		return $numberOfFieldsToMigrate > 0;
 	}
 
 	/**
@@ -88,99 +157,85 @@ class TceformsUpdateWizard extends AbstractUpdate {
 	 * @return boolean TRUE on success, FALSE on error
 	 */
 	public function performUpdate(array &$dbQueries, &$customMessages) {
-		$this->init();
-		$tables = array(
-			'tt_content' => array(
-				'image' => array(
-					'sourcePath' => 'uploads/pics/',
-					// Relative to fileadmin
-					'targetPath' => '_migrated/pics/',
-					'titleTexts' => 'titleText',
-					'captions' => 'imagecaption',
-					'links' => 'image_link',
-					'alternativeTexts' => 'altText'
-				)
-			),
-			'pages' => array(
-				'media' => array(
-					'sourcePath' => 'uploads/media/',
-					// Relative to fileadmin
-					'targetPath' => '_migrated/media/'
-				)
-			),
-			'pages_language_overlay' => array(
-				'media' => array(
-					'sourcePath' => 'uploads/media/',
-					// Relative to fileadmin
-					'targetPath' => '_migrated/media/'
-				)
-			)
-		);
-		// We write down the fields that were migrated. Like this: tt_content:media
-		// so you can check whether a field was already migrated
-		if (isset($GLOBALS['TYPO3_CONF_VARS']['INSTALL']['wizardDone']['Tx_Install_Updates_File_TceformsUpdateWizard'])) {
-			$finishedFields = explode(',', $GLOBALS['TYPO3_CONF_VARS']['INSTALL']['wizardDone']['Tx_Install_Updates_File_TceformsUpdateWizard']);
-		} else {
-			$finishedFields = array();
+		if ($this->versionNumber < 6000000) {
+			// Nothing to do
+			return TRUE;
 		}
-		$result = TRUE;
-		if ($this->versionNumber >= 6000000) {
-			// @todo
-			// - for each table:
-			// - get records from table
-			// - for each record:
-			// - for each field:
-			// - migrate field
-			foreach ($tables as $table => $tableConfiguration) {
-				$fieldsToMigrate = array_keys($tableConfiguration);
-				$fieldsToGet = array();
-				// find all additional fields we should get from the database
-				foreach ($tableConfiguration as $field => $fieldConfiguration) {
-					$fieldKey = $table . ':' . $field;
-					if (array_search($fieldKey, $finishedFields) !== FALSE) {
-						// this field was already migrated
-						continue;
-					} else {
-						$finishedFields[] = $fieldKey;
-					}
-					$fieldsToGet[] = $field;
-					if (isset($fieldConfiguration['titleTexts'])) {
-						$fieldsToGet[] = $fieldConfiguration['titleTexts'];
-					}
-					if (isset($fieldConfiguration['alternativeTexts'])) {
-						$fieldsToGet[] = $fieldConfiguration['alternativeTexts'];
-					}
-					if (isset($fieldConfiguration['captions'])) {
-						$fieldsToGet[] = $fieldConfiguration['captions'];
-					}
-					if (isset($fieldConfiguration['links'])) {
-						$fieldsToGet[] = $fieldConfiguration['links'];
-					}
+		$this->init();
+		$finishedFields = $this->getFinishedFields();
+		foreach ($this->tables as $table => $tableConfiguration) {
+			// find all additional fields we should get from the database
+			foreach ($tableConfiguration as $fieldToMigrate => $fieldConfiguration) {
+				$fieldKey = $table . ':' . $fieldToMigrate;
+				if (in_array($fieldKey, $finishedFields)) {
+					// this field was already migrated
+					continue;
 				}
-				$records = $this->getRecordsFromTable($table, $fieldsToGet);
-				foreach ($records as $record) {
-					foreach ($fieldsToMigrate as $field) {
-						$dbQueries = array_merge($this->migrateField($table, $record, $field, $tableConfiguration[$field], $customMessages));
+				$fieldsToGet = array($fieldToMigrate);
+				if (isset($fieldConfiguration['titleTexts'])) {
+					$fieldsToGet[] = $fieldConfiguration['titleTexts'];
+				}
+				if (isset($fieldConfiguration['alternativeTexts'])) {
+					$fieldsToGet[] = $fieldConfiguration['alternativeTexts'];
+				}
+				if (isset($fieldConfiguration['captions'])) {
+					$fieldsToGet[] = $fieldConfiguration['captions'];
+				}
+				if (isset($fieldConfiguration['links'])) {
+					$fieldsToGet[] = $fieldConfiguration['links'];
+				}
+
+				do {
+					$records = $this->getRecordsFromTable($table, $fieldToMigrate, $fieldsToGet, self::RECORDS_PER_QUERY);
+					foreach ($records as $record) {
+						$this->migrateField($table, $record, $fieldToMigrate, $fieldConfiguration, $customMessages);
 					}
+				} while (count($records) === self::RECORDS_PER_QUERY);
+
+				// add the field to the "finished fields"
+				// this can only be done
+				if (is_array($records) && count($records) === 0) {
+					$finishedFields[] = $fieldKey;
 				}
 			}
 		}
-		$finishedFields = implode(',', $finishedFields);
-		$this->markWizardAsDone($finishedFields);
-		return $result;
+		$this->markWizardAsDone(implode(',', $finishedFields));
+		return TRUE;
 	}
 
 	/**
-	 * Get records from table
+	 * We write down the fields that were migrated. Like this: tt_content:media
+	 * so you can check whether a field was already migrated
 	 *
-	 * @param string $table
-	 * @param array $relationFields
 	 * @return array
 	 */
-	protected function getRecordsFromTable($table, $relationFields) {
+	protected function getFinishedFields() {
+		$className = 'TYPO3\\CMS\\Install\\Updates\\TceformsUpdateWizard';
+		return isset($GLOBALS['TYPO3_CONF_VARS']['INSTALL']['wizardDone'][$className])
+			? explode(',', $GLOBALS['TYPO3_CONF_VARS']['INSTALL']['wizardDone'][$className])
+			: array();
+	}
+
+	/**
+	 * Get records from table where the field to migrate is not empty (NOT NULL and != '')
+	 * and also not numeric (which means that it is migrated)
+	 *
+	 * @param string $table
+	 * @param string $fieldToMigrate
+	 * @param array $relationFields
+	 * @param int $limit Maximum number records to select
+	 * @return array
+	 */
+	protected function getRecordsFromTable($table, $fieldToMigrate, $relationFields, $limit) {
 		$fields = implode(',', array_merge($relationFields, array('uid', 'pid')));
-		$records = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows($fields, $table, '');
-		return $records;
+		$deletedCheck = isset($GLOBALS['TCA'][$table]['ctrl']['delete'])
+			? ' AND ' . $GLOBALS['TCA'][$table]['ctrl']['delete'] . '=0'
+			: '';
+		$where = $fieldToMigrate . ' IS NOT NULL'
+			. ' AND ' . $fieldToMigrate . ' != \'\''
+			. ' AND CAST(CAST(' . $fieldToMigrate . ' AS DECIMAL) AS CHAR) <> ' . $fieldToMigrate
+			. $deletedCheck;
+		return $this->database->exec_SELECTgetRows($fields, $table, $where, '', '', $limit);
 	}
 
 	/**
@@ -195,7 +250,12 @@ class TceformsUpdateWizard extends AbstractUpdate {
 	 * @throws \Exception
 	 */
 	protected function migrateField($table, $row, $fieldname, $fieldConfiguration, &$customMessages) {
-		$fieldItems = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $row[$fieldname], TRUE);
+		$titleTextContents = array();
+		$alternativeTextContents = array();
+		$captionContents = array();
+		$linkContents = array();
+
+		$fieldItems = GeneralUtility::trimExplode(',', $row[$fieldname], TRUE);
 		if (empty($fieldItems) || is_numeric($row[$fieldname])) {
 			return array();
 		}
@@ -203,6 +263,7 @@ class TceformsUpdateWizard extends AbstractUpdate {
 			$titleTextField = $fieldConfiguration['titleTexts'];
 			$titleTextContents = explode(LF, $row[$titleTextField]);
 		}
+
 		if (isset($fieldConfiguration['alternativeTexts'])) {
 			$alternativeTextField = $fieldConfiguration['alternativeTexts'];
 			$alternativeTextContents = explode(LF, $row[$alternativeTextField]);
@@ -218,37 +279,71 @@ class TceformsUpdateWizard extends AbstractUpdate {
 		$fileadminDirectory = rtrim($GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'], '/') . '/';
 		$queries = array();
 		$i = 0;
+
+		if (!PATH_site) {
+			throw new \Exception('PATH_site was undefined.');
+		}
+
+		$storageUid = (int)$this->storage->getUid();
+
 		foreach ($fieldItems as $item) {
-			if (!PATH_site) {
-				throw new \Exception('PATH_site was undefined.');
-			}
-
+			$fileUid = NULL;
 			$sourcePath = PATH_site . $fieldConfiguration['sourcePath'] . $item;
-			$targetPath = PATH_site . $fileadminDirectory . $fieldConfiguration['targetPath'] . $item;
+			$targetDirectory = PATH_site . $fileadminDirectory . $fieldConfiguration['targetPath'];
+			$targetPath = $targetDirectory . $item;
 
-			// if the source file does not exist, we should just continue, but leave a message in the docs;
-			// ideally, the user would be informed after the update as well.
-			if (!file_exists($sourcePath)) {
-				$this->logger->notice('File ' . $fieldConfiguration['sourcePath'] . $item . ' does not exist. Reference was not migrated.', array('table' => $table, 'record' => $row, 'field' => $fieldname));
+			// maybe the file was already moved, so check if the original file still exists
+			if (file_exists($sourcePath)) {
+				if (!is_dir($targetDirectory)) {
+					GeneralUtility::mkdir_deep($targetDirectory);
+				}
 
-				$format = 'File \'%s\' does not exist. Referencing field: %s.%d.%s. The reference was not migrated.';
-				$message = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('\TYPO3\CMS\Core\Messaging\FlashMessage',
-					sprintf($format, $fieldConfiguration['sourcePath'] . $item, $table, $row['uid'], $fieldname),
-					'', \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING
+				// see if the file already exists in the storage
+				$fileSha1 = sha1_file($sourcePath);
+
+				$existingFileRecord = $this->database->exec_SELECTgetSingleRow(
+					'uid',
+					'sys_file',
+					'sha1=' . $this->database->fullQuoteStr($fileSha1, 'sys_file') . ' AND storage=' . $storageUid
 				);
-				/** @var \TYPO3\CMS\Core\Messaging\FlashMessage $message */
-				$customMessages .= '<br />' . $message->render();
-
-				continue;
+				// the file exists, the file does not have to be moved again
+				if (is_array($existingFileRecord)) {
+					$fileUid = $existingFileRecord['uid'];
+				} else {
+					// just move the file (no duplicate)
+					rename($sourcePath, $targetPath);
+				}
 			}
 
-			if (!is_dir(dirname($targetPath))) {
-				\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep(dirname($targetPath));
+			if ($fileUid === NULL) {
+				// get the File object if it hasn't been fetched before
+				try {
+					// if the source file does not exist, we should just continue, but leave a message in the docs;
+					// ideally, the user would be informed after the update as well.
+					$file = $this->storage->getFile($fieldConfiguration['targetPath'] . $item);
+					$fileUid = $file->getUid();
+
+				} catch (\Exception $e) {
+
+					// no file found, no reference can be set
+					$this->logger->notice(
+						'File ' . $fieldConfiguration['sourcePath'] . $item . ' does not exist. Reference was not migrated.',
+						array('table' => $table, 'record' => $row, 'field' => $fieldname)
+					);
+
+					$format = 'File \'%s\' does not exist. Referencing field: %s.%d.%s. The reference was not migrated.';
+					$message = GeneralUtility::makeInstance('\TYPO3\CMS\Core\Messaging\FlashMessage',
+						sprintf($format, $fieldConfiguration['sourcePath'] . $item, $table, $row['uid'], $fieldname),
+						'', \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING
+					);
+					/** @var \TYPO3\CMS\Core\Messaging\FlashMessage $message */
+					$customMessages .= '<br />' . $message->render();
+
+					continue;
+				}
 			}
-			rename($sourcePath, $targetPath);
-			// get the File object
-			$file = $this->storage->getFile($fieldConfiguration['targetPath'] . $item);
-			if ($file instanceof \TYPO3\CMS\Core\Resource\File) {
+
+			if ($fileUid > 0) {
 				$fields = array(
 					// TODO add sorting/sorting_foreign
 					'fieldname' => $fieldname,
@@ -257,7 +352,7 @@ class TceformsUpdateWizard extends AbstractUpdate {
 					// as the record to link to, see issue #46497
 					'pid' => ($table === 'pages' ? $row['uid'] : $row['pid']),
 					'uid_foreign' => $row['uid'],
-					'uid_local' => $file->getUid(),
+					'uid_local' => $fileUid,
 					'tablenames' => $table,
 					'crdate' => time(),
 					'tstamp' => time()
@@ -274,15 +369,18 @@ class TceformsUpdateWizard extends AbstractUpdate {
 				if (isset($linkField)) {
 					$fields['link'] = trim($linkContents[$i]);
 				}
-				$GLOBALS['TYPO3_DB']->exec_INSERTquery('sys_file_reference', $fields);
-				$queries[] = str_replace(LF, ' ', $GLOBALS['TYPO3_DB']->debug_lastBuiltQuery);
+				$this->database->exec_INSERTquery('sys_file_reference', $fields);
+				$queries[] = str_replace(LF, ' ', $this->database->debug_lastBuiltQuery);
 				++$i;
 			}
 		}
-		// Update referencing table's original field to now contain the count of references.
-		$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid=' . $row['uid'], array($fieldname => $i));
-		$queries[] = str_replace(LF, ' ', $GLOBALS['TYPO3_DB']->debug_lastBuiltQuery);
+
+		// Update referencing table's original field to now contain the count of references,
+		// but only if all new references could be set
+		if ($i === count($fieldItems)) {
+			$this->database->exec_UPDATEquery($table, 'uid=' . $row['uid'], array($fieldname => $i));
+			$queries[] = str_replace(LF, ' ', $this->database->debug_lastBuiltQuery);
+		}
 		return $queries;
 	}
-
 }
