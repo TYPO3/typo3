@@ -1572,6 +1572,11 @@ class BackendUtility {
 				if ($theFile) {
 					$fileName = trim($uploaddir . '/' . $theFile, '/');
 					$fileObject = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->retrieveFileOrFolderObject($fileName);
+					if ($fileObject === NULL) {
+						$thumbData .= static::createMessageForMissingThumbnail($fileName);
+						continue;
+					}
+
 					$fileExtension = $fileObject->getExtension();
 					if ($fileExtension == 'ttf' || \TYPO3\CMS\Core\Utility\GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], $fileExtension)) {
 						$imageUrl = $fileObject->process(\TYPO3\CMS\Core\Resource\ProcessedFile::CONTEXT_IMAGEPREVIEW, array(
@@ -1605,6 +1610,23 @@ class BackendUtility {
 			}
 		}
 		return $thumbData;
+	}
+
+	/**
+	 * Create FlashMessage indicating a missing file
+	 *
+	 * @param string $filePath Path to file including filename
+	 * @return string Rendered FlashMessage
+	 */
+	static protected function createMessageForMissingThumbnail($filePath) {
+		/** @var \TYPO3\CMS\Core\Messaging\FlashMessage $flashMessage */
+		$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
+			$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:warning.file_missing_text') .
+			' <abbr title="' . htmlspecialchars($filePath) . '">' . htmlspecialchars(basename($filePath)) . '</abbr>',
+			$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:warning.file_missing'),
+			\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR
+		);
+		return $flashMessage->render();
 	}
 
 	/**
