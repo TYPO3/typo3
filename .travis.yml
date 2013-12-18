@@ -12,6 +12,7 @@ services:
 
 before_script:
 # Install build dependencies
+  - sudo apt-get update && sudo apt-get install git
   - git clone --single-branch --branch TYPO3_6-1 --depth 1 git://github.com/typo3-ci/TYPO3-Travis-Integration.git build-environment
   - source build-environment/install-helper.sh
   - installPhpModule igbinary
