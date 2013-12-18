@@ -6171,9 +6171,17 @@ class ContentObjectRenderer {
 						// If link is to a access restricted page which should be redirected, then find new URL:
 						if ($GLOBALS['TSFE']->config['config']['typolinkLinkAccessRestrictedPages'] && $GLOBALS['TSFE']->config['config']['typolinkLinkAccessRestrictedPages'] !== 'NONE' && !$GLOBALS['TSFE']->checkPageGroupAccess($page)) {
 							$thePage = $GLOBALS['TSFE']->sys_page->getPage($GLOBALS['TSFE']->config['config']['typolinkLinkAccessRestrictedPages']);
-							$addParams = $GLOBALS['TSFE']->config['config']['typolinkLinkAccessRestrictedPages_addParams'];
-							$addParams = str_replace('###RETURN_URL###', rawurlencode($this->lastTypoLinkUrl), $addParams);
-							$addParams = str_replace('###PAGE_ID###', $page['uid'], $addParams);
+							$addParams = str_replace(
+								array(
+									'###RETURN_URL###',
+									'###PAGE_ID###'
+								),
+								array(
+									rawurlencode($this->lastTypoLinkUrl),
+									$page['uid']
+								),
+								$GLOBALS['TSFE']->config['config']['typolinkLinkAccessRestrictedPages_addParams']
+							);
 							$this->lastTypoLinkUrl = $this->getTypoLink_URL($thePage['uid'] . ($theTypeP ? ',' . $theTypeP : ''), $addParams, $target);
 							$this->lastTypoLinkUrl = $this->forceAbsoluteUrl($this->lastTypoLinkUrl, $conf);
 							$this->lastTypoLinkLD['totalUrl'] = $this->lastTypoLinkUrl;

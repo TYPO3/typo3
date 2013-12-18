@@ -267,8 +267,11 @@ class DataSubmissionController {
 		if ($this->autoRespondMessage) {
 			$theParts = explode('/', $this->autoRespondMessage, 2);
 			$theParts[0] = str_replace('###SUBJECT###', $this->subject, $theParts[0]);
-			$theParts[1] = str_replace('/', LF, $theParts[1]);
-			$theParts[1] = str_replace('###MESSAGE###', $this->plainContent, $theParts[1]);
+			$theParts[1] = str_replace(
+				array('/', '###MESSAGE###'),
+				array(LF, $this->plainContent),
+				$theParts[1]
+			);
 			/** @var $autoRespondMail \TYPO3\CMS\Core\Mail\MailMessage */
 			$autoRespondMail = Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Mail\\MailMessage');
 			$autoRespondMail->setTo($this->fromAddress)->setSubject($theParts[0])->setFrom($this->recipient)->setBody($theParts[1]);

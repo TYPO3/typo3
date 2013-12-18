@@ -193,8 +193,7 @@ class CacheManager implements \TYPO3\CMS\Core\SingletonInterface {
 					$pathAndFilename = str_replace(FLOW3_PATH_PACKAGES, '', $pathAndFilename);
 					$matches = array();
 					if (preg_match('/[^\\/]+\\/(.+)\\/(Classes|Tests)\\/(.+)\\.php/', $pathAndFilename, $matches) === 1) {
-						$classNameWithUnderscores = str_replace('/', '_', $matches[1] . '_' . ($matches[2] === 'Tests' ? 'Tests_' : '') . $matches[3]);
-						$classNameWithUnderscores = str_replace('.', '_', $classNameWithUnderscores);
+						$classNameWithUnderscores = str_replace(array('/', '.'), '_', $matches[1] . '_' . ($matches[2] === 'Tests' ? 'Tests_' : '') . $matches[3]);
 						$modifiedClassNamesWithUnderscores[$classNameWithUnderscores] = TRUE;
 						// If an aspect was modified, the whole code cache needs to be flushed, so keep track of them:
 						if (substr($classNameWithUnderscores, -6, 6) === 'Aspect') {

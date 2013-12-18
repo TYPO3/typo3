@@ -3206,16 +3206,29 @@ class BackendUtility {
 			}
 			$whereClause = implode('', $whereClauseParts);
 		}
-		$whereClause = str_replace('###CURRENT_PID###', intval($tsConfig['_CURRENT_PID']), $whereClause);
-		$whereClause = str_replace('###THIS_UID###', intval($tsConfig['_THIS_UID']), $whereClause);
-		$whereClause = str_replace('###THIS_CID###', intval($tsConfig['_THIS_CID']), $whereClause);
-		$whereClause = str_replace('###STORAGE_PID###', intval($tsConfig['_STORAGE_PID']), $whereClause);
-		$whereClause = str_replace('###SITEROOT###', intval($tsConfig['_SITEROOT']), $whereClause);
-		$whereClause = str_replace('###PAGE_TSCONFIG_ID###', intval($tsConfig[$field]['PAGE_TSCONFIG_ID']), $whereClause);
-		$whereClause = str_replace('###PAGE_TSCONFIG_IDLIST###', $GLOBALS['TYPO3_DB']->cleanIntList($tsConfig[$field]['PAGE_TSCONFIG_IDLIST']), $whereClause);
-		$whereClause = str_replace('###PAGE_TSCONFIG_STR###', $GLOBALS['TYPO3_DB']->quoteStr($tsConfig[$field]['PAGE_TSCONFIG_STR'], $table), $whereClause);
-
-		return $whereClause;
+		return str_replace (
+			array (
+				'###CURRENT_PID###',
+				'###THIS_UID###',
+				'###THIS_CID###',
+				'###STORAGE_PID###',
+				'###SITEROOT###',
+				'###PAGE_TSCONFIG_ID###',
+				'###PAGE_TSCONFIG_IDLIST###',
+				'###PAGE_TSCONFIG_STR###'
+			),
+			array(
+				intval($tsConfig['_CURRENT_PID']),
+				intval($tsConfig['_THIS_UID']),
+				intval($tsConfig['_THIS_CID']),
+				intval($tsConfig['_STORAGE_PID']),
+				intval($tsConfig['_SITEROOT']),
+				intval($tsConfig[$field]['PAGE_TSCONFIG_ID']),
+				$GLOBALS['TYPO3_DB']->cleanIntList($tsConfig[$field]['PAGE_TSCONFIG_IDLIST']),
+				$GLOBALS['TYPO3_DB']->quoteStr($tsConfig[$field]['PAGE_TSCONFIG_STR'], $table)
+			),
+			$whereClause
+		);
 	}
 
 	/**

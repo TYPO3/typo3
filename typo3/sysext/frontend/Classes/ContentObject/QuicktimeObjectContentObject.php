@@ -76,9 +76,17 @@ class QuicktimeObjectContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abs
 		}
 		$params = ($params ? substr($params, 0, -2) : '') . LF . $qtObject . '.write("' . $replaceElementIdString . '");';
 		$alternativeContent = isset($conf['alternativeContent.']) ? $this->cObj->stdWrap($conf['alternativeContent'], $conf['alternativeContent.']) : $conf['alternativeContent'];
-		$layout = isset($conf['layout.']) ? $this->cObj->stdWrap($conf['layout'], $conf['layout.']) : $conf['layout'];
-		$layout = str_replace('###ID###', $replaceElementIdString, $layout);
-		$layout = str_replace('###QTOBJECT###', '<div id="' . $replaceElementIdString . '">' . $alternativeContent . '</div>', $layout);
+		$layout = str_replace(
+			array(
+				'###ID###',
+				'###QTOBJECT###'
+			),
+			array(
+				$replaceElementIdString,
+				'<div id="' . $replaceElementIdString . '">' . $alternativeContent . '</div>'
+			),
+			isset($conf['layout.']) ? $this->cObj->stdWrap($conf['layout'], $conf['layout.']) : $conf['layout']
+		);
 		$width = isset($conf['width.']) ? $this->cObj->stdWrap($conf['width'], $conf['width.']) : $conf['width'];
 		if (!$width) {
 			$width = $conf[$type . '.']['defaultWidth'];

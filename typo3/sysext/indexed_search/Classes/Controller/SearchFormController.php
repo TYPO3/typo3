@@ -1626,9 +1626,11 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 			' . implode('', $links) . '
 		</ul>';
 		}
-		$label = $this->pi_getLL('pi_list_browseresults_display', 'Displaying results ###TAG_BEGIN###%s to %s###TAG_END### out of ###TAG_BEGIN###%s###TAG_END###');
-		$label = str_replace('###TAG_BEGIN###', '<strong>', $label);
-		$label = str_replace('###TAG_END###', '</strong>', $label);
+		$label = str_replace(
+			array('###TAG_BEGIN###', '###TAG_END###'),
+			array('<strong>', '</strong>'),
+			$this->pi_getLL('pi_list_browseresults_display', 'Displaying results ###TAG_BEGIN###%s to %s###TAG_END### out of ###TAG_BEGIN###%s###TAG_END###')
+		);
 		$sTables = '<div' . $this->pi_classParam('browsebox') . '>' . ($showResultCount ? '<p>' . sprintf($label, $pR1, min(array($this->internal['res_count'], $pR2)), $this->internal['res_count']) . $addString . '</p>' : '') . $addPart . '</div>';
 		return $sTables;
 	}

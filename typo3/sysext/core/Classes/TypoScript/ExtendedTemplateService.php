@@ -287,15 +287,14 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 	public function substituteCMarkers($all) {
 		switch ($this->constantMode) {
 			case 'const':
-				$all = str_replace('##' . $this->Cmarker . '_B##', '<font color="green"><strong>', $all);
-				$all = str_replace('##' . $this->Cmarker . '_E##', '</strong></font>', $all);
-				break;
 			case 'subst':
-				$all = str_replace('##' . $this->Cmarker . '_B##', '<font color="green"><strong>', $all);
-				$all = str_replace('##' . $this->Cmarker . '_E##', '</strong></font>', $all);
+				$all = str_replace(
+					array('##' . $this->Cmarker . '_B##', '##' . $this->Cmarker . '_E##'),
+					array('<font color="green"><strong>', '</strong></font>'),
+					$all
+				);
 				break;
 			default:
-				$all = $all;
 		}
 		return $all;
 	}

@@ -1009,11 +1009,12 @@ class GeneralUtility {
 	 * @return string Converted result.
 	 */
 	static public function htmlspecialchars_decode($value) {
-		$value = str_replace('&gt;', '>', $value);
-		$value = str_replace('&lt;', '<', $value);
-		$value = str_replace('&quot;', '"', $value);
-		$value = str_replace('&amp;', '&', $value);
-		return $value;
+		return str_replace(
+			array('&gt;', '&lt;', '&quot;', '&amp;'),
+			array('>', '<', '"', '&'),
+			$value
+		);
+
 	}
 
 	/**

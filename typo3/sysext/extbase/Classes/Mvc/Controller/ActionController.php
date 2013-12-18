@@ -486,12 +486,21 @@ class ActionController extends \TYPO3\CMS\Extbase\Mvc\Controller\AbstractControl
 			$possibleViewName = $this->viewObjectNamePattern;
 		}
 
-		$extensionName = $this->request->getControllerExtensionName();
-		$possibleViewName = str_replace('@extension', $extensionName, $possibleViewName);
-		$possibleViewName = str_replace('@controller', $this->request->getControllerName(), $possibleViewName);
-		$possibleViewName = str_replace('@action', ucfirst($this->request->getControllerActionName()), $possibleViewName);
+		$possibleViewName = str_replace(
+			array(
+				'@extension',
+				'@controller',
+				'@action'
+			),
+			array(
+				$this->request->getControllerExtensionName(),
+				$this->request->getControllerName(),
+				ucfirst($this->request->getControllerActionName())
+			),
+			$possibleViewName
+		);
 		$format = $this->request->getFormat();
-		$viewObjectName = str_replace('@format', ucfirst($this->request->getFormat()), $possibleViewName);
+		$viewObjectName = str_replace('@format', ucfirst($format), $possibleViewName);
 		if (class_exists($viewObjectName) === FALSE) {
 			$viewObjectName = str_replace('@format', '', $possibleViewName);
 		}

@@ -1357,9 +1357,17 @@ class AbstractMenuContentObject {
 		// If access restricted pages should be shown in menus, change the link of such pages to link to a redirection page:
 		if ($this->mconf['showAccessRestrictedPages'] && $this->mconf['showAccessRestrictedPages'] !== 'NONE' && !$GLOBALS['TSFE']->checkPageGroupAccess($page)) {
 			$thePage = $this->sys_page->getPage($this->mconf['showAccessRestrictedPages']);
-			$addParams = $this->mconf['showAccessRestrictedPages.']['addParams'];
-			$addParams = str_replace('###RETURN_URL###', rawurlencode($LD['totalURL']), $addParams);
-			$addParams = str_replace('###PAGE_ID###', $page['uid'], $addParams);
+			$addParams = str_replace(
+				array(
+					'###RETURN_URL###',
+					'###PAGE_ID###'
+				),
+				array(
+					rawurlencode($LD['totalURL']),
+					$page['uid']
+				),
+				$this->mconf['showAccessRestrictedPages.']['addParams']
+			);
 			$LD = $this->menuTypoLink($thePage, $mainTarget, '', '', '', $addParams, $typeOverride);
 		}
 	}

@@ -1033,11 +1033,19 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 				$images = $this->cObj->stdWrap($images, $conf['imageStdWrapNoWidth.']);
 			}
 		}
-		$output = $this->cObj->cObjGetSingle($conf['layout'], $conf['layout.']);
-		$output = str_replace('###TEXT###', $content, $output);
-		$output = str_replace('###IMAGES###', $images, $output);
-		$output = str_replace('###CLASSES###', $class, $output);
-		return $output;
+		return str_replace(
+			array(
+				'###TEXT###',
+				'###IMAGES###',
+				'###CLASSES###'
+			),
+			array(
+				$content,
+				$images,
+				$class
+			),
+			$this->cObj->cObjGetSingle($conf['layout'], $conf['layout.'])
+		);
 	}
 
 	/***********************************

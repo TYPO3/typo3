@@ -177,12 +177,14 @@ class ImageMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu\Abst
 				}
 				$gifCreator->start($conf, $GLOBALS['TSFE']->page);
 				// calculations
-				$sum = array(0, 0, 0, 0);
 				foreach ($waArr as $key => $val) {
 					if ($dConf[$key] = $itemsConf[$key]['distrib']) {
 						$textBB = $gifCreator->objBB[$val['textNum']];
-						$dConf[$key] = str_replace('textX', $textBB[0], $dConf[$key]);
-						$dConf[$key] = str_replace('textY', $textBB[1], $dConf[$key]);
+						$dConf[$key] = str_replace(
+							array('textX', 'textY'),
+							array($textBB[0], $textBB[1]),
+							$dConf[$key]
+						);
 						$dConf[$key] = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $gifCreator->calcOffset($dConf[$key]));
 					}
 				}

@@ -118,13 +118,20 @@ class LinkHandler extends \TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktype {
 		}
 		switch ($errorType) {
 			case self::DELETED:
-				$response = $GLOBALS['LANG']->getLL('list.report.rowdeleted');
-				$response = str_replace('###title###', $title, $response);
-				$response = str_replace('###uid###', $errorParams['uid'], $response);
+				$response = str_replace(
+					array(
+						'###title###',
+						'###uid###'
+					),
+					array(
+						$title,
+						$errorParams['uid']
+					),
+					$GLOBALS['LANG']->getLL('list.report.rowdeleted')
+				);
 				break;
 			default:
-				$response = $GLOBALS['LANG']->getLL('list.report.rownotexisting');
-				$response = str_replace('###uid###', $errorParams['uid'], $response);
+				$response = str_replace('###uid###', $errorParams['uid'], $GLOBALS['LANG']->getLL('list.report.rownotexisting'));
 		}
 		return $response;
 	}

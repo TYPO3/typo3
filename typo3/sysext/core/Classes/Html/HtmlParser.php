@@ -202,6 +202,8 @@ class HtmlParser {
 	static public function substituteMarkerArray($content, $markContentArray, $wrap = '', $uppercase = FALSE, $deleteUnused = FALSE) {
 		if (is_array($markContentArray)) {
 			$wrapArr = GeneralUtility::trimExplode('|', $wrap);
+			$search = array();
+			$replace = array();
 			foreach ($markContentArray as $marker => $markContent) {
 				if ($uppercase) {
 					// use strtr instead of strtoupper to avoid locale problems with Turkish
@@ -210,8 +212,11 @@ class HtmlParser {
 				if (count($wrapArr) > 0) {
 					$marker = $wrapArr[0] . $marker . $wrapArr[1];
 				}
-				$content = str_replace($marker, $markContent, $content);
+				$search[] = $marker;
+				$replace[] = $markContent;
 			}
+			$content = str_replace($search, $replace, $content);
+			unset($search, $replace);
 			if ($deleteUnused) {
 				if (empty($wrap)) {
 					$wrapArr = array('###', '###');
@@ -985,10 +990,7 @@ class HtmlParser {
 		} elseif ($dir == 2) {
 			$value = GeneralUtility::deHSCentities(htmlspecialchars($value));
 		} elseif ($dir == -1) {
-			$value = str_replace('&gt;', '>', $value);
-			$value = str_replace('&lt;', '<', $value);
-			$value = str_replace('&quot;', '"', $value);
-			$value = str_replace('&amp;', '&', $value);
+			$value = GeneralUtility::htmlspecialchars_decode($value);
 		}
 		return $value;
 	}

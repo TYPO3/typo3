@@ -399,10 +399,12 @@ var selectedDictionary = "' . $this->dictionary . '";
 					if ($dictionaryContent[1]) {
 						// Isolate the character set
 						$dictionaryContent = GeneralUtility::trimExplode(LF, $dictionaryContent[1]);
-						$characterSet = $dictionaryContent[0];
 						// Fix Aspell character set oddity (i.e. iso8859-1)
-						$characterSet = str_replace('iso', 'iso-', $characterSet);
-						$characterSet = str_replace('--', '-', $characterSet);
+						$characterSet = str_replace(
+							array('iso', '--'),
+							array('iso-', '-'),
+							$dictionaryContent[0]
+						);
 					}
 					if (!$characterSet) {
 						GeneralUtility::sysLog('SpellChecker main dictionary character set retrieval error: ' . $dictionaryContent[1], $this->extKey, GeneralUtility::SYSLOG_SEVERITY_ERROR);

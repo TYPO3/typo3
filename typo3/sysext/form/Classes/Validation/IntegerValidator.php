@@ -41,10 +41,21 @@ class IntegerValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator {
 		if ($this->requestHandler->has($this->fieldName)) {
 			$value = $this->requestHandler->getByMethod($this->fieldName);
 			$locale = localeconv();
-			$valueFiltered = str_replace($locale['thousands_sep'], '', $value);
-			$valueFiltered = str_replace($locale['mon_thousands_sep'], '', $value);
-			$valueFiltered = str_replace($locale['decimal_point'], '.', $valueFiltered);
-			$valueFiltered = str_replace($locale['mon_decimal_point'], '.', $valueFiltered);
+			$valueFiltered = str_replace(
+				array(
+					$locale['thousands_sep'],
+					$locale['mon_thousands_sep'],
+					$locale['decimal_point'],
+					$locale['mon_decimal_point']
+				),
+				array(
+					'',
+					'',
+					'.',
+					'.'
+				),
+				$value
+			);
 			if (strval(intval($valueFiltered)) != $valueFiltered) {
 				return FALSE;
 			}

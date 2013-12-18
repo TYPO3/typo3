@@ -238,10 +238,19 @@ class SearchResultContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstra
 				$targetPart = $LD['target'] ? ' target="' . htmlspecialchars($LD['target']) . '"' : '';
 				$urlParams = $this->cObj->URLqMark($LD['totalURL'], '&sword=' . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('sword')) . '&scols=' . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('scols')) . '&stype=' . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('stype')) . '&scount=' . $total);
 				// substitution:
-				$result = $this->cObj->cObjGetSingle($conf['layout'], $conf['layout.'], 'layout');
-				$result = str_replace('###RANGELOW###', $rangeLow, $result);
-				$result = str_replace('###RANGEHIGH###', $rangeHigh, $result);
-				$result = str_replace('###TOTAL###', $total, $result);
+				$result = str_replace(
+					array(
+						'###RANGELOW###',
+						'###RANGEHIGH###',
+						'###TOTAL###'
+					),
+					array(
+						$rangeLow,
+						$rangeHigh,
+						$total
+					),
+					$this->cObj->cObjGetSingle($conf['layout'], $conf['layout.'], 'layout')
+				);
 				if ($rangeHigh < $total) {
 					$next = $this->cObj->cObjGetSingle($conf['next'], $conf['next.'], 'next');
 					$next = '<a href="' . htmlspecialchars(($urlParams . '&spointer=' . ($spointer + $theRange))) . '"' . $targetPart . $GLOBALS['TSFE']->ATagParams . '>' . $next . '</a>';

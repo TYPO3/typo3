@@ -511,11 +511,20 @@ class FormContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractConten
 							$result = $labelLayout;
 						}
 					}
-					$result = str_replace('###FIELD###', $fieldCode, $result);
-					$result = str_replace('###LABEL###', $labelCode, $result);
-					$result = str_replace('###COMMENT###', $commentCode, $result);
 					//RTF
-					$content .= $result;
+					$content .= str_replace(
+						array(
+							'###FIELD###',
+							'###LABEL###',
+							'###COMMENT###'
+						),
+						array(
+							$fieldCode,
+							$labelCode,
+							$commentCode
+						),
+						$result
+					);
 				}
 			}
 		}

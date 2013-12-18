@@ -272,8 +272,17 @@ class TemplateParser {
 	 * inserting the correct namespace separator.
 	 */
 	public function __construct() {
-		self::$SCAN_PATTERN_NAMESPACEDECLARATION = str_replace('LEGACY_NAMESPACE_SEPARATOR', preg_quote(\TYPO3\CMS\Fluid\Fluid::LEGACY_NAMESPACE_SEPARATOR), self::$SCAN_PATTERN_NAMESPACEDECLARATION);
-		self::$SCAN_PATTERN_NAMESPACEDECLARATION = str_replace('FLUID_NAMESPACE_SEPARATOR', preg_quote(\TYPO3\CMS\Fluid\Fluid::NAMESPACE_SEPARATOR), self::$SCAN_PATTERN_NAMESPACEDECLARATION);
+		self::$SCAN_PATTERN_NAMESPACEDECLARATION = str_replace(
+			array(
+				'LEGACY_NAMESPACE_SEPARATOR',
+				'FLUID_NAMESPACE_SEPARATOR'
+			),
+			array(
+				preg_quote(\TYPO3\CMS\Fluid\Fluid::LEGACY_NAMESPACE_SEPARATOR),
+				preg_quote(\TYPO3\CMS\Fluid\Fluid::NAMESPACE_SEPARATOR)
+			),
+			self::$SCAN_PATTERN_NAMESPACEDECLARATION
+		);
 	}
 
 	/**

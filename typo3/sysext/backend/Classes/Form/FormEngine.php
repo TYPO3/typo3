@@ -5212,11 +5212,23 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 		}
 		foreach ($arr as $k => $v) {
 			// Make substitutions:
-			$arr[$k] = str_replace('###PAGE_TITLE###', $pageTitle, $arr[$k]);
-			$arr[$k] = str_replace('###ID_NEW_INDICATOR###', $newLabel, $arr[$k]);
-			$arr[$k] = str_replace('###RECORD_LABEL###', $rLabel, $arr[$k]);
-			$arr[$k] = str_replace('###TABLE_TITLE###', htmlspecialchars($this->sL($GLOBALS['TCA'][$table]['ctrl']['title'])), $arr[$k]);
-			$arr[$k] = str_replace('###RECORD_ICON###', IconUtility::getSpriteIconForRecord($table, $rec, array('title' => $this->getRecordPath($table, $rec))), $arr[$k]);
+			$arr[$k] = str_replace(
+				array(
+					'###PAGE_TITLE###',
+					'###ID_NEW_INDICATOR###',
+					'###RECORD_LABEL###',
+					'###TABLE_TITLE###',
+					'###RECORD_ICON###'
+				),
+				array(
+					$pageTitle,
+					$newLabel,
+					$rLabel,
+					htmlspecialchars($this->sL($GLOBALS['TCA'][$table]['ctrl']['title'])),
+					IconUtility::getSpriteIconForRecord($table, $rec, array('title' => $this->getRecordPath($table, $rec)))
+				),
+				$arr[$k]
+			);
 		}
 		return $arr;
 	}
@@ -5251,15 +5263,29 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 	 * @todo Define visibility
 	 */
 	public function rplColorScheme($inTemplate) {
-		// Colors:
-		$inTemplate = str_replace('###BGCOLOR###', $this->colorScheme[0] ? ' bgcolor="' . $this->colorScheme[0] . '"' : '', $inTemplate);
-		$inTemplate = str_replace('###BGCOLOR_HEAD###', $this->colorScheme[1] ? ' bgcolor="' . $this->colorScheme[1] . '"' : '', $inTemplate);
-		$inTemplate = str_replace('###FONTCOLOR_HEAD###', $this->colorScheme[3], $inTemplate);
-		// Classes:
-		$inTemplate = str_replace('###CLASSATTR_1###', $this->classScheme[0] ? ' class="' . $this->classScheme[0] . '"' : '', $inTemplate);
-		$inTemplate = str_replace('###CLASSATTR_2###', $this->classScheme[1] ? ' class="' . $this->classScheme[1] . '"' : '', $inTemplate);
-		$inTemplate = str_replace('###CLASSATTR_4###', $this->classScheme[3] ? ' class="' . $this->classScheme[3] . '"' : '', $inTemplate);
-		return $inTemplate;
+		return str_replace(
+			array(
+				// Colors:
+				'###BGCOLOR###',
+				'###BGCOLOR_HEAD###',
+				'###FONTCOLOR_HEAD###',
+				// Classes:
+				'###CLASSATTR_1###',
+				'###CLASSATTR_2###',
+				'###CLASSATTR_4###'
+			),
+			array(
+				// Colors:
+				$this->colorScheme[0] ? ' bgcolor="' . $this->colorScheme[0] . '"' : '',
+				$this->colorScheme[1] ? ' bgcolor="' . $this->colorScheme[1] . '"' : '',
+				$this->colorScheme[3],
+				// Classes:
+				$this->classScheme[0] ? ' class="' . $this->classScheme[0] . '"' : '',
+				$this->classScheme[1] ? ' class="' . $this->classScheme[1] . '"' : '',
+				$this->classScheme[3] ? ' class="' . $this->classScheme[3] . '"' : ''
+			),
+			$inTemplate
+		);
 	}
 
 	/**
@@ -5666,8 +5692,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 		// $this->additionalJS_submit:
 		if ($this->additionalJS_submit) {
 			$additionalJS_submit = implode('', $this->additionalJS_submit);
-			$additionalJS_submit = str_replace(CR, '', $additionalJS_submit);
-			$additionalJS_submit = str_replace(LF, '', $additionalJS_submit);
+			$additionalJS_submit = str_replace(array(CR, LF), '', $additionalJS_submit);
 			$out .= '
 			TBE_EDITOR.addActionChecks("submit", "' . addslashes($additionalJS_submit) . '");
 			';

@@ -157,9 +157,16 @@ Uncaught TYPO3 Exception ' . $exceptionCodeNumber . $exception->getMessage() . L
 							$arguments .= '<span style="color:#FF8700;"><em>' . get_class($argument) . '</em></span>';
 						} elseif (is_string($argument)) {
 							$preparedArgument = strlen($argument) < 100 ? $argument : substr($argument, 0, 50) . '#tripleDot#' . substr($argument, -50);
-							$preparedArgument = htmlspecialchars($preparedArgument);
-							$preparedArgument = str_replace('#tripleDot#', '<span style="color:white;">&hellip;</span>', $preparedArgument);
-							$preparedArgument = str_replace(LF, '<span style="color:white;">&crarr;</span>', $preparedArgument);
+							$preparedArgument = str_replace(
+								array(
+									'#tripleDot#',
+									LF),
+								array(
+									'<span style="color:white;">&hellip;</span>',
+									'<span style="color:white;">&crarr;</span>'
+								),
+								htmlspecialchars($preparedArgument)
+							);
 							$arguments .= '"<span style="color:#FF8700;" title="' . htmlspecialchars($argument) . '">' . $preparedArgument . '</span>"';
 						} elseif (is_numeric($argument)) {
 							$arguments .= '<span style="color:#FF8700;">' . (string) $argument . '</span>';

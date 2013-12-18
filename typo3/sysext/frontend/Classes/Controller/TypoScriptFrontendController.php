@@ -1919,10 +1919,17 @@ class TypoScriptFrontendController {
 		} elseif (\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($code, 'READFILE:')) {
 			$readFile = GeneralUtility::getFileAbsFileName(trim(substr($code, 9)));
 			if (@is_file($readFile)) {
-				$fileContent = GeneralUtility::getUrl($readFile);
-				$fileContent = str_replace('###CURRENT_URL###', GeneralUtility::getIndpEnv('REQUEST_URI'), $fileContent);
-				$fileContent = str_replace('###REASON###', htmlspecialchars($reason), $fileContent);
-				echo $fileContent;
+				echo str_replace(
+					array(
+						'###CURRENT_URL###',
+						'###REASON###'
+					),
+					array(
+						GeneralUtility::getIndpEnv('REQUEST_URI'),
+						htmlspecialchars($reason)
+					),
+					GeneralUtility::getUrl($readFile)
+				);
 			} else {
 				throw new \RuntimeException('Configuration Error: 404 page "' . $readFile . '" could not be found.', 1294587214);
 			}
@@ -3405,10 +3412,19 @@ class TypoScriptFrontendController {
 		$this->recursivelyReplaceIntPlaceholdersInContent();
 		$GLOBALS['TT']->push('Substitute header section');
 		$this->INTincScript_loadJSCode();
-		$this->content = $this->getPageRenderer()->renderJavaScriptAndCssForProcessingOfUncachedContentObjects($this->content, $this->config['INTincScript_ext']['divKey']);
-		$this->content = str_replace('<!--HD_' . $this->config['INTincScript_ext']['divKey'] . '-->', $this->convOutputCharset(implode(LF, $this->additionalHeaderData), 'HD'), $this->content);
-		$this->content = str_replace('<!--FD_' . $this->config['INTincScript_ext']['divKey'] . '-->', $this->convOutputCharset(implode(LF, $this->additionalFooterData), 'FD'), $this->content);
-		$this->content = str_replace('<!--TDS_' . $this->config['INTincScript_ext']['divKey'] . '-->', $this->convOutputCharset($this->divSection, 'TDS'), $this->content);
+		$this->content = str_replace(
+			array(
+				'<!--HD_' . $this->config['INTincScript_ext']['divKey'] . '-->',
+				'<!--FD_' . $this->config['INTincScript_ext']['divKey'] . '-->',
+				'<!--TDS_' . $this->config['INTincScript_ext']['divKey'] . '-->'
+			),
+			array(
+				$this->convOutputCharset(implode(LF, $this->additionalHeaderData), 'HD'),
+				$this->convOutputCharset(implode(LF, $this->additionalFooterData), 'FD'),
+				$this->convOutputCharset($this->divSection, 'TDS'),
+			),
+			$this->getPageRenderer()->renderJavaScriptAndCssForProcessingOfUncachedContentObjects($this->content, $this->config['INTincScript_ext']['divKey'])
+		);
 		// Replace again, because header and footer data and page renderer replacements may introduce additional placeholders (see #44825)
 		$this->recursivelyReplaceIntPlaceholdersInContent();
 		$this->setAbsRefPrefix();
@@ -4103,20 +4119,38 @@ if (version == "n3") {
 	 * @todo Define visibility
 	 */
 	public function setAbsRefPrefix() {
-		if ($this->absRefPrefix) {
-			$this->content = str_replace('"typo3temp/', '"' . $this->absRefPrefix . 'typo3temp/', $this->content);
-			$this->content = str_replace('"typo3conf/ext/', '"' . $this->absRefPrefix . 'typo3conf/ext/', $this->content);
-			$this->content = str_replace('"' . TYPO3_mainDir . 'contrib/', '"' . $this->absRefPrefix . TYPO3_mainDir . 'contrib/', $this->content);
-			$this->content = str_replace('"' . TYPO3_mainDir . 'ext/', '"' . $this->absRefPrefix . TYPO3_mainDir . 'ext/', $this->content);
-			$this->content = str_replace('"' . TYPO3_mainDir . 'sysext/', '"' . $this->absRefPrefix . TYPO3_mainDir . 'sysext/', $this->content);
-			$this->content = str_replace('"' . $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'], '"' . $this->absRefPrefix . $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'], $this->content);
-			$this->content = str_replace('"' . $GLOBALS['TYPO3_CONF_VARS']['BE']['RTE_imageStorageDir'], '"' . $this->absRefPrefix . $GLOBALS['TYPO3_CONF_VARS']['BE']['RTE_imageStorageDir'], $this->content);
-			// Process additional directories
-			$directories = GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['FE']['additionalAbsRefPrefixDirectories'], TRUE);
-			foreach ($directories as $directory) {
-				$this->content = str_replace('"' . $directory, '"' . $this->absRefPrefix . $directory, $this->content);
-			}
+		if (!$this->absRefPrefix) {
+			return;
 		}
+		$search = array(
+			'"typo3temp/',
+			'"typo3conf/ext/',
+			'"' . TYPO3_mainDir . 'contrib/',
+			'"' . TYPO3_mainDir . 'ext/',
+			'"' . TYPO3_mainDir . 'sysext/',
+			'"' . $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'],
+			'"' . $GLOBALS['TYPO3_CONF_VARS']['BE']['RTE_imageStorageDir']
+		);
+		$replace = array(
+			'"' . $this->absRefPrefix . 'typo3temp/',
+			'"' . $this->absRefPrefix . 'typo3conf/ext/',
+			'"' . $this->absRefPrefix . TYPO3_mainDir . 'contrib/',
+			'"' . $this->absRefPrefix . TYPO3_mainDir . 'ext/',
+			'"' . $this->absRefPrefix . TYPO3_mainDir . 'sysext/',
+			'"' . $this->absRefPrefix . $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'],
+			'"' . $this->absRefPrefix . $GLOBALS['TYPO3_CONF_VARS']['BE']['RTE_imageStorageDir']
+		);
+		// Process additional directories
+		$directories = GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['FE']['additionalAbsRefPrefixDirectories'], TRUE);
+		foreach ($directories as $directory) {
+			$search[] = '"' . $directory;
+			$replace[] = '"' . $this->absRefPrefix . $directory;
+		}
+		$this->content = str_replace(
+			$search,
+			$replace,
+			$this->content
+		);
 	}
 
 	/**

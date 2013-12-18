@@ -206,42 +206,86 @@ class InternalLinktype extends \TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktyp
 		if (is_array($errorParams['page'])) {
 			switch ($errorType['page']) {
 				case self::DELETED:
-					$errorPage = $GLOBALS['LANG']->getLL('list.report.pagedeleted');
-					$errorPage = str_replace('###title###', $errorParams['page']['title'], $errorPage);
-					$errorPage = str_replace('###uid###', $errorParams['page']['uid'], $errorPage);
+					$errorPage = str_replace(
+						array(
+							'###title###',
+							'###uid###'
+						),
+						array(
+							$errorParams['page']['title'],
+							$errorParams['page']['uid']
+						),
+						$GLOBALS['LANG']->getLL('list.report.pagedeleted')
+					);
 				break;
 				case self::HIDDEN:
-					$errorPage = $GLOBALS['LANG']->getLL('list.report.pagenotvisible');
-					$errorPage = str_replace('###title###', $errorParams['page']['title'], $errorPage);
-					$errorPage = str_replace('###uid###', $errorParams['page']['uid'], $errorPage);
+					$errorPage = str_replace(
+						array(
+							'###title###',
+							'###uid###'
+						),
+						array(
+							$errorParams['page']['title'],
+							$errorParams['page']['uid']
+						),
+						$GLOBALS['LANG']->getLL('list.report.pagenotvisible')
+					);
 				break;
 				default:
-					$errorPage = $GLOBALS['LANG']->getLL('list.report.pagenotexisting');
-					$errorPage = str_replace('###uid###', $errorParams['page']['uid'], $errorPage);
+					$errorPage = str_replace(
+						'###uid###',
+						$errorParams['page']['uid'],
+						$GLOBALS['LANG']->getLL('list.report.pagenotexisting')
+					);
 			}
 		}
 		if (is_array($errorParams['content'])) {
 			switch ($errorType['content']) {
 				case self::DELETED:
-					$errorContent = $GLOBALS['LANG']->getLL('list.report.contentdeleted');
-					$errorContent = str_replace('###title###', $errorParams['content']['title'], $errorContent);
-					$errorContent = str_replace('###uid###', $errorParams['content']['uid'], $errorContent);
+					$errorContent = str_replace(
+						array(
+							'###title###',
+							'###uid###'
+						),
+						array(
+							$errorParams['content']['title'],
+							$errorParams['content']['uid']
+						),
+						$GLOBALS['LANG']->getLL('list.report.contentdeleted')
+					);
 				break;
 				case self::HIDDEN:
-					$errorContent = $GLOBALS['LANG']->getLL('list.report.contentnotvisible');
-					$errorContent = str_replace('###title###', $errorParams['content']['title'], $errorContent);
-					$errorContent = str_replace('###uid###', $errorParams['content']['uid'], $errorContent);
+					$errorContent = str_replace(
+						array(
+							'###title###',
+							'###uid###'
+						),
+						array(
+							$errorParams['content']['title'],
+							$errorParams['content']['uid']
+						),
+						$GLOBALS['LANG']->getLL('list.report.contentnotvisible')
+					);
 				break;
 				case self::MOVED:
-					$errorContent = $GLOBALS['LANG']->getLL('list.report.contentmoved');
-					$errorContent = str_replace('###title###', $errorParams['content']['title'], $errorContent);
-					$errorContent = str_replace('###uid###', $errorParams['content']['uid'], $errorContent);
-					$errorContent = str_replace('###wrongpage###', $errorParams['content']['wrongPage'], $errorContent);
-					$errorContent = str_replace('###rightpage###', $errorParams['content']['rightPage'], $errorContent);
+					$errorContent = str_replace(
+						array(
+							'###title###',
+							'###uid###',
+							'###wrongpage###',
+							'###rightpage###'
+						),
+						array(
+							$errorParams['content']['title'],
+							$errorParams['content']['uid'],
+							$errorParams['content']['wrongPage'],
+							$errorParams['content']['rightPage']
+						),
+						$GLOBALS['LANG']->getLL('list.report.contentmoved')
+					);
 				break;
 				default:
-					$errorContent = $GLOBALS['LANG']->getLL('list.report.contentnotexisting');
-					$errorContent = str_replace('###uid###', $errorParams['content']['uid'], $errorContent);
+					$errorContent = str_replace('###uid###', $errorParams['content']['uid'], $GLOBALS['LANG']->getLL('list.report.contentnotexisting'));
 			}
 		}
 		if (isset($errorPage) && isset($errorContent)) {

@@ -135,9 +135,11 @@ class LengthValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator {
 	 * @return string Message text with substituted markers
 	 */
 	protected function substituteValues($message) {
-		$message = str_replace('%minimum', $this->minimum, $message);
-		$message = str_replace('%maximum', $this->maximum, $message);
-		return $message;
+		return str_replace(
+			array('%minimum', '%maximum'),
+			array($this->minimum, $this->maximum),
+			$message
+		);
 	}
 
 }
