@@ -434,7 +434,8 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 			array('getMimeTypeOfFile')
 		);
 		$mockedFile = $this->getSimpleFileMock('/targetFolder/file', array('updateProperties'));
-		$mockedFile->expects($this->once())->method('updateProperties');
+		// does not update properties itself but leaves that to the indexer
+		$mockedFile->expects($this->never())->method('updateProperties');
 		$fixture->replaceFile($mockedFile, $this->getUrl('sourceFolder/file'));
 	}
 

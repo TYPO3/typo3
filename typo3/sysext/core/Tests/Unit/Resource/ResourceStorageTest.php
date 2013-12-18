@@ -440,9 +440,13 @@ class ResourceStorageTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCa
 		$this->fixture->expects($this->any())->method('getFileIndexRepository')->will($this->returnValue($indexFileRepositoryMock));
 		$mockedFile = $this->getMock('TYPO3\\CMS\\Core\\Resource\\File', array(), array(), '', FALSE);
 		$mockedFile->expects($this->any())->method('getIdentifier')->will($this->returnValue($fileInfo['identifier']));
-		$mockedFile->expects($this->at(1))->method('updateProperties')->with($this->equalTo(array('sha1' => $hash)));
-		$mockedFile->expects($this->at(4))->method('updateProperties')->with($this->equalTo($newProperties));
-		$indexFileRepositoryMock->expects($this->once())->method('update')->with($mockedFile);
+		// called by indexer because the properties are updated
+		$this->fixture->expects($this->any())->method('getFileInfoByIdentifier')->will($this->returnValue($newProperties));
+		$mockedFile->expects($this->any())->method('getStorage')->will($this->returnValue($this->fixture));
+		$mockedFile->expects($this->any())->method('getProperties')->will($this->returnValue(array_keys($fileInfo)));
+		$mockedFile->expects($this->any())->method('getUpdatedProperties')->will($this->returnValue(array_keys($newProperties)));
+		// do not update directly; that's up to the indexer
+		$indexFileRepositoryMock->expects($this->never())->method('update');
 		$this->fixture->setFileContents($mockedFile, uniqid());
 	}
 
@@ -453,6 +457,15 @@ class ResourceStorageTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCa
 	public function moveFileCallsDriversRawMethodsWithCorrectArguments() {
 		$localFilePath = '/path/to/localFile';
 		$sourceFileIdentifier = '/sourceFile.ext';
+		$fileInfoDummy = array(
+			'storage' => 'A',
+			'identifier' => 'B',
+			'mtime' => 'C',
+			'ctime' => 'D',
+			'mimetype' => 'E',
+			'size' => 'F',
+			'name' => 'G',
+		);
 		$this->addToMount(array(
 			'targetFolder' => array()
 		));
@@ -465,12 +478,14 @@ class ResourceStorageTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCa
 		$sourceFile = $this->getSimpleFileMock($sourceFileIdentifier);
 		$sourceFile->expects($this->once())->method('getForLocalProcessing')->will($this->returnValue($localFilePath));
 		$sourceFile->expects($this->any())->method('getStorage')->will($this->returnValue($sourceStorage));
+		$sourceFile->expects($this->once())->method('getUpdatedProperties')->will($this->returnValue(array_keys($fileInfoDummy)));
+		$sourceFile->expects($this->once())->method('getProperties')->will($this->returnValue($fileInfoDummy));
 		/** @var $driver \TYPO3\CMS\Core\Resource\Driver\LocalDriver */
 		$driver = $this->getMock('TYPO3\\CMS\\Core\\Resource\\Driver\\LocalDriver', array(), array(array('basePath' => $this->getMountRootUrl())));
+		$driver->expects($this->once())->method('getFileInfoByIdentifier')->will($this->returnValue($fileInfoDummy));
 		$driver->expects($this->once())->method('addFileRaw')->with($localFilePath, $targetFolder, $this->equalTo('file.ext'))->will($this->returnValue('/targetFolder/file.ext'));
 		/** @var $fixture \TYPO3\CMS\Core\Resource\ResourceStorage */
-		$fixture = $this->getMock('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', array('assureFileMovePermissions', 'updateFile'), array($driver, array('configuration' => $configuration)));
-		$fixture->expects($this->once())->method('updateFile')->with($this->equalTo($sourceFile), $this->equalTo('/targetFolder/file.ext'));
+		$fixture = $this->getMock('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', array('assureFileMovePermissions'), array($driver, array('configuration' => $configuration)));
 		$fixture->moveFile($sourceFile, $targetFolder, 'file.ext');
 	}
 
