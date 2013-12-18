@@ -2613,7 +2613,7 @@ class GraphicalFunctions {
 			} else {
 				$frame = '';
 			}
-			$cmd = GeneralUtility::imageMagickCommand('convert', $params . ' ' . $this->wrapFileName($input) . $frame . ' ' . $this->wrapFileName($output));
+			$cmd = GeneralUtility::imageMagickCommand('convert', $params . ' ' . $this->wrapFileName($input . $frame) . ' ' . $this->wrapFileName($output));
 			$this->IM_commands[] = array($output, $cmd);
 			$ret = \TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd);
 			// Change the permissions of the file
