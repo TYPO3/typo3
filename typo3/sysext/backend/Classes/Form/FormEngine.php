@@ -2973,12 +2973,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 					// Making the row:
 					// ********************
 					// Title of field:
-					// in previous versions (< 4.7), the flexform looked like this:
-					// <tx_templavoila>
-					//     <title>LLL:EXT:cms/locallang_ttc.xml:media.sources</title>
-					// </tx_templavoila>
-					// for whatever reason,
-					// now, only using <title> in an unnested way is fine.
+					// <title>LLL:EXT:cms/locallang_ttc.xml:media.sources</title>
 					$theTitle = $value['title'];
 
 					// If there is a title, check for LLL label
@@ -3038,11 +3033,27 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 								$onClickInsert .= 'TBE_EDITOR.addActionChecks("submit", unescape("' . rawurlencode(implode(';', $this->additionalJS_submit)) . '").' . $replace . ');';
 								$onClickInsert .= 'TYPO3.TCEFORMS.update();';
 								$onClickInsert .= 'return false;';
-								// Kasper's comment (kept for history): Maybe there is a better way to do this than store the HTML for the new element in rawurlencoded format - maybe it even breaks with certain charsets? But for now this works...
+								// Kasper's comment (kept for history):
+								// Maybe there is a better way to do this than store the HTML for the new element
+								// in rawurlencoded format - maybe it even breaks with certain charsets?
+								// But for now this works...
 								$this->additionalJS_post = $additionalJS_post_saved;
 								$this->additionalJS_submit = $additionalJS_submit_saved;
-								$new = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:cm.new', TRUE);
-								$newElementsLinks[] = '<a href="#" onclick="' . htmlspecialchars($onClickInsert) . '">' . IconUtility::getSpriteIcon('actions-document-new') . htmlspecialchars(GeneralUtility::fixed_lgd_cs($this->sL($nCfg['tx_templavoila']['title']), 30)) . '</a>';
+								$title = '';
+								if (isset($nCfg['title'])) {
+									$title = $this->sL($nCfg['title']);
+								} elseif (isset($nCfg['tx_templavoila']['title'])) {
+									/* @deprecated since 4.7 will be removed two versions after 6.2 */
+									GeneralUtility::deprecationLog(
+										'Flexform data for table ' . $table . ', field ' . $field
+										. 'contains the <tx_templavoila><title>... construct deprecated since TYPO3 4.7. '
+										. 'The <tx_templavoila> element has to be removed now. Support will be removed two versions after 6.2.'
+									);
+									$title = $this->sL($nCfg['tx_templavoila']['title']);
+								}
+								$newElementsLinks[] = '<a href="#" onclick="' . htmlspecialchars($onClickInsert) . '">'
+									. IconUtility::getSpriteIcon('actions-document-new')
+									. htmlspecialchars(GeneralUtility::fixed_lgd_cs($title, 30)) . '</a>';
 							}
 							// Reverting internal variables we don't want to change:
 							$this->requiredElements = $TEMP_requiredElements;
