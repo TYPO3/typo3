@@ -4062,12 +4062,31 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 	/**
-	 * Tests whether verifyFilenameAgainstDenyPattern detects the NULL character.
-	 *
-	 * @test
+	 * @return array
 	 */
-	public function verifyFilenameAgainstDenyPatternDetectsNullCharacter() {
-		$this->assertFalse(Utility\GeneralUtility::verifyFilenameAgainstDenyPattern('image .gif'));
+	public function deniedFilesDataProvider() {
+		return array(
+			'Nul character in file' => array('image' . chr(0) . '.gif'),
+			'Nul character in file with .php' => array('image.php' . chr(0) . '.gif'),
+			'Regular .php file' => array('file.php'),
+			'Regular .php5 file' => array('file.php5'),
+			'Regular .php3 file' => array('file.php3'),
+			'Regular .phpsh file' => array('file.phpsh'),
+			'Regular .phtml file' => array('file.phtml'),
+			'PHP file in the middle' => array('file.php.txt'),
+			'.htaccess file' => array('.htaccess'),
+		);
+	}
+
+	/**
+	 * Tests whether verifyFilenameAgainstDenyPattern detects denied files.
+	 *
+	 * @param string $deniedFile
+	 * @test
+	 * @dataProvider deniedFilesDataProvider
+	 */
+	public function verifyFilenameAgainstDenyPatternDetectsNotAllowedFiles($deniedFile) {
+		$this->assertFalse(Utility\GeneralUtility::verifyFilenameAgainstDenyPattern($deniedFile));
 	}
 
 

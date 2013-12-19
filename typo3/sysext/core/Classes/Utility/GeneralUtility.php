@@ -2953,7 +2953,7 @@ Connection: close
 		}
 		$fileArr = array_merge($fileArr, self::getFilesInDir($path, $extList, 1, 1, $excludePattern));
 		$dirs = self::get_dirs($path);
-		if (is_array($dirs) && $recursivityLevels > 0) {
+		if ($recursivityLevels > 0 && is_array($dirs)) {
 			foreach ($dirs as $subdirs) {
 				if ((string) $subdirs != '' && (!strlen($excludePattern) || !preg_match(('/^' . $excludePattern . '$/'), $subdirs))) {
 					$fileArr = self::getAllFilesAndFoldersInPath($fileArr, $path . $subdirs . '/', $extList, $regDirs, $recursivityLevels - 1, $excludePattern);
@@ -2989,7 +2989,7 @@ Connection: close
 	 * @return string
 	 */
 	static public function fixWindowsFilePath($theFile) {
-		return str_replace('//', '/', str_replace('\\', '/', $theFile));
+		return str_replace(array('\\', '//'), '/', $theFile);
 	}
 
 	/**
@@ -3006,17 +3006,17 @@ Connection: close
 		$parts = explode('/', $pathStr);
 		$output = array();
 		$c = 0;
-		foreach ($parts as $pV) {
-			if ($pV == '..') {
+		foreach ($parts as $part) {
+			if ($part === '..') {
 				if ($c) {
 					array_pop($output);
-					$c--;
+					--$c;
 				} else {
-					$output[] = $pV;
+					$output[] = $part;
 				}
 			} else {
-				$c++;
-				$output[] = $pV;
+				++$c;
+				$output[] = $part;
 			}
 		}
 		return implode('/', $output);
@@ -3609,27 +3609,27 @@ Connection: close
 	 *
 	 *************************/
 	/**
-	 * Returns the absolute filename of a relative reference, resolves the "EXT:" prefix (way of referring to files inside extensions) and checks that the file is inside the PATH_site of the TYPO3 installation and implies a check with \TYPO3\CMS\Core\Utility\GeneralUtility::validPathStr(). Returns FALSE if checks failed. Does not check if the file exists.
+	 * Returns the absolute filename of a relative reference, resolves the "EXT:" prefix
+	 * (way of referring to files inside extensions) and checks that the file is inside
+	 * the PATH_site of the TYPO3 installation and implies a check with
+	 * \TYPO3\CMS\Core\Utility\GeneralUtility::validPathStr().
 	 *
 	 * @param string $filename The input filename/filepath to evaluate
 	 * @param boolean $onlyRelative If $onlyRelative is set (which it is by default), then only return values relative to the current PATH_site is accepted.
 	 * @param boolean $relToTYPO3_mainDir If $relToTYPO3_mainDir is set, then relative paths are relative to PATH_typo3 constant - otherwise (default) they are relative to PATH_site
-	 * @return string Returns the absolute filename of $filename IF valid, otherwise blank string.
+	 * @return string Returns the absolute filename of $filename if valid, otherwise blank string.
 	 */
 	static public function getFileAbsFileName($filename, $onlyRelative = TRUE, $relToTYPO3_mainDir = FALSE) {
 		if ((string)$filename === '') {
 			return '';
 		}
+		$relPathPrefix = PATH_site;
 		if ($relToTYPO3_mainDir) {
-			if (!defined('PATH_typo3')) {
-				return '';
-			}
 			$relPathPrefix = PATH_typo3;
-		} else {
-			$relPathPrefix = PATH_site;
 		}
+
 		// Extension
-		if (substr($filename, 0, 4) == 'EXT:') {
+		if (strpos($filename, 'EXT:') === 0) {
 			list($extKey, $local) = explode('/', substr($filename, 4), 2);
 			$filename = '';
 			if ((string)$extKey !== '' && \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($extKey) && (string)$local !== '') {
@@ -3646,6 +3646,7 @@ Connection: close
 			// checks backpath.
 			return $filename;
 		}
+		return '';
 	}
 
 	/**
@@ -3661,10 +3662,8 @@ Connection: close
 	 * @todo Possible improvement: Should it rawurldecode the string first to check if any of these characters is encoded?
 	 */
 	static public function validPathStr($theFile) {
-		if (strpos($theFile, '//') === FALSE && strpos($theFile, '\\') === FALSE && !preg_match('#(?:^\\.\\.|/\\.\\./|[[:cntrl:]])#u', $theFile)) {
-			return TRUE;
-		}
-		return FALSE;
+		return strpos($theFile, '//') === FALSE && strpos($theFile, '\\') === FALSE
+			&& !preg_match('#(?:^\\.\\.|/\\.\\./|[[:cntrl:]])#u', $theFile);
 	}
 
 	/**
@@ -3674,12 +3673,7 @@ Connection: close
 	 * @return boolean
 	 */
 	static public function isAbsPath($path) {
-		// On Windows also a path starting with a drive letter is absolute: X:/
-		if (TYPO3_OS === 'WIN' && (substr($path, 1, 2) === ':/' || substr($path, 1, 2) === ':\\')) {
-			return TRUE;
-		}
-		// Path starting with a / is always absolute, on every system
-		return $path[0] === '/';
+		return $path[0] === '/' || TYPO3_OS === 'WIN' && (strpos($path, ':/') === 1 || strpos($path, ':\\') === 1);
 	}
 
 	/**
@@ -3689,31 +3683,28 @@ Connection: close
 	 * @return boolean
 	 */
 	static public function isAllowedAbsPath($path) {
-		if (self::isAbsPath($path) && self::validPathStr($path) && (self::isFirstPartOfStr($path, PATH_site) || $GLOBALS['TYPO3_CONF_VARS']['BE']['lockRootPath'] && self::isFirstPartOfStr($path, $GLOBALS['TYPO3_CONF_VARS']['BE']['lockRootPath']))) {
-			return TRUE;
-		}
+		$lockRootPath = $GLOBALS['TYPO3_CONF_VARS']['BE']['lockRootPath'];
+		return self::isAbsPath($path) && self::validPathStr($path)
+			&& (self::isFirstPartOfStr($path, PATH_site)
+				|| $lockRootPath && self::isFirstPartOfStr($path, $lockRootPath));
 	}
 
 	/**
 	 * Verifies the input filename against the 'fileDenyPattern'. Returns TRUE if OK.
 	 *
+	 * Filenames are not allowed to contain control characters. Therefore we
+	 * allways filter on [[:cntrl:]].
+	 *
 	 * @param string $filename File path to evaluate
 	 * @return boolean
 	 */
 	static public function verifyFilenameAgainstDenyPattern($filename) {
-		// Filenames are not allowed to contain control characters
-		if (preg_match('/[[:cntrl:]]/', $filename)) {
-			return FALSE;
-		}
+		$pattern = '/[[:cntrl:]]/';
 		if ((string)$filename !== '' && (string)$GLOBALS['TYPO3_CONF_VARS']['BE']['fileDenyPattern'] !== '') {
-			$result = preg_match('/' . $GLOBALS['TYPO3_CONF_VARS']['BE']['fileDenyPattern'] . '/i', $filename);
-			if ($result) {
-				return FALSE;
-			}
+			$pattern = '/(?:[[:cntrl:]]|' . $GLOBALS['TYPO3_CONF_VARS']['BE']['fileDenyPattern'] . ')/i';
 		}
-		return TRUE;
+		return !preg_match($pattern, $filename);
 	}
-
 
 	/**
 	 * Low level utility function to copy directories and content recursive
