@@ -10,6 +10,12 @@ env:
   - DB=none FUNCTIONALTESTS=1
   - DB=none PHPLINT=1
 
+notifications:
+  irc:
+    - "irc.freenode.net#typo3-cms"
+  email:
+    - typo3-team-core@lists.typo3.org
+
 services:
   - memcached
 
