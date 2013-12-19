@@ -28,20 +28,6 @@ class LinkHandler extends \TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktype {
 	const DELETED = 'deleted';
 
 	/**
-	 * TSconfig of the module tx_linkhandler
-	 *
-	 * @var array
-	 */
-	protected $tsconfig;
-
-	/**
-	 * Get TSconfig when loading the class
-	 */
-	public function __construct() {
-		$this->tsconfig = \TYPO3\CMS\Backend\Utility\BackendUtility::getModTSconfig(1, 'mod.tx_linkhandler');
-	}
-
-	/**
 	 * Checks a given URL for validity
 	 *
 	 * @param string $url Url to check
@@ -101,9 +87,10 @@ class LinkHandler extends \TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktype {
 	public function getErrorMessage($errorParams) {
 		$errorType = $errorParams['errorType'];
 		$tableName = $errorParams['tablename'];
-		$title = $GLOBALS['LANG']->getLL('list.report.rowdeleted.default.title');
-		if ($this->tsconfig['properties'][$tableName . '.']) {
-			$title = $this->tsconfig['properties'][$tableName . '.']['label'];
+		if (!empty($GLOBALS['TCA'][$tableName]['ctrl']['title'])) {
+			$title = $GLOBALS['LANG']->sL($GLOBALS['TCA'][$tableName]['ctrl']['title'], TRUE);
+		} else {
+			$title = $tableName;
 		}
 		switch ($errorType) {
 			case self::DELETED:
