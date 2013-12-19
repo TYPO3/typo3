@@ -326,7 +326,7 @@ class FrontendUserAuthentication extends \TYPO3\CMS\Core\Authentication\Abstract
 			ksort($this->groupData['uid']);
 			ksort($this->groupData['pid']);
 		}
-		return count($this->groupData['uid']) ? count($this->groupData['uid']) : 0;
+		return count($this->groupData['uid']) ?: 0;
 	}
 
 	/**

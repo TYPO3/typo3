@@ -674,7 +674,7 @@ class Indexer {
 	 */
 	public function convertHTMLToUtf8($content, $charset = '') {
 		// Find charset:
-		$charset = $charset ? $charset : $this->getHTMLcharset($content);
+		$charset = $charset ?: $this->getHTMLcharset($content);
 		$charset = $this->csObj->parse_charset($charset);
 		// Convert charset:
 		if ($charset && $charset !== 'utf-8') {
@@ -1111,7 +1111,7 @@ class Indexer {
 	public function indexRegularDocument($file, $force = FALSE, $contentTmpFile = '', $altExtension = '') {
 		// Init
 		$fI = pathinfo($file);
-		$ext = $altExtension ? $altExtension : strtolower($fI['extension']);
+		$ext = $altExtension ?: strtolower($fI['extension']);
 		// Create abs-path:
 		if (!$contentTmpFile) {
 			if (!GeneralUtility::isAbsPath($file)) {
@@ -1595,7 +1595,7 @@ class Indexer {
 	public function submitFilePage($hash, $file, $subinfo, $ext, $mtime, $ctime, $size, $content_md5h, $contentParts) {
 		// Find item Type:
 		$storeItemType = $this->external_parsers[$ext]->ext2itemtype_map[$ext];
-		$storeItemType = $storeItemType ? $storeItemType : $ext;
+		$storeItemType = $storeItemType ?: $ext;
 		// Remove any current data for this phash:
 		$this->removeOldIndexedFiles($hash['phash']);
 		// Split filename:
@@ -1608,7 +1608,7 @@ class Indexer {
 			'contentHash' => $content_md5h,
 			'data_filename' => $file,
 			'item_type' => $storeItemType,
-			'item_title' => trim($contentParts['title']) ? $contentParts['title'] : basename($file),
+			'item_title' => trim($contentParts['title']) ?: basename($file),
 			'item_description' => $this->bodyDescription($contentParts),
 			'item_mtime' => $mtime,
 			'item_size' => $size,

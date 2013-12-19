@@ -66,7 +66,7 @@ class BackendUtility {
 	 */
 	static public function deleteClause($table, $tableAlias = '') {
 		if ($GLOBALS['TCA'][$table]['ctrl']['delete']) {
-			return ' AND ' . ($tableAlias ? $tableAlias : $table) . '.' . $GLOBALS['TCA'][$table]['ctrl']['delete'] . '=0';
+			return ' AND ' . ($tableAlias ?: $table) . '.' . $GLOBALS['TCA'][$table]['ctrl']['delete'] . '=0';
 		} else {
 			return '';
 		}
@@ -933,7 +933,7 @@ class BackendUtility {
 				// Used to avoid looping, if any should happen.
 				$subFieldPointer = $conf['ds_pointerField_searchParent_subField'];
 				while (!$srcPointer) {
-					$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,' . $ds_pointerField . ',' . $ds_searchParentField . ($subFieldPointer ? ',' . $subFieldPointer : ''), $table, 'uid=' . intval(($newRecordPidValue ? $newRecordPidValue : $rr[$ds_searchParentField])) . self::deleteClause($table));
+					$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,' . $ds_pointerField . ',' . $ds_searchParentField . ($subFieldPointer ? ',' . $subFieldPointer : ''), $table, 'uid=' . intval($newRecordPidValue ?: $rr[$ds_searchParentField]) . self::deleteClause($table));
 					$newRecordPidValue = 0;
 					$rr = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 					$GLOBALS['TYPO3_DB']->sql_free_result($res);
@@ -1339,7 +1339,7 @@ class BackendUtility {
 	static public function getListGroupNames($fields = 'title, uid') {
 		$exQ = ' AND hide_in_lists=0';
 		if (!$GLOBALS['BE_USER']->isAdmin()) {
-			$exQ .= ' AND uid IN (' . ($GLOBALS['BE_USER']->user['usergroup_cached_list'] ? $GLOBALS['BE_USER']->user['usergroup_cached_list'] : 0) . ')';
+			$exQ .= ' AND uid IN (' . ($GLOBALS['BE_USER']->user['usergroup_cached_list'] ?: 0) . ')';
 		}
 		return self::getGroupNames($fields, $exQ);
 	}
@@ -2253,7 +2253,7 @@ class BackendUtility {
 	 * @return string File icon filename
 	 */
 	static public function getFileIcon($ext) {
-		return $GLOBALS['FILEICONS'][$ext] ? $GLOBALS['FILEICONS'][$ext] : $GLOBALS['FILEICONS']['default'];
+		return $GLOBALS['FILEICONS'][$ext] ?: $GLOBALS['FILEICONS']['default'];
 	}
 
 	/**

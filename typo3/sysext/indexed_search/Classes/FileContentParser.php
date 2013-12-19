@@ -234,7 +234,7 @@ class FileContentParser {
 		// If extension was OK:
 		if ($extOK) {
 			$this->supportedExtensions[$extension] = TRUE;
-			$this->ext2itemtype_map[$extension] = $mainExtension ? $mainExtension : $extension;
+			$this->ext2itemtype_map[$extension] = $mainExtension ?: $extension;
 			return TRUE;
 		}
 	}

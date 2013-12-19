@@ -391,7 +391,7 @@ class SearchResultContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstra
 					} elseif (strlen($val) > 1) {
 						// A searchword MUST be at least two characters long!
 						$this->sword_array[$i]['sword'] = $val;
-						$this->sword_array[$i]['oper'] = $lastoper ? $lastoper : $this->default_operator;
+						$this->sword_array[$i]['oper'] = $lastoper ?: $this->default_operator;
 						$lastoper = '';
 						$i++;
 					}

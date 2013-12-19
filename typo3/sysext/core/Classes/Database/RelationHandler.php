@@ -475,7 +475,7 @@ class RelationHandler {
 			// Default
 			if (!$this->MM_is_foreign) {
 				// If tablesnames columns exists and contain a name, then this value is the table, else it's the firstTable...
-				$theTable = $row['tablenames'] ? $row['tablenames'] : $this->firstTable;
+				$theTable = $row['tablenames'] ?: $this->firstTable;
 			}
 			if (($row[$uidForeign_field] || $theTable == 'pages') && $theTable && isset($this->tableArray[$theTable])) {
 				$this->itemArray[$key]['id'] = $row[$uidForeign_field];

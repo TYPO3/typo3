@@ -191,12 +191,12 @@ class ExtensionListUtility implements \SplObserver {
 			intval($subject->getLastuploaddate()),
 			$subject->getT3xfilemd5(),
 			$this->repositoryUid,
-			$this->extensionModel->getDefaultState($subject->getState() ? $subject->getState() : ''),
+			$this->extensionModel->getDefaultState($subject->getState() ?: ''),
 			intval($subject->getReviewstate()),
-			$this->extensionModel->getCategoryIndexFromStringOrNumber($subject->getCategory() ? $subject->getCategory() : ''),
-			$subject->getDescription() ? $subject->getDescription() : '',
-			$subject->getDependencies() ? $subject->getDependencies() : '',
-			$subject->getUploadcomment() ? $subject->getUploadcomment() : ''
+			$this->extensionModel->getCategoryIndexFromStringOrNumber($subject->getCategory() ?: ''),
+			$subject->getDescription() ?: '',
+			$subject->getDependencies() ?: '',
+			$subject->getUploadcomment() ?: ''
 		);
 		++$this->sumRecords;
 	}

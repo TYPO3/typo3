@@ -1283,9 +1283,9 @@ class HtmlParser {
 					$attr .= '="' . htmlspecialchars($v) . '"';
 				}
 			} else {
-				$attr = $meta[$k]['origTag'] ? $meta[$k]['origTag'] : $k;
-				if ((string)$v !== '' || isset($meta[$k]['dashType'])) {
-					$dash = $meta[$k]['dashType'] ? $meta[$k]['dashType'] : (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($v) ? '' : '"');
+				$attr = $meta[$k]['origTag'] ?: $k;
+				if (strcmp($v, '') || isset($meta[$k]['dashType'])) {
+					$dash = $meta[$k]['dashType'] ?: (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($v) ? '' : '"');
 					$attr .= '=' . $dash . $v . $dash;
 				}
 			}

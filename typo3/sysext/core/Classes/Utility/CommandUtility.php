@@ -386,7 +386,7 @@ class CommandUtility {
 
 			// Image magick paths first
 			// im_path_lzw take precedence over im_path
-		if (($imPath = ($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_path_lzw'] ? $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_path_lzw'] : $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_path']))) {
+		if (($imPath = ($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_path_lzw'] ?: $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_path']))) {
 			$imPath = self::fixPath($imPath);
 			$pathsArr[$imPath] = $imPath;
 		}

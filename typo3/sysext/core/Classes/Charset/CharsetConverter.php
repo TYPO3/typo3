@@ -671,9 +671,9 @@ class CharsetConverter {
 			$script = $this->lang_to_script[$language];
 		}
 		if (TYPO3_OS == 'WIN') {
-			$cs = $this->script_to_charset_windows[$script] ? $this->script_to_charset_windows[$script] : 'windows-1252';
+			$cs = $this->script_to_charset_windows[$script] ?: 'windows-1252';
 		} else {
-			$cs = $this->script_to_charset_unix[$script] ? $this->script_to_charset_unix[$script] : 'utf-8';
+			$cs = $this->script_to_charset_unix[$script] ?: 'utf-8';
 		}
 		return $cs;
 	}

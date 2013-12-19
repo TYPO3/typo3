@@ -144,7 +144,7 @@ class BasicFileUtility {
 		$this->mounts = $mounts;
 		$this->webPath = GeneralUtility::getIndpEnv('TYPO3_DOCUMENT_ROOT');
 		$this->isInit = 1;
-		$this->maxInputNameLen = $GLOBALS['TYPO3_CONF_VARS']['SYS']['maxFileNameLength'] ? $GLOBALS['TYPO3_CONF_VARS']['SYS']['maxFileNameLength'] : $this->maxInputNameLen;
+		$this->maxInputNameLen = $GLOBALS['TYPO3_CONF_VARS']['SYS']['maxFileNameLength'] ?: $this->maxInputNameLen;
 	}
 
 	/**

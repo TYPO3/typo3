@@ -176,10 +176,10 @@ class ShowImageController {
 
 <html>
 <head>
-	<title>' . htmlspecialchars(($this->title ? $this->title : 'Image')) . '</title>
+	<title>' . htmlspecialchars(($this->title ?: 'Image')) . '</title>
 	' . ($this->title ? '' : '<meta name="robots" content="noindex,follow" />') . '
 </head>
-		' . ($this->bodyTag ? $this->bodyTag : '<body>');
+		' . ($this->bodyTag ?: '<body>');
 		if (is_array($imgInfo)) {
 			$wrapParts = explode('|', $this->wrap);
 			$this->content .= trim($wrapParts[0]) . $img->imgTag($imgInfo) . trim($wrapParts[1]);

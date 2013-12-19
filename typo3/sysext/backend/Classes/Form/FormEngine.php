@@ -1020,7 +1020,7 @@ class FormEngine {
 		$PA['pal'] = $pal;
 		// Get the TCA configuration for the current field:
 		$PA['fieldConf'] = $GLOBALS['TCA'][$table]['columns'][$field];
-		$PA['fieldConf']['config']['form_type'] = $PA['fieldConf']['config']['form_type'] ? $PA['fieldConf']['config']['form_type'] : $PA['fieldConf']['config']['type'];
+		$PA['fieldConf']['config']['form_type'] = $PA['fieldConf']['config']['form_type'] ?: $PA['fieldConf']['config']['type'];
 
 		// Using "form_type" locally in this script
 		$skipThisField = $this->inline->skipField($table, $field, $row, $PA['fieldConf']['config']);
@@ -1103,9 +1103,9 @@ class FormEngine {
 					$PA['onFocus'] = $palJSfunc && !$GLOBALS['BE_USER']->uc['dontShowPalettesOnFocusInAB'] ? ' onfocus="' . htmlspecialchars($palJSfunc) . '"' : '';
 					// Find item
 					$item = '';
-					$PA['label'] = $PA['altName'] ? $PA['altName'] : $PA['fieldConf']['label'];
-					$PA['label'] = $PA['fieldTSConfig']['label'] ? $PA['fieldTSConfig']['label'] : $PA['label'];
-					$PA['label'] = $PA['fieldTSConfig']['label.'][$GLOBALS['LANG']->lang] ? $PA['fieldTSConfig']['label.'][$GLOBALS['LANG']->lang] : $PA['label'];
+					$PA['label'] = $PA['altName'] ?: $PA['fieldConf']['label'];
+					$PA['label'] = $PA['fieldTSConfig']['label'] ?: $PA['label'];
+					$PA['label'] = $PA['fieldTSConfig']['label.'][$GLOBALS['LANG']->lang] ?: $PA['label'];
 					$PA['label'] = $this->sL($PA['label']);
 					// JavaScript code for event handlers:
 					$PA['fieldChangeFunc'] = array();
@@ -1222,7 +1222,7 @@ class FormEngine {
 	 * @todo Define visibility
 	 */
 	public function getSingleField_SW($table, $field, $row, &$PA) {
-		$PA['fieldConf']['config']['form_type'] = $PA['fieldConf']['config']['form_type'] ? $PA['fieldConf']['config']['form_type'] : $PA['fieldConf']['config']['type'];
+		$PA['fieldConf']['config']['form_type'] = $PA['fieldConf']['config']['form_type'] ?: $PA['fieldConf']['config']['type'];
 		// Using "form_type" locally in this script
 		// Hook: getSingleField_beforeRender
 		foreach ($this->hookObjectsSingleField as $hookObject) {
@@ -1396,7 +1396,7 @@ class FormEngine {
 		if (isset($config['checkbox'])) {
 			$item .= IconUtility::getSpriteIcon('actions-input-clear', array('tag' => 'a', 'class' => 't3-tceforms-input-clearer', 'onclick' => 'document.getElementById(\'' . $inputId . '\').value=\'\';document.getElementById(\'' . $inputId . '\').focus();' . implode('', $PA['fieldChangeFunc'])));
 		}
-		$mLgd = $config['max'] ? $config['max'] : 256;
+		$mLgd = $config['max'] ?: 256;
 		$iOnChange = implode('', $PA['fieldChangeFunc']);
 		$cssClasses[] = 'hasDefaultValue';
 		$item .= '<input type="text" ' . $this->getPlaceholderAttribute($table, $field, $config, $row) . 'id="' . $inputId . '" ' . 'class="' . implode(' ', $cssClasses) . '" ' . 'name="' . $PA['itemFormElName'] . '_hr" ' . 'value=""' . 'style="' . $cssStyle . '" ' . 'maxlength="' . $mLgd . '" ' . 'onchange="' . htmlspecialchars($iOnChange) . '"' . $PA['onFocus'] . ' />';
@@ -1573,7 +1573,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 				if ($specConf['nowrap']) {
 					$wrap = 'off';
 				} else {
-					$wrap = $config['wrap'] ? $config['wrap'] : 'virtual';
+					$wrap = $config['wrap'] ?: 'virtual';
 				}
 				$classes = array();
 				if ($specConf['fixed-font']) {

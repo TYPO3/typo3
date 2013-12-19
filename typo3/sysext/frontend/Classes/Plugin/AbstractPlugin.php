@@ -425,7 +425,7 @@ class AbstractPlugin {
 				$overrulePIvars = array_merge($overrulePIvars, (array) $mergeArr);
 				$str = $this->pi_linkTP($str, array($this->prefixId => $overrulePIvars), $cache, $altPageId);
 			} else {
-				$overrulePIvars = array('showUid' => $uid ? $uid : '');
+				$overrulePIvars = array('showUid' => $uid ?: '');
 				$overrulePIvars = array_merge($overrulePIvars, (array) $mergeArr);
 				$str = $this->pi_linkTP_keepPIvars($str, $overrulePIvars, $cache, 0, $altPageId);
 			}
@@ -563,7 +563,7 @@ class AbstractPlugin {
 			// Link to previous page
 			if ($alwaysPrev >= 0) {
 				if ($pointer > 0) {
-					$links[] = $this->cObj->wrap($this->pi_linkTP_keepPIvars($this->pi_getLL('pi_list_browseresults_prev', '< Previous', $hscText), array($pointerName => $pointer - 1 ? $pointer - 1 : ''), $pi_isOnlyFields), $wrapper['inactiveLinkWrap']);
+					$links[] = $this->cObj->wrap($this->pi_linkTP_keepPIvars($this->pi_getLL('pi_list_browseresults_prev', '< Previous', $hscText), array($pointerName => ($pointer - 1) ?: ''), $pi_isOnlyFields), $wrapper['inactiveLinkWrap']);
 				} elseif ($alwaysPrev) {
 					$links[] = $this->cObj->wrap($this->pi_getLL('pi_list_browseresults_prev', '< Previous', $hscText), $wrapper['disabledLinkWrap']);
 				}
@@ -580,10 +580,10 @@ class AbstractPlugin {
 					if ($this->internal['dontLinkActivePage']) {
 						$links[] = $this->cObj->wrap($pageText, $wrapper['activeLinkWrap']);
 					} else {
-						$links[] = $this->cObj->wrap($this->pi_linkTP_keepPIvars($pageText, array($pointerName => $a ? $a : ''), $pi_isOnlyFields), $wrapper['activeLinkWrap']);
+						$links[] = $this->cObj->wrap($this->pi_linkTP_keepPIvars($pageText, array($pointerName => $a ?: ''), $pi_isOnlyFields), $wrapper['activeLinkWrap']);
 					}
 				} else {
-					$links[] = $this->cObj->wrap($this->pi_linkTP_keepPIvars($pageText, array($pointerName => $a ? $a : ''), $pi_isOnlyFields), $wrapper['inactiveLinkWrap']);
+					$links[] = $this->cObj->wrap($this->pi_linkTP_keepPIvars($pageText, array($pointerName => $a ?: ''), $pi_isOnlyFields), $wrapper['inactiveLinkWrap']);
 				}
 			}
 			if ($pointer < $totalPages - 1 || $showFirstLast) {

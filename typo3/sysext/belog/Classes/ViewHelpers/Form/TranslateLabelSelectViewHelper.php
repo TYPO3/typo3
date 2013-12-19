@@ -78,7 +78,7 @@ class TranslateLabelSelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\S
 		}
 		$labelKey = $this->hasArgument('optionLabelPrefix') ? $this->arguments['optionLabelPrefix'] . $label : $label;
 		$translatedLabel = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate($labelKey, $this->controllerContext->getRequest()->getControllerExtensionName());
-		return $translatedLabel ? $translatedLabel : $label;
+		return $translatedLabel ?: $label;
 	}
 
 }

@@ -140,7 +140,7 @@ class WorkspaceService implements \TYPO3\CMS\Core\SingletonInterface {
 				}
 			}
 			// Select all versions to swap:
-			$versions = $this->selectVersionsInWorkspace($wsid, 0, $stage, $pageId ? $pageId : -1, 0, 'tables_modify', $language);
+			$versions = $this->selectVersionsInWorkspace($wsid, 0, $stage, $pageId ?: -1, 0, 'tables_modify', $language);
 			// Traverse the selection to build CMD array:
 			foreach ($versions as $table => $records) {
 				foreach ($records as $rec) {
@@ -168,7 +168,7 @@ class WorkspaceService implements \TYPO3\CMS\Core\SingletonInterface {
 			// Define stage to select:
 			$stage = -99;
 			// Select all versions to swap:
-			$versions = $this->selectVersionsInWorkspace($wsid, 0, $stage, $pageId ? $pageId : -1, 0, 'tables_modify', $language);
+			$versions = $this->selectVersionsInWorkspace($wsid, 0, $stage, $pageId ?: -1, 0, 'tables_modify', $language);
 			// Traverse the selection to build CMD array:
 			foreach ($versions as $table => $records) {
 				foreach ($records as $rec) {

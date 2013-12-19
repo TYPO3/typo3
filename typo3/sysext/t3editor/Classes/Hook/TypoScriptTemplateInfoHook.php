@@ -112,7 +112,7 @@ class TypoScriptTemplateInfoHook {
 			// If given use the requested template_uid
 			// if not, use the first template-record on the page (in this case there should only be one record!)
 			$set = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('SET');
-			$template_uid = $set['templatesOnPage'] ? $set['templatesOnPage'] : 0;
+			$template_uid = $set['templatesOnPage'] ?: 0;
 			// Defined global here!
 			$tmpl = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\ExtendedTemplateService');
 			// Do not log time-performance information
@@ -122,7 +122,7 @@ class TypoScriptTemplateInfoHook {
 			$tplRow = $tmpl->ext_getFirstTemplate($pageId, $template_uid);
 			$existTemplate = is_array($tplRow) ? TRUE : FALSE;
 			if ($existTemplate) {
-				$saveId = $tplRow['_ORIG_uid'] ? $tplRow['_ORIG_uid'] : $tplRow['uid'];
+				$saveId = $tplRow['_ORIG_uid'] ?: $tplRow['uid'];
 				// Update template ?
 				$POST = \TYPO3\CMS\Core\Utility\GeneralUtility::_POST();
 				if ($POST['submit']) {

@@ -168,7 +168,7 @@ class DataSubmissionController {
 				$this->mailMessage->setBody($plainTextContent, 'text/plain', $this->characterSet);
 			}
 			for ($a = 0; $a < 10; $a++) {
-				$variableName = 'attachment' . ($a ? $a : '');
+				$variableName = 'attachment' . ($a ?: '');
 				if (!isset($_FILES[$variableName])) {
 					continue;
 				}

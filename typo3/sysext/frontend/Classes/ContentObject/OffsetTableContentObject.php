@@ -118,7 +118,7 @@ class OffsetTableContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstrac
 			// top
 			if ($valPairs[1]) {
 				$rows[1] .= '<tr>';
-				$rows[1] .= '<td><img src="' . $GLOBALS['TSFE']->absRefPrefix . 'clear.gif" width="' . ($valPairs[0] ? $valPairs[0] : 1) . '" height="' . $valPairs[1] . '" alt="" title="" /></td>';
+				$rows[1] .= '<td><img src="' . $GLOBALS['TSFE']->absRefPrefix . 'clear.gif" width="' . ($valPairs[0] ?: 1) . '" height="' . $valPairs[1] . '" alt="" title="" /></td>';
 				if ($valPairs[0]) {
 					$rows[1] .= '<td></td>';
 				}
@@ -134,7 +134,7 @@ class OffsetTableContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstrac
 			}
 			$rows[2] .= '<td' . $this->tdParams . '>' . $content . '</td>';
 			if ($valPairs[2]) {
-				$rows[2] .= $valPairs[3] ? '<td>' . $heightImg . '</td>' : '<td><img src="' . $GLOBALS['TSFE']->absRefPrefix . 'clear.gif" width="' . $valPairs[2] . '" height="' . ($valPairs[5] ? $valPairs[5] : 1) . '" alt="" title="" /></td>';
+				$rows[2] .= $valPairs[3] ? '<td>' . $heightImg . '</td>' : '<td><img src="' . $GLOBALS['TSFE']->absRefPrefix . 'clear.gif" width="' . $valPairs[2] . '" height="' . ($valPairs[5] ?: 1) . '" alt="" title="" /></td>';
 			}
 			$rows[2] .= '</tr>';
 			// Bottom row:
@@ -146,7 +146,7 @@ class OffsetTableContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstrac
 				if ($valPairs[2]) {
 					$rows[3] .= '<td>' . $widthImg . '</td>';
 				}
-				$rows[3] .= '<td><img src="' . $GLOBALS['TSFE']->absRefPrefix . 'clear.gif" width="' . ($valPairs[2] ? $valPairs[2] : ($valPairs[4] ? $valPairs[4] : 1)) . '" height="' . $valPairs[3] . '" alt="" title="" /></td>';
+				$rows[3] .= '<td><img src="' . $GLOBALS['TSFE']->absRefPrefix . 'clear.gif" width="' . ($valPairs[2] ?: ($valPairs[4] ?: 1)) . '" height="' . $valPairs[3] . '" alt="" title="" /></td>';
 				$rows[3] .= '</tr>';
 			}
 			return $this->begin . implode('', $rows) . $this->end;

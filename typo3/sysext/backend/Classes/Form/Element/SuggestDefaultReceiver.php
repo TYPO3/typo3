@@ -307,7 +307,7 @@ class SuggestDefaultReceiver {
 	 */
 	protected function checkRecordAccess($row, $uid) {
 		$retValue = TRUE;
-		$table = $this->mmForeignTable ? $this->mmForeignTable : $this->table;
+		$table = $this->mmForeignTable ?: $this->table;
 		if ($table == 'pages') {
 			if (!BackendUtility::readPageAccess($uid, $GLOBALS['BE_USER']->getPagePermsClause(1))) {
 				$retValue = FALSE;

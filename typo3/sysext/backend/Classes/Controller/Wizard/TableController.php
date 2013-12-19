@@ -582,7 +582,7 @@ class TableController {
 		if (!$cols && trim($tLines[0])) {
 			$cols = count(explode($this->tableParsing_delimiter, $tLines[0]));
 		}
-		$cols = $cols ? $cols : 4;
+		$cols = $cols ?: 4;
 		// Traverse the number of table elements:
 		$cfgArr = array();
 		foreach ($tLines as $k => $v) {

@@ -130,7 +130,7 @@ class StorageRepository extends AbstractRepository {
 		$res = $this->db->exec_SELECTquery(
 			'*',
 			$this->table,
-			($whereClause ? $whereClause : '1=1') . $this->getWhereClauseForEnabledFields()
+			($whereClause ?: '1=1') . $this->getWhereClauseForEnabledFields()
 		);
 
 		/** @var $driverRegistry Driver\DriverRegistry */

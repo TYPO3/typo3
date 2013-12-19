@@ -207,7 +207,7 @@ class FolderTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 	 * @return string The title
 	 */
 	public function getTitleStr($row, $titleLen = 30) {
-		return $row['_title'] ? $row['_title'] : parent::getTitleStr($row, $titleLen);
+		return $row['_title'] ?: parent::getTitleStr($row, $titleLen);
 	}
 
 	/**

@@ -1315,7 +1315,7 @@ class DataHandler {
 			BackendUtility::fixVersioningPid($table, $currentRecord);
 			// Get original language record if available:
 			if (is_array($currentRecord) && $GLOBALS['TCA'][$table]['ctrl']['transOrigDiffSourceField'] && $GLOBALS['TCA'][$table]['ctrl']['languageField'] && $currentRecord[$GLOBALS['TCA'][$table]['ctrl']['languageField']] > 0 && $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] && intval($currentRecord[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']]) > 0) {
-				$lookUpTable = $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerTable'] ? $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerTable'] : $table;
+				$lookUpTable = $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerTable'] ?: $table;
 				$originalLanguageRecord = $this->recordInfo($lookUpTable, $currentRecord[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']], '*');
 				BackendUtility::workspaceOL($lookUpTable, $originalLanguageRecord);
 				$originalLanguage_diffStorage = unserialize($currentRecord[$GLOBALS['TCA'][$table]['ctrl']['transOrigDiffSourceField']]);
@@ -1839,7 +1839,7 @@ class DataHandler {
 			if (empty($filter['userFunc'])) {
 				continue;
 			}
-			$parameters = $filter['parameters'] ? $filter['parameters'] : array();
+			$parameters = $filter['parameters'] ?: array();
 			$parameters['values'] = $values;
 			$parameters['tcaFieldConfig'] = $tcaFieldConfiguration;
 			$values = GeneralUtility::callUserFunction($filter['userFunc'], $parameters, $this);
@@ -1890,7 +1890,7 @@ class DataHandler {
 			// Setting permitted extensions.
 			$all_files = array();
 			$all_files['webspace']['allow'] = $tcaFieldConf['allowed'];
-			$all_files['webspace']['deny'] = $tcaFieldConf['disallowed'] ? $tcaFieldConf['disallowed'] : '*';
+			$all_files['webspace']['deny'] = $tcaFieldConf['disallowed'] ?: '*';
 			$all_files['ftpspace'] = $all_files['webspace'];
 			$this->fileFunc->init('', $all_files);
 		}
@@ -4685,7 +4685,7 @@ class DataHandler {
 								$overrideArray = array(
 									't3ver_id' => $highestVerNumber + 1,
 									't3ver_oid' => $id,
-									't3ver_label' => $label ? $label : $subVer . ' / ' . date('d-m-Y H:m:s'),
+									't3ver_label' => $label ?: $subVer . ' / ' . date('d-m-Y H:m:s'),
 									't3ver_wsid' => $this->BE_USER->workspace,
 									't3ver_state' => (string)($delete ? new VersionState(VersionState::DELETE_PLACEHOLDER) : new VersionState(VersionState::DEFAULT_STATE)),
 									't3ver_count' => 0,

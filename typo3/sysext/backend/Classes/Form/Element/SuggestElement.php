@@ -277,7 +277,7 @@ class SuggestElement {
 			asort($rowsSort);
 			$rowsSort = array_keys($rowsSort);
 			// Limit the number of items in the result list
-			$maxItems = $config['maxItemsInResultList'] ? $config['maxItemsInResultList'] : 10;
+			$maxItems = $config['maxItemsInResultList'] ?: 10;
 			$maxItems = min(count($resultRows), $maxItems);
 			// put together the selector entry
 			for ($i = 0; $i < $maxItems; $i++) {

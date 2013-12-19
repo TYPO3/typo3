@@ -2032,7 +2032,7 @@ class GeneralUtility {
 	 */
 	static public function array2xml_cs(array $array, $docTag = 'phparray', array $options = array(), $charset = '') {
 		// Set default charset unless explicitly specified
-		$charset = $charset ? $charset : 'utf-8';
+		$charset = $charset ?: 'utf-8';
 		// Return XML:
 		return '<?xml version="1.0" encoding="' . htmlspecialchars($charset) . '" standalone="yes" ?>' . LF . self::array2xml($array, '', 0, $docTag, 0, $options);
 	}
@@ -2097,7 +2097,7 @@ class GeneralUtility {
 				} else {
 					// Use special tag for num. keys:
 					$attr .= ' index="' . $tagName . '"';
-					$tagName = $options['useIndexTagForNum'] ? $options['useIndexTagForNum'] : 'numIndex';
+					$tagName = $options['useIndexTagForNum'] ?: 'numIndex';
 				}
 			} elseif ($options['useIndexTagForAssoc']) {
 				// Use tag for all associative keys:
@@ -2211,7 +2211,7 @@ class GeneralUtility {
 		// Default output charset is UTF-8, only ASCII, ISO-8859-1 and UTF-8 are supported!!!
 		$match = array();
 		preg_match('/^[[:space:]]*<\\?xml[^>]*encoding[[:space:]]*=[[:space:]]*"([^"]*)"/', substr($string, 0, 200), $match);
-		$theCharset = $match[1] ? $match[1] : 'utf-8';
+		$theCharset = $match[1] ?: 'utf-8';
 		// us-ascii / utf-8 / iso-8859-1
 		xml_parser_set_option($parser, XML_OPTION_TARGET_ENCODING, $theCharset);
 		// Parse content:
@@ -2483,8 +2483,8 @@ class GeneralUtility {
 			$fp = @fsockopen(($scheme . $parsedURL['host']), $port, $errno, $errstr, 2.0);
 			if (!$fp || $errno > 0) {
 				if (isset($report)) {
-					$report['error'] = $errno ? $errno : -1;
-					$report['message'] = $errno ? ($errstr ? $errstr : 'Socket error.') : 'Socket initialization error.';
+					$report['error'] = $errno ?: -1;
+					$report['message'] = $errno ? ($errstr ?: 'Socket error.') : 'Socket initialization error.';
 				}
 				return FALSE;
 			}

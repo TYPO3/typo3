@@ -130,9 +130,9 @@ class ServicesListReport implements \TYPO3\CMS\Reports\ReportInterface {
 		if (!empty($serviceInformation['description'])) {
 			$serviceDescription .= '<p class="service-description">' . $serviceInformation['description'] . '</p>';
 		}
-		$serviceSubtypes = empty($serviceInformation['serviceSubTypes']) ? '-' : implode(', ', $serviceInformation['serviceSubTypes']);
-		$serviceOperatingSystem = empty($serviceInformation['os']) ? $GLOBALS['LANG']->getLL('any') : $serviceInformation['os'];
-		$serviceRequiredExecutables = empty($serviceInformation['exec']) ? '-' : $serviceInformation['exec'];
+		$serviceSubtypes = $serviceInformation['serviceSubTypes'] ? implode(', ', $serviceInformation['serviceSubTypes']) : '-';
+		$serviceOperatingSystem = $serviceInformation['os'] ?: $GLOBALS['LANG']->getLL('any');
+		$serviceRequiredExecutables = $serviceInformation['exec'] ?: '-';
 		$serviceAvailabilityClass = 'typo3-message message-error';
 		$serviceAvailable = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xlf:no');
 		try {

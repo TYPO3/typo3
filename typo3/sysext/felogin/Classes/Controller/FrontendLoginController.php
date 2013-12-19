@@ -152,7 +152,7 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin 
 		}
 		$this->redirectUrl = $this->validateRedirectUrl($this->redirectUrl);
 		// Get Template
-		$templateFile = $this->conf['templateFile'] ? $this->conf['templateFile'] : 'EXT:felogin/template.html';
+		$templateFile = $this->conf['templateFile'] ?: 'EXT:felogin/template.html';
 		$this->template = $this->cObj->fileResource($templateFile);
 		// Is user logged in?
 		$this->userIsLoggedIn = $GLOBALS['TSFE']->loginUser;
@@ -294,7 +294,7 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin 
 	protected function changePassword() {
 		$subpartArray = ($linkpartArray = array());
 		$done = FALSE;
-		$minLength = intval($this->conf['newPasswordMinLength']) ? intval($this->conf['newPasswordMinLength']) : 6;
+		$minLength = intval($this->conf['newPasswordMinLength']) ?: 6;
 		$subpart = $this->cObj->getSubpart($this->template, '###TEMPLATE_CHANGEPASSWORD###');
 		$markerArray['###STATUS_HEADER###'] = $this->getDisplayText('change_password_header', $this->conf['changePasswordHeader_stdWrap.']);
 		$markerArray['###STATUS_MESSAGE###'] = sprintf($this->getDisplayText(

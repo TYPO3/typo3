@@ -234,7 +234,7 @@ class User {
 								if (!$v[($k2i . '.')]['dontInsertSiteUrl']) {
 									$v[$k2i . '.']['content'] = str_replace('###_URL###', $this->siteUrl, $v[$k2i . '.']['content']);
 								}
-								$logo = $v[$k2i . '.']['_icon'] ? $v[$k2i . '.']['_icon'] : '';
+								$logo = $v[$k2i . '.']['_icon'] ?: '';
 								$onClickEvent = '';
 								switch ((string) $v[($k2i . '.')]['mode']) {
 									case 'wrap':

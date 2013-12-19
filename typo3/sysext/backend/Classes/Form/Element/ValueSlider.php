@@ -67,8 +67,8 @@ class ValueSlider {
 			$max = isset($params['fieldConfig']['range']['upper']) ? intval($params['fieldConfig']['range']['upper']) : 10000;
 		}
 		$elementType = $params['fieldConfig']['type'];
-		$step = $params['wConf']['step'] ? $params['wConf']['step'] : 1;
-		$width = intval($params['wConf']['width']) ? intval($params['wConf']['width']) : 400;
+		$step = $params['wConf']['step'] ?: 1;
+		$width = intval($params['wConf']['width']) ?: 400;
 		$type = 'null';
 		if (isset($params['fieldConfig']['eval'])) {
 			$eval = GeneralUtility::trimExplode(',', $params['fieldConfig']['eval'], TRUE);

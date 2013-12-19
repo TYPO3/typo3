@@ -148,7 +148,7 @@ class ConfigurationForm extends \TYPO3\CMS\Core\TypoScript\ExtendedTemplateServi
 			}
 		');
 		if ($addFormTag) {
-			$content .= '<form action="' . htmlspecialchars(($script ? $script : \TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript())) . '" name="' . $this->ext_CEformName . '" method="post" enctype="' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'] . '">';
+			$content .= '<form action="' . htmlspecialchars(($script ?: \TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript())) . '" name="' . $this->ext_CEformName . '" method="post" enctype="' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'] . '">';
 		}
 		$content .= $addFields;
 		$content .= $printFields;

@@ -475,7 +475,7 @@ class SetupModuleController {
 				continue;
 			}
 			$label = $this->getLabel($config['label'], $fieldName);
-			$label = $this->getCSH($config['csh'] ? $config['csh'] : $fieldName, $label);
+			$label = $this->getCSH($config['csh'] ?: $fieldName, $label);
 			$type = $config['type'];
 			$eval = $config['eval'];
 			$class = $config['class'];
@@ -728,11 +728,11 @@ class SetupModuleController {
 		} else {
 			$out = htmlspecialchars($str);
 		}
-		if (isset($this->overrideConf[$key ? $key : $str])) {
+		if (isset($this->overrideConf[$key ?: $str])) {
 			$out = '<span style="color:#999999">' . $out . '</span>';
 		}
 		if ($addLabelTag) {
-			$out = '<label for="' . ($altLabelTagId ? $altLabelTagId : 'field_' . $key) . '">' . $out . '</label>';
+			$out = '<label for="' . ($altLabelTagId ?: 'field_' . $key) . '">' . $out . '</label>';
 		}
 		return $out;
 	}

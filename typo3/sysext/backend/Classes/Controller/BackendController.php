@@ -316,7 +316,7 @@ class BackendController {
 		$icon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-user-' . ($GLOBALS['BE_USER']->isAdmin() ? 'admin' : 'backend'));
 		$realName = $GLOBALS['BE_USER']->user['realName'];
 		$username = $GLOBALS['BE_USER']->user['username'];
-		$label = $realName ? $realName : $username;
+		$label = $realName ?: $username;
 		$title = $username;
 		// Link to user setup if it's loaded and user has access
 		$link = '';

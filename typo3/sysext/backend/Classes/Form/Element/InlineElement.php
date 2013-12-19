@@ -802,7 +802,7 @@ class InlineElement {
 		$foreign_selector = $conf['foreign_selector'];
 		$PA = array();
 		$PA['fieldConf'] = $GLOBALS['TCA'][$foreign_table]['columns'][$foreign_selector];
-		$PA['fieldConf']['config']['form_type'] = $PA['fieldConf']['config']['form_type'] ? $PA['fieldConf']['config']['form_type'] : $PA['fieldConf']['config']['type'];
+		$PA['fieldConf']['config']['form_type'] = $PA['fieldConf']['config']['form_type'] ?: $PA['fieldConf']['config']['type'];
 		// Using "form_type" locally in this script
 		$PA['fieldTSConfig'] = $this->fObj->setTSconfig($foreign_table, array(), $foreign_selector);
 		$config = $PA['fieldConf']['config'];
@@ -2262,7 +2262,7 @@ class InlineElement {
 			if ($PA['fieldConf'] && $conf['foreign_selector_fieldTcaOverride']) {
 				\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($PA['fieldConf'], $conf['foreign_selector_fieldTcaOverride']);
 			}
-			$PA['fieldConf']['config']['form_type'] = $PA['fieldConf']['config']['form_type'] ? $PA['fieldConf']['config']['form_type'] : $PA['fieldConf']['config']['type'];
+			$PA['fieldConf']['config']['form_type'] = $PA['fieldConf']['config']['form_type'] ?: $PA['fieldConf']['config']['type'];
 			// Using "form_type" locally in this script
 			$PA['fieldTSConfig'] = $this->fObj->setTSconfig($foreign_table, array(), $field);
 			$config = $PA['fieldConf']['config'];
@@ -2478,7 +2478,7 @@ class InlineElement {
 	 */
 	protected function wrapWithAnchor($text, $link, $attributes = array()) {
 		$link = trim($link);
-		$result = '<a href="' . ($link ? $link : '#') . '"';
+		$result = '<a href="' . ($link ?: '#') . '"';
 		foreach ($attributes as $key => $value) {
 			$result .= ' ' . $key . '="' . htmlspecialchars(trim($value)) . '"';
 		}

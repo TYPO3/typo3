@@ -100,7 +100,7 @@ class Mailer extends \Swift_Mailer {
 				if ($port === NULL || $port === '') {
 					$port = '25';
 				}
-				$useEncryption = $this->mailSettings['transport_smtp_encrypt'] ? $this->mailSettings['transport_smtp_encrypt'] : NULL;
+				$useEncryption = $this->mailSettings['transport_smtp_encrypt'] ?: NULL;
 				// Create our transport
 				$this->transport = \Swift_SmtpTransport::newInstance($host, $port, $useEncryption);
 				// Need authentication?

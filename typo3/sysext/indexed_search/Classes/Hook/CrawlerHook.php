@@ -244,7 +244,7 @@ class CrawlerHook {
 				);
 			}
 			// Init:
-			$pid = intval($cfgRec['alternative_source_pid']) ? intval($cfgRec['alternative_source_pid']) : $cfgRec['pid'];
+			$pid = intval($cfgRec['alternative_source_pid']) ?: $cfgRec['pid'];
 			$numberOfRecords = $cfgRec['recordsbatch'] ? \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($cfgRec['recordsbatch'], 1) : 100;
 			// Get root line:
 			$rl = $this->getUidRootLineForClosestTemplate($cfgRec['pid']);
@@ -620,7 +620,7 @@ class CrawlerHook {
 		if ($cfgRec['timer_frequency'] <= 24 * 3600) {
 			$aMidNight = mktime(0, 0, 0) - 1 * 24 * 3600;
 		} else {
-			$lastTime = $cfgRec['timer_next_indexing'] ? $cfgRec['timer_next_indexing'] : $GLOBALS['EXEC_TIME'];
+			$lastTime = $cfgRec['timer_next_indexing'] ?: $GLOBALS['EXEC_TIME'];
 			$aMidNight = mktime(0, 0, 0, date('m', $lastTime), date('d', $lastTime), date('y', $lastTime));
 		}
 		// Find last offset time plus frequency in seconds:

@@ -329,7 +329,7 @@ class AbstractMenuContentObject {
 			}
 			// Setting "nextActive": This is the page uid + MPvar of the NEXT page in rootline. Used to expand the menu if we are in the right branch of the tree
 			// Notice: The automatic expansion of a menu is designed to work only when no "special" modes (except "directory") are used.
-			$startLevel = $directoryLevel ? $directoryLevel : $this->entryLevel;
+			$startLevel = $directoryLevel ?: $this->entryLevel;
 			$currentLevel = $startLevel + $this->menuNumber;
 			if (is_array($this->tmpl->rootLine[$currentLevel])) {
 				$nextMParray = $this->MP_array;
@@ -382,7 +382,7 @@ class AbstractMenuContentObject {
 			// Begin production of menu:
 			$temp = array();
 			$altSortFieldValue = trim($this->mconf['alternativeSortingField']);
-			$altSortField = $altSortFieldValue ? $altSortFieldValue : 'sorting';
+			$altSortField = $altSortFieldValue ?: 'sorting';
 			// ... only for the FIRST level of a HMENU
 			if ($this->menuNumber == 1 && $this->conf['special']) {
 				$value = isset($this->conf['special.']['value.']) ? $this->parent_cObj->stdWrap($this->conf['special.']['value'], $this->conf['special.']['value.']) : $this->conf['special.']['value'];
@@ -1018,7 +1018,7 @@ class AbstractMenuContentObject {
 					// If rollOver on normal, we must apply a state for rollOver on the active
 					if ($ROconf) {
 						// If RollOver on active then apply this
-						$ROconf[$key] = $IFSUBROconf[$key] ? $IFSUBROconf[$key] : $IFSUBconf[$key];
+						$ROconf[$key] = $IFSUBROconf[$key] ?: $IFSUBconf[$key];
 					}
 				}
 			}
@@ -1044,7 +1044,7 @@ class AbstractMenuContentObject {
 					// If rollOver on normal, we must apply a state for rollOver on the active
 					if ($ROconf) {
 						// If RollOver on active then apply this
-						$ROconf[$key] = $ACTROconf[$key] ? $ACTROconf[$key] : $ACTconf[$key];
+						$ROconf[$key] = $ACTROconf[$key] ?: $ACTconf[$key];
 					}
 				}
 			}
@@ -1071,7 +1071,7 @@ class AbstractMenuContentObject {
 					// If rollOver on normal, we must apply a state for rollOver on the active
 					if ($ROconf) {
 						// If RollOver on active then apply this
-						$ROconf[$key] = $ACTIFSUBROconf[$key] ? $ACTIFSUBROconf[$key] : $ACTIFSUBconf[$key];
+						$ROconf[$key] = $ACTIFSUBROconf[$key] ?: $ACTIFSUBconf[$key];
 					}
 				}
 			}
@@ -1098,7 +1098,7 @@ class AbstractMenuContentObject {
 					// If rollOver on normal, we must apply a state for rollOver on the active
 					if ($ROconf) {
 						// If RollOver on active then apply this
-						$ROconf[$key] = $CURROconf[$key] ? $CURROconf[$key] : $CURconf[$key];
+						$ROconf[$key] = $CURROconf[$key] ?: $CURconf[$key];
 					}
 				}
 			}
@@ -1124,7 +1124,7 @@ class AbstractMenuContentObject {
 					// If rollOver on normal, we must apply a state for rollOver on the current
 					if ($ROconf) {
 						// If RollOver on current then apply this
-						$ROconf[$key] = $CURIFSUBROconf[$key] ? $CURIFSUBROconf[$key] : $CURIFSUBconf[$key];
+						$ROconf[$key] = $CURIFSUBROconf[$key] ?: $CURIFSUBconf[$key];
 					}
 				}
 			}
@@ -1150,7 +1150,7 @@ class AbstractMenuContentObject {
 					// If rollOver on normal, we must apply a state for rollOver on the active
 					if ($ROconf) {
 						// If RollOver on active then apply this
-						$ROconf[$key] = $USRROconf[$key] ? $USRROconf[$key] : $USRconf[$key];
+						$ROconf[$key] = $USRROconf[$key] ?: $USRconf[$key];
 					}
 				}
 			}
@@ -1193,7 +1193,7 @@ class AbstractMenuContentObject {
 					// If rollOver on normal, we must apply a state for rollOver on the active
 					if ($ROconf) {
 						// If RollOver on active then apply this
-						$ROconf[$key] = $USERDEF1ROconf[$key] ? $USERDEF1ROconf[$key] : $USERDEF1conf[$key];
+						$ROconf[$key] = $USERDEF1ROconf[$key] ?: $USERDEF1conf[$key];
 					}
 				}
 			}
@@ -1219,7 +1219,7 @@ class AbstractMenuContentObject {
 					// If rollOver on normal, we must apply a state for rollOver on the active
 					if ($ROconf) {
 						// If RollOver on active then apply this
-						$ROconf[$key] = $USERDEF2ROconf[$key] ? $USERDEF2ROconf[$key] : $USERDEF2conf[$key];
+						$ROconf[$key] = $USERDEF2ROconf[$key] ?: $USERDEF2conf[$key];
 					}
 				}
 			}
@@ -1246,7 +1246,7 @@ class AbstractMenuContentObject {
 		if ($this->mconf['overrideId'] || $this->menuArr[$key]['overrideId']) {
 			$overrideArray = array();
 			// If a user script returned the value overrideId in the menu array we use that as page id
-			$overrideArray['uid'] = $this->mconf['overrideId'] ? $this->mconf['overrideId'] : $this->menuArr[$key]['overrideId'];
+			$overrideArray['uid'] = $this->mconf['overrideId'] ?: $this->menuArr[$key]['overrideId'];
 			$overrideArray['alias'] = '';
 			// Clear MP parameters since ID was changed.
 			$MP_params = '';
@@ -1320,7 +1320,7 @@ class AbstractMenuContentObject {
 		if (preg_match('/([0-9]+[\\s])?(([0-9]+)x([0-9]+))?(:.+)?/s', $LD['target'], $matches) || $targetIsType) {
 			// has type?
 			if (intval($matches[1]) || $targetIsType) {
-				$LD['totalURL'] = $this->parent_cObj->URLqMark($LD['totalURL'], '&type=' . ($targetIsType ? $targetIsType : intval($matches[1])));
+				$LD['totalURL'] = $this->parent_cObj->URLqMark($LD['totalURL'], '&type=' . ($targetIsType ?: intval($matches[1])));
 				$LD['target'] = $targetIsType ? '' : trim(substr($LD['target'], strlen($matches[1]) + 1));
 			}
 			// Open in popup window?
@@ -1750,7 +1750,7 @@ class AbstractMenuContentObject {
 	 * @return array
 	 */
 	protected function sectionIndex($altSortField, $pid = NULL) {
-		$pid = intval($pid ? $pid : $this->id);
+		$pid = intval($pid ?: $this->id);
 		$basePageRow = $this->sys_page->getPage($pid);
 		if (!is_array($basePageRow)) {
 			return array();

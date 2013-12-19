@@ -160,7 +160,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_action', '', '', 'sys_action.sorting');
 		} else {
 			// Editors can only see the actions which are assigned to a usergroup they belong to
-			$additionalWhere = 'be_groups.uid IN (' . ($GLOBALS['BE_USER']->groupList ? $GLOBALS['BE_USER']->groupList : 0) . ')';
+			$additionalWhere = 'be_groups.uid IN (' . ($GLOBALS['BE_USER']->groupList ?: 0) . ')';
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECT_mm_query('sys_action.*', 'sys_action', 'sys_action_asgr_mm', 'be_groups', ' AND sys_action.hidden=0 AND ' . $additionalWhere, 'sys_action.uid', 'sys_action.sorting');
 		}
 		while ($actionRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {

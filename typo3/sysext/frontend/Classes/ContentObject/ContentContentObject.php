@@ -50,7 +50,7 @@ class ContentContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractCon
 			$GLOBALS['TSFE']->recordRegister[$originalRec]++;
 		}
 		$conf['table'] = isset($conf['table.']) ? trim($this->cObj->stdWrap($conf['table'], $conf['table.'])) : trim($conf['table']);
-		$renderObjName = $conf['renderObj'] ? $conf['renderObj'] : '<' . $conf['table'];
+		$renderObjName = $conf['renderObj'] ?: '<' . $conf['table'];
 		$renderObjKey = $conf['renderObj'] ? 'renderObj' : '';
 		$renderObjConf = $conf['renderObj.'];
 		$slide = isset($conf['slide.']) ? intval($this->cObj->stdWrap($conf['slide'], $conf['slide.'])) : intval($conf['slide']);

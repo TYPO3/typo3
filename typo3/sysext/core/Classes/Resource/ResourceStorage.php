@@ -1789,7 +1789,7 @@ class ResourceStorage {
 		// TODO implement the $conflictMode handling
 		$this->assureFolderCopyPermissions($folderToCopy, $targetParentFolder);
 		$returnObject = NULL;
-		$newFolderName = $newFolderName ? $newFolderName : $folderToCopy->getName();
+		$newFolderName = $newFolderName ?: $folderToCopy->getName();
 		$this->emitPreFolderCopySignal($folderToCopy, $targetParentFolder, $newFolderName);
 		$sourceStorage = $folderToCopy->getStorage();
 		// call driver method to move the file

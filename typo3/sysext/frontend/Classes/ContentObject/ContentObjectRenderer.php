@@ -3555,7 +3555,7 @@ class ContentObjectRenderer {
 	 * @todo Define visibility
 	 */
 	public function listNum($content, $listNum, $char) {
-		$char = $char ? $char : ',';
+		$char = $char ?: ',';
 		if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($char)) {
 			$char = chr($char);
 		}

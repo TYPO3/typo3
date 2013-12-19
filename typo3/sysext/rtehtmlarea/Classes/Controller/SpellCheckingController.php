@@ -164,9 +164,9 @@ class SpellCheckingController {
 		// Setting start time
 		$time_start = microtime(TRUE);
 		$this->pspell_is_available = in_array('pspell', get_loaded_extensions());
-		$this->AspellDirectory = trim($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['plugins']['SpellChecker']['AspellDirectory']) ? trim($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['plugins']['SpellChecker']['AspellDirectory']) : '/usr/bin/aspell';
+		$this->AspellDirectory = trim($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['plugins']['SpellChecker']['AspellDirectory']) ?: '/usr/bin/aspell';
 		// Setting command mode if requested and available
-		$this->forceCommandMode = trim($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['plugins']['SpellChecker']['forceCommandMode']) ? trim($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['plugins']['SpellChecker']['forceCommandMode']) : 0;
+		$this->forceCommandMode = trim($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['plugins']['SpellChecker']['forceCommandMode']) ?: 0;
 		if (!$this->pspell_is_available || $this->forceCommandMode) {
 			$AspellVersionString = explode('Aspell', shell_exec($this->AspellDirectory . ' -v'));
 			$AspellVersion = substr($AspellVersionString[1], 0, 4);

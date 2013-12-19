@@ -1210,7 +1210,7 @@ class GraphicalFunctions {
 	public function calcWordSpacing($conf, $scaleFactor = 1) {
 		$spacing = intval($conf['spacing']);
 		$wordSpacing = intval($conf['wordSpacing']);
-		$wordSpacing = $wordSpacing ? $wordSpacing : $spacing * 2;
+		$wordSpacing = $wordSpacing ?: $spacing * 2;
 		$spacing *= $scaleFactor;
 		$wordSpacing *= $scaleFactor;
 		return array($spacing, $wordSpacing);

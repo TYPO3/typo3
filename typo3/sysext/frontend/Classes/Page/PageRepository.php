@@ -479,7 +479,7 @@ class PageRepository {
 						// Check subpages - first subpage or random subpage
 						$searchField = 'pid';
 						// If a shortcut mode is set and no valid page is given to select subpags from use the actual page.
-						$searchUid = intval($row['shortcut']) ? intval($row['shortcut']) : $row['uid'];
+						$searchUid = intval($row['shortcut']) ?: $row['uid'];
 					} elseif ($row['shortcut_mode'] == self::SHORTCUT_MODE_PARENT_PAGE) {
 						// Shortcut to parent page
 						$searchField = 'uid';
@@ -668,7 +668,7 @@ class PageRepository {
 					$prevMountPids[] = $mount_pid;
 					$recursiveMountPid = $this->getMountPointInfo($mount_pid, $mountRec, $prevMountPids, $firstPageUid);
 					// Return mount point information:
-					$result = $recursiveMountPid ? $recursiveMountPid : array(
+					$result = $recursiveMountPid ?: array(
 						'mount_pid' => $mount_pid,
 						'overlay' => $pageRec['mount_pid_ol'],
 						'MPvar' => $mount_pid . '-' . $firstPageUid,

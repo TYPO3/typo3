@@ -1301,7 +1301,7 @@ class TemplateService {
 	 * @todo Define visibility
 	 */
 	public function printTitle($pageTitle, $noTitle = FALSE, $showTitleFirst = FALSE) {
-		$siteTitle = trim($this->setup['sitetitle']) ? $this->setup['sitetitle'] : '';
+		$siteTitle = trim($this->setup['sitetitle']);
 		$pageTitle = $noTitle ? '' : $pageTitle;
 		$pageTitleSeparator = '';
 		if ($showTitleFirst) {
@@ -1469,7 +1469,7 @@ class TemplateService {
 			$LD['url'] = $script . '?id=' . $page['uid'];
 		}
 		// Setting target
-		$LD['target'] = trim($page['target']) ? trim($page['target']) : $oTarget;
+		$LD['target'] = trim($page['target']) ?: $oTarget;
 		// typeNum
 		$typeNum = $this->setup[$LD['target'] . '.']['typeNum'];
 		if (!\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($typeOverride) && intval($GLOBALS['TSFE']->config['config']['forceTypeValue'])) {

@@ -346,7 +346,7 @@ class RecordHistory {
 			$displayCode .= '<tr><td>' . $GLOBALS['LANG']->getLL($key, 1) . '</td>';
 			$displayCode .= '<td><select name="settings[' . $key . ']" onChange="document.settings.submit()" style="width:100px">';
 			foreach ($values as $singleKey => $singleVal) {
-				$caption = $GLOBALS['LANG']->getLL($singleVal, 1) ? $GLOBALS['LANG']->getLL($singleVal, 1) : $singleVal;
+				$caption = $GLOBALS['LANG']->getLL($singleVal, 1) ?: $singleVal;
 				$displayCode .= '<option value="' . $singleKey . '"' . ($singleKey == $currentSelection[$key] ? ' selected="selected"' : '') . '> ' . $caption . '</option>';
 			}
 			$displayCode .= '</select></td></tr>';

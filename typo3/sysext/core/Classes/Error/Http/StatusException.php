@@ -54,7 +54,7 @@ class StatusException extends \TYPO3\CMS\Core\Error\Exception {
 		} else {
 			$this->statusHeaders = array($statusHeaders);
 		}
-		$this->title = $title ? $title : $this->title;
+		$this->title = $title ?: $this->title;
 		parent::__construct($message, $code);
 	}
 

@@ -296,7 +296,7 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 					$fExt = ($this->export->doOutputCompress() ? '-z' : '') . '.t3d';
 			}
 			// Filename:
-			$dlFile = $inData['filename'] ? $inData['filename'] : 'T3D_' . substr(preg_replace('/[^[:alnum:]_]/', '-', $inData['download_export_name']), 0, 20) . '_' . date('Y-m-d_H-i') . $fExt;
+			$dlFile = $inData['filename'] ?: 'T3D_' . substr(preg_replace('/[^[:alnum:]_]/', '-', $inData['download_export_name']), 0, 20) . '_' . date('Y-m-d_H-i') . $fExt;
 			// Export for download:
 			if ($inData['download_export']) {
 				$mimeType = 'application/octet-stream';

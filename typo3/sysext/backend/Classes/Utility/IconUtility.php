@@ -179,7 +179,7 @@ class IconUtility {
 			}
 		} else {
 			if (!($iconfile = $GLOBALS['TCA'][$table]['ctrl']['typeicons'][$row[$GLOBALS['TCA'][$table]['ctrl']['typeicon_column']]])) {
-				$iconfile = $GLOBALS['TCA'][$table]['ctrl']['iconfile'] ? $GLOBALS['TCA'][$table]['ctrl']['iconfile'] : $table . '.gif';
+				$iconfile = $GLOBALS['TCA'][$table]['ctrl']['iconfile'] ?: $table . '.gif';
 			}
 		}
 		// Setting path of iconfile if not already set. Default is "gfx/i/"
@@ -316,7 +316,7 @@ class IconUtility {
 			// Otherwise, test if auto-detection is enabled:
 			// Search for alternative icon automatically:
 			$fExt = $GLOBALS['TBE_STYLES']['skinImgAutoCfg']['forceFileExtension'];
-			$scaleFactor = $GLOBALS['TBE_STYLES']['skinImgAutoCfg']['scaleFactor'] ? $GLOBALS['TBE_STYLES']['skinImgAutoCfg']['scaleFactor'] : 1;
+			$scaleFactor = $GLOBALS['TBE_STYLES']['skinImgAutoCfg']['scaleFactor'] ?: 1;
 			// Scaling factor
 			$lookUpName = $fExt ? preg_replace('/\\.[[:alnum:]]+$/', '', $srcKey) . '.' . $fExt : $srcKey;
 			// Set filename to look for

@@ -339,7 +339,7 @@ class DatabaseConnection {
 		$mmWhere .= ($local_table and $foreign_table) ? ' AND ' : '';
 		$tables = ($local_table ? $local_table . ',' : '') . $mm_table;
 		if ($foreign_table) {
-			$mmWhere .= ($foreign_table_as ? $foreign_table_as : $foreign_table) . '.uid=' . $mm_table . '.uid_foreign';
+			$mmWhere .= ($foreign_table_as ?: $foreign_table) . '.uid=' . $mm_table . '.uid_foreign';
 			$tables .= ',' . $foreign_table . ($foreign_table_as ? ' AS ' . $foreign_table_as : '');
 		}
 		return $this->exec_SELECTquery($select, $tables, $mmWhere . ' ' . $whereClause, $groupBy, $orderBy, $limit);

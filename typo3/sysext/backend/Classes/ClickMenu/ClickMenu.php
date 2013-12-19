@@ -712,7 +712,7 @@ class ClickMenu {
 	 * @todo Define visibility
 	 */
 	public function DB_changeFlag($table, $rec, $flagField, $title, $name, $iconRelPath = 'gfx/') {
-		$uid = $rec['_ORIG_uid'] ? $rec['_ORIG_uid'] : $rec['uid'];
+		$uid = $rec['_ORIG_uid'] ?: $rec['uid'];
 		$editOnClick = '';
 		$loc = 'top.content.list_frame';
 		$editOnClick = 'if(' . $loc . '){' . $loc . '.location.href=top.TS.PATH_typo3+\'tce_db.php?redirect=\'' . '+top.rawurlencode(' . $this->frameLocation(($loc . '.document')) . '.pathname+' . $this->frameLocation(($loc . '.document')) . '.search)+\'' . '&data[' . $table . '][' . $uid . '][' . $flagField . ']=' . ($rec[$flagField] ? 0 : 1) . '&prErr=1&vC=' . $GLOBALS['BE_USER']->veriCode() . BackendUtility::getUrlToken('tceAction') . '\';}hideCM();top.nav.refresh.defer(500, top.nav);';
@@ -1267,7 +1267,7 @@ class ClickMenu {
 				}
 			}
 			$pointer = max(0, $pointer);
-			$menuItemsBefore = array_slice($menuItems, 0, $pointer ? $pointer : 0);
+			$menuItemsBefore = array_slice($menuItems, 0, $pointer ?: 0);
 			$menuItemsAfter = array_slice($menuItems, $pointer);
 			$menuItems = $menuItemsBefore + $newMenuItems + $menuItemsAfter;
 		}

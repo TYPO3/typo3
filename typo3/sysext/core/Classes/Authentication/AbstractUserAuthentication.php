@@ -1284,7 +1284,7 @@ abstract class AbstractUserAuthentication {
 	 * @todo Define visibility
 	 */
 	public function processLoginData($loginData, $passwordTransmissionStrategy = '') {
-		$passwordTransmissionStrategy = $passwordTransmissionStrategy ? $passwordTransmissionStrategy : ($GLOBALS['TYPO3_CONF_VARS'][$this->loginType]['loginSecurityLevel'] ? trim($GLOBALS['TYPO3_CONF_VARS'][$this->loginType]['loginSecurityLevel']) : $this->security_level);
+		$passwordTransmissionStrategy = $passwordTransmissionStrategy ?: ($GLOBALS['TYPO3_CONF_VARS'][$this->loginType]['loginSecurityLevel'] ? trim($GLOBALS['TYPO3_CONF_VARS'][$this->loginType]['loginSecurityLevel']) : $this->security_level);
 		if ($this->writeDevLog) {
 			GeneralUtility::devLog('Login data before processing: ' . GeneralUtility::arrayToLogString($loginData), 'TYPO3\\CMS\\Core\\Authentication\\AbstractUserAuthentication');
 		}
@@ -1363,7 +1363,7 @@ abstract class AbstractUserAuthentication {
 	 */
 	public function compareUident($user, $loginData, $passwordCompareStrategy = '') {
 		$OK = FALSE;
-		$passwordCompareStrategy = $passwordCompareStrategy ? $passwordCompareStrategy : $this->security_level;
+		$passwordCompareStrategy = $passwordCompareStrategy ?: $this->security_level;
 		switch ($passwordCompareStrategy) {
 			case 'superchallenged':
 

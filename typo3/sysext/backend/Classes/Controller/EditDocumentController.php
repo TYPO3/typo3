@@ -392,7 +392,7 @@ class EditDocumentController {
 			$this->defVals = $this->overrideVals;
 		}
 		// Setting return URL
-		$this->retUrl = $this->returnUrl ? $this->returnUrl : 'dummy.php';
+		$this->retUrl = $this->returnUrl ?: 'dummy.php';
 		// Fix $this->editconf if versioning applies to any of the records
 		$this->fixWSversioningInEditConf();
 		// Make R_URL (request url) based on input GETvars:

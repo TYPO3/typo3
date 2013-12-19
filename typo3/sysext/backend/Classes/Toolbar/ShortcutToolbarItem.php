@@ -231,7 +231,7 @@ class ShortcutToolbarItem implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookI
 			$moduleParts = explode('|', $row['module_name']);
 			$row['module_name'] = $moduleParts[0];
 			$row['M_module_name'] = $moduleParts[1];
-			$moduleParts = explode('_', $row['M_module_name'] ? $row['M_module_name'] : $row['module_name']);
+			$moduleParts = explode('_', $row['M_module_name'] ?: $row['module_name']);
 			$queryParts = parse_url($row['url']);
 			$queryParameters = GeneralUtility::explodeUrl2Array($queryParts['query'], 1);
 			if ($row['module_name'] == 'xMOD_alt_doc.php' && is_array($queryParameters['edit'])) {

@@ -657,7 +657,7 @@ class HelpModuleController {
 						foreach ($GLOBALS['TCA_DESCR'][$cshKey]['columns'] as $field => $data) {
 							if ($field) {
 								$this->glossaryWords[$cshKey . '.' . $field] = array(
-									'title' => trim($data['alttitle'] ? $data['alttitle'] : $cshKey),
+									'title' => trim($data['alttitle'] ?: $cshKey),
 									'description' => str_replace('%22', '%23%23%23', rawurlencode($data['description']))
 								);
 							}

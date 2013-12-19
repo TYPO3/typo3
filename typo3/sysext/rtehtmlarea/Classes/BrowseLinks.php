@@ -308,9 +308,9 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 		// Attributes setting functions
 		$JScode .= '
 			var cur_href="' . ($this->curUrlArray['href'] ? ($this->curUrlInfo['query'] ? substr($this->curUrlArray['href'], 0, -strlen($this->curUrlInfo['query'])) : $this->curUrlArray['href']) : '') . '";
-			var cur_target="' . ($this->setTarget ? $this->setTarget : '') . '";
-			var cur_class="' . ($this->setClass ? $this->setClass : '') . '";
-			var cur_title="' . ($this->setTitle ? $this->setTitle : '') . '";
+			var cur_target="' . ($this->setTarget ?: '') . '";
+			var cur_class="' . ($this->setClass ?: '') . '";
+			var cur_title="' . ($this->setTitle ?: '') . '";
 
 			function browse_links_setTarget(value) {
 				cur_target=value;
@@ -790,7 +790,7 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 						<tr>
 							<td>' . $GLOBALS['LANG']->getLL('query_parameters', TRUE) . ':</td>
 							<td colspan="3">
-								<input type="text" name="query_parameters" value="' . ($this->curUrlInfo['query'] ? $this->curUrlInfo['query'] : '') . '" ' . $this->doc->formWidth(30) . ' />
+								<input type="text" name="query_parameters" value="' . ($this->curUrlInfo['query'] ?: '') . '" ' . $this->doc->formWidth(30) . ' />
 							</td>
 						</tr>' : '';
 	}
@@ -908,7 +908,7 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 										browse_links_setTarget(anchorClass[\'target\']);
 									} else if (document.ltargetform.ltarget && document.getElementById(\'ltargetrow\').style.display == \'none\') {
 											// Reset target to default if field is not displayed and class has no configured target
-										document.ltargetform.ltarget.value = \'' . ($this->defaultLinkTarget ? $this->defaultLinkTarget : '') . '\';
+										document.ltargetform.ltarget.value = \'' . ($this->defaultLinkTarget ?: '') . '\';
 										browse_links_setTarget(document.ltargetform.ltarget.value);
 									}
 									break;
@@ -924,7 +924,7 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 	 * @todo Define visibility
 	 */
 	public function addTitleSelector() {
-		$title = $this->setTitle ? $this->setTitle : ($this->setClass || !$this->classesAnchorDefault[$this->act] ? '' : $this->classesAnchorDefaultTitle[$this->act]);
+		$title = $this->setTitle ?: ($this->setClass || !$this->classesAnchorDefault[$this->act] ? '' : $this->classesAnchorDefaultTitle[$this->act]);
 		$readOnly = $this->buttonConfig['properties.']['title.']['readOnly'] || $this->buttonConfig[$this->act . '.']['properties.']['title.']['readOnly'];
 		if ($readOnly) {
 			$title = $this->setClass ? $this->classesAnchorClassTitle[$this->setClass] : $this->classesAnchorDefaultTitle[$this->act];

@@ -1082,7 +1082,7 @@ class ImportExport {
 			)
 		);
 		// Creating XML file from $outputArray:
-		$charset = $this->dat['header']['charset'] ? $this->dat['header']['charset'] : 'utf-8';
+		$charset = $this->dat['header']['charset'] ?: 'utf-8';
 		$XML = '<?xml version="1.0" encoding="' . $charset . '" standalone="yes" ?>' . LF;
 		$XML .= GeneralUtility::array2xml($this->dat, '', 0, 'T3RecordDocument', 0, $options);
 		return $XML;
@@ -2690,7 +2690,7 @@ class ImportExport {
 					$staticFixed = TRUE;
 				}
 				$pInfo['preCode'] = $preCode . '&nbsp;&nbsp;&nbsp;&nbsp;<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], ('gfx/rel_db' . $Iprepend . '.gif'), 'width="13" height="12"') . ' align="top" title="' . htmlspecialchars($pInfo['ref']) . '" alt="" />';
-				$pInfo['class'] = $htmlColorClass ? $htmlColorClass : 'bgColor3';
+				$pInfo['class'] = $htmlColorClass ?: 'bgColor3';
 				$pInfo['type'] = 'rel';
 				if (!$staticFixed || $this->showStaticRelations) {
 					$lines[] = $pInfo;
@@ -2734,7 +2734,7 @@ class ImportExport {
 			$pInfo['title'] = htmlspecialchars($fI['filename']);
 			$pInfo['ref'] = 'FILE';
 			$pInfo['size'] = $fI['filesize'];
-			$pInfo['class'] = $htmlColorClass ? $htmlColorClass : 'bgColor3';
+			$pInfo['class'] = $htmlColorClass ?: 'bgColor3';
 			$pInfo['type'] = 'file';
 			// If import mode and there is a non-RTE softreference, check the destination directory:
 			if ($this->mode === 'import' && $tokenID && !$fI['RTE_ORIG_ID']) {
@@ -2785,7 +2785,7 @@ class ImportExport {
 				$pInfo['title'] = htmlspecialchars($fI['filename']) . ' <em>(Original)</em>';
 				$pInfo['ref'] = 'FILE';
 				$pInfo['size'] = $fI['filesize'];
-				$pInfo['class'] = $htmlColorClass ? $htmlColorClass : 'bgColor3';
+				$pInfo['class'] = $htmlColorClass ?: 'bgColor3';
 				$pInfo['type'] = 'file';
 				$lines[] = $pInfo;
 				unset($this->remainHeader['files'][$ID]);
@@ -2806,7 +2806,7 @@ class ImportExport {
 					$pInfo['title'] = htmlspecialchars($fI['filename']) . ' <em>(Resource)</em>';
 					$pInfo['ref'] = 'FILE';
 					$pInfo['size'] = $fI['filesize'];
-					$pInfo['class'] = $htmlColorClass ? $htmlColorClass : 'bgColor3';
+					$pInfo['class'] = $htmlColorClass ?: 'bgColor3';
 					$pInfo['type'] = 'file';
 					$lines[] = $pInfo;
 					unset($this->remainHeader['files'][$ID]);

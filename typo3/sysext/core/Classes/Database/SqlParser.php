@@ -1524,7 +1524,7 @@ class SqlParser {
 		$orderBy = $this->compileFieldList($components['ORDERBY']);
 		$limit = $components['LIMIT'];
 		// Make query:
-		$query = 'SELECT ' . ($components['STRAIGHT_JOIN'] ? $components['STRAIGHT_JOIN'] . '' : '') . '
+		$query = 'SELECT ' . ($components['STRAIGHT_JOIN'] ?: '') . '
 				' . $this->compileFieldList($components['SELECT']) . '
 				FROM ' . $this->compileFromTables($components['FROM']) . (strlen($where) ? '
 				WHERE ' . $where : '') . (strlen($groupBy) ? '
@@ -1653,7 +1653,7 @@ class SqlParser {
 	 */
 	protected function compileALTERTABLE($components) {
 		// Make query:
-		$query = 'ALTER TABLE ' . $components['TABLE'] . ' ' . $components['action'] . ' ' . ($components['FIELD'] ? $components['FIELD'] : $components['KEY']);
+		$query = 'ALTER TABLE ' . $components['TABLE'] . ' ' . $components['action'] . ' ' . ($components['FIELD'] ?: $components['KEY']);
 		// Based on action, add the final part:
 		switch (strtoupper(str_replace(array(' ', TAB, CR, LF), '', $components['action']))) {
 			case 'ADD':

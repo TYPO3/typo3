@@ -317,7 +317,7 @@ class Commands {
 		$subNode->setType('pages');
 		$subNode->setId($record['uid']);
 		$subNode->setMountPoint($mountPoint);
-		$subNode->setWorkspaceId($record['_ORIG_uid'] ? $record['_ORIG_uid'] : $record['uid']);
+		$subNode->setWorkspaceId($record['_ORIG_uid'] ?: $record['uid']);
 		$subNode->setBackgroundColor(self::$backgroundColors[$record['uid']]);
 		$field = 'title';
 		$text = $record['title'];

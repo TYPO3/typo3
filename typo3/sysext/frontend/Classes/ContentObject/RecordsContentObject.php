@@ -122,7 +122,7 @@ class RecordsContentObject extends AbstractContentObject {
 							$row = $this->cObj->checkPid($row['pid']) ? $row : '';
 						}
 						if ($row && !$GLOBALS['TSFE']->recordRegister[($val['table'] . ':' . $val['id'])]) {
-							$renderObjName = $conf['conf.'][$val['table']] ? $conf['conf.'][$val['table']] : '<' . $val['table'];
+							$renderObjName = $conf['conf.'][$val['table']] ?: '<' . $val['table'];
 							$renderObjKey = $conf['conf.'][$val['table']] ? 'conf.' . $val['table'] : '';
 							$renderObjConf = $conf['conf.'][$val['table'] . '.'];
 							$this->cObj->currentRecordNumber++;
