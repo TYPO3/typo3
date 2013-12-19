@@ -86,7 +86,8 @@ class ExternalLinktype extends \TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktyp
 			/** @var $response \HTTP_Request2_Response */
 			$response = $request->send();
 			// HEAD was not allowed, now trying GET
-			if (isset($response) && $response->getStatus() === 405) {
+			$status = isset($response) ? $response->getStatus() : 0;
+			if ($status === 405 || $status === 403) {
 				$request->setMethod('GET');
 				$request->setHeader('Range', 'bytes = 0 - 4048');
 				/** @var $response \HTTP_Request2_Response */
@@ -108,9 +109,10 @@ class ExternalLinktype extends \TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktyp
 			}
 			$errorParams['message'] = $e->getMessage();
 		}
-		if (isset($response) && $response->getStatus() >= 300) {
+		$status = isset($response) ? $response->getStatus() : 0;
+		if ($status >= 300) {
 			$isValidUrl = FALSE;
-			$errorParams['errorType'] = $response->getStatus();
+			$errorParams['errorType'] = $status;
 			$errorParams['message'] = $response->getReasonPhrase();
 		}
 		if (!$isValidUrl) {
