@@ -313,6 +313,7 @@ class PathUtility {
 	 *
 	 * @param string $path
 	 * @return array
+	 * @internal
 	 */
 	static public function stripPathSitePrefix($path) {
 		static $pathSiteLength = NULL;
