@@ -21,17 +21,5 @@ if (TYPO3_MODE === 'BE') {
 			'TYPO3\\CMS\\Core\\Package\\PackageManager',
 			'scanAvailablePackages'
 		);
-		$signalSlotDispatcher->connect(
-			'TYPO3\\CMS\\Extensionmanager\\Utility\\InstallUtility',
-			'tablesDefinitionIsBeingBuilt',
-			'TYPO3\\CMS\\Core\\Cache\\Cache',
-			'addCachingFrameworkRequiredDatabaseSchemaToTablesDefintion'
-		);
-		$signalSlotDispatcher->connect(
-			'TYPO3\\CMS\\Extensionmanager\\Utility\\InstallUtility',
-			'tablesDefinitionIsBeingBuilt',
-			'TYPO3\\CMS\\Core\\Category\\CategoryRegistry',
-			'addExtensionCategoryDatabaseSchemaToTablesDefintion'
-		);
 	}
 }

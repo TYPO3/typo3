@@ -123,7 +123,7 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface {
 			$this->loadExtension($extensionKey);
 		}
 		$this->reloadCaches();
-		$this->processRuntimeDatabaseUpdates($extensionKey);
+		$this->processCachingFrameworkUpdates();
 		$this->saveDefaultConfiguration($extension['key']);
 	}
 
@@ -240,40 +240,20 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 	/**
-	 * Gets all database updates due to runtime configuration, like caching framework or
-	 * category api for example
+	 * Gets all registered caches and creates required caching framework tables.
 	 *
-	 * @param string $extensionKey
+	 * @return void
 	 */
-	protected function processRuntimeDatabaseUpdates($extensionKey) {
-		$sqlString = $this->emitTablesDefinitionIsBeingBuiltSignal($extensionKey);
-		if (!empty($sqlString)) {
-			$this->updateDbWithExtTablesSql(implode(LF . LF . LF . LF, $sqlString));
-		}
-	}
+	protected function processCachingFrameworkUpdates() {
+		$extTablesSqlContent = '';
 
-	/**
-	 * Emits a signal to manipulate the tables definitions
-	 *
-	 * @param string $extensionKey
-	 * @return mixed
-	 * @throws \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException
-	 */
-	protected function emitTablesDefinitionIsBeingBuiltSignal($extensionKey) {
-		$signalReturn = $this->signalSlotDispatcher->dispatch(__CLASS__, 'tablesDefinitionIsBeingBuilt', array('sqlString' => array(), 'extensionKey' => $extensionKey));
-		$sqlString = $signalReturn['sqlString'];
-		if (!is_array($sqlString)) {
-			throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException(
-				sprintf(
-					'The signal %s of class %s returned a value of type %s, but array was expected.',
-					'tablesDefinitionIsBeingBuilt',
-					__CLASS__,
-					gettype($sqlString)
-				),
-				1382360258
-			);
+		// @TODO: This should probably moved to TYPO3\CMS\Core\Cache\Cache->getDatabaseTableDefinitions ?!
+		$GLOBALS['typo3CacheManager']->setCacheConfigurations($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']);
+		$extTablesSqlContent .= \TYPO3\CMS\Core\Cache\Cache::getDatabaseTableDefinitions();
+
+		if ($extTablesSqlContent !== '') {
+			$this->updateDbWithExtTablesSql($extTablesSqlContent);
 		}
-		return $sqlString;
 	}
 
 	/**
@@ -283,7 +263,7 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	public function reloadCaches() {
 		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::removeCacheFiles();
-		\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->reloadTypo3LoadedExtAndClassLoaderAndExtLocalconf()->loadExtensionTables();
+		\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->reloadTypo3LoadedExtAndClassLoaderAndExtLocalconf();
 	}
 
 	/**

@@ -98,18 +98,4 @@ class Cache {
 		return $tableDefinitions;
 	}
 
-	/**
-	 * A slot method to inject the required caching framework database tables to the
-	 * tables defintions string
-	 *
-	 * @param array $sqlString
-	 * @param string $extensionKey
-	 * @return array
-	 */
-	public function addCachingFrameworkRequiredDatabaseSchemaToTablesDefintion(array $sqlString, $extensionKey) {
-		$GLOBALS['typo3CacheManager']->setCacheConfigurations($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']);
-		$sqlString[] = static::getDatabaseTableDefinitions();
-		return array('sqlString' => $sqlString, 'extensionKey' => $extensionKey);
-	}
-
 }
