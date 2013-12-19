@@ -723,7 +723,7 @@ class ContentObjectRenderer {
 				$old_conf = $conf;
 				list($name, $conf) = $cF->getVal($key, $GLOBALS['TSFE']->tmpl->setup);
 				if (is_array($old_conf) && count($old_conf)) {
-					$conf = $this->joinTSarrays($conf, $old_conf);
+					$conf = array_replace_recursive($conf, $old_conf);
 				}
 				// Getting the cObject
 				$GLOBALS['TT']->incStackPointer();
@@ -6879,7 +6879,7 @@ class ContentObjectRenderer {
 			$old_conf = $confArr[$prop . '.'];
 			list($name, $conf) = $cF->getVal($key, $GLOBALS['TSFE']->tmpl->setup);
 			if (is_array($old_conf) && count($old_conf)) {
-				$conf = $this->joinTSarrays($conf, $old_conf);
+				$conf = array_replace_recursive($conf, $old_conf);
 			}
 			$confArr[$prop . '.'] = $conf;
 		}
@@ -6893,19 +6893,12 @@ class ContentObjectRenderer {
 	 * @param array $old_conf TypoScript property array, the "overlay
 	 * @return array The resulting array
 	 * @see mergeTSRef(), tx_tstemplatestyler_modfunc1::joinTSarrays()
+	 * @deprecated since 6.2, will be removed in two versions, use array_replace_recursive() instead
 	 * @todo Define visibility
 	 */
 	public function joinTSarrays($conf, $old_conf) {
-		if (is_array($old_conf)) {
-			foreach ($old_conf as $key => $val) {
-				if (is_array($val)) {
-					$conf[$key] = $this->joinTSarrays($conf[$key], $val);
-				} else {
-					$conf[$key] = $val;
-				}
-			}
-		}
-		return $conf;
+		GeneralUtility::logDeprecatedFunction();
+		return array_replace_recursive($conf, $old_conf);
 	}
 
 	/**

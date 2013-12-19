@@ -123,7 +123,7 @@ class TypoScriptFactory implements \TYPO3\CMS\Core\SingletonInterface {
 				$oldArguments = $arguments;
 				list($class, $arguments) = $typoscriptParser->getVal($key, $GLOBALS['TSFE']->tmpl->setup);
 				if (is_array($oldArguments) && count($oldArguments)) {
-					$arguments = $this->getLocalConentObject()->joinTSarrays($arguments, $oldArguments);
+					$arguments = array_replace_recursive($arguments, $oldArguments);
 				}
 				$GLOBALS['TT']->incStackPointer();
 				$contentObject = array(

@@ -472,7 +472,7 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 		}
 		// Specific configuration for the chosen rendering method
 		if (is_array($conf['rendering.'][$renderMethod . '.'])) {
-			$conf = $this->cObj->joinTSarrays($conf, $conf['rendering.'][$renderMethod . '.']);
+			$conf = array_replace_recursive($conf, $conf['rendering.'][$renderMethod . '.']);
 		}
 		// Image or Text with Image?
 		if (is_array($conf['text.'])) {
@@ -504,7 +504,7 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 			$fallbackRenderMethod = $this->cObj->cObjGetSingle($conf['fallbackRendering'], $conf['fallbackRendering.']);
 		}
 		if ($fallbackRenderMethod && is_array($conf['rendering.'][$fallbackRenderMethod . '.'])) {
-			$conf = $this->cObj->joinTSarrays($conf, $conf['rendering.'][$fallbackRenderMethod . '.']);
+			$conf = array_replace_recursive($conf, $conf['rendering.'][$fallbackRenderMethod . '.']);
 		}
 		// Set the accessibility mode which uses a different type of markup, used 4.7+
 		$accessibilityMode = FALSE;
