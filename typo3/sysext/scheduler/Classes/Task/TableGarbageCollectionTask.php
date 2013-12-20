@@ -30,7 +30,7 @@ namespace TYPO3\CMS\Scheduler\Task;
  * This task deletes rows from tables older than the given number of days.
  *
  * Available tables must be registered in
- * $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['tx_scheduler_TableGarbageCollection']['options']['tables']
+ * $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['TYPO3\\CMS\\Scheduler\\Task\\TableGarbageCollectionTask']['options']['tables']
  * See ext_localconf.php of scheduler extension for an example
  *
  * @author Christian Kuhn <lolli@schwarzbu.ch>
