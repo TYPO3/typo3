@@ -306,8 +306,8 @@ class AbstractController {
 				->setBody('There has been an Install Tool login attempt at TYPO3 site'
 				. ' \'' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . '\''
 				. ' (' . GeneralUtility::getIndpEnv('HTTP_HOST') . ')'
-				. ' The MD5 hash of the last 5 characters of the password tried was \'' . substr(md5($formValues['password']), -5) . '\''
-				. ' remote addres was \'' . GeneralUtility::getIndpEnv('REMOTE_ADDR') . '\''
+				. ' The last 5 characters of the MD5 hash of the password tried was \'' . substr(md5($formValues['password']), -5) . '\''
+				. ' remote address was \'' . GeneralUtility::getIndpEnv('REMOTE_ADDR') . '\''
 				. ' (' . GeneralUtility::getIndpEnv('REMOTE_HOST') . ')')
 				->send();
 		}
