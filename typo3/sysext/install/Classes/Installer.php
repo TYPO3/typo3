@@ -421,8 +421,8 @@ class Installer {
 				if ($wEmail) {
 					$subject = 'Install Tool Login ATTEMPT at \'' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . '\'';
 					$email_body = 'There has been an Install Tool login attempt at TYPO3 site \'' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . '\' (' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('HTTP_HOST') . ').
-The MD5 hash of the last 5 characters of the password tried was \'' . substr(md5($p), -5) . '\'
-REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE_ADDR') . '\' (' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE_HOST') . ')';
+The last 5 characters of the MD5 hash of the password tried was \'' . substr(md5($p), -5) . '\'
+remote address was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE_ADDR') . '\' (' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE_HOST') . ')';
 					mail($wEmail, $subject, $email_body, 'From: TYPO3 Install Tool WARNING <>');
 				}
 			}
