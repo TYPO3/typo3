@@ -63,7 +63,7 @@ class DatabaseSelect extends Action\AbstractAction implements StepInterface {
 					$errorStatus->setMessage(
 						'Database with name ' . $newDatabaseName . ' could not be created.' .
 						' Either your database name contains special chars (only alphanumeric characters are allowed)' .
-						' or your database user probably has no sufficient permissions to create it.' .
+						' or your database user probably does not have sufficient permissions to create it.' .
 						' Please choose an existing (empty) database or contact administration.'
 					);
 					$result[] = $errorStatus;
@@ -75,7 +75,7 @@ class DatabaseSelect extends Action\AbstractAction implements StepInterface {
 				$errorStatus->setMessage('Given database name must be shorter than fifty characters.');
 				$result[] = $errorStatus;
 			}
-		} elseif ($postValues['type'] === 'existing') {
+		} elseif ($postValues['type'] === 'existing' && !empty($postValues['existing'])) {
 			// Only store database information when it's empty
 			$this->databaseConnection->setDatabaseName($postValues['existing']);
 			$this->databaseConnection->sql_select_db();
@@ -84,6 +84,12 @@ class DatabaseSelect extends Action\AbstractAction implements StepInterface {
 			if (!$isInitialInstallation || count($existingTables) === 0) {
 				$localConfigurationPathValuePairs['DB/database'] = $postValues['existing'];
 			}
+		} else {
+			/** @var $errorStatus \TYPO3\CMS\Install\Status\ErrorStatus */
+			$errorStatus = $this->objectManager->get('TYPO3\\CMS\\Install\\Status\\ErrorStatus');
+			$errorStatus->setTitle('No Database selected');
+			$errorStatus->setMessage('You have to select a database.');
+			$result[] = $errorStatus;
 		}
 
 		if (!empty($localConfigurationPathValuePairs)) {
