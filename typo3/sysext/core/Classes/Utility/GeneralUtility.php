@@ -5122,8 +5122,19 @@ Connection: close
 	 * @return string the encoded value already quoted (with single quotes),
 	 */
 	static public function quoteJSvalue($value) {
-		$escapedValue = static::makeInstance('TYPO3\\CMS\\Core\\Encoder\\JavaScriptEncoder')->encode($value);
-		return '\'' . $escapedValue . '\'';
+		return strtr(
+			json_encode((string)$value, JSON_HEX_AMP|JSON_HEX_APOS|JSON_HEX_QUOT|JSON_HEX_TAG),
+			array(
+				'"' => '\'',
+				'/' => '\\u002F',
+				'\\\\\\' => '\u005C',
+				' ' => '\\u0020',
+				'!' => '\\u0021',
+				'\\t' => '\\u0009',
+				'\\n' => '\\u000A',
+				'\\r' => '\\u000D'
+			)
+		);
 	}
 
 	/**

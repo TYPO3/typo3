@@ -2335,13 +2335,13 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789',
 				'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
 			),
-			'Angel brackets and ampersand are encoded' => array(
+			'Angle brackets and ampersand are encoded' => array(
 				'<>&',
-				'\\x3C\\x3E\\x26'
+				'\\u003C\\u003E\\u0026'
 			),
 			'Quotes and slashes are encoded' => array(
 				'"\'\\/',
-				'\\x22\\x27\\x5C\\x2F'
+				'\\u0022\\u0027\\u005C\\u002F'
 			),
 			'Empty string stays empty' => array(
 				'',
@@ -2349,19 +2349,19 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			),
 			'Exclamation mark and space are properly encoded' => array(
 				'Hello World!',
-				'Hello\\x20World\\x21'
+				'Hello\\u0020World\\u0021'
 			),
 			'Whitespaces are properly encoded' => array(
 				TAB . LF . CR . ' ',
-				'\\x09\\x0A\\x0D\\x20'
+				'\\u0009\\u000A\\u000D\\u0020'
 			),
 			'Null byte is properly encoded' => array(
 				chr(0),
-				'\\x00'
+				'\\u0000'
 			),
 			'Umlauts are properly encoded' => array(
 				'ÜüÖöÄä',
-				'\\xDC\\xFC\\xD6\\xF6\\xC4\\xE4'
+				'\\u00dc\\u00fc\\u00d6\\u00f6\\u00c4\\u00e4'
 			)
 		);
 	}

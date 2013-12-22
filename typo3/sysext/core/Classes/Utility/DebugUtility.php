@@ -52,11 +52,6 @@ class DebugUtility {
 	';
 
 	/**
-	 * @var \TYPO3\CMS\Core\Encoder\JavaScriptEncoder
-	 */
-	static protected $javaScriptEncoder;
-
-	/**
 	 * Debug
 	 *
 	 * @param string $var
@@ -77,9 +72,9 @@ class DebugUtility {
 			$tabHeader = $header ?: 'Debug';
 			$script = '
 				(function debug() {
-					var debugMessage = "' . static::getJavaScriptEncoder()->encode($debug) . '";
-					var header = "' . static::getJavaScriptEncoder()->encode($tabHeader) . '";
-					var group = "' . static::getJavaScriptEncoder()->encode($group) . '";
+					var debugMessage = ' . GeneralUtility::quoteJSvalue($debug) . ';
+					var header = ' . GeneralUtility::quoteJSvalue($tabHeader) . ';
+					var group = ' . GeneralUtility::quoteJSvalue($group) . ';
 
 					if (typeof Ext !== "object" && (top && typeof top.Ext !== "object")) {
 						document.write(debugMessage);
@@ -133,7 +128,6 @@ class DebugUtility {
 	 * @return string
 	 */
 	static public function convertVariableToString($variable) {
-		$string = '';
 		if (is_array($variable)) {
 			$string = self::viewArray($variable);
 		} elseif (is_object($variable)) {
@@ -159,9 +153,9 @@ class DebugUtility {
 		$debugString = self::convertVariableToString($debugVariable);
 		$script = '
 			(function debug() {
-				var debugMessage = "' . static::getJavaScriptEncoder()->encode($debugString) . '",
-					header = "' . static::getJavaScriptEncoder()->encode($header) . '",
-					group = "' . static::getJavaScriptEncoder()->encode($group) . '",
+				var debugMessage = ' . GeneralUtility::quoteJSvalue($debugString) . ',
+					header = ' . GeneralUtility::quoteJSvalue($header) . ',
+					group = ' . GeneralUtility::quoteJSvalue($group) . ',
 
 					browserWindow = function(debug, header, group) {
 						var newWindow = window.open("", "TYPO3DebugWindow_" + group,
@@ -350,14 +344,4 @@ class DebugUtility {
 		echo self::viewArray($array_in);
 	}
 
-	/**
-	 * @return \TYPO3\CMS\Core\Encoder\JavaScriptEncoder
-	 */
-	static protected function getJavaScriptEncoder() {
-		if (empty(self::$javaScriptEncoder)) {
-			self::$javaScriptEncoder = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Encoder\\JavaScriptEncoder');
-		}
-
-		return self::$javaScriptEncoder;
-	}
 }
