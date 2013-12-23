@@ -237,6 +237,25 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 	}
 
 	/**
+	 * @test
+	 * @see DataSet/Assertion/copyPageRecord.csv
+	 */
+	public function copyPageWithHotelBeforeParentContent() {
+		// Ensure hotels get processed first
+		$GLOBALS['TCA'] = array_merge(
+			array(self::TABLE_Hotel => $GLOBALS['TCA'][self::TABLE_Hotel]),
+			$GLOBALS['TCA']
+		);
+
+		$newTableIds = $this->actionService->copyRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_PageIdTarget);
+		$this->assertAssertionDataSet('copyPageWHotelBeforeParentContent');
+
+		$newPageId = $newTableIds[self::TABLE_Page][self::VALUE_PageId];
+		$responseContent = $this->getFrontendResponse($newPageId)->getResponseContent();
+		$this->assertResponseContentHasRecords($responseContent, self::TABLE_Hotel, 'title', array('Hotel #1', 'Hotel #2', 'Hotel #1'));
+	}
+
+	/**
 	 * IRRE Child Records
 	 */
 
