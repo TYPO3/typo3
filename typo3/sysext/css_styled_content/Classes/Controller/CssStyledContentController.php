@@ -570,20 +570,24 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 		// EqualHeight
 		$equalHeight = intval($this->cObj->stdWrap($conf['equalH'], $conf['equalH.']));
 		if ($equalHeight) {
-			// Initiate gifbuilder object in order to get dimensions AND calculate the imageWidth's
-			$gifCreator = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Imaging\\GifBuilder');
-			$gifCreator->init();
 			$relations_cols = array();
 			// contains the individual width of all images after scaling to $equalHeight
 			$imgWidths = array();
 			for ($a = 0; $a < $imgCount; $a++) {
 				$imgKey = $a + $imgStart;
-				$imgInfo = $gifCreator->getImageDimensions($imgPath . $imgs[$imgKey]);
+
+				/** @var $file \TYPO3\CMS\Core\Resource\File */
+				if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($imgs[$imgKey])) {
+					$file = $this->getResourceFactory()->getFileObject((int)$imgs[$imgKey]);
+				} else {
+					$file = $this->getResourceFactory()->getFileObjectFromCombinedIdentifier($imgPath . $imgs[$imgKey]);
+				}
+
 				// relationship between the original height and the wished height
-				$rel = $imgInfo[1] / $equalHeight;
+				$rel = $file->getProperty('height') / $equalHeight;
 				// if relations is zero, then the addition of this value is omitted as the image is not expected to display because of some error.
 				if ($rel) {
-					$imgWidths[$a] = $imgInfo[0] / $rel;
+					$imgWidths[$a] = $file->getProperty('width') / $rel;
 					// counts the total width of the row with the new height taken into consideration.
 					$relations_cols[(int)floor($a / $colCount)] += $imgWidths[$a];
 				}
@@ -1219,4 +1223,12 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 		}
 	}
 
+	/**
+	 * Get the ResourceFactory
+	 *
+	 * @return \TYPO3\CMS\Core\Resource\ResourceFactory
+	 */
+	protected function getResourceFactory() {
+		return \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance();
+	}
 }
