@@ -450,7 +450,7 @@
 			<trans-unit id="menu_type.I.8" xml:space="preserve">
 				<source>Sitemaps of selected pages</source>
 			</trans-unit>
-			<trans-unit id="menu_type.I.9" xml:space="preserve">
+			<trans-unit id="menu_type.I.categorized_pages" xml:space="preserve">
 				<source>Pages for selected categories</source>
 			</trans-unit>
 			<trans-unit id="menu_type.I.categorized_content" xml:space="preserve">

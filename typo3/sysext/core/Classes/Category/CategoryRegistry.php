@@ -143,7 +143,7 @@ class CategoryRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 	public function getCategoryFieldsForTable(array &$configuration, \TYPO3\CMS\Backend\Form\FormEngine $formObject) {
 		$table = '';
 		// Define the table being looked up from the type of menu
-		if ($configuration['row']['menu_type'] == 9) {
+		if ($configuration['row']['menu_type'] == 'categorized_pages') {
 			$table = 'pages';
 		} elseif ($configuration['row']['menu_type'] == 'categorized_content') {
 			$table = 'tt_content';

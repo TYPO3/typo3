@@ -1144,8 +1144,8 @@ return array(
 						'6'
 					),
 					array(
-						'LLL:EXT:cms/locallang_ttc.xlf:menu_type.I.9',
-						'9'
+						'LLL:EXT:cms/locallang_ttc.xlf:menu_type.I.categorized_pages',
+						'categorized_pages'
 					),
 					array(
 						'LLL:EXT:cms/locallang_ttc.xlf:menu_type.I.categorized_content',

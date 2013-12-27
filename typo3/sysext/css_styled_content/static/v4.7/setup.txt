@@ -1959,15 +1959,15 @@ tt_content.menu {
 		}
 
 		# Menu of categorized pages
-		9 < .default
-		9 {
+		categorized_pages < .default
+		categorized_pages {
 			special = categories
 			special.value.field = selected_categories
 			special.relation.field = category_field
 			special.sorting = title
 			special.order = asc
 			stdWrap {
-				outerWrap = <ul class="csc-menu csc-menu-9">|</ul>
+				outerWrap = <ul class="csc-menu csc-menu-categorized-pages">|</ul>
 			}
 		}
 
