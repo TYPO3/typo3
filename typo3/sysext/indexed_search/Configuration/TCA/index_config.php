@@ -14,9 +14,6 @@ return array(
 		),
 		'iconfile' => 'default.gif'
 	),
-	'feInterface' => array(
-		'fe_admin_fieldList' => 'hidden, starttime, title, description, type, depth, table2index, alternative_source_pid, get_params, chashcalc, filepath, extensions'
-	),
 	'interface' => array(
 		'showRecordFieldList' => 'hidden,starttime,title,description,type,depth,table2index,alternative_source_pid,get_params,chashcalc,filepath,extensions'
 	),

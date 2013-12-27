@@ -215,15 +215,17 @@ class ExtensionManagementUtility {
 	 *
 	 * @param string $table The table name of a table already present in $GLOBALS['TCA'] with a columns section
 	 * @param array $columnArray The array with the additional columns (typical some fields an extension wants to add)
-	 * @param boolean $addTofeInterface If $addTofeInterface is TRUE the list of fields are also added to the fe_admin_fieldList.
+	 * @param boolean $addTofeInterface DEPRECATED: Usage of feInterface is no longer part of the TYPO3 CMS Core. Please check EXT:statictemplates.
 	 * @return void
 	 */
-	static public function addTCAcolumns($table, $columnArray, $addTofeInterface = 0) {
+	static public function addTCAcolumns($table, $columnArray, $addTofeInterface = FALSE) {
 		if (is_array($columnArray) && is_array($GLOBALS['TCA'][$table]) && is_array($GLOBALS['TCA'][$table]['columns'])) {
 			// Candidate for array_merge() if integer-keys will some day make trouble...
 			$GLOBALS['TCA'][$table]['columns'] = array_merge($GLOBALS['TCA'][$table]['columns'], $columnArray);
 			if ($addTofeInterface) {
-				$GLOBALS['TCA'][$table]['feInterface']['fe_admin_fieldList'] .= ',' . implode(',', array_keys($columnArray));
+				GeneralUtility::deprecationLog(
+					'Usage of feInterface is no longer part of the TYPO3 CMS Core. Please check EXT:statictemplates.'
+				);
 			}
 		}
 	}
