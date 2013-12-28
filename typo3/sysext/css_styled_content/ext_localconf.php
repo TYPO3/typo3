@@ -50,9 +50,4 @@ $GLOBALS['TYPO3_CONF_VARS']['FE']['contentRenderingTemplates'] = array(
 	'cssstyledcontent/static/v4.7/',
 	'cssstyledcontent/static/v4.6/',
 	'cssstyledcontent/static/v4.5/',
-	'cssstyledcontent/static/v4.4/',
-	'cssstyledcontent/static/v4.3/',
-	'cssstyledcontent/static/v4.2/',
-	'cssstyledcontent/static/v3.9/',
-	'cssstyledcontent/static/v3.8/'
 );
