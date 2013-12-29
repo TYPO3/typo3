@@ -143,9 +143,6 @@ class PropertyMapper implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	protected function doMapping($source, $targetType, \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration, &$currentPropertyPath) {
 		if (is_object($source)) {
-			// This is needed to correctly convert old class names to new ones
-			// This compatibility layer will be removed with 7.0
-			$targetType = \TYPO3\CMS\Core\Core\ClassLoader::getClassNameForAlias($targetType);
 			$targetType = $this->parseCompositeType($targetType);
 			if ($source instanceof $targetType) {
 				return $source;
@@ -219,6 +216,10 @@ class PropertyMapper implements \TYPO3\CMS\Core\SingletonInterface {
 		}
 
 		$targetType = $this->parseCompositeType($targetType);
+		// This is needed to correctly convert old class names to new ones
+		// This compatibility layer will be removed with 7.0
+		$targetType = \TYPO3\CMS\Core\Core\ClassLoader::getClassNameForAlias($targetType);
+
 		$converter = NULL;
 
 		if (\TYPO3\CMS\Extbase\Utility\TypeHandlingUtility::isSimpleType($targetType)) {
