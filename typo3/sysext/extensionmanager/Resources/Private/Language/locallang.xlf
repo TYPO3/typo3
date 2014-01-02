@@ -66,6 +66,9 @@
 			<trans-unit id="updateScript.none" xml:space="preserve">
 				<source>No update necessary.</source>
 			</trans-unit>
+			<trans-unit id="extensionList.clickToConfigure" xml:space="preserve">
+				<source>(Click to configure)</source>
+			</trans-unit>
 			<trans-unit id="extensionList.configure" xml:space="preserve">
 				<source>Configure</source>
 			</trans-unit>
