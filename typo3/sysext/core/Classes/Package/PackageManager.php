@@ -608,9 +608,9 @@ class PackageManager extends \TYPO3\Flow\Package\PackageManager implements \TYPO
 	 * @param array $excludedTypes Array of package types to exclude
 	 * @return array List of packages
 	 */
-	protected function getPackageKeysOfType($type, array $excludedTypes = array()) {
+	protected function getActivePackageKeysOfType($type, array $excludedTypes = array()) {
 		$packageKeys = array();
-		foreach ($this->packages as $packageKey => $package) {
+		foreach ($this->activePackages as $packageKey => $package) {
 			$packageType = $package->getComposerManifest('type');
 			if (($type === '' || $packageType === $type) && !in_array($packageType, $excludedTypes)) {
 				$packageKeys[] = $packageKey;
@@ -656,8 +656,8 @@ class PackageManager extends \TYPO3\Flow\Package\PackageManager implements \TYPO
 				$rootPackageKeys[] = $packageKey;
 			}
 		}
-		$extensionPackageKeys = $this->getPackageKeysOfType('', array('typo3-cms-framework'));
-		$frameworkPackageKeys = $this->getPackageKeysOfType('typo3-cms-framework');
+		$extensionPackageKeys = $this->getActivePackageKeysOfType('', array('typo3-cms-framework'));
+		$frameworkPackageKeys = $this->getActivePackageKeysOfType('typo3-cms-framework');
 		foreach ($extensionPackageKeys as $packageKey) {
 			// Remove framework packages from list
 			$packageKeysWithoutFramework = array_diff(
@@ -683,7 +683,7 @@ class PackageManager extends \TYPO3\Flow\Package\PackageManager implements \TYPO
 	protected function buildDependencyGraph() {
 		$this->resolvePackageDependencies();
 
-		$frameworkPackageKeys = $this->getPackageKeysOfType('typo3-cms-framework');
+		$frameworkPackageKeys = $this->getActivePackageKeysOfType('typo3-cms-framework');
 		$this->buildDependencyGraphForPackages($frameworkPackageKeys);
 
 		$this->addDependencyToFrameworkToAllExtensions();

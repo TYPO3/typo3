@@ -686,8 +686,8 @@ class PackageManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			array('typo3-cms-framework', array(), $frameworkPackageKeys),
 		);
 
-		$packageManager = $this->getAccessibleMock('\TYPO3\CMS\Core\Package\PackageManager', array('resolvePackageDependencies','getPackageKeysOfType'));
-		$packageManager->expects($this->any())->method('getPackageKeysOfType')->will($this->returnValueMap($typeAssignment));
+		$packageManager = $this->getAccessibleMock('\TYPO3\CMS\Core\Package\PackageManager', array('resolvePackageDependencies','getActivePackageKeysOfType'));
+		$packageManager->expects($this->any())->method('getActivePackageKeysOfType')->will($this->returnValueMap($typeAssignment));
 		$packageManager->_set('packages', $unsortedPackages);
 		$packageManager->_set('packageStatesConfiguration', $unsortedPackageStatesConfiguration);
 		$packageManager->_call('buildDependencyGraph');
@@ -859,8 +859,8 @@ class PackageManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			array('typo3-cms-framework', array(), $frameworkPackageKeys),
 		);
 
-		$packageManager = $this->getAccessibleMock('\TYPO3\CMS\Core\Package\PackageManager', array('resolvePackageDependencies','getPackageKeysOfType'));
-		$packageManager->expects($this->any())->method('getPackageKeysOfType')->will($this->returnValueMap($typeAssignment));
+		$packageManager = $this->getAccessibleMock('\TYPO3\CMS\Core\Package\PackageManager', array('resolvePackageDependencies','getActivePackageKeysOfType'));
+		$packageManager->expects($this->any())->method('getActivePackageKeysOfType')->will($this->returnValueMap($typeAssignment));
 		$packageManager->_set('packages', $unsortedPackages);
 		$packageManager->_set('packageStatesConfiguration', $unsortedPackageStatesConfiguration);
 		$packageManager->_call('sortAvailablePackagesByDependencies');
@@ -1104,8 +1104,8 @@ class PackageManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			array('typo3-cms-framework', array(), array()),
 		);
 
-		$packageManager = $this->getAccessibleMock('\TYPO3\CMS\Core\Package\PackageManager', array('resolvePackageDependencies','getPackageKeysOfType'));
-		$packageManager->expects($this->any())->method('getPackageKeysOfType')->will($this->returnValueMap($typeAssignment));
+		$packageManager = $this->getAccessibleMock('\TYPO3\CMS\Core\Package\PackageManager', array('resolvePackageDependencies','getActivePackageKeysOfType'));
+		$packageManager->expects($this->any())->method('getActivePackageKeysOfType')->will($this->returnValueMap($typeAssignment));
 		$packageManager->_set('packages', $unsortedPackages);
 		$packageManager->_set('packageStatesConfiguration', $unsortedPackageStatesConfiguration);
 		$packageManager->_call('getAvailablePackageLoadingOrder');

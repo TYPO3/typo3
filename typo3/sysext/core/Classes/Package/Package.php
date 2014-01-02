@@ -241,11 +241,11 @@ class Package extends \TYPO3\Flow\Package\Package implements PackageInterface {
 	 * @return boolean TRUE if $requirement is a composer package (contains a slash), FALSE otherwise
 	 */
 	protected function packageRequirementIsComposerPackage($requirement) {
-		//@TODO remove this workaround once extensionmanager can handle composer packages natively
-		if ($requirement === 'composer/installers') {
-			return FALSE;
-		}
-		return parent::packageRequirementIsComposerPackage($requirement);
+		// According to http://getcomposer.org/doc/02-libraries.md#platform-packages
+		// the following regex should capture all non composer requirements.
+		// typo3 is included in the list because it's a meta package and not supported for now.
+		// composer/installers is included until extensionmanager can handle composer packages natively
+		return preg_match('/^(php(-64bit)?|ext-[^\/]+|lib-(curl|iconv|libxml|openssl|pcre|uuid|xsl)|typo3|composer\/installers)$/', $requirement) !== 1;
 	}
 
 
