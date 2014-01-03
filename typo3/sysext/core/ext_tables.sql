@@ -412,10 +412,10 @@ CREATE TABLE sys_file_reference (
 	# Reference fields (basically same as MM table)
 	uid_local int(11) DEFAULT '0' NOT NULL,
 	uid_foreign int(11) DEFAULT '0' NOT NULL,
-	tablenames varchar(255) DEFAULT '' NOT NULL,
-	fieldname tinytext,
+	tablenames varchar(64) DEFAULT '' NOT NULL,
+	fieldname varchar(64) DEFAULT '' NOT NULL,
 	sorting_foreign int(11) DEFAULT '0' NOT NULL,
-	table_local varchar(255) DEFAULT '' NOT NULL,
+	table_local varchar(64) DEFAULT '' NOT NULL,
 
 	# Local usage overlay fields
 	title tinytext,
