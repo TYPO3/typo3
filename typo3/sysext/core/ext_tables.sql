@@ -425,7 +425,10 @@ CREATE TABLE sys_file_reference (
 	downloadname tinytext,
 
 	PRIMARY KEY (uid),
-	KEY parent (pid,deleted)
+	KEY parent (pid,deleted),
+	KEY tablenames_fieldname (tablenames(32),fieldname(12)),
+	KEY deleted (deleted),
+	KEY uid_foreign (uid_foreign)
 );
 
 
