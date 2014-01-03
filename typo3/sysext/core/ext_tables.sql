@@ -377,7 +377,8 @@ CREATE TABLE sys_file_processedfile (
 	width int(11) DEFAULT '0',
 	height int(11) DEFAULT '0',
 
-	PRIMARY KEY (uid)
+	PRIMARY KEY (uid),
+	KEY combined_1 (original,task_type,configurationsha1)
 );
 
 #
