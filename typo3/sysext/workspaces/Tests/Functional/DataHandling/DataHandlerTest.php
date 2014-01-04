@@ -39,6 +39,7 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 		/** @var $backendUser \TYPO3\CMS\Core\Authentication\BackendUserAuthentication */
 		$backendUser = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Authentication\\BackendUserAuthentication');
 		$backendUser->user['admin'] = 1;
+		$backendUser->user['uid'] = 1;
 		$GLOBALS['BE_USER'] = $backendUser;
 		\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->initializeLanguageObject();
 

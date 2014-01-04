@@ -39,6 +39,7 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 		/** @var $backendUser \TYPO3\CMS\Core\Authentication\BackendUserAuthentication */
 		$backendUser = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Authentication\\BackendUserAuthentication');
 		$backendUser->user['admin'] = 1;
+		$backendUser->user['uid'] = 1;
 		// By default make tests on live workspace
 		$backendUser->workspace = 0;
 		$GLOBALS['BE_USER'] = $backendUser;
