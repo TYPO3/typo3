@@ -139,7 +139,7 @@ abstract class AbstractDriver implements DriverInterface {
 	 * @return string
 	 */
 	protected function getTemporaryPathForFile($fileIdentifier) {
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::tempnam('fal-tempfile-') . '.' . PathUtility::basename($fileIdentifier);
+		return \TYPO3\CMS\Core\Utility\GeneralUtility::tempnam('fal-tempfile-', '.' . PathUtility::pathinfo($fileIdentifier, PATHINFO_EXTENSION));
 	}
 
 	/**

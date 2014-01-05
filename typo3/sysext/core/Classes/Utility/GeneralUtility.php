@@ -3815,12 +3815,23 @@ Connection: close
 	 * This function should be used for getting temporary file names - will make your applications safe for open_basedir = on
 	 * REMEMBER to delete the temporary files after use! This is done by \TYPO3\CMS\Core\Utility\GeneralUtility::unlink_tempfile()
 	 *
-	 * @param string $filePrefix Prefix to temp file (which will have no extension btw)
+	 * @param string $filePrefix Prefix for temporary file
+	 * @param string $fileSuffix Suffix for temporary file, for example a special file extension
 	 * @return string result from PHP function tempnam() with PATH_site . 'typo3temp/' set for temp path.
 	 * @see unlink_tempfile(), upload_to_tempfile()
 	 */
-	static public function tempnam($filePrefix) {
-		return tempnam(PATH_site . 'typo3temp/', $filePrefix);
+	static public function tempnam($filePrefix, $fileSuffix = '') {
+		$temporaryPath = PATH_site . 'typo3temp/';
+		if ($fileSuffix === '') {
+			$tempFileName = tempnam($temporaryPath, $filePrefix);
+		} else {
+			do {
+				$tempFileName = $temporaryPath . $filePrefix . mt_rand(1, PHP_INT_MAX) . $fileSuffix;
+			} while (file_exists($tempFileName));
+			touch($tempFileName);
+			clearstatcache(NULL, $tempFileName);
+		}
+		return $tempFileName;
 	}
 
 	/**

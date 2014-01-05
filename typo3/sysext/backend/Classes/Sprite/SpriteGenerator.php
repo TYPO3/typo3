@@ -431,7 +431,7 @@ class SpriteGenerator {
 	 * @return void
 	 */
 	protected function generateGraphic() {
-		$tempSprite = GeneralUtility::tempnam($this->spriteName);
+		$tempSprite = GeneralUtility::tempnam($this->spriteName, '.png');
 		$filePath = PATH_site . $this->spriteFolder . $this->spriteName . '.png';
 
 		// Create black true color image with given size
@@ -446,9 +446,9 @@ class SpriteGenerator {
 				imagecopy($newSprite, $currentIcon, $icon['left'], $icon['top'], 0, 0, $icon['width'], $icon['height']);
 			}
 		}
-		imagepng($newSprite, $tempSprite . '.png');
-		GeneralUtility::upload_copy_move($tempSprite . '.png', $filePath);
-		GeneralUtility::unlink_tempfile($tempSprite . '.png');
+		imagepng($newSprite, $tempSprite);
+		GeneralUtility::upload_copy_move($tempSprite, $filePath);
+		GeneralUtility::unlink_tempfile($tempSprite);
 	}
 
 	/**
@@ -457,7 +457,7 @@ class SpriteGenerator {
 	 * @return void
 	 */
 	protected function generateHighDensityGraphic() {
-		$tempSprite = GeneralUtility::tempnam($this->spriteName . '@x2');
+		$tempSprite = GeneralUtility::tempnam($this->spriteName . '@x2', '.png');
 		$filePath = PATH_site . $this->spriteFolder . $this->spriteName . '@x2.png';
 
 		// Create black true color image with given size
@@ -479,9 +479,9 @@ class SpriteGenerator {
 				}
 			}
 		}
-		imagepng($newSprite, $tempSprite . '.png');
-		GeneralUtility::upload_copy_move($tempSprite . '.png', $filePath);
-		GeneralUtility::unlink_tempfile($tempSprite . '.png');
+		imagepng($newSprite, $tempSprite);
+		GeneralUtility::upload_copy_move($tempSprite, $filePath);
+		GeneralUtility::unlink_tempfile($tempSprite);
 	}
 	/**
 	 * Arranges icons in sprites,
