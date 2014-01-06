@@ -42,9 +42,10 @@ abstract class Tx_Fluid_ViewHelpers_Be_AbstractBackendViewHelper extends Tx_Flui
 		if (!isset($GLOBALS['SOBE']->doc)) {
 			$doc = t3lib_div::makeInstance('template');
 			$doc->backPath = $GLOBALS['BACK_PATH'];
-			if (is_object($GLOBALS['SOBE'])) {
-				$GLOBALS['SOBE']->doc = $doc;
+			if (!isset($GLOBALS['SOBE'])) {
+				$GLOBALS['SOBE'] = new \stdClass();
 			}
+			$GLOBALS['SOBE']->doc = $doc;
 		} else {
 			$doc = $GLOBALS['SOBE']->doc;
 		}
