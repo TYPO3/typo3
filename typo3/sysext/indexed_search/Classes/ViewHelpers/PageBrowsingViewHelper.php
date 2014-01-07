@@ -40,7 +40,6 @@ class PageBrowsingViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractVi
 	/**
 	 * main render function
 	 *
-	 * @param array $details	an array with the browser settings
 	 * @param integer $maximumNumberOfResultPages
 	 * @param integer $numberOfResults
 	 * @param integer $resultsPerPage
