@@ -47,7 +47,7 @@ class ColumnsContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractCon
 			$tdRowCount = 0;
 			$tableParams = isset($conf['tableParams.']) ? $this->cObj->stdWrap($conf['tableParams'], $conf['tableParams.']) : $conf['tableParams'];
 			$tableParams = $tableParams ? ' ' . $tableParams : ' border="0" cellspacing="0" cellpadding="0"';
-			$TDParams = isset($conf['TDParams.']) ? $this->cObj->stdWrap($conf['TDParams'], $conf['TDParams.']) : $conf['TDParams'];
+			$TDparams = isset($conf['TDParams.']) ? $this->cObj->stdWrap($conf['TDParams'], $conf['TDParams.']) : $conf['TDParams'];
 			$TDparams = $TDparams ? ' ' . $TDparams : ' valign="top"';
 			$rows = isset($conf['rows.']) ? $this->cObj->stdWrap($conf['rows'], $conf['rows.']) : $conf['rows'];
 			$rows = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($rows, 2, 20);
