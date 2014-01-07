@@ -154,7 +154,7 @@ class IndexSearchRepository {
 			// Total search-result count
 			$count = $GLOBALS['TYPO3_DB']->sql_num_rows($res);
 			// The pointer is set to the result page that is currently being viewed
-			$pointer = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($this->resultpagePointer, 0, floor($count / $this->resultsPerPage));
+			$pointer = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($this->resultpagePointer, 0, floor($count / $this->numberOfResults));
 			// Initialize result accumulation variables:
 			$c = 0;
 			// Result pointer: Counts up the position in the current search-result
