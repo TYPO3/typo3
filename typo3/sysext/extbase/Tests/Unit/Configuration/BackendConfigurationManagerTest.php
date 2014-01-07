@@ -75,87 +75,9 @@ class BackendConfigurationManagerTest extends \TYPO3\CMS\Extbase\Tests\Unit\Base
 	/**
 	 * @test
 	 */
-	public function getCurrentPageIdReturnsPageIdFromPost() {
-		\TYPO3\CMS\Core\Utility\GeneralUtility::_GETset(array('id' => 123));
-		$_POST['id'] = 321;
-		$expectedResult = 321;
+	public function getCurrentPageIdReturnsZeroIfIdIsNotSet() {
+		$expectedResult = 0;
 		$actualResult = $this->backendConfigurationManager->_call('getCurrentPageId');
-		$this->assertEquals($expectedResult, $actualResult);
-	}
-
-	/**
-	 * @test
-	 */
-	public function getCurrentPageIdReturnsPidFromFirstRootTemplateIfIdIsNotSetAndNoRootPageWasFound() {
-		$GLOBALS['TYPO3_DB']->expects($this->at(0))->method('exec_SELECTgetRows')->with('uid', 'pages', 'deleted=0 AND hidden=0 AND is_siteroot=1', '', '', '1')->will($this->returnValue(array()));
-		$GLOBALS['TYPO3_DB']->expects($this->at(1))->method('exec_SELECTgetRows')->with('pid', 'sys_template', 'deleted=0 AND hidden=0 AND root=1', '', '', '1')->will($this->returnValue(array(
-			array('pid' => 123)
-		)));
-		$expectedResult = 123;
-		$actualResult = $this->backendConfigurationManager->_call('getCurrentPageId');
-		$this->assertEquals($expectedResult, $actualResult);
-	}
-
-	/**
-	 * @test
-	 */
-	public function getCurrentPageIdReturnsUidFromFirstRootPageIfIdIsNotSet() {
-		$GLOBALS['TYPO3_DB']->expects($this->once())->method('exec_SELECTgetRows')->with('uid', 'pages', 'deleted=0 AND hidden=0 AND is_siteroot=1', '', '', '1')->will($this->returnValue(array(
-			array('uid' => 321)
-		)));
-		$expectedResult = 321;
-		$actualResult = $this->backendConfigurationManager->_call('getCurrentPageId');
-		$this->assertEquals($expectedResult, $actualResult);
-	}
-
-	/**
-	 * @test
-	 */
-	public function getCurrentPageIdReturnsDefaultStoragePidIfIdIsNotSetNoRootTemplateAndRootPageWasFound() {
-		$GLOBALS['TYPO3_DB']->expects($this->at(0))->method('exec_SELECTgetRows')->with('uid', 'pages', 'deleted=0 AND hidden=0 AND is_siteroot=1', '', '', '1')->will($this->returnValue(array()));
-		$GLOBALS['TYPO3_DB']->expects($this->at(1))->method('exec_SELECTgetRows')->with('pid', 'sys_template', 'deleted=0 AND hidden=0 AND root=1', '', '', '1')->will($this->returnValue(array()));
-		$expectedResult = \TYPO3\CMS\Extbase\Configuration\AbstractConfigurationManager::DEFAULT_BACKEND_STORAGE_PID;
-		$actualResult = $this->backendConfigurationManager->_call('getCurrentPageId');
-		$this->assertEquals($expectedResult, $actualResult);
-	}
-
-	/**
-	 * @test
-	 */
-	public function getPluginConfigurationReturnsEmptyArrayIfNoPluginConfigurationWasFound() {
-		$this->backendConfigurationManager->expects($this->once())->method('getTypoScriptSetup')->will($this->returnValue(array('foo' => 'bar')));
-		$expectedResult = array();
-		$actualResult = $this->backendConfigurationManager->_call('getPluginConfiguration', 'SomeExtensionName', 'SomePluginName');
-		$this->assertEquals($expectedResult, $actualResult);
-	}
-
-	/**
-	 * @test
-	 */
-	public function getPluginConfigurationReturnsExtensionConfiguration() {
-		$testSettings = array(
-			'settings.' => array(
-				'foo' => 'bar'
-			)
-		);
-		$testSettingsConverted = array(
-			'settings' => array(
-				'foo' => 'bar'
-			)
-		);
-		$testSetup = array(
-			'module.' => array(
-				'tx_someextensionname.' => $testSettings
-			)
-		);
-		$this->mockTypoScriptService->expects($this->any())->method('convertTypoScriptArrayToPlainArray')->with($testSettings)->will($this->returnValue($testSettingsConverted));
-		$this->backendConfigurationManager->expects($this->once())->method('getTypoScriptSetup')->will($this->returnValue($testSetup));
-		$expectedResult = array(
-			'settings' => array(
-				'foo' => 'bar'
-			)
-		);
-		$actualResult = $this->backendConfigurationManager->_call('getPluginConfiguration', 'SomeExtensionName');
 		$this->assertEquals($expectedResult, $actualResult);
 	}
 

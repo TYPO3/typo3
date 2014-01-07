@@ -127,22 +127,7 @@ class BackendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\Abstr
 	 * @return integer current page id. If no page is selected current root page id is returned
 	 */
 	protected function getCurrentPageId() {
-		$pageId = (integer) \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id');
-		if ($pageId > 0) {
-			return $pageId;
-		}
-		// get current site root
-		$rootPages = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid', 'pages', 'deleted=0 AND hidden=0 AND is_siteroot=1', '', '', '1');
-		if (count($rootPages) > 0) {
-			return $rootPages[0]['uid'];
-		}
-		// get root template
-		$rootTemplates = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('pid', 'sys_template', 'deleted=0 AND hidden=0 AND root=1', '', '', '1');
-		if (count($rootTemplates) > 0) {
-			return $rootTemplates[0]['pid'];
-		}
-		// fallback
-		return self::DEFAULT_BACKEND_STORAGE_PID;
+		return (integer) \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id');
 	}
 
 	/**
