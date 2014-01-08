@@ -703,6 +703,7 @@ class ContentObjectRenderer {
 	 * @param array $conf The array with TypoScript properties for the content object
 	 * @param string $TSkey A string label used for the internal debugging tracking.
 	 * @return string cObject output
+	 * @throws \UnexpectedValueException
 	 * @todo Define visibility
 	 */
 	public function cObjGetSingle($name, $conf, $TSkey = '__') {
@@ -716,7 +717,7 @@ class ContentObjectRenderer {
 				$GLOBALS['TT']->push($TSkey, $name);
 			}
 			// Checking if the COBJ is a reference to another object. (eg. name of 'blabla.blabla = < styles.something')
-			if (substr($name, 0, 1) == '<') {
+			if ($name{0} === '<') {
 				$key = trim(substr($name, 1));
 				$cF = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\Parser\\TypoScriptParser');
 				// $name and $conf is loaded with the referenced values.
@@ -2283,8 +2284,7 @@ class ContentObjectRenderer {
 	 * @return string The processed input value
 	 */
 	public function stdWrap_field($content = '', $conf = array()) {
-		$content = $this->getFieldVal($conf['field']);
-		return $content;
+		return $this->getFieldVal($conf['field']);
 	}
 
 	/**
@@ -2297,8 +2297,7 @@ class ContentObjectRenderer {
 	 * @return string The processed input value
 	 */
 	public function stdWrap_current($content = '', $conf = array()) {
-		$content = $this->data[$this->currentValKey];
-		return $content;
+		return $this->data[$this->currentValKey];
 	}
 
 	/**
@@ -2311,8 +2310,7 @@ class ContentObjectRenderer {
 	 * @return string The processed input value
 	 */
 	public function stdWrap_cObject($content = '', $conf = array()) {
-		$content = $this->cObjGetSingle($conf['cObject'], $conf['cObject.'], '/stdWrap/.cObject');
-		return $content;
+		return $this->cObjGetSingle($conf['cObject'], $conf['cObject.'], '/stdWrap/.cObject');
 	}
 
 	/**
@@ -2325,8 +2323,7 @@ class ContentObjectRenderer {
 	 * @return string The processed input value
 	 */
 	public function stdWrap_numRows($content = '', $conf = array()) {
-		$content = $this->numRows($conf['numRows.']);
-		return $content;
+		return $this->numRows($conf['numRows.']);
 	}
 
 	/**
@@ -2338,8 +2335,7 @@ class ContentObjectRenderer {
 	 * @return string The processed input value
 	 */
 	public function stdWrap_filelist($content = '', $conf = array()) {
-		$content = $this->filelist($conf['filelist']);
-		return $content;
+		return $this->filelist($conf['filelist']);
 	}
 
 	/**
@@ -2351,8 +2347,7 @@ class ContentObjectRenderer {
 	 * @return string The processed input value
 	 */
 	public function stdWrap_preUserFunc($content = '', $conf = array()) {
-		$content = $this->callUserFunction($conf['preUserFunc'], $conf['preUserFunc.'], $content);
-		return $content;
+		return $this->callUserFunction($conf['preUserFunc'], $conf['preUserFunc.'], $content);
 	}
 
 	/**
@@ -2396,8 +2391,7 @@ class ContentObjectRenderer {
 	 * @return string The processed input value
 	 */
 	public function stdWrap_preIfEmptyListNum($content = '', $conf = array()) {
-		$content = $this->listNum($content, $conf['preIfEmptyListNum'], $conf['preIfEmptyListNum.']['splitChar']);
-		return $content;
+		return $this->listNum($content, $conf['preIfEmptyListNum'], $conf['preIfEmptyListNum.']['splitChar']);
 	}
 
 	/**
@@ -2458,8 +2452,7 @@ class ContentObjectRenderer {
 	 * @return string The processed input value
 	 */
 	public function stdWrap_listNum($content = '', $conf = array()) {
-		$content = $this->listNum($content, $conf['listNum'], $conf['listNum.']['splitChar']);
-		return $content;
+		return $this->listNum($content, $conf['listNum'], $conf['listNum.']['splitChar']);
 	}
 
 	/**
@@ -2471,8 +2464,7 @@ class ContentObjectRenderer {
 	 * @return string The processed input value
 	 */
 	public function stdWrap_trim($content = '', $conf = array()) {
-		$content = trim($content);
-		return $content;
+		return trim($content);
 	}
 
 	/**
@@ -2521,8 +2513,7 @@ class ContentObjectRenderer {
 	 * @return string The processed input value
 	 */
 	public function stdWrap_stdWrap($content = '', $conf = array()) {
-		$content = $this->stdWrap($content, $conf['stdWrap.']);
-		return $content;
+		return $this->stdWrap($content, $conf['stdWrap.']);
 	}
 
 	/**
@@ -2551,7 +2542,7 @@ class ContentObjectRenderer {
 	 * @return string The processed input value
 	 */
 	public function stdWrap_required($content = '', $conf = array()) {
-		if ((string) $content == '') {
+		if ((string) $content === '') {
 			$content = '';
 			$this->stopRendering[$this->stdWrapRecursionLevel] = TRUE;
 		}
@@ -2601,8 +2592,7 @@ class ContentObjectRenderer {
 	 * @return string The processed input value
 	 */
 	public function stdWrap_csConv($content = '', $conf = array()) {
-		$content = $GLOBALS['TSFE']->csConv($content, $conf['csConv']);
-		return $content;
+		return $GLOBALS['TSFE']->csConv($content, $conf['csConv']);
 	}
 
 	/**
@@ -2615,8 +2605,7 @@ class ContentObjectRenderer {
 	 * @return string The processed input value
 	 */
 	public function stdWrap_parseFunc($content = '', $conf = array()) {
-		$content = $this->parseFunc($content, $conf['parseFunc.'], $conf['parseFunc']);
-		return $content;
+		return $this->parseFunc($content, $conf['parseFunc.'], $conf['parseFunc']);
 	}
 
 	/**
@@ -2645,8 +2634,7 @@ class ContentObjectRenderer {
 	 * @return string The processed input value
 	 */
 	public function stdWrap_split($content = '', $conf = array()) {
-		$content = $this->splitObj($content, $conf['split.']);
-		return $content;
+		return $this->splitObj($content, $conf['split.']);
 	}
 
 	/**
@@ -2658,8 +2646,7 @@ class ContentObjectRenderer {
 	 * @return string The processed input value
 	 */
 	public function stdWrap_replacement($content = '', $conf = array()) {
-		$content = $this->replacement($content, $conf['replacement.']);
-		return $content;
+		return $this->replacement($content, $conf['replacement.']);
 	}
 
 	/**
@@ -2688,8 +2675,7 @@ class ContentObjectRenderer {
 	 * @return string The processed input value
 	 */
 	public function stdWrap_char($content = '', $conf = array()) {
-		$content = chr(intval($conf['char']));
-		return $content;
+		return chr(intval($conf['char']));
 	}
 
 	/**
@@ -2701,8 +2687,7 @@ class ContentObjectRenderer {
 	 * @return string The processed input value
 	 */
 	public function stdWrap_intval($content = '', $conf = array()) {
-		$content = intval($content);
-		return $content;
+		return intval($content);
 	}
 
 	/**
@@ -2733,8 +2718,7 @@ class ContentObjectRenderer {
 	 * @return string The processed input value
 	 */
 	public function stdWrap_round($content = '', $conf = array()) {
-		$content = $this->round($content, $conf['round.']);
-		return $content;
+		return $this->round($content, $conf['round.']);
 	}
 
 	/**
@@ -2746,8 +2730,7 @@ class ContentObjectRenderer {
 	 * @return string The processed input value
 	 */
 	public function stdWrap_numberFormat($content = '', $conf = array()) {
-		$content = $this->numberFormat($content, $conf['numberFormat.']);
-		return $content;
+		return $this->numberFormat($content, $conf['numberFormat.']);
 	}
 
 	/**
@@ -2759,8 +2742,7 @@ class ContentObjectRenderer {
 	 * @return string The processed input value
 	 */
 	public function stdWrap_expandList($content = '', $conf = array()) {
-		$content = GeneralUtility::expandList($content);
-		return $content;
+		return GeneralUtility::expandList($content);
 	}
 
 	/**
@@ -2808,8 +2790,7 @@ class ContentObjectRenderer {
 	 * @return string The processed input value
 	 */
 	public function stdWrap_age($content = '', $conf = array()) {
-		$content = $this->calcAge($GLOBALS['EXEC_TIME'] - $content, $conf['age']);
-		return $content;
+		return $this->calcAge($GLOBALS['EXEC_TIME'] - $content, $conf['age']);
 	}
 
 	/**
@@ -2822,8 +2803,7 @@ class ContentObjectRenderer {
 	 * @return string The processed input value
 	 */
 	public function stdWrap_case($content = '', $conf = array()) {
-		$content = $this->HTMLcaseshift($content, $conf['case']);
-		return $content;
+		return $this->HTMLcaseshift($content, $conf['case']);
 	}
 
 	/**
@@ -2835,8 +2815,7 @@ class ContentObjectRenderer {
 	 * @return string The processed input value
 	 */
 	public function stdWrap_bytes($content = '', $conf = array()) {
-		$content = GeneralUtility::formatSize($content, $conf['bytes.']['labels']);
-		return $content;
+		return GeneralUtility::formatSize($content, $conf['bytes.']['labels']);
 	}
 
 	/**
@@ -2848,8 +2827,7 @@ class ContentObjectRenderer {
 	 * @return string The processed input value
 	 */
 	public function stdWrap_substring($content = '', $conf = array()) {
-		$content = $this->substring($content, $conf['substring']);
-		return $content;
+		return $this->substring($content, $conf['substring']);
 	}
 
 	/**
@@ -2861,8 +2839,7 @@ class ContentObjectRenderer {
 	 * @return string The processed input value
 	 */
 	public function stdWrap_removeBadHTML($content = '', $conf = array()) {
-		$content = $this->removeBadHTML($content, $conf['removeBadHTML.']);
-		return $content;
+		return $this->removeBadHTML($content, $conf['removeBadHTML.']);
 	}
 
 	/**
@@ -2874,8 +2851,7 @@ class ContentObjectRenderer {
 	 * @return string The processed input value
 	 */
 	public function stdWrap_cropHTML($content = '', $conf = array()) {
-		$content = $this->cropHTML($content, $conf['cropHTML']);
-		return $content;
+		return $this->cropHTML($content, $conf['cropHTML']);
 	}
 
 	/**
@@ -2887,8 +2863,7 @@ class ContentObjectRenderer {
 	 * @return string The processed input value
 	 */
 	public function stdWrap_stripHtml($content = '', $conf = array()) {
-		$content = strip_tags($content);
-		return $content;
+		return strip_tags($content);
 	}
 
 	/**
@@ -2900,8 +2875,7 @@ class ContentObjectRenderer {
 	 * @return string The processed input value
 	 */
 	public function stdWrap_crop($content = '', $conf = array()) {
-		$content = $this->crop($content, $conf['crop']);
-		return $content;
+		return $this->crop($content, $conf['crop']);
 	}
 
 	/**
@@ -2913,8 +2887,7 @@ class ContentObjectRenderer {
 	 * @return string The processed input value
 	 */
 	public function stdWrap_rawUrlEncode($content = '', $conf = array()) {
-		$content = rawurlencode($content);
-		return $content;
+		return rawurlencode($content);
 	}
 
 	/**
@@ -2943,12 +2916,11 @@ class ContentObjectRenderer {
 	 * @return string The processed input value
 	 */
 	public function stdWrap_doubleBrTag($content = '', $conf = array()) {
-		$content = preg_replace('/
+		return preg_replace('/
 ?
 [	 ]*
 ?
 /', $conf['doubleBrTag'], $content);
-		return $content;
 	}
 
 	/**
@@ -2961,8 +2933,7 @@ class ContentObjectRenderer {
 	 * @return string The processed input value
 	 */
 	public function stdWrap_br($content = '', $conf = array()) {
-		$content = nl2br($content, !empty($GLOBALS['TSFE']->xhtmlDoctype));
-		return $content;
+		return nl2br($content, !empty($GLOBALS['TSFE']->xhtmlDoctype));
 	}
 
 	/**
@@ -2974,8 +2945,7 @@ class ContentObjectRenderer {
 	 * @return string The processed input value
 	 */
 	public function stdWrap_brTag($content = '', $conf = array()) {
-		$content = str_replace(LF, $conf['brTag'], $content);
-		return $content;
+		return str_replace(LF, $conf['brTag'], $content);
 	}
 
 	/**
@@ -2988,8 +2958,7 @@ class ContentObjectRenderer {
 	 * @return string The processed input value
 	 */
 	public function stdWrap_encapsLines($content = '', $conf = array()) {
-		$content = $this->encaps_lineSplit($content, $conf['encapsLines.']);
-		return $content;
+		return $this->encaps_lineSplit($content, $conf['encapsLines.']);
 	}
 
 	/**
@@ -3001,8 +2970,7 @@ class ContentObjectRenderer {
 	 * @return string The processed input value
 	 */
 	public function stdWrap_keywords($content = '', $conf = array()) {
-		$content = $this->keywords($content);
-		return $content;
+		return $this->keywords($content);
 	}
 
 	/**
@@ -3015,8 +2983,7 @@ class ContentObjectRenderer {
 	 * @return string The processed input value
 	 */
 	public function stdWrap_innerWrap($content = '', $conf = array()) {
-		$content = $this->wrap($content, $conf['innerWrap']);
-		return $content;
+		return $this->wrap($content, $conf['innerWrap']);
 	}
 
 	/**
@@ -3029,8 +2996,7 @@ class ContentObjectRenderer {
 	 * @return string The processed input value
 	 */
 	public function stdWrap_innerWrap2($content = '', $conf = array()) {
-		$content = $this->wrap($content, $conf['innerWrap2']);
-		return $content;
+		return $this->wrap($content, $conf['innerWrap2']);
 	}
 
 	/**
@@ -3044,8 +3010,7 @@ class ContentObjectRenderer {
 	 * @return string The processed input value
 	 */
 	public function stdWrap_fontTag($content = '', $conf = array()) {
-		$content = $this->wrap($content, $conf['fontTag']);
-		return $content;
+		return $this->wrap($content, $conf['fontTag']);
 	}
 
 	/**
@@ -3057,8 +3022,7 @@ class ContentObjectRenderer {
 	 * @return string The processed input value
 	 */
 	public function stdWrap_addParams($content = '', $conf = array()) {
-		$content = $this->addParams($content, $conf['addParams.']);
-		return $content;
+		return $this->addParams($content, $conf['addParams.']);
 	}
 
 	/**
@@ -3071,8 +3035,7 @@ class ContentObjectRenderer {
 	 * @return string The processed input value
 	 */
 	public function stdWrap_textStyle($content = '', $conf = array()) {
-		$content = $this->textStyle($content, $conf['textStyle.']);
-		return $content;
+		return $this->textStyle($content, $conf['textStyle.']);
 	}
 
 	/**
@@ -3085,8 +3048,7 @@ class ContentObjectRenderer {
 	 * @return string The processed input value
 	 */
 	public function stdWrap_tableStyle($content = '', $conf = array()) {
-		$content = $this->tableStyle($content, $conf['tableStyle.']);
-		return $content;
+		return $this->tableStyle($content, $conf['tableStyle.']);
 	}
 
 	/**
@@ -3099,8 +3061,7 @@ class ContentObjectRenderer {
 	 * @return string The processed input value
 	 */
 	public function stdWrap_filelink($content = '', $conf = array()) {
-		$content = $this->filelink($content, $conf['filelink.']);
-		return $content;
+		return $this->filelink($content, $conf['filelink.']);
 	}
 
 	/**
@@ -3112,8 +3073,7 @@ class ContentObjectRenderer {
 	 * @return string The processed input value
 	 */
 	public function stdWrap_preCObject($content = '', $conf = array()) {
-		$content = $this->cObjGetSingle($conf['preCObject'], $conf['preCObject.'], '/stdWrap/.preCObject') . $content;
-		return $content;
+		return $this->cObjGetSingle($conf['preCObject'], $conf['preCObject.'], '/stdWrap/.preCObject') . $content;
 	}
 
 	/**
@@ -3125,8 +3085,7 @@ class ContentObjectRenderer {
 	 * @return string The processed input value
 	 */
 	public function stdWrap_postCObject($content = '', $conf = array()) {
-		$content .= $this->cObjGetSingle($conf['postCObject'], $conf['postCObject.'], '/stdWrap/.postCObject');
-		return $content;
+		return $content . $this->cObjGetSingle($conf['postCObject'], $conf['postCObject.'], '/stdWrap/.postCObject');
 	}
 
 	/**
@@ -3157,8 +3116,7 @@ class ContentObjectRenderer {
 	 * @return string The processed input value
 	 */
 	public function stdWrap_typolink($content = '', $conf = array()) {
-		$content = $this->typolink($content, $conf['typolink.']);
-		return $content;
+		return $this->typolink($content, $conf['typolink.']);
 	}
 
 	/**
@@ -3186,8 +3144,7 @@ class ContentObjectRenderer {
 	 * @return string The processed input value
 	 */
 	public function stdWrap_spaceBefore($content = '', $conf = array()) {
-		$content = $this->wrapSpace($content, trim($conf['spaceBefore']) . '|', $conf['space.']);
-		return $content;
+		return $this->wrapSpace($content, trim($conf['spaceBefore']) . '|', $conf['space.']);
 	}
 
 	/**
@@ -3200,8 +3157,7 @@ class ContentObjectRenderer {
 	 * @return string The processed input value
 	 */
 	public function stdWrap_spaceAfter($content = '', $conf = array()) {
-		$content = $this->wrapSpace($content, '|' . trim($conf['spaceAfter']), $conf['space.']);
-		return $content;
+		return $this->wrapSpace($content, '|' . trim($conf['spaceAfter']), $conf['space.']);
 	}
 
 	/**
@@ -3215,8 +3171,7 @@ class ContentObjectRenderer {
 	 * @return string The processed input value
 	 */
 	public function stdWrap_space($content = '', $conf = array()) {
-		$content = $this->wrapSpace($content, trim($conf['space']), $conf['space.']);
-		return $content;
+		return $this->wrapSpace($content, trim($conf['space']), $conf['space.']);
 	}
 
 	/**
@@ -3232,8 +3187,7 @@ class ContentObjectRenderer {
 	 * @return string The processed input value
 	 */
 	public function stdWrap_wrap($content = '', $conf = array()) {
-		$content = $this->wrap($content, $conf['wrap'], $conf['wrap.']['splitChar'] ? $conf['wrap.']['splitChar'] : '|');
-		return $content;
+		return $this->wrap($content, $conf['wrap'], $conf['wrap.']['splitChar'] ? $conf['wrap.']['splitChar'] : '|');
 	}
 
 	/**
@@ -3270,8 +3224,7 @@ class ContentObjectRenderer {
 	 * @return string The processed input value
 	 */
 	public function stdWrap_wrap2($content = '', $conf = array()) {
-		$content = $this->wrap($content, $conf['wrap2'], $conf['wrap2.']['splitChar'] ? $conf['wrap2.']['splitChar'] : '|');
-		return $content;
+		return $this->wrap($content, $conf['wrap2'], $conf['wrap2.']['splitChar'] ? $conf['wrap2.']['splitChar'] : '|');
 	}
 
 	/**
@@ -3284,8 +3237,7 @@ class ContentObjectRenderer {
 	 * @return string The processed input value
 	 */
 	public function stdWrap_dataWrap($content = '', $conf = array()) {
-		$content = $this->dataWrap($content, $conf['dataWrap']);
-		return $content;
+		return $this->dataWrap($content, $conf['dataWrap']);
 	}
 
 	/**
@@ -3297,8 +3249,7 @@ class ContentObjectRenderer {
 	 * @return string The processed input value
 	 */
 	public function stdWrap_prepend($content = '', $conf = array()) {
-		$content = $this->cObjGetSingle($conf['prepend'], $conf['prepend.'], '/stdWrap/.prepend') . $content;
-		return $content;
+		return $this->cObjGetSingle($conf['prepend'], $conf['prepend.'], '/stdWrap/.prepend') . $content;
 	}
 
 	/**
@@ -3310,8 +3261,7 @@ class ContentObjectRenderer {
 	 * @return string The processed input value
 	 */
 	public function stdWrap_append($content = '', $conf = array()) {
-		$content .= $this->cObjGetSingle($conf['append'], $conf['append.'], '/stdWrap/.append');
-		return $content;
+		return $content . $this->cObjGetSingle($conf['append'], $conf['append.'], '/stdWrap/.append');
 	}
 
 	/**
@@ -3324,8 +3274,7 @@ class ContentObjectRenderer {
 	 * @return string The processed input value
 	 */
 	public function stdWrap_wrap3($content = '', $conf = array()) {
-		$content = $this->wrap($content, $conf['wrap3'], $conf['wrap3.']['splitChar'] ? $conf['wrap3.']['splitChar'] : '|');
-		return $content;
+		return $this->wrap($content, $conf['wrap3'], $conf['wrap3.']['splitChar'] ? $conf['wrap3.']['splitChar'] : '|');
 	}
 
 	/**
@@ -3353,8 +3302,7 @@ class ContentObjectRenderer {
 	 * @return string The processed input value
 	 */
 	public function stdWrap_outerWrap($content = '', $conf = array()) {
-		$content = $this->wrap($content, $conf['outerWrap']);
-		return $content;
+		return $this->wrap($content, $conf['outerWrap']);
 	}
 
 	/**
@@ -3366,8 +3314,7 @@ class ContentObjectRenderer {
 	 * @return string The processed input value
 	 */
 	public function stdWrap_insertData($content = '', $conf = array()) {
-		$content = $this->insertData($content);
-		return $content;
+		return $this->insertData($content);
 	}
 
 	/**
@@ -3403,8 +3350,7 @@ class ContentObjectRenderer {
 	 * @return string The processed input value
 	 */
 	public function stdWrap_postUserFunc($content = '', $conf = array()) {
-		$content = $this->callUserFunction($conf['postUserFunc'], $conf['postUserFunc.'], $content);
-		return $content;
+		return $this->callUserFunction($conf['postUserFunc'], $conf['postUserFunc.'], $content);
 	}
 
 	/**
@@ -3545,8 +3491,7 @@ class ContentObjectRenderer {
 	 * @return string The processed input value
 	 */
 	public function stdWrap_debug($content = '', $conf = array()) {
-		$content = '<pre>' . htmlspecialchars($content) . '</pre>';
-		return $content;
+		return '<pre>' . htmlspecialchars($content) . '</pre>';
 	}
 
 	/**
