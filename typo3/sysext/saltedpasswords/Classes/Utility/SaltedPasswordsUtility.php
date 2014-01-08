@@ -40,6 +40,7 @@ class SaltedPasswordsUtility {
 	 * Keeps this extension's key.
 	 */
 	const EXTKEY = 'saltedpasswords';
+
 	/**
 	 * Calculates number of backend users, who have no saltedpasswords
 	 * protection.
@@ -87,8 +88,8 @@ class SaltedPasswordsUtility {
 	 */
 	public function feloginForgotPasswordHook(array &$params, \TYPO3\CMS\Felogin\Controller\FrontendLoginController $pObj) {
 		if (self::isUsageEnabled('FE')) {
-			$this->objInstanceSaltedPW = \TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::getSaltingInstance();
-			$params['newPassword'] = $this->objInstanceSaltedPW->getHashedPassword($params['newPassword']);
+			$objInstanceSaltedPW = \TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::getSaltingInstance();
+			$params['newPassword'] = $objInstanceSaltedPW->getHashedPassword($params['newPassword']);
 		}
 	}
 

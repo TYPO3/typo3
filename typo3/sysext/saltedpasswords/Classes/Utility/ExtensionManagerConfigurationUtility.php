@@ -26,6 +26,7 @@ namespace TYPO3\CMS\Saltedpasswords\Utility;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Core\Messaging\FlashMessage;
 
 /**
  * class providing configuration checks for saltedpasswords.
@@ -38,7 +39,7 @@ class ExtensionManagerConfigurationUtility {
 	/**
 	 * @var integer
 	 */
-	protected $errorType = \TYPO3\CMS\Core\Messaging\FlashMessage::OK;
+	protected $errorType = FlashMessage::OK;
 
 	/**
 	 * @var string
@@ -56,6 +57,11 @@ class ExtensionManagerConfigurationUtility {
 	protected $problems = array();
 
 	/**
+	 * @var array
+	 */
+	protected $extConf = array();
+
+	/**
 	 * Set the error level if no higher level
 	 * is set already
 	 *
@@ -65,28 +71,28 @@ class ExtensionManagerConfigurationUtility {
 	private function setErrorLevel($level) {
 		switch ($level) {
 			case 'error':
-				$this->errorType = \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR;
+				$this->errorType = FlashMessage::ERROR;
 				$this->header = 'Errors found in your configuration';
 				$this->preText = 'SaltedPasswords will not work until these problems have been resolved:<br />';
 				break;
 			case 'warning':
-				if ($this->errorType < \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR) {
-					$this->errorType = \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING;
+				if ($this->errorType < FlashMessage::ERROR) {
+					$this->errorType = FlashMessage::WARNING;
 					$this->header = 'Warnings about your configuration';
 					$this->preText = 'SaltedPasswords might behave different than expected:<br />';
 				}
 				break;
 			case 'info':
-				if ($this->errorType < \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING) {
-					$this->errorType = \TYPO3\CMS\Core\Messaging\FlashMessage::INFO;
+				if ($this->errorType < FlashMessage::WARNING) {
+					$this->errorType = FlashMessage::INFO;
 					$this->header = 'Additional information';
 					$this->preText = '<br />';
 				}
 				break;
 			case 'ok':
 				// TODO: Remove INFO condition as it has lower importance
-				if ($this->errorType < \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING && $this->errorType != \TYPO3\CMS\Core\Messaging\FlashMessage::INFO) {
-					$this->errorType = \TYPO3\CMS\Core\Messaging\FlashMessage::OK;
+				if ($this->errorType < FlashMessage::WARNING && $this->errorType != FlashMessage::INFO) {
+					$this->errorType = FlashMessage::OK;
 					$this->header = 'No errors were found';
 					$this->preText = 'SaltedPasswords has been configured correctly and works as expected.<br />';
 				}
@@ -107,7 +113,7 @@ class ExtensionManagerConfigurationUtility {
 	<li>###PROBLEMS###</li>
 </ul>';
 			$message = str_replace('###PROBLEMS###', implode('<br />&nbsp;</li><li>', $this->problems), $message);
-			if ($this->errorType > \TYPO3\CMS\Core\Messaging\FlashMessage::OK) {
+			if ($this->errorType > FlashMessage::OK) {
 				$message .= '<br />
 Note, that a wrong configuration might have impact on the security of
 your TYPO3 installation and the usability of the backend.';
@@ -145,7 +151,7 @@ your TYPO3 installation and the usability of the backend.';
 		$this->init();
 		$extConf = $this->extConf['BE'];
 		// The backend is called over SSL
-		$SSL = ($GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSL'] > 0 ? TRUE : FALSE) && $GLOBALS['TYPO3_CONF_VARS']['BE']['loginSecurityLevel'] != 'superchallenged';
+		$SSL = $GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSL'] > 0 && $GLOBALS['TYPO3_CONF_VARS']['BE']['loginSecurityLevel'] != 'superchallenged';
 		$rsaAuthLoaded = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('rsaauth');
 		// SSL configured?
 		if ($SSL) {
@@ -227,7 +233,8 @@ It is not possible to set "updatePasswd" and "forceSalted" at the same time.
 Please disable either one of them.';
 		}
 		// Check if the configured hash-method is available on system
-		if (!($instance = \TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::getSaltingInstance(NULL, 'BE') || !$instance->isAvailable())) {
+		$instance = \TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::getSaltingInstance(NULL, 'BE');
+		if ($instance === NULL || !$instance->isAvailable()) {
 			$this->setErrorLevel('error');
 			$problems[] = 'The selected method for hashing your salted passwords is not available on this
 system! Please check your configuration.';
@@ -262,6 +269,7 @@ system! Please check your configuration.';
 	public function checkConfigurationFrontend(array $params, $pObj) {
 		$this->init();
 		$extConf = $this->extConf['FE'];
+		$problems = array();
 		if ($extConf['enabled']) {
 			// Inform the user if securityLevel in FE is challenged or blank --> extension won't work
 			if (!\TYPO3\CMS\Core\Utility\GeneralUtility::inList('normal,rsa', $GLOBALS['TYPO3_CONF_VARS']['FE']['loginSecurityLevel'])) {
