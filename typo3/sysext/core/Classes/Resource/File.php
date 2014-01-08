@@ -151,6 +151,18 @@ class File extends AbstractFile {
 	}
 
 	/**
+	 * Gets SHA1 hash.
+	 *
+	 * @return string
+	 */
+	public function getSha1() {
+		if (empty($this->properties['sha1'])) {
+			$this->properties['sha1'] = parent::getSha1();
+		}
+		return $this->properties['sha1'];
+	}
+
+	/**
 	 * Replace the current file contents with the given string
 	 *
 	 * @param string $contents The contents to write to the file.
