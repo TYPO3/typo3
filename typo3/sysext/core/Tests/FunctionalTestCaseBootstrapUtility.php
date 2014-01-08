@@ -204,8 +204,6 @@ class FunctionalTestCaseBootstrapUtility {
 	/**
 	 * Create LocalConfiguration.php file in the test instance
 	 *
-	 * @param array $coreExtensionsToLoad Additional core extensions to load
-	 * @param array $testExtensionPaths Paths to extensions relative to document root
 	 * @throws Exception
 	 * @return void
 	 */
@@ -256,6 +254,27 @@ class FunctionalTestCaseBootstrapUtility {
 	protected function setUpPackageStates(array $coreExtensionsToLoad, array $testExtensionPaths) {
 		$packageStates = require ORIGINAL_ROOT . 'typo3conf/PackageStates.php';
 		$packageStates['packages']['phpunit']['packagePath'] = '../../' . $packageStates['packages']['phpunit']['packagePath'];
+
+		// Activate core extensions if currently inactive
+		foreach ($coreExtensionsToLoad as $extensionName) {
+			if (!empty($packageStates['packages'][$extensionName]['state']) && $packageStates['packages'][$extensionName]['state'] !== 'active') {
+				$packageStates['packages'][$extensionName]['state'] = 'active';
+			}
+		}
+
+		// Clean and activate test extensions that have been symlinked before
+		foreach ($testExtensionPaths as $extensionPath) {
+			$extensionName = basename($extensionPath);
+			if (!empty($packageStates['packages'][$extensionName])) {
+				unset($packageStates['packages'][$extensionName]);
+			}
+
+			$packageStates['packages'][$extensionName] = array(
+				'state' => 'active',
+				'packagePath' => 'typo3conf/ext/' . $extensionName . '/',
+				'classesPath' => 'Classes/',
+			);
+		}
 
 		$result = $this->writeFile(
 			$this->instancePath . '/typo3conf/PackageStates.php',
