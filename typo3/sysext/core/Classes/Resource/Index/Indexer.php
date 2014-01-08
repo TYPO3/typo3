@@ -107,14 +107,18 @@ class Indexer {
 		foreach ($fileIndexRecords as $indexRecord) {
 			$fileObject = $this->getResourceFactory()->getFileObject($indexRecord['uid'], $indexRecord);
 
-			$metaData = $fileObject->_getMetaData();
+			$newMetaData = array(
+				0 => $fileObject->_getMetaData()
+			);
 			foreach ($extractionServices as $service) {
 				if ($service->canProcess($fileObject)) {
-					$metaData = array_merge(
-						$metaData,
-						$service->extractMetaData($fileObject)
-					);
+					$newMetaData[$service->getPriority()] = $service->extractMetaData($fileObject, $newMetaData);
 				}
+			}
+			ksort($newMetaData);
+			$metaData = array();
+			foreach ($newMetaData as $data) {
+				$metaData = array_merge($metaData, $data);
 			}
 			$this->getMetaDataRepository()->update($fileObject->getUid(), $metaData);
 			$this->getFileIndexRepository()->updateIndexingTime($fileObject->getUid());

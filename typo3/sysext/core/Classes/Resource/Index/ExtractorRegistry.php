@@ -82,7 +82,7 @@ class ExtractorRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 			foreach ($this->extractors as $className) {
 				/** @var ExtractorInterface $object */
 				$object = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($className);
-				$this->instances[$object->getPriority()] = $object;
+				$this->instances[$object->getExecutionPriority()] = $object;
 			}
 			krsort($this->instances);
 		}
