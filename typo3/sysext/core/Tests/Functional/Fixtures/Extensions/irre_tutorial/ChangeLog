@@ -1,0 +1,253 @@
+2013-08-17  Oliver Hader  <oliver@typo3.org>
+
+	* [TASK] Modify abstract setUp() to be compatible with TYPO3 6.1
+	* [TASK] Add test-cases for m:n relations stored in MM tables in a workspace
+
+2013-08-15  Oliver Hader  <oliver@typo3.org>
+
+	* [TASK] Use backend module dispatcher
+	* [TASK] Use include_once() instead of require_once() for 6.2 compatibility
+
+2013-03-03  Oliver Hader  <oliver@typo3.org>
+
+	* [TASK] #29278: Extend test-case for 1n:FF copy localized new structure on workspaces
+
+2013-02-05  Oliver Hader  <oliver@typo3.org>
+
+	* [TASK] #29278: Extend test-case for 1n:FF copy actions on workspaces
+	* [BUGFIX] Fix unit-test assertions (array_*_key vs. array_*_assoc)
+	* [TASK] #29278: Extend test-case for copying 1n:CSV & 1n:FF to different page on workspaces
+
+2013-02-04  Oliver Hader  <oliver@typo3.org>
+
+	* [TASK] #45132 & #45133: Extend test-case concerning placeholder translation values in workspaces
+	* [TASK] #29278 & #45132 & #45133: Extend test-cases concerning sys_refindex
+	* [TASK] Disable shadowColumnsForNewPlaceholders in favour of #29278 which solves it implicitly in the Core
+	* [TASK] #45151: Extend test-case for 1n:CSV copy actions on workspaces
+
+2013-01-31  Oliver Hader  <oliver@typo3.org>
+
+	* [TASK] Trigger localization of children on parent localization
+	* [TASK] #29278: Extend test-case concerning copying and localization of new workspace records
+	* [TASK] Remove checks for TYPO3 versions prior to 4.5.0
+	* [TASK] #29278: Extend test-case concerning placeholder values in workspaces
+
+2012-11-05  Oliver Hader  <oliver@typo3.org>
+
+	* [TASK] Added FlexForm for IRRE to tt_content records
+	* [TASK] Utilize foreign_match_fields to distinguish references
+
+2012-10-12  Oliver Hader  <oliver@typo3.org>
+
+	* [TASK] Added localization in pages_language_overlay of 1nff record
+
+2012-03-12  Oliver Hader  <oliver@typo3.org>
+
+	* Fixed bug: Regular non-workspace tests might be executed on a workspace
+
+2012-03-10  Oliver Hader  <oliver@typo3.org>
+
+	* Cleanup: Changed variables, methods, CGL and install repsonse
+	* Release of version 0.4.0
+
+2012-03-06  Oliver Hader  <oliver@typo3.org>
+
+	* Tests: Clean-up test cases
+	* Tests: Added test cases for publishing records deleted in workspace
+
+2011-08-12  Oliver Hader  <oliver@typo3.org>
+
+	* Fixed bug: Extensions with hooks in t3lib_TCEmain are not considered to be loaded
+	* Fixed bug: Behaviour in TYPO3 4.6 concerning caches has changed and needs special handling
+
+2011-06-20  Oliver Hader  <oliver@typo3.org>
+
+	* Fixed bug: Typing error in install process
+	* Tests: Modified test cases to clear TSconfig settings options.workspaces
+
+2011-06-14  Oliver Hader  <oliver@typo3.org>
+
+	* Fixed bug: Calls to deprecated and removed functions
+
+2011-04-05  Oliver Hader  <oliver@typo3.org>
+
+	* Tests: Separated m:n MM localization tests for localizationModes 'keep' and 'select'
+
+2011-03-30  Oliver Hader  <oliver@typo3.org>
+
+	* Tests: Refactored abstract test clases
+	* Fixed bug: TCA of m:n MM tables does not use MM relations with uid
+	* Tests: Extended m:n MM localization tests
+
+2011-03-23  Oliver Hader  <oliver@typo3.org>
+
+	* Tests: Added m:n MM localization tests
+	* Tests: Extended m:n MM localization tests
+
+2011-03-22  Oliver Hader  <oliver@typo3.org>
+
+	* Tests: Refactoring of structure
+
+2011-03-18  Oliver Hader  <oliver@typo3.org>
+
+	* Tests: Added 1:n CSV tests for removing of child records in workspaces
+	* Cleanup: Fixed whitespaces in fixtures
+	* Tests: Extended 1:n CSV and 1:n FF tests for removing child records in workspaces and flushing dependent elements in the workspace module
+
+2011-03-17  Oliver Hader  <oliver@typo3.org>
+
+	* Fixed bug: Workspaces extension must be loaded if using TYPO3 4.5.0+
+	* Tests: Added 1:n FF tests for removing of child records in workspaces
+
+2011-02-09  Oliver Hader  <oliver@typo3.org>
+
+	* Tests: Renamed abstract test class to not be considered as testsuite by PHPUnit
+	* Tests: Added skip calls to unsupported test cases that rely on TYPO3 4.5.0
+
+2011-01-21  Oliver Hader  <oliver@typo3.org>
+
+	* Added tabs for forms view for all parent and child tables
+
+2011-01-01  Oliver Hader  <oliver@typo3.org>
+
+	* Tests: Fixed 1:n FF test case since checking on a placeholder for an existing record does not make sense
+
+2010-12-31  Oliver Hader  <oliver@typo3.org>
+
+	* Tests: Extended 1:n FF tests concerning sorting order of placeholder records
+
+2010-12-26  Oliver Hader  <oliver@typo3.org>
+
+	* Tests: Extended 1:n FF tests concerning sorting order of placeholder records
+
+2010-12-23  Oliver Hader  <oliver@typo3.org>
+
+	* Tests: Extended 1:n FF tests concerning child records on pages
+
+2010-11-17  Oliver Hader  <oliver@typo3.org>
+
+	* Release of version 0.3.2
+
+2010-11-13  Oliver Hader  <oliver@typo3.org>
+
+	* Tests: Fixed tests to be working with TYPO3 4.5 and also versions before
+
+2010-11-13  Oliver Hader  <oliver@typo3.org>
+
+	* Tests: Fixed data set of table tx_irretutorial_1nff_price
+	* Tests: Extended unit tests for 1:n CSV and 1:n FF
+	* Updated sample data to import at ./irre_tutorial/res/T3D__IRRE.t3d
+	* Release of version 0.3.1
+
+2010-11-05  Oliver Hader  <oliver@typo3.org>
+
+	* Fixed bug: Inline field for pages table is not available for all doktypes
+
+2010-11-04  Oliver Hader  <oliver@typo3.org>
+
+	* Added parenttable field for prices in 1:n FF context
+
+2010-10-29  Oliver Hader  <oliver@typo3.org>
+
+	* Tests: Fixed labels of error messages to be checked
+
+2010-10-28  Oliver Hader  <oliver@typo3.org>
+
+	* Changed blob fields of 1:n CSV relations to text
+	* Updated README.txt contents
+	* Tests: Extended unit tests for 1:n FF
+	* Tests: Extended unit tests for 1:n CSV
+
+2010-10-27  Oliver Hader  <oliver@typo3.org>
+
+	* Added TCA definition to copy foreign_field and foreign_table_field values to workspace placeholder records
+
+2010-10-20  Oliver Hader  <oliver@typo3.org>
+
+	* Added use case to use 1:n relationships as part of a pages record
+	* Updated sample data to import at ./irre_tutorial/res/T3D__IRRE.t3d
+
+2010-10-10  Oliver Hader  <oliver@typo3.org>
+
+	* Added basic skeleton for unit tests
+	* Tests: Extended unit tests for 1:n FF
+
+2010-08-06  Oliver Hader  <oliver@typo3.org>
+
+	* Added workspaces and versioning field definitions
+	* Raised version number to 0.3.0
+
+2010-02-27  Oliver Hader  <oliver@typo3.org>
+
+	* Release of version 0.2.0
+
+2010-02-27  Oliver Hader  <oliver@typo3.org>
+
+	* Cleanup: Removed whitespaces at end of line
+	* Added definitions for m:n asymmetric structure that uses a regular MM intermediate table with uid_local and uid_foreign
+	* Added configuration for bidirection MM disposals
+	* Updated pre-defined content structure of relational data
+
+2008-02-03  Oliver Hader  <oh@inpublica.de>
+
+	* Changed tca.*.php files to use the new 'behaviour' array in TCA of fields of type 'inline'
+
+2008-01-28  Oliver Hader  <oh@inpublica.de>
+
+	* Added l10n_mode=prefixLangTitle and used new TCA property on select fields
+
+2008-01-27  Oliver Hader  <oh@inpublica.de>
+
+	* Fixed and configured missing required fields (sys_language_uid, l18n_parent, l18n_diffsource) for localization in ext_tables.sql, ext_tables.*.php and tca.*.php
+	* Added localizationMode in $TCA configuration of IRRE parent fields and sample appearance configuration
+
+2008-01-20  Oliver Hader  <oh@inpublica.de>
+
+	* Fixed bug in header of ext_tables.*.php files ("<?" -> "<?php">)
+
+2008-01-04  Oliver Hader  <oh@inpublica.de>
+
+	* Added and configured required fields (sys_language_uid, l18n_parent, l18n_diffsource) for localization in ext_tables.sql, ext_tables.*.php and tca.*.php
+	! Localizazion is currently still unsupported in TYPO3 4.1.5 and TYPO3 4.2.0-alpha2 - this change is for testing upcoming patches concerning IRRE & localization
+
+2007-03-07  Oliver Hader  <oh@inpublica.de>
+
+	* Updated code blocks in documentation to be correctly rendered on typo3.org
+
+2007-02-20  Oliver Hader  <oh@inpublica.de>
+
+	* Updated documentation to be correctly rendered on typo3.org
+
+2007-02-19  Oliver Hader  <oh@inpublica.de>
+
+	* Integrated first version of documentation
+	* Updated sample data to import at ./irre_tutorial/res/T3D__IRRE.t3d
+
+2007-02-05  Oliver Hader  <oh@inpublica.de>
+
+	* Renamed "anti-symmetric" to "asymmetric"
+	* Created new page "m:n asymmetric selector"
+	* Updated sample data to import at ./irre_tutorial/res/T3D__IRRE.t3d
+
+2007-01-31  Oliver Hader  <oh@inpublica.de>
+
+	* Changed data structure for mnasym part -> prices are integrated as attribute on hotel<->offer intermediate table
+	* Removed table tx_irretutorial_mnasym_offer_price_rel - not required anymore
+	* Implemented new TSconfig.<table>.<field>.config{ ... } feature (available with 4.1rc1)
+
+2007-01-30  Oliver Hader  <oh@inpublica.de>
+
+	* Integrated backend module in Web-Module to import IRRE Tutorial Sample Data
+		- implemented installer
+		- implemented uninstaller
+	* Created data structures and integrated T3D export file
+	* Changed README.txt
+
+2007-01-29  Oliver Hader  <oh@inpublica.de>
+
+	* Changed table icons and labels
+	* Removed typing errors from ext_tables.*.php
+
+2007-01-28  Oliver Hader  <oh@inpublica.de>
+
+	* Initial release (currently not finished and not working)

@@ -42,4 +42,11 @@
 		<deleted>0</deleted>
 		<perms_everybody>15</perms_everybody>
 	</pages>
+	<pages>
+		<uid>7</uid>
+		<pid>0</pid>
+		<title>Root 2</title>
+		<deleted>0</deleted>
+		<perms_everybody>15</perms_everybody>
+	</pages>
 </dataset>

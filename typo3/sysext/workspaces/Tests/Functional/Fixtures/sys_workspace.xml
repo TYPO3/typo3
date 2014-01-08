@@ -15,4 +15,9 @@
 		<pid>0</pid>
 		<title>Filled Workspace #2</title>
 	</sys_workspace>
+	<sys_workspace>
+		<uid>9</uid>
+		<pid>0</pid>
+		<title>Custom Workspace</title>
+	</sys_workspace>
 </dataset>
