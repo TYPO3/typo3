@@ -2095,7 +2095,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 			'log_data' => serialize($data),
 			'tablename' => $tablename,
 			'recuid' => intval($recuid),
-			'IP' => GeneralUtility::getIndpEnv('REMOTE_ADDR'),
+			'IP' => (string) GeneralUtility::getIndpEnv('REMOTE_ADDR'),
 			'tstamp' => $GLOBALS['EXEC_TIME'],
 			'event_pid' => intval($event_pid),
 			'NEWid' => $NEWid,
