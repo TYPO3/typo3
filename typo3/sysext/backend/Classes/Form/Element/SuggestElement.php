@@ -240,10 +240,23 @@ class SuggestElement {
 				$config['addWhere'] = $foreign_table_where;
 			}
 			if (isset($config['addWhere'])) {
-				$config['addWhere'] = strtr(' ' . $config['addWhere'], array(
+				$replacement = array(
 					'###THIS_UID###' => (int)$uid,
 					'###CURRENT_PID###' => (int)$pageId
-				));
+				);
+				if (isset($TSconfig['TCEFORM.'][$table . '.'][$field . '.'])) {
+					$fieldTSconfig = $TSconfig['TCEFORM.'][$table . '.'][$field . '.'];
+					if (isset($fieldTSconfig['PAGE_TSCONFIG_ID'])) {
+						$replacement['###PAGE_TSCONFIG_ID###'] = (int)$fieldTSconfig['PAGE_TSCONFIG_ID'];
+					}
+					if (isset($fieldTSconfig['PAGE_TSCONFIG_IDLIST'])) {
+						$replacement['###PAGE_TSCONFIG_IDLIST###'] = $GLOBALS['TYPO3_DB']->cleanIntList($fieldTSconfig['PAGE_TSCONFIG_IDLIST']);
+					}
+					if (isset($fieldTSconfig['PAGE_TSCONFIG_STR'])) {
+						$replacement['###PAGE_TSCONFIG_STR###'] = $GLOBALS['TYPO3_DB']->quoteStr($fieldTSconfig['PAGE_TSCONFIG_STR'], $fieldConfig['foreign_table']);
+					}
+				}
+				$config['addWhere'] = strtr(' ' . $config['addWhere'], $replacement);
 			}
 			// instantiate the class that should fetch the records for this $queryTable
 			$receiverClassName = $config['receiverClass'];
