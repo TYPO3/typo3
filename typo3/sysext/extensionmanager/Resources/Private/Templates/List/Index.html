@@ -73,8 +73,10 @@
 						<td>
 					</f:else>
 				</f:if>
-
-					<img class="ext-icon" src="../{extension.siteRelPath}/{extension.ext_icon}" alt="{extension.title}" /><em:configureExtension extension="{extension}" forceConfiguration="0" showDescription="1">{extension.title}</em:configureExtension>
+					<f:if condition="{extension.ext_icon}">
+						<img class="ext-icon" src="../{extension.siteRelPath}/{extension.ext_icon}" alt="{extension.title}" />
+					</f:if>
+					<em:configureExtension extension="{extension}" forceConfiguration="0" showDescription="1">{extension.title}</em:configureExtension>
 				</td>
 				<td>
 					{extensionKey}
