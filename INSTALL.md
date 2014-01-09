@@ -30,8 +30,19 @@ system requirements for running TYPO3 CMS 6.2 LTS are:
 
 * Webserver capable of running PHP applications (Apache, Nginx, IIS or other)
 * PHP >5.3.7 up to 5.5 (PHP 5.4 or later recommended)
-* MySQL 5.1 up to 5.6 or compatible
+* MySQL 5.1 up to 5.6 or compatible (no "strict mode", see below)
 * more than 200 MB of disk space
+
+### MySQL environment
+
+TYPO3 works with MySQL in the above mentioned versions. It will also work on
+compatible "drop-in" replacements like MariaDB or Percona.
+
+Note that MySQL "strict mode" is currently not supported by TYPO3. If your
+MySQL server is configured with either STRICT_TRANS_TABLES or
+STRICT_ALL_TABLES (especially true with MySQL 5.6, as this is a new default),
+you need to configure setDBinit in the Install Tool. See question 2 in the
+"Installation FAQ" below for more information.
 
 ### PHP environment
 
@@ -78,7 +89,7 @@ functionality:
 
 * Apache with mod_expires and mod_rewrite enabled
 
-* MySQL 5.1 or newer
+* MySQL 5.5 or newer
 
 * GraphicsMagick or ImageMagick v6 or newer installed on the server
 
@@ -256,7 +267,7 @@ A:  If you use MySQL 5.x or newer, try setting it to "compatible" mode. Open the
     example.com is the web site domain), navigate to "All configuration".
     Find "setDBinit", and add this line to the top of the input field:
 ```
-	SET SESSION sql_mode='MYSQL40'
+	SET SESSION sql_mode=''
 ```
 
 ### 3
