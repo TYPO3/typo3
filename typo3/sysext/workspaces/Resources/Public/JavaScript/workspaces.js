@@ -16,6 +16,9 @@ Ext.ns('TYPO3.Workspaces');
 TYPO3.Workspaces.App = {
 
 	init : function() {
+		// With a large amount of unpublished changes, the workspace grid requires a longer Ajax timeout
+		Ext.Ajax.timeout = 120000;
+
 		TYPO3.Workspaces.WorkspaceGrid.initColModel();
 		TYPO3.Workspaces.WorkspaceGrid.render('workspacegrid');
 
