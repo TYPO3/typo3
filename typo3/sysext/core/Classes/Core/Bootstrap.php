@@ -830,16 +830,12 @@ class Bootstrap {
 	 *
 	 * @return Bootstrap
 	 * @internal This is not a public API method, do not use in own extensions
+	 * @throws \RuntimeException
 	 */
 	public function checkBackendIpOrDie() {
 		if (trim($GLOBALS['TYPO3_CONF_VARS']['BE']['IPmaskList'])) {
 			if (!Utility\GeneralUtility::cmpIP(Utility\GeneralUtility::getIndpEnv('REMOTE_ADDR'), $GLOBALS['TYPO3_CONF_VARS']['BE']['IPmaskList'])) {
-				// Send Not Found header - if the webserver can make use of it
-				header('Status: 404 Not Found');
-				// Just point us away from here...
-				header('Location: http://');
-				// ... and exit good!
-				die;
+				throw new \RuntimeException('TYPO3 Backend access denied: The IP address of your client does not match the list of allowed IP addresses.', 1389265900);
 			}
 		}
 		return $this;
@@ -851,6 +847,7 @@ class Bootstrap {
 	 *
 	 * @return Bootstrap
 	 * @internal This is not a public API method, do not use in own extensions
+	 * @throws \RuntimeException
 	 */
 	public function checkSslBackendAndRedirectIfNeeded() {
 		if (intval($GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSL'])) {
@@ -872,14 +869,10 @@ class Bootstrap {
 					list(, $url) = explode('://', Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . TYPO3_mainDir, 2);
 					list($server, $address) = explode('/', $url, 2);
 					header('Location: https://' . $server . $sslPortSuffix . '/' . $address);
+					die;
 				} else {
-					// Send Not Found header - if the webserver can make use of it...
-					header('Status: 404 Not Found');
-					// Just point us away from here...
-					header('Location: http://');
+					throw new \RuntimeException('TYPO3 Backend not accessed via SSL: TYPO3 Backend is configured to only be accessible through SSL. Change the URL in your browser and try again.', 1389265726);
 				}
-				// ... and exit good!
-				die;
 			}
 		}
 		return $this;
