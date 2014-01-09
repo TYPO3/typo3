@@ -21,26 +21,26 @@
 	<table id="typo3-documentation-download" class="typo3-documentation-list">
 		<thead>
 		<tr>
-			<th><f:translate key="documentation.actions" /></th>
 			<th><f:translate key="documentation.title" /></th>
 			<th><f:translate key="documentation.shortcut" /></th>
 			<th><f:translate key="documentation.type" /></th>
+			<th><f:translate key="documentation.actions" /></th>
 		</tr>
 		</thead>
 		<tbody>
 		<f:for each="{documents}" as="document">
 			<tr id="{document.key}" >
-				<td class="icons">
-					<doc:link.action action="download" arguments="{url:document.url, key:document.key, version:document.version}" title="{f:translate(key:'documentation.actions.download')}">
-						<span class="t3-icon t3-icon-actions t3-icon-system-extension-download">&nbsp;</span>
-					</doc:link.action>
-				</td>
 				<td class="title">
 					<img src="../{document.icon}" title="{document.title}" alt="{document.title}" />
 					{document.title}
 				</td>
 				<td>{document.shortcut}</td>
 				<td>{document.type}</td>
+				<td class="icons">
+					<doc:link.action action="download" arguments="{url:document.url, key:document.key, version:document.version}" title="{f:translate(key:'documentation.actions.download')}">
+						<span class="t3-icon t3-icon-actions t3-icon-system-extension-download">&nbsp;</span>
+					</doc:link.action>
+				</td>
 			</tr>
 		</f:for>
 		</tbody>
