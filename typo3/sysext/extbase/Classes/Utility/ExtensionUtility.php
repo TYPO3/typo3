@@ -187,7 +187,7 @@ tt_content.' . $pluginSignature . ' {
 	 * @throws \InvalidArgumentException
 	 * @return void
 	 */
-	static public function registerModule($extensionName, $mainModuleName = '', $subModuleName = '', $position = '', array $controllerActions, array $moduleConfiguration = array()) {
+	static public function registerModule($extensionName, $mainModuleName = '', $subModuleName = '', $position = '', array $controllerActions = array(), array $moduleConfiguration = array()) {
 		if (empty($extensionName)) {
 			throw new \InvalidArgumentException('The extension name must not be empty', 1239891989);
 		}
