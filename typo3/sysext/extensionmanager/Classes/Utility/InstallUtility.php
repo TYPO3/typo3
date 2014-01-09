@@ -116,15 +116,15 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface {
 		$this->processDatabaseUpdates($extension);
 		$this->ensureConfiguredDirectoriesExist($extension);
 		$this->importInitialFiles($extension['siteRelPath'], $extensionKey);
-		if ($extension['clearcacheonload']) {
-			$GLOBALS['typo3CacheManager']->flushCaches();
-		}
 		if (!$this->isLoaded($extensionKey)) {
 			$this->loadExtension($extensionKey);
 		}
 		$this->reloadCaches();
 		$this->processCachingFrameworkUpdates();
 		$this->saveDefaultConfiguration($extension['key']);
+		if ($extension['clearcacheonload']) {
+			$GLOBALS['typo3CacheManager']->flushCaches();
+		}
 	}
 
 	/**

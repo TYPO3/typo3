@@ -784,4 +784,17 @@ class PackageManager extends \TYPO3\Flow\Package\PackageManager implements \TYPO
 		$this->packages = $newPackages;
 		$this->packageStatesConfiguration['packages'] = $newPackageStatesConfiguration;
 	}
+
+	/**
+	 * Resolves the dependent packages from the meta data of all packages recursively. The
+	 * resolved direct or indirect dependencies of each package will put into the package
+	 * states configuration array.
+	 *
+	 * @return void
+	 */
+	protected function resolvePackageDependencies() {
+		foreach ($this->activePackages as $packageKey => $package) {
+			$this->packageStatesConfiguration['packages'][$packageKey]['dependencies'] = $this->getDependencyArrayForPackage($packageKey);
+		}
+	}
 }
