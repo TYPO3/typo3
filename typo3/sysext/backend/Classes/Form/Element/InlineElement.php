@@ -1117,7 +1117,7 @@ class InlineElement {
 		// Put the current level also to the dynNestedStack of TCEforms:
 		$this->fObj->pushToDynNestedStack('inline', $this->inlineNames['object']);
 		// Dynamically create a new record using \TYPO3\CMS\Backend\Form\DataPreprocessor
-		if (!$foreignUid || !MathUtility::canBeInterpretedAsInteger($foreignUid)) {
+		if (!$foreignUid || !MathUtility::canBeInterpretedAsInteger($foreignUid) || $config['foreign_selector']) {
 			$record = $this->getNewRecord($this->inlineFirstPid, $current['table']);
 			// Set default values for new created records
 			if (isset($config['foreign_record_defaults']) && is_array($config['foreign_record_defaults'])) {
