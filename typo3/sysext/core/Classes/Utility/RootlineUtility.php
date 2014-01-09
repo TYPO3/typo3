@@ -287,7 +287,8 @@ class RootlineUtility {
 					}
 					$whereClause = implode(' AND ', $whereClauseParts);
 					$whereClause .= $this->pageContext->deleteClause($table);
-					$rows = $this->databaseConnection->exec_SELECTgetRows('uid', $table, $whereClause);
+					$orderBy = isset($configuration['foreign_sortby']) ? $configuration['foreign_sortby'] : '';
+					$rows = $this->databaseConnection->exec_SELECTgetRows('uid', $table, $whereClause, '', $orderBy);
 					if (!is_array($rows)) {
 						throw new \RuntimeException('Could to resolve related records for page ' . $uid . ' and foreign_table ' . htmlspecialchars($configuration['foreign_table']), 1343589452);
 					}
