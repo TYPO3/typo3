@@ -26,10 +26,10 @@ namespace TYPO3\CMS\Core\Resource;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
- * FileResourceInterface
+ * ResourceInterface
  *
- * @author Ingmar Schlecht <ingmar@typo3.org>
  */
 interface ResourceInterface {
 	/**
@@ -59,4 +59,9 @@ interface ResourceInterface {
 	 * @return string
 	 */
 	public function getHashedIdentifier();
+
+	/**
+	 * @return FolderInterface
+	 */
+	public function getParentFolder();
 }

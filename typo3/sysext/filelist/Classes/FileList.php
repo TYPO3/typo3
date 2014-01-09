@@ -411,9 +411,7 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 		$levelUp = '';
 		try {
 			$currentStorage = $currentFolder->getStorage();
-			$parentFolder = $currentStorage->getFolder(
-				$currentStorage->getFolderIdentifierFromFileIdentifier($this->folderObject->getIdentifier())
-			);
+			$parentFolder = $currentFolder->getParentFolder();
 			if ($parentFolder->getIdentifier() !== $currentFolder->getIdentifier() && $currentStorage->isWithinFileMountBoundaries($parentFolder)) {
 				$levelUp = $this->linkWrapDir(
 					IconUtility::getSpriteIcon(

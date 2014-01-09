@@ -455,4 +455,17 @@ class Folder implements FolderInterface {
 	public function getRole() {
 		return $this->storage->getRole($this);
 	}
+
+	/**
+	 * Returns the parent folder.
+	 *
+	 * In non-hierarchical storages, that always is the root folder.
+	 *
+	 * The parent folder of the root folder is the root folder.
+	 *
+	 * @return Folder
+	 */
+	public function getParentFolder() {
+		return $this->getStorage()->getFolder($this->getStorage()->getFolderIdentifierFromFileIdentifier($this->getIdentifier()));
+	}
 }
