@@ -2270,7 +2270,8 @@ class GraphicalFunctions {
 				}
 				// Making the temporary filename:
 				$this->createTempSubDir('pics/');
-				$output = $this->absPrefix . $this->tempPath . 'pics/' . $this->filenamePrefix . $theOutputName . '.' . $newExt;
+				$relativeOutputPath = $this->tempPath . 'pics/' . $this->filenamePrefix . $theOutputName . '.' . $newExt;
+				$output = (TYPO3_MODE === 'BE') ? PATH_site . $relativeOutputPath: $this->absPrefix . $relativeOutputPath;
 				// Register temporary filename:
 				$GLOBALS['TEMP_IMAGES_ON_PAGE'][] = $output;
 				if ($this->dontCheckForExistingTempFile || !$this->file_exists_typo3temp_file($output, $imagefile)) {
