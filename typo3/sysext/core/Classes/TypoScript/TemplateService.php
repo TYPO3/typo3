@@ -1594,14 +1594,31 @@ class TemplateService {
 	 * @see isDefaultTypoScriptAdded
 	 */
 	protected function addDefaultTypoScript() {
-			// Add default TS for all code types, if not done already
+		// Add default TS for all code types, if not done already
 		if (!$this->isDefaultTypoScriptAdded) {
-			if (!empty($GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_constants'])) {
-				array_unshift($this->constants, (string)$GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_constants']);
-			}
-			if (!empty($GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup'])) {
-				array_unshift($this->config, (string)$GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup']);
-			}
+			// adding default setup and constants
+			// defaultTypoScript_setup is *very* unlikely to be empty
+			// the count of elements in ->constants and ->config have to be in sync so we always add *both*
+			array_unshift($this->constants, (string)$GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_constants']);
+			array_unshift($this->config, (string)$GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup']);
+			// prepare a proper entry to hierachyInfo (used by TemplateAnalyzer in BE)
+			$rootTemplateId = $this->hierarchyInfo[count($this->hierarchyInfo)-1]['templateID'];
+			$defaultTemplateInfo = array(
+				'root' => '',
+				'next' => '',
+				'clConst' => '',
+				'clConf' => '',
+				'templateID' => '_defaultTypoScript_',
+				'templateParent' => $rootTemplateId,
+				'title' => 'SYS:TYPO3_CONF_VARS:FE:defaultTypoScript',
+				'uid' => '_defaultTypoScript_',
+				'pid' => '',
+				'configLines' => substr_count((string)$GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup'], LF) + 1
+			);
+			// push info to information arrays used in BE by TemplateTools (Analyzer)
+			array_unshift($this->clearList_const, $defaultTemplateInfo['uid']);
+			array_unshift($this->clearList_setup, $defaultTemplateInfo['uid']);
+			array_unshift($this->hierarchyInfo, $defaultTemplateInfo);
 			$this->isDefaultTypoScriptAdded = TRUE;
 		}
 	}
