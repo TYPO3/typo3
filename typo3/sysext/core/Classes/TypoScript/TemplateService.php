@@ -322,6 +322,16 @@ class TemplateService {
 	protected $isDefaultTypoScriptAdded = FALSE;
 
 	/**
+	 * Set to TRUE after $this->config and $this->constants have processed all <INCLUDE_TYPOSCRIPT:> instructions.
+	 *
+	 * This prevents double processing of INCLUDES.
+	 *
+	 * @see processIncludes()
+	 * @var boolean
+	 */
+	protected $processIncludesHasBeenRun = FALSE;
+
+	/**
 	 * @return boolean
 	 */
 	public function getProcessExtensionStatics() {
@@ -1039,6 +1049,10 @@ class TemplateService {
 	 * @see \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser, generateConfig()
 	 */
 	public function processIncludes() {
+		if ($this->processIncludesHasBeenRun) {
+			return;
+		}
+
 		$files = array();
 		foreach ($this->constants as &$value) {
 			$includeData = \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser::checkIncludeLines($value, 1, TRUE);
@@ -1052,12 +1066,15 @@ class TemplateService {
 			$value = $includeData['typoscript'];
 		}
 		unset($value);
-		if (count($files)) {
+
+		if (!empty($files)) {
 			$files = array_unique($files);
 			foreach ($files as $file) {
 				$this->rowSum[] = array($file, filemtime($file));
 			}
 		}
+
+		$this->processIncludesHasBeenRun = TRUE;
 	}
 
 	/**
