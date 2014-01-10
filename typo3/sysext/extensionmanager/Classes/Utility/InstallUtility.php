@@ -207,6 +207,14 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface {
 			throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException('Extension ' . $extensionKey . ' is not available', 1342864081);
 		}
 		$availableAndInstalledExtensions = $this->listUtility->enrichExtensionsWithEmConfAndTerInformation(array($extensionKey => $extension));
+
+		if (!isset($availableAndInstalledExtensions[$extensionKey])) {
+			throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException(
+				'Please check your uploaded extension "' . $extensionKey . '". The configuration file "ext_emconf.php" seems to be invalid.',
+				1391432222
+			);
+		}
+
 		return $availableAndInstalledExtensions[$extensionKey];
 	}
 
