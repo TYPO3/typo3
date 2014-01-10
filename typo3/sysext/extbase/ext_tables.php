@@ -24,7 +24,7 @@ if (!isset($TCA['fe_users']['ctrl']['type'])) {
 			)
 		)
 	);
-	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns('fe_users', $tempColumns, 1);
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns('fe_users', $tempColumns);
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes('fe_users', 'tx_extbase_type');
 	$TCA['fe_users']['ctrl']['type'] = 'tx_extbase_type';
 }
@@ -46,7 +46,7 @@ if (!isset($TCA['fe_groups']['ctrl']['type'])) {
 			)
 		)
 	);
-	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns('fe_groups', $tempColumns, 1);
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns('fe_groups', $tempColumns);
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes('fe_groups', 'tx_extbase_type');
 	$TCA['fe_groups']['ctrl']['type'] = 'tx_extbase_type';
 }

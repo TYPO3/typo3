@@ -26,8 +26,7 @@ if (!defined('TYPO3_MODE')) {
 				),
 			)
 		),
-	),
-	1
+	)
 );
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes(
 	'pages',
@@ -57,8 +56,7 @@ if (!defined('TYPO3_MODE')) {
 				),
 			)
 		),
-	),
-	1
+	)
 );
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes(
 	'pages_language_overlay',
@@ -79,8 +77,7 @@ if (!defined('TYPO3_MODE')) {
 				),
 			)
 		),
-	),
-	1
+	)
 );
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes(
