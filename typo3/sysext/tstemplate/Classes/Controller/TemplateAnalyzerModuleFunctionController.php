@@ -125,8 +125,7 @@ class TemplateAnalyzerModuleFunctionController extends \TYPO3\CMS\Backend\Module
 		$GLOBALS['tmpl']->clearList_const_temp = array_flip($GLOBALS['tmpl']->clearList_const);
 		$GLOBALS['tmpl']->clearList_setup_temp = array_flip($GLOBALS['tmpl']->clearList_setup);
 		$pointer = count($GLOBALS['tmpl']->hierarchyInfo);
-		$GLOBALS['tmpl']->hierarchyInfoArr = $GLOBALS['tmpl']->ext_process_hierarchyInfo(array(), $pointer);
-		$hierarArr = array();
+		$hierarchyInfo = $GLOBALS['tmpl']->ext_process_hierarchyInfo(array(), $pointer);
 		$head = '<thead><tr>';
 		$head .= '<th>' . $GLOBALS['LANG']->getLL('title', TRUE) . '</th>';
 		$head .= '<th>' . $GLOBALS['LANG']->getLL('rootlevel', TRUE) . '</th>';
@@ -136,7 +135,7 @@ class TemplateAnalyzerModuleFunctionController extends \TYPO3\CMS\Backend\Module
 		$head .= '<th>' . $GLOBALS['LANG']->getLL('rootline', TRUE) . '</th>';
 		$head .= '<th>' . $GLOBALS['LANG']->getLL('nextLevel', TRUE) . '</th>';
 		$head .= '</tr></thead>';
-		$hierar = implode(array_reverse($GLOBALS['tmpl']->ext_getTemplateHierarchyArr($GLOBALS['tmpl']->hierarchyInfoArr, '', array(), 1)), '');
+		$hierar = implode(array_reverse($GLOBALS['tmpl']->ext_getTemplateHierarchyArr($hierarchyInfo, '', array(), 1)), '');
 		$hierar = '<table class="t3-table" id="ts-analyzer">' . $head . $hierar . '</table>';
 		$theOutput .= $this->pObj->doc->spacer(5);
 		$theOutput .= $this->pObj->doc->section($GLOBALS['LANG']->getLL('templateHierarchy', TRUE), $hierar, 0, 1);
@@ -162,16 +161,14 @@ class TemplateAnalyzerModuleFunctionController extends \TYPO3\CMS\Backend\Module
 				<table class="t3-table ts-typoscript">
 			';
 			// Don't know why -2 and not 0... :-) But works.
-			$GLOBALS['tmpl']->ext_lineNumberOffset = -2;
+			$GLOBALS['tmpl']->ext_lineNumberOffset = 0;
 			$GLOBALS['tmpl']->ext_lineNumberOffset_mode = 'const';
-			$GLOBALS['tmpl']->ext_lineNumberOffset += count(explode(LF, \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser::checkIncludeLines(('' . $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_constants'])))) + 1;
-			reset($GLOBALS['tmpl']->clearList_const);
 			foreach ($GLOBALS['tmpl']->constants as $key => $val) {
-				$cVal = current($GLOBALS['tmpl']->clearList_const);
-				if ($cVal == \TYPO3\CMS\Core\Utility\GeneralUtility::_GET('template') || \TYPO3\CMS\Core\Utility\GeneralUtility::_GET('template') == 'all') {
+				$currentTemplateId = $GLOBALS['tmpl']->hierarchyInfo[$key]['templateID'];
+				if ($currentTemplateId == \TYPO3\CMS\Core\Utility\GeneralUtility::_GET('template') || \TYPO3\CMS\Core\Utility\GeneralUtility::_GET('template') == 'all') {
 					$theOutput .= '
 						<tr>
-							<td><strong>' . htmlspecialchars($GLOBALS['tmpl']->templateTitles[$cVal]) . '</strong></td>
+							<td><strong>' . htmlspecialchars($GLOBALS['tmpl']->hierarchyInfo[$key]['title']) . '</strong></td>
 						</tr>
 						<tr>
 							<td>
@@ -184,7 +181,6 @@ class TemplateAnalyzerModuleFunctionController extends \TYPO3\CMS\Backend\Module
 					}
 				}
 				$GLOBALS['tmpl']->ext_lineNumberOffset += count(explode(LF, $val)) + 1;
-				next($GLOBALS['tmpl']->clearList_const);
 			}
 			$theOutput .= '
 				</table>
@@ -200,13 +196,12 @@ class TemplateAnalyzerModuleFunctionController extends \TYPO3\CMS\Backend\Module
 			';
 			$GLOBALS['tmpl']->ext_lineNumberOffset = 0;
 			$GLOBALS['tmpl']->ext_lineNumberOffset_mode = 'setup';
-			$GLOBALS['tmpl']->ext_lineNumberOffset += count(explode(LF, \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser::checkIncludeLines(('' . $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup'])))) + 1;
-			reset($GLOBALS['tmpl']->clearList_setup);
 			foreach ($GLOBALS['tmpl']->config as $key => $val) {
-				if (current($GLOBALS['tmpl']->clearList_setup) == \TYPO3\CMS\Core\Utility\GeneralUtility::_GET('template') || \TYPO3\CMS\Core\Utility\GeneralUtility::_GET('template') == 'all') {
+				$currentTemplateId = $GLOBALS['tmpl']->hierarchyInfo[$key]['templateID'];
+				if ($currentTemplateId == \TYPO3\CMS\Core\Utility\GeneralUtility::_GET('template') || \TYPO3\CMS\Core\Utility\GeneralUtility::_GET('template') == 'all') {
 					$theOutput .= '
 						<tr>
-							<td><strong>' . htmlspecialchars($GLOBALS['tmpl']->templateTitles[current($GLOBALS['tmpl']->clearList_setup)]) . '</strong></td></tr>
+							<td><strong>' . htmlspecialchars($GLOBALS['tmpl']->hierarchyInfo[$key]['title']) . '</strong></td></tr>
 						<tr>
 							<td><table border="0" cellpadding="0" cellspacing="0" width="100%"><tr><td nowrap="nowrap">' . $GLOBALS['tmpl']->ext_outputTS(array($val), $this->pObj->MOD_SETTINGS['ts_analyzer_checkLinenum'], $this->pObj->MOD_SETTINGS['ts_analyzer_checkComments'], $this->pObj->MOD_SETTINGS['ts_analyzer_checkCrop'], $this->pObj->MOD_SETTINGS['ts_analyzer_checkSyntax'], 0) . '</td></tr></table>
 							</td>
@@ -217,7 +212,6 @@ class TemplateAnalyzerModuleFunctionController extends \TYPO3\CMS\Backend\Module
 					}
 				}
 				$GLOBALS['tmpl']->ext_lineNumberOffset += count(explode(LF, $val)) + 1;
-				next($GLOBALS['tmpl']->clearList_setup);
 			}
 			$theOutput .= '
 				</table>

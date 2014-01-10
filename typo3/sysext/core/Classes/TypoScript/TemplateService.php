@@ -251,13 +251,16 @@ class TemplateService {
 	 */
 	public $sectionsMatch;
 
-	// Backend: ts_analyzer
 	/**
+	 * Used by Backend only (Typoscript Template Analyzer)
+	 *
 	 * @todo Define visibility
 	 */
 	public $clearList_const = array();
 
 	/**
+	 * Used by Backend only (Typoscript Template Analyzer)
+	 *
 	 * @todo Define visibility
 	 */
 	public $clearList_setup = array();
