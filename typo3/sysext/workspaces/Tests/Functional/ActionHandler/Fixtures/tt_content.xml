@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dataset>
+	<tt_content>
+		<uid>1</uid>
+		<pid>2</pid>
+		<header>Original content</header>
+		<deleted>0</deleted>
+		<t3ver_oid>0</t3ver_oid>
+		<t3ver_wsid>0</t3ver_wsid>
+	</tt_content>
+	<tt_content>
+		<uid>2</uid>
+		<pid>-1</pid>
+		<header>Workspace version of original content</header>
+		<deleted>0</deleted>
+		<t3ver_oid>1</t3ver_oid>
+		<t3ver_wsid>91</t3ver_wsid>
+		<t3ver_stage>1</t3ver_stage>
+	</tt_content>
+</dataset>

@@ -563,11 +563,11 @@ class ActionHandler extends \TYPO3\CMS\Workspaces\ExtDirect\AbstractHandler {
 	 * t3ver_oid
 	 * uid
 	 * nextStage
-	 * receipients: array with uids
+	 * recipients: array with uids
 	 * additional: string
 	 * comments: string
 	 *
-	 * @param stdClass $parameters
+	 * @param \stdClass $parameters
 	 * @return array
 	 */
 	public function sendToSpecificStageExecute(\stdClass $parameters) {
@@ -576,7 +576,13 @@ class ActionHandler extends \TYPO3\CMS\Workspaces\ExtDirect\AbstractHandler {
 		$comments = $parameters->comments;
 		$elements = $parameters->affects->elements;
 		$recipients = $this->getRecipientList($parameters->receipients, $parameters->additional, $setStageId);
-		foreach ($elements as $key => $element) {
+		foreach ($elements as $element) {
+			// Avoid any action on records that have already been published to live
+			$elementRecord = BackendUtility::getRecord($element->table, $element->uid);
+			if ((int)$elementRecord['t3ver_wsid'] === 0) {
+				continue;
+			}
+
 			if ($setStageId == \TYPO3\CMS\Workspaces\Service\StagesService::STAGE_PUBLISH_EXECUTE_ID) {
 				$cmdArray[$element->table][$element->t3ver_oid]['version']['action'] = 'swap';
 				$cmdArray[$element->table][$element->t3ver_oid]['version']['swapWith'] = $element->uid;
