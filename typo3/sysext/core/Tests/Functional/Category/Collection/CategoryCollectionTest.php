@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Core\Tests\Functional\Category\Collection;
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Test case for \TYPO3\CMS\Core\Category\Collection\CategoryCollection
@@ -62,11 +63,6 @@ class CategoryCollectionTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 	private $numberOfRecords = 5;
 
 	/**
-	 * @var \Tx_Phpunit_Framework
-	 */
-	private $testingFramework;
-
-	/**
 	 * @var \TYPO3\CMS\Core\Database\DatabaseConnection
 	 */
 	private $database;
@@ -77,9 +73,9 @@ class CategoryCollectionTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 	 * @return void
 	 */
 	public function setUp() {
-		$this->markTestIncomplete('needs to be fixed');
-		$this->database = $GLOBALS['TYPO3_DB'];
-		$this->fixture = new \TYPO3\CMS\Core\Category\Collection\CategoryCollection($this->tableName);
+		parent::setUp();
+		$this->database = $this->getDatabase();
+		$this->fixture = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Category\\Collection\\CategoryCollection', $this->tableName);
 		$this->collectionRecord = array(
 			'uid' => 0,
 			'title' => uniqid('title'),
@@ -89,29 +85,9 @@ class CategoryCollectionTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 		$GLOBALS['TCA'][$this->tableName] = array('ctrl' => array());
 		// prepare environment
 		$this->createDummyTable();
-		$this->testingFramework = new \Tx_Phpunit_Framework('sys_category', array('tx_foo'));
 		$this->populateDummyTable();
 		$this->prepareTables();
 		$this->makeRelationBetweenCategoryAndDummyTable();
-	}
-
-	/**
-	 * Tears down this test suite.
-	 *
-	 * @return void
-	 */
-	public function tearDown() {
-		// Disabled for now
-		return;
-
-		$this->testingFramework->cleanUp();
-		// clean up environment
-		$this->dropDummyTable();
-		$this->dropDummyField();
-		unset($this->testingFramework);
-		unset($this->collectionRecord);
-		unset($this->fixture);
-		unset($this->database);
 	}
 
 	/**
@@ -246,7 +222,7 @@ class CategoryCollectionTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 			$values = array(
 				'title' => uniqid('title')
 			);
-			$this->testingFramework->createRecord($this->tableName, $values);
+			$this->database->exec_INSERTquery($this->tableName, $values);
 		}
 	}
 
@@ -260,9 +236,10 @@ class CategoryCollectionTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 			$values = array(
 				'uid_local' => $this->categoryUid,
 				'uid_foreign' => $index,
-				'tablenames' => $this->tableName
+				'tablenames' => $this->tableName,
+				'fieldname' => 'categories'
 			);
-			$this->testingFramework->createRecord('sys_category_record_mm', $values);
+			$this->database->exec_INSERTquery('sys_category_record_mm', $values);
 		}
 	}
 
@@ -307,20 +284,7 @@ class CategoryCollectionTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 			'title' => uniqid('title'),
 			'is_dummy_record' => 1
 		);
-		$this->categoryUid = $this->testingFramework->createRecord('sys_category', $values);
+		$this->database->exec_INSERTquery('sys_category', $values);
+		$this->categoryUid = $this->database->sql_insert_id();
 	}
-
-	/**
-	 * Remove dummy record and drop field
-	 *
-	 * @return void
-	 */
-	private function dropDummyField() {
-		$sql = 'ALTER TABLE %s DROP COLUMN is_dummy_record';
-		foreach ($this->tables as $table) {
-			$_sql = sprintf($sql, $table);
-			$this->database->sql_query($_sql);
-		}
-	}
-
 }
