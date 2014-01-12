@@ -2004,10 +2004,10 @@ class Indexer {
 			$GLOBALS['TYPO3_DB']->exec_DELETEquery('index_rel', 'phash=' . intval($phash));
 			foreach ($wordList as $val) {
 				$insertFields = array(
-					'phash' => $phash,
-					'wid' => $val['hash'],
-					'count' => $val['count'],
-					'first' => $val['first'],
+					'phash' => (int)$phash,
+					'wid' => (int)$val['hash'],
+					'count' => (int)$val['count'],
+					'first' => (int)$val['first'],
 					'freq' => $this->freqMap($val['count'] / $this->wordcount),
 					'flags' => $val['cmp'] & $this->flagBitMask
 				);
