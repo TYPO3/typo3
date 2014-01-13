@@ -117,6 +117,13 @@ class SilentConfigurationUpgradeService {
 		'SYS/T3instID',
 		// #52857
 		'SYS/forceReturnPath',
+	    // #54930
+	    'INSTALL/wizardDone/tx_coreupdates_compressionlevel',
+	    'INSTALL/wizardDone/TYPO3\\CMS\\Install\\Updates\\CompressionLevelUpdate',
+	    'INSTALL/wizardDone/tx_coreupdates_installsysexts',
+	    'INSTALL/wizardDone/TYPO3\\CMS\\Install\\Updates\\InstallSysExtsUpdate',
+	    'INSTALL/wizardDone/tx_coreupdates_migrateworkspaces',
+	    'INSTALL/wizardDone/TYPO3\\CMS\\Install\\Updates\\MigrateWorkspacesUpdate',
 	);
 
 	/**

@@ -121,6 +121,14 @@ functionality:
 Installation
 ------------
 
+### Important note for upgrades from TYPO3 CMS versions **below 4.5 LTS**
+
+It is not possible to upgrade any version below 4.5 LTS to 6.2 LTS directly,
+since some upgrade wizards are not available anymore on 6.2 LTS.
+
+It is highly recommended to upgrade to 4.5 LTS first and continue with
+a second upgrade to 6.2 LTS.
+
 ### If SSH and symlinks are possible
 
 If you have SSH access to your webserver and are able to create symlinks,
