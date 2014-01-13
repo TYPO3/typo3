@@ -318,18 +318,25 @@ class BooleanNode extends \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode {
 		if (is_bool($value)) {
 			return $value;
 		}
-		if (is_numeric($value)) {
-			return $value > 0;
+
+		if (is_integer($value) || is_float($value)) {
+			return !empty($value);
 		}
+
+		if (is_numeric($value)) {
+			return ($value != 0);
+		}
+
 		if (is_string($value)) {
 			return (!empty($value) && strtolower($value) !== 'false');
 		}
 		if (is_array($value) || (is_object($value) && $value instanceof \Countable)) {
-			return count($value) > 0;
+			return (bool) count($value);
 		}
 		if (is_object($value)) {
 			return TRUE;
 		}
+
 		return FALSE;
 	}
 }
