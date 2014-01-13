@@ -161,6 +161,7 @@ return array(
 				'eval' => 'null',
 				'placeholder' => '__row|uid_local|metadata|title',
 				'mode' => 'useOrOverridePlaceholder',
+				'default' => NULL,
 			)
 		),
 		'link' => array(
@@ -199,6 +200,7 @@ return array(
 				'eval' => 'null',
 				'placeholder' => '__row|uid_local|metadata|description',
 				'mode' => 'useOrOverridePlaceholder',
+				'default' => NULL,
 			)
 		),
 		'alternative' => array(
@@ -211,6 +213,7 @@ return array(
 				'eval' => 'null',
 				'placeholder' => '__row|uid_local|metadata|alternative',
 				'mode' => 'useOrOverridePlaceholder',
+				'default' => NULL,
 			),
 		),
 	),

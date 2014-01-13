@@ -1155,10 +1155,7 @@ class FormEngine {
 					if (isset($PA['fieldConf']['config']['mode']) && $PA['fieldConf']['config']['mode'] == 'useOrOverridePlaceholder') {
 						$placeholder = $this->getPlaceholderValue($table, $field, $PA['fieldConf']['config'], $row);
 						$onChange = 'typo3form.fieldTogglePlaceholder(' . GeneralUtility::quoteJSvalue($PA['itemFormElName']) . ', !this.checked)';
-
-
-						$isNull = ($PA['itemFormElValue'] === NULL);
-						$checked = (($isNull || $this->isNewRecord($table, $row)) ? '' : ' checked="checked"');
+						$checked = $PA['itemFormElValue'] === NULL ? '' : ' checked="checked"';
 
 						$this->additionalJS_post[] = 'typo3form.fieldTogglePlaceholder('
 							. GeneralUtility::quoteJSvalue($PA['itemFormElName']) . ', ' . ($checked ? 'false' : 'true') . ');';

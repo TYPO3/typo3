@@ -261,8 +261,16 @@ class DataPreprocessor {
 			// Set $data variable for the field, either inputted value from $row - or if not found, the default value as defined in the "config" array
 			if (isset($row[$field])) {
 				$data = (string)$row[$field];
-			} elseif (array_key_exists($field, $row) && !empty($fieldConfig['config']['eval']) && GeneralUtility::inList($fieldConfig['config']['eval'], 'null')) {
-				$data = NULL;
+			} elseif (!empty($fieldConfig['config']['eval']) && GeneralUtility::inList($fieldConfig['config']['eval'], 'null')) {
+				// Field exists but is set to NULL
+				if (array_key_exists($field, $row)) {
+					$data = NULL;
+				// Only use NULL if default value was explicitly set to be backward compatible.
+				} elseif (array_key_exists('default', $fieldConfig['config']) && $fieldConfig['config']['default'] === NULL) {
+					$data = NULL;
+				} else {
+					$data = (string)$fieldConfig['config']['default'];
+				}
 			} else {
 				$data = (string)$fieldConfig['config']['default'];
 			}
