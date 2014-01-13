@@ -3393,6 +3393,15 @@ class TypoScriptFrontendController {
 	}
 
 	/**
+	 * Generate the page title again as TSFE->altPageTitle might have been modified by an inc script
+	 *
+	 * @return void
+	 */
+	protected function regeneratePageTitle() {
+		\TYPO3\CMS\Frontend\Page\PageGenerator::generatePageTitle();
+	}
+
+	/**
 	 * Processes the INTinclude-scripts
 	 *
 	 * @return void
@@ -3413,10 +3422,14 @@ class TypoScriptFrontendController {
 		$this->recursivelyReplaceIntPlaceholdersInContent();
 		$GLOBALS['TT']->push('Substitute header section');
 		$this->INTincScript_loadJSCode();
+
+		$this->regeneratePageTitle();
+
 		$this->content = $this->getPageRenderer()->renderJavaScriptAndCssForProcessingOfUncachedContentObjects($this->content, $this->config['INTincScript_ext']['divKey']);
 		$this->content = str_replace('<!--HD_' . $this->config['INTincScript_ext']['divKey'] . '-->', $this->convOutputCharset(implode(LF, $this->additionalHeaderData), 'HD'), $this->content);
 		$this->content = str_replace('<!--FD_' . $this->config['INTincScript_ext']['divKey'] . '-->', $this->convOutputCharset(implode(LF, $this->additionalFooterData), 'FD'), $this->content);
 		$this->content = str_replace('<!--TDS_' . $this->config['INTincScript_ext']['divKey'] . '-->', $this->convOutputCharset($this->divSection, 'TDS'), $this->content);
+
 		// Replace again, because header and footer data and page renderer replacements may introduce additional placeholders (see #44825)
 		$this->recursivelyReplaceIntPlaceholdersInContent();
 		$this->setAbsRefPrefix();
