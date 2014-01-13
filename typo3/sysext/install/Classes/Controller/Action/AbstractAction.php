@@ -64,6 +64,11 @@ abstract class AbstractAction {
 	protected $postValues = array();
 
 	/**
+	 * @var array Contains the fatal error array of the last request when passed. Schema is the one returned by error_get_last()
+	 */
+	protected $lastError = array();
+
+	/**
 	 * @var array<\TYPO3\CMS\Install\Status\StatusInterface> Optional status message from controller
 	 */
 	protected $messages = array();
@@ -103,6 +108,7 @@ abstract class AbstractAction {
 			->assign('token', $this->token)
 			->assign('context', $contextService->getContextString())
 			->assign('contextService', $contextService)
+			->assign('lastError', $this->lastError)
 			->assign('messages', $this->messages)
 			->assign('typo3Version', TYPO3_version)
 			->assign('siteName', $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'])
@@ -149,6 +155,15 @@ abstract class AbstractAction {
 	 */
 	public function setPostValues(array $postValues) {
 		$this->postValues = $postValues;
+	}
+
+	/**
+	 * Set the last error array as returned by error_get_last()
+	 *
+	 * @param array $lastError
+	 */
+	public function setLastError(array $lastError) {
+		$this->lastError = $lastError;
 	}
 
 	/**

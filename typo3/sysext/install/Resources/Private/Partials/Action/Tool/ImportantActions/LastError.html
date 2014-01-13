@@ -1,0 +1,12 @@
+<f:if condition="{lastError}">
+	<div class="typo3-message message-warning">
+		<div class="header-container">
+			<div class="message-header">
+				<strong>Detected Fatal Error</strong>
+			</div>
+			<div class="message-body">
+				{lastError.message} in {lastError.file} on line {lastError.line}
+			</div>
+		</div>
+	</div>
+</f:if>

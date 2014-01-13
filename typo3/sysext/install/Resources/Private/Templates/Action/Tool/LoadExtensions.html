@@ -13,6 +13,8 @@
 		are unloaded, you can restart the initial action to proceed your request.
 	</p>
 
+	<f:render partial="Action/Tool/ImportantActions/LastError" arguments="{lastError: lastError}"/>
+
 	<hr />
 	<f:render partial="Action/Tool/ImportantActions/ExtensionCompatibilityTester" arguments="{_all}"/>
 	<script type="text/javascript">

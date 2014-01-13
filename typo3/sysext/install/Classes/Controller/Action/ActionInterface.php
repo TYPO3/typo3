@@ -70,6 +70,13 @@ interface ActionInterface {
 	public function setPostValues(array $postValues);
 
 	/**
+	 * Set the last error array as returned by error_get_last()
+	 *
+	 * @param array $lastError
+	 */
+	public function setLastError(array $lastError);
+
+	/**
 	 * Status messages from controller
 	 *
 	 * @param array<\TYPO3\CMS\Install\Status\StatusInterface> $messages
