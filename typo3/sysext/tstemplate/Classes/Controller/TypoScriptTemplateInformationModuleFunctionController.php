@@ -274,6 +274,8 @@ class TypoScriptTemplateInformationModuleFunctionController extends \TYPO3\CMS\B
 					$this->tce_processed = TRUE;
 					// re-read the template ...
 					$this->initialize_editor($this->pObj->id, $template_uid);
+					// reload template menu
+					$manyTemplatesMenu = $this->pObj->templateMenu();
 				}
 				// If files has been edited:
 				if (is_array($edit)) {
