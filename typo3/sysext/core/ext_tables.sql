@@ -349,7 +349,8 @@ CREATE TABLE sys_file_metadata (
 
 	PRIMARY KEY (uid),
 	KEY file (file),
-	KEY t3ver_oid (t3ver_oid,t3ver_wsid)
+	KEY t3ver_oid (t3ver_oid,t3ver_wsid),
+	KEY fal_filelist (l10n_parent,sys_language_uid),
 );
 
 
