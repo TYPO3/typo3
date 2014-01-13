@@ -742,6 +742,13 @@ class TypoScriptFrontendController {
 	protected $cacheHash;
 
 	/**
+	 * Runtime cache of domains per processed page ids.
+	 *
+	 * @var array
+	 */
+	protected $domainDataCache = array();
+
+	/**
 	 * Class constructor
 	 * Takes a number of GET/POST input variable as arguments and stores them internally.
 	 * The processing of these variables goes on later in this class.
@@ -4920,19 +4927,25 @@ if (version == "n3") {
 	 * @return mixed Return domain data or NULL
 	*/
 	public function getDomainDataForPid($targetPid) {
-		$result = NULL;
-
-		$sysDomainData = $this->getSysDomainCache();
-		$rootline = $this->sys_page->getRootLine($targetPid);
-		// walk the rootline downwards from the target page to the root, until a domain record is found
-		foreach ($rootline as $pageInRootline) {
-			$pidInRootline = $pageInRootline['uid'];
-			if (isset($sysDomainData[$pidInRootline])) {
-				$result = $sysDomainData[$pidInRootline];
-				break;
+		// Using array_key_exists() here, nice $result can be NULL
+		// (happens, if there's no domain records defined)
+		if (!array_key_exists($targetPid, $this->domainDataCache)) {
+			$result = NULL;
+			$sysDomainData = $this->getSysDomainCache();
+			$rootline = $this->sys_page->getRootLine($targetPid);
+			// walk the rootline downwards from the target page
+			// to the root page, until a domain record is found
+			foreach ($rootline as $pageInRootline) {
+				$pidInRootline = $pageInRootline['uid'];
+				if (isset($sysDomainData[$pidInRootline])) {
+					$result = $sysDomainData[$pidInRootline];
+					break;
+				}
 			}
+			$this->domainDataCache[$targetPid] = $result;
 		}
-		return $result;
+
+		return $this->domainDataCache[$targetPid];
 	}
 
 	/**
