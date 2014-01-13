@@ -793,6 +793,9 @@ class PackageManager extends \TYPO3\Flow\Package\PackageManager implements \TYPO
 	 * @return void
 	 */
 	protected function resolvePackageDependencies() {
+		foreach ($this->packages as $packageKey => $package) {
+			$this->packageStatesConfiguration['packages'][$packageKey]['dependencies'] = array();
+		}
 		foreach ($this->activePackages as $packageKey => $package) {
 			$this->packageStatesConfiguration['packages'][$packageKey]['dependencies'] = $this->getDependencyArrayForPackage($packageKey);
 		}
