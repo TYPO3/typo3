@@ -680,7 +680,9 @@ CREATE TABLE sys_category (
 
 	PRIMARY KEY (uid),
 	KEY parent (pid),
-	KEY t3ver_oid (t3ver_oid,t3ver_wsid)
+	KEY t3ver_oid (t3ver_oid,t3ver_wsid),
+	KEY category_parent (parent),
+	KEY category_list (pid,deleted,sys_language_uid),
 );
 
 #
