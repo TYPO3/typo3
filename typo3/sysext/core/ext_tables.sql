@@ -262,7 +262,7 @@ CREATE TABLE sys_file_storage (
 	deleted tinyint(4) DEFAULT '0' NOT NULL,
 	hidden tinyint(4) DEFAULT '0' NOT NULL,
 
-	name tinytext,
+	name varchar(30) DEFAULT '' NOT NULL,
 	description text,
 	driver tinytext,
 	configuration text,
@@ -273,7 +273,8 @@ CREATE TABLE sys_file_storage (
 	processingfolder tinytext,
 
 	PRIMARY KEY (uid),
-	KEY parent (pid,deleted)
+	KEY parent (pid,deleted),
+	KEY deleted_hidden (deleted,hidden)
 );
 
 #
