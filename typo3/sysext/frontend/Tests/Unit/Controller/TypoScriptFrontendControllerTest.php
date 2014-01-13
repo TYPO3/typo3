@@ -78,7 +78,8 @@ class TypoScriptFrontendControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
 			'INTincScript_process',
 			'INTincScript_includeLibs',
 			'INTincScript_loadJSCode',
-			'setAbsRefPrefix'
+			'setAbsRefPrefix',
+		    'regeneratePageTitle'
 		), array(), '', FALSE);
 		$tsfe->expects($this->exactly(2))->method('INTincScript_process')->will($this->returnCallback(array($this, 'INTincScript_processCallback')));
 		$tsfe->content = file_get_contents(__DIR__ . '/Fixtures/renderedPage.html');

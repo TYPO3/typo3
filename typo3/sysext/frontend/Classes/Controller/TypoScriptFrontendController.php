@@ -3387,6 +3387,15 @@ class TypoScriptFrontendController {
 	}
 
 	/**
+	 * Generate the page title again as TSFE->altPageTitle might have been modified by an inc script
+	 *
+	 * @return void
+	 */
+	protected function regeneratePageTitle() {
+		\TYPO3\CMS\Frontend\Page\PageGenerator::generatePageTitle();
+	}
+
+	/**
 	 * Processes the INTinclude-scripts
 	 *
 	 * @return void
@@ -3407,6 +3416,7 @@ class TypoScriptFrontendController {
 		$this->recursivelyReplaceIntPlaceholdersInContent();
 		$GLOBALS['TT']->push('Substitute header section');
 		$this->INTincScript_loadJSCode();
+		$this->regeneratePageTitle();
 		$this->content = str_replace(
 			array(
 				'<!--HD_' . $this->config['INTincScript_ext']['divKey'] . '-->',

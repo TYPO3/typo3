@@ -1920,7 +1920,9 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	public function renderJavaScriptAndCssForProcessingOfUncachedContentObjects($cachedPageContent, $substituteHash) {
 		$this->prepareRendering();
 		list($jsLibs, $jsFiles, $jsFooterFiles, $cssFiles, $jsInline, $cssInline, $jsFooterInline, $jsFooterLibs) = $this->renderJavaScriptAndCss();
+		$title = $this->title ? str_replace('|', htmlspecialchars($this->title), $this->titleTag) : '';
 		$markerArray = array(
+			'<!-- ###TITLE' . $substituteHash . '### -->' => $title,
 			'<!-- ###CSS_INCLUDE' . $substituteHash . '### -->' => $cssFiles,
 			'<!-- ###CSS_INLINE' . $substituteHash . '### -->' => $cssInline,
 			'<!-- ###JS_INLINE' . $substituteHash . '### -->' => $jsInline,
@@ -2048,9 +2050,9 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 			'INLINECOMMENT' => $this->inlineComments ? LF . LF . '<!-- ' . LF . implode(LF, $this->inlineComments) . '-->' . LF . LF : '',
 			'BASEURL' => $this->baseUrl ? str_replace('|', $this->baseUrl, $this->baseUrlTag) : '',
 			'SHORTCUT' => $this->favIcon ? sprintf($this->shortcutTag, htmlspecialchars($this->favIcon), $this->iconMimeType) : '',
-			'TITLE' => $this->title ? str_replace('|', htmlspecialchars($this->title), $this->titleTag) : '',
 			'META' => implode(LF, $this->metaTags),
 			'BODY' => $this->bodyContent,
+			'TITLE' => '<!-- ###TITLE' . $substituteHash . '### -->',
 			'CSS_INCLUDE' => '<!-- ###CSS_INCLUDE' . $substituteHash . '### -->',
 			'CSS_INLINE' => '<!-- ###CSS_INLINE' . $substituteHash . '### -->',
 			'JS_INLINE' => '<!-- ###JS_INLINE' . $substituteHash . '### -->',

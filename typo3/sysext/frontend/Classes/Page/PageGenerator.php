@@ -40,6 +40,12 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class PageGenerator {
 
 	/**
+	 * Do not render title tag
+	 * Typoscript setting: [config][noPageTitle]
+	 */
+	const NO_PAGE_TITLE = 2;
+
+	/**
 	 * Setting some vars in TSFE, primarily based on TypoScript config settings.
 	 *
 	 * @return void
@@ -724,14 +730,7 @@ class PageGenerator {
 		if (is_array($GLOBALS['TSFE']->pSetup['footerData.'])) {
 			$pageRenderer->addFooterData($GLOBALS['TSFE']->cObj->cObjGet($GLOBALS['TSFE']->pSetup['footerData.'], 'footerData.'));
 		}
-		// Title
-		$titleTagContent = $GLOBALS['TSFE']->tmpl->printTitle($GLOBALS['TSFE']->altPageTitle ? $GLOBALS['TSFE']->altPageTitle : $GLOBALS['TSFE']->page['title'], $GLOBALS['TSFE']->config['config']['noPageTitle'], $GLOBALS['TSFE']->config['config']['pageTitleFirst']);
-		if ($GLOBALS['TSFE']->config['config']['titleTagFunction']) {
-			$titleTagContent = $GLOBALS['TSFE']->cObj->callUserFunction($GLOBALS['TSFE']->config['config']['titleTagFunction'], array(), $titleTagContent);
-		}
-		if (strlen($titleTagContent) && intval($GLOBALS['TSFE']->config['config']['noPageTitle']) !== 2) {
-			$pageRenderer->setTitle($titleTagContent);
-		}
+		static::generatePageTitle();
 		// Add ending slash only to documents rendered as xhtml
 		$endingSlash = $GLOBALS['TSFE']->xhtmlVersion ? ' /' : '';
 		$pageRenderer->addMetaTag('<meta name="generator" content="TYPO3 ' . TYPO3_branch . ' CMS"' . $endingSlash . '>');
@@ -1081,4 +1080,29 @@ class PageGenerator {
 		return $OK;
 	}
 
+	/**
+	 * Generate title for page.
+	 * Takes the settings ['config']['noPageTitle'], ['config']['pageTitleFirst'], ['config']['titleTagFunction']
+	 * and ['config']['noPageTitle'] into account.
+	 * Furthermore $GLOBALS['TSFE']->altPageTitle is observed.
+	 *
+	 * @return void
+	 */
+	static public function generatePageTitle() {
+		$titleTagContent = $GLOBALS['TSFE']->tmpl->printTitle(
+			$GLOBALS['TSFE']->altPageTitle ? $GLOBALS['TSFE']->altPageTitle : $GLOBALS['TSFE']->page['title'],
+			$GLOBALS['TSFE']->config['config']['noPageTitle'],
+			$GLOBALS['TSFE']->config['config']['pageTitleFirst']
+		);
+		if ($GLOBALS['TSFE']->config['config']['titleTagFunction']) {
+			$titleTagContent = $GLOBALS['TSFE']->cObj->callUserFunction(
+				$GLOBALS['TSFE']->config['config']['titleTagFunction'],
+				array(),
+				$titleTagContent
+			);
+		}
+		if ($titleTagContent !== '' && (integer)$GLOBALS['TSFE']->config['config']['noPageTitle'] !== self::NO_PAGE_TITLE) {
+			$GLOBALS['TSFE']->getPageRenderer()->setTitle($titleTagContent);
+		}
+	}
 }
