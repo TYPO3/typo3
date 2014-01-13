@@ -101,8 +101,8 @@ class AllConfiguration extends Action\AbstractAction implements Action\ActionInt
 						$itemData['value'] = str_replace(array('\'.chr(10).\'', '\' . LF . \''), array(LF, LF), $value);
 					} elseif (preg_match('/^(<.*?>)?boolean/i', $description)) {
 						$itemData['type'] = 'checkbox';
-						$itemData['value'] = !empty($value) ? $value : 1;
-						$itemData['checked'] = $value ? TRUE : FALSE;
+						$itemData['value'] = $value ? '1' : '0';
+						$itemData['checked'] = (boolean)$value;
 					} else {
 						$itemData['type'] = 'input';
 						$itemData['value'] = $value;

@@ -9,8 +9,15 @@
 		<f:for each="{sectionData}" as="item">
 			<div class="item">
 				<strong>[{sectionName}][{item.key}] </strong>
-				<f:if condition="{item.value}">
-					= {item.value -> i:format.crop(maxCharacters: 40)}
+				<f:if condition="{item.type} == 'checkbox'">
+					<f:then>
+						= {item.value}
+					</f:then>
+					<f:else>
+						<f:if condition="{item.value}">
+							= {item.value -> i:format.crop(maxCharacters: 40)}
+						</f:if>
+					</f:else>
 				</f:if>
 				<div class="item-description">
 					{item.description -> f:format.raw()}
@@ -32,7 +39,7 @@
 						/>
 						<input
 							type="checkbox"
-							value="{item.value}"
+							value="1"
 							name="install[values][{sectionName}][{item.key}]"
 							{f:if(condition: item.checked, then:'checked="checked"')}
 						/>
