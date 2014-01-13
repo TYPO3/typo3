@@ -137,11 +137,13 @@ abstract class AbstractDriver {
 	 * Checks if a configuration is valid for this driver.
 	 * Throws an exception if a configuration will not work.
 	 *
-	 * @abstract
 	 * @param array $configuration
+	 * @throws \BadMethodCallException
 	 * @return void
 	 */
-	static abstract public function verifyConfiguration(array $configuration);
+	static public function verifyConfiguration(array $configuration) {
+		throw new \BadMethodCallException('Not yet implemented!', 1389606342);
+	}
 
 	/**
 	 * processes the configuration, should be overridden by subclasses
