@@ -193,7 +193,8 @@ class LoadedExtensionsArray implements \Iterator, \ArrayAccess, \Serializable, \
 	 * @return void Any returned value is ignored.
 	 */
 	public function rewind() {
-		$this->iteratorPosition = array_shift(array_keys($this->packageManager->getActivePackages()));
+		$keys = array_keys($this->packageManager->getActivePackages());
+		$this->iteratorPosition = array_shift($keys);
 	}
 
 	/**
