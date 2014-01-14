@@ -64,6 +64,13 @@ class GeneralUtility {
 	static protected $nonSingletonInstances = array();
 
 	/**
+	 * Cache for makeInstance with given class name and final class names to reduce number of self::getClassName() calls
+	 *
+	 * @var array Given class name => final class name
+	 */
+	static protected $finalClassNameCache = array();
+
+	/**
 	 * The application context
 	 *
 	 * @var \TYPO3\CMS\Core\Core\ApplicationContext
@@ -4207,7 +4214,12 @@ Connection: close
 		if (!is_string($className) || empty($className)) {
 			throw new \InvalidArgumentException('$className must be a non empty string.', 1288965219);
 		}
-		$finalClassName = self::getClassName($className);
+		if (isset(static::$finalClassNameCache[$className])) {
+			$finalClassName = static::$finalClassNameCache[$className];
+		} else {
+			$finalClassName = self::getClassName($className);
+			static::$finalClassNameCache[$className] = $finalClassName;
+		}
 		// Return singleton instance if it is already registered
 		if (isset(self::$singletonInstances[$finalClassName])) {
 			return self::$singletonInstances[$finalClassName];
@@ -4319,7 +4331,7 @@ Connection: close
 			return FALSE;
 		}
 
-		return array_key_exists($className, (array)$GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'])
+		return isset($GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][$className])
 				&& is_array($GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][$className])
 				&& !empty($GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][$className]['className']);
 	}
