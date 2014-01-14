@@ -412,9 +412,9 @@ class ElementBrowser {
 			$P2['formName'] = $this->P['formName'];
 			$P2['fieldChangeFunc'] = $this->P['fieldChangeFunc'];
 			$P2['fieldChangeFuncHash'] = GeneralUtility::hmac(serialize($this->P['fieldChangeFunc']));
-			$P2['params']['allowedExtensions'] = $this->P['params']['allowedExtensions'];
-			$P2['params']['blindLinkOptions'] = $this->P['params']['blindLinkOptions'];
-			$P2['params']['blindLinkFields'] = $this->P['params']['blindLinkFields'];
+			$P2['params']['allowedExtensions'] = isset($this->P['params']['allowedExtensions']) ? $this->P['params']['allowedExtensions'] : '';
+			$P2['params']['blindLinkOptions'] = isset($this->P['params']['blindLinkOptions']) ? $this->P['params']['blindLinkOptions'] : '';
+			$P2['params']['blindLinkFields'] = isset($this->P['params']['blindLinkFields']) ? $this->P['params']['blindLinkFields']: '';
 			$addPassOnParams .= GeneralUtility::implodeArrayForUrl('P', $P2);
 			$JScode .= '
 				function link_typo3Page(id,anchor) {	//
@@ -707,15 +707,30 @@ class ElementBrowser {
 	public function main_rte($wiz = 0) {
 		// Starting content:
 		$content = $this->doc->startPage('RTE link');
+
 		// Initializing the action value, possibly removing blinded values etc:
-		$allowedItems = array_diff(explode(',', 'page,file,folder,url,mail,spec'), GeneralUtility::trimExplode(',', $this->thisConfig['blindLinkOptions'], TRUE));
-		$allowedItems = array_diff($allowedItems, GeneralUtility::trimExplode(',', $this->P['params']['blindLinkOptions']));
+		$blindLinkOptions = isset($this->thisConfig['blindLinkOptions'])
+			? GeneralUtility::trimExplode(',', $this->thisConfig['blindLinkOptions'], TRUE)
+			: array();
+		$pBlindLinkOptions = isset($this->P['params']['blindLinkOptions'])
+			? GeneralUtility::trimExplode(',', $this->P['params']['blindLinkOptions'])
+			: array();
+		$allowedItems = array_diff(array('page', 'file', 'folder', 'url', 'mail', 'spec'), $blindLinkOptions, $pBlindLinkOptions);
+
 		// Call hook for extra options
 		foreach ($this->hookObjects as $hookObject) {
 			$allowedItems = $hookObject->addAllowedItems($allowedItems);
 		}
+
 		// Removing link fields if configured
-		$allowedFields = array_diff(array('target', 'title', 'class', 'params'), GeneralUtility::trimExplode(',', $this->thisConfig['blindLinkFields'], TRUE), GeneralUtility::trimExplode(',', $this->P['params']['blindLinkFields'], TRUE));
+		$blindLinkFields = isset($this->thisConfig['blindLinkFields'])
+			? GeneralUtility::trimExplode(',', $this->thisConfig['blindLinkFields'], TRUE)
+			: array();
+		$pBlindLinkFields = isset($this->P['params']['blindLinkFields'])
+			? GeneralUtility::trimExplode(',', $this->P['params']['blindLinkFields'], TRUE)
+			: array();
+		$allowedFields = array_diff(array('target', 'title', 'class', 'params'), $blindLinkFields, $pBlindLinkFields);
+
 		// If $this->act is not allowed, default to first allowed
 		if (!in_array($this->act, $allowedItems)) {
 			$this->act = reset($allowedItems);
