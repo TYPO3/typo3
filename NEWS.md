@@ -134,6 +134,16 @@ the introduction of the group "system".
 
 ### Frontend
 
+* Typoscript compatibility
+
+For new installations TYPO3 CMS 6.2 now uses the new format of tt_content and page
+records. If you're upgrading from a previous version the FrontendContentAdapter is
+activated, which converts those records back to the old format for you on the fly.
+
+If you manage to change your Typoscript to use the new format you should consider
+deactivating the Adapter with the Install Tool option [FE][activateContentAdapter]
+as the Adapter really slows down the system.
+
 * Minor API change in \TYPO3\CMS\Frontend\ContentObjectRenderer->getTreeList()
 
 getTreeList() got some cleanup and slightly changed its return result. Former

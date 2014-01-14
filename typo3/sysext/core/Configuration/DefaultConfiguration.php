@@ -716,6 +716,7 @@ return array(
 		'XCLASS' => array()
 	),
 	'FE' => array( // Configuration for the TypoScript frontend (FE). Nothing here relates to the administration backend!
+		'activateContentAdapter' => TRUE, 		// Boolean: TYPO3 Frontend can transform tt_content and pages records using FAL back to into a format like DB records have been in pre 6.x, so legacy Typoscript can work with it. <strong><em>WARNING: THIS IS SLOW!</em></strong>
 		'png_to_gif' => FALSE,		// Boolean: Enables conversion back to gif of all png-files generated in the frontend libraries. Notice that this leaves an increased number of temporary files in typo3temp/
 		'addAllowedPaths' => '',		// Additional relative paths (comma-list) to allow TypoScript resources be in. Should be prepended with '/'. If not, then any path where the first part is like this path will match. That is: 'myfolder/ , myarchive' will match eg. 'myfolder/', 'myarchive/', 'myarchive_one/', 'myarchive_2/' ... No check is done to see if this directory actually exists in the root of the site. Paths are matched by simply checking if these strings equals the first part of any TypoScript resource filepath. (See class template, function init() in \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser)
 		'allowedTempPaths' => '',		// Additional paths allowed for temporary images. Used with imgResource. Eg. 'alttypo3temp/,another_temp_dir/';

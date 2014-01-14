@@ -35,6 +35,7 @@ return array(
 	),
 	'FE' => array(
 		'loginSecurityLevel' => 'rsa',
+		'activateContentAdapter' => FALSE,
 	),
 	'GFX' => array(
 		'jpg_quality' => '80',

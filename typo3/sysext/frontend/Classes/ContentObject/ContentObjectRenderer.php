@@ -561,7 +561,7 @@ class ContentObjectRenderer {
 	 */
 	public function start($data, $table = '') {
 		global $TYPO3_CONF_VARS;
-		if (is_array($data) && !empty($data) && !empty($table)) {
+		if ($TYPO3_CONF_VARS['FE']['activateContentAdapter'] && is_array($data) && !empty($data) && !empty($table)) {
 			\TYPO3\CMS\Core\Resource\Service\FrontendContentAdapterService::modifyDBRow($data, $table);
 		}
 		$this->data = $data;

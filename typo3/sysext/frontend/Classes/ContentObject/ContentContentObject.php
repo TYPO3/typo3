@@ -105,7 +105,9 @@ class ContentContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractCon
 								$_procObj->modifyDBRow($row, $conf['table']);
 							}
 						}
-						\TYPO3\CMS\Core\Resource\Service\FrontendContentAdapterService::modifyDBRow($row, $conf['table']);
+						if ($GLOBALS['TYPO3_CONF_VARS']['FE']['activateContentAdapter']) {
+							\TYPO3\CMS\Core\Resource\Service\FrontendContentAdapterService::modifyDBRow($row, $conf['table']);
+						}
 						if (!$GLOBALS['TSFE']->recordRegister[($conf['table'] . ':' . $row['uid'])]) {
 							$this->cObj->currentRecordNumber++;
 							$cObj->parentRecordNumber = $this->cObj->currentRecordNumber;
