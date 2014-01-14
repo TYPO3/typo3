@@ -141,6 +141,14 @@ class SilentConfigurationUpgradeService {
 	 */
 	protected function removeObsoleteLocalConfigurationSettings() {
 		$removed = $this->configurationManager->removeLocalConfigurationKeysByPath($this->obsoleteLocalConfigurationSettings);
+
+		// The old default value is not needed anymore. So if the user
+		// did not set a different value we can remove it.
+		$currentSetDbInitValue = $this->configurationManager->getConfigurationValueByPath('SYS/setDBinit');
+		if (preg_match('/^\s*SET\s+NAMES\s+[\'"]?utf8[\'"]?\s*[;]?\s*$/i', $currentSetDbInitValue) === 1) {
+			$removed = $removed || $this->configurationManager->removeLocalConfigurationKeysByPath(array('SYS/setDBinit'));
+		}
+
 		// If something was changed: Trigger a reload to have new values in next request
 		if ($removed) {
 			$this->throwRedirectException();

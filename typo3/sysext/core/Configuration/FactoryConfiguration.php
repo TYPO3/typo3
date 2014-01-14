@@ -77,7 +77,6 @@ return array(
 	'SYS' => array(
 		'compat_version' => '6.2',
 		'isInitialInstallationInProgress' => TRUE,
-		'setDBinit' => 'SET NAMES utf8;',
 		'sitename' => 'New TYPO3 site',
 	),
 );

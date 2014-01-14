@@ -238,7 +238,6 @@ class Bootstrap {
 		$this->defineDatabaseConstants()
 			->defineUserAgentConstant()
 			->registerExtDirectComponents()
-			->checkUtf8DatabaseSettingsOrDie()
 			->transferDeprecatedCurlSettings()
 			->setCacheHashOptions()
 			->setDefaultTimezone()
@@ -484,35 +483,6 @@ class Bootstrap {
 		// @todo Please deuglify
 		\TYPO3\CMS\Core\Cache\Cache::initializeCachingFramework();
 		$this->setEarlyInstance('TYPO3\CMS\Core\Cache\CacheManager', $GLOBALS['typo3CacheManager']);
-		return $this;
-	}
-
-	/**
-	 * Checking for UTF-8 in the settings since TYPO3 4.5
-	 *
-	 * Since TYPO3 4.5, everything other than UTF-8 is deprecated.
-	 *
-	 * [SYS][setDBinit] is used to set the DB connection
-	 * and both settings need to be adjusted for UTF-8 in order to work properly
-	 *
-	 * @return Bootstrap
-	 */
-	protected function checkUtf8DatabaseSettingsOrDie() {
-		if (isset($GLOBALS['TYPO3_CONF_VARS']['SYS']['setDBinit']) &&
-			$GLOBALS['TYPO3_CONF_VARS']['SYS']['setDBinit'] !== '-1' &&
-			preg_match('/SET NAMES [\'"]?utf8[\'"]?/i', $GLOBALS['TYPO3_CONF_VARS']['SYS']['setDBinit']) === FALSE &&
-			TYPO3_enterInstallScript !== '1') {
-
-			// Only accept "SET NAMES utf8" for this setting, otherwise die with a nice error
-			die('This TYPO3 installation is using the $GLOBALS[\'TYPO3_CONF_VARS\'][\'SYS\'][\'setDBinit\'] property with the following value:' . chr(10) .
-				$GLOBALS['TYPO3_CONF_VARS']['SYS']['setDBinit'] . chr(10) . chr(10) .
-				'It looks like UTF-8 is not used for this connection.' . chr(10) . chr(10) .
-				'Everything other than UTF-8 is unsupported since TYPO3 4.7.' . chr(10) .
-				'The DB, its connection and TYPO3 should be migrated to UTF-8 therefore. Please check your setup.'
-			);
-		} else {
-			$GLOBALS['TYPO3_CONF_VARS']['SYS']['setDBinit'] = 'SET NAMES utf8;';
-		}
 		return $this;
 	}
 
