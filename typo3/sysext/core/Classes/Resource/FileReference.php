@@ -67,14 +67,6 @@ class FileReference implements FileInterface {
 	protected $name;
 
 	/**
-	 * The FileRepository object. Is needed e.g. for the delete() method to delete the usage record
-	 * (sys_file_reference record) of this file usage.
-	 *
-	 * @var FileRepository
-	 */
-	protected $fileRepository;
-
-	/**
 	 * Reference to the original File object underlying this FileReference.
 	 *
 	 * @var File
@@ -107,10 +99,9 @@ class FileReference implements FileInterface {
 		}
 		if (!$factory) {
 			/** @var $factory ResourceFactory */
-			$factory = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\ResourceFactory');
+			$factory = ResourceFactory::getInstance();
 		}
 		$this->originalFile = $factory->getFileObject($fileReferenceData['uid_local']);
-		$this->fileRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\FileRepository');
 		if (!is_object($this->originalFile)) {
 			throw new \RuntimeException('Original File not found for FileReference.', 1300098529);
 		}

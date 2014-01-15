@@ -35,17 +35,11 @@ namespace TYPO3\CMS\Extbase\Domain\Model;
 class FileReference extends \TYPO3\CMS\Extbase\Domain\Model\AbstractFileFolder {
 
 	/**
-	 * @var \TYPO3\CMS\Core\Resource\FileRepository
-	 * @inject
-	 */
-	protected $fileRepository;
-
-	/**
 	 * @return \TYPO3\CMS\Core\Resource\FileReference
 	 */
 	public function getOriginalResource() {
 		if ($this->originalResource === NULL) {
-			$this->originalResource = $this->fileRepository->findFileReferenceByUid($this->getUid());
+			$this->originalResource = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getFileReferenceObject($this->getUid());
 		}
 
 		return $this->originalResource;

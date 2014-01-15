@@ -142,11 +142,6 @@ class ExtendedFileUtility extends \TYPO3\CMS\Core\Utility\File\BasicFileUtility 
 
 
 	/**
-	 * @var \TYPO3\CMS\Core\Resource\FileRepository
-	 */
-	protected $fileRepository;
-
-	/**
 	 * Initialization of the class
 	 *
 	 * @param array $fileCmds Array with the commands to execute. See "TYPO3 Core API" document
@@ -162,8 +157,6 @@ class ExtendedFileUtility extends \TYPO3\CMS\Core\Utility\File\BasicFileUtility 
 		$this->unzipPath = $unzipPath;
 		// Initialize Object Factory
 		$this->fileFactory = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance();
-		// Initialize Object Factory
-		$this->fileRepository = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\FileRepository');
 		// Initializing file processing commands:
 		$this->fileCmdMap = $fileCmds;
 	}

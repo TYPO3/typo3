@@ -75,7 +75,10 @@ class FilesContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractConte
 			$referencesUidArray = GeneralUtility::intExplode(',', $referencesUid, TRUE);
 			foreach ($referencesUidArray as $referenceUid) {
 				try {
-					$this->addToArray($this->getFileRepository()->findFileReferenceByUid($referenceUid), $fileObjects);
+					$this->addToArray(
+						$this->getFileFactory()->getFileReferenceObject($referenceUid),
+						$fileObjects
+					);
 				} catch (\TYPO3\CMS\Core\Resource\Exception $e) {
 					/** @var \TYPO3\CMS\Core\Log\Logger $logger */
 					$logger = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Log\\LogManager')->getLogger(__CLASS__);
@@ -107,7 +110,7 @@ class FilesContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractConte
 			$fileUids = GeneralUtility::intExplode(',', $this->stdWrapValue('files', $conf), TRUE);
 			foreach ($fileUids as $fileUid) {
 				try {
-					$this->addToArray($this->getFileRepository()->findByUid($fileUid), $fileObjects);
+					$this->addToArray($this->getFileFactory()->getFileObject($fileUid), $fileObjects);
 				} catch (\TYPO3\CMS\Core\Resource\Exception $e) {
 					/** @var \TYPO3\CMS\Core\Log\Logger $logger */
 					$logger = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Log\\LogManager')->getLogger(__CLASS__);

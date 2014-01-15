@@ -224,14 +224,14 @@ class FilesContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				->with('name')
 				->will($this->returnValue('File ' . $i));
 
-			$fileReferenceMap[] = array($i, $fileReference);
+			$fileReferenceMap[] = array($i, array(), $fileReference);
 		}
 
-		$fileRepository = $this->getMock('TYPO3\\CMS\\Core\\Resource\\FileRepository');
-		$fileRepository->expects($this->any())
-			->method('findFileReferenceByUid')
+		$resourceFactory = $this->getMock('TYPO3\\CMS\\Core\\Resource\\ResourceFactory');
+		$resourceFactory->expects($this->any())
+			->method('getFileReferenceObject')
 			->will($this->returnValueMap($fileReferenceMap));
-		$this->subject->setFileRepository($fileRepository);
+		$this->subject->setFileFactory($resourceFactory);
 
 		$this->assertSame($expected, $this->subject->render($configuration));
 	}
@@ -394,14 +394,14 @@ class FilesContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				->with('name')
 				->will($this->returnValue('File ' . $i));
 
-			$fileMap[] = array($i, $file);
+			$fileMap[] = array($i, array(), $file);
 		}
 
-		$fileRepository = $this->getMock('TYPO3\\CMS\\Core\\Resource\\FileRepository');
-		$fileRepository->expects($this->any())
-			->method('findByUid')
+		$resourceFactory = $this->getMock('TYPO3\\CMS\\Core\\Resource\\ResourceFactory');
+		$resourceFactory->expects($this->any())
+			->method('getFileObject')
 			->will($this->returnValueMap($fileMap));
-		$this->subject->setFileRepository($fileRepository);
+		$this->subject->setFileFactory($resourceFactory);
 
 		$this->assertSame($expected, $this->subject->render($configuration));
 	}
