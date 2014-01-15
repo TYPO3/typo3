@@ -1185,4 +1185,18 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 		return $role;
 	}
 
+	/**
+	 * Directly output the contents of the file to the output
+	 * buffer. Should not take care of header files or flushing
+	 * buffer before. Will be taken care of by the Storage.
+	 *
+	 * @param string $identifier
+	 *
+	 * @return void
+	 */
+	public function dumpFileContents($identifier) {
+		readfile($this->getAbsolutePath($this->canonicalizeAndCheckFileIdentifier($identifier)), 0);
+	}
+
+
 }

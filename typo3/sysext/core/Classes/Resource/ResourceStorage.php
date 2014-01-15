@@ -1433,6 +1433,33 @@ class ResourceStorage {
 	}
 
 	/**
+	 * Outputs file Contents,
+	 * clears output buffer first and sends headers accordingly.
+	 *
+	 * @param FileInterface $file
+	 * @param boolean $asDownload If set Content-Disposition headers are sent
+	 * @param string $alternativeFilename the filename for the download (if $asDownload is set)
+	 * @return void
+	 */
+	public function dumpFileContents(FileInterface $file, $asDownload = FALSE, $alternativeFilename = NULL) {
+		if ($asDownload) {
+			$downloadName = $alternativeFilename ?: $file->getName();
+			header('Content-Disposition: attachment; filename=' . $downloadName);
+		}
+		header('Content-Type: ' . $file->getMimeType());
+		header('Content-Length: ' . $file->getSize());
+		header('Last-Modified: ' .
+			gmdate('D, d M Y H:i:s', array_pop($this->driver->getFileInfoByIdentifier($file->getIdentifier(), array('mtime')))) . ' GMT',
+			TRUE,
+			200
+		);
+		ob_clean();
+		$this->driver->dumpFileContents($file->getIdentifier());
+		flush();
+		exit();
+	}
+
+	/**
 	 * Set contents of a file object.
 	 *
 	 * @param AbstractFile $file
