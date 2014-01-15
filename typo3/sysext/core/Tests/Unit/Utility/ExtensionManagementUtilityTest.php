@@ -1037,17 +1037,9 @@ class ExtensionManagementUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 	/**
 	 * @test
 	 */
-	public function removeCacheFilesFlushesCache() {
-		$mockCache = $this->getMock(
-			'TYPO3\\CMS\\Core\\Cache\\Frontend\\AbstractFrontend',
-			array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag', 'requireOnce'),
-			array(),
-			'',
-			FALSE
-		);
-		$GLOBALS['typo3CacheManager'] = $this->getMock('TYPO3\\CMS\\Core\\Cache\\CacheManager', array('getCache'));
-		$GLOBALS['typo3CacheManager']->expects($this->any())->method('getCache')->will($this->returnValue($mockCache));
-		$mockCache->expects($this->once())->method('flush');
+	public function removeCacheFilesFlushesSystemCaches() {
+		$GLOBALS['typo3CacheManager'] = $this->getMock('TYPO3\\CMS\\Core\\Cache\\CacheManager', array('flushCachesInGroup'));
+		$GLOBALS['typo3CacheManager']->expects($this->once())->method('flushCachesInGroup')->with('system');
 		ExtensionManagementUtility::removeCacheFiles();
 	}
 

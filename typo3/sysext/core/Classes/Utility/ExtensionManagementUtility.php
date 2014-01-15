@@ -1744,7 +1744,7 @@ tt_content.' . $key . $prefix . ' {
 	}
 
 	/**
-	 * Remove cache files from php code cache, tagged with 'core'
+	 * Remove cache files from php code cache, grouped by 'system'
 	 *
 	 * This removes the following cache entries:
 	 * - autoloader cache registry
@@ -1759,9 +1759,7 @@ tt_content.' . $key . $prefix . ' {
 	 * @return void
 	 */
 	static public function removeCacheFiles() {
-		/** @var $codeCache \TYPO3\CMS\Core\Cache\Frontend\PhpFrontend */
-		$codeCache = $GLOBALS['typo3CacheManager']->getCache('cache_core');
-		$codeCache->flush();
+		$GLOBALS['typo3CacheManager']->flushCachesInGroup('system');
 	}
 
 	/**

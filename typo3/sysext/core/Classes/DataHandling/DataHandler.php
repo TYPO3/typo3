@@ -6484,13 +6484,13 @@ class DataHandler {
 	/**
 	 * Unlink (delete) core cache files
 	 *
-	 * @return integer The number of files deleted
-	 * @deprecated since 6.0, will be removed in two versions, use \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::removeCacheFiles() instead
+	 * @return void
+	 * @deprecated since 6.0, will be removed in two versions, use the cache manager directly instead
 	 * @todo Define visibility
 	 */
 	public function removeCacheFiles() {
 		GeneralUtility::logDeprecatedFunction();
-		return \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::removeCacheFiles();
+		$GLOBALS['typo3CacheManager']->flushCachesInGroup('system');
 	}
 
 	/**
@@ -6931,31 +6931,38 @@ class DataHandler {
 	/**
 	 * Clears the cache based on the command $cacheCmd.
 	 *
-	 * $cacheCmd='pages':	Clears cache for all pages. Requires admin-flag to
-	 * be set for BE_USER.
+	 * $cacheCmd='pages'
+	 * Clears cache for all pages and page-based caches inside the cache manager.
+	 * Requires admin-flag to be set for BE_USER.
 	 *
-	 * $cacheCmd='all':		Clears all cache_tables. This is necessary if
-	 * templates are updated. Requires admin-flag to be set for BE_USER.
+	 * $cacheCmd='all'
+	 * Clears all cache_tables. This is necessary if templates are updated.
+	 * Requires admin-flag to be set for BE_USER.
 	 *
-	 * $cacheCmd=[integer]:	Clears cache for the page pointed to by $cacheCmd
-	 * (an integer).
+	 * The following cache_* are intentionally not cleared by 'all'
 	 *
-	 * $cacheCmd='cacheTag:[string]':  Flush page and pagesection cache by given tag
+	 * - cache_md5params:	RDCT redirects.
+	 * - cache_imagesizes:	Clearing this table would cause a lot of unneeded
+	 * Imagemagick calls because the size informations have
+	 * to be fetched again after clearing.
+	 * - all caches inside the cache manager that are inside the group "system"
+	 * - they are only needed to build up the core system and templates,
+	 *   use "temp_cached" or "system" to do that
 	 *
-	 * $cacheCmd='cacheId:[string]':  Removes cache identifier from page and page section cache
+	 * $cacheCmd=[integer]
+	 * Clears cache for the page pointed to by $cacheCmd (an integer).
+	 *
+	 * $cacheCmd='cacheTag:[string]'
+	 * Flush page and pagesection cache by given tag
+	 *
+	 * $cacheCmd='cacheId:[string]'
+	 * Removes cache identifier from page and page section cache
 	 *
 	 * Can call a list of post processing functions as defined in
 	 * $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc']
 	 * (numeric array with values being the function references, called by
 	 * GeneralUtility::callUserFunction()).
 	 *
-	 * Note: The following cache_* are intentionally not cleared by
-	 * $cacheCmd='all':
-	 *
-	 * - cache_md5params:	RDCT redirects.
-	 * - cache_imagesizes:	Clearing this table would cause a lot of unneeded
-	 * Imagemagick calls because the size informations have
-	 * to be fetched again after clearing.
 	 *
 	 * @param string $cacheCmd The cache command, see above description
 	 * @return void
@@ -6968,19 +6975,20 @@ class DataHandler {
 		switch (strtolower($cacheCmd)) {
 			case 'pages':
 				if ($this->admin || $this->BE_USER->getTSConfigVal('options.clearCache.pages')) {
-					$this->internal_clearPageCache();
+					$GLOBALS['typo3CacheManager']->flushCachesInGroup('pages');
 				}
 				break;
 			case 'all':
 				if ($this->admin || $this->BE_USER->getTSConfigVal('options.clearCache.all')) {
-					// Clear all caching framework caches
-					$GLOBALS['typo3CacheManager']->flushCaches();
+					// Clear cache group "all" of caching framework caches
+					$GLOBALS['typo3CacheManager']->flushCachesInGroup('all');
 					if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('cms')) {
 						$GLOBALS['TYPO3_DB']->exec_TRUNCATEquery('cache_treelist');
 					}
 					// Clearing additional cache tables:
 					if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearAllCache_additionalTables'])) {
 						foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearAllCache_additionalTables'] as $tableName) {
+							GeneralUtility::deprecationLog('Hook clearAllCache_additionalTables in DataHandler is deprecated in 6.2 and will be removed two versions later. Use the caching framework with database backend instead.');
 							if (!preg_match('/[^[:alnum:]_]/', $tableName) && substr($tableName, -5) === 'cache') {
 								$GLOBALS['TYPO3_DB']->exec_TRUNCATEquery($tableName);
 							} else {
@@ -6989,12 +6997,16 @@ class DataHandler {
 						}
 					}
 				}
-				\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::removeCacheFiles();
+
 				break;
 			case 'temp_cached':
-				\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::removeCacheFiles();
+			case 'system':
+				if ($this->admin || $this->BE_USER->getTSConfigVal('options.clearCache.system')) {
+					$GLOBALS['typo3CacheManager']->flushCachesInGroup('system');
+				}
 				break;
 		}
+
 		$tagsToFlush = array();
 		// Clear cache for a page ID!
 		if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($cacheCmd)) {
@@ -7023,18 +7035,11 @@ class DataHandler {
 		}
 		// process caching framwork operations
 		if (count($tagsToFlush) > 0) {
-			/** @var $pageCache \TYPO3\CMS\Core\Cache\Frontend\AbstractFrontend */
-			$pageCache = $GLOBALS['typo3CacheManager']->getCache('cache_pages');
-			/** @var $pageSectionCache \TYPO3\CMS\Core\Cache\Frontend\AbstractFrontend */
-			$pageSectionCache = $GLOBALS['typo3CacheManager']->getCache('cache_pagesection');
-			/** @var $hashCache \TYPO3\CMS\Core\Cache\Frontend\AbstractFrontend */
-			$hashCache = $GLOBALS['typo3CacheManager']->getCache('cache_hash');
 			foreach ($tagsToFlush as $tag) {
-				$pageCache->flushByTag($tag);
-				$pageSectionCache->flushByTag($tag);
-				$hashCache->flushByTag($tag);
+				$GLOBALS['typo3CacheManager']->flushCachesInGroupByTag('pages', $tag);
 			}
 		}
+
 		// Call post processing function for clear-cache:
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc'])) {
 			$_params = array('cacheCmd' => strtolower($cacheCmd));
@@ -7148,11 +7153,11 @@ class DataHandler {
 	 *
 	 * @return void
 	 * @todo Define visibility
+	 * @deprecated since TYPO3 CMS 6.2, remove two versions later. The DataHandler clearPageCache method is deprecated, use the cache manager directly.
 	 */
 	public function internal_clearPageCache() {
-		if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('cms')) {
-			$GLOBALS['typo3CacheManager']->getCache('cache_pages')->flush();
-		}
+		GeneralUtility::logDeprecatedFunction();
+		$GLOBALS['typo3CacheManager']->flushCachesInGroup('pages');
 	}
 
 	/**

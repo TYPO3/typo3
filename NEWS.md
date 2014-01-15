@@ -54,6 +54,22 @@ be used multiple times on the same table to add more than one category field.
 The options array (the fourth parameter) now can contain a 'label' to set a
 custom label for each category field.
 
+
+#### Caching
+
+* Caching behaviour by newly introduced grouping parameter
+
+Most caches used in TYPO3 CMS are now based on the FLOW caching framework. The
+caching framework is now used for class loading, Extbase-internals, most page-
+related caches, and for the configuration cache. Some caches are system-related
+caches that only need to be flushed and rebuilt when the core is updated or
+an extension is (un-)installed. **The functionality of "Clear all caches" thus
+does not include the system-related caches anymore** - these can be cleared by
+"Clear configuration cache" or DataHandler->clear_cacheCmd('system') if the
+user has the according permissions. Each cache can be configured to be in one or
+multiple groups in its configuration parameters. Custom groups can be defined
+and cleared manually.
+
 ### Frontend
 
 * Minor API change in \TYPO3\CMS\Frontend\ContentObjectRenderer->getTreeList()

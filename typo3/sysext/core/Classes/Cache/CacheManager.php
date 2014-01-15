@@ -50,12 +50,23 @@ class CacheManager implements \TYPO3\CMS\Core\SingletonInterface {
 	protected $cacheConfigurations = array();
 
 	/**
+	 * Used to flush caches of a specific group
+	 * is an associative array containing the group identifier as key
+	 * and the identifier as an array within that group
+	 * groups are set via the cache configurations of each cache.
+	 *
+	 * @var array
+	 */
+	protected $cacheGroups = array();
+
+	/**
 	 * @var array Default cache configuration as fallback
 	 */
 	protected $defaultCacheConfiguration = array(
 		'frontend' => 'TYPO3\\CMS\\Core\\Cache\\Frontend\\VariableFrontend',
 		'backend' => 'TYPO3\\CMS\\Core\\Cache\\Backend\\Typo3DatabaseBackend',
-		'options' => array()
+		'options' => array(),
+		'groups' => array('all')
 	);
 
 	/**
@@ -148,6 +159,45 @@ class CacheManager implements \TYPO3\CMS\Core\SingletonInterface {
 			$cache->flush();
 		}
 	}
+
+	/**
+	 * Flushes all registered caches of a specific group
+	 *
+	 * @param string $groupIdentifier
+	 * @return void
+	 * @api
+	 */
+	public function flushCachesInGroup($groupIdentifier) {
+		$this->createAllCaches();
+		if (isset($this->cacheGroups[$groupIdentifier])) {
+			foreach ($this->cacheGroups[$groupIdentifier] as $cacheIdentifier) {
+				if (isset($this->caches[$cacheIdentifier])) {
+					$this->caches[$cacheIdentifier]->flush();
+				}
+			}
+		}
+	}
+
+	/**
+	 * Flushes entries tagged by the specified tag of all registered
+	 * caches of a specific group.
+	 *
+	 * @param string $groupIdentifier
+	 * @param string $tag Tag to search for
+	 * @return void
+	 * @api
+	 */
+	public function flushCachesInGroupByTag($groupIdentifier, $tag) {
+		$this->createAllCaches();
+		if (isset($this->cacheGroups[$groupIdentifier])) {
+			foreach ($this->cacheGroups[$groupIdentifier] as $cacheIdentifier) {
+				if (isset($this->caches[$cacheIdentifier])) {
+					$this->caches[$cacheIdentifier]->flushByTag($tag);
+				}
+			}
+		}
+	}
+
 
 	/**
 	 * Flushes entries tagged by the specified tag of all registered
@@ -316,6 +366,20 @@ class CacheManager implements \TYPO3\CMS\Core\SingletonInterface {
 		} else {
 			$backendOptions = $this->defaultCacheConfiguration['options'];
 		}
+
+		// Add the cache identifier to the groups that it should be attached to, or use the default ones.
+		if (isset($this->cacheConfigurations[$identifier]['groups']) && is_array($this->cacheConfigurations[$identifier]['groups'])) {
+			$assignedGroups = $this->cacheConfigurations[$identifier]['groups'];
+		} else {
+			$assignedGroups = $this->defaultCacheConfiguration['groups'];
+		}
+		foreach ($assignedGroups as $groupIdentifier) {
+			if (!isset($this->cacheGroups[$groupIdentifier])) {
+				$this->cacheGroups[$groupIdentifier] = array();
+			}
+			$this->cacheGroups[$groupIdentifier][] = $identifier;
+		}
+
 		$this->cacheFactory->create($identifier, $frontend, $backend, $backendOptions);
 	}
 

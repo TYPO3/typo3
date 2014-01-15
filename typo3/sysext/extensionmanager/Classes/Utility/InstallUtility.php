@@ -262,7 +262,7 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return void
 	 */
 	public function reloadCaches() {
-		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::removeCacheFiles();
+		$GLOBALS['typo3CacheManager']->flushCachesInGroup('system');
 		\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->reloadTypo3LoadedExtAndClassLoaderAndExtLocalconf();
 	}
 

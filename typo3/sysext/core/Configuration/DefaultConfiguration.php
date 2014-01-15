@@ -133,51 +133,68 @@ return array(
 				'cache_core' => array(
 					'frontend' => 'TYPO3\CMS\Core\Cache\Frontend\PhpFrontend',
 					'backend' => 'TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend',
-					'options' => array()
+					'options' => array(
+						'defaultLifetime' => 0,
+					),
+					'groups' => array('system')
 				),
 				'cache_classes' => array(
 					'frontend' => 'TYPO3\CMS\Core\Cache\Frontend\StringFrontend',
 					'backend' => 'TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend',
-					'options' => array()
+					'options' => array(
+						'defaultLifetime' => 0,
+					),
+					'groups' => array('system')
 				),
 				'cache_hash' => array(
 					'frontend' => 'TYPO3\CMS\Core\Cache\Frontend\VariableFrontend',
 					'backend' => 'TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend',
-					'options' => array()
+					'options' => array(),
+					'groups' => array('pages', 'all')
 				),
 				'cache_pages' => array(
 					'frontend' => 'TYPO3\CMS\Core\Cache\Frontend\VariableFrontend',
 					'backend' => 'TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend',
 					'options' => array(
 						'compression' => TRUE
-					)
+					),
+					'groups' => array('pages', 'all')
 				),
 				'cache_pagesection' => array(
 					'frontend' => 'TYPO3\CMS\Core\Cache\Frontend\VariableFrontend',
 					'backend' => 'TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend',
 					'options' => array(
 						'compression' => TRUE
-					)
+					),
+					'groups' => array('pages', 'all')
 				),
 				'cache_phpcode' => array(
 					'frontend' => 'TYPO3\CMS\Core\Cache\Frontend\PhpFrontend',
 					'backend' => 'TYPO3\CMS\Core\Cache\Backend\FileBackend',
-					'options' => array()
+					'options' => array(
+						'defaultLifetime' => 0,
+					),
+					'groups' => array('system')
 				),
 				'cache_runtime' => array(
 					'frontend' => 'TYPO3\CMS\Core\Cache\Frontend\VariableFrontend',
 					'backend' => 'TYPO3\CMS\Core\Cache\Backend\TransientMemoryBackend',
-					'options' => array()
+					'options' => array(),
+					'groups' => array()
 				),
 				'cache_rootline' => array(
 					'frontend' => 'TYPO3\CMS\Core\Cache\Frontend\VariableFrontend',
 					'backend' => 'TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend',
-					'options' => array()
+					'options' => array(),
+					'groups' => array('pages', 'all')
 				),
 				't3lib_l10n' => array(
 					'frontend' => 'TYPO3\CMS\Core\Cache\Frontend\VariableFrontend',
 					'backend' => 'TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend',
-					'options' => array(),
+					'options' => array(
+						'defaultLifetime' => 0,
+					),
+					'groups' => array('system')
 				),
 				'extbase_object' => array(
 					'frontend' => 'TYPO3\CMS\Core\Cache\Frontend\VariableFrontend',
@@ -185,6 +202,7 @@ return array(
 					'options' => array(
 						'defaultLifetime' => 0,
 					),
+					'groups' => array('system')
 				),
 				'extbase_reflection' => array(
 					'frontend' => 'TYPO3\CMS\Core\Cache\Frontend\VariableFrontend',
@@ -192,6 +210,7 @@ return array(
 					'options' => array(
 						'defaultLifetime' => 0,
 					),
+					'groups' => array('system')
 				),
 			),
 		),
