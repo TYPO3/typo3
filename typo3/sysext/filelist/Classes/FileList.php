@@ -612,7 +612,15 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 	public function formatFileList(array $files) {
 		$out = '';
 		// first two keys are "0" (default) and "-1" (multiple), after that comes the "other languages"
-		$systemLanguages = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Configuration\\TranslationConfigurationProvider')->getSystemLanguages();
+		$allSystemLanguages = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Configuration\\TranslationConfigurationProvider')->getSystemLanguages();
+		$systemLanguages = array_filter($allSystemLanguages, function($languageRecord) {
+			if ($languageRecord['uid'] === -1 || $languageRecord['uid'] === 0 || !$GLOBALS['BE_USER']->checkLanguageAccess($languageRecord['uid'])) {
+				return FALSE;
+			} else {
+				return TRUE;
+			}
+		});
+
 		foreach ($files as $fileObject) {
 			list($flag, $code) = $this->fwd_rwd_nav();
 			$out .= $code;
@@ -649,7 +657,7 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 								$temp .= $this->makeEdit($fileObject);
 							}
 							$temp .= $this->makeClip($fileObject);
-							if (count($systemLanguages) > 2) {
+							if (!empty($systemLanguages)) {
 								$temp .= '<a class="filelist-translationToggler" data-fileid="' . $fileObject->getUid() . '">' .
 									IconUtility::getSpriteIcon('mimetypes-x-content-page-language-overlay') . '</a>';
 							}
@@ -682,15 +690,13 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 				}
 				$out .= $this->addelement(1, $theIcon, $theData, ' class="file_list_normal"');
 
-				$metaDataRecord = $fileObject->_getMetaData();
-				$translations = $this->getTranslationsForMetaData($metaDataRecord);
-				if (count($systemLanguages) > 2) {
+				if (!empty($systemLanguages)) {
+					$metaDataRecord = $fileObject->_getMetaData();
+					$translations = $this->getTranslationsForMetaData($metaDataRecord);
 					$code = IconUtility::getSpriteIcon('empty-empty');
 					foreach ($systemLanguages as $language) {
 						$languageId = $language['uid'];
-						if ($languageId == -1 || $languageId == 0) {
-							continue;
-						}
+
 						$flagIcon = $language['flagIcon'];
 						if (array_key_exists($languageId, $translations)) {
 
