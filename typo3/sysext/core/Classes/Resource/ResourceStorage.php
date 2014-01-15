@@ -82,6 +82,8 @@ class ResourceStorage {
 	const SIGNAL_PostFileRename = 'postFileRename';
 	const SIGNAL_PreFileReplace = 'preFileReplace';
 	const SIGNAL_PostFileReplace = 'postFileReplace';
+	const SIGNAL_PreFolderAdd = 'preFolderAdd';
+	const SIGNAL_PostFolderAdd = 'postFolderAdd';
 	const SIGNAL_PreFolderCopy = 'preFolderCopy';
 	const SIGNAL_PostFolderCopy = 'postFolderCopy';
 	const SIGNAL_PreFolderMove = 'preFolderMove';
@@ -1968,8 +1970,15 @@ class ResourceStorage {
 		if (!$this->checkFolderActionPermission('add', $parentFolder)) {
 			throw new Exception\InsufficientFolderWritePermissionsException('You are not allowed to create directories in the folder "' . $parentFolder->getIdentifier() . '"', 1323059807);
 		}
+
+		$this->emitPreFolderAddSignal($parentFolder, $folderName);
+
 		$newFolder = $this->getDriver()->createFolder($folderName, $parentFolder->getIdentifier(), TRUE);
-		return $this->getFolder($newFolder);
+		$newFolder = $this->getFolder($newFolder);
+
+		$this->emitPostFolderAddSignal($newFolder);
+
+		return $newFolder;
 	}
 
 	/**
@@ -2155,6 +2164,27 @@ class ResourceStorage {
 	 */
 	protected function emitPostFileDeleteSignal(FileInterface $file) {
 		$this->getSignalSlotDispatcher()->dispatch('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', self::SIGNAL_PostFileDelete, array($file));
+	}
+
+	/**
+	 * Emits the folder pre-add signal
+	 *
+	 * @param Folder $targetFolder
+	 * @param string $name
+	 * @return void
+	 */
+	protected function emitPreFolderAddSignal(Folder $targetFolder, $name) {
+		$this->getSignalSlotDispatcher()->dispatch('ResourceStorage', self::SIGNAL_PreFolderAdd, array($targetFolder, $name));
+	}
+
+	/**
+	 * Emits the folder post-add signal
+	 *
+	 * @param Folder $folder
+	 * @return void
+	 */
+	protected function emitPostFolderAddSignal(Folder $folder) {
+		$this->getSignalSlotDispatcher()->dispatch('ResourceStorage', self::SIGNAL_PostFolderAdd, array($folder));
 	}
 
 	/**
