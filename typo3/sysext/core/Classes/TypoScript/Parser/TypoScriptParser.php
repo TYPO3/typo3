@@ -216,7 +216,8 @@ class TypoScriptParser {
 	 * Start parsing the input TypoScript text piece. The result is stored in $this->setup
 	 *
 	 * @param string $string The TypoScript text
-	 * @param object $matchObj If is object, then this is used to match conditions found in the TypoScript code. If matchObj not specified, then no conditions will work! (Except [GLOBAL])
+	 * @param object|string $matchObj If is object, then this is used to match conditions found in the TypoScript code. If matchObj not specified, then no conditions will work! (Except [GLOBAL])
+	 *
 	 * @return void
 	 * @todo Define visibility
 	 */
@@ -225,26 +226,32 @@ class TypoScriptParser {
 		$this->rawP = 0;
 		$pre = '[GLOBAL]';
 		while ($pre) {
-			if ($this->breakPointLN && $pre == '[_BREAK]') {
+			if ($this->breakPointLN && $pre === '[_BREAK]') {
 				$this->error('Breakpoint at ' . ($this->lineNumberOffset + $this->rawP - 2) . ': Line content was "' . $this->raw[($this->rawP - 2)] . '"', 1);
 				break;
 			}
-			if (strtoupper($pre) == '[GLOBAL]' || strtoupper($pre) == '[END]' || !$this->lastConditionTrue && strtoupper($pre) == '[ELSE]') {
+			$preUppercase = strtoupper($pre);
+			if ($pre{0} === '[' &&
+				($preUppercase === '[GLOBAL]' ||
+					$preUppercase === '[END]' ||
+					!$this->lastConditionTrue && $preUppercase === '[ELSE]')
+			) {
 				$pre = trim($this->parseSub($this->setup));
 				$this->lastConditionTrue = 1;
 			} else {
 				// We're in a specific section. Therefore we log this section
-				if (strtoupper($pre) != '[ELSE]') {
+				$specificSection = $preUppercase !== '[ELSE]';
+				if ($specificSection) {
 					$this->sections[md5($pre)] = $pre;
 				}
 				if (is_object($matchObj) && $matchObj->match($pre) || $this->syntaxHighLight) {
-					if (strtoupper($pre) != '[ELSE]') {
+					if ($specificSection) {
 						$this->sectionsMatch[md5($pre)] = $pre;
 					}
 					$pre = trim($this->parseSub($this->setup));
 					$this->lastConditionTrue = 1;
 				} else {
-					$pre = trim($this->nextDivider());
+					$pre = $this->nextDivider();
 					$this->lastConditionTrue = 0;
 				}
 			}
@@ -267,9 +274,9 @@ class TypoScriptParser {
 	 */
 	public function nextDivider() {
 		while (isset($this->raw[$this->rawP])) {
-			$line = ltrim($this->raw[$this->rawP]);
+			$line = trim($this->raw[$this->rawP]);
 			$this->rawP++;
-			if ($line && substr($line, 0, 1) == '[') {
+			if ($line && $line{0} === '[') {
 				return $line;
 			}
 		}
@@ -279,10 +286,10 @@ class TypoScriptParser {
 	 * Parsing the $this->raw TypoScript lines from pointer, $this->rawP
 	 *
 	 * @param array $setup Reference to the setup array in which to accumulate the values.
-	 * @return string Returns the string of the condition found, the exit signal or possible nothing (if it completed parsing with no interruptions)
+	 * @return string|NULL Returns the string of the condition found, the exit signal or possible nothing (if it completed parsing with no interruptions)
 	 * @todo Define visibility
 	 */
-	public function parseSub(&$setup) {
+	public function parseSub(array &$setup) {
 		while (isset($this->raw[$this->rawP])) {
 			$line = ltrim($this->raw[$this->rawP]);
 			$lineP = $this->rawP;
@@ -292,11 +299,11 @@ class TypoScriptParser {
 			}
 			// Breakpoint?
 			// By adding 1 we get that line processed
-			if ($this->breakPointLN && $this->lineNumberOffset + $this->rawP - 1 == $this->breakPointLN + 1) {
+			if ($this->breakPointLN && $this->lineNumberOffset + $this->rawP - 1 === $this->breakPointLN + 1) {
 				return '[_BREAK]';
 			}
 			// Set comment flag?
-			if (!$this->multiLineEnabled && substr($line, 0, 2) == '/*') {
+			if (!$this->multiLineEnabled && strpos($line, '/*') === 0) {
 				$this->commentSet = 1;
 			}
 			// If $this->multiLineEnabled we will go and get the line values here because we know, the first if() will be TRUE.
@@ -304,14 +311,14 @@ class TypoScriptParser {
 				// If multiline is enabled. Escape by ')'
 				if ($this->multiLineEnabled) {
 					// Multiline ends...
-					if (substr($line, 0, 1) == ')') {
+					if ($line{0} === ')') {
 						if ($this->syntaxHighLight) {
 							$this->regHighLight('operator', $lineP, strlen($line) - 1);
 						}
 						// Disable multiline
 						$this->multiLineEnabled = 0;
 						$theValue = implode($this->multiLineValue, LF);
-						if (strstr($this->multiLineObject, '.')) {
+						if (strpos($this->multiLineObject, '.') !== FALSE) {
 							// Set the value deeper.
 							$this->setVal($this->multiLineObject, $setup, array($theValue));
 						} else {
@@ -330,7 +337,7 @@ class TypoScriptParser {
 						}
 						$this->multiLineValue[] = $this->raw[$this->rawP - 1];
 					}
-				} elseif ($this->inBrace == 0 && substr($line, 0, 1) == '[') {
+				} elseif ($this->inBrace === 0 && $line{0} === '[') {
 					// Beginning of condition (only on level zero compared to brace-levels
 					if ($this->syntaxHighLight) {
 						$this->regHighLight('condition', $lineP);
@@ -338,22 +345,22 @@ class TypoScriptParser {
 					return $line;
 				} else {
 					// Return if GLOBAL condition is set - no matter what.
-					if (substr($line, 0, 1) == '[' && strtoupper(trim($line)) == '[GLOBAL]') {
+					if ($line{0} === '[' && stripos($line, '[GLOBAL]') !== FALSE) {
 						if ($this->syntaxHighLight) {
 							$this->regHighLight('condition', $lineP);
 						}
 						$this->error('Line ' . ($this->lineNumberOffset + $this->rawP - 1) . ': On return to [GLOBAL] scope, the script was short of ' . $this->inBrace . ' end brace(s)', 1);
 						$this->inBrace = 0;
 						return $line;
-					} elseif (strcspn($line, '}#/') != 0) {
+					} elseif ($line{0} !== '}' && $line{0} !== '#' && $line{0} !== '/') {
 						// If not brace-end or comment
 						// Find object name string until we meet an operator
 						$varL = strcspn($line, ' {=<>:(');
-						$objStrName = trim(substr($line, 0, $varL));
+						$objStrName = substr($line, 0, $varL);
 						if ($this->syntaxHighLight) {
 							$this->regHighLight('objstr', $lineP, strlen(substr($line, $varL)));
 						}
-						if (strlen($objStrName)) {
+						if ($objStrName !== '') {
 							$r = array();
 							if ($this->strict && preg_match('/[^[:alnum:]_\\\\\\.-]/i', $objStrName, $r)) {
 								$this->error('Line ' . ($this->lineNumberOffset + $this->rawP - 1) . ': Object Name String, "' . htmlspecialchars($objStrName) . '" contains invalid character "' . $r[0] . '". Must be alphanumeric or one of: "_-\\."');
@@ -361,91 +368,95 @@ class TypoScriptParser {
 								$line = ltrim(substr($line, $varL));
 								if ($this->syntaxHighLight) {
 									$this->regHighLight('objstr_postspace', $lineP, strlen($line));
-									if (strlen($line) > 0) {
+									if ($line !== '') {
 										$this->regHighLight('operator', $lineP, strlen($line) - 1);
 										$this->regHighLight('operator_postspace', $lineP, strlen(ltrim(substr($line, 1))));
 									}
 								}
-								// Checking for special TSparser properties (to change TS values at parsetime)
-								$match = array();
-								if (preg_match('/^:=([^\\(]+)\\((.*)\\).*/', $line, $match)) {
-									$tsFunc = trim($match[1]);
-									$tsFuncArg = $match[2];
-									list($currentValue) = $this->getVal($objStrName, $setup);
-									$tsFuncArg = str_replace(array('\\\\', '\\n', '\\t'), array('\\', LF, TAB), $tsFuncArg);
-									$newValue = $this->executeValueModifier($tsFunc, $tsFuncArg, $currentValue);
-									if (isset($newValue)) {
-										$line = '= ' . $newValue;
+								if ($line === '') {
+									$this->error('Line ' . ($this->lineNumberOffset + $this->rawP - 1) . ': Object Name String, "' . htmlspecialchars($objStrName) . '" was not followed by any operator, =<>({');
+								} else {
+									// Checking for special TSparser properties (to change TS values at parsetime)
+									$match = array();
+									if ($line{0} === ':' && preg_match('/^:=\\s*([^\\(]+)\\s*\\((.*)\\).*/', $line, $match)) {
+										$tsFunc = $match[1];
+										$tsFuncArg = $match[2];
+										list($currentValue) = $this->getVal($objStrName, $setup);
+										$tsFuncArg = str_replace(array('\\\\', '\\n', '\\t'), array('\\', LF, TAB), $tsFuncArg);
+										$newValue = $this->executeValueModifier($tsFunc, $tsFuncArg, $currentValue);
+										if (isset($newValue)) {
+											$line = '= ' . $newValue;
+										}
 									}
-								}
-								switch (substr($line, 0, 1)) {
-									case '=':
-										if ($this->syntaxHighLight) {
-											$this->regHighLight('value', $lineP, strlen(ltrim(substr($line, 1))) - strlen(trim(substr($line, 1))));
-										}
-										if (strstr($objStrName, '.')) {
-											$value = array();
-											$value[0] = trim(substr($line, 1));
-											$this->setVal($objStrName, $setup, $value);
-										} else {
-											$setup[$objStrName] = trim(substr($line, 1));
-											if ($this->lastComment && $this->regComments) {
-												// Setting comment..
-												$setup[$objStrName . '..'] .= $this->lastComment;
+									switch ($line{0}) {
+										case '=':
+											if ($this->syntaxHighLight) {
+												$this->regHighLight('value', $lineP, strlen(ltrim(substr($line, 1))) - strlen(trim(substr($line, 1))));
 											}
-											if ($this->regLinenumbers) {
-												$setup[$objStrName . '.ln..'][] = $this->lineNumberOffset + $this->rawP - 1;
+											if (strpos($objStrName, '.') !== FALSE) {
+												$value = array();
+												$value[0] = trim(substr($line, 1));
+												$this->setVal($objStrName, $setup, $value);
+											} else {
+												$setup[$objStrName] = trim(substr($line, 1));
+												if ($this->lastComment && $this->regComments) {
+													// Setting comment..
+													$setup[$objStrName . '..'] .= $this->lastComment;
+												}
+												if ($this->regLinenumbers) {
+													$setup[$objStrName . '.ln..'][] = $this->lineNumberOffset + $this->rawP - 1;
+												}
 											}
-										}
-										break;
-									case '{':
-										$this->inBrace++;
-										if (strstr($objStrName, '.')) {
-											$exitSig = $this->rollParseSub($objStrName, $setup);
-											if ($exitSig) {
-												return $exitSig;
+											break;
+										case '{':
+											$this->inBrace++;
+											if (strpos($objStrName, '.') !== FALSE) {
+												$exitSig = $this->rollParseSub($objStrName, $setup);
+												if ($exitSig) {
+													return $exitSig;
+												}
+											} else {
+												if (!isset($setup[($objStrName . '.')])) {
+													$setup[$objStrName . '.'] = array();
+												}
+												$exitSig = $this->parseSub($setup[$objStrName . '.']);
+												if ($exitSig) {
+													return $exitSig;
+												}
 											}
-										} else {
-											if (!isset($setup[($objStrName . '.')])) {
-												$setup[$objStrName . '.'] = array();
+											break;
+										case '(':
+											$this->multiLineObject = $objStrName;
+											$this->multiLineEnabled = 1;
+											$this->multiLineValue = array();
+											break;
+										case '<':
+											if ($this->syntaxHighLight) {
+												$this->regHighLight('value_copy', $lineP, strlen(ltrim(substr($line, 1))) - strlen(trim(substr($line, 1))));
 											}
-											$exitSig = $this->parseSub($setup[$objStrName . '.']);
-											if ($exitSig) {
-												return $exitSig;
+											$theVal = trim(substr($line, 1));
+											if ($theVal{0} === '.') {
+												$res = $this->getVal(substr($theVal, 1), $setup);
+											} else {
+												$res = $this->getVal($theVal, $this->setup);
 											}
-										}
-										break;
-									case '(':
-										$this->multiLineObject = $objStrName;
-										$this->multiLineEnabled = 1;
-										$this->multiLineValue = array();
-										break;
-									case '<':
-										if ($this->syntaxHighLight) {
-											$this->regHighLight('value_copy', $lineP, strlen(ltrim(substr($line, 1))) - strlen(trim(substr($line, 1))));
-										}
-										$theVal = trim(substr($line, 1));
-										if (substr($theVal, 0, 1) == '.') {
-											$res = $this->getVal(substr($theVal, 1), $setup);
-										} else {
-											$res = $this->getVal($theVal, $this->setup);
-										}
-										$this->setVal($objStrName, $setup, unserialize(serialize($res)), 1);
-										// unserialize(serialize(...)) may look stupid but is needed because of some reference issues. See Kaspers reply to "[TYPO3-core] good question" from December 15 2005.
-										break;
-									case '>':
-										if ($this->syntaxHighLight) {
-											$this->regHighLight('value_unset', $lineP, strlen(ltrim(substr($line, 1))) - strlen(trim(substr($line, 1))));
-										}
-										$this->setVal($objStrName, $setup, 'UNSET');
-										break;
-									default:
-										$this->error('Line ' . ($this->lineNumberOffset + $this->rawP - 1) . ': Object Name String, "' . htmlspecialchars($objStrName) . '" was not preceded by any operator, =<>({');
+											$this->setVal($objStrName, $setup, unserialize(serialize($res)), 1);
+											// unserialize(serialize(...)) may look stupid but is needed because of some reference issues. See Kaspers reply to "[TYPO3-core] good question" from December 15 2005.
+											break;
+										case '>':
+											if ($this->syntaxHighLight) {
+												$this->regHighLight('value_unset', $lineP, strlen(ltrim(substr($line, 1))) - strlen(trim(substr($line, 1))));
+											}
+											$this->setVal($objStrName, $setup, 'UNSET');
+											break;
+										default:
+											$this->error('Line ' . ($this->lineNumberOffset + $this->rawP - 1) . ': Object Name String, "' . htmlspecialchars($objStrName) . '" was not followed by any operator, =<>({');
+									}
 								}
 							}
 							$this->lastComment = '';
 						}
-					} elseif (substr($line, 0, 1) == '}') {
+					} elseif ($line{0} === '}') {
 						$this->inBrace--;
 						$this->lastComment = '';
 						if ($this->syntaxHighLight) {
@@ -463,7 +474,7 @@ class TypoScriptParser {
 						}
 						// Comment. The comments are concatenated in this temporary string:
 						if ($this->regComments) {
-							$this->lastComment .= trim($line) . LF;
+							$this->lastComment .= rtrim($line) . LF;
 						}
 					}
 				}
@@ -473,7 +484,7 @@ class TypoScriptParser {
 				if ($this->syntaxHighLight) {
 					$this->regHighLight('comment', $lineP);
 				}
-				if (substr($line, 0, 2) == '*/') {
+				if (strpos($line, '*/') === 0) {
 					$this->commentSet = 0;
 				}
 			}
@@ -563,27 +574,29 @@ class TypoScriptParser {
 	 * @see parseSub()
 	 * @todo Define visibility
 	 */
-	public function rollParseSub($string, &$setup) {
-		if ((string) $string != '') {
-			$keyLen = strcspn($string, '.');
-			if ($keyLen == strlen($string)) {
-				$key = $string . '.';
-				if (!isset($setup[$key])) {
-					$setup[$key] = array();
-				}
-				$exitSig = $this->parseSub($setup[$key]);
-				if ($exitSig) {
-					return $exitSig;
-				}
-			} else {
-				$key = substr($string, 0, $keyLen) . '.';
-				if (!isset($setup[$key])) {
-					$setup[$key] = array();
-				}
-				$exitSig = $this->rollParseSub(substr($string, $keyLen + 1), $setup[$key]);
-				if ($exitSig) {
-					return $exitSig;
-				}
+	public function rollParseSub($string, array &$setup) {
+		if ((string) $string === '') {
+			return '';
+		}
+
+		$key = strstr($string, '.', TRUE);
+		if ($key === FALSE) {
+			$key = $string . '.';
+			if (!isset($setup[$key])) {
+				$setup[$key] = array();
+			}
+			$exitSig = $this->parseSub($setup[$key]);
+			if ($exitSig) {
+				return $exitSig;
+			}
+		} else {
+			$key .= '.';
+			if (!isset($setup[$key])) {
+				$setup[$key] = array();
+			}
+			$exitSig = $this->rollParseSub(substr($string, strlen($key)), $setup[$key]);
+			if ($exitSig) {
+				return $exitSig;
 			}
 		}
 	}
@@ -596,24 +609,25 @@ class TypoScriptParser {
 	 * @return array An array with keys 0/1 being value/property respectively
 	 * @todo Define visibility
 	 */
-	public function getVal($string, $setup) {
-		if ((string) $string != '') {
-			$keyLen = strcspn($string, '.');
-			if ($keyLen == strlen($string)) {
-				// Added 6/6/03. Shouldn't hurt
-				$retArr = array();
-				if (isset($setup[$string])) {
-					$retArr[0] = $setup[$string];
-				}
-				if (isset($setup[$string . '.'])) {
-					$retArr[1] = $setup[$string . '.'];
-				}
-				return $retArr;
-			} else {
-				$key = substr($string, 0, $keyLen) . '.';
-				if ($setup[$key]) {
-					return $this->getVal(substr($string, $keyLen + 1), $setup[$key]);
-				}
+	public function getVal($string, array $setup) {
+		if ((string) $string === '') {
+			return array();
+		}
+
+		$key = strstr($string, '.', TRUE);
+		if ($key === FALSE) {
+			$retArr = array();
+			if (isset($setup[$string])) {
+				$retArr[0] = $setup[$string];
+			}
+			if (isset($setup[$string . '.'])) {
+				$retArr[1] = $setup[$string . '.'];
+			}
+			return $retArr;
+		} else {
+			$key .= '.';
+			if ($setup[$key]) {
+				return $this->getVal(substr($string, strlen($key)), $setup[$key]);
 			}
 		}
 	}
@@ -623,51 +637,53 @@ class TypoScriptParser {
 	 *
 	 * @param string $string The object sub-path, eg "thisprop.another_prot
 	 * @param array $setup The local setup array from the function calling this function.
-	 * @param array $value The value/property pair array to set. If only one of them is set, then the other is not touched (unless $wipeOut is set, which it is when copies are made which must include both value and property)
+	 * @param array|string $value The value/property pair array to set. If only one of them is set, then the other is not touched (unless $wipeOut is set, which it is when copies are made which must include both value and property)
 	 * @param boolean $wipeOut If set, then both value and property is wiped out when a copy is made of another value.
 	 * @return void
 	 * @todo Define visibility
 	 */
-	public function setVal($string, &$setup, $value, $wipeOut = 0) {
-		if ((string) $string != '') {
-			$keyLen = strcspn($string, '.');
-			if ($keyLen == strlen($string)) {
-				if ($value == 'UNSET') {
+	public function setVal($string, array &$setup, $value, $wipeOut = FALSE) {
+		if ((string) $string === '') {
+			return;
+		}
+
+		$key = strstr($string, '.', TRUE);
+		if ($key === FALSE) {
+			if ($value === 'UNSET') {
+				unset($setup[$string]);
+				unset($setup[$string . '.']);
+				if ($this->regLinenumbers) {
+					$setup[$string . '.ln..'][] = ($this->lineNumberOffset + $this->rawP - 1) . '>';
+				}
+			} else {
+				$lnRegisDone = 0;
+				if ($wipeOut && $this->strict) {
 					unset($setup[$string]);
 					unset($setup[$string . '.']);
 					if ($this->regLinenumbers) {
-						$setup[$string . '.ln..'][] = ($this->lineNumberOffset + $this->rawP - 1) . '>';
-					}
-				} else {
-					$lnRegisDone = 0;
-					if ($wipeOut && $this->strict) {
-						unset($setup[$string]);
-						unset($setup[$string . '.']);
-						if ($this->regLinenumbers) {
-							$setup[$string . '.ln..'][] = ($this->lineNumberOffset + $this->rawP - 1) . '<';
-							$lnRegisDone = 1;
-						}
-					}
-					if (isset($value[0])) {
-						$setup[$string] = $value[0];
-					}
-					if (isset($value[1])) {
-						$setup[$string . '.'] = $value[1];
-					}
-					if ($this->lastComment && $this->regComments) {
-						$setup[$string . '..'] .= $this->lastComment;
-					}
-					if ($this->regLinenumbers && !$lnRegisDone) {
-						$setup[$string . '.ln..'][] = $this->lineNumberOffset + $this->rawP - 1;
+						$setup[$string . '.ln..'][] = ($this->lineNumberOffset + $this->rawP - 1) . '<';
+						$lnRegisDone = 1;
 					}
 				}
-			} else {
-				$key = substr($string, 0, $keyLen) . '.';
-				if (!isset($setup[$key])) {
-					$setup[$key] = array();
+				if (isset($value[0])) {
+					$setup[$string] = $value[0];
 				}
-				$this->setVal(substr($string, $keyLen + 1), $setup[$key], $value);
+				if (isset($value[1])) {
+					$setup[$string . '.'] = $value[1];
+				}
+				if ($this->lastComment && $this->regComments) {
+					$setup[$string . '..'] .= $this->lastComment;
+				}
+				if ($this->regLinenumbers && !$lnRegisDone) {
+					$setup[$string . '.ln..'][] = $this->lineNumberOffset + $this->rawP - 1;
+				}
 			}
+		} else {
+			$key .= '.';
+			if (!isset($setup[$key])) {
+				$setup[$key] = array();
+			}
+			$this->setVal(substr($string, strlen($key)), $setup[$key], $value);
 		}
 	}
 
@@ -740,7 +756,7 @@ class TypoScriptParser {
 
 				// There must be a line-break char after - not sure why this check is necessary, kept it for being 100% backwards compatible
 				// An empty string is also ok (means that the next line is also a valid include_typoscript tag)
-				if (preg_match('/(^\s*\r?\n|^$)/', $tsContentsTillNextInclude) == FALSE) {
+				if (!preg_match('/(^\\s*\\r?\\n|^$)/', $tsContentsTillNextInclude)) {
 					$newString .= self::typoscriptIncludeError('Invalid characters after <INCLUDE_TYPOSCRIPT: source="' . $includeType . ':' . $filename . '">-tag (rest of line must be empty).');
 				} elseif (strpos('..', $filename) !== FALSE) {
 					$newString .= self::typoscriptIncludeError('Invalid filepath "' . $filename . '" (containing "..").');
@@ -809,7 +825,7 @@ class TypoScriptParser {
 	 * @param string $parentFilenameOrPath The parent file (with absolute path) or path for relative includes
 	 * @static
 	 */
-	public static function includeFile($filename, $cycle_counter = 1, $returnFiles = FALSE, &$newString = '', &$includedFiles = array(), $optionalProperties = '', $parentFilenameOrPath = '') {
+	public static function includeFile($filename, $cycle_counter = 1, $returnFiles = FALSE, &$newString = '', array &$includedFiles = array(), $optionalProperties = '', $parentFilenameOrPath = '') {
 		// Resolve a possible relative paths if a parent file is given
 		if ($parentFilenameOrPath !== '' && GeneralUtility::isFirstPartOfStr($filename, '.')) {
 			$absfilename = PathUtility::getAbsolutePathOfRelativeReferencedFileOrPath($parentFilenameOrPath, $filename);
@@ -857,7 +873,7 @@ class TypoScriptParser {
 	 * @param string $parentFilenameOrPath The parent file (with absolute path) or path for relative includes
 	 * @static
 	 */
-	protected static function includeDirectory($dirPath, $cycle_counter = 1, $returnFiles = FALSE, &$newString = '', &$includedFiles = array(), $optionalProperties = '', $parentFilenameOrPath = '') {
+	protected static function includeDirectory($dirPath, $cycle_counter = 1, $returnFiles = FALSE, &$newString = '', array &$includedFiles = array(), $optionalProperties = '', $parentFilenameOrPath = '') {
 		// Extract the value of the property extensions="..."
 		$matches = preg_split('#(?i)extensions\s*=\s*"([^"]*)"(\s*|>)#', $optionalProperties, 2, PREG_SPLIT_DELIM_CAPTURE);
 		if (count($matches) > 1) {
@@ -905,7 +921,7 @@ class TypoScriptParser {
 	 * @param array $array Array with TypoScript in each value
 	 * @return array Same array but where the values has been parsed for include-commands
 	 */
-	static public function checkIncludeLines_array($array) {
+	static public function checkIncludeLines_array(array $array) {
 		foreach ($array as $k => $v) {
 			$array[$k] = self::checkIncludeLines($array[$k]);
 		}
@@ -916,12 +932,16 @@ class TypoScriptParser {
 	 * Search for commented INCLUDE_TYPOSCRIPT statements
 	 * and save the content between the BEGIN and the END line to the specified file
 	 *
-	 * @param string $string Template content
+	 * @param string  $string Template content
 	 * @param integer $cycle_counter Counter for detecting endless loops
-	 * @param array $extractedFileNames
+	 * @param array   $extractedFileNames
+	 * @param string  $parentFilenameOrPath
+	 *
+	 * @throws \RuntimeException
+	 * @throws \UnexpectedValueException
 	 * @return string Template content with uncommented include statements
 	 */
-	static public function extractIncludes($string, $cycle_counter = 1, $extractedFileNames = array(), $parentFilenameOrPath = '') {
+	static public function extractIncludes($string, $cycle_counter = 1, array $extractedFileNames = array(), $parentFilenameOrPath = '') {
 		if ($cycle_counter > 10) {
 			GeneralUtility::sysLog('It appears like TypoScript code is looping over itself. Check your templates for "&lt;INCLUDE_TYPOSCRIPT: ..." tags', 'Core', GeneralUtility::SYSLOG_SEVERITY_WARNING);
 			return '
@@ -930,6 +950,7 @@ class TypoScriptParser {
 ###
 ';
 		}
+		$expectedEndTag = '';
 		$fileContent = array();
 		$restContent = array();
 		$fileName = NULL;
@@ -937,11 +958,12 @@ class TypoScriptParser {
 		$lines = preg_split("/\r\n|\n|\r/", $string);
 		$skipNextLineIfEmpty = FALSE;
 		$openingCommentedIncludeStatement = NULL;
+		$optionalProperties = '';
 		foreach ($lines as $line) {
 			// \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser::checkIncludeLines inserts
 			// an additional empty line, remove this again
 			if ($skipNextLineIfEmpty) {
-				if (trim($line) == '') {
+				if (trim($line) === '') {
 					continue;
 				}
 				$skipNextLineIfEmpty = FALSE;
@@ -950,16 +972,16 @@ class TypoScriptParser {
 			// Outside commented include statements
 			if (!$inIncludePart) {
 				// Search for beginning commented include statements
-				if (preg_match('/###\s*<INCLUDE_TYPOSCRIPT:\s*source\s*=\s*"\s*((?i)file|dir)\s*:\s*([^"]*)"(.*)>\s*BEGIN/i', $line, $matches)) {
+				if (preg_match('/###\\s*<INCLUDE_TYPOSCRIPT:\\s*source\\s*=\\s*"\\s*((?i)file|dir)\\s*:\\s*([^"]*)"(.*)>\\s*BEGIN/i', $line, $matches)) {
 					// Found a commented include statement
 
 					// Save this line in case there is no ending tag
 					$openingCommentedIncludeStatement = trim($line);
-					$openingCommentedIncludeStatement = trim(preg_replace('/### Warning: .*###/', '', $openingCommentedIncludeStatement));
+					$openingCommentedIncludeStatement = preg_replace('/\\s*### Warning: .*###\\s*/', '', $openingCommentedIncludeStatement);
 
 					// type of match: FILE or DIR
 					$inIncludePart = strtoupper($matches[1]);
-					$fileName = trim($matches[2]);
+					$fileName = $matches[2];
 					$optionalProperties = $matches[3];
 
 					$expectedEndTag = '### <INCLUDE_TYPOSCRIPT: source="' . $inIncludePart . ':' . $fileName . '"' . $optionalProperties . '> END';
@@ -973,8 +995,8 @@ class TypoScriptParser {
 			} else {
 				// Inside commented include statements
 				// Search for the matching ending commented include statement
-				$strippedLine = strtolower(preg_replace('/\s/', '', $line));
-				if (strpos($strippedLine, $expectedEndTag) !== FALSE) {
+				$strippedLine = preg_replace('/\s/', '', $line);
+				if (stripos($strippedLine, $expectedEndTag) !== FALSE) {
 					// Found the matching ending include statement
 					$fileContentString = implode(PHP_EOL, $fileContent);
 
@@ -1029,7 +1051,7 @@ class TypoScriptParser {
 						$extractedFileNames[] = $realFileName;
 
 						// Recursive call to detected nested commented include statements
-						$fileContentString = self::extractIncludes($fileContentString, $cycle_counter + 1, $extractedFileNames, $realFileName);
+						self::extractIncludes($fileContentString, $cycle_counter + 1, $extractedFileNames, $realFileName);
 
 						// just drop content between tags since it should usually just contain individual files from that dir
 
@@ -1066,7 +1088,7 @@ class TypoScriptParser {
 	 * @param array $array Array with TypoScript in each value
 	 * @return array Same array but where the values has been processed with extractIncludes
 	 */
-	static public function extractIncludes_array($array) {
+	static public function extractIncludes_array(array $array) {
 		foreach ($array as $k => $v) {
 			$array[$k] = self::extractIncludes($array[$k]);
 		}
@@ -1088,7 +1110,7 @@ class TypoScriptParser {
 	 * @return string HTML code for the syntax highlighted string
 	 * @todo Define visibility
 	 */
-	public function doSyntaxHighlight($string, $lineNum = '', $highlightBlockMode = 0) {
+	public function doSyntaxHighlight($string, $lineNum = '', $highlightBlockMode = FALSE) {
 		$this->syntaxHighLight = 1;
 		$this->highLightData = array();
 		$this->error = array();
@@ -1110,7 +1132,7 @@ class TypoScriptParser {
 	 * @todo Define visibility
 	 */
 	public function regHighLight($code, $pointer, $strlen = -1) {
-		if ($strlen == -1) {
+		if ($strlen === -1) {
 			$this->highLightData[$pointer] = array(array($code, 0));
 		} else {
 			$this->highLightData[$pointer][] = array($code, $strlen);
@@ -1147,7 +1169,7 @@ class TypoScriptParser {
 						$part = substr($value, $start, $len);
 						$start += $len;
 						$st = $this->highLightStyles[isset($this->highLightStyles[$set[0]]) ? $set[0] : 'default'];
-						if (!$highlightBlockMode || $set[0] != 'prespace') {
+						if (!$highlightBlockMode || $set[0] !== 'prespace') {
 							$lineC .= $st[0] . htmlspecialchars($part) . $st[1];
 						}
 					} elseif ($len < 0) {

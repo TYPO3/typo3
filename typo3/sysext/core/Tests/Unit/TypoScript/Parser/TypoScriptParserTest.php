@@ -32,7 +32,7 @@ class TypoScriptParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @var \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface
 	 */
-	protected $typoScriptParser;
+	protected $typoScriptParser = NULL;
 
 	/**
 	 * Set up
@@ -469,4 +469,23 @@ class TypoScriptParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		);
 	}
 
+	/**
+	 * @test
+	 */
+	public function setValCanBeCalledWithArrayValueParameter() {
+		$string = '';
+		$setup = array();
+		$value = array();
+		$this->typoScriptParser->setVal($string, $setup, $value);
+	}
+
+	/**
+	 * @test
+	 */
+	public function setValCanBeCalledWithStringValueParameter() {
+		$string = '';
+		$setup = array();
+		$value = '';
+		$this->typoScriptParser->setVal($string, $setup, $value);
+	}
 }
