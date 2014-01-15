@@ -154,8 +154,9 @@ class ClassLoader {
 
 		$cacheEntryIdentifier = strtolower(str_replace('\\', '_', $className));
 		try {
-			if ($this->classesCache->has($cacheEntryIdentifier)) {
-				$classLoadingInformation = explode("\xff", $this->classesCache->get($cacheEntryIdentifier));
+			$rawClassLoadingInformation = $this->classesCache->get($cacheEntryIdentifier);
+			if ($rawClassLoadingInformation !== FALSE) {
+				$classLoadingInformation = explode("\xff", $rawClassLoadingInformation);
 			} else {
 				$classLoadingInformation = $this->buildClassLoadingInformation($className);
 				if ($classLoadingInformation !== NULL) {
@@ -172,14 +173,11 @@ class ClassLoader {
 		//   1 => original class name
 		//   2 and following => alias class names
 		// )
-
 		$loadingSuccessful = FALSE;
 		if ($classLoadingInformation !== NULL) {
-			if (class_exists($classLoadingInformation[1], FALSE)) {
-				$loadingSuccessful = TRUE;
-			} else {
-				$loadingSuccessful = (boolean)require_once $classLoadingInformation[0];
-			}
+			// The call to class_exists fixes a rare case when early instances need to be aliased
+			// but PHP fails to recognize the real path of the class. See #55904
+			$loadingSuccessful = class_exists($classLoadingInformation[1], FALSE) || (bool)require_once $classLoadingInformation[0];
 		}
 		if ($loadingSuccessful && count($classLoadingInformation) > 2) {
 			$originalClassName = $classLoadingInformation[1];
@@ -269,7 +267,7 @@ class ClassLoader {
 					// The namespace part is substituted.
 					$classPathAndFilename = '/' . str_replace('\\', '/', ltrim(substr($className, $packageData['namespaceLength']), '\\')) . '.php';
 				} else {
-					// make the classname PSR-0 compliant by replacing underscores only in the classname not in the namespace
+					// Make the classname PSR-0 compliant by replacing underscores only in the classname not in the namespace
 					$classPathAndFilename  = '';
 					$lastNamespacePosition = strrpos($className, '\\');
 					if ($lastNamespacePosition !== FALSE) {
@@ -337,9 +335,7 @@ class ClassLoader {
 			} else {
 				$classesPath = $this->packageClassesPaths[$extensionKey];
 			}
-			// Naming convention is to capitalize each part of the path
-			$classNameWithoutVendorAndProduct = ucwords(strtr($classNameWithoutVendorAndProduct, $delimiter, LF));
-			$classFilePath = $classesPath . strtr($classNameWithoutVendorAndProduct, LF, '/') . '.php';
+			$classFilePath = $classesPath . strtr($classNameWithoutVendorAndProduct, $delimiter, '/') . '.php';
 			if (@file_exists($classFilePath)) {
 				return array($classFilePath, $className);
 			}
@@ -358,7 +354,7 @@ class ClassLoader {
 	}
 
 	/**
-	 * Get cache entry identifier
+	 * Get cache entry identifier for the package namespaces cache
 	 *
 	 * @return string|null identifier
 	 */
@@ -371,7 +367,7 @@ class ClassLoader {
 	/**
 	 * Set cache identifier
 	 *
-	 * @param string $cacheIdentifier Cache identifier
+	 * @param string $cacheIdentifier Cache identifier for package namespaces cache
 	 * @return ClassLoader
 	 */
 	public function setCacheIdentifier($cacheIdentifier) {
@@ -455,8 +451,12 @@ class ClassLoader {
 	 */
 	protected function loadPackageNamespacesFromCache() {
 		$cacheEntryIdentifier = $this->getCacheEntryIdentifier();
-		if ($cacheEntryIdentifier !== NULL && $this->coreCache->has($cacheEntryIdentifier)) {
-			list($packageNamespaces, $packageClassesPaths) = $this->coreCache->requireOnce($cacheEntryIdentifier);
+		if ($cacheEntryIdentifier === NULL) {
+			return FALSE;
+		}
+		$packageData = $this->coreCache->requireOnce($cacheEntryIdentifier);
+		if ($packageData !== FALSE) {
+			list($packageNamespaces, $packageClassesPaths) = $packageData;
 			if (is_array($packageNamespaces) && is_array($packageClassesPaths)) {
 				$this->packageNamespaces = $packageNamespaces;
 				$this->packageClassesPaths = $packageClassesPaths;

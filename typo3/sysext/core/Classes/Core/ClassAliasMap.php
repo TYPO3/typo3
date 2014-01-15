@@ -174,7 +174,7 @@ class ClassAliasMap implements \TYPO3\CMS\Core\SingletonInterface {
 		}
 		$this->aliasToClassNameMapping[$lowercasedAliasClassName] = $originalClassName;
 		$this->classNameToAliasMapping[strtolower($originalClassName)][$lowercasedAliasClassName] = $aliasClassName;
-		return (\class_exists($aliasClassName, FALSE) || \interface_exists($aliasClassName, FALSE)) ? TRUE : class_alias($originalClassName, $aliasClassName);
+		return (class_exists($aliasClassName, FALSE) || interface_exists($aliasClassName, FALSE)) ? TRUE : class_alias($originalClassName, $aliasClassName);
 	}
 
 	/**

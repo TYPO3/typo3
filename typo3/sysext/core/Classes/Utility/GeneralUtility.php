@@ -4265,11 +4265,6 @@ Connection: close
 		}
 		// Create new instance and call constructor with parameters
 		$instance = static::instantiateClass($finalClassName, func_get_args());
-		// Create alias if not present
-		$alias = \TYPO3\CMS\Core\Core\ClassLoader::getAliasForClassName($finalClassName);
-		if ($finalClassName !== $alias && !class_exists($alias, FALSE)) {
-			class_alias($finalClassName, $alias);
-		}
 		// Register new singleton instance
 		if ($instance instanceof \TYPO3\CMS\Core\SingletonInterface) {
 			self::$singletonInstances[$finalClassName] = $instance;
