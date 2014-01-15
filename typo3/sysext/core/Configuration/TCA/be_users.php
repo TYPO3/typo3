@@ -115,7 +115,7 @@ return array(
 				'internal_type' => 'db',
 				'allowed' => 'pages',
 				'size' => '3',
-				'maxitems' => 25,
+				'maxitems' => 100,
 				'autoSizeMax' => 10,
 				'show_thumbs' => '1',
 				'wizards' => array(
@@ -132,7 +132,7 @@ return array(
 				'foreign_table' => 'sys_filemounts',
 				'foreign_table_where' => ' AND sys_filemounts.pid=0 ORDER BY sys_filemounts.title',
 				'size' => '3',
-				'maxitems' => 25,
+				'maxitems' => 100,
 				'autoSizeMax' => 10,
 				'iconsInOptionTags' => 1,
 				'wizards' => array(
