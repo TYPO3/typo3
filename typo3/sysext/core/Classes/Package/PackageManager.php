@@ -209,7 +209,7 @@ class PackageManager extends \TYPO3\Flow\Package\PackageManager implements \TYPO
 			$this->coreCache->set($packageObjectsCacheEntryIdentifier, serialize($this->packages));
 			$this->coreCache->set(
 				$cacheEntryIdentifier,
-				'return __DIR__ !== \'' . $cacheEntryPath . '\' ? FALSE : ' . PHP_EOL .
+				'return ' . PHP_EOL .
 					var_export($packageCache, TRUE) . ';'
 			);
 		}
