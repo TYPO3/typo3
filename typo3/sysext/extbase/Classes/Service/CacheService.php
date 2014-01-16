@@ -27,6 +27,7 @@ namespace TYPO3\CMS\Extbase\Service;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Cache clearing helper functions
  */
@@ -36,6 +37,18 @@ class CacheService implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @var \SplStack
 	 */
 	protected $pageIdStack;
+
+	/**
+	 * @var \TYPO3\CMS\Core\Cache\CacheManager
+	 */
+	protected $cacheManager;
+
+	/**
+	 * @param \TYPO3\CMS\Core\Cache\CacheManager $cacheManager
+	 */
+	public function injectCacheManager(\TYPO3\CMS\Core\Cache\CacheManager $cacheManager) {
+		$this->cacheManager = $cacheManager;
+	}
 
 	/**
 	 * Initializes the pageIdStack
@@ -58,45 +71,15 @@ class CacheService implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return void
 	 */
 	public function clearPageCache($pageIdsToClear = NULL) {
-
-		if ($pageIdsToClear !== NULL && !is_array($pageIdsToClear)) {
-			$pageIdsToClear = array(intval($pageIdsToClear));
-		}
-		$this->flushPageCache($pageIdsToClear);
-		$this->flushPageSectionCache($pageIdsToClear);
-	}
-
-	/**
-	 * Flushes cache_pages or cachingframework_cache_pages.
-	 *
-	 * @param array|NULL $pageIds pageIds to clear the cache for
-	 * @return void
-	 */
-	protected function flushPageCache($pageIds = NULL) {
-		$pageCache = $GLOBALS['typo3CacheManager']->getCache('cache_pages');
-		if ($pageIds !== NULL) {
-			foreach ($pageIds as $pageId) {
-				$pageCache->flushByTag('pageId_' . $pageId);
-			}
+		if ($pageIdsToClear === NULL) {
+			$this->cacheManager->flushCachesInGroup('pages');
 		} else {
-			$pageCache->flush();
-		}
-	}
-
-	/**
-	 * Flushes cache_pagesection or cachingframework_cache_pagesection.
-	 *
-	 * @param array|NULL $pageIds pageIds to clear the cache for
-	 * @return void
-	 */
-	protected function flushPageSectionCache($pageIds = NULL) {
-		$pageSectionCache = $GLOBALS['typo3CacheManager']->getCache('cache_pagesection');
-		if ($pageIds !== NULL) {
-			foreach ($pageIds as $pageId) {
-				$pageSectionCache->flushByTag('pageId_' . $pageId);
+			if (!is_array($pageIdsToClear)) {
+				$pageIdsToClear = array((integer)$pageIdsToClear);
 			}
-		} else {
-			$pageSectionCache->flush();
+			foreach ($pageIdsToClear as $pageId) {
+				$this->cacheManager->flushCachesInGroupByTag('pages', 'pageId_' . $pageId);
+			}
 		}
 	}
 
