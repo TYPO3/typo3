@@ -788,10 +788,10 @@ class TemplateService {
 						if (@is_dir($ISF_filePath)) {
 							$mExtKey = str_replace('_', '', $ISF_extKey . '/' . $ISF_localPath);
 							$subrow = array(
-								'constants' => @is_file(($ISF_filePath . 'constants.txt')) ? GeneralUtility::getUrl($ISF_filePath . 'constants.txt') : '',
-								'config' => @is_file(($ISF_filePath . 'setup.txt')) ? GeneralUtility::getUrl($ISF_filePath . 'setup.txt') : '',
-								'include_static' => @is_file(($ISF_filePath . 'include_static.txt')) ? implode(',', array_unique(GeneralUtility::intExplode(',', GeneralUtility::getUrl($ISF_filePath . 'include_static.txt')))) : '',
-								'include_static_file' => @is_file(($ISF_filePath . 'include_static_file.txt')) ? implode(',', array_unique(explode(',', GeneralUtility::getUrl($ISF_filePath . 'include_static_file.txt')))) : '',
+								'constants' => @file_exists(($ISF_filePath . 'constants.txt')) ? GeneralUtility::getUrl($ISF_filePath . 'constants.txt') : '',
+								'config' => @file_exists(($ISF_filePath . 'setup.txt')) ? GeneralUtility::getUrl($ISF_filePath . 'setup.txt') : '',
+								'include_static' => @file_exists(($ISF_filePath . 'include_static.txt')) ? implode(',', array_unique(GeneralUtility::intExplode(',', GeneralUtility::getUrl($ISF_filePath . 'include_static.txt')))) : '',
+								'include_static_file' => @file_exists(($ISF_filePath . 'include_static_file.txt')) ? implode(',', array_unique(explode(',', GeneralUtility::getUrl($ISF_filePath . 'include_static_file.txt')))) : '',
 								'title' => $ISF_file,
 								'uid' => $mExtKey
 							);
@@ -1247,7 +1247,7 @@ class TemplateService {
 				$extPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extKey);
 				$newFile = \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($extPath) . $script;
 			}
-			if (!@is_file((PATH_site . $newFile))) {
+			if (!@file_exists((PATH_site . $newFile))) {
 				if ($this->tt_track) {
 					$GLOBALS['TT']->setTSlogMessage('Extension media file "' . $newFile . '" was not found!', 3);
 				}
@@ -1263,10 +1263,10 @@ class TemplateService {
 		if (strpos($file, '/') !== FALSE) {
 			// If the file is in the media/ folder but it doesn't exist,
 			// it is assumed that it's in the tslib folder
-			if (GeneralUtility::isFirstPartOfStr($file, 'media/') && !is_file(($this->getFileName_backPath . $file))) {
+			if (GeneralUtility::isFirstPartOfStr($file, 'media/') && !file_exists(($this->getFileName_backPath . $file))) {
 				$file = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('cms') . 'tslib/' . $file;
 			}
-			if (is_file($this->getFileName_backPath . $file)) {
+			if (file_exists($this->getFileName_backPath . $file)) {
 				$outFile = $file;
 				$fileInfo = GeneralUtility::split_fileref($outFile);
 				$OK = 0;

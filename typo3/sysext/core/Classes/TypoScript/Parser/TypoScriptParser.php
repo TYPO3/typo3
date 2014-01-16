@@ -824,7 +824,7 @@ class TypoScriptParser {
 			// Check for allowed files
 			if (!GeneralUtility::verifyFilenameAgainstDenyPattern($absfilename)) {
 				$newString .= self::typoscriptIncludeError('File "' . $filename . '" was not included since it is not allowed due to fileDenyPattern.');
-			} elseif (!@is_file($absfilename)) {
+			} elseif (!@file_exists($absfilename)) {
 				$newString .= self::typoscriptIncludeError('File "' . $filename . '" was not was not found.');
 			} else {
 				$includedFiles[] = $absfilename;

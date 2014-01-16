@@ -129,7 +129,7 @@ class LoadedExtensionArrayElement implements \IteratorAggregate, \ArrayAccess, \
 	protected function initializeExtensionFiles() {
 		foreach ($this->extensionFilesToCheckFor as $fileName) {
 			$absolutePathToFile = $this->package->getPackagePath() . $fileName;
-			if (@is_file($absolutePathToFile)) {
+			if (@file_exists($absolutePathToFile)) {
 				$this->extensionInformation[$fileName] = $absolutePathToFile;
 			}
 		}
