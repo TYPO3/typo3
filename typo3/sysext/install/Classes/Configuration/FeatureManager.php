@@ -114,7 +114,7 @@ class FeatureManager {
 			$featureName = $feature->getName();
 			$presets = $feature->getPresetsOrderedByPriority();
 			foreach ($presets as $preset) {
-				// Only chose "normal" presets, no custom presets
+				// Only choose "normal" presets, no custom presets
 				if ($preset instanceof CustomPresetInterface) {
 					break;
 				}
