@@ -74,12 +74,14 @@ class FunctionalTestCaseBootstrapUtility {
 	 * @param string $testCaseClassName Name of test case class
 	 * @param array $coreExtensionsToLoad Array of core extensions to load
 	 * @param array $testExtensionsToLoad Array of test extensions to load
+	 * @param array $pathsToLinkInTestInstance Array of source => destination path pairs to be linked
 	 * @return void
 	 */
 	public function setUp(
 		$testCaseClassName,
 		array $coreExtensionsToLoad,
-		array $testExtensionsToLoad
+		array $testExtensionsToLoad,
+		array $pathsToLinkInTestInstance
 	) {
 		$this->setUpIdentifier($testCaseClassName);
 		$this->setUpInstancePath();
@@ -87,6 +89,7 @@ class FunctionalTestCaseBootstrapUtility {
 		$this->setUpInstanceDirectories();
 		$this->setUpInstanceCoreLinks();
 		$this->linkTestExtensionsToInstance($testExtensionsToLoad);
+		$this->linkPathsInTestInstance($pathsToLinkInTestInstance);
 		$this->setUpLocalConfiguration();
 		$this->setUpPackageStates($coreExtensionsToLoad, $testExtensionsToLoad);
 		$this->setUpBasicTypo3Bootstrap();
@@ -215,6 +218,36 @@ class FunctionalTestCaseBootstrapUtility {
 				throw new Exception(
 					'Can not link extension folder: ' . $absoluteExtensionPath . ' to ' . $destinationPath,
 					1376657142
+				);
+			}
+		}
+	}
+
+	/**
+	 * Link paths inside the test instance, e.g. from a fixture fileadmin subfolder to the
+	 * test instance fileadmin folder
+	 *
+	 * @param array $pathsToLinkInTestInstance Contains paths as array of source => destination in key => value pairs of folders relative to test instance root
+	 * @throws \TYPO3\CMS\Core\Tests\Exception if a source path could not be found
+	 * @throws \TYPO3\CMS\Core\Tests\Exception on failing creating the symlink
+	 * @return void
+	 * @see \TYPO3\CMS\Core\Tests\FunctionalTestCase::$pathsToLinkInTestInstance
+	 */
+	protected function linkPathsInTestInstance(array $pathsToLinkInTestInstance) {
+		foreach ($pathsToLinkInTestInstance as $sourcePathToLinkInTestInstance => $destinationPathToLinkInTestInstance) {
+			$sourcePath = $this->instancePath . '/' . ltrim($sourcePathToLinkInTestInstance, '/');
+			if (!file_exists($sourcePath)) {
+				throw new Exception(
+					'Path ' . $sourcePath . ' not found',
+					1376745645
+				);
+			}
+			$destinationPath = $this->instancePath . '/' . ltrim($destinationPathToLinkInTestInstance, '/');
+			$success = symlink($sourcePath, $destinationPath);
+			if (!$success) {
+				throw new Exception(
+					'Can not link the path ' . $sourcePath . ' to ' . $destinationPath,
+					1389969623
 				);
 			}
 		}

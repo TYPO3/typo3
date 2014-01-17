@@ -98,6 +98,36 @@ abstract class FunctionalTestCase extends BaseTestCase {
 	protected $testExtensionsToLoad = array();
 
 	/**
+	 * Array of test/fixture folder or file paths that should be linked for a test.
+	 *
+	 * This property will stay empty in this abstract, so it is possible
+	 * to just overwrite it in extending classes. Path noted here will
+	 * be linked for every test of a test case and it is not possible to change
+	 * the list of folders between single tests of a test case.
+	 *
+	 * array(
+	 *   'link-source' => 'link-destination'
+	 * );
+	 *
+	 * Given paths are expected to be relative to the test instance root.
+	 * The array keys are the source paths and the array values are the destination
+	 * paths, example:
+	 *
+	 * array(
+	 *   'typo3/sysext/impext/Tests/Functional/Fixtures/Folders/fileadmin/user_upload' =>
+	 *   'fileadmin/user_upload',
+	 *   'typo3conf/ext/my_own_ext/Tests/Functional/Fixtures/Folders/uploads/tx_myownext' =>
+	 *   'uploads/tx_myownext'
+	 * );
+	 *
+	 * To be able to link from my_own_ext the extension path needs also to be registered in
+	 * property $testExtensionsToLoad
+	 *
+	 * @var array
+	 */
+	protected $pathsToLinkInTestInstance = array();
+
+	/**
 	 * Private utility class used in setUp() and tearDown(). Do NOT use in test cases!
 	 *
 	 * @var \TYPO3\CMS\Core\Tests\FunctionalTestCaseBootstrapUtility
@@ -116,7 +146,12 @@ abstract class FunctionalTestCase extends BaseTestCase {
 			$this->markTestSkipped('Functional tests must be called through phpunit on CLI');
 		}
 		$this->bootstrapUtility = new FunctionalTestCaseBootstrapUtility();
-		$this->bootstrapUtility->setUp(get_class($this), $this->coreExtensionsToLoad, $this->testExtensionsToLoad);
+		$this->bootstrapUtility->setUp(
+			get_class($this),
+			$this->coreExtensionsToLoad,
+			$this->testExtensionsToLoad,
+			$this->pathsToLinkInTestInstance
+		);
 	}
 
 	/**
