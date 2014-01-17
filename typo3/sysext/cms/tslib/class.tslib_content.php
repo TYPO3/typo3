@@ -847,10 +847,9 @@ class tslib_cObj {
 		$name = $classMapping[$name];
 
 		if (!array_key_exists($name, $this->contentObjects)) {
-			$fullyQualifiedClassName = 'tslib_content_' . $name;
-			if (class_exists($fullyQualifiedClassName)) {
-				$this->contentObjects[$name] = t3lib_div::makeInstance($fullyQualifiedClassName, $this);
-			} else {
+			try {
+				$this->contentObjects[$name] = t3lib_div::makeInstance('tslib_content_' . $name, $this);
+			} catch (ReflectionException $e) {
 				$this->contentObjects[$name] = NULL;
 			}
 		}
