@@ -390,10 +390,10 @@ class FileHandlingUtility implements \TYPO3\CMS\Core\SingletonInterface {
 		$zip = zip_open($file);
 		if (is_resource($zip)) {
 			while (($zipEntry = zip_read($zip)) !== FALSE) {
-				if (strpos(zip_entry_name($zipEntry), DIRECTORY_SEPARATOR) !== FALSE) {
-					$last = strrpos(zip_entry_name($zipEntry), DIRECTORY_SEPARATOR);
+				if (strpos(zip_entry_name($zipEntry), '/') !== FALSE) {
+					$last = strrpos(zip_entry_name($zipEntry), '/');
 					$dir = substr(zip_entry_name($zipEntry), 0, $last);
-					$file = substr(zip_entry_name($zipEntry), strrpos(zip_entry_name($zipEntry), DIRECTORY_SEPARATOR) + 1);
+					$file = substr(zip_entry_name($zipEntry), strrpos(zip_entry_name($zipEntry), '/') + 1);
 					if (!is_dir($dir)) {
 						GeneralUtility::mkdir_deep($extensionDir . $dir);
 					}
