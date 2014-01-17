@@ -15,13 +15,6 @@ if (TYPO3_MODE === 'BE') {
 
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(
 		'web_ts',
-		'TYPO3\\CMS\\TsTemplate\\Controller\\TemplateAnalyzerModuleFunctionController',
-		$extensionPath . 'Classes/Controller/TemplateAnalyzerModuleFunctionController.php',
-		'LLL:EXT:tstemplate/ts/locallang.xlf:templateAnalyzer'
-	);
-
-	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(
-		'web_ts',
 		'TYPO3\\CMS\\TsTemplate\\Controller\\TypoScriptTemplateConstantEditorModuleFunctionController',
 		$extensionPath . 'Classes/Controller/TypoScriptTemplateConstantEditorModuleFunctionController.php',
 		'LLL:EXT:tstemplate/ts/locallang.xlf:constantEditor'
@@ -39,6 +32,13 @@ if (TYPO3_MODE === 'BE') {
 		'TYPO3\\CMS\\TsTemplate\\Controller\\TypoScriptTemplateObjectBrowserModuleFunctionController',
 		$extensionPath  . 'Classes/Controller/TypoScriptTemplateObjectBrowserModuleFunctionController.php',
 		'LLL:EXT:tstemplate/ts/locallang.xlf:objectBrowser'
+	);
+
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(
+		'web_ts',
+		'TYPO3\\CMS\\TsTemplate\\Controller\\TemplateAnalyzerModuleFunctionController',
+		$extensionPath . 'Classes/Controller/TemplateAnalyzerModuleFunctionController.php',
+		'LLL:EXT:tstemplate/ts/locallang.xlf:templateAnalyzer'
 	);
 
 }
