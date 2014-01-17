@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dataset>
+	<pages>
+		<uid>1</uid>
+		<pid>0</pid>
+		<title>Root</title>
+		<deleted>0</deleted>
+		<perms_everybody>15</perms_everybody>
+	</pages>
+	<pages>
+		<uid>2</uid>
+		<pid>1</pid>
+		<title>Dummy 1-2</title>
+		<deleted>0</deleted>
+		<perms_everybody>15</perms_everybody>
+	</pages>
+</dataset>
