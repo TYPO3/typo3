@@ -60,7 +60,7 @@ class SessionService implements \TYPO3\CMS\Core\SingletonInterface {
 	private $cookieName = 'Typo3InstallTool';
 
 	/**
-	 * time (minutes) to expire an ununsed session
+	 * time (minutes) to expire an unused session
 	 *
 	 * @var integer
 	 */

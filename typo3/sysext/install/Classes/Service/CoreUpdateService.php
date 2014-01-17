@@ -98,7 +98,7 @@ class CoreUpdateService {
 	}
 
 	/**
-	 * In future implementations we might implement some sarter logic here
+	 * In future implementations we might implement some smarter logic here
 	 *
 	 * @return string
 	 */

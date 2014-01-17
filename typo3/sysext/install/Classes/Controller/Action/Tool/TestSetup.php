@@ -594,7 +594,7 @@ class TestSetup extends Action\AbstractAction implements Action\ActionInterface 
 		$result['imageMagickEnabled'] =  $GLOBALS['TYPO3_CONF_VARS']['GFX']['im'];
 		$result['imageMagickPath'] = $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_path'];
 		$result['imageMagickVersion'] = $this->determineImageMagickVersion();
-		$result['imageMagick5Effecs'] = $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_v5effects'];
+		$result['imageMagick5Effects'] = $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_v5effects'];
 		$result['gdlibEnabled'] = $GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib'];
 		$result['gdlibPng'] = $GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib_png'];
 		$result['freeTypeDpi'] = $GLOBALS['TYPO3_CONF_VARS']['GFX']['TTFdpi'];

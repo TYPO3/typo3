@@ -37,7 +37,7 @@ namespace TYPO3\CMS\Install\ViewHelpers\Be;
  * <f:be.container>your module content</f:be.container>
  * </code>
  * <output>
- * "your module content" wrapped with propper head & body tags.
+ * "your module content" wrapped with proper head & body tags.
  * Default backend CSS styles and JavaScript will be included
  * </output>
  *

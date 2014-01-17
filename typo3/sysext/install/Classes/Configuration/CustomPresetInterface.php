@@ -29,7 +29,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Custom preset interface
  *
- * Interface for presets not catched by other presets.
+ * Interface for presets not caught by other presets.
  * Represents "custom" configuration options of a feature.
  *
  * There must be only one custom preset per feature!

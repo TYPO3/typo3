@@ -309,7 +309,7 @@ class InstallSysExtsUpdate extends AbstractUpdate {
 		// Can not fetch url, throw an exception
 		if ($fileContent === FALSE) {
 			throw new \Exception(
-				'Can not fetch URL "' . $url . '". Possibile reasons are network problems or misconfiguration.',
+				'Can not fetch URL "' . $url . '". Possible reasons are network problems or misconfiguration.',
 				1344685036
 			);
 		}

@@ -35,7 +35,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * the step controller at an early point.
  *
  * Every change is encapsulated in one method an must throw a RedirectException
- * if new data is written to LocalConfiguration. This is catched by above
+ * if new data is written to LocalConfiguration. This is caught by above
  * step controller to initiate a redirect and start again with adapted configuration.
  */
 class SilentConfigurationUpgradeService {

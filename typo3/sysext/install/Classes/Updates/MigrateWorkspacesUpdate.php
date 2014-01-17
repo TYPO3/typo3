@@ -111,7 +111,7 @@ class MigrateWorkspacesUpdate extends InstallSysExtsUpdate {
 	 * This method requests input from the user about the upgrade process, if needed
 	 *
 	 * @param string $inputPrefix
-	 * @return void
+	 * @return string
 	 */
 	public function getUserInput($inputPrefix) {
 		$content = '';
@@ -339,7 +339,7 @@ class MigrateWorkspacesUpdate extends InstallSysExtsUpdate {
 	}
 
 	/**
-	 * Migrate all workspace adminusers fields to support groups aswell,
+	 * Migrate all workspace admin users fields to support groups as well,
 	 * this means that the old comma separated list of uids (referring to be_users)
 	 * is updated to be a list of uids with the tablename as prefix
 	 *

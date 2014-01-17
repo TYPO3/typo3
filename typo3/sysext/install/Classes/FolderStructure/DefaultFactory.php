@@ -25,7 +25,7 @@ namespace TYPO3\CMS\Install\FolderStructure;
  ***************************************************************/
 
 /**
- * Factory returns default folder structure object hierachie
+ * Factory returns default folder structure object hierarchy
  */
 class DefaultFactory {
 

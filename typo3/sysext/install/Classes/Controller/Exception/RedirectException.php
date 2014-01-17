@@ -26,7 +26,7 @@ namespace TYPO3\CMS\Install\Controller\Exception;
 
 /**
  * A controller exception to initiate a reload. Used in some
- * controller action classes and catched in controller to handle
+ * controller action classes and caught in controller to handle
  * the redirect.
  */
 class RedirectException extends \TYPO3\CMS\Install\Controller\Exception {

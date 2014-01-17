@@ -394,7 +394,7 @@ button span.t3-install-form-button-icon-negative {
 	font-weight: normal;
 	margin: 3px 0.4em 0 0;
 	float: right;
-	padding: 0px 5px;
+	padding: 0 5px;
 	border-radius: 6px;
 	line-height: 1.5em;
 }
@@ -802,7 +802,7 @@ button.btn-save:hover {
 	margin: 0 0;
 }
 #fixed-footer-fieldset fieldset {
-	margin: 0em -1.8em;
+	margin: 0 -1.8em;
 	color: #fff;
 	text-align: center;
 	padding: 0.5em 0;
