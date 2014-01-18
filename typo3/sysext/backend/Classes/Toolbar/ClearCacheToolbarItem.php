@@ -64,34 +64,39 @@ class ClearCacheToolbarItem implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHoo
 		$this->backendReference = $backendReference;
 		$this->cacheActions = array();
 		$this->optionValues = array('all', 'pages');
-		// Clear cache for ALL tables!
-		if ($GLOBALS['BE_USER']->isAdmin() || $GLOBALS['BE_USER']->getTSConfigVal('options.clearCache.all')) {
-			$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:rm.clearCacheMenu_all', TRUE);
-			$this->cacheActions[] = array(
-				'id' => 'all',
-				'title' => $title,
-				'href' => $this->backPath . 'tce_db.php?vC=' . $GLOBALS['BE_USER']->veriCode() . '&cacheCmd=all&ajaxCall=1' . BackendUtility::getUrlToken('tceAction'),
-				'icon' => IconUtility::getSpriteIcon('actions-system-cache-clear-impact-high')
-			);
-		}
-		// Clear cache for either ALL pages
+
+		// Clear all page-related caches
 		if ($GLOBALS['BE_USER']->isAdmin() || $GLOBALS['BE_USER']->getTSConfigVal('options.clearCache.pages')) {
-			$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:rm.clearCacheMenu_pages', TRUE);
 			$this->cacheActions[] = array(
 				'id' => 'pages',
-				'title' => $title,
+				'title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:flushPageCachesTitle', TRUE),
+				'description' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:flushPageCachesDescription', TRUE),
 				'href' => $this->backPath . 'tce_db.php?vC=' . $GLOBALS['BE_USER']->veriCode() . '&cacheCmd=pages&ajaxCall=1' . BackendUtility::getUrlToken('tceAction'),
+				'icon' => IconUtility::getSpriteIcon('actions-system-cache-clear-impact-low')
+			);
+		}
+
+		// Clear cache for ALL tables!
+		if ($GLOBALS['BE_USER']->isAdmin() || $GLOBALS['BE_USER']->getTSConfigVal('options.clearCache.all')) {
+			$this->cacheActions[] = array(
+				'id' => 'all',
+				'title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:flushAllCachesTitle', TRUE),
+				'description' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:flushAllCachesDescription', TRUE),
+				'href' => $this->backPath . 'tce_db.php?vC=' . $GLOBALS['BE_USER']->veriCode() . '&cacheCmd=all&ajaxCall=1' . BackendUtility::getUrlToken('tceAction'),
 				'icon' => IconUtility::getSpriteIcon('actions-system-cache-clear-impact-medium')
 			);
 		}
-		// Clearing of cache-files in typo3conf/ + menu
-		if ($GLOBALS['BE_USER']->isAdmin()) {
-			$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:rm.clearCacheMenu_allTypo3Conf', TRUE);
+
+		// Clearing of system cache (core cache, class cache etc)
+		// is only shown explicitly if activated for a BE-user (not activated for admins by default)
+		// or if the system runs in development mode
+		if ($GLOBALS['BE_USER']->getTSConfigVal('options.clearCache.system') || GeneralUtility::getApplicationContext()->isDevelopment()) {
 			$this->cacheActions[] = array(
-				'id' => 'temp_CACHED',
-				'title' => $title,
-				'href' => $this->backPath . 'tce_db.php?vC=' . $GLOBALS['BE_USER']->veriCode() . '&cacheCmd=temp_CACHED&ajaxCall=1' . BackendUtility::getUrlToken('tceAction'),
-				'icon' => IconUtility::getSpriteIcon('actions-system-cache-clear-impact-low')
+				'id' => 'system',
+				'title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:flushSystemCachesTitle', TRUE),
+				'description' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:flushSystemCachesDescription', TRUE),
+				'href' => $this->backPath . 'tce_db.php?vC=' . $GLOBALS['BE_USER']->veriCode() . '&cacheCmd=system&ajaxCall=1' . BackendUtility::getUrlToken('tceAction'),
+				'icon' => IconUtility::getSpriteIcon('actions-system-cache-clear-impact-high')
 			);
 		}
 		// Hook for manipulate cacheActions
@@ -137,7 +142,7 @@ class ClearCacheToolbarItem implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHoo
 		$cacheMenu[] = '<a href="#" class="toolbar-item">' . IconUtility::getSpriteIcon('apps-toolbar-menu-cache', array('title' => $title)) . '</a>';
 		$cacheMenu[] = '<ul class="toolbar-item-menu" style="display: none;">';
 		foreach ($this->cacheActions as $actionKey => $cacheAction) {
-			$cacheMenu[] = '<li><a href="' . htmlspecialchars($cacheAction['href']) . '">' . $cacheAction['icon'] . ' ' . $cacheAction['title'] . '</a></li>';
+			$cacheMenu[] = '<li><a href="' . htmlspecialchars($cacheAction['href']) . '" title="' . htmlspecialchars($cacheAction['description'] ?: $cacheAction['title']) . '">' . $cacheAction['icon'] . ' ' . htmlspecialchars($cacheAction['title']) . '</a></li>';
 		}
 		$cacheMenu[] = '</ul>';
 		return implode(LF, $cacheMenu);

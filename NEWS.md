@@ -69,6 +69,37 @@ does not include the system-related caches anymore** - these can be cleared by
 user has the according permissions. Each cache can be configured to be in one or
 multiple groups in its configuration parameters. Custom groups can be defined
 and cleared manually.
+All extension maintainers are encouraged to switch their own caching mechanisms
+to the caching framework and use the API instead of using hooks within TCEmain,
+as the clearing via TCEmain would only be triggered if going through
+the TCEmain calls (not via Extbase e.g.).
+
+* Re-ordered backend menu items
+With grouped caching (see above) items in the menu bar of the TYPO3 Backend
+have been re-arranged and renamed to reflect the impact of the icons.
+
+ - "Flush frontend caches" clears all caches marked with the group "pages".
+ This includes clearing the previous "cache_hash", "cache_pages" and
+ "cache_pagesection", which affects links, TypoScript, fully-cached pages and
+ cached page elements.
+
+ - "Flush all caches" clears all caches inside the groups "all" and "pages"
+ as well as additional database tables registered via hooks in TCEmain. However
+ the system-related caches are NOT flushed.
+
+ - "Flush system caches" clears all system-related caches, which is the class
+ loading cache, configuration cache (previously known as temp_CACHED_* files)
+ and some other extbase-related class caches. The symbol is now disabled
+ by default, even for admins, and can be enabled by setting the userTSconfig
+ option "options.clearCache.system=1", and is also always enabled using
+ the Application Context / TYPO3_CONTEXT Environment Option "Development".
+ Additionally, clearing system caches can be done via the Install Tool, they
+ are automatically flushed when an extension is being activated/uninstalled.
+
+All hooks within TCEmain still work as expected. However, the use of
+clear_cacheCmd with the parameter "temp_cached" is discouraged with
+the introduction of the group "system".
+
 
 ### Frontend
 
