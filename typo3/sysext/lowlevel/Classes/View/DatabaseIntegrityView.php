@@ -134,7 +134,6 @@ class DatabaseIntegrityView {
 				'records' => $GLOBALS['LANG']->getLL('recordStatistics', TRUE),
 				'relations' => $GLOBALS['LANG']->getLL('databaseRelations', TRUE),
 				'search' => $GLOBALS['LANG']->getLL('fullSearch', TRUE),
-				'filesearch' => $GLOBALS['LANG']->getLL('findFilename', TRUE),
 				'refindex' => $GLOBALS['LANG']->getLL('manageRefIndex', TRUE)
 			),
 			'search' => array(
@@ -227,9 +226,6 @@ class DatabaseIntegrityView {
 			case 'relations':
 				$this->func_relations();
 				break;
-			case 'filesearch':
-				$this->func_filesearch();
-				break;
 			case 'refindex':
 				$this->func_refindex();
 				break;
@@ -294,7 +290,7 @@ class DatabaseIntegrityView {
 	 * @return void
 	 */
 	protected function func_default() {
-		$availableModFuncs = array('records', 'relations', 'search', 'filesearch', 'refindex');
+		$availableModFuncs = array('records', 'relations', 'search', 'refindex');
 		$content = '<dl class="t3-overview-list">';
 		foreach ($availableModFuncs as $modFunc) {
 			$functionUrl = BackendUtility::getModuleUrl('system_dbint') . '&SET[function]=' . $modFunc;
@@ -551,38 +547,11 @@ class DatabaseIntegrityView {
 	/**
 	 * Searching for files with a specific pattern
 	 *
+	 * @deprecated since 6.2 will be removed two versions later
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function func_filesearch() {
-		$pattern = GeneralUtility::_GP('pattern');
-		$pcontent = $GLOBALS['LANG']->getLL('enterRegexPattern') . ' <input type="text" name="pattern" value="' . htmlspecialchars(($pattern ? $pattern : $GLOBALS['TYPO3_CONF_VARS']['BE']['fileDenyPattern'])) . '"> <input type="submit" name="' . $GLOBALS['LANG']->getLL('SearchButton') . '">';
-		$this->content .= $this->doc->header($GLOBALS['LANG']->getLL('findFilename'));
-		$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('pattern'), $pcontent, FALSE, TRUE);
-		if ((string)$pattern !== '') {
-			$dirs = GeneralUtility::get_dirs(PATH_site);
-			$lines = array();
-			$depth = 10;
-			foreach ($dirs as $key => $value) {
-				$matching_files = array();
-				$info = '';
-				if (!GeneralUtility::inList('typo3,typo3conf,tslib,media,t3lib', $value)) {
-					$info = $this->findFile(PATH_site . $value . '/', $pattern, $matching_files, $depth);
-				}
-				if (is_array($info)) {
-					$lines[] = '<hr><strong>' . $value . '/</strong> ' . $GLOBALS['LANG']->getLL('beingChecked');
-					$lines[] = $GLOBALS['LANG']->getLL('directories') . ' ' . $info[0];
-					if ($info[2]) {
-						$lines[] = '<span class="typo3-red">' . $GLOBALS['LANG']->getLL('directoriesTooDeep') . ' ' . $depth . '</span>';
-					}
-					$lines[] = $GLOBALS['LANG']->getLL('files') . ' ' . $info[1];
-					$lines[] = $GLOBALS['LANG']->getLL('matchingFiles') . '<br><nobr><span class="typo3-red">' . implode('<br>', $matching_files) . '</span></nobr>';
-				} else {
-					$lines[] = $GLOBALS['TBE_TEMPLATE']->dfw('<hr><strong>' . $value . '/</strong> ' . $GLOBALS['LANG']->getLL('notChecked'));
-				}
-			}
-			$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('searchingForFilenames'), implode('<br>', $lines), FALSE, TRUE);
-		}
+		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
 	}
 
 	/**
@@ -592,46 +561,11 @@ class DatabaseIntegrityView {
 	 * @param string $pattern Match pattern
 	 * @param array $matching_files Array of matching files, passed by reference
 	 * @param integer $depth Depth to recurse
+	 * @deprecated since 6.2 will be removed two versions later
 	 * @return array Array with various information about the search result
-	 * @see func_filesearch()
-	 * @todo Define visibility
 	 */
 	public function findFile($basedir, $pattern, &$matching_files, $depth) {
-		$files_searched = 0;
-		$dirs_searched = 0;
-		$dirs_error = 0;
-		// Traverse files:
-		$files = GeneralUtility::getFilesInDir($basedir, '', 1);
-		if (is_array($files)) {
-			$files_searched += count($files);
-			// Escape the regexp. Note: we cannot use preg_quote here because it will escape more than we need!
-			$regExpPattern = str_replace('/', '\\/', $pattern);
-			foreach ($files as $value) {
-				if (preg_match('/' . $regExpPattern . '/i', basename($value))) {
-					$matching_files[] = \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($value);
-				}
-			}
-		}
-		// Traverse subdirs
-		if ($depth > 0) {
-			$dirs = GeneralUtility::get_dirs($basedir);
-			if (is_array($dirs)) {
-				$dirs_searched += count($dirs);
-				foreach ($dirs as $value) {
-					$inf = $this->findFile($basedir . $value . '/', $pattern, $matching_files, $depth - 1);
-					$dirs_searched += $inf[0];
-					$files_searched += $inf[1];
-					$dirs_error = $inf[2];
-				}
-			}
-		} else {
-			$dirs = GeneralUtility::get_dirs($basedir);
-			if (is_array($dirs) && count($dirs)) {
-				// Means error - there were further subdirs!
-				$dirs_error = 1;
-			}
-		}
-		return array($dirs_searched, $files_searched, $dirs_error);
+		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
 	}
 
 }
