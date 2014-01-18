@@ -659,10 +659,10 @@ class FileContentParser {
 	 *
 	 * Parameter <code>$resetLocale</code> has to be FALSE and TRUE alternating for all calls.
 	 *
-	 * @staticvar string $lastLocale Stores the locale used before it is overriden by this method.
+	 * @staticvar string $lastLocale Stores the locale used before it is overridden by this method.
 	 * @param boolean $resetLocale TRUE resets the locale to $lastLocale.
 	 * @return void
-	 * @throws RuntimeException
+	 * @throws \RuntimeException
 	 */
 	protected function setLocaleForServerFileSystem($resetLocale = FALSE) {
 		static $lastLocale = NULL;
@@ -672,13 +672,13 @@ class FileContentParser {
 
 		if ($resetLocale) {
 			if ($lastLocale == NULL) {
-				throw new RuntimeException('Cannot reset locale to NULL.', 1357064326);
+				throw new \RuntimeException('Cannot reset locale to NULL.', 1357064326);
 			}
 			setlocale(LC_CTYPE, $lastLocale);
 			$lastLocale = NULL;
 		} else {
 			if ($lastLocale !== NULL) {
-				throw new RuntimeException('Cannot set new locale as locale has already been changed before.', 1357064437);
+				throw new \RuntimeException('Cannot set new locale as locale has already been changed before.', 1357064437);
 			}
 			$lastLocale = setlocale(LC_CTYPE, 0);
 			setlocale(LC_CTYPE, $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLocale']);
