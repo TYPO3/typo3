@@ -462,4 +462,21 @@ class FileTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$method->invoke($fixture);
 		$this->assertNull($fixture->isIndexed());
 	}
+
+	/**
+	 * @test
+	 */
+	public function hasPropertyReturnsTrueFilePropertyExists() {
+		$fixture = new \TYPO3\CMS\Core\Resource\File(array('testproperty' => 'testvalue'), $this->storageMock);
+		$this->assertTrue($fixture->hasProperty('testproperty'));
+	}
+
+	/**
+	 * @test
+	 */
+	public function hasPropertyReturnsTrueIfMetadataPropertyExists() {
+		$fixture = $this->getAccessibleMock('TYPO3\\CMS\\Core\\Resource\\File', array('dummy'), array(array(), $this->storageMock));
+		$fixture->_set('metaDataProperties', array('testproperty' => 'testvalue'));
+		$this->assertTrue($fixture->hasProperty('testproperty'));
+	}
 }

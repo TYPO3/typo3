@@ -117,6 +117,21 @@ class File extends AbstractFile {
 	}
 
 	/**
+	 * Checks if the file has a (metadata) property which
+	 * can be retrieved by "getProperty"
+	 *
+	 * @param string $key
+	 * @return boolean
+	 */
+	public function hasProperty($key) {
+		if (!parent::hasProperty($key)) {
+			return array_key_exists($key, $this->metaDataProperties);
+		}
+		return TRUE;
+	}
+
+
+	/**
 	 * Returns the properties of this object.
 	 *
 	 * @return array
