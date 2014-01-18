@@ -88,24 +88,26 @@ class SortPagesWizardModuleFunction extends \TYPO3\CMS\Backend\Module\AbstractFu
 
 			if (count($menuItems)) {
 				$lines = array();
-				$lines[] = '<tr class="t3-row-header">
-				<td>' . $this->wiz_linkOrder($GLOBALS['LANG']->getLL('wiz_changeOrder_title'), 'title') . '</td>
-				' . (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('cms') ? '<td> ' . $this->wiz_linkOrder($GLOBALS['LANG']->getLL('wiz_changeOrder_subtitle'), 'subtitle') . '</td>' : '') . '
-				<td>' . $this->wiz_linkOrder($GLOBALS['LANG']->getLL('wiz_changeOrder_tChange'), 'tstamp') . '</td>
-				<td>' . $this->wiz_linkOrder($GLOBALS['LANG']->getLL('wiz_changeOrder_tCreate'), 'crdate') . '</td>
-				</tr>';
+				$lines[] = '<thead><tr>';
+				$lines[] = '<th>' . $this->wiz_linkOrder($GLOBALS['LANG']->getLL('wiz_changeOrder_title'), 'title') . '</th>';
+				$lines[] = (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('cms') ? '<th> ' . $this->wiz_linkOrder($GLOBALS['LANG']->getLL('wiz_changeOrder_subtitle'), 'subtitle') . '</th>' : '');
+				$lines[] = '<th>' . $this->wiz_linkOrder($GLOBALS['LANG']->getLL('wiz_changeOrder_tChange'), 'tstamp') . '</th>';
+				$lines[] = '<th>' . $this->wiz_linkOrder($GLOBALS['LANG']->getLL('wiz_changeOrder_tCreate'), 'crdate') . '</th>';
+				$lines[] = '</tr></thead>';
+
 				foreach ($menuItems as $rec) {
 					$m_perms_clause = $GLOBALS['BE_USER']->getPagePermsClause(2);
 					// edit permissions for that page!
 					$pRec = BackendUtility::getRecord('pages', $rec['uid'], 'uid', ' AND ' . $m_perms_clause);
-					$lines[] = '<tr class="db_list_normal"><td nowrap="nowrap">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('pages', $rec) . (!is_array($pRec) ? $GLOBALS['TBE_TEMPLATE']->rfw('<strong>' . $GLOBALS['LANG']->getLL('wiz_W', TRUE) . '</strong> ') : '') . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($rec['title'], $GLOBALS['BE_USER']->uc['titleLen'])) . '&nbsp;</td>
-					' . (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('cms') ? '<td nowrap="nowrap">' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($rec['subtitle'], $GLOBALS['BE_USER']->uc['titleLen'])) . '&nbsp;</td>' : '') . '
-					<td nowrap="nowrap">' . BackendUtility::datetime($rec['tstamp']) . '&nbsp;&nbsp;</td>
-					<td nowrap="nowrap">' . BackendUtility::datetime($rec['crdate']) . '&nbsp;&nbsp;</td>
+					$lines[] = '<tr class="db_list_normal"><td nowrap="nowrap">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('pages', $rec) . (!is_array($pRec) ? $GLOBALS['TBE_TEMPLATE']->rfw('<strong>' . $GLOBALS['LANG']->getLL('wiz_W', TRUE) . '</strong> ') : '') . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($rec['title'], $GLOBALS['BE_USER']->uc['titleLen'])) . '</td>
+					' . (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('cms') ? '<td nowrap="nowrap">' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($rec['subtitle'], $GLOBALS['BE_USER']->uc['titleLen'])) . '</td>' : '') . '
+					<td nowrap="nowrap">' . BackendUtility::datetime($rec['tstamp']) . '</td>
+					<td nowrap="nowrap">' . BackendUtility::datetime($rec['crdate']) . '</td>
 					</tr>';
 				}
-				$theCode .= '<h4>' . $GLOBALS['LANG']->getLL('wiz_currentPageOrder', TRUE) . '</h4>
-			<table border="0" cellpadding="0" cellspacing="0" class="typo3-dblist">' . implode('', $lines) . '</table><br />';
+				$theCode .= '<h2>' . $GLOBALS['LANG']->getLL('wiz_currentPageOrder', TRUE) . '</h2>';
+				$theCode .= '<table class="t3-table">' . implode('', $lines) . '</table>';
+
 				// Menu:
 				$lines = array();
 				$lines[] = $this->wiz_linkOrder($GLOBALS['LANG']->getLL('wiz_changeOrder_title'), 'title');
@@ -139,7 +141,7 @@ class SortPagesWizardModuleFunction extends \TYPO3\CMS\Backend\Module\AbstractFu
 	 * @todo Define visibility
 	 */
 	public function wiz_linkOrder($title, $order) {
-		return '&nbsp; &nbsp;<a class="t3-link" href="' . htmlspecialchars(('index.php?id=' . $GLOBALS['SOBE']->id . '&sortByField=' . $order)) . '" onclick="return confirm(' . $GLOBALS['LANG']->JScharCode($GLOBALS['LANG']->getLL('wiz_changeOrder_msg1')) . ')">' . htmlspecialchars($title) . '</a>';
+		return '<a class="t3-link" href="' . htmlspecialchars(('index.php?id=' . $GLOBALS['SOBE']->id . '&sortByField=' . $order)) . '" onclick="return confirm(' . $GLOBALS['LANG']->JScharCode($GLOBALS['LANG']->getLL('wiz_changeOrder_msg1')) . ')">' . htmlspecialchars($title) . '</a>';
 	}
 
 }
