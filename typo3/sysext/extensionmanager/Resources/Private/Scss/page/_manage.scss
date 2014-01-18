@@ -41,41 +41,9 @@
 
 // Table
 .typo3-extension-list {
-
-	border-spacing: 0;
-
-	// Header
-	thead {
-		background-color: #666;
-
-		tr {
-			background: none !important;
-
-			&:hover {
-				background: none;
-			}
-		}
-	}
-
 	th {
-		background: none;
-		border: 0;
-		padding: 8px 10px;
-
 		min-width: 53px;
-
-		vertical-align: middle;
-
-		font-weight: bold;
-		color: #fff;
-
 		cursor: pointer;
-		white-space: nowrap;
-
-
-		&:hover {
-			background: rgba(200,200,200,.3);
-		}
 
 		.DataTables_sort_icon {
 			display: inline-block;
@@ -88,78 +56,11 @@
 		}
 	}
 
-	// All lines
-	tr {
-
-		// Reset some values that get applied by jQuery UI styling
-		&.odd,
-		&.even {
-			td {
-				background: none;
-			}
-
-			&:hover {
-				td {
-					background: none;
-
-					&.alpha { @include alpha; }
-					&.beta { @include beta; }
-					&.stable { @include stable; }
-					&.experimental { @include experimental; }
-					&.test { @include test; }
-					&.obsolete { @include obsolete; }
-					&.excludeFromUpdates { @include excludeFromUpdates; }
-				}
-			}
-		}
-
-		// Add some stuff to match corporate design
-		td {
-			background: none;
-			padding: 8px 10px;
-			vertical-align: middle;
-
-			&.state {
-				width: 70px;
-			}
-
-			&.alpha { @include alpha; }
-			&.beta { @include beta; }
-			&.stable { @include stable; }
-			&.experimental { @include experimental; }
-			&.test { @include test; }
-			&.obsolete { @include obsolete; }
-			&.excludeFromUpdates { @include excludeFromUpdates; }
-
-			img {
-				vertical-align: middle;
-				margin-right: 5px;
-			}
-		}
-
-		// Zebra-look
-		&:nth-child(2n) {
-			background: #fff;
-		}
-
-		&:nth-child(2n + 1) {
-			background: #f7f7f7;
-		}
-
-		// Hovering lines
-		&:hover {
-			background: #ececec;
-		}
-
-	}
-
 	.ext-icon {
 		max-height: 16px;
 		width: auto;
 	}
 }
-
-
 
 // Paginator
 .dataTables_info {
@@ -170,9 +71,6 @@
 	float: left;
 	margin: 10px 0 0;
 }
-
-
-
 
 .uploadForm {
 	background-color: #ededed;

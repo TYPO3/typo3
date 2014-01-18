@@ -82,12 +82,6 @@
 .dataTables_paginate {
   width: auto; }
 
-.typo3-extension-list {
-  width: 100%; }
-
-.typo3-extension-list td {
-  padding: 10px; }
-
 #typo3-extension-configuration-forms {
   min-width: 400px;
   max-width: 900px; }
@@ -124,25 +118,25 @@
   padding: 3px 10px;
   margin-left: -2px; }
 
-.alpha {
+.t3-table td.alpha {
   color: #f14400; }
 
-.beta {
+.t3-table td.beta {
   color: #f4bd00; }
 
-.stable {
+.t3-table td.stable {
   color: #3db900; }
 
-.experimental {
+.t3-table td.experimental {
   color: #000; }
 
-.test {
+.t3-table td.test {
   color: #000; }
 
-.obsolete {
+.t3-table td.obsolete {
   color: #8c8c8c; }
 
-.excludeFromUpdates {
+.t3-table td.excludeFromUpdates {
   color: #000; }
 
 .alpha,
@@ -165,7 +159,6 @@
   display: inline; }
 
 #typo3-extension-configuration-forms .info {
-  font-size: 9px;
   color: #666;
   font-weight: normal; }
 
@@ -229,82 +222,18 @@ p {
   .ui-toolbar .dataTables_filter {
     float: left; }
 
-.typo3-extension-list {
-  border-spacing: 0; }
-  .typo3-extension-list thead {
-    background-color: #666; }
-    .typo3-extension-list thead tr {
-      background: none !important; }
-      .typo3-extension-list thead tr:hover {
-        background: none; }
-  .typo3-extension-list th {
-    background: none;
-    border: 0;
-    padding: 8px 10px;
-    min-width: 53px;
+.typo3-extension-list th {
+  min-width: 53px;
+  cursor: pointer; }
+  .typo3-extension-list th .DataTables_sort_icon {
+    display: inline-block;
     vertical-align: middle;
-    font-weight: bold;
-    color: #fff;
-    cursor: pointer;
-    white-space: nowrap; }
-    .typo3-extension-list th:hover {
-      background: rgba(200, 200, 200, 0.3); }
-    .typo3-extension-list th .DataTables_sort_icon {
-      display: inline-block;
-      vertical-align: middle;
-      margin-left: 5px; }
-      .typo3-extension-list th .DataTables_sort_icon.ui-icon-carat-2-n-s {
-        background: none; }
-  .typo3-extension-list tr.odd td, .typo3-extension-list tr.even td {
-    background: none; }
-  .typo3-extension-list tr.odd:hover td, .typo3-extension-list tr.even:hover td {
-    background: none; }
-    .typo3-extension-list tr.odd:hover td.alpha, .typo3-extension-list tr.even:hover td.alpha {
-      color: #f14400; }
-    .typo3-extension-list tr.odd:hover td.beta, .typo3-extension-list tr.even:hover td.beta {
-      color: #f4bd00; }
-    .typo3-extension-list tr.odd:hover td.stable, .typo3-extension-list tr.even:hover td.stable {
-      color: #3db900; }
-    .typo3-extension-list tr.odd:hover td.experimental, .typo3-extension-list tr.even:hover td.experimental {
-      color: #000; }
-    .typo3-extension-list tr.odd:hover td.test, .typo3-extension-list tr.even:hover td.test {
-      color: #000; }
-    .typo3-extension-list tr.odd:hover td.obsolete, .typo3-extension-list tr.even:hover td.obsolete {
-      color: #8c8c8c; }
-    .typo3-extension-list tr.odd:hover td.excludeFromUpdates, .typo3-extension-list tr.even:hover td.excludeFromUpdates {
-      color: #000; }
-  .typo3-extension-list tr td {
-    background: none;
-    padding: 8px 10px;
-    vertical-align: middle; }
-    .typo3-extension-list tr td.state {
-      width: 70px; }
-    .typo3-extension-list tr td.alpha {
-      color: #f14400; }
-    .typo3-extension-list tr td.beta {
-      color: #f4bd00; }
-    .typo3-extension-list tr td.stable {
-      color: #3db900; }
-    .typo3-extension-list tr td.experimental {
-      color: #000; }
-    .typo3-extension-list tr td.test {
-      color: #000; }
-    .typo3-extension-list tr td.obsolete {
-      color: #8c8c8c; }
-    .typo3-extension-list tr td.excludeFromUpdates {
-      color: #000; }
-    .typo3-extension-list tr td img {
-      vertical-align: middle;
-      margin-right: 5px; }
-  .typo3-extension-list tr:nth-child(2n) {
-    background: #fff; }
-  .typo3-extension-list tr:nth-child(2n + 1) {
-    background: #f7f7f7; }
-  .typo3-extension-list tr:hover {
-    background: #ececec; }
-  .typo3-extension-list .ext-icon {
-    max-height: 16px;
-    width: auto; }
+    margin-left: 5px; }
+    .typo3-extension-list th .DataTables_sort_icon.ui-icon-carat-2-n-s {
+      background: none; }
+.typo3-extension-list .ext-icon {
+  max-height: 16px;
+  width: auto; }
 
 .dataTables_info {
   display: none; }
@@ -389,9 +318,6 @@ p {
     color: #8c8c8c;
     padding: 4px 20px 4px 0; }
 
-.currentVersionInfo a {
-  text-decoration: underline; }
-
 span.ter-ext-state {
   padding: 0 0 0 5px;
   font-weight: bold;
@@ -409,3 +335,6 @@ span.ter-ext-state-beta {
 
 span.ter-ext-state-alpha {
   color: #f14400; }
+
+#typo3-docbody form.download {
+  margin-bottom: 0; }

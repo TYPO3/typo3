@@ -82,10 +82,6 @@
 	th { font-weight: normal; color: #8c8c8c; padding: 4px 20px 4px 0; }
 }
 
-.currentVersionInfo a {
-	text-decoration: underline;
-}
-
 span.ter-ext-state {
 	padding: 0 0 0 5px;
 	font-weight: bold;
@@ -107,4 +103,8 @@ span.ter-ext-state-beta {
 
 span.ter-ext-state-alpha {
 	color: #f14400;
+}
+
+#typo3-docbody form.download {
+	margin-bottom: 0;
 }

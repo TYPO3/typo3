@@ -42,14 +42,6 @@
 	width: auto;
 }
 
-.typo3-extension-list {
-	width: 100%;
-}
-
-.typo3-extension-list td {
-	padding: 10px;
-}
-
 #typo3-extension-configuration-forms  {
 	min-width: 400px;
 	max-width: 900px;
@@ -95,13 +87,13 @@
 	margin-left: -2px;
 }
 
-.alpha { @include alpha; }
-.beta { @include beta; }
-.stable { @include stable; }
-.experimental { @include experimental; }
-.test { @include test; }
-.obsolete { @include obsolete; }
-.excludeFromUpdates { @include excludeFromUpdates; }
+.t3-table td.alpha { @include alpha; }
+.t3-table td.beta { @include beta; }
+.t3-table td.stable { @include stable; }
+.t3-table td.experimental { @include experimental; }
+.t3-table td.test { @include test; }
+.t3-table td.obsolete { @include obsolete; }
+.t3-table td.excludeFromUpdates { @include excludeFromUpdates; }
 
 .alpha,
 .beta,
@@ -127,7 +119,6 @@
 }
 
 #typo3-extension-configuration-forms .info {
-	font-size: 9px;
 	color: #666;
 	font-weight: normal;
 }
