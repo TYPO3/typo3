@@ -363,7 +363,13 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	public function removeExtension($extension) {
 		$absolutePath = $this->fileHandlingUtility->getAbsoluteExtensionPath($extension);
 		if ($this->fileHandlingUtility->isValidExtensionPath($absolutePath)) {
-			$this->fileHandlingUtility->removeDirectory($absolutePath);
+			if ($this->packageManager->isPackageAvailable($extension)) {
+				// Package manager deletes the extension and removes the entry from PackageStates.php
+				$this->packageManager->deletePackage($extension);
+			} else {
+				// The extension is not listed in PackageStates.php, we can safely remove it
+				$this->fileHandlingUtility->removeDirectory($absolutePath);
+			}
 		} else {
 			throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException('No valid extension path given.', 1342875724);
 		}

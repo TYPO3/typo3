@@ -95,9 +95,6 @@ class ActionController extends AbstractController {
 		$success = TRUE;
 		$message = '';
 		try {
-			if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($extension)) {
-				$this->installUtility->uninstall($extension);
-			}
 			$this->installUtility->removeExtension($extension);
 		} catch (\TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException $e) {
 			$message = $e->getMessage();
