@@ -44,6 +44,7 @@ $flowClasses = array(
 	'typo3\flow\package\packagemanager' => $flowClassesPath . 'TYPO3/Flow/Package/PackageManager.php',
 	'typo3\flow\package\packagemanagerinterface' => $flowClassesPath . 'TYPO3/Flow/Package/PackageManagerInterface.php',
 	'typo3\flow\utility\files' => $flowClassesPath . 'TYPO3/Flow/Utility/Files.php',
+	'typo3\flow\utility\exception' => $flowClassesPath . 'TYPO3/Flow/Utility/Exception.php',
 	'typo3\flow\exception' => $flowClassesPath . 'TYPO3/Flow/Exception.php',
 );
 return array_merge($typo3Classes, $flowClasses);
