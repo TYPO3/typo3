@@ -18,7 +18,7 @@ See the links for more information about what Page TSconfig is.</source>
 			<trans-unit id="_tsconfig_hierarchy.seeAlso" xml:space="preserve">
 				<source>_MOD_web_info:tsconfig_edit,
 pages:TSconfig,
-Page TSconfig objects | http://typo3.org/documentation/document-library/doc_core_tsconfig/Page_TSconfig/</source>
+Page TSconfig objects | http://docs.typo3.org/typo3cms/TSconfigReference/PageTsconfig/Index.html</source>
 				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_tsconfig_hierarchy.image" xml:space="preserve">

@@ -13,7 +13,7 @@
 				<source>&lt;b&gt;Notice [For Admins]:&lt;/b&gt; These settings can all be overridden or have their default values changed by "User TSconfig". To read more about this concept, see the link below!</source>
 			</trans-unit>
 			<trans-unit id="_.seeAlso" xml:space="preserve">
-				<source>User TSconfig SETUP | http://typo3.org/documentation/document-library/doc_core_tsconfig/SETUP/</source>
+				<source>User TSconfig SETUP | http://docs.typo3.org/typo3cms/TSconfigReference/UserTsconfig/Setup/Index.html</source>
 			</trans-unit>
 			<trans-unit id="_.image" xml:space="preserve">
 				<source>EXT:setup/cshimages/setup8.png,
