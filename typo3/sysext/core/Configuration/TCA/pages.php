@@ -356,7 +356,7 @@ return array(
 				'type' => 'input',
 				'size' => '50',
 				'max' => '255',
-				'eval' => ''
+				'eval' => 'trim'
 			)
 		),
 		'target' => array(
