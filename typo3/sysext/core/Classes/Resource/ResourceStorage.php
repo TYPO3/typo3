@@ -195,6 +195,11 @@ class ResourceStorage {
 	protected $isOnline = NULL;
 
 	/**
+	 * @var boolean
+	 */
+	protected $isDefault = FALSE;
+
+	/**
 	 * The filters used for the files and folder names.
 	 *
 	 * @var array
@@ -221,6 +226,7 @@ class ResourceStorage {
 		}
 		$this->driver->initialize();
 		$this->capabilities = ($this->storageRecord['is_browsable'] && $this->driver->hasCapability(self::CAPABILITY_BROWSABLE) ? self::CAPABILITY_BROWSABLE : 0) + ($this->storageRecord['is_public'] && $this->driver->hasCapability(self::CAPABILITY_PUBLIC) ? self::CAPABILITY_PUBLIC : 0) + ($this->storageRecord['is_writable'] && $this->driver->hasCapability(self::CAPABILITY_WRITABLE) ? self::CAPABILITY_WRITABLE : 0);
+		$this->isDefault = (isset($storageRecord['is_default']) && $storageRecord['is_default'] == 1);
 		// TODO do not set the "public" capability if no public URIs can be generated
 		$this->processConfiguration();
 		$this->resetFileAndFolderNameFiltersToDefault();
@@ -2493,5 +2499,20 @@ class ResourceStorage {
 	 */
 	protected function getIndexer() {
 		return GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\Index\\Indexer', $this);
+	}
+
+	/**
+	 * @param boolean $isDefault
+	 * @return void
+	 */
+	public function setDefault($isDefault) {
+		$this->isDefault = (boolean)$isDefault;
+	}
+
+	/**
+	 * @return boolean
+	 */
+	public function isDefault() {
+		return $this->isDefault;
 	}
 }

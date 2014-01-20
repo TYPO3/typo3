@@ -267,6 +267,7 @@ CREATE TABLE sys_file_storage (
 	description text,
 	driver tinytext,
 	configuration text,
+	is_default tinyint(4) DEFAULT '0' NOT NULL,
 	is_browsable tinyint(4) DEFAULT '0' NOT NULL,
 	is_public tinyint(4) DEFAULT '0' NOT NULL,
 	is_writable tinyint(4) DEFAULT '0' NOT NULL,

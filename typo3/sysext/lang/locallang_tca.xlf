@@ -411,6 +411,9 @@
 			<trans-unit id="sys_file_storage.is_online" xml:space="preserve">
 				<source>Is online?</source>
 			</trans-unit>
+			<trans-unit id="sys_file_storage.is_default" xml:space="preserve">
+				<source>Is default storage?</source>
+			</trans-unit>
 			<trans-unit id="sys_file_storage.is_browsable" xml:space="preserve">
 				<source>Is browsable?</source>
 			</trans-unit>

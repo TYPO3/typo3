@@ -108,6 +108,29 @@ class ResourceFactory implements \TYPO3\CMS\Core\SingletonInterface {
 		return $driverObject;
 	}
 
+
+	/**
+	 * Returns the Default Storage
+	 *
+	 * The Default Storage is considered to be the replacement for the fileadmin/ construct.
+	 * It is automatically created with the setting fileadminDir from install tool.
+	 * getDefaultStorage->getDefaultFolder() will get you fileadmin/user_upload/ in a standard
+	 * TYPO3 installation.
+	 *
+	 * @return null|ResourceStorage
+	 */
+	public function getDefaultStorage() {
+		/** @var $storageRepository StorageRepository */
+		$storageRepository = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\StorageRepository');
+
+		$allStorages = $storageRepository->findAll();
+		foreach ($allStorages as $storage) {
+			if ($storage->isDefault()) {
+				return $storage;
+			}
+		}
+		return NULL;
+	}
 	/**
 	 * Creates an instance of the storage from given UID. The $recordData can
 	 * be supplied to increase performance.
@@ -135,7 +158,7 @@ class ResourceFactory implements \TYPO3\CMS\Core\SingletonInterface {
 				$recordData = array(
 					'uid' => 0,
 					'pid' => 0,
-					'name' => 'Default Storage',
+					'name' => 'Fallback Storage',
 					'description' => 'Internal storage, mounting the main TYPO3_site directory.',
 					'driver' => 'Local',
 					'processingfolder' => 'typo3temp/_processed_/',
@@ -144,7 +167,8 @@ class ResourceFactory implements \TYPO3\CMS\Core\SingletonInterface {
 					'is_online' => TRUE,
 					'is_browsable' => TRUE,
 					'is_public' => TRUE,
-					'is_writable' => TRUE
+					'is_writable' => TRUE,
+					'is_default' => FALSE,
 				);
 				$storageConfiguration = array(
 					'basePath' => '/',

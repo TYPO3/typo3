@@ -55,6 +55,18 @@ return array(
 				'default' => 1
 			)
 		),
+		'is_default' => array(
+			'exclude' => 0,
+			'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_storage.is_default',
+			'config' => array(
+				'type' => 'check',
+				'default' => 0,
+				'eval' => 'maximumRecordsChecked',
+				'validation' => array(
+					'maximumRecordsChecked' => 1
+				)
+			)
+		),
 		'is_public' => array(
 			'exclude' => 0,
 			'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_storage.is_public',
@@ -109,7 +121,7 @@ return array(
 		)
 	),
 	'types' => array(
-		'0' => array('showitem' => 'name, description, hidden, --div--;Configuration, driver, configuration, processingfolder, --div--;Access, --palette--;Capabilities;capabilities, is_online')
+		'0' => array('showitem' => 'name, description, hidden, --div--;Configuration, driver, configuration, is_default, processingfolder, --div--;Access, --palette--;Capabilities;capabilities, is_online')
 	),
 	'palettes' => array(
 		'capabilities' => array('showitem' => 'is_browsable, is_public, is_writable', 'canNotCollapse' => TRUE)

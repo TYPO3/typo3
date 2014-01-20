@@ -121,7 +121,8 @@ class StorageRepository extends AbstractRepository {
 						'fileadmin/ (auto-created)',
 						$GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'],
 						'relative',
-						'This is the local fileadmin/ directory. This storage mount has been created automatically by TYPO3.'
+						'This is the local fileadmin/ directory. This storage mount has been created automatically by TYPO3.',
+						TRUE
 					) > 0 ) {
 						// call self for initialize Cache
 						$this->initializeLocalCache();
@@ -193,9 +194,10 @@ class StorageRepository extends AbstractRepository {
 	 * @param string $basePath
 	 * @param string $pathType
 	 * @param string $description
+	 * @param bool $default set to default storage
 	 * @return integer uid of the inserted record
 	 */
-	public function createLocalStorage($name, $basePath, $pathType, $description = '') {
+	public function createLocalStorage($name, $basePath, $pathType, $description = '', $default = FALSE) {
 		$caseSensitive = $this->testCaseSensitivity($pathType === 'relative' ? PATH_site . $basePath : $basePath);
 		// create the FlexForm for the driver configuration
 		$flexFormData = array(
@@ -226,7 +228,8 @@ class StorageRepository extends AbstractRepository {
 			'is_online' => 1,
 			'is_browsable' => 1,
 			'is_public' => 1,
-			'is_writable' => 1
+			'is_writable' => 1,
+			'is_default' => $default ? 1 : 0
 		);
 		$this->db->exec_INSERTquery('sys_file_storage', $field_values);
 		return (int)$this->db->sql_insert_id();
