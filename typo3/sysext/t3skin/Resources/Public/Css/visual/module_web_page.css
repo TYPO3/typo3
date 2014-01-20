@@ -12,7 +12,8 @@ Web > Page
 }
 
 .t3-page-colHeader {
-	background: none;
+	background: #fff;
+	border-bottom: 1px solid #cdcdcd;
 	color: #999999;
 	font-family: Verdana, sans-serif;
 	text-align: left;
@@ -34,12 +35,6 @@ Web > Page
 .t3-page-border {
 	background-color: #cfcfcf;
 	width: 1px;
-}
-
-.t3-page-ce-wrapper {
-	background-color: #f1f1f1;
-	border-top: 1px solid #cdcdcd;
-	border-bottom: 1px solid #cdcdcd;
 }
 
 .t3-page-ce-wrapper-new-ce {
@@ -146,13 +141,13 @@ table.typo3-page-columnsMode tr td a b {
 	word-break: break-all;
 }
 
-table.t3-page-columns tr td span.exampleContent a {
-	color: #000000;
-	text-decoration: none;
-}
-
 table.typo3-page-buttons td {
 	padding-right: 10px;
+}
+
+td.t3-gridCell {
+	background-color: #f1f1f1;
+	border-bottom: 1px solid #cdcdcd;
 }
 
 td.t3-gridCell-restricted {

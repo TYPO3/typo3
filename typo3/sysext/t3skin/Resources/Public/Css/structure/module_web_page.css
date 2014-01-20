@@ -2,6 +2,16 @@
 Web > Page
 - - - - - - - - - - - - - - - - - - - - - */
 
+table.t3-gridTable,
+table.t3-page-langMode {
+	margin-bottom: 1.5em;
+	border-collapse: separate;
+	border-spacing: 12px;
+}
+td.t3-gridCell {
+	border-bottom: 1px solid black;
+}
+
 .t3-page-ce-wrapper .t3-row-header {
 	height: 16px;
 }
@@ -14,8 +24,10 @@ td.t3-page-column,
 td.t3-page-lang-column {
 	min-width: 150px;
 	max-width: 300px;
-	border-left: 12px solid #fff;
-	border-right: 12px solid #fff;
+}
+
+td.t3-page-lang-column h3 {
+	margin-top: 0;
 }
 
 .t3-page-colHeader {
@@ -23,10 +35,6 @@ td.t3-page-lang-column {
 	padding-left: 10px;
 	padding-right: 20px;
 	position: relative;
-}
-
-td.t3-page-lang-column.t3-page-lang-label {
-	padding-bottom: 12px;
 }
 
 .t3-page-colHeader a {
@@ -117,5 +125,9 @@ td.t3-gridCell div.t3-page-ce {
 }
 
 td.t3-page-column.t3-gridCell .t3-page-colHeader {
-	padding-top: 36px;
+	padding-top: 12px;
+}
+
+tr:first-child td.t3-page-column.t3-gridCell .t3-page-colHeader {
+	padding-top: 0;
 }
