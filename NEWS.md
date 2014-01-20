@@ -116,6 +116,14 @@ After:
 getTreeList(42, 4)
 result: '0, 22, 11, 4'
 
+* Removal of HTML Tidy and its options
+
+The possibility to use the external tool HTML Tidy that is used to clean up
+incomplete HTML when a frontend page is rendered was removed from the TYPO3
+Core. Its functionality is now provided by the TER extension "Tidy".
+The extension works with the same options as before.
+
+
 ### Administration / Customization
 
 * Content-length header (TypoScript setting config.enableContentLengthHeader)

@@ -656,9 +656,6 @@ return array(
 	),
 	'FE' => array( // Configuration for the TypoScript frontend (FE). Nothing here relates to the administration backend!
 		'png_to_gif' => FALSE,		// Boolean: Enables conversion back to gif of all png-files generated in the frontend libraries. Notice that this leaves an increased number of temporary files in typo3temp/
-		'tidy' => FALSE,		// Boolean: If set, the output html-code will be passed through "tidy" which is a little program you can get from <a href="http://www.w3.org/People/Raggett/tidy/" target="_blank">w3c.org</a>. "Tidy" cleans the HTML-code for nice display!
-		'tidy_option' => 'cached',		// options [all, cached, output]. "all" = the content is always passed through "tidy" before it may be stored in cache. "cached" = only if the page is put into the cache, "output" = only the output code just before it's echoed out.
-		'tidy_path' => 'tidy -i --quiet true --tidy-mark true -wrap 0 -raw',		// Path with options for tidy. For XHTML output, add " --output-xhtml true"
 		'addAllowedPaths' => '',		// Additional relative paths (comma-list) to allow TypoScript resources be in. Should be prepended with '/'. If not, then any path where the first part is like this path will match. That is: 'myfolder/ , myarchive' will match eg. 'myfolder/', 'myarchive/', 'myarchive_one/', 'myarchive_2/' ... No check is done to see if this directory actually exists in the root of the site. Paths are matched by simply checking if these strings equals the first part of any TypoScript resource filepath. (See class template, function init() in \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser)
 		'allowedTempPaths' => '',		// Additional paths allowed for temporary images. Used with imgResource. Eg. 'alttypo3temp/,another_temp_dir/';
 		'debug' => FALSE,		// Boolean: If set, some debug HTML-comments may be output somewhere. Can also be set by TypoScript.

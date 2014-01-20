@@ -3309,7 +3309,7 @@ class TypoScriptFrontendController {
 
 	/**
 	 * Does some processing AFTER the pagegen script is included.
-	 * This includes calling tidy (if configured), XHTML cleaning (if configured), caching the page, indexing the page (if configured) and setting sysLastChanged
+	 * This includes calling XHTML cleaning (if configured), caching the page, indexing the page (if configured) and setting sysLastChanged
 	 *
 	 * @return void
 	 * @todo Define visibility
@@ -3318,12 +3318,6 @@ class TypoScriptFrontendController {
 		// This is to ensure, that the page is NOT cached if the no_cache parameter was set before the page was generated. This is a safety precaution, as it could have been unset by some script.
 		if ($this->no_cacheBeforePageGen) {
 			$this->set_no_cache('no_cache has been set before the page was generated - safety check', TRUE);
-		}
-		// Tidy up the code, if flag...
-		if ($this->TYPO3_CONF_VARS['FE']['tidy_option'] == 'all') {
-			$GLOBALS['TT']->push('Tidy, all', '');
-			$this->content = $this->tidyHTML($this->content);
-			$GLOBALS['TT']->pull();
 		}
 		// XHTML-clean the code, if flag set
 		if ($this->doXHTML_cleaning() == 'all') {
@@ -3347,12 +3341,6 @@ class TypoScriptFrontendController {
 		}
 		// Processing if caching is enabled:
 		if (!$this->no_cache) {
-			// Tidy up the code, if flag...
-			if ($this->TYPO3_CONF_VARS['FE']['tidy_option'] == 'cached') {
-				$GLOBALS['TT']->push('Tidy, cached', '');
-				$this->content = $this->tidyHTML($this->content);
-				$GLOBALS['TT']->pull();
-			}
 			// XHTML-clean the code, if flag set
 			if ($this->doXHTML_cleaning() == 'cached') {
 				$GLOBALS['TT']->push('XHTML clean, cached', '');
@@ -3627,7 +3615,7 @@ if (version == "n3") {
 
 	/**
 	 * Process the output before it's actually outputted. Sends headers also.
-	 * This includes substituting the "username" comment, sending additional headers (as defined in the TypoScript "config.additionalheaders" object), tidy'ing content, XHTML cleaning content (if configured)
+	 * This includes substituting the "username" comment, sending additional headers (as defined in the TypoScript "config.additionalheaders" object), XHTML cleaning content (if configured)
 	 * Works on $this->content.
 	 *
 	 * @return void
@@ -3658,12 +3646,6 @@ if (version == "n3") {
 		// Make substitution of eg. username/uid in content only if cache-headers for client/proxy caching is NOT sent!
 		if (!$this->isClientCachable) {
 			$this->contentStrReplace();
-		}
-		// Tidy up the code, if flag...
-		if ($this->TYPO3_CONF_VARS['FE']['tidy_option'] == 'output') {
-			$GLOBALS['TT']->push('Tidy, output', '');
-			$this->content = $this->tidyHTML($this->content);
-			$GLOBALS['TT']->pull();
 		}
 		// XHTML-clean the code, if flag set
 		if ($this->doXHTML_cleaning() == 'output') {
@@ -4215,9 +4197,11 @@ if (version == "n3") {
 	 *
 	 * @param string $content The page content to clean up. Will be written to a temporary file which "tidy" is then asked to clean up. File content is read back and returned.
 	 * @return string Returns the
+	 * @deprecated tidy and its options were deprecated with TYPO3 CMS 6.2, this function will be removed two versions later. If you need tidy, use the extension "tidy" from TER.
 	 * @todo Define visibility
 	 */
 	public function tidyHTML($content) {
+		GeneralUtility::logDeprecatedFunction();
 		if ($this->TYPO3_CONF_VARS['FE']['tidy'] && $this->TYPO3_CONF_VARS['FE']['tidy_path']) {
 			$oldContent = $content;
 			// Create temporary name
