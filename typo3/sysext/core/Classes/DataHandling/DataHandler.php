@@ -1578,7 +1578,7 @@ class DataHandler {
 				$res = $this->checkValue_input($res, $value, $tcaFieldConf, $PP, $field);
 				break;
 			case 'check':
-				$res = $this->checkValue_check($res, $value, $tcaFieldConf, $PP);
+				$res = $this->checkValue_check($res, $value, $tcaFieldConf, $PP, $field);
 				break;
 			case 'radio':
 				$res = $this->checkValue_radio($res, $value, $tcaFieldConf, $PP);
@@ -1687,10 +1687,11 @@ class DataHandler {
 	 * @param string $value The value to set.
 	 * @param array $tcaFieldConf Field configuration from TCA
 	 * @param array $PP Additional parameters in a numeric array: $table,$id,$curValue,$status,$realPid,$recFID
+	 * @param string $field Field name
 	 * @return array Modified $res array
 	 * @todo Define visibility
 	 */
-	public function checkValue_check($res, $value, $tcaFieldConf, $PP) {
+	public function checkValue_check($res, $value, $tcaFieldConf, $PP, $field = '') {
 		list($table, $id, $curValue, $status, $realPid, $recFID) = $PP;
 		$itemC = count($tcaFieldConf['items']);
 		if (!$itemC) {
@@ -1702,6 +1703,25 @@ class DataHandler {
 		}
 		if ($value > $maxV) {
 			$value = $maxV;
+		}
+		if ($field && $realPid >= 0 && $value > 0 && !empty($tcaFieldConf['eval'])) {
+			$evalCodesArray = GeneralUtility::trimExplode(',', $tcaFieldConf['eval'], TRUE);
+			$otherRecordsWithSameValue = array();
+			$maxCheckedRecords = 0;
+			if (in_array('maximumRecordsCheckedInPid', $evalCodesArray)) {
+				$otherRecordsWithSameValue = $this->getRecordsWithSameValue($table, $id, $field, $value, $realPid);
+				$maxCheckedRecords = (int)$tcaFieldConf['validation']['maximumRecordsCheckedInPid'];
+			}
+			if (in_array('maximumRecordsChecked', $evalCodesArray)) {
+				$otherRecordsWithSameValue = $this->getRecordsWithSameValue($table, $id, $field, $value);
+				$maxCheckedRecords = (int)$tcaFieldConf['validation']['maximumRecordsChecked'];
+			}
+
+			// there are more than enough records with value "1" in the DB
+			// if so, set this value to "0" again
+			if ($maxCheckedRecords && count($otherRecordsWithSameValue) >= $maxCheckedRecords) {
+				$value = 0;
+			}
 		}
 		$res['value'] = $value;
 		return $res;
@@ -2373,6 +2393,29 @@ class DataHandler {
 			$value = strlen($newValue) ? $newValue : $value;
 		}
 		return $value;
+	}
+
+	/**
+	 * gets all records that have the same value in a field
+	 * excluding the given uid
+	 *
+	 * @param string $tableName Table name
+	 * @param integer $uid UID to filter out in the lookup (the record itself...)
+	 * @param string $fieldName Field name for which $value must be unique
+	 * @param string $value Value string.
+	 * @param integer $pageId If set, the value will be unique for this PID
+	 * @return array
+	 */
+	public function getRecordsWithSameValue($tableName, $uid, $fieldName, $value, $pageId = 0) {
+		$result = array();
+		if (!empty($GLOBALS['TCA'][$tableName]['columns'][$fieldName])) {
+
+			$uid = (int)$uid;
+			$pageId = (int)$pageId;
+			$whereStatement = ' AND uid <> ' . $uid . ' AND ' . ($pageId ? 'pid = ' . $pageId : 'pid >= 0');
+			$result = BackendUtility::getRecordsByField($tableName, $fieldName, $value, $whereStatement);
+		}
+		return $result;
 	}
 
 	/**
