@@ -28,20 +28,22 @@ class CaseContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractConten
 	 * @return string Output
 	 */
 	public function render($conf = array()) {
-		if ($this->cObj->checkIf($conf['if.'])) {
-			$setCurrent = isset($conf['setCurrent.']) ? $this->cObj->stdWrap($conf['setCurrent'], $conf['setCurrent.']) : $conf['setCurrent'];
-			if ($setCurrent) {
-				$this->cObj->data[$this->cObj->currentValKey] = $setCurrent;
-			}
-			$key = isset($conf['key.']) ? $this->cObj->stdWrap($conf['key'], $conf['key.']) : $conf['key'];
-			$key = strlen($conf[$key]) ? $key : 'default';
-			$name = $conf[$key];
-			$theValue = $this->cObj->cObjGetSingle($name, $conf[$key . '.'], $key);
-			if (isset($conf['stdWrap.'])) {
-				$theValue = $this->cObj->stdWrap($theValue, $conf['stdWrap.']);
-			}
-			return $theValue;
+		if (!empty($conf['if.']) && !$this->cObj->checkIf($conf['if.'])) {
+			return '';
 		}
+
+		$setCurrent = isset($conf['setCurrent.']) ? $this->cObj->stdWrap($conf['setCurrent'], $conf['setCurrent.']) : $conf['setCurrent'];
+		if ($setCurrent) {
+			$this->cObj->data[$this->cObj->currentValKey] = $setCurrent;
+		}
+		$key = isset($conf['key.']) ? $this->cObj->stdWrap($conf['key'], $conf['key.']) : $conf['key'];
+		$key = strlen($conf[$key]) ? $key : 'default';
+		$name = $conf[$key];
+		$theValue = $this->cObj->cObjGetSingle($name, $conf[$key . '.'], $key);
+		if (isset($conf['stdWrap.'])) {
+			$theValue = $this->cObj->stdWrap($theValue, $conf['stdWrap.']);
+		}
+		return $theValue;
 	}
 
 }

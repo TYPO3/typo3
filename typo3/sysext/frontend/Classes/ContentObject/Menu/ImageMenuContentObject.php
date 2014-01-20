@@ -149,7 +149,7 @@ class ImageMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu\Abst
 									/** @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $cObj */
 									$cObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
 									$cObj->start($cObjData, 'pages');
-									if (!$cObj->checkIf($theValArr['if.'])) {
+									if (!empty($theValArr['if.']) && !$cObj->checkIf($theValArr['if.'])) {
 										$setObjFlag = 0;
 									}
 									unset($theValArr['if.']);
