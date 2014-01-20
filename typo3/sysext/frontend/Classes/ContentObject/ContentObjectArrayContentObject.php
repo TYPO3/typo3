@@ -19,7 +19,7 @@ namespace TYPO3\CMS\Frontend\ContentObject;
  * @author Xavier Perseguers <typo3@perseguers.ch>
  * @author Steffen Kamper <steffen@typo3.org>
  */
-class ContentObjectArrayContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractContentObject {
+class ContentObjectArrayContentObject extends AbstractContentObject {
 
 	/**
 	 * Rendering the cObject, COBJ_ARRAY / COA
@@ -28,23 +28,24 @@ class ContentObjectArrayContentObject extends \TYPO3\CMS\Frontend\ContentObject\
 	 * @return string Output
 	 */
 	public function render($conf = array()) {
-		if (is_array($conf)) {
-			$content = '';
-			if ($this->cObj->checkIf($conf['if.'])) {
-				$this->cObj->includeLibs($conf);
-				$content = $this->cObj->cObjGet($conf);
-				$wrap = isset($conf['wrap.']) ? $this->cObj->stdWrap($conf['wrap'], $conf['wrap.']) : $conf['wrap'];
-				if ($wrap) {
-					$content = $this->cObj->wrap($content, $wrap);
-				}
-				if (isset($conf['stdWrap.'])) {
-					$content = $this->cObj->stdWrap($content, $conf['stdWrap.']);
-				}
-			}
-			return $content;
-		} else {
+		if (empty($conf)) {
 			$GLOBALS['TT']->setTSlogMessage('No elements in this content object array (COBJ_ARRAY, COA).', 2);
+			return '';
 		}
+		if (!empty($conf['if.']) && !$this->cObj->checkIf($conf['if.'])) {
+			return '';
+		}
+
+		$this->cObj->includeLibs($conf);
+		$content = $this->cObj->cObjGet($conf);
+		$wrap = isset($conf['wrap.']) ? $this->cObj->stdWrap($conf['wrap'], $conf['wrap.']) : $conf['wrap'];
+		if ($wrap) {
+			$content = $this->cObj->wrap($content, $wrap);
+		}
+		if (isset($conf['stdWrap.'])) {
+			$content = $this->cObj->stdWrap($content, $conf['stdWrap.']);
+		}
+		return $content;
 	}
 
 }

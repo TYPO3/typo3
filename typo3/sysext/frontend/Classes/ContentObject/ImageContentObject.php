@@ -28,13 +28,15 @@ class ImageContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractConte
 	 * @return string Output
 	 */
 	public function render($conf = array()) {
-		if ($this->cObj->checkIf($conf['if.'])) {
-			$theValue = $this->cObj->cImage($conf['file'], $conf);
-			if (isset($conf['stdWrap.'])) {
-				$theValue = $this->cObj->stdWrap($theValue, $conf['stdWrap.']);
-			}
-			return $theValue;
+		if (!empty($conf['if.']) && !$this->cObj->checkIf($conf['if.'])) {
+			return '';
 		}
+
+		$theValue = $this->cObj->cImage($conf['file'], $conf);
+		if (isset($conf['stdWrap.'])) {
+			$theValue = $this->cObj->stdWrap($theValue, $conf['stdWrap.']);
+		}
+		return $theValue;
 	}
 
 }
