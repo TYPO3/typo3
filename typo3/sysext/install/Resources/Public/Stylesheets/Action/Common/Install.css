@@ -529,6 +529,7 @@ h4.item-header {
 	background-position: 0.5em 0.7em;
 	border: 1px solid;
 	color: #000000;
+	word-wrap: break-word;
 }
 
 .typo3-message h4 {
