@@ -71,7 +71,7 @@ class LocalizationFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return void
 	 */
 	protected function initializeCache() {
-		$this->cacheInstance = $GLOBALS['typo3CacheManager']->getCache('t3lib_l10n');
+		$this->cacheInstance = $GLOBALS['typo3CacheManager']->getCache('l10n');
 	}
 
 	/**

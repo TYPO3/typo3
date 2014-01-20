@@ -188,7 +188,7 @@ return array(
 					'options' => array(),
 					'groups' => array('pages', 'all')
 				),
-				't3lib_l10n' => array(
+				'l10n' => array(
 					'frontend' => 'TYPO3\CMS\Core\Cache\Frontend\VariableFrontend',
 					'backend' => 'TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend',
 					'options' => array(

@@ -70,7 +70,7 @@ class XliffParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$GLOBALS['TYPO3_CONF_VARS']['SYS']['lang']['format']['priority'] = 'xlf';
 		\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Localization\\LanguageStore')->initialize();
 			// Clear localization cache
-		$GLOBALS['typo3CacheManager']->getCache('t3lib_l10n')->flush();
+		$GLOBALS['typo3CacheManager']->getCache('l10n')->flush();
 	}
 
 	/**
