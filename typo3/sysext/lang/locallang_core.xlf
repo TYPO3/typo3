@@ -672,9 +672,6 @@ Would you like to save now in order to refresh the display?</source>
 			<trans-unit id="rm.clearCacheMenu_allTypo3Conf" xml:space="preserve">
 				<source>Clear configuration cache</source>
 			</trans-unit>
-			<trans-unit id="rm.clearCacheMenu_pages" xml:space="preserve">
-				<source>Clear page content cache</source>
-			</trans-unit>
 			<trans-unit id="flushPageCachesTitle" xml:space="preserve">
 				<source>Flush frontend caches</source>
 			</trans-unit>
