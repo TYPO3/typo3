@@ -118,6 +118,24 @@ class CacheManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
+	 * @expectedException \TYPO3\CMS\Core\Cache\Exception\NoSuchCacheGroupException
+	 */
+	public function flushCachesInGroupThrowsExceptionForNonExistingGroup() {
+		$manager = new \TYPO3\CMS\Core\Cache\CacheManager();
+		$manager->flushCachesInGroup('nonExistingGroup');
+	}
+
+	/**
+	 * @test
+	 * @expectedException \TYPO3\CMS\Core\Cache\Exception\NoSuchCacheGroupException
+	 */
+	public function flushCachesInGroupByTagThrowsExceptionForNonExistingGroup() {
+		$manager = new \TYPO3\CMS\Core\Cache\CacheManager();
+		$manager->flushCachesInGroup('nonExistingGroup', 'someTag');
+	}
+
+	/**
+	 * @test
 	 */
 	public function getCacheCreatesCacheInstanceWithGivenConfiguration() {
 		$manager = new \TYPO3\CMS\Core\Cache\CacheManager();

@@ -23,6 +23,10 @@ namespace TYPO3\CMS\Core\Cache;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use TYPO3\CMS\Core\Cache\Exception\NoSuchCacheGroupException;
+
+
 /**
  * The Cache Manager
  *
@@ -165,6 +169,7 @@ class CacheManager implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @param string $groupIdentifier
 	 * @return void
+	 * @throws NoSuchCacheGroupException
 	 * @api
 	 */
 	public function flushCachesInGroup($groupIdentifier) {
@@ -175,6 +180,8 @@ class CacheManager implements \TYPO3\CMS\Core\SingletonInterface {
 					$this->caches[$cacheIdentifier]->flush();
 				}
 			}
+		} else {
+			throw new NoSuchCacheGroupException('No cache in the specified group \'' . $groupIdentifier . '\'', 1390334120);
 		}
 	}
 
@@ -185,6 +192,7 @@ class CacheManager implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @param string $groupIdentifier
 	 * @param string $tag Tag to search for
 	 * @return void
+	 * @throws NoSuchCacheGroupException
 	 * @api
 	 */
 	public function flushCachesInGroupByTag($groupIdentifier, $tag) {
@@ -195,6 +203,8 @@ class CacheManager implements \TYPO3\CMS\Core\SingletonInterface {
 					$this->caches[$cacheIdentifier]->flushByTag($tag);
 				}
 			}
+		} else {
+			throw new NoSuchCacheGroupException('No cache in the specified group \'' . $groupIdentifier . '\'', 1390337129);
 		}
 	}
 
