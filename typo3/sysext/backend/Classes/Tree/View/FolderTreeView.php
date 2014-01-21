@@ -148,7 +148,7 @@ class FolderTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 		// Wrap icon in click-menu link.
 		if (!$this->ext_IconMode) {
 			// Check storage access to wrap with click menu
-			if ($folderObject->getStorage()->hasFolder('/')) {
+			if (!$folderObject instanceof \TYPO3\CMS\Core\Resource\InaccessibleFolder) {
 				$theFolderIcon = $GLOBALS['TBE_TEMPLATE']->wrapClickMenuOnIcon($theFolderIcon, $folderObject->getCombinedIdentifier(), '', 0);
 			}
 		} elseif ($this->ext_IconMode === 'titlelink') {
@@ -169,7 +169,7 @@ class FolderTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 	 */
 	public function wrapTitle($title, \TYPO3\CMS\Core\Resource\Folder $folderObject, $bank = 0) {
 		// Check storage access to wrap with click menu
-		if (!$folderObject->getStorage()->hasFolder('/')) {
+		if ($folderObject instanceof \TYPO3\CMS\Core\Resource\InaccessibleFolder) {
 			return $title;
 		}
 		$aOnClick = 'return jumpTo(\'' . $this->getJumpToParam($folderObject) . '\', this, \'' . $this->domIdPrefix . $this->getId($folderObject) . '\', ' . $bank . ');';
@@ -348,9 +348,13 @@ class FolderTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 
 		// This generates the directory tree
 		/* array of \TYPO3\CMS\Core\Resource\Folder */
-		$subFolders = $folderObject->getSubfolders();
-		$subFolders = \TYPO3\CMS\Core\Resource\Utility\ListUtility::resolveSpecialFolderNames($subFolders);
-		uksort($subFolders, 'strnatcasecmp');
+		if ($folderObject instanceof \TYPO3\CMS\Core\Resource\InaccessibleFolder) {
+			$subFolders = array();
+		} else {
+			$subFolders = $folderObject->getSubfolders();
+			$subFolders = \TYPO3\CMS\Core\Resource\Utility\ListUtility::resolveSpecialFolderNames($subFolders);
+			uksort($subFolders, 'strnatcasecmp');
+		}
 
 		$totalSubFolders = count($subFolders);
 		$HTML = '';
@@ -361,6 +365,7 @@ class FolderTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 			$this->tree[] = array();
 			// Get the key for this space
 			end($this->tree);
+			$isLocked = $subFolder instanceof \TYPO3\CMS\Core\Resource\InaccessibleFolder;
 			$treeKey = key($this->tree);
 			$specUID = GeneralUtility::md5int($subFolder->getCombinedIdentifier());
 			$this->specUIDmap[$specUID] = $subFolder->getCombinedIdentifier();
@@ -371,22 +376,22 @@ class FolderTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 				'folder' => $subFolder
 			);
 			// Make a recursive call to the next level
-			if ($depth > 1 && $this->expandNext($specUID)) {
+			if (!$isLocked && $depth > 1 && $this->expandNext($specUID)) {
 				$nextCount = $this->getFolderTree($subFolder, $depth - 1, $type);
 				// Set "did expand" flag
 				$isOpen = 1;
 			} else {
-				$nextCount = $this->getNumberOfSubfolders($subFolder);
+				$nextCount = $isLocked ? 0 : $this->getNumberOfSubfolders($subFolder);
 				// Clear "did expand" flag
 				$isOpen = 0;
 			}
 			// Set HTML-icons, if any:
 			if ($this->makeHTML) {
 				$HTML = $this->PMicon($subFolder, $subFolderCounter, $totalSubFolders, $nextCount, $isOpen);
-				if ($subFolder->checkActionPermission('write')) {
-					$type = '';
-					$overlays = array();
-				} else {
+				$type = '';
+				$overlays = array();
+
+				if ($isLocked) {
 					$type = 'readonly';
 					$overlays = array('status-overlay-locked' => array());
 				}

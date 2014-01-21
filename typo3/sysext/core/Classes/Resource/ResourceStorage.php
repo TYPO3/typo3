@@ -1921,7 +1921,7 @@ class ResourceStorage {
 		}
 		$folders = array();
 		foreach ($folderIdentifiers as $folderIdentifier) {
-			$folders[$folderIdentifier] = $this->getFolder($folderIdentifier);
+			$folders[$folderIdentifier] = $this->getFolder($folderIdentifier, TRUE);
 		}
 		return $folders;
 	}
@@ -2019,14 +2019,32 @@ class ResourceStorage {
 
 	/**
 	 * @param string $identifier
+	 * @param boolean $returnInaccessibleFolderObject
 	 *
 	 * @return Folder
 	 */
-	public function getFolder($identifier) {
+	public function getFolder($identifier, $returnInaccessibleFolderObject = FALSE) {
 		$data = $this->driver->getFolderInfoByIdentifier($identifier);
 		$folder = ResourceFactory::getInstance()->createFolderObject($this, $data['identifier'], $data['name']);
-		$this->assureFolderReadPermission($folder);
 
+		try {
+			$this->assureFolderReadPermission($folder);
+		} catch (Exception\InsufficientFolderAccessPermissionsException $e) {
+			$folder = NULL;
+			if ($returnInaccessibleFolderObject) {
+				// if parent folder is readable return innaccessible folder object
+				$parentPermissions = $this->driver->getPermissions($this->driver->getParentFolderIdentifierOfIdentifier($identifier));
+				if ($parentPermissions['r']) {
+					$folder = GeneralUtility::makeInstance(
+						'TYPO3\\CMS\\Core\\Resource\\InaccessibleFolder', $this, $data['identifier'], $data['name']
+					);
+				}
+			}
+
+			if ($folder === NULL) {
+				throw $e;
+			}
+		}
 		return $folder;
 	}
 

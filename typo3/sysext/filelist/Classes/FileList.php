@@ -338,7 +338,7 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 			$this->fieldArray = explode(',', $rowlist);
 			$folderObjects = array();
 			foreach ($folders as $folder) {
-				$folderObjects[] = $storage->getFolder($folder);
+				$folderObjects[] = $storage->getFolder($folder, TRUE);
 			}
 
 			$folderObjects = \TYPO3\CMS\Core\Resource\Utility\ListUtility::resolveSpecialFolderNames($folderObjects);
@@ -463,48 +463,63 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 			list($flag, $code) = $this->fwd_rwd_nav();
 			$out .= $code;
 			if ($flag) {
+				$isLocked = $folderObject instanceof \TYPO3\CMS\Core\Resource\InaccessibleFolder;
+				$isWritable = $folderObject->checkActionPermission('write');
+
 				// Initialization
 				$this->counter++;
 				list($_, $icon, $path) = $this->dirData($folderObject);
 				// The icon with link
-				$theIcon = IconUtility::getSpriteIcon($icon, array('title' => $folderName));
-				if ($this->clickMenus) {
-					$theIcon = $GLOBALS['SOBE']->doc->wrapClickMenuOnIcon($theIcon, $folderObject->getCombinedIdentifier());
+
+				if (!$isLocked) {
+					$theIcon = IconUtility::getSpriteIcon($icon, array('title' => $folderName));
+					if (!$this->clickMenus) {
+						$theIcon = $GLOBALS['SOBE']->doc->wrapClickMenuOnIcon($theIcon, $folderObject->getCombinedIdentifier());
+					}
+				} else {
+					$theIcon = IconUtility::getSpriteIcon($icon, array('title' => $folderName), array('status-overlay-locked' => array()));
 				}
 				// Preparing and getting the data-array
 				$theData = array();
-				foreach ($this->fieldArray as $field) {
-					switch ($field) {
-						case 'size':
-							$numFiles = $folderObject->getFileCount();
-							$theData[$field] = $numFiles . ' ' . $GLOBALS['LANG']->getLL(($numFiles === 1 ? 'file' : 'files'), TRUE);
-							break;
-						case 'rw':
-							$theData[$field] = (!$folderObject->checkActionPermission('read') ? ' ' : '<span class="typo3-red"><strong>' . $GLOBALS['LANG']->getLL('read', TRUE) . '</strong></span>') . (!$folderObject->checkActionPermission('write') ? '' : '<span class="typo3-red"><strong>' . $GLOBALS['LANG']->getLL('write', TRUE) . '</strong></span>');
-							break;
-						case 'fileext':
-							$theData[$field] = $GLOBALS['LANG']->getLL('folder', TRUE);
-							break;
-						case 'tstamp':
-							// @todo: FAL: how to get the mtime info -- $theData[$field] = \TYPO3\CMS\Backend\Utility\BackendUtility::date($theFile['tstamp']);
-							$theData[$field] = '-';
-							break;
-						case 'file':
-							$theData[$field] = $this->linkWrapDir($displayName, $folderObject);
-							break;
-						case '_CLIPBOARD_':
-							$temp = '';
-							if ($this->bigControlPanel) {
-								$temp .= $this->makeEdit($folderObject);
-							}
-							$temp .= $this->makeClip($folderObject);
-							$theData[$field] = $temp;
-							break;
-						case '_REF_':
-							$theData[$field] = $this->makeRef($folderObject);
-							break;
-						default:
-							$theData[$field] = GeneralUtility::fixed_lgd_cs($theFile[$field], $this->fixedL);
+				if ($isLocked) {
+					foreach ($this->fieldArray as $field) {
+						$theData[$field] = '';
+					}
+					$theData['file'] = $displayName;
+				} else {
+					foreach ($this->fieldArray as $field) {
+						switch ($field) {
+							case 'size':
+								$numFiles = $folderObject->getFileCount();
+								$theData[$field] = $numFiles . ' ' . $GLOBALS['LANG']->getLL(($numFiles === 1 ? 'file' : 'files'), TRUE);
+								break;
+							case 'rw':
+								$theData[$field] = '<span class="typo3-red"><strong>' . $GLOBALS['LANG']->getLL('read', TRUE) . '</strong></span>' . (!$isWritable ? '' : '<span class="typo3-red"><strong>' . $GLOBALS['LANG']->getLL('write', TRUE) . '</strong></span>');
+								break;
+							case 'fileext':
+								$theData[$field] = $GLOBALS['LANG']->getLL('folder', TRUE);
+								break;
+							case 'tstamp':
+								// @todo: FAL: how to get the mtime info -- $theData[$field] = \TYPO3\CMS\Backend\Utility\BackendUtility::date($theFile['tstamp']);
+								$theData[$field] = '-';
+								break;
+							case 'file':
+								$theData[$field] = $this->linkWrapDir($displayName, $folderObject);
+								break;
+							case '_CLIPBOARD_':
+								$temp = '';
+								if ($this->bigControlPanel) {
+									$temp .= $this->makeEdit($folderObject);
+								}
+								$temp .= $this->makeClip($folderObject);
+								$theData[$field] = $temp;
+								break;
+							case '_REF_':
+								$theData[$field] = $this->makeRef($folderObject);
+								break;
+							default:
+								$theData[$field] = GeneralUtility::fixed_lgd_cs($theFile[$field], $this->fixedL);
+						}
 					}
 				}
 				$out .= $this->addelement(1, $theIcon, $theData, ' class="file_list_normal"');
@@ -583,10 +598,6 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 		} elseif ($role === FolderInterface::ROLE_RECYCLER) {
 			$icon = 'apps-filetree-folder-recycler';
 			$title = '<strong>' . $GLOBALS['LANG']->getLL('recycler', TRUE) . '</strong>';
-		}
-		// Mark the icon as read-only icon if the folder is not writable
-		if ($folderObject->checkActionPermission('write') === FALSE) {
-			$icon = 'apps-filetree-folder-locked';
 		}
 		return array($title, $icon, $folderObject->getIdentifier());
 	}

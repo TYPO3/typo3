@@ -1693,7 +1693,14 @@ class ElementBrowser {
 				$c++;
 				if ($renderFolders) {
 					$fileIdentifier = $fileOrFolderObject->getCombinedIdentifier();
-					$icon = IconUtility::getSpriteIconForFile('folder');
+					$overlays = array();
+					if ($fileOrFolderObject instanceof \TYPO3\CMS\Core\Resource\InaccessibleFolder) {
+						$overlays = array('status-overlay-locked' => array());
+					}
+					$icon = IconUtility::getSpriteIcon(
+						IconUtility::mapFileExtensionToSpriteIconName('folder'),
+						array('title' => $fileOrFolderObject->getName()),
+						$overlays);
 					$itemUid = 'file:' . $fileIdentifier;
 				} else {
 					$fileIdentifier = $fileOrFolderObject->getUid();
@@ -1714,12 +1721,17 @@ class ElementBrowser {
 					$arrCol = '';
 				}
 				// Put it all together for the file element:
-				$out .= '<img' . IconUtility::skinImg($GLOBALS['BACK_PATH'],
-						('gfx/ol/join' . ($c == $totalItems ? 'bottom' : '') . '.gif'),
-						'width="18" height="16"'
-					) . ' alt="" />' . $arrCol . '<a href="#" onclick="return link_folder(\'' . $itemUid . '\');">'
-					. $icon . htmlspecialchars(GeneralUtility::fixed_lgd_cs($fileOrFolderObject->getName(), $titleLen))
-					. '</a><br />';
+				$out .=
+					'<img' .
+						IconUtility::skinImg(
+							$GLOBALS['BACK_PATH'],
+							('gfx/ol/join' . ($c == $totalItems ? 'bottom' : '') . '.gif'),
+							'width="18" height="16"'
+						) . ' alt="" />' . $arrCol .
+					'<a href="#" onclick="return link_folder(\'' . $itemUid . '\');">' .
+						$icon .
+						htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($fileOrFolderObject->getName(), $titleLen)) .
+					'</a><br />';
 			}
 		}
 		return $out;
