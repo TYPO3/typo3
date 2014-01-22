@@ -47,6 +47,16 @@ class ActionHandler extends \TYPO3\CMS\Workspaces\ExtDirect\AbstractHandler {
 	}
 
 	/**
+	 * Generates workspace preview links for all available languages of a page.
+	 *
+	 * @param integer $uid
+	 * @return array
+	 */
+	public function generateWorkspacePreviewLinksForAllLanguages($uid) {
+		return $this->getWorkspaceService()->generateWorkspacePreviewLinksForAllLanguages($uid);
+	}
+
+	/**
 	 * Swaps a single record.
 	 *
 	 * @param string $table

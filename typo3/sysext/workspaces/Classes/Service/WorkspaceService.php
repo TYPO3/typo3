@@ -647,6 +647,24 @@ class WorkspaceService implements SingletonInterface {
 	}
 
 	/**
+	 * Generate workspace preview links for all available languages of a page
+	 *
+	 * @param int $uid
+	 * @return array
+	 */
+	public function generateWorkspacePreviewLinksForAllLanguages($uid) {
+		$previewUrl = $this->generateWorkspacePreviewLink($uid);
+		$previewLanguages = $this->getAvailableLanguages($uid);
+		$previewLinks = array();
+
+		foreach ($previewLanguages as $languageUid => $language) {
+			$previewLinks[$language] = $previewUrl . '&L=' . $languageUid;
+		}
+
+		return $previewLinks;
+	}
+
+	/**
 	 * Find the Live-Uid for a given page,
 	 * the results are cached at run-time to avoid too many database-queries
 	 *
@@ -734,4 +752,36 @@ class WorkspaceService implements SingletonInterface {
 		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
 	}
 
+	/**
+	 * Get the available languages of a certain page
+	 *
+	 * @param int $pageId
+	 * @return array
+	 */
+	public function getAvailableLanguages($pageId) {
+		$languageOptions = array();
+		/** @var \TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider $translationConfigurationProvider */
+		$translationConfigurationProvider = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Configuration\\TranslationConfigurationProvider');
+		$systemLanguages = $translationConfigurationProvider->getSystemLanguages($pageId);
+
+		if ($GLOBALS['BE_USER']->checkLanguageAccess(0)) {
+			// Use configured label for default language
+			$languageOptions[0] = $systemLanguages[0]['title'];
+		}
+		$pages = BackendUtility::getRecordsByField('pages_language_overlay', 'pid', $pageId);
+
+		if (!is_array($pages)) {
+			return $languageOptions;
+		}
+
+		foreach ($pages as $page) {
+			$languageId = (int)$page['sys_language_uid'];
+			// Only add links to active languages the user has access to
+			if (isset($systemLanguages[$languageId]) && $GLOBALS['BE_USER']->checkLanguageAccess($languageId)) {
+				$languageOptions[$page['sys_language_uid']] = $systemLanguages[$languageId]['title'];
+			}
+		}
+
+		return $languageOptions;
+	}
 }

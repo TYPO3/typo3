@@ -375,5 +375,31 @@ TYPO3.Workspaces.Actions = {
 		};
 
 		top.TYPO3.Dialog.QuestionDialog(configuration);
+	},
+
+	/**
+	 * Generate workspace preview links for all available languages of a page
+	 *
+	 * @return {void}
+	 */
+	generateWorkspacePreviewLinksForAllLanguages: function() {
+		TYPO3.Workspaces.ExtDirectActions.generateWorkspacePreviewLinksForAllLanguages(TYPO3.settings.Workspaces.id, function(response) {
+
+			var msg = '<ul>';
+
+			for (language in response) {
+				var url = response[language];
+
+				msg += String.format('<li style="margin: 0 0 8px;"><strong>{1}</strong><br /><a href="{0}" target="_blank">{0}</a></li>', url, language);
+			}
+
+			msg += '</ul>';
+
+			top.TYPO3.Dialog.InformationDialog({
+				title: TYPO3.l10n.localize('previewLink'),
+				minWidth: '400',
+				msg: msg
+			});
+		});
 	}
 };
