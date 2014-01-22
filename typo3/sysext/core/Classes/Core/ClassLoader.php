@@ -333,7 +333,9 @@ class ClassLoader {
 			} else {
 				$classesPath = $this->packageClassesPaths[$extensionKey];
 			}
-			$classFilePath = $classesPath . strtr($classNameWithoutVendorAndProduct, $delimiter, '/') . '.php';
+			// Naming convention is to capitalize each part of the path
+			$classNameWithoutVendorAndProduct = ucwords(strtr($classNameWithoutVendorAndProduct, $delimiter, LF));
+			$classFilePath = $classesPath . strtr($classNameWithoutVendorAndProduct, LF, '/') . '.php';
 			if (@file_exists($classFilePath)) {
 				return array($classFilePath, $className);
 			}
