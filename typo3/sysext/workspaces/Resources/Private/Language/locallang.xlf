@@ -95,7 +95,7 @@
 				</source>
 			</trans-unit>
 			<trans-unit id="tooltip.generatePagePreview">
-				<source>Generate page preview</source>
+				<source>Generate page preview links</source>
 			</trans-unit>
 			<trans-unit id="previewLink">
 				<source>Preview Link</source>
@@ -267,8 +267,8 @@
 			<trans-unit id="label_doaction_discard">
 				<source>Discard</source>
 			</trans-unit>
-			<trans-unit id="label_doaction_generatePreviewLink">
-				<source>Generate Workspace Preview Link</source>
+			<trans-unit id="label_doaction_generatePreviewLinks">
+				<source>Generate Workspace Preview Links</source>
 			</trans-unit>
 			<trans-unit id="info.elementAlreadyModified">
 				<source>Element is in workspace stage "%s", modifications will send it back to "%s".</source>
