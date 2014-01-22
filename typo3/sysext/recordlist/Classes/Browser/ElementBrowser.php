@@ -698,10 +698,10 @@ class ElementBrowser {
 
 		// Initializing the action value, possibly removing blinded values etc:
 		$blindLinkOptions = isset($this->thisConfig['blindLinkOptions'])
-			? GeneralUtility::trimExplode(',', $this->thisConfig['blindLinkOptions'], TRUE)
+			? \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->thisConfig['blindLinkOptions'], TRUE)
 			: array();
 		$pBlindLinkOptions = isset($this->P['params']['blindLinkOptions'])
-			? GeneralUtility::trimExplode(',', $this->P['params']['blindLinkOptions'])
+			? \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->P['params']['blindLinkOptions'])
 			: array();
 		$allowedItems = array_diff(array('page', 'file', 'folder', 'url', 'mail', 'spec'), $blindLinkOptions, $pBlindLinkOptions);
 
@@ -712,10 +712,10 @@ class ElementBrowser {
 
 		// Removing link fields if configured
 		$blindLinkFields = isset($this->thisConfig['blindLinkFields'])
-			? GeneralUtility::trimExplode(',', $this->thisConfig['blindLinkFields'], TRUE)
+			? \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->thisConfig['blindLinkFields'], TRUE)
 			: array();
 		$pBlindLinkFields = isset($this->P['params']['blindLinkFields'])
-			? GeneralUtility::trimExplode(',', $this->P['params']['blindLinkFields'], TRUE)
+			? \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->P['params']['blindLinkFields'], TRUE)
 			: array();
 		$allowedFields = array_diff(array('target', 'title', 'class', 'params'), $blindLinkFields, $pBlindLinkFields);
 
