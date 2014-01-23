@@ -210,3 +210,8 @@ Pages and content elements are now categorizable by default.
 
 The "Special Menus" content element type now offers the possibility to display
 a list of categorized pages or content elements.
+
+* Category fields are excluded by default
+
+Category fields are created as exclude field (TCA) by default.
+If you're upgrading don't forget to add the permission for users.

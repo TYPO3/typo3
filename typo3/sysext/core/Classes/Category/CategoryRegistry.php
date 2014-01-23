@@ -348,6 +348,7 @@ class CategoryRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 				),
 			);
 
+			// Merge changes to TCA configuration
 			if (!empty($options['fieldConfiguration'])) {
 				\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule(
 					$fieldConfiguration,
@@ -355,14 +356,21 @@ class CategoryRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 				);
 			}
 
+			// Take specific label into account
 			$label = 'LLL:EXT:lang/locallang_tca.xlf:sys_category.categories';
 			if (!empty($options['label'])) {
 				$label = $options['label'];
 			}
 
+			// Take specific value of exclude flag into account
+			$exclude = TRUE;
+			if (isset($options['exclude'])) {
+				$exclude = (bool)$options['exclude'];
+			}
+
 			$columns = array(
 				$fieldName => array(
-					'exclude' => 0,
+					'exclude' => $exclude,
 					'label' => $label,
 					'config' => $fieldConfiguration,
 				),
