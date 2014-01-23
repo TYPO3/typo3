@@ -158,6 +158,7 @@ return array(
 				'internal_type' => 'db',
 				'allowed' => '*',
 				'MM' => 'sys_category_record_mm',
+				'size' => 10,
 				'show_thumbs' => FALSE
 			)
 		)
