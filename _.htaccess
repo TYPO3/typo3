@@ -113,8 +113,8 @@ RewriteRule ^typo3conf/ext/[^/]+/Resources/Private/ - [F]
 
 # Stop rewrite processing, if we are in the typo3/ directory.
 # For httpd.conf, use this line instead of the next one:
-# RewriteRule ^/TYPO3root/(typo3/|t3lib/|fileadmin/|typo3conf/|typo3temp/|uploads/|favicon\.ico) - [L]
-RewriteRule ^(typo3/|t3lib/|fileadmin/|typo3conf/|typo3temp/|uploads/|favicon\.ico) - [L]
+# RewriteRule ^/TYPO3root/(typo3/|fileadmin/|typo3conf/|typo3temp/|uploads/|favicon\.ico) - [L]
+RewriteRule ^(typo3/|fileadmin/|typo3conf/|typo3temp/|uploads/|favicon\.ico) - [L]
 
 # If the file/symlink/directory does not exist => Redirect to index.php.
 # For httpd.conf, you need to prefix each '%{REQUEST_FILENAME}' with '%{DOCUMENT_ROOT}'.
