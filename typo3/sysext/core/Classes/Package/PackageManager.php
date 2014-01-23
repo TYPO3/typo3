@@ -620,4 +620,15 @@ class PackageManager extends \TYPO3\Flow\Package\PackageManager implements \TYPO
 		$this->packages = $newPackages;
 	}
 
+	/**
+	 * Saves the current content of $this->packageStatesConfiguration to the
+	 * PackageStates.php file.
+	 *
+	 * @return void
+	 */
+	protected function sortAndSavePackageStates() {
+		parent::sortAndSavePackageStates();
+
+		\TYPO3\CMS\Core\Utility\OpcodeCacheUtility::clearAllActive($this->packageStatesPathAndFilename);
+	}
 }

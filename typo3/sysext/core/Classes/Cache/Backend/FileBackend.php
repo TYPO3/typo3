@@ -174,6 +174,9 @@ class FileBackend extends \TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend implem
 		if ($result === FALSE) {
 			throw new \TYPO3\CMS\Core\Cache\Exception('The cache file "' . $cacheEntryPathAndFilename . '" could not be written.', 1222361632);
 		}
+		if ($this->cacheEntryFileExtension === '.php') {
+			\TYPO3\CMS\Core\Utility\OpcodeCacheUtility::clearAllActive($cacheEntryPathAndFilename);
+		}
 	}
 
 	/**

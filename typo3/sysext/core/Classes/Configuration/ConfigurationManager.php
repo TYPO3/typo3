@@ -306,7 +306,7 @@ class ConfigurationManager {
 			);
 		}
 		$configuration = Utility\ArrayUtility::sortByKeyRecursive($configuration);
-		return Utility\GeneralUtility::writeFile(
+		$result = Utility\GeneralUtility::writeFile(
 			$localConfigurationFile,
 			'<?php' . LF .
 				'return ' .
@@ -317,6 +317,10 @@ class ConfigurationManager {
 			'?>',
 			TRUE
 		);
+
+		Utility\OpcodeCacheUtility::clearAllActive($localConfigurationFile);
+
+		return $result;
 	}
 
 	/**

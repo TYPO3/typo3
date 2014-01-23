@@ -242,6 +242,9 @@ class SimpleFileBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend im
 		}
 		$cacheEntryPathAndFilename = $this->cacheDirectory . $entryIdentifier . $this->cacheEntryFileExtension;
 		rename($temporaryCacheEntryPathAndFilename, $cacheEntryPathAndFilename);
+		if ($this->cacheEntryFileExtension === '.php') {
+			\TYPO3\CMS\Core\Utility\OpcodeCacheUtility::clearAllActive($cacheEntryPathAndFilename);
+		}
 	}
 
 	/**

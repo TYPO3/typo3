@@ -743,29 +743,59 @@ class Check {
 	 * @return Status\StatusInterface
 	 */
 	protected function checkSomePhpOpcodeCacheIsLoaded() {
-		if (
-			// Currently APCu identifies itself both as "apcu" and "apc" (for compatibility) although it doesn't provide the APC-opcache functionality
-			extension_loaded('eaccelerator')
-			|| extension_loaded('xcache')
-			|| (extension_loaded('apc') && !extension_loaded('apcu'))
-			|| extension_loaded('Zend Optimizer+')
-			|| extension_loaded('Zend OPcache')
-			|| extension_loaded('wincache')
-		) {
-			$status = new Status\OkStatus();
-			$status->setTitle('A PHP opcode cache is loaded');
-		} else {
+		$opcodeCaches = \TYPO3\CMS\Core\Utility\OpcodeCacheUtility::getAllActive();
+		if (count($opcodeCaches) === 0) {
 			$status = new Status\WarningStatus();
 			$status->setTitle('No PHP opcode cache loaded');
 			$status->setMessage(
 				'PHP opcode caches hold a compiled version of executed PHP scripts in' .
 				' memory and do not require to recompile any script on each access.' .
 				' This can be a massive performance improvement and can put load off a' .
-				' server in general, a parse time reduction by factor three for full cached' .
+				' server in general. A parse time reduction by factor three for fully cached' .
 				' pages can be achieved easily if using some opcode cache.' .
 				' If in doubt choosing one, APC runs well and can be used as data' .
 				' cache layer in TYPO3 CMS as additional feature.'
 			);
+		} else {
+			$status = new Status\OkStatus();
+			$message = '';
+
+			foreach ($opcodeCaches as $opcodeCache => $properties) {
+				$message .= 'Name: ' . $opcodeCache . ' Version: ' . $properties['version'];
+				$message .= LF;
+
+				if ($properties['error']) {
+					// Set status to error if not already set
+					if ($status->getSeverity() !== 'error') {
+						$status = new Status\ErrorStatus();
+					}
+					$message .= ' This opcode cache is marked as malfunctioning by the TYPO3 CMS Team.';
+				} elseif ($properties['canInvalidate']) {
+					$message .= ' This opcode cache should work correctly and has good performance.';
+				} else {
+					// Set status to warning if not already error set
+					if ($status->getSeverity() !== 'error' || $status->getSeverity() !== 'warning') {
+						$status = new Status\WarningStatus();
+					}
+					$message .= ' This opcode cache may work correctly but has medium performance.';
+				}
+				$message .= LF;
+			}
+
+			// Set title of status depending on serverity
+			switch ($status->getSeverity()) {
+				case 'error':
+					$status->setTitle('A possibly malfunctioning PHP opcode cache is loaded');
+					break;
+				case 'warning':
+					$status->setTitle('A PHP opcode cache is loaded, which may cause problems');
+					break;
+				case 'ok':
+				default:
+					$status->setTitle('A PHP opcode cache is loaded');
+					break;
+			}
+			$status->setMessage($message);
 		}
 		return $status;
 	}
