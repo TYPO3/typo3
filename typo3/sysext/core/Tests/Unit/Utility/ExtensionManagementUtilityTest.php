@@ -296,6 +296,42 @@ class ExtensionManagementUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 		return $tca;
 	}
 
+	/**
+	 * Data provider for getClassNamePrefixForExtensionKey.
+	 *
+	 * @return array
+	 */
+	public function extensionKeyDataProvider() {
+		return array(
+			'Without underscores' => array(
+				'testkey',
+				'tx_testkey'
+			),
+			'With underscores' => array(
+				'this_is_a_test_extension',
+				'tx_thisisatestextension'
+			),
+			'With user prefix and without underscores' => array(
+				'user_testkey',
+				'user_testkey'
+			),
+			'With user prefix and with underscores' => array(
+				'user_test_key',
+				'user_testkey'
+			),
+		);
+	}
+
+	/**
+	 * @test
+	 * @param string $extensionName
+	 * @param string $expectedPrefix
+	 * @dataProvider extensionKeyDataProvider
+	 */
+	public function getClassNamePrefixForExtensionKey($extensionName, $expectedPrefix) {
+		$this->assertSame($expectedPrefix, ExtensionManagementUtility::getCN($extensionName));
+	}
+
 	/////////////////////////////////////////////
 	// Tests concerning getExtensionKeyByPrefix
 	/////////////////////////////////////////////
@@ -735,6 +771,62 @@ class ExtensionManagementUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 		file_put_contents($extLocalconfLocation, "<?php\n\nthrow new RuntimeException('', 1340559079);\n\n?>");
 		$GLOBALS['TYPO3_LOADED_EXT'] = new \TYPO3\CMS\Core\Compatibility\LoadedExtensionsArray($packageManager);
 		ExtensionManagementUtilityAccessibleProxy::loadSingleExtLocalconfFiles();
+	}
+
+	/////////////////////////////////////////
+	// Tests concerning addModule
+	/////////////////////////////////////////
+
+	/**
+	 * @test
+	 */
+	public function newSubmoduleCanBeAddedToTopOfModule() {
+		$mainModule = 'foobar';
+		$subModule = 'newModule';
+		$GLOBALS['TBE_MODULES'][$mainModule] = 'some,modules';
+
+		ExtensionManagementUtility::addModule($mainModule, $subModule, 'top');
+
+		$this->assertEquals('newModule,some,modules', $GLOBALS['TBE_MODULES'][$mainModule]);
+	}
+
+	/**
+	 * @test
+	 */
+	public function newSubmoduleCanBeAddedToBottomOfModule() {
+		$mainModule = 'foobar';
+		$subModule = 'newModule';
+		$GLOBALS['TBE_MODULES'][$mainModule] = 'some,modules';
+
+		ExtensionManagementUtility::addModule($mainModule, $subModule, 'bottom');
+
+		$this->assertEquals('some,modules,newModule', $GLOBALS['TBE_MODULES'][$mainModule]);
+	}
+
+	/**
+	 * @test
+	 */
+	public function newSubmoduleCanBeAddedAfterSpecifiedSubmodule() {
+		$mainModule = 'foobar';
+		$subModule = 'newModule';
+		$GLOBALS['TBE_MODULES'][$mainModule] = 'some,modules';
+
+		ExtensionManagementUtility::addModule($mainModule, $subModule, 'after:some');
+
+		$this->assertEquals('some,newModule,modules', $GLOBALS['TBE_MODULES'][$mainModule]);
+	}
+
+	/**
+	 * @test
+	 */
+	public function newSubmoduleCanBeAddedBeforeSpecifiedSubmodule() {
+		$mainModule = 'foobar';
+		$subModule = 'newModule';
+		$GLOBALS['TBE_MODULES'][$mainModule] = 'some,modules';
+
+		ExtensionManagementUtility::addModule($mainModule, $subModule, 'before:modules');
+
+		$this->assertEquals('some,newModule,modules', $GLOBALS['TBE_MODULES'][$mainModule]);
 	}
 
 	/////////////////////////////////////////

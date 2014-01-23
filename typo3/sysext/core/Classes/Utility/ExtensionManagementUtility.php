@@ -112,6 +112,8 @@ class ExtensionManagementUtility {
 	 * Useful for images and links from backend
 	 *
 	 * @param string $key Extension key
+	 *
+	 * @throws \BadFunctionCallException
 	 * @return string
 	 */
 	static public function extRelPath($key) {
@@ -147,7 +149,7 @@ class ExtensionManagementUtility {
 	 * @internal
 	 */
 	static public function getCN($key) {
-		return substr($key, 0, 5) == 'user_' ? 'user_' . str_replace('_', '', substr($key, 5)) : 'tx_' . str_replace('_', '', $key);
+		return strpos($key, 'user_') === 0 ? 'user_' . str_replace('_', '', substr($key, 5)) : 'tx_' . str_replace('_', '', $key);
 	}
 
 	/**
@@ -188,6 +190,8 @@ class ExtensionManagementUtility {
 	 * If the extension is not installed, this function returns an empty string.
 	 *
 	 * @param string $key The key of the extension to look up, must not be empty
+	 *
+	 * @throws \InvalidArgumentException
 	 * @return string The extension version as a string in the format "x.y.z",
 	 */
 	static public function getExtensionVersion($key) {
@@ -233,66 +237,87 @@ class ExtensionManagementUtility {
 	/**
 	 * Makes fields visible in the TCEforms, adding them to the end of (all) "types"-configurations
 	 *
-	 * Adds a string $str (comma list of field names) to all ["types"][xxx]["showitem"] entries for table $table (unless limited by $specificTypesList)
+	 * Adds a string $string (comma separated list of field names) to all ["types"][xxx]["showitem"] entries for table $table (unless limited by $typeList)
 	 * This is needed to have new fields shown automatically in the TCEFORMS of a record from $table.
 	 * Typically this function is called after having added new columns (database fields) with the addTCAcolumns function
 	 * FOR USE IN ext_tables.php FILES
 	 *
 	 * @param string $table Table name
-	 * @param string $str Field list to add.
-	 * @param string $specificTypesList List of specific types to add the field list to. (If empty, all type entries are affected)
+	 * @param string $newFieldsString Field list to add.
+	 * @param string $typeList List of specific types to add the field list to. (If empty, all type entries are affected)
 	 * @param string $position Insert fields before (default) or after one
 	 * @return void
 	 */
-	static public function addToAllTCAtypes($table, $str, $specificTypesList = '', $position = '') {
-		$str = trim($str);
+	static public function addToAllTCAtypes($table, $newFieldsString, $typeList = '', $position = '') {
+		$newFieldsString = trim($newFieldsString);
+		if ($newFieldsString === '' || !is_array($GLOBALS['TCA'][$table]['types'])) {
+			return;
+		}
+		list($positionIdentifier, $entityName) = GeneralUtility::trimExplode(':', $position);
 		$palettesChanged = array();
-		if ($str && is_array($GLOBALS['TCA'][$table]) && is_array($GLOBALS['TCA'][$table]['types'])) {
-			foreach ($GLOBALS['TCA'][$table]['types'] as $type => &$typeDetails) {
-				if ($specificTypesList === '' || GeneralUtility::inList($specificTypesList, $type)) {
-					$fieldExists = FALSE;
-					if ($position != '' && is_array($GLOBALS['TCA'][$table]['palettes'])) {
-						$positionArray = GeneralUtility::trimExplode(':', $position);
-						if ($positionArray[0] == 'replace') {
-							foreach ($GLOBALS['TCA'][$table]['palettes'] as $palette => $paletteDetails) {
-								if (preg_match('/\\b' . preg_quote($palette, '/') . '\\b/', $typeDetails['showitem']) > 0 && preg_match('/\\b' . preg_quote($positionArray[1], '/') . '\\b/', $paletteDetails['showitem']) > 0) {
-									self::addFieldsToPalette($table, $palette, $str, $position);
-									// Save that palette in case other types use it
-									$palettesChanged[] = $palette;
-									$fieldExists = TRUE;
-								} elseif (in_array($palette, $palettesChanged)) {
-									$fieldExists = TRUE;
-								}
-							}
-						} else {
-							if (strpos($typeDetails['showitem'], $str) !== FALSE) {
-								$fieldExists = TRUE;
-							} else {
-								foreach ($GLOBALS['TCA'][$table]['palettes'] as $palette => $paletteDetails) {
-									if (preg_match('/\\b' . preg_quote($palette, '/') . '\\b/', $typeDetails['showitem']) > 0 && preg_match('/\\b' . preg_quote($positionArray[1], '/') . '\\b/', $paletteDetails['showitem']) > 0) {
-										$position = $positionArray[0] . ':--palette--;;' . $palette;
+
+		foreach ($GLOBALS['TCA'][$table]['types'] as $type => &$typeDetails) {
+			// skip if we don't want to add the field for this type
+			if ($typeList !== '' && !GeneralUtility::inList($typeList, $type)) {
+				continue;
+			}
+			// skip if fields were already added
+			if (strpos($typeDetails['showitem'], $newFieldsString) !== FALSE) {
+				continue;
+			}
+
+			$fieldExists = FALSE;
+			$newPosition = '';
+			$paletteNames = array();
+			if (is_array($GLOBALS['TCA'][$table]['palettes'])) {
+				// Get the palette names used in current showitem
+				$paletteCount = preg_match_all('/(?:^|,)                    # Line start or a comma
+					(?:
+					    \\s*\\-\\-palette\\-\\-;[^;]*;([^,$]*)|              # --palette--;label;paletteName
+					    \\s*\\b[^;,]+\\b(?:;[^;]*;([^;,]+);?[^;,]*;?)?[^,]*  # field;label;paletteName[;options[;colors]]
+					)/x', $typeDetails['showitem'], $paletteMatches);
+				if ($paletteCount > 0) {
+					$paletteNames = array_filter(array_merge($paletteMatches[1], $paletteMatches[2]));
+					if (count($paletteNames)) {
+						foreach ($paletteNames as $paletteName) {
+							$palette = $GLOBALS['TCA'][$table]['palettes'][$paletteName];
+							switch ($positionIdentifier) {
+								case 'after':
+								case 'before':
+									if (preg_match('/\\b' . $entityName . '\\b/', $palette['showitem']) > 0) {
+										$newPosition = $positionIdentifier . ':--palette--;;' . $paletteName;
 									}
-								}
+									break;
+								case 'replace':
+									// check if fields have been added to palette before
+									if (isset($palettesChanged[$paletteName])) {
+										$fieldExists = TRUE;
+										continue;
+									}
+									if (preg_match('/\\b' . $entityName . '\\b/', $palette['showitem']) > 0) {
+										self::addFieldsToPalette($table, $paletteName, $newFieldsString, $position);
+										// Memorize that we already changed this palette, in case other types also use it
+										$palettesChanged[$paletteName] = TRUE;
+										$fieldExists = TRUE;
+										continue;
+									}
+									break;
+								default:
+									// Intentionally left blank
 							}
 						}
-					} else {
-						if (strpos($typeDetails['showitem'], $str) !== FALSE) {
-							$fieldExists = TRUE;
-						} elseif (is_array($GLOBALS['TCA'][$table]['palettes'])) {
-							foreach ($GLOBALS['TCA'][$table]['palettes'] as $palette => $paletteDetails) {
-								if (preg_match('/\\b' . preg_quote($palette, '/') . '\\b/', $typeDetails['showitem']) > 0 && strpos($paletteDetails['showitem'], $str) !== FALSE) {
-									$fieldExists = TRUE;
-								}
-							}
-						}
-					}
-					if ($fieldExists === FALSE) {
-						$typeDetails['showitem'] = self::executePositionedStringInsertion($typeDetails['showitem'], $str, $position);
 					}
 				}
 			}
-			unset($typeDetails);
+			if ($fieldExists === FALSE) {
+				$typeDetails['showitem'] = self::executePositionedStringInsertion(
+					$typeDetails['showitem'],
+					$newFieldsString,
+					$newPosition !== '' ? $newPosition : $position
+				);
+			}
 		}
+		unset($typeDetails);
 	}
 
 	/**
@@ -441,6 +466,8 @@ class ExtensionManagementUtility {
 	 * @param string $fieldName Name of the field to be used
 	 * @param array $customSettingOverride Custom field settings overriding the basics
 	 * @param string $allowedFileExtensions Comma list of allowed file extensions (e.g. "jpg,gif,pdf")
+	 * @param string $disallowedFileExtensions
+	 *
 	 * @return array
 	 */
 	static public function getFileFieldTCAConfig($fieldName, array $customSettingOverride = array(), $allowedFileExtensions = '', $disallowedFileExtensions = '') {
@@ -520,63 +547,61 @@ class ExtensionManagementUtility {
 	 * Inserts as list of data into an existing list.
 	 * The insertion position can be defined accordant before of after existing list items.
 	 *
+	 * Example:
+	 * + list: 'field_a, field_b;;;;2-2-2, field_c;;;;3-3-3'
+	 * + insertionList: 'field_d, field_e;;;4-4-4'
+	 * + insertionPosition: 'after:field_b'
+	 * -> 'field_a, field_b;;;;2-2-2, field_d, field_e;;;4-4-4, field_c;;;;3-3-3'
+	 *
+	 * $insertPosition may contain ; and - characters: after:--palette--;;title
+	 *
 	 * @param string $list The list of items to be extended
 	 * @param string $insertionList The list of items to inserted
 	 * @param string $insertionPosition Insert fields before (default) or after one
 	 * @return string The extended list
 	 */
 	static protected function executePositionedStringInsertion($list, $insertionList, $insertionPosition = '') {
-		$list = trim($list);
+		$list = $newList = trim($list, ', \\t\\n\\r\\0\\x0B');
+
 		$insertionList = self::removeDuplicatesForInsertion($insertionList, $list);
-		if ($insertionList) {
-			// Append data to the end (default):
-			if ($insertionPosition === '') {
-				$list .= ($list ? ', ' : '') . $insertionList;
-			} else {
-				$positions = GeneralUtility::trimExplode(',', $insertionPosition, TRUE);
-				$items = self::explodeItemList($list);
-				$isInserted = FALSE;
-				// Iterate through all fields an check whether it's possible to inserte there:
-				foreach ($items as $item => &$itemDetails) {
-					$needles = self::getInsertionNeedles($item, $itemDetails['details']);
-					// Insert data before:
-					foreach ($needles['before'] as $needle) {
-						if (in_array($needle, $positions)) {
-							$itemDetails['rawData'] = $insertionList . ', ' . $itemDetails['rawData'];
-							$isInserted = TRUE;
-							break;
-						}
-					}
-					// Insert data after:
-					foreach ($needles['after'] as $needle) {
-						if (in_array($needle, $positions)) {
-							$itemDetails['rawData'] .= ', ' . $insertionList;
-							$isInserted = TRUE;
-							break;
-						}
-					}
-					// Replace with data:
-					foreach ($needles['replace'] as $needle) {
-						if (in_array($needle, $positions)) {
-							$itemDetails['rawData'] = $insertionList;
-							$isInserted = TRUE;
-							break;
-						}
-					}
-					// Break if insertion was already done:
-					if ($isInserted) {
-						break;
-					}
-				}
-				// If insertion point could not be determined, append the data:
-				if (!$isInserted) {
-					$list .= ($list ? ', ' : '') . $insertionList;
-				} else {
-					$list = self::generateItemList($items, TRUE);
-				}
-			}
+
+		if ($insertionList === '') {
+			return $list;
 		}
-		return $list;
+		if ($list === '') {
+			return $insertionList;
+		}
+		if ($insertionPosition === '') {
+			return $list . ',' . $insertionList;
+		}
+
+		list($location, $positionName) = GeneralUtility::trimExplode(':', $insertionPosition);
+		// The $insertPosition may be a palette: after:--palette--;;title
+		// In the $list the palette may contain a LLL string in between the ;;
+		// Adjust the regex to match that
+		if (strpos($positionName, ';;') !== FALSE) {
+			$positionName = str_replace(';;', ';[^;]*;', $positionName);
+		}
+
+		$pattern = ('/(^|,\\s*)(' . $positionName . '[^,$]*)/');
+		switch ($location) {
+			case 'after':
+				$newList = preg_replace($pattern, '$1$2, ' . $insertionList, $list);
+				break;
+			case 'before':
+				$newList = preg_replace($pattern, '$1' . $insertionList . ', $2', $list);
+				break;
+			case 'replace':
+				$newList = preg_replace($pattern, '$1' . $insertionList, $list);
+				break;
+			default:
+		}
+
+		// When preg_replace did not replace anything; append the $insertionList.
+		if ($list === $newList) {
+			return $list . ', ' . $insertionList;
+		}
+		return $newList;
 	}
 
 	/**
@@ -588,32 +613,26 @@ class ExtensionManagementUtility {
 	 * + insertion: 'field_b, field_d, field_c;;;4-4-4'
 	 * -> new insertion: 'field_d'
 	 *
+	 * Duplicate values in $insertionList are removed.
+	 *
 	 * @param string $insertionList The list of items to inserted
 	 * @param string $list The list of items to be extended (default: '')
 	 * @return string Duplicate-free list of items to be inserted
 	 */
 	static protected function removeDuplicatesForInsertion($insertionList, $list = '') {
-		$pattern = '/(^|,)\\s*\\b([^;,]+)\\b[^,]*/';
-		$listItems = array();
-		if ($list && preg_match_all($pattern, $list, $listMatches)) {
-			$listItems = $listMatches[2];
+		$insertionListParts = preg_split('/\\s*,\\s*/', $insertionList);
+		$insertionList = implode(', ', array_unique($insertionListParts));
+		if ($list === '') {
+			return $insertionList;
 		}
-		if ($insertionList && preg_match_all($pattern, $insertionList, $insertionListMatches)) {
-			$insertionItems = array();
-			$insertionDuplicates = FALSE;
-			foreach ($insertionListMatches[2] as $insertionIndex => $insertionItem) {
-				if (!isset($insertionItems[$insertionItem]) && !in_array($insertionItem, $listItems)) {
-					$insertionItems[$insertionItem] = TRUE;
-				} else {
-					unset($insertionListMatches[0][$insertionIndex]);
-					$insertionDuplicates = TRUE;
-				}
-			}
-			if ($insertionDuplicates) {
-				$insertionList = implode('', $insertionListMatches[0]);
-			}
+		// Get a list of fieldNames that are present in the list.
+		preg_match_all('/(?:^|,)\\s*\\b([^;,]+)\\b[^,]*/', $list, $listMatches);
+		// Remove the field names from the insertionlist.
+		$fieldReplacePatterns = array();
+		foreach ($listMatches[1] as $fieldName) {
+			$fieldReplacePatterns[] = '/(?:^|,)\\s*\\b' . $fieldName . '\\b[^,$]*/';
 		}
-		return $insertionList;
+		return preg_replace($fieldReplacePatterns, '', $insertionList);
 	}
 
 	/**
@@ -623,11 +642,12 @@ class ExtensionManagementUtility {
 	 * @param string $item The name of the field/item
 	 * @param array $itemDetails Additional details of the field/item like e.g. palette information
 	 * @return array The needled to be used for inserting content before or after existing fields/items
+	 * @deprecated since 6.2, will be removed two versions later. This method was only used by executePositionedStringInsertion().
 	 */
 	static protected function getInsertionNeedles($item, array $itemDetails) {
-		if (strstr($item, '--')) {
+		if (strpos($item, '--') !== FALSE) {
 			// If $item is a separator (--div--) or palette (--palette--) then it may have been appended by a unique number. This must be stripped away here.
-			$item = preg_replace('/[0-9]+$/', '', $item);
+			$item = str_replace(array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9), '', $item);
 		}
 		$needles = array(
 			'before' => array($item, 'before:' . $item),
@@ -656,7 +676,7 @@ class ExtensionManagementUtility {
 		foreach ($itemParts as $itemPart) {
 			$itemDetails = GeneralUtility::trimExplode(';', $itemPart, FALSE, 5);
 			$key = $itemDetails[0];
-			if (strstr($key, '--')) {
+			if (strpos($key, '--') !== FALSE) {
 				// If $key is a separator (--div--) or palette (--palette--) then it will be appended by a unique number. This must be removed again when using this value!
 				$key .= count($items);
 			}
@@ -687,9 +707,9 @@ class ExtensionManagementUtility {
 	static protected function generateItemList(array $items, $useRawData = FALSE) {
 		$itemParts = array();
 		foreach ($items as $item => $itemDetails) {
-			if (strstr($item, '--')) {
+			if (strpos($item, '--') !== FALSE) {
 				// If $item is a separator (--div--) or palette (--palette--) then it may have been appended by a unique number. This must be stripped away here.
-				$item = preg_replace('/[0-9]+$/', '', $item);
+				$item = str_replace(array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9), '', $item);
 			}
 			if ($useRawData) {
 				$itemParts[] = $itemDetails['rawData'];
@@ -803,41 +823,30 @@ class ExtensionManagementUtility {
 	 * @return void
 	 */
 	static public function addModule($main, $sub = '', $position = '', $path = '', $moduleConfiguration = array()) {
+		// If there is already a main module by this name:
+		// Adding the submodule to the correct position:
 		if (isset($GLOBALS['TBE_MODULES'][$main]) && $sub) {
-			// If there is already a main module by this name:
-			// Adding the submodule to the correct position:
 			list($place, $modRef) = GeneralUtility::trimExplode(':', $position, TRUE);
-			$mods = GeneralUtility::trimExplode(',', $GLOBALS['TBE_MODULES'][$main], TRUE);
-			if (!in_array($sub, $mods)) {
+			$modules = ',' . $GLOBALS['TBE_MODULES'][$main] . ',';
+			$modRef = ',' . $modRef . ',';
+			if (!GeneralUtility::inList($modules, $sub)) {
 				switch (strtolower($place)) {
 					case 'after':
-
-					case 'before':
-						$pointer = 0;
-						$found = FALSE;
-						foreach ($mods as $k => $m) {
-							if ($m === $modRef) {
-								$pointer = strtolower($place) == 'after' ? $k + 1 : $k;
-								$found = TRUE;
-							}
-						}
-						if ($found) {
-							array_splice($mods, $pointer, 0, $sub);
-						} else {
-							// If requested module is not found: Add at the end
-							array_push($mods, $sub);
-						}
+						$modules = str_replace($modRef, $modRef . $sub . ',', $modules);
 						break;
+					case 'before':
+						$modules = str_replace($modRef, ',' . $sub . $modRef, $modules);
+						break;
+					case 'top':
+						$modules = $sub . $modules;
+						break;
+					case 'bottom':
 					default:
-						if (strtolower($place) == 'top') {
-							array_unshift($mods, $sub);
-						} else {
-							array_push($mods, $sub);
-						}
+						$modules = $modules . $sub;
 				}
 			}
 			// Re-inserting the submodule list:
-			$GLOBALS['TBE_MODULES'][$main] = implode(',', $mods);
+			$GLOBALS['TBE_MODULES'][$main] = trim($modules, ',');
 		} else {
 			// Create new main modules with only one submodule, $sub (or none if $sub is blank)
 			$GLOBALS['TBE_MODULES'][$main] = $sub;
@@ -1036,7 +1045,7 @@ class ExtensionManagementUtility {
 			// Empty $os means 'not limited to one OS', therefore a check is not needed
 			if ($GLOBALS['T3_SERVICES'][$serviceType][$serviceKey]['available'] && $GLOBALS['T3_SERVICES'][$serviceType][$serviceKey]['os'] != '') {
 				// TYPO3_OS is not yet defined
-				$os_type = stristr(PHP_OS, 'win') && !stristr(PHP_OS, 'darwin') ? 'WIN' : 'UNIX';
+				$os_type = stripos(PHP_OS, 'win') !== FALSE && !stripos(PHP_OS, 'darwin') !== FALSE ? 'WIN' : 'UNIX';
 				$os = GeneralUtility::trimExplode(',', strtoupper($GLOBALS['T3_SERVICES'][$serviceType][$serviceKey]['os']));
 				if (!in_array($os_type, $os)) {
 					self::deactivateService($serviceType, $serviceKey);
@@ -1233,11 +1242,11 @@ class ExtensionManagementUtility {
 	 * When adding a frontend plugin you will have to add both an entry to the TCA definition of tt_content table AND to the TypoScript template which must initiate the rendering.
 	 * Since the static template with uid 43 is the "content.default" and practically always used for rendering the content elements it's very useful to have this function automatically adding the necessary TypoScript for calling your plugin. It will also work for the extension "css_styled_content"
 	 * $type determines the type of frontend plugin:
-	 * "list_type" (default)	- the good old "Insert plugin" entry
-	 * "menu_type"	- a "Menu/Sitemap" entry
-	 * "CType" - a new content element type
-	 * "header_layout" - an additional header type (added to the selection of layout1-5)
-	 * "includeLib" - just includes the library for manual use somewhere in TypoScript.
+	 * + list_type (default) - the good old "Insert plugin" entry
+	 * + menu_type - a "Menu/Sitemap" entry
+	 * + CType - a new content element type
+	 * + header_layout - an additional header type (added to the selection of layout1-5)
+	 * + includeLib - just includes the library for manual use somewhere in TypoScript.
 	 * (Remember that your $type definition should correspond to the column/items array in $GLOBALS['TCA'][tt_content] where you added the selector item for the element! See addPlugin() function)
 	 * FOR USE IN ext_localconf.php FILES
 	 *
@@ -1245,7 +1254,8 @@ class ExtensionManagementUtility {
 	 * @param string $classFile The PHP-class filename relative to the extension root directory. If set to blank a default value is chosen according to convensions.
 	 * @param string $prefix Is used as a - yes, suffix - of the class name (fx. "_pi1")
 	 * @param string $type See description above
-	 * @param boolean $cached If $cached is set as USER content object (cObject) is created - otherwise a USER_INT object is created.
+	 * @param integer $cached If $cached is set as USER content object (cObject) is created - otherwise a USER_INT object is created.
+	 *
 	 * @return void
 	 */
 	static public function addPItoST43($key, $classFile = '', $prefix = '', $type = 'list_type', $cached = 0) {
@@ -1349,7 +1359,8 @@ tt_content.' . $key . $prefix . ' {
 	 * @param string $key Is the extension key (informative only).
 	 * @param string $type Is either "setup" or "constants" and obviously determines which kind of TypoScript code we are adding.
 	 * @param string $content Is the TS content, prefixed with a [GLOBAL] line and a comment-header.
-	 * @param string $afterStaticUid Is either an integer pointing to a uid of a static_template or a string pointing to the "key" of a static_file template ([reduced extension_key]/[local path]). The points is that the TypoScript you add is included only IF that static template is included (and in that case, right after). So effectively the TypoScript you set can specifically overrule settings from those static templates.
+	 * @param integer $afterStaticUid Is either an integer pointing to a uid of a static_template or a string pointing to the "key" of a static_file template ([reduced extension_key]/[local path]). The points is that the TypoScript you add is included only IF that static template is included (and in that case, right after). So effectively the TypoScript you set can specifically overrule settings from those static templates.
+	 *
 	 * @return void
 	 */
 	static public function addTypoScript($key, $type, $content, $afterStaticUid = 0) {
@@ -1385,9 +1396,9 @@ tt_content.' . $key . $prefix . ' {
 	 * Find extension icon
 	 *
 	 * @param string $extensionPath Path to extension directory.
-	 * @param string $returnFullPath Return full path of file.
+	 * @param boolean $returnFullPath Return full path of file.
+	 *
 	 * @return string
-	 * @throws \BadFunctionCallException
 	 */
 	static public function getExtensionIcon($extensionPath, $returnFullPath = FALSE) {
 		$icon = '';
@@ -1786,8 +1797,7 @@ tt_content.' . $key . $prefix . ' {
 			$requiredExtensions = GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['EXT']['requiredExt']);
 		}
 		$requiredExtensions = array_merge(GeneralUtility::trimExplode(',', REQUIRED_EXTENSIONS), $requiredExtensions);
-		$requiredExtensions = array_unique($requiredExtensions);
-		return $requiredExtensions;
+		return array_unique($requiredExtensions);
 	}
 
 	/**
