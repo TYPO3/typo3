@@ -145,7 +145,13 @@ class FileListController {
 			if ($combinedIdentifier) {
 				/** @var $fileFactory \TYPO3\CMS\Core\Resource\ResourceFactory */
 				$fileFactory = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\ResourceFactory');
-				$this->folderObject = $fileFactory->getFolderObjectFromCombinedIdentifier($combinedIdentifier);
+				$storage = $fileFactory->getStorageObjectFromCombinedIdentifier($combinedIdentifier);
+				$identifier = substr($combinedIdentifier, strpos($combinedIdentifier, ':') + 1);
+				if (!$storage->hasFolder($identifier)) {
+					$identifier = $storage->getFolderIdentifierFromFileIdentifier($identifier);
+				}
+
+				$this->folderObject = $fileFactory->getFolderObjectFromCombinedIdentifier($storage->getUid() . ':' . $identifier);
 				// Disallow the rendering of the processing folder (e.g. could be called manually)
 				// and all folders without any defined storage
 				if ($this->folderObject && ($this->folderObject->getStorage()->getUid() == 0 || trim($this->folderObject->getStorage()->getProcessingFolder()->getIdentifier(), '/') === trim($this->folderObject->getIdentifier(), '/'))) {
@@ -165,8 +171,15 @@ class FileListController {
 				}
 			}
 		} catch (\TYPO3\CMS\Core\Resource\Exception\FolderDoesNotExistException $fileException) {
-			// Set folder object to null and throw a message later on
-			$this->folderObject = NULL;
+			// Take the first object of the first storage
+			$fileStorages = $GLOBALS['BE_USER']->getFileStorages();
+			$fileStorage = reset($fileStorages);
+			if ($fileStorage) {
+				// Set folder object to null and throw a message later on
+				$this->folderObject = $fileStorage->getRootLevelFolder();
+			} else {
+				$this->folderObject = NULL;
+			}
 			$this->errorMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
 				sprintf($GLOBALS['LANG']->getLL('folderNotFoundMessage', TRUE),
 						htmlspecialchars($this->id)
