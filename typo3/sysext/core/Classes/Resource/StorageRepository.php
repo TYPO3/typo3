@@ -35,6 +35,11 @@ namespace TYPO3\CMS\Core\Resource;
 class StorageRepository extends AbstractRepository {
 
 	/**
+	 * @var null|array‚
+	 */
+	protected static $storageRowCache = NULL;
+
+	/**
 	 * @var string
 	 */
 	protected $objectType = 'TYPO3\\CMS\\Core\\Resource\\ResourceStorage';
@@ -74,32 +79,84 @@ class StorageRepository extends AbstractRepository {
 	}
 
 	/**
+	 * @param integer $uid
+	 *
+	 * @return null|ResourceStorage
+	 */
+	public function findByUid($uid) {
+		$this->initializeLocalCache();
+		if (isset(self::$storageRowCache[$uid])) {
+			return  $this->factory->getStorageObject($uid, self::$storageRowCache[$uid]);
+		}
+		return NULL;
+	}
+
+
+	/**
+	 * Initializes the Storage
+	 *
+	 * @return void
+	 */
+	protected function initializeLocalCache() {
+		if (static::$storageRowCache === NULL) {
+
+			static::$storageRowCache = $this->db->exec_SELECTgetRows(
+				'*',
+				$this->table,
+				'1=1' . $this->getWhereClauseForEnabledFields(),
+				'',
+				'',
+				'',
+				'uid'
+			);
+			// if no storage is created before or the user has not access to a storage
+			// static::$storageRowCache would have the value array()
+			// so check if there is any record. If no record is found, create the fileadmin/ storage
+			// selecting just one row is enoung
+
+			if (static::$storageRowCache === array()) {
+				$storageObjectsExists = $this->db->exec_SELECTgetSingleRow('uid', $this->table, '');
+				if ($storageObjectsExists !==  NULL) {
+					if ($this->createLocalStorage(
+						'fileadmin/ (auto-created)',
+						$GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'],
+						'relative',
+						'This is the local fileadmin/ directory. This storage mount has been created automatically by TYPO3.'
+					) > 0 ) {
+						// call self for initialize Cache
+						$this->initializeLocalCache();
+					}
+				}
+			}
+		}
+	}
+
+	/**
 	 * Finds storages by type, i.e. the driver used
 	 *
 	 * @param string $storageType
 	 * @return ResourceStorage[]
 	 */
 	public function findByStorageType($storageType) {
+		$this->initializeLocalCache();
+
 		/** @var $driverRegistry Driver\DriverRegistry */
 		$driverRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\Driver\\DriverRegistry');
+
 		$storageObjects = array();
-		$whereClause = $this->typeField . ' = ' . $this->db->fullQuoteStr($storageType, $this->table);
-		$res = $this->db->exec_SELECTquery(
-			'*',
-			$this->table,
-			$whereClause . $this->getWhereClauseForEnabledFields()
-		);
-		while ($row = $this->db->sql_fetch_assoc($res)) {
-			if ($driverRegistry->driverExists($row['driver'])) {
-				$storageObjects[] = $this->createDomainObject($row);
+		foreach (static::$storageRowCache as $storageRow) {
+			if (!$storageRow['driver'] !== $storageType) {
+				continue;
+			}
+			if ($driverRegistry->driverExists($storageRow['driver'])) {
+				$storageObjects[] = $this->factory->getStorageObject($storageRow['uid'], $storageRow);
 			} else {
 				$this->logger->warning(
-					sprintf('Could not instantiate storage "%s" because of missing driver.', array($row['name'])),
-					$row
+					sprintf('Could not instantiate storage "%s" because of missing driver.', array($storageRow['name'])),
+					$storageRow
 				);
 			}
 		}
-		$this->db->sql_free_result($res);
 		return $storageObjects;
 	}
 
@@ -110,43 +167,22 @@ class StorageRepository extends AbstractRepository {
 	 * @return ResourceStorage[]
 	 */
 	public function findAll() {
-			// check if we have never created a storage before (no records, regardless of the enableFields),
-			// only fetch one record for that (is enough). If no record is found, create the fileadmin/ storage
-		$storageObjectsCount = $this->db->exec_SELECTcountRows('uid', $this->table, '1=1');
-		if ($storageObjectsCount === 0) {
-			$this->createLocalStorage(
-				'fileadmin/ (auto-created)',
-				$GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'],
-				'relative',
-				'This is the local fileadmin/ directory. This storage mount has been created automatically by TYPO3.'
-			);
-		}
-
-		$storageObjects = array();
-		$whereClause = NULL;
-		if ($this->type != '') {
-			$whereClause = $this->typeField . ' = ' . $this->db->fullQuoteStr($this->type, $this->table);
-		}
-		$res = $this->db->exec_SELECTquery(
-			'*',
-			$this->table,
-			($whereClause ?: '1=1') . $this->getWhereClauseForEnabledFields()
-		);
+		$this->initializeLocalCache();
 
 		/** @var $driverRegistry Driver\DriverRegistry */
 		$driverRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\Driver\\DriverRegistry');
 
-		while ($row = $this->db->sql_fetch_assoc($res)) {
-			if ($driverRegistry->driverExists($row['driver'])) {
-				$storageObjects[] = $this->createDomainObject($row);
+		$storageObjects = array();
+		foreach (static::$storageRowCache as $storageRow) {
+			if ($driverRegistry->driverExists($storageRow['driver'])) {
+				$storageObjects[] = $this->factory->getStorageObject($storageRow['uid'], $storageRow);
 			} else {
 				$this->logger->warning(
-					sprintf('Could not instantiate storage "%s" because of missing driver.', array($row['name'])),
-					$row
+					sprintf('Could not instantiate storage "%s" because of missing driver.', array($storageRow['name'])),
+					$storageRow
 				);
 			}
 		}
-		$this->db->sql_free_result($res);
 		return $storageObjects;
 	}
 

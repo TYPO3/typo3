@@ -123,14 +123,15 @@ class ResourceFactory implements \TYPO3\CMS\Core\SingletonInterface {
 		if (!is_numeric($uid)) {
 			throw new \InvalidArgumentException('uid of Storage has to be numeric.', 1314085991);
 		}
-		if (intval($uid) === 0 && $fileIdentifier !== NULL) {
+		$uid = (int)$uid;
+		if ($uid === 0 && $fileIdentifier !== NULL) {
 			$uid = $this->findBestMatchingStorageByLocalPath($fileIdentifier);
 		}
 		if (!$this->storageInstances[$uid]) {
 			$storageConfiguration = NULL;
 			$storageObject = NULL;
 			// If the built-in storage with UID=0 is requested:
-			if (intval($uid) === 0) {
+			if ($uid === 0) {
 				$recordData = array(
 					'uid' => 0,
 					'pid' => 0,
@@ -149,7 +150,7 @@ class ResourceFactory implements \TYPO3\CMS\Core\SingletonInterface {
 					'basePath' => '/',
 					'pathType' => 'relative'
 				);
-			} elseif (count($recordData) === 0 || $recordData['uid'] !== $uid) {
+			} elseif (count($recordData) === 0 || (int)$recordData['uid'] !== $uid) {
 				/** @var $storageRepository StorageRepository */
 				$storageRepository = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\StorageRepository');
 				/** @var $storage ResourceStorage */
