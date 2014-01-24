@@ -1,0 +1,61 @@
+{namespace sg = TYPO3\CMS\Styleguide\ViewHelpers}
+
+<f:layout name="Default"/>
+
+<f:section name="iconButtons">
+</f:section>
+
+<f:section name="content">
+	<h3>Link tags</h3>
+
+	<div class="example">
+		<a href="#" class="t3-button">Link button</a>
+	</div>
+
+	<div class="example">
+		<pre>
+&lt;a href="#" class="t3-button"&gt;Link button&lt;/a&gt;
+		</pre>
+	</div>
+
+	<h3>Form tags</h3>
+
+	<div class="example">
+		<a href="#" class="t3-button">Link button</a>
+		<button class="t3-button">Button tag</button>
+		<input type="submit" class="t3-button" value="Input submit" />
+		<input type="button" class="t3-button" value="Input button" />
+	</div>
+
+	<div class="example">
+		<pre>
+&lt;a href="#" class="t3-button"&gt;Link button&lt;/a&gt;
+&lt;button class="t3-button"&gt;Button tag&lt;/button&gt;
+&lt;input type="submit" class="t3-button" value="Input submit" /&gt;
+&lt;input type="button" class="t3-button" value="Input button" /&gt;
+		</pre>
+	</div>
+
+	<h3>Disabled tags</h3>
+
+	<div class="example">
+		<a href="#" class="t3-button disabled">Link button</a>
+		<button class="t3-button" disabled="disabled">Button tag</button>
+		<input type="submit" class="t3-button" value="Input submit" disabled="disabled" />
+		<input type="button" class="t3-button" value="Input button" disabled="disabled" />
+	</div>
+
+	<div class="example">
+		<pre>
+&lt;a href="#" class="t3-button disabled"&gt;Link button&lt;/a&gt;
+&lt;button class="t3-button" disabled="disabled"&gt;Button tag&lt;/button&gt;
+&lt;input type="submit" class="t3-button" value="Input submit" disabled="disabled" /&gt;
+&lt;input type="button" class="t3-button" value="Input button" disabled="disabled" /&gt;
+		</pre>
+	</div>
+
+
+	<p><f:link.action action="tables">Previous page &laquo;Tables&raquo;</f:link.action> /
+		<f:link.action action="flashMessages">Next page &laquo;Flash messages&raquo;</f:link.action></p>
+
+</f:section>

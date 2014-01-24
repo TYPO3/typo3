@@ -15,6 +15,9 @@
 			<trans-unit id="forms" xml:space="preserve">
 				<source>Forms</source>
 			</trans-unit>
+			<trans-unit id="buttons" xml:space="preserve">
+				<source>Buttons</source>
+			</trans-unit>
 			<trans-unit id="tables" xml:space="preserve">
 				<source>Tables</source>
 			</trans-unit>

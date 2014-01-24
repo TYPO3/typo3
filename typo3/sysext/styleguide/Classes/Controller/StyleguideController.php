@@ -34,6 +34,12 @@ use TYPO3\CMS\Core\Messaging\FlashMessage;
 class StyleguideController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
 
 	/**
+	 * Buttons
+	 */
+	public function buttonsAction() {
+	}
+
+	/**
 	 * Index
 	 */
 	public function indexAction() {
