@@ -11,17 +11,6 @@ body {
 	line-height: 1.5em;
 }
 
-select,
-textarea,
-input,
-td,
-body,
-.defstyle,
-p,
-div {
-	margin: 0px;
-}
-
 h1 {
 	font-size: 2.3em;
 	margin: 0 0 30px 0;

@@ -219,13 +219,6 @@ body#ext-taskcenter-task-index-php h3 {
 	float: left;
 }
 
-#taskcenter-item fieldset.fields input, #taskcenter-item fieldset.fields select {
-	width: 160px;
-	float: left;
-	border: 1px solid #ccc;
-	padding: 2px 3px;
-}
-
 #taskcenter-item fieldset.fields select {
 	width: 170px;
 }

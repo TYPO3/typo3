@@ -46,11 +46,6 @@
 	width: auto;
 }
 
-.tx_scheduler_mod1 input.button {
-	padding: 1px 4px 1px 4px;
-	margin: 5px 0px;
-}
-
 .tx_scheduler_mod1 .status-legend {
 	padding-top: 10px;
 	padding-bottom: 5px;

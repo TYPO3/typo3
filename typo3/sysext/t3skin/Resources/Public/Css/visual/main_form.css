@@ -6,21 +6,24 @@ textarea.fixed-font {
 	font-family: "Lucida Console", "Lucida Sans Typewriter", "Bitstream Vera Sans Mono", monospace;
 }
 
-textarea {
+.t3-button,
+input,
+textarea,
+button {
 	background-color: #fefefe;
 	border: 1px solid #7c7c7c;
+	border-radius: 2px;
 }
 
 textarea:hover {
 	border: 1px solid #737f91;
 }
 
+.t3-button,
+button,
 input[type="submit"],
 input[type="reset"],
-input[type="button"],
-input[type="submit"][disabled="disabled"]:hover,
-input[type="reset"][disabled="disabled"]:hover,
-input[type="button"][disabled="disabled"]:hover {
+input[type="button"] {
 	background-color: #f6f6f6;
 	background-image: url('../../../../images/backgrounds/button.png');
 	background-image: linear-gradient(center top, #f6f6f6 10%, #d5d5d5 90%);
@@ -28,13 +31,11 @@ input[type="button"][disabled="disabled"]:hover {
 	background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(0.1, #f6f6f6), color-stop(0.9, #d5d5d5));
 	background-position: bottom;
 	background-repeat: repeat-x;
-	border: 1px solid #7c7c7c;
-	border-radius: 1px;
-	-moz-border-radius: 1px;
 	color: #434343;
 	cursor: pointer;
 }
 
+.t3-button:hover,
 input[type="submit"]:hover,
 input[type="reset"]:hover,
 input[type="button"]:hover {
@@ -48,8 +49,11 @@ input[type="button"]:hover {
 	border: 1px solid #737f91;
 	color: #1e1e1e;
 	cursor: pointer;
+	text-decoration: none;
 }
 
+.t3-button.disabled,
+button[disabled="disabled"],
 input[type="submit"][disabled="disabled"],
 input[type="reset"][disabled="disabled"],
 input[type="button"][disabled="disabled"],
