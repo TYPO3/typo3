@@ -1,3 +1,6 @@
+![TYPo3](http://typo3.org/typo3conf/ext/t3org_template/i/typo3-logo.png)
+
+
 TYPO3 CMS Backend Styleguide
 ============================
 
@@ -5,6 +8,8 @@ Presents all supported styles for TYPO3 backend modules.
 
 This styleguide is work in progress. It is not part of and does not represent the official documentation, yet.
 Styleguide extension currently brings own css definitions that need to be integrated into TYPO3 CMS step by step.
+
+<a href="http://typo3.org/extensions/repository/view/styleguide" target="_blank">Official repository for TYPO3 CMS extension "styleguide".</a>
 
 # Table of content
 
