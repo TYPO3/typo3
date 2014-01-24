@@ -9,6 +9,10 @@
 	padding: 0 24px;
 	overflow: hidden;
 }
+/* overwrite defaults from normalise.css */
+.typo3-docheader-functions select {
+	color: #000;
+}
 .typo3-docheader-buttons {
 	color: #000;
 	height: 16px;

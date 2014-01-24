@@ -124,6 +124,7 @@ class BackendController {
 			unset($this->jsFiles['loginrefresh']);
 		}
 		// Add default BE css
+		$this->pageRenderer->addCssLibrary('contrib/normalize/normalize.css', 'stylesheet', 'all', '', TRUE, TRUE);
 		$this->css = '';
 		$this->cssFiles = array();
 		$this->toolbarItems = array();

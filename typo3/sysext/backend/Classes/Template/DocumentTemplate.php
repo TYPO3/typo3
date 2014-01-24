@@ -422,6 +422,7 @@ class DocumentTemplate {
 		if (!isset($this->pageRenderer)) {
 			$this->pageRenderer = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Page\\PageRenderer');
 			$this->pageRenderer->setLanguage($GLOBALS['LANG']->lang);
+			$this->pageRenderer->addCssLibrary($GLOBALS['BACK_PATH'] . 'contrib/normalize/normalize.css', 'stylesheet', 'all', '', TRUE, TRUE);
 			$this->pageRenderer->enableConcatenateFiles();
 			$this->pageRenderer->enableCompressCss();
 			$this->pageRenderer->enableCompressJavascript();
