@@ -852,7 +852,12 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 		if ((!$exclList || !GeneralUtility::inList($exclList, 'sortRev')) && $this->sortRev) {
 			$urlParameters['sortRev'] = $this->sortRev;
 		}
-		return BackendUtility::getModuleUrl('web_list', $urlParameters);
+
+		// Current request GET arguments might be required by module so we add them to url
+		// GET array contains also controller and action names required to generate valid pagination url
+		$urlParameters = array_replace_recursive(GeneralUtility::_GET(), $urlParameters);
+
+		return BackendUtility::getModuleUrl($urlParameters['M'], $urlParameters);
 	}
 
 	/**
