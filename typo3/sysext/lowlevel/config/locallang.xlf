@@ -7,34 +7,34 @@
 				<source>Configuration</source>
 			</trans-unit>
 			<trans-unit id="typo3ConfVars" xml:space="preserve">
-				<source>$TYPO3_CONF_VARS (Global Configuration)</source>
+				<source>$GLOBALS['TYPO3_CONF_VARS'] (Global Configuration)</source>
 			</trans-unit>
 			<trans-unit id="tca" xml:space="preserve">
-				<source>$TCA (Table configuration array)</source>
+				<source>$GLOBALS['TCA'] (Table configuration array)</source>
 			</trans-unit>
 			<trans-unit id="tcaDescr" xml:space="preserve">
-				<source>$TCA_DESCR (Table Help Description)</source>
+				<source>$GLOBALS['TCA_DESCR'] (Table Help Description)</source>
 			</trans-unit>
 			<trans-unit id="loadedExt" xml:space="preserve">
-				<source>$TYPO3_LOADED_EXT (Loaded Extensions)</source>
+				<source>$GLOBALS['TYPO3_LOADED_EXT'] (Loaded Extensions)</source>
 			</trans-unit>
 			<trans-unit id="tbeStyles" xml:space="preserve">
-				<source>$TBE_STYLES (Skinning Styles)</source>
+				<source>$GLOBALS['TBE_STYLES'] (Skinning Styles)</source>
 			</trans-unit>
 			<trans-unit id="beUser" xml:space="preserve">
-				<source>$BE_USER-&gt;uc (User Settings)</source>
+				<source>$GLOBALS['BE_USER']-&gt;uc (User Settings)</source>
 			</trans-unit>
 			<trans-unit id="usersettings" xml:space="preserve">
-				<source>$TYPO3_USER_SETTINGS (User Settings Configuration)</source>
+				<source>$GLOBALS['TYPO3_USER_SETTINGS'] (User Settings Configuration)</source>
 			</trans-unit>
 			<trans-unit id="t3services" xml:space="preserve">
-				<source>$T3_SERVICES (Registered Services)</source>
+				<source>$GLOBALS['T3_SERVICES'] (Registered Services)</source>
 			</trans-unit>
 			<trans-unit id="tbemodulesext" xml:space="preserve">
-				<source>$TBE_MODULES_EXT (BE Modules Extensions)</source>
+				<source>$GLOBALS['TBE_MODULES_EXT'] (BE Modules Extensions)</source>
 			</trans-unit>
 			<trans-unit id="tbemodules" xml:space="preserve">
-				<source>$TBE_MODULES (BE Modules)</source>
+				<source>$GLOBALS['TBE_MODULES'] (BE Modules)</source>
 			</trans-unit>
 			<trans-unit id="cropLines" xml:space="preserve">
 				<source>Crop lines</source>
