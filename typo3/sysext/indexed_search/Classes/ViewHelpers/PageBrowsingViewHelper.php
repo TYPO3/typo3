@@ -38,16 +38,21 @@ namespace TYPO3\CMS\IndexedSearch\ViewHelpers;
 class PageBrowsingViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 	/**
-	 * main render function
+	 * @var string
+	 */
+	protected $prefixId = 'tx_indexedsearch';
+
+	/**
+	 * Main render function
 	 *
 	 * @param integer $maximumNumberOfResultPages
 	 * @param integer $numberOfResults
 	 * @param integer $resultsPerPage
 	 * @param integer $currentPage
-	 * @return the content
+	 * @param string|NULL $freeIndexUid
+	 * @return string The content
 	 */
-	public function render($maximumNumberOfResultPages, $numberOfResults, $resultsPerPage, $currentPage = 1) {
-		$maximumNumberOfResultPages = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($maximumNumberOfResultPages, 1, 100, 10);
+	public function render($maximumNumberOfResultPages, $numberOfResults, $resultsPerPage, $currentPage = 1, $freeIndexUid = NULL) {
 		$pageCount = ceil($numberOfResults / $resultsPerPage);
 		$content = '';
 		// only show the result browser if more than one page is needed
@@ -56,33 +61,33 @@ class PageBrowsingViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractVi
 			// prev page
 			// show on all pages after the 1st one
 			if ($currentPage > 0) {
-				$label = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('displayResults.previous', 'indexed_search');
-				$content .= '<li>' . $this->makecurrentPageSelector_link($label, ($currentPage - 1), $freeIndexUid) . '</li>';
+				$label = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('displayResults.previous', 'IndexedSearch');
+				$content .= '<li>' . $this->makecurrentPageSelector_link($label, $currentPage - 1, $freeIndexUid) . '</li>';
 			}
-			for ($a = 0; $a < $pageCount; $a++) {
-				$min = max(0, $currentPage + 1 - ceil($maximumNumberOfResultPages / 2));
-				$max = $min + $maximumNumberOfResultPages;
-				if ($max > $pageCount) {
-					$min = $min - ($max - $pageCount);
-				}
-				if ($a >= $min && $a < $max) {
-					$label = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('displayResults.page', 'indexed_search');
-					$label = trim($label . ' ' . ($a + 1));
-					$label = $this->makecurrentPageSelector_link($label, $a, $freeIndexUid);
-					if ($a == $currentPage) {
-						$content .= '<li class="tx-indexedsearch-browselist-currentPage"><strong>' . $label . '</strong></li>';
-					} else {
-						$content .= '<li>' . $label . '</li>';
-					}
+			$maximumNumberOfResultPages = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($maximumNumberOfResultPages, 1, 200000000, 10);
+			$min = max(0, $currentPage + 1 - ceil($maximumNumberOfResultPages / 2));
+			$max = $min + $maximumNumberOfResultPages;
+			if ($max > $pageCount) {
+				$min -= $max - $pageCount;
+			}
+			for ($a = $min; $a < $pageCount && $a < $max; $a++) {
+				$label = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('displayResults.page', 'IndexedSearch');
+				$label = trim($label . ' ' . ($a + 1));
+				$label = $this->makecurrentPageSelector_link($label, $a, $freeIndexUid);
+				if ($a === $currentPage) {
+					$content .= '<li class="tx-indexedsearch-browselist-currentPage"><strong>' . $label . '</strong></li>';
+				} else {
+					$content .= '<li>' . $label . '</li>';
 				}
 			}
 			// next link
 			if ($currentPage + 1 < $pageCount) {
-				$label = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('displayResults.next', 'indexed_search');
-				$content = '<li>' . $this->makecurrentPageSelector_link($label, ($currentPage + 1), $freeIndexUid) . '</li>';
+				$label = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('displayResults.next', 'IndexedSearch');
+				$content .= '<li>' . $this->makecurrentPageSelector_link($label, ($currentPage + 1), $freeIndexUid) . '</li>';
 			}
 			$content = '<ul class="tx-indexedsearch-browsebox">' . $content . '</ul>';
 		}
+
 		return $content;
 	}
 
@@ -97,7 +102,11 @@ class PageBrowsingViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractVi
 	 * @todo Define visibility
 	 */
 	public function makecurrentPageSelector_link($str, $p, $freeIndexUid) {
-		$onclick = 'document.getElementById(\'' . $this->prefixId . '_currentPage\').value=\'' . $p . '\';' . 'document.getElementById(\'' . $this->prefixId . '_freeIndexUid\').value=\'' . rawurlencode($freeIndexUid) . '\';' . 'document.getElementById(\'' . $this->prefixId . '\').submit();return false;';
+		$onclick = 'document.getElementById(\'' . $this->prefixId . '_pointer\').value=\'' . $p . '\';';
+		if ($freeIndexUid !== NULL) {
+			$onclick .= 'document.getElementById(\'' . $this->prefixId . '_freeIndexUid\').value=\'' . rawurlencode($freeIndexUid) . '\';';
+		}
+		$onclick .= 'document.getElementById(\'' . $this->prefixId . '\').submit();return false;';
 		return '<a href="#" onclick="' . htmlspecialchars($onclick) . '">' . $str . '</a>';
 	}
 
