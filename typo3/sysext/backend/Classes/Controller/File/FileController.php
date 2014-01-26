@@ -29,6 +29,7 @@ namespace TYPO3\CMS\Backend\Controller\File;
  ***************************************************************/
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 
 /**
  * Gateway for TCE (TYPO3 Core Engine) file-handling through POST forms.
@@ -144,7 +145,7 @@ class FileController {
 	public function finish() {
 		// Push errors to flash message queue, if there are any
 		$this->fileProcessor->pushErrorMessagesToFlashMessageQueue();
-		\TYPO3\CMS\Backend\Utility\BackendUtility::setUpdateSignal('updateFolderTree');
+		BackendUtility::setUpdateSignal('updateFolderTree');
 		if ($this->redirect) {
 			\TYPO3\CMS\Core\Utility\HttpUtility::redirect($this->redirect);
 		}
@@ -172,7 +173,13 @@ class FileController {
 				foreach ($result as $files) {
 					/** @var $file \TYPO3\CMS\Core\Resource\File */
 					foreach ($files as $file) {
-						$fileData[$action][] = $file->toArray();
+						$fileData[$action][] = array_merge(
+							$file->toArray(),
+							array (
+								'date' => BackendUtility::date($file->getModificationTime()),
+								'iconClasses' => \TYPO3\CMS\Backend\Utility\IconUtility::mapFileExtensionToSpriteIconClass($file->getExtension()),
+							)
+						);
 					}
 				}
 			}

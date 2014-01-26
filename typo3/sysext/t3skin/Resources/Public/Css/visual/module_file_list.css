@@ -49,41 +49,93 @@ table#typo3-filelist tr td div.typo3-editCtrl {
 	-o-transition:border 0.2s ease;
 	transition:border 0.2s ease;
 }
-.dropInProgess #typo3-inner-docbody {
-	border:10px solid #73ab61;
-	padding:-10px !important!;
-	margin-bottom:20px !important;
-	-webkit-transition:border 0.2s ease;
-	-moz-transition:border 0.2s ease;
-	-ms-transition:border 0.2s ease;
-	-o-transition:border 0.2s ease;
-	transition:border 0.2s ease;
+.t3-dropzone {
+	border:1px dashed #666666;
+	background:#DEDEDE;
+	text-align: center;
+	color: #616161;
+	margin-bottom: 1px;
+	position: relative;
+	cursor: pointer;
 }
-
-.DragUpload-DropZone.t3-dropzone {
+.t3-dropzone .t3-dropzone-close {
 	position: absolute;
-	width:0;
-	display:none;
-	height:0;
-	z-index:9999;
+	top: 2px;
+	right: 2px;
+	cursor: pointer;
+	font-size: 20px;
 }
-
-.dropInProgess .DragUpload-DropZone.t3-dropzone,
-.uploadInProgress .DragUpload-DropZone.t3-dropzone,
-.DragUpload-ProgressInformation {
-	width:40%;
-	height:auto;
-	top:50px;
-	left:30%;
-	border:1px solid #73ab61;
-	background:#c8d9c3;
-	padding:8px;
-	display:block;
-	box-shadow:0px 0px 10px 0px #888888;
+.t3-drop-in-progress .t3-dropzone {
+	box-shadow: 0px 0px 10px 0px #888;
+	color: #000;
 }
-.DragUpload-ProgressInformation {
+.t3-drop-in-progress .t3-dropzone .t3-dropzone-mask {
 	position: absolute;
-	top:30px;
-	background-color: #dedede;
-	border: 1px solid #a2aab8;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	top: 0;
+}
+.t3-dropzone.t3-dropzone-drop-ok {
+	background: #EBEBEB;
+}
+.t3-upload-file-picker {
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	height: 1px;
+	width: 1px;
+	visibility: hidden;
+}
+table#typo3-filelist tr.file_list_normal.t3-upload-queue-item.last td {
+	border-bottom: 1px solid #666666;
+}
+table#typo3-filelist tr.file_list_normal.t3-upload-queue-item.uploading td {
+	color: #9D9D9D;
+}
+table#typo3-filelist tr.file_list_normal.t3-upload-queue-item.error td {
+	color: #BF383F;
+}
+table#typo3-filelist tr.file_list_normal.t3-upload-queue-item td.t3-upload-queue-progress {
+	color: #FFF;
+	padding: 0;
+}
+table#typo3-filelist tr.file_list_normal.t3-upload-queue-item.uploading td.t3-upload-queue-progress {
+	background-color: #F2CEB0;
+	color: #000;
+}
+table#typo3-filelist tr.file_list_normal.t3-upload-queue-item.error td.t3-upload-queue-progress {
+	background-color: #E5B6B9;
+	color: #F7F7F7;
+}
+div.t3-upload-queue-progress {
+	position: relative;
+	text-align: right;
+	padding: 5px 3px;
+	border:1px solid #C6C6C6;
+}
+.t3-upload-queue-progress-percentage,
+.t3-upload-queue-progress-message {
+	display: inline;
+	position: relative;
+	z-index: 2;
+	margin-right: 4px;
+}
+.t3-upload-queue-progress-message {
+	font-weight: bold;
+}
+.t3-upload-queue-progress-bar {
+	position: absolute;
+	z-index: 1;
+	top: 0;
+	left: -2px;
+	bottom:0;
+	background-color: #6EA757;
+	border: 1px solid #FFF;
+}
+.uploading .t3-upload-queue-progress-bar {
+	background-color: #F38B36;
+}
+.error .t3-upload-queue-progress-bar {
+	background-color: #BF383F;
 }

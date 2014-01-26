@@ -439,19 +439,16 @@ Do you want to continue WITHOUT saving?</source>
 			<trans-unit id="file_upload.php.files" xml:space="preserve">
 				<source>files</source>
 			</trans-unit>
-			<trans-unit id="file_upload.draginformation.message" xml:space="preserve">
-				<source>You simply can drag your files into the filelist. Click again for classic mode.</source>
+			<trans-unit id="file_upload.dropzonehint.title" xml:space="preserve">
+				<source>Drop &amp; Drop to upload files</source>
 			</trans-unit>
-			<trans-unit id="file_upload.draginformation.title" xml:space="preserve">
-				<source>Drag &amp; Drop available</source>
+			<trans-unit id="file_upload.dropzonehint.message" xml:space="preserve">
+				<source>Drop your files here, or &lt;u&gt;click, browse &amp; choose files&lt;/u&gt;</source>
 			</trans-unit>
-			<trans-unit id="file_upload.dropzonehint" xml:space="preserve">
-				<source>Drop your files here!</source>
+			<trans-unit id="file_upload.maxFileSizeExceeded" xml:space="preserve">
+				<source>File &quot;{0}&quot; exceeds maximum file size of {1}!</source>
 			</trans-unit>
-			<trans-unit id="file_upload.maxFilesizeExceeded" xml:space="preserve">
-				<source>File &quot;{0}&quot; exceeds maximum filesize of {1} bytes!</source>
-			</trans-unit>
-			<trans-unit id="file_upload.fileNotAllowwed" xml:space="preserve">
+			<trans-unit id="file_upload.fileNotAllowed" xml:space="preserve">
 				<source>Filename &quot;{0}&quot; is not allowed!</source>
 			</trans-unit>
 			<trans-unit id="file_upload.uploadFailed" xml:space="preserve">

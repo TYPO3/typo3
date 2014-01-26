@@ -346,12 +346,6 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 
 			// Directories are added
 			$iOut = $this->formatDirList($folderObjects);
-			if ($iOut) {
-				// Half line is drawn
-				$theData = array(
-					$titleCol => ''
-				);
-			}
 			// Files are added
 			$iOut .= $this->formatFileList($files, $titleCol);
 			// Header line is drawn
@@ -378,19 +372,18 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 				}
 			}
 
-			if (!empty($iOut)) {
-				$out .= '<thead>' . $this->addelement(1, '&nbsp;', $theData, ' class="t3-row-header"', '') . '</thead>';
-				$out .= '<tbody>' . $iOut . '</tbody>';
-				// half line is drawn
-				// finish
-				$out = '
+			$out .= '<thead>' . $this->addelement(1, '&nbsp;', $theData, ' class="t3-row-header"', '') . '</thead>';
+			$out .= '<tbody>' . $iOut . '</tbody>';
+			// half line is drawn
+			// finish
+			$out = '
 		<!--
 			File list table:
 		-->
 			<table cellpadding="0" cellspacing="0" id="typo3-filelist">
 				' . $out . '
 			</table>';
-			}
+
 		} else {
 			/** @var $flashMessage \TYPO3\CMS\Core\Messaging\FlashMessage */
 			$flashMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $GLOBALS['LANG']->getLL('storageNotBrowsableMessage'), $GLOBALS['LANG']->getLL('storageNotBrowsableTitle'), \TYPO3\CMS\Core\Messaging\FlashMessage::INFO);
