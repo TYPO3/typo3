@@ -21,7 +21,7 @@ before_script:
   - if [[ "$TRAVIS_PHP_VERSION" == "5.3" ]]; then installPhpModule -y apc; fi
 
 # Install rudimentary TYPO3
-  - if [[ "$PHPUNIT" == "1" ]]; then git clone --single-branch --branch master --depth 1 git://git.typo3.org/TYPO3v4/Distributions/Introduction.git build-environment/Introduction; fi
+  - if [[ "$PHPUNIT" == "1" ]]; then git clone --single-branch --branch master --depth 1 git://git.typo3.org/TYPO3CMS/Distributions/Introduction.git build-environment/Introduction; fi
   - if [[ "$PHPUNIT" == "1" ]]; then mv build-environment/typo3conf .; fi
   - if [[ "$PHPUNIT" == "1" ]]; then git clone --single-branch --branch master --depth 1 git://git.typo3.org/TYPO3CMS/Extensions/phpunit.git typo3conf/ext/phpunit/; fi
   - if [[ "$PHPUNIT" == "1" ]]; then mkdir fileadmin; fi
