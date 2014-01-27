@@ -300,7 +300,7 @@ class FileListController {
 					$fileProcessor->dontCheckForUnique = $this->overwriteExistingFiles ? 1 : 0;
 					$fileProcessor->start($FILE);
 					$fileProcessor->processData();
-					$fileProcessor->printLogErrorMessages();
+					$fileProcessor->pushErrorMessagesToFlashMessageQueue();
 				}
 			}
 			if (!isset($this->MOD_SETTINGS['sort'])) {

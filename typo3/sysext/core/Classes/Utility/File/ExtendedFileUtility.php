@@ -129,6 +129,13 @@ class ExtendedFileUtility extends \TYPO3\CMS\Core\Utility\File\BasicFileUtility 
 	public $lastError = '';
 
 	/**
+	 * All error messages from the file operations of this script instance
+	 *
+	 * @var array
+	 */
+	protected $errorMessages = array();
+
+	/**
 	 * @var array
 	 */
 	protected $fileCmdMap;
@@ -271,30 +278,20 @@ class ExtendedFileUtility extends \TYPO3\CMS\Core\Utility\File\BasicFileUtility 
 	 *
 	 * @param string $redirect Redirect URL (for creating link in message)
 	 * @return void
-	 * @todo Define visibility
-	 * @deprecated since TYPO3 6.1, will be removed two versions later, use ->getErrorMessages directly instead
+	 * @deprecated since TYPO3 6.1, will be removed two versions later, use ->pushErrorMessagesToFlashMessageQueue directly instead
 	 */
 	public function printLogErrorMessages($redirect = '') {
 		GeneralUtility::logDeprecatedFunction();
-		$this->getErrorMessages();
+		$this->pushErrorMessagesToFlashMessageQueue();
 	}
 
 	/**
-	 * Adds log error messages from the previous file operations of this script instance
-	 * to the FlashMessageQueue
+	 * Adds all log error messages from the operations of this script instance to the FlashMessageQueue
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
-	public function getErrorMessages() {
-		$res = $this->getDatabaseConnection()->exec_SELECTquery(
-			'*',
-			'sys_log',
-			'type = 2 AND userid = ' . intval($this->getBackendUser()->user['uid']) . ' AND tstamp=' . intval($GLOBALS['EXEC_TIME']) . ' AND error<>0'
-		);
-		while ($row = $this->getDatabaseConnection()->sql_fetch_assoc($res)) {
-			$logData = unserialize($row['log_data']);
-			$msg = $row['error'] . ': ' . sprintf($row['details'], $logData[0], $logData[1], $logData[2], $logData[3], $logData[4]);
+	public function pushErrorMessagesToFlashMessageQueue() {
+		foreach ($this->getErrorMessages() as $msg) {
 			$flashMessage = GeneralUtility::makeInstance(
 				'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
 				$msg,
@@ -304,7 +301,15 @@ class ExtendedFileUtility extends \TYPO3\CMS\Core\Utility\File\BasicFileUtility 
 			);
 			$this->addFlashMessage($flashMessage);
 		}
-		$this->getDatabaseConnection()->sql_free_result($res);
+	}
+
+	/**
+	 * Return all error messages from the file operations of this script instance
+	 *
+	 * @return array all errorMessages as a numerical array
+	 */
+	public function getErrorMessages() {
+		return $this->errorMessages;
 	}
 
 	/**
@@ -354,7 +359,10 @@ class ExtendedFileUtility extends \TYPO3\CMS\Core\Utility\File\BasicFileUtility 
 		if (is_object($this->getBackendUser())) {
 			$this->getBackendUser()->writelog($type, $action, $error, $details_nr, $details, $data);
 		}
-		$this->lastError = vsprintf($details, $data);
+		if ($error > 0) {
+			$this->lastError = vsprintf($details, $data);
+			$this->errorMessages[] = $this->lastError;
+		}
 	}
 
 	/*************************************
@@ -871,7 +879,7 @@ class ExtendedFileUtility extends \TYPO3\CMS\Core\Utility\File\BasicFileUtility 
 	 * in HTML you'd need sth like this: <input type="file" name="upload_1[]" multiple="true" />
 	 *
 	 * @param array $cmds $cmds['data'] is the ID-number (points to the global var that holds the filename-ref  ($_FILES['upload_' . $id]['name']) . $cmds['target'] is the target directory, $cmds['charset'] is the the character set of the file name (utf-8 is needed for JS-interaction)
-	 * @return string Returns the new filename upon success
+	 * @return File[] | FALSE Returns an array of new file objects upon success. False otherwise
 	 * @todo Define visibility
 	 */
 	public function func_upload($cmds) {
