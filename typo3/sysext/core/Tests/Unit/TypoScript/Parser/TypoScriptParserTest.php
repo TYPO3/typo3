@@ -338,6 +338,12 @@ class TypoScriptParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 					)
 				),
 			),
+			'simple assignment operator with tab character before "="' => array(
+				'test	 = someValue',
+				array(
+					'test' => 'someValue',
+				),
+			),
 			'simple assignment operator character as value "="' => array(
 				'test ==TEST=',
 				array(

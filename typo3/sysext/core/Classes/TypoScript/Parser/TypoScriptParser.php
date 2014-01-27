@@ -355,7 +355,8 @@ class TypoScriptParser {
 					} elseif ($line{0} !== '}' && $line{0} !== '#' && $line{0} !== '/') {
 						// If not brace-end or comment
 						// Find object name string until we meet an operator
-						$varL = strcspn($line, ' {=<>:(');
+						$varL = strcspn($line, TAB . ' {=<>:(');
+						// also remove tabs after the object string name
 						$objStrName = substr($line, 0, $varL);
 						if ($this->syntaxHighLight) {
 							$this->regHighLight('objstr', $lineP, strlen(substr($line, $varL)));
