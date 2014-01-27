@@ -27,7 +27,6 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-use TYPO3\CMS\Extbase\Utility\TypeHandlingUtility;
 
 /**
  * A persistence backend. This backend maps objects to the relational model of the storage backend.
@@ -1009,7 +1008,7 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 			}
 		} elseif ($input instanceof \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface) {
 			return $input->getUid();
-		} elseif (TypeHandlingUtility::isCoreType($input)) {
+		} elseif ($input instanceof \TYPO3\CMS\Core\Type\TypeInterface) {
 			return (string) $input;
 		} elseif (is_bool($input)) {
 			return $input === TRUE ? 1 : 0;

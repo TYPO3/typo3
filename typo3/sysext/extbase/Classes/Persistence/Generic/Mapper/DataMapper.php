@@ -222,12 +222,11 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface {
 					case 'TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage':
 						$propertyValue = $this->mapResultToPropertyValue($object, $propertyName, $this->fetchRelated($object, $propertyName, $row[$columnName]));
 						break;
-					case TypeHandlingUtility::isCoreType($propertyData['type']):
-						$propertyValue = $this->mapCoreType($propertyData['type'], $row[$columnName]);
-						break;
 					default:
 						if ($propertyData['type'] === 'DateTime' || in_array('DateTime', class_parents($propertyData['type']))) {
 							$propertyValue = $this->mapDateTime($row[$columnName], $columnMap->getDateTimeStorageFormat());
+						} elseif (TypeHandlingUtility::isCoreType($propertyData['type'])) {
+							$propertyValue = $this->mapCoreType($propertyData['type'], $row[$columnName]);
 						} else {
 							$propertyValue = $this->mapResultToPropertyValue($object, $propertyName, $this->fetchRelated($object, $propertyName, $row[$columnName]));
 						}
