@@ -588,7 +588,7 @@ class t3lib_pageSelect {
 				if ($statusCode && defined('t3lib_utility_Http::HTTP_STATUS_' . $statusCode)) {
 					t3lib_utility_Http::redirect($redirectUrl, constant('t3lib_utility_Http::HTTP_STATUS_' . $statusCode));
 				} else {
-					t3lib_utility_Http::redirect($redirectUrl, 't3lib_utility_Http::HTTP_STATUS_301');
+					t3lib_utility_Http::redirect($redirectUrl, t3lib_utility_Http::HTTP_STATUS_301);
 				}
 				exit;
 			} else {
