@@ -35,7 +35,7 @@ before_script:
     	installPhpModule -y memcache
     	installPhpModule redis
     	mv build-environment/typo3conf .
-    	git clone --single-branch --branch master --depth 1 git://git.typo3.org/TYPO3v4/Extensions/phpunit.git typo3conf/ext/phpunit/
+    	git clone --single-branch --branch master --depth 1 git://git.typo3.org/TYPO3CMS/Extensions/phpunit.git typo3conf/ext/phpunit/
     	mkdir fileadmin
     	mkdir uploads
     	mkdir typo3temp
@@ -44,7 +44,7 @@ before_script:
   - >
     if [[ "$FUNCTIONALTESTS" == "1" ]]; then
     	mv build-environment/typo3conf .
-    	git clone --single-branch --branch master --depth 1 git://git.typo3.org/TYPO3v4/Extensions/phpunit.git typo3conf/ext/phpunit/
+    	git clone --single-branch --branch master --depth 1 git://git.typo3.org/TYPO3CMS/Extensions/phpunit.git typo3conf/ext/phpunit/
     	mkdir typo3temp
     fi
 
