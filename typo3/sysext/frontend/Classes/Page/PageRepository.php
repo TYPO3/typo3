@@ -539,7 +539,7 @@ class PageRepository {
 				if ($statusCode && defined('TYPO3\\CMS\\Core\\Utility\\HttpUtility::HTTP_STATUS_' . $statusCode)) {
 					\TYPO3\CMS\Core\Utility\HttpUtility::redirect($redirectUrl, constant('TYPO3\\CMS\\Core\\Utility\\HttpUtility::HTTP_STATUS_' . $statusCode));
 				} else {
-					\TYPO3\CMS\Core\Utility\HttpUtility::redirect($redirectUrl, 'TYPO3\\CMS\\Core\\Utility\\HttpUtility::HTTP_STATUS_301');
+					\TYPO3\CMS\Core\Utility\HttpUtility::redirect($redirectUrl, \TYPO3\CMS\Core\Utility\HttpUtility::HTTP_STATUS_301);
 				}
 				die;
 			} else {
