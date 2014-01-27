@@ -25,13 +25,16 @@ namespace TYPO3\CMS\SysNote\Core;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Database\DatabaseConnection;
+
 /**
  * Bootstrap for note module
  *
  * @author Kai Vogel <kai.vogel@speedprogs.de>
  */
 class Bootstrap {
-
 	/**
 	 * Do not touch if you are not sure what you are doing!
 	 * @var array
@@ -48,6 +51,18 @@ class Bootstrap {
 	protected $currentGetArguments;
 
 	/**
+	 * @var DatabaseConnection
+	 */
+	protected $databaseConnection;
+
+	/**
+	 * @param DatabaseConnection $databaseConnection
+	 */
+	public function __construct(DatabaseConnection $databaseConnection = NULL) {
+		$this->databaseConnection = $databaseConnection ?: $GLOBALS['TYPO3_DB'];
+	}
+
+	/**
 	 * Bootstrap extbase and execute controller
 	 *
 	 * @param string $controllerName Controller to execute
@@ -56,14 +71,38 @@ class Bootstrap {
 	 * @return string
 	 */
 	public function run($controllerName, $actionName, array $arguments = array()) {
+		if (!$this->expectOutput($arguments)) {
+			return '';
+		}
 		$arguments['controller'] = ucfirst(trim($controllerName));
 		$arguments['action'] = lcfirst(trim($actionName));
 		$this->overrideGetArguments($arguments);
 		/** @var $extbaseBootstrap \TYPO3\CMS\Extbase\Core\Bootstrap */
-		$extbaseBootstrap = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Core\\Bootstrap');
+		$extbaseBootstrap = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Core\\Bootstrap');
 		$content = $extbaseBootstrap->run('', $this->extbaseConfiguration);
 		$this->revertGetArguments();
 		return $content;
+	}
+
+	/**
+	 * Check if the note plugin expects output. If there are no sys_note records on the given
+	 * pages, the extbase bootstrap doesn't have to run the complete plugin.
+	 * This mechanism should increase the performance of the hooked backend modules heavily.
+	 *
+	 * @param array $arguments Arguments for the extbase plugin
+	 * @return boolean
+	 */
+	protected function expectOutput(array $arguments = array()) {
+		// no pids set
+		if (!isset($arguments['pids']) || empty($arguments['pids']) || empty($GLOBALS['BE_USER']->user['uid'])) {
+			return FALSE;
+		}
+		$pidList = $this->databaseConnection->cleanIntList($arguments['pids']);
+		if (empty($pidList)) {
+			return FALSE;
+		}
+		// check if there are records
+		return ($this->databaseConnection->exec_SELECTcountRows('*', 'sys_note', 'pid IN (' . $pidList . ')' . BackendUtility::deleteClause('sys_note')) > 0);
 	}
 
 	/**
@@ -91,5 +130,4 @@ class Bootstrap {
 			$_GET = $this->currentGetArguments;
 		}
 	}
-
 }
