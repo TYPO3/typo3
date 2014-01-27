@@ -2082,87 +2082,83 @@ class ContentObjectRenderer {
 	 * @return string The processed input value
 	 */
 	public function stdWrap($content = '', $conf = array()) {
-		if (count($this->stdWrapHookObjects)) {
-			foreach ($this->stdWrapHookObjects as $hookObject) {
-				if (is_callable(array($hookObject, 'stdWrapPreProcess'))) {
-					$conf['stdWrapPreProcess'] = 1;
+		// If there is any hook object, activate all of the process and override functions.
+		// The hook interface ContentObjectStdWrapHookInterface takes care that all 4 methods exist.
+		if ($this->stdWrapHookObjects) {
+			$conf['stdWrapPreProcess'] = 1;
+			$conf['stdWrapOverride'] = 1;
+			$conf['stdWrapProcess'] = 1;
+			$conf['stdWrapPostProcess'] = 1;
+		}
+
+		if (!is_array($conf) || !$conf) {
+			return $content;
+		}
+
+		// Cache handling
+		if (is_array($conf['cache.'])) {
+			$conf['cache.']['key'] = $this->stdWrap($conf['cache.']['key'], $conf['cache.']['key.']);
+			$conf['cache.']['tags'] = $this->stdWrap($conf['cache.']['tags'], $conf['cache.']['tags.']);
+			$conf['cache.']['lifetime'] = $this->stdWrap($conf['cache.']['lifetime'], $conf['cache.']['lifetime.']);
+			$conf['cacheRead'] = 1;
+			$conf['cacheStore'] = 1;
+		}
+		// Check, which of the available stdWrap functions is needed for the current conf Array
+		// and keep only those but still in the same order
+		$sortedConf = array_intersect_key($this->stdWrapOrder, $conf);
+		// Functions types that should not make use of nested stdWrap function calls to avoid conflicts with internal TypoScript used by these functions
+		$stdWrapDisabledFunctionTypes = 'cObject,functionName,stdWrap';
+		// Additional Array to check whether a function has already been executed
+		$isExecuted = array();
+		// Additional switch to make sure 'required', 'if' and 'fieldRequired'
+		// will still stop rendering immediately in case they return FALSE
+		$this->stdWrapRecursionLevel++;
+		$this->stopRendering[$this->stdWrapRecursionLevel] = FALSE;
+		// execute each function in the predefined order
+		foreach ($sortedConf as $stdWrapName => $functionType) {
+			// eliminate the second key of a pair 'key'|'key.' to make sure functions get called only once and check if rendering has been stopped
+			if (!$isExecuted[$stdWrapName] && !$this->stopRendering[$this->stdWrapRecursionLevel]) {
+				$functionName = rtrim($stdWrapName, '.');
+				$functionProperties = $functionName . '.';
+				// If there is any code one the next level, check if it contains "official" stdWrap functions
+				// if yes, execute them first - will make each function stdWrap aware
+				// so additional stdWrap calls within the functions can be removed, since the result will be the same
+				// exception: the recursive stdWrap function and cObject will still be using their own stdWrap call, since it modifies the content and not a property
+				if (count($conf[$functionProperties]) && !GeneralUtility::inList($stdWrapDisabledFunctionTypes, $functionType)) {
+					if (array_intersect_key($this->stdWrapOrder, $conf[$functionProperties])) {
+						$conf[$functionName] = $this->stdWrap($conf[$functionName], $conf[$functionProperties]);
+					}
 				}
-				if (is_callable(array($hookObject, 'stdWrapOverride'))) {
-					$conf['stdWrapOverride'] = 1;
+				// Get just that part of $conf that is needed for the particular function
+				$singleConf = array(
+					$functionName => $conf[$functionName],
+					$functionProperties => $conf[$functionProperties]
+				);
+				// In this special case 'spaceBefore' and 'spaceAfter' need additional stuff from 'space.''
+				if ($functionName == 'spaceBefore' || $functionName == 'spaceAfter') {
+					$singleConf['space.'] = $conf['space.'];
 				}
-				if (is_callable(array($hookObject, 'stdWrapProcess'))) {
-					$conf['stdWrapProcess'] = 1;
+				// Hand over the whole $conf array to the stdWrapHookObjects
+				if ($functionType === 'hook') {
+					$singleConf = $conf;
 				}
-				if (is_callable(array($hookObject, 'stdWrapPostProcess'))) {
-					$conf['stdWrapPostProcess'] = 1;
+				// Check if key is still containing something, since it might have been changed by next level stdWrap before
+				if ((isset($conf[$functionName]) || $conf[$functionProperties]) && !($functionType == 'boolean' && !$conf[$functionName])) {
+					// Add both keys - with and without the dot - to the set of executed functions
+					$isExecuted[$functionName] = TRUE;
+					$isExecuted[$functionProperties] = TRUE;
+					// Call the function with the prefix stdWrap_ to make sure nobody can execute functions just by adding their name to the TS Array
+					$functionName = 'stdWrap_' . $functionName;
+					$content = $this->{$functionName}($content, $singleConf);
+				} elseif ($functionType == 'boolean' && !$conf[$functionName]) {
+					$isExecuted[$functionName] = TRUE;
+					$isExecuted[$functionProperties] = TRUE;
 				}
 			}
 		}
-		if (is_array($conf) && count($conf)) {
-			// Cache handling
-			if (is_array($conf['cache.'])) {
-				$conf['cache.']['key'] = $this->stdWrap($conf['cache.']['key'], $conf['cache.']['key.']);
-				$conf['cache.']['tags'] = $this->stdWrap($conf['cache.']['tags'], $conf['cache.']['tags.']);
-				$conf['cache.']['lifetime'] = $this->stdWrap($conf['cache.']['lifetime'], $conf['cache.']['lifetime.']);
-				$conf['cacheRead'] = 1;
-				$conf['cacheStore'] = 1;
-			}
-			// Check, which of the available stdWrap functions is needed for the current conf Array
-			// and keep only those but still in the same order
-			$sortedConf = array_intersect_key($this->stdWrapOrder, $conf);
-			// Functions types that should not make use of nested stdWrap function calls to avoid conflicts with internal TypoScript used by these functions
-			$stdWrapDisabledFunctionTypes = 'cObject,functionName,stdWrap';
-			// Additional Array to check whether a function has already been executed
-			$isExecuted = array();
-			// Additional switch to make sure 'required', 'if' and 'fieldRequired'
-			// will still stop rendering immediately in case they return FALSE
-			$this->stdWrapRecursionLevel++;
-			$this->stopRendering[$this->stdWrapRecursionLevel] = FALSE;
-			// execute each function in the predefined order
-			foreach ($sortedConf as $stdWrapName => $functionType) {
-				// eliminate the second key of a pair 'key'|'key.' to make sure functions get called only once and check if rendering has been stopped
-				if (!$isExecuted[$stdWrapName] && !$this->stopRendering[$this->stdWrapRecursionLevel]) {
-					$functionName = rtrim($stdWrapName, '.');
-					$functionProperties = $functionName . '.';
-					// If there is any code one the next level, check if it contains "official" stdWrap functions
-					// if yes, execute them first - will make each function stdWrap aware
-					// so additional stdWrap calls within the functions can be removed, since the result will be the same
-					// exception: the recursive stdWrap function and cObject will still be using their own stdWrap call, since it modifies the content and not a property
-					if (count($conf[$functionProperties]) && !GeneralUtility::inList($stdWrapDisabledFunctionTypes, $functionType)) {
-						if (array_intersect_key($this->stdWrapOrder, $conf[$functionProperties])) {
-							$conf[$functionName] = $this->stdWrap($conf[$functionName], $conf[$functionProperties]);
-						}
-					}
-					// Get just that part of $conf that is needed for the particular function
-					$singleConf = array(
-						$functionName => $conf[$functionName],
-						$functionProperties => $conf[$functionProperties]
-					);
-					// In this special case 'spaceBefore' and 'spaceAfter' need additional stuff from 'space.''
-					if ($functionName == 'spaceBefore' || $functionName == 'spaceAfter') {
-						$singleConf['space.'] = $conf['space.'];
-					}
-					// Hand over the whole $conf array to the stdWrapHookObjects
-					if ($functionType === 'hook') {
-						$singleConf = $conf;
-					}
-					// Check if key is still containing something, since it might have been changed by next level stdWrap before
-					if ((isset($conf[$functionName]) || $conf[$functionProperties]) && !($functionType == 'boolean' && !$conf[$functionName])) {
-						// Add both keys - with and without the dot - to the set of executed functions
-						$isExecuted[$functionName] = TRUE;
-						$isExecuted[$functionProperties] = TRUE;
-						// Call the function with the prefix stdWrap_ to make sure nobody can execute functions just by adding their name to the TS Array
-						$functionName = 'stdWrap_' . $functionName;
-						$content = $this->{$functionName}($content, $singleConf);
-					} elseif ($functionType == 'boolean' && !$conf[$functionName]) {
-						$isExecuted[$functionName] = TRUE;
-						$isExecuted[$functionProperties] = TRUE;
-					}
-				}
-			}
-			unset($this->stopRendering[$this->stdWrapRecursionLevel]);
-			$this->stdWrapRecursionLevel--;
-		}
+		unset($this->stopRendering[$this->stdWrapRecursionLevel]);
+		$this->stdWrapRecursionLevel--;
+
 		return $content;
 	}
 
