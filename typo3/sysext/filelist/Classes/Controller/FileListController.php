@@ -371,7 +371,7 @@ class FileListController {
 			$content = '';
 			if ($this->errorMessage) {
 				$this->errorMessage->setSeverity(\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
-				$content = $this->doc->moduleBody(array(), array_merge(array('REFRESH' => ''), $this->getButtons()), array('CSH' => '', 'TITLE' => '', 'FOLDER_INFO' => '', 'PAGE_ICON' => '', 'FUNC_MENU' => '', 'CONTENT' => $this->errorMessage->render()));
+				$content = $this->doc->moduleBody(array(), array_merge(array('REFRESH' => '', 'PASTE' => '', 'LEVEL_UP' => ''), $this->getButtons()), array('CSH' => '', 'TITLE' => '', 'FOLDER_INFO' => '', 'PAGE_ICON' => '', 'FUNC_MENU' => '', 'CONTENT' => $this->errorMessage->render()));
 			}
 			// Create output - no access (no warning though)
 			$this->content = $this->doc->render($GLOBALS['LANG']->getLL('files'), $content);
