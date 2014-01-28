@@ -155,7 +155,7 @@ class Bootstrap {
 	 * @internal This is not a public API method, do not use in own extensions
 	 */
 	public function baseSetup($relativePathPart = '') {
-		\TYPO3\CMS\Core\Core\SystemEnvironmentBuilder::run($relativePathPart);
+		SystemEnvironmentBuilder::run($relativePathPart);
 		Utility\GeneralUtility::presetApplicationContext($this->applicationContext);
 		return $this;
 	}
@@ -262,7 +262,7 @@ class Bootstrap {
 		$classLoader = new ClassLoader($this->applicationContext);
 		$this->setEarlyInstance('TYPO3\\CMS\\Core\\Core\\ClassLoader', $classLoader);
 		$classLoader->setRuntimeClassLoadingInformationFromAutoloadRegistry((array) include __DIR__ . '/../../ext_autoload.php');
-		$classAliasMap = new \TYPO3\CMS\Core\Core\ClassAliasMap();
+		$classAliasMap = new ClassAliasMap();
 		$classAliasMap->injectClassLoader($classLoader);
 		$this->setEarlyInstance('TYPO3\\CMS\\Core\\Core\\ClassAliasMap', $classAliasMap);
 		$classLoader->injectClassAliasMap($classAliasMap);
@@ -316,6 +316,7 @@ class Bootstrap {
 		Utility\ExtensionManagementUtility::setPackageManager($packageManager);
 		$packageManager->injectClassLoader($this->getEarlyInstance('TYPO3\\CMS\\Core\\Core\\ClassLoader'));
 		$packageManager->injectCoreCache($this->getEarlyInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->getCache('cache_core'));
+		$packageManager->injectDependencyResolver(Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Package\\DependencyResolver'));
 		$packageManager->initialize($this, PATH_site);
 		Utility\GeneralUtility::setSingletonInstance('TYPO3\\CMS\\Core\\Package\\PackageManager', $packageManager);
 		$GLOBALS['TYPO3_LOADED_EXT'] = new \TYPO3\CMS\Core\Compatibility\LoadedExtensionsArray($packageManager);
@@ -363,7 +364,7 @@ class Bootstrap {
 		$bootstrap = $this->getInstance();
 		// Commented out for package management patch, method is still used in extensionmanager
 		//		$bootstrap->populateTypo3LoadedExtGlobal(FALSE);
-		//		\TYPO3\CMS\Core\Core\ClassLoader::loadClassLoaderCache();
+		//		ClassLoader::loadClassLoaderCache();
 		$bootstrap->loadAdditionalConfigurationFromExtensions(FALSE);
 		return $this;
 	}

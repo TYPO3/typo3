@@ -179,7 +179,7 @@ interface PackageManagerInterface {
 	/**
 	 * Register a native Flow package
 	 *
-	 * @param string $packageKey The Package to be registered
+	 * @param PackageInterface $packageKey The Package to be registered
 	 * @param boolean $sortAndSave allows for not saving packagestates when used in loops etc.
 	 * @return PackageInterface
 	 * @throws Exception\CorruptPackageException
