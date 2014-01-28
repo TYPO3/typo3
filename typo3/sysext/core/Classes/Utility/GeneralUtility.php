@@ -1510,8 +1510,7 @@ class GeneralUtility {
 	 * @return array Exploded values
 	 */
 	static public function trimExplode($delim, $string, $removeEmptyValues = FALSE, $limit = 0) {
-		$explodedValues = explode($delim, $string);
-		$result = array_map('trim', $explodedValues);
+		$result = array_map('trim', explode($delim, $string));
 		if ($removeEmptyValues) {
 			$temp = array();
 			foreach ($result as $value) {
@@ -1521,14 +1520,12 @@ class GeneralUtility {
 			}
 			$result = $temp;
 		}
-		if ($limit !== 0) {
-			if ($limit < 0) {
-				$result = array_slice($result, 0, $limit);
-			} elseif (count($result) > $limit) {
-				$lastElements = array_slice($result, $limit - 1);
-				$result = array_slice($result, 0, $limit - 1);
-				$result[] = implode($delim, $lastElements);
-			}
+		if ($limit > 0 && count($result) > $limit) {
+			$lastElements = array_slice($result, $limit - 1);
+			$result = array_slice($result, 0, $limit - 1);
+			$result[] = implode($delim, $lastElements);
+		} elseif ($limit < 0) {
+			$result = array_slice($result, 0, $limit);
 		}
 		return $result;
 	}
@@ -3465,29 +3462,30 @@ Connection: close
 			case '_ARRAY':
 				$out = array();
 				// Here, list ALL possible keys to this function for debug display.
-				$envTestVars = self::trimExplode(',', '
-						HTTP_HOST,
-						TYPO3_HOST_ONLY,
-						TYPO3_PORT,
-						PATH_INFO,
-						QUERY_STRING,
-						REQUEST_URI,
-						HTTP_REFERER,
-						TYPO3_REQUEST_HOST,
-						TYPO3_REQUEST_URL,
-						TYPO3_REQUEST_SCRIPT,
-						TYPO3_REQUEST_DIR,
-						TYPO3_SITE_URL,
-						TYPO3_SITE_SCRIPT,
-						TYPO3_SSL,
-						TYPO3_REV_PROXY,
-						SCRIPT_NAME,
-						TYPO3_DOCUMENT_ROOT,
-						SCRIPT_FILENAME,
-						REMOTE_ADDR,
-						REMOTE_HOST,
-						HTTP_USER_AGENT,
-						HTTP_ACCEPT_LANGUAGE', TRUE);
+				$envTestVars = array(
+					'HTTP_HOST',
+					'TYPO3_HOST_ONLY',
+					'TYPO3_PORT',
+					'PATH_INFO',
+					'QUERY_STRING',
+					'REQUEST_URI',
+					'HTTP_REFERER',
+					'TYPO3_REQUEST_HOST',
+					'TYPO3_REQUEST_URL',
+					'TYPO3_REQUEST_SCRIPT',
+					'TYPO3_REQUEST_DIR',
+					'TYPO3_SITE_URL',
+					'TYPO3_SITE_SCRIPT',
+					'TYPO3_SSL',
+					'TYPO3_REV_PROXY',
+					'SCRIPT_NAME',
+					'TYPO3_DOCUMENT_ROOT',
+					'SCRIPT_FILENAME',
+					'REMOTE_ADDR',
+					'REMOTE_HOST',
+					'HTTP_USER_AGENT',
+					'HTTP_ACCEPT_LANGUAGE'
+				);
 				foreach ($envTestVars as $v) {
 					$out[$v] = self::getIndpEnv($v);
 				}
