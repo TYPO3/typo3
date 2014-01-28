@@ -827,7 +827,7 @@ class ClickMenu {
 				$selItem = reset($elArr);
 				$elInfo = array(
 					basename($selItem),
-					basename($path),
+					basename($identifier),
 					$this->clipObj->currentMode()
 				);
 				$menuItems['pasteinto'] = $this->FILE_paste($identifier, $selItem, $elInfo);
