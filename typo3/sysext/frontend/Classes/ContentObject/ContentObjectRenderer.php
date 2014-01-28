@@ -7376,8 +7376,10 @@ class ContentObjectRenderer {
 								$theList = array_merge(
 									GeneralUtility::intExplode(
 										',',
-										$this->getTreeList($next_id, $depth - 1, $begin - 1, $dontCheckEnableFields,
-											$addSelectFields, $moreWhereClauses, $prevId_array, $recursionLevel + 1)
+										$this->getTreeList($next_id, $depth - 1, $begin - 1,
+											$dontCheckEnableFields, $addSelectFields, $moreWhereClauses,
+											$prevId_array, $recursionLevel + 1),
+										TRUE
 									),
 									$theList
 								);
