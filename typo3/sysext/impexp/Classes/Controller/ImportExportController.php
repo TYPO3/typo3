@@ -884,19 +884,12 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 						}
 					}
 					if (count($extKeysToInstall)) {
-						$passParams = GeneralUtility::_POST('tx_impexp');
-						unset($passParams['import_mode']);
-						unset($passParams['import_file']);
-						$thisScriptUrl = GeneralUtility::getIndpEnv('REQUEST_URI') . '?M=xMOD_tximpexp&id=' . $this->id . GeneralUtility::implodeArrayForUrl('tx_impexp', $passParams);
-						$emURL = $this->doc->backPath . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('em') . 'classes/index.php?CMD[requestInstallExtensions]=' . implode(',', $extKeysToInstall) . '&returnUrl=' . rawurlencode($thisScriptUrl);
-						$extensionInstallationMessage = 'Before you can install this T3D file you need to install the extensions "' . implode('", "', $extKeysToInstall) . '". Clicking Import will first take you to the Extension Manager so these dependencies can be resolved.';
+						$extensionInstallationMessage = 'Before you can install this T3D file you need to install the extensions "' . implode('", "', $extKeysToInstall) . '".';
 					}
 					if ($inData['import_file']) {
 						if (!count($extKeysToInstall)) {
 							$import->importData($this->id);
 							BackendUtility::setUpdateSignal('updatePageTree');
-						} else {
-							\TYPO3\CMS\Core\Utility\HttpUtility::redirect($emURL);
 						}
 					}
 					$import->display_import_pid_record = $this->pageinfo;
