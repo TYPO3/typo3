@@ -363,7 +363,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 * @todo Define visibility
 	 */
 	public function isAdmin() {
-		return ($this->user['admin'] & 1) == 1;
+		return is_array($this->user) && ($this->user['admin'] & 1) == 1;
 	}
 
 	/**
@@ -1554,7 +1554,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 				}
 
 				// Mount group home-dirs
-				if (($this->user['options'] & 2) == 2 && $GLOBALS['TYPO3_CONF_VARS']['BE']['groupHomePath'] != '') {
+				if ((is_array($this->user) && $this->user['options'] & 2) == 2 && $GLOBALS['TYPO3_CONF_VARS']['BE']['groupHomePath'] != '') {
 					// If groupHomePath is set, we attempt to mount it
 					list($groupHomeStorageUid, $groupHomeFilter) = explode(':', $GLOBALS['TYPO3_CONF_VARS']['BE']['groupHomePath'], 2);
 					$groupHomeStorageUid = (int)$groupHomeStorageUid;
@@ -2211,7 +2211,7 @@ This is a dump of the failures:
 	 * @todo Define visibility
 	 */
 	public function backendCheckLogin() {
-		if (!$this->user['uid']) {
+		if (empty($this->user['uid'])) {
 			if (!defined('TYPO3_PROCEED_IF_NO_USER') || !TYPO3_PROCEED_IF_NO_USER) {
 				\TYPO3\CMS\Core\Utility\HttpUtility::redirect($GLOBALS['BACK_PATH']);
 			}
