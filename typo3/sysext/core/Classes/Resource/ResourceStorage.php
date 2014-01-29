@@ -2446,10 +2446,11 @@ class ResourceStorage {
 				$processingFolder = $this->storageRecord['processingfolder'];
 			}
 			if ($this->driver->folderExists($processingFolder) === FALSE) {
-				$processingFolder = $this->createFolder($processingFolder);
+				$this->processingFolder = $this->createFolder($processingFolder);
+			} else {
+				$data = $this->driver->getFolderInfoByIdentifier($processingFolder);
+				$this->processingFolder = ResourceFactory::getInstance()->createFolderObject($this, $data['identifier'], $data['name']);
 			}
-			$data = $this->driver->getFolderInfoByIdentifier($processingFolder);
-			$this->processingFolder = ResourceFactory::getInstance()->createFolderObject($this, $data['identifier'], $data['name']);
 		}
 		return $this->processingFolder;
 	}
