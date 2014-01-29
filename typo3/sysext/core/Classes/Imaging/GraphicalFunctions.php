@@ -2069,7 +2069,7 @@ class GraphicalFunctions {
 		// ... and possibly recalculating the value
 		if (trim($cParts[1])) {
 			$cParts[1] = trim($cParts[1]);
-			if (substr($cParts[1], 0, 1) == '*') {
+			if ($cParts[1][0] === '*') {
 				$val = doubleval(substr($cParts[1], 1));
 				$col[0] = MathUtility::forceIntegerInRange($col[0] * $val, 0, 255);
 				$col[1] = MathUtility::forceIntegerInRange($col[1] * $val, 0, 255);

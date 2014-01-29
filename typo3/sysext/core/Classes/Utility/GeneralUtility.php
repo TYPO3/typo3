@@ -1355,7 +1355,7 @@ class GeneralUtility {
 	 * @return string The string with the first character as lowercase
 	 */
 	static public function lcfirst($string) {
-		return self::strtolower(substr($string, 0, 1)) . substr($string, 1);
+		return self::strtolower($string[0]) . substr($string, 1);
 	}
 
 	/**
@@ -1897,7 +1897,7 @@ class GeneralUtility {
 		$value = array();
 		// Compared with empty string instead , 030102
 		while ($tag_tmp !== '') {
-			$firstChar = substr($tag_tmp, 0, 1);
+			$firstChar = $tag_tmp[0];
 			if ($firstChar === '"' || $firstChar === '\'') {
 				$reg = explode($firstChar, $tag_tmp, 3);
 				$value[] = $reg[1];
@@ -2256,7 +2256,7 @@ class GeneralUtility {
 			// Test for numeric tag, encoded on the form "nXXX":
 			$testNtag = substr($tagName, 1);
 			// Closing tag.
-			$tagName = substr($tagName, 0, 1) == 'n' && MathUtility::canBeInterpretedAsInteger($testNtag) ? (int)$testNtag : $tagName;
+			$tagName = $tagName[0] === 'n' && MathUtility::canBeInterpretedAsInteger($testNtag) ? (int)$testNtag : $tagName;
 			// Test for alternative index value:
 			if (strlen($val['attributes']['index'])) {
 				$tagName = $val['attributes']['index'];
@@ -3024,7 +3024,7 @@ Connection: close
 	static public function locationHeaderUrl($path) {
 		$uI = parse_url($path);
 		// relative to HOST
-		if (substr($path, 0, 1) == '/') {
+		if ($path[0] === '/') {
 			$path = self::getIndpEnv('TYPO3_REQUEST_HOST') . $path;
 		} elseif (!$uI['scheme']) {
 			// No scheme either
@@ -3669,7 +3669,7 @@ Connection: close
 			return TRUE;
 		}
 		// Path starting with a / is always absolute, on every system
-		return substr($path, 0, 1) === '/';
+		return $path[0] === '/';
 	}
 
 	/**
@@ -3753,9 +3753,9 @@ Connection: close
 				}
 			} elseif (self::isAbsPath($decodedUrl) && self::isAllowedAbsPath($decodedUrl)) {
 				$sanitizedUrl = $url;
-			} elseif (strpos($testAbsoluteUrl, self::getIndpEnv('TYPO3_SITE_PATH')) === 0 && substr($decodedUrl, 0, 1) === '/') {
+			} elseif (strpos($testAbsoluteUrl, self::getIndpEnv('TYPO3_SITE_PATH')) === 0 && $decodedUrl[0] === '/') {
 				$sanitizedUrl = $url;
-			} elseif (strpos($testRelativeUrl, self::getIndpEnv('TYPO3_SITE_PATH')) === 0 && substr($decodedUrl, 0, 1) !== '/') {
+			} elseif (strpos($testRelativeUrl, self::getIndpEnv('TYPO3_SITE_PATH')) === 0 && $decodedUrl[0] !== '/') {
 				$sanitizedUrl = $url;
 			}
 		}
@@ -4092,7 +4092,7 @@ Connection: close
 			$funcRef = $funcName;
 		}
 		// Check for persistent object token, "&"
-		if (substr($funcRef, 0, 1) == '&') {
+		if ($funcRef[0] === '&') {
 			$funcRef = substr($funcRef, 1);
 			$storePersistentObject = TRUE;
 		} else {
@@ -4186,7 +4186,7 @@ Connection: close
 				$class = $classRef;
 			}
 			// Check for persistent object token, "&"
-			if (substr($class, 0, 1) == '&') {
+			if ($class[0] === '&') {
 				$class = substr($class, 1);
 				$storePersistentObject = TRUE;
 			} else {

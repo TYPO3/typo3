@@ -1014,7 +1014,7 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin 
 		$parsedUrl = @parse_url($url);
 		if ($parsedUrl !== FALSE && !isset($parsedUrl['scheme']) && !isset($parsedUrl['host'])) {
 			// If the relative URL starts with a slash, we need to check if it's within the current site path
-			return !GeneralUtility::isFirstPartOfStr($parsedUrl['path'], '/') || GeneralUtility::isFirstPartOfStr($parsedUrl['path'], GeneralUtility::getIndpEnv('TYPO3_SITE_PATH'));
+			return $parsedUrl['path'][0] !== '/' || GeneralUtility::isFirstPartOfStr($parsedUrl['path'], GeneralUtility::getIndpEnv('TYPO3_SITE_PATH'));
 		}
 		return FALSE;
 	}

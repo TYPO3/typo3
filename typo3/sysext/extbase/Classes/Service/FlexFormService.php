@@ -93,7 +93,7 @@ class FlexFormService implements \TYPO3\CMS\Core\SingletonInterface {
 				if (in_array($nodeKey, array('el', '_arrayContainer'))) {
 					return $this->walkFlexFormNode($nodeValue, $valuePointer);
 				}
-				if (substr($nodeKey, 0, 1) === '_') {
+				if ($nodeKey[0] === '_') {
 					continue;
 				}
 				if (strpos($nodeKey, '.')) {

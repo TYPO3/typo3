@@ -257,7 +257,7 @@ class Rfc822AddressesParser {
 		// If the next char is a comma and this was a group, then
 		// there are more addresses, otherwise, if there are any more
 		// chars, then there is another address.
-		if ($is_group && substr($address, 0, 1) == ',') {
+		if ($is_group && $address[0] === ',') {
 			$address = trim(substr($address, 1));
 			return $address;
 		} elseif (strlen($address) > 0) {
@@ -473,7 +473,7 @@ class Rfc822AddressesParser {
 		}
 		foreach ($phrase_parts as $part) {
 			// If quoted string:
-			if (substr($part, 0, 1) == '"') {
+			if ($part[0] === '"') {
 				if (!$this->_validateQuotedString($part)) {
 					return FALSE;
 				}
@@ -571,7 +571,7 @@ class Rfc822AddressesParser {
 		}
 		$mailbox = trim($mailbox);
 		// Check for name + route-addr
-		if (substr($mailbox, -1) == '>' && substr($mailbox, 0, 1) != '<') {
+		if (substr($mailbox, -1) === '>' && $mailbox[0] !== '<') {
 			$parts = explode('<', $mailbox);
 			$name = $this->_splitCheck($parts, '<');
 			$phrase = trim($name);
@@ -581,7 +581,7 @@ class Rfc822AddressesParser {
 			}
 		} else {
 			// First snip angle brackets if present.
-			if (substr($mailbox, 0, 1) == '<' && substr($mailbox, -1) == '>') {
+			if ($mailbox[0] === '<' && substr($mailbox, -1) === '>') {
 				$addr_spec = substr($mailbox, 1, -1);
 			} else {
 				$addr_spec = $mailbox;

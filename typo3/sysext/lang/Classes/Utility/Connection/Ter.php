@@ -40,7 +40,7 @@ class Ter extends \TYPO3\CMS\Extensionmanager\Utility\Connection\TerUtility {
 	public function fetchTranslationStatus($extensionKey, $mirrorUrl) {
 		$result = FALSE;
 		$extPath = \TYPO3\CMS\Core\Utility\GeneralUtility::strtolower($extensionKey);
-		$mirrorUrl .= $extPath{0} . '/' . $extPath{1} . '/' . $extPath . '-l10n/' . $extPath . '-l10n.xml';
+		$mirrorUrl .= $extPath[0] . '/' . $extPath[1] . '/' . $extPath . '-l10n/' . $extPath . '-l10n.xml';
 		$remote = \TYPO3\CMS\Core\Utility\GeneralUtility::getURL($mirrorUrl, 0, array(TYPO3_user_agent));
 
 		if ($remote !== FALSE) {
@@ -175,7 +175,7 @@ class Ter extends \TYPO3\CMS\Extensionmanager\Utility\Connection\TerUtility {
 	 */
 	protected function fetchTranslation($extensionKey, $language, $mirrorUrl) {
 		$extensionPath = \TYPO3\CMS\Core\Utility\GeneralUtility::strtolower($extensionKey);
-		$mirrorUrl .= $extensionPath{0} . '/' . $extensionPath{1} . '/' . $extensionPath .
+		$mirrorUrl .= $extensionPath[0] . '/' . $extensionPath[1] . '/' . $extensionPath .
 			'-l10n/' . $extensionPath . '-l10n-' . $language . '.zip';
 		$l10nResponse = \TYPO3\CMS\Core\Utility\GeneralUtility::getURL($mirrorUrl, 0, array(TYPO3_user_agent));
 

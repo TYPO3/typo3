@@ -971,7 +971,7 @@ class DataHandler {
 								$OK = 1;
 								// If a NEW... id
 								if (strstr($pid_value, 'NEW')) {
-									if (substr($pid_value, 0, 1) == '-') {
+									if ($pid_value[0] === '-') {
 										$negFlag = -1;
 										$pid_value = substr($pid_value, 1);
 									} else {
@@ -2486,7 +2486,7 @@ class DataHandler {
 					break;
 				case 'double2':
 					$value = preg_replace('/[^0-9,\\.-]/', '', $value);
-					$negative = substr($value, 0, 1) == '-';
+					$negative = $value[0] === '-';
 					$value = strtr($value, array(',' => '.', '-' => ''));
 					if (strpos($value, '.') === FALSE) {
 						$value .= '.0';

@@ -717,7 +717,7 @@ class ContentObjectRenderer {
 				$GLOBALS['TT']->push($TSkey, $name);
 			}
 			// Checking if the COBJ is a reference to another object. (eg. name of 'blabla.blabla = < styles.something')
-			if ($name{0} === '<') {
+			if ($name[0] === '<') {
 				$key = trim(substr($name, 1));
 				$cF = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\Parser\\TypoScriptParser');
 				// $name and $conf is loaded with the referenced values.
@@ -4218,7 +4218,7 @@ class ContentObjectRenderer {
 			list($tagName) = explode(' ', $subparts[0], 2);
 			// adds/overrides attributes
 			foreach ($conf as $pkey => $val) {
-				if (substr($pkey, -1) != '.' && substr($pkey, 0, 1) != '_') {
+				if (substr($pkey, -1) !== '.' && $pkey[0] !== '_') {
 					$tmpVal = isset($conf[$pkey . '.']) ? $this->stdWrap($conf[$pkey], $conf[$pkey . '.']) : (string)$val;
 					if ($lowerCaseAttributes) {
 						$pkey = strtolower($pkey);
@@ -4894,7 +4894,7 @@ class ContentObjectRenderer {
 				$data = substr($theValue, $pointer, $len);
 				$tag = explode(' ', trim(substr($data, 1, -1)), 2);
 				$tag[0] = strtolower($tag[0]);
-				if (substr($tag[0], 0, 1) == '/') {
+				if ($tag[0][0] === '/') {
 					$tag[0] = substr($tag[0], 1);
 					$tag['out'] = 1;
 				}
@@ -5010,7 +5010,7 @@ class ContentObjectRenderer {
 			$l = trim($l);
 			$attrib = array();
 			$nWrapped = 0;
-			if (substr($l, 0, 1) == '<' && substr($l, -1) == '>') {
+			if ($l[0] === '<' && substr($l, -1) === '>') {
 				$fwParts = explode('>', substr($l, 1), 2);
 				list($tagName, $tagParams) = explode(' ', $fwParts[0], 2);
 				if (!$fwParts[1]) {
@@ -5983,7 +5983,7 @@ class ContentObjectRenderer {
 						// Query Params:
 						$addQueryParams = $conf['addQueryString'] ? $this->getQueryArguments($conf['addQueryString.']) : '';
 						$addQueryParams .= isset($conf['additionalParams.']) ? trim($this->stdWrap($conf['additionalParams'], $conf['additionalParams.'])) : trim($conf['additionalParams']);
-						if ($addQueryParams == '&' || substr($addQueryParams, 0, 1) != '&') {
+						if ($addQueryParams === '&' || $addQueryParams[0] !== '&') {
 							$addQueryParams = '';
 						}
 						if ($conf['useCacheHash']) {
@@ -6599,8 +6599,9 @@ class ContentObjectRenderer {
 		$lines = GeneralUtility::trimExplode(LF, $params, TRUE);
 		foreach ($lines as $val) {
 			$pair = explode('=', $val, 2);
-			if (!GeneralUtility::inList('#,/', substr(trim($pair[0]), 0, 1))) {
-				$paramArr[trim($pair[0])] = trim($pair[1]);
+			$pair[0] = trim($pair[0]);
+			if (!GeneralUtility::inList('#,/', $pair[0][0])) {
+				$paramArr[$pair[0]] = trim($pair[1]);
 			}
 		}
 		return $paramArr;
@@ -6823,7 +6824,7 @@ class ContentObjectRenderer {
 	 * @todo Define visibility
 	 */
 	public function mergeTSRef($confArr, $prop) {
-		if (substr($confArr[$prop], 0, 1) == '<') {
+		if ($confArr[$prop][0] === '<') {
 			$key = trim(substr($confArr[$prop], 1));
 			$cF = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\Parser\\TypoScriptParser');
 			// $name and $conf is loaded with the referenced values.

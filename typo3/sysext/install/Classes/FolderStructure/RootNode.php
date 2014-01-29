@@ -49,7 +49,7 @@ class RootNode extends DirectoryNode implements RootNodeInterface {
 
 		if (!isset($structure['name'])
 			|| ($this->isWindowsOs() && substr($structure['name'], 1, 2) !== ':/')
-			|| (!$this->isWindowsOs() && substr($structure['name'], 0, 1) !== '/')
+			|| (!$this->isWindowsOs() && $structure['name'][0] !== '/')
 		) {
 			throw new \TYPO3\CMS\Install\FolderStructure\Exception\InvalidArgumentException(
 				'Root node expects absolute path as name',

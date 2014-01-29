@@ -476,7 +476,7 @@ class PageGenerator {
 					}
 					if ($ss) {
 						if ($GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['import']) {
-							if (!$GLOBALS['TSFE']->pSetup['includeCSS.'][($key . '.')]['external'] && substr($ss, 0, 1) != '/') {
+							if (!$GLOBALS['TSFE']->pSetup['includeCSS.'][($key . '.')]['external'] && $ss[0] !== '/') {
 								// To fix MSIE 6 that cannot handle these as relative paths (according to Ben v Ende)
 								$ss = GeneralUtility::dirname(GeneralUtility::getIndpEnv('SCRIPT_NAME')) . '/' . $ss;
 							}

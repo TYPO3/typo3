@@ -153,7 +153,7 @@ abstract class AbstractDomainObject implements \TYPO3\CMS\Extbase\DomainObject\D
 	public function _getProperties() {
 		$properties = get_object_vars($this);
 		foreach ($properties as $propertyName => $propertyValue) {
-			if (substr($propertyName, 0, 1) === '_') {
+			if ($propertyName[0] === '_') {
 				unset($properties[$propertyName]);
 			}
 		}
@@ -193,7 +193,7 @@ abstract class AbstractDomainObject implements \TYPO3\CMS\Extbase\DomainObject\D
 			$this->_cleanProperties = array();
 			$properties = get_object_vars($this);
 			foreach ($properties as $propertyName => $propertyValue) {
-				if (substr($propertyName, 0, 1) === '_') {
+				if ($propertyName[0] === '_') {
 					continue;
 				}
 				// Do not memorize "internal" properties

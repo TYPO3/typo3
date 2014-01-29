@@ -1061,7 +1061,7 @@ class DocumentTemplate {
 	 */
 	public function sectionHeader($label, $sH = FALSE, $addAttrib = '') {
 		$tag = $sH ? 'h2' : 'h3';
-		if ($addAttrib && substr($addAttrib, 0, 1) !== ' ') {
+		if ($addAttrib && $addAttrib[0] !== ' ') {
 			$addAttrib = ' ' . $addAttrib;
 		}
 		$str = '
@@ -1193,7 +1193,7 @@ class DocumentTemplate {
 	 * @todo Define visibility
 	 */
 	public function addStyleSheet($key, $href, $title = '', $relation = 'stylesheet') {
-		if (strpos($href, '://') !== FALSE || substr($href, 0, 1) === '/') {
+		if (strpos($href, '://') !== FALSE || $href[0] === '/') {
 			$file = $href;
 		} else {
 			$file = $this->backPath . $href;

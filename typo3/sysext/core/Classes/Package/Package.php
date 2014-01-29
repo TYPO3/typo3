@@ -79,7 +79,7 @@ class Package extends \TYPO3\Flow\Package\Package implements PackageInterface {
 		if (substr($packagePath, -1, 1) !== '/') {
 			throw new \TYPO3\Flow\Package\Exception\InvalidPackagePathException(sprintf('The package path "%s" provided for package "%s" has no trailing forward slash.', $packagePath, $packageKey), 1166633720);
 		}
-		if (substr($classesPath, 1, 1) === '/') {
+		if ($classesPath[1] === '/') {
 			throw new \TYPO3\Flow\Package\Exception\InvalidPackagePathException(sprintf('The package classes path provided for package "%s" has a leading forward slash.', $packageKey), 1334841320);
 		}
 		if (!@file_exists($packagePath . $manifestPath . 'ext_emconf.php')) {

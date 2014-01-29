@@ -205,7 +205,7 @@ class PathUtility {
 			return TRUE;
 		}
 		// Path starting with a / is always absolute, on every system
-		return substr($path, 0, 1) === '/';
+		return $path[0] === '/';
 	}
 
 	/**

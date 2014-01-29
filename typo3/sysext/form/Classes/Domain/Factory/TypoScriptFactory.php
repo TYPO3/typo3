@@ -116,7 +116,7 @@ class TypoScriptFactory implements \TYPO3\CMS\Core\SingletonInterface {
 		if (in_array($class, \TYPO3\CMS\Form\Utility\FormUtility::getInstance()->getFormObjects())) {
 			$this->addElement($parentElement, $class, $arguments);
 		} elseif ($this->disableContentElement === FALSE) {
-			if (substr($class, 0, 1) == '<') {
+			if ($class[0] === '<') {
 				$key = trim(substr($class, 1));
 				/** @var $typoscriptParser \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser */
 				$typoscriptParser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\Parser\\TypoScriptParser');

@@ -618,7 +618,7 @@ class PageRepository {
 			// If relative path, prefix Site URL:
 			$uI = parse_url($redirectTo);
 			// Relative path assumed now.
-			if (!$uI['scheme'] && substr($redirectTo, 0, 1) != '/') {
+			if (!$uI['scheme'] && $redirectTo[0] !== '/') {
 				$redirectTo = GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . $redirectTo;
 			}
 			return $redirectTo;

@@ -178,7 +178,7 @@ abstract class AbstractConditionMatcher {
 		$result = FALSE;
 		$normalizedExpression = $this->normalizeExpression($expression);
 		// First and last character must be square brackets (e.g. "[A]&&[B]":
-		if (substr($normalizedExpression, 0, 1) === '[' && substr($normalizedExpression, -1) === ']') {
+		if ($normalizedExpression[0] === '[' && substr($normalizedExpression, -1) === ']') {
 			$innerExpression = substr($normalizedExpression, 1, -1);
 			$orParts = explode(']||[', $innerExpression);
 			foreach ($orParts as $orPart) {
@@ -241,7 +241,7 @@ abstract class AbstractConditionMatcher {
 				$values = GeneralUtility::trimExplode(',', $value, TRUE);
 				foreach ($values as $test) {
 					if (strcspn($test, '=<>') == 0) {
-						switch (substr($test, 0, 1)) {
+						switch ($test[0]) {
 							case '=':
 								if (doubleval(substr($test, 1)) == $browserInfo['version']) {
 									return TRUE;
@@ -439,14 +439,14 @@ abstract class AbstractConditionMatcher {
 		$result = array();
 		$arguments = trim($arguments);
 		while ($arguments) {
-			if ($arguments{0} == ',') {
+			if ($arguments[0] === ',') {
 				$result[] = '';
 				$arguments = substr($arguments, 1);
 			} else {
 				$pos = strcspn($arguments, ',\'"');
 				if ($pos == 0) {
 					// We hit a quote of some kind
-					$quote = $arguments{0};
+					$quote = $arguments[0];
 					$segment = preg_replace('/^(.*?[^\\\])' . $quote . '.*$/', '\1', substr($arguments, 1));
 					$segment = str_replace('\\' . $quote, $quote, $segment);
 					$result[] = $segment;

@@ -77,7 +77,7 @@ class SqlSchemaMigrationService {
 		$table = '';
 		$total = array();
 		foreach ($lines as $value) {
-			if (substr($value, 0, 1) == '#') {
+			if ($value[0] === '#') {
 				// Ignore comments
 				continue;
 			}
@@ -91,7 +91,7 @@ class SqlSchemaMigrationService {
 					}
 				}
 			} else {
-				if (substr($value, 0, 1) == ')' && substr($value, -1) == ';') {
+				if ($value[0] === ')' && substr($value, -1) === ';') {
 					$ttype = array();
 					if (preg_match('/(ENGINE|TYPE)[ ]*=[ ]*([a-zA-Z]*)/', $value, $ttype)) {
 						$total[$table]['extra']['ENGINE'] = $ttype[2];
@@ -515,17 +515,18 @@ class SqlSchemaMigrationService {
 		$statementArray = array();
 		$statementArrayPointer = 0;
 		foreach ($sqlcodeArr as $line => $lineContent) {
+			$lineContent = trim($lineContent);
 			$is_set = 0;
 			// Auto_increment fields cannot have a default value!
 			if (stristr($lineContent, 'auto_increment')) {
 				$lineContent = preg_replace('/ default \'0\'/i', '', $lineContent);
 			}
-			if (!$removeNonSQL || trim($lineContent) !== '' && substr(trim($lineContent), 0, 1) != '#' && substr(trim($lineContent), 0, 2) != '--') {
+			if (!$removeNonSQL || $lineContent !== '' && $lineContent[0] !== '#' && substr($lineContent, 0, 2) !== '--') {
 				// '--' is seen as mysqldump comments from server version 3.23.49
 				$statementArray[$statementArrayPointer] .= $lineContent;
 				$is_set = 1;
 			}
-			if (substr(trim($lineContent), -1) == ';') {
+			if (substr($lineContent, -1) === ';') {
 				if (isset($statementArray[$statementArrayPointer])) {
 					if (!trim($statementArray[$statementArrayPointer]) || $query_regex && !preg_match(('/' . $query_regex . '/i'), trim($statementArray[$statementArrayPointer]))) {
 						unset($statementArray[$statementArrayPointer]);

@@ -154,7 +154,7 @@ class FormContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractConten
 				// field:
 				$fParts = explode(',', $parts[1]);
 				$fParts[0] = trim($fParts[0]);
-				if (substr($fParts[0], 0, 1) == '*') {
+				if ($fParts[0][0] === '*') {
 					$confData['required'] = 1;
 					$fParts[0] = substr($fParts[0], 1);
 				}
@@ -279,7 +279,7 @@ class FormContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractConten
 						for ($a = 0; $a < $pCount; $a++) {
 							$valueParts[$a] = trim($valueParts[$a]);
 							// Finding default value
-							if (substr($valueParts[$a], 0, 1) == '*') {
+							if ($valueParts[$a][0] === '*') {
 								$sel = 'selected';
 								$valueParts[$a] = substr($valueParts[$a], 1);
 							} else {
@@ -325,7 +325,7 @@ class FormContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractConten
 						$pCount = count($valueParts);
 						for ($a = 0; $a < $pCount; $a++) {
 							$valueParts[$a] = trim($valueParts[$a]);
-							if (substr($valueParts[$a], 0, 1) == '*') {
+							if ($valueParts[$a][0] === '*') {
 								$sel = 'checked';
 								$valueParts[$a] = substr($valueParts[$a], 1);
 							} else {

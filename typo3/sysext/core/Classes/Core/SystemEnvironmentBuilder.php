@@ -382,7 +382,7 @@ class SystemEnvironmentBuilder {
 				$isRelativePath = TRUE;
 			}
 		} else {
-			if (substr($scriptPath, 0, 1) !== '/') {
+			if ($scriptPath[0] !== '/') {
 				$isRelativePath = TRUE;
 			}
 		}

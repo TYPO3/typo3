@@ -3430,7 +3430,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 					$bit = substr($bitKey, 1);
 					if (MathUtility::canBeInterpretedAsInteger($bit)) {
 						$bit = MathUtility::forceIntegerInRange($bit, 0, 30);
-						if (substr($bitKey, 0, 1) == '-' && !($sTValue & pow(2, $bit)) || substr($bitKey, 0, 1) == '+' && $sTValue & pow(2, $bit)) {
+						if ($bitKey[0] === '-' && !($sTValue & pow(2, $bit)) || $bitKey[0] === '+' && $sTValue & pow(2, $bit)) {
 							$excludeElements = array_merge($excludeElements, GeneralUtility::trimExplode(',', $eList, TRUE));
 						}
 					}
@@ -4106,7 +4106,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 		if (is_array($wizConf) && !$this->disableWizards) {
 			$parametersOfWizards = &$specConf['wizards']['parameters'];
 			foreach ($wizConf as $wid => $wConf) {
-				if (substr($wid, 0, 1) != '_' && (!$wConf['enableByTypeConfig'] || is_array($parametersOfWizards) && in_array($wid, $parametersOfWizards)) && ($RTE || !$wConf['RTEonly'])) {
+				if ($wid[0] !== '_' && (!$wConf['enableByTypeConfig'] || is_array($parametersOfWizards) && in_array($wid, $parametersOfWizards)) && ($RTE || !$wConf['RTEonly'])) {
 					// Title / icon:
 					$iTitle = htmlspecialchars($this->sL($wConf['title']));
 					if ($wConf['icon']) {

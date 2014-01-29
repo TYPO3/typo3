@@ -88,10 +88,10 @@ class DiffUtility {
 					$c = (int)$lValue;
 					$diffResArray[$c]['changeInfo'] = $lValue;
 				}
-				if (substr($lValue, 0, 1) == '<') {
+				if ($lValue[0] === '<') {
 					$differenceStr .= ($diffResArray[$c]['old'][] = substr($lValue, 2));
 				}
-				if (substr($lValue, 0, 1) == '>') {
+				if ($lValue[0] === '>') {
 					$differenceStr .= ($diffResArray[$c]['new'][] = substr($lValue, 2));
 				}
 			}

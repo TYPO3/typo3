@@ -1098,7 +1098,7 @@ class CharsetConverter {
 	 */
 	public function utf8CharToUnumber($str, $hex = 0) {
 		// First char
-		$ord = ord(substr($str, 0, 1));
+		$ord = ord($str[0]);
 		// This verifyes that it IS a multi byte string
 		if (($ord & 192) == 192) {
 			$binBuf = '';
@@ -1113,7 +1113,7 @@ class CharsetConverter {
 					break;
 				}
 			}
-			$binBuf = substr(('00000000' . decbin(ord(substr($str, 0, 1)))), -(6 - $b)) . $binBuf;
+			$binBuf = substr(('00000000' . decbin(ord($str[0]))), -(6 - $b)) . $binBuf;
 			$int = bindec($binBuf);
 		} else {
 			$int = $ord;
@@ -1158,7 +1158,7 @@ class CharsetConverter {
 					$detectedType = '';
 					foreach ($lines as $value) {
 						// Comment line or blanks are ignored.
-						if (trim($value) && substr($value, 0, 1) != '#') {
+						if (trim($value) && $value[0] !== '#') {
 							// Detect type if not done yet: (Done on first real line)
 							// The "whitespaced" type is on the syntax 	"0x0A	0x000A	#LINE FEED" 	while 	"ms-token" is like 		"B9 = U+00B9 : SUPERSCRIPT ONE"
 							if (!$detectedType) {

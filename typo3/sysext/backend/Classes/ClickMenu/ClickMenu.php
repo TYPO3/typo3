@@ -1324,7 +1324,7 @@ class ClickMenu {
 	public function enableDisableItems($menuItems) {
 		if ($this->iParts[3]) {
 			// Detect "only" mode: (only showing listed items)
-			if (substr($this->iParts[3], 0, 1) == '+') {
+			if ($this->iParts[3][0] === '+') {
 				$this->iParts[3] = substr($this->iParts[3], 1);
 				$only = TRUE;
 			} else {

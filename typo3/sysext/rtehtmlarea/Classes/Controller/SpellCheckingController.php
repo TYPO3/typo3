@@ -611,14 +611,14 @@ var selectedDictionary = "' . $this->dictionary . '";
 						echo '{' . $AspellAnswer . '}';
 					}
 					GeneralUtility::unlink_tempfile($tmpFileName);
-					if (substr($AspellResultLines['1'], 0, 1) != '*') {
+					if ($AspellResultLines['1'][0] !== '*') {
 						if (!in_array($word, $this->misspelled)) {
 							if (sizeof($this->misspelled) != 0) {
 								$this->suggestedWords .= ',';
 							}
 							$suggest = array();
 							$suggestions = array();
-							if (substr($AspellResultLines['1'], 0, 1) == '&') {
+							if ($AspellResultLines['1'][0] === '&') {
 								$suggestions = GeneralUtility::trimExplode(':', $AspellResultLines['1'], TRUE);
 								$suggest = GeneralUtility::trimExplode(',', $suggestions['1'], TRUE);
 							}

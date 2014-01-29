@@ -55,7 +55,7 @@ class FileNameFilter {
 	 */
 	static public function filterHiddenFilesAndFolders($itemName, $itemIdentifier, $parentIdentifier, array $additionalInformation, \TYPO3\CMS\Core\Resource\Driver\DriverInterface $driverInstance) {
 		// Only apply the filter if you want to hide the hidden files
-		if (self::$showHiddenFilesAndFolders === FALSE && substr($itemName, 0, 1) == '.') {
+		if (self::$showHiddenFilesAndFolders === FALSE && $itemName[0] === '.') {
 			return -1;
 		} else {
 			return TRUE;

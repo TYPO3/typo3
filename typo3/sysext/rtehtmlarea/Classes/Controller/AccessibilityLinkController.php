@@ -114,7 +114,7 @@ class AccessibilityLinkController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlu
 			if ((string)$extKey !== '' && \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($extKey) && (string)$local !== '') {
 				$newFilename = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath($extKey) . $local;
 			}
-		} elseif (substr($filename, 0, 1) != '/') {
+		} elseif ($filename[0] !== '/') {
 			$newFilename = $filename;
 		} else {
 			$newFilename = substr($filename, 1);

@@ -415,7 +415,7 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 			$a++;
 			$depth = $depth_in . $key;
 			// This excludes all constants starting with '_' from being shown.
-			if ($this->bType != 'const' || substr($depth, 0, 1) != '_') {
+			if ($this->bType !== 'const' || $depth[0] !== '_') {
 				$goto = substr(md5($depth), 0, 6);
 				$deeper = is_array($arr[$key . '.']) && ($this->tsbrowser_depthKeys[$depth] || $this->ext_expandAllNotes) ? 1 : 0;
 				$PM = 'join';
@@ -1013,7 +1013,7 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 					$retArr['paramstr'] = $p;
 					switch ($retArr['type']) {
 						case 'int':
-							if (substr($retArr['paramstr'], 0, 1) == '-') {
+							if ($retArr['paramstr'][0] === '-') {
 								$retArr['params'] = GeneralUtility::intExplode('-', substr($retArr['paramstr'], 1));
 								$retArr['params'][0] = (int)('-' . $retArr['params'][0]);
 							} else {
@@ -1369,13 +1369,13 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 			}
 			$this->rawP++;
 			if ($line) {
-				if (substr($line, 0, 1) == '[') {
+				if ($line[0] === '[') {
 
 				} elseif (strcspn($line, '}#/') != 0) {
 					$varL = strcspn($line, ' {=<');
 					$var = substr($line, 0, $varL);
 					$line = ltrim(substr($line, $varL));
-					switch (substr($line, 0, 1)) {
+					switch ($line[0]) {
 						case '=':
 							$this->objReg[$pre . $var] = $this->rawP - 1;
 							break;
@@ -1385,7 +1385,7 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 							break;
 					}
 					$this->lastComment = '';
-				} elseif (substr($line, 0, 1) == '}') {
+				} elseif ($line[0] === '}') {
 					$this->lastComment = '';
 					$this->ext_inBrace--;
 					if ($this->ext_inBrace < 0) {
@@ -1513,13 +1513,13 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 								if ($var && !GeneralUtility::inList($this->HTMLcolorList, strtolower($var))) {
 									$var = preg_replace('/[^A-Fa-f0-9]*/', '', $var);
 									$useFulHex = strlen($var) > 3;
-									$col[] = HexDec(substr($var, 0, 1));
-									$col[] = HexDec(substr($var, 1, 1));
-									$col[] = HexDec(substr($var, 2, 1));
+									$col[] = HexDec($var[0]);
+									$col[] = HexDec($var[1]);
+									$col[] = HexDec($var[2]);
 									if ($useFulHex) {
-										$col[] = HexDec(substr($var, 3, 1));
-										$col[] = HexDec(substr($var, 4, 1));
-										$col[] = HexDec(substr($var, 5, 1));
+										$col[] = HexDec($var[3]);
+										$col[] = HexDec($var[4]);
+										$col[] = HexDec($var[5]);
 									}
 									$var = substr(('0' . DecHex($col[0])), -1) . substr(('0' . DecHex($col[1])), -1) . substr(('0' . DecHex($col[2])), -1);
 									if ($useFulHex) {

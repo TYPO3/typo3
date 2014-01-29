@@ -1243,7 +1243,7 @@ class SqlParser {
 		// Field type:
 		if ($result['fieldType'] = $this->nextPart($parseString, '^(int|smallint|tinyint|mediumint|bigint|double|numeric|decimal|float|varchar|char|text|tinytext|mediumtext|longtext|blob|tinyblob|mediumblob|longblob)([[:space:],]+|\\()')) {
 			// Looking for value:
-			if (substr($parseString, 0, 1) == '(') {
+			if ($parseString[0] === '(') {
 				$parseString = substr($parseString, 1);
 				if ($result['value'] = $this->nextPart($parseString, '^([^)]*)')) {
 					$parseString = ltrim(substr($parseString, 1));
@@ -1369,7 +1369,7 @@ class SqlParser {
 		} else {
 			// Just plain string value, in quotes or not:
 			// Quote?
-			$firstChar = substr($parseString, 0, 1);
+			$firstChar = $parseString[0];
 			switch ($firstChar) {
 				case '"':
 					$value = array($this->getValueInQuotes($parseString, '"'), '"');

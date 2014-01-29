@@ -104,7 +104,7 @@ class DoubleMetaPhoneUtility {
 			$this->current++;
 		}
 		// Initial 'X' is pronounced 'Z' e.g. 'Xavier'
-		if (substr($this->original, 0, 1) == 'X') {
+		if ($this->original[0] === 'X') {
 			$this->primary .= 'S';
 			// 'Z' maps to 'S'
 			$this->secondary .= 'S';
@@ -223,7 +223,7 @@ class DoubleMetaPhoneUtility {
 						break;
 					}
 					// double 'C', but not McClellan'
-					if ($this->StringAt($this->original, $this->current, 2, array('CC')) && !($this->current == 1 && substr($this->original, 0, 1) == 'M')) {
+					if ($this->StringAt($this->original, $this->current, 2, array('CC')) && !($this->current == 1 && $this->original[0] === 'M')) {
 						// 'bellocchio' but not 'bacchus'
 						if ($this->StringAt($this->original, $this->current + 2, 1, array('I', 'E', 'H')) && !$this->StringAt($this->original, ($this->current + 2), 2, array('HU'))) {
 							// 'accident', 'accede', 'succeed'

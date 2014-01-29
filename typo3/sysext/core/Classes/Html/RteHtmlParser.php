@@ -752,7 +752,7 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 				if (strstr($link_param, '@') && (!$pU['scheme'] || $pU['scheme'] == 'mailto')) {
 					// mailadr
 					$href = 'mailto:' . preg_replace('/^mailto:/i', '', $link_param);
-				} elseif (substr($link_param, 0, 1) == '#') {
+				} elseif ($link_param[0] === '#') {
 					// check if anchor
 					$href = $siteUrl . $link_param;
 				} else {

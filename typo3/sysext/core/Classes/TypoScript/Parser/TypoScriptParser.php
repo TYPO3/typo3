@@ -231,7 +231,7 @@ class TypoScriptParser {
 				break;
 			}
 			$preUppercase = strtoupper($pre);
-			if ($pre{0} === '[' &&
+			if ($pre[0] === '[' &&
 				($preUppercase === '[GLOBAL]' ||
 					$preUppercase === '[END]' ||
 					!$this->lastConditionTrue && $preUppercase === '[ELSE]')
@@ -276,7 +276,7 @@ class TypoScriptParser {
 		while (isset($this->raw[$this->rawP])) {
 			$line = trim($this->raw[$this->rawP]);
 			$this->rawP++;
-			if ($line && $line{0} === '[') {
+			if ($line && $line[0] === '[') {
 				return $line;
 			}
 		}
@@ -311,7 +311,7 @@ class TypoScriptParser {
 				// If multiline is enabled. Escape by ')'
 				if ($this->multiLineEnabled) {
 					// Multiline ends...
-					if ($line{0} === ')') {
+					if ($line[0] === ')') {
 						if ($this->syntaxHighLight) {
 							$this->regHighLight('operator', $lineP, strlen($line) - 1);
 						}
@@ -337,7 +337,7 @@ class TypoScriptParser {
 						}
 						$this->multiLineValue[] = $this->raw[$this->rawP - 1];
 					}
-				} elseif ($this->inBrace === 0 && $line{0} === '[') {
+				} elseif ($this->inBrace === 0 && $line[0] === '[') {
 					// Beginning of condition (only on level zero compared to brace-levels
 					if ($this->syntaxHighLight) {
 						$this->regHighLight('condition', $lineP);
@@ -345,14 +345,14 @@ class TypoScriptParser {
 					return $line;
 				} else {
 					// Return if GLOBAL condition is set - no matter what.
-					if ($line{0} === '[' && stripos($line, '[GLOBAL]') !== FALSE) {
+					if ($line[0] === '[' && stripos($line, '[GLOBAL]') !== FALSE) {
 						if ($this->syntaxHighLight) {
 							$this->regHighLight('condition', $lineP);
 						}
 						$this->error('Line ' . ($this->lineNumberOffset + $this->rawP - 1) . ': On return to [GLOBAL] scope, the script was short of ' . $this->inBrace . ' end brace(s)', 1);
 						$this->inBrace = 0;
 						return $line;
-					} elseif ($line{0} !== '}' && $line{0} !== '#' && $line{0} !== '/') {
+					} elseif ($line[0] !== '}' && $line[0] !== '#' && $line[0] !== '/') {
 						// If not brace-end or comment
 						// Find object name string until we meet an operator
 						$varL = strcspn($line, TAB . ' {=<>:(');
@@ -379,7 +379,7 @@ class TypoScriptParser {
 								} else {
 									// Checking for special TSparser properties (to change TS values at parsetime)
 									$match = array();
-									if ($line{0} === ':' && preg_match('/^:=\\s*([^\\(]+)\\s*\\((.*)\\).*/', $line, $match)) {
+									if ($line[0] === ':' && preg_match('/^:=\\s*([^\\(]+)\\s*\\((.*)\\).*/', $line, $match)) {
 										$tsFunc = $match[1];
 										$tsFuncArg = $match[2];
 										list($currentValue) = $this->getVal($objStrName, $setup);
@@ -389,7 +389,7 @@ class TypoScriptParser {
 											$line = '= ' . $newValue;
 										}
 									}
-									switch ($line{0}) {
+									switch ($line[0]) {
 										case '=':
 											if ($this->syntaxHighLight) {
 												$this->regHighLight('value', $lineP, strlen(ltrim(substr($line, 1))) - strlen(trim(substr($line, 1))));
@@ -436,7 +436,7 @@ class TypoScriptParser {
 												$this->regHighLight('value_copy', $lineP, strlen(ltrim(substr($line, 1))) - strlen(trim(substr($line, 1))));
 											}
 											$theVal = trim(substr($line, 1));
-											if ($theVal{0} === '.') {
+											if ($theVal[0] === '.') {
 												$res = $this->getVal(substr($theVal, 1), $setup);
 											} else {
 												$res = $this->getVal($theVal, $this->setup);
@@ -457,7 +457,7 @@ class TypoScriptParser {
 							}
 							$this->lastComment = '';
 						}
-					} elseif ($line{0} === '}') {
+					} elseif ($line[0] === '}') {
 						$this->inBrace--;
 						$this->lastComment = '';
 						if ($this->syntaxHighLight) {
@@ -751,7 +751,7 @@ class TypoScriptParser {
 				$tsContentsTillNextInclude = $parts[$i + 3];
 
 				// Resolve a possible relative paths if a parent file is given
-				if ($parentFilenameOrPath !== '' && GeneralUtility::isFirstPartOfStr($filename, '.')) {
+				if ($parentFilenameOrPath !== '' && $filename[0] === '.') {
 					$filename = PathUtility::getAbsolutePathOfRelativeReferencedFileOrPath($parentFilenameOrPath, $filename);
 				}
 
@@ -828,7 +828,7 @@ class TypoScriptParser {
 	 */
 	public static function includeFile($filename, $cycle_counter = 1, $returnFiles = FALSE, &$newString = '', array &$includedFiles = array(), $optionalProperties = '', $parentFilenameOrPath = '') {
 		// Resolve a possible relative paths if a parent file is given
-		if ($parentFilenameOrPath !== '' && GeneralUtility::isFirstPartOfStr($filename, '.')) {
+		if ($parentFilenameOrPath !== '' && $filename[0] === '.') {
 			$absfilename = PathUtility::getAbsolutePathOfRelativeReferencedFileOrPath($parentFilenameOrPath, $filename);
 		} else {
 			$absfilename = $filename;
@@ -884,7 +884,7 @@ class TypoScriptParser {
 		}
 
 		// Resolve a possible relative paths if a parent file is given
-		if ($parentFilenameOrPath !== '' && GeneralUtility::isFirstPartOfStr($dirPath, '.')) {
+		if ($parentFilenameOrPath !== '' && $dirPath[0] === '.') {
 			$absDirPath = PathUtility::getAbsolutePathOfRelativeReferencedFileOrPath($parentFilenameOrPath, $dirPath);
 		} else {
 			$absDirPath = $dirPath;
@@ -1004,7 +1004,7 @@ class TypoScriptParser {
 					// Write the content to the file
 
 					// Resolve a possible relative paths if a parent file is given
-					if ($parentFilenameOrPath !== '' && GeneralUtility::isFirstPartOfStr($fileName, '.')) {
+					if ($parentFilenameOrPath !== '' && $fileName[0] === '.') {
 						$realFileName = PathUtility::getAbsolutePathOfRelativeReferencedFileOrPath($parentFilenameOrPath, $fileName);
 					} else {
 						$realFileName = $fileName;

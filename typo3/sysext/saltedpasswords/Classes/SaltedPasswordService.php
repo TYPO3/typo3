@@ -151,7 +151,7 @@ class SaltedPasswordService extends \TYPO3\CMS\Sv\AbstractAuthenticationService 
 				// Instanciate default method class
 				$this->objInstanceSaltedPW = \TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::getSaltingInstance(substr($user['password'], 1));
 				// md5
-				if (substr($user['password'], 0, 1) === 'M') {
+				if ($user['password'][0] === 'M') {
 					$validPasswd = $this->objInstanceSaltedPW->checkPassword(md5($password), substr($user['password'], 1));
 				} else {
 					$validPasswd = $this->objInstanceSaltedPW->checkPassword($password, substr($user['password'], 1));

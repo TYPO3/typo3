@@ -781,7 +781,7 @@ class FormsController {
 				// Field:
 				$fParts = GeneralUtility::trimExplode(',', $parts[1]);
 				$fParts[0] = trim($fParts[0]);
-				if (substr($fParts[0], 0, 1) == '*') {
+				if ($fParts[0][0] === '*') {
 					$confData['required'] = 1;
 					$fParts[0] = substr($fParts[0], 1);
 				}

@@ -227,7 +227,7 @@ class ElementConditionMatcher {
 			case '!-':
 				list($minimum, $maximum) = explode('-', $operand);
 				$result = $fieldValue >= $minimum && $fieldValue <= $maximum;
-				if ($operator{0} === '!') {
+				if ($operator[0] === '!') {
 					$result = !$result;
 				}
 				break;
@@ -236,14 +236,14 @@ class ElementConditionMatcher {
 			case '=':
 			case '!=':
 				$result = \TYPO3\CMS\Core\Utility\GeneralUtility::inList($operand, $fieldValue);
-				if ($operator{0} === '!') {
+				if ($operator[0] === '!') {
 					$result = !$result;
 				}
 				break;
 			case 'BIT':
 			case '!BIT':
 				$result = ((int)$fieldValue & $operand) ? TRUE : FALSE;
-				if ($operator{0} === '!') {
+				if ($operator[0] === '!') {
 					$result = !$result;
 				}
 				break;

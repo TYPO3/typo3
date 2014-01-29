@@ -372,10 +372,10 @@ class LanguageService {
 							$type = $keyParts[1];
 						}
 							// Detecting 'hidden' labels, converting to normal fieldname
-						if ($fieldName == '_') {
+						if ($fieldName === '_') {
 							$fieldName = '';
 						}
-						if (substr($fieldName, 0, 1) == '_') {
+						if ($fieldName !== '' && $fieldName[0] === '_') {
 							$fieldName = substr($fieldName, 1);
 						}
 							// Append label
