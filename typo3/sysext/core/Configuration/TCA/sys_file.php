@@ -133,7 +133,8 @@ return array(
 				'foreign_table' => 'sys_file_metadata',
 				'foreign_field' => 'file',
 				'size' => 1,
-				'minitems' => 1
+				'minitems' => 1,
+				'maxitems' => 1,
 			)
 		)
 	),
