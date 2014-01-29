@@ -6104,11 +6104,6 @@ class tx_rtehtmlarea_user extends \TYPO3\CMS\Rtehtmlarea\User {}
 /**
  * @deprecated since 6.0 will be removed in 7.0
  */
-class tx_saltedpasswords_autoloader extends \TYPO3\CMS\Saltedpasswords\Autoloader {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
 class tx_saltedpasswords_eval_be extends \TYPO3\CMS\Saltedpasswords\Evaluation\BackendEvaluator {}
 
 /**

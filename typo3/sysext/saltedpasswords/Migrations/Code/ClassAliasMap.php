@@ -1,6 +1,5 @@
 <?php
 return array(
-	'tx_saltedpasswords_autoloader' => 'TYPO3\\CMS\\Saltedpasswords\\Autoloader',
 	'tx_saltedpasswords_eval_be' => 'TYPO3\\CMS\\Saltedpasswords\\Evaluation\\BackendEvaluator',
 	'tx_saltedpasswords_eval' => 'TYPO3\\CMS\\Saltedpasswords\\Evaluation\\Evaluator',
 	'tx_saltedpasswords_eval_fe' => 'TYPO3\\CMS\\Saltedpasswords\\Evaluation\\FrontendEvaluator',
