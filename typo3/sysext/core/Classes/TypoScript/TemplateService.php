@@ -362,7 +362,6 @@ class TemplateService {
 			// fileadmin/ path
 			'uploads/',
 			'typo3temp/',
-			't3lib/fonts/',
 			TYPO3_mainDir . 'ext/',
 			TYPO3_mainDir . 'sysext/',
 			TYPO3_mainDir . 'contrib/',
