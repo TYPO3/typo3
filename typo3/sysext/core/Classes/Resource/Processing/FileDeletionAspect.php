@@ -88,16 +88,17 @@ class FileDeletionAspect {
 	public function removeFromRepository(FileInterface $fileObject) {
 		// remove file from repository
 		if ($fileObject instanceof File) {
+			$this->cleanupProcessedFiles($fileObject);
+			$this->cleanupCategoryReferences($fileObject);
 			$this->getFileIndexRepository()->remove($fileObject->getUid());
 			$this->getMetaDataRepository()->removeByFileUid($fileObject->getUid());
+
 			// remove all references
 			$this->getDatabase()->exec_DELETEquery(
 				'sys_file_reference',
 				'uid_local=' . (int)$fileObject->getUid() . ' AND table_local = \'sys_file\''
 			);
 
-			$this->cleanupCategoryReferences($fileObject);
-			$this->cleanupProcessedFiles($fileObject);
 		} elseif ($fileObject instanceof ProcessedFile) {
 			$this->getDatabase()->exec_DELETEquery('sys_file_processedfile', 'uid=' . (int)$fileObject->getUid());
 		}
@@ -136,7 +137,10 @@ class FileDeletionAspect {
 
 		/** @var $processedFile \TYPO3\CMS\Core\Resource\ProcessedFile */
 		foreach ($this->getProcessedFileRepository()->findAllByOriginalFile($fileObject) as $processedFile) {
-			$processedFile->delete(TRUE);
+			if ($processedFile->exists()) {
+				$processedFile->delete(TRUE);
+			}
+			$this->removeFromRepository($processedFile);
 		}
 	}
 }
