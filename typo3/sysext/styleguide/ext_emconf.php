@@ -12,7 +12,7 @@
 
 $EM_CONF[$_EXTKEY] = array(
 	'title' => 'TYPO3 CMS Backend Styleguide',
-	'description' => '',
+	'description' => 'Presents all supported styles for TYPO3 backend modules. Mocks typography, tables, forms, buttons, flash messages and helpers. More at https://github.com/7elix/TYPO3.CMS.Styleguide',
 	'category' => 'plugin',
 	'author' => 'Felix Kopp',
 	'author_email' => 'felix-source@phorax.com',
