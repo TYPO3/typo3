@@ -86,7 +86,12 @@ abstract class AbstractHierarchicalFilesystemDriver extends AbstractDriver {
 	 * @return string
 	 */
 	protected function canonicalizeAndCheckFolderIdentifier($folderPath) {
-		return $this->canonicalizeAndCheckFileIdentifier($folderPath) . '/';
+		if ($folderPath === '/') {
+			$canonicalizedIdentifier = $folderPath;
+		} else {
+			$canonicalizedIdentifier = $this->canonicalizeAndCheckFileIdentifier($folderPath) . '/';
+		}
+		return $canonicalizedIdentifier;
 	}
 
 	/**
