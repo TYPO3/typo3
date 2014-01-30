@@ -1282,7 +1282,6 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 				case 'image':
 					if ($row['CType'] == 'text' || $row['CType'] == 'textpic') {
 						if ($row['bodytext']) {
-							$this->getProcessedValue('tt_content', 'text_align,text_face,text_size,text_color,text_properties', $row, $infoArr);
 							$out .= $this->linkEditContent($this->renderText($row['bodytext']), $row) . '<br />';
 						}
 					}

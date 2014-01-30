@@ -506,200 +506,6 @@ return array(
 				)
 			)
 		),
-		'text_align' => array(
-			'exclude' => 1,
-			'label' => 'LLL:EXT:cms/locallang_ttc.xlf:text_align',
-			'config' => array(
-				'type' => 'select',
-				'items' => array(
-					array(
-						'',
-						''
-					),
-					array(
-						'LLL:EXT:cms/locallang_ttc.xlf:text_align.I.1',
-						'center'
-					),
-					array(
-						'LLL:EXT:cms/locallang_ttc.xlf:text_align.I.2',
-						'right'
-					),
-					array(
-						'LLL:EXT:cms/locallang_ttc.xlf:text_align.I.3',
-						'left'
-					)
-				),
-				'default' => ''
-			)
-		),
-		'text_face' => array(
-			'exclude' => 1,
-			'label' => 'LLL:EXT:cms/locallang_ttc.xlf:text_face',
-			'config' => array(
-				'type' => 'select',
-				'items' => array(
-					array(
-						'LLL:EXT:lang/locallang_general.xlf:LGL.default_value',
-						'0'
-					),
-					array(
-						'Times',
-						'1'
-					),
-					array(
-						'Verdana',
-						'2'
-					),
-					array(
-						'Arial',
-						'3'
-					)
-				),
-				'default' => '0'
-			)
-		),
-		'text_size' => array(
-			'exclude' => 1,
-			'label' => 'LLL:EXT:cms/locallang_ttc.xlf:text_size',
-			'config' => array(
-				'type' => 'select',
-				'items' => array(
-					array(
-						'LLL:EXT:lang/locallang_general.xlf:LGL.default_value',
-						'0'
-					),
-					array(
-						'LLL:EXT:cms/locallang_ttc.xlf:text_size.I.1',
-						'1'
-					),
-					array(
-						'LLL:EXT:cms/locallang_ttc.xlf:text_size.I.2',
-						'2'
-					),
-					array(
-						'LLL:EXT:cms/locallang_ttc.xlf:text_size.I.3',
-						'3'
-					),
-					array(
-						'LLL:EXT:cms/locallang_ttc.xlf:text_size.I.4',
-						'4'
-					),
-					array(
-						'LLL:EXT:cms/locallang_ttc.xlf:text_size.I.5',
-						'5'
-					),
-					array(
-						'LLL:EXT:cms/locallang_ttc.xlf:text_size.I.6',
-						'10'
-					),
-					array(
-						'LLL:EXT:cms/locallang_ttc.xlf:text_size.I.7',
-						'11'
-					)
-				),
-				'default' => '0'
-			)
-		),
-		'text_color' => array(
-			'exclude' => 1,
-			'label' => 'LLL:EXT:cms/locallang_ttc.xlf:text_color',
-			'config' => array(
-				'type' => 'select',
-				'items' => array(
-					array(
-						'LLL:EXT:lang/locallang_general.xlf:LGL.default_value',
-						'0'
-					),
-					array(
-						'LLL:EXT:cms/locallang_ttc.xlf:text_color.I.1',
-						'1'
-					),
-					array(
-						'LLL:EXT:cms/locallang_ttc.xlf:text_color.I.2',
-						'2'
-					),
-					array(
-						'LLL:EXT:cms/locallang_ttc.xlf:text_color.I.3',
-						'200'
-					),
-					array(
-						'-----',
-						'--div--'
-					),
-					array(
-						'LLL:EXT:cms/locallang_ttc.xlf:text_color.I.5',
-						'240'
-					),
-					array(
-						'LLL:EXT:cms/locallang_ttc.xlf:text_color.I.6',
-						'241'
-					),
-					array(
-						'LLL:EXT:cms/locallang_ttc.xlf:text_color.I.7',
-						'242'
-					),
-					array(
-						'LLL:EXT:cms/locallang_ttc.xlf:text_color.I.8',
-						'243'
-					),
-					array(
-						'LLL:EXT:cms/locallang_ttc.xlf:text_color.I.9',
-						'244'
-					),
-					array(
-						'LLL:EXT:cms/locallang_ttc.xlf:text_color.I.10',
-						'245'
-					),
-					array(
-						'LLL:EXT:cms/locallang_ttc.xlf:text_color.I.11',
-						'246'
-					),
-					array(
-						'LLL:EXT:cms/locallang_ttc.xlf:text_color.I.12',
-						'247'
-					),
-					array(
-						'LLL:EXT:cms/locallang_ttc.xlf:text_color.I.13',
-						'248'
-					),
-					array(
-						'LLL:EXT:cms/locallang_ttc.xlf:text_color.I.14',
-						'249'
-					),
-					array(
-						'LLL:EXT:cms/locallang_ttc.xlf:text_color.I.15',
-						'250'
-					)
-				),
-				'default' => '0'
-			)
-		),
-		'text_properties' => array(
-			'exclude' => 1,
-			'label' => 'LLL:EXT:cms/locallang_ttc.xlf:text_properties',
-			'config' => array(
-				'type' => 'check',
-				'items' => array(
-					array(
-						'LLL:EXT:cms/locallang_ttc.xlf:text_properties.I.0',
-						''
-					),
-					array(
-						'LLL:EXT:cms/locallang_ttc.xlf:text_properties.I.1',
-						''
-					),
-					array(
-						'LLL:EXT:cms/locallang_ttc.xlf:text_properties.I.2',
-						''
-					),
-					array(
-						'LLL:EXT:cms/locallang_ttc.xlf:text_properties.I.3',
-						''
-					)
-				),
-				'cols' => 4
-			)
-		),
 		'image' => array(
 			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.images',
 			'config' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getFileFieldTCAConfig('image', array(
@@ -1809,7 +1615,6 @@ return array(
 					rte_enabled;LLL:EXT:cms/locallang_ttc.xlf:rte_enabled_formlabel,
 					--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.appearance,
 						--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.frames;frames,
-						--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.textlayout;textlayout,
 				--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access,
 					--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.visibility;visibility,
 					--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.access;access,
@@ -1825,7 +1630,6 @@ return array(
 					--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.frames;frames,
 					--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.image_settings;image_settings,
 					--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.imageblock;imageblock,
-					--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.textlayout;textlayout,
 				--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access,
 					--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.visibility;visibility,
 					--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.access;access,
@@ -1852,7 +1656,6 @@ return array(
 					bodytext;LLL:EXT:cms/locallang_ttc.xlf:bodytext.ALT.bulletlist_formlabel;;nowrap,
 				--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.appearance,
 					--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.frames;frames,
-					--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.textlayout;textlayout,
 				--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access,
 					--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.visibility;visibility,
 					--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.access;access,
@@ -1865,7 +1668,6 @@ return array(
 				--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.appearance,
 					--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.frames;frames,
 					--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.table_layout;tablelayout,
-					--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.textlayout;textlayout,
 				--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access,
 					--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.visibility;visibility,
 					--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.access;access,
@@ -2051,9 +1853,6 @@ return array(
 		'8' => array(
 			'showitem' => 'layout'
 		),
-		'9' => array(
-			'showitem' => 'text_align,text_face,text_size,text_color'
-		),
 		'10' => array(
 			'showitem' => 'table_bgColor, table_border, table_cellspacing, table_cellpadding'
 		),
@@ -2133,10 +1932,6 @@ return array(
 		),
 		'frames' => array(
 			'showitem' => 'layout;LLL:EXT:cms/locallang_ttc.xlf:layout_formlabel, spaceBefore;LLL:EXT:cms/locallang_ttc.xlf:spaceBefore_formlabel, spaceAfter;LLL:EXT:cms/locallang_ttc.xlf:spaceAfter_formlabel, section_frame;LLL:EXT:cms/locallang_ttc.xlf:section_frame_formlabel',
-			'canNotCollapse' => 1
-		),
-		'textlayout' => array(
-			'showitem' => 'text_align;LLL:EXT:cms/locallang_ttc.xlf:text_align_formlabel, text_face;LLL:EXT:cms/locallang_ttc.xlf:text_face_formlabel, text_size;LLL:EXT:cms/locallang_ttc.xlf:text_size_formlabel, text_color;LLL:EXT:cms/locallang_ttc.xlf:text_color_formlabel, --linebreak--, text_properties;LLL:EXT:cms/locallang_ttc.xlf:text_properties_formlabel',
 			'canNotCollapse' => 1
 		),
 		'tablelayout' => array(

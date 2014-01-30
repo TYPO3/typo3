@@ -2,34 +2,10 @@
 # Page TSconfig for "css_styled_content"
 #
 # Removes obsolete type values and fields from "Content Element" table "tt_content"
-# Configures processing for the Rich Text Editor according to the rendering principles.
 # ***************************************************************************************
 
 TCEFORM.tt_content {
-	text_properties.disabled=1
-	text_align.disabled=1
-	text_color.disabled=1
-	text_face.disabled=1
-	text_size.disabled=1
 	image_frames.disabled = 1
 
 	CType.removeItems = swfobject,qtobject,multimedia
 }
-
-
-//These Settings are removed as from 4.0 because we like to keep these settings up to the RTE-Extensions
-//Have a look at EXT:rtehtmlarea to find further examples on setting up RTE-Configuration
-/*
-RTE.config.tt_content.bodytext.showButtons = table
-RTE.config.tt_content.bodytext.proc {
-  overruleMode = ts_css
-  allowedClasses= _
-
-   # This will clean up content coming from RTE into database so that it is XHTML compatible regarding case and quotes around attributes:
-  entryHTMLparser_db = 1
-  entryHTMLparser_db {
-    keepNonMatchedTags = 1
-    xhtml_cleaning = 1
-  }
-}
-*/

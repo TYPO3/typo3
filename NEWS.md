@@ -55,6 +55,24 @@ The options array (the fourth parameter) now can contain a 'label' to set a
 custom label for each category field.
 
 
+#### CSS Styled Content
+
+* Removed deprecated DB fields
+
+There are 5 DB fields in tt_content that haven't been used in TYPO3 since
+version 4.0, and were disabled by default when using CSS Styled Content.
+
+The DB fields are
+  - text_align
+  - text_face
+  - text_size
+  - text_color
+  - text_properties
+
+The fields have been removed from the code and are removed by the
+DB Compare after upgrading.
+
+
 #### Caching
 
 * Caching behaviour by newly introduced grouping parameter
