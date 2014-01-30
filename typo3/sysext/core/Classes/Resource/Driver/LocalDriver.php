@@ -1071,18 +1071,20 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 
 	/**
 	 * Checks if a given identifier is within a container, e.g. if
-	 * a file or folder is within another folder.
-	 * This can e.g. be used to check for webmounts.
+	 * a file or folder is within another folder. It will also return
+	 * TRUE if both canonicalized identifiers are equal.
 	 *
 	 * @param string $folderIdentifier
 	 * @param string $identifier identifier to be checked against $folderIdentifier
-	 *
-	 * @return boolean TRUE if $content is within $folderIdentifier
+	 * @return boolean TRUE if $content is within or matches $folderIdentifier
 	 */
 	public function isWithin($folderIdentifier, $identifier) {
-		$folderPath = $this->canonicalizeAndCheckFolderIdentifier($folderIdentifier);
-		$identifier = $this->canonicalizeAndCheckFileIdentifier($identifier);
-		return GeneralUtility::isFirstPartOfStr($identifier, $folderPath);
+		$folderIdentifier = $this->canonicalizeAndCheckFileIdentifier($folderIdentifier);
+		$entryIdentifier = $this->canonicalizeAndCheckFileIdentifier($identifier);
+		if ($folderIdentifier === $entryIdentifier) {
+			return TRUE;
+		}
+		return GeneralUtility::isFirstPartOfStr($entryIdentifier, $folderIdentifier . '/');
 	}
 
 	/**

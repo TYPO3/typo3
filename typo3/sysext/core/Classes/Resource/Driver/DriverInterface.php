@@ -379,10 +379,13 @@ interface DriverInterface {
 	 * a file or folder is within another folder.
 	 * This can e.g. be used to check for web-mounts.
 	 *
+	 * Hint: this also needs to return TRUE if the given identifier
+	 * matches the container identifier to allow access to the root
+	 * folder of a filemount.
+	 *
 	 * @param string $folderIdentifier
 	 * @param string $identifier identifier to be checked against $folderIdentifier
-	 *
-	 * @return boolean TRUE if $content is within $folderIdentifier
+	 * @return boolean TRUE if $content is within or matches $folderIdentifier
 	 */
 	public function isWithin($folderIdentifier, $identifier);
 
