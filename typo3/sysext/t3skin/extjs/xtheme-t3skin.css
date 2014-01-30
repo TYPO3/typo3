@@ -767,6 +767,7 @@ ul.x-tab-strip-bottom{
 }
 
 .x-btn button {
+	font-size: 12px;
 }
 
 .x-btn em {
@@ -1403,6 +1404,7 @@ td.x-grid3-hd-over, td.x-grid3-hd-menu-open {
 
 .x-tree-node{
 	color:#000;
+	font-size: 12px;
 }
 
 .x-tree-node a, .x-dd-drag-ghost a {
