@@ -1164,6 +1164,12 @@ class DocumentTemplate {
 		$this->inDocStylesArray[] = $this->inDocStyles_TBEstyle;
 		// Implode it all:
 		$inDocStyles = implode(LF, $this->inDocStylesArray);
+
+		// Reset styles so they won't be added again in insertStylesAndJS()
+		$this->inDocStylesArray = array();
+		$this->inDocStyles = '';
+		$this->inDocStyles_TBEstyle = '';
+
 		if ($this->styleSheetFile) {
 			$this->pageRenderer->addCssFile($this->backPath . $this->styleSheetFile);
 		}
@@ -1225,9 +1231,12 @@ class DocumentTemplate {
 	 */
 	public function insertStylesAndJS($content) {
 		// Insert accumulated CSS
-		$this->inDocStylesArray[] = $this->inDocStyles;
+		if (!empty($this->inDocStyles)) {
+			$this->inDocStylesArray[] = $this->inDocStyles;
+		}
 		$styles = LF . implode(LF, $this->inDocStylesArray);
 		$content = str_replace('/*###POSTCSSMARKER###*/', $styles, $content);
+
 		// Insert accumulated JS
 		$jscode = $this->JScode . LF . $this->wrapScriptTags(implode(LF, $this->JScodeArray));
 		$content = str_replace('<!--###POSTJSMARKER###-->', $jscode, $content);

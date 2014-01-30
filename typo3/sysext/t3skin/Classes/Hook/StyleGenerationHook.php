@@ -4,7 +4,7 @@ namespace TYPO3\CMS\T3skin\Hook;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013-2013 Stefan Neufeind <info [at] speedpartner.de>
+ *  (c) 2014 Stefan Neufeind <info [at] speedpartner.de>
  *
  *  All rights reserved
  *
