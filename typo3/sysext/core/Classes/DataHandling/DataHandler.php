@@ -5938,7 +5938,7 @@ class DataHandler {
 	 * @todo Define visibility
 	 */
 	public function setHistory($table, $id, $logId) {
-		if (isset($this->historyRecords[$table . ':' . $id])) {
+		if (isset($this->historyRecords[$table . ':' . $id]) && (int)$logId > 0) {
 			$fields_values = array();
 			$fields_values['history_data'] = serialize($this->historyRecords[$table . ':' . $id]);
 			$fields_values['fieldlist'] = implode(',', array_keys($this->historyRecords[$table . ':' . $id]['newRecord']));
