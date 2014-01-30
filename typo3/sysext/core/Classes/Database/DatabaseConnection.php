@@ -198,10 +198,7 @@ class DatabaseConnection {
 	 * @return boolean|\mysqli_result|object MySQLi result object / DBAL object
 	 */
 	public function exec_INSERTquery($table, $fields_values, $no_quote_fields = FALSE) {
-		if (!$this->isConnected) {
-			$this->connectDB();
-		}
-		$res = $this->link->query($this->INSERTquery($table, $fields_values, $no_quote_fields));
+		$res = $this->query($this->INSERTquery($table, $fields_values, $no_quote_fields));
 		if ($this->debugOutput) {
 			$this->debug('exec_INSERTquery');
 		}
@@ -222,10 +219,7 @@ class DatabaseConnection {
 	 * @return boolean|\mysqli_result|object MySQLi result object / DBAL object
 	 */
 	public function exec_INSERTmultipleRows($table, array $fields, array $rows, $no_quote_fields = FALSE) {
-		if (!$this->isConnected) {
-			$this->connectDB();
-		}
-		$res = $this->link->query($this->INSERTmultipleRows($table, $fields, $rows, $no_quote_fields));
+		$res = $this->query($this->INSERTmultipleRows($table, $fields, $rows, $no_quote_fields));
 		if ($this->debugOutput) {
 			$this->debug('exec_INSERTmultipleRows');
 		}
@@ -247,10 +241,7 @@ class DatabaseConnection {
 	 * @return boolean|\mysqli_result|object MySQLi result object / DBAL object
 	 */
 	public function exec_UPDATEquery($table, $where, $fields_values, $no_quote_fields = FALSE) {
-		if (!$this->isConnected) {
-			$this->connectDB();
-		}
-		$res = $this->link->query($this->UPDATEquery($table, $where, $fields_values, $no_quote_fields));
+		$res = $this->query($this->UPDATEquery($table, $where, $fields_values, $no_quote_fields));
 		if ($this->debugOutput) {
 			$this->debug('exec_UPDATEquery');
 		}
@@ -269,10 +260,7 @@ class DatabaseConnection {
 	 * @return boolean|\mysqli_result|object MySQLi result object / DBAL object
 	 */
 	public function exec_DELETEquery($table, $where) {
-		if (!$this->isConnected) {
-			$this->connectDB();
-		}
-		$res = $this->link->query($this->DELETEquery($table, $where));
+		$res = $this->query($this->DELETEquery($table, $where));
 		if ($this->debugOutput) {
 			$this->debug('exec_DELETEquery');
 		}
@@ -296,11 +284,8 @@ class DatabaseConnection {
 	 * @return boolean|\mysqli_result|object MySQLi result object / DBAL object
 	 */
 	public function exec_SELECTquery($select_fields, $from_table, $where_clause, $groupBy = '', $orderBy = '', $limit = '') {
-		if (!$this->isConnected) {
-			$this->connectDB();
-		}
 		$query = $this->SELECTquery($select_fields, $from_table, $where_clause, $groupBy, $orderBy, $limit);
-		$res = $this->link->query($query);
+		$res = $this->query($query);
 		if ($this->debugOutput) {
 			$this->debug('exec_SELECTquery');
 		}
@@ -447,10 +432,7 @@ class DatabaseConnection {
 	 * @return mixed Result from handler
 	 */
 	public function exec_TRUNCATEquery($table) {
-		if (!$this->isConnected) {
-			$this->connectDB();
-		}
-		$res = $this->link->query($this->TRUNCATEquery($table));
+		$res = $this->query($this->TRUNCATEquery($table));
 		if ($this->debugOutput) {
 			$this->debug('exec_TRUNCATEquery');
 		}
@@ -459,6 +441,20 @@ class DatabaseConnection {
 			$hookObject->exec_TRUNCATEquery_postProcessAction($table, $this);
 		}
 		return $res;
+	}
+
+	/**
+	 * Central query method. Also checks if there is a database connection.
+	 * Use this to execute database queries instead of directly calling $this->link->query()
+	 *
+	 * @param string $query The query to send to the database
+	 * @return bool|\mysqli_result
+	 */
+	protected function query($query) {
+		if (!$this->isConnected) {
+			$this->connectDB();
+		}
+		return $this->link->query($query);
 	}
 
 	/**************************************
@@ -765,10 +761,7 @@ class DatabaseConnection {
 	 * @return boolean|\mysqli_result|object MySQLi result object / DBAL object
 	 */
 	public function exec_PREPAREDquery($query, array $queryComponents) {
-		if (!$this->isConnected) {
-			$this->connectDB();
-		}
-		$res = $this->link->query($query);
+		$res = $this->query($query);
 		if ($this->debugOutput) {
 			$this->debug('stmt_execute', $query);
 		}
@@ -987,10 +980,7 @@ class DatabaseConnection {
 	 * @return boolean|\mysqli_result|object MySQLi result object / DBAL object
 	 */
 	public function sql_query($query) {
-		if (!$this->isConnected) {
-			$this->connectDB();
-		}
-		$res = $this->link->query($query);
+		$res = $this->query($query);
 		if ($this->debugOutput) {
 			$this->debug('sql_query', $query);
 		}
@@ -1212,7 +1202,7 @@ class DatabaseConnection {
 			}
 
 			foreach ($this->initializeCommandsAfterConnect as $command) {
-				if ($this->link->query($command) === FALSE) {
+				if ($this->query($command) === FALSE) {
 					\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog(
 						'Could not initialize DB connection with query "' . $command . '": ' . $this->sql_error(),
 						'Core',
@@ -1303,11 +1293,8 @@ class DatabaseConnection {
 	 * @return array Each entry represents a database name
 	 */
 	public function admin_get_dbs() {
-		if (!$this->isConnected) {
-			$this->connectDB();
-		}
 		$dbArr = array();
-		$db_list = $this->link->query("SELECT SCHEMA_NAME FROM information_schema.SCHEMATA");
+		$db_list = $this->query("SELECT SCHEMA_NAME FROM information_schema.SCHEMATA");
 		if ($db_list === FALSE) {
 			throw new \RuntimeException(
 				'MySQL Error: Cannot get tablenames: "' . $this->sql_error() . '"!',
@@ -1338,11 +1325,8 @@ class DatabaseConnection {
 	 * @return array Array with tablenames as key and arrays with status information as value
 	 */
 	public function admin_get_tables() {
-		if (!$this->isConnected) {
-			$this->connectDB();
-		}
 		$whichTables = array();
-		$tables_result = $this->link->query('SHOW TABLE STATUS FROM `' . $this->databaseName . '`');
+		$tables_result = $this->query('SHOW TABLE STATUS FROM `' . $this->databaseName . '`');
 		if ($tables_result !== FALSE) {
 			while ($theTable = $tables_result->fetch_assoc()) {
 				$whichTables[$theTable['Name']] = $theTable;
@@ -1364,11 +1348,8 @@ class DatabaseConnection {
 	 * @return array Field information in an associative array with fieldname => field row
 	 */
 	public function admin_get_fields($tableName) {
-		if (!$this->isConnected) {
-			$this->connectDB();
-		}
 		$output = array();
-		$columns_res = $this->link->query('SHOW COLUMNS FROM `' . $tableName . '`');
+		$columns_res = $this->query('SHOW COLUMNS FROM `' . $tableName . '`');
 		if ($columns_res !== FALSE) {
 			while ($fieldRow = $columns_res->fetch_assoc()) {
 				$output[$fieldRow['Field']] = $fieldRow;
@@ -1386,11 +1367,8 @@ class DatabaseConnection {
 	 * @return array Key information in a numeric array
 	 */
 	public function admin_get_keys($tableName) {
-		if (!$this->isConnected) {
-			$this->connectDB();
-		}
 		$output = array();
-		$keyRes = $this->link->query('SHOW KEYS FROM `' . $tableName . '`');
+		$keyRes = $this->query('SHOW KEYS FROM `' . $tableName . '`');
 		if ($keyRes !== FALSE) {
 			while ($keyRow = $keyRes->fetch_assoc()) {
 				$output[] = $keyRow;
@@ -1413,11 +1391,8 @@ class DatabaseConnection {
 	 * @return array Array with Charset as key and an array of "Charset", "Description", "Default collation", "Maxlen" as values
 	 */
 	public function admin_get_charsets() {
-		if (!$this->isConnected) {
-			$this->connectDB();
-		}
 		$output = array();
-		$columns_res = $this->link->query('SHOW CHARACTER SET');
+		$columns_res = $this->query('SHOW CHARACTER SET');
 		if ($columns_res !== FALSE) {
 			while ($row = $columns_res->fetch_assoc()) {
 				$output[$row['Charset']] = $row;
@@ -1434,10 +1409,7 @@ class DatabaseConnection {
 	 * @return boolean|\mysqli_result|object MySQLi result object / DBAL object
 	 */
 	public function admin_query($query) {
-		if (!$this->isConnected) {
-			$this->connectDB();
-		}
-		$res = $this->link->query($query);
+		$res = $this->query($query);
 		if ($this->debugOutput) {
 			$this->debug('admin_query', $query);
 		}
