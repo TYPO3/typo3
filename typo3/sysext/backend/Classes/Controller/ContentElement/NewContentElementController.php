@@ -186,7 +186,7 @@ class NewContentElementController {
 				foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms']['db_new_content_el']['wizardItemsHook'] as $classData) {
 					$hookObject = GeneralUtility::getUserObj($classData);
 					if (!$hookObject instanceof \TYPO3\CMS\Backend\Wizard\NewContentElementWizardHookInterface) {
-						throw new \UnexpectedValueException('$hookObject must implement interface cms_newContentElementWizardItemsHook', 1227834741);
+						throw new \UnexpectedValueException('$hookObject must implement interface TYPO3\\CMS\\Backend\\Wizard\\NewContentElementWizardHookInterface', 1227834741);
 					}
 					$hookObject->manipulateWizardItems($wizardItems, $this);
 				}
