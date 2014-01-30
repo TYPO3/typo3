@@ -467,7 +467,7 @@ Do you want to continue WITHOUT saving?</source>
 				<source>Upload complete! Filelist reloading...</source>
 			</trans-unit>
 			<trans-unit id="file_upload.overwriteExistingFiles" xml:space="preserve">
-				<source>The files below will be overwritten.</source>
+				<source>Shall existing files be overwritten?</source>
 			</trans-unit>
 			<trans-unit id="file_upload.php.number_of_files" xml:space="preserve">
 				<source>Number of files:</source>

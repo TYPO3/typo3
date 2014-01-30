@@ -660,7 +660,7 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 								$processedFile = $fileObject->process(\TYPO3\CMS\Core\Resource\ProcessedFile::CONTEXT_IMAGEPREVIEW, array());
 								if ($processedFile) {
 									$thumbUrl = $processedFile->getPublicUrl(TRUE);
-									$theData[$field] .= '<br /><img src="' . $thumbUrl . '" hspace="2" data-file-name="' . htmlspecialchars($fileName) . '" title="' . htmlspecialchars($fileName) . '" alt="" />';
+									$theData[$field] .= '<br /><img src="' . $thumbUrl . '" hspace="2" title="' . htmlspecialchars($fileName) . '" alt="" />';
 								}
 							}
 							break;
