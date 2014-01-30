@@ -1308,14 +1308,15 @@ class ElementBrowser {
 		// Create upload/create folder forms, if a path is given
 		if ($this->expandFolder) {
 			$this->selectedFolder = FALSE;
+			$fileOrFolderObject = NULL;
 
-			// try to fetch the folder the user had open the last time he browsed files
-			// fallback to the default folder in case the last used folder is not existing
+			// Try to fetch the folder the user had open the last time he browsed files
+			// Fallback to the default folder in case the last used folder is not existing
 			try {
 				$fileOrFolderObject = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->retrieveFileOrFolderObject($this->expandFolder);
-			} catch (\TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException $inexistentFolderException) {
-				// we're just catching the exception here, nothing to be done if folder does not exist
-			};
+			} catch (\TYPO3\CMS\Core\Resource\Exception $accessException) {
+				// We're just catching the exception here, nothing to be done if folder does not exist or is not accessible.
+			}
 
 			if ($fileOrFolderObject instanceof \TYPO3\CMS\Core\Resource\Folder) {
 				// It's a folder

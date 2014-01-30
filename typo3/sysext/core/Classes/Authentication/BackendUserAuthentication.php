@@ -1736,11 +1736,13 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 		if ($uploadFolder) {
 			$uploadFolder = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getFolderObjectFromCombinedIdentifier($uploadFolder);
 		} else {
-			$storages = $this->getFileStorages();
-			if (count($storages) > 0) {
-				/** @var $firstStorage \TYPO3\CMS\Core\Resource\ResourceStorage */
-				$firstStorage = reset($storages);
-				$uploadFolder = $firstStorage->getDefaultFolder();
+			foreach($this->getFileStorages() as $storage) {
+				try {
+					$uploadFolder = $storage->getDefaultFolder();
+					break;
+				} catch (\TYPO3\CMS\Core\Resource\Exception $folderAccessException) {
+					// If the folder is not accessible (no permissions / does not exist) try the next one.
+				}
 			}
 		}
 		if ($uploadFolder instanceof \TYPO3\CMS\Core\Resource\Folder) {
