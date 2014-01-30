@@ -628,7 +628,7 @@ class FileContentParser {
 				$this->setLocaleForServerFileSystem();
 				// PHP EXIF
 				if (function_exists('exif_read_data')) {
-					$exif = exif_read_data($absFile, 'IFD0');
+					$exif = @exif_read_data($absFile, 'IFD0');
 				} else {
 					$exif = FALSE;
 				}
