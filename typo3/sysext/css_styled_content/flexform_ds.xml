@@ -85,7 +85,7 @@
 							<config>
 								<type>input</type>
 								<size>33</size>
-								<eval>nospace,trim,alphanum_x</eval>
+								<eval>trim</eval>
 							</config>
 						</TCEforms>
 					</acctables_tableclass>
