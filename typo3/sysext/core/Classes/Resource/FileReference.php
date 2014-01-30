@@ -484,4 +484,13 @@ class FileReference implements FileInterface {
 	public function getHashedIdentifier() {
 		return $this->getStorage()->hashFileIdentifier($this->getIdentifier());
 	}
+
+	/**
+	 * Returns the parent folder.
+	 *
+	 * @return FolderInterface
+	 */
+	public function getParentFolder() {
+		return $this->originalFile->getParentFolder();
+	}
 }
