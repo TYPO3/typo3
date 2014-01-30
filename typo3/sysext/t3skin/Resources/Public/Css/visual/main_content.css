@@ -55,10 +55,10 @@ a.t3-link {
 
 /* horizontal ruler */
 hr, div.hr {
-	background-color: #ddd;
-	border-bottom: 1px solid black;
+	background: none;
+	border: none;
 	border-top: 1px solid #7a7a7a;
-	color: #ddd;
+	height: 1px;
 }
 
 img {
