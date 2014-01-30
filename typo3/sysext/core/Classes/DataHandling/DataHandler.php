@@ -2336,7 +2336,7 @@ class DataHandler {
 				break;
 			case 'domainname':
 				if (!preg_match('/^[a-z0-9.\\-]*$/i', $value)) {
-					$value = GeneralUtility::idnaEncode($value);
+					$value = \TYPO3\CMS\Core\Utility\GeneralUtility::idnaEncode($value);
 				}
 				break;
 			default:
