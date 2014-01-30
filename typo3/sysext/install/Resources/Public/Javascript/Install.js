@@ -308,6 +308,19 @@ $(document).ready(function() {
 		handleButtonScrolling();
 	});
 
+	$('.toggleAll').on('click', function() {
+		$toggleAll = $('.toggleGroup');
+		if ($toggleAll.not('.expanded').length == 0) {
+			// all elements are open, close them
+			$toggleAll.removeClass('expanded');
+			$toggleAll.find('.toggleData').hide();
+		} else {
+			$toggleAll.addClass('expanded');
+			$toggleAll.find('.toggleData').show();
+		}
+		handleButtonScrolling();
+	});
+
 	// Simple password strength indicator
 	$('.t3-install-form-password-strength').on('keyup', function() {
 		var value = $(this).val();

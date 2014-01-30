@@ -467,6 +467,11 @@ button span.t3-install-form-button-icon-negative {
 	border-bottom: 1px solid #666;
 }
 
+#t3-install-box-body .toggleAll {
+	text-align: right;
+	cursor: pointer;
+}
+
 .toggleGroup {
 	margin: 1em 0;
 }

@@ -40,6 +40,8 @@
 			<form method="post">
 				<f:render partial="Action/Common/HiddenFormFields" arguments="{_all}" />
 
+				<div class="toggleAll">Toggle All</div>
+
 				<f:for each="{data}" as="sectionData" key="sectionName">
 					<f:if condition="{sectionData}">
 						<f:render partial="Action/Tool/AllConfiguration/SubSection" arguments="{_all}" />
