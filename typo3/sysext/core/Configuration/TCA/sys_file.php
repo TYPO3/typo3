@@ -4,8 +4,6 @@ return array(
 		'title' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file',
 		'label' => 'name',
 		'tstamp' => 'tstamp',
-		'crdate' => 'crdate',
-		'cruser_id' => 'cruser_id',
 		'type' => 'type',
 		'hideTable' => TRUE,
 		'rootLevel' => TRUE,
