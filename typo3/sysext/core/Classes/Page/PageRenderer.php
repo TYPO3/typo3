@@ -1588,8 +1588,11 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 
 			// load all paths to map to package names / namespaces
 		if (count($this->requireJsConfig) === 0) {
-				// first, load all paths for the namespaces
-			$this->requireJsConfig['paths'] = array();
+			// first, load all paths for the namespaces, and configure contrib libs.
+			$this->requireJsConfig['paths'] = array(
+				'jquery-ui' => 'contrib/jqueryui',
+				'jquery' => 'contrib/jquery'
+			);
 			// get all extensions that are loaded
 			$loadedExtensions = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getLoadedExtensionListArray();
 			foreach ($loadedExtensions as $packageName) {
@@ -1609,6 +1612,25 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 		}
 
 		$this->addRequireJs = TRUE;
+	}
+
+	/**
+	 * Add additional configuration to require js.
+	 *
+	 * Configuration will be merged recursive with overrule.
+	 *
+	 * To add another path mapping deliver the following configuration:
+	 * 		'paths' => array(
+     *			'EXTERN/JQUERY-UI/1.10.3' => 'contrib/jqueryui/jquery-ui-1.10.4.custom.min',
+	 *      ),
+	 *
+	 * @author Daniel Siepmann <daniel.siepmann@typo3.org>
+	 *
+	 * @param array $configuration The configuration that will be merged with existing one.
+	 * @return void
+	 */
+	public function addRequireJsConfiguration(array $configuration) {
+		\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($this->requireJsConfig, $configuration);
 	}
 
 	/**

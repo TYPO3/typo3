@@ -5567,6 +5567,8 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 			// If IRRE fields were processed, add the JavaScript functions:
 			if ($this->inline->inlineCount) {
 				$pageRenderer->loadScriptaculous();
+				// We want to load jQuery-ui inside our js. Enable this using requirejs.
+				$pageRenderer->loadRequireJs();
 				$this->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/jsfunc.inline.js');
 				$out .= '
 				inline.setPrependFormFieldNames("' . $this->inline->prependNaming . '");

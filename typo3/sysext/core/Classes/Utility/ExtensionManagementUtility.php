@@ -476,8 +476,8 @@ class ExtensionManagementUtility {
 				'useSortable' => TRUE,
 				'headerThumbnail' => array(
 					'field' => 'uid_local',
-					'width' => '64',
-					'height' => '64',
+					'width' => '45',
+					'height' => '45c',
 				),
 				'showPossibleLocalizationRecords' => FALSE,
 				'showRemovedLocalizationRecords' => FALSE,

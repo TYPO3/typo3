@@ -76,9 +76,9 @@ var inline = {
 		} else if ($(objectId + '_fields') && $(objectId + '_fields').innerHTML.substr(0,16) == '<!--notloaded-->') {
 			inline.isLoading = true;
 				// add loading-indicator
-			if (TYPO3.jQuery('#' + escapedObjectId + '_icon')) {
-				TYPO3.jQuery('#' + escapedObjectId + '_icon').hide();
-				TYPO3.jQuery('#' + escapedObjectId + '_iconcontainer').addClass('loading-indicator');
+			if (TYPO3.jQuery('#' + escapedObjectId + '_loadingbar').length === 0) {
+				var loadingBar = '<div id="' + escapedObjectId + '_loadingbar" class="t3-form-header-inline-loadingbar loadingbar"><div class="expand"></div></div>';
+				TYPO3.jQuery('#' + escapedObjectId + '_header').after(loadingBar);
 			}
 			return this.getRecordDetails(objectId, returnURL);
 		}
@@ -499,10 +499,7 @@ var inline = {
 		}
 
 			// remove loading-indicator
-		if ($(objectId + '_icon')) {
-			$(objectId + '_iconcontainer').removeClassName('loading-indicator');
-			$(objectId + '_icon').show();
-		}
+		TYPO3.jQuery('#' + objectId + '_loadingbar').remove();
 
 			// now that the content is loaded, set the expandState
 		this.expandCollapseRecord(objectId, expandSingle);
@@ -601,49 +598,71 @@ var inline = {
 	},
 
 	dragAndDropSorting: function(element) {
-		var objectId = element.getAttribute('id').replace(/_records$/, '');
-		var objectName = inline.prependFormFieldNames+inline.parseObjectId('parts', objectId, 3, 0, true);
-		var formObj = document.getElementsByName(objectName);
+		require(['jquery'], function($) {
+			var objectId = element.getAttribute('id').replace(/_records$/, '');
+			var objectName = inline.prependFormFieldNames+inline.parseObjectId('parts', objectId, 3, 0, true);
+			var formObj = document.getElementsByName(objectName);
+			var $element = $( element );
 
-		if (formObj.length) {
-			var checked = new Array();
-			var order = Sortable.sequence(element);
-			var records = formObj[0].value.split(',');
+			if (formObj.length) {
+				var checked = new Array();
+				var order = [];
+				$element.find('.sortableHandle').each(function(i,e) {
+					order.push($(e).data('id').toString());
+				});
+				var records = formObj[0].value.split(',');
 
-				// check if ordered uid is really part of the records
-				// virtually deleted items might still be there but ordering shouldn't saved at all on them
-			for (var i=0; i<order.length; i++) {
-				if (records.indexOf(order[i]) != -1) {
-					checked.push(order[i]);
+					// check if ordered uid is really part of the records
+					// virtually deleted items might still be there but ordering shouldn't saved at all on them
+				for (var i=0; i<order.length; i++) {
+					if (records.indexOf(order[i]) != -1) {
+						checked.push(order[i]);
+					}
+				}
+
+				formObj[0].value = checked.join(',');
+
+				if (inline.data.config && inline.data.config[objectId]) {
+					var table = inline.data.config[objectId].table;
+					inline.redrawSortingButtons(objectId + inline.structureSeparator + table, checked);
 				}
 			}
-
-			formObj[0].value = checked.join(',');
-
-			if (inline.data.config && inline.data.config[objectId]) {
-				var table = inline.data.config[objectId].table;
-				inline.redrawSortingButtons(objectId + inline.structureSeparator + table, checked);
-			}
-		}
+		});
 	},
 
 	createDragAndDropSorting: function(objectId) {
-		Position.includeScrollOffsets = true;
-		Sortable.create(
-			objectId,
-			{
-				format: /^[^_\-](?:[A-Za-z0-9\-\_\.]*)-(.*)_div$/,
-				onUpdate: inline.dragAndDropSorting,
-				tag: 'div',
-				handle: 'sortableHandle',
-				overlap: 'vertical',
-				constraint: 'vertical'
+		require(['jquery','jquery-ui/jquery-ui-1.10.4.custom.min'], function($) {
+			var $sortingContainer = $('#' + objectId);
+
+			if ($sortingContainer.hasClass('ui-sortable')) {
+				$sortingContainer.sortable('enable');
+				return;
 			}
-		);
+
+			$sortingContainer.addClass('t3-form-field-container-wrap');
+			$sortingContainer.sortable(
+				{
+					containment: 'body',
+					handle: '.sortableHandle',
+					zIndex: '4000',
+					axis: 'y',
+					tolerance: 'pointer',
+					stop: function() {
+						inline.dragAndDropSorting($sortingContainer[0]);
+					}
+				}
+			);
+		});
 	},
 
 	destroyDragAndDropSorting: function(objectId) {
-		Sortable.destroy(objectId);
+		require(['jquery','jquery-ui/jquery-ui-1.10.4.custom.min'], function($) {
+			var $sortingContainer = $('#' + objectId);
+			if (!$sortingContainer.hasClass('ui-sortable')) {
+				return;
+			}
+			$('#' + objectId).sortable('disable');
+		});
 	},
 
 	redrawSortingButtons: function(objectPrefix, records) {

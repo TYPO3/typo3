@@ -382,18 +382,112 @@ TCEforms Flexforms
 /* - - - - - - - - - - - - - - - - - - - - -
 TCEforms Inline-Relational-Record-Editing
 - - - - - - - - - - - - - - - - - - - - - */
-
-.typo3-TCEforms div.inlineDivMSIE {
-	display: inline-block;
-}
-.t3-form-field-container-inline:first-child {
-	margin-top:16px;
+.t3-form-field-container-wrap {
+	margin: 6px 0px;
 }
 
 .t3-form-field-container-inline {
-	margin-right: 20px;
-	margin-bottom: 2px;
-	width:100%;
+	margin: 2px 0px;
+}
+
+.t3-form-field-header-inline > span {
+	position: absolute;
+	left: 4px;
+	top: 15px;
+}
+
+.t3-form-field-header-inline-wrap:before,
+.t3-form-field-header-inline-wrap:after {
+	content: " ";
+	display: table;
+}
+
+.t3-form-field-header-inline-wrap:after {
+    clear: both;
+}
+
+.t3-form-field-header-inline-wrap {
+	min-width: 300px;
+}
+
+.t3-form-field-header-inline-icon,
+.t3-form-field-header-inline-thumbnail {
+	float: left;
+	margin-right: 5px;
+}
+
+.t3-form-field-header-inline-icon {
+	width: 18px;
+	height: 16px;
+	padding: 3px 0px;
+}
+
+.t3-form-field-header-inline-thumbnail {
+	float: left;
+	margin-right: 15px;
+}
+
+.t3-form-field-header-inline-thumbnail img {
+	display: block;
+}
+
+.t3-form-field-header-inline-ctrl {
+	float: right;
+}
+
+.t3-form-field-header-inline-ctrl .t3-icon {
+	margin: 0px;
+	margin-left: 3px;
+}
+
+.t3-form-field-header-inline-body,
+.t3-form-field-header-inline-summary {
+	overflow: hidden;
+	zoom: 1;
+}
+
+.t3-form-field-header-inline-thumbnail,
+.t3-form-field-header-inline-summary {
+	cursor: pointer;
+}
+
+.t3-form-field-header-inline-ctrl,
+.t3-form-field-header-inline-summary {
+	padding: 5px 0px;
+}
+
+.t3-form-field-header-inline-summary dl {
+	margin: 0px;
+	overflow: hidden;
+}
+
+.t3-form-field-header-inline-summary dt {
+	font-weight: bold;
+	float: left;
+	clear: left;
+	margin-right: 10px;
+}
+
+.t3-form-field-header-inline-summary dd {
+	float: left;
+}
+
+.t3-form-field-header-inline-ctrl img {
+	vertical-align: middle;
+}
+
+.t3-form-field-header-inline .t3-form-field-header-inline-ctrl > * {
+	opacity: 0;
+}
+
+.t3-form-field-header-inline:hover .t3-form-field-header-inline-ctrl > * {
+	opacity: 1;
+}
+
+.t3-form-field-header-inline .t3-form-field-header-inline-ctrl > span.sortableHandle {
+	margin-left: 16px;
+	opacity: 1;
+	display: inline-block;
 }
 
 .t3-form-field-container-inline-placeHolder div.t3-form-field-record-inline,
@@ -410,95 +504,22 @@ TCEforms Inline-Relational-Record-Editing
 	display:none;
 }
 
-.t3-form-field-header-inline > span {
-	position:absolute;
-	left:4px;
-	top:50%;
-	margin-top:-4px;
-}
-
-.t3-form-field-header-inline > table {
-	margin:0px;
-	padding:0px;
-	width:100%;
-}
-
-div.t3-form-field-header-inline td {
-	padding:0px;
-	margin:0px;
-	min-height:100px;
-}
-
-.t3-form-field-header-inline td.t3-form-field-header-inline-ctrl {
-	text-align:right;
-    height:22px;
-    vertical-align:middle;
-}
-
-.t3-form-field-header-inline td.t3-form-field-header-inline-ctrl > * {
-	opacity:0;
-}
-
-.t3-form-field-header-inline:hover td.t3-form-field-header-inline-ctrl > * {
-	opacity:1;
-}
-
-.t3-form-field-header-inline td.t3-form-field-header-inline-ctrl > span.sortableHandle {
-	margin-left:16px;
-	opacity:1;
-	display:inline-block;
-}
-
-.t3-form-field-container-inline-placeHolder td.t3-form-field-header-inline-ctrl > a {
-	margin-right:32px;
-	display:inline-block;
-	opacity:1;
-}
-
-.t3-form-field-container-inline-hidden td.t3-form-field-header-inline-ctrl > a.hiddenHandle {
-	display:inline-block;
-	opacity:1;
-}
-.t3-form-field-header-inline td.t3-form-field-header-inline-summary {
-	text-align:left;
-}
-
-.t3-form-field-header-inline td.t3-form-field-header-inline-summary dl {
-	overflow: hidden;
-}
-
-.t3-form-field-header-inline td.t3-form-field-header-inline-summary dl dt {
-	float: left;
-	clear: left;
-	margin-right: 10px;
-}
-.t3-form-field-header-inline td.t3-form-field-header-inline-summary dl dd {
-	float: left;
-}
-
-.t3-form-field-header-inline td.t3-form-field-header-inline-icon {
-	width:25px;
-}
-
-.t3-form-field-header-inline td.t3-form-field-header-inline-thumbnail {
-	width:80px;
-	padding:0px!important;
-	vertical-align: middle;
-}
-
 .t3-form-field-record-inline {
 	padding: 8px 8px;
-    position:relative;
+	position: relative;
 }
+
 .t3-form-field-record-inline > table {
     width:100%;
 }
+
 .t3-form-field-record-inline .typo3-dyntabmenu-divs,
 .t3-form-field-record-inline .typo3-dyntabmenu-tabs {
-    margin-left:8px;
-    margin-right:8px !important;
-    margin-bottom:0px !important;
+	margin-left:8px;
+	margin-right:8px !important;
+	margin-bottom:0px !important;
 }
+
 .sortableHandle {
 	cursor: move;
 }

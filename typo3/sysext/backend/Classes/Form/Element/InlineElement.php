@@ -592,15 +592,29 @@ class InlineElement {
 				} elseif($fileObject) {
 					$imageSetup = $config['appearance']['headerThumbnail'];
 					unset($imageSetup['field']);
-					$imageSetup = array_merge(array('width' => 64, 'height' => 64), $imageSetup);
-					$imageUrl = $fileObject->process(\TYPO3\CMS\Core\Resource\ProcessedFile::CONTEXT_IMAGEPREVIEW, $imageSetup)->getPublicUrl(TRUE);
-					$thumbnail = '<img src="' . $imageUrl . '" alt="' . htmlspecialchars($recTitle) . '">';
+					$imageSetup = array_merge(array('width' => '45', 'height' => '45c'), $imageSetup);
+					$imageUrl = $fileObject->process(\TYPO3\CMS\Core\Resource\ProcessedFile::CONTEXT_IMAGECROPSCALEMASK, $imageSetup)->getPublicUrl(TRUE);
+					$thumbnail = '<img class="t3-form-field-header-inline-thumbnail-image" src="' . $imageUrl . '" alt="' . htmlspecialchars($recTitle) . '">';
 				}
 			}
 		}
-		$header = '<table>' . '<tr>' . (!empty($config['appearance']['headerThumbnail']['field']) && $thumbnail ?
-				'<td class="t3-form-field-header-inline-thumbnail" id="' . $objectId . '_thumbnailcontainer">' . $thumbnail . '</td>' :
-				'<td class="t3-form-field-header-inline-icon" id="' . $objectId . '_iconcontainer">' . $iconImg . '</td>') . '<td class="t3-form-field-header-inline-summary">' . $label . '</td>' . '<td clasS="t3-form-field-header-inline-ctrl">' . $ctrl . '</td>' . '</tr>' . '</table>';
+
+		if (!empty($config['appearance']['headerThumbnail']['field']) && $thumbnail) {
+			$headerClasses = ' t3-form-field-header-inline-has-thumbnail';
+			$mediaContainer = '<div class="t3-form-field-header-inline-thumbnail" id="' . $objectId . '_thumbnailcontainer">' . $thumbnail . '</div>';
+		} else {
+			$headerClasses = ' t3-form-field-header-inline-has-icon';
+			$mediaContainer = '<div class="t3-form-field-header-inline-icon" id="' . $objectId . '_iconcontainer">' . $iconImg . '</div>';
+		}
+
+		$header = '<div class="t3-form-field-header-inline-wrap' . $headerClasses . '">'
+				. '<div class="t3-form-field-header-inline-ctrl">' . $ctrl . '</div>'
+				. '<div class="t3-form-field-header-inline-body">'
+				. $mediaContainer
+				. '<div class="t3-form-field-header-inline-summary">' . $label . '</div>'
+				. '</div>'
+				. '</div>';
+
 		return $header;
 	}
 
@@ -702,7 +716,7 @@ class InlineElement {
 			}
 			// Drag&Drop Sorting: Sortable handler for script.aculo.us
 			if ($enabledControls['dragdrop'] && $permsEdit && $enableManualSorting && $config['appearance']['useSortable']) {
-				$cells['dragdrop'] = IconUtility::getSpriteIcon('actions-move-move', array('class' => 'sortableHandle', 'title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.move', TRUE)));
+				$cells['dragdrop'] = IconUtility::getSpriteIcon('actions-move-move', array('data-id' => $rec['uid'], 'class' => 'sortableHandle', 'title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.move', TRUE)));
 			}
 		} elseif ($isVirtualRecord) {
 			if ($enabledControls['localize'] && isset($rec['__create'])) {

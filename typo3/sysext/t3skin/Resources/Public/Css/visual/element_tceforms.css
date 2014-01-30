@@ -379,24 +379,19 @@ div.t3-form-field-container:first-child .t3-form-field-label-flex {
 TCEforms Inline-Relational-Record-Editing
 - - - - - - - - - - - - - - - - - - - - - */
 .t3-form-field-container-inline {
-	border: 1px solid #dbdbdb;
-    background-color:#f9f9f9;
+	border: 1px solid #aaaaaa;
+	background-color: #f9f9f9;
 }
 
 .t3-form-field-header-inline {
-    background-image: linear-gradient(top, rgb(218,218,218) 0%, rgb(192,192,192) 100%);
-    background-image: -o-linear-gradient(top, rgb(218,218,218) 0%, rgb(192,192,192) 100%);
-    background-image: -moz-linear-gradient(top, rgb(218,218,218) 0%, rgb(192,192,192) 100%);
-    background-image: -webkit-linear-gradient(top, rgb(218,218,218) 0%, rgb(192,192,192) 100%);
-    background-image: -ms-linear-gradient(top, rgb(218,218,218) 0%, rgb(192,192,192) 100%);
+	background-color: #E0E0E0;
+}
+.t3-form-field-header-inline:hover {
+	background-color: #cccccc;
+}
 
-    background-image: -webkit-gradient(
-    	linear,
-    	left top,
-    	left bottom,
-    	color-stop(0, rgb(218,218,218)),
-    	color-stop(1, rgb(192,192,192))
-    );
+.t3-form-header-inline-loadingbar {
+	border-top: 1px solid #aaaaaa;
 }
 
 .t3-form-field-container-inline-hidden,
@@ -408,12 +403,12 @@ TCEforms Inline-Relational-Record-Editing
     vertical-align:top;
 }
 
-.t3-form-field-header-inline td.t3-form-field-header-inline-thumbnail img {
-    border-bottom:1px solid white;
+.t3-form-field-header-inline-thumbnail-image {
+    border: none;
 }
 
 .t3-form-field-record-inline {
-
+	border-top: 1px solid #aaaaaa;
 }
 
 .typo3-TCEforms .t3-form-field-container-inline .wrapperTable,
