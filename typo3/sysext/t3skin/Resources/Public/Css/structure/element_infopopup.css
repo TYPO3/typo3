@@ -6,15 +6,3 @@ body#typo3-show-item-php {
 	padding: 12px 24px;
 	height: auto;
 }
-
-#typo3-show-item-php h1 small {
-	color: #aaa;
-	font-size: 0.7em;
-}
-
-#typo3-show-item-php table { margin-bottom: 1.5em; }
-	#typo3-show-item-php table td { line-height: normal; height: auto; padding: 6px; }
-
-#typo3-show-item-php div.fileInfoContainer.fileDimensions {
-	margin-left: 18px;
-}

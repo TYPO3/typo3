@@ -323,7 +323,7 @@ class ElementInformationController {
 			}
 			$tableRows[] = '
 				<tr>
-					<td class="t3-col-header">' . rtrim($value, ':') . '</td>
+					<td><strong>' . rtrim($value, ':') . '</strong></td>
 					<td>' . htmlspecialchars($rowValue) . '</td>
 				</tr>';
 		}
@@ -347,14 +347,12 @@ class ElementInformationController {
 			$itemLabel = $GLOBALS['LANG']->sL(BackendUtility::getItemLabel($this->table, $name), TRUE);
 			$tableRows[] = '
 				<tr>
-					<td class="t3-col-header">' . $itemLabel . '</td>
+					<td><strong>' . $itemLabel . '</strong></td>
 					<td>' . htmlspecialchars($itemValue) . '</td>
 				</tr>';
 		}
 
-		return '<table id="typo3-showitem" class="t3-table-info">' .
-				implode('', $tableRows) .
-				'</table>';
+		return '<table class="t3-table">' . implode('', $tableRows) . '</table>';
 	}
 
 	/*
@@ -416,7 +414,7 @@ class ElementInformationController {
 			$itemLabel = $GLOBALS['LANG']->sL(BackendUtility::getItemLabel($this->table, $name), TRUE);
 			$tableRows[] = '
 				<tr>
-					<td class="t3-col-header">' . $itemLabel . '</td>
+					<td><strong>' . $itemLabel . '</strong></td>
 					<td>' . htmlspecialchars($itemValue) . '</td>
 				</tr>';
 		}
@@ -511,7 +509,7 @@ class ElementInformationController {
 		// Compile information for title tag:
 		$infoData = array();
 		if (count($rows)) {
-			$infoDataHeader = '<tr class="t3-row-header">' . '<td>&nbsp;</td>' . '<td>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.table') . '</td>' . '<td>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.title') . '</td>' . '<td>[uid]</td>' . '<td>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.field') . '</td>' . '<td>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.flexpointer') . '</td>' . '<td>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.softrefKey') . '</td>' . '<td>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.sorting') . '</td>' . '</tr>';
+			$infoDataHeader = '<tr>' . '<td>&nbsp;</td>' . '<td>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.table') . '</td>' . '<td>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.title') . '</td>' . '<td>[uid]</td>' . '<td>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.field') . '</td>' . '<td>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.flexpointer') . '</td>' . '<td>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.softrefKey') . '</td>' . '<td>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.sorting') . '</td>' . '</tr>';
 		}
 		foreach ($rows as $row) {
 			if ($row['tablename'] === 'sys_file_reference') {
@@ -534,7 +532,7 @@ class ElementInformationController {
 		}
 		$referenceLine = '';
 		if (count($infoData)) {
-			$referenceLine = '<table border="0" cellpadding="0" cellspacing="0" class="typo3-dblist">' .
+			$referenceLine = '<table class="t3-table">' .
 					'<thead>' . $infoDataHeader . '</thead>' .
 					'<tbody>' .
 					implode('', $infoData) .
@@ -589,7 +587,7 @@ class ElementInformationController {
 			return;
 		}
 
-		return '<table border="0" cellpadding="0" cellspacing="0" class="typo3-dblist">' .
+		return '<table class="t3-table">' .
 				'<thead>' . $infoDataHeader . '</thead>' .
 				'<tbody>' .
 				implode('', $infoData) .
