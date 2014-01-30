@@ -62,13 +62,25 @@ class UserFileMountService {
 			/** @var $storage \TYPO3\CMS\Core\Resource\ResourceStorage */
 			$storage = $storageRepository->findByUid($storageUid);
 			if ($storage->isBrowsable()) {
-				$rootLevelFolder = $storage->getRootLevelFolder();
-				$folderItems = $this->getSubfoldersForOptionList($rootLevelFolder);
-				foreach ($folderItems as $item) {
-					$PA['items'][] = array(
-						$item->getIdentifier(),
-						$item->getIdentifier()
-					);
+				$rootLevelFolders = array();
+
+				$fileMounts = $storage->getFileMounts();
+				if (!empty($fileMounts)) {
+					foreach ($fileMounts as $fileMountInfo) {
+						$rootLevelFolders[] = $fileMountInfo['folder'];
+					}
+				} else {
+					$rootLevelFolders[] = $storage->getRootLevelFolder();
+				}
+
+				foreach ($rootLevelFolders as $rootLevelFolder) {
+					$folderItems = $this->getSubfoldersForOptionList($rootLevelFolder);
+					foreach ($folderItems as $item) {
+						$PA['items'][] = array(
+							$item->getIdentifier(),
+							$item->getIdentifier()
+						);
+					}
 				}
 			} else {
 				/** @var \TYPO3\CMS\Core\Messaging\FlashMessageService $flashMessageService */
