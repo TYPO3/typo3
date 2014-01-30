@@ -1149,6 +1149,11 @@ $str.=$this->docBodyTagBegin().
 			// Implode it all:
 		$inDocStyles = implode(LF, $this->inDocStylesArray);
 
+		// Reset styles so they won't be added again in insertStylesAndJS()
+		$this->inDocStylesArray = array();
+		$this->inDocStyles = '';
+		$this->inDocStyles_TBEstyle = '';
+
 		if ($this->styleSheetFile) {
 			$this->pageRenderer->addCssFile($this->backPath . $this->styleSheetFile);
 		}
@@ -1209,7 +1214,9 @@ $str.=$this->docBodyTagBegin().
 	 */
 	function insertStylesAndJS($content)	{
 			// insert accumulated CSS
-		$this->inDocStylesArray[] = $this->inDocStyles;
+		if (!empty($this->inDocStyles)) {
+			$this->inDocStylesArray[] = $this->inDocStyles;
+		}
 		$styles = LF.implode(LF, $this->inDocStylesArray);
 		$content = str_replace('/*###POSTCSSMARKER###*/',$styles,$content);
 
