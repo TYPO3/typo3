@@ -667,10 +667,22 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 					// Unsetting 'rtekeep' attribute if that had been set.
 					unset($attribArray['rtekeep']);
 					if (!$attribArray['data-htmlarea-external']) {
-						// If the url is local, remove url-prefix
 						$siteURL = $this->siteUrl();
+						// If the url is local, remove url-prefix
 						if ($siteURL && substr($attribArray['href'], 0, strlen($siteURL)) == $siteURL) {
 							$attribArray['href'] = $this->relBackPath . substr($attribArray['href'], strlen($siteURL));
+						}
+						// Check for FAL link-handler keyword
+						list($linkHandlerKeyword, $linkHandlerValue) = explode(':', $attribArray['href'], 2);
+						if ($linkHandlerKeyword === '?file') {
+							try {
+								$fileOrFolderObject = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->retrieveFileOrFolderObject(rawurldecode($linkHandlerValue));
+								if ($fileOrFolderObject instanceof \TYPO3\CMS\Core\Resource\FileInterface || $fileOrFolderObject instanceof \TYPO3\CMS\Core\Resource\Folder) {
+									$attribArray['href'] = $fileOrFolderObject->getPublicUrl();
+								}
+							} catch (\TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException $resourceDoesNotExistException) {
+								// The indentifier inserted in the RTE is already gone...
+							}
 						}
 					}
 					unset($attribArray['data-htmlarea-external']);
