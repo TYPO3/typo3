@@ -141,6 +141,10 @@ incomplete HTML when a frontend page is rendered was removed from the TYPO3
 Core. Its functionality is now provided by the TER extension "Tidy".
 The extension works with the same options as before.
 
+* Change in Hook TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['pageLoadedFromCache']
+
+Previously $row['cache_data'] was a serialized array. To avoid double serializing and unserializing,
+from now on $row['cache_data'] is just reconstituted as array when fetching from cache.
 
 ### Administration / Customization
 

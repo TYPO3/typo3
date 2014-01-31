@@ -2223,7 +2223,7 @@ class TypoScriptFrontendController {
 						}
 					}
 					// Fetches the lowlevel config stored with the cached data
-					$this->config = (array) unserialize($row['cache_data']);
+					$this->config = $row['cache_data'];
 					// Getting the content
 					$this->content = $row['content'];
 					// Flag for temp content
@@ -3144,7 +3144,7 @@ class TypoScriptFrontendController {
 			'page_id' => $this->id,
 			'content' => $content,
 			'temp_content' => $this->tempContent,
-			'cache_data' => serialize($data),
+			'cache_data' => $data,
 			'expires' => $expirationTstamp,
 			'tstamp' => $GLOBALS['EXEC_TIME']
 		);
