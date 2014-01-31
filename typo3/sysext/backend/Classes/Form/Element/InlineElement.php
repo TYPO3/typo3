@@ -294,11 +294,11 @@ class InlineElement {
 			if ($language > 0 && $row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']] > 0) {
 				// Add the "Localize all records" link before all child records:
 				if (isset($config['appearance']['showAllLocalizationLink']) && $config['appearance']['showAllLocalizationLink']) {
-					$levelLinks .= $this->getLevelInteractionLink('localize', $nameObject . self::Structure_Separator . $foreign_table, $config);
+					$levelLinks .= ' ' . $this->getLevelInteractionLink('localize', $nameObject . self::Structure_Separator . $foreign_table, $config);
 				}
 				// Add the "Synchronize with default language" link before all child records:
 				if (isset($config['appearance']['showSynchronizationLink']) && $config['appearance']['showSynchronizationLink']) {
-					$levelLinks .= $this->getLevelInteractionLink('synchronize', $nameObject . self::Structure_Separator . $foreign_table, $config);
+					$levelLinks .= ' ' . $this->getLevelInteractionLink('synchronize', $nameObject . self::Structure_Separator . $foreign_table, $config);
 				}
 			}
 		}
@@ -853,9 +853,8 @@ class InlineElement {
 			} else {
 				$createNewRelationText = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:cm.createNewRelation', TRUE);
 			}
-			$item .= '<a href="#" onclick="' . htmlspecialchars($onChange) . '" align="abstop">' . IconUtility::getSpriteIcon('actions-document-new', array('title' => $createNewRelationText)) . $createNewRelationText . '</a>';
-			// Wrap the selector and add a spacer to the bottom
-			$item = '<div style="margin-bottom: 20px;">' . $item . '</div>';
+			$item .= ' <a href="#" class="t3-button" onclick="' . htmlspecialchars($onChange) . '" align="abstop">' . IconUtility::getSpriteIcon('actions-document-new', array('title' => $createNewRelationText)) . $createNewRelationText . '</a>';
+			$item = '<div class="t3-form-field-group">' . $item . '</div>';
 		}
 		return $item;
 	}
@@ -890,7 +889,7 @@ class InlineElement {
 		}
 		$browserParams = '|||' . $allowed . '|' . $objectPrefix . '|inline.checkUniqueElement||inline.importElement';
 		$onClick = 'setFormValueOpenBrowser(\'' . $mode . '\', \'' . $browserParams . '\'); return false;';
-		$item = '<a href="#" onclick="' . htmlspecialchars($onClick) . '">' . IconUtility::getSpriteIcon('actions-insert-record', array('title' => $createNewRelationText)) . $createNewRelationText . '</a>';
+		$item = '<a href="#" class="t3-button" onclick="' . htmlspecialchars($onClick) . '">' . IconUtility::getSpriteIcon('actions-insert-record', array('title' => $createNewRelationText)) . $createNewRelationText . '</a>';
 		return $item;
 	}
 
@@ -911,7 +910,7 @@ class InlineElement {
 				$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:cm.createnew', TRUE);
 				$icon = 'actions-document-new';
 				$className = 'typo3-newRecordLink';
-				$attributes['class'] = 'inlineNewButton ' . $this->inlineData['config'][$nameObject]['md5'];
+				$attributes['class'] = 't3-button inlineNewButton ' . $this->inlineData['config'][$nameObject]['md5'];
 				$attributes['onclick'] = 'return inline.createNewRecord(\'' . $objectPrefix . '\')';
 				if (isset($conf['inline']['inlineNewButtonStyle']) && $conf['inline']['inlineNewButtonStyle']) {
 					$attributes['style'] = $conf['inline']['inlineNewButtonStyle'];
@@ -926,13 +925,14 @@ class InlineElement {
 				$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.xlf:localizeAllRecords', 1);
 				$icon = 'actions-document-localize';
 				$className = 'typo3-localizationLink';
+				$attributes['class'] = 't3-button';
 				$attributes['onclick'] = 'return inline.synchronizeLocalizeRecords(\'' . $objectPrefix . '\', \'localize\')';
 				break;
 			case 'synchronize':
 				$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.xlf:synchronizeWithOriginalLanguage', TRUE);
 				$icon = 'actions-document-synchronize';
 				$className = 'typo3-synchronizationLink';
-				$attributes['class'] = 'inlineNewButton ' . $this->inlineData['config'][$nameObject]['md5'];
+				$attributes['class'] = 't3-button inlineNewButton ' . $this->inlineData['config'][$nameObject]['md5'];
 				$attributes['onclick'] = 'return inline.synchronizeLocalizeRecords(\'' . $objectPrefix . '\', \'synchronize\')';
 				break;
 		}

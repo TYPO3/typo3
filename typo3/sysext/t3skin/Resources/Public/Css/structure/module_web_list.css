@@ -138,7 +138,7 @@ div#typo3-newRecordLink,
 div.typo3-newRecordLink,
 div.typo3-localizationLink,
 div.typo3-synchronizationLink {
-	margin: 5px 0px 5px 0px;
+	display: inline;
 }
 
 div#typo3-newRecordLink img,
