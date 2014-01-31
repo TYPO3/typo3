@@ -2339,9 +2339,13 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				'<>&',
 				'\\u003C\\u003E\\u0026'
 			),
-			'Quotes and slashes are encoded' => array(
-				'"\'\\/',
-				'\\u0022\\u0027\\u005C\\u002F'
+			'Quotes and backslashes are encoded' => array(
+				'"\'\\',
+				'\\u0022\\u0027\\u005C'
+			),
+			'Forward slashes are escaped' => array(
+				'</script>',
+				'\\u003C\\/script\\u003E'
 			),
 			'Empty string stays empty' => array(
 				'',

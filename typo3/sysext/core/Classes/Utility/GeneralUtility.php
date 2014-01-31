@@ -5126,8 +5126,7 @@ Connection: close
 			json_encode((string)$value, JSON_HEX_AMP|JSON_HEX_APOS|JSON_HEX_QUOT|JSON_HEX_TAG),
 			array(
 				'"' => '\'',
-				'/' => '\\u002F',
-				'\\\\\\' => '\u005C',
+				'\\\\' => '\\u005C',
 				' ' => '\\u0020',
 				'!' => '\\u0021',
 				'\\t' => '\\u0009',
