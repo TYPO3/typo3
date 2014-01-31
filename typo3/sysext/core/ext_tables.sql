@@ -181,7 +181,7 @@ CREATE TABLE pages (
   KEY t3ver_oid (t3ver_oid,t3ver_wsid),
   KEY parent (pid,deleted,sorting),
   KEY alias (alias),
-  KEY determainSiteRoot (deleted,hidden,is_siteroot),
+  KEY determineSiteRoot (deleted,hidden,is_siteroot),
 );
 
 #
