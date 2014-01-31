@@ -47,6 +47,10 @@ class FileTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->singletonInstances = \TYPO3\CMS\Core\Utility\GeneralUtility::getSingletonInstances();
 		$this->storageMock = $this->getMock('TYPO3\CMS\Core\Resource\ResourceStorage', array(), array(), '', FALSE);
 		$this->storageMock->expects($this->any())->method('getUid')->will($this->returnValue(5));
+
+		$mockedMetaDataRepository = $this->getMock('TYPO3\\CMS\\Core\\Resource\\Index\\MetaDataRepository');
+		$mockedMetaDataRepository->expects($this->any())->method('findByFile')->will($this->returnValue(array('file' => 1)));
+		\TYPO3\CMS\Core\Utility\GeneralUtility::setSingletonInstance('TYPO3\\CMS\\Core\\Resource\\Index\\MetaDataRepository', $mockedMetaDataRepository);
 	}
 
 	public function tearDown() {
@@ -119,6 +123,10 @@ class FileTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function fileIndexStatusIsTrueIfUidIsSet() {
+		$mockedMetaDataRepository = $this->getMock('TYPO3\\CMS\\Core\\Resource\\Index\\MetaDataRepository');
+		$mockedMetaDataRepository->expects($this->once())->method('findByFile')->will($this->returnValue(array('file' => 1)));
+		\TYPO3\CMS\Core\Utility\GeneralUtility::setSingletonInstance('TYPO3\\CMS\\Core\\Resource\\Index\\MetaDataRepository', $mockedMetaDataRepository);
+
 		$fixture = new \TYPO3\CMS\Core\Resource\File(array('uid' => 1), $this->storageMock);
 		$this->assertTrue($fixture->isIndexed());
 	}
