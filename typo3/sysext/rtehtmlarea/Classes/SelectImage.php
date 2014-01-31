@@ -29,6 +29,7 @@ namespace TYPO3\CMS\Rtehtmlarea;
  ***************************************************************/
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Resource;
 
 /**
  * Script Class
@@ -62,8 +63,6 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 	protected $magicMaxHeight;
 
 	protected $imgPath;
-
-	protected $RTEImageStorageDir;
 
 	public $editorNo;
 
@@ -180,9 +179,11 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 	/**
 	 * Get the path to the folder where RTE images are stored
 	 *
-	 * @return 	string		the path to the folder where RTE images are stored
+	 * @return  string the path to the folder where RTE images are stored
+	 * @deprecated since 6.2, will be removed in two versions
 	 */
 	protected function getRTEImageStorageDir() {
+		GeneralUtility::logDeprecatedFunction();
 		return $this->imgPath ?: $GLOBALS['TYPO3_CONF_VARS']['BE']['RTE_imageStorageDir'];
 	}
 
@@ -192,10 +193,11 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 	 * @return 	void
 	 */
 	protected function insertImage() {
-		if (GeneralUtility::_GP('insertImage')) {
-			$table = GeneralUtility::_GP('table');
-			$uid = GeneralUtility::_GP('uid');
-			$fileObject = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getFileObject($uid);
+		$table = htmlspecialchars(GeneralUtility::_GP('table'));
+		$uid = (int) GeneralUtility::_GP('uid');
+		if (GeneralUtility::_GP('insertImage') && $uid) {
+			/** @var $fileObject Resource\File */
+			$fileObject = Resource\ResourceFactory::getInstance()->getFileObject($uid);
 			// Get default values for alt and title attributes from file properties
 			$altText = $fileObject->getProperty('alternative');
 			$titleText = $fileObject->getProperty('name');
@@ -222,49 +224,57 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 	/**
 	 * Insert a magic image
 	 *
-	 * @param \TYPO3\CMS\Core\Resource\FileInterface $fileObject: the image file
-	 * @param 	string		$altText: text for the alt attribute of the image
-	 * @param 	string		$titleText: text for the title attribute of the image
-	 * @param 	string		$additionalParams: text representing more HTML attributes to be added on the img tag
-	 * @return 	void
+	 * @param Resource\File $fileObject: the image file
+	 * @param string $altText: text for the alt attribute of the image
+	 * @param string $titleText: text for the title attribute of the image
+	 * @param string $additionalParams: text representing more HTML attributes to be added on the img tag
+	 * @return void
 	 */
-	public function insertMagicImage(\TYPO3\CMS\Core\Resource\FileInterface $fileObject, $altText = '', $titleText = '', $additionalParams = '') {
-		if ($this->RTEImageStorageDir) {
-			// Create the magic image
-			/** @var $magicImageService \TYPO3\CMS\Core\Resource\Service\MagicImageService */
-			$magicImageService = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\Service\\MagicImageService');
-			$imageConfiguration = array(
-				'width' => GeneralUtility::_GP('cWidth'),
-				'height' => GeneralUtility::_GP('cHeight'),
-				'maxW' => $this->magicMaxWidth,
-				'maxH' => $this->magicMaxHeight
-			);
-			$magicImage = $magicImageService->createMagicImage($fileObject, $imageConfiguration, $this->getRTEImageStorageDir());
-			if ($magicImage instanceof \TYPO3\CMS\Core\Resource\FileInterface) {
-				$filePath = $magicImage->getForLocalProcessing(FALSE);
-				$imageInfo = @getimagesize($filePath);
-				$imageUrl = $this->siteURL . \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($filePath);
-				$this->imageInsertJS($imageUrl, $imageInfo[0], $imageInfo[1], $altText, $titleText, $additionalParams);
-			}
-		} else {
-			GeneralUtility::sysLog('Attempt at creating a magic image failed due to absent RTE_imageStorageDir', $this->extKey . '/tx_rtehtmlarea_select_image', GeneralUtility::SYSLOG_SEVERITY_ERROR);
+	public function insertMagicImage(Resource\File $fileObject, $altText = '', $titleText = '', $additionalParams = '') {
+		// Create the magic image service
+		/** @var $magicImageService Resource\Service\MagicImageService */
+		$magicImageService = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\Service\\MagicImageService');
+		// Create the magic image
+		$imageConfiguration = array(
+			'width' => GeneralUtility::_GP('cWidth'),
+			'height' => GeneralUtility::_GP('cHeight'),
+			'maxW' => $this->magicMaxWidth,
+			'maxH' => $this->magicMaxHeight
+		);
+		$magicImage = $magicImageService->createMagicImage($fileObject, $imageConfiguration);
+		$imageUrl = $magicImage->getPublicUrl();
+		// If file is local, make the url absolute
+		if (substr($imageUrl, 0, 4) !== 'http') {
+			$imageUrl = $this->siteURL . $imageUrl;
 		}
+		// Insert the magic image
+		$this->imageInsertJS($imageUrl, $magicImage->getProperty('width'), $magicImage->getProperty('height'), $altText, $titleText, $additionalParams);
 	}
 
 	/**
 	 * Insert a plain image
 	 *
-	 * @param \TYPO3\CMS\Core\Resource\FileInterface $fileObject: the image file
+	 * @param \TYPO3\CMS\Core\Resource\File $fileObject: the image file
 	 * @param 	string		$altText: text for the alt attribute of the image
 	 * @param 	string		$titleText: text for the title attribute of the image
 	 * @param 	string		$additionalParams: text representing more HTML attributes to be added on the img tag
 	 * @return 	void
 	 */
-	public function insertPlainImage(\TYPO3\CMS\Core\Resource\FileInterface $fileObject, $altText = '', $titleText = '', $additionalParams = '') {
-		$filePath = $fileObject->getForLocalProcessing(FALSE);
-		$imageInfo = @getimagesize($filePath);
-		$imageUrl = $this->siteURL . \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($filePath);
-		$this->imageInsertJS($imageUrl, $imageInfo[0], $imageInfo[1], $altText, $titleText, $additionalParams);
+	public function insertPlainImage(Resource\File $fileObject, $altText = '', $titleText = '', $additionalParams = '') {
+		$width = $fileObject->getProperty('width');
+		$height = $fileObject->getProperty('height');
+		if (!$width || !$height) {
+			$filePath = $fileObject->getForLocalProcessing(FALSE);
+			$imageInfo = @getimagesize($filePath);
+			$width = $imageInfo[0];
+			$height = $imageInfo[1];
+		}
+		$imageUrl = $fileObject->getPublicUrl();
+		// If file is local, make the url absolute
+		if (substr($imageUrl, 0, 4) !== 'http') {
+			$imageUrl = $this->siteURL . $imageUrl;
+		}
+		$this->imageInsertJS($imageUrl, $width, $height, $altText, $titleText, $additionalParams);
 	}
 
 	/**
@@ -837,7 +847,6 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 		$this->thisConfig = $this->getRTEConfig();
 		$this->buttonConfig = $this->getButtonConfig();
 		$this->imgPath = $this->getImgPath();
-		$this->RTEImageStorageDir = $this->getRTEImageStorageDir();
 		$this->defaultClass = $this->getDefaultClass();
 		$this->setMaximumImageDimensions();
 	}

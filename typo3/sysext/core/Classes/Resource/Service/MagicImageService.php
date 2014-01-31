@@ -26,8 +26,8 @@ namespace TYPO3\CMS\Core\Resource\Service;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
-use TYPO3\CMS\Core\Utility\PathUtility;
+use TYPO3\CMS\Core\Resource;
+use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * Magic image service
@@ -37,66 +37,16 @@ use TYPO3\CMS\Core\Utility\PathUtility;
 class MagicImageService {
 
 	/**
-	 * @var \TYPO3\CMS\Core\Imaging\GraphicalFunctions
-	 */
-	protected $imageObject;
-
-	/**
-	 * Internal function to retrieve the target magic image folder
-	 *
-	 * @param string $targetFolderCombinedIdentifier
-	 * @return \TYPO3\CMS\Core\Resource\Folder
-	 */
-	protected function getMagicFolder($targetFolderCombinedIdentifier) {
-		// check if the input is already a folder
-		if ($targetFolderCombinedIdentifier instanceof \TYPO3\CMS\Core\Resource\Folder) {
-			$magicFolder = $targetFolderCombinedIdentifier;
-		} else {
-			$fileFactory = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance();
-
-			// @todo Proper exception handling is missing here
-			if ($targetFolderCombinedIdentifier) {
-				$magicFolder = $fileFactory->getFolderObjectFromCombinedIdentifier($targetFolderCombinedIdentifier);
-			}
-			if (empty($magicFolder) || !$magicFolder instanceof \TYPO3\CMS\Core\Resource\Folder) {
-				$magicFolder = $fileFactory->getFolderObjectFromCombinedIdentifier($GLOBALS['TYPO3_CONF_VARS']['BE']['RTE_imageStorageDir']);
-			}
-		}
-		return $magicFolder;
-	}
-
-	/**
-	 * Internal function to retrieve the image object,
-	 * if it does not exist, an instance will be created
-	 *
-	 * @return \TYPO3\CMS\Core\Imaging\GraphicalFunctions
-	 */
-	protected function getImageObject() {
-		if ($this->imageObject === NULL) {
-			/** @var $this->imageObject \TYPO3\CMS\Core\Imaging\GraphicalFunctions */
-			$this->imageObject = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Imaging\\GraphicalFunctions');
-			$this->imageObject->init();
-			$this->imageObject->mayScaleUp = 0;
-			$this->imageObject->tempPath = PATH_site . $this->imageObject->tempPath;
-		}
-		return $this->imageObject;
-	}
-
-	/**
 	 * Creates a magic image
 	 *
-	 * @param \TYPO3\CMS\Core\Resource\FileInterface $imageFileObject: the original image file
+	 * @param Resource\File $imageFileObject: the original image file
 	 * @param array $fileConfiguration (width, height, maxW, maxH)
-	 * @param string $targetFolderCombinedIdentifier: target folder combined identifier
-	 * @return \TYPO3\CMS\Core\Resource\FileInterface
+	 * @return ProcessedFile
 	 */
-	public function createMagicImage(\TYPO3\CMS\Core\Resource\FileInterface $imageFileObject, array $fileConfiguration, $targetFolderCombinedIdentifier) {
-		$magicImage = NULL;
-		// Get file for processing
-		$imageFilePath = $imageFileObject->getForLocalProcessing(TRUE);
+	public function createMagicImage(Resource\File $imageFileObject, array $fileConfiguration) {
 		// Process dimensions
-		$maxWidth = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($fileConfiguration['width'], 0, $fileConfiguration['maxW']);
-		$maxHeight = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($fileConfiguration['height'], 0, $fileConfiguration['maxH']);
+		$maxWidth = MathUtility::forceIntegerInRange($fileConfiguration['width'], 0, $fileConfiguration['maxW']);
+		$maxHeight = MathUtility::forceIntegerInRange($fileConfiguration['height'], 0, $fileConfiguration['maxH']);
 		if (!$maxWidth) {
 			$maxWidth = $fileConfiguration['maxW'];
 		}
@@ -104,14 +54,13 @@ class MagicImageService {
 			$maxHeight = $fileConfiguration['maxH'];
 		}
 		// Create the magic image
-		$magicImageInfo = $this->getImageObject()->imageMagickConvert($imageFilePath, 'WEB', $maxWidth . 'm', $maxHeight . 'm');
-		if ($magicImageInfo[3]) {
-			$targetFileName = 'RTEmagicC_' . PathUtility::pathInfo($imageFileObject->getName(), PATHINFO_FILENAME) . '.' . PathUtility::pathinfo($magicImageInfo[3], PATHINFO_EXTENSION);
-			$magicFolder = $this->getMagicFolder($targetFolderCombinedIdentifier);
-			if ($magicFolder instanceof \TYPO3\CMS\Core\Resource\Folder) {
-				$magicImage = $magicFolder->addFile($magicImageInfo[3], $targetFileName, 'changeName');
-			}
-		}
+		$magicImage = $imageFileObject->process(
+			Resource\ProcessedFile::CONTEXT_IMAGECROPSCALEMASK,
+			array(
+				'width' => $maxWidth . 'm',
+				'height' => $maxHeight . 'm'
+			)
+		);
 		return $magicImage;
 	}
 
