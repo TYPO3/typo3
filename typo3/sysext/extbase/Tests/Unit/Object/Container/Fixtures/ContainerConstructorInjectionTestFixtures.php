@@ -117,8 +117,13 @@ class TwoConstructorArgumentsFirstOptional {
 	public $argumentTestClassTwo;
 
 	/**
-	 * This can not be handled correctly at the moment since the underlying
-	 * reflection API of PHP marks the first parameter as required!
+	 * The extbase container code uses PHP parameter reflection isOptional() to determine
+	 * injection. PHP behaves differently in current supported core versions, in effect
+	 * constructor injection of the first argument can not be relied on.
+	 *
+	 * The according unit tests currently do not check the value of first argument.
+	 *
+	 * @see https://bugs.php.net/bug.php?id=62715
 	 *
 	 * @param ArgumentTestClass $argumentTestClass
 	 * @param ArgumentTestClass $argumentTestClassTwo
