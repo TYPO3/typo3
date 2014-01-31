@@ -1448,6 +1448,10 @@ class ResourceStorage {
 		}
 		header('Content-Type: ' . $file->getMimeType());
 		header('Content-Length: ' . $file->getSize());
+
+		// Cache-Control header is needed here to solve an issue with browser IE8 and lower
+		// See for more information: http://support.microsoft.com/kb/323308
+		header("Cache-Control: ''");
 		header('Last-Modified: ' .
 			gmdate('D, d M Y H:i:s', array_pop($this->driver->getFileInfoByIdentifier($file->getIdentifier(), array('mtime')))) . ' GMT',
 			TRUE,
