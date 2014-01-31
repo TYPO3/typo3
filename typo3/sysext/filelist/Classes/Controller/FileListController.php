@@ -170,7 +170,7 @@ class FileListController {
 					throw new \RuntimeException('Could not find any folder to be displayed.', 1349276894);
 				}
 			}
-		} catch (\TYPO3\CMS\Core\Resource\Exception\FolderDoesNotExistException $fileException) {
+		} catch (\TYPO3\CMS\Core\Resource\Exception $fileException) {
 			// Take the first object of the first storage
 			$fileStorages = $GLOBALS['BE_USER']->getFileStorages();
 			$fileStorage = reset($fileStorages);
