@@ -35,6 +35,10 @@ table#typo3-EBfiles tr td.c-wCell {
 body#typo3-browse-links-php a {
 	text-decoration: none;
 }
+body#typo3-browse-links-php #typo3-messages {
+	margin: 0px;
+	padding: 10px;
+}
 
 /* - - - - - - - - - - - - - - - - - - - - -
 RTE select image

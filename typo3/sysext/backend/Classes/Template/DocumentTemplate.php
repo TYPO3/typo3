@@ -1908,13 +1908,9 @@ class DocumentTemplate {
 		}
 		// adding flash messages
 		if ($this->showFlashMessages) {
-			/** @var $flashMessageService \TYPO3\CMS\Core\Messaging\FlashMessageService */
-			$flashMessageService = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessageService');
-			/** @var $defaultFlashMessageQueue \TYPO3\CMS\Core\Messaging\FlashMessageQueue */
-			$defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
-			$flashMessages = $defaultFlashMessageQueue->renderFlashMessages();
+			$flashMessages = $this->getFlashMessages();
 			if (!empty($flashMessages)) {
-				$markerArray['FLASHMESSAGES'] = '<div id="typo3-messages">' . $flashMessages . '</div>';
+				$markerArray['FLASHMESSAGES'] = $flashMessages;
 				// If there is no dedicated marker for the messages present
 				// then force them to appear before the content
 				if (strpos($moduleBody, '###FLASHMESSAGES###') === FALSE) {
@@ -1937,6 +1933,23 @@ class DocumentTemplate {
 		}
 		// Replacing all markers with the finished markers and return the HTML content
 		return HtmlParser::substituteMarkerArray($moduleBody, $markerArray, '###|###');
+	}
+
+	/**
+	 * Get the default rendered FlashMessages from queue
+	 *
+	 * @return string
+	 */
+	public function getFlashMessages() {
+		/** @var $flashMessageService \TYPO3\CMS\Core\Messaging\FlashMessageService */
+		$flashMessageService = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessageService');
+		/** @var $defaultFlashMessageQueue \TYPO3\CMS\Core\Messaging\FlashMessageQueue */
+		$defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
+		$flashMessages = $defaultFlashMessageQueue->renderFlashMessages();
+		if (!empty($flashMessages)) {
+			$flashMessages = '<div id="typo3-messages">' . $flashMessages . '</div>';
+		}
+		return $flashMessages;
 	}
 
 	/**

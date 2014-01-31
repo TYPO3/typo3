@@ -210,7 +210,11 @@ class ExtendedFileUtility extends \TYPO3\CMS\Core\Utility\File\BasicFileUtility 
 			if ($this->fileCmdMap['upload']) {
 				$uploads = $this->fileCmdMap['upload'];
 				foreach ($uploads as $upload) {
-					if (!$_FILES[('upload_' . $upload['data'])]['name']) {
+					if (empty($_FILES[('upload_' . $upload['data'])]['name'])
+						|| (is_array($_FILES[('upload_' . $upload['data'])]['name'])
+							&& empty($_FILES[('upload_' . $upload['data'])]['name'][0])
+						)
+					) {
 						unset($this->fileCmdMap['upload'][$upload['data']]);
 					}
 				}

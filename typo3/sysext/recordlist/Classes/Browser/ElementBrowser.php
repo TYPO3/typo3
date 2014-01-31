@@ -1369,6 +1369,9 @@ class ElementBrowser {
 		} else {
 			$files = '';
 		}
+		// Add the FlashMessages if any
+		$content .= $this->doc->getFlashMessages();
+
 		// Putting the parts together, side by side:
 		$content .= '
 
@@ -2323,7 +2326,7 @@ class ElementBrowser {
 						<td class="c-wCell c-hCell">';
 		// Traverse the number of upload fields (default is 3):
 		for ($a = 1; $a <= $count; $a++) {
-			$code .= '<input type="file" multiple="multiple" name="upload_' . $a . '"' . $this->doc->formWidth(35)
+			$code .= '<input type="file" multiple="multiple" name="upload_' . $a . '[]"' . $this->doc->formWidth(35)
 					. ' size="50" />
 				<input type="hidden" name="file[upload][' . $a . '][target]" value="'
 					. htmlspecialchars($folderObject->getCombinedIdentifier()) . '" />
