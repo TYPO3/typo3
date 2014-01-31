@@ -7,10 +7,6 @@
  * Text					#55545E
  * headline Text		#FFFFFF
  * Border 				#A2AAB8
- *
- * Attributes:
- * font-family			verdana, arial, tahoma, helvetica, sans-serif
- * font-size			10px
  */
 
 .x-tab-strip-spacer { display: none; }
@@ -155,8 +151,7 @@
 }
 
 /* Toolbars */
-
-.x-toolbar{
+.x-toolbar {
 	border-color:#A2AAB8;
 	background:#EFEFF4 url(images/toolbar/bg.gif) repeat-x top left;
 }
@@ -2369,4 +2364,10 @@ div.x-grid3-row:hover img.t3-icon-extensions-workspaces {
 	border: none;
 	padding: 0;
 	margin: 0;
+}
+
+/* Vertical alignment of the icons in topbar of pagetree */
+#typo3-pagetree-topPanel .x-toolbar-cell {
+	font-size: 10px;
+	line-height: normal;
 }
