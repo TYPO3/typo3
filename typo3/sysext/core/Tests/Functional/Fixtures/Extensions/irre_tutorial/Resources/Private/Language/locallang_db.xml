@@ -12,6 +12,7 @@
 			<label index="pages.doktype.div.irre">IRRE Tutorial</label>
 			<label index="pages.doktype.I.233">IRRE Tutorial Test Page</label>
 			<label index="pages.tx_irretutorial_hotels">Hotels:</label>
+			<label index="tt_content.tx_irretutorial_hotels">Hotels:</label>
 			<label index="tt_content.tx_irretutorial_flexform">IRRE:</label>
 			<label index="tt_content.tx_irretutorial_flexform.hotels">IRRE:</label>
 			<label index="tt_content.div.irre">IRRE Tutorial</label>
