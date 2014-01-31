@@ -478,6 +478,14 @@ class BackendUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				)
 			)
 		);
+		// Stub LanguageService and let sL() return the same value that came in again
+		$GLOBALS['LANG'] = $this->getMock('TYPO3\\CMS\\Lang\\LanguageService', array(), array(), '', FALSE);
+		$GLOBALS['LANG']->expects($this->any())->method('sL')
+			->will($this->returnCallback(
+				function($name) {
+					return $name;
+				}
+			));
 
 		$tcaBackup = $GLOBALS['TCA'][$table];
 		unset($GLOBALS['TCA'][$table]);
@@ -505,6 +513,14 @@ class BackendUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				)
 			)
 		);
+		// Stub LanguageService and let sL() return the same value that came in again
+		$GLOBALS['LANG'] = $this->getMock('TYPO3\\CMS\\Lang\\LanguageService', array(), array(), '', FALSE);
+		$GLOBALS['LANG']->expects($this->any())->method('sL')
+			->will($this->returnCallback(
+				function($name) {
+					return $name;
+				}
+			));
 
 		$tcaBackup = $GLOBALS['TCA'][$table];
 		unset($GLOBALS['TCA'][$table]);
