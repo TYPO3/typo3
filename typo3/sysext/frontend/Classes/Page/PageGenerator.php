@@ -462,27 +462,24 @@ class PageGenerator {
 			}
 		}
 		/**********************************************************************/
-		/* includeCSS
-		/* config.includeCSS {
-		/*
-		/* }
+		/* config.includeCSS / config.includeCSSLibs
 		/**********************************************************************/
 		if (is_array($GLOBALS['TSFE']->pSetup['includeCSS.'])) {
 			foreach ($GLOBALS['TSFE']->pSetup['includeCSS.'] as $key => $CSSfile) {
 				if (!is_array($CSSfile)) {
-					$ss = $GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['external'] ? $CSSfile : $GLOBALS['TSFE']->tmpl->getFileName($CSSfile);
-					if (isset($GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['if.']) && !$GLOBALS['TSFE']->cObj->checkIf($GLOBALS['TSFE']->pSetup['includeCSS.'][($key . '.')]['if.'])) {
+					$cssFileConfig = &$GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.'];
+					if (isset($cssFileConfig['if.']) && !$GLOBALS['TSFE']->cObj->checkIf($cssFileConfig['if.'])) {
 						continue;
 					}
+					$ss = $cssFileConfig['external'] ? $CSSfile : $GLOBALS['TSFE']->tmpl->getFileName($CSSfile);
 					if ($ss) {
-						if ($GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['import']) {
-							if (!$GLOBALS['TSFE']->pSetup['includeCSS.'][($key . '.')]['external'] && $ss[0] !== '/') {
+						if ($cssFileConfig['import']) {
+							if (!$cssFileConfig['external'] && $ss[0] !== '/') {
 								// To fix MSIE 6 that cannot handle these as relative paths (according to Ben v Ende)
 								$ss = GeneralUtility::dirname(GeneralUtility::getIndpEnv('SCRIPT_NAME')) . '/' . $ss;
 							}
-							$pageRenderer->addCssInlineBlock('import_' . $key, '@import url("' . htmlspecialchars($ss) . '") ' . htmlspecialchars($GLOBALS['TSFE']->pSetup['includeCSS.'][($key . '.')]['media']) . ';', empty($GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['disableCompression']), $GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['forceOnTop'] ? TRUE : FALSE, '');
+							$pageRenderer->addCssInlineBlock('import_' . $key, '@import url("' . htmlspecialchars($ss) . '") ' . htmlspecialchars($cssFileConfig['media']) . ';', empty($cssFileConfig['disableCompression']), $cssFileConfig['forceOnTop'] ? TRUE : FALSE, '');
 						} else {
-							$cssFileConfig = &$GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.'];
 							$pageRenderer->addCssFile(
 								$ss,
 								$cssFileConfig['alternate'] ? 'alternate stylesheet' : 'stylesheet',
@@ -500,6 +497,40 @@ class PageGenerator {
 				}
 			}
 		}
+		if (is_array($GLOBALS['TSFE']->pSetup['includeCSSLibs.'])) {
+			foreach ($GLOBALS['TSFE']->pSetup['includeCSSLibs.'] as $key => $CSSfile) {
+				if (!is_array($CSSfile)) {
+					$cssFileConfig = &$GLOBALS['TSFE']->pSetup['includeCSSLibs.'][$key . '.'];
+					if (isset($cssFileConfig['if.']) && !$GLOBALS['TSFE']->cObj->checkIf($cssFileConfig['if.'])) {
+						continue;
+					}
+					$ss = $cssFileConfig['external'] ? $CSSfile : $GLOBALS['TSFE']->tmpl->getFileName($CSSfile);
+					if ($ss) {
+						if ($cssFileConfig['import']) {
+							if (!$cssFileConfig['external'] && $ss[0] !== '/') {
+								// To fix MSIE 6 that cannot handle these as relative paths (according to Ben v Ende)
+								$ss = GeneralUtility::dirname(GeneralUtility::getIndpEnv('SCRIPT_NAME')) . '/' . $ss;
+							}
+							$pageRenderer->addCssInlineBlock('import_' . $key, '@import url("' . htmlspecialchars($ss) . '") ' . htmlspecialchars($cssFileConfig['media']) . ';', empty($cssFileConfig['disableCompression']), $cssFileConfig['forceOnTop'] ? TRUE : FALSE, '');
+						} else {
+							$pageRenderer->addCssLibrary(
+								$ss,
+								$cssFileConfig['alternate'] ? 'alternate stylesheet' : 'stylesheet',
+								$cssFileConfig['media'] ?: 'all',
+								$cssFileConfig['title'] ?: '',
+								empty($cssFileConfig['disableCompression']),
+								$cssFileConfig['forceOnTop'] ? TRUE : FALSE,
+								$cssFileConfig['allWrap'],
+								$cssFileConfig['excludeFromConcatenation'] ? TRUE : FALSE,
+								$cssFileConfig['allWrap.']['splitChar']
+							);
+							unset($cssFileConfig);
+						}
+					}
+				}
+			}
+		}
+
 		// Stylesheets
 		$style = '';
 		if ($GLOBALS['TSFE']->pSetup['insertClassesFromRTE']) {
