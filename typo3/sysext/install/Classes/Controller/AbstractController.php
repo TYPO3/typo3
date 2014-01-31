@@ -408,6 +408,7 @@ class AbstractController {
 			require(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('dbal') . 'ext_localconf.php');
 			$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['dbal']['backend']
 				= 'TYPO3\\CMS\\Core\\Cache\\Backend\\NullBackend';
+			$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['dbal']['options'] = array();
 		}
 
 		require(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('extbase') . 'ext_localconf.php');
@@ -415,14 +416,19 @@ class AbstractController {
 
 		$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['extbase_datamapfactory_datamap']['backend']
 			= 'TYPO3\\CMS\\Core\\Cache\\Backend\\NullBackend';
+		$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['extbase_datamapfactory_datamap']['options'] = array();
 		$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['extbase_object']['backend']
 			= 'TYPO3\\CMS\\Core\\Cache\\Backend\\NullBackend';
+		$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['extbase_object']['options'] = array();
 		$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['extbase_reflection']['backend']
 			= 'TYPO3\\CMS\\Core\\Cache\\Backend\\NullBackend';
+		$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['extbase_reflection']['options'] = array();
 		$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['extbase_typo3dbbackend_tablecolumns']['backend']
 			= 'TYPO3\\CMS\\Core\\Cache\\Backend\\NullBackend';
+		$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['extbase_typo3dbbackend_tablecolumns']['options'] = array();
 		$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['fluid_template']['backend']
 			= 'TYPO3\\CMS\\Core\\Cache\\Backend\\NullBackend';
+		$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['fluid_template']['options'] = array();
 
 		/** @var $cacheManager \TYPO3\CMS\Core\Cache\CacheManager */
 		$cacheManager = $GLOBALS['typo3CacheManager'];
