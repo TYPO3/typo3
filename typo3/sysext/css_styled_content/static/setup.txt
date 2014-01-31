@@ -2171,15 +2171,9 @@ tt_content.menu {
 # Should be a complete copy from the old static template "content (default)"
 tt_content.shortcut = COA
 tt_content.shortcut {
-	20 = CASE
-	20.key.field = layout
-	20.0= RECORDS
-	20.0 {
-		source.field = records
-		tables = {$content.shortcut.tables}
-	}
-	20.1= RECORDS
-	20.1 {
+
+	20 = RECORDS
+	20 {
 		source.field = records
 		tables = {$content.shortcut.tables}
 	}
