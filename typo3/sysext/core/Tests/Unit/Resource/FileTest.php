@@ -105,19 +105,6 @@ class FileTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 	/**
-	 * @test
-	 */
-	public function fileAsksRepositoryForIndexStatus() {
-		$mockedRepository = $this->getMock('TYPO3\\CMS\\Core\\Resource\\Index\\FileIndexRepository');
-		$mockedRepository->expects($this->once())->method('findOneByCombinedIdentifier')->will($this->returnValue(array('uid' => 1)));
-		$mockedRepository->expects($this->exactly(0))->method('add');
-		\TYPO3\CMS\Core\Utility\GeneralUtility::setSingletonInstance('TYPO3\\CMS\\Core\\Resource\\Index\\FileIndexRepository', $mockedRepository);
-
-		$fixture = new \TYPO3\CMS\Core\Resource\File(array(), $this->storageMock);
-		$this->assertTrue($fixture->isIndexed());
-	}
-
-	/**
 	 * Tests if a file is seen as indexed if the record has a uid
 	 *
 	 * @test
@@ -213,60 +200,9 @@ class FileTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->assertSame($mockedNewStorage, $subject->getStorage());
 	}
 
-	/**
-	 * @test
-	 */
-	public function fetchingIndexedPropertyCausesFileObjectToLoadIndexRecord() {
-		$mockedRepository = $this->getMock('TYPO3\\CMS\\Core\\Resource\\Index\\FileIndexRepository');
-		$mockedRepository->expects($this->once())->method('findOneByCombinedIdentifier')->will($this->returnValue(array('uid' => 10)));
-		\TYPO3\CMS\Core\Utility\GeneralUtility::setSingletonInstance('TYPO3\\CMS\\Core\\Resource\\Index\\FileIndexRepository', $mockedRepository);
 
-		$fixture = new \TYPO3\CMS\Core\Resource\File(array('identifier' => '/test', 'storage' => 5), $this->storageMock);
-		$this->assertEquals(10, $fixture->getProperty('uid'));
-	}
 
-	/**
-	 * @test
-	 */
-	public function isIndexedTriggersIndexingIfFileIsNotIndexedAlready() {
-		$subject = $this->getAccessibleMock(
-			'TYPO3\\CMS\\Core\\Resource\\File',
-			array('loadIndexRecord'),
-			array(),
-			'',
-			FALSE
-		);
-		$subject->_set('indexed', NULL);
-		$subject->_set('indexingInProgress', FALSE);
-
-		$subject
-			->expects($this->once())
-			->method('loadIndexRecord');
-		$subject->isIndexed();
-	}
-
-	/**
-	 * @test
-	 */
-	public function fileIsAutomaticallyIndexedOnPropertyAccessIfNotAlreadyIndexed() {
-		$subject = $this->getAccessibleMock(
-			'TYPO3\\CMS\\Core\\Resource\\File',
-			array('loadIndexRecord'),
-			array(),
-			'',
-			FALSE
-		);
-		$subject->_set('metaDataProperties', array());
-		$subject->_set('properties', array());
-
-		$subject->_set('indexed', NULL);
-		$subject
-			->expects($this->once())
-			->method('loadIndexRecord');
-		$subject->getProperty('foo');
-	}
-
-	/**
+/**
 	 * @test
 	 */
 	public function copyToCallsCopyOperationOnTargetFolderStorage() {
@@ -440,40 +376,6 @@ class FileTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 */
-	public function indexablePropertyIsByDefaultTrue() {
-		$fixture = new \TYPO3\CMS\Core\Resource\File(array(), $this->storageMock);
-		$this->assertAttributeEquals(TRUE, 'indexable', $fixture);
-	}
-
-	/**
-	 * @test
-	 */
-	public function indexablePropertyCanBeSetAndGet() {
-		$fixture = new \TYPO3\CMS\Core\Resource\File(array(), $this->storageMock);
-		foreach (array(FALSE, TRUE) as $value) {
-			$fixture->setIndexable($value);
-			$this->assertSame($value, $fixture->isIndexable());
-		}
-	}
-
-	/**
-	 * @test
-	 */
-	public function callMethodLoadIndexRecordWithPropertyIndexableSetToFalseAndCheckWhetherIsIndexedReturnsNull() {
-		$method = new \ReflectionMethod(
-			'TYPO3\CMS\Core\Resource\File', 'loadIndexRecord'
-		);
-		$method->setAccessible(TRUE);
-
-		$fixture = new \TYPO3\CMS\Core\Resource\File(array(), $this->storageMock);
-		$fixture->setIndexable(FALSE);
-		$method->invoke($fixture);
-		$this->assertNull($fixture->isIndexed());
-	}
-
-	/**
-	 * @test
-	 */
 	public function hasPropertyReturnsTrueFilePropertyExists() {
 		$fixture = new \TYPO3\CMS\Core\Resource\File(array('testproperty' => 'testvalue'), $this->storageMock);
 		$this->assertTrue($fixture->hasProperty('testproperty'));
@@ -484,6 +386,7 @@ class FileTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function hasPropertyReturnsTrueIfMetadataPropertyExists() {
 		$fixture = $this->getAccessibleMock('TYPO3\\CMS\\Core\\Resource\\File', array('dummy'), array(array(), $this->storageMock));
+		$fixture->_set('metaDataLoaded', TRUE);
 		$fixture->_set('metaDataProperties', array('testproperty' => 'testvalue'));
 		$this->assertTrue($fixture->hasProperty('testproperty'));
 	}

@@ -5,6 +5,8 @@ namespace TYPO3\CMS\Core\Resource;
  *  Copyright notice
  *
  *  (c) 2011-2013 Ingo Renner <ingo@typo3.org>
+ *  (c) 2011-2013 Andreas Wolf <andreas.wolf@ikt-werk.de>
+ *  (c) 2013-20xx Steffen Ritter <steffen.ritter@typo3.org>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -32,25 +34,13 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * File representation in the file abstraction layer.
  *
- * @author Andreas Wolf <andreas.wolf@ikt-werk.de>
  */
 class File extends AbstractFile {
 
 	/**
-	 * File indexing status. True, if the file is indexed in the database;
-	 * NULL is the default value, this means that the index status is unknown
-	 *
-	 * @var boolean|NULL
+	 * @var bool
 	 */
-	protected $indexed = NULL;
-
-	/**
-	 * Tells whether to index a file or not.
-	 * If yes, the file will be persisted into sys_file.
-	 *
-	 * @var boolean
-	 */
-	protected $indexable = TRUE;
+	protected $metaDataLoaded = FALSE;
 
 	/**
 	 * @var array
@@ -83,16 +73,16 @@ class File extends AbstractFile {
 	 *
 	 * @param array $fileData
 	 * @param ResourceStorage $storage
+	 * @param array $metaData
 	 */
-	public function __construct(array $fileData, ResourceStorage $storage) {
+	public function __construct(array $fileData, ResourceStorage $storage, $metaData = array()) {
 		$this->identifier = $fileData['identifier'];
 		$this->name = $fileData['name'];
 		$this->properties = $fileData;
 		$this->storage = $storage;
-
-		if (isset($fileData['uid']) && intval($fileData['uid']) > 0) {
-			$this->indexed = TRUE;
-			$this->loadMetaData();
+		if ($metaData !== array()) {
+			$this->metaDataLoaded = TRUE;
+			$this->metaDataProperties = $metaData;
 		}
 	}
 
@@ -106,12 +96,12 @@ class File extends AbstractFile {
 	 * @return mixed Property value
 	 */
 	public function getProperty($key) {
-		if ($this->indexed === NULL) {
-			$this->loadIndexRecord();
-		}
 		if (parent::hasProperty($key)) {
 			return parent::getProperty($key);
 		} else {
+			if (!$this->metaDataLoaded) {
+				$this->loadMetaData();
+			}
 			return array_key_exists($key, $this->metaDataProperties) ? $this->metaDataProperties[$key] : NULL;
 		}
 	}
@@ -125,6 +115,9 @@ class File extends AbstractFile {
 	 */
 	public function hasProperty($key) {
 		if (!parent::hasProperty($key)) {
+			if (!$this->metaDataLoaded) {
+				$this->loadMetaData();
+			}
 			return array_key_exists($key, $this->metaDataProperties);
 		}
 		return TRUE;
@@ -137,8 +130,8 @@ class File extends AbstractFile {
 	 * @return array
 	 */
 	public function getProperties() {
-		if ($this->indexed === NULL) {
-			$this->loadIndexRecord();
+		if (!$this->metaDataLoaded) {
+			$this->loadMetaData();
 		}
 		return array_merge(parent::getProperties(), array_diff_key((array)$this->metaDataProperties, parent::getProperties()));
 	}
@@ -197,58 +190,21 @@ class File extends AbstractFile {
 	 * @return boolean|NULL
 	 */
 	public function isIndexed() {
-		if ($this->indexed === NULL && !$this->indexingInProgress) {
-			$this->loadIndexRecord();
-		}
-		return $this->indexed;
-	}
-
-	/**
-	 * @param bool $indexIfNotIndexed
-	 *
-	 * @throws \RuntimeException
-	 * @return void
-	 */
-	protected function loadIndexRecord($indexIfNotIndexed = TRUE) {
-		if ($this->indexed !== NULL || !$this->indexable || $this->indexingInProgress) {
-			return;
-		}
-		$this->indexingInProgress = TRUE;
-
-		$indexRecord = $this->getFileIndexRepository()->findOneByCombinedIdentifier($this->getCombinedIdentifier());
-		if ($indexRecord === FALSE && $indexIfNotIndexed) {
-			$this->getIndexerService()->updateIndexEntry($this);
-			$this->updatedProperties = array();
-		} elseif ($indexRecord !== FALSE) {
-			$this->mergeIndexRecord($indexRecord);
-			$this->indexed = TRUE;
-			$this->loadMetaData();
-		} else {
-			throw new \RuntimeException('Could not load index record for "' . $this->getIdentifier() . '"', 1321288316);
-		}
-		$this->indexingInProgress = FALSE;
+		return TRUE;
 	}
 
 	/**
 	 * Loads MetaData from Repository
-	 */
-	protected function loadMetaData() {
-		$this->metaDataProperties = $this->getMetaDataRepository()->findByFile($this);
-	}
-
-	/**
-	 * Merges the contents of this file's index record into the file properties.
-	 *
-	 * @param array $recordData The index record as fetched from the database
-	 *
-	 * @throws \InvalidArgumentException
 	 * @return void
 	 */
-	protected function mergeIndexRecord(array $recordData) {
-		if ($this->properties['uid'] != 0) {
-			throw new \InvalidArgumentException('uid property is already set. Cannot merge index record.', 1321023156);
+	protected function loadMetaData() {
+		if (!$this->indexingInProgress) {
+			$this->indexingInProgress = TRUE;
+			$this->metaDataProperties = $this->getMetaDataRepository()->findByFile($this);
+			$this->metaDataLoaded = TRUE;
+			$this->indexingInProgress = FALSE;
 		}
-		$this->properties = array_merge($recordData, $this->properties);
+
 	}
 
 	/**
@@ -273,9 +229,7 @@ class File extends AbstractFile {
 		if (isset($properties['name'])) {
 			$this->name = $properties['name'];
 		}
-		if ($this->indexed === NULL && !isset($properties['uid'])) {
-			$this->loadIndexRecord();
-		}
+
 		if ($this->properties['uid'] != 0 && isset($properties['uid'])) {
 			unset($properties['uid']);
 		}
@@ -284,16 +238,10 @@ class File extends AbstractFile {
 				if (!in_array($key, $this->updatedProperties)) {
 					$this->updatedProperties[] = $key;
 				}
-				// TODO check if we should completely remove properties that
-				// are set to NULL
 				$this->properties[$key] = $value;
 			}
 		}
-		// Updating indexing status
-		if (isset($properties['uid']) && intval($properties['uid']) > 0) {
-			$this->indexed = TRUE;
-			$this->loadMetaData();
-		}
+
 		if (array_key_exists('storage', $properties) && in_array('storage', $this->updatedProperties)) {
 			$this->storage = ResourceFactory::getInstance()->getStorageObject($properties['storage']);
 		}
@@ -329,11 +277,14 @@ class File extends AbstractFile {
 	 * the files' mimetype and the systems' encryption key.
 	 * used to generate a thumbnail, and this hash is checked if valid
 	 *
-	 * @todo maybe \TYPO3\CMS\Core\Utility\GeneralUtility::hmac() could be used?
 	 * @return string the MD5 hash
 	 */
 	public function calculateChecksum() {
-		return md5($this->getCombinedIdentifier() . '|' . $this->getMimeType() . '|' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']);
+		return md5(
+			$this->getCombinedIdentifier() . '|' .
+			$this->getMimeType() . '|' .
+			$GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']
+		);
 	}
 
 	/**
@@ -362,7 +313,7 @@ class File extends AbstractFile {
 			'mimetype' => $this->getMimeType(),
 			'size' => $this->getSize(),
 			'url' => $this->getPublicUrl(),
-			'indexed' => $this->indexed,
+			'indexed' => TRUE,
 			'uid' => $this->getUid(),
 			'permissions' => array(
 				'read' => $this->checkActionPermission('read'),
@@ -379,20 +330,6 @@ class File extends AbstractFile {
 			$array[$key] = $value;
 		}
 		return $array;
-	}
-
-	/**
-	 * @return boolean
-	 */
-	public function isIndexable() {
-		return $this->indexable;
-	}
-
-	/**
-	 * @param boolean $indexable
-	 */
-	public function setIndexable($indexable) {
-		$this->indexable = $indexable;
 	}
 
 	/**

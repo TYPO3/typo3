@@ -138,7 +138,6 @@ abstract class AbstractFile implements FileInterface {
 	 * @return mixed Property value
 	 */
 	public function getProperty($key) {
-
 		if ($this->hasProperty($key)) {
 			return $this->properties[$key];
 		} else {
