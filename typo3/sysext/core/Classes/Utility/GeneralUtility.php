@@ -2973,6 +2973,9 @@ Connection: close
 	 * @return string
 	 */
 	static public function resolveBackPath($pathStr) {
+		if (strpos($pathStr, '..') === FALSE) {
+			return $pathStr;
+		}
 		$parts = explode('/', $pathStr);
 		$output = array();
 		$c = 0;
