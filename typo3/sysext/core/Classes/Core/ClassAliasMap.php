@@ -217,7 +217,10 @@ class ClassAliasMap implements \TYPO3\CMS\Core\SingletonInterface {
 			$cacheEntryIdentifier = $this->getCacheEntryIdentifier();
 			if ($cacheEntryIdentifier !== NULL) {
 				$this->coreCache->set($this->getCacheEntryIdentifier(), implode(LF, $proxyContent));
-				$this->coreCache->requireOnce($cacheEntryIdentifier);
+				if ($this->coreCache->requireOnce($cacheEntryIdentifier) === NULL) {
+					// Just happens on TYPO3\CMS\Core\Cache\Backend\NullBackend, cause we don't get a return value.
+					eval(implode(PHP_EOL, $proxyContent));
+				}
 			} else {
 				eval(implode(PHP_EOL, $proxyContent));
 			}

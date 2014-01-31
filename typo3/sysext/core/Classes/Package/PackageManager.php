@@ -189,7 +189,6 @@ class PackageManager extends \TYPO3\Flow\Package\PackageManager implements \TYPO
 	protected function saveToPackageCache() {
 		$cacheEntryIdentifier = $this->getCacheEntryIdentifier();
 		if ($cacheEntryIdentifier !== NULL && !$this->coreCache->has($cacheEntryIdentifier)) {
-			$cacheEntryPath = rtrim(\TYPO3\CMS\Core\Utility\GeneralUtility::fixWindowsFilePath($this->coreCache->getBackend()->getCacheDirectory()), '/');
 			// Package objects get their own cache entry, so PHP does not have to parse the serialized string
 			$packageObjectsCacheEntryIdentifier = uniqid('PackageObjects_');
 			// Build cache file
