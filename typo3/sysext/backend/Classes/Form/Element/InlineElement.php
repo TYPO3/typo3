@@ -877,6 +877,7 @@ class InlineElement {
 		$allowed = $config['allowed'];
 		$objectPrefix = $this->inlineNames['object'] . self::Structure_Separator . $foreign_table;
 		$mode = 'db';
+		$showUpload = FALSE;
 		if (!empty($conf['appearance']['createNewRelationLinkTitle'])) {
 			$createNewRelationText = $GLOBALS['LANG']->sL($conf['appearance']['createNewRelationLinkTitle'], TRUE);
 		} else {
@@ -886,14 +887,54 @@ class InlineElement {
 			if (isset($config['appearance']['elementBrowserType'])) {
 				$mode = $config['appearance']['elementBrowserType'];
 			}
+			if ($mode === 'file') {
+				$showUpload = TRUE;
+			}
+			if (isset($config['appearance']['fileUploadAllowed'])) {
+				$showUpload = (bool)$config['appearance']['fileUploadAllowed'];
+			}
 			if (isset($config['appearance']['elementBrowserAllowed'])) {
 				$allowed = $config['appearance']['elementBrowserAllowed'];
 			}
 		}
 		$browserParams = '|||' . $allowed . '|' . $objectPrefix . '|inline.checkUniqueElement||inline.importElement';
 		$onClick = 'setFormValueOpenBrowser(\'' . $mode . '\', \'' . $browserParams . '\'); return false;';
+
 		$item = '<a href="#" class="t3-button" onclick="' . htmlspecialchars($onClick) . '">' . IconUtility::getSpriteIcon('actions-insert-record', array('title' => $createNewRelationText)) . $createNewRelationText . '</a>';
+
+		if ($showUpload && $this->fObj->edit_docModuleUpload) {
+			$maxFileSize = GeneralUtility::getMaxUploadFileSize() * 1024;
+			$folder = $folder = $GLOBALS['BE_USER']->getDefaultUploadFolder();
+			$item .= ' <a href="#" class="t3-button t3-drag-uploader"
+				style="display:none"
+				data-dropzone-target="#'.htmlspecialchars($this->inlineNames['object']).'"
+				data-insert-dropzone-before="1"
+				data-file-irre-object="'.htmlspecialchars($objectPrefix).'"
+				data-file-allowed="'.htmlspecialchars($allowed).'"
+				data-target-folder="'.htmlspecialchars($folder->getCombinedIdentifier()).'"
+				data-max-file-size="'.htmlspecialchars($maxFileSize).'"
+				><span class="t3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-upload">&nbsp;</span>';
+			$item .= $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:file_upload.select-and-submit', TRUE);
+			$item .= '</a>';
+
+			$this->loadDragUploadJs();
+		}
 		return $item;
+	}
+
+	/**
+	 * Load the required javascript for the DragUploader
+	 */
+	protected function loadDragUploadJs() {
+
+		/** @var $pageRenderer \TYPO3\CMS\Core\Page\PageRenderer */
+		$pageRenderer = $GLOBALS['SOBE']->doc->getPageRenderer();
+		$pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/FileListLocalisation');
+		$pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/DragUploader');
+		$pageRenderer->addInlineLanguagelabelFile(
+			\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('lang') . 'locallang_core.xlf',
+			'file_upload'
+		);
 	}
 
 	/**

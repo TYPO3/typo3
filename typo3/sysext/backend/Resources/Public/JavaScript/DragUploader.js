@@ -25,20 +25,27 @@ define('TYPO3/CMS/Backend/DragUploader', ['jquery'], function($) {
 	 */
 
 	// register the constructor
-	var DragUploaderPlugin = function() {
+	var DragUploaderPlugin = function(element) {
 		var me = this;
-
 		me.$body = $('body');
-		me.$dragMask = $('<div />').addClass('t3-body-drag-mask').appendTo(me.$body);
-		me.$dropzone = $('<div />').addClass('t3-dropzone').hide().insertAfter('#typo3-inner-docbody h1:first');
+		me.$element = $(element);
+		me.$trigger = $(me.$element.data('dropzone-trigger'));
+		me.$dropzone = $('<div />').addClass('t3-dropzone').hide();
+		if (me.$element.data('file-irre-object') && me.$element.nextAll(me.$element.data('dropzone-target')).length !== 0) {
+			me.dropZoneInsertBefore = true;
+			me.$dropzone.insertBefore(me.$element.data('dropzone-target'));
+		} else {
+			me.dropZoneInsertBefore = false;
+			me.$dropzone.insertAfter(me.$element.data('dropzone-target'));
+		}
 		me.$dropzoneMask = $('<div />').addClass('t3-dropzone-mask').appendTo(me.$dropzone);
 		me.$fileInput = $('<input type="file" multiple name="files[]" />').addClass('t3-upload-file-picker').appendTo(me.$body);
-		me.$fileList = $('#typo3-filelist');
+		me.$fileList = $(me.$element.data('progress-container'));
 		me.fileListColumnCount = $('thead tr:first td', me.$fileList).length;
-
-		me.fileDenyPattern = new RegExp($('[data-file-deny-pattern]').attr('data-file-deny-pattern'), 'i');
-		me.maxFileSize = parseInt($('[data-max-file-size]').attr('data-max-file-size'));
-		me.target = $('[data-target-folder]').attr('data-target-folder');
+		me.filesExtensionsAllowed = me.$element.data('file-allowed');
+		me.fileDenyPattern = me.$element.data('file-deny-pattern') ? new RegExp(me.$element.data('file-deny-pattern'), 'i') : false;
+		me.maxFileSize = parseInt(me.$element.data('max-file-size'));
+		me.target = me.$element.data('target-folder');
 
 		me.browserCapabilities = {
 			fileReader: typeof FileReader != 'undefined',
@@ -90,7 +97,9 @@ define('TYPO3/CMS/Backend/DragUploader', ['jquery'], function($) {
 
 			// ask user if we should override files
 			var override = confirm(TYPO3.l10n.localize('file_upload.overwriteExistingFiles'));
-
+			if (!me.$fileList.is(':visible')) {
+				me.$fileList.show();
+			}
 			// Add each file to queue and start upload
 			$.each(files, function(i, file) {
 				new FileQueueItem(me, file, override);
@@ -105,7 +114,17 @@ define('TYPO3/CMS/Backend/DragUploader', ['jquery'], function($) {
 			me.$dropzone.removeClass('t3-dropzone-drop-ok');
 		};
 
+		// bind file picker to default upload button
+		me.bindUploadButton = function(button) {
+			button.click(function(event) {
+				event.preventDefault();
+				me.$fileInput.click();
+				me.showDropzone();
+			});
+		};
+
 		if (me.browserCapabilities.DnD) {
+			me.$element.show();
 			me.$body.on('dragover', me.dragFileIntoDocument);
 			me.$body.on('dragend', me.dragAborted);
 			me.$body.on('drop', me.ignoreDrop);
@@ -119,20 +138,27 @@ define('TYPO3/CMS/Backend/DragUploader', ['jquery'], function($) {
 				.click(function(){me.$fileInput.click()});
 			$('<span />').addClass('t3-icon t3-icon-actions t3-icon-actions-close t3-dropzone-close').html('&nbsp;').click(me.hideDropzone).appendTo(me.$dropzone);
 
+			// no filelist then create own progress table
+			if (me.$fileList.length === 0) {
+				me.$fileList = $('<table />').attr('id', 'typo3-filelist').addClass('t3-upload-queue').html('<tbody></tbody>').hide();
+				if (me.dropZoneInsertBefore) {
+					me.$fileList.insertAfter(me.$dropzone);
+				} else {
+					me.$fileList.insertBefore(me.$dropzone);
+				}
+				me.fileListColumnCount = 7;
+			}
+
 			me.$fileInput.on('change', function() {
 				me.processFiles(this.files);
 			});
 
-			// bind file picker to default upload button
-			$('#button-upload').click(function(event) {
-				event.preventDefault();
-				me.$fileInput.click();
-				me.showDropzone();
-			});
+			me.bindUploadButton(me.$trigger.length ? me.$trigger : me.$element);
 		}
 	};
 
 	var FileQueueItem = function(dragUploader, file, override) {
+
 		var me = this;
 		me.dragUploader = dragUploader;
 		me.file = file;
@@ -192,7 +218,25 @@ define('TYPO3/CMS/Backend/DragUploader', ['jquery'], function($) {
 				if (data.result.upload[0].iconClasses) {
 					me.$iconCol.html('<span class="' + data.result.upload[0].iconClasses + '">&nbsp;</span>');
 				}
-				setTimeout(function() {me.showFileInfo(data.result.upload[0])}, 3000);
+
+				if (me.dragUploader.$element.data('file-irre-object')) {
+					inline.importElement(
+						me.dragUploader.$element.data('file-irre-object'),
+						'sys_file',
+						data.result.upload[0].uid,
+						'file'
+					);
+					setTimeout(function() {
+						me.$row.remove();
+						if ($('tr', me.dragUploader.$fileList).length === 0) {
+							me.dragUploader.$fileList.hide();
+						}
+					}, 3000);
+
+
+				} else {
+					setTimeout(function() {me.showFileInfo(data.result.upload[0])}, 3000);
+				}
 			}
 		};
 
@@ -228,6 +272,18 @@ define('TYPO3/CMS/Backend/DragUploader', ['jquery'], function($) {
 			return string;
 		};
 
+		me.checkAllowedExtensions = function() {
+			if (!me.dragUploader.filesExtensionsAllowed) {
+				return true;
+			}
+			var extension = me.file.name.split('.').pop();
+			var allowed = me.dragUploader.filesExtensionsAllowed.split(',');
+			if ($.inArray(extension.toLowerCase(), allowed) !== -1) {
+				return true;
+			}
+			return false;
+		}
+
 		// position queue item in file list
 		if ($('tbody tr.t3-upload-queue-item', me.dragUploader.$fileList).length === 0) {
 			me.$row.prependTo($('tbody', me.dragUploader.$fileList));
@@ -242,15 +298,20 @@ define('TYPO3/CMS/Backend/DragUploader', ['jquery'], function($) {
 		// check file size
 		if (me.file.size > me.dragUploader.maxFileSize) {
 			me.updateMessage(TYPO3.l10n.localize('file_upload.maxFileSizeExceeded')
-			  .replace(/\{0\}/g, me.file.name)
-			  .replace(/\{1\}/g, me.fileSizeAsString(me.dragUploader.maxFileSize)));
+				.replace(/\{0\}/g, me.file.name)
+				.replace(/\{1\}/g, me.fileSizeAsString(me.dragUploader.maxFileSize)));
 			me.$row.addClass('error');
 
-		// check filename/extension
-		} else if (me.file.name.match(me.dragUploader.fileDenyPattern)) {
+		// check filename/extension against deny pattern
+		} else if (me.dragUploader.fileDenyPattern && me.file.name.match(me.dragUploader.fileDenyPattern)) {
 			me.updateMessage(TYPO3.l10n.localize('file_upload.fileNotAllowed').replace(/\{0\}/g, me.file.name));
 			me.$row.addClass('error');
 
+		} else if (!me.checkAllowedExtensions()) {
+			me.updateMessage(TYPO3.l10n.localize('file_upload.fileExtensionExpected')
+				.replace(/\{0\}/g, me.dragUploader.filesExtensionsAllowed)
+			);
+			me.$row.addClass('error');
 		} else {
 			me.updateMessage('- ' + me.fileSizeAsString(me.file.size));
 
@@ -317,7 +378,7 @@ define('TYPO3/CMS/Backend/DragUploader', ['jquery'], function($) {
 			})
 		};
 
-		$('body').dragUploader();
+		$('.t3-drag-uploader').dragUploader();
 
 	};
 
@@ -332,7 +393,7 @@ define('TYPO3/CMS/Backend/DragUploader', ['jquery'], function($) {
 		DragUploader.initialize();
 
 		// load required modules to hook in the post initialize function
-		if (undefined !== TYPO3.settings && undefined !== TYPO3.settings.RequireJS.PostInitializationModules && undefined !== TYPO3.settings.RequireJS.PostInitializationModules['TYPO3/CMS/Backend/DragUploader']) {
+		if (undefined !== TYPO3.settings && undefined !== TYPO3.settings.RequireJS && undefined !== TYPO3.settings.RequireJS.PostInitializationModules && undefined !== TYPO3.settings.RequireJS.PostInitializationModules['TYPO3/CMS/Backend/DragUploader']) {
 			$.each(TYPO3.settings.RequireJS.PostInitializationModules['TYPO3/CMS/Backend/DragUploader'], function(pos, moduleName) {
 				require([moduleName]);
 			});

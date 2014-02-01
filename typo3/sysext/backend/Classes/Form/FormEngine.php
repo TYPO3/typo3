@@ -330,6 +330,11 @@ class FormEngine {
 	 */
 	public $edit_showFieldHelp = '';
 
+	/**
+	 * @var bool
+	 */
+	public $edit_docModuleUpload = FALSE;
+
 	// If set, the forms will be rendered a little wider, more precisely with a factor of $this->form_largeComp.
 	/**
 	 * @todo Define visibility
@@ -645,7 +650,7 @@ class FormEngine {
 		$this->setNewBEDesign();
 		$this->docLarge = $GLOBALS['BE_USER']->uc['edit_wideDocument'] ? 1 : 0;
 		$this->edit_showFieldHelp = $GLOBALS['BE_USER']->uc['edit_showFieldHelp'];
-		$this->edit_docModuleUpload = $GLOBALS['BE_USER']->uc['edit_docModuleUpload'];
+		$this->edit_docModuleUpload = (bool)$GLOBALS['BE_USER']->uc['edit_docModuleUpload'];
 		$this->inline->init($this);
 		$this->suggest->init($this);
 	}

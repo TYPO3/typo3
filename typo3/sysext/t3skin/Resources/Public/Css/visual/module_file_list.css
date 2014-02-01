@@ -57,6 +57,7 @@ table#typo3-filelist tr td div.typo3-editCtrl {
 	margin-bottom: 1px;
 	position: relative;
 	cursor: pointer;
+	margin-top: 10px;
 }
 .t3-dropzone .t3-dropzone-close {
 	position: absolute;
@@ -87,8 +88,14 @@ table#typo3-filelist tr td div.typo3-editCtrl {
 	width: 1px;
 	visibility: hidden;
 }
+table.t3-upload-queue {
+	margin: 10px 0;
+}
 table#typo3-filelist tr.file_list_normal.t3-upload-queue-item.last td {
 	border-bottom: 1px solid #666666;
+}
+table#typo3-filelist.t3-upload-queue tr.file_list_normal.t3-upload-queue-item.last td {
+	border-bottom: 1px solid #A2AAB8;
 }
 table#typo3-filelist tr.file_list_normal.t3-upload-queue-item.uploading td {
 	color: #9D9D9D;

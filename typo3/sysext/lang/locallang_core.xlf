@@ -445,11 +445,17 @@ Do you want to continue WITHOUT saving?</source>
 			<trans-unit id="file_upload.dropzonehint.message" xml:space="preserve">
 				<source>Drop your files here, or &lt;u&gt;click, browse &amp; choose files&lt;/u&gt;</source>
 			</trans-unit>
+			<trans-unit id="file_upload.select-and-submit" xml:space="preserve">
+				<source>Select &amp; upload files</source>
+			</trans-unit>
 			<trans-unit id="file_upload.maxFileSizeExceeded" xml:space="preserve">
 				<source>File &quot;{0}&quot; exceeds maximum file size of {1}!</source>
 			</trans-unit>
 			<trans-unit id="file_upload.fileNotAllowed" xml:space="preserve">
 				<source>Filename &quot;{0}&quot; is not allowed!</source>
+			</trans-unit>
+			<trans-unit id="file_upload.fileExtensionExpected" xml:space="preserve">
+				<source>Upload failed! A file with &quot;{0}&quot; extension is expected!</source>
 			</trans-unit>
 			<trans-unit id="file_upload.uploadFailed" xml:space="preserve">
 				<source>Upload of file &quot;{0}&quot; failed!</source>
