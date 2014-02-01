@@ -69,9 +69,8 @@ class WorkspaceSelectorToolbarItem implements \TYPO3\CMS\Backend\Toolbar\Toolbar
 	}
 
 	/**
-	 * checks whether the user has access to this toolbar item
+	 * Checks whether the user has access to this toolbar item
 	 *
-	 * @see typo3/alt_shortcut.php
 	 * @return boolean TRUE if user has access, FALSE if not
 	 */
 	public function checkAccess() {

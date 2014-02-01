@@ -37,7 +37,6 @@ return array(
 	'SC_alt_doc_nodoc' => 'TYPO3\\CMS\\Backend\\Controller\\NoDocumentsOpenController',
 	'SC_db_layout' => 'TYPO3\\CMS\\Backend\\Controller\\PageLayoutController',
 	'SC_alt_db_navframe' => 'TYPO3\\CMS\\Backend\\Controller\\PageTreeNavigationController',
-	'SC_alt_shortcut' => 'TYPO3\\CMS\\Backend\\Controller\\ShortcutFrameController',
 	'SC_tce_db' => 'TYPO3\\CMS\\Backend\\Controller\\SimpleDataHandlerController',
 	'SC_wizard_add' => 'TYPO3\\CMS\\Backend\\Controller\\Wizard\\AddController',
 	'SC_wizard_colorpicker' => 'TYPO3\\CMS\\Backend\\Controller\\Wizard\\ColorpickerController',

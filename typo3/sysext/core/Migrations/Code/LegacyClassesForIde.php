@@ -219,11 +219,6 @@ class SC_alt_db_navframe extends \TYPO3\CMS\Backend\Controller\PageTreeNavigatio
 /**
  * @deprecated since 6.0 will be removed in 7.0
  */
-class SC_alt_shortcut extends \TYPO3\CMS\Backend\Controller\ShortcutFrameController {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
 class SC_tce_db extends \TYPO3\CMS\Backend\Controller\SimpleDataHandlerController {}
 
 /**

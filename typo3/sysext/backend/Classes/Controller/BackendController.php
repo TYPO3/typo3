@@ -537,7 +537,6 @@ class BackendController {
 
 	/**
 	 * Checking if the "&edit" variable was sent so we can open it for editing the page.
-	 * Code based on code from "alt_shortcut.php"
 	 *
 	 * @return void
 	 */
