@@ -85,6 +85,10 @@ class DataSet {
 		$idIndex = NULL;
 		foreach ($rawData as $values) {
 			if (!empty($values[0])) {
+				// Skip comment lines, starting with "#"
+				if ($values[0]{0} === '#') {
+					continue;
+				}
 				$tableName = $values[0];
 				$fieldCount = NULL;
 				$idIndex = NULL;

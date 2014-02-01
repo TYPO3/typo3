@@ -69,18 +69,31 @@ class ActionService {
 	/**
 	 * @param integer $pageId
 	 * @param array $tableRecordData
+	 * @return array
 	 */
 	public function createNewRecords($pageId, array $tableRecordData) {
 		$dataMap = array();
+		$newTableIds = array();
 		$currentUid = NULL;
 		foreach ($tableRecordData as $tableName => $recordData) {
 			$recordData = $this->resolvePreviousUid($recordData, $currentUid);
 			$recordData['pid'] = $pageId;
 			$currentUid = uniqid('NEW');
+			$newTableIds[$tableName][] = $currentUid;
 			$dataMap[$tableName][$currentUid] = $recordData;
 		}
 		$this->dataHandler->start($dataMap, array());
 		$this->dataHandler->process_datamap();
+
+		foreach ($newTableIds as $tableName => &$ids) {
+			foreach ($ids as &$id) {
+				if (!empty($this->dataHandler->substNEWwithIDs[$id])) {
+					$id = $this->dataHandler->substNEWwithIDs[$id];
+				}
+			}
+		}
+
+		return $newTableIds;
 	}
 
 	/**
