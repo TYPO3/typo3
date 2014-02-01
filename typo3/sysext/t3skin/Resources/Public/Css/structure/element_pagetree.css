@@ -173,6 +173,7 @@ Pagetree
  *
  */
 .typo3-pagetree-indicatorBar-item p {
+	margin-bottom: 0;
 	padding: 5px 10px;
 }
 
