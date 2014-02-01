@@ -75,6 +75,8 @@ class SilentConfigurationUpgradeService {
 		'EXT/extList_FE',
 		// #41813
 		'EXT/noEdit',
+		// #47018
+		'EXT/requiredExt',
 		// #26090
 		'FE/defaultTypoScript_editorcfg',
 		'FE/defaultTypoScript_editorcfg.',

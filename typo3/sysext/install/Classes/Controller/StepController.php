@@ -306,7 +306,6 @@ class StepController extends AbstractController {
 				'EXT' => array(
 					'extListArray' => '__UNSET',
 					'extList' => '__UNSET',
-					'requiredExt' => '__UNSET',
 				),
 			));
 

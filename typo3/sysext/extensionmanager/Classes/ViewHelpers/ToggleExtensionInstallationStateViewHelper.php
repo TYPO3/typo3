@@ -45,10 +45,11 @@ class ToggleExtensionInstallationStateViewHelper extends \TYPO3\CMS\Fluid\ViewHe
 	 * @return string the rendered a tag
 	 */
 	public function render($extension) {
-		$requiredExtensions = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getRequiredExtensionListArray();
-
-		// Required extensions can't be deactivated, these are always activated
-		if (in_array($extension['key'], $requiredExtensions)) {
+		// Early return if package is protected and can not be unloaded
+		/** @var $packageManager \TYPO3\CMS\Core\Package\PackageManager */
+		$packageManager = $this->objectManager->get('TYPO3\\CMS\\Core\\Package\\PackageManager');
+		$package = $packageManager->getPackage($extension['key']);
+		if ($package->isProtected()) {
 			return '';
 		}
 

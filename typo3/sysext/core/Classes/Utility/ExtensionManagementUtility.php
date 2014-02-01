@@ -60,9 +60,10 @@ class ExtensionManagementUtility {
 
 	/**
 	 * Sets the package manager for all that backwards compatibility stuff,
-	 * so it doesn't have to be fetched through the bootstap
+	 * so it doesn't have to be fetched through the bootstap.
 	 *
 	 * @param \TYPO3\CMS\Core\Package\PackageManager $packageManager
+	 * @internal
 	 */
 	static public function setPackageManager(\TYPO3\CMS\Core\Package\PackageManager $packageManager) {
 		static::$packageManager = $packageManager;
@@ -90,9 +91,7 @@ class ExtensionManagementUtility {
 	}
 
 	/**
-	 * Returns the absolute path to the extension with extension key $key
-	 * If the extension is not loaded the function will die with an error message
-	 * Useful for internal fileoperations
+	 * Returns the absolute path to the extension with extension key $key.
 	 *
 	 * @param $key string Extension key
 	 * @param $script string $script is appended to the output if set.
@@ -1783,21 +1782,14 @@ tt_content.' . $key . $prefix . ' {
 	}
 
 	/**
-	 * Gets list of required extensions.
-	 * This is the list of extensions from constant REQUIRED_EXTENSIONS defined
-	 * in bootstrap, together with a possible additional list of extensions from
-	 * local configuration
+	 * Returns REQUIRED_EXTENSIONS constant set by package manager as array.
 	 *
 	 * @return array List of required extensions
+	 * @deprecated since 6,2, will be removed two versions later.
 	 */
 	static public function getRequiredExtensionListArray() {
-		if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXT']['requiredExt'])) {
-			$requiredExtensions = $GLOBALS['TYPO3_CONF_VARS']['EXT']['requiredExt'];
-		} else {
-			$requiredExtensions = GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['EXT']['requiredExt']);
-		}
-		$requiredExtensions = array_merge(GeneralUtility::trimExplode(',', REQUIRED_EXTENSIONS), $requiredExtensions);
-		return array_unique($requiredExtensions);
+		GeneralUtility::logDeprecatedFunction();
+		return GeneralUtility::trimExplode(',', REQUIRED_EXTENSIONS);
 	}
 
 	/**
