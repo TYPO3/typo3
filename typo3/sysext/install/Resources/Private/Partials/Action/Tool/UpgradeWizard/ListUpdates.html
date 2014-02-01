@@ -16,7 +16,7 @@
 				<f:if condition="{availableUpdate.renderNext}">
 					<f:render
 						partial="Action/Common/SubmitButton"
-						arguments="{name:'getUserInput', text:'Next'}"
+						arguments="{name:'getUserInput', text:'Execute'}"
 					/>
 				</f:if>
 				<hr />
@@ -31,12 +31,11 @@
 	</f:else>
 </f:if>
 
-<h4>Final step</h4>
+<h4>Hint</h4>
 <p>
-	When all updates are done you should check your database for required updates.
-	<br />
-	Perform the database analyzer steps until no more changes are required.
+	When all updates are done you can check the database for tables and fields no longer required.
+	Perform the Database Analyzer steps until no more changes are required.
 </p>
-<a href="Install.php?install[action]=importantActions&install[context]={context}&install[controller]=tool">
-	Go to database analyzer
+<a href="Install.php?install[action]=importantActions&amp;install[context]={context}&amp;install[controller]=tool">
+	Go to Database Analyzer
 </a>

@@ -33,6 +33,13 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class UpgradeWizard extends Action\AbstractAction implements Action\ActionInterface {
 
 	/**
+	 * There are tables and fields missing in the database
+	 *
+	 * @var bool
+	 */
+	protected $needsInitialUpdateDatabaseSchema = FALSE;
+
+	/**
 	 * Handle this action
 	 *
 	 * @return string content
@@ -42,6 +49,22 @@ class UpgradeWizard extends Action\AbstractAction implements Action\ActionInterf
 
 		// ext_localconf, db and ext_tables must be loaded for the upgrade wizards
 		$this->loadExtLocalconfDatabaseAndExtTables();
+
+		// To make sure initialUpdateDatabaseSchema is first wizard, it is added here instead of ext_localconf.php
+		$initialUpdateDatabaseSchemaUpdateObject = $this->getUpgradeObjectInstance('TYPO3\\CMS\\Install\\Updates\\InitialDatabaseSchemaUpdate', 'initialUpdateDatabaseSchema');
+		if ($initialUpdateDatabaseSchemaUpdateObject->shouldRenderWizard()) {
+			$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'] = array_merge(
+				array('initialUpdateDatabaseSchema' => 'TYPO3\\CMS\\Install\\Updates\\InitialDatabaseSchemaUpdate'),
+				$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']
+			);
+			$this->needsInitialUpdateDatabaseSchema = TRUE;
+		}
+
+		// To make sure finalUpdateDatabaseSchema is last wizard, it is added here instead of ext_localconf.php
+		$finalUpdateDatabaseSchemaUpdateObject = $this->getUpgradeObjectInstance('TYPO3\\CMS\\Install\\Updates\\FinalDatabaseSchemaUpdate', 'finalUpdateDatabaseSchema');
+		if ($finalUpdateDatabaseSchemaUpdateObject->shouldRenderWizard()) {
+			$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['finalUpdateDatabaseSchema'] = 'TYPO3\\CMS\\Install\\Updates\\FinalDatabaseSchemaUpdate';
+		}
 
 		// Perform silent cache framework table upgrades
 		$this->silentCacheFrameworkTableSchemaMigration();
@@ -90,8 +113,13 @@ class UpgradeWizard extends Action\AbstractAction implements Action\ActionInterf
 					'explanation' => $explanation,
 					'renderNext' => FALSE,
 				);
-				// There are upgrade wizards that only show text and don't want to be executed
-				if ($updateObject->shouldRenderNextButton()) {
+				if ($identifier === 'initialUpdateDatabaseSchema') {
+					$availableUpdates['initialUpdateDatabaseSchema']['renderNext'] = $this->needsInitialUpdateDatabaseSchema;
+				} elseif ($identifier === 'finalUpdateDatabaseSchema') {
+					// Okay to check here because finalUpdateDatabaseSchema is last element in array
+					$availableUpdates['finalUpdateDatabaseSchema']['renderNext'] = count($availableUpdates) === 1;
+				} elseif (!$this->needsInitialUpdateDatabaseSchema && $updateObject->shouldRenderNextButton()) {
+					// There are upgrade wizards that only show text and don't want to be executed
 					$availableUpdates[$identifier]['renderNext'] = TRUE;
 				}
 			}
@@ -236,7 +264,10 @@ class UpgradeWizard extends Action\AbstractAction implements Action\ActionInterf
 			// Find the current update wizard, and then start validating the next ones
 			if ($currentObj->getIdentifier() == $identifier) {
 				$isPreviousRecord = FALSE;
-				continue;
+				// For the updateDatabaseSchema-wizards verify they do not have to be executed again
+				if ($identifier !== 'initialUpdateDatabaseSchema' && $identifier !== 'finalUpdateDatabaseSchema') {
+					continue;
+				}
 			}
 			if (!$isPreviousRecord) {
 				$nextUpgradeWizard = $this->getUpgradeObjectInstance($className, $identifier);
