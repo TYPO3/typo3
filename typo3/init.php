@@ -72,7 +72,6 @@ require __DIR__ . '/sysext/core/Classes/Core/Bootstrap.php';
 	->initializeBackendAuthentication()
 	->initializeBackendUserMounts()
 	->initializeLanguageObject()
-	->initializeModuleMenuObject()
 	->initializeBackendTemplate()
 	->endOutputBufferingAndCleanPreviousOutput()
 	->initializeOutputCompression();

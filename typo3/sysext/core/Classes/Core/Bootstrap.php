@@ -1077,19 +1077,6 @@ class Bootstrap {
 	}
 
 	/**
-	 * Initialize module menu object
-	 *
-	 * @return Bootstrap
-	 * @internal This is not a public API method, do not use in own extensions
-	 */
-	public function initializeModuleMenuObject() {
-		/** @var $moduleMenuUtility \TYPO3\CMS\Backend\Module\ModuleController */
-		$moduleMenuUtility = Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Module\\ModuleController');
-		$moduleMenuUtility->createModuleMenu();
-		return $this;
-	}
-
-	/**
 	 * Things that should be performed to shut down the framework.
 	 * This method is called in all important scripts for a clean
 	 * shut down of the system.
