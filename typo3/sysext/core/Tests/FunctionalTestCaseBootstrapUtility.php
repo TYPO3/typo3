@@ -91,8 +91,8 @@ class FunctionalTestCaseBootstrapUtility {
 		$this->setUpPackageStates($coreExtensionsToLoad, $testExtensionsToLoad);
 		$this->setUpBasicTypo3Bootstrap();
 		$this->setUpTestDatabase();
-		$this->createDatabaseStructure();
 		\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->loadExtensionTables(TRUE);
+		$this->createDatabaseStructure();
 	}
 
 	/**
