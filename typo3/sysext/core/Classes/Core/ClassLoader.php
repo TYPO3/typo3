@@ -372,7 +372,6 @@ class ClassLoader {
 	 */
 	public function setCacheIdentifier($cacheIdentifier) {
 		$this->cacheIdentifier = $cacheIdentifier;
-		$this->classAliasMap->setCacheIdentifier($cacheIdentifier);
 		return $this;
 	}
 
@@ -384,7 +383,7 @@ class ClassLoader {
 	 */
 	public function setPackages(array $packages) {
 		$this->packages = $packages;
-		if (!$this->loadPackageNamespacesFromCache() || !$this->classAliasMap->loadEarlyInstanceMappingFromCache()) {
+		if (!$this->loadPackageNamespacesFromCache()) {
 			$this->buildPackageNamespacesAndClassesPaths();
 		} else {
 			$this->classAliasMap->setPackages($packages);
