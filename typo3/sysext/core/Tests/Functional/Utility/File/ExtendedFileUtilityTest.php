@@ -92,10 +92,9 @@ class ExtendedFileUtilityTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 		// Initializing file processor
 		$GLOBALS['BE_USER'] = $this->getMock('TYPO3\\CMS\\Core\\Authentication\\BackendUserAuthentication', array('getSessionData', 'setAndSaveSessionData'));
 		$GLOBALS['BE_USER']->user['uid'] = 1;
-		$GLOBALS['FILEMOUNTS'] = array();
 		// Initializing:
 		$this->fileProcessor = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Utility\\File\\ExtendedFileUtility');
-		$this->fileProcessor->init($GLOBALS['FILEMOUNTS'], $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
+		$this->fileProcessor->init(array(), $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
 		$this->fileProcessor->init_actionPerms($GLOBALS['BE_USER']->getFileoperationPermissions());
 		$this->fileProcessor->dontCheckForUnique = 1;
 	}

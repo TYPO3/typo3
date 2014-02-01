@@ -3259,7 +3259,7 @@ class ImportExport {
 	public function getFileProcObj() {
 		if (!is_object($this->fileProcObj)) {
 			$this->fileProcObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Utility\\File\\ExtendedFileUtility');
-			$this->fileProcObj->init($GLOBALS['FILEMOUNTS'], $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
+			$this->fileProcObj->init(array(), $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
 			$this->fileProcObj->setActionPermissions();
 		}
 		return $this->fileProcObj;

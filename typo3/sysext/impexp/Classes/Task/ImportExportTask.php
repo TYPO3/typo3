@@ -171,17 +171,12 @@ class ImportExportTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 	}
 
 	/**
-	 * Returns first temporary folder of the user account (from $FILEMOUNTS)
+	 * Returns first temporary folder of the user account
 	 *
 	 * @return string Absolute path to first "_temp_" folder of the current user, otherwise blank.
 	 */
 	protected function userTempFolder() {
-		foreach ($GLOBALS['FILEMOUNTS'] as $filePathInfo) {
-			$tempFolder = $filePathInfo['path'] . '_temp_/';
-			if (@is_dir($tempFolder)) {
-				return $tempFolder;
-			}
-		}
+		// @TODO: This is broken since move to FAL
 		return '';
 	}
 

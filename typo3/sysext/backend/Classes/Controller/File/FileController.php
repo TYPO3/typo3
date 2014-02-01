@@ -122,7 +122,7 @@ class FileController {
 	 */
 	public function main() {
 		// Initializing:
-		$this->fileProcessor->init($GLOBALS['FILEMOUNTS'], $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
+		$this->fileProcessor->init(array(), $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
 		$this->fileProcessor->setActionPermissions();
 		$this->fileProcessor->dontCheckForUnique = $this->overwriteExistingFiles ? 1 : 0;
 		// Checking referrer / executing:

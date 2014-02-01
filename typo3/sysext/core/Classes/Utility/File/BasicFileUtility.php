@@ -134,9 +134,9 @@ class BasicFileUtility {
 	 * Typically TYPO3_CONF_VARS['BE']['fileExtensions'] would be passed along as $f_ext.
 	 *
 	 * Example:
-	 * $basicff->init($GLOBALS['FILEMOUNTS'],$GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
+	 * $basicff->init(array(), $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
 	 *
-	 * @param 	array		Contains the paths of the file mounts for the current BE user. Normally $GLOBALS['FILEMOUNTS'] is passed. This variable is set during backend user initialization; $FILEMOUNTS = $GLOBALS['BE_USER']->returnFilemounts(); (see typo3/init.php)
+	 * @param 	array		Not in use anymore
 	 * @param 	array		Array with information about allowed and denied file extensions. Typically passed: $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']
 	 * @return 	void
 	 * @see typo3/init.php, \TYPO3\CMS\Core\Authentication\BackendUserAuthentication::returnFilemounts()
@@ -150,7 +150,7 @@ class BasicFileUtility {
 		$this->f_ext['ftpspace']['allow'] = GeneralUtility::uniqueList(strtolower($f_ext['ftpspace']['allow']));
 		$this->f_ext['ftpspace']['deny'] = GeneralUtility::uniqueList(strtolower($f_ext['ftpspace']['deny']));
 
-		$this->mounts = $mounts;
+		$this->mounts = (!empty($mounts) ? $mounts : array());
 		$this->webPath = GeneralUtility::getIndpEnv('TYPO3_DOCUMENT_ROOT');
 		$this->isInit = 1;
 		$this->maxInputNameLen = $GLOBALS['TYPO3_CONF_VARS']['SYS']['maxFileNameLength'] ?: $this->maxInputNameLen;

@@ -1098,42 +1098,35 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 ****************************/
 
 	/**
-	 * Returns first temporary folder of the user account (from $FILEMOUNTS)
+	 * Returns first temporary folder of the user account
 	 *
 	 * @return string Absolute path to first "_temp_" folder of the current user, otherwise blank.
 	 * @todo Define visibility
 	 */
 	public function userTempFolder() {
-		global $FILEMOUNTS;
-		foreach ($FILEMOUNTS as $filePathInfo) {
-			$tempFolder = $filePathInfo['path'] . '_temp_/';
-			if (@is_dir($tempFolder)) {
-				return $tempFolder;
-			}
+		/** @var $folder \TYPO3\CMS\Core\Resource\Folder */
+		$folder = $GLOBALS['BE_USER']->getDefaultUploadFolder();
+		if ($folder !== FALSE) {
+			return PATH_site . $folder->getPublicUrl();
 		}
+		return '';
 	}
 
 	/**
 	 * Returns folder where user can save export files.
 	 *
 	 * @return string Absolute path to folder where export files can be saved.
-	 * @todo Define visibility
+	 * @todo Define visib
 	 */
 	public function userSaveFolder() {
-		global $FILEMOUNTS;
-		reset($FILEMOUNTS);
-		$filePathInfo = current($FILEMOUNTS);
-		if (is_array($filePathInfo)) {
-			$tempFolder = $filePathInfo['path'] . '_temp_/';
-			if (!@is_dir($tempFolder)) {
-				$tempFolder = $filePathInfo['path'];
-				if (!@is_dir($tempFolder)) {
-					return FALSE;
-				}
-			}
-			return $tempFolder;
+		/** @var $folder \TYPO3\CMS\Core\Resource\Folder */
+		$folder = $GLOBALS['BE_USER']->getDefaultUploadFolder();
+		if ($folder !== FALSE) {
+			return PATH_site . $folder->getPublicUrl();
 		}
+		return '';
 	}
+
 
 	/**
 	 * Check if a file has been uploaded
@@ -1145,7 +1138,7 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		$file = GeneralUtility::_GP('file');
 		// Initializing:
 		$this->fileProcessor = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Utility\\File\\ExtendedFileUtility');
-		$this->fileProcessor->init($GLOBALS['FILEMOUNTS'], $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
+		$this->fileProcessor->init(array(), $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
 		$this->fileProcessor->setActionPermissions();
 		$this->fileProcessor->dontCheckForUnique = GeneralUtility::_GP('overwriteExistingFiles') ? 1 : 0;
 		// Checking referer / executing:

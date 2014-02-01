@@ -78,8 +78,6 @@ class BrowseLinksController {
 			foreach ($altMountPoints as $filePathRelativeToFileadmindir) {
 				$GLOBALS['BE_USER']->addFileMount('', $filePathRelativeToFileadmindir, $filePathRelativeToFileadmindir, 1, 'readonly');
 			}
-			$GLOBALS['BE_USER']->getFileStorages();
-			$GLOBALS['FILEMOUNTS'] = $GLOBALS['BE_USER']->groupData['filemounts'];
 		}
 		// Render type by user function
 		$browserRendered = FALSE;

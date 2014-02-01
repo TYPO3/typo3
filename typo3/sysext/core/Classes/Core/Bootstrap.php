@@ -729,7 +729,6 @@ class Bootstrap {
 		unset($GLOBALS['FILEICONS']);
 		// Those set in init.php:
 		unset($GLOBALS['WEBMOUNTS']);
-		unset($GLOBALS['FILEMOUNTS']);
 		unset($GLOBALS['BE_USER']);
 		// Those set otherwise:
 		unset($GLOBALS['TBE_MODULES_EXT']);
@@ -1033,8 +1032,6 @@ class Bootstrap {
 	public function initializeBackendUserMounts() {
 		// Includes deleted mount pages as well! @TODO: Figure out why ...
 		$GLOBALS['WEBMOUNTS'] = $GLOBALS['BE_USER']->returnWebmounts();
-		$GLOBALS['BE_USER']->getFileStorages();
-		$GLOBALS['FILEMOUNTS'] = $GLOBALS['BE_USER']->groupData['filemounts'];
 		return $this;
 	}
 
