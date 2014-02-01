@@ -30,17 +30,24 @@ namespace TYPO3\CMS\Lang\Command;
 class UpdateCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\CommandController {
 
 	/**
+	 * @var \TYPO3\CMS\Core\Package\PackageManager
+	 * @inject
+	 */
+	protected $packageManager;
+
+	/**
+	 * @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
+	 * @inject
+	 */
+	protected $signalSlotDispatcher;
+
+	/**
 	 * Update language file for each extension
 	 *
 	 * @param string $localesToUpdate Comma separated list of locales that needs to be updated
 	 * @return void
 	 */
 	public function updateCommand($localesToUpdate = '') {
-		/** @var $listUtility \TYPO3\CMS\Extensionmanager\Utility\ListUtility */
-		$listUtility = $this->objectManager->get('TYPO3\\CMS\\Extensionmanager\\Utility\\ListUtility');
-		$availableExtensions = $listUtility->getAvailableExtensions();
-		$extensions = $listUtility->getAvailableAndInstalledExtensions($availableExtensions);
-
 		/** @var $updateTranslationService \TYPO3\CMS\Lang\Service\UpdateTranslationService */
 		$updateTranslationService = $this->objectManager->get('TYPO3\\CMS\\Lang\Service\\UpdateTranslationService');
 		/** @var $languageRepository \TYPO3\CMS\Lang\Domain\Repository\LanguageRepository */
@@ -55,10 +62,17 @@ class UpdateCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\CommandC
 				$locales[] = $language->getLocale();
 			}
 		}
-
-		foreach ($extensions as $extension) {
-			$updateTranslationService->updateTranslation($extension['key'], $locales);
+		$this->packageManager = $this->objectManager->get('TYPO3\\CMS\\Core\\Package\\PackageManager');
+		$this->emitPackagesMayHaveChanged();
+		foreach ($this->packageManager->getAvailablePackages() as $package) {
+			$updateTranslationService->updateTranslation($package->getPackageKey(), $locales);
 		}
 	}
 
+	/**
+	 * Emits packages may have changed signal
+	 */
+	protected function emitPackagesMayHaveChanged() {
+		$this->signalSlotDispatcher->dispatch('PackageManagement', 'packagesMayHaveChanged');
+	}
 }

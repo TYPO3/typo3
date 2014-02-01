@@ -389,9 +389,7 @@ class DependencyUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 	public function findInstalledExtensionsThatDependOnMe($extensionKey) {
-		$availableExtensions = $this->listUtility->getAvailableExtensions();
-		$availableAndInstalledExtensions = $this->listUtility->getAvailableAndInstalledExtensions($availableExtensions);
-		$availableAndInstalledExtensions = $this->listUtility->enrichExtensionsWithEmConfAndTerInformation($availableAndInstalledExtensions);
+		$availableAndInstalledExtensions = $this->listUtility->getAvailableAndInstalledExtensionsWithAdditionalInformation();
 		$dependentExtensions = array();
 		foreach ($availableAndInstalledExtensions as $availableAndInstalledExtensionKey => $availableAndInstalledExtension) {
 			if (isset($availableAndInstalledExtension['installed']) && $availableAndInstalledExtension['installed'] === TRUE) {

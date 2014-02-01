@@ -26,6 +26,9 @@ namespace TYPO3\CMS\Extensionmanager\Utility;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Core\Package\PackageInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Utility for dealing with extension list related functions
  *
@@ -39,22 +42,16 @@ namespace TYPO3\CMS\Extensionmanager\Utility;
 class ListUtility implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Object\ObjectManager
-	 * @inject
-	 */
-	public $objectManager;
-
-	/**
 	 * @var \TYPO3\CMS\Extensionmanager\Utility\EmConfUtility
 	 * @inject
 	 */
-	public $emConfUtility;
+	protected $emConfUtility;
 
 	/**
 	 * @var \TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository
 	 * @inject
 	 */
-	public $extensionRepository;
+	protected $extensionRepository;
 
 	/**
 	 * @var \TYPO3\CMS\Extensionmanager\Utility\InstallUtility
@@ -63,34 +60,58 @@ class ListUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	protected $installUtility;
 
 	/**
+	 * @var \TYPO3\CMS\Core\Package\PackageManager
+	 * @inject
+	 */
+	protected $packageManager;
+
+	/**
+	 * @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
+	 * @inject
+	 */
+	protected $signalSlotDispatcher;
+
+	/**
 	 * Returns the list of available, but not necessarily loaded extensions
 	 *
 	 * @return array Array with two sub-arrays, list array (all extensions with info) and category index
 	 * @see getInstExtList()
 	 */
 	public function getAvailableExtensions() {
+		$this->emitPackagesMayHaveChanged();
 		$extensions = array();
-		$paths = \TYPO3\CMS\Extensionmanager\Domain\Model\Extension::returnInstallPaths();
-		foreach ($paths as $installationType => $path) {
-			try {
-				if (is_dir($path)) {
-					$extList = \TYPO3\CMS\Core\Utility\GeneralUtility::get_dirs($path);
-					if (is_array($extList)) {
-						foreach ($extList as $extKey) {
-							$extensions[$extKey] = array(
-								'siteRelPath' => str_replace(PATH_site, '', $path . $extKey),
-								'type' => $installationType,
-								'key' => $extKey,
-								'ext_icon' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getExtensionIcon($path . $extKey . '/')
-							);
-						}
-					}
-				}
-			} catch (\Exception $e) {
-				\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog($e->getMessage(), 'extensionmanager');
-			}
+		foreach ($this->packageManager->getAvailablePackages() as $package) {
+			$installationType = $this->getInstallTypeForPackage($package);
+			$extensions[$package->getPackageKey()] = array(
+				'siteRelPath' => str_replace(PATH_site, '', $package->getPackagePath()),
+				'type' => $installationType,
+				'key' => $package->getPackageKey(),
+				'ext_icon' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getExtensionIcon($package->getPackagePath()),
+			);
 		}
 		return $extensions;
+	}
+
+	/**
+	 * Emits packages may have changed signal
+	 */
+	protected function emitPackagesMayHaveChanged() {
+		$this->signalSlotDispatcher->dispatch('PackageManagement', 'packagesMayHaveChanged');
+	}
+
+	/**
+	 * Returns "System", "Global" or "Local" based on extension position in filesystem.
+	 *
+	 * @param PackageInterface $package
+	 * @return string
+	 */
+	protected function getInstallTypeForPackage(PackageInterface $package) {
+		foreach (\TYPO3\CMS\Extensionmanager\Domain\Model\Extension::returnInstallPaths() as $installType => $installPath) {
+			if (GeneralUtility::isFirstPartOfStr($package->getPackagePath(), $installPath)) {
+				return $installType;
+			}
+		}
+		return '';
 	}
 
 	/**
@@ -100,8 +121,8 @@ class ListUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return array
 	 */
 	public function getAvailableAndInstalledExtensions(array $availableExtensions) {
-		foreach ($GLOBALS['TYPO3_LOADED_EXT'] as $extKey => $properties) {
-			if (array_key_exists($extKey, $availableExtensions)) {
+		foreach (array_keys($this->packageManager->getActivePackages()) as $extKey) {
+			if (isset($availableExtensions[$extKey])) {
 				$availableExtensions[$extKey]['installed'] = TRUE;
 			}
 		}
@@ -143,5 +164,4 @@ class ListUtility implements \TYPO3\CMS\Core\SingletonInterface {
 		$availableAndInstalledExtensions = $this->getAvailableAndInstalledExtensions($availableExtensions);
 		return $this->enrichExtensionsWithEmConfAndTerInformation($availableAndInstalledExtensions);
 	}
-
 }

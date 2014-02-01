@@ -65,9 +65,7 @@ class ListController extends \TYPO3\CMS\Extensionmanager\Controller\AbstractCont
 	 * @return void
 	 */
 	public function indexAction() {
-		$availableExtensions = $this->listUtility->getAvailableExtensions();
-		$availableAndInstalledExtensions = $this->listUtility->getAvailableAndInstalledExtensions($availableExtensions);
-		$availableAndInstalledExtensions = $this->listUtility->enrichExtensionsWithEmConfAndTerInformation($availableAndInstalledExtensions);
+		$availableAndInstalledExtensions = $this->listUtility->getAvailableAndInstalledExtensionsWithAdditionalInformation();
 		$this->view->assign('extensions', $availableAndInstalledExtensions);
 		$this->handleTriggerArguments();
 	}

@@ -71,11 +71,7 @@ class ExtensionRepository {
 	 */
 	public function findAll() {
 		if (!count($this->extensions)) {
-			$availableExtensions = $this->listUtility->getAvailableExtensions();
-			$availableAndInstalledExtensions = $this->listUtility->getAvailableAndInstalledExtensions($availableExtensions);
-			$availableAndInstalledExtensions = $this->listUtility->enrichExtensionsWithEmConfAndTerInformation(
-				$availableAndInstalledExtensions
-			);
+			$availableAndInstalledExtensions = $this->listUtility->getAvailableAndInstalledExtensionsWithAdditionalInformation();
 
 			foreach ($availableAndInstalledExtensions as $entry) {
 				/** @var $extension \TYPO3\CMS\Lang\Domain\Model\Extension */

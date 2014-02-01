@@ -37,6 +37,12 @@ use TYPO3\CMS\Extbase\Mvc\Controller\CommandController;
 class ExtensionCommandController extends CommandController {
 
 	/**
+	 * @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
+	 * @inject
+	 */
+	protected $signalSlotDispatcher;
+
+	/**
 	 * Installs an extension by key
 	 *
 	 * The extension files must be present in one of the
@@ -46,9 +52,7 @@ class ExtensionCommandController extends CommandController {
 	 * @return void
 	 */
 	public function installCommand($extensionKey) {
-		/** @var $packageManager \TYPO3\CMS\Core\Package\PackageManager */
-		$packageManager = $this->objectManager->get('TYPO3\\CMS\\Core\\Package\\PackageManager');
-		$packageManager->scanAvailablePackages();
+		$this->emitPackagesMayHaveChanged();
 
 		/** @var $service \TYPO3\CMS\Extensionmanager\Utility\InstallUtility */
 		$service = $this->objectManager->get('TYPO3\\CMS\\Extensionmanager\\Utility\\InstallUtility');
@@ -70,4 +74,10 @@ class ExtensionCommandController extends CommandController {
 		$service->uninstall($extensionKey);
 	}
 
+	/**
+	 * Emits packages may have changed signal
+	 */
+	protected function emitPackagesMayHaveChanged() {
+		$this->signalSlotDispatcher->dispatch('PackageManagement', 'packagesMayHaveChanged');
+	}
 }
