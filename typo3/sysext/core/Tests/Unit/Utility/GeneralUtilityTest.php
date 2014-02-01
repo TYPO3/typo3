@@ -1351,13 +1351,48 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	//////////////////////////////////
 	// Tests concerning revExplode
 	//////////////////////////////////
+
+	public function revExplodeDataProvider() {
+		return array(
+			'limit 0 should return unexploded string' => array(
+				'my:words:here',
+				0,
+				array('my:words:here')
+			),
+			'limit 1 should return unexploded string' => array(
+				'my:words:here',
+				1,
+				array('my:words:here')
+			),
+			'limit 2 should return two pieces' => array(
+				'my:words:here',
+				2,
+				array('my:words', 'here')
+			),
+			'limit 3 should return unexploded string' => array(
+				'my:words:here',
+				3,
+				array('my', 'words', 'here')
+			),
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider revExplodeDataProvider
+	 */
+	public function revExplodeCorrectlyExplodesStringForGivenPartsCount($testString, $count, $expectedArray) {
+		$actualArray = Utility\GeneralUtility::revExplode(':', $testString, $count);
+		$this->assertEquals($expectedArray, $actualArray);
+	}
+
 	/**
 	 * @test
 	 */
-	public function revExplodeExplodesString() {
-		$testString = 'my:words:here';
-		$expectedArray = array('my:words', 'here');
-		$actualArray = Utility\GeneralUtility::revExplode(':', $testString, 2);
+	public function revExplodeRespectsLimitThreeWhenExploding() {
+		$testString = 'even:more:of:my:words:here';
+		$expectedArray = array('even:more:of:my', 'words', 'here');
+		$actualArray = Utility\GeneralUtility::revExplode(':', $testString, 3);
 		$this->assertEquals($expectedArray, $actualArray);
 	}
 

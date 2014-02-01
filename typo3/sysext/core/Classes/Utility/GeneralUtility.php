@@ -1483,9 +1483,17 @@ class GeneralUtility {
 	 * @return array Exploded values
 	 */
 	static public function revExplode($delimiter, $string, $count = 0) {
-		$explodedValues = explode($delimiter, strrev($string), $count);
-		$explodedValues = array_map('strrev', $explodedValues);
-		return array_reverse($explodedValues);
+		// 2 is the (currently, as of 2014-02) most-used value for $count in the core, therefore we check it first
+		if ($count === 2) {
+			$position = strrpos($string, $delimiter);
+			return array(substr($string, 0, $position), substr($string, $position + 1));
+		} else if ($count <= 1) {
+			return array($string);
+		} else {
+			$explodedValues = explode($delimiter, strrev($string), $count);
+			$explodedValues = array_map('strrev', $explodedValues);
+			return array_reverse($explodedValues);
+		}
 	}
 
 	/**
