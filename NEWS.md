@@ -146,6 +146,18 @@ The extension works with the same options as before.
 Previously $row['cache_data'] was a serialized array. To avoid double serializing and unserializing,
 from now on $row['cache_data'] is just reconstituted as array when fetching from cache.
 
+* Frontend Cookie now only set when needed, not set by default anymore
+
+The cookie "fe_typo_user" set in the frontend by each request, is now only
+being set if the session data is used via $TSFE->fe_user->setKey('ses')
+so it can be used for shopping baskets for non-logged-in users
+out-of-the-box without hacking the default behaviour of setting the
+cookie.
+The previous behaviour always set the "fe_typo_user" cookie, but changed
+the session ID on each request, until it was fixated by a user login.
+The superfluous option "dontSetCookie" is now ineffective as the cookie
+is not set anymore by default.
+
 ### Administration / Customization
 
 * Content-length header (TypoScript setting config.enableContentLengthHeader)

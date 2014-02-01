@@ -929,9 +929,6 @@ class TypoScriptFrontendController {
 				unset($cookieName);
 			}
 		}
-		if ($this->TYPO3_CONF_VARS['FE']['dontSetCookie']) {
-			$this->fe_user->dontSetCookie = 1;
-		}
 		$this->fe_user->start();
 		$this->fe_user->unpack_uc('');
 		// Gets session data

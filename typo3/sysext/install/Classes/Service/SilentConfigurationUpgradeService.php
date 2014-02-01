@@ -86,6 +86,8 @@ class SilentConfigurationUpgradeService {
 		'FE/simulateStaticDocuments',
 		// #52786
 		'FE/logfile_dir',
+		// #55549
+		'FE/dontSetCookie',
 		// #52011
 		'GFX/im_combine_filename',
 		// #52088

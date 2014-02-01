@@ -274,6 +274,7 @@ abstract class AbstractUserAuthentication {
 	// to come from $_COOKIE).
 	/**
 	 * @todo Define visibility
+	 * @deprecated since TYPO3 CMS 6.2, remove two versions later, use $this->isCookieSet() instead
 	 */
 	public $cookieId;
 
@@ -315,11 +316,18 @@ abstract class AbstractUserAuthentication {
 	 */
 	public $forceSetCookie = FALSE;
 
-	// Will prevent the setting of the session cookie (takes precedence over forceSetCookie)
 	/**
+	 * Will prevent the setting of the session cookie (takes precedence over forceSetCookie)
+	 * @var bool
 	 * @todo Define visibility
 	 */
 	public $dontSetCookie = FALSE;
+
+	/**
+	 * is set to know on this current request if a cookie was set
+	 * @var bool
+	 */
+	protected $cookieWasSetOnCurrentRequest = FALSE;
 
 	// If set, the challenge value will be stored in a session as well so the
 	// server can check that is was not forged.
@@ -390,10 +398,7 @@ abstract class AbstractUserAuthentication {
 		// $id is set to ses_id if cookie is present. Else set to FALSE, which will start a new session
 		$id = $this->getCookie($this->name);
 		$this->svConfig = $GLOBALS['TYPO3_CONF_VARS']['SVCONF']['auth'];
-		// If we have a flash client, take the ID from the GP
-		if (!$id && $GLOBALS['CLIENT']['BROWSER'] == 'flash') {
-			$id = GeneralUtility::_GP($this->name);
-		}
+
 		// If fallback to get mode....
 		if (!$id && $this->getFallBack && $this->get_name) {
 			$id = isset($_GET[$this->get_name]) ? GeneralUtility::_GET($this->get_name) : '';
@@ -402,7 +407,7 @@ abstract class AbstractUserAuthentication {
 			}
 			$mode = 'get';
 		}
-		$this->cookieId = $id;
+
 		// If new session or client tries to fix session...
 		if (!$id || !$this->isExistingSessionRecord($id)) {
 			// New random session-$id is made
@@ -470,6 +475,7 @@ abstract class AbstractUserAuthentication {
 	 * Sets the session cookie for the current disposal.
 	 *
 	 * @return void
+	 * @throws \TYPO3\CMS\Core\Exception
 	 */
 	protected function setSessionCookie() {
 		$isSetSessionCookie = $this->isSetSessionCookie();
@@ -489,6 +495,7 @@ abstract class AbstractUserAuthentication {
 			// Do not set cookie if cookieSecure is set to "1" (force HTTPS) and no secure channel is used:
 			if ((int)$settings['cookieSecure'] !== 1 || GeneralUtility::getIndpEnv('TYPO3_SSL')) {
 				setcookie($this->name, $this->id, $cookieExpire, $cookiePath, $cookieDomain, $cookieSecure, $cookieHttpOnly);
+				$this->cookieWasSetOnCurrentRequest = TRUE;
 			} else {
 				throw new \TYPO3\CMS\Core\Exception('Cookie was not set since HTTPS was forced in $TYPO3_CONF_VARS[SYS][cookieSecure].', 1254325546);
 			}
@@ -543,6 +550,7 @@ abstract class AbstractUserAuthentication {
 	 * @return string The value stored in the cookie
 	 */
 	protected function getCookie($cookieName) {
+		$cookieValue = '';
 		if (isset($_SERVER['HTTP_COOKIE'])) {
 			$cookies = GeneralUtility::trimExplode(';', $_SERVER['HTTP_COOKIE']);
 			foreach ($cookies as $cookie) {
@@ -981,6 +989,19 @@ abstract class AbstractUserAuthentication {
 	}
 
 	/**
+	 * Empty / unset the cookie
+	 *
+	 * @param string $cookieName usually, this is $this->name
+	 * @return void
+	 */
+	public function removeCookie($cookieName) {
+		$cookieDomain = $this->getCookieDomain();
+		// If no cookie domain is set, use the base path
+		$cookiePath = $cookieDomain ? '/' : GeneralUtility::getIndpEnv('TYPO3_SITE_PATH');
+		setcookie($cookieName, NULL, -1, $cookiePath, $cookieDomain);
+	}
+
+	/**
 	 * Determine whether there's an according session record to a given session_id
 	 * in the database. Don't care if session record is still valid or not.
 	 *
@@ -994,6 +1015,17 @@ abstract class AbstractUserAuthentication {
 		$row = $statement->fetch(\TYPO3\CMS\Core\Database\PreparedStatement::FETCH_NUM);
 		$statement->free();
 		return $row[0] ? TRUE : FALSE;
+	}
+
+	/**
+	 * Returns whether this request is going to set a cookie
+	 * or a cookie was already found in the system
+	 * replaces the old functionality for "$this->cookieId"
+	 *
+	 * @return boolean Returns TRUE if a cookie is set
+	 */
+	public function isCookieSet() {
+		return $this->cookieWasSetOnCurrentRequest || $this->getCookie($this->name);
 	}
 
 	/*************************

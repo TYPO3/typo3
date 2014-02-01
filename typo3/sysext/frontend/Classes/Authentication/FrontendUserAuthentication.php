@@ -113,6 +113,10 @@ class FrontendUserAuthentication extends \TYPO3\CMS\Core\Authentication\Abstract
 	 * Default constructor.
 	 */
 	public function __construct() {
+		// Disable cookie by default, will be activated if saveSessionData() is called,
+		// a user is logging-in or an existing session is found
+		$this->dontSetCookie = TRUE;
+
 		$this->session_table = 'fe_sessions';
 		$this->name = self::getCookieName();
 		$this->get_name = 'ftu';
@@ -237,6 +241,19 @@ class FrontendUserAuthentication extends \TYPO3\CMS\Core\Authentication\Abstract
 		$loginData['permanent'] = $isPermanent;
 		$this->is_permanent = $isPermanent;
 		return $loginData;
+	}
+
+	/**
+	 * Creates a user session record and returns its values.
+	 * However, as the FE user cookie is normally not set, this has to be done
+	 * before the parent class is doing the rest.
+	 *
+	 * @param array $tempuser User data array
+	 * @return array The session data for the newly created session.
+	 */
+	public function createUserSession($tempuser) {
+		$this->setSessionCookie();
+		return parent::createUserSession($tempuser);
 	}
 
 	/**
@@ -396,6 +413,10 @@ class FrontendUserAuthentication extends \TYPO3\CMS\Core\Authentication\Abstract
 			if (empty($this->sesData)) {
 				// Remove session-data
 				$this->removeSessionData();
+				// Remove cookie if not logged in as the session data is removed as well
+				if (!empty($this->user['uid'])) {
+					$this->removeCookie($this->name);
+				}
 			} elseif ($this->sessionDataTimestamp === NULL) {
 				// Write new session-data
 				$insertFields = array(
@@ -405,6 +426,8 @@ class FrontendUserAuthentication extends \TYPO3\CMS\Core\Authentication\Abstract
 				);
 				$this->sessionDataTimestamp = $GLOBALS['EXEC_TIME'];
 				$GLOBALS['TYPO3_DB']->exec_INSERTquery('fe_session_data', $insertFields);
+				// Now set the cookie (= fix the session)
+				$this->setSessionCookie();
 			} else {
 				// Update session data
 				$updateFields = array(
@@ -424,6 +447,20 @@ class FrontendUserAuthentication extends \TYPO3\CMS\Core\Authentication\Abstract
 	 */
 	public function removeSessionData() {
 		$GLOBALS['TYPO3_DB']->exec_DELETEquery('fe_session_data', 'hash=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->id, 'fe_session_data'));
+	}
+
+	/**
+	 * Log out current user!
+	 * Removes the current session record, sets the internal ->user array to a blank string
+	 * Thereby the current user (if any) is effectively logged out!
+	 * Additionally the cookie is removed
+	 *
+	 * @return void
+	 */
+	public function logoff() {
+		parent::logoff();
+		// Remove the cookie on log-off
+		$this->removeCookie($this->name);
 	}
 
 	/**
@@ -532,10 +569,10 @@ class FrontendUserAuthentication extends \TYPO3\CMS\Core\Authentication\Abstract
 	 * @todo Define visibility
 	 */
 	public function record_registration($recs, $maxSizeOfSessionData = 0) {
-		// Storing value ONLY if there is a confirmed cookie set (->cookieID),
+		// Storing value ONLY if there is a confirmed cookie set,
 		// otherwise a shellscript could easily be spamming the fe_sessions table
 		// with bogus content and thus bloat the database
-		if (!$maxSizeOfSessionData || $this->cookieId) {
+		if (!$maxSizeOfSessionData || $this->isCookieSet()) {
 			if ($recs['clear_all']) {
 				$this->setKey('ses', 'recs', array());
 			}
