@@ -71,6 +71,8 @@ class SilentConfigurationUpgradeService {
 		'EXT/em_wsdlURL',
 		// #43094
 		'EXT/extList',
+		// #47018
+		'EXT/extListArray',
 		// #35877
 		'EXT/extList_FE',
 		// #41813

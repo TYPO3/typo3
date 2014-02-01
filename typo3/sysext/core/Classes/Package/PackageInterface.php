@@ -28,4 +28,20 @@ interface PackageInterface extends \TYPO3\Flow\Package\PackageInterface {
 	 */
 	public function getClassFilesFromAutoloadRegistry();
 
+	/**
+	 * Tells if the package is part of the default factory configuration
+	 * and therefor activated at first installation.
+	 *
+	 * @return boolean
+	 */
+	public function isPartOfFactoryDefault();
+
+	/**
+	 * Tells if the package is required for a minimal usable (backend) system
+	 * and therefor activated if PackageStates is created from scratch for
+	 * whatever reason.
+	 *
+	 * @return boolean
+	 */
+	public function isPartOfMinimalUsableSystem();
 }

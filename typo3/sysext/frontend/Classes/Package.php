@@ -38,4 +38,14 @@ class Package extends BasePackage {
 	 * @var boolean
 	 */
 	protected $protected = TRUE;
+
+	/**
+	 * @var bool
+	 */
+	protected $partOfFactoryDefault = TRUE;
+
+	/**
+	 * @var bool
+	 */
+	protected $partOfMinimalUsableSystem = TRUE;
 }

@@ -57,6 +57,22 @@ class EnvironmentAndFolders extends Action\AbstractAction implements StepInterfa
 			$configurationManager = $this->objectManager->get('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager');
 			$configurationManager->createLocalConfigurationFromFactoryConfiguration();
 
+			// Create a PackageStates.php with all packages activated marked as "part of factory default"
+			if (!file_exists(PATH_typo3conf . 'PackageStates.php')) {
+				/** @var \TYPO3\CMS\Core\Package\FailsafePackageManager $packageManager */
+				$packageManager = \TYPO3\CMS\Core\Core\Bootstrap::getInstance()->getEarlyInstance('TYPO3\\Flow\\Package\\PackageManager');
+				$packages = $packageManager->getAvailablePackages();
+				foreach ($packages as $package) {
+					/** @var $package \TYPO3\CMS\Core\Package\PackageInterface */
+					if ($package instanceof \TYPO3\CMS\Core\Package\PackageInterface
+						&& $package->isPartOfFactoryDefault()
+					) {
+						$packageManager->activatePackage($package->getPackageKey());
+					}
+				}
+				$packageManager->forceSortAndSavePackageStates();
+			}
+
 			// Create enable install tool file after typo3conf & LocalConfiguration were created
 			$installToolService = $this->objectManager->get('TYPO3\\CMS\\Install\\Service\\EnableFileService');
 			$installToolService->createInstallToolEnableFile();

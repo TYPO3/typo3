@@ -42,6 +42,22 @@ class Package extends \TYPO3\Flow\Package\Package implements PackageInterface {
 	protected $ignoredClassNames = array();
 
 	/**
+	 * If this package is part of factory default, it will be activated
+	 * during first installation.
+	 *
+	 * @var bool
+	 */
+	protected $partOfFactoryDefault = FALSE;
+
+	/**
+	 * If this package is part of minimal usable system, it will be
+	 * activated if PackageStates is created from scratch.
+	 *
+	 * @var bool
+	 */
+	protected $partOfMinimalUsableSystem = FALSE;
+
+	/**
 	 * Constructor
 	 *
 	 * @param \TYPO3\Flow\Package\PackageManager $packageManager the package manager which knows this package
@@ -82,6 +98,20 @@ class Package extends \TYPO3\Flow\Package\Package implements PackageInterface {
 		if ($this->objectManagementEnabled === NULL) {
 			$this->objectManagementEnabled = FALSE;
 		}
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function isPartOfFactoryDefault() {
+		return $this->partOfFactoryDefault;
+	}
+
+	/**
+	 * @return boolean
+	 */
+	public function isPartOfMinimalUsableSystem() {
+		return $this->partOfMinimalUsableSystem;
 	}
 
 	/**

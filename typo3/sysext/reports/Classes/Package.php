@@ -1,10 +1,10 @@
 <?php
-namespace TYPO3\CMS\Lang;
+namespace TYPO3\CMS\Reports;
 
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013 Thomas Maroschik <tmaroschik@dfau.de>
+ *  (c) 2013 Christian Kuhn <lolli@schwarzbu.ch>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -30,22 +30,12 @@ namespace TYPO3\CMS\Lang;
 use TYPO3\CMS\Core\Package\Package as BasePackage;
 
 /**
- * This is the lang package
+ * This is the Reports package
  */
 class Package extends BasePackage {
-
-	/**
-	 * @var boolean
-	 */
-	protected $protected = TRUE;
 
 	/**
 	 * @var bool
 	 */
 	protected $partOfFactoryDefault = TRUE;
-
-	/**
-	 * @var bool
-	 */
-	protected $partOfMinimalUsableSystem = TRUE;
 }

@@ -45,6 +45,9 @@ class StepController extends AbstractController {
 	/**
 	 * Index action acts a a dispatcher to different steps
 	 *
+	 * Warning: Order of these methods is security relevant and interferes with different access
+	 * conditions (new/existing installation). See the single method comments for details.
+	 *
 	 * @throws Exception
 	 * @return void
 	 */
@@ -52,13 +55,10 @@ class StepController extends AbstractController {
 		$this->loadBaseExtensions();
 		$this->initializeObjectManager();
 
-		// Warning: Order of these methods is security relevant and interferes with different access
-		// conditions (new/existing installation). See the single method comments for details.
 		$this->outputInstallToolNotEnabledMessageIfNeeded();
 		$this->migrateLocalconfToLocalConfigurationIfNeeded();
-		// @TODO: Move method to silest upgrader?!
-		$this->migrateExtensionListToPackageStatesFile();
 		$this->outputInstallToolPasswordNotSetMessageIfNeeded();
+		$this->migrateExtensionListToPackageStatesFile();
 		$this->executeOrOutputFirstInstallStepIfNeeded();
 		$this->executeSilentConfigurationUpgradesIfNeeded();
 		$this->initializeSession();
@@ -166,7 +166,9 @@ class StepController extends AbstractController {
 	}
 
 	/**
-	 * "Silent" upgrade very early in step installer, before rendering step 1:
+	 * Migrate localconf.php to LocalConfiguration if needed. This is done early in
+	 * install tool to ease further handling.
+	 *
 	 * If typo3conf and typo3conf/localconf.php exist, but no typo3conf/LocalConfiguration,
 	 * create LocalConfiguration.php / AdditionalConfiguration.php from localconf.php
 	 * Might throw exception if typo3conf directory is not writable.
@@ -260,54 +262,72 @@ class StepController extends AbstractController {
 	}
 
 	/**
-	 * "Silent" upgrade very early in step installer, before rendering step 1
+	 * Create PackageStates.php if missing and LocalConfiguration exists.
+	 *
+	 * This typically happens during upgrading from 6.1 or lower, all valid packages
+	 * from old EXT/extListArray will be marked active.
+	 *
+	 * It is also fired if PackageStates.php is deleted on a running 6.2 instance,
+	 * all packages marked as "part of minimal system" are activated in this case.
+	 *
+	 * The step installer creates typo3conf/, LocalConfiguration and PackageStates in
+	 * one call, so an "installation in progress" does not trigger creation of
+	 * PackageStates here.
 	 *
 	 * @throws \Exception
 	 * @return void
 	 */
 	protected function migrateExtensionListToPackageStatesFile() {
+		/** @var \TYPO3\CMS\Core\Configuration\ConfigurationManager $configurationManager */
+		$configurationManager = $this->objectManager->get('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager');
+		$localConfigurationFileLocation = $configurationManager->getLocalConfigurationFileLocation();
+		$localConfigurationFileExists = is_file($localConfigurationFileLocation);
+
+		if (file_exists(PATH_typo3conf . 'PackageStates.php')
+			|| (is_dir(PATH_typo3conf) && !$localConfigurationFileExists)
+			|| !is_dir(PATH_typo3conf)
+		) {
+			return;
+		}
+
 		try {
-			/** @var \TYPO3\CMS\Core\Configuration\ConfigurationManager $configurationManager */
-			$configurationManager = $this->objectManager->get('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager');
-			$localConfigurationFileLocation = $configurationManager->getLocalConfigurationFileLocation();
-			$localConfigurationFileExists = is_file($localConfigurationFileLocation);
-			if (!is_dir(PATH_typo3conf) || (is_dir(PATH_typo3conf) && !$localConfigurationFileExists) || file_exists(PATH_typo3conf . 'PackageStates.php')) {
-				return;
-			}
-			$loadedExtensions = array();
-			try {
-				// Extensions in extListArray
-				$loadedExtensions = $configurationManager->getLocalConfigurationValueByPath('EXT/extListArray');
-			} catch (\RuntimeException $exception) {
-				// Fallback handling if extlist is still a string and not an array
-				// @deprecated since 6.2, will be removed two versions later without a substitute
-				try {
-					$loadedExtensions = GeneralUtility::trimExplode(',', $configurationManager->getLocalConfigurationValueByPath('EXT/extList'));
-				} catch (\RuntimeException $exception) {
-				}
-			}
 			/** @var \TYPO3\CMS\Core\Package\FailsafePackageManager $packageManager */
 			$packageManager = \TYPO3\CMS\Core\Core\Bootstrap::getInstance()->getEarlyInstance('TYPO3\\Flow\\Package\\PackageManager');
-			foreach ($loadedExtensions as $loadedExtension) {
+
+			// Activate all packages required for a minimal usable system
+			$packages = $packageManager->getAvailablePackages();
+			foreach ($packages as $package) {
+				/** @var $package \TYPO3\CMS\Core\Package\PackageInterface */
+				if ($package instanceof \TYPO3\CMS\Core\Package\PackageInterface
+					&& $package->isPartOfMinimalUsableSystem()
+				) {
+					$packageManager->activatePackage($package->getPackageKey());
+				}
+			}
+
+			// Activate all packages from LocalConfiguration EXT/extListArray if there is such an entry during upgrading.
+			$extensionsFromExtListArray = array();
+			try {
+				$extensionsFromExtListArray = $configurationManager->getLocalConfigurationValueByPath('EXT/extListArray');
+			} catch (\RuntimeException $exception) {
+			}
+			foreach ($extensionsFromExtListArray as $loadedExtension) {
 				try {
 					$packageManager->activatePackage($loadedExtension);
 				} catch (\TYPO3\Flow\Package\Exception\UnknownPackageException $exception) {
 					// Skip unavailable packages silently
 				}
 			}
-			$packageManager->forceSortAndSavePackageStates();
 
 			// Backup LocalConfiguration.php
-			copy(
-				$configurationManager->getLocalConfigurationFileLocation(),
-				preg_replace('/\.php$/', '.beforePackageStatesMigration.php', $configurationManager->getLocalConfigurationFileLocation())
-			);
-			$configurationManager->updateLocalConfiguration(array(
-				'EXT' => array(
-					'extListArray' => '__UNSET',
-					'extList' => '__UNSET',
-				),
-			));
+			if (file_exists(PATH_typo3conf . 'PackageStates.php')) {
+				copy(
+					$configurationManager->getLocalConfigurationFileLocation(),
+					preg_replace('/\.php$/', '.beforePackageStatesMigration.php', $configurationManager->getLocalConfigurationFileLocation())
+				);
+			}
+
+			$packageManager->forceSortAndSavePackageStates();
 
 			// Perform a reload to self, so bootstrap now uses new PackageStates.php
 			$this->redirect();
