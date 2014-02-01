@@ -444,10 +444,10 @@ class GraphicalMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu\
 					$this->I['theItem'] = implode('', $this->I['parts']);
 					$this->I['theItem'] = $this->extProc_beforeAllWrap($this->I['theItem'], $key);
 					// wrap:
-					$this->I['theItem'] = $this->tmpl->wrap($this->I['theItem'], $this->I['val']['wrap']);
+					$this->I['theItem'] = $this->WMcObj->wrap($this->I['theItem'], $this->I['val']['wrap']);
 					// allWrap:
 					$allWrap = isset($this->I['val']['allWrap.']) ? $this->WMcObj->stdWrap($this->I['val']['allWrap'], $this->I['val']['allWrap.']) : $this->I['val']['allWrap'];
-					$this->I['theItem'] = $this->tmpl->wrap($this->I['theItem'], $allWrap);
+					$this->I['theItem'] = $this->WMcObj->wrap($this->I['theItem'], $allWrap);
 					if ($this->I['val']['subst_elementUid']) {
 						$this->I['theItem'] = str_replace('{elementUid}', $this->I['uid'], $this->I['theItem']);
 					}
@@ -519,7 +519,7 @@ class GraphicalMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu\
 			$this->I['theItem'] .= $this->subMenu($this->I['uid'], $this->WMsubmenuObjSuffixes[$key]['sOSuffix']);
 		}
 		$part = isset($this->I['val']['wrapItemAndSub.']) ? $this->WMcObj->stdWrap($this->I['val']['wrapItemAndSub'], $this->I['val']['wrapItemAndSub.']) : $this->I['val']['wrapItemAndSub'];
-		$this->WMresult .= $part ? $this->tmpl->wrap($this->I['theItem'], $part) : $this->I['theItem'];
+		$this->WMresult .= $part ? $this->WMcObj->wrap($this->I['theItem'], $part) : $this->I['theItem'];
 	}
 
 	/**
@@ -549,7 +549,7 @@ class GraphicalMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu\
 		if (is_array($this->mconf['stdWrap.'])) {
 			$this->WMresult = $this->WMcObj->stdWrap($this->WMresult, $this->mconf['stdWrap.']);
 		}
-		return $this->tmpl->wrap($this->WMresult, $this->mconf['wrap']) . $this->WMextraScript;
+		return $this->WMcObj->wrap($this->WMresult, $this->mconf['wrap']) . $this->WMextraScript;
 	}
 
 }

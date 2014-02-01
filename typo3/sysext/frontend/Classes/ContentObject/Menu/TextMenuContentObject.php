@@ -148,7 +148,7 @@ class TextMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu\Abstr
 				$this->I['theItem'] = $this->extProc_beforeAllWrap($this->I['theItem'], $key);
 				// allWrap:
 				$allWrap = isset($this->I['val']['allWrap.']) ? $this->WMcObj->stdWrap($this->I['val']['allWrap'], $this->I['val']['allWrap.']) : $this->I['val']['allWrap'];
-				$this->I['theItem'] = $this->tmpl->wrap($this->I['theItem'], $allWrap);
+				$this->I['theItem'] = $this->WMcObj->wrap($this->I['theItem'], $allWrap);
 				if ($this->I['val']['subst_elementUid']) {
 					$this->I['theItem'] = str_replace('{elementUid}', $this->I['uid'], $this->I['theItem']);
 				}
@@ -189,7 +189,7 @@ class TextMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu\Abstr
 		}
 		$processedPref = isset($this->I['val'][$pref . '.']) ? $this->WMcObj->stdWrap($this->I['val'][$pref], $this->I['val'][$pref . '.']) : $this->I['val'][$pref];
 		if (isset($this->I['val'][$pref . 'Wrap'])) {
-			return $this->tmpl->wrap($res . $processedPref, $this->I['val'][$pref . 'Wrap']);
+			return $this->WMcObj->wrap($res . $processedPref, $this->I['val'][$pref . 'Wrap']);
 		} else {
 			return $res . $processedPref;
 		}
@@ -237,7 +237,7 @@ class TextMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu\Abstr
 			$this->I['theItem'] .= $this->subMenu($this->I['uid'], $this->WMsubmenuObjSuffixes[$key]['sOSuffix']);
 		}
 		$part = isset($this->I['val']['wrapItemAndSub.']) ? $this->WMcObj->stdWrap($this->I['val']['wrapItemAndSub'], $this->I['val']['wrapItemAndSub.']) : $this->I['val']['wrapItemAndSub'];
-		$this->WMresult .= $part ? $this->tmpl->wrap($this->I['theItem'], $part) : $this->I['theItem'];
+		$this->WMresult .= $part ? $this->WMcObj->wrap($this->I['theItem'], $part) : $this->I['theItem'];
 	}
 
 	/**
@@ -267,7 +267,7 @@ class TextMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu\Abstr
 		if (is_array($this->mconf['stdWrap.'])) {
 			$this->WMresult = $this->WMcObj->stdWrap($this->WMresult, $this->mconf['stdWrap.']);
 		}
-		return $this->tmpl->wrap($this->WMresult, $this->mconf['wrap']) . $this->WMextraScript;
+		return $this->WMcObj->wrap($this->WMresult, $this->mconf['wrap']) . $this->WMextraScript;
 	}
 
 }

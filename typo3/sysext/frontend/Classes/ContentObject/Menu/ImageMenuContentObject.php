@@ -236,7 +236,7 @@ class ImageMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu\Abst
 			}
 			$result .= ' /><map name="' . $menuName . '" id="' . $menuName . '">' . $res['imgMap'] . '</map>';
 			$GLOBALS['TSFE']->imagesOnPage[] = $res['output_file'];
-			return $this->tmpl->wrap($result, $this->mconf['wrap']);
+			return $this->WMcObj->wrap($result, $this->mconf['wrap']);
 		}
 	}
 

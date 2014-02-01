@@ -74,12 +74,12 @@ class JavaScriptMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu
 					$formCode .= '</option>';
 				}
 				$formCode .= '</select>';
-				$allFormCode .= $this->tmpl->wrap($formCode, $levelConf['wrap']);
+				$allFormCode .= $this->WMcObj->wrap($formCode, $levelConf['wrap']);
 			}
-			$formCode = $this->tmpl->wrap($allFormCode, $this->mconf['wrap']);
+			$formCode = $this->WMcObj->wrap($allFormCode, $this->mconf['wrap']);
 			$formCode = '<form action="" method="post" style="margin: 0 0 0 0;" name="' . $this->JSMenuName . 'Form">' . $formCode . '</form>';
 			$formCode .= '<script type="text/javascript"> /*<![CDATA[*/ ' . $this->JSMenuName . '.writeOut(1,' . $this->JSMenuName . '.openID,1); /*]]>*/ </script>';
-			return $this->tmpl->wrap($formCode, $this->mconf['wrapAfterTags']);
+			return $this->WMcObj->wrap($formCode, $this->mconf['wrapAfterTags']);
 		}
 	}
 
