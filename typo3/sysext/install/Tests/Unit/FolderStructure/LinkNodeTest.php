@@ -336,6 +336,19 @@ class LinkNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 */
+	public function isTargetCorrectAcceptsATargetWithATrailingSlash() {
+		/** @var $node \TYPO3\CMS\Install\FolderStructure\LinkNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+		$node = $this->getAccessibleMock('TYPO3\\CMS\\Install\\FolderStructure\\LinkNode', array('exists', 'isLink', 'getCurrentTarget', 'getTarget'), array(), '', FALSE);
+		$node->expects($this->any())->method('exists')->will($this->returnValue(TRUE));
+		$node->expects($this->any())->method('isLink')->will($this->returnValue(TRUE));
+		$node->expects($this->once())->method('getCurrentTarget')->will($this->returnValue('someLinkTarget'));
+		$node->expects($this->once())->method('getTarget')->will($this->returnValue('someLinkTarget/'));
+		$this->assertTrue($node->_call('isTargetCorrect'));
+	}
+
+	/**
+	 * @test
+	 */
 	public function isTargetCorrectReturnsTrueIfActualTargetIsIdenticalToSpecifiedTarget() {
 		if (TYPO3_OS === 'WIN') {
 			$this->markTestSkipped('Test not available on Windows OS.');

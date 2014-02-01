@@ -185,7 +185,7 @@ class LinkNode extends AbstractNode implements NodeInterface {
 			$result = TRUE;
 		} else {
 			$actualTarget = $this->getCurrentTarget();
-			if ($actualTarget === $expectedTarget) {
+			if ($actualTarget === rtrim($expectedTarget, '/')) {
 				$result = TRUE;
 			}
 		}
