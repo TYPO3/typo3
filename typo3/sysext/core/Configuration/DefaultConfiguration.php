@@ -164,7 +164,8 @@ return array(
 					'frontend' => 'TYPO3\CMS\Core\Cache\Frontend\VariableFrontend',
 					'backend' => 'TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend',
 					'options' => array(
-						'compression' => TRUE
+						'compression' => TRUE,
+						'defaultLifetime' => 2592000   //  30 days; set this to a lower value in case your cache gets too big
 					),
 					'groups' => array('pages', 'all')
 				),
