@@ -110,10 +110,6 @@ class FileTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function fileIndexStatusIsTrueIfUidIsSet() {
-		$mockedMetaDataRepository = $this->getMock('TYPO3\\CMS\\Core\\Resource\\Index\\MetaDataRepository');
-		$mockedMetaDataRepository->expects($this->once())->method('findByFile')->will($this->returnValue(array('file' => 1)));
-		\TYPO3\CMS\Core\Utility\GeneralUtility::setSingletonInstance('TYPO3\\CMS\\Core\\Resource\\Index\\MetaDataRepository', $mockedMetaDataRepository);
-
 		$fixture = new \TYPO3\CMS\Core\Resource\File(array('uid' => 1), $this->storageMock);
 		$this->assertTrue($fixture->isIndexed());
 	}
