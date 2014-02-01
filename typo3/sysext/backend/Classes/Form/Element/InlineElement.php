@@ -30,6 +30,7 @@ namespace TYPO3\CMS\Backend\Form\Element;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Database\RelationHandler;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
@@ -767,9 +768,11 @@ class InlineElement {
 				$comboRecord = $this->getNewRecord($this->inlineFirstPid, $comboConfig['foreign_table']);
 				$isNewRecord = TRUE;
 			}
+			$flashMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:warning.inline_use_combination'), '', FlashMessage::WARNING);
+			$out = $flashMessage->render();
 			// Get the TCEforms interpretation of the TCA of the child table
-			$out = $this->renderMainFields($comboConfig['foreign_table'], $comboRecord);
-			$out = $this->wrapFormsSection($out, array(), array('class' => 'wrapperAttention'));
+			$out .= $this->renderMainFields($comboConfig['foreign_table'], $comboRecord);
+			$out = $this->wrapFormsSection($out, array(), array());
 			// If this is a new record, add a pid value to store this record and the pointer value for the intermediate table
 			if ($isNewRecord) {
 				$comboFormFieldName = $this->prependFormFieldNames . '[' . $comboConfig['foreign_table'] . '][' . $comboRecord['uid'] . '][pid]';

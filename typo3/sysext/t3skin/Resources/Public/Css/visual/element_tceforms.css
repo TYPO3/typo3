@@ -411,6 +411,10 @@ TCEforms Inline-Relational-Record-Editing
 	border-top: 1px solid #aaaaaa;
 }
 
+.t3-form-field-record-inline .typo3-message {
+	margin-bottom: 1.5em;
+}
+
 .typo3-TCEforms .t3-form-field-container-inline .wrapperTable,
 .typo3-TCEforms .t3-form-field-container-inline .wrapperTable1,
 .typo3-TCEforms .t3-form-field-container-inline .wrapperTable2,
