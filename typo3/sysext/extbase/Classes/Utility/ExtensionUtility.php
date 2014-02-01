@@ -71,7 +71,8 @@ class ExtensionUtility {
 			$extensionName = substr($extensionName, $delimiterPosition + 1);
 		}
 		$extensionName = str_replace(' ', '', ucwords(str_replace('_', ' ', $extensionName)));
-		$pluginSignature = strtolower($extensionName) . '_' . strtolower($pluginName);
+
+		$pluginSignature = strtolower($extensionName . '_' . $pluginName);
 		if (!is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['plugins'][$pluginName])) {
 			$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['plugins'][$pluginName] = array();
 		}
@@ -81,31 +82,7 @@ class ExtensionUtility {
 				$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['plugins'][$pluginName]['controllers'][$controllerName]['nonCacheableActions'] = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $nonCacheableControllerActions[$controllerName]);
 			}
 		}
-		$pluginTemplate = 'plugin.tx_' . strtolower($extensionName) . ' {
-	settings {
-	}
-	persistence {
-		storagePid =
-		classes {
-		}
-	}
-	view {
-		templateRootPaths {
-			#example: fooKey = EXT:bar/foo
-		}
-		layoutRootPaths {
-			#example: fooKey = EXT:bar/foo
-		}
-		partialRootPaths {
-			#example: fooKey = EXT:bar/foo
-		}
-		 # with defaultPid you can specify the default page uid of this plugin. If you set this to the string "auto" the target page will be determined automatically. Defaults to an empty string that expects the target page to be the current page.
-		defaultPid =
-	}
-}';
-		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScript($extensionName, 'setup', '
-# Setting ' . $extensionName . ' plugin TypoScript
-' . $pluginTemplate);
+
 		switch ($pluginType) {
 			case self::PLUGIN_TYPE_PLUGIN:
 				$pluginContent = trim('
