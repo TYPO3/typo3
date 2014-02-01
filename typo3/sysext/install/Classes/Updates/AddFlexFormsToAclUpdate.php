@@ -161,7 +161,7 @@ class AddFlexFormsToAclUpdate extends AbstractUpdate {
 	protected function updateGroupAccessLists(array $addFields, array &$dbQueries, &$customMessages) {
 		foreach ($addFields as $groupUID => $flexExcludeFields) {
 			// First get current fields
-			$result = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('non_exclude_fields', 'be_groups', 'uid=' . (int) $groupUID);
+			$result = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('non_exclude_fields', 'be_groups', 'uid=' . (int)$groupUID);
 			if (!isset($result['non_exclude_fields'])) {
 				continue;
 			}
@@ -170,7 +170,7 @@ class AddFlexFormsToAclUpdate extends AbstractUpdate {
 			$flexExcludeFields = implode(',', $flexExcludeFields);
 			$nonExcludeFields = trim($nonExcludeFields . ',' . $flexExcludeFields, ', ');
 			// Finally override with new fields
-			$GLOBALS['TYPO3_DB']->exec_UPDATEquery('be_groups', 'uid=' . (int) $groupUID, array('non_exclude_fields' => $nonExcludeFields));
+			$GLOBALS['TYPO3_DB']->exec_UPDATEquery('be_groups', 'uid=' . (int)$groupUID, array('non_exclude_fields' => $nonExcludeFields));
 			// Get last executed query
 			$dbQueries[] = str_replace(chr(10), ' ', $GLOBALS['TYPO3_DB']->debug_lastBuiltQuery);
 			// Check for errors

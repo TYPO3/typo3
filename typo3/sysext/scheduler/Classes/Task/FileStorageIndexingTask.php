@@ -43,7 +43,7 @@ class FileStorageIndexingTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 	 */
 	public function execute() {
 		$success = FALSE;
-		if (intval($this->storageUid) > 0) {
+		if ((int)$this->storageUid > 0) {
 			$storage = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getStorageObject($this->storageUid);
 			$storage->setEvaluatePermissions(FALSE);
 			$indexer = $this->getIndexer($storage);

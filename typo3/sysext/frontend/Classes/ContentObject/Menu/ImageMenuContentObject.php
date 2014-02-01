@@ -76,7 +76,7 @@ class ImageMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu\Abst
 			if (is_array($conf)) {
 				$gifObjCount = 0;
 				$sKeyArray = \TYPO3\CMS\Core\TypoScript\TemplateService::sortedKeyList($conf);
-				$gifObjCount = intval(end($sKeyArray));
+				$gifObjCount = (int)end($sKeyArray);
 				$lastOriginal = $gifObjCount;
 				// Now we add graphical objects to the gifbuilder-setup
 				$waArr = array();
@@ -87,7 +87,7 @@ class ImageMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu\Abst
 						$sKeyArray = \TYPO3\CMS\Core\TypoScript\TemplateService::sortedKeyList($val);
 						foreach ($sKeyArray as $theKey) {
 							$theValue = $val[$theKey];
-							if (intval($theKey) && ($theValArr = $val[$theKey . '.'])) {
+							if ((int)$theKey && ($theValArr = $val[$theKey . '.'])) {
 								$cObjData = $this->menuArr[$key] ?: array();
 								$gifObjCount++;
 								if ($theValue == 'TEXT') {

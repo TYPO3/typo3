@@ -761,8 +761,8 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 					if ($linkHandlerKeyword === 'file') {
 						$href = $siteUrl . '?' . $linkHandlerKeyword . ':' . rawurlencode($linkHandlerValue);
 					} else {
-						$fileChar = intval(strpos($link_param, '/'));
-						$urlChar = intval(strpos($link_param, '.'));
+						$fileChar = (int)strpos($link_param, '/');
+						$urlChar = (int)strpos($link_param, '.');
 						// Detects if a file is found in site-root.
 						list($rootFileDat) = explode('?', $link_param);
 						$rFD_fI = pathinfo($rootFileDat);
@@ -810,7 +810,7 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 							// Checking if the id-parameter is an alias.
 							if (!\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($idPart)) {
 								list($idPartR) = BackendUtility::getRecordsByField('pages', 'alias', $idPart);
-								$idPart = intval($idPartR['uid']);
+								$idPart = (int)$idPartR['uid'];
 							}
 							$page = BackendUtility::getRecord('pages', $idPart);
 							if (is_array($page)) {
@@ -1003,7 +1003,7 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 							// Processing inner content here:
 							$innerContent = $this->HTMLcleaner_db($this->removeFirstAndLastTag($blockSplit[$k]));
 							if (!isset($this->procOptions['typohead']) || $this->procOptions['typohead']) {
-								$type = intval(substr($tagName, 1));
+								$type = (int)substr($tagName, 1);
 								$blockSplit[$k] = '<typohead' . ($type != 6 ? ' type="' . $type . '"' : '') . ($attribArray['align'] ? ' align="' . $attribArray['align'] . '"' : '') . ($attribArray['class'] ? ' class="' . $attribArray['class'] . '"' : '') . '>' . $innerContent . '</typohead>' . $lastBR;
 							} else {
 								$blockSplit[$k] = '<' . $tagName . ($attribArray['align'] ? ' align="' . htmlspecialchars($attribArray['align']) . '"' : '') . ($attribArray['class'] ? ' class="' . htmlspecialchars($attribArray['class']) . '"' : '') . '>' . $innerContent . '</' . $tagName . '>' . $lastBR;
@@ -1650,10 +1650,10 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 			// Width
 			$reg = array();
 			preg_match('/width' . $regex . '/i', $style, $reg);
-			$w = intval($reg[1]);
+			$w = (int)$reg[1];
 			// Height
 			preg_match('/height' . $regex . '/i', $style, $reg);
-			$h = intval($reg[1]);
+			$h = (int)$reg[1];
 		}
 		if (!$w) {
 			$w = $attribArray['width'];
@@ -1661,7 +1661,7 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 		if (!$h) {
 			$h = $attribArray['height'];
 		}
-		return array(intval($w), intval($h));
+		return array((int)$w, (int)$h);
 	}
 
 	/**

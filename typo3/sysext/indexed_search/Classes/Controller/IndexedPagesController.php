@@ -226,7 +226,7 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 	 */
 	public function indexed_info($data, $firstColContent) {
 		// Query:
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('ISEC.phash_t3, ISEC.rl0, ISEC.rl1, ISEC.rl2, ISEC.page_id, ISEC.uniqid, ' . 'IP.phash, IP.phash_grouping, IP.cHashParams, IP.data_filename, IP.data_page_id, ' . 'IP.data_page_reg1, IP.data_page_type, IP.data_page_mp, IP.gr_list, IP.item_type, ' . 'IP.item_title, IP.item_description, IP.item_mtime, IP.tstamp, IP.item_size, ' . 'IP.contentHash, IP.crdate, IP.parsetime, IP.sys_language_uid, IP.item_crdate, ' . 'IP.externalUrl, IP.recordUid, IP.freeIndexUid, IP.freeIndexSetId, count(*) AS count_val', 'index_phash IP, index_section ISEC', 'IP.phash = ISEC.phash AND ISEC.page_id = ' . intval($data['uid']), 'IP.phash,IP.phash_grouping,IP.cHashParams,IP.data_filename,IP.data_page_id,IP.data_page_reg1,IP.data_page_type,IP.data_page_mp,IP.gr_list,IP.item_type,IP.item_title,IP.item_description,IP.item_mtime,IP.tstamp,IP.item_size,IP.contentHash,IP.crdate,IP.parsetime,IP.sys_language_uid,IP.item_crdate,ISEC.phash,ISEC.phash_t3,ISEC.rl0,ISEC.rl1,ISEC.rl2,ISEC.page_id,ISEC.uniqid,IP.externalUrl,IP.recordUid,IP.freeIndexUid,IP.freeIndexSetId', 'IP.item_type, IP.tstamp', $this->maxListPerPage + 1);
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('ISEC.phash_t3, ISEC.rl0, ISEC.rl1, ISEC.rl2, ISEC.page_id, ISEC.uniqid, ' . 'IP.phash, IP.phash_grouping, IP.cHashParams, IP.data_filename, IP.data_page_id, ' . 'IP.data_page_reg1, IP.data_page_type, IP.data_page_mp, IP.gr_list, IP.item_type, ' . 'IP.item_title, IP.item_description, IP.item_mtime, IP.tstamp, IP.item_size, ' . 'IP.contentHash, IP.crdate, IP.parsetime, IP.sys_language_uid, IP.item_crdate, ' . 'IP.externalUrl, IP.recordUid, IP.freeIndexUid, IP.freeIndexSetId, count(*) AS count_val', 'index_phash IP, index_section ISEC', 'IP.phash = ISEC.phash AND ISEC.page_id = ' . (int)$data['uid'], 'IP.phash,IP.phash_grouping,IP.cHashParams,IP.data_filename,IP.data_page_id,IP.data_page_reg1,IP.data_page_type,IP.data_page_mp,IP.gr_list,IP.item_type,IP.item_title,IP.item_description,IP.item_mtime,IP.tstamp,IP.item_size,IP.contentHash,IP.crdate,IP.parsetime,IP.sys_language_uid,IP.item_crdate,ISEC.phash,ISEC.phash_t3,ISEC.rl0,ISEC.rl1,ISEC.rl2,ISEC.page_id,ISEC.uniqid,IP.externalUrl,IP.recordUid,IP.freeIndexUid,IP.freeIndexSetId', 'IP.item_type, IP.tstamp', $this->maxListPerPage + 1);
 		// Initialize variables:
 		$rowCount = 0;
 		$lines = array();
@@ -275,7 +275,7 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 				</tr>';
 		}
 		// Checking for phash-rows which are NOT joined with the section table:
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('IP.*', 'index_phash IP', 'IP.data_page_id = ' . intval($data['uid']) . ' AND IP.phash NOT IN (' . implode(',', $phashAcc) . ')');
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('IP.*', 'index_phash IP', 'IP.data_page_id = ' . (int)$data['uid'] . ' AND IP.phash NOT IN (' . implode(',', $phashAcc) . ')');
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 			$out .= '
 				<tr class="typo3-red">
@@ -370,10 +370,10 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 				// Remove-indexing-link:
 				$lines[] = '<td>' . $cmdLinks . '</td>';
 				// Query:
-				$ftrow = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', 'index_fulltext', 'phash = ' . intval($row['phash']));
+				$ftrow = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', 'index_fulltext', 'phash = ' . (int)$row['phash']);
 				$lines[] = '<td style="white-space: normal;">' . htmlspecialchars(GeneralUtility::fixed_lgd_cs($ftrow['fulltextdata'], 3000)) . '<hr/><em>Size: ' . strlen($ftrow['fulltextdata']) . '</em>' . '</td>';
 				// Query:
-				$ftrows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('index_words.baseword, index_rel.*', 'index_rel, index_words', 'index_rel.phash = ' . intval($row['phash']) . ' AND index_words.wid = index_rel.wid', '', '', '', 'baseword');
+				$ftrows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('index_words.baseword, index_rel.*', 'index_rel, index_words', 'index_rel.phash = ' . (int)$row['phash'] . ' AND index_words.wid = index_rel.wid', '', '', '', 'baseword');
 				$wordList = '';
 				if (is_array($ftrows)) {
 					$indexed_words = array_keys($ftrows);
@@ -487,13 +487,14 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 	 */
 	public function showDetailsForPhash($phash) {
 		$content = '';
-		// Selects the result row:
-		$phashRecord = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', 'index_phash', 'phash = ' . intval($phash));
+		$phash = (int)$phash;
+			// Selects the result row:
+		$phashRecord = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', 'index_phash', 'phash = ' . $phash);
 		// If found, display:
 		if (is_array($phashRecord)) {
 			$content .= '<h4>phash row content:</h4>' . \TYPO3\CMS\Core\Utility\DebugUtility::viewArray($phashRecord);
 			// Getting debug information if any:
-			$ftrows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'index_debug', 'phash = ' . intval($phash));
+			$ftrows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'index_debug', 'phash = ' . $phash);
 			if (is_array($ftrows)) {
 				$debugInfo = unserialize($ftrows[0]['debuginfo']);
 				$lexer = $debugInfo['lexer'];
@@ -503,7 +504,7 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 			}
 			$content .= '<h3>Word statistics</h3>';
 			// Finding all words for this phash:
-			$ftrows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('index_words.*, index_rel.*', 'index_rel, index_words', 'index_rel.phash = ' . intval($phash) . ' AND index_words.wid = index_rel.wid', '', 'index_words.baseword', '');
+			$ftrows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('index_words.*, index_rel.*', 'index_rel, index_words', 'index_rel.phash = ' . $phash . ' AND index_words.wid = index_rel.wid', '', 'index_words.baseword', '');
 			$pageRec = BackendUtility::getRecord('pages', $phashRecord['data_page_id']);
 			$showStopWordCheckBox = $GLOBALS['BE_USER']->isAdmin();
 			$content .= $this->listWords($ftrows, 'All words found on page (' . count($ftrows) . '):', $showStopWordCheckBox, $pageRec);
@@ -516,16 +517,16 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 				$content .= $this->listMetaphoneStat($metaphone, 'Metaphone stats:');
 			}
 			// Finding top-20 on frequency for this phash:
-			$ftrows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('index_words.baseword, index_words.metaphone, index_rel.*', 'index_rel, index_words', 'index_rel.phash = ' . intval($phash) . ' AND index_words.wid = index_rel.wid
+			$ftrows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('index_words.baseword, index_words.metaphone, index_rel.*', 'index_rel, index_words', 'index_rel.phash = ' . $phash . ' AND index_words.wid = index_rel.wid
 							 AND index_words.is_stopword=0', '', 'index_rel.freq DESC', '20');
 			$content .= $this->listWords($ftrows, 'Top-20 words by frequency:', 2);
 			// Finding top-20 on count for this phash:
-			$ftrows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('index_words.baseword, index_words.metaphone, index_rel.*', 'index_rel, index_words', 'index_rel.phash = ' . intval($phash) . ' AND index_words.wid = index_rel.wid
+			$ftrows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('index_words.baseword, index_words.metaphone, index_rel.*', 'index_rel, index_words', 'index_rel.phash = ' . $phash . ' AND index_words.wid = index_rel.wid
 							 AND index_words.is_stopword=0', '', 'index_rel.count DESC', '20');
 			$content .= $this->listWords($ftrows, 'Top-20 words by count:', 2);
 			$content .= '<h3>Section records for this phash</h3>';
 			// Finding sections for this record:
-			$ftrows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'index_section', 'index_section.phash = ' . intval($phash), '', '', '');
+			$ftrows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'index_section', 'index_section.phash = ' . $phash, '', '', '');
 			$content .= \TYPO3\CMS\Core\Utility\DebugUtility::viewArray($ftrows);
 			// Add go-back link:
 			$content = $this->linkList() . $content . $this->linkList();
@@ -667,9 +668,9 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 	 */
 	public function showDetailsForWord($wid) {
 		// Select references to this word
-		$ftrows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('index_phash.*, index_section.*, index_rel.*', 'index_rel, index_section, index_phash', 'index_rel.wid = ' . intval($wid) . ' AND index_rel.phash = index_section.phash' . ' AND index_section.phash = index_phash.phash', '', 'index_rel.freq DESC', '');
+		$ftrows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('index_phash.*, index_section.*, index_rel.*', 'index_rel, index_section, index_phash', 'index_rel.wid = ' . (int)$wid . ' AND index_rel.phash = index_section.phash' . ' AND index_section.phash = index_phash.phash', '', 'index_rel.freq DESC', '');
 		// Headers:
-		$content .= '
+		$content = '
 			<tr class="tableheader bgColor5">
 				<td>phash</td>
 				<td>page_id</td>
@@ -711,7 +712,7 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 	 */
 	public function showDetailsForMetaphone($metaphone) {
 		// Finding top-20 on frequency for this phash:
-		$ftrows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('index_words.*', 'index_words', 'index_words.metaphone = ' . intval($metaphone), '', 'index_words.baseword', '');
+		$ftrows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('index_words.*', 'index_words', 'index_words.metaphone = ' . (int)$metaphone, '', 'index_words.baseword', '');
 		if (count($ftrows)) {
 			$content .= '<h4>Metaphone: ' . $this->indexerObj->metaphone($ftrows[0]['baseword'], 1) . '</h4>';
 			$content .= '
@@ -894,8 +895,8 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 	public function reindexPhash($phash, $pageId) {
 		// Query:
 		$resultRow = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('ISEC.*, IP.*', 'index_phash IP, index_section ISEC', 'IP.phash = ISEC.phash
-						AND IP.phash = ' . intval($phash) . '
-						AND ISEC.page_id = ' . intval($pageId));
+						AND IP.phash = ' . (int)$phash . '
+						AND ISEC.page_id = ' . (int)$pageId);
 		$content = '';
 		if (is_array($resultRow)) {
 			if ($resultRow['item_type'] && $resultRow['item_type'] !== '0') {
@@ -974,15 +975,15 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 			$phashRows = GeneralUtility::trimExplode(',', $phashList, TRUE);
 		}
 		foreach ($phashRows as $phash) {
-			$phash = intval($phash);
+			$phash = (int)$phash;
 			if ($phash > 0) {
 				if ($clearPageCache) {
 					// Clearing page cache:
-					$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('page_id', 'index_section', 'phash=' . intval($phash));
+					$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('page_id', 'index_section', 'phash=' . (int)$phash);
 					if ($GLOBALS['TYPO3_DB']->sql_num_rows($res)) {
 						$idList = array();
 						while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-							$idList[] = (int) $row['page_id'];
+							$idList[] = (int)$row['page_id'];
 						}
 						$pageCache = $GLOBALS['typo3CacheManager']->getCache('cache_pages');
 						foreach ($idList as $pageId) {
@@ -993,7 +994,7 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 				// Removing old registrations for all tables.
 				$tableArr = explode(',', 'index_phash,index_rel,index_section,index_grlist,index_fulltext,index_debug');
 				foreach ($tableArr as $table) {
-					$GLOBALS['TYPO3_DB']->exec_DELETEquery($table, 'phash=' . intval($phash));
+					$GLOBALS['TYPO3_DB']->exec_DELETEquery($table, 'phash=' . (int)$phash);
 				}
 			}
 		}
@@ -1008,7 +1009,7 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 	 * @todo Define visibility
 	 */
 	public function getGrListEntriesForPhash($phash, $gr_list) {
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'index_grlist', 'phash=' . intval($phash));
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'index_grlist', 'phash=' . (int)$phash);
 		$lines = array();
 		$isRemoved = 0;
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {

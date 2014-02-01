@@ -105,7 +105,7 @@ class LocalPageTree extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 		// PM action:
 		$PM = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode('_', \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('PM'));
 		// traverse mounts:
-		$titleLen = intval($this->BE_USER->uc['titleLen']);
+		$titleLen = (int)$this->BE_USER->uc['titleLen'];
 		$treeArr = array();
 		$idx = 0;
 		// Set first:

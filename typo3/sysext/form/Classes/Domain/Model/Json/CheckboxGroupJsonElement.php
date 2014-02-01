@@ -93,7 +93,7 @@ class CheckboxGroupJsonElement extends \TYPO3\CMS\Form\Domain\Model\Json\Fieldse
 			$keys = \TYPO3\CMS\Core\TypoScript\TemplateService::sortedKeyList($parameters);
 			foreach ($keys as $key) {
 				$class = $parameters[$key];
-				if (intval($key) && !strstr($key, '.')) {
+				if ((int)$key && strpos($key, '.') === FALSE) {
 					if (isset($parameters[$key . '.']) && $class === 'CHECKBOX') {
 						$childElementArguments = $parameters[$key . '.'];
 						if (isset($childElementArguments['checked'])) {

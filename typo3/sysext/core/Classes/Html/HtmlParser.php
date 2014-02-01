@@ -811,7 +811,7 @@ class HtmlParser {
 												$tagAttrib[0][$attr] = trim($tagAttrib[0][$attr]);
 											}
 											if ($params['intval']) {
-												$tagAttrib[0][$attr] = intval($tagAttrib[0][$attr]);
+												$tagAttrib[0][$attr] = (int)$tagAttrib[0][$attr];
 											}
 											if ($params['lower']) {
 												$tagAttrib[0][$attr] = strtolower($tagAttrib[0][$attr]);
@@ -821,9 +821,9 @@ class HtmlParser {
 											}
 											if ($params['range']) {
 												if (isset($params['range'][1])) {
-													$tagAttrib[0][$attr] = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($tagAttrib[0][$attr], intval($params['range'][0]), intval($params['range'][1]));
+													$tagAttrib[0][$attr] = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($tagAttrib[0][$attr], (int)$params['range'][0], (int)$params['range'][1]);
 												} else {
-													$tagAttrib[0][$attr] = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($tagAttrib[0][$attr], intval($params['range'][0]));
+													$tagAttrib[0][$attr] = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($tagAttrib[0][$attr], (int)$params['range'][0]);
 												}
 											}
 											if (is_array($params['list'])) {
@@ -1441,7 +1441,7 @@ class HtmlParser {
 		return array(
 			$keepTags,
 			'' . $TSconfig['keepNonMatchedTags'],
-			intval($TSconfig['htmlSpecialChars']),
+			(int)$TSconfig['htmlSpecialChars'],
 			$addConfig
 		);
 	}

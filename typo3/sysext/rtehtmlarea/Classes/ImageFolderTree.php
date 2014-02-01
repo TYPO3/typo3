@@ -85,7 +85,7 @@ class ImageFolderTree extends \TBE_FolderTree {
 	 */
 	public function PMiconATagWrap($icon, $cmd, $isExpand = TRUE) {
 		if ($this->thisScript) {
-			$js = htmlspecialchars('Tree.thisScript=\'' . $GLOBALS['BACK_PATH'] . 'ajax.php\';Tree.load(\'' . $cmd . '\', ' . intval($isExpand) . ', this);');
+			$js = htmlspecialchars('Tree.thisScript=\'' . $GLOBALS['BACK_PATH'] . 'ajax.php\';Tree.load(\'' . $cmd . '\', ' . (int)$isExpand . ', this);');
 			return '<a class="pm" onclick="' . $js . '">' . $icon . '</a>';
 		} else {
 			return $icon;

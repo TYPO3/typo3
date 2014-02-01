@@ -77,7 +77,7 @@ class CategoryCollection extends \TYPO3\CMS\Core\Category\Collection\CategoryCol
 		$collectionRecord = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
 			'*',
 			static::$storageTableName,
-			'uid = ' . intval($id) . self::getFrontendObject()->sys_page->enableFields(static::$storageTableName)
+			'uid = ' . (int)$id . self::getFrontendObject()->sys_page->enableFields(static::$storageTableName)
 		);
 		$collectionRecord['table_name'] = $tableName;
 		$collectionRecord['field_name'] = $fieldName;
@@ -97,7 +97,7 @@ class CategoryCollection extends \TYPO3\CMS\Core\Category\Collection\CategoryCol
 	protected function getCollectedRecords() {
 		$relatedRecords = array();
 		// Assemble where clause
-		$where = 'AND ' . self::$storageTableName . '.uid = ' . intval($this->getIdentifier());
+		$where = 'AND ' . self::$storageTableName . '.uid = ' . (int)$this->getIdentifier();
 		// Add condition on tablenames fields
 		$where .= ' AND sys_category_record_mm.tablenames = ' . $this->getDatabase()->fullQuoteStr(
 			$this->getItemTableName(),
@@ -118,7 +118,7 @@ class CategoryCollection extends \TYPO3\CMS\Core\Category\Collection\CategoryCol
 			// If not in default language, also consider items in current language with no original
 			if ($this->getFrontendObject()->sys_language_content > 0) {
 				$languageCondition .= '
-					OR (' . $languageField . ' = ' . intval($this->getFrontendObject()->sys_language_content) . '
+					OR (' . $languageField . ' = ' . (int)$this->getFrontendObject()->sys_language_content . '
 					AND ' . $this->getItemTableName() . '.' .
 					$GLOBALS['TCA'][$this->getItemTableName()]['ctrl']['transOrigPointerField'] . ' = 0)
 				';

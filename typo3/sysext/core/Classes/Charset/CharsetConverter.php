@@ -1639,7 +1639,7 @@ class CharsetConverter {
 	 * @see mb_strlen(), mb_substr()
 	 */
 	protected function cropMbstring($charset, $string, $len, $crop = '') {
-		if (intval($len) === 0 || mb_strlen($string, $charset) <= abs($len)) {
+		if ((int)$len === 0 || mb_strlen($string, $charset) <= abs($len)) {
 			return $string;
 		}
 		if ($len > 0) {
@@ -1666,7 +1666,7 @@ class CharsetConverter {
 		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['t3lib_cs_utils'] == 'mbstring') {
 			return $this->cropMbstring($charset, $string, $len, $crop);
 		}
-		if (intval($len) == 0) {
+		if ((int)$len === 0) {
 			return $string;
 		}
 		if ($charset == 'utf-8') {
@@ -2074,7 +2074,7 @@ class CharsetConverter {
 			$d = -1;
 		}
 		for (; strlen($str[$i]) && $n < $p; $i += $d) {
-			$c = (int) ord($str[$i]);
+			$c = (int)ord($str[$i]);
 			// single-byte (0xxxxxx)
 			if (!($c & 128)) {
 				$n++;
@@ -2112,7 +2112,7 @@ class CharsetConverter {
 		// Number of characters
 		$n = 0;
 		for ($i = $pos; $i > 0; $i--) {
-			$c = (int) ord($str[$i]);
+			$c = (int)ord($str[$i]);
 			// single-byte (0xxxxxx)
 			if (!($c & 128)) {
 				$n++;

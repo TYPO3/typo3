@@ -405,7 +405,7 @@ class GeneralUtility {
 				} else {
 					$mask = FALSE;
 				}
-				if (intval($mask)) {
+				if ((int)$mask) {
 					// "192.168.3.0/24"
 					$lnet = ip2long($test);
 					$lip = ip2long($baseIP);
@@ -454,7 +454,7 @@ class GeneralUtility {
 			}
 			if (self::validIPv6($test)) {
 				$test = self::normalizeIPv6($test);
-				$maskInt = intval($mask) ? intval($mask) : 128;
+				$maskInt = (int)$mask ?: 128;
 				// Special case; /0 is an allowed mask - equals a wildcard
 				if ($mask === '0') {
 					$success = TRUE;
@@ -466,7 +466,7 @@ class GeneralUtility {
 					$success = TRUE;
 					// Modulo is 0 if this is a 8-bit-boundary
 					$maskIntModulo = $maskInt % 8;
-					$numFullCharactersUntilBoundary = intval($maskInt / 8);
+					$numFullCharactersUntilBoundary = (int)($maskInt / 8);
 					if (substr($testBin, 0, $numFullCharactersUntilBoundary) !== substr($baseIPBin, 0, $numFullCharactersUntilBoundary)) {
 						$success = FALSE;
 					} elseif ($maskIntModulo > 0) {
@@ -1308,7 +1308,7 @@ class GeneralUtility {
 	 * @return string Random Bytes
 	 */
 	static public function getRandomHexString($count) {
-		return substr(bin2hex(self::generateRandomBytes(intval(($count + 1) / 2))), 0, $count);
+		return substr(bin2hex(self::generateRandomBytes((int)(($count + 1) / 2))), 0, $count);
 	}
 
 	/**
@@ -1442,18 +1442,35 @@ class GeneralUtility {
 	}
 
 	/**
-	 * Explodes a $string delimited by $delim and passes each item in the array through intval().
+	 * Explodes a $string delimited by $delim and casts each item in the array to (int).
 	 * Corresponds to \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(), but with conversion to integers for all values.
 	 *
 	 * @param string $delimiter Delimiter string to explode with
 	 * @param string $string The string to explode
-	 * @param boolean $onlyNonEmptyValues If set, all empty values (='') will NOT be set in output
+	 * @param boolean $removeEmptyValues If set, all empty values (='') will NOT be set in output
 	 * @param integer $limit If positive, the result will contain a maximum of limit elements,
 	 * @return array Exploded values, all converted to integers
 	 */
-	static public function intExplode($delimiter, $string, $onlyNonEmptyValues = FALSE, $limit = 0) {
-		$explodedValues = self::trimExplode($delimiter, $string, $onlyNonEmptyValues, $limit);
-		return array_map('intval', $explodedValues);
+	static public function intExplode($delimiter, $string, $removeEmptyValues = FALSE, $limit = 0) {
+		$result = explode($delimiter, $string);
+		foreach ($result as $key => &$value) {
+			if ($removeEmptyValues && ($value === '' || trim($value) === '')) {
+				unset($result[$key]);
+			} else {
+				$value = (int)$value;
+			}
+		}
+		unset($value);
+		if ($limit !== 0) {
+			if ($limit < 0) {
+				$result = array_slice($result, 0, $limit);
+			} elseif (count($result) > $limit) {
+				$lastElements = array_slice($result, $limit - 1);
+				$result = array_slice($result, 0, $limit - 1);
+				$result[] = implode($delimiter, $lastElements);
+			}
+		}
+		return $result;
 	}
 
 	/**
@@ -1493,7 +1510,7 @@ class GeneralUtility {
 			}
 			$result = $temp;
 		}
-		if ($limit != 0) {
+		if ($limit !== 0) {
 			if ($limit < 0) {
 				$result = array_slice($result, 0, $limit);
 			} elseif (count($result) > $limit) {
@@ -2122,7 +2139,7 @@ class GeneralUtility {
 					'path' => ($clearStackPath ? '' : $stackData['path'] . '/' . $tagName)
 				)) . ($spaceInd >= 0 ? str_pad('', ($level + 1) * $indentN, $indentChar) : '');
 				// Do not set "type = array". Makes prettier XML but means that empty arrays are not restored with xml2array
-				if ((int) $options['disableTypeAttrib'] != 2) {
+				if ((int)$options['disableTypeAttrib'] != 2) {
 					$attr .= ' type="array"';
 				}
 			} else {
@@ -2272,7 +2289,7 @@ class GeneralUtility {
 						// Cast type:
 						switch ((string) $val['attributes']['type']) {
 							case 'integer':
-								$current[$tagName] = (int) $current[$tagName];
+								$current[$tagName] = (int)$current[$tagName];
 								break;
 							case 'double':
 								$current[$tagName] = (double) $current[$tagName];
@@ -2420,7 +2437,7 @@ class GeneralUtility {
 			curl_setopt($ch, CURLOPT_HTTPGET, $includeHeader == 2 ? 'HEAD' : 'GET');
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 			curl_setopt($ch, CURLOPT_FAILONERROR, 1);
-			curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, max(0, intval($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlTimeout'])));
+			curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, max(0, (int)$GLOBALS['TYPO3_CONF_VARS']['SYS']['curlTimeout']));
 			$followLocation = @curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
 			if (is_array($requestHeaders)) {
 				curl_setopt($ch, CURLOPT_HTTPHEADER, $requestHeaders);
@@ -2469,7 +2486,7 @@ class GeneralUtility {
 				}
 				return FALSE;
 			}
-			$port = intval($parsedURL['port']);
+			$port = (int)$parsedURL['port'];
 			if ($port < 1) {
 				if ($parsedURL['scheme'] == 'http') {
 					$port = $port > 0 ? $port : 80;
@@ -3027,7 +3044,7 @@ Connection: close
 	 */
 	static public function getMaxUploadFileSize($localLimit = 0) {
 		// Don't allow more than the global max file size at all
-		$t3Limit = intval($localLimit > 0 ? $localLimit : $GLOBALS['TYPO3_CONF_VARS']['BE']['maxFileSize']);
+		$t3Limit = (int)$localLimit > 0 ? $localLimit : $GLOBALS['TYPO3_CONF_VARS']['BE']['maxFileSize'];
 		// As TYPO3 is handling the file size in KB, multiply by 1024 to get bytes
 		$t3Limit = $t3Limit * 1024;
 		// Check for PHP restrictions of the maximum size of one of the $_FILES
@@ -4764,7 +4781,7 @@ Connection: close
 			case '76':
 
 			default:
-				$lengthLimit = (int) $urlmode;
+				$lengthLimit = (int)$urlmode;
 		}
 		if ($lengthLimit === FALSE) {
 			// No processing
@@ -4814,7 +4831,7 @@ Connection: close
 	 * @return integer Compensated fontsize based on $GLOBALS['TYPO3_CONF_VARS']['GFX']['TTFdpi']
 	 */
 	static public function freetypeDpiComp($font_size) {
-		$dpi = intval($GLOBALS['TYPO3_CONF_VARS']['GFX']['TTFdpi']);
+		$dpi = (int)$GLOBALS['TYPO3_CONF_VARS']['GFX']['TTFdpi'];
 		if ($dpi != 72) {
 			$font_size = $font_size / $dpi * 72;
 		}
@@ -4873,7 +4890,7 @@ Connection: close
 	static public function sysLog($msg, $extKey, $severity = 0) {
 		$severity = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($severity, 0, 4);
 		// Is message worth logging?
-		if (intval($GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLogLevel']) > $severity) {
+		if ((int)$GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLogLevel'] > $severity) {
 			return;
 		}
 		// Initialize logging
@@ -4898,7 +4915,7 @@ Connection: close
 		foreach (explode(';', $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLog'], 2) as $log) {
 			list($type, $destination, $level) = explode(',', $log, 4);
 			// Is message worth logging for this log type?
-			if (intval($level) > $severity) {
+			if ((int)$level > $severity) {
 				continue;
 			}
 			$msgLine = ' - ' . $extKey . ': ' . $msg;
@@ -4928,7 +4945,7 @@ Connection: close
 				error_log($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLogHost'] . $msgLine, 0);
 			} elseif ($type == 'syslog') {
 				$priority = array(LOG_INFO, LOG_NOTICE, LOG_WARNING, LOG_ERR, LOG_CRIT);
-				syslog($priority[(int) $severity], $msgLine);
+				syslog($priority[(int)$severity], $msgLine);
 			}
 		}
 	}

@@ -214,18 +214,18 @@ class IconUtility {
 			}
 			// If a "starttime" is set and higher than current time:
 			if ($enCols['starttime']) {
-				if ($GLOBALS['EXEC_TIME'] < intval($row[$enCols['starttime']])) {
+				if ($GLOBALS['EXEC_TIME'] < (int)$row[$enCols['starttime']]) {
 					$timing = TRUE;
 					// And if "endtime" is NOT set:
-					if (intval($row[$enCols['endtime']]) == 0) {
+					if ((int)$row[$enCols['endtime']] === 0) {
 						$futuretiming = TRUE;
 					}
 				}
 			}
 			// If an "endtime" is set:
 			if ($enCols['endtime']) {
-				if (intval($row[$enCols['endtime']]) > 0) {
-					if (intval($row[$enCols['endtime']]) < $GLOBALS['EXEC_TIME']) {
+				if ((int)$row[$enCols['endtime']] > 0) {
+					if ((int)$row[$enCols['endtime']] < $GLOBALS['EXEC_TIME']) {
 						// End-timing applies at this point.
 						$timing = TRUE;
 					} else {
@@ -848,13 +848,13 @@ class IconUtility {
 				$status['hidden'] = TRUE;
 			}
 			// If a "starttime" is set and higher than current time:
-			if ($tcaCtrl['enablecolumns']['starttime'] && $GLOBALS['EXEC_TIME'] < intval($row[$tcaCtrl['enablecolumns']['starttime']])) {
+			if ($tcaCtrl['enablecolumns']['starttime'] && $GLOBALS['EXEC_TIME'] < (int)$row[$tcaCtrl['enablecolumns']['starttime']]) {
 				$status['starttime'] = TRUE;
 			}
 			// If an "endtime" is set
 			if ($tcaCtrl['enablecolumns']['endtime']) {
-				if (intval($row[$tcaCtrl['enablecolumns']['endtime']]) > 0) {
-					if (intval($row[$tcaCtrl['enablecolumns']['endtime']]) < $GLOBALS['EXEC_TIME']) {
+				if ((int)$row[$tcaCtrl['enablecolumns']['endtime']] > 0) {
+					if ((int)$row[$tcaCtrl['enablecolumns']['endtime']] < $GLOBALS['EXEC_TIME']) {
 						// End-timing applies at this point.
 						$status['endtime'] = TRUE;
 					} else {

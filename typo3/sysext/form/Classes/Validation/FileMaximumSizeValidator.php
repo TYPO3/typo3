@@ -73,7 +73,7 @@ class FileMaximumSizeValidator extends \TYPO3\CMS\Form\Validation\AbstractValida
 	 * @return object Rule object
 	 */
 	public function setMaximum($maximum) {
-		$this->maximum = (int) $maximum;
+		$this->maximum = (int)$maximum;
 		return $this;
 	}
 

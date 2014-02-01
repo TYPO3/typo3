@@ -43,6 +43,6 @@ $TYPO3_CONF_VARS['EXTCONF']['indexed_search']['use_tables'] = 'index_phash,index
 // unserializing the configuration so we can use it here:
 $_EXTCONF = unserialize($_EXTCONF);
 // Use the advanced doubleMetaphone parser instead of the internal one (usage of metaphone parsers is generally disabled by default)
-if (isset($_EXTCONF['enableMetaphoneSearch']) && intval($_EXTCONF['enableMetaphoneSearch']) == 2) {
+if (isset($_EXTCONF['enableMetaphoneSearch']) && (int)$_EXTCONF['enableMetaphoneSearch'] == 2) {
 	$TYPO3_CONF_VARS['EXTCONF']['indexed_search']['metaphone'] = '&TYPO3\\CMS\\IndexedSearch\\Utility\\DoubleMetaPhoneUtility';
 }

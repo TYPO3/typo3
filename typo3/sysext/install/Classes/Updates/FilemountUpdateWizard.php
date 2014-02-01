@@ -142,7 +142,7 @@ class FilemountUpdateWizard extends AbstractUpdate {
 			}
 			$this->db->exec_UPDATEquery(
 				'sys_filemounts',
-				'uid=' . intval($filemount['uid']),
+				'uid=' . (int)$filemount['uid'],
 				array('base' => $storageId, 'path' => $storagePath)
 			);
 			$this->sqlQueries[] = $GLOBALS['TYPO3_DB']->debug_lastBuiltQuery;
@@ -164,7 +164,7 @@ class FilemountUpdateWizard extends AbstractUpdate {
 		foreach ($relativeFilemounts as $filemount) {
 			$this->db->exec_UPDATEquery(
 				'sys_filemounts',
-				'uid=' . intval($filemount['uid']),
+				'uid=' . (int)$filemount['uid'],
 				array('base' => $this->storage->getUid(), 'path' => '/' . ltrim($filemount['path'], '/'))
 			);
 			$this->sqlQueries[] = $GLOBALS['TYPO3_DB']->debug_lastBuiltQuery;

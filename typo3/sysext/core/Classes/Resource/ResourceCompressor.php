@@ -84,7 +84,7 @@ class ResourceCompressor {
 			$this->createGzipped = TRUE;
 			// $compressionLevel can also be TRUE
 			if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($compressionLevel)) {
-				$this->gzipCompressionLevel = intval($compressionLevel);
+				$this->gzipCompressionLevel = (int)$compressionLevel;
 			}
 		}
 		$this->setInitialPaths();

@@ -93,13 +93,13 @@ class SaltFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		// 3 Bytes should result in a 6 char length base64 encoded string
 		// used for MD5 and PHPass salted hashing
 		$byteLength = 3;
-		$reqLengthBase64 = intval(ceil($byteLength * 8 / 6));
+		$reqLengthBase64 = (int)ceil($byteLength * 8 / 6);
 		$randomBytes = \TYPO3\CMS\Core\Utility\GeneralUtility::generateRandomBytes($byteLength);
 		$this->assertTrue(strlen($this->objectInstance->base64Encode($randomBytes, $byteLength)) == $reqLengthBase64);
 		// 16 Bytes should result in a 22 char length base64 encoded string
 		// used for Blowfish salted hashing
 		$byteLength = 16;
-		$reqLengthBase64 = intval(ceil($byteLength * 8 / 6));
+		$reqLengthBase64 = (int)ceil($byteLength * 8 / 6);
 		$randomBytes = \TYPO3\CMS\Core\Utility\GeneralUtility::generateRandomBytes($byteLength);
 		$this->assertTrue(strlen($this->objectInstance->base64Encode($randomBytes, $byteLength)) == $reqLengthBase64);
 	}

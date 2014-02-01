@@ -95,8 +95,8 @@ class GridDataService {
 	public function generateGridListFromVersions($versions, $parameter, $currentWorkspace) {
 		// Read the given parameters from grid. If the parameter is not set use default values.
 		$filterTxt = isset($parameter->filterTxt) ? $parameter->filterTxt : '';
-		$start = isset($parameter->start) ? intval($parameter->start) : 0;
-		$limit = isset($parameter->limit) ? intval($parameter->limit) : 30;
+		$start = isset($parameter->start) ? (int)$parameter->start : 0;
+		$limit = isset($parameter->limit) ? (int)$parameter->limit : 30;
 		$this->sort = isset($parameter->sort) ? $parameter->sort : 't3ver_oid';
 		$this->sortDir = isset($parameter->dir) ? $parameter->dir : 'ASC';
 		if (is_int($currentWorkspace)) {

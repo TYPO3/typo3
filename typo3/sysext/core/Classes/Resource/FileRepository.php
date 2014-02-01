@@ -187,7 +187,7 @@ class FileRepository extends AbstractRepository {
 			'tablenames=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($tableName, 'sys_file_reference') .
 				' AND deleted = 0' .
 				' AND hidden = 0' .
-				' AND uid_foreign=' . intval($uid) .
+				' AND uid_foreign=' . (int)$uid .
 				' AND fieldname=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($fieldName, 'sys_file_reference'),
 			'',
 			'sorting_foreign'

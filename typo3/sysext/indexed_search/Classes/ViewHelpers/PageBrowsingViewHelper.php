@@ -52,7 +52,7 @@ class PageBrowsingViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractVi
 		$content = '';
 		// only show the result browser if more than one page is needed
 		if ($pageCount > 1) {
-			$currentPage = intval($currentPage);
+			$currentPage = (int)$currentPage;
 			// prev page
 			// show on all pages after the 1st one
 			if ($currentPage > 0) {

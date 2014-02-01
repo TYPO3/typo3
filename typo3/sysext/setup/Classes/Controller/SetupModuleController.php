@@ -444,7 +444,7 @@ class SetupModuleController {
 		$code = array();
 		$i = 0;
 		$fieldArray = $this->getFieldsFromShowItem();
-		$this->dividers2tabs = isset($GLOBALS['TYPO3_USER_SETTINGS']['ctrl']['dividers2tabs']) ? intval($GLOBALS['TYPO3_USER_SETTINGS']['ctrl']['dividers2tabs']) : 0;
+		$this->dividers2tabs = isset($GLOBALS['TYPO3_USER_SETTINGS']['ctrl']['dividers2tabs']) ? (int)$GLOBALS['TYPO3_USER_SETTINGS']['ctrl']['dividers2tabs'] : 0;
 		$tabLabel = '';
 		foreach ($fieldArray as $fieldName) {
 			$more = '';
@@ -656,7 +656,7 @@ class SetupModuleController {
 		$this->simulateSelector = '';
 		unset($this->OLD_BE_USER);
 		if ($GLOBALS['BE_USER']->isAdmin()) {
-			$this->simUser = intval(GeneralUtility::_GP('simUser'));
+			$this->simUser = (int)GeneralUtility::_GP('simUser');
 			// Make user-selector:
 			$users = BackendUtility::getUserNames('username,usergroup,usergroup_cached_list,uid,realName', BackendUtility::BEenableFields('be_users'));
 			$opt = array();

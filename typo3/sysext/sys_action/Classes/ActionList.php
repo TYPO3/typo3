@@ -84,7 +84,7 @@ class ActionList extends \TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList {
 			$urlParameters['SET'] = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('SET');
 		}
 		if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('show')) {
-			$urlParameters['show'] = intval(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('show'));
+			$urlParameters['show'] = (int)\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('show');
 		}
 		return \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('user_task', $urlParameters);
 	}

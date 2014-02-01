@@ -164,7 +164,7 @@ class StaticRecordCollection extends \TYPO3\CMS\Core\Collection\AbstractRecordCo
 	 */
 	protected function getCollectedRecords() {
 		$relatedRecords = array();
-		$resource = $GLOBALS['TYPO3_DB']->exec_SELECT_mm_query($this->getItemTableName() . '.*', self::$storageTableName, 'sys_collection_entries', $this->getItemTableName(), 'AND ' . self::$storageTableName . '.uid=' . intval($this->getIdentifier()));
+		$resource = $GLOBALS['TYPO3_DB']->exec_SELECT_mm_query($this->getItemTableName() . '.*', self::$storageTableName, 'sys_collection_entries', $this->getItemTableName(), 'AND ' . self::$storageTableName . '.uid=' . (int)$this->getIdentifier());
 		if ($resource) {
 			while ($record = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($resource)) {
 				$relatedRecords[] = $record;

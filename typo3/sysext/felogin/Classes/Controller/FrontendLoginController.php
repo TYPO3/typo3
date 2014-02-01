@@ -130,8 +130,8 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin 
 		$this->mergeflexFormValuesIntoConf();
 		// Get storage PIDs:
 		if ($this->conf['storagePid']) {
-			if (intval($this->conf['recursive'])) {
-				$this->spid = $this->pi_getPidList($this->conf['storagePid'], intval($this->conf['recursive']));
+			if ((int)$this->conf['recursive']) {
+				$this->spid = $this->pi_getPidList($this->conf['storagePid'], (int)$this->conf['recursive']);
 			} else {
 				$this->spid = $this->conf['storagePid'];
 			}
@@ -294,7 +294,7 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin 
 	protected function changePassword() {
 		$subpartArray = ($linkpartArray = array());
 		$done = FALSE;
-		$minLength = intval($this->conf['newPasswordMinLength']) ?: 6;
+		$minLength = (int)$this->conf['newPasswordMinLength'] ?: 6;
 		$subpart = $this->cObj->getSubpart($this->template, '###TEMPLATE_CHANGEPASSWORD###');
 		$markerArray['###STATUS_HEADER###'] = $this->getDisplayText('change_password_header', $this->conf['changePasswordHeader_stdWrap.']);
 		$markerArray['###STATUS_MESSAGE###'] = sprintf($this->getDisplayText(
@@ -306,14 +306,14 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin 
 		$uid = $this->piVars['user'];
 		$piHash = $this->piVars['forgothash'];
 		$hash = explode('|', $piHash);
-		if (intval($uid) == 0) {
+		if ((int)$uid === 0) {
 			$markerArray['###STATUS_MESSAGE###'] = $this->getDisplayText(
 				'change_password_notvalid_message',
 				$this->conf['changePasswordNotValidMessage_stdWrap.']
 			);
 			$subpartArray['###CHANGEPASSWORD_FORM###'] = '';
 		} else {
-			$user = $this->pi_getRecord('fe_users', intval($uid));
+			$user = $this->pi_getRecord('fe_users', (int)$uid);
 			$userHash = $user['felogin_forgotHash'];
 			$compareHash = explode('|', $userHash);
 			if (!$compareHash || !$compareHash[1] || $compareHash[0] < time() || $hash[0] != $compareHash[0] || md5($hash[1]) != $compareHash[1]) {
@@ -397,7 +397,7 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin 
 	 * @return string Empty string with success, error message with no success
 	 */
 	protected function generateAndSendHash($user) {
-		$hours = intval($this->conf['forgotLinkHashValidTime']) > 0 ? intval($this->conf['forgotLinkHashValidTime']) : 24;
+		$hours = (int)$this->conf['forgotLinkHashValidTime'] > 0 ? (int)$this->conf['forgotLinkHashValidTime'] : 24;
 		$validEnd = time() + 3600 * $hours;
 		$validEndString = date($this->conf['dateFormat'], $validEnd);
 		$hash = md5(GeneralUtility::generateRandomBytes(64));
@@ -663,7 +663,7 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin 
 							break;
 						case 'login':
 							if ($this->conf['redirectPageLogin']) {
-								$redirect_url[] = $this->pi_getPageLink(intval($this->conf['redirectPageLogin']));
+								$redirect_url[] = $this->pi_getPageLink((int)$this->conf['redirectPageLogin']);
 							}
 							break;
 						case 'getpost':
@@ -711,7 +711,7 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin 
 					switch ($redirMethod) {
 						case 'loginError':
 							if ($this->conf['redirectPageLoginError']) {
-								$redirect_url[] = $this->pi_getPageLink(intval($this->conf['redirectPageLoginError']));
+								$redirect_url[] = $this->pi_getPageLink((int)$this->conf['redirectPageLoginError']);
 							}
 							break;
 					}
@@ -724,7 +724,7 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin 
 					$redirect_url[] = $this->cObj->lastTypoLinkUrl;
 				} elseif ($this->logintype == '' && $redirMethod == 'logout' && $this->conf['redirectPageLogout'] && $GLOBALS['TSFE']->loginUser) {
 					// If logout and page not accessible
-					$redirect_url[] = $this->pi_getPageLink(intval($this->conf['redirectPageLogout']));
+					$redirect_url[] = $this->pi_getPageLink((int)$this->conf['redirectPageLogout']);
 				} elseif ($this->logintype === 'logout') {
 					// after logout
 					// Hook for general actions after after logout has been confirmed
@@ -739,7 +739,7 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin 
 					switch ($redirMethod) {
 						case 'logout':
 							if ($this->conf['redirectPageLogout']) {
-								$redirect_url[] = $this->pi_getPageLink(intval($this->conf['redirectPageLogout']));
+								$redirect_url[] = $this->pi_getPageLink((int)$this->conf['redirectPageLogout']);
 							}
 							break;
 					}

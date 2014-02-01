@@ -49,7 +49,7 @@ abstract class AbstractElementView {
 	 */
 	public function __construct(\TYPO3\CMS\Form\Domain\Model\Element\AbstractElement $model, $spaces) {
 		$this->model = $model;
-		$this->spaces = (int) $spaces;
+		$this->spaces = (int)$spaces;
 	}
 
 }

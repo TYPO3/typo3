@@ -412,7 +412,7 @@ class DatabaseTreeDataProvider extends \TYPO3\CMS\Core\Tree\TableConfiguration\A
 					$dbGroup->start($value, $this->getTableName(), $this->columnConfiguration['MM'], $uid, $this->getTableName(), $this->columnConfiguration);
 					$relatedUids = $dbGroup->tableArray[$this->getTableName()];
 				} elseif ($this->columnConfiguration['foreign_field']) {
-					$records = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid', $this->getTableName(), $this->columnConfiguration['foreign_field'] . '=' . intval($uid));
+					$records = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid', $this->getTableName(), $this->columnConfiguration['foreign_field'] . '=' . (int)$uid);
 					foreach ($records as $record) {
 						$relatedUids[] = $record['uid'];
 					}
@@ -434,7 +434,7 @@ class DatabaseTreeDataProvider extends \TYPO3\CMS\Core\Tree\TableConfiguration\A
 	 * @return integer[] all uids found
 	 */
 	protected function listFieldQuery($fieldName, $queryId) {
-		$records = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid', $this->getTableName(), $GLOBALS['TYPO3_DB']->listQuery($fieldName, intval($queryId), $this->getTableName()) . (intval($queryId) == 0 ? ' OR ' . $fieldName . ' = \'\'' : ''));
+		$records = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid', $this->getTableName(), $GLOBALS['TYPO3_DB']->listQuery($fieldName, (int)$queryId, $this->getTableName()) . ((int)$queryId == 0 ? ' OR ' . $fieldName . ' = \'\'' : ''));
 		$uidArray = array();
 		foreach ($records as $record) {
 			$uidArray[] = $record['uid'];

@@ -92,7 +92,7 @@ class FormContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractConten
 						if (is_array($singleKeyArray['valueArray.'])) {
 							$temp_accumulated = array();
 							foreach ($singleKeyArray['valueArray.'] as $singleKey => $singleKey_valueArray) {
-								if (is_array($singleKey_valueArray) && (int)$singleKey . '.' === (string)$singleKey) {
+								if (is_array($singleKey_valueArray) && (int)$singleKey . '.' === (string) $singleKey) {
 									$temp_valueArray = array();
 									$valueArrayLabel = isset($singleKey_valueArray['label.']) ? $this->cObj->stdWrap($singleKey_valueArray['label'], $singleKey_valueArray['label.']) : $singleKey_valueArray['label'];
 									list($temp_valueArray[0]) = explode('=', $valueArrayLabel);
@@ -173,7 +173,7 @@ class FormContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractConten
 					// Attachment names...
 					if ($confData['type'] == 'file') {
 						$confData['fieldname'] = 'attachment' . $attachmentCounter;
-						$attachmentCounter = intval($attachmentCounter) + 1;
+						$attachmentCounter = (int)$attachmentCounter + 1;
 					}
 				} else {
 					$confData['fieldname'] = str_replace(' ', '_', trim($typeParts[0]));
@@ -215,7 +215,7 @@ class FormContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractConten
 				// Create form field based on configuration/type:
 				switch ($confData['type']) {
 					case 'textarea':
-						$cols = trim($fParts[1]) ? intval($fParts[1]) : 20;
+						$cols = trim($fParts[1]) ? (int)$fParts[1] : 20;
 						$compensateFieldWidth = isset($conf['compensateFieldWidth.']) ? $this->cObj->stdWrap($conf['compensateFieldWidth'], $conf['compensateFieldWidth.']) : $conf['compensateFieldWidth'];
 						$compWidth = doubleval($compensateFieldWidth ? $compensateFieldWidth : $GLOBALS['TSFE']->compensateFieldWidth);
 						$compWidth = $compWidth ? $compWidth : 1;
@@ -235,7 +235,7 @@ class FormContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractConten
 					case 'input':
 
 					case 'password':
-						$size = trim($fParts[1]) ? intval($fParts[1]) : 20;
+						$size = trim($fParts[1]) ? (int)$fParts[1] : 20;
 						$compensateFieldWidth = isset($conf['compensateFieldWidth.']) ? $this->cObj->stdWrap($conf['compensateFieldWidth'], $conf['compensateFieldWidth.']) : $conf['compensateFieldWidth'];
 						$compWidth = doubleval($compensateFieldWidth ? $compensateFieldWidth : $GLOBALS['TSFE']->compensateFieldWidth);
 						$compWidth = $compWidth ? $compWidth : 1;

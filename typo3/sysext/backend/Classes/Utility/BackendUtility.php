@@ -88,7 +88,7 @@ class BackendUtility {
 	 */
 	static public function getRecord($table, $uid, $fields = '*', $where = '', $useDeleteClause = TRUE) {
 		if ($GLOBALS['TCA'][$table]) {
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($fields, $table, 'uid=' . intval($uid) . ($useDeleteClause ? self::deleteClause($table) : '') . $where);
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($fields, $table, 'uid=' . (int)$uid . ($useDeleteClause ? self::deleteClause($table) : '') . $where);
 			$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 			$GLOBALS['TYPO3_DB']->sql_free_result($res);
 			if ($row) {
@@ -216,7 +216,7 @@ class BackendUtility {
 				$val = strrev($val);
 				$parts = explode('_', $val, 2);
 				if ((string) trim($parts[0]) != '') {
-					$theID = intval(strrev($parts[0]));
+					$theID = (int)strrev($parts[0]);
 					$theTable = trim($parts[1]) ? strrev(trim($parts[1])) : $default_tablename;
 					if ($theTable == $tablename) {
 						$list[] = $theID;
@@ -277,7 +277,7 @@ class BackendUtility {
 		$recordLocalization = FALSE;
 		if (self::isTableLocalizable($table)) {
 			$tcaCtrl = $GLOBALS['TCA'][$table]['ctrl'];
-			$recordLocalization = self::getRecordsByField($table, $tcaCtrl['transOrigPointerField'], $uid, 'AND ' . $tcaCtrl['languageField'] . '=' . intval($language) . ($andWhereClause ? ' ' . $andWhereClause : ''), '', '', '1');
+			$recordLocalization = self::getRecordsByField($table, $tcaCtrl['transOrigPointerField'], $uid, 'AND ' . $tcaCtrl['languageField'] . '=' . (int)$language . ($andWhereClause ? ' ' . $andWhereClause : ''), '', '', '1');
 		}
 		return $recordLocalization;
 	}
@@ -360,7 +360,7 @@ class BackendUtility {
 		if (is_array($getPageForRootline_cache[$ident])) {
 			$row = $getPageForRootline_cache[$ident];
 		} else {
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('pid,uid,title,TSconfig,is_siteroot,storage_pid,t3ver_oid,t3ver_wsid,t3ver_state,t3ver_stage,backend_layout_next_level', 'pages', 'uid=' . intval($uid) . ' ' . self::deleteClause('pages') . ' ' . $clause);
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('pid,uid,title,TSconfig,is_siteroot,storage_pid,t3ver_oid,t3ver_wsid,t3ver_state,t3ver_stage,backend_layout_next_level', 'pages', 'uid=' . (int)$uid . ' ' . self::deleteClause('pages') . ' ' . $clause);
 			$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 			if ($row) {
 				$newLocation = FALSE;
@@ -680,7 +680,7 @@ class BackendUtility {
 	 */
 	static public function readPageAccess($id, $perms_clause) {
 		if ((string) $id != '') {
-			$id = intval($id);
+			$id = (int)$id;
 			if (!$id) {
 				if ($GLOBALS['BE_USER']->isAdmin()) {
 					$path = '/';
@@ -693,7 +693,7 @@ class BackendUtility {
 					self::workspaceOL('pages', $pageinfo);
 					if (is_array($pageinfo)) {
 						self::fixVersioningPid('pages', $pageinfo);
-						list($pageinfo['_thePath'], $pageinfo['_thePathFull']) = self::getRecordPath(intval($pageinfo['uid']), $perms_clause, 15, 1000);
+						list($pageinfo['_thePath'], $pageinfo['_thePathFull']) = self::getRecordPath((int)$pageinfo['uid'], $perms_clause, 15, 1000);
 						return $pageinfo;
 					}
 				}
@@ -933,7 +933,7 @@ class BackendUtility {
 				// Used to avoid looping, if any should happen.
 				$subFieldPointer = $conf['ds_pointerField_searchParent_subField'];
 				while (!$srcPointer) {
-					$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,' . $ds_pointerField . ',' . $ds_searchParentField . ($subFieldPointer ? ',' . $subFieldPointer : ''), $table, 'uid=' . intval($newRecordPidValue ?: $rr[$ds_searchParentField]) . self::deleteClause($table));
+					$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,' . $ds_pointerField . ',' . $ds_searchParentField . ($subFieldPointer ? ',' . $subFieldPointer : ''), $table, 'uid=' . (int)($newRecordPidValue ?: $rr[$ds_searchParentField]) . self::deleteClause($table));
 					$newRecordPidValue = 0;
 					$rr = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 					$GLOBALS['TYPO3_DB']->sql_free_result($res);
@@ -1131,7 +1131,7 @@ class BackendUtility {
 	static public function getPagesTSconfig($id, $rootLine = NULL, $returnPartArray = FALSE) {
 		static $pagesTSconfig_cache = array();
 
-		$id = intval($id);
+		$id = (int)$id;
 		if ($returnPartArray === FALSE
 			&& $rootLine === NULL
 			&& isset($pagesTSconfig_cache[$id])
@@ -1196,7 +1196,7 @@ class BackendUtility {
 	 * @see implodeTSParams(), getPagesTSconfig()
 	 */
 	static public function updatePagesTSconfig($id, $pageTS, $TSconfPrefix, $impParams = '') {
-		$id = intval($id);
+		$id = (int)$id;
 		if (is_array($pageTS) && $id > 0) {
 			if (!is_array($impParams)) {
 				$impParams = self::implodeTSParams(self::getPagesTSconfig($id));
@@ -1232,7 +1232,7 @@ class BackendUtility {
 				$TSlines = array_reverse($TSlines);
 				// Store those changes
 				$TSconf = implode(LF, $TSlines);
-				$GLOBALS['TYPO3_DB']->exec_UPDATEquery('pages', 'uid=' . intval($id), array('TSconfig' => $TSconf));
+				$GLOBALS['TYPO3_DB']->exec_UPDATEquery('pages', 'uid=' . (int)$id, array('TSconfig' => $TSconf));
 			}
 		}
 	}
@@ -1428,7 +1428,7 @@ class BackendUtility {
 	 * @return string Formatted time
 	 */
 	static public function date($tstamp) {
-		return date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'], (int) $tstamp);
+		return date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'], (int)$tstamp);
 	}
 
 	/**
@@ -1536,7 +1536,7 @@ class BackendUtility {
 		$sizeParts = array(64, 64);
 		if ($size = trim($size)) {
 			$sizeParts = explode('x', $size . 'x' . $size);
-			if (!intval($sizeParts[0])) {
+			if (!(int)$sizeParts[0]) {
 				$size = '';
 			}
 		}
@@ -1549,7 +1549,7 @@ class BackendUtility {
 				'sys_file_reference',
 				'tablenames = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($table, 'sys_file_reference')
 					. ' AND fieldname=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($field, 'sys_file_reference')
-					. ' AND uid_foreign=' . intval($row['uid'])
+					. ' AND uid_foreign=' . (int)$row['uid']
 					. self::deleteClause('sys_file_reference')
 					. self::versioningPlaceholderClause('sys_file_reference'),
 				'',
@@ -1689,9 +1689,9 @@ class BackendUtility {
 			$parts[] = $GLOBALS['LANG']->sL($GLOBALS['TCA']['pages']['columns']['url']['label']) . ' ' . $row['url'];
 		} elseif ($row['doktype'] == PageRepository::DOKTYPE_SHORTCUT) {
 			if ($perms_clause) {
-				$label = self::getRecordPath(intval($row['shortcut']), $perms_clause, 20);
+				$label = self::getRecordPath((int)$row['shortcut'], $perms_clause, 20);
 			} else {
-				$row['shortcut'] = intval($row['shortcut']);
+				$row['shortcut'] = (int)$row['shortcut'];
 				$lRec = self::getRecordWSOL('pages', $row['shortcut'], 'title');
 				$label = $lRec['title'] . ' (id=' . $row['shortcut'] . ')';
 			}
@@ -1701,9 +1701,9 @@ class BackendUtility {
 			$parts[] = $GLOBALS['LANG']->sL($GLOBALS['TCA']['pages']['columns']['shortcut']['label']) . ' ' . $label;
 		} elseif ($row['doktype'] == PageRepository::DOKTYPE_MOUNTPOINT) {
 			if ($perms_clause) {
-				$label = self::getRecordPath(intval($row['mount_pid']), $perms_clause, 20);
+				$label = self::getRecordPath((int)$row['mount_pid'], $perms_clause, 20);
 			} else {
-				$lRec = self::getRecordWSOL('pages', intval($row['mount_pid']), 'title');
+				$lRec = self::getRecordWSOL('pages', (int)$row['mount_pid'], 'title');
 				$label = $lRec['title'];
 			}
 			$parts[] = $GLOBALS['LANG']->sL($GLOBALS['TCA']['pages']['columns']['mount_pid']['label']) . ' ' . $label;
@@ -2091,7 +2091,7 @@ class BackendUtility {
 								$rParts = GeneralUtility::trimExplode(',', $value, TRUE);
 								$lA = array();
 								foreach ($rParts as $rVal) {
-									$rVal = intval($rVal);
+									$rVal = (int)$rVal;
 									if ($rVal > 0) {
 										$r = self::getRecordWSOL($theColConf['foreign_table'], $rVal);
 									} else {
@@ -2688,7 +2688,7 @@ class BackendUtility {
 				$domain = rtrim(GeneralUtility::getIndpEnv('TYPO3_SITE_URL'), '/');
 			}
 			// Append port number if lockSSLPort is not the standard port 443
-			$portNumber = intval($GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSLPort']);
+			$portNumber = (int)$GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSLPort'];
 			if ($portNumber > 0 && $portNumber !== 443 && $portNumber < 65536 && $protocol === 'https') {
 				$domain .= ':' . strval($portNumber);
 			}
@@ -3062,7 +3062,7 @@ class BackendUtility {
 	 */
 	static public function lockRecords($table = '', $uid = 0, $pid = 0) {
 		if (isset($GLOBALS['BE_USER']->user['uid'])) {
-			$user_id = intval($GLOBALS['BE_USER']->user['uid']);
+			$user_id = (int)$GLOBALS['BE_USER']->user['uid'];
 			if ($table && $uid) {
 				$fields_values = array(
 					'userid' => $user_id,
@@ -3075,7 +3075,7 @@ class BackendUtility {
 				);
 				$GLOBALS['TYPO3_DB']->exec_INSERTquery('sys_lockedrecords', $fields_values);
 			} else {
-				$GLOBALS['TYPO3_DB']->exec_DELETEquery('sys_lockedrecords', 'userid=' . intval($user_id));
+				$GLOBALS['TYPO3_DB']->exec_DELETEquery('sys_lockedrecords', 'userid=' . (int)$user_id);
 			}
 		}
 	}
@@ -3093,7 +3093,7 @@ class BackendUtility {
 	static public function isRecordLocked($table, $uid) {
 		if (!is_array($GLOBALS['LOCKED_RECORDS'])) {
 			$GLOBALS['LOCKED_RECORDS'] = array();
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_lockedrecords', 'sys_lockedrecords.userid<>' . intval($GLOBALS['BE_USER']->user['uid']) . '
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_lockedrecords', 'sys_lockedrecords.userid<>' . (int)$GLOBALS['BE_USER']->user['uid'] . '
 								AND sys_lockedrecords.tstamp > ' . ($GLOBALS['EXEC_TIME'] - 2 * 3600));
 			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 				// Get the type of the user that locked this record:
@@ -3224,12 +3224,12 @@ class BackendUtility {
 				'###PAGE_TSCONFIG_STR###'
 			),
 			array(
-				intval($tsConfig['_CURRENT_PID']),
-				intval($tsConfig['_THIS_UID']),
-				intval($tsConfig['_THIS_CID']),
-				intval($tsConfig['_STORAGE_PID']),
-				intval($tsConfig['_SITEROOT']),
-				intval($tsConfig[$field]['PAGE_TSCONFIG_ID']),
+				(int)$tsConfig['_CURRENT_PID'],
+				(int)$tsConfig['_THIS_UID'],
+				(int)$tsConfig['_THIS_CID'],
+				(int)$tsConfig['_STORAGE_PID'],
+				(int)$tsConfig['_SITEROOT'],
+				(int)$tsConfig[$field]['PAGE_TSCONFIG_ID'],
 				$GLOBALS['TYPO3_DB']->cleanIntList($tsConfig[$field]['PAGE_TSCONFIG_IDLIST']),
 				$GLOBALS['TYPO3_DB']->quoteStr($tsConfig[$field]['PAGE_TSCONFIG_STR'], $table)
 			),
@@ -3274,10 +3274,10 @@ class BackendUtility {
 		$rootLine = self::BEgetRootLine($TScID, '', TRUE);
 		foreach ($rootLine as $rC) {
 			if (!$res['_STORAGE_PID']) {
-				$res['_STORAGE_PID'] = intval($rC['storage_pid']);
+				$res['_STORAGE_PID'] = (int)$rC['storage_pid'];
 			}
 			if (!$res['_SITEROOT']) {
-				$res['_SITEROOT'] = $rC['is_siteroot'] ? intval($rC['uid']) : 0;
+				$res['_SITEROOT'] = $rC['is_siteroot'] ? (int)$rC['uid'] : 0;
 			}
 		}
 		return $res;
@@ -3299,7 +3299,7 @@ class BackendUtility {
 	static public function getTSconfig_pidValue($table, $uid, $pid) {
 		// If pid is an integer this takes precedence in our lookup.
 		if (MathUtility::canBeInterpretedAsInteger($pid)) {
-			$thePidValue = intval($pid);
+			$thePidValue = (int)$pid;
 			// If ref to another record, look that record up.
 			if ($thePidValue < 0) {
 				$pidRec = self::getRecord($table, abs($thePidValue), 'pid');
@@ -3556,7 +3556,7 @@ class BackendUtility {
 					return '';
 				}
 			} else {
-				$condition = 'ref_uid=' . intval($ref);
+				$condition = 'ref_uid=' . (int)$ref;
 			}
 			$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('*', 'sys_refindex', 'ref_table=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($table, 'sys_refindex') . ' AND ' . $condition . ' AND deleted=0');
 		}
@@ -3573,7 +3573,7 @@ class BackendUtility {
 	 */
 	static public function translationCount($table, $ref, $msg = '') {
 		if (empty($GLOBALS['TCA'][$table]['ctrl']['transForeignTable']) && $GLOBALS['TCA'][$table]['ctrl']['languageField'] && $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] && !$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerTable']) {
-			$where = $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] . '=' . intval($ref) . ' AND ' . $GLOBALS['TCA'][$table]['ctrl']['languageField'] . '<>0';
+			$where = $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] . '=' . (int)$ref . ' AND ' . $GLOBALS['TCA'][$table]['ctrl']['languageField'] . '<>0';
 			if (!empty($GLOBALS['TCA'][$table]['ctrl']['delete'])) {
 				$where .= ' AND ' . $GLOBALS['TCA'][$table]['ctrl']['delete'] . '=0';
 			}
@@ -3608,7 +3608,7 @@ class BackendUtility {
 				$outputRows[] = $row;
 			} else {
 				// Select UID version:
-				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($fields, $table, 'uid=' . intval($uid) . ($includeDeletedRecords ? '' : self::deleteClause($table)));
+				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($fields, $table, 'uid=' . (int)$uid . ($includeDeletedRecords ? '' : self::deleteClause($table)));
 				// Add rows to output array:
 				if ($res) {
 					$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
@@ -3621,7 +3621,7 @@ class BackendUtility {
 				}
 			}
 			// Select all offline versions of record:
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($fields, $table, 'pid=-1 AND uid<>' . intval($uid) . ' AND t3ver_oid=' . intval($uid) . ($workspace != 0 ? ' AND t3ver_wsid=' . intval($workspace) : '') . ($includeDeletedRecords ? '' : self::deleteClause($table)), '', 't3ver_id DESC');
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($fields, $table, 'pid=-1 AND uid<>' . (int)$uid . ' AND t3ver_oid=' . (int)$uid . ($workspace != 0 ? ' AND t3ver_wsid=' . (int)$workspace : '') . ($includeDeletedRecords ? '' : self::deleteClause($table)), '', 't3ver_id DESC');
 			// Add rows to output array:
 			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 				$outputRows[] = $row;
@@ -3715,7 +3715,7 @@ class BackendUtility {
 				// If version was found, swap the default record with that one.
 				if (is_array($wsAlt)) {
 					// Check if this is in move-state:
-					if ($previewMovePlaceholders && !$movePldSwap && ($table == 'pages' || (int) $GLOBALS['TCA'][$table]['ctrl']['versioningWS'] >= 2) && $unsetMovePointers) {
+					if ($previewMovePlaceholders && !$movePldSwap && ($table == 'pages' || (int)$GLOBALS['TCA'][$table]['ctrl']['versioningWS'] >= 2) && $unsetMovePointers) {
 						// Only for WS ver 2... (moving)
 						// If t3ver_state is not found, then find it... (but we like best if it is here...)
 						if (!isset($wsAlt['t3ver_state'])) {
@@ -3768,7 +3768,7 @@ class BackendUtility {
 	 */
 	static public function movePlhOL($table, &$row) {
 		// Only for WS ver 2... (moving)
-		if ($table == 'pages' || (int) $GLOBALS['TCA'][$table]['ctrl']['versioningWS'] >= 2) {
+		if ($table == 'pages' || (int)$GLOBALS['TCA'][$table]['ctrl']['versioningWS'] >= 2) {
 			// If t3ver_move_id or t3ver_state is not found, then find it... (but we like best if it is here...)
 			if (!isset($row['t3ver_move_id']) || !isset($row['t3ver_state'])) {
 				$moveIDRec = self::getRecord($table, $row['uid'], 't3ver_move_id, t3ver_state');
@@ -3802,7 +3802,7 @@ class BackendUtility {
 		if (ExtensionManagementUtility::isLoaded('version')) {
 			if ($workspace !== 0 && $GLOBALS['TCA'][$table] && $GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
 				// Select workspace version of record:
-				$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow($fields, $table, 'pid=-1 AND ' . 't3ver_oid=' . intval($uid) . ' AND ' . 't3ver_wsid=' . intval($workspace) . self::deleteClause($table));
+				$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow($fields, $table, 'pid=-1 AND ' . 't3ver_oid=' . (int)$uid . ' AND ' . 't3ver_wsid=' . (int)$workspace . self::deleteClause($table));
 				if (is_array($row)) {
 					return $row;
 				}
@@ -3853,7 +3853,7 @@ class BackendUtility {
 	 */
 	static public function versioningPlaceholderClause($table) {
 		if ($GLOBALS['TCA'][$table] && $GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
-			$currentWorkspace = intval($GLOBALS['BE_USER']->workspace);
+			$currentWorkspace = (int)$GLOBALS['BE_USER']->workspace;
 			return ' AND (' . $table . '.t3ver_state <= ' . new VersionState(VersionState::DEFAULT_STATE) . ' OR ' . $table . '.t3ver_wsid = ' . $currentWorkspace . ')';
 		}
 	}
@@ -3871,7 +3871,7 @@ class BackendUtility {
 			if (is_null($workspaceId)) {
 				$workspaceId = $GLOBALS['BE_USER']->workspace;
 			}
-			$workspaceId = intval($workspaceId);
+			$workspaceId = (int)$workspaceId;
 			$pidOperator = $workspaceId === 0 ? '!=' : '=';
 			$whereClause = ' AND ' . $table . '.t3ver_wsid=' . $workspaceId . ' AND ' . $table . '.pid' . $pidOperator . '-1';
 		}
@@ -3892,7 +3892,7 @@ class BackendUtility {
 				if ($tableName != 'pages' && $cfg['ctrl']['versioningWS']) {
 					// Select all records from this table in the database from the workspace
 					// This joins the online version with the offline version as tables A and B
-					$output[$tableName] = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('B.uid as live_uid, A.uid as offline_uid', $tableName . ' A,' . $tableName . ' B', 'A.pid=-1' . ' AND B.pid=' . intval($pageId) . ' AND A.t3ver_wsid=' . intval($workspace) . ' AND A.t3ver_oid=B.uid' . self::deleteClause($tableName, 'A') . self::deleteClause($tableName, 'B'));
+					$output[$tableName] = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('B.uid as live_uid, A.uid as offline_uid', $tableName . ' A,' . $tableName . ' B', 'A.pid=-1' . ' AND B.pid=' . (int)$pageId . ' AND A.t3ver_wsid=' . (int)$workspace . ' AND A.t3ver_oid=B.uid' . self::deleteClause($tableName, 'A') . self::deleteClause($tableName, 'B'));
 					if (!is_array($output[$tableName]) || !count($output[$tableName])) {
 						unset($output[$tableName]);
 					}
@@ -3927,13 +3927,13 @@ class BackendUtility {
 	 */
 	static public function getMovePlaceholder($table, $uid, $fields = '*') {
 		$workspace = $GLOBALS['BE_USER']->workspace;
-		if ($workspace !== 0 && $GLOBALS['TCA'][$table] && (int) $GLOBALS['TCA'][$table]['ctrl']['versioningWS'] >= 2) {
+		if ($workspace !== 0 && $GLOBALS['TCA'][$table] && (int)$GLOBALS['TCA'][$table]['ctrl']['versioningWS'] >= 2) {
 			// Select workspace version of record:
 			$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
 				$fields,
 				$table,
 				'pid<>-1 AND t3ver_state=' . new VersionState(VersionState::MOVE_PLACEHOLDER) . ' AND t3ver_move_id='
-					. intval($uid) . ' AND t3ver_wsid=' . intval($workspace) . self::deleteClause($table)
+					. (int)$uid . ' AND t3ver_wsid=' . (int)$workspace . self::deleteClause($table)
 			);
 			if (is_array($row)) {
 				return $row;

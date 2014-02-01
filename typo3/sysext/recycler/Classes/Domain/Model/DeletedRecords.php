@@ -143,7 +143,7 @@ class DeletedRecords {
 	 * @return 	void
 	 */
 	protected function setData($id = 0, $table, $depth, $tcaCtrl, $filter) {
-		$id = intval($id);
+		$id = (int)$id;
 		if (array_key_exists('delete', $tcaCtrl)) {
 			// find the 'deleted' field for this table
 			$deletedField = \TYPO3\CMS\Recycler\Utility\RecyclerUtility::getDeletedField($table);

@@ -82,7 +82,7 @@ class SplitStorage extends \TYPO3\CMS\Rsaauth\Storage\AbstractStorage {
 			// Get split point. First part is always smaller than the second
 			// because it goes to the file system
 			$keyLength = strlen($key);
-			$splitPoint = rand(intval($keyLength / 10), intval($keyLength / 2));
+			$splitPoint = rand((int)($keyLength / 10), (int)($keyLength / 2));
 			// Get key parts
 			$keyPart1 = substr($key, 0, $splitPoint);
 			$keyPart2 = substr($key, $splitPoint);

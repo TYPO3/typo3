@@ -117,7 +117,7 @@ class PreviewHook implements \TYPO3\CMS\Core\SingletonInterface {
 		if ($pObj->beUserLogin && is_object($params['BE_USER']) && \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($workspaceUid)) {
 			if ($workspaceUid == 0 || $workspaceUid >= -1 && $params['BE_USER']->checkWorkspace($workspaceUid)) {
 				// Check Access to workspace. Live (0) is OK to preview for all.
-				$pObj->workspacePreview = intval($workspaceUid);
+				$pObj->workspacePreview = (int)$workspaceUid;
 			} else {
 				// No preview, will default to "Live" at the moment
 				$pObj->workspacePreview = -99;
@@ -253,7 +253,7 @@ class PreviewHook implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return integer	the hours as a number
 	 */
 	public function getPreviewLinkLifetime() {
-		$ttlHours = intval($GLOBALS['BE_USER']->getTSConfigVal('options.workspaces.previewLinkTTLHours'));
+		$ttlHours = (int)$GLOBALS['BE_USER']->getTSConfigVal('options.workspaces.previewLinkTTLHours');
 		return $ttlHours ? $ttlHours : 24 * 2;
 	}
 

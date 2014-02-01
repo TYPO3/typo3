@@ -92,7 +92,7 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 			}
 			unset($val);
 			// Set header type:
-			$type = intval($this->cObj->data['layout']);
+			$type = (int)$this->cObj->data['layout'];
 			// Compile list:
 			$out = '
 				<ul class="csc-bulletlist csc-bulletlist-' . $type . '">' . implode('', $lines) . '
@@ -130,13 +130,13 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 			$tableClass = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'acctables_tableclass');
 			$delimiter = trim($this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'tableparsing_delimiter', 's_parsing'));
 			if ($delimiter) {
-				$delimiter = chr(intval($delimiter));
+				$delimiter = chr((int)$delimiter);
 			} else {
 				$delimiter = '|';
 			}
 			$quotedInput = trim($this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'tableparsing_quote', 's_parsing'));
 			if ($quotedInput) {
-				$quotedInput = chr(intval($quotedInput));
+				$quotedInput = chr((int)$quotedInput);
 			} else {
 				$quotedInput = '';
 			}
@@ -209,7 +209,7 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 			}
 			$tableContents .= $tmpTable;
 			// Set header type:
-			$type = intval($this->cObj->data['layout']);
+			$type = (int)$this->cObj->data['layout'];
 			// Table tag params.
 			$tableTagParams = $this->getTableAttributes($conf, $type);
 			if (!$noStyles) {
@@ -242,7 +242,7 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 			$this->pi_loadLL();
 			$out = '';
 			// Set layout type:
-			$type = intval($this->cObj->data['layout']);
+			$type = (int)$this->cObj->data['layout'];
 			// See if the file path variable is set, this takes precedence
 			$filePathConf = $this->cObj->stdWrap($conf['filePath'], $conf['filePath.']);
 			if ($filePathConf) {
@@ -395,7 +395,7 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 			if (count($relationParts) >= $colCount) {
 				$out = array();
 				for ($a = 0; $a < $colCount; $a++) {
-					$currentRelationValue = intval($relationParts[$a]);
+					$currentRelationValue = (int)$relationParts[$a];
 					if ($currentRelationValue >= 1) {
 						$out[$a] = $currentRelationValue;
 					} else {
@@ -444,7 +444,7 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 			// this evenly distributes rounding errors across all images in this row.
 			$suggestedWidth = round($accumDesiredWidth - $accumWidth);
 			// finalImgWidth may not exceed $availableWidth
-			$finalImgWidth = (int) min($availableWidth, $suggestedWidth);
+			$finalImgWidth = (int)min($availableWidth, $suggestedWidth);
 			$accumWidth += $finalImgWidth;
 			$columnWidths[$a] = $finalImgWidth;
 		}
@@ -484,9 +484,9 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 			return $content;
 		}
 		$imgs = GeneralUtility::trimExplode(',', $imgList);
-		$imgStart = intval($this->cObj->stdWrap($conf['imgStart'], $conf['imgStart.']));
+		$imgStart = (int)$this->cObj->stdWrap($conf['imgStart'], $conf['imgStart.']);
 		$imgCount = count($imgs) - $imgStart;
-		$imgMax = intval($this->cObj->stdWrap($conf['imgMax'], $conf['imgMax.']));
+		$imgMax = (int)$this->cObj->stdWrap($conf['imgMax'], $conf['imgMax.']);
 		if ($imgMax) {
 			$imgCount = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($imgCount, 0, $imgMax);
 		}
@@ -522,24 +522,24 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 		$imagePosition = $position & 7;
 		// 0,8,16,24 (above,below,intext,intext-wrap)
 		$contentPosition = $position & 24;
-		$textMargin = intval($this->cObj->stdWrap($conf['textMargin'], $conf['textMargin.']));
+		$textMargin = (int)$this->cObj->stdWrap($conf['textMargin'], $conf['textMargin.']);
 		if (!$conf['textMargin_outOfText'] && $contentPosition < 16) {
 			$textMargin = 0;
 		}
-		$colspacing = intval($this->cObj->stdWrap($conf['colSpace'], $conf['colSpace.']));
-		$border = intval($this->cObj->stdWrap($conf['border'], $conf['border.'])) ? 1 : 0;
-		$borderThickness = intval($this->cObj->stdWrap($conf['borderThick'], $conf['borderThick.']));
+		$colspacing = (int)$this->cObj->stdWrap($conf['colSpace'], $conf['colSpace.']);
+		$border = (int)$this->cObj->stdWrap($conf['border'], $conf['border.']) ? 1 : 0;
+		$borderThickness = (int)$this->cObj->stdWrap($conf['borderThick'], $conf['borderThick.']);
 		$borderThickness = $borderThickness ?: 1;
-		$borderSpace = $conf['borderSpace'] && $border ? intval($conf['borderSpace']) : 0;
+		$borderSpace = $conf['borderSpace'] && $border ? (int)$conf['borderSpace'] : 0;
 		// Generate cols
-		$cols = intval($this->cObj->stdWrap($conf['cols'], $conf['cols.']));
+		$cols = (int)$this->cObj->stdWrap($conf['cols'], $conf['cols.']);
 		$colCount = $cols > 1 ? $cols : 1;
 		if ($colCount > $imgCount) {
 			$colCount = $imgCount;
 		}
 		$rowCount = ceil($imgCount / $colCount);
 		// Generate rows
-		$rows = intval($this->cObj->stdWrap($conf['rows'], $conf['rows.']));
+		$rows = (int)$this->cObj->stdWrap($conf['rows'], $conf['rows.']);
 		if ($rows > 1) {
 			$rowCount = $rows;
 			if ($rowCount > $imgCount) {
@@ -548,8 +548,8 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 			$colCount = $rowCount > 1 ? ceil($imgCount / $rowCount) : $imgCount;
 		}
 		// Max Width
-		$maxW = intval($this->cObj->stdWrap($conf['maxW'], $conf['maxW.']));
-		$maxWInText = intval($this->cObj->stdWrap($conf['maxWInText'], $conf['maxWInText.']));
+		$maxW = (int)$this->cObj->stdWrap($conf['maxW'], $conf['maxW.']);
+		$maxWInText = (int)$this->cObj->stdWrap($conf['maxWInText'], $conf['maxWInText.']);
 		$fiftyPercentWidthInText = round($maxW / 100 * 50);
 		// in Text
 		if ($contentPosition >= 16) {
@@ -564,11 +564,11 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 		$netW = $maxW - $colspacing * ($colCount - 1) - $colCount * $border * ($borderThickness + $borderSpace) * 2;
 		// Specify the maximum width for each column
 		$columnWidths = $this->getImgColumnWidths($conf, $colCount, $netW);
-		$image_compression = intval($this->cObj->stdWrap($conf['image_compression'], $conf['image_compression.']));
-		$image_effects = intval($this->cObj->stdWrap($conf['image_effects'], $conf['image_effects.']));
-		$image_frames = intval($this->cObj->stdWrap($conf['image_frames.']['key'], $conf['image_frames.']['key.']));
+		$image_compression = (int)$this->cObj->stdWrap($conf['image_compression'], $conf['image_compression.']);
+		$image_effects = (int)$this->cObj->stdWrap($conf['image_effects'], $conf['image_effects.']);
+		$image_frames = (int)$this->cObj->stdWrap($conf['image_frames.']['key'], $conf['image_frames.']['key.']);
 		// EqualHeight
-		$equalHeight = intval($this->cObj->stdWrap($conf['equalH'], $conf['equalH.']));
+		$equalHeight = (int)$this->cObj->stdWrap($conf['equalH'], $conf['equalH.']);
 		if ($equalHeight) {
 			$relations_cols = array();
 			// contains the individual width of all images after scaling to $equalHeight
@@ -607,7 +607,7 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 			$imgKey = $a + $imgStart;
 			// If the image cannot be interpreted as integer (therefore filename and no FAL id), add the image path
 			if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($imgs[$imgKey])) {
-				$totalImagePath = intval($imgs[$imgKey]);
+				$totalImagePath = (int)$imgs[$imgKey];
 			} else {
 				$totalImagePath = $imgPath . $imgs[$imgKey];
 			}
@@ -616,7 +616,7 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 			$GLOBALS['TSFE']->register['IMAGE_NUM_CURRENT'] = $imgKey;
 			$GLOBALS['TSFE']->register['ORIG_FILENAME'] = $totalImagePath;
 			$this->cObj->data[$this->cObj->currentValKey] = $totalImagePath;
-			$imgObjNum = intval($splitArr[$a]['imgObjNum']);
+			$imgObjNum = (int)$splitArr[$a]['imgObjNum'];
 			$imgConf = $conf[$imgObjNum . '.'];
 			if ($equalHeight) {
 				if ($a % $colCount == 0) {
@@ -644,7 +644,7 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 				// this evenly distributes rounding errors across all images in this row.
 				$suggestedWidth = round($accumDesiredWidth - $accumWidth);
 				// finalImgWidth may not exceed $availableWidth
-				$finalImgWidth = (int) min($availableWidth, $suggestedWidth);
+				$finalImgWidth = (int)min($availableWidth, $suggestedWidth);
 				$accumWidth += $finalImgWidth;
 				$imgConf['file.']['width'] = $finalImgWidth;
 				$imgConf['file.']['height'] = round($desiredHeight);
@@ -872,9 +872,7 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 				}
 			}
 			// Set the margin for image + text, no wrap always to avoid multiple stylesheets
-			$noWrapMargin = (int) (($maxWInText ? $maxWInText : $fiftyPercentWidthInText) + intval(
-				$this->cObj->stdWrap($conf['textMargin'], $conf['textMargin.'])
-			));
+			$noWrapMargin = (int)(($maxWInText ? $maxWInText : $fiftyPercentWidthInText) + (int)$this->cObj->stdWrap($conf['textMargin'], $conf['textMargin.']));
 			$this->addPageStyle('.csc-textpic-intext-right-nowrap .csc-textpic-text', 'margin-right: ' . $noWrapMargin . 'px;');
 			$this->addPageStyle('.csc-textpic-intext-left-nowrap .csc-textpic-text', 'margin-left: ' . $noWrapMargin . 'px;');
 			// Beside Text where the image block width is not equal to maxW
@@ -1072,7 +1070,7 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 			return $hookObject->renderSpace($content, $configuration);
 		}
 		if (isset($configuration['space']) && in_array($configuration['space'], array('before', 'after'))) {
-			$constant = (int) $configuration['constant'];
+			$constant = (int)$configuration['constant'];
 			if ($configuration['space'] === 'before') {
 				$value = $constant + $this->cObj->data['spaceBefore'];
 				$declaration = 'margin-top: ' . $value . 'px !important;';
@@ -1133,9 +1131,9 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 	public function getTableAttributes($conf, $type) {
 		// Initializing:
 		$tableTagParams_conf = $conf['tableParams_' . $type . '.'];
-		$border = $this->cObj->data['table_border'] ? intval($this->cObj->data['table_border']) : $tableTagParams_conf['border'];
-		$cellSpacing = $this->cObj->data['table_cellspacing'] ? intval($this->cObj->data['table_cellspacing']) : $tableTagParams_conf['cellspacing'];
-		$cellPadding = $this->cObj->data['table_cellpadding'] ? intval($this->cObj->data['table_cellpadding']) : $tableTagParams_conf['cellpadding'];
+		$border = $this->cObj->data['table_border'] ? (int)$this->cObj->data['table_border'] : $tableTagParams_conf['border'];
+		$cellSpacing = $this->cObj->data['table_cellspacing'] ? (int)$this->cObj->data['table_cellspacing'] : $tableTagParams_conf['cellspacing'];
+		$cellPadding = $this->cObj->data['table_cellpadding'] ? (int)$this->cObj->data['table_cellpadding'] : $tableTagParams_conf['cellpadding'];
 		$summary = trim(htmlspecialchars($this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'acctables_summary')));
 		// Create table attributes and classes array:
 		$tableTagParams = ($classes = array());

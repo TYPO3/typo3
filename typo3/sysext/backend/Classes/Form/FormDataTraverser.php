@@ -122,7 +122,7 @@ class FormDataTraverser {
 	protected function initializeOriginalLanguageUid() {
 		$fieldCtrlConfig = $GLOBALS['TCA'][$this->currentTable]['ctrl'];
 		if (!empty($fieldCtrlConfig['languageField']) && isset($this->currentRow[$fieldCtrlConfig['languageField']])) {
-			$this->originalLanguageUid = intval($this->currentRow[$fieldCtrlConfig['languageField']]);
+			$this->originalLanguageUid = (int)$this->currentRow[$fieldCtrlConfig['languageField']];
 		} else {
 			$this->originalLanguageUid = FALSE;
 		}
@@ -290,7 +290,7 @@ class FormDataTraverser {
 		$values = GeneralUtility::trimExplode(',', $value);
 		$selectedValues = array();
 
-		if ($maxItems !== NULL && (count($values) > intval($maxItems))) {
+		if ($maxItems !== NULL && (count($values) > (int)$maxItems)) {
 			return $selectedValues;
 		}
 
@@ -395,7 +395,7 @@ class FormDataTraverser {
 			if (!isset($currentRow[$languageField])) {
 				continue;
 			}
-			if (intval($currentRow[$languageField]) === $this->originalLanguageUid) {
+			if ((int)$currentRow[$languageField] === $this->originalLanguageUid) {
 				$foundRows[] = $currentRow;
 			}
 		}

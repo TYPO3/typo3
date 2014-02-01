@@ -94,7 +94,7 @@ class NameJsonElement extends \TYPO3\CMS\Form\Domain\Model\Json\FieldsetJsonElem
 			$keys = \TYPO3\CMS\Core\TypoScript\TemplateService::sortedKeyList($parameters);
 			foreach ($keys as $key) {
 				$class = $parameters[$key];
-				if (intval($key) && !strstr($key, '.')) {
+				if ((int)$key && strpos($key, '.') === FALSE) {
 					if (isset($parameters[$key . '.'])) {
 						$childElementArguments = $parameters[$key . '.'];
 						if (in_array($childElementArguments['name'], array('prefix', 'suffix', 'middleName'))) {

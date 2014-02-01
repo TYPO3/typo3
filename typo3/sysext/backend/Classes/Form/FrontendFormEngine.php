@@ -68,7 +68,7 @@ class FrontendFormEngine extends \TYPO3\CMS\Backend\Form\FormEngine {
 			$iRow[] = '<td valign="top">' . '<img name="req_' . $content['TABLE'] . '_' . $content['ID'] . '_' . $content['FIELD'] . '" src="clear.gif" width="10" height="10" alt="" />' . '<img name="cm_' . $content['TABLE'] . '_' . $content['ID'] . '_' . $content['FIELD'] . '" src="clear.gif" width="7" height="10" alt="" />' . '</td><td nowrap="nowrap" valign="top">' . $content['ITEM'] . $content['HELP_ICON'] . '</td>';
 		}
 		$out = '<table border="0" cellpadding="0" cellspacing="0">
-			<tr><td><img src="clear.gif" width="' . intval($this->paletteMargin) . '" height="1" alt="" /></td>' . implode('', $hRow) . '</tr>
+			<tr><td><img src="clear.gif" width="' . (int)$this->paletteMargin . '" height="1" alt="" /></td>' . implode('', $hRow) . '</tr>
 			<tr><td></td>' . implode('', $iRow) . '</tr>
 		</table>';
 		return $out;

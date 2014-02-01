@@ -441,7 +441,7 @@ class DocumentTemplate {
 				$this->pageRenderer->addJsFile($GLOBALS['BACK_PATH'] . $file);
 			}
 		}
-		if (intval($GLOBALS['TYPO3_CONF_VARS']['BE']['debug']) === 1) {
+		if ((int)$GLOBALS['TYPO3_CONF_VARS']['BE']['debug'] === 1) {
 			$this->pageRenderer->enableDebugMode();
 		}
 		return $this->pageRenderer;
@@ -1023,7 +1023,7 @@ class DocumentTemplate {
 	 * @todo Define visibility
 	 */
 	public function divider($dist) {
-		$dist = intval($dist);
+		$dist = (int)$dist;
 		$str = '
 
 	<!-- DIVIDER -->
@@ -1044,7 +1044,7 @@ class DocumentTemplate {
 			return '
 
 	<!-- Spacer element -->
-	<div style="padding-top: ' . intval($dist) . 'px;"></div>
+	<div style="padding-top: ' . (int)$dist . 'px;"></div>
 ';
 		}
 	}
@@ -1799,7 +1799,7 @@ class DocumentTemplate {
 				<script type="text/javascript">
 					DTM_array["' . $id . '"] = new Array();
 					' . implode('', $JSinit) . '
-					' . ($toggle <= 0 ? 'DTM_activate("' . $id . '", top.DTM_currentTabs["' . $id . '"]?top.DTM_currentTabs["' . $id . '"]:' . intval($defaultTabIndex) . ', 0);' : '') . '
+					' . ($toggle <= 0 ? 'DTM_activate("' . $id . '", top.DTM_currentTabs["' . $id . '"]?top.DTM_currentTabs["' . $id . '"]:' . (int)$defaultTabIndex . ', 0);' : '') . '
 				</script>
 
 				';

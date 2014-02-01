@@ -262,7 +262,7 @@ NOW Running --AUTOFIX on result. OK?' . ($this->cli_isArg('--dryrun') ? ' (--dry
 		// Traverse headers for output:
 		if (is_array($res['headers'])) {
 			foreach ($res['headers'] as $key => $value) {
-				if ($detailLevel <= intval($value[2])) {
+				if ($detailLevel <= (int)$value[2]) {
 					if (is_array($res[$key]) && (count($res[$key]) || !$silent)) {
 						// Header and explanaion:
 						$this->cli_echo('---------------------------------------------' . LF, 1);
@@ -386,7 +386,7 @@ NOW Running --AUTOFIX on result. OK?' . ($this->cli_isArg('--dryrun') ? ' (--dry
 	public function genTree_traverse($rootID, $depth, $echoLevel = 0, $callBack = '', $versionSwapmode = '', $rootIsVersion = 0, $accumulatedPath = '') {
 		// Register page:
 		$this->recStats['all']['pages'][$rootID] = $rootID;
-		$pageRecord = BackendUtility::getRecordRaw('pages', 'uid=' . intval($rootID), 'deleted,title,t3ver_count,t3ver_wsid');
+		$pageRecord = BackendUtility::getRecordRaw('pages', 'uid=' . (int)$rootID, 'deleted,title,t3ver_count,t3ver_wsid');
 		$accumulatedPath .= '/' . $pageRecord['title'];
 		// Register if page is deleted:
 		if ($pageRecord['deleted']) {
@@ -431,7 +431,7 @@ NOW Running --AUTOFIX on result. OK?' . ($this->cli_isArg('--dryrun') ? ' (--dry
 			if ($tableName != 'pages') {
 				// Select all records belonging to page:
 				$pt4 = GeneralUtility::milliseconds();
-				$resSub = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid' . ($GLOBALS['TCA'][$tableName]['ctrl']['delete'] ? ',' . $GLOBALS['TCA'][$tableName]['ctrl']['delete'] : ''), $tableName, 'pid=' . intval($rootID) . ($this->genTree_traverseDeleted ? '' : BackendUtility::deleteClause($tableName)));
+				$resSub = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid' . ($GLOBALS['TCA'][$tableName]['ctrl']['delete'] ? ',' . $GLOBALS['TCA'][$tableName]['ctrl']['delete'] : ''), $tableName, 'pid=' . (int)$rootID . ($this->genTree_traverseDeleted ? '' : BackendUtility::deleteClause($tableName)));
 				$this->performanceStatistics['genTree_traverse():TraverseTables:']['MySQL']['(ALL)'] += GeneralUtility::milliseconds() - $pt4;
 				$this->performanceStatistics['genTree_traverse():TraverseTables:']['MySQL'][$tableName] += GeneralUtility::milliseconds() - $pt4;
 				$pt5 = GeneralUtility::milliseconds();
@@ -542,7 +542,7 @@ NOW Running --AUTOFIX on result. OK?' . ($this->cli_isArg('--dryrun') ? ' (--dry
 		if (!$versionSwapmode || $versionSwapmode == 'SWAPMODE:1') {
 			if ($depth > 0) {
 				$depth--;
-				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'pages', 'pid=' . intval($rootID) . ($this->genTree_traverseDeleted ? '' : BackendUtility::deleteClause('pages')), '', 'sorting');
+				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'pages', 'pid=' . (int)$rootID . ($this->genTree_traverseDeleted ? '' : BackendUtility::deleteClause('pages')), '', 'sorting');
 				while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 					$this->genTree_traverse($row['uid'], $depth, $echoLevel, $callBack, $versionSwapmode, 0, $accumulatedPath);
 				}

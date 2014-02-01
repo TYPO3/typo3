@@ -112,8 +112,8 @@ class MoveElementController {
 	 */
 	public function init() {
 		// Setting internal vars:
-		$this->sys_language = intval(GeneralUtility::_GP('sys_language'));
-		$this->page_id = intval(GeneralUtility::_GP('uid'));
+		$this->sys_language = (int)GeneralUtility::_GP('sys_language');
+		$this->page_id = (int)GeneralUtility::_GP('uid');
 		$this->table = GeneralUtility::_GP('table');
 		$this->R_URI = GeneralUtility::sanitizeLocalUrl(GeneralUtility::_GP('returnUrl'));
 		$this->input_moveUid = GeneralUtility::_GP('moveUid');
@@ -167,7 +167,7 @@ class MoveElementController {
 						$pidPageInfo = BackendUtility::readPageAccess($pageinfo['pid'], $this->perms_clause);
 						if (is_array($pidPageInfo)) {
 							if ($GLOBALS['BE_USER']->isInWebMount($pidPageInfo['pid'], $this->perms_clause)) {
-								$code .= '<a href="' . htmlspecialchars(GeneralUtility::linkThisScript(array('uid' => intval($pageinfo['pid']), 'moveUid' => $this->moveUid))) . '">' . IconUtility::getSpriteIcon('actions-view-go-up') . BackendUtility::getRecordTitle('pages', $pidPageInfo, TRUE) . '</a><br />';
+								$code .= '<a href="' . htmlspecialchars(GeneralUtility::linkThisScript(array('uid' => (int)$pageinfo['pid'], 'moveUid' => $this->moveUid))) . '">' . IconUtility::getSpriteIcon('actions-view-go-up') . BackendUtility::getRecordTitle('pages', $pidPageInfo, TRUE) . '</a><br />';
 							} else {
 								$code .= IconUtility::getSpriteIconForRecord('pages', $pidPageInfo) . BackendUtility::getRecordTitle('pages', $pidPageInfo, TRUE) . '<br />';
 							}
@@ -215,7 +215,7 @@ class MoveElementController {
 						if (is_array($pidPageInfo)) {
 							if ($GLOBALS['BE_USER']->isInWebMount($pidPageInfo['pid'], $this->perms_clause)) {
 								$code .= '<a href="' . htmlspecialchars(GeneralUtility::linkThisScript(array(
-									'uid' => intval($pageinfo['pid']),
+									'uid' => (int)$pageinfo['pid'],
 									'moveUid' => $this->moveUid
 								))) . '">' . IconUtility::getSpriteIcon('actions-view-go-up') . BackendUtility::getRecordTitle('pages', $pidPageInfo, TRUE) . '</a><br />';
 							} else {

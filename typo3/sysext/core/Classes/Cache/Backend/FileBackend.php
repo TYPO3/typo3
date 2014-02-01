@@ -195,7 +195,7 @@ class FileBackend extends \TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend implem
 		if ($this->isCacheFileExpired($pathAndFilename)) {
 			return FALSE;
 		}
-		$dataSize = (int) file_get_contents($pathAndFilename, NULL, NULL, (filesize($pathAndFilename) - self::DATASIZE_DIGITS), self::DATASIZE_DIGITS);
+		$dataSize = (int)file_get_contents($pathAndFilename, NULL, NULL, (filesize($pathAndFilename) - self::DATASIZE_DIGITS), self::DATASIZE_DIGITS);
 		return file_get_contents($pathAndFilename, NULL, NULL, 0, $dataSize);
 	}
 
@@ -264,9 +264,9 @@ class FileBackend extends \TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend implem
 				continue;
 			}
 			$cacheEntryPathAndFilename = $directoryIterator->getPathname();
-			$index = (int) file_get_contents($cacheEntryPathAndFilename, NULL, NULL, (filesize($cacheEntryPathAndFilename) - self::DATASIZE_DIGITS), self::DATASIZE_DIGITS);
+			$index = (int)file_get_contents($cacheEntryPathAndFilename, NULL, NULL, (filesize($cacheEntryPathAndFilename) - self::DATASIZE_DIGITS), self::DATASIZE_DIGITS);
 			$metaData = file_get_contents($cacheEntryPathAndFilename, NULL, NULL, $index);
-			$expiryTime = (int) substr($metaData, 0, self::EXPIRYTIME_LENGTH);
+			$expiryTime = (int)substr($metaData, 0, self::EXPIRYTIME_LENGTH);
 			if ($expiryTime !== 0 && $expiryTime < $now) {
 				continue;
 			}
@@ -323,8 +323,8 @@ class FileBackend extends \TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend implem
 		if (file_exists($cacheEntryPathAndFilename) === FALSE) {
 			return TRUE;
 		}
-		$index = (int) file_get_contents($cacheEntryPathAndFilename, NULL, NULL, (filesize($cacheEntryPathAndFilename) - self::DATASIZE_DIGITS), self::DATASIZE_DIGITS);
-		$expiryTime = intval(file_get_contents($cacheEntryPathAndFilename, NULL, NULL, $index, self::EXPIRYTIME_LENGTH));
+		$index = (int)file_get_contents($cacheEntryPathAndFilename, NULL, NULL, (filesize($cacheEntryPathAndFilename) - self::DATASIZE_DIGITS), self::DATASIZE_DIGITS);
+		$expiryTime = (int)file_get_contents($cacheEntryPathAndFilename, NULL, NULL, $index, self::EXPIRYTIME_LENGTH);
 		return $expiryTime !== 0 && $expiryTime < $GLOBALS['EXEC_TIME'];
 	}
 

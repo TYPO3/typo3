@@ -237,7 +237,7 @@ class Extension extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	public function getCategoryIndexFromStringOrNumber($category) {
 		$categoryIndex = 4;
 		if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($category)) {
-			$categoryIndex = (integer)$category;
+			$categoryIndex = (int)$category;
 			if ($categoryIndex < 0 || $categoryIndex > 10) {
 				$categoryIndex = 4;
 			}

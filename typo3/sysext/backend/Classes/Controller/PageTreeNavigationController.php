@@ -316,7 +316,7 @@ class PageTreeNavigationController {
 			}
 		}
 		// Getting temporary mount point ID:
-		$temporaryMountPoint = intval($GLOBALS['BE_USER']->getSessionData('pageTree_temporaryMountPoint'));
+		$temporaryMountPoint = (int)$GLOBALS['BE_USER']->getSessionData('pageTree_temporaryMountPoint');
 		// If mount point ID existed and is within users real mount points, then set it temporarily:
 		if ($temporaryMountPoint > 0 && $GLOBALS['BE_USER']->isInWebMount($temporaryMountPoint)) {
 			if ($this->active_tempMountPoint = BackendUtility::readPageAccess($temporaryMountPoint, $GLOBALS['BE_USER']->getPagePermsClause(1))) {
@@ -336,7 +336,7 @@ class PageTreeNavigationController {
 	 * @todo Define visibility
 	 */
 	public function settingTemporaryMountPoint($pageId) {
-		$GLOBALS['BE_USER']->setAndSaveSessionData('pageTree_temporaryMountPoint', intval($pageId));
+		$GLOBALS['BE_USER']->setAndSaveSessionData('pageTree_temporaryMountPoint', (int)$pageId);
 	}
 
 	/**********************************

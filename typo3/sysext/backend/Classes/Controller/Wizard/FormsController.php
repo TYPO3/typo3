@@ -675,11 +675,11 @@ class FormsController {
 					$tArr = array('', '', '', '', '', '');
 					switch ((string) $vv['type']) {
 						case 'textarea':
-							if (intval($vv['cols'])) {
-								$tArr[0] = intval($vv['cols']);
+							if ((int)$vv['cols']) {
+								$tArr[0] = (int)$vv['cols'];
 							}
-							if (intval($vv['rows'])) {
-								$tArr[1] = intval($vv['rows']);
+							if ((int)$vv['rows']) {
+								$tArr[1] = (int)$vv['rows'];
 							}
 							if (trim($vv['extra'])) {
 								$tArr[2] = trim($vv['extra']);
@@ -692,11 +692,11 @@ class FormsController {
 							break;
 						case 'input':
 						case 'password':
-							if (intval($vv['size'])) {
-								$tArr[0] = intval($vv['size']);
+							if ((int)$vv['size']) {
+								$tArr[0] = (int)$vv['size'];
 							}
-							if (intval($vv['max'])) {
-								$tArr[1] = intval($vv['max']);
+							if ((int)$vv['max']) {
+								$tArr[1] = (int)$vv['max'];
 							}
 							if (strlen($vv['specialEval'])) {
 								// Preset blank default value so position 3 can get a value...
@@ -705,13 +705,13 @@ class FormsController {
 							}
 							break;
 						case 'file':
-							if (intval($vv['size'])) {
-								$tArr[0] = intval($vv['size']);
+							if ((int)$vv['size']) {
+								$tArr[0] = (int)$vv['size'];
 							}
 							break;
 						case 'select':
-							if (intval($vv['size'])) {
-								$tArr[0] = intval($vv['size']);
+							if ((int)$vv['size']) {
+								$tArr[0] = (int)$vv['size'];
 							}
 							if ($vv['autosize']) {
 								$tArr[0] = 'auto';
@@ -766,6 +766,7 @@ class FormsController {
 	public function cfgString2CfgArray($cfgStr) {
 		// Traverse the number of form elements:
 		$tLines = explode(LF, $cfgStr);
+		$attachmentCounter = 0;
 		foreach ($tLines as $k => $v) {
 			// Initialize:
 			$confData = array();
@@ -792,7 +793,7 @@ class FormsController {
 						// Attachment names...
 						if ($confData['type'] == 'file') {
 							$confData['fieldname'] = 'attachment' . $attachmentCounter;
-							$attachmentCounter = intval($attachmentCounter) + 1;
+							$attachmentCounter = (int)$attachmentCounter + 1;
 						}
 					} else {
 						$confData['fieldname'] = str_replace(' ', '_', trim($typeParts[0]));
@@ -823,9 +824,9 @@ class FormsController {
 							$confData['size'] = $fParts[1];
 							break;
 						case 'select':
-							$confData['size'] = intval($fParts[1]) ? $fParts[1] : '';
-							$confData['autosize'] = strtolower(trim($fParts[1])) == 'auto' ? 1 : 0;
-							$confData['multiple'] = strtolower(trim($fParts[2])) == 'm' ? 1 : 0;
+							$confData['size'] = (int)$fParts[1] ? $fParts[1] : '';
+							$confData['autosize'] = strtolower(trim($fParts[1])) === 'auto' ? 1 : 0;
+							$confData['multiple'] = strtolower(trim($fParts[2])) === 'm' ? 1 : 0;
 							break;
 					}
 				}

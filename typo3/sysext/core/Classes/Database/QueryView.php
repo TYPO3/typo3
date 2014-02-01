@@ -205,7 +205,7 @@ class QueryView {
 						'qSelect' => $qSelect,
 						'qString' => $qString
 					));
-					$GLOBALS['TYPO3_DB']->exec_UPDATEquery('sys_action', 'uid=' . intval($uid), $dA);
+					$GLOBALS['TYPO3_DB']->exec_UPDATEquery('sys_action', 'uid=' . (int)$uid, $dA);
 					$qOK = 1;
 				}
 			}
@@ -242,7 +242,7 @@ class QueryView {
 		$storeArray = $this->initStoreArray();
 		$storeQueryConfigs = unserialize($GLOBALS['SOBE']->MOD_SETTINGS['storeQueryConfigs']);
 		$storeControl = GeneralUtility::_GP('storeControl');
-		$storeIndex = intval($storeControl['STORE']);
+		$storeIndex = (int)$storeControl['STORE'];
 		$saveStoreArray = 0;
 		$writeArray = array();
 		if (is_array($storeControl)) {
@@ -721,9 +721,9 @@ class QueryView {
 	 * @todo Define visibility
 	 */
 	public function getTreeList($id, $depth, $begin = 0, $perms_clause) {
-		$depth = intval($depth);
-		$begin = intval($begin);
-		$id = intval($id);
+		$depth = (int)$depth;
+		$begin = (int)$begin;
+		$id = (int)$id;
 		if ($begin == 0) {
 			$theList = $id;
 		} else {

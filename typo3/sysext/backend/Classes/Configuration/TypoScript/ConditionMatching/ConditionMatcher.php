@@ -142,7 +142,7 @@ class ConditionMatcher extends \TYPO3\CMS\Core\Configuration\TypoScript\Conditio
 		$editStatement = GeneralUtility::_GP('edit');
 		$commandStatement = GeneralUtility::_GP('cmd');
 		// Determine id from module that was called with an id:
-		if ($id = intval(GeneralUtility::_GP('id'))) {
+		if ($id = (int)GeneralUtility::_GP('id')) {
 			$pageId = $id;
 		} elseif (is_array($editStatement)) {
 			list($table, $uidAndAction) = each($editStatement);
@@ -185,7 +185,7 @@ class ConditionMatcher extends \TYPO3\CMS\Core\Configuration\TypoScript\Conditio
 	 */
 	protected function getPageIdByRecord($table, $id, $ignoreTable = FALSE) {
 		$pageId = 0;
-		$id = (int) $id;
+		$id = (int)$id;
 		if ($table && $id) {
 			if (($ignoreTable || $table === 'pages') && $id >= 0) {
 				$pageId = $id;
@@ -206,7 +206,7 @@ class ConditionMatcher extends \TYPO3\CMS\Core\Configuration\TypoScript\Conditio
 	 */
 	protected function isNewPageWithPageId($pageId) {
 		if (isset($GLOBALS['SOBE']) && $GLOBALS['SOBE'] instanceof \TYPO3\CMS\Backend\Controller\EditDocumentController) {
-			$pageId = intval($pageId);
+			$pageId = (int)$pageId;
 			$elementsData = $GLOBALS['SOBE']->elementsData;
 			$data = $GLOBALS['SOBE']->data;
 			// If saving a new page record:

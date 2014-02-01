@@ -59,7 +59,7 @@ class Content {
 	 * @return void
 	 */
 	public function setUid($uid) {
-		$this->uid = (int) $uid;
+		$this->uid = (int)$uid;
 	}
 
 	/**
@@ -78,7 +78,7 @@ class Content {
 	 * @return void
 	 */
 	public function setPageId($pageId) {
-		$this->pageId = (int) $pageId;
+		$this->pageId = (int)$pageId;
 	}
 
 	/**

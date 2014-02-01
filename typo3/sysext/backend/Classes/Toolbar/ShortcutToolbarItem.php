@@ -280,7 +280,7 @@ class ShortcutToolbarItem implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookI
 			$shortcut['group'] = $shortcutGroup;
 			$shortcut['icon'] = $this->getShortcutIcon($row, $shortcut);
 			$shortcut['iconTitle'] = $this->getShortcutIconTitle($shortcutLabel, $row['module_name'], $row['M_module_name']);
-			$shortcut['action'] = 'jump(unescape(\'' . rawurlencode($row['url']) . '\'),\'' . implode('_', $moduleParts) . '\',\'' . $moduleParts[0] . '\', ' . intval($pageId) . ');';
+			$shortcut['action'] = 'jump(unescape(\'' . rawurlencode($row['url']) . '\'),\'' . implode('_', $moduleParts) . '\',\'' . $moduleParts[0] . '\', ' . (int)$pageId . ');';
 			$lastGroup = $row['sc_group'];
 			$shortcuts[] = $shortcut;
 		}
@@ -312,7 +312,7 @@ class ShortcutToolbarItem implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookI
 	protected function getShortcutById($shortcutId) {
 		$returnShortcut = FALSE;
 		foreach ($this->shortcuts as $shortcut) {
-			if ($shortcut['raw']['uid'] == (int) $shortcutId) {
+			if ($shortcut['raw']['uid'] == (int)$shortcutId) {
 				$returnShortcut = $shortcut;
 				continue;
 			}
@@ -382,7 +382,7 @@ class ShortcutToolbarItem implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookI
 		$shortcutGroups = $this->shortcutGroups;
 		if (!$GLOBALS['BE_USER']->isAdmin()) {
 			foreach ($shortcutGroups as $groupId => $groupName) {
-				if (intval($groupId) < 0) {
+				if ((int)$groupId < 0) {
 					unset($shortcutGroups[$groupId]);
 				}
 			}
@@ -399,7 +399,7 @@ class ShortcutToolbarItem implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookI
 	 * @return void
 	 */
 	public function deleteAjaxShortcut($params = array(), \TYPO3\CMS\Core\Http\AjaxRequestHandler &$ajaxObj = NULL) {
-		$shortcutId = (int) GeneralUtility::_POST('shortcutId');
+		$shortcutId = (int)GeneralUtility::_POST('shortcutId');
 		$fullShortcut = $this->getShortcutById($shortcutId);
 		$ajaxReturn = 'failed';
 		if ($fullShortcut['raw']['userid'] == $GLOBALS['BE_USER']->user['uid']) {
@@ -492,12 +492,12 @@ class ShortcutToolbarItem implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookI
 	 * @return void
 	 */
 	public function setAjaxShortcut($params = array(), \TYPO3\CMS\Core\Http\AjaxRequestHandler &$ajaxObj = NULL) {
-		$shortcutId = (int) GeneralUtility::_POST('shortcutId');
+		$shortcutId = (int)GeneralUtility::_POST('shortcutId');
 		$shortcutName = strip_tags(GeneralUtility::_POST('value'));
-		$shortcutGroupId = (int) GeneralUtility::_POST('shortcut-group');
+		$shortcutGroupId = (int)GeneralUtility::_POST('shortcut-group');
 		if ($shortcutGroupId > 0 || $GLOBALS['BE_USER']->isAdmin()) {
 			// Users can delete only their own shortcuts (except admins)
-			$addUserWhere = !$GLOBALS['BE_USER']->isAdmin() ? ' AND userid=' . intval($GLOBALS['BE_USER']->user['uid']) : '';
+			$addUserWhere = !$GLOBALS['BE_USER']->isAdmin() ? ' AND userid=' . (int)$GLOBALS['BE_USER']->user['uid'] : '';
 			$fieldValues = array(
 				'description' => $shortcutName,
 				'sc_group' => $shortcutGroupId

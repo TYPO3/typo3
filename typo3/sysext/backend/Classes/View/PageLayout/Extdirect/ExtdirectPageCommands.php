@@ -54,11 +54,11 @@ class ExtdirectPageCommands {
 		$targetPage = 0;
 		list($_, $table, $uid) = GeneralUtility::trimExplode('-', $sourceElement);
 		if ($table === 'tt_content' && MathUtility::canBeInterpretedAsInteger($uid)) {
-			$moveElementUid = intval($uid);
+			$moveElementUid = (int)$uid;
 		}
 		list($_, $table, $uid) = GeneralUtility::trimExplode('-', $destinationElement);
 		if ($table === 'tt_content' && MathUtility::canBeInterpretedAsInteger($uid)) {
-			$afterElementUid = intval($uid);
+			$afterElementUid = (int)$uid;
 		} else {
 			// it's dropped in an empty column
 			$afterElementUid = -1;
@@ -67,8 +67,8 @@ class ExtdirectPageCommands {
 		if ($prefix === 'colpos' && MathUtility::canBeInterpretedAsInteger($column) &&
 				$prefix2 === 'page' && MathUtility::canBeInterpretedAsInteger($page)
 		) {
-			$targetColumn = intval($column);
-			$targetPage = intval($page);
+			$targetColumn = (int)$column;
+			$targetPage = (int)$page;
 		}
 		// move to empty column
 		if ($afterElementUid === -1) {

@@ -56,7 +56,7 @@ class GreaterThanValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator 
 	 */
 	public function isValid() {
 		if ($this->requestHandler->has($this->fieldName)) {
-			$value = (int) $this->requestHandler->getByMethod($this->fieldName);
+			$value = (int)$this->requestHandler->getByMethod($this->fieldName);
 			if ($value <= $this->minimum) {
 				return FALSE;
 			}
@@ -71,7 +71,7 @@ class GreaterThanValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator 
 	 * @return object Rule object
 	 */
 	public function setMinimum($minimum) {
-		$this->minimum = (int) $minimum;
+		$this->minimum = (int)$minimum;
 		return $this;
 	}
 

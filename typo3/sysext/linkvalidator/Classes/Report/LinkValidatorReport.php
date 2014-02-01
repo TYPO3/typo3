@@ -391,7 +391,7 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
 			999 => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_infi')
 		);
 		foreach ($parts as $kv => $label) {
-			$opt[] = '<option value="' . $kv . '"' . ($kv == intval($this->searchLevel) ? ' selected="selected"' : '') . '>' . htmlspecialchars($label) . '</option>';
+			$opt[] = '<option value="' . $kv . '"' . ($kv == (int)$this->searchLevel ? ' selected="selected"' : '') . '>' . htmlspecialchars($label) . '</option>';
 		}
 		$lMenu = '<select name="search_levels">' . implode('', $opt) . '</select>';
 		return $lMenu;

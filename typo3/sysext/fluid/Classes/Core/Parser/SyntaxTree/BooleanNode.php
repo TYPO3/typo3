@@ -234,7 +234,7 @@ class BooleanNode extends \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode {
 				if (!self::isComparable($evaluatedLeftSide, $evaluatedRightSide)) {
 					return FALSE;
 				}
-				return (boolean) ((integer) $evaluatedLeftSide % (integer) $evaluatedRightSide);
+				return (boolean) ((int)$evaluatedLeftSide % (int)$evaluatedRightSide);
 			case '>':
 				if (!self::isComparable($evaluatedLeftSide, $evaluatedRightSide)) {
 					return FALSE;

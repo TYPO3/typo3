@@ -53,10 +53,10 @@ class BrowseLinksController {
 		// Clear temporary DB mounts
 		$tmpMount = \TYPO3\CMS\Core\Utility\GeneralUtility::_GET('setTempDBmount');
 		if (isset($tmpMount)) {
-			$GLOBALS['BE_USER']->setAndSaveSessionData('pageTree_temporaryMountPoint', intval($tmpMount));
+			$GLOBALS['BE_USER']->setAndSaveSessionData('pageTree_temporaryMountPoint', (int)$tmpMount);
 		}
 		// Set temporary DB mounts
-		$tempDBmount = intval($GLOBALS['BE_USER']->getSessionData('pageTree_temporaryMountPoint'));
+		$tempDBmount = (int)$GLOBALS['BE_USER']->getSessionData('pageTree_temporaryMountPoint');
 		if ($tempDBmount) {
 			$altMountPoints = $tempDBmount;
 		}

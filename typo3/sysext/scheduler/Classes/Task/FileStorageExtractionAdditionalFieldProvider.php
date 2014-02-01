@@ -90,7 +90,7 @@ class FileStorageExtractionAdditionalFieldProvider implements \TYPO3\CMS\Schedul
 	protected function getFileCountField(FileStorageExtractionTask $task = NULL) {
 		$fieldName = 'tx_scheduler[scheduler_fileStorageIndexing_fileCount]';
 		$fieldId = 'scheduler_fileStorageIndexing_fileCount';
-		$fieldValue = $task !== NULL ? intval($task->maxFileCount) : 100;
+		$fieldValue = $task !== NULL ? (int)$task->maxFileCount : 100;
 		$fieldHtml = '<input type="text" name="' . $fieldName . '" id="' . $fieldId . '" value="' . htmlspecialchars($fieldValue) . '" />';
 
 		$fieldConfiguration = array(
@@ -133,8 +133,8 @@ class FileStorageExtractionAdditionalFieldProvider implements \TYPO3\CMS\Schedul
 		if ($task !== NULL && !$task instanceof FileStorageExtractionTask) {
 			throw new \InvalidArgumentException('Task not of type FileStorageExtractionTask', 1384275695);
 		}
-		$task->storageUid = intval($submittedData['scheduler_fileStorageIndexing_storage']);
-		$task->maxFileCount = intval($submittedData['scheduler_fileStorageIndexing_fileCount']);
+		$task->storageUid = (int)$submittedData['scheduler_fileStorageIndexing_storage'];
+		$task->maxFileCount = (int)$submittedData['scheduler_fileStorageIndexing_fileCount'];
 	}
 
 }

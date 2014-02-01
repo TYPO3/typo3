@@ -388,7 +388,7 @@ class UriBuilder {
 	 * @api
 	 */
 	public function setTargetPageType($targetPageType) {
-		$this->targetPageType = (integer) $targetPageType;
+		$this->targetPageType = (int)$targetPageType;
 		return $this;
 	}
 

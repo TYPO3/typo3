@@ -36,7 +36,7 @@ namespace TYPO3\CMS\Extbase\Utility;
 class ArrayUtility {
 
 	/**
-	 * Explodes a $string delimited by $delimeter and passes each item in the array through intval().
+	 * Explodes a $string delimited by $delimeter and casts each item in the array to (int).
 	 * Corresponds to explode(), but with conversion to integers for all values.
 	 *
 	 * @param string $delimiter Delimiter string to explode with
@@ -45,8 +45,12 @@ class ArrayUtility {
 	 * @api
 	 */
 	static public function integerExplode($delimiter, $string) {
-		$explodedValues = self::trimExplode($delimiter, $string);
-		return array_map('intval', $explodedValues);
+		$explodedValues = explode($delimiter, $string);
+		foreach ($explodedValues as &$value) {
+			$value = (int)$value;
+		}
+		unset($value);
+		return $explodedValues;
 	}
 
 	/**

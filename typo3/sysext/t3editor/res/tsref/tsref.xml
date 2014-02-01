@@ -7372,7 +7372,7 @@ Uses "renderCharset" for the operation.]]></description>
 		</property>
 		<property name="char" type="int">
 			<description><![CDATA[Content is set to the chr(value).
-PHP: $content=chr(intval($conf["char"]);]]></description>
+PHP: $content=chr((int)$conf["char"]);]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>

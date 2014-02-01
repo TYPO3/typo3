@@ -93,7 +93,7 @@ class ProcessedFileRepository extends AbstractRepository {
 	 * @return ProcessedFile
 	 */
 	protected function createDomainObject(array $databaseRow) {
-		$originalFile = $this->resourceFactory->getFileObject(intval($databaseRow['original']));
+		$originalFile = $this->resourceFactory->getFileObject((int)$databaseRow['original']);
 		$originalFile->setStorage($this->resourceFactory->getStorageObject($originalFile->getProperty('storage')));
 		$taskType = $databaseRow['task_type'];
 		$configuration = unserialize($databaseRow['configuration']);
@@ -134,10 +134,10 @@ class ProcessedFileRepository extends AbstractRepository {
 	 */
 	public function update($processedFile) {
 		if ($processedFile->isPersisted()) {
-			$uid = intval($processedFile->getUid());
+			$uid = (int)$processedFile->getUid();
 			$updateFields = $this->cleanUnavailableColumns($processedFile->toArray());
 			$updateFields['tstamp'] = time();
-			$this->databaseConnection->exec_UPDATEquery($this->table, 'uid=' . intval($uid), $updateFields);
+			$this->databaseConnection->exec_UPDATEquery($this->table, 'uid=' . (int)$uid, $updateFields);
 		}
 	}
 
@@ -152,7 +152,7 @@ class ProcessedFileRepository extends AbstractRepository {
 		$databaseRow = $this->databaseConnection->exec_SELECTgetSingleRow(
 			'*',
 			$this->table,
-			'original=' . intval($file->getUid()) .
+			'original=' . (int)$file->getUid() .
 				' AND task_type=' . $this->databaseConnection->fullQuoteStr($taskType, $this->table) .
 				' AND configurationsha1=' . $this->databaseConnection->fullQuoteStr(sha1(serialize($configuration)), $this->table)
 		);
@@ -175,7 +175,7 @@ class ProcessedFileRepository extends AbstractRepository {
 			throw new \InvalidArgumentException('Parameter is no File object but got type "'
 				. (is_object($file) ? get_class($file) : gettype($file)) . '"', 1382006142);
 		}
-		$whereClause = 'original=' . intval($file->getUid()) . $this->getWhereClauseForEnabledFields();
+		$whereClause = 'original=' . (int)$file->getUid() . $this->getWhereClauseForEnabledFields();
 		$rows = $this->databaseConnection->exec_SELECTgetRows('*', $this->table, $whereClause);
 
 		$itemList = array();

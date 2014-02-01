@@ -182,13 +182,13 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface {
 	protected function thawProperties(\TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object, array $row) {
 		$className = get_class($object);
 		$dataMap = $this->getDataMap($className);
-		$object->_setProperty('uid', intval($row['uid']));
-		$object->_setProperty('pid', intval($row['pid']));
-		$object->_setProperty('_localizedUid', intval($row['uid']));
+		$object->_setProperty('uid', (int)$row['uid']);
+		$object->_setProperty('pid', (int)$row['pid']);
+		$object->_setProperty('_localizedUid', (int)$row['uid']);
 		if ($dataMap->getLanguageIdColumnName() !== NULL) {
-			$object->_setProperty('_languageUid', intval($row[$dataMap->getLanguageIdColumnName()]));
+			$object->_setProperty('_languageUid', (int)$row[$dataMap->getLanguageIdColumnName()]);
 			if (isset($row['_LOCALIZED_UID'])) {
-				$object->_setProperty('_localizedUid', intval($row['_LOCALIZED_UID']));
+				$object->_setProperty('_localizedUid', (int)$row['_LOCALIZED_UID']);
 			}
 		}
 		$properties = $object->_getProperties();
@@ -203,16 +203,16 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface {
 			if ($row[$columnName] !== NULL) {
 				switch ($propertyData['type']) {
 					case 'integer':
-						$propertyValue = (integer) $row[$columnName];
+						$propertyValue = (int)$row[$columnName];
 						break;
 					case 'float':
-						$propertyValue = (double) $row[$columnName];
+						$propertyValue = (double)$row[$columnName];
 						break;
 					case 'boolean':
-						$propertyValue = (boolean) $row[$columnName];
+						$propertyValue = (bool)$row[$columnName];
 						break;
 					case 'string':
-						$propertyValue = (string) $row[$columnName];
+						$propertyValue = (string)$row[$columnName];
 						break;
 					case 'array':
 						// $propertyValue = $this->mapArray($row[$columnName]); // Not supported, yet!

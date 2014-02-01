@@ -88,7 +88,7 @@ class TypoScriptFactory implements \TYPO3\CMS\Core\SingletonInterface {
 			$keys = \TYPO3\CMS\Core\TypoScript\TemplateService::sortedKeyList($typoscript);
 			foreach ($keys as $key) {
 				$class = $typoscript[$key];
-				if (intval($key) && !strstr($key, '.')) {
+				if ((int)$key && strpos($key, '.') === FALSE) {
 					if (isset($typoscript[$key . '.'])) {
 						$elementArguments = $typoscript[$key . '.'];
 					} else {
@@ -293,7 +293,7 @@ class TypoScriptFactory implements \TYPO3\CMS\Core\SingletonInterface {
 		$keys = \TYPO3\CMS\Core\TypoScript\TemplateService::sortedKeyList($arguments);
 		foreach ($keys as $key) {
 			$class = $arguments[$key];
-			if (intval($key) && !strstr($key, '.')) {
+			if ((int)$key && strpos($key, '.') === FALSE) {
 				$filterArguments = $arguments[$key . '.'];
 				$filter = $element->makeFilter($class, $filterArguments);
 				$element->addFilter($filter);
@@ -352,7 +352,7 @@ class TypoScriptFactory implements \TYPO3\CMS\Core\SingletonInterface {
 			$keys = \TYPO3\CMS\Core\TypoScript\TemplateService::sortedKeyList($rulesTyposcript);
 			foreach ($keys as $key) {
 				$class = $rulesTyposcript[$key];
-				if (intval($key) && !strstr($key, '.')) {
+				if ((int)$key && strpos($key, '.') === FALSE) {
 					$elementArguments = $rulesTyposcript[$key . '.'];
 					$rule = $rulesClass->createRule($class, $elementArguments);
 					$rule->setFieldName($elementArguments['element']);

@@ -59,7 +59,7 @@ class ReviewController extends \TYPO3\CMS\Workspaces\Controller\AbstractControll
 			$wsList = array_intersect_key($wsList, $wsCur);
 		} else {
 			if (strlen(GeneralUtility::_GP('workspace'))) {
-				$switchWs = (int) GeneralUtility::_GP('workspace');
+				$switchWs = (int)GeneralUtility::_GP('workspace');
 				if (in_array($switchWs, array_keys($wsList)) && $activeWorkspace != $switchWs) {
 					$activeWorkspace = $switchWs;
 					$GLOBALS['BE_USER']->setWorkspace($activeWorkspace);

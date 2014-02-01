@@ -47,13 +47,13 @@ class AutoPublishService {
 		// Select all workspaces that needs to be published / unpublished:
 		$workspaces = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid,swap_modes,publish_time,unpublish_time', 'sys_workspace', 'pid=0
 				AND
-				((publish_time!=0 AND publish_time<=' . intval($GLOBALS['EXEC_TIME']) . ')
-				OR (publish_time=0 AND unpublish_time!=0 AND unpublish_time<=' . intval($GLOBALS['EXEC_TIME']) . '))' . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('sys_workspace'));
+				((publish_time!=0 AND publish_time<=' . (int)$GLOBALS['EXEC_TIME'] . ')
+				OR (publish_time=0 AND unpublish_time!=0 AND unpublish_time<=' . (int)$GLOBALS['EXEC_TIME'] . '))' . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('sys_workspace'));
 		$workspaceService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Workspaces\\Service\\WorkspaceService');
 		foreach ($workspaces as $rec) {
 			// First, clear start/end time so it doesn't get select once again:
 			$fieldArray = $rec['publish_time'] != 0 ? array('publish_time' => 0) : array('unpublish_time' => 0);
-			$GLOBALS['TYPO3_DB']->exec_UPDATEquery('sys_workspace', 'uid=' . intval($rec['uid']), $fieldArray);
+			$GLOBALS['TYPO3_DB']->exec_UPDATEquery('sys_workspace', 'uid=' . (int)$rec['uid'], $fieldArray);
 			// Get CMD array:
 			$cmd = $workspaceService->getCmdArrayForPublishWS($rec['uid'], $rec['swap_modes'] == 1);
 			// $rec['swap_modes']==1 means that auto-publishing will swap versions, not just publish and empty the workspace.

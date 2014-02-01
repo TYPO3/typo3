@@ -44,7 +44,7 @@ class SizeAttribute extends \TYPO3\CMS\Form\Domain\Model\Attribute\AbstractAttri
 	 * @return integer Attribute value
 	 */
 	public function getValue() {
-		$value = (int) $this->value;
+		$value = (int)$this->value;
 		if ($value <= 0) {
 			$attribute = 40;
 		} else {

@@ -957,7 +957,7 @@ class ElementBrowser {
 					$subcats = array();
 					$v = $this->thisConfig['userLinks.'];
 					foreach ($v as $k2 => $value) {
-						$k2i = intval($k2);
+						$k2i = (int)$k2;
 						if (substr($k2, -1) == '.' && is_array($v[$k2i . '.'])) {
 							// Title:
 							$title = trim($v[$k2i]);
@@ -1026,7 +1026,7 @@ class ElementBrowser {
 				$cElements = $this->expandPage();
 				// Outputting Temporary DB mount notice:
 				$dbmount = '';
-				if (intval($GLOBALS['BE_USER']->getSessionData('pageTree_temporaryMountPoint'))) {
+				if ((int)$GLOBALS['BE_USER']->getSessionData('pageTree_temporaryMountPoint')) {
 					$link = '<a href="' . htmlspecialchars(GeneralUtility::linkThisScript(array('setTempDBmount' => 0)))
 						. '">' . $GLOBALS['LANG']->sl('LLL:EXT:lang/locallang_core.xlf:labels.temporaryDBmount', TRUE)
 						. '</a>';
@@ -1232,7 +1232,7 @@ class ElementBrowser {
 			foreach ($tablesArr as $currentTable) {
 				$tableTca = $GLOBALS['TCA'][$currentTable];
 				if (isset($tableTca)) {
-					if (!isset($tableTca['ctrl']['rootLevel']) || (intval($tableTca['ctrl']['rootLevel']) != 1)) {
+					if (!isset($tableTca['ctrl']['rootLevel']) || ((int)$tableTca['ctrl']['rootLevel']) != 1) {
 						$onlyRootLevel = FALSE;
 					}
 				}
@@ -1489,7 +1489,6 @@ class ElementBrowser {
 			// Set header:
 			$out .= $this->barheader($GLOBALS['LANG']->getLL('contentElements') . ':');
 			// Create header for listing, showing the page title/icon:
-			$titleLen = intval($GLOBALS['BE_USER']->uc['titleLen']);
 			$mainPageRec = BackendUtility::getRecordWSOL('pages', $expPageId);
 			$picon = IconUtility::getSpriteIconForRecord('pages', $mainPageRec);
 			$picon .= BackendUtility::getRecordTitle('pages', $mainPageRec, TRUE);
@@ -1498,7 +1497,7 @@ class ElementBrowser {
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 				'uid,header,hidden,starttime,endtime,fe_group,CType,colPos,bodytext',
 				'tt_content',
-				'pid=' . intval($expPageId) . BackendUtility::deleteClause('tt_content')
+				'pid=' . (int)$expPageId . BackendUtility::deleteClause('tt_content')
 					. BackendUtility::versioningPlaceholderClause('tt_content'),
 				'',
 				'colPos,sorting'
@@ -1566,7 +1565,7 @@ class ElementBrowser {
 			$out .= $this->barheader($GLOBALS['LANG']->getLL('selectRecords') . ':');
 			// Create the header, showing the current page for which the listing is.
 			// Includes link to the page itself, if pages are amount allowed tables.
-			$titleLen = intval($GLOBALS['BE_USER']->uc['titleLen']);
+			$titleLen = (int)$GLOBALS['BE_USER']->uc['titleLen'];
 			$mainPageRec = BackendUtility::getRecordWSOL('pages', $this->expandPage);
 			$ATag = '';
 			$ATag_e = '';
@@ -1674,7 +1673,7 @@ class ElementBrowser {
 				$currentIdentifier = $this->curUrlInfo['info'];
 			}
 			// Create header element; The folder from which files are listed.
-			$titleLen = intval($GLOBALS['BE_USER']->uc['titleLen']);
+			$titleLen = (int)$GLOBALS['BE_USER']->uc['titleLen'];
 			$folderIcon = IconUtility::getSpriteIconForFile('folder');
 			$folderIcon .= htmlspecialchars(GeneralUtility::fixed_lgd_cs($folder->getIdentifier(), $titleLen));
 			$picon = '<a href="#" onclick="return link_folder(\'file:' . $folder->getCombinedIdentifier() . '\');">'
@@ -1775,7 +1774,7 @@ class ElementBrowser {
 		$out .= $this->barheader(sprintf($GLOBALS['LANG']->getLL('files') . ' (%s):', $filesCount));
 		$out .= '<div id="filelist">';
 		$out .= $this->getBulkSelector($filesCount);
-		$titleLen = intval($GLOBALS['BE_USER']->uc['titleLen']);
+		$titleLen = (int)$GLOBALS['BE_USER']->uc['titleLen'];
 		// Create the header of current folder:
 		if ($folder) {
 			$folderIcon = IconUtility::getSpriteIconForFile('folder');
@@ -1900,7 +1899,7 @@ class ElementBrowser {
 		$baseFolderPath = $baseFolder->getPublicUrl();
 		// Create headline (showing number of folders):
 		$content .= $this->barheader(sprintf($GLOBALS['LANG']->getLL('folders') . ' (%s):', count($folders)));
-		$titleLength = intval($GLOBALS['BE_USER']->uc['titleLen']);
+		$titleLength = (int)$GLOBALS['BE_USER']->uc['titleLen'];
 		// Create the header of current folder:
 		$aTag = '<a href="#" onclick="return insertElement(\'\',\'' . rawurlencode($baseFolderPath)
 			. '\', \'folder\', \'' . rawurlencode($baseFolderPath) . '\', unescape(\'' . rawurlencode($baseFolderPath)
@@ -2002,7 +2001,7 @@ class ElementBrowser {
 		$files = $this->getFilesInFolder($folder, $extensionList);
 
 		$out .= $this->barheader(sprintf($GLOBALS['LANG']->getLL('files') . ' (%s):', count($files)));
-		$titleLen = intval($GLOBALS['BE_USER']->uc['titleLen']);
+		$titleLen = (int)$GLOBALS['BE_USER']->uc['titleLen'];
 		$picon = '<img' . IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/i/_icon_webfolders.gif', 'width="18" height="16"') . ' alt="" />';
 		$picon .= htmlspecialchars(GeneralUtility::fixed_lgd_cs(basename($folder->getName()), $titleLen));
 		$out .= $picon . '<br />';
@@ -2235,10 +2234,10 @@ class ElementBrowser {
 						// Checking if the id-parameter is an alias.
 						if (!\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($id)) {
 							list($idPartR) = BackendUtility::getRecordsByField('pages', 'alias', $id);
-							$id = intval($idPartR['uid']);
+							$id = (int)$idPartR['uid'];
 						}
 						$pageRow = BackendUtility::getRecordWSOL('pages', $id);
-						$titleLen = intval($GLOBALS['BE_USER']->uc['titleLen']);
+						$titleLen = (int)$GLOBALS['BE_USER']->uc['titleLen'];
 						$info['value'] = ((((($GLOBALS['LANG']->getLL('page', TRUE) . ' \'')
 										. htmlspecialchars(GeneralUtility::fixed_lgd_cs($pageRow['title'], $titleLen)))
 										. '\' (ID:') . $id) . ($uP['fragment'] ? ', #' . $uP['fragment'] : '')) . ')';
@@ -2303,7 +2302,7 @@ class ElementBrowser {
 		if ($count === '0') {
 			return '';
 		}
-		$count = intval($count) == 0 ? 3 : intval($count);
+		$count = (int)$count === 0 ? 3 : (int)$count;
 		// Create header, showing upload path:
 		$header = $folderObject->getIdentifier();
 		$code = '

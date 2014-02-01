@@ -228,7 +228,7 @@ class PropertyType {
 	 * @return string  name of the specified type
 	 */
 	static public function nameFromValue($type) {
-		switch (intval($type)) {
+		switch ((int)$type) {
 			case self::STRING:
 				$name = self::TYPENAME_STRING;
 				break;

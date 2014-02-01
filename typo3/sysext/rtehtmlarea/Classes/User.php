@@ -185,7 +185,7 @@ class User {
 		if (is_array($thisConfig['userElements.'])) {
 			$categories = array();
 			foreach ($thisConfig['userElements.'] as $k => $value) {
-				$ki = intval($k);
+				$ki = (int)$k;
 				$v = $thisConfig['userElements.'][$ki . '.'];
 				if (substr($k, -1) == '.' && is_array($v)) {
 					$subcats = array();
@@ -222,7 +222,7 @@ class User {
 							}
 						}
 						foreach ($v as $k2 => $dummyValue) {
-							$k2i = intval($k2);
+							$k2i = (int)$k2;
 							if (substr($k2, -1) == '.' && is_array($v[$k2i . '.'])) {
 								$title = trim($v[$k2i]);
 								if (!$title) {

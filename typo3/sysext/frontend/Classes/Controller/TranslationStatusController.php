@@ -83,7 +83,7 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
 			$theOutput .= BackendUtility::cshItem('_MOD_web_info', 'lang', $GLOBALS['BACK_PATH'], '|<br />');
 			// Showing the tree:
 			// Initialize starting point of page tree:
-			$treeStartingPoint = intval($this->pObj->id);
+			$treeStartingPoint = (int)$this->pObj->id;
 			$treeStartingRecord = BackendUtility::getRecordWSOL('pages', $treeStartingPoint);
 			$depth = $this->pObj->MOD_SETTINGS['depth'];
 			// Initialize tree object:
@@ -139,7 +139,7 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
 			$params = '&edit[pages][' . $editUid . ']=edit';
 			$info .= '<a href="#" onclick="' . htmlspecialchars(
 					BackendUtility::editOnClick($params, $GLOBALS['BACK_PATH'])) . '" title="' . $LANG->getLL('lang_renderl10n_editDefaultLanguagePage', TRUE) . '">' . IconUtility::getSpriteIcon('actions-document-open') . '</a>';
-			$info .= '<a href="#" onclick="' . htmlspecialchars(('top.loadEditId(' . intval($data['row']['uid']) . ',"&SET[language]=0"); return false;')) . '" title="' . $LANG->getLL('lang_renderl10n_editPage', TRUE) . '">' . IconUtility::getSpriteIcon('actions-page-open') . '</a>';
+			$info .= '<a href="#" onclick="' . htmlspecialchars(('top.loadEditId(' . (int)$data['row']['uid'] . ',"&SET[language]=0"); return false;')) . '" title="' . $LANG->getLL('lang_renderl10n_editPage', TRUE) . '">' . IconUtility::getSpriteIcon('actions-page-open') . '</a>';
 			$info .= str_replace('###LANG_UID###', '0', $viewPageLink);
 			$info .= '&nbsp;';
 			$info .= $data['row']['l18n_cfg'] & 1 ? '<span title="' . $LANG->sL('LLL:EXT:cms/locallang_tca.xlf:pages.l18n_cfg.I.1', TRUE) . '">D</span>' : '&nbsp;';
@@ -151,7 +151,7 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
 			$disableLanguages = isset($modSharedTSconfig['properties']['disableLanguages']) ? \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $modSharedTSconfig['properties']['disableLanguages'], TRUE) : array();
 			// Traverse system languages:
 			foreach ($languages as $langRow) {
-				if ($this->pObj->MOD_SETTINGS['lang'] == 0 || (int) $this->pObj->MOD_SETTINGS['lang'] === (int) $langRow['uid']) {
+				if ($this->pObj->MOD_SETTINGS['lang'] == 0 || (int)$this->pObj->MOD_SETTINGS['lang'] === (int)$langRow['uid']) {
 					$row = $this->getLangStatus($data['row']['uid'], $langRow['uid']);
 					$info = '';
 					if (is_array($row)) {
@@ -170,7 +170,7 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
 						$params = '&edit[pages_language_overlay][' . $editUid . ']=edit';
 						$info .= '<a href="#" onclick="' . htmlspecialchars(
 								BackendUtility::editOnClick($params, $GLOBALS['BACK_PATH'])) . '" title="' . $LANG->getLL('lang_renderl10n_editLanguageOverlayRecord', TRUE) . '">' . IconUtility::getSpriteIcon('actions-document-open') . '</a>';
-						$info .= '<a href="#" onclick="' . htmlspecialchars(('top.loadEditId(' . intval($data['row']['uid']) . ',"&SET[language]=' . $langRow['uid'] . '"); return false;')) . '" title="' . $LANG->getLL('lang_renderl10n_editPageLang', TRUE) . '">' . IconUtility::getSpriteIcon('actions-page-open') . '</a>';
+						$info .= '<a href="#" onclick="' . htmlspecialchars(('top.loadEditId(' . (int)$data['row']['uid'] . ',"&SET[language]=' . $langRow['uid'] . '"); return false;')) . '" title="' . $LANG->getLL('lang_renderl10n_editPageLang', TRUE) . '">' . IconUtility::getSpriteIcon('actions-page-open') . '</a>';
 						$info .= str_replace('###LANG_UID###', $langRow['uid'], $viewPageLink);
 						$tCells[] = '<td class="' . $status . '">' . $info . '</td>';
 						$tCells[] = '<td class="' . $status . '" title="' . $LANG->getLL('lang_renderl10n_CEcount', TRUE) . '" align="center">' . $this->getContentElementCount($data['row']['uid'], $langRow['uid']) . '</td>';
@@ -210,7 +210,7 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
 		}
 		$tCells[] = '<td class="c-leftLine" colspan="2">' . $LANG->getLL('lang_renderl10n_default', TRUE) . ':' . $editIco . '</td>';
 		foreach ($languages as $langRow) {
-			if ($this->pObj->MOD_SETTINGS['lang'] == 0 || (int) $this->pObj->MOD_SETTINGS['lang'] === (int) $langRow['uid']) {
+			if ($this->pObj->MOD_SETTINGS['lang'] == 0 || (int)$this->pObj->MOD_SETTINGS['lang'] === (int)$langRow['uid']) {
 				// Title:
 				$tCells[] = '<td class="c-leftLine">' . htmlspecialchars($langRow['title']) . '</td>';
 				// Edit language overlay records:
@@ -280,8 +280,8 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 			'*',
 			'pages_language_overlay',
-			'pid=' . intval($pageId) .
-				' AND sys_language_uid=' . intval($langId) .
+			'pid=' . (int)$pageId .
+				' AND sys_language_uid=' . (int)$langId .
 				BackendUtility::deleteClause('pages_language_overlay') .
 				BackendUtility::versioningPlaceholderClause('pages_language_overlay')
 		);
@@ -289,7 +289,7 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
 		BackendUtility::workspaceOL('pages_language_overlay', $row);
 		if (is_array($row)) {
 			$row['_COUNT'] = $GLOBALS['TYPO3_DB']->sql_num_rows($res);
-			$row['_HIDDEN'] = $row['hidden'] || intval($row['endtime']) > 0 && intval($row['endtime']) < $GLOBALS['EXEC_TIME'] || $GLOBALS['EXEC_TIME'] < intval($row['starttime']);
+			$row['_HIDDEN'] = $row['hidden'] || (int)$row['endtime'] > 0 && (int)$row['endtime'] < $GLOBALS['EXEC_TIME'] || $GLOBALS['EXEC_TIME'] < (int)$row['starttime'];
 		}
 		return $row;
 	}
@@ -303,7 +303,7 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
 	 * @todo Define visibility
 	 */
 	public function getContentElementCount($pageId, $sysLang) {
-		$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('uid', 'tt_content', 'pid=' . intval($pageId) . ' AND sys_language_uid=' . intval($sysLang) . BackendUtility::deleteClause('tt_content') . BackendUtility::versioningPlaceholderClause('tt_content'));
+		$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('uid', 'tt_content', 'pid=' . (int)$pageId . ' AND sys_language_uid=' . (int)$sysLang . BackendUtility::deleteClause('tt_content') . BackendUtility::versioningPlaceholderClause('tt_content'));
 		return $count ?: '-';
 	}
 

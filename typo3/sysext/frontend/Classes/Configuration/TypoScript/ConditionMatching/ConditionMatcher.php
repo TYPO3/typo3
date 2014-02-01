@@ -129,7 +129,7 @@ class ConditionMatcher extends \TYPO3\CMS\Core\Configuration\TypoScript\Conditio
 	 * @return integer The current page Id
 	 */
 	protected function determinePageId() {
-		return (int) $GLOBALS['TSFE']->id;
+		return (int)$GLOBALS['TSFE']->id;
 	}
 
 	/**

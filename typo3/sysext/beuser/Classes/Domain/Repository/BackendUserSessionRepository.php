@@ -45,7 +45,7 @@ class BackendUserSessionRepository extends \TYPO3\CMS\Extbase\Persistence\Reposi
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 			'ses_id AS id, ses_iplock AS ip, ses_tstamp AS timestamp',
 			'be_sessions',
-			'ses_userid = "' . intval($backendUser->getUid()) . '"',
+			'ses_userid = "' . (int)$backendUser->getUid() . '"',
 			'',
 			'ses_tstamp ASC'
 		);

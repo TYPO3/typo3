@@ -604,7 +604,7 @@ class Bootstrap {
 		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['errors']['exceptionHandler'] = $GLOBALS['TYPO3_CONF_VARS']['SYS']['productionExceptionHandler'];
 		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['errors']['exceptionalErrors'] = $GLOBALS['TYPO3_CONF_VARS']['SYS']['exceptionalErrors'];
 		// Turn error logging on/off.
-		if (($displayErrors = intval($GLOBALS['TYPO3_CONF_VARS']['SYS']['displayErrors'])) != '-1') {
+		if (($displayErrors = (int)$GLOBALS['TYPO3_CONF_VARS']['SYS']['displayErrors']) != '-1') {
 			// Special value "2" enables this feature only if $GLOBALS['TYPO3_CONF_VARS'][SYS][devIPmask] matches
 			if ($displayErrors == 2) {
 				if (Utility\GeneralUtility::cmpIP(Utility\GeneralUtility::getIndpEnv('REMOTE_ADDR'), $GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask'])) {
@@ -635,8 +635,8 @@ class Bootstrap {
 	 * @return Bootstrap
 	 */
 	protected function setMemoryLimit() {
-		if (intval($GLOBALS['TYPO3_CONF_VARS']['SYS']['setMemoryLimit']) > 16) {
-			@ini_set('memory_limit', (intval($GLOBALS['TYPO3_CONF_VARS']['SYS']['setMemoryLimit']) . 'm'));
+		if ((int)$GLOBALS['TYPO3_CONF_VARS']['SYS']['setMemoryLimit'] > 16) {
+			@ini_set('memory_limit', ((int)$GLOBALS['TYPO3_CONF_VARS']['SYS']['setMemoryLimit'] . 'm'));
 		}
 		return $this;
 	}
@@ -806,7 +806,7 @@ class Bootstrap {
 	 */
 	public function checkLockedBackendAndRedirectOrDie() {
 		if ($GLOBALS['TYPO3_CONF_VARS']['BE']['adminOnly'] < 0) {
-			throw new \RuntimeException('TYPO3 Backend locked: Backend and Install Tool are locked for maintenance. [BE][adminOnly] is set to "' . intval($GLOBALS['TYPO3_CONF_VARS']['BE']['adminOnly']) . '".', 1294586847);
+			throw new \RuntimeException('TYPO3 Backend locked: Backend and Install Tool are locked for maintenance. [BE][adminOnly] is set to "' . (int)$GLOBALS['TYPO3_CONF_VARS']['BE']['adminOnly'] . '".', 1294586847);
 		}
 		if (@is_file((PATH_typo3conf . 'LOCK_BACKEND'))) {
 			if (TYPO3_PROCEED_IF_NO_USER === 2) {
@@ -850,9 +850,9 @@ class Bootstrap {
 	 * @throws \RuntimeException
 	 */
 	public function checkSslBackendAndRedirectIfNeeded() {
-		if (intval($GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSL'])) {
-			if (intval($GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSLPort'])) {
-				$sslPortSuffix = ':' . intval($GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSLPort']);
+		if ((int)$GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSL']) {
+			if ((int)$GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSLPort']) {
+				$sslPortSuffix = ':' . (int)$GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSLPort'];
 			} else {
 				$sslPortSuffix = '';
 			}
@@ -865,7 +865,7 @@ class Bootstrap {
 					die;
 				}
 			} elseif (!Utility\GeneralUtility::getIndpEnv('TYPO3_SSL')) {
-				if (intval($GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSL']) === 2) {
+				if ((int)$GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSL'] === 2) {
 					list(, $url) = explode('://', Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . TYPO3_mainDir, 2);
 					list($server, $address) = explode('/', $url, 2);
 					header('Location: https://' . $server . $sslPortSuffix . '/' . $address);
@@ -997,7 +997,7 @@ class Bootstrap {
 		$backendUser = Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Authentication\\BackendUserAuthentication');
 		$backendUser->warningEmail = $GLOBALS['TYPO3_CONF_VARS']['BE']['warning_email_addr'];
 		$backendUser->lockIP = $GLOBALS['TYPO3_CONF_VARS']['BE']['lockIP'];
-		$backendUser->auth_timeout_field = intval($GLOBALS['TYPO3_CONF_VARS']['BE']['sessionTimeout']);
+		$backendUser->auth_timeout_field = (int)$GLOBALS['TYPO3_CONF_VARS']['BE']['sessionTimeout'];
 		$backendUser->OS = TYPO3_OS;
 		if (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI) {
 			$backendUser->dontSetCookie = TRUE;

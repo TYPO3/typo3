@@ -74,7 +74,7 @@ Although deleted records are not errors to be repaired, this tool allows you to 
 		);
 		$startingPoint = $this->cli_isArg('--pid') ? \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($this->cli_argValue('--pid'), 0) : 0;
 		$depth = $this->cli_isArg('--depth') ? \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($this->cli_argValue('--depth'), 0) : 1000;
-		$this->genTree($startingPoint, $depth, (int) $this->cli_argValue('--echotree'));
+		$this->genTree($startingPoint, $depth, (int)$this->cli_argValue('--echotree'));
 		$resultArray['deleted'] = $this->recStats['deleted'];
 		return $resultArray;
 	}

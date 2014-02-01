@@ -154,9 +154,9 @@ class OpendocsController implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookIn
 		$label = htmlspecialchars(strip_tags(\TYPO3\CMS\Core\Utility\GeneralUtility::htmlspecialchars_decode($document[0])));
 		$icon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord($table, $record);
 		$link = $GLOBALS['BACK_PATH'] . 'alt_doc.php?' . $document[2];
-		$pageId = intval($document[3]['uid']);
+		$pageId = (int)$document[3]['uid'];
 		if ($document[3]['table'] !== 'pages') {
-			$pageId = intval($document[3]['pid']);
+			$pageId = (int)$document[3]['pid'];
 		}
 		$firstRow = '';
 		if ($isFirstDoc) {

@@ -469,7 +469,7 @@ class FileContentParser {
 					\TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd, $res);
 					$pdfInfo = $this->splitPdfInfo($res);
 					unset($res);
-					if (intval($pdfInfo['pages'])) {
+					if ((int)$pdfInfo['pages']) {
 						list($low, $high) = explode('-', $cPKey);
 						// Get pdf content:
 						$tempFileName = \TYPO3\CMS\Core\Utility\GeneralUtility::tempnam('Typo3_indexer');
@@ -706,7 +706,7 @@ class FileContentParser {
 				\TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd, $res);
 				$pdfInfo = $this->splitPdfInfo($res);
 				unset($res);
-				if (intval($pdfInfo['pages'])) {
+				if ((int)$pdfInfo['pages']) {
 					$cParts = array();
 					// Calculate mode
 					if ($this->pdf_mode > 0) {

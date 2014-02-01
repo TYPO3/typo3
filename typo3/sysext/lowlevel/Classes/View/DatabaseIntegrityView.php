@@ -431,7 +431,7 @@ class DatabaseIntegrityView {
 				if ($setup[1] != '--div--') {
 					$codeArr[$n][] = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('pages', array('doktype' => $setup[1]));
 					$codeArr[$n][] = $GLOBALS['LANG']->sL($setup[0]) . ' (' . $setup[1] . ')';
-					$codeArr[$n][] = intval($admin->recStats['doktype'][$setup[1]]);
+					$codeArr[$n][] = (int)$admin->recStats['doktype'][$setup[1]];
 				}
 			}
 			$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('doktype'), $this->doc->table($codeArr), TRUE, TRUE);
@@ -472,7 +472,7 @@ class DatabaseIntegrityView {
 					$lostRecordCount = count($admin->lRecords[$t]);
 				}
 				if ($countArr['all'][$t]) {
-					$theNumberOfRe = intval($countArr['non_deleted'][$t]) . '/' . $lostRecordCount;
+					$theNumberOfRe = (int)$countArr['non_deleted'][$t] . '/' . $lostRecordCount;
 				} else {
 					$theNumberOfRe = '';
 				}

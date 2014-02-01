@@ -499,8 +499,8 @@ class StagesService {
 				$beuserUidArray[] = str_replace('be_users_', '', $uidvalue);
 			} elseif (strstr($uidvalue, 'be_groups') !== FALSE) {
 				$begroupUidArray[] = str_replace('be_groups_', '', $uidvalue);
-			} elseif ((int) $uidvalue) {
-				$beuserUidArray[] = (int) $uidvalue;
+			} elseif ((int)$uidvalue) {
+				$beuserUidArray[] = (int)$uidvalue;
 			}
 		}
 

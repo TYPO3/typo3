@@ -334,7 +334,7 @@ class ResourceStorage {
 	 * @return integer
 	 */
 	public function getUid() {
-		return (int) $this->storageRecord['uid'];
+		return (int)$this->storageRecord['uid'];
 	}
 
 	/**
@@ -356,7 +356,7 @@ class ResourceStorage {
 	 * @see CAPABILITY_* constants
 	 */
 	public function getCapabilities() {
-		return (int) $this->capabilities;
+		return (int)$this->capabilities;
 	}
 
 	/**
@@ -450,7 +450,7 @@ class ResourceStorage {
 	public function markAsPermanentlyOffline() {
 		if ($this->getUid() > 0) {
 			// @todo: move this to the storage repository
-			$GLOBALS['TYPO3_DB']->exec_UPDATEquery('sys_file_storage', 'uid=' . intval($this->getUid()), array('is_online' => 0));
+			$GLOBALS['TYPO3_DB']->exec_UPDATEquery('sys_file_storage', 'uid=' . (int)$this->getUid(), array('is_online' => 0));
 		}
 		$this->storageRecord['is_online'] = 0;
 		$this->isOnline = FALSE;

@@ -57,20 +57,20 @@ class PermissionAjaxController {
 		$this->conf['page'] = \TYPO3\CMS\Core\Utility\GeneralUtility::_POST('page');
 		$this->conf['who'] = \TYPO3\CMS\Core\Utility\GeneralUtility::_POST('who');
 		$this->conf['mode'] = \TYPO3\CMS\Core\Utility\GeneralUtility::_POST('mode');
-		$this->conf['bits'] = intval(\TYPO3\CMS\Core\Utility\GeneralUtility::_POST('bits'));
-		$this->conf['permissions'] = intval(\TYPO3\CMS\Core\Utility\GeneralUtility::_POST('permissions'));
+		$this->conf['bits'] = (int)\TYPO3\CMS\Core\Utility\GeneralUtility::_POST('bits');
+		$this->conf['permissions'] = (int)\TYPO3\CMS\Core\Utility\GeneralUtility::_POST('permissions');
 		$this->conf['action'] = \TYPO3\CMS\Core\Utility\GeneralUtility::_POST('action');
-		$this->conf['ownerUid'] = intval(\TYPO3\CMS\Core\Utility\GeneralUtility::_POST('ownerUid'));
+		$this->conf['ownerUid'] = (int)\TYPO3\CMS\Core\Utility\GeneralUtility::_POST('ownerUid');
 		$this->conf['username'] = \TYPO3\CMS\Core\Utility\GeneralUtility::_POST('username');
-		$this->conf['groupUid'] = intval(\TYPO3\CMS\Core\Utility\GeneralUtility::_POST('groupUid'));
+		$this->conf['groupUid'] = (int)\TYPO3\CMS\Core\Utility\GeneralUtility::_POST('groupUid');
 		$this->conf['groupname'] = \TYPO3\CMS\Core\Utility\GeneralUtility::_POST('groupname');
-		$this->conf['editLockState'] = intval(\TYPO3\CMS\Core\Utility\GeneralUtility::_POST('editLockState'));
+		$this->conf['editLockState'] = (int)\TYPO3\CMS\Core\Utility\GeneralUtility::_POST('editLockState');
 		// User: Replace some parts of the posted values
-		$this->conf['new_owner_uid'] = intval(\TYPO3\CMS\Core\Utility\GeneralUtility::_POST('newOwnerUid'));
+		$this->conf['new_owner_uid'] = (int)\TYPO3\CMS\Core\Utility\GeneralUtility::_POST('newOwnerUid');
 		$temp_owner_data = BackendUtility::getUserNames('username, uid', ' AND uid = ' . $this->conf['new_owner_uid']);
 		$this->conf['new_owner_username'] = htmlspecialchars($temp_owner_data[$this->conf['new_owner_uid']]['username']);
 		// Group: Replace some parts of the posted values
-		$this->conf['new_group_uid'] = intval(\TYPO3\CMS\Core\Utility\GeneralUtility::_POST('newGroupUid'));
+		$this->conf['new_group_uid'] = (int)\TYPO3\CMS\Core\Utility\GeneralUtility::_POST('newGroupUid');
 		$temp_group_data = BackendUtility::getGroupNames('title,uid', ' AND uid = ' . $this->conf['new_group_uid']);
 		$this->conf['new_group_username'] = htmlspecialchars($temp_group_data[$this->conf['new_group_uid']]['title']);
 	}
@@ -140,9 +140,9 @@ class PermissionAjaxController {
 					break;
 				default:
 					if ($this->conf['mode'] == 'delete') {
-						$this->conf['permissions'] = intval($this->conf['permissions'] - $this->conf['bits']);
+						$this->conf['permissions'] = (int)($this->conf['permissions'] - $this->conf['bits']);
 					} else {
-						$this->conf['permissions'] = intval($this->conf['permissions'] + $this->conf['bits']);
+						$this->conf['permissions'] = (int)($this->conf['permissions'] + $this->conf['bits']);
 					}
 					// Prepare data to change
 					$data = array();

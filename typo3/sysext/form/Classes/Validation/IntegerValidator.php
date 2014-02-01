@@ -56,7 +56,7 @@ class IntegerValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator {
 				),
 				$value
 			);
-			if (strval(intval($valueFiltered)) != $valueFiltered) {
+			if (strval((int)$valueFiltered) != $valueFiltered) {
 				return FALSE;
 			}
 		}

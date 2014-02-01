@@ -53,7 +53,7 @@ class RepositoryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 		$repository = $this->findByUid($uid);
 
 		$repository->setLastUpdate(new \DateTime());
-		$repository->setExtensionCount(intval($extCount));
+		$repository->setExtensionCount((int)$extCount);
 
 		$this->update($repository);
 	}

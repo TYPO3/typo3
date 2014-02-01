@@ -373,7 +373,7 @@ class RelationHandler {
 					// If the ID is not blank and the table name is among the names in the inputted tableList
 					if (((string) $theID != '' && $theID) && $theTable && isset($this->tableArray[$theTable])) {
 						// Get ID as the right value:
-						$theID = $this->secondTable ? abs(intval($theID)) : intval($theID);
+						$theID = $this->secondTable ? abs((int)$theID) : (int)$theID;
 						// Register ID/table name in internal arrays:
 						$this->itemArray[$key]['id'] = $theID;
 						$this->itemArray[$key]['table'] = $theTable;
@@ -463,13 +463,13 @@ class RelationHandler {
 			$sorting_field = 'sorting';
 		}
 		if ($this->MM_table_where) {
-			$additionalWhere .= LF . str_replace('###THIS_UID###', intval($uid), $this->MM_table_where);
+			$additionalWhere .= LF . str_replace('###THIS_UID###', (int)$uid, $this->MM_table_where);
 		}
 		foreach ($this->MM_match_fields as $field => $value) {
 			$additionalWhere .= ' AND ' . $field . '=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($value, $tableName);
 		}
 		// Select all MM relations:
-		$where = $uidLocal_field . '=' . intval($uid) . $additionalWhere;
+		$where = $uidLocal_field . '=' . (int)$uid . $additionalWhere;
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $tableName, $where, '', $sorting_field);
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 			// Default
@@ -525,7 +525,7 @@ class RelationHandler {
 			$additionalWhere = '';
 			// Add WHERE clause if configured
 			if ($this->MM_table_where) {
-				$additionalWhere .= LF . str_replace('###THIS_UID###', intval($uid), $this->MM_table_where);
+				$additionalWhere .= LF . str_replace('###THIS_UID###', (int)$uid, $this->MM_table_where);
 			}
 			// Select, update or delete only those relations that match the configured fields
 			foreach ($this->MM_match_fields as $field => $value) {
@@ -577,7 +577,7 @@ class RelationHandler {
 					// if a uid field is available since that is unique!
 					// But as long as it "doesn't hurt" we just add it to the where clause. It should all match up.
 					$whereClause = $uidLocal_field . '=' . $uid . ' AND ' . $uidForeign_field . '=' . $val['id']
-						. ($this->MM_hasUidField ? ' AND uid=' . intval($oldMMs_inclUid[$oldMMs_index][2]) : '');
+						. ($this->MM_hasUidField ? ' AND uid=' . (int)$oldMMs_inclUid[$oldMMs_index][2] : '');
 					if ($tablename) {
 						$whereClause .= ' AND tablenames=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($tablename, $MM_tableName);
 					}
@@ -609,7 +609,7 @@ class RelationHandler {
 				foreach ($oldMMs as $oldMM_key => $mmItem) {
 					// If UID field is present, of course we need only use that for deleting.
 					if ($this->MM_hasUidField) {
-						$removeClauses[] = 'uid=' . intval($oldMMs_inclUid[$oldMM_key][2]);
+						$removeClauses[] = 'uid=' . (int)$oldMMs_inclUid[$oldMM_key][2];
 					} else {
 						if (is_array($mmItem)) {
 							$removeClauses[] = 'tablenames=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($mmItem[0], $MM_tableName)
@@ -627,7 +627,7 @@ class RelationHandler {
 					}
 				}
 				$deleteAddWhere = ' AND (' . implode(' OR ', $removeClauses) . ')';
-				$where = $uidLocal_field . '=' . intval($uid) . $deleteAddWhere . $additionalWhere_tablenames . $additionalWhere;
+				$where = $uidLocal_field . '=' . (int)$uid . $deleteAddWhere . $additionalWhere_tablenames . $additionalWhere;
 				$GLOBALS['TYPO3_DB']->exec_DELETEquery($MM_tableName, $where);
 				// Update ref index:
 				foreach ($updateRefIndex_records as $pair) {
@@ -672,13 +672,13 @@ class RelationHandler {
 			$additionalWhere = '';
 			// Add WHERE clause if configured
 			if ($this->MM_table_where) {
-				$additionalWhere .= LF . str_replace('###THIS_UID###', intval($uid), $this->MM_table_where);
+				$additionalWhere .= LF . str_replace('###THIS_UID###', (int)$uid, $this->MM_table_where);
 			}
 			// Select, update or delete only those relations that match the configured fields
 			foreach ($this->MM_match_fields as $field => $value) {
 				$additionalWhere .= ' AND ' . $field . '=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($value, $MM_tableName);
 			}
-			$where = $uidLocal_field . '=' . intval($uid) . $additionalWhere_tablenames . $additionalWhere;
+			$where = $uidLocal_field . '=' . (int)$uid . $additionalWhere_tablenames . $additionalWhere;
 			$GLOBALS['TYPO3_DB']->exec_UPDATEquery($MM_tableName, $where, array($uidLocal_field => $newUid));
 		}
 	}
@@ -694,7 +694,7 @@ class RelationHandler {
 	 */
 	public function readForeignField($uid, $conf) {
 		$key = 0;
-		$uid = intval($uid);
+		$uid = (int)$uid;
 		$foreign_table = $conf['foreign_table'];
 		$foreign_table_field = $conf['foreign_table_field'];
 		$useDeleteClause = !$this->undeleteRecord;
@@ -855,7 +855,7 @@ class RelationHandler {
 				}
 				// Update accordant fields in the database:
 				if (count($updateValues)) {
-					$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid=' . intval($uid), $updateValues);
+					$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid=' . (int)$uid, $updateValues);
 					$this->updateRefIndex($table, $uid);
 				}
 				// Update accordant fields in the database for workspaces overlays/placeholders:
@@ -865,7 +865,7 @@ class RelationHandler {
 						&& $row['t3ver_oid']
 						&& VersionState::cast($row['t3ver_state'])->equals(VersionState::NEW_PLACEHOLDER_VERSION)
 					) {
-						$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid=' . intval($row['t3ver_oid']), $workspaceValues);
+						$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid=' . (int)$row['t3ver_oid'], $workspaceValues);
 					}
 				}
 			}
@@ -976,7 +976,7 @@ class RelationHandler {
 			return FALSE;
 		}
 		$output = array();
-		$titleLen = intval($GLOBALS['BE_USER']->uc['titleLen']);
+		$titleLen = (int)$GLOBALS['BE_USER']->uc['titleLen'];
 		foreach ($this->itemArray as $val) {
 			$theRow = $this->results[$val['table']][$val['id']];
 			if ($theRow && is_array($GLOBALS['TCA'][$val['table']])) {

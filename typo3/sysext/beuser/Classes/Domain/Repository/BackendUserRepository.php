@@ -91,10 +91,10 @@ class BackendUserRepository extends \TYPO3\CMS\Extbase\Domain\Repository\Backend
 		// @TODO: Refactor for real n:m relations
 		if ($demand->getBackendUserGroup()) {
 			$constraints[] = $query->logicalOr(
-				$query->equals('usergroup', intval($demand->getBackendUserGroup()->getUid())),
-				$query->like('usergroup', intval($demand->getBackendUserGroup()->getUid()) . ',%'),
-				$query->like('usergroup', '%,' . intval($demand->getBackendUserGroup()->getUid())),
-				$query->like('usergroup', '%,' . intval($demand->getBackendUserGroup()->getUid()) . ',%')
+				$query->equals('usergroup', (int)$demand->getBackendUserGroup()->getUid()),
+				$query->like('usergroup', (int)$demand->getBackendUserGroup()->getUid() . ',%'),
+				$query->like('usergroup', '%,' . (int)$demand->getBackendUserGroup()->getUid()),
+				$query->like('usergroup', '%,' . (int)$demand->getBackendUserGroup()->getUid() . ',%')
 			);
 			$query->contains('usergroup', $demand->getBackendUserGroup());
 		}

@@ -90,7 +90,7 @@ abstract class AbstractTestCase extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
 	 * @return void
 	 */
 	protected function setExpectedLogEntries($count) {
-		$count = intval($count);
+		$count = (int)$count;
 
 		if ($count > 0) {
 			$this->expectedLogEntries = $count;

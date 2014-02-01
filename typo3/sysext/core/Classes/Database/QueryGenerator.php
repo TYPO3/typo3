@@ -651,7 +651,7 @@ class QueryGenerator {
 						$this->extJSCODE .= 'typo3form.fieldSet("' . $this->name . $subscript . '[inputValue]", "datetime", "", 0,0);';
 						$this->extJSCODE .= 'typo3form.fieldSet("' . $this->name . $subscript . '[inputValue1]", "datetime", "", 0,0);';
 					} else {
-						$lineHTML .= '<input type="text" name="' . $this->name . $subscript . '[inputValue]_hr' . '" value="' . strftime('%H:%M %e-%m-%Y', intval($conf['inputValue'])) . '" ' . $GLOBALS['TBE_TEMPLATE']->formWidth(10) . ' onChange="typo3form.fieldGet(\'' . $this->name . $subscript . '[inputValue]\', \'datetime\', \'\', 0,0);"><input type="hidden" value="' . htmlspecialchars($conf['inputValue']) . '" name="' . $this->name . $subscript . '[inputValue]' . '">';
+						$lineHTML .= '<input type="text" name="' . $this->name . $subscript . '[inputValue]_hr' . '" value="' . strftime('%H:%M %e-%m-%Y', (int)$conf['inputValue']) . '" ' . $GLOBALS['TBE_TEMPLATE']->formWidth(10) . ' onChange="typo3form.fieldGet(\'' . $this->name . $subscript . '[inputValue]\', \'datetime\', \'\', 0,0);"><input type="hidden" value="' . htmlspecialchars($conf['inputValue']) . '" name="' . $this->name . $subscript . '[inputValue]' . '">';
 						$this->extJSCODE .= 'typo3form.fieldSet("' . $this->name . $subscript . '[inputValue]", "datetime", "", 0,0);';
 					}
 					break;
@@ -1245,8 +1245,8 @@ class QueryGenerator {
 		} elseif ($conf['comparison'] == 162 || $conf['comparison'] == 163) {
 			$inputValArray = explode(',', $inputVal);
 			$inputVal = 0;
-			foreach ($inputValArray as $key => $fileName) {
-				$inputVal += intval($fileName);
+			foreach ($inputValArray as $fileName) {
+				$inputVal += (int)$fileName;
 			}
 			$qsTmp = str_replace('#VALUE#', $inputVal, $qsTmp);
 		} else {
@@ -1451,9 +1451,9 @@ class QueryGenerator {
 	 * @todo Define visibility
 	 */
 	public function getTreeList($id, $depth, $begin = 0, $perms_clause) {
-		$depth = intval($depth);
-		$begin = intval($begin);
-		$id = intval($id);
+		$depth = (int)$depth;
+		$begin = (int)$begin;
+		$id = (int)$id;
 		if ($begin == 0) {
 			$theList = $id;
 		} else {

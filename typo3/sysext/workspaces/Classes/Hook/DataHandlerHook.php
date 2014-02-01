@@ -81,7 +81,7 @@ class DataHandlerHook {
 		$fields = array('t3ver_stage' => \TYPO3\CMS\Workspaces\Service\StagesService::STAGE_EDIT_ID);
 		foreach ($this->getTcaTables() as $tcaTable) {
 			if (BackendUtility::isTableWorkspaceEnabled($tcaTable)) {
-				$where = 't3ver_stage = ' . intval($stageId);
+				$where = 't3ver_stage = ' . (int)$stageId;
 				$where .= ' AND t3ver_wsid > 0 AND pid=-1';
 				$where .= BackendUtility::deleteClause($tcaTable);
 				$GLOBALS['TYPO3_DB']->exec_UPDATEquery($tcaTable, $where, $fields);

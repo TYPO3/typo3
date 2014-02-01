@@ -143,7 +143,7 @@ class ElementInformationController {
 	 */
 	protected function initDatabaseRecord() {
 		$this->type = 'db';
-		$this->uid = intval($this->uid);
+		$this->uid = (int)$this->uid;
 
 		// Check permissions and uid value:
 		if ($this->uid && $GLOBALS['BE_USER']->check('tables_select', $this->table)) {
@@ -313,7 +313,7 @@ class ElementInformationController {
 		foreach ($extraFields as $name => $value) {
 			$rowValue = BackendUtility::getProcessedValueExtra($this->table, $name, $this->row[$name]);
 			if ($name === 'cruser_id' && $rowValue) {
-				$userTemp = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('username, realName', 'be_users', 'uid = ' . intval($rowValue));
+				$userTemp = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('username, realName', 'be_users', 'uid = ' . (int)$rowValue);
 				if ($userTemp[0]['username'] !== '') {
 					$rowValue = $userTemp[0]['username'];
 					if ($userTemp[0]['realName'] !== '') {
@@ -503,7 +503,7 @@ class ElementInformationController {
 		$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 			'*',
 			'sys_refindex',
-			'ref_table=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($selectTable, 'sys_refindex') . ' AND ref_uid=' . intval($selectUid) . ' AND deleted=0'
+			'ref_table=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($selectTable, 'sys_refindex') . ' AND ref_uid=' . (int)$selectUid . ' AND deleted=0'
 		);
 
 		// Compile information for title tag:
@@ -552,7 +552,7 @@ class ElementInformationController {
 		$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 			'*',
 			'sys_refindex',
-			'tablename=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($table, 'sys_refindex') . ' AND recuid=' . intval($ref)
+			'tablename=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($table, 'sys_refindex') . ' AND recuid=' . (int)$ref
 		);
 
 		// Compile information for title tag:

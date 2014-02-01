@@ -84,7 +84,7 @@ class FrontendEditingController {
 		}
 		list($table, $uid) = explode(':', $currentRecord);
 		// Page ID for new records, 0 if not specified
-		$newRecordPid = intval($conf['newRecordInPid']);
+		$newRecordPid = (int)$conf['newRecordInPid'];
 		if (!$conf['onlyCurrentPid'] || $dataArray['pid'] == $GLOBALS['TSFE']->id) {
 			if ($table == 'pages') {
 				$newUid = $uid;
@@ -205,7 +205,7 @@ class FrontendEditingController {
 	public function editAction() {
 		// Commands
 		list($table, $uid) = explode(':', $this->TSFE_EDIT['record']);
-		$uid = intval($uid);
+		$uid = (int)$uid;
 		$cmd = $this->TSFE_EDIT['cmd'];
 		// Look for some TSFE_EDIT data that indicates we should save.
 		if (($this->TSFE_EDIT['doSave'] || $this->TSFE_EDIT['update'] || $this->TSFE_EDIT['update_close']) && is_array($this->TSFE_EDIT['data'])) {
@@ -335,10 +335,10 @@ class FrontendEditingController {
 						$operator = '>';
 						$order = 'ASC';
 					}
-					$sortCheck = ' AND ' . $sortField . $operator . intval($row[$sortField]);
+					$sortCheck = ' AND ' . $sortField . $operator . (int)$row[$sortField];
 				}
 				$GLOBALS['TYPO3_DB']->sql_free_result($res);
-				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,pid', $table, 'pid=' . intval($row['pid']) . $sortCheck . $copyAfterFieldsQuery . $GLOBALS['TSFE']->sys_page->enableFields($table, '', $ignore), '', $sortField . ' ' . $order, '2');
+				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,pid', $table, 'pid=' . (int)$row['pid'] . $sortCheck . $copyAfterFieldsQuery . $GLOBALS['TSFE']->sys_page->enableFields($table, '', $ignore), '', $sortField . ' ' . $order, '2');
 				if ($row2 = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 					if ($afterUID) {
 						$cmdData[$table][$uid]['move'] = -$afterUID;

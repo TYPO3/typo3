@@ -168,8 +168,8 @@ class Commands {
 	 */
 	static public function createNode(\TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode $parentNode, $targetId, $pageType) {
 		$placeholder = 'NEW12345';
-		$pid = intval($parentNode->getWorkspaceId());
-		$targetId = intval($targetId);
+		$pid = (int)$parentNode->getWorkspaceId();
+		$targetId = (int)$targetId;
 
 		// Use page TsConfig as default page initialization
 		$pageTs = BackendUtility::getPagesTSconfig($pid);
@@ -249,7 +249,7 @@ class Commands {
 	 */
 	static public function getMountPointPath($uid = -1) {
 		if ($uid === -1) {
-			$uid = intval($GLOBALS['BE_USER']->uc['pageTree_temporaryMountPoint']);
+			$uid = (int)$GLOBALS['BE_USER']->uc['pageTree_temporaryMountPoint'];
 		}
 		if ($uid <= 0) {
 			return '';
@@ -290,7 +290,7 @@ class Commands {
 	 * @return string
 	 */
 	static public function getDomainName($uid) {
-		$whereClause = 'pid=' . intval($uid) . BackendUtility::deleteClause('sys_domain') . BackendUtility::BEenableFields('sys_domain');
+		$whereClause = 'pid=' . (int)$uid . BackendUtility::deleteClause('sys_domain') . BackendUtility::BEenableFields('sys_domain');
 		$domain = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('domainName', 'sys_domain', $whereClause, '', 'sorting');
 		return is_array($domain) ? htmlspecialchars($domain['domainName']) : '';
 	}
@@ -308,7 +308,7 @@ class Commands {
 			self::$addIdAsPrefix = $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.showPageIdWithTitle');
 			self::$addDomainName = $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.showDomainNameWithTitle');
 			self::$backgroundColors = $GLOBALS['BE_USER']->getTSConfigProp('options.pageTree.backgroundColor');
-			self::$titleLength = intval($GLOBALS['BE_USER']->uc['titleLen']);
+			self::$titleLength = (int)$GLOBALS['BE_USER']->uc['titleLen'];
 		}
 		/** @var $subNode \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode */
 		$subNode = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\Pagetree\\PagetreeNode');

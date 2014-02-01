@@ -232,7 +232,7 @@ class PageLayoutController {
 		$this->perms_clause = $GLOBALS['BE_USER']->getPagePermsClause(1);
 		$this->backPath = $GLOBALS['BACK_PATH'];
 		// GPvars:
-		$this->id = intval(GeneralUtility::_GP('id'));
+		$this->id = (int)GeneralUtility::_GP('id');
 		$this->pointer = GeneralUtility::_GP('pointer');
 		$this->imagemode = GeneralUtility::_GP('imagemode');
 		$this->clear_cache = GeneralUtility::_GP('clear_cache');
@@ -249,7 +249,7 @@ class PageLayoutController {
 		// Initialize menu
 		$this->menuConfig();
 		// Setting sys language from session var:
-		$this->current_sys_language = intval($this->MOD_SETTINGS['language']);
+		$this->current_sys_language = (int)$this->MOD_SETTINGS['language'];
 		// CSH / Descriptions:
 		$this->descrTable = '_MOD_' . $this->MCONF['name'];
 	}
@@ -369,10 +369,10 @@ class PageLayoutController {
 		}
 		// If content from different pid is displayed
 		if ($this->pageinfo['content_from_pid']) {
-			$contentPage = BackendUtility::getRecord('pages', intval($this->pageinfo['content_from_pid']));
+			$contentPage = BackendUtility::getRecord('pages', (int)$this->pageinfo['content_from_pid']);
 			$title = BackendUtility::getRecordTitle('pages', $contentPage);
 			$linkToPid = $this->local_linkThisScript(array('id' => $this->pageinfo['content_from_pid']));
-			$link = '<a href="' . $linkToPid . '">' . htmlspecialchars($title) . ' (PID ' . intval($this->pageinfo['content_from_pid']) . ')</a>';
+			$link = '<a href="' . $linkToPid . '">' . htmlspecialchars($title) . ' (PID ' . (int)$this->pageinfo['content_from_pid'] . ')</a>';
 			$flashMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', sprintf($GLOBALS['LANG']->getLL('content_from_pid_title'), $link), '', FlashMessage::INFO);
 			$content .= $flashMessage->render();
 		}
@@ -388,8 +388,8 @@ class PageLayoutController {
 			$overlayRecord = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
 				'title',
 				'pages_language_overlay',
-				'pid = ' . intval($this->id) .
-						' AND sys_language_uid = ' . intval($this->current_sys_language) .
+				'pid = ' . (int)$this->id .
+						' AND sys_language_uid = ' . (int)$this->current_sys_language .
 						BackendUtility::deleteClause('pages_language_overlay') .
 						BackendUtility::versioningPlaceholderClause('pages_language_overlay'),
 				'',
@@ -425,8 +425,8 @@ class PageLayoutController {
 			// JavaScript:
 			$this->doc->JScode = '<script type="text/javascript" ' . 'src="' . GeneralUtility::createVersionNumberedFilename(($GLOBALS['BACK_PATH'] . 'js/jsfunc.updateform.js')) . '">' . '</script>';
 			$this->doc->JScode .= $this->doc->wrapScriptTags('
-				if (top.fsMod) top.fsMod.recentIds["web"] = ' . intval($this->id) . ';
-				if (top.fsMod) top.fsMod.navFrameHighlightedID["web"] = "pages' . intval($this->id) . '_"+top.fsMod.currentBank; ' . intval($this->id) . ';
+				if (top.fsMod) top.fsMod.recentIds["web"] = ' . (int)$this->id . ';
+				if (top.fsMod) top.fsMod.navFrameHighlightedID["web"] = "pages' . (int)$this->id . '_"+top.fsMod.currentBank; ' . (int)$this->id . ';
 				function jumpToUrl(URL,formEl) {	//
 					if (document.editform && TBE_EDITOR.isFormChanged)	{	// Check if the function exists... (works in all browsers?)
 						if (!TBE_EDITOR.isFormChanged())	{	//
@@ -560,7 +560,7 @@ class PageLayoutController {
 			$this->doc->backPath = $GLOBALS['BACK_PATH'];
 			$this->doc->setModuleTemplate('EXT:backend/Resources/Private/Templates/db_layout.html');
 			$this->doc->JScode = $this->doc->wrapScriptTags('
-				if (top.fsMod) top.fsMod.recentIds["web"] = ' . intval($this->id) . ';
+				if (top.fsMod) top.fsMod.recentIds["web"] = ' . (int)$this->id . ';
 			');
 			$flashMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $GLOBALS['LANG']->getLL('clickAPage_content'), $GLOBALS['LANG']->getLL('clickAPage_header'), FlashMessage::INFO);
 			$body = $flashMessage->render();
@@ -613,7 +613,7 @@ class PageLayoutController {
 		$edit_record = $this->edit_record;
 		// If a command to edit all records in a column is issue, then select all those elements, and redirect to alt_doc.php:
 		if (substr($edit_record, 0, 9) == '_EDIT_COL') {
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'tt_content', 'pid=' . intval($this->id) . ' AND colPos=' . intval(substr($edit_record, 10)) . ' AND sys_language_uid=' . intval($this->current_sys_language) . ($this->MOD_SETTINGS['tt_content_showHidden'] ? '' : BackendUtility::BEenableFields('tt_content')) . BackendUtility::deleteClause('tt_content') . BackendUtility::versioningPlaceholderClause('tt_content'), '', 'sorting');
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'tt_content', 'pid=' . (int)$this->id . ' AND colPos=' . (int)substr($edit_record, 10) . ' AND sys_language_uid=' . (int)$this->current_sys_language . ($this->MOD_SETTINGS['tt_content_showHidden'] ? '' : BackendUtility::BEenableFields('tt_content')) . BackendUtility::deleteClause('tt_content') . BackendUtility::versioningPlaceholderClause('tt_content'), '', 'sorting');
 			$idListA = array();
 			while ($cRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 				$idListA[] = $cRow['uid'];
@@ -623,7 +623,7 @@ class PageLayoutController {
 		}
 		// If the former record edited was the creation of a NEW record, this will look up the created records uid:
 		if ($this->new_unique_uid) {
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_log', 'userid=' . intval($GLOBALS['BE_USER']->user['uid']) . ' AND NEWid=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->new_unique_uid, 'sys_log'));
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_log', 'userid=' . (int)$GLOBALS['BE_USER']->user['uid'] . ' AND NEWid=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->new_unique_uid, 'sys_log'));
 			$sys_log_row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 			if (is_array($sys_log_row)) {
 				$edit_record = $sys_log_row['tablename'] . ':' . $sys_log_row['recuid'];
@@ -634,19 +634,19 @@ class PageLayoutController {
 		$is_selected = 0;
 		$languageOverlayRecord = '';
 		if ($this->current_sys_language) {
-			list($languageOverlayRecord) = BackendUtility::getRecordsByField('pages_language_overlay', 'pid', $this->id, 'AND sys_language_uid=' . intval($this->current_sys_language));
+			list($languageOverlayRecord) = BackendUtility::getRecordsByField('pages_language_overlay', 'pid', $this->id, 'AND sys_language_uid=' . (int)$this->current_sys_language);
 		}
 		if (is_array($languageOverlayRecord)) {
 			$inValue = 'pages_language_overlay:' . $languageOverlayRecord['uid'];
-			$is_selected += intval($edit_record == $inValue);
+			$is_selected += (int)$edit_record == $inValue;
 			$opt[] = '<option value="' . $inValue . '"' . ($edit_record == $inValue ? ' selected="selected"' : '') . '>[ ' . $GLOBALS['LANG']->getLL('editLanguageHeader', TRUE) . ' ]</option>';
 		} else {
 			$inValue = 'pages:' . $this->id;
-			$is_selected += intval($edit_record == $inValue);
+			$is_selected += (int)$edit_record == $inValue;
 			$opt[] = '<option value="' . $inValue . '"' . ($edit_record == $inValue ? ' selected="selected"' : '') . '>[ ' . $GLOBALS['LANG']->getLL('editPageProperties', TRUE) . ' ]</option>';
 		}
 		// Selecting all content elements from this language and allowed colPos:
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'tt_content', 'pid=' . intval($this->id) . ' AND sys_language_uid=' . intval($this->current_sys_language) . ' AND colPos IN (' . $this->colPosList . ')' . ($this->MOD_SETTINGS['tt_content_showHidden'] ? '' : BackendUtility::BEenableFields('tt_content')) . BackendUtility::deleteClause('tt_content') . BackendUtility::versioningPlaceholderClause('tt_content'), '', 'colPos,sorting');
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'tt_content', 'pid=' . (int)$this->id . ' AND sys_language_uid=' . (int)$this->current_sys_language . ' AND colPos IN (' . $this->colPosList . ')' . ($this->MOD_SETTINGS['tt_content_showHidden'] ? '' : BackendUtility::BEenableFields('tt_content')) . BackendUtility::deleteClause('tt_content') . BackendUtility::versioningPlaceholderClause('tt_content'), '', 'colPos,sorting');
 		$colPos = NULL;
 		$first = 1;
 		// Page is the pid if no record to put this after.
@@ -666,7 +666,7 @@ class PageLayoutController {
 					$opt[] = '<option value="_EDIT_COL:' . $colPos . '">__' . $GLOBALS['LANG']->sL(BackendUtility::getLabelFromItemlist('tt_content', 'colPos', $colPos), TRUE) . ':__</option>';
 				}
 				$inValue = 'tt_content:' . $cRow['uid'];
-				$is_selected += intval($edit_record == $inValue);
+				$is_selected += (int)$edit_record == $inValue;
 				$opt[] = '<option value="' . $inValue . '"' . ($edit_record == $inValue ? ' selected="selected"' : '') . '>' . htmlspecialchars(GeneralUtility::fixed_lgd_cs(($cRow['header'] ? $cRow['header'] : '[' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.no_title') . '] ' . strip_tags($cRow['bodytext'])), $GLOBALS['BE_USER']->uc['titleLen'])) . '</option>';
 				$prev = -$cRow['uid'];
 			}
@@ -675,7 +675,7 @@ class PageLayoutController {
 		if (!$edit_record) {
 			$edit_record = 'tt_content:new/' . $prev . '/' . $colPos;
 			$inValue = 'tt_content:new/' . $prev . '/' . $colPos;
-			$is_selected += intval($edit_record == $inValue);
+			$is_selected += (int)$edit_record == $inValue;
 			$opt[] = '<option value="' . $inValue . '"' . ($edit_record == $inValue ? ' selected="selected"' : '') . '>[ ' . $GLOBALS['LANG']->getLL('newLabel', 1) . ' ]</option>';
 		}
 		// If none is yet selected...
@@ -689,7 +689,7 @@ class PageLayoutController {
 		$this->deleteButton = MathUtility::canBeInterpretedAsInteger($this->eRParts[1]) && $edit_record && ($this->eRParts[0] != 'pages' && $this->EDIT_CONTENT || $this->eRParts[0] == 'pages' && $this->CALC_PERMS & 4);
 		// If undo-button should be rendered (depends on available items in sys_history)
 		$this->undoButton = 0;
-		$undoRes = $GLOBALS['TYPO3_DB']->exec_SELECTquery('tstamp', 'sys_history', 'tablename=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->eRParts[0], 'sys_history') . ' AND recuid=' . intval($this->eRParts[1]), '', 'tstamp DESC', '1');
+		$undoRes = $GLOBALS['TYPO3_DB']->exec_SELECTquery('tstamp', 'sys_history', 'tablename=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->eRParts[0], 'sys_history') . ' AND recuid=' . (int)$this->eRParts[1], '', 'tstamp DESC', '1');
 		if ($this->undoButtonR = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($undoRes)) {
 			$this->undoButton = 1;
 		}
@@ -727,8 +727,8 @@ class PageLayoutController {
 			$trData = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Form\\DataPreprocessor');
 			$trData->addRawData = TRUE;
 			$trData->defVals[$this->eRParts[0]] = array(
-				'colPos' => intval($ex_colPos),
-				'sys_language_uid' => intval($this->current_sys_language)
+				'colPos' => (int)$ex_colPos,
+				'sys_language_uid' => (int)$this->current_sys_language
 			);
 			$trData->disableRTE = $this->MOD_SETTINGS['disableRTE'];
 			$trData->lockRecords = 1;
@@ -740,7 +740,7 @@ class PageLayoutController {
 			if ($uidVal == 'new') {
 				$new_unique_uid = uniqid('NEW');
 				$rec['uid'] = $new_unique_uid;
-				$rec['pid'] = intval($ex_pid) ?: $this->id;
+				$rec['pid'] = (int)$ex_pid ?: $this->id;
 				$recordAccess = TRUE;
 			} else {
 				$rec['uid'] = $uidVal;
@@ -914,7 +914,7 @@ class PageLayoutController {
 				// The order of the rows: Default is left(1), Normal(0), right(2), margin(3)
 				$dblist->tt_contentConfig['cols'] = implode(',', $colList);
 				$dblist->tt_contentConfig['showHidden'] = $this->MOD_SETTINGS['tt_content_showHidden'];
-				$dblist->tt_contentConfig['sys_language_uid'] = intval($this->current_sys_language);
+				$dblist->tt_contentConfig['sys_language_uid'] = (int)$this->current_sys_language;
 				// If the function menu is set to "Language":
 				if ($this->MOD_SETTINGS['function'] == 2) {
 					$dblist->tt_contentConfig['single'] = 0;
@@ -1051,8 +1051,8 @@ class PageLayoutController {
 					$overlayRecord = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
 						'uid',
 						'pages_language_overlay',
-						'pid = ' . intval($this->id) . ' ' .
-						'AND sys_language_uid = ' . intval($this->current_sys_language) .
+						'pid = ' . (int)$this->id . ' ' .
+						'AND sys_language_uid = ' . (int)$this->current_sys_language .
 						BackendUtility::deleteClause('pages_language_overlay') .
 						BackendUtility::versioningPlaceholderClause('pages_language_overlay'),
 						'',
@@ -1133,7 +1133,7 @@ class PageLayoutController {
 		return $GLOBALS['TYPO3_DB']->exec_SELECTcountRows(
 			'uid',
 			'tt_content',
-			'pid=' . intval($this->id) . ' AND sys_language_uid=' . intval($this->current_sys_language) . BackendUtility::BEenableFields('tt_content', 1) . BackendUtility::deleteClause('tt_content') . BackendUtility::versioningPlaceholderClause('tt_content')
+			'pid=' . (int)$this->id . ' AND sys_language_uid=' . (int)$this->current_sys_language . BackendUtility::BEenableFields('tt_content', 1) . BackendUtility::deleteClause('tt_content') . BackendUtility::versioningPlaceholderClause('tt_content')
 		);
 	}
 
@@ -1165,7 +1165,7 @@ class PageLayoutController {
 			return $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 				'sys_language.*',
 				'pages_language_overlay,sys_language',
-				'pages_language_overlay.sys_language_uid=sys_language.uid AND pages_language_overlay.pid=' . intval($id) . $exQ .
+				'pages_language_overlay.sys_language_uid=sys_language.uid AND pages_language_overlay.pid=' . (int)$id . $exQ .
 					BackendUtility::versioningPlaceholderClause('pages_language_overlay'),
 				'pages_language_overlay.sys_language_uid,sys_language.uid,sys_language.pid,sys_language.tstamp,sys_language.hidden,sys_language.title,sys_language.static_lang_isocode,sys_language.flag',
 				'sys_language.title'

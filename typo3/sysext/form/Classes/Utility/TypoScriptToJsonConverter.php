@@ -84,7 +84,7 @@ class TypoScriptToJsonConverter {
 			$keys = \TYPO3\CMS\Core\TypoScript\TemplateService::sortedKeyList($typoscript);
 			foreach ($keys as $key) {
 				$class = $typoscript[$key];
-				if (intval($key) && !strstr($key, '.')) {
+				if ((int)$key && strpos($key, '.') === FALSE) {
 					if (isset($typoscript[$key . '.'])) {
 						$elementArguments = $typoscript[$key . '.'];
 					} else {
@@ -155,8 +155,7 @@ class TypoScriptToJsonConverter {
 		$validationRulesAvailable = FALSE;
 		if (!empty($this->validationRules) && isset($arguments['name'])) {
 			foreach ($this->validationRules as $key => $ruleName) {
-				if (intval($key) && !strstr($key, '.')) {
-					$ruleConfiguration = array();
+				if ((int)$key && strpos($key, '.') === FALSE) {
 					if (isset($this->validationRules[$key . '.'])) {
 						$ruleConfiguration = $this->validationRules[$key . '.'];
 						if (isset($ruleConfiguration['element']) && $ruleConfiguration['element'] === $arguments['name']) {

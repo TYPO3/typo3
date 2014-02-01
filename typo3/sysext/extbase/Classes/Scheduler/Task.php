@@ -159,7 +159,7 @@ class Task extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 	 */
 	public function addDefaultValue($argumentName, $argumentValue) {
 		if (is_bool($argumentValue)) {
-			$argumentValue = intval($argumentValue);
+			$argumentValue = (int)$argumentValue;
 		}
 		$this->defaults[$argumentName] = $argumentValue;
 	}

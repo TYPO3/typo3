@@ -95,11 +95,11 @@ class Locker {
 	public function __construct($id, $method = 'simple', $loops = 0, $step = 0) {
 		// Force ID to be string
 		$id = (string) $id;
-		if (intval($loops)) {
-			$this->loops = intval($loops);
+		if ((int)$loops) {
+			$this->loops = (int)$loops;
 		}
-		if (intval($step)) {
-			$this->step = intval($step);
+		if ((int)$step) {
+			$this->step = (int)$step;
 		}
 		$this->method = $method;
 		switch ($this->method) {

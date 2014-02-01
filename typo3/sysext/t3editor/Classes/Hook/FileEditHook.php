@@ -104,7 +104,7 @@ class FileEditHook {
 		$attributes = 'rows="30" ' . 'wrap="off" ' . $pObj->doc->formWidthText(48, 'width:98%;height:60%', 'off');
 		$title = $GLOBALS['LANG']->getLL('file') . ' ' . htmlspecialchars($pObj->target);
 		$outCode = $t3editor->getCodeEditor('file[editfile][0][data]', 'fixed-font enable-tab', '$1', $attributes, $title, array(
-			'target' => intval($pObj->target)
+			'target' => (int)$pObj->target
 		));
 		$parameters['pageContent'] = preg_replace('/\\<textarea .*name="file\\[editfile\\]\\[0\\]\\[data\\]".*\\>([^\\<]*)\\<\\/textarea\\>/mi', $outCode, $parameters['pageContent']);
 	}

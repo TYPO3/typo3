@@ -87,7 +87,7 @@ class ext_posMap_pages extends \TYPO3\CMS\Backend\Tree\View\PagePositionMap {
 	 * @todo Define visibility
 	 */
 	public function linkPageTitle($str, $rec) {
-		$url = \TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array('uid' => intval($rec['uid']), 'moveUid' => $GLOBALS['SOBE']->moveUid));
+		$url = \TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array('uid' => (int)$rec['uid'], 'moveUid' => $GLOBALS['SOBE']->moveUid));
 		return '<a href="' . htmlspecialchars($url) . '">' . $str . '</a>';
 	}
 
@@ -127,7 +127,7 @@ class ext_posMap_tt_content extends \TYPO3\CMS\Backend\Tree\View\PagePositionMap
 	 * @todo Define visibility
 	 */
 	public function linkPageTitle($str, $rec) {
-		$url = \TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array('uid' => intval($rec['uid']), 'moveUid' => $GLOBALS['SOBE']->moveUid));
+		$url = \TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array('uid' => (int)$rec['uid'], 'moveUid' => $GLOBALS['SOBE']->moveUid));
 		return '<a href="' . htmlspecialchars($url) . '">' . $str . '</a>';
 	}
 

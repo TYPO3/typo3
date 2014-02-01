@@ -381,7 +381,7 @@ abstract class AbstractElementView {
 	 * @return string
 	 */
 	public function getElementWrapId() {
-		$elementId = (int) $this->model->getElementId();
+		$elementId = (int)$this->model->getElementId();
 		$wrapId = 'csc-form-' . $elementId;
 		return $wrapId;
 	}

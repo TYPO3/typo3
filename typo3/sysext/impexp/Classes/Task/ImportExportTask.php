@@ -74,7 +74,7 @@ class ImportExportTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 	 */
 	public function main() {
 		$content = '';
-		$id = intval(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('display'));
+		$id = (int)\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('display');
 		// If a preset is found, it is rendered using an iframe
 		if ($id > 0) {
 			$url = $GLOBALS['BACK_PATH'] . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('impexp') . 'app/index.php?tx_impexp[action]=export&preset[load]=1&preset[select]=' . $id;

@@ -88,6 +88,6 @@ class VersionState extends \TYPO3\CMS\Core\Type\Enumeration {
 	 * @return boolean
 	 */
 	public function indicatesPlaceholder() {
-		return intval($this->__toString()) > self::DEFAULT_STATE;
+		return (int)$this->__toString() > self::DEFAULT_STATE;
 	}
 }

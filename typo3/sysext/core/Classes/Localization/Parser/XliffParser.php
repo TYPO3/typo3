@@ -68,13 +68,13 @@ class XliffParser extends \TYPO3\CMS\Core\Localization\Parser\AbstractXmlParser 
 							$formIndex = substr((string) $translationPluralForm['id'], strpos((string) $translationPluralForm['id'], '[') + 1, -1);
 							if ($this->languageKey === 'default') {
 								// Default language come from XLIFF template (no target element)
-								$parsedTranslationElement[(int) $formIndex] = array(
+								$parsedTranslationElement[(int)$formIndex] = array(
 									'source' => (string) $translationPluralForm->source,
 									'target' => (string) $translationPluralForm->source
 								);
 							} else {
 								// @todo Support "approved" attribute
-								$parsedTranslationElement[(int) $formIndex] = array(
+								$parsedTranslationElement[(int)$formIndex] = array(
 									'source' => (string) $translationPluralForm->source,
 									'target' => (string) $translationPluralForm->target
 								);

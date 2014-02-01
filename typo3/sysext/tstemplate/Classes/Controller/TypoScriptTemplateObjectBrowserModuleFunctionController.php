@@ -309,9 +309,9 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends \TYPO3\CMS
 		$tmpl->resourceCheck = 1;
 		$tmpl->removeFromGetFilePath = PATH_site;
 		if ($this->pObj->MOD_SETTINGS['ts_browser_type'] == 'const') {
-			$tmpl->ext_constants_BRP = intval(GeneralUtility::_GP('breakPointLN'));
+			$tmpl->ext_constants_BRP = (int)GeneralUtility::_GP('breakPointLN');
 		} else {
-			$tmpl->ext_config_BRP = intval(GeneralUtility::_GP('breakPointLN'));
+			$tmpl->ext_config_BRP = (int)GeneralUtility::_GP('breakPointLN');
 		}
 		$tmpl->generateConfig();
 		if ($bType == 'setup') {

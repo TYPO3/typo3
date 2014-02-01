@@ -77,7 +77,7 @@ Cleaning XML for FlexForm fields.
 		$this->cleanFlexForm_dirtyFields = &$resultArray['dirty'];
 		// Do not repair flexform data in deleted records.
 		$this->genTree_traverseDeleted = FALSE;
-		$this->genTree($startingPoint, $depth, (int) $this->cli_argValue('--echotree'), 'main_parseTreeCallBack');
+		$this->genTree($startingPoint, $depth, (int)$this->cli_argValue('--echotree'), 'main_parseTreeCallBack');
 		asort($resultArray);
 		return $resultArray;
 	}
@@ -99,7 +99,7 @@ Cleaning XML for FlexForm fields.
 				if ($echoLevel > 2) {
 					echo LF . '			[cleanflexform:] Field "' . $colName . '" in ' . $tableName . ':' . $uid . ' was a flexform and...';
 				}
-				$recRow = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordRaw($tableName, 'uid=' . intval($uid));
+				$recRow = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordRaw($tableName, 'uid=' . (int)$uid);
 				$flexObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\FlexForm\\FlexFormTools');
 				if ($recRow[$colName]) {
 					// Clean XML:
@@ -138,7 +138,7 @@ Cleaning XML for FlexForm fields.
 			} else {
 				// Clean XML:
 				$data = array();
-				$recRow = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordRaw($table, 'uid=' . intval($uid));
+				$recRow = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordRaw($table, 'uid=' . (int)$uid);
 				$flexObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\FlexForm\\FlexFormTools');
 				if ($recRow[$field]) {
 					$data[$table][$uid][$field] = $flexObj->cleanFlexFormXML($table, $field, $recRow);

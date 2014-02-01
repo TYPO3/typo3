@@ -48,8 +48,8 @@ class ToolbarMenu {
 	 * @return array
 	 */
 	public function setWorkspace($parameter) {
-		$workspaceId = intval($parameter->workSpaceId);
-		$pageId = intval($parameter->pageId);
+		$workspaceId = (int)$parameter->workSpaceId;
+		$pageId = (int)$parameter->pageId;
 
 		$GLOBALS['BE_USER']->setWorkspace($workspaceId);
 
@@ -69,7 +69,7 @@ class ToolbarMenu {
 		return array(
 			'title' => \TYPO3\CMS\Workspaces\Service\WorkspaceService::getWorkspaceTitle($workspaceId),
 			'id' => $workspaceId,
-			'page' => (isset($page['uid']) && ($parameter->pageId == $page['uid'])) ? NULL : intval($page['uid'])
+			'page' => (isset($page['uid']) && ($parameter->pageId == $page['uid'])) ? NULL : (int)$page['uid']
 		);
 	}
 

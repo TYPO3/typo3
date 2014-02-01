@@ -174,7 +174,7 @@ class AuthenticationService extends \TYPO3\CMS\Sv\AbstractAuthenticationService 
 			if (is_array($TYPO3_CONF_VARS['FE']['IPmaskMountGroups'])) {
 				foreach ($TYPO3_CONF_VARS['FE']['IPmaskMountGroups'] as $IPel) {
 					if ($this->authInfo['REMOTE_ADDR'] && $IPel[0] && \TYPO3\CMS\Core\Utility\GeneralUtility::cmpIP($this->authInfo['REMOTE_ADDR'], $IPel[0])) {
-						$groups[] = intval($IPel[1]);
+						$groups[] = (int)$IPel[1];
 					}
 				}
 			}

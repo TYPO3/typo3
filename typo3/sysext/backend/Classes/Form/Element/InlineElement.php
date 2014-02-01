@@ -190,7 +190,7 @@ class InlineElement {
 		$config = $PA['fieldConf']['config'];
 		$foreign_table = $config['foreign_table'];
 		if (BackendUtility::isTableLocalizable($table)) {
-			$language = intval($row[$GLOBALS['TCA'][$table]['ctrl']['languageField']]);
+			$language = (int)$row[$GLOBALS['TCA'][$table]['ctrl']['languageField']];
 		}
 		$minitems = MathUtility::forceIntegerInRange($config['minitems'], 0);
 		$maxitems = MathUtility::forceIntegerInRange($config['maxitems'], 0);
@@ -452,7 +452,7 @@ class InlineElement {
 			if ($isVirtualRecord) {
 				$class .= ' t3-form-field-container-inline-placeHolder';
 			}
-			if (isset($rec['hidden']) && intval($rec['hidden'])) {
+			if (isset($rec['hidden']) && (int)$rec['hidden']) {
 				$class .= ' t3-form-field-container-inline-hidden';
 			}
 			$out = '<div class="t3-form-field-record-inline" id="' . $objectId . '_fields" data-expandSingle="' . ($config['appearance']['expandSingle'] ? 1 : 0) . '" data-returnURL="' . htmlspecialchars(GeneralUtility::getIndpEnv('REQUEST_URI')) . '">' . $fields . $combination . '</div>';
@@ -836,7 +836,7 @@ class InlineElement {
 			}
 			// Put together the selector box:
 			$selector_itemListStyle = isset($config['itemListStyle']) ? ' style="' . htmlspecialchars($config['itemListStyle']) . '"' : ' style="' . $this->fObj->defaultMultipleSelectorStyle . '"';
-			$size = intval($conf['size']);
+			$size = (int)$conf['size'];
 			$size = $conf['autoSizeMax'] ? MathUtility::forceIntegerInRange(count($selItems) + 1, MathUtility::forceIntegerInRange($size, 1), $conf['autoSizeMax']) : $size;
 			$onChange = 'return inline.importNewRecord(\'' . $this->inlineNames['object'] . self::Structure_Separator . $conf['foreign_table'] . '\')';
 			$item = '
@@ -1054,7 +1054,7 @@ class InlineElement {
 		// Initialize TCEforms (rendering the forms)
 		$GLOBALS['SOBE']->tceforms = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Form\\FormEngine');
 		$GLOBALS['SOBE']->tceforms->inline = $this;
-		$GLOBALS['SOBE']->tceforms->RTEcounter = intval(array_shift($ajaxArguments));
+		$GLOBALS['SOBE']->tceforms->RTEcounter = (int)array_shift($ajaxArguments);
 		$GLOBALS['SOBE']->tceforms->initDefaultBEMode();
 		$GLOBALS['SOBE']->tceforms->palettesCollapsed = !$GLOBALS['SOBE']->MOD_SETTINGS['showPalettes'];
 		$GLOBALS['SOBE']->tceforms->disableRTE = $GLOBALS['SOBE']->MOD_SETTINGS['disableRTE'];
@@ -1409,8 +1409,8 @@ class InlineElement {
 		$foreignTable = $config['foreign_table'];
 		$localizationMode = BackendUtility::getInlineLocalizationMode($table, $config);
 		if ($localizationMode != FALSE) {
-			$language = intval($row[$GLOBALS['TCA'][$table]['ctrl']['languageField']]);
-			$transOrigPointer = intval($row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']]);
+			$language = (int)$row[$GLOBALS['TCA'][$table]['ctrl']['languageField']];
+			$transOrigPointer = (int)$row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']];
 			$transOrigTable = BackendUtility::getOriginalTranslationTable($table);
 
 			if ($language > 0 && $transOrigPointer) {

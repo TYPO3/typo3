@@ -464,7 +464,7 @@ class DatabaseRecordList extends \TYPO3\CMS\Recordlist\RecordList\AbstractDataba
 				// Get first two rows and initialize prevPrevUid and prevUid if on page > 1
 				if ($this->firstElementNumber > 2 && $this->iLimit > 0) {
 					$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result);
-					$prevPrevUid = -((int) $row['uid']);
+					$prevPrevUid = -((int)$row['uid']);
 					$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result);
 					$prevUid = $row['uid'];
 				}
@@ -518,7 +518,7 @@ class DatabaseRecordList extends \TYPO3\CMS\Recordlist\RecordList\AbstractDataba
 									// $lRow isn't always what we want - if record was moved we've to work with the
 									// placeholder records otherwise the list is messed up a bit
 									if ($row['_MOVE_PLH_uid'] && $row['_MOVE_PLH_pid']) {
-										$tmpRow = BackendUtility::getRecordRaw($table, 't3ver_move_id="' . intval($lRow['uid']) . '" AND pid="' . $row['_MOVE_PLH_pid'] . '" AND t3ver_wsid=' . $row['t3ver_wsid'] . BackendUtility::deleteClause($table), $selFieldList);
+										$tmpRow = BackendUtility::getRecordRaw($table, 't3ver_move_id="' . (int)$lRow['uid'] . '" AND pid="' . $row['_MOVE_PLH_pid'] . '" AND t3ver_wsid=' . $row['t3ver_wsid'] . BackendUtility::deleteClause($table), $selFieldList);
 										$lRow = is_array($tmpRow) ? $tmpRow : $lRow;
 									}
 									// In offline workspace, look for alternative record:
@@ -818,7 +818,7 @@ class DatabaseRecordList extends \TYPO3\CMS\Recordlist\RecordList\AbstractDataba
 							} else {
 								$params = '&edit[' . $table . '][' . $this->id . ']=new';
 								if ($table == 'pages_language_overlay') {
-									$params .= '&overrideVals[pages_language_overlay][doktype]=' . (int) $this->pageRow['doktype'];
+									$params .= '&overrideVals[pages_language_overlay][doktype]=' . (int)$this->pageRow['doktype'];
 								}
 								$icon = '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick($params, $this->backPath, -1)) . '" title="' . $GLOBALS['LANG']->getLL('new', TRUE) . '">' . ($table == 'pages' ? IconUtility::getSpriteIcon('actions-page-new') : IconUtility::getSpriteIcon('actions-document-new')) . '</a>';
 							}
@@ -1135,7 +1135,7 @@ class DatabaseRecordList extends \TYPO3\CMS\Recordlist\RecordList\AbstractDataba
 					$params = '&cmd[' . $table . '][' . $row['uid'] . '][delete]=1';
 					$onClick = htmlspecialchars(
 						('if (confirm(' . $warningText . ')) {jumpToUrl(\''
-						. $GLOBALS['SOBE']->doc->issueCommand($params, -1) . '\');} return false;')
+							. $GLOBALS['SOBE']->doc->issueCommand($params, -1) . '\');} return false;')
 					);
 
 					$icon = IconUtility::getSpriteIcon('actions-edit-' . $actionName);
@@ -1290,7 +1290,7 @@ class DatabaseRecordList extends \TYPO3\CMS\Recordlist\RecordList\AbstractDataba
 			'tablename, recuid, field',
 			'sys_refindex',
 			'ref_table = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($tableName, 'sys_refindex') .
-				' AND ref_uid = ' . $uid . ' AND deleted = 0'
+			' AND ref_uid = ' . $uid . ' AND deleted = 0'
 		);
 		return $this->generateReferenceToolTip($rows, '\'' . $tableName . '\', \'' . $uid . '\'');
 	}

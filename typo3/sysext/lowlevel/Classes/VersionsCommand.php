@@ -89,7 +89,7 @@ Automatic Repair:
 		);
 		$startingPoint = $this->cli_isArg('--pid') ? \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($this->cli_argValue('--pid'), 0) : 0;
 		$depth = $this->cli_isArg('--depth') ? \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($this->cli_argValue('--depth'), 0) : 1000;
-		$this->genTree($startingPoint, $depth, (int) $this->cli_argValue('--echotree'));
+		$this->genTree($startingPoint, $depth, (int)$this->cli_argValue('--echotree'));
 		$resultArray['versions'] = $this->recStats['versions'];
 		$resultArray['versions_published'] = $this->recStats['versions_published'];
 		$resultArray['versions_liveWS'] = $this->recStats['versions_liveWS'];
@@ -116,7 +116,7 @@ Automatic Repair:
 		$resultArray['versions_move_placeholders_ok'] = array();
 		$resultArray['versions_move_placeholders_bad'] = array();
 		foreach ($GLOBALS['TCA'] as $table => $cfg) {
-			if ((int) $cfg['ctrl']['versioningWS'] >= 2) {
+			if ((int)$cfg['ctrl']['versioningWS'] >= 2) {
 				$placeHolders = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 					'uid,pid,t3ver_move_id,t3ver_wsid,t3ver_state',
 					$table,
@@ -124,7 +124,7 @@ Automatic Repair:
 				);
 				foreach ($placeHolders as $phrec) {
 					$shortID = \TYPO3\CMS\Core\Utility\GeneralUtility::shortmd5($table . ':' . $phrec['uid']);
-					if ((int) $phrec['t3ver_wsid'] != 0) {
+					if ((int)$phrec['t3ver_wsid'] != 0) {
 						$phrecCopy = $phrec;
 						if (BackendUtility::movePlhOL($table, $phrec)) {
 							if ($wsAlt = BackendUtility::getWorkspaceVersionOfRecord($phrecCopy['t3ver_wsid'], $table, $phrec['uid'], 'uid,pid,t3ver_state')) {
@@ -155,7 +155,7 @@ Automatic Repair:
 		// Finding move_id_check inconsistencies:
 		$resultArray['versions_move_id_check'] = array();
 		foreach ($GLOBALS['TCA'] as $table => $cfg) {
-			if ((int) $cfg['ctrl']['versioningWS'] >= 2) {
+			if ((int)$cfg['ctrl']['versioningWS'] >= 2) {
 				$placeHolders = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid,pid,t3ver_move_id,t3ver_wsid,t3ver_state', $table, 't3ver_move_id<>0' . BackendUtility::deleteClause($table));
 				foreach ($placeHolders as $phrec) {
 					if (VersionState::cast($phrec['t3ver_state'])->equals(VersionState::MOVE_PLACEHOLDER)) {
@@ -223,7 +223,7 @@ Automatic Repair:
 					$fields_values = array(
 						't3ver_wsid' => 0
 					);
-					$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid=' . intval($uid), $fields_values);
+					$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid=' . (int)$uid, $fields_values);
 					echo 'DONE';
 				}
 				echo LF;

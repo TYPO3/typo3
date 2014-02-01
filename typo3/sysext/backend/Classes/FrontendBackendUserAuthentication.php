@@ -200,7 +200,7 @@ class FrontendBackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\B
 			}
 		}
 		// Check SSL (https)
-		if (intval($GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSL']) && $GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSL'] != 3) {
+		if ((int)$GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSL'] && $GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSL'] !== 3) {
 			if (!GeneralUtility::getIndpEnv('TYPO3_SSL')) {
 				return FALSE;
 			}
@@ -242,9 +242,9 @@ class FrontendBackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\B
 	 * @return string Returns the list with a comma in the end (if any pages selected!)
 	 */
 	public function extGetTreeList($id, $depth, $begin = 0, $perms_clause) {
-		$depth = intval($depth);
-		$begin = intval($begin);
-		$id = intval($id);
+		$depth = (int)$depth;
+		$begin = (int)$begin;
+		$id = (int)$id;
 		$theList = '';
 		if ($id && $depth > 0) {
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,title', 'pages', 'pid=' . $id . ' AND doktype IN (' . $GLOBALS['TYPO3_CONF_VARS']['FE']['content_doktypes'] . ') AND deleted=0 AND ' . $perms_clause);
@@ -270,7 +270,7 @@ class FrontendBackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\B
 	 */
 	public function extGetNumberOfCachedPages($pageId) {
 		$pageCache = $GLOBALS['typo3CacheManager']->getCache('cache_pages');
-		$pageCacheEntries = $pageCache->getByTag('pageId_' . (int) $pageId);
+		$pageCacheEntries = $pageCache->getByTag('pageId_' . (int)$pageId);
 		return count($pageCacheEntries);
 	}
 

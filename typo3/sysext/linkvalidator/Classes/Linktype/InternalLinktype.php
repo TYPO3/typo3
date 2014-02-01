@@ -127,7 +127,7 @@ class InternalLinktype extends \TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktyp
 	 * @return boolean TRUE on success or FALSE on error
 	 */
 	protected function checkPage($page) {
-		$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('uid, title, deleted, hidden, starttime, endtime', 'pages', 'uid = ' . intval($page));
+		$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('uid, title, deleted, hidden, starttime, endtime', 'pages', 'uid = ' . (int)$page);
 		$this->responsePage = TRUE;
 		if ($row) {
 			if ($row['deleted'] == '1') {
@@ -135,7 +135,7 @@ class InternalLinktype extends \TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktyp
 				$this->errorParams['page']['title'] = $row['title'];
 				$this->errorParams['page']['uid'] = $row['uid'];
 				$this->responsePage = FALSE;
-			} elseif ($row['hidden'] == '1' || $GLOBALS['EXEC_TIME'] < intval($row['starttime']) || $row['endtime'] && intval($row['endtime']) < $GLOBALS['EXEC_TIME']) {
+			} elseif ($row['hidden'] == '1' || $GLOBALS['EXEC_TIME'] < (int)$row['starttime'] || $row['endtime'] && (int)$row['endtime'] < $GLOBALS['EXEC_TIME']) {
 				$this->errorParams['errorType']['page'] = self::HIDDEN;
 				$this->errorParams['page']['title'] = $row['title'];
 				$this->errorParams['page']['uid'] = $row['uid'];
@@ -143,7 +143,7 @@ class InternalLinktype extends \TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktyp
 			}
 		} else {
 			$this->errorParams['errorType']['page'] = self::NOTEXISTING;
-			$this->errorParams['page']['uid'] = intval($page);
+			$this->errorParams['page']['uid'] = (int)$page;
 			$this->responsePage = FALSE;
 		}
 		return $this->responsePage;
@@ -158,7 +158,7 @@ class InternalLinktype extends \TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktyp
 	 */
 	protected function checkContent($page, $anchor) {
 		// Get page ID on which the content element in fact is located
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('uid, pid, header, deleted, hidden, starttime, endtime', 'tt_content', 'uid = ' . intval($anchor));
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('uid, pid, header, deleted, hidden, starttime, endtime', 'tt_content', 'uid = ' . (int)$anchor);
 		$this->responseContent = TRUE;
 		// this content element exists
 		if ($res) {
@@ -168,9 +168,9 @@ class InternalLinktype extends \TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktyp
 			// (The element might have been moved to another page)
 			if (!($correctPageID === $page)) {
 				$this->errorParams['errorType']['content'] = self::MOVED;
-				$this->errorParams['content']['uid'] = intval($anchor);
-				$this->errorParams['content']['wrongPage'] = intval($page);
-				$this->errorParams['content']['rightPage'] = intval($correctPageID);
+				$this->errorParams['content']['uid'] = (int)$anchor;
+				$this->errorParams['content']['wrongPage'] = (int)$page;
+				$this->errorParams['content']['rightPage'] = (int)$correctPageID;
 				$this->responseContent = FALSE;
 			} else {
 				// The element is located on the page to which the link is pointing
@@ -179,7 +179,7 @@ class InternalLinktype extends \TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktyp
 					$this->errorParams['content']['title'] = $res['header'];
 					$this->errorParams['content']['uid'] = $res['uid'];
 					$this->responseContent = FALSE;
-				} elseif ($res['hidden'] == '1' || $GLOBALS['EXEC_TIME'] < intval($res['starttime']) || $res['endtime'] && intval($res['endtime']) < $GLOBALS['EXEC_TIME']) {
+				} elseif ($res['hidden'] == '1' || $GLOBALS['EXEC_TIME'] < (int)$res['starttime'] || $res['endtime'] && (int)$res['endtime'] < $GLOBALS['EXEC_TIME']) {
 					$this->errorParams['errorType']['content'] = self::HIDDEN;
 					$this->errorParams['content']['title'] = $res['header'];
 					$this->errorParams['content']['uid'] = $res['uid'];
@@ -189,7 +189,7 @@ class InternalLinktype extends \TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktyp
 		} else {
 			// The content element does not exist
 			$this->errorParams['errorType']['content'] = self::NOTEXISTING;
-			$this->errorParams['content']['uid'] = intval($anchor);
+			$this->errorParams['content']['uid'] = (int)$anchor;
 			$this->responseContent = FALSE;
 		}
 		return $this->responseContent;

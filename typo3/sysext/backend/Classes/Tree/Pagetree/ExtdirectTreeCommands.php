@@ -151,7 +151,7 @@ class ExtdirectTreeCommands {
 		$node = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\Pagetree\\PagetreeNode', (array) $nodeData);
 		try {
 			Commands::updateNodeLabel($node, $updatedLabel);
-			$shortendedText = GeneralUtility::fixed_lgd_cs($updatedLabel, intval($GLOBALS['BE_USER']->uc['titleLen']));
+			$shortendedText = GeneralUtility::fixed_lgd_cs($updatedLabel, (int)$GLOBALS['BE_USER']->uc['titleLen']);
 			$returnValue = array(
 				'editableText' => $updatedLabel,
 				'updatedText' => htmlspecialchars($shortendedText)
@@ -355,7 +355,7 @@ class ExtdirectTreeCommands {
 		if (count($mountPoints) == 0) {
 			$mountPoints = array(0);
 		}
-		$mountPoints[] = intval($GLOBALS['BE_USER']->uc['pageTree_temporaryMountPoint']);
+		$mountPoints[] = (int)$GLOBALS['BE_USER']->uc['pageTree_temporaryMountPoint'];
 		$mountPoints = array_unique($mountPoints);
 		/** @var $userSettings \TYPO3\CMS\Backend\User\ExtDirect\BackendUserSettingsDataProvider */
 		$userSettings = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\User\\ExtDirect\\BackendUserSettingsDataProvider');
@@ -364,7 +364,7 @@ class ExtdirectTreeCommands {
 		$rootline = BackendUtility::BEgetRootLine($nodeId, '', $GLOBALS['BE_USER']->workspace != 0);
 		$rootlineIds = array();
 		foreach ($rootline as $pageData) {
-			$rootlineIds[] = intval($pageData['uid']);
+			$rootlineIds[] = (int)$pageData['uid'];
 		}
 		foreach ($mountPoints as $mountPoint) {
 			if (!in_array($mountPoint, $rootlineIds, TRUE)) {

@@ -226,7 +226,7 @@ class FrontendEditPanel {
 			if ($rParts[0] == 'pages') {
 				$out = $this->editPanelLinkWrap_doWrap($string, $adminURL . 'db_new.php?id=' . $rParts[1] . '&pagesOnly=1', $currentRecord);
 			} else {
-				if (!intval($nPid)) {
+				if (!(int)$nPid) {
 					$nPid = \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($rParts[1]) ? -$rParts[1] : $GLOBALS['TSFE']->id;
 				}
 				$out = $this->editPanelLinkWrap_doWrap($string, $adminURL . 'alt_doc.php?edit[' . $rParts[0] . '][' . $nPid . ']=new&noView=' . $nV, $currentRecord);

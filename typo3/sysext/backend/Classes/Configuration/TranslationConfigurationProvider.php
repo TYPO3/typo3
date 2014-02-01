@@ -110,7 +110,7 @@ class TranslationConfigurationProvider {
 					if ($trTable !== $table || $row[$GLOBALS['TCA'][$table]['ctrl']['languageField']] <= 0) {
 						if ($trTable !== $table || $row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']] == 0) {
 							// Look for translations of this record, index by language field value:
-							$translationsTemp = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows($selFieldList ? $selFieldList : 'uid,' . $GLOBALS['TCA'][$trTable]['ctrl']['languageField'], $trTable, $GLOBALS['TCA'][$trTable]['ctrl']['transOrigPointerField'] . '=' . intval($uid) . ' AND pid=' . intval(($table === 'pages' ? $row['uid'] : $row['pid'])) . ' AND ' . $GLOBALS['TCA'][$trTable]['ctrl']['languageField'] . (!$sys_language_uid ? '>0' : '=' . intval($sys_language_uid)) . BackendUtility::deleteClause($trTable) . BackendUtility::versioningPlaceholderClause($trTable));
+							$translationsTemp = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows($selFieldList ? $selFieldList : 'uid,' . $GLOBALS['TCA'][$trTable]['ctrl']['languageField'], $trTable, $GLOBALS['TCA'][$trTable]['ctrl']['transOrigPointerField'] . '=' . (int)$uid . ' AND pid=' . (int)($table === 'pages' ? $row['uid'] : $row['pid']) . ' AND ' . $GLOBALS['TCA'][$trTable]['ctrl']['languageField'] . (!$sys_language_uid ? '>0' : '=' . (int)$sys_language_uid) . BackendUtility::deleteClause($trTable) . BackendUtility::versioningPlaceholderClause($trTable));
 							$translations = array();
 							$translations_errors = array();
 							foreach ($translationsTemp as $r) {

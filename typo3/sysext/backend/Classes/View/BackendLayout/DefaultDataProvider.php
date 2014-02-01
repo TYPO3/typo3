@@ -76,7 +76,7 @@ class DefaultDataProvider implements DataProviderInterface {
 		$data = $this->getDatabaseConnection()->exec_SELECTgetSingleRow(
 			'*',
 			'backend_layout',
-			'uid=' . intval($identifier) . BackendUtility::BEenableFields('backend_layout') . BackendUtility::deleteClause('backend_layout')
+			'uid=' . (int)$identifier . BackendUtility::BEenableFields('backend_layout') . BackendUtility::deleteClause('backend_layout')
 		);
 		if (is_array($data)) {
 			$backendLayout = $this->createBackendLayout($data);
@@ -145,9 +145,9 @@ class DefaultDataProvider implements DataProviderInterface {
 			'*',
 			'backend_layout',
 				'(
-					( ' . intval($pageTsConfigId[$fieldName]) . ' = 0 AND ' . intval($storagePid) . ' = 0 )
-					OR ( backend_layout.pid = ' . intval($pageTsConfigId[$fieldName]) . ' OR backend_layout.pid = ' . intval($storagePid) . ' )
-					OR ( ' . intval($pageTsConfigId[$fieldName]) . ' = 0 AND backend_layout.pid = ' . intval($pageUid) . ' )
+					( ' . (int)$pageTsConfigId[$fieldName] . ' = 0 AND ' . (int)$storagePid . ' = 0 )
+					OR ( backend_layout.pid = ' . (int)$pageTsConfigId[$fieldName] . ' OR backend_layout.pid = ' . (int)$storagePid . ' )
+					OR ( ' . (int)$pageTsConfigId[$fieldName] . ' = 0 AND backend_layout.pid = ' . (int)$pageUid . ' )
 				) ' . BackendUtility::BEenableFields('backend_layout') . BackendUtility::deleteClause('backend_layout'),
 			'',
 			'sorting ASC'
@@ -170,7 +170,7 @@ class DefaultDataProvider implements DataProviderInterface {
 		$storagePid = 0;
 
 		if (!empty($pageTsConfig['TCEFORM.']['pages.']['_STORAGE_PID'])) {
-			$storagePid = (int) $pageTsConfig['TCEFORM.']['pages.']['_STORAGE_PID'];
+			$storagePid = (int)$pageTsConfig['TCEFORM.']['pages.']['_STORAGE_PID'];
 		}
 
 		return $storagePid;
@@ -189,11 +189,11 @@ class DefaultDataProvider implements DataProviderInterface {
 		);
 
 		if (!empty($pageTsConfig['TCEFORM.']['pages.']['backend_layout.']['PAGE_TSCONFIG_ID'])) {
-			$pageTsConfigIds['backend_layout'] = (int) $pageTsConfig['TCEFORM.']['pages.']['backend_layout.']['PAGE_TSCONFIG_ID'];
+			$pageTsConfigIds['backend_layout'] = (int)$pageTsConfig['TCEFORM.']['pages.']['backend_layout.']['PAGE_TSCONFIG_ID'];
 		}
 
 		if (!empty($pageTsConfig['TCEFORM.']['pages.']['backend_layout_next_level.']['PAGE_TSCONFIG_ID'])) {
-			$pageTsConfigIds['backend_layout_next_level'] = (int) $pageTsConfig['TCEFORM.']['pages.']['backend_layout_next_level.']['PAGE_TSCONFIG_ID'];
+			$pageTsConfigIds['backend_layout_next_level'] = (int)$pageTsConfig['TCEFORM.']['pages.']['backend_layout_next_level.']['PAGE_TSCONFIG_ID'];
 		}
 
 		return $pageTsConfigIds;

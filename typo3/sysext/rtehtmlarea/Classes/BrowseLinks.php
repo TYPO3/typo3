@@ -614,7 +614,7 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 					$subcats = array();
 					$v = $this->thisConfig['userLinks.'];
 					foreach ($v as $k2 => $dummyValue) {
-						$k2i = intval($k2);
+						$k2i = (int)$k2;
 						if (substr($k2, -1) == '.' && is_array($v[$k2i . '.'])) {
 							// Title:
 							$title = trim($v[$k2i]);
@@ -670,7 +670,7 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 				$tree = $pagetree->getBrowsableTree();
 				$cElements = $this->expandPage();
 				// Outputting Temporary DB mount notice:
-				if (intval($GLOBALS['BE_USER']->getSessionData('pageTree_temporaryMountPoint'))) {
+				if ((int)$GLOBALS['BE_USER']->getSessionData('pageTree_temporaryMountPoint')) {
 					$link = '<a href="' . htmlspecialchars(GeneralUtility::linkThisScript(array('setTempDBmount' => 0))) . '">' . $GLOBALS['LANG']->sl('LLL:EXT:lang/locallang_core.xlf:labels.temporaryDBmount', TRUE) . '</a>';
 					$flashMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $link, '', \TYPO3\CMS\Core\Messaging\FlashMessage::INFO);
 					$dbmount = $flashMessage->render();

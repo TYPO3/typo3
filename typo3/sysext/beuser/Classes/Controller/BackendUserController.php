@@ -196,7 +196,7 @@ class BackendUserController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCont
 	protected function terminateBackendUserSessionAction(\TYPO3\CMS\Beuser\Domain\Model\BackendUser $backendUser, $sessionId) {
 		$GLOBALS['TYPO3_DB']->exec_DELETEquery(
 			'be_sessions',
-			'ses_userid = "' . intval($backendUser->getUid()) . '" AND ses_id = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($sessionId, 'be_sessions') . ' LIMIT 1'
+			'ses_userid = "' . (int)$backendUser->getUid() . '" AND ses_id = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($sessionId, 'be_sessions') . ' LIMIT 1'
 		);
 		if ($GLOBALS['TYPO3_DB']->sql_affected_rows() == 1) {
 			$message = 'Session successfully terminated.';
@@ -218,12 +218,12 @@ class BackendUserController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCont
 			$updateData['ses_userid'] = $targetUser['uid'];
 			// User switchback or replace current session?
 			if ($switchBack) {
-				$updateData['ses_backuserid'] = intval($GLOBALS['BE_USER']->user['uid']);
+				$updateData['ses_backuserid'] = (int)$GLOBALS['BE_USER']->user['uid'];
 			}
 
 			$whereClause = 'ses_id=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($GLOBALS['BE_USER']->id, 'be_sessions');
 			$whereClause .= ' AND ses_name=' . $GLOBALS['TYPO3_DB']->fullQuoteStr(\TYPO3\CMS\Core\Authentication\BackendUserAuthentication::getCookieName(), 'be_sessions');
-			$whereClause .= ' AND ses_userid=' . intval($GLOBALS['BE_USER']->user['uid']);
+			$whereClause .= ' AND ses_userid=' . (int)$GLOBALS['BE_USER']->user['uid'];
 
 			$GLOBALS['TYPO3_DB']->exec_UPDATEquery(
 				'be_sessions',

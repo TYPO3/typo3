@@ -190,7 +190,7 @@ abstract class AbstractRepository implements \TYPO3\CMS\Extbase\Persistence\Repo
 		if (!\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($uid)) {
 			throw new \InvalidArgumentException('uid has to be integer.', 1316779798);
 		}
-		$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', $this->table, 'uid=' . intval($uid) . $this->getWhereClauseForEnabledFields());
+		$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', $this->table, 'uid=' . (int)$uid . $this->getWhereClauseForEnabledFields());
 		if (empty($row) || !is_array($row)) {
 			throw new \RuntimeException('Could not find row with uid "' . $uid . '" in table ' . $this->table, 1314354065);
 		}

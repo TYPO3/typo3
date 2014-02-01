@@ -393,7 +393,7 @@ class TemplateService {
 	 * @return array Returns the unmatched array $currentPageData if found cached in "cache_pagesection". Otherwise FALSE is returned which means that the array must be generated and stored in the cache
 	 */
 	public function getCurrentPageData() {
-		return $GLOBALS['typo3CacheManager']->getCache('cache_pagesection')->get(intval($GLOBALS['TSFE']->id) . '_' . GeneralUtility::md5int($GLOBALS['TSFE']->MP));
+		return $GLOBALS['typo3CacheManager']->getCache('cache_pagesection')->get((int)$GLOBALS['TSFE']->id . '_' . GeneralUtility::md5int($GLOBALS['TSFE']->MP));
 	}
 
 	/**
@@ -521,8 +521,8 @@ class TemplateService {
 				$mpvarHash = GeneralUtility::md5int($GLOBALS['TSFE']->MP);
 				/** @var $pageSectionCache \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface */
 				$pageSectionCache = $GLOBALS['typo3CacheManager']->getCache('cache_pagesection');
-				$pageSectionCache->set(intval($GLOBALS['TSFE']->id) . '_' . $mpvarHash, $cc, array(
-					'pageId_' . intval($GLOBALS['TSFE']->id),
+				$pageSectionCache->set((int)$GLOBALS['TSFE']->id . '_' . $mpvarHash, $cc, array(
+					'pageId_' . (int)$GLOBALS['TSFE']->id,
 					'mpvarHash_' . $mpvarHash
 				));
 			}
@@ -562,7 +562,7 @@ class TemplateService {
 		for ($a = 0; $a < $c; $a++) {
 			// If some template loaded before has set a template-id for the next level, then load this template first!
 			if ($this->nextLevel) {
-				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_template', 'uid=' . intval($this->nextLevel) . ' ' . $this->whereClause);
+				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_template', 'uid=' . (int)$this->nextLevel . ' ' . $this->whereClause);
 				$this->nextLevel = 0;
 				if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 					$this->versionOL($row);
@@ -576,9 +576,9 @@ class TemplateService {
 			$addC = '';
 			// If first loop AND there is set an alternative template uid, use that
 			if ($a == $c - 1 && $start_template_uid) {
-				$addC = ' AND uid=' . intval($start_template_uid);
+				$addC = ' AND uid=' . (int)$start_template_uid;
 			}
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_template', 'pid=' . intval($this->absoluteRootLine[$a]['uid']) . $addC . ' ' . $this->whereClause, '', 'sorting', 1);
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_template', 'pid=' . (int)$this->absoluteRootLine[$a]['uid'] . $addC . ' ' . $this->whereClause, '', 'sorting', 1);
 			if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 				$this->versionOL($row);
 				if (is_array($row)) {
@@ -644,7 +644,7 @@ class TemplateService {
 			// This feature allows us a hack to test/demonstrate various included templates on the same set of content bearing pages. Used by the "freesite" extension.
 			$basedOn_hackFeature = explode('=', $row['basedOn']);
 			if ($basedOn_hackFeature[0] == 'EXTERNAL_BASED_ON_TEMPLATE_ID' && $basedOn_hackFeature[1]) {
-				$id = intval(GeneralUtility::_GET($basedOn_hackFeature[1]));
+				$id = (int)GeneralUtility::_GET($basedOn_hackFeature[1]);
 				// If $id is not allready included ...
 				if ($id && !GeneralUtility::inList($idList, ('sys_' . $id))) {
 					$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_template', 'uid=' . $id . ' ' . $this->whereClause);
@@ -920,7 +920,7 @@ class TemplateService {
 		// Initialize parser and match-condition classes:
 		/** @var $constants \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser */
 		$constants = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\Parser\\TypoScriptParser');
-		$constants->breakPointLN = intval($this->ext_constants_BRP);
+		$constants->breakPointLN = (int)$this->ext_constants_BRP;
 		$constants->setup = $this->const;
 		$constants->setup = $this->mergeConstantsFromPageTSconfig($constants->setup);
 		/** @var $matchObj \TYPO3\CMS\Frontend\Configuration\TypoScript\ConditionMatching\ConditionMatcher */
@@ -942,7 +942,7 @@ class TemplateService {
 		// Initialize parser and match-condition classes:
 		/** @var $config \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser */
 		$config = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\Parser\\TypoScriptParser');
-		$config->breakPointLN = intval($this->ext_config_BRP);
+		$config->breakPointLN = (int)$this->ext_config_BRP;
 		$config->regLinenumbers = $this->ext_regLinenumbers;
 		$config->regComments = $this->ext_regComments;
 		$config->setup = $this->setup;
@@ -1162,7 +1162,7 @@ class TemplateService {
 	 */
 	public function splitConfArray($conf, $splitCount) {
 		// Initialize variables:
-		$splitCount = intval($splitCount);
+		$splitCount = (int)$splitCount;
 		$conf2 = array();
 		if ($splitCount && is_array($conf)) {
 			// Initialize output to carry at least the keys:
@@ -1388,7 +1388,7 @@ class TemplateService {
 		$setupArrKeys = array_keys($setupArr);
 		foreach ($setupArrKeys as $key) {
 			if ($acceptOnlyProperties || \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($key)) {
-				$keyArr[] = intval($key);
+				$keyArr[] = (int)$key;
 			}
 		}
 		$keyArr = array_unique($keyArr);
@@ -1472,15 +1472,15 @@ class TemplateService {
 		$LD['target'] = trim($page['target']) ?: $oTarget;
 		// typeNum
 		$typeNum = $this->setup[$LD['target'] . '.']['typeNum'];
-		if (!\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($typeOverride) && intval($GLOBALS['TSFE']->config['config']['forceTypeValue'])) {
-			$typeOverride = intval($GLOBALS['TSFE']->config['config']['forceTypeValue']);
+		if (!\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($typeOverride) && (int)$GLOBALS['TSFE']->config['config']['forceTypeValue']) {
+			$typeOverride = (int)$GLOBALS['TSFE']->config['config']['forceTypeValue'];
 		}
 		if ((string)$typeOverride !== '') {
 			$typeNum = $typeOverride;
 		}
 		// Override...
 		if ($typeNum) {
-			$LD['type'] = '&type=' . intval($typeNum);
+			$LD['type'] = '&type=' . (int)$typeNum;
 		} else {
 			$LD['type'] = '';
 		}
@@ -1565,7 +1565,7 @@ class TemplateService {
 	 * @todo Define visibility
 	 */
 	public function initMPmap_create($id, $MP_array = array(), $level = 0) {
-		$id = intval($id);
+		$id = (int)$id;
 		if ($id <= 0) {
 			return;
 		}
@@ -1589,7 +1589,7 @@ class TemplateService {
 		if ($id && $level < 20) {
 			$nextLevelAcc = array();
 			// Select and traverse current level pages:
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,pid,doktype,mount_pid,mount_pid_ol', 'pages', 'pid=' . intval($id) . ' AND deleted=0 AND doktype<>' . \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_RECYCLER . ' AND doktype<>' . \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_BE_USER_SECTION);
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,pid,doktype,mount_pid,mount_pid_ol', 'pages', 'pid=' . (int)$id . ' AND deleted=0 AND doktype<>' . \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_RECYCLER . ' AND doktype<>' . \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_BE_USER_SECTION);
 			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 				// Find mount point if any:
 				$next_id = $row['uid'];

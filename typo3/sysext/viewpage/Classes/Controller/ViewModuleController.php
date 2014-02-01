@@ -67,7 +67,7 @@ class ViewModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 	 * @return string
 	 */
 	protected function getTargetUrl() {
-		$pageIdToShow = intval(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id'));
+		$pageIdToShow = (int)\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id');
 		$adminCommand = $this->getAdminCommand($pageIdToShow);
 		$domainName = $this->getDomainName($pageIdToShow);
 		// Mount point overlay: Set new target page id and mp parameter
@@ -123,7 +123,7 @@ class ViewModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 	protected function getTypeParameterIfSet($pageId) {
 		$typeParameter = '';
 		$modTSconfig = BackendUtility::getModTSconfig($pageId, 'mod.web_view');
-		$typeId = intval($modTSconfig['properties']['type']);
+		$typeId = (int)$modTSconfig['properties']['type'];
 		if ($typeId > 0) {
 			$typeParameter = '&type=' . $typeId;
 		}
@@ -147,7 +147,7 @@ class ViewModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 	 * @return array
 	 */
 	protected function getPreviewFrameWidths() {
-		$pageId = intval(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id'));
+		$pageId = (int)\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id');
 		$modTSconfig = BackendUtility::getModTSconfig($pageId, 'mod.web_view');
 		$data = json_encode(array(
 			'width' => '100%',

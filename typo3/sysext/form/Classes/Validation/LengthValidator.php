@@ -90,7 +90,7 @@ class LengthValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator {
 	 * @return object Rule object
 	 */
 	public function setMinimum($minimum) {
-		$this->minimum = (int) $minimum;
+		$this->minimum = (int)$minimum;
 		return $this;
 	}
 
@@ -104,7 +104,7 @@ class LengthValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator {
 		if (empty($maximum)) {
 			$this->maximum = NULL;
 		} else {
-			$this->maximum = (int) $maximum;
+			$this->maximum = (int)$maximum;
 		}
 		return $this;
 	}

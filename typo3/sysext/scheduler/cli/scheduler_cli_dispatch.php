@@ -36,7 +36,7 @@ if (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI && basename(PATH_thisScript) == 'c
 	$cli = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Controller\\CommandLineController');
 	// If a specific id is given in arguments, then run that task. Otherwise run scheduled tasks.
 	if ($cli->cli_isArg('-i')) {
-		$taskId = intval($cli->cli_argValue('-i'));
+		$taskId = (int)$cli->cli_argValue('-i');
 		if ($taskId > 0) {
 			// Force the execution of the task even if it is disabled or no execution scheduled
 			if ($cli->cli_isArg('-f')) {

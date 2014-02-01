@@ -58,7 +58,7 @@ class ErrorHandler implements \TYPO3\CMS\Core\Error\ErrorHandlerInterface {
 	 * @return void
 	 */
 	public function setExceptionalErrors($exceptionalErrors) {
-		$this->exceptionalErrors = (int) $exceptionalErrors;
+		$this->exceptionalErrors = (int)$exceptionalErrors;
 	}
 
 	/**

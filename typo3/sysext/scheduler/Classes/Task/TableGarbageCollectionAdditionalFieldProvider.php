@@ -165,7 +165,7 @@ class TableGarbageCollectionAdditionalFieldProvider implements \TYPO3\CMS\Schedu
 		}
 		$fieldName = 'tx_scheduler[scheduler_tableGarbageCollection_numberOfDays]';
 		$fieldId = 'task_tableGarbageCollection_numberOfDays';
-		$fieldHtml = '<input type="text" ' . 'name="' . $fieldName . '" ' . 'id="' . $fieldId . '" ' . $disabled . 'value="' . intval($taskInfo['scheduler_tableGarbageCollection_numberOfDays']) . '" ' . 'size="4" />';
+		$fieldHtml = '<input type="text" ' . 'name="' . $fieldName . '" ' . 'id="' . $fieldId . '" ' . $disabled . 'value="' . (int)$taskInfo['scheduler_tableGarbageCollection_numberOfDays'] . '" ' . 'size="4" />';
 		$fieldConfiguration = array(
 			'code' => $fieldHtml,
 			'label' => 'LLL:EXT:scheduler/mod1/locallang.xlf:label.tableGarbageCollection.numberOfDays',
@@ -235,7 +235,7 @@ class TableGarbageCollectionAdditionalFieldProvider implements \TYPO3\CMS\Schedu
 		$validData = FALSE;
 		if (!isset($submittedData['scheduler_tableGarbageCollection_numberOfDays'])) {
 			$validData = TRUE;
-		} elseif (intval($submittedData['scheduler_tableGarbageCollection_numberOfDays']) >= 0) {
+		} elseif ((int)$submittedData['scheduler_tableGarbageCollection_numberOfDays'] >= 0) {
 			$validData = TRUE;
 		} else {
 			// Issue error message
@@ -254,7 +254,7 @@ class TableGarbageCollectionAdditionalFieldProvider implements \TYPO3\CMS\Schedu
 	public function saveAdditionalFields(array $submittedData, \TYPO3\CMS\Scheduler\Task\AbstractTask $task) {
 		$task->allTables = $submittedData['scheduler_tableGarbageCollection_allTables'] === 'on' ? TRUE : FALSE;
 		$task->table = $submittedData['scheduler_tableGarbageCollection_table'];
-		$task->numberOfDays = intval($submittedData['scheduler_tableGarbageCollection_numberOfDays']);
+		$task->numberOfDays = (int)$submittedData['scheduler_tableGarbageCollection_numberOfDays'];
 	}
 
 }

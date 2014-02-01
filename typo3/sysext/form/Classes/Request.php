@@ -299,7 +299,7 @@ class Request implements \TYPO3\CMS\Core\SingletonInterface {
 							'tempFilename' => $tempFilename,
 							'originalFilename' => $_FILES[$this->prefix]['name'][$fieldName],
 							'type' => $mimeType,
-							'size' => (int) $_FILES[$this->prefix]['size'][$fieldName]
+							'size' => (int)$_FILES[$this->prefix]['size'][$fieldName]
 						);
 					}
 				}

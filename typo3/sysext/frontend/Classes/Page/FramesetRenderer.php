@@ -47,10 +47,10 @@ class FramesetRenderer {
 			$sKeyArray = \TYPO3\CMS\Core\TypoScript\TemplateService::sortedKeyList($setup);
 			foreach ($sKeyArray as $theKey) {
 				$theValue = $setup[$theKey];
-				if (intval($theKey) && ($conf = $setup[$theKey . '.'])) {
+				if ((int)$theKey && ($conf = $setup[$theKey . '.'])) {
 					switch ($theValue) {
 						case 'FRAME':
-							$typeNum = intval($GLOBALS['TSFE']->tmpl->setup[$conf['obj'] . '.']['typeNum']);
+							$typeNum = (int)$GLOBALS['TSFE']->tmpl->setup[$conf['obj'] . '.']['typeNum'];
 							if (!$conf['src'] && !$typeNum) {
 								$typeNum = -1;
 							}
@@ -87,7 +87,7 @@ class FramesetRenderer {
 			}
 			$paramStr .= ' src="' . htmlspecialchars($src) . '"';
 		} else {
-			$LD = $GLOBALS['TSFE']->tmpl->linkData($GLOBALS['TSFE']->page, '', $GLOBALS['TSFE']->no_cache, '', '', ($setup['options'] ? '&' . $setup['options'] : '') . $GLOBALS['TSFE']->cObj->getClosestMPvalueForPage($GLOBALS['TSFE']->page['uid']), intval($typeNum));
+			$LD = $GLOBALS['TSFE']->tmpl->linkData($GLOBALS['TSFE']->page, '', $GLOBALS['TSFE']->no_cache, '', '', ($setup['options'] ? '&' . $setup['options'] : '') . $GLOBALS['TSFE']->cObj->getClosestMPvalueForPage($GLOBALS['TSFE']->page['uid']), (int)$typeNum);
 			$finalURL = $LD['totalURL'];
 			$paramStr .= ' src="' . htmlspecialchars($finalURL) . '"';
 		}

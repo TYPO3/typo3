@@ -117,7 +117,7 @@ class FilePermissionUpdate extends AbstractUpdate {
 				$updateArray = array(
 					'file_permissions' => $filePermission
 				);
-				$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid=' . (int) $singleRecord['uid'], $updateArray);
+				$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid=' . (int)$singleRecord['uid'], $updateArray);
 				// Get last executed query
 				$dbQueries[] = str_replace(chr(10), ' ', $GLOBALS['TYPO3_DB']->debug_lastBuiltQuery);
 				// Check for errors

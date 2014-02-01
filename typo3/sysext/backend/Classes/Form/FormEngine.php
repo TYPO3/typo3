@@ -767,17 +767,17 @@ class FormEngine {
 						// Getting the style information out:
 						$color_style_parts = GeneralUtility::trimExplode('-', $parts[4]);
 						if ($color_style_parts[0] !== '') {
-							$this->setColorScheme($GLOBALS['TBE_STYLES']['colorschemes'][intval($color_style_parts[0])]);
+							$this->setColorScheme($GLOBALS['TBE_STYLES']['colorschemes'][(int)$color_style_parts[0]]);
 						}
 						if ($color_style_parts[1] !== '') {
-							$this->fieldStyle = $GLOBALS['TBE_STYLES']['styleschemes'][intval($color_style_parts[1])];
+							$this->fieldStyle = $GLOBALS['TBE_STYLES']['styleschemes'][(int)$color_style_parts[1]];
 							if (!isset($this->fieldStyle)) {
 								$this->fieldStyle = $GLOBALS['TBE_STYLES']['styleschemes'][0];
 							}
 						}
 						if ($color_style_parts[2] !== '') {
 							$this->wrapBorder($out_array[$out_sheet], $out_pointer);
-							$this->borderStyle = $GLOBALS['TBE_STYLES']['borderschemes'][intval($color_style_parts[2])];
+							$this->borderStyle = $GLOBALS['TBE_STYLES']['borderschemes'][(int)$color_style_parts[2]];
 							if (!isset($this->borderStyle)) {
 								$this->borderStyle = $GLOBALS['TBE_STYLES']['borderschemes'][0];
 							}
@@ -1307,10 +1307,10 @@ class FormEngine {
 			}
 			$dateRange = '';
 			if (isset($config['range']['lower'])) {
-				$dateRange .= ' lower-' . intval($config['range']['lower']);
+				$dateRange .= ' lower-' . (int)$config['range']['lower'];
 			}
 			if (isset($config['range']['upper'])) {
-				$dateRange .= ' upper-' . intval($config['range']['upper']);
+				$dateRange .= ' upper-' . (int)$config['range']['upper'];
 			}
 			$inputId = uniqid('tceforms-' . $class . 'field-');
 			$cssClasses[] = 'tceforms-textfield tceforms-' . $class . 'field' . $dateRange;
@@ -1647,8 +1647,8 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 		if (!count($selItems)) {
 			$selItems[] = array('', '');
 		}
-		$thisValue = intval($PA['itemFormElValue']);
-		$cols = intval($config['cols']);
+		$thisValue = (int)$PA['itemFormElValue'];
+		$cols = (int)$config['cols'];
 		$selItemsCount = count($selItems);
 		if ($cols > 1) {
 			$item .= '<table border="0" cellspacing="0" cellpadding="0" class="typo3-TCEforms-checkboxArray">';
@@ -1752,7 +1752,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 		// Creating the label for the "No Matching Value" entry.
 		$nMV_label = isset($PA['fieldTSConfig']['noMatchingValue_label']) ? $this->sL($PA['fieldTSConfig']['noMatchingValue_label']) : '[ ' . $this->getLL('l_noMatchingValue') . ' ]';
 		// Prepare some values:
-		$maxitems = intval($config['maxitems']);
+		$maxitems = (int)$config['maxitems'];
 		// If a SINGLE selector box...
 		if ($maxitems <= 1 && $config['renderMode'] !== 'tree') {
 			$item = $this->getSingleField_typeSelect_single($table, $field, $row, $PA, $config, $selItems, $nMV_label);
@@ -1895,7 +1895,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 		$opt = array();
 		$selicons = array();
 		$onlySelectedIconShown = 0;
-		$size = intval($config['size']);
+		$size = (int)$config['size'];
 		// Style set on <select/>
 		$selectedStyle = '';
 		$item = '';
@@ -2003,7 +2003,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 		// Create icon table:
 		if (count($selicons) && !$config['noIconsBelowSelect']) {
 			$item .= '<table border="0" cellpadding="0" cellspacing="0" class="typo3-TCEforms-selectIcons">';
-			$selicon_cols = intval($config['selicon_cols']);
+			$selicon_cols = (int)$config['selicon_cols'];
 			if (!$selicon_cols) {
 				$selicon_cols = count($selicons);
 			}
@@ -2219,7 +2219,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 		// Compile selector box:
 		$sOnChange = implode('', $PA['fieldChangeFunc']);
 		$selector_itemListStyle = isset($config['itemListStyle']) ? ' style="' . htmlspecialchars($config['itemListStyle']) . '"' : ' style="' . $this->defaultMultipleSelectorStyle . '"';
-		$size = intval($config['size']);
+		$size = (int)$config['size'];
 		$cssPrefix = $size === 1 ? 'tceforms-select' : 'tceforms-multiselect';
 		$size = $config['autoSizeMax'] ? MathUtility::forceIntegerInRange(count($selItems) + 1, MathUtility::forceIntegerInRange($size, 1), $config['autoSizeMax']) : $size;
 		$selectBox = '<select id="' . uniqid($cssPrefix) . '" name="' . $PA['itemFormElName'] . '[]"' . $this->insertDefStyle('select', $cssPrefix) . ($size ? ' size="' . $size . '"' : '') . ' multiple="multiple" onchange="' . htmlspecialchars($sOnChange) . '"' . $PA['onFocus'] . $selector_itemListStyle . $disabled . '>
@@ -2332,7 +2332,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 			}
 			// Put together the selector box:
 			$selector_itemListStyle = isset($config['itemListStyle']) ? ' style="' . htmlspecialchars($config['itemListStyle']) . '"' : ' style="' . $this->defaultMultipleSelectorStyle . '"';
-			$size = intval($config['size']);
+			$size = (int)$config['size'];
 			$size = $config['autoSizeMax'] ? MathUtility::forceIntegerInRange(count($itemArray) + 1, MathUtility::forceIntegerInRange($size, 1), $config['autoSizeMax']) : $size;
 			if ($config['exclusiveKeys']) {
 				$sOnChange = 'setFormValueFromBrowseWin(\'' . $PA['itemFormElName'] . '\',this.options[this.selectedIndex].value, this.options[this.selectedIndex].text, this.options[this.selectedIndex].title,\'' . $config['exclusiveKeys'] . '\'); ';
@@ -2408,7 +2408,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 		$config = $PA['fieldConf']['config'];
 		$internal_type = $config['internal_type'];
 		$show_thumbs = $config['show_thumbs'];
-		$size = intval($config['size']);
+		$size = (int)$config['size'];
 		$maxitems = MathUtility::forceIntegerInRange($config['maxitems'], 0);
 		if (!$maxitems) {
 			$maxitems = 100000;
@@ -2676,7 +2676,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 		if ($config['format']) {
 			$itemValue = $this->formatValue($config, $itemValue);
 		}
-		$rows = intval($config['rows']);
+		$rows = (int)$config['rows'];
 		if ($rows > 1) {
 			if (!$config['pass_content']) {
 				$itemValue = nl2br(htmlspecialchars($itemValue));
@@ -2764,7 +2764,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 			// Look up page overlays:
 			$checkPageLanguageOverlay = $GLOBALS['BE_USER']->getTSConfigVal('options.checkPageLanguageOverlay') ? TRUE : FALSE;
 			if ($checkPageLanguageOverlay) {
-				$pageOverlays = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'pages_language_overlay', 'pid=' . intval($row['pid']) . BackendUtility::deleteClause('pages_language_overlay') . BackendUtility::versioningPlaceholderClause('pages_language_overlay'), '', '', '', 'sys_language_uid');
+				$pageOverlays = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'pages_language_overlay', 'pid=' . (int)$row['pid'] . BackendUtility::deleteClause('pages_language_overlay') . BackendUtility::versioningPlaceholderClause('pages_language_overlay'), '', '', '', 'sys_language_uid');
 			}
 			$languages = $this->getAvailableLanguages();
 			foreach ($languages as $lInfo) {
@@ -3288,7 +3288,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 				$itemValue = md5($itemValue);
 				break;
 			case 'filesize':
-				$value = GeneralUtility::formatSize(intval($itemValue));
+				$value = GeneralUtility::formatSize((int)$itemValue);
 				if ($config['format.']['appendByteSize']) {
 					$value .= ' (' . $itemValue . ')';
 				}
@@ -3652,10 +3652,10 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 	 */
 	public function registerDefaultLanguageData($table, $rec) {
 		// Add default language:
-		if ($GLOBALS['TCA'][$table]['ctrl']['languageField'] && $rec[$GLOBALS['TCA'][$table]['ctrl']['languageField']] > 0 && $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] && intval($rec[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']]) > 0) {
+		if ($GLOBALS['TCA'][$table]['ctrl']['languageField'] && $rec[$GLOBALS['TCA'][$table]['ctrl']['languageField']] > 0 && $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] && (int)$rec[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']] > 0) {
 			$lookUpTable = $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerTable'] ? $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerTable'] : $table;
 			// Get data formatted:
-			$this->defaultLanguageData[$table . ':' . $rec['uid']] = BackendUtility::getRecordWSOL($lookUpTable, intval($rec[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']]));
+			$this->defaultLanguageData[$table . ':' . $rec['uid']] = BackendUtility::getRecordWSOL($lookUpTable, (int)$rec[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']]);
 			// Get data for diff:
 			if ($GLOBALS['TCA'][$table]['ctrl']['transOrigDiffSourceField']) {
 				$this->defaultLanguageData_diff[$table . ':' . $rec['uid']] = unserialize($rec[$GLOBALS['TCA'][$table]['ctrl']['transOrigDiffSourceField']]);
@@ -3665,9 +3665,9 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 			foreach ($prLang as $prL) {
 				/** @var $t8Tools \TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider */
 				$t8Tools = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Configuration\\TranslationConfigurationProvider');
-				$tInfo = $t8Tools->translationInfo($lookUpTable, intval($rec[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']]), $prL['uid']);
+				$tInfo = $t8Tools->translationInfo($lookUpTable, (int)$rec[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']], $prL['uid']);
 				if (is_array($tInfo['translations']) && is_array($tInfo['translations'][$prL['uid']])) {
-					$this->additionalPreviewLanguageData[$table . ':' . $rec['uid']][$prL['uid']] = BackendUtility::getRecordWSOL($table, intval($tInfo['translations'][$prL['uid']]['uid']));
+					$this->additionalPreviewLanguageData[$table . ':' . $rec['uid']][$prL['uid']] = BackendUtility::getRecordWSOL($table, (int)$tInfo['translations'][$prL['uid']]['uid']);
 				}
 			}
 		}
@@ -4260,7 +4260,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 				$outStr = '';
 				$vAlign = $wizConf['_VALIGN'] ? ' style="vertical-align:' . $wizConf['_VALIGN'] . '"' : '';
 				if (count($outArr) > 1 || $wizConf['_PADDING']) {
-					$dist = intval($wizConf['_DISTANCE']);
+					$dist = (int)$wizConf['_DISTANCE'];
 					if ($wizConf['_VERTICAL']) {
 						$dist = $dist ? '<tr><td><img src="clear.gif" width="1" height="' . $dist . '" alt="" /></td></tr>' : '';
 						$outStr = '<tr><td>' . implode(('</td></tr>' . $dist . '<tr><td>'), $outArr) . '</td></tr>';
@@ -4268,7 +4268,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 						$dist = $dist ? '<td><img src="clear.gif" height="1" width="' . $dist . '" alt="" /></td>' : '';
 						$outStr = '<tr><td' . $vAlign . '>' . implode(('</td>' . $dist . '<td' . $vAlign . '>'), $outArr) . '</td></tr>';
 					}
-					$outStr = '<table border="0" cellpadding="' . intval($wizConf['_PADDING']) . '" cellspacing="' . intval($wizConf['_PADDING']) . '">' . $outStr . '</table>';
+					$outStr = '<table border="0" cellpadding="' . (int)$wizConf['_PADDING'] . '" cellspacing="' . (int)$wizConf['_PADDING'] . '">' . $outStr . '</table>';
 				} else {
 					$outStr = implode('', $outArr);
 				}
@@ -5661,7 +5661,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 			TBE_EDITOR.images.sel.src = "' . IconUtility::skinImg($this->backPath, 'gfx/content_selected.gif', '', 1) . '";
 			TBE_EDITOR.images.clear.src = "' . $this->backPath . 'clear.gif";
 
-			TBE_EDITOR.auth_timeout_field = ' . intval($GLOBALS['BE_USER']->auth_timeout_field) . ';
+			TBE_EDITOR.auth_timeout_field = ' . (int)$GLOBALS['BE_USER']->auth_timeout_field . ';
 			TBE_EDITOR.formname = "' . $formname . '";
 			TBE_EDITOR.formnameUENC = "' . rawurlencode($formname) . '";
 			TBE_EDITOR.backPath = "' . addslashes($this->backPath) . '";

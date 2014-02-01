@@ -40,7 +40,7 @@ class WebInfoController extends \TYPO3\CMS\Belog\Controller\AbstractController {
 	 */
 	public function initializeAction() {
 		$this->isInPageContext = TRUE;
-		$this->pageId = intval(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id'));
+		$this->pageId = (int)\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id');
 	}
 
 }

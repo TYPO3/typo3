@@ -183,7 +183,7 @@ class NewRecordController {
 		}
 		// Setting GPvars:
 		// The page id to operate from
-		$this->id = intval(GeneralUtility::_GP('id'));
+		$this->id = (int)GeneralUtility::_GP('id');
 		$this->returnUrl = GeneralUtility::sanitizeLocalUrl(GeneralUtility::_GP('returnUrl'));
 		$this->pagesOnly = GeneralUtility::_GP('pagesOnly');
 		// Create instance of template class for output
@@ -605,7 +605,7 @@ class NewRecordController {
 		if ($table == 'pages' && $GLOBALS['TYPO3_CONF_VARS']['SYS']['contentTable'] && isset($GLOBALS['TCA'][$GLOBALS['TYPO3_CONF_VARS']['SYS']['contentTable']]) && $addContentTable) {
 			$parameters .= '&edit[' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['contentTable'] . '][prev]=new&returnNewPageId=1';
 		} elseif ($table == 'pages_language_overlay') {
-			$parameters .= '&overrideVals[pages_language_overlay][doktype]=' . (int) $this->pageinfo['doktype'];
+			$parameters .= '&overrideVals[pages_language_overlay][doktype]=' . (int)$this->pageinfo['doktype'];
 		}
 		$onClick = BackendUtility::editOnClick($parameters, '', $this->returnUrl);
 		return '<a href="#" onclick="' . htmlspecialchars($onClick) . '">' . $linkText . '</a>';
@@ -632,7 +632,7 @@ class NewRecordController {
 			return FALSE;
 		}
 		// Checking doktype:
-		$doktype = intval($pid_row['doktype']);
+		$doktype = (int)$pid_row['doktype'];
 		if (!($allowedTableList = $GLOBALS['PAGES_TYPES'][$doktype]['allowedTables'])) {
 			$allowedTableList = $GLOBALS['PAGES_TYPES']['default']['allowedTables'];
 		}

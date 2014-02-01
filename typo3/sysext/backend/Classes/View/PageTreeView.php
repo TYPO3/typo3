@@ -164,7 +164,7 @@ class PageTreeView extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 	 * @todo Define visibility
 	 */
 	public function printTree($treeArr = '') {
-		$titleLen = intval($this->BE_USER->uc['titleLen']);
+		$titleLen = (int)$this->BE_USER->uc['titleLen'];
 		if (!is_array($treeArr)) {
 			$treeArr = $this->tree;
 		}
@@ -294,7 +294,7 @@ class PageTreeView extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 	public function PMiconATagWrap($icon, $cmd, $isExpand = TRUE) {
 		if ($this->thisScript) {
 			// Activate dynamic ajax-based tree
-			$js = htmlspecialchars('Tree.load(\'' . $cmd . '\', ' . intval($isExpand) . ', this);');
+			$js = htmlspecialchars('Tree.load(\'' . $cmd . '\', ' . (int)$isExpand . ', this);');
 			return '<a class="pm" onclick="' . $js . '">' . $icon . '</a>';
 		} else {
 			return $icon;
@@ -312,7 +312,7 @@ class PageTreeView extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 		// Get stored tree structure AND updating it if needed according to incoming PM GET var.
 		$this->initializePositionSaving();
 		// Init done:
-		$titleLen = intval($this->BE_USER->uc['titleLen']);
+		$titleLen = (int)$this->BE_USER->uc['titleLen'];
 		$treeArr = array();
 		// Traverse mounts:
 		foreach ($this->MOUNTS as $idx => $uid) {
@@ -373,7 +373,7 @@ class PageTreeView extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 		// Buffer for id hierarchy is reset:
 		$this->buffer_idH = array();
 		// Init vars
-		$depth = intval($depth);
+		$depth = (int)$depth;
 		$HTML = '';
 		$a = 0;
 		$res = $this->getDataInit($uid, $subCSSclass);

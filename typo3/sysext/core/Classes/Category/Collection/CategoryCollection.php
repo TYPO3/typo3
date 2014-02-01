@@ -104,7 +104,7 @@ class CategoryCollection extends \TYPO3\CMS\Core\Collection\AbstractRecordCollec
 		$collectionRecord = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
 			'*',
 			static::$storageTableName,
-			'uid = ' . intval($id) . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause(static::$storageTableName)
+			'uid = ' . (int)$id . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause(static::$storageTableName)
 		);
 		$collectionRecord['table_name'] = $tableName;
 		$collectionRecord['field_name'] = $fieldName;
@@ -121,7 +121,7 @@ class CategoryCollection extends \TYPO3\CMS\Core\Collection\AbstractRecordCollec
 	protected function getCollectedRecords() {
 		$relatedRecords = array();
 		// Assemble where clause
-		$where = 'AND ' . self::$storageTableName . '.uid = ' . intval($this->getIdentifier());
+		$where = 'AND ' . self::$storageTableName . '.uid = ' . (int)$this->getIdentifier();
 		// Add condition on tablenames fields
 		$where .= ' AND sys_category_record_mm.tablenames = ' . $this->getDatabase()->fullQuoteStr(
 			$this->getItemTableName(),

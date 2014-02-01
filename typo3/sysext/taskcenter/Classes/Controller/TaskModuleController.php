@@ -353,7 +353,7 @@ class TaskModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	protected function checkAccess($extKey, $taskClass) {
 		// Check if task is blinded with TsConfig (taskcenter.<extkey>.<taskName>
 		$tsConfig = $GLOBALS['BE_USER']->getTSConfig('taskcenter.' . $extKey . '.' . $taskClass);
-		if (isset($tsConfig['value']) && intval($tsConfig['value']) == 0) {
+		if (isset($tsConfig['value']) && (int)$tsConfig['value'] === 0) {
 			return FALSE;
 		}
 		// Admins are always allowed
@@ -361,7 +361,7 @@ class TaskModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 			return TRUE;
 		}
 		// Check if task is restricted to admins
-		if (intval($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['taskcenter'][$extKey][$taskClass]['admin']) == 1) {
+		if ((int)$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['taskcenter'][$extKey][$taskClass]['admin'] === 1) {
 			return FALSE;
 		}
 		return TRUE;

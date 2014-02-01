@@ -971,7 +971,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 					// cast numerical values
 					$mt = $this->sql_field_metatype($table, $k);
 					if ($mt[0] == 'I') {
-						$v = (int) $v;
+						$v = (int)$v;
 					} elseif ($mt[0] == 'F') {
 						$v = (double) $v;
 					}
@@ -1085,7 +1085,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 						// cast numeric values
 						$mt = $this->sql_field_metatype($table, $k);
 						if ($mt[0] == 'I') {
-							$v = (int) $v;
+							$v = (int)$v;
 						} elseif ($mt[0] == 'F') {
 							$v = (double) $v;
 						}
@@ -2689,7 +2689,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 				if ($keyRows !== FALSE) {
 					foreach ($keyRows as $k => $theKey) {
 						$theKey['Table'] = $tableName;
-						$theKey['Non_unique'] = (int) (!$theKey['unique']);
+						$theKey['Non_unique'] = (int)(!$theKey['unique']);
 						$theKey['Key_name'] = str_replace($tableName . '_', '', $k);
 						// the following are probably not needed anyway...
 						$theKey['Collation'] = '';
@@ -3615,7 +3615,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	public function debug_WHERE($table, $where, $script = '') {
 		$insertArray = array(
 			'tstamp' => $GLOBALS['EXEC_TIME'],
-			'beuser_id' => intval($GLOBALS['BE_USER']->user['uid']),
+			'beuser_id' => (int)$GLOBALS['BE_USER']->user['uid'],
 			'script' => $script,
 			'tablename' => $table,
 			'whereclause' => $where
@@ -3648,7 +3648,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 		}
 		$insertArray = array(
 			'tstamp' => $GLOBALS['EXEC_TIME'],
-			'beuser_id' => intval($GLOBALS['BE_USER']->user['uid']),
+			'beuser_id' => (int)$GLOBALS['BE_USER']->user['uid'],
 			'script' => $script,
 			'exec_time' => $ms,
 			'table_join' => $join,

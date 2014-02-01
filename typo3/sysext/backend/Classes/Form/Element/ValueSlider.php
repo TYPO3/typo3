@@ -63,21 +63,21 @@ class ValueSlider {
 		$max = 10000;
 		// Use the range property, if defined, to set min and max values
 		if (isset($params['fieldConfig']['range'])) {
-			$min = isset($params['fieldConfig']['range']['lower']) ? intval($params['fieldConfig']['range']['lower']) : 0;
-			$max = isset($params['fieldConfig']['range']['upper']) ? intval($params['fieldConfig']['range']['upper']) : 10000;
+			$min = isset($params['fieldConfig']['range']['lower']) ? (int)$params['fieldConfig']['range']['lower'] : 0;
+			$max = isset($params['fieldConfig']['range']['upper']) ? (int)$params['fieldConfig']['range']['upper'] : 10000;
 		}
 		$elementType = $params['fieldConfig']['type'];
 		$step = $params['wConf']['step'] ?: 1;
-		$width = intval($params['wConf']['width']) ?: 400;
+		$width = (int)$params['wConf']['width'] ?: 400;
 		$type = 'null';
 		if (isset($params['fieldConfig']['eval'])) {
 			$eval = GeneralUtility::trimExplode(',', $params['fieldConfig']['eval'], TRUE);
 			if (in_array('time', $eval)) {
 				$type = 'time';
-				$value = (int) $value;
+				$value = (int)$value;
 			} elseif (in_array('int', $eval)) {
 				$type = 'int';
-				$value = (int) $value;
+				$value = (int)$value;
 			} elseif (in_array('double2', $eval)) {
 				$type = 'double';
 				$value = (double) $value;
@@ -85,7 +85,7 @@ class ValueSlider {
 		}
 		if (isset($params['fieldConfig']['items'])) {
 			$type = 'array';
-			$value = (int) $value;
+			$value = (int)$value;
 		}
 		$callback = $params['fieldChangeFunc']['TBE_EDITOR_fieldChanged'];
 		$getField = $params['fieldChangeFunc']['typo3form.fieldGet'];

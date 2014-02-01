@@ -55,7 +55,7 @@ class PostProcessor {
 		if (is_array($this->typoScript)) {
 			$keys = $this->sortTypoScriptKeyList();
 			foreach ($keys as $key) {
-				if (!intval($key) || strpos($key, '.') !== FALSE) {
+				if (!(int)$key || strpos($key, '.') !== FALSE) {
 					continue;
 				}
 				$className = FALSE;

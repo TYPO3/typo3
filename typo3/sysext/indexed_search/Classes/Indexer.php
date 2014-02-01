@@ -1466,9 +1466,9 @@ class Indexer {
 			'sys_language_uid' => $this->conf['sys_language_uid'],
 			// Sys language uid of the page. Should reflect which language it DOES actually display!
 			'externalUrl' => 0,
-			'recordUid' => intval($this->conf['recordUid']),
-			'freeIndexUid' => intval($this->conf['freeIndexUid']),
-			'freeIndexSetId' => intval($this->conf['freeIndexSetId'])
+			'recordUid' => (int)$this->conf['recordUid'],
+			'freeIndexUid' => (int)$this->conf['freeIndexUid'],
+			'freeIndexSetId' => (int)$this->conf['freeIndexSetId']
 		);
 		if (\TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility::isTableUsed('index_phash')) {
 			$GLOBALS['TYPO3_DB']->exec_INSERTquery('index_phash', $fields);
@@ -1543,7 +1543,7 @@ class Indexer {
 		$fields = array(
 			'phash' => $hash,
 			'phash_t3' => $hash_t3,
-			'page_id' => intval($this->conf['id'])
+			'page_id' => (int)$this->conf['id']
 		);
 		$this->getRootLineFields($fields);
 		if (\TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility::isTableUsed('index_section')) {
@@ -1563,12 +1563,12 @@ class Indexer {
 		$tableArray = explode(',', 'index_phash,index_section,index_grlist,index_fulltext,index_debug');
 		foreach ($tableArray as $table) {
 			if (\TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility::isTableUsed($table)) {
-				$GLOBALS['TYPO3_DB']->exec_DELETEquery($table, 'phash=' . intval($phash));
+				$GLOBALS['TYPO3_DB']->exec_DELETEquery($table, 'phash=' . (int)$phash);
 			}
 		}
 		// Removing all index_section records with hash_t3 set to this hash (this includes such records set for external media on the page as well!). The re-insert of these records are done in indexRegularDocument($file).
 		if (\TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility::isTableUsed('index_section')) {
-			$GLOBALS['TYPO3_DB']->exec_DELETEquery('index_section', 'phash_t3=' . intval($phash));
+			$GLOBALS['TYPO3_DB']->exec_DELETEquery('index_section', 'phash_t3=' . (int)$phash);
 		}
 	}
 
@@ -1617,10 +1617,10 @@ class Indexer {
 			'crdate' => $GLOBALS['EXEC_TIME'],
 			'gr_list' => $this->conf['gr_list'],
 			'externalUrl' => $fileParts['scheme'] ? 1 : 0,
-			'recordUid' => intval($this->conf['recordUid']),
-			'freeIndexUid' => intval($this->conf['freeIndexUid']),
-			'freeIndexSetId' => intval($this->conf['freeIndexSetId']),
-			'sys_language_uid' => intval($this->conf['sys_language_uid'])
+			'recordUid' => (int)$this->conf['recordUid'],
+			'freeIndexUid' => (int)$this->conf['freeIndexUid'],
+			'freeIndexSetId' => (int)$this->conf['freeIndexSetId'],
+			'sys_language_uid' => (int)$this->conf['sys_language_uid']
 		);
 		if (\TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility::isTableUsed('index_phash')) {
 			$GLOBALS['TYPO3_DB']->exec_INSERTquery('index_phash', $fields);
@@ -1664,7 +1664,7 @@ class Indexer {
 	public function submitFile_grlist($hash) {
 		// Testing if there is a gr_list record for a non-logged in user and if so, there is no need to place another one.
 		if (\TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility::isTableUsed('index_grlist')) {
-			$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('phash', 'index_grlist', 'phash=' . intval($hash) . ' AND (hash_gr_list=' . \TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility::md5inthash($this->defaultGrList) . ' OR hash_gr_list=' . \TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility::md5inthash($this->conf['gr_list']) . ')');
+			$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('phash', 'index_grlist', 'phash=' . (int)$hash . ' AND (hash_gr_list=' . \TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility::md5inthash($this->defaultGrList) . ' OR hash_gr_list=' . \TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility::md5inthash($this->conf['gr_list']) . ')');
 			if ($count == 0) {
 				$this->submit_grlist($hash, $hash);
 			}
@@ -1681,7 +1681,7 @@ class Indexer {
 	public function submitFile_section($hash) {
 		// Testing if there is already a section
 		if (\TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility::isTableUsed('index_section')) {
-			$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('phash', 'index_section', 'phash=' . intval($hash) . ' AND page_id=' . intval($this->conf['id']));
+			$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('phash', 'index_section', 'phash=' . (int)$hash . ' AND page_id=' . (int)$this->conf['id']);
 			if ($count == 0) {
 				$this->submit_section($hash, $this->hash['phash']);
 			}
@@ -1700,7 +1700,7 @@ class Indexer {
 		$tableArray = explode(',', 'index_phash,index_grlist,index_fulltext,index_debug');
 		foreach ($tableArray as $table) {
 			if (\TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility::isTableUsed($table)) {
-				$GLOBALS['TYPO3_DB']->exec_DELETEquery($table, 'phash=' . intval($phash));
+				$GLOBALS['TYPO3_DB']->exec_DELETEquery($table, 'phash=' . (int)$phash);
 			}
 		}
 	}
@@ -1724,7 +1724,7 @@ class Indexer {
 			// Not indexed (not in index_phash)
 			$result = 4;
 		} else {
-			$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('item_mtime,tstamp', 'index_phash', 'phash=' . intval($phash));
+			$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('item_mtime,tstamp', 'index_phash', 'phash=' . (int)$phash);
 			// If there was an indexing of the page...:
 			if ($row) {
 				if ($this->tstamp_maxAge && $row['tstamp'] + $this->tstamp_maxAge < $GLOBALS['EXEC_TIME']) {
@@ -1777,7 +1777,7 @@ class Indexer {
 		// With this query the page will only be indexed if it's content is different from the same "phash_grouping" -page.
 		$result = TRUE;
 		if (\TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility::isTableUsed('index_phash')) {
-			$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('phash', 'index_phash', 'phash_grouping=' . intval($this->hash['phash_grouping']) . ' AND contentHash=' . intval($this->content_md5h));
+			$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('phash', 'index_phash', 'phash_grouping=' . (int)$this->hash['phash_grouping'] . ' AND contentHash=' . (int)$this->content_md5h);
 			if ($row) {
 				$result = $row;
 			}
@@ -1797,7 +1797,7 @@ class Indexer {
 	public function checkExternalDocContentHash($hashGr, $content_md5h) {
 		$result = TRUE;
 		if (\TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility::isTableUsed('index_phash')) {
-			$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('*', 'index_phash', 'phash_grouping=' . intval($hashGr) . ' AND contentHash=' . intval($content_md5h));
+			$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('*', 'index_phash', 'phash_grouping=' . (int)$hashGr . ' AND contentHash=' . (int)$content_md5h);
 			$result = $count == 0;
 		}
 		return $result;
@@ -1813,7 +1813,7 @@ class Indexer {
 	public function is_grlist_set($phash_x) {
 		$result = FALSE;
 		if (\TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility::isTableUsed('index_grlist')) {
-			$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('phash_x', 'index_grlist', 'phash_x=' . intval($phash_x));
+			$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('phash_x', 'index_grlist', 'phash_x=' . (int)$phash_x);
 			$result = $count > 0;
 		}
 		return $result;
@@ -1830,7 +1830,7 @@ class Indexer {
 	 */
 	public function update_grlist($phash, $phash_x) {
 		if (\TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility::isTableUsed('index_grlist')) {
-			$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('phash', 'index_grlist', 'phash=' . intval($phash) . ' AND hash_gr_list=' . \TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility::md5inthash($this->conf['gr_list']));
+			$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('phash', 'index_grlist', 'phash=' . (int)$phash . ' AND hash_gr_list=' . \TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility::md5inthash($this->conf['gr_list']));
 			if ($count == 0) {
 				$this->submit_grlist($phash, $phash_x);
 				$this->log_setTSlogMessage('Inserted gr_list \'' . $this->conf['gr_list'] . '\' for phash \'' . $phash . '\'', 1);
@@ -1852,9 +1852,9 @@ class Indexer {
 				'tstamp' => $GLOBALS['EXEC_TIME']
 			);
 			if ($mtime) {
-				$updateFields['item_mtime'] = intval($mtime);
+				$updateFields['item_mtime'] = (int)$mtime;
 			}
-			$GLOBALS['TYPO3_DB']->exec_UPDATEquery('index_phash', 'phash=' . intval($phash), $updateFields);
+			$GLOBALS['TYPO3_DB']->exec_UPDATEquery('index_phash', 'phash=' . (int)$phash, $updateFields);
 		}
 	}
 
@@ -1868,9 +1868,9 @@ class Indexer {
 	public function updateSetId($phash) {
 		if (\TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility::isTableUsed('index_phash')) {
 			$updateFields = array(
-				'freeIndexSetId' => intval($this->conf['freeIndexSetId'])
+				'freeIndexSetId' => (int)$this->conf['freeIndexSetId']
 			);
-			$GLOBALS['TYPO3_DB']->exec_UPDATEquery('index_phash', 'phash=' . intval($phash), $updateFields);
+			$GLOBALS['TYPO3_DB']->exec_UPDATEquery('index_phash', 'phash=' . (int)$phash, $updateFields);
 		}
 	}
 
@@ -1885,9 +1885,9 @@ class Indexer {
 	public function updateParsetime($phash, $parsetime) {
 		if (\TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility::isTableUsed('index_phash')) {
 			$updateFields = array(
-				'parsetime' => intval($parsetime)
+				'parsetime' => (int)$parsetime
 			);
-			$GLOBALS['TYPO3_DB']->exec_UPDATEquery('index_phash', 'phash=' . intval($phash), $updateFields);
+			$GLOBALS['TYPO3_DB']->exec_UPDATEquery('index_phash', 'phash=' . (int)$phash, $updateFields);
 		}
 	}
 
@@ -1901,7 +1901,7 @@ class Indexer {
 		if (\TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility::isTableUsed('index_section')) {
 			$updateFields = array();
 			$this->getRootLineFields($updateFields);
-			$GLOBALS['TYPO3_DB']->exec_UPDATEquery('index_section', 'page_id=' . intval($this->conf['id']), $updateFields);
+			$GLOBALS['TYPO3_DB']->exec_UPDATEquery('index_section', 'page_id=' . (int)$this->conf['id'], $updateFields);
 		}
 	}
 
@@ -1914,12 +1914,12 @@ class Indexer {
 	 * @todo Define visibility
 	 */
 	public function getRootLineFields(array &$fieldArray) {
-		$fieldArray['rl0'] = intval($this->conf['rootline_uids'][0]);
-		$fieldArray['rl1'] = intval($this->conf['rootline_uids'][1]);
-		$fieldArray['rl2'] = intval($this->conf['rootline_uids'][2]);
+		$fieldArray['rl0'] = (int)$this->conf['rootline_uids'][0];
+		$fieldArray['rl1'] = (int)$this->conf['rootline_uids'][1];
+		$fieldArray['rl2'] = (int)$this->conf['rootline_uids'][2];
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['addRootLineFields'])) {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['addRootLineFields'] as $fieldName => $rootLineLevel) {
-				$fieldArray[$fieldName] = intval($this->conf['rootline_uids'][$rootLineLevel]);
+				$fieldArray[$fieldName] = (int)$this->conf['rootline_uids'][$rootLineLevel];
 			}
 		}
 	}
@@ -1935,9 +1935,9 @@ class Indexer {
 		if (\TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility::isTableUsed('index_phash') && \TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility::isTableUsed('index_grlist')) {
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('A.phash', 'index_phash A,index_grlist B', '
 					A.phash=B.phash
-					AND A.phash_grouping=' . intval($this->hash['phash_grouping']) . '
+					AND A.phash_grouping=' . (int)$this->hash['phash_grouping'] . '
 					AND B.hash_gr_list<>' . \TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility::md5inthash($this->defaultGrList) . '
-					AND A.contentHash=' . intval($this->content_md5h));
+					AND A.contentHash=' . (int)$this->content_md5h);
 			while ($res && FALSE !== ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))) {
 				$this->log_setTSlogMessage('The currently indexed page was indexed under no user-login and apparently this page has been indexed under login conditions earlier, but with the SAME content. Therefore the old similar page with phash=\'' . $row['phash'] . '\' are now removed.', 1);
 				$this->removeOldIndexedPages($row['phash']);
@@ -1973,7 +1973,7 @@ class Indexer {
 			if (count($wordListArray)) {
 				$phashArray = array();
 				foreach ($wordListArray as $value) {
-					$phashArray[] = intval($value['hash']);
+					$phashArray[] = (int)$value['hash'];
 				}
 				$cwl = implode(',', $phashArray);
 				$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('baseword', 'index_words', 'wid IN (' . $cwl . ')');
@@ -2008,13 +2008,13 @@ class Indexer {
 	 */
 	public function submitWords($wordList, $phash) {
 		if (\TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility::isTableUsed('index_rel')) {
-			$GLOBALS['TYPO3_DB']->exec_DELETEquery('index_rel', 'phash=' . intval($phash));
+			$GLOBALS['TYPO3_DB']->exec_DELETEquery('index_rel', 'phash=' . (int)$phash);
 			foreach ($wordList as $val) {
 				$insertFields = array(
-					'phash' => (integer)$phash,
-					'wid' => (integer)$val['hash'],
-					'count' => (integer)$val['count'],
-					'first' => (integer)$val['first'],
+					'phash' => (int)$phash,
+					'wid' => (int)$val['hash'],
+					'count' => (int)$val['count'],
+					'first' => (int)$val['first'],
 					'freq' => $this->freqMap($val['count'] / $this->wordcount),
 					'flags' => $val['cmp'] & $this->flagBitMask
 				);
@@ -2056,9 +2056,9 @@ class Indexer {
 	public function setT3Hashes() {
 		//  Set main array:
 		$hArray = array(
-			'id' => (int) $this->conf['id'],
-			'type' => (int) $this->conf['type'],
-			'sys_lang' => (int) $this->conf['sys_language_uid'],
+			'id' => (int)$this->conf['id'],
+			'type' => (int)$this->conf['type'],
+			'sys_lang' => (int)$this->conf['sys_language_uid'],
 			'MP' => (string) $this->conf['MP'],
 			'cHash' => $this->cHashParams
 		);

@@ -89,11 +89,11 @@ class SuggestElement {
 		</div>';
 		// Get minimumCharacters from TCA
 		if (isset($config['fieldConf']['config']['wizards']['suggest']['default']['minimumCharacters'])) {
-			$minChars = intval($config['fieldConf']['config']['wizards']['suggest']['default']['minimumCharacters']);
+			$minChars = (int)$config['fieldConf']['config']['wizards']['suggest']['default']['minimumCharacters'];
 		}
 		// Overwrite it with minimumCharacters from TSConfig (TCEFORM) if given
 		if (isset($config['fieldTSConfig']['suggest.']['default.']['minimumCharacters'])) {
-			$minChars = intval($config['fieldTSConfig']['suggest.']['default.']['minimumCharacters']);
+			$minChars = (int)$config['fieldTSConfig']['suggest.']['default.']['minimumCharacters'];
 		}
 		$minChars = $minChars > 0 ? $minChars : 2;
 
@@ -249,8 +249,8 @@ class SuggestElement {
 			}
 			if (isset($config['addWhere'])) {
 				$config['addWhere'] = strtr(' ' . $config['addWhere'], array(
-					'###THIS_UID###' => intval($uid),
-					'###CURRENT_PID###' => intval($pageId)
+					'###THIS_UID###' => (int)$uid,
+					'###CURRENT_PID###' => (int)$pageId
 				));
 			}
 			// instantiate the class that should fetch the records for this $queryTable

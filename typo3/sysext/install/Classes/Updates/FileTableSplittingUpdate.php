@@ -91,7 +91,7 @@ class FileTableSplittingUpdate extends AbstractUpdate {
 		);
 		$filesToMigrateUids = array();
 		foreach ($filesToMigrateRows as $row) {
-			$filesToMigrateUids[] = intval($row['uid']);
+			$filesToMigrateUids[] = (int)$row['uid'];
 		}
 		$filesToMigrateUids = array_unique($filesToMigrateUids);
 		$dataToMove = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(

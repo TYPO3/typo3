@@ -315,6 +315,6 @@ class Mapper implements \TYPO3\CMS\Core\SingletonInterface {
 		$query = $this->queryFactory->create($dataType);
 		$query->getQuerySettings()->setRespectSysLanguage(FALSE);
 		$query->getQuerySettings()->setRespectStoragePage(FALSE);
-		return $query->matching($query->equals('uid', intval($uid)))->execute()->getFirst();
+		return $query->matching($query->equals('uid', (int)$uid))->execute()->getFirst();
 	}
 }

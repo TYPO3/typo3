@@ -111,7 +111,7 @@ Reports missing relations';
 				$idx = $rec['ref_table'] . ':' . $rec['ref_uid'];
 				// Get referenced record:
 				if (!isset($tempExists[$idx])) {
-					$tempExists[$idx] = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordRaw($rec['ref_table'], 'uid=' . intval($rec['ref_uid']), 'uid,pid' . ($GLOBALS['TCA'][$rec['ref_table']]['ctrl']['delete'] ? ',' . $GLOBALS['TCA'][$rec['ref_table']]['ctrl']['delete'] : ''));
+					$tempExists[$idx] = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordRaw($rec['ref_table'], 'uid=' . (int)$rec['ref_uid'], 'uid,pid' . ($GLOBALS['TCA'][$rec['ref_table']]['ctrl']['delete'] ? ',' . $GLOBALS['TCA'][$rec['ref_table']]['ctrl']['delete'] : ''));
 				}
 				// Compile info string for location of reference:
 				$infoString = $this->infoStr($rec);

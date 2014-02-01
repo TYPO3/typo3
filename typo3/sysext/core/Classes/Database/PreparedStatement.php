@@ -326,7 +326,7 @@ class PreparedStatement {
 	 * @api
 	 */
 	public function seek($rowNumber) {
-		return $GLOBALS['TYPO3_DB']->sql_data_seek($this->resource, intval($rowNumber));
+		return $GLOBALS['TYPO3_DB']->sql_data_seek($this->resource, (int)$rowNumber);
 	}
 
 	/**
@@ -448,7 +448,7 @@ class PreparedStatement {
 					$value = 'NULL';
 					break;
 				case self::PARAM_INT:
-					$value = intval($typeValue['value']);
+					$value = (int)$typeValue['value'];
 					break;
 				case self::PARAM_STR:
 					$value = $GLOBALS['TYPO3_DB']->fullQuoteStr($typeValue['value'], $this->table);

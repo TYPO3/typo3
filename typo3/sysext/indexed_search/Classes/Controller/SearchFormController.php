@@ -342,7 +342,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 		$this->operator_translate_table[] = array($GLOBALS['TSFE']->csConvObj->conv_case('utf-8', $GLOBALS['TSFE']->csConvObj->utf8_encode($this->pi_getLL('local_operator_OR'), $GLOBALS['TSFE']->renderCharset), 'toLower'), 'OR');
 		$this->operator_translate_table[] = array($GLOBALS['TSFE']->csConvObj->conv_case('utf-8', $GLOBALS['TSFE']->csConvObj->utf8_encode($this->pi_getLL('local_operator_NOT'), $GLOBALS['TSFE']->renderCharset), 'toLower'), 'AND NOT');
 		// This is the id of the site root. This value may be a commalist of integer (prepared for this)
-		$this->wholeSiteIdList = intval($GLOBALS['TSFE']->config['rootLine'][0]['uid']);
+		$this->wholeSiteIdList = (int)$GLOBALS['TSFE']->config['rootLine'][0]['uid'];
 		// Creating levels for section menu:
 		// This selects the first and secondary menus for the "sections" selector - so we can search in sections and sub sections.
 		if ($this->conf['show.']['L1sections']) {
@@ -521,7 +521,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 			// Create header if we are searching more than one indexing configuration:
 			if (count($indexCfgs) > 1) {
 				if ($freeIndexUid > 0) {
-					$indexCfgRec = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('title', 'index_config', 'uid=' . intval($freeIndexUid) . $this->cObj->enableFields('index_config'));
+					$indexCfgRec = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('title', 'index_config', 'uid=' . (int)$freeIndexUid . $this->cObj->enableFields('index_config'));
 					$titleString = $indexCfgRec['title'];
 				} else {
 					$titleString = $this->pi_getLL('opt_freeIndexUid_header_' . $freeIndexUid);
@@ -1054,7 +1054,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	public function languageWhere() {
 		if ($this->piVars['lang'] >= 0) {
 			// -1 is the same as ALL language.
-			return 'AND IP.sys_language_uid=' . intval($this->piVars['lang']);
+			return 'AND IP.sys_language_uid=' . (int)$this->piVars['lang'];
 		}
 	}
 
@@ -1068,7 +1068,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	public function freeIndexUidWhere($freeIndexUid) {
 		if ($freeIndexUid >= 0) {
 			// First, look if the freeIndexUid is a meta configuration:
-			$indexCfgRec = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('indexcfgs', 'index_config', 'type=5 AND uid=' . intval($freeIndexUid) . $this->cObj->enableFields('index_config'));
+			$indexCfgRec = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('indexcfgs', 'index_config', 'type=5 AND uid=' . (int)$freeIndexUid . $this->cObj->enableFields('index_config'));
 			if (is_array($indexCfgRec)) {
 				$refs = GeneralUtility::trimExplode(',', $indexCfgRec['indexcfgs']);
 				$list = array(-99);
@@ -1077,13 +1077,13 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 					list($table, $uid) = GeneralUtility::revExplode('_', $ref, 2);
 					switch ($table) {
 						case 'index_config':
-							$idxRec = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('uid', 'index_config', 'uid=' . intval($uid) . $this->cObj->enableFields('index_config'));
+							$idxRec = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('uid', 'index_config', 'uid=' . (int)$uid . $this->cObj->enableFields('index_config'));
 							if ($idxRec) {
 								$list[] = $uid;
 							}
 							break;
 						case 'pages':
-							$indexCfgRecordsFromPid = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid', 'index_config', 'pid=' . intval($uid) . $this->cObj->enableFields('index_config'));
+							$indexCfgRecordsFromPid = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid', 'index_config', 'pid=' . (int)$uid . $this->cObj->enableFields('index_config'));
 							foreach ($indexCfgRecordsFromPid as $idxRec) {
 								$list[] = $idxRec['uid'];
 							}
@@ -1092,7 +1092,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 				}
 				$list = array_unique($list);
 			} else {
-				$list = array(intval($freeIndexUid));
+				$list = array((int)$freeIndexUid);
 			}
 			return ' AND IP.freeIndexUid IN (' . implode(',', $list) . ')';
 		}
@@ -1224,7 +1224,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 			// So, selecting for the grlist records belonging to the parent phash-row where the current users gr_list exists will help us to know.
 			// If this is NOT found, there is still a theoretical possibility that another user accessible page would display a link, so maybe the resume of such a document here may be unjustified hidden. But better safe than sorry.
 			if (\TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility::isTableUsed('index_grlist')) {
-				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('phash', 'index_grlist', 'phash=' . intval($row['phash_t3']) . ' AND gr_list=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($GLOBALS['TSFE']->gr_list, 'index_grlist'));
+				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('phash', 'index_grlist', 'phash=' . (int)$row['phash_t3'] . ' AND gr_list=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($GLOBALS['TSFE']->gr_list, 'index_grlist'));
 			} else {
 				$res = FALSE;
 			}
@@ -1238,7 +1238,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 			if ((string)$row['gr_list'] !== (string)$GLOBALS['TSFE']->gr_list) {
 				// Selecting for the grlist records belonging to the phash-row where the current users gr_list exists. If it is found it is proof that this user has direct access to the phash-rows content although he did not himself initiate the indexing...
 				if (\TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility::isTableUsed('index_grlist')) {
-					$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('phash', 'index_grlist', 'phash=' . intval($row['phash']) . ' AND gr_list=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($GLOBALS['TSFE']->gr_list, 'index_grlist'));
+					$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('phash', 'index_grlist', 'phash=' . (int)$row['phash'] . ' AND gr_list=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($GLOBALS['TSFE']->gr_list, 'index_grlist'));
 				} else {
 					$res = FALSE;
 				}
@@ -1301,13 +1301,13 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 		$insertFields = array(
 			'searchstring' => $this->piVars['sword'],
 			'searchoptions' => serialize(array($this->piVars, $sWArr, $pt)),
-			'feuser_id' => intval($this->fe_user->user['uid']),
+			'feuser_id' => (int)$this->fe_user->user['uid'],
 			// fe_user id, integer
 			'cookie' => $this->fe_user->id,
 			// cookie as set or retrieve. If people has cookies disabled this will vary all the time...
 			'IP' => GeneralUtility::getIndpEnv('REMOTE_ADDR'),
 			// Remote IP address
-			'hits' => intval($count),
+			'hits' => (int)$count,
 			// Number of hits on the search.
 			'tstamp' => $GLOBALS['EXEC_TIME']
 		);
@@ -1615,7 +1615,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 		$sTables = '';
 		if ($pageCount > 1) {
 			// only show the result browser if more than one page is needed
-			$pointer = intval($pointer);
+			$pointer = (int)$pointer;
 			$links = array();
 			// Make browse-table/links:
 			if ($pointer > 0) {
@@ -1911,7 +1911,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 			if (!$noMarkup) {
 				$markedSW = '';
 				if (\TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility::isTableUsed('index_fulltext')) {
-					$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'index_fulltext', 'phash=' . intval($row['phash']));
+					$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'index_fulltext', 'phash=' . (int)$row['phash']);
 				} else {
 					$res = FALSE;
 				}
@@ -2101,7 +2101,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 			} else {
 				// ... otherwise, get flag from sys_language record:
 				// Get sys_language record
-				$rowDat = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', 'sys_language', 'uid=' . intval($row['sys_language_uid']) . ' ' . $this->cObj->enableFields('sys_language'));
+				$rowDat = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', 'sys_language', 'uid=' . (int)$row['sys_language_uid'] . ' ' . $this->cObj->enableFields('sys_language'));
 				// Flag code:
 				$flag = $rowDat['flag'];
 				if ($flag) {
@@ -2205,7 +2205,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 * @todo Define visibility
 	 */
 	public function getFirstSysDomainRecordForPage($id) {
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('domainName', 'sys_domain', 'pid=' . intval($id) . $this->cObj->enableFields('sys_domain'), '', 'sorting');
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('domainName', 'sys_domain', 'pid=' . (int)$id . $this->cObj->enableFields('sys_domain'), '', 'sorting');
 		$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 		return rtrim($row['domainName'], '/');
 	}
@@ -2267,7 +2267,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	public function getMenu($id) {
 		if ($this->conf['show.']['LxALLtypes']) {
 			$output = array();
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('title,uid', 'pages', 'pid=' . intval($id) . $this->cObj->enableFields('pages'), '', 'sorting');
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('title,uid', 'pages', 'pid=' . (int)$id . $this->cObj->enableFields('pages'), '', 'sorting');
 			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 				$output[$row['uid']] = $GLOBALS['TSFE']->sys_page->getPageOverlay($row);
 			}
@@ -2345,7 +2345,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 			} else {
 				$result = $this->conf['search.']['targetPid'];
 			}
-			$result = intval($result);
+			$result = (int)$result;
 		}
 		return $result;
 	}

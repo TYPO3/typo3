@@ -162,7 +162,7 @@ class ExtensionService implements \TYPO3\CMS\Core\SingletonInterface {
 			return $this->targetPidPluginCache[$pluginSignature];
 
 		}
-		return (integer) $frameworkConfiguration['view']['defaultPid'];
+		return (int)$frameworkConfiguration['view']['defaultPid'];
 	}
 
 	/**
@@ -208,7 +208,7 @@ class ExtensionService implements \TYPO3\CMS\Core\SingletonInterface {
 		$settings = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS, $extensionName);
 		$formatToPageTypeMapping = isset($settings['view']['formatToPageTypeMapping']) ? $settings['view']['formatToPageTypeMapping'] : array();
 		if (is_array($formatToPageTypeMapping) && array_key_exists($format, $formatToPageTypeMapping)) {
-			$targetPageType = (integer) $formatToPageTypeMapping[$format];
+			$targetPageType = (int)$formatToPageTypeMapping[$format];
 		}
 		return $targetPageType;
 	}

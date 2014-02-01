@@ -434,7 +434,7 @@ class DatabaseConnection {
 		$resultSet = $this->exec_SELECTquery('COUNT(' . $field . ')', $table, $where);
 		if ($resultSet !== FALSE) {
 			list($count) = $this->sql_fetch_row($resultSet);
-			$count = intval($count);
+			$count = (int)$count;
 			$this->sql_free_result($resultSet);
 		}
 		return $count;
@@ -863,12 +863,12 @@ class DatabaseConnection {
 	 * Useful when you want to make sure an array contains only integers before imploding them in a select-list.
 	 *
 	 * @param array $arr Array with values
-	 * @return array The input array with all values passed through intval()
+	 * @return array The input array with all values cast to (int)
 	 * @see cleanIntList()
 	 */
 	public function cleanIntArray($arr) {
 		foreach ($arr as $k => $v) {
-			$arr[$k] = intval($arr[$k]);
+			$arr[$k] = (int)$arr[$k];
 		}
 		return $arr;
 	}
@@ -878,7 +878,7 @@ class DatabaseConnection {
 	 * Useful when you want to make sure a commalist of supposed integers really contain only integers; You want to know that when you don't trust content that could go into an SQL statement.
 	 *
 	 * @param string $list List of comma-separated values which should be integers
-	 * @return string The input list but with every value passed through intval()
+	 * @return string The input list but with every value cast to (int)
 	 * @see cleanIntArray()
 	 */
 	public function cleanIntList($list) {
@@ -1786,7 +1786,7 @@ class DatabaseConnection {
 	 */
 	public function debug($func, $query = '') {
 		$error = $this->sql_error();
-		if ($error || (int) $this->debugOutput === 2) {
+		if ($error || (int)$this->debugOutput === 2) {
 			\TYPO3\CMS\Core\Utility\DebugUtility::debug(
 				array(
 					'caller' => 'TYPO3\\CMS\\Core\\Database\\DatabaseConnection::' . $func,
@@ -1866,7 +1866,7 @@ class DatabaseConnection {
 		) {
 			// Raw HTML output
 			$explainMode = 1;
-		} elseif ((int) $this->explainOutput == 3 && is_object($GLOBALS['TT'])) {
+		} elseif ((int)$this->explainOutput == 3 && is_object($GLOBALS['TT'])) {
 			// Embed the output into the TS admin panel
 			$explainMode = 2;
 		} else {

@@ -356,7 +356,7 @@ abstract class AbstractConditionMatcher {
 						$theTestValue = date('z', $theEvalTime);
 						break;
 				}
-				$theTestValue = intval($theTestValue);
+				$theTestValue = (int)$theTestValue;
 				// comp
 				$values = GeneralUtility::trimExplode(',', $value, TRUE);
 				foreach ($values as $test) {

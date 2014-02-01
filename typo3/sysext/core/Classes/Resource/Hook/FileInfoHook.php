@@ -48,7 +48,7 @@ class FileInfoHook {
 		$fileRecord = $propertyArray['row'];
 		$fileObject = NULL;
 		if ($fileRecord['uid'] > 0) {
-			$fileObject = ResourceFactory::getInstance()->getFileObject(intval($fileRecord['uid']));
+			$fileObject = ResourceFactory::getInstance()->getFileObject((int)$fileRecord['uid']);
 
 		}
 		return $this->renderFileInformationContent($fileObject);
@@ -65,7 +65,7 @@ class FileInfoHook {
 		$fileMedadataRecord = $propertyArray['row'];
 		$fileObject = NULL;
 		if ($fileMedadataRecord['file'] > 0) {
-			$fileObject = ResourceFactory::getInstance()->getFileObject(intval($fileMedadataRecord['file']));
+			$fileObject = ResourceFactory::getInstance()->getFileObject((int)$fileMedadataRecord['file']);
 		}
 
 		return $this->renderFileInformationContent($fileObject);

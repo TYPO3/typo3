@@ -51,10 +51,10 @@ class UserFileMountService {
 	 */
 	public function renderTceformsSelectDropdown(&$PA, &$tceformsObj) {
 		// If working for sys_filemounts table
-		$storageUid = intval($PA['row']['base']);
+		$storageUid = (int)$PA['row']['base'];
 		if (!$storageUid) {
 			// If working for sys_file_collection table
-			$storageUid = intval($PA['row']['storage']);
+			$storageUid = (int)$PA['row']['storage'];
 		}
 		if ($storageUid > 0) {
 			/** @var $storageRepository \TYPO3\CMS\Core\Resource\StorageRepository */

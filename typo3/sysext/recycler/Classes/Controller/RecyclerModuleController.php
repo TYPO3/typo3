@@ -81,8 +81,8 @@ class RecyclerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 		} else {
 			$this->allowDelete = $modTS['properties']['allowDelete'] == '1';
 		}
-		if (isset($modTS['properties']['recordsPageLimit']) && intval($modTS['properties']['recordsPageLimit']) > 0) {
-			$this->recordsPageLimit = intval($modTS['properties']['recordsPageLimit']);
+		if (isset($modTS['properties']['recordsPageLimit']) && (int)$modTS['properties']['recordsPageLimit'] > 0) {
+			$this->recordsPageLimit = (int)$modTS['properties']['recordsPageLimit'];
 		}
 	}
 

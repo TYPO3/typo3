@@ -376,7 +376,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 * @todo Define visibility
 	 */
 	public function isMemberOfGroup($groupId) {
-		$groupId = intval($groupId);
+		$groupId = (int)$groupId;
 		if ($this->groupList && $groupId) {
 			return GeneralUtility::inList($this->groupList, $groupId);
 		}
@@ -420,11 +420,11 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 		if (!$GLOBALS['TYPO3_CONF_VARS']['BE']['lockBeUserToDBmounts'] || $this->isAdmin()) {
 			return 1;
 		}
-		$id = intval($id);
+		$id = (int)$id;
 		// Check if input id is an offline version page in which case we will map id to the online version:
 		$checkRec = BackendUtility::getRecord('pages', $id, 'pid,t3ver_oid');
 		if ($checkRec['pid'] == -1) {
-			$id = intval($checkRec['t3ver_oid']);
+			$id = (int)$checkRec['t3ver_oid'];
 		}
 		if (!$readPerms) {
 			$readPerms = $this->getPagePermsClause(1);
@@ -504,7 +504,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 			if ($this->isAdmin()) {
 				return ' 1=1';
 			}
-			$perms = intval($perms);
+			$perms = (int)$perms;
 			// Make sure it's integer.
 			$str = ' (' . '(pages.perms_everybody & ' . $perms . ' = ' . $perms . ')' . ' OR (pages.perms_userid = ' . $this->user['uid'] . ' AND pages.perms_user & ' . $perms . ' = ' . $perms . ')';
 			// User
@@ -692,7 +692,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	public function checkLanguageAccess($langValue) {
 		// The users language list must be non-blank - otherwise all languages are allowed.
 		if (trim($this->groupData['allowed_languages']) !== '') {
-			$langValue = intval($langValue);
+			$langValue = (int)$langValue;
 			// Language must either be explicitly allowed OR the lang Value be "-1" (all languages)
 			if ($langValue != -1 && !$this->check('allowed_languages', $langValue)) {
 				return FALSE;
@@ -895,11 +895,11 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 			}
 			if (is_array($recData)) {
 				// We are testing a "version" (identified by a pid of -1): it can be edited provided that workspace matches and versioning is enabled for the table.
-				if ((int) $recData['pid'] === -1) {
+				if ((int)$recData['pid'] === -1) {
 					// No versioning, basic error, inconsistency even! Such records should not have a pid of -1!
 					if (!$GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
 						return 'Versioning disabled for table';
-					} elseif ((int) $recData['t3ver_wsid'] !== $this->workspace) {
+					} elseif ((int)$recData['t3ver_wsid'] !== $this->workspace) {
 						// So does workspace match?
 						return 'Workspace ID of record didn\'t match current workspace';
 					} else {
@@ -942,7 +942,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 				$recData = BackendUtility::getRecord($table, $recData, 'uid,pid,t3ver_wsid,t3ver_stage');
 			}
 			if (is_array($recData)) {
-				if ((int) $recData['pid'] === -1) {
+				if ((int)$recData['pid'] === -1) {
 					return $this->workspaceCannotEditRecord($table, $recData);
 				} else {
 					return 'Not an offline version';
@@ -1035,7 +1035,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 			return TRUE;
 		}
 		if ($this->workspace !== 0 && \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('workspaces')) {
-			$stage = intval($stage);
+			$stage = (int)$stage;
 			$stat = $this->checkWorkspaceCurrent();
 			// Check if custom staging is activated
 			$workspaceRec = BackendUtility::getRecord('sys_workspace', $stat['uid']);
@@ -1110,7 +1110,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 * @todo Define visibility
 	 */
 	public function workspaceSwapAccess() {
-		if ($this->workspace > 0 && (int) $this->workspaceRec['swap_modes'] === 2) {
+		if ($this->workspace > 0 && (int)$this->workspaceRec['swap_modes'] === 2) {
 			return FALSE;
 		} else {
 			return TRUE;
@@ -1206,7 +1206,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 			// Default: show all warnings
 			$alertPopup = 255;
 		} else {
-			$alertPopup = (int) $alertPopup['value'];
+			$alertPopup = (int)$alertPopup['value'];
 		}
 		// Show confirmation
 		if (($alertPopup & $bitmask) == $bitmask) {
@@ -1433,7 +1433,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 */
 	public function setCachedList($cList) {
 		if ((string) $cList != (string) $this->user['usergroup_cached_list']) {
-			$GLOBALS['TYPO3_DB']->exec_UPDATEquery('be_users', 'uid=' . intval($this->user['uid']), array('usergroup_cached_list' => $cList));
+			$GLOBALS['TYPO3_DB']->exec_UPDATEquery('be_users', 'uid=' . (int)$this->user['uid'], array('usergroup_cached_list' => $cList));
 		}
 	}
 
@@ -1457,7 +1457,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 			// Regular users only have storages that are defined in their filemounts
 			// Permissions and file mounts for the storage are added in StoragePermissionAspect
 			foreach ($this->getFileMountRecords() as $row) {
-				if (!array_key_exists(intval($row['base']), $this->fileStorages)) {
+				if (!array_key_exists((int)$row['base'], $this->fileStorages)) {
 					$storageObject = $storageRepository->findByUid($row['base']);
 					$this->fileStorages[$storageObject->getUid()] = $storageObject;
 				}
@@ -1535,7 +1535,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 				// If userHomePath is set, we attempt to mount it
 				if ($GLOBALS['TYPO3_CONF_VARS']['BE']['userHomePath']) {
 					list($userHomeStorageUid, $userHomeFilter) = explode(':', $GLOBALS['TYPO3_CONF_VARS']['BE']['userHomePath'], 2);
-					$userHomeStorageUid = intval($userHomeStorageUid);
+					$userHomeStorageUid = (int)$userHomeStorageUid;
 					$userHomeFilter = '/' . ltrim($userHomeFilter, '/');
 					if ($userHomeStorageUid > 0) {
 						// Try and mount with [uid]_[username]
@@ -1557,7 +1557,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 				if (($this->user['options'] & 2) == 2 && $GLOBALS['TYPO3_CONF_VARS']['BE']['groupHomePath'] != '') {
 					// If groupHomePath is set, we attempt to mount it
 					list($groupHomeStorageUid, $groupHomeFilter) = explode(':', $GLOBALS['TYPO3_CONF_VARS']['BE']['groupHomePath'], 2);
-					$groupHomeStorageUid = intval($groupHomeStorageUid);
+					$groupHomeStorageUid = (int)$groupHomeStorageUid;
 					$groupHomeFilter = '/' . ltrim($groupHomeFilter, '/');
 					if ($groupHomeStorageUid > 0) {
 						foreach ($this->userGroups as $groupData) {
@@ -1907,7 +1907,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 					break;
 				default:
 					if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('workspaces')) {
-						$wsRec = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow($fields, 'sys_workspace', 'pid=0 AND uid=' . intval($wsRec) . BackendUtility::deleteClause('sys_workspace'), '', 'title');
+						$wsRec = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow($fields, 'sys_workspace', 'pid=0 AND uid=' . (int)$wsRec . BackendUtility::deleteClause('sys_workspace'), '', 'title');
 					}
 			}
 		}
@@ -1988,7 +1988,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 		// If ID is different from the stored one, change it:
 		if ((int)$this->workspace !== (int)$this->user['workspace_id']) {
 			$this->user['workspace_id'] = $this->workspace;
-			$GLOBALS['TYPO3_DB']->exec_UPDATEquery('be_users', 'uid=' . intval($this->user['uid']), array('workspace_id' => $this->user['workspace_id']));
+			$GLOBALS['TYPO3_DB']->exec_UPDATEquery('be_users', 'uid=' . (int)$this->user['uid'], array('workspace_id' => $this->user['workspace_id']));
 			$this->simplelog('User changed workspace to "' . $this->workspace . '"');
 		}
 	}
@@ -2005,7 +2005,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 
 		if ($workspaceRecord) {
 			$this->workspaceRec = $workspaceRecord;
-			$this->workspace = (int) $workspaceId;
+			$this->workspace = (int)$workspaceId;
 			$result = TRUE;
 		}
 
@@ -2018,7 +2018,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 * @return void
 	 */
 	public function setDefaultWorkspace() {
-		$this->workspace = (int) $this->getDefaultWorkspace();
+		$this->workspace = (int)$this->getDefaultWorkspace();
 		$this->workspaceRec = $this->checkWorkspace($this->workspace, '*');
 	}
 
@@ -2031,7 +2031,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 */
 	public function setWorkspacePreview($previewState) {
 		$this->user['workspace_preview'] = $previewState;
-		$GLOBALS['TYPO3_DB']->exec_UPDATEquery('be_users', 'uid=' . intval($this->user['uid']), array('workspace_preview' => $this->user['workspace_preview']));
+		$GLOBALS['TYPO3_DB']->exec_UPDATEquery('be_users', 'uid=' . (int)$this->user['uid'], array('workspace_preview' => $this->user['workspace_preview']));
 	}
 
 	/**
@@ -2088,18 +2088,18 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 		}
 
 		$fields_values = array(
-			'userid' => intval($userId),
-			'type' => intval($type),
-			'action' => intval($action),
-			'error' => intval($error),
-			'details_nr' => intval($details_nr),
+			'userid' => (int)$userId,
+			'type' => (int)$type,
+			'action' => (int)$action,
+			'error' => (int)$error,
+			'details_nr' => (int)$details_nr,
 			'details' => $details,
 			'log_data' => serialize($data),
 			'tablename' => $tablename,
-			'recuid' => intval($recuid),
+			'recuid' => (int)$recuid,
 			'IP' => (string) GeneralUtility::getIndpEnv('REMOTE_ADDR'),
 			'tstamp' => $GLOBALS['EXEC_TIME'],
-			'event_pid' => intval($event_pid),
+			'event_pid' => (int)$event_pid,
 			'NEWid' => $NEWid,
 			'workspace' => $this->workspace
 		);
@@ -2135,13 +2135,13 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 		if ($email) {
 			// Get last flag set in the log for sending
 			$theTimeBack = $GLOBALS['EXEC_TIME'] - $secondsBack;
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('tstamp', 'sys_log', 'type=255 AND action=4 AND tstamp>' . intval($theTimeBack), '', 'tstamp DESC', '1');
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('tstamp', 'sys_log', 'type=255 AND action=4 AND tstamp>' . (int)$theTimeBack, '', 'tstamp DESC', '1');
 			if ($testRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 				$theTimeBack = $testRow['tstamp'];
 			}
 			$GLOBALS['TYPO3_DB']->sql_free_result($res);
 			// Check for more than $max number of error failures with the last period.
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_log', 'type=255 AND action=3 AND error<>0 AND tstamp>' . intval($theTimeBack), '', 'tstamp');
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_log', 'type=255 AND action=3 AND error<>0 AND tstamp>' . (int)$theTimeBack, '', 'tstamp');
 			if ($GLOBALS['TYPO3_DB']->sql_num_rows($res) > $max) {
 				// OK, so there were more than the max allowed number of login failures - so we will send an email then.
 				$subject = 'TYPO3 Login Failure Warning (at ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . ')';
@@ -2353,12 +2353,12 @@ This is a dump of the failures:
 			if ($GLOBALS['TYPO3_CONF_VARS']['BE']['warning_email_addr']) {
 				$warn = 0;
 				$prefix = '';
-				if (intval($GLOBALS['TYPO3_CONF_VARS']['BE']['warning_mode']) & 1) {
+				if ((int)$GLOBALS['TYPO3_CONF_VARS']['BE']['warning_mode'] & 1) {
 					// first bit: All logins
 					$warn = 1;
 					$prefix = $this->isAdmin() ? '[AdminLoginWarning]' : '[LoginWarning]';
 				}
-				if ($this->isAdmin() && intval($GLOBALS['TYPO3_CONF_VARS']['BE']['warning_mode']) & 2) {
+				if ($this->isAdmin() && (int)$GLOBALS['TYPO3_CONF_VARS']['BE']['warning_mode'] & 2) {
 					// second bit: Only admin-logins
 					$warn = 1;
 					$prefix = '[AdminLoginWarning]';
@@ -2402,7 +2402,7 @@ This is a dump of the failures:
 		} elseif ($adminOnlyMode == 2 && TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI) {
 			$isUserAllowedToLogin = TRUE;
 		} elseif ($this->user['ses_backuserid']) {
-			$backendUserId = intval($this->user['ses_backuserid']);
+			$backendUserId = (int)$this->user['ses_backuserid'];
 			$whereAdmin = 'uid=' . $backendUserId . ' AND admin=1' . BackendUtility::BEenableFields('be_users');
 			if ($GLOBALS['TYPO3_DB']->exec_SELECTcountRows('uid', 'be_users', $whereAdmin) > 0) {
 				$isUserAllowedToLogin = TRUE;

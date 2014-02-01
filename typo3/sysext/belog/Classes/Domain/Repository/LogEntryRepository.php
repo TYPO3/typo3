@@ -143,7 +143,7 @@ class LogEntryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 		}
 		// Constraint for a group
 		if (substr($userOrGroup, 0, 3) === 'gr-') {
-			$groupId = intval(substr($userOrGroup, 3));
+			$groupId = (int)substr($userOrGroup, 3);
 			$userIds = array();
 			foreach ($this->beUserList as $userId => $userData) {
 				if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList($userData['usergroup_cached_list'], $groupId)) {
@@ -157,9 +157,9 @@ class LogEntryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 				$queryConstraints[] = $query->in('userid', array(-1));
 			}
 		} elseif (substr($userOrGroup, 0, 3) === 'us-') {
-			$queryConstraints[] = $query->equals('userid', intval(substr($userOrGroup, 3)));
+			$queryConstraints[] = $query->equals('userid', (int)substr($userOrGroup, 3));
 		} elseif ($userOrGroup === '-1') {
-			$queryConstraints[] = $query->equals('userid', intval($GLOBALS['BE_USER']->user['uid']));
+			$queryConstraints[] = $query->equals('userid', (int)$GLOBALS['BE_USER']->user['uid']);
 		}
 	}
 

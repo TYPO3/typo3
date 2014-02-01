@@ -75,11 +75,11 @@ class AdminPanelView {
 			$GLOBALS['TSFE']->displayFieldEditIcons = 1;
 		}
 		if (GeneralUtility::_GP('ADMCMD_simUser')) {
-			$GLOBALS['BE_USER']->uc['TSFE_adminConfig']['preview_simulateUserGroup'] = intval(GeneralUtility::_GP('ADMCMD_simUser'));
+			$GLOBALS['BE_USER']->uc['TSFE_adminConfig']['preview_simulateUserGroup'] = (int)GeneralUtility::_GP('ADMCMD_simUser');
 			$this->ext_forcePreview = TRUE;
 		}
 		if (GeneralUtility::_GP('ADMCMD_simTime')) {
-			$GLOBALS['BE_USER']->uc['TSFE_adminConfig']['preview_simulateDate'] = intval(GeneralUtility::_GP('ADMCMD_simTime'));
+			$GLOBALS['BE_USER']->uc['TSFE_adminConfig']['preview_simulateDate'] = (int)GeneralUtility::_GP('ADMCMD_simTime');
 			$this->ext_forcePreview = TRUE;
 		}
 		if ($GLOBALS['TSFE']->forceTemplateParsing) {
@@ -142,7 +142,7 @@ class AdminPanelView {
 			// Actions:
 			if ($input['action']['clearCache'] && $this->isAdminModuleEnabled('cache')) {
 				$GLOBALS['BE_USER']->extPageInTreeInfo = array();
-				$theStartId = intval($input['cache_clearCacheId']);
+				$theStartId = (int)$input['cache_clearCacheId'];
 				$GLOBALS['TSFE']->clearPageCacheContent_pidList($GLOBALS['BE_USER']->extGetTreeList($theStartId, $this->extGetFeAdminValue('cache', 'clearCacheLevels'), 0, $GLOBALS['BE_USER']->getPagePermsClause(1)) . $theStartId);
 			}
 			// Saving
@@ -423,7 +423,7 @@ class AdminPanelView {
 			if (!GeneralUtility::_GP('ADMCMD_view')) {
 				$out .= $this->extGetItem('', '<a href="#" onclick="' . htmlspecialchars(('
 						if (parent.opener && parent.opener.top && parent.opener.top.TS) {
-							parent.opener.top.fsMod.recentIds["web"]=' . intval($GLOBALS['TSFE']->page['uid']) . ';
+							parent.opener.top.fsMod.recentIds["web"]=' . (int)$GLOBALS['TSFE']->page['uid'] . ';
 							if (parent.opener.top.content && parent.opener.top.content.nav_frame && parent.opener.top.content.nav_frame.refresh_nav) {
 								parent.opener.top.content.nav_frame.refresh_nav();
 							}
@@ -621,7 +621,7 @@ class AdminPanelView {
 				$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
 					'uid,pid,t3ver_state',
 					'pages_language_overlay',
-					'pid=' . intval($id) .
+					'pid=' . (int)$id .
 					' AND sys_language_uid=' . $GLOBALS['TSFE']->sys_language_uid .
 					$GLOBALS['TSFE']->sys_page->enableFields('pages_language_overlay')
 				);

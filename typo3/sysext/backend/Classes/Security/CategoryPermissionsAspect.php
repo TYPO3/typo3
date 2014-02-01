@@ -87,7 +87,7 @@ class CategoryPermissionsAspect {
 
 				foreach ($categoryMountPoints as $categoryMountPoint) {
 
-					$treeNode = $this->lookUpCategoryMountPointInTreeNodes((int) $categoryMountPoint, $treeNodeCollection);
+					$treeNode = $this->lookUpCategoryMountPointInTreeNodes((int)$categoryMountPoint, $treeNodeCollection);
 					if (!is_null($treeNode)) {
 						$securedTreeNodeCollection->append($treeNode);
 					}
@@ -114,7 +114,7 @@ class CategoryPermissionsAspect {
 		foreach ($treeNodeCollection as $treeNode) {
 
 			/** @var \TYPO3\CMS\Backend\Tree\TreeNode $treeNode */
-			if ((int) $treeNode->getId() === $categoryMountPoint) {
+			if ((int)$treeNode->getId() === $categoryMountPoint) {
 				$result = $treeNode;
 				break;
 			}

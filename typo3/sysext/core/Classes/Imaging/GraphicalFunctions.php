@@ -353,7 +353,7 @@ class GraphicalFunctions {
 			$this->NO_IM_EFFECTS = 0;
 			$this->V5_EFFECTS = 1;
 			if ($gfxConf['im_v5effects'] > 0) {
-				$this->cmds['jpg'] = ($this->cmds['jpeg'] = '-colorspace ' . $this->colorspace . ' -quality ' . intval($gfxConf['jpg_quality']) . $this->v5_sharpen(10));
+				$this->cmds['jpg'] = ($this->cmds['jpeg'] = '-colorspace ' . $this->colorspace . ' -quality ' . (int)$gfxConf['jpg_quality'] . $this->v5_sharpen(10));
 			}
 		}
 		// Secures that images are not scaled up.
@@ -716,8 +716,7 @@ class GraphicalFunctions {
 	 * @todo Define visibility
 	 */
 	public function txtPosition($conf, $workArea, $BB) {
-		$bbox = $BB[2];
-		$angle = intval($conf['angle']) / 180 * pi();
+		$angle = (int)$conf['angle'] / 180 * pi();
 		$conf['angle'] = 0;
 		$straightBB = $this->calcBBox($conf);
 		// offset, align, valign, workarea
@@ -726,7 +725,6 @@ class GraphicalFunctions {
 		$result[2] = $BB[0];
 		$result[3] = $BB[1];
 		$w = $workArea[2];
-		$h = $workArea[3];
 		switch ($conf['align']) {
 			case 'right':
 
@@ -932,7 +930,7 @@ class GraphicalFunctions {
 	 */
 	public function fontResize($conf) {
 		// You have to use +calc options like [10.h] in 'offset' to get the right position of your text-image, if you use +calc in XY height!!!!
-		$maxWidth = intval($conf['maxWidth']);
+		$maxWidth = (int)$conf['maxWidth'];
 		list($spacing, $wordSpacing) = $this->calcWordSpacing($conf);
 		if ($maxWidth) {
 			// If any kind of spacing applys, we use this function:
@@ -997,10 +995,10 @@ class GraphicalFunctions {
 					// First run, just copy over.
 					$offsetInfo = $calc;
 				} else {
-					$offsetInfo[2] += $calc[2] - $calc[0] + intval($splitRendering['compX']) + intval($strCfg['xSpaceBefore']) + intval($strCfg['xSpaceAfter']);
-					$offsetInfo[3] += $calc[3] - $calc[1] - intval($splitRendering['compY']) - intval($strCfg['ySpaceBefore']) - intval($strCfg['ySpaceAfter']);
-					$offsetInfo[4] += $calc[4] - $calc[6] + intval($splitRendering['compX']) + intval($strCfg['xSpaceBefore']) + intval($strCfg['xSpaceAfter']);
-					$offsetInfo[5] += $calc[5] - $calc[7] - intval($splitRendering['compY']) - intval($strCfg['ySpaceBefore']) - intval($strCfg['ySpaceAfter']);
+					$offsetInfo[2] += $calc[2] - $calc[0] + (int)$splitRendering['compX'] + (int)$strCfg['xSpaceBefore'] + (int)$strCfg['xSpaceAfter'];
+					$offsetInfo[3] += $calc[3] - $calc[1] - (int)$splitRendering['compY'] - (int)$strCfg['ySpaceBefore'] - (int)$strCfg['ySpaceAfter'];
+					$offsetInfo[4] += $calc[4] - $calc[6] + (int)$splitRendering['compX'] + (int)$strCfg['xSpaceBefore'] + (int)$strCfg['xSpaceAfter'];
+					$offsetInfo[5] += $calc[5] - $calc[7] - (int)$splitRendering['compY'] - (int)$strCfg['ySpaceBefore'] - (int)$strCfg['ySpaceAfter'];
 				}
 			} else {
 				debug('cannot read file: ' . $fontFile, 'TYPO3\\CMS\\Core\\Imaging\\GraphicalFunctions::ImageTTFBBoxWrapper()');
@@ -1042,8 +1040,8 @@ class GraphicalFunctions {
 			}
 			// Setting xSpaceBefore
 			if ($i) {
-				$x += intval($strCfg['xSpaceBefore']);
-				$y -= intval($strCfg['ySpaceBefore']);
+				$x += (int)$strCfg['xSpaceBefore'];
+				$y -= (int)$strCfg['ySpaceBefore'];
 			}
 			$fontFile = self::prependAbsolutePath($strCfg['fontFile']);
 			if (is_readable($fontFile)) {
@@ -1051,8 +1049,8 @@ class GraphicalFunctions {
 				ImageTTFText($im, GeneralUtility::freetypeDpiComp($sF * $strCfg['fontSize']), $angle, $x, $y, $colorIndex, $fontFile, $strCfg['str']);
 				// Calculate offset to apply:
 				$wordInf = ImageTTFBBox(GeneralUtility::freetypeDpiComp($sF * $strCfg['fontSize']), $angle, self::prependAbsolutePath($strCfg['fontFile']), $strCfg['str']);
-				$x += $wordInf[2] - $wordInf[0] + intval($splitRendering['compX']) + intval($strCfg['xSpaceAfter']);
-				$y += $wordInf[5] - $wordInf[7] - intval($splitRendering['compY']) - intval($strCfg['ySpaceAfter']);
+				$x += $wordInf[2] - $wordInf[0] + (int)$splitRendering['compX'] + (int)$strCfg['xSpaceAfter'];
+				$y += $wordInf[5] - $wordInf[7] - (int)$splitRendering['compY'] - (int)$strCfg['ySpaceAfter'];
 			} else {
 				debug('cannot read file: ' . $fontFile, 'TYPO3\\CMS\\Core\\Imaging\\GraphicalFunctions::ImageTTFTextWrapper()');
 			}
@@ -1208,8 +1206,8 @@ class GraphicalFunctions {
 	 * @todo Define visibility
 	 */
 	public function calcWordSpacing($conf, $scaleFactor = 1) {
-		$spacing = intval($conf['spacing']);
-		$wordSpacing = intval($conf['wordSpacing']);
+		$spacing = (int)$conf['spacing'];
+		$wordSpacing = (int)$conf['wordSpacing'];
 		$wordSpacing = $wordSpacing ?: $spacing * 2;
 		$spacing *= $scaleFactor;
 		$wordSpacing *= $scaleFactor;
@@ -1354,7 +1352,7 @@ class GraphicalFunctions {
 	 * @todo Define visibility
 	 */
 	public function makeOutline(&$im, $conf, $workArea, $txtConf) {
-		$thickness = intval($conf['thickness']);
+		$thickness = (int)$conf['thickness'];
 		if ($thickness) {
 			$txtConf['fontColor'] = $conf['color'];
 			$outLineDist = MathUtility::forceIntegerInRange($thickness, 1, 2);
@@ -1389,11 +1387,11 @@ class GraphicalFunctions {
 			for ($a = 0; $a < $iterations; $a++) {
 				$yOff = round(sin((2 * pi() / $iterations * ($a + 1))) * 100 * $distance);
 				if ($yOff) {
-					$yOff = intval(ceil(abs(($yOff / 100))) * ($yOff / abs($yOff)));
+					$yOff = (int)(ceil(abs(($yOff / 100))) * ($yOff / abs($yOff)));
 				}
 				$xOff = round(cos((2 * pi() / $iterations * ($a + 1))) * 100 * $distance);
 				if ($xOff) {
-					$xOff = intval(ceil(abs(($xOff / 100))) * ($xOff / abs($xOff)));
+					$xOff = (int)(ceil(abs(($xOff / 100))) * ($xOff / abs($xOff)));
 				}
 				$res[$a] = array($xOff, $yOff);
 			}
@@ -1437,7 +1435,7 @@ class GraphicalFunctions {
 	 */
 	public function makeShadow(&$im, $conf, $workArea, $txtConf) {
 		$workArea = $this->applyOffset($workArea, GeneralUtility::intExplode(',', $conf['offset']));
-		$blurRate = MathUtility::forceIntegerInRange(intval($conf['blur']), 0, 99);
+		$blurRate = MathUtility::forceIntegerInRange((int)$conf['blur'], 0, 99);
 		// No effects if ImageMagick ver. 5+
 		if (!$blurRate || $this->NO_IM_EFFECTS) {
 			$txtConf['fontColor'] = $conf['color'];
@@ -1502,7 +1500,7 @@ class GraphicalFunctions {
 				}
 				$intensity = ceil(255 - $intensity / 100 * 255);
 				$this->inputLevels($blurTextImg, 0, $intensity);
-				$opacity = MathUtility::forceIntegerInRange(intval($conf['opacity']), 0, 100);
+				$opacity = MathUtility::forceIntegerInRange((int)$conf['opacity'], 0, 100);
 				if ($opacity && $opacity < 100) {
 					$high = ceil(255 * $opacity / 100);
 					// Reducing levels as the opacity demands
@@ -1560,7 +1558,7 @@ class GraphicalFunctions {
 			// conversion:
 			// PHP 0 = opaque, 127 = transparent
 			// TYPO3 100 = opaque, 0 = transparent
-			$opacity = MathUtility::forceIntegerInRange(intval($conf['opacity']), 1, 100, 1);
+			$opacity = MathUtility::forceIntegerInRange((int)$conf['opacity'], 1, 100, 1);
 			$opacity = abs($opacity - 100);
 			$opacity = round(127 * $opacity / 100);
 		}
@@ -2031,8 +2029,8 @@ class GraphicalFunctions {
 	 * @todo Define visibility
 	 */
 	public function applyOffset($cords, $OFFSET) {
-		$cords[0] = intval($cords[0]) + intval($OFFSET[0]);
-		$cords[1] = intval($cords[1]) + intval($OFFSET[1]);
+		$cords[0] = (int)$cords[0] + (int)$OFFSET[0];
+		$cords[1] = (int)$cords[1] + (int)$OFFSET[1];
 		return $cords;
 	}
 
@@ -2057,9 +2055,9 @@ class GraphicalFunctions {
 		} elseif (strstr($string, ',')) {
 			$string = preg_replace('/[^,0-9]*/', '', $string);
 			$strArr = explode(',', $string);
-			$col[] = intval($strArr[0]);
-			$col[] = intval($strArr[1]);
-			$col[] = intval($strArr[2]);
+			$col[] = (int)$strArr[0];
+			$col[] = (int)$strArr[1];
+			$col[] = (int)$strArr[2];
 		} else {
 			$string = strtolower(trim($string));
 			if ($this->colMap[$string]) {
@@ -2077,7 +2075,7 @@ class GraphicalFunctions {
 				$col[1] = MathUtility::forceIntegerInRange($col[1] * $val, 0, 255);
 				$col[2] = MathUtility::forceIntegerInRange($col[2] * $val, 0, 255);
 			} else {
-				$val = intval($cParts[1]);
+				$val = (int)$cParts[1];
 				$col[0] = MathUtility::forceIntegerInRange($col[0] + $val, 0, 255);
 				$col[1] = MathUtility::forceIntegerInRange($col[1] + $val, 0, 255);
 				$col[2] = MathUtility::forceIntegerInRange($col[2] + $val, 0, 255);
@@ -2241,7 +2239,7 @@ class GraphicalFunctions {
 				}
 				$info[0] = $data[0];
 				$info[1] = $data[1];
-				$frame = $this->noFramePrepended ? '' : intval($frame);
+				$frame = $this->noFramePrepended ? '' : (int)$frame;
 				if (!$params) {
 					$params = $this->cmds[$newExt];
 				}
@@ -2253,8 +2251,8 @@ class GraphicalFunctions {
 					if (!$data['origH']) {
 						$data['origH'] = $data[1];
 					}
-					$offsetX = intval(($data[0] - $data['origW']) * ($data['cropH'] + 100) / 200);
-					$offsetY = intval(($data[1] - $data['origH']) * ($data['cropV'] + 100) / 200);
+					$offsetX = (int)(($data[0] - $data['origW']) * ($data['cropH'] + 100) / 200);
+					$offsetY = (int)(($data[1] - $data['origH']) * ($data['cropV'] + 100) / 200);
 					$params .= ' -crop ' . $data['origW'] . 'x' . $data['origH'] . '+' . $offsetX . '+' . $offsetY . '! ';
 				}
 				$command = $this->scalecmd . ' ' . $info[0] . 'x' . $info[1] . '! ' . $params . ' ';
@@ -2369,8 +2367,8 @@ class GraphicalFunctions {
 			} else {
 				preg_match('/([^\\.]*)$/', $imageFile, $imageExtension);
 				$result = array(
-					(int) $cachedImageDimensions['imagewidth'],
-					(int) $cachedImageDimensions['imageheight'],
+					(int)$cachedImageDimensions['imagewidth'],
+					(int)$cachedImageDimensions['imageheight'],
 					strtolower($imageExtension[0]),
 					$imageFile
 				);
@@ -2398,15 +2396,15 @@ class GraphicalFunctions {
 			$max = 0;
 		}
 		if (strstr($w . $h, 'c')) {
-			$out['cropH'] = intval(substr(strstr($w, 'c'), 1));
-			$out['cropV'] = intval(substr(strstr($h, 'c'), 1));
+			$out['cropH'] = (int)substr(strstr($w, 'c'), 1);
+			$out['cropV'] = (int)substr(strstr($h, 'c'), 1);
 			$crs = TRUE;
 		} else {
 			$crs = FALSE;
 		}
 		$out['crs'] = $crs;
-		$w = intval($w);
-		$h = intval($h);
+		$w = (int)$w;
+		$h = (int)$h;
 		// If there are max-values...
 		if (!empty($options['maxW'])) {
 			// If width is given...
@@ -2581,7 +2579,7 @@ class GraphicalFunctions {
 					if ($val) {
 						$temp = explode('x', $val);
 					}
-					if (intval($temp[0]) && intval($temp[1])) {
+					if ((int)$temp[0] && (int)$temp[1]) {
 						$dim = $temp;
 						break;
 					}
@@ -2609,7 +2607,7 @@ class GraphicalFunctions {
 			// Unless noFramePrepended is set in the Install Tool, a frame number is added to
 			// select a specific page of the image (by default this will be the first page)
 			if (!$this->noFramePrepended) {
-				$frame = '[' . intval($frame) . ']';
+				$frame = '[' . (int)$frame . ']';
 			} else {
 				$frame = '';
 			}

@@ -216,7 +216,7 @@ class BaseScriptClass {
 		if (!$this->MCONF['name']) {
 			$this->MCONF = $GLOBALS['MCONF'];
 		}
-		$this->id = intval(GeneralUtility::_GP('id'));
+		$this->id = (int)GeneralUtility::_GP('id');
 		$this->CMD = GeneralUtility::_GP('CMD');
 		$this->perms_clause = $GLOBALS['BE_USER']->getPagePermsClause(1);
 		$this->menuConfig();

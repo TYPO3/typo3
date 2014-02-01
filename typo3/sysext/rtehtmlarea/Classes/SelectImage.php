@@ -1009,7 +1009,7 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 			$out .= $this->barheader(sprintf($GLOBALS['LANG']->getLL('files') . ' (%s):', $filesCount));
 			$out .= '<div id="filelist">';
 			$out .= $this->getBulkSelector($filesCount);
-			$titleLen = intval($GLOBALS['BE_USER']->uc['titleLen']);
+			$titleLen = (int)$GLOBALS['BE_USER']->uc['titleLen'];
 			// Create the header of current folder:
 			if ($folder) {
 				$folderIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForFile('folder');

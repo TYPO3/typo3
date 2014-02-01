@@ -106,7 +106,7 @@ class DataPreprocessor {
 	 * @todo Define visibility
 	 */
 	public function fetchRecord($table, $idList, $operation) {
-		if ((string)$idList == 'prev') {
+		if ((string)$idList === 'prev') {
 			$idList = $this->prevPageID;
 		}
 		if ($GLOBALS['TCA'][$table]) {
@@ -134,7 +134,7 @@ class DataPreprocessor {
 							$pid = $record['pid'];
 							unset($record);
 						} else {
-							$pid = intval($id);
+							$pid = (int)$id;
 						}
 						$pageTS = BackendUtility::getPagesTSconfig($pid);
 						if (isset($pageTS['TCAdefaults.'])) {
@@ -173,9 +173,9 @@ class DataPreprocessor {
 						// Finally, call renderRecord:
 						$this->renderRecord($table, uniqid('NEW'), $id, $newRow);
 					} else {
-						$id = intval($id);
+						$id = (int)$id;
 						// Fetch database values
-						$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $table, 'uid=' . intval($id) . BackendUtility::deleteClause($table));
+						$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $table, 'uid=' . $id . BackendUtility::deleteClause($table));
 						if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 							BackendUtility::fixVersioningPid($table, $row);
 							$this->renderRecord($table, $id, $row['pid'], $row);
@@ -387,7 +387,7 @@ class DataPreprocessor {
 		// New data set, ready for interface (list of values, rawurlencoded)
 		$dataAcc = array();
 		// For list selectors (multi-value):
-		if (intval($fieldConfig['config']['maxitems']) > 1) {
+		if ((int)$fieldConfig['config']['maxitems'] > 1) {
 			// Add regular elements:
 			if (!is_array($fieldConfig['config']['items'])) {
 				$fieldConfig['config']['items'] = array();

@@ -157,7 +157,7 @@ class Constraint extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 * @return void
 	 */
 	public function setNumber($number) {
-		$this->number = intval($number);
+		$this->number = (int)$number;
 	}
 
 	/**
@@ -204,7 +204,7 @@ class Constraint extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 * @return integer
 	 */
 	public function getTimeFrame() {
-		return intval($this->timeFrame);
+		return (int)$this->timeFrame;
 	}
 
 	/**
@@ -223,7 +223,7 @@ class Constraint extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 * @return integer
 	 */
 	public function getAction() {
-		return intval($this->action);
+		return (int)$this->action;
 	}
 
 	/**
@@ -290,7 +290,7 @@ class Constraint extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 * @return void
 	 */
 	public function setStartTimestamp($timestamp) {
-		$this->startTimestamp = intval($timestamp);
+		$this->startTimestamp = (int)$timestamp;
 	}
 
 	/**
@@ -309,7 +309,7 @@ class Constraint extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 * @return void
 	 */
 	public function setEndTimestamp($timestamp) {
-		$this->endTimestamp = intval($timestamp);
+		$this->endTimestamp = (int)$timestamp;
 	}
 
 	/**
@@ -347,7 +347,7 @@ class Constraint extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 * @return void
 	 */
 	public function setPageId($id) {
-		$this->pageId = intval($id);
+		$this->pageId = (int)$id;
 	}
 
 	/**
@@ -375,7 +375,7 @@ class Constraint extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 * @return integer
 	 */
 	public function getDepth() {
-		return intval($this->depth);
+		return (int)$this->depth;
 	}
 
 }

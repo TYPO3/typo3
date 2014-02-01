@@ -59,7 +59,7 @@ class RecyclerGarbageCollectionTask extends \TYPO3\CMS\Scheduler\Task\AbstractTa
 		if (TYPO3_OS == 'WIN') {
 			throw new \BadMethodCallException('This task is not reliable for Windows OS', 1308270454);
 		}
-		$seconds = 60 * 60 * 24 * (int) $this->numberOfDays;
+		$seconds = 60 * 60 * 24 * (int)$this->numberOfDays;
 		$timestamp = $GLOBALS['EXEC_TIME'] - $seconds;
 		// Get fileadmin directory
 		$directory = PATH_site . 'fileadmin/';
@@ -81,7 +81,7 @@ class RecyclerGarbageCollectionTask extends \TYPO3\CMS\Scheduler\Task\AbstractTa
 	 */
 	protected function cleanupRecycledFiles($directory, $timestamp) {
 		$directory = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($directory);
-		$timestamp = (int) $timestamp;
+		$timestamp = (int)$timestamp;
 		// Check if given directory exists
 		if (!@is_dir($directory)) {
 			throw new \RuntimeException('Given directory "' . $directory . '" does not exist', 1301614535);

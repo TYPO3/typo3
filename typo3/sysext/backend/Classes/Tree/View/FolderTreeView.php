@@ -127,7 +127,7 @@ class FolderTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 			// Activates dynamic AJAX based tree
 			$scopeData = serialize($this->scope);
 			$scopeHash = GeneralUtility::hmac($scopeData);
-			$js = htmlspecialchars('Tree.load(\'' . $cmd . '\', ' . intval($isExpand) . ', this, \'' . $scopeData . '\', \'' . $scopeHash . '\');');
+			$js = htmlspecialchars('Tree.load(\'' . $cmd . '\', ' . (int)$isExpand . ', this, \'' . $scopeData . '\', \'' . $scopeHash . '\');');
 			return '<a class="pm" onclick="' . $js . '">' . $icon . '</a>';
 		} else {
 			return $icon;
@@ -344,7 +344,7 @@ class FolderTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 	 * @see getBrowsableTree()
 	 */
 	public function getFolderTree(\TYPO3\CMS\Core\Resource\Folder $folderObject, $depth = 999, $type = '') {
-		$depth = intval($depth);
+		$depth = (int)$depth;
 
 		// This generates the directory tree
 		/* array of \TYPO3\CMS\Core\Resource\Folder */
@@ -439,7 +439,7 @@ class FolderTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 		$doExpand = FALSE;
 		$doCollapse = FALSE;
 		$ajaxOutput = '';
-		$titleLength = intval($this->BE_USER->uc['titleLen']);
+		$titleLength = (int)$this->BE_USER->uc['titleLen'];
 		if (!is_array($treeItems)) {
 			$treeItems = $this->tree;
 		}

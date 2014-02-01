@@ -59,7 +59,7 @@ class ModuleRunner implements ModuleRunnerInterface {
 		if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id')) {
 			// Check page access
 			$permClause = $GLOBALS['BE_USER']->getPagePermsClause(TRUE);
-			$access = is_array(\TYPO3\CMS\Backend\Utility\BackendUtility::readPageAccess((integer) \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id'), $permClause));
+			$access = is_array(\TYPO3\CMS\Backend\Utility\BackendUtility::readPageAccess((int)\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id'), $permClause));
 			if (!$access) {
 				throw new \RuntimeException('You don\'t have access to this page', 1289917924);
 			}

@@ -487,7 +487,7 @@ abstract class AbstractUserAuthentication {
 			// Deliver cookies only via HTTP and prevent possible XSS by JavaScript:
 			$cookieHttpOnly = (bool) $settings['cookieHttpOnly'];
 			// Do not set cookie if cookieSecure is set to "1" (force HTTPS) and no secure channel is used:
-			if ((int) $settings['cookieSecure'] !== 1 || GeneralUtility::getIndpEnv('TYPO3_SSL')) {
+			if ((int)$settings['cookieSecure'] !== 1 || GeneralUtility::getIndpEnv('TYPO3_SSL')) {
 				setcookie($this->name, $this->id, $cookieExpire, $cookiePath, $cookieDomain, $cookieSecure, $cookieHttpOnly);
 			} else {
 				throw new \TYPO3\CMS\Core\Exception('Cookie was not set since HTTPS was forced in $TYPO3_CONF_VARS[SYS][cookieSecure].', 1254325546);
@@ -736,10 +736,10 @@ abstract class AbstractUserAuthentication {
 					$serviceObj->initAuth($subType, $loginData, $authInfo, $this);
 					if (($ret = $serviceObj->authUser($tempuser)) > 0) {
 						// If the service returns >=200 then no more checking is needed - useful for IP checking without password
-						if (intval($ret) >= 200) {
+						if ((int)$ret >= 200) {
 							$authenticated = TRUE;
 							break;
-						} elseif (intval($ret) >= 100) {
+						} elseif ((int)$ret >= 100) {
 
 						} else {
 							$authenticated = TRUE;
@@ -797,8 +797,8 @@ abstract class AbstractUserAuthentication {
 				if ($requestStr == $backendScript && GeneralUtility::getIndpEnv('TYPO3_SSL')) {
 					list(, $url) = explode('://', GeneralUtility::getIndpEnv('TYPO3_SITE_URL'), 2);
 					list($server, $address) = explode('/', $url, 2);
-					if (intval($GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSLPort'])) {
-						$sslPortSuffix = ':' . intval($GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSLPort']);
+					if ((int)$GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSLPort']) {
+						$sslPortSuffix = ':' . (int)$GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSLPort'];
 						// strip port from server
 						$server = str_replace($sslPortSuffix, '', $server);
 					}
@@ -922,10 +922,10 @@ abstract class AbstractUserAuthentication {
 			// A user was found
 			if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($this->auth_timeout_field)) {
 				// Get timeout from object
-				$timeout = intval($this->auth_timeout_field);
+				$timeout = (int)$this->auth_timeout_field;
 			} else {
 				// Get timeout-time from usertable
-				$timeout = intval($user[$this->auth_timeout_field]);
+				$timeout = (int)$user[$this->auth_timeout_field];
 			}
 			// If timeout > 0 (TRUE) and currenttime has not exceeded the latest sessions-time plus the timeout in seconds then accept user
 			// Option later on: We could check that last update was at least x seconds ago in order not to update twice in a row if one script redirects to another...
@@ -1117,7 +1117,7 @@ abstract class AbstractUserAuthentication {
 	 * @access private
 	 */
 	protected function hashLockClause() {
-		$wherePart = 'AND ' . $this->session_table . '.ses_hashlock=' . intval($this->hashLockClause_getHashInt());
+		$wherePart = 'AND ' . $this->session_table . '.ses_hashlock=' . $this->hashLockClause_getHashInt();
 		return $wherePart;
 	}
 
@@ -1155,9 +1155,9 @@ abstract class AbstractUserAuthentication {
 				$variable = $this->uc;
 			}
 			if ($this->writeDevLog) {
-				GeneralUtility::devLog('writeUC: ' . $this->userid_column . '=' . intval($this->user[$this->userid_column]), 'TYPO3\\CMS\\Core\\Authentication\\AbstractUserAuthentication');
+				GeneralUtility::devLog('writeUC: ' . $this->userid_column . '=' . (int)$this->user[$this->userid_column], 'TYPO3\\CMS\\Core\\Authentication\\AbstractUserAuthentication');
 			}
-			$GLOBALS['TYPO3_DB']->exec_UPDATEquery($this->user_table, $this->userid_column . '=' . intval($this->user[$this->userid_column]), array('uc' => serialize($variable)));
+			$GLOBALS['TYPO3_DB']->exec_UPDATEquery($this->user_table, $this->userid_column . '=' . (int)$this->user[$this->userid_column], array('uc' => serialize($variable)));
 		}
 	}
 
@@ -1300,7 +1300,7 @@ abstract class AbstractUserAuthentication {
 			if (!empty($serviceResult)) {
 				$isLoginDataProcessed = TRUE;
 				// If the service returns >=200 then no more processing is needed
-				if (intval($serviceResult) >= 200) {
+				if ((int)$serviceResult >= 200) {
 					unset($serviceObject);
 					break;
 				}
@@ -1400,7 +1400,7 @@ abstract class AbstractUserAuthentication {
 	 * @todo Define visibility
 	 */
 	public function gc() {
-		$GLOBALS['TYPO3_DB']->exec_DELETEquery($this->session_table, 'ses_tstamp < ' . intval(($GLOBALS['EXEC_TIME'] - $this->gc_time)) . ' AND ses_name = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->name, $this->session_table));
+		$GLOBALS['TYPO3_DB']->exec_DELETEquery($this->session_table, 'ses_tstamp < ' . (int)($GLOBALS['EXEC_TIME'] - $this->gc_time) . ' AND ses_name = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->name, $this->session_table));
 	}
 
 	/**
@@ -1477,7 +1477,7 @@ abstract class AbstractUserAuthentication {
 	 */
 	public function getRawUserByUid($uid) {
 		$user = FALSE;
-		$dbres = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $this->user_table, 'uid=' . intval($uid) . ' ' . $this->user_where_clause());
+		$dbres = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $this->user_table, 'uid=' . (int)$uid . ' ' . $this->user_where_clause());
 		if ($dbres) {
 			$user = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($dbres);
 			$GLOBALS['TYPO3_DB']->sql_free_result($dbres);

@@ -592,8 +592,8 @@ class SoftReferenceIndex {
 				$finalTagParts['identifier'] = trim($link_param);
 			} else {
 				$isLocalFile = 0;
-				$fileChar = intval(strpos($link_param, '/'));
-				$urlChar = intval(strpos($link_param, '.'));
+				$fileChar = (int)strpos($link_param, '/');
+				$urlChar = (int)strpos($link_param, '.');
 
 					// Detects if a file is found in site-root and if so it will be treated like a normal file.
 				list($rootFileDat) = explode('?', rawurldecode($link_param));
@@ -642,7 +642,7 @@ class SoftReferenceIndex {
 							$link_param = $this->getPageIdFromAlias($link_param);
 						}
 
-						$finalTagParts['page_id'] = intval($link_param);
+						$finalTagParts['page_id'] = (int)$link_param;
 					}
 				}
 			}

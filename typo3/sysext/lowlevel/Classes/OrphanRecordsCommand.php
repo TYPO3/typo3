@@ -92,7 +92,7 @@ Will report orphan uids from TCA tables.';
 		// zero = tree root, must use tree root if you wish to reverse selection to find orphans!
 		$startingPoint = 0;
 		$pt = \TYPO3\CMS\Core\Utility\GeneralUtility::milliseconds();
-		$this->genTree($startingPoint, 1000, (int) $this->cli_argValue('--echotree'));
+		$this->genTree($startingPoint, 1000, (int)$this->cli_argValue('--echotree'));
 		$resultArray['misplaced_at_rootlevel'] = $this->recStats['misplaced_at_rootlevel'];
 		$resultArray['misplaced_inside_tree'] = $this->recStats['misplaced_inside_tree'];
 		$resultArray['illegal_record_under_versioned_page'] = $this->recStats['illegal_record_under_versioned_page'];

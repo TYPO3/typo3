@@ -291,7 +291,7 @@ class ModuleController {
 				$row['phash']
 			);
 			if ($row['pcount'] > 1) {
-				$res2 = $GLOBALS['TYPO3_DB']->exec_SELECTquery('index_phash.*', 'index_phash', 'phash_grouping=' . intval($row['phash_grouping']) . ' AND phash<>' . intval($row['phash']));
+				$res2 = $GLOBALS['TYPO3_DB']->exec_SELECTquery('index_phash.*', 'index_phash', 'phash_grouping=' . (int)$row['phash_grouping'] . ' AND phash<>' . (int)$row['phash']);
 				while ($row2 = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res2)) {
 					$grListRec = $this->getGrlistRecord($row2['phash']);
 					$recList[] = array(
@@ -356,7 +356,7 @@ class ModuleController {
 				htmlentities(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($row['data_filename'], 100))
 			);
 			if ($row['pcount'] > 1) {
-				$res2 = $GLOBALS['TYPO3_DB']->exec_SELECTquery('index_phash.*', 'index_phash', 'phash_grouping=' . intval($row['phash_grouping']) . ' AND phash<>' . intval($row['phash']));
+				$res2 = $GLOBALS['TYPO3_DB']->exec_SELECTquery('index_phash.*', 'index_phash', 'phash_grouping=' . (int)$row['phash_grouping'] . ' AND phash<>' . (int)$row['phash']);
 				while ($row2 = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res2)) {
 					$cHash = count(unserialize($row2['cHashParams'])) ? $this->formatCHash(unserialize($row2['cHashParams'])) : '';
 					$grListRec = $this->getGrlistRecord($row2['phash']);
@@ -419,7 +419,7 @@ class ModuleController {
 	 * @todo Define visibility
 	 */
 	public function getNumberOfSections($phash) {
-		return $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('phash', 'index_section', 'phash=' . intval($phash));
+		return $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('phash', 'index_section', 'phash=' . (int)$phash);
 	}
 
 	/**
@@ -430,7 +430,7 @@ class ModuleController {
 	 * @todo Define visibility
 	 */
 	public function getNumberOfWords($phash) {
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*)', 'index_rel', 'phash=' . intval($phash));
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*)', 'index_rel', 'phash=' . (int)$phash);
 		$row = $GLOBALS['TYPO3_DB']->sql_fetch_row($res);
 		return $row[0];
 	}
@@ -443,7 +443,7 @@ class ModuleController {
 	 * @todo Define visibility
 	 */
 	public function getGrlistRecord($phash) {
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('index_grlist.*', 'index_grlist', 'phash=' . intval($phash));
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('index_grlist.*', 'index_grlist', 'phash=' . (int)$phash);
 		$allRows = array();
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 			$row['pcount'] = $GLOBALS['TYPO3_DB']->sql_num_rows($res);
@@ -460,7 +460,7 @@ class ModuleController {
 	 * @todo Define visibility
 	 */
 	public function getNumberOfFulltext($phash) {
-		return $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('phash', 'index_fulltext', 'phash=' . intval($phash));
+		return $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('phash', 'index_fulltext', 'phash=' . (int)$phash);
 	}
 
 	/**

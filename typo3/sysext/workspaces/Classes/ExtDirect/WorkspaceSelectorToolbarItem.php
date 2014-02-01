@@ -102,7 +102,7 @@ class WorkspaceSelectorToolbarItem implements \TYPO3\CMS\Backend\Toolbar\Toolbar
 
 		$index = 0;
 		$availableWorkspaces = \TYPO3\CMS\Workspaces\Service\WorkspaceService::getAvailableWorkspaces();
-		$activeWorkspace = (int) $GLOBALS['BE_USER']->workspace;
+		$activeWorkspace = (int)$GLOBALS['BE_USER']->workspace;
 		$stateCheckedIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-status-checked');
 		$stateUncheckedIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('empty-empty', array(
 			'title' => $GLOBALS['LANG']->getLL('bookmark_inactive')
@@ -114,10 +114,11 @@ class WorkspaceSelectorToolbarItem implements \TYPO3\CMS\Backend\Toolbar\Toolbar
 		);
 
 		foreach ($availableWorkspaces as $workspaceId => $label) {
+			$workspaceId = (int)$workspaceId;
 			$iconState = ($workspaceId === $activeWorkspace ? $stateCheckedIcon : $stateUncheckedIcon);
 			$classValue = ($workspaceId === $activeWorkspace ? ' class="selected"' : '');
 			$sectionName = ($index++ === 0 ? 'top' : 'items');
-			$workspaceSections[$sectionName][] = '<li' . $classValue . '>' . '<a href="backend.php?changeWorkspace=' . intval($workspaceId) . '" id="ws-' . intval($workspaceId) . '" class="ws">' . $iconState . ' ' . htmlspecialchars($label) . '</a></li>';
+			$workspaceSections[$sectionName][] = '<li' . $classValue . '>' . '<a href="backend.php?changeWorkspace=' . $workspaceId . '" id="ws-' . $workspaceId . '" class="ws">' . $iconState . ' ' . htmlspecialchars($label) . '</a></li>';
 		}
 
 		if (count($workspaceSections['top']) > 0) {

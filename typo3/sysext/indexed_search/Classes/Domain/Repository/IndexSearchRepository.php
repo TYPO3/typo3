@@ -129,7 +129,7 @@ class IndexSearchRepository {
 		$this->descendingSortOrderFlag = $searchData['desc'];
 		$this->resultpagePointer = $searchData['pointer'];
 		if (isset($searchData['numberOfResults']) && is_numeric($searchData['numberOfResults'])) {
-			$this->numberOfResults = intval($searchData['numberOfResults']);
+			$this->numberOfResults = (int)$searchData['numberOfResults'];
 		}
 	}
 
@@ -501,7 +501,7 @@ class IndexSearchRepository {
 	public function languageWhere() {
 		// -1 is the same as ALL language.
 		if ($this->languageUid >= 0) {
-			return ' AND IP.sys_language_uid=' . intval($this->languageUid);
+			return ' AND IP.sys_language_uid=' . (int)$this->languageUid;
 		}
 	}
 
@@ -512,24 +512,26 @@ class IndexSearchRepository {
 	 * @return 	string		WHERE SQL clause part.
 	 */
 	public function freeIndexUidWhere($freeIndexUid) {
+		$freeIndexUid = (int)$freeIndexUid;
 		if ($freeIndexUid >= 0) {
 			// First, look if the freeIndexUid is a meta configuration:
-			$indexCfgRec = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('indexcfgs', 'index_config', 'type=5 AND uid=' . intval($freeIndexUid) . $this->enableFields('index_config'));
+			$indexCfgRec = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('indexcfgs', 'index_config', 'type=5 AND uid=' . $freeIndexUid . $this->enableFields('index_config'));
 			if (is_array($indexCfgRec)) {
 				$refs = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $indexCfgRec['indexcfgs']);
 				// Default value to protect against empty array.
 				$list = array(-99);
 				foreach ($refs as $ref) {
 					list($table, $uid) = \TYPO3\CMS\Core\Utility\GeneralUtility::revExplode('_', $ref, 2);
+					$uid = (int)$uid;
 					switch ($table) {
 						case 'index_config':
-							$idxRec = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('uid', 'index_config', 'uid=' . intval($uid) . $this->enableFields('index_config'));
+							$idxRec = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('uid', 'index_config', 'uid=' . $uid . $this->enableFields('index_config'));
 							if ($idxRec) {
 								$list[] = $uid;
 							}
 							break;
 						case 'pages':
-							$indexCfgRecordsFromPid = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid', 'index_config', 'pid=' . intval($uid) . $this->enableFields('index_config'));
+							$indexCfgRecordsFromPid = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid', 'index_config', 'pid=' . $uid . $this->enableFields('index_config'));
 							foreach ($indexCfgRecordsFromPid as $idxRec) {
 								$list[] = $idxRec['uid'];
 							}
@@ -538,7 +540,7 @@ class IndexSearchRepository {
 				}
 				$list = array_unique($list);
 			} else {
-				$list = array(intval($freeIndexUid));
+				$list = array($freeIndexUid);
 			}
 			return ' AND IP.freeIndexUid IN (' . implode(',', $list) . ')';
 		}
@@ -663,7 +665,7 @@ class IndexSearchRepository {
 			// So, selecting for the grlist records belonging to the parent phash-row where the current users gr_list exists will help us to know.
 			// If this is NOT found, there is still a theoretical possibility that another user accessible page would display a link, so maybe the resume of such a document here may be unjustified hidden. But better safe than sorry.
 			if ($this->isTableUsed('index_grlist')) {
-				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('phash', 'index_grlist', 'phash=' . intval($row['phash_t3']) . ' AND gr_list=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->frontendUserGroupList, 'index_grlist'));
+				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('phash', 'index_grlist', 'phash=' . (int)$row['phash_t3'] . ' AND gr_list=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->frontendUserGroupList, 'index_grlist'));
 			} else {
 				$res = FALSE;
 			}
@@ -677,7 +679,7 @@ class IndexSearchRepository {
 			if ((string)$row['gr_list'] !== (string)$this->frontendUserGroupList) {
 				// Selecting for the grlist records belonging to the phash-row where the current users gr_list exists. If it is found it is proof that this user has direct access to the phash-rows content although he did not himself initiate the indexing...
 				if ($this->isTableUsed('index_grlist')) {
-					$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('phash', 'index_grlist', 'phash=' . intval($row['phash']) . ' AND gr_list=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->frontendUserGroupList, 'index_grlist'));
+					$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('phash', 'index_grlist', 'phash=' . (int)$row['phash'] . ' AND gr_list=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->frontendUserGroupList, 'index_grlist'));
 				} else {
 					$res = FALSE;
 				}

@@ -58,7 +58,7 @@ class PageGenerator {
 			$temp_copy_TSFE->id = $GLOBALS['TSFE']->page['content_from_pid'];
 			$temp_copy_TSFE->MP = '';
 			$temp_copy_TSFE->getPageAndRootlineWithDomain($GLOBALS['TSFE']->config['config']['content_from_pid_allowOutsideDomain'] ? 0 : $GLOBALS['TSFE']->domainStartPage);
-			$GLOBALS['TSFE']->contentPid = intval($temp_copy_TSFE->id);
+			$GLOBALS['TSFE']->contentPid = (int)$temp_copy_TSFE->id;
 			unset($temp_copy_TSFE);
 		}
 		if ($GLOBALS['TSFE']->config['config']['MP_defaults']) {
@@ -525,7 +525,7 @@ class PageGenerator {
 		}
 		// Setting body tag margins in CSS:
 		if (isset($GLOBALS['TSFE']->pSetup['bodyTagMargins']) && $GLOBALS['TSFE']->pSetup['bodyTagMargins.']['useCSS']) {
-			$margins = intval($GLOBALS['TSFE']->pSetup['bodyTagMargins']);
+			$margins = (int)$GLOBALS['TSFE']->pSetup['bodyTagMargins'];
 			$style .= '
 	BODY {margin: ' . $margins . 'px ' . $margins . 'px ' . $margins . 'px ' . $margins . 'px;}';
 		}
@@ -731,6 +731,7 @@ class PageGenerator {
 			$pageRenderer->addFooterData($GLOBALS['TSFE']->cObj->cObjGet($GLOBALS['TSFE']->pSetup['footerData.'], 'footerData.'));
 		}
 		static::generatePageTitle();
+
 		// Add ending slash only to documents rendered as xhtml
 		$endingSlash = $GLOBALS['TSFE']->xhtmlVersion ? ' /' : '';
 		$pageRenderer->addMetaTag('<meta name="generator" content="TYPO3 ' . TYPO3_branch . ' CMS"' . $endingSlash . '>');
@@ -955,7 +956,7 @@ class PageGenerator {
 				$bodyTag = preg_replace('/>$/', '', trim($bodyTag)) . ' background="' . $GLOBALS['TSFE']->absRefPrefix . $bgImg[3] . '">';
 			}
 			if (isset($GLOBALS['TSFE']->pSetup['bodyTagMargins'])) {
-				$margins = intval($GLOBALS['TSFE']->pSetup['bodyTagMargins']);
+				$margins = (int)$GLOBALS['TSFE']->pSetup['bodyTagMargins'];
 				if ($GLOBALS['TSFE']->pSetup['bodyTagMargins.']['useCSS']) {
 
 				} else {
@@ -1101,7 +1102,7 @@ class PageGenerator {
 				$titleTagContent
 			);
 		}
-		if ($titleTagContent !== '' && (integer)$GLOBALS['TSFE']->config['config']['noPageTitle'] !== self::NO_PAGE_TITLE) {
+		if ($titleTagContent !== '' && (int)$GLOBALS['TSFE']->config['config']['noPageTitle'] !== self::NO_PAGE_TITLE) {
 			$GLOBALS['TSFE']->getPageRenderer()->setTitle($titleTagContent);
 		}
 	}

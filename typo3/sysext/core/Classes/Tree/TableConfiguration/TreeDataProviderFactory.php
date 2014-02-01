@@ -81,13 +81,13 @@ class TreeDataProviderFactory {
 
 			$treeConfiguration = $tcaConfiguration['treeConfig'];
 			if (isset($treeConfiguration['rootUid'])) {
-				$dataProvider->setRootUid(intval($treeConfiguration['rootUid']));
+				$dataProvider->setRootUid((int)$treeConfiguration['rootUid']);
 			}
 			if (isset($treeConfiguration['appearance']['expandAll'])) {
 				$dataProvider->setExpandAll((bool) $treeConfiguration['appearance']['expandAll']);
 			}
 			if (isset($treeConfiguration['appearance']['maxLevels'])) {
-				$dataProvider->setLevelMaximum(intval($treeConfiguration['appearance']['maxLevels']));
+				$dataProvider->setLevelMaximum((int)$treeConfiguration['appearance']['maxLevels']);
 			}
 			if (isset($treeConfiguration['appearance']['nonSelectableLevels'])) {
 				$dataProvider->setNonSelectableLevelList($treeConfiguration['appearance']['nonSelectableLevels']);

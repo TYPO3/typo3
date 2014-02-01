@@ -84,11 +84,11 @@ class MediaFlexformUpdate extends AbstractUpdate {
 			);
 			$width = $sDEF['mmWidth']['vDEF'];
 			if ($width) {
-				$data['data']['sGeneral']['lDEF']['mmWidth'] = array('vDEF' => intval($width));
+				$data['data']['sGeneral']['lDEF']['mmWidth'] = array('vDEF' => (int)$width);
 			}
 			$height = $sDEF['mmHeight']['vDEF'];
 			if ($height) {
-				$data['data']['sGeneral']['lDEF']['mmHeight'] = array('vDEF' => intval($height));
+				$data['data']['sGeneral']['lDEF']['mmHeight'] = array('vDEF' => (int)$height);
 			}
 			switch ($type) {
 				case 'video':

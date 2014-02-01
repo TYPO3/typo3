@@ -205,7 +205,7 @@ abstract class AbstractContextMenuDataProvider {
 					$action->setClass(\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconClasses($actionConfiguration['spriteIcon']));
 				}
 			}
-			$actionCollection->offsetSet($level . intval($index), $action);
+			$actionCollection->offsetSet($level . (int)$index, $action);
 			$actionCollection->ksort();
 		}
 		return $actionCollection;

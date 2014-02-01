@@ -532,7 +532,7 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 
 		foreach ($lnArr as $k => $ln) {
 			foreach ($this->lnToScript as $endLn => $title) {
-				if ($endLn >= intval($ln)) {
+				if ($endLn >= (int)$ln) {
 					$lnArr[$k] = '"' . $title . '", ' . $ln;
 					break;
 				}
@@ -843,11 +843,11 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 	 */
 	public function ext_getFirstTemplate($id, $template_uid = 0) {
 		// Query is taken from the runThroughTemplates($theRootLine) function in the parent class.
-		if (intval($id)) {
+		if ((int)$id) {
 			if ($template_uid) {
 				$addC = ' AND uid=' . $template_uid;
 			}
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_template', 'pid=' . intval($id) . $addC . ' ' . $this->whereClause, '', 'sorting', '1');
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_template', 'pid=' . (int)$id . $addC . ' ' . $this->whereClause, '', 'sorting', '1');
 			$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 			BackendUtility::workspaceOL('sys_template', $row);
 			$GLOBALS['TYPO3_DB']->sql_free_result($res);
@@ -865,9 +865,9 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 	 */
 	public function ext_getAllTemplates($id) {
 		// Query is taken from the runThroughTemplates($theRootLine) function in the parent class.
-		if (intval($id)) {
+		if ((int)$id) {
 			$outRes = array();
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_template', 'pid=' . intval($id) . ' ' . $this->whereClause, '', 'sorting');
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_template', 'pid=' . (int)$id . ' ' . $this->whereClause, '', 'sorting');
 			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 				BackendUtility::workspaceOL('sys_template', $row);
 				if (is_array($row)) {
@@ -1015,7 +1015,7 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 						case 'int':
 							if (substr($retArr['paramstr'], 0, 1) == '-') {
 								$retArr['params'] = GeneralUtility::intExplode('-', substr($retArr['paramstr'], 1));
-								$retArr['params'][0] = intval('-' . $retArr['params'][0]);
+								$retArr['params'][0] = (int)('-' . $retArr['params'][0]);
 							} else {
 								$retArr['params'] = GeneralUtility::intExplode('-', $retArr['paramstr']);
 							}
@@ -1502,11 +1502,11 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 								if ($typeDat['paramstr']) {
 									$var = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($var, $typeDat['params'][0], $typeDat['params'][1]);
 								} else {
-									$var = intval($var);
+									$var = (int)$var;
 								}
 								break;
 							case 'int+':
-								$var = max(0, intval($var));
+								$var = max(0, (int)$var);
 								break;
 							case 'color':
 								$col = array();
@@ -1542,15 +1542,15 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 								break;
 							case 'offset':
 								if (isset($Wdata[$key])) {
-									$var = intval($var) . ',' . intval($Wdata[$key]);
+									$var = (int)$var . ',' . (int)$Wdata[$key];
 									if (isset($W2data[$key])) {
-										$var .= ',' . intval($W2data[$key]);
+										$var .= ',' . (int)$W2data[$key];
 										if (isset($W3data[$key])) {
-											$var .= ',' . intval($W3data[$key]);
+											$var .= ',' . (int)$W3data[$key];
 											if (isset($W4data[$key])) {
-												$var .= ',' . intval($W4data[$key]);
+												$var .= ',' . (int)$W4data[$key];
 												if (isset($W5data[$key])) {
-													$var .= ',' . intval($W5data[$key]);
+													$var .= ',' . (int)$W5data[$key];
 												}
 											}
 										}

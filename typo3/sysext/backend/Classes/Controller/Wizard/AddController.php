@@ -110,9 +110,9 @@ class AddController {
 		$TSconfig = BackendUtility::getTCEFORM_TSconfig($this->P['table'], is_array($origRow) ? $origRow : array('pid' => $this->P['pid']));
 		// Set [params][pid]
 		if (substr($this->P['params']['pid'], 0, 3) == '###' && substr($this->P['params']['pid'], -3) == '###') {
-			$this->pid = intval($TSconfig['_' . substr($this->P['params']['pid'], 3, -3)]);
+			$this->pid = (int)$TSconfig['_' . substr($this->P['params']['pid'], 3, -3)];
 		} else {
-			$this->pid = intval($this->P['params']['pid']);
+			$this->pid = (int)$this->P['params']['pid'];
 		}
 		// Return if new record as parent (not possibly/allowed)
 		if ($this->pid > 0) {
@@ -125,7 +125,7 @@ class AddController {
 			if (is_array($eC[$this->table]) && \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($this->P['uid'])) {
 				// Getting id and cmd from returning editConf array.
 				reset($eC[$this->table]);
-				$this->id = intval(key($eC[$this->table]));
+				$this->id = (int)key($eC[$this->table]);
 				$cmd = current($eC[$this->table]);
 				// ... and if everything seems OK we will register some classes for inclusion and instruct the object to perform processing later.
 				if ($this->P['params']['setValue'] && $cmd == 'edit' && $this->id && $this->P['table'] && $this->P['field'] && $this->P['uid']) {

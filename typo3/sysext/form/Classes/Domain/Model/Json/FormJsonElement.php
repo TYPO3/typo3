@@ -105,7 +105,7 @@ class FormJsonElement extends \TYPO3\CMS\Form\Domain\Model\Json\ContainerJsonEle
 		if (isset($parameters['postProcessor.']) && is_array($parameters['postProcessor.'])) {
 			$postProcessors = $parameters['postProcessor.'];
 			foreach ($postProcessors as $key => $postProcessorName) {
-				if (intval($key) && !strstr($key, '.')) {
+				if ((int)$key && strpos($key, '.') === FALSE) {
 					$postProcessorConfiguration = array();
 					if (isset($postProcessors[$key . '.'])) {
 						$postProcessorConfiguration = $postProcessors[$key . '.'];

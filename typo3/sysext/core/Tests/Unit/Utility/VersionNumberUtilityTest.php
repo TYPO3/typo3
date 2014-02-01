@@ -82,7 +82,7 @@ class VersionNumberUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function convertIntegerToVersionNumberConvertsIntegerToVersionNumber($versionNumber, $expected) {
 		// Make sure incoming value is an integer
-		$versionNumber = (int) $versionNumber;
+		$versionNumber = (int)$versionNumber;
 		$this->assertEquals($expected, VersionNumberUtility::convertIntegerToVersionNumber($versionNumber));
 	}
 

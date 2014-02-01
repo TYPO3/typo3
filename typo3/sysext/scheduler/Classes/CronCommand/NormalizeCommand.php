@@ -230,7 +230,7 @@ class NormalizeCommand {
 			if (!MathUtility::canBeInterpretedAsInteger($fieldValue)) {
 				throw new \InvalidArgumentException('Unable to convert value to integer.', 1291237668);
 			}
-			$rangeArray[$fieldNumber] = (int) $fieldValue;
+			$rangeArray[$fieldNumber] = (int)$fieldValue;
 		}
 		$resultList = '';
 		if (count($rangeArray) === 1) {
@@ -281,7 +281,7 @@ class NormalizeCommand {
 		if (!MathUtility::canBeInterpretedAsInteger($right)) {
 			throw new \InvalidArgumentException('Unable to convert step values: Right part must be a single integer.', 1291414957);
 		}
-		$right = (int) $right;
+		$right = (int)$right;
 		$leftArray = explode(',', $left);
 		$validValues = array();
 		$currentStep = $right;
@@ -293,7 +293,7 @@ class NormalizeCommand {
 				$currentStep = $right;
 			}
 			if ($currentStep === $right) {
-				$validValues[] = (int) $leftValue;
+				$validValues[] = (int)$leftValue;
 			}
 			$currentStep--;
 		}
@@ -329,7 +329,7 @@ class NormalizeCommand {
 		if (!$timestamp || $timestamp < strtotime('2010-01-01') || $timestamp > strtotime('2010-12-01')) {
 			throw new \InvalidArgumentException('Unable to convert given month name.', 1291083486);
 		}
-		return (int) date('n', $timestamp);
+		return (int)date('n', $timestamp);
 	}
 
 	/**
@@ -347,7 +347,7 @@ class NormalizeCommand {
 			$weekday = 7;
 		}
 		if ($weekday >= 1 && $weekday <= 7) {
-			$normalizedWeekday = (int) $weekday;
+			$normalizedWeekday = (int)$weekday;
 		}
 		if (!$normalizedWeekday) {
 			// Convert string representation like 'sun' to integer
@@ -355,7 +355,7 @@ class NormalizeCommand {
 			if (!$timestamp || $timestamp < strtotime('2010-01-01') || $timestamp > strtotime('2010-01-08')) {
 				throw new \InvalidArgumentException('Unable to convert given weekday name.', 1291163589);
 			}
-			$normalizedWeekday = (int) date('N', $timestamp);
+			$normalizedWeekday = (int)date('N', $timestamp);
 		}
 		return $normalizedWeekday;
 	}

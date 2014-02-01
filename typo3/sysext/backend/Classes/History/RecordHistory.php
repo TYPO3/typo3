@@ -140,7 +140,7 @@ class RecordHistory {
 			$this->showInsertDelete = 0;
 			$this->showSubElements = 0;
 			$element = explode(':', $this->element);
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_history', 'tablename=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($element[0], 'sys_history') . ' AND recuid=' . intval($element[1]), '', 'uid DESC', '1');
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_history', 'tablename=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($element[0], 'sys_history') . ' AND recuid=' . (int)$element[1], '', 'uid DESC', '1');
 			$record = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 			$this->lastSyslogId = $record['sys_log_uid'];
 			$this->createChangeLog();
@@ -182,9 +182,10 @@ class RecordHistory {
 	 * @todo Define visibility
 	 */
 	public function toggleHighlight($uid) {
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('snapshot', 'sys_history', 'uid=' . intval($uid));
+		$uid = (int)$uid;
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('snapshot', 'sys_history', 'uid=' . $uid);
 		$tmp = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
-		$GLOBALS['TYPO3_DB']->exec_UPDATEquery('sys_history', 'uid=' . intval($uid), array('snapshot' => !$tmp['snapshot']));
+		$GLOBALS['TYPO3_DB']->exec_UPDATEquery('sys_history', 'uid=' . $uid, array('snapshot' => !$tmp['snapshot']));
 	}
 
 	/**
@@ -353,14 +354,14 @@ class RecordHistory {
 		}
 		// set values correctly
 		if ($currentSelection['maxSteps'] != 'marked') {
-			$this->maxSteps = $currentSelection['maxSteps'] ? intval($currentSelection['maxSteps']) : '';
+			$this->maxSteps = $currentSelection['maxSteps'] ? (int)$currentSelection['maxSteps'] : '';
 		} else {
 			$this->showMarked = TRUE;
 			$this->maxSteps = FALSE;
 		}
-		$this->showDiff = intval($currentSelection['showDiff']);
-		$this->showSubElements = intval($currentSelection['showSubElements']);
-		$this->showInsertDelete = intval($currentSelection['showInsertDelete']);
+		$this->showDiff = (int)$currentSelection['showDiff'];
+		$this->showSubElements = (int)$currentSelection['showSubElements'];
+		$this->showInsertDelete = (int)$currentSelection['showInsertDelete'];
 		$content = '';
 		// Get link to page history if the element history is shown
 		$elParts = explode(':', $this->element);
@@ -653,7 +654,7 @@ class RecordHistory {
 		if ($elParts[0] == 'pages' && $this->showSubElements && $this->hasPageAccess('pages', $elParts[1])) {
 			foreach ($GLOBALS['TCA'] as $tablename => $value) {
 				// check if there are records on the page
-				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', $tablename, 'pid=' . intval($elParts[1]));
+				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', $tablename, 'pid=' . (int)$elParts[1]);
 				while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 					// if there is history data available, merge it into changelog
 					if ($newChangeLog = $this->getHistoryData($tablename, $row['uid'])) {
@@ -687,7 +688,7 @@ class RecordHistory {
 			// Selecting the $this->maxSteps most recent states:
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('sys_history.*, sys_log.userid', 'sys_history, sys_log', 'sys_history.sys_log_uid = sys_log.uid
 							AND sys_history.tablename = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($table, 'sys_history') . '
-							AND sys_history.recuid = ' . intval($uid), '', 'sys_log.uid DESC', $this->maxSteps);
+							AND sys_history.recuid = ' . (int)$uid, '', 'sys_log.uid DESC', $this->maxSteps);
 			// Traversing the result, building up changesArray / changeLog:
 			$changeLog = array();
 			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
@@ -718,7 +719,7 @@ class RecordHistory {
 				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid, userid, action, tstamp', 'sys_log', 'type = 1
 							AND (action=1 OR action=3)
 							AND tablename = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($table, 'sys_log') . '
-							AND recuid = ' . intval($uid), '', 'uid DESC', $this->maxSteps);
+							AND recuid = ' . (int)$uid, '', 'uid DESC', $this->maxSteps);
 				while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 					if ($row['uid'] < $this->lastSyslogId && $this->lastSyslogId) {
 						continue;
@@ -851,7 +852,7 @@ class RecordHistory {
 	public function resolveShUid() {
 		if ($this->getArgument('sh_uid')) {
 			$sh_uid = $this->getArgument('sh_uid');
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_history', 'uid=' . intval($sh_uid));
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_history', 'uid=' . (int)$sh_uid);
 			$record = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 			$this->element = $record['tablename'] . ':' . $record['recuid'];
 			$this->lastSyslogId = $record['sys_log_uid'] - 1;
@@ -866,7 +867,7 @@ class RecordHistory {
 	 * @return boolean
 	 */
 	protected function hasPageAccess($table, $uid) {
-		$uid = intval($uid);
+		$uid = (int)$uid;
 
 		if ($table === 'pages') {
 			$pageId = $uid;
@@ -946,7 +947,7 @@ class RecordHistory {
 			case 'diff':
 			case 'highlight':
 			case 'sh_uid':
-				$value = intval($value);
+				$value = (int)$value;
 				break;
 			case 'settings':
 				if (!is_array($value)) {

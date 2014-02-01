@@ -51,7 +51,7 @@ class ColumnsContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractCon
 			$TDparams = $TDparams ? ' ' . $TDparams : ' valign="top"';
 			$rows = isset($conf['rows.']) ? $this->cObj->stdWrap($conf['rows'], $conf['rows.']) : $conf['rows'];
 			$rows = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($rows, 2, 20);
-			$totalWidth = isset($conf['totalWidth.']) ? intval($this->cObj->stdWrap($conf['totalWidth'], $conf['totalWidth.'])) : intval($conf['totalWidth']);
+			$totalWidth = isset($conf['totalWidth.']) ? (int)$this->cObj->stdWrap($conf['totalWidth'], $conf['totalWidth.']) : (int)$conf['totalWidth'];
 			$columnWidth = 0;
 			$totalGapWidth = 0;
 			$gapData = array(
@@ -62,7 +62,7 @@ class ColumnsContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractCon
 			);
 			$gapData = $GLOBALS['TSFE']->tmpl->splitConfArray($gapData, $rows - 1);
 			foreach ($gapData as $val) {
-				$totalGapWidth += intval($val['gapWidth']);
+				$totalGapWidth += (int)$val['gapWidth'];
 			}
 			if ($totalWidth) {
 				$columnWidth = ceil(($totalWidth - $totalGapWidth) / $rows);
@@ -79,10 +79,10 @@ class ColumnsContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractCon
 				$content .= '</td>';
 				if ($a < $rows) {
 					$gapConf = $gapData[$a - 1];
-					$gapWidth = intval($gapConf['gapWidth']);
+					$gapWidth = (int)$gapConf['gapWidth'];
 					if ($gapWidth) {
 						$tdPar = $gapConf['gapBgCol'] ? ' bgcolor="' . $gapConf['gapBgCol'] . '"' : '';
-						$gapLine = intval($gapConf['gapLineThickness']);
+						$gapLine = (int)$gapConf['gapLineThickness'];
 						if ($gapLine) {
 							$gapSurround = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange(($gapWidth - $gapLine) / 2, 1, 1000);
 							// right gap

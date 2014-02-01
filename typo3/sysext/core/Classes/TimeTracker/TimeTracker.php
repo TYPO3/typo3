@@ -319,7 +319,7 @@ class TimeTracker {
 		$highlight_col = $this->printConf['highlight_col'];
 		$c = 0;
 		foreach ($this->tsStackLog as $uniqueId => $data) {
-			if ($this->highlightLongerThan && intval($data['owntime']) > intval($this->highlightLongerThan)) {
+			if ($this->highlightLongerThan && (int)$data['owntime'] > (int)$this->highlightLongerThan) {
 				$logRowClass = 'typo3-adminPanel-logRow-highlight';
 			} else {
 				$logRowClass = $c % 2 ? 'line-odd' : 'line-even';
@@ -504,7 +504,7 @@ class TimeTracker {
 		if ($pointer > 0) {
 			end($arr);
 			$k = key($arr);
-			$this->createHierarchyArray($arr[intval($k) . '.'], $pointer - 1, $uniqueId);
+			$this->createHierarchyArray($arr[(int)$k . '.'], $pointer - 1, $uniqueId);
 		} else {
 			$arr[] = $uniqueId;
 		}

@@ -162,10 +162,10 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass 
 		// Setting up the context sensitive menu:
 		$this->doc->getContextMenuCode();
 		// Getting input data:
-		$this->id = intval(GeneralUtility::_GP('id'));
+		$this->id = (int)GeneralUtility::_GP('id');
 
 		// Record uid. Goes with table name to indicate specific record
-		$this->uid = intval(GeneralUtility::_GP('uid'));
+		$this->uid = (int)GeneralUtility::_GP('uid');
 		// // Record table. Goes with uid to indicate specific record
 		$this->table = GeneralUtility::_GP('table');
 
@@ -430,9 +430,10 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass 
 	public function pageSubContent($pid, $c = 0) {
 		$tableNames = GeneralUtility::removeArrayEntryByValue(array_keys($GLOBALS['TCA']), 'pages');
 		$tableNames[] = 'pages';
+		$content = '';
 		foreach ($tableNames as $tN) {
 			// Basically list ALL tables - not only those being copied might be found!
-			$mres = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $tN, 'pid=' . intval($pid) . BackendUtility::deleteClause($tN), '', $GLOBALS['TCA'][$tN]['ctrl']['sortby'] ? $GLOBALS['TCA'][$tN]['ctrl']['sortby'] : '');
+			$mres = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $tN, 'pid=' . (int)$pid . BackendUtility::deleteClause($tN), '', $GLOBALS['TCA'][$tN]['ctrl']['sortby'] ? $GLOBALS['TCA'][$tN]['ctrl']['sortby'] : '');
 			if ($GLOBALS['TYPO3_DB']->sql_num_rows($mres)) {
 				$content .= '
 					<tr>

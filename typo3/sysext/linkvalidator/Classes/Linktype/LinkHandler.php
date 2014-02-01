@@ -66,8 +66,8 @@ class LinkHandler extends \TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktype {
 		$parts = explode(':', $url);
 		if (count($parts) == 3) {
 			$tableName = htmlspecialchars($parts[1]);
-			$rowid = intval($parts[2]);
-			$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', $tableName, 'uid = ' . intval($rowid));
+			$rowid = (int)$parts[2];
+			$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', $tableName, 'uid = ' . (int)$rowid);
 			if ($row) {
 				if ($row['deleted'] == '1') {
 					$errorParams['errorType'] = self::DELETED;

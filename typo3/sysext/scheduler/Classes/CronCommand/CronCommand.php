@@ -143,8 +143,8 @@ class CronCommand {
 	 * @return boolean TRUE if cron command conditions are met
 	 */
 	protected function minuteAndHourMatchesCronCommand($timestamp) {
-		$minute = intval(date('i', $timestamp));
-		$hour = intval(date('G', $timestamp));
+		$minute = (int)date('i', $timestamp);
+		$hour = (int)date('G', $timestamp);
 		$commandMatch = FALSE;
 		if ($this->isInCommandList($this->cronCommandSections[0], $minute) && $this->isInCommandList($this->cronCommandSections[1], $hour)) {
 			$commandMatch = TRUE;

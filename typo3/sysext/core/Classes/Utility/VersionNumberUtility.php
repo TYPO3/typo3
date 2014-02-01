@@ -41,7 +41,7 @@ class VersionNumberUtility {
 	 */
 	static public function convertVersionNumberToInteger($versionNumber) {
 		$versionParts = explode('.', $versionNumber);
-		return intval(((int) $versionParts[0] . str_pad((int) $versionParts[1], 3, '0', STR_PAD_LEFT)) . str_pad((int) $versionParts[2], 3, '0', STR_PAD_LEFT));
+		return (int)(((int)$versionParts[0] . str_pad((int)$versionParts[1], 3, '0', STR_PAD_LEFT)) . str_pad((int)$versionParts[2], 3, '0', STR_PAD_LEFT));
 	}
 
 	/**
@@ -61,7 +61,7 @@ class VersionNumberUtility {
 			substr($versionString, 3, 3),
 			substr($versionString, 6, 3)
 		);
-		return intval($parts[0]) . '.' . intval($parts[1]) . '.' . intval($parts[2]);
+		return (int)$parts[0] . '.' . (int)$parts[1] . '.' . (int)$parts[2];
 	}
 
 	/**
@@ -156,7 +156,7 @@ class VersionNumberUtility {
 		$parts[2] = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($parts[2], 0, 999);
 		$result = array();
 		$result['version'] = $parts[0] . '.' . $parts[1] . '.' . $parts[2];
-		$result['version_int'] = intval($parts[0] * 1000000 + $parts[1] * 1000 + $parts[2]);
+		$result['version_int'] = (int)($parts[0] * 1000000 + $parts[1] * 1000 + $parts[2]);
 		$result['version_main'] = $parts[0];
 		$result['version_sub'] = $parts[1];
 		$result['version_dev'] = $parts[2];

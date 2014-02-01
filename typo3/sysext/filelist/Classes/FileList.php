@@ -319,7 +319,7 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 					$filesToSort[$sortingKey . $i] = $fileObject;
 				}
 				uksort($filesToSort, 'strnatcasecmp');
-				if (intval($this->sortRev) === 1) {
+				if ((int)$this->sortRev === 1) {
 					$filesToSort = array_reverse($filesToSort);
 				}
 				$files = $filesToSort;
@@ -729,7 +729,7 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 	 * @return array keys are the sys_language uids, values are the $rows
 	 */
 	protected function getTranslationsForMetaData($metaDataRecord) {
-		$where = $GLOBALS['TCA']['sys_file_metadata']['ctrl']['transOrigPointerField'] . '=' . intval($metaDataRecord['uid']) .
+		$where = $GLOBALS['TCA']['sys_file_metadata']['ctrl']['transOrigPointerField'] . '=' . (int)$metaDataRecord['uid'] .
 			' AND ' . $GLOBALS['TCA']['sys_file_metadata']['ctrl']['languageField'] . '>0';
 		$translationRecords = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'sys_file_metadata', $where);
 		$translations = array();
@@ -914,7 +914,7 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 		}
 		// Look up the file in the sys_refindex.
 		// Exclude sys_file_metadata records as these are no use references
-		$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'sys_refindex', 'ref_table=\'sys_file\' AND ref_uid = ' . (integer)$fileOrFolderObject->getUid() . ' AND deleted=0 AND tablename != "sys_file_metadata"');
+		$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'sys_refindex', 'ref_table=\'sys_file\' AND ref_uid = ' . (int)$fileOrFolderObject->getUid() . ' AND deleted=0 AND tablename != "sys_file_metadata"');
 		return $this->generateReferenceToolTip($rows, '\'_FILE\', ' . GeneralUtility::quoteJSvalue($fileOrFolderObject->getCombinedIdentifier()));
 	}
 

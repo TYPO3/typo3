@@ -105,10 +105,10 @@ class FrontendContentAdapterService {
 			if (isset($row[$migrateFieldName]) && self::fieldIsInType($migrateFieldName, $table, $row)) {
 				/** @var $fileRepository \TYPO3\CMS\Core\Resource\FileRepository */
 				$fileRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\FileRepository');
-				if ($table === 'pages' && isset($row['_LOCALIZED_UID']) && intval($row['sys_language_uid']) > 0) {
+				if ($table === 'pages' && isset($row['_LOCALIZED_UID']) && (int)$row['sys_language_uid'] > 0) {
 					$table = 'pages_language_overlay';
 				}
-				$files = $fileRepository->findByRelation($table, $migrateFieldName, isset($row['_LOCALIZED_UID']) ? intval($row['_LOCALIZED_UID']) : intval($row['uid']));
+				$files = $fileRepository->findByRelation($table, $migrateFieldName, isset($row['_LOCALIZED_UID']) ? (int)$row['_LOCALIZED_UID'] : (int)$row['uid']);
 				$fileFieldContents = array(
 					'paths' => array(),
 					'titleTexts' => array(),

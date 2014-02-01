@@ -212,9 +212,9 @@ class DateTimeConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\Abstra
 		if (!isset($source['hour']) && !isset($source['minute']) && !isset($source['second'])) {
 			return;
 		}
-		$hour = isset($source['hour']) ? (integer)$source['hour'] : 0;
-		$minute = isset($source['minute']) ? (integer)$source['minute'] : 0;
-		$second = isset($source['second']) ? (integer)$source['second'] : 0;
+		$hour = isset($source['hour']) ? (int)$source['hour'] : 0;
+		$minute = isset($source['minute']) ? (int)$source['minute'] : 0;
+		$second = isset($source['second']) ? (int)$source['second'] : 0;
 		$date->setTime($hour, $minute, $second);
 	}
 

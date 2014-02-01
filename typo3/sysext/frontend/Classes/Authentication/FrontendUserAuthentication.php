@@ -160,11 +160,11 @@ class FrontendUserAuthentication extends \TYPO3\CMS\Core\Authentication\Abstract
 	 * @todo Define visibility
 	 */
 	public function start() {
-		if (intval($this->auth_timeout_field) > 0 && intval($this->auth_timeout_field) < $this->lifetime) {
+		if ((int)$this->auth_timeout_field > 0 && (int)$this->auth_timeout_field < $this->lifetime) {
 			// If server session timeout is non-zero but less than client session timeout: Copy this value instead.
 			$this->auth_timeout_field = $this->lifetime;
 		}
-		$this->sessionDataLifetime = intval($GLOBALS['TYPO3_CONF_VARS']['FE']['sessionDataLifetime']);
+		$this->sessionDataLifetime = (int)$GLOBALS['TYPO3_CONF_VARS']['FE']['sessionDataLifetime'];
 		if ($this->sessionDataLifetime <= 0) {
 			$this->sessionDataLifetime = 86400;
 		}
@@ -433,7 +433,7 @@ class FrontendUserAuthentication extends \TYPO3\CMS\Core\Authentication\Abstract
 	 * @return void
 	 */
 	public function gc() {
-		$timeoutTimeStamp = intval($GLOBALS['EXEC_TIME'] - $this->sessionDataLifetime);
+		$timeoutTimeStamp = (int)$GLOBALS['EXEC_TIME'] - $this->sessionDataLifetime;
 		$GLOBALS['TYPO3_DB']->exec_DELETEquery('fe_session_data', 'tstamp < ' . $timeoutTimeStamp);
 		parent::gc();
 	}

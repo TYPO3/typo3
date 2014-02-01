@@ -74,7 +74,7 @@ class BackendLayoutWizardController {
 			throw new \InvalidArgumentException('Hmac Validation failed for backend_layout wizard', 1385811397);
 		}
 		$this->md5ID = $this->P['md5ID'];
-		$uid = intval($this->P['uid']);
+		$uid = (int)$this->P['uid'];
 		// Initialize document object:
 		$this->doc = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
@@ -102,7 +102,7 @@ class BackendLayoutWizardController {
 		);
 		$pageRenderer->addInlineLanguageLabelArray($languageLabels);
 		// Select record
-		$record = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows($this->P['field'], $this->P['table'], 'uid=' . intval($this->P['uid']));
+		$record = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows($this->P['field'], $this->P['table'], 'uid=' . (int)$this->P['uid']);
 		if (trim($record[0][$this->P['field']]) == '') {
 			$t3GridData = '[[{colspan:1,rowspan:1,spanned:false,name:\'\'}]]';
 			$colCount = 1;
@@ -132,10 +132,10 @@ class BackendLayoutWizardController {
 							$cellString = '{';
 							$cellData = array();
 							if (isset($column['colspan'])) {
-								$cellData[] = 'colspan:' . intval($column['colspan']);
-								$columnColSpan = intval($column['colspan']);
+								$cellData[] = 'colspan:' . (int)$column['colspan'];
+								$columnColSpan = (int)$column['colspan'];
 								if (isset($column['rowspan'])) {
-									$columnRowSpan = intval($column['rowspan']);
+									$columnRowSpan = (int)$column['rowspan'];
 									for ($spanRow = 0; $spanRow < $columnRowSpan; $spanRow++) {
 										for ($spanColumn = 0; $spanColumn < $columnColSpan; $spanColumn++) {
 											$spannedMatrix[$i + $spanRow][$j + $spanColumn] = 1;
@@ -149,14 +149,14 @@ class BackendLayoutWizardController {
 							} else {
 								$cellData[] = 'colspan:1';
 								if (isset($column['rowspan'])) {
-									$columnRowSpan = intval($column['rowspan']);
+									$columnRowSpan = (int)$column['rowspan'];
 									for ($spanRow = 0; $spanRow < $columnRowSpan; $spanRow++) {
 										$spannedMatrix[$i + $spanRow][$j] = 1;
 									}
 								}
 							}
 							if (isset($column['rowspan'])) {
-								$cellData[] = 'rowspan:' . intval($column['rowspan']);
+								$cellData[] = 'rowspan:' . (int)$column['rowspan'];
 							} else {
 								$cellData[] = 'rowspan:1';
 							}

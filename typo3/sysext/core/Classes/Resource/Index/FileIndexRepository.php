@@ -106,7 +106,7 @@ class FileIndexRepository implements SingletonInterface {
 		$row = $this->getDatabase()->exec_SELECTgetSingleRow(
 			implode(',', $this->fields),
 			$this->table,
-			'uid=' . intval($fileUid)
+			'uid=' . (int)$fileUid
 		);
 		return is_array($row) ? $row : FALSE;
 	}
@@ -138,7 +138,7 @@ class FileIndexRepository implements SingletonInterface {
 		$row = $this->getDatabase()->exec_SELECTgetSingleRow(
 			implode(',', $this->fields),
 			$this->table,
-			sprintf('storage=%u AND identifier_hash=%s', intval($storageUid), $this->getDatabase()->fullQuoteStr($identifierHash, $this->table))
+			sprintf('storage=%u AND identifier_hash=%s', (int)$storageUid, $this->getDatabase()->fullQuoteStr($identifierHash, $this->table))
 		);
 		return is_array($row) ? $row : FALSE;
 	}
@@ -278,10 +278,10 @@ class FileIndexRepository implements SingletonInterface {
 		return $this->getDatabase()->exec_SELECTgetRows(
 			implode(',', $this->fields),
 			$this->table,
-			'tstamp > last_indexed AND storage = ' . intval($storage->getUid()),
+			'tstamp > last_indexed AND storage = ' . (int)$storage->getUid(),
 			'',
 			'tstamp ASC',
-			intval($limit) > 0 ? intval($limit) : ''
+			(int)$limit > 0 ? (int)$limit : ''
 		);
 	}
 
@@ -300,7 +300,7 @@ class FileIndexRepository implements SingletonInterface {
 		return $this->getDatabase()->exec_SELECTgetRows(
 			implode(',', $this->fields),
 			$this->table,
-			'storage = ' . intval($storage->getUid()) . ' AND uid NOT IN (' . implode(',', $uidList) . ')'
+			'storage = ' . (int)$storage->getUid() . ' AND uid NOT IN (' . implode(',', $uidList) . ')'
 		);
 	}
 
@@ -311,7 +311,7 @@ class FileIndexRepository implements SingletonInterface {
 	 * @return void
 	 */
 	public function updateIndexingTime($fileUid) {
-		$this->getDatabase()->exec_UPDATEquery($this->table, 'uid = ' . intval($fileUid), array('last_indexed' => time()));
+		$this->getDatabase()->exec_UPDATEquery($this->table, 'uid = ' . (int)$fileUid, array('last_indexed' => time()));
 	}
 
 	/**
@@ -321,7 +321,7 @@ class FileIndexRepository implements SingletonInterface {
 	 * @return void
 	 */
 	public function markFileAsMissing($fileUid) {
-		$this->getDatabase()->exec_UPDATEquery($this->table, 'uid = ' . intval($fileUid), array('missing' => 1));
+		$this->getDatabase()->exec_UPDATEquery($this->table, 'uid = ' . (int)$fileUid, array('missing' => 1));
 	}
 
 	/**
@@ -332,12 +332,12 @@ class FileIndexRepository implements SingletonInterface {
 	 * @return string
 	 */
 	protected function getWhereClauseForFile(File $file) {
-		if (intval($file->_getPropertyRaw('uid')) > 0) {
-			$where = 'uid=' . intval($file->getUid());
+		if ((int)$file->_getPropertyRaw('uid') > 0) {
+			$where = 'uid=' . (int)$file->getUid();
 		} else {
 			$where = sprintf(
 				'storage=%u AND identifier=%s',
-				intval($file->getStorage()->getUid()),
+				(int)$file->getStorage()->getUid(),
 				$this->getDatabase()->fullQuoteStr($file->_getPropertyRaw('identifier'), $this->table)
 			);
 		}
@@ -351,7 +351,7 @@ class FileIndexRepository implements SingletonInterface {
 	 * @return void
 	 */
 	public function remove($fileUid) {
-		$this->getDatabase()->exec_DELETEquery($this->table, 'uid=' . intval($fileUid));
+		$this->getDatabase()->exec_DELETEquery($this->table, 'uid=' . (int)$fileUid);
 		$this->emitRecordDeleted($fileUid);
 	}
 

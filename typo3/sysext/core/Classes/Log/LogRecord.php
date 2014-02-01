@@ -259,7 +259,7 @@ class LogRecord implements \ArrayAccess {
 	 * @return string
 	 */
 	public function __toString() {
-		$timestamp = date('r', (int) $this->created);
+		$timestamp = date('r', (int)$this->created);
 		$levelName = \TYPO3\CMS\Core\Log\LogLevel::getName($this->level);
 		$data = !empty($this->data) ? '- ' . json_encode($this->data) : '';
 		$logRecordString = sprintf('%s [%s] request="%s" component="%s": %s %s', $timestamp, $levelName, $this->requestId, $this->component, $this->message, $data);

@@ -224,16 +224,16 @@ class FrontendRteController extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaBase {
 		if (isset($this->thisConfig['RTEWidthOverride'])) {
 			if (strstr($this->thisConfig['RTEWidthOverride'], '%')) {
 				if ($this->client['browser'] != 'msie') {
-					$width = intval($this->thisConfig['RTEWidthOverride']) > 0 ? $this->thisConfig['RTEWidthOverride'] : '100%';
+					$width = (int)$this->thisConfig['RTEWidthOverride'] > 0 ? $this->thisConfig['RTEWidthOverride'] : '100%';
 				}
 			} else {
-				$width = intval($this->thisConfig['RTEWidthOverride']) > 0 ? intval($this->thisConfig['RTEWidthOverride']) : $width;
+				$width = (int)$this->thisConfig['RTEWidthOverride'] > 0 ? (int)$this->thisConfig['RTEWidthOverride'] : $width;
 			}
 		}
 		$RTEWidth = strstr($width, '%') ? $width : $width . 'px';
 		$editorWrapWidth = strstr($width, '%') ? $width : ($width + 2) . 'px';
 		$height = 380;
-		$RTEHeightOverride = intval($this->thisConfig['RTEHeightOverride']);
+		$RTEHeightOverride = (int)$this->thisConfig['RTEHeightOverride'];
 		$height = $RTEHeightOverride > 0 ? $RTEHeightOverride : $height;
 		$RTEHeight = $height . 'px';
 		$editorWrapHeight = ($height + 2) . 'px';

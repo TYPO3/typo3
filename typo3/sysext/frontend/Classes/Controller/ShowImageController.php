@@ -166,7 +166,7 @@ class ShowImageController {
 		$this->height = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($this->height, 0);
 		$this->width = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($this->width, 0);
 		if ($this->frame) {
-			$this->frame = intval($this->frame);
+			$this->frame = (int)$this->frame;
 		}
 		$imgInfo = $img->imageMagickConvert($this->file, 'web', $this->width . $max, $this->height, $img->IMparams($this->effects), $this->frame);
 		// Create HTML output:

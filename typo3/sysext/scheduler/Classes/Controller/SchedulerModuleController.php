@@ -167,7 +167,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 		$sectionTitle = '';
 		// Get submitted data
 		$this->submittedData = GeneralUtility::_GPmerged('tx_scheduler');
-		$this->submittedData['uid'] = intval($this->submittedData['uid']);
+		$this->submittedData['uid'] = (int)$this->submittedData['uid'];
 		// If a save command was submitted, handle saving now
 		if ($this->CMD == 'save' || $this->CMD == 'saveclose') {
 			$previousCMD = GeneralUtility::_GP('previousCMD');
@@ -504,7 +504,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 			}
 		} catch (\UnexpectedValueException $e) {
 			// The task could not be unserialized properly, simply delete the database record
-			$result = $GLOBALS['TYPO3_DB']->exec_DELETEquery('tx_scheduler_task', 'uid = ' . intval($this->submittedData['uid']));
+			$result = $GLOBALS['TYPO3_DB']->exec_DELETEquery('tx_scheduler_task', 'uid = ' . (int)$this->submittedData['uid']);
 			if ($result) {
 				$this->addMessage($GLOBALS['LANG']->getLL('msg.deleteSuccess'));
 			} else {
@@ -1298,7 +1298,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 	protected function preprocessData() {
 		$result = TRUE;
 		// Validate id
-		$this->submittedData['uid'] = empty($this->submittedData['uid']) ? 0 : intval($this->submittedData['uid']);
+		$this->submittedData['uid'] = empty($this->submittedData['uid']) ? 0 : (int)$this->submittedData['uid'];
 		// Validate selected task class
 		if (!class_exists($this->submittedData['class'])) {
 			$this->addMessage($GLOBALS['LANG']->getLL('msg.noTaskClassFound'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
@@ -1354,7 +1354,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 					// Check if the frequency is a valid number
 					// If yes, assume it is a frequency in seconds, and unset cron error code
 					if (is_numeric($frequency)) {
-						$this->submittedData['interval'] = intval($frequency);
+						$this->submittedData['interval'] = (int)$frequency;
 						unset($cronErrorCode);
 					}
 				}

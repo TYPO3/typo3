@@ -45,7 +45,7 @@ class MaxlengthAttribute extends \TYPO3\CMS\Form\Domain\Model\Attribute\Abstract
 	 * @return integer Attribute value
 	 */
 	public function getValue() {
-		$value = (int) $this->value;
+		$value = (int)$this->value;
 		if ($value <= 0) {
 			$attribute = 40;
 		} else {

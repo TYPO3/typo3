@@ -65,14 +65,14 @@ class CategoryBasedFileCollection extends \TYPO3\CMS\Core\Resource\Collection\Ab
 			'sys_category',
 			'sys_category_record_mm',
 			'sys_file_metadata',
-			'AND sys_category.uid=' . intval($this->getItemsCriteria()) .
+			'AND sys_category.uid=' . (int)$this->getItemsCriteria() .
 			' AND sys_category_record_mm.tablenames = \'sys_file_metadata\''
 		);
 
 		$resourceFactory = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance();
 		if ($resource) {
 			while (($record = $this->getDatabase()->sql_fetch_assoc($resource)) !== FALSE) {
-				$this->add($resourceFactory->getFileObject(intval($record['file'])));
+				$this->add($resourceFactory->getFileObject((int)$record['file']));
 			}
 			$this->getDatabase()->sql_free_result($resource);
 		}

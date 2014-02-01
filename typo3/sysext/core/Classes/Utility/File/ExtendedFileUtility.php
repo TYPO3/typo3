@@ -397,7 +397,7 @@ class ExtendedFileUtility extends \TYPO3\CMS\Core\Utility\File\BasicFileUtility 
 			$refIndexRecords = $this->getDatabaseConnection()->exec_SELECTgetRows(
 				'*',
 				'sys_refindex',
-				'deleted=0 AND ref_table="sys_file" AND ref_uid=' . intval($fileObject->getUid())
+				'deleted=0 AND ref_table="sys_file" AND ref_uid=' . (int)$fileObject->getUid()
 				. ' AND tablename != "sys_file_metadata"'
 			);
 			if (count($refIndexRecords) > 0) {

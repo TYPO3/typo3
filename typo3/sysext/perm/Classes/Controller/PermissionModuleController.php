@@ -38,7 +38,7 @@ use TYPO3\CMS\Backend\Utility\IconUtility;
  * This module lets you view and change permissions for pages.
  *
  * Variables:
- * $this->MOD_SETTINGS['depth']: intval 1-3: decides the depth of the list
+ * $this->MOD_SETTINGS['depth']: int 1-3: decides the depth of the list
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @author Andreas Kundoch <typo3@mehrwert.de>
@@ -166,7 +166,7 @@ class PermissionModuleController {
 	 */
 	public function init() {
 		// Setting GPvars:
-		$this->id = intval(GeneralUtility::_GP('id'));
+		$this->id = (int)GeneralUtility::_GP('id');
 		$this->edit = GeneralUtility::_GP('edit');
 		$this->return_id = GeneralUtility::_GP('return_id');
 		$this->lastEdited = GeneralUtility::_GP('lastEdited');
@@ -416,7 +416,7 @@ class PermissionModuleController {
 			<input type="hidden" name="data[pages][' . $this->id . '][perms_everybody]" value="' . $this->pageinfo['perms_everybody'] . '" />
 			' . $this->getRecursiveSelect($this->id, $this->perms_clause) . '
 			<input type="submit" name="submit" value="' . $GLOBALS['LANG']->getLL('Save', TRUE) . '" />' . '<input type="submit" value="' . $GLOBALS['LANG']->getLL('Abort', TRUE) . '" onclick="' . htmlspecialchars(('jumpToUrl(' . GeneralUtility::quoteJSvalue((BackendUtility::getModuleUrl('web_perm') . '&id=' . $this->id), TRUE) . '); return false;')) . '" />
-			<input type="hidden" name="redirect" value="' . htmlspecialchars((BackendUtility::getModuleUrl('web_perm') . '&mode=' . $this->MOD_SETTINGS['mode'] . '&depth=' . $this->MOD_SETTINGS['depth'] . '&id=' . intval($this->return_id) . '&lastEdited=' . $this->id)) . '" />
+			<input type="hidden" name="redirect" value="' . htmlspecialchars((BackendUtility::getModuleUrl('web_perm') . '&mode=' . $this->MOD_SETTINGS['mode'] . '&depth=' . $this->MOD_SETTINGS['depth'] . '&id=' . (int)$this->return_id . '&lastEdited=' . $this->id)) . '" />
 			' . \TYPO3\CMS\Backend\Form\FormEngine::getHiddenTokenField('tceAction');
 		// Adding section with the permission setting matrix:
 		$this->content .= $this->doc->divider(5);

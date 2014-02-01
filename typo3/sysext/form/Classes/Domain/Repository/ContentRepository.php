@@ -43,7 +43,7 @@ class ContentRepository {
 		$record = FALSE;
 		$getPostVariables = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('P');
 		$table = (string) $getPostVariables['table'];
-		$recordId = (int) $getPostVariables['uid'];
+		$recordId = (int)$getPostVariables['uid'];
 		$row = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($table, $recordId);
 		if (is_array($row)) {
 			// strip off the leading "[Translate to XY]" text after localizing the original record

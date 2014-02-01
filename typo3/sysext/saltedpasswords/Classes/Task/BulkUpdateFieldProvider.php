@@ -85,7 +85,7 @@ class BulkUpdateFieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldPro
 		// Configuration for numberOfRecords
 		$fieldName = 'tx_scheduler[scheduler_saltedpasswordsBulkUpdateNumberOfRecords]';
 		$fieldId = 'task_saltedpasswordsBulkUpdateNumberOfRecords';
-		$fieldValue = intval($taskInfo['scheduler_saltedpasswordsBulkUpdateNumberOfRecords']);
+		$fieldValue = (int)$taskInfo['scheduler_saltedpasswordsBulkUpdateNumberOfRecords'];
 		$fieldHtml = '<input type="text" name="' . $fieldName . '" id="' . $fieldId . '" value="' . htmlspecialchars($fieldValue) . '" />';
 		$additionalFields[$fieldId] = array(
 			'code' => $fieldHtml,
@@ -107,7 +107,7 @@ class BulkUpdateFieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldPro
 		$result = TRUE;
 		// Check if number of records is indeed a number and greater or equals to 0
 		// If not, fail validation and issue error message
-		if (!is_numeric($submittedData['scheduler_saltedpasswordsBulkUpdateNumberOfRecords']) || intval($submittedData['scheduler_saltedpasswordsBulkUpdateNumberOfRecords']) < 0) {
+		if (!is_numeric($submittedData['scheduler_saltedpasswordsBulkUpdateNumberOfRecords']) || (int)$submittedData['scheduler_saltedpasswordsBulkUpdateNumberOfRecords'] < 0) {
 			$result = FALSE;
 			$parentObject->addMessage($GLOBALS['LANG']->sL('LLL:EXT:saltedpasswords/locallang.xlf:ext.saltedpasswords.tasks.bulkupdate.invalidNumberOfRecords'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
 		}
@@ -127,7 +127,7 @@ class BulkUpdateFieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldPro
 		} else {
 			$task->setCanDeactivateSelf(FALSE);
 		}
-		$task->setNumberOfRecords(intval($submittedData['scheduler_saltedpasswordsBulkUpdateNumberOfRecords']));
+		$task->setNumberOfRecords((int)$submittedData['scheduler_saltedpasswordsBulkUpdateNumberOfRecords']);
 	}
 
 }

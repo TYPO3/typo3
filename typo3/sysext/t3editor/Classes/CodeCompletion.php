@@ -56,7 +56,7 @@ class CodeCompletion {
 		$response = array();
 		// Process the AJAX requests:
 		if ($ajaxMethod == 'loadTemplates') {
-			$ajaxObj->setContent($this->loadTemplates(intval(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('pageId'))));
+			$ajaxObj->setContent($this->loadTemplates((int)\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('pageId')));
 			$ajaxObj->setContentFormat('jsonbody');
 		}
 	}

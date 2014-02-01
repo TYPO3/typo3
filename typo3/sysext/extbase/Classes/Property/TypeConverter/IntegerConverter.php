@@ -59,6 +59,6 @@ class IntegerConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\Abstrac
 		if (!is_numeric($source)) {
 			return new \TYPO3\CMS\Extbase\Error\Error('"%s" is no integer.', 1332933658, array($source));
 		}
-		return (integer)$source;
+		return (int)$source;
 	}
 }

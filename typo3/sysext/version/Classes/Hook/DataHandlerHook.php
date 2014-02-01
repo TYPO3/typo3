@@ -214,7 +214,7 @@ class DataHandlerHook {
 			if ($record['pid'] == -1) {
 				if ($GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
 					// In Live workspace, delete any. In other workspaces there must be match.
-					if ($tcemainObj->BE_USER->workspace == 0 || (int) $record['t3ver_wsid'] == $tcemainObj->BE_USER->workspace) {
+					if ($tcemainObj->BE_USER->workspace == 0 || (int)$record['t3ver_wsid'] == $tcemainObj->BE_USER->workspace) {
 						$liveRec = BackendUtility::getLiveVersionOfRecord($table, $id, 'uid,t3ver_state');
 						// Processing can be skipped if a delete placeholder shall be swapped/published
 						// during the current request. Thus it will be deleted later on...
@@ -269,7 +269,7 @@ class DataHandlerHook {
 					$updateFields = array(
 						't3ver_state' => (string)new VersionState(VersionState::DEFAULT_STATE)
 					);
-					$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid=' . intval($wsRec['uid']), $updateFields);
+					$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid=' . (int)$wsRec['uid'], $updateFields);
 				}
 				$tcemainObj->deleteEl($table, $id);
 			} else {
@@ -312,7 +312,7 @@ class DataHandlerHook {
 			// If no version exists and versioningWS is in version 2, a new placeholder is made automatically:
 			if (
 				!$WSversion['uid']
-				&& (int) $GLOBALS['TCA'][$table]['ctrl']['versioningWS'] >= 2
+				&& (int)$GLOBALS['TCA'][$table]['ctrl']['versioningWS'] >= 2
 				&& !$moveRecVersionState->equals(VersionState::MOVE_PLACEHOLDER)
 			) {
 				$tcemainObj->versionizeRecord($table, $uid, 'Placeholder version for moving record');
@@ -323,7 +323,7 @@ class DataHandlerHook {
 			// Element was in "New/Deleted/Moved" so it can be moved...
 			$recIsNewVersion = $moveRecVersionState->indicatesPlaceholder();
 			$destRes = $tcemainObj->BE_USER->workspaceAllowLiveRecordsInPID($resolvedPid, $table);
-			$canMoveRecord = $recIsNewVersion || (int) $GLOBALS['TCA'][$table]['ctrl']['versioningWS'] >= 2;
+			$canMoveRecord = $recIsNewVersion || (int)$GLOBALS['TCA'][$table]['ctrl']['versioningWS'] >= 2;
 			// Workspace source check:
 			if (!$recIsNewVersion) {
 				$errorCode = $tcemainObj->BE_USER->workspaceCannotEditRecord($table, $WSversion['uid'] ? $WSversion['uid'] : $uid);
@@ -346,7 +346,7 @@ class DataHandlerHook {
 			if (!count($workspaceAccessBlocked)) {
 				// If the move operation is done on a versioned record, which is
 				// NOT new/deleted placeholder and versioningWS is in version 2, then...
-				if ($WSversion['uid'] && !$recIsNewVersion && (int) $GLOBALS['TCA'][$table]['ctrl']['versioningWS'] >= 2) {
+				if ($WSversion['uid'] && !$recIsNewVersion && (int)$GLOBALS['TCA'][$table]['ctrl']['versioningWS'] >= 2) {
 					$this->moveRecord_wsPlaceholders($table, $uid, $destPid, $WSversion['uid'], $tcemainObj);
 				} else {
 					// moving not needed, just behave like in live workspace
@@ -381,12 +381,12 @@ class DataHandlerHook {
 			// Get the new stage title from workspaces library, if workspaces extension is installed
 			if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('workspaces')) {
 				$stageService = GeneralUtility::makeInstance('TYPO3\\CMS\\Workspaces\\Service\\StagesService');
-				$newStage = $stageService->getStageTitle((int) $stageId);
+				$newStage = $stageService->getStageTitle((int)$stageId);
 			} else {
 				// TODO: CONSTANTS SHOULD BE USED - tx_service_workspace_workspaces
 				// TODO: use localized labels
 				// Compile label:
-				switch ((int) $stageId) {
+				switch ((int)$stageId) {
 					case 1:
 						$newStage = 'Ready for review';
 						break;
@@ -406,9 +406,9 @@ class DataHandlerHook {
 			if (count($notificationAlternativeRecipients) == 0) {
 				// Compile list of recipients:
 				$emails = array();
-				switch ((int) $stat['stagechg_notification']) {
+				switch ((int)$stat['stagechg_notification']) {
 					case 1:
-						switch ((int) $stageId) {
+						switch ((int)$stageId) {
 							case 1:
 								$emails = $this->getEmailsForStageChangeNotification($workspaceRec['reviewers']);
 								break;
@@ -423,7 +423,7 @@ class DataHandlerHook {
 									list($eTable, $eUid) = explode(':', $elRef);
 									$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('log_data,tstamp,userid', 'sys_log', 'action=6 and details_nr=30
 													AND tablename=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($eTable, 'sys_log') . '
-													AND recuid=' . intval($eUid), '', 'uid DESC');
+													AND recuid=' . (int)$eUid, '', 'uid DESC');
 									// Find all implicated since the last stage-raise from editing to review:
 									foreach ($rows as $dat) {
 										$data = unserialize($dat['log_data']);
@@ -456,7 +456,7 @@ class DataHandlerHook {
 			if (count($emails)) {
 				// Path to record is found:
 				list($elementTable, $elementUid) = explode(':', $elementName);
-				$elementUid = intval($elementUid);
+				$elementUid = (int)$elementUid;
 				$elementRecord = BackendUtility::getRecord($elementTable, $elementUid);
 				$recordTitle = BackendUtility::getRecordTitle($elementTable, $elementRecord);
 				if ($elementTable == 'pages') {
@@ -583,7 +583,7 @@ class DataHandlerHook {
 		$emails = array();
 		foreach ($users as $userIdent) {
 			if ($noTablePrefix) {
-				$id = intval($userIdent);
+				$id = (int)$userIdent;
 			} else {
 				list($table, $id) = GeneralUtility::revExplode('_', $userIdent, 2);
 			}
@@ -625,11 +625,11 @@ class DataHandlerHook {
 				$updateData = array(
 					't3ver_stage' => $stageId
 				);
-				$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid=' . intval($id), $updateData);
+				$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid=' . (int)$id, $updateData);
 				$tcemainObj->newlog2('Stage for record was changed to ' . $stageId . '. Comment was: "' . substr($comment, 0, 100) . '"', $table, $id);
 				// TEMPORARY, except 6-30 as action/detail number which is observed elsewhere!
 				$tcemainObj->log($table, $id, 6, 0, 0, 'Stage raised...', 30, array('comment' => $comment, 'stage' => $stageId));
-				if ((int) $stat['stagechg_notification'] > 0) {
+				if ((int)$stat['stagechg_notification'] > 0) {
 					if ($notificationEmailInfo) {
 						$this->notificationEmailInfo[$stat['uid'] . ':' . $stageId . ':' . $comment]['shared'] = array($stat, $stageId, $comment);
 						$this->notificationEmailInfo[$stat['uid'] . ':' . $stageId . ':' . $comment]['elements'][] = $table . ':' . $id;
@@ -660,7 +660,7 @@ class DataHandlerHook {
 	 * @see copyPages()
 	 */
 	protected function versionizePages($uid, $label, $versionizeTree, DataHandler $tcemainObj) {
-		$uid = intval($uid);
+		$uid = (int)$uid;
 		// returns the branch
 		$brExist = $tcemainObj->doesBranchExist('', $uid, $tcemainObj->pMap['show'], 1);
 		// Checks if we had permissions
@@ -684,7 +684,7 @@ class DataHandlerHook {
 					// If we're going to copy recursively...:
 					if ($versionizeTree > 0) {
 						// Get ALL subpages to copy (read permissions respected - they should NOT be...):
-						$CPtable = $tcemainObj->int_pageTreeInfo(array(), $uid, intval($versionizeTree), $theNewRootID);
+						$CPtable = $tcemainObj->int_pageTreeInfo(array(), $uid, (int)$versionizeTree, $theNewRootID);
 						// Now copying the subpages
 						foreach ($CPtable as $thePageUid => $thePagePid) {
 							$newPid = $tcemainObj->copyMappingArray['pages'][$thePagePid];
@@ -771,7 +771,7 @@ class DataHandlerHook {
 										// Modify offline version to become online:
 										$tmp_wsid = $swapVersion['t3ver_wsid'];
 										// Set pid for ONLINE
-										$swapVersion['pid'] = intval($curVersion['pid']);
+										$swapVersion['pid'] = (int)$curVersion['pid'];
 										// We clear this because t3ver_oid only make sense for offline versions
 										// and we want to prevent unintentional misuse of this
 										// value for online records.
@@ -785,7 +785,7 @@ class DataHandlerHook {
 											if ($t3ver_state['swapVersion'] > 0) {
 												$swapVersion['t3ver_wsid'] = $tcemainObj->BE_USER->workspace;
 											} else {
-												$swapVersion['t3ver_wsid'] = intval($curVersion['t3ver_wsid']);
+												$swapVersion['t3ver_wsid'] = (int)$curVersion['t3ver_wsid'];
 											}
 										}
 										$swapVersion['t3ver_tstamp'] = $GLOBALS['EXEC_TIME'];
@@ -794,13 +794,13 @@ class DataHandlerHook {
 											$swapVersion['t3ver_state'] = (string)new VersionState(VersionState::DEFAULT_STATE);
 										}
 										// Moving element.
-										if ((int) $GLOBALS['TCA'][$table]['ctrl']['versioningWS'] >= 2) {
+										if ((int)$GLOBALS['TCA'][$table]['ctrl']['versioningWS'] >= 2) {
 											//  && $t3ver_state['swapVersion']==4   // Maybe we don't need this?
 											if ($plhRec = BackendUtility::getMovePlaceholder($table, $id, 't3ver_state,pid,uid' . ($GLOBALS['TCA'][$table]['ctrl']['sortby'] ? ',' . $GLOBALS['TCA'][$table]['ctrl']['sortby'] : ''))) {
 												$movePlhID = $plhRec['uid'];
 												$movePlh['pid'] = $swapVersion['pid'];
-												$swapVersion['pid'] = intval($plhRec['pid']);
-												$curVersion['t3ver_state'] = intval($swapVersion['t3ver_state']);
+												$swapVersion['pid'] = (int)$plhRec['pid'];
+												$curVersion['t3ver_state'] = (int)$swapVersion['t3ver_state'];
 												$swapVersion['t3ver_state'] = (string)new VersionState(VersionState::DEFAULT_STATE);
 												if ($GLOBALS['TCA'][$table]['ctrl']['sortby']) {
 													// sortby is a "keepFields" which is why this will work...
@@ -820,8 +820,8 @@ class DataHandlerHook {
 										unset($curVersion['uid']);
 										// Set pid for OFFLINE
 										$curVersion['pid'] = -1;
-										$curVersion['t3ver_oid'] = intval($id);
-										$curVersion['t3ver_wsid'] = $swapIntoWS ? intval($tmp_wsid) : 0;
+										$curVersion['t3ver_oid'] = (int)$id;
+										$curVersion['t3ver_wsid'] = $swapIntoWS ? (int)$tmp_wsid : 0;
 										$curVersion['t3ver_tstamp'] = $GLOBALS['EXEC_TIME'];
 										$curVersion['t3ver_count'] = $curVersion['t3ver_count'] + 1;
 										// Increment lifecycle counter
@@ -836,11 +836,11 @@ class DataHandlerHook {
 										$tcemainObj->compareFieldArrayWithCurrentAndUnset($table, $swapWith, $curVersion);
 										// Execute swapping:
 										$sqlErrors = array();
-										$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid=' . intval($id), $swapVersion);
+										$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid=' . (int)$id, $swapVersion);
 										if ($GLOBALS['TYPO3_DB']->sql_error()) {
 											$sqlErrors[] = $GLOBALS['TYPO3_DB']->sql_error();
 										} else {
-											$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid=' . intval($swapWith), $curVersion);
+											$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid=' . (int)$swapWith, $curVersion);
 											if ($GLOBALS['TYPO3_DB']->sql_error()) {
 												$sqlErrors[] = $GLOBALS['TYPO3_DB']->sql_error();
 											} else {
@@ -859,13 +859,13 @@ class DataHandlerHook {
 													$tcemainObj->deleteEl($table, $movePlhID, TRUE, TRUE);
 												} else {
 													// Otherwise update the movePlaceholder:
-													$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid=' . intval($movePlhID), $movePlh);
+													$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid=' . (int)$movePlhID, $movePlh);
 													$tcemainObj->addRemapStackRefIndex($table, $movePlhID);
 												}
 											}
 											// Checking for delete:
 											// Delete only if new/deleted placeholders are there.
-											if (!$swapIntoWS && ((int) $t3ver_state['swapVersion'] === 1 || (int) $t3ver_state['swapVersion'] === 2)) {
+											if (!$swapIntoWS && ((int)$t3ver_state['swapVersion'] === 1 || (int)$t3ver_state['swapVersion'] === 2)) {
 												// Force delete
 												$tcemainObj->deleteEl($table, $id, TRUE);
 											}
@@ -1023,13 +1023,13 @@ class DataHandlerHook {
 					't3ver_wsid' => 0,
 					't3ver_tstamp' => $GLOBALS['EXEC_TIME']
 				);
-				$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid=' . intval($id), $updateData);
+				$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid=' . (int)$id, $updateData);
 				// Clear workspace ID for live version AND DELETE IT as well because it is a new record!
 				if (
 					VersionState::cast($liveRec['t3ver_state'])->equals(VersionState::NEW_PLACEHOLDER)
 					|| VersionState::cast($liveRec['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER)
 				) {
-					$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid=' . intval($liveRec['uid']), $updateData);
+					$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid=' . (int)$liveRec['uid'], $updateData);
 					// THIS assumes that the record was placeholder ONLY for ONE record (namely $id)
 					$tcemainObj->deleteEl($table, $liveRec['uid'], TRUE);
 				}
@@ -1046,7 +1046,7 @@ class DataHandlerHook {
 					$tcemainObj->deleteEl($table, $id, TRUE, TRUE);
 				}
 				// Remove the move-placeholder if found for live record.
-				if ((int) $GLOBALS['TCA'][$table]['ctrl']['versioningWS'] >= 2) {
+				if ((int)$GLOBALS['TCA'][$table]['ctrl']['versioningWS'] >= 2) {
 					if ($plhRec = BackendUtility::getMovePlaceholder($table, $liveRec['uid'], 'uid')) {
 						$tcemainObj->deleteEl($table, $plhRec['uid'], TRUE, TRUE);
 					}
@@ -1076,7 +1076,7 @@ class DataHandlerHook {
 			foreach ($copyTablesArray as $table) {
 				// all records under the page is copied.
 				if ($table && is_array($GLOBALS['TCA'][$table]) && $table !== 'pages') {
-					$mres = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', $table, 'pid=' . intval($oldPageId) . $tcemainObj->deleteClause($table));
+					$mres = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', $table, 'pid=' . (int)$oldPageId . $tcemainObj->deleteClause($table));
 					while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($mres)) {
 						// Check, if this record has already been copied by a parent record as relation:
 						if (!$tcemainObj->copyMappingArray[$table][$row['uid']]) {
@@ -1281,7 +1281,7 @@ class DataHandlerHook {
 			$updateFields = array(
 				't3ver_state' => (string)new VersionState(VersionState::MOVE_POINTER)
 			);
-			$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid=' . intval($wsUid), $updateFields);
+			$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid=' . (int)$wsUid, $updateFields);
 		}
 		// Check for the localizations of that element and move them as well
 		$tcemainObj->moveL10nOverlayRecords($table, $uid, $destPid, $originalRecordDestinationPid);

@@ -124,7 +124,7 @@ class AbstractJsonElement {
 		if (isset($parameters['filters.']) && is_array($parameters['filters.'])) {
 			$filters = $parameters['filters.'];
 			foreach ($filters as $key => $filterName) {
-				if (intval($key) && !strstr($key, '.')) {
+				if ((int)$key && strpos($key, '.') === FALSE) {
 					$filterConfiguration = array();
 					if (isset($filters[$key . '.'])) {
 						$filterConfiguration = $filters[$key . '.'];

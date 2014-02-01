@@ -478,7 +478,7 @@ updateQryForm(\'' . $input['QUERY'] . '\');
 				// Look for request to view specific script exec:
 				$specTime = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('specTime');
 				if ($specTime) {
-					$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('exec_time,errorFlag,table_join,serdata,query', 'tx_dbal_debuglog', 'tstamp=' . (int) $specTime);
+					$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('exec_time,errorFlag,table_join,serdata,query', 'tx_dbal_debuglog', 'tstamp=' . (int)$specTime);
 					$tRows = array();
 					$tRows[] = '
 							<tr>
@@ -516,7 +516,7 @@ updateQryForm(\'' . $input['QUERY'] . '\');
 									<td>' . htmlspecialchars($row['qrycount']) . '</td>
 									<td>' . ($row['error'] ? '<strong style="color:#f00">ERR</strong>' : '') . '</td>
 									<td>' . htmlspecialchars($row['calc_sum']) . '</td>
-									<td><a href="' . $this->thisScript . '&amp;specTime=' . intval($row['tstamp']) . '">' . htmlspecialchars($row['script']) . '</a></td>
+									<td><a href="' . $this->thisScript . '&amp;specTime=' . (int)$row['tstamp'] . '">' . htmlspecialchars($row['script']) . '</a></td>
 								</tr>';
 					}
 				}

@@ -97,7 +97,7 @@ class ElementEntity {
 	 */
 	public function __construct($table, $id, array $data = array(), \TYPO3\CMS\Version\Dependency\DependencyResolver $dependency) {
 		$this->table = $table;
-		$this->id = intval($id);
+		$this->id = (int)$id;
 		$this->data = $data;
 		$this->dependency = $dependency;
 		$this->dependency->executeEventCallback(self::EVENT_Construct, $this);

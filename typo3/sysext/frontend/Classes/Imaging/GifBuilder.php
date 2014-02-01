@@ -165,7 +165,7 @@ class GifBuilder extends \TYPO3\CMS\Core\Imaging\GraphicalFunctions {
 						$this->charRangeMap[$cRMkey]['charMapConfig'] = $cRMcfg['charMapConfig.'];
 						$this->charRangeMap[$cRMkey]['cfgKey'] = substr($cRMcfgkey, 0, -1);
 						$this->charRangeMap[$cRMkey]['multiplicator'] = (double) $cRMcfg['fontSizeMultiplicator'];
-						$this->charRangeMap[$cRMkey]['pixelSpace'] = intval($cRMcfg['pixelSpaceFontSizeRef']);
+						$this->charRangeMap[$cRMkey]['pixelSpace'] = (int)$cRMcfg['pixelSpaceFontSizeRef'];
 					}
 				}
 			}
@@ -198,7 +198,7 @@ class GifBuilder extends \TYPO3\CMS\Core\Imaging\GraphicalFunctions {
 			// The Bounding Box for the objects is stored in an array
 			foreach ($sKeyArray as $theKey) {
 				$theValue = $this->setup[$theKey];
-				if (intval($theKey) && ($conf = $this->setup[$theKey . '.'])) {
+				if ((int)$theKey && ($conf = $this->setup[$theKey . '.'])) {
 					// Swipes through TEXT and IMAGE-objects
 					switch ($theValue) {
 						case 'TEXT':
@@ -258,7 +258,7 @@ class GifBuilder extends \TYPO3\CMS\Core\Imaging\GraphicalFunctions {
 			$this->setup['workArea'] = $this->calcOffset($this->setup['workArea']);
 			foreach ($sKeyArray as $theKey) {
 				$theValue = $this->setup[$theKey];
-				if (intval($theKey) && ($conf = $this->setup[$theKey . '.'])) {
+				if ((int)$theKey && ($conf = $this->setup[$theKey . '.'])) {
 					switch ($theValue) {
 						case 'TEXT':
 
@@ -315,8 +315,8 @@ class GifBuilder extends \TYPO3\CMS\Core\Imaging\GraphicalFunctions {
 			}
 			// Get trivial data
 			$XY = GeneralUtility::intExplode(',', $this->setup['XY']);
-			$maxWidth = isset($this->setup['maxWidth.']) ? intval($this->cObj->stdWrap($this->setup['maxWidth'], $this->setup['maxWidth.'])) : intval($this->setup['maxWidth']);
-			$maxHeight = isset($this->setup['maxHeight.']) ? intval($this->cObj->stdWrap($this->setup['maxHeight'], $this->setup['maxHeight.'])) : intval($this->setup['maxHeight']);
+			$maxWidth = isset($this->setup['maxWidth.']) ? (int)$this->cObj->stdWrap($this->setup['maxWidth'], $this->setup['maxWidth.']) : (int)$this->setup['maxWidth'];
+			$maxHeight = isset($this->setup['maxHeight.']) ? (int)$this->cObj->stdWrap($this->setup['maxHeight'], $this->setup['maxHeight.']) : (int)$this->setup['maxHeight'];
 			$XY[0] = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($XY[0], 1, $maxWidth ?: 2000);
 			$XY[1] = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($XY[1], 1, $maxHeight ?: 2000);
 			$this->XY = $XY;
@@ -398,7 +398,7 @@ class GifBuilder extends \TYPO3\CMS\Core\Imaging\GraphicalFunctions {
 			$sKeyArray = \TYPO3\CMS\Core\TypoScript\TemplateService::sortedKeyList($this->setup);
 			foreach ($sKeyArray as $theKey) {
 				$theValue = $this->setup[$theKey];
-				if (intval($theKey) && ($conf = $this->setup[$theKey . '.'])) {
+				if ((int)$theKey && ($conf = $this->setup[$theKey . '.'])) {
 					// apply stdWrap to all properties, except for TEXT objects
 					// all properties of the TEXT sub-object have already been stdWrap-ped
 					// before in ->checkTextObj()
@@ -517,7 +517,7 @@ class GifBuilder extends \TYPO3\CMS\Core\Imaging\GraphicalFunctions {
 				// Multiple transparent colors are set. This is done via the trick that all transparent colors get
 				// converted to one color and then this one gets set as transparent as png/gif can just have one
 				// transparent color.
-				$Tcolor = $this->unifyColors($this->im, $this->setup['transparentColor_array'], intval($this->setup['transparentColor.']['closest']));
+				$Tcolor = $this->unifyColors($this->im, $this->setup['transparentColor_array'], (int)$this->setup['transparentColor.']['closest']);
 				if ($Tcolor >= 0) {
 					imagecolortransparent($this->im, $Tcolor);
 				}
@@ -578,7 +578,7 @@ class GifBuilder extends \TYPO3\CMS\Core\Imaging\GraphicalFunctions {
 		$this->combinedTextStrings[] = strip_tags($conf['text']);
 		// Max length = 100 if automatic line braks are not defined:
 		if (!isset($conf['breakWidth']) || !$conf['breakWidth']) {
-			$tlen = intval($conf['textMaxLength']) ?: 100;
+			$tlen = (int)$conf['textMaxLength'] ?: 100;
 			if ($this->nativeCharset) {
 				$conf['text'] = $this->csConvObj->substr($this->nativeCharset, $conf['text'], 0, $tlen);
 			} else {
@@ -643,8 +643,8 @@ class GifBuilder extends \TYPO3\CMS\Core\Imaging\GraphicalFunctions {
 		$value = array();
 		$numbers = GeneralUtility::trimExplode(',', $this->calculateFunctions($string));
 		foreach ($numbers as $key => $val) {
-			if ((string) $val == (string) intval($val)) {
-				$value[$key] = intval($val);
+			if ((string)$val == (string)(int)$val) {
+				$value[$key] = (int)$val;
 			} else {
 				$value[$key] = $this->calculateValue($val);
 			}
@@ -700,7 +700,7 @@ class GifBuilder extends \TYPO3\CMS\Core\Imaging\GraphicalFunctions {
 			$basicFileFunctions = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Utility\\File\\BasicFileUtility');
 			$meaningfulPrefix = implode('_', array_merge($this->combinedTextStrings, $this->combinedFileNames));
 			$meaningfulPrefix = $basicFileFunctions->cleanFileName($meaningfulPrefix);
-			$meaningfulPrefixLength = intval($GLOBALS['TSFE']->config['config']['meaningfulTempFilePrefix']);
+			$meaningfulPrefixLength = (int)$GLOBALS['TSFE']->config['config']['meaningfulTempFilePrefix'];
 			if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['UTF8filesystem']) {
 				/** @var $t3libCsInstance \TYPO3\CMS\Core\Charset\CharsetConverter */
 				$t3libCsInstance = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Charset\\CharsetConverter');
@@ -755,8 +755,8 @@ class GifBuilder extends \TYPO3\CMS\Core\Imaging\GraphicalFunctions {
 		foreach ($parts as $part) {
 			$theVal = $part[1];
 			$sign = $part[0];
-			if ((string) intval($theVal) == (string) $theVal) {
-				$theVal = intval($theVal);
+			if (((string)(int)$theVal) == ((string)$theVal)) {
+				$theVal = (int)$theVal;
 			} elseif ('[' . substr($theVal, 1, -1) . ']' == $theVal) {
 				$objParts = explode('.', substr($theVal, 1, -1));
 				$theVal = 0;
@@ -768,7 +768,7 @@ class GifBuilder extends \TYPO3\CMS\Core\Imaging\GraphicalFunctions {
 					} elseif ($objParts[1] == 'lineHeight') {
 						$theVal = $this->objBB[$objParts[0]][2]['lineHeight'];
 					}
-					$theVal = intval($theVal);
+					$theVal = (int)$theVal;
 				}
 			} elseif (floatval($theVal)) {
 				$theVal = floatval($theVal);

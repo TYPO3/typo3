@@ -96,7 +96,7 @@ class TypoScriptTemplateModuleController extends \TYPO3\CMS\Backend\Module\BaseS
 	 */
 	public function init() {
 		parent::init();
-		$this->id = intval(GeneralUtility::_GP('id'));
+		$this->id = (int)GeneralUtility::_GP('id');
 		$this->e = GeneralUtility::_GP('e');
 		$this->sObj = GeneralUtility::_GP('sObj');
 		$this->edit = GeneralUtility::_GP('edit');
@@ -168,7 +168,7 @@ class TypoScriptTemplateModuleController extends \TYPO3\CMS\Backend\Module\BaseS
 			$this->doc->postCode = '
 		<script language="javascript" type="text/javascript">
 			script_ended = 1;
-			if (top.fsMod) top.fsMod.recentIds["web"] = ' . intval($this->id) . ';
+			if (top.fsMod) top.fsMod.recentIds["web"] = ' . $this->id . ';
 		</script>
 		';
 			$this->doc->inDocStylesArray[] = '

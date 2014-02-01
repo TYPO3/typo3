@@ -2192,7 +2192,7 @@ class ImportExport {
 		$initStrDat = explode(':', $initStr);
 		if (strstr($initStrDat[0], 'Warning') == FALSE) {
 			if ((string)$initStrDat[3] === '') {
-				$datString = fread($fd, intval($initStrDat[2]));
+				$datString = fread($fd, (int)$initStrDat[2]);
 				fread($fd, 1);
 				if (md5($datString) === $initStrDat[0]) {
 					if ($initStrDat[1]) {
@@ -2247,8 +2247,8 @@ class ImportExport {
 		$pointer += $initStrLen;
 		$initStrDat = explode(':', $initStr);
 		if ((string)$initStrDat[3] === '') {
-			$datString = substr($filecontent, $pointer, intval($initStrDat[2]));
-			$pointer += intval($initStrDat[2]) + 1;
+			$datString = substr($filecontent, $pointer, (int)$initStrDat[2]);
+			$pointer += (int)$initStrDat[2] + 1;
 			if (md5($datString) === $initStrDat[0]) {
 				if ($initStrDat[1]) {
 					if ($this->compress) {

@@ -69,7 +69,7 @@ class TabindexAttribute extends \TYPO3\CMS\Form\Domain\Model\Attribute\AbstractA
 	 * @return integer Attribute value
 	 */
 	public function getValue() {
-		$attribute = (int) $this->value;
+		$attribute = (int)$this->value;
 		if ($attribute < 0 || $attribute > 32767) {
 			$attribute = 0;
 		}

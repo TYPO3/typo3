@@ -176,7 +176,7 @@ class RteMagicImagesUpdateWizard extends AbstractUpdate {
 				$targetRecord = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
 					'uid, ' . $targetFieldName,
 					$refRecord['tablename'],
-					'uid=' . intval($refRecord['recuid'])
+					'uid=' . (int)$refRecord['recuid']
 				);
 				if ($targetRecord) {
 					// Replace the old filename with the new one, and add data-* attributes used by the RTE
@@ -192,7 +192,7 @@ class RteMagicImagesUpdateWizard extends AbstractUpdate {
 					// Update the record
 					$GLOBALS['TYPO3_DB']->exec_UPDATEquery(
 						$refRecord['tablename'],
-						'uid=' . intval($refRecord['recuid']),
+						'uid=' . (int)$refRecord['recuid'],
 						array($targetFieldName => $targetRecord[$targetFieldName])
 					);
 					$queries[] = str_replace(LF, ' ', $GLOBALS['TYPO3_DB']->debug_lastBuiltQuery);

@@ -59,7 +59,7 @@ class DatabaseRecordList extends \TYPO3\CMS\Recordlist\RecordList\DatabaseRecord
 			$or = '';
 			// add the uid only if input is numeric, cast to int
 			if (is_numeric($this->searchString)) {
-				$queryPart = ' AND (uid=' . (int) $this->searchString . ' OR ';
+				$queryPart = ' AND (uid=' . (int)$this->searchString . ' OR ';
 			} else {
 				$queryPart = ' AND (';
 			}

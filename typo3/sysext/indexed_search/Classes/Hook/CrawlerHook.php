@@ -86,7 +86,7 @@ class CrawlerHook {
 				'timer_next_indexing' => $nextTime,
 				'session_data' => ''
 			);
-			$GLOBALS['TYPO3_DB']->exec_UPDATEquery('index_config', 'uid=' . intval($cfgRec['uid']), $field_array);
+			$GLOBALS['TYPO3_DB']->exec_UPDATEquery('index_config', 'uid=' . (int)$cfgRec['uid'], $field_array);
 			// Based on configuration type:
 			switch ($cfgRec['type']) {
 				case 1:
@@ -136,7 +136,7 @@ class CrawlerHook {
 						// General
 						'procInstructions' => array('[Index Cfg UID#' . $cfgRec['uid'] . ']'),
 						// General
-						'url' => intval($cfgRec['alternative_source_pid']),
+						'url' => (int)$cfgRec['alternative_source_pid'],
 						// Partly general... (for URL and file types and page tree (root))
 						'depth' => 0
 					);
@@ -179,7 +179,7 @@ class CrawlerHook {
 		// Indexer configuration ID must exist:
 		if ($params['indexConfigUid']) {
 			// Load the indexing configuration record:
-			$cfgRec = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', 'index_config', 'uid=' . intval($params['indexConfigUid']));
+			$cfgRec = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', 'index_config', 'uid=' . (int)$params['indexConfigUid']);
 			if (is_array($cfgRec)) {
 				// Unpack session data:
 				$session_data = unserialize($cfgRec['session_data']);
@@ -219,7 +219,7 @@ class CrawlerHook {
 				$field_array = array(
 					'session_data' => serialize($session_data)
 				);
-				$GLOBALS['TYPO3_DB']->exec_UPDATEquery('index_config', 'uid=' . intval($cfgRec['uid']), $field_array);
+				$GLOBALS['TYPO3_DB']->exec_UPDATEquery('index_config', 'uid=' . (int)$cfgRec['uid'], $field_array);
 			}
 		}
 		return array('log' => $params);
@@ -244,13 +244,13 @@ class CrawlerHook {
 				);
 			}
 			// Init:
-			$pid = intval($cfgRec['alternative_source_pid']) ?: $cfgRec['pid'];
+			$pid = (int)$cfgRec['alternative_source_pid'] ?: $cfgRec['pid'];
 			$numberOfRecords = $cfgRec['recordsbatch'] ? \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($cfgRec['recordsbatch'], 1) : 100;
 			// Get root line:
 			$rl = $this->getUidRootLineForClosestTemplate($cfgRec['pid']);
 			// Select
-			$recs = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', $cfgRec['table2index'], 'pid = ' . intval($pid) . '
-							AND uid > ' . intval($session_data['uid']) . BackendUtility::deleteClause($cfgRec['table2index']) . BackendUtility::BEenableFields($cfgRec['table2index']), '', 'uid', $numberOfRecords);
+			$recs = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', $cfgRec['table2index'], 'pid = ' . $pid . '
+							AND uid > ' . (int)$session_data['uid'] . BackendUtility::deleteClause($cfgRec['table2index']) . BackendUtility::BEenableFields($cfgRec['table2index']), '', 'uid', $numberOfRecords);
 			// Traverse:
 			if (count($recs)) {
 				foreach ($recs as $r) {
@@ -387,7 +387,7 @@ class CrawlerHook {
 	 */
 	public function crawler_execute_type4($cfgRec, &$session_data, $params, &$pObj) {
 		// Base page uid:
-		$pageUid = intval($params['url']);
+		$pageUid = (int)$params['url'];
 		// Get array of URLs from page:
 		$pageRow = BackendUtility::getRecord('pages', $pageUid);
 		$res = $pObj->getUrlsForPageRow($pageRow);
@@ -404,7 +404,7 @@ class CrawlerHook {
 		// Add subpages to log now:
 		if ($params['depth'] < $cfgRec['depth']) {
 			// Subpages selected
-			$recs = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid,title', 'pages', 'pid = ' . intval($pageUid) . BackendUtility::deleteClause('pages'));
+			$recs = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid,title', 'pages', 'pid = ' . $pageUid . BackendUtility::deleteClause('pages'));
 			// Traverse subpages and add to queue:
 			if (count($recs)) {
 				foreach ($recs as $r) {
@@ -436,15 +436,15 @@ class CrawlerHook {
 		// For each running configuration, look up how many log entries there are which are scheduled for execution and if none, clear the "set_id" (means; Processing was DONE)
 		foreach ($runningIndexingConfigurations as $cfgRec) {
 			// Look for ended processes:
-			$queued_items = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('*', 'tx_crawler_queue', 'set_id=' . intval($cfgRec['set_id']) . ' AND exec_time=0');
+			$queued_items = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('*', 'tx_crawler_queue', 'set_id=' . (int)$cfgRec['set_id'] . ' AND exec_time=0');
 			if (!$queued_items) {
 				// Lookup old phash rows:
-				$oldPhashRows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('phash', 'index_phash', 'freeIndexUid=' . intval($cfgRec['uid']) . ' AND freeIndexSetId<>' . $cfgRec['set_id']);
+				$oldPhashRows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('phash', 'index_phash', 'freeIndexUid=' . (int)$cfgRec['uid'] . ' AND freeIndexSetId<>' . (int)$cfgRec['set_id']);
 				foreach ($oldPhashRows as $pHashRow) {
 					// Removing old registrations for all tables (code copied from class.tx_indexedsearch_modfunc1.php)
 					$tableArr = explode(',', 'index_phash,index_rel,index_section,index_grlist,index_fulltext,index_debug');
 					foreach ($tableArr as $table) {
-						$GLOBALS['TYPO3_DB']->exec_DELETEquery($table, 'phash=' . intval($pHashRow['phash']));
+						$GLOBALS['TYPO3_DB']->exec_DELETEquery($table, 'phash=' . (int)$pHashRow['phash']);
 					}
 				}
 				// End process by updating index-config record:
@@ -452,7 +452,7 @@ class CrawlerHook {
 					'set_id' => 0,
 					'session_data' => ''
 				);
-				$GLOBALS['TYPO3_DB']->exec_UPDATEquery('index_config', 'uid=' . intval($cfgRec['uid']), $field_array);
+				$GLOBALS['TYPO3_DB']->exec_UPDATEquery('index_config', 'uid=' . (int)$cfgRec['uid'], $field_array);
 			}
 		}
 	}
@@ -681,7 +681,7 @@ class CrawlerHook {
 	 */
 	public function deleteFromIndex($id) {
 		// Lookup old phash rows:
-		$oldPhashRows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('phash', 'index_section', 'page_id=' . intval($id));
+		$oldPhashRows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('phash', 'index_section', 'page_id=' . (int)$id);
 		if (count($oldPhashRows)) {
 			$pHashesToDelete = array();
 			foreach ($oldPhashRows as $pHashRow) {
@@ -749,8 +749,8 @@ class CrawlerHook {
 						AND type=1
 						AND table2index=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($table, 'index_config') . '
 						AND (
-								(alternative_source_pid=0 AND pid=' . intval($currentRecord['pid']) . ')
-								OR (alternative_source_pid=' . intval($currentRecord['pid']) . ')
+								(alternative_source_pid=0 AND pid=' . (int)$currentRecord['pid'] . ')
+								OR (alternative_source_pid=' . (int)$currentRecord['pid'] . ')
 							)
 						AND records_indexonchange=1
 						' . BackendUtility::deleteClause('index_config'));

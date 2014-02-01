@@ -278,7 +278,7 @@ class SpriteGenerator {
 	 * @return SpriteGenerator An instance of $this, to enable "chaining".
 	 */
 	public function setIconSpace($value) {
-		$this->space = intval($value);
+		$this->space = (int)$value;
 		return $this;
 	}
 

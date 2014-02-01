@@ -399,7 +399,7 @@ class RecordList {
 					return list ? list : idList;
 				}
 
-				if (top.fsMod) top.fsMod.recentIds["web"] = ' . intval($this->id) . ';
+				if (top.fsMod) top.fsMod.recentIds["web"] = ' . (int)$this->id . ';
 			');
 			// Setting up the context sensitive menu:
 			$this->doc->getContextMenuCode();

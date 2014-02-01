@@ -53,17 +53,17 @@ class ContentContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractCon
 		$renderObjName = $conf['renderObj'] ?: '<' . $conf['table'];
 		$renderObjKey = $conf['renderObj'] ? 'renderObj' : '';
 		$renderObjConf = $conf['renderObj.'];
-		$slide = isset($conf['slide.']) ? intval($this->cObj->stdWrap($conf['slide'], $conf['slide.'])) : intval($conf['slide']);
+		$slide = isset($conf['slide.']) ? (int)$this->cObj->stdWrap($conf['slide'], $conf['slide.']) : (int)$conf['slide'];
 		if (!$slide) {
 			$slide = 0;
 		}
-		$slideCollect = isset($conf['slide.']['collect.']) ? intval($this->cObj->stdWrap($conf['slide.']['collect'], $conf['slide.']['collect.'])) : intval($conf['slide.']['collect']);
+		$slideCollect = isset($conf['slide.']['collect.']) ? (int)$this->cObj->stdWrap($conf['slide.']['collect'], $conf['slide.']['collect.']) : (int)$conf['slide.']['collect'];
 		if (!$slideCollect) {
 			$slideCollect = 0;
 		}
-		$slideCollectReverse = isset($conf['slide.']['collectReverse.']) ? intval($this->cObj->stdWrap($conf['slide.']['collectReverse'], $conf['slide.']['collectReverse.'])) : intval($conf['slide.']['collectReverse']);
+		$slideCollectReverse = isset($conf['slide.']['collectReverse.']) ? (int)$this->cObj->stdWrap($conf['slide.']['collectReverse'], $conf['slide.']['collectReverse.']) : (int)$conf['slide.']['collectReverse'];
 		$slideCollectReverse = $slideCollectReverse ? TRUE : FALSE;
-		$slideCollectFuzzy = isset($conf['slide.']['collectFuzzy.']) ? intval($this->cObj->stdWrap($conf['slide.']['collectFuzzy'], $conf['slide.']['collectFuzzy.'])) : intval($conf['slide.']['collectFuzzy']);
+		$slideCollectFuzzy = isset($conf['slide.']['collectFuzzy.']) ? (int)$this->cObj->stdWrap($conf['slide.']['collectFuzzy'], $conf['slide.']['collectFuzzy.']) : (int)$conf['slide.']['collectFuzzy'];
 		if ($slideCollectFuzzy) {
 			$slideCollectFuzzy = TRUE;
 		} else {

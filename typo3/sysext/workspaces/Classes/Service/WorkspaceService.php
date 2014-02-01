@@ -128,7 +128,7 @@ class WorkspaceService implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return 	array		Command array for tcemain
 	 */
 	public function getCmdArrayForPublishWS($wsid, $doSwap, $pageId = 0, $language = NULL) {
-		$wsid = intval($wsid);
+		$wsid = (int)$wsid;
 		$cmd = array();
 		if ($wsid >= -1 && $wsid !== 0) {
 			// Define stage to select:
@@ -162,7 +162,7 @@ class WorkspaceService implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return 	array		Command array for tcemain
 	 */
 	public function getCmdArrayForFlushWS($wsid, $flush = TRUE, $pageId = 0, $language = NULL) {
-		$wsid = intval($wsid);
+		$wsid = (int)$wsid;
 		$cmd = array();
 		if ($wsid >= -1 && $wsid !== 0) {
 			// Define stage to select:
@@ -195,8 +195,8 @@ class WorkspaceService implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return 	array		Array of all records uids etc. First key is table name, second key incremental integer. Records are associative arrays with uid and t3ver_oidfields. The pid of the online record is found as "livepid" the pid of the offline record is found in "wspid
 	 */
 	public function selectVersionsInWorkspace($wsid, $filter = 0, $stage = -99, $pageId = -1, $recursionLevel = 0, $selectionType = 'tables_select', $language = NULL) {
-		$wsid = intval($wsid);
-		$filter = intval($filter);
+		$wsid = (int)$wsid;
+		$filter = (int)$filter;
 		$output = array();
 		// Contains either nothing or a list with live-uids
 		if ($pageId != -1 && $recursionLevel > 0) {
@@ -224,7 +224,7 @@ class WorkspaceService implements \TYPO3\CMS\Core\SingletonInterface {
 			}
 			if ($GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
 				$recs = $this->selectAllVersionsFromPages($table, $pageList, $wsid, $filter, $stage, $language);
-				if (intval($GLOBALS['TCA'][$table]['ctrl']['versioningWS']) === 2) {
+				if ((int)$GLOBALS['TCA'][$table]['ctrl']['versioningWS'] === 2) {
 					$moveRecs = $this->getMoveToPlaceHolderFromPages($table, $pageList, $wsid, $filter, $stage);
 					$recs = array_merge($recs, $moveRecs);
 				}
@@ -288,7 +288,7 @@ class WorkspaceService implements \TYPO3\CMS\Core\SingletonInterface {
 			$where .= ' AND A.t3ver_count ' . ($filter === 1 ? '= 0' : '> 0');
 		}
 		if ($stage != -99) {
-			$where .= ' AND A.t3ver_stage=' . intval($stage);
+			$where .= ' AND A.t3ver_stage=' . (int)$stage;
 		}
 		// Table B (online) must have PID >= 0 to signify being online.
 		$where .= ' AND B.pid>=0';
@@ -335,7 +335,7 @@ class WorkspaceService implements \TYPO3\CMS\Core\SingletonInterface {
 			$where .= ' AND C.t3ver_count ' . ($filter === 1 ? '= 0' : '> 0');
 		}
 		if ($stage != -99) {
-			$where .= ' AND C.t3ver_stage=' . intval($stage);
+			$where .= ' AND C.t3ver_stage=' . (int)$stage;
 		}
 		if ($pageList) {
 			$pidField = $table === 'pages' ? 'B.uid' : 'A.pid';
@@ -379,9 +379,9 @@ class WorkspaceService implements \TYPO3\CMS\Core\SingletonInterface {
 			$pageList = implode(',', $newList);
 		}
 		unset($searchObj);
-		if (intval($GLOBALS['TCA']['pages']['ctrl']['versioningWS']) === 2 && $pageList) {
+		if ((int)$GLOBALS['TCA']['pages']['ctrl']['versioningWS'] === 2 && $pageList) {
 			// Remove the "subbranch" if a page was moved away
-			$movedAwayPages = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid, pid, t3ver_move_id', 'pages', 't3ver_move_id IN (' . $pageList . ') AND t3ver_wsid=' . intval($wsid) . BackendUtility::deleteClause('pages'), '', 'uid', '', 't3ver_move_id');
+			$movedAwayPages = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid, pid, t3ver_move_id', 'pages', 't3ver_move_id IN (' . $pageList . ') AND t3ver_wsid=' . (int)$wsid . BackendUtility::deleteClause('pages'), '', 'uid', '', 't3ver_move_id');
 			$pageIds = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $pageList, TRUE);
 			// move all pages away
 			$newList = array_diff($pageIds, array_keys($movedAwayPages));
@@ -406,8 +406,8 @@ class WorkspaceService implements \TYPO3\CMS\Core\SingletonInterface {
 				$pageIds[] = $pageId;
 			}
 			foreach ($pageIds as $pageId) {
-				if (intval($pages[$pageId]['t3ver_move_id']) > 0) {
-					$newList[] = intval($pages[$pageId]['t3ver_move_id']);
+				if ((int)$pages[$pageId]['t3ver_move_id'] > 0) {
+					$newList[] = (int)$pages[$pageId]['t3ver_move_id'];
 				} else {
 					$newList[] = $pageId;
 				}
@@ -488,9 +488,9 @@ class WorkspaceService implements \TYPO3\CMS\Core\SingletonInterface {
 		$isNewPage = FALSE;
 		// If the language is not default, check state of overlay
 		if ($language > 0) {
-			$whereClause = 'pid = ' . intval($id);
-			$whereClause .= ' AND ' . $GLOBALS['TCA']['pages_language_overlay']['ctrl']['languageField'] . ' = ' . intval($language);
-			$whereClause .= ' AND t3ver_wsid = ' . intval($GLOBALS['BE_USER']->workspace);
+			$whereClause = 'pid = ' . (int)$id;
+			$whereClause .= ' AND ' . $GLOBALS['TCA']['pages_language_overlay']['ctrl']['languageField'] . ' = ' . (int)$language;
+			$whereClause .= ' AND t3ver_wsid = ' . (int)$GLOBALS['BE_USER']->workspace;
 			$whereClause .= BackendUtility::deleteClause('pages_language_overlay');
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('t3ver_state', 'pages_language_overlay', $whereClause);
 			if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {

@@ -44,7 +44,7 @@ class MathUtility {
 	 */
 	static public function forceIntegerInRange($theInt, $min, $max = 2000000000, $defaultValue = 0) {
 		// Returns $theInt as an integer in the integerspace from $min to $max
-		$theInt = intval($theInt);
+		$theInt = (int)$theInt;
 		// If the input value is zero after being converted to integer,
 		// defaultValue may set another default value for it.
 		if ($defaultValue && !$theInt) {
@@ -66,7 +66,7 @@ class MathUtility {
 	 * @return integer
 	 */
 	static public function convertToPositiveInteger($theInt) {
-		$theInt = intval($theInt);
+		$theInt = (int)$theInt;
 		if ($theInt < 0) {
 			$theInt = 0;
 		}
@@ -86,7 +86,7 @@ class MathUtility {
 		if ($var === '' || is_object($var) || is_array($var)) {
 			return FALSE;
 		}
-		return (string) intval($var) === (string) $var;
+		return (string) (int)$var === (string) $var;
 	}
 
 	/**

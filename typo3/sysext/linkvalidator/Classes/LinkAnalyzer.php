@@ -395,9 +395,9 @@ class LinkAnalyzer {
 	 * @return string Returns the list with a comma in the end (if any pages selected!)
 	 */
 	public function extGetTreeList($id, $depth, $begin = 0, $permsClause, $considerHidden = FALSE) {
-		$depth = intval($depth);
-		$begin = intval($begin);
-		$id = intval($id);
+		$depth = (int)$depth;
+		$begin = (int)$begin;
+		$id = (int)$id;
 		$theList = '';
 		if ($depth > 0) {
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(

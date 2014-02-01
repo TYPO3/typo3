@@ -70,7 +70,7 @@ class CrawlerHook {
 		}
 		// Increase step counter (this is just an example of how the session data can be used - to track how many instances of indexing is left)
 		$session_data['step']++;
-		switch ((int) $session_data['step']) {
+		switch ((int)$session_data['step']) {
 			case 1:
 				// Indexing Example: Content accessed with GET parameters added to URL:
 				// Load indexer if not yet [DON'T CHANGE]:

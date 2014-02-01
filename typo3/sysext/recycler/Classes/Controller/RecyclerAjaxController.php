@@ -94,8 +94,8 @@ class RecyclerAjaxController {
 		switch ($this->command) {
 			case 'getDeletedRecords':
 				$table = GeneralUtility::_GP('table') ? GeneralUtility::_GP('table') : GeneralUtility::_GP('tableDefault');
-				$limit = GeneralUtility::_GP('limit') ? (int) GeneralUtility::_GP('limit') : (int) GeneralUtility::_GP('pagingSizeDefault');
-				$start = GeneralUtility::_GP('start') ? (int) GeneralUtility::_GP('start') : 0;
+				$limit = GeneralUtility::_GP('limit') ? (int)GeneralUtility::_GP('limit') : (int)GeneralUtility::_GP('pagingSizeDefault');
+				$start = GeneralUtility::_GP('start') ? (int)GeneralUtility::_GP('start') : 0;
 				$filter = GeneralUtility::_GP('filterTxt') ? GeneralUtility::_GP('filterTxt') : '';
 				$startUid = GeneralUtility::_GP('startUid') ? GeneralUtility::_GP('startUid') : '';
 				$depth = GeneralUtility::_GP('depth') ? GeneralUtility::_GP('depth') : '';

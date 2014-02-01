@@ -213,7 +213,7 @@ class CleanUp extends Action\AbstractAction implements Action\ActionInterface {
 								$ok = TRUE;
 							}
 						} else {
-							if (fileatime($absoluteFile) < $GLOBALS['EXEC_TIME'] - intval($timeMap[$condition]) * 60 * 60 * 24) {
+							if (fileatime($absoluteFile) < $GLOBALS['EXEC_TIME'] - (int)$timeMap[$condition] * 60 * 60 * 24) {
 								$ok = TRUE;
 							}
 						}

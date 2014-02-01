@@ -119,7 +119,7 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface {
 				} else {
 					$value = serialize($executions);
 				}
-				$GLOBALS['TYPO3_DB']->exec_UPDATEquery('tx_scheduler_task', 'uid = ' . intval($row['uid']), array('serialized_executions' => $value));
+				$GLOBALS['TYPO3_DB']->exec_UPDATEquery('tx_scheduler_task', 'uid = ' . (int)$row['uid'], array('serialized_executions' => $value));
 			}
 		}
 		$GLOBALS['TYPO3_DB']->sql_free_result($res);
@@ -271,7 +271,7 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface {
 			$queryArray = array(
 				'SELECT' => 'uid, serialized_task_object',
 				'FROM' => 'tx_scheduler_task',
-				'WHERE' => 'uid = ' . intval($uid),
+				'WHERE' => 'uid = ' . (int)$uid,
 				'LIMIT' => 1
 			);
 		}
@@ -308,7 +308,7 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @see tx_scheduler::fetchTask()
 	 */
 	public function fetchTaskRecord($uid) {
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'tx_scheduler_task', 'uid = ' . intval($uid));
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'tx_scheduler_task', 'uid = ' . (int)$uid);
 		// If the task is not found, throw an exception
 		if ($GLOBALS['TYPO3_DB']->sql_num_rows($res) == 0) {
 			throw new \OutOfBoundsException('No task', 1247827244);
@@ -395,7 +395,7 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @see tx_scheduler::fetchTask()
 	 */
 	public function scheduleNextSchedulerRunUsingAtDaemon() {
-		if ((int) $this->extConf['useAtdaemon'] !== 1) {
+		if ((int)$this->extConf['useAtdaemon'] !== 1) {
 			return FALSE;
 		}
 		/** @var $registry \TYPO3\CMS\Core\Registry */
@@ -403,7 +403,7 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface {
 		// Get at job id from registry and remove at job
 		$atJobId = $registry->get('tx_scheduler', 'atJobId');
 		if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($atJobId)) {
-			shell_exec('atrm ' . (int) $atJobId . ' 2>&1');
+			shell_exec('atrm ' . (int)$atJobId . ' 2>&1');
 		}
 		// Can not use fetchTask() here because if tasks have just executed
 		// they are not in the list of next executions
@@ -445,7 +445,7 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface {
 				}
 			}
 			if ($outputParts[0] === 'job' && \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($outputParts[1])) {
-				$atJobId = (int) $outputParts[1];
+				$atJobId = (int)$outputParts[1];
 				$registry->set('tx_scheduler', 'atJobId', $atJobId);
 			}
 		}

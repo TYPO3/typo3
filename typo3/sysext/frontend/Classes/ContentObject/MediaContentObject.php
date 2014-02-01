@@ -126,8 +126,8 @@ class MediaContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractConte
 		$typeConf = $conf['mimeConf.'][$mime . '.'][$conf['type'] . '.'] ?: array();
 		$conf['predefined'] = array();
 		// Width and height
-		$conf['width'] = intval($this->doFlexFormOverlay($conf, 'width'));
-		$conf['height'] = intval($this->doFlexFormOverlay($conf, 'height'));
+		$conf['width'] = (int)$this->doFlexFormOverlay($conf, 'width');
+		$conf['height'] = (int)$this->doFlexFormOverlay($conf, 'height');
 		if (is_array($conf['parameter.']['mmMediaOptions'])) {
 			foreach ($conf['parameter.']['mmMediaOptions'] as $key => $value) {
 				if ($key == 'mmMediaCustomParameterContainer') {

@@ -131,12 +131,12 @@ class Typo3QuerySettings implements \TYPO3\CMS\Extbase\Persistence\Generic\Query
 
 		// Set correct language uid for frontend handling
 		if (isset($GLOBALS['TSFE']) && is_object($GLOBALS['TSFE'])) {
-			$this->setLanguageUid(intval($GLOBALS['TSFE']->sys_language_content));
+			$this->setLanguageUid((int)$GLOBALS['TSFE']->sys_language_content);
 			$this->setLanguageOverlayMode($GLOBALS['TSFE']->sys_language_contentOL ?: FALSE);
 			$this->setLanguageMode($GLOBALS['TSFE']->sys_language_mode ?: NULL);
-		} elseif (intval(GeneralUtility::_GP('L'))) {
+		} elseif ((int)GeneralUtility::_GP('L')) {
 			// Set language from 'L' parameter
-			$this->setLanguageUid(intval(GeneralUtility::_GP('L')));
+			$this->setLanguageUid((int)GeneralUtility::_GP('L'));
 		}
 	}
 

@@ -250,7 +250,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 			// The root has a pseudo record in pageinfo...
 			$row = $GLOBALS['SOBE']->pageinfo;
 		} else {
-			$result = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'pages', 'uid=' . intval($id) . $delClause);
+			$result = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'pages', 'uid=' . (int)$id . $delClause);
 			$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result);
 			BackendUtility::workspaceOL('pages', $row);
 		}
@@ -271,7 +271,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 					$this->fieldArray = explode(',', 'title,uid,alias,starttime,endtime,fe_group,target,url,shortcut,shortcut_mode');
 			}
 			// Getting select-depth:
-			$depth = intval($GLOBALS['SOBE']->MOD_SETTINGS['pages_levels']);
+			$depth = (int)$GLOBALS['SOBE']->MOD_SETTINGS['pages_levels'];
 			// Half line is drawn
 			$theData = array();
 			$theData['subject'] = $this->widthGif;
@@ -400,11 +400,13 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 			$langListArr = GeneralUtility::intExplode(',', $langList);
 			$defLanguageCount = array();
 			$defLangBinding = array();
+			$grid = '';
 			// For each languages... :
 			// If not languageMode, then we'll only be through this once.
 			foreach ($langListArr as $lP) {
-				if (count($langListArr) === 1 || $lP == 0) {
-					$showLanguage = ' AND sys_language_uid IN (' . intval($lP) . ',-1)';
+				$lP = (int)$lP;
+				if (count($langListArr) === 1 || $lP === 0) {
+					$showLanguage = ' AND sys_language_uid IN (' . $lP . ',-1)';
 				} else {
 					$showLanguage = ' AND sys_language_uid=' . $lP;
 				}
@@ -525,8 +527,8 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 					// GRID VIEW:
 					$grid .= '<div class="t3-gridContainer"><table border="0" cellspacing="0" cellpadding="0" width="100%" height="100%" class="t3-page-columns t3-gridTable">';
 					// Add colgroups
-					$colCount = intval($backendLayout['__config']['backend_layout.']['colCount']);
-					$rowCount = intval($backendLayout['__config']['backend_layout.']['rowCount']);
+					$colCount = (int)$backendLayout['__config']['backend_layout.']['colCount'];
+					$rowCount = (int)$backendLayout['__config']['backend_layout.']['rowCount'];
 					$grid .= '<colgroup>';
 					for ($i = 0; $i < $colCount; $i++) {
 						$grid .= '<col style="width:' . 100 / $colCount . '%"></col>';
@@ -545,10 +547,10 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 								continue;
 							}
 							// Which tt_content colPos should be displayed inside this cell
-							$columnKey = intval($columnConfig['colPos']);
+							$columnKey = (int)$columnConfig['colPos'];
 							// Render the grid cell
-							$colSpan = intval($columnConfig['colspan']);
-							$rowSpan = intval($columnConfig['rowspan']);
+							$colSpan = (int)$columnConfig['colspan'];
+							$rowSpan = (int)$columnConfig['rowspan'];
 							$grid .= '<td valign="top"' .
 								($colSpan > 0 ? ' colspan="' . $colSpan . '"' : '') .
 								($rowSpan > 0 ? ' rowspan="' . $rowSpan . '"' : '') .
@@ -591,6 +593,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 				$sCont = array();
 				foreach ($langListArr as $lP) {
 					// Header:
+					$lP = (int)$lP;
 					$cCont[$lP] = '
 						<td valign="top" class="t3-page-lang-column">
 							<h3>' . htmlspecialchars($this->tt_contentConfig['languageCols'][$lP]) . '</h3>
@@ -600,7 +603,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 					$viewLink = '<a href="#" onclick="' . htmlspecialchars(BackendUtility::viewOnClick($this->id, $this->backPath, BackendUtility::BEgetRootLine($this->id), '', '', ('&L=' . $lP))) . '">' . IconUtility::getSpriteIcon('actions-document-view') . '</a>';
 					// Language overlay page header:
 					if ($lP) {
-						list($lpRecord) = BackendUtility::getRecordsByField('pages_language_overlay', 'pid', $id, 'AND sys_language_uid=' . intval($lP));
+						list($lpRecord) = BackendUtility::getRecordsByField('pages_language_overlay', 'pid', $id, 'AND sys_language_uid=' . $lP);
 						BackendUtility::workspaceOL('pages_language_overlay', $lpRecord);
 						$params = '&edit[pages_language_overlay][' . $lpRecord['uid'] . ']=edit&overrideVals[pages_language_overlay][sys_language_uid]=' . $lP;
 						$lPLabel = $GLOBALS['SOBE']->doc->wrapClickMenuOnIcon(IconUtility::getSpriteIconForRecord('pages_language_overlay', $lpRecord), 'pages_language_overlay', $lpRecord['uid']) . $viewLink . ($GLOBALS['BE_USER']->check('tables_modify', 'pages_language_overlay') ? '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick($params, $this->backPath)) . '" title="' . $GLOBALS['LANG']->getLL('edit', TRUE) . '">' . IconUtility::getSpriteIcon('actions-document-open') . '</a>' : '') . htmlspecialchars(GeneralUtility::fixed_lgd_cs($lpRecord['title'], 20));
@@ -687,8 +690,8 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 					$numberOfContentElementsInColumn = count($rowArr);
 					$rowOut = '';
 					// If it turns out that there are not content elements in the column, then display a big button which links directly to the wizard script:
-					if ($this->doEdit && $this->option_showBigButtons && !intval($key) && $numberOfContentElementsInColumn == 0) {
-						$onClick = 'window.location.href=\'db_new_content_el.php?id=' . $id . '&colPos=' . intval($key) . '&sys_language_uid=' . $lP . '&uid_pid=' . $id . '&returnUrl=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI')) . '\';';
+					if ($this->doEdit && $this->option_showBigButtons && !(int)$key && $numberOfContentElementsInColumn == 0) {
+						$onClick = 'window.location.href=\'db_new_content_el.php?id=' . $id . '&colPos=' . (int)$key . '&sys_language_uid=' . $lP . '&uid_pid=' . $id . '&returnUrl=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI')) . '\';';
 						$theNewButton = $GLOBALS['SOBE']->doc->t3Button($onClick, $GLOBALS['LANG']->getLL('newPageContent'));
 						$theNewButton = '<img src="clear.gif" width="1" height="5" alt="" /><br />' . $theNewButton;
 					} else {
@@ -761,7 +764,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 				}
 			} else {
 				if ($this->doEdit && $GLOBALS['BE_USER']->check('tables_modify', 'pages_language_overlay')) {
-					list($languageOverlayRecord) = BackendUtility::getRecordsByField('pages_language_overlay', 'pid', $id, 'AND sys_language_uid=' . intval($GLOBALS['SOBE']->current_sys_language));
+					list($languageOverlayRecord) = BackendUtility::getRecordsByField('pages_language_overlay', 'pid', $id, 'AND sys_language_uid=' . (int)$GLOBALS['SOBE']->current_sys_language);
 					$bArray[0] = $GLOBALS['SOBE']->doc->t3Button(BackendUtility::editOnClick('&edit[pages_language_overlay][' . $languageOverlayRecord['uid'] . ']=edit', $this->backPath, ''), $GLOBALS['LANG']->getLL('editPageProperties_curLang'));
 				}
 			}
@@ -992,7 +995,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	public function pages_getTree($theRows, $pid, $qWhere, $treeIcons, $depth) {
 		$depth--;
 		if ($depth >= 0) {
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'pages', 'pid=' . intval($pid) . $qWhere, '', 'sorting');
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'pages', 'pid=' . (int)$pid . $qWhere, '', 'sorting');
 			$c = 0;
 			$rc = $GLOBALS['TYPO3_DB']->sql_num_rows($res);
 			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
@@ -1007,7 +1010,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 				}
 			}
 		} else {
-			$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('uid', 'pages', 'pid=' . intval($pid) . $qWhere);
+			$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('uid', 'pages', 'pid=' . (int)$pid . $qWhere);
 			if ($count) {
 				$this->plusPages[$pid] = $count;
 			}
@@ -1416,7 +1419,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	public function getNonTranslatedTTcontentUids($defLanguageCount, $id, $lP) {
 		if ($lP && count($defLanguageCount)) {
 			// Select all translations here:
-			$queryParts = $this->makeQueryArray('tt_content', $id, 'AND sys_language_uid=' . intval($lP) . ' AND l18n_parent IN (' . implode(',', $defLanguageCount) . ')');
+			$queryParts = $this->makeQueryArray('tt_content', $id, 'AND sys_language_uid=' . (int)$lP . ' AND l18n_parent IN (' . implode(',', $defLanguageCount) . ')');
 			$result = $GLOBALS['TYPO3_DB']->exec_SELECT_queryArray($queryParts);
 			// Flip uids:
 			$defLanguageCount = array_flip($defLanguageCount);
@@ -1562,7 +1565,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 			}
 			// If any languages are left, make selector:
 			if (count($langSelItems) > 1) {
-				$onChangeContent = 'window.location.href=\'' . $this->backPath . 'alt_doc.php?&edit[pages_language_overlay][' . $id . ']=new&overrideVals[pages_language_overlay][doktype]=' . (int) $this->pageRecord['doktype'] . '&overrideVals[pages_language_overlay][sys_language_uid]=\'+this.options[this.selectedIndex].value+\'&returnUrl=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI')) . '\'';
+				$onChangeContent = 'window.location.href=\'' . $this->backPath . 'alt_doc.php?&edit[pages_language_overlay][' . $id . ']=new&overrideVals[pages_language_overlay][doktype]=' . (int)$this->pageRecord['doktype'] . '&overrideVals[pages_language_overlay][sys_language_uid]=\'+this.options[this.selectedIndex].value+\'&returnUrl=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI')) . '\'';
 				return $GLOBALS['LANG']->getLL('new_language', TRUE) . ': <select name="createNewLanguage" onchange="' . htmlspecialchars($onChangeContent) . '">
 						' . implode('', $langSelItems) . '
 					</select><br /><br />';
@@ -1657,9 +1660,9 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	 */
 	public function numberOfRecords($table, $pid) {
 		if ($GLOBALS['TCA'][$table]) {
-			$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('uid', $table, 'pid=' . intval($pid) . BackendUtility::deleteClause($table) . BackendUtility::versioningPlaceholderClause($table));
+			$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('uid', $table, 'pid=' . (int)$pid . BackendUtility::deleteClause($table) . BackendUtility::versioningPlaceholderClause($table));
 		}
-		return intval($count);
+		return (int)$count;
 	}
 
 	/**
@@ -1876,7 +1879,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 			// Check access and whether the proper extensions are loaded:
 			if ($GLOBALS['BE_USER']->check('tables_select', $tName) && (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($tName) || GeneralUtility::inList('fe_users,tt_content', $tName) || isset($this->externalTables[$tName]))) {
 				// Make query to count records from page:
-				$c = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('uid', $tName, 'pid=' . intval($id) . BackendUtility::deleteClause($tName) . BackendUtility::versioningPlaceholderClause($tName));
+				$c = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('uid', $tName, 'pid=' . (int)$id . BackendUtility::deleteClause($tName) . BackendUtility::versioningPlaceholderClause($tName));
 				// If records were found (or if "tt_content" is the table...):
 				if ($c || GeneralUtility::inList('tt_content', $tName)) {
 					// Add row to menu:

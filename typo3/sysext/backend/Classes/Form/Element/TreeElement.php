@@ -80,7 +80,7 @@ class TreeElement {
 		}
 		$allowedUids = array();
 		foreach ($possibleSelectboxItems as $item) {
-			if (intval($item[1]) > 0) {
+			if ((int)$item[1] > 0) {
 				$allowedUids[] = $item[1];
 			}
 		}
@@ -115,13 +115,13 @@ class TreeElement {
 		$itemArray[] = $treeData;
 		$treeData = json_encode($itemArray);
 		$id = md5($PA['itemFormElName']);
-		if (isset($PA['fieldConf']['config']['size']) && intval($PA['fieldConf']['config']['size']) > 0) {
-			$height = intval($PA['fieldConf']['config']['size']) * 20;
+		if (isset($PA['fieldConf']['config']['size']) && (int)$PA['fieldConf']['config']['size'] > 0) {
+			$height = (int)$PA['fieldConf']['config']['size'] * 20;
 		} else {
 			$height = 280;
 		}
-		if (isset($PA['fieldConf']['config']['autoSizeMax']) && intval($PA['fieldConf']['config']['autoSizeMax']) > 0) {
-			$autoSizeMax = intval($PA['fieldConf']['config']['autoSizeMax']) * 20;
+		if (isset($PA['fieldConf']['config']['autoSizeMax']) && (int)$PA['fieldConf']['config']['autoSizeMax'] > 0) {
+			$autoSizeMax = (int)$PA['fieldConf']['config']['autoSizeMax'] * 20;
 		}
 		$header = FALSE;
 		$expanded = FALSE;
@@ -131,7 +131,7 @@ class TreeElement {
 			$header = $appearance['showHeader'] ? TRUE : FALSE;
 			$expanded = $appearance['expandAll'] === TRUE;
 			if (isset($appearance['width'])) {
-				$width = intval($appearance['width']);
+				$width = (int)$appearance['width'];
 			}
 		}
 		$onChange = '';
@@ -161,7 +161,7 @@ class TreeElement {
 			TYPO3.Components.Tree.StandardTreeItemData["' . $id . '"] = ' . $treeData . ';
 			var tree' . $id . ' = new TYPO3.Components.Tree.StandardTree({
 				id: "' . $id . '",
-				showHeader: ' . intval($header) . ',
+				showHeader: ' . (int)$header . ',
 				onChange: "' . $onChange . '",
 				countSelectedNodes: ' . count($selectedNodes) . ',
 				width: ' . $width . ',
@@ -190,7 +190,7 @@ class TreeElement {
 						}
 					}
 				},
-				tcaMaxItems: ' . ($PA['fieldConf']['config']['maxitems'] ? intval($PA['fieldConf']['config']['maxitems']) : 99999) . ',
+				tcaMaxItems: ' . ($PA['fieldConf']['config']['maxitems'] ? (int)$PA['fieldConf']['config']['maxitems'] : 99999) . ',
 				tcaSelectRecursiveAllowed: ' . ($appearance['allowRecursiveMode'] ? 'true' : 'false') . ',
 				tcaSelectRecursive: false,
 				tcaExclusiveKeys: "' . ($PA['fieldConf']['config']['exclusiveKeys'] ? $PA['fieldConf']['config']['exclusiveKeys'] : '') . '",

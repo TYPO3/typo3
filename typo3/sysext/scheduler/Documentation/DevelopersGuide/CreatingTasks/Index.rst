@@ -1,4 +1,5 @@
 ﻿.. ==================================================
+﻿﻿﻿.. ==================================================
 .. FOR YOUR INFORMATION
 .. --------------------------------------------------
 .. -*- coding: utf-8 -*- with BOM.
@@ -195,7 +196,7 @@ does not contain any harmful input (for example, XSS).
 
 The safest way to proceed is to very strictly handle input. For
 example, if all you expect is some integer number, pass the value
-through a call to :code:`intval()` . If it's a string, but you don't
+through a typecast to (int). If it's a string, but you don't
 expect any markup in it, run it through :code:`strip\_tags()` . Such
 simple measures can filter most of the harmful code.
 

@@ -253,8 +253,8 @@ class GraphicalMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu\
 			// File exists
 			if (file_exists($gifFileName)) {
 				$info = @getimagesize($gifFileName);
-				$this->result[$resKey][$key]['output_w'] = intval($info[0]);
-				$this->result[$resKey][$key]['output_h'] = intval($info[1]);
+				$this->result[$resKey][$key]['output_w'] = (int)$info[0];
+				$this->result[$resKey][$key]['output_h'] = (int)$info[1];
 				$this->result[$resKey][$key]['output_file'] = $gifFileName;
 			} elseif ($isGD) {
 				// file is generated

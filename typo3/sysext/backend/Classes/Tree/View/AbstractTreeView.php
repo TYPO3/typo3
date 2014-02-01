@@ -398,7 +398,6 @@ abstract class AbstractTreeView {
 		// Get stored tree structure AND updating it if needed according to incoming PM GET var.
 		$this->initializePositionSaving();
 		// Init done:
-		$titleLen = intval($this->BE_USER->uc['titleLen']);
 		$treeArr = array();
 		// Traverse mounts:
 		foreach ($this->MOUNTS as $idx => $uid) {
@@ -451,7 +450,7 @@ abstract class AbstractTreeView {
 	 * @todo Define visibility
 	 */
 	public function printTree($treeArr = '') {
-		$titleLen = intval($this->BE_USER->uc['titleLen']);
+		$titleLen = (int)$this->BE_USER->uc['titleLen'];
 		if (!is_array($treeArr)) {
 			$treeArr = $this->tree;
 		}
@@ -763,7 +762,7 @@ abstract class AbstractTreeView {
 		// Buffer for id hierarchy is reset:
 		$this->buffer_idH = array();
 		// Init vars
-		$depth = intval($depth);
+		$depth = (int)$depth;
 		$HTML = '';
 		$a = 0;
 		$res = $this->getDataInit($uid, $subCSSclass);

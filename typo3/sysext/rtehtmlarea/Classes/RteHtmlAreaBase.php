@@ -464,15 +464,15 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 				if ($RTEWidthOverride) {
 					if (strstr($RTEWidthOverride, '%')) {
 						if ($this->client['browser'] != 'msie') {
-							$RTEWidth = intval($RTEWidthOverride) > 0 ? $RTEWidthOverride : '100%';
+							$RTEWidth = (int)$RTEWidthOverride > 0 ? $RTEWidthOverride : '100%';
 						}
 					} else {
-						$RTEWidth = intval($RTEWidthOverride) > 0 ? intval($RTEWidthOverride) : $RTEWidth;
+						$RTEWidth = (int)$RTEWidthOverride > 0 ? (int)$RTEWidthOverride : $RTEWidth;
 					}
 				}
 				$RTEWidth = strstr($RTEWidth, '%') ? $RTEWidth : $RTEWidth . 'px';
 				$RTEHeight = $RTEHeight + ($this->TCEform->docLarge ? (isset($GLOBALS['BE_USER']->userTS['options.']['RTELargeHeightIncrement']) ? $GLOBALS['BE_USER']->userTS['options.']['RTELargeHeightIncrement'] : 0) : 0);
-				$RTEHeightOverride = is_object($GLOBALS['BE_USER']) && isset($GLOBALS['BE_USER']->uc['rteHeight']) && intval($GLOBALS['BE_USER']->uc['rteHeight']) ? intval($GLOBALS['BE_USER']->uc['rteHeight']) : intval($this->thisConfig['RTEHeightOverride']);
+				$RTEHeightOverride = is_object($GLOBALS['BE_USER']) && isset($GLOBALS['BE_USER']->uc['rteHeight']) && (int)$GLOBALS['BE_USER']->uc['rteHeight'] ? (int)$GLOBALS['BE_USER']->uc['rteHeight'] : (int)$this->thisConfig['RTEHeightOverride'];
 				$RTEHeight = $RTEHeightOverride > 0 ? $RTEHeightOverride : $RTEHeight;
 				$RTEPaddingRight = '2px';
 				$editorWrapWidth = '99%';
@@ -890,9 +890,9 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 			RTEarea[editornumber].textAreaId = "' . $textAreaId . '";
 			RTEarea[editornumber].id = "RTEarea" + editornumber;
 			RTEarea[editornumber].RTEWidthOverride = "' . (is_object($GLOBALS['BE_USER']) && isset($GLOBALS['BE_USER']->uc['rteWidth']) && trim($GLOBALS['BE_USER']->uc['rteWidth']) ? trim($GLOBALS['BE_USER']->uc['rteWidth']) : trim($this->thisConfig['RTEWidthOverride'])) . '";
-			RTEarea[editornumber].RTEHeightOverride = "' . (is_object($GLOBALS['BE_USER']) && isset($GLOBALS['BE_USER']->uc['rteHeight']) && intval($GLOBALS['BE_USER']->uc['rteHeight']) ? intval($GLOBALS['BE_USER']->uc['rteHeight']) : intval($this->thisConfig['RTEHeightOverride'])) . '";
+			RTEarea[editornumber].RTEHeightOverride = "' . (is_object($GLOBALS['BE_USER']) && isset($GLOBALS['BE_USER']->uc['rteHeight']) && (int)$GLOBALS['BE_USER']->uc['rteHeight'] ? (int)$GLOBALS['BE_USER']->uc['rteHeight'] : (int)$this->thisConfig['RTEHeightOverride']) . '";
 			RTEarea[editornumber].resizable = ' . (is_object($GLOBALS['BE_USER']) && isset($GLOBALS['BE_USER']->uc['rteResize']) && $GLOBALS['BE_USER']->uc['rteResize'] ? 'true' : (trim($this->thisConfig['rteResize']) ? 'true' : 'false')) . ';
-			RTEarea[editornumber].maxHeight = "' . (is_object($GLOBALS['BE_USER']) && isset($GLOBALS['BE_USER']->uc['rteMaxHeight']) && intval($GLOBALS['BE_USER']->uc['rteMaxHeight']) ? trim($GLOBALS['BE_USER']->uc['rteMaxHeight']) : (intval($this->thisConfig['rteMaxHeight']) ?: '2000')) . '";
+			RTEarea[editornumber].maxHeight = "' . (is_object($GLOBALS['BE_USER']) && isset($GLOBALS['BE_USER']->uc['rteMaxHeight']) && (int)$GLOBALS['BE_USER']->uc['rteMaxHeight'] ? trim($GLOBALS['BE_USER']->uc['rteMaxHeight']) : ((int)$this->thisConfig['rteMaxHeight'] ?: '2000')) . '";
 			RTEarea[editornumber].fullScreen = ' . ($this->fullScreen ? 'true' : 'false') . ';
 			RTEarea[editornumber].showStatusBar = ' . (trim($this->thisConfig['showStatusBar']) ? 'true' : 'false') . ';
 			RTEarea[editornumber].enableWordClean = ' . (trim($this->thisConfig['enableWordClean']) ? 'true' : 'false') . ';
@@ -909,11 +909,11 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 			RTEarea[editornumber].dialogueWindows = new Object();';
 		if (isset($this->thisConfig['dialogueWindows.']['defaultPositionFromTop'])) {
 			$configureRTEInJavascriptString .= '
-			RTEarea[editornumber].dialogueWindows.positionFromTop = ' . intval($this->thisConfig['dialogueWindows.']['defaultPositionFromTop']) . ';';
+			RTEarea[editornumber].dialogueWindows.positionFromTop = ' . (int)$this->thisConfig['dialogueWindows.']['defaultPositionFromTop'] . ';';
 		}
 		if (isset($this->thisConfig['dialogueWindows.']['defaultPositionFromLeft'])) {
 			$configureRTEInJavascriptString .= '
-			RTEarea[editornumber].dialogueWindows.positionFromLeft = ' . intval($this->thisConfig['dialogueWindows.']['defaultPositionFromLeft']) . ';';
+			RTEarea[editornumber].dialogueWindows.positionFromLeft = ' . (int)$this->thisConfig['dialogueWindows.']['defaultPositionFromLeft'] . ';';
 		}
 		// The following properties apply only to the backend
 		if (!$this->is_FE()) {

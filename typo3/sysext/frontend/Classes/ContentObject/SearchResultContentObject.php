@@ -161,11 +161,11 @@ class SearchResultContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstra
 				}
 			} elseif (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('stype')) {
 				if (substr(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('stype'), 0, 1) == 'L') {
-					$pointer = intval(substr(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('stype'), 1));
+					$pointer = (int)substr(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('stype'), 1);
 					$theRootLine = $GLOBALS['TSFE']->tmpl->rootLine;
 					// location Data:
 					$locDat_arr = explode(':', \TYPO3\CMS\Core\Utility\GeneralUtility::_POST('locationData'));
-					$pId = intval($locDat_arr[0]);
+					$pId = (int)$locDat_arr[0];
 					if ($pId) {
 						$altRootLine = $GLOBALS['TSFE']->sys_page->getRootLine($pId);
 						ksort($altRootLine);
@@ -201,7 +201,7 @@ class SearchResultContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstra
 			if ($conf['languageField.'][$this->fTable]) {
 				// (using sys_language_uid which is the ACTUAL language of the page.
 				// sys_language_content is only for selecting DISPLAY content!)
-				$endClause .= ' AND ' . $this->fTable . '.' . $conf['languageField.'][$this->fTable] . ' = ' . intval($GLOBALS['TSFE']->sys_language_uid);
+				$endClause .= ' AND ' . $this->fTable . '.' . $conf['languageField.'][$this->fTable] . ' = ' . (int)$GLOBALS['TSFE']->sys_language_uid;
 			}
 			// Build query
 			$this->build_search_query($endClause);
@@ -212,10 +212,10 @@ class SearchResultContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstra
 				$this->count_query();
 			}
 			// Range
-			$spointer = intval(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('spointer'));
+			$spointer = (int)\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('spointer');
 			$range = isset($conf['range.']) ? $this->cObj->stdWrap($conf['range'], $conf['range.']) : $conf['range'];
 			if ($range) {
-				$theRange = intval($range);
+				$theRange = (int)$range;
 			} else {
 				$theRange = 20;
 			}

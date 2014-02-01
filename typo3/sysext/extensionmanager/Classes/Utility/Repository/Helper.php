@@ -159,7 +159,7 @@ class Helper implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @see getRemoteExtListFile()
 	 */
 	public function getLocalExtListFile() {
-		$absFilePath = PATH_site . 'typo3temp/' . intval($this->repository->getUid()) . '.extensions.xml.gz';
+		$absFilePath = PATH_site . 'typo3temp/' . (int)$this->repository->getUid() . '.extensions.xml.gz';
 		return $absFilePath;
 	}
 
@@ -197,7 +197,7 @@ class Helper implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @see getRemoteMirrorListFile()
 	 */
 	public function getLocalMirrorListFile() {
-		$absFilePath = PATH_site . 'typo3temp/' . intval($this->repository->getUid()) . '.mirrors.xml.gz';
+		$absFilePath = PATH_site . 'typo3temp/' . (int)$this->repository->getUid() . '.mirrors.xml.gz';
 		return $absFilePath;
 	}
 

@@ -101,7 +101,7 @@ class CreatePagesWizardModuleFunctionController extends \TYPO3\CMS\Backend\Modul
 			if (is_array($data['pages'])) {
 				if (GeneralUtility::_GP('createInListEnd')) {
 					$endI = end($menuItems);
-					$thePid = -intval($endI['uid']);
+					$thePid = -(int)$endI['uid'];
 					if (!$thePid) {
 						$thePid = $this->pObj->id;
 					}

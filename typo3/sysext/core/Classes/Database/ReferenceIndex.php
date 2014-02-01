@@ -100,9 +100,9 @@ class ReferenceIndex {
 			'addedNodes' => 0
 		);
 		// Get current index from Database:
-		$currentRels = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'sys_refindex', 'tablename=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($table, 'sys_refindex') . ' AND recuid=' . intval($uid), '', '', '', 'hash');
+		$currentRels = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'sys_refindex', 'tablename=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($table, 'sys_refindex') . ' AND recuid=' . (int)$uid, '', '', '', 'hash');
 		// First, test to see if the record exists (including deleted-flagged)
-		if (BackendUtility::getRecordRaw($table, 'uid=' . intval($uid), 'uid')) {
+		if (BackendUtility::getRecordRaw($table, 'uid=' . (int)$uid, 'uid')) {
 			// Then, get relations:
 			$relations = $this->generateRefIndexData($table, $uid);
 			if (is_array($relations)) {
@@ -154,7 +154,7 @@ class ReferenceIndex {
 	public function generateRefIndexData($table, $uid) {
 		if (isset($GLOBALS['TCA'][$table])) {
 			// Get raw record from DB:
-			$record = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', $table, 'uid=' . intval($uid));
+			$record = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', $table, 'uid=' . (int)$uid);
 			if (is_array($record)) {
 				// Initialize:
 				$this->words_strings = array();
@@ -593,7 +593,7 @@ class ReferenceIndex {
 			if (is_array($refRec)) {
 				if ($GLOBALS['TCA'][$refRec['tablename']]) {
 					// Get that record from database:
-					$record = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', $refRec['tablename'], 'uid=' . intval($refRec['recuid']));
+					$record = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', $refRec['tablename'], 'uid=' . (int)$refRec['recuid']);
 					if (is_array($record)) {
 						// Get all relations from record, filter with fieldname:
 						$dbrels = $this->getRelations($refRec['tablename'], $record, $refRec['field']);

@@ -251,11 +251,11 @@ class ActionHandler extends \TYPO3\CMS\Workspaces\ExtDirect\AbstractHandler {
 		if (!$this->getStageService()->isValid($stageId)) {
 			throw new \InvalidArgumentException($GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:error.stageId.integer'));
 		} else {
-			$stageId = (int) $stageId;
+			$stageId = (int)$stageId;
 		}
 		$recipients = array();
 		foreach ($uidOfRecipients as $userUid) {
-			$beUserRecord = BackendUtility::getRecord('be_users', intval($userUid));
+			$beUserRecord = BackendUtility::getRecord('be_users', (int)$userUid);
 			if (is_array($beUserRecord) && $beUserRecord['email'] !== '') {
 				$uc = $beUserRecord['uc'] ? unserialize($beUserRecord['uc']) : array();
 				$recipients[$beUserRecord['email']] = array(
@@ -265,8 +265,8 @@ class ActionHandler extends \TYPO3\CMS\Workspaces\ExtDirect\AbstractHandler {
 			}
 		}
 		// the notification mode can be configured in the workspace stage record
-		$notification_mode = $this->getStageService()->getNotificationMode($stageId);
-		if (intval($notification_mode) === \TYPO3\CMS\Workspaces\Service\StagesService::MODE_NOTIFY_ALL || intval($notification_mode) === \TYPO3\CMS\Workspaces\Service\StagesService::MODE_NOTIFY_ALL_STRICT) {
+		$notification_mode = (int)$this->getStageService()->getNotificationMode($stageId);
+		if ($notification_mode === \TYPO3\CMS\Workspaces\Service\StagesService::MODE_NOTIFY_ALL || $notification_mode === \TYPO3\CMS\Workspaces\Service\StagesService::MODE_NOTIFY_ALL_STRICT) {
 			// get the default recipients from the stage configuration
 			// the default recipients needs to be added in some cases of the notification_mode
 			$default_recipients = $this->getStageService()->getResponsibleBeUser($stageId, TRUE);
@@ -605,11 +605,11 @@ class ActionHandler extends \TYPO3\CMS\Workspaces\ExtDirect\AbstractHandler {
 				$disabled = FALSE;
 				$name = $user['realName'] ? $user['realName'] : $user['username'];
 				// the notification mode can be configured in the workspace stage record
-				$notification_mode = $this->getStageService()->getNotificationMode($stage);
-				if (intval($notification_mode) === \TYPO3\CMS\Workspaces\Service\StagesService::MODE_NOTIFY_SOMEONE) {
+				$notification_mode = (int)$this->getStageService()->getNotificationMode($stage);
+				if ($notification_mode === \TYPO3\CMS\Workspaces\Service\StagesService::MODE_NOTIFY_SOMEONE) {
 					// all responsible users are checked per default, as in versions before
 					$checked = TRUE;
-				} elseif (intval($notification_mode) === \TYPO3\CMS\Workspaces\Service\StagesService::MODE_NOTIFY_ALL) {
+				} elseif ($notification_mode === \TYPO3\CMS\Workspaces\Service\StagesService::MODE_NOTIFY_ALL) {
 					// the default users are checked only
 					if (!empty($default_recipients[$id])) {
 						$checked = TRUE;
@@ -617,7 +617,7 @@ class ActionHandler extends \TYPO3\CMS\Workspaces\ExtDirect\AbstractHandler {
 					} else {
 						$checked = FALSE;
 					}
-				} elseif (intval($notification_mode) === \TYPO3\CMS\Workspaces\Service\StagesService::MODE_NOTIFY_ALL_STRICT) {
+				} elseif ($notification_mode === \TYPO3\CMS\Workspaces\Service\StagesService::MODE_NOTIFY_ALL_STRICT) {
 					// all responsible users are checked
 					$checked = TRUE;
 					$disabled = TRUE;
@@ -733,8 +733,8 @@ class ActionHandler extends \TYPO3\CMS\Workspaces\ExtDirect\AbstractHandler {
 	 * @throws \TYPO3\CMS\Core\Exception
 	 */
 	protected function setTemporaryWorkspace($workspaceId) {
-		$workspaceId = (int) $workspaceId;
-		$currentWorkspace = (int) $this->getBackendUser()->workspace;
+		$workspaceId = (int)$workspaceId;
+		$currentWorkspace = (int)$this->getBackendUser()->workspace;
 
 		if ($currentWorkspace !== $workspaceId) {
 			if (!$this->getBackendUser()->setTemporaryWorkspace($workspaceId)) {

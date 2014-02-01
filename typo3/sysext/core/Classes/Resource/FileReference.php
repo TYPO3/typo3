@@ -251,7 +251,7 @@ class FileReference implements FileInterface {
 	 * @return integer
 	 */
 	public function getUid() {
-		return (int) $this->propertiesOfFileReference['uid'];
+		return (int)$this->propertiesOfFileReference['uid'];
 	}
 
 	/**
@@ -260,7 +260,7 @@ class FileReference implements FileInterface {
 	 * @return integer
 	 */
 	public function getSize() {
-		return (int) $this->originalFile->getSize();
+		return (int)$this->originalFile->getSize();
 	}
 
 	/**
@@ -305,7 +305,7 @@ class FileReference implements FileInterface {
 	 * @return integer
 	 */
 	public function getModificationTime() {
-		return (int) $this->originalFile->getModificationTime();
+		return (int)$this->originalFile->getModificationTime();
 	}
 
 	/**
@@ -314,7 +314,7 @@ class FileReference implements FileInterface {
 	 * @return integer
 	 */
 	public function getCreationTime() {
-		return (int) $this->originalFile->getCreationTime();
+		return (int)$this->originalFile->getCreationTime();
 	}
 
 	/**
@@ -323,7 +323,7 @@ class FileReference implements FileInterface {
 	 * @return integer $fileType
 	 */
 	public function getType() {
-		return (int) $this->originalFile->getType();
+		return (int)$this->originalFile->getType();
 	}
 
 	/**

@@ -396,7 +396,7 @@ class BackendLayoutView implements \TYPO3\CMS\Core\SingletonInterface {
 		$page = $this->getDatabaseConnection()->exec_SELECTgetSingleRow(
 			'uid, pid, backend_layout',
 			'pages',
-			'uid=' . intval($pageId)
+			'uid=' . (int)$pageId
 		);
 		BackendUtility::workspaceOL('pages', $page);
 		return $page;

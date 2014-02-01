@@ -62,7 +62,7 @@ class FolderTree extends \rteFolderTree {
 			// Activates dynamic AJAX based tree
 			$scopeData = serialize($this->scope);
 			$scopeHash = \TYPO3\CMS\Core\Utility\GeneralUtility::hmac($scopeData);
-			$js = htmlspecialchars('Tree.thisScript=\'' . $this->backPath . 'ajax.php\',Tree.load(\'' . $cmd . '\', ' . intval($isExpand) . ', this, ' . json_encode($scopeData) . ', \'' . $scopeHash . '\');');
+			$js = htmlspecialchars('Tree.thisScript=\'' . $this->backPath . 'ajax.php\',Tree.load(\'' . $cmd . '\', ' . (int)$isExpand . ', this, ' . json_encode($scopeData) . ', \'' . $scopeHash . '\');');
 			return '<a class="pm" onclick="' . $js . '">' . $icon . '</a>';
 		} else {
 			return $icon;

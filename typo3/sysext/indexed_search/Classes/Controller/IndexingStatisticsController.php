@@ -59,7 +59,7 @@ class IndexingStatisticsController extends \TYPO3\CMS\Backend\Module\AbstractFun
 		$conf['words'] = 50;
 
 		// max words in result list
-		$conf['bid'] = intval(\TYPO3\CMS\Core\Utility\GeneralUtility::_GET('id'));
+		$conf['bid'] = (int)\TYPO3\CMS\Core\Utility\GeneralUtility::_GET('id');
 
 		// pageid for several statistics
 		$addwhere1 = '';

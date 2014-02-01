@@ -52,7 +52,7 @@ class PageTree extends \rtePageTree {
 	 * @todo Define visibility
 	 */
 	public function printTree($treeArr = '') {
-		$titleLen = intval($GLOBALS['BE_USER']->uc['titleLen']);
+		$titleLen = (int)$GLOBALS['BE_USER']->uc['titleLen'];
 		if (!is_array($treeArr)) {
 			$treeArr = $this->tree;
 		}

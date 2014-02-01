@@ -305,7 +305,7 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 	public function start($id, $table, $pointer, $search = '', $levels = '', $showLimit = 0) {
 		// Setting internal variables:
 		// sets the parent id
-		$this->id = intval($id);
+		$this->id = (int)$id;
 		if ($GLOBALS['TCA'][$table]) {
 			// Setting single table mode, if table exists:
 			$this->table = $table;
@@ -329,13 +329,13 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 		$this->HTMLcode = '';
 		// Limits
 		if (isset($this->modTSconfig['properties']['itemsLimitPerTable'])) {
-			$this->itemsLimitPerTable = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange(intval($this->modTSconfig['properties']['itemsLimitPerTable']), 1, 10000);
+			$this->itemsLimitPerTable = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange((int)$this->modTSconfig['properties']['itemsLimitPerTable'], 1, 10000);
 		}
 		if (isset($this->modTSconfig['properties']['itemsLimitSingleTable'])) {
-			$this->itemsLimitSingleTable = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange(intval($this->modTSconfig['properties']['itemsLimitSingleTable']), 1, 10000);
+			$this->itemsLimitSingleTable = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange((int)$this->modTSconfig['properties']['itemsLimitSingleTable'], 1, 10000);
 		}
 		// Set search levels:
-		$searchLevels = intval($this->searchLevels);
+		$searchLevels = (int)$this->searchLevels;
 		$this->perms_clause = $GLOBALS['BE_USER']->getPagePermsClause(1);
 		// This will hide records from display - it has nothing todo with user rights!!
 		if ($pidList = $GLOBALS['BE_USER']->getTSConfigVal('options.hideRecords.pages')) {
@@ -368,7 +368,7 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 			// Search everywhere
 			$this->pidSelect = '1=1';
 		} else {
-			$this->pidSelect = 'pid=' . intval($id);
+			$this->pidSelect = 'pid=' . (int)$id;
 		}
 		// Initialize languages:
 		if ($this->localizationView) {
@@ -407,9 +407,9 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 				}
 				// iLimit is set depending on whether we're in single- or multi-table mode
 				if ($this->table) {
-					$this->iLimit = isset($GLOBALS['TCA'][$tableName]['interface']['maxSingleDBListItems']) ? intval($GLOBALS['TCA'][$tableName]['interface']['maxSingleDBListItems']) : $this->itemsLimitSingleTable;
+					$this->iLimit = isset($GLOBALS['TCA'][$tableName]['interface']['maxSingleDBListItems']) ? (int)$GLOBALS['TCA'][$tableName]['interface']['maxSingleDBListItems'] : $this->itemsLimitSingleTable;
 				} else {
-					$this->iLimit = isset($GLOBALS['TCA'][$tableName]['interface']['maxDBListItems']) ? intval($GLOBALS['TCA'][$tableName]['interface']['maxDBListItems']) : $this->itemsLimitPerTable;
+					$this->iLimit = isset($GLOBALS['TCA'][$tableName]['interface']['maxDBListItems']) ? (int)$GLOBALS['TCA'][$tableName]['interface']['maxDBListItems'] : $this->itemsLimitPerTable;
 				}
 				if ($this->showLimit) {
 					$this->iLimit = $this->showLimit;
@@ -430,8 +430,8 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 					$fields = array();
 				}
 				// Find ID to use (might be different for "versioning_followPages" tables)
-				if (intval($this->searchLevels) == 0) {
-					$this->pidSelect = 'pid=' . intval($this->id);
+				if ((int)$this->searchLevels === 0) {
+					$this->pidSelect = 'pid=' . (int)$this->id;
 				}
 				// Finally, render the list:
 				$this->HTMLcode .= $this->getTable($tableName, $this->id, implode(',', $fields));
@@ -456,7 +456,7 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 		$opt = array();
 		$parts = explode('|', $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.enterSearchLevels'));
 		foreach ($parts as $kv => $label) {
-			$opt[] = '<option value="' . $kv . '"' . ($kv == intval($this->searchLevels) ? ' selected="selected"' : '') . '>' . htmlspecialchars($label) . '</option>';
+			$opt[] = '<option value="' . $kv . '"' . ($kv == (int)$this->searchLevels ? ' selected="selected"' : '') . '>' . htmlspecialchars($label) . '</option>';
 		}
 		$lMenu = '<select name="search_levels">' . implode('', $opt) . '</select>';
 		// Table with the search box:
@@ -619,7 +619,7 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 	 */
 	public function makeSearchString($table, $currentPid = -1) {
 		$result = '';
-		$currentPid = intval($currentPid);
+		$currentPid = (int)$currentPid;
 		$tablePidField = $table == 'pages' ? 'uid' : 'pid';
 		// Make query, only if table is valid and a search string is actually defined:
 		if ($this->searchString) {
@@ -989,7 +989,7 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 	public function localizationRedirect($justLocalized) {
 		list($table, $orig_uid, $language) = explode(':', $justLocalized);
 		if ($GLOBALS['TCA'][$table] && $GLOBALS['TCA'][$table]['ctrl']['languageField'] && $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']) {
-			$localizedRecord = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('uid', $table, $GLOBALS['TCA'][$table]['ctrl']['languageField'] . '=' . intval($language) . ' AND ' . $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] . '=' . intval($orig_uid) . BackendUtility::deleteClause($table) . BackendUtility::versioningPlaceholderClause($table));
+			$localizedRecord = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('uid', $table, $GLOBALS['TCA'][$table]['ctrl']['languageField'] . '=' . (int)$language . ' AND ' . $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] . '=' . (int)$orig_uid . BackendUtility::deleteClause($table) . BackendUtility::versioningPlaceholderClause($table));
 			if (is_array($localizedRecord)) {
 				// Create parameters and finally run the classic page module for creating a new page translation
 				$url = substr($this->listURL(), strlen($this->backPath));

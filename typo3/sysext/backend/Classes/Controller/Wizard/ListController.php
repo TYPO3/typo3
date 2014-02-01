@@ -87,9 +87,9 @@ class ListController {
 		$TSconfig = BackendUtility::getTCEFORM_TSconfig($this->table, is_array($origRow) ? $origRow : array('pid' => $this->P['pid']));
 		// Set [params][pid]
 		if (substr($this->P['params']['pid'], 0, 3) == '###' && substr($this->P['params']['pid'], -3) == '###') {
-			$this->pid = intval($TSconfig['_' . substr($this->P['params']['pid'], 3, -3)]);
+			$this->pid = (int)$TSconfig['_' . substr($this->P['params']['pid'], 3, -3)];
 		} else {
-			$this->pid = intval($this->P['params']['pid']);
+			$this->pid = (int)$this->P['params']['pid'];
 		}
 		// Make redirect:
 		// If pid is blank OR if id is set, then return...

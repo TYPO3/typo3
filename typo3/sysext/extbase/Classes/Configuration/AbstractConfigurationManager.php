@@ -187,7 +187,7 @@ abstract class AbstractConfigurationManager implements \TYPO3\CMS\Core\Singleton
 				});
 				$frameworkConfiguration['persistence']['storagePid'] = $this->getRecursiveStoragePids(
 					implode(',', $storagePids),
-					(int) $frameworkConfiguration['persistence']['recursive']
+					(int)$frameworkConfiguration['persistence']['recursive']
 				);
 			}
 		}

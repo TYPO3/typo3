@@ -246,10 +246,11 @@ class ExtensionRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 	 * @return integer
 	 */
 	public function insertLastVersion($repositoryUid = 1) {
+		$repositoryUid = (int)$repositoryUid;
 		$groupedRows = $this->databaseConnection->exec_SELECTgetRows(
 			'extension_key, max(integer_version) as maxintversion',
 			'tx_extensionmanager_domain_model_extension',
-			'repository=' . intval($repositoryUid),
+			'repository=' . $repositoryUid,
 			'extension_key'
 		);
 		$extensions = count($groupedRows);
@@ -258,7 +259,7 @@ class ExtensionRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 			// set all to 0
 			$this->databaseConnection->exec_UPDATEquery(
 				'tx_extensionmanager_domain_model_extension',
-				'current_version=1 AND repository=' . intval($repositoryUid),
+				'current_version=1 AND repository=' . $repositoryUid,
 				array('current_version' => 0)
 			);
 			// Find latest version of extensions and set current_version to 1 for these
@@ -267,8 +268,8 @@ class ExtensionRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 					'tx_extensionmanager_domain_model_extension',
 					'extension_key=' .
 							$this->databaseConnection->fullQuoteStr($row['extension_key'], 'tx_extensionmanager_domain_model_extension') .
-							' AND integer_version=' . intval($row['maxintversion']) .
-							' AND repository=' . intval($repositoryUid),
+							' AND integer_version=' . (int)$row['maxintversion'] .
+							' AND repository=' . $repositoryUid,
 					array('current_version' => 1)
 				);
 			}

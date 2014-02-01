@@ -130,7 +130,7 @@ class RootlineUtility {
 	 * @throws \RuntimeException
 	 */
 	public function __construct($uid, $mountPointParameter = '', \TYPO3\CMS\Frontend\Page\PageRepository $context = NULL) {
-		$this->pageUid = intval($uid);
+		$this->pageUid = (int)$uid;
 		$this->mountPointParameter = trim($mountPointParameter);
 		if ($context === NULL) {
 			if (isset($GLOBALS['TSFE']) && is_object($GLOBALS['TSFE']) && is_object($GLOBALS['TSFE']->sys_page)) {
@@ -151,8 +151,8 @@ class RootlineUtility {
 	 * @return void
 	 */
 	protected function initializeObject() {
-		$this->languageUid = intval($this->pageContext->sys_language_uid);
-		$this->workspaceUid = intval($this->pageContext->versioningWorkspaceId);
+		$this->languageUid = (int)$this->pageContext->sys_language_uid;
+		$this->workspaceUid = (int)$this->pageContext->versioningWorkspaceId;
 		$this->versionPreview = $this->pageContext->versioningPreview;
 		if ($this->mountPointParameter !== '') {
 			if (!$GLOBALS['TYPO3_CONF_VARS']['FE']['enable_mount_pids']) {
@@ -179,7 +179,7 @@ class RootlineUtility {
 	 */
 	public function getCacheIdentifier($otherUid = NULL) {
 		return implode('_', array(
-			$otherUid !== NULL ? intval($otherUid) : $this->pageUid,
+			$otherUid !== NULL ? (int)$otherUid : $this->pageUid,
 			$this->mountPointParameter,
 			$this->languageUid,
 			$this->workspaceUid,
@@ -230,7 +230,7 @@ class RootlineUtility {
 	protected function getRecordArray($uid) {
 		$currentCacheIdentifier = $this->getCacheIdentifier($uid);
 		if (!isset(self::$pageRecordCache[$currentCacheIdentifier])) {
-			$row = $this->databaseConnection->exec_SELECTgetSingleRow(implode(',', self::$rootlineFields), 'pages', 'uid = ' . intval($uid) . ' AND pages.deleted = 0 AND pages.doktype <> ' . \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_RECYCLER);
+			$row = $this->databaseConnection->exec_SELECTgetSingleRow(implode(',', self::$rootlineFields), 'pages', 'uid = ' . (int)$uid . ' AND pages.deleted = 0 AND pages.doktype <> ' . \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_RECYCLER);
 			if (empty($row)) {
 				throw new \RuntimeException('Could not fetch page data for uid ' . $uid . '.', 1343589451);
 			}
@@ -272,14 +272,14 @@ class RootlineUtility {
 					$columnIsOverlaid = in_array($column, $pageOverlayFields, TRUE);
 					$table = $configuration['foreign_table'];
 					$field = $configuration['foreign_field'];
-					$whereClauseParts = array($field . ' = ' . intval($columnIsOverlaid ? $uid : $pageRecord['uid']));
+					$whereClauseParts = array($field . ' = ' . (int)$columnIsOverlaid ? $uid : $pageRecord['uid']);
 					if (isset($configuration['foreign_match_fields']) && is_array($configuration['foreign_match_fields'])) {
 						foreach ($configuration['foreign_match_fields'] as $field => $value) {
 							$whereClauseParts[] = $field . ' = ' . $this->databaseConnection->fullQuoteStr($value, $table);
 						}
 					}
 					if (isset($configuration['foreign_table_field'])) {
-						if (intval($this->languageUid) > 0 && $columnIsOverlaid) {
+						if ((int)$this->languageUid > 0 && $columnIsOverlaid) {
 							$whereClauseParts[] = trim($configuration['foreign_table_field']) . ' = \'pages_language_overlay\'';
 						} else {
 							$whereClauseParts[] = trim($configuration['foreign_table_field']) . ' = \'pages\'';

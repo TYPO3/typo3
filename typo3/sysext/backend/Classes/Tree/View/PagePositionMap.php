@@ -373,7 +373,7 @@ class PagePositionMap {
 		$colPosArray = GeneralUtility::trimExplode(',', $colPosList, TRUE);
 		$lines = array();
 		foreach ($colPosArray as $kk => $vv) {
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'tt_content', 'pid=' . intval($pid) . ($showHidden ? '' : BackendUtility::BEenableFields('tt_content')) . ' AND colPos=' . intval($vv) . ((string)$this->cur_sys_language !== '' ? ' AND sys_language_uid=' . intval($this->cur_sys_language) : '') . BackendUtility::deleteClause('tt_content') . BackendUtility::versioningPlaceholderClause('tt_content'), '', 'sorting');
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'tt_content', 'pid=' . (int)$pid . ($showHidden ? '' : BackendUtility::BEenableFields('tt_content')) . ' AND colPos=' . (int)$vv . ((string)$this->cur_sys_language !== '' ? ' AND sys_language_uid=' . (int)$this->cur_sys_language : '') . BackendUtility::deleteClause('tt_content') . BackendUtility::versioningPlaceholderClause('tt_content'), '', 'sorting');
 			$lines[$vv] = array();
 			$lines[$vv][] = $this->insertPositionIcon('', $vv, $kk, $moveUid, $pid);
 			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
@@ -404,8 +404,8 @@ class PagePositionMap {
 		$backendLayout = GeneralUtility::callUserFunction('TYPO3\\CMS\\Backend\\View\\BackendLayoutView->getSelectedBackendLayout', $pid, $this);
 		if (isset($backendLayout['__config']['backend_layout.'])) {
 			$table = '<div class="t3-gridContainer"><table border="0" cellspacing="0" cellpadding="0" id="typo3-ttContentList">';
-			$colCount = intval($backendLayout['__config']['backend_layout.']['colCount']);
-			$rowCount = intval($backendLayout['__config']['backend_layout.']['rowCount']);
+			$colCount = (int)$backendLayout['__config']['backend_layout.']['colCount'];
+			$rowCount = (int)$backendLayout['__config']['backend_layout.']['rowCount'];
 			$table .= '<colgroup>';
 			for ($i = 0; $i < $colCount; $i++) {
 				$table .= '<col style="width:' . 100 / $colCount . '%"></col>';
@@ -425,7 +425,7 @@ class PagePositionMap {
 						continue;
 					}
 					// Which tt_content colPos should be displayed inside this cell
-					$columnKey = intval($columnConfig['colPos']);
+					$columnKey = (int)$columnConfig['colPos'];
 					$head = '';
 					$params = array();
 					$params['pid'] = $pid;
@@ -567,7 +567,7 @@ class PagePositionMap {
 	 * @todo Define visibility
 	 */
 	public function wrapRecordTitle($str, $row) {
-		return '<a href="' . htmlspecialchars(GeneralUtility::linkThisScript(array('uid' => intval($row['uid']), 'moveUid' => ''))) . '">' . $str . '</a>';
+		return '<a href="' . htmlspecialchars(GeneralUtility::linkThisScript(array('uid' => (int)$row['uid'], 'moveUid' => ''))) . '">' . $str . '</a>';
 	}
 
 }

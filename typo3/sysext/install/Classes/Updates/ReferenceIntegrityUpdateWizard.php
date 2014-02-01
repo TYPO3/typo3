@@ -64,7 +64,7 @@ class ReferenceIntegrityUpdateWizard extends AbstractUpdate {
 				if ($fileReferenceRecord['newpid'] > 0) {
 					$updateQuery = $GLOBALS['TYPO3_DB']->UPDATEquery(
 						'sys_file_reference',
-						'uid=' . intval($fileReferenceRecord['uid']),
+						'uid=' . (int)$fileReferenceRecord['uid'],
 						array('pid' => $fileReferenceRecord['newpid'])
 					);
 					$GLOBALS['TYPO3_DB']->sql_query($updateQuery);
@@ -115,7 +115,7 @@ class ReferenceIntegrityUpdateWizard extends AbstractUpdate {
 		foreach ($sysFileReferences as $fileReferenceRecord) {
 			// if the target table is pages (e.g. when adding a file reference to the pages->media
 			// record, then the
-			$whereClause = 'uid=' . intval($fileReferenceRecord['targetuid']);
+			$whereClause = 'uid=' . (int)$fileReferenceRecord['targetuid'];
 			if ($fileReferenceRecord['targettable'] === 'pages') {
 				$isPageReference = TRUE;
 			} else {

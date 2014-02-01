@@ -121,7 +121,7 @@ class PhpBackend extends \TYPO3\CMS\Rsaauth\Backend\AbstractBackend {
 		$index = strpos($data, 'Exponent: ');
 		// We do not check for '$index === FALSE' because the exponent is
 		// always there!
-		return intval(substr($data, $index + 10));
+		return (int)substr($data, $index + 10);
 	}
 
 	/**
