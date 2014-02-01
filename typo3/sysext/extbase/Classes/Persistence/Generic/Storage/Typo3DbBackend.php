@@ -114,28 +114,19 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 	 * Adds a row to the storage
 	 *
 	 * @param string $tableName The database table name
-	 * @param array $row The row to be inserted
-	 * @param boolean $isRelation TRUE if we are currently inserting into a relation table, FALSE by default
+	 * @param array $fieldValues The row to be inserted
+	 * @param bool $isRelation TRUE if we are currently inserting into a relation table, FALSE by default
 	 * @return integer The uid of the inserted row
 	 */
-	public function addRow($tableName, array $row, $isRelation = FALSE) {
-		$fields = array();
-		$values = array();
-		$parameters = array();
-		if (isset($row['uid'])) {
-			unset($row['uid']);
+	public function addRow($tableName, array $fieldValues, $isRelation = FALSE) {
+		if (isset($fieldValues['uid'])) {
+			unset($fieldValues['uid']);
 		}
-		foreach ($row as $columnName => $value) {
-			$fields[] = $columnName;
-			$values[] = '?';
-			$parameters[] = $value;
-		}
-		$sqlString = 'INSERT INTO ' . $tableName . ' (' . implode(', ', $fields) . ') VALUES (' . implode(', ', $values) . ')';
-		$this->replacePlaceholders($sqlString, $parameters, $tableName);
-		// debug($sqlString,-2);
-		$this->databaseHandle->sql_query($sqlString);
-		$this->checkSqlErrors($sqlString);
+
+		$this->databaseHandle->exec_INSERTquery($tableName, $fieldValues);
+		$this->checkSqlErrors();
 		$uid = $this->databaseHandle->sql_insert_id();
+
 		if (!$isRelation) {
 			$this->clearPageCache($tableName, $uid);
 		}
@@ -146,141 +137,137 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 	 * Updates a row in the storage
 	 *
 	 * @param string $tableName The database table name
-	 * @param array $row The row to be updated
-	 * @param boolean $isRelation TRUE if we are currently inserting into a relation table, FALSE by default
+	 * @param array $fieldValues The row to be updated
+	 * @param bool $isRelation TRUE if we are currently inserting into a relation table, FALSE by default
 	 * @throws \InvalidArgumentException
-	 * @return boolean
+	 * @return bool
 	 */
-	public function updateRow($tableName, array $row, $isRelation = FALSE) {
-		if (!isset($row['uid'])) {
+	public function updateRow($tableName, array $fieldValues, $isRelation = FALSE) {
+		if (!isset($fieldValues['uid'])) {
 			throw new \InvalidArgumentException('The given row must contain a value for "uid".');
 		}
-		$uid = (int)$row['uid'];
-		unset($row['uid']);
-		$fields = array();
-		$parameters = array();
-		foreach ($row as $columnName => $value) {
-			$fields[] = $columnName . '=?';
-			$parameters[] = $value;
-		}
-		$parameters[] = $uid;
-		$sqlString = 'UPDATE ' . $tableName . ' SET ' . implode(', ', $fields) . ' WHERE uid=?';
-		$this->replacePlaceholders($sqlString, $parameters, $tableName);
-		// debug($sqlString,-2);
-		$returnValue = $this->databaseHandle->sql_query($sqlString);
-		$this->checkSqlErrors($sqlString);
+
+		$uid = (int)$fieldValues['uid'];
+		unset($fieldValues['uid']);
+
+		$updateSuccessful = $this->databaseHandle->exec_UPDATEquery($tableName, 'uid = '. $uid, $fieldValues);
+		$this->checkSqlErrors();
+
 		if (!$isRelation) {
 			$this->clearPageCache($tableName, $uid);
 		}
-		return $returnValue;
+
+		return $updateSuccessful;
 	}
 
 	/**
 	 * Updates a relation row in the storage.
 	 *
 	 * @param string $tableName The database relation table name
-	 * @param array $row The row to be updated
+	 * @param array $fieldValues The row to be updated
 	 * @throws \InvalidArgumentException
-	 * @return boolean
+	 * @return bool
 	 */
-	public function updateRelationTableRow($tableName, array $row) {
-		if (!isset($row['uid_local']) && !isset($row['uid_foreign'])) {
+	public function updateRelationTableRow($tableName, array $fieldValues) {
+		if (!isset($fieldValues['uid_local']) && !isset($fieldValues['uid_foreign'])) {
 			throw new \InvalidArgumentException(
-				'The given row must contain a value for "uid_local" and "uid_foreign".', 1360500126
+				'The given fieldValues must contain a value for "uid_local" and "uid_foreign".', 1360500126
 			);
 		}
-		$uidLocal = (int)$row['uid_local'];
-		$uidForeign = (int)$row['uid_foreign'];
-		unset($row['uid_local']);
-		unset($row['uid_foreign']);
-		$fields = array();
-		$parameters = array();
-		foreach ($row as $columnName => $value) {
-			$fields[] = $columnName . '=?';
-			$parameters[] = $value;
-		}
-		$parameters[] = $uidLocal;
-		$parameters[] = $uidForeign;
 
-		$sqlString = 'UPDATE ' . $tableName . ' SET ' . implode(', ', $fields) . ' WHERE uid_local=? AND uid_foreign=?';
-		$this->replacePlaceholders($sqlString, $parameters);
+		$where['uid_local'] = (int)$fieldValues['uid_local'];
+		$where['uid_foreign'] = (int)$fieldValues['uid_foreign'];
+		unset($fieldValues['uid_local']);
+		unset($fieldValues['uid_foreign']);
 
-		$returnValue = $this->databaseHandle->sql_query($sqlString);
-		$this->checkSqlErrors($sqlString);
+		$updateSuccessful = $this->databaseHandle->exec_UPDATEquery(
+			$tableName,
+			$this->resolveWhereStatement($where, $tableName),
+			$fieldValues
+		);
+		$this->checkSqlErrors();
 
-		return $returnValue;
+		return $updateSuccessful;
 	}
 
 	/**
 	 * Deletes a row in the storage
 	 *
 	 * @param string $tableName The database table name
-	 * @param array $identifier An array of identifier array('fieldname' => value). This array will be transformed to a WHERE clause
-	 * @param boolean $isRelation TRUE if we are currently manipulating a relation table, FALSE by default
-	 * @return boolean
+	 * @param array $where An array of where array('fieldname' => value).
+	 * @param bool $isRelation TRUE if we are currently manipulating a relation table, FALSE by default
+	 * @return bool
 	 */
-	public function removeRow($tableName, array $identifier, $isRelation = FALSE) {
-		$statement = 'DELETE FROM ' . $tableName . ' WHERE ' . $this->parseIdentifier($identifier);
-		$this->replacePlaceholders($statement, $identifier, $tableName);
-		if (!$isRelation && isset($identifier['uid'])) {
-			$this->clearPageCache($tableName, $identifier['uid'], $isRelation);
+	public function removeRow($tableName, array $where, $isRelation = FALSE) {
+		$deleteSuccessful = $this->databaseHandle->exec_DELETEquery(
+			$tableName,
+			$this->resolveWhereStatement($where, $tableName)
+		);
+		$this->checkSqlErrors();
+
+		if (!$isRelation && isset($where['uid'])) {
+			$this->clearPageCache($tableName, $where['uid']);
 		}
-		// debug($statement, -2);
-		$returnValue = $this->databaseHandle->sql_query($statement);
-		$this->checkSqlErrors($statement);
-		return $returnValue;
+
+		return $deleteSuccessful;
 	}
 
 	/**
 	 * Fetches maximal value for given table column from database.
 	 *
 	 * @param string $tableName The database table name
-	 * @param array $identifier An array of identifier array('fieldname' => value). This array will be transformed to a WHERE clause
+	 * @param array $where An array of where array('fieldname' => value).
 	 * @param string $columnName column name to get the max value from
 	 * @return mixed the max value
 	 */
-	public function getMaxValueFromTable($tableName, $identifier, $columnName) {
-		$sqlString = 'SELECT ' . $columnName . ' FROM ' . $tableName . ' WHERE ' . $this->parseIdentifier($identifier) . ' ORDER BY  ' . $columnName . ' DESC LIMIT 1';
-		$this->replacePlaceholders($sqlString, $identifier);
+	public function getMaxValueFromTable($tableName, array $where, $columnName) {
+		$result = $this->databaseHandle->exec_SELECTgetSingleRow(
+			$columnName,
+			$tableName,
+			$this->resolveWhereStatement($where, $tableName),
+			'',
+			$columnName . ' DESC',
+			TRUE
+		);
+		$this->checkSqlErrors();
 
-		$result = $this->databaseHandle->sql_query($sqlString);
-		$row = $this->databaseHandle->sql_fetch_assoc($result);
-		$this->checkSqlErrors($sqlString);
-		return $row[$columnName];
+		return $result[0];
 	}
 
 	/**
 	 * Fetches row data from the database
 	 *
 	 * @param string $tableName
-	 * @param array $identifier The Identifier of the row to fetch
-	 * @return array|boolean
+	 * @param array $where An array of where array('fieldname' => value).
+	 * @return array|bool
 	 */
-	public function getRowByIdentifier($tableName, array $identifier) {
-		$statement = 'SELECT * FROM ' . $tableName . ' WHERE ' . $this->parseIdentifier($identifier);
-		$this->replacePlaceholders($statement, $identifier, $tableName);
-		// debug($statement,-2);
-		$res = $this->databaseHandle->sql_query($statement);
-		$this->checkSqlErrors($statement);
-		$row = $this->databaseHandle->sql_fetch_assoc($res);
-		if ($row !== FALSE) {
-			return $row;
-		} else {
-			return FALSE;
-		}
+	public function getRowByIdentifier($tableName, array $where) {
+		$row = $this->databaseHandle->exec_SELECTgetSingleRow(
+			'*',
+			$tableName,
+			$this->resolveWhereStatement($where, $tableName)
+		);
+		$this->checkSqlErrors();
+
+		return $row ?: FALSE;
 	}
 
 	/**
-	 * @param array $identifier
+	 * Converts an array to an AND concatenated where statement
+	 *
+	 * @param array $where array('fieldName' => 'fieldValue')
+	 * @param string $tableName table to use for escaping config
+	 *
 	 * @return string
 	 */
-	protected function parseIdentifier(array $identifier) {
-		$fieldNames = array_keys($identifier);
-		$suffixedFieldNames = array();
-		foreach ($fieldNames as $fieldName) {
-			$suffixedFieldNames[] = $fieldName . '=?';
+	protected function resolveWhereStatement(array $where, $tableName = 'foo') {
+		$whereStatement = array();
+
+		foreach ($where as $fieldName => $fieldValue) {
+			$whereStatement[] = $fieldName . ' = ' . $this->databaseHandle->fullQuoteStr($fieldValue, $tableName);
 		}
-		return implode(' AND ', $suffixedFieldNames);
+
+		return implode(' AND ', $whereStatement);
 	}
 
 	/**
@@ -483,7 +470,7 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 	 * @param array &$sql The query parts
 	 * @return void
 	 */
-	protected function addRecordTypeConstraint($className, &$sql) {
+	protected function addRecordTypeConstraint($className, array &$sql) {
 		if ($className !== NULL) {
 			$dataMap = $this->dataMapper->getDataMap($className);
 			if ($dataMap->getRecordTypeColumnName() !== NULL) {
@@ -728,7 +715,7 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 	/**
 	 * @param string &$className
 	 * @param string &$tableName
-	 * @param array &$propertyPath
+	 * @param string &$propertyPath
 	 * @param array &$sql
 	 * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception
 	 * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\InvalidRelationConfigurationException
@@ -936,13 +923,13 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 	 * Returns constraint statement for frontend context
 	 *
 	 * @param string $tableName
-	 * @param boolean $ignoreEnableFields A flag indicating whether the enable fields should be ignored
+	 * @param bool $ignoreEnableFields A flag indicating whether the enable fields should be ignored
 	 * @param array $enableFieldsToBeIgnored If $ignoreEnableFields is true, this array specifies enable fields to be ignored. If it is NULL or an empty array (default) all enable fields are ignored.
-	 * @param boolean $includeDeleted A flag indicating whether deleted records should be included
+	 * @param bool $includeDeleted A flag indicating whether deleted records should be included
 	 * @return string
 	 * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\InconsistentQuerySettingsException
 	 */
-	protected function getFrontendConstraintStatement($tableName, $ignoreEnableFields, $enableFieldsToBeIgnored = array(), $includeDeleted) {
+	protected function getFrontendConstraintStatement($tableName, $ignoreEnableFields, array $enableFieldsToBeIgnored = array(), $includeDeleted) {
 		$statement = '';
 		if ($ignoreEnableFields && !$includeDeleted) {
 			if (count($enableFieldsToBeIgnored)) {
@@ -963,8 +950,8 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 	 * Returns constraint statement for backend context
 	 *
 	 * @param string $tableName
-	 * @param boolean $ignoreEnableFields A flag indicating whether the enable fields should be ignored
-	 * @param boolean $includeDeleted A flag indicating whether deleted records should be included
+	 * @param bool $ignoreEnableFields A flag indicating whether the enable fields should be ignored
+	 * @param bool $includeDeleted A flag indicating whether deleted records should be included
 	 * @return string
 	 */
 	protected function getBackendConstraintStatement($tableName, $ignoreEnableFields, $includeDeleted) {

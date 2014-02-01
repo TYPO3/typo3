@@ -36,50 +36,50 @@ interface BackendInterface {
 	 * Adds a row to the storage
 	 *
 	 * @param string $tableName The database table name
-	 * @param array $row The row to insert
+	 * @param array $fieldValues The fieldValues to insert
 	 * @param boolean $isRelation TRUE if we are currently inserting into a relation table, FALSE by default
 	 * @return integer the UID of the inserted row
 	 */
-	public function addRow($tableName, array $row, $isRelation = FALSE);
+	public function addRow($tableName, array $fieldValues, $isRelation = FALSE);
 
 	/**
 	 * Updates a row in the storage
 	 *
 	 * @param string $tableName The database table name
-	 * @param array $row The row to update
+	 * @param array $fieldValues The fieldValues to update
 	 * @param boolean $isRelation TRUE if we are currently inserting into a relation table, FALSE by default
 	 * @return mixed|void
 	 */
-	public function updateRow($tableName, array $row, $isRelation = FALSE);
+	public function updateRow($tableName, array $fieldValues, $isRelation = FALSE);
 
 	/**
 	 * Updates a relation row in the storage
 	 *
 	 * @param string $tableName The database relation table name
-	 * @param array $row The row to be updated
+	 * @param array $fieldValues The fieldValues to be updated
 	 * @return boolean
 	 */
-	public function updateRelationTableRow($tableName, array $row);
+	public function updateRelationTableRow($tableName, array $fieldValues);
 
 	/**
 	 * Deletes a row in the storage
 	 *
 	 * @param string $tableName The database table name
-	 * @param array $identifier An array of identifier array('fieldname' => value). This array will be transformed to a WHERE clause
+	 * @param array $where An array of where array('fieldname' => value). This array will be transformed to a WHERE clause
 	 * @param boolean $isRelation TRUE if we are currently inserting into a relation table, FALSE by default
 	 * @return mixed|void
 	 */
-	public function removeRow($tableName, array $identifier, $isRelation = FALSE);
+	public function removeRow($tableName, array $where, $isRelation = FALSE);
 
 	/**
 	 * Fetches maximal value for given table column
 	 *
 	 * @param string $tableName The database table name
-	 * @param array $identifier An array of identifier array('fieldname' => value). This array will be transformed to a WHERE clause
+	 * @param array $where An array of where array('fieldname' => value). This array will be transformed to a WHERE clause
 	 * @param string $columnName column name to get the max value from
 	 * @return mixed the max value
 	 */
-	public function getMaxValueFromTable($tableName, $identifier, $columnName);
+	public function getMaxValueFromTable($tableName, array $where, $columnName);
 
 	/**
 	 * Returns the number of items matching the query.
