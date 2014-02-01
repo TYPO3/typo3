@@ -2,18 +2,17 @@
 if (!defined('TYPO3_MODE')) {
 	die('Access denied.');
 }
-//replace old Login
-$pluginContent = trim('
+
+// define the plugin execution
+$pluginContent = '# Defining "felogin" plugin TypoScript
 plugin.tx_felogin_pi1 = USER_INT
-plugin.tx_felogin_pi1 {
-  includeLibs = EXT:felogin/pi1/class.tx_felogin_pi1.php
-  userFunc = tx_felogin_pi1->main
-}
-');
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScript($_EXTKEY, 'setup', '
-# Setting ' . $_EXTKEY . ' plugin TypoScript
-' . $pluginContent);
-$addLine = '
+plugin.tx_felogin_pi1.userFunc = TYPO3\\CMS\\Felogin\\Controller\\FrontendLoginController->main
+';
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScript($_EXTKEY, 'setup', $pluginContent);
+
+// replace old Login with felogin
+$replaceLoginCType = '
+# Setting "felogin" plugin to replace default "login" content element via TypoScript
 tt_content.login = COA
 tt_content.login {
 	10 = < lib.stdheader
@@ -21,7 +20,8 @@ tt_content.login {
 	20 = < plugin.tx_felogin_pi1
 }
 ';
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScript($_EXTKEY, 'setup', '# Setting ' . $_EXTKEY . ' plugin TypoScript' . $addLine . '', 43);
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScript($_EXTKEY, 'setup', $replaceLoginCType, 43);
+
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig('
 mod.wizards.newContentElement.wizardItems.forms {
 	elements {
@@ -39,5 +39,4 @@ mod.wizards.newContentElement.wizardItems.forms {
 ');
 
 // Page module hook
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['tt_content_drawItem'][$_EXTKEY] =
-	'EXT:' . $_EXTKEY . '/Classes/Hooks/CmsLayout.php:TYPO3\CMS\Felogin\Hooks\CmsLayout';
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['tt_content_drawItem'][$_EXTKEY] = 'TYPO3\\CMS\\Felogin\\Hooks\\CmsLayout';
