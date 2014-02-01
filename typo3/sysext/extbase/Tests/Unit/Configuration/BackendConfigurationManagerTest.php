@@ -78,10 +78,10 @@ class BackendConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 	 * @test
 	 */
 	public function getCurrentPageIdReturnsPidFromFirstRootTemplateIfIdIsNotSetAndNoRootPageWasFound() {
-		$GLOBALS['TYPO3_DB']->expects($this->at(0))->method('exec_SELECTgetRows')->with('uid', 'pages', 'deleted=0 AND hidden=0 AND is_siteroot=1', '', '', '1')->will($this->returnValue(array()));
-		$GLOBALS['TYPO3_DB']->expects($this->at(1))->method('exec_SELECTgetRows')->with('pid', 'sys_template', 'deleted=0 AND hidden=0 AND root=1', '', '', '1')->will($this->returnValue(array(
+		$GLOBALS['TYPO3_DB']->expects($this->at(0))->method('exec_SELECTgetSingleRow')->with('uid', 'pages', 'deleted=0 AND hidden=0 AND is_siteroot=1', '', 'sorting')->will($this->returnValue(array()));
+		$GLOBALS['TYPO3_DB']->expects($this->at(1))->method('exec_SELECTgetSingleRow')->with('pid', 'sys_template', 'deleted=0 AND hidden=0 AND root=1', '', 'crdate')->will($this->returnValue(
 			array('pid' => 123)
-		)));
+		));
 		$expectedResult = 123;
 		$actualResult = $this->backendConfigurationManager->_call('getCurrentPageId');
 		$this->assertEquals($expectedResult, $actualResult);
@@ -91,9 +91,9 @@ class BackendConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 	 * @test
 	 */
 	public function getCurrentPageIdReturnsUidFromFirstRootPageIfIdIsNotSet() {
-		$GLOBALS['TYPO3_DB']->expects($this->once())->method('exec_SELECTgetRows')->with('uid', 'pages', 'deleted=0 AND hidden=0 AND is_siteroot=1', '', '', '1')->will($this->returnValue(array(
+		$GLOBALS['TYPO3_DB']->expects($this->once())->method('exec_SELECTgetSingleRow')->with('uid', 'pages', 'deleted=0 AND hidden=0 AND is_siteroot=1', '', 'sorting')->will($this->returnValue(
 			array('uid' => 321)
-		)));
+		));
 		$expectedResult = 321;
 		$actualResult = $this->backendConfigurationManager->_call('getCurrentPageId');
 		$this->assertEquals($expectedResult, $actualResult);
@@ -103,8 +103,8 @@ class BackendConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 	 * @test
 	 */
 	public function getCurrentPageIdReturnsDefaultStoragePidIfIdIsNotSetNoRootTemplateAndRootPageWasFound() {
-		$GLOBALS['TYPO3_DB']->expects($this->at(0))->method('exec_SELECTgetRows')->with('uid', 'pages', 'deleted=0 AND hidden=0 AND is_siteroot=1', '', '', '1')->will($this->returnValue(array()));
-		$GLOBALS['TYPO3_DB']->expects($this->at(1))->method('exec_SELECTgetRows')->with('pid', 'sys_template', 'deleted=0 AND hidden=0 AND root=1', '', '', '1')->will($this->returnValue(array()));
+		$GLOBALS['TYPO3_DB']->expects($this->at(0))->method('exec_SELECTgetSingleRow')->with('uid', 'pages', 'deleted=0 AND hidden=0 AND is_siteroot=1', '', 'sorting')->will($this->returnValue(array()));
+		$GLOBALS['TYPO3_DB']->expects($this->at(1))->method('exec_SELECTgetSingleRow')->with('pid', 'sys_template', 'deleted=0 AND hidden=0 AND root=1', '', 'crdate')->will($this->returnValue(array()));
 		$expectedResult = \TYPO3\CMS\Extbase\Configuration\AbstractConfigurationManager::DEFAULT_BACKEND_STORAGE_PID;
 		$actualResult = $this->backendConfigurationManager->_call('getCurrentPageId');
 		$this->assertEquals($expectedResult, $actualResult);

@@ -46,6 +46,12 @@ class BackendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\Abstr
 	protected $typoScriptSetupCache = array();
 
 	/**
+	 * stores the current page ID
+	 * @var integer
+	 */
+	protected $currentPageId;
+
+	/**
 	 * Returns TypoScript Setup array from current Environment.
 	 *
 	 * @return array the raw TypoScript setup
@@ -127,22 +133,56 @@ class BackendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\Abstr
 	 * @return integer current page id. If no page is selected current root page id is returned
 	 */
 	protected function getCurrentPageId() {
-		$pageId = (int)\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id');
-		if ($pageId > 0) {
-			return $pageId;
+		if ($this->currentPageId !== NULL) {
+			return $this->currentPageId;
 		}
-		// get current site root
-		$rootPages = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid', 'pages', 'deleted=0 AND hidden=0 AND is_siteroot=1', '', '', '1');
-		if (count($rootPages) > 0) {
-			return $rootPages[0]['uid'];
+
+		$this->currentPageId = $this->getCurrentPageIdFromGetPostData() ?: $this->getCurrentPageIdFromCurrentSiteRoot();
+		$this->currentPageId = $this->currentPageId ?: $this->getCurrentPageIdFromRootTemplate();
+		$this->currentPageId = $this->currentPageId ?: self::DEFAULT_BACKEND_STORAGE_PID;
+
+		return $this->currentPageId;
+	}
+
+	/**
+	 * Gets the current page ID from the GET/POST data.
+	 *
+	 * @return int the page UID, will be 0 if none has been set
+	 */
+	protected function getCurrentPageIdFromGetPostData() {
+		return (int)\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id');
+	}
+
+	/**
+	 * Gets the current page ID from the first site root in tree.
+	 *
+	 * @return int the page UID, will be 0 if none has been set
+	 */
+	protected function getCurrentPageIdFromCurrentSiteRoot() {
+		$rootPage = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
+			'uid', 'pages', 'deleted=0 AND hidden=0 AND is_siteroot=1', '', 'sorting'
+		);
+		if (empty($rootPage)) {
+			return 0;
 		}
-		// get root template
-		$rootTemplates = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('pid', 'sys_template', 'deleted=0 AND hidden=0 AND root=1', '', '', '1');
-		if (count($rootTemplates) > 0) {
-			return $rootTemplates[0]['pid'];
+
+		return (int)$rootPage['uid'];
+	}
+
+	/**
+	 * Gets the current page ID from the first created root template.
+	 *
+	 * @return int the page UID, will be 0 if none has been set
+	 */
+	protected function getCurrentPageIdFromRootTemplate() {
+		$rootTemplate = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
+			'pid', 'sys_template', 'deleted=0 AND hidden=0 AND root=1', '', 'crdate'
+		);
+		if (empty($rootTemplate)) {
+			return 0;
 		}
-		// fallback
-		return self::DEFAULT_BACKEND_STORAGE_PID;
+
+		return (int)$rootTemplate['pid'];
 	}
 
 	/**

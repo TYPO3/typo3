@@ -235,7 +235,8 @@ CREATE TABLE sys_template (
 
 	PRIMARY KEY (uid),
 	KEY t3ver_oid (t3ver_oid,t3ver_wsid),
-	KEY parent (pid,deleted,hidden,sorting)
+	KEY parent (pid,deleted,hidden,sorting),
+	KEY roottemplate (deleted,hidden,root)
 );
 
 #
