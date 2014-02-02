@@ -28,7 +28,7 @@
 				<source>Tables</source>
 			</trans-unit>
 			<trans-unit id="flashMessages" xml:space="preserve">
-				<source>FlashMessages</source>
+				<source>Flash Messages</source>
 			</trans-unit>
 			<trans-unit id="helpers" xml:space="preserve">
 				<source>Helpers</source>
