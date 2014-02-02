@@ -50,9 +50,6 @@ styles.content.imgtext {
     # cat=content/cImage/c5; type=string; label= Lightbox rel="" attribute: Which rel="" attribute to use for lightbox links (only applicable if lightbox rendering is enabled)
   linkWrap.lightboxRelAttribute = lightbox[{field:uid}]
 
-  captionSplit = 0
-    # cat=content/cImage/e1; type=boolean; label= Images, text split: If this is checked, then the image text (caption, alt, title, longdesc) will be split by each line and they will appear on the corresponding images in the imagelist.
-  imageTextSplit = 1
     # cat=content/cImage/e2; type=string; label= Images, empty title handling: How will the 'title' attribute be handled if no title is given for an image. Possible choices: "keepEmpty", "useAlt" or "removeAttr". Recommended for accessibility is "removeAttr". For correct tooltips on IE, use "keepEmpty". For previous TYPO3 behaviour, use "useAlt".
   emptyTitleHandling = removeAttr
     # cat=content/cImage/e3; type=boolean; label= Images, title in link: Do you want the 'title' attribute to be added to the surrounding <a> tag, if present? Recommended for accessibility is "true".

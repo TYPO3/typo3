@@ -28,6 +28,7 @@ namespace TYPO3\CMS\CssStyledContent\Controller;
  ***************************************************************/
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * Plugin class - instantiated from TypoScript.
@@ -470,6 +471,9 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 		if (!$renderMethod || $renderMethod == 'table') {
 			return $this->cObj->IMGTEXT($conf);
 		}
+		if (isset($conf['preRenderRegisters.'])) {
+			$this->cObj->LOAD_REGISTER($conf['preRenderRegisters.'], 'LOAD_REGISTER');
+		}
 		// Specific configuration for the chosen rendering method
 		if (is_array($conf['rendering.'][$renderMethod . '.'])) {
 			$conf = array_replace_recursive($conf, $conf['rendering.'][$renderMethod . '.']);
@@ -483,12 +487,16 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 			// No images, that's easy
 			return $content;
 		}
-		$imgs = GeneralUtility::trimExplode(',', $imgList);
+		$imgs = GeneralUtility::trimExplode(',', $imgList, TRUE);
+		if (count($imgs) === 0) {
+			// The imgList was not empty but did only contain empty values
+			return $content;
+		}
 		$imgStart = (int)$this->cObj->stdWrap($conf['imgStart'], $conf['imgStart.']);
 		$imgCount = count($imgs) - $imgStart;
 		$imgMax = (int)$this->cObj->stdWrap($conf['imgMax'], $conf['imgMax.']);
 		if ($imgMax) {
-			$imgCount = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($imgCount, 0, $imgMax);
+			$imgCount = MathUtility::forceIntegerInRange($imgCount, 0, $imgMax);
 		}
 		$imgPath = $this->cObj->stdWrap($conf['imgPath'], $conf['imgPath.']);
 		// Does we need to render a "global caption" (below the whole image block)?
@@ -497,9 +505,13 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 			// If we just have one image, the caption relates to the image, so it is not "global"
 			$renderGlobalCaption = FALSE;
 		}
+		$imgListContainsReferenceUids = (bool)(isset($conf['imgListContainsReferenceUids.'])
+			? $this->cObj->stdWrap($conf['imgListContainsReferenceUids'], $conf['imgListContainsReferenceUids.'])
+			: $conf['imgListContainsReferenceUids']);
 		// Use the calculated information (amount of images, if global caption is wanted) to choose a different rendering method for the images-block
 		$GLOBALS['TSFE']->register['imageCount'] = $imgCount;
 		$GLOBALS['TSFE']->register['renderGlobalCaption'] = $renderGlobalCaption;
+		$fallbackRenderMethod = '';
 		if ($conf['fallbackRendering']) {
 			$fallbackRenderMethod = $this->cObj->cObjGetSingle($conf['fallbackRendering'], $conf['fallbackRendering.']);
 		}
@@ -577,7 +589,7 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 				$imgKey = $a + $imgStart;
 
 				/** @var $file \TYPO3\CMS\Core\Resource\File */
-				if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($imgs[$imgKey])) {
+				if (MathUtility::canBeInterpretedAsInteger($imgs[$imgKey])) {
 					$file = $this->getResourceFactory()->getFileObject((int)$imgs[$imgKey]);
 				} else {
 					$file = $this->getResourceFactory()->getFileObjectFromCombinedIdentifier($imgPath . $imgs[$imgKey]);
@@ -606,8 +618,9 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 		for ($a = 0; $a < $imgCount; $a++) {
 			$imgKey = $a + $imgStart;
 			// If the image cannot be interpreted as integer (therefore filename and no FAL id), add the image path
-			if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($imgs[$imgKey])) {
+			if (MathUtility::canBeInterpretedAsInteger($imgs[$imgKey])) {
 				$totalImagePath = (int)$imgs[$imgKey];
+				$this->initializeCurrentFileInContentObjectRenderer($totalImagePath, $imgListContainsReferenceUids);
 			} else {
 				$totalImagePath = $imgPath . $imgs[$imgKey];
 			}
@@ -816,6 +829,13 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 						// Register IMAGE_NUM_CURRENT for the caption
 						$GLOBALS['TSFE']->register['IMAGE_NUM_CURRENT'] = $imageKey;
 						$this->cObj->data[$this->cObj->currentValKey] = $origImages[$imageKey]['origFile'];
+						if (MathUtility::canBeInterpretedAsInteger($imgs[$imageKey])) {
+							$this->initializeCurrentFileInContentObjectRenderer((int)$imgs[$imageKey], $imgListContainsReferenceUids);
+						} elseif (!isset($imgs[$imageKey])) {
+							// If not all columns in the last row are filled $imageKey gets larger than
+							// the array. In that case we clear the current file.
+							$this->cObj->setCurrentFile(NULL);
+						}
 						// Get the image if not an empty cell
 						if (isset($imgsTag[$imageKey])) {
 							$image = $this->cObj->stdWrap($imgsTag[$imageKey], $conf['imgTagStdWrap.']);
@@ -941,6 +961,9 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 					$GLOBALS['TSFE']->register['imagewidth'] = $origImages[$imgKey][0];
 					$GLOBALS['TSFE']->register['imagespace'] = $imageSpace;
 					$GLOBALS['TSFE']->register['imageheight'] = $origImages[$imgKey][1];
+					if (MathUtility::canBeInterpretedAsInteger($imgs[$imgKey])) {
+						$this->initializeCurrentFileInContentObjectRenderer(intval($imgs[$imgKey]), $imgListContainsReferenceUids);
+					}
 					if ($imageSpace > $maxImageSpace) {
 						$maxImageSpace = $imageSpace;
 					}
@@ -1035,7 +1058,8 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 				$images = $this->cObj->stdWrap($images, $conf['imageStdWrapNoWidth.']);
 			}
 		}
-		return str_replace(
+
+		$output = str_replace(
 			array(
 				'###TEXT###',
 				'###IMAGES###',
@@ -1048,6 +1072,32 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 			),
 			$this->cObj->cObjGetSingle($conf['layout'], $conf['layout.'])
 		);
+
+		if (isset($conf['preRenderRegisters.'])) {
+			$this->cObj->LOAD_REGISTER($conf['preRenderRegisters.'], 'RESTORE_REGISTER');
+		}
+
+		return $output;
+	}
+
+	/**
+	 * Loads the file / file reference object and sets it in the
+	 * currentFile property of the ContentObjectRenderer.
+	 *
+	 * This makes the file data available during image rendering.
+	 *
+	 * @param int $fileUid The UID of the file or file reference (depending on $treatAsReference) that should be loaded.
+	 * @param bool $treatAsReference If TRUE the given UID will be used to load a file reference otherwise it will be used to load a regular file.
+	 * @return void
+	 */
+	protected function initializeCurrentFileInContentObjectRenderer($fileUid, $treatAsReference) {
+		$resourceFactory = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance();
+		if ($treatAsReference) {
+			$imageFile = $resourceFactory->getFileReferenceObject($fileUid);
+		} else {
+			$imageFile = $resourceFactory->getFileObject($fileUid);
+		}
+		$this->cObj->setCurrentFile($imageFile);
 	}
 
 	/***********************************

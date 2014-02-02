@@ -69,6 +69,9 @@
 			<trans-unit id="eIcon.caption" xml:space="preserve">
 				<source>Edit image caption</source>
 			</trans-unit>
+			<trans-unit id="eIcon.caption_position" xml:space="preserve">
+				<source>Edit image caption alignment</source>
+			</trans-unit>
 			<trans-unit id="eIcon.bullets" xml:space="preserve">
 				<source>Edit bullet list</source>
 			</trans-unit>

@@ -634,15 +634,42 @@ tt_content.image.20 = USER
 tt_content.image.20 {
 	userFunc = TYPO3\CMS\CssStyledContent\Controller\CssStyledContentController->render_textpic
 
+	preRenderRegisters {
+		// To optimize performance we load all image captions into a register
+		// because we need to know if at least one image has a caption at
+		// multiple places to determine the render method.
+		allImageCaptions.cObject = FILES
+		allImageCaptions.cObject {
+			references {
+				table = tt_content
+				uid.field = uid
+				fieldName = image
+			}
+			renderObj = TEXT
+			renderObj.data = file:current:description
+		}
+	}
+
 	# Image source
-	imgList.field = image
-	imgList.override.field = image_fileUids
+	imgList.cObject = FILES
+	imgList.cObject {
+		references < tt_content.image.20.preRenderRegisters.allImageCaptions.cObject.references
+		renderObj = TEXT
+		renderObj.data = file:current:uid
+		renderObj.wrap = |,
+	}
 	imgPath = uploads/pics/
+
+	// This needs to be set because the UID list generated in the imgList
+	// setting contains UIDs of file references (not files).
+	imgListContainsReferenceUids = 1
 
 	# Single image rendering
 	imgObjNum = 1
 	1 {
-		file.import.current = 1
+		// Since the current file is a reference we need to use uid_local
+		// to get the UID of the original file.
+		file.import.data = file:current:uid_local
 		file.width.field = imagewidth
 
 		layoutKey = {$styles.content.imgtext.layoutKey}
@@ -698,6 +725,7 @@ tt_content.image.20 {
 			width = {$styles.content.imgtext.linkWrap.width}
 			height = {$styles.content.imgtext.linkWrap.height}
 			effects = {$styles.content.imgtext.linkWrap.effects}
+			treatIdAsReference = 1
 
 			JSwindow = 1
 			JSwindow.newWindow = {$styles.content.imgtext.linkWrap.newWindow}
@@ -706,14 +734,10 @@ tt_content.image.20 {
 			directImageLink = {$styles.content.imgtext.linkWrap.lightboxEnabled}
 
 			enable.field = image_zoom
-			enable.ifEmpty.typolink.parameter.field = image_link
-			enable.ifEmpty.typolink.parameter.listNum.splitChar = 10
-			enable.ifEmpty.typolink.parameter.listNum.stdWrap.data = register : IMAGE_NUM_CURRENT
+			enable.ifEmpty.typolink.parameter.data = file:current:link
 			enable.ifEmpty.typolink.returnLast = url
 
-			typolink.parameter.field = image_link
-			typolink.parameter.listNum.splitChar = 10
-			typolink.parameter.listNum.stdWrap.data = register : IMAGE_NUM_CURRENT
+			typolink.parameter.data = file:current:link
 
 			typolink.target < lib.parseTarget
 			typolink.target =
@@ -728,59 +752,12 @@ tt_content.image.20 {
 
 		altText = TEXT
 		altText {
-			field = altText
+			data = file:current:alternative
 			stripHtml = 1
-			split.token.char = 10
-			split.token.if.isTrue = {$styles.content.imgtext.imageTextSplit}
-			split.returnKey.data = register : IMAGE_NUM_CURRENT
-		}
-
-		params =
-		params {
-			override {
-				dataWrap = aria-describedby="csc-longdesc-{field:uid}-{register:IMAGE_NUM_CURRENT}"
-				if {
-					isTrue {
-						cObject = TEXT
-						cObject {
-							field = imagecaption
-							required = 1
-							parseFunc =< lib.parseFunc
-							split {
-								token {
-									char = 10
-									if.isPositive = {$styles.content.imgtext.imageTextSplit} + {$styles.content.imgtext.captionSplit}
-								}
-								returnKey.data = register : IMAGE_NUM_CURRENT
-							}
-						}
-					}
-					isFalse = 1
-					isFalse {
-						if {
-							isFalse {
-								cObject = TEXT
-								cObject {
-									field = longdescURL
-									split {
-										token {
-											char = 10
-										}
-										returnKey.data = register : IMAGE_NUM_CURRENT
-									}
-								}
-							}
-						}
-					}
-					isPositive = {$styles.content.imgtext.imageTextSplit} + {$styles.content.imgtext.captionSplit}
-					value = html5
-					equals.data = TSFE:config|config|doctype
-				}
-			}
 		}
 
 		titleText < .altText
-		titleText.field = titleText
+		titleText.data = file:current:title
 
 		longdescURL {
 			parameter {
@@ -820,46 +797,19 @@ tt_content.image.20 {
 		1 {
 			1 = TEXT
 			1 {
-				field = imagecaption
+				data = file:current:description
 				required = 1
 				parseFunc =< lib.parseFunc
 				br = 1
-				split.token.char = 10
-				split.token.if.isPositive = {$styles.content.imgtext.imageTextSplit} + {$styles.content.imgtext.captionSplit}
-				split.returnKey.data = register : IMAGE_NUM_CURRENT
-			}
-			stdWrap {
-				required = 1
-				typolink {
-					parameter {
-						field = longdescURL
-						trim = 1
-						split {
-							token {
-								char = 10
-							}
-							returnKey.data = register : IMAGE_NUM_CURRENT
-						}
-						if {
-							value = html5
-							equals.data = TSFE:config|config|doctype
-						}
-					}
-					ATagParams {
-						dataWrap = id="csc-longdesc-{field:uid}-{register:IMAGE_NUM_CURRENT}"
-					}
-					target = {$styles.content.links.target}
-					extTarget = {$styles.content.links.extTarget}
-				}
 			}
 		}
 	}
 
-	# captionSplit is deprecated, use imageTextSplit instead
-	captionSplit = {$styles.content.imgtext.captionSplit}
 	captionAlign.field = imagecaption_position
-	# caption/alttext/title/longdescURL splitting
-	imageTextSplit = {$styles.content.imgtext.imageTextSplit}
+
+	// This needs to be set to TRUE because otherwise render_textpic will
+	// render a global caption which we do not have.
+	imageTextSplit = 1
 
 	borderThick = {$styles.content.imgtext.borderThick}
 	borderClass = {$styles.content.imgtext.borderClass}
@@ -1031,7 +981,7 @@ tt_content.image.20 {
 				10 = TEXT
 				10 {
 					if {
-						isTrue.field = imagecaption
+						isTrue.data = file:current:description
 						value = 1
 						equals.data = register:imageCount
 					}
@@ -1045,21 +995,9 @@ tt_content.image.20 {
 						value = 1
 						isGreaterThan.data = register:imageCount
 						isTrue.if.isFalse.data = register:renderGlobalCaption
-						isTrue.field = imagecaption
+						isTrue.data = register:allImageCaptions
 					}
 					value = splitCaption
-				}
-
-				# Multiple images and one global caption
-				30 = TEXT
-				30 {
-					if {
-						value = 1
-						isGreaterThan.data = register:imageCount
-						isTrue.if.isTrue.data = register:renderGlobalCaption
-						isTrue.field = imagecaption
-					}
-					value = globalCaption
 				}
 
 				# Multiple images and no caption at all
@@ -1068,7 +1006,7 @@ tt_content.image.20 {
 					if {
 						value = 1
 						isGreaterThan.data = register:imageCount
-						isFalse.field = imagecaption
+						isFalse.data = register:allImageCaptions
 					}
 					value = noCaption
 				}
@@ -1201,54 +1139,15 @@ tt_content.image.20 {
 				}
 			}
 		}
-		globalCaption {
-			# Just one image without a caption
-			fallbackRendering < tt_content.image.20.rendering.singleNoCaption.fallbackRendering.10
-			allStdWrap {
-				dataWrap = <div class="csc-textpic-imagewrap"><table>###CAPTION###<tbody> | </tbody></table></div>
-				dataWrap {
-					override = <figure class="csc-textpic-imagewrap" data-csc-images="{register:imageCount}" data-csc-cols="{field:imagecols}"> | ###CAPTION###</figure>
-					override {
-						if {
-							value = html5
-							equals.data = TSFE:config|config|doctype
-						}
-					}
-				}
-			}
-			singleStdWrap {
-				wrap = <div class="csc-textpic-image###CLASSES###"> | </div>
-				wrap {
-					override = <div class="csc-textpic-image###CLASSES###"> | </div>
-				}
-			}
-			rowStdWrap.wrap = <div class="csc-textpic-imagerow"> | </div>
-			noRowsStdWrap.wrap = <div class="csc-textpic-imagerow csc-textpic-imagerow-none"> | </div>
-			lastRowStdWrap.wrap = <div class="csc-textpic-imagerow csc-textpic-imagerow-last"> | </div>
-			columnStdWrap.wrap = <div class="csc-textpic-imagecolumn###CLASSES###"> | </div>
-			caption {
-				required = 1
-				wrap = <caption class="csc-textpic-caption"> | </caption>
-				wrap {
-					override = <figcaption class="csc-textpic-caption###CLASSES###"> | </figcaption>
-					override {
-						if {
-							value = html5
-							equals.data = TSFE:config|config|doctype
-						}
-					}
-				}
-			}
-		}
 	}
 	renderMethod = singleNoCaption
 
-	editIcons = tt_content : image [imageorient|imagewidth|imageheight], [imagecols|image_noRows|imageborder],[image_link|image_zoom],[image_compression|image_effects|image_frames],imagecaption[imagecaption_position]
+	editIcons = tt_content : image [imageorient|imagewidth|imageheight],[imagecols|image_noRows|imageborder],[image_zoom],[image_compression|image_effects|image_frames],[imagecaption_position]
 	editIcons.iconTitle.data = LLL:EXT:css_styled_content/pi1/locallang.xml:eIcon.images
 
-	caption.editIcons = tt_content : imagecaption[imagecaption_position]
+	caption.editIcons = tt_content : imagecaption_position
 	caption.editIcons.beforeLastTag=1
-	caption.editIcons.iconTitle.data = LLL:EXT:css_styled_content/pi1/locallang.xml:eIcon.caption
+	caption.editIcons.iconTitle.data = LLL:EXT:css_styled_content/pi1/locallang.xml:eIcon.caption_position
 
 	stdWrap.prefixComment = 2 | Image block:
 }
