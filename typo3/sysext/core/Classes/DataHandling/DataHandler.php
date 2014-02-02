@@ -1721,6 +1721,7 @@ class DataHandler {
 			// if so, set this value to "0" again
 			if ($maxCheckedRecords && count($otherRecordsWithSameValue) >= $maxCheckedRecords) {
 				$value = 0;
+				$this->log($table, $id, 5, 0, 1, 'Could not activate checkbox for field "%s". A total of %s record(s) can have this checkbox activated. Uncheck other records first in order to activate the checkbox of this record.', -1, array($GLOBALS['LANG']->sL(BackendUtility::getItemLabel($table, $field)), $maxCheckedRecords));
 			}
 		}
 		$res['value'] = $value;
