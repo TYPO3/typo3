@@ -45,8 +45,10 @@
 				</td>
 			</tr>
 			<tr>
-				<td style="white-space: nowrap">
-					<span class="t3-table-tree"><img src="sysext/t3skin/icons/gfx/ol/join-30px.gif" width="16" height="30" alt="" /></span>
+				<td class="nowrap">
+					<span class="t3-table-tree">
+						<sg:SpriteManagerIcon iconName="treeline-line" />
+					</span>
 
 					<a href="#" onClick="Clickmenu.show('', '', '1', '', '', ''); return false;"><sg:spriteManagerIcon iconName="mimetypes-other-other" /></a>
 
@@ -64,15 +66,19 @@
 			<tr>
 				<td class="nowrap">
 					<span class="t3-table-tree">
-						<img src="sysext/t3skin/icons/gfx/ol/line-30px.gif" width="16" height="30" alt="" />
+						<sg:SpriteManagerIcon iconName="treeline-line" />
 					</span>
-					<span class="t3-table-tree">
-						<img src="sysext/t3skin/icons/gfx/ol/joinbottom-30px.gif" width="16" height="30" alt="" />
-					</span>
+
+					<a href="javascript:alert('Fold'); return false;">
+						<span class="t3-table-tree">
+							<sg:SpriteManagerIcon iconName="treeline-minus" />
+						</span>
+					</a>
 
 					<a href="#" onClick="Clickmenu.show('', '', '1', '', '', ''); return false;"><sg:spriteManagerIcon iconName="mimetypes-other-other" /></a>
 
-					<b>Record title always bold</b>
+					<b>Second level</b>
+					<small>not second class</small>
 				</td>
 				<td><a href="#">Donec id elit</a></td>
 				<td align="right">9.300,20</td>
@@ -84,9 +90,59 @@
 				</td>
 			</tr>
 			<tr>
+				<td class="nowrap">
+					<span class="t3-table-tree">
+						<sg:SpriteManagerIcon iconName="treeline-line" />
+					</span>
+
+					<span class="t3-table-tree">
+						<sg:SpriteManagerIcon iconName="treeline-line" />
+					</span>
+
+					<span class="t3-table-tree">
+						<sg:SpriteManagerIcon iconName="treeline-joinbottom" />
+					</span>
+
+					<a href="#" onClick="Clickmenu.show('', '', '1', '', '', ''); return false;"><sg:spriteManagerIcon iconName="mimetypes-other-other" /></a>
+
+					<b>Magic third level</b>
+				</td>
+				<td><a href="#">Donec id elit</a></td>
+				<td align="right">9.300,20</td>
+				<td align="right" class="nowrap">
+					<a href="#" onClick="alert('Ok'); return false;"><sg:spriteManagerIcon iconName="actions-document-open" /></a>
+					<a href="#" onClick="alert('Ok'); return false;"><sg:spriteManagerIcon iconName="actions-document-info" /></a>
+					<a href="#" onClick="alert('Ok'); return false;"><sg:spriteManagerIcon iconName="actions-edit-hide" /></a>
+					<a href="#" onClick="alert('Ok'); return false;"><sg:spriteManagerIcon iconName="actions-edit-delete" /></a>
+				</td>
+			</tr>
+			<tr>
+				<td class="nowrap">
+					<span class="t3-table-tree">
+						<sg:SpriteManagerIcon iconName="treeline-line" />
+					</span>
+
+					<span class="t3-table-tree">
+						<sg:SpriteManagerIcon iconName="treeline-joinbottom" />
+					</span>
+
+					<a href="#" onClick="Clickmenu.show('', '', '1', '', '', ''); return false;"><sg:spriteManagerIcon iconName="mimetypes-other-other" /></a>
+
+					<b>Record title always bold</b>
+				</td>
+				<td><a href="#">Donec id elit</a></td>
+				<td align="right">0,00</td>
+				<td align="right" class="nowrap">
+					<a href="#" onClick="alert('Ok'); return false;"><sg:spriteManagerIcon iconName="actions-document-open" /></a>
+					<a href="#" onClick="alert('Ok'); return false;"><sg:spriteManagerIcon iconName="actions-document-info" /></a>
+					<a href="#" onClick="alert('Ok'); return false;"><sg:spriteManagerIcon iconName="actions-edit-hide" /></a>
+					<a href="#" onClick="alert('Ok'); return false;"><sg:spriteManagerIcon iconName="actions-edit-delete" /></a>
+				</td>
+			</tr>
+			<tr>
 				<td>
 					<span class="t3-table-tree">
-						<img src="sysext/t3skin/icons/gfx/ol/joinbottom-30px.gif" width="16" height="30" alt="" />
+						<sg:SpriteManagerIcon iconName="treeline-joinbottom" />
 					</span>
 
 					<a href="#" onClick="Clickmenu.show('', '', '1', '', '', ''); return false;"><sg:spriteManagerIcon iconName="mimetypes-other-other" /></a>
@@ -103,18 +159,28 @@
 				</td>
 			</tr>
 		</tbody>
+		<tfoot>
+			<tr>
+				<td colspan="4">
+					X.XXX,XX Entries
+				</td>
+			</tr>
+		</tfoot>
 	</table>
 
 	<div class="example">
 		<pre>&lt;table class="t3-table"&gt;
 	&lt;thead&gt;
-		&lt;th&gt;&lt;/th&gt;
+		&lt;th&gt;Head&lt;/th&gt;
 	&lt;/thead&gt;
 	&lt;tbody&gt;
 		&lt;td&gt;
 			&lt;span class="t3-table-tree"&gt;Icon&lt;/span&gt;
 		&lt;/td&gt;
 	&lt;/tbody&gt;
+	&lt;tfoot&gt;
+		&lt;td&gt;Foot&lt;/td&gt;
+	&lt;/tfoot&gt;
 &lt;/table&gt;</pre>
 	</div>
 
