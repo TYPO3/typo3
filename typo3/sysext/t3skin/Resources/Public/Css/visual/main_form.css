@@ -28,32 +28,25 @@ input[type="checkbox"] {
 /* - - - - - - - - - - - - - - - - - - - - -
 Buttons
 - - - - - - - - - - - - - - - - - - - - - */
+
 .t3-button,
 button,
 input[type="submit"],
 input[type="reset"],
 input[type="button"] {
-	font-size: 12px;
-	line-height: 1.5em;
-	display: inline-block;
-	margin-bottom: 0;
-	font-weight: normal;
-	text-align: center;
-	vertical-align: middle;
-	cursor: pointer;
+	background-color: #E0E0E0;
 	background-image: none;
+	border: 1px solid #7c7c7c;
+	border-radius: 2px;
+	color: #434343;
+	cursor: pointer;
 	white-space: nowrap;
 	-webkit-user-select: none;
 	-moz-user-select: none;
 	-ms-user-select: none;
 	 -o-user-select: none;
 	user-select: none;
-	border-radius: 2px;
 	text-decoration: none!important;
-	padding: 6px 10px;
-	background-color: #E0E0E0;
-	border: 1px solid #7c7c7c;
-	color: #434343;
 }
 
 .t3-button:hover,

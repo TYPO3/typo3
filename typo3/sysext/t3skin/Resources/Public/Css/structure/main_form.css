@@ -10,11 +10,14 @@ form {
 	margin-bottom: 1.25em;
 }
 
+.t3-button,
 input,
 textarea,
 button {
-	padding: 3px 6px;
+	display: inline-block;
 	margin: 0 0.5em 0.5em 0;
+	padding: 3px 6px;
+	vertical-align: middle;
 }
 
 input[type=checkbox] {
