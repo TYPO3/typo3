@@ -40,8 +40,8 @@ table#typo3-altdoc-header input,
 .t3-tceforms-input-wrapper .t3-tceforms-input-clearer,
 .t3-tceforms-input-wrapper-hover .t3-tceforms-input-clearer {
 	position: absolute;
-	right: 4px;
-	top: 28%;
+	right: 10px;
+	top: 5px;
 	z-index: 1000;
 	cursor: pointer;
 }
@@ -65,8 +65,7 @@ table#typo3-altdoc-header input,
 .t3-tceforms-input-wrapper-datetime-hover .tceforms-datetimefield {
 	position: relative;
 	z-index: 2000;
-	min-height: 14px;
-	padding-right: 20px!important;
+	padding-right: 30px!important;
 }
 
 .t3-tceforms-input-wrapper-hover .t3-tceforms-input-clearer,
@@ -476,20 +475,21 @@ TCEforms Sections
 }
 
 .t3-tceforms-fieldReadOnly {
-    padding:5px;
-    border:1px solid #cccccc;
-    background: #f4f4f4;
-    color: #696362;
-    -webkit-box-shadow: inset 0px 0px 5px 0px #e8e8e8;
-    box-shadow: inset 0px 0px 5px 0px #e8e8e8;
-    padding-right:21px;
-    position:relative;
+	background-color: #fefefe;
+	border: 1px solid #7c7c7c;
+	border-radius: 2px;
+	pointer-events: none;
+	cursor: default;
+	opacity: 0.5;
+	filter: ~"alpha(opacity=@50)";
+	-webkit-box-shadow: none;
+	box-shadow: none;
 }
 
 .t3-tceforms-fieldReadOnly span.t3-icon {
-    position:absolute;
-    right:3px;
-    top:4px;
+    position: absolute;
+    right: 3px;
+    top: 4px;
 }
 
 .t3-form-field-item {

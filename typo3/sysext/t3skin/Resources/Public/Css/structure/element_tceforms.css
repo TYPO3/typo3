@@ -194,8 +194,6 @@ select option.c-divider {
 .typo3-TCEforms .formField3,
 .typo3-TCEforms .formField4,
 .typo3-TCEforms .formField5 {
-	margin: 4px 2px 4px 1px;
-	padding: 2px;
 	vertical-align: middle;
 	position: relative;
 }
@@ -300,6 +298,13 @@ select option.c-divider {
 
 .typo3-TCEforms .typo3-csh-link {
 	margin-left: 5px;
+}
+
+.t3-tceforms-fieldReadOnly {
+	/** Lock icon in right corner */
+	padding: 3px 30px 3px 6px;
+	margin: 0 0.5em 0.5em 0;
+	position: relative;
 }
 
 /* - - - - - - - - - - - - - - - - - - - - -
