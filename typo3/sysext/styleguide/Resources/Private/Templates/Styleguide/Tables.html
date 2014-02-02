@@ -1,4 +1,4 @@
-{namespace bu = TYPO3\CMS\Beuser\ViewHelpers}
+{namespace sg = TYPO3\CMS\Styleguide\ViewHelpers}
 
 <f:layout name="Default"/>
 
@@ -7,55 +7,57 @@
 
 <f:section name="content">
 
-	<f:comment>
+	<!--
 		****************************************
 		Table
 		****************************************
-	</f:comment>
+	-->
 
 	<h2>Standard Table</h2>
+
+	<p>Tables are used all over the TYPO3 CMS backend. Use tables to show tabular data. The action icons should always be in the last table row cell. Please consider that zebra table row styling os done by nth-child CSS3 selector and might not work on legacy browsers (Internet Explorer 8).</p>
 
 	<table class="t3-table">
 		<thead>
 			<tr>
 				<th>Tree & Table Header</th>
 				<th>Table Header <a href="#">link</a> inline</th>
+				<th align="right" width="150">Table Header</th>
 				<th>&nbsp;</th>
-				<th width="150">Table Header</th>
 			</tr>
 		</thead>
 		<tbody>
 			<tr>
 				<td style="white-space: nowrap">
-					<a href="#" onClick="Clickmenu.show('', '', '1', '', '', ''); return false;"><bu:SpriteManagerIcon iconName="mimetypes-other-other" /></a>
+					<a href="#" onClick="Clickmenu.show('', '', '1', '', '', ''); return false;"><sg:spriteManagerIcon iconName="mimetypes-other-other" /></a>
 
 					<b>Record title on root level</b>
 				</td>
 				<td><a href="#">Donec id elit</a></td>
-				<td class="nowrap">
-					<a href="#" onClick="alert('Ok'); return false;"><bu:spriteManagerIcon iconName="actions-document-open" /></a>
-					<a href="#" onClick="alert('Ok'); return false;"><bu:spriteManagerIcon iconName="actions-document-info" /></a>
-					<a href="#" onClick="alert('Ok'); return false;"><bu:spriteManagerIcon iconName="actions-edit-hide" /></a>
-					<a href="#" onClick="alert('Ok'); return false;"><bu:spriteManagerIcon iconName="actions-edit-delete" /></a>
+				<td align="right">1.900,50</td>
+				<td align="right" class="nowrap">
+					<a href="#" onClick="alert('Ok'); return false;"><sg:spriteManagerIcon iconName="actions-document-open" /></a>
+					<a href="#" onClick="alert('Ok'); return false;"><sg:spriteManagerIcon iconName="actions-document-info" /></a>
+					<a href="#" onClick="alert('Ok'); return false;"><sg:spriteManagerIcon iconName="actions-edit-hide" /></a>
+					<a href="#" onClick="alert('Ok'); return false;"><sg:spriteManagerIcon iconName="actions-edit-delete" /></a>
 				</td>
-				<td>Content Goes Here</td>
 			</tr>
 			<tr>
 				<td style="white-space: nowrap">
 					<span class="t3-table-tree"><img src="sysext/t3skin/icons/gfx/ol/join-30px.gif" width="16" height="30" alt="" /></span>
 
-					<a href="#" onClick="Clickmenu.show('', '', '1', '', '', ''); return false;"><bu:SpriteManagerIcon iconName="mimetypes-other-other" /></a>
+					<a href="#" onClick="Clickmenu.show('', '', '1', '', '', ''); return false;"><sg:spriteManagerIcon iconName="mimetypes-other-other" /></a>
 
 					<b>First level entry record</b>
 				</td>
 				<td><a href="#">Donec id elit</a></td>
-				<td class="nowrap">
-					<a href="#" onClick="alert('Ok'); return false;"><bu:spriteManagerIcon iconName="actions-document-open" /></a>
-					<a href="#" onClick="alert('Ok'); return false;"><bu:spriteManagerIcon iconName="actions-document-info" /></a>
-					<a href="#" onClick="alert('Ok'); return false;"><bu:spriteManagerIcon iconName="actions-edit-hide" /></a>
-					<a href="#" onClick="alert('Ok'); return false;"><bu:spriteManagerIcon iconName="actions-edit-delete" /></a>
+				<td align="right">540,99</td>
+				<td align="right" class="nowrap">
+					<a href="#" onClick="alert('Ok'); return false;"><sg:spriteManagerIcon iconName="actions-document-open" /></a>
+					<a href="#" onClick="alert('Ok'); return false;"><sg:spriteManagerIcon iconName="actions-document-info" /></a>
+					<a href="#" onClick="alert('Ok'); return false;"><sg:spriteManagerIcon iconName="actions-edit-hide" /></a>
+					<a href="#" onClick="alert('Ok'); return false;"><sg:spriteManagerIcon iconName="actions-edit-delete" /></a>
 				</td>
-				<td>Content Goes Here</td>
 			</tr>
 			<tr>
 				<td style="white-space: nowrap">
@@ -66,18 +68,18 @@
 						<img src="sysext/t3skin/icons/gfx/ol/joinbottom-30px.gif" width="16" height="30" alt="" />
 					</span>
 
-					<a href="#" onClick="Clickmenu.show('', '', '1', '', '', ''); return false;"><bu:SpriteManagerIcon iconName="mimetypes-other-other" /></a>
+					<a href="#" onClick="Clickmenu.show('', '', '1', '', '', ''); return false;"><sg:spriteManagerIcon iconName="mimetypes-other-other" /></a>
 
 					<b>Record title always bold</b>
 				</td>
 				<td><a href="#">Donec id elit</a></td>
-				<td class="nowrap">
-					<a href="#" onClick="alert('Ok'); return false;"><bu:spriteManagerIcon iconName="actions-document-open" /></a>
-					<a href="#" onClick="alert('Ok'); return false;"><bu:spriteManagerIcon iconName="actions-document-info" /></a>
-					<a href="#" onClick="alert('Ok'); return false;"><bu:spriteManagerIcon iconName="actions-edit-hide" /></a>
-					<a href="#" onClick="alert('Ok'); return false;"><bu:spriteManagerIcon iconName="actions-edit-delete" /></a>
+				<td align="right">9.300,20</td>
+				<td align="right" class="nowrap">
+					<a href="#" onClick="alert('Ok'); return false;"><sg:spriteManagerIcon iconName="actions-document-open" /></a>
+					<a href="#" onClick="alert('Ok'); return false;"><sg:spriteManagerIcon iconName="actions-document-info" /></a>
+					<a href="#" onClick="alert('Ok'); return false;"><sg:spriteManagerIcon iconName="actions-edit-hide" /></a>
+					<a href="#" onClick="alert('Ok'); return false;"><sg:spriteManagerIcon iconName="actions-edit-delete" /></a>
 				</td>
-				<td>Content Goes Here</td>
 			</tr>
 			<tr>
 				<td style="white-space: nowrap">
@@ -85,23 +87,21 @@
 						<img src="sysext/t3skin/icons/gfx/ol/joinbottom-30px.gif" width="16" height="30" alt="" />
 					</span>
 
-					<a href="#" onClick="Clickmenu.show('', '', '1', '', '', ''); return false;"><bu:SpriteManagerIcon iconName="mimetypes-other-other" /></a>
+					<a href="#" onClick="Clickmenu.show('', '', '1', '', '', ''); return false;"><sg:spriteManagerIcon iconName="mimetypes-other-other" /></a>
 
 					<b>Record title always bold</b>
 				</td>
 				<td><a href="#">Donec id elit</a></td>
-				<td class="nowrap">
-					<a href="#" onClick="alert('Ok'); return false;"><bu:spriteManagerIcon iconName="actions-document-open" /></a>
-					<a href="#" onClick="alert('Ok'); return false;"><bu:spriteManagerIcon iconName="actions-document-info" /></a>
-					<a href="#" onClick="alert('Ok'); return false;"><bu:spriteManagerIcon iconName="actions-edit-hide" /></a>
-					<a href="#" onClick="alert('Ok'); return false;"><bu:spriteManagerIcon iconName="actions-edit-delete" /></a>
+				<td align="right">0,00</td>
+				<td align="right" class="nowrap">
+					<a href="#" onClick="alert('Ok'); return false;"><sg:spriteManagerIcon iconName="actions-document-open" /></a>
+					<a href="#" onClick="alert('Ok'); return false;"><sg:spriteManagerIcon iconName="actions-document-info" /></a>
+					<a href="#" onClick="alert('Ok'); return false;"><sg:spriteManagerIcon iconName="actions-edit-hide" /></a>
+					<a href="#" onClick="alert('Ok'); return false;"><sg:spriteManagerIcon iconName="actions-edit-delete" /></a>
 				</td>
-				<td>Content Goes Here</td>
 			</tr>
 		</tbody>
 	</table>
-
-	<p>Markup</p>
 
 	<div class="example">
 		<pre>&lt;table class="t3-table"&gt;
