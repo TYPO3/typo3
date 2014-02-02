@@ -319,6 +319,7 @@ $GLOBALS['TBE_STYLES']['spriteIconApi']['coreSpriteImageNames'] = array(
 	'actions-edit-cut',
 	'actions-edit-cut-release',
 	'actions-edit-delete',
+	'actions-edit-download',
 	'actions-edit-hide',
 	'actions-edit-insert-default',
 	'actions-edit-localize-status-high',
