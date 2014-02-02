@@ -247,6 +247,11 @@ return array(
 			'processingTaskTypes' => array(
 				'Image.Preview' => 'TYPO3\\CMS\\Core\\Resource\\Processing\\ImagePreviewTask',
 				'Image.CropScaleMask' => 'TYPO3\\CMS\\Core\\Resource\\Processing\\ImageCropScaleMaskTask'
+			),
+			'registeredCollections' => array(
+				'static' => 'TYPO3\\CMS\\Core\\Resource\\Collection\\StaticFileCollection',
+				'folder' => 'TYPO3\\CMS\\Core\\Resource\\Collection\\FolderBasedFileCollection',
+				'category' => 'TYPO3\\CMS\\Core\\Resource\\Collection\\CategoryBasedFileCollection',
 			)
 		),
 		'isInitialInstallationInProgress' => FALSE,		// Boolean: If TRUE, the installation is 'in progress'. This value is handled within the install tool step installer internally.

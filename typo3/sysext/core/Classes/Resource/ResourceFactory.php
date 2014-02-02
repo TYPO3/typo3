@@ -296,20 +296,11 @@ class ResourceFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return Collection\AbstractFileCollection
 	 */
 	public function createCollectionObject(array $collectionData) {
-		switch ($collectionData['type']) {
-			case 'static':
-				$collection = Collection\StaticFileCollection::create($collectionData);
-				break;
-			case 'folder':
-				$collection = Collection\FolderBasedFileCollection::create($collectionData);
-				break;
-			case 'category':
-				$collection = Collection\CategoryBasedFileCollection::create($collectionData);
-				break;
-			default:
-				$collection = NULL;
-		}
-		return $collection;
+		/** @var $registry Collection\FileCollectionRegistry */
+		$registry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\Collection\\FileCollectionRegistry');
+		$class = $registry->getFileCollectionClass($collectionData['type']);
+
+		return $class::create($collectionData);
 	}
 
 	/**
