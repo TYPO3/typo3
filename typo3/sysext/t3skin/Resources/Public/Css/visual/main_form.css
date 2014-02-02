@@ -34,27 +34,32 @@ button,
 input[type="submit"],
 input[type="reset"],
 input[type="button"] {
-	background-color: #E0E0E0;
-	background-image: none;
+	background-color: rgb(120, 120, 120);
 	border: 1px solid #7c7c7c;
 	border-radius: 2px;
-	color: #434343;
+	color: #fff;
+	display: inline-block;
+	font-family: Share, Verdana, Arial, Helvetica, sans-serif;
+	font-weight: normal;
+	line-height: 1.5em;
+	margin-bottom: 0;
+	cursor: pointer;
+	background-image: none;
 	cursor: pointer;
 	white-space: nowrap;
+	user-select: none;
+	text-decoration: none!important;
 	-webkit-user-select: none;
 	-moz-user-select: none;
 	-ms-user-select: none;
 	 -o-user-select: none;
-	user-select: none;
-	text-decoration: none!important;
 }
 
 .t3-button:hover,
 input[type="submit"]:hover,
 input[type="reset"]:hover,
 input[type="button"]:hover {
-	background-color: #cccccc;
-	text-decoration: none!important;
+	background-color: rgb(95, 95, 95);
 }
 
 .t3-button span.t3-icon {
