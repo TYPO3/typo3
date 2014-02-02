@@ -1,0 +1,217 @@
+{namespace sg = TYPO3\CMS\Styleguide\ViewHelpers}
+
+<f:layout name="Default"/>
+
+<f:section name="iconButtons">
+</f:section>
+
+<f:section name="headline">
+	Trees
+</f:section>
+
+<f:section name="content">
+
+	<!--
+		Stand alone
+	-->
+
+	<h2>Stand alone trees</h2>
+
+	<p>Structures and hierarchical content as trees.</p>
+
+	<ul>
+		<li>
+			<sg:SpriteManagerIcon iconName="treeline-line" /> Line
+		</li>
+		<li>
+			<sg:SpriteManagerIcon iconName="treeline-join" /> Join
+		</li>
+		<li>
+			<sg:SpriteManagerIcon iconName="treeline-joinbottom" /> Join bottom
+		</li>
+		<li>
+			<sg:SpriteManagerIcon iconName="treeline-jointop" /> Join top
+		</li>
+		<li>
+			<sg:SpriteManagerIcon iconName="treeline-minus" /> Minus
+		</li>
+		<li>
+			<sg:SpriteManagerIcon iconName="treeline-minusonly" /> Minus only
+		</li>
+		<li>
+			<sg:SpriteManagerIcon iconName="treeline-minustop" /> Minus top
+		</li>
+		<li>
+			<sg:SpriteManagerIcon iconName="treeline-minusbottom" /> Minus bottom
+		</li>
+		<li>
+			<sg:SpriteManagerIcon iconName="treeline-plus" /> Plus
+		</li>
+		<li>
+			<sg:SpriteManagerIcon iconName="treeline-plusonly" /> Plus only
+		</li>
+		<li>
+			<sg:SpriteManagerIcon iconName="treeline-plustop" /> Plus top
+		</li>
+		<li>
+			<sg:SpriteManagerIcon iconName="treeline-plusbottom" /> Plus bottom
+		</li>
+		<li>
+			<sg:SpriteManagerIcon iconName="treeline-stopper" /> Stopper
+		</li>
+	</ul>
+
+	<ul>
+		<li>
+			<sg:SpriteManagerIcon iconName="treeline-join" /> Join
+		</li>
+		<li>
+			<sg:SpriteManagerIcon iconName="treeline-line" /> Line
+			<sg:SpriteManagerIcon iconName="treeline-join" /> Join
+		</li>
+		<li>
+			<sg:SpriteManagerIcon iconName="treeline-joinbottom" /> Join bottom
+		</li>
+		<li>
+			<sg:SpriteManagerIcon iconName="treeline-jointop" /> Join top
+		</li>
+		<li>
+			<sg:SpriteManagerIcon iconName="treeline-minus" /> Minus
+		</li>
+		<li>
+			<sg:SpriteManagerIcon iconName="treeline-minusonly" /> Minus only
+		</li>
+		<li>
+			<sg:SpriteManagerIcon iconName="treeline-minustop" /> Minus top
+		</li>
+		<li>
+			<sg:SpriteManagerIcon iconName="treeline-minusbottom" /> Minus bottom
+		</li>
+		<li>
+			<sg:SpriteManagerIcon iconName="treeline-plus" /> Plus
+		</li>
+		<li>
+			<sg:SpriteManagerIcon iconName="treeline-plusonly" /> Plus only
+		</li>
+		<li>
+			<sg:SpriteManagerIcon iconName="treeline-plustop" /> Plus top
+		</li>
+		<li>
+			<sg:SpriteManagerIcon iconName="treeline-plusbottom" /> Plus bottom
+		</li>
+		<li>
+			<sg:SpriteManagerIcon iconName="treeline-stopper" /> Stopper
+		</li>
+	</ul>
+
+	<!--
+		****************************************
+		Table tree
+		****************************************
+	-->
+
+	<h2>Trees in table</h2>
+
+	<p>Tables are used all over the TYPO3 CMS backend. Use tables to show tabular data. The action icons should always be in the last table row cell. Please consider that zebra table row styling os done by nth-child CSS3 selector and might not work on legacy browsers (Internet Explorer 8).</p>
+
+	<table class="t3-table">
+		<thead>
+			<tr>
+				<th>Tree & Table Header</th>
+				<th>Table Header <a href="#">link</a> inline</th>
+				<th align="right" width="150">Table Header</th>
+				<th>&nbsp;</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td style="white-space: nowrap">
+					<a href="#" onClick="Clickmenu.show('', '', '1', '', '', ''); return false;"><sg:spriteManagerIcon iconName="mimetypes-other-other" /></a>
+
+					<b>Record title on root level</b>
+				</td>
+				<td><a href="#">Donec id elit</a></td>
+				<td align="right">1.900,50</td>
+				<td align="right" class="nowrap">
+					<a href="#" onClick="alert('Ok'); return false;"><sg:spriteManagerIcon iconName="actions-document-open" /></a>
+					<a href="#" onClick="alert('Ok'); return false;"><sg:spriteManagerIcon iconName="actions-document-info" /></a>
+					<a href="#" onClick="alert('Ok'); return false;"><sg:spriteManagerIcon iconName="actions-edit-hide" /></a>
+					<a href="#" onClick="alert('Ok'); return false;"><sg:spriteManagerIcon iconName="actions-edit-delete" /></a>
+				</td>
+			</tr>
+			<tr>
+				<td style="white-space: nowrap">
+					<span class="t3-table-tree">
+						<sg:SpriteManagerIcon iconName="treeline-line" />
+					</span>
+
+					<a href="#" onClick="Clickmenu.show('', '', '1', '', '', ''); return false;"><sg:spriteManagerIcon iconName="mimetypes-other-other" /></a>
+
+					<b>First level entry record</b>
+				</td>
+				<td><a href="#">Donec id elit</a></td>
+				<td align="right">540,99</td>
+				<td align="right" class="nowrap">
+					<a href="#" onClick="alert('Ok'); return false;"><sg:spriteManagerIcon iconName="actions-document-open" /></a>
+					<a href="#" onClick="alert('Ok'); return false;"><sg:spriteManagerIcon iconName="actions-document-info" /></a>
+					<a href="#" onClick="alert('Ok'); return false;"><sg:spriteManagerIcon iconName="actions-edit-hide" /></a>
+					<a href="#" onClick="alert('Ok'); return false;"><sg:spriteManagerIcon iconName="actions-edit-delete" /></a>
+				</td>
+			</tr>
+			<tr>
+				<td style="white-space: nowrap">
+					<span class="t3-table-tree">
+						<sg:SpriteManagerIcon iconName="treeline-line" />
+					</span>
+
+					<span class="t3-table-tree">
+						<sg:SpriteManagerIcon iconName="treeline-joinbottom" />
+					</span>
+
+					<a href="#" onClick="Clickmenu.show('', '', '1', '', '', ''); return false;"><sg:spriteManagerIcon iconName="mimetypes-other-other" /></a>
+
+					<b>Record title always bold</b>
+				</td>
+				<td><a href="#">Donec id elit</a></td>
+				<td align="right">9.300,20</td>
+				<td align="right" class="nowrap">
+					<a href="#" onClick="alert('Ok'); return false;"><sg:spriteManagerIcon iconName="actions-document-open" /></a>
+					<a href="#" onClick="alert('Ok'); return false;"><sg:spriteManagerIcon iconName="actions-document-info" /></a>
+					<a href="#" onClick="alert('Ok'); return false;"><sg:spriteManagerIcon iconName="actions-edit-hide" /></a>
+					<a href="#" onClick="alert('Ok'); return false;"><sg:spriteManagerIcon iconName="actions-edit-delete" /></a>
+				</td>
+			</tr>
+			<tr>
+				<td style="white-space: nowrap">
+					<span class="t3-table-tree">
+						<sg:SpriteManagerIcon iconName="treeline-joinbottom" />
+					</span>
+
+					<a href="#" onClick="Clickmenu.show('', '', '1', '', '', ''); return false;"><sg:spriteManagerIcon iconName="mimetypes-other-other" /></a>
+
+					<b>Record title always bold</b>
+				</td>
+				<td><a href="#">Donec id elit</a></td>
+				<td align="right">0,00</td>
+				<td align="right" class="nowrap">
+					<a href="#" onClick="alert('Ok'); return false;"><sg:spriteManagerIcon iconName="actions-document-open" /></a>
+					<a href="#" onClick="alert('Ok'); return false;"><sg:spriteManagerIcon iconName="actions-document-info" /></a>
+					<a href="#" onClick="alert('Ok'); return false;"><sg:spriteManagerIcon iconName="actions-edit-hide" /></a>
+					<a href="#" onClick="alert('Ok'); return false;"><sg:spriteManagerIcon iconName="actions-edit-delete" /></a>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<div class="example">
+		<pre>
+Tree
+		</pre>
+	</div>
+
+	<hr />
+
+	<p><f:link.action action="typography">Previous page &laquo;Typography&raquo;</f:link.action> /
+		<f:link.action action="tables">Next page &laquo;Tables&raquo;</f:link.action></p>
+
+</f:section>

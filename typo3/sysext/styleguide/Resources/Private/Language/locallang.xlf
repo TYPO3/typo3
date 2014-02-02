@@ -18,6 +18,9 @@
 			<trans-unit id="typography" xml:space="preserve">
 				<source>Typography</source>
 			</trans-unit>
+			<trans-unit id="trees" xml:space="preserve">
+				<source>Trees</source>
+			</trans-unit>
 			<trans-unit id="buttons" xml:space="preserve">
 				<source>Buttons</source>
 			</trans-unit>

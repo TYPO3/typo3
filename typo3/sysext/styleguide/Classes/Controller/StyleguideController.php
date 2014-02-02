@@ -58,6 +58,12 @@ class StyleguideController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 	}
 
 	/**
+	 * Trees
+	 */
+	public function treesAction() {
+	}
+
+	/**
 	 * Tables
 	 */
 	public function tablesAction() {
