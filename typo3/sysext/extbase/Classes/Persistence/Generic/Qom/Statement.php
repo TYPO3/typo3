@@ -33,11 +33,6 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
 class Statement {
 
 	/**
-	 * constants determining the language of the query
-	 */
-	const TYPO3_SQL_MYSQL = 'TYPO3-SQL-MYSQL';
-
-	/**
 	 * @var string
 	 */
 	protected $statement;
@@ -48,21 +43,14 @@ class Statement {
 	protected $boundVariables = array();
 
 	/**
-	 * @var string
-	 */
-	protected $language;
-
-	/**
 	 * Constructs the Statement instance
 	 *
 	 * @param string $statement The statement
 	 * @param array $boundVariables An array of variables to bind to the statement
-	 * @param string $language The query language. One of the above constants.
 	 */
-	public function __construct($statement, array $boundVariables = array(), $language = self::TYPO3_SQL_MYSQL) {
+	public function __construct($statement, array $boundVariables = array()) {
 		$this->statement = $statement;
 		$this->boundVariables = $boundVariables;
-		$this->language = $language;
 	}
 
 	/**
@@ -81,14 +69,5 @@ class Statement {
 	 */
 	public function getBoundVariables() {
 		return $this->boundVariables;
-	}
-
-	/**
-	 * Gets the language.
-	 *
-	 * @return string The language; one of self::
-	 */
-	public function getLanguage() {
-		return $this->language;
 	}
 }
