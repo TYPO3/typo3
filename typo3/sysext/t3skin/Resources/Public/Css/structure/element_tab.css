@@ -52,8 +52,7 @@ table.typo3-dyntabmenu td {
 	padding: 0;
 }
 
-table.typo3-dyntabmenu td.disabled,
-table.typo3-dyntabmenu td.disabled_over {
+table.typo3-dyntabmenu td.disabled {
 	padding: 5px 10px 5px 10px;
 }
 
@@ -66,14 +65,12 @@ table.typo3-dyntabmenu td a {
 }
 
 table.typo3-dyntabmenu td.tabact a,
-table.typo3-dyntabmenu td.tabact_over a,
-table#typo3-tabmenu td.tabact a,
-table#typo3-tabmenu td.tabact_over a {
+table#typo3-tabmenu td.tabact a {
 	margin-top: 0px;
 }
 
-table.typo3-dyntabmenu td.tab_over a,
-table#typo3-tabmenu td.tab_over a {
+table.typo3-dyntabmenu td.tab:hover a,
+table#typo3-tabmenu td.tab:hover a {
 	margin-top: 0px;
 }
 
@@ -87,11 +84,8 @@ div.typo3-dyntabmenu-divs-foldout div.c-tablayer {
 }
 
 div.typo3-dyntabmenu-divs-foldout div.tab,
-div.typo3-dyntabmenu-divs-foldout div.tab_over,
 div.typo3-dyntabmenu-divs-foldout div.tabact,
-div.typo3-dyntabmenu-divs-foldout div.tabact_over,
-div.typo3-dyntabmenu-divs-foldout div.disabled,
-div.typo3-dyntabmenu-divs-foldout div.disabled_over {
+div.typo3-dyntabmenu-divs-foldout div.disabled {
 	margin-top: 5px;
 }
 
@@ -99,14 +93,8 @@ div.typo3-dyntabmenu-divs-foldout div.disabled {
 	padding: 2px 2px 2px 18px;
 }
 
-div.typo3-dyntabmenu-divs-foldout div.disabled_over {
-	padding: 2px 2px 2px 18px;
-}
-
 div.typo3-dyntabmenu-divs-foldout div.tab a,
-div.typo3-dyntabmenu-divs-foldout div.tabact a,
-div.typo3-dyntabmenu-divs-foldout div.tab_over a,
-div.typo3-dyntabmenu-divs-foldout div.tabact_over a {
+div.typo3-dyntabmenu-divs-foldout div.tabact a {
 	display: block;
 	padding: 2px 2px 2px 18px;
 }

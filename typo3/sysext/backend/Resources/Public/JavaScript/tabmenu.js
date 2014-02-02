@@ -21,8 +21,7 @@
  *
  ***************************************************************/
 
-var DTM_array = DTM_array || [],
-	DTM_origClass = DTM_origClass || '';
+var DTM_array = DTM_array || [];
 
 	// if tabs are used in a popup window the array might not exists
 if (!top.DTM_currentTabs) {
@@ -47,19 +46,11 @@ function DTM_activate(idBase,index,doToogle) {
 	if (document.getElementById(idBase+'-'+index+'-DIV')) {
 		if (doToogle && document.getElementById(idBase+'-'+index+'-DIV').style.display === 'block') {
 			document.getElementById(idBase+'-'+index+'-DIV').style.display = 'none';
-			if (DTM_origClass === '') {
-				document.getElementById(idBase+'-'+index+'-MENU').attributes.getNamedItem('class').nodeValue = 'tab';
-			} else {
-				DTM_origClass = 'tab';
-			}
+			document.getElementById(idBase+'-'+index+'-MENU').attributes.getNamedItem('class').nodeValue = 'tab';
 			top.DTM_currentTabs[idBase] = -1;
 		} else {
 			document.getElementById(idBase+'-'+index+'-DIV').style.display = 'block';
-			if (DTM_origClass === '') {
-				document.getElementById(idBase+'-'+index+'-MENU').attributes.getNamedItem('class').nodeValue = 'tabact';
-			} else {
-				DTM_origClass = 'tabact';
-			}
+			document.getElementById(idBase+'-'+index+'-MENU').attributes.getNamedItem('class').nodeValue = 'tabact';
 			top.DTM_currentTabs[idBase] = index;
 		}
 	}
@@ -72,29 +63,14 @@ function DTM_toggle(idBase,index,isInit) {
 			document.getElementById(idBase+'-'+index+'-DIV').style.display = 'none';
 			if (isInit) {
 				document.getElementById(idBase+'-'+index+'-MENU').attributes.getNamedItem('class').nodeValue = 'tab';
-			} else {
-				DTM_origClass = 'tab';
 			}
 			top.DTM_currentTabs[idBase+'-'+index] = 0;
 		} else {
 			document.getElementById(idBase+'-'+index+'-DIV').style.display = 'block';
 			if (isInit) {
 				document.getElementById(idBase+'-'+index+'-MENU').attributes.getNamedItem('class').nodeValue = 'tabact';
-			} else {
-				DTM_origClass = 'tabact';
 			}
 			top.DTM_currentTabs[idBase+'-'+index] = 1;
 		}
 	}
 }
-
-function DTM_mouseOver(obj) {
-		DTM_origClass = obj.attributes.getNamedItem('class').nodeValue;
-		obj.attributes.getNamedItem('class').nodeValue += '_over';
-}
-
-function DTM_mouseOut(obj) {
-		obj.attributes.getNamedItem('class').nodeValue = DTM_origClass;
-		DTM_origClass = '';
-}
-

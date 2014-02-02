@@ -20,8 +20,7 @@ table#typo3-tabmenu td.disabled {
 }
 
 table.typo3-dyntabmenu td.tabact a,
-table.typo3-dyntabmenu td.tab_over a,
-table.typo3-dyntabmenu td.tabact_over a,
+table.typo3-dyntabmenu td.tab:hover a,
 table#typo3-tabmenu td.tabact,
 table#typo3-tabmenu td.tab:hover,
 table#typo3-tabmenu td.tabact:hover {
@@ -29,15 +28,14 @@ table#typo3-tabmenu td.tabact:hover {
 	color: #000;
 }
 
-table.typo3-dyntabmenu td.tab_over a,
+table.typo3-dyntabmenu td.tab:hover a,
 table#typo3-tabmenu td.tab:hover {
 	background-color: #eeeeee;
 	border-color: #adadad;
 	color: #606060;
 }
 
-table.typo3-dyntabmenu td.disabled,
-table.typo3-dyntabmenu td.disabled_over {
+table.typo3-dyntabmenu td.disabled {
 	background: #e8e8e8;
 	border: 1px solid #d6d6d6;
 	color: #b7b7b7;
@@ -48,8 +46,7 @@ table.typo3-dyntabmenu td a {
 	border-bottom: 1px solid #ffffff;
 }
 
-table.typo3-dyntabmenu td.tab a,
-table.typo3-dyntabmenu td.tab_over a {
+table.typo3-dyntabmenu td.tab a {
 	border-bottom: 1px solid #c0c0c0;
 }
 
@@ -81,11 +78,8 @@ div.typo3-dyntabmenu-divs p.c-descr {
 
 /* Foldout tabs */
 div.typo3-dyntabmenu-divs-foldout div.tab,
-div.typo3-dyntabmenu-divs-foldout div.tab_over,
 div.typo3-dyntabmenu-divs-foldout div.tabact,
-div.typo3-dyntabmenu-divs-foldout div.tabact_over,
-div.typo3-dyntabmenu-divs-foldout div.disabled,
-div.typo3-dyntabmenu-divs-foldout div.disabled_over {
+div.typo3-dyntabmenu-divs-foldout div.disabled {
 	border: solid black 1px;
 	border-radius: 3px;
 	-webkit-border-radius: 3px;
@@ -98,7 +92,7 @@ div.typo3-dyntabmenu-divs-foldout div.tab {
 	background-repeat: no-repeat;
 }
 
-div.typo3-dyntabmenu-divs-foldout div.tab_over {
+div.typo3-dyntabmenu-divs-foldout div.tab:hover {
 	background: #f6eab7;
 	background-image: url('../../../../icons/gfx/ol/arrowbullet.gif');
 	background-repeat: no-repeat;
@@ -110,7 +104,7 @@ div.typo3-dyntabmenu-divs-foldout div.tabact {
 	background-repeat: no-repeat;
 }
 
-div.typo3-dyntabmenu-divs-foldout div.tabact_over {
+div.typo3-dyntabmenu-divs-foldout div.tabact:hover {
 	background: #f6eab7;
 	background-image: url('../../../../icons/gfx/ol/arrowbullet.gif');
 	background-repeat: no-repeat;
@@ -121,15 +115,13 @@ div.typo3-dyntabmenu-divs-foldout div.disabled {
 	color: #999;
 }
 
-div.typo3-dyntabmenu-divs-foldout div.disabled_over {
+div.typo3-dyntabmenu-divs-foldout div.disabled:hover {
 	background: #f6eab7;
 	color: #999;
 }
 
 div.typo3-dyntabmenu-divs-foldout div.tab a,
-div.typo3-dyntabmenu-divs-foldout div.tabact a,
-div.typo3-dyntabmenu-divs-foldout div.tab_over a,
-div.typo3-dyntabmenu-divs-foldout div.tabact_over a {
+div.typo3-dyntabmenu-divs-foldout div.tabact a {
 	text-decoration: none;
 	color: #000;
 }
