@@ -744,60 +744,75 @@ class ExtensionManagementUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 		ExtensionManagementUtilityAccessibleProxy::loadSingleExtLocalconfFiles();
 	}
 
+
 	/////////////////////////////////////////
 	// Tests concerning addModule
 	/////////////////////////////////////////
 
 	/**
-	 * @test
+	 * Data provider for addModule tests
+	 * @return array
 	 */
-	public function newSubmoduleCanBeAddedToTopOfModule() {
-		$mainModule = 'foobar';
-		$subModule = 'newModule';
-		$GLOBALS['TBE_MODULES'][$mainModule] = 'some,modules';
-
-		ExtensionManagementUtility::addModule($mainModule, $subModule, 'top');
-
-		$this->assertEquals('newModule,some,modules', $GLOBALS['TBE_MODULES'][$mainModule]);
+	public function addModulePositionTestsDataProvider() {
+		return array(
+			'can add new main module if none exists' => array(
+				'top',
+				'',
+				'newModule'
+			),
+			'can add new sub module if no position specified' => array(
+				'',
+				'some,modules',
+				'some,modules,newModule'
+			),
+			'can add new sub module to top of module' => array(
+				'top',
+				'some,modules',
+				'newModule,some,modules'
+			),
+			'can add new sub module if bottom of module' => array(
+				'bottom',
+				'some,modules',
+				'some,modules,newModule'
+			),
+			'can add new sub module before specified sub module' => array(
+				'before:modules',
+				'some,modules',
+				'some,newModule,modules'
+			),
+			'can add new sub module after specified sub module' => array(
+				'after:some',
+				'some,modules',
+				'some,newModule,modules'
+			),
+			'can add new sub module at the bottom if specified sub module to add before does not exist' => array(
+				'before:modules',
+				'some,otherModules',
+				'some,otherModules,newModule'
+			),
+			'can add new sub module at the bottom if specified sub module to add after does not exist' => array(
+				'after:some',
+				'someOther,modules',
+				'someOther,modules,newModule'
+			),
+		);
 	}
 
 	/**
 	 * @test
+	 * @dataProvider addModulePositionTestsDataProvider
 	 */
-	public function newSubmoduleCanBeAddedToBottomOfModule() {
+	public function addModuleCanAddModule($position, $existing, $expected) {
 		$mainModule = 'foobar';
 		$subModule = 'newModule';
-		$GLOBALS['TBE_MODULES'][$mainModule] = 'some,modules';
+		if ($existing) {
+			$GLOBALS['TBE_MODULES'][$mainModule] = $existing;
+		}
 
-		ExtensionManagementUtility::addModule($mainModule, $subModule, 'bottom');
+		ExtensionManagementUtility::addModule($mainModule, $subModule, $position);
 
-		$this->assertEquals('some,modules,newModule', $GLOBALS['TBE_MODULES'][$mainModule]);
-	}
-
-	/**
-	 * @test
-	 */
-	public function newSubmoduleCanBeAddedAfterSpecifiedSubmodule() {
-		$mainModule = 'foobar';
-		$subModule = 'newModule';
-		$GLOBALS['TBE_MODULES'][$mainModule] = 'some,modules';
-
-		ExtensionManagementUtility::addModule($mainModule, $subModule, 'after:some');
-
-		$this->assertEquals('some,newModule,modules', $GLOBALS['TBE_MODULES'][$mainModule]);
-	}
-
-	/**
-	 * @test
-	 */
-	public function newSubmoduleCanBeAddedBeforeSpecifiedSubmodule() {
-		$mainModule = 'foobar';
-		$subModule = 'newModule';
-		$GLOBALS['TBE_MODULES'][$mainModule] = 'some,modules';
-
-		ExtensionManagementUtility::addModule($mainModule, $subModule, 'before:modules');
-
-		$this->assertEquals('some,newModule,modules', $GLOBALS['TBE_MODULES'][$mainModule]);
+		$this->assertTrue(isset($GLOBALS['TBE_MODULES'][$mainModule]));
+		$this->assertEquals($expected, $GLOBALS['TBE_MODULES'][$mainModule]);
 	}
 
 	/////////////////////////////////////////

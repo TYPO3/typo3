@@ -827,6 +827,9 @@ class ExtensionManagementUtility {
 		if (isset($GLOBALS['TBE_MODULES'][$main]) && $sub) {
 			list($place, $modRef) = GeneralUtility::trimExplode(':', $position, TRUE);
 			$modules = ',' . $GLOBALS['TBE_MODULES'][$main] . ',';
+			if ($place === NULL || ($modRef !== NULL && !GeneralUtility::inList($modules, $modRef))) {
+				$place = 'bottom';
+			}
 			$modRef = ',' . $modRef . ',';
 			if (!GeneralUtility::inList($modules, $sub)) {
 				switch (strtolower($place)) {
