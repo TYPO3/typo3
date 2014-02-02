@@ -2994,7 +2994,13 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			$this->markTestSkipped($methodName . '() test cannot be done when the web server user is only member of 1 group.');
 			return FALSE;
 		}
-		$groupInfo = posix_getgrgid($groups[1]);
+		$uname = strtolower(php_uname());
+		$groupOffset = 1;
+		if (strpos($uname, 'darwin') !== FALSE) {
+			// We are on OSX and it seems that the first group needs to be fetched since Mavericks
+			$groupOffset = 0;
+		}
+		$groupInfo = posix_getgrgid($groups[$groupOffset]);
 		return $groupInfo['name'];
 	}
 
