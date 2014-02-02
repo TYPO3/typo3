@@ -15,51 +15,85 @@
 	<h2>Typography</h2>
 
 	<div class="example">
-		<h1>TYPO3 Backend Module Headline</h1>
+		<h1>H1: Module Headline</h1>
 		<hr />
-		<h2>TYPO3 Backend Module Headline</h2>
+		<h2>H2: Section Headline</h2>
 		<hr />
-		<h3>TYPO3 Backend Module Headline</h3>
+		<h3>H3: Paragraph Headline</h3>
 		<hr />
-		<h4>TYPO3 Backend Module Headline</h4>
+		<h4>H4: Moderate Headline</h4>
 	</div>
 
+
+	<!--
+		H1
+	-->
+
+	<p>Module headline "H1" is the main headline within each backend module. Only added once to every backend page.</p>
 
 	<div class="example">
-		<h1>This is a very large headline.</h1>
+		<h1>H1: Module Headline</h1>
+	</div>
+	<div class="example">
+		<pre>
+&lt;h1&gt;h1: Module Headline&lt;/h1&gt;
+		</pre>
 	</div>
 
-	<p>Module headline "H1", once for each backend module.<br />
-		With 2.1em (23px) and normal font weight.</p>
+	<!--
+		H2
+	-->
+
+	<p>Section headline "H2" is the headline for every section in backend modules. Place above each section and use several times..</p>
 
 	<div class="example">
-		<h2>This is a large headline.</h2>
+		<h2>H2: Section Headline</h2>
+	</div>
+	<div class="example">
+		<pre>
+&lt;h2&gt;H2: Section Headline&lt;/h2&gt;
+		</pre>
 	</div>
 
-	<p>Second headline "h2", for every section.<br />
-		With 1.3em (14px) and normal font weight.</p>
+	<!--
+		H3
+	-->
+
+	<p>Paragraph headline "H3" can be used to split section content into logical units. Place in between paragraphs within section.</p>
 
 	<div class="example">
-		<h3>This is a medium headline.</h3>
+		<h3>H3: Paragraph Headline</h3>
 	</div>
-
-	<p>Sub-headline "h3", for logical distinction inside sections.<br />
-		With 1.1em (12px) and normal font weight.</p>
 
 	<div class="example">
-		<h4>This is a moderate headline.</h4>
+		<pre>
+&lt;h3&gt;H3: Paragraph Headline&lt;/h3%gt;
+		</pre>
 	</div>
 
-	<p>Content headline "h4", for paragraphs.<br />
-		With 1em (11px) and normal font weight.</p>
+	<!--
+		H4
+	-->
 
-	<f:comment>
-		****************************************
+	<p>Moderate headline "H4" might be used to split off meta / footer information.</p>
+
+	<div class="example">
+		<h4>H4: Moderate headline</h4>
+	</div>
+
+	<div class="example">
+		<pre>
+&lt;h4&gt;H4: Moderate Headline&lt;/h4&gt;
+		</pre>
+	</div>
+
+	<!--
 		Copy text
-		****************************************
-	</f:comment>
+	-->
 
 	<h2>Copy text</h2>
+
+	<p>Normal copy text in base font size 1em with a line-height of 1.5em.</p>
 
 	<div class="example">
 		<p>This is a paragraph. Paragraphs are preset with a font size, line height and spacing to match the overall
@@ -68,69 +102,113 @@
 			<strong>make it bold!</strong>. You can also "em" to <em>italicize your words</em>.</p>
 	</div>
 
-	<p>Normal copy text in base font size 1em with a line-height of 1.5em.</p>
+	<div class="example">
+		<pre>
+&lt;p&gt;Copy text&lt;/p&gt;
+		</pre>
+	</div>
 
-	<f:comment>
-		****************************************
-		Lead / subheader
-		****************************************
-	</f:comment>
+	<!--
+		Lead
+	-->
 
-	<h2>Lead copy / subheadline.copy</h2>
+	<h2>Lead copy</h2>
+
+	<p>The lead class can be added to paragraphs and other html content to highlight. Most used for the introduction text in backend modules.</p>
 
 	<div class="example">
 		<p class="lead">Introduction text or lead copy text box with highlights.</p>
 	</div>
 
-	<p>The lead class can be added to paragraphs and other html content to highlight. Most used for the introduction text in backend modules.</p>
+	<div class="example">
+		<pre>
+&lt;p class="lead"&gt;Text&lt;&lt;/p&gt;
+		</pre>
+	</div>
 
-	<f:comment>
-		****************************************
+	<!--
 		Emphasis
-		****************************************
-	</f:comment>
+	-->
 
 	<h2>Emphasis</h2>
 
+	<!--
+		Bold
+	-->
+
 	<h3>Bold</h3>
+
+	<p>Bold font-weight can be gained with strong and b html tag.</p>
 
 	<div class="example">
 		<p>This example includes <strong>bold text</strong> based on strong html tag.</p>
 		<p>This example includes <b>bold text</b> based on b htm tag.</p>
 	</div>
+	<div class="example">
+		<pre>
+&lt;strong&gt;bold text&lt;/strong&gt;<br />
+&lt;b&gt;bold text&lt;/b&gt;
+		</pre>
+	</div>
 
-	<p>Bold font-weight can be gained with strong and b html tag.</p>
+	<!--
+		Italic
+	-->
 
 	<h3>Italic</h3>
+
+	<p>Italic font style can be gained with em and i html tag.</p>
 
 	<div class="example">
 		<p>This example includes <em>bold text</em> based on em html tag.</p>
 		<p>This example includes <i>bold text</i>  based on i html tag.</p>
 	</div>
 
-	<p>Bold font-weight can be gained with em and i html tag.</p>
+	<div class="example">
+		<pre>
+&lt;em&gt;italic text&lt;/em&gt;<br />
+&lt;i&gt;italic text&lt;/i&gt;
+		</pre>
+	</div>
+
+	<!--
+		Small text
+	-->
 
 	<h3>Small text</h3>
+
+	<p>Small text.</p>
 
 	<div class="example">
 		<small>Line of small text</small>
 	</div>
 
-	<p>Small text.</p>
+	<div class="example">
+		<pre>
+&lt;small&gt;small text&lt;/small&gt;
+		</pre>
+	</div>
 
-	<f:comment>
-		****************************************
+	<!--
 		Links
-		****************************************
-	</f:comment>
+	-->
 
 	<h2>Links</h2>
+
+	<p>Links are currently not decorated.</p>
 
 	<div class="example">
 		<p>Copy text with embedded <a href="#">link text</a>.</p>
 	</div>
+	<div class="example">
+		<pre>
+&lt;a href="#"&gt;link&lt;/a&gt;
+		</pre>
+	</div>
 
-	<p>Links are currently not decorated.</p>
+	<!--
+		Colors
+	-->
 
 	<h2>Colors</h2>
 
