@@ -1167,9 +1167,13 @@ class FormEngine {
 						. '<span class="t3-tceforms-placeholder-override-checkbox">' .
 							'<input type="hidden" name="' . htmlspecialchars($PA['itemFormElNameActive']) . '" value="0" />' .
 							'<input type="checkbox" name="' . htmlspecialchars($PA['itemFormElNameActive']) . '" value="1" id="tce-forms-textfield-use-override-' . $field . '-' . $row['uid'] . '" onchange="' . htmlspecialchars($onChange) . '"' . $checked . ' />' .
-							'<label for="tce-forms-textfield-use-override-' . $field . '-' . $row['uid'] . '">' . htmlspecialchars(sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.placeholder.override'), $placeholder)) . '</label>' .
+							'<label for="tce-forms-textfield-use-override-' . $field . '-' . $row['uid'] . '">' .
+							sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.placeholder.override'),
+							BackendUtility::getRecordTitlePrep($placeholder, 20)) . '</label>' .
 						'</span>'
-						. '<div class="t3-form-placeholder-placeholder">' . $this->getSingleField_typeNone_render($PA['fieldConf']['config'], $placeholder) . '</div>'
+						. '<div class="t3-form-placeholder-placeholder">' . $this->getSingleField_typeNone_render(
+							$PA['fieldConf']['config'], GeneralUtility::fixed_lgd_cs($placeholder, 30)
+						) . '</div>'
 						. '<div class="t3-form-placeholder-formfield">' . $item . '</div>'
 						. '</div>';
 					}

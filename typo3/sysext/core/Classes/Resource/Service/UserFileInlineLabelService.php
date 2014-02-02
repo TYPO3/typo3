@@ -28,6 +28,7 @@ namespace TYPO3\CMS\Core\Resource\Service;
  ***************************************************************/
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /**
@@ -60,9 +61,15 @@ class UserFileInlineLabelService {
 		foreach ($sysFileFields as $field) {
 			$value = '';
 			if ($field === 'title') {
-				$value = isset($params['row']['title'])
-					? htmlspecialchars($params['row']['title'])
-					: BackendUtility::getRecordTitle('sys_file', $fileRecord, TRUE);
+				if (isset($params['row']['title'])) {
+					$fullTitle = $params['row']['title'];
+				} else {
+					$metaDataRepository = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\Index\\MetaDataRepository');
+					$metaData = $metaDataRepository->findByFileUid($fileRecord['uid']);
+					$fullTitle = $metaData['title'];
+				}
+
+				$value = BackendUtility::getRecordTitlePrep(htmlspecialchars($fullTitle));
 			} else {
 				if (isset($params['row'][$field])) {
 					$value = htmlspecialchars($params['row'][$field]);
