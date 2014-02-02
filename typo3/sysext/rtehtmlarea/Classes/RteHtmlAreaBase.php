@@ -1466,8 +1466,10 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 	// Hook on lorem_ipsum extension to insert text into the RTE in wysiwyg mode
 	/**
 	 * @todo Define visibility
+	 * @deprecated since 6.2 - will be removed two versions later without replacement
 	 */
 	public function loremIpsumInsert($params) {
+		GeneralUtility::logDeprecatedFunction();
 		return '
 				if (typeof(lorem_ipsum) == \'function\' && ' . $params['element'] . '.tagName.toLowerCase() == \'textarea\' ) lorem_ipsum(' . $params['element'] . ', lipsum_temp_strings[lipsum_temp_pointer]);
 				';
