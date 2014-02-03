@@ -7,7 +7,7 @@
 					<uid>1</uid>
 					<pid>0</pid>
 					<title>Root</title>
-					<size>1675</size>
+					<size>162</size>
 					<relations index="rels" type="array">
 					</relations>
 					<softrefs type="array">
@@ -17,7 +17,7 @@
 					<uid>2</uid>
 					<pid>1</pid>
 					<title>Dummy 1-2</title>
-					<size>1680</size>
+					<size>167</size>
 					<relations index="rels" type="array">
 					</relations>
 					<softrefs type="array">
@@ -29,7 +29,7 @@
 					<uid>1</uid>
 					<pid>1</pid>
 					<title>Test content</title>
-					<size>2068</size>
+					<size>165</size>
 					<relations index="rels" type="array">
 					</relations>
 					<softrefs type="array">
@@ -68,72 +68,11 @@
 			<fieldlist index="data" type="array">
 				<field index="uid">1</field>
 				<field index="pid">0</field>
-				<field index="t3ver_oid">0</field>
-				<field index="t3ver_id">0</field>
-				<field index="t3ver_wsid">0</field>
-				<field index="t3ver_label"></field>
-				<field index="t3ver_state">0</field>
-				<field index="t3ver_stage">0</field>
-				<field index="t3ver_count">0</field>
-				<field index="t3ver_tstamp">0</field>
-				<field index="t3ver_move_id">0</field>
-				<field index="t3_origuid">0</field>
-				<field index="tstamp">0</field>
-				<field index="sorting">0</field>
 				<field index="deleted">0</field>
-				<field index="perms_userid">0</field>
-				<field index="perms_groupid">0</field>
-				<field index="perms_user">0</field>
-				<field index="perms_group">0</field>
 				<field index="perms_everybody">15</field>
-				<field index="editlock">0</field>
-				<field index="crdate">0</field>
-				<field index="cruser_id">0</field>
 				<field index="hidden">0</field>
 				<field index="title">Root</field>
-				<field index="doktype">0</field>
-				<field index="TSconfig" type="NULL"></field>
-				<field index="storage_pid">0</field>
-				<field index="is_siteroot">0</field>
-				<field index="php_tree_stop">0</field>
-				<field index="tx_impexp_origuid">0</field>
-				<field index="url"></field>
-				<field index="starttime">0</field>
-				<field index="endtime">0</field>
-				<field index="urltype">0</field>
-				<field index="shortcut">0</field>
-				<field index="shortcut_mode">0</field>
-				<field index="no_cache">0</field>
-				<field index="fe_group">0</field>
-				<field index="subtitle"></field>
-				<field index="layout">0</field>
-				<field index="url_scheme">0</field>
-				<field index="target"></field>
-				<field index="media" type="NULL"></field>
-				<field index="lastUpdated">0</field>
-				<field index="keywords" type="NULL"></field>
-				<field index="cache_timeout">0</field>
-				<field index="cache_tags"></field>
-				<field index="newUntil">0</field>
-				<field index="description" type="NULL"></field>
-				<field index="no_search">0</field>
-				<field index="SYS_LASTCHANGED">0</field>
-				<field index="abstract" type="NULL"></field>
-				<field index="module"></field>
-				<field index="extendToSubpages">0</field>
-				<field index="author"></field>
-				<field index="author_email"></field>
-				<field index="nav_title"></field>
-				<field index="nav_hide">0</field>
-				<field index="content_from_pid">0</field>
-				<field index="mount_pid">0</field>
-				<field index="mount_pid_ol">0</field>
-				<field index="alias"></field>
-				<field index="l18n_cfg">0</field>
-				<field index="fe_login_mode">0</field>
-				<field index="backend_layout"></field>
-				<field index="backend_layout_next_level"></field>
-				<field index="categories">0</field>
+				<field index="doktype">1</field>
 			</fieldlist>
 			<related index="rels" type="array">
 			</related>
@@ -142,72 +81,11 @@
 			<fieldlist index="data" type="array">
 				<field index="uid">2</field>
 				<field index="pid">1</field>
-				<field index="t3ver_oid">0</field>
-				<field index="t3ver_id">0</field>
-				<field index="t3ver_wsid">0</field>
-				<field index="t3ver_label"></field>
-				<field index="t3ver_state">0</field>
-				<field index="t3ver_stage">0</field>
-				<field index="t3ver_count">0</field>
-				<field index="t3ver_tstamp">0</field>
-				<field index="t3ver_move_id">0</field>
-				<field index="t3_origuid">0</field>
-				<field index="tstamp">0</field>
-				<field index="sorting">0</field>
 				<field index="deleted">0</field>
-				<field index="perms_userid">0</field>
-				<field index="perms_groupid">0</field>
-				<field index="perms_user">0</field>
-				<field index="perms_group">0</field>
 				<field index="perms_everybody">15</field>
-				<field index="editlock">0</field>
-				<field index="crdate">0</field>
-				<field index="cruser_id">0</field>
 				<field index="hidden">0</field>
 				<field index="title">Dummy 1-2</field>
-				<field index="doktype">0</field>
-				<field index="TSconfig" type="NULL"></field>
-				<field index="storage_pid">0</field>
-				<field index="is_siteroot">0</field>
-				<field index="php_tree_stop">0</field>
-				<field index="tx_impexp_origuid">0</field>
-				<field index="url"></field>
-				<field index="starttime">0</field>
-				<field index="endtime">0</field>
-				<field index="urltype">0</field>
-				<field index="shortcut">0</field>
-				<field index="shortcut_mode">0</field>
-				<field index="no_cache">0</field>
-				<field index="fe_group">0</field>
-				<field index="subtitle"></field>
-				<field index="layout">0</field>
-				<field index="url_scheme">0</field>
-				<field index="target"></field>
-				<field index="media" type="NULL"></field>
-				<field index="lastUpdated">0</field>
-				<field index="keywords" type="NULL"></field>
-				<field index="cache_timeout">0</field>
-				<field index="cache_tags"></field>
-				<field index="newUntil">0</field>
-				<field index="description" type="NULL"></field>
-				<field index="no_search">0</field>
-				<field index="SYS_LASTCHANGED">0</field>
-				<field index="abstract" type="NULL"></field>
-				<field index="module"></field>
-				<field index="extendToSubpages">0</field>
-				<field index="author"></field>
-				<field index="author_email"></field>
-				<field index="nav_title"></field>
-				<field index="nav_hide">0</field>
-				<field index="content_from_pid">0</field>
-				<field index="mount_pid">0</field>
-				<field index="mount_pid_ol">0</field>
-				<field index="alias"></field>
-				<field index="l18n_cfg">0</field>
-				<field index="fe_login_mode">0</field>
-				<field index="backend_layout"></field>
-				<field index="backend_layout_next_level"></field>
-				<field index="categories">0</field>
+				<field index="doktype">1</field>
 			</fieldlist>
 			<related index="rels" type="array">
 			</related>
@@ -217,85 +95,10 @@
 				<field index="uid">1</field>
 				<field index="pid">1</field>
 				<field index="t3ver_oid">0</field>
-				<field index="t3ver_id">0</field>
-				<field index="t3ver_wsid">0</field>
-				<field index="t3ver_label"></field>
-				<field index="t3ver_state">0</field>
-				<field index="t3ver_stage">0</field>
-				<field index="t3ver_count">0</field>
-				<field index="t3ver_tstamp">0</field>
-				<field index="t3ver_move_id">0</field>
-				<field index="t3_origuid">0</field>
-				<field index="tstamp">0</field>
-				<field index="crdate">0</field>
-				<field index="cruser_id">0</field>
 				<field index="hidden">0</field>
-				<field index="sorting">0</field>
-				<field index="CType" />
+				<field index="CType">text</field>
 				<field index="header">Test content</field>
-				<field index="header_position"></field>
-				<field index="bodytext" type="NULL"></field>
-				<field index="image" type="NULL"></field>
-				<field index="imagewidth">0</field>
-				<field index="imageorient">0</field>
-				<field index="imagecaption" type="NULL"></field>
-				<field index="imagecols">0</field>
-				<field index="imageborder">0</field>
-				<field index="media" type="NULL"></field>
-				<field index="layout">0</field>
 				<field index="deleted">0</field>
-				<field index="cols">0</field>
-				<field index="records" type="NULL"></field>
-				<field index="pages" type="NULL"></field>
-				<field index="starttime">0</field>
-				<field index="endtime">0</field>
-				<field index="colPos">0</field>
-				<field index="subheader"></field>
-				<field index="spaceBefore">0</field>
-				<field index="spaceAfter">0</field>
-				<field index="fe_group">0</field>
-				<field index="header_link"></field>
-				<field index="imagecaption_position"></field>
-				<field index="image_link" type="NULL"></field>
-				<field index="image_zoom">0</field>
-				<field index="image_noRows">0</field>
-				<field index="image_effects">0</field>
-				<field index="image_compression">0</field>
-				<field index="altText" type="NULL"></field>
-				<field index="titleText" type="NULL"></field>
-				<field index="longdescURL" type="NULL"></field>
-				<field index="header_layout">0</field>
-				<field index="menu_type">0</field>
-				<field index="list_type">0</field>
-				<field index="table_border">0</field>
-				<field index="table_cellspacing">0</field>
-				<field index="table_cellpadding">0</field>
-				<field index="table_bgColor">0</field>
-				<field index="select_key"></field>
-				<field index="sectionIndex">0</field>
-				<field index="linkToTop">0</field>
-				<field index="file_collections" type="NULL"></field>
-				<field index="filelink_size">0</field>
-				<field index="filelink_sorting"></field>
-				<field index="target"></field>
-				<field index="section_frame">0</field>
-				<field index="date">0</field>
-				<field index="multimedia" type="NULL"></field>
-				<field index="image_frames">0</field>
-				<field index="recursive">0</field>
-				<field index="imageheight">0</field>
-				<field index="rte_enabled">0</field>
-				<field index="sys_language_uid">0</field>
-				<field index="tx_impexp_origuid">0</field>
-				<field index="pi_flexform" type="NULL"></field>
-				<field index="accessibility_title"></field>
-				<field index="accessibility_bypass">0</field>
-				<field index="accessibility_bypass_text"></field>
-				<field index="l18n_parent">0</field>
-				<field index="l18n_diffsource" type="NULL"></field>
-				<field index="selected_categories" type="NULL"></field>
-				<field index="category_field"></field>
-				<field index="categories">0</field>
 			</fieldlist>
 			<related index="rels" type="array">
 			</related>

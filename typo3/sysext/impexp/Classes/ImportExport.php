@@ -322,6 +322,21 @@ class ImportExport {
 	 */
 	public $fileProcObj = '';
 
+	/**
+	 * Keys are [recordname], values are an array of fields to be included
+	 * in the export
+	 *
+	 * @var array
+	 */
+	protected $recordTypesIncludeFields = array();
+
+	/**
+	 * Default array of fields to be included in the export
+	 *
+	 * @var array
+	 */
+	protected $defaultRecordIncludeFields = array('uid', 'pid');
+
 	/**************************
 	 * Initialize
 	 *************************/
@@ -522,6 +537,33 @@ class ImportExport {
 	 *************************/
 
 	/**
+	 * Sets the fields of record types to be included in the export
+	 *
+	 * @param array $recordTypesIncludeFields Keys are [recordname], values are an array of fields to be included in the export
+	 * @throws \TYPO3\CMS\Core\Exception if an array value is not type of array
+	 * @return void
+	 */
+	public function setRecordTypesIncludeFields(array $recordTypesIncludeFields) {
+		foreach ($recordTypesIncludeFields as $table => $fields) {
+			if (!is_array($fields)) {
+				throw new \TYPO3\CMS\Core\Exception('The include fields for record type ' . htmlspecialchars($table) . ' are not defined by an array.', 1391440658);
+			}
+			$this->setRecordTypeIncludeFields($table, $fields);
+		}
+	}
+
+	/**
+	 * Sets the fields of a record type to be included in the export
+	 *
+	 * @param string $table The record type
+	 * @param array $fields The fields to be included
+	 * @return void
+	 */
+	public function setRecordTypeIncludeFields($table, array $fields) {
+		$this->recordTypesIncludeFields[$table] = $fields;
+	}
+
+	/**
 	 * Adds the record $row from $table.
 	 * No checking for relations done here. Pure data.
 	 *
@@ -537,6 +579,7 @@ class ImportExport {
 			if ($this->checkPID($table === 'pages' ? $row['uid'] : $row['pid'])) {
 				if (!isset($this->dat['records'][($table . ':' . $row['uid'])])) {
 					// Prepare header info:
+					$row = $this->filterRecordFields($table, $row);
 					$headerInfo = array();
 					$headerInfo['uid'] = $row['uid'];
 					$headerInfo['pid'] = $row['pid'];
@@ -973,6 +1016,33 @@ class ImportExport {
 		}
 		return $list;
 	}
+
+	/**
+	 * If include fields for a specific record type are set, the data
+	 * are filtered out with fields are not included in the fields.
+	 *
+	 * @param string $table The record type to be filtered
+	 * @param array $row The data to be filtered
+	 * @return array The filtered record row
+	 */
+	protected function filterRecordFields($table, array $row) {
+		if (isset($this->recordTypesIncludeFields[$table])) {
+			$includeFields = array_unique(array_merge(
+				$this->recordTypesIncludeFields[$table],
+				$this->defaultRecordIncludeFields
+			));
+			$newRow = array();
+			foreach ($row as $key => $value) {
+				if (in_array($key, $includeFields)) {
+					$newRow[$key] = $value;
+				}
+			}
+		} else {
+			$newRow = $row;
+		}
+		return $newRow;
+	}
+
 
 	/**************************
 	 * File Output

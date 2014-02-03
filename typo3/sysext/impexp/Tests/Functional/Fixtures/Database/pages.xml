@@ -4,6 +4,7 @@
 		<uid>1</uid>
 		<pid>0</pid>
 		<title>Root</title>
+		<doktype>1</doktype>
 		<deleted>0</deleted>
 		<perms_everybody>15</perms_everybody>
 	</pages>
@@ -11,6 +12,7 @@
 		<uid>2</uid>
 		<pid>1</pid>
 		<title>Dummy 1-2</title>
+		<doktype>1</doktype>
 		<deleted>0</deleted>
 		<perms_everybody>15</perms_everybody>
 	</pages>

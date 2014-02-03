@@ -54,7 +54,26 @@ class ExportSimpleTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 
 		/** @var $export \TYPO3\CMS\Impexp\ImportExport */
 		$export = GeneralUtility::makeInstance('TYPO3\\CMS\\Impexp\\ImportExport');
-		$export->init();
+		$export->init(0, 'export');
+
+		$export->setRecordTypesIncludeFields(
+			array(
+				'pages' => array(
+					'title',
+					'deleted',
+					'doktype',
+					'hidden',
+					'perms_everybody'
+				),
+				'tt_content' => array(
+					'CType',
+					'header',
+					'deleted',
+					'hidden',
+					't3ver_oid'
+				)
+			)
+		);
 
 		$export->export_addRecord('pages', BackendUtility::getRecord('pages', 1));
 		$export->export_addRecord('pages', BackendUtility::getRecord('pages', 2));
