@@ -172,7 +172,7 @@ class ReferenceIndex {
 							$this->createEntryData_dbRels($table, $uid, $fieldname, '', $deleted, $dat['itemArray']);
 							break;
 						case 'file_reference':
-
+							// not used (see getRelations()), but fallback to file
 						case 'file':
 							$this->createEntryData_fileRels($table, $uid, $fieldname, '', $deleted, $dat['newValueFiles']);
 							break;
@@ -295,6 +295,7 @@ class ReferenceIndex {
 	 * @param integer $uid UID of source record (where reference is located)
 	 * @param string $fieldname Fieldname of source record (where reference is located)
 	 * @param string $flexpointer Pointer to location inside flexform struc
+	 * @param integer $deleted
 	 * @param array $keys Data array with soft reference keys
 	 * @return void
 	 * @todo Define visibility
@@ -311,7 +312,7 @@ class ReferenceIndex {
 									$this->relations[] = $this->createEntryData($table, $uid, $fieldname, $flexpointer, $deleted, $tableName, $recordId, '', -1, $spKey, $subKey);
 									break;
 								case 'file_reference':
-
+									// not used (see getRelations()), but fallback to file
 								case 'file':
 									$this->relations[] = $this->createEntryData($table, $uid, $fieldname, $flexpointer, $deleted, '_FILE', 0, $el['subst']['relFileName'], -1, $spKey, $subKey);
 									break;
@@ -352,19 +353,42 @@ class ReferenceIndex {
 			if (!in_array($field, $nonFields) && is_array($GLOBALS['TCA'][$table]['columns'][$field]) && (!$onlyField || $onlyField === $field)) {
 				$conf = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
 				// Add files
-				if ($result = $this->getRelations_procFiles($value, $conf, $uid)) {
-					// Creates an entry for the field with all the files:
-					$outRow[$field] = array(
-						'type' => 'db',
-						'itemArray' => $result
-					);
+				$resultsFromFiles = $this->getRelations_procFiles($value, $conf, $uid);
+				if (!empty($resultsFromFiles)) {
+					// We have to fill different arrays here depending on the result.
+					// internal_type file is still a relation of type file and
+					// since http://forge.typo3.org/issues/49538 internal_type file_reference
+					// is a database relation to a sys_file record
+					$fileResultsFromFiles = array();
+					$dbResultsFromFiles = array();
+					foreach ($resultsFromFiles as $resultFromFiles) {
+						if (isset($resultFromFiles['table']) && $resultFromFiles['table'] === 'sys_file') {
+							$dbResultsFromFiles[] = $resultFromFiles;
+						} else {
+							// Creates an entry for the field with all the files:
+							$fileResultsFromFiles[] = $resultFromFiles;
+						}
+					}
+					if (!empty($fileResultsFromFiles)) {
+						$outRow[$field] = array(
+							'type' => 'file',
+							'newValueFiles' => $fileResultsFromFiles
+						);
+					}
+					if (!empty($dbResultsFromFiles)) {
+						$outRow[$field] = array(
+							'type' => 'db',
+							'itemArray' => $dbResultsFromFiles
+						);
+					}
 				}
 				// Add DB:
-				if ($result = $this->getRelations_procDB($value, $conf, $uid, $table, $field)) {
+				$resultsFromDatabase = $this->getRelations_procDB($value, $conf, $uid, $table, $field);
+				if (!empty($resultsFromDatabase)) {
 					// Create an entry for the field with all DB relations:
 					$outRow[$field] = array(
 						'type' => 'db',
-						'itemArray' => $result
+						'itemArray' => $resultsFromDatabase
 					);
 				}
 				// For "flex" fieldtypes we need to traverse the structure looking for file and db references of course!
@@ -469,7 +493,7 @@ class ReferenceIndex {
 	 * @param string $value Field value
 	 * @param array $conf Field configuration array of type "TCA/columns
 	 * @param integer $uid Field uid
-	 * @return array If field type is OK it will return an array with the files inside. Else FALSE
+	 * @return bool|array If field type is OK it will return an array with the files inside. Else FALSE
 	 * @todo Define visibility
 	 */
 	public function getRelations_procFiles($value, $conf, $uid) {
@@ -507,8 +531,12 @@ class ReferenceIndex {
 					try {
 						$file = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->retrieveFileOrFolderObject($file);
 						if ($file instanceof \TYPO3\CMS\Core\Resource\FileInterface) {
-							$newValueFile['table'] = 'sys_file';
-							$newValueFile['id'] = $file->getUid();
+							// For setting this as sys_file relation later, the keys filename, ID and ID_absFile
+							// have not to be included, because the are not evaluated for db relations.
+							$newValueFile = array(
+								'table' => 'sys_file',
+								'id' => $file->getUid()
+							);
 						}
 					} catch (\Exception $e) {
 
@@ -609,7 +637,7 @@ class ReferenceIndex {
 									}
 									break;
 								case 'file_reference':
-
+									// not used (see getRelations()), but fallback to file
 								case 'file':
 									$error = $this->setReferenceValue_fileRels($refRec, $dat['newValueFiles'], $newValue, $dataArray);
 									if ($error) {
