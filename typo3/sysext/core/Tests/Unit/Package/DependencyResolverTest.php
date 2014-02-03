@@ -44,8 +44,8 @@ class DependencyResolverTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$packageKeys = array_keys($unsortedPackageStatesConfiguration);
 
 		$basePathAssignment = array(
-			array($unsortedPackageStatesConfiguration, '', array(PATH_typo3 . DependencyResolver::SYSEXT_FOLDER), array_diff($packageKeys, $frameworkPackageKeys)),
-			array($unsortedPackageStatesConfiguration, PATH_typo3 . DependencyResolver::SYSEXT_FOLDER, array(), $frameworkPackageKeys),
+			array($unsortedPackageStatesConfiguration, '', array(DependencyResolver::SYSEXT_FOLDER), array_diff($packageKeys, $frameworkPackageKeys)),
+			array($unsortedPackageStatesConfiguration, DependencyResolver::SYSEXT_FOLDER, array(), $frameworkPackageKeys),
 		);
 
 		$dependencyResolver = $this->getAccessibleMock('\TYPO3\CMS\Core\Package\DependencyResolver', array('getPackageKeysInBasePath'));
@@ -63,8 +63,8 @@ class DependencyResolverTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$packageKeys = array_keys($unsortedPackageStatesConfiguration);
 
 		$basePathAssignment = array(
-			array($unsortedPackageStatesConfiguration, '', array(PATH_typo3 . DependencyResolver::SYSEXT_FOLDER), array_diff($packageKeys, $frameworkPackageKeys)),
-			array($unsortedPackageStatesConfiguration, PATH_typo3 . DependencyResolver::SYSEXT_FOLDER, array(), $frameworkPackageKeys),
+			array($unsortedPackageStatesConfiguration, '', array(DependencyResolver::SYSEXT_FOLDER), array_diff($packageKeys, $frameworkPackageKeys)),
+			array($unsortedPackageStatesConfiguration, DependencyResolver::SYSEXT_FOLDER, array(), $frameworkPackageKeys),
 		);
 
 		$dependencyResolver = $this->getAccessibleMock('\TYPO3\CMS\Core\Package\DependencyResolver', array('getPackageKeysInBasePath'));
@@ -104,8 +104,8 @@ class DependencyResolverTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$packageKeys = array_keys($unsortedPackageStatesConfiguration);
 
 		$basePathAssignment = array(
-			array($unsortedPackageStatesConfiguration, '', array(PATH_typo3 . DependencyResolver::SYSEXT_FOLDER), $packageKeys),
-			array($unsortedPackageStatesConfiguration, PATH_typo3 . DependencyResolver::SYSEXT_FOLDER, array(), array()),
+			array($unsortedPackageStatesConfiguration, '', array(DependencyResolver::SYSEXT_FOLDER), $packageKeys),
+			array($unsortedPackageStatesConfiguration, DependencyResolver::SYSEXT_FOLDER, array(), array()),
 		);
 
 		$dependencyResolver = $this->getAccessibleMock('\TYPO3\CMS\Core\Package\DependencyResolver', array('getActivePackageKeysOfType'));

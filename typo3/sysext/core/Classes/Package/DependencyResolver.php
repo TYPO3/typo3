@@ -36,7 +36,7 @@ class DependencyResolver {
 	/**
 	 * Folder with framework extensions
 	 */
-	const SYSEXT_FOLDER = 'sysext';
+	const SYSEXT_FOLDER = 'typo3/sysext';
 
 	/**
 	 * @param array $packageStatesConfiguration
@@ -171,8 +171,8 @@ class DependencyResolver {
 				$rootPackageKeys[] = $packageKey;
 			}
 		}
-		$extensionPackageKeys = $this->getPackageKeysInBasePath($packageStateConfiguration, '', array(PATH_typo3 . self::SYSEXT_FOLDER));
-		$frameworkPackageKeys = $this->getPackageKeysInBasePath($packageStateConfiguration, PATH_typo3 . self::SYSEXT_FOLDER);
+		$extensionPackageKeys = $this->getPackageKeysInBasePath($packageStateConfiguration, '', array(self::SYSEXT_FOLDER));
+		$frameworkPackageKeys = $this->getPackageKeysInBasePath($packageStateConfiguration, self::SYSEXT_FOLDER);
 		foreach ($extensionPackageKeys as $packageKey) {
 			// Remove framework packages from list
 			$packageKeysWithoutFramework = array_diff(
@@ -198,7 +198,7 @@ class DependencyResolver {
 	 * @return array
 	 */
 	protected function buildDependencyGraph(array $packageStateConfiguration) {
-		$frameworkPackageKeys = $this->getPackageKeysInBasePath($packageStateConfiguration, PATH_typo3 . self::SYSEXT_FOLDER);
+		$frameworkPackageKeys = $this->getPackageKeysInBasePath($packageStateConfiguration, self::SYSEXT_FOLDER);
 		$dependencyGraph = $this->buildDependencyGraphForPackages($packageStateConfiguration, $frameworkPackageKeys);
 		$packageStateConfiguration = $this->addDependencyToFrameworkToAllExtensions($packageStateConfiguration, $dependencyGraph);
 
