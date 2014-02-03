@@ -1984,7 +1984,7 @@ class DataHandler {
 					$theDestFile = '';
 					// a FAL file was added, now resolve the file object and get the absolute path
 					// @todo in future versions this needs to be modified to handle FAL objects natively
-					if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($theFile)) {
+					if (!empty($theFile) && \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($theFile)) {
 						$fileObject = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getFileObject($theFile);
 						$theFile = $fileObject->getForLocalProcessing(FALSE);
 					}
@@ -2085,7 +2085,7 @@ class DataHandler {
 					$propArr = $this->getRecordProperties($table, $id);
 					foreach ($valueArray as &$theFile) {
 						// FAL handling: it's a UID, thus it is resolved to the absolute path
-						if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($theFile)) {
+						if (!empty($theFile) && \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($theFile)) {
 							$fileObject = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getFileObject($theFile);
 							$theFile = $fileObject->getForLocalProcessing(FALSE);
 						}

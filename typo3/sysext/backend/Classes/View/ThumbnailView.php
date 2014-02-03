@@ -119,7 +119,7 @@ class ThumbnailView {
 		// We need to distinguish it from absolute Windows paths by cbecking for an integer as first part.
 		$parts = GeneralUtility::trimExplode(':', $filePathOrCombinedFileIdentifier);
 		// Best case: we get a sys_file UID
-		if (MathUtility::canBeInterpretedAsInteger($filePathOrCombinedFileIdentifier)) {
+		if (!empty($filePathOrCombinedFileIdentifier) && MathUtility::canBeInterpretedAsInteger($filePathOrCombinedFileIdentifier)) {
 			/** @var File $filePathOrCombinedFileIdentifier */
 			$fileObject = ResourceFactory::getInstance()->getFileObject($filePathOrCombinedFileIdentifier);
 		} elseif (count($parts) <= 1 || !MathUtility::canBeInterpretedAsInteger($parts[0])) {

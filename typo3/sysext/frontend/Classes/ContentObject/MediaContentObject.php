@@ -259,10 +259,10 @@ class MediaContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractConte
 		/** @var $mediaWizard \TYPO3\CMS\Frontend\MediaWizard\MediaWizardProviderInterface */
 		$mediaWizard = \TYPO3\CMS\Frontend\MediaWizard\MediaWizardProviderManager::getValidMediaWizardProvider($fileParts[0]);
 		// Get the path relative to the page currently outputted
-		if (substr($fileParts[0], 0, 5) === "file:") {
+		if (substr($fileParts[0], 0, 5) === 'file:') {
 			$fileUid = substr($fileParts[0], 5);
 
-			if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($fileUid)) {
+			if (!empty($fileUid) && \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($fileUid)) {
 				$fileObject = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getFileObject($fileUid);
 
 				if ($fileObject instanceof \TYPO3\CMS\Core\Resource\FileInterface) {
