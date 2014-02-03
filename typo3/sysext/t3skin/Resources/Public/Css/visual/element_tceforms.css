@@ -384,6 +384,7 @@ TCEforms Inline-Relational-Record-Editing
 
 .t3-form-field-header-inline {
 	background-color: #E0E0E0;
+	cursor: pointer;
 }
 .t3-form-field-header-inline:hover {
 	background-color: #cccccc;
@@ -417,11 +418,6 @@ TCEforms Inline-Relational-Record-Editing
 .typo3-TCEforms .t3-form-field-container-inline .wrapperTable4,
 .typo3-TCEforms .t3-form-field-container-inline .wrapperTable5 {
 	border: 0;
-}
-
-.t3-form-field-header-inline td.t3-form-field-header-inline-summary,
-.t3-form-field-header-inline td.t3-form-field-header-inline-icon {
-	cursor: pointer;
 }
 
 .t3-form-field-header-inline td.t3-form-field-header-inline-summary dl dt {
