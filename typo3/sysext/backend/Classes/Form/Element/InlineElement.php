@@ -864,7 +864,7 @@ class InlineElement {
 
 	/**
 	 * Generate a link that opens an element browser in a new window.
-	 * For group/db there is no way o use a "selector" like a <select>|</select>-box.
+	 * For group/db there is no way to use a "selector" like a <select>|</select>-box.
 	 *
 	 * @param array $conf TCA configuration of the parent(!) field
 	 * @param array $PA An array with additional configuration options
@@ -900,24 +900,31 @@ class InlineElement {
 		$browserParams = '|||' . $allowed . '|' . $objectPrefix . '|inline.checkUniqueElement||inline.importElement';
 		$onClick = 'setFormValueOpenBrowser(\'' . $mode . '\', \'' . $browserParams . '\'); return false;';
 
-		$item = '<a href="#" class="t3-button" onclick="' . htmlspecialchars($onClick) . '">' . IconUtility::getSpriteIcon('actions-insert-record', array('title' => $createNewRelationText)) . $createNewRelationText . '</a>';
+		$item = '<a href="#" class="t3-button" onclick="' . htmlspecialchars($onClick) . '">';
+		$item .= IconUtility::getSpriteIcon('actions-insert-record', array('title' => $createNewRelationText));
+		$item .= $createNewRelationText . '</a>';
 
 		if ($showUpload && $this->fObj->edit_docModuleUpload) {
-			$maxFileSize = GeneralUtility::getMaxUploadFileSize() * 1024;
-			$folder = $folder = $GLOBALS['BE_USER']->getDefaultUploadFolder();
-			$item .= ' <a href="#" class="t3-button t3-drag-uploader"
-				style="display:none"
-				data-dropzone-target="#'.htmlspecialchars($this->inlineNames['object']).'"
-				data-insert-dropzone-before="1"
-				data-file-irre-object="'.htmlspecialchars($objectPrefix).'"
-				data-file-allowed="'.htmlspecialchars($allowed).'"
-				data-target-folder="'.htmlspecialchars($folder->getCombinedIdentifier()).'"
-				data-max-file-size="'.htmlspecialchars($maxFileSize).'"
-				><span class="t3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-upload">&nbsp;</span>';
-			$item .= $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:file_upload.select-and-submit', TRUE);
-			$item .= '</a>';
+			$folder = $GLOBALS['BE_USER']->getDefaultUploadFolder();
+			if (
+				$folder instanceof \TYPO3\CMS\Core\Resource\Folder
+				&& $folder->checkActionPermission('add')
+			) {
+				$maxFileSize = GeneralUtility::getMaxUploadFileSize() * 1024;
+				$item .= ' <a href="#" class="t3-button t3-drag-uploader"
+					style="display:none"
+					data-dropzone-target="#' . htmlspecialchars($this->inlineNames['object']) . '"
+					data-insert-dropzone-before="1"
+					data-file-irre-object="' . htmlspecialchars($objectPrefix) . '"
+					data-file-allowed="' . htmlspecialchars($allowed) . '"
+					data-target-folder="' . htmlspecialchars($folder->getCombinedIdentifier()) . '"
+					data-max-file-size="' . htmlspecialchars($maxFileSize) . '"
+					><span class="t3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-upload">&nbsp;</span>';
+				$item .= $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:file_upload.select-and-submit', TRUE);
+				$item .= '</a>';
 
-			$this->loadDragUploadJs();
+				$this->loadDragUploadJs();
+			}
 		}
 		return $item;
 	}
