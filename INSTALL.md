@@ -105,6 +105,7 @@ functionality:
   * curl
   * mbstring
   * FreeType (usually included within the PHP distribution)
+  * bcmath or gmp (needed if you'd like to use the openid system extension)
 
 * PHP access to /dev/urandom or /dev/random on Unix-like platforms for
   increased security. Make sure to add "/dev/random:/dev/urandom" to
