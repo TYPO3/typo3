@@ -7,8 +7,7 @@
 	"version": "6.2.0",
 
 	"require": {
-		"typo3/cms/core": "*",
-		"typo3/cms/css-styled-content": "*"
+		"typo3/cms/core": "*"
 	},
 	"replace": {
 		"felogin": "*"
