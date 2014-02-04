@@ -166,7 +166,7 @@ class SqlParserTest extends AbstractTestCase {
 		$this->assertInternalType('array', $components);
 
 		$result = $this->subject->_callRef('compileINSERT', $components);
-		$expected = 'INSERT INTO static_country_zones VALUES (\'483\', \'0\', \'NL\', \'NLD\', \'528\', \'DR\', \'Drenthe\', \'\')';
+		$expected = 'INSERT INTO static_country_zones VALUES (\'483\',\'0\',\'NL\',\'NLD\',\'528\',\'DR\',\'Drenthe\',\'\')';
 		$this->assertEquals($expected, $this->cleanSql($result));
 	}
 
@@ -179,7 +179,7 @@ class SqlParserTest extends AbstractTestCase {
 		$this->assertInternalType('array', $components);
 
 		$result = $this->subject->_callRef('compileINSERT', $components);
-		$expected = 'INSERT INTO static_country_zones VALUES (\'483\', \'0\', \'NL\', \'NLD\', \'528\', \'DR\', \'Drenthe\', \'\')';
+		$expected = 'INSERT INTO static_country_zones VALUES (\'483\',\'0\',\'NL\',\'NLD\',\'528\',\'DR\',\'Drenthe\',\'\')';
 		$this->assertEquals($expected, $this->cleanSql($result));
 	}
 
@@ -193,8 +193,8 @@ class SqlParserTest extends AbstractTestCase {
 		$this->assertInternalType('array', $components);
 
 		$result = $this->subject->_callRef('compileINSERT', $components);
-		$expected = 'INSERT INTO static_territories (uid, pid, tr_iso_nr, tr_parent_iso_nr, tr_name_en) ';
-		$expected .= 'VALUES (\'1\', \'0\', \'2\', \'0\', \'Africa\')';
+		$expected = 'INSERT INTO static_territories (uid,pid,tr_iso_nr,tr_parent_iso_nr,tr_name_en) ';
+		$expected .= 'VALUES (\'1\',\'0\',\'2\',\'0\',\'Africa\')';
 		$this->assertEquals($expected, $this->cleanSql($result));
 	}
 
@@ -207,7 +207,7 @@ class SqlParserTest extends AbstractTestCase {
 		$this->assertInternalType('array', $components);
 
 		$result = $this->subject->_callRef('compileINSERT', $components);
-		$expected = 'INSERT INTO static_territories VALUES (\'1\', \'0\', \'2\', \'0\', \'Africa\'), (\'2\', \'0\', \'9\', \'0\', \'Oceania\'), ' . '(\'3\', \'0\', \'19\', \'0\', \'Americas\'), (\'4\', \'0\', \'142\', \'0\', \'Asia\')';
+		$expected = 'INSERT INTO static_territories VALUES (\'1\',\'0\',\'2\',\'0\',\'Africa\'),(\'2\',\'0\',\'9\',\'0\',\'Oceania\'),(\'3\',\'0\',\'19\',\'0\',\'Americas\'),(\'4\',\'0\',\'142\',\'0\',\'Asia\')';
 		$this->assertEquals($expected, $this->cleanSql($result));
 	}
 
@@ -221,8 +221,8 @@ class SqlParserTest extends AbstractTestCase {
 		$this->assertInternalType('array', $components);
 
 		$result = $this->subject->_callRef('compileINSERT', $components);
-		$expected = 'INSERT INTO static_territories (uid, pid, tr_iso_nr, tr_parent_iso_nr, tr_name_en) ';
-		$expected .= 'VALUES (\'1\', \'0\', \'2\', \'0\', \'Africa\'), (\'2\', \'0\', \'9\', \'0\', \'Oceania\')';
+		$expected = 'INSERT INTO static_territories (uid,pid,tr_iso_nr,tr_parent_iso_nr,tr_name_en) ';
+		$expected .= 'VALUES (\'1\',\'0\',\'2\',\'0\',\'Africa\'),(\'2\',\'0\',\'9\',\'0\',\'Oceania\')';
 		$this->assertEquals($expected, $this->cleanSql($result));
 	}
 
