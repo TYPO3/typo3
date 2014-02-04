@@ -54,6 +54,7 @@ class FolderTree extends \rteFolderTree {
 				'browser' => array(
 					'mode' => $GLOBALS['SOBE']->browser->mode,
 					'act' => $GLOBALS['SOBE']->browser->act,
+					'editorNo' => $GLOBALS['SOBE']->browser->editorNo
 				),
 			);
 		}

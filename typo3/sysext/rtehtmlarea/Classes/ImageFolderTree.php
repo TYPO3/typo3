@@ -38,58 +38,6 @@ namespace TYPO3\CMS\Rtehtmlarea;
  *
  * @author 	Kasper Skårhøj <kasper@typo3.com>
  */
-class ImageFolderTree extends \TBE_FolderTree {
-
-	/**
-	 * @todo Define visibility
-	 */
-	public $ext_IconMode = 1;
-
-	/**
-	 * Wrapping the title in a link, if applicable.
-	 *
-	 * @param 	string			Title, ready for output.
-	 * @param 	\TYPO3\CMS\Core\Resource\Folder	The "record
-	 * @return 	string			Wrapping title string.
-	 * @todo Define visibility
-	 */
-	public function wrapTitle($title, \TYPO3\CMS\Core\Resource\Folder $folderObject) {
-		if ($this->ext_isLinkable($folderObject)) {
-			$aOnClick = 'return jumpToUrl(\'' . $this->thisScript . '?editorNo=' . $GLOBALS['SOBE']->browser->editorNo . '&act=' . $GLOBALS['SOBE']->browser->act . '&mode=' . $GLOBALS['SOBE']->browser->mode . '&expandFolder=' . rawurlencode($folderObject->getCombinedIdentifier()) . '\');';
-			return '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">' . $title . '</a>';
-		} else {
-			return '<span class="typo3-dimmed">' . $title . '</span>';
-		}
-	}
-
-	/**
-	 * Returns TRUE if the input "record" contains a folder which can be linked.
-	 *
-	 * @param 	\TYPO3\CMS\Core\Resource\Folder	Object with information about the folder element. Contains keys like title, uid, path, _title
-	 * @return 	boolean			TRUE is returned if the path is found in the web-part of the the server and is NOT a recycler or temp folder
-	 * @todo Define visibility
-	 */
-	public function ext_isLinkable(\TYPO3\CMS\Core\Resource\Folder $folderObject) {
-		// $folderObject->getStorage()->isPublic() does not matter if the mode is 'magic'
-		return $GLOBALS['SOBE']->browser->act === 'magic' || parent::ext_isLinkable($folderObject);
-	}
-
-	/**
-	 * Wrap the plus/minus icon in a link
-	 *
-	 * @param string $icon HTML string to wrap, probably an image tag.
-	 * @param string $cmd Command for 'PM' get var
-	 * @param boolean $isExpand If expanded
-	 * @return string Link-wrapped input string
-	 * @access private
-	 */
-	public function PMiconATagWrap($icon, $cmd, $isExpand = TRUE) {
-		if ($this->thisScript) {
-			$js = htmlspecialchars('Tree.thisScript=\'' . $GLOBALS['BACK_PATH'] . 'ajax.php\';Tree.load(\'' . $cmd . '\', ' . (int)$isExpand . ', this);');
-			return '<a class="pm" onclick="' . $js . '">' . $icon . '</a>';
-		} else {
-			return $icon;
-		}
-	}
+class ImageFolderTree extends FolderTree {
 
 }
