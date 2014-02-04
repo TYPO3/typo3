@@ -2329,7 +2329,8 @@ class GraphicalFunctions {
 	 */
 	public function cacheImageDimensions($identifyResult) {
 		// Create md5 hash of filemtime and filesize
-		$md5Hash = md5(filemtime($identifyResult[3]) . filesize($identifyResult[3]));
+		$fileStatus = stat($identifyResult[3]);
+		$md5Hash = md5($fileStatus['mtime'] . $fileStatus['size']);
 		$result = FALSE;
 		if ($md5Hash) {
 			$fieldArray = array(
@@ -2357,7 +2358,8 @@ class GraphicalFunctions {
 	 */
 	public function getCachedImageDimensions($imageFile) {
 		// Create md5 hash of filemtime and filesize
-		$md5Hash = md5(filemtime($imageFile) . filesize($imageFile));
+		$fileStatus = stat($imageFile);
+		$md5Hash = md5($fileStatus['mtime'] . $fileStatus['size']);
 		$cachedImageDimensions = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('md5hash, md5filename, imagewidth, imageheight', 'cache_imagesizes', 'md5filename=' . $GLOBALS['TYPO3_DB']->fullQuoteStr(md5($imageFile), 'cache_imagesizes'));
 		$result = FALSE;
 		if (is_array($cachedImageDimensions)) {

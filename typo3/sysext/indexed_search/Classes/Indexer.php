@@ -1128,7 +1128,7 @@ class Indexer {
 		// Indexing the document:
 		if ($absFile && @is_file($absFile)) {
 			if ($this->external_parsers[$ext]) {
-				$mtime = filemtime($absFile);
+				$fileInfo = stat($absFile);
 				$cParts = $this->fileContentParts($ext, $absFile);
 				foreach ($cParts as $cPKey) {
 					$this->internal_log = array();
@@ -1137,7 +1137,7 @@ class Indexer {
 					$subinfo = array('key' => $cPKey);
 					// Setting page range. This is "0" (zero) when no division is made, otherwise a range like "1-3"
 					$phash_arr = ($this->file_phash_arr = $this->setExtHashes($file, $subinfo));
-					$check = $this->checkMtimeTstamp($mtime, $phash_arr['phash']);
+					$check = $this->checkMtimeTstamp($fileInfo['mtime'], $phash_arr['phash']);
 					if ($check > 0 || $force) {
 						if ($check > 0) {
 							$this->log_setTSlogMessage('Indexing needed, reason: ' . $this->reasons[$check], 1);
@@ -1166,10 +1166,8 @@ class Indexer {
 									$this->log_pull();
 									// Submitting page (phash) record
 									$this->log_push('Submitting page', '');
-									$size = filesize($absFile);
 									// Unfortunately I cannot determine WHEN a file is originally made - so I must return the modification time...
-									$ctime = filemtime($absFile);
-									$this->submitFilePage($phash_arr, $file, $subinfo, $ext, $mtime, $ctime, $size, $content_md5h, $contentParts);
+									$this->submitFilePage($phash_arr, $file, $subinfo, $ext, $fileInfo['mtime'], $fileInfo['ctime'], $fileInfo['size'], $content_md5h, $contentParts);
 									$this->log_pull();
 									// Check words and submit to word list if not there
 									$this->log_push('Check word list and submit words', '');
@@ -1182,7 +1180,7 @@ class Indexer {
 									$this->updateParsetime($phash_arr['phash'], GeneralUtility::milliseconds() - $Pstart);
 								} else {
 									// Update the timestamp
-									$this->updateTstamp($phash_arr['phash'], $mtime);
+									$this->updateTstamp($phash_arr['phash'], $fileInfo['mtime']);
 									$this->log_setTSlogMessage('Indexing not needed, the contentHash, ' . $content_md5h . ', has not changed. Timestamp updated.');
 								}
 							} else {

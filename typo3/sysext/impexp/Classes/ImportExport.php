@@ -797,10 +797,11 @@ class ImportExport {
 	public function export_addFile($fI, $recordRef = '', $fieldname = '') {
 		if (@is_file($fI['ID_absFile'])) {
 			if (filesize($fI['ID_absFile']) < $this->maxFileSize) {
+				$fileInfo = stat($fI['ID_absFile']);
 				$fileRec = array();
-				$fileRec['filesize'] = filesize($fI['ID_absFile']);
+				$fileRec['filesize'] = $fileInfo['size'];
 				$fileRec['filename'] = basename($fI['ID_absFile']);
-				$fileRec['filemtime'] = filemtime($fI['ID_absFile']);
+				$fileRec['filemtime'] = $fileInfo['mtime'];
 				//for internal type file_reference
 				$fileRec['relFileRef'] = \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($fI['ID_absFile']);
 				if ($recordRef) {
@@ -830,10 +831,11 @@ class ImportExport {
 						$RTEoriginal_absPath = dirname($fI['ID_absFile']) . '/' . $RTEoriginal;
 						if (@is_file($RTEoriginal_absPath)) {
 							$RTEoriginal_ID = md5($RTEoriginal_absPath);
+							$fileInfo = stat($RTEoriginal_absPath);
 							$fileRec = array();
-							$fileRec['filesize'] = filesize($RTEoriginal_absPath);
+							$fileRec['filesize'] = $fileInfo['size'];
 							$fileRec['filename'] = basename($RTEoriginal_absPath);
-							$fileRec['filemtime'] = filemtime($RTEoriginal_absPath);
+							$fileRec['filemtime'] = $fileInfo['mtime'];
 							$fileRec['record_ref'] = '_RTE_COPY_ID:' . $fI['ID'];
 							$this->dat['header']['files'][$fI['ID']]['RTE_ORIG_ID'] = $RTEoriginal_ID;
 							// Setting this data in the header
@@ -870,10 +872,11 @@ class ImportExport {
 									$prefixedMedias[$k] = '{EXT_RES_ID:' . $EXTres_ID . '}';
 									// Add file to memory if it is not set already:
 									if (!isset($this->dat['header']['files'][$EXTres_ID])) {
+										$fileInfo = stat($EXTres_absPath);
 										$fileRec = array();
-										$fileRec['filesize'] = filesize($EXTres_absPath);
+										$fileRec['filesize'] = $fileInfo['size'];
 										$fileRec['filename'] = basename($EXTres_absPath);
-										$fileRec['filemtime'] = filemtime($EXTres_absPath);
+										$fileRec['filemtime'] = $fileInfo['mtime'];
 										$fileRec['record_ref'] = '_EXT_PARENT_:' . $fI['ID'];
 										// Media relative to the HTML file.
 										$fileRec['parentRelFileName'] = $v;

@@ -306,7 +306,8 @@ class ResourceCompressor {
 			}
 			$filenameAbsolute = GeneralUtility::resolveBackPath($this->rootPath . $filename);
 			if (@file_exists($filenameAbsolute)) {
-				$unique .= $filenameAbsolute . filemtime($filenameAbsolute) . filesize($filenameAbsolute);
+				$fileStatus = stat($filenameAbsolute);
+				$unique .= $filenameAbsolute . $fileStatus['mtime'] . $fileStatus['size'];
 			} else {
 				$unique .= $filenameAbsolute;
 			}
@@ -370,7 +371,8 @@ class ResourceCompressor {
 		// generate the unique name of the file
 		$filenameAbsolute = GeneralUtility::resolveBackPath($this->rootPath . $this->getFilenameFromMainDir($filename));
 		if (@file_exists($filenameAbsolute)) {
-			$unique = $filenameAbsolute . filemtime($filenameAbsolute) . filesize($filenameAbsolute);
+			$fileStatus = stat($filenameAbsolute);
+			$unique = $filenameAbsolute . $fileStatus['mtime'] . $fileStatus['size'];
 		} else {
 			$unique = $filenameAbsolute;
 		}
@@ -512,7 +514,8 @@ class ResourceCompressor {
 		// generate the unique name of the file
 		$filenameAbsolute = GeneralUtility::resolveBackPath($this->rootPath . $this->getFilenameFromMainDir($filename));
 		if (@file_exists($filenameAbsolute)) {
-			$unique = $filenameAbsolute . filemtime($filenameAbsolute) . filesize($filenameAbsolute);
+			$fileStatus = stat($filenameAbsolute);
+			$unique = $filenameAbsolute . $fileStatus['mtime'] . $fileStatus['size'];
 		} else {
 			$unique = $filenameAbsolute;
 		}

@@ -90,7 +90,8 @@ abstract class AbstractSpriteHandler implements \TYPO3\CMS\Backend\Sprite\Sprite
 			// File should be present
 			$allowedCssFilesinTempDir[] = $fileName;
 			// get-Cache Filename
-			$unique = md5($fileName . filemtime((PATH_site . $file)) . filesize((PATH_site . $file)));
+			$fileStatus = stat(PATH_site . $file);
+			$unique = md5($fileName . $fileStatus['mtime'] . $fileStatus['size']);
 			$cacheFile = PATH_site . SpriteManager::$tempPath . $fileName . $unique . '.css';
 			if (!file_exists($cacheFile)) {
 				copy(PATH_site . $file, $cacheFile);
