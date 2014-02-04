@@ -40,7 +40,7 @@ class Typo3QuerySettings implements \TYPO3\CMS\Extbase\Persistence\Generic\Query
 	/**
 	 * Flag if the storage page should be respected for the query.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $respectStoragePage = TRUE;
 
@@ -56,7 +56,7 @@ class Typo3QuerySettings implements \TYPO3\CMS\Extbase\Persistence\Generic\Query
 	 * If--in addition to this--enableFieldsToBeIgnored is set, only fields specified there are ignored. If FALSE, all
 	 * enable fields are taken into account, regardless of the enableFieldsToBeIgnored setting.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $ignoreEnableFields = FALSE;
 
@@ -71,14 +71,14 @@ class Typo3QuerySettings implements \TYPO3\CMS\Extbase\Persistence\Generic\Query
 	/**
 	 * Flag whether deleted records should be included in the result set.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $includeDeleted = FALSE;
 
 	/**
 	 * Flag if the sys_language_uid should be respected (default is TRUE).
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $respectSysLanguage = TRUE;
 
@@ -99,17 +99,24 @@ class Typo3QuerySettings implements \TYPO3\CMS\Extbase\Persistence\Generic\Query
 	/**
 	 * Represensting sys_language_uid only valid for current context
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	protected $languageUid = 0;
 
 	/**
 	 * Flag if the the query result should be returned as raw QueryResult.
 	 *
-	 * @var boolean
+	 * @var bool
 	 * @deprecated since Extbase 6.2, will be removed two versions later
 	 */
 	protected $returnRawQueryResult = FALSE;
+
+	/**
+	 * Flag whether the query should use a prepared statement
+	 *
+	 * @var bool
+	 */
+	protected $usePreparedStatement = FALSE;
 
 	/**
 	 * As long as we use a feature flag ignoreAllEnableFieldsInBe to determine the default behavior, the
@@ -143,7 +150,7 @@ class Typo3QuerySettings implements \TYPO3\CMS\Extbase\Persistence\Generic\Query
 	/**
 	 * Sets the flag if the storage page should be respected for the query.
 	 *
-	 * @param boolean $respectStoragePage If TRUE the storage page ID will be determined and the statement will be extended accordingly.
+	 * @param bool $respectStoragePage If TRUE the storage page ID will be determined and the statement will be extended accordingly.
 	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface
 	 * @api
 	 */
@@ -155,7 +162,7 @@ class Typo3QuerySettings implements \TYPO3\CMS\Extbase\Persistence\Generic\Query
 	/**
 	 * Returns the state, if the storage page should be respected for the query.
 	 *
-	 * @return boolean TRUE, if the storage page should be respected; otherwise FALSE.
+	 * @return bool TRUE, if the storage page should be respected; otherwise FALSE.
 	 */
 	public function getRespectStoragePage() {
 		return $this->respectStoragePage;
@@ -183,7 +190,7 @@ class Typo3QuerySettings implements \TYPO3\CMS\Extbase\Persistence\Generic\Query
 	}
 
 	/**
-	 * @param boolean $respectSysLanguage TRUE if TYPO3 language settings are to be applied
+	 * @param bool $respectSysLanguage TRUE if TYPO3 language settings are to be applied
 	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface (fluent interface)
 	 * @api
 	 */
@@ -193,7 +200,7 @@ class Typo3QuerySettings implements \TYPO3\CMS\Extbase\Persistence\Generic\Query
 	}
 
 	/**
-	 * @return boolean TRUE if TYPO3 language settings are to be applied
+	 * @return bool TRUE if TYPO3 language settings are to be applied
 	 */
 	public function getRespectSysLanguage() {
 		return $this->respectSysLanguage;
@@ -234,7 +241,7 @@ class Typo3QuerySettings implements \TYPO3\CMS\Extbase\Persistence\Generic\Query
 	}
 
 	/**
-	 * @param integer $languageUid
+	 * @param int $languageUid
 	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface instance of $this to allow method chaining
 	 * @api
 	 */
@@ -244,7 +251,7 @@ class Typo3QuerySettings implements \TYPO3\CMS\Extbase\Persistence\Generic\Query
 	}
 
 	/**
-	 * @return integer
+	 * @return int
 	 */
 	public function getLanguageUid() {
 		return $this->languageUid;
@@ -253,7 +260,7 @@ class Typo3QuerySettings implements \TYPO3\CMS\Extbase\Persistence\Generic\Query
 	/**
 	 * Sets the language uid for the language overlay.
 	 *
-	 * @param integer $sysLanguageUid language uid for the language overlay
+	 * @param int $sysLanguageUid language uid for the language overlay
 	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface instance of $this to allow method chaining
 	 * @deprecated since Extbase 6.2, will be removed two versions later. Use setLanguageUid() instead.
 	 */
@@ -265,7 +272,7 @@ class Typo3QuerySettings implements \TYPO3\CMS\Extbase\Persistence\Generic\Query
 	/**
 	 * Returns the language uid for the language overlay
 	 *
-	 * @return integer language uid for the language overlay
+	 * @return int language uid for the language overlay
 	 * @deprecated since Extbase 6.2, will be removed two versions later. Use getLanguageUid() instead.
 	 */
 	public function getSysLanguageUid() {
@@ -276,7 +283,7 @@ class Typo3QuerySettings implements \TYPO3\CMS\Extbase\Persistence\Generic\Query
 	/**
 	 * Sets the flag if the visibility in the frontend should be respected.
 	 *
-	 * @param boolean $respectEnableFields TRUE if the visibility in the frontend should be respected. If TRUE, the "enable fields" of TYPO3 will be added to the query statement.
+	 * @param bool $respectEnableFields TRUE if the visibility in the frontend should be respected. If TRUE, the "enable fields" of TYPO3 will be added to the query statement.
 	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface
 	 * @deprecated since Extbase 6.0, will be removed two versions later. Use setIgnoreEnableFields() and setEnableFieldsToBeIgnored() instead.
 	 * @see setIgnoreEnableFields()
@@ -293,7 +300,7 @@ class Typo3QuerySettings implements \TYPO3\CMS\Extbase\Persistence\Generic\Query
 	/**
 	 * Returns the state, if the visibility settings for the frontend should be respected for the query.
 	 *
-	 * @return boolean TRUE, if the visibility settings for the frontend should should be respected; otherwise FALSE.
+	 * @return bool TRUE, if the visibility settings for the frontend should should be respected; otherwise FALSE.
 	 * @deprecated since Extbase 6.0, will be removed two versions later. Use getIgnoreEnableFields() and getEnableFieldsToBeIgnored() instead.
 	 * @see getIgnoreEnableFields()
 	 * @see getEnableFieldsToBeIgnored()
@@ -308,7 +315,7 @@ class Typo3QuerySettings implements \TYPO3\CMS\Extbase\Persistence\Generic\Query
 	 * If--in addition to this--enableFieldsToBeIgnored is set, only fields specified there are ignored. If FALSE, all
 	 * enable fields are taken into account, regardless of the enableFieldsToBeIgnored setting.
 	 *
-	 * @param boolean $ignoreEnableFields
+	 * @param bool $ignoreEnableFields
 	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface
 	 * @see setEnableFieldsToBeIgnored()
 	 * @api
@@ -324,7 +331,7 @@ class Typo3QuerySettings implements \TYPO3\CMS\Extbase\Persistence\Generic\Query
 	 * If TRUE, all enable fields are ignored. If--in addition to this--enableFieldsToBeIgnored is set, only fields specified there are ignored.
 	 * If FALSE, all enable fields are taken into account, regardless of the enableFieldsToBeIgnored setting.
 	 *
-	 * @return boolean
+	 * @return bool
 	 * @see getEnableFieldsToBeIgnored()
 	 */
 	public function getIgnoreEnableFields() {
@@ -360,7 +367,7 @@ class Typo3QuerySettings implements \TYPO3\CMS\Extbase\Persistence\Generic\Query
 	/**
 	 * Sets the flag if the query should return objects that are deleted.
 	 *
-	 * @param boolean $includeDeleted
+	 * @param bool $includeDeleted
 	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface
 	 * @api
 	 */
@@ -372,7 +379,7 @@ class Typo3QuerySettings implements \TYPO3\CMS\Extbase\Persistence\Generic\Query
 	/**
 	 * Returns if the query should return objects that are deleted.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function getIncludeDeleted() {
 		return $this->includeDeleted;
@@ -381,7 +388,7 @@ class Typo3QuerySettings implements \TYPO3\CMS\Extbase\Persistence\Generic\Query
 	/**
 	 * Sets the state, if the QueryResult should be returned unmapped.
 	 *
-	 * @param boolean $returnRawQueryResult TRUE, if the QueryResult should be returned unmapped; otherwise FALSE.
+	 * @param bool $returnRawQueryResult TRUE, if the QueryResult should be returned unmapped; otherwise FALSE.
 	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface
 	 * @deprecated since Extbase 6.2, will be removed two versions later. Please use argument in query->execute() instead.
 	 */
@@ -394,11 +401,27 @@ class Typo3QuerySettings implements \TYPO3\CMS\Extbase\Persistence\Generic\Query
 	/**
 	 * Returns the state, if the QueryResult should be returned unmapped.
 	 *
-	 * @return boolean TRUE, if the QueryResult should be returned unmapped; otherwise FALSE.
+	 * @return bool TRUE, if the QueryResult should be returned unmapped; otherwise FALSE.
 	 * @deprecated since Extbase 6.2, will be removed two versions later. Please use argument in query->execute() instead.
 	 */
 	public function getReturnRawQueryResult() {
 		// We do not log this call intentionally, otherwise the deprecation log would be filled up
 		return $this->returnRawQueryResult;
+	}
+
+	/**
+	 * @param bool $usePreparedStatement
+	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface
+	 */
+	public function usePreparedStatement($usePreparedStatement) {
+		$this->usePreparedStatement = $usePreparedStatement;
+		return $this;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function getUsePreparedStatement() {
+		return (bool)$this->usePreparedStatement;
 	}
 }

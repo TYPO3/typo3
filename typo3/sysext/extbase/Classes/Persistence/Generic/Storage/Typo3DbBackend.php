@@ -29,6 +29,7 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Storage;
  ***************************************************************/
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 
 /**
  * A Storage backend
@@ -277,29 +278,150 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 	 * @return array
 	 */
 	public function getObjectDataByQuery(\TYPO3\CMS\Extbase\Persistence\QueryInterface $query) {
-		$statement = $query->getStatement();
-		if ($statement instanceof \TYPO3\CMS\Extbase\Persistence\Generic\Qom\Statement) {
-			$sql = $statement->getStatement();
-			$parameters = $statement->getBoundVariables();
+		if ($query->getStatement() instanceof \TYPO3\CMS\Extbase\Persistence\Generic\Qom\Statement) {
+			$rows = $this->getObjectDataByRawQuery($query);
 		} else {
+
+			// @todo with queryParser we don't need this parameters anymore
 			$parameters = array();
 			$statementParts = $this->parseQuery($query, $parameters);
-			$sql = $this->buildQuery($statementParts, $parameters);
+			$rows = $this->getRowsByStatementParts($query, $statementParts, $parameters);
 		}
-		$tableName = 'foo';
-		if (is_array($statementParts) && !empty($statementParts['tables'][0])) {
-			$tableName = $statementParts['tables'][0];
-		}
-		$this->replacePlaceholders($sql, $parameters, $tableName);
-		// debug($sql,-2);
-		$result = $this->databaseHandle->sql_query($sql);
-		$this->checkSqlErrors($sql);
-		$rows = $this->getRowsFromResult($result);
-		$this->databaseHandle->sql_free_result($result);
-		// Get language uid from querySettings.
-		// Ensure the backend handling is not broken (fallback to Get parameter 'L' if needed)
+
 		$rows = $this->doLanguageAndWorkspaceOverlay($query->getSource(), $rows, $query->getQuerySettings());
-		// TODO: implement $objectData = $this->processObjectRecords($statementHandle);
+		return $rows;
+	}
+
+	/**
+	 * Creates the parameters for the query methods of the database methods in the TYPO3 core, from an array
+	 * that came from a parsed query.
+	 *
+	 * @param array $statementParts
+	 * @return array
+	 */
+	protected function createQueryCommandParametersFromStatementParts(array $statementParts) {
+		return array(
+			'selectFields' => implode(' ', $statementParts['keywords']) . ' ' . implode(',', $statementParts['fields']),
+			'fromTable'    => implode(' ', $statementParts['tables']) . ' ' . implode(' ', $statementParts['unions']),
+			'whereClause'  => (!empty($statementParts['where']) ? implode('', $statementParts['where']) : '1')
+				. (!empty($statementParts['additionalWhereClause'])
+					? ' AND ' . implode(' AND ', $statementParts['additionalWhereClause'])
+					: ''
+			),
+			'orderBy'      => (!empty($statementParts['orderings']) ? implode(', ', $statementParts['orderings']) : ''),
+			'limit'        => ($statementParts['offset'] ? $statementParts['offset'] . ', ' : '')
+				. ($statementParts['limit'] ? $statementParts['limit'] : '')
+		);
+	}
+
+	/**
+	 * Determines wether to use prepared statement or not and returns the rows from the corresponding method
+	 *
+	 * @param \TYPO3\CMS\Extbase\Persistence\QueryInterface $query
+	 * @param array $statementParts
+	 * @param array $parameters
+	 * @return array
+	 */
+	protected function getRowsByStatementParts(\TYPO3\CMS\Extbase\Persistence\QueryInterface $query, array $statementParts, array $parameters) {
+		if ($query->getQuerySettings()->getUsePreparedStatement()) {
+			$rows = $this->getRowsFromPreparedDatabase($statementParts, $parameters);
+		} else {
+			$rows = $this->getRowsFromDatabase($statementParts, $parameters);
+		}
+
+		return $rows;
+	}
+
+	/**
+	 * Fetches the rows directly from the database, not using prepared statement
+	 *
+	 * @param array $statementParts
+	 * @param array $parameters
+	 * @return array the result
+	 */
+	protected function getRowsFromDatabase(array $statementParts, array $parameters) {
+		$queryCommandParameters = $this->createQueryCommandParametersFromStatementParts($statementParts);
+
+		// @todo this work-around will be gone with queryParser
+		$this->replacePlaceholders($queryCommandParameters['whereClause'], $parameters);
+
+		$rows = $this->databaseHandle->exec_SELECTgetRows(
+			$queryCommandParameters['selectFields'],
+			$queryCommandParameters['fromTable'],
+			$queryCommandParameters['whereClause'],
+			'',
+			$queryCommandParameters['orderBy'],
+			$queryCommandParameters['limit']
+		);
+		$this->checkSqlErrors();
+
+		return $rows;
+	}
+
+	/**
+	 * Fetches the rows from the database, using prepared statement
+	 *
+	 * @param array $statementParts
+	 * @param array $parameters
+	 * @return array the result
+	 */
+	protected function getRowsFromPreparedDatabase(array $statementParts, array $parameters) {
+		$queryCommandParameters = $this->createQueryCommandParametersFromStatementParts($statementParts);
+		$preparedStatement = $this->databaseHandle->prepare_SELECTquery(
+			$queryCommandParameters['selectFields'],
+			$queryCommandParameters['fromTable'],
+			$queryCommandParameters['whereClause'],
+			'',
+			$queryCommandParameters['orderBy'],
+			$queryCommandParameters['limit']
+		);
+
+		$preparedStatement->execute($parameters);
+		$rows = $preparedStatement->fetchAll();
+
+		$preparedStatement->free();
+		return $rows;
+	}
+
+	/**
+	 * Returns the object data using a custom statement
+	 *
+	 * @param \TYPO3\CMS\Extbase\Persistence\QueryInterface $query
+	 * @return array
+	 */
+	protected function getObjectDataByRawQuery(QueryInterface $query) {
+		$statement = $query->getStatement();
+		$parameters = $statement->getBoundVariables();
+
+		if ($statement instanceof \TYPO3\CMS\Core\Database\PreparedStatement) {
+			$preparedStatement = $statement->getStatement();
+
+			$preparedStatement->execute($parameters);
+			$rows = $preparedStatement->fetchAll();
+
+			$preparedStatement->free();
+		} else {
+
+			/**
+			 * @deprecated since 6.2, this block will be removed in two versions
+			 * the deprecation log is in Qom\Statement
+			 */
+			if (!empty($parameters)) {
+				$sqlString = $statement->getStatement();
+				$this->replacePlaceholders($sqlString, $parameters);
+			}
+
+			$result = $this->databaseHandle->sql_query($sqlString);
+			$this->checkSqlErrors();
+
+			$rows = array();
+			while ($row = $this->databaseHandle->sql_fetch_assoc($result)) {
+				if (is_array($row)) {
+					$rows[] = $row;
+				}
+			}
+		}
+
 		return $rows;
 	}
 
@@ -311,38 +433,42 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 	 * @return integer The number of matching tuples
 	 */
 	public function getObjectCountByQuery(\TYPO3\CMS\Extbase\Persistence\QueryInterface $query) {
-		$constraint = $query->getConstraint();
-		if ($constraint instanceof \TYPO3\CMS\Extbase\Persistence\Generic\Qom\Statement) {
+		if ($query->getConstraint() instanceof \TYPO3\CMS\Extbase\Persistence\Generic\Qom\Statement) {
 			throw new \TYPO3\CMS\Extbase\Persistence\Generic\Storage\Exception\BadConstraintException('Could not execute count on queries with a constraint of type TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Qom\\StatementInterface', 1256661045);
 		}
+
+		// @todo with queryParser we don't need this parameters anymore
 		$parameters = array();
 		$statementParts = $this->parseQuery($query, $parameters);
-		// Reset $statementParts for valid table return
-		reset($statementParts);
-		// if limit is set, we need to count the rows "manually" as COUNT(*) ignores LIMIT constraints
-		if (!empty($statementParts['limit'])) {
-			$statement = $this->buildQuery($statementParts, $parameters);
-			$this->replacePlaceholders($statement, $parameters, current($statementParts['tables']));
-			$result = $this->databaseHandle->sql_query($statement);
-			$this->checkSqlErrors($statement);
-			$count = $this->databaseHandle->sql_num_rows($result);
-		} else {
-			$statementParts['fields'] = array('COUNT(*)');
-			// having orderings without grouping is not compatible with non-MySQL DBMS
-			$statementParts['orderings'] = array();
-			if (isset($statementParts['keywords']['distinct'])) {
-				unset($statementParts['keywords']['distinct']);
-				$statementParts['fields'] = array('COUNT(DISTINCT ' . reset($statementParts['tables']) . '.uid)');
-			}
-			$statement = $this->buildQuery($statementParts, $parameters);
-			$this->replacePlaceholders($statement, $parameters, current($statementParts['tables']));
-			$result = $this->databaseHandle->sql_query($statement);
-			$this->checkSqlErrors($statement);
-			$rows = $this->getRowsFromResult($result);
-			$count = current(current($rows));
+
+		// @todo this work-around will be gone with queryParser
+		$statementParts['where'] = implode('', $statementParts['where']);
+		$this->replacePlaceholders($statementParts['where'], $parameters);
+
+		$fields = '*';
+		if (isset($statementParts['keywords']['distinct'])) {
+			$fields = 'DISTINCT ' . reset($statementParts['tables']) . '.uid';
 		}
-		$this->databaseHandle->sql_free_result($result);
-		return (int)$count;
+
+		$count = $this->databaseHandle->exec_SELECTcountRows(
+			$fields,
+			implode(' ', $statementParts['tables']) . ' ' . implode(' ', $statementParts['unions']),
+			(!empty($statementParts['where']) ? $statementParts['where'] : '1')
+				. (!empty($statementParts['additionalWhereClause'])
+					? ' AND ' . implode(' AND ', $statementParts['additionalWhereClause'])
+					: '')
+		);
+		$this->checkSqlErrors();
+
+		if ($statementParts['offset']) {
+			$count -= $statementParts['offset'];
+		}
+
+		if ($statementParts['limit']) {
+			$count = min($count, $statementParts['limit']);
+		}
+
+		return (int)max(0, $count);
 	}
 
 	/**
@@ -361,12 +487,12 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 		$sql['where'] = array();
 		$sql['additionalWhereClause'] = array();
 		$sql['orderings'] = array();
-		$sql['limit'] = array();
+		$sql['limit'] = ((int)$query->getLimit() ?: NULL);
+		$sql['offset'] = ((int)$query->getOffset() ?: NULL);
 		$source = $query->getSource();
 		$this->parseSource($source, $sql);
 		$this->parseConstraint($query->getConstraint(), $source, $sql, $parameters);
 		$this->parseOrderings($query->getOrderings(), $source, $sql);
-		$this->parseLimitAndOffset($query->getLimit(), $query->getOffset(), $sql);
 		$tableNames = array_unique(array_keys($sql['tables'] + $sql['unions']));
 		foreach ($tableNames as $tableName) {
 			if (is_string($tableName) && strlen($tableName) > 0) {
@@ -704,10 +830,13 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 			$operator = $this->resolveOperator($operator);
 			$constraintSQL = '';
 			if ($valueFunction === NULL) {
-				$constraintSQL .= (!empty($tableName) ? $tableName . '.' : '') . $columnName . ' ' . $operator . ' ?';
+				$constraintSQL .= (!empty($tableName) ? $tableName . '.' : '') . $columnName . ' ' . $operator;
 			} else {
-				$constraintSQL .= $valueFunction . '(' . (!empty($tableName) ? $tableName . '.' : '') . $columnName . ') ' . $operator . ' ?';
+				$constraintSQL .= $valueFunction . '(' . (!empty($tableName) ? $tableName . '.' : '') . $columnName . ') ' . $operator;
 			}
+
+			$constraintSQL .= ' ?';
+
 			$sql['where'][] = $constraintSQL;
 		}
 	}
@@ -1072,38 +1201,6 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 				$sql['orderings'][] = $columnName . ' ' . $order;
 			}
 		}
-	}
-
-	/**
-	 * Transforms limit and offset into SQL
-	 *
-	 * @param integer $limit
-	 * @param integer $offset
-	 * @param array &$sql
-	 * @return void
-	 */
-	protected function parseLimitAndOffset($limit, $offset, array &$sql) {
-		if ($limit !== NULL && $offset !== NULL) {
-			$sql['limit'] = (int)$offset . ', ' . (int)$limit;
-		} elseif ($limit !== NULL) {
-			$sql['limit'] = (int)$limit;
-		}
-	}
-
-	/**
-	 * Transforms a Resource from a database query to an array of rows.
-	 *
-	 * @param resource $result The result
-	 * @return array The result as an array of rows (tuples)
-	 */
-	protected function getRowsFromResult($result) {
-		$rows = array();
-		while ($row = $this->databaseHandle->sql_fetch_assoc($result)) {
-			if (is_array($row)) {
-				$rows[] = $row;
-			}
-		}
-		return $rows;
 	}
 
 	/**
