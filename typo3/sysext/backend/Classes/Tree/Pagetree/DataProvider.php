@@ -270,7 +270,7 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider {
 				) {
 					continue;
 				}
-				if ($rootlineElement['pid'] === $nodeId
+				if ((int)$rootlineElement['pid'] === $nodeId
 					|| $rootlineElement['uid'] === $nodeId
 					|| ($rootlineElement['uid'] === $isInWebMount
 						&& in_array($rootlineElement['uid'], $mountPoints, TRUE))
@@ -281,7 +281,7 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider {
 					continue;
 				}
 				$rootlineElement = Commands::getNodeRecord($rootlineElement['uid'], FALSE);
-				$ident = (int)$rootlineElement['sorting'] . $rootlineElement['uid'];
+				$ident = (int)$rootlineElement['sorting'] . (int)$rootlineElement['uid'];
 				if ($reference && $reference->offsetExists($ident)) {
 					/** @var $refNode \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode */
 					$refNode = $reference->offsetGet($ident);
@@ -295,7 +295,7 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider {
 				} else {
 					$refNode = Commands::getNewNode($rootlineElement, $mountPoint);
 					$replacement = '<span class="typo3-pagetree-filteringTree-highlight">$1</span>';
-					if ($isNumericSearchFilter && $rootlineElement['uid'] === (int)$searchFilter) {
+					if ($isNumericSearchFilter && (int)$rootlineElement['uid'] === (int)$searchFilter) {
 						$text = str_replace('$1', $refNode->getText(), $replacement);
 					} else {
 						$text = preg_replace('/(' . $searchFilterQuoted . ')/i', $replacement, $refNode->getText());
