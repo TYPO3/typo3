@@ -1517,13 +1517,13 @@ class SqlParser {
 		$orderBy = $this->compileFieldList($components['ORDERBY']);
 		$limit = $components['LIMIT'];
 		// Make query:
-		$query = 'SELECT ' . ($components['STRAIGHT_JOIN'] ?: '') . '
-				' . $this->compileFieldList($components['SELECT']) . '
-				FROM ' . $this->compileFromTables($components['FROM']) . (strlen($where) ? '
-				WHERE ' . $where : '') . (strlen($groupBy) ? '
-				GROUP BY ' . $groupBy : '') . (strlen($orderBy) ? '
-				ORDER BY ' . $orderBy : '') . (strlen($limit) ? '
-				LIMIT ' . $limit : '');
+		$query = 'SELECT ' . ($components['STRAIGHT_JOIN'] ?: '') . ' ' .
+				$this->compileFieldList($components['SELECT']) .
+				' FROM ' . $this->compileFromTables($components['FROM']) . (strlen($where) ?
+				' WHERE ' . $where : '') . (strlen($groupBy) ?
+				' GROUP BY ' . $groupBy : '') . (strlen($orderBy) ?
+				' ORDER BY ' . $orderBy : '') . (strlen($limit) ?
+				' LIMIT ' . $limit : '');
 		return $query;
 	}
 
@@ -1543,11 +1543,9 @@ class SqlParser {
 			$fields[] = $fN . '=' . $fV[1] . $this->compileAddslashes($fV[0]) . $fV[1];
 		}
 		// Make query:
-		$query = 'UPDATE ' . $components['TABLE'] . ' SET
-				' . implode(',
-				', $fields) . '
-				' . (strlen($where) ? '
-				WHERE ' . $where : '');
+		$query = 'UPDATE ' . $components['TABLE'] . ' SET ' . implode(',', $fields) .
+			(strlen($where) ? ' WHERE ' . $where : '');
+
 		return $query;
 	}
 
@@ -1572,20 +1570,15 @@ class SqlParser {
 			foreach ($valuesComponent as $fV) {
 				$fields[] = $fV[1] . $this->compileAddslashes($fV[0]) . $fV[1];
 			}
-			$values[] = '(' . implode(',
-				', $fields) . ')';
+			$values[] = '(' . implode(',', $fields) . ')';
 		}
 		// Make query:
 		$query = 'INSERT INTO ' . $components['TABLE'];
 		if (count($tableFields)) {
-			$query .= '
-				(' . implode(',
-				', $tableFields) . ')';
+			$query .= ' (' . implode(',', $tableFields) . ')';
 		}
-		$query .= '
-			VALUES
-			' . implode(',
-			', $values);
+		$query .= ' VALUES ' . implode(',', $values);
+
 		return $query;
 	}
 
@@ -1600,8 +1593,8 @@ class SqlParser {
 		// Where clause:
 		$where = $this->compileWhereClause($components['WHERE']);
 		// Make query:
-		$query = 'DELETE FROM ' . $components['TABLE'] . (strlen($where) ? '
-				WHERE ' . $where : '');
+		$query = 'DELETE FROM ' . $components['TABLE'] . (strlen($where) ? ' WHERE ' . $where : '');
+
 		return $query;
 	}
 
@@ -1630,10 +1623,10 @@ class SqlParser {
 			}
 		}
 		// Make query:
-		$query = 'CREATE TABLE ' . $components['TABLE'] . ' (
-			' . implode(',
-			', $fieldsKeys) . '
-			)' . ($components['engine'] ? ' ENGINE=' . $components['engine'] : '');
+		$query = 'CREATE TABLE ' . $components['TABLE'] . ' (' .
+			implode(',', $fieldsKeys) . ')' .
+			($components['engine'] ? ' ENGINE=' . $components['engine'] : '');
+
 		return $query;
 	}
 
