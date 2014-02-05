@@ -154,6 +154,9 @@
 				<source>Delete</source>
 			</trans-unit>
 			<trans-unit id="action_1_4" xml:space="preserve">
+				<source>Move</source>
+			</trans-unit>
+			<trans-unit id="action_1_5" xml:space="preserve">
 				<source>Check</source>
 			</trans-unit>
 			<trans-unit id="msg_1_0_1" xml:space="preserve">
