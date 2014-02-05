@@ -244,7 +244,12 @@ class File extends AbstractFile {
 				$this->properties[$key] = $value;
 			}
 		}
-
+		// If the mime_type property should be updated and it was changed also update the type.
+		if (array_key_exists('mime_type', $properties) && in_array('mime_type', $this->updatedProperties)) {
+			$this->updatedProperties[] = 'type';
+			unset($this->properties['type']);
+			$this->getType();
+		}
 		if (array_key_exists('storage', $properties) && in_array('storage', $this->updatedProperties)) {
 			$this->storage = ResourceFactory::getInstance()->getStorageObject($properties['storage']);
 		}
