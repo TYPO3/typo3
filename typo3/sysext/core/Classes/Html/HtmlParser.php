@@ -980,16 +980,17 @@ class HtmlParser {
 	 * Converts htmlspecialchars forth ($dir=1) AND back ($dir=-1)
 	 *
 	 * @param string $value Input value
-	 * @param integer $dir Direction: forth ($dir=1, dir=2 for preserving entities) AND back ($dir=-1)
+	 * @param int $dir Direction: forth ($dir=1, dir=2 for preserving entities) AND back ($dir=-1)
 	 * @return string Output value
 	 * @todo Define visibility
 	 */
 	public function bidir_htmlspecialchars($value, $dir) {
-		if ($dir == 1) {
+		$dir = (int)$dir;
+		if ($dir === 1) {
 			$value = htmlspecialchars($value);
-		} elseif ($dir == 2) {
-			$value = GeneralUtility::deHSCentities(htmlspecialchars($value));
-		} elseif ($dir == -1) {
+		} elseif ($dir === 2) {
+			$value = htmlspecialchars($value, ENT_COMPAT, 'UTF-8', FALSE);
+		} elseif ($dir === -1) {
 			$value = htmlspecialchars_decode($value);
 		}
 		return $value;

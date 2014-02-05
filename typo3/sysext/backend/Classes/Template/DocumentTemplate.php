@@ -1635,7 +1635,7 @@ function jumpToUrl(URL) {
 			$menuDef = array();
 			foreach ($menuItems as $value => $label) {
 				$menuDef[$value]['isActive'] = (string)$currentValue === (string)$value;
-				$menuDef[$value]['label'] = GeneralUtility::deHSCentities(htmlspecialchars($label));
+				$menuDef[$value]['label'] = htmlspecialchars($label, ENT_COMPAT, 'UTF-8', FALSE);
 				$menuDef[$value]['url'] = $script . '?' . $mainParams . $addparams . '&' . $elementName . '=' . $value;
 			}
 			$content = $this->getTabMenuRaw($menuDef);

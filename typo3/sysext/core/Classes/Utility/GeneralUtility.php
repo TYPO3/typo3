@@ -1025,9 +1025,12 @@ class GeneralUtility {
 
 	/**
 	 * Re-converts HTML entities if they have been converted by htmlspecialchars()
+	 * Note: Use htmlspecialchars($str, ENT_COMPAT, 'UTF-8', FALSE) to avoid double encoding.
+	 *       This makes the call to this method obsolete.
 	 *
 	 * @param string $str String which contains eg. "&amp;amp;" which should stay "&amp;". Or "&amp;#1234;" to "&#1234;". Or "&amp;#x1b;" to "&#x1b;
 	 * @return string Converted result.
+	 *
 	 */
 	static public function deHSCentities($str) {
 		return preg_replace('/&amp;([#[:alnum:]]*;)/', '&\\1', $str);

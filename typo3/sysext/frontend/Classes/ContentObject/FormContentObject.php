@@ -417,12 +417,12 @@ class FormContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractConten
 						if ($image) {
 							$fieldCode = sprintf('<input type="image" name="%s"%s src="%s"%s />', $confData['fieldname'], $elementIdAttribute, $image, $params);
 						} else {
-							$fieldCode = sprintf('<input type="submit" name="%s"%s value="%s"%s />', $confData['fieldname'], $elementIdAttribute, GeneralUtility::deHSCentities(htmlspecialchars($value)), $addParams);
+							$fieldCode = sprintf('<input type="submit" name="%s"%s value="%s"%s />', $confData['fieldname'], $elementIdAttribute, htmlspecialchars($value, ENT_COMPAT, 'UTF-8', FALSE), $addParams);
 						}
 						break;
 					case 'reset':
 						$value = trim($parts[2]);
-						$fieldCode = sprintf('<input type="reset" name="%s"%s value="%s"%s />', $confData['fieldname'], $elementIdAttribute, GeneralUtility::deHSCentities(htmlspecialchars($value)), $addParams);
+						$fieldCode = sprintf('<input type="reset" name="%s"%s value="%s"%s />', $confData['fieldname'], $elementIdAttribute, htmlspecialchars($value, ENT_COMPAT, 'UTF-8', FALSE), $addParams);
 						break;
 					case 'label':
 						$fieldCode = nl2br(htmlspecialchars(trim($parts[2])));
