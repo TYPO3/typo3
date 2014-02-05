@@ -194,8 +194,8 @@ class FrontendUserAuthentication extends \TYPO3\CMS\Core\Authentication\Abstract
 	 * @todo Define visibility
 	 */
 	public function isSetSessionCookie() {
-		$retVal = ($this->newSessionID || $this->forceSetCookie) && ($this->lifetime == 0 || !$this->user['ses_permanent']);
-		return $retVal;
+		return ($this->newSessionID || $this->forceSetCookie)
+			&& ($this->lifetime == 0 || !isset($this->user['ses_permanent']) || !$this->user['ses_permanent']);
 	}
 
 	/**
@@ -206,7 +206,7 @@ class FrontendUserAuthentication extends \TYPO3\CMS\Core\Authentication\Abstract
 	 * @todo Define visibility
 	 */
 	public function isRefreshTimeBasedCookie() {
-		return $this->lifetime > 0 && $this->user['ses_permanent'];
+		return $this->lifetime > 0 && isset($this->user['ses_permanent']) && $this->user['ses_permanent'];
 	}
 
 	/**

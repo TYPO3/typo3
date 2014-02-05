@@ -3761,7 +3761,7 @@ if (version == "n3") {
 		$search = array();
 		$replace = array();
 		// Substitutes username mark with the username
-		if ($this->fe_user->user['uid']) {
+		if (!empty($this->fe_user->user['uid'])) {
 			// User name:
 			$token = isset($this->config['config']['USERNAME_substToken']) ? trim($this->config['config']['USERNAME_substToken']) : '';
 			$search[] = $token ? $token : '<!--###USERNAME###-->';

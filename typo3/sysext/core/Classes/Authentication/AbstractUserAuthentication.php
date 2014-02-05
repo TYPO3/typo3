@@ -1175,14 +1175,15 @@ abstract class AbstractUserAuthentication {
 	}
 
 	/**
-	 * Sets $theUC as the internal variable ->uc IF $theUC is an array. If $theUC is FALSE, the 'uc' content from the ->user array will be unserialized and restored in ->uc
+	 * Sets $theUC as the internal variable ->uc IF $theUC is an array.
+	 * If $theUC is FALSE, the 'uc' content from the ->user array will be unserialized and restored in ->uc
 	 *
 	 * @param mixed $theUC If an array, then set as ->uc, otherwise load from user record
 	 * @return void
 	 * @todo Define visibility
 	 */
 	public function unpack_uc($theUC = '') {
-		if (!$theUC) {
+		if (!$theUC && isset($this->user['uc'])) {
 			$theUC = unserialize($this->user['uc']);
 		}
 		if (is_array($theUC)) {
