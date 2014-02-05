@@ -748,7 +748,7 @@ class ImportExport {
 		// Traverse all "rels" registered for "records"
 		if (is_array($this->dat['records'])) {
 			foreach ($this->dat['records'] as $k => $value) {
-				if (is_array($this->dat['records'][$k]['rels'])) {
+				if (isset($this->dat['records'][$k]['rels']) && is_array($this->dat['records'][$k]['rels'])) {
 					foreach ($this->dat['records'][$k]['rels'] as $fieldname => $vR) {
 						// For all file type relations:
 						if ($vR['type'] == 'file') {
@@ -827,6 +827,61 @@ class ImportExport {
 			$this->error('There were no records available.');
 		}
 	}
+
+	/**
+	 * This adds all files from sys_file records
+	 *
+	 * @return void
+	 */
+	public function export_addFilesFromSysFilesRecords() {
+		if (!isset($this->dat['header']['records']['sys_file']) || !is_array($this->dat['header']['records']['sys_file'])) {
+			return;
+		}
+		foreach (array_keys($this->dat['header']['records']['sys_file']) as $sysFileUid) {
+			$recordData = $this->dat['records']['sys_file:' . $sysFileUid]['data'];
+			$file = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->createFileObject($recordData);
+			$this->export_addSysFile($file);
+		}
+	}
+
+	/**
+	 * Adds a files content from a sys file record to the export memory
+	 *
+	 * @param \TYPO3\CMS\Core\Resource\File $file
+	 * @return void
+	 */
+	public function export_addSysFile(\TYPO3\CMS\Core\Resource\File $file) {
+		if ($file->getProperty('size') >= $this->maxFileSize) {
+			$this->error('File ' . $file->getPublicUrl() . ' was larger (' . GeneralUtility::formatSize($file->getProperty('size')) . ') than the maxFileSize (' . GeneralUtility::formatSize($this->maxFileSize) . ')! Skipping.');
+			return;
+		}
+		try {
+			$fileContent = $file->getContents();
+		} catch (\TYPO3\CMS\Core\Resource\Exception\InsufficientFileAccessPermissionsException $e) {
+			$this->error('File ' . $file->getPublicUrl() . ': ' . $e->getMessage());
+			return;
+		} catch (\TYPO3\CMS\Core\Resource\Exception\IllegalFileExtensionException $e) {
+			$this->error('File ' . $file->getPublicUrl() . ': ' . $e->getMessage());
+			return;
+		}
+		$fileRec = array();
+		$fileRec['filesize'] = $file->getProperty('size');
+		$fileRec['filename'] = $file->getProperty('name');
+		$fileRec['filemtime'] = $file->getProperty('modification_date');
+
+		// build unique id based on the storage and the file identifier
+		$fileId = md5($file->getStorage()->getUid() . ':' . $file->getProperty('identifier_hash'));
+
+		// Setting this data in the header
+		$this->dat['header']['files_fal'][$fileId] = $fileRec;
+
+		// ... and finally add the heavy stuff:
+		$fileRec['content'] = $fileContent;
+		$fileRec['content_sha1'] = $file->getProperty('sha1');
+
+		$this->dat['files_fal'][$fileId] = $fileRec;
+	}
+
 
 	/**
 	 * Adds a files content to the export memory
@@ -1067,6 +1122,8 @@ class ImportExport {
 			$out .= $this->addFilePart(serialize($this->dat['records']), $compress);
 			// adding files:
 			$out .= $this->addFilePart(serialize($this->dat['files']), $compress);
+			// adding files_fal:
+			$out .= $this->addFilePart(serialize($this->dat['files_fal']), $compress);
 		}
 		return $out;
 	}
@@ -1086,6 +1143,7 @@ class ImportExport {
 					'clearStackPath' => TRUE,
 					'parentTagMap' => array(
 						'files' => 'file',
+						'files_fal' => 'file',
 						'records' => 'table',
 						'table' => 'rec',
 						'rec:rels' => 'relations',
@@ -1150,6 +1208,12 @@ class ImportExport {
 					'disableTypeAttrib' => TRUE,
 					'parentTagMap' => array(
 						'files' => 'file'
+					)
+				),
+				'/files_fal' => array(
+					'disableTypeAttrib' => TRUE,
+					'parentTagMap' => array(
+						'files_fal' => 'file'
 					)
 				)
 			)
@@ -2233,6 +2297,7 @@ class ImportExport {
 					if ($all) {
 						$this->dat['records'] = $this->getNextFilePart($fd, 1, 'records');
 						$this->dat['files'] = $this->getNextFilePart($fd, 1, 'files');
+						$this->dat['files_fal'] = $this->getNextFilePart($fd, 1, 'files_fal');
 					}
 					$this->loadInit();
 					return TRUE;

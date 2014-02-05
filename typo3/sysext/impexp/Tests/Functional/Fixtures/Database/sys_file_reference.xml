@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dataset>
+	<sys_file_reference>
+		<uid>1</uid>
+		<pid>1</pid>
+		<uid_local>1</uid_local>
+		<uid_foreign>1</uid_foreign>
+		<tablenames>tt_content</tablenames>
+		<fieldname>image</fieldname>
+		<table_local>sys_file</table_local>
+	</sys_file_reference>
+</dataset>

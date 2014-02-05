@@ -45,6 +45,16 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	public $pageinfo;
 
 	/**
+	 * @var \TYPO3\CMS\Impexp\ImportExport
+	 */
+	protected $export;
+
+	/**
+	 * @var \TYPO3\CMS\Impexp\ImportExport
+	 */
+	protected $import;
+
+	/**
 	 * Main module function
 	 *
 	 * @return void
@@ -282,6 +292,9 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		// Finally files are added:
 		// MUST be after the DBrelations are set so that files from ALL added records are included!
 		$this->export->export_addFilesFromRelations();
+
+		$this->export->export_addFilesFromSysFilesRecords();
+
 		// If the download button is clicked, return file
 		if ($inData['download_export'] || $inData['save_export']) {
 			switch ((string) $inData['filetype']) {

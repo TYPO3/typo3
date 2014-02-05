@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Impexp\Tests\Functional\ImportExport;
+namespace TYPO3\CMS\Impexp\Tests\Functional\Export;
 
 /***************************************************************
  * Copyright notice
@@ -25,88 +25,65 @@ namespace TYPO3\CMS\Impexp\Tests\Functional\ImportExport;
  ***************************************************************/
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 
 /**
  * Functional test for the ImportExport
  */
-class ExportSimpleTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
+abstract class AbstractExportTestCase extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 
 	/**
 	 * @var array
 	 */
 	protected $coreExtensionsToLoad = array('impexp');
 
+	/**
+	 * @var \TYPO3\CMS\Impexp\ImportExport
+	 */
+	protected $export;
+
+	/**
+	 * Set up for set up the backend user, initialize the language object
+	 * and creating the ImportExport instance
+	 *
+	 * @return void
+	 */
 	public function setUp() {
 		parent::setUp();
+
 		$this->setUpBackendUserFromFixture(1);
 		// Needed to avoid PHP Warnings
 		$GLOBALS['TBE_STYLES']['spriteIconApi']['iconsAvailable'] = array();
-		$this->importDataSet(__DIR__ . '/../Fixtures/Database/pages.xml');
-		$this->importDataSet(__DIR__ . '/../Fixtures/Database/tt_content.xml');
+
+		\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->initializeLanguageObject();
+
+		$this->export = GeneralUtility::makeInstance('TYPO3\\CMS\\Impexp\\ImportExport');
+		$this->export->init(0, 'export');
 	}
 
 	/**
-	 * @test
+	 * Builds a flat array containing the page tree with the PageTreeView
+	 * based on given start pid and depth and set it in the ImportExport object.
+	 *
+	 * @param int $pidToStart
+	 * @param int $depth
+	 * @return void
 	 */
-	public function canExportSimplePagesAndRelatedTtContent() {
+	protected function setPageTree($pidToStart, $depth = 1) {
+
 		$permsClause = $GLOBALS['BE_USER']->getPagePermsClause(1);
 
-		/** @var $export \TYPO3\CMS\Impexp\ImportExport */
-		$export = GeneralUtility::makeInstance('TYPO3\\CMS\\Impexp\\ImportExport');
-		$export->init(0, 'export');
-
-		$export->setRecordTypesIncludeFields(
-			array(
-				'pages' => array(
-					'title',
-					'deleted',
-					'doktype',
-					'hidden',
-					'perms_everybody'
-				),
-				'tt_content' => array(
-					'CType',
-					'header',
-					'deleted',
-					'hidden',
-					't3ver_oid'
-				)
-			)
-		);
-
-		$export->export_addRecord('pages', BackendUtility::getRecord('pages', 1));
-		$export->export_addRecord('pages', BackendUtility::getRecord('pages', 2));
-		$export->export_addRecord('tt_content', BackendUtility::getRecord('tt_content', 1));
-
-		$pidToStart = 1;
 		/** @var $tree \TYPO3\CMS\Backend\Tree\View\PageTreeView */
 		$tree = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\View\\PageTreeView');
 		$tree->init('AND ' . $permsClause);
 		$tree->tree[] = array('row' => $pidToStart);
 		$tree->buffer_idH = array();
-		$tree->getTree(1, 1, '');
+		$tree->getTree($pidToStart, $depth, '');
 
-		$idH = array();
 		$idH[$pidToStart]['uid'] = $pidToStart;
 		if (count($tree->buffer_idH)) {
 			$idH[$pidToStart]['subrow'] = $tree->buffer_idH;
 		}
-		$export->setPageTree($idH);
 
-		// After adding ALL records we set relations:
-		for ($a = 0; $a < 10; $a++) {
-			$addR = $export->export_addDBRelations($a);
-			if (!count($addR)) {
-				break;
-			}
-		}
-
-		$export->export_addFilesFromRelations();
-
-		$out = $export->compileMemoryToFileContent('xml');
-
-		$this->assertXmlStringEqualsXmlFile(__DIR__ . '/../Fixtures/ImportExport/pages-and-ttcontent.xml', $out);
+		$this->export->setPageTree($idH);
 	}
-
 }

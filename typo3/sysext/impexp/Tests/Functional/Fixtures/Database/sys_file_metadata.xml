@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dataset>
+	<sys_file_metadata>
+		<uid>1</uid>
+		<pid>0</pid>
+		<file>1</file>
+		<title>Dummy image</title>
+		<width>400</width>
+		<height>300</height>
+		<description>This is a dummy image.</description>
+		<alternative>Photo of program code</alternative>
+		<sys_language_uid>0</sys_language_uid>
+		<l10n_parent>0</l10n_parent>
+	</sys_file_metadata>
+	<sys_file_metadata>
+		<uid>2</uid>
+		<pid>0</pid>
+		<file>1</file>
+		<title>Beispiel Bild</title>
+		<width>0</width>
+		<height>0</height>
+		<description>Nur ein Beispielbild.</description>
+		<alternative>Foto von Programmcode</alternative>
+		<sys_language_uid>1</sys_language_uid>
+		<l10n_parent>1</l10n_parent>
+	</sys_file_metadata>
+</dataset>
