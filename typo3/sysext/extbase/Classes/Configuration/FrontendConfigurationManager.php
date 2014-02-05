@@ -191,8 +191,12 @@ class FrontendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\Abst
 	 * @return array the processed framework configuration
 	 */
 	protected function mergeConfigurationIntoFrameworkConfiguration(array $frameworkConfiguration, array $configuration, $configurationPartName) {
-		if (is_array($frameworkConfiguration[$configurationPartName]) && is_array($configuration[$configurationPartName])) {
-			\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($frameworkConfiguration[$configurationPartName], $configuration[$configurationPartName]);
+		if (is_array($configuration[$configurationPartName])) {
+			if (is_array($frameworkConfiguration[$configurationPartName])) {
+				\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($frameworkConfiguration[$configurationPartName], $configuration[$configurationPartName]);
+			} else {
+				$frameworkConfiguration[$configurationPartName] = $configuration[$configurationPartName];
+			}
 		}
 		return $frameworkConfiguration;
 	}
