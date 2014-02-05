@@ -306,9 +306,18 @@ class ElementInformationController {
 			$extraFields['crdate'] = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_general.xlf:LGL.creationDate', TRUE);
 			$extraFields['cruser_id'] = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_general.xlf:LGL.creationUserId', TRUE);
 			$extraFields['tstamp'] = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_general.xlf:LGL.timestamp', TRUE);
+
+			// check if the special fields are defined in the TCA ctrl section of the table
+			foreach ($extraFields as $fieldName => $fieldLabel) {
+				if (isset($GLOBALS['TCA'][$this->table]['ctrl'][$fieldName])) {
+					$extraFields[$GLOBALS['TCA'][$this->table]['ctrl'][$fieldName]] = $fieldLabel;
+				} else {
+					unset($extraFields[$fieldName]);
+				}
+			}
 		}
 
-		foreach ($extraFields as $name => $value) {
+		foreach ($extraFields as $name => $fieldLabel) {
 			$rowValue = '';
 			if (!isset($this->row[$name])) {
 				$resourceObject = $this->fileObject ?: $this->folderObject;
@@ -322,8 +331,9 @@ class ElementInformationController {
 			} else {
 				$rowValue = BackendUtility::getProcessedValueExtra($this->table, $name, $this->row[$name]);
 			}
+			// show the backend username who created the issue
 			if ($name === 'cruser_id' && $rowValue) {
-				$userTemp = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('username, realName', 'be_users', 'uid = ' . (int)$rowValue);
+				$userTemp = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('username, realName', 'be_users', 'uid = ' . (int)$rowValue);
 				if ($userTemp[0]['username'] !== '') {
 					$rowValue = $userTemp[0]['username'];
 					if ($userTemp[0]['realName'] !== '') {
@@ -333,7 +343,7 @@ class ElementInformationController {
 			}
 			$tableRows[] = '
 				<tr>
-					<td><strong>' . rtrim($value, ':') . '</strong></td>
+					<th>' . rtrim($fieldLabel, ':') . '</th>
 					<td>' . htmlspecialchars($rowValue) . '</td>
 				</tr>';
 		}
