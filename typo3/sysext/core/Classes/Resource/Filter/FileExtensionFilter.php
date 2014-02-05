@@ -119,7 +119,7 @@ class FileExtensionFilter {
 	 */
 	protected function isAllowed($fileName) {
 		$result = TRUE;
-		$fileExt = pathinfo($fileName, PATHINFO_EXTENSION);
+		$fileExt = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
 		// Check allowed file extensions
 		if ($this->allowedFileExtensions !== NULL && count($this->allowedFileExtensions) > 0 && !in_array($fileExt, $this->allowedFileExtensions)) {
 			$result = FALSE;
