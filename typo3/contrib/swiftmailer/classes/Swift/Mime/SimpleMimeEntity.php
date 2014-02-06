@@ -280,7 +280,7 @@ class Swift_Mime_SimpleMimeEntity implements Swift_Mime_MimeEntity
      */
     public function setChildren(array $children, $compoundLevel = null)
     {
-        //TODO: Try to refactor this logic
+        // TODO: Try to refactor this logic
 
         $compoundLevel = isset($compoundLevel)
             ? $compoundLevel
@@ -300,9 +300,9 @@ class Swift_Mime_SimpleMimeEntity implements Swift_Mime_MimeEntity
                 if ($nextLevel == $level) {
                     $immediateChildren[] = $child;
                 } elseif ($level < $nextLevel) {
-                    //Re-assign immediateChildren to grandchildren
+                    // Re-assign immediateChildren to grandchildren
                     $grandchildren = array_merge($grandchildren, $immediateChildren);
-                    //Set new children
+                    // Set new children
                     $immediateChildren = array($child);
                 } else {
                     $grandchildren[] = $child;
@@ -313,7 +313,7 @@ class Swift_Mime_SimpleMimeEntity implements Swift_Mime_MimeEntity
         if (!empty($immediateChildren)) {
             $lowestLevel = $this->_getNeededChildLevel($immediateChildren[0], $compoundLevel);
 
-            //Determine which composite media type is needed to accommodate the
+            // Determine which composite media type is needed to accommodate the
             // immediate children
             foreach ($this->_compositeRanges as $mediaType => $range) {
                 if ($lowestLevel > $range[0]
@@ -324,7 +324,7 @@ class Swift_Mime_SimpleMimeEntity implements Swift_Mime_MimeEntity
                 }
             }
 
-            //Put any grandchildren in a subpart
+            // Put any grandchildren in a subpart
             if (!empty($grandchildren)) {
                 $subentity = $this->_createChild();
                 $subentity->_setNestingLevel($lowestLevel);
@@ -795,14 +795,14 @@ class Swift_Mime_SimpleMimeEntity implements Swift_Mime_MimeEntity
     {
         $shouldSort = false;
         foreach ($this->_immediateChildren as $child) {
-            //NOTE: This include alternative parts moved into a related part
+            // NOTE: This include alternative parts moved into a related part
             if ($child->getNestingLevel() == self::LEVEL_ALTERNATIVE) {
                 $shouldSort = true;
                 break;
             }
         }
 
-        //Sort in order of preference, if there is one
+        // Sort in order of preference, if there is one
         if ($shouldSort) {
             usort($this->_immediateChildren, array($this, '_childSortAlgorithm'));
         }

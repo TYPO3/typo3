@@ -1,6 +1,17 @@
 Changelog
 =========
 
+5.0.3 (2013-12-03)
+------------------
+
+ * fixed double-dot bug
+ * fixed DKIM signer
+
+5.0.2 (2013-08-30)
+------------------
+
+ * handled correct exception type while reading IoBuffer output
+
 5.0.1 (2013-06-17)
 ------------------
 

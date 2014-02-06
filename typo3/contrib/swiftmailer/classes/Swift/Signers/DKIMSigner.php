@@ -258,10 +258,9 @@ class Swift_Signers_DKIMSigner implements Swift_Signers_HeaderSigner
     public function unbind(Swift_InputByteStream $is)
     {
         // Don't have to mirror anything
-        foreach ($this->_bound as $k => $el) {
-            if ($el == $is) {
+        foreach ($this->_bound as $k => $stream) {
+            if ($stream === $is) {
                 unset($this->_bound[$k]);
-
                 return;
             }
         }
@@ -651,10 +650,10 @@ class Swift_Signers_DKIMSigner implements Swift_Signers_HeaderSigner
         $signature = '';
         switch ($this->_hashAlgorithm) {
             case 'rsa-sha1':
-                $algorithm = 'sha1';
+                $algorithm = OPENSSL_ALGO_SHA1;
                 break;
             case 'rsa-sha256':
-                $algorithm = 'sha256';
+                $algorithm = OPENSSL_ALGO_SHA256;
                 break;
         }
         $pkeyId=openssl_get_privatekey($this->_privateKey);
