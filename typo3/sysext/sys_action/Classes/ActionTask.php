@@ -244,7 +244,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 			if (empty($vars['username'])) {
 				$errors[] = $GLOBALS['LANG']->getLL('error-username-empty');
 			}
-			if (empty($vars['password'])) {
+			if ($vars['key'] === 'NEW' && empty($vars['password'])) {
 				$errors[] = $GLOBALS['LANG']->getLL('error-password-empty');
 			}
 			if ($vars['key'] !== 'NEW' && !$this->isCreatedByUser($vars['key'], $record)) {
@@ -432,11 +432,12 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 		$vars['db_mountpoints'] = $this->fixDbMount($vars['db_mountpoints']);
 		// Check if the usergroup is allowed
 		$vars['usergroup'] = $this->fixUserGroup($vars['usergroup'], $record);
+		$key = $vars['key'];
+		$vars['password'] = trim($vars['password']);
 		// Check if md5 is used as password encryption
-		if (strpos($GLOBALS['TCA']['be_users']['columns']['password']['config']['eval'], 'md5') !== FALSE) {
+		if ($vars['password'] !== '' && strpos($GLOBALS['TCA']['be_users']['columns']['password']['config']['eval'], 'md5') !== FALSE) {
 			$vars['password'] = md5($vars['password']);
 		}
-		$key = $vars['key'];
 		$data = '';
 		$newUserId = 0;
 		if ($key === 'NEW') {
@@ -445,7 +446,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 				$data = array();
 				$data['be_users'][$key] = $beRec;
 				$data['be_users'][$key]['username'] = $this->fixUsername($vars['username'], $record['t1_userprefix']);
-				$data['be_users'][$key]['password'] = trim($vars['password']);
+				$data['be_users'][$key]['password'] = $vars['password'];
 				$data['be_users'][$key]['realName'] = $vars['realName'];
 				$data['be_users'][$key]['email'] = $vars['email'];
 				$data['be_users'][$key]['disable'] = (int)$vars['disable'];
@@ -460,8 +461,8 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 			if (is_array($beRec) && $beRec['cruser_id'] == $GLOBALS['BE_USER']->user['uid']) {
 				$data = array();
 				$data['be_users'][$key]['username'] = $this->fixUsername($vars['username'], $record['t1_userprefix']);
-				if (trim($vars['password'])) {
-					$data['be_users'][$key]['password'] = trim($vars['password']);
+				if ($vars['password'] !== '') {
+					$data['be_users'][$key]['password'] = $vars['password'];
 				}
 				$data['be_users'][$key]['realName'] = $vars['realName'];
 				$data['be_users'][$key]['email'] = $vars['email'];
