@@ -1084,7 +1084,12 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 		if ($folderIdentifier === $entryIdentifier) {
 			return TRUE;
 		}
-		return GeneralUtility::isFirstPartOfStr($entryIdentifier, $folderIdentifier . '/');
+		// File identifier canonicalization will not modify a single slash so
+		// we must not append another slash in that case.
+		if ($folderIdentifier !== '/') {
+			$folderIdentifier .= '/';
+		}
+		return GeneralUtility::isFirstPartOfStr($entryIdentifier, $folderIdentifier);
 	}
 
 	/**
