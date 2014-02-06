@@ -5940,7 +5940,7 @@ class ContentObjectRenderer {
 							$LD['target'] = $target;
 							// Convert IDNA-like domain (if any)
 							if (!preg_match('/^[a-z0-9.\\-]*$/i', $targetDomain)) {
-								$targetDomain =  GeneralUtility::idnaEncode($targetDomain);
+								$targetDomain =  \TYPO3\CMS\Core\Utility\GeneralUtility::idnaEncode($targetDomain);
 							}
 							$this->lastTypoLinkUrl = $this->URLqMark(($absoluteUrlScheme . '://' . $targetDomain . '/index.php?id=' . $page['uid']), $addQueryParams) . $sectionMark;
 						} else {
