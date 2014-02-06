@@ -266,7 +266,7 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 	public function linkClipboardHeaderIcon($string, $table, $cmd, $warning = '') {
 		$onClickEvent = 'document.dblistForm.cmd.value=\'' . $cmd . '\';document.dblistForm.submit();';
 		if ($warning) {
-			$onClickEvent = 'if (confirm(' . $GLOBALS['LANG']->JScharCode($warning) . ')){' . $onClickEvent . '}';
+			$onClickEvent = 'if (confirm(' . GeneralUtility::quoteJSvalue($warning) . ')){' . $onClickEvent . '}';
 		}
 		return '<a href="#" onclick="' . htmlspecialchars($onClickEvent) . 'return false;">' . $string . '</a>';
 	}
@@ -868,7 +868,7 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 			}
 
 			if ($GLOBALS['BE_USER']->jsConfirmation(4)) {
-				$confirmationCheck = 'confirm(' . $GLOBALS['LANG']->JScharCode(sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:mess.delete'), basename($identifier)) . $referenceCountText) . ')';
+				$confirmationCheck = 'confirm(' . GeneralUtility::quoteJSvalue(sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:mess.delete'), basename($identifier)) . $referenceCountText) . ')';
 			} else {
 				$confirmationCheck = '1 == 1';
 			}

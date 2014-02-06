@@ -439,7 +439,7 @@ class PageLayoutController {
 			' . ($this->popView ? BackendUtility::viewOnClick($this->id, $GLOBALS['BACK_PATH'], BackendUtility::BEgetRootLine($this->id)) : '') . '
 
 				function deleteRecord(table,id,url) {	//
-					if (confirm(' . $GLOBALS['LANG']->JScharCode($GLOBALS['LANG']->getLL('deleteWarning')) . ')) {
+					if (confirm(' . GeneralUtility::quoteJSvalue($GLOBALS['LANG']->getLL('deleteWarning')) . ')) {
 						window.location.href = "' . $GLOBALS['BACK_PATH'] . 'tce_db.php?cmd["+table+"]["+id+"][delete]=1&redirect="+escape(url)+"&vC=' . $GLOBALS['BE_USER']->veriCode() . BackendUtility::getUrlToken('tceAction') . '&prErr=1&uPT=1";
 					}
 					return false;

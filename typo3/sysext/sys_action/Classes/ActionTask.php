@@ -404,7 +404,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 		$href = 'mod.php?M=user_task&SET[function]=sys_action.tx_sysaction_task&show=' . (int)$sysActionUid . '&be_users_uid=' . (int)$userId;
 		$link = '<a href="' . htmlspecialchars($href) . '">' . htmlspecialchars($username) . '</a>';
 		// Link to delete the user record
-		$onClick = ' onClick="return confirm(' . $GLOBALS['LANG']->JScharCode($GLOBALS['LANG']->getLL('lDelete_warning')) . ');"';
+		$onClick = ' onClick="return confirm(' . GeneralUtility::quoteJSvalue($GLOBALS['LANG']->getLL('lDelete_warning')) . ');"';
 		$link .= '
 				<a href="' . htmlspecialchars(($href . '&delete=1')) . '" ' . $onClick . '>
 					<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/delete_record.gif') . ' alt="" />

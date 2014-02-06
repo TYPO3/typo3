@@ -698,7 +698,7 @@ class InlineElement {
 			// "Delete" link:
 			if ($enabledControls['delete'] && ($isPagesTable && $localCalcPerms & 4 || !$isPagesTable && $calcPerms & 16)) {
 				$onClick = 'inline.deleteRecord(\'' . $nameObjectFtId . '\');';
-				$cells['delete'] = '<a href="#" onclick="' . htmlspecialchars(('if (confirm(' . $GLOBALS['LANG']->JScharCode($GLOBALS['LANG']->getLL('deleteWarning')) . ')) {	' . $onClick . ' } return false;')) . '">' . IconUtility::getSpriteIcon('actions-edit-delete', array('title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_web_list.xlf:delete', TRUE))) . '</a>';
+				$cells['delete'] = '<a href="#" onclick="' . htmlspecialchars(('if (confirm(' . GeneralUtility::quoteJSvalue($GLOBALS['LANG']->getLL('deleteWarning')) . ')) {	' . $onClick . ' } return false;')) . '">' . IconUtility::getSpriteIcon('actions-edit-delete', array('title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_web_list.xlf:delete', TRUE))) . '</a>';
 			}
 
 			// "Hide/Unhide" links:
@@ -729,7 +729,7 @@ class InlineElement {
 		}
 		// If the record is edit-locked	by another user, we will show a little warning sign:
 		if ($lockInfo = BackendUtility::isRecordLocked($foreign_table, $rec['uid'])) {
-			$cells['locked'] = '<a href="#" onclick="' . htmlspecialchars(('alert(' . $GLOBALS['LANG']->JScharCode($lockInfo['msg']) . ');return false;')) . '">' . IconUtility::getSpriteIcon('status-warning-in-use', array('title' => htmlspecialchars($lockInfo['msg']))) . '</a>';
+			$cells['locked'] = '<a href="#" onclick="alert(' . GeneralUtility::quoteJSvalue($lockInfo['msg']) . ');return false;">' . IconUtility::getSpriteIcon('status-warning-in-use', array('title' => $lockInfo['msg'])) . '</a>';
 		}
 		// Hook: Post-processing of single controls for specific child records:
 		foreach ($this->hookObjects as $hookObj) {

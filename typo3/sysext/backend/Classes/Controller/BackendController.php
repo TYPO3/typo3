@@ -575,7 +575,7 @@ class BackendController {
 			} else {
 				$this->js .= '
 		// Warning about page editing:
-	alert(' . $GLOBALS['LANG']->JScharCode(sprintf($GLOBALS['LANG']->getLL('noEditPage'), $editId)) . ');
+	alert(' . GeneralUtility::quoteJSvalue(sprintf($GLOBALS['LANG']->getLL('noEditPage'), $editId)) . ');
 			';
 			}
 		}

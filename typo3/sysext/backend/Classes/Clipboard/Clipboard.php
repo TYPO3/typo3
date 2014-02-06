@@ -293,7 +293,7 @@ class Clipboard {
 		if ($elCount) {
 			if ($GLOBALS['BE_USER']->jsConfirmation(4)) {
 				$js = '
-			if (confirm(' . $GLOBALS['LANG']->JScharCode(sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:mess.deleteClip'), $elCount)) . ')){
+			if (confirm(' . GeneralUtility::quoteJSvalue(sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:mess.deleteClip'), $elCount)) . ')){
 				window.location.href=\'' . $this->deleteUrl(0, ($this->fileMode ? 1 : 0)) . '&redirect=\'+top.rawurlencode(window.location.href);
 			}
 					';
@@ -652,7 +652,7 @@ class Clipboard {
 			}
 
 			// Message
-			$conf = 'confirm(' . $GLOBALS['LANG']->JScharCode(sprintf($msg, GeneralUtility::fixed_lgd_cs($selRecTitle, 30), GeneralUtility::fixed_lgd_cs($thisRecTitle, 30), GeneralUtility::fixed_lgd_cs($columnLabel, 30))) . ')';
+			$conf = 'confirm(' . GeneralUtility::quoteJSvalue(sprintf($msg, GeneralUtility::fixed_lgd_cs($selRecTitle, 30), GeneralUtility::fixed_lgd_cs($thisRecTitle, 30), GeneralUtility::fixed_lgd_cs($columnLabel, 30))) . ')';
 		} else {
 			$conf = '';
 		}

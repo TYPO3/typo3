@@ -970,7 +970,7 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 			$label = $GLOBALS['LANG']->sL(trim($string));
 		}
 		$label = str_replace('"', '\\"', str_replace('\\\'', '\'', $label));
-		$label = $JScharCode ? $GLOBALS['LANG']->JScharCode($label) : $label;
+		$label = $JScharCode ? GeneralUtility::quoteJSvalue($label) : $label;
 		return $label;
 	}
 

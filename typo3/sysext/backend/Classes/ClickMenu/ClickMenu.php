@@ -439,7 +439,7 @@ class ClickMenu {
 		$editOnClick = '';
 		$loc = 'top.content.list_frame';
 		if ($GLOBALS['BE_USER']->jsConfirmation(2)) {
-			$conf = $loc . ' && confirm(' . $GLOBALS['LANG']->JScharCode(sprintf($GLOBALS['LANG']->sL(('LLL:EXT:lang/locallang_core.xlf:mess.' . ($elInfo[2] == 'copy' ? 'copy' : 'move') . '_' . $type)), $elInfo[0], $elInfo[1])) . ')';
+			$conf = $loc . ' && confirm(' . GeneralUtility::quoteJSvalue(sprintf($GLOBALS['LANG']->sL(('LLL:EXT:lang/locallang_core.xlf:mess.' . ($elInfo[2] == 'copy' ? 'copy' : 'move') . '_' . $type)), $elInfo[0], $elInfo[1])) . ')';
 		} else {
 			$conf = $loc;
 		}
@@ -635,7 +635,7 @@ class ClickMenu {
 		$editOnClick = '';
 		$loc = 'top.content.list_frame';
 		if ($GLOBALS['BE_USER']->jsConfirmation(4)) {
-			$conf = 'confirm(' . $GLOBALS['LANG']->JScharCode((sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:mess.delete'), $elInfo[0]) . BackendUtility::referenceCount($table, $uid, ' (There are %s reference(s) to this record!)') . BackendUtility::translationCount($table, $uid, (' ' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.translationsOfRecord'))))) . ')';
+			$conf = 'confirm(' . GeneralUtility::quoteJSvalue((sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:mess.delete'), $elInfo[0]) . BackendUtility::referenceCount($table, $uid, ' (There are %s reference(s) to this record!)') . BackendUtility::translationCount($table, $uid, (' ' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.translationsOfRecord'))))) . ')';
 		} else {
 			$conf = '1==1';
 		}
@@ -930,7 +930,7 @@ class ClickMenu {
 		$editOnClick = '';
 		$loc = 'top.content.list_frame';
 		if ($GLOBALS['BE_USER']->jsConfirmation(4)) {
-			$conf = 'confirm(' . $GLOBALS['LANG']->JScharCode((sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:mess.delete'), basename($path)) . BackendUtility::referenceCount('_FILE', $path, ' (There are %s reference(s) to this file!)'))) . ')';
+			$conf = 'confirm(' . GeneralUtility::quoteJSvalue((sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:mess.delete'), basename($path)) . BackendUtility::referenceCount('_FILE', $path, ' (There are %s reference(s) to this file!)'))) . ')';
 		} else {
 			$conf = '1==1';
 		}
@@ -952,7 +952,7 @@ class ClickMenu {
 		$editOnClick = '';
 		$loc = 'top.content.list_frame';
 		if ($GLOBALS['BE_USER']->jsConfirmation(2)) {
-			$conf = $loc . ' && confirm(' . $GLOBALS['LANG']->JScharCode(sprintf($GLOBALS['LANG']->sL(('LLL:EXT:lang/locallang_core.xlf:mess.' . ($elInfo[2] == 'copy' ? 'copy' : 'move') . '_into')), $elInfo[0], $elInfo[1])) . ')';
+			$conf = $loc . ' && confirm(' . GeneralUtility::quoteJSvalue(sprintf($GLOBALS['LANG']->sL(('LLL:EXT:lang/locallang_core.xlf:mess.' . ($elInfo[2] == 'copy' ? 'copy' : 'move') . '_into')), $elInfo[0], $elInfo[1])) . ')';
 		} else {
 			$conf = $loc;
 		}

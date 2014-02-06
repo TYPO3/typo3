@@ -84,8 +84,8 @@ class PageTreeView extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 	public function wrapIcon($thePageIcon, &$row) {
 		// If the record is locked, present a warning sign.
 		if ($lockInfo = \TYPO3\CMS\Backend\Utility\BackendUtility::isRecordLocked('pages', $row['uid'])) {
-			$aOnClick = 'alert(' . $GLOBALS['LANG']->JScharCode($lockInfo['msg']) . ');return false;';
-			$lockIcon = '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">' . IconUtility::getSpriteIcon('status-warning-in-use', array('title' => htmlspecialchars($lockInfo['msg']))) . '</a>';
+			$aOnClick = 'alert(' . GeneralUtility::quoteJSvalue($lockInfo['msg']) . ');return false;';
+			$lockIcon = '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">' . IconUtility::getSpriteIcon('status-warning-in-use', array('title' => $lockInfo['msg'])) . '</a>';
 		} else {
 			$lockIcon = '';
 		}

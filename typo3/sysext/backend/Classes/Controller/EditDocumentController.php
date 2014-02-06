@@ -633,7 +633,7 @@ class EditDocumentController {
 			}
 			function deleteRecord(table,id,url) {	//
 				if (
-					' . ($GLOBALS['BE_USER']->jsConfirmation(4) ? 'confirm(' . $GLOBALS['LANG']->JScharCode($GLOBALS['LANG']->getLL('deleteWarning')) . ')' : '1==1') . '
+					' . ($GLOBALS['BE_USER']->jsConfirmation(4) ? 'confirm(' . GeneralUtility::quoteJSvalue($GLOBALS['LANG']->getLL('deleteWarning')) . ')' : '1==1') . '
 				)	{
 					window.location.href = "tce_db.php?cmd["+table+"]["+id+"][delete]=1' . BackendUtility::getUrlToken('tceAction') . '&redirect="+escape(url)+"&vC=' . $GLOBALS['BE_USER']->veriCode() . '&prErr=1&uPT=1";
 				}

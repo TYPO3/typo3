@@ -1932,7 +1932,7 @@ class ElementBrowser {
 			}
 			if (strstr($folderPath, ',') || strstr($folderPath, '|')) {
 				// In case an invalid character is in the filepath, display error message:
-				$errorMessage = $GLOBALS['LANG']->JScharCode(sprintf($GLOBALS['LANG']->getLL('invalidChar'), ', |'));
+				$errorMessage = GeneralUtility::quoteJSvalue(sprintf($GLOBALS['LANG']->getLL('invalidChar'), ', |'));
 				$aTag = ($aTag_alt = '<a href="#" onclick="alert(' . $errorMessage . ');return false;">');
 			} else {
 				// If foldername is OK, just add it:

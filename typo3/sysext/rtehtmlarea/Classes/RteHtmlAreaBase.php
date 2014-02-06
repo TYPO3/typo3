@@ -1263,7 +1263,7 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 	 * @return 	string		Localized string.
 	 */
 	public function getLLContent($string) {
-		return $this->contentLanguageService->JScharCode($this->contentLanguageService->sL($string));
+		return GeneralUtility::quoteJSvalue($this->contentLanguageService->sL($string));
 	}
 
 	public function getPageConfigLabel($string, $JScharCode = 1) {
@@ -1284,7 +1284,7 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 				$label = $LANG->sL(trim($string));
 			}
 			$label = str_replace('"', '\\"', str_replace('\\\'', '\'', $label));
-			$label = $JScharCode ? $LANG->JScharCode($label) : $label;
+			$label = $JScharCode ? GeneralUtility::quoteJSvalue($label) : $label;
 		}
 		return $label;
 	}
@@ -1297,9 +1297,8 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 		if ($this->OutputCharset != 'utf-8') {
 			$str = $GLOBALS['TSFE']->csConvObj->utf8_encode($str, $this->OutputCharset);
 		}
-		// Convert the UTF-8 string into a array of char numbers:
-		$nArr = $GLOBALS['TSFE']->csConvObj->utf8_to_numberarray($str);
-		return 'String.fromCharCode(' . implode(',', $nArr) . ')';
+		// Convert the UTF-8 string into a 'JavaScript-safe' encoded string:
+		return GeneralUtility::quoteJSvalue($str);
 	}
 
 	public function getFullFileName($filename) {

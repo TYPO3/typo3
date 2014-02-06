@@ -26,6 +26,7 @@ namespace TYPO3\CMS\Lang;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Contains the TYPO3 Backend Language class
@@ -213,9 +214,12 @@ class LanguageService {
 	 *
 	 * @param string $str Input string, encoded with UTF-8
 	 * @return string Output string, a JavaScript function: "String.fromCharCode(......)
+	 * @depreacted since 6.2 - will be removed two versions later; use GeneralUtility::quoteJSvalue() instead
 	 */
 	public function JScharCode($str) {
-			// Convert the UTF-8 string into a array of char numbers:
+		GeneralUtility::logDeprecatedFunction();
+
+		// Convert the UTF-8 string into a array of char numbers:
 		$nArr = $this->csConvObj->utf8_to_numberarray($str);
 		return 'String.fromCharCode(' . implode(',', $nArr) . ')';
 	}
