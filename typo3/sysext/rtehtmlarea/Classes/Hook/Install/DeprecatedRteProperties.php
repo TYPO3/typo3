@@ -139,7 +139,7 @@ class DeprecatedRteProperties extends \TYPO3\CMS\Install\Updates\AbstractUpdate 
 					$result = FALSE;
 				}
 			}
-			$description .= '<p>Only page records were searched for deprecated properties. However, such properties can also be used in BE group and BE user records (prepended with page.). These are not searched nor updated by this wizard.</p>' . LF . '<p>Page TSconfig may also be included from external files. These are not updated by this wizard. If required, the update will need to be done manually.</p>' . LF . '<p>Note also that deprecated properties have been replaced in default configurations provided by htmlArea RTE';
+			$description .= '<p>Only page records are searched for deprecated properties. However, such properties can also be used in BE group and BE user records (prepended with page.). These are not searched nor updated by this wizard.</p>' . LF . '<p>Page TSconfig may also be included from external files. These are not updated by this wizard. If required, the update will need to be done manually.</p>' . LF . '<p>Note also that deprecated properties have been replaced in default configurations provided by htmlArea RTE';
 		}
 		return $result;
 	}
@@ -152,25 +152,35 @@ class DeprecatedRteProperties extends \TYPO3\CMS\Install\Updates\AbstractUpdate 
 	 * @return 	boolean		TRUE if update succeeded, FALSE otherwise
 	 */
 	public function performUpdate(array &$dbQueries, &$customMessages) {
-		$success = FALSE;
+		$customMessages = '';
 		$pages = $this->getPagesWithDeprecatedRteProperties($dbQueries, $customMessages);
 		if (empty($customMessages)) {
-			if (count($pages)) {
+			$pagesCount = count($pages);
+			if ($pagesCount) {
 				$updateablePages = $this->findUpdateablePagesWithDeprecatedRteProperties($pages);
 				if (count($updateablePages)) {
 					$this->updatePages($updateablePages, $dbQueries, $customMessages);
+					// If the update was successful
+					if (empty($customMessages)) {
+						// If all pages were updated, we query again to check if any deprecated properties are still present.
+						if (count($updateablePages) === $pagesCount) {
+							$pagesAfter = $this->getPagesWithDeprecatedRteProperties($dbQueries, $customMessages);
+							if (empty($customMessages)) {
+								if (count($pagesAfter)) {
+									$customMessages = 'Some deprecated Page TSconfig properties were found. However, the wizard was unable to automatically replace all the deprecated properties found. Some properties will have to be replaced manually.';
+								}
+							}
+						} else {
+							$customMessages = 'Some deprecated Page TSconfig properties were found. However, the wizard was unable to automatically replace all the deprecated properties found. Some properties will have to be replaced manually.';
+						}
+					}
 				} else {
-					$customMessages = 'Some deprecated Page TSconfig properties were found. However, the wizard was unable to automatically replace any of the deprecated properties found. They will have to be replaced manually.' . LF . LF;
-					$success = TRUE;
+					$customMessages = 'Some deprecated Page TSconfig properties were found. However, the wizard was unable to automatically replace any of the deprecated properties found. These properties will have to be replaced manually.';
 				}
-			} else {
-				$customMessages = '>No deprecated Page TSconfig properties were found on page records.' . LF . LF;
-				$success = TRUE;
 			}
-			$customMessages .= 'Only page records were searched for deprecated properties. However, such properties can also be used in BE group and BE user records (prepended with page.). These are not searched nor updated by this wizard.' . LF . LF . 'Page TSconfig may also be included from external files. These were not updated by this wizard. If required, the update will need to be done manually.';
 		}
 		$this->markWizardAsDone();
-		return empty($customMessages) ? $success : FALSE;
+		return empty($customMessages);
 	}
 
 	/**
@@ -201,7 +211,7 @@ class DeprecatedRteProperties extends \TYPO3\CMS\Install\Updates\AbstractUpdate 
 	}
 
 	/**
-	 * Gets the pages with updated deprecated RTE properties in TSConfig column
+	 * Gets the pages with updateable deprecated RTE properties in TSConfig column
 	 *
 	 * @param 	array		$pages: reference to pages with deprecated property
 	 * @return 	array		uid and inclusion string for the pages with deprecated RTE properties in TSConfig column
@@ -237,7 +247,7 @@ class DeprecatedRteProperties extends \TYPO3\CMS\Install\Updates\AbstractUpdate 
 			$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, $where, $field_values);
 			$dbQueries[] = str_replace(chr(10), ' ', $GLOBALS['TYPO3_DB']->debug_lastBuiltQuery);
 			if ($GLOBALS['TYPO3_DB']->sql_error()) {
-				$customMessages = 'SQL-ERROR: ' . htmlspecialchars($GLOBALS['TYPO3_DB']->sql_error());
+				$customMessages .= 'SQL-ERROR: ' . htmlspecialchars($GLOBALS['TYPO3_DB']->sql_error()) . LF . LF;
 			}
 		}
 	}
