@@ -514,7 +514,7 @@ class PackageManager extends \TYPO3\Flow\Package\PackageManager implements \TYPO
 		if (isset($this->packageAliasMap[$lowercasedPackageKey = strtolower($packageKey)])) {
 			$packageKey = $this->packageAliasMap[$lowercasedPackageKey];
 		}
-		return parent::isPackageActive($packageKey) || isset($this->runtimeActivatedPackages[$packageKey]);
+		return isset($this->runtimeActivatedPackages[$packageKey]) || parent::isPackageActive($packageKey);
 	}
 
 	/**
