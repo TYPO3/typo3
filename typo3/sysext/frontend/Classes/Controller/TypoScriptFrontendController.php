@@ -2320,7 +2320,7 @@ class TypoScriptFrontendController {
 	protected function createHashBase($createLockHashBase = FALSE) {
 		$hashParameters = array(
 			'id' => (int)$this->id,
-			'type' => (int)$this->typ,
+			'type' => (int)$this->type,
 			'gr_list' => (string) $this->gr_list,
 			'MP' => (string) $this->MP,
 			'cHash' => $this->cHash_array,
