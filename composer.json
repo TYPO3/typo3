@@ -1,0 +1,109 @@
+{
+	"name": "typo3/cms",
+	"description": "TYPO3 CMS is a free open source Content Management Framework initially created by Kasper Skaarhoj and licensed under GNU/GPL.",
+	"keywords": ["typo3", "cms", "content management system", "extbase"],
+	"homepage": "http://typo3.org/",
+	"type": "typo3-cms-core",
+	"license": "GPL-2.0+",
+	"authors": [
+		{
+			"name": "TYPO3 CMS Core Team",
+			"role": "Developer",
+			"homepage": "http://forge.typo3.org/projects/typo3cms-core"
+		},
+		{
+			"name": "The TYPO3 Community",
+			"role": "Contributor",
+			"homepage": "https://typo3.org/community/"
+		}
+	],
+	"support": {
+		"general": "http://typo3.org/support/",
+		"issues": "http://forge.typo3.org",
+		"irc": "http://typo3.org/support/irc-chat/",
+		"news": "nntp://lists.typo3.org"
+	},
+    "config": {
+        "vendor-dir": "Packages/Libraries",
+        "bin-dir": "bin"
+    },
+	"require": {
+		"php": ">=5.3.7",
+		"ext-fileinfo": "*",
+		"ext-pcre": "*",
+		"ext-session": "*",
+		"ext-xml": "*",
+		"typo3/cms-composer-installers": "*"
+	},
+	"suggest": {
+		"ext-gd": "GDlib/Freetype is required for building images with text (GIFBUILDER) and can also be used to scale images",
+		"ext-zlib": "TYPO3 uses zlib for amongst others output compression and un/packing t3x extension files",
+		"ext-openssl": "",
+		"ext-soap": "",
+		"ext-zip": ""
+	},
+	"extra": {
+		"branch-alias": {
+			"dev-master": "6.2.x-dev"
+		}
+	},
+	"replace": {
+		"typo3/cms-about": "self.version",
+		"typo3/cms-aboutmodules": "self.version",
+		"typo3/cms-adodb": "self.version",
+		"typo3/cms-backend": "self.version",
+		"typo3/cms-belog": "self.version",
+		"typo3/cms-beuser": "self.version",
+		"typo3/cms-cms": "self.version",
+		"typo3/cms-context-help": "self.version",
+		"typo3/cms-core": "self.version",
+		"typo3/cms-cshmanual": "self.version",
+		"typo3/cms-css-styled-content": "self.version",
+		"typo3/cms-dbal": "self.version",
+		"typo3/cms-documentation": "self.version",
+		"typo3/cms-extbase": "self.version",
+		"typo3/cms-extensionmanager": "self.version",
+		"typo3/cms-extra-page-cm-options": "self.version",
+		"typo3/cms-feedit": "self.version",
+		"typo3/cms-felogin": "self.version",
+		"typo3/cms-filelist": "self.version",
+		"typo3/cms-filemetadata": "self.version",
+		"typo3/cms-fluid": "self.version",
+		"typo3/cms-form": "self.version",
+		"typo3/cms-frontend": "self.version",
+		"typo3/cms-func": "self.version",
+		"typo3/cms-func-wizards": "self.version",
+		"typo3/cms-impexp": "self.version",
+		"typo3/cms-indexed-search": "self.version",
+		"typo3/cms-indexed-search-mysql": "self.version",
+		"typo3/cms-info": "self.version",
+		"typo3/cms-info-pagetsconfig": "self.version",
+		"typo3/cms-install": "self.version",
+		"typo3/cms-lang": "self.version",
+		"typo3/cms-linkvalidator": "self.version",
+		"typo3/cms-lowlevel": "self.version",
+		"typo3/cms-opendocs": "self.version",
+		"typo3/cms-openid": "self.version",
+		"typo3/cms-perm": "self.version",
+		"typo3/cms-recordlist": "self.version",
+		"typo3/cms-recycler": "self.version",
+		"typo3/cms-reports": "self.version",
+		"typo3/cms-rsaauth": "self.version",
+		"typo3/cms-rtehtmlarea": "self.version",
+		"typo3/cms-saltedpasswords": "self.version",
+		"typo3/cms-scheduler": "self.version",
+		"typo3/cms-setup": "self.version",
+		"typo3/cms-sv": "self.version",
+		"typo3/cms-sys-action": "self.version",
+		"typo3/cms-sys-note": "self.version",
+		"typo3/cms-t3editor": "self.version",
+		"typo3/cms-t3skin": "self.version",
+		"typo3/cms-taskcenter": "self.version",
+		"typo3/cms-tstemplate": "self.version",
+		"typo3/cms-version": "self.version",
+		"typo3/cms-viewpage": "self.version",
+		"typo3/cms-wizard-crpages": "self.version",
+		"typo3/cms-wizard-sortpages": "self.version",
+		"typo3/cms-workspaces": "self.version"
+	}
+}
