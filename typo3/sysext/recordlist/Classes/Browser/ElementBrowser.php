@@ -1768,6 +1768,7 @@ class ElementBrowser {
 	 */
 	protected function fileList(array $files, Folder $folder = NULL, $noThumbs = FALSE) {
 		$out = '';
+
 		$lines = array();
 		// Create headline (showing number of files):
 		$filesCount = count($files);
@@ -1789,13 +1790,14 @@ class ElementBrowser {
 					<td colspan="4">No files found.</td>
 				</tr>';
 		}
-		// Init graphic object for reading file dimensions:
+		// Init graphic object for reading file and image dimensions:
 		/** @var $imgObj \TYPO3\CMS\Core\Imaging\GraphicalFunctions */
 		$imgObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Imaging\\GraphicalFunctions');
 		$imgObj->init();
 		$imgObj->mayScaleUp = 0;
 		$imgObj->tempPath = PATH_site . $imgObj->tempPath;
 		// Traverse the file list:
+		/** @var $fileObject \TYPO3\CMS\Core\Resource\File */
 		foreach ($files as $fileObject) {
 			$fileExtension = $fileObject->getExtension();
 			// Thumbnail/size generation:
@@ -1825,10 +1827,17 @@ class ElementBrowser {
 				'fileExt' => $fileExtension,
 				'fileIcon' => $icon
 			);
-			$ATag = '<a href="#" onclick="return BrowseLinks.File.insertElement(\'file_' . $filesIndex . '\');">';
-			$ATag_alt = substr($ATag, 0, -4) . ',1);">';
-			$bulkCheckBox = '<input type="checkbox" class="typo3-bulk-item" name="file_' . $filesIndex . '" value="0" /> ';
-			$ATag_e = '</a>';
+			if ($this->act === 'plain' && ($imgInfo[0] > $this->plainMaxWidth || $imgInfo[1] > $this->plainMaxHeight) || !GeneralUtility::inList('jpg,jpeg,gif,png', $fileExtension)) {
+				$ATag = '';
+				$ATag_alt = '';
+				$ATag_e = '';
+				$bulkCheckBox = '';
+			} else {
+				$ATag = '<a href="#" onclick="return BrowseLinks.File.insertElement(\'file_' . $filesIndex . '\');">';
+				$ATag_alt = substr($ATag, 0, -4) . ',1);">';
+				$bulkCheckBox = '<input type="checkbox" class="typo3-bulk-item" name="file_' . $filesIndex . '" value="0" /> ';
+				$ATag_e = '</a>';
+			}
 			// Create link to showing details about the file in a window:
 			$Ahref = $GLOBALS['BACK_PATH'] . 'show_item.php?type=file&table=_FILE&uid='
 				. rawurlencode($fileObject->getCombinedIdentifier())
@@ -1839,14 +1848,14 @@ class ElementBrowser {
 			$filenameAndIcon = $bulkCheckBox . $ATag_alt . $icon
 				. htmlspecialchars(GeneralUtility::fixed_lgd_cs($fileObject->getName(), $titleLen)) . $ATag_e;
 			// Show element:
-			// Image...
 			if ($pDim) {
+				// Image...
 				$lines[] = '
 					<tr class="file_list_normal">
 						<td nowrap="nowrap">' . $filenameAndIcon . '&nbsp;</td>
-						<td>' . $ATag . '<img' . IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/plusbullet2.gif',
+						<td>' . ($ATag . '<img' . IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/plusbullet2.gif',
 							'width="18" height="16"') . ' title="' . $GLOBALS['LANG']->getLL('addToList', TRUE)
-							. '" alt="" />' . $ATag_e . '</td>
+							. '" alt="" />' . $ATag_e) . '</td>
 						<td nowrap="nowrap">' . ($ATag2 . '<img' . IconUtility::skinImg($GLOBALS['BACK_PATH'],
 							'gfx/zoom2.gif', 'width="12" height="12"') . ' title="'
 							. $GLOBALS['LANG']->getLL('info', TRUE) . '" alt="" /> '
@@ -1861,9 +1870,9 @@ class ElementBrowser {
 				$lines[] = '
 					<tr class="file_list_normal">
 						<td nowrap="nowrap">' . $filenameAndIcon . '&nbsp;</td>
-						<td>' . $ATag . '<img' . IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/plusbullet2.gif',
+						<td>' . ($ATag . '<img' . IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/plusbullet2.gif',
 							'width="18" height="16"') . ' title="' . $GLOBALS['LANG']->getLL('addToList', TRUE)
-							. '" alt="" />' . $ATag_e . '</td>
+							. '" alt="" />' . $ATag_e) . '</td>
 						<td nowrap="nowrap">' . ($ATag2 . '<img' . IconUtility::skinImg($GLOBALS['BACK_PATH'],
 							'gfx/zoom2.gif', 'width="12" height="12"') . ' title="'
 							. $GLOBALS['LANG']->getLL('info', TRUE) . '" alt="" /> '
