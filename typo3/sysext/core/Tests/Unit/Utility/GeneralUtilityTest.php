@@ -3294,6 +3294,178 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->assertFalse(is_link($symlinkName));
 	}
 
+	///////////////////////////////////
+	// Tests concerning getFilesInDir
+	///////////////////////////////////
+
+	/**
+	 * Helper method to create test directory.
+	 *
+	 * @return string A unique directory name prefixed with test_.
+	 */
+	protected function getFilesInDirCreateTestDirectory() {
+		$directory = 'typo3temp/' . uniqid('test_');
+		Utility\GeneralUtility::mkdir_deep(PATH_site, $directory);
+		$this->testFilesToDelete[] = PATH_site . $directory;
+		return $directory;
+	}
+
+	/**
+	 * @test
+	 */
+	public function getFilesInDirFindsRegularFile() {
+		$directory = $this->getFilesInDirCreateTestDirectory();
+		$unique = uniqid('test_');
+		$content = 'getFilesInDirFindsRegularFile';
+		$file = PATH_site . $directory . '/' . $unique . '.txt';
+		Utility\GeneralUtility::writeFileToTypo3tempDir($file, $content);
+		$files = Utility\GeneralUtility::getFilesInDir(PATH_site . $directory);
+		$this->assertContains($unique . '.txt', $files);
+	}
+
+	/**
+	 * @test
+	 */
+	public function getFilesInDirFindsHiddenFile() {
+		$directory = $this->getFilesInDirCreateTestDirectory();
+		$unique = uniqid('test_');
+		$content = 'getFilesInDirFindsHiddenFile';
+		$file = PATH_site . $directory . '/.' . $unique . '.txt';
+		Utility\GeneralUtility::writeFileToTypo3tempDir($file, $content);
+		$files = Utility\GeneralUtility::getFilesInDir(PATH_site . $directory);
+		$this->assertContains('.' . $unique . '.txt', $files);
+	}
+
+	/**
+	 * @test
+	 */
+	public function getFilesInDirByExtensionFindsFiles() {
+		$directory = $this->getFilesInDirCreateTestDirectory();
+		$unique = uniqid('test_');
+		$content = 'getFilesInDirByExtensionFindsFiles';
+		$file = PATH_site . $directory . '/' . $unique . '.txt';
+		Utility\GeneralUtility::writeFileToTypo3tempDir($file, $content);
+		$file = PATH_site . $directory . '/' . $unique . '.js';
+		Utility\GeneralUtility::writeFileToTypo3tempDir($file, $content);
+		$files = Utility\GeneralUtility::getFilesInDir(PATH_site . $directory, 'txt,js');
+		$this->assertContains($unique . '.txt', $files);
+		$this->assertContains($unique . '.js', $files);
+	}
+
+	/**
+	 * @test
+	 */
+	public function getFilesInDirByExtensionDoesNotFindFilesWithOtherExtensions() {
+		$directory = $this->getFilesInDirCreateTestDirectory();
+		$unique = uniqid('test_');
+		$content = 'getFilesInDirFindsRegularFile';
+		$file = PATH_site . $directory . '/' . $unique . '.txt';
+		Utility\GeneralUtility::writeFileToTypo3tempDir($file, $content);
+		$file = PATH_site . $directory . '/' . $unique . '.js';
+		Utility\GeneralUtility::writeFileToTypo3tempDir($file, $content);
+		$file = PATH_site . $directory . '/' . $unique . '.css';
+		Utility\GeneralUtility::writeFileToTypo3tempDir($file, $content);
+		$files = Utility\GeneralUtility::getFilesInDir(PATH_site . $directory, 'txt,js');
+		$this->assertNotContains($unique . '.css', $files);
+		$this->assertContains($unique . '.txt', $files);
+		$this->assertContains($unique . '.js', $files);
+	}
+
+	/**
+	 * @test
+	 */
+	public function getFilesInDirExcludesFilesMatchingPattern() {
+		$directory = $this->getFilesInDirCreateTestDirectory();
+		$unique = uniqid('test_');
+		$content = 'getFilesInDirExcludesFilesMatchingPattern';
+		$file = PATH_site . $directory . '/' . $unique . '.txt';
+		Utility\GeneralUtility::writeFileToTypo3tempDir($file, $content);
+		$file = PATH_site . $directory . '/' . $unique . '.js';
+		Utility\GeneralUtility::writeFileToTypo3tempDir($file, $content);
+		$excludeUnique = uniqid('excludeMe');
+		$file = PATH_site . $directory . '/' . $excludeUnique . '.txt';
+		Utility\GeneralUtility::writeFileToTypo3tempDir($file, $content);
+		$files = Utility\GeneralUtility::getFilesInDir(PATH_site . $directory, '', FALSE, '', 'excludeMe.*');
+		$this->assertNotContains($excludeUnique . '.txt', $files);
+		$this->assertContains($unique . '.js', $files);
+	}
+
+	/**
+	 * @test
+	 */
+	public function getFilesInDirCanPrependPath() {
+		$directory = $this->getFilesInDirCreateTestDirectory();
+		$unique = uniqid('test_');
+		$content = 'getFilesInDirCanPrependPath';
+		$file = PATH_site . $directory . '/' . $unique . '.txt';
+		Utility\GeneralUtility::writeFileToTypo3tempDir($file, $content);
+		$files = Utility\GeneralUtility::getFilesInDir(PATH_site . $directory, '', TRUE);
+		$this->assertContains(PATH_site . $directory . '/' . $unique . '.txt', $files);
+	}
+
+	/**
+	 * @test
+	 */
+	public function getFilesInDirCanOrderAlphabetically() {
+		$directory = $this->getFilesInDirCreateTestDirectory();
+		$uniqueB = uniqid('test_B_');
+		$content = 'test_B';
+		$file = PATH_site . $directory . '/' . $uniqueB . '.txt';
+		Utility\GeneralUtility::writeFileToTypo3tempDir($file, $content);
+		$uniqueA = uniqid('test_A_');
+		$content = 'test_A';
+		$file = PATH_site . $directory . '/' . $uniqueA . '.txt';
+		Utility\GeneralUtility::writeFileToTypo3tempDir($file, $content);
+
+		$this->assertSame(
+			array_values(Utility\GeneralUtility::getFilesInDir(PATH_site . $directory, '', FALSE, '1')),
+			array($uniqueA . '.txt', $uniqueB . '.txt')
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function getFilesInDirReturnsArrayWithMd5OfElementAndPathAsArrayKey() {
+		$directory = $this->getFilesInDirCreateTestDirectory();
+		$unique = uniqid('test_');
+		$content = 'getFilesInDirReturnsArrayWithMd5OfElementAndPathAsArrayKey';
+		$file = PATH_site . $directory . '/' . $unique . '.txt';
+		$md5 = md5($file);
+		Utility\GeneralUtility::writeFileToTypo3tempDir($file, $content);
+		$files = Utility\GeneralUtility::getFilesInDir(PATH_site . $directory);
+		$this->assertArrayHasKey($md5, $files);
+	}
+
+	/**
+	 * @test
+	 */
+	public function getFilesInDirDoesNotFindDirectories() {
+		$directory = $this->getFilesInDirCreateTestDirectory();
+		$subDirectory = $directory . '/testSubdirectory';
+		Utility\GeneralUtility::mkdir_deep(PATH_site, $subDirectory);
+		$this->testFilesToDelete[] = PATH_site . $subDirectory;
+		$files = Utility\GeneralUtility::getFilesInDir(PATH_site . $directory);
+		$this->assertNotContains('testSubdirectory', $files);
+	}
+
+	/**
+	 * Dotfiles; current directory: '.' and parent directory: '..' must not be
+	 * present.
+	 *
+	 * @test
+	 */
+	public function getFilesInDirDoesNotFindDotfiles() {
+		$directory = $this->getFilesInDirCreateTestDirectory();
+		$unique = uniqid('test_');
+		$content = 'getFilesInDirDoesNotFindDotfiles';
+		$file = PATH_site . $directory . '/.' . $unique . '.txt';
+		Utility\GeneralUtility::writeFileToTypo3tempDir($file, $content);
+		$files = Utility\GeneralUtility::getFilesInDir(PATH_site . $directory);
+		$this->assertNotContains('..', $files);
+		$this->assertNotContains('.', $files);
+	}
+
 	///////////////////////////////
 	// Tests concerning unQuoteFilenames
 	///////////////////////////////
