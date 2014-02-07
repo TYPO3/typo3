@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\TsTemplate\Controller;
+namespace TYPO3\CMS\Tstemplate\Controller;
 
 /***************************************************************
  *  Copyright notice

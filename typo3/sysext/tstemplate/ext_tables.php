@@ -15,28 +15,28 @@ if (TYPO3_MODE === 'BE') {
 
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(
 		'web_ts',
-		'TYPO3\\CMS\\TsTemplate\\Controller\\TypoScriptTemplateConstantEditorModuleFunctionController',
+		'TYPO3\\CMS\\Tstemplate\\Controller\\TypoScriptTemplateConstantEditorModuleFunctionController',
 		$extensionPath . 'Classes/Controller/TypoScriptTemplateConstantEditorModuleFunctionController.php',
 		'LLL:EXT:tstemplate/ts/locallang.xlf:constantEditor'
 	);
 
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(
 		'web_ts',
-		'TYPO3\\CMS\\TsTemplate\\Controller\\TypoScriptTemplateInformationModuleFunctionController',
+		'TYPO3\\CMS\\Tstemplate\\Controller\\TypoScriptTemplateInformationModuleFunctionController',
 		$extensionPath . 'Classes/Controller/TypoScriptTemplateInformationModuleFunctionController.php',
 		'LLL:EXT:tstemplate/ts/locallang.xlf:infoModify'
 	);
 
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(
 		'web_ts',
-		'TYPO3\\CMS\\TsTemplate\\Controller\\TypoScriptTemplateObjectBrowserModuleFunctionController',
+		'TYPO3\\CMS\\Tstemplate\\Controller\\TypoScriptTemplateObjectBrowserModuleFunctionController',
 		$extensionPath  . 'Classes/Controller/TypoScriptTemplateObjectBrowserModuleFunctionController.php',
 		'LLL:EXT:tstemplate/ts/locallang.xlf:objectBrowser'
 	);
 
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(
 		'web_ts',
-		'TYPO3\\CMS\\TsTemplate\\Controller\\TemplateAnalyzerModuleFunctionController',
+		'TYPO3\\CMS\\Tstemplate\\Controller\\TemplateAnalyzerModuleFunctionController',
 		$extensionPath . 'Classes/Controller/TemplateAnalyzerModuleFunctionController.php',
 		'LLL:EXT:tstemplate/ts/locallang.xlf:templateAnalyzer'
 	);
