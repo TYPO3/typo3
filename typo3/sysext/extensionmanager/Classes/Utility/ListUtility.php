@@ -81,6 +81,11 @@ class ListUtility implements \TYPO3\CMS\Core\SingletonInterface {
 		$this->emitPackagesMayHaveChanged();
 		$extensions = array();
 		foreach ($this->packageManager->getAvailablePackages() as $package) {
+			// Only TYPO3 related packages could be handled by the extension manager
+			// Composer packages from "Packages" folder will be instanciated as \TYPO3\Flow\Package\Package
+			if (!($package instanceof \TYPO3\CMS\Core\Package\PackageInterface)) {
+				continue;
+			}
 			$installationType = $this->getInstallTypeForPackage($package);
 			$extensions[$package->getPackageKey()] = array(
 				'siteRelPath' => str_replace(PATH_site, '', $package->getPackagePath()),
