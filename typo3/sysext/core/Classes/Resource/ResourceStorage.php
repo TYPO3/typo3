@@ -2389,7 +2389,7 @@ class ResourceStorage {
 			// The destinations file
 			$theDestFile = $theTestFile;
 			// If the file does NOT exist we return this fileName
-			if (!$this->driver->fileExistsInFolder($theDestFile, $folder)) {
+			if (!$this->driver->fileExistsInFolder($theDestFile, $folder->getIdentifier())) {
 				return $theDestFile;
 			}
 		}
