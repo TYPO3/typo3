@@ -6299,32 +6299,32 @@ class tx_sysactionToolbarMenu extends \TYPO3\CMS\SysAction\ActionToolbarMenu {}
 /**
  * @deprecated since 6.0 will be removed in 7.0
  */
-class tx_t3editor_codecompletion extends \TYPO3\CMS\T3Editor\CodeCompletion {}
+class tx_t3editor_codecompletion extends \TYPO3\CMS\T3editor\CodeCompletion {}
 
 /**
  * @deprecated since 6.0 will be removed in 7.0
  */
-class tx_t3editor_tceforms_wizard extends \TYPO3\CMS\T3Editor\FormWizard {}
+class tx_t3editor_tceforms_wizard extends \TYPO3\CMS\T3editor\FormWizard {}
 
 /**
  * @deprecated since 6.0 will be removed in 7.0
  */
-class tx_t3editor_hooks_fileedit extends \TYPO3\CMS\T3Editor\Hook\FileEditHook {}
+class tx_t3editor_hooks_fileedit extends \TYPO3\CMS\T3editor\Hook\FileEditHook {}
 
 /**
  * @deprecated since 6.0 will be removed in 7.0
  */
-class tx_t3editor_hooks_tstemplateinfo extends \TYPO3\CMS\T3Editor\Hook\TypoScriptTemplateInfoHook {}
+class tx_t3editor_hooks_tstemplateinfo extends \TYPO3\CMS\T3editor\Hook\TypoScriptTemplateInfoHook {}
 
 /**
  * @deprecated since 6.0 will be removed in 7.0
  */
-class tx_t3editor extends \TYPO3\CMS\T3Editor\T3Editor {}
+class tx_t3editor extends \TYPO3\CMS\T3editor\T3editor {}
 
 /**
  * @deprecated since 6.0 will be removed in 7.0
  */
-class tx_t3editor_TSrefLoader extends \TYPO3\CMS\T3Editor\TypoScriptReferenceLoader {}
+class tx_t3editor_TSrefLoader extends \TYPO3\CMS\T3editor\TypoScriptReferenceLoader {}
 
 /**
  * @deprecated since 6.0 will be removed in 7.0

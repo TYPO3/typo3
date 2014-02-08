@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\T3Editor\Hook;
+namespace TYPO3\CMS\T3editor\Hook;
 
 /***************************************************************
  *  Copyright notice
@@ -35,7 +35,7 @@ namespace TYPO3\CMS\T3Editor\Hook;
 class FileEditHook {
 
 	/**
-	 * @var \TYPO3\CMS\T3Editor\T3Editor
+	 * @var \TYPO3\CMS\T3editor\T3editor
 	 */
 	protected $t3editor = NULL;
 
@@ -45,11 +45,11 @@ class FileEditHook {
 	protected $ajaxSaveType = 'TypoScriptTemplateInformationModuleFunctionController';
 
 	/**
-	 * @return \TYPO3\CMS\T3Editor\T3Editor
+	 * @return \TYPO3\CMS\T3editor\T3editor
 	 */
 	protected function getT3editor() {
 		if ($this->t3editor == NULL) {
-			$this->t3editor = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\T3Editor\\T3Editor')->setAjaxSaveType($this->ajaxSaveType);
+			$this->t3editor = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\T3editor\\T3editor')->setAjaxSaveType($this->ajaxSaveType);
 		}
 		return $this->t3editor;
 	}

@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\T3Editor;
+namespace TYPO3\CMS\T3editor;
 
 /***************************************************************
  *  Copyright notice
@@ -39,6 +39,13 @@ class CodeCompletion {
 	 * @var \TYPO3\CMS\Core\Http\AjaxRequestHandler
 	 */
 	protected $ajaxObj;
+
+	/**
+	 * Default constructor
+	 */
+	public function __construct() {
+		$GLOBALS['LANG']->includeLLFile('EXT:t3editor/locallang.xlf');
+	}
 
 	/**
 	 * General processor for AJAX requests.

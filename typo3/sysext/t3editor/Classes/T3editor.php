@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\T3Editor;
+namespace TYPO3\CMS\T3editor;
 
 /***************************************************************
  *  Copyright notice
@@ -32,7 +32,7 @@ namespace TYPO3\CMS\T3Editor;
  *
  * @author Tobias Liebig <mail_typo3@etobi.de>
  */
-class T3Editor implements \TYPO3\CMS\Core\SingletonInterface {
+class T3editor implements \TYPO3\CMS\Core\SingletonInterface {
 
 	const MODE_TYPOSCRIPT = 'typoscript';
 	const MODE_JAVASCRIPT = 'javascript';
@@ -70,7 +70,7 @@ class T3Editor implements \TYPO3\CMS\Core\SingletonInterface {
 	 * sets the type of code to edit (::MODE_TYPOSCRIPT, ::MODE_JAVASCRIPT)
 	 *
 	 * @param $mode	string Expects one of the predefined constants
-	 * @return \TYPO3\CMS\T3Editor\T3Editor
+	 * @return \TYPO3\CMS\T3editor\T3editor
 	 */
 	public function setMode($mode) {
 		$this->mode = $mode;
@@ -81,7 +81,7 @@ class T3Editor implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Set the AJAX save type
 	 *
 	 * @param string $ajaxSaveType
-	 * @return \TYPO3\CMS\T3Editor\T3Editor
+	 * @return \TYPO3\CMS\T3editor\T3editor
 	 */
 	public function setAjaxSaveType($ajaxSaveType) {
 		$this->ajaxSaveType = $ajaxSaveType;
@@ -164,6 +164,7 @@ class T3Editor implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Creates a new instance of the class
 	 */
 	public function __construct() {
+		$GLOBALS['LANG']->includeLLFile('EXT:t3editor/locallang.xlf');
 		// Disable pmktextarea to avoid conflicts (thanks Peter Klein for this suggestion)
 		$GLOBALS['BE_USER']->uc['disablePMKTextarea'] = 1;
 	}
@@ -231,10 +232,10 @@ class T3Editor implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return string The template code, prepared to use in javascript
 	 */
 	protected function getPreparedTemplate() {
-		$T3Editor_template = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName('EXT:t3editor/res/templates/t3editor.html'));
-		$T3Editor_template = addslashes($T3Editor_template);
-		$T3Editor_template = str_replace(array(CR, LF), array('', '\' + \''), $T3Editor_template);
-		return '\'' . $T3Editor_template . '\'';
+		$T3editor_template = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName('EXT:t3editor/res/templates/t3editor.html'));
+		$T3editor_template = addslashes($T3editor_template);
+		$T3editor_template = str_replace(array(CR, LF), array('', '\' + \''), $T3editor_template);
+		return '\'' . $T3editor_template . '\'';
 	}
 
 	/**
@@ -391,7 +392,7 @@ class T3Editor implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * new Ajax.Request('/dev/t3e/dummy/typo3/ajax.php', {
 	 * parameters: {
-	 * ajaxID: 'T3Editor::saveCode',
+	 * ajaxID: 'T3editor::saveCode',
 	 * t3editor_savetype: 'TypoScriptTemplateInformationModuleFunctionController'
 	 * }
 	 * });
