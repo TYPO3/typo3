@@ -73,6 +73,11 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 	public $indexerObj;
 
 	/**
+	 * @int Default number of list entries per page
+	 */
+	protected $maxListPerPage;
+
+	/**
 	 * Initialize menu array internally
 	 *
 	 * @return 	void
@@ -164,8 +169,8 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 		} else {
 			// Detail listings:
 			// Depth function menu:
-			$h_func = BackendUtility::getFuncMenu($this->pObj->id, 'SET[type]', $this->pObj->MOD_SETTINGS['type'], $this->pObj->MOD_MENU['type'], 'index.php');
-			$h_func .= BackendUtility::getFuncMenu($this->pObj->id, 'SET[depth]', $this->pObj->MOD_SETTINGS['depth'], $this->pObj->MOD_MENU['depth'], 'index.php');
+			$h_func = BackendUtility::getFuncMenu($this->pObj->id, 'SET[type]', $this->pObj->MOD_SETTINGS['type'], $this->pObj->MOD_MENU['type']);
+			$h_func .= BackendUtility::getFuncMenu($this->pObj->id, 'SET[depth]', $this->pObj->MOD_SETTINGS['depth'], $this->pObj->MOD_MENU['depth']);
 			// Show title / function menu:
 			$theOutput .= $this->pObj->doc->header($LANG->getLL('title'));
 			$theOutput .= $this->pObj->doc->section('', $h_func, 0, 1);
