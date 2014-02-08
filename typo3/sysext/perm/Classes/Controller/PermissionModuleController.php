@@ -234,23 +234,26 @@ class PermissionModuleController {
 					setCheck("check[perms_everybody]", "data[pages][' . $this->id . '][perms_everybody]");
 				');
 			}
+
 			// Draw the HTML page header.
 			$this->content .= $this->doc->header($GLOBALS['LANG']->getLL('permissions') . ($this->edit ? ': ' . $GLOBALS['LANG']->getLL('Edit') : ''));
-			$this->content .= $this->doc->spacer(5);
 			$vContent = $this->doc->getVersionSelector($this->id, 1);
 			if ($vContent) {
 				$this->content .= $this->doc->section('', $vContent);
 			}
+
 			// Main function, branching out:
 			if (!$this->edit) {
 				$this->notEdit();
 			} else {
 				$this->doEdit();
 			}
+
 			$docHeaderButtons = $this->getButtons();
 			$markers['CSH'] = $this->docHeaderButtons['csh'];
 			$markers['FUNC_MENU'] = BackendUtility::getFuncMenu($this->id, 'SET[mode]', $this->MOD_SETTINGS['mode'], $this->MOD_MENU['mode']);
 			$markers['CONTENT'] = $this->content;
+
 			// Build the <body> for the module
 			$this->content = $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
 		} else {
@@ -328,6 +331,7 @@ class PermissionModuleController {
 
 		// Owner selector:
 		$options = '';
+
 		// flag: is set if the page-userid equals one from the user-list
 		$userset = 0;
 		foreach ($beUserArray as $uid => $row) {
@@ -337,16 +341,12 @@ class PermissionModuleController {
 			} else {
 				$selected = '';
 			}
-			$options .= '
-				<option value="' . $uid . '"' . $selected . '>' . htmlspecialchars($row['username']) . '</option>';
+			$options .= '<option value="' . $uid . '"' . $selected . '>' . htmlspecialchars($row['username']) . '</option>';
 		}
-		$options = '
-				<option value="0"></option>' . $options;
-		$selector = '
-			<select name="data[pages][' . $this->id . '][perms_userid]">
-				' . $options . '
-			</select>';
-		$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('Owner') . ':', $selector);
+		$options = '<option value="0"></option>' . $options;
+		$selector = '<select name="data[pages][' . $this->id . '][perms_userid]">' . $options . '</select>';
+		$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('Owner'), $selector, TRUE);
+
 		// Group selector:
 		$options = '';
 		$userset = 0;
@@ -357,59 +357,58 @@ class PermissionModuleController {
 			} else {
 				$selected = '';
 			}
-			$options .= '
-				<option value="' . $uid . '"' . $selected . '>' . htmlspecialchars($row['title']) . '</option>';
+			$options .= '<option value="' . $uid . '"' . $selected . '>' . htmlspecialchars($row['title']) . '</option>';
 		}
+
 		// If the group was not set AND there is a group for the page
 		if (!$userset && $this->pageinfo['perms_groupid']) {
-			$options = '
-				<option value="' . $this->pageinfo['perms_groupid'] . '" selected="selected">' . htmlspecialchars($beGroupArray_o[$this->pageinfo['perms_groupid']]['title']) . '</option>' . $options;
+			$options = '<option value="' . $this->pageinfo['perms_groupid'] . '" selected="selected">' . htmlspecialchars($beGroupArray_o[$this->pageinfo['perms_groupid']]['title']) . '</option>' . $options;
 		}
-		$options = '
-				<option value="0"></option>' . $options;
-		$selector = '
-			<select name="data[pages][' . $this->id . '][perms_groupid]">
-				' . $options . '
-			</select>';
-		$this->content .= $this->doc->divider(5);
-		$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('Group') . ':', $selector);
+		$options = '<option value="0"></option>' . $options;
+		$selector = '<select name="data[pages][' . $this->id . '][perms_groupid]">' . $options . '</select>';
+
+		$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('Group'), $selector, TRUE);
+
 		// Permissions checkbox matrix:
 		$code = '
-			<table border="0" cellspacing="2" cellpadding="0" id="typo3-permissionMatrix">
-				<tr>
-					<td></td>
-					<td class="bgColor2">' . str_replace(' ', '<br />', $GLOBALS['LANG']->getLL('1', TRUE)) . '</td>
-					<td class="bgColor2">' . str_replace(' ', '<br />', $GLOBALS['LANG']->getLL('16', TRUE)) . '</td>
-					<td class="bgColor2">' . str_replace(' ', '<br />', $GLOBALS['LANG']->getLL('2', TRUE)) . '</td>
-					<td class="bgColor2">' . str_replace(' ', '<br />', $GLOBALS['LANG']->getLL('4', TRUE)) . '</td>
-					<td class="bgColor2">' . str_replace(' ', '<br />', $GLOBALS['LANG']->getLL('8', TRUE)) . '</td>
-				</tr>
-				<tr>
-					<td align="right" class="bgColor2">' . $GLOBALS['LANG']->getLL('Owner', TRUE) . '</td>
-					<td class="bgColor-20">' . $this->printCheckBox('perms_user', 1) . '</td>
-					<td class="bgColor-20">' . $this->printCheckBox('perms_user', 5) . '</td>
-					<td class="bgColor-20">' . $this->printCheckBox('perms_user', 2) . '</td>
-					<td class="bgColor-20">' . $this->printCheckBox('perms_user', 3) . '</td>
-					<td class="bgColor-20">' . $this->printCheckBox('perms_user', 4) . '</td>
-				</tr>
-				<tr>
-					<td align="right" class="bgColor2">' . $GLOBALS['LANG']->getLL('Group', TRUE) . '</td>
-					<td class="bgColor-20">' . $this->printCheckBox('perms_group', 1) . '</td>
-					<td class="bgColor-20">' . $this->printCheckBox('perms_group', 5) . '</td>
-					<td class="bgColor-20">' . $this->printCheckBox('perms_group', 2) . '</td>
-					<td class="bgColor-20">' . $this->printCheckBox('perms_group', 3) . '</td>
-					<td class="bgColor-20">' . $this->printCheckBox('perms_group', 4) . '</td>
-				</tr>
-				<tr>
-					<td align="right" class="bgColor2">' . $GLOBALS['LANG']->getLL('Everybody', TRUE) . '</td>
-					<td class="bgColor-20">' . $this->printCheckBox('perms_everybody', 1) . '</td>
-					<td class="bgColor-20">' . $this->printCheckBox('perms_everybody', 5) . '</td>
-					<td class="bgColor-20">' . $this->printCheckBox('perms_everybody', 2) . '</td>
-					<td class="bgColor-20">' . $this->printCheckBox('perms_everybody', 3) . '</td>
-					<td class="bgColor-20">' . $this->printCheckBox('perms_everybody', 4) . '</td>
-				</tr>
+			<table class="t3-table" id="typo3-permissionMatrix">
+				<thead>
+					<tr>
+						<th></th>
+						<th>' . $GLOBALS['LANG']->getLL('1', TRUE) . '</th>
+						<th>' . $GLOBALS['LANG']->getLL('16', TRUE) . '</th>
+						<th>' . $GLOBALS['LANG']->getLL('2', TRUE) . '</th>
+						<th>' . $GLOBALS['LANG']->getLL('4', TRUE) . '</th>
+						<th>' . $GLOBALS['LANG']->getLL('8', TRUE) . '</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td><strong>' . $GLOBALS['LANG']->getLL('Owner', TRUE) . '</strong></td>
+						<td>' . $this->printCheckBox('perms_user', 1) . '</td>
+						<td>' . $this->printCheckBox('perms_user', 5) . '</td>
+						<td>' . $this->printCheckBox('perms_user', 2) . '</td>
+						<td>' . $this->printCheckBox('perms_user', 3) . '</td>
+						<td>' . $this->printCheckBox('perms_user', 4) . '</td>
+					</tr>
+					<tr>
+						<td><strong>' . $GLOBALS['LANG']->getLL('Group', TRUE) . '</strong></td>
+						<td>' . $this->printCheckBox('perms_group', 1) . '</td>
+						<td>' . $this->printCheckBox('perms_group', 5) . '</td>
+						<td>' . $this->printCheckBox('perms_group', 2) . '</td>
+						<td>' . $this->printCheckBox('perms_group', 3) . '</td>
+						<td>' . $this->printCheckBox('perms_group', 4) . '</td>
+					</tr>
+					<tr>
+						<td><strong>' . $GLOBALS['LANG']->getLL('Everybody', TRUE) . '</strong></td>
+						<td>' . $this->printCheckBox('perms_everybody', 1) . '</td>
+						<td>' . $this->printCheckBox('perms_everybody', 5) . '</td>
+						<td>' . $this->printCheckBox('perms_everybody', 2) . '</td>
+						<td>' . $this->printCheckBox('perms_everybody', 3) . '</td>
+						<td>' . $this->printCheckBox('perms_everybody', 4) . '</td>
+					</tr>
+				</tbody>
 			</table>
-			<br />
 
 			<input type="hidden" name="data[pages][' . $this->id . '][perms_user]" value="' . $this->pageinfo['perms_user'] . '" />
 			<input type="hidden" name="data[pages][' . $this->id . '][perms_group]" value="' . $this->pageinfo['perms_group'] . '" />
@@ -418,21 +417,24 @@ class PermissionModuleController {
 			<input type="submit" name="submit" value="' . $GLOBALS['LANG']->getLL('Save', TRUE) . '" />' . '<input type="submit" value="' . $GLOBALS['LANG']->getLL('Abort', TRUE) . '" onclick="' . htmlspecialchars(('jumpToUrl(' . GeneralUtility::quoteJSvalue((BackendUtility::getModuleUrl('web_perm') . '&id=' . $this->id), TRUE) . '); return false;')) . '" />
 			<input type="hidden" name="redirect" value="' . htmlspecialchars((BackendUtility::getModuleUrl('web_perm') . '&mode=' . $this->MOD_SETTINGS['mode'] . '&depth=' . $this->MOD_SETTINGS['depth'] . '&id=' . (int)$this->return_id . '&lastEdited=' . $this->id)) . '" />
 			' . \TYPO3\CMS\Backend\Form\FormEngine::getHiddenTokenField('tceAction');
+
 		// Adding section with the permission setting matrix:
-		$this->content .= $this->doc->divider(5);
-		$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('permissions') . ':', $code);
+		$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('permissions'), $code, TRUE);
+
 		// CSH for permissions setting
 		$this->content .= BackendUtility::cshItem('xMOD_csh_corebe', 'perm_module_setting', $GLOBALS['BACK_PATH'], '<br /><br />');
+
 		// Adding help text:
 		if ($GLOBALS['BE_USER']->uc['helpText']) {
-			$this->content .= $this->doc->divider(20);
-			$legendText = '<strong>' . $GLOBALS['LANG']->getLL('1', TRUE) . '</strong>: ' . $GLOBALS['LANG']->getLL('1_t', TRUE);
-			$legendText .= '<br /><strong>' . $GLOBALS['LANG']->getLL('16', TRUE) . '</strong>: ' . $GLOBALS['LANG']->getLL('16_t', TRUE);
-			$legendText .= '<br /><strong>' . $GLOBALS['LANG']->getLL('2', TRUE) . '</strong>: ' . $GLOBALS['LANG']->getLL('2_t', TRUE);
-			$legendText .= '<br /><strong>' . $GLOBALS['LANG']->getLL('4', TRUE) . '</strong>: ' . $GLOBALS['LANG']->getLL('4_t', TRUE);
-			$legendText .= '<br /><strong>' . $GLOBALS['LANG']->getLL('8', TRUE) . '</strong>: ' . $GLOBALS['LANG']->getLL('8_t', TRUE);
-			$code = $legendText . '<br /><br />' . $GLOBALS['LANG']->getLL('def', TRUE);
-			$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('Legend', TRUE) . ':', $code);
+			$legendText = '<p><strong>' . $GLOBALS['LANG']->getLL('1', TRUE) . '</strong>: ' . $GLOBALS['LANG']->getLL('1_t', TRUE) . '<br />';
+			$legendText .= '<strong>' . $GLOBALS['LANG']->getLL('16', TRUE) . '</strong>: ' . $GLOBALS['LANG']->getLL('16_t', TRUE) . '<br />';
+			$legendText .= '<strong>' . $GLOBALS['LANG']->getLL('2', TRUE) . '</strong>: ' . $GLOBALS['LANG']->getLL('2_t', TRUE) . '<br />';
+			$legendText .= '<strong>' . $GLOBALS['LANG']->getLL('4', TRUE) . '</strong>: ' . $GLOBALS['LANG']->getLL('4_t', TRUE) . '<br />';
+			$legendText .= '<strong>' . $GLOBALS['LANG']->getLL('8', TRUE) . '</strong>: ' . $GLOBALS['LANG']->getLL('8_t', TRUE) . '</p>';
+
+			$code = $legendText . '<p>' . $GLOBALS['LANG']->getLL('def', TRUE) . '</p>';
+
+			$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('Legend', TRUE), $code, TRUE);
 		}
 	}
 
@@ -453,14 +455,16 @@ class PermissionModuleController {
 		if (!$GLOBALS['BE_USER']->isAdmin()) {
 			$beGroupArray = BackendUtility::blindGroupNames($beGroupArray, $beGroupKeys, 0);
 		}
+
 		// Length of strings:
 		$tLen = 20;
+
 		// Selector for depth:
 		$code = $GLOBALS['LANG']->getLL('Depth') . ': ';
 		$code .= BackendUtility::getFuncMenu($this->id, 'SET[depth]', $this->MOD_SETTINGS['depth'], $this->MOD_MENU['depth']);
 		$this->content .= $this->doc->section('', $code);
-		$this->content .= $this->doc->spacer(5);
-		// Initialize tree object:
+
+		/** @var \TYPO3\CMS\Backend\Tree\View\PageTreeView */
 		$tree = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\View\\PageTreeView');
 		$tree->init('AND ' . $this->perms_clause);
 		$tree->addField('perms_user', 1);
@@ -473,87 +477,94 @@ class PermissionModuleController {
 		$tree->addField('starttime');
 		$tree->addField('endtime');
 		$tree->addField('editlock');
+
 		// Creating top icon; the current page
 		$HTML = IconUtility::getSpriteIconForRecord('pages', $this->pageinfo);
 		$tree->tree[] = array('row' => $this->pageinfo, 'HTML' => $HTML);
+
 		// Create the tree from $this->id:
 		$tree->getTree($this->id, $this->MOD_SETTINGS['depth'], '');
+
 		// Make header of table:
 		$code = '
-			<tr class="t3-row-header">
-				<td colspan="2">&nbsp;</td>
-				<td><img' . IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/line.gif', 'width="5" height="16"') . ' alt="" /></td>
-				<td>' . $GLOBALS['LANG']->getLL('Owner', TRUE) . '</td>
-				<td><img' . IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/line.gif', 'width="5" height="16"') . ' alt="" /></td>
-				<td align="center">' . $GLOBALS['LANG']->getLL('Group', TRUE) . '</td>
-				<td><img' . IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/line.gif', 'width="5" height="16"') . ' alt="" /></td>
-				<td align="center">' . $GLOBALS['LANG']->getLL('Everybody', TRUE) . '</td>
-				<td><img' . IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/line.gif', 'width="5" height="16"') . ' alt="" /></td>
-				<td align="center">' . $GLOBALS['LANG']->getLL('EditLock', TRUE) . '</td>
-			</tr>
+			<thead>
+				<tr>
+					<th colspan="2">&nbsp;</th>
+					<th>' . $GLOBALS['LANG']->getLL('Owner', TRUE) . '</th>
+					<th align="center">' . $GLOBALS['LANG']->getLL('Group', TRUE) . '</th>
+					<th align="center">' . $GLOBALS['LANG']->getLL('Everybody', TRUE) . '</th>
+					<th align="center">' . $GLOBALS['LANG']->getLL('EditLock', TRUE) . '</th>
+				</tr>
+			</thead>
 		';
+
 		// Traverse tree:
 		foreach ($tree->tree as $data) {
 			$cells = array();
 			$pageId = $data['row']['uid'];
+
 			// Background colors:
 			$bgCol = $this->lastEdited == $pageId ? ' class="bgColor-20"' : '';
 			$lE_bgCol = $bgCol;
+
 			// User/Group names:
-			$userName = $beUserArray[$data['row']['perms_userid']] ? $beUserArray[$data['row']['perms_userid']]['username'] : ($data['row']['perms_userid'] ? $data['row']['perms_userid'] : '');
+			$userName = $beUserArray[$data['row']['perms_userid']] ?
+					$beUserArray[$data['row']['perms_userid']]['username'] :
+					($data['row']['perms_userid'] ? $data['row']['perms_userid'] : '');
+
 			if ($data['row']['perms_userid'] && !$beUserArray[$data['row']['perms_userid']]) {
 				$userName = \TYPO3\CMS\Perm\Controller\PermissionAjaxController::renderOwnername($pageId, $data['row']['perms_userid'], htmlspecialchars(GeneralUtility::fixed_lgd_cs($userName, 20)), FALSE);
 			} else {
 				$userName = \TYPO3\CMS\Perm\Controller\PermissionAjaxController::renderOwnername($pageId, $data['row']['perms_userid'], htmlspecialchars(GeneralUtility::fixed_lgd_cs($userName, 20)));
 			}
-			$groupName = $beGroupArray[$data['row']['perms_groupid']] ? $beGroupArray[$data['row']['perms_groupid']]['title'] : ($data['row']['perms_groupid'] ? $data['row']['perms_groupid'] : '');
+
+			$groupName = $beGroupArray[$data['row']['perms_groupid']] ?
+					$beGroupArray[$data['row']['perms_groupid']]['title'] :
+					($data['row']['perms_groupid'] ? $data['row']['perms_groupid'] : '');
+
 			if ($data['row']['perms_groupid'] && !$beGroupArray[$data['row']['perms_groupid']]) {
 				$groupName = \TYPO3\CMS\Perm\Controller\PermissionAjaxController::renderGroupname($pageId, $data['row']['perms_groupid'], htmlspecialchars(GeneralUtility::fixed_lgd_cs($groupName, 20)), FALSE);
 			} else {
 				$groupName = \TYPO3\CMS\Perm\Controller\PermissionAjaxController::renderGroupname($pageId, $data['row']['perms_groupid'], htmlspecialchars(GeneralUtility::fixed_lgd_cs($groupName, 20)));
 			}
+
 			// Seeing if editing of permissions are allowed for that page:
 			$editPermsAllowed = $data['row']['perms_userid'] == $GLOBALS['BE_USER']->user['uid'] || $GLOBALS['BE_USER']->isAdmin();
+
 			// First column:
 			$cellAttrib = $data['row']['_CSSCLASS'] ? ' class="' . $data['row']['_CSSCLASS'] . '"' : '';
-			$cells[] = '
-					<td align="left" nowrap="nowrap"' . ($cellAttrib ? $cellAttrib : $bgCol) . '>' . $data['HTML'] . htmlspecialchars(GeneralUtility::fixed_lgd_cs($data['row']['title'], $tLen)) . '&nbsp;</td>';
+			$cells[] = '<td align="left" nowrap="nowrap"' . ($cellAttrib ? $cellAttrib : $bgCol) . '>' .
+					$data['HTML'] . htmlspecialchars(GeneralUtility::fixed_lgd_cs($data['row']['title'], $tLen)) . '</td>';
+
 			// "Edit permissions" -icon
 			if ($editPermsAllowed && $pageId) {
 				$aHref = BackendUtility::getModuleUrl('web_perm') . '&mode=' . $this->MOD_SETTINGS['mode'] . '&depth=' . $this->MOD_SETTINGS['depth'] . '&id=' . ($data['row']['_ORIG_uid'] ? $data['row']['_ORIG_uid'] : $pageId) . '&return_id=' . $this->id . '&edit=1';
-				$cells[] = '
-					<td' . $bgCol . '><a href="' . htmlspecialchars($aHref) . '" title="' . $GLOBALS['LANG']->getLL('ch_permissions', TRUE) . '">' . IconUtility::getSpriteIcon('actions-document-open') . '</a></td>';
+				$cells[] = '<td' . $bgCol . '><a href="' . htmlspecialchars($aHref) . '" title="' . $GLOBALS['LANG']->getLL('ch_permissions', TRUE) . '">' .
+						IconUtility::getSpriteIcon('actions-document-open') . '</a></td>';
 			} else {
-				$cells[] = '
-					<td' . $bgCol . '></td>';
+				$cells[] = '<td' . $bgCol . '></td>';
 			}
 
 			$cells[] = '
-				<td' . $bgCol . ' class="center"><img' . IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/line.gif', 'width="5" height="16"') . ' alt="" /></td>
 				<td' . $bgCol . ' nowrap="nowrap">' . ($pageId ? \TYPO3\CMS\Perm\Controller\PermissionAjaxController::renderPermissions($data['row']['perms_user'], $pageId, 'user') . ' ' . $userName : '') . '</td>
-
-				<td' . $bgCol . ' class="center"><img' . IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/line.gif', 'width="5" height="16"') . ' alt="" /></td>
 				<td' . $bgCol . ' nowrap="nowrap">' . ($pageId ? \TYPO3\CMS\Perm\Controller\PermissionAjaxController::renderPermissions($data['row']['perms_group'], $pageId, 'group') . ' ' . $groupName : '') . '</td>
-
-				<td' . $bgCol . ' class="center"><img' . IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/line.gif', 'width="5" height="16"') . ' alt="" /></td>
 				<td' . $bgCol . ' nowrap="nowrap">' . ($pageId ? ' ' . \TYPO3\CMS\Perm\Controller\PermissionAjaxController::renderPermissions($data['row']['perms_everybody'], $pageId, 'everybody') : '') . '</td>
-
-				<td' . $bgCol . ' class="center"><img' . IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/line.gif', 'width="5" height="16"') . ' alt="" /></td>
 				<td' . $bgCol . ' nowrap="nowrap">' . ($data['row']['editlock'] ? '<span id="el_' . $pageId . '" class="editlock"><a class="editlock" onclick="WebPermissions.toggleEditLock(\'' . $pageId . '\', \'1\');" title="' . $GLOBALS['LANG']->getLL('EditLock_descr', TRUE) . '">' . IconUtility::getSpriteIcon('status-warning-lock') . '</a></span>' : ($pageId === 0 ? '' : '<span id="el_' . $pageId . '" class="editlock"><a class="editlock" onclick="WebPermissions.toggleEditLock(\'' . $pageId . '\', \'0\');" title="Enable the &raquo;Admin-only&laquo; edit lock for this page">[+]</a></span>')) . '</td>
 			';
+
 			// Compile table row:
-			$code .= '
-				<tr>
-					' . implode('
-					', $cells) . '
-				</tr>';
+			$code .= '<tr>' . implode('', $cells) . '</tr>';
 		}
+
 		// Wrap rows in table tags:
-		$code = '<table border="0" cellspacing="0" cellpadding="0" id="typo3-permissionList">' . $code . '</table>';
+		$code = '<table class="t3-table" id="typo3-permissionList">' . $code . '</table>';
+
 		// Adding the content as a section:
 		$this->content .= $this->doc->section('', $code);
+
 		// CSH for permissions setting
 		$this->content .= BackendUtility::cshItem('xMOD_csh_corebe', 'perm_module', $GLOBALS['BACK_PATH'], '<br />|');
+
 		// Creating legend table:
 		$legendText = '<strong>' . $GLOBALS['LANG']->getLL('1', TRUE) . '</strong>: ' . $GLOBALS['LANG']->getLL('1_t', TRUE);
 		$legendText .= '<br /><strong>' . $GLOBALS['LANG']->getLL('16', TRUE) . '</strong>: ' . $GLOBALS['LANG']->getLL('16_t', TRUE);
@@ -569,9 +580,9 @@ class PermissionModuleController {
 		$code .= '<br /><br />' . IconUtility::getSpriteIcon('status-status-permission-granted') . ': ' . $GLOBALS['LANG']->getLL('A_Granted', TRUE);
 		$code .= '<br />' . IconUtility::getSpriteIcon('status-status-permission-denied') . ': ' . $GLOBALS['LANG']->getLL('A_Denied', TRUE);
 		$code .= '</div>';
+
 		// Adding section with legend code:
-		$this->content .= $this->doc->spacer(20);
-		$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('Legend') . ':', $code, 0, 1);
+		$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('Legend') . ':', $code, TRUE, TRUE);
 	}
 
 	/*****************************

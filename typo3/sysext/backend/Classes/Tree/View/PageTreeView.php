@@ -110,7 +110,7 @@ class PageTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 	public function PMicon($row, $a, $c, $nextCount, $exp) {
 		$PM = 'join';
 		$BTM = $a == $c ? 'bottom' : '';
-		$icon = '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->backPath, ('gfx/ol/' . $PM . $BTM . '.gif'), 'width="18" height="16"') . ' alt="" />';
+		$icon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('treeline-' . $PM . $BTM);
 		return $icon;
 	}
 

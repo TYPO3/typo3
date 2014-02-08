@@ -410,7 +410,8 @@ abstract class AbstractTreeView {
 			$this->ids = $curIds;
 			// Set PM icon for root of mount:
 			$cmd = $this->bank . '_' . ($isOpen ? '0_' : '1_') . $uid . '_' . $this->treeName;
-			$icon = '<img' . IconUtility::skinImg($this->backPath, ('gfx/ol/' . ($isOpen ? 'minus' : 'plus') . 'only.gif'), 'width="18" height="16"') . ' alt="" />';
+			$icon = IconUtility::getSpriteIcon('treeline-'. ($isOpen ? 'minus' : 'plus') . 'only');
+
 			$firstHtml = $this->PM_ATagWrap($icon, $cmd);
 			// Preparing rootRec for the mount
 			if ($uid) {
@@ -429,7 +430,7 @@ abstract class AbstractTreeView {
 				// If the mount is expanded, go down:
 				if ($isOpen) {
 					// Set depth:
-					$depthD = '<img' . IconUtility::skinImg($this->backPath, 'gfx/ol/blank.gif', 'width="18" height="16"') . ' alt="" />';
+					$depthD = IconUtility::getSpriteIcon('treeline-blank');
 					if ($this->addSelfId) {
 						$this->ids[] = $uid;
 					}
@@ -500,7 +501,7 @@ abstract class AbstractTreeView {
 	public function PMicon($row, $a, $c, $nextCount, $exp) {
 		$PM = $nextCount ? ($exp ? 'minus' : 'plus') : 'join';
 		$BTM = $a == $c ? 'bottom' : '';
-		$icon = '<img' . IconUtility::skinImg($this->backPath, ('gfx/ol/' . $PM . $BTM . '.gif'), 'width="18" height="16"') . ' alt="" />';
+		$icon = IconUtility::getSpriteIcon('treeline-' . $PM . $BTM);
 		if ($nextCount) {
 			$cmd = $this->bank . '_' . ($exp ? '0_' : '1_') . $row['uid'] . '_' . $this->treeName;
 			$bMark = $this->bank . '_' . $row['uid'];
@@ -796,8 +797,9 @@ abstract class AbstractTreeView {
 			$this->ids[] = ($idH[$row['uid']]['uid'] = $row['uid']);
 			$this->ids_hierarchy[$depth][] = $row['uid'];
 			$this->orig_ids_hierarchy[$depth][] = $row['_ORIG_uid'] ?: $row['uid'];
+
 			// Make a recursive call to the next level
-			$HTML_depthData = $depthData . '<img' . IconUtility::skinImg($this->backPath, ('gfx/ol/' . $LN . '.gif'), 'width="18" height="16"') . ' alt="" />';
+			$HTML_depthData = $depthData . IconUtility::getSpriteIcon('treeline-' . $LN);
 			if ($depth > 1 && $this->expandNext($newID) && !$row['php_tree_stop']) {
 				$nextCount = $this->getTree($newID, $depth - 1, $this->makeHTML ? $HTML_depthData : '', $blankLineCode . ',' . $LN, $row['_SUBCSSCLASS']);
 				if (count($this->buffer_idH)) {
