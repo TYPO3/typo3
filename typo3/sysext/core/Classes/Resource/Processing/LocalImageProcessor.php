@@ -14,7 +14,6 @@ namespace TYPO3\CMS\Core\Resource\Processing;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Utility\CommandUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -113,42 +112,12 @@ class LocalImageProcessor implements ProcessorInterface {
 	 * @return void
 	 * @throws \RuntimeException
 	 *
-	 * @internal Don't use this method from outside the LocalImageProcessor!
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8. Use \TYPO3\CMS\Core\Imaging\GraphicalFunctions::getTemporaryImageWithText() instead.
 	 */
 	public function getTemporaryImageWithText($filename, $textline1, $textline2, $textline3) {
-		if (!$GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib']) {
-			throw new \RuntimeException('TYPO3 Fatal Error: No gdlib. ' . $textline1 . ' ' . $textline2 . ' ' . $textline3, 1270853952);
-		}
-		// Creates the basis for the error image
-		if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib_png']) {
-			$im = imagecreatefrompng(PATH_typo3 . 'gfx/notfound_thumb.png');
-		} else {
-			$im = imagecreatefromgif(PATH_typo3 . 'gfx/notfound_thumb.gif');
-		}
-		// Sets background color and print color.
-		$white = imageColorAllocate($im, 255, 255, 255);
-		$black = imageColorAllocate($im, 0, 0, 0);
-		// Prints the text strings with the build-in font functions of GD
-		$x = 0;
-		$font = 0;
-		if ($textline1) {
-			imagefilledrectangle($im, $x, 9, 56, 16, $white);
-			imageString($im, $font, $x, 9, $textline1, $black);
-		}
-		if ($textline2) {
-			imagefilledrectangle($im, $x, 19, 56, 26, $white);
-			imageString($im, $font, $x, 19, $textline2, $black);
-		}
-		if ($textline3) {
-			imagefilledrectangle($im, $x, 29, 56, 36, $white);
-			imageString($im, $font, $x, 29, substr($textline3, -14), $black);
-		}
-		// Outputting the image stream and exit
-		if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib_png']) {
-			imagePng($im, $filename);
-		} else {
-			imageGif($im, $filename);
-		}
+		GeneralUtility::logDeprecatedFunction();
+		$graphicalFunctions = $this->getGraphicalFunctionsObject();
+		$graphicalFunctions->getTemporaryImageWithText($filename, $textline1, $textline2, $textline3);
 	}
 
 	/**

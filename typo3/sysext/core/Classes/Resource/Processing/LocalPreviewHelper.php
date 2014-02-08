@@ -18,6 +18,7 @@ use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Utility\CommandUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Core\Imaging\GraphicalFunctions;
 
 /**
  * Helper for creating local image previews using TYPO3s image processing classes.
@@ -47,7 +48,6 @@ class LocalPreviewHelper {
 	 * @return array
 	 */
 	public function process(TaskInterface $task) {
-		$targetFile = $task->getTargetFile();
 		$sourceFile = $task->getSourceFile();
 
 			// Merge custom configuration with default configuration
@@ -63,7 +63,13 @@ class LocalPreviewHelper {
 		if ($sourceFile->getType() != File::FILETYPE_IMAGE &&
 			!GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], $sourceFile->getExtension())) {
 				// Create a default image
-			$this->processor->getTemporaryImageWithText($temporaryFileName, 'Not imagefile!', 'No ext!', $sourceFile->getName());
+			$graphicalFunctions = GeneralUtility::makeInstance(GraphicalFunctions::class);
+			$graphicalFunctions->getTemporaryImageWithText(
+				$temporaryFileName,
+				'Not imagefile!',
+				'No ext!',
+				$sourceFile->getName()
+			);
 		} else {
 				// Create the temporary file
 			if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['im']) {
@@ -74,8 +80,14 @@ class LocalPreviewHelper {
 				CommandUtility::exec($cmd);
 
 				if (!file_exists($temporaryFileName)) {
-						// Create a error gif
-					$this->processor->getTemporaryImageWithText($temporaryFileName, 'No thumb', 'generated!', $sourceFile->getName());
+					// Create a error gif
+					$graphicalFunctions = GeneralUtility::makeInstance(GraphicalFunctions::class);
+					$graphicalFunctions->getTemporaryImageWithText(
+						$temporaryFileName,
+						'No thumb',
+						'generated!',
+						$sourceFile->getName()
+					);
 				}
 			}
 		}
