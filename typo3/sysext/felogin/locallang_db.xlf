@@ -9,6 +9,9 @@
 			<trans-unit id="felogin_redirectPid" xml:space="preserve">
 				<source>Redirect at Login to Page (felogin)</source>
 			</trans-unit>
+			<trans-unit id="felogin_forgotHash" xml:space="preserve">
+				<source>Forgot hash</source>
+			</trans-unit>
 			<trans-unit id="tt_content.pi_flexform.general_header" xml:space="preserve">
 				<source>General Header</source>
 			</trans-unit>
