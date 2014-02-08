@@ -1875,10 +1875,12 @@ class localRecordList extends recordList {
 			// Setting filename:
 		$filename=$prefix.'_'.date('dmy-Hi').'.csv';
 
-			// Creating output header:
-		$mimeType = 'application/octet-stream';
-		Header('Content-Type: '.$mimeType);
-		Header('Content-Disposition: attachment; filename='.$filename);
+		// Creating output header:
+		header('Content-Type: application/octet-stream');
+		header('Content-Disposition: attachment; filename='.$filename);
+		// Cache-Control header is needed here to solve an issue with browser IE and
+		// versions lower then 9. See for more information: http://support.microsoft.com/kb/323308
+		header("Cache-Control: ''");
 
 			// Printing the content of the CSV lines:
 		echo implode(chr(13).chr(10),$this->csvLines);
