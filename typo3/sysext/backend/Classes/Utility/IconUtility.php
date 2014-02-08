@@ -105,6 +105,8 @@ class IconUtility {
 		'xltm' => 'mimetypes-excel',
 		'xltx' => 'mimetypes-excel',
 		'sxc' => 'mimetypes-excel',
+		'pps' => 'mimetypes-powerpoint',
+		'ppsx' => 'mimetypes-powerpoint',
 		'ppt' => 'mimetypes-powerpoint',
 		'pptm' => 'mimetypes-powerpoint',
 		'pptx' => 'mimetypes-powerpoint',
