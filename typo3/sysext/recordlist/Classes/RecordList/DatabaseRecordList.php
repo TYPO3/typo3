@@ -542,7 +542,8 @@ class DatabaseRecordList extends \TYPO3\CMS\Recordlist\RecordList\AbstractDataba
 					if ($this->totalItems > $this->itemsLimitPerTable) {
 						$countOnFirstPage = $this->totalItems > $this->itemsLimitSingleTable ? $this->itemsLimitSingleTable : $this->totalItems;
 						$hasMore = $this->totalItems > $this->itemsLimitSingleTable;
-						$iOut .= '<tr><td colspan="' . count($this->fieldArray) . '" style="padding:5px;">
+						$colspan = $this->showIcon ? count($this->fieldArray) + 1 : count($this->fieldArray);
+						$iOut .= '<tr><td colspan="' . $colspan . '" style="padding:5px;">
 								<a href="' . htmlspecialchars(($this->listURL() . '&table=' . rawurlencode($table))) . '">' . '<img' . IconUtility::skinImg($this->backPath, 'gfx/pildown.gif', 'width="14" height="14"') . ' alt="" />' . ' <i>[1 - ' . $countOnFirstPage . ($hasMore ? '+' : '') . ']</i></a>
 								</td></tr>';
 					}
