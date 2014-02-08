@@ -440,7 +440,7 @@ Do you want to continue WITHOUT saving?</source>
 				<source>files</source>
 			</trans-unit>
 			<trans-unit id="file_upload.dropzonehint.title" xml:space="preserve">
-				<source>Drop &amp; Drop to upload files</source>
+				<source>Drag &amp; drop to upload files</source>
 			</trans-unit>
 			<trans-unit id="file_upload.dropzonehint.message" xml:space="preserve">
 				<source>Drop your files here, or &lt;u&gt;click, browse &amp; choose files&lt;/u&gt;</source>
