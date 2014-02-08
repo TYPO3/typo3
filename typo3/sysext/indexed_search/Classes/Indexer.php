@@ -767,9 +767,9 @@ class Indexer {
 			// Decode entities:
 			if ($linkInfo['localPath']) {
 				// localPath means: This file is sent by a download script. While the indexed URL has to point to $linkInfo['href'], the absolute path to the file is specified here!
-				$linkSource = GeneralUtility::htmlspecialchars_decode($linkInfo['localPath']);
+				$linkSource = htmlspecialchars_decode($linkInfo['localPath']);
 			} else {
-				$linkSource = GeneralUtility::htmlspecialchars_decode($linkInfo['href']);
+				$linkSource = htmlspecialchars_decode($linkInfo['href']);
 			}
 			// Parse URL:
 			$qParts = parse_url($linkSource);

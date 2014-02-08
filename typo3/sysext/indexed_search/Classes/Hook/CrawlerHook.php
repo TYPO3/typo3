@@ -519,7 +519,7 @@ class CrawlerHook {
 		// Traverse links:
 		foreach ($list as $count => $linkInfo) {
 			// Decode entities:
-			$subUrl = GeneralUtility::htmlspecialchars_decode($linkInfo['href']);
+			$subUrl = htmlspecialchars_decode($linkInfo['href']);
 			$qParts = parse_url($subUrl);
 			if (!$qParts['scheme']) {
 				$relativeUrl = GeneralUtility::resolveBackPath($subUrl);

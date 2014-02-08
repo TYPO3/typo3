@@ -198,7 +198,7 @@ class SoftReferenceIndex {
 			if ($k % 2) {
 				// Get file reference:
 				$attribs = $htmlParser->get_tag_attributes($v);
-				$srcRef = GeneralUtility::htmlspecialchars_decode($attribs[0]['src']);
+				$srcRef = htmlspecialchars_decode($attribs[0]['src']);
 				$pI = pathinfo($srcRef);
 				// If it looks like a local image, continue. Otherwise ignore it.
 				$absPath = GeneralUtility::getFileAbsFileName(PATH_site . $srcRef);
@@ -342,7 +342,7 @@ class SoftReferenceIndex {
 				}
 				// Get file reference:
 				if (isset($attribs[0][$attributeName])) {
-					$srcRef = GeneralUtility::htmlspecialchars_decode($attribs[0][$attributeName]);
+					$srcRef = htmlspecialchars_decode($attribs[0][$attributeName]);
 					// Set entry:
 					$tokenID = $this->makeTokenID($k);
 					$elements[$k] = array();

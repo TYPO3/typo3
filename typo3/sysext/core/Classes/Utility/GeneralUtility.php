@@ -1012,16 +1012,14 @@ class GeneralUtility {
 	/**
 	 * Inverse version of htmlspecialchars()
 	 *
+	 * @deprecated since 6.2 replaced by php native htmlspecialchars_decode()
+	 *
 	 * @param string $value Value where &gt;, &lt;, &quot; and &amp; should be converted to regular chars.
 	 * @return string Converted result.
 	 */
 	static public function htmlspecialchars_decode($value) {
-		return str_replace(
-			array('&gt;', '&lt;', '&quot;', '&amp;'),
-			array('>', '<', '"', '&'),
-			$value
-		);
-
+		GeneralUtility::logDeprecatedFunction();
+		return htmlspecialchars_decode($value);
 	}
 
 	/**

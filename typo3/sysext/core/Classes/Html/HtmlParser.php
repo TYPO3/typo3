@@ -557,7 +557,7 @@ class HtmlParser {
 				if ($val != '=') {
 					if ($valuemode) {
 						if ($name) {
-							$attributes[$name] = $deHSC ? GeneralUtility::htmlspecialchars_decode($val) : $val;
+							$attributes[$name] = $deHSC ? htmlspecialchars_decode($val) : $val;
 							$attributesMeta[$name]['dashType'] = $metaC[$key];
 							$name = '';
 						}
@@ -990,7 +990,7 @@ class HtmlParser {
 		} elseif ($dir == 2) {
 			$value = GeneralUtility::deHSCentities(htmlspecialchars($value));
 		} elseif ($dir == -1) {
-			$value = GeneralUtility::htmlspecialchars_decode($value);
+			$value = htmlspecialchars_decode($value);
 		}
 		return $value;
 	}

@@ -890,7 +890,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function htmlspecialcharsDecodeReturnsDecodedString() {
 		$string = '<typo3 version="6.0">&nbsp;</typo3>';
 		$encoded = htmlspecialchars($string);
-		$decoded = Utility\GeneralUtility::htmlspecialchars_decode($encoded);
+		$decoded = htmlspecialchars_decode($encoded);
 		$this->assertEquals($string, $decoded);
 	}
 
