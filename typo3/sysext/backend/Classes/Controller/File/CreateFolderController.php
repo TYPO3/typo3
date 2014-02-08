@@ -118,7 +118,7 @@ class CreateFolderController {
 		if (!$this->folderObject) {
 			$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_file_list.xlf:paramError', TRUE);
 			$message = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_file_list.xlf:targetNoDir', TRUE);
-			throw new \RuntimeException($title . ': ' . $message, 1294586843);
+			throw new \RuntimeException($title . ': ' . $message, 1294586845);
 		}
 		if ($this->folderObject->getStorage()->getUid() === 0) {
 			throw new \TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException('You are not allowed to access folders outside your storages', 1375889838);

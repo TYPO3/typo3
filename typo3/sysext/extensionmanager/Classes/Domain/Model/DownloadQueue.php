@@ -99,7 +99,7 @@ class DownloadQueue implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	public function removeExtensionFromQueue(\TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension, $stack = 'download') {
 		if (!is_string($stack) || !in_array($stack, array('download', 'update'))) {
-			throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException('Stack has to be either "download" or "update"', 1342432103);
+			throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException('Stack has to be either "download" or "update"', 1342432104);
 		}
 		if (array_key_exists($stack, $this->extensionStorage) && is_array($this->extensionStorage[$stack])) {
 			if (array_key_exists($extension->getExtensionKey(), $this->extensionStorage[$stack])) {

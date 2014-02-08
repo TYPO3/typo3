@@ -164,7 +164,7 @@ class FileHandlingUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	protected function addDirectory($extDirPath) {
 		GeneralUtility::mkdir($extDirPath);
 		if (!is_dir($extDirPath)) {
-			throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException(sprintf($GLOBALS['LANG']->getLL('clearMakeExtDir_could_not_create_dir'), $this->getRelativePath($extDirPath)), 1337280416);
+			throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException(sprintf($GLOBALS['LANG']->getLL('clearMakeExtDir_could_not_create_dir'), $this->getRelativePath($extDirPath)), 1337280418);
 		}
 	}
 

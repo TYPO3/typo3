@@ -253,7 +253,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 		if (!$this->folderExists($folderIdentifier)) {
 			throw new \TYPO3\CMS\Core\Resource\Exception\FolderDoesNotExistException(
 				'File ' . $folderIdentifier . ' does not exist.',
-				1314516809
+				1314516810
 			);
 		}
 		return array(

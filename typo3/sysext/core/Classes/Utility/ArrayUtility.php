@@ -359,7 +359,7 @@ class ArrayUtility {
 				$stringContent = str_replace('\'', '\\\'', $stringContent);
 				$lines .= '\'' . $stringContent . '\'' . ',' . LF;
 			} else {
-				throw new \RuntimeException('Objects are not supported', 1342294986);
+				throw new \RuntimeException('Objects are not supported', 1342294987);
 			}
 		}
 		$lines .= str_repeat(TAB, ($level - 1)) . ')' . ($level - 1 == 0 ? '' : ',' . LF);

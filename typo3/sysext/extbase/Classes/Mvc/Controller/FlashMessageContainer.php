@@ -80,7 +80,7 @@ class FlashMessageContainer implements \TYPO3\CMS\Core\SingletonInterface {
 		if (!is_string($message)) {
 			throw new \InvalidArgumentException(
 				'The flash message must be string, ' . gettype($message) . ' given.',
-				1243258395
+				1243258396
 			);
 		}
 		/** @var $flashMessage \TYPO3\CMS\Core\Messaging\FlashMessage */

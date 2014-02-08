@@ -398,7 +398,7 @@ class TemplateView extends AbstractTemplateView {
 		$layoutPathAndFilename = $this->getLayoutPathAndFilename($layoutName);
 		$layoutSource = file_get_contents($layoutPathAndFilename);
 		if ($layoutSource === FALSE) {
-			throw new Exception\InvalidTemplateResourceException('"' . $layoutPathAndFilename . '" is not a valid template resource URI.', 1257246929);
+			throw new Exception\InvalidTemplateResourceException('"' . $layoutPathAndFilename . '" is not a valid template resource URI.', 1257246930);
 		}
 		return $layoutSource;
 	}
@@ -427,7 +427,7 @@ class TemplateView extends AbstractTemplateView {
 				return $layoutPathAndFilename;
 			}
 		}
-		throw new Exception\InvalidTemplateResourceException('The template files "' . implode('", "', $paths) . '" could not be loaded.', 1225709595);
+		throw new Exception\InvalidTemplateResourceException('The template files "' . implode('", "', $paths) . '" could not be loaded.', 1225709596);
 	}
 
 	/**
@@ -454,7 +454,7 @@ class TemplateView extends AbstractTemplateView {
 		$partialPathAndFilename = $this->getPartialPathAndFilename($partialName);
 		$partialSource = file_get_contents($partialPathAndFilename);
 		if ($partialSource === FALSE) {
-			throw new Exception\InvalidTemplateResourceException('"' . $partialPathAndFilename . '" is not a valid template resource URI.', 1257246929);
+			throw new Exception\InvalidTemplateResourceException('"' . $partialPathAndFilename . '" is not a valid template resource URI.', 1257246931);
 		}
 		return $partialSource;
 	}
@@ -474,7 +474,7 @@ class TemplateView extends AbstractTemplateView {
 				return $partialPathAndFilename;
 			}
 		}
-		throw new Exception\InvalidTemplateResourceException('The template files "' . implode('", "', $paths) . '" could not be loaded.', 1225709595);
+		throw new Exception\InvalidTemplateResourceException('The template files "' . implode('", "', $paths) . '" could not be loaded.', 1225709597);
 	}
 
 	/**

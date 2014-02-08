@@ -98,7 +98,7 @@ class CycleViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelpe
 	protected function initializeValues($values) {
 		if (is_object($values)) {
 			if (!$values instanceof \Traversable) {
-				throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception('CycleViewHelper only supports arrays and objects implementing \Traversable interface' , 1248728393);
+				throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception('CycleViewHelper only supports arrays and objects implementing \Traversable interface' , 1248728394);
 			}
 			$this->values = iterator_to_array($values, FALSE);
 		} else {

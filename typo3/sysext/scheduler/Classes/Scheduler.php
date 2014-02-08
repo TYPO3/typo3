@@ -311,7 +311,7 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface {
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'tx_scheduler_task', 'uid = ' . (int)$uid);
 		// If the task is not found, throw an exception
 		if ($GLOBALS['TYPO3_DB']->sql_num_rows($res) == 0) {
-			throw new \OutOfBoundsException('No task', 1247827244);
+			throw new \OutOfBoundsException('No task', 1247827245);
 		} else {
 			$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 			$GLOBALS['TYPO3_DB']->sql_free_result($res);

@@ -131,7 +131,7 @@ class FileStorageExtractionAdditionalFieldProvider implements \TYPO3\CMS\Schedul
 	 */
 	public function saveAdditionalFields(array $submittedData, \TYPO3\CMS\Scheduler\Task\AbstractTask $task) {
 		if ($task !== NULL && !$task instanceof FileStorageExtractionTask) {
-			throw new \InvalidArgumentException('Task not of type FileStorageExtractionTask', 1384275695);
+			throw new \InvalidArgumentException('Task not of type FileStorageExtractionTask', 1384275698);
 		}
 		$task->storageUid = (int)$submittedData['scheduler_fileStorageIndexing_storage'];
 		$task->maxFileCount = (int)$submittedData['scheduler_fileStorageIndexing_fileCount'];

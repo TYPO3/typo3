@@ -219,7 +219,7 @@ class LanguageStore implements \TYPO3\CMS\Core\SingletonInterface {
 		if (isset($this->configuration[$fileReference]['fileReference']) && trim($this->configuration[$fileReference]['fileReference']) !== '') {
 			return (string) $this->configuration[$fileReference]['fileReference'];
 		} else {
-			throw new \InvalidArgumentException(sprintf('Invalid file reference configuration for the current file (%s)', $fileReference), 1307293692);
+			throw new \InvalidArgumentException(sprintf('Invalid file reference configuration for the current file (%s)', $fileReference), 1307293693);
 		}
 	}
 

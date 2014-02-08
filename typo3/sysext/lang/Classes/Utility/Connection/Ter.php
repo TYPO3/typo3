@@ -225,7 +225,7 @@ class Ter extends \TYPO3\CMS\Extensionmanager\Utility\Connection\TerUtility {
 						}
 					}
 				} else {
-					throw new \TYPO3\CMS\Lang\Exception\Lang('Extension directory missing in zip file!', 1352566904);
+					throw new \TYPO3\CMS\Lang\Exception\Lang('Extension directory missing in zip file!', 1352566905);
 				}
 			}
 		} else {

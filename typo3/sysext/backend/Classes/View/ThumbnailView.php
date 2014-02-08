@@ -280,7 +280,7 @@ class ThumbnailView {
 	 */
 	public function errorGif($l1, $l2, $l3) {
 		if (!$GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib']) {
-			throw new \RuntimeException('TYPO3 Fatal Error: No gdlib. ' . $l1 . ' ' . $l2 . ' ' . $l3, 1270853952);
+			throw new \RuntimeException('TYPO3 Fatal Error: No gdlib. ' . $l1 . ' ' . $l2 . ' ' . $l3, 1270853954);
 		}
 		// Creates the basis for the error image
 		if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib_png']) {

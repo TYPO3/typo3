@@ -942,7 +942,7 @@ class ResourceStorage {
 		}
 		// Check if target folder is writable
 		if (!$this->checkFolderActionPermission('write', $targetFolder)) {
-			throw new Exception\InsufficientFolderAccessPermissionsException('You are not allowed to write to the target folder "' . $targetFolder->getIdentifier() . '"', 1319219349);
+			throw new Exception\InsufficientFolderAccessPermissionsException('You are not allowed to write to the target folder "' . $targetFolder->getIdentifier() . '"', 1319219350);
 		}
 	}
 
@@ -964,14 +964,14 @@ class ResourceStorage {
 		}
 		// Check if user is allowed to rename
 		if (!$this->checkFileActionPermission('rename', $file)) {
-			throw new Exception\InsufficientUserPermissionsException('You are not allowed to rename files."', 1319219349);
+			throw new Exception\InsufficientUserPermissionsException('You are not allowed to rename files."', 1319219351);
 		}
 		// Check if the user is allowed to write to folders
 		// Although it would be good to check, we cannot check here if the folder actually is writable
 		// because we do not know in which folder the file resides.
 		// So we rely on the driver to throw an exception in case the renaming failed.
 		if (!$this->checkFolderActionPermission('write')) {
-			throw new Exception\InsufficientFileWritePermissionsException('You are not allowed to write to folders', 1319219349);
+			throw new Exception\InsufficientFileWritePermissionsException('You are not allowed to write to folders', 1319219352);
 		}
 	}
 
@@ -997,7 +997,7 @@ class ResourceStorage {
 		}
 		// Check if user is allowed to copy
 		if (!$file->getStorage()->checkFileActionPermission('copy', $file)) {
-			throw new Exception\InsufficientFileReadPermissionsException('You are not allowed to copy the file "' . $file->getIdentifier() . '"', 1319550425);
+			throw new Exception\InsufficientFileReadPermissionsException('You are not allowed to copy the file "' . $file->getIdentifier() . '"', 1319550426);
 		}
 		// Check if targetFolder is writable
 		if (!$this->checkFolderActionPermission('write', $targetFolder)) {
@@ -1134,7 +1134,7 @@ class ResourceStorage {
 	 */
 	public function updateProcessedFile($localFilePath, ProcessedFile $processedFile) {
 		if (!file_exists($localFilePath)) {
-			throw new \InvalidArgumentException('File "' . $localFilePath . '" does not exist.', 1319552745);
+			throw new \InvalidArgumentException('File "' . $localFilePath . '" does not exist.', 1319552746);
 		}
 		$fileIdentifier = $this->driver->addFile($localFilePath, $this->getProcessingFolder()->getIdentifier(), $processedFile->getName());
 		// @todo check if we have to update the processed file other then the identifier
@@ -1556,7 +1556,7 @@ class ResourceStorage {
 		$this->emitPreFileCopySignal($file, $targetFolder);
 		// File exists and we should abort, let's abort
 		if ($conflictMode === 'cancel' && $targetFolder->hasFile($targetFileName)) {
-			throw new Exception\ExistingTargetFileNameException('The target file already exists.', 1320291063);
+			throw new Exception\ExistingTargetFileNameException('The target file already exists.', 1320291064);
 		}
 		// File exists and we should find another name, let's find another one
 		if ($conflictMode === 'renameNewFile' && $targetFolder->hasFile($targetFileName)) {

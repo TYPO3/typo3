@@ -221,7 +221,7 @@ class RequestBuilder implements \TYPO3\CMS\Core\SingletonInterface {
 		if (!in_array($actionName, $allowedActionNames)) {
 			$configuration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
 			if (isset($configuration['mvc']['throwPageNotFoundExceptionIfActionCantBeResolved']) && (boolean) $configuration['mvc']['throwPageNotFoundExceptionIfActionCantBeResolved']) {
-				throw new \TYPO3\CMS\Core\Error\Http\PageNotFoundException('The requested resource was not found', 1313857897);
+				throw new \TYPO3\CMS\Core\Error\Http\PageNotFoundException('The requested resource was not found', 1313857898);
 			} elseif (isset($configuration['mvc']['callDefaultActionIfActionCantBeResolved']) && (boolean) $configuration['mvc']['callDefaultActionIfActionCantBeResolved']) {
 				return $defaultActionName;
 			}

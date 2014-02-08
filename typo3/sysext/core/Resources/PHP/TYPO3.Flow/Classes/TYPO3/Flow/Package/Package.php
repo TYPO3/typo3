@@ -431,7 +431,7 @@ class Package implements PackageInterface {
 			}
 
 		} catch (\Exception $exception) {
-			throw new \TYPO3\Flow\Package\Exception($exception->getMessage(), 1166633720);
+			throw new \TYPO3\Flow\Package\Exception($exception->getMessage(), 1166633721);
 		}
 		return $classFiles;
 	}

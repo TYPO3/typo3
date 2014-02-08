@@ -61,7 +61,7 @@ class FileNode extends AbstractNode implements NodeInterface {
 		if (strstr($structure['name'], '/') !== FALSE) {
 			throw new \TYPO3\CMS\Install\FolderStructure\Exception\InvalidArgumentException(
 				'File name must not contain forward slash',
-				1366222204
+				1366222207
 			);
 		}
 		$this->name = $structure['name'];

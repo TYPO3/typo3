@@ -128,10 +128,10 @@ tt_content.' . $pluginSignature . ' {
 	 */
 	static public function registerPlugin($extensionName, $pluginName, $pluginTitle, $pluginIconPathAndFilename = NULL) {
 		if (empty($pluginName)) {
-			throw new \InvalidArgumentException('The plugin name must not be empty', 1239891987);
+			throw new \InvalidArgumentException('The plugin name must not be empty', 1239891988);
 		}
 		if (empty($extensionName)) {
-			throw new \InvalidArgumentException('The extension name was invalid (must not be empty and must match /[A-Za-z][_A-Za-z0-9]/)', 1239891989);
+			throw new \InvalidArgumentException('The extension name was invalid (must not be empty and must match /[A-Za-z][_A-Za-z0-9]/)', 1239891991);
 		}
 		$delimiterPosition = strrpos($extensionName, '.');
 		if ($delimiterPosition !== FALSE) {
@@ -189,7 +189,7 @@ tt_content.' . $pluginSignature . ' {
 	 */
 	static public function registerModule($extensionName, $mainModuleName = '', $subModuleName = '', $position = '', array $controllerActions = array(), array $moduleConfiguration = array()) {
 		if (empty($extensionName)) {
-			throw new \InvalidArgumentException('The extension name must not be empty', 1239891989);
+			throw new \InvalidArgumentException('The extension name must not be empty', 1239891990);
 		}
 		// Check if vendor name is prepended to extensionName in the format {vendorName}.{extensionName}
 		$vendorName = NULL;

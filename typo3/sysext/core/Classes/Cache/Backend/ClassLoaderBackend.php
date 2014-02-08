@@ -97,7 +97,7 @@ class ClassLoaderBackend extends SimpleFileBackend {
 	 */
 	public function get($entryIdentifier) {
 		if ($entryIdentifier !== basename($entryIdentifier)) {
-			throw new \InvalidArgumentException('The specified entry identifier must not contain a path segment.', 1334756877);
+			throw new \InvalidArgumentException('The specified entry identifier must not contain a path segment.', 1334756880);
 		}
 		$pathAndFilename = $this->cacheDirectory . $entryIdentifier . $this->cacheEntryFileExtension;
 		if (!@file_exists($pathAndFilename)) {
@@ -139,7 +139,7 @@ class ClassLoaderBackend extends SimpleFileBackend {
 	 */
 	public function has($entryIdentifier) {
 		if ($entryIdentifier !== basename($entryIdentifier)) {
-			throw new \InvalidArgumentException('The specified entry identifier must not contain a path segment.', 1334756878);
+			throw new \InvalidArgumentException('The specified entry identifier must not contain a path segment.', 1334756879);
 		}
 		$pathAndFilename = $this->cacheDirectory . $entryIdentifier . $this->cacheEntryFileExtension;
 		return @file_exists($pathAndFilename);

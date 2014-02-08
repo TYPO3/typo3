@@ -42,7 +42,7 @@ abstract class AbstractWriter implements \TYPO3\CMS\Core\Log\Writer\WriterInterf
 			if (method_exists($this, $methodName)) {
 				$this->{$methodName}($optionValue);
 			} else {
-				throw new \InvalidArgumentException('Invalid log writer option "' . $optionKey . '" for log writer of type "' . get_class($this) . '"', 1321696151);
+				throw new \InvalidArgumentException('Invalid log writer option "' . $optionKey . '" for log writer of type "' . get_class($this) . '"', 1321696152);
 			}
 		}
 	}

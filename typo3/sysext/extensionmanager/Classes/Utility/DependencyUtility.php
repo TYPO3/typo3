@@ -169,7 +169,7 @@ class DependencyUtility implements \TYPO3\CMS\Core\SingletonInterface {
 		} else {
 			throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException(
 				'checkPhpDependency can only check PHP dependencies. Found dependency with identifier "' . $dependency->getIdentifier() . '"',
-				1377977857
+				1377977858
 			);
 		}
 		return TRUE;

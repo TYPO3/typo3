@@ -247,7 +247,7 @@ class NormalizeCommand {
 			}
 			$resultList = implode(',', $resultListArray);
 		} else {
-			throw new \InvalidArgumentException('Unable to convert range to list of values.', 1291234985);
+			throw new \InvalidArgumentException('Unable to convert range to list of values.', 1291234986);
 		}
 		return (string) $resultList;
 	}
@@ -264,7 +264,7 @@ class NormalizeCommand {
 	 */
 	static protected function reduceListOfValuesByStepValue($stepExpression) {
 		if (strlen($stepExpression) === 0) {
-			throw new \InvalidArgumentException('Unable to convert step values.', 1291234985);
+			throw new \InvalidArgumentException('Unable to convert step values.', 1291234987);
 		}
 		$stepValuesAndStepArray = explode('/', $stepExpression);
 		if (count($stepValuesAndStepArray) < 1 || count($stepValuesAndStepArray) > 2) {
@@ -298,7 +298,7 @@ class NormalizeCommand {
 			$currentStep--;
 		}
 		if (count($validValues) === 0) {
-			throw new \InvalidArgumentException('Unable to convert step values: Result value list is empty.', 1291414958);
+			throw new \InvalidArgumentException('Unable to convert step values: Result value list is empty.', 1291414959);
 		}
 		return implode(',', $validValues);
 	}

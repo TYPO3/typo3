@@ -167,7 +167,7 @@ class Mapper implements \TYPO3\CMS\Core\SingletonInterface {
 			return $this->transformToObject($source, $target, '--none--');
 		}
 		if (!is_object($target) && !is_array($target)) {
-			throw new \TYPO3\CMS\Extbase\Property\Exception\InvalidTargetException('The target object must be a valid object or array, ' . gettype($target) . ' given.', 1187807099);
+			throw new \TYPO3\CMS\Extbase\Property\Exception\InvalidTargetException('The target object must be a valid object or array, ' . gettype($target) . ' given.', 1187807100);
 		}
 		$this->mappingResults = new \TYPO3\CMS\Extbase\Property\MappingResults();
 		if (is_object($target)) {

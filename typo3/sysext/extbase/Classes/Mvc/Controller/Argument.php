@@ -437,7 +437,7 @@ class Argument {
 			$transformedValue = $this->deprecatedPropertyMapper->map(array_keys($value), $value, $this->dataType);
 		}
 		if (!$transformedValue instanceof $this->dataType && ($transformedValue !== NULL || $this->isRequired())) {
-			throw new \TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentValueException('The value must be of type "' . $this->dataType . '", but was of type "' . (is_object($transformedValue) ? get_class($transformedValue) : gettype($transformedValue)) . '".' . ($this->deprecatedPropertyMapper->getMappingResults()->hasErrors() ? '<p>' . implode('<br />', $this->deprecatedPropertyMapper->getMappingResults()->getErrors()) . '</p>' : ''), 1251730701);
+			throw new \TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentValueException('The value must be of type "' . $this->dataType . '", but was of type "' . (is_object($transformedValue) ? get_class($transformedValue) : gettype($transformedValue)) . '".' . ($this->deprecatedPropertyMapper->getMappingResults()->hasErrors() ? '<p>' . implode('<br />', $this->deprecatedPropertyMapper->getMappingResults()->getErrors()) . '</p>' : ''), 1251730702);
 		}
 		return $transformedValue;
 	}

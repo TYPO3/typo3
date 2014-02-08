@@ -400,7 +400,7 @@ class Query implements \TYPO3\CMS\Extbase\Persistence\QueryInterface {
 			$resultingConstraint = array_shift($constraints);
 		}
 		if ($resultingConstraint === NULL) {
-			throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\InvalidNumberOfConstraintsException('There must be at least one constraint or a non-empty array of constraints given.', 1268056288);
+			throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\InvalidNumberOfConstraintsException('There must be at least one constraint or a non-empty array of constraints given.', 1268056289);
 		}
 		foreach ($constraints as $constraint) {
 			$resultingConstraint = $this->qomFactory->_or($resultingConstraint, $constraint);

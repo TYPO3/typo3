@@ -386,7 +386,7 @@ class PackageManager extends \TYPO3\Flow\Package\PackageManager implements \TYPO
 			$this->registerPackage($package, FALSE);
 
 			if (!$this->packages[$packageKey] instanceof \TYPO3\Flow\Package\PackageInterface) {
-				throw new \TYPO3\Flow\Package\Exception\CorruptPackageException(sprintf('The package class in package "%s" does not implement PackageInterface.', $packageKey), 1300782487);
+				throw new \TYPO3\Flow\Package\Exception\CorruptPackageException(sprintf('The package class in package "%s" does not implement PackageInterface.', $packageKey), 1300782488);
 			}
 
 			$this->packageKeys[strtolower($packageKey)] = $packageKey;

@@ -189,7 +189,7 @@ class ToolController extends AbstractController {
 		if (!($toolAction instanceof \TYPO3\CMS\Install\Controller\Action\ActionInterface)) {
 			throw new Exception(
 				$action . ' does not implement ActionInterface',
-				1369474308
+				1369474309
 			);
 		}
 		$toolAction->setController('tool');

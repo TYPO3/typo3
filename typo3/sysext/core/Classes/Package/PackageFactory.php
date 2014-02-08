@@ -58,7 +58,7 @@ class PackageFactory extends \TYPO3\Flow\Package\PackageFactory {
 				$packageClassName = str_replace('.', '\\', $packageKey) . '\Package';
 			}
 			if (!class_exists($packageClassName, FALSE)) {
-				throw new \TYPO3\Flow\Package\Exception\CorruptPackageException(sprintf('The package "%s" does not contain a valid package class. Check if the file "%s" really contains a class called "%s".', $packageKey, $packageClassPathAndFilename, $packageClassName), 1327587091);
+				throw new \TYPO3\Flow\Package\Exception\CorruptPackageException(sprintf('The package "%s" does not contain a valid package class. Check if the file "%s" really contains a class called "%s".', $packageKey, $packageClassPathAndFilename, $packageClassName), 1327587092);
 			}
 		} else {
 			$emConfPath = Files::concatenatePaths(array($packagePath, 'ext_emconf.php'));
@@ -86,7 +86,7 @@ class PackageFactory extends \TYPO3\Flow\Package\PackageFactory {
 	 */
 	public static function getPackageKeyFromManifest($manifest, $packagePath, $packagesBasePath) {
 		if (!is_object($manifest)) {
-			throw new  \TYPO3\Flow\Package\Exception\InvalidPackageManifestException('Invalid composer manifest.', 1348146450);
+			throw new  \TYPO3\Flow\Package\Exception\InvalidPackageManifestException('Invalid composer manifest.', 1348146451);
 		}
 		if (isset($manifest->type) && substr($manifest->type, 0, 10) === 'typo3-cms-') {
 			$relativePackagePath = substr($packagePath, strlen($packagesBasePath));

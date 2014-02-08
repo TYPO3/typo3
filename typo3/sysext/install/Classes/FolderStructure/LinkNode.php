@@ -175,7 +175,7 @@ class LinkNode extends AbstractNode implements NodeInterface {
 		if (!$this->isLink()) {
 			throw new \TYPO3\CMS\Install\FolderStructure\Exception\InvalidArgumentException(
 				'Node is not a link',
-				1380556246
+				1380556247
 			);
 		}
 

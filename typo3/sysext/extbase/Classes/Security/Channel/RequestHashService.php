@@ -74,11 +74,11 @@ class RequestHashService implements \TYPO3\CMS\Core\SingletonInterface {
 				}
 				// Strip off closing ] if needed
 				if (!is_array($currentPosition)) {
-					throw new \TYPO3\CMS\Extbase\Security\Exception\InvalidArgumentForRequestHashGenerationException('The form field name "' . $formField . '" collides with a previous form field name which declared the field as string. (String overridden by Array)', 1255072196);
+					throw new \TYPO3\CMS\Extbase\Security\Exception\InvalidArgumentForRequestHashGenerationException('The form field name "' . $formField . '" collides with a previous form field name which declared the field as string. (String overridden by Array)', 1255072197);
 				}
 				if ($i == count($formFieldParts) - 1) {
 					if (isset($currentPosition[$formFieldPart]) && is_array($currentPosition[$formFieldPart])) {
-						throw new \TYPO3\CMS\Extbase\Security\Exception\InvalidArgumentForRequestHashGenerationException('The form field name "' . $formField . '" collides with a previous form field name which declared the field as array. (Array overridden by String)', 1255072587);
+						throw new \TYPO3\CMS\Extbase\Security\Exception\InvalidArgumentForRequestHashGenerationException('The form field name "' . $formField . '" collides with a previous form field name which declared the field as array. (Array overridden by String)', 1255072588);
 					}
 					// Last iteration - add a string
 					if ($formFieldPart === '') {
@@ -88,7 +88,7 @@ class RequestHashService implements \TYPO3\CMS\Core\SingletonInterface {
 					}
 				} else {
 					if ($formFieldPart === '') {
-						throw new \TYPO3\CMS\Extbase\Security\Exception\InvalidArgumentForRequestHashGenerationException('The form field name "' . $formField . '" is invalid. Reason: "[]" used not as last argument.', 1255072832);
+						throw new \TYPO3\CMS\Extbase\Security\Exception\InvalidArgumentForRequestHashGenerationException('The form field name "' . $formField . '" is invalid. Reason: "[]" used not as last argument.', 1255072833);
 					}
 					if (!isset($currentPosition[$formFieldPart])) {
 						$currentPosition[$formFieldPart] = array();

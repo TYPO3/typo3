@@ -82,7 +82,7 @@ class Arguments extends \ArrayObject {
 	 */
 	public function append($value) {
 		if (!$value instanceof \TYPO3\CMS\Extbase\Mvc\Controller\Argument) {
-			throw new \InvalidArgumentException('Controller arguments must be valid TYPO3\\CMS\\Extbase\\Mvc\\Controller\\Argument objects.', 1187953786);
+			throw new \InvalidArgumentException('Controller arguments must be valid TYPO3\\CMS\\Extbase\\Mvc\\Controller\\Argument objects.', 1187953787);
 		}
 		$this->offsetSet(NULL, $value);
 	}
