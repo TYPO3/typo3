@@ -1,0 +1,19 @@
+ # global configuration
+
+config.tx_extbase {
+	persistence{
+		classes {
+			Extbase\Domain\ModelFrontendUser {
+				subclasses {
+					ExtbaseTeam\BlogExample\Domain\Model\Administrator = ExtbaseTeam\BlogExample\Domain\Model\Administrator
+				}
+			}
+			ExtbaseTeam\BlogExample\Domain\Model\Administrator {
+				mapping {
+					tableName = fe_users
+					recordType = ExtbaseTeam\BlogExample\Domain\Model\Administrator
+				}
+			}
+		}
+	}
+}

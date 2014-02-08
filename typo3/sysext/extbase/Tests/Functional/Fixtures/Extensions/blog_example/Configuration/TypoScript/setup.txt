@@ -1,0 +1,72 @@
+ # Plugin configuration
+plugin.tx_blogexample {
+	settings {
+		 # maximum number of posts to display per page
+		postsPerPage = 3
+		 # Editor FE Usergroup uid
+		editorUsergroupUid = {$plugin.tx_blogexample.settings.editorUsergroupUid}
+		 # Plaintext page type number
+		plaintextPageType = {$plugin.tx_blogexample.settings.plaintextPageType}
+	}
+	persistence {
+		storagePid = {$plugin.tx_blogexample.persistence.storagePid}
+	}
+	view {
+		templateRootPath = {$plugin.tx_blogexample.view.templateRootPath}
+		partialRootPath = {$plugin.tx_blogexample.view.partialRootPath}
+		layoutRootPath = {$plugin.tx_blogexample.view.layoutRootPath}
+		defaultPid = auto
+	}
+	# This is an example how to modify the translation
+	_LOCAL_LANG {
+		default {
+			someUnusedKey = foo
+		}
+	}
+}
+
+ # Module configuration
+module.tx_blogexample {
+	settings < plugin.tx_blogexample.settings
+	persistence < plugin.tx_blogexample.persistence
+	view < plugin.tx_blogexample.view
+	view {
+		templateRootPath = {$module.tx_blogexample.view.templateRootPath}
+		partialRootPath = {$module.tx_blogexample.view.partialRootPath}
+		layoutRootPath = {$module.tx_blogexample.view.layoutRootPath}
+	}
+}
+
+ # plaintext rendering
+tx_blogexample_plaintext = PAGE
+tx_blogexample_plaintext {
+	typeNum = {$plugin.tx_blogexample.settings.plaintextPageType}
+	10 = USER
+	10 {
+		userFunc = tx_extbase_core_bootstrap->run
+		extensionName = BlogExample
+		pluginName = PostList
+		switchableControllerActions {
+			Post {
+				1 = index
+			}
+		}
+	}
+	config {
+		admPanel = 0
+		no_cache = 1
+		disableAllHeaderCode = 1
+		additionalHeaders = Content-type:text/plain
+		defaultGetVars {
+			tx_blogexample_postlist.format = txt
+		}
+	}
+}
+
+ # Adjust plaintext rendering, if blog_example runs as single, fully fledged plugin
+[globalVar = TYPO3_CONF_VARS|EXTCONF|blog_example|registerSinglePlugin > 0]
+	tx_blogexample_plaintext {
+		10.pluginName = Pi1
+		#config.defaultGetVars =
+	}
+[end]

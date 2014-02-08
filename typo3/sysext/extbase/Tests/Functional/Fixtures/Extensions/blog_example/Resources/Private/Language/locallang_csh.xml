@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<type>CSH</type>
+		<description>Language labels for the blog_example context sensitive help (CSH)</description>
+		<csh_table>_MOD_txblogexampleM1</csh_table>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index=".alttitle">Blog Example</label>
+			<label index=".description">This is some dummy help. But it's context sensitive!</label>
+			<label index=".seeAlso">_MOD_web_func:tx_wizardcrpages, _MOD_web_func:tx_wizardsortpages</label>
+		</languageKey>
+	</data>
+</T3locallang>

@@ -1,0 +1,30 @@
+plugin.tx_blogexample {
+	settings {
+		 # cat=plugin.tx_blogexample/a; type=int+; label=Editor FE Usergroup uid:Enter the uid of the FE Usergroup that should be allowed to edit Blogs and Post in the frontend
+		editorUsergroupUid = 1
+		 # cat=plugin.tx_blogexample/a; type=int+; label=Plaintext page type:If the default plaintext page typenum (778) conflicts with your setup, you can override this setting here
+		plaintextPageType = 778
+	}
+	view {
+		 # cat=plugin.tx_blogexample/file; type=string; label=Path to template root (FE)
+		templateRootPath = EXT:blog_example/Resources/Private/Templates/
+		 # cat=plugin.tx_blogexample/file; type=string; label=Path to template partials (FE)
+		partialRootPath = EXT:blog_example/Resources/Private/Partials/
+		 # cat=plugin.tx_blogexample/file; type=string; label=Path to template layouts (FE)
+		layoutRootPath = EXT:blog_example/Resources/Private/Layouts/
+	}
+	persistence {
+		 # cat=plugin.tx_blogexample//a; type=int+; label=Default storage PID
+		storagePid =
+	}
+}
+module.tx_blogexample {
+	view {
+		 # cat=module.tx_blogexample/file; type=string; label=Path to template root (BE)
+		templateRootPath = EXT:blog_example/Resources/Private/Backend/Templates/
+		 # cat=module.tx_blogexample/file; type=string; label=Path to template partials (BE)
+		partialRootPath = EXT:blog_example/Resources/Private/Partials/
+		 # cat=module.tx_blogexample/file; type=string; label=Path to template layouts (BE)
+		layoutRootPath = EXT:blog_example/Resources/Private/Backend/Layouts/
+	}
+}

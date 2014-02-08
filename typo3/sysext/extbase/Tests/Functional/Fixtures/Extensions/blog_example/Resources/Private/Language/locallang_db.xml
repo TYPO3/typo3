@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<type>database</type>
+		<description>Language labels for database tables/fields belonging to extension 'blog_example'</description>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="tx_blogexample_domain_model_blog">Blog</label>
+			<label index="tx_blogexample_domain_model_blog.title">Blog title</label>
+			<label index="tx_blogexample_domain_model_blog.description">Short description</label>
+			<label index="tx_blogexample_domain_model_blog.logo">Logo</label>
+			<label index="tx_blogexample_domain_model_blog.posts">Posts</label>
+			<label index="tx_blogexample_domain_model_blog.administrator">Administrator</label>
+			<label index="tx_blogexample_domain_model_post">Post</label>
+			<label index="tx_blogexample_domain_model_post.blog">Related to</label>
+			<label index="tx_blogexample_domain_model_post.title">Title</label>
+			<label index="tx_blogexample_domain_model_post.date">Date</label>
+			<label index="tx_blogexample_domain_model_post.author">Author</label>
+			<label index="tx_blogexample_domain_model_post.content">Content</label>
+			<label index="tx_blogexample_domain_model_post.votes">Votes</label>
+			<label index="tx_blogexample_domain_model_post.published">Published</label>
+			<label index="tx_blogexample_domain_model_post.tags">Tags</label>
+			<label index="tx_blogexample_domain_model_post.comments">Comments</label>
+			<label index="tx_blogexample_domain_model_post.related">Related posts</label>
+			<label index="tx_blogexample_domain_model_person">Person</label>
+			<label index="tx_blogexample_domain_model_person.firstname">Firstname</label>
+			<label index="tx_blogexample_domain_model_person.lastname">Lastname</label>
+			<label index="tx_blogexample_domain_model_person.email">E-Mail</label>
+			<label index="tx_blogexample_domain_model_person.avatar">Avatar</label>
+			<label index="tx_blogexample_domain_model_comment">Comment</label>
+			<label index="tx_blogexample_domain_model_comment.date">Date</label>
+			<label index="tx_blogexample_domain_model_comment.author">Author</label>
+			<label index="tx_blogexample_domain_model_comment.email">Email</label>
+			<label index="tx_blogexample_domain_model_comment.content">Content</label>
+			<label index="tx_blogexample_domain_model_tag">Tag</label>
+			<label index="tx_blogexample_domain_model_tag.name">Name</label>
+			<label index="tx_blogexample_domain_model_tag.posts">Related posts</label>
+			<label index="fe_users.tx_extbase_type.Tx_BlogExample_Domain_Model_Administrator">Blog Admin (BlogExample)</label>
+		</languageKey>
+	</data>
+</T3locallang>

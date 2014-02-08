@@ -1,0 +1,3 @@
+ # Include BlogExample default styles
+
+page.includeCSS.tx_blogexample = EXT:blog_example/Resources/Public/Css/BlogExample.css
