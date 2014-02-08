@@ -76,8 +76,8 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
 		$theOutput = $this->pObj->doc->header($GLOBALS['LANG']->getLL('lang_title'));
 		if ($this->pObj->id) {
 			// Depth selector:
-			$h_func = BackendUtility::getFuncMenu($this->pObj->id, 'SET[depth]', $this->pObj->MOD_SETTINGS['depth'], $this->pObj->MOD_MENU['depth'], 'index.php');
-			$h_func .= BackendUtility::getFuncMenu($this->pObj->id, 'SET[lang]', $this->pObj->MOD_SETTINGS['lang'], $this->pObj->MOD_MENU['lang'], 'index.php');
+			$h_func = BackendUtility::getFuncMenu($this->pObj->id, 'SET[depth]', $this->pObj->MOD_SETTINGS['depth'], $this->pObj->MOD_MENU['depth']);
+			$h_func .= BackendUtility::getFuncMenu($this->pObj->id, 'SET[lang]', $this->pObj->MOD_SETTINGS['lang'], $this->pObj->MOD_MENU['lang']);
 			$theOutput .= $h_func;
 			// Add CSH:
 			$theOutput .= BackendUtility::cshItem('_MOD_web_info', 'lang', $GLOBALS['BACK_PATH'], '|<br />');

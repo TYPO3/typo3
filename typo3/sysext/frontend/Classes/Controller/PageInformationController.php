@@ -77,7 +77,7 @@ class PageInformationController extends \TYPO3\CMS\Backend\Module\AbstractFuncti
 		$dblist->descrTable = '_MOD_' . $GLOBALS['MCONF']['name'];
 		$dblist->backPath = $BACK_PATH;
 		$dblist->thumbs = 0;
-		$dblist->script = 'index.php';
+		$dblist->script = '_DISPATCH';
 		$dblist->showIcon = 0;
 		$dblist->setLMargin = 0;
 		$dblist->agePrefixes = $LANG->sL('LLL:EXT:lang/locallang_core.xlf:labels.minutesHoursDaysYears');
@@ -85,8 +85,8 @@ class PageInformationController extends \TYPO3\CMS\Backend\Module\AbstractFuncti
 		// PAGES:
 		$this->pObj->MOD_SETTINGS['pages_levels'] = $this->pObj->MOD_SETTINGS['depth'];
 		// ONLY for the sake of dblist module which uses this value.
-		$h_func = BackendUtility::getFuncMenu($this->pObj->id, 'SET[depth]', $this->pObj->MOD_SETTINGS['depth'], $this->pObj->MOD_MENU['depth'], 'index.php');
-		$h_func .= BackendUtility::getFuncMenu($this->pObj->id, 'SET[pages]', $this->pObj->MOD_SETTINGS['pages'], $this->pObj->MOD_MENU['pages'], 'index.php');
+		$h_func = BackendUtility::getFuncMenu($this->pObj->id, 'SET[depth]', $this->pObj->MOD_SETTINGS['depth'], $this->pObj->MOD_MENU['depth']);
+		$h_func .= BackendUtility::getFuncMenu($this->pObj->id, 'SET[pages]', $this->pObj->MOD_SETTINGS['pages'], $this->pObj->MOD_MENU['pages']);
 		$dblist->start($this->pObj->id, 'pages', 0);
 		$dblist->generateList();
 		// CSH
