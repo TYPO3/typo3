@@ -194,6 +194,12 @@ Example:
   and not
     <img src="fileadmin/xxxx.jpg" alt="Alt-Attribute" title="Alt-Attribute" />
 
+* Date view helper uses configured default format
+
+The fluid date view helper now uses $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy']
+as fallback format instead of hardcoded Y-m-d if no explicit format is given as
+argument. This may change the output of dates from Y-m-d to d-m-y.
+
 ### System categories
 
 * Activated by default

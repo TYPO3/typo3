@@ -90,7 +90,11 @@ class DateViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 	 * @throws \TYPO3\CMS\Fluid\Core\ViewHelper\Exception
 	 * @api
 	 */
-	public function render($date = NULL, $format = 'Y-m-d') {
+	public function render($date = NULL, $format = '') {
+		if ($format === '') {
+			$format = $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] ?: 'Y-m-d';
+		}
+
 		if ($date === NULL) {
 			$date = $this->renderChildren();
 			if ($date === NULL) {
