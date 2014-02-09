@@ -65,7 +65,7 @@ class t3lib_mail_MailerTest extends tx_phpunit_testcase {
 		return array(
 			'smtp but no host' => array(array('transport' => 'smtp')),
 			'mbox but no file' => array(array('transport' => 'mbox')),
-			'no instance of Swift_Transport' => array(array('transport' => 'TYPO3\\CMS\\Core\\Messaging\\ErrorpageMessage'))
+			'no instance of Swift_Transport' => array(array('transport' => 't3lib_message_ErrorpageMessage'))
 		);
 	}
 
