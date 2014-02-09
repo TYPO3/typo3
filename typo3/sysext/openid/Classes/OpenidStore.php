@@ -24,6 +24,8 @@ namespace TYPO3\CMS\Openid;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('openid') . 'lib/php-openid/Auth/OpenID/Interface.php';
+
 /**
  * This class is a TYPO3-specific OpenID store.
  *
