@@ -182,7 +182,7 @@ class LocalizationUtility {
 	 *
 	 * @return void
 	 */
-	protected function setLanguageKeys() {
+	static protected function setLanguageKeys() {
 		self::$languageKey = 'default';
 		self::$alternativeLanguageKeys = array();
 		if (TYPO3_MODE === 'FE') {
