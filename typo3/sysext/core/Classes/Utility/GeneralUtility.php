@@ -1485,7 +1485,7 @@ class GeneralUtility {
 		if ($count === 2) {
 			$position = strrpos($string, $delimiter);
 			return array(substr($string, 0, $position), substr($string, $position + 1));
-		} else if ($count <= 1) {
+		} elseif ($count <= 1) {
 			return array($string);
 		} else {
 			$explodedValues = explode($delimiter, strrev($string), $count);
