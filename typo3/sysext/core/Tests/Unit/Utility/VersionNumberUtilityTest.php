@@ -119,7 +119,11 @@ class VersionNumberUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			array(
 				'6.0.1',
 				'6.0.1'
-			)
+			),
+			array(
+				'6.2.0beta5',
+				'6.2.0'
+			),
 		);
 	}
 

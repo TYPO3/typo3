@@ -92,17 +92,18 @@ class VersionNumberUtility {
 	}
 
 	/**
-	 * Removes -dev -alpha -beta -RC states from a version number
-	 * and replaces them by .0
+	 * Removes -dev -alpha -beta -RC states (also without '-' prefix) from a version number
+	 * and replaces them by .0 and normalizes to a three part version number
 	 *
 	 * @return string
 	 */
 	static public function getNumericTypo3Version() {
 		$t3version = static::getCurrentTypo3Version();
-		if (stripos($t3version, '-dev') || stripos($t3version, '-alpha') || stripos($t3version, '-beta') || stripos($t3version, '-RC')) {
-			// find the last occurence of "-" and replace that part with a ".0"
-			$t3version = substr($t3version, 0, strrpos($t3version, '-')) . '.0';
-		}
+		$t3version = preg_replace('/-?(dev|alpha|beta|RC).*$/', '', $t3version);
+		$parts = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode('.', $t3version . '..');
+		$t3version = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($parts[0], 0, 999) . '.' .
+			\TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($parts[1], 0, 999) . '.' .
+			\TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($parts[2], 0, 999);
 		return $t3version;
 	}
 
