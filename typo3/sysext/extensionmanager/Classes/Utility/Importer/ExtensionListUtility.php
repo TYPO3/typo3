@@ -69,6 +69,7 @@ class ExtensionListUtility implements \SplObserver {
 		'extension_key',
 		'version',
 		'integer_version',
+		'current_version',
 		'alldownloadcounter',
 		'downloadcounter',
 		'title',
@@ -92,7 +93,7 @@ class ExtensionListUtility implements \SplObserver {
 	 *
 	 * @var array
 	 */
-	static protected $fieldIndicesNoQuote = array(2, 3, 4, 10, 12, 13, 14, 15);
+	static protected $fieldIndicesNoQuote = array(2, 3, 5, 11, 13, 14, 15, 16);
 
 	/**
 	 * Keeps repository UID.
@@ -181,6 +182,8 @@ class ExtensionListUtility implements \SplObserver {
 			$subject->getExtkey(),
 			$subject->getVersion(),
 			$versionRepresentations['version_int'],
+			// initialize current_version, correct value computed later:
+			0,
 			(int)$subject->getAlldownloadcounter(),
 			(int)$subject->getDownloadcounter(),
 			!is_null($subject->getTitle()) ? $subject->getTitle() : '',
