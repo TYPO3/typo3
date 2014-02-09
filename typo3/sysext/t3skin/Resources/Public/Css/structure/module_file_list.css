@@ -2,26 +2,6 @@
 File > List
 - - - - - - - - - - - - - - - - - - - - - */
 
-table#typo3-filelist {
-	width: 100%;
-}
-
-table#typo3-filelist img {
-	vertical-align: middle;
-}
-
-table#typo3-filelist tr td {
-	padding: 5px 3px;
-}
-
-table#typo3-filelist tr.t3-row-header td {
-	padding: 3px;
-}
-
-table#typo3-filelist tr.c-headLine td {
-	height: 16px;
-}
-
 table#typo3-filelist tr td div.typo3-clipCtrl {
 	float: left;
 }
@@ -29,10 +9,6 @@ table#typo3-filelist tr td div.typo3-clipCtrl {
 table#typo3-filelist tr td div.typo3-editCtrl {
 	float: left;
 	padding-right: 10px;
-}
-
-table#typo3-filelist-top tr {
-	vertical-align: bottom;
 }
 
 /* - - - - - - - - - - - - - - - - - - - - -

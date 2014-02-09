@@ -3,44 +3,10 @@ File > List
 
 - - - - - - - - - - - - - - - - - - - - - */
 
-table#typo3-filelist {
-	background: #fff;
-	border: 1px solid #a2aab8;
-}
-
-table#typo3-filelist tr td.c-headLine {
-	background-color: #b8bec9;
-	background-image: url('../../../../icons/gfx/alt_menu_mainitem_bg.gif');
-	background-repeat: repeat-x;
-	font-weight: bold;
-}
-
-table#typo3-filelist tr td.c-headLine a {
-	color: #fff;
-}
-
-table#typo3-filelist tr.file_list_normal:nth-child(even) td {
-	background-color: #f7f7f7;
-}
-
-table#typo3-filelist tr.file_list_normal:nth-child(odd) td {
-	background-color: #ffffff;
-}
-
-table#typo3-filelist tbody tr.file_list_normal:hover td {
-	background-color: #dedede;
-}
-
-table#typo3-filelist tr td img {
-	text-align: center;
-}
-
-
 table#typo3-filelist tr td div.typo3-clipCtrl,
 table#typo3-filelist tr td div.typo3-editCtrl {
 	text-align: center;
 }
-
 
 #typo3-inner-docbody {
 	-webkit-transition:border 0.2s ease;

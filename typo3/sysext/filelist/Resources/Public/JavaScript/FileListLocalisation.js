@@ -18,14 +18,12 @@
  * JavaScript RequireJS module called "TYPO3/CMS/Backend/FileListLocalisation"
  *
  */
-define('TYPO3/CMS/Backend/FileListLocalisation', ['jquery'], function($) {
-
+define('TYPO3/CMS/Filelist/FileListLocalisation', ['jquery'], function($) {
 
 	$('a.filelist-translationToggler').click(function(event) {
 		var id = $(this).attr('data-fileid');
-		$('tr[data-fileid="' + id + '"]').toggle();
+		$('div[data-fileid="' + id + '"]').toggle();
 	});
-	$('tr.localisationData').hide();
 
 	return null;
 });

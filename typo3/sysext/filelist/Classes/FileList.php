@@ -372,7 +372,7 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 				}
 			}
 
-			$out .= '<thead>' . $this->addelement(1, '&nbsp;', $theData, ' class="t3-row-header"', '') . '</thead>';
+			$out .= '<thead>' . $this->addelement(1, '&nbsp;', $theData) . '</thead>';
 			$out .= '<tbody>' . $iOut . '</tbody>';
 			// half line is drawn
 			// finish
@@ -380,7 +380,7 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 		<!--
 			File list table:
 		-->
-			<table cellpadding="0" cellspacing="0" id="typo3-filelist">
+			<table class="t3-table" id="typo3-filelist">
 				' . $out . '
 			</table>';
 
@@ -515,7 +515,7 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 						}
 					}
 				}
-				$out .= $this->addelement(1, $theIcon, $theData, ' class="file_list_normal"');
+				$out .= $this->addelement(1, $theIcon, $theData);
 			}
 			$this->eCounter++;
 			$this->dirCounter = $this->eCounter;
@@ -670,9 +670,46 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 								$processedFile = $fileObject->process(\TYPO3\CMS\Core\Resource\ProcessedFile::CONTEXT_IMAGEPREVIEW, array());
 								if ($processedFile) {
 									$thumbUrl = $processedFile->getPublicUrl(TRUE);
-									$theData[$field] .= '<br /><img src="' . $thumbUrl . '" hspace="2" title="' . htmlspecialchars($fileName) . '" alt="" />';
+									$theData[$field] .= '<br /><img src="' . $thumbUrl . '" title="' . htmlspecialchars($fileName) . '" alt="" />';
 								}
 							}
+
+							if (!empty($systemLanguages)) {
+								$metaDataRecord = $fileObject->_getMetaData();
+								$translations = $this->getTranslationsForMetaData($metaDataRecord);
+								$languageCode = '';
+
+								foreach ($systemLanguages as $language) {
+									$languageId = $language['uid'];
+									$flagIcon = $language['flagIcon'];
+
+									if (array_key_exists($languageId, $translations)) {
+										$flagButtonIcon = IconUtility::getSpriteIcon(
+											'actions-document-open',
+											array('title' => $fileName),
+											array($flagIcon . '-overlay' => array()));
+										$data = array(
+											'sys_file_metadata' => array($translations[$languageId]['uid'] => 'edit')
+										);
+										$editOnClick = BackendUtility::editOnClick(GeneralUtility::implodeArrayForUrl('edit', $data), $GLOBALS['BACK_PATH'], $this->listUrl());
+										$languageCode .= sprintf('<a href="#" onclick="%s">%s</a>', htmlspecialchars($editOnClick), $flagButtonIcon);
+
+									} else {
+										$href = $GLOBALS['SOBE']->doc->issueCommand(
+											'&cmd[sys_file_metadata][' . $metaDataRecord['uid'] . '][localize]=' . $languageId,
+											$this->backPath . 'alt_doc.php?justLocalized=' . rawurlencode(('sys_file_metadata:' . $metaDataRecord['uid'] . ':' . $languageId)) .
+											'&returnUrl=' . rawurlencode($this->listURL()) . BackendUtility::getUrlToken('editRecord')
+										);
+										$flagButtonIcon = IconUtility::getSpriteIcon($flagIcon);
+										$languageCode .= sprintf('<a href="%s">%s</a> ', htmlspecialchars($href), $flagButtonIcon);
+									}
+								}
+
+								// Hide flag button bar when not translated yet
+								$theData[$field] .= '<div class="localisationData" data-fileid="' . $fileObject->getUid() . '"' .
+										(empty($translations) ? ' style="display: none;"' : '') . '>' . $languageCode . '</div>';
+							}
+
 							break;
 						default:
 							$theData[$field] = '';
@@ -681,41 +718,8 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 							}
 					}
 				}
-				$out .= $this->addelement(1, $theIcon, $theData, ' class="file_list_normal"');
+				$out .= $this->addelement(1, $theIcon, $theData);
 
-				if (!empty($systemLanguages)) {
-					$metaDataRecord = $fileObject->_getMetaData();
-					$translations = $this->getTranslationsForMetaData($metaDataRecord);
-					$code = IconUtility::getSpriteIcon('empty-empty');
-					foreach ($systemLanguages as $language) {
-						$languageId = $language['uid'];
-
-						$flagIcon = $language['flagIcon'];
-						if (array_key_exists($languageId, $translations)) {
-
-							$theIcon = IconUtility::getSpriteIcon(
-								'actions-document-open',
-								array('title' => $fileName),
-								array($flagIcon . '-overlay' => array()));
-							$data = array(
-								'sys_file_metadata' => array($translations[$languageId]['uid'] => 'edit')
-							);
-							$editOnClick = BackendUtility::editOnClick(GeneralUtility::implodeArrayForUrl('edit', $data), $GLOBALS['BACK_PATH'], $this->listUrl());
-							$code .= sprintf('<a href="#" onclick="%s">%s</a>', htmlspecialchars($editOnClick), $theIcon);
-
-						} else {
-							$href = $GLOBALS['SOBE']->doc->issueCommand(
-								'&cmd[sys_file_metadata][' . $metaDataRecord['uid'] . '][localize]=' . $languageId,
-								$this->backPath . 'alt_doc.php?justLocalized=' . rawurlencode(('sys_file_metadata:' . $metaDataRecord['uid'] . ':' . $languageId)) .
-								'&returnUrl=' . rawurlencode($this->listURL()) . BackendUtility::getUrlToken('editRecord')
-							);
-							$theIcon = IconUtility::getSpriteIcon($flagIcon);
-
-							$code .= sprintf('<a href="%s">%s</a>', htmlspecialchars($href), $theIcon);
-						}
-					}
-					$out .= '<tr class="file_list_normal localisationData" data-fileid="' . $fileObject->getUid() . '"><td></td><td colspan="' . count($this->fieldArray) . '">' . $code . '</td></tr>';
-				}
 			}
 			$this->eCounter++;
 		}
