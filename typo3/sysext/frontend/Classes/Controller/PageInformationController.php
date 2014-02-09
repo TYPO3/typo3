@@ -77,7 +77,7 @@ class PageInformationController extends \TYPO3\CMS\Backend\Module\AbstractFuncti
 		$dblist->descrTable = '_MOD_' . $GLOBALS['MCONF']['name'];
 		$dblist->backPath = $BACK_PATH;
 		$dblist->thumbs = 0;
-		$dblist->script = '_DISPATCH';
+		$dblist->script = BackendUtility::getModuleUrl('web_info');
 		$dblist->showIcon = 0;
 		$dblist->setLMargin = 0;
 		$dblist->agePrefixes = $LANG->sL('LLL:EXT:lang/locallang_core.xlf:labels.minutesHoursDaysYears');

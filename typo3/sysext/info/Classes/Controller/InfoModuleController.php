@@ -109,7 +109,7 @@ class InfoModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 			');
 			// Setting up the context sensitive menu:
 			$this->doc->getContextMenuCode();
-			$this->doc->form = '<form action="index.php" method="post" name="webinfoForm">';
+			$this->doc->form = '<form action="' . htmlspecialchars(BackendUtility::getModuleUrl('web_info')) . '" method="post" name="webinfoForm">';
 			$vContent = $this->doc->getVersionSelector($this->id, 1);
 			if ($vContent) {
 				$this->content .= $this->doc->section('', $vContent);

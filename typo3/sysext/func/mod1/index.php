@@ -31,9 +31,6 @@
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-unset($MCONF);
-require __DIR__ . '/conf.php';
-require $BACK_PATH . 'init.php';
 
 /** @var $SOBE \TYPO3\CMS\Func\Controller\PageFunctionsController */
 $SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Func\\Controller\\PageFunctionsController');

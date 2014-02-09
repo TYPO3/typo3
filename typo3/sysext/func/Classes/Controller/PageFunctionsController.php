@@ -98,7 +98,7 @@ class PageFunctionsController extends \TYPO3\CMS\Backend\Module\BaseScriptClass 
 			');
 			// Setting up the context sensitive menu:
 			$this->doc->getContextMenuCode();
-			$this->doc->form = '<form action="index.php" method="post"><input type="hidden" name="id" value="' . $this->id . '" />';
+			$this->doc->form = '<form action="' . htmlspecialchars(BackendUtility::getModuleUrl('web_func')) . '" method="post"><input type="hidden" name="id" value="' . htmlspecialchars($this->id) . '" />';
 			$vContent = $this->doc->getVersionSelector($this->id, TRUE);
 			if ($vContent) {
 				$this->content .= $this->doc->section('', $vContent);

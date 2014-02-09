@@ -141,7 +141,14 @@ class SortPagesWizardModuleFunction extends \TYPO3\CMS\Backend\Module\AbstractFu
 	 * @todo Define visibility
 	 */
 	public function wiz_linkOrder($title, $order) {
-		return '<a class="t3-link" href="' . htmlspecialchars(('index.php?id=' . $GLOBALS['SOBE']->id . '&sortByField=' . $order)) . '" onclick="return confirm(' . GeneralUtility::quoteJSvalue($GLOBALS['LANG']->getLL('wiz_changeOrder_msg1')) . ')">' . htmlspecialchars($title) . '</a>';
+		return '<a class="t3-link" href="' . htmlspecialchars(
+			BackendUtility::getModuleUrl('web_func',
+				array(
+					'id' => $GLOBALS['SOBE']->id,
+					'sortByField' => $order
+				)
+			)
+		) . '" onclick="return confirm(' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue($GLOBALS['LANG']->getLL('wiz_changeOrder_msg1')) . ')">' . htmlspecialchars($title) . '</a>';
 	}
 
 }
