@@ -2,6 +2,7 @@
 ul.x-tab-strip.x-tab-strip-top {
 	width: 100%;
 	margin-bottom: 0;
+	padding-left: 0;
 }
 ul.x-tab-strip.x-tab-strip-top li.last {
 	float: right;

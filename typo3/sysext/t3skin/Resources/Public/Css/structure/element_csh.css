@@ -96,18 +96,6 @@ div.typo3-view-help div.c-toc p {
 	margin: 0;
 }
 
-div.typo3-view-help div.c-toc ul {
-	padding: 2px 5px;
-}
-
-div.typo3-view-help div.c-toc ul li ul {
-	margin-left: 10px;
-}
-
-div.typo3-view-help div.c-toc ul li {
-	padding: 2px;
-}
-
 div.typo3-view-help .manual-title,
 div.typo3-view-help .introduction {
 	padding: 0 12px 6px;
@@ -116,7 +104,6 @@ div.typo3-view-help .introduction {
 div.typo3-view-help img.c-inlineimg  {
 	margin-left: 10px;
 }
-
 
 /*** new help code ***/
 .t3-help-inline {
@@ -211,18 +198,6 @@ div.t3-view-help div.c-toc {
 
 div.t3-view-help div.c-toc p {
 	margin: 0;
-}
-
-div.t3-view-help div.c-toc ul {
-	padding: 2px 5px;
-}
-
-div.t3-view-help div.c-toc ul li ul {
-	margin-left: 10px;
-}
-
-div.t3-view-help div.c-toc ul li {
-	padding: 2px;
 }
 
 div.t3-view-help .manual-title,

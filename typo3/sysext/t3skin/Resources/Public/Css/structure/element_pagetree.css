@@ -51,6 +51,11 @@ Pagetree
 	padding-top: 2px;
 }
 
+#typo3-pagetree ul {
+	padding-left: 0;
+	list-style: none;
+}
+
 #typo3-pagetree ul.x-tree-root-ct {
 	padding-top: 24px;
 	margin-bottom: 50px;

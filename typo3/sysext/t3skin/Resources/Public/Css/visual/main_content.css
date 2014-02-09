@@ -28,6 +28,16 @@ pre {
 	font-family: "Lucida Console", "Lucida Sans Typewriter", "Bitstream Vera Sans Mono", monospace;
 }
 
+/* Lists */
+
+ul {
+	list-style-type: disc;
+}
+
+ol {
+	list-style-type: decimal;
+}
+
 /* Links in general */
 a {
 	color: #212424;

@@ -2,6 +2,8 @@
 
 ul.x-tab-strip.x-tab-strip-top {
 	margin-bottom: 0;
+	list-style: none;
+	padding-left: 0;
 }
 
 #linkvalidator-main div.x-tab-panel-bwrap div div div div.x-panel-body {

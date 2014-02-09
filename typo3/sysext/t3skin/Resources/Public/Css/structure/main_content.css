@@ -40,6 +40,13 @@ blockquote {
 	margin-bottom: 1.25em;
 }
 
+/* Lists */
+
+ul,
+ol {
+	padding-left: 3em;
+}
+
 /* Preformatted text - not used so much in TYPO3 */
 pre {
 	margin: 0px;

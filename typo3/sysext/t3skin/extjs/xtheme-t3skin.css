@@ -1288,6 +1288,8 @@ td.x-grid3-hd-over, td.x-grid3-hd-menu-open {
 
 .x-tree ul {
 	margin-bottom: 0;
+	list-style: none;
+	padding-left: 0;
 }
 
 .x-tree .x-panel-body{

@@ -25,6 +25,7 @@ Module menu
 #typo3-menu,
 #typo3-menu ul {
 	list-style: none;
+	padding-left: 0;
 }
 
 #typo3-menu a {
