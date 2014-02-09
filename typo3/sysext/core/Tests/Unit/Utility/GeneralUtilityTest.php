@@ -2620,29 +2620,6 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		throw new \RuntimeException('foo', 1344888548);
 	}
 
-	///////////////////////////
-	// Tests concerning getUrl
-	///////////////////////////
-	/**
-	 * @test
-	 */
-	public function getUrlWithAdditionalRequestHeadersProvidesHttpHeaderOnError() {
-		$url = 'http://typo3.org/i-do-not-exist-' . time();
-		$report = array();
-		Utility\GeneralUtility::getUrl($url, 0, array(), $report);
-		$this->assertContains('404', $report['message']);
-	}
-
-	/**
-	 * @test
-	 */
-	public function getUrlProvidesWithoutAdditionalRequestHeadersHttpHeaderOnError() {
-		$url = 'http://typo3.org/i-do-not-exist-' . time();
-		$report = array();
-		Utility\GeneralUtility::getUrl($url, 0, FALSE, $report);
-		$this->assertContains('404', $report['message'], 'Did not provide the HTTP response header when requesting a failing URL.');
-	}
-
 	///////////////////////////////
 	// Tests concerning fixPermissions
 	///////////////////////////////
