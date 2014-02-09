@@ -107,6 +107,8 @@ class Check {
 		$statusArray[] = $this->checkSuhosinExecutorIncludeWhitelistContainsVfs();
 		$statusArray[] = $this->checkSomePhpOpcodeCacheIsLoaded();
 		$statusArray[] = $this->checkReflectionDocComment();
+		$statusArray[] = $this->checkSystemLocale();
+		$statusArray[] = $this->checkLocaleWithUTF8filesystem();
 		$statusArray[] = $this->checkWindowsApacheThreadStackSize();
 		foreach ($this->requiredPhpExtensions as $extension) {
 			$statusArray[] = $this->checkRequiredPhpExtension($extension);
@@ -790,6 +792,84 @@ class Check {
 			$status = new Status\OkStatus();
 			$status->setTitle('PHP Doc comment reflection works');
 		}
+		return $status;
+	}
+
+	/**
+	 * Check if systemLocale setting is correct (locale exists in the OS)
+	 *
+	 * @return Status\StatusInterface
+	 */
+	protected function checkSystemLocale() {
+
+		$currentLocale = setlocale(LC_CTYPE, 0);
+
+		// On Windows an empty locale value uses the regional settings from the Control Panel
+		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLocale'] === '' && TYPO3_OS !== 'WIN') {
+			$status = new Status\InfoStatus();
+			$status->setTitle('Empty systemLocale setting');
+			$status->setMessage(
+				'$GLOBALS[TYPO3_CONF_VARS][SYS][systemLocale] is not set. This is fine as long as no UTF-8 file system is used.'
+			);
+		} elseif (setlocale(LC_CTYPE, $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLocale']) === FALSE) {
+			$status = new Status\ErrorStatus();
+			$status->setTitle('Incorrect systemLocale setting');
+			$status->setMessage(
+				'Current value of the $GLOBALS[TYPO3_CONF_VARS][SYS][systemLocale] is incorrect. Locale with this name doesn\'t exist in the operating system.'
+			);
+			setlocale(LC_CTYPE, $currentLocale);
+		} else {
+			$status = new Status\OkStatus();
+			$status->setTitle('System locale is correct');
+		}
+
+		return $status;
+	}
+
+	/**
+	 * Checks whether we can use file names with UTF-8 characters.
+	 * Configured system locale must support UTF-8 when UTF8filesystem is set
+	 *
+	 * @return Status\StatusInterface
+	 */
+	protected function checkLocaleWithUTF8filesystem() {
+
+		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['UTF8filesystem']) {
+
+			// On Windows an empty local value uses the regional settings from the Control Panel
+			if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLocale'] === '' && TYPO3_OS !== 'WIN') {
+				$status = new Status\ErrorStatus();
+				$status->setTitle('System locale not set on UTF-8 file system');
+				$status->setMessage(
+					'$GLOBALS[TYPO3_CONF_VARS][SYS][UTF8filesystem] is set, but $GLOBALS[TYPO3_CONF_VARS][SYS][systemLocale] is empty. Make sure a valid locale which supports UTF-8 is set.'
+				);
+			} else {
+				$testString = 'ÖöĄĆŻĘĆćążąęó.jpg';
+				$currentLocale = setlocale(LC_CTYPE, 0);
+				$quote = TYPO3_OS === 'WIN' ? '"' : '\'';
+
+				setlocale(LC_CTYPE, $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLocale']);
+
+				if (escapeshellarg($testString) === $quote . $testString . $quote) {
+					$status = new Status\OkStatus();
+					$status->setTitle('File names with UTF-8 characters can be used.');
+				} else {
+					$status = new Status\ErrorStatus();
+					$status->setTitle('System locale setting doesn\'t support UTF-8 file names.');
+					$status->setMessage(
+						'Please check your $GLOBALS[TYPO3_CONF_VARS][SYS][systemLocale] setting.'
+					);
+				}
+
+				setlocale(LC_CTYPE, $currentLocale);
+			}
+
+
+		} else {
+			$status = new Status\OkStatus();
+			$status->setTitle('Skipping test, as UTF8filesystem is not enabled.');
+		}
+
 		return $status;
 	}
 
