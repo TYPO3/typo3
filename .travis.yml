@@ -12,6 +12,7 @@ services:
 
 before_script:
 # Install build dependencies
+  - sudo apt-get install parallel
   - sudo apt-get update && sudo apt-get install git
   - git clone --single-branch --branch TYPO3_6-1 --depth 1 git://github.com/typo3-ci/TYPO3-Travis-Integration.git build-environment
   - source build-environment/install-helper.sh
@@ -34,5 +35,5 @@ before_script:
   - if [[ "$DB" == "mysql" ]]; then mysql -uroot typo3_test < build-environment/dbimport/phpunit.sql; fi
 
 script:
-  - if [[ "$PHPLINT" == "1" ]]; then phpLint all; fi
+  - if [[ "$PHPLINT" == "1" ]]; then phpLint; fi
   - if [[ "$PHPUNIT" == "1" ]]; then php $PWD/typo3/cli_dispatch.phpsh phpunit -c typo3/sysext/core/Build/UnitTests.xml; fi
