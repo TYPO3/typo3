@@ -158,6 +158,13 @@ the session ID on each request, until it was fixated by a user login.
 The superfluous option "dontSetCookie" is now ineffective as the cookie
 is not set anymore by default.
 
+* No backward compatibility for classes inheriting localPageTree or localFolderTree
+
+Backwards compatibility for extensions that inherit from one of the classes
+localPageTree, localFolderTree, rtefoldertree, rtepagetree, tbe_foldertree or tbe_pagetree
+is dropped.
+
+
 ### Administration / Customization
 
 * Content-length header (TypoScript setting config.enableContentLengthHeader)

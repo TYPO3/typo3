@@ -879,7 +879,7 @@ class ElementBrowser {
 			case 'file':
 
 			case 'folder':
-				$foldertree = GeneralUtility::makeInstance('rteFolderTree');
+				$foldertree = GeneralUtility::makeInstance('localFolderTree');
 				$foldertree->thisScript = $this->thisScript;
 				$tree = $foldertree->getBrowsableTree();
 				if (!$this->curUrlInfo['value'] || $this->curUrlInfo['act'] != $this->act) {
@@ -1017,7 +1017,7 @@ class ElementBrowser {
 				}
 				break;
 			case 'page':
-				$pageTree = GeneralUtility::makeInstance('rtePageTree');
+				$pageTree = GeneralUtility::makeInstance('localPageTree');
 				$pageTree->thisScript = $this->thisScript;
 				$pageTree->ext_showPageId = $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.showPageIdWithTitle');
 				$pageTree->ext_showNavTitle = $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.showNavTitle');

@@ -735,7 +735,7 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 
 			case 'magic':
 				// Create folder tree:
-				$foldertree = GeneralUtility::makeInstance('TYPO3\\CMS\\Rtehtmlarea\\ImageFolderTree');
+				$foldertree = GeneralUtility::makeInstance('TYPO3\\CMS\\Rtehtmlarea\\FolderTree');
 				$foldertree->thisScript = $this->thisScript;
 				$tree = $foldertree->getBrowsableTree();
 				// Get currently selected folder

@@ -44,10 +44,11 @@ return array(
 	'tx_rtehtmlarea_deprecatedRteProperties' => 'TYPO3\\CMS\\Rtehtmlarea\\Hook\\Install\\DeprecatedRteProperties',
 	'tx_rtehtmlarea_softrefproc' => 'TYPO3\\CMS\\Rtehtmlarea\\Hook\\SoftReferenceHook',
 	'tx_rtehtmlarea_statusReport_conflictsCheck' => 'TYPO3\\CMS\\Rtehtmlarea\\Hook\\StatusReportConflictsCheckHook',
-	'tx_rtehtmlarea_image_folderTree' => 'TYPO3\\CMS\\Rtehtmlarea\\ImageFolderTree',
+	'tx_rtehtmlarea_image_folderTree' => 'TYPO3\\CMS\\Rtehtmlarea\\FolderTree',
 	'tx_rtehtmlarea_pageTree' => 'TYPO3\\CMS\\Rtehtmlarea\\PageTree',
 	'tx_rtehtmlarea_api' => 'TYPO3\\CMS\\Rtehtmlarea\\RteHtmlAreaApi',
 	'tx_rtehtmlarea_base' => 'TYPO3\\CMS\\Rtehtmlarea\\RteHtmlAreaBase',
 	'tx_rtehtmlarea_select_image' => 'TYPO3\\CMS\\Rtehtmlarea\\SelectImage',
 	'tx_rtehtmlarea_user' => 'TYPO3\\CMS\\Rtehtmlarea\\User',
+	'TYPO3\\CMS\\Rtehtmlarea\\ImageFolderTree' => 'TYPO3\\CMS\\Rtehtmlarea\\FolderTree',
 );

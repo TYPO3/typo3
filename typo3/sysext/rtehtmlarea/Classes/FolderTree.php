@@ -7,7 +7,7 @@ namespace TYPO3\CMS\Rtehtmlarea;
  *
  * @author 	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-class FolderTree extends \rteFolderTree {
+class FolderTree extends \localFolderTree {
 
 	/**
 	 * Constructor function of the class

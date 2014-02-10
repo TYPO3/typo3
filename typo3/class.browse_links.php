@@ -136,15 +136,6 @@ class localPageTree extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 }
 
 /**
- * Page tree for the RTE - totally the same, no changes needed. (Just for the sake of beauty - or confusion... :-)
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- */
-class rtePageTree extends localPageTree {
-
-}
-
-/**
  * For TBE record browser
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
@@ -258,15 +249,6 @@ class localFolderTree extends \TYPO3\CMS\Backend\Tree\View\FolderTreeView {
 		$aOnClick = 'return jumpToUrl(\'' . $this->thisScript . '?PM=' . $cmd . '\',\'' . $anchor . '\');';
 		return '<a href="#"' . $name . ' onclick="' . htmlspecialchars($aOnClick) . '">' . $icon . '</a>';
 	}
-
-}
-
-/**
- * Folder tree for the RTE - totally the same, no changes needed. (Just for the sake of beauty - or confusion... :-)
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- */
-class rteFolderTree extends localFolderTree {
 
 }
 

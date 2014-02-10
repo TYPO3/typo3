@@ -42,7 +42,7 @@ namespace TYPO3\CMS\Rtehtmlarea;
  *
  * @author 	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-class PageTree extends \rtePageTree {
+class PageTree extends \localPageTree {
 
 	/**
 	 * Create the page navigation tree in HTML
