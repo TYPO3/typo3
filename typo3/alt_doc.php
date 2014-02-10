@@ -40,10 +40,10 @@ $editDocumentController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('
 
 // Preprocessing, storing data if submitted to
 $editDocumentController->preInit();
-$formprotection = \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get();
 
 // Checks, if a save button has been clicked (or the doSave variable is sent)
 if ($editDocumentController->doProcessData()) {
+	$formprotection = \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get();
 	if ($formprotection->validateToken(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('formToken'), 'editRecord')) {
 		$editDocumentController->processData();
 	}
