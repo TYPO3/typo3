@@ -1484,7 +1484,11 @@ class GeneralUtility {
 		// 2 is the (currently, as of 2014-02) most-used value for $count in the core, therefore we check it first
 		if ($count === 2) {
 			$position = strrpos($string, $delimiter);
-			return array(substr($string, 0, $position), substr($string, $position + 1));
+			if ($position !== FALSE) {
+				return array(substr($string, 0, $position), substr($string, $position + 1));
+			} else {
+				return array($string);
+			}
 		} elseif ($count <= 1) {
 			return array($string);
 		} else {
