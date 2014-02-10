@@ -314,7 +314,7 @@ class FormDataTraverser {
 	 *
 	 * @param array $fieldConfig "config" section of the TCA configuration of the related inline field.
 	 * @param string $fieldName The name of the inline field.
-	 * @param string $value The value in the local table (normally a comma seperated list of the inline record UIDs).
+	 * @param string $value The value in the local table (normally a comma separated list of the inline record UIDs).
 	 * @return array Array of related UIDs.
 	 */
 	protected function getRelatedInlineFieldUids(array $fieldConfig, $fieldName, $value) {

@@ -5244,7 +5244,7 @@ class DataHandler {
 	 * Triggers a remap action for a specific record.
 	 *
 	 * Some records are post-processed by the processRemapStack() method (e.g. IRRE children).
-	 * This method determines wether an action/modification is executed directly to a record
+	 * This method determines whether an action/modification is executed directly to a record
 	 * or is postponed to happen after remapping data.
 	 *
 	 * @param string $table Name of the table

@@ -135,7 +135,7 @@ class Repository extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 * Method returns URL of a resource that contains repository mirrors.
 	 *
 	 * @access public
-	 * @return string URL of file that contains repository mirros
+	 * @return string URL of file that contains repository mirrors
 	 * @see $mirrorListUrl, getMirrorListUrl()
 	 */
 	public function getMirrorListUrl() {

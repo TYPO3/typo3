@@ -147,7 +147,7 @@ class AbstractRte {
 	 * Trigger field - this field tells the TCEmain that processing should be done on this value!
 	 *
 	 * @param string $fieldName Field name of the RTE field.
-	 * @return string <input> field of type "hidden" with a flag telling the TCEmain that this fields content should be traansformed back to database state.
+	 * @return string <input> field of type "hidden" with a flag telling the TCEmain that this fields content should be transformed back to database state.
 	 * @todo Define visibility
 	 */
 	public function triggerField($fieldName) {

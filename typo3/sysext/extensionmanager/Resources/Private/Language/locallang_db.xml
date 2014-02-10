@@ -22,7 +22,7 @@
 			<label index="tx_extensionmanager_domain_model_extension.integerversion">Integer Version</label>
 
 			<label index="tx_extensionmanager_domain_model_repository">Repository</label>
-			<label index="tx_extensionmanager_domain_model_repository.title">Titel</label>
+			<label index="tx_extensionmanager_domain_model_repository.title">Title</label>
 			<label index="tx_extensionmanager_domain_model_repository.description">Description</label>
 			<label index="tx_extensionmanager_domain_model_repository.wsdlUrl">WSDL URL</label>
 			<label index="tx_extensionmanager_domain_model_repository.mirrorListUrl">Mirror list URL</label>

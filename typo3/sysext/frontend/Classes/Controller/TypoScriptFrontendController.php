@@ -3674,7 +3674,7 @@ if (version == "n3") {
 				\TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($_funcRef, $_params, $this);
 			}
 		}
-		// Send content-lenght header.
+		// Send content-length header.
 		// Notice that all HTML content outside the length of the content-length header will be cut off!
 		// Therefore content of unknown length from included PHP-scripts and if admin users are logged
 		// in (admin panel might show...) or if debug mode is turned on, we disable it!
@@ -4231,7 +4231,7 @@ if (version == "n3") {
 				$content = $oldContent;
 				$GLOBALS['TT']->setTSlogMessage('"tidy" returned an empty value!', 2);
 			}
-			$GLOBALS['TT']->setTSlogMessage('"tidy" content lenght: ' . strlen($content), 0);
+			$GLOBALS['TT']->setTSlogMessage('"tidy" content length: ' . strlen($content), 0);
 		}
 		return $content;
 	}

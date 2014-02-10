@@ -42,7 +42,7 @@ class ArgumentsValidator extends \TYPO3\CMS\Extbase\Validation\Validator\Abstrac
 	 *
 	 * @param object $arguments The arguments object that should be validated
 	 * @throws \InvalidArgumentException
-	 * @return boolean TRUE if all arguments are valid, FALSE if an error occured
+	 * @return boolean TRUE if all arguments are valid, FALSE if an error occurred
 	 */
 	public function isValid($arguments) {
 		if (!$arguments instanceof \TYPO3\CMS\Extbase\Mvc\Controller\Arguments) {
@@ -78,7 +78,7 @@ class ArgumentsValidator extends \TYPO3\CMS\Extbase\Validation\Validator\Abstrac
 	 * @param object $arguments The arguments object containing the property (argument) to validate
 	 * @param string $argumentName Name of the property (ie. name of the argument) to validate
 	 * @throws \InvalidArgumentException
-	 * @return boolean TRUE if the argument is valid, FALSE if an error occured
+	 * @return boolean TRUE if the argument is valid, FALSE if an error occurred
 	 */
 	public function isPropertyValid($arguments, $argumentName) {
 		if (!$arguments instanceof \TYPO3\CMS\Extbase\Mvc\Controller\Arguments) {

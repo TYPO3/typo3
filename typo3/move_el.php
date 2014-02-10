@@ -95,7 +95,7 @@ class ext_posMap_pages extends \TYPO3\CMS\Backend\Tree\View\PagePositionMap {
 	 * Wrap $t_code in bold IF the $dat uid matches $id
 	 *
 	 * @param string $t_code Title string
-	 * @param array $dat Infomation array with record array inside.
+	 * @param array $dat Information array with record array inside.
 	 * @param integer $id The current id.
 	 * @return string The title string.
 	 * @todo Define visibility

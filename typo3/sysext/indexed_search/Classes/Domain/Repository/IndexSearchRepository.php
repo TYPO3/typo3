@@ -754,7 +754,7 @@ class IndexSearchRepository {
 
 	/**
 	 * Check if the tables provided are configured for usage.
-	 * This becomes neccessary for extensions that provide additional database
+	 * This becomes necessary for extensions that provide additional database
 	 * functionality like indexed_search_mysql.
 	 *
 	 * @param string $table_list Comma-separated list of tables

@@ -30,7 +30,7 @@ namespace TYPO3\CMS\Frontend\Aspect;
 /**
  * Class FileMetadataTranslationAspect
  *
- * We do not have AOP in TYPO3 for now, thus the acspect which
+ * We do not have AOP in TYPO3 for now, thus the aspect which
  * deals with metadata translation is a slot which reacts on a signal
  * in the Index\MetadataRepository.
  *

@@ -90,7 +90,7 @@ class DocumentTemplate {
 	 */
 	public $JScodeArray = array();
 
-	// Additional 'page-end' code could be accommulated in this var. It will be outputted at the end of page before </body> and some other internal page-end code.
+	// Additional 'page-end' code could be accumulated in this var. It will be outputted at the end of page before </body> and some other internal page-end code.
 	/**
 	 * @todo Define visibility
 	 */

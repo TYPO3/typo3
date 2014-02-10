@@ -140,7 +140,7 @@ class InstallUtilityTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	/**
 	 * @test
 	 */
-	public function installCallsLoadExtenion() {
+	public function installCallsLoadExtension() {
 		$this->installMock->expects($this->once())->method('loadExtension');
 		$this->installMock->install($this->extensionKey);
 	}

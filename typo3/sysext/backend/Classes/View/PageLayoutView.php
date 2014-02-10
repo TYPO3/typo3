@@ -77,7 +77,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	 */
 	public $ext_function = 0;
 
-	// If TRUE, elements will have edit icons (probably this is whethere the user has permission to edit the page content). Set externally.
+	// If TRUE, elements will have edit icons (probably this is whether the user has permission to edit the page content). Set externally.
 	/**
 	 * @todo Define visibility
 	 */

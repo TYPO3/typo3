@@ -464,7 +464,7 @@ class ContentObjectRenderer {
 	 */
 	public $recordRegister = array();
 
-	// Containig hooks for userdefined cObjects
+	// Containing hooks for userdefined cObjects
 	/**
 	 * @todo Define visibility
 	 */
@@ -3849,7 +3849,7 @@ class ContentObjectRenderer {
 	}
 
 	/**
-	 * Implements the stdWrap property "crop" which is a modified "substr" function allowing to limit a string lenght to a certain number of chars (from either start or end of string) and having a pre/postfix applied if the string really was cropped.
+	 * Implements the stdWrap property "crop" which is a modified "substr" function allowing to limit a string length to a certain number of chars (from either start or end of string) and having a pre/postfix applied if the string really was cropped.
 	 *
 	 * @param string $content The string to perform the operation on
 	 * @param string $options The parameters splitted by "|": First parameter is the max number of chars of the string. Negative value means cropping from end of string. Second parameter is the pre/postfix string to apply if cropping occurs. Third parameter is a boolean value. If set then crop will be applied at nearest space.
@@ -5679,7 +5679,7 @@ class ContentObjectRenderer {
 	 *
 	 * @param mixed $inputValue Comma-separated list of values to look up
 	 * @param array $conf TS-configuration array, see TSref for details
-	 * @return string String of translated values, seperated by $delimiter. If no matches were found, the input value is simply returned.
+	 * @return string String of translated values, separated by $delimiter. If no matches were found, the input value is simply returned.
 	 * @todo It would be nice it this function basically looked up any type of value, db-relations etc.
 	 * @todo Define visibility
 	 */
@@ -7281,15 +7281,15 @@ class ContentObjectRenderer {
 	 * Mount Pages are also descended but notice that these ID numbers are not
 	 * useful for links unless the correct MPvar is set.
 	 *
-	 * @param integer $id The id of the start page from which point in the page tree to decend. IF NEGATIVE the id itself is included in the end of the list (only if $begin is 0) AND the output does NOT contain a last comma. Recommended since it will resolve the input ID for mount pages correctly and also check if the start ID actually exists!
-	 * @param integer $depth The number of levels to decend. If you want to decend infinitely, just set this to 100 or so. Should be at least "1" since zero will just make the function return (no decend...)
+	 * @param integer $id The id of the start page from which point in the page tree to descend. IF NEGATIVE the id itself is included in the end of the list (only if $begin is 0) AND the output does NOT contain a last comma. Recommended since it will resolve the input ID for mount pages correctly and also check if the start ID actually exists!
+	 * @param integer $depth The number of levels to descend. If you want to descend infinitely, just set this to 100 or so. Should be at least "1" since zero will just make the function return (no decend...)
 	 * @param integer $begin Is an optional integer that determines at which level in the tree to start collecting uid's. Zero means 'start right away', 1 = 'next level and out'
 	 * @param boolean $dontCheckEnableFields See function description
 	 * @param string $addSelectFields Additional fields to select. Syntax: ",[fieldname],[fieldname],...
 	 * @param string $moreWhereClauses Additional where clauses. Syntax: " AND [fieldname]=[value] AND ...
 	 * @param array $prevId_array array of IDs from previous recursions. In order to prevent infinite loops with mount pages.
 	 * @param integer $recursionLevel Internal: Zero for the first recursion, incremented for each recursive call.
-	 * @return string Returns the list of ids as a comma seperated string
+	 * @return string Returns the list of ids as a comma separated string
 	 * @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::checkEnableFields(), \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::checkPagerecordForIncludeSection()
 	 */
 	public function getTreeList($id, $depth, $begin = 0, $dontCheckEnableFields = FALSE, $addSelectFields = '', $moreWhereClauses = '', array $prevId_array = array(), $recursionLevel = 0) {

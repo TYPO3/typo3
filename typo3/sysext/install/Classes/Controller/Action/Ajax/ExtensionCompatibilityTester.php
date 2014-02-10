@@ -122,7 +122,7 @@ class ExtensionCompatibilityTester extends Action\AbstractAction implements Acti
 	/**
 	 * Tries to load the ext_localconf and ext_tables files of all non-core extensions
 	 * Writes current extension name to file and deletes it again when inclusion was
-	 * successfull.
+	 * successful.
 	 *
 	 * @param array $extensions
 	 * @return void

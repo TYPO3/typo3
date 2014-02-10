@@ -165,7 +165,7 @@ class BackendUserController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCont
 	 * Attaches one backend user to the compare list
 	 *
 	 * @param integer $uid
-	 * @retun void
+	 * @return void
 	 */
 	public function addToCompareListAction($uid) {
 		$this->moduleData->attachUidCompareUser($uid);
@@ -177,7 +177,7 @@ class BackendUserController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCont
 	 * Removes given backend user to the compare list
 	 *
 	 * @param integer $uid
-	 * @retun void
+	 * @return void
 	 */
 	public function removeFromCompareListAction($uid) {
 		$this->moduleData->detachUidCompareUser($uid);

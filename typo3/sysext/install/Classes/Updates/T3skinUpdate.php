@@ -76,7 +76,7 @@ class T3skinUpdate extends AbstractUpdate {
 	public function performUpdate(array &$dbQueries, &$customMessages) {
 		$result = FALSE;
 		if ($this->versionNumber >= 4004000 && !\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('t3skin')) {
-			// check wether the table can be truncated or if sysext with tca has to be installed
+			// check whether the table can be truncated or if sysext with tca has to be installed
 			if ($this->checkForUpdate($customMessages)) {
 				try {
 					\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::loadExtension('t3skin');

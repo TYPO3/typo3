@@ -526,7 +526,7 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 	 *
 	 * @param array $row Record array
 	 * @param string $table Table (record is from)
-	 * @param string $field Field name for which thumbsnail are to be rendered.
+	 * @param string $field Field name for which thumbnail are to be rendered.
 	 * @return string HTML for thumbnails, if any.
 	 * @todo Define visibility
 	 */
@@ -811,7 +811,7 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 
 	/**
 	 * Creates the URL to this script, including all relevant GPvars
-	 * Fixed GPvars are id, table, imagemode, returlUrl, search_field, search_levels and showLimit
+	 * Fixed GPvars are id, table, imagemode, returnUrl, search_field, search_levels and showLimit
 	 * The GPvars "sortField" and "sortRev" are also included UNLESS they are found in the $exclList variable.
 	 *
 	 * @param string $altId Alternative id value. Enter blank string for the current id ($this->id)

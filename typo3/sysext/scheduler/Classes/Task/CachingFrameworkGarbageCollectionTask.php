@@ -52,7 +52,7 @@ class CachingFrameworkGarbageCollectionTask extends \TYPO3\CMS\Scheduler\Task\Ab
 		$cacheConfigurations = $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'];
 		if (is_array($cacheConfigurations)) {
 			// Iterate through configured caches and call garbage collection if
-			// backend is within selected backends in additonal field of task
+			// backend is within selected backends in additional field of task
 			foreach ($cacheConfigurations as $cacheName => $cacheConfiguration) {
 				// The cache backend used for this cache
 				$usedCacheBackend = $cacheConfiguration['backend'];

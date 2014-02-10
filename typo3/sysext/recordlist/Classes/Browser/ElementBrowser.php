@@ -179,7 +179,7 @@ class ElementBrowser {
 	 *
 	 * Values:
 	 * 0: form field name reference, eg. "data[tt_content][123][image]"
-	 * 1: htlmArea RTE parameters: editorNo:contentTypo3Language:contentTypo3Charset
+	 * 1: htmlArea RTE parameters: editorNo:contentTypo3Language:contentTypo3Charset
 	 * 2: RTE config parameters: RTEtsConfigParams
 	 * 3: allowed types. Eg. "tt_content" or "gif,jpg,jpeg,tif,bmp,pcx,tga,png,pdf,ai"
 	 * 4: IRRE uniqueness: target level object-id to perform actions/checks on, eg. "data[79][tt_address][1][<field>][<foreign_table>]"

@@ -27,7 +27,7 @@ namespace TYPO3\CMS\Backend\Wizard;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 /**
- * Interface for classes which hook into SC_db_new_content_el and manipulater wizardItems array
+ * Interface for classes which hook into SC_db_new_content_el and manipulator wizardItems array
  *
  * @author Steffen Kamper <info@sk-typo3.de>
  */

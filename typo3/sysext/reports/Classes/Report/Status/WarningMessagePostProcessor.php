@@ -32,7 +32,7 @@ class WarningMessagePostProcessor {
 
 	/**
 	 * Tries to get the highest severity of the system's status first, if
-	 * something is found it is asumed that the status update task is set up
+	 * something is found it is assumed that the status update task is set up
 	 * properly or the status report has been checked manually and we take over
 	 * control over the system warning messages.
 	 *

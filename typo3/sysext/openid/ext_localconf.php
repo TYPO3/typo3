@@ -4,7 +4,7 @@ if (!defined('TYPO3_MODE')) {
 	die('Access denied.');
 }
 
-// Register OpenID pocessing service with TYPO3
+// Register OpenID processing service with TYPO3
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addService(
 	$_EXTKEY,
 	'auth',

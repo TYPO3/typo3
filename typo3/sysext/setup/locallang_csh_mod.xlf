@@ -125,7 +125,7 @@ The default module is "About Modules".</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="option_maxTitleLen.image_descr" xml:space="preserve">
-				<source>In this case the Maximum Title lenght is set to 10 - and the result is that titles in the page tree - as well as other places in the backend - will be cropped after 10 characters, then suffixed by "...". The default value is "30".</source>
+				<source>In this case the Maximum Title length is set to 10 - and the result is that titles in the page tree - as well as other places in the backend - will be cropped after 10 characters, then suffixed by "...". The default value is "30".</source>
 			</trans-unit>
 			<trans-unit id="option_copyLevels.alttitle" xml:space="preserve">
 				<source>Recursive Copy</source>

@@ -36,7 +36,7 @@ TYPO3.Components.PageModule = {
 	},
 
 	/**
-	 * This method is used to bind the higlighting function "setElementActive"
+	 * This method is used to bind the highlighting function "setElementActive"
 	 * to the mouseover event and the "setElementInactive" to the mouseout event.
 	 */
 	enableHighlighting: function() {
@@ -52,7 +52,7 @@ TYPO3.Components.PageModule = {
 	},
 
 	/**
-	 * This method is used to unbind the higlighting function "setElementActive"
+	 * This method is used to unbind the highlighting function "setElementActive"
 	 * from the mouseover event and the "setElementInactive" from the mouseout event.
 	 */
 	disableHighlighting: function() {

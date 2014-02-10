@@ -39,7 +39,7 @@ class BackendUserSettingsDataProvider {
 	/**
 	 * Get user settings
 	 *
-	 * Returns all user settings, if $key is not specified, otherwise it retuns the value for $key
+	 * Returns all user settings, if $key is not specified, otherwise it returns the value for $key
 	 *
 	 * @param string $key Identifier, allows also dotted notation for subarrays
 	 * @return mixed Value associated

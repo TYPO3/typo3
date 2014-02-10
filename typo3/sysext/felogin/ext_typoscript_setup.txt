@@ -1,5 +1,5 @@
 plugin.tx_felogin_pi1 {
-		#storagePid - where are the user records? use single value or a commaseperated list
+		#storagePid - where are the user records? use single value or a comma separated list
 	storagePid = {$styles.content.loginform.pid}
 	recursive =
 
@@ -20,7 +20,7 @@ plugin.tx_felogin_pi1 {
 		ATagParams = rel="nofollow"
 	}
 
-		#preserve GET vars - define "all" or commaseperated list of GET-vars that should be included by link generation
+		#preserve GET vars - define "all" or comma separated list of GET-vars that should be included by link generation
 	preserveGETvars = all
 
 

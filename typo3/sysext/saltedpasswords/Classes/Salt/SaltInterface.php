@@ -54,7 +54,7 @@ interface SaltInterface {
 	public function getSaltLength();
 
 	/**
-	 * Returns wether all prequesites for the hashing methods are matched
+	 * Returns whether all prequesites for the hashing methods are matched
 	 *
 	 * @return boolean Method available
 	 */

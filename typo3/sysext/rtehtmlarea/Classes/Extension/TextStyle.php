@@ -56,10 +56,10 @@ class TextStyle extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 	// Frontend language array
 	protected $pluginButtons = 'textstyle';
 
-	// The comma-seperated list of button names that the extension id adding to the htmlArea RTE tollbar
+	// The comma separated list of button names that the extension id adding to the htmlArea RTE tollbar
 	protected $pluginLabels = 'textstylelabel';
 
-	// The comma-seperated list of label names that the extension id adding to the htmlArea RTE tollbar
+	// The comma separated list of label names that the extension id adding to the htmlArea RTE tollbar
 	// The name-converting array, converting the button names used in the RTE PageTSConfing to the button id's used by the JS scripts
 	protected $convertToolbarForHtmlAreaArray = array(
 		'textstylelabel' => 'I[text_style]',

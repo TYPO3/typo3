@@ -50,7 +50,7 @@ TCEForms.Suggest = Class.create({
 	 * @param  string  field     The field which is currently edited
 	 * @param  integer uid       The uid of the record which is currently edited
 	 * @param  integer pid       The pid of the record which is currently edited
-	 * @param  integer minimumCharacters the minimum characaters that is need to trigger the initial search
+	 * @param  integer minimumCharacters the minimum characters that is need to trigger the initial search
 	 * @param  string  fieldType The TCA type of the field (e.g. group, select, ...)
 	 */
 	initialize: function(objectId, table, field, uid, pid, minimumCharacters, fieldType) {

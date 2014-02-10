@@ -34,7 +34,7 @@ namespace TYPO3\CMS\Rsaauth\Backend;
  * To prepare data for encoding, the createNewKeyPair() method should be called.
  * This method returns an instance of \TYPO3\CMS\Rsaauth\Keypair class, which contains
  * the private and public keys. Public key is sent to the client to encode data.
- * Private key should be stored somewhere (preferrably in user's session).
+ * Private key should be stored somewhere (preferably in user's session).
  *
  * To decode data, the decrypt() method should be called with the private key
  * created at the previous step and the data to decode. If the data is decoded
@@ -45,7 +45,7 @@ namespace TYPO3\CMS\Rsaauth\Backend;
 abstract class AbstractBackend {
 
 	/**
-	 * Error message for the last operation. Derieved classes should always set
+	 * Error message for the last operation. Derived classes should always set
 	 * or clear this variable inside the createNewKeyPair() or decypt().
 	 *
 	 * @var string

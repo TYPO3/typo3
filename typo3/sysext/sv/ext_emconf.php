@@ -10,7 +10,7 @@
  ***************************************************************/
 $EM_CONF[$_EXTKEY] = array(
 	'title' => 'TYPO3 System Services',
-	'description' => 'The core/default sevices. This includes the default authentication services for now.',
+	'description' => 'The core/default services. This includes the default authentication services for now.',
 	'category' => 'services',
 	'shy' => 1,
 	'dependencies' => '',

@@ -61,7 +61,7 @@ TYPO3.Backend.t3Grid = Ext.extend(Ext.Component, {
 
 	/**
 	 * Takes a cell and looks above it if there are any cells that have colspans that
-	 * spanns into the given cell. This is used when a row was removed from the grid
+	 * spans into the given cell. This is used when a row was removed from the grid
 	 * to make sure that no cell with wrong colspans exists in the grid.
 	 *
 	 * @param col integer
@@ -421,7 +421,7 @@ TYPO3.Backend.t3Grid = Ext.extend(Ext.Component, {
 	},
 
 	/**
-	 * Checks wether a cell can span to the right or not. A cell can span to the right
+	 * Checks whether a cell can span to the right or not. A cell can span to the right
 	 * if it is not in the last column and if there is no cell beside it that is
 	 * already overspanned by some other cell.
 	 *
@@ -454,7 +454,7 @@ TYPO3.Backend.t3Grid = Ext.extend(Ext.Component, {
 	},
 
 	/**
-	 * Checks wether a cell can span down or not.
+	 * Checks whether a cell can span down or not.
 	 *
 	 * @param col integer
 	 * @param row integer

@@ -110,7 +110,7 @@ class PermissionAjaxController {
 						$tce->process_datamap();
 						$content = self::renderOwnername($this->conf['page'], $this->conf['new_owner_uid'], $this->conf['new_owner_username']);
 					} else {
-						$ajaxObj->setError('An error occured: No page owner uid specified.');
+						$ajaxObj->setError('An error occurred: No page owner uid specified.');
 					}
 					break;
 				case 'show_change_group_selector':
@@ -126,7 +126,7 @@ class PermissionAjaxController {
 						$tce->process_datamap();
 						$content = self::renderGroupname($this->conf['page'], $this->conf['new_group_uid'], $this->conf['new_group_username']);
 					} else {
-						$ajaxObj->setError('An error occured: No page group uid specified.');
+						$ajaxObj->setError('An error occurred: No page group uid specified.');
 					}
 					break;
 				case 'toggle_edit_lock':

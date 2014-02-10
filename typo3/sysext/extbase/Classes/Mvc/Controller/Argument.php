@@ -498,7 +498,7 @@ class Argument {
 	}
 
 	/**
-	 * @return array<\TYPO3\CMS\Extbase\Error\Result> Validation errors which have occured.
+	 * @return array<\TYPO3\CMS\Extbase\Error\Result> Validation errors which have occurred.
 	 * @api
 	 */
 	public function getValidationResults() {

@@ -80,7 +80,7 @@ class DisjunctionValidator extends AbstractCompositeValidator {
 	 * If at least one error occurred, the result is FALSE.
 	 *
 	 * @param mixed $value The value that should be validated
-	 * @return boolean TRUE if the value is valid, FALSE if an error occured
+	 * @return boolean TRUE if the value is valid, FALSE if an error occurred
 	 * @deprecated since Extbase 1.4.0, will be removed two versions after Extbase 6.1
 	 */
 	public function isValid($value) {

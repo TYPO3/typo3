@@ -34,7 +34,7 @@ class IconViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendView
 	 *
 	 * @param string $icon Icon to be used
 	 * @param string $title Optional title
-	 * @return strin Content rendered image
+	 * @return string Content rendered image
 	 */
 	public function render($icon, $title = '') {
 		if (!empty($icon)) {

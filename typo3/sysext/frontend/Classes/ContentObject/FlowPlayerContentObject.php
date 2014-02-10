@@ -131,7 +131,7 @@ class FlowPlayerContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstract
 	);
 
 	/**
-	 * htlm5 tag attributes
+	 * html5 tag attributes
 	 */
 	public $html5TagAttributes = array(
 		'autoPlay',

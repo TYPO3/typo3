@@ -28,7 +28,7 @@ namespace TYPO3\CMS\Backend\View\BackendLayout;
  ***************************************************************/
 
 /**
- * Context that is forwared to backend layout data providers.
+ * Context that is forwarded to backend layout data providers.
  *
  * @author Oliver Hader <oliver.hader@typo3.org>
  */

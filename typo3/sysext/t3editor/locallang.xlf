@@ -40,7 +40,7 @@
 				<source>document has been modified</source>
 			</trans-unit>
 			<trans-unit id="js.label_errorWhileSaving" xml:space="preserve">
-				<source>An error occured while saving the data.</source>
+				<source>An error occurred while saving the data.</source>
 			</trans-unit>
 		</body>
 	</file>

@@ -78,7 +78,7 @@ class GraphicalMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu\
 	}
 
 	/**
-	 * Will traverse input array with configuratoin per-item and create corresponding GIF files for the menu.
+	 * Will traverse input array with configuration per-item and create corresponding GIF files for the menu.
 	 * The data of the files are stored in $this->result
 	 *
 	 * @param array $conf Array with configuration for each item.

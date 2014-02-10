@@ -55,7 +55,7 @@ class SearchResultContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstra
 	 */
 	public $operator_translate_table_caseinsensitive = TRUE;
 
-	// case-sensitiv. Defineres the words, which will be operators between words
+	// case-sensitive. Defines the words, which will be operators between words
 	/**
 	 * @todo Define visibility
 	 */
@@ -407,7 +407,7 @@ class SearchResultContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstra
 	 * @param string $origSword The raw sword string from outside
 	 * @param string $specchars Special chars which are used as operators (+- is default)
 	 * @param string $delchars Special chars which are deleted if the append the searchword (+-., is default)
-	 * @return mixed Returns an ARRAY if there were search words, othervise the return value may be unset.
+	 * @return mixed Returns an ARRAY if there were search words, otherwise the return value may be unset.
 	 * @todo Define visibility
 	 */
 	public function split($origSword, $specchars = '+-', $delchars = '+.,-') {

@@ -103,7 +103,7 @@ abstract class AbstractFormFieldViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\
 		$value = NULL;
 		if ($this->hasArgument('value')) {
 			$value = $this->arguments['value'];
-		} elseif ($this->configurationManager->isFeatureEnabled('rewrittenPropertyMapper') && $this->hasMappingErrorOccured()) {
+		} elseif ($this->configurationManager->isFeatureEnabled('rewrittenPropertyMapper') && $this->hasMappingErrorOccurred()) {
 			$value = $this->getLastSubmittedFormData();
 		} elseif ($this->isObjectAccessorMode() && $this->viewHelperVariableContainer->exists('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper', 'formObject')) {
 			$this->addAdditionalIdentityPropertiesIfNeeded();
@@ -119,17 +119,17 @@ abstract class AbstractFormFieldViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\
 	}
 
 	/**
-	 * Checks if a property mapping error has occured in the last request.
+	 * Checks if a property mapping error has occurred in the last request.
 	 *
-	 * @return boolean TRUE if a mapping error occured, FALSE otherwise
+	 * @return boolean TRUE if a mapping error occurred, FALSE otherwise
 	 */
-	protected function hasMappingErrorOccured() {
+	protected function hasMappingErrorOccurred() {
 		return $this->controllerContext->getRequest()->getOriginalRequest() !== NULL;
 	}
 
 	/**
 	 * Get the form data which has last been submitted; only returns valid data in case
-	 * a property mapping error has occured. Check with hasMappingErrorOccured() before!
+	 * a property mapping error has occurred. Check with hasMappingErrorOccurred() before!
 	 *
 	 * @return mixed
 	 */

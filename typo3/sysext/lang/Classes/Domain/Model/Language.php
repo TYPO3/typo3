@@ -99,7 +99,7 @@ class Language extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Setter for the selected
 	 *
-	 * @param boolean $selected wether the language is available or not
+	 * @param boolean $selected whether the language is available or not
 	 * @return void
 	 */
 	public function setSelected($selected) {

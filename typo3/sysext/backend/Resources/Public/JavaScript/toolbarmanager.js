@@ -59,7 +59,7 @@ var ToolbarManager = Class.create({
 
 	/**
 	 * positions a toolbar item (has to have .toolbar-item-menu)
-	 * @param elementId The parent element ofthe menu to be positioned
+	 * @param elementId The parent element of the menu to be positioned
 	 */
 	positionMenu: function(elementId) {
 	}

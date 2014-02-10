@@ -198,7 +198,7 @@ TYPO3.ContextHelp = function() {
 			});
 
 			/**
-			 * Adds a sequence to Ext.TooltTip::showAt so as to increase vertical offset when anchor position is 'botton'
+			 * Adds a sequence to Ext.TooltTip::showAt so as to increase vertical offset when anchor position is 'bottom'
 			 * This positions the tip box closer to the target element when the anchor is on the bottom side of the box
 			 * When anchor position is 'top' or 'bottom', the anchor is pushed slightly to the left in order to align with the help icon, if any
 			 *

@@ -238,7 +238,7 @@ class BackendLayoutWizardController {
 	}
 
 	/**
-	 * Returnes the sourcecode to the browser
+	 * Returns the sourcecode to the browser
 	 *
 	 * @return void
 	 * @todo Define visibility

@@ -162,7 +162,7 @@ class GenericObjectValidator extends AbstractValidator implements ObjectValidato
 	 * @param object $object The object containing the property to validate
 	 * @param string $propertyName Name of the property to validate
 	 * @throws \InvalidArgumentException
-	 * @return boolean TRUE if the property value is valid, FALSE if an error occured
+	 * @return boolean TRUE if the property value is valid, FALSE if an error occurred
 	 * @api
 	 * @deprecated since Extbase 1.4.0, will be removed two versions after Extbase 6.1
 	 */

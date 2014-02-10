@@ -895,9 +895,9 @@ class TypoScriptParser {
 		// Get alphabetically sorted file index in array
 		$fileIndex = GeneralUtility::getAllFilesAndFoldersInPath(array(), $absDirPath, $includedFileExtensions);
 		// Prepend file contents to $newString
-		$prefixLenght = strlen(PATH_site);
+		$prefixLength = strlen(PATH_site);
 		foreach ($fileIndex as $absFileRef) {
-			$relFileRef = substr($absFileRef, $prefixLenght);
+			$relFileRef = substr($absFileRef, $prefixLength);
 			self::includeFile($relFileRef, $cycle_counter, $returnFiles, $newString, $includedFiles, '', $absDirPath);
 		}
 		$newString .= '### <INCLUDE_TYPOSCRIPT: source="DIR:' . $dirPath . '"' . $optionalProperties . '> END:' . LF . LF;

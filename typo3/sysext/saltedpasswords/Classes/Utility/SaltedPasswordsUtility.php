@@ -62,7 +62,7 @@ class SaltedPasswordsUtility {
 	 *
 	 * @author Rainer Kuhn <kuhn@punkt.de>
 	 * @author Marcus Krause <marcus#exp2009@t3sec.info>
-	 * @param string $mode TYPO3_MODE, wether Configuration for Frontend or Backend should be delivered
+	 * @param string $mode TYPO3_MODE, whether Configuration for Frontend or Backend should be delivered
 	 * @return array Extension configuration data
 	 */
 	static public function returnExtConf($mode = TYPO3_MODE) {

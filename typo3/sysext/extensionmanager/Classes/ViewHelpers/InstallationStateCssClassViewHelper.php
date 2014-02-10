@@ -37,7 +37,7 @@ class InstallationStateCssClassViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelp
 	/**
 	 * Returns string meant to be used as css class
 	 * 'installed' => if an extension is installed
-	 * 'available' => if an extension is available in the sytem
+	 * 'available' => if an extension is available in the system
 	 * '' (empty string) => if neither installed nor available
 	 *
 	 * @param string $needle

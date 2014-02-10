@@ -848,7 +848,7 @@ class InlineElement {
 					', $opt) . '
 				</select>';
 			// Add a "Create new relation" link for adding new relations
-			// This is neccessary, if the size of the selector is "1" or if
+			// This is necessary, if the size of the selector is "1" or if
 			// there is only one record item in the select-box, that is selected by default
 			// The selector-box creates a new relation on using a onChange event (see some line above)
 			if (!empty($conf['appearance']['createNewRelationLinkTitle'])) {
@@ -2202,7 +2202,7 @@ class InlineElement {
 	 * );
 	 *
 	 * It is possible to use the array keys '%AND.1', '%AND.2', etc. to prevent
-	 * overwriting the sub-array. It could be neccessary, if you use complex comparisons.
+	 * overwriting the sub-array. It could be necessary, if you use complex comparisons.
 	 *
 	 * The example above means, key1 *AND* key2 (and their values) have to match with
 	 * the $subjectArray and additional one *OR* key3 or key4 have to meet the same
@@ -2212,7 +2212,7 @@ class InlineElement {
 	 *
 	 * @param array $subjectArray The array to search in
 	 * @param array $searchArray The array with keys and values to search for
-	 * @param string $type Use '%AND' or '%OR' for comparision
+	 * @param string $type Use '%AND' or '%OR' for comparison
 	 * @return boolean The result of the comparison
 	 * @todo Define visibility
 	 */

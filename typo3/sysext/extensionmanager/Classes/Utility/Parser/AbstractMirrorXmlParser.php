@@ -83,7 +83,7 @@ abstract class AbstractMirrorXmlParser extends \TYPO3\CMS\Extensionmanager\Utili
 	protected $title = NULL;
 
 	/**
-	 * Returns an assoziative array of all mirror properties.
+	 * Returns an associative array of all mirror properties.
 	 *
 	 * Valid array keys of returned array are:
 	 * country, host, path, sponsorlink, sponsorlogo, sponsorname, title

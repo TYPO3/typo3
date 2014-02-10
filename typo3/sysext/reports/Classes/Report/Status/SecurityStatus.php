@@ -145,7 +145,7 @@ class SecurityStatus implements \TYPO3\CMS\Reports\StatusProviderInterface {
 	}
 
 	/**
-	 * Checks whether memcached is configured, if that's the case we asume it's also used.
+	 * Checks whether memcached is configured, if that's the case we assume it's also used.
 	 *
 	 * @return boolean TRUE if memcached is used, FALSE otherwise.
 	 */
@@ -240,7 +240,7 @@ class SecurityStatus implements \TYPO3\CMS\Reports\StatusProviderInterface {
 	}
 
 	/**
-	 * Checks for the existance of the ENABLE_INSTALL_TOOL file.
+	 * Checks for the existence of the ENABLE_INSTALL_TOOL file.
 	 *
 	 * @return \TYPO3\CMS\Reports\Status An object representing whether ENABLE_INSTALL_TOOL exists
 	 */

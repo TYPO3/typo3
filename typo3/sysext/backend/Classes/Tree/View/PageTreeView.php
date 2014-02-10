@@ -85,7 +85,7 @@ class PageTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 	/**
 	 * Returns TRUE/FALSE if the next level for $id should be expanded - and all levels should, so we always return 1.
 	 *
-	 * @param integer $id ID (uid) to test for (see extending classes where this is checked againts session data)
+	 * @param integer $id ID (uid) to test for (see extending classes where this is checked against session data)
 	 * @return boolean
 	 * @todo Define visibility
 	 */

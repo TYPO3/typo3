@@ -198,7 +198,7 @@ TYPO3BackendLogin = {
 
 	/**
 	 * Store a login type in a cookie to save it for future visits
-	 * Login type means wether you login by username/password or OpenID
+	 * Login type means whether you login by username/password or OpenID
 	 */
 	setLogintypeCookie: function(type) {
 		var now = new Date();

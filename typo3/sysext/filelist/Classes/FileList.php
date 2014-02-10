@@ -560,7 +560,7 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 	}
 
 	/**
-	 * Returns list URL; This is the URL of the current script with id and imagemode parameters, thats all.
+	 * Returns list URL; This is the URL of the current script with id and imagemode parameters, that's all.
 	 * The URL however is not relative (with the backpath), otherwise GeneralUtility::sanitizeLocalUrl() would say that
 	 * the URL would be invalid
 	 *

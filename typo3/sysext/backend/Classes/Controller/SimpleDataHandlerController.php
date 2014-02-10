@@ -72,7 +72,7 @@ class SimpleDataHandlerController {
 	 */
 	public $cacheCmd;
 
-	// Redirect URL. Script will redirect to this location after performing operations (unless errors has occured)
+	// Redirect URL. Script will redirect to this location after performing operations (unless errors has occurred)
 	/**
 	 * @todo Define visibility
 	 */

@@ -107,7 +107,7 @@ class PageTreeNavigationController {
 	}
 
 	/**
-	 * Initialiation of the class
+	 * Initialization of the class
 	 *
 	 * @return 	void
 	 */

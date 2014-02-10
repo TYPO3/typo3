@@ -164,7 +164,7 @@ class OpenidService extends \TYPO3\CMS\Core\Service\AbstractService {
 					$isProcessed = TRUE;
 				} elseif (!empty($loginData['uname'])) {
 					// It might be the case that during frontend login the OpenID URL is submitted in the username field
-					// Since we are a low priority service, and no password has been submitted it is OK to just asume
+					// Since we are a low priority service, and no password has been submitted it is OK to just assume
 					// we might have gotten an OpenID URL
 					$loginData['uident_openid'] = $this->normalizeOpenID($loginData['uname']);
 					$isProcessed = TRUE;

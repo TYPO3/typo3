@@ -149,7 +149,7 @@ var TsCodeCompletion = function(codeMirror, outerdiv) {
 			eval(localname+' = new ' + plugin.classname + '();');
 			var obj = eval(localname);
 		} catch(e) {
-			throw("error occured while trying to make new instance of \"" + plugin.classname + "\"! maybe syntax error or wrong filepath?");
+			throw("error occurred while trying to make new instance of \"" + plugin.classname + "\"! maybe syntax error or wrong filepath?");
 			return;
 		}
 		obj.init(pluginContext,plugin);

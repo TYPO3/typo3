@@ -47,7 +47,7 @@ class Typo3DatabaseBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend
 	protected $tagsTable;
 
 	/**
-	 * @var boolean Indicates wether data is compressed or not (requires php zlib)
+	 * @var boolean Indicates whether data is compressed or not (requires php zlib)
 	 */
 	protected $compression = FALSE;
 

@@ -138,8 +138,8 @@ TYPO3.BackendLiveSearch = Ext.extend(Ext.form.ComboBox, {
 		h = Math.min(h, space, this.maxHeight);
 
 		/**
-		 * @internal The calcated height of "h" in the line before seems not working as expected.
-		 *			 If i define a min height, the box shold at least use this height also if only one entry is in there
+		 * @internal The calculated height of "h" in the line before seems not working as expected.
+		 *			 If i define a min height, the box should at least use this height also if only one entry is in there
 		 */
 		//h = this.maxHeight;
 

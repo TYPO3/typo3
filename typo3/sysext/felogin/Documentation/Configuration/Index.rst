@@ -36,7 +36,7 @@ storagePid
 
    Description
          Define the Storage Folder with the Website User Records, using a comma
-         seperated list or single value
+         separated list or single value
 
    Default
          {$styles.content.loginform.pid}

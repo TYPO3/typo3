@@ -60,7 +60,7 @@ class ExtensionModelUtility {
 	}
 
 	/**
-	 * Converts string dependencys to an object storage of dependencies
+	 * Converts string dependencies to an object storage of dependencies
 	 *
 	 * @param string $dependencies
 	 * @return \SplObjectStorage

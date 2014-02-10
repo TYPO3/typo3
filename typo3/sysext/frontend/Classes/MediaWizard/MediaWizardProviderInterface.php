@@ -45,7 +45,7 @@ interface MediaWizardProviderInterface {
 	 * Rewrites a media provider URL into a canonized form that can be embedded
 	 *
 	 * @param string $url URL to be handled
-	 * @return string Canonized URL that can be used to embedd
+	 * @return string Canonized URL that can be used to embed
 	 */
 	public function rewriteUrl($url);
 

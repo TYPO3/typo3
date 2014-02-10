@@ -34,7 +34,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  * Generating navigation / menus from TypoScript
  *
  * Base class. The HMENU content object uses this (or more precisely one of the extension classes).
- * Amoung others the class generates an array of menuitems. Thereafter functions from the subclasses are called.
+ * Among others the class generates an array of menuitems. Thereafter functions from the subclasses are called.
  * The class is ALWAYS used through extension classes (like GraphicalMenuContentObject or TextMenuContentObject which are classics) and
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>

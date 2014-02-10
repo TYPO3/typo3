@@ -35,7 +35,7 @@ namespace TYPO3\CMS\Reports;
 interface StatusProviderInterface {
 
 	/**
-	 * Returns the staus of an extension or (sub)system
+	 * Returns the status of an extension or (sub)system
 	 *
 	 * @return array An array of \TYPO3\CMS\Reports\Status objects
 	 */

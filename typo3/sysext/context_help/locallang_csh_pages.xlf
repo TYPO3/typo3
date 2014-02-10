@@ -324,7 +324,7 @@ You can select nothing or "none" to get the default column view of the page modu
 
 If you select a layout or "none", it will override any settings that might have been inherited from pages in the rootline of the current page.
 
-The selection is inherited automatically by all subpages - so you don't have to set it seperately for each of them.</source>
+The selection is inherited automatically by all subpages - so you don't have to set it separately for each of them.</source>
 			</trans-unit>
 			<trans-unit id="_backend_layout_next_level.seeAlso" xml:space="preserve">
 				<source>pages:backend_layout</source>

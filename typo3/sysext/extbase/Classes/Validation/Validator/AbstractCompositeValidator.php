@@ -205,7 +205,7 @@ abstract class AbstractCompositeValidator implements ObjectValidatorInterface, \
 	 *
 	 * @param object $object The object containing the property to validate
 	 * @param string $propertyName Name of the property to validate
-	 * @return boolean TRUE if the property value is valid, FALSE if an error occured
+	 * @return boolean TRUE if the property value is valid, FALSE if an error occurred
 	 *
 	 * @deprecated since Extbase 1.4.0, will be removed two versions after Extbase 6.1
 	 */

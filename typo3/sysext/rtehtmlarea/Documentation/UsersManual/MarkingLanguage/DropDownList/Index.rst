@@ -38,7 +38,7 @@ element[language-code].
 
 Site developers/admins have the ability to configure:
 
-- wether lang or xml:lang or both are used as language attibute(s);
+- whether lang or xml:lang or both are used as language attibute(s);
 
 - which languages are available in the drop-down list.
 

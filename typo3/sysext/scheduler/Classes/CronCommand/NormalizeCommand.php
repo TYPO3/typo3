@@ -30,7 +30,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  *
  * Special fields like three letter weekdays, ranges and steps are substituted
  * to a comma separated list of integers. Example:
- * '2-4 10-40/10 * mar * fri'  will be nolmalized to '2,4 10,20,30,40 * * 3 1,2'
+ * '2-4 10-40/10 * mar * fri'  will be normalized to '2,4 10,20,30,40 * * 3 1,2'
  *
  * @author Christian Kuhn <lolli@schwarzbu.ch>
  */
@@ -130,7 +130,7 @@ class NormalizeCommand {
 		if ((string) $expression === '*') {
 			$fieldValues = '*';
 		} else {
-			// Fragment espression by , / and - and substitute three letter code of month and weekday to numbers
+			// Fragment expression by , / and - and substitute three letter code of month and weekday to numbers
 			$listOfCommaValues = explode(',', $expression);
 			$fieldArray = array();
 			foreach ($listOfCommaValues as $listElement) {
@@ -239,7 +239,7 @@ class NormalizeCommand {
 			$left = $rangeArray[0];
 			$right = $rangeArray[1];
 			if ($left > $right) {
-				throw new \InvalidArgumentException('Unable to convert range to list: Left integer must not be greather than right integer.', 1291237145);
+				throw new \InvalidArgumentException('Unable to convert range to list: Left integer must not be greater than right integer.', 1291237145);
 			}
 			$resultListArray = array();
 			for ($i = $left; $i <= $right; $i++) {

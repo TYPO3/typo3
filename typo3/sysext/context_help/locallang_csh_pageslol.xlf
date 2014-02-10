@@ -23,7 +23,7 @@ _MOD_web_layout:language_list</source>
 				<source>Use this to temporarily disable the alternative language overlay for this page.</source>
 			</trans-unit>
 			<trans-unit id="hidden.details" xml:space="preserve">
-				<source>Setting this option is practical in the phase of adding the extra language. When it is set, the alternative content will not be displayed unless you - as an logged in backend user - enableds the Admin Panel&gt;Preview&gt;Show hidden records option.</source>
+				<source>Setting this option is practical in the phase of adding the extra language. When it is set, the alternative content will not be displayed unless you - as an logged in backend user - enables the Admin Panel&gt;Preview&gt;Show hidden records option.</source>
 			</trans-unit>
 			<trans-unit id="_hidden.seeAlso" xml:space="preserve">
 				<source>pages_language_overlay:starttime,

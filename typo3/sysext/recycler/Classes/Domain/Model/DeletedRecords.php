@@ -46,7 +46,7 @@ class DeletedRecords {
 	protected $limit = '';
 
 	/**
-	 * Array with all avaiable FE tables
+	 * Array with all available FE tables
 	 *
 	 * @var 	array
 	 */

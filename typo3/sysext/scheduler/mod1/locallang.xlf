@@ -319,7 +319,7 @@
 				<source>Disabled, will not be executed, except manually</source>
 			</trans-unit>
 			<trans-unit id="status.legend.failure" xml:space="preserve">
-				<source>Failure! An error occured during the last execution (move over bullet for more details)</source>
+				<source>Failure! An error occurred during the last execution (move over bullet for more details)</source>
 			</trans-unit>
 			<trans-unit id="status.legend.late" xml:space="preserve">
 				<source>Late, will run with next execution</source>

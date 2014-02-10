@@ -7300,7 +7300,7 @@ Value must be set and properties are those of ->HTMLparser.
 ]]></default>
 		</property>
 		<property name="TCAselectItem" type="array">
-			<description><![CDATA[Resolves a comma seperated list of values into the TCA item representation.
+			<description><![CDATA[Resolves a comma separated list of values into the TCA item representation.
 
 .table (string): The Table to look up
 .field (string): The field to resolve

@@ -103,7 +103,7 @@ class ExtensionManagementService implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 	/**
-	 * Resolve an extensions dependencys (download, copy and install dependent
+	 * Resolve an extensions dependencies (download, copy and install dependent
 	 * extensions) and install the extension
 	 *
 	 * @param \TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension

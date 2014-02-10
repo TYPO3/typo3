@@ -38,7 +38,7 @@ class UpdateScriptUtility {
 	 * Returns true, if ext_update class says it wants to run.
 	 *
 	 * @param string $extensionKey extension key
-	 * @return mixed NULL, if update is not availabel, else update script return
+	 * @return mixed NULL, if update is not available, else update script return
 	 */
 	public function executeUpdateIfNeeded($extensionKey) {
 		$this->requireUpdateScript($extensionKey);

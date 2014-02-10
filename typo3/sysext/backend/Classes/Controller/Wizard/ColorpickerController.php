@@ -257,7 +257,7 @@ class ColorpickerController {
 	}
 
 	/**
-	 * Returnes a frameset so our JavaScript Reference isn't lost
+	 * Returns a frameset so our JavaScript Reference isn't lost
 	 * Took some brains to figure this one out ;-)
 	 * If Peter wouldn't have been I would've gone insane...
 	 *

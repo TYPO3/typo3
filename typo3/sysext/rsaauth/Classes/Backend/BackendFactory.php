@@ -44,7 +44,7 @@ class BackendFactory {
 
 	/**
 	 * A flag that tells if the factory is initialized. This is to prevent
-	 * continious creation of backends in case if none of them is available.
+	 * continuous creation of backends in case if none of them is available.
 	 *
 	 * @var boolean
 	 */
@@ -53,7 +53,7 @@ class BackendFactory {
 	/**
 	 * A selected backend. This member is set in the getBackend() function. It
 	 * will not be an abstract backend as shown below but a real class, which is
-	 * derieved from the \TYPO3\CMS\Rsaauth\Backend\AbstractBackend.
+	 * derived from the \TYPO3\CMS\Rsaauth\Backend\AbstractBackend.
 	 *
 	 * @var \TYPO3\CMS\Rsaauth\Backend\AbstractBackend
 	 */
@@ -61,7 +61,7 @@ class BackendFactory {
 
 	/**
 	 * Obtains a backend. This function will return a non-abstract class, which
-	 * is derieved from the \TYPO3\CMS\Rsaauth\Backend\AbstractBackend. Applications should
+	 * is derived from the \TYPO3\CMS\Rsaauth\Backend\AbstractBackend. Applications should
 	 * not use any methods that are not declared in the \TYPO3\CMS\Rsaauth\Backend\AbstractBackend.
 	 *
 	 * @return \TYPO3\CMS\Rsaauth\Backend\AbstractBackend A backend
@@ -71,7 +71,7 @@ class BackendFactory {
 			// Backend does not exist yet. Create it.
 			foreach (self::$availableBackends as $backend) {
 				$backendObject = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($backend);
-				// Check that it is derieved from the proper base class
+				// Check that it is derived from the proper base class
 				if ($backendObject instanceof \TYPO3\CMS\Rsaauth\Backend\AbstractBackend) {
 					/** @var $backendObject \TYPO3\CMS\Rsaauth\Backend\AbstractBackend */
 					if ($backendObject->isAvailable()) {

@@ -54,7 +54,7 @@ class PropertyMapper implements \TYPO3\CMS\Core\SingletonInterface {
 	protected $typeConverters = array();
 
 	/**
-	 * A list of property mapping messages (errors, warnings) which have occured on last mapping.
+	 * A list of property mapping messages (errors, warnings) which have occurred on last mapping.
 	 *
 	 * @var \TYPO3\CMS\Extbase\Error\Result
 	 */

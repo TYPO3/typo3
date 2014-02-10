@@ -136,7 +136,7 @@ class ActionToolbarMenu implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookInt
 	}
 
 	/**
-	 * Adds the neccessary javascript ot the backend
+	 * Adds the necessary javascript ot the backend
 	 *
 	 * @return void
 	 */
@@ -147,7 +147,7 @@ class ActionToolbarMenu implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookInt
 	}
 
 	/**
-	 * Adds the neccessary css ot the backend
+	 * Adds the necessary css ot the backend
 	 *
 	 * @return void
 	 */

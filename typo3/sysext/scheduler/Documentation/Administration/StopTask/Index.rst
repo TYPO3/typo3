@@ -21,7 +21,7 @@ circumstances.
 .. figure:: ../../Images/StoppingATask.png
    :alt: Stopping a task
 
-   Stopping a running task from the main scren
+   Stopping a running task from the main screen
 
 
 In such cases it is possible to use the "stop" button to

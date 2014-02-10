@@ -181,7 +181,7 @@ class BackendController {
 		 ******************************************************/
 		foreach ($this->cssFiles as $cssFileName => $cssFile) {
 			$this->pageRenderer->addCssFile($cssFile);
-			// Load addditional css files to overwrite existing core styles
+			// Load additional css files to overwrite existing core styles
 			if (!empty($GLOBALS['TBE_STYLES']['stylesheets'][$cssFileName])) {
 				$this->pageRenderer->addCssFile($GLOBALS['TBE_STYLES']['stylesheets'][$cssFileName]);
 			}
@@ -628,7 +628,7 @@ class BackendController {
 	 */
 	public function addJavascriptFile($javascriptFile) {
 		$jsFileAdded = FALSE;
-		//TODO add more checks if neccessary
+		//TODO add more checks if necessary
 		if (file_exists(GeneralUtility::resolveBackPath(PATH_typo3 . $javascriptFile))) {
 			$this->jsFiles[] = $javascriptFile;
 			$jsFileAdded = TRUE;

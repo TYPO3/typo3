@@ -78,7 +78,7 @@ abstract class AbstractValidator implements \TYPO3\CMS\Extbase\Validation\Valida
 
 	/**
 	 * Checks if the given value is valid according to the validator, and returns
-	 * the Error Messages object which occured.
+	 * the Error Messages object which occurred.
 	 *
 	 * @param mixed $value The value that should be validated
 	 * @return \TYPO3\CMS\Extbase\Error\Result

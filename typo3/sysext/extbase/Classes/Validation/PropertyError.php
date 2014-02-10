@@ -78,7 +78,7 @@ class PropertyError extends \TYPO3\CMS\Extbase\Validation\Error {
 	/**
 	 * Get all errors for the property
 	 *
-	 * @return array An array of \TYPO3\CMS\Extbase\Validation\Error objects or an empty array if no errors occured for the property
+	 * @return array An array of \TYPO3\CMS\Extbase\Validation\Error objects or an empty array if no errors occurred for the property
 	 */
 	public function getErrors() {
 		return $this->errors;

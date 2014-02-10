@@ -124,7 +124,7 @@ class SetupModuleController {
 	 *
 	 ******************************/
 	/**
-	 * Instanciate the form protection before a simulated user is initialized.
+	 * Instantiate the form protection before a simulated user is initialized.
 	 */
 	public function __construct() {
 		$this->formProtection = \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get();

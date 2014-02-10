@@ -41,7 +41,7 @@ class DateTimeValidator extends AbstractValidator {
 	 * If at least one error occurred, the result is FALSE.
 	 *
 	 * @param mixed $value The value that should be validated
-	 * @return boolean TRUE if the value is valid, FALSE if an error occured
+	 * @return boolean TRUE if the value is valid, FALSE if an error occurred
 	 */
 	public function isValid($value) {
 		$this->errors = array();

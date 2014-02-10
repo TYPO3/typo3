@@ -355,7 +355,7 @@
 				<source>Too many files selected</source>
 			</trans-unit>
 			<trans-unit id="fileUpload_errorUploadHttpError" xml:space="preserve">
-				<source>A HTTP error occured: {0}</source>
+				<source>A HTTP error occurred: {0}</source>
 			</trans-unit>
 			<trans-unit id="fileUpload_errorUploadMissingUrl" xml:space="preserve">
 				<source>Internal error: No Upload URL set</source>

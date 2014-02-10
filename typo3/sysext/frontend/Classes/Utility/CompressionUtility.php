@@ -45,7 +45,7 @@ class CompressionUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 * is enabled.
 	 *
 	 * @param string $outputBuffer Output buffer to compress
-	 * @param integer $mode One of PHP_OUTPUT_HANDLER_xxx contants
+	 * @param integer $mode One of PHP_OUTPUT_HANDLER_xxx constants
 	 * @return string Compressed string
 	 * @see ob_start()
 	 * @see ob_gzhandler()

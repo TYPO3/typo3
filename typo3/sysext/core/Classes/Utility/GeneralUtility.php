@@ -2416,7 +2416,7 @@ class GeneralUtility {
 	 * @param integer $includeHeader Whether the HTTP header should be fetched or not. 0=disable, 1=fetch header+content, 2=fetch header only
 	 * @param array $requestHeaders HTTP headers to be used in the request
 	 * @param array $report Error code/message and, if $includeHeader is 1, response meta data (HTTP status and content type)
-	 * @return mixed The content from the resource given as input. FALSE if an error has occured.
+	 * @return mixed The content from the resource given as input. FALSE if an error has occurred.
 	 */
 	static public function getUrl($url, $includeHeader = 0, $requestHeaders = FALSE, &$report = NULL) {
 		$content = FALSE;

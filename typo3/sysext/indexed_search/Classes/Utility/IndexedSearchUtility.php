@@ -38,7 +38,7 @@ class IndexedSearchUtility {
 
 	/**
 	 * Check if the tables provided are configured for usage. This becomes
-	 * neccessary for extensions that provide additional database functionality
+	 * necessary for extensions that provide additional database functionality
 	 * like indexed_search_mysql.
 	 *
 	 * @param string $tableName Table name to check

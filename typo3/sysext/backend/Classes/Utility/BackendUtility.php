@@ -1912,7 +1912,7 @@ class BackendUtility {
 	 *
 	 * @param string $table Table name, present in TCA
 	 * @param array $row Row from table
-	 * @param boolean $prep If set, result is prepared for output: The output is cropped to a limited lenght (depending on BE_USER->uc['titleLen']) and if no value is found for the title, '<em>[No title]</em>' is returned (localized). Further, the output is htmlspecialchars()'ed
+	 * @param boolean $prep If set, result is prepared for output: The output is cropped to a limited length (depending on BE_USER->uc['titleLen']) and if no value is found for the title, '<em>[No title]</em>' is returned (localized). Further, the output is htmlspecialchars()'ed
 	 * @param boolean $forceResult If set, the function always returns an output. If no value is found for the title, '[No title]' is returned (localized).
 	 * @return string
 	 */
@@ -1967,7 +1967,7 @@ class BackendUtility {
 	}
 
 	/**
-	 * Crops a title string to a limited lenght and if it really was cropped, wrap it in a <span title="...">|</span>,
+	 * Crops a title string to a limited length and if it really was cropped, wrap it in a <span title="...">|</span>,
 	 * which offers a tooltip with the original title when moving mouse over it.
 	 *
 	 * @param string $title The title string to be cropped

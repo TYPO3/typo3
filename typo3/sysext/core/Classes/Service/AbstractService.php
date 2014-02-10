@@ -186,7 +186,7 @@ abstract class AbstractService {
 	 * @return void
 	 * @todo Define visibility
 	 */
-	public function errorPush($errNum = T3_ERR_SV_GENERAL, $errMsg = 'Unspecified error occured') {
+	public function errorPush($errNum = T3_ERR_SV_GENERAL, $errMsg = 'Unspecified error occurred') {
 		array_push($this->error, array('nr' => $errNum, 'msg' => $errMsg));
 		if (is_object($GLOBALS['TT'])) {
 			$GLOBALS['TT']->setTSlogMessage($errMsg, 2);

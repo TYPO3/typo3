@@ -39,8 +39,8 @@ class SpriteIconViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBacke
 	 * Renders an icon as known from the TYPO3 backend
 	 *
 	 * @param string $icon Icon to be used
-	 * @param string $title Title attribte
-	 * @param string $class Class attribte
+	 * @param string $title Title attribute
+	 * @param string $class Class attribute
 	 * @return string the rendered icon
 	 */
 	public function render($icon, $title = '', $class = '') {

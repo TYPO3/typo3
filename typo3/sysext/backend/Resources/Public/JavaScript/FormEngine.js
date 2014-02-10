@@ -166,7 +166,7 @@ define('TYPO3/CMS/Backend/FormEngine', ['jquery'], function ($) {
 			selectedValues.push($(this).prop('value'));
 		});
 
-		// make a comma-seperated list, if it is a multi-select
+		// make a comma separated list, if it is a multi-select
 		// set the values to the final hidden field
 		$(originalFieldEl).val(selectedValues.join(','));
 	};

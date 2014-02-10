@@ -151,7 +151,7 @@ class BlowfishSalt extends \TYPO3\CMS\Saltedpasswords\Salt\Md5Salt {
 	}
 
 	/**
-	 * Returns wether all prequesites for the hashing methods are matched
+	 * Returns whether all prerequisites for the hashing methods are matched
 	 *
 	 * @return boolean Method available
 	 */

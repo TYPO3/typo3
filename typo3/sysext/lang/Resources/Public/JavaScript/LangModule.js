@@ -82,7 +82,7 @@ var languageModule = {
 	 * @return void
 	 */
 	processCell: function(cell) {
-			// Intialize
+			// Initialize
 		var $cell = jQuery(cell);
 		languageModule.toggleEventHandlers('off');
 		languageModule.errorCount = 0;

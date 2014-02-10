@@ -121,7 +121,7 @@
 				<source>Search Form</source>
 			</trans-unit>
 			<trans-unit id="forms_search_description" xml:space="preserve">
-				<source>Draws a search form and the searchresult if a search is performed.</source>
+				<source>Draws a search form and the search result if a search is performed.</source>
 			</trans-unit>
 			<trans-unit id="forms_login_title" xml:space="preserve">
 				<source>Login Form</source>

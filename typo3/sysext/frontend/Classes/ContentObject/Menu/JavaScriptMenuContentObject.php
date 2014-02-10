@@ -73,16 +73,16 @@ class JavaScriptMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu
 				$formCode = '';
 				$levelConf = $this->mconf[$a . '.'];
 				$length = $levelConf['width'] ?: 14;
-				$lenghtStr = '';
+				$lengthStr = '';
 				for ($b = 0; $b < $length; $b++) {
-					$lenghtStr .= '_';
+					$lengthStr .= '_';
 				}
 				$height = $levelConf['elements'] ?: 5;
 				$formCode .= '<select name="selector' . $a . '" onchange="' . $this->JSMenuName . '.act(' . $a . ');"' . ($levelConf['additionalParams'] ? ' ' . $levelConf['additionalParams'] : '') . '>';
 				for ($b = 0; $b < $height; $b++) {
 					$formCode .= '<option value="0">';
 					if ($b == 0) {
-						$formCode .= $lenghtStr;
+						$formCode .= $lengthStr;
 					}
 					$formCode .= '</option>';
 				}

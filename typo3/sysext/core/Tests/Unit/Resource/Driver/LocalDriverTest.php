@@ -62,7 +62,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 	}
 
 	/**
-	 * Creates a "real" directory for doing tests. This is neccessary because some file system properties (e.g. permissions)
+	 * Creates a "real" directory for doing tests. This is necessary because some file system properties (e.g. permissions)
 	 * cannot be reflected by vfsStream, and some methods (like touch()) don't work there either.
 	 *
 	 * Created directories are automatically destroyed by the tearDownAfterClass() method.

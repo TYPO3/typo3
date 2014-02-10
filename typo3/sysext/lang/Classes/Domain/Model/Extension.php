@@ -72,7 +72,7 @@ class Extension extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	protected $updateResult = array();
 
 	/**
-	 * Construtor of the extension model.
+	 * Constructor of the extension model.
 	 *
 	 * @param string $key The extension key
 	 * @param string $title Title of the extension

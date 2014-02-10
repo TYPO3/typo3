@@ -905,7 +905,7 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 	 * Deletes an object
 	 *
 	 * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object The object to be removed from the storage
-	 * @param boolean $markAsDeleted Wether to just flag the row deleted (default) or really delete it
+	 * @param boolean $markAsDeleted Whether to just flag the row deleted (default) or really delete it
 	 * @return void
 	 */
 	protected function removeEntity(\TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object, $markAsDeleted = TRUE) {

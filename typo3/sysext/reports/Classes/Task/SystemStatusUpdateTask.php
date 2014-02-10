@@ -39,7 +39,7 @@ class SystemStatusUpdateTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 	protected $notificationEmail = NULL;
 
 	/**
-	 * Executes the System Status Update task, determing the highest severity of
+	 * Executes the System Status Update task, determining the highest severity of
 	 * status reports and saving that to the registry to be displayed at login
 	 * if necessary.
 	 *

@@ -125,7 +125,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 	}
 
 	/**
-	 * Gemeral overview over the task in the taskcenter menu
+	 * General overview over the task in the taskcenter menu
 	 *
 	 * @return string Overview as HTML
 	 */
@@ -149,7 +149,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 
 	/**
 	 * Get all actions of an user. Admins can see any action, all others only those
-	 * whic are allowed in sys_action record itself.
+	 * which are allowed in sys_action record itself.
 	 *
 	 * @return array Array holding every needed information of a sys_action
 	 */
@@ -219,7 +219,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 	protected function viewNewBackendUser($record) {
 		$content = '';
 		$beRec = BackendUtility::getRecord('be_users', (int)$record['t1_copy_of_user']);
-		// A record is neeed which is used as copy for the new user
+		// A record is need which is used as copy for the new user
 		if (!is_array($beRec)) {
 			$flashMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $GLOBALS['LANG']->getLL('action_notReady', TRUE), $GLOBALS['LANG']->getLL('action_error'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
 			$content .= $flashMessage->render();
@@ -254,7 +254,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 			} else {
 				// Save user
 				$key = $this->saveNewBackendUser($record, $vars);
-				// Success messsage
+				// Success message
 				$flashMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $vars['key'] === 'NEW' ? $GLOBALS['LANG']->getLL('success-user-created') : $GLOBALS['LANG']->getLL('success-user-updated'), $GLOBALS['LANG']->getLL('success'), \TYPO3\CMS\Core\Messaging\FlashMessage::OK);
 				$content .= $flashMessage->render() . '<br />';
 			}
@@ -507,7 +507,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 			$cleanGroupList = array();
 			// Create an array from the allowed usergroups using the uid as key
 			$allowedUsergroups = array_flip(explode(',', $actionRecord['t1_allowed_groups']));
-			// Walk through the array and check every uid if it is undder the allowed ines
+			// Walk through the array and check every uid if it is under the allowed ines
 			foreach ($appliedUsergroups as $group) {
 				if (isset($allowedUsergroups[$group])) {
 					$cleanGroupList[] = $group;
@@ -658,7 +658,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 			$record = BackendUtility::getRecord($el['table'], $dbAnalysis->results[$el['table']][$el['id']]);
 			$title = BackendUtility::getRecordTitle($el['table'], $dbAnalysis->results[$el['table']][$el['id']]);
 			$description = $GLOBALS['LANG']->sL($GLOBALS['TCA'][$el['table']]['ctrl']['title'], TRUE);
-			// @todo: which information could be needfull
+			// @todo: which information could be needful
 			if (isset($record['crdate'])) {
 				$description .= ' - ' . BackendUtility::dateTimeAge($record['crdate']);
 			}

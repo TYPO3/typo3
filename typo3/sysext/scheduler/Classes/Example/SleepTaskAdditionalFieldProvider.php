@@ -24,7 +24,7 @@ namespace TYPO3\CMS\Scheduler\Example;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 /**
- * Aditional fields provider class for usage with the Scheduler's sleep task
+ * Additional fields provider class for usage with the Scheduler's sleep task
  *
  * @author 		François Suter <francois@typo3.org>
  */

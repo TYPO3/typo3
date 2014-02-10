@@ -24,7 +24,7 @@ namespace TYPO3\CMS\Scheduler\CronCommand;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 /**
- * This class provides calulations for the cron command format.
+ * This class provides calculations for the cron command format.
  *
  * @author Markus Friedrich <markus.friedrich@dkd.de>
  * @author Christian Kuhn <lolli@schwarzbu.ch>

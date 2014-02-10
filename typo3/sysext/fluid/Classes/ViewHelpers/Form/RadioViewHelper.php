@@ -77,7 +77,7 @@ class RadioViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFiel
 		$nameAttribute = $this->getName();
 		$valueAttribute = $this->getValue();
 		if ($checked === NULL && $this->isObjectAccessorMode()) {
-			if ($this->hasMappingErrorOccured()) {
+			if ($this->hasMappingErrorOccurred()) {
 				$propertyValue = $this->getLastSubmittedFormData();
 			} else {
 				$propertyValue = $this->getPropertyValue();

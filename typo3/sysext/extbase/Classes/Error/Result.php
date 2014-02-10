@@ -369,7 +369,7 @@ class Result {
 
 	/**
 	 * Get a list of all Warning objects recursively. The result is an array,
-	 * where the key is the property path where the warning occured, and the
+	 * where the key is the property path where the warning occurred, and the
 	 * value is a list of all warnings (stored as array)
 	 *
 	 * @return array<\TYPO3\CMS\Extbase\Error\Warning>

@@ -84,7 +84,7 @@ class PermissionModuleController {
 	/**
 	 * Module settings, cleansed.
 	 *
-	 * @var aray
+	 * @var array
 	 */
 	public $MOD_SETTINGS = array();
 

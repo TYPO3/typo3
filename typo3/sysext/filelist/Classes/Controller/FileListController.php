@@ -201,7 +201,7 @@ class FileListController {
 	public function menuConfig() {
 		// MENU-ITEMS:
 		// If array, then it's a selector box menu
-		// If empty string it's just a variable, that'll be saved.
+		// If empty string it's just a variable, that will be saved.
 		// Values NOT in this array will not be saved in the settings-array for the module.
 		$this->MOD_MENU = array(
 			'sort' => '',

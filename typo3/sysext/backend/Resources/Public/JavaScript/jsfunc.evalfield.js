@@ -52,8 +52,8 @@ function evalFunc() {
 	this.isInString = '';
 	this.USmode = 0;
 }
-function evalFunc_pol(fortegn, value) {
-	return eval (((fortegn=="-")?'-':'')+value);
+function evalFunc_pol(foreign, value) {
+	return eval (((foreign=="-")?'-':'')+value);
 }
 function evalFunc_evalObjValue(FObj,value) {
 	var evallist = FObj.evallist;
