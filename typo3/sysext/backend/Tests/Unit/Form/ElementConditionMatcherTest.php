@@ -42,13 +42,6 @@ class ElementConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 	/**
-	 * Tears down this test case.
-	 */
-	protected function tearDown() {
-		unset($this->fixture);
-	}
-
-	/**
 	 * Returns data sets for the test matchConditionStrings
 	 * Each dataset is an array with the following elements:
 	 * - the condition string

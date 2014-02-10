@@ -43,10 +43,6 @@ class ModuleControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->moduleController = $this->getAccessibleMock('TYPO3\\CMS\\Backend\\Module\\ModuleController', array('getLanguageService'), array(), '', FALSE);
 	}
 
-	protected function tearDown() {
-		unset($this->moduleController);
-	}
-
 	/**
 	 * @test
 	 */

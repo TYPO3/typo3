@@ -56,15 +56,6 @@ class AbstractPluginTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 	/**
-	 * Tears down this testcase
-	 */
-	public function tearDown() {
-		parent::tearDown();
-
-		$this->abstractPlugin = NULL;
-	}
-
-	/**
 	 * Data provider for piSetPiVarDefaultsStdWrap
 	 *
 	 * @return array input-array with configuration and stdWrap, expected output-array in piVars

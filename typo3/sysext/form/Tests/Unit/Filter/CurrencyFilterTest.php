@@ -41,10 +41,6 @@ class CurrencyFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->fixture = new \TYPO3\CMS\Form\Filter\CurrencyFilter();
 	}
 
-	public function tearDown() {
-		unset($this->fixture);
-	}
-
 	public function validDataProvider() {
 		return array(
 			'1200 => 1.200,00' => array(

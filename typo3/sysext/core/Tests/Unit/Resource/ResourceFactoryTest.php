@@ -39,17 +39,12 @@ class FactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @var \TYPO3\CMS\Core\Resource\ResourceFactory
 	 */
-	private $fixture;
-
-	/**
-	 * @var boolean
-	 */
-	private $objectCreated = FALSE;
+	protected $fixture;
 
 	/**
 	 * @var array
 	 */
-	private $filesCreated = array();
+	protected $filesCreated = array();
 
 	public function setUp() {
 		$this->singletonInstances = \TYPO3\CMS\Core\Utility\GeneralUtility::getSingletonInstances();
@@ -61,6 +56,7 @@ class FactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		foreach ($this->filesCreated as $file) {
 			unlink($file);
 		}
+		parent::tearDown();
 	}
 
 	/**********************************

@@ -44,10 +44,6 @@ class InArrayValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$this->subject = $this->getMock('TYPO3\\CMS\\Form\\Validation\\InArrayValidator', array('dummy'), array(), '', FALSE);
 	}
 
-	public function tearDown() {
-		unset($this->helper, $this->subject);
-	}
-
 	public function validArrayProvider() {
 		return array(
 			'12 in (12, 13)' => array(array(array(12, 13), 12))

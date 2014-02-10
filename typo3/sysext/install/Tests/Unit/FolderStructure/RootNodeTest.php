@@ -43,6 +43,7 @@ class RootNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir($node, TRUE);
 			}
 		}
+		parent::tearDown();
 	}
 
 	/**

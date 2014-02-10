@@ -44,6 +44,7 @@ class SelectViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\
 		foreach ($this->backupLocales as $category => $locale) {
 			setlocale(constant($category), $locale);
 		}
+		parent::tearDown();
 	}
 
 	/**

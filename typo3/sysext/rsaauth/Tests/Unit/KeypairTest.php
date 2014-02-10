@@ -43,10 +43,6 @@ class KeypairTest extends \TYPO3\CMS\Core\Tests\UnitTestCase  {
 		$this->subject = new Keypair();
 	}
 
-	public function tearDown() {
-		unset($this->subject);
-	}
-
 	/**
 	 * @test
 	 */

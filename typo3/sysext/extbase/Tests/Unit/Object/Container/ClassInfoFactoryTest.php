@@ -36,10 +36,10 @@ class ClassInfoFactoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	/**
 	 * @var \TYPO3\CMS\Extbase\Object\Container\ClassInfoFactory
 	 */
-	private $classInfoFactory;
+	protected $classInfoFactory;
 
 	/**
-
+	 * Set up
 	 */
 	public function setUp() {
 		$this->classInfoFactory = new \TYPO3\CMS\Extbase\Object\Container\ClassInfoFactory();

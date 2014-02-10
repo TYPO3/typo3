@@ -52,7 +52,7 @@ class FrontendLoginTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @var string
 	 */
-	private $testTableName;
+	protected $testTableName;
 
 	/**
 	 * Set up
@@ -65,13 +65,6 @@ class FrontendLoginTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->accessibleFixture->cObj = $this->getMock('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
 		$GLOBALS['TSFE'] = $this->getMock('TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController', array(), array(), '', FALSE);
 		$this->setUpFakeSitePathAndHost();
-	}
-
-	/**
-	 * Tear down
-	 */
-	public function tearDown() {
-		$this->accessibleFixture = NULL;
 	}
 
 	/**

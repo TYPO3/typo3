@@ -44,10 +44,6 @@ class DateValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$this->subject = $this->getMock('TYPO3\\CMS\\Form\\Validation\\DateValidator', array('dummy'), array(), '', FALSE);
 	}
 
-	public function tearDown() {
-		unset($this->helper, $this->subject);
-	}
-
 	public function validDateProvider() {
 		return array(
 			'28-03-2012' => array(array('%e-%m-%Y', '28-03-2012')),

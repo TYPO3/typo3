@@ -67,10 +67,6 @@ class MapperTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$this->fixture->_set('validatorResolver', $validatorResolver);
 	}
 
-	public function tearDown() {
-		unset($this->fixture);
-	}
-
 	/**
 	 * @test
 	 */

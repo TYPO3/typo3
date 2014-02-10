@@ -38,10 +38,6 @@ class DocumentFormatTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$this->fixture = new \TYPO3\CMS\Documentation\Domain\Model\DocumentFormat();
 	}
 
-	public function tearDown() {
-		unset($this->fixture);
-	}
-
 	/**
 	 * @test
 	 */

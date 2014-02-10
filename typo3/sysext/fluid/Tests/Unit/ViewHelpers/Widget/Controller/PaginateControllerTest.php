@@ -31,15 +31,6 @@ class PaginateControllerTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase 
 	}
 
 	/**
-	 * Cleans up this test case
-	 *
-	 * @return void
-	 */
-	public function tearDown() {
-		unset($this->controller);
-	}
-
-	/**
 	 * @test
 	 */
 	public function calculateDisplayRangeDeterminesCorrectDisplayRangeStartAndEndForEvenMaximumNumberOfLinks() {

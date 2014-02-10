@@ -42,10 +42,6 @@ class BackendUserGroupTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$this->fixture = new \TYPO3\CMS\Extbase\Domain\Model\BackendUserGroup();
 	}
 
-	public function tearDown() {
-		unset($this->fixture);
-	}
-
 	/**
 	 * @test
 	 */

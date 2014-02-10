@@ -80,10 +80,6 @@ class IconUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->mockRecord['bodytext'] = '';
 	}
 
-	public function tearDown() {
-		unset($this->mockRecord);
-	}
-
 	//////////////////////////////////////////
 	// Tests concerning imagemake
 	//////////////////////////////////////////

@@ -47,13 +47,6 @@ class ExtensionTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	}
 
 	/**
-	 * Tear down
-	 */
-	public function tearDown() {
-		$this->fixture = NULL;
-	}
-
-	/**
 	 * @test
 	 */
 	public function getKeyInitiallyReturnsEmptyString() {

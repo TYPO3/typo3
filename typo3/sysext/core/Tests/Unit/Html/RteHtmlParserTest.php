@@ -34,7 +34,7 @@ class RteHtmlParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @var \TYPO3\CMS\Core\Html\RteHtmlParser
 	 */
-	private $fixture = NULL;
+	protected $fixture = NULL;
 
 	public function setUp() {
 		$this->fixture = new \TYPO3\CMS\Core\Html\RteHtmlParser();
@@ -45,10 +45,6 @@ class RteHtmlParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			'disableUnifyLineBreaks' => '0',
 			'overruleMode' => 'ts_css'
 		);
-	}
-
-	public function tearDown() {
-		unset($this->fixture);
 	}
 
 	/**

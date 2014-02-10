@@ -33,14 +33,10 @@ class CategoryRepositoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Domain\Repository\CategoryRepository
 	 */
-	private $fixture = NULL;
+	protected $fixture = NULL;
 
 	protected function setUp() {
 		$this->fixture = new \TYPO3\CMS\Extbase\Domain\Repository\CategoryRepository($this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerInterface'));
-	}
-
-	protected function tearDown() {
-		unset($this->fixture);
 	}
 
 	/**

@@ -43,10 +43,6 @@ class FileMaximumSizeValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTes
 		$this->subject = $this->getMock('TYPO3\\CMS\\Form\\Validation\\FileMaximumSizeValidator', array('dummy'), array(), '', FALSE);
 	}
 
-	public function tearDown() {
-		unset($this->helper, $this->subject);
-	}
-
 	public function validSizesProvider() {
 		return array(
 			'11B for max. 12B' => array(array(12, 11)),

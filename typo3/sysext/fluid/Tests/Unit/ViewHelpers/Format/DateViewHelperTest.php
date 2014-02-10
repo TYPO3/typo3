@@ -41,6 +41,7 @@ class DateViewHelperTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 			setlocale(constant($category), $locale);
 		}
 		date_default_timezone_set($this->timezone);
+		parent::tearDown();
 	}
 
 	/**

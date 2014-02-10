@@ -46,13 +46,6 @@ class LanguageSelectionFormTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCa
 	}
 
 	/**
-	 * Tear down
-	 */
-	public function tearDown() {
-		$this->fixture = NULL;
-	}
-
-	/**
 	 * @test
 	 */
 	public function getLanguagesInitiallyReturnsEmptyArray() {

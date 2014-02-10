@@ -44,10 +44,6 @@ class LessThanValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$this->subject = $this->getMock('TYPO3\\CMS\\Form\\Validation\\LessthanValidator', array('dummy'), array(), '', FALSE);
 	}
 
-	public function tearDown() {
-		unset($this->helper, $this->subject);
-	}
-
 	public function validValueProvider() {
 		return array(
 			'4 < 8' => array(array(8, 4)),

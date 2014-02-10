@@ -52,7 +52,7 @@ class AbstractConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function tearDown() {
 		Fixtures\GeneralUtilityFixture::setApplicationContext($this->backupApplicationContext);
-		unset($this->backupApplicationContext);
+		parent::tearDown();
 	}
 
 	/**

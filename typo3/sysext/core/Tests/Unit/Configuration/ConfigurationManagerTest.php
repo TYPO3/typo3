@@ -58,6 +58,7 @@ class ConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		foreach ($this->testFilesToDelete as $absoluteFileName) {
 			\TYPO3\CMS\Core\Utility\GeneralUtility::unlink_tempfile($absoluteFileName);
 		}
+		parent::tearDown();
 	}
 
 	/**

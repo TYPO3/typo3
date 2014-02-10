@@ -51,28 +51,31 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 	/**
 	 * @var array
 	 */
-	static private $testDirs = array();
+	protected $testDirs = array();
 
-
-	static public function tearDownAfterClass() {
-		foreach (self::$testDirs as $dir) {
+	/**
+	 * Tear down
+	 */
+	public function tearDown() {
+		foreach ($this->testDirs as $dir) {
 			chmod($dir, 0777);
 			\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir($dir, TRUE);
 		}
+		parent::tearDown();
 	}
 
 	/**
 	 * Creates a "real" directory for doing tests. This is necessary because some file system properties (e.g. permissions)
 	 * cannot be reflected by vfsStream, and some methods (like touch()) don't work there either.
 	 *
-	 * Created directories are automatically destroyed by the tearDownAfterClass() method.
+	 * Created directories are automatically destroyed during tearDown()
 	 *
 	 * @return string
 	 */
 	protected function createRealTestdir() {
 		$basedir = PATH_site . 'typo3temp/' . uniqid('fal-test-');
 		mkdir($basedir);
-		self::$testDirs[] = $basedir;
+		$this->testDirs[] = $basedir;
 		return $basedir;
 	}
 

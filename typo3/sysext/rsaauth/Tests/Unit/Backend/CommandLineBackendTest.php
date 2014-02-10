@@ -43,10 +43,6 @@ class CommandLineBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase  {
 		$this->subject = new CommandLineBackend();
 	}
 
-	public function tearDown() {
-		unset($this->subject);
-	}
-
 	/**
 	 * @test
 	 */

@@ -43,10 +43,6 @@ class PhpBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase  {
 		$this->subject = new PhpBackend();
 	}
 
-	public function tearDown() {
-		unset($this->subject);
-	}
-
 	/**
 	 * @test
 	 */

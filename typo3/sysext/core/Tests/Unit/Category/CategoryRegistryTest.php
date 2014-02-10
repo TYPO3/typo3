@@ -63,14 +63,6 @@ class CategoryRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 	/**
-	 * Tears down this test suite.
-	 */
-	protected function tearDown() {
-		unset($this->tables);
-		unset($this->fixture);
-	}
-
-	/**
 	 * @test
 	 */
 	public function doesAddReturnTrueOnDefinedTable() {

@@ -33,6 +33,7 @@ class DatabaseConnectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		foreach ($this->temporaryFiles as $filename) {
 			unlink($filename);
 		}
+		parent::tearDown();
 	}
 
 	/**

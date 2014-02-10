@@ -49,6 +49,7 @@ class BootstrapTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	public function tearDown() {
 		\TYPO3\CMS\Core\Utility\GeneralUtility::purgeInstances();
 		\TYPO3\CMS\Core\Utility\GeneralUtility::resetSingletonInstances($this->singletonInstances);
+		parent::tearDown();
 	}
 
 	/**

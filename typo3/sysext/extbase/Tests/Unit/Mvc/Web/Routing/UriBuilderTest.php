@@ -33,21 +33,6 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Mvc\Web\Routing;
 class UriBuilderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
-	 * @var \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
-	 */
-	protected $tsfeBackup;
-
-	/**
-	 * @var array
-	 */
-	protected $getBackup;
-
-	/**
-	 * @var array
-	 */
-	protected $postBackup;
-
-	/**
 	 * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
 	 */
 	protected $mockConfigurationManager;
@@ -73,10 +58,7 @@ class UriBuilderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	protected $uriBuilder;
 
 	public function setUp() {
-		$this->tsfeBackup = $GLOBALS['TSFE'];
 		$GLOBALS['TSFE'] = $this->getMock('TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController', array(), array(), '', FALSE);
-		$this->getBackup = \TYPO3\CMS\Core\Utility\GeneralUtility::_GET();
-		$this->postBackup = \TYPO3\CMS\Core\Utility\GeneralUtility::_POST();
 		$this->mockContentObject = $this->getMock('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
 		$this->mockRequest = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Web\\Request');
 		$this->mockExtensionService = $this->getMock('TYPO3\\CMS\\Extbase\\Service\\ExtensionService');
@@ -87,12 +69,6 @@ class UriBuilderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$this->uriBuilder->_set('configurationManager', $this->mockConfigurationManager);
 		$this->uriBuilder->_set('extensionService', $this->mockExtensionService);
 		$this->uriBuilder->_set('environmentService', $this->objectManager->get('TYPO3\\CMS\\Extbase\\Service\\EnvironmentService'));
-	}
-
-	public function tearDown() {
-		$GLOBALS['TSFE'] = $this->tsfeBackup;
-		\TYPO3\CMS\Core\Utility\GeneralUtility::_GETset($this->getBackup);
-		$_POST = $this->postBackup;
 	}
 
 	/**

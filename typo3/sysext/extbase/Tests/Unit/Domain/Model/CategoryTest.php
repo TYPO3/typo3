@@ -33,14 +33,10 @@ class CategoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	/**
 	 * @var \TYPO3\CMS\Extbase\Domain\Model\Category
 	 */
-	private $fixture = NULL;
+	protected $fixture = NULL;
 
 	public function setUp() {
 		$this->fixture = new \TYPO3\CMS\Extbase\Domain\Model\Category();
-	}
-
-	public function tearDown() {
-		unset($this->fixture);
 	}
 
 	/**

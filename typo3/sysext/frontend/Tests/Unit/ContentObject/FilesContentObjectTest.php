@@ -60,13 +60,6 @@ class FilesContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 	/**
-	 * Tear down
-	 */
-	public function tearDown() {
-		unset($this->subject, $this->tsfe);
-	}
-
-	/**
 	 * @return array
 	 */
 	public function renderReturnsFilesForFileReferencesDataProvider() {

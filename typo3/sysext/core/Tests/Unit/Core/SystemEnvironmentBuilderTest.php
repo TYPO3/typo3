@@ -48,15 +48,6 @@ class SystemEnvironmentBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 	/**
-	 * Tear down
-	 *
-	 * @return void
-	 */
-	public function tearDown() {
-		unset($this->fixture);
-	}
-
-	/**
 	 * Data provider for 'fileDenyPatternMatchesPhpExtension' test case.
 	 *
 	 * @return array

@@ -45,10 +45,6 @@ class FileMinimumSizeValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTes
 		$this->subject = $this->getMock('TYPO3\\CMS\\Form\\Validation\\FileMinimumSizeValidator', array('dummy'), array(), '', FALSE);
 	}
 
-	public function tearDown() {
-		unset($this->helper, $this->subject);
-	}
-
 	public function validSizesProvider() {
 		return array(
 			'12B for min. 11B' => array(array(11, 12)),

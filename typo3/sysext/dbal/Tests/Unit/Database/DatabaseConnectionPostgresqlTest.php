@@ -30,6 +30,7 @@ class DatabaseConnectionPostgresqlTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
 	public function tearDown() {
 		// Clear DBAL-generated cache files
 		$GLOBALS['TYPO3_DB']->clearCachedFieldInfo();
+		parent::tearDown();
 	}
 
 	/**

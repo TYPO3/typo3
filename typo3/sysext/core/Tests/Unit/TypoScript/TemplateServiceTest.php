@@ -60,16 +60,6 @@ class TemplateServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 	/**
-	 * Tears down this test case.
-	 *
-	 * @return void
-	 */
-	protected function tearDown() {
-		unset($this->templateService);
-		unset($this->templateServiceMock);
-	}
-
-	/**
 	 * @test
 	 */
 	public function versionOlCallsVersionOlOfPageSelectClassWithGivenRow() {

@@ -44,13 +44,6 @@ class TitleCaseFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->fixture = new \TYPO3\CMS\Form\Filter\TitleCaseFilter();
 	}
 
-	/**
-	 * Tear down
-	 */
-	public function tearDown() {
-		$this->fixture = NULL;
-	}
-
 	public function stringProvider() {
 		return array(
 			'some text' => array('some text', 'Some Text'),

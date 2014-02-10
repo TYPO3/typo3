@@ -45,13 +45,6 @@ class InlineElementTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 	/**
-	 * Tears down this test case.
-	 */
-	protected function tearDown() {
-		unset($this->fixture);
-	}
-
-	/**
 	 * @param array $arguments
 	 * @param array $expectedInlineStructure
 	 * @param array $expectedInlineNames

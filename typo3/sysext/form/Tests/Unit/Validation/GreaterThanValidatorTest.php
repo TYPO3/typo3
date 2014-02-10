@@ -45,10 +45,6 @@ class GreaterThanValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCas
 		$this->subject = $this->getMock('TYPO3\\CMS\\Form\\Validation\\GreaterThanValidator', array('dummy'), array(), '', FALSE);
 	}
 
-	public function tearDown() {
-		unset($this->helper, $this->subject);
-	}
-
 	public function validNumberProvider() {
 		return array(
 			'13 > 12' => array(array(12, 13)),

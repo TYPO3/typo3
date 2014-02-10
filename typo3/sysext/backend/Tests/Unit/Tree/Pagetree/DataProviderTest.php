@@ -42,10 +42,6 @@ class DataProviderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->fixture = new \TYPO3\CMS\Backend\Tree\Pagetree\DataProvider();
 	}
 
-	public function tearDown() {
-		unset($this->fixture);
-	}
-
 	/**
 	 * @test
 	 */

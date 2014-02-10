@@ -36,30 +36,13 @@ class MailUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	protected $singletonInstances = array();
 
-	/**
-	 * backed-up TYPO3_CONF_VARS SC_OPTIONS
-	 *
-	 * @var array
-	 */
-	private $scOptionsBackup = array();
-
-	/**
-	 * backed-up T3_VAR callUserFunction
-	 *
-	 * @var array
-	 */
-	private $callUserFunctionBackup = array();
-
 	public function setUp() {
 		$this->singletonInstances = \TYPO3\CMS\Core\Utility\GeneralUtility::getSingletonInstances();
-		$this->scOptionsBackup = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'];
-		$this->callUserFunctionBackup = $GLOBALS['T3_VAR']['callUserFunction'];
 	}
 
 	public function tearDown() {
 		\TYPO3\CMS\Core\Utility\GeneralUtility::resetSingletonInstances($this->singletonInstances);
-		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'] = $this->scOptionsBackup;
-		$GLOBALS['T3_VAR']['callUserFunction'] = $this->callUserFunctionBackup;
+		parent::tearDown();
 	}
 
 	//////////////////////////

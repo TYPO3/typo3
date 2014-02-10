@@ -53,6 +53,7 @@ class CronCommandTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	public function tearDown() {
 		date_default_timezone_set($this->timezoneBackup);
+		parent::tearDown();
 	}
 
 	/**

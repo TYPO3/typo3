@@ -41,10 +41,6 @@ class DigitFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->fixture = new \TYPO3\CMS\Form\Filter\DigitFilter();
 	}
 
-	public function tearDown() {
-		unset($this->fixture);
-	}
-
 	public function validDataProvider() {
 		return array(
 			'1,00 -> 100' => array('1,00', '100'),

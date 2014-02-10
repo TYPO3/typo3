@@ -34,14 +34,10 @@ class CharsetConverterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @var \TYPO3\CMS\Core\Charset\CharsetConverter
 	 */
-	private $fixture = NULL;
+	protected $fixture = NULL;
 
 	public function setUp() {
 		$this->fixture = new \TYPO3\CMS\Core\Charset\CharsetConverter();
-	}
-
-	public function tearDown() {
-		unset($this->fixture);
 	}
 
 	////////////////////////////

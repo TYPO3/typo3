@@ -43,10 +43,6 @@ class AlphanumericValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCa
 		$this->subject = $this->getMock('TYPO3\\CMS\\Form\\Validation\\AlphanumericValidator', array('dummy'), array(), '', FALSE);
 	}
 
-	public function tearDown() {
-		unset($this->helper, $this->subject);
-	}
-
 	public function validDataProviderWithoutWhitespace() {
 		return array(
 			'ascii without spaces' => array('thisismyinput4711'),

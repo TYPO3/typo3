@@ -44,13 +44,6 @@ class TrimFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->fixture = new \TYPO3\CMS\Form\Filter\TrimFilter();
 	}
 
-	/**
-	 * Tear down
-	 */
-	public function tearDown() {
-		$this->fixture = NULL;
-	}
-
 	public function stringProvider() {
 		return array(
 			'\tsome text ' => array("\tsome text ", 'some text'),

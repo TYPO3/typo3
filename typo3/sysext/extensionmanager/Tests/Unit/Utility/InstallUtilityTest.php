@@ -97,6 +97,7 @@ class InstallUtilityTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		foreach ($this->fakedExtensions as $extension => $dummy) {
 			\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir(PATH_site . 'typo3temp/' . $extension, TRUE);
 		}
+		parent::tearDown();
 	}
 
 	/**

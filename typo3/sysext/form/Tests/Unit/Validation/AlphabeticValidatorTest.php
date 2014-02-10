@@ -48,13 +48,6 @@ class AlphabeticValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase
 	}
 
 	/**
-	 * Tear down
-	 */
-	public function tearDown() {
-		unset($this->helper, $this->subject);
-	}
-
-	/**
 	 * @return array
 	 */
 	public function validDataProviderWithoutWhitespace() {

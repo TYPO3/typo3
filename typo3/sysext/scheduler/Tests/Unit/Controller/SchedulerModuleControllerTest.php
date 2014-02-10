@@ -46,15 +46,6 @@ class SchedulerModuleControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 	/**
-	 * Cleans up each test case.
-	 *
-	 * @return void
-	 */
-	public function tearDown() {
-		$this->testObject = NULL;
-	}
-
-	/**
 	 * Data provider for checkDateWithStrtotimeValues
 	 *
 	 * @see checkDateWithStrtotimeValues

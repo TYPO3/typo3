@@ -51,15 +51,6 @@ class MailPostProcessorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	}
 
 	/**
-	 * Tear down
-	 *
-	 * @return void
-	 */
-	protected function tearDown() {
-		unset($this->mailPostProcessor);
-	}
-
-	/**
 	 * Data provider for filterValidEmailsReturnsOnlyValidAddresses
 	 *
 	 * @return array input string, expected return array

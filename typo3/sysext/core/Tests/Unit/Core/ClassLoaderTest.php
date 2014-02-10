@@ -43,7 +43,6 @@ class ClassLoaderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	protected $fakedExtensions = array();
 
-
 	/**
 	 * @var \TYPO3\CMS\Core\Core\ClassLoader
 	 */
@@ -92,6 +91,7 @@ class ClassLoaderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function tearDown() {
 		$this->classLoader->injectClassAliasMap($this->orinalClassAliasMap);
+		parent::tearDown();
 	}
 
 	/**

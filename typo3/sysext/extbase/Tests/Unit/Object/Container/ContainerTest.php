@@ -38,12 +38,12 @@ class ContainerTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	/**
 	 * @var \TYPO3\CMS\Extbase\Object\Container\Container
 	 */
-	private $container;
+	protected $container;
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Object\Container\ClassInfo
 	 */
-	private $cachedClassInfo;
+	protected $cachedClassInfo;
 
 	public function setUp() {
 		//our mocked cache will allways indicate that he has nothing in the cache to force that we get the real classinfo

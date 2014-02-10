@@ -47,13 +47,6 @@ class DataProviderCollectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 	/**
-	 * Tears down this test case.
-	 */
-	protected function tearDown() {
-		unset($this->dataProviderCollection);
-	}
-
-	/**
 	 * @test
 	 * @expectedException \UnexpectedValueException
 	 */

@@ -49,13 +49,6 @@ class SqlSchemaMigrationServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 	/**
-	 * Tears down the fixture
-	 */
-	public function tearDown() {
-		unset($this->fixture);
-	}
-
-	/**
 	 * @test
 	 */
 	public function getDatabaseExtraFindsChangedFields() {

@@ -58,7 +58,7 @@ class FrontendContentAdapterServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCa
 	public function tearDown() {
 		call_user_func_array($this->accessibleFixtureName . '::_setStatic', array('migrationCache', array()));
 		\TYPO3\CMS\Core\Utility\GeneralUtility::resetSingletonInstances($this->singletonInstances);
-		unset($this->fileRepositoryMock);
+		parent::tearDown();
 	}
 
 	/**

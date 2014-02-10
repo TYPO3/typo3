@@ -44,11 +44,6 @@ class IpValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$this->subject = $this->getMock('TYPO3\\CMS\\Form\\Validation\\IpValidator', array('dummy'), array(), '', FALSE);
 	}
 
-	public function tearDown() {
-		unset($this->helper);
-		unset($this->subject);
-	}
-
 	public function validIpv4Provider() {
 		return array(
 			'127.0.0.1'   => array('127.0.0.1'),

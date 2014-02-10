@@ -44,10 +44,6 @@ class UriValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$this->subject = $this->getMock('TYPO3\\CMS\\Form\\Validation\\UriValidator', array('dummy'), array(), '', FALSE);
 	}
 
-	public function tearDown() {
-		unset($this->helper, $this->subject);
-	}
-
 	public function validDataProvider() {
 		return array(
 			'http://example.net'              => array('http://example.net'),

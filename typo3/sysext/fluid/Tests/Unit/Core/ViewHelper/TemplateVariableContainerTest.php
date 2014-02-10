@@ -25,10 +25,6 @@ class TemplateVariableContainerTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTe
 		$this->variableContainer = new \TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer();
 	}
 
-	public function tearDown() {
-		unset($this->variableContainer);
-	}
-
 	/**
 	 * @test
 	 */

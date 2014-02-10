@@ -43,6 +43,7 @@ class ExtensionCompatibilityTesterTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
 		if (file_exists(PATH_site . 'typo3temp/ExtensionCompatibilityTester.txt')) {
 			unlink(PATH_site . 'typo3temp/ExtensionCompatibilityTester.txt');
 		}
+		parent::tearDown();
 	}
 
 	/**

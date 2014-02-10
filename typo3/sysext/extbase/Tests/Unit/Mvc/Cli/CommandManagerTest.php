@@ -26,11 +26,6 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Mvc\Cli;
 class CommandManagerTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
-	 * @var array
-	 */
-	protected $commandControllerBackup = array();
-
-	/**
 	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
 	 */
 	protected $mockObjectManager;
@@ -41,14 +36,9 @@ class CommandManagerTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	protected $commandManager;
 
 	public function setUp() {
-		$this->commandControllerBackup = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['extbase']['commandControllers'];
 		$this->commandManager = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Mvc\\Cli\\CommandManager', array('getAvailableCommands'));
 		$this->mockObjectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerInterface');
 		$this->commandManager->_set('objectManager', $this->mockObjectManager);
-	}
-
-	public function tearDown() {
-		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['extbase']['commandControllers'] = $this->commandControllerBackup;
 	}
 
 	/**

@@ -38,6 +38,7 @@ class FormProtectionFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	public function tearDown() {
 		\TYPO3\CMS\Core\FormProtection\FormProtectionFactory::purgeInstances();
+		parent::tearDown();
 	}
 
 	/////////////////////////

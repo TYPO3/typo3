@@ -70,11 +70,11 @@ class LocallangXmlParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * Cleans up the environment after running a test.
 	 */
 	public function tearDown() {
-		unset($this->parser);
-			// Restore locallangXMLOverride and localization format priority
+		// Restore locallangXMLOverride and localization format priority
 		$GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride'] = $this->locallangXMLOverride;
 		$GLOBALS['TYPO3_CONF_VARS']['SYS']['lang']['format']['priority'] = $this->l10nPriority;
 		\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Localization\\LanguageStore')->initialize();
+		parent::tearDown();
 	}
 
 	/**

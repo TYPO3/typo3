@@ -51,13 +51,6 @@ class BackendLayoutViewTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 	/**
-	 * Tears down this test case.
-	 */
-	protected function tearDown() {
-		unset($this->backendLayoutView);
-	}
-
-	/**
 	 * @param boolean|string $expected
 	 * @param array $page
 	 * @param array $rootLine

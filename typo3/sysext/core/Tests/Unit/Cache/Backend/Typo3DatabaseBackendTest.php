@@ -97,6 +97,7 @@ class Typo3DatabaseBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function tearDown() {
 		$GLOBALS['TYPO3_DB']->sql_query('DROP TABLE IF EXISTS ' . $this->testingCacheTable . ';');
 		$GLOBALS['TYPO3_DB']->sql_query('DROP TABLE IF EXISTS ' . $this->testingTagsTable . ';');
+		parent::tearDown();
 	}
 
 	/**

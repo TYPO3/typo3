@@ -57,10 +57,10 @@ class IndexerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * Explicitly clean up the indexer object to prevent any memory leaks
 	 */
 	public function tearDown() {
-		$this->fixture = NULL;
 		if ($this->temporaryFileName) {
 			@unlink($this->temporaryFileName);
 		}
+		parent::tearDown();
 	}
 
 	/**

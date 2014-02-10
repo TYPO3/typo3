@@ -28,10 +28,6 @@ class ParsingStateTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$this->parsingState = new \TYPO3\CMS\Fluid\Core\Parser\ParsingState();
 	}
 
-	public function tearDown() {
-		unset($this->parsingState);
-	}
-
 	/**
 	 * @test
 	 */

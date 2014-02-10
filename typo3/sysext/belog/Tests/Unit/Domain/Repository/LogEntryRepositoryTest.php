@@ -41,10 +41,6 @@ class LogEntryRepositoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase 
 		$this->objectManager->expects($this->any())->method('get')->with('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\QuerySettingsInterface')->will($this->returnValue($this->querySettings));
 	}
 
-	public function tearDown() {
-		unset($this->querySettings, $this->objectManager);
-	}
-
 	/**
 	 * @test
 	 */

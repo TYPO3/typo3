@@ -45,15 +45,6 @@ class TypoScriptParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 	/**
-	 * Tear down
-	 *
-	 * @return void
-	 */
-	protected function tearDown() {
-		unset($this->typoScriptParser);
-	}
-
-	/**
 	 * Data provider for executeValueModifierReturnsModifiedResult
 	 *
 	 * @return array modifier name, modifier arguments, current value, expected result

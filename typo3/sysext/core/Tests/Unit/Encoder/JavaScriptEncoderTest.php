@@ -40,10 +40,6 @@ class JavaScriptEncoderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->fixture = new \TYPO3\CMS\Core\Encoder\JavaScriptEncoder();
 	}
 
-	public function tearDown() {
-		unset($this->fixture);
-	}
-
 	/**
 	 * Data provider for encodeEncodesCorrectly.
 	 *

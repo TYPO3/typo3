@@ -44,13 +44,6 @@ class StripNewLinesFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->fixture = new \TYPO3\CMS\Form\Filter\StripNewLinesFilter();
 	}
 
-	/**
-	 * Tear down
-	 */
-	public function tearDown() {
-		$this->fixture = NULL;
-	}
-
 	public function dataProviderWithNewlines() {
 		return array(
 			'some\ntext' => array("some\ntext", 'some text'),

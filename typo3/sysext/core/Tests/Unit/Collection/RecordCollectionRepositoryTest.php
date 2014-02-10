@@ -73,17 +73,6 @@ class RecordCollectionRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 	}
 
 	/**
-	 * Cleans up this test case.
-	 */
-	protected function tearDown() {
-		unset($this->databaseMock);
-		unset($this->fixture);
-		unset($this->getSingleRowCallbackReturnValue);
-		unset($this->getRowsCallbackReturnValue);
-		unset($this->testTableName);
-	}
-
-	/**
 	 * @test
 	 */
 	public function doesFindByUidReturnNull() {

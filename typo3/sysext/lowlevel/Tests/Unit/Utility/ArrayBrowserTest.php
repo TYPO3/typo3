@@ -34,14 +34,10 @@ class ArrayBrowserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @var \TYPO3\CMS\Lowlevel\Utility\ArrayBrowser
 	 */
-	private $fixture;
+	protected $fixture;
 
 	public function setUp() {
 		$this->fixture = new \TYPO3\CMS\Lowlevel\Utility\ArrayBrowser();
-	}
-
-	public function tearDown() {
-		unset($this->fixture);
 	}
 
 	///////////////////////////////

@@ -40,10 +40,6 @@ class LogEntryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$this->fixture = new \TYPO3\CMS\Belog\Domain\Model\LogEntry();
 	}
 
-	public function tearDown() {
-		unset($this->fixture);
-	}
-
 	/**
 	 * @test
 	 */

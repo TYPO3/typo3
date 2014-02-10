@@ -36,14 +36,10 @@ class BackendUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @var \TYPO3\CMS\Backend\Utility\BackendUtility
 	 */
-	private $fixture;
+	protected $fixture;
 
 	public function setUp() {
 		$this->fixture = new BackendUtility();
-	}
-
-	public function tearDown() {
-		unset($this->fixture);
 	}
 
 	///////////////////////////////////////

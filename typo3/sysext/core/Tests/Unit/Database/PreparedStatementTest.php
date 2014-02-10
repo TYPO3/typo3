@@ -34,7 +34,7 @@ class PreparedStatementTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Database\DatabaseConnection
 	 */
-	private $databaseStub;
+	protected $databaseStub;
 
 	/**
 	 * Create a new database mock object for every test

@@ -55,6 +55,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		foreach ($this->testFilesToDelete as $absoluteFileName) {
 			Utility\GeneralUtility::rmdir($absoluteFileName, TRUE);
 		}
+		parent::tearDown();
 	}
 
 	/**

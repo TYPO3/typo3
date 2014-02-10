@@ -43,10 +43,6 @@ class FileAllowedTypesValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTe
 		$this->subject = $this->getMock('TYPO3\\CMS\\Form\\Validation\\FileAllowedTypesValidator', array('dummy'), array(), '', FALSE);
 	}
 
-	public function tearDown() {
-		unset($this->helper, $this->subject);
-	}
-
 	public function validTypesProvider() {
 		return array(
 			'pdf in (pdf)'       => array(array('application/pdf', 'application/pdf')),

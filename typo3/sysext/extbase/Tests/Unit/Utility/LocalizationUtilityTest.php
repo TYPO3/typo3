@@ -155,10 +155,6 @@ class LocalizationUtilityTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase
 		$this->localization = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Utility\\LocalizationUtility', array('getConfigurationManager'));
 	}
 
-	public function tearDown() {
-		$this->localization = NULL;
-	}
-
 	/**
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>

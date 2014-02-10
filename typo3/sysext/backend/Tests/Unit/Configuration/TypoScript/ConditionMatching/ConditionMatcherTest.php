@@ -34,17 +34,17 @@ class ConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @var array
 	 */
-	private $rootline;
+	protected $rootline;
 
 	/**
 	 * @var \TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher
 	 */
-	private $matchCondition;
+	protected $matchCondition;
 
 	/**
 	 * @var string
 	 */
-	private $testTableName;
+	protected $testTableName;
 
 	public function setUp() {
 		$this->testTableName = 'TYPO3\\CMS\\Backend\\Configuration\\TypoScript\\ConditionMatching\\ConditionMatcher_testTable';
@@ -53,11 +53,6 @@ class ConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$GLOBALS[$this->testGlobalNamespace] = array();
 		$this->setUpBackend();
 		$this->matchCondition = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Configuration\\TypoScript\\ConditionMatching\\ConditionMatcher');
-	}
-
-	public function tearDown() {
-		unset($this->matchCondition);
-		unset($GLOBALS[$this->testGlobalNamespace]);
 	}
 
 	private function setUpBackend() {

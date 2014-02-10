@@ -31,30 +31,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Utility;
  */
 class ClientUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
-	/**
-	 * backed-up TYPO3_CONF_VARS SC_OPTIONS
-	 *
-	 * @var array
-	 */
-	private $scOptionsBackup = array();
-
-	/**
-	 * backed-up T3_VAR callUserFunction
-	 *
-	 * @var array
-	 */
-	private $callUserFunctionBackup = array();
-
-	public function setUp() {
-		$this->scOptionsBackup = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'];
-		$this->callUserFunctionBackup = $GLOBALS['T3_VAR']['callUserFunction'];
-	}
-
-	public function tearDown() {
-		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'] = $this->scOptionsBackup;
-		$GLOBALS['T3_VAR']['callUserFunction'] = $this->callUserFunctionBackup;
-	}
-
 	//////////////////////////////////////////////////////////
 	// Utility Functions
 	//////////////////////////////////////////////////////////

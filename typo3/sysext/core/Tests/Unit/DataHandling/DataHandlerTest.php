@@ -39,12 +39,12 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @var \TYPO3\CMS\Core\DataHandling\DataHandler
 	 */
-	private $fixture;
+	protected $fixture;
 
 	/**
 	 * @var \TYPO3\CMS\Core\Authentication\BackendUserAuthentication a mock logged-in back-end user
 	 */
-	private $backEndUser;
+	protected $backEndUser;
 
 	public function setUp() {
 		$this->singletonInstances = \TYPO3\CMS\Core\Utility\GeneralUtility::getSingletonInstances();
@@ -55,7 +55,7 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	public function tearDown() {
 		\TYPO3\CMS\Core\Utility\GeneralUtility::resetSingletonInstances($this->singletonInstances);
-		unset($this->fixture->BE_USER, $this->fixture, $this->backEndUser);
+		parent::tearDown();
 	}
 
 	//////////////////////////////////////

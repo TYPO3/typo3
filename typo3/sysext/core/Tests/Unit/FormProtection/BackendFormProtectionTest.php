@@ -61,7 +61,7 @@ class BackendFormProtectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	public function tearDown() {
 		\TYPO3\CMS\Core\Utility\GeneralUtility::resetSingletonInstances($this->singletonInstances);
-		$this->subject->__destruct();
+		parent::tearDown();
 	}
 
 	//////////////////////

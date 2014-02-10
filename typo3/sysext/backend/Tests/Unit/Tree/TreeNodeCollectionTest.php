@@ -31,14 +31,6 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Tree;
  */
 class TreeNodeCollectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
-	public function setUp() {
-
-	}
-
-	public function tearDown() {
-
-	}
-
 	/**
 	 * @test
 	 */

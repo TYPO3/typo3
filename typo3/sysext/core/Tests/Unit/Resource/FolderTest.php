@@ -41,7 +41,7 @@ class FolderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	protected $singletonInstances = array();
 
-	private $basedir = 'basedir';
+	protected $basedir = 'basedir';
 
 	public function setUp() {
 		$this->singletonInstances = \TYPO3\CMS\Core\Utility\GeneralUtility::getSingletonInstances();
@@ -50,6 +50,7 @@ class FolderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	protected function tearDown() {
 		\TYPO3\CMS\Core\Utility\GeneralUtility::resetSingletonInstances($this->singletonInstances);
+		parent::tearDown();
 	}
 
 	protected function createFolderFixture($path, $name, $mockedStorage = NULL) {

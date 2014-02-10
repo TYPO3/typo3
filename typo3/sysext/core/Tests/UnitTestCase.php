@@ -42,4 +42,31 @@ abstract class UnitTestCase extends BaseTestCase {
 	 */
 	protected $backupGlobalsBlacklist = array('TYPO3_LOADED_EXT');
 
+	/**
+	 * Unset all additional properties of test classes to help PHP
+	 * garbage collection. This reduces memory footprint with lots
+	 * of tests.
+	 *
+	 * If owerwriting tearDown() in test classes, please call
+	 * parent::tearDown() at the end. Unsetting of own properties
+	 * is not needed this way.
+	 *
+	 * @return void
+	 */
+	protected function tearDown() {
+		$reflection = new \ReflectionObject($this);
+		foreach ($reflection->getProperties() as $property) {
+			$declaringClass = $property->getDeclaringClass()->getName();
+			if (
+				!$property->isStatic()
+				&& $declaringClass !== 'TYPO3\CMS\Core\Tests\UnitTestCase'
+				&& $declaringClass !== 'TYPO3\CMS\Core\Tests\BaseTestCase'
+				&& strpos($property->getDeclaringClass()->getName(), 'PHPUnit_') !== 0
+			) {
+				$propertyName = $property->getName();
+				unset($this->$propertyName);
+			}
+		}
+		unset($reflection);
+	}
 }

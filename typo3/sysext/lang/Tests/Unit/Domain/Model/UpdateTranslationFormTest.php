@@ -43,10 +43,6 @@ class UpdateTranslationFormTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCa
 		$this->fixture = new \TYPO3\CMS\Lang\Domain\Model\UpdateTranslationForm();
 	}
 
-	public function tearDown() {
-		unset($this->fixture);
-	}
-
 	/**
 	 * @test
 	 */

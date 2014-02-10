@@ -38,10 +38,6 @@ class DocumentTranslationTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase
 		$this->fixture = new \TYPO3\CMS\Documentation\Domain\Model\DocumentTranslation();
 	}
 
-	public function tearDown() {
-		unset($this->fixture);
-	}
-
 	/**
 	 * @test
 	 */

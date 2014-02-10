@@ -50,25 +50,7 @@ class WidgetRequestBuilderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCas
 	 */
 	protected $mockWidgetContext;
 
-	/**
-	 * @var array
-	 */
-	protected $serverBackup;
-
-	/**
-	 * @var array
-	 */
-	protected $getBackup;
-
-	/**
-	 * @var array
-	 */
-	protected $postBackup;
-
 	public function setUp() {
-		$this->serverBackup = $_SERVER;
-		$this->getBackup = $_GET;
-		$this->postBackup = $_POST;
 		$this->widgetRequestBuilder = $this->getAccessibleMock('TYPO3\\CMS\\Fluid\\Core\\Widget\\WidgetRequestBuilder', array('setArgumentsFromRawRequestData'));
 		$this->mockWidgetRequest = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\Widget\\WidgetRequest');
 		$this->mockObjectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerInterface');
@@ -78,15 +60,6 @@ class WidgetRequestBuilderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCas
 		$this->mockAjaxWidgetContextHolder = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\Widget\\AjaxWidgetContextHolder');
 		$this->widgetRequestBuilder->injectAjaxWidgetContextHolder($this->mockAjaxWidgetContextHolder);
 		$this->mockAjaxWidgetContextHolder->expects($this->once())->method('get')->will($this->returnValue($this->mockWidgetContext));
-	}
-
-	/**
-	 * @return void
-	 */
-	public function tearDown() {
-		$_SERVER = $this->serverBackup;
-		$_GET = $this->getBackup;
-		$_POST = $this->postBackup;
 	}
 
 	/**

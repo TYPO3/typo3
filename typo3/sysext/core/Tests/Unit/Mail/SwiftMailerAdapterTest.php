@@ -40,10 +40,6 @@ class SwiftMailerAdapterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->fixture = $this->getAccessibleMock('\\TYPO3\\CMS\\Core\\Mail\\SwiftMailerAdapter', array('dummy'));
 	}
 
-	public function tearDown() {
-
-	}
-
 	//////////////////////////
 	// Tests concerning mail
 	//////////////////////////

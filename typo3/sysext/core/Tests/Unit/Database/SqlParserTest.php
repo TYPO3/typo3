@@ -33,14 +33,10 @@ class SqlParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @var \TYPO3\CMS\Core\Database\SqlParser|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface
 	 */
-	private $fixture;
+	protected $fixture;
 
 	public function setUp() {
 		$this->fixture = $this->getAccessibleMock('\\TYPO3\\CMS\\Core\\Database\\SqlParser', array('dummy'));
-	}
-
-	public function tearDown() {
-		unset($this->fixture);
 	}
 
 	/**

@@ -44,10 +44,6 @@ class RegExpValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$this->subject = $this->getMock('TYPO3\\CMS\\Form\\Validation\\RegExpValidator', array('dummy'), array(), '', FALSE);
 	}
 
-	public function tearDown() {
-		unset($this->helper, $this->subject);
-	}
-
 	public function validDataProvider() {
 		return array(
 			'/^a/ matches a' => array(array('/^a/', 'a')),

@@ -41,11 +41,6 @@ class BackendUserRepositoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCa
 		$this->fixture = new \TYPO3\CMS\Beuser\Domain\Repository\BackendUserRepository($this->objectManager);
 	}
 
-	public function tearDown() {
-		unset($this->fixture);
-		unset($this->objectManager);
-	}
-
 	/**
 	 * @test
 	 */

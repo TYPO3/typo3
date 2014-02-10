@@ -42,10 +42,6 @@ class HistoryEntryRepositoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestC
 		$this->objectManager->expects($this->any())->method('get')->with('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\QuerySettingsInterface')->will($this->returnValue($this->querySettings));
 	}
 
-	public function tearDown() {
-		unset($this->querySettings, $this->objectManager);
-	}
-
 	/**
 	 * @test
 	 */

@@ -54,11 +54,6 @@ class ConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->matchCondition = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Configuration\\TypoScript\\ConditionMatching\\ConditionMatcher');
 	}
 
-	public function tearDown() {
-		unset($this->matchCondition);
-		unset($GLOBALS[$this->testGlobalNamespace]);
-	}
-
 	/**
 	 * Tests whether a faulty expression fails.
 	 *

@@ -73,10 +73,6 @@ class QueryFactoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$this->queryFactory->_set('dataMapper', $this->dataMapper);
 	}
 
-	protected function tearDown() {
-		unset($this->objectManager, $this->dataMapper, $this->queryFactory);
-	}
-
 	public function getStaticAndRootLevelAndExpectedResult() {
 		return array(
 			'Respect storage page is set when entity is neither marked as static nor as rootLevel.' => array(FALSE, FALSE, TRUE),

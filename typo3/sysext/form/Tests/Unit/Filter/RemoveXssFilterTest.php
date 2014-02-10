@@ -41,10 +41,6 @@ class RemoveXssFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->fixture = new \TYPO3\CMS\Form\Filter\RemoveXssFilter();
 	}
 
-	public function tearDown() {
-		unset($this->fixture);
-	}
-
 	public function maliciousStringProvider() {
 		return array(
 			'<IMG SRC="javascript:alert(\'XSS\');">' => array('<IMG SRC="javascript:alert(\'XSS\');">'),

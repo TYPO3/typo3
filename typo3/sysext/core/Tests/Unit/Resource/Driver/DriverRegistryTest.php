@@ -37,7 +37,7 @@ class DriverRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @var \TYPO3\CMS\Core\Resource\Driver\DriverRegistry
 	 */
-	private $fixture;
+	protected $fixture;
 
 	public function setUp() {
 		$this->initializeFixture();

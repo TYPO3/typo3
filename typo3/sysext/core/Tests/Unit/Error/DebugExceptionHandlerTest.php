@@ -34,7 +34,7 @@ class DebugExceptionHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @var \TYPO3\CMS\Core\Error\DebugExceptionHandler|\PHPUnit_Framework_MockObject_MockObject
 	 */
-	private $fixture = NULL;
+	protected $fixture = NULL;
 
 	/**
 	 * Sets up this test case.
@@ -42,13 +42,6 @@ class DebugExceptionHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	protected function setUp() {
 		$this->fixture = $this->getMock('TYPO3\\CMS\\Core\\Error\\DebugExceptionHandler', array('sendStatusHeaders', 'writeLogEntries'), array(), '', FALSE);
 		$this->fixture->expects($this->any())->method('discloseExceptionInformation')->will($this->returnValue(TRUE));
-	}
-
-	/**
-	 * Tears down this test case.
-	 */
-	protected function tearDown() {
-		unset($this->fixture);
 	}
 
 	/**

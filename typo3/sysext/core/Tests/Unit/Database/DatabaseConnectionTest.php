@@ -51,7 +51,7 @@ class DatabaseConnectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	public function tearDown() {
 		$this->fixture->sql_query('DROP TABLE ' . $this->testTable . ';');
-		unset($this->fixture);
+		parent::tearDown();
 	}
 
 	//////////////////////////////////////////////////

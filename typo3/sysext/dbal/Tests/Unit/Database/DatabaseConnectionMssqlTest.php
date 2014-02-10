@@ -30,6 +30,7 @@ class DatabaseConnectionMssqlTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function tearDown() {
 		// Clear DBAL-generated cache files
 		$GLOBALS['TYPO3_DB']->clearCachedFieldInfo();
+		parent::tearDown();
 	}
 
 	/**

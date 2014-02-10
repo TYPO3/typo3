@@ -58,7 +58,7 @@ class BackendUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @var \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
 	 */
-	private $fixture = NULL;
+	protected $fixture = NULL;
 
 	public function setUp() {
 		// reset hooks
@@ -69,6 +69,7 @@ class BackendUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function tearDown() {
 		unset($this->fixture);
 		\TYPO3\CMS\Core\FormProtection\FormProtectionFactory::purgeInstances();
+		parent::tearDown();
 	}
 
 	/////////////////////////////////////////

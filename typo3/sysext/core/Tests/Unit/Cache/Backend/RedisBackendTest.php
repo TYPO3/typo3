@@ -99,6 +99,7 @@ class RedisBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		if ($this->backend instanceof \TYPO3\CMS\Core\Cache\Backend\RedisBackend) {
 			$this->backend->flush();
 		}
+		parent::tearDown();
 	}
 
 	/**

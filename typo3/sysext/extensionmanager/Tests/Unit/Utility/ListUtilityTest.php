@@ -34,7 +34,7 @@ class ListUtilityTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	/**
 	 * @var \TYPO3\CMS\Extensionmanager\Utility\ListUtility
 	 */
-	private $subject;
+	protected $subject;
 
 	/**
 	 * @return void
@@ -53,13 +53,6 @@ class ListUtilityTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 					'rsaauth' => $this->getMock('TYPO3\\CMS\\Cms\\Package', array(), array(), '', FALSE),
 				)));
 		$this->inject($this->subject, 'packageManager', $packageManagerMock);
-	}
-
-	/**
-	 * @return void
-	 */
-	public function tearDown() {
-		unset($this->subject);
 	}
 
 	/**

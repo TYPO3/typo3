@@ -40,10 +40,6 @@ class ConstraintTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$this->subject = new \TYPO3\CMS\Belog\Domain\Model\Constraint();
 	}
 
-	public function tearDown() {
-		unset($this->subject);
-	}
-
 	/**
 	 * @test
 	 */

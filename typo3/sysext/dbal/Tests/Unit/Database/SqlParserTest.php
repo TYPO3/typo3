@@ -45,13 +45,6 @@ class SqlParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 	/**
-	 * Cleans up the environment after running a test.
-	 */
-	public function tearDown() {
-		unset($this->fixture);
-	}
-
-	/**
 	 * Cleans a SQL query.
 	 *
 	 * @param mixed $sql

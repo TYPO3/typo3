@@ -29,23 +29,17 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\MediaWizard;
  * @author Sebastian Fischer <typo3@marketing-factory.de>
  */
 class MediaWizardProviderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+
 	/**
 	 * @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\TYPO3\CMS\Frontend\MediaWizard\MediaWizardProvider
 	 */
-	private $fixture;
+	protected $fixture;
 
 	/**
 	 * Setup
 	 */
 	public function setUp() {
 		$this->fixture = $this->getAccessibleMock('\\TYPO3\\CMS\\Frontend\\MediaWizard\\MediaWizardProvider', array('dummy'), array(), '', FALSE);
-	}
-
-	/**
-	 * Tear down
-	 */
-	public function tearDown() {
-		unset($this->fixture);
 	}
 
 	/**

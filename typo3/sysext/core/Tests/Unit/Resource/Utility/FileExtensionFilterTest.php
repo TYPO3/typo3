@@ -74,11 +74,8 @@ class FileExtensionFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * Cleans up this test suite.
 	 */
 	protected function tearDown() {
-		unset($this->fileFactoryMock);
-		unset($this->tceMainMock);
-		unset($this->parameters);
-		unset($this->filter);
 		\TYPO3\CMS\Core\Utility\GeneralUtility::resetSingletonInstances($this->singletonInstances);
+		parent::tearDown();
 	}
 
 	/**

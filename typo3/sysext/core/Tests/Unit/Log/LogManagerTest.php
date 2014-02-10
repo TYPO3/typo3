@@ -44,6 +44,7 @@ class LogManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	public function tearDown() {
 		\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Log\\LogManager')->reset();
+		parent::tearDown();
 	}
 
 	/**

@@ -45,13 +45,6 @@ class AlphabeticFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 	/**
-	 * Tear down
-	 */
-	public function tearDown() {
-		$this->fixture = NULL;
-	}
-
-	/**
 	 * @test
 	 */
 	public function filterForStringWithUnicodeCharactersAndSpacesReturnsInputString() {

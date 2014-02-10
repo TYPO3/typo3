@@ -56,10 +56,6 @@ class CacheHashCalculatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		));
 	}
 
-	public function tearDown() {
-		$GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = $this->confCache['encryptionKey'];
-	}
-
 	/**
 	 * @dataProvider cacheHashCalculationDataprovider
 	 * @test

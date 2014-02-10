@@ -44,10 +44,6 @@ class BetweenValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$this->subject = $this->getMock('TYPO3\\CMS\\Form\\Validation\\BetweenValidator', array('dummy'), array(), '', FALSE);
 	}
 
-	public function tearDown() {
-		unset($this->helper, $this->subject);
-	}
-
 	public function validNonInclusiveDataProvider() {
 		return array(
 			'3 < 5 < 7'      => array(array(3, 5, 7)),

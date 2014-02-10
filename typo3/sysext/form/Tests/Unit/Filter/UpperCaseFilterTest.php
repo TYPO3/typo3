@@ -47,14 +47,6 @@ class UpperCaseFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$GLOBALS['TSFE']->renderCharset = 'utf-8';
 	}
 
-	/**
-	 * Tear down
-	 */
-	public function tearDown() {
-		$this->fixture = NULL;
-		unset($GLOBALS['TSFE']);
-	}
-
 	public function stringProvider() {
 		return array(
 			'asdf' => array('asdf', 'ASDF'),

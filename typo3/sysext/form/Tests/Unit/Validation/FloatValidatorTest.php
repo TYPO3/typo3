@@ -43,10 +43,6 @@ class FloatValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$this->subject = $this->getMock('TYPO3\\CMS\\Form\\Validation\\FloatValidator', array('dummy'), array(), '', FALSE);
 	}
 
-	public function tearDown() {
-		unset($this->helper, $this->subject);
-	}
-
 	public function validFloatProvider() {
 		return array(
 			'12.1 for en_US locale' => array(array(12.1, 'en_US')),

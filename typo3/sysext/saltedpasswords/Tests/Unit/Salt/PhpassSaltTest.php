@@ -51,15 +51,6 @@ class PhpassSaltTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 	/**
-	 * Tears down objects and settings created in this testcase.
-	 *
-	 * @return void
-	 */
-	public function tearDown() {
-		$this->objectInstance = NULL;
-	}
-
-	/**
 	 * @test
 	 */
 	public function hasCorrectBaseClass() {

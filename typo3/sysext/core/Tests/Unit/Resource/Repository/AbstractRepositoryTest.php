@@ -37,9 +37,9 @@ class AbstractRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @var \TYPO3\CMS\Core\Resource\AbstractRepository
 	 */
-	private $fixture;
+	protected $fixture;
 
-	private $mockedDb;
+	protected $mockedDb;
 
 	protected function createDatabaseMock() {
 		$this->mockedDb = $this->getMock('TYPO3\\CMS\\Core\\Database\\DatabaseConnection');

@@ -49,6 +49,7 @@ class AbstractUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 		foreach ($this->globals as $key => $value) {
 			$GLOBALS[$key] = unserialize($value);
 		}
+		parent::tearDown();
 	}
 
 	////////////////////////////////////

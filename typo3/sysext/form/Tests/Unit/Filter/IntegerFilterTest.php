@@ -41,10 +41,6 @@ class IntegerFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->fixture = new \TYPO3\CMS\Form\Filter\IntegerFilter();
 	}
 
-	public function tearDown() {
-		unset($this->fixture);
-	}
-
 	public function dataProvider() {
 		return array(
 			'"1" -> 1' => array('1', 1),

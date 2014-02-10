@@ -51,15 +51,6 @@ class BlowfishSaltTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 	/**
-	 * Tears down objects and settings created in this testcase.
-	 *
-	 * @return void
-	 */
-	public function tearDown() {
-		unset($this->objectInstance);
-	}
-
-	/**
 	 * Marks tests as skipped if the blowfish method is not available.
 	 *
 	 * @return void

@@ -54,6 +54,7 @@ class FileHandlingUtilityTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase
 				rmdir($resource);
 			}
 		}
+		parent::tearDown();
 	}
 
 	/**

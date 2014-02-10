@@ -44,10 +44,6 @@ class EqualsValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$this->subject = $this->getMock('TYPO3\\CMS\\Form\\Validation\\EqualsValidator', array('dummy'), array(), '', FALSE);
 	}
 
-	public function tearDown() {
-		unset($this->helper, $this->subject);
-	}
-
 	public function invalidPairProvider() {
 		return array(
 			'somethingElse !== something' => array(array('somethingElse', 'something')),

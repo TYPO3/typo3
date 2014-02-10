@@ -46,15 +46,6 @@ class GraphicalFunctionsTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 	/**
-	 * Tear down
-	 *
-	 * @return void
-	 */
-	public function tearDown() {
-		$this->fixture = NULL;
-	}
-
-	/**
 	 * Dataprovider for getScaleForImage
 	 *
 	 * @return array

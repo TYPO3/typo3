@@ -51,15 +51,6 @@ class Md5SaltTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 	/**
-	 * Tears down objects and settings created in this testcase.
-	 *
-	 * @return void
-	 */
-	public function tearDown() {
-		$this->objectInstance = NULL;
-	}
-
-	/**
 	 * Prepares a message to be shown when a salted hashing is not supported.
 	 *
 	 * @return string Empty string if salted hashing method is available, otherwise an according warning

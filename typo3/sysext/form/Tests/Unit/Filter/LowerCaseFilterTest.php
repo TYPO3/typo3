@@ -44,11 +44,6 @@ class LowerCaseFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$GLOBALS['TSFE']->renderCharset = 'utf-8';
 	}
 
-	public function tearDown() {
-		unset($this->fixture);
-		unset($GLOBALS['TSFE']);
-	}
-
 	public function dataProvider() {
 		return array(
 			'a -> a' => array('a', 'a'),

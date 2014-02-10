@@ -41,7 +41,7 @@ class ResourceStorageTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCa
 	/**
 	 * @var \TYPO3\CMS\Core\Resource\ResourceStorage
 	 */
-	private $fixture;
+	protected $fixture;
 
 	public function setUp() {
 		parent::setUp();
@@ -55,8 +55,8 @@ class ResourceStorageTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCa
 	}
 
 	public function tearDown() {
-		parent::tearDown();
 		\TYPO3\CMS\Core\Utility\GeneralUtility::resetSingletonInstances($this->singletonInstances);
+		parent::tearDown();
 	}
 
 	/**

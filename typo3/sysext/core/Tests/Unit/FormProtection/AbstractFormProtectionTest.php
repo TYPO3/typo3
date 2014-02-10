@@ -34,15 +34,10 @@ class AbstractFormProtectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @var \TYPO3\CMS\Core\Tests\Unit\FormProtection\Fixtures\FormProtectionTesting
 	 */
-	private $fixture;
+	protected $fixture;
 
 	public function setUp() {
 		$this->fixture = new \TYPO3\CMS\Core\Tests\Unit\FormProtection\Fixtures\FormProtectionTesting();
-	}
-
-	public function tearDown() {
-		$this->fixture->__destruct();
-		unset($this->fixture);
 	}
 
 	/////////////////////////////////////////

@@ -36,19 +36,8 @@ class MailerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	protected $fixture;
 
-	/**
-	 * @var array
-	 */
-	protected $globalMailSettings;
-
 	public function setUp() {
-		$this->globalMailSettings = $GLOBALS['TYPO3_CONF_VARS']['MAIL'];
 		$this->fixture = $this->getMock('TYPO3\\CMS\\Core\\Mail\\Mailer', array('noMethodMocked'), array(), '', FALSE);
-	}
-
-	public function tearDown() {
-		unset($this->fixture);
-		$GLOBALS['TYPO3_CONF_VARS']['MAIL'] = $this->globalMailSettings;
 	}
 
 	//////////////////////////

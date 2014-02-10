@@ -37,28 +37,13 @@ class InstallToolFormProtectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	protected $fixture;
 
 	/**
-	 * @var array Backup of $_SESSION
-	 */
-	protected $sessionBackup;
-
-	/**
 	 * Set up
 	 */
 	public function setUp() {
-		$this->sessionBackup = $_SESSION;
-
 		$this->fixture = $this->getAccessibleMock(
 			'TYPO3\\CMS\\Core\\FormProtection\\InstallToolFormProtection',
 			array('dummy')
 		);
-	}
-
-	/**
-	 * Tear down
-	 */
-	public function tearDown() {
-		$this->fixture->__destruct();
-		$_SESSION = $this->sessionBackup;
 	}
 
 	//////////////////////////////////////////////////////////
