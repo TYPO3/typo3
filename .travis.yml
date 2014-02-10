@@ -20,6 +20,7 @@ services:
   - memcached
 
 before_script:
+  - sudo apt-get install parallel
   - sudo apt-get update && sudo apt-get install git
   - git clone --single-branch --branch master --depth 1 git://github.com/typo3-ci/TYPO3-Travis-Integration.git build-environment
   - source build-environment/install-helper.sh
@@ -63,7 +64,7 @@ script:
     elif [[ "$UNITTESTS" == "1" ]]; then
     	./typo3conf/ext/phpunit/Composer/vendor/bin/phpunit -c typo3/sysext/core/Build/UnitTests.xml
     elif [[ "$FUNCTIONALTESTS" == "1" ]]; then
-    	./typo3conf/ext/phpunit/Composer/vendor/bin/phpunit -c typo3/sysext/core/Build/FunctionalTests.xml
+    	grep directory typo3/sysext/core/Build/FunctionalTests.xml | sed 's#[	]*<directory>\.\./\.\./\.\./\.\./\(typo3/sysext.*\)</directory>$#\1#g' | parallel --gnu --keep-order 'echo "Running {} tests"; ./typo3conf/ext/phpunit/Composer/vendor/bin/phpunit -c typo3/sysext/core/Build/FunctionalTests.xml {}'
     else
     	exit 1
     fi
