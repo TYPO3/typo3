@@ -9,16 +9,6 @@ namespace TYPO3\CMS\Dbal\Tests\Unit\Database;
 class DatabaseConnectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
-	 * @var \TYPO3\CMS\Core\Database\DatabaseConnection
-	 */
-	protected $db;
-
-	/**
-	 * @var array
-	 */
-	protected $loadedExtensions;
-
-	/**
 	 * @var array
 	 */
 	protected $temporaryFiles;
@@ -27,10 +17,6 @@ class DatabaseConnectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * Prepares the environment before running a test.
 	 */
 	public function setUp() {
-		// Backup list of loaded extensions
-//		$this->loadedExtensions = $GLOBALS['TYPO3_LOADED_EXT'];
-		// Backup database connection
-		$this->db = $GLOBALS['TYPO3_DB'];
 		$this->temporaryFiles = array();
 		$className = self::buildAccessibleProxy('TYPO3\\CMS\\Dbal\\Database\\DatabaseConnection');
 		$GLOBALS['TYPO3_DB'] = new $className();
@@ -47,10 +33,6 @@ class DatabaseConnectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		foreach ($this->temporaryFiles as $filename) {
 			unlink($filename);
 		}
-		// Restore DB connection
-		$GLOBALS['TYPO3_DB'] = $this->db;
-		// Restore list of loaded extensions
-//		$GLOBALS['TYPO3_LOADED_EXT'] = $this->loadedExtensions;
 	}
 
 	/**

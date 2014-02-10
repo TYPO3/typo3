@@ -31,13 +31,6 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\ContentObject\Menu;
 class AbstractMenuContentObjectTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
-	 * A backup of the global database
-	 *
-	 * @var \TYPO3\CMS\Core\Database\DatabaseConnection
-	 */
-	protected $databaseBackup = NULL;
-
-	/**
 	 * @var \TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject
 	 */
 	protected $fixture = NULL;
@@ -48,18 +41,10 @@ class AbstractMenuContentObjectTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTe
 	public function setUp() {
 		$proxy = $this->buildAccessibleProxy('TYPO3\\CMS\\Frontend\\ContentObject\\Menu\\AbstractMenuContentObject');
 		$this->fixture = new $proxy();
-		$this->databaseBackup = $GLOBALS['TYPO3_DB'];
 		$GLOBALS['TYPO3_DB'] = $this->getMock('TYPO3\\CMS\\Core\\Database\\DatabaseConnection');
 		$GLOBALS['TSFE'] = $this->getMock('TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController', array(), array($GLOBALS['TYPO3_CONF_VARS'], 1, 1));
 		$GLOBALS['TSFE']->cObj = new \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer();
 		$GLOBALS['TSFE']->page = array();
-	}
-
-	/**
-	 * Tear down this testcase
-	 */
-	public function tearDown() {
-		$GLOBALS['TYPO3_DB'] = $this->databaseBackup;
 	}
 
 	////////////////////////////////

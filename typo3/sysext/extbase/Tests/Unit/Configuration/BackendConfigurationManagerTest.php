@@ -30,11 +30,6 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Configuration;
 class BackendConfigurationManagerTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
-	 * @var \TYPO3\CMS\Core\Database\DatabaseConnection
-	 */
-	protected $typo3DbBackup;
-
-	/**
 	 * @var \TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface
 	 */
 	protected $backendConfigurationManager;
@@ -48,18 +43,10 @@ class BackendConfigurationManagerTest extends \TYPO3\CMS\Extbase\Tests\Unit\Base
 	 * Sets up this testcase
 	 */
 	public function setUp() {
-		$this->typo3DbBackup = $GLOBALS['TYPO3_DB'];
 		$GLOBALS['TYPO3_DB'] = $this->getMock('TYPO3\\CMS\\Core\\Database\\DatabaseConnection', array());
 		$this->backendConfigurationManager = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Configuration\\BackendConfigurationManager', array('getTypoScriptSetup'));
 		$this->mockTypoScriptService = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Service\\TypoScriptService');
 		$this->backendConfigurationManager->_set('typoScriptService', $this->mockTypoScriptService);
-	}
-
-	/**
-	 * Tears down this testcase
-	 */
-	public function tearDown() {
-		$GLOBALS['TYPO3_DB'] = $this->typo3DbBackup;
 	}
 
 	/**

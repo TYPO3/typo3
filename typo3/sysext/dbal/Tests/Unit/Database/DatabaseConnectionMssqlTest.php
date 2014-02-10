@@ -9,23 +9,9 @@ namespace TYPO3\CMS\Dbal\Tests\Unit\Database;
 class DatabaseConnectionMssqlTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
-	 * @var \TYPO3\CMS\Core\Database\DatabaseConnection
-	 */
-	protected $db;
-
-	/**
-	 * @var array
-	 */
-	protected $dbalConfig;
-
-	/**
 	 * Prepares the environment before running a test.
 	 */
 	public function setUp() {
-		// Backup DBAL configuration
-		$this->dbalConfig = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['dbal'];
-		// Backup database connection
-		$this->db = $GLOBALS['TYPO3_DB'];
 		// Reconfigure DBAL to use MS SQL
 		require __DIR__ . '/Fixtures/mssql.config.php';
 		$className = self::buildAccessibleProxy('TYPO3\\CMS\\Dbal\\Database\\DatabaseConnection');
@@ -44,10 +30,6 @@ class DatabaseConnectionMssqlTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function tearDown() {
 		// Clear DBAL-generated cache files
 		$GLOBALS['TYPO3_DB']->clearCachedFieldInfo();
-		// Restore DBAL configuration
-		$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['dbal'] = $this->dbalConfig;
-		// Restore DB connection
-		$GLOBALS['TYPO3_DB'] = $this->db;
 	}
 
 	/**

@@ -28,15 +28,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Utility;
  */
 class ExtensionUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
-	/**
-	 * A backup of the global database
-	 *
-	 * @var \TYPO3\CMS\Core\Database\DatabaseConnection
-	 */
-	protected $databaseBackup = NULL;
-
 	public function setUp() {
-		$this->databaseBackup = $GLOBALS['TYPO3_DB'];
 		$GLOBALS['TYPO3_DB'] = $this->getMock('TYPO3\\CMS\\Core\\Database\\DatabaseConnection', array('fullQuoteStr', 'exec_SELECTgetRows'));
 
 		$GLOBALS['TSFE'] = new \stdClass();
@@ -69,10 +61,6 @@ class ExtensionUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				'pluginName' => 'ThirdPlugin'
 			)
 		);
-	}
-
-	public function tearDown() {
-		$GLOBALS['TYPO3_DB'] = $this->databaseBackup;
 	}
 
 	/**

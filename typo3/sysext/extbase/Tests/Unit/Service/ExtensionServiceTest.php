@@ -29,11 +29,6 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Service;
 class ExtensionServiceTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
-	 * @var \TYPO3\CMS\Core\Database\DatabaseConnection
-	 */
-	protected $typo3DbBackup;
-
-	/**
 	 * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
 	 */
 	protected $mockConfigurationManager;
@@ -44,7 +39,6 @@ class ExtensionServiceTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	protected $extensionService;
 
 	public function setUp() {
-		$this->typo3DbBackup = $GLOBALS['TYPO3_DB'];
 		$GLOBALS['TYPO3_DB'] = $this->getMock('TYPO3\\CMS\\Core\\Database\\DatabaseConnection', array('fullQuoteStr', 'exec_SELECTgetRows'));
 		$GLOBALS['TSFE'] = new \stdClass();
 		$this->extensionService = $this->getAccessibleMock('TYPO3\CMS\Extbase\Service\ExtensionService', array('dummy'));
@@ -85,10 +79,6 @@ class ExtensionServiceTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 				)
 			)
 		);
-	}
-
-	public function tearDown() {
-		$GLOBALS['TYPO3_DB'] = $this->typo3DbBackup;
 	}
 
 	/**
