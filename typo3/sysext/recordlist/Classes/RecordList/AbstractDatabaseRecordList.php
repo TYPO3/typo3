@@ -405,10 +405,19 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 				if ($hideTable) {
 					continue;
 				}
-				// iLimit is set depending on whether we're in single- or multi-table mode
+				// check if we are in single- or multi-table mode
 				if ($this->table) {
 					$this->iLimit = isset($GLOBALS['TCA'][$tableName]['interface']['maxSingleDBListItems']) ? (int)$GLOBALS['TCA'][$tableName]['interface']['maxSingleDBListItems'] : $this->itemsLimitSingleTable;
 				} else {
+					// if there are no records in table continue current foreach
+					$firstRow = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
+						'uid',
+						$tableName,
+						$this->pidSelect . BackendUtility::deleteClause($tableName) . BackendUtility::versioningPlaceholderClause($tableName)
+					);
+					if ($firstRow === FALSE) {
+						continue;
+					}
 					$this->iLimit = isset($GLOBALS['TCA'][$tableName]['interface']['maxDBListItems']) ? (int)$GLOBALS['TCA'][$tableName]['interface']['maxDBListItems'] : $this->itemsLimitPerTable;
 				}
 				if ($this->showLimit) {
