@@ -6,9 +6,7 @@ php:
   - 5.5
 
 env:
-  - DB=mysql UNITTESTS=1
-  - DB=none FUNCTIONALTESTS=1
-  - DB=none PHPLINT=1
+  - DB=mysql
 
 notifications:
   irc:
@@ -21,34 +19,15 @@ services:
 
 before_script:
   - sudo apt-get install parallel
-  - sudo apt-get update && sudo apt-get install git
   - git clone --single-branch --branch master --depth 1 git://github.com/typo3-ci/TYPO3-Travis-Integration.git build-environment
   - source build-environment/install-helper.sh
-
-  - >
-    if [[ "$UNITTESTS" == "1" ]]; then
-    	if [[ "$TRAVIS_PHP_VERSION" == "5.3" ]]; then
-    		installPhpModule -y apc;
-    	fi
-    	if [[ "$TRAVIS_PHP_VERSION" != "5.5" ]]; then
-    		installPhpModule igbinary
-    	fi
-    	installPhpModule -y memcache
-    	installPhpModule redis
-    	mv build-environment/typo3conf .
-    	git clone --single-branch --branch master --depth 1 git://git.typo3.org/TYPO3CMS/Extensions/phpunit.git typo3conf/ext/phpunit/
-    	mkdir fileadmin
-    	mkdir uploads
-    	mkdir typo3temp
-    fi
-
-  - >
-    if [[ "$FUNCTIONALTESTS" == "1" ]]; then
-    	mv build-environment/typo3conf .
-    	git clone --single-branch --branch master --depth 1 git://git.typo3.org/TYPO3CMS/Extensions/phpunit.git typo3conf/ext/phpunit/
-    	mkdir typo3temp
-    fi
-
+  - if [[ "$TRAVIS_PHP_VERSION" == "5.3" ]]; then installPhpModule -y apc; fi
+  - if [[ "$TRAVIS_PHP_VERSION" != "5.5" ]]; then installPhpModule igbinary; fi
+  - installPhpModule -y memcache
+  - installPhpModule redis
+  - mkdir fileadmin uploads typo3temp
+  - mv build-environment/typo3conf .
+  - git clone --single-branch --branch master --depth 1 git://git.typo3.org/TYPO3CMS/Extensions/phpunit.git typo3conf/ext/phpunit/
   - >
     if [[ "$DB" == "mysql" ]]; then
     	mysql -e "DROP DATABASE IF EXISTS typo3_test;" -uroot
@@ -58,13 +37,4 @@ before_script:
     fi
 
 script:
-  - >
-    if [[ "$PHPLINT" == "1" ]]; then
-    	phpLint all
-    elif [[ "$UNITTESTS" == "1" ]]; then
-    	./typo3conf/ext/phpunit/Composer/vendor/bin/phpunit -c typo3/sysext/core/Build/UnitTests.xml
-    elif [[ "$FUNCTIONALTESTS" == "1" ]]; then
-    	grep directory typo3/sysext/core/Build/FunctionalTests.xml | sed 's#[	]*<directory>\.\./\.\./\.\./\.\./\(typo3/sysext.*\)</directory>$#\1#g' | parallel --gnu --keep-order 'echo "Running {} tests"; ./typo3conf/ext/phpunit/Composer/vendor/bin/phpunit -c typo3/sysext/core/Build/FunctionalTests.xml {}'
-    else
-    	exit 1
-    fi
+  - php -r 'echo implode("\n", array("Lint", "UnitTests", "FunctionalTests"));' | parallel --gnu --keep-order 'echo "Running {}"; ./build-environment/execute{}.sh'
