@@ -37,4 +37,4 @@ before_script:
     fi
 
 script:
-  - php -r 'echo implode("\n", array("Lint", "UnitTests", "FunctionalTests"));' | parallel --gnu --keep-order 'echo "Running {}"; ./build-environment/execute{}.sh'
+  - printf "UnitTests\nFunctionalTests\nLint" | parallel --gnu --keep-order 'echo "Running {}"; ./build-environment/execute{}.sh'
