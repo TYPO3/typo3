@@ -103,8 +103,6 @@ class ClassAliasMap implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return array
 	 */
 	public function buildMappingAndInitializeEarlyInstanceMapping() {
-		// Simple registry to filter class names with different cases
-		$classNameRegistry = array();
 		// Needed for early instance alias mapping
 		$aliasToClassNameMapping = array();
 		// Final mapping array
@@ -113,14 +111,7 @@ class ClassAliasMap implements \TYPO3\CMS\Core\SingletonInterface {
 			if (!$package instanceof \TYPO3\CMS\Core\Package\Package) {
 				continue;
 			}
-
 			foreach ($package->getClassAliases() as $aliasClassName => $className) {
-				$lookUpClassName = strtolower($className);
-				if (isset($classNameRegistry[$lookUpClassName])) {
-					continue;
-				}
-
-				$classNameRegistry[$lookUpClassName] = TRUE;
 				$lowercasedAliasClassName = strtolower($aliasClassName);
 				$aliasToClassNameMapping[$lowercasedAliasClassName] = $className;
 				$classNameToAliasMapping[$className][$lowercasedAliasClassName] = $lowercasedAliasClassName;
