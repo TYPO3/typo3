@@ -1,6 +1,7 @@
 /* - - - - - - - - - - - - - - - - - - - - -
 Form
 - - - - - - - - - - - - - - - - - - - - - */
+
 input,
 textarea,
 button {
@@ -9,12 +10,16 @@ button {
 	border-radius: 2px;
 }
 
-textarea.fixed-font {
-	font-family: "Lucida Console", "Lucida Sans Typewriter", "Bitstream Vera Sans Mono", monospace;
+input:focus,
+textarea:focus,
+button:focus {
+	border-color: rgb(50, 160, 255);
+	box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.075), 0 0 6px rgba(50, 160, 255, 0.6);
+	outline: 0;
 }
 
-textarea:hover {
-	border: 1px solid #737f91;
+textarea.fixed-font {
+	font-family: "Lucida Console", "Lucida Sans Typewriter", "Bitstream Vera Sans Mono", monospace;
 }
 
 .checkbox,
