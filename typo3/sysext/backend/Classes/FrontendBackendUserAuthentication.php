@@ -146,7 +146,7 @@ class FrontendBackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\B
 	 * @return boolean Whether frontend editing is active
 	 */
 	public function isFrontendEditingActive() {
-		return $this->extAdmEnabled && ($this->adminPanel->isAdminModuleEnabled('edit') && $this->adminPanel->isAdminModuleOpen('edit') || $GLOBALS['TSFE']->displayEditIcons == 1);
+		return $this->extAdmEnabled && ($this->adminPanel->isAdminModuleEnabled('edit') || $GLOBALS['TSFE']->displayEditIcons == 1);
 	}
 
 	/**
