@@ -3330,122 +3330,95 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return string A unique directory name prefixed with test_.
 	 */
 	protected function getFilesInDirCreateTestDirectory() {
-		$directory = 'typo3temp/' . uniqid('test_');
-		Utility\GeneralUtility::mkdir_deep(PATH_site, $directory);
-		$this->testFilesToDelete[] = PATH_site . $directory;
-		return $directory;
+		if (!class_exists('org\\bovigo\\vfs\\vfsStreamWrapper')) {
+			$this->markTestSkipped('getFilesInDirCreateTestDirectory() helper method not available without vfsStream.');
+		}
+		$structure = array(
+			'subDirectory' => array(
+				'test.php' => 'butter',
+				'other.php' => 'milk',
+				'stuff.csv' => 'honey',
+			),
+			'excludeMe.txt' => 'cocoa nibs',
+			'testB.txt' => 'olive oil',
+			'testA.txt' => 'eggs',
+			'testC.txt' => 'carrots',
+			'test.js' => 'oranges',
+			'test.css' => 'apples',
+			'.secret.txt' => 'sammon',
+		);
+		\vfsStream::setup('test', NULL, $structure);
+		return \vfsStream::url('test');
 	}
 
 	/**
 	 * @test
 	 */
 	public function getFilesInDirFindsRegularFile() {
-		$directory = $this->getFilesInDirCreateTestDirectory();
-		$unique = uniqid('test_');
-		$content = 'getFilesInDirFindsRegularFile';
-		$file = PATH_site . $directory . '/' . $unique . '.txt';
-		Utility\GeneralUtility::writeFileToTypo3tempDir($file, $content);
-		$files = Utility\GeneralUtility::getFilesInDir(PATH_site . $directory);
-		$this->assertContains($unique . '.txt', $files);
+		$vfsStreamUrl = $this->getFilesInDirCreateTestDirectory();
+		$files = Utility\GeneralUtility::getFilesInDir($vfsStreamUrl);
+		$this->assertContains('testA.txt', $files);
 	}
 
 	/**
 	 * @test
 	 */
 	public function getFilesInDirFindsHiddenFile() {
-		$directory = $this->getFilesInDirCreateTestDirectory();
-		$unique = uniqid('test_');
-		$content = 'getFilesInDirFindsHiddenFile';
-		$file = PATH_site . $directory . '/.' . $unique . '.txt';
-		Utility\GeneralUtility::writeFileToTypo3tempDir($file, $content);
-		$files = Utility\GeneralUtility::getFilesInDir(PATH_site . $directory);
-		$this->assertContains('.' . $unique . '.txt', $files);
+		$vfsStreamUrl = $this->getFilesInDirCreateTestDirectory();
+		$files = Utility\GeneralUtility::getFilesInDir($vfsStreamUrl);
+		$this->assertContains('.secret.txt', $files);
 	}
 
 	/**
 	 * @test
 	 */
 	public function getFilesInDirByExtensionFindsFiles() {
-		$directory = $this->getFilesInDirCreateTestDirectory();
-		$unique = uniqid('test_');
-		$content = 'getFilesInDirByExtensionFindsFiles';
-		$file = PATH_site . $directory . '/' . $unique . '.txt';
-		Utility\GeneralUtility::writeFileToTypo3tempDir($file, $content);
-		$file = PATH_site . $directory . '/' . $unique . '.js';
-		Utility\GeneralUtility::writeFileToTypo3tempDir($file, $content);
-		$files = Utility\GeneralUtility::getFilesInDir(PATH_site . $directory, 'txt,js');
-		$this->assertContains($unique . '.txt', $files);
-		$this->assertContains($unique . '.js', $files);
+		$vfsStreamUrl = $this->getFilesInDirCreateTestDirectory();
+		$files = Utility\GeneralUtility::getFilesInDir($vfsStreamUrl, 'txt,js');
+		$this->assertContains('testA.txt', $files);
+		$this->assertContains('test.js', $files);
 	}
 
 	/**
 	 * @test
 	 */
 	public function getFilesInDirByExtensionDoesNotFindFilesWithOtherExtensions() {
-		$directory = $this->getFilesInDirCreateTestDirectory();
-		$unique = uniqid('test_');
-		$content = 'getFilesInDirFindsRegularFile';
-		$file = PATH_site . $directory . '/' . $unique . '.txt';
-		Utility\GeneralUtility::writeFileToTypo3tempDir($file, $content);
-		$file = PATH_site . $directory . '/' . $unique . '.js';
-		Utility\GeneralUtility::writeFileToTypo3tempDir($file, $content);
-		$file = PATH_site . $directory . '/' . $unique . '.css';
-		Utility\GeneralUtility::writeFileToTypo3tempDir($file, $content);
-		$files = Utility\GeneralUtility::getFilesInDir(PATH_site . $directory, 'txt,js');
-		$this->assertNotContains($unique . '.css', $files);
-		$this->assertContains($unique . '.txt', $files);
-		$this->assertContains($unique . '.js', $files);
+		$vfsStreamUrl = $this->getFilesInDirCreateTestDirectory();
+		$files = Utility\GeneralUtility::getFilesInDir($vfsStreamUrl, 'txt,js');
+		$this->assertContains('testA.txt', $files);
+		$this->assertContains('test.js', $files);
+		$this->assertNotContains('test.css', $files);
 	}
 
 	/**
 	 * @test
 	 */
 	public function getFilesInDirExcludesFilesMatchingPattern() {
-		$directory = $this->getFilesInDirCreateTestDirectory();
-		$unique = uniqid('test_');
-		$content = 'getFilesInDirExcludesFilesMatchingPattern';
-		$file = PATH_site . $directory . '/' . $unique . '.txt';
-		Utility\GeneralUtility::writeFileToTypo3tempDir($file, $content);
-		$file = PATH_site . $directory . '/' . $unique . '.js';
-		Utility\GeneralUtility::writeFileToTypo3tempDir($file, $content);
-		$excludeUnique = uniqid('excludeMe');
-		$file = PATH_site . $directory . '/' . $excludeUnique . '.txt';
-		Utility\GeneralUtility::writeFileToTypo3tempDir($file, $content);
-		$files = Utility\GeneralUtility::getFilesInDir(PATH_site . $directory, '', FALSE, '', 'excludeMe.*');
-		$this->assertNotContains($excludeUnique . '.txt', $files);
-		$this->assertContains($unique . '.js', $files);
+		$vfsStreamUrl = $this->getFilesInDirCreateTestDirectory();
+		$files = Utility\GeneralUtility::getFilesInDir($vfsStreamUrl, '', FALSE, '', 'excludeMe.*');
+		$this->assertContains('test.js', $files);
+		$this->assertNotContains('excludeMe.txt', $files);
 	}
 
 	/**
 	 * @test
 	 */
 	public function getFilesInDirCanPrependPath() {
-		$directory = $this->getFilesInDirCreateTestDirectory();
-		$unique = uniqid('test_');
-		$content = 'getFilesInDirCanPrependPath';
-		$file = PATH_site . $directory . '/' . $unique . '.txt';
-		Utility\GeneralUtility::writeFileToTypo3tempDir($file, $content);
-		$files = Utility\GeneralUtility::getFilesInDir(PATH_site . $directory, '', TRUE);
-		$this->assertContains(PATH_site . $directory . '/' . $unique . '.txt', $files);
+		$vfsStreamUrl = $this->getFilesInDirCreateTestDirectory();
+		$this->assertContains(
+			$vfsStreamUrl . '/testA.txt',
+			Utility\GeneralUtility::getFilesInDir($vfsStreamUrl, '', TRUE)
+		);
 	}
 
 	/**
 	 * @test
 	 */
 	public function getFilesInDirCanOrderAlphabetically() {
-		$directory = $this->getFilesInDirCreateTestDirectory();
-		$uniqueB = uniqid('test_B_');
-		$content = 'test_B';
-		$file = PATH_site . $directory . '/' . $uniqueB . '.txt';
-		Utility\GeneralUtility::writeFileToTypo3tempDir($file, $content);
-		$uniqueA = uniqid('test_A_');
-		$content = 'test_A';
-		$file = PATH_site . $directory . '/' . $uniqueA . '.txt';
-		Utility\GeneralUtility::writeFileToTypo3tempDir($file, $content);
-
+		$vfsStreamUrl = $this->getFilesInDirCreateTestDirectory();
 		$this->assertSame(
-			array_values(Utility\GeneralUtility::getFilesInDir(PATH_site . $directory, '', FALSE, '1')),
-			array($uniqueA . '.txt', $uniqueB . '.txt')
+			array_values(Utility\GeneralUtility::getFilesInDir($vfsStreamUrl, '', FALSE, '1')),
+			array('.secret.txt', 'excludeMe.txt', 'test.css', 'test.js', 'testA.txt', 'testB.txt', 'testC.txt')
 		);
 	}
 
@@ -3453,26 +3426,22 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function getFilesInDirReturnsArrayWithMd5OfElementAndPathAsArrayKey() {
-		$directory = $this->getFilesInDirCreateTestDirectory();
-		$unique = uniqid('test_');
-		$content = 'getFilesInDirReturnsArrayWithMd5OfElementAndPathAsArrayKey';
-		$file = PATH_site . $directory . '/' . $unique . '.txt';
-		$md5 = md5($file);
-		Utility\GeneralUtility::writeFileToTypo3tempDir($file, $content);
-		$files = Utility\GeneralUtility::getFilesInDir(PATH_site . $directory);
-		$this->assertArrayHasKey($md5, $files);
+		$vfsStreamUrl = $this->getFilesInDirCreateTestDirectory();
+		$this->assertArrayHasKey(
+			md5($vfsStreamUrl . '/testA.txt'),
+			Utility\GeneralUtility::getFilesInDir($vfsStreamUrl)
+		);
 	}
 
 	/**
 	 * @test
 	 */
 	public function getFilesInDirDoesNotFindDirectories() {
-		$directory = $this->getFilesInDirCreateTestDirectory();
-		$subDirectory = $directory . '/testSubdirectory';
-		Utility\GeneralUtility::mkdir_deep(PATH_site, $subDirectory);
-		$this->testFilesToDelete[] = PATH_site . $subDirectory;
-		$files = Utility\GeneralUtility::getFilesInDir(PATH_site . $directory);
-		$this->assertNotContains('testSubdirectory', $files);
+		$vfsStreamUrl = $this->getFilesInDirCreateTestDirectory();
+		$this->assertNotContains(
+			'subDirectory',
+			Utility\GeneralUtility::getFilesInDir($vfsStreamUrl)
+		);
 	}
 
 	/**
@@ -3482,12 +3451,8 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function getFilesInDirDoesNotFindDotfiles() {
-		$directory = $this->getFilesInDirCreateTestDirectory();
-		$unique = uniqid('test_');
-		$content = 'getFilesInDirDoesNotFindDotfiles';
-		$file = PATH_site . $directory . '/.' . $unique . '.txt';
-		Utility\GeneralUtility::writeFileToTypo3tempDir($file, $content);
-		$files = Utility\GeneralUtility::getFilesInDir(PATH_site . $directory);
+		$vfsStreamUrl = $this->getFilesInDirCreateTestDirectory();
+		$files = Utility\GeneralUtility::getFilesInDir($vfsStreamUrl);
 		$this->assertNotContains('..', $files);
 		$this->assertNotContains('.', $files);
 	}
