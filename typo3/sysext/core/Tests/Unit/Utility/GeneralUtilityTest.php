@@ -3425,6 +3425,24 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 */
+	public function getFilesInDirCanOrderByMtime() {
+		$files = array();
+		$iterator = new \DirectoryIterator(__DIR__);
+		foreach ($iterator as $fileinfo) {
+			if ($fileinfo->isFile()) {
+				$files[$fileinfo->getFilename()] = $fileinfo->getMTime();
+			}
+		}
+		asort($files);
+		$this->assertSame(
+			array_values(Utility\GeneralUtility::getFilesInDir(__DIR__, '', FALSE, 'mtime')),
+			array_keys($files)
+		);
+	}
+
+	/**
+	 * @test
+	 */
 	public function getFilesInDirReturnsArrayWithMd5OfElementAndPathAsArrayKey() {
 		$vfsStreamUrl = $this->getFilesInDirCreateTestDirectory();
 		$this->assertArrayHasKey(
