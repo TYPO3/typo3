@@ -399,11 +399,14 @@ class ClassLoader {
 	 * @param \TYPO3\Flow\Package\PackageInterface $package
 	 * @return ClassLoader
 	 */
-	public function addRuntimeActivatedPackage(\TYPO3\Flow\Package\PackageInterface $package) {
-		$this->packages[] = $package;
-		$this->buildPackageNamespaceAndClassesPath($package);
-		$this->sortPackageNamespaces();
-		$this->loadClassFilesFromAutoloadRegistryIntoRuntimeClassInformationCache(array($package));
+	public function addActivePackage(\TYPO3\Flow\Package\PackageInterface $package) {
+		$packageKey = $package->getPackageKey();
+		if (!isset($this->packages[$packageKey])) {
+			$this->packages[$packageKey] = $package;
+			$this->buildPackageNamespaceAndClassesPath($package);
+			$this->sortPackageNamespaces();
+			$this->loadClassFilesFromAutoloadRegistryIntoRuntimeClassInformationCache(array($package));
+		}
 		return $this;
 	}
 

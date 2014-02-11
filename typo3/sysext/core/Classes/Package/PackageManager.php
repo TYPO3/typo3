@@ -531,6 +531,7 @@ class PackageManager extends \TYPO3\Flow\Package\PackageManager implements \TYPO
 	public function activatePackage($packageKey) {
 		$package = $this->getPackage($packageKey);
 		parent::activatePackage($package->getPackageKey());
+		$this->classLoader->addActivePackage($package);
 	}
 
 	/**
@@ -542,7 +543,7 @@ class PackageManager extends \TYPO3\Flow\Package\PackageManager implements \TYPO
 	public function activatePackageDuringRuntime($packageKey) {
 		$package = $this->getPackage($packageKey);
 		$this->runtimeActivatedPackages[$package->getPackageKey()] = $package;
-		$this->classLoader->addRuntimeActivatedPackage($package);
+		$this->classLoader->addActivePackage($package);
 	}
 
 
