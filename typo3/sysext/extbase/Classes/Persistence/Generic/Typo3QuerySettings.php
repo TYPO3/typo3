@@ -119,6 +119,13 @@ class Typo3QuerySettings implements \TYPO3\CMS\Extbase\Persistence\Generic\Query
 	protected $usePreparedStatement = FALSE;
 
 	/**
+	 * Flag whether the query should be cached using the caching framework
+	 *
+	 * @var bool
+	 */
+	protected $useQueryCache = TRUE;
+
+	/**
 	 * As long as we use a feature flag ignoreAllEnableFieldsInBe to determine the default behavior, the
 	 * initializeObject is responsible for handling that.
 	 */
@@ -423,5 +430,21 @@ class Typo3QuerySettings implements \TYPO3\CMS\Extbase\Persistence\Generic\Query
 	 */
 	public function getUsePreparedStatement() {
 		return (bool)$this->usePreparedStatement;
+	}
+
+	/**
+	 * @param bool $useQueryCache
+	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface
+	 */
+	public function useQueryCache($useQueryCache) {
+		$this->useQueryCache = $useQueryCache;
+		return $this;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function getUseQueryCache() {
+		return (bool)$this->useQueryCache;
 	}
 }

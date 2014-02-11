@@ -87,6 +87,11 @@ class Comparison implements \TYPO3\CMS\Extbase\Persistence\Generic\Qom\Compariso
 	 */
 	protected $operand2;
 
+	/*
+	 * @var string
+	 */
+	protected $parameterIdentifier;
+
 	/**
 	 * Constructs this Comparison instance
 	 *
@@ -125,5 +130,20 @@ class Comparison implements \TYPO3\CMS\Extbase\Persistence\Generic\Qom\Compariso
 	 */
 	public function getOperand2() {
 		return $this->operand2;
+	}
+
+	/**
+	 * @param string $parameterIdentifier
+	 * @return void
+	 */
+	public function setParameterIdentifier($parameterIdentifier) {
+		$this->parameterIdentifier = $parameterIdentifier;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getParameterIdentifier() {
+		return $this->parameterIdentifier;
 	}
 }
