@@ -272,7 +272,7 @@ class RootlineUtility {
 					$columnIsOverlaid = in_array($column, $pageOverlayFields, TRUE);
 					$table = $configuration['foreign_table'];
 					$field = $configuration['foreign_field'];
-					$whereClauseParts = array($field . ' = ' . (int)$columnIsOverlaid ? $uid : $pageRecord['uid']);
+					$whereClauseParts = array($field . ' = ' . (int)($columnIsOverlaid ? $uid : $pageRecord['uid']));
 					if (isset($configuration['foreign_match_fields']) && is_array($configuration['foreign_match_fields'])) {
 						foreach ($configuration['foreign_match_fields'] as $field => $value) {
 							$whereClauseParts[] = $field . ' = ' . $this->databaseConnection->fullQuoteStr($value, $table);
