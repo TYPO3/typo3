@@ -26,6 +26,7 @@ namespace TYPO3\CMS\Backend\Controller\ContentElement;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Script Class for the New Content element wizard
@@ -116,17 +117,17 @@ class NewContentElementController {
 			$this->include_once = array_merge($this->include_once, $GLOBALS['TBE_MODULES_EXT']['xMOD_db_new_content_el']['addElClasses']);
 		}
 		// Setting internal vars:
-		$this->id = intval(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id'));
-		$this->sys_language = intval(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('sys_language_uid'));
-		$this->R_URI = \TYPO3\CMS\Core\Utility\GeneralUtility::sanitizeLocalUrl(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('returnUrl'));
-		$this->colPos = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('colPos');
-		$this->uid_pid = intval(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('uid_pid'));
+		$this->id = intval(GeneralUtility::_GP('id'));
+		$this->sys_language = intval(GeneralUtility::_GP('sys_language_uid'));
+		$this->R_URI = GeneralUtility::sanitizeLocalUrl(GeneralUtility::_GP('returnUrl'));
+		$this->colPos = GeneralUtility::_GP('colPos');
+		$this->uid_pid = intval(GeneralUtility::_GP('uid_pid'));
 		$this->MCONF['name'] = 'xMOD_db_new_content_el';
 		$this->modTSconfig = \TYPO3\CMS\Backend\Utility\BackendUtility::getModTSconfig($this->id, 'mod.wizards.newContentElement');
 		$config = \TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig($this->id);
 		$this->config = $config['mod.']['wizards.']['newContentElement.'];
 		// Starting the document template object:
-		$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
+		$this->doc = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->setModuleTemplate('templates/db_new_content_el.html');
 		$this->doc->JScode = '';
@@ -148,7 +149,7 @@ class NewContentElementController {
 	public function main() {
 		if ($this->id && $this->access) {
 			// Init position map object:
-			$posMap = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('ext_posMap');
+			$posMap = GeneralUtility::makeInstance('ext_posMap');
 			$posMap->cur_sys_language = $this->sys_language;
 			$posMap->backPath = $GLOBALS['BACK_PATH'];
 			// If a column is pre-set:
@@ -183,7 +184,7 @@ class NewContentElementController {
 			// Hook for manipulating wizardItems, wrapper, onClickEvent etc.
 			if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms']['db_new_content_el']['wizardItemsHook'])) {
 				foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms']['db_new_content_el']['wizardItemsHook'] as $classData) {
-					$hookObject = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($classData);
+					$hookObject = GeneralUtility::getUserObj($classData);
 					if (!$hookObject instanceof \TYPO3\CMS\Backend\Wizard\NewContentElementWizardHookInterface) {
 						throw new \UnexpectedValueException('$hookObject must implement interface cms_newContentElementWizardItemsHook', 1227834741);
 					}
@@ -270,7 +271,7 @@ class NewContentElementController {
 				// Load SHARED page-TSconfig settings and retrieve column list from there, if applicable:
 				$modTSconfig_SHARED = \TYPO3\CMS\Backend\Utility\BackendUtility::getModTSconfig($this->id, 'mod.SHARED');
 				$colPosList = strcmp(trim($modTSconfig_SHARED['properties']['colPos_list']), '') ? trim($modTSconfig_SHARED['properties']['colPos_list']) : '1,0,2,3';
-				$colPosList = implode(',', array_unique(\TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $colPosList)));
+				$colPosList = implode(',', array_unique(GeneralUtility::intExplode(',', $colPosList)));
 				// Removing duplicates, if any
 				// Finally, add the content of the column selector to the content:
 				$code .= $posMap->printContentElementColumns($this->id, 0, $colPosList, 1, $this->R_URI);
@@ -358,7 +359,7 @@ class NewContentElementController {
 		if (is_array($wizards)) {
 			foreach ($wizards as $groupKey => $wizardGroup) {
 				$groupKey = preg_replace('/\\.$/', '', $groupKey);
-				$showItems = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $wizardGroup['show'], TRUE);
+				$showItems = GeneralUtility::trimExplode(',', $wizardGroup['show'], TRUE);
 				$showAll = strcmp($wizardGroup['show'], '*') ? FALSE : TRUE;
 				$groupItems = array();
 				if (is_array($appendWizards[$groupKey . '.']['elements.'])) {
@@ -400,7 +401,7 @@ class NewContentElementController {
 		if (is_array($GLOBALS['TBE_MODULES_EXT']['xMOD_db_new_content_el']['addElClasses'])) {
 			foreach ($GLOBALS['TBE_MODULES_EXT']['xMOD_db_new_content_el']['addElClasses'] as $class => $path) {
 				require_once $path;
-				$modObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($class);
+				$modObj = GeneralUtility::makeInstance($class);
 				$wizardElements = $modObj->proc($wizardElements);
 			}
 		}
@@ -452,20 +453,23 @@ class NewContentElementController {
 		// Get TCEFORM from TSconfig of current page
 		$row = array('pid' => $this->id);
 		$TCEFORM_TSconfig = \TYPO3\CMS\Backend\Utility\BackendUtility::getTCEFORM_TSconfig('tt_content', $row);
-		$removeItems = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $TCEFORM_TSconfig['CType']['removeItems'], 1);
-		$keepItems = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $TCEFORM_TSconfig['CType']['keepItems'], 1);
 		$headersUsed = array();
 		// Traverse wizard items:
 		foreach ($wizardItems as $key => $cfg) {
 			// Exploding parameter string, if any (old style)
 			if ($wizardItems[$key]['params']) {
 				// Explode GET vars recursively
-				$tempGetVars = \TYPO3\CMS\Core\Utility\GeneralUtility::explodeUrl2Array($wizardItems[$key]['params'], TRUE);
+				$tempGetVars = GeneralUtility::explodeUrl2Array($wizardItems[$key]['params'], TRUE);
 				// If tt_content values are set, merge them into the tt_content_defValues array, unset them from $tempGetVars and re-implode $tempGetVars into the param string (in case remaining parameters are around).
 				if (is_array($tempGetVars['defVals']['tt_content'])) {
-					$wizardItems[$key]['tt_content_defValues'] = array_merge(is_array($wizardItems[$key]['tt_content_defValues']) ? $wizardItems[$key]['tt_content_defValues'] : array(), $tempGetVars['defVals']['tt_content']);
+					$wizardItems[$key]['tt_content_defValues'] = array_merge(
+						is_array($wizardItems[$key]['tt_content_defValues'])
+							? $wizardItems[$key]['tt_content_defValues']
+							: array(),
+						$tempGetVars['defVals']['tt_content']
+					);
 					unset($tempGetVars['defVals']['tt_content']);
-					$wizardItems[$key]['params'] = \TYPO3\CMS\Core\Utility\GeneralUtility::implodeArrayForUrl('', $tempGetVars);
+					$wizardItems[$key]['params'] = GeneralUtility::implodeArrayForUrl('', $tempGetVars);
 				}
 			}
 			// If tt_content_defValues are defined...:
@@ -475,9 +479,17 @@ class NewContentElementController {
 					if (is_array($GLOBALS['TCA']['tt_content']['columns'][$fN])) {
 						// Get information about if the field value is OK:
 						$config = &$GLOBALS['TCA']['tt_content']['columns'][$fN]['config'];
-						$authModeDeny = $config['type'] == 'select' && $config['authMode'] && !$GLOBALS['BE_USER']->checkAuthMode('tt_content', $fN, $fV, $config['authMode']);
-						$isNotInKeepItems = count($keepItems) && !in_array($fV, $keepItems);
-						if ($authModeDeny || $fN == 'CType' && in_array($fV, $removeItems) || $isNotInKeepItems) {
+						$authModeDeny = $config['type'] == 'select' && $config['authMode']
+							&& !$GLOBALS['BE_USER']->checkAuthMode('tt_content', $fN, $fV, $config['authMode']);
+						// explode TSconfig keys only as needed
+						if (!isset($removeItems[$fN])) {
+							$removeItems[$fN] = GeneralUtility::trimExplode(',', $TCEFORM_TSconfig[$fN]['removeItems'], TRUE);
+						}
+						if (!isset($keepItems[$fN])) {
+							$keepItems[$fN] = GeneralUtility::trimExplode(',', $TCEFORM_TSconfig[$fN]['keepItems'], TRUE);
+						}
+						$isNotInKeepItems = count($keepItems[$fN]) && !in_array($fV, $keepItems[$fN]);
+						if ($authModeDeny || in_array($fV, $removeItems[$fN]) || $isNotInKeepItems) {
 							// Remove element all together:
 							unset($wizardItems[$key]);
 							break;
