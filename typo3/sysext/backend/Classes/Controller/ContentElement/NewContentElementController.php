@@ -455,8 +455,6 @@ class NewContentElementController {
 		// Get TCEFORM from TSconfig of current page
 		$row = array('pid' => $this->id);
 		$TCEFORM_TSconfig = BackendUtility::getTCEFORM_TSconfig('tt_content', $row);
-		$removeItems = GeneralUtility::trimExplode(',', $TCEFORM_TSconfig['CType']['removeItems'], TRUE);
-		$keepItems = GeneralUtility::trimExplode(',', $TCEFORM_TSconfig['CType']['keepItems'], TRUE);
 		$headersUsed = array();
 		// Traverse wizard items:
 		foreach ($wizardItems as $key => $cfg) {
@@ -464,9 +462,16 @@ class NewContentElementController {
 			if ($wizardItems[$key]['params']) {
 				// Explode GET vars recursively
 				$tempGetVars = GeneralUtility::explodeUrl2Array($wizardItems[$key]['params'], TRUE);
-				// If tt_content values are set, merge them into the tt_content_defValues array, unset them from $tempGetVars and re-implode $tempGetVars into the param string (in case remaining parameters are around).
+				// If tt_content values are set, merge them into the tt_content_defValues array,
+				// unset them from $tempGetVars and re-implode $tempGetVars into the param string
+				// (in case remaining parameters are around).
 				if (is_array($tempGetVars['defVals']['tt_content'])) {
-					$wizardItems[$key]['tt_content_defValues'] = array_merge(is_array($wizardItems[$key]['tt_content_defValues']) ? $wizardItems[$key]['tt_content_defValues'] : array(), $tempGetVars['defVals']['tt_content']);
+					$wizardItems[$key]['tt_content_defValues'] = array_merge(
+						is_array($wizardItems[$key]['tt_content_defValues'])
+							? $wizardItems[$key]['tt_content_defValues']
+							: array(),
+						$tempGetVars['defVals']['tt_content']
+					);
 					unset($tempGetVars['defVals']['tt_content']);
 					$wizardItems[$key]['params'] = GeneralUtility::implodeArrayForUrl('', $tempGetVars);
 				}
@@ -478,9 +483,17 @@ class NewContentElementController {
 					if (is_array($GLOBALS['TCA']['tt_content']['columns'][$fN])) {
 						// Get information about if the field value is OK:
 						$config = &$GLOBALS['TCA']['tt_content']['columns'][$fN]['config'];
-						$authModeDeny = $config['type'] == 'select' && $config['authMode'] && !$GLOBALS['BE_USER']->checkAuthMode('tt_content', $fN, $fV, $config['authMode']);
-						$isNotInKeepItems = count($keepItems) && !in_array($fV, $keepItems);
-						if ($authModeDeny || $fN == 'CType' && in_array($fV, $removeItems) || $isNotInKeepItems) {
+						$authModeDeny = $config['type'] == 'select' && $config['authMode']
+							&& !$GLOBALS['BE_USER']->checkAuthMode('tt_content', $fN, $fV, $config['authMode']);
+						// explode TSconfig keys only as needed
+						if (!isset($removeItems[$fN])) {
+							$removeItems[$fN] = GeneralUtility::trimExplode(',', $TCEFORM_TSconfig[$fN]['removeItems'], TRUE);
+						}
+						if (!isset($keepItems[$fN])) {
+							$keepItems[$fN] = GeneralUtility::trimExplode(',', $TCEFORM_TSconfig[$fN]['keepItems'], TRUE);
+						}
+						$isNotInKeepItems = count($keepItems[$fN]) && !in_array($fV, $keepItems[$fN]);
+						if ($authModeDeny || in_array($fV, $removeItems[$fN]) || $isNotInKeepItems) {
 							// Remove element all together:
 							unset($wizardItems[$key]);
 							break;
