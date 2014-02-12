@@ -175,7 +175,11 @@ class ClassLoader {
 
 		$loadingSuccessful = FALSE;
 		if ($classLoadingInformation !== NULL) {
-			$loadingSuccessful = (boolean)require_once $classLoadingInformation[0];
+			if (class_exists($classLoadingInformation[1], FALSE)) {
+				$loadingSuccessful = TRUE;
+			} else {
+				$loadingSuccessful = (boolean)require_once $classLoadingInformation[0];
+			}
 		}
 		if ($loadingSuccessful && count($classLoadingInformation) > 2) {
 			$originalClassName = $classLoadingInformation[1];
