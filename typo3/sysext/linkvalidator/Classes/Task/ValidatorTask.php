@@ -453,7 +453,7 @@ class ValidatorTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 			}
 		}
 		if (is_array($validEmailList) && !empty($validEmailList)) {
-			$mail->setTo($this->email);
+			$mail->setTo($validEmailList);
 		} else {
 			$sendEmail = FALSE;
 		}
