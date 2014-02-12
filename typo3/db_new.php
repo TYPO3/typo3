@@ -40,7 +40,7 @@ require __DIR__ . '/init.php';
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-class localPageTree extends \TYPO3\CMS\Backend\Tree\View\PageTreeView {
+class newRecordLocalPageTree extends \TYPO3\CMS\Backend\Tree\View\PageTreeView {
 
 	/**
 	 * Inserting uid-information in title-text for an icon

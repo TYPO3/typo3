@@ -330,7 +330,7 @@ class NewRecordController {
 			$this->code .= '
 				<h3>' . htmlspecialchars($GLOBALS['LANG']->getLL('selectPosition')) . ':</h3>
 			';
-			$positionMap = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\View\\PagePositionMap');
+			$positionMap = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\View\\PagePositionMap', 'newRecordLocalPageTree');
 			/** @var $positionMap \TYPO3\CMS\Backend\Tree\View\PagePositionMap */
 			$this->code .= $positionMap->positionTree($this->id, $this->pageinfo, $this->perms_clause, $this->R_URI);
 		} else {

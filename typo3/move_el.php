@@ -38,7 +38,7 @@ require __DIR__ . '/init.php';
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-class localPageTree extends \TYPO3\CMS\Backend\Tree\View\PageTreeView {
+class moveElementLocalPageTree extends \TYPO3\CMS\Backend\Tree\View\PageTreeView {
 
 	/**
 	 * Inserting uid-information in title-text for an icon
@@ -65,6 +65,13 @@ class ext_posMap_pages extends \TYPO3\CMS\Backend\Tree\View\PagePositionMap {
 	 * @todo Define visibility
 	 */
 	public $l_insertNewPageHere = 'movePageToHere';
+
+	/**
+	 * Page tree implementation class name
+	 *
+	 * @var string
+	 */
+	protected $pageTreeClassName = 'moveElementLocalPageTree';
 
 	/**
 	 * Creates the onclick event for the insert-icons.
@@ -117,6 +124,13 @@ class ext_posMap_tt_content extends \TYPO3\CMS\Backend\Tree\View\PagePositionMap
 	 * @todo Define visibility
 	 */
 	public $dontPrintPageInsertIcons = 1;
+
+	/**
+	 * Page tree implementation class name
+	 *
+	 * @var string
+	 */
+	protected $pageTreeClassName = 'moveElementLocalPageTree';
 
 	/**
 	 * Wrapping page title.

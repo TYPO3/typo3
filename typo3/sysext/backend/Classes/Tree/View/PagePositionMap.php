@@ -114,6 +114,24 @@ class PagePositionMap {
 	 */
 	public $modConfigStr = 'mod.web_list.newPageWiz';
 
+	/**
+	 * Page tree implementation class name
+	 *
+	 * @var string
+	 */
+	protected $pageTreeClassName = 'localPageTree';
+
+	/**
+	 * Constructor allowing to set pageTreeImplementation
+	 *
+	 * @param string $pageTreeClassName
+	 */
+	public function __construct($pageTreeClassName = NULL) {
+		if ($pageTreeClassName !== NULL) {
+			$this->pageTreeClassName = $pageTreeClassName;
+		}
+	}
+
 	/*************************************
 	 *
 	 * Page position map:
@@ -121,8 +139,6 @@ class PagePositionMap {
 	 **************************************/
 	/**
 	 * Creates a "position tree" based on the page tree.
-	 * Notice: A class, "localPageTree" must exist and probably it is an extension class of the
-	 * \TYPO3\CMS\Backend\Tree\View\PageTreeView class. See "db_new.php" in the core for an example.
 	 *
 	 * @param integer $id Current page id
 	 * @param array $pageinfo Current page record.
@@ -134,8 +150,8 @@ class PagePositionMap {
 	public function positionTree($id, $pageinfo, $perms_clause, $R_URI) {
 		$code = '';
 		// Make page tree object:
-		/** @var $t3lib_pageTree localPageTree */
-		$t3lib_pageTree = GeneralUtility::makeInstance('localPageTree');
+		/** @var \TYPO3\CMS\Backend\Tree\View\PageTreeView localPageTree */
+		$t3lib_pageTree = GeneralUtility::makeInstance($this->pageTreeClassName);
 		$t3lib_pageTree->init(' AND ' . $perms_clause);
 		$t3lib_pageTree->addField('pid');
 		// Initialize variables:
