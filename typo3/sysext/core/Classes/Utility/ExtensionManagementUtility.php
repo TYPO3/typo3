@@ -582,16 +582,16 @@ class ExtensionManagementUtility {
 			$positionName = str_replace(';;', ';[^;]*;', $positionName);
 		}
 
-		$pattern = ('/(^|,\\s*)(' . $positionName . '[^,$]*)/');
+		$pattern = ('/(^|,\\s*)(' . $positionName . ')(;[^,$]+)?(,|$)/');
 		switch ($location) {
 			case 'after':
-				$newList = preg_replace($pattern, '$1$2, ' . $insertionList, $list);
+				$newList = preg_replace($pattern, '$1$2$3, ' . $insertionList . '$4', $list);
 				break;
 			case 'before':
-				$newList = preg_replace($pattern, '$1' . $insertionList . ', $2', $list);
+				$newList = preg_replace($pattern, '$1' . $insertionList . ', $2$3$4', $list);
 				break;
 			case 'replace':
-				$newList = preg_replace($pattern, '$1' . $insertionList, $list);
+				$newList = preg_replace($pattern, '$1' . $insertionList . '$4', $list);
 				break;
 			default:
 		}
