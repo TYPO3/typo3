@@ -42,12 +42,11 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['compat_version']['tx_c
 	'version' => 6002000,
 	'description' => '<p>lib.stdheader: The &lt;header&gt; tag now only wraps the header if the header element has a date set, else the output is just a straight &lt;hX&gt; tag.</p>',
 );
-// Register ourselves as "content rendering template" (providing the hooks of "static template 43" = content (default) )
-$GLOBALS['TYPO3_CONF_VARS']['FE']['contentRenderingTemplates'] = array(
-	'cssstyledcontent/static/',
-	'cssstyledcontent/static/v6.1/',
-	'cssstyledcontent/static/v6.0/',
-	'cssstyledcontent/static/v4.7/',
-	'cssstyledcontent/static/v4.6/',
-	'cssstyledcontent/static/v4.5/',
-);
+
+// Mark the delivered TypoScript templates as "content rendering template" (providing the hooks of "static template 43" = content (default))
+$GLOBALS['TYPO3_CONF_VARS']['FE']['contentRenderingTemplates'][] = 'cssstyledcontent/static/';
+$GLOBALS['TYPO3_CONF_VARS']['FE']['contentRenderingTemplates'][] = 'cssstyledcontent/static/v6.1/';
+$GLOBALS['TYPO3_CONF_VARS']['FE']['contentRenderingTemplates'][] = 'cssstyledcontent/static/v6.0/';
+$GLOBALS['TYPO3_CONF_VARS']['FE']['contentRenderingTemplates'][] = 'cssstyledcontent/static/v4.7/';
+$GLOBALS['TYPO3_CONF_VARS']['FE']['contentRenderingTemplates'][] = 'cssstyledcontent/static/v4.6/';
+$GLOBALS['TYPO3_CONF_VARS']['FE']['contentRenderingTemplates'][] = 'cssstyledcontent/static/v4.5/';

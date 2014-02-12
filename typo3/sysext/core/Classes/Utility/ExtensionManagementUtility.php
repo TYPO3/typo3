@@ -1369,16 +1369,21 @@ tt_content.' . $key . $prefix . ' {
 	 * Adds $content to the default TypoScript code for either setup or constants as set in $GLOBALS['TYPO3_CONF_VARS'][FE]['defaultTypoScript_*']
 	 * (Basically this function can do the same as addTypoScriptSetup and addTypoScriptConstants - just with a little more hazzle, but also with some more options!)
 	 * FOR USE IN ext_localconf.php FILES
+	 * Note: As of TYPO3 CMS 6.2, static template #43 (content: default) was replaced with "defaultContentRendering" which makes it
+	 * possible that a first extension like css_styled_content registers a "contentRendering" template (= a template that defines default content rendering TypoScript)
+	 * by adding itself to $TYPO3_CONF_VARS[FE][contentRenderingTemplates][] = 'myext/Configuration/TypoScript'.
+	 * An extension calling addTypoScript('myext', 'setup', $typoScript, 'defaultContentRendering') will add its TypoScript directly after;
+	 * For now, "43" and "defaultContentRendering" can be used, but defaultContentRendering is more descriptive and should be used in the future
 	 *
 	 * @param string $key Is the extension key (informative only).
 	 * @param string $type Is either "setup" or "constants" and obviously determines which kind of TypoScript code we are adding.
-	 * @param string $content Is the TS content, prefixed with a [GLOBAL] line and a comment-header.
-	 * @param integer $afterStaticUid Is either an integer pointing to a uid of a static_template or a string pointing to the "key" of a static_file template ([reduced extension_key]/[local path]). The points is that the TypoScript you add is included only IF that static template is included (and in that case, right after). So effectively the TypoScript you set can specifically overrule settings from those static templates.
+	 * @param string $content Is the TS content, will be prefixed with a [GLOBAL] line and a comment-header.
+	 * @param int|string $afterStaticUid Is either an integer pointing to a uid of a static_template or a string pointing to the "key" of a static_file template ([reduced extension_key]/[local path]). The points is that the TypoScript you add is included only IF that static template is included (and in that case, right after). So effectively the TypoScript you set can specifically overrule settings from those static templates.
 	 *
 	 * @return void
 	 */
 	static public function addTypoScript($key, $type, $content, $afterStaticUid = 0) {
-		if ($type == 'setup' || $type == 'constants') {
+		if ($type === 'setup' || $type === 'constants') {
 			$content = '
 
 [GLOBAL]
@@ -1389,11 +1394,10 @@ tt_content.' . $key . $prefix . ' {
 ' . $content;
 			if ($afterStaticUid) {
 				$GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_' . $type . '.'][$afterStaticUid] .= $content;
-				// If 'content (default)' is targeted, also add to other 'content rendering templates', eg. css_styled_content
-				if ($afterStaticUid == 43 && is_array($GLOBALS['TYPO3_CONF_VARS']['FE']['contentRenderingTemplates'])) {
-					foreach ($GLOBALS['TYPO3_CONF_VARS']['FE']['contentRenderingTemplates'] as $templateName) {
-						$GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_' . $type . '.'][$templateName] .= $content;
-					}
+				// If 'content (default)' is targeted (static uid 43),
+				// the content is added after typoscript of type contentRendering, eg. css_styled_content, see EXT:frontend/TemplateService for that
+				if ($afterStaticUid == 43 || $afterStaticUid === 'defaultContentRendering') {
+					$GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_' . $type . '.']['defaultContentRendering'] .= $content;
 				}
 			} else {
 				$GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_' . $type] .= $content;
