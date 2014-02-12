@@ -39,6 +39,13 @@ use TYPO3\CMS\Core\Resource;
 class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 
 	/**
+	 * These file extensions are allowed in the "plain" image selection mode.
+	 *
+	 * @const
+	 */
+	const PLAIN_MODE_IMAGE_FILE_EXTENSIONS = 'jpg,jpeg,gif,png';
+
+	/**
 	 * @todo Define visibility
 	 */
 	public $extKey = 'rtehtmlarea';
@@ -54,8 +61,18 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 
 	protected $defaultClass;
 
+	/**
+	 * Relevant for RTE mode "plain": the maximum width an image must have to be selectable.
+	 *
+	 * @var int
+	 */
 	protected $plainMaxWidth;
 
+	/**
+	 * Relevant for RTE mode "plain": the maximum height an image must have to be selectable.
+	 *
+	 * @var int
+	 */
 	protected $plainMaxHeight;
 
 	protected $magicMaxWidth;
@@ -133,7 +150,7 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 		$pArr[1] = implode(':', array($this->editorNo, $this->sys_language_content));
 		$pArr[2] = $this->RTEtsConfigParams;
 		if ($this->act == 'dragdrop' || $this->act == 'plain') {
-			$this->allowedFileTypes = explode(',', 'jpg,jpeg,gif,png');
+			$this->allowedFileTypes = explode(',', self::PLAIN_MODE_IMAGE_FILE_EXTENSIONS);
 		}
 		$pArr[3] = implode(',', $this->allowedFileTypes);
 		$this->bparams = implode('|', $pArr);
@@ -153,6 +170,7 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 	 * Initialize hook objects implementing the hook interface
 	 *
 	 * @return 	void
+	 * @throws \UnexpectedValueException
 	 */
 	protected function initHookObjects() {
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/rtehtmlarea/mod4/class.tx_rtehtmlarea_select_image.php']['browseLinksHook'])) {
@@ -637,8 +655,8 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 	 * Session data for this class can be set from outside with this method.
 	 * Call after init()
 	 *
-	 * @param 	array		Session data array
-	 * @return 	array		Session data and boolean which indicates that data needs to be stored in session because it's changed
+	 * @param array $data Session data array
+	 * @return array Session data and boolean which indicates that data needs to be stored in session because it's changed
 	 * @todo Define visibility
 	 */
 	public function processSessionData($data) {
@@ -661,9 +679,7 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 	}
 
 	/**
-	 * [Describe function...]
-	 *
-	 * @return 	[type]		...
+	 * @return string
 	 * @todo Define visibility
 	 */
 	public function main_rte() {
@@ -732,8 +748,8 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 					}
 				}
 				// Get the selected folder
+				$selectedFolder = FALSE;
 				if ($this->expandFolder) {
-					$selectedFolder = FALSE;
 					$fileOrFolderObject = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->retrieveFileOrFolderObject($this->expandFolder);
 					if ($fileOrFolderObject instanceof \TYPO3\CMS\Core\Resource\Folder) {
 						// it's a folder
@@ -762,8 +778,9 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 					$this->content .= $uploadForm;
 				}
 				// Render the filelist if there is a folder selected
+				$files = '';
 				if ($selectedFolder) {
-					$files = $this->TBE_expandFolder($selectedFolder, $this->act === 'plain' ? 'jpg,jpeg,gif,png' : $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], $GLOBALS['BE_USER']->getTSConfigVal('options.noThumbsInRTEimageSelect'));
+					$files = $this->TBE_expandFolder($selectedFolder, $this->act === 'plain' ? self::PLAIN_MODE_IMAGE_FILE_EXTENSIONS : $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], $GLOBALS['BE_USER']->getTSConfigVal('options.noThumbsInRTEimageSelect'));
 				}
 				// Setup filelist indexed elements:
 				$this->doc->JScode .= $this->doc->wrapScriptTags('BrowseLinks.addElements(' . json_encode($this->elements) . ');');
@@ -806,14 +823,15 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 						$this->expandFolder = $cmpPath;
 					}
 				}
+				$selectedFolder = FALSE;
 				if ($this->expandFolder) {
 					try {
 						$selectedFolder = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getFolderObjectFromCombinedIdentifier($this->expandFolder);
-					} catch (Exception $e) {
-						$selectedFolder = FALSE;
+					} catch (\Exception $e) {
 					}
 				}
 				// Render the filelist if there is a folder selected
+				$files = '';
 				if ($selectedFolder) {
 					$files = $this->TBE_dragNDrop($selectedFolder, implode(',', $this->allowedFileTypes));
 				}
@@ -999,4 +1017,23 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 		}
 	}
 
+	/**
+	 * Checks if the given file is selectable in the file list.
+	 *
+	 * In "plain" RTE mode only image files with a maximum width and height are selectable.
+	 *
+	 * @param \TYPO3\CMS\Core\Resource\FileInterface $file
+	 * @param array $imgInfo Image dimensions from \TYPO3\CMS\Core\Imaging\GraphicalFunctions::getImageDimensions()
+	 * @return bool TRUE if file is selectable.
+	 */
+	protected function fileIsSelectableInFileList(\TYPO3\CMS\Core\Resource\FileInterface $file, array $imgInfo) {
+		return (
+			$this->act !== 'plain'
+			|| (
+				GeneralUtility::inList(self::PLAIN_MODE_IMAGE_FILE_EXTENSIONS, strtolower($file->getExtension()))
+				&& $imgInfo[0] <= $this->plainMaxWidth
+				&& $imgInfo[1] <= $this->plainMaxHeight
+			)
+		);
+	}
 }

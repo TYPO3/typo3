@@ -41,7 +41,7 @@ class MagicImageService {
 	 *
 	 * @param Resource\File $imageFileObject: the original image file
 	 * @param array $fileConfiguration (width, height, maxW, maxH)
-	 * @return ProcessedFile
+	 * @return Resource\ProcessedFile
 	 */
 	public function createMagicImage(Resource\File $imageFileObject, array $fileConfiguration) {
 		// Process dimensions

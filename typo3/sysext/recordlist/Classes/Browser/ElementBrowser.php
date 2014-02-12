@@ -1801,6 +1801,7 @@ class ElementBrowser {
 		foreach ($files as $fileObject) {
 			$fileExtension = $fileObject->getExtension();
 			// Thumbnail/size generation:
+			$imgInfo = array();
 			if (GeneralUtility::inList(strtolower($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext']), strtolower($fileExtension)) && !$noThumbs) {
 				$imageUrl = $fileObject->process(
 					\TYPO3\CMS\Core\Resource\ProcessedFile::CONTEXT_IMAGEPREVIEW,
@@ -1827,16 +1828,16 @@ class ElementBrowser {
 				'fileExt' => $fileExtension,
 				'fileIcon' => $icon
 			);
-			if ($this->act === 'plain' && ($imgInfo[0] > $this->plainMaxWidth || $imgInfo[1] > $this->plainMaxHeight) || !GeneralUtility::inList('jpg,jpeg,gif,png', $fileExtension)) {
-				$ATag = '';
-				$ATag_alt = '';
-				$ATag_e = '';
-				$bulkCheckBox = '';
-			} else {
+			if ($this->fileIsSelectableInFileList($fileObject, $imgInfo)) {
 				$ATag = '<a href="#" onclick="return BrowseLinks.File.insertElement(\'file_' . $filesIndex . '\');">';
 				$ATag_alt = substr($ATag, 0, -4) . ',1);">';
 				$bulkCheckBox = '<input type="checkbox" class="typo3-bulk-item" name="file_' . $filesIndex . '" value="0" /> ';
 				$ATag_e = '</a>';
+			} else {
+				$ATag = '';
+				$ATag_alt = '';
+				$ATag_e = '';
+				$bulkCheckBox = '';
 			}
 			// Create link to showing details about the file in a window:
 			$Ahref = $GLOBALS['BACK_PATH'] . 'show_item.php?type=file&table=_FILE&uid='
@@ -1893,6 +1894,19 @@ class ElementBrowser {
 		// Return accumulated content for file listing:
 		$out .= '</div>';
 		return $out;
+	}
+
+	/**
+	 * Checks if the given file is selectable in the file list.
+	 *
+	 * By default all files are selectable. This method may be overwritten in child classes.
+	 *
+	 * @param \TYPO3\CMS\Core\Resource\FileInterface $file
+	 * @param array $imgInfo Image dimensions from \TYPO3\CMS\Core\Imaging\GraphicalFunctions::getImageDimensions()
+	 * @return bool TRUE if file is selectable.
+	 */
+	protected function fileIsSelectableInFileList(\TYPO3\CMS\Core\Resource\FileInterface $file, array $imgInfo) {
+		return TRUE;
 	}
 
 	/**
