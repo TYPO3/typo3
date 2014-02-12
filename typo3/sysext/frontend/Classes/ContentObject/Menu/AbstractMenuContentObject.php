@@ -839,8 +839,8 @@ class AbstractMenuContentObject {
 			}
 			$c = 0;
 			$c_b = 0;
-			$minItems = (int)$this->mconf['minItems'] ? $this->mconf['minItems'] : $this->conf['minItems'];
-			$maxItems = (int)$this->mconf['maxItems'] ? $this->mconf['maxItems'] : $this->conf['maxItems'];
+			$minItems = (int)($this->mconf['minItems'] ?: $this->conf['minItems']);
+			$maxItems = (int)($this->mconf['maxItems'] ?: $this->conf['maxItems']);
 			$begin = $this->parent_cObj->calc($this->mconf['begin'] ? $this->mconf['begin'] : $this->conf['begin']);
 			$minItemsConf = isset($this->mconf['minItems.']) ? $this->mconf['minItems.'] : (isset($this->conf['minItems.']) ? $this->conf['minItems.'] : NULL);
 			$minItems = is_array($minItemsConf) ? $this->parent_cObj->stdWrap($minItems, $minItemsConf) : $minItems;
