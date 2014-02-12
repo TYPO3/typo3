@@ -230,6 +230,48 @@ class ContentObjectRenderer {
 	);
 
 	/**
+	 * Class names for accordant content objects
+	 *
+	 * @var array
+	 */
+	protected $contentObjectClassMapping = array(
+		'TEXT' => 'Text',
+		'CASE' => 'Case',
+		'CLEARGIF' => 'ClearGif',
+		'COBJ_ARRAY' => 'ContentObjectArray',
+		'COA' => 'ContentObjectArray',
+		'COA_INT' => 'ContentObjectArrayInternal',
+		'USER' => 'User',
+		'USER_INT' => 'UserInternal',
+		'FILE' => 'File',
+		'FILES' => 'Files',
+		'IMAGE' => 'Image',
+		'IMG_RESOURCE' => 'ImageResource',
+		'IMGTEXT' => 'ImageText',
+		'CONTENT' => 'Content',
+		'RECORDS' => 'Records',
+		'HMENU' => 'HierarchicalMenu',
+		'CTABLE' => 'ContentTable',
+		'OTABLE' => 'OffsetTable',
+		'COLUMNS' => 'Columns',
+		'HRULER' => 'HorizontalRuler',
+		'CASEFUNC' => 'Case',
+		'LOAD_REGISTER' => 'LoadRegister',
+		'RESTORE_REGISTER' => 'RestoreRegister',
+		'FORM' => 'Form',
+		'SEARCHRESULT' => 'SearchResult',
+		'TEMPLATE' => 'Template',
+		'FLUIDTEMPLATE' => 'FluidTemplate',
+		'MULTIMEDIA' => 'Multimedia',
+		'MEDIA' => 'Media',
+		'SWFOBJECT' => 'ShockwaveFlashObject',
+		'FLOWPLAYER' => 'FlowPlayer',
+		'QTOBJECT' => 'QuicktimeObject',
+		'SVG' => 'ScalableVectorGraphics',
+		'EDITPANEL' => 'EditPanel',
+	);
+
+	/**
 	 * Holds ImageMagick parameters and extensions used for compression
 	 *
 	 * @see IMGTEXT()
@@ -477,11 +519,6 @@ class ContentObjectRenderer {
 	protected $getImgResourceHookObjects;
 
 	/**
-	 * @var array with members of AbstractContentObject
-	 */
-	protected $contentObjects = array();
-
-	/**
 	 * @var \TYPO3\CMS\Core\Resource\File Current file objects (during iterations over files)
 	 */
 	protected $currentFile = NULL;
@@ -562,44 +599,6 @@ class ContentObjectRenderer {
 	 */
 	public function getCurrentTable() {
 		return $this->table;
-	}
-
-	/**
-	 * Clone helper.
-	 *
-	 * Resets the references to the TypoScript Content Object implementation
-	 * objects of tslib_content_*. Otherwise they would still point to the
-	 * original ContentObjectRender instance's tslib_content_* instances, they in return
-	 * would back-reference to the original ContentObjectRender instance instead of the
-	 * newly cloned ContentObjectRender instance.
-	 *
-	 * @see http://forge.typo3.org/issues/24204
-	 */
-	public function __clone() {
-		$this->contentObjects = array();
-	}
-
-	/**
-	 * Serialization (sleep) helper.
-	 *
-	 * Removes properties of this object from serialization.
-	 * This action is necessary, since there might be closures used
-	 * in the accordant content objects (e.g. in FLUIDTEMPLATE) which
-	 * cannot be serialized. It's fine to reset $this->contentObjects
-	 * since elements will be recreated and are just a local cache,
-	 * but not required for runtime logic and behaviour.
-	 *
-	 * @return array Names of the properties to be serialized
-	 * @see http://forge.typo3.org/issues/36820
-	 */
-	public function __sleep() {
-		// Use get_objects_vars() instead of
-		// a much more expensive Reflection:
-		$properties = get_object_vars($this);
-		if (isset($properties['contentObjects'])) {
-			unset($properties['contentObjects']);
-		}
-		return array_keys($properties);
 	}
 
 	/**
@@ -776,58 +775,14 @@ class ContentObjectRenderer {
 	 * Returns a new content object of type $name.
 	 *
 	 * @param string $name
-	 * @return AbstractContentObject
+	 * @return NULL|AbstractContentObject
 	 */
 	public function getContentObject($name) {
-		$classMapping = array(
-			'TEXT' => 'Text',
-			'CASE' => 'Case',
-			'CLEARGIF' => 'ClearGif',
-			'COBJ_ARRAY' => 'ContentObjectArray',
-			'COA' => 'ContentObjectArray',
-			'COA_INT' => 'ContentObjectArrayInternal',
-			'USER' => 'User',
-			'USER_INT' => 'UserInternal',
-			'FILE' => 'File',
-			'FILES' => 'Files',
-			'IMAGE' => 'Image',
-			'IMG_RESOURCE' => 'ImageResource',
-			'IMGTEXT' => 'ImageText',
-			'CONTENT' => 'Content',
-			'RECORDS' => 'Records',
-			'HMENU' => 'HierarchicalMenu',
-			'CTABLE' => 'ContentTable',
-			'OTABLE' => 'OffsetTable',
-			'COLUMNS' => 'Columns',
-			'HRULER' => 'HorizontalRuler',
-			'CASEFUNC' => 'Case',
-			'LOAD_REGISTER' => 'LoadRegister',
-			'RESTORE_REGISTER' => 'RestoreRegister',
-			'FORM' => 'Form',
-			'SEARCHRESULT' => 'SearchResult',
-			'TEMPLATE' => 'Template',
-			'FLUIDTEMPLATE' => 'FluidTemplate',
-			'MULTIMEDIA' => 'Multimedia',
-			'MEDIA' => 'Media',
-			'SWFOBJECT' => 'ShockwaveFlashObject',
-			'FLOWPLAYER' => 'FlowPlayer',
-			'QTOBJECT' => 'QuicktimeObject',
-			'SVG' => 'ScalableVectorGraphics',
-			'EDITPANEL' => 'EditPanel',
-		);
-		$name = $classMapping[$name];
-		if (!array_key_exists($name, $this->contentObjects)) {
-			$fullyQualifiedClassName = 'TYPO3\\CMS\\Frontend\\ContentObject\\' . $name . 'ContentObject';
-			if (class_exists($fullyQualifiedClassName)) {
-				$this->contentObjects[$name] = GeneralUtility::makeInstance(
-					$fullyQualifiedClassName,
-					$this
-				);
-			} else {
-				$this->contentObjects[$name] = NULL;
-			}
+		if (!isset($this->contentObjectClassMapping[$name])) {
+			return NULL;
 		}
-		return $this->contentObjects[$name];
+		$fullyQualifiedClassName = 'TYPO3\\CMS\\Frontend\\ContentObject\\' . $this->contentObjectClassMapping[$name] . 'ContentObject';
+		return GeneralUtility::makeInstance($fullyQualifiedClassName, $this);
 	}
 
 	/********************************************

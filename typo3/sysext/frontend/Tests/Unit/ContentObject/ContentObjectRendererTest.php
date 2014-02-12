@@ -176,19 +176,6 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @param string $name TypoScript name of content object
 	 * @param string $className Expected class name
 	 */
-	public function getContentObjectUsesExistingInstanceOfRequestedObjectType($name, $className) {
-		$fullClassName = 'TYPO3\\CMS\\Frontend\\ContentObject\\' . $className . 'ContentObject';
-		$contentObjectInstance = $this->getMock($fullClassName, array(), array(), '', FALSE);
-		$this->cObj->_set('contentObjects', array($className => $contentObjectInstance));
-		$this->assertSame($contentObjectInstance, $this->cObj->getContentObject($name));
-	}
-
-	/**
-	 * @test
-	 * @dataProvider getContentObjectValidContentObjectsDataProvider
-	 * @param string $name TypoScript name of content object
-	 * @param string $className Expected class name
-	 */
 	public function getContentObjectCallsMakeInstanceForNewContentObjectInstance($name, $className) {
 		$fullClassName = 'TYPO3\\CMS\\Frontend\\ContentObject\\' . $className . 'ContentObject';
 		$contentObjectInstance = $this->getMock($fullClassName, array(), array(), '', FALSE);
