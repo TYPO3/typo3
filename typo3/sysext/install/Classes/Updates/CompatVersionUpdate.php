@@ -212,12 +212,12 @@ class CompatVersionUpdate extends AbstractUpdate {
 		$currentVersion = \TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionNumberToInteger(TYPO3_branch);
 		$tableContents = '';
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['compat_version'])) {
-			$updateWizardBoxes = '';
+			$upgradeWizardBoxes = '';
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['compat_version'] as $internalName => $details) {
 				if ($details['version'] > $oldVersion && $details['version'] <= $currentVersion) {
 					$description = str_replace(chr(10), '<br />', $details['description']);
 					$description_acknowledge = isset($details['description_acknowledge']) ? str_replace(chr(10), '<br />', $details['description_acknowledge']) : '';
-					$updateWizardBoxes .= '
+					$upgradeWizardBoxes .= '
 						<div style="border: 1px solid; padding: 10px; margin: 10px; padding-top: 0px; width: 500px;">
 							<h3>' . (isset($details['title']) ? $details['title'] : $internalName) . '</h3>
 							' . $description . (strlen($description_acknowledge) ? '<p>' . $description_acknowledge . '</p>' : '') . (strlen($inputPrefix) ? '
@@ -234,8 +234,8 @@ class CompatVersionUpdate extends AbstractUpdate {
 				}
 			}
 		}
-		if (strlen($updateWizardBoxes)) {
-			return $updateWizardBoxes;
+		if (strlen($upgradeWizardBoxes)) {
+			return $upgradeWizardBoxes;
 		}
 		return '';
 	}

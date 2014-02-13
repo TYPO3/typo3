@@ -364,8 +364,8 @@ button span.t3-install-form-button-icon-negative {
 	background-image: url('../../../Images/Menu/FolderStructure.png');
 }
 
-#t3-install-menu #t3-install-menu-updateWizard {
-	background-image: url('../../../Images/Menu/UpdateWizard.png');
+#t3-install-menu #t3-install-menu-upgradeWizard {
+	background-image: url('../../../Images/Menu/UpgradeWizard.png');
 }
 
 #t3-install-menu #t3-install-menu-testSetup {

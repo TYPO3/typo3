@@ -45,7 +45,7 @@ class ToolController extends AbstractController {
 		'configuration',
 		'folderStructure',
 		'testSetup',
-		'updateWizard',
+		'upgradeWizard',
 		'allConfiguration',
 		'cleanUp',
 		'loadExtensions',

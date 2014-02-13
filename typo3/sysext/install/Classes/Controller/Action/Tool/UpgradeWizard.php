@@ -30,7 +30,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Handle update wizards
  */
-class UpdateWizard extends Action\AbstractAction implements Action\ActionInterface {
+class UpgradeWizard extends Action\AbstractAction implements Action\ActionInterface {
 
 	/**
 	 * Handle this action
@@ -49,7 +49,7 @@ class UpdateWizard extends Action\AbstractAction implements Action\ActionInterfa
 		$actionMessages = array();
 
 		if (isset($this->postValues['set']['getUserInput'])) {
-			$actionMessages[] = $this->getUserInputForUpdateWizard();
+			$actionMessages[] = $this->getUserInputForUpgradeWizard();
 			$this->view->assign('updateAction', 'getUserInput');
 		} elseif (isset($this->postValues['set']['performUpdate'])) {
 			$actionMessages[] = $this->performUpdate();
@@ -110,7 +110,7 @@ class UpdateWizard extends Action\AbstractAction implements Action\ActionInterfa
 	 *
 	 * @return \TYPO3\CMS\Install\Status\StatusInterface
 	 */
-	protected function getUserInputForUpdateWizard() {
+	protected function getUserInputForUpgradeWizard() {
 		$wizardIdentifier = $this->postValues['values']['identifier'];
 
 		$className = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'][$wizardIdentifier];
@@ -120,13 +120,13 @@ class UpdateWizard extends Action\AbstractAction implements Action\ActionInterfa
 			$wizardHtml = $updateObject->getUserInput('install[values][' . $wizardIdentifier . ']');
 		}
 
-		$updateWizardData = array(
+		$upgradeWizardData = array(
 			'identifier' => $wizardIdentifier,
 			'title' => $updateObject->getTitle(),
 			'wizardHtml' => $wizardHtml,
 		);
 
-		$this->view->assign('updateWizardData', $updateWizardData);
+		$this->view->assign('upgradeWizardData', $upgradeWizardData);
 
 		/** @var $message \TYPO3\CMS\Install\Status\StatusInterface */
 		$message = $this->objectManager->get('TYPO3\\CMS\\Install\\Status\\OkStatus');
@@ -196,12 +196,12 @@ class UpdateWizard extends Action\AbstractAction implements Action\ActionInterfa
 		$this->getDatabase()->store_lastBuiltQuery = FALSE;
 
 		// Next update wizard, if available
-		$nextUpdateWizard = $this->getNextUpdateWizardInstance($updateObject);
-		$nextUpdateWizardIdentifier = '';
-		if ($nextUpdateWizard) {
-			$nextUpdateWizardIdentifier = $nextUpdateWizard->getIdentifier();
+		$nextUpgradeWizard = $this->getNextUpgradeWizardInstance($updateObject);
+		$nextUpgradeWizardIdentifier = '';
+		if ($nextUpgradeWizard) {
+			$nextUpgradeWizardIdentifier = $nextUpgradeWizard->getIdentifier();
 		}
-		$this->view->assign('nextUpdateWizardIdentifier', $nextUpdateWizardIdentifier);
+		$this->view->assign('nextUpgradeWizardIdentifier', $nextUpgradeWizardIdentifier);
 
 		return $message;
 	}
@@ -230,7 +230,7 @@ class UpdateWizard extends Action\AbstractAction implements Action\ActionInterfa
 	 * @param object $currentObj Current update wizard object
 	 * @return mixed Upgrade wizard instance or FALSE
 	 */
-	protected function getNextUpdateWizardInstance($currentObj) {
+	protected function getNextUpgradeWizardInstance($currentObj) {
 		$isPreviousRecord = TRUE;
 		foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'] as $identifier => $className) {
 			// Find the current update wizard, and then start validating the next ones
@@ -239,9 +239,9 @@ class UpdateWizard extends Action\AbstractAction implements Action\ActionInterfa
 				continue;
 			}
 			if (!$isPreviousRecord) {
-				$nextUpdateWizard = $this->getUpgradeObjectInstance($className, $identifier);
-				if ($nextUpdateWizard->shouldRenderWizard()) {
-					return $nextUpdateWizard;
+				$nextUpgradeWizard = $this->getUpgradeObjectInstance($className, $identifier);
+				if ($nextUpgradeWizard->shouldRenderWizard()) {
+					return $nextUpgradeWizard;
 				}
 			}
 		}

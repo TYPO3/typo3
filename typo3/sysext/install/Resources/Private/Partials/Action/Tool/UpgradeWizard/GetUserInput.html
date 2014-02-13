@@ -1,10 +1,10 @@
 <form method="post">
 	<f:render partial="Action/Common/HiddenFormFields" arguments="{_all}" />
-	<input type="hidden" name="install[values][identifier]" value="{updateWizardData.identifier}"/>
+	<input type="hidden" name="install[values][identifier]" value="{upgradeWizardData.identifier}"/>
 
-	<h4>{updateWizardData.title}</h4>
+	<h4>{upgradeWizardData.title}</h4>
 
-	<f:format.raw>{updateWizardData.wizardHtml}</f:format.raw>
+	<f:format.raw>{upgradeWizardData.wizardHtml}</f:format.raw>
 
 	<fieldset>
 		<ol>
