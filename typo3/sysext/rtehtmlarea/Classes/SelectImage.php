@@ -101,6 +101,7 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 		$this->doc->JScode .= $this->doc->wrapScriptTags('
 			Tree.ajaxID = "SC_alt_file_navframe::expandCollapse";
 		');
+		$this->doc->getPageRenderer()->addCssFile($this->doc->backPath . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('t3skin') . 'rtehtmlarea/htmlarea.css');
 		$this->doc->getContextMenuCode();
 	}
 
@@ -399,33 +400,32 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 					});
 					languageSelector += \'</select>\';
 				}
-				var bgColor=\' class="bgColor4"\';
 				var sz="";
-				sz+=\'<table border="0" cellpadding="1" cellspacing="1"><form action="" name="imageData">\';
+				sz+=\'<form action="" name="imageData"><table class="htmlarea-window-table">\';
 				' . (in_array('class', $removedProperties) ? '' : '
 				if(classesImage) {
-					sz+=\'<tr><td\'+bgColor+\'><label for="iClass">' . $GLOBALS['LANG']->getLL('class') . ': </label></td><td>\'+styleSelector+\'</td></tr>\';
+					sz+=\'<tr><td><label for="iClass">' . $GLOBALS['LANG']->getLL('class') . ': </label></td><td>\'+styleSelector+\'</td></tr>\';
 				}') . (in_array('width', $removedProperties) ? '' : '
 				if (!(selectedImageRef && selectedImageRef.src.indexOf("RTEmagic") == -1 && ' . $lockPlainWidth . ')) {
-					sz+=\'<tr><td\'+bgColor+\'><label for="iWidth">' . $GLOBALS['LANG']->getLL('width') . ': </label></td><td><input type="text" id="iWidth" name="iWidth" value=""' . $GLOBALS['TBE_TEMPLATE']->formWidth(4) . ' /></td></tr>\';
+					sz+=\'<tr><td><label for="iWidth">' . $GLOBALS['LANG']->getLL('width') . ': </label></td><td><input type="text" id="iWidth" name="iWidth" value=""' . $GLOBALS['TBE_TEMPLATE']->formWidth(4) . ' /></td></tr>\';
 				}') . (in_array('height', $removedProperties) ? '' : '
 				if (!(selectedImageRef && selectedImageRef.src.indexOf("RTEmagic") == -1 && ' . $lockPlainHeight . ')) {
-					sz+=\'<tr><td\'+bgColor+\'><label for="iHeight">' . $GLOBALS['LANG']->getLL('height') . ': </label></td><td><input type="text" id="iHeight" name="iHeight" value=""' . $GLOBALS['TBE_TEMPLATE']->formWidth(4) . ' /></td></tr>\';
+					sz+=\'<tr><td><label for="iHeight">' . $GLOBALS['LANG']->getLL('height') . ': </label></td><td><input type="text" id="iHeight" name="iHeight" value=""' . $GLOBALS['TBE_TEMPLATE']->formWidth(4) . ' /></td></tr>\';
 				}') . (in_array('border', $removedProperties) ? '' : '
-				sz+=\'<tr><td\'+bgColor+\'><label for="iBorder">' . $GLOBALS['LANG']->getLL('border') . ': </label></td><td><input type="checkbox" id="iBorder" name="iBorder" value="1" /></td></tr>\';') . (in_array('float', $removedProperties) ? '' : '
-				sz+=\'<tr><td\'+bgColor+\'><label for="iFloat">' . $GLOBALS['LANG']->getLL('float') . ': </label></td><td>\'+floatSelector+\'</td></tr>\';') . (in_array('paddingTop', $removedProperties) ? '' : '
-				sz+=\'<tr><td\'+bgColor+\'><label for="iPaddingTop">' . $GLOBALS['LANG']->getLL('padding_top') . ': </label></td><td><input type="text" id="iPaddingTop" name="iPaddingTop" value=""' . $GLOBALS['TBE_TEMPLATE']->formWidth(4) . '></td></tr>\';') . (in_array('paddingRight', $removedProperties) ? '' : '
-				sz+=\'<tr><td\'+bgColor+\'><label for="iPaddingRight">' . $GLOBALS['LANG']->getLL('padding_right') . ': </label></td><td><input type="text" id="iPaddingRight" name="iPaddingRight" value=""' . $GLOBALS['TBE_TEMPLATE']->formWidth(4) . ' /></td></tr>\';') . (in_array('paddingBottom', $removedProperties) ? '' : '
-				sz+=\'<tr><td\'+bgColor+\'><label for="iPaddingBottom">' . $GLOBALS['LANG']->getLL('padding_bottom') . ': </label></td><td><input type="text" id="iPaddingBottom" name="iPaddingBottom" value=""' . $GLOBALS['TBE_TEMPLATE']->formWidth(4) . ' /></td></tr>\';') . (in_array('paddingLeft', $removedProperties) ? '' : '
-				sz+=\'<tr><td\'+bgColor+\'><label for="iPaddingLeft">' . $GLOBALS['LANG']->getLL('padding_left') . ': </label></td><td><input type="text" id="iPaddingLeft" name="iPaddingLeft" value=""' . $GLOBALS['TBE_TEMPLATE']->formWidth(4) . ' /></td></tr>\';') . (in_array('title', $removedProperties) ? '' : '
-				sz+=\'<tr><td\'+bgColor+\'><label for="iTitle">' . $GLOBALS['LANG']->getLL('title') . ': </label></td><td><input type="text" id="iTitle" name="iTitle"' . $GLOBALS['TBE_TEMPLATE']->formWidth(20) . ' /></td></tr>\';') . (in_array('alt', $removedProperties) ? '' : '
-				sz+=\'<tr><td\'+bgColor+\'><label for="iAlt">' . $GLOBALS['LANG']->getLL('alt') . ': </label></td><td><input type="text" id="iAlt" name="iAlt"' . $GLOBALS['TBE_TEMPLATE']->formWidth(20) . ' /></td></tr>\';') . (in_array('lang', $removedProperties) ? '' : '
+				sz+=\'<tr><td><label for="iBorder">' . $GLOBALS['LANG']->getLL('border') . ': </label></td><td><input type="checkbox" id="iBorder" name="iBorder" value="1" /></td></tr>\';') . (in_array('float', $removedProperties) ? '' : '
+				sz+=\'<tr><td><label for="iFloat">' . $GLOBALS['LANG']->getLL('float') . ': </label></td><td>\'+floatSelector+\'</td></tr>\';') . (in_array('paddingTop', $removedProperties) ? '' : '
+				sz+=\'<tr><td><label for="iPaddingTop">' . $GLOBALS['LANG']->getLL('padding_top') . ': </label></td><td><input type="text" id="iPaddingTop" name="iPaddingTop" value=""' . $GLOBALS['TBE_TEMPLATE']->formWidth(4) . '></td></tr>\';') . (in_array('paddingRight', $removedProperties) ? '' : '
+				sz+=\'<tr><td><label for="iPaddingRight">' . $GLOBALS['LANG']->getLL('padding_right') . ': </label></td><td><input type="text" id="iPaddingRight" name="iPaddingRight" value=""' . $GLOBALS['TBE_TEMPLATE']->formWidth(4) . ' /></td></tr>\';') . (in_array('paddingBottom', $removedProperties) ? '' : '
+				sz+=\'<tr><td><label for="iPaddingBottom">' . $GLOBALS['LANG']->getLL('padding_bottom') . ': </label></td><td><input type="text" id="iPaddingBottom" name="iPaddingBottom" value=""' . $GLOBALS['TBE_TEMPLATE']->formWidth(4) . ' /></td></tr>\';') . (in_array('paddingLeft', $removedProperties) ? '' : '
+				sz+=\'<tr><td><label for="iPaddingLeft">' . $GLOBALS['LANG']->getLL('padding_left') . ': </label></td><td><input type="text" id="iPaddingLeft" name="iPaddingLeft" value=""' . $GLOBALS['TBE_TEMPLATE']->formWidth(4) . ' /></td></tr>\';') . (in_array('title', $removedProperties) ? '' : '
+				sz+=\'<tr><td><label for="iTitle">' . $GLOBALS['LANG']->getLL('title') . ': </label></td><td><input type="text" id="iTitle" name="iTitle"' . $GLOBALS['TBE_TEMPLATE']->formWidth(20) . ' /></td></tr>\';') . (in_array('alt', $removedProperties) ? '' : '
+				sz+=\'<tr><td><label for="iAlt">' . $GLOBALS['LANG']->getLL('alt') . ': </label></td><td><input type="text" id="iAlt" name="iAlt"' . $GLOBALS['TBE_TEMPLATE']->formWidth(20) . ' /></td></tr>\';') . (in_array('lang', $removedProperties) ? '' : '
 				if (plugin.getButton("Language")) {
-					sz+=\'<tr><td\'+bgColor+\'><label for="iLang">\' + plugin.editor.getPlugin("Language").localize(\'Language-Tooltip\') + \': </label></td><td>\' + languageSelector + \'</td></tr>\';
+					sz+=\'<tr><td><label for="iLang">\' + plugin.editor.getPlugin("Language").localize(\'Language-Tooltip\') + \': </label></td><td>\' + languageSelector + \'</td></tr>\';
 				}') . (in_array('clickenlarge', $removedProperties) || in_array('data-htmlarea-clickenlarge', $removedProperties) ? '' : '
-				sz+=\'<tr><td\'+bgColor+\'><label for="iClickEnlarge">' . $GLOBALS['LANG']->sL('LLL:EXT:cms/locallang_ttc.xlf:image_zoom', TRUE) . ' </label></td><td><input type="checkbox" name="iClickEnlarge" id="iClickEnlarge" value="0" /></td></tr>\';') . '
-				sz+=\'<tr><td><input type="submit" value="' . $GLOBALS['LANG']->getLL('update') . '" onClick="return setImageProperties();"></td></tr>\';
-				sz+=\'</form></table>\';
+				sz+=\'<tr><td><label for="iClickEnlarge">' . $GLOBALS['LANG']->sL('LLL:EXT:cms/locallang_ttc.xlf:image_zoom', TRUE) . ' </label></td><td><input type="checkbox" name="iClickEnlarge" id="iClickEnlarge" value="0" /></td></tr>\';') . '
+				sz+=\'<tr><td></td><td><input type="submit" value="' . $GLOBALS['LANG']->getLL('update') . '" onClick="return setImageProperties();"></td></tr>\';
+				sz+=\'</table></form>\';
 				return sz;
 			}
 			function setImageProperties() {

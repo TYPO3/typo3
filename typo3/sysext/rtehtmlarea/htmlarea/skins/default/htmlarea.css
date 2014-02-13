@@ -221,6 +221,11 @@ body.ext-ie6 .htmlarea-context-menu .buttonActive,
 body.ext-ie6 .htmlarea-window .x-panel-icon {
 	background-image: url("images/sprites/actions.gif");
 }
+.htmlarea-window .x-window-header-text {
+	display: inline-block;
+	margin-top: -4px !important;
+	vertical-align: top;
+}
 .htmlarea-window .x-window-header .t3-help-link {
 	color: #fff;
 }
@@ -248,6 +253,32 @@ body.ext-ie6 .htmlarea-window .x-panel-icon {
 }
 .ext-ie .htmlarea-window .x-fieldset-bwrap {
 	clear: left;
+}
+/* Selector htmlarea-window-table is used in the element browsers */
+.htmlarea-window-table td {
+	padding: 0 2px;
+}
+.htmlarea-window-table td label {
+	display: inline-block;
+	height: 100%;
+	vertical-align: top;
+}
+.htmlarea-window-table input[type="checkbox"] {
+	margin-bottom: 10px;
+	margin-top: 7px;
+}
+.htmlarea-window-table select {
+	border: solid 1px #888;
+	height: 24px;
+	line-height: 20px;
+	margin-bottom: 5px;
+	margin-bottom: 5px;
+	padding-left: 3px;
+}
+.htmlarea-window-table option {
+	height: 20px;
+	line-height: 20px;
+	padding-top: 5px;
 }
 .htmlarea-window .x-form-item-label {
 	font-size: 10px;
