@@ -92,6 +92,7 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 		$this->initLinkAttributes();
 		// Apply the same styles as those of the base script
 		$this->doc->bodyTagId = 'typo3-browse-links-php';
+		$this->doc->getPageRenderer()->addCssFile($this->doc->backPath . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('t3skin') . 'rtehtmlarea/htmlarea.css');
 		// Add attributes to body tag. Note: getBodyTagAdditions will invoke the hooks
 		$this->doc->bodyTagAdditions = $this->getBodyTagAdditions();
 		// Adding RTE JS code
@@ -509,35 +510,25 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 				<!--
 					Enter mail address:
 				-->
-						<form action="" name="lurlform" id="lurlform">
-							<table border="0" cellpadding="2" cellspacing="1" id="typo3-linkMail">
 								<tr>
-									<td>' . $GLOBALS['LANG']->getLL('emailAddress', TRUE) . ':</td>
-									<td><input type="text" name="lemail"' . $this->doc->formWidth(20) . ' value="' . htmlspecialchars(($this->curUrlInfo['act'] == 'mail' ? $this->curUrlInfo['info'] : '')) . '" /> ' . '<input type="submit" value="' . $GLOBALS['LANG']->getLL('setLink', TRUE) . '" onclick="browse_links_setTarget(\'\');browse_links_setHref(\'mailto:\'+document.lurlform.lemail.value);browse_links_setAdditionalValue(\'data-htmlarea-external\', \'\');return link_current();" /></td>
-								</tr>
-							</table>
-						</form>';
-				$content .= $extUrl;
-				$content .= $this->addAttributesForm();
+									<td><label>' . $GLOBALS['LANG']->getLL('emailAddress', TRUE) . ':</label></td>
+									<td><input type="text" name="lemail"' . $this->doc->formWidth(20) . ' value="' . htmlspecialchars(($this->curUrlInfo['act'] == 'mail' ? $this->curUrlInfo['info'] : '')) . '" /> ' . '<input type="submit" value="' . $GLOBALS['LANG']->getLL('setLink', TRUE) . '" onclick="browse_links_setTarget(\'\');browse_links_setHref(\'mailto:\'+document.ltargetform.lemail.value);browse_links_setAdditionalValue(\'data-htmlarea-external\', \'\');return link_current();" /></td>
+								</tr>';
+				//$content .= $extUrl;
+				$content .= $this->addAttributesForm($extUrl);
 				break;
 			case 'url':
 				$extUrl = '
 				<!--
 					Enter External URL:
 				-->
-						<form action="" name="lurlform" id="lurlform">
-							<table border="0" cellpadding="2" cellspacing="1" id="typo3-linkURL">
 								<tr>
-									<td>URL:</td>
-									<td><input type="text" name="lurl"' . $this->doc->formWidth(20) . ' value="' . htmlspecialchars(($this->curUrlInfo['act'] == 'url' ? $this->curUrlInfo['info'] : 'http://')) . '" /> ' . '<input type="submit" value="' . $GLOBALS['LANG']->getLL('setLink', TRUE) . '" onclick="if (/^[A-Za-z0-9_+]{1,8}:/.test(document.lurlform.lurl.value)) { browse_links_setHref(document.lurlform.lurl.value); } else { browse_links_setHref(\'http://\'+document.lurlform.lurl.value); }; browse_links_setAdditionalValue(\'data-htmlarea-external\', \'1\'); return link_current();" /></td>
-								</tr>
-							</table>
-						</form>';
-				$content .= $extUrl;
-				$content .= $this->addAttributesForm();
+									<td><label>URL:</label></td>
+									<td colspan="3"><input type="text" name="lurl"' . $this->doc->formWidth(20) . ' value="' . htmlspecialchars(($this->curUrlInfo['act'] == 'url' ? $this->curUrlInfo['info'] : 'http://')) . '" /> ' . '<input type="submit" value="' . $GLOBALS['LANG']->getLL('setLink', TRUE) . '" onclick="if (/^[A-Za-z0-9_+]{1,8}:/.test(document.ltargetform.lurl.value)) { browse_links_setHref(document.ltargetform.lurl.value); } else { browse_links_setHref(\'http://\'+document.ltargetform.lurl.value); }; browse_links_setAdditionalValue(\'data-htmlarea-external\', \'1\'); return link_current();" /></td>
+								</tr>';
+				$content .= $this->addAttributesForm($extUrl);
 				break;
 			case 'file':
-
 			case 'folder':
 				$content .= $this->addAttributesForm();
 				// Create folder tree:
@@ -707,9 +698,10 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 	/**
 	 * Creates a form for link attributes
 	 *
+	 * @param string $rows: html code for some initial rows of the table to be wrapped in form
 	 * @return string The HTML code of the form
 	 */
-	public function addAttributesForm() {
+	public function addAttributesForm($rows = '') {
 		$ltargetForm = '';
 		$additionalAttributeFields = '';
 		// Add page id, target, class selector box, title and parameters fields:
@@ -729,8 +721,8 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 				$additionalAttributeFields .= $processor->getAttributefields($_params, $this);
 			}
 		}
-		if ($lpageId || $queryParameters || $ltarget || $lclass || $ltitle || $rel) {
-			$ltargetForm = $this->wrapInForm($lpageId . $queryParameters . $ltarget . $lclass . $ltitle . $rel . $additionalAttributeFields);
+		if ($rows || $lpageId || $queryParameters || $lclass || $ltitle || $ltarget || $rel) {
+			$ltargetForm = $this->wrapInForm($rows . $lpageId . $queryParameters . $lclass . $ltitle . $ltarget . $rel . $additionalAttributeFields);
 		}
 		return $ltargetForm;
 	}
@@ -744,7 +736,7 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 				Selecting target for link:
 			-->
 				<form action="" name="ltargetform" id="ltargetform">
-					<table border="0" cellpadding="2" cellspacing="1" id="typo3-linkTarget">' . $string;
+					<table id="typo3-linkTarget" class="htmlarea-window-table">' . $string;
 		if ($this->act == $this->curUrlInfo['act'] && $this->act != 'mail' && $this->curUrlArray['href']) {
 			$form .= '
 						<tr>
@@ -767,7 +759,7 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 	public function addPageIdSelector() {
 		return $this->act == 'page' && $this->buttonConfig && is_array($this->buttonConfig['pageIdSelector.']) && $this->buttonConfig['pageIdSelector.']['enabled'] ? '
 						<tr>
-							<td>' . $GLOBALS['LANG']->getLL('page_id', TRUE) . ':</td>
+							<td><label>' . $GLOBALS['LANG']->getLL('page_id', TRUE) . ':</label></td>
 							<td colspan="3">
 								<input type="text" size="6" name="luid" />&nbsp;<input type="submit" value="' . $GLOBALS['LANG']->getLL('setLink', TRUE) . '" onclick="return link_typo3Page(document.ltargetform.luid.value);" />
 							</td>
@@ -780,7 +772,7 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 	public function addRelField() {
 		return ($this->act == 'page' || $this->act == 'url' || $this->act == 'file') && $this->buttonConfig && is_array($this->buttonConfig['relAttribute.']) && $this->buttonConfig['relAttribute.']['enabled'] ? '
 						<tr>
-							<td>' . $GLOBALS['LANG']->getLL('linkRelationship', TRUE) . ':</td>
+							<td><label>' . $GLOBALS['LANG']->getLL('linkRelationship', TRUE) . ':</label></td>
 							<td colspan="3">
 								<input type="text" name="lrel" value="' . $this->additionalAttributes['rel'] . '"  ' . $this->doc->formWidth(30) . ' />
 							</td>
@@ -793,7 +785,7 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 	public function addQueryParametersSelector() {
 		return $this->act == 'page' && $this->buttonConfig && is_array($this->buttonConfig['queryParametersSelector.']) && $this->buttonConfig['queryParametersSelector.']['enabled'] ? '
 						<tr>
-							<td>' . $GLOBALS['LANG']->getLL('query_parameters', TRUE) . ':</td>
+							<td><label>' . $GLOBALS['LANG']->getLL('query_parameters', TRUE) . ':</label></td>
 							<td colspan="3">
 								<input type="text" name="query_parameters" value="' . ($this->curUrlInfo['query'] ?: '') . '" ' . $this->doc->formWidth(30) . ' />
 							</td>
@@ -816,7 +808,7 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 		if ($this->act != 'mail') {
 			$ltarget .= '
 					<tr id="ltargetrow"' . ($targetSelectorConfig['disabled'] && $popupSelectorConfig['disabled'] ? ' style="display: none;"' : '') . '>
-						<td>' . $GLOBALS['LANG']->getLL('target', TRUE) . ':</td>
+						<td><label>' . $GLOBALS['LANG']->getLL('target', TRUE) . ':</label></td>
 						<td><input type="text" name="ltarget" onchange="browse_links_setTarget(this.value);" value="' . htmlspecialchars(($this->setTarget ? $this->setTarget : ($this->setClass || !$this->classesAnchorDefault[$this->act] ? '' : $this->classesAnchorDefaultTarget[$this->act]))) . '"' . $this->doc->formWidth(10) . ' /></td>';
 			$ltarget .= '
 						<td colspan="2">';
@@ -840,7 +832,7 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 				}';
 				$ltarget .= '
 						<tr>
-							<td>' . $GLOBALS['LANG']->getLL('target_popUpWindow', TRUE) . ':</td>
+							<td><label>' . $GLOBALS['LANG']->getLL('target_popUpWindow', TRUE) . ':</label></td>
 							<td colspan="3">
 								<select name="popup_width" onchange="' . $selectJS . '">
 									<option value="0">' . $GLOBALS['LANG']->getLL('target_popUpWindow_width', TRUE) . '</option>
@@ -877,7 +869,7 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 		if ($this->classesAnchorJSOptions[$this->act]) {
 			$selectClass = '
 						<tr>
-							<td>' . $GLOBALS['LANG']->getLL('anchor_class', TRUE) . ':</td>
+							<td><label>' . $GLOBALS['LANG']->getLL('anchor_class', TRUE) . ':</label></td>
 							<td colspan="3">
 								<select name="anchor_class" onchange="' . $this->getClassOnChangeJS() . '">
 									' . $this->classesAnchorJSOptions[$this->act] . '

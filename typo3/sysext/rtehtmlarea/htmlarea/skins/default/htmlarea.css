@@ -255,6 +255,9 @@ body.ext-ie6 .htmlarea-window .x-panel-icon {
 	clear: left;
 }
 /* Selector htmlarea-window-table is used in the element browsers */
+#typo3-curUrl {
+	margin-left: 10px;
+}
 .htmlarea-window-table td {
 	padding: 0 2px;
 }
@@ -269,16 +272,14 @@ body.ext-ie6 .htmlarea-window .x-panel-icon {
 }
 .htmlarea-window-table select {
 	border: solid 1px #888;
-	height: 24px;
-	line-height: 20px;
-	margin-bottom: 5px;
+	height: 23px;
 	margin-bottom: 5px;
 	padding-left: 3px;
 }
 .htmlarea-window-table option {
-	height: 20px;
-	line-height: 20px;
-	padding-top: 5px;
+	line-height: normal;
+	padding-bottom: 3px;
+	padding-top: 3px;
 }
 .htmlarea-window .x-form-item-label {
 	font-size: 10px;
