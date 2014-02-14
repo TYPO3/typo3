@@ -62,7 +62,7 @@ class ModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * @return 	void
 	 */
 	public function main() {
-		$this->thisScript = 'mod.php?M=' . $this->MCONF['name'];
+		$this->thisScript = BackendUtility::getModuleUrl($this->MCONF['name']);
 		// Clean up settings:
 		$this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('SET'), $this->MCONF['name']);
 		// Draw the header

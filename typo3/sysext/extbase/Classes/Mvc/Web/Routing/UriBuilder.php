@@ -13,6 +13,8 @@ namespace TYPO3\CMS\Extbase\Mvc\Web\Routing;
  * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General      *
  * Public License for more details.                                       *
  *                                                                        */
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+
 /**
  * An URI Builder
  *
@@ -609,7 +611,9 @@ class UriBuilder {
 		\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($arguments, $this->arguments);
 		$arguments = $this->convertDomainObjectsToIdentityArrays($arguments);
 		$this->lastArguments = $arguments;
-		$uri = 'mod.php?' . http_build_query($arguments, NULL, '&');
+		$moduleName = $arguments['M'];
+		unset($arguments['M'], $arguments['moduleToken']);
+		$uri = BackendUtility::getModuleUrl($moduleName, $arguments);
 		if ($this->section !== '') {
 			$uri .= '#' . $this->section;
 		}

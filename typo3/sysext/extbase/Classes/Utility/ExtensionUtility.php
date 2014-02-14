@@ -222,7 +222,6 @@ tt_content.' . $pluginSignature . ' {
 			$moduleSignature .= '_' . $subModuleName;
 		}
 		$moduleConfiguration['name'] = $moduleSignature;
-		$moduleConfiguration['script'] = 'mod.php?M=' . rawurlencode($moduleSignature);
 		if (NULL !== $vendorName) {
 			$moduleConfiguration['vendorName'] = $vendorName;
 		}

@@ -27,6 +27,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Mvc\Web\Routing;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Uri Builder Test Class
  */
@@ -69,6 +70,10 @@ class UriBuilderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$this->uriBuilder->_set('configurationManager', $this->mockConfigurationManager);
 		$this->uriBuilder->_set('extensionService', $this->mockExtensionService);
 		$this->uriBuilder->_set('environmentService', $this->objectManager->get('TYPO3\\CMS\\Extbase\\Service\\EnvironmentService'));
+		// Mocking backend user is required for backend URI generation as BackendUtility::getModuleUrl() is called
+		$backendUserMock = $this->getMock('TYPO3\\CMS\\Core\\Authentication\\BackendUserAuthentication');
+		$backendUserMock->expects($this->any())->method('check')->will($this->returnValue(TRUE));
+		$GLOBALS['BE_USER'] = $backendUserMock;
 	}
 
 	/**
@@ -177,7 +182,7 @@ class UriBuilderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$_POST['foo2'] = 'bar2';
 		$this->uriBuilder->setAddQueryString(TRUE);
 		$this->uriBuilder->setAddQueryStringMethod('GET,POST');
-		$expectedResult = 'mod.php?M=moduleKey&id=pageId&foo=bar&foo2=bar2';
+		$expectedResult = 'mod.php?M=moduleKey&moduleToken=dummyToken&id=pageId&foo=bar&foo2=bar2';
 		$actualResult = $this->uriBuilder->buildBackendUri();
 		$this->assertEquals($expectedResult, $actualResult);
 	}
@@ -191,7 +196,7 @@ class UriBuilderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$_POST['foo2'] = 'bar2';
 		$this->uriBuilder->setAddQueryString(TRUE);
 		$this->uriBuilder->setAddQueryStringMethod(NULL);
-		$expectedResult = 'mod.php?M=moduleKey&id=pageId&foo=bar';
+		$expectedResult = 'mod.php?M=moduleKey&moduleToken=dummyToken&id=pageId&foo=bar';
 		$actualResult = $this->uriBuilder->buildBackendUri();
 		$this->assertEquals($expectedResult, $actualResult);
 	}
@@ -214,7 +219,7 @@ class UriBuilderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 					'M',
 					'id'
 				),
-				'mod.php?foo=bar&foo2=bar2'
+				'mod.php?moduleToken=dummyToken&foo=bar&foo2=bar2'
 			),
 			'Arguments to be excluded in the end' => array(
 				array(
@@ -229,7 +234,7 @@ class UriBuilderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 					'M',
 					'id'
 				),
-				'mod.php?foo=bar&foo2=bar2'
+				'mod.php?moduleToken=dummyToken&foo=bar&foo2=bar2'
 			),
 			'Arguments in nested array to be excluded' => array(
 				array(
@@ -246,7 +251,7 @@ class UriBuilderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 					'id',
 					'tx_foo[bar]'
 				),
-				'mod.php?M=moduleKey&foo2=bar2'
+				'mod.php?M=moduleKey&moduleToken=dummyToken&foo2=bar2'
 			),
 			'Arguments in multidimensional array to be excluded' => array(
 				array(
@@ -265,7 +270,7 @@ class UriBuilderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 					'id',
 					'tx_foo[bar][baz]'
 				),
-				'mod.php?M=moduleKey&foo2=bar2'
+				'mod.php?M=moduleKey&moduleToken=dummyToken&foo2=bar2'
 			),
 		);
 	}
@@ -289,7 +294,7 @@ class UriBuilderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 */
 	public function buildBackendUriKeepsModuleQueryParametersIfAddQueryStringIsNotSet() {
 		\TYPO3\CMS\Core\Utility\GeneralUtility::_GETset(array('M' => 'moduleKey', 'id' => 'pageId', 'foo' => 'bar'));
-		$expectedResult = 'mod.php?M=moduleKey&id=pageId';
+		$expectedResult = 'mod.php?M=moduleKey&moduleToken=dummyToken&id=pageId';
 		$actualResult = $this->uriBuilder->buildBackendUri();
 		$this->assertEquals($expectedResult, $actualResult);
 	}
@@ -300,7 +305,7 @@ class UriBuilderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	public function buildBackendUriMergesAndOverrulesQueryParametersWithArguments() {
 		\TYPO3\CMS\Core\Utility\GeneralUtility::_GETset(array('M' => 'moduleKey', 'id' => 'pageId', 'foo' => 'bar'));
 		$this->uriBuilder->setArguments(array('M' => 'overwrittenModuleKey', 'somePrefix' => array('bar' => 'baz')));
-		$expectedResult = 'mod.php?M=overwrittenModuleKey&id=pageId&somePrefix%5Bbar%5D=baz';
+		$expectedResult = 'mod.php?M=overwrittenModuleKey&moduleToken=dummyToken&id=pageId&somePrefix%5Bbar%5D=baz';
 		$actualResult = $this->uriBuilder->buildBackendUri();
 		$this->assertEquals($expectedResult, $actualResult);
 	}
@@ -313,7 +318,7 @@ class UriBuilderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$mockDomainObject = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\DomainObject\\AbstractEntity', array('dummy'));
 		$mockDomainObject->_set('uid', '123');
 		$this->uriBuilder->setArguments(array('somePrefix' => array('someDomainObject' => $mockDomainObject)));
-		$expectedResult = 'mod.php?M=moduleKey&somePrefix%5BsomeDomainObject%5D=123';
+		$expectedResult = 'mod.php?M=moduleKey&moduleToken=dummyToken&somePrefix%5BsomeDomainObject%5D=123';
 		$actualResult = $this->uriBuilder->buildBackendUri();
 		$this->assertEquals($expectedResult, $actualResult);
 	}
@@ -324,7 +329,7 @@ class UriBuilderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	public function buildBackendUriRespectsSection() {
 		\TYPO3\CMS\Core\Utility\GeneralUtility::_GETset(array('M' => 'moduleKey'));
 		$this->uriBuilder->setSection('someSection');
-		$expectedResult = 'mod.php?M=moduleKey#someSection';
+		$expectedResult = 'mod.php?M=moduleKey&moduleToken=dummyToken#someSection';
 		$actualResult = $this->uriBuilder->buildBackendUri();
 		$this->assertEquals($expectedResult, $actualResult);
 	}
@@ -336,7 +341,7 @@ class UriBuilderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		\TYPO3\CMS\Core\Utility\GeneralUtility::_GETset(array('M' => 'moduleKey'));
 		$this->mockRequest->expects($this->any())->method('getBaseUri')->will($this->returnValue('http://baseuri/' . TYPO3_mainDir));
 		$this->uriBuilder->setCreateAbsoluteUri(TRUE);
-		$expectedResult = 'http://baseuri/' . TYPO3_mainDir . 'mod.php?M=moduleKey';
+		$expectedResult = 'http://baseuri/' . TYPO3_mainDir . 'mod.php?M=moduleKey&moduleToken=dummyToken';
 		$actualResult = $this->uriBuilder->buildBackendUri();
 		$this->assertSame($expectedResult, $actualResult);
 	}

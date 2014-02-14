@@ -24,6 +24,7 @@ namespace TYPO3\CMS\Taskcenter\Controller;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -288,7 +289,7 @@ class TaskModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 					if (!$this->checkAccess($extKey, $taskClass)) {
 						continue;
 					}
-					$link = 'mod.php?M=user_task&SET[function]=' . $extKey . '.' . $taskClass;
+					$link = BackendUtility::getModuleUrl('user_task') . '&SET[function]=' . $extKey . '.' . $taskClass;
 					$taskTitle = $GLOBALS['LANG']->sL($task['title']);
 					$taskDescriptionHtml = '';
 					// Check for custom icon

@@ -108,12 +108,20 @@ class HelpModuleController {
 	public $glossaryWords;
 
 	/**
+	 * URL to help module
+	 *
+	 * @var string
+	 */
+	protected $moduleUrl;
+
+	/**
 	 * Initialize the class for various input etc.
 	 *
 	 * @return void
 	 * @todo Define visibility
 	 */
 	public function init() {
+		$this->moduleUrl = BackendUtility::getModuleUrl('help_cshmanual');
 		// Setting GPvars:
 		$this->tfID = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('tfID');
 		// Sanitizes the tfID using whitelisting.
@@ -272,7 +280,7 @@ class HelpModuleController {
 		if (!$this->renderALL) {
 			$output .= '
 				<br/>
-				<p class="c-nav"><a href="mod.php?M=help_cshmanual&renderALL=1">' . $GLOBALS['LANG']->getLL('full_manual', TRUE) . '</a></p>';
+				<p class="c-nav"><a href="' . htmlspecialchars($this->moduleUrl) . '&amp;renderALL=1">' . $GLOBALS['LANG']->getLL('full_manual', TRUE) . '</a></p>';
 		}
 		if ($this->renderALL) {
 			$output .= '
@@ -316,7 +324,7 @@ class HelpModuleController {
 			}
 		} else {
 			// Only TOC:
-			$tocArray[$tocCat][$table] = '<p><a href="mod.php?M=help_cshmanual&tfID=' . rawurlencode(($table . '.*')) . '">' . $this->getTableFieldLabel($table) . '</a></p>';
+			$tocArray[$tocCat][$table] = '<p><a href="' . htmlspecialchars($this->moduleUrl) . '&amp;tfID=' . rawurlencode(($table . '.*')) . '">' . $this->getTableFieldLabel($table) . '</a></p>';
 		}
 		// Unset CSH key:
 		unset($CSHkeys[$table]);
@@ -400,7 +408,7 @@ class HelpModuleController {
 		$output = $this->substituteGlossaryWords($output);
 		// TOC link:
 		if (!$this->renderALL) {
-			$tocLink = '<p class="c-nav"><a href="mod.php?M=help_cshmanual">' . $GLOBALS['LANG']->getLL('goToToc', TRUE) . '</a></p>';
+			$tocLink = '<p class="c-nav"><a href="' . htmlspecialchars($this->moduleUrl) . '">' . $GLOBALS['LANG']->getLL('goToToc', TRUE) . '</a></p>';
 			$output = $tocLink . '
 				<br/>' . $output . '
 				<br />' . $tocLink;
@@ -427,8 +435,8 @@ class HelpModuleController {
 		// Link to Full table description and TOC:
 		$getLLKey = $this->limitAccess ? 'fullDescription' : 'fullDescription_module';
 		$output .= '<br />
-			<p class="c-nav"><a href="mod.php?M=help_cshmanual&tfID=' . rawurlencode(($key . '.*')) . '">' . $GLOBALS['LANG']->getLL($getLLKey, TRUE) . '</a></p>
-			<p class="c-nav"><a href="mod.php?M=help_cshmanual">' . $GLOBALS['LANG']->getLL('goToToc', TRUE) . '</a></p>';
+			<p class="c-nav"><a href="' . htmlspecialchars($this->moduleUrl) . '&amp;tfID=' . rawurlencode(($key . '.*')) . '">' . $GLOBALS['LANG']->getLL($getLLKey, TRUE) . '</a></p>
+			<p class="c-nav"><a href="' . htmlspecialchars($this->moduleUrl) . '">' . $GLOBALS['LANG']->getLL('goToToc', TRUE) . '</a></p>';
 		return $output;
 	}
 
@@ -468,7 +476,7 @@ class HelpModuleController {
 						// Checking read access:
 						if (isset($GLOBALS['TCA_DESCR'][$iP[0]])) {
 							// Make see-also link:
-							$href = $this->renderALL || $anchorTable && $iP[0] == $anchorTable ? '#' . implode('.', $iP) : 'mod.php?M=help_cshmanual&tfID=' . rawurlencode(implode('.', $iP)) . '&back=' . $this->tfID;
+							$href = $this->renderALL || $anchorTable && $iP[0] == $anchorTable ? '#' . implode('.', $iP) : htmlspecialchars($this->moduleUrl) . '&amp;tfID=' . rawurlencode(implode('.', $iP)) . '&amp;back=' . $this->tfID;
 							$label = $this->getTableFieldLabel($iP[0], $iP[1], ' / ');
 							$lines[] = '<a href="' . htmlspecialchars($href) . '">' . htmlspecialchars($label) . '</a>';
 						}
@@ -566,7 +574,7 @@ class HelpModuleController {
 			// Make seeAlso references.
 			$seeAlsoRes = $this->make_seeAlso($GLOBALS['TCA_DESCR'][$key]['columns'][$field]['seeAlso'], $anchors ? $key : '');
 			// Making item:
-			$out = '<a name="' . $key . '.' . $field . '"></a>' . $this->headerLine($this->getTableFieldLabel($key, $field), 1) . $this->prepareContent($GLOBALS['TCA_DESCR'][$key]['columns'][$field]['description']) . ($GLOBALS['TCA_DESCR'][$key]['columns'][$field]['details'] ? $this->headerLine(($GLOBALS['LANG']->getLL('details') . ':')) . $this->prepareContent($GLOBALS['TCA_DESCR'][$key]['columns'][$field]['details']) : '') . ($GLOBALS['TCA_DESCR'][$key]['columns'][$field]['syntax'] ? $this->headerLine(($GLOBALS['LANG']->getLL('syntax') . ':')) . $this->prepareContent($GLOBALS['TCA_DESCR'][$key]['columns'][$field]['syntax']) : '') . ($GLOBALS['TCA_DESCR'][$key]['columns'][$field]['image'] ? $this->printImage($GLOBALS['TCA_DESCR'][$key]['columns'][$field]['image'], $GLOBALS['TCA_DESCR'][$key]['columns'][$field]['image_descr']) : '') . ($GLOBALS['TCA_DESCR'][$key]['columns'][$field]['seeAlso'] && $seeAlsoRes ? $this->headerLine(($GLOBALS['LANG']->getLL('seeAlso') . ':')) . '<p>' . $seeAlsoRes . '</p>' : '') . ($this->back ? '<br /><p><a href="' . htmlspecialchars(('mod.php?M=help_cshmanual&tfID=' . rawurlencode($this->back))) . '" class="typo3-goBack">' . htmlspecialchars($GLOBALS['LANG']->getLL('goBack')) . '</a></p>' : '') . '<br />';
+			$out = '<a name="' . $key . '.' . $field . '"></a>' . $this->headerLine($this->getTableFieldLabel($key, $field), 1) . $this->prepareContent($GLOBALS['TCA_DESCR'][$key]['columns'][$field]['description']) . ($GLOBALS['TCA_DESCR'][$key]['columns'][$field]['details'] ? $this->headerLine(($GLOBALS['LANG']->getLL('details') . ':')) . $this->prepareContent($GLOBALS['TCA_DESCR'][$key]['columns'][$field]['details']) : '') . ($GLOBALS['TCA_DESCR'][$key]['columns'][$field]['syntax'] ? $this->headerLine(($GLOBALS['LANG']->getLL('syntax') . ':')) . $this->prepareContent($GLOBALS['TCA_DESCR'][$key]['columns'][$field]['syntax']) : '') . ($GLOBALS['TCA_DESCR'][$key]['columns'][$field]['image'] ? $this->printImage($GLOBALS['TCA_DESCR'][$key]['columns'][$field]['image'], $GLOBALS['TCA_DESCR'][$key]['columns'][$field]['image_descr']) : '') . ($GLOBALS['TCA_DESCR'][$key]['columns'][$field]['seeAlso'] && $seeAlsoRes ? $this->headerLine(($GLOBALS['LANG']->getLL('seeAlso') . ':')) . '<p>' . $seeAlsoRes . '</p>' : '') . ($this->back ? '<br /><p><a href="' . htmlspecialchars($this->moduleUrl . '&amp;tfID=' . rawurlencode($this->back)) . '" class="typo3-goBack">' . htmlspecialchars($GLOBALS['LANG']->getLL('goBack')) . '</a></p>' : '') . '<br />';
 		}
 		return $out;
 	}
@@ -616,8 +624,6 @@ class HelpModuleController {
 	 * @todo Define visibility
 	 */
 	public function getTableFieldLabel($key, $field = '', $mergeToken = ': ') {
-		$tableName = '';
-		$fieldName = '';
 		// Get table / field parts:
 		list($tableName, $fieldName) = $this->getTableFieldNames($key, $field);
 		// Create label:
@@ -638,7 +644,7 @@ class HelpModuleController {
 	 */
 	public function createGlossaryIndex() {
 		// Create hash string and try to retrieve glossary array:
-		$hash = md5('typo3/mod.php?M=help_cshmanual:glossary');
+		$hash = md5('help_cshmanual:glossary');
 		$cachedData = BackendUtility::getHash($hash);
 		// Generate glossary words if not found:
 		if (is_array($cachedData)) {
@@ -710,7 +716,7 @@ class HelpModuleController {
 				// quoteMeta used so special chars (which should not occur though) in words will not break the regex. Seemed to work (- kasper)
 				$parts = preg_split('/( |[\\(])(' . quoteMeta($wordSet['title']) . ')([\\.\\!\\)\\?\\:\\,]+| )/i', ' ' . $code . ' ', 2, PREG_SPLIT_DELIM_CAPTURE);
 				if (count($parts) == 5) {
-					$parts[2] = '<a class="glossary-term" href="' . htmlspecialchars(('mod.php?M=help_cshmanual&tfID=' . rawurlencode($wordSet['key']) . '&back=' . $this->tfID)) . '" title="' . rawurlencode(htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs(rawurldecode($wordSet['description']), 80))) . '">' . htmlspecialchars($parts[2]) . '</a>';
+					$parts[2] = '<a class="glossary-term" href="' . htmlspecialchars($this->moduleUrl . '&amp;tfID=' . rawurlencode($wordSet['key']) . '&amp;back=' . $this->tfID) . '" title="' . rawurlencode(htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs(rawurldecode($wordSet['description']), 80))) . '">' . htmlspecialchars($parts[2]) . '</a>';
 					$code = substr(implode('', $parts), 1, -1);
 					// Disable entry so it doesn't get used next time:
 					unset($this->substWords[$wordKey]);

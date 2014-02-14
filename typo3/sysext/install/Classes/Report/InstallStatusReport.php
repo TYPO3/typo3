@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Install\Report;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 
 /**
  * Provides an installation status report
@@ -135,7 +136,7 @@ class InstallStatusReport implements \TYPO3\CMS\Reports\StatusProviderInterface 
 		if (!\TYPO3\CMS\Core\Utility\GeneralUtility::compat_version(TYPO3_branch)) {
 			$value = $GLOBALS['LANG']->getLL('status_updateIncomplete');
 			$severity = \TYPO3\CMS\Reports\Status::WARNING;
-			$url = 'mod.php?M=system_InstallInstall';
+			$url = BackendUtility::getModuleUrl('system_InstallInstall');
 			$message = sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:warning.install_update'), '<a href="' . $url . '">', '</a>');
 		}
 		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Reports\\Status', $GLOBALS['LANG']->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_remainingUpdates'), $value, $message, $severity);

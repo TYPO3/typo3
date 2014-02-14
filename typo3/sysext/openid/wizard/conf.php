@@ -1,6 +1,6 @@
 <?php
 //required for mod.php
-$MCONF['name'] = 'openid_wizard';
+$MCONF['name'] = 'wizard_openid';
 $MCONF['script'] = '_DISPATCH';
 $MCONF['access'] = '';
 ?>

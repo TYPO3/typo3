@@ -2735,17 +2735,19 @@ class BackendUtility {
 		if (!is_array($mainParams)) {
 			$mainParams = array('id' => $mainParams);
 		}
-		$mainParams = GeneralUtility::implodeArrayForUrl('', $mainParams);
+
 		if (!$script) {
-			$script = basename(PATH_thisScript);
-			$mainParams .= GeneralUtility::_GET('M') ? '&M=' . rawurlencode(GeneralUtility::_GET('M')) : '';
+			$scriptUrl = self::getModuleUrl(GeneralUtility::_GET('M'), $mainParams) . $addparams;
+		} else {
+			$mainParams = GeneralUtility::implodeArrayForUrl('', $mainParams);
+			$scriptUrl = $script . '?' . $mainParams . $addparams;
 		}
 		$options = array();
 		foreach ($menuItems as $value => $label) {
 			$options[] = '<option value="' . htmlspecialchars($value) . '"' . ((string)$currentValue === (string)$value ? ' selected="selected"' : '') . '>' . GeneralUtility::deHSCentities(htmlspecialchars($label)) . '</option>';
 		}
 		if (count($options)) {
-			$onChange = 'jumpToUrl(\'' . $script . '?' . $mainParams . $addparams . '&' . $elementName . '=\'+this.options[this.selectedIndex].value,this);';
+			$onChange = 'jumpToUrl(' . GeneralUtility::quoteJSvalue($scriptUrl . '&' . $elementName . '=') . '+this.options[this.selectedIndex].value,this);';
 			return '
 
 				<!-- Function Menu of module -->
@@ -3007,8 +3009,9 @@ class BackendUtility {
 		}
 		$allUrlParameters = array();
 		$allUrlParameters['M'] = $moduleName;
+		$allUrlParameters['moduleToken'] = \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get()->generateToken('moduleCall', $moduleName);
 		$allUrlParameters = array_merge($allUrlParameters, $urlParameters);
-		$url = 'mod.php?' . GeneralUtility::implodeArrayForUrl('', $allUrlParameters, '', TRUE);
+		$url = 'mod.php?' . ltrim(GeneralUtility::implodeArrayForUrl('', $allUrlParameters, '', TRUE, TRUE), '&');
 		if ($returnAbsoluteUrl) {
 			return GeneralUtility::getIndpEnv('TYPO3_REQUEST_DIR') . $url;
 		} else {

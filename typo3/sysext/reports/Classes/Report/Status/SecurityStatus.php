@@ -24,6 +24,7 @@ namespace TYPO3\CMS\Reports\Report\Status;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -79,7 +80,7 @@ class SecurityStatus implements \TYPO3\CMS\Reports\StatusProviderInterface {
 			if (!$secure) {
 				$value = $GLOBALS['LANG']->getLL('status_insecure');
 				$severity = \TYPO3\CMS\Reports\Status::ERROR;
-				$editUserAccountUrl = 'alt_doc.php?returnUrl=' . urlencode('mod.php?M=system_ReportsTxreportsm1') . '&edit[be_users][' . $row['uid'] . ']=edit';
+				$editUserAccountUrl = 'alt_doc.php?returnUrl=' . rawurlencode(BackendUtility::getModuleUrl('system_ReportsTxreportsm1')) . '&edit[be_users][' . $row['uid'] . ']=edit';
 				$message = sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:warning.backend_admin'), '<a href="' . $editUserAccountUrl . '">', '</a>');
 			}
 		}
@@ -194,7 +195,7 @@ class SecurityStatus implements \TYPO3\CMS\Reports\StatusProviderInterface {
 		if (!$validPassword) {
 			$value = $GLOBALS['LANG']->getLL('status_insecure');
 			$severity = \TYPO3\CMS\Reports\Status::ERROR;
-			$changeInstallToolPasswordUrl = 'mod.php?M=system_InstallInstall';
+			$changeInstallToolPasswordUrl = BackendUtility::getModuleUrl('system_InstallInstall');
 			$message = sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:warning.installtool_default_password'), '<a href="' . $changeInstallToolPasswordUrl . '">', '</a>');
 		}
 		return GeneralUtility::makeInstance('TYPO3\\CMS\\Reports\\Status', $GLOBALS['LANG']->getLL('status_installToolPassword'), $value, $message, $severity);

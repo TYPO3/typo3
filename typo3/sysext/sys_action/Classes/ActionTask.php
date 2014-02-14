@@ -55,9 +55,17 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 	protected $hookObjects = array();
 
 	/**
+	 * URL to task module
+	 *
+	 * @var string
+	 */
+	protected $moduleUrl;
+
+	/**
 	 * Constructor
 	 */
 	public function __construct(\TYPO3\CMS\Taskcenter\Controller\TaskModuleController $taskObject) {
+		$this->moduleUrl = BackendUtility::getModuleUrl('user_task');
 		$this->taskObject = $taskObject;
 		$GLOBALS['LANG']->includeLLFile('EXT:sys_action/locallang.xlf');
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['sys_action']['tx_sysaction_task'])) {
@@ -176,7 +184,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 				'title' => $actionRow['title'],
 				'description' => $actionRow['description'],
 				'descriptionHtml' => nl2br(htmlspecialchars($actionRow['description'])) . $editActionLink,
-				'link' => 'mod.php?M=user_task&SET[function]=sys_action.tx_sysaction_task&show=' . $actionRow['uid'],
+				'link' => $this->moduleUrl . '&SET[function]=sys_action.tx_sysaction_task&show=' . $actionRow['uid'],
 				'icon' => 'EXT:sys_action/sys_action.gif'
 			);
 		}
@@ -202,7 +210,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 		}
 		// Admin users can create a new action
 		if ($GLOBALS['BE_USER']->isAdmin()) {
-			$returnUrl = rawurlencode('mod.php?M=user_task');
+			$returnUrl = rawurlencode($this->moduleUrl);
 			$link = GeneralUtility::getIndpEnv('TYPO3_REQUEST_DIR') . $GLOBALS['BACK_PATH'] . 'alt_doc.php?returnUrl=' . $returnUrl . '&edit[sys_action][0]=new';
 			$content .= '<br />
 						<a href="' . $link . '" title="' . $GLOBALS['LANG']->getLL('new-sys_action') . '">' . '<img class="icon"' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/new_record.gif') . ' title="' . $GLOBALS['LANG']->getLL('new-sys_action') . '" alt="" /> ' . $GLOBALS['LANG']->getLL('new-sys_action') . '</a>';
@@ -337,7 +345,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 			'tstamp' => $GLOBALS['ACCESS_TIME']
 		));
 		// redirect to the original task
-		$redirectUrl = 'mod.php?M=user_task&show=' . $actionId;
+		$redirectUrl = $this->moduleUrl . '&show=' . $actionId;
 		\TYPO3\CMS\Core\Utility\HttpUtility::redirect($redirectUrl);
 	}
 
@@ -401,7 +409,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 			$username .= ' (' . $realName . ')';
 		}
 		// Link to update the user record
-		$href = 'mod.php?M=user_task&SET[function]=sys_action.tx_sysaction_task&show=' . (int)$sysActionUid . '&be_users_uid=' . (int)$userId;
+		$href = $this->moduleUrl . '&SET[function]=sys_action.tx_sysaction_task&show=' . (int)$sysActionUid . '&be_users_uid=' . (int)$userId;
 		$link = '<a href="' . htmlspecialchars($href) . '">' . htmlspecialchars($username) . '</a>';
 		// Link to delete the user record
 		$onClick = ' onClick="return confirm(' . GeneralUtility::quoteJSvalue($GLOBALS['LANG']->getLL('lDelete_warning')) . ');"';
@@ -634,7 +642,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 	 * @return void Redirect to form to create a record
 	 */
 	protected function viewNewRecord($record) {
-		$returnUrl = rawurlencode('mod.php?M=user_task');
+		$returnUrl = rawurlencode($this->moduleUrl);
 		$link = GeneralUtility::getIndpEnv('TYPO3_REQUEST_DIR') . $GLOBALS['BACK_PATH'] . 'alt_doc.php?returnUrl=' . $returnUrl . '&edit[' . $record['t3_tables'] . '][' . (int)$record['t3_listPid'] . ']=new';
 		\TYPO3\CMS\Core\Utility\HttpUtility::redirect($link);
 	}

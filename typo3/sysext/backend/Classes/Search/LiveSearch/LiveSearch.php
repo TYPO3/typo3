@@ -259,8 +259,8 @@ class LiveSearch {
 		// "Edit" link: ( Only if permissions to edit the page-record of the content of the parent page ($this->id)
 		// @todo Is there an existing function to generate this link?
 		if ($permsEdit) {
-			$returnUrl = rawurlencode('mod.php?M=web_list&id=' . $row['pid']);
-			$editLink = 'alt_doc.php?' . '&edit[' . $tableName . '][' . $row['uid'] . ']=edit&returnUrl=' . $returnUrl;
+			$returnUrl = BackendUtility::getModuleUrl('web_list', array('id' => $row['pid']));
+			$editLink = 'alt_doc.php?' . '&edit[' . $tableName . '][' . $row['uid'] . ']=edit&returnUrl=' . rawurlencode($returnUrl);
 		}
 		return $editLink;
 	}

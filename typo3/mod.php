@@ -32,10 +32,14 @@
 unset($MCONF);
 require __DIR__ . '/init.php';
 // Find module path:
-$temp_M = (string) \TYPO3\CMS\Core\Utility\GeneralUtility::_GET('M');
+$moduleName = (string)\TYPO3\CMS\Core\Utility\GeneralUtility::_GET('M');
 $isDispatched = FALSE;
-if ($temp_path = $TBE_MODULES['_PATHS'][$temp_M]) {
-	$MCONF['_'] = 'mod.php?M=' . rawurlencode($temp_M);
+$formprotection = \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get();
+if (!$formprotection->validateToken(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('moduleToken'), 'moduleCall', $moduleName)) {
+	throw new \UnexpectedValueException('Invalid form/module token detected. Access Denied!', 1392409507);
+}
+if ($temp_path = $TBE_MODULES['_PATHS'][$moduleName]) {
+	$MCONF['_'] = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl($moduleName);
 	require $temp_path . 'conf.php';
 	$BACK_PATH = '';
 	require $temp_path . 'index.php';
@@ -44,7 +48,7 @@ if ($temp_path = $TBE_MODULES['_PATHS'][$temp_M]) {
 	if (is_array($TBE_MODULES['_dispatcher'])) {
 		foreach ($TBE_MODULES['_dispatcher'] as $dispatcherClassName) {
 			$dispatcher = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager')->get($dispatcherClassName);
-			if ($dispatcher->callModule($temp_M) === TRUE) {
+			if ($dispatcher->callModule($moduleName) === TRUE) {
 				$isDispatched = TRUE;
 				break;
 			}
@@ -52,6 +56,6 @@ if ($temp_path = $TBE_MODULES['_PATHS'][$temp_M]) {
 	}
 }
 if ($isDispatched === FALSE) {
-	throw new UnexpectedValueException('No module "' . htmlspecialchars($temp_M) . '" could be found.', 1294585070);
+	throw new UnexpectedValueException('No module "' . htmlspecialchars($moduleName) . '" could be found.', 1294585070);
 }
 \TYPO3\CMS\Core\Core\Bootstrap::getInstance()->shutdown();

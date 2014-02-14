@@ -25,6 +25,7 @@ namespace TYPO3\CMS\Beuser\Controller;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 
 /**
  * Backend module user administration controller
@@ -121,7 +122,7 @@ class BackendUserController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCont
 		}
 		$compareUserList = $this->moduleData->getCompareUserList();
 		$this->view->assign('demand', $demand);
-		$this->view->assign('returnUrl', 'mod.php?M=system_BeuserTxBeuser');
+		$this->view->assign('returnUrl', rawurlencode(BackendUtility::getModuleUrl('system_BeuserTxBeuser')));
 		$this->view->assign('dateFormat', $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy']);
 		$this->view->assign('timeFormat', $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm']);
 		$this->view->assign('backendUsers', $this->backendUserRepository->findDemanded($demand));

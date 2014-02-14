@@ -24,6 +24,7 @@ namespace TYPO3\CMS\Impexp\Task;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 
 /**
  * This class provides a textarea to save personal notes
@@ -134,7 +135,7 @@ class ImportExportTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 						'icon' => $icon,
 						'title' => $title,
 						'descriptionHtml' => implode('<br />', $description),
-						'link' => 'mod.php?M=user_task&SET[function]=impexp.tx_impexp_task&display=' . $presetCfg['uid']
+						'link' => BackendUtility::getModuleUrl('user_task') . '&SET[function]=impexp.tx_impexp_task&display=' . $presetCfg['uid']
 					);
 				}
 				// Render preset list

@@ -18,7 +18,9 @@ $tempColumns = array(
 				'0' => Array(
 					'type' => 'popup',
 					'title' => 'Add OpenID',
-					'script' => 'mod.php?M=openid_wizard',
+					'module' => array(
+						'name' => 'wizard_openid'
+					),
 					'icon' => 'EXT:openid/ext_icon.gif',
 					'JSopenParams' => ',width=600,height=400,status=0,menubar=0,scrollbars=0',
 				)
@@ -51,7 +53,7 @@ $GLOBALS['TYPO3_USER_SETTINGS']['columns']['tx_openid_openid'] = array(
 if (TYPO3_MODE === 'BE') {
 	// Register wizard
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
-		'openid_wizard',
+		'wizard_openid',
 		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'wizard/'
 	);
 }

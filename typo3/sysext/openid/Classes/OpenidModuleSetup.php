@@ -23,6 +23,9 @@ namespace TYPO3\CMS\Openid;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * This class is the OpenID return script for the TYPO3 Backend (used in the user-settings module).
  *
@@ -62,9 +65,7 @@ class OpenidModuleSetup {
 			' type="text" name="data[be_users][tx_openid_openid]"' .
 			' value="' . htmlspecialchars($openid) . '" />' .
 			'&nbsp;&nbsp;<a href="#" onclick="' .
-			'vHWin=window.open(\'../typo3/mod.php\?' .
-			'M=openid_wizard&' .
-			'P[itemName]=data%5Bbe_users%5D%5Btx_openid_openid%5D\'' .
+			'vHWin=window.open(' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('wizard_openid') . '&P[itemName]=data%5Bbe_users%5D%5Btx_openid_openid%5D') .
 			',null,\'width=600,height=400,status=0,menubar=0,scrollbars=0\');' .
 			'vHWin.focus();return false;' .
 			'">' .

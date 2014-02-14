@@ -27,6 +27,7 @@ namespace TYPO3\CMS\Backend\View;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -235,7 +236,11 @@ class ModuleMenuView {
 				);
 			} elseif (is_array($moduleData['sub'])) {
 				foreach ($moduleData['sub'] as $submoduleName => $submoduleData) {
-					$submoduleLink = GeneralUtility::resolveBackPath($submoduleData['script']);
+					if (isset($submoduleData['script'])) {
+						$submoduleLink = GeneralUtility::resolveBackPath($submoduleData['script']);
+					} else {
+						$submoduleLink = BackendUtility::getModuleUrl($submoduleData['name']);
+					}
 					$submoduleKey = $moduleName . '_' . $submoduleName . '_tab';
 					$submoduleIcon = $this->getModuleIcon($submoduleKey);
 					$submoduleDescription = $GLOBALS['LANG']->moduleLabels['labels'][$submoduleKey . 'label'];

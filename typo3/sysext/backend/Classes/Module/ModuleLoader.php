@@ -27,6 +27,7 @@ namespace TYPO3\CMS\Backend\Module;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -306,9 +307,9 @@ class ModuleLoader {
 				// Default script setup
 				if ($setupInformation['configuration']['script'] === '_DISPATCH') {
 					if ($setupInformation['configuration']['extbase']) {
-						$finalModuleConfiguration['script'] = 'mod.php?M=Tx_' . rawurlencode($name);
+						$finalModuleConfiguration['script'] = BackendUtility::getModuleUrl('Tx_' . $name);
 					} else {
-						$finalModuleConfiguration['script'] = 'mod.php?M=' . rawurlencode($name);
+						$finalModuleConfiguration['script'] = BackendUtility::getModuleUrl($name);
 					}
 				} elseif ($setupInformation['configuration']['script'] && file_exists($setupInformation['path'] . '/' . $setupInformation['configuration']['script'])) {
 					$finalModuleConfiguration['script'] = $this->getRelativePath(PATH_typo3, $fullpath . '/' . $setupInformation['configuration']['script']);
