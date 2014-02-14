@@ -54,67 +54,33 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 	 */
 	public function init() {
 		$this->initVariables();
-		// Create content laguage service
+		// Create content language service
 		$this->contentLanguageService = GeneralUtility::makeInstance('TYPO3\\CMS\\Lang\\LanguageService');
 		$this->contentLanguageService->init($this->contentTypo3Language);
 		$this->initConfiguration();
-		// init fileProcessor
-		$this->fileProcessor = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Utility\\File\\BasicFileUtility');
-		$this->fileProcessor->init($GLOBALS['FILEMOUNTS'], $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
-		// Creating backend template object:
-		$this->doc = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
-		$this->doc->backPath = $GLOBALS['BACK_PATH'];
-		// Loading the Prototype library and browse_links.js
-		$this->doc->getPageRenderer()->loadPrototype();
-		$this->doc->loadJavascriptLib('js/tree.js');
-		$this->doc->getPageRenderer()->addInlineSetting('Tree.SC_alt_db_navframe', 'ajaxUrl', BackendUtility::getAjaxUrl('SC_alt_db_navframe::expandCollapse'));
-		$this->doc->getPageRenderer()->addInlineSetting('Tree.SC_alt_file_navframe', 'ajaxUrl', BackendUtility::getAjaxUrl('SC_alt_file_navframe::expandCollapse'));
-		$this->doc->loadJavascriptLib('js/browse_links.js');
-		// Adding context menu code
-		$this->doc->getContextMenuCode();
+
+		$this->initDocumentTemplate();
+
 		// Initializing hooking browsers
 		$this->initHookObjects('ext/rtehtmlarea/mod3/class.tx_rtehtmlarea_browse_links.php');
-		// CurrentUrl - the current link url must be passed around if it exists
-		$this->curUrlArray = GeneralUtility::_GP('curUrl');
-		if ($this->curUrlArray['all']) {
-			$this->curUrlArray = GeneralUtility::get_tag_attributes($this->curUrlArray['all']);
-			$this->curUrlArray['href'] = htmlspecialchars_decode($this->curUrlArray['href']);
-		}
-		// Note: parseCurUrl will invoke the hooks
-		$this->curUrlInfo = $this->parseCurUrl($this->curUrlArray['href'], $this->siteURL);
-		if (isset($this->curUrlArray['data-htmlarea-external']) && $this->curUrlInfo['act'] != 'mail') {
-			$this->curUrlInfo['act'] = 'url';
-			$this->curUrlInfo['info'] = $this->curUrlArray['href'];
-		}
+		$this->initCurrentUrl();
 		// Determine nature of current url:
 		$this->act = GeneralUtility::_GP('act');
 		if (!$this->act) {
 			$this->act = $this->curUrlInfo['act'];
 		}
-		// Setting intial values for link attributes
+		// Setting initial values for link attributes
 		$this->initLinkAttributes();
-		// Apply the same styles as those of the base script
-		$this->doc->bodyTagId = 'typo3-browse-links-php';
-		$this->doc->getPageRenderer()->addCssFile($this->doc->backPath . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('t3skin') . 'rtehtmlarea/htmlarea.css');
-		// Add attributes to body tag. Note: getBodyTagAdditions will invoke the hooks
-		$this->doc->bodyTagAdditions = $this->getBodyTagAdditions();
-		// Adding RTE JS code
-		$this->doc->JScodeArray['rtehtmlarea'] = $this->getJSCode();
 	}
 
 	/**
 	 * Initialize class variables
 	 *
-	 * @return 	void
+	 * @return void
 	 */
 	public function initVariables() {
-		// Main GPvars:
-		$this->pointer = GeneralUtility::_GP('pointer');
-		$this->bparams = GeneralUtility::_GP('bparams');
-		$this->P = GeneralUtility::_GP('P');
-		$this->expandPage = GeneralUtility::_GP('expandPage');
-		$this->expandFolder = GeneralUtility::_GP('expandFolder');
-		$this->PM = GeneralUtility::_GP('PM');
+		parent::initVariables();
+
 		// Process bparams
 		$pArr = explode('|', $this->bparams);
 		$pRteArr = explode(':', $pArr[1]);
@@ -129,24 +95,53 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 		$pArr[1] = implode(':', array($this->editorNo, $this->contentTypo3Language, $this->contentTypo3Charset));
 		$pArr[2] = $this->RTEtsConfigParams;
 		$this->bparams = implode('|', $pArr);
-		// Find "mode"
-		$this->mode = GeneralUtility::_GP('mode');
-		if (!$this->mode) {
-			$this->mode = 'rte';
-		}
-		// Current site url
-		$this->siteURL = GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
-		$this->determineScriptUrl();
 	}
 
 	/**
 	 * Initializes the configuration variables
 	 *
-	 * @return 	void
+	 * @return void
 	 */
 	public function initConfiguration() {
 		$this->thisConfig = $this->getRTEConfig();
 		$this->buttonConfig = $this->getButtonConfig('link');
+	}
+
+	/**
+	 * Initialize document template object
+	 *
+	 * @return void
+	 */
+	protected function initDocumentTemplate() {
+		parent::initDocumentTemplate();
+		$this->doc->getContextMenuCode();
+		// Apply the same styles as those of the base script
+		$this->doc->bodyTagId = 'typo3-browse-links-php';
+		$this->doc->getPageRenderer()->addCssFile($this->doc->backPath . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('t3skin') . 'rtehtmlarea/htmlarea.css');
+		// Add attributes to body tag. Note: getBodyTagAdditions will invoke the hooks
+		$this->doc->bodyTagAdditions = $this->getBodyTagAdditions();
+		// Adding RTE JS code
+		$this->doc->JScodeArray['rtehtmlarea'] = $this->getJSCode();
+	}
+
+	/**
+	 * Initialize $this->curUrlArray and $this->curUrlInfo based on script parameters
+	 *
+	 * @return void
+	 */
+	protected function initCurrentUrl() {
+		// CurrentUrl - the current link url must be passed around if it exists
+		$this->curUrlArray = GeneralUtility::_GP('curUrl');
+		if ($this->curUrlArray['all']) {
+			$this->curUrlArray = GeneralUtility::get_tag_attributes($this->curUrlArray['all']);
+			$this->curUrlArray['href'] = htmlspecialchars_decode($this->curUrlArray['href']);
+		}
+		// Note: parseCurUrl will invoke the hooks
+		$this->curUrlInfo = $this->parseCurUrl($this->curUrlArray['href'], $this->siteURL);
+		if (isset($this->curUrlArray['data-htmlarea-external']) && $this->curUrlInfo['act'] != 'mail') {
+			$this->curUrlInfo['act'] = 'url';
+			$this->curUrlInfo['info'] = $this->curUrlArray['href'];
+		}
 	}
 
 	/**
@@ -156,9 +151,9 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 	 */
 	protected function getRTEConfig() {
 		$RTEtsConfigParts = explode(':', $this->RTEtsConfigParams);
-		$RTEsetup = $GLOBALS['BE_USER']->getTSConfig('RTE', \TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig($RTEtsConfigParts[5]));
+		$RTEsetup = $GLOBALS['BE_USER']->getTSConfig('RTE', BackendUtility::getPagesTSconfig($RTEtsConfigParts[5]));
 		$this->RTEProperties = $RTEsetup['properties'];
-		return \TYPO3\CMS\Backend\Utility\BackendUtility::RTEsetup($this->RTEProperties, $RTEtsConfigParts[0], $RTEtsConfigParts[2], $RTEtsConfigParts[4]);
+		return BackendUtility::RTEsetup($this->RTEProperties, $RTEtsConfigParts[0], $RTEtsConfigParts[2], $RTEtsConfigParts[4]);
 	}
 
 	/**
@@ -168,27 +163,9 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 	 * @return 	array		the configuration array of the image button
 	 */
 	protected function getButtonConfig($buttonName) {
-		return is_array($this->thisConfig['buttons.']) && is_array($this->thisConfig['buttons.'][$buttonName . '.']) ? $this->thisConfig['buttons.'][$buttonName . '.'] : array();
-	}
-
-	/**
-	 * Initialize hook objects implementing the interface
-	 *
-	 * @param 	string		$hookKey: the hook key
-	 * @return 	void
-	 */
-	protected function initHookObjects($hookKey) {
-		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][$hookKey]['browseLinksHook'])) {
-			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][$hookKey]['browseLinksHook'] as $classData) {
-				$processObject = GeneralUtility::getUserObj($classData);
-				if (!$processObject instanceof \TYPO3\CMS\Core\ElementBrowser\ElementBrowserHookInterface) {
-					throw new \UnexpectedValueException('$processObject must implement interface TYPO3\\CMS\\Core\\ElementBrowser\\ElementBrowserHookInterface', 1195115653);
-				}
-				$parameters = array();
-				$processObject->init($this, $parameters);
-				$this->hookObjects[] = $processObject;
-			}
-		}
+		return is_array($this->thisConfig['buttons.']) && is_array($this->thisConfig['buttons.'][$buttonName . '.'])
+			? $this->thisConfig['buttons.'][$buttonName . '.']
+			: array();
 	}
 
 	/**

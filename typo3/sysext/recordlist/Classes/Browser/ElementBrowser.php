@@ -254,10 +254,10 @@ class ElementBrowser {
 	 * Sets the script url depending on being a module or script request
 	 */
 	protected function determineScriptUrl() {
-		if ($moduleName = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('M')) {
-			$this->thisScript = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl($moduleName);
+		if ($moduleName = GeneralUtility::_GP('M')) {
+			$this->thisScript = BackendUtility::getModuleUrl($moduleName);
 		} else {
-			$this->thisScript = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('SCRIPT_NAME');
+			$this->thisScript = GeneralUtility::getIndpEnv('SCRIPT_NAME');
 		}
 	}
 
@@ -277,19 +277,86 @@ class ElementBrowser {
 	 * @throws \UnexpectedValueException
 	 */
 	public function init() {
+		$this->initVariables();
+
+		$this->RTEtsConfigParams = GeneralUtility::_GP('RTEtsConfigParams');
+		$this->initConfiguration();
+		$this->initDocumentTemplate();
+		// init hook objects:
+		$this->initHookObjects('typo3/class.browse_links.php');
+
+		$this->initCurrentUrl();
+
+		// Determine nature of current url:
+		$this->act = GeneralUtility::_GP('act');
+		if (!$this->act) {
+			$this->act = $this->curUrlInfo['act'];
+		}
+
+		// Initializing the target value (RTE)
+		$this->setTarget = $this->curUrlArray['target'] != '-' ? rawurlencode($this->curUrlArray['target']) : '';
+		if ($this->thisConfig['defaultLinkTarget'] && !isset($this->curUrlArray['target'])) {
+			$this->setTarget = $this->thisConfig['defaultLinkTarget'];
+		}
+		// Initializing the class value (RTE)
+		$this->setClass = $this->curUrlArray['class'] != '-' ? rawurlencode($this->curUrlArray['class']) : '';
+		// Initializing the title value (RTE)
+		$this->setTitle = $this->curUrlArray['title'] != '-' ? rawurlencode($this->curUrlArray['title']) : '';
+		// Initializing the params value
+		$this->setParams = $this->curUrlArray['params'] != '-' ? rawurlencode($this->curUrlArray['params']) : '';
+
+		// Finally, add the accumulated JavaScript to the template object:
+		$this->doc->JScode .= $this->doc->wrapScriptTags($this->getJSCode());
+	}
+
+	/**
+	 * Initialize class variables
+	 *
+	 * @return void
+	 */
+	public function initVariables() {
 		// Main GPvars:
 		$this->pointer = GeneralUtility::_GP('pointer');
 		$this->bparams = GeneralUtility::_GP('bparams');
 		$this->P = GeneralUtility::_GP('P');
-		$this->RTEtsConfigParams = GeneralUtility::_GP('RTEtsConfigParams');
 		$this->expandPage = GeneralUtility::_GP('expandPage');
 		$this->expandFolder = GeneralUtility::_GP('expandFolder');
 		$this->PM = GeneralUtility::_GP('PM');
+
+		// Site URL
+		// Current site url
+		$this->siteURL = GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
+		$this->determineScriptUrl();
+
 		// Find "mode"
 		$this->mode = GeneralUtility::_GP('mode');
 		if (!$this->mode) {
 			$this->mode = 'rte';
 		}
+
+		// Init fileProcessor
+		$this->fileProcessor = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Utility\\File\\BasicFileUtility');
+		$this->fileProcessor->init($GLOBALS['FILEMOUNTS'], $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
+	}
+
+	/**
+	 * Initializes the configuration variables
+	 *
+	 * @return void
+	 */
+	public function initConfiguration() {
+		// Rich Text Editor specific configuration:
+		if ((string) $this->mode === 'rte') {
+			$this->thisConfig = $this->getRTEConfig();
+		}
+	}
+
+	/**
+	 * Initialize document template object
+	 *
+	 *  @return void
+	 */
+	protected function initDocumentTemplate() {
 		// Creating backend template object:
 		$this->doc = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
 		$this->doc->bodyTagId = 'typo3-browse-links-php';
@@ -300,10 +367,18 @@ class ElementBrowser {
 		$this->doc->loadJavascriptLib('js/tree.js');
 		$this->doc->getPageRenderer()->addInlineSetting('Tree.SC_alt_db_navframe', 'ajaxUrl', BackendUtility::getAjaxUrl('SC_alt_db_navframe::expandCollapse'));
 		$this->doc->getPageRenderer()->addInlineSetting('Tree.SC_alt_file_navframe', 'ajaxUrl', BackendUtility::getAjaxUrl('SC_alt_file_navframe::expandCollapse'));
-		// init hook objects:
-		$this->hookObjects = array();
-		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.browse_links.php']['browseLinksHook'])) {
-			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.browse_links.php']['browseLinksHook'] as $classData) {
+	}
+
+	/**
+	 * Initialize hook objects implementing the interface
+	 *
+	 * @param string $hookKey the hook key
+	 * @throws \UnexpectedValueException
+	 * @return void
+	 */
+	protected function initHookObjects($hookKey) {
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][$hookKey]['browseLinksHook'])) {
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][$hookKey]['browseLinksHook'] as $classData) {
 				$processObject = GeneralUtility::getUserObj($classData);
 				if (!$processObject instanceof \TYPO3\CMS\Core\ElementBrowser\ElementBrowserHookInterface) {
 					throw new \UnexpectedValueException('$processObject must implement interface TYPO3\\CMS\\Core\\ElementBrowser\\ElementBrowserHookInterface', 1195039394);
@@ -313,13 +388,14 @@ class ElementBrowser {
 				$this->hookObjects[] = $processObject;
 			}
 		}
-		// Site URL
-		// Current site url
-		$this->siteURL = GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
-		$this->determineScriptUrl();
-		// Init fileProcessor
-		$this->fileProcessor = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Utility\\File\\BasicFileUtility');
-		$this->fileProcessor->init($GLOBALS['FILEMOUNTS'], $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
+	}
+
+	/**
+	 * Initialize $this->curUrlArray and $this->curUrlInfo based on script parameters
+	 *
+	 * @return void
+	 */
+	protected function initCurrentUrl() {
 		// CurrentUrl - the current link url must be passed around if it exists
 		if ($this->mode == 'wizard') {
 			$currentValues = GeneralUtility::trimExplode(LF, trim($this->P['currentValue']));
@@ -392,30 +468,31 @@ class ElementBrowser {
 			}
 			$this->curUrlInfo = $this->parseCurUrl($this->curUrlArray['href'], $this->siteURL);
 		}
-		// Determine nature of current url:
-		$this->act = GeneralUtility::_GP('act');
-		if (!$this->act) {
-			$this->act = $this->curUrlInfo['act'];
-		}
+	}
+
+	/**
+	 * Get the RTE configuration from Page TSConfig
+	 *
+	 * @return array RTE configuration array
+	 */
+	protected function getRTEConfig() {
+		$RTEtsConfigParts = explode(':', $this->RTEtsConfigParams);
+		$RTEsetup = $GLOBALS['BE_USER']->getTSConfig('RTE', BackendUtility::getPagesTSconfig($RTEtsConfigParts[5]));
+		return BackendUtility::RTEsetup($RTEsetup['properties'], $RTEtsConfigParts[0], $RTEtsConfigParts[2], $RTEtsConfigParts[4]);
+	}
+
+	/**
+	 * Generate JS code to be used on the link insert/modify dialogue
+	 *
+	 * @return string the generated JS code
+	 * @todo Define visibility
+	 */
+	public function getJsCode() {
 		// Rich Text Editor specific configuration:
 		$addPassOnParams = '';
 		if ((string) $this->mode == 'rte') {
-			$RTEtsConfigParts = explode(':', $this->RTEtsConfigParams);
 			$addPassOnParams .= '&RTEtsConfigParams=' . rawurlencode($this->RTEtsConfigParams);
-			$RTEsetup = $GLOBALS['BE_USER']->getTSConfig('RTE', BackendUtility::getPagesTSconfig($RTEtsConfigParts[5]));
-			$this->thisConfig = BackendUtility::RTEsetup($RTEsetup['properties'], $RTEtsConfigParts[0], $RTEtsConfigParts[2], $RTEtsConfigParts[4]);
 		}
-		// Initializing the target value (RTE)
-		$this->setTarget = ($this->curUrlArray['target'] != '-') ? $this->curUrlArray['target'] : '';
-		if ($this->thisConfig['defaultLinkTarget'] && !isset($this->curUrlArray['target'])) {
-			$this->setTarget = $this->thisConfig['defaultLinkTarget'];
-		}
-		// Initializing the class value (RTE)
-		$this->setClass = ($this->curUrlArray['class'] != '-') ? $this->curUrlArray['class'] : '';
-		// Initializing the title value (RTE)
-		$this->setTitle = ($this->curUrlArray['title'] != '-') ? $this->curUrlArray['title'] : '';
-		// Initializing the params value
-		$this->setParams = ($this->curUrlArray['params'] != '-') ? $this->curUrlArray['params'] : '';
 		// BEGIN accumulation of header JavaScript:
 		$JScode = '
 			// This JavaScript is primarily for RTE/Link. jumpToUrl is used in the other cases as well...
@@ -721,8 +798,7 @@ class ElementBrowser {
 				$JScode .= $processor->extendJScode($_params, $this);
 			}
 		}
-		// Finally, add the accumulated JavaScript to the template object:
-		$this->doc->JScode .= $this->doc->wrapScriptTags($JScode);
+		return $JScode;
 	}
 
 	/**
@@ -1755,7 +1831,7 @@ class ElementBrowser {
 						) . ' alt="" />' . $arrCol .
 					'<a href="#" onclick="return link_folder(\'' . $itemUid . '\');">' .
 						$icon .
-						htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($fileOrFolderObject->getName(), $titleLen)) .
+						htmlspecialchars(GeneralUtility::fixed_lgd_cs($fileOrFolderObject->getName(), $titleLen)) .
 					'</a><br />';
 			}
 		}
@@ -2491,7 +2567,7 @@ class ElementBrowser {
 				. '&expandFolder=' . rawurlencode($this->selectedFolder->getCombinedIdentifier())
 				. '&bparams=' . rawurlencode($this->bparams);
 			$thumbNailCheck = BackendUtility::getFuncCheck('', 'SET[displayThumbs]', $_MOD_SETTINGS['displayThumbs'],
-					\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('M') ? '' : $this->thisScript, $addParams, 'id="checkDisplayThumbs"')
+					GeneralUtility::_GP('M') ? '' : $this->thisScript, $addParams, 'id="checkDisplayThumbs"')
 				. ' <label for="checkDisplayThumbs">'
 				. $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_file_list.xlf:displayThumbs', TRUE) . '</label>';
 			$out .= $this->doc->spacer(5) . $thumbNailCheck . $this->doc->spacer(15);

@@ -100,44 +100,27 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 	public function init() {
 		$this->initVariables();
 		$this->initConfiguration();
-		$this->initHookObjects();
-		// init fileProcessor
-		$this->fileProcessor = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Utility\\File\\BasicFileUtility');
-		$this->fileProcessor->init($GLOBALS['FILEMOUNTS'], $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
+		$this->initHookObjects('ext/rtehtmlarea/mod4/class.tx_rtehtmlarea_select_image.php');
+
 		$this->allowedItems = $this->getAllowedItems('magic,plain,image');
 		$this->insertImage();
-		// Creating backend template object:
-		$this->doc = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
-		// Apply the same styles as those of the base script
-		$this->doc->bodyTagId = 'typo3-browse-links-php';
-		$this->doc->bodyTagAdditions = $this->getBodyTagAdditions();
-		$this->doc->backPath = $GLOBALS['BACK_PATH'];
-		// Load the Prototype library and browse_links.js
-		$this->doc->getPageRenderer()->loadPrototype();
-		$this->doc->loadJavascriptLib('js/tree.js');
-		$this->doc->getPageRenderer()->addInlineSetting('Tree.SC_alt_db_navframe', 'ajaxUrl', BackendUtility::getAjaxUrl('SC_alt_db_navframe::expandCollapse'));
-		$this->doc->getPageRenderer()->addInlineSetting('Tree.SC_alt_file_navframe', 'ajaxUrl', BackendUtility::getAjaxUrl('SC_alt_file_navframe::expandCollapse'));
-		$this->doc->loadJavascriptLib('js/browse_links.js');
-		$this->doc->JScode .= $this->doc->wrapScriptTags('
-			Tree.ajaxID = "SC_alt_file_navframe::expandCollapse";
-		');
-		$this->doc->getPageRenderer()->addCssFile($this->doc->backPath . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('t3skin') . 'rtehtmlarea/htmlarea.css');
-		$this->doc->getContextMenuCode();
+
+		$this->initDocumentTemplate();
 	}
 
 	/**
 	 * Initialize class variables
 	 *
-	 * @return 	void
+	 * @return void
 	 */
 	public function initVariables() {
+		parent::initVariables();
 		// Get "act"
 		$this->act = GeneralUtility::_GP('act');
 		if (!$this->act) {
 			$this->act = FALSE;
 		}
 		// Process bparams
-		$this->bparams = GeneralUtility::_GP('bparams');
 		$pArr = explode('|', $this->bparams);
 		$pRteArr = explode(':', $pArr[1]);
 		$this->editorNo = $pRteArr[0];
@@ -148,8 +131,6 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 			$this->sys_language_content = GeneralUtility::_GP('sys_language_content');
 			$this->RTEtsConfigParams = GeneralUtility::_GP('RTEtsConfigParams');
 		}
-		$this->expandPage = GeneralUtility::_GP('expandPage');
-		$this->expandFolder = GeneralUtility::_GP('expandFolder');
 		$pArr[1] = implode(':', array($this->editorNo, $this->sys_language_content));
 		$pArr[2] = $this->RTEtsConfigParams;
 		if ($this->act == 'dragdrop' || $this->act == 'plain') {
@@ -157,34 +138,24 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 		}
 		$pArr[3] = implode(',', $this->allowedFileTypes);
 		$this->bparams = implode('|', $pArr);
-		// Find "mode"
-		$this->mode = GeneralUtility::_GP('mode');
-		if (!$this->mode) {
-			$this->mode = 'rte';
-		}
-		// Site URL
-		$this->siteURL = GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
-		$this->determineScriptUrl();
 	}
 
 	/**
-	 * Initialize hook objects implementing the hook interface
+	 * Initialize document template object
 	 *
-	 * @return 	void
-	 * @throws \UnexpectedValueException
+	 * @return void
 	 */
-	protected function initHookObjects() {
-		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/rtehtmlarea/mod4/class.tx_rtehtmlarea_select_image.php']['browseLinksHook'])) {
-			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/rtehtmlarea/mod4/class.tx_rtehtmlarea_select_image.php']['browseLinksHook'] as $classData) {
-				$processObject = GeneralUtility::getUserObj($classData);
-				if (!$processObject instanceof \TYPO3\CMS\Core\ElementBrowser\ElementBrowserHookInterface) {
-					throw new \UnexpectedValueException('$processObject must implement interface TYPO3\\CMS\\Core\\ElementBrowser\\ElementBrowserHookInterface', 1195115652);
-				}
-				$parameters = array();
-				$processObject->init($this, $parameters);
-				$this->hookObjects[] = $processObject;
-			}
-		}
+	protected function initDocumentTemplate() {
+		parent::initDocumentTemplate();
+
+		$this->doc->bodyTagId = 'typo3-browse-links-php';
+		$this->doc->bodyTagAdditions = $this->getBodyTagAdditions();
+
+		$this->doc->JScode .= $this->doc->wrapScriptTags('
+			Tree.ajaxID = "SC_alt_file_navframe::expandCollapse";
+		');
+		$this->doc->getPageRenderer()->addCssFile($this->doc->backPath . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('t3skin') . 'rtehtmlarea/htmlarea.css');
+		$this->doc->getContextMenuCode();
 	}
 
 	/**
@@ -868,17 +839,6 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 		$this->imgPath = $this->getImgPath();
 		$this->defaultClass = $this->getDefaultClass();
 		$this->setMaximumImageDimensions();
-	}
-
-	/**
-	 * Get the RTE configuration from Page TSConfig
-	 *
-	 * @return 	array		RTE configuration array
-	 */
-	protected function getRTEConfig() {
-		$RTEtsConfigParts = explode(':', $this->RTEtsConfigParams);
-		$RTEsetup = $GLOBALS['BE_USER']->getTSConfig('RTE', \TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig($RTEtsConfigParts[5]));
-		return \TYPO3\CMS\Backend\Utility\BackendUtility::RTEsetup($RTEsetup['properties'], $RTEtsConfigParts[0], $RTEtsConfigParts[2], $RTEtsConfigParts[4]);
 	}
 
 	/**
