@@ -116,7 +116,7 @@ class StorageRepository extends AbstractRepository {
 
 			if (static::$storageRowCache === array()) {
 				$storageObjectsExists = $this->db->exec_SELECTgetSingleRow('uid', $this->table, '');
-				if ($storageObjectsExists !==  NULL) {
+				if ($storageObjectsExists !== NULL) {
 					if ($this->createLocalStorage(
 						'fileadmin/ (auto-created)',
 						$GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'],
@@ -124,6 +124,8 @@ class StorageRepository extends AbstractRepository {
 						'This is the local fileadmin/ directory. This storage mount has been created automatically by TYPO3.',
 						TRUE
 					) > 0 ) {
+						// reset to null to force reloading of storages
+						static::$storageRowCache = NULL;
 						// call self for initialize Cache
 						$this->initializeLocalCache();
 					}
