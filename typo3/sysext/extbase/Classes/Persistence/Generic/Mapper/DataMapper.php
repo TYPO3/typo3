@@ -181,6 +181,7 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	protected function thawProperties(\TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object, array $row) {
 		$className = get_class($object);
+		$classSchema = $this->reflectionService->getClassSchema($className);
 		$dataMap = $this->getDataMap($className);
 		$object->_setProperty('uid', (int)$row['uid']);
 		$object->_setProperty('pid', (int)$row['pid']);
@@ -198,7 +199,7 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface {
 			}
 			$columnMap = $dataMap->getColumnMap($propertyName);
 			$columnName = $columnMap->getColumnName();
-			$propertyData = $this->reflectionService->getClassSchema($className)->getProperty($propertyName);
+			$propertyData = $classSchema->getProperty($propertyName);
 			$propertyValue = NULL;
 			if ($row[$columnName] !== NULL) {
 				switch ($propertyData['type']) {
