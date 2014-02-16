@@ -244,9 +244,6 @@ class FrontendRteController extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaBase {
 		 * =======================================
 		 */
 		$this->getPageRenderer();
-		// Preloading the pageStyle and including RTE skin stylesheets
-		$this->addPageStyle();
-		$this->addSkin();
 		// Register RTE in JS
 		$this->TCEform->additionalJS_post[] = $this->wrapCDATA($this->registerRTEinJS($this->TCEform->RTEcounter, '', '', '', $textAreaId));
 		// Set the save option for the RTE:
@@ -256,9 +253,14 @@ class FrontendRteController extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaBase {
 			$this->pageRenderer->loadExtJs();
 			$this->pageRenderer->enableExtJSQuickTips();
 		}
-		$this->pageRenderer->addCssFile($this->siteURL . 'typo3/js/extjs/ux/resize.css');
 		$this->pageRenderer->addJsFile($this->getFullFileName('typo3/js/extjs/ux/ext.resizable.js'));
 		$this->pageRenderer->addJsFile('sysext/backend/Resources/Public/JavaScript/notifications.js');
+		// Preloading the pageStyle and including RTE skin stylesheets
+		$this->addPageStyle();
+		$this->pageRenderer->addCssFile($this->siteURL . 'typo3/contrib/extjs/resources/css/ext-all-notheme.css');
+		$this->pageRenderer->addCssFile($this->siteURL . 'typo3/sysext/t3skin/extjs/xtheme-t3skin.css');
+		$this->addSkin();
+		$this->pageRenderer->addCssFile($this->siteURL . 'typo3/js/extjs/ux/resize.css');
 		// Add RTE JavaScript
 		$this->addRteJsFiles($this->TCEform->RTEcounter);
 		$this->pageRenderer->addJsFile($this->buildJSMainLangFile($this->TCEform->RTEcounter));
