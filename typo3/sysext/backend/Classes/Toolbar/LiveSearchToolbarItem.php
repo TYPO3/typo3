@@ -38,7 +38,7 @@ class LiveSearchToolbarItem implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHoo
 	/**
 	 * Reference back to the backend object
 	 *
-	 * @var 	TYPO3backend
+	 * @var \TYPO3\CMS\Backend\Controller\BackendController
 	 */
 	protected $backendReference;
 
