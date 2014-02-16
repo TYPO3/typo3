@@ -57,27 +57,27 @@ table#typo3-filelist tr td div.typo3-editCtrl {
 table.t3-upload-queue {
 	margin: 10px 0;
 }
-table#typo3-filelist tr.file_list_normal.t3-upload-queue-item.last td {
+table#typo3-filelist tr.t3-upload-queue-item.last td {
 	border-bottom: 1px solid #666666;
 }
-table#typo3-filelist.t3-upload-queue tr.file_list_normal.t3-upload-queue-item.last td {
-	border-bottom: 1px solid #A2AAB8;
+table#typo3-filelist.t3-upload-queue tr.t3-upload-queue-item.last td {
+	border-bottom: 1px solid #D7D7D7;
 }
-table#typo3-filelist tr.file_list_normal.t3-upload-queue-item.uploading td {
+table#typo3-filelist tr.t3-upload-queue-item.uploading td {
 	color: #9D9D9D;
 }
-table#typo3-filelist tr.file_list_normal.t3-upload-queue-item.error td {
+table#typo3-filelist tr.t3-upload-queue-item.error td {
 	color: #BF383F;
 }
-table#typo3-filelist tr.file_list_normal.t3-upload-queue-item td.t3-upload-queue-progress {
+table#typo3-filelist tr.t3-upload-queue-item td.t3-upload-queue-progress {
 	color: #FFF;
 	padding: 0;
 }
-table#typo3-filelist tr.file_list_normal.t3-upload-queue-item.uploading td.t3-upload-queue-progress {
+table#typo3-filelist tr.t3-upload-queue-item.uploading td.t3-upload-queue-progress {
 	background-color: #F2CEB0;
 	color: #000;
 }
-table#typo3-filelist tr.file_list_normal.t3-upload-queue-item.error td.t3-upload-queue-progress {
+table#typo3-filelist tr.t3-upload-queue-item.error td.t3-upload-queue-progress {
 	background-color: #E5B6B9;
 	color: #F7F7F7;
 }
