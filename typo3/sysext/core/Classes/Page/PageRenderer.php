@@ -2359,10 +2359,11 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 					$wrapArr = explode($properties['splitChar'] ?: '|', $properties['allWrap'], 2);
 					$tag = $wrapArr[0] . $tag . $wrapArr[1];
 				}
+				$tag .= LF;
 				if ($properties['forceOnTop']) {
-					$cssFiles = $tag . LF . $cssFiles;
+					$cssFiles = $tag . $cssFiles;
 				} else {
-					$cssFiles .= LF . $tag;
+					$cssFiles .= $tag;
 				}
 			}
 		}
@@ -2389,10 +2390,11 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 					$wrapArr = explode($properties['splitChar'] ?: '|', $properties['allWrap'], 2);
 					$tag = $wrapArr[0] . $tag . $wrapArr[1];
 				}
+				$tag .= LF;
 				if ($properties['forceOnTop']) {
-					$cssFiles = $tag . LF . $cssFiles;
+					$cssFiles = $tag . $cssFiles;
 				} else {
-					$cssFiles .= LF . $tag;
+					$cssFiles .= $tag;
 				}
 			}
 		}
@@ -2408,10 +2410,11 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 		$cssInline = '';
 		if (count($this->cssInline)) {
 			foreach ($this->cssInline as $name => $properties) {
+				$cssCode = '/*' . htmlspecialchars($name) . '*/' . LF . $properties['code'] . LF;
 				if ($properties['forceOnTop']) {
-					$cssInline = '/*' . htmlspecialchars($name) . '*/' . LF . $properties['code'] . LF . $cssInline;
+					$cssInline = $cssCode . $cssInline;
 				} else {
-					$cssInline .= '/*' . htmlspecialchars($name) . '*/' . LF . $properties['code'] . LF;
+					$cssInline .= $cssCode;
 				}
 			}
 			$cssInline = $this->inlineCssWrap[0] . $cssInline . $this->inlineCssWrap[1];
@@ -2436,17 +2439,18 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 					$wrapArr = explode($properties['splitChar'] ?: '|', $properties['allWrap'], 2);
 					$tag = $wrapArr[0] . $tag . $wrapArr[1];
 				}
+				$tag .= LF;
 				if ($properties['forceOnTop']) {
 					if ($properties['section'] === self::PART_HEADER) {
-						$jsLibs = $tag . LF . $jsLibs;
+						$jsLibs = $tag . $jsLibs;
 					} else {
-						$jsFooterLibs = $tag . LF . $jsFooterLibs;
+						$jsFooterLibs = $tag . $jsFooterLibs;
 					}
 				} else {
 					if ($properties['section'] === self::PART_HEADER) {
-						$jsLibs .= LF . $tag;
+						$jsLibs .= $tag;
 					} else {
-						$jsFooterLibs .= LF . $tag;
+						$jsFooterLibs .= $tag;
 					}
 				}
 			}
@@ -2475,23 +2479,24 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 					$wrapArr = explode($properties['splitChar'] ?: '|', $properties['allWrap'], 2);
 					$tag = $wrapArr[0] . $tag . $wrapArr[1];
 				}
+				$tag .= LF;
 				if ($properties['forceOnTop']) {
 					if ($properties['section'] === self::PART_HEADER) {
-						$jsFiles = $tag . LF . $jsFiles;
+						$jsFiles = $tag . $jsFiles;
 					} else {
-						$jsFooterFiles = $tag . LF . $jsFooterFiles;
+						$jsFooterFiles = $tag . $jsFooterFiles;
 					}
 				} else {
 					if ($properties['section'] === self::PART_HEADER) {
-						$jsFiles .= LF . $tag;
+						$jsFiles .= $tag;
 					} else {
-						$jsFooterFiles .= LF . $tag;
+						$jsFooterFiles .= $tag;
 					}
 				}
 			}
 		}
 		if ($this->moveJsFromHeaderToFooter) {
-			$jsFooterFiles = $jsFiles . LF . $jsFooterFiles;
+			$jsFooterFiles = $jsFiles . $jsFooterFiles;
 			$jsFiles = '';
 		}
 		return array($jsFiles, $jsFooterFiles);
@@ -2507,17 +2512,18 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 		$jsFooterInline = '';
 		if (count($this->jsInline)) {
 			foreach ($this->jsInline as $name => $properties) {
+				$jsCode = '/*' . htmlspecialchars($name) . '*/' . LF . $properties['code'] . LF;
 				if ($properties['forceOnTop']) {
 					if ($properties['section'] === self::PART_HEADER) {
-						$jsInline = '/*' . htmlspecialchars($name) . '*/' . LF . $properties['code'] . LF . $jsInline;
+						$jsInline = $jsCode . $jsInline;
 					} else {
-						$jsFooterInline = '/*' . htmlspecialchars($name) . '*/' . LF . $properties['code'] . LF . $jsFooterInline;
+						$jsFooterInline = $jsCode . $jsFooterInline;
 					}
 				} else {
 					if ($properties['section'] === self::PART_HEADER) {
-						$jsInline .= '/*' . htmlspecialchars($name) . '*/' . LF . $properties['code'] . LF;
+						$jsInline .= $jsCode;
 					} else {
-						$jsFooterInline .= '/*' . htmlspecialchars($name) . '*/' . LF . $properties['code'] . LF;
+						$jsFooterInline .= $jsCode;
 					}
 				}
 			}
@@ -2529,7 +2535,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 			$jsFooterInline = $this->inlineJavascriptWrap[0] . $jsFooterInline . $this->inlineJavascriptWrap[1];
 		}
 		if ($this->moveJsFromHeaderToFooter) {
-			$jsFooterInline = $jsInline . LF . $jsFooterInline;
+			$jsFooterInline = $jsInline . $jsFooterInline;
 			$jsInline = '';
 		}
 		return array($jsInline, $jsFooterInline);
