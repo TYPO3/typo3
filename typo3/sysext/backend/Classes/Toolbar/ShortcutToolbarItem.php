@@ -8,7 +8,25 @@ namespace TYPO3\CMS\Backend\Toolbar;
  */
 class ShortcutToolbarItem implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookInterface {
 
-	protected $shortcutGroups;
+	const SUPERGLOBAL_GROUP = -100;
+
+	/**
+	 * @var string
+	 * @todo define visibility
+	 */
+	public $perms_clause;
+
+	/**
+	 * @var string
+	 * @todo define visibility
+	 */
+	public $backPath;
+
+	/**
+	 * @var array
+	 * @todo define visibility
+	 */
+	public $fieldArray;
 
 	/**
 	 * All available shortcuts
@@ -16,6 +34,11 @@ class ShortcutToolbarItem implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookI
 	 * @var array
 	 */
 	protected $shortcuts;
+
+	/**
+	 * @var array
+	 */
+	protected $shortcutGroups;
 
 	/**
 	 * Labels of all groups.
@@ -28,7 +51,7 @@ class ShortcutToolbarItem implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookI
 	/**
 	 * Reference back to the backend object
 	 *
-	 * @var 	TYPO3backend
+	 * @var \TYPO3\CMS\Backend\Controller\BackendController
 	 */
 	protected $backendReference;
 
@@ -185,36 +208,41 @@ class ShortcutToolbarItem implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookI
 	 * @return array Array of shortcuts
 	 */
 	protected function initShortcuts() {
-		$shortcuts = array();
-		$globalGroups = $this->getGlobalShortcutGroups();
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_be_shortcuts', '((userid = ' . $GLOBALS['BE_USER']->user['uid'] . ' AND sc_group>=0) OR sc_group IN (' . implode(',', array_keys($globalGroups)) . '))', '', 'sc_group,sorting');
+		$globalGroupIdList = implode(',', array_keys($this->getGlobalShortcutGroups()));
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+			'*',
+			'sys_be_shortcuts',
+			'(userid = ' . (int)$GLOBALS['BE_USER']->user['uid'] . ' AND sc_group>=0) OR sc_group IN (' . $globalGroupIdList . ')',
+			'',
+			'sc_group,sorting'
+		);
 		// Traverse shortcuts
+		$lastGroup = 0;
+		$shortcuts = array();
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 			$shortcut = array('raw' => $row);
-			$moduleParts = explode('|', $row['module_name']);
-			$row['module_name'] = $moduleParts[0];
-			$row['M_module_name'] = $moduleParts[1];
-			$moduleParts = explode('_', $row['M_module_name'] ? $row['M_module_name'] : $row['module_name']);
+			list($row['module_name'], $row['M_module_name']) = explode('|', $row['module_name']);
 			$queryParts = parse_url($row['url']);
 			$queryParameters = \TYPO3\CMS\Core\Utility\GeneralUtility::explodeUrl2Array($queryParts['query'], 1);
-			if ($row['module_name'] == 'xMOD_alt_doc.php' && is_array($queryParameters['edit'])) {
+			if ($row['module_name'] === 'xMOD_alt_doc.php' && is_array($queryParameters['edit'])) {
 				$shortcut['table'] = key($queryParameters['edit']);
 				$shortcut['recordid'] = key($queryParameters['edit'][$shortcut['table']]);
-				if ($queryParameters['edit'][$shortcut['table']][$shortcut['recordid']] == 'edit') {
+				if ($queryParameters['edit'][$shortcut['table']][$shortcut['recordid']] === 'edit') {
 					$shortcut['type'] = 'edit';
-				} elseif ($queryParameters['edit'][$shortcut['table']][$shortcut['recordid']] == 'new') {
+				} elseif ($queryParameters['edit'][$shortcut['table']][$shortcut['recordid']] === 'new') {
 					$shortcut['type'] = 'new';
 				}
-				if (substr($shortcut['recordid'], -1) == ',') {
+				if (substr($shortcut['recordid'], -1) === ',') {
 					$shortcut['recordid'] = substr($shortcut['recordid'], 0, -1);
 				}
 			} else {
 				$shortcut['type'] = 'other';
 			}
 			// Check for module access
+			$moduleName = $row['M_module_name'] ?: $row['module_name'];
 			$pageId = $this->getLinkedPageId($row['url']);
 			if (!$GLOBALS['BE_USER']->isAdmin()) {
-				if (!isset($GLOBALS['LANG']->moduleLabels['tabs_images'][(implode('_', $moduleParts) . '_tab')])) {
+				if (!isset($GLOBALS['LANG']->moduleLabels['tabs_images'][$moduleName . '_tab'])) {
 					// Nice hack to check if the user has access to this module
 					// - otherwise the translation label would not have been loaded :-)
 					continue;
@@ -231,10 +259,13 @@ class ShortcutToolbarItem implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookI
 					}
 				}
 			}
-			$shortcutGroup = $row['sc_group'];
-			if ($shortcutGroup && strcmp($lastGroup, $shortcutGroup) && $shortcutGroup != -100) {
+			$moduleParts = explode('_', $moduleName);
+			$shortcutGroup = (int)$row['sc_group'];
+			if ($shortcutGroup && $lastGroup !== $shortcutGroup && $shortcutGroup !== self::SUPERGLOBAL_GROUP) {
 				$shortcut['groupLabel'] = $this->getShortcutGroupLabel($shortcutGroup);
 			}
+			$lastGroup = $shortcutGroup;
+
 			if ($row['description']) {
 				$shortcut['label'] = $row['description'];
 			} else {
@@ -242,9 +273,9 @@ class ShortcutToolbarItem implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookI
 			}
 			$shortcut['group'] = $shortcutGroup;
 			$shortcut['icon'] = $this->getShortcutIcon($row, $shortcut);
-			$shortcut['iconTitle'] = $this->getShortcutIconTitle($shortcutLabel, $row['module_name'], $row['M_module_name']);
-			$shortcut['action'] = 'jump(unescape(\'' . rawurlencode($row['url']) . '\'),\'' . implode('_', $moduleParts) . '\',\'' . $moduleParts[0] . '\', ' . intval($pageId) . ');';
-			$lastGroup = $row['sc_group'];
+			$shortcut['iconTitle'] = $this->getShortcutIconTitle($shortcut['label'], $row['module_name'], $row['M_module_name']);
+			$shortcut['action'] = 'jump(unescape(\'' . rawurlencode($row['url']) . '\'),\'' . $moduleName . '\',\'' . $moduleParts[0] . '\', ' . (int)$pageId . ');';
+
 			$shortcuts[] = $shortcut;
 		}
 		return $shortcuts;
@@ -284,14 +315,11 @@ class ShortcutToolbarItem implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookI
 	}
 
 	/**
-	 * Gets the available shortcut groups from default gropups, user TSConfig,
-	 * and global groups
+	 * Gets the available shortcut groups from default groups, user TSConfig, and global groups
 	 *
-	 * @param array $params Array of parameters from the AJAX interface, currently unused
-	 * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj Object of type TYPO3AJAX
 	 * @return array
 	 */
-	protected function initShortcutGroups($params = array(), \TYPO3\CMS\Core\Http\AjaxRequestHandler &$ajaxObj = NULL) {
+	protected function initShortcutGroups() {
 		// Groups from TSConfig
 		$bookmarkGroups = $GLOBALS['BE_USER']->getTSConfigProp('options.bookmarkGroups');
 		if (is_array($bookmarkGroups) && count($bookmarkGroups)) {
@@ -311,9 +339,10 @@ class ShortcutToolbarItem implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookI
 			}
 		}
 		// Group -100 is kind of superglobal and can't be changed.
-		$this->shortcutGroups[-100] = 1;
+		$this->shortcutGroups[self::SUPERGLOBAL_GROUP] = 1;
 		// Add labels
 		foreach ($this->shortcutGroups as $groupId => $groupLabel) {
+			$groupId = (int)$groupId;
 			$label = $groupLabel;
 			if ($groupLabel == '1') {
 				$label = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.xlf:bookmark_group_' . abs($groupId), 1);
@@ -324,8 +353,8 @@ class ShortcutToolbarItem implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookI
 			}
 			if ($groupId < 0) {
 				// Global group
-				$label = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.xlf:bookmark_global', 1) . ': ' . (!empty($label) ? $label : abs($groupId));
-				if ($groupId == -100) {
+				$label = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.xlf:bookmark_global', TRUE) . ': ' . (!empty($label) ? $label : abs($groupId));
+				if ($groupId === self::SUPERGLOBAL_GROUP) {
 					$label = $GLOBALS['LANG']->getLL('bookmark_global', 1) . ': ' . $GLOBALS['LANG']->getLL('bookmark_all', 1);
 				}
 			}
@@ -486,11 +515,7 @@ class ShortcutToolbarItem implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookI
 	 * @return string The shortcut group label, can be an empty string if no group was found for the id
 	 */
 	protected function getShortcutGroupLabel($groupId) {
-		$label = '';
-		if ($this->shortcutGroups[$groupId]) {
-			$label = $this->shortcutGroups[$groupId];
-		}
-		return $label;
+		return isset($this->shortcutGroups[$groupId]) ? $this->shortcutGroups[$groupId] : '';
 	}
 
 	/**
@@ -533,6 +558,7 @@ class ShortcutToolbarItem implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookI
 		case 'xMOD_alt_doc.php':
 			$table = $shortcut['table'];
 			$recordid = $shortcut['recordid'];
+			$icon = '';
 			if ($shortcut['type'] == 'edit') {
 				// Creating the list of fields to include in the SQL query:
 				$selectFields = $this->fieldArray;
