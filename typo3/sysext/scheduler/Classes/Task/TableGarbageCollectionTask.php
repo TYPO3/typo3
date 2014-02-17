@@ -89,7 +89,6 @@ class TableGarbageCollectionTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask 
 			// Expire field = 0 means no expiration
 			$where = $field . ' <= \'' . $dateLimit . '\' AND ' . $field . ' > \'0\'';
 		} elseif (!empty($configuration['dateField'])) {
-			$field = $configuration['dateField'];
 			if (!$this->allTables) {
 				$deleteTimestamp = strtotime('-' . $this->numberOfDays . 'days');
 			} else {
