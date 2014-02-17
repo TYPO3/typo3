@@ -61,9 +61,10 @@ class ActionService {
 	 * @param string $tableName
 	 * @param integer $pageId
 	 * @param array $recordData
+	 * @return array
 	 */
 	public function createNewRecord($tableName, $pageId, array $recordData) {
-		$this->createNewRecords($pageId, array($tableName => $recordData));
+		return $this->createNewRecords($pageId, array($tableName => $recordData));
 	}
 
 	/**
@@ -178,6 +179,7 @@ class ActionService {
 		);
 		$this->dataHandler->start(array(), $commandMap);
 		$this->dataHandler->process_cmdmap();
+		return $this->dataHandler->copyMappingArray;
 	}
 
 	/**
@@ -201,6 +203,7 @@ class ActionService {
 	 * @param string $tableName
 	 * @param integer $uid
 	 * @param integer $languageId
+	 * @return array
 	 */
 	public function localizeRecord($tableName, $uid, $languageId) {
 		$commandMap = array(
@@ -212,6 +215,7 @@ class ActionService {
 		);
 		$this->dataHandler->start(array(), $commandMap);
 		$this->dataHandler->process_cmdmap();
+		return $this->dataHandler->copyMappingArray;
 	}
 
 	/**

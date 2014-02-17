@@ -4,7 +4,7 @@ sys_category
 ,29,0,512,0,0,0,0,0,0,0,0,"Category B",0,0
 ,30,0,768,0,0,0,0,0,0,0,0,"Category C",0,0
 ,31,0,1024,0,0,0,0,0,0,0,0,"Category A.A",28,0
-,32,0,384,0,1,28,0,0,0,0,0,"Category A",0,1
+,32,0,384,0,1,28,0,0,0,0,0,"[Translate to Dansk:] Category A",0,1
 sys_category_record_mm
 ,uid_local,uid_foreign,tablenames,sorting,sorting_foreign,fieldname
 ,28,297,tt_content,0,1,categories

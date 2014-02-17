@@ -194,7 +194,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 			self::VALUE_PageId,
 			array(
 				self::TABLE_Hotel => array('uid' => 4, 'title' => 'Testing #1'),
-				self::TABLE_Content => array('uid' => self::VALUE_ContentIdLast, 'tx_irretutorial_hotels' => '3,4'),
+				self::TABLE_Content => array('uid' => self::VALUE_ContentIdFirst, 'tx_irretutorial_hotels' => '3,4'),
 			)
 		);
 		$this->assertAssertionDataSet('modifyParentRecordWithHotelChildRecord');
