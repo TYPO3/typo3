@@ -105,6 +105,14 @@ class PageRepository {
 	protected $cache_getMountPointInfo = array();
 
 	/**
+	 * @var array
+	 */
+	protected $tableNamesAllowedOnRootLevel = array(
+		'sys_file_metadata',
+		'sys_category',
+	);
+
+	/**
 	 * Named constants for "magic numbers" of the field doktype
 	 */
 	const DOKTYPE_DEFAULT = 1;
@@ -366,7 +374,7 @@ class PageRepository {
 				$hookObject->getRecordOverlay_preProcess($table, $row, $sys_language_content, $OLmode, $this);
 			}
 		}
-		if ($row['uid'] > 0 && ($row['pid'] > 0 || $table == 'sys_file_metadata')) {
+		if ($row['uid'] > 0 && ($row['pid'] > 0 || in_array($table, $this->tableNamesAllowedOnRootLevel))) {
 			if ($GLOBALS['TCA'][$table] && $GLOBALS['TCA'][$table]['ctrl']['languageField'] && $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']) {
 				if (!$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerTable']) {
 					// Will not be able to work with other tables (Just didn't implement it yet; Requires a scan

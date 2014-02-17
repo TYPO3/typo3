@@ -328,9 +328,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 		$responseContent = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseContent();
 		$this->assertResponseContentStructureHasRecords(
 			$responseContent, self::TABLE_Content . ':' . self::VALUE_ContentIdFirst, 'categories',
-			// @todo Category localization cannot be rendered - http://forge.typo3.org/issues/56059
-			// self::TABLE_Category, 'title', array('[Translate to Dansk:] Category A', 'Category B')
-			self::TABLE_Category, 'title', array('Category A', 'Category B')
+			self::TABLE_Category, 'title', array('[Translate to Dansk:] Category A', 'Category B')
 		);
 	}
 
