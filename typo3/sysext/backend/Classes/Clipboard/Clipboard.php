@@ -369,7 +369,7 @@ class Clipboard {
 								$processedFile = $fileObject->process(\TYPO3\CMS\Core\Resource\ProcessedFile::CONTEXT_IMAGEPREVIEW, array());
 								if ($processedFile) {
 									$thumbUrl = $processedFile->getPublicUrl(TRUE);
-									$thumb .= '<br /><img src="' . $thumbUrl . '" title="' . htmlspecialchars($fileObject->getName()) . '" alt="" />';
+									$thumb .= '<br /><img src="' . htmlspecialchars($thumbUrl) . '" title="' . htmlspecialchars($fileObject->getName()) . '" alt="" />';
 								}
 							}
 							$lines[] = '
