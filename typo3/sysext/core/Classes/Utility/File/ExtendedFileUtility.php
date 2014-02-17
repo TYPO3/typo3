@@ -222,6 +222,19 @@ class ExtendedFileUtility extends \TYPO3\CMS\Core\Utility\File\BasicFileUtility 
 					$this->writelog(1, 1, 108, 'No file was uploaded!', '');
 				}
 			}
+
+			// Check if there were new folder names expected, but non given
+			if ($this->fileCmdMap['newfolder']) {
+				foreach ($this->fileCmdMap['newfolder'] as $key => $cmdArr) {
+					if (empty($cmdArr['data'])) {
+						unset($this->fileCmdMap['newfolder'][$key]);
+					}
+				}
+				if (count($this->fileCmdMap['newfolder']) === 0) {
+					$this->writeLog(6, 1, 108, 'No name for new folder given!', '');
+				}
+			}
+
 			// Traverse each set of actions
 			foreach ($this->fileCmdMap as $action => $actionData) {
 				// Traverse all action data. More than one file might be affected at the same time.
