@@ -365,8 +365,12 @@ class Clipboard {
 							$folder = $fileObject instanceof \TYPO3\CMS\Core\Resource\Folder;
 							$size = $folder ? '' : '(' . \TYPO3\CMS\Core\Utility\GeneralUtility::formatSize($fileObject->getSize()) . 'bytes)';
 							$icon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForFile($folder ? 'folder' : strtolower($fileObject->getExtension()), array('style' => 'margin: 0 20px;', 'title' => $fileObject->getName() . ' ' . $size));
-							if ($this->clipData['_setThumb'] && \TYPO3\CMS\Core\Utility\GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], $fileObject->getExtension())) {
-								$thumb = '<br />' . \TYPO3\CMS\Backend\Utility\BackendUtility::getThumbNail(($this->backPath . 'thumbs.php'), $v, ' vspace="4"');
+							if (!$folder && $this->clipData['_setThumb'] && \TYPO3\CMS\Core\Utility\GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], $fileObject->getExtension())) {
+								$processedFile = $fileObject->process(\TYPO3\CMS\Core\Resource\ProcessedFile::CONTEXT_IMAGEPREVIEW, array());
+								if ($processedFile) {
+									$thumbUrl = $processedFile->getPublicUrl(TRUE);
+									$thumb .= '<br /><img src="' . $thumbUrl . '" title="' . htmlspecialchars($fileObject->getName()) . '" alt="" />';
+								}
 							}
 							$lines[] = '
 								<tr>
