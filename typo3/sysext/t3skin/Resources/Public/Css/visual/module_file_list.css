@@ -47,7 +47,7 @@ table#typo3-filelist tr td div.typo3-editCtrl {
 	background: #EBEBEB;
 }
 .t3-upload-file-picker {
-	position: absolute;
+	position: fixed;
 	bottom: 0;
 	right: 0;
 	height: 1px;
