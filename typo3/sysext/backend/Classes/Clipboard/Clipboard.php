@@ -365,8 +365,12 @@ class Clipboard {
 							$folder = $fileObject instanceof \TYPO3\CMS\Core\Resource\Folder;
 							$size = $folder ? '' : '(' . GeneralUtility::formatSize($fileObject->getSize()) . 'bytes)';
 							$icon = IconUtility::getSpriteIconForFile($folder ? 'folder' : strtolower($fileObject->getExtension()), array('style' => 'margin: 0 20px;', 'title' => $fileObject->getName() . ' ' . $size));
-							if ($this->clipData['_setThumb'] && GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], $fileObject->getExtension())) {
-								$thumb = '<br />' . BackendUtility::getThumbNail(($this->backPath . 'thumbs.php'), $v, ' vspace="4"');
+							if (!$folder && $this->clipData['_setThumb'] && GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], $fileObject->getExtension())) {
+								$processedFile = $fileObject->process(\TYPO3\CMS\Core\Resource\ProcessedFile::CONTEXT_IMAGEPREVIEW, array());
+								if ($processedFile) {
+									$thumbUrl = $processedFile->getPublicUrl(TRUE);
+									$thumb .= '<br /><img src="' . $thumbUrl . '" title="' . htmlspecialchars($fileObject->getName()) . '" alt="" />';
+								}
 							}
 							$lines[] = '
 								<tr>
