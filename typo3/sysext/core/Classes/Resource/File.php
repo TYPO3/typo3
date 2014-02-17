@@ -143,6 +143,9 @@ class File extends AbstractFile {
 	 * @internal
 	 */
 	public function _getMetaData() {
+		if (!$this->metaDataLoaded) {
+			$this->loadMetaData();
+		}
 		return $this->metaDataProperties;
 	}
 
