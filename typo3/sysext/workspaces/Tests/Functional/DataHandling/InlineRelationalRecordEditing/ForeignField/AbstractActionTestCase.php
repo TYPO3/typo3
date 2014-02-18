@@ -200,6 +200,65 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 	/**
 	 * @test
 	 */
+	public function createAndCopyParentContentRecordWithHotelAndOfferChildRecordsAndDiscardCopiedParentRecord() {
+		// @todo Copying the new child records is broken in the Core
+		$newTableIds = $this->actionService->createNewRecords(
+			self::VALUE_PageId,
+			array(
+				self::TABLE_Offer => array('title' => 'Offer #1'),
+				self::TABLE_Hotel => array('title' => 'Hotel #1', 'offers' => '__previousUid'),
+				self::TABLE_Content => array('header' => 'Testing #1', 'tx_irretutorial_hotels' => '__previousUid'),
+			)
+		);
+		$newContentId = $newTableIds['tt_content'][0];
+		$copiedTableIds = $this->actionService->copyRecord(self::TABLE_Content, $newContentId, self::VALUE_PageId);
+		$copiedContentId = $copiedTableIds[self::TABLE_Content][$newContentId];
+		$this->actionService->deleteRecord(self::TABLE_Content, $copiedContentId);
+		$this->assertAssertionDataSet('createAndCopyParentContentRecordWithHotelAndOfferChildRecordsAndDiscardCopiedParentRecord');
+	}
+
+	/**
+	 * @test
+	 */
+	public function createAndLocalizeParentContentRecordWithHotelAndOfferChildRecords() {
+		// @todo Localizing the new child records is broken in the Core
+		$newTableIds = $this->actionService->createNewRecords(
+			self::VALUE_PageId,
+			array(
+				self::TABLE_Offer => array('title' => 'Offer #1'),
+				self::TABLE_Hotel => array('title' => 'Hotel #1', 'offers' => '__previousUid'),
+				self::TABLE_Content => array('header' => 'Testing #1', 'tx_irretutorial_hotels' => '__previousUid'),
+			)
+		);
+		$newContentId = $newTableIds[self::TABLE_Content][0];
+		$newHotelId = $newTableIds[self::TABLE_Hotel][0];
+		$localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Content, $newContentId, self::VALUE_LanguageId);
+		$this->assertAssertionDataSet('createAndLocalizeParentContentRecordWithHotelAndOfferChildRecords');
+	}
+
+	/**
+	 * @test
+	 */
+	public function createAndLocalizeParentContentRecordWithHotelAndOfferChildRecordsAndDiscardLocalizedParentRecord() {
+		// @todo Localizing the new child records is broken in the Core
+		$newTableIds = $this->actionService->createNewRecords(
+			self::VALUE_PageId,
+			array(
+				self::TABLE_Offer => array('title' => 'Offer #1'),
+				self::TABLE_Hotel => array('title' => 'Hotel #1', 'offers' => '__previousUid'),
+				self::TABLE_Content => array('header' => 'Testing #1', 'tx_irretutorial_hotels' => '__previousUid'),
+			)
+		);
+		$newContentId = $newTableIds[self::TABLE_Content][0];
+		$localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Content, $newContentId, self::VALUE_LanguageId);
+		$localizedContentId = $localizedTableIds[self::TABLE_Content][$newContentId];
+		$this->actionService->deleteRecord(self::TABLE_Content, $localizedContentId);
+		$this->assertAssertionDataSet('createAndLocalizeParentContentRecordWithHotelAndOfferChildRecordsAndDiscardLocalizedParentRecord');
+	}
+
+	/**
+	 * @test
+	 */
 	public function modifyOnlyHotelChildRecord() {
 		$this->actionService->modifyRecord(self::TABLE_Hotel, 4, array('title' => 'Testing #1'));
 		$this->assertAssertionDataSet('modifyOnlyHotelChildRecord');
@@ -225,6 +284,41 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 			)
 		);
 		$this->assertAssertionDataSet('modifyParentRecordWithHotelChildRecord');
+	}
+
+	/**
+	 * @test
+	 */
+	public function modifyParentRecordWithHotelChildRecordAndDiscardModifiedParentRecord() {
+		$this->actionService->modifyRecords(
+			self::VALUE_PageId,
+			array(
+				self::TABLE_Hotel => array('uid' => 4, 'title' => 'Testing #1'),
+				self::TABLE_Content => array('uid' => self::VALUE_ContentIdFirst, 'tx_irretutorial_hotels' => '3,4'),
+			)
+		);
+		$this->actionService->deleteRecord(self::TABLE_Content, self::VALUE_ContentIdFirst);
+		$this->assertAssertionDataSet('modifyParentRecordWithHotelChildRecordAndDiscardModifiedParentRecord');
+	}
+
+	/**
+	 * @test
+	 */
+	public function modifyParentRecordWithHotelChildRecordAndDiscardAllModifiedRecords() {
+		$this->actionService->modifyRecords(
+			self::VALUE_PageId,
+			array(
+				self::TABLE_Hotel => array('uid' => 4, 'title' => 'Testing #1'),
+				self::TABLE_Content => array('uid' => self::VALUE_ContentIdFirst, 'tx_irretutorial_hotels' => '3,4'),
+			)
+		);
+		$this->actionService->deleteRecords(
+				array(
+					self::TABLE_Hotel => array(4),
+					self::TABLE_Content => array(self::VALUE_ContentIdFirst),
+				)
+		);
+		$this->assertAssertionDataSet('modifyParentRecordWithHotelChildRecordAndDiscardAllModifiedRecords');
 	}
 
 	/**

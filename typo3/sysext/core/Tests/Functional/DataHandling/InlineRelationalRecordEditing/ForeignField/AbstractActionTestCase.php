@@ -173,6 +173,43 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 	/**
 	 * @test
 	 */
+	public function createAndCopyParentContentRecordWithHotelAndOfferChildRecords() {
+		$newTableIds = $this->actionService->createNewRecords(
+			self::VALUE_PageId,
+			array(
+				self::TABLE_Offer => array('title' => 'Offer #1'),
+				self::TABLE_Hotel => array('title' => 'Hotel #1', 'offers' => '__previousUid'),
+				self::TABLE_Content => array('header' => 'Testing #1', 'tx_irretutorial_hotels' => '__previousUid'),
+			)
+		);
+		$newContentId = $newTableIds[self::TABLE_Content][0];
+		$newHotelId = $newTableIds[self::TABLE_Hotel][0];
+		$copiedTableIds = $this->actionService->copyRecord(self::TABLE_Content, $newContentId, self::VALUE_PageId);
+		$this->assertAssertionDataSet('createAndCopyParentContentRecordWithHotelAndOfferChildRecords');
+	}
+
+	/**
+	 * @test
+	 */
+	public function createAndLocalizeParentContentRecordWithHotelAndOfferChildRecords() {
+		// @todo Localizing the new child records is broken in the Core
+		$newTableIds = $this->actionService->createNewRecords(
+			self::VALUE_PageId,
+			array(
+				self::TABLE_Offer => array('title' => 'Offer #1'),
+				self::TABLE_Hotel => array('title' => 'Hotel #1', 'offers' => '__previousUid'),
+				self::TABLE_Content => array('header' => 'Testing #1', 'tx_irretutorial_hotels' => '__previousUid'),
+			)
+		);
+		$newContentId = $newTableIds[self::TABLE_Content][0];
+		$newHotelId = $newTableIds[self::TABLE_Hotel][0];
+		$localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Content, $newContentId, self::VALUE_LanguageId);
+		$this->assertAssertionDataSet('createAndLocalizeParentContentRecordWithHotelAndOfferChildRecords');
+	}
+
+	/**
+	 * @test
+	 */
 	public function modifyOnlyHotelChildRecord() {
 		$this->actionService->modifyRecord(self::TABLE_Hotel, 4, array('title' => 'Testing #1'));
 		$this->assertAssertionDataSet('modifyOnlyHotelChildRecord');

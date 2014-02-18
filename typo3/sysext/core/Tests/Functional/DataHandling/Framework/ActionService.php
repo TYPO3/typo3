@@ -153,13 +153,25 @@ class ActionService {
 	 * @param integer $uid
 	 */
 	public function deleteRecord($tableName, $uid) {
-		$commandMap = array(
-			$tableName => array(
-				$uid => array(
-					'delete' => TRUE,
-				),
-			),
+		$this->deleteRecords(
+			array(
+				$tableName => array($uid),
+			)
 		);
+	}
+
+	/**
+	 * @param array $tableRecordIds
+	 */
+	public function deleteRecords(array $tableRecordIds) {
+		$commandMap = array();
+		foreach ($tableRecordIds as $tableName => $ids) {
+			foreach ($ids as $uid) {
+				$commandMap[$tableName][$uid] = array(
+					'delete' => TRUE,
+				);
+			}
+		}
 		$this->dataHandler->start(array(), $commandMap);
 		$this->dataHandler->process_cmdmap();
 	}
@@ -168,6 +180,7 @@ class ActionService {
 	 * @param string $tableName
 	 * @param integer $uid
 	 * @param integer $pageId
+	 * @return array
 	 */
 	public function copyRecord($tableName, $uid, $pageId) {
 		$commandMap = array(
