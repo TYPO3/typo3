@@ -440,7 +440,7 @@ class GraphicalMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu\
 						$this->I['A1'] = '';
 						$this->I['A2'] = '';
 					}
-					$this->I['IMG'] = '<img src="' . $GLOBALS['TSFE']->absRefPrefix . $this->I['val']['output_file'] . '" width="' . $this->I['val']['output_w'] . '" height="' . $this->I['val']['output_h'] . '" ' . \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::getBorderAttr('border="0"') . ($this->mconf['disableAltText'] ? '' : ' alt="' . htmlspecialchars($this->I['altText']) . '"') . $this->I['name'] . ($this->I['val']['imgParams'] ? ' ' . $this->I['val']['imgParams'] : '') . ' />';
+					$this->I['IMG'] = '<img src="' . $GLOBALS['TSFE']->absRefPrefix . $this->I['val']['output_file'] . '" width="' . $this->I['val']['output_w'] . '" height="' . $this->I['val']['output_h'] . '" ' . $this->parent_cObj->getBorderAttr('border="0"') . ($this->mconf['disableAltText'] ? '' : ' alt="' . htmlspecialchars($this->I['altText']) . '"') . $this->I['name'] . ($this->I['val']['imgParams'] ? ' ' . $this->I['val']['imgParams'] : '') . ' />';
 					// Make before, middle and after parts
 					$this->I['parts'] = array();
 					$this->I['parts']['ATag_begin'] = $this->I['A1'];
