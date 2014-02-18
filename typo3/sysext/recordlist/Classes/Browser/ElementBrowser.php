@@ -2359,6 +2359,7 @@ class ElementBrowser {
 			. '&expandFolder=' . rawurlencode($folderObject->getCombinedIdentifier())
 			. '&bparams=' . rawurlencode($this->bparams);
 		$code .= '<input type="hidden" name="redirect" value="' . htmlspecialchars($redirectValue) . '" />';
+		$code .= \TYPO3\CMS\Backend\Form\FormEngine::getHiddenTokenField('tceAction');
 		$code .= '
 			<div id="c-override">
 				<label><input type="checkbox" name="overwriteExistingFiles" id="overwriteExistingFiles" value="1" /> '
@@ -2422,6 +2423,7 @@ class ElementBrowser {
 			. '&expandFolder=' . rawurlencode($folderObject->getCombinedIdentifier())
 			. '&bparams=' . rawurlencode($this->bparams);
 		$code .= '<input type="hidden" name="redirect" value="' . htmlspecialchars($redirectValue) . '" />'
+			. \TYPO3\CMS\Backend\Form\FormEngine::getHiddenTokenField('tceAction')
 			. '<input type="submit" name="submit" value="'
 			. $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:file_newfolder.php.submit', TRUE) . '" />';
 		$code .= '</td>

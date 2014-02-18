@@ -934,7 +934,7 @@ class ClickMenu {
 		} else {
 			$conf = '1==1';
 		}
-		$editOnClick = 'if(' . $loc . ' && ' . $conf . ' ){' . $loc . '.location.href=top.TS.PATH_typo3+\'tce_file.php?redirect=\'+top.rawurlencode(' . $this->frameLocation(($loc . '.document')) . '.pathname+' . $this->frameLocation(($loc . '.document')) . '.search)+\'' . '&file[delete][0][data]=' . rawurlencode($path) . '&vC=' . $GLOBALS['BE_USER']->veriCode() . '\';}hideCM();';
+		$editOnClick = 'if(' . $loc . ' && ' . $conf . ' ){' . $loc . '.location.href=top.TS.PATH_typo3+\'tce_file.php?redirect=\'+top.rawurlencode(' . $this->frameLocation(($loc . '.document')) . '.pathname+' . $this->frameLocation(($loc . '.document')) . '.search)+\'' . '&file[delete][0][data]=' . rawurlencode($path) . '&vC=' . $GLOBALS['BE_USER']->veriCode() . BackendUtility::getUrlToken('tceAction') . '\';}hideCM();';
 		return $this->linkItem($this->label('delete'), $this->excludeIcon(IconUtility::getSpriteIcon('actions-edit-delete')), $editOnClick . 'return false;');
 	}
 
@@ -1056,7 +1056,7 @@ class ClickMenu {
 	public function dragDrop_copymovefolder($srcPath, $dstPath, $action) {
 		$editOnClick = '';
 		$loc = 'top.content.list_frame';
-		$editOnClick = 'if(' . $loc . '){' . $loc . '.document.location=top.TS.PATH_typo3+"tce_file.php?redirect="+top.rawurlencode(' . $this->frameLocation(($loc . '.document')) . '.pathname+' . $this->frameLocation(($loc . '.document')) . '.search)+"' . '&file[' . $action . '][0][data]=' . $srcPath . '&file[' . $action . '][0][target]=' . $dstPath . '&prErr=1&vC=' . $GLOBALS['BE_USER']->veriCode() . '";}hideCM();top.nav.refresh();';
+		$editOnClick = 'if(' . $loc . '){' . $loc . '.document.location=top.TS.PATH_typo3+"tce_file.php?redirect="+top.rawurlencode(' . $this->frameLocation(($loc . '.document')) . '.pathname+' . $this->frameLocation(($loc . '.document')) . '.search)+"' . '&file[' . $action . '][0][data]=' . $srcPath . '&file[' . $action . '][0][target]=' . $dstPath . '&prErr=1&vC=' . $GLOBALS['BE_USER']->veriCode() . BackendUtility::getUrlToken('tceAction') . '";}hideCM();top.nav.refresh();';
 		return $this->linkItem($this->label($action . 'Folder_into'), $this->excludeIcon(IconUtility::getSpriteIcon('apps-pagetree-drag-move-into')), $editOnClick . 'return false;', 0);
 	}
 

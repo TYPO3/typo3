@@ -194,6 +194,7 @@ class CreateFolderController {
 					<input type="submit" value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:file_newfolder.php.submit', TRUE) . '" />
 					<input type="submit" value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.cancel', TRUE) . '" onclick="backToList(); return false;" />
 					<input type="hidden" name="redirect" value="' . htmlspecialchars($this->returnUrl) . '" />
+					'. \TYPO3\CMS\Backend\Form\FormEngine::getHiddenTokenField('tceAction') . '
 				</div>
 				';
 			// CSH:
@@ -229,6 +230,7 @@ class CreateFolderController {
 					<input type="submit" value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:file_newfolder.php.newfile_submit', TRUE) . '" />
 					<input type="submit" value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.cancel', TRUE) . '" onclick="backToList(); return false;" />
 					<input type="hidden" name="redirect" value="' . htmlspecialchars($this->returnUrl) . '" />
+					'. \TYPO3\CMS\Backend\Form\FormEngine::getHiddenTokenField('tceAction') . '
 				</div>
 				';
 			// CSH:

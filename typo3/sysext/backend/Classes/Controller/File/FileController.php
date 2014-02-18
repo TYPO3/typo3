@@ -91,6 +91,7 @@ class FileController {
 		$this->vC = GeneralUtility::_GP('vC');
 		$this->redirect = GeneralUtility::sanitizeLocalUrl(GeneralUtility::_GP('redirect'));
 		$this->initClipboard();
+		$this->fileProcessor = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Utility\\File\\ExtendedFileUtility');
 	}
 
 	/**
@@ -121,7 +122,6 @@ class FileController {
 	 */
 	public function main() {
 		// Initializing:
-		$this->fileProcessor = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Utility\\File\\ExtendedFileUtility');
 		$this->fileProcessor->init($GLOBALS['FILEMOUNTS'], $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
 		$this->fileProcessor->setActionPermissions();
 		$this->fileProcessor->dontCheckForUnique = $this->overwriteExistingFiles ? 1 : 0;

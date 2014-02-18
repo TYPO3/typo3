@@ -37,5 +37,10 @@
 require __DIR__ . '/init.php';
 
 $fileController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\File\\FileController');
-$fileController->main();
+
+$formprotection = \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get();
+if ($formprotection->validateToken(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('formToken'), 'tceAction')) {
+	$fileController->main();
+}
+
 $fileController->finish();
