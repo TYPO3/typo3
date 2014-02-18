@@ -772,7 +772,13 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 						$rFD_fI = pathinfo($rootFileDat);
 						if (trim($rootFileDat) && !strstr($link_param, '/') && (@is_file((PATH_site . $rootFileDat)) || \TYPO3\CMS\Core\Utility\GeneralUtility::inList('php,html,htm', strtolower($rFD_fI['extension'])))) {
 							$href = $siteUrl . $link_param;
-						} elseif ($pU['scheme'] || $urlChar && (!$fileChar || $urlChar < $fileChar)) {
+						} elseif (
+							(
+								$pU['scheme']
+								&& !isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['typolinkLinkHandler'][$pU['scheme']])
+							)
+							|| $urlChar && (!$fileChar || $urlChar < $fileChar)
+						) {
 							// url (external): if has scheme or if a '.' comes before a '/'.
 							$href = $link_param;
 							if (!$pU['scheme']) {
