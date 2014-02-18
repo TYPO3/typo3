@@ -120,6 +120,7 @@ class Indexer {
 			foreach ($newMetaData as $data) {
 				$metaData = array_merge($metaData, $data);
 			}
+			$fileObject->_updateMetaDataProperties($metaData);
 			$this->getMetaDataRepository()->update($fileObject->getUid(), $metaData);
 			$this->getFileIndexRepository()->updateIndexingTime($fileObject->getUid());
 		}
@@ -220,6 +221,7 @@ class Indexer {
 			$metaData = array();
 			list($metaData['width'], $metaData['height']) = getimagesize($rawFileLocation);
 			$this->getMetaDataRepository()->update($fileObject->getUid(), $metaData);
+			$fileObject->_updateMetaDataProperties($metaData);
 		}
 	}
 

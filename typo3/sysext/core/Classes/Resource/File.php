@@ -251,6 +251,22 @@ class File extends AbstractFile {
 	}
 
 	/**
+	 * Updates MetaData properties
+	 *
+	 * @internal Do not use outside the FileAbstraction Layer classes
+	 *
+	 * @param array $properties
+	 * @return void
+	 */
+	public function _updateMetaDataProperties(array $properties) {
+		if ($this->metaDataProperties !== NULL) {
+			$this->metaDataProperties = array_merge($this->metaDataProperties, $properties);
+		} else {
+			$this->metaDataProperties = $properties;
+		}
+	}
+
+	/**
 	 * Returns the names of all properties that have been updated in this record
 	 *
 	 * @return array
