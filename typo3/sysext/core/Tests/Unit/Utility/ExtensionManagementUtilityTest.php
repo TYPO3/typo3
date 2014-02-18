@@ -561,6 +561,49 @@ class ExtensionManagementUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 		$this->assertEquals('newA, newB, fieldX', $GLOBALS['TCA'][$table]['palettes']['generatedFor-fieldA']['showitem']);
 	}
 
+	/**
+	 * Data provider for executePositionedStringInsertionTrimsCorrectCharacters
+	 * @return array
+	 */
+	public function executePositionedStringInsertionTrimsCorrectCharactersDataProvider() {
+		return array(
+			'normal characters' => array(
+				'tr0',
+				'tr0',
+			),
+			'newlines' => array(
+				"test\n",
+				'test',
+			),
+			'newlines with carriage return' => array(
+				"test\r\n",
+				'test',
+			),
+			'tabs' => array(
+				"test\t",
+				'test',
+			),
+			'commas' => array(
+				"test,",
+				'test',
+			),
+			'multiple commas with trailing spaces' => array(
+				"test,,\t, \r\n",
+				'test',
+			),
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider executePositionedStringInsertionTrimsCorrectCharactersDataProvider
+	 */
+	public function executePositionedStringInsertionTrimsCorrectCharacters($string, $expectedResult) {
+		$extensionManagementUtility = $this->getAccessibleMock('\\TYPO3\\CMS\\Core\\Utility\\ExtensionManagementUtility', array('dummy'));
+		$string = $extensionManagementUtility->_call('executePositionedStringInsertion', $string, '');
+		$this->assertEquals($expectedResult, $string);
+	}
+
 	/////////////////////////////////////////
 	// Tests concerning addTcaSelectItem
 	/////////////////////////////////////////

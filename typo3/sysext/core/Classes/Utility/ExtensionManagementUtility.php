@@ -558,7 +558,7 @@ class ExtensionManagementUtility {
 	 * @return string The extended list
 	 */
 	static protected function executePositionedStringInsertion($list, $insertionList, $insertionPosition = '') {
-		$list = $newList = trim($list, ', \\t\\n\\r\\0\\x0B');
+		$list = $newList = trim($list, ", \t\n\r\0\x0B");
 
 		$insertionList = self::removeDuplicatesForInsertion($insertionList, $list);
 
@@ -569,7 +569,7 @@ class ExtensionManagementUtility {
 			return $insertionList;
 		}
 		if ($insertionPosition === '') {
-			return $list . ',' . $insertionList;
+			return $list . ', ' . $insertionList;
 		}
 
 		list($location, $positionName) = GeneralUtility::trimExplode(':', $insertionPosition);
