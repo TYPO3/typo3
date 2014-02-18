@@ -7376,7 +7376,7 @@ class ContentObjectRenderer {
 								$theList = array_merge(
 									GeneralUtility::intExplode(
 										',',
-										self::getTreeList($next_id, $depth - 1, $begin - 1, $dontCheckEnableFields,
+										$this->getTreeList($next_id, $depth - 1, $begin - 1, $dontCheckEnableFields,
 											$addSelectFields, $moreWhereClauses, $prevId_array, $recursionLevel + 1)
 									),
 									$theList
@@ -7586,7 +7586,7 @@ class ContentObjectRenderer {
 		$queryParts = $this->getWhere($table, $conf, TRUE);
 		// Fields:
 		if ($conf['selectFields']) {
-			$queryParts['SELECT'] = self::sanitizeSelectPart($conf['selectFields'], $table);
+			$queryParts['SELECT'] = $this->sanitizeSelectPart($conf['selectFields'], $table);
 		} else {
 			$queryParts['SELECT'] = '*';
 		}

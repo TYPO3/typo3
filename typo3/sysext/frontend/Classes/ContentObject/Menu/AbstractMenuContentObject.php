@@ -549,7 +549,7 @@ class AbstractMenuContentObject {
 						$id_list_arr = array();
 						foreach ($items as $id) {
 							$bA = MathUtility::forceIntegerInRange($this->conf['special.']['beginAtLevel'], 0, 100);
-							$id_list_arr[] = \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::getTreeList(-1 * $id, $depth - 1 + $bA, $bA - 1);
+							$id_list_arr[] = $this->parent_cObj->getTreeList(-1 * $id, $depth - 1 + $bA, $bA - 1);
 						}
 						$id_list = implode(',', $id_list_arr);
 						// Get sortField (mode)
@@ -605,7 +605,7 @@ class AbstractMenuContentObject {
 							$value_rec = $this->sys_page->getPage($value);
 							$kfieldSrc = $this->conf['special.']['keywordsField.']['sourceField'] ? $this->conf['special.']['keywordsField.']['sourceField'] : 'keywords';
 							// keywords.
-							$kw = trim(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::keywords($value_rec[$kfieldSrc]));
+							$kw = trim($this->parent_cObj->keywords($value_rec[$kfieldSrc]));
 						}
 						// *'auto', 'manual', 'tstamp'
 						$mode = $this->conf['special.']['mode'];
@@ -650,7 +650,7 @@ class AbstractMenuContentObject {
 						// If there are keywords and the startuid is present.
 						if ($kw && $startUid) {
 							$bA = MathUtility::forceIntegerInRange($this->conf['special.']['beginAtLevel'], 0, 100);
-							$id_list = \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::getTreeList(-1 * $startUid, $depth - 1 + $bA, $bA - 1);
+							$id_list = $this->parent_cObj->getTreeList(-1 * $startUid, $depth - 1 + $bA, $bA - 1);
 							$kwArr = explode(',', $kw);
 							foreach ($kwArr as $word) {
 								$word = trim($word);

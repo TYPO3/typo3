@@ -581,7 +581,7 @@ class IndexSearchRepository {
 			$siteIdNumbers = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $this->searchRootPageIdList);
 			$pageIdList = array();
 			foreach ($siteIdNumbers as $rootId) {
-				$pageIdList[] = \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::getTreeList(-1 * $rootId, 9999);
+				$pageIdList[] = $GLOBALS['TSFE']->cObj->getTreeList(-1 * $rootId, 9999);
 			}
 			$page_where = ' AND ISEC.page_id IN (' . implode(',', $pageIdList) . ')';
 		}
