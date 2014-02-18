@@ -32,6 +32,8 @@ use TYPO3\CMS\Core\Tests\Functional\DataHandling\Framework\DataSet;
  */
 abstract class AbstractDataHandlerActionTestCase extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 
+	const VALUE_BackendUserId = 1;
+
 	/**
 	 * @var string
 	 */
@@ -65,15 +67,11 @@ abstract class AbstractDataHandlerActionTestCase extends \TYPO3\CMS\Core\Tests\F
 	public function setUp() {
 		parent::setUp();
 
-		$this->backendUser = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Authentication\\BackendUserAuthentication');
-		$this->backendUser->user['admin'] = 1;
-		$this->backendUser->user['uid'] = 1;
+		$this->backendUser = $this->setUpBackendUserFromFixture(self::VALUE_BackendUserId);
 		// By default make tests on live workspace
 		$this->backendUser->workspace = 0;
-		$GLOBALS['BE_USER'] = $this->backendUser;
 
 		$this->actionService = $this->getActionService();
-
 		\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->initializeLanguageObject();
 	}
 

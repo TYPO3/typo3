@@ -188,6 +188,7 @@ abstract class FunctionalTestCase extends BaseTestCase {
 	 * Initialize backend user
 	 *
 	 * @param int $userUid uid of the user we want to initialize. This user must exist in the fixture file
+	 * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
 	 * @throws Exception
 	 */
 	protected function setUpBackendUserFromFixture($userUid) {
@@ -213,6 +214,8 @@ abstract class FunctionalTestCase extends BaseTestCase {
 			);
 		}
 		$GLOBALS['BE_USER']->backendCheckLogin();
+
+		return $backendUser;
 	}
 
 	/**
