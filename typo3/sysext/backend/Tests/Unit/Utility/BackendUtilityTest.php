@@ -496,13 +496,59 @@ class BackendUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 */
-	public function getLabelsFromItemsListReturnsPlainValueIfItemIsNotFound() {
+	public function getProcessedValueReturnsLabelsForExistingValuesSolely() {
 		$table = 'foobar';
 		$col = 'someColumn';
 		$tca = array(
 			'columns' => array(
 				'someColumn' => array(
 					'config' => array(
+						'type' => 'select',
+						'items' => array(
+							'0' => array('aFooLabel', 'foo'),
+							'1' => array('aBarLabel', 'bar')
+						)
+					)
+				)
+			)
+		);
+		// Stub LanguageService and let sL() return the same value that came in again
+		$GLOBALS['LANG'] = $this->getMock('TYPO3\\CMS\\Lang\\LanguageService', array(), array(), '', FALSE);
+		$GLOBALS['LANG']->charSet = 'utf-8';
+		$GLOBALS['LANG']->csConvObj = $this->getMock('TYPO3\\CMS\\Core\\Charset\\CharsetConverter');
+		$GLOBALS['LANG']->expects($this->any())->method('sL')
+			->will($this->returnCallback(
+				function($name) {
+					return $name;
+				}
+			));
+		$GLOBALS['LANG']->csConvObj->expects($this->any())->method('crop')
+			->will($this->returnCallback(
+				function($charset, $string, $len, $crop = '') {
+					return $string;
+				}
+			));
+
+		$tcaBackup = $GLOBALS['TCA'][$table];
+		unset($GLOBALS['TCA'][$table]);
+		$GLOBALS['TCA'][$table] = $tca;
+		$label = $this->fixture->getProcessedValue($table, $col, 'foo,invalidKey,bar');
+		unset($GLOBALS['TCA'][$table]);
+		$GLOBALS['TCA'][$table] = $tcaBackup;
+		$this->assertEquals('aFooLabel, aBarLabel', $label);
+	}
+
+	/**
+	 * @test
+	 */
+	public function getProcessedValueReturnsPlainValueIfItemIsNotFound() {
+		$table = 'foobar';
+		$col = 'someColumn';
+		$tca = array(
+			'columns' => array(
+				'someColumn' => array(
+					'config' => array(
+						'type' => 'select',
 						'items' => array(
 							'0' => array('aFooLabel', 'foo')
 						)
@@ -512,20 +558,28 @@ class BackendUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		);
 		// Stub LanguageService and let sL() return the same value that came in again
 		$GLOBALS['LANG'] = $this->getMock('TYPO3\\CMS\\Lang\\LanguageService', array(), array(), '', FALSE);
+		$GLOBALS['LANG']->charSet = 'utf-8';
+		$GLOBALS['LANG']->csConvObj = $this->getMock('TYPO3\\CMS\\Core\\Charset\\CharsetConverter');
 		$GLOBALS['LANG']->expects($this->any())->method('sL')
 			->will($this->returnCallback(
 				function($name) {
 					return $name;
 				}
 			));
+		$GLOBALS['LANG']->csConvObj->expects($this->any())->method('crop')
+			->will($this->returnCallback(
+				function($charset, $string, $len, $crop = '') {
+					return $string;
+				}
+			));
 
 		$tcaBackup = $GLOBALS['TCA'][$table];
 		unset($GLOBALS['TCA'][$table]);
 		$GLOBALS['TCA'][$table] = $tca;
-		$label = $this->fixture->getLabelsFromItemsList($table, $col, 'foo,something,missing');
+		$label = $this->fixture->getProcessedValue($table, $col, 'invalidKey');
 		unset($GLOBALS['TCA'][$table]);
 		$GLOBALS['TCA'][$table] = $tcaBackup;
-		$this->assertEquals('aFooLabel, something, missing', $label);
+		$this->assertEquals('invalidKey', $label);
 	}
 
 	/**

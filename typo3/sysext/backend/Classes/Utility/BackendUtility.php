@@ -1863,19 +1863,13 @@ class BackendUtility {
 			if (is_array($GLOBALS['TCA'][$table]) && is_array($GLOBALS['TCA'][$table]['columns'][$column]) && is_array($GLOBALS['TCA'][$table]['columns'][$column]['config']['items'])) {
 				// Loop on all selected values
 				foreach ($values as $aValue) {
-					$valueFound = FALSE;
 					foreach ($GLOBALS['TCA'][$table]['columns'][$column]['config']['items'] as $itemConfiguration) {
 						// Loop on all available items
 						// Keep matches and move on to next value
 						if ($aValue == $itemConfiguration[1]) {
 							$labels[] = $GLOBALS['LANG']->sL($itemConfiguration[0]);
-							$valueFound = TRUE;
 							break;
 						}
-					}
-					// no item label found then we use the plain db value
-					if (!$valueFound) {
-						$labels[] = $aValue;
 					}
 				}
 			}
@@ -2105,6 +2099,10 @@ class BackendUtility {
 								}
 								$l = implode(', ', $lA);
 							}
+						}
+						if (empty($l) && !empty($value)) {
+							// Use plain database value when label is empty
+							$l = $value;
 						}
 					}
 					break;
