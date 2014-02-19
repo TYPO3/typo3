@@ -26,6 +26,15 @@ page = PAGE
 page {
 	10 = CONTENT
 	10 {
+		watcher.parentRecordField = __pages
+		table = pages
+		select {
+			orderBy = sorting
+			pidInList = this
+		}
+	}
+	20 = CONTENT
+	20 {
 		watcher.parentRecordField = __contents
 		table = tt_content
 		select {

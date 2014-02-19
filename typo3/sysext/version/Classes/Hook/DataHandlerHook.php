@@ -143,32 +143,6 @@ class DataHandlerHook {
 	}
 
 	/**
-	 * Hook that is called after tcemain made most of its decisions.
-	 *
-	 * NOTE: This fixes an issue related to moving/creating initial-placeholders - if such a new page
-	 * is intended to be place behind a move-placeholder tcemain handles the movement/creation,
-	 * but does not respect the wsPlaceholder, which leads the new page to be located at the old location of the
-	 * page where it was intended to be placed behind.
-	 *
-	 * @param string $command
-	 * @param string $table
-	 * @param integer $id
-	 * @param mixed $value
-	 * @param DataHandler $tcemain
-	 */
-	public function processCmdmap_postProcess($command, $table, $id, $value, DataHandler $tcemain) {
-		if ($command === 'move') {
-			if ($value < 0) {
-				$movePlaceHolder = BackendUtility::getMovePlaceholder($table, abs($value), 'uid');
-				if ($movePlaceHolder !== FALSE) {
-					$destPid = -$movePlaceHolder['uid'];
-					$tcemain->moveRecord_raw($table, $id, $destPid);
-				}
-			}
-		}
-	}
-
-	/**
 	 * hook that is called AFTER all commands of the commandmap was
 	 * executed
 	 *

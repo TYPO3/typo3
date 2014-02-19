@@ -6060,6 +6060,10 @@ class DataHandler {
 					if ($lookForLiveVersion = BackendUtility::getLiveVersionOfRecord($table, $row['uid'], $sortRow . ',pid,uid')) {
 						$row = $lookForLiveVersion;
 					}
+					// Fetch move placeholder, since it might point to a new page in the current workspace
+					if ($movePlaceholder = BackendUtility::getMovePlaceholder($table, $row['uid'], 'uid,pid,' . $sortRow)) {
+						$row = $movePlaceholder;
+					}
 					// If the record should be inserted after itself, keep the current sorting information:
 					if ($row['uid'] == $uid) {
 						$sortNumber = $row[$sortRow];

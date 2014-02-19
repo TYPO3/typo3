@@ -154,7 +154,6 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 	 * @test
 	 */
 	public function moveContentRecordToDifferentPageAndChangeSorting() {
-		$this->markTestSkipped('Something seems to be wrong here...');
 		$this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_PageIdTarget);
 		$this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdFirst, -self::VALUE_ContentIdLast);
 		$this->assertAssertionDataSet('moveContentRecordToDifferentPageAndChangeSorting');
@@ -171,7 +170,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 	 * @test
 	 */
 	public function createPageRecord() {
-		$newTableIds = $this->actionService->createNewRecord(self::TABLE_Page, self::VALUE_PageId, array('title' => 'Testing #1'));
+		$newTableIds = $this->actionService->createNewRecord(self::TABLE_Page, self::VALUE_PageId, array('title' => 'Testing #1', 'hidden' => 0));
 		$this->assertAssertionDataSet('createPageRecord');
 
 		$newPageId = $newTableIds[self::TABLE_Page][0];
@@ -256,9 +255,31 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 		$this->actionService->moveRecord(self::TABLE_Page, self::VALUE_PageId, -self::VALUE_PageIdTarget);
 		$this->assertAssertionDataSet('movePageRecordToDifferentPageAndChangeSorting');
 
-		$responseContent = $this->getFrontendResponse(self::VALUE_PageId, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseContent();
-		$this->assertResponseContentHasRecords($responseContent, self::TABLE_Page, 'title', 'Relations');
-		$this->assertResponseContentHasRecords($responseContent, self::TABLE_Content, 'header', array('Regular Element #1', 'Regular Element #2'));
+		$responseContentPage = $this->getFrontendResponse(self::VALUE_PageId, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseContent();
+		$this->assertResponseContentHasRecords($responseContentPage, self::TABLE_Page, 'title', 'Relations');
+		$this->assertResponseContentHasRecords($responseContentPage, self::TABLE_Content, 'header', array('Regular Element #1', 'Regular Element #2'));
+		$responseContentWebsite = $this->getFrontendResponse(self::VALUE_PageIdWebsite, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseContent();
+		$this->assertResponseContentStructureHasRecords(
+			$responseContentWebsite, self::TABLE_Page . ':' . self::VALUE_PageIdWebsite, '__pages',
+			self::TABLE_Page, 'title', array('Target', 'Relations', 'DataHandlerTest')
+		);
+	}
+
+	/**
+	 * @test
+	 * @see http://forge.typo3.org/issues/33104
+	 * @see http://forge.typo3.org/issues/55573
+	 */
+	public function movePageRecordToDifferentPageAndCreatePageRecordAfterMovedPageRecord() {
+		$this->actionService->moveRecord(self::TABLE_Page, self::VALUE_PageIdTarget, self::VALUE_PageIdWebsite);
+		$this->actionService->createNewRecord(self::TABLE_Page, -self::VALUE_PageIdTarget, array('title' => 'Testing #1', 'hidden' => 0));
+		$this->assertAssertionDataSet('movePageRecordToDifferentPageAndCreatePageRecordAfterMovedPageRecord');
+
+		$responseContent = $this->getFrontendResponse(self::VALUE_PageIdWebsite, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseContent();
+		$this->assertResponseContentStructureHasRecords(
+			$responseContent, self::TABLE_Page . ':' . self::VALUE_PageIdWebsite, '__pages',
+			self::TABLE_Page, 'title', array('Target', 'Testing #1', 'DataHandlerTest')
+		);
 	}
 
 }
