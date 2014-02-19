@@ -118,6 +118,14 @@ class IconUtility {
 	);
 
 	/**
+	 * Array of icons rendered by getSpriteIcon(). This contains only icons
+	 * without overlays or options. These are the most common form.
+	 *
+	 * @var array
+	 */
+	static protected $spriteIconCache = array();
+
+	/**
 	 * Returns an icon image tag, 18x16 pixels, based on input information.
 	 * This function is recommended to use in your backend modules.
 	 *
@@ -573,37 +581,58 @@ class IconUtility {
 	 *
 	 **********************************************/
 	/**
-	 * This generic method is used throughout the TYPO3 Backend to show icons in any variation which are not
-	 * bound to any resource object (see getSpriteIconForResource) or database record (see getSpriteIconForRecord)
+	 * This generic method is used throughout the TYPO3 Backend to show icons
+	 * in any variation which are not bound to any resource object (see getSpriteIconForResource)
+	 * or database record (see getSpriteIconForRecord)
 	 *
-	 * Generates a HTML tag with proper CSS classes. The TYPO3 skin has defined these CSS classes
-	 * already to have a pre-defined background image, and the correct background-position to show
-	 * the necessary icon.
+	 * Generates a HTML tag with proper CSS classes. The TYPO3 skin has
+	 * defined these CSS classes already to have a pre-defined background image,
+	 * and the correct background-position to show the necessary icon.
+	 *
+	 * If no options or overlays are given, the icon will be cached in
+	 * $priteIconCache.
 	 *
 	 * @param string $iconName The name of the icon to fetch
 	 * @param array $options An associative array with additional options and attributes for the tag. by default, the key is the name of the attribute, and the value is the parameter string that is set. However, there are some additional special reserved keywords that can be used as keys: "html" (which is the HTML that will be inside the icon HTML tag), "tagName" (which is an alternative tagName than "span"), and "class" (additional class names that will be merged with the sprite icon CSS classes)
-	 * @param array	$overlays An associative array with the icon-name as key, and the options for this overlay as an array again (see the parameter $options again)
+	 * @param array $overlays An associative array with the icon-name as key, and the options for this overlay as an array again (see the parameter $options again)
+	 *
 	 * @return string The full HTML tag (usually a <span>)
 	 * @access public
 	 */
 	static public function getSpriteIcon($iconName, array $options = array(), array $overlays = array()) {
+		// Check if icon can be cached and return cached version if present
+		if (empty($options) && empty($overlays)) {
+			if (isset(self::$spriteIconCache[$iconName])) {
+				return self::$spriteIconCache[$iconName];
+			}
+			$iconIsCacheable = TRUE;
+		} else {
+			$iconIsCacheable = FALSE;
+		}
+
 		$innerHtml = isset($options['html']) ? $options['html'] : NULL;
 		$tagName = isset($options['tagName']) ? $options['tagName'] : NULL;
+
 		// Deal with the overlays
-		if (count($overlays)) {
-			foreach ($overlays as $overlayIconName => $overlayOptions) {
-				$overlayOptions['html'] = $innerHtml;
-				$overlayOptions['class'] = (isset($overlayOptions['class']) ? $overlayOptions['class'] . ' ' : '') . 't3-icon-overlay';
-				$innerHtml = self::getSpriteIcon($overlayIconName, $overlayOptions);
-			}
+		foreach ($overlays as $overlayIconName => $overlayOptions) {
+			$overlayOptions['html'] = $innerHtml;
+			$overlayOptions['class'] = (isset($overlayOptions['class']) ? $overlayOptions['class'] . ' ' : '') . 't3-icon-overlay';
+			$innerHtml = self::getSpriteIcon($overlayIconName, $overlayOptions);
 		}
-		// Check if whished icon is available
-		$iconName = in_array($iconName, $GLOBALS['TBE_STYLES']['spriteIconApi']['iconsAvailable']) || $iconName == 'empty-empty' ? $iconName : 'status-status-icon-missing';
+
+		// Check if requested icon is available
+		$iconName = in_array($iconName, $GLOBALS['TBE_STYLES']['spriteIconApi']['iconsAvailable']) || $iconName === 'empty-empty' ? $iconName : 'status-status-icon-missing';
+
 		// Create the CSS class
 		$options['class'] = self::getSpriteIconClasses($iconName) . (isset($options['class']) ? ' ' . $options['class'] : '');
-		unset($options['html']);
-		unset($options['tagName']);
-		return self::buildSpriteHtmlIconTag($options, $innerHtml, $tagName);
+		unset($options['html'], $options['tagName']);
+		$spriteHtml = self::buildSpriteHtmlIconTag($options, $innerHtml, $tagName);
+
+		// Store result in cache if possible
+		if ($iconIsCacheable) {
+			self::$spriteIconCache[$iconName] = $spriteHtml;
+		}
+		return $spriteHtml;
 	}
 
 	/**
