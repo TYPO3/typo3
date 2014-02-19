@@ -207,6 +207,13 @@ class RelationHandler {
 	public $MM_table_where = '';
 
 	/**
+	 * Usage of a MM field on the opposite relation.
+	 *
+	 * @var array
+	 */
+	protected $MM_oppositeUsage;
+
+	/**
 	 * @var boolean
 	 */
 	protected $updateReferenceIndex = TRUE;
@@ -239,6 +246,9 @@ class RelationHandler {
 		$this->MM_match_fields = is_array($conf['MM_match_fields']) ? $conf['MM_match_fields'] : array();
 		$this->MM_insert_fields = is_array($conf['MM_insert_fields']) ? $conf['MM_insert_fields'] : $this->MM_match_fields;
 		$this->currentTable = $currentTable;
+		if (!empty($conf['MM_oppositeUsage']) && is_array($conf['MM_oppositeUsage'])) {
+			$this->MM_oppositeUsage = $conf['MM_oppositeUsage'];
+		}
 		if ($this->MM_is_foreign) {
 			$tmp = $conf['type'] === 'group' ? $conf['allowed'] : $conf['foreign_table'];
 			// Normally, $conf['allowed'] can contain a list of tables,
@@ -595,6 +605,7 @@ class RelationHandler {
 					$insertFields[$sorting_field] = $c;
 					if ($tablename) {
 						$insertFields['tablenames'] = $tablename;
+						$insertFields = $this->completeOppositeUsageValues($tablename, $insertFields);
 					}
 					$GLOBALS['TYPO3_DB']->exec_INSERTquery($MM_tableName, $insertFields);
 					if ($this->MM_is_foreign) {
@@ -1038,4 +1049,33 @@ class RelationHandler {
 			&& $parentConf['symmetric_field']
 			&& $parentUid == $childRec[$parentConf['symmetric_field']];
 	}
+
+	/**
+	 * Completes MM values to be written by values from the opposite relation.
+	 * This method used MM insert field or MM match fields if defined.
+	 *
+	 * @param string $tableName Name of the opposite table
+	 * @param array $referenceValues Values to be written
+	 * @return array Values to be written, possibly modified
+	 */
+	protected function completeOppositeUsageValues($tableName, array $referenceValues) {
+		if (empty($this->MM_oppositeUsage[$tableName]) || count($this->MM_oppositeUsage[$tableName]) > 1) {
+			return $referenceValues;
+		}
+
+		$fieldName = $this->MM_oppositeUsage[$tableName][0];
+		if (empty($GLOBALS['TCA'][$tableName]['columns'][$fieldName]['config'])) {
+			return $referenceValues;
+		}
+
+		$configuration = $GLOBALS['TCA'][$tableName]['columns'][$fieldName]['config'];
+		if (!empty($configuration['MM_insert_fields'])) {
+			$referenceValues = array_merge($configuration['MM_insert_fields'], $referenceValues);
+		} elseif (!empty($configuration['MM_match_fields'])) {
+			$referenceValues = array_merge($configuration['MM_match_fields'], $referenceValues);
+		}
+
+		return $referenceValues;
+	}
+
 }
