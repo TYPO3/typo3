@@ -42,6 +42,8 @@ namespace TYPO3\CMS\Backend\Controller\File;
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+
 /**
  * Script Class, handling the calling of methods in the file admin classes.
  *
@@ -163,7 +165,19 @@ class FileController {
 		if (count($errors)) {
 			$ajaxObj->setError(implode(',', $errors));
 		} else {
-			$ajaxObj->addContent('result', $this->fileData);
+			$flatResult = array();
+			foreach ($this->fileData as $action => $results) {
+				foreach ($results as $result) {
+					if (is_array($result)) {
+						foreach ($result as $subResult) {
+							$flatResult[$action][] = $this->flattenResultDataValue($subResult);
+						}
+					} else {
+						$flatResult[$action][] = $this->flattenResultDataValue($result);
+					}
+				}
+			}
+			$ajaxObj->addContent('result', $flatResult);
 			if ($this->redirect) {
 				$ajaxObj->addContent('redirect', $this->redirect);
 			}
@@ -171,6 +185,30 @@ class FileController {
 		}
 	}
 
+	/**
+	 * Flatten result value from FileProcessor
+	 *
+	 * The value can be a File, Folder or boolean
+	 *
+	 * @param bool|\TYPO3\CMS\Core\Resource\File|\TYPO3\CMS\Core\Resource\Folder $result
+	 * @return bool|string|array
+	 */
+	protected function flattenResultDataValue($result) {
+
+		if ($result instanceof \TYPO3\CMS\Core\Resource\File) {
+			$result = array_merge(
+				$result->toArray(),
+				array (
+					'date' => BackendUtility::date($result->getModificationTime()),
+					'iconClasses' => \TYPO3\CMS\Backend\Utility\IconUtility::mapFileExtensionToSpriteIconClass($result->getExtension()),
+				)
+			);
+		} elseif ($result instanceof \TYPO3\CMS\Core\Resource\Folder) {
+			$result = $result->getIdentifier();
+		}
+
+		return $result;
+	}
 }
 
 
