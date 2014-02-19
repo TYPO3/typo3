@@ -151,9 +151,41 @@ class ActionService {
 	/**
 	 * @param string $tableName
 	 * @param integer $uid
+	 * @return array
 	 */
 	public function deleteRecord($tableName, $uid) {
-		$this->deleteRecords(
+		return $this->deleteRecords(
+			array(
+				$tableName => array($uid),
+			)
+		);
+	}
+
+	/**
+	 * @param array $tableRecordIds
+	 * @return array
+	 */
+	public function deleteRecords(array $tableRecordIds) {
+		$commandMap = array();
+		foreach ($tableRecordIds as $tableName => $ids) {
+			foreach ($ids as $uid) {
+				$commandMap[$tableName][$uid] = array(
+					'delete' => TRUE,
+				);
+			}
+		}
+		$this->dataHandler->start(array(), $commandMap);
+		$this->dataHandler->process_cmdmap();
+		// Deleting workspace records is actually a copy(!)
+		return $this->dataHandler->copyMappingArray;
+	}
+
+	/**
+	 * @param string $tableName
+	 * @param integer $uid
+	 */
+	public function clearWorkspaceRecord($tableName, $uid) {
+		$this->clearWorkspaceRecords(
 			array(
 				$tableName => array($uid),
 			)
@@ -163,12 +195,14 @@ class ActionService {
 	/**
 	 * @param array $tableRecordIds
 	 */
-	public function deleteRecords(array $tableRecordIds) {
+	public function clearWorkspaceRecords(array $tableRecordIds) {
 		$commandMap = array();
 		foreach ($tableRecordIds as $tableName => $ids) {
 			foreach ($ids as $uid) {
 				$commandMap[$tableName][$uid] = array(
-					'delete' => TRUE,
+					'version' => array(
+						'action' => 'clearWSID',
+					)
 				);
 			}
 		}

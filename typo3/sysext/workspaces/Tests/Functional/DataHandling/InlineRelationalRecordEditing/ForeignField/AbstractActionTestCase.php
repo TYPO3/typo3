@@ -93,6 +93,16 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 	/**
 	 * @test
 	 */
+	public function deleteParentContentRecordAndDiscardDeletedParentRecord() {
+		$newTableIds = $this->actionService->deleteRecord(self::TABLE_Content, self::VALUE_ContentIdLast);
+		$versionedDeletedContentId = $newTableIds[self::TABLE_Content][self::VALUE_ContentIdLast];
+		$this->actionService->clearWorkspaceRecord(self::TABLE_Content, $versionedDeletedContentId);
+		$this->assertAssertionDataSet('deleteParentContentRecordAndDiscardDeletedParentRecord');
+	}
+
+	/**
+	 * @test
+	 */
 	public function copyParentContentRecord() {
 		$this->actionService->copyRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_PageId);
 		$this->assertAssertionDataSet('copyParentContentRecord');
@@ -213,7 +223,8 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 		$newContentId = $newTableIds['tt_content'][0];
 		$copiedTableIds = $this->actionService->copyRecord(self::TABLE_Content, $newContentId, self::VALUE_PageId);
 		$copiedContentId = $copiedTableIds[self::TABLE_Content][$newContentId];
-		$this->actionService->deleteRecord(self::TABLE_Content, $copiedContentId);
+		$versionedCopiedContentId = $this->actionService->getDataHander()->getAutoVersionId(self::TABLE_Content, $copiedContentId);
+		$this->actionService->clearWorkspaceRecord(self::TABLE_Content, $versionedCopiedContentId);
 		$this->assertAssertionDataSet('createAndCopyParentContentRecordWithHotelAndOfferChildRecordsAndDiscardCopiedParentRecord');
 	}
 
@@ -252,7 +263,8 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 		$newContentId = $newTableIds[self::TABLE_Content][0];
 		$localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Content, $newContentId, self::VALUE_LanguageId);
 		$localizedContentId = $localizedTableIds[self::TABLE_Content][$newContentId];
-		$this->actionService->deleteRecord(self::TABLE_Content, $localizedContentId);
+		$versionedLocalizedContentId = $this->actionService->getDataHander()->getAutoVersionId(self::TABLE_Content, $localizedContentId);
+		$this->actionService->clearWorkspaceRecord(self::TABLE_Content, $versionedLocalizedContentId);
 		$this->assertAssertionDataSet('createAndLocalizeParentContentRecordWithHotelAndOfferChildRecordsAndDiscardLocalizedParentRecord');
 	}
 
@@ -297,7 +309,8 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 				self::TABLE_Content => array('uid' => self::VALUE_ContentIdFirst, 'tx_irretutorial_hotels' => '3,4'),
 			)
 		);
-		$this->actionService->deleteRecord(self::TABLE_Content, self::VALUE_ContentIdFirst);
+		$modifiedContentId = $this->actionService->getDataHander()->getAutoVersionId(self::TABLE_Content, self::VALUE_ContentIdFirst);
+		$this->actionService->clearWorkspaceRecord(self::TABLE_Content, $modifiedContentId);
 		$this->assertAssertionDataSet('modifyParentRecordWithHotelChildRecordAndDiscardModifiedParentRecord');
 	}
 
@@ -312,10 +325,12 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 				self::TABLE_Content => array('uid' => self::VALUE_ContentIdFirst, 'tx_irretutorial_hotels' => '3,4'),
 			)
 		);
-		$this->actionService->deleteRecords(
+		$modifiedContentId = $this->actionService->getDataHander()->getAutoVersionId(self::TABLE_Content, self::VALUE_ContentIdFirst);
+		$modifiedHotelId = $this->actionService->getDataHander()->getAutoVersionId(self::TABLE_Hotel, 4);
+		$this->actionService->clearWorkspaceRecords(
 				array(
-					self::TABLE_Hotel => array(4),
-					self::TABLE_Content => array(self::VALUE_ContentIdFirst),
+					self::TABLE_Hotel => array($modifiedHotelId),
+					self::TABLE_Content => array($modifiedContentId),
 				)
 		);
 		$this->assertAssertionDataSet('modifyParentRecordWithHotelChildRecordAndDiscardAllModifiedRecords');
