@@ -3352,7 +3352,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		\vfsStream::setup('test', NULL, $structure);
 		$vfsUrl = \vfsStream::url('test');
 
-		if (version_compare(PHP_VERSION, '5.3.0', '>')) {
+		if (version_compare(PHP_VERSION, '5.4.0', '>=')) {
 			// set random values for mtime
 			foreach ($structure as $structureLevel1Key => $structureLevel1Content) {
 				$newMtime = rand();
