@@ -168,22 +168,19 @@ class FileController {
 		if (count($errors)) {
 			$ajaxObj->setError(implode(',', $errors));
 		} else {
-			$fileData = array();
-			foreach ($this->fileData as $action => $result) {
-				foreach ($result as $files) {
-					/** @var $file \TYPO3\CMS\Core\Resource\File */
-					foreach ($files as $file) {
-						$fileData[$action][] = array_merge(
-							$file->toArray(),
-							array (
-								'date' => BackendUtility::date($file->getModificationTime()),
-								'iconClasses' => \TYPO3\CMS\Backend\Utility\IconUtility::mapFileExtensionToSpriteIconClass($file->getExtension()),
-							)
-						);
+			$flatResult = array();
+			foreach ($this->fileData as $action => $results) {
+				foreach ($results as $result) {
+					if (is_array($result)) {
+						foreach ($result as $subResult) {
+							$flatResult[$action][] = $this->flattenResultDataValue($subResult);
+						}
+					} else {
+						$flatResult[$action][] = $this->flattenResultDataValue($result);
 					}
 				}
 			}
-			$ajaxObj->addContent('result', $fileData);
+			$ajaxObj->addContent('result', $flatResult);
 			if ($this->redirect) {
 				$ajaxObj->addContent('redirect', $this->redirect);
 			}
@@ -191,4 +188,28 @@ class FileController {
 		}
 	}
 
+	/**
+	 * Flatten result value from FileProcessor
+	 *
+	 * The value can be a File, Folder or boolean
+	 *
+	 * @param bool|\TYPO3\CMS\Core\Resource\File|\TYPO3\CMS\Core\Resource\Folder $result
+	 * @return bool|string|array
+	 */
+	protected function flattenResultDataValue($result) {
+
+		if ($result instanceof \TYPO3\CMS\Core\Resource\File) {
+			$result = array_merge(
+				$result->toArray(),
+				array (
+					'date' => BackendUtility::date($result->getModificationTime()),
+					'iconClasses' => \TYPO3\CMS\Backend\Utility\IconUtility::mapFileExtensionToSpriteIconClass($result->getExtension()),
+				)
+			);
+		} elseif ($result instanceof \TYPO3\CMS\Core\Resource\Folder) {
+			$result = $result->getIdentifier();
+		}
+
+		return $result;
+	}
 }
