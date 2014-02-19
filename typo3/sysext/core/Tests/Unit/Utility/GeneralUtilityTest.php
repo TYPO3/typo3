@@ -3350,7 +3350,22 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			'.secret.txt' => 'sammon',
 		);
 		\vfsStream::setup('test', NULL, $structure);
-		return \vfsStream::url('test');
+		$vfsUrl = \vfsStream::url('test');
+
+		if (version_compare(PHP_VERSION, '5.3.0', '>')) {
+			// set random values for mtime
+			foreach ($structure as $structureLevel1Key => $structureLevel1Content) {
+				$newMtime = rand();
+				if (is_array($structureLevel1Content)) {
+					foreach ($structureLevel1Content as $structureLevel2Key => $structureLevel2Content) {
+						touch($vfsUrl . '/' . $structureLevel1Key . '/' . $structureLevel2Key, $newMtime);
+					}
+				} else {
+					touch($vfsUrl . '/' . $structureLevel1Key, $newMtime);
+				}
+			}
+		}
+		return $vfsUrl;
 	}
 
 	/**
@@ -3416,10 +3431,10 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 */
-	public function getFilesInDirCanOrderAlphabetically() {
+	public function getFilesInDirDoesSortAlphabeticallyByDefault() {
 		$vfsStreamUrl = $this->getFilesInDirCreateTestDirectory();
 		$this->assertSame(
-			array_values(Utility\GeneralUtility::getFilesInDir($vfsStreamUrl, '', FALSE, '1')),
+			array_values(Utility\GeneralUtility::getFilesInDir($vfsStreamUrl, '', FALSE)),
 			array('.secret.txt', 'excludeMe.txt', 'test.css', 'test.js', 'testA.txt', 'testB.txt', 'testC.txt')
 		);
 	}
@@ -3428,8 +3443,13 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function getFilesInDirCanOrderByMtime() {
+		if (version_compare(PHP_VERSION, '5.4.0', '<')) {
+			$this->markTestSkipped('touch() does not work with vfsStream in PHP 5.3 and below.');
+		}
+
+		$vfsStreamUrl = $this->getFilesInDirCreateTestDirectory();
 		$files = array();
-		$iterator = new \DirectoryIterator(__DIR__);
+		$iterator = new \DirectoryIterator($vfsStreamUrl);
 		foreach ($iterator as $fileinfo) {
 			if ($fileinfo->isFile()) {
 				$files[$fileinfo->getFilename()] = $fileinfo->getMTime();
@@ -3437,7 +3457,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		}
 		asort($files);
 		$this->assertSame(
-			array_values(Utility\GeneralUtility::getFilesInDir(__DIR__, '', FALSE, 'mtime')),
+			array_values(Utility\GeneralUtility::getFilesInDir($vfsStreamUrl, '', FALSE, 'mtime')),
 			array_keys($files)
 		);
 	}
