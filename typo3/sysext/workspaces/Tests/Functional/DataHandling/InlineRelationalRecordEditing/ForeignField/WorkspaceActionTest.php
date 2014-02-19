@@ -33,7 +33,7 @@ class WorkspaceActionTest extends AbstractActionTestCase {
 
 	public function setUp() {
 		parent::setUp();
-		$this->backendUser->workspace = 1;
+		$this->backendUser->workspace = self::VALUE_WorkspaceId;
 	}
 
 }

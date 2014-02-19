@@ -53,6 +53,7 @@ abstract class AbstractDataHandlerActionTestCase extends \TYPO3\CMS\Core\Tests\F
 	 * @var array
 	 */
 	protected $pathsToLinkInTestInstance = array(
+		'typo3/sysext/core/Tests/Functional/Fixtures/Frontend/AdditionalConfiguration.php' => 'typo3conf/AdditionalConfiguration.php',
 		'typo3/sysext/core/Tests/Functional/Fixtures/Frontend/extTables.php' => 'typo3conf/extTables.php',
 	);
 
