@@ -75,7 +75,7 @@ class FunctionalTestCaseBootstrapUtility {
 	 * @param array $coreExtensionsToLoad Array of core extensions to load
 	 * @param array $testExtensionsToLoad Array of test extensions to load
 	 * @param array $pathsToLinkInTestInstance Array of source => destination path pairs to be linked
-	 * @return void
+	 * @return string Path to TYPO3 CMS test installation for this test case
 	 */
 	public function setUp(
 		$testCaseClassName,
@@ -96,6 +96,8 @@ class FunctionalTestCaseBootstrapUtility {
 		$this->setUpTestDatabase();
 		\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->loadExtensionTables(TRUE);
 		$this->createDatabaseStructure();
+
+		return $this->instancePath;
 	}
 
 	/**

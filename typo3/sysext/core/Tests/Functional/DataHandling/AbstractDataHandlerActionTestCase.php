@@ -26,6 +26,8 @@ namespace TYPO3\CMS\Core\Tests\Functional\DataHandling;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Tests\Functional\DataHandling\Framework\DataSet;
+use TYPO3\CMS\Core\Tests\Functional\Framework\Frontend\Response;
+use TYPO3\CMS\Core\Tests\Functional\Framework\Frontend\ResponseContent;
 
 /**
  * Functional test for the DataHandler
@@ -263,6 +265,143 @@ abstract class AbstractDataHandlerActionTestCase extends \TYPO3\CMS\Core\Tests\F
 		}
 
 		return $differentFields;
+	}
+
+	/**
+	 * @param ResponseContent $responseContent
+	 * @param string $structureRecordIdentifier
+	 * @param string $structureFieldName
+	 * @param string $tableName
+	 * @param string $fieldName
+	 * @param string|array $values
+	 */
+	protected function assertResponseContentStructureHasRecords(ResponseContent $responseContent, $structureRecordIdentifier, $structureFieldName, $tableName, $fieldName, $values) {
+		$nonMatchingVariants = array();
+
+		foreach ($responseContent->findStructures($structureRecordIdentifier, $structureFieldName) as $path => $structure) {
+			$nonMatchingValues = $this->getNonMatchingValuesFrontendResponseRecords($structure, $tableName, $fieldName, $values);
+
+			if (empty($nonMatchingValues)) {
+				// Increase assertion counter
+				$this->assertEmpty($nonMatchingValues);
+				return;
+			}
+
+			$nonMatchingVariants[$path] = $nonMatchingValues;
+		}
+
+		$nonMatchingMessage = '';
+		foreach ($nonMatchingVariants as $path => $nonMatchingValues) {
+			$nonMatchingMessage .= '* ' . $path . ': ' . implode(', ', $nonMatchingValues);
+		}
+
+		$this->fail('Could not assert all values for "' . $tableName . '.' . $fieldName . '"' . LF . $nonMatchingMessage);
+	}
+
+	/**
+	 * @param ResponseContent $responseContent
+	 * @param string $structureRecordIdentifier
+	 * @param string $structureFieldName
+	 * @param string $tableName
+	 * @param string $fieldName
+	 * @param string|array $values
+	 */
+	protected function assertResponseContentStructureDoesNotHaveRecords(ResponseContent $responseContent, $structureRecordIdentifier, $structureFieldName, $tableName, $fieldName, $values) {
+		if (is_string($values)) {
+			$values = array($values);
+		}
+
+		$matchingVariants = array();
+
+		foreach ($responseContent->findStructures($structureRecordIdentifier, $structureFieldName) as $path => $structure) {
+			$nonMatchingValues = $this->getNonMatchingValuesFrontendResponseRecords($structure, $tableName, $fieldName, $values);
+			$matchingValues = array_diff($values, $nonMatchingValues);
+
+			if (!empty($matchingValues)) {
+				$matchingVariants[$path] = $matchingValues;
+			}
+		}
+
+		if (empty($matchingVariants)) {
+			// Increase assertion counter
+			$this->assertEmpty($matchingVariants);
+			return;
+		}
+
+		$matchingMessage = '';
+		foreach ($matchingVariants as $path => $matchingValues) {
+			$matchingMessage .= '* ' . $path . ': ' . implode(', ', $matchingValues);
+		}
+
+		$this->fail('Could not assert not having values for "' . $tableName . '.' . $fieldName . '"' . LF . $matchingMessage);
+	}
+
+	/**
+	 * @param ResponseContent $responseContent
+	 * @param string $tableName
+	 * @param string $fieldName
+	 * @param string|array $values
+	 */
+	protected function assertResponseContentHasRecords(ResponseContent $responseContent, $tableName, $fieldName, $values) {
+		$nonMatchingValues = $this->getNonMatchingValuesFrontendResponseRecords($responseContent->getRecords(), $tableName, $fieldName, $values);
+
+		if (!empty($nonMatchingValues)) {
+			$this->fail('Could not assert all values for "' . $tableName . '.' . $fieldName . '": ' . implode(', ', $nonMatchingValues));
+		}
+
+		// Increase assertion counter
+		$this->assertEmpty($nonMatchingValues);
+	}
+
+	/**
+	 * @param ResponseContent $responseContent
+	 * @param string $tableName
+	 * @param string $fieldName
+	 * @param string|array $values
+	 */
+	protected function assertResponseContentDoesNotHaveRecords(ResponseContent $responseContent, $tableName, $fieldName, $values) {
+		if (is_string($values)) {
+			$values = array($values);
+		}
+
+		$nonMatchingValues = $this->getNonMatchingValuesFrontendResponseRecords($responseContent->getRecords(), $tableName, $fieldName, $values);
+		$matchingValues = array_diff($values, $nonMatchingValues);
+
+		if (!empty($matchingValues)) {
+			$this->fail('Could not assert not having values for "' . $tableName . '.' . $fieldName . '": ' . implode(', ', $matchingValues));
+		}
+
+		// Increase assertion counter
+		$this->assertTrue(TRUE);
+	}
+
+	/**
+	 * @param string|array $data
+	 * @param string $tableName
+	 * @param string $fieldName
+	 * @param string|array $values
+	 * @return array
+	 */
+	protected function getNonMatchingValuesFrontendResponseRecords($data, $tableName, $fieldName, $values) {
+		if (empty($data) || !is_array($data)) {
+			$this->fail('Frontend Response data does not have any records');
+		}
+
+		if (is_string($values)) {
+			$values = array($values);
+		}
+
+		foreach ($data as $recordIdentifier => $recordData) {
+			if (strpos($recordIdentifier, $tableName . ':') !== 0) {
+				continue;
+			}
+
+			if (($foundValueIndex = array_search($recordData[$fieldName], $values)) !== FALSE) {
+				unset($values[$foundValueIndex]);
+			}
+		}
+
+		return $values;
 	}
 
 }

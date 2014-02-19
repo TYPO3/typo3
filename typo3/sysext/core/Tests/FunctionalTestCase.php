@@ -24,6 +24,8 @@ namespace TYPO3\CMS\Core\Tests;
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use \TYPO3\CMS\Core\Tests\Functional\Framework\Frontend\Response;
+
 /**
  * Base test case class for functional tests, all TYPO3 CMS
  * functional tests should extend from this class!
@@ -135,6 +137,13 @@ abstract class FunctionalTestCase extends BaseTestCase {
 	private $bootstrapUtility = NULL;
 
 	/**
+	 * Path to TYPO3 CMS test installation for this test case
+	 *
+	 * @var string
+	 */
+	private $instancePath;
+
+	/**
 	 * Set up creates a test instance and database.
 	 *
 	 * This method should be called with parent::setUp() in your test cases!
@@ -146,7 +155,7 @@ abstract class FunctionalTestCase extends BaseTestCase {
 			$this->markTestSkipped('Functional tests must be called through phpunit on CLI');
 		}
 		$this->bootstrapUtility = new FunctionalTestCaseBootstrapUtility();
-		$this->bootstrapUtility->setUp(
+		$this->instancePath = $this->bootstrapUtility->setUp(
 			get_class($this),
 			$this->coreExtensionsToLoad,
 			$this->testExtensionsToLoad,
@@ -273,4 +282,92 @@ abstract class FunctionalTestCase extends BaseTestCase {
 			}
 		}
 	}
+
+	/**
+	 * @param int $pageId
+	 * @param array $typoScriptFiles
+	 */
+	protected function setUpFrontendRootPage($pageId, array $typoScriptFiles = array()) {
+		$pageId = (int)$pageId;
+		$page = $this->getDatabase()->exec_SELECTgetSingleRow('*', 'pages', 'uid=' . $pageId);
+
+		if (empty($page)) {
+			$this->fail('Cannot set up frontend root page "' . $pageId . '"');
+		}
+
+		$pagesFields = array(
+			'is_siteroot' => 1
+		);
+
+		$this->getDatabase()->exec_UPDATEquery('pages', 'uid=' . $pageId, $pagesFields);
+
+		$templateFields = array(
+			'pid' => $pageId,
+			'title' => '',
+			'config' => '',
+			'clear' => 3,
+			'root' => 1,
+		);
+
+		foreach ($typoScriptFiles as $typoScriptFile) {
+			$templateFields['config'] .= '<INCLUDE_TYPOSCRIPT: source="FILE:' . $typoScriptFile . '">' . LF;
+		}
+
+		$this->getDatabase()->exec_INSERTquery('sys_template', $templateFields);
+	}
+
+	/**
+	 * @param int $pageId
+	 * @param int $languageId
+	 * @param int $backendUserId
+	 * @param int $workspaceId
+	 * @param bool $failOnFailure
+	 * @return Response
+	 */
+	protected function getFrontendResponse($pageId, $languageId = 0, $backendUserId = 0, $workspaceId = 0, $failOnFailure = TRUE) {
+		$pageId = (int)$pageId;
+		$languageId = (int)$languageId;
+
+		if (defined('PHP_BINARY')) {
+			$phpExecutable = PHP_BINARY;
+		} else {
+			$phpExecutable = rtrim(PHP_BINDIR, '/') . '/php';
+		}
+
+		$additionalParameter = '';
+
+		if (!empty($backendUserId)) {
+			$additionalParameter .= '&backendUserId=' . (int)$backendUserId;
+		}
+		if (!empty($workspaceId)) {
+			$additionalParameter .= '&workspaceId=' . (int)$workspaceId;
+		}
+
+		$arguments = array(
+			'documentRoot' => $this->instancePath,
+			'requestUrl' => 'http://localhost/?id=' . $pageId . '&L=' . $languageId . $additionalParameter,
+		);
+
+		$commandParts = array(
+			escapeshellcmd($phpExecutable),
+			escapeshellarg(ORIGINAL_ROOT . 'typo3/sysext/core/Tests/Functional/Framework/Scripts/Request.php'),
+			escapeshellarg(json_encode($arguments)),
+		);
+
+		$command = trim(implode(' ', $commandParts));
+		$response = shell_exec($command);
+		$result = json_decode($response, TRUE);
+
+		if ($result === FALSE) {
+			$this->fail('Frontend Response is empty');
+		}
+
+		if ($failOnFailure && $result['status'] === Response::STATUS_Failure) {
+			$this->fail('Frontend Response has failure:' . LF . $result['error']);
+		}
+
+		$response = new Response($result['status'], $result['content'], $result['error']);
+		return $response;
+	}
+
 }
