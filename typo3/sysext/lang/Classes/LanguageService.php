@@ -294,12 +294,15 @@ class LanguageService {
 	 * @return string
 	 */
 	public function sL($input, $hsc = FALSE) {
-			// If cached label
-		if (!isset($this->LL_labels_cache[$this->lang][$input]) && substr($input, 0, 4) === 'LLL:') {
+		$identifier = $input . '_' . (int)$hsc . '_' . (int)$this->debugKey;
+		if (isset($this->LL_labels_cache[$this->lang][$identifier])) {
+			return $this->LL_labels_cache[$this->lang][$identifier];
+		}
+		if (strpos($input, 'LLL:') === 0) {
 			$restStr = trim(substr($input, 4));
 			$extPrfx = '';
 				// ll-file refered to is found in an extension.
-			if (substr($restStr, 0, 4) === 'EXT:') {
+			if (strpos($restStr, 'EXT:') === 0) {
 				$restStr = trim(substr($restStr, 4));
 				$extPrfx = 'EXT:';
 			}
@@ -310,25 +313,22 @@ class LanguageService {
 				$this->LL_files_cache[$parts[0]] = $this->readLLfile($parts[0]);
 					// If the current language is found in another file, load that as well:
 				$lFileRef = $this->localizedFileRef($parts[0]);
-				if ($lFileRef && is_string($this->LL_files_cache[$parts[0]][$this->lang]) && $this->LL_files_cache[$parts[0]][$this->lang] == 'EXT') {
+				if ($lFileRef && $this->LL_files_cache[$parts[0]][$this->lang] === 'EXT') {
 					$tempLL = $this->readLLfile($lFileRef);
 					$this->LL_files_cache[$parts[0]][$this->lang] = $tempLL[$this->lang];
 				}
 			}
-			$this->LL_labels_cache[$this->lang][$input] = $this->getLLL($parts[1], $this->LL_files_cache[$parts[0]]);
-		}
-			// For the cached output charset conversion has already happened!
-			// So perform HSC right here.
-		if (isset($this->LL_labels_cache[$this->lang][$input])) {
-			$output = $this->LL_labels_cache[$this->lang][$input];
+			$output = $this->getLLL($parts[1], $this->LL_files_cache[$parts[0]]);
 		} else {
 				// Use a constant non-localizable label
 			$output = $input;
 		}
 		if ($hsc) {
-			$output = \TYPO3\CMS\Core\Utility\GeneralUtility::deHSCentities(htmlspecialchars($output));
+			$output = htmlspecialchars($output, ENT_COMPAT, 'UTF-8', FALSE);
 		}
-		return $output . $this->debugLL($input);
+		$output .= $this->debugLL($input);
+		$this->LL_labels_cache[$this->lang][$identifier] = $output;
+		return $output;
 	}
 
 	/**
@@ -359,9 +359,7 @@ class LanguageService {
 						$keyPartsCount = count($keyParts);
 							// Check if last part is special instruction
 							// Only "+" is currently supported
-						$specialInstruction = $keyParts[$keyPartsCount - 1] == '+' ?
-							TRUE :
-							FALSE;
+						$specialInstruction = $keyParts[$keyPartsCount - 1] === '+';
 						if ($specialInstruction) {
 							array_pop($keyParts);
 						}
@@ -410,7 +408,7 @@ class LanguageService {
 		$globalLanguage = array();
 			// Get default file
 		$localLanguage = $this->readLLfile($fileRef);
-		if (is_array($localLanguage) && count($localLanguage)) {
+		if (is_array($localLanguage) && !empty($localLanguage)) {
 				// it depends on, whether we should return the result or set it in the global $LOCAL_LANG array
 			if ($setGlobal) {
 				$globalLanguage = (array)$GLOBALS['LOCAL_LANG'];
@@ -420,7 +418,7 @@ class LanguageService {
 			}
 				// Localized addition?
 			$lFileRef = $this->localizedFileRef($fileRef);
-			if ($lFileRef && (string) $globalLanguage[$this->lang] == 'EXT') {
+			if ($lFileRef && (string) $globalLanguage[$this->lang] === 'EXT') {
 				$localLanguage = $this->readLLfile($lFileRef);
 				\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($globalLanguage, $localLanguage);
 			}
@@ -475,7 +473,7 @@ class LanguageService {
 	 * @return string Input filename with a '.[lang-key].php' ending added if $this->lang is not 'default'
 	 */
 	protected function localizedFileRef($fileRef) {
-		if ($this->lang != 'default' && substr($fileRef, -4) == '.php') {
+		if ($this->lang !== 'default' && substr($fileRef, -4) === '.php') {
 			return substr($fileRef, 0, -4) . '.' . $this->lang . '.php';
 		}
 	}
@@ -489,7 +487,7 @@ class LanguageService {
 	 * @return void
 	 */
 	public function overrideLL($index, $value, $overrideDefault = TRUE) {
-		if (isset($GLOBALS['LOCAL_LANG']) === FALSE) {
+		if (!isset($GLOBALS['LOCAL_LANG'])) {
 			$GLOBALS['LOCAL_LANG'] = array();
 		}
 		$GLOBALS['LOCAL_LANG'][$this->lang][$index][0]['target'] = $value;
