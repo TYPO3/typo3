@@ -177,6 +177,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 		$this->assertResponseContentHasRecords($responseContent, self::TABLE_Content, 'header', 'Testing #1');
 
 		// @todo New category is not resolved in new content element due to core bug
+		// The frontend query ignores pid=-1 and thus the specific workspace record in sys_category:33
 		/*
 			$this->assertResponseContentStructureHasRecords(
 				$responseContent, self::TABLE_Content . ':' . $newContentId, 'categories',
@@ -229,6 +230,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 	 * @test
 	 */
 	public function modifyBothRecordsOfCategoryRelation() {
+		$this->markTestSkipped('Using specific UIDs on both sides is not implemented yet');
 		$this->actionService->modifyRecord(self::TABLE_Category, self::VALUE_CategoryIdFirst, array('title' => 'Testing #1'));
 		$this->actionService->modifyRecord(self::TABLE_Content, self::VALUE_ContentIdFirst, array('header' => 'Testing #1'));
 		$this->assertAssertionDataSet('modifyBothRecordsOfCategoryRelation');
@@ -293,6 +295,11 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 			$responseContent, self::TABLE_Content . ':' . self::VALUE_ContentIdFirst, 'categories',
 			self::TABLE_Category, 'title', 'Category A'
 			// @todo Actually it should be twice "Category A" since the category got copied
+			// The frontend query ignores pid=-1 and thus the specific workspace record in sys_category:33
+			// SELECT sys_category.* FROM sys_category JOIN sys_category_record_mm ON sys_category_record_mm.uid_local = sys_category.uid WHERE sys_category.uid IN (33,28,29)
+			// AND sys_category_record_mm.uid_foreign=297 AND (sys_category.sys_language_uid IN (0,-1))
+			// AND sys_category.deleted=0 AND (sys_category.t3ver_wsid=0 OR sys_category.t3ver_wsid=1) AND sys_category.pid<>-1
+			// ORDER BY sys_category_record_mm.sorting_foreign
 			// self::TABLE_Category, 'title', array('Category A', 'Category A')
 		);
 	}
@@ -321,9 +328,9 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 		$responseContent = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseContent();
 		$this->assertResponseContentStructureHasRecords(
 			$responseContent, self::TABLE_Content . ':' . self::VALUE_ContentIdFirst, 'categories',
-			self::TABLE_Category, 'title', array('Category A', 'Category B')
-			// @todo Actually it should contain the localized category
+			// @todo Category localization cannot be rendered - http://forge.typo3.org/issues/56059
 			// self::TABLE_Category, 'title', array('[Translate to Dansk:] Category A', 'Category B')
+			self::TABLE_Category, 'title', array('Category A', 'Category B')
 		);
 	}
 

@@ -153,6 +153,7 @@ return array(
 				'internal_type' => 'db',
 				'allowed' => '*',
 				'MM' => 'sys_category_record_mm',
+				'MM_oppositeUsage' => array(),
 				'size' => 10,
 				'show_thumbs' => FALSE
 			)

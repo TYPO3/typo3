@@ -376,6 +376,13 @@ class CategoryRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 				),
 			);
 
+			if (empty($GLOBALS['TCA']['sys_category']['columns']['items']['config']['MM_oppositeUsage'][$tableName])) {
+				$GLOBALS['TCA']['sys_category']['columns']['items']['config']['MM_oppositeUsage'][$tableName] = array();
+			}
+			if (!in_array($fieldName, $GLOBALS['TCA']['sys_category']['columns']['items']['config']['MM_oppositeUsage'][$tableName])) {
+				$GLOBALS['TCA']['sys_category']['columns']['items']['config']['MM_oppositeUsage'][$tableName][] = $fieldName;
+			}
+
 			// Adding fields to an existing table definition
 			\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns($tableName, $columns);
 		}
