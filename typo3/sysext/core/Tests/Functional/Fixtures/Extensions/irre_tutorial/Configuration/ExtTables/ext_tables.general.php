@@ -67,9 +67,9 @@ if (!defined('TYPO3_MODE')) {
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns(
 	'tt_content',
 	 array(
-		 'tx_irretutorial_hotels' => array(
+		 'tx_irretutorial_1nff_hotels' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:irre_tutorial/Resources/Private/Language/locallang_db.xml:tt_content.tx_irretutorial_hotels',
+			'label' => 'LLL:EXT:irre_tutorial/Resources/Private/Language/locallang_db.xml:tt_content.tx_irretutorial_1nff_hotels',
 			'config' => array(
 				'type' => 'inline',
 				'foreign_table' => 'tx_irretutorial_1nff_hotel',
@@ -103,6 +103,6 @@ if (!defined('TYPO3_MODE')) {
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes(
 	'tt_content',
-	'--div--;LLL:EXT:irre_tutorial/Resources/Private/Language/locallang_db.xml:tt_content.div.irre, tx_irretutorial_hotels;;;;1-1-1, tx_irretutorial_flexform'
+	'--div--;LLL:EXT:irre_tutorial/Resources/Private/Language/locallang_db.xml:tt_content.div.irre, tx_irretutorial_1nff_hotels;;;;1-1-1, tx_irretutorial_flexform'
 );
 ?>

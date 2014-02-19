@@ -15,7 +15,7 @@ watcher {
 	tableFields {
 		pages = uid,_ORIG_uid,pid,sorting,title
 		sys_category = uid,_ORIG_uid,_LOCALIZED_UID,pid,sys_language_uid,title,parent,items,sys_language_uid
-		tt_content = uid,_ORIG_uid,_LOCALIZED_UID,pid,sorting,sys_language_uid,header,categories,tx_irretutorial_hotels
+		tt_content = uid,_ORIG_uid,_LOCALIZED_UID,pid,sorting,sys_language_uid,header,categories,tx_irretutorial_1nff_hotels
 		tx_irretutorial_1nff_hotel = uid,_ORIG_uid,_LOCALIZED_UID,pid,sorting,sys_language_uid,title,offers
 		tx_irretutorial_1nff_offer = uid,_ORIG_uid,_LOCALIZED_UID,pid,sorting,sys_language_uid,title,prices
 		tx_irretutorial_1nff_price = uid,_ORIG_uid,_LOCALIZED_UID,pid,sorting,sys_language_uid,title,price
@@ -60,8 +60,8 @@ page {
 			}
 			20 = CONTENT
 			20 {
-				if.isTrue.field = tx_irretutorial_hotels
-				watcher.parentRecordField = tx_irretutorial_hotels
+				if.isTrue.field = tx_irretutorial_1nff_hotels
+				watcher.parentRecordField = tx_irretutorial_1nff_hotels
 				table = tx_irretutorial_1nff_hotel
 				select {
 					orderBy = sorting
