@@ -62,10 +62,10 @@ class FileInfoHook {
 	 * @return string The HTML code for the TCEform field
 	 */
 	public function renderFileMetadataInfo(array $propertyArray, \TYPO3\CMS\Backend\Form\FormEngine $tceformsObj) {
-		$fileMedadataRecord = $propertyArray['row'];
+		$fileMetadataRecord = $propertyArray['row'];
 		$fileObject = NULL;
-		if ($fileMedadataRecord['file'] > 0) {
-			$fileObject = ResourceFactory::getInstance()->getFileObject((int)$fileMedadataRecord['file']);
+		if ($fileMetadataRecord['file'] > 0) {
+			$fileObject = ResourceFactory::getInstance()->getFileObject((int)$fileMetadataRecord['file']);
 		}
 
 		return $this->renderFileInformationContent($fileObject);

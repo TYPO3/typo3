@@ -115,10 +115,10 @@ class FileDeletionAspect {
 		// Retrieve the file metadata uid which is different from the file uid.
 		$metadataProperties = $fileObject->_getMetaData();
 
-		$metadDataUid = isset($metadataProperties['_ORIG_uid']) ? $metadataProperties['_ORIG_uid'] : $metadataProperties['uid'];
+		$metaDataUid = isset($metadataProperties['_ORIG_uid']) ? $metadataProperties['_ORIG_uid'] : $metadataProperties['uid'];
 		$this->getDatabase()->exec_DELETEquery(
 			'sys_category_record_mm',
-			'uid_foreign=' . (int)$metadDataUid . ' AND tablenames = \'sys_file_metadata\''
+			'uid_foreign=' . (int)$metaDataUid . ' AND tablenames = \'sys_file_metadata\''
 		);
 	}
 
