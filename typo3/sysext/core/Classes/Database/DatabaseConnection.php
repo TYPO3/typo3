@@ -667,12 +667,12 @@ class DatabaseConnection {
 	 * @param string $field Field name
 	 * @param string $value Value to find in list
 	 * @param string $table Table in which we are searching (for DBAL detection of quoteStr() method)
-	 * @throws \InvalidArgumentException
 	 * @return string WHERE clause for a query
+	 * @throws \InvalidArgumentException
 	 */
 	public function listQuery($field, $value, $table) {
-		$value = (string) $value;
-		if (strpos(',', $value) !== FALSE) {
+		$value = (string)$value;
+		if (strpos($value, ',') !== FALSE) {
 			throw new \InvalidArgumentException('$value must not contain a comma (,) in $this->listQuery() !', 1294585862);
 		}
 		$pattern = $this->quoteStr($value, $table);
