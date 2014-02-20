@@ -19,6 +19,9 @@ watcher {
 		tx_irretutorial_1nff_hotel = uid,_ORIG_uid,_LOCALIZED_UID,pid,sorting,sys_language_uid,title,offers
 		tx_irretutorial_1nff_offer = uid,_ORIG_uid,_LOCALIZED_UID,pid,sorting,sys_language_uid,title,prices
 		tx_irretutorial_1nff_price = uid,_ORIG_uid,_LOCALIZED_UID,pid,sorting,sys_language_uid,title,price
+		tx_irretutorial_1ncsv_hotel = uid,_ORIG_uid,_LOCALIZED_UID,pid,sorting,sys_language_uid,title,offers
+		tx_irretutorial_1ncsv_offer = uid,_ORIG_uid,_LOCALIZED_UID,pid,sorting,sys_language_uid,title,prices
+		tx_irretutorial_1ncsv_price = uid,_ORIG_uid,_LOCALIZED_UID,pid,sorting,sys_language_uid,title,price
 	}
 }
 
@@ -102,6 +105,42 @@ page {
 							where.intval = 1
 							where.wrap = parenttable="tx_irretutorial_1nff_offer" AND parentid=|
 							languageField = sys_language_uid
+						}
+					}
+				}
+			}
+			30 = CONTENT
+			30 {
+				if.isTrue.field = tx_irretutorial_1ncsv_hotels
+				watcher.parentRecordField = tx_irretutorial_1ncsv_hotels
+				table = tx_irretutorial_1ncsv_hotel
+				select {
+					uidInList.data = field:tx_irretutorial_1ncsv_hotels
+					orderBy = sorting
+					# not including sys_language_uid lookup
+					# languageField = sys_language_uid
+				}
+				renderObj = CONTENT
+				renderObj {
+					if.isTrue.field = offers
+					watcher.parentRecordField = offers
+					table = tx_irretutorial_1ncsv_offer
+					select {
+						uidInList.data = field:offers
+						orderBy = sorting
+						# not including sys_language_uid lookup
+						# languageField = sys_language_uid
+					}
+					renderObj = CONTENT
+					renderObj {
+						if.isTrue.field = prices
+						watcher.parentRecordField = prices
+						table = tx_irretutorial_1ncsv_price
+						select {
+							uidInList.data = field:prices
+							orderBy = sorting
+							# not including sys_language_uid lookup
+							# languageField = sys_language_uid
 						}
 					}
 				}
