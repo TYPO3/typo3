@@ -24,3 +24,5 @@ if (TYPO3_MODE === 'BE' && !(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_INSTALL)) {
 	'TYPO3\\CMS\\Core\\Resource\\Processing\\FileDeletionAspect',
 	'removeFromRepository'
 );
+
+$GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['dumpFile'] = 'EXT:core/Resources/PHP/FileDumpEID.php';

@@ -64,7 +64,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 	 *
 	 * @var string
 	 */
-	protected $baseUri;
+	protected $baseUri = NULL;
 
 	/**
 	 * @var \TYPO3\CMS\Core\Charset\CharsetConverter
@@ -79,12 +79,44 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 	);
 
 	/**
+	 * @param array $configuration
+	 */
+	public function __construct(array $configuration = array()) {
+		parent::__construct($configuration);
+		// The capabilities default of this driver. See CAPABILITY_* constants for possible values
+		$this->capabilities =
+			\TYPO3\CMS\Core\Resource\ResourceStorage::CAPABILITY_BROWSABLE
+			| \TYPO3\CMS\Core\Resource\ResourceStorage::CAPABILITY_PUBLIC
+			| \TYPO3\CMS\Core\Resource\ResourceStorage::CAPABILITY_WRITABLE;
+	}
+
+	/**
+	 * Merges the capabilites merged by the user at the storage
+	 * configuration into the actual capabilities of the driver
+	 * and returns the result.
+	 *
+	 * @param integer $capabilities
+	 *
+	 * @return integer
+	 */
+	public function mergeConfigurationCapabilities($capabilities) {
+		$this->capabilities &= $capabilities;
+		return $this->capabilities;
+	}
+
+
+	/**
 	 * Processes the configuration for this driver.
 	 *
 	 * @return void
 	 */
 	public function processConfiguration() {
 		$this->absoluteBasePath = $this->calculateBasePath($this->configuration);
+		$this->determineBaseUrl();
+		if ($this->baseUri === NULL) {
+			// remove public flag
+			$this->capabilities &= ~\TYPO3\CMS\Core\Resource\ResourceStorage::CAPABILITY_PUBLIC;
+		}
 	}
 
 	/**
@@ -94,11 +126,6 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 	 * @return void
 	 */
 	public function initialize() {
-		$this->determineBaseUrl();
-		// The capabilities of this driver. See CAPABILITY_* constants for possible values
-		$this->capabilities = \TYPO3\CMS\Core\Resource\ResourceStorage::CAPABILITY_BROWSABLE
-			| \TYPO3\CMS\Core\Resource\ResourceStorage::CAPABILITY_PUBLIC
-			| \TYPO3\CMS\Core\Resource\ResourceStorage::CAPABILITY_WRITABLE;
 	}
 
 	/**
@@ -108,11 +135,17 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 	 * @return void
 	 */
 	protected function determineBaseUrl() {
-		if (GeneralUtility::isFirstPartOfStr($this->absoluteBasePath, PATH_site)) {
-			// use site-relative URLs
-			$this->baseUri = \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($this->absoluteBasePath);
-		} elseif (isset($this->configuration['baseUri']) && GeneralUtility::isValidUrl($this->configuration['baseUri'])) {
-			$this->baseUri = rtrim($this->configuration['baseUri'], '/') . '/';
+		// only calculate baseURI if the storage does not enforce jumpUrl Script
+		if ($this->hasCapability(\TYPO3\CMS\Core\Resource\ResourceStorage::CAPABILITY_PUBLIC)) {
+			if (GeneralUtility::isFirstPartOfStr($this->absoluteBasePath, PATH_site)) {
+				// use site-relative URLs
+				$temporaryBaseUri = \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($this->absoluteBasePath);
+				$uriParts = explode('/', rtrim($temporaryBaseUri, '/'));
+				array_map('rawurlencode', $uriParts);
+				$this->baseUri = implode('/', $uriParts) . '/';
+			} elseif (isset($this->configuration['baseUri']) && GeneralUtility::isValidUrl($this->configuration['baseUri'])) {
+				$this->baseUri = rtrim($this->configuration['baseUri'], '/') . '/';
+			}
 		}
 	}
 
@@ -137,6 +170,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 		} else {
 			$absoluteBasePath = $configuration['basePath'];
 		}
+		$this->canonicalizeAndCheckFilePath($absoluteBasePath);
 		$absoluteBasePath = rtrim($absoluteBasePath, '/') . '/';
 		if (!is_dir($absoluteBasePath)) {
 			throw new \TYPO3\CMS\Core\Resource\Exception\InvalidConfigurationException(
@@ -148,29 +182,20 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 	}
 
 	/**
-	 * Returns the public URL to a file. For the local driver, this will always
-	 * return a path relative to PATH_site.
+	 * Returns the public URL to a file.
+	 * For the local driver, this will always return a path relative to PATH_site.
 	 *
 	 * @param string $identifier
-	 * @param boolean $relativeToCurrentScript Determines whether the URL returned should be relative to the current script,
-	 *                                         in case it is relative at all (only for the LocalDriver)
-	 *
 	 * @return string
 	 * @throws \TYPO3\CMS\Core\Resource\Exception
 	 */
-	public function getPublicUrl($identifier, $relativeToCurrentScript = FALSE) {
-		if ($this->configuration['pathType'] === 'relative' && rtrim($this->configuration['basePath'], '/') !== '') {
-			$publicUrl = rtrim($this->configuration['basePath'], '/') . '/' . ltrim($identifier, '/');
-		} elseif (isset($this->baseUri)) {
-			$publicUrl = $this->baseUri . ltrim($identifier, '/');
-		} else {
-			throw new \TYPO3\CMS\Core\Resource\Exception('Public URL of file cannot be determined', 1329765518);
-		}
-		// If requested, make the path relative to the current script in order to make it possible
-		// to use the relative file
-		if ($relativeToCurrentScript) {
-			$publicUrl = PathUtility::getRelativePathTo(PathUtility::dirname((PATH_site . $publicUrl))) .
-				PathUtility::basename($publicUrl);
+	public function getPublicUrl($identifier) {
+		$publicUrl = NULL;
+		if ($this->baseUri !== NULL) {
+			$uriParts = explode('/', ltrim($identifier, '/'));
+			$uriParts = array_map('rawurlencode', $uriParts);
+			$identifier = implode('/', $uriParts);
+			$publicUrl = $this->baseUri . $identifier;
 		}
 		return $publicUrl;
 	}

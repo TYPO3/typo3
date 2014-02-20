@@ -204,7 +204,7 @@ abstract class AbstractRepository implements \TYPO3\CMS\Extbase\Persistence\Repo
 	 * @return string the additional where clause, something like " AND deleted=0 AND hidden=0"
 	 */
 	protected function getWhereClauseForEnabledFields() {
-		if ($this->getEnvironmentMode() === 'FE') {
+		if ($this->getEnvironmentMode() === 'FE' && $GLOBALS['TSFE']->sys_page) {
 			// frontend context
 			$whereClause = $GLOBALS['TSFE']->sys_page->enableFields($this->table);
 			$whereClause .= $GLOBALS['TSFE']->sys_page->deleteClause($this->table);

@@ -65,6 +65,17 @@ interface DriverInterface {
 	public function getCapabilities();
 
 	/**
+	 * Merges the capabilites merged by the user at the storage
+	 * configuration into the actual capabilities of the driver
+	 * and returns the result.
+	 *
+	 * @param integer $capabilities
+	 *
+	 * @return integer
+	 */
+	public function mergeConfigurationCapabilities($capabilities);
+
+	/**
 	 * Returns TRUE if this driver has the given capability.
 	 *
 	 * @param integer $capability A capability, as defined in a CAPABILITY_* constant
@@ -128,16 +139,13 @@ interface DriverInterface {
 
 	/**
 	 * Returns the public URL to a file.
+	 * Either fully qualified URL or relative to PATH_site (rawurlencoded).
+	 *
 	 *
 	 * @param string $identifier
-	 * @param boolean $relativeToCurrentScript Determines whether the URL
-	 *                                         returned should be relative
-	 *                                         to the current script, in case
-	 *                                         it is relative at all (only
-	 *                                         for the LocalDriver)
 	 * @return string
 	 */
-	public function getPublicUrl($identifier, $relativeToCurrentScript = FALSE);
+	public function getPublicUrl($identifier);
 
 	/**
 	 * Creates a folder, within a parent folder.

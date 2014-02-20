@@ -116,9 +116,7 @@ class ResourceStorageTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCa
 	 */
 	protected function createDriverMock($driverConfiguration, \TYPO3\CMS\Core\Resource\ResourceStorage $storageObject = NULL, $mockedDriverMethods = array()) {
 		$this->initializeVfs();
-		if ($storageObject == NULL) {
-			$storageObject = $this->getMock('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', array(), array(), '', FALSE);
-		}
+
 
 		if (!isset($driverConfiguration['basePath'])) {
 			$driverConfiguration['basePath'] = $this->getMountRootUrl();
@@ -131,7 +129,9 @@ class ResourceStorageTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCa
 				// when using the AbstractDriver we would be in trouble when wanting to mock away some concrete method
 			$driver = $this->getMock('TYPO3\\CMS\\Core\\Resource\\Driver\\LocalDriver', $mockedDriverMethods, array($driverConfiguration));
 		}
-		$storageObject->setDriver($driver);
+		if ($storageObject !== NULL) {
+			$storageObject->setDriver($driver);
+		}
 		$driver->setStorageUid(6);
 		$driver->processConfiguration();
 		$driver->initialize();
@@ -201,8 +201,15 @@ class ResourceStorageTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCa
 			'is_browsable' => $capabilites['browsable'],
 			'is_online' => TRUE
 		);
-		$mockedDriver = $this->createDriverMock(array(), $this->fixture, array('hasCapability'));
-		$mockedDriver->expects($this->any())->method('hasCapability')->will($this->returnValue(TRUE));
+		$mockedDriver = $this->createDriverMock(
+			array(
+				'pathType' => 'relative',
+				'basePath' => 'fileadmin/',
+				'baseUri' => 'http://www.test.de/'
+			),
+			$this->fixture,
+			NULL
+		);
 		$this->prepareFixture(array(), FALSE, $mockedDriver, $storageRecord);
 		$this->assertEquals($capabilites['public'], $this->fixture->isPublic(), 'Capability "public" is not correctly set.');
 		$this->assertEquals($capabilites['writable'], $this->fixture->isWritable(), 'Capability "writable" is not correctly set.');

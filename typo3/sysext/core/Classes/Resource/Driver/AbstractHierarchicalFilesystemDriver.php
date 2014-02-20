@@ -56,7 +56,8 @@ abstract class AbstractHierarchicalFilesystemDriver extends AbstractDriver {
 		$filePath = \TYPO3\CMS\Core\Utility\PathUtility::getCanonicalPath($filePath);
 
 		// filePath must be valid
-		if (!$this->isPathValid($filePath)) {
+		// Special case is required by vfsStream in Unit Test context
+		if (!$this->isPathValid($filePath) && substr($filePath, 0, 6) !== 'vfs://') {
 			throw new \TYPO3\CMS\Core\Resource\Exception\InvalidPathException('File ' . $filePath . ' is not valid (".." and "//" is not allowed in path).', 1320286857);
 		}
 		return $filePath;

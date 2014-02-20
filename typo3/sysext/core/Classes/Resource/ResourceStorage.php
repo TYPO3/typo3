@@ -215,8 +215,14 @@ class ResourceStorage {
 	public function __construct(Driver\DriverInterface $driver, array $storageRecord) {
 		$this->storageRecord = $storageRecord;
 		$this->configuration = ResourceFactory::getInstance()->convertFlexFormDataToConfigurationArray($storageRecord['configuration']);
+		$this->capabilities =
+			($this->storageRecord['is_browsable'] ? self::CAPABILITY_BROWSABLE : 0) |
+			($this->storageRecord['is_public'] ? self::CAPABILITY_PUBLIC : 0) |
+			($this->storageRecord['is_writable'] ? self::CAPABILITY_WRITABLE : 0);
+
 		$this->driver = $driver;
 		$this->driver->setStorageUid($storageRecord['uid']);
+		$this->driver->mergeConfigurationCapabilities($this->capabilities);
 		try {
 			$this->driver->processConfiguration();
 		} catch (Exception\InvalidConfigurationException $e) {
@@ -225,11 +231,11 @@ class ResourceStorage {
 			$this->markAsPermanentlyOffline();
 		}
 		$this->driver->initialize();
-		$this->capabilities = ($this->storageRecord['is_browsable'] && $this->driver->hasCapability(self::CAPABILITY_BROWSABLE) ? self::CAPABILITY_BROWSABLE : 0) + ($this->storageRecord['is_public'] && $this->driver->hasCapability(self::CAPABILITY_PUBLIC) ? self::CAPABILITY_PUBLIC : 0) + ($this->storageRecord['is_writable'] && $this->driver->hasCapability(self::CAPABILITY_WRITABLE) ? self::CAPABILITY_WRITABLE : 0);
+		$this->capabilities = $this->driver->getCapabilities();
+
 		$this->isDefault = (isset($storageRecord['is_default']) && $storageRecord['is_default'] == 1);
-		// TODO do not set the "public" capability if no public URIs can be generated
-		$this->processConfiguration();
 		$this->resetFileAndFolderNameFiltersToDefault();
+		$this->processConfiguration();
 	}
 
 	/**
@@ -1200,7 +1206,33 @@ class ResourceStorage {
 			$this->emitPreGeneratePublicUrl($resourceObject, $relativeToCurrentScript, array('publicUrl' => &$publicUrl));
 			// If slot did not handle the signal, use the default way to determine public URL
 			if ($publicUrl === NULL) {
-				$publicUrl = $this->driver->getPublicUrl($resourceObject->getIdentifier(), $relativeToCurrentScript);
+
+				if ($this->hasCapability(self::CAPABILITY_PUBLIC)) {
+					$publicUrl = $this->driver->getPublicUrl($resourceObject->getIdentifier());
+				}
+
+				if ($publicUrl === NULL && $resourceObject instanceof FileInterface) {
+					$queryParameterArray = array('eID' => 'dumpFile', 't' => '');
+					if ($resourceObject instanceof File) {
+						$queryParameterArray['f'] = $resourceObject->getUid();
+						$queryParameterArray['t'] = 'f';
+					} elseif ($resourceObject instanceof ProcessedFile) {
+						$queryParameterArray['p'] = $resourceObject->getUid();
+						$queryParameterArray['t'] = 'p';
+					}
+
+					$queryParameterArray['token'] = GeneralUtility::hmac(implode('|', $queryParameterArray), 'resourceStorageDumpFile');
+					$publicUrl = 'index.php?' . str_replace('+', '%20', http_build_query($queryParameterArray));
+				}
+
+				// If requested, make the path relative to the current script in order to make it possible
+				// to use the relative file
+				if ($publicUrl !== NULL && $relativeToCurrentScript && !GeneralUtility::isValidUrl($publicUrl)) {
+					$absolutePathToContainingFolder = PathUtility::dirname(PATH_site . $publicUrl);
+					$pathPart = PathUtility::getRelativePathTo($absolutePathToContainingFolder);
+					$filePart = substr(PATH_site . $publicUrl, strlen($absolutePathToContainingFolder) + 1);
+					$publicUrl = $pathPart . $filePart;
+				}
 			}
 		}
 		return $publicUrl;
@@ -1466,9 +1498,8 @@ class ResourceStorage {
 			200
 		);
 		ob_clean();
-		$this->driver->dumpFileContents($file->getIdentifier());
 		flush();
-		exit();
+		$this->driver->dumpFileContents($file->getIdentifier());
 	}
 
 	/**

@@ -369,6 +369,33 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 	}
 
 	/**
+	 * Data provider for getPublicUrlReturnsValidUrlContainingSpecialCharacters().
+	 *
+	 * @return array
+	 */
+	public function getPublicUrlReturnsValidUrlContainingSpecialCharacters_dataProvider() {
+		return array(
+			array('/single file with some special chars äüö!.txt'),
+			array('/on subfolder/with special chars äüö!.ext'),
+			array('/who names a file like !"§$%&()=?*+~"#\'´`<>-.ext'),
+			array('no leading slash !"§$%&()=?*+~#\'"´`"<>-.txt')
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider getPublicUrlReturnsValidUrlContainingSpecialCharacters_dataProvider
+	 */
+	public function getPublicUrlReturnsValidUrlContainingSpecialCharacters($fileIdentifier) {
+		$baseUri = 'http://example.org/foobar/' . uniqid();
+		$fixture = $this->createDriverFixture(array(
+			'baseUri' => $baseUri
+		));
+		$publicUrl = $fixture->getPublicUrl($fileIdentifier);
+		$this->assertTrue(GeneralUtility::isValidUrl($publicUrl), 'getPublicUrl did not return a valid URL:' . $publicUrl);
+	}
+
+	/**
 	 * @test
 	 */
 	public function fileContentsCanBeWrittenAndRead() {
