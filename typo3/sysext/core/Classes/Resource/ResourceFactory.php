@@ -393,19 +393,27 @@ class ResourceFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 	/**
+	 * Gets an file object from storage by file identifier
+	 * If the file is outside of the process folder it gets indexed and returned as file object afterwards
+	 * If the file is within processing folder the file object will be directly returned
+	 *
 	 * @param int $storageUid
 	 * @param string $fileIdentifier
-	 *
-	 * @return File
+	 * @return File|ProcessedFile
 	 */
 	public function getFileObjectByStorageAndIdentifier($storageUid, &$fileIdentifier) {
 		$storage = $this->getStorageObject($storageUid, array(), $fileIdentifier);
-		$fileData = $this->getFileIndexRepository()->findOneByStorageUidAndIdentifier($storage->getUid(), $fileIdentifier);
-		if ($fileData === FALSE) {
-			$fileObject = $this->getIndexer($storage)->createIndexEntry($fileIdentifier);
+		if (!$storage->isWithinProcessingFolder($fileIdentifier)) {
+			$fileData = $this->getFileIndexRepository()->findOneByStorageUidAndIdentifier($storage->getUid(), $fileIdentifier);
+			if ($fileData === FALSE) {
+				$fileObject = $this->getIndexer($storage)->createIndexEntry($fileIdentifier);
+			} else {
+				$fileObject = $this->getFileObject($fileData['uid'], $fileData);
+			}
 		} else {
-			$fileObject = $this->getFileObject($fileData['uid'], $fileData);
+			$fileObject = $this->getProcessedFileRepository()->findByStorageAndIdentifier($storage, $fileIdentifier);
 		}
+
 		return $fileObject;
 	}
 
@@ -602,6 +610,15 @@ class ResourceFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	protected function getFileIndexRepository() {
 		return FileIndexRepository::getInstance();
+	}
+
+	/**
+	 * Returns an instance of the ProcessedFileRepository
+	 *
+	 * @return ProcessedFileRepository
+	 */
+	protected function getProcessedFileRepository() {
+		return GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\ProcessedFileRepository');
 	}
 
 	/**

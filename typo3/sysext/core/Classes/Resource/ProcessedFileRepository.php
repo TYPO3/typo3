@@ -108,6 +108,27 @@ class ProcessedFileRepository extends AbstractRepository {
 	}
 
 	/**
+	 * @param ResourceStorage $storage
+	 * @param string $identifier
+	 *
+	 * @return null|ProcessedFile
+	 */
+	public function findByStorageAndIdentifier(ResourceStorage $storage, $identifier) {
+		$processedFileObject = NULL;
+		if ($storage->hasFile($identifier)) {
+			$databaseRow = $this->databaseConnection->exec_SELECTgetSingleRow(
+				'*',
+				$this->table,
+				'storage = ' . (int)$storage->getUid() .
+				' AND identifier = ' . $this->databaseConnection->fullQuoteStr($identifier, $this->table)
+			);
+			if ($databaseRow) {
+				$processedFileObject = $this->createDomainObject($databaseRow);
+			}
+		}
+		return $processedFileObject;
+	}
+	/**
 	 * Adds a processedfile object in the database
 	 *
 	 * @param ProcessedFile $processedFile

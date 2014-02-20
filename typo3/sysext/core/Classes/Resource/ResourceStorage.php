@@ -2061,6 +2061,14 @@ class ResourceStorage {
 	}
 
 	/**
+	 * @param string $identifier
+	 * @return bool
+	 */
+	public function isWithinProcessingFolder($identifier) {
+		return $this->driver->isWithin($this->getProcessingFolder()->getIdentifier(), $identifier);
+	}
+
+	/**
 	 * Returns the folders on the root level of the storage
 	 * or the first mount point of this storage for this user
 	 *

@@ -181,7 +181,7 @@ CREATE TABLE pages (
   KEY t3ver_oid (t3ver_oid,t3ver_wsid),
   KEY parent (pid,deleted,sorting),
   KEY alias (alias),
-  KEY determineSiteRoot (deleted,hidden,is_siteroot),
+  KEY determineSiteRoot (deleted,hidden,is_siteroot)
 );
 
 #
@@ -352,7 +352,7 @@ CREATE TABLE sys_file_metadata (
 	PRIMARY KEY (uid),
 	KEY file (file),
 	KEY t3ver_oid (t3ver_oid,t3ver_wsid),
-	KEY fal_filelist (l10n_parent,sys_language_uid),
+	KEY fal_filelist (l10n_parent,sys_language_uid)
 );
 
 
@@ -380,7 +380,8 @@ CREATE TABLE sys_file_processedfile (
 	height int(11) DEFAULT '0',
 
 	PRIMARY KEY (uid),
-	KEY combined_1 (original,task_type,configurationsha1)
+	KEY combined_1 (original,task_type,configurationsha1),
+	KEY identifier (storage,identifier)
 );
 
 #
@@ -687,7 +688,7 @@ CREATE TABLE sys_category (
 	KEY parent (pid),
 	KEY t3ver_oid (t3ver_oid,t3ver_wsid),
 	KEY category_parent (parent),
-	KEY category_list (pid,deleted,sys_language_uid),
+	KEY category_list (pid,deleted,sys_language_uid)
 );
 
 #
