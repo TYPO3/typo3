@@ -75,13 +75,15 @@ class FunctionalTestCaseBootstrapUtility {
 	 * @param array $coreExtensionsToLoad Array of core extensions to load
 	 * @param array $testExtensionsToLoad Array of test extensions to load
 	 * @param array $pathsToLinkInTestInstance Array of source => destination path pairs to be linked
+	 * @param array $configurationToUse Array of TYPO3_CONF_VARS that need to be overridden
 	 * @return string Path to TYPO3 CMS test installation for this test case
 	 */
 	public function setUp(
 		$testCaseClassName,
 		array $coreExtensionsToLoad,
 		array $testExtensionsToLoad,
-		array $pathsToLinkInTestInstance
+		array $pathsToLinkInTestInstance,
+		array $configurationToUse
 	) {
 		$this->setUpIdentifier($testCaseClassName);
 		$this->setUpInstancePath();
@@ -90,7 +92,7 @@ class FunctionalTestCaseBootstrapUtility {
 		$this->setUpInstanceCoreLinks();
 		$this->linkTestExtensionsToInstance($testExtensionsToLoad);
 		$this->linkPathsInTestInstance($pathsToLinkInTestInstance);
-		$this->setUpLocalConfiguration();
+		$this->setUpLocalConfiguration($configurationToUse);
 		$this->setUpPackageStates($coreExtensionsToLoad, $testExtensionsToLoad);
 		$this->setUpBasicTypo3Bootstrap();
 		$this->setUpTestDatabase();
@@ -260,14 +262,17 @@ class FunctionalTestCaseBootstrapUtility {
 	/**
 	 * Create LocalConfiguration.php file in the test instance
 	 *
+	 * @param array $configurationToMerge
 	 * @throws Exception
 	 * @return void
 	 */
-	protected function setUpLocalConfiguration() {
+	protected function setUpLocalConfiguration(array $configurationToMerge) {
 		$originalConfigurationArray = require ORIGINAL_ROOT . 'typo3conf/LocalConfiguration.php';
 		// Base of final LocalConfiguration is core factory configuration
 		$finalConfigurationArray = require ORIGINAL_ROOT .'typo3/sysext/core/Configuration/FactoryConfiguration.php';
 
+		$this->mergeRecursiveWithOverrule($finalConfigurationArray, require ORIGINAL_ROOT .'typo3/sysext/core/Build/Configuration/FunctionalTestsConfiguration.php');
+		$this->mergeRecursiveWithOverrule($finalConfigurationArray, $configurationToMerge);
 		$finalConfigurationArray['DB'] = $originalConfigurationArray['DB'];
 		// Calculate and set new database name
 		$this->originalDatabaseName = $originalConfigurationArray['DB']['database'];
@@ -343,13 +348,13 @@ class FunctionalTestCaseBootstrapUtility {
 
 		// Activate test extensions that have been symlinked before
 		foreach ($testExtensionPaths as $extensionPath) {
+			$extensionName = basename($extensionPath);
 			if (isset($packageSates['packages'][$extensionName])) {
 				throw new Exception(
 					$extensionName . ' is already registered as extension to load, no need to load it explicitly',
 					1390913894
 				);
 			}
-			$extensionName = basename($extensionPath);
 			$packageStates['packages'][$extensionName] = array(
 				'state' => 'active',
 				'packagePath' => 'typo3conf/ext/' . $extensionName . '/',
@@ -622,5 +627,48 @@ class FunctionalTestCaseBootstrapUtility {
 		}
 		$lines .= str_repeat(chr(9), ($level - 1)) . ')' . ($level - 1 == 0 ? '' : ',' . chr(10));
 		return $lines;
+	}
+
+	/**
+	 * COPIED FROM ArrayUtility
+	 *
+	 * Merges two arrays recursively and "binary safe" (integer keys are
+	 * overridden as well), overruling similar values in the original array
+	 * with the values of the overrule array.
+	 * In case of identical keys, ie. keeping the values of the overrule array.
+	 *
+	 * This method takes the original array by reference for speed optimization with large arrays
+	 *
+	 * The differences to the existing PHP function array_merge_recursive() are:
+	 *  * Keys of the original array can be unset via the overrule array. ($enableUnsetFeature)
+	 *  * Much more control over what is actually merged. ($addKeys, $includeEmptyValues)
+	 *  * Elements or the original array get overwritten if the same key is present in the overrule array.
+	 *
+	 * @param array $original Original array. It will be *modified* by this method and contains the result afterwards!
+	 * @param array $overrule Overrule array, overruling the original array
+	 * @param boolean $addKeys If set to FALSE, keys that are NOT found in $original will not be set. Thus only existing value can/will be overruled from overrule array.
+	 * @param boolean $includeEmptyValues If set, values from $overrule will overrule if they are empty or zero.
+	 * @param boolean $enableUnsetFeature If set, special values "__UNSET" can be used in the overrule array in order to unset array keys in the original array.
+	 * @return void
+	 */
+	protected function mergeRecursiveWithOverrule(array &$original, array $overrule, $addKeys = TRUE, $includeEmptyValues = TRUE, $enableUnsetFeature = TRUE) {
+		foreach (array_keys($overrule) as $key) {
+			if ($enableUnsetFeature && $overrule[$key] === '__UNSET') {
+				unset($original[$key]);
+				continue;
+			}
+			if (isset($original[$key]) && is_array($original[$key])) {
+				if (is_array($overrule[$key])) {
+					self::mergeRecursiveWithOverrule($original[$key], $overrule[$key], $addKeys, $includeEmptyValues, $enableUnsetFeature);
+				}
+			} elseif (
+				($addKeys || isset($original[$key])) &&
+				($includeEmptyValues || $overrule[$key])
+			) {
+				$original[$key] = $overrule[$key];
+			}
+		}
+		// This line is kept for backward compatibility reasons.
+		reset($original);
 	}
 }

@@ -57,7 +57,6 @@ use \TYPO3\CMS\Core\Tests\Functional\Framework\Frontend\Response;
  *     typo3/sysext/core/Tests/Functional/DataHandling/DataHandlerTest.php
  */
 abstract class FunctionalTestCase extends BaseTestCase {
-
 	/**
 	 * Core extensions to load.
 	 *
@@ -130,6 +129,14 @@ abstract class FunctionalTestCase extends BaseTestCase {
 	protected $pathsToLinkInTestInstance = array();
 
 	/**
+	 * This configuration array is merged with TYPO3_CONF_VARS
+	 * that are set in default configuration and factory configuration
+	 *
+	 * @var array
+	 */
+	protected $configurationToUseInTestInstance = array();
+
+	/**
 	 * Private utility class used in setUp() and tearDown(). Do NOT use in test cases!
 	 *
 	 * @var \TYPO3\CMS\Core\Tests\FunctionalTestCaseBootstrapUtility
@@ -159,7 +166,8 @@ abstract class FunctionalTestCase extends BaseTestCase {
 			get_class($this),
 			$this->coreExtensionsToLoad,
 			$this->testExtensionsToLoad,
-			$this->pathsToLinkInTestInstance
+			$this->pathsToLinkInTestInstance,
+			$this->configurationToUseInTestInstance
 		);
 	}
 
