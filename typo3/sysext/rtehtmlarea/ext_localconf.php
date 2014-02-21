@@ -67,6 +67,8 @@ if (strstr($_EXTCONF['defaultConfiguration'], 'Minimal')) {
 require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'hooks/softref/ext_localconf.php';
 // Add Status Report about Conflicting Extensions
 require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'hooks/statusreport/ext_localconf.php';
+// Add frontend hook to add meta tag when rtehtmlarea is present and user agent is IE 11+
+require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Configuration/Hook/Frontend/Controller/ext_localconf.php';
 
 // Configure Lorem Ipsum hook to insert nonsense in wysiwyg mode
 if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('lorem_ipsum') && TYPO3_MODE == 'BE') {
