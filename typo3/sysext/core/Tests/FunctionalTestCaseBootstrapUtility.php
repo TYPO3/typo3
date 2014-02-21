@@ -209,13 +209,13 @@ class FunctionalTestCaseBootstrapUtility {
 	 */
 	protected function linkTestExtensionsToInstance(array $extensionPaths) {
 		foreach ($extensionPaths as $extensionPath) {
-			if (!is_dir($extensionPath)) {
+			$absoluteExtensionPath = ORIGINAL_ROOT . $extensionPath;
+			if (!is_dir($absoluteExtensionPath)) {
 				throw new Exception(
-					'Test extension path ' . $extensionPath . ' not found',
+					'Test extension path ' . $absoluteExtensionPath . ' not found',
 					1376745645
 				);
 			}
-			$absoluteExtensionPath = ORIGINAL_ROOT . $extensionPath;
 			$destinationPath = $this->instancePath . '/typo3conf/ext/'. basename($absoluteExtensionPath);
 			$success = symlink($absoluteExtensionPath, $destinationPath);
 			if (!$success) {
