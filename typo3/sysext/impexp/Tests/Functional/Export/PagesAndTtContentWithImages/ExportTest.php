@@ -33,8 +33,6 @@ require_once __DIR__ . '/../AbstractExportTestCase.php';
  */
 class ExportTest extends \TYPO3\CMS\Impexp\Tests\Functional\Export\AbstractExportTestCase {
 
-
-
 	protected $pathsToLinkInTestInstance = array(
 		'typo3/sysext/impexp/Tests/Functional/Fixtures/Folders/fileadmin/user_upload' => 'fileadmin/user_upload'
 	);
@@ -159,7 +157,7 @@ class ExportTest extends \TYPO3\CMS\Impexp\Tests\Functional\Export\AbstractExpor
 
 		$out = $this->export->compileMemoryToFileContent('xml');
 
-		$this->assertXmlStringEqualsXmlFile(__DIR__ . '/../../Fixtures/ImportExport/pages-and-ttcontent-with-image.xml', $out);
+		$this->assertXmlStringEqualsXmlFile(__DIR__ . '/../../Fixtures/ImportExportXml/pages-and-ttcontent-with-image.xml', $out);
 	}
 
 }

@@ -24,6 +24,8 @@ namespace TYPO3\CMS\Impexp\Tests\Functional\Import;
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 require_once __DIR__ . '/../../../../core/Tests/Functional/DataHandling/AbstractDataHandlerActionTestCase.php';
 
 /**
@@ -52,6 +54,26 @@ abstract class AbstractImportTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 
 		$this->import = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Impexp\\ImportExport');
 		$this->import->init(0, 'import');
+	}
+
+
+	/**
+	 * Test if the local filesystem is case sensitive
+	 *
+	 * @return boolean
+	 */
+	protected function isCaseSensitiveFilesystem() {
+		$caseSensitive = TRUE;
+		$path = GeneralUtility::tempnam('aAbB');
+
+		// do the actual sensitivity check
+		if (@file_exists(strtoupper($path)) && @file_exists(strtolower($path))) {
+			$caseSensitive = FALSE;
+		}
+
+		// clean filesystem
+		unlink($path);
+		return $caseSensitive;
 	}
 
 }

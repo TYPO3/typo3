@@ -27,6 +27,7 @@ namespace TYPO3\CMS\Impexp;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 
@@ -336,6 +337,13 @@ class ImportExport {
 	 * @var array
 	 */
 	protected $defaultRecordIncludeFields = array('uid', 'pid');
+
+	/**
+	 * Array of current registered storage objects
+	 *
+	 * @var array
+	 */
+	protected $storageObjects = array();
 
 	/**************************
 	 * Initialize
@@ -1255,13 +1263,11 @@ class ImportExport {
 	 ***********************/
 
 	/**
-	 * Imports the internal data array to $pid.
+	 * Initialize all settings for the import
 	 *
-	 * @param integer $pid Page ID in which to import the content
 	 * @return void
-	 * @todo Define visibility
 	 */
-	public function importData($pid) {
+	protected function initializeImport() {
 		// Set this flag to indicate that an import is being/has been done.
 		$this->doesImport = 1;
 		// Initialize:
@@ -1273,6 +1279,36 @@ class ImportExport {
 		$this->unlinkFiles = array();
 		$this->alternativeFileName = array();
 		$this->alternativeFilePath = array();
+
+		$this->initializeLocalStorages();
+	}
+
+	/**
+	 * Initialize the all present storage objects
+	 *
+	 * @return void
+	 */
+	protected function initializeLocalStorages() {
+		/** @var $storageRepository \TYPO3\CMS\Core\Resource\StorageRepository */
+		$storageRepository = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\StorageRepository');
+		$this->storageObjects = $storageRepository->findAll();
+	}
+
+
+	/**
+	 * Imports the internal data array to $pid.
+	 *
+	 * @param integer $pid Page ID in which to import the content
+	 * @return void
+	 */
+	public function importData($pid) {
+
+		$this->initializeImport();
+
+		// Write sys_file_storages first
+		$this->writeSysFileStorageRecords();
+		// Write sys_file records and write the binary file data
+		$this->writeSysFileRecords();
 		// Write records, first pages, then the rest
 		// Fields with "hard" relations to database, files and flexform fields are kept empty during this run
 		$this->writeRecords_pages($pid);
@@ -1286,6 +1322,260 @@ class ImportExport {
 		$this->unlinkTempFiles();
 		// Finally, traverse all records and process softreferences with substitution attributes.
 		$this->processSoftReferences();
+	}
+
+	/**
+	 * Imports the sys_file_storage records from internal data array.
+	 *
+	 * @return void
+	 */
+	protected function writeSysFileStorageRecords() {
+		if (!isset($this->dat['header']['records']['sys_file_storage'])) {
+			return;
+		}
+		$sysFileStorageUidsToBeResetToDefaultStorage = array();
+		foreach (array_keys($this->dat['header']['records']['sys_file_storage']) as $sysFileStorageUid) {
+			$storageRecord = $this->dat['records']['sys_file_storage:' . $sysFileStorageUid]['data'];
+			// continue with Local, writable and online storage only
+			if ($storageRecord['driver'] === 'Local' && $storageRecord['is_writable'] && $storageRecord['is_online']) {
+				$useThisStorageUidInsteadOfTheOneInImport = 0;
+				/** @var $localStorage \TYPO3\CMS\Core\Resource\ResourceStorage */
+				foreach ($this->storageObjects as $localStorage) {
+					// check the available storage for Local, writable and online ones
+					if ($localStorage->getDriverType() === 'Local' && $localStorage->isWritable() && $localStorage->isOnline()) {
+						// check if there is already a identical storage present (same pathType and basePath)
+						$storageRecordConfiguration = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->convertFlexFormDataToConfigurationArray($storageRecord['configuration']);
+						$localStorageRecordConfiguration = $localStorage->getConfiguration();
+						if ($storageRecordConfiguration['pathType'] == $localStorageRecordConfiguration['pathType'] && $storageRecordConfiguration['basePath'] == $localStorageRecordConfiguration['basePath']) {
+							// same storage is already present
+							$useThisStorageUidInsteadOfTheOneInImport = $localStorage->getUid();
+							break;
+						}
+					}
+				}
+				if ($useThisStorageUidInsteadOfTheOneInImport > 0) {
+					// same storage is already present; map the to be imported one to the present one
+					$this->import_mapId['sys_file_storage'][$sysFileStorageUid] = $useThisStorageUidInsteadOfTheOneInImport;
+				} else {
+					// Local, writable and online storage. Is allowed to be used to later write files in.
+					$this->addSingle('sys_file_storage', $sysFileStorageUid, 0);
+				}
+			} else {
+				// Storage with non Local drivers could be imported but must not be used to saves files in, because you
+				// could not be sure, that this is supported. The default storage will be used in this case.
+				// It could happen that non writable and non online storage will be created as dupes because you could not
+				// check the detailed configuration options at this point
+				$this->addSingle('sys_file_storage', $sysFileStorageUid, 0);
+				$sysFileStorageUidsToBeResetToDefaultStorage[] = $sysFileStorageUid;
+			}
+
+		}
+
+		// Importing the added ones
+		$tce = $this->getNewTCE();
+		// Because all records are being submitted in their correct order with positive pid numbers - and so we should reverse submission order internally.
+		$tce->reverseOrder = 1;
+		$tce->isImporting = TRUE;
+		$tce->start($this->import_data, array());
+		$tce->process_datamap();
+		$this->addToMapId($tce->substNEWwithIDs);
+
+		$defaultStorageUid = NULL;
+		// get default storage
+		$defaultStorage = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getDefaultStorage();
+		if ($defaultStorage !== NULL) {
+			$defaultStorageUid = $defaultStorage->getUid();
+		}
+		foreach ($sysFileStorageUidsToBeResetToDefaultStorage as $sysFileStorageUidToBeResetToDefaultStorage) {
+			$this->import_mapId['sys_file_storage'][$sysFileStorageUidToBeResetToDefaultStorage] = $defaultStorageUid;
+		}
+
+		// unset the sys_file_storage records to prevent a import in writeRecords_records
+		unset($this->dat['header']['records']['sys_file_storage']);
+	}
+
+	/**
+	 * Imports the sys_file records and the binary files data from internal data array.
+	 *
+	 * @return void
+	 */
+	protected function writeSysFileRecords() {
+		if (!isset($this->dat['header']['records']['sys_file'])) {
+			return;
+		}
+
+		// fetch fresh storage records from database
+		$storageRecords = $this->fetchStorageRecords();
+
+		$defaultStorage = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getDefaultStorage();
+
+		foreach (array_keys($this->dat['header']['records']['sys_file']) as $sysFileUid) {
+			$fileRecord = $this->dat['records']['sys_file:' . $sysFileUid]['data'];
+
+			// save file to disk
+			$fileId = md5($fileRecord['storage'] . ':' . $fileRecord['identifier_hash']);
+			$temporaryFile = $this->writeTemporaryFileFromData($fileId);
+			if ($temporaryFile === NULL) {
+				// error on writing the file. Error message was already added
+				continue;
+			}
+
+			$originalStorageUid = $fileRecord['storage'];
+			$useStorageFromStorageRecords = FALSE;
+
+			// replace storage id, if a alternative one was registered
+			if (isset($this->import_mapId['sys_file_storage'][$fileRecord['storage']])) {
+				$fileRecord['storage'] = $this->import_mapId['sys_file_storage'][$fileRecord['storage']];
+				$useStorageFromStorageRecords = TRUE;
+			}
+
+			if (empty($fileRecord['storage'])) {
+				// no storage for the file is defined, mostly because of a missing default storage.
+				$this->error('Error: No storage for the file "' . $fileRecord['identifier'] . '" with storage uid "' . $originalStorageUid . '"');
+				continue;
+			}
+
+			// using a storage from the local storage is only allowed, if the uid is present in the
+			// mapping. Only in this case we could be sure, that it's a local, online and writable storage.
+			if ($useStorageFromStorageRecords && isset($storageRecords[$fileRecord['storage']])) {
+				/** @var $storage \TYPO3\CMS\Core\Resource\ResourceStorage */
+				$storage = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getStorageObject($fileRecord['storage'], $storageRecords[$fileRecord['storage']]);
+			} elseif ($defaultStorage !== NULL) {
+				$storage = $defaultStorage;
+			} else {
+				$this->error('Error: No storage available for the file "' . $fileRecord['identifier'] . '" with storage uid "' . $fileRecord['storage'] . '"');
+				continue;
+			}
+
+			$newFile = NULL;
+
+			// check, if there is a identical file
+			try {
+				if ($storage->hasFile($fileRecord['identifier'])) {
+						$file = $storage->getFile($fileRecord['identifier']);
+					if ($file->getSha1() === $fileRecord['sha1']) {
+						$newFile = $file;
+					}
+				}
+			} catch (Exception $e) {}
+
+			if ($newFile === NULL) {
+
+				$folderName = dirname(ltrim($fileRecord['identifier'], '/'));
+				if (!$storage->hasFolder($folderName)) {
+					try {
+						$storage->createFolder($folderName);
+					} catch (Exception $e) {
+						$this->error('Error: Folder could not be created for file "' . $fileRecord['identifier'] . '" with storage uid "' . $fileRecord['storage'] . '"');
+						continue;
+					}
+				}
+
+				$importFolder = $storage->getFolder($folderName);
+
+				try {
+					/** @var $file \TYPO3\CMS\Core\Resource\File */
+					$newFile = $storage->addFile($temporaryFile, $importFolder, $fileRecord['name']);
+				} catch (Exception $e) {
+					$this->error('Error: File could not be added to the storage: "' . $fileRecord['identifier'] . '" with storage uid "' . $fileRecord['storage'] . '"');
+					continue;
+				}
+
+				if ($newFile->getSha1() !== $fileRecord['sha1']) {
+					$this->error('Error: The hash of the written file is not identical to the import data! File could be corrupted! File: "' . $fileRecord['identifier'] . '" with storage uid "' . $fileRecord['storage'] . '"');
+				}
+			}
+
+			// save the new uid in the import id map
+			$this->import_mapId['sys_file'][$fileRecord['uid']] = $newFile->getUid();
+			$this->fixUidLocalInSysFileReferenceRecords($fileRecord['uid'], $newFile->getUid());
+
+		}
+
+		// unset the sys_file records to prevent a import in writeRecords_records
+		unset($this->dat['header']['records']['sys_file']);
+	}
+
+	/**
+	 * Normally the importer works like the following:
+	 * Step 1: import the records with cleared field values of relation fields (see addSingle())
+	 * Step 2: update the records with the right relation ids (see setRelations())
+	 *
+	 * In step 2 the saving fields of type "relation to sys_file_reference" checks the related sys_file_reference
+	 * record (created in step 1) with the FileExtensionFilter for matching file extensions of the related file.
+	 * To make this work correct, the uid_local of sys_file_reference records has to be not empty AND has to
+	 * relate to the correct (imported) sys_file record uid!!!
+	 *
+	 * This is fixed here.
+	 *
+	 * @param int $oldFileUid
+	 * @param int $newFileUid
+	 * @return void
+	*/
+	protected function fixUidLocalInSysFileReferenceRecords($oldFileUid, $newFileUid) {
+		if (!isset($this->dat['header']['records']['sys_file_reference'])) {
+			return;
+		}
+
+		foreach (array_keys($this->dat['header']['records']['sys_file_reference']) as $sysFileReferenceUid) {
+			$fileReferenceRecord = $this->dat['records']['sys_file_reference:' . $sysFileReferenceUid]['data'];
+			if ($fileReferenceRecord['uid_local'] == $oldFileUid) {
+				$fileReferenceRecord['uid_local'] = $newFileUid;
+				$this->dat['records']['sys_file_reference:' . $sysFileReferenceUid]['data'] = $fileReferenceRecord;
+			}
+		}
+	}
+
+	/**
+	 * Fetched fresh storage records from database because the new imported
+	 * ones are not in cached data of the StorageRepository
+	 *
+	 * @return bool|array
+	 */
+	protected function fetchStorageRecords() {
+		$whereClause = \TYPO3\CMS\Backend\Utility\BackendUtility::BEenableFields('sys_file_storage');
+		$whereClause .= \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('sys_file_storage');
+
+		$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+			'*',
+			'sys_file_storage',
+			'1=1' . $whereClause,
+			'',
+			'',
+			'',
+			'uid'
+		);
+
+		return $rows;
+	}
+
+	/**
+	 * Writes the file from import array to temp dir and returns the filename of it.
+	 *
+	 * @param string $fileId
+	 * @param string $dataKey
+	 * @return string Absolute filename of the temporary filename of the file
+	 */
+	protected function writeTemporaryFileFromData($fileId, $dataKey = 'files_fal') {
+		$temporaryFilePath = NULL;
+		if (is_array($this->dat[$dataKey][$fileId])) {
+			$temporaryFilePathInternal = GeneralUtility::tempnam('import_temp_');
+			GeneralUtility::writeFile($temporaryFilePathInternal, $this->dat[$dataKey][$fileId]['content']);
+			clearstatcache();
+			if (@is_file($temporaryFilePathInternal)) {
+				$this->unlinkFiles[] = $temporaryFilePathInternal;
+				if (filesize($temporaryFilePathInternal) == $this->dat[$dataKey][$fileId]['filesize']) {
+					$temporaryFilePath = $temporaryFilePathInternal;
+				} else {
+					$this->error('Error: temporary file ' . $temporaryFilePathInternal . ' had a size (' . filesize($temporaryFilePathInternal) . ') different from the original (' . $this->dat[$dataKey][$fileId]['filesize'] . ')', 1);
+				}
+			} else {
+				$this->error('Error: temporary file ' . $temporaryFilePathInternal . ' was not written as it should have been!', 1);
+			}
+		} else {
+			$this->error('Error: No file found for ID ' . $fileId, 1);
+		}
+		return $temporaryFilePath;
 	}
 
 	/**
@@ -1505,6 +1795,21 @@ class ImportExport {
 			if (is_array($record)) {
 				if ($this->update && $this->doesRecordExist($table, $uid) && $this->import_mode[$table . ':' . $uid] !== 'as_new') {
 					$ID = $uid;
+				} elseif ($table === 'sys_file_metadata' && $record['sys_language_uid'] == '0' && $this->import_mapId['sys_file'][$record['file']]) {
+					// on adding sys_file records the belonging sys_file_metadata record was also created
+					// if there is one the record need to be overwritten instead of creating a new one.
+					$recordInDatabase = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
+						'uid',
+						'sys_file_metadata',
+						'file = ' . $this->import_mapId['sys_file'][$record['file']] . ' AND sys_language_uid = 0 AND pid = 0'
+					);
+					if ($recordInDatabase !== NULL) {
+						$this->import_mapId['sys_file_metadata'][$record['uid']] = $recordInDatabase['uid'];
+						$ID = $recordInDatabase['uid'];
+					} else {
+						$ID = uniqid('NEW');
+					}
+
 				} else {
 					$ID = uniqid('NEW');
 				}
@@ -1541,8 +1846,16 @@ class ImportExport {
 
 						case 'file':
 							// Fixed later in ->setRelations() [because we need to know ALL newly created IDs before we can map relations!]
-							// In the meantime we set NO values for relations:
-							$this->import_data[$table][$ID][$field] = '';
+							// In the meantime we set NO values for relations.
+							//
+							// BUT for field uid_local of table sys_file_reference the relation MUST not be cleared here,
+							// because the value is already the uid of the right imported sys_file record.
+							// @see fixUidLocalInSysFileReferenceRecords()
+							// If it's empty or a uid to another record the FileExtensionFilter will throw an exception or
+							// delete the reference record if the file extension of the related record doesn't match.
+							if ($table !== 'sys_file_reference' && $field !== 'uid_local') {
+								$this->import_data[$table][$ID][$field] = '';
+							}
 							break;
 						case 'flex':
 							// Fixed later in setFlexFormRelations()
@@ -1644,6 +1957,11 @@ class ImportExport {
 				if (is_array($this->dat['records'][$table . ':' . $uid]['rels'])) {
 					// Traverse relation fields of each record
 					foreach ($this->dat['records'][$table . ':' . $uid]['rels'] as $field => $config) {
+						// uid_local of sys_file_reference needs no update because the correct reference uid was already written
+						// @see ImportExport::fixUidLocalInSysFileReferenceRecords()
+						if ($table === 'sys_file_reference' && $field === 'uid_local') {
+							continue;
+						}
 						switch ((string) $config['type']) {
 							case 'db':
 								if (is_array($config['itemArray']) && count($config['itemArray'])) {
@@ -2614,6 +2932,12 @@ class ImportExport {
 	 */
 	public function traverseAllRecords($pT, &$lines) {
 		foreach ($pT as $t => $recUidArr) {
+			if ($this->update && $t === 'sys_file') {
+				$this->error('Updating sys_file records is not supported! They will be imported as new records!');
+			}
+			if ($this->force_all_UIDS && $t === 'sys_file') {
+				$this->error('Forcing uids of sys_file records is not supported! They will be imported as new records!');
+			}
 			if ($t != 'pages') {
 				$preCode = '';
 				foreach ($recUidArr as $ruid => $value) {
@@ -2704,7 +3028,11 @@ class ImportExport {
 						$optValues['force_uid'] = sprintf($LANG->getLL('impexpcore_singlereco_forceUidSAdmin'), $uid);
 					}
 					$optValues['exclude'] = $LANG->getLL('impexpcore_singlereco_exclude');
-					$pInfo['updateMode'] = $this->renderSelectBox('tx_impexp[import_mode][' . $table . ':' . $uid . ']', $this->import_mode[$table . ':' . $uid], $optValues);
+					if ($table === 'sys_file') {
+						$pInfo['updateMode'] = '';
+					} else {
+						$pInfo['updateMode'] = $this->renderSelectBox('tx_impexp[import_mode][' . $table . ':' . $uid . ']', $this->import_mode[$table . ':' . $uid], $optValues);
+					}
 				}
 				// Diff vieiw:
 				if ($this->showDiff) {
