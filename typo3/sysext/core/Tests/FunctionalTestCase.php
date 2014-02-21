@@ -137,6 +137,32 @@ abstract class FunctionalTestCase extends BaseTestCase {
 	protected $configurationToUseInTestInstance = array();
 
 	/**
+	 * Array of folders that should be created inside the test instance document root.
+	 *
+	 * This property will stay empty in this abstract, so it is possible
+	 * to just overwrite it in extending classes. Path noted here will
+	 * be linked for every test of a test case and it is not possible to change
+	 * the list of folders between single tests of a test case.
+	 *
+	 * Per default the following folder are created
+	 * /fileadmin
+	 * /typo3temp
+	 * /typo3conf
+	 * /typo3conf/ext
+	 * /uploads
+	 *
+	 * To create additional folders add the paths to this array. Given paths are expected to be
+	 * relative to the test instance root and have to begin with a slash. Example:
+	 *
+	 * array(
+	 *   'fileadmin/user_upload'
+	 * );
+	 *
+	 * @var array
+	 */
+	protected $additionalFoldersToCreate = array();
+
+	/**
 	 * Private utility class used in setUp() and tearDown(). Do NOT use in test cases!
 	 *
 	 * @var \TYPO3\CMS\Core\Tests\FunctionalTestCaseBootstrapUtility
@@ -167,7 +193,8 @@ abstract class FunctionalTestCase extends BaseTestCase {
 			$this->coreExtensionsToLoad,
 			$this->testExtensionsToLoad,
 			$this->pathsToLinkInTestInstance,
-			$this->configurationToUseInTestInstance
+			$this->configurationToUseInTestInstance,
+			$this->additionalFoldersToCreate
 		);
 	}
 

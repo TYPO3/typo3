@@ -69,6 +69,18 @@ class FunctionalTestCaseBootstrapUtility {
 	);
 
 	/**
+	 * @var array These folder are always created
+	 */
+	protected $defaultFoldersToCreate = array(
+		'',
+		'/fileadmin',
+		'/typo3temp',
+		'/typo3conf',
+		'/typo3conf/ext',
+		'/uploads'
+	);
+
+	/**
 	 * Set up creates a test instance and database.
 	 *
 	 * @param string $testCaseClassName Name of test case class
@@ -76,6 +88,7 @@ class FunctionalTestCaseBootstrapUtility {
 	 * @param array $testExtensionsToLoad Array of test extensions to load
 	 * @param array $pathsToLinkInTestInstance Array of source => destination path pairs to be linked
 	 * @param array $configurationToUse Array of TYPO3_CONF_VARS that need to be overridden
+	 * @param array $additionalFoldersToCreate Array of folder paths to be created
 	 * @return string Path to TYPO3 CMS test installation for this test case
 	 */
 	public function setUp(
@@ -83,12 +96,13 @@ class FunctionalTestCaseBootstrapUtility {
 		array $coreExtensionsToLoad,
 		array $testExtensionsToLoad,
 		array $pathsToLinkInTestInstance,
-		array $configurationToUse
+		array $configurationToUse,
+		array $additionalFoldersToCreate
 	) {
 		$this->setUpIdentifier($testCaseClassName);
 		$this->setUpInstancePath();
 		$this->removeOldInstanceIfExists();
-		$this->setUpInstanceDirectories();
+		$this->setUpInstanceDirectories($additionalFoldersToCreate);
 		$this->setUpInstanceCoreLinks();
 		$this->linkTestExtensionsToInstance($testExtensionsToLoad);
 		$this->linkPathsInTestInstance($pathsToLinkInTestInstance);
@@ -157,18 +171,12 @@ class FunctionalTestCaseBootstrapUtility {
 	/**
 	 * Create folder structure of test instance.
 	 *
+	 * @param array $additionalFoldersToCreate Array of additional folders to be created
 	 * @throws Exception
 	 * @return void
 	 */
-	protected function setUpInstanceDirectories() {
-		$foldersToCreate = array(
-			'',
-			'/fileadmin',
-			'/typo3temp',
-			'/typo3conf',
-			'/typo3conf/ext',
-			'/uploads'
-		);
+	protected function setUpInstanceDirectories(array $additionalFoldersToCreate = array()) {
+		$foldersToCreate = array_merge($this->defaultFoldersToCreate, $additionalFoldersToCreate);
 		foreach ($foldersToCreate as $folder) {
 			$success = mkdir($this->instancePath . $folder);
 			if (!$success) {
