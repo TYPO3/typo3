@@ -84,6 +84,37 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 	/**
 	 * @test
 	 */
+	public function createContentRecordAndDiscardCreatedContentRecord() {
+		$newTableIds = $this->actionService->createNewRecord(self::TABLE_Content, self::VALUE_PageId, array('header' => 'Testing #1'));
+		$newContentId = $newTableIds[self::TABLE_Content][0];
+		$versionedNewContentId = $this->actionService->getDataHander()->getAutoVersionId(self::TABLE_Content, $newContentId);
+		$this->actionService->clearWorkspaceRecord(self::TABLE_Content, $versionedNewContentId);
+		$this->assertAssertionDataSet('createContentRecordAndDiscardCreatedContentRecord');
+
+		$responseContent = $this->getFrontendResponse(self::VALUE_PageId, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseContent();
+		$this->assertResponseContentDoesNotHaveRecords($responseContent, self::TABLE_Content, 'header', 'Testing #1');
+	}
+
+	/**
+	 * @test
+	 */
+	public function createAndCopyContentRecordAndDiscardCopiedContentRecord() {
+		$newTableIds = $this->actionService->createNewRecord(self::TABLE_Content, self::VALUE_PageId, array('header' => 'Testing #1'));
+		$newContentId = $newTableIds[self::TABLE_Content][0];
+		$copiedTableIds = $this->actionService->copyRecord(self::TABLE_Content, $newContentId, self::VALUE_PageId);
+		$copiedContentId = $copiedTableIds[self::TABLE_Content][$newContentId];
+		$versionedCopiedContentId = $this->actionService->getDataHander()->getAutoVersionId(self::TABLE_Content, $copiedContentId);
+		$this->actionService->clearWorkspaceRecord(self::TABLE_Content, $versionedCopiedContentId);
+		$this->assertAssertionDataSet('createAndCopyContentRecordAndDiscardCopiedContentRecord');
+
+		$responseContent = $this->getFrontendResponse(self::VALUE_PageId, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseContent();
+		$this->assertResponseContentHasRecords($responseContent, self::TABLE_Content, 'header', 'Testing #1');
+		$this->assertResponseContentDoesNotHaveRecords($responseContent, self::TABLE_Content, 'header', 'Testing #1 (copy 1)');
+	}
+
+	/**
+	 * @test
+	 */
 	public function modifyContentRecord() {
 		$this->actionService->modifyRecord(self::TABLE_Content, self::VALUE_ContentIdLast, array('header' => 'Testing #1'));
 		$this->assertAssertionDataSet('modifyContentRecord');
