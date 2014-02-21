@@ -359,11 +359,28 @@ class EditDocumentController {
 	public $dontStoreDocumentRef;
 
 	/**
+	 * @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
+	 */
+	protected $signalSlotDispatcher;
+
+	/**
 	 * Constructor
 	 */
 	public function __construct() {
 		$GLOBALS['SOBE'] = $this;
 		$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_alt_doc.xml');
+	}
+
+	/**
+	 * Get the SignalSlot dispatcher
+	 *
+	 * @return \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
+	 */
+	protected function getSignalSlotDispatcher() {
+		if (!isset($this->signalSlotDispatcher)) {
+			$this->signalSlotDispatcher = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\SignalSlot\\Dispatcher');
+		}
+		return $this->signalSlotDispatcher;
 	}
 
 	/**
@@ -422,6 +439,8 @@ class EditDocumentController {
 		if ($this->workspace !== NULL) {
 			$this->getBackendUser()->setTemporaryWorkspace($this->workspace);
 		}
+
+		$this->getSignalSlotDispatcher()->dispatch(__CLASS__, __FUNCTION__ . 'After', array($this));
 	}
 
 	/**
