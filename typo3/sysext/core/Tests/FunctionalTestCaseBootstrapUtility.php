@@ -107,6 +107,8 @@ class FunctionalTestCaseBootstrapUtility {
 	 * @return void
 	 */
 	public function tearDown() {
+		$classLoader = \TYPO3\CMS\Core\Core\Bootstrap::getInstance()->getEarlyInstance('TYPO3\\CMS\\Core\\Core\\ClassLoader');
+		spl_autoload_unregister(array($classLoader, 'loadClass'));
 		if (empty($this->identifier)) {
 			throw new Exception(
 				'Test identifier not set. Is parent::setUp() called in setUp()?',
