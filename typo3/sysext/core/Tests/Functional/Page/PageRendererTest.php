@@ -350,7 +350,7 @@ class PageRendererTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 	/**
 	 * @test
 	 */
-	public function isJqueryLoadedMinifiedFromGoogleByDefault($version, $cdn, $regex) {
+	public function isJqueryLoadedMinifiedFromGoogleByDefault() {
 		$subject = new \TYPO3\CMS\Core\Page\PageRenderer();
 
 		$expectedRegex = '#<script src="//ajax.googleapis.com/ajax/libs/jquery/1.6.3/jquery.min.js" type="text/javascript"></script>#';

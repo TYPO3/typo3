@@ -49,7 +49,7 @@ class RenderElement {
 	/**
 	 * @var array|RenderLevel[]
 	 */
-	protected $levels;
+	protected $levels = array();
 
 	/**
 	 * @var array
