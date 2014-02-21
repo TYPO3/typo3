@@ -43,8 +43,26 @@ require_once(__DIR__ . '/../Tests/Exception.php');
  * be way more complicated if done within the test class.
  *
  * It is required that phpunit binary is called from the document root of the instance,
- * otherwise path calculation of the created TYPO3 CMS instance will fail.
+ * or TYPO3_PATH_WEB environement variable needs to be set,
+ * otherwise path calculation, of the created TYPO3 CMS instance will fail.
  */
-if (!defined('ORIGINAL_ROOT')) {
-	define('ORIGINAL_ROOT', $_SERVER['PWD'] . '/');
+if (getenv('TYPO3_PATH_WEB')) {
+	$webRoot = getenv('TYPO3_PATH_WEB') . '/';
+} elseif (isset($_SERVER['PWD'])) {
+	$webRoot = $_SERVER['PWD'] . '/';
+} else {
+	$webRoot = getcwd() . '/';
 }
+
+/**
+ * Fail if configuration is not found
+ */
+if (!file_exists($webRoot . 'typo3conf/LocalConfiguration.php')) {
+	throw new \Exception('TYPO3 web root not found. Call PHPUnit from that directory or set TYPO3_PATH_WEB to it.');
+}
+
+if (!defined('ORIGINAL_ROOT')) {
+	define('ORIGINAL_ROOT', $webRoot);
+}
+
+unset($webRoot);

@@ -82,6 +82,8 @@ define('PATH_site', $webRoot);
 define('TYPO3_MODE', 'BE');
 define('TYPO3_cliMode', TRUE);
 
+unset($webRoot);
+
 /**
  * We need to fake the current script to be the cli dispatcher to satisfy some GeneralUtility::getIndpEnv tests
  * TODO: properly mock these tests
