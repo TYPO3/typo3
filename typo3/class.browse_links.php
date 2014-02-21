@@ -225,7 +225,7 @@ class localFolderTree extends \TYPO3\CMS\Backend\Tree\View\FolderTreeView {
 	 * @todo Define visibility
 	 */
 	public function ext_isLinkable(\TYPO3\CMS\Core\Resource\Folder $folderObject) {
-		if (!$folderObject->getStorage()->isPublic() || strstr($folderObject->getIdentifier(), '_recycler_') || strstr($folderObject->getIdentifier(), '_temp_')) {
+		if (strstr($folderObject->getIdentifier(), '_recycler_') || strstr($folderObject->getIdentifier(), '_temp_')) {
 			return FALSE;
 		} else {
 			return TRUE;
