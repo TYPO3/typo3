@@ -38,15 +38,9 @@ class FrontendContentAdapterServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCa
 	protected $singletonInstances = array();
 
 	/**
-	 * @var string
-	 */
-	protected $accessibleFixtureName;
-
-	/**
 	 * Saving the singletons
 	 */
 	public function setUp() {
-		$this->accessibleFixtureName = $this->buildAccessibleProxy('TYPO3\\CMS\\Core\\Resource\\Service\\FrontendContentAdapterService');
 		$this->singletonInstances = \TYPO3\CMS\Core\Utility\GeneralUtility::getSingletonInstances();
 		$this->fileRepositoryMock = $this->getMock('TYPO3\\CMS\\Core\\Resource\\FileRepository');
 		\TYPO3\CMS\Core\Utility\GeneralUtility::setSingletonInstance('TYPO3\\CMS\\Core\\Resource\\FileRepository', $this->fileRepositoryMock);
@@ -56,31 +50,8 @@ class FrontendContentAdapterServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCa
 	 * Restoring the singletons
 	 */
 	public function tearDown() {
-		call_user_func_array($this->accessibleFixtureName . '::_setStatic', array('migrationCache', array()));
 		\TYPO3\CMS\Core\Utility\GeneralUtility::resetSingletonInstances($this->singletonInstances);
 		parent::tearDown();
-	}
-
-	/**
-	 * @test
-	 */
-	public function customTableIsNotConsidered() {
-		$dbRow = array(
-			'uid' => uniqid(),
-		);
-		/* @see \TYPO3\CMS\Core\Resource\Service\FrontendContentAdapterService::modifyDBRow */
-		$result = call_user_func_array($this->accessibleFixtureName . '::modifyDBRow', array(&$dbRow, uniqid('tx_testtable')));
-		$this->assertNull($result);
-	}
-
-	/**
-	 * @test
-	 */
-	public function recordWithoutUidIsNotConsidered() {
-		$dbRow = array();
-		/* @see \TYPO3\CMS\Core\Resource\Service\FrontendContentAdapterService::modifyDBRow */
-		$result = call_user_func_array($this->accessibleFixtureName . '::modifyDBRow', array(&$dbRow, 'tt_content'));
-		$this->assertNull($result);
 	}
 
 	/**
@@ -91,45 +62,12 @@ class FrontendContentAdapterServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCa
 			->method('findByRelation')
 			->will($this->returnValue(array()));
 		$dbRow = array(
-			'uid' => uniqid(),
 			'CType' => 'image',
 			'image' => '1'
 		);
 
-		/* @see \TYPO3\CMS\Core\Resource\Service\FrontendContentAdapterService::modifyDBRow */
-		call_user_func_array($this->accessibleFixtureName . '::modifyDBRow', array(&$dbRow, 'tt_content'));
+		\TYPO3\CMS\Core\Resource\Service\FrontendContentAdapterService::modifyDBRow($dbRow, 'tt_content');
 		$this->assertEmpty($dbRow['image']);
-	}
-
-	/**
-	 * @test
-	 */
-	public function processedRecordsAreCached() {
-		// Asserting that this is only called once,
-		// since second call shall be delivered from cache
-		$this->fileRepositoryMock->expects($this->once())
-			->method('findByRelation')
-			->will($this->returnValue(array()));
-
-		$testUid = uniqid();
-
-		$dbRow = array(
-			'uid' => $testUid,
-			'CType' => 'image',
-			'image' => '1',
-		);
-
-		/* @see \TYPO3\CMS\Core\Resource\Service\FrontendContentAdapterService::modifyDBRow */
-		call_user_func_array($this->accessibleFixtureName . '::modifyDBRow', array(&$dbRow, 'tt_content'));
-
-		$dbRow = array(
-			'uid' => $testUid,
-			'CType' => 'image',
-			'image' => '1',
-		);
-
-		/* @see \TYPO3\CMS\Core\Resource\Service\FrontendContentAdapterService::modifyDBRow */
-		call_user_func_array($this->accessibleFixtureName . '::modifyDBRow', array(&$dbRow, 'tt_content'));
 	}
 
 	/**
@@ -147,17 +85,15 @@ class FrontendContentAdapterServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCa
 			->method('findByRelation')
 			->will($this->returnValue(array($fileReference)));
 		$dbRow = array(
-			'uid' => uniqid(),
 			'CType' => 'image',
 			'image' => '1'
 		);
 
-		/* @see \TYPO3\CMS\Core\Resource\Service\FrontendContentAdapterService::modifyDBRow */
-		call_user_func_array($this->accessibleFixtureName . '::modifyDBRow', array(&$dbRow, 'tt_content'));
+		\TYPO3\CMS\Core\Resource\Service\FrontendContentAdapterService::modifyDBRow($dbRow, 'tt_content');
 		$this->assertSame('../../path/to/file', $dbRow['image']);
 	}
 
-	public function contentRowsOfDifferentTypesDataProvider() {
+	public function conteRowsOfDifferentTypesDataProvider() {
 		$filePropertiesImage = array(
 			'title' => 'Image',
 			'description' => 'IMAGE DESCRIPTION',
@@ -171,7 +107,6 @@ class FrontendContentAdapterServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCa
 		return array(
 			'Image Element' => array(
 				array(
-					'uid' => uniqid(),
 					'CType' => 'image',
 					'image' => '',
 					'media' => '',
@@ -181,7 +116,6 @@ class FrontendContentAdapterServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCa
 			),
 			'Textpic Element' => array(
 				array(
-					'uid' => uniqid(),
 					'CType' => 'textpic',
 					'image' => '',
 					'media' => '',
@@ -191,7 +125,6 @@ class FrontendContentAdapterServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCa
 			),
 			'Uploads Element' => array(
 				array(
-					'uid' => uniqid(),
 					'CType' => 'uploads',
 					'image' => '',
 					'media' => '',
@@ -204,7 +137,7 @@ class FrontendContentAdapterServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCa
 
 	/**
 	 * @test
-	 * @dataProvider contentRowsOfDifferentTypesDataProvider
+	 * @dataProvider conteRowsOfDifferentTypesDataProvider
 	 */
 	public function migrationOfLegacyFieldsIsOnlyDoneWhenRelationFieldIsVisibleInType($dbRow, $expectedCaption, $fileProperties) {
 		$fileReference = $this->getMock('TYPO3\\CMS\\Core\\Resource\\FileReference', array(), array(), '', FALSE);
@@ -221,8 +154,7 @@ class FrontendContentAdapterServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCa
 			->method('findByRelation')
 			->will($this->returnValue(array($fileReference)));
 
-		/* @see \TYPO3\CMS\Core\Resource\Service\FrontendContentAdapterService::modifyDBRow */
-		call_user_func_array($this->accessibleFixtureName . '::modifyDBRow', array(&$dbRow, 'tt_content'));
+		\TYPO3\CMS\Core\Resource\Service\FrontendContentAdapterService::modifyDBRow($dbRow, 'tt_content');
 		$this->assertSame($expectedCaption, $dbRow['imagecaption']);
 	}
 

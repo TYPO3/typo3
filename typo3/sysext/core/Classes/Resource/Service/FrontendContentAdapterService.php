@@ -66,11 +66,6 @@ class FrontendContentAdapterService {
 	);
 
 	/**
-	 * @var array
-	 */
-	protected static $migrationCache = array();
-
-	/**
 	 * Modifies the DB row in the CONTENT cObj of tslib_content for supplying
 	 * backwards compatibility for some file fields which have switched to using
 	 * the new File API instead of the old uploads/ folder for storing files.
@@ -83,77 +78,62 @@ class FrontendContentAdapterService {
 	 * @return void
 	 */
 	static public function modifyDBRow(&$row, $table) {
-		// Only consider records with uid set, that have
-		// not been processed yet ("migrated")
-		if (!isset($row['uid']) || isset($row['_MIGRATED']) && $row['_MIGRATED'] === TRUE) {
+		if (isset($row['_MIGRATED']) && $row['_MIGRATED'] === TRUE) {
 			return;
 		}
-		// Only consider records of table pages and tt_content
-		if ($table !== 'pages' && $table !== 'tt_content') {
-			return;
-		}
-		// Use cached result, if available
-		if (!empty(static::$migrationCache[$table][$row['uid']])) {
-			$row = static::$migrationCache[$table][$row['uid']];
-			return;
-		}
-		// Process fields and execute "migration"
-		if (!isset(static::$migrationCache[$table])) {
-			static::$migrationCache[$table] = array();
-		}
-		foreach (static::$migrateFields[$table] as $migrateFieldName => $oldFieldNames) {
-			if (isset($row[$migrateFieldName]) && self::fieldIsInType($migrateFieldName, $table, $row)) {
-				/** @var $fileRepository \TYPO3\CMS\Core\Resource\FileRepository */
-				$fileRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\FileRepository');
-				if ($table === 'pages' && isset($row['_LOCALIZED_UID']) && (int)$row['sys_language_uid'] > 0) {
-					$table = 'pages_language_overlay';
-				}
-				$files = $fileRepository->findByRelation($table, $migrateFieldName, isset($row['_LOCALIZED_UID']) ? (int)$row['_LOCALIZED_UID'] : (int)$row['uid']);
-				$fileFieldContents = array(
-					'paths' => array(),
-					'titleTexts' => array(),
-					'captions' => array(),
-					'links' => array(),
-					'alternativeTexts' => array(),
-					$migrateFieldName . '_fileUids' => array(),
-					$migrateFieldName . '_fileReferenceUids' => array(),
-				);
-				$oldFieldNames[$migrateFieldName . '_fileUids'] = $migrateFieldName . '_fileUids';
-				$oldFieldNames[$migrateFieldName . '_fileReferenceUids'] = $migrateFieldName . '_fileReferenceUids';
+		if (array_key_exists($table, static::$migrateFields)) {
+			foreach (static::$migrateFields[$table] as $migrateFieldName => $oldFieldNames) {
+				if ($row !== NULL && isset($row[$migrateFieldName]) && self::fieldIsInType($migrateFieldName, $table, $row)) {
+					/** @var $fileRepository \TYPO3\CMS\Core\Resource\FileRepository */
+					$fileRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\FileRepository');
+					if ($table === 'pages' && isset($row['_LOCALIZED_UID']) && intval($row['sys_language_uid']) > 0) {
+						$table = 'pages_language_overlay';
+					}
+					$files = $fileRepository->findByRelation($table, $migrateFieldName, isset($row['_LOCALIZED_UID']) ? intval($row['_LOCALIZED_UID']) : intval($row['uid']));
+					$fileFieldContents = array(
+						'paths' => array(),
+						'titleTexts' => array(),
+						'captions' => array(),
+						'links' => array(),
+						'alternativeTexts' => array(),
+						$migrateFieldName . '_fileUids' => array(),
+						$migrateFieldName . '_fileReferenceUids' => array(),
+					);
+					$oldFieldNames[$migrateFieldName . '_fileUids'] = $migrateFieldName . '_fileUids';
+					$oldFieldNames[$migrateFieldName . '_fileReferenceUids'] = $migrateFieldName . '_fileReferenceUids';
 
-				foreach ($files as $file) {
-					/** @var $file \TYPO3\CMS\Core\Resource\FileReference */
-					$fileProperties = $file->getProperties();
-					$fileFieldContents['paths'][] = '../../' . $file->getPublicUrl();
-					$fileFieldContents['titleTexts'][] = $fileProperties['title'];
-					$fileFieldContents['captions'][] = $fileProperties['description'];
-					$fileFieldContents['links'][] = $fileProperties['link'];
-					$fileFieldContents['alternativeTexts'][] = $fileProperties['alternative'];
-					$fileFieldContents[$migrateFieldName .  '_fileUids'][] = $file->getOriginalFile()->getUid();
-					$fileFieldContents[$migrateFieldName .  '_fileReferenceUids'][] = $file->getUid();
-				}
-				foreach ($oldFieldNames as $oldFieldType => $oldFieldName) {
-					if ($oldFieldType === '__typeMatch') {
-						continue;
+					foreach ($files as $file) {
+						/** @var $file \TYPO3\CMS\Core\Resource\FileReference */
+						$fileProperties = $file->getProperties();
+						$fileFieldContents['paths'][] = '../../' . $file->getPublicUrl();
+						$fileFieldContents['titleTexts'][] = $fileProperties['title'];
+						$fileFieldContents['captions'][] = $fileProperties['description'];
+						$fileFieldContents['links'][] = $fileProperties['link'];
+						$fileFieldContents['alternativeTexts'][] = $fileProperties['alternative'];
+						$fileFieldContents[$migrateFieldName .  '_fileUids'][] = $file->getOriginalFile()->getUid();
+						$fileFieldContents[$migrateFieldName .  '_fileReferenceUids'][] = $file->getUid();
 					}
-					if ($oldFieldType === 'paths' || substr($oldFieldType, -9) == '_fileUids' || substr($oldFieldType, -18) == '_fileReferenceUids') {
-						// For paths and uids, make comma separated list
-						$fieldContents = implode(',', $fileFieldContents[$oldFieldType]);
-					} else {
-						// For all other fields, separate by newline
-						$fieldContents = implode(chr(10), $fileFieldContents[$oldFieldType]);
+					foreach ($oldFieldNames as $oldFieldType => $oldFieldName) {
+						if ($oldFieldType === '__typeMatch') {
+							continue;
+						}
+						if ($oldFieldType === 'paths' || substr($oldFieldType, -9) == '_fileUids' || substr($oldFieldType, -18) == '_fileReferenceUids') {
+							// For paths and uids, make comma separated list
+							$fieldContents = implode(',', $fileFieldContents[$oldFieldType]);
+						} else {
+							// For all other fields, separate by newline
+							$fieldContents = implode(chr(10), $fileFieldContents[$oldFieldType]);
+						}
+						$row[$oldFieldName] = $fieldContents;
 					}
-					$row[$oldFieldName] = $fieldContents;
 				}
 			}
 		}
-
 		$row['_MIGRATED'] = TRUE;
-		static::$migrationCache[$table][$row['uid']] = $row;
 	}
 
 	/**
-	 * Checks whether field is in type
+	 * Check if fieldis in type
 	 *
 	 * @param string $fieldName
 	 * @param string $table
@@ -165,10 +145,7 @@ class FrontendContentAdapterService {
 		if (empty($fieldConfiguration['__typeMatch'])) {
 			return TRUE;
 		} else {
-			return in_array(
-				$row[$fieldConfiguration['__typeMatch']['typeField']],
-				$fieldConfiguration['__typeMatch']['types']
-			);
+			return in_array($row[$fieldConfiguration['__typeMatch']['typeField']], $fieldConfiguration['__typeMatch']['types']);
 		}
 	}
 }
