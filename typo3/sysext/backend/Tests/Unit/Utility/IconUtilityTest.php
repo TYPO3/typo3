@@ -80,6 +80,34 @@ class IconUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->mockRecord['bodytext'] = '';
 	}
 
+	/**
+	 * Create folder object to use as test subject
+	 *
+	 * @param string $identifier
+	 * @return \TYPO3\CMS\Core\Resource\Folder
+	 */
+	protected function getTestSubjectFolderObject($identifier) {
+		$mockedStorage = $this->getMock('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', array(), array(), '', FALSE);
+		$mockedStorage->expects($this->any())->method('getRootLevelFolder')->will($this->returnValue(
+			new \TYPO3\CMS\Core\Resource\Folder($mockedStorage, '/', '/')
+		));
+		return new \TYPO3\CMS\Core\Resource\Folder($mockedStorage, $identifier, $identifier);
+	}
+
+	/**
+	 * Create file object to use as test subject
+	 *
+	 * @param $extension
+	 * @return \TYPO3\CMS\Core\Resource\File
+	 */
+	protected function getTestSubjectFileObject($extension) {
+		$mockedStorage = $this->getMock('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', array(), array(), '', FALSE);
+		$mockedFile = $this->getMock('TYPO3\\CMS\\Core\\Resource\\File', array(), array(array(), $mockedStorage));
+		$mockedFile->expects($this->once())->method('getExtension')->will($this->returnValue($extension));
+
+		return $mockedFile;
+	}
+
 	//////////////////////////////////////////
 	// Tests concerning imagemake
 	//////////////////////////////////////////
@@ -384,4 +412,135 @@ class IconUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		IconUtility::mapRecordOverlayToSpriteIconName('tt_content', array());
 	}
 
+	//////////////////////////////////////////////
+	// Tests concerning getSpriteIconForResource
+	//////////////////////////////////////////////
+	/**
+	 * Tests the returns of no file
+	 *
+	 * @test
+	 */
+	public function getSpriteIconForResourceWithFileWithoutExtensionTypeReturnsOtherSprite() {
+		$fileObject = $this->getTestSubjectFileObject('');
+		$result = IconUtility::getSpriteIconForResource($fileObject);
+		$this->assertEquals('<span class="t3-icon t3-icon-mimetypes t3-icon-mimetypes-other t3-icon-other-other">&nbsp;</span>', $result);
+	}
+
+	/**
+	 * Tests the returns of unknown file
+	 *
+	 * @test
+	 */
+	public function getSpriteIconForResourceWithUnknownFileTypeReturnsOtherSprite() {
+		$fileObject = $this->getTestSubjectFileObject('foo');
+		$result = IconUtility::getSpriteIconForResource($fileObject);
+		$this->assertEquals('<span class="t3-icon t3-icon-mimetypes t3-icon-mimetypes-other t3-icon-other-other">&nbsp;</span>', $result);
+	}
+
+	/**
+	 * Tests the returns of file pdf
+	 *
+	 * @test
+	 */
+	public function getSpriteIconForResourceWithPdfReturnsPdfSprite() {
+		$fileObject = $this->getTestSubjectFileObject('pdf');
+		$result = IconUtility::getSpriteIconForResource($fileObject);
+		$this->assertEquals('<span class="t3-icon t3-icon-mimetypes t3-icon-mimetypes-pdf t3-icon-pdf">&nbsp;</span>', $result);
+	}
+
+	/**
+	 * Tests the returns of file png
+	 *
+	 * @test
+	 */
+	public function getSpriteIconForResourceWithPngFileReturnsPngSprite() {
+		$fileObject = $this->getTestSubjectFileObject('png');
+		$result = IconUtility::getSpriteIconForResource($fileObject);
+		$this->assertEquals('<span class="t3-icon t3-icon-mimetypes t3-icon-mimetypes-media t3-icon-media-image">&nbsp;</span>', $result);
+	}
+
+	/**
+	 * Tests the returns of file png + option
+	 *
+	 * @test
+	 */
+	public function getSpriteIconForResourceWithPngFileAndOptionsReturnsPngSpriteAndOptions() {
+		$fileObject = $this->getTestSubjectFileObject('png');
+		$result = IconUtility::getSpriteIconForResource($fileObject, array('title' => 'bar'));
+		$this->assertEquals('<span title="bar" class="t3-icon t3-icon-mimetypes t3-icon-mimetypes-media t3-icon-media-image">&nbsp;</span>', $result);
+	}
+
+	/**
+	 * Tests the returns of normal folder
+	 *
+	 * @test
+	 */
+	public function getSpriteIconForResourceWithFolderReturnsFolderSprite() {
+		$folderObject = $this->getTestSubjectFolderObject('/test');
+		$result = IconUtility::getSpriteIconForResource($folderObject);
+		$this->assertEquals('<span class="t3-icon t3-icon-apps t3-icon-apps-filetree t3-icon-filetree-folder-default">&nbsp;</span>', $result);
+	}
+
+	/**
+	 * Tests the returns of open folder
+	 *
+	 * @test
+	 */
+	public function getSpriteIconForResourceWithOpenFolderReturnsOpenFolderSprite() {
+		$folderObject = $this->getTestSubjectFolderObject('/test');
+		$result = IconUtility::getSpriteIconForResource($folderObject, array('folder-open' => TRUE));
+		$this->assertEquals('<span class="t3-icon t3-icon-apps t3-icon-apps-filetree t3-icon-filetree-folder-opened">&nbsp;</span>', $result);
+	}
+
+	/**
+	 * Tests the returns of root folder
+	 *
+	 * @test
+	 */
+	public function getSpriteIconForResourceWithRootFolderReturnsRootFolderSprite() {
+		$folderObject = $this->getTestSubjectFolderObject('/');
+		$result = IconUtility::getSpriteIconForResource($folderObject);
+		$this->assertEquals('<span class="t3-icon t3-icon-apps t3-icon-apps-filetree t3-icon-filetree-root">&nbsp;</span>', $result);
+	}
+
+	/**
+	 * Tests the returns of mount root
+	 *
+	 * @test
+	 */
+	public function getSpriteIconForResourceWithMountRootReturnsMountFolderSprite() {
+		$folderObject = $this->getTestSubjectFolderObject('/mount');
+		$result = IconUtility::getSpriteIconForResource($folderObject, array('mount-root' => TRUE));
+		$this->assertEquals('<span class="t3-icon t3-icon-apps t3-icon-apps-filetree t3-icon-filetree-mount">&nbsp;</span>', $result);
+	}
+
+	/**
+	 * Tests whether a overrideResourceIcon hook is called.
+	 *
+	 * @test
+	 */
+	public function isOverrideResourceIconHookCalled() {
+
+		$classReference = uniqid('user_overrideResourceIconHook');
+		$folderObject = $this->getTestSubjectFolderObject('/test');
+		$hookMock = $this->getMock('TYPO3\\CMS\\Backend\\Utility\\IconUtilityOverrideResourceIconHookInterface', array('overrideResourceIcon'), array(), $classReference);
+		$hookMock->expects($this->once())->method('overrideResourceIcon');
+		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_iconworks.php']['overrideResourceIcon'][$classReference] = $classReference;
+		$GLOBALS['T3_VAR']['getUserObj'][$classReference] = $hookMock;
+		IconUtility::getSpriteIconForResource($folderObject);
+	}
+
+	/**
+	 * Tests whether a faulty overrideResourceIcon hook (the hook object cannot be found) is not called.
+	 *
+	 * @test
+	 * @expectedException UnexpectedValueException
+	 */
+	public function isFaultyResourceIconHookNotCalled() {
+		$classReference = uniqid('user_overrideResourceIconHook');
+		$folderObject = $this->getTestSubjectFolderObject('/test');
+		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_iconworks.php']['overrideResourceIcon'][$classReference] = $classReference;
+		$GLOBALS['T3_VAR']['getUserObj'][$classReference] = new \stdClass();
+		IconUtility::getSpriteIconForResource($folderObject);
+	}
 }

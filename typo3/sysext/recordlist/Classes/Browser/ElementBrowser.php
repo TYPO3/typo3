@@ -1677,7 +1677,7 @@ class ElementBrowser {
 			}
 			// Create header element; The folder from which files are listed.
 			$titleLen = (int)$GLOBALS['BE_USER']->uc['titleLen'];
-			$folderIcon = IconUtility::getSpriteIconForFile('folder');
+			$folderIcon = IconUtility::getSpriteIconForResource($folder);
 			$folderIcon .= htmlspecialchars(GeneralUtility::fixed_lgd_cs($folder->getIdentifier(), $titleLen));
 			$picon = '<a href="#" onclick="return link_folder(\'file:' . $folder->getCombinedIdentifier() . '\');">'
 				. $folderIcon . '</a>';
@@ -1714,7 +1714,7 @@ class ElementBrowser {
 					$fileExtension = $fileOrFolderObject->getExtension();
 					// Get size and icon:
 					$size = ' (' . GeneralUtility::formatSize($fileOrFolderObject->getSize()) . 'bytes)';
-					$icon = IconUtility::getSpriteIconForFile($fileExtension, array('title' => $fileOrFolderObject->getName() . $size));
+					$icon = IconUtility::getSpriteIconForResource($fileOrFolderObject, array('title' => $fileOrFolderObject->getName() . $size));
 					$itemUid = 'file:' . $fileIdentifier;
 				}
 				// If the listed file turns out to be the CURRENT file, then show blinking arrow:
@@ -1781,7 +1781,7 @@ class ElementBrowser {
 		$titleLen = (int)$GLOBALS['BE_USER']->uc['titleLen'];
 		// Create the header of current folder:
 		if ($folder) {
-			$folderIcon = IconUtility::getSpriteIconForFile('folder');
+			$folderIcon = IconUtility::getSpriteIconForResource($folder);
 			$lines[] = '<tr class="t3-row-header">
 				<td colspan="4">' . $folderIcon
 				. htmlspecialchars(GeneralUtility::fixed_lgd_cs($folder->getIdentifier(), $titleLen)) . '</td>
@@ -1819,7 +1819,7 @@ class ElementBrowser {
 			}
 			// Create file icon:
 			$size = ' (' . GeneralUtility::formatSize($fileObject->getSize()) . 'bytes' . ($pDim ? ', ' . $pDim : '') . ')';
-			$icon = IconUtility::getSpriteIconForFile($fileExtension, array('title' => $fileObject->getName() . $size));
+			$icon = IconUtility::getSpriteIconForResource($fileObject, array('title' => $fileObject->getName() . $size));
 			// Create links for adding the file:
 			$filesIndex = count($this->elements);
 			$this->elements['file_' . $filesIndex] = array(
@@ -2049,7 +2049,7 @@ class ElementBrowser {
 				$imgInfo = @getimagesize($fileObject->getForLocalProcessing(FALSE));
 				$pDim = $imgInfo[0] . 'x' . $imgInfo[1] . ' pixels';
 				$size = ' (' . GeneralUtility::formatSize($fileObject->getSize()) . 'bytes' . ($pDim ? ', ' . $pDim : '') . ')';
-				$filenameAndIcon = IconUtility::getSpriteIconForFile($fileExtension, array('title' => $fileObject->getName() . $size));
+				$filenameAndIcon = IconUtility::getSpriteIconForResource($fileObject, array('title' => $fileObject->getName() . $size));
 				if (GeneralUtility::_GP('noLimit')) {
 					$maxW = 10000;
 					$maxH = 10000;

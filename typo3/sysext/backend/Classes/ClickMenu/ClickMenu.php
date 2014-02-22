@@ -745,7 +745,7 @@ class ClickMenu {
 			$userMayEditStorage = FALSE;
 			$identifier = $fileObject->getCombinedIdentifier();
 			if ($fileObject instanceof \TYPO3\CMS\Core\Resource\Folder) {
-				$icon = IconUtility::getSpriteIconForFile('folder', array(
+				$icon = IconUtility::getSpriteIconForResource($fileObject, array(
 					'class' => 'absmiddle',
 					'title' => htmlspecialchars($fileObject->getName())
 				));
@@ -763,7 +763,7 @@ class ClickMenu {
 					$isOnline = FALSE;
 				}
 			} else {
-				$icon = IconUtility::getSpriteIconForFile($fileObject->getExtension(), array(
+				$icon = IconUtility::getSpriteIconForResource($fileObject, array(
 					'class' => 'absmiddle',
 					'title' => htmlspecialchars($fileObject->getName() . ' (' . GeneralUtility::formatSize($fileObject->getSize()) . ')')
 				));

@@ -220,21 +220,20 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 			'page_icon' => '',
 			'PASTE' => ''
 		);
-		// Makes the code for the foldericon in the top
+		// Makes the code for the folder icon in the top
 		if ($folderObject) {
-			list($_, $icon, $path) = $this->dirData($folderObject);
 			$title = htmlspecialchars($folderObject->getIdentifier());
 			// Start compiling the HTML
 			// @todo: how to fix this? $title = $GLOBALS['SOBE']->basicFF->blindPath($title);
-			// If this is some subpage under the mount root....
+			// If this is some subFolder under the mount root....
 			if ($folderObject->getStorage()->isWithinFileMountBoundaries($folderObject)) {
 				// The icon with link
-				$otherMarkers['PAGE_ICON'] = IconUtility::getSpriteIcon($icon, array('title' => $title));
+				$otherMarkers['PAGE_ICON'] = IconUtility::getSpriteIconForResource($folderObject, array('title' => $title));
 				// No HTML specialchars here - HTML like <strong> </strong> is allowed
 				$otherMarkers['TITLE'] .= GeneralUtility::removeXSS(GeneralUtility::fixed_lgd_cs($title, -($this->fixedL + 20)));
 			} else {
-				// This is the root page
-				$otherMarkers['PAGE_ICON'] = IconUtility::getSpriteIcon('apps-filetree-root');
+				// This is the root folder
+				$otherMarkers['PAGE_ICON'] = IconUtility::getSpriteIconForResource($folderObject, array('title' => $title, 'mount-root' => TRUE));
 				$otherMarkers['TITLE'] .= htmlspecialchars(GeneralUtility::fixed_lgd_cs($title, -($this->fixedL + 20)));
 			}
 			if ($this->clickMenus) {
@@ -465,17 +464,13 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 
 				// Initialization
 				$this->counter++;
-				list($_, $icon, $path) = $this->dirData($folderObject);
-				// The icon with link
 
-				if (!$isLocked) {
-					$theIcon = IconUtility::getSpriteIcon($icon, array('title' => $folderName));
-					if (!$this->clickMenus) {
-						$theIcon = $GLOBALS['SOBE']->doc->wrapClickMenuOnIcon($theIcon, $folderObject->getCombinedIdentifier());
-					}
-				} else {
-					$theIcon = IconUtility::getSpriteIcon($icon, array('title' => $folderName), array('status-overlay-locked' => array()));
+				// The icon with link
+				$theIcon = IconUtility::getSpriteIconForResource($folderObject, array('title' => $folderName));
+				if (!$isLocked && !$this->clickMenus) {
+					$theIcon = $GLOBALS['SOBE']->doc->wrapClickMenuOnIcon($theIcon, $folderObject->getCombinedIdentifier());
 				}
+
 				// Preparing and getting the data-array
 				$theData = array();
 				if ($isLocked) {
@@ -583,9 +578,11 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 	 *
 	 * @param \TYPO3\CMS\Core\Resource\Folder $folderObject File information array
 	 * @return array (title, icon, path)
-	 * @todo Define visibility
+	 * @deprecated since 6.2 - will be removed two versions later without replacement
 	 */
 	public function dirData(\TYPO3\CMS\Core\Resource\Folder $folderObject) {
+		GeneralUtility::logDeprecatedFunction();
+
 		$title = htmlspecialchars($folderObject->getName());
 		$icon = 'apps-filetree-folder-default';
 		$role = $folderObject->getRole();
@@ -628,7 +625,7 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 				$ext = $fileObject->getExtension();
 				$fileName = trim($fileObject->getName());
 				// The icon with link
-				$theIcon = IconUtility::getSpriteIconForFile($ext, array('title' => $fileName));
+				$theIcon = IconUtility::getSpriteIconForResource($fileObject, array('title' => $fileName));
 				if ($this->clickMenus) {
 					$theIcon = $GLOBALS['SOBE']->doc->wrapClickMenuOnIcon($theIcon, $fileObject->getCombinedIdentifier());
 				}

@@ -557,21 +557,24 @@ class IconUtility {
 	 * this is typically wrapped in a <span> tag with corresponding CSS classes that
 	 * will be responsible for the
 	 *
-	 * There are three ways to use this API:
+	 * There are four ways to use this API:
 	 *
 	 * 1) for any given TCA record
 	 *	$spriteIconHtml = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('pages', $row);
 	 *
-	 * 2) for any given file
+	 * 2) for any given File of Folder object
+	 *	$spriteIconHtml = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForResource($fileOrFolderObject);
+	 *
+	 * 3) for any given file
 	 *	$spriteIconHtml = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForFile('myimage.png');
 	 *
-	 * 3) for any other icon you know the name
+	 * 4) for any other icon you know the name
 	 *	$spriteIconHtml = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open');
 	 *
 	 **********************************************/
 	/**
 	 * This generic method is used throughout the TYPO3 Backend to show icons in any variation which are not
-	 * bound to any file type (see getSpriteIconForFile) or database record (see getSpriteIconForRecord)
+	 * bound to any resource object (see getSpriteIconForResource) or database record (see getSpriteIconForRecord)
 	 *
 	 * Generates a HTML tag with proper CSS classes. The TYPO3 skin has defined these CSS classes
 	 * already to have a pre-defined background image, and the correct background-position to show
@@ -701,6 +704,82 @@ class IconUtility {
 		unset($options['html']);
 		unset($options['tagName']);
 		return self::buildSpriteHtmlIconTag($options, $innerHtml, $tagName);
+	}
+
+	/**
+	 * This method is used throughout the TYPO3 Backend to show icons for files and folders
+	 *
+	 * The method takes care of the translation of file extension to proper icon and for folders
+	 * it will return the icon depending on the role of the folder.
+	 *
+	 * If the given resource is a folder there are some additional options that can be used:
+	 *  - mount-root => TRUE (to indicate this is the root of a mount)
+	 *  - folder-open => TRUE (to indicate that the folder is opened in the file tree)
+	 *
+	 * There is a hook in place to manipulate the icon name and overlays.
+	 *
+	 * @param \TYPO3\CMS\Core\Resource\ResourceInterface $resource
+	 * @param array $options An associative array with additional options and attributes for the tag. See self::getSpriteIcon()
+	 * @param array $overlays An associative array with the icon-name as key, and the options for this overlay as an array again (see the parameter $options again)
+	 * @return string
+	 * @throws \UnexpectedValueException
+	 */
+	static public function getSpriteIconForResource(\TYPO3\CMS\Core\Resource\ResourceInterface $resource, array $options = array(), array $overlays = array()) {
+		// Folder
+		if ($resource instanceof \TYPO3\CMS\Core\Resource\FolderInterface) {
+			// non browsable storage
+			if ($resource->getStorage()->isBrowsable() === FALSE && !empty($options['mount-root'])) {
+				$iconName = 'apps-filetree-folder-locked';
+			// storage root
+			} elseif ($resource->getStorage()->getRootLevelFolder()->getIdentifier() === $resource->getIdentifier()) {
+				$iconName = 'apps-filetree-root';
+			// user/group mount root
+			} elseif (!empty($options['mount-root'])) {
+				$iconName = 'apps-filetree-mount';
+			} else {
+
+				// in folder tree view $options['folder-open'] can define a open folder icon
+				if (!empty($options['folder-open'])) {
+					$iconName = 'apps-filetree-folder-opened';
+				} else {
+					$iconName = 'apps-filetree-folder-default';
+				}
+
+				$role = $resource->getRole();
+				if ($role === \TYPO3\CMS\Core\Resource\FolderInterface::ROLE_TEMPORARY) {
+					$iconName = 'apps-filetree-folder-temp';
+				} elseif ($role === \TYPO3\CMS\Core\Resource\FolderInterface::ROLE_RECYCLER) {
+					$iconName = 'apps-filetree-folder-recycler';
+				}
+
+				// if locked add overlay
+				if ($resource instanceof \TYPO3\CMS\Core\Resource\InaccessibleFolder) {
+					$overlays['status-overlay-locked'] = array();
+				}
+			}
+		// File
+		} else {
+			$iconName = self::mapFileExtensionToSpriteIconName($resource->getExtension());
+
+			if ($resource instanceof \TYPO3\CMS\Core\Resource\File && $resource->isMissing()) {
+				$overlays['status-overlay-missing'] = array();
+			}
+		}
+
+		// Hook: allow some other process to influence the choice of icon and overlays
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_iconworks.php']['overrideResourceIcon'])) {
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_iconworks.php']['overrideResourceIcon'] as $classRef) {
+				$hookObject = GeneralUtility::getUserObj($classRef);
+				if (!$hookObject instanceof IconUtilityOverrideResourceIconHookInterface) {
+					throw new \UnexpectedValueException('$hookObject must implement interface TYPO3\\CMS\\Backend\\Utility\\IconUtilityOverrideResourceIconHookInterface', 1393574895);
+				}
+				$hookObject->overrideResourceIcon($resource, $iconName, $options, $overlays);
+			}
+		}
+
+		unset($options['mount-root']);
+		unset($options['folder-open']);
+		return self::getSpriteIcon($iconName, $options, $overlays);
 	}
 
 	/**

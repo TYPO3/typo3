@@ -299,19 +299,13 @@ class FolderTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 			} else {
 				$firstHtml = $icon;
 			}
-			// @todo: create sprite icons for user/group mounts etc
-			if ($storageObject->isBrowsable() === FALSE) {
-				$icon = 'apps-filetree-folder-locked';
-			} else {
-				$icon = 'apps-filetree-root';
-			}
 			// Mark a storage which is not online, as offline
 			// maybe someday there will be a special icon for this
 			if ($storageObject->isOnline() === FALSE) {
 				$rootLevelFolderName .= ' (' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_file.xlf:sys_file_storage.isOffline') . ')';
 			}
 			// Preparing rootRec for the mount
-			$firstHtml .= $this->wrapIcon(IconUtility::getSpriteIcon($icon), $rootLevelFolder);
+			$firstHtml .= $this->wrapIcon(IconUtility::getSpriteIconForResource($rootLevelFolder, array('mount-root' => TRUE)), $rootLevelFolder);
 			$row = array(
 				'uid' => $folderHashSpecUID,
 				'title' => $rootLevelFolderName,
@@ -389,27 +383,12 @@ class FolderTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 			if ($this->makeHTML) {
 				$HTML = $this->PMicon($subFolder, $subFolderCounter, $totalSubFolders, $nextCount, $isOpen);
 				$type = '';
-				$overlays = array();
 
-				if ($isLocked) {
-					$type = 'readonly';
-					$overlays = array('status-overlay-locked' => array());
-				}
-				if ($isOpen) {
-					$icon = 'apps-filetree-folder-opened';
-				} else {
-					$icon = 'apps-filetree-folder-default';
-				}
 				$role = $subFolder->getRole();
 				if ($role !== FolderInterface::ROLE_DEFAULT) {
 					$row['_title'] = '<strong>' . $subFolderName . '</strong>';
 				}
-				if ($role === FolderInterface::ROLE_TEMPORARY) {
-					$icon = 'apps-filetree-folder-temp';
-				} elseif ($role === FolderInterface::ROLE_RECYCLER) {
-					$icon = 'apps-filetree-folder-recycler';
-				}
-				$icon = IconUtility::getSpriteIcon($icon, array('title' => $subFolderName), $overlays);
+				$icon = IconUtility::getSpriteIconForResource($subFolder, array('title' => $subFolderName, 'folder-open' => (bool)$isOpen));
 				$HTML .= $this->wrapIcon($icon, $subFolder);
 			}
 			// Finally, add the row/HTML content to the ->tree array in the reserved key.
