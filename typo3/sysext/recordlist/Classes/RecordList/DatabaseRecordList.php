@@ -678,7 +678,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 		$iOut = '';
 		$id_orig = NULL;
 		// If in search mode, make sure the preview will show the correct page
-		if (strlen($this->searchString)) {
+		if ((string)$this->searchString !== '') {
 			$id_orig = $this->id;
 			$this->id = $row['pid'];
 		}
@@ -776,7 +776,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 				}
 			}
 			// Reset the ID if it was overwritten
-			if (strlen($this->searchString)) {
+			if ((string)$this->searchString !== '') {
 				$this->id = $id_orig;
 			}
 			// Add row to CSV list:

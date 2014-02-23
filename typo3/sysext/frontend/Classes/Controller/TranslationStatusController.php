@@ -276,7 +276,7 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
 	 * @return array System language records in an array.
 	 */
 	public function getSystemLanguages() {
-		if (!$GLOBALS['BE_USER']->user['admin'] && strlen($GLOBALS['BE_USER']->groupData['allowed_languages'])) {
+		if (!$GLOBALS['BE_USER']->user['admin'] && $GLOBALS['BE_USER']->groupData['allowed_languages'] !== '') {
 			$allowed_languages = array_flip(explode(',', $GLOBALS['BE_USER']->groupData['allowed_languages']));
 		}
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_language', '1=1' . BackendUtility::deleteClause('sys_language'));

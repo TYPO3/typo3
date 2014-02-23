@@ -64,6 +64,7 @@ class ContentContentObject extends AbstractContentObject {
 			$slideCollectFuzzy = TRUE;
 		}
 		$again = FALSE;
+		$tmpValue = '';
 		do {
 			$res = $this->cObj->exec_getQuery($conf['table'], $conf['select.']);
 			if ($error = $GLOBALS['TYPO3_DB']->sql_error()) {
@@ -128,9 +129,9 @@ class ContentContentObject extends AbstractContentObject {
 				if (isset($conf['select.']['pidInList.'])) {
 					unset($conf['select.']['pidInList.']);
 				}
-				$again = strlen($conf['select.']['pidInList']) ? TRUE : FALSE;
+				$again = (string)$conf['select.']['pidInList'] !== '';
 			}
-		} while ($again && ($slide && !strlen($theValue) && $slideCollectFuzzy || $slide && $slideCollect));
+		} while ($again && $slide && (string)$tmpValue === '' && $slideCollectFuzzy || $slideCollect);
 
 		$wrap = isset($conf['wrap.']) ? $this->cObj->stdWrap($conf['wrap'], $conf['wrap.']) : $conf['wrap'];
 		if ($wrap) {

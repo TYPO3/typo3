@@ -360,7 +360,7 @@ class DateTimeConverterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @dataProvider convertFromArrayDataProvider
 	 */
 	public function convertFromArrayTests(array $source, $isValid) {
-		$dateFormat = isset($source['dateFormat']) && strlen($source['dateFormat']) > 0 ? $source['dateFormat'] : NULL;
+		$dateFormat = isset($source['dateFormat']) && $source['dateFormat'] !== '' ? $source['dateFormat'] : NULL;
 		if ($dateFormat !== NULL) {
 			$mockMappingConfiguration = $this->getMock(\TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface::class);
 			$mockMappingConfiguration

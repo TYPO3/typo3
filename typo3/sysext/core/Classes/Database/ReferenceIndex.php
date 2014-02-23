@@ -401,7 +401,7 @@ class ReferenceIndex {
 					}
 				}
 				// Soft References:
-				if (strlen($value) && ($softRefs = BackendUtility::explodeSoftRefParserList($conf['softref']))) {
+				if ((string)$value !== '' && ($softRefs = BackendUtility::explodeSoftRefParserList($conf['softref']))) {
 					$softRefValue = $value;
 					foreach ($softRefs as $spKey => $spParams) {
 						$softRefObj = BackendUtility::softRefParserObj($spKey);
@@ -409,7 +409,7 @@ class ReferenceIndex {
 							$resultArray = $softRefObj->findRef($table, $field, $uid, $softRefValue, $spKey, $spParams);
 							if (is_array($resultArray)) {
 								$outRow[$field]['softrefs']['keys'][$spKey] = $resultArray['elements'];
-								if (strlen($resultArray['content'])) {
+								if ((string)$resultArray['content'] !== '') {
 									$softRefValue = $resultArray['content'];
 								}
 							}
@@ -471,7 +471,7 @@ class ReferenceIndex {
 			$this->temp_flexRelations['db'][$structurePath] = $resultsFromDatabase;
 		}
 		// Soft References:
-		if ((is_array($dataValue) || strlen($dataValue)) && $softRefs = BackendUtility::explodeSoftRefParserList($dsConf['softref'])) {
+		if ((is_array($dataValue) || (string)$dataValue !== '') && $softRefs = BackendUtility::explodeSoftRefParserList($dsConf['softref'])) {
 			$softRefValue = $dataValue;
 			foreach ($softRefs as $spKey => $spParams) {
 				$softRefObj = BackendUtility::softRefParserObj($spKey);
@@ -479,7 +479,7 @@ class ReferenceIndex {
 					$resultArray = $softRefObj->findRef($table, $field, $uid, $softRefValue, $spKey, $spParams, $structurePath);
 					if (is_array($resultArray) && is_array($resultArray['elements'])) {
 						$this->temp_flexRelations['softrefs'][$structurePath]['keys'][$spKey] = $resultArray['elements'];
-						if (strlen($resultArray['content'])) {
+						if ((string)$resultArray['content'] !== '') {
 							$softRefValue = $resultArray['content'];
 						}
 					}

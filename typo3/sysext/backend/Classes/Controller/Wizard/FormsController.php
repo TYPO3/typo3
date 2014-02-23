@@ -443,7 +443,7 @@ class FormsController extends AbstractWizardController {
 						case 'input':
 
 						case 'password':
-							if (strlen(trim($confData['specialEval']))) {
+							if (trim($confData['specialEval']) !== '') {
 								$hiddenFields[] = '<input type="hidden" name="FORMCFG[c][' . ($k + 1) * 2 . '][specialEval]" value="' . htmlspecialchars($confData['specialEval']) . '" />';
 							}
 							break;
@@ -662,7 +662,7 @@ class FormsController extends AbstractWizardController {
 							if (trim($vv['extra'])) {
 								$tArr[2] = trim($vv['extra']);
 							}
-							if (strlen($vv['specialEval'])) {
+							if ($vv['specialEval'] !== '') {
 								// Preset blank default value so position 3 can get a value...
 								$thisLine[2] = '';
 								$thisLine[3] = $vv['specialEval'];
@@ -676,7 +676,7 @@ class FormsController extends AbstractWizardController {
 							if ((int)$vv['max']) {
 								$tArr[1] = (int)$vv['max'];
 							}
-							if (strlen($vv['specialEval'])) {
+							if ($vv['specialEval'] !== '') {
 								// Preset blank default value so position 3 can get a value...
 								$thisLine[2] = '';
 								$thisLine[3] = $vv['specialEval'];

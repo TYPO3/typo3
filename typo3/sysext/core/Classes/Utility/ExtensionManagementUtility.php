@@ -464,7 +464,7 @@ class ExtensionManagementUtility {
 		}
 		// Make sure item keys are integers
 		$GLOBALS['TCA'][$table]['columns'][$field]['config']['items'] = array_values($GLOBALS['TCA'][$table]['columns'][$field]['config']['items']);
-		if (strlen($relativePosition) > 0) {
+		if ($relativePosition !== '') {
 			// Insert at specified position
 			$matchedPosition = ArrayUtility::filterByValueRecursive($relativeToField, $GLOBALS['TCA'][$table]['columns'][$field]['config']['items']);
 			if (count($matchedPosition) > 0) {
@@ -763,7 +763,7 @@ class ExtensionManagementUtility {
 		}
 		ArrayUtility::mergeRecursiveWithOverrule($defaultModuleConfiguration, $moduleConfiguration);
 		$moduleConfiguration = $defaultModuleConfiguration;
-		if (strlen($subModuleName) > 0) {
+		if ($subModuleName !== '') {
 			$moduleSignature = $mainModuleName . '_' . $subModuleName;
 		} else {
 			$moduleSignature = $mainModuleName;

@@ -2722,11 +2722,11 @@ class BackendUtility {
 		$beUser = static::getBackendUserAuthentication();
 		$viewLanguageOrder = $beUser->getTSConfigVal('options.view.languageOrder');
 
-		if (strlen($viewLanguageOrder) > 0) {
+		if ((string)$viewLanguageOrder !== '') {
 			$suffix = '';
 			// Find allowed languages (if none, all are allowed!)
 			$allowedLanguages = NULL;
-			if (!$beUser->user['admin'] && strlen($beUser->groupData['allowed_languages'])) {
+			if (!$beUser->user['admin'] && $beUser->groupData['allowed_languages'] !== '') {
 				$allowedLanguages = array_flip(explode(',', $beUser->groupData['allowed_languages']));
 			}
 			// Traverse the view order, match first occurrence:
@@ -3691,7 +3691,7 @@ class BackendUtility {
 			$parserList = implode(',', array_keys($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['softRefParser_GL'])) . ',' . $parserList;
 		}
 		// Return immediately if list is blank:
-		if (!strlen($parserList)) {
+		if ($parserList === '') {
 			return FALSE;
 		}
 		// Otherwise parse the list:

@@ -43,7 +43,7 @@ class ImageFeature extends Configuration\AbstractFeature implements Configuratio
 	 */
 	public function getAdditionalSearchPath() {
 		$additionalPath = '';
-		if (isset($this->postValues['additionalSearchPath']) && strlen($this->postValues['additionalSearchPath'])) {
+		if (isset($this->postValues['additionalSearchPath']) && $this->postValues['additionalSearchPath'] !== '') {
 			$additionalPath = $this->postValues['additionalSearchPath'];
 		}
 		return $additionalPath;

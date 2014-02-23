@@ -75,7 +75,7 @@ class TreeElement extends AbstractFormElement {
 					$item->checked = in_array($additionalItem[1], $selectedNodes);
 					if (file_exists(PATH_typo3 . $additionalItem[3])) {
 						$item->icon = $additionalItem[3];
-					} elseif (strlen(trim($additionalItem[3]))) {
+					} elseif (trim($additionalItem[3]) !== '') {
 						$item->iconCls = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconClasses($additionalItem[3]);
 					}
 					$itemArray[] = $item;

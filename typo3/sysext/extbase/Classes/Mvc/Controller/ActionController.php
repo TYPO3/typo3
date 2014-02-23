@@ -286,7 +286,7 @@ class ActionController extends AbstractController {
 
 		if ($actionResult === NULL && $this->view instanceof ViewInterface) {
 			$this->response->appendContent($this->view->render());
-		} elseif (is_string($actionResult) && strlen($actionResult) > 0) {
+		} elseif (is_string($actionResult) && $actionResult !== '') {
 			$this->response->appendContent($actionResult);
 		} elseif (is_object($actionResult) && method_exists($actionResult, '__toString')) {
 			$this->response->appendContent((string)$actionResult);

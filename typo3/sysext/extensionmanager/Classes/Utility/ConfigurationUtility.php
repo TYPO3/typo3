@@ -111,7 +111,7 @@ class ConfigurationUtility implements \TYPO3\CMS\Core\SingletonInterface {
 
 		$theConstants = array();
 
-		if (strlen($rawConfigurationString) > 0) {
+		if ((string)$rawConfigurationString !== '') {
 			$extensionPathInformation = $this->getExtensionPathInformation($extensionKey);
 
 			$tsStyleConfig = $this->objectManager->get(\TYPO3\CMS\Core\TypoScript\ConfigurationForm::class);

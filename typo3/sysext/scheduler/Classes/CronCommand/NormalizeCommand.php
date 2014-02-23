@@ -185,7 +185,7 @@ class NormalizeCommand {
 			}
 			$fieldValues = implode(',', $fieldArray);
 		}
-		if (strlen($fieldValues) === 0) {
+		if ((string)$fieldValues === '') {
 			throw new \InvalidArgumentException('Unable to convert integer field to list of values: Result list empty.', 1291422012);
 		}
 		if ((string)$fieldValues !== '*') {
@@ -211,7 +211,7 @@ class NormalizeCommand {
 	 * @return array
 	 */
 	static protected function convertRangeToListOfValues($range) {
-		if (strlen($range) === 0) {
+		if ((string)$range === '') {
 			throw new \InvalidArgumentException('Unable to convert range to list of values with empty string.', 1291234985);
 		}
 		$rangeArray = explode('-', $range);
@@ -222,7 +222,7 @@ class NormalizeCommand {
 			}
 			$rangeArray[$fieldNumber] = (int)$fieldValue;
 		}
-		$resultList = '';
+
 		if (count($rangeArray) === 1) {
 			$resultList = $rangeArray[0];
 		} elseif (count($rangeArray) === 2) {
@@ -253,7 +253,7 @@ class NormalizeCommand {
 	 * @return string Comma separated list of valid values
 	 */
 	static protected function reduceListOfValuesByStepValue($stepExpression) {
-		if (strlen($stepExpression) === 0) {
+		if ($stepExpression === '') {
 			throw new \InvalidArgumentException('Unable to convert step values.', 1291234987);
 		}
 		$stepValuesAndStepArray = explode('/', $stepExpression);
@@ -262,10 +262,10 @@ class NormalizeCommand {
 		}
 		$left = $stepValuesAndStepArray[0];
 		$right = $stepValuesAndStepArray[1];
-		if (strlen($stepValuesAndStepArray[0]) === 0) {
+		if ((string)$stepValuesAndStepArray[0] === '') {
 			throw new \InvalidArgumentException('Unable to convert step values: Left part of / is empty.', 1291414955);
 		}
-		if (strlen($stepValuesAndStepArray[1]) === 0) {
+		if ((string)$stepValuesAndStepArray[1] === '') {
 			throw new \InvalidArgumentException('Unable to convert step values: Right part of / is empty.', 1291414956);
 		}
 		if (!MathUtility::canBeInterpretedAsInteger($right)) {

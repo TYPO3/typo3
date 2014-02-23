@@ -215,7 +215,7 @@ class CommandController implements CommandControllerInterface {
 		$originalRole = $this->ensureAdminRoleIfRequested();
 		$commandResult = call_user_func_array(array($this, $this->commandMethodName), $preparedArguments);
 		$this->restoreUserRole($originalRole);
-		if (is_string($commandResult) && strlen($commandResult) > 0) {
+		if (is_string($commandResult) && $commandResult !== '') {
 			$this->response->appendContent($commandResult);
 		} elseif (is_object($commandResult) && method_exists($commandResult, '__toString')) {
 			$this->response->appendContent((string)$commandResult);

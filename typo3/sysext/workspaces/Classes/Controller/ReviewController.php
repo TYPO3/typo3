@@ -51,7 +51,7 @@ class ReviewController extends AbstractController {
 			$wsCur = array($activeWorkspace => TRUE);
 			$wsList = array_intersect_key($wsList, $wsCur);
 		} else {
-			if (strlen(GeneralUtility::_GP('workspace'))) {
+			if ((string)GeneralUtility::_GP('workspace') !== '') {
 				$switchWs = (int)GeneralUtility::_GP('workspace');
 				if (in_array($switchWs, array_keys($wsList)) && $activeWorkspace != $switchWs) {
 					$activeWorkspace = $switchWs;

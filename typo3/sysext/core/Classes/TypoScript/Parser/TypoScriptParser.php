@@ -1237,7 +1237,7 @@ class TypoScriptParser {
 			} else {
 				debug(array($value));
 			}
-			if (strlen(substr($value, $start))) {
+			if (strlen($value) > $start) {
 				$lineC .= $this->highLightStyles['ignored'][0] . htmlspecialchars(substr($value, $start)) . $this->highLightStyles['ignored'][1];
 			}
 			if ($errA[$rawP]) {

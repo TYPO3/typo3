@@ -38,7 +38,7 @@ class CaseContentObject extends AbstractContentObject {
 			$this->cObj->data[$this->cObj->currentValKey] = $setCurrent;
 		}
 		$key = isset($conf['key.']) ? $this->cObj->stdWrap($conf['key'], $conf['key.']) : $conf['key'];
-		$key = strlen($conf[$key]) ? $key : 'default';
+		$key = (string)$conf[$key] !== '' ? $key : 'default';
 		// If no "default" property is available, then an empty string is returned
 		if ($key === 'default' && $conf['default'] === NULL) {
 			$theValue = '';

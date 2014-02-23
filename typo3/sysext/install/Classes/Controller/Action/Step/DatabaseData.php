@@ -32,7 +32,7 @@ class DatabaseData extends AbstractStepAction {
 
 		$postValues = $this->postValues['values'];
 
-		$username = strlen($postValues['username']) ? $postValues['username'] : 'admin';
+		$username = (string)$postValues['username'] !== '' ? $postValues['username'] : 'admin';
 
 		// Check password and return early if not good enough
 		$password = $postValues['password'];

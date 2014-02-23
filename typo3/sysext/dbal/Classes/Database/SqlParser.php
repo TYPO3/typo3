@@ -367,7 +367,7 @@ class SqlParser extends \TYPO3\CMS\Core\Database\SqlParser {
 				$type = $this->databaseConnection->MySQLMetaType($fieldCfg['fieldType']);
 				$cfg = $type;
 				// Add value, if any:
-				if (strlen($fieldCfg['value']) && in_array($type, array('C', 'C2'))) {
+				if ((string)$fieldCfg['value'] !== '' && in_array($type, array('C', 'C2'))) {
 					$cfg .= ' ' . $fieldCfg['value'];
 				} elseif (!isset($fieldCfg['value']) && in_array($type, array('C', 'C2'))) {
 					$cfg .= ' 255';

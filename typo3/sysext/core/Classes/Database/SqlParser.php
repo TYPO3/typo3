@@ -431,7 +431,7 @@ class SqlParser {
 		$result['TABLE'] = $this->nextPart($parseString, '^([[:alnum:]_]+)[[:space:]]*\\(', TRUE);
 		if ($result['TABLE']) {
 			// While the parseString is not yet empty:
-			while (strlen($parseString) > 0) {
+			while ($parseString !== '') {
 				// Getting key
 				if ($key = $this->nextPart($parseString, '^(KEY|PRIMARY KEY|UNIQUE KEY|UNIQUE)([[:space:]]+|\\()')) {
 					$key = $this->normalizeKeyword($key);
@@ -683,7 +683,7 @@ class SqlParser {
 	public function parseFieldList(&$parseString, $stopRegex = '') {
 		$stack = array();
 		// Contains the parsed content
-		if (strlen($parseString) === 0) {
+		if ($parseString === '') {
 			return $stack;
 		}
 		// @todo - should never happen, why does it?
@@ -700,7 +700,7 @@ class SqlParser {
 		// Parse any SQL hint / comments
 		$stack[$pnt]['comments'] = $this->nextPart($parseString, '^(\\/\\*.*\\*\\/)');
 		// $parseString is continuously shortened by the process and we keep parsing it till it is zero:
-		while (strlen($parseString)) {
+		while ($parseString !== '') {
 			// Checking if we are inside / outside parenthesis (in case of a function like count(), max(), min() etc...):
 			// Inside parenthesis here (does NOT detect if values in quotes are used, the only token is ")" or "("):
 			if ($level > 0) {
@@ -784,7 +784,7 @@ class SqlParser {
 					return $stack;
 				}
 				// Looking for comma (since the stop-keyword did not trigger a return...)
-				if (strlen($parseString) && !$this->nextPart($parseString, '^(,)')) {
+				if ($parseString !== '' && !$this->nextPart($parseString, '^(,)')) {
 					return $this->parseError('No comma found as expected in parseFieldList()', $parseString);
 				}
 				// Increasing pointer:
@@ -856,7 +856,7 @@ class SqlParser {
 		// Recursivity brake.
 		$loopExit = 0;
 		// $parseString is continously shortend by the process and we keep parsing it till it is zero:
-		while (strlen($parseString)) {
+		while ($parseString !== '') {
 			// Looking for the table:
 			if ($stack[$pnt]['table'] = $this->nextPart($parseString, '^([[:alnum:]_]+)(,|[[:space:]]+)')) {
 				// Looking for stop-keywords before fetching potential table alias:
@@ -935,7 +935,7 @@ class SqlParser {
 				return $stack;
 			}
 			// Looking for comma:
-			if (strlen($parseString) && !$this->nextPart($parseString, '^(,)')) {
+			if ($parseString !== '' && !$this->nextPart($parseString, '^(,)')) {
 				return $this->parseError('No comma found as expected in parseFromTables()', $parseString);
 			}
 			// Increasing pointer:
@@ -973,7 +973,7 @@ class SqlParser {
 		// Recursivity brake.
 		$loopExit = 0;
 		// $parseString is continuously shortened by the process and we keep parsing it till it is zero:
-		while (strlen($parseString)) {
+		while ($parseString !== '') {
 			// Look for next parenthesis level:
 			$newLevel = $this->nextPart($parseString, '^([(])');
 			// If new level is started, manage stack/pointers:
@@ -1102,7 +1102,7 @@ class SqlParser {
 						}
 						// See if the value is calculated:
 						$stack[$level][$pnt[$level]]['calc'] = $this->nextPart($parseString, '^(' . $calcOperators . ')');
-						if (strlen($stack[$level][$pnt[$level]]['calc'])) {
+						if ((string)$stack[$level][$pnt[$level]]['calc'] !== '') {
 							// Finding value for calculation:
 							$calc_value = $this->getValue($parseString);
 							$stack[$level][$pnt[$level]]['calc_value'] = $calc_value;
@@ -1120,7 +1120,7 @@ class SqlParser {
 						}
 					}
 					$stack[$level][$pnt[$level]]['comparator'] = $this->nextPart($parseString, '^(' . implode('|', self::$comparatorPatterns) . ')');
-					if (strlen($stack[$level][$pnt[$level]]['comparator'])) {
+					if ($stack[$level][$pnt[$level]]['comparator'] !== '') {
 						if (preg_match('/^CONCAT[[:space:]]*\\(/', $parseString)) {
 							$this->nextPart($parseString, '^(CONCAT[[:space:]]?[(])');
 							$values = array(
@@ -1208,7 +1208,7 @@ class SqlParser {
 					// Normalize boolean operator
 					$op = str_replace(array('&&', '||'), array('AND', 'OR'), $op);
 					$stack[$level][$pnt[$level]]['operator'] = $op;
-				} elseif (strlen($parseString)) {
+				} elseif ($parseString !== '') {
 					// Looking for stop-keywords:
 					if ($stopRegex && ($this->lastStopKeyWord = $this->nextPart($parseString, $stopRegex))) {
 						$this->lastStopKeyWord = $this->normalizeKeyword($this->lastStopKeyWord);
@@ -1405,7 +1405,7 @@ class SqlParser {
 			$buffer .= $v;
 			$reg = array();
 			preg_match('/\\\\$/', $v, $reg);
-			if ($reg and strlen($reg[0]) % 2) {
+			if ($reg && strlen($reg[0]) % 2) {
 				$buffer .= $quote;
 			} else {
 				$parseString = ltrim(substr($parseString, strlen($buffer) + 2));
@@ -1528,10 +1528,10 @@ class SqlParser {
 		// Make query:
 		$query = 'SELECT ' . ($components['STRAIGHT_JOIN'] ?: '') . ' ' .
 				$this->compileFieldList($components['SELECT']) .
-				' FROM ' . $this->compileFromTables($components['FROM']) . (strlen($where) ?
-				' WHERE ' . $where : '') . (strlen($groupBy) ?
-				' GROUP BY ' . $groupBy : '') . (strlen($orderBy) ?
-				' ORDER BY ' . $orderBy : '') . (strlen($limit) ?
+				' FROM ' . $this->compileFromTables($components['FROM']) . ($where !== '' ?
+				' WHERE ' . $where : '') . ($groupBy !== '' ?
+				' GROUP BY ' . $groupBy : '') . ($orderBy !== '' ?
+				' ORDER BY ' . $orderBy : '') . ((string)$limit !== '' ?
 				' LIMIT ' . $limit : '');
 		return $query;
 	}
@@ -1553,7 +1553,7 @@ class SqlParser {
 		}
 		// Make query:
 		$query = 'UPDATE ' . $components['TABLE'] . ' SET ' . implode(',', $fields) .
-			(strlen($where) ? ' WHERE ' . $where : '');
+			($where !== '' ? ' WHERE ' . $where : '');
 
 		return $query;
 	}
@@ -1602,7 +1602,7 @@ class SqlParser {
 		// Where clause:
 		$where = $this->compileWhereClause($components['WHERE']);
 		// Make query:
-		$query = 'DELETE FROM ' . $components['TABLE'] . (strlen($where) ? ' WHERE ' . $where : '');
+		$query = 'DELETE FROM ' . $components['TABLE'] . ($where !== '' ? ' WHERE ' . $where : '');
 
 		return $query;
 	}
@@ -1911,7 +1911,7 @@ class SqlParser {
 		// Set type:
 		$cfg = $fieldCfg['fieldType'];
 		// Add value, if any:
-		if (strlen($fieldCfg['value'])) {
+		if ((string)$fieldCfg['value'] !== '') {
 			$cfg .= '(' . $fieldCfg['value'] . ')';
 		}
 		// Add additional features:

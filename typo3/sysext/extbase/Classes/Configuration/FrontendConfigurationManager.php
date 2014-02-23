@@ -105,7 +105,7 @@ class FrontendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\Abst
 	 */
 	protected function overrideStoragePidIfStartingPointIsSet(array $frameworkConfiguration) {
 		$pages = $this->contentObject->data['pages'];
-		if (is_string($pages) && strlen($pages) > 0) {
+		if (is_string($pages) && $pages !== '') {
 			$list = array();
 			if ($this->contentObject->data['recursive'] > 0) {
 				$explodedPages = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $pages);
@@ -154,7 +154,7 @@ class FrontendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\Abst
 	protected function overrideConfigurationFromFlexForm(array $frameworkConfiguration) {
 		$flexFormConfiguration = $this->contentObject->data['pi_flexform'];
 		if (is_string($flexFormConfiguration)) {
-			if (strlen($flexFormConfiguration) > 0) {
+			if ($flexFormConfiguration !== '') {
 				$flexFormConfiguration = $this->flexFormService->convertFlexFormContentToArray($flexFormConfiguration);
 			} else {
 				$flexFormConfiguration = array();
@@ -233,7 +233,7 @@ class FrontendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\Abst
 		$storagePids = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $storagePid);
 		foreach ($storagePids as $startPid) {
 			$pids = $this->getContentObject()->getTreeList($startPid, $recursionDepth, 0);
-			if (strlen($pids) > 0) {
+			if ((string)$pids !== '') {
 				$recursiveStoragePids .= $pids . ',';
 			}
 		}

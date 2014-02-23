@@ -51,7 +51,7 @@ class LinkNode extends AbstractNode implements NodeInterface {
 		}
 		$this->name = $structure['name'];
 
-		if (isset($structure['target']) && strlen($structure['target']) > 0) {
+		if (isset($structure['target']) && $structure['target'] !== '') {
 			$this->target = $structure['target'];
 		}
 	}

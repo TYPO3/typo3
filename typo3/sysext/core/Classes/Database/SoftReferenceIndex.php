@@ -27,7 +27,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * Example of usage
  * Soft References:
- * if ($conf['softref'] && strlen($value))	{	// Check if a TCA configured field has softreferences defined (see TYPO3 Core API document)
+ * if ($conf['softref'] && (strong)$value !== ''))	{	// Check if a TCA configured field has softreferences defined (see TYPO3 Core API document)
  * $softRefs = \TYPO3\CMS\Backend\Utility\BackendUtility::explodeSoftRefParserList($conf['softref']);		// Explode the list of softreferences/parameters
  * foreach($softRefs as $spKey => $spParams)	{	// Traverse soft references
  * $softRefObj = &\TYPO3\CMS\Backend\Utility\BackendUtility::softRefParserObj($spKey);	// create / get object
@@ -631,7 +631,7 @@ class SoftReferenceIndex {
 			// Link-data del
 			$link_param = trim($link_params_parts[0]);
 
-			if (strlen($link_params_parts[1])) {
+			if ((string)$link_params_parts[1] !== '') {
 				$finalTagParts['anchor'] = trim($link_params_parts[1]);
 			}
 
@@ -643,7 +643,7 @@ class SoftReferenceIndex {
 			}
 
 			// Checking if the id-parameter is an alias.
-			if (strlen($link_param)) {
+			if ((string)$link_param !== '') {
 				if (!\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($link_param)) {
 					$finalTagParts['alias'] = $link_param;
 					$link_param = $this->getPageIdFromAlias($link_param);
@@ -744,11 +744,11 @@ class SoftReferenceIndex {
 					);
 				}
 				// Add type if applicable
-				if (strlen($tLP['type'])) {
+				if ((string)$tLP['type'] !== '') {
 					$content .= ',' . $tLP['type'];
 				}
 				// Add anchor if applicable
-				if (strlen($tLP['anchor'])) {
+				if ((string)$tLP['anchor'] !== '') {
 					// Anchor is assumed to point to a content elements:
 					if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($tLP['anchor'])) {
 						// Initialize a new entry because we have a new relation:
@@ -780,7 +780,7 @@ class SoftReferenceIndex {
 				}
 		}
 		// Finally, for all entries that was rebuild with tokens, add target, class, title and additionalParams in the end:
-		if (strlen($content) && isset($tLP['target']) && $tLP['target'] !== '') {
+		if ($content !== '' && isset($tLP['target']) && $tLP['target'] !== '') {
 			$content .= ' ' . $tLP['target'];
 			if (isset($tLP['class']) && $tLP['class'] !== '') {
 				$content .= ' "' . $tLP['class'] . '"';

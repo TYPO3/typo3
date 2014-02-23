@@ -231,10 +231,10 @@ class FieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldProviderInter
 		}
 		$descriptionIndex = $labelNameIndex . '.description';
 		$description = $this->getLanguageLabel($descriptionIndex);
-		if (strlen($description) === 0) {
+		if ((string)$description === '') {
 			$description = $argument->getDescription();
 		}
-		if (strlen($description) > 0) {
+		if ((string)$description !== '') {
 			$label .= '. <em>' . htmlspecialchars($description) . '</em>';
 		}
 		return $label;

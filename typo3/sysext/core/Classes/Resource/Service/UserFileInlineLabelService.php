@@ -64,7 +64,7 @@ class UserFileInlineLabelService {
 					$value = BackendUtility::getRecordTitlePrep($fileRecord[$field]);
 				}
 			}
-			if (!strlen($value)) {
+			if ((string)$value === '') {
 				continue;
 			}
 			$labelText = LocalizationUtility::translate('LLL:EXT:lang/locallang_tca.xlf:sys_file.' . $field, 'lang');

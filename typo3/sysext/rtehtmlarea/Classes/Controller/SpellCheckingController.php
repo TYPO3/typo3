@@ -474,7 +474,7 @@ var selectedDictionary = "' . $this->dictionary . '";
 	 * Handler for the opening of a tag
 	 */
 	public function startHandler($xml_parser, $tag, $attributes) {
-		if (strlen($this->xmlCharacterData)) {
+		if ((string)$this->xmlCharacterData !== '') {
 			$this->spellCheckHandler($xml_parser, $this->xmlCharacterData);
 			$this->xmlCharacterData = '';
 		}
@@ -515,7 +515,7 @@ var selectedDictionary = "' . $this->dictionary . '";
 	 * Handler for the closing of a tag
 	 */
 	public function endHandler($xml_parser, $tag) {
-		if (strlen($this->xmlCharacterData)) {
+		if ((string)$this->xmlCharacterData !== '') {
 			$this->spellCheckHandler($xml_parser, $this->xmlCharacterData);
 			$this->xmlCharacterData = '';
 		}

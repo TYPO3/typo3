@@ -635,7 +635,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 							) {
 								$grid .= $this->tt_content_drawColHeader($this->getLanguageService()->sL($columnConfig['name']) .
 									' (' . $this->getLanguageService()->getLL('noAccess') . ')', '', '');
-							} elseif (isset($columnConfig['name']) && strlen($columnConfig['name']) > 0) {
+							} elseif (isset($columnConfig['name']) && $columnConfig['name'] !== '') {
 								$grid .= $this->tt_content_drawColHeader($this->getLanguageService()->sL($columnConfig['name'])
 									. ' (' . $this->getLanguageService()->getLL('notAssigned') . ')', '', '');
 							} else {
@@ -1813,7 +1813,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 			// Remove disallowed languages
 			if (count($langSelItems) > 1
 				&& !$this->getBackendUser()->user['admin']
-				&& strlen($this->getBackendUser()->groupData['allowed_languages'])
+				&& $this->getBackendUser()->groupData['allowed_languages'] !== ''
 			) {
 				$allowed_languages = array_flip(explode(',', $this->getBackendUser()->groupData['allowed_languages']));
 				if (count($allowed_languages)) {

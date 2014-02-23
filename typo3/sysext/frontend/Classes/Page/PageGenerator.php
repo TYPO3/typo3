@@ -109,7 +109,7 @@ class PageGenerator {
 		if (is_array($GLOBALS['TSFE']->sWordList)) {
 			$space = !empty($GLOBALS['TSFE']->config['config']['sword_standAlone']) ? '[[:space:]]' : '';
 			foreach ($GLOBALS['TSFE']->sWordList as $val) {
-				if (strlen(trim($val)) > 0) {
+				if (trim($val) !== '') {
 					$GLOBALS['TSFE']->sWordRegEx .= $space . quotemeta($val) . $space . '|';
 				}
 			}
