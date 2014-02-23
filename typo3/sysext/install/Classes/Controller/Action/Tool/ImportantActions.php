@@ -133,7 +133,7 @@ class ImportantActions extends Action\AbstractAction implements Action\ActionInt
 	 */
 	protected function changeSiteName() {
 		$values = $this->postValues['values'];
-		if (isset($values['newSiteName']) && $values['newSiteName'] !== '') {
+		if (isset($values['newSiteName']) && strlen($values['newSiteName']) > 0) {
 			/** @var \TYPO3\CMS\Core\Configuration\ConfigurationManager $configurationManager */
 			$configurationManager = $this->objectManager->get('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager');
 			$configurationManager->setLocalConfigurationValueByPath('SYS/sitename', $values['newSiteName']);

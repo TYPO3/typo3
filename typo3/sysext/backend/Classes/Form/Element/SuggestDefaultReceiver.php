@@ -218,7 +218,7 @@ class SuggestDefaultReceiver {
 		$searchWholePhrase = $this->config['searchWholePhrase'];
 		$searchString = $this->params['value'];
 		$searchUid = (int)$searchString;
-		if ($searchString !== '') {
+		if (strlen($searchString)) {
 			$searchString = $GLOBALS['TYPO3_DB']->quoteStr($searchString, $this->table);
 			$likeCondition = ' LIKE \'' . ($searchWholePhrase ? '%' : '') . $GLOBALS['TYPO3_DB']->escapeStrForLike($searchString, $this->table) . '%\'';
 			// Search in all fields given by label or label_alt
@@ -244,7 +244,7 @@ class SuggestDefaultReceiver {
 			}
 		}
 		// add an additional search condition comment
-		if (isset($this->config['searchCondition']) && $this->config['searchCondition'] !== '') {
+		if (isset($this->config['searchCondition']) && strlen($this->config['searchCondition']) > 0) {
 			$this->selectClause .= ' AND ' . $this->config['searchCondition'];
 		}
 		// add the global clauses to the where-statement

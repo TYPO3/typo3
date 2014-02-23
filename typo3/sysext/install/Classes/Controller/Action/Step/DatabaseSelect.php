@@ -108,7 +108,7 @@ class DatabaseSelect extends Action\AbstractAction implements StepInterface {
 	public function needsExecution() {
 		$this->initializeDatabaseConnection();
 		$result = TRUE;
-		if ((string)$GLOBALS['TYPO3_CONF_VARS']['DB']['database'] !== '') {
+		if (strlen($GLOBALS['TYPO3_CONF_VARS']['DB']['database']) > 0) {
 			$this->databaseConnection->setDatabaseName($GLOBALS['TYPO3_CONF_VARS']['DB']['database']);
 			try {
 				$selectResult = $this->databaseConnection->sql_select_db();

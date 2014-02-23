@@ -463,7 +463,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 					$sqlResult = $this->handlerInstance[$this->lastHandlerKey]->_query($this->lastQuery, FALSE);
 				} else {
 					$this->handlerInstance[$this->lastHandlerKey]->StartTrans();
-					if ($this->lastQuery[0] !== '') {
+					if (strlen($this->lastQuery[0])) {
 						$sqlResult = $this->handlerInstance[$this->lastHandlerKey]->_query($this->lastQuery[0], FALSE);
 					}
 					if (is_array($this->lastQuery[1])) {
@@ -624,7 +624,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 					$sqlResult = $this->handlerInstance[$this->lastHandlerKey]->_query($this->lastQuery, FALSE);
 				} else {
 					$this->handlerInstance[$this->lastHandlerKey]->StartTrans();
-					if ($this->lastQuery[0] !== '') {
+					if (strlen($this->lastQuery[0])) {
 						$sqlResult = $this->handlerInstance[$this->lastHandlerKey]->_query($this->lastQuery[0], FALSE);
 					}
 					if (is_array($this->lastQuery[1])) {
@@ -1098,7 +1098,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 					$query[0] = 'UPDATE ' . $this->quoteFromTables($table) . '
 						SET
 							' . implode(',
-							', $nArr) . ($where !== '' ? '
+							', $nArr) . (strlen($where) > 0 ? '
 						WHERE
 							' . $this->quoteWhereClause($where) : '');
 				}
@@ -1115,7 +1115,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 				$query = 'UPDATE ' . $this->quoteFromTables($table) . '
 					SET
 						' . implode(',
-						', $nArr) . ($where !== '' ? '
+						', $nArr) . (strlen($where) > 0 ? '
 					WHERE
 						' . $this->quoteWhereClause($where) : '');
 				if ($this->debugOutput || $this->store_lastBuiltQuery) {
@@ -1143,7 +1143,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 			}
 			$table = $this->quoteFromTables($table);
 			$where = $this->quoteWhereClause($where);
-			$query = 'DELETE FROM ' . $table . ($where !== '' ? ' WHERE ' . $where : '');
+			$query = 'DELETE FROM ' . $table . (strlen($where) > 0 ? ' WHERE ' . $where : '');
 			if ($this->debugOutput || $this->store_lastBuiltQuery) {
 				$this->debug_lastBuiltQuery = $query;
 			}
@@ -2944,7 +2944,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 						$this->handlerInstance[$handlerKey]->PConnect($cfgArray['config']['host'] . (isset($cfgArray['config']['port']) ? ':' . $cfgArray['config']['port'] : ''), $cfgArray['config']['username'], $cfgArray['config']['password'], $cfgArray['config']['database']);
 					}
 					if (!$this->handlerInstance[$handlerKey]->isConnected()) {
-						$dsn = $cfgArray['config']['driver'] . '://' . $cfgArray['config']['username'] . ($cfgArray['config']['password'] !== '' ? ':XXXX@' : '') . $cfgArray['config']['host'] . (isset($cfgArray['config']['port']) ? ':' . $cfgArray['config']['port'] : '') . '/' . $cfgArray['config']['database'] . ($GLOBALS['TYPO3_CONF_VARS']['SYS']['no_pconnect'] ? '' : '?persistent=1');
+						$dsn = $cfgArray['config']['driver'] . '://' . $cfgArray['config']['username'] . (strlen($cfgArray['config']['password']) ? ':XXXX@' : '') . $cfgArray['config']['host'] . (isset($cfgArray['config']['port']) ? ':' . $cfgArray['config']['port'] : '') . '/' . $cfgArray['config']['database'] . ($GLOBALS['TYPO3_CONF_VARS']['SYS']['no_pconnect'] ? '' : '?persistent=1');
 						GeneralUtility::sysLog('Could not connect to DB server using ADOdb on ' . $cfgArray['config']['host'] . ' with user ' . $cfgArray['config']['username'] . '.', 'Core', 4);
 						error_log('DBAL error: Connection to ' . $dsn . ' failed. Maybe PHP doesn\'t support the database?');
 						$output = FALSE;
@@ -3579,7 +3579,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 						$parseResults['ORDERBY'] = $this->SQLparser->debug_parseSQLpart('SELECT', $inData['args'][4]);
 						// Using select field list syntax
 						foreach ($parseResults as $k => $v) {
-							if ($v === '') {
+							if (!strlen($parseResults[$k])) {
 								unset($parseResults[$k]);
 							}
 						}

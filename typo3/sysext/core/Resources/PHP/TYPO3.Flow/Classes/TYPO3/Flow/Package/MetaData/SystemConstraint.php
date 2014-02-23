@@ -35,7 +35,7 @@ class SystemConstraint extends \TYPO3\Flow\Package\MetaData\AbstractConstraint {
 	 * @param string $maxVersion
 	 */
 	public function __construct($constraintType, $type, $value = NULL, $minVersion = NULL, $maxVersion = NULL) {
-		if ($value === '') {
+		if (!strlen($value)) {
 			$value = NULL;
 		}
 		parent::__construct($constraintType, $value, $minVersion, $maxVersion);

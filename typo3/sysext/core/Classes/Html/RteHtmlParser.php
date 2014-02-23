@@ -1715,7 +1715,7 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 				$attribArray = $this->get_tag_attributes_classic($this->getFirstTag($v), 1);
 				// Checking if there is a scheme, and if not, prepend the current url.
 				// ONLY do this if href has content - the <a> tag COULD be an anchor and if so, it should be preserved...
-				if ($attribArray['href'] !== '') {
+				if (strlen($attribArray['href'])) {
 					$uP = parse_url(strtolower($attribArray['href']));
 					if (!$uP['scheme']) {
 						$attribArray['href'] = $this->siteUrl() . substr($attribArray['href'], strlen($this->relBackPath));

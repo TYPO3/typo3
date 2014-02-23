@@ -213,7 +213,7 @@ class Ter extends \TYPO3\CMS\Extensionmanager\Utility\Connection\TerUtility {
 						\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep($path, implode('/', $zipEntryPathSegments));
 					} else {
 						$absoluteTargetPath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($path . implode('/', $zipEntryPathSegments) . '/' . $fileName);
-						if (trim($absoluteTargetPath) !== '') {
+						if (strlen(trim($absoluteTargetPath)) > 0) {
 							$return = \TYPO3\CMS\Core\Utility\GeneralUtility::writeFile(
 								$absoluteTargetPath, zip_entry_read($zipEntry, zip_entry_filesize($zipEntry))
 							);

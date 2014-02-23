@@ -2387,7 +2387,7 @@ class ContentObjectRenderer {
 	 * @return string The processed input value
 	 */
 	public function stdWrap_ifBlank($content = '', $conf = array()) {
-		if (trim($content) === '') {
+		if (!strlen(trim($content))) {
 			$content = $conf['ifBlank'];
 		}
 		return $content;
@@ -2438,7 +2438,7 @@ class ContentObjectRenderer {
 			$length = isset($conf['strPad.']['length.']) ? $this->stdWrap($conf['strPad.']['length'], $conf['strPad.']['length.']) : $conf['strPad.']['length'];
 			$length = (int)$length;
 		}
-		if (isset($conf['strPad.']['padWith']) && (string)$conf['strPad.']['padWith'] !== '') {
+		if (isset($conf['strPad.']['padWith']) && strlen($conf['strPad.']['padWith']) > 0) {
 			$padWith = isset($conf['strPad.']['padWith.']) ? $this->stdWrap($conf['strPad.']['padWith'], $conf['strPad.']['padWith.']) : $conf['strPad.']['padWith'];
 		}
 		if (!empty($conf['strPad.']['type'])) {
@@ -5741,10 +5741,10 @@ class ContentObjectRenderer {
 				// The '-' character means 'no title'. Necessary in order to specify further parameters without setting the title!
 				$forceTitle = '';
 			}
-			$forceParams = isset($link_paramA[4]) ? trim($link_paramA[4]) : '';
-			if ($forceParams !== '') {
+			if (isset($link_paramA[4]) && strlen(trim($link_paramA[4])) > 0) {
+				$forceParams = trim($link_paramA[4]);
 				// params value
-				$conf['additionalParams'] .= $forceParams[0] === '&' ? $forceParams : '&' . $forceParams;
+				$conf['additionalParams'] .= $forceParams[0] == '&' ? $forceParams : '&' . $forceParams;
 			}
 			// Check, if the target is coded as a JS open window link:
 			$JSwindowParts = array();
@@ -5906,10 +5906,10 @@ class ContentObjectRenderer {
 						$link_param = $GLOBALS['TSFE']->sys_page->getPageIdFromAlias($link_param);
 					}
 					// Link to page even if access is missing?
-					if (isset($conf['linkAccessRestrictedPages'])) {
-						$disableGroupAccessCheck = (boolean)$conf['linkAccessRestrictedPages'];
+					if (strlen($conf['linkAccessRestrictedPages'])) {
+						$disableGroupAccessCheck = $conf['linkAccessRestrictedPages'] ? TRUE : FALSE;
 					} else {
-						$disableGroupAccessCheck = (boolean)$GLOBALS['TSFE']->config['config']['typolinkLinkAccessRestrictedPages'];
+						$disableGroupAccessCheck = $GLOBALS['TSFE']->config['config']['typolinkLinkAccessRestrictedPages'] ? TRUE : FALSE;
 					}
 					// Looking up the page record to verify its existence:
 					$page = $GLOBALS['TSFE']->sys_page->getPage($link_param, $disableGroupAccessCheck);
@@ -6009,7 +6009,7 @@ class ContentObjectRenderer {
 							}
 						}
 						// If target page has a different domain and the current domain's linking scheme (e.g. RealURL/...) should not be used
-						if ($targetDomain !== '' && $targetDomain !== $currentDomain && !$enableLinksAcrossDomains) {
+						if (strlen($targetDomain) && $targetDomain !== $currentDomain && !$enableLinksAcrossDomains) {
 							$target = isset($conf['extTarget']) ? $conf['extTarget'] : $GLOBALS['TSFE']->extTarget;
 							if ($conf['extTarget.']) {
 								$target = $this->stdWrap($target, $conf['extTarget.']);
@@ -6029,7 +6029,7 @@ class ContentObjectRenderer {
 								$target = $forceTarget;
 							}
 							$LD = $GLOBALS['TSFE']->tmpl->linkData($page, $target, $conf['no_cache'], '', '', $addQueryParams, $theTypeP, $targetDomain);
-							if ($targetDomain !== '') {
+							if (strlen($targetDomain)) {
 								// We will add domain only if URL does not have it already.
 								if ($enableLinksAcrossDomains) {
 									// Get rid of the absRefPrefix if necessary. absRefPrefix is applicable only

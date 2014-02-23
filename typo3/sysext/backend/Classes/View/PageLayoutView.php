@@ -566,7 +566,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 								$grid .= $head[$columnKey] . $content[$columnKey];
 							} elseif (isset($columnConfig['colPos']) && $columnConfig['colPos'] !== '') {
 								$grid .= $this->tt_content_drawColHeader($GLOBALS['LANG']->getLL('noAccess'), '', '');
-							} elseif (isset($columnConfig['name']) && $columnConfig['name'] !== '') {
+							} elseif (isset($columnConfig['name']) && strlen($columnConfig['name']) > 0) {
 								$grid .= $this->tt_content_drawColHeader($GLOBALS['LANG']->sL($columnConfig['name']) . ' (' . $GLOBALS['LANG']->getLL('notAssigned') . ')', '', '');
 							} else {
 								$grid .= $this->tt_content_drawColHeader($GLOBALS['LANG']->getLL('notAssigned'), '', '');
@@ -1543,7 +1543,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 				unset($langSelItems[$row['uid']]);
 			}
 			// Remove disallowed languages
-			if (count($langSelItems) > 1 && !$GLOBALS['BE_USER']->user['admin'] && $GLOBALS['BE_USER']->groupData['allowed_languages'] !== '') {
+			if (count($langSelItems) > 1 && !$GLOBALS['BE_USER']->user['admin'] && strlen($GLOBALS['BE_USER']->groupData['allowed_languages'])) {
 				$allowed_languages = array_flip(explode(',', $GLOBALS['BE_USER']->groupData['allowed_languages']));
 				if (count($allowed_languages)) {
 					foreach ($langSelItems as $key => $value) {

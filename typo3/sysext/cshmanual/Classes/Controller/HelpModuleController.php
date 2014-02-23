@@ -704,7 +704,7 @@ class HelpModuleController {
 	 * @todo Define visibility
 	 */
 	public function substituteGlossaryWords_htmlcleaner_callback($code) {
-		if (is_array($this->substWords) && count($this->substWords) && trim($code) !== '') {
+		if (is_array($this->substWords) && count($this->substWords) && strlen(trim($code))) {
 			// Substitute words:
 			foreach ($this->substWords as $wordKey => $wordSet) {
 				// quoteMeta used so special chars (which should not occur though) in words will not break the regex. Seemed to work (- kasper)

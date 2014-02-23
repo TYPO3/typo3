@@ -211,7 +211,7 @@ class TimeTracker {
 	public function setTSselectQuery(array $data, $msg = '') {
 		end($this->currentHashPointer);
 		$k = current($this->currentHashPointer);
-		if ($msg !== '') {
+		if (strlen($msg)) {
 			$data['msg'] = $msg;
 		}
 		$this->tsStackLog[$k]['selectQuery'][] = $data;
@@ -429,7 +429,7 @@ class TimeTracker {
 				$BTM = $ac == $c ? 'bottom' : '';
 				$PM = is_array($arr[$k . '.']) ? ($deeper ? 'minus' : 'plus') : 'join';
 				$this->tsStackLog[$v]['icons'] = $depthData . ($first ? '' : '<img src="' . TYPO3_mainDir . 'gfx/ol/' . $PM . $BTM . '.gif" width="18" height="16" align="top" border="0" alt="" />');
-				if ($this->tsStackLog[$v]['content'] !== '') {
+				if (strlen($this->tsStackLog[$v]['content'])) {
 					$content = str_replace($this->tsStackLog[$v]['content'], $v, $content);
 				}
 				if (is_array($arr[$k . '.'])) {
@@ -451,7 +451,7 @@ class TimeTracker {
 		// Traverse array again, this time substitute the unique hash with the red key
 		foreach ($arr as $k => $v) {
 			if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($k)) {
-				if ($this->tsStackLog[$v]['content'] !== '') {
+				if (strlen($this->tsStackLog[$v]['content'])) {
 					$content = str_replace($v, '<strong style="color:red;">[' . $this->tsStackLog[$v]['key'] . ']</strong>', $content);
 				}
 			}

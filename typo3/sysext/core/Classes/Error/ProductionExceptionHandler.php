@@ -30,7 +30,7 @@ namespace TYPO3\CMS\Core\Error;
  *
  * @author Ingo Renner <ingo@typo3.org>
  */
-class ProductionExceptionHandler extends AbstractExceptionHandler {
+class ProductionExceptionHandler extends \TYPO3\CMS\Core\Error\AbstractExceptionHandler {
 
 	/**
 	 * Default title for error messages
@@ -58,7 +58,7 @@ class ProductionExceptionHandler extends AbstractExceptionHandler {
 	/**
 	 * Echoes an exception for the web.
 	 *
-	 * @param \Exception $exception The exception
+	 * @param Exception $exception The exception
 	 * @return void
 	 */
 	public function echoExceptionWeb(\Exception $exception) {
@@ -71,7 +71,7 @@ class ProductionExceptionHandler extends AbstractExceptionHandler {
 	/**
 	 * Echoes an exception for the command line.
 	 *
-	 * @param \Exception $exception The exception
+	 * @param Exception $exception The exception
 	 * @return void
 	 */
 	public function echoExceptionCLI(\Exception $exception) {
@@ -82,7 +82,7 @@ class ProductionExceptionHandler extends AbstractExceptionHandler {
 	/**
 	 * Determines, whether Exception details should be outputted
 	 *
-	 * @param \Exception $exception The exception
+	 * @param Exception $exception The exception
 	 * @return boolean
 	 */
 	protected function discloseExceptionInformation(\Exception $exception) {
@@ -100,13 +100,12 @@ class ProductionExceptionHandler extends AbstractExceptionHandler {
 	/**
 	 * Returns the title for the error message
 	 *
-	 * @param \Exception $exception Exception causing the error
+	 * @param Exception $exception Exception causing the error
 	 * @return string
 	 */
 	protected function getTitle(\Exception $exception) {
-		$title = method_exists($exception, 'getTitle') ? $exception->getTitle() : '';
-		if ($this->discloseExceptionInformation($exception) && $title !== '') {
-			return htmlspecialchars($title);
+		if ($this->discloseExceptionInformation($exception) && method_exists($exception, 'getTitle') && strlen($exception->getTitle()) > 0) {
+			return htmlspecialchars($exception->getTitle());
 		} else {
 			return $this->defaultTitle;
 		}
@@ -115,7 +114,7 @@ class ProductionExceptionHandler extends AbstractExceptionHandler {
 	/**
 	 * Returns the message for the error message
 	 *
-	 * @param \Exception $exception Exception causing the error
+	 * @param Exception $exception Exception causing the error
 	 * @return string
 	 */
 	protected function getMessage(\Exception $exception) {

@@ -196,9 +196,7 @@ class FrontendEditPanel {
 				$cBuf = rtrim(preg_replace('/<[^<]*>$/', '', $cBuf));
 				$secureCount--;
 			}
-			$content = $cBuf !== '' && $secureCount
-				? substr($content, 0, strlen($cBuf)) . $icon . substr($content, strlen($cBuf))
-				: $icon . $content;
+			$content = strlen($cBuf) && $secureCount ? substr($content, 0, strlen($cBuf)) . $icon . substr($content, strlen($cBuf)) : ($content = $icon . $content);
 		} else {
 			$content .= $icon;
 		}

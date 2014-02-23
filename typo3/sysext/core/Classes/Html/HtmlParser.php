@@ -797,10 +797,10 @@ class HtmlParser {
 									$tagAttrib = $this->get_tag_attributes($tagParts[1]);
 									$tagParts[1] = '';
 									foreach ($tags[$tagName]['fixAttrib'] as $attr => $params) {
-										if ($params['set'] !== '') {
+										if (strlen($params['set'])) {
 											$tagAttrib[0][$attr] = $params['set'];
 										}
-										if (!empty($params['unset'])) {
+										if (isset($params['unset']) && !empty($params['unset'])) {
 											unset($tagAttrib[0][$attr]);
 										}
 										if (!isset($tagAttrib[0][$attr]) && (string)$params['default'] !== '') {
@@ -1077,7 +1077,7 @@ class HtmlParser {
 		$content = implode('', $parts);
 		// Fix <style> section:
 		$prefix = isset($alternatives['style']) ? $alternatives['style'] : $main_prefix;
-		if ($prefix !== '') {
+		if (strlen($prefix)) {
 			$parts = $this->splitIntoBlock('style', $content);
 			foreach ($parts as $k => &$part) {
 				if ($k % 2) {

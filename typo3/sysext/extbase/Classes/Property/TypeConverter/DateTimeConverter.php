@@ -139,7 +139,7 @@ class DateTimeConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\Abstra
 			} else {
 				throw new \TYPO3\CMS\Extbase\Property\Exception\TypeConverterException('Could not convert the given source into a DateTime object because it was not an array with a valid date as a string', 1308003914);
 			}
-			if (isset($source['dateFormat']) && $source['dateFormat'] !== '') {
+			if (isset($source['dateFormat']) && strlen($source['dateFormat']) > 0) {
 				$dateFormat = $source['dateFormat'];
 			}
 		}
@@ -149,7 +149,7 @@ class DateTimeConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\Abstra
 		if (ctype_digit($dateAsString) && $configuration === NULL && (!is_array($source) || !isset($source['dateFormat']))) {
 			$dateFormat = 'U';
 		}
-		if (is_array($source) && isset($source['timezone']) && (string)$source['timezone'] !== '') {
+		if (is_array($source) && isset($source['timezone']) && strlen($source['timezone']) !== 0) {
 			try {
 				$timezone = new \DateTimeZone($source['timezone']);
 			} catch (\Exception $e) {

@@ -244,15 +244,15 @@ class ImageTextContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractC
 						}
 					}
 					// "alt", "title" and "longdesc" attributes:
-					if ($imgConf['altText'] === '' && !is_array($imgConf['altText.'])) {
+					if (!strlen($imgConf['altText']) && !is_array($imgConf['altText.'])) {
 						$imgConf['altText'] = $conf['altText'];
 						$imgConf['altText.'] = $conf['altText.'];
 					}
-					if ($imgConf['titleText'] === '' && !is_array($imgConf['titleText.'])) {
+					if (!strlen($imgConf['titleText']) && !is_array($imgConf['titleText.'])) {
 						$imgConf['titleText'] = $conf['titleText'];
 						$imgConf['titleText.'] = $conf['titleText.'];
 					}
-					if ($imgConf['longdescURL'] === '' && !is_array($imgConf['longdescURL.'])) {
+					if (!strlen($imgConf['longdescURL']) && !is_array($imgConf['longdescURL.'])) {
 						$imgConf['longdescURL'] = $conf['longdescURL'];
 						$imgConf['longdescURL.'] = $conf['longdescURL.'];
 					}

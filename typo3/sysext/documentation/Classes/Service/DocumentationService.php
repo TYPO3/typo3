@@ -296,7 +296,7 @@ class DocumentationService {
 						GeneralUtility::mkdir_deep($path, implode('/', $zipEntryPathSegments));
 					} else {
 						$absoluteTargetPath = GeneralUtility::getFileAbsFileName($path . implode('/', $zipEntryPathSegments) . '/' . $fileName);
-						if (trim($absoluteTargetPath) !== '') {
+						if (strlen(trim($absoluteTargetPath)) > 0) {
 							$return = GeneralUtility::writeFile(
 								$absoluteTargetPath, zip_entry_read($zipEntry, zip_entry_filesize($zipEntry))
 							);

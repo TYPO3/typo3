@@ -260,7 +260,7 @@ class Rfc822AddressesParser {
 		if ($is_group && $address[0] === ',') {
 			$address = trim(substr($address, 1));
 			return $address;
-		} elseif ($address !== '') {
+		} elseif (strlen($address) > 0) {
 			return $address;
 		} else {
 			return '';
@@ -415,7 +415,7 @@ class Rfc822AddressesParser {
 		// If a group then split on comma and put into an array.
 		// Otherwise, Just put the whole address in an array.
 		if ($is_group) {
-			while ($address['address'] !== '') {
+			while (strlen($address['address']) > 0) {
 				$parts = explode(',', $address['address']);
 				$addresses[] = $this->_splitCheck($parts, ',');
 				$address['address'] = trim(substr($address['address'], strlen(end($addresses) . ',')));
@@ -551,7 +551,7 @@ class Rfc822AddressesParser {
 		$comments = array();
 		// Catch any RFC822 comments and store them separately.
 		$_mailbox = $mailbox;
-		while (trim($_mailbox) !== '') {
+		while (strlen(trim($_mailbox)) > 0) {
 			$parts = explode('(', $_mailbox);
 			$before_comment = $this->_splitCheck($parts, '(');
 			if ($before_comment != $_mailbox) {

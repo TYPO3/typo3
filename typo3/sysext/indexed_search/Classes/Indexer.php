@@ -903,7 +903,7 @@ class Indexer {
 		$urlHeaders = $this->getUrlHeaders($externalUrl);
 		if (stristr($urlHeaders['Content-Type'], 'text/html')) {
 			$content = ($this->indexExternalUrl_content = GeneralUtility::getUrl($externalUrl));
-			if ((string)$content !== '') {
+			if (strlen($content)) {
 				// Create temporary file:
 				$tmpFile = GeneralUtility::tempnam('EXTERNAL_URL');
 				if ($tmpFile) {
@@ -928,12 +928,12 @@ class Indexer {
 	public function getUrlHeaders($url) {
 		// Try to get the headers only
 		$content = GeneralUtility::getUrl($url, 2);
-		if ((string)$content !== '') {
+		if (strlen($content)) {
 			// Compile headers:
 			$headers = GeneralUtility::trimExplode(LF, $content, TRUE);
 			$retVal = array();
 			foreach ($headers as $line) {
-				if (trim($line) === '') {
+				if (!strlen(trim($line))) {
 					break;
 				}
 				list($headKey, $headValue) = explode(':', $line, 2);
@@ -1271,7 +1271,7 @@ class Indexer {
 	public function charsetEntity2utf8(&$contentArr, $charset) {
 		// Convert charset if necessary
 		foreach ($contentArr as $key => $value) {
-			if ((string)$contentArr[$key] !== '') {
+			if (strlen($contentArr[$key])) {
 				if ($charset !== 'utf-8') {
 					$contentArr[$key] = $this->csObj->utf8_encode($contentArr[$key], $charset);
 				}
@@ -1417,7 +1417,7 @@ class Indexer {
 		}
 		if ($returnRawMetaphoneValue) {
 			$result = $metaphoneRawValue;
-		} elseif ($metaphoneRawValue !== '') {
+		} elseif (strlen($metaphoneRawValue)) {
 			// Create hash and return integer
 			$result = \TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility::md5inthash($metaphoneRawValue);
 		} else {

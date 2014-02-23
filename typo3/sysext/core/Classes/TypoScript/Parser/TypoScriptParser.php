@@ -1173,10 +1173,14 @@ class TypoScriptParser {
 						if (!$highlightBlockMode || $set[0] !== 'prespace') {
 							$lineC .= $st[0] . htmlspecialchars($part) . $st[1];
 						}
+					} elseif ($len < 0) {
+						debug(array($len, $value, $rawP));
 					}
 				}
+			} else {
+				debug(array($value));
 			}
-			if (strlen($value) > $start) {
+			if (strlen(substr($value, $start))) {
 				$lineC .= $this->highLightStyles['ignored'][0] . htmlspecialchars(substr($value, $start)) . $this->highLightStyles['ignored'][1];
 			}
 			if ($errA[$rawP]) {

@@ -487,7 +487,7 @@ var selectedDictionary = "' . $this->dictionary . '";
 	 * @todo Define visibility
 	 */
 	public function startHandler($xml_parser, $tag, $attributes) {
-		if ((string)$this->xmlCharacterData !== '') {
+		if (strlen($this->xmlCharacterData)) {
 			$this->spellCheckHandler($xml_parser, $this->xmlCharacterData);
 			$this->xmlCharacterData = '';
 		}
@@ -528,7 +528,7 @@ var selectedDictionary = "' . $this->dictionary . '";
 	 * @todo Define visibility
 	 */
 	public function endHandler($xml_parser, $tag) {
-		if ((string)$this->xmlCharacterData !== '') {
+		if (strlen($this->xmlCharacterData)) {
 			$this->spellCheckHandler($xml_parser, $this->xmlCharacterData);
 			$this->xmlCharacterData = '';
 		}

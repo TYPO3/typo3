@@ -200,7 +200,7 @@ class LocalizationUtility {
 					}
 				}
 			}
-		} elseif ($GLOBALS['BE_USER']->uc['lang'] !== '') {
+		} elseif (strlen($GLOBALS['BE_USER']->uc['lang']) > 0) {
 			self::$languageKey = $GLOBALS['BE_USER']->uc['lang'];
 		}
 	}

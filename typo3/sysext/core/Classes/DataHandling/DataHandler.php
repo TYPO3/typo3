@@ -2390,7 +2390,7 @@ class DataHandler {
 			}
 			$GLOBALS['TYPO3_DB']->sql_free_result($res);
 			// If the new value is there:
-			$value = $newValue !== '' ? $newValue : $value;
+			$value = strlen($newValue) ? $newValue : $value;
 		}
 		return $value;
 	}
@@ -3443,7 +3443,7 @@ class DataHandler {
 		// Process references and files, currently that means only the files, prepending absolute paths:
 		$dataValue = $this->copyRecord_procFilesRefs($dsConf, $uid, $dataValue);
 		// If references are set for this field, set flag so they can be corrected later (in ->remapListedDBRecords())
-		if ($this->isReferenceField($dsConf) && (string)$dataValue !== '') {
+		if ($this->isReferenceField($dsConf) && strlen($dataValue)) {
 			$dataValue = $this->copyRecord_procBasedOnFieldType($table, $uid, $field, $dataValue, array(), $dsConf, $realDestPid);
 			$this->registerDBList[$table][$uid][$field] = 'FlexForm_reference';
 		}
@@ -3996,13 +3996,14 @@ class DataHandler {
 										foreach ($GLOBALS['TCA'][$Ttable]['columns'] as $fN => $fCfg) {
 											// Check if we are just prefixing:
 											if ($fCfg['l10n_mode'] == 'prefixLangTitle') {
-												if (($fCfg['config']['type'] == 'text' || $fCfg['config']['type'] == 'input') && (string)$row[$fN] !== '') {
+												if (($fCfg['config']['type'] == 'text' || $fCfg['config']['type'] == 'input') && strlen($row[$fN])) {
 													list($tscPID) = BackendUtility::getTSCpid($table, $uid, '');
 													$TSConfig = $this->getTCEMAIN_TSconfig($tscPID);
-													if (empty($TSConfig['translateToMessage'])) {
-														$translateToMsg = 'Translate to ' . $langRec['title'] . ':';
-													} else {
+													if (isset($TSConfig['translateToMessage']) && strlen($TSConfig['translateToMessage'])) {
 														$translateToMsg = @sprintf($TSConfig['translateToMessage'], $langRec['title']);
+													}
+													if (!strlen($translateToMsg)) {
+														$translateToMsg = 'Translate to ' . $langRec['title'] . ':';
 													}
 													$overrideValues[$fN] = '[' . $translateToMsg . '] ' . $row[$fN];
 												}
@@ -4986,7 +4987,7 @@ class DataHandler {
 		// Extract parameters:
 		list($table, $uid, $field) = $pParams;
 		// If references are set for this field, set flag so they can be corrected later:
-		if ($this->isReferenceField($dsConf) && (string)$dataValue !== '') {
+		if ($this->isReferenceField($dsConf) && strlen($dataValue)) {
 			$vArray = $this->remapListedDBRecords_procDBRefs($dsConf, $dataValue, $uid, $table);
 			if (is_array($vArray)) {
 				$dataValue = implode(',', $vArray);

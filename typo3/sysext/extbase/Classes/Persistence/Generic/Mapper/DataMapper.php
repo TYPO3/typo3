@@ -534,7 +534,7 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMap The data map
 	 */
 	public function getDataMap($className) {
-		if (!is_string($className) || $className === '') {
+		if (!is_string($className) || strlen($className) === 0) {
 			throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception('No class name was given to retrieve the Data Map for.', 1251315965);
 		}
 		if (!isset($this->dataMaps[$className])) {

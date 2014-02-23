@@ -164,7 +164,7 @@ class Files {
 		if (is_file($path)) {
 			throw new \TYPO3\Flow\Utility\Exception('Could not create directory "' . $path . '", because a file with that name exists!', 1349340620);
 		}
-		if ($path !== '' && !is_dir($path)) {
+		if (!is_dir($path) && strlen($path) > 0) {
 			$oldMask = umask(000);
 			mkdir($path, 0777, TRUE);
 			umask($oldMask);

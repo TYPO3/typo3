@@ -950,7 +950,7 @@ class GeneralUtility {
 	 */
 	static public function formatSize($sizeInBytes, $labels = '') {
 		// Set labels:
-		if ($labels === '') {
+		if (strlen($labels) == 0) {
 			$labels = ' | K| M| G';
 		} else {
 			$labels = str_replace('"', '', $labels);
@@ -1635,7 +1635,7 @@ class GeneralUtility {
 		} else {
 			$p = explode('&', $string);
 			foreach ($p as $v) {
-				if ((string)$v !== '') {
+				if (strlen($v)) {
 					list($pK, $pV) = explode('=', $v, 2);
 					$output[rawurldecode($pK)] = rawurldecode($pV);
 				}
@@ -2266,7 +2266,7 @@ class GeneralUtility {
 			// Closing tag.
 			$tagName = $tagName[0] === 'n' && MathUtility::canBeInterpretedAsInteger($testNtag) ? (int)$testNtag : $tagName;
 			// Test for alternative index value:
-			if ($val['attributes']['index'] !== '') {
+			if (strlen($val['attributes']['index'])) {
 				$tagName = $val['attributes']['index'];
 			}
 			// Setting tag-values, manage stack:
@@ -2534,7 +2534,7 @@ Connection: close
 					}
 				}
 				$content .= $line;
-				if (trim($line) === '') {
+				if (!strlen(trim($line))) {
 					// Stop at the first empty line (= end of header)
 					break;
 				}
@@ -2636,7 +2636,7 @@ Connection: close
 				// Set createGroup if not empty
 				if (
 					isset($GLOBALS['TYPO3_CONF_VARS']['BE']['createGroup'])
-					&& $GLOBALS['TYPO3_CONF_VARS']['BE']['createGroup'] !== ''
+					&& strlen($GLOBALS['TYPO3_CONF_VARS']['BE']['createGroup']) > 0
 				) {
 					// "@" is there because file is not necessarily OWNED by the user
 					$changeGroupResult = @chgrp($path, $GLOBALS['TYPO3_CONF_VARS']['BE']['createGroup']);
@@ -2759,7 +2759,7 @@ Connection: close
 			throw new \InvalidArgumentException('The specified directory is of type "' . gettype($deepDirectory) . '" but a string is expected.', 1303662956);
 		}
 		$fullPath = $directory . $deepDirectory;
-		if ($fullPath !== '' && !is_dir($fullPath)) {
+		if (!is_dir($fullPath) && strlen($fullPath) > 0) {
 			$firstCreatedPath = self::createDirectoryPath($fullPath);
 			if ($firstCreatedPath !== '') {
 				self::fixPermissions($firstCreatedPath, TRUE);
@@ -2961,7 +2961,7 @@ Connection: close
 		$dirs = self::get_dirs($path);
 		if ($recursivityLevels > 0 && is_array($dirs)) {
 			foreach ($dirs as $subdirs) {
-				if ((string) $subdirs != '' && ($excludePattern === '' || !preg_match(('/^' . $excludePattern . '$/'), $subdirs))) {
+				if ((string) $subdirs != '' && (!strlen($excludePattern) || !preg_match(('/^' . $excludePattern . '$/'), $subdirs))) {
 					$fileArr = self::getAllFilesAndFoldersInPath($fileArr, $path . $subdirs . '/', $extList, $regDirs, $recursivityLevels - 1, $excludePattern);
 				}
 			}

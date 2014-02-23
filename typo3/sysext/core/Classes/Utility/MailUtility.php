@@ -206,7 +206,7 @@ class MailUtility {
 					$afterParts = explode(' ', substr($str, $lineWidth + $substrStart), 2);
 					$theLine = $substr . $afterParts[0];
 				}
-				if ($theLine === '') {
+				if (!strlen($theLine)) {
 					// prevent endless loop because of empty line
 					break;
 				}

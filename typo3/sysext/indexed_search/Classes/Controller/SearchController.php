@@ -915,7 +915,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 			}
 			// Add media to search in:
 			$additionalMedia = trim($this->settings['mediaList']);
-			if ($additionalMedia !== '') {
+			if (strlen($additionalMedia) > 0) {
 				$additionalMedia = GeneralUtility::trimExplode(',', $additionalMedia, TRUE);
 			}
 			foreach ($this->externalParsers as $extension => $obj) {

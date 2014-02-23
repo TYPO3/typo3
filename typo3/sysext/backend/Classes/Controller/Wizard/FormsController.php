@@ -463,7 +463,7 @@ class FormsController {
 						case 'input':
 
 						case 'password':
-							if (trim($confData['specialEval']) !== '') {
+							if (strlen(trim($confData['specialEval']))) {
 								$hiddenFields[] = '<input type="hidden" name="FORMCFG[c][' . ($k + 1) * 2 . '][specialEval]" value="' . htmlspecialchars($confData['specialEval']) . '" />';
 							}
 							break;
@@ -684,7 +684,7 @@ class FormsController {
 							if (trim($vv['extra'])) {
 								$tArr[2] = trim($vv['extra']);
 							}
-							if ($vv['specialEval'] !== '') {
+							if (strlen($vv['specialEval'])) {
 								// Preset blank default value so position 3 can get a value...
 								$thisLine[2] = '';
 								$thisLine[3] = $vv['specialEval'];
@@ -698,7 +698,7 @@ class FormsController {
 							if ((int)$vv['max']) {
 								$tArr[1] = (int)$vv['max'];
 							}
-							if ($vv['specialEval'] !== '') {
+							if (strlen($vv['specialEval'])) {
 								// Preset blank default value so position 3 can get a value...
 								$thisLine[2] = '';
 								$thisLine[3] = $vv['specialEval'];

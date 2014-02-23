@@ -48,7 +48,7 @@ class CaseContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractConten
 				$this->cObj->data[$this->cObj->currentValKey] = $setCurrent;
 			}
 			$key = isset($conf['key.']) ? $this->cObj->stdWrap($conf['key'], $conf['key.']) : $conf['key'];
-			$key = $conf[$key] !== '' ? $key : 'default';
+			$key = strlen($conf[$key]) ? $key : 'default';
 			$name = $conf[$key];
 			$theValue = $this->cObj->cObjGetSingle($name, $conf[$key . '.'], $key);
 			if (isset($conf['stdWrap.'])) {

@@ -205,10 +205,10 @@ tt_content.' . $pluginSignature . ' {
 			'labels' => '',
 			'extRelPath' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($extensionKey) . 'Classes/'
 		);
-		if ($mainModuleName !== '' && !array_key_exists($mainModuleName, $GLOBALS['TBE_MODULES'])) {
+		if (strlen($mainModuleName) > 0 && !array_key_exists($mainModuleName, $GLOBALS['TBE_MODULES'])) {
 			$mainModuleName = $extensionName . \TYPO3\CMS\Core\Utility\GeneralUtility::underscoredToUpperCamelCase($mainModuleName);
 		} else {
-			$mainModuleName = $mainModuleName !== '' ? $mainModuleName : 'web';
+			$mainModuleName = strlen($mainModuleName) > 0 ? $mainModuleName : 'web';
 		}
 		// add mandatory parameter to use new pagetree
 		if ($mainModuleName === 'web') {
@@ -217,7 +217,7 @@ tt_content.' . $pluginSignature . ' {
 		\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($defaultModuleConfiguration, $moduleConfiguration);
 		$moduleConfiguration = $defaultModuleConfiguration;
 		$moduleSignature = $mainModuleName;
-		if ($subModuleName !== '') {
+		if (strlen($subModuleName) > 0) {
 			$subModuleName = $extensionName . \TYPO3\CMS\Core\Utility\GeneralUtility::underscoredToUpperCamelCase($subModuleName);
 			$moduleSignature .= '_' . $subModuleName;
 		}

@@ -186,8 +186,8 @@ class Argument {
 		if (!is_string($name)) {
 			throw new \InvalidArgumentException('$name must be of type string, ' . gettype($name) . ' given.', 1187951688);
 		}
-		if ($name === '') {
-			throw new \InvalidArgumentException('$name must be a non-empty string.', 1232551853);
+		if (strlen($name) === 0) {
+			throw new \InvalidArgumentException('$name must be a non-empty string, ' . strlen($name) . ' characters given.', 1232551853);
 		}
 		$this->name = $name;
 		$this->dataType = $dataType;

@@ -841,7 +841,7 @@ class QueryView {
 								}
 							} else {
 								$singleValue = $row[$fN];
-								if ($singleValue !== '' && !stristr($singleValue, '_')) {
+								if (strlen($singleValue) && !stristr($singleValue, '_')) {
 									$dontPrefixFirstTable = 1;
 								}
 							}

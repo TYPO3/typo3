@@ -247,7 +247,7 @@ class SwiftMailerAdapter implements \TYPO3\CMS\Core\Mail\MailerAdapterInterface 
 						}
 					} elseif (preg_match('/^content-transfer-encoding:(.*)$/i', $line, $matches)) {
 						$encoding = trim($matches[1]);
-					} elseif (trim($line) === '') {
+					} elseif (strlen(trim($line)) == 0) {
 						// empty line before actual content of this part
 						break;
 					}
@@ -333,7 +333,7 @@ class SwiftMailerAdapter implements \TYPO3\CMS\Core\Mail\MailerAdapterInterface 
 			$fromAddress = $this->message->getReturnPath();
 			$fromName = $fromAddress;
 		}
-		if ($fromAddress === '') {
+		if (strlen($fromAddress) == 0) {
 			$fromAddress = 'no-reply@example.org';
 			$fromName = 'TYPO3 CMS';
 		}

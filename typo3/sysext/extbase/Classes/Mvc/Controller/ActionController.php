@@ -338,7 +338,7 @@ class ActionController extends \TYPO3\CMS\Extbase\Mvc\Controller\AbstractControl
 		}
 		if ($actionResult === NULL && $this->view instanceof ViewInterface) {
 			$this->response->appendContent($this->view->render());
-		} elseif (is_string($actionResult) && $actionResult !== '') {
+		} elseif (is_string($actionResult) && strlen($actionResult) > 0) {
 			$this->response->appendContent($actionResult);
 		} elseif (is_object($actionResult) && method_exists($actionResult, '__toString')) {
 			$this->response->appendContent((string)$actionResult);
@@ -463,7 +463,7 @@ class ActionController extends \TYPO3\CMS\Extbase\Mvc\Controller\AbstractControl
 		// @todo remove handling of deprecatedSetting two versions after 6.2
 		if (
 			isset($extbaseFrameworkConfiguration['view'][$deprecatedSetting])
-			&& (string)$extbaseFrameworkConfiguration['view'][$deprecatedSetting] !== ''
+			&& strlen($extbaseFrameworkConfiguration['view'][$deprecatedSetting]) > 0
 		) {
 			$values[] = $extbaseFrameworkConfiguration['view'][$deprecatedSetting];
 		}

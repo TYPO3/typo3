@@ -89,10 +89,10 @@ class Bootstrap implements \TYPO3\CMS\Extbase\Core\BootstrapInterface {
 	 */
 	public function initialize($configuration) {
 		if (!$this->isInCliMode()) {
-			if (!isset($configuration['extensionName']) || $configuration['extensionName'] === '') {
+			if (!isset($configuration['extensionName']) || strlen($configuration['extensionName']) === 0) {
 				throw new \RuntimeException('Invalid configuration: "extensionName" is not set', 1290623020);
 			}
-			if (!isset($configuration['pluginName']) || $configuration['pluginName'] === '') {
+			if (!isset($configuration['pluginName']) || strlen($configuration['pluginName']) === 0) {
 				throw new \RuntimeException('Invalid configuration: "pluginName" is not set', 1290623027);
 			}
 		}

@@ -466,7 +466,7 @@ class SystemEnvironmentBuilder {
 	 */
 	static protected function getPathSiteByRelativePathPart($relativePathPart) {
 		$entryScriptDirectory = self::getUnifiedDirectoryNameWithTrailingSlash(PATH_thisScript);
-		if ($relativePathPart !== '') {
+		if (strlen($relativePathPart) > 0) {
 			$pathSite = substr($entryScriptDirectory, 0, -strlen($relativePathPart));
 		} else {
 			$pathSite = $entryScriptDirectory;

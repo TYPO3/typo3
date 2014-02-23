@@ -378,27 +378,25 @@ class Check {
 			}
 		}
 
-		if ($disabledFunctions !== '') {
-			if (count($disabledFunctionsArray) > 0) {
-				$status = new Status\ErrorStatus();
-				$status->setTitle('Some PHP functions disabled');
-				$status->setMessage(
-					'disable_functions=' . implode(' ', explode(',', $disabledFunctions)) . LF .
-					'These function(s) are disabled. TYPO3 uses some of those, so there might be trouble.' .
-					' TYPO3 is designed to use the default set of PHP functions plus some common extensions.' .
-					' Possibly these functions are disabled' .
-					' due to security considerations and most likely the list would include a function like' .
-					' exec() which is used by TYPO3 at various places. Depending on which exact functions' .
-					' are disabled, some parts of the system may just break without further notice.'
-				);
-			} else {
-				$status = new Status\NoticeStatus();
-				$status->setTitle('Some PHP functions currently disabled but OK');
-				$status->setMessage(
-					'disable_functions=' . implode(' ', explode(',', $disabledFunctions)) . LF .
-					'These function(s) are disabled. TYPO3 uses currently none of those, so you are good to go.'
-				);
-			}
+		if (strlen($disabledFunctions) > 0 && count($disabledFunctionsArray) > 0) {
+			$status = new Status\ErrorStatus();
+			$status->setTitle('Some PHP functions disabled');
+			$status->setMessage(
+				'disable_functions=' . implode(' ', explode(',', $disabledFunctions)) . LF .
+				'These function(s) are disabled. TYPO3 uses some of those, so there might be trouble.' .
+				' TYPO3 is designed to use the default set of PHP functions plus some common extensions.' .
+				' Possibly these functions are disabled' .
+				' due to security considerations and most likely the list would include a function like' .
+				' exec() which is used by TYPO3 at various places. Depending on which exact functions' .
+				' are disabled, some parts of the system may just break without further notice.'
+			);
+		} elseif (strlen($disabledFunctions) > 0 && count($disabledFunctionsArray) === 0) {
+			$status = new Status\NoticeStatus();
+			$status->setTitle('Some PHP functions currently disabled but OK');
+			$status->setMessage(
+				'disable_functions=' . implode(' ', explode(',', $disabledFunctions)) . LF .
+				'These function(s) are disabled. TYPO3 uses currently none of those, so you are good to go.'
+			);
 		} else {
 			$status = new Status\OkStatus();
 			$status->setTitle('No disabled PHP functions');
@@ -441,7 +439,7 @@ class Check {
 	 */
 	protected function checkDocRoot() {
 		$docRootSetting = trim(ini_get('doc_root'));
-		if ($docRootSetting !== '') {
+		if (strlen($docRootSetting) > 0) {
 			$status = new Status\NoticeStatus();
 			$status->setTitle('doc_root is set');
 			$status->setMessage(
@@ -466,7 +464,7 @@ class Check {
 	 */
 	protected function checkOpenBaseDir() {
 		$openBaseDirSetting = trim(ini_get('open_basedir'));
-		if ($openBaseDirSetting !== '') {
+		if (strlen($openBaseDirSetting) > 0) {
 			$status = new Status\NoticeStatus();
 			$status->setTitle('PHP open_basedir is set');
 			$status->setMessage(
@@ -779,7 +777,7 @@ class Check {
 	 */
 	protected function checkReflectionDocComment() {
 		$testReflection = new \ReflectionMethod(get_class($this), __FUNCTION__);
-		if ((string)$testReflection->getDocComment() === '') {
+		if (strlen($testReflection->getDocComment()) === 0) {
 			$status = new Status\ErrorStatus();
 			$status->setTitle('PHP Doc comment reflection broken');
 			$status->setMessage(

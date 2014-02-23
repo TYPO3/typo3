@@ -55,7 +55,7 @@ class FloatConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\AbstractT
 	 * @api
 	 */
 	public function convertFrom($source, $targetType, array $convertedChildProperties = array(), \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration = NULL) {
-		if ($source === NULL || (string)$source === '') {
+		if ($source === NULL || strlen($source) === 0) {
 			return NULL;
 		}
 		// We won't backport the full flavored locale parsing of floats from Flow here

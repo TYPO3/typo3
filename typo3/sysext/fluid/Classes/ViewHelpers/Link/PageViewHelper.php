@@ -89,7 +89,7 @@ class PageViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedVi
 			->setArgumentsToBeExcludedFromQueryString($argumentsToBeExcludedFromQueryString)
 			->setAddQueryStringMethod($addQueryStringMethod)
 			->build();
-		if ((string)$uri !== '') {
+		if (strlen($uri)) {
 			$this->tag->addAttribute('href', $uri);
 			$this->tag->setContent($this->renderChildren());
 			$result = $this->tag->render();
