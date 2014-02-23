@@ -178,7 +178,7 @@ class NewContentElementController {
 			$code = '';
 			$wizardItems = $this->getWizardItems();
 			// Wrapper for wizards
-			$this->elementWrapper['section'] = array('<ul class="contentelement-wizard">', '</ul>');
+			$this->elementWrapper['section'] = array('<ul class="contentelement-wizard list-unstyled">', '</ul>');
 			// Copy wrapper for tabs
 			$this->elementWrapperForTabs = $this->elementWrapper;
 			// Hook for manipulating wizardItems, wrapper, onClickEvent etc.
