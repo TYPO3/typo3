@@ -227,6 +227,9 @@ class ResourceCompressor {
 			if (empty($fileOptions['section']) || !empty($fileOptions['excludeFromConcatenation'])) {
 				continue;
 			}
+			if (!isset($filesToInclude[$fileOptions['section']])) {
+				$filesToInclude[$fileOptions['section']] = array();
+			}
 			// we remove BACK_PATH from $filename, so make it relative to root path
 			$filenameFromMainDir = $this->getFilenameFromMainDir($fileOptions['file']);
 			if ($fileOptions['forceOnTop']) {
