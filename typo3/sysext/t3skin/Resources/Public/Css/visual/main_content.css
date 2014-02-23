@@ -38,6 +38,11 @@ ol {
 	list-style-type: decimal;
 }
 
+ul.list-unstyled,
+ol.list-unstyled {
+	list-style-type: none;
+}
+
 /* Links in general */
 a {
 	color: #212424;

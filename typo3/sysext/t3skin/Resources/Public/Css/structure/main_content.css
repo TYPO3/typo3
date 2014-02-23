@@ -47,6 +47,11 @@ ol {
 	padding-left: 3em;
 }
 
+ul.list-unstyled,
+ol.list-unstyled {
+	padding-left: 0;
+}
+
 /* Preformatted text - not used so much in TYPO3 */
 pre {
 	margin: 0px;
