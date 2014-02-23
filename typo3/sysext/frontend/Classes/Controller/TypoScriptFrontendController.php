@@ -1939,7 +1939,7 @@ class TypoScriptFrontendController {
 			}
 		} elseif (\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($code, 'REDIRECT:')) {
 			HttpUtility::redirect(substr($code, 9));
-		} elseif (strlen($code)) {
+		} elseif ($code !== '') {
 			// Check if URL is relative
 			$url_parts = parse_url($code);
 			if ($url_parts['host'] == '') {
@@ -2758,7 +2758,7 @@ class TypoScriptFrontendController {
 			// These two fields are the ones which contain recipient addresses that can be misused to send mail from foreign servers.
 			$encodedFields = explode(',', 'recipient, recipient_copy');
 			foreach ($encodedFields as $fieldKey) {
-				if (strlen($EMAIL_VARS[$fieldKey])) {
+				if ((string)$EMAIL_VARS[$fieldKey] !== '') {
 					// Decode...
 					if ($res = $this->codeString($EMAIL_VARS[$fieldKey], TRUE)) {
 						$EMAIL_VARS[$fieldKey] = $res;
@@ -2825,7 +2825,7 @@ class TypoScriptFrontendController {
 	 * @todo Define visibility
 	 */
 	public function checkJumpUrlReferer() {
-		if (strlen($this->jumpurl) && !$this->TYPO3_CONF_VARS['SYS']['doNotCheckReferer']) {
+		if ((string)$this->jumpurl !== '' && !$this->TYPO3_CONF_VARS['SYS']['doNotCheckReferer']) {
 			$referer = parse_url(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('HTTP_REFERER'));
 			if (isset($referer['host']) && !($referer['host'] == GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY'))) {
 				unset($this->jumpurl);
@@ -3216,7 +3216,7 @@ class TypoScriptFrontendController {
 				$lockObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Locking\\Locker', $key, $this->TYPO3_CONF_VARS['SYS']['lockingMode']);
 			}
 			$success = FALSE;
-			if (strlen($key)) {
+			if ($key !== '') {
 				// TRUE = Page could get locked without blocking
 				// FALSE = Page could get locked but process was blocked before
 				$success = $lockObj->acquire();
@@ -4158,7 +4158,7 @@ if (version == "n3") {
 	public function baseUrlWrap($url) {
 		if ($this->baseUrl) {
 			$urlParts = parse_url($url);
-			if (!strlen($urlParts['scheme']) && $url[0] !== '/') {
+			if ($urlParts['scheme'] === '' && $url[0] !== '/') {
 				$url = $this->baseUrl . $url;
 			}
 		}
@@ -4177,7 +4177,7 @@ if (version == "n3") {
 	 * @todo Define visibility
 	 */
 	public function logDeprecatedTyposcript($typoScriptProperty, $explanation = '') {
-		$explanationText = strlen($explanation) ? ' - ' . $explanation : '';
+		$explanationText = $explanation !== '' ? ' - ' . $explanation : '';
 		$GLOBALS['TT']->setTSlogMessage($typoScriptProperty . ' is deprecated.' . $explanationText, 2);
 		\TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog('TypoScript ' . $typoScriptProperty . ' is deprecated' . $explanationText);
 	}
@@ -4241,7 +4241,10 @@ if (version == "n3") {
 	 * @todo Define visibility
 	 */
 	public function prefixLocalAnchorsWithScript() {
-		$scriptPath = $GLOBALS['TSFE']->absRefPrefix . substr(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'), strlen(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL')));
+		$scriptPath = $GLOBALS['TSFE']->absRefPrefix . substr(
+			\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'),
+			strlen(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL'))
+		);
 		$originalContent = $this->content;
 		$this->content = preg_replace('/(<(?:a|area).*?href=")(#[^"]*")/i', '${1}' . htmlspecialchars($scriptPath) . '${2}', $originalContent);
 		// There was an error in the call to preg_replace, so keep the original content (behavior prior to PHP 5.2)
@@ -4450,7 +4453,7 @@ if (version == "n3") {
 			$severity = GeneralUtility::SYSLOG_SEVERITY_WARNING;
 		}
 
-		if (strlen($reason)) {
+		if ($reason !== '') {
 			$warning = '$TSFE->set_no_cache() was triggered. Reason: ' . $reason . '.';
 		} else {
 			$trace = debug_backtrace();

@@ -152,7 +152,7 @@ Uncaught TYPO3 Exception ' . $exceptionCodeNumber . $exception->getMessage() . L
 				$arguments = '';
 				if (isset($step['args']) && is_array($step['args'])) {
 					foreach ($step['args'] as $argument) {
-						$arguments .= strlen($arguments) === 0 ? '' : '<span style="color:white;">,</span> ';
+						$arguments .= (string)$arguments === '' ? '' : '<span style="color:white;">,</span> ';
 						if (is_object($argument)) {
 							$arguments .= '<span style="color:#FF8700;"><em>' . get_class($argument) . '</em></span>';
 						} elseif (is_string($argument)) {

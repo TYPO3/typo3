@@ -112,10 +112,10 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface {
 			if (isset($classSettings['subclasses']) && is_array($classSettings['subclasses'])) {
 				$subclasses = $this->resolveSubclassesRecursive($frameworkConfiguration['persistence']['classes'], $classSettings['subclasses']);
 			}
-			if (isset($classSettings['mapping']['recordType']) && strlen($classSettings['mapping']['recordType']) > 0) {
+			if (isset($classSettings['mapping']['recordType']) && $classSettings['mapping']['recordType'] !== '') {
 				$recordType = $classSettings['mapping']['recordType'];
 			}
-			if (isset($classSettings['mapping']['tableName']) && strlen($classSettings['mapping']['tableName']) > 0) {
+			if (isset($classSettings['mapping']['tableName']) && $classSettings['mapping']['tableName'] !== '') {
 				$tableName = $classSettings['mapping']['tableName'];
 			}
 			$classHierarchy = array_merge(array($className), class_parents($className));

@@ -189,7 +189,7 @@ class BackendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\Abstr
 		$storagePids = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $storagePid);
 		foreach ($storagePids as $startPid) {
 			$pids = $this->queryGenerator->getTreeList($startPid, $recursionDepth, 0, 1);
-			if (strlen($pids) > 0) {
+			if ((string)$pids !== '') {
 				$recursiveStoragePids .= $pids . ',';
 			}
 		}

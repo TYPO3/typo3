@@ -553,7 +553,7 @@ class AbstractController {
 		$parameters[] = $controllerParameter;
 
 		// Add action if specified
-		if (strlen($action) > 0) {
+		if ((string)$action !== '') {
 			$parameters[] = 'install[action]=' . $action;
 		}
 

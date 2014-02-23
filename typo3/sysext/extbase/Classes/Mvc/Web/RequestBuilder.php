@@ -154,7 +154,7 @@ class RequestBuilder implements \TYPO3\CMS\Core\SingletonInterface {
 		$request->setRequestUri(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'));
 		$request->setBaseUri(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL'));
 		$request->setMethod($this->environmentService->getServerRequestMethod());
-		if (is_string($parameters['format']) && strlen($parameters['format'])) {
+		if (is_string($parameters['format']) && $parameters['format'] !== '') {
 			$request->setFormat(filter_var($parameters['format'], FILTER_SANITIZE_STRING));
 		} else {
 			$request->setFormat($this->defaultFormat);
@@ -177,8 +177,8 @@ class RequestBuilder implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return string
 	 */
 	protected function resolveControllerName(array $parameters) {
-		if (!isset($parameters['controller']) || strlen($parameters['controller']) === 0) {
-			if (strlen($this->defaultControllerName) === 0) {
+		if (!isset($parameters['controller']) || $parameters['controller'] === '') {
+			if ($this->defaultControllerName === '') {
 				throw new \TYPO3\CMS\Extbase\Mvc\Exception('The default controller for extension "' . $this->extensionName . '" and plugin "' . $this->pluginName . '" can not be determined. Please check for TYPO3\\CMS\\Extbase\\Utility\\ExtensionUtility::configurePlugin() in your ext_localconf.php.', 1316104317);
 			}
 			return $this->defaultControllerName;
@@ -210,8 +210,8 @@ class RequestBuilder implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	protected function resolveActionName($controllerName, array $parameters) {
 		$defaultActionName = is_array($this->allowedControllerActions[$controllerName]) ? current($this->allowedControllerActions[$controllerName]) : '';
-		if (!isset($parameters['action']) || strlen($parameters['action']) === 0) {
-			if (strlen($defaultActionName) === 0) {
+		if (!isset($parameters['action']) || $parameters['action'] === '') {
+			if ($defaultActionName === '') {
 				throw new \TYPO3\CMS\Extbase\Mvc\Exception('The default action can not be determined for controller "' . $controllerName . '". Please check TYPO3\\CMS\\Extbase\\Utility\\ExtensionUtility::configurePlugin() in your ext_localconf.php.', 1295479651);
 			}
 			return $defaultActionName;

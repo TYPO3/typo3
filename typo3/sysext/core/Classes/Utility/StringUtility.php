@@ -41,6 +41,7 @@ class StringUtility {
 	 * @param string $haystack Full string to check
 	 * @param string $needle Reference string which must be found as the "last part" of the full string
 	 * @return boolean TRUE if $needle was found to be equal to the last part of $str
+	 * @throws \InvalidArgumentException
 	 */
 	static public function isLastPartOfString($haystack, $needle) {
 			// Sanitize $haystack and $needle

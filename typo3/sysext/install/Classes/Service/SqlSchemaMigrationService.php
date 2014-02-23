@@ -81,7 +81,7 @@ class SqlSchemaMigrationService {
 				// Ignore comments
 				continue;
 			}
-			if (!strlen($table)) {
+			if ($table === '') {
 				$parts = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(' ', $value, TRUE);
 				if (strtoupper($parts[0]) === 'CREATE' && strtoupper($parts[1]) === 'TABLE') {
 					$table = str_replace('`', '', $parts[2]);
@@ -261,7 +261,7 @@ class SqlSchemaMigrationService {
 		$diffArr = array();
 		if (is_array($FDsrc)) {
 			foreach ($FDsrc as $table => $info) {
-				if (!strlen($onlyTableList) || \TYPO3\CMS\Core\Utility\GeneralUtility::inList($onlyTableList, $table)) {
+				if ($onlyTableList === '' || \TYPO3\CMS\Core\Utility\GeneralUtility::inList($onlyTableList, $table)) {
 					if (!isset($FDcomp[$table])) {
 						// If the table was not in the FDcomp-array, the result array is loaded with that table.
 						$extraArr[$table] = $info;

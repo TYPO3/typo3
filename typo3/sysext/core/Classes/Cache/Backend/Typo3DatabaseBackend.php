@@ -187,7 +187,7 @@ class Typo3DatabaseBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend
 		if (is_array($cacheEntry)) {
 			$cacheEntry = $cacheEntry['content'];
 		}
-		if ($this->compression && strlen($cacheEntry)) {
+		if ($this->compression && (string)$cacheEntry !== '') {
 			$cacheEntry = gzuncompress($cacheEntry);
 		}
 		return $cacheEntry !== NULL ? $cacheEntry : FALSE;

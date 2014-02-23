@@ -59,9 +59,13 @@ class TranslationConfigurationProvider {
 		}
 		$languageIconTitles[0] = array(
 			'uid' => 0,
-			'title' => strlen($modSharedTSconfig['properties']['defaultLanguageLabel']) ? $modSharedTSconfig['properties']['defaultLanguageLabel'] . ' (' . $GLOBALS['LANG']->sl('LLL:EXT:lang/locallang_mod_web_list.xlf:defaultLanguage') . ')' : $GLOBALS['LANG']->sl('LLL:EXT:lang/locallang_mod_web_list.xlf:defaultLanguage'),
+			'title' => $modSharedTSconfig['properties']['defaultLanguageLabel'] !== ''
+					? $modSharedTSconfig['properties']['defaultLanguageLabel'] . ' (' . $GLOBALS['LANG']->sl('LLL:EXT:lang/locallang_mod_web_list.xlf:defaultLanguage') . ')'
+					: $GLOBALS['LANG']->sl('LLL:EXT:lang/locallang_mod_web_list.xlf:defaultLanguage'),
 			'ISOcode' => 'DEF',
-			'flagIcon' => strlen($modSharedTSconfig['properties']['defaultLanguageFlag']) ? 'flags-' . $modSharedTSconfig['properties']['defaultLanguageFlag'] : 'empty-empty'
+			'flagIcon' => $modSharedTSconfig['properties']['defaultLanguageFlag'] !== ''
+					? 'flags-' . $modSharedTSconfig['properties']['defaultLanguageFlag']
+					: 'empty-empty'
 		);
 		// Set "All" language:
 		$languageIconTitles[-1] = array(
@@ -80,7 +84,7 @@ class TranslationConfigurationProvider {
 					$languageIconTitles[$row['uid']]['ISOcode'] = $staticLangRow['lg_iso_2'];
 				}
 			}
-			if (strlen($row['flag'])) {
+			if ($row['flag'] !== '') {
 				$languageIconTitles[$row['uid']]['flagIcon'] = IconUtility::mapRecordTypeToSpriteIconName('sys_language', $row);
 			}
 		}

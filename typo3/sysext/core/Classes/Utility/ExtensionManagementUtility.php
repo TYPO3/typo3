@@ -434,7 +434,7 @@ class ExtensionManagementUtility {
 		}
 		// Make sure item keys are integers
 		$GLOBALS['TCA'][$table]['columns'][$field]['config']['items'] = array_values($GLOBALS['TCA'][$table]['columns'][$field]['config']['items']);
-		if (strlen($relativePosition) > 0) {
+		if ((string)$relativePosition !== '') {
 			// Insert at specified position
 			$matchedPosition = \TYPO3\CMS\Core\Utility\ArrayUtility::filterByValueRecursive($relativeToField, $GLOBALS['TCA'][$table]['columns'][$field]['config']['items']);
 			if (count($matchedPosition) > 0) {
@@ -761,7 +761,7 @@ class ExtensionManagementUtility {
 		}
 		\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($defaultModuleConfiguration, $moduleConfiguration);
 		$moduleConfiguration = $defaultModuleConfiguration;
-		if (strlen($subModuleName) > 0) {
+		if ($subModuleName !== '') {
 			$moduleSignature = $mainModuleName . '_' . $subModuleName;
 		} else {
 			$moduleSignature = $mainModuleName;

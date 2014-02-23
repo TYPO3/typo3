@@ -847,7 +847,11 @@ class GraphicalFunctions {
 	 * @todo Define visibility
 	 */
 	public function addToMap($cords, $conf) {
-		$this->map .= '<area' . ' shape="poly"' . ' coords="' . implode(',', $cords) . '"' . ' href="' . htmlspecialchars($conf['url']) . '"' . ($conf['target'] ? ' target="' . htmlspecialchars($conf['target']) . '"' : '') . $JS . (strlen($conf['titleText']) ? ' title="' . htmlspecialchars($conf['titleText']) . '"' : '') . ' alt="' . htmlspecialchars($conf['altText']) . '" />';
+		$this->map .= '<area' . ' shape="poly"' . ' coords="' . implode(',', $cords) . '"'
+			. ' href="' . htmlspecialchars($conf['url']) . '"'
+			. ($conf['target'] ? ' target="' . htmlspecialchars($conf['target']) . '"' : '') . $JS
+			. ((string)$conf['titleText'] !== '' ? ' title="' . htmlspecialchars($conf['titleText']) . '"' : '')
+			. ' alt="' . htmlspecialchars($conf['altText']) . '" />';
 	}
 
 	/**
@@ -1085,14 +1089,14 @@ class GraphicalFunctions {
 				// Process each type of split rendering keyword:
 				switch ((string) $splitRendering[$key]) {
 					case 'highlightWord':
-						if (strlen($cfg['value'])) {
+						if ((string)$cfg['value'] !== '') {
 							$newResult = array();
 							// Traverse the current parts of the result array:
 							foreach ($result as $part) {
 								// Explode the string value by the word value to highlight:
 								$explodedParts = explode($cfg['value'], $part['str']);
 								foreach ($explodedParts as $c => $expValue) {
-									if (strlen($expValue)) {
+									if ((string)$expValue !== '') {
 										$newResult[] = array_merge($part, array('str' => $expValue));
 									}
 									if ($c + 1 < count($explodedParts)) {
@@ -1116,7 +1120,7 @@ class GraphicalFunctions {
 						}
 						break;
 					case 'charRange':
-						if (strlen($cfg['value'])) {
+						if ((string)$cfg['value'] !== '') {
 							// Initialize range:
 							$ranges = GeneralUtility::trimExplode(',', $cfg['value'], TRUE);
 							foreach ($ranges as $i => $rangeDef) {
@@ -1150,7 +1154,7 @@ class GraphicalFunctions {
 									// Switch bank:
 									if ($inRange != $currentState && !GeneralUtility::inList('32,10,13,9', $uNumber)) {
 										// Set result:
-										if (strlen($bankAccum)) {
+										if ($bankAccum !== '') {
 											$newResult[] = array(
 												'str' => $bankAccum,
 												'fontSize' => $currentState && $cfg['fontSize'] ? $cfg['fontSize'] : $part['fontSize'],
@@ -1170,7 +1174,7 @@ class GraphicalFunctions {
 									$bankAccum .= $utfChar;
 								}
 								// Set result for FINAL part:
-								if (strlen($bankAccum)) {
+								if ($bankAccum !== '') {
 									$newResult[] = array(
 										'str' => $bankAccum,
 										'fontSize' => $currentState && $cfg['fontSize'] ? $cfg['fontSize'] : $part['fontSize'],

@@ -496,7 +496,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 		$this->reset();
 		$this->csConvObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Charset\\CharsetConverter');
 		$this->locales = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Localization\\Locales');
-		if (strlen($templateFile)) {
+		if ($templateFile !== '') {
 			$this->templateFile = $templateFile;
 		}
 		$this->backPath = isset($backPath) ? $backPath : $GLOBALS['BACK_PATH'];

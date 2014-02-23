@@ -369,7 +369,7 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 		$this->parseLimitAndOffset($query->getLimit(), $query->getOffset(), $sql);
 		$tableNames = array_unique(array_keys($sql['tables'] + $sql['unions']));
 		foreach ($tableNames as $tableName) {
-			if (is_string($tableName) && strlen($tableName) > 0) {
+			if (is_string($tableName) && $tableName !== '') {
 				$this->addAdditionalWhereClause($query->getQuerySettings(), $tableName, $sql);
 			}
 		}
@@ -1066,7 +1066,7 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 				$tableName = $source->getLeft()->getSelectorName();
 			}
 			$columnName = $this->dataMapper->convertPropertyNameToColumnName($propertyName, $className);
-			if (strlen($tableName) > 0) {
+			if ($tableName !== '') {
 				$sql['orderings'][] = $tableName . '.' . $columnName . ' ' . $order;
 			} else {
 				$sql['orderings'][] = $columnName . ' ' . $order;

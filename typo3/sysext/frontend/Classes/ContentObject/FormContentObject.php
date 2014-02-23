@@ -384,15 +384,17 @@ class FormContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractConten
 						$value = trim($parts[2]);
 						// If this form includes an auto responder message, include a HMAC checksum field
 						// in order to verify potential abuse of this feature.
-						if (strlen($value) && GeneralUtility::inList($confData['fieldname'], 'auto_respond_msg')) {
-							$hmacChecksum = GeneralUtility::hmac($value, 'content_form');
-							$hiddenfields .= sprintf('<input type="hidden" name="auto_respond_checksum" id="%sauto_respond_checksum" value="%s" />', $prefix, $hmacChecksum);
-						}
-						if (strlen($value) && GeneralUtility::inList('recipient_copy,recipient', $confData['fieldname']) && $GLOBALS['TYPO3_CONF_VARS']['FE']['secureFormmail']) {
-							break;
-						}
-						if (strlen($value) && GeneralUtility::inList('recipient_copy,recipient', $confData['fieldname'])) {
-							$value = $GLOBALS['TSFE']->codeString($value);
+						if ($value !== '') {
+							if (GeneralUtility::inList($confData['fieldname'], 'auto_respond_msg')) {
+								$hmacChecksum = GeneralUtility::hmac($value, 'content_form');
+								$hiddenfields .= sprintf('<input type="hidden" name="auto_respond_checksum" id="%sauto_respond_checksum" value="%s" />', $prefix, $hmacChecksum);
+							}
+							if (GeneralUtility::inList('recipient_copy,recipient', $confData['fieldname']) && $GLOBALS['TYPO3_CONF_VARS']['FE']['secureFormmail']) {
+								break;
+							}
+							if (GeneralUtility::inList('recipient_copy,recipient', $confData['fieldname'])) {
+								$value = $GLOBALS['TSFE']->codeString($value);
+							}
 						}
 						$hiddenfields .= sprintf('<input type="hidden" name="%s"%s value="%s" />', $confData['fieldname'], $elementIdAttribute, htmlspecialchars($value));
 						break;
@@ -433,7 +435,7 @@ class FormContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractConten
 				}
 				if ($fieldCode) {
 					// Checking for special evaluation modes:
-					if (GeneralUtility::inList('textarea,input,password', $confData['type']) && strlen(trim($parts[3]))) {
+					if (trim($parts[3]) !== '' && GeneralUtility::inList('textarea,input,password', $confData['type'])) {
 						$modeParameters = GeneralUtility::trimExplode(':', $parts[3]);
 					} else {
 						$modeParameters = array();
@@ -601,7 +603,7 @@ class FormContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractConten
 			foreach ($conf['hiddenFields.'] as $hF_key => $hF_conf) {
 				if (substr($hF_key, -1) != '.') {
 					$hF_value = $this->cObj->cObjGetSingle($hF_conf, $conf['hiddenFields.'][$hF_key . '.'], 'hiddenfields');
-					if (strlen($hF_value) && GeneralUtility::inList('recipient_copy,recipient', $hF_key)) {
+					if ((string)$hF_value !== '' && GeneralUtility::inList('recipient_copy,recipient', $hF_key)) {
 						if ($GLOBALS['TYPO3_CONF_VARS']['FE']['secureFormmail']) {
 							continue;
 						}

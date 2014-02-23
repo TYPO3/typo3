@@ -110,7 +110,7 @@ class PageGenerator {
 		if (is_array($GLOBALS['TSFE']->sWordList)) {
 			$space = !empty($GLOBALS['TSFE']->config['config']['sword_standAlone']) ? '[[:space:]]' : '';
 			foreach ($GLOBALS['TSFE']->sWordList as $val) {
-				if (strlen(trim($val)) > 0) {
+				if (trim($val) !== '') {
 					$GLOBALS['TSFE']->sWordRegEx .= $space . quotemeta($val) . $space . '|';
 				}
 			}
@@ -762,7 +762,6 @@ class PageGenerator {
 			$pageRenderer->addFooterData($GLOBALS['TSFE']->cObj->cObjGet($GLOBALS['TSFE']->pSetup['footerData.'], 'footerData.'));
 		}
 		static::generatePageTitle();
-
 		// Add ending slash only to documents rendered as xhtml
 		$endingSlash = $GLOBALS['TSFE']->xhtmlVersion ? ' /' : '';
 		$pageRenderer->addMetaTag('<meta name="generator" content="TYPO3 ' . TYPO3_branch . ' CMS"' . $endingSlash . '>');

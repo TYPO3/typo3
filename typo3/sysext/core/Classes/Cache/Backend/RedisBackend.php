@@ -152,7 +152,7 @@ class RedisBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend impleme
 			\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog('Could not connect to redis server.', 'core', \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_ERROR);
 		}
 		if ($this->connected) {
-			if (strlen($this->password)) {
+			if ($this->password !== '') {
 				$success = $this->redis->auth($this->password);
 				if (!$success) {
 					throw new \TYPO3\CMS\Core\Cache\Exception('The given password was not accepted by the redis server.', 1279765134);
@@ -329,7 +329,7 @@ class RedisBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend impleme
 		if ($this->connected) {
 			$storedEntry = $this->redis->get(self::IDENTIFIER_DATA_PREFIX . $entryIdentifier);
 		}
-		if ($this->compression && strlen($storedEntry) > 0) {
+		if ($this->compression && (string)$storedEntry !== '') {
 			$storedEntry = gzuncompress($storedEntry);
 		}
 		return $storedEntry;

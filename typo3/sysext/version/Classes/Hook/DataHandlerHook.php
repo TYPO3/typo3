@@ -563,7 +563,7 @@ class DataHandlerHook {
 			}
 			if ($table === 'be_users' || $noTablePrefix) {
 				if ($userRecord = BackendUtility::getRecord('be_users', $id, 'uid,email,lang,realName', BackendUtility::BEenableFields('be_users'))) {
-					if (strlen(trim($userRecord['email']))) {
+					if (trim($userRecord['email']) !== '') {
 						$emails[$id] = $userRecord;
 					}
 				}

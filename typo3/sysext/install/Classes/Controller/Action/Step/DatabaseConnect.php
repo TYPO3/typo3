@@ -380,7 +380,7 @@ class DatabaseConnect extends Action\AbstractAction implements StepInterface {
 		// connection first and use TCP/IP as fallback
 		if ($localConfigurationPathValuePairs['DB/host'] === 'localhost'
 			|| \TYPO3\CMS\Core\Utility\GeneralUtility::cmpIP($localConfigurationPathValuePairs['DB/host'], '127.*.*.*')
-			|| strlen($localConfigurationPathValuePairs['DB/host']) === 0
+			|| (string)$localConfigurationPathValuePairs['DB/host'] === ''
 		) {
 			if ($this->isConnectionWithUnixDomainSocketPossible()) {
 				$localConfigurationPathValuePairs['DB/host'] = 'localhost';
@@ -417,15 +417,15 @@ class DatabaseConnect extends Action\AbstractAction implements StepInterface {
 	protected function isConnectionWithUnixDomainSocketPossible() {
 		$result = FALSE;
 		// Use configured socket
-		$socket = $this->getConfiguredSocket();
-		if (!strlen($socket) > 0) {
+		$socket = (string)$this->getConfiguredSocket();
+		if ($socket === '') {
 			// If no configured socket, use default php socket
-			$defaultSocket = ini_get('mysqli.default_socket');
-			if (strlen($defaultSocket) > 0) {
+			$defaultSocket = (string)ini_get('mysqli.default_socket');
+			if ($defaultSocket !== '') {
 				$socket = $defaultSocket;
 			}
 		}
-		if (strlen($socket) > 0) {
+		if ($socket !== '') {
 			$socketOpenResult = @fsockopen('unix://' . $socket);
 			if ($socketOpenResult) {
 				fclose($socketOpenResult);
@@ -637,7 +637,7 @@ class DatabaseConnect extends Action\AbstractAction implements StepInterface {
 	protected function getConfiguredPort() {
 		$host = isset($GLOBALS['TYPO3_CONF_VARS']['DB']['host']) ? $GLOBALS['TYPO3_CONF_VARS']['DB']['host'] : '';
 		$port = isset($GLOBALS['TYPO3_CONF_VARS']['DB']['port']) ? $GLOBALS['TYPO3_CONF_VARS']['DB']['port'] : '';
-		if (strlen($port) === 0 && substr_count($host, ':') === 1) {
+		if ($port === '' && substr_count($host, ':') === 1) {
 			$hostPortArray = explode(':', $host);
 			$port = $hostPortArray[1];
 		}

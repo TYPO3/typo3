@@ -99,7 +99,7 @@ class TextMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu\Abstr
 				$this->I['linkHREF'] = $this->link($key, $this->I['val']['altTarget'], $this->mconf['forceTypeValue']);
 				// Title attribute of links:
 				$titleAttrValue = isset($this->I['val']['ATagTitle.']) ? $this->WMcObj->stdWrap($this->I['val']['ATagTitle'], $this->I['val']['ATagTitle.']) . $this->I['accessKey']['alt'] : $this->I['val']['ATagTitle'] . $this->I['accessKey']['alt'];
-				if (strlen($titleAttrValue)) {
+				if ($titleAttrValue !== '') {
 					$this->I['linkHREF']['title'] = $titleAttrValue;
 				}
 

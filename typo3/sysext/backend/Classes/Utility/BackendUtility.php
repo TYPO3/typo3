@@ -2607,10 +2607,10 @@ class BackendUtility {
 		// Look if a fixed preview language should be added:
 		$viewLanguageOrder = $GLOBALS['BE_USER']->getTSConfigVal('options.view.languageOrder');
 
-		if (strlen($viewLanguageOrder) > 0) {
+		if ((string)$viewLanguageOrder !== '') {
 			$suffix = '';
 			// Find allowed languages (if none, all are allowed!)
-			if (!$GLOBALS['BE_USER']->user['admin'] && strlen($GLOBALS['BE_USER']->groupData['allowed_languages'])) {
+			if (!$GLOBALS['BE_USER']->user['admin'] && $GLOBALS['BE_USER']->groupData['allowed_languages'] !== '') {
 				$allowedLanguages = array_flip(explode(',', $GLOBALS['BE_USER']->groupData['allowed_languages']));
 			}
 			// Traverse the view order, match first occurence:
@@ -3499,7 +3499,7 @@ class BackendUtility {
 			$parserList = implode(',', array_keys($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['softRefParser_GL'])) . ',' . $parserList;
 		}
 		// Return immediately if list is blank:
-		if (!strlen($parserList)) {
+		if ($parserList === '') {
 			return FALSE;
 		}
 		// Otherwise parse the list:

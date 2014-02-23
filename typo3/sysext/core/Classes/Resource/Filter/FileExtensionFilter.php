@@ -161,7 +161,7 @@ class FileExtensionFilter {
 		$returnValue = NULL;
 		if (is_array($inputArgument)) {
 			$returnValue = $inputArgument;
-		} elseif (strlen($inputArgument) > 0) {
+		} elseif ((string)$inputArgument !== '') {
 			$returnValue = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $inputArgument);
 		}
 

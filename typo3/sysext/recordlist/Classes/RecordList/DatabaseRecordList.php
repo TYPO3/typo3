@@ -182,7 +182,7 @@ class DatabaseRecordList extends \TYPO3\CMS\Recordlist\RecordList\AbstractDataba
 		// Get users permissions for this page record:
 		$localCalcPerms = $GLOBALS['BE_USER']->calcPerms($this->pageRow);
 		// CSH
-		if (!strlen($this->id)) {
+		if ((string)$this->id === '') {
 			$buttons['csh'] = BackendUtility::cshItem('xMOD_csh_corebe', 'list_module_noId', $GLOBALS['BACK_PATH'], '', TRUE);
 		} elseif (!$this->id) {
 			$buttons['csh'] = BackendUtility::cshItem('xMOD_csh_corebe', 'list_module_root', $GLOBALS['BACK_PATH'], '', TRUE);
@@ -605,7 +605,7 @@ class DatabaseRecordList extends \TYPO3\CMS\Recordlist\RecordList\AbstractDataba
 	public function renderListRow($table, $row, $cc, $titleCol, $thumbsCol, $indent = 0) {
 		$iOut = '';
 		// If in search mode, make sure the preview will show the correct page
-		if (strlen($this->searchString)) {
+		if ((string)$this->searchString !== '') {
 			$id_orig = $this->id;
 			$this->id = $row['pid'];
 		}
@@ -688,7 +688,7 @@ class DatabaseRecordList extends \TYPO3\CMS\Recordlist\RecordList\AbstractDataba
 				}
 			}
 			// Reset the ID if it was overwritten
-			if (strlen($this->searchString)) {
+			if ((string)$this->searchString !== '') {
 				$this->id = $id_orig;
 			}
 			// Add row to CSV list:

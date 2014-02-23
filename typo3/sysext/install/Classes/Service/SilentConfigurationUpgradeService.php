@@ -408,7 +408,7 @@ class SilentConfigurationUpgradeService {
 		catch (\RuntimeException $e) {
 			$currentIm5EffectsValue = $this->configurationManager->getDefaultConfigurationValueByPath('GFX/im_v5effects');
 		}
-		if (strlen($currentIm5Value) > 0) {
+		if ((string)$currentIm5Value !== '') {
 			if ($currentImMaskValue != 1) {
 				$changedValues['GFX/im_mask_temp_ext_gif'] = 1;
 			}

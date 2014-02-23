@@ -509,7 +509,7 @@ class AdminPanelView {
 			$table = '';
 			foreach ($tableArr as $key => $arr) {
 				$label = (isset($arr[2]) ? '<strong>' . $arr[0] . '</strong>' : $arr[0]);
-				$value = strlen($arr[1]) ? $arr[1] : '';
+				$value = (string)$arr[1] !== '' ? $arr[1] : '';
 				$table .=
 					'<tr class="typo3-adminPanel-itemRow ' . ($key % 2 == 0 ? 'line-even' : 'line-odd') . '">
 							<td class="typo3-adminPanel-section-content-title">' . $label . '</td>

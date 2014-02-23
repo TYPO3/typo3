@@ -388,7 +388,7 @@ class Request implements \TYPO3\CMS\Extbase\Mvc\RequestInterface {
 	 * @return void
 	 */
 	public function setArgument($argumentName, $value) {
-		if (!is_string($argumentName) || strlen($argumentName) == 0) {
+		if (!is_string($argumentName) || $argumentName === '') {
 			throw new \TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentNameException('Invalid argument name.', 1210858767);
 		}
 		if ($argumentName[0] === '_' && $argumentName[1] === '_') {

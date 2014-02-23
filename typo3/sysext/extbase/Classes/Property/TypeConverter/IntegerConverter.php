@@ -53,7 +53,7 @@ class IntegerConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\Abstrac
 	 * @api
 	 */
 	public function convertFrom($source, $targetType, array $convertedChildProperties = array(), \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration = NULL) {
-		if ($source === NULL || strlen($source) === 0) {
+		if ($source === NULL || (string)$source === '') {
 			return NULL;
 		}
 		if (!is_numeric($source)) {

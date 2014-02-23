@@ -437,7 +437,7 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface {
 			 */
 			list($extensionName, $extensionValidatorName) = explode(':', $validatorName);
 
-			if ($validatorName !== $extensionName && strlen($extensionValidatorName) > 0) {
+			if ($validatorName !== $extensionName && $extensionValidatorName !== '') {
 				/**
 				 * Shorthand custom
 				 */

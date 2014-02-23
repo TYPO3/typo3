@@ -1138,8 +1138,8 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 		$TSConf = array('value' => NULL, 'properties' => NULL);
 		$parts = GeneralUtility::trimExplode('.', $objectString, TRUE, 2);
 		$key = $parts[0];
-		if (strlen($key) > 0) {
-			if (count($parts) > 1 && strlen($parts[1]) > 0) {
+		if ($key !== '') {
+			if (count($parts) > 1 && $parts[1] !== '') {
 				// Go on, get the next level
 				if (is_array($config[$key . '.'])) {
 					$TSConf = $this->getTSConfig($parts[1], $config[$key . '.']);

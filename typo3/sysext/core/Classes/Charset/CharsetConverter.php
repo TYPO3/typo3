@@ -1688,11 +1688,11 @@ class CharsetConverter {
 			return $string;
 		} else {
 			if ($len > 0) {
-				if (strlen($string[$i])) {
+				if (isset($string[$i])) {
 					return substr($string, 0, $i) . $crop;
 				}
 			} else {
-				if (strlen($string[$i - 1])) {
+				if (isset($string[$i - 1])) {
 					return $crop . substr($string, $i);
 				}
 			}
@@ -1890,7 +1890,7 @@ class CharsetConverter {
 				return $str;
 		}
 		$out = '';
-		for ($i = 0; strlen($str[$i]); $i++) {
+		for ($i = 0; isset($str[$i]); $i++) {
 			$c = $str[$i];
 			if (isset($map[$c])) {
 				$out .= $map[$c];
@@ -1956,7 +1956,7 @@ class CharsetConverter {
 	 */
 	public function utf8_strlen($str) {
 		$n = 0;
-		for ($i = 0; strlen($str[$i]); $i++) {
+		for ($i = 0; isset($str[$i]); $i++) {
 			$c = ord($str[$i]);
 			// Single-byte (0xxxxxx)
 			if (!($c & 128)) {
@@ -2073,7 +2073,7 @@ class CharsetConverter {
 			$i = strlen($str) - 1;
 			$d = -1;
 		}
-		for (; strlen($str[$i]) && $n < $p; $i += $d) {
+		for (; isset($str[$i]) && $n < $p; $i += $d) {
 			$c = (int)ord($str[$i]);
 			// single-byte (0xxxxxx)
 			if (!($c & 128)) {
@@ -2083,7 +2083,7 @@ class CharsetConverter {
 				$n++;
 			}
 		}
-		if (!strlen($str[$i])) {
+		if (!isset($str[$i])) {
 			// Offset beyond string length
 			return FALSE;
 		}
@@ -2121,7 +2121,7 @@ class CharsetConverter {
 				$n++;
 			}
 		}
-		if (!strlen($str[$i])) {
+		if (!isset($str[$i])) {
 			// Offset beyond string length
 			return FALSE;
 		}
@@ -2153,7 +2153,7 @@ class CharsetConverter {
 			default:
 				return $str;
 		}
-		for ($i = 0; strlen($str[$i]); $i++) {
+		for ($i = 0; isset($str[$i]); $i++) {
 			$c = ord($str[$i]);
 			// single-byte (0xxxxxx)
 			if (!($c & 128)) {
@@ -2199,7 +2199,7 @@ class CharsetConverter {
 	 */
 	public function euc_strtrunc($str, $len, $charset) {
 		$sjis = $charset == 'shift_jis';
-		for ($i = 0; strlen($str[$i]) && $i < $len; $i++) {
+		for ($i = 0; isset($str[$i]) && $i < $len; $i++) {
 			$c = ord($str[$i]);
 			if ($sjis) {
 				if ($c >= 128 && $c < 160 || $c >= 224) {
@@ -2211,7 +2211,7 @@ class CharsetConverter {
 				}
 			}
 		}
-		if (!strlen($str[$i])) {
+		if (!isset($str[$i])) {
 			return $str;
 		}
 		// string shorter than supplied length
@@ -2265,7 +2265,7 @@ class CharsetConverter {
 	public function euc_strlen($str, $charset) {
 		$sjis = $charset == 'shift_jis';
 		$n = 0;
-		for ($i = 0; strlen($str[$i]); $i++) {
+		for ($i = 0; isset($str[$i]); $i++) {
 			$c = ord($str[$i]);
 			if ($sjis) {
 				if ($c >= 128 && $c < 160 || $c >= 224) {
@@ -2303,7 +2303,7 @@ class CharsetConverter {
 			$i = strlen($str) - 1;
 			$d = -1;
 		}
-		for (; strlen($str[$i]) && $n < $p; $i += $d) {
+		for (; isset($str[$i]) && $n < $p; $i += $d) {
 			$c = ord($str[$i]);
 			if ($sjis) {
 				if ($c >= 128 && $c < 160 || $c >= 224) {
@@ -2316,7 +2316,7 @@ class CharsetConverter {
 			}
 			$n++;
 		}
-		if (!strlen($str[$i])) {
+		if (!isset($str[$i])) {
 			return FALSE;
 		}
 		// offset beyond string length
@@ -2358,7 +2358,7 @@ class CharsetConverter {
 		}
 		$sjis = $charset == 'shift_jis';
 		$out = '';
-		for ($i = 0; strlen($str[$i]); $i++) {
+		for ($i = 0; isset($str[$i]); $i++) {
 			$mbc = $str[$i];
 			$c = ord($mbc);
 			if ($sjis) {

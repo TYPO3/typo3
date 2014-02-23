@@ -1345,7 +1345,7 @@ class AbstractMenuContentObject {
 		// Added this check: What it does is to enter the baseUrl (if set, which it should for "realurl" based sites)
 		// as URL if the calculated value is empty. The problem is that no link is generated with a blank URL
 		// and blank URLs might appear when the realurl encoding is used and a link to the frontpage is generated.
-		$list['HREF'] = strlen($LD['totalURL']) ? $LD['totalURL'] : $GLOBALS['TSFE']->baseUrl;
+		$list['HREF'] = (string)$LD['totalURL'] !== '' ? $LD['totalURL'] : $GLOBALS['TSFE']->baseUrl;
 		$list['TARGET'] = $LD['target'];
 		$list['onClick'] = $onClick;
 		return $list;

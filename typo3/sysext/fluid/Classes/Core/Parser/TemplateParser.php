@@ -625,17 +625,17 @@ class TemplateParser {
 
 		// The following post-processing handles a case when there is only a ViewHelper, and no Object Accessor.
 		// Resolves bug #5107.
-		if (strlen($delimiter) === 0 && strlen($viewHelperString) > 0) {
+		if ($delimiter === '' && $viewHelperString !== '') {
 			$viewHelperString = $objectAccessorString . $viewHelperString;
 			$objectAccessorString = '';
 		}
 
 		// ViewHelpers
 		$matches = array();
-		if (strlen($viewHelperString) > 0 && preg_match_all(self::$SPLIT_PATTERN_SHORTHANDSYNTAX_VIEWHELPER, $viewHelperString, $matches, PREG_SET_ORDER) > 0) {
+		if ($viewHelperString !== '' && preg_match_all(self::$SPLIT_PATTERN_SHORTHANDSYNTAX_VIEWHELPER, $viewHelperString, $matches, PREG_SET_ORDER) > 0) {
 			// The last ViewHelper has to be added first for correct chaining.
 			foreach (array_reverse($matches) as $singleMatch) {
-				if (strlen($singleMatch['ViewHelperArguments']) > 0) {
+				if ($singleMatch['ViewHelperArguments'] !== '') {
 					$arguments = $this->postProcessArgumentsForObjectAccessor(
 						$this->recursiveArrayHandler($singleMatch['ViewHelperArguments'])
 					);
@@ -648,7 +648,7 @@ class TemplateParser {
 		}
 
 		// Object Accessor
-		if (strlen($objectAccessorString) > 0) {
+		if ($objectAccessorString !== '') {
 
 			$node = $this->objectManager->get('TYPO3\\CMS\\Fluid\\Core\\Parser\\SyntaxTree\\ObjectAccessorNode', $objectAccessorString);
 			$this->callInterceptor($node, \TYPO3\CMS\Fluid\Core\Parser\InterceptorInterface::INTERCEPT_OBJECTACCESSOR, $state);

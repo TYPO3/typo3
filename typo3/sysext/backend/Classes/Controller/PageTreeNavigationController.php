@@ -305,7 +305,7 @@ class PageTreeNavigationController {
 	 */
 	public function initializeTemporaryDBmount() {
 		// Set/Cancel Temporary DB Mount:
-		if (strlen($this->setTempDBmount)) {
+		if ((string)$this->setTempDBmount !== '') {
 			$set = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($this->setTempDBmount, 0);
 			if ($set > 0 && $GLOBALS['BE_USER']->isInWebMount($set)) {
 				// Setting...:

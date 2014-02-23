@@ -236,7 +236,7 @@ class LinkAnalyzer {
 			$conf = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
 			$valueField = $record[$field];
 			// Check if a TCA configured field has soft references defined (see TYPO3 Core API document)
-			if ($conf['softref'] && strlen($valueField)) {
+			if ($conf['softref'] && (string)$valueField !== '') {
 				// Explode the list of soft references/parameters
 				$softRefs = BackendUtility::explodeSoftRefParserList($conf['softref']);
 				// Traverse soft references

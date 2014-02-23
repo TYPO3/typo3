@@ -211,7 +211,7 @@ class SetupModuleController {
 						GeneralUtility::callUserFunction($function, $params, $this);
 					}
 				}
-				$this->passwordIsSubmitted = strlen($be_user_data['password']) > 0;
+				$this->passwordIsSubmitted = (string)$be_user_data['password'] !== '';
 				$passwordIsConfirmed = $this->passwordIsSubmitted && $be_user_data['password'] === $be_user_data['password2'];
 				// Update the real name:
 				if ($be_user_data['realName'] !== $GLOBALS['BE_USER']->user['realName']) {

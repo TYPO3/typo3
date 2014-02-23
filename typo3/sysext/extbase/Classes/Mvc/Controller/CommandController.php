@@ -203,7 +203,7 @@ class CommandController implements \TYPO3\CMS\Extbase\Mvc\Controller\CommandCont
 			$preparedArguments[] = $argument->getValue();
 		}
 		$commandResult = call_user_func_array(array($this, $this->commandMethodName), $preparedArguments);
-		if (is_string($commandResult) && strlen($commandResult) > 0) {
+		if (is_string($commandResult) && $commandResult !== '') {
 			$this->response->appendContent($commandResult);
 		} elseif (is_object($commandResult) && method_exists($commandResult, '__toString')) {
 			$this->response->appendContent((string) $commandResult);

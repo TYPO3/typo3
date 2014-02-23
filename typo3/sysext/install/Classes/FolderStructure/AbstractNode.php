@@ -235,7 +235,7 @@ abstract class AbstractNode {
 		}
 		$relativePath = substr($path, strlen($pathSiteWithoutTrailingSlash), strlen($path));
 		// Add a forward slash again, so we don't end up with an empty string
-		if (strlen($relativePath) === 0) {
+		if ($relativePath === '') {
 			$relativePath = '/';
 		}
 		return $relativePath;

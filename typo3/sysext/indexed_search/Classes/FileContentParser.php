@@ -482,9 +482,10 @@ class FileContentParser {
 							$content = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($tempFileName);
 							unlink($tempFileName);
 						} else {
+							$content = '';
 							$this->pObj->log_setTSlogMessage(sprintf($this->sL('LLL:EXT:indexed_search/locallang.xlf:pdfToolsFailed'), $absFile), 2);
 						}
-						if (strlen($content)) {
+						if ((string)$content !== '') {
 							$contentArr = $this->pObj->splitRegularContent($this->removeEndJunk($content));
 						}
 					}

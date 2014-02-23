@@ -1249,7 +1249,9 @@ class EditDocumentController {
 				'uid' => 0,
 				'pid' => 0,
 				'hidden' => 0,
-				'title' => strlen($modSharedTSconfig['properties']['defaultLanguageLabel']) ? $modSharedTSconfig['properties']['defaultLanguageLabel'] . ' (' . $GLOBALS['LANG']->sl('LLL:EXT:lang/locallang_mod_web_list.xlf:defaultLanguage') . ')' : $GLOBALS['LANG']->sl('LLL:EXT:lang/locallang_mod_web_list.xlf:defaultLanguage'),
+				'title' => $modSharedTSconfig['properties']['defaultLanguageLabel'] !== ''
+						? $modSharedTSconfig['properties']['defaultLanguageLabel'] . ' (' . $GLOBALS['LANG']->sl('LLL:EXT:lang/locallang_mod_web_list.xlf:defaultLanguage') . ')'
+						: $GLOBALS['LANG']->sl('LLL:EXT:lang/locallang_mod_web_list.xlf:defaultLanguage'),
 				'flag' => $modSharedTSconfig['properties']['defaultLanguageFlag']
 			)
 		);

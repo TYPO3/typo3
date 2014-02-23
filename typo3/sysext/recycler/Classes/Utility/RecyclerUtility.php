@@ -89,7 +89,7 @@ class RecyclerUtility {
 		$output = ($fullOutput = '/');
 		while ($uid != 0 && $loopCheck > 0) {
 			$loopCheck--;
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,pid,title,deleted,t3ver_oid,t3ver_wsid', 'pages', 'uid=' . (int)$uid . (strlen(trim($clause)) ? ' AND ' . $clause : ''));
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,pid,title,deleted,t3ver_oid,t3ver_wsid', 'pages', 'uid=' . (int)$uid . (trim($clause) !== '' ? ' AND ' . $clause : ''));
 			if (is_resource($res)) {
 				$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 				$GLOBALS['TYPO3_DB']->sql_free_result($res);

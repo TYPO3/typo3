@@ -2968,7 +2968,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 					$theTitle = $value['title'];
 
 					// If there is a title, check for LLL label
-					if (strlen($theTitle) > 0) {
+					if ((string)$theTitle !== '') {
 						$theTitle = htmlspecialchars(GeneralUtility::fixed_lgd_cs($this->sL($theTitle), 30));
 					}
 					// If it's a "section" or "container":
@@ -3134,7 +3134,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 									$alertMsgOnChange = '';
 								}
 								$fakePA['fieldChangeFunc'] = $PA['fieldChangeFunc'];
-								if (strlen($alertMsgOnChange)) {
+								if ($alertMsgOnChange !== '') {
 									$fakePA['fieldChangeFunc']['alert'] = $alertMsgOnChange;
 								}
 								$fakePA['onFocus'] = $PA['onFocus'];

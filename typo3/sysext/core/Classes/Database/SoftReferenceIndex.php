@@ -570,10 +570,10 @@ class SoftReferenceIndex {
 		$finalTagParts = array();
 		// Split by space into link / target / class
 		list($link_param, $browserTarget, $cssClass) = GeneralUtility::trimExplode(' ', $typolinkValue, TRUE);
-		if (strlen($browserTarget)) {
+		if ($browserTarget !== '') {
 			$finalTagParts['target'] = $browserTarget;
 		}
-		if (strlen($cssClass)) {
+		if ($cssClass !== '') {
 			$finalTagParts['class'] = $cssClass;
 		}
 		// Parse URL:
@@ -624,8 +624,9 @@ class SoftReferenceIndex {
 					// Link-data del
 					$link_param = trim($link_params_parts[0]);
 
-					if (strlen($link_params_parts[1])) {
-						$finalTagParts['anchor'] = trim($link_params_parts[1]);
+					$linkAnchor = isset($link_params_parts[1]) ? trim($link_params_parts[1]) : '';
+					if ($linkAnchor !== '')  {
+						$finalTagParts['anchor'] = $linkAnchor;
 					}
 
 					// Splitting the parameter by ',' and if the array counts more than 1 element it's a id/type/? pair
@@ -636,7 +637,7 @@ class SoftReferenceIndex {
 					}
 
 					// Checking if the id-parameter is an alias.
-					if (strlen($link_param)) {
+					if ((string)$link_param !== '') {
 						if (!\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($link_param)) {
 							$finalTagParts['alias'] = $link_param;
 							$link_param = $this->getPageIdFromAlias($link_param);
@@ -739,11 +740,11 @@ class SoftReferenceIndex {
 					);
 				}
 				// Add type if applicable
-				if (strlen($tLP['type'])) {
+				if ((string)$tLP['type'] !== '') {
 					$content .= ',' . $tLP['type'];
 				}
 				// Add anchor if applicable
-				if (strlen($tLP['anchor'])) {
+				if ((string)$tLP['anchor'] !== '') {
 					// Anchor is assumed to point to a content elements:
 					if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($tLP['anchor'])) {
 						// Initialize a new entry because we have a new relation:
@@ -768,9 +769,9 @@ class SoftReferenceIndex {
 				return $content;
 		}
 		// Finally, for all entries that was rebuild with tokens, add target and class in the end:
-		if (strlen($content) && strlen($tLP['target'])) {
+		if ($content !== '' && $tLP['target'] !== '') {
 			$content .= ' ' . $tLP['target'];
-			if (strlen($tLP['class'])) {
+			if ($tLP['class'] !== '') {
 				$content .= ' ' . $tLP['class'];
 			}
 		}

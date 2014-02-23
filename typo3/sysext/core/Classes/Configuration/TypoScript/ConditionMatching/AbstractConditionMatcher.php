@@ -287,7 +287,7 @@ abstract class AbstractConditionMatcher {
 				break;
 			case 'useragent':
 				$test = trim($value);
-				if (strlen($test)) {
+				if ($test !== '') {
 					return $this->searchStringWildcard($browserInfo['useragent'], $test);
 				}
 				break;

@@ -90,7 +90,7 @@ class TranslateViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewH
 	public function render() {
 		$id = $this->hasArgument('id') ? $this->arguments['id'] : $this->arguments['key'];
 
-		if (strlen($id) > 0) {
+		if ((string)$id !== '') {
 			return $this->renderTranslation($id);
 		} else {
 			throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception\InvalidVariableException('An argument "key" or "id" has to be provided', 1351584844);

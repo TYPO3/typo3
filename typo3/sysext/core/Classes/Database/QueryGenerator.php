@@ -837,7 +837,7 @@ class QueryGenerator {
 								}
 							} else {
 								$singleValue = $row[$fN];
-								if (strlen($singleValue) && !stristr($singleValue, '_')) {
+								if ($singleValue !== '' && !stristr($singleValue, '_')) {
 									$dontPrefixFirstTable = 1;
 								}
 							}

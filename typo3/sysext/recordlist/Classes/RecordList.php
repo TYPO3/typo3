@@ -318,7 +318,7 @@ class RecordList {
 		// It is set, if the clickmenu-layer is active AND the extended view is not enabled.
 		$dblist->dontShowClipControlPanels = $GLOBALS['CLIENT']['FORMSTYLE'] && !$this->MOD_SETTINGS['bigControlPanel'] && $dblist->clipObj->current == 'normal' && !$this->modTSconfig['properties']['showClipControlPanelsDespiteOfCMlayers'];
 		// If there is access to the page or root page is used for searching, then render the list contents and set up the document template object:
-		if ($access || ($this->id === 0 && $this->search_levels > 0 && strlen($this->search_field) > 0)) {
+		if ($access || ($this->id === 0 && $this->search_levels > 0 && $this->search_field !== '')) {
 			// Deleting records...:
 			// Has not to do with the clipboard but is simply the delete action. The clipboard object is used to clean up the submitted entries to only the selected table.
 			if ($this->cmd == 'delete') {

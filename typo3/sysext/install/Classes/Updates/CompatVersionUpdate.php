@@ -204,40 +204,37 @@ class CompatVersionUpdate extends AbstractUpdate {
 	/**
 	 * Show changes needed
 	 *
-	 * @param string Input prefix to prepend all form fields with.
+	 * @param string $inputPrefix Input prefix to prepend all form fields with.
 	 * @return string HTML output
 	 */
 	protected function showChangesNeeded($inputPrefix = '') {
+		if (!is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['compat_version'])) {
+			return '';
+		}
 		$oldVersion = \TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionNumberToInteger($GLOBALS['TYPO3_CONF_VARS']['SYS']['compat_version']);
 		$currentVersion = \TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionNumberToInteger(TYPO3_branch);
-		$tableContents = '';
-		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['compat_version'])) {
-			$updateWizardBoxes = '';
-			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['compat_version'] as $internalName => $details) {
-				if ($details['version'] > $oldVersion && $details['version'] <= $currentVersion) {
-					$description = str_replace(chr(10), '<br />', $details['description']);
-					$description_acknowledge = isset($details['description_acknowledge']) ? str_replace(chr(10), '<br />', $details['description_acknowledge']) : '';
-					$updateWizardBoxes .= '
-						<div style="border: 1px solid; padding: 10px; margin: 10px; padding-top: 0px; width: 500px;">
-							<h3>' . (isset($details['title']) ? $details['title'] : $internalName) . '</h3>
-							' . $description . (strlen($description_acknowledge) ? '<p>' . $description_acknowledge . '</p>' : '') . (strlen($inputPrefix) ? '
-								<fieldset>
-									<ol>
-										<li class="labelAfter">
-											<input type="checkbox" name="' . $inputPrefix . '[compatVersion][' . $internalName . ']" id="compatVersion' . $internalName . '" value="1" />
-											<label for="compatVersion' . $internalName . '">Acknowledged</label>
-										</li>
-									</ol>
-								</fieldset>
-							' : '') . '
-						</div>';
-				}
+		$updateWizardBoxes = '';
+		foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['compat_version'] as $internalName => $details) {
+			if ($details['version'] > $oldVersion && $details['version'] <= $currentVersion) {
+				$description = str_replace(chr(10), '<br />', $details['description']);
+				$description_acknowledge = isset($details['description_acknowledge']) ? str_replace(chr(10), '<br />', $details['description_acknowledge']) : '';
+				$updateWizardBoxes .= '
+					<div style="border: 1px solid; padding: 10px; margin: 10px; padding-top: 0px; width: 500px;">
+						<h3>' . (isset($details['title']) ? $details['title'] : $internalName) . '</h3>
+						' . $description . ($description_acknowledge !== '' ? '<p>' . $description_acknowledge . '</p>' : '') . ($inputPrefix !== '' ? '
+							<fieldset>
+								<ol>
+									<li class="labelAfter">
+										<input type="checkbox" name="' . $inputPrefix . '[compatVersion][' . $internalName . ']" id="compatVersion' . $internalName . '" value="1" />
+										<label for="compatVersion' . $internalName . '">Acknowledged</label>
+									</li>
+								</ol>
+							</fieldset>
+						' : '') . '
+					</div>';
 			}
 		}
-		if (strlen($updateWizardBoxes)) {
-			return $updateWizardBoxes;
-		}
-		return '';
+		return $updateWizardBoxes;
 	}
 
 }

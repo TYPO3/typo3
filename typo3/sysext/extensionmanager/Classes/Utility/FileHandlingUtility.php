@@ -397,7 +397,7 @@ class FileHandlingUtility implements \TYPO3\CMS\Core\SingletonInterface {
 					if (!is_dir($dir)) {
 						GeneralUtility::mkdir_deep($extensionDir . $dir);
 					}
-					if (strlen(trim($file)) > 0) {
+					if (trim($file) !== '') {
 						$return = GeneralUtility::writeFile($extensionDir . $dir . '/' . $file, zip_entry_read($zipEntry, zip_entry_filesize($zipEntry)));
 						if ($return === FALSE) {
 							throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException('Could not write file ' . $this->getRelativePath($file), 1344691048);

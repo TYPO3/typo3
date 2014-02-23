@@ -156,7 +156,7 @@ class ArrayBrowser {
 	 */
 	public function wrapValue($theValue, $depth) {
 		$wrappedValue = '';
-		if (strlen($theValue) > 0) {
+		if ((string)$theValue !== '') {
 			$wrappedValue = '<strong>' . htmlspecialchars($theValue) . '</strong>';
 		}
 		return $wrappedValue;

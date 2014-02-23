@@ -2187,7 +2187,7 @@ class ElementBrowser {
 			}
 			$str = is_object($fileObject) ? $fileObject->getIdentifier() : '';
 		}
-		if (strlen($str)) {
+		if ($str !== '') {
 			return '
 				<!-- Print current URL -->
 				<table border="0" cellpadding="0" cellspacing="0" id="typo3-curUrl">
