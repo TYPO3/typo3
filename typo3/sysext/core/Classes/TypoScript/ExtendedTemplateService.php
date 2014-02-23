@@ -28,6 +28,7 @@ namespace TYPO3\CMS\Core\TypoScript;
  ***************************************************************/
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -423,7 +424,7 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 				$BTM = $a == $c ? 'bottom' : '';
 				$PM = is_array($arr[$key . '.']) && !$this->ext_noPMicons ? ($deeper ? 'minus' : 'plus') : 'join';
 				$HTML .= $depthData;
-				$theIcon = '<img src="' . $GLOBALS['BACK_PATH'] . 'gfx/ol/' . $PM . $BTM . '.gif" width="18" height="16" align="top" border="0" alt="" />';
+				$theIcon = IconUtility::getSpriteIcon('treeline-' . $PM . $BTM);
 				if ($PM == 'join') {
 					$HTML .= $theIcon;
 				} else {
@@ -495,7 +496,7 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 				}
 				$HTML .= '<br />';
 				if ($deeper) {
-					$HTML .= $this->ext_getObjTree($arr[$key . '.'], $depth, $depthData . '<img src="' . $GLOBALS['BACK_PATH'] . 'gfx/ol/' . $LN . '.gif" width="18" height="16" align="top" alt="" />', '', $arr[$key], $alphaSort);
+					$HTML .= $this->ext_getObjTree($arr[$key . '.'], $depth, $depthData . IconUtility::getSpriteIcon('treeline-' . $LN), '', $arr[$key], $alphaSort);
 				}
 			}
 		}
@@ -683,7 +684,7 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 				$A_B = '';
 				$A_E = '';
 			}
-			$HTML .= ($first ? '' : '<img src="' . $GLOBALS['BACK_PATH'] . 'gfx/ol/' . $PM . $BTM . '.gif" width="18" height="16" align="top" border="0" alt="" />') . $icon . $A_B . htmlspecialchars(GeneralUtility::fixed_lgd_cs($row['title'], $GLOBALS['BE_USER']->uc['titleLen'])) . $A_E . '&nbsp;&nbsp;';
+			$HTML .= ($first ? '' : IconUtility::getSpriteIcon('treeline-' . $PM . $BTM)) . $icon . $A_B . htmlspecialchars(GeneralUtility::fixed_lgd_cs($row['title'], $GLOBALS['BE_USER']->uc['titleLen'])) . $A_E . '&nbsp;&nbsp;';
 			$RL = $this->ext_getRootlineNumber($row['pid']);
 			$keyArray[] = '<tr class="' . ($i++ % 2 == 0 ? 'bgColor4' : 'bgColor6') . '">
 							<td nowrap="nowrap">' . $HTML . '</td>
@@ -695,7 +696,7 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 							<td>' . ($row['next'] ? '&nbsp;' . $row['next'] . '&nbsp;&nbsp;' : '') . '</td>
 						</tr>';
 			if ($deeper) {
-				$keyArray = $this->ext_getTemplateHierarchyArr($arr[$key . '.'], $depthData . ($first ? '' : '<img src="' . $GLOBALS['BACK_PATH'] . 'gfx/ol/' . $LN . '.gif" width="18" height="16" align="top" />'), $keyArray);
+				$keyArray = $this->ext_getTemplateHierarchyArr($arr[$key . '.'], $depthData . ($first ? '' : IconUtility::getSpriteIcon('treeline-' . $LN)), $keyArray);
 			}
 		}
 		return $keyArray;
