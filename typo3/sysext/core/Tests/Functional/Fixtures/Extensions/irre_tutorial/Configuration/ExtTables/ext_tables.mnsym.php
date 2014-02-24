@@ -18,7 +18,7 @@ $TCA['tx_irretutorial_mnsym_hotel'] = array(
 		),
 		'dynamicConfigFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY).'Configuration/Tca/tca.mnsym.php',
 		'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY).'Resources/Public/Icons/icon_tx_irretutorial_hotel.gif',
-		'versioningWS' => TRUE,
+		'versioningWS' => 2,
 		'origUid' => 't3_origuid',
 		'dividers2tabs' => TRUE,
 	),
@@ -46,7 +46,7 @@ $TCA['tx_irretutorial_mnsym_hotel_rel'] = array(
 		),
 		'dynamicConfigFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY).'Configuration/Tca/tca.mnsym.php',
 		'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY).'Resources/Public/Icons/icon_tx_irretutorial_hotel_rel.gif',
-		'versioningWS' => TRUE,
+		'versioningWS' => 2,
 		'origUid' => 't3_origuid',
 		// @see http://forge.typo3.org/issues/29278 which solves it implicitly in the Core
 		// 'shadowColumnsForNewPlaceholders' => 'hotelid',

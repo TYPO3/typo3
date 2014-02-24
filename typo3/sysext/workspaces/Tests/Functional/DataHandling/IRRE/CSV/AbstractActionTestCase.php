@@ -217,7 +217,6 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 	 * @see DataSet/Assertion/moveParentContentRecordToDifferentPageAndChangeSorting.csv
 	 */
 	public function moveParentContentToDifferentPageAndChangeSorting() {
-		$this->markTestSkipped('Something seems to be wrong here...');
 		$this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_PageIdTarget);
 		$this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdFirst, -self::VALUE_ContentIdLast);
 		$this->assertAssertionDataSet('moveParentContentToDifferentPageNChangeSorting');

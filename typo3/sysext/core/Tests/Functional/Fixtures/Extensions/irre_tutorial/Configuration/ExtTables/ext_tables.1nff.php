@@ -18,7 +18,7 @@ $TCA['tx_irretutorial_1nff_hotel'] = array(
 		),
 		'dynamicConfigFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY).'Configuration/Tca/tca.1nff.php',
 		'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY).'Resources/Public/Icons/icon_tx_irretutorial_hotel.gif',
-		'versioningWS' => TRUE,
+		'versioningWS' => 2,
 		'origUid' => 't3_origuid',
 		// @see http://forge.typo3.org/issues/29278 which solves it implicitly in the Core
 		// 'shadowColumnsForNewPlaceholders' => 'parentid,parenttable',
@@ -49,7 +49,7 @@ $TCA['tx_irretutorial_1nff_offer'] = array(
 		),
 		'dynamicConfigFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY).'Configuration/Tca/tca.1nff.php',
 		'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY).'Resources/Public/Icons/icon_tx_irretutorial_offer.gif',
-		'versioningWS' => TRUE,
+		'versioningWS' => 2,
 		'origUid' => 't3_origuid',
 		// @see http://forge.typo3.org/issues/29278 which solves it implicitly in the Core
 		// 'shadowColumnsForNewPlaceholders' => 'parentid,parenttable',
@@ -80,7 +80,7 @@ $TCA['tx_irretutorial_1nff_price'] = array(
 		),
 		'dynamicConfigFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY).'Configuration/Tca/tca.1nff.php',
 		'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY).'Resources/Public/Icons/icon_tx_irretutorial_price.gif',
-		'versioningWS' => TRUE,
+		'versioningWS' => 2,
 		'origUid' => 't3_origuid',
 		// @see http://forge.typo3.org/issues/29278 which solves it implicitly in the Core
 		// 'shadowColumnsForNewPlaceholders' => 'parentid,parenttable',
