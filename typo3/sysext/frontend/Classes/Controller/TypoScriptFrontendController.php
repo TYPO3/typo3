@@ -3619,9 +3619,21 @@ class TypoScriptFrontendController {
 		// Set headers, if any
 		if (!empty($this->config['config']['additionalHeaders'])) {
 			$headerArray = explode('|', $this->config['config']['additionalHeaders']);
+			GeneralUtility::deprecationLog('The TypoScript option "config.additionalHeaders" has been deprecated with TYPO3 CMS 7, and will be removed with CMS 8, please use the more flexible syntax config.additionalHeaders.10... to separate each header value.');
 			foreach ($headerArray as $headLine) {
 				$headLine = trim($headLine);
 				header($headLine);
+			}
+		}
+		if (is_array($this->config['config']['additionalHeaders.'])) {
+			ksort($this->config['config']['additionalHeaders.']);
+			foreach ($this->config['config']['additionalHeaders.'] as $options) {
+				header(
+					trim($options['header']),
+					// "replace existing headers" is turned on by default, unless turned off
+					($options['replace'] === '0' ? FALSE : TRUE),
+					((int)$options['httpResponseCode'] ?: NULL)
+				);
 			}
 		}
 		// Send appropriate status code in case of temporary content
