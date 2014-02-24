@@ -1,0 +1,6 @@
+sys_refindex
+,hash,tablename,recuid,field,flexpointer,softref_key,softref_id,sorting,deleted,ref_table,ref_uid,ref_string
+,0c81d9b3f27460380a2e442fdfa0649d,tt_content,298,tx_testdatahandler_group,,,,0,0,tx_testdatahandler_element,2,
+,8f3d6a0de293045066188fc790f4805f,tt_content,298,tx_testdatahandler_group,,,,1,0,tx_testdatahandler_element,3,
+,70386199b2e7d7e3be07ec7b501f411d,tt_content,297,tx_testdatahandler_group,,,,0,0,tx_testdatahandler_element,1,
+,3f113b20cdf1b3be96048a257872a178,tt_content,297,tx_testdatahandler_group,,,,1,0,tx_testdatahandler_element,2,

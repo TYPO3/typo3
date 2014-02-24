@@ -1,0 +1,16 @@
+pages
+,uid,pid,sorting,deleted,t3ver_wsid,t3ver_state,t3ver_stage,t3ver_oid,t3ver_move_id,title
+,1,0,256,0,0,0,0,0,0,FunctionalTest
+,88,1,256,0,0,0,0,0,0,DataHandlerTest
+,89,88,256,0,0,0,0,0,0,Relations
+,90,88,512,0,0,0,0,0,0,Target
+tt_content
+,uid,pid,sorting,deleted,sys_language_uid,l18n_parent,t3ver_wsid,t3ver_state,t3ver_stage,t3ver_oid,t3ver_move_id,header,tx_testdatahandler_select
+,297,89,256,0,0,0,0,0,0,0,0,"Regular Element #1","1,2"
+,298,89,512,0,0,0,0,0,0,0,0,"Regular Element #2","2,3"
+,299,89,128,0,0,0,0,0,0,0,0,"Regular Element #2 (copy 1)","2,3"
+tx_testdatahandler_element
+,uid,pid,sorting,deleted,sys_language_uid,l10n_parent,t3ver_wsid,t3ver_state,t3ver_stage,t3ver_oid,t3ver_move_id,title
+,1,89,256,0,0,0,0,0,0,0,0,"Element #1"
+,2,89,512,0,0,0,0,0,0,0,0,"Element #2"
+,3,89,768,0,0,0,0,0,0,0,0,"Element #3"

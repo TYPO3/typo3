@@ -22,6 +22,7 @@ watcher {
 		tx_irretutorial_1ncsv_hotel = uid,_ORIG_uid,_LOCALIZED_UID,pid,sorting,sys_language_uid,title,offers
 		tx_irretutorial_1ncsv_offer = uid,_ORIG_uid,_LOCALIZED_UID,pid,sorting,sys_language_uid,title,prices
 		tx_irretutorial_1ncsv_price = uid,_ORIG_uid,_LOCALIZED_UID,pid,sorting,sys_language_uid,title,price
+		tx_testdatahandler_element = uid,_ORIG_uid,_LOCALIZED_UID,pid,sorting,sys_language_uid,title
 	}
 }
 
@@ -143,6 +144,32 @@ page {
 							# languageField = sys_language_uid
 						}
 					}
+				}
+			}
+			50 = CONTENT
+			50 {
+				if.isTrue.field = tx_testdatahandler_select
+				watcher.parentRecordField = tx_testdatahandler_select
+				table = tx_testdatahandler_element
+				select {
+					uidInList.data = field:tx_testdatahandler_select
+					pidInList = 0
+					orderBy = sorting
+					# not including sys_language_uid lookup
+					# languageField = sys_language_uid
+				}
+			}
+			60 = CONTENT
+			60 {
+				if.isTrue.field = tx_testdatahandler_group
+				watcher.parentRecordField = tx_testdatahandler_group
+				table = tx_testdatahandler_element
+				select {
+					uidInList.data = field:tx_testdatahandler_group
+					pidInList = 0
+					orderBy = sorting
+					# not including sys_language_uid lookup
+					# languageField = sys_language_uid
 				}
 			}
 		}

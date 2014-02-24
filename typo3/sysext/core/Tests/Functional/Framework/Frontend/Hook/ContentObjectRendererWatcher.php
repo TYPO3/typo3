@@ -75,6 +75,10 @@ class ContentObjectRendererWatcher implements \TYPO3\CMS\Frontend\ContentObject\
 			}
 		}
 
+		if (!empty($configuration['if.']) && !$parentObject->checkIf($configuration['if.'])) {
+			return '';
+		}
+
 		$contentObject = $parentObject->getContentObject($name);
 		if ($contentObject) {
 			$contentObject->render($configuration);

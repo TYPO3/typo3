@@ -1,0 +1,21 @@
+"sys_workspace"
+,"uid","pid","deleted","title","adminusers","members","reviewers","db_mountpoints","file_mountpoints","freeze","live_edit","vtypes","disable_autocreate","swap_modes","publish_access","custom_stages","stagechg_notification","edit_notification_mode","edit_notification_defaults","edit_allow_notificaton_settings","publish_notification_mode","publish_notification_defaults","publish_allow_notificaton_settings"
+,1,0,0,"Workspace #1",,,,,,0,0,0,0,0,0,0,0,0,,0,0,,0
+,2,0,0,"Workspace #2",,,,,,0,0,0,0,0,0,0,0,0,,0,0,,0
+"sys_workspace_stage"
+,"uid","pid","tstamp","deleted","sorting","title","responsible_persons","default_mailcomment","parentid","parenttable","notification_mode","notification_defaults","allow_notificaton_settings"
+,1,0,1290048921,0,1,"Stage 1","be_users_3",,1,"sys_workspace",0,,0
+"sys_language"
+,"uid","pid","hidden","title","flag"
+,1,0,0,"Dansk","dk"
+,2,0,0,"Deutsch","de"
+tt_content
+,uid,pid,sorting,deleted,sys_language_uid,l18n_parent,t3ver_wsid,t3ver_state,t3ver_stage,t3ver_oid,t3ver_move_id,header,tx_testdatahandler_group
+,297,89,256,0,0,0,0,0,0,0,0,"Regular Element #1","1,2"
+,298,89,512,0,0,0,0,0,0,0,0,"Regular Element #2","2,3"
+tx_testdatahandler_element
+,uid,pid,sorting,deleted,sys_language_uid,l10n_parent,t3ver_wsid,t3ver_state,t3ver_stage,t3ver_oid,t3ver_move_id,title
+,1,89,256,0,0,0,0,0,0,0,0,"Element #1"
+,2,89,512,0,0,0,0,0,0,0,0,"Element #2"
+,3,89,768,0,0,0,0,0,0,0,0,"Element #3"
+
