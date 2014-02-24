@@ -566,6 +566,26 @@ function jumpToUrl(URL) {
 	}
 
 	/**
+	 * Like ->getHeader() but for files and folders
+	 * Returns the icon with the path of the file/folder set in the alt/title attribute. Shows the name after the icon.
+	 *
+	 * @param \TYPO3\CMS\Core\Resource\ResourceInterface $resource
+	 * @param array $tWrap is an array with indexes 0 and 1 each representing HTML-tags (start/end) which will wrap the title
+	 * @return string
+	 */
+	public function getResourceHeader(\TYPO3\CMS\Core\Resource\ResourceInterface $resource, $tWrap = array('', '')) {
+		$path = $resource->getStorage()->getName() . $resource->getParentFolder()->getIdentifier();
+		$iconImgTag = IconUtility::getSpriteIconForResource($resource, array('title' => htmlspecialchars($path)));
+
+		if ($resource instanceof \TYPO3\CMS\Core\Resource\File) {
+			$metaData = $resource->_getMetaData();
+			$iconImgTag = $this->wrapClickMenuOnIcon($iconImgTag, 'sys_file_metadata', $metaData['uid']);
+		}
+
+		return '<span class="typo3-moduleHeader">' . $iconImgTag .  $tWrap[0] . htmlspecialchars(GeneralUtility::fixed_lgd_cs($resource->getName(), 45)) .  $tWrap[1] . '</span>';
+	}
+
+	/**
 	 * Like ->getHeader() but for files in the File>* main module/submodules
 	 * Returns the file-icon with the path of the file set in the alt/title attribute. Shows the file-name after the icon.
 	 *
@@ -573,9 +593,10 @@ function jumpToUrl(URL) {
 	 * @param string $path Alt text
 	 * @param string $iconfile The icon file (relative to TYPO3 dir)
 	 * @return string HTML content
-	 * @todo Define visibility
+	 * @deprecated since 6.2 remove 2 version later use getResourceHeader() instead
 	 */
 	public function getFileheader($title, $path, $iconfile) {
+		GeneralUtility::logDeprecatedFunction();
 		$fileInfo = GeneralUtility::split_fileref($title);
 		$title = htmlspecialchars(GeneralUtility::fixed_lgd_cs($fileInfo['path'], -35)) . '<strong>' . htmlspecialchars($fileInfo['file']) . '</strong>';
 		return '<span class="typo3-moduleHeader"><img' . IconUtility::skinImg($this->backPath, $iconfile, 'width="18" height="16"') . ' title="' . htmlspecialchars($path) . '" alt="" />' . $title . '</span>';
