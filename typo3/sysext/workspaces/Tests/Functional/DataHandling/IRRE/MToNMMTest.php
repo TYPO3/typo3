@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\InlineRelationalRecordEditing;
+namespace TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\IRRE;
 
 /***************************************************************
 *  Copyright notice
@@ -59,7 +59,7 @@ class MToNMMTest extends AbstractTestCase {
 	public function setUp() {
 		parent::setUp();
 
-		$this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/core/Tests/Functional/DataHandling/InlineRelationalRecordEditing/Fixtures/MToNMMAsymmetric.xml');
+		$this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/core/Tests/Functional/DataHandling/IRRE/Fixtures/MToNMMAsymmetric.xml');
 	}
 
 	/**

@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Core\Tests\Functional\DataHandling\InlineRelationalRecordEditing\CommaSeparatedValue;
+namespace TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\IRRE\CSV;
 
 /***************************************************************
  * Copyright notice
@@ -29,11 +29,11 @@ require_once dirname(__FILE__) . '/AbstractActionTestCase.php';
 /**
  * Functional test for the DataHandler
  */
-class LiveActionTest extends AbstractActionTestCase {
+class WorkspaceActionTest extends AbstractActionTestCase {
 
 	public function setUp() {
 		parent::setUp();
-		$this->backendUser->workspace = 0;
+		$this->backendUser->workspace = self::VALUE_WorkspaceId;
 	}
 
 }

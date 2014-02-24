@@ -71,6 +71,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 
 	/**
 	 * @test
+	 * @see DataSet/Assertion/addCategoryRelation.csv
 	 */
 	public function addCategoryRelation() {
 		$this->actionService->modifyReferences(
@@ -87,6 +88,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 
 	/**
 	 * @test
+	 * @see DataSet/Assertion/deleteCategoryRelation.csv
 	 */
 	public function deleteCategoryRelation() {
 		$this->actionService->modifyReferences(
@@ -107,6 +109,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 
 	/**
 	 * @test
+	 * @see DataSet/Assertion/changeCategoryRelationSorting.csv
 	 */
 	public function changeCategoryRelationSorting() {
 		$this->actionService->modifyReferences(
@@ -123,12 +126,13 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 
 	/**
 	 * @test
+	 * @see DataSet/Assertion/createContentRecordAndAddCategoryRelation.csv
 	 */
-	public function createContentRecordAndAddCategoryRelation() {
+	public function createContentAndAddRelation() {
 		$newTableIds = $this->actionService->createNewRecord(
 			self::TABLE_Content, self::VALUE_PageId, array('header' => 'Testing #1', 'categories' => self::VALUE_CategoryIdSecond)
 		);
-		$this->assertAssertionDataSet('createContentRecordAndAddCategoryRelation');
+		$this->assertAssertionDataSet('createContentNAddRelation');
 
 		$newContentId = $newTableIds[self::TABLE_Content][0];
 		$responseContent = $this->getFrontendResponse(self::VALUE_PageId, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseContent();
@@ -141,12 +145,13 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 
 	/**
 	 * @test
+	 * @see DataSet/Assertion/createCategoryRecordAndAddCategoryRelation.csv
 	 */
-	public function createCategoryRecordAndAddCategoryRelation() {
+	public function createCategoryAndAddRelation() {
 		$this->actionService->createNewRecord(
 			self::TABLE_Category, 0, array('title' => 'Testing #1', 'items' => 'tt_content_' . self::VALUE_ContentIdFirst)
 		);
-		$this->assertAssertionDataSet('createCategoryRecordAndAddCategoryRelation');
+		$this->assertAssertionDataSet('createCategoryNAddRelation');
 
 		// @todo Does not work due to the core bug of not setting the reference field in the MM record
 		/*
@@ -161,8 +166,9 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 
 	/**
 	 * @test
+	 * @see DataSet/Assertion/createContentRecordAndCreateCategoryRelation.csv
 	 */
-	public function createContentRecordAndCreateCategoryRelation() {
+	public function createContentAndCreateRelation() {
 		$newTableIds = $this->actionService->createNewRecords(
 			self::VALUE_PageId,
 			array(
@@ -170,7 +176,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 				self::TABLE_Content => array('header' => 'Testing #1', 'categories' => '__previousUid'),
 			)
 		);
-		$this->assertAssertionDataSet('createContentRecordAndCreateCategoryRelation');
+		$this->assertAssertionDataSet('createContentNCreateRelation');
 
 		$newContentId = $newTableIds[self::TABLE_Content][0];
 		$responseContent = $this->getFrontendResponse(self::VALUE_PageId, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseContent();
@@ -188,8 +194,9 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 
 	/**
 	 * @test
+	 * @see DataSet/Assertion/createCategoryRecordAndCreateCategoryRelation.csv
 	 */
-	public function createCategoryRecordAndCreateCategoryRelation() {
+	public function createCategoryAndCreateRelation() {
 		$this->markTestSkipped('The new content record cannot be referenced in the new category record');
 		$this->actionService->createNewRecords(
 			self::VALUE_PageId,
@@ -198,15 +205,16 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 				self::TABLE_Category => array('title' => 'Testing #1', 'items' => 'tt_content___previousUid'),
 			)
 		);
-		$this->assertAssertionDataSet('createCategoryRecordAndCreateCategoryRelation');
+		$this->assertAssertionDataSet('createCategoryNCreateRelation');
 	}
 
 	/**
 	 * @test
+	 * @see DataSet/Assertion/modifyCategoryRecordOfCategoryRelation.csv
 	 */
-	public function modifyCategoryRecordOfCategoryRelation() {
+	public function modifyCategoryOfRelation() {
 		$this->actionService->modifyRecord(self::TABLE_Category, self::VALUE_CategoryIdFirst, array('title' => 'Testing #1'));
-		$this->assertAssertionDataSet('modifyCategoryRecordOfCategoryRelation');
+		$this->assertAssertionDataSet('modifyCategoryOfRelation');
 
 		$responseContent = $this->getFrontendResponse(self::VALUE_PageId, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseContent();
 		$this->assertResponseContentStructureHasRecords(
@@ -217,10 +225,11 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 
 	/**
 	 * @test
+	 * @see DataSet/Assertion/modifyContentRecordOfCategoryRelation.csv
 	 */
-	public function modifyContentRecordOfCategoryRelation() {
+	public function modifyContentOfRelation() {
 		$this->actionService->modifyRecord(self::TABLE_Content, self::VALUE_ContentIdFirst, array('header' => 'Testing #1'));
-		$this->assertAssertionDataSet('modifyContentRecordOfCategoryRelation');
+		$this->assertAssertionDataSet('modifyContentOfRelation');
 
 		$responseContent = $this->getFrontendResponse(self::VALUE_PageId, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseContent();
 		$this->assertResponseContentHasRecords($responseContent, self::TABLE_Content, 'header', 'Testing #1');
@@ -228,12 +237,13 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 
 	/**
 	 * @test
+	 * @see DataSet/Assertion/modifyBothRecordsOfCategoryRelation.csv
 	 */
-	public function modifyBothRecordsOfCategoryRelation() {
+	public function modifyBothsOfRelation() {
 		$this->markTestSkipped('Using specific UIDs on both sides is not implemented yet');
 		$this->actionService->modifyRecord(self::TABLE_Category, self::VALUE_CategoryIdFirst, array('title' => 'Testing #1'));
 		$this->actionService->modifyRecord(self::TABLE_Content, self::VALUE_ContentIdFirst, array('header' => 'Testing #1'));
-		$this->assertAssertionDataSet('modifyBothRecordsOfCategoryRelation');
+		$this->assertAssertionDataSet('modifyBothsOfRelation');
 
 		$responseContent = $this->getFrontendResponse(self::VALUE_PageId, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseContent();
 		$this->assertResponseContentStructureHasRecords(
@@ -245,10 +255,11 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 
 	/**
 	 * @test
+	 * @see DataSet/Assertion/deleteContentRecordOfCategoryRelation.csv
 	 */
-	public function deleteContentRecordOfCategoryRelation() {
+	public function deleteContentOfRelation() {
 		$this->actionService->deleteRecord(self::TABLE_Content, self::VALUE_ContentIdLast);
-		$this->assertAssertionDataSet('deleteContentRecordOfCategoryRelation');
+		$this->assertAssertionDataSet('deleteContentOfRelation');
 
 		$responseContent = $this->getFrontendResponse(self::VALUE_PageId, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseContent();
 		$this->assertResponseContentDoesNotHaveRecords($responseContent, self::TABLE_Content, 'header', 'Testing #1');
@@ -256,10 +267,11 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 
 	/**
 	 * @test
+	 * @see DataSet/Assertion/deleteCategoryRecordOfCategoryRelation.csv
 	 */
-	public function deleteCategoryRecordOfCategoryRelation() {
+	public function deleteCategoryOfRelation() {
 		$this->actionService->deleteRecord(self::TABLE_Category, self::VALUE_CategoryIdFirst);
-		$this->assertAssertionDataSet('deleteCategoryRecordOfCategoryRelation');
+		$this->assertAssertionDataSet('deleteCategoryOfRelation');
 
 		$responseContent = $this->getFrontendResponse(self::VALUE_PageId, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseContent();
 		$this->assertResponseContentStructureDoesNotHaveRecords(
@@ -270,10 +282,11 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 
 	/**
 	 * @test
+	 * @see DataSet/Assertion/copyContentRecordOfCategoryRelation.csv
 	 */
-	public function copyContentRecordOfCategoryRelation() {
+	public function copyContentOfRelation() {
 		$newTableIds = $this->actionService->copyRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_PageId);
-		$this->assertAssertionDataSet('copyContentRecordOfCategoryRelation');
+		$this->assertAssertionDataSet('copyContentOfRelation');
 
 		$newContentId = $newTableIds[self::TABLE_Content][self::VALUE_ContentIdLast];
 		$responseContent = $this->getFrontendResponse(self::VALUE_PageId, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseContent();
@@ -285,10 +298,11 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 
 	/**
 	 * @test
+	 * @see DataSet/Assertion/copyCategoryRecordOfCategoryRelation.csv
 	 */
-	public function copyCategoryRecordOfCategoryRelation() {
+	public function copyCategoryOfRelation() {
 		$this->actionService->copyRecord(self::TABLE_Category, self::VALUE_CategoryIdFirst, 0);
-		$this->assertAssertionDataSet('copyCategoryRecordOfCategoryRelation');
+		$this->assertAssertionDataSet('copyCategoryOfRelation');
 
 		$responseContent = $this->getFrontendResponse(self::VALUE_PageId, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseContent();
 		$this->assertResponseContentStructureHasRecords(
@@ -306,10 +320,11 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 
 	/**
 	 * @test
+	 * @see DataSet/Assertion/localizeContentRecordOfCategoryRelation.csv
 	 */
-	public function localizeContentRecordOfCategoryRelation() {
+	public function localizeContentOfRelation() {
 		$this->actionService->localizeRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_LanguageId);
-		$this->assertAssertionDataSet('localizeContentRecordOfCategoryRelation');
+		$this->assertAssertionDataSet('localizeContentOfRelation');
 
 		$responseContent = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseContent();
 		$this->assertResponseContentStructureHasRecords(
@@ -320,10 +335,11 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 
 	/**
 	 * @test
+	 * @see DataSet/Assertion/localizeCategoryRecordOfCategoryRelation.csv
 	 */
-	public function localizeCategoryRecordOfCategoryRelation() {
+	public function localizeCategoryOfRelation() {
 		$this->actionService->localizeRecord(self::TABLE_Category, self::VALUE_CategoryIdFirst, self::VALUE_LanguageId);
-		$this->assertAssertionDataSet('localizeCategoryRecordOfCategoryRelation');
+		$this->assertAssertionDataSet('localizeCategoryOfRelation');
 
 		$responseContent = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseContent();
 		$this->assertResponseContentStructureHasRecords(
@@ -334,10 +350,11 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 
 	/**
 	 * @test
+	 * @see DataSet/Assertion/moveContentRecordOfCategoryRelationToDifferentPage.csv
 	 */
-	public function moveContentRecordOfCategoryRelationToDifferentPage() {
+	public function moveContentOfRelationToDifferentPage() {
 		$this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_PageIdTarget);
-		$this->assertAssertionDataSet('moveContentRecordOfCategoryRelationToDifferentPage');
+		$this->assertAssertionDataSet('moveContentOfRelationToDifferentPage');
 
 		$responseContent = $this->getFrontendResponse(self::VALUE_PageIdTarget, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseContent();
 		$this->assertResponseContentStructureHasRecords(

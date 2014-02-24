@@ -62,6 +62,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 
 	/**
 	 * @test
+	 * @see DataSet/Assertion/addCategoryRelation.csv
 	 */
 	public function addCategoryRelation() {
 		$this->actionService->modifyReferences(
@@ -78,6 +79,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 
 	/**
 	 * @test
+	 * @see DataSet/Assertion/deleteCategoryRelation.csv
 	 */
 	public function deleteCategoryRelation() {
 		$this->actionService->modifyReferences(
@@ -98,6 +100,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 
 	/**
 	 * @test
+	 * @see DataSet/Assertion/changeCategoryRelationSorting.csv
 	 */
 	public function changeCategoryRelationSorting() {
 		$this->actionService->modifyReferences(
@@ -114,10 +117,11 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 
 	/**
 	 * @test
+	 * @see DataSet/Assertion/modifyCategoryRecordOfCategoryRelation.csv
 	 */
-	public function modifyCategoryRecordOfCategoryRelation() {
+	public function modifyCategoryOfRelation() {
 		$this->actionService->modifyRecord(self::TABLE_Category, self::VALUE_CategoryIdFirst, array('title' => 'Testing #1'));
-		$this->assertAssertionDataSet('modifyCategoryRecordOfCategoryRelation');
+		$this->assertAssertionDataSet('modifyCategoryOfRelation');
 
 		$responseContent = $this->getFrontendResponse(self::VALUE_PageId)->getResponseContent();
 		$this->assertResponseContentStructureHasRecords(
@@ -128,10 +132,11 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 
 	/**
 	 * @test
+	 * @see DataSet/Assertion/modifyContentRecordOfCategoryRelation.csv
 	 */
-	public function modifyContentRecordOfCategoryRelation() {
+	public function modifyContentOfRelation() {
 		$this->actionService->modifyRecord(self::TABLE_Content, self::VALUE_ContentIdFirst, array('header' => 'Testing #1'));
-		$this->assertAssertionDataSet('modifyContentRecordOfCategoryRelation');
+		$this->assertAssertionDataSet('modifyContentOfRelation');
 
 		$responseContent = $this->getFrontendResponse(self::VALUE_PageId)->getResponseContent();
 		$this->assertResponseContentHasRecords($responseContent, self::TABLE_Content, 'header', 'Testing #1');
@@ -139,11 +144,12 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 
 	/**
 	 * @test
+	 * @see DataSet/Assertion/modifyBothRecordsOfCategoryRelation.csv
 	 */
-	public function modifyBothRecordsOfCategoryRelation() {
+	public function modifyBothsOfRelation() {
 		$this->actionService->modifyRecord(self::TABLE_Category, self::VALUE_CategoryIdFirst, array('title' => 'Testing #1'));
 		$this->actionService->modifyRecord(self::TABLE_Content, self::VALUE_ContentIdFirst, array('header' => 'Testing #1'));
-		$this->assertAssertionDataSet('modifyBothRecordsOfCategoryRelation');
+		$this->assertAssertionDataSet('modifyBothsOfRelation');
 
 		$responseContent = $this->getFrontendResponse(self::VALUE_PageId)->getResponseContent();
 		$this->assertResponseContentStructureHasRecords(
@@ -155,10 +161,11 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 
 	/**
 	 * @test
+	 * @see DataSet/Assertion/deleteContentRecordOfCategoryRelation.csv
 	 */
-	public function deleteContentRecordOfCategoryRelation() {
+	public function deleteContentOfRelation() {
 		$this->actionService->deleteRecord(self::TABLE_Content, self::VALUE_ContentIdLast);
-		$this->assertAssertionDataSet('deleteContentRecordOfCategoryRelation');
+		$this->assertAssertionDataSet('deleteContentOfRelation');
 
 		$responseContent = $this->getFrontendResponse(self::VALUE_PageId)->getResponseContent();
 		$this->assertResponseContentDoesNotHaveRecords($responseContent, self::TABLE_Content, 'header', 'Testing #1');
@@ -166,10 +173,11 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 
 	/**
 	 * @test
+	 * @see DataSet/Assertion/deleteCategoryRecordOfCategoryRelation.csv
 	 */
-	public function deleteCategoryRecordOfCategoryRelation() {
+	public function deleteCategoryOfRelation() {
 		$this->actionService->deleteRecord(self::TABLE_Category, self::VALUE_CategoryIdFirst);
-		$this->assertAssertionDataSet('deleteCategoryRecordOfCategoryRelation');
+		$this->assertAssertionDataSet('deleteCategoryOfRelation');
 
 		$responseContent = $this->getFrontendResponse(self::VALUE_PageId)->getResponseContent();
 		$this->assertResponseContentStructureDoesNotHaveRecords(
@@ -180,10 +188,11 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 
 	/**
 	 * @test
+	 * @see DataSet/Assertion/copyContentRecordOfCategoryRelation.csv
 	 */
-	public function copyContentRecordOfCategoryRelation() {
+	public function copyContentOfRelation() {
 		$newTableIds = $this->actionService->copyRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_PageId);
-		$this->assertAssertionDataSet('copyContentRecordOfCategoryRelation');
+		$this->assertAssertionDataSet('copyContentOfRelation');
 
 		$newContentId = $newTableIds[self::TABLE_Content][self::VALUE_ContentIdLast];
 		$responseContent = $this->getFrontendResponse(self::VALUE_PageId)->getResponseContent();
@@ -195,10 +204,11 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 
 	/**
 	 * @test
+	 * @see DataSet/Assertion/copyCategoryRecordOfCategoryRelation.csv
 	 */
-	public function copyCategoryRecordOfCategoryRelation() {
+	public function copyCategoryOfRelation() {
 		$this->actionService->copyRecord(self::TABLE_Category, self::VALUE_CategoryIdFirst, 0);
-		$this->assertAssertionDataSet('copyCategoryRecordOfCategoryRelation');
+		$this->assertAssertionDataSet('copyCategoryOfRelation');
 
 		$responseContent = $this->getFrontendResponse(self::VALUE_PageId)->getResponseContent();
 		$this->assertResponseContentStructureHasRecords(
@@ -209,10 +219,11 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 
 	/**
 	 * @test
+	 * @see DataSet/Assertion/localizeContentRecordOfCategoryRelation.csv
 	 */
-	public function localizeContentRecordOfCategoryRelation() {
+	public function localizeContentOfRelation() {
 		$this->actionService->localizeRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_LanguageId);
-		$this->assertAssertionDataSet('localizeContentRecordOfCategoryRelation');
+		$this->assertAssertionDataSet('localizeContentOfRelation');
 
 		$responseContent = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId)->getResponseContent();
 		$this->assertResponseContentStructureHasRecords(
@@ -223,10 +234,11 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 
 	/**
 	 * @test
+	 * @see DataSet/Assertion/localizeCategoryRecordOfCategoryRelation.csv
 	 */
-	public function localizeCategoryRecordOfCategoryRelation() {
+	public function localizeCategoryOfRelation() {
 		$this->actionService->localizeRecord(self::TABLE_Category, self::VALUE_CategoryIdFirst, self::VALUE_LanguageId);
-		$this->assertAssertionDataSet('localizeCategoryRecordOfCategoryRelation');
+		$this->assertAssertionDataSet('localizeCategoryOfRelation');
 
 		$responseContent = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId)->getResponseContent();
 		$this->assertResponseContentStructureHasRecords(
@@ -237,10 +249,11 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 
 	/**
 	 * @test
+	 * @see DataSet/Assertion/moveContentRecordOfCategoryRelationToDifferentPage.csv
 	 */
-	public function moveContentRecordOfCategoryRelationToDifferentPage() {
+	public function moveContentOfRelationToDifferentPage() {
 		$this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_PageIdTarget);
-		$this->assertAssertionDataSet('moveContentRecordOfCategoryRelationToDifferentPage');
+		$this->assertAssertionDataSet('moveContentOfRelationToDifferentPage');
 
 		$responseContent = $this->getFrontendResponse(self::VALUE_PageIdTarget)->getResponseContent();
 		$this->assertResponseContentStructureHasRecords(

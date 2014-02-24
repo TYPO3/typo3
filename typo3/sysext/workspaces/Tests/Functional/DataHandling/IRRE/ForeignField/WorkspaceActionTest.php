@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\InlineRelationalRecordEditing\CommaSeparatedValue;
+namespace TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\IRRE\ForeignField;
 
 /***************************************************************
  * Copyright notice

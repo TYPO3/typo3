@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\InlineRelationalRecordEditing;
+namespace TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\IRRE;
 
 /***************************************************************
 *  Copyright notice
@@ -24,7 +24,7 @@ namespace TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\InlineRelationalRec
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-require_once(ORIGINAL_ROOT . 'typo3/sysext/core/Tests/Functional/DataHandling/InlineRelationalRecordEditing/AbstractTestCase.php');
+require_once(ORIGINAL_ROOT . 'typo3/sysext/core/Tests/Functional/DataHandling/IRRE/AbstractTestCase.php');
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
@@ -35,7 +35,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @author Oliver Hader <oliver@typo3.org>
  */
-abstract class AbstractTestCase extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\InlineRelationalRecordEditing\AbstractTestCase {
+abstract class AbstractTestCase extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\IRRE\AbstractTestCase {
 	const VALUE_TimeStamp = 1250000000;
 	const VALUE_Pid = 1;
 	const VALUE_PidAlternative = 7;

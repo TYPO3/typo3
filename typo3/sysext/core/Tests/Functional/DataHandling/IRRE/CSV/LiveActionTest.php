@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\InlineRelationalRecordEditing\ForeignField;
+namespace TYPO3\CMS\Core\Tests\Functional\DataHandling\IRRE\CSV;
 
 /***************************************************************
  * Copyright notice
@@ -29,11 +29,11 @@ require_once dirname(__FILE__) . '/AbstractActionTestCase.php';
 /**
  * Functional test for the DataHandler
  */
-class WorkspaceActionTest extends AbstractActionTestCase {
+class LiveActionTest extends AbstractActionTestCase {
 
 	public function setUp() {
 		parent::setUp();
-		$this->backendUser->workspace = self::VALUE_WorkspaceId;
+		$this->backendUser->workspace = 0;
 	}
 
 }
