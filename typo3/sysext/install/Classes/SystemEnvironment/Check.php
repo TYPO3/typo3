@@ -580,12 +580,12 @@ class Check {
 	 * @return Status\StatusInterface
 	 */
 	protected function checkSuhosinLoaded() {
-		if ($this->isSuhosinLoaded()) {
+		if ($this->isSuhosinLoadedAndActive()) {
 			$status = new Status\OkStatus();
-			$status->setTitle('PHP suhosin extension loaded');
+			$status->setTitle('PHP suhosin extension loaded and active');
 		} else {
 			$status = new Status\NoticeStatus();
-			$status->setTitle('PHP suhosin extension not loaded');
+			$status->setTitle('PHP suhosin extension not loaded or in simulation mode');
 			$status->setMessage(
 				'suhosin is an extension to harden the PHP environment. In general, it is' .
 				' good to have it from a security point of view. While TYPO3 CMS works' .
@@ -603,7 +603,7 @@ class Check {
 	 */
 	protected function checkSuhosinRequestMaxVars() {
 		$recommendedRequestMaxVars = 400;
-		if ($this->isSuhosinLoaded()) {
+		if ($this->isSuhosinLoadedAndActive()) {
 			$currentRequestMaxVars = ini_get('suhosin.request.max_vars');
 			if ($currentRequestMaxVars < $recommendedRequestMaxVars) {
 				$status = new Status\ErrorStatus();
@@ -638,7 +638,7 @@ class Check {
 	 */
 	protected function checkSuhosinRequestMaxVarnameLength() {
 		$recommendedRequestMaxVarnameLength = 200;
-		if ($this->isSuhosinLoaded()) {
+		if ($this->isSuhosinLoadedAndActive()) {
 			$currentRequestMaxVarnameLength = ini_get('suhosin.request.max_varname_length');
 			if ($currentRequestMaxVarnameLength < $recommendedRequestMaxVarnameLength) {
 				$status = new Status\ErrorStatus();
@@ -673,7 +673,7 @@ class Check {
 	 */
 	protected function checkSuhosinPostMaxNameLength() {
 		$recommendedPostMaxNameLength = 200;
-		if ($this->isSuhosinLoaded()) {
+		if ($this->isSuhosinLoadedAndActive()) {
 			$currentPostMaxNameLength = ini_get('suhosin.post.max_name_length');
 			if ($currentPostMaxNameLength < $recommendedPostMaxNameLength) {
 				$status = new Status\ErrorStatus();
@@ -708,7 +708,7 @@ class Check {
 	 */
 	protected function checkSuhosinPostMaxVars() {
 		$recommendedPostMaxVars = 400;
-		if ($this->isSuhosinLoaded()) {
+		if ($this->isSuhosinLoadedAndActive()) {
 			$currentPostMaxVars = ini_get('suhosin.post.max_vars');
 			if ($currentPostMaxVars < $recommendedPostMaxVars) {
 				$status = new Status\ErrorStatus();
@@ -743,7 +743,7 @@ class Check {
 	 */
 	protected function checkSuhosinGetMaxValueLength() {
 		$recommendedGetMaxValueLength = 2000;
-		if ($this->isSuhosinLoaded()) {
+		if ($this->isSuhosinLoadedAndActive()) {
 			$currentGetMaxValueLength = ini_get('suhosin.get.max_value_length');
 			if ($currentGetMaxValueLength < $recommendedGetMaxValueLength) {
 				$status = new Status\ErrorStatus();
@@ -778,7 +778,7 @@ class Check {
 	 */
 	protected function checkSuhosinGetMaxNameLength() {
 		$recommendedGetMaxNameLength = 200;
-		if ($this->isSuhosinLoaded()) {
+		if ($this->isSuhosinLoadedAndActive()) {
 			$currentGetMaxNameLength = ini_get('suhosin.get.max_name_length');
 			if ($currentGetMaxNameLength < $recommendedGetMaxNameLength) {
 				$status = new Status\ErrorStatus();
@@ -812,7 +812,7 @@ class Check {
 	 * @return Status\StatusInterface
 	 */
 	protected function checkSuhosinExecutorIncludeWhiteListContainsPhar() {
-		if ($this->isSuhosinLoaded()) {
+		if ($this->isSuhosinLoadedAndActive()) {
 			$whitelist = (string)ini_get('suhosin.executor.include.whitelist');
 			if (strpos($whitelist, 'phar') === FALSE) {
 				$status = new Status\NoticeStatus();
@@ -844,7 +844,7 @@ class Check {
 	 * @return Status\StatusInterface
 	 */
 	protected function checkSuhosinExecutorIncludeWhiteListContainsVfs() {
-		if ($this->isSuhosinLoaded()) {
+		if ($this->isSuhosinLoadedAndActive()) {
 			$whitelist = (string)ini_get('suhosin.executor.include.whitelist');
 			if (strpos($whitelist, 'vfs') === FALSE) {
 				$status = new Status\WarningStatus();
@@ -1408,10 +1408,17 @@ class Check {
 	 *
 	 * @return boolean TRUE if suhosin PHP extension is loaded
 	 */
-	protected function isSuhosinLoaded() {
+	protected function isSuhosinLoadedAndActive() {
 		$suhosinLoaded = FALSE;
 		if (extension_loaded('suhosin')) {
-			$suhosinLoaded = TRUE;
+			$suhosinInSimulationMode = filter_var(
+				ini_get('suhosin.simulation'),
+				FILTER_VALIDATE_BOOLEAN,
+				array(FILTER_REQUIRE_SCALAR, FILTER_NULL_ON_FAILURE)
+			);
+			if (!$suhosinInSimulationMode) {
+				$suhosinLoaded = TRUE;
+			}
 		}
 		return $suhosinLoaded;
 	}
