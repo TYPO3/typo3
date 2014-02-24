@@ -175,7 +175,7 @@ define('TYPO3/CMS/Backend/FormEngine', ['jquery'], function ($) {
 	setFormValueManipulate = function(fName, type, maxLength) {
 		var $formEl = FormEngine.getFormElement(fName);
 		if ($formEl.length > 0) {
-			var formObj = formEl.get();
+			var formObj = $formEl.get();
 			var localArray_V = new Array();
 			var localArray_L = new Array();
 			var localArray_S = new Array();
