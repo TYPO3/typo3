@@ -78,12 +78,6 @@ class IndexerServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 		$GLOBALS['TYPO3_DB'] = $this->getMock('TYPO3\\CMS\\Core\\Database\\DatabaseConnection', array(), array(), '', FALSE);
 
-		$arrayConstraint = $this->logicalAnd(
-			$this->arrayHasKey('crdate'),
-			$this->arrayHasKey('tstamp'),
-			$this->contains($GLOBALS['EXEC_TIME'])
-		);
-
 		$mockedFile = $this->getMock('TYPO3\\CMS\\Core\\Resource\\File', array(), array(), '', FALSE);
 
 		$fixture->indexFile($mockedFile);
