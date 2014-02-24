@@ -1105,7 +1105,7 @@ class ResourceStorage {
 		}
 		$this->assureFileAddPermissions($localFilePath, $targetFolder, $targetFileName);
 		$targetFolder = $targetFolder ?: $this->getDefaultFolder();
-		$targetFileName = $targetFileName ?: PathUtility::basename($localFilePath);
+		$targetFileName = $this->driver->sanitizeFileName($targetFileName ?: PathUtility::basename($localFilePath));
 		if ($conflictMode === 'cancel' && $this->driver->fileExistsInFolder($targetFileName, $targetFolder->getIdentifier())) {
 			throw new Exception\ExistingTargetFileNameException('File "' . $targetFileName . '" already exists in folder ' . $targetFolder->getIdentifier(), 1322121068);
 		} elseif ($conflictMode === 'changeName') {
