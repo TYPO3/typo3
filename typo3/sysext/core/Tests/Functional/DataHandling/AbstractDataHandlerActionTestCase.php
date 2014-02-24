@@ -128,6 +128,7 @@ abstract class AbstractDataHandlerActionTestCase extends \TYPO3\CMS\Core\Tests\F
 		$fileName = GeneralUtility::getFileAbsFileName($fileName);
 
 		$dataSet = DataSet::read($fileName);
+		$failMessages = array();
 
 		foreach ($dataSet->getTableNames() as $tableName) {
 			$hasUidField = ($dataSet->getIdIndex($tableName) !== NULL);
@@ -136,11 +137,16 @@ abstract class AbstractDataHandlerActionTestCase extends \TYPO3\CMS\Core\Tests\F
 				$result = $this->assertInRecords($assertion, $records);
 				if ($result === FALSE) {
 					if ($hasUidField && empty($records[$assertion['uid']])) {
-						$this->fail('Record "' . $tableName . ':' . $assertion['uid'] . '" not found in database');
+						$failMessages[] = 'Record "' . $tableName . ':' . $assertion['uid'] . '" not found in database';
+						continue;
 					}
 					$recordIdentifier = $tableName . ($hasUidField ? ':' . $assertion['uid'] : '');
 					$additionalInformation = ($hasUidField ? $this->renderRecords($assertion, $records[$assertion['uid']]) : $this->arrayToString($assertion));
-					$this->fail('Assertion in data-set failed for "' . $recordIdentifier . '":' . LF . $additionalInformation);
+					$failMessages[] = 'Assertion in data-set failed for "' . $recordIdentifier . '":' . LF . $additionalInformation;
+					// Unset failed asserted record
+					if ($hasUidField) {
+						unset($records[$assertion['uid']]);
+					}
 				} else {
 					// Unset asserted record
 					unset($records[$result]);
@@ -148,6 +154,17 @@ abstract class AbstractDataHandlerActionTestCase extends \TYPO3\CMS\Core\Tests\F
 					$this->assertTrue($result !== FALSE);
 				}
 			}
+			if (!empty($records)) {
+				foreach ($records as $record) {
+					$recordIdentifier = $tableName . ':' . $record['uid'];
+					$additionalInformation = $this->arrayToString($record);
+					$failMessages[] = 'Not asserted record found for "' . $recordIdentifier . '":' . LF . $additionalInformation;
+				}
+			}
+		}
+
+		if (!empty($failMessages)) {
+			$this->fail(implode(LF, $failMessages));
 		}
 	}
 
@@ -205,7 +222,7 @@ abstract class AbstractDataHandlerActionTestCase extends \TYPO3\CMS\Core\Tests\F
 			}
 			$elements[] = "'" . $key . "' => '" . $value . "'";
 		}
-		return 'array(' . implode(', ', $elements) . ')';
+		return 'array(' . PHP_EOL . '   ' . implode(', ' . PHP_EOL . '   ', $elements) . PHP_EOL . ')' . PHP_EOL;
 	}
 
 	/**
@@ -221,6 +238,7 @@ abstract class AbstractDataHandlerActionTestCase extends \TYPO3\CMS\Core\Tests\F
 			'record' => array('Record'),
 		);
 		$lines = array();
+		$linesFromXmlValues = array();
 		$result = '';
 
 		foreach ($differentFields as $differentField) {
@@ -232,18 +250,35 @@ abstract class AbstractDataHandlerActionTestCase extends \TYPO3\CMS\Core\Tests\F
 		foreach ($columns as $columnIndex => $column) {
 			$columnLength = NULL;
 			foreach ($column as $value) {
+				if (strpos($value, '<?xml') === 0) {
+					$value = '[see diff]';
+				}
 				$valueLength = strlen($value);
 				if (empty($columnLength) || $valueLength > $columnLength) {
 					$columnLength = $valueLength;
 				}
 			}
 			foreach ($column as $valueIndex => $value) {
+				if (strpos($value, '<?xml') === 0) {
+					if ($columnIndex === 'assertion') {
+						try {
+							$this->assertXmlStringEqualsXmlString((string)$value, (string)$record[$columns['fields'][$valueIndex]]);
+						} catch(\PHPUnit_Framework_ExpectationFailedException $e) {
+							$linesFromXmlValues[] = 'Diff for field "' . $columns['fields'][$valueIndex] . '":' . PHP_EOL . $e->getComparisonFailure()->getDiff();
+						}
+					}
+					$value = '[see diff]';
+				}
 				$lines[$valueIndex][$columnIndex] = str_pad($value, $columnLength, ' ');
 			}
 		}
 
 		foreach ($lines as $line) {
 			$result .= implode('|', $line) . PHP_EOL;
+		}
+
+		foreach ($linesFromXmlValues as $lineFromXmlValues) {
+			$result .= PHP_EOL . $lineFromXmlValues . PHP_EOL;
 		}
 
 		return $result;
@@ -260,6 +295,14 @@ abstract class AbstractDataHandlerActionTestCase extends \TYPO3\CMS\Core\Tests\F
 		foreach ($assertion as $field => $value) {
 			if (strpos($value, '\\*') === 0) {
 				continue;
+			} elseif (strpos($value, '<?xml') === 0) {
+				try {
+					$this->assertXmlStringEqualsXmlString((string)$value, (string)$record[$field]);
+				} catch (\PHPUnit_Framework_ExpectationFailedException $e) {
+					$differentFields[] = $field;
+				}
+			} elseif ($value === NULL && $record[$field] !== $value) {
+				$differentFields[] = $field;
 			} elseif ((string)$record[$field] !== (string)$value) {
 				$differentFields[] = $field;
 			}
