@@ -6,6 +6,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Service;
  *
  *  (c) 2009 Christian Müller <christian@kitsunet.de>
  *  (c) 2011 Bastian Waidelich <bastian@typo3.org>
+ *  (c) 2014 Markus Klein <klein.t3@mfc-linz.at>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -30,107 +31,126 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Service;
 class TypoScriptServiceTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
+	 * data provider for convertTypoScriptArrayToPlainArray
 	 * @return array
 	 */
 	public function convertTypoScriptArrayToPlainArrayTestdata() {
-		$testdata = array();
-		//convert TypoScript Array To Plain Array Removes Trailing Dots
-		$testdata[0] = array(
-			'typoScriptSettings' => array(
-				'10.' => array(
-					'value' => 'Hello World!',
-					'foo.' => array(
-						'bar' => 5
-					)
-				),
-				'10' => 'TEXT'
-			),
-			'expectedSettings' => array(
-				'10' => array(
-					'value' => 'Hello World!',
-					'foo' => array(
-						'bar' => 5
-					),
-					'_typoScriptNodeValue' => 'TEXT'
-				)
-			)
-		);
-		//convert TypoScript Array To Plain Array Removes Trailing Dots With Changed Order In The TypoScript Array
-		$testdata[1] = array(
-			'typoScriptSettings' => array(
-				'10' => 'TEXT',
-				'10.' => array(
-					'value' => 'Hello World!',
-					'foo.' => array(
-						'bar' => 5
-					)
-				)
-			),
-			'expectedSettings' => array(
-				'10' => array(
-					'value' => 'Hello World!',
-					'foo' => array(
-						'bar' => 5
-					),
-					'_typoScriptNodeValue' => 'TEXT'
-				)
-			)
-		);
-		$testdata[2] = array(
-			'typoScriptSettings' => array(
-				'10' => 'COA',
-				'10.' => array(
-					'10' => 'TEXT',
+		return array(
+			'simple typoscript array' => array(
+				'typoScriptSettings' => array(
 					'10.' => array(
 						'value' => 'Hello World!',
 						'foo.' => array(
 							'bar' => 5
 						)
 					),
-					'20' => 'COA',
-					'20.' => array(
-						'10' => 'TEXT',
-						'10.' => array(
-							'value' => 'Test',
-							'wrap' => '[|]'
-						),
-						'20' => 'TEXT',
-						'20.' => array(
-							'value' => 'Test',
-							'wrap' => '[|]'
-						)
-					),
-					'30' => 'custom'
-				)
-			),
-			'expectedSettings' => array(
-				'10' => array(
+					'10' => 'TEXT'
+				),
+				'expectedSettings' => array(
 					'10' => array(
 						'value' => 'Hello World!',
 						'foo' => array(
 							'bar' => 5
 						),
 						'_typoScriptNodeValue' => 'TEXT'
+					)
+				)
+			),
+			'typoscript with intermediate dots' => array(
+				'typoScriptSettings' => array(
+					'10.' => array(
+						'value' => 'Hello World!',
+						'foo.' => array(
+							'bar' => 5
+						)
 					),
-					'20' => array(
+					'10' => 'TEXT'
+				),
+				'expectedSettings' => array(
+					'10' => array(
+						'value' => 'Hello World!',
+						'foo' => array(
+							'bar' => 5
+						),
+						'_typoScriptNodeValue' => 'TEXT'
+					)
+				)
+			),
+			'typoscript array with changed order' => array(
+				'typoScriptSettings' => array(
+					'10' => 'TEXT',
+					'10.' => array(
+						'value' => 'Hello World!',
+						'foo.' => array(
+							'bar' => 5
+						)
+					)
+				),
+				'expectedSettings' => array(
+					'10' => array(
+						'value' => 'Hello World!',
+						'foo' => array(
+							'bar' => 5
+						),
+						'_typoScriptNodeValue' => 'TEXT'
+					)
+				)
+			),
+			'nested typoscript array' => array(
+				'typoScriptSettings' => array(
+					'10' => 'COA',
+					'10.' => array(
+						'10' => 'TEXT',
+						'10.' => array(
+							'value' => 'Hello World!',
+							'foo.' => array(
+								'bar' => 5
+							)
+						),
+						'20' => 'COA',
+						'20.' => array(
+							'10' => 'TEXT',
+							'10.' => array(
+								'value' => 'Test',
+								'wrap' => '[|]'
+							),
+							'20' => 'TEXT',
+							'20.' => array(
+								'value' => 'Test',
+								'wrap' => '[|]'
+							)
+						),
+						'30' => 'custom'
+					)
+				),
+				'expectedSettings' => array(
+					'10' => array(
 						'10' => array(
-							'value' => 'Test',
-							'wrap' => '[|]',
+							'value' => 'Hello World!',
+							'foo' => array(
+								'bar' => 5
+							),
 							'_typoScriptNodeValue' => 'TEXT'
 						),
 						'20' => array(
-							'value' => 'Test',
-							'wrap' => '[|]',
-							'_typoScriptNodeValue' => 'TEXT'
+							'10' => array(
+								'value' => 'Test',
+								'wrap' => '[|]',
+								'_typoScriptNodeValue' => 'TEXT'
+							),
+							'20' => array(
+								'value' => 'Test',
+								'wrap' => '[|]',
+								'_typoScriptNodeValue' => 'TEXT'
+							),
+							'_typoScriptNodeValue' => 'COA'
 						),
+						'30' => 'custom',
 						'_typoScriptNodeValue' => 'COA'
-					),
-					'30' => 'custom',
-					'_typoScriptNodeValue' => 'COA'
+					)
 				)
-			)
+			),
 		);
-		return $testdata;
 	}
 
 	/**
@@ -151,74 +171,118 @@ class TypoScriptServiceTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @return array
 	 */
 	public function convertPlainArrayToTypoScriptArrayTestdata() {
-		$testdata = array();
-		$testdata[0] = array(
-			'extbaseTS' => array(
-				'10' => array(
-					'value' => 'Hallo',
-					'_typoScriptNodeValue' => 'TEXT'
+		return array(
+			'simple typoscript' => array(
+				'extbaseTS' => array(
+					'10' => array(
+						'value' => 'Hallo',
+						'_typoScriptNodeValue' => 'TEXT'
+					)
+				),
+				'classic' => array(
+					'10' => 'TEXT',
+					'10.' => array(
+						'value' => 'Hallo'
+					)
 				)
 			),
-			'classic' => array(
-				'10' => 'TEXT',
-				'10.' => array(
-					'value' => 'Hallo'
-				)
-			)
-		);
-		$testdata[1] = array(
-			'extbaseTS' => array(
-				'10' => array(
+			'typoscript with null value' => array(
+				'extbaseTS' => array(
 					'10' => array(
-						'value' => 'Hello World!',
-						'foo' => array(
-							'bar' => 5
-						),
+						'value' => 'Hallo',
 						'_typoScriptNodeValue' => 'TEXT'
 					),
-					'20' => array(
+				    '20' => NULL
+				),
+				'classic' => array(
+					'10' => 'TEXT',
+					'10.' => array(
+						'value' => 'Hallo'
+					),
+				    '20' => ''
+				)
+			),
+			'ts with dots in key' => array(
+				'extbaseTS' => array(
+					'1.0' => array(
+						'value' => 'Hallo',
+						'_typoScriptNodeValue' => 'TEXT'
+					)
+				),
+				'classic' => array(
+					'1.0' => 'TEXT',
+					'1.0.' => array(
+						'value' => 'Hallo'
+					)
+				)
+			),
+			'ts with backslashes in key' => array(
+				'extbaseTS' => array(
+					'1\\0\\' => array(
+						'value' => 'Hallo',
+						'_typoScriptNodeValue' => 'TEXT'
+					)
+				),
+				'classic' => array(
+					'1\\0\\' => 'TEXT',
+					'1\\0\\.' => array(
+						'value' => 'Hallo'
+					)
+				)
+			),
+			'bigger typoscript' => array(
+				'extbaseTS' => array(
+					'10' => array(
 						'10' => array(
-							'value' => 'Test',
-							'wrap' => '[|]',
+							'value' => 'Hello World!',
+							'foo' => array(
+								'bar' => 5
+							),
 							'_typoScriptNodeValue' => 'TEXT'
 						),
 						'20' => array(
-							'value' => 'Test',
-							'wrap' => '[|]',
-							'_typoScriptNodeValue' => 'TEXT'
+							'10' => array(
+								'value' => 'Test',
+								'wrap' => '[|]',
+								'_typoScriptNodeValue' => 'TEXT'
+							),
+							'20' => array(
+								'value' => 'Test',
+								'wrap' => '[|]',
+								'_typoScriptNodeValue' => 'TEXT'
+							),
+							'_typoScriptNodeValue' => 'COA'
 						),
 						'_typoScriptNodeValue' => 'COA'
-					),
-					'_typoScriptNodeValue' => 'COA'
-				)
-			),
-			'classic' => array(
-				'10' => 'COA',
-				'10.' => array(
-					'10' => 'TEXT',
+					)
+				),
+				'classic' => array(
+					'10' => 'COA',
 					'10.' => array(
-						'value' => 'Hello World!',
-						'foo.' => array(
-							'bar' => 5
-						)
-					),
-					'20' => 'COA',
-					'20.' => array(
 						'10' => 'TEXT',
 						'10.' => array(
-							'value' => 'Test',
-							'wrap' => '[|]'
+							'value' => 'Hello World!',
+							'foo.' => array(
+								'bar' => 5
+							)
 						),
-						'20' => 'TEXT',
+						'20' => 'COA',
 						'20.' => array(
-							'value' => 'Test',
-							'wrap' => '[|]'
+							'10' => 'TEXT',
+							'10.' => array(
+								'value' => 'Test',
+								'wrap' => '[|]'
+							),
+							'20' => 'TEXT',
+							'20.' => array(
+								'value' => 'Test',
+								'wrap' => '[|]'
+							)
 						)
 					)
 				)
-			)
+			),
 		);
-		return $testdata;
 	}
 
 	/**

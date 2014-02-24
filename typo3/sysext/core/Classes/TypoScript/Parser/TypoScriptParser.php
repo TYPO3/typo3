@@ -567,7 +567,8 @@ class TypoScriptParser {
 	}
 
 	/**
-	 * Parsing of TypoScript keys inside a curly brace where the key is composite of at least two keys, thus having to recursively call itself to get the value
+	 * Parsing of TypoScript keys inside a curly brace where the key is composite of at least two keys,
+	 * thus having to recursively call itself to get the value
 	 *
 	 * @param string $string The object sub-path, eg "thisprop.another_prot
 	 * @param array $setup The local setup array from the function calling this function
@@ -576,61 +577,52 @@ class TypoScriptParser {
 	 * @todo Define visibility
 	 */
 	public function rollParseSub($string, array &$setup) {
-		if ((string) $string === '') {
+		if ((string)$string === '') {
 			return '';
 		}
 
-		$key = strstr($string, '.', TRUE);
-		if ($key === FALSE) {
-			$key = $string . '.';
-			if (!isset($setup[$key])) {
-				$setup[$key] = array();
-			}
-			$exitSig = $this->parseSub($setup[$key]);
-			if ($exitSig) {
-				return $exitSig;
-			}
-		} else {
-			$key .= '.';
-			if (!isset($setup[$key])) {
-				$setup[$key] = array();
-			}
-			$exitSig = $this->rollParseSub(substr($string, strlen($key)), $setup[$key]);
-			if ($exitSig) {
-				return $exitSig;
-			}
+		list($key, $remainingKey) = $this->parseNextKeySegment($string);
+		$key .= '.';
+		if (!isset($setup[$key])) {
+			$setup[$key] = array();
 		}
+		$exitSig = $remainingKey === ''
+			? $this->parseSub($setup[$key])
+			: $this->rollParseSub($remainingKey, $setup[$key]);
+		return $exitSig ?: '';
 	}
 
 	/**
-	 * Get a value/property pair for an object path in TypoScript, eg. "myobject.myvalue.mysubproperty". Here: Used by the "copy" operator, <
+	 * Get a value/property pair for an object path in TypoScript, eg. "myobject.myvalue.mysubproperty".
+	 * Here: Used by the "copy" operator, <
 	 *
 	 * @param string $string Object path for which to get the value
 	 * @param array $setup Global setup code if $string points to a global object path. But if string is prefixed with "." then its the local setup array.
 	 * @return array An array with keys 0/1 being value/property respectively
 	 * @todo Define visibility
 	 */
-	public function getVal($string, array $setup) {
-		if ((string) $string === '') {
+	public function getVal($string, $setup) {
+		if ((string)$string === '') {
 			return array();
 		}
 
-		$key = strstr($string, '.', TRUE);
-		if ($key === FALSE) {
+		list($key, $remainingKey) = $this->parseNextKeySegment($string);
+		$subKey = $key . '.';
+		if ($remainingKey === '') {
 			$retArr = array();
-			if (isset($setup[$string])) {
-				$retArr[0] = $setup[$string];
+			if (isset($setup[$key])) {
+				$retArr[0] = $setup[$key];
 			}
-			if (isset($setup[$string . '.'])) {
-				$retArr[1] = $setup[$string . '.'];
+			if (isset($setup[$subKey])) {
+				$retArr[1] = $setup[$subKey];
 			}
 			return $retArr;
 		} else {
-			$key .= '.';
-			if ($setup[$key]) {
-				return $this->getVal(substr($string, strlen($key)), $setup[$key]);
+			if ($setup[$subKey]) {
+				return $this->getVal($remainingKey, $setup[$subKey]);
 			}
 		}
+		return array();
 	}
 
 	/**
@@ -639,53 +631,104 @@ class TypoScriptParser {
 	 * @param string $string The object sub-path, eg "thisprop.another_prot
 	 * @param array $setup The local setup array from the function calling this function.
 	 * @param array|string $value The value/property pair array to set. If only one of them is set, then the other is not touched (unless $wipeOut is set, which it is when copies are made which must include both value and property)
-	 * @param boolean $wipeOut If set, then both value and property is wiped out when a copy is made of another value.
+	 * @param bool $wipeOut If set, then both value and property is wiped out when a copy is made of another value.
 	 * @return void
 	 * @todo Define visibility
 	 */
 	public function setVal($string, array &$setup, $value, $wipeOut = FALSE) {
-		if ((string) $string === '') {
+		if ((string)$string === '') {
 			return;
 		}
 
-		$key = strstr($string, '.', TRUE);
-		if ($key === FALSE) {
+		list($key, $remainingKey) = $this->parseNextKeySegment($string);
+		$subKey = $key . '.';
+		if ($remainingKey === '') {
 			if ($value === 'UNSET') {
-				unset($setup[$string]);
-				unset($setup[$string . '.']);
+				unset($setup[$key]);
+				unset($setup[$subKey]);
 				if ($this->regLinenumbers) {
-					$setup[$string . '.ln..'][] = ($this->lineNumberOffset + $this->rawP - 1) . '>';
+					$setup[$key . '.ln..'][] = ($this->lineNumberOffset + $this->rawP - 1) . '>';
 				}
 			} else {
 				$lnRegisDone = 0;
 				if ($wipeOut && $this->strict) {
-					unset($setup[$string]);
-					unset($setup[$string . '.']);
+					unset($setup[$key]);
+					unset($setup[$subKey]);
 					if ($this->regLinenumbers) {
-						$setup[$string . '.ln..'][] = ($this->lineNumberOffset + $this->rawP - 1) . '<';
+						$setup[$key . '.ln..'][] = ($this->lineNumberOffset + $this->rawP - 1) . '<';
 						$lnRegisDone = 1;
 					}
 				}
 				if (isset($value[0])) {
-					$setup[$string] = $value[0];
+					$setup[$key] = $value[0];
 				}
 				if (isset($value[1])) {
-					$setup[$string . '.'] = $value[1];
+					$setup[$subKey] = $value[1];
 				}
 				if ($this->lastComment && $this->regComments) {
-					$setup[$string . '..'] .= $this->lastComment;
+					$setup[$key . '..'] .= $this->lastComment;
 				}
 				if ($this->regLinenumbers && !$lnRegisDone) {
-					$setup[$string . '.ln..'][] = $this->lineNumberOffset + $this->rawP - 1;
+					$setup[$key . '.ln..'][] = $this->lineNumberOffset + $this->rawP - 1;
 				}
 			}
 		} else {
-			$key .= '.';
-			if (!isset($setup[$key])) {
-				$setup[$key] = array();
+			if (!isset($setup[$subKey])) {
+				$setup[$subKey] = array();
 			}
-			$this->setVal(substr($string, strlen($key)), $setup[$key], $value);
+			$this->setVal($remainingKey, $setup[$subKey], $value);
 		}
+	}
+
+	/**
+	 * Determines the first key segment of a TypoScript key by searching for the first
+	 * unescaped dot in the given key string.
+	 *
+	 * Since the escape characters are only needed to correctly determine the key
+	 * segment any escape characters before the first unescaped dot are
+	 * stripped from the key.
+	 *
+	 * @param string $key The key, possibly consisting of multiple key segments separated by unescaped dots
+	 * @return array Array with key segment and remaining part of $key
+	 */
+	protected function parseNextKeySegment($key) {
+		// if no dot is in the key, nothing to do
+		$dotPosition = strpos($key, '.');
+		if ($dotPosition === FALSE) {
+			return array($key, '');
+		}
+
+		if (strpos($key, '\\') !== FALSE) {
+			// backslashes are in the key, so we do further parsing
+
+			while ($dotPosition !== FALSE) {
+				if ($dotPosition > 0 && $key[$dotPosition - 1] !== '\\' || $dotPosition > 1 && $key[$dotPosition - 2] === '\\') {
+					break;
+				}
+				// escaped dot found, continue
+				$dotPosition = strpos($key, '.', $dotPosition + 1);
+			}
+
+			if ($dotPosition === FALSE) {
+				// no regular dot found
+				$keySegment = $key;
+				$remainingKey = '';
+			} else {
+				if ($dotPosition > 1 && $key[$dotPosition - 2] === '\\' && $key[$dotPosition - 1] === '\\') {
+					$keySegment = substr($key, 0, $dotPosition - 1);
+				} else {
+					$keySegment = substr($key, 0, $dotPosition);
+				}
+				$remainingKey = substr($key, $dotPosition + 1);
+			}
+
+			// fix key segment by removing escape sequences
+			$keySegment = str_replace('\\.', '.', $keySegment);
+		} else {
+			// no backslash in the key, we're fine off
+			list($keySegment, $remainingKey) = explode('.', $key, 2);
+		}
+		return array($keySegment, $remainingKey);
 	}
 
 	/**

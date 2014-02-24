@@ -5,6 +5,7 @@ namespace TYPO3\CMS\Extbase\Service;
  *  Copyright notice
  *
  *  (c) 2010-2013 Extbase Team (http://forge.typo3.org/projects/typo3v4-mvc)
+ *  (c) 2014 Markus Klein <klein.t3@mfc-linz.at>
  *  Extbase is a backport of TYPO3 Flow. All credits go to the TYPO3 Flow team.
  *  All rights reserved
  *
@@ -39,15 +40,14 @@ class TypoScriptService implements \TYPO3\CMS\Core\SingletonInterface {
 	 * to be more future-proof and not to have any conflicts with Fluid object accessor syntax.
 	 *
 	 * @param array $typoScriptArray The TypoScript array (e.g. array('foo' => 'TEXT', 'foo.' => array('bar' => 'baz')))
-	 * @return array
+	 * @return array e.g. array('foo' => array('_typoScriptNodeValue' => 'TEXT', 'bar' => 'baz'))
 	 * @api
 	 */
 	public function convertTypoScriptArrayToPlainArray(array $typoScriptArray) {
-		foreach ($typoScriptArray as $key => &$value) {
+		foreach ($typoScriptArray as $key => $value) {
 			if (substr($key, -1) === '.') {
 				$keyWithoutDot = substr($key, 0, -1);
-				$hasNodeWithoutDot = array_key_exists($keyWithoutDot, $typoScriptArray);
-				$typoScriptNodeValue = $hasNodeWithoutDot ? $typoScriptArray[$keyWithoutDot] : NULL;
+				$typoScriptNodeValue = isset($typoScriptArray[$keyWithoutDot]) ? $typoScriptArray[$keyWithoutDot] : NULL;
 				if (is_array($value)) {
 					$typoScriptArray[$keyWithoutDot] = $this->convertTypoScriptArrayToPlainArray($value);
 					if (!is_null($typoScriptNodeValue)) {
@@ -84,7 +84,7 @@ class TypoScriptService implements \TYPO3\CMS\Core\SingletonInterface {
 				}
 				$typoScriptArray[$key . '.'] = $this->convertPlainArrayToTypoScriptArray($value);
 			} else {
-				$typoScriptArray[$key] = $value;
+				$typoScriptArray[$key] = is_null($value) ? '' : $value;
 			}
 		}
 		return $typoScriptArray;
