@@ -43,6 +43,11 @@ class WizardView extends \TYPO3\CMS\Form\View\Wizard\AbstractWizardView {
 	public $doc;
 
 	/**
+	 * @var \TYPO3\CMS\Core\Page\PageRenderer
+	 */
+	protected $pageRenderer;
+
+	/**
 	 * Constructs this view
 	 *
 	 * Defines the global variable SOBE. Normally this is used by the wizards
@@ -106,6 +111,7 @@ class WizardView extends \TYPO3\CMS\Form\View\Wizard\AbstractWizardView {
 		$content .= $this->doc->moduleBody(array(), $docHeaderButtons, $markers);
 		$content .= $this->doc->endPage();
 		$content = $this->doc->insertStylesAndJS($content);
+
 		echo $content;
 		die;
 	}
@@ -119,7 +125,6 @@ class WizardView extends \TYPO3\CMS\Form\View\Wizard\AbstractWizardView {
 	 */
 	protected function loadJavascript() {
 		$compress = TRUE;
-		$baseUrl = \TYPO3\CMS\Core\Utility\GeneralUtility::resolveBackPath('../../../../../' . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('form') . 'Resources/Public/JavaScript/Wizard/');
 		$javascriptFiles = array(
 			'Initialize.js',
 			'Ux/Ext.ux.merge.js',
@@ -222,6 +227,7 @@ class WizardView extends \TYPO3\CMS\Form\View\Wizard\AbstractWizardView {
 		// Load ExtJS
 		$this->pageRenderer->loadExtJS();
 		// Load the wizards javascript
+		$baseUrl = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('form') . 'Resources/Public/JavaScript/Wizard/';
 		foreach ($javascriptFiles as $javascriptFile) {
 			$this->pageRenderer->addJsFile($baseUrl . $javascriptFile, 'text/javascript', $compress, FALSE);
 		}
@@ -237,11 +243,11 @@ class WizardView extends \TYPO3\CMS\Form\View\Wizard\AbstractWizardView {
 	protected function loadCss() {
 		// TODO Set to TRUE when finished
 		$compress = FALSE;
-		$baseUrl = \TYPO3\CMS\Core\Utility\GeneralUtility::resolveBackPath('../../../../../' . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('form') . 'Resources/Public/CSS/');
 		$cssFiles = array(
 			'Wizard/Form.css',
 			'Wizard/Wizard.css'
 		);
+		$baseUrl = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('form') . 'Resources/Public/CSS/';
 		// Load the wizards css
 		foreach ($cssFiles as $cssFile) {
 			$this->pageRenderer->addCssFile($baseUrl . $cssFile, 'stylesheet', 'all', '', $compress, FALSE);

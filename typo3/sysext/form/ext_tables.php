@@ -6,13 +6,23 @@ if (!defined('TYPO3_MODE')) {
 // Add Default TS to Include static (from extensions)
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile($_EXTKEY, 'Configuration/TypoScript/', 'Default TS');
 
+if (TYPO3_MODE === 'BE') {
+	// Register wizard
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
+		'wizard_form',
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Modules/Wizards/FormWizard/'
+	);
+}
+
 $GLOBALS['TCA']['tt_content']['columns']['bodytext']['config']['wizards']['forms'] = array(
 	'notNewRecords' => 1,
 	'enableByTypeConfig' => 1,
 	'type' => 'script',
 	'title' => 'Form wizard',
 	'icon' => 'wizard_forms.gif',
-	'script' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('form') . 'Classes/Controller/Wizard.php',
+	'module' => array(
+		'name' => 'wizard_form'
+	),
 	'params' => array(
 		'xmlOutput' => 0
 	)
