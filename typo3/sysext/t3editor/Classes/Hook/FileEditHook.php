@@ -110,12 +110,14 @@ class FileEditHook {
 	}
 
 	/**
+	 * @param array $parameters
+	 * @param mixed $pObj
+	 *
 	 * @return boolean TRUE if successful
 	 */
 	public function save($parameters, $pObj) {
 		$savingsuccess = FALSE;
 		if ($parameters['type'] == $this->ajaxSaveType) {
-			require_once 'init.php';
 			$tceFile = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\File\\FileController');
 			$tceFile->processAjaxRequest(array(), $parameters['ajaxObj']);
 			$result = $parameters['ajaxObj']->getContent('result');
