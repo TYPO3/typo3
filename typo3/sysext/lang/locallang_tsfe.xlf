@@ -138,6 +138,12 @@
 			<trans-unit id="info_noCache" xml:space="preserve">
 				<source>Page cached</source>
 			</trans-unit>
+			<trans-unit id="info_noCache_yes" xml:space="preserve">
+				<source>Yes</source>
+			</trans-unit>
+			<trans-unit id="info_noCache_no" xml:space="preserve">
+				<source>No</source>
+			</trans-unit>
 			<trans-unit id="info_countUserInt" xml:space="preserve">
 				<source>Count of USER_INT objects</source>
 			</trans-unit>
