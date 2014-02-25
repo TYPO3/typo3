@@ -94,7 +94,7 @@
 	}
 
 	function transformPaginatorToAjax() {
-		$('.f3-widget-paginator a').each(function() {
+		$('#typo3-dblist-pagination a').each(function() {
 			$(this).data('href', $(this).attr('href'));
 			$(this).attr('href', '#');
 			$(this).click(function() {
