@@ -2111,9 +2111,10 @@ class ElementBrowser {
 	 *
 	 * @param string $folder Absolute filepath
 	 * @return boolean If the input path is found in PATH_site then it returns TRUE.
-	 * @todo Define visibility
+	 * @deprecated since 6.2 - will be removed two versions later without replacement
 	 */
 	public function isWebFolder($folder) {
+		GeneralUtility::logDeprecatedFunction();
 		$folder = rtrim($folder, '/') . '/';
 		return GeneralUtility::isFirstPartOfStr($folder, PATH_site) ? TRUE : FALSE;
 	}
@@ -2123,9 +2124,10 @@ class ElementBrowser {
 	 *
 	 * @param string $folder Absolute filepath
 	 * @return boolean If the input path is found in the backend users filemounts, then return TRUE.
-	 * @todo Define visibility
+	 * @deprecated since 6.2 - will be removed two versions later without replacement
 	 */
 	public function checkFolder($folder) {
+		GeneralUtility::logDeprecatedFunction();
 		return $this->fileProcessor->checkPathAgainstMounts(rtrim($folder, '/') . '/') ? TRUE : FALSE;
 	}
 
@@ -2299,8 +2301,10 @@ class ElementBrowser {
 	 * @param \TYPO3\CMS\Backend\RecordList\ElementBrowserRecordList $recordList
 	 * @throws \InvalidArgumentException
 	 * @return void
+	 * @deprecated since 6.2 - will be removed two versions later without replacement
 	 */
 	public function setRecordList($recordList) {
+		GeneralUtility::logDeprecatedFunction();
 		if (!$recordList instanceof \TYPO3\CMS\Backend\RecordList\ElementBrowserRecordList) {
 			throw new \InvalidArgumentException('$recordList needs to be an instance of \\TYPO3\\CMS\\Backend\\RecordList\\ElementBrowserRecordList', 1370878522);
 		}
