@@ -492,7 +492,7 @@ class AdminPanelView {
 			$tableArr[] = array($this->extGetLL('info_id'), $GLOBALS['TSFE']->id);
 			$tableArr[] = array($this->extGetLL('info_type'), $GLOBALS['TSFE']->type);
 			$tableArr[] = array($this->extGetLL('info_groupList'), $GLOBALS['TSFE']->gr_list);
-			$tableArr[] = array($this->extGetLL('info_noCache'), $GLOBALS['TSFE']->no_cache ? 1 : 0);
+			$tableArr[] = array($this->extGetLL('info_noCache'), $this->extGetLL('info_noCache_' . ($GLOBALS['TSFE']->no_cache ? 'no' : 'yes')));
 			$tableArr[] = array($this->extGetLL('info_countUserInt'), count($GLOBALS['TSFE']->config['INTincScript']));
 
 			if (!empty($GLOBALS['TSFE']->fe_user->user['uid'])) {
