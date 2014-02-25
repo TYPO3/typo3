@@ -980,7 +980,7 @@ class ElementBrowser {
 							if (substr($v[$k2i . '.']['url'], 0, 7) === 'http://' || substr($v[$k2i . '.']['url'], 0, 7) === 'mailto:') {
 								$onClickEvent .= 'cur_href=' . GeneralUtility::quoteJSvalue($v[($k2i . '.')]['url']) . ';link_current();';
 							} else {
-								$onClickEvent .= 'link_spec(' . GeneralUtility::quoteJSvalue($this->siteURL . $v[($k2i . '.')]['url']) . '));';
+								$onClickEvent .= 'link_spec(' . GeneralUtility::quoteJSvalue($this->siteURL . $v[($k2i . '.')]['url']) . ');';
 							}
 							// Link:
 							$A = array('<a href="#" onclick="' . htmlspecialchars($onClickEvent) . 'return false;">', '</a>');
