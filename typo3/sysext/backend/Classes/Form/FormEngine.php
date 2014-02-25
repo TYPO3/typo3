@@ -3746,7 +3746,7 @@ class FormEngine {
 	 */
 	public function printPalette($palArr) {
 		$fieldAttributes = ' class="t3-form-palette-field"';
-		$labelAttributes = ' class="t3-form-palette-field-label"';
+		$labelAttributes = ' class="t3-form-palette-field-label t3-form-field-label"';
 
 		$row = 0;
 		$iRow = array();
@@ -4014,7 +4014,6 @@ class FormEngine {
 			}
 			$out .= '
 			TBE_EDITOR.images.req.src = "' . IconUtility::skinImg($this->backPath, 'gfx/required_h.gif', '', 1) . '";
-			TBE_EDITOR.images.cm.src = "' . IconUtility::skinImg($this->backPath, 'gfx/content_client.gif', '', 1) . '";
 			TBE_EDITOR.images.sel.src = "' . IconUtility::skinImg($this->backPath, 'gfx/content_selected.gif', '', 1) . '";
 			TBE_EDITOR.images.clear.src = "' . $this->backPath . 'clear.gif";
 

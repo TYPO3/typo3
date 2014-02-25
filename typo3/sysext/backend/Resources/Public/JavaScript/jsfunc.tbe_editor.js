@@ -330,9 +330,18 @@ var TBE_EDITOR = {
 		var theRecord = TBE_EDITOR.prependFormFieldNames+'['+table+']['+uid+']';
 		TBE_EDITOR.isChanged = 1;
 
-			// Set change image:
-		var imgObjName = "cm_"+table+"_"+uid+"_"+field;
-		TBE_EDITOR.setImage(imgObjName,TBE_EDITOR.images.cm);
+		// modify the "field has changed" info by adding a class to the container element (based on palette or main field)
+		var $formField = TYPO3.jQuery('[name="' + el + '"]');
+		var $label = $formField.closest('.t3-form-palette-field-container').find('.t3-form-field-label');
+		// no palette - find the header if it is a flexform
+		if ($label.length === 0) {
+			$label = $formField.closest('.t3-form-field-container').children('.t3-form-field-label');
+		}
+		// no flex either, check for a "normal" field
+		if ($label.length === 0) {
+			$label = $formField.closest('.formField-field').parent().prev().find('.t3-form-field-label');
+		}
+		$label.addClass('t3-form-field-state-changed');
 
 			// Set change image
 		if (document[TBE_EDITOR.formname][theField] && document[TBE_EDITOR.formname][theField].type=="select-one" && document[TBE_EDITOR.formname][theField+"_selIconVal"]) {
