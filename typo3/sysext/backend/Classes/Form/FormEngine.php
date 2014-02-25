@@ -4156,15 +4156,27 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 								$params['md5ID'] = $md5ID;
 								$params['returnUrl'] = $this->thisReturnUrl();
 								// Resolving script filename and setting URL.
-								if (substr($wConf['script'], 0, 4) === 'EXT:') {
-									$wScript = GeneralUtility::getFileAbsFileName($wConf['script']);
-									if ($wScript) {
-										$wScript = '../' . \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($wScript);
+								if (isset($wConf['script'])) {
+									if (substr($wConf['script'], 0, 4) === 'EXT:') {
+										$wScript = GeneralUtility::getFileAbsFileName($wConf['script']);
+										if ($wScript) {
+											$wScript = '../' . \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($wScript);
+										} else {
+											// Illeagal configuration, fail silently
+											break;
+										}
 									} else {
-										break;
+										$wScript = $wConf['script'];
 									}
+								} elseif (isset($wConf['module']['name'])) {
+									$urlParameters = array();
+									if (isset($wConf['module']['urlParameters']) && is_array($wConf['module']['urlParameters'])) {
+										$urlParameters = $wConf['module']['urlParameters'];
+									}
+									$wScript = BackendUtility::getModuleUrl($wConf['module']['name'], $urlParameters);
 								} else {
-									$wScript = $wConf['script'];
+									// Illeagal configuration, fail silently
+									break;
 								}
 								$url = $this->backPath . $wScript . (strstr($wScript, '?') ? '' : '?');
 								// If there is no script and the type is "colorbox", break right away:
