@@ -90,8 +90,8 @@ class DatabaseConnect extends Action\AbstractAction implements StepInterface {
 				$config = $configurationManager->getConfigurationValueByPath('EXTCONF/dbal/handlerCfg');
 				$driver = $config['_DEFAULT']['config']['driver'];
 				if ($driver === 'oci8') {
-					$configurationManager['_DEFAULT']['config']['driverOptions']['connectSID']
-						= $postValues['type'] === 'sid' ? TRUE : FALSE;
+					$config['_DEFAULT']['config']['driverOptions']['connectSID'] = ($postValues['type'] === 'sid');
+					$localConfigurationPathValuePairs['EXTCONF/dbal/handlerCfg'] = $config;
 				}
 			}
 
