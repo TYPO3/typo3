@@ -300,18 +300,18 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 		$JScode .= '
 			var plugin = window.parent.RTEarea["' . $this->editorNo . '"].editor.getPlugin("TYPO3Link");
 			var HTMLArea = window.parent.HTMLArea;
-			var add_href=' . GeneralUtility::quoteJSvalue(($this->curUrlArray['href'] ? '&curUrl[href]=' . rawurlencode($this->curUrlArray['href']) : '')) . ';
-			var add_target=' . GeneralUtility::quoteJSvalue(($this->setTarget ? '&curUrl[target]=' . rawurlencode($this->setTarget) : '')) . ';
-			var add_class=' . GeneralUtility::quoteJSvalue(($this->setClass ? '&curUrl[class]=' . rawurlencode($this->setClass) : '')) . ';
-			var add_title=' . GeneralUtility::quoteJSvalue(($this->setTitle ? '&curUrl[title]=' . rawurlencode($this->setTitle) : '')) . ';
-			var add_params=' . GeneralUtility::quoteJSvalue(($this->bparams ? '&bparams=' . rawurlencode($this->bparams) : '')) . ';
+			var add_href=' . GeneralUtility::quoteJSvalue($this->curUrlArray['href'] ? '&curUrl[href]=' . rawurlencode($this->curUrlArray['href']) : '') . ';
+			var add_target=' . GeneralUtility::quoteJSvalue($this->setTarget ? '&curUrl[target]=' . rawurlencode($this->setTarget) : '') . ';
+			var add_class=' . GeneralUtility::quoteJSvalue($this->setClass ? '&curUrl[class]=' . rawurlencode($this->setClass) : '') . ';
+			var add_title=' . GeneralUtility::quoteJSvalue($this->setTitle ? '&curUrl[title]=' . rawurlencode($this->setTitle) : '') . ';
+			var add_params=' . GeneralUtility::quoteJSvalue($this->bparams ? '&bparams=' . rawurlencode($this->bparams) : '') . ';
 			var additionalValues = ' . (count($this->additionalAttributes) ? json_encode($this->additionalAttributes, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) : '{}') . ';';
 		// Attributes setting functions
 		$JScode .= '
-			var cur_href="' . GeneralUtility::quoteJSvalue($this->curUrlArray['href'] ? ($this->curUrlInfo['query'] ? substr($this->curUrlArray['href'], 0, -strlen($this->curUrlInfo['query'])) : $this->curUrlArray['href']) : '') . '";
-			var cur_target="' . GeneralUtility::quoteJSvalue($this->setTarget ?: '') . '";
-			var cur_class="' . GeneralUtility::quoteJSvalue($this->setClass ?: '') . '";
-			var cur_title="' . GeneralUtility::quoteJSvalue($this->setTitle ?: '') . '";
+			var cur_href=' . GeneralUtility::quoteJSvalue($this->curUrlArray['href'] ? ($this->curUrlInfo['query'] ? substr($this->curUrlArray['href'], 0, -strlen($this->curUrlInfo['query'])) : $this->curUrlArray['href']) : '') . ';
+			var cur_target=' . GeneralUtility::quoteJSvalue($this->setTarget ?: '') . ';
+			var cur_class=' . GeneralUtility::quoteJSvalue($this->setClass ?: '') . ';
+			var cur_title=' . GeneralUtility::quoteJSvalue($this->setTitle ?: '') . ';
 
 			function browse_links_setTarget(value) {
 				cur_target=value;

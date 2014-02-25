@@ -399,17 +399,17 @@ class ElementBrowser {
 		// BEGIN accumulation of header JavaScript:
 		$JScode = '
 			// This JavaScript is primarily for RTE/Link. jumpToUrl is used in the other cases as well...
-			var add_href=' . GeneralUtility::quoteJSvalue(($this->curUrlArray['href'] ? '&curUrl[href]=' . rawurlencode($this->curUrlArray['href']) : '')) . ';
-			var add_target=' . GeneralUtility::quoteJSvalue(($this->setTarget ? '&curUrl[target]=' . rawurlencode($this->setTarget) : '')) . ';
-			var add_class=' . GeneralUtility::quoteJSvalue(($this->setClass ? '&curUrl[class]=' . rawurlencode($this->setClass) : '')) . ';
-			var add_title=' . GeneralUtility::quoteJSvalue(($this->setTitle ? '&curUrl[title]=' . rawurlencode($this->setTitle) : '')) . ';
-			var add_params=' . GeneralUtility::quoteJSvalue(($this->bparams ? '&bparams=' . rawurlencode($this->bparams) : '')) . ';
+			var add_href=' . GeneralUtility::quoteJSvalue($this->curUrlArray['href'] ? '&curUrl[href]=' . rawurlencode($this->curUrlArray['href']) : '') . ';
+			var add_target=' . GeneralUtility::quoteJSvalue($this->setTarget ? '&curUrl[target]=' . rawurlencode($this->setTarget) : '') . ';
+			var add_class=' . GeneralUtility::quoteJSvalue($this->setClass ? '&curUrl[class]=' . rawurlencode($this->setClass) : '') . ';
+			var add_title=' . GeneralUtility::quoteJSvalue($this->setTitle ? '&curUrl[title]=' . rawurlencode($this->setTitle) : '') . ';
+			var add_params=' . GeneralUtility::quoteJSvalue($this->bparams ? '&bparams=' . rawurlencode($this->bparams) : '') . ';
 
-			var cur_href=' . GeneralUtility::quoteJSvalue(($this->curUrlArray['href'] ? $this->curUrlArray['href'] : '')) . ';
-			var cur_target=' . GeneralUtility::quoteJSvalue(($this->setTarget ? $this->setTarget : '')) . ';
-			var cur_class=' . GeneralUtility::quoteJSvalue(($this->setClass ? $this->setClass : '')) . ';
-			var cur_title=' . GeneralUtility::quoteJSvalue(($this->setTitle ? $this->setTitle : '')) . ';
-			var cur_params=' . GeneralUtility::quoteJSvalue(($this->setParams ? $this->setParams : '')) . ';
+			var cur_href=' . GeneralUtility::quoteJSvalue($this->curUrlArray['href'] ?: '') . ';
+			var cur_target=' . GeneralUtility::quoteJSvalue($this->setTarget ?: '') . ';
+			var cur_class=' . GeneralUtility::quoteJSvalue($this->setClass ?: '') . ';
+			var cur_title=' . GeneralUtility::quoteJSvalue($this->setTitle ?: '') . ';
+			var cur_params=' . GeneralUtility::quoteJSvalue($this->setParams ?: '') . ';
 
 			function browse_links_setTarget(target) {	//
 				cur_target=target;
