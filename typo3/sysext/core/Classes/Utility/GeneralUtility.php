@@ -2310,6 +2310,9 @@ class GeneralUtility {
 							case 'boolean':
 								$current[$tagName] = (bool) $current[$tagName];
 								break;
+							case 'NULL':
+								$current[$tagName] = NULL;
+								break;
 							case 'array':
 								// MUST be an empty array since it is processed as a value; Empty arrays would end up here because they would have no tags inside...
 								$current[$tagName] = array();
