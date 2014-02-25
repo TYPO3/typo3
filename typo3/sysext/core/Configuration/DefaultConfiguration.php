@@ -276,6 +276,7 @@ return array(
 			'opendocs',
 			'install',
 			't3editor',
+			'css_styled_content',
 			'felogin',
 			'feedit',
 			'recycler',
