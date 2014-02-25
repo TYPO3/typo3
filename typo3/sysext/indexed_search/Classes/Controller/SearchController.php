@@ -346,7 +346,6 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 			}
 		}
 		$title = $resultData['item_title'] . $resultData['titleaddition'];
-		$title = htmlspecialchars($title);
 		// If external media, link to the media-file instead.
 		if ($row['item_type']) {
 			if ($row['show_resume']) {
@@ -355,7 +354,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 				if ($GLOBALS['TSFE']->config['config']['fileTarget']) {
 					$targetAttribute = ' target="' . htmlspecialchars($GLOBALS['TSFE']->config['config']['fileTarget']) . '"';
 				}
-				$title = '<a href="' . htmlspecialchars($row['data_filename']) . '"' . $targetAttribute . '>' . $title . '</a>';
+				$title = '<a href="' . htmlspecialchars($row['data_filename']) . '"' . $targetAttribute . '>' . htmlspecialchars($title) . '</a>';
 			} else {
 				// Suspicious, so linking to page instead...
 				$copiedRow = $row;
