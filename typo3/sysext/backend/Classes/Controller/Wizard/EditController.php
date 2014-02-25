@@ -27,6 +27,7 @@ namespace TYPO3\CMS\Backend\Controller\Wizard;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
 
@@ -89,7 +90,7 @@ class EditController {
 			// Detecting the various allowed field type setups and acting accordingly.
 			if (is_array($config) && $config['type'] == 'select' && !$config['MM'] && $config['maxitems'] <= 1 && \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($this->P['currentValue']) && $this->P['currentValue'] && $fTable) {
 				// SINGLE value:
-				$redirectUrl = 'alt_doc.php?returnUrl=' . rawurlencode('wizard_edit.php?doClose=1') . '&edit[' . $fTable . '][' . $this->P['currentValue'] . ']=edit';
+				$redirectUrl = 'alt_doc.php?returnUrl=' . rawurlencode(BackendUtility::getModuleUrl('wizard_edit', array('doClose' => 1))) . '&edit[' . $fTable . '][' . $this->P['currentValue'] . ']=edit';
 				HttpUtility::redirect($redirectUrl);
 			} elseif (is_array($config) && $this->P['currentSelectedValues'] && ($config['type'] == 'select' && $config['foreign_table'] || $config['type'] == 'group' && $config['internal_type'] == 'db')) {
 				// MULTIPLE VALUES:
@@ -107,7 +108,7 @@ class EditController {
 					$params .= '&edit[' . $recTableUidParts[0] . '][' . $recTableUidParts[1] . ']=edit';
 				}
 				// Redirect to alt_doc.php:
-				HttpUtility::redirect('alt_doc.php?returnUrl=' . rawurlencode('wizard_edit.php?doClose=1') . $params);
+				HttpUtility::redirect('alt_doc.php?returnUrl=' . rawurlencode(BackendUtility::getModuleUrl('wizard_edit', array('doClose' => 1))) . $params);
 			} else {
 				$this->closeWindow();
 			}

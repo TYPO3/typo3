@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 1999-2013 Kasper Skårhøj (kasperYYYY@typo3.com)
+ *  (c) 2014 Helmut Hummel (helmut.hummel@typo3.org)
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -27,11 +27,6 @@
 
 /**
  * Wizard to edit records from group/select lists in TCEforms
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-require __DIR__ . '/init.php';
-
-\TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog('The way registering a wizard in TCA has changed in 6.2. Please set module[name]=wizard_edit instead of script=wizard_edit.php in your TCA. This script will be removed in two versions.');
 $editController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\Wizard\\EditController');
 $editController->main();

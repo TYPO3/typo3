@@ -69,7 +69,9 @@ return array(
 					'edit' => array(
 						'type' => 'popup',
 						'title' => 'LLL:EXT:lang/locallang_tca.xlf:be_users.usergroup_edit_title',
-						'script' => 'wizard_edit.php',
+						'module' => array(
+							'name' => 'wizard_edit',
+						),
 						'popup_onlyOpenIfSelected' => 1,
 						'icon' => 'edit2.gif',
 						'JSopenParams' => 'height=350,width=580,status=0,menubar=0,scrollbars=1'
@@ -141,7 +143,9 @@ return array(
 					'edit' => array(
 						'type' => 'popup',
 						'title' => 'LLL:EXT:lang/locallang_tca.xlf:file_mountpoints_edit_title',
-						'script' => 'wizard_edit.php',
+						'module' => array(
+							'name' => 'wizard_edit',
+						),
 						'icon' => 'edit2.gif',
 						'popup_onlyOpenIfSelected' => 1,
 						'JSopenParams' => 'height=350,width=580,status=0,menubar=0,scrollbars=1'
