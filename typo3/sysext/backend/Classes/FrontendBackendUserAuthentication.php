@@ -59,15 +59,6 @@ class FrontendBackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\B
 	public $formfield_chalvalue = '';
 
 	/**
-	 * Sets the level of security. *'normal' = clear-text. 'challenged' = hashed password/username.
-	 * from form in $formfield_uident. 'superchallenged' = hashed password hashed again with username.
-	 *
-	 * @var 	string
-	 * @deprecated since 4.7 will be removed in 6.1
-	 */
-	public $security_level = '';
-
-	/**
 	 * Decides if the writelog() function is called at login and logout.
 	 *
 	 * @var 	boolean

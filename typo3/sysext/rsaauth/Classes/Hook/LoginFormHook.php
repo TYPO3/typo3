@@ -34,7 +34,10 @@ class LoginFormHook {
 	/**
 	 * Adds RSA-specific JavaScript and returns a form tag
 	 *
+	 * @param array $params
+	 * @param \TYPO3\CMS\Backend\Controller\LoginController $pObj
 	 * @return string Form tag
+	 * @throws \TYPO3\CMS\Core\Error\Exception
 	 */
 	public function getLoginFormTag(array $params, \TYPO3\CMS\Backend\Controller\LoginController &$pObj) {
 		$form = NULL;

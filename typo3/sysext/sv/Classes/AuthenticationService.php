@@ -65,27 +65,9 @@ class AuthenticationService extends \TYPO3\CMS\Sv\AbstractAuthenticationService 
 		if (!empty($loginData['uident_text'])) {
 			$loginData['uident_challenged'] = (string) md5(($loginData['uname'] . ':' . $loginData['uident_text'] . ':' . $loginData['chalvalue']));
 			$loginData['uident_superchallenged'] = (string) md5(($loginData['uname'] . ':' . md5($loginData['uident_text']) . ':' . $loginData['chalvalue']));
-			$this->processOriginalPasswordValue($loginData);
 			$isProcessed = TRUE;
 		}
 		return $isProcessed;
-	}
-
-	/**
-	 * This method ensures backwards compatibility of the processed loginData
-	 * with older TYPO3 versions.
-	 * Starting with TYPO3 6.1 $loginData['uident'] will always contain the raw
-	 * value of the submitted password field and will not be processed any further.
-	 *
-	 * @param array $loginData
-	 * @deprecated will be removed with 6.1
-	 */
-	protected function processOriginalPasswordValue(&$loginData) {
-		if ($this->authInfo['security_level'] === 'superchallenged') {
-			$loginData['uident'] = $loginData['uident_superchallenged'];
-		} elseif ($this->authInfo['security_level'] === 'challenged') {
-			$loginData['uident'] = $loginData['uident_challenged'];
-		}
 	}
 
 	/**

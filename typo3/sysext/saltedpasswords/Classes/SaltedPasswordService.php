@@ -112,18 +112,12 @@ class SaltedPasswordService extends \TYPO3\CMS\Sv\AbstractAuthenticationService 
 	 *
 	 * @param array $user User data array
 	 * @param array $loginData Login data array
-	 * @param string $security_level Login security level (optional)
 	 * @return boolean TRUE if login data matched
 	 * @todo Define visibility
 	 */
-	public function compareUident(array $user, array $loginData, $security_level = 'normal') {
+	public function compareUident(array $user, array $loginData) {
 		$validPasswd = FALSE;
-		// Could be merged; still here to clarify
-		if (TYPO3_MODE === 'BE') {
-			$password = $loginData['uident_text'];
-		} elseif (TYPO3_MODE === 'FE') {
-			$password = $loginData['uident_text'];
-		}
+		$password = $loginData['uident_text'];
 		// Determine method used for given salted hashed password
 		$this->objInstanceSaltedPW = \TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::getSaltingInstance($user['password']);
 		// Existing record is in format of Salted Hash password

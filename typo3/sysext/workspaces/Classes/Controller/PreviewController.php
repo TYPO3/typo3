@@ -210,11 +210,7 @@ class PreviewController extends \TYPO3\CMS\Workspaces\Controller\AbstractControl
 		if (!$GLOBALS['BE_USER']->check('modules', $pageModule)) {
 			$pageModule = '';
 		}
-		$menuFrameName = 'menu';
-		if ($GLOBALS['BE_USER']->uc['noMenuMode'] === 'icons') {
-			$menuFrameName = 'topmenuFrame';
-		}
-		// determine security level from conf vars and default to super challenged
+		// Determine security level from conf vars and default to super challenged
 		if ($GLOBALS['TYPO3_CONF_VARS']['BE']['loginSecurityLevel']) {
 			$loginSecurityLevel = $GLOBALS['TYPO3_CONF_VARS']['BE']['loginSecurityLevel'];
 		} else {
@@ -226,7 +222,7 @@ class PreviewController extends \TYPO3\CMS\Workspaces\Controller\AbstractControl
 			'PATH_typo3_enc' => rawurlencode($pathTYPO3),
 			'username' => htmlspecialchars($GLOBALS['BE_USER']->user['username']),
 			'uniqueID' => GeneralUtility::shortMD5(uniqid('')),
-			'securityLevel' => $this->loginSecurityLevel,
+			'securityLevel' => $loginSecurityLevel,
 			'TYPO3_mainDir' => TYPO3_mainDir,
 			'pageModule' => $pageModule,
 			'condensedMode' => $GLOBALS['BE_USER']->uc['condensedMode'] ? 1 : 0,

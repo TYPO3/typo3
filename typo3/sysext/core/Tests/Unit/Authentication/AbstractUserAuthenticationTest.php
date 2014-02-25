@@ -60,7 +60,6 @@ class AbstractUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 			'Backend login with securityLevel "normal"' => array(
 				'BE',
 				'normal',
-				'superchallenged',
 				array(
 					'status' => 'login',
 					'uname' => 'admin',
@@ -70,7 +69,7 @@ class AbstractUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 				array(
 					'status' => 'login',
 					'uname' => 'admin',
-					'uident' => '651219fccfbe0c9004c7196515d780ce',
+					'uident' => 'password',
 					'chalvalue' => NULL,
 					'uident_text' => 'password',
 					'uident_challenged' => '458203772635d38f05ca9e62d8237974',
@@ -79,7 +78,6 @@ class AbstractUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 			),
 			'Backend login with securityLevel "superchallenged"' => array(
 				'BE',
-				'superchallenged',
 				'superchallenged',
 				array(
 					'status' => 'login',
@@ -100,7 +98,6 @@ class AbstractUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 			'Frontend login with securityLevel "normal"' => array(
 				'FE',
 				'normal',
-				'normal',
 				array(
 					'status' => 'login',
 					'uname' => 'admin',
@@ -119,7 +116,6 @@ class AbstractUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 			),
 			'Frontend login with securityLevel "challenged"' => array(
 				'FE',
-				'challenged',
 				'challenged',
 				array(
 					'status' => 'login',
@@ -144,10 +140,9 @@ class AbstractUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 	 * @test
 	 * @dataProvider processLoginDataProvider
 	 */
-	public function processLoginReturnsCorrectData($loginType, $passwordSubmissionStrategy, $passwordCompareStrategy, $originalData, $processedData) {
+	public function processLoginReturnsCorrectData($loginType, $passwordSubmissionStrategy, $originalData, $processedData) {
 		/** @var $mock \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication */
 		$mock = $this->getMock('TYPO3\\CMS\\Core\\Authentication\\AbstractUserAuthentication', array('_dummy'));
-		$mock->security_level = $passwordCompareStrategy;
 		$mock->loginType = $loginType;
 		$this->assertEquals($mock->processLoginData($originalData, $passwordSubmissionStrategy), $processedData);
 	}

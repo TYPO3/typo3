@@ -136,7 +136,6 @@ class FrontendUserAuthentication extends \TYPO3\CMS\Core\Authentication\Abstract
 		$this->formfield_uident = 'pass';
 		$this->formfield_chalvalue = 'challenge';
 		$this->formfield_status = 'logintype';
-		$this->security_level = '';
 		$this->auth_timeout_field = 6000;
 		$this->sendNoCacheHeaders = FALSE;
 		$this->getFallBack = TRUE;
