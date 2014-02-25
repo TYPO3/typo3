@@ -185,7 +185,7 @@ class PageTreeNavigationController {
 			top.TYPO3.Backend.ContentContainer.setUrl(theUrl);
 
 			' . ($this->doHighlight ? 'Tree.highlightActiveItem("web", highlightID + "_" + bank);' : '') . '
-			' . (!$GLOBALS['CLIENT']['FORMSTYLE'] ? '' : 'if (linkObj) linkObj.blur(); ') . '
+			if (linkObj) { linkObj.blur(); }
 			return false;
 		}
 		' . ($this->cMR ? 'jumpTo(top.fsMod.recentIds[\'web\'],\'\');' : '') . ($this->hasFilterBox ? 'var TYPO3PageTreeFilter = new PageTreeFilter();' : '') . '

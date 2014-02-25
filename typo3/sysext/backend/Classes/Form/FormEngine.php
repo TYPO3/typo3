@@ -230,7 +230,7 @@ class FormEngine {
 	 */
 	public $renderReadonly = FALSE;
 
-	// Form field width compensation: Factor from NN4 form field widths to style-aware browsers (like NN6+ and MSIE, with the $GLOBALS['CLIENT']['FORMSTYLE'] value set)
+	// Form field width compensation: Factor of "size=12" to "style="width: 12*9.58px" for form field widths of style-aware browsers
 	/**
 	 * @todo Define visibility
 	 */
@@ -1971,9 +1971,9 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 			if ($p[2] && !$suppressIcons && (!$onlySelectedIconShown || $sM)) {
 				list($selIconFile, $selIconInfo) = $this->getIcon($p[2]);
 				if (!empty($selIconInfo)) {
-					$iOnClick = $this->elName($PA['itemFormElName']) . '.selectedIndex=' . $c . '; ' . $this->elName($PA['itemFormElName']) . '.style.backgroundImage=' . $this->elName($PA['itemFormElName']) . '.options[' . $c . '].style.backgroundImage; ' . implode('', $PA['fieldChangeFunc']) . $this->blur() . 'return false;';
+					$iOnClick = $this->elName($PA['itemFormElName']) . '.selectedIndex=' . $c . '; ' . $this->elName($PA['itemFormElName']) . '.style.backgroundImage=' . $this->elName($PA['itemFormElName']) . '.options[' . $c . '].style.backgroundImage; ' . implode('', $PA['fieldChangeFunc']) . 'this.blur(); return false;';
 				} else {
-					$iOnClick = $this->elName($PA['itemFormElName']) . '.selectedIndex=' . $c . '; ' . $this->elName($PA['itemFormElName']) . '.className=' . $this->elName($PA['itemFormElName']) . '.options[' . $c . '].className; ' . implode('', $PA['fieldChangeFunc']) . $this->blur() . 'return false;';
+					$iOnClick = $this->elName($PA['itemFormElName']) . '.selectedIndex=' . $c . '; ' . $this->elName($PA['itemFormElName']) . '.className=' . $this->elName($PA['itemFormElName']) . '.options[' . $c . '].className; ' . implode('', $PA['fieldChangeFunc']) . 'this.blur(); return false;';
 				}
 				$selicons[] = array(
 					(!$onlySelectedIconShown ? '<a href="#" onclick="' . htmlspecialchars($iOnClick) . '">' : '') . $this->getIconHtml($p[2], htmlspecialchars($p[0]), htmlspecialchars($p[0])) . (!$onlySelectedIconShown ? '</a>' : ''),
@@ -4186,7 +4186,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 								// If "script" type, create the links around the icon:
 								if ((string) $wConf['type'] == 'script') {
 									$aUrl = $url . GeneralUtility::implodeArrayForUrl('', array('P' => $params));
-									$outArr[] = '<a href="' . htmlspecialchars($aUrl) . '" onclick="' . $this->blur() . 'return !TBE_EDITOR.isFormChanged();">' . $icon . '</a>';
+									$outArr[] = '<a href="' . htmlspecialchars($aUrl) . '" onclick="this.blur(); return !TBE_EDITOR.isFormChanged();">' . $icon . '</a>';
 								} else {
 									// ... else types "popup", "colorbox" and "userFunc" will need additional parameters:
 									$params['formName'] = $this->formName;
@@ -4201,7 +4201,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 										// Current form value is passed as P[currentValue]!
 										$addJS = $wConf['popup_onlyOpenIfSelected'] ? 'if (!TBE_EDITOR.curSelected(\'' . $itemName . $listFlag . '\')){alert(' . GeneralUtility::quoteJSvalue($this->getLL('m_noSelItemForEdit')) . '); return false;}' : '';
 										$curSelectedValues = '+\'&P[currentSelectedValues]=\'+TBE_EDITOR.curSelected(\'' . $itemName . $listFlag . '\')';
-										$aOnClick = $this->blur() . $addJS . 'vHWin=window.open(\'' . $url . GeneralUtility::implodeArrayForUrl('', array('P' => $params)) . '\'+\'&P[currentValue]=\'+TBE_EDITOR.rawurlencode(' . $this->elName($itemName) . '.value,200)' . $curSelectedValues . ',\'popUp' . $md5ID . '\',\'' . $wConf['JSopenParams'] . '\');' . 'vHWin.focus();return false;';
+										$aOnClick = 'this.blur();' . $addJS . 'vHWin=window.open(\'' . $url . GeneralUtility::implodeArrayForUrl('', array('P' => $params)) . '\'+\'&P[currentValue]=\'+TBE_EDITOR.rawurlencode(' . $this->elName($itemName) . '.value,200)' . $curSelectedValues . ',\'popUp' . $md5ID . '\',\'' . $wConf['JSopenParams'] . '\');' . 'vHWin.focus();return false;';
 										// Setting "colorBoxLinks" - user LATER to wrap around the color box as well:
 										$colorBoxLinks = array('<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">', '</a>');
 										if ((string) $wConf['type'] == 'popup') {
@@ -4501,16 +4501,6 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 	}
 
 	/**
-	 * Returns 'this.blur();' string, if supported.
-	 *
-	 * @return string If the current browser supports styles, the string 'this.blur();' is returned.
-	 * @todo Define visibility
-	 */
-	public function blur() {
-		return $GLOBALS['CLIENT']['FORMSTYLE'] ? 'this.blur();' : '';
-	}
-
-	/**
 	 * Returns the "returnUrl" of the form. Can be set externally or will be taken from "GeneralUtility::linkThisScript()"
 	 *
 	 * @return string Return URL of current script
@@ -4552,15 +4542,10 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 	public function formWidth($size = 48, $textarea = 0) {
 		$widthAndStyleAttributes = '';
 		$fieldWidthAndStyle = $this->formWidthAsArray($size, $textarea);
-		if (!$GLOBALS['CLIENT']['FORMSTYLE']) {
-			// If not setting the width by style-attribute
-			$widthAndStyleAttributes = ' ' . $fieldWidthAndStyle['width'];
-		} else {
-			// Setting width by style-attribute. 'cols' MUST be avoided with NN6+
-			$widthAndStyleAttributes = ' style="' . htmlspecialchars($fieldWidthAndStyle['style']) . '"';
-			if ($fieldWidthAndStyle['class']) {
-				$widthAndStyleAttributes .= ' class="' . htmlspecialchars($fieldWidthAndStyle['class']) . '"';
-			}
+		// Setting width by style-attribute. 'cols' MUST be avoided with NN6+
+		$widthAndStyleAttributes = ' style="' . htmlspecialchars($fieldWidthAndStyle['style']) . '"';
+		if ($fieldWidthAndStyle['class']) {
+			$widthAndStyleAttributes .= ' class="' . htmlspecialchars($fieldWidthAndStyle['class']) . '"';
 		}
 		return $widthAndStyleAttributes;
 	}
@@ -4577,21 +4562,16 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 		if ($this->docLarge) {
 			$size = round($size * $this->form_largeComp);
 		}
-		$widthAttribute = $textarea ? 'cols' : 'size';
-		if (!$GLOBALS['CLIENT']['FORMSTYLE']) {
-			// If not setting the width by style-attribute
-			$fieldWidthAndStyle['width'] = $widthAttribute . '="' . $size . '"';
-		} else {
-			// Setting width by style-attribute. 'cols' MUST be avoided with NN6+
-			$widthInPixels = ceil($size * $this->form_rowsToStylewidth);
 
-			if ($textarea) {
-				$widthInPixels += $this->form_additionalTextareaStyleWidth;
-			}
+		// Setting width by style-attribute. 'cols' MUST be avoided with NN6+
+		$widthInPixels = ceil($size * $this->form_rowsToStylewidth);
 
-			$fieldWidthAndStyle['style'] = 'width: ' . $widthInPixels . 'px; ' . $this->defStyle . $this->formElStyle(($textarea ? 'text' : 'input'));
-			$fieldWidthAndStyle['class'] = $this->formElClass($textarea ? 'text' : 'input');
+		if ($textarea) {
+			$widthInPixels += $this->form_additionalTextareaStyleWidth;
 		}
+
+		$fieldWidthAndStyle['style'] = 'width: ' . $widthInPixels . 'px; ' . $this->defStyle . $this->formElStyle(($textarea ? 'text' : 'input'));
+		$fieldWidthAndStyle['class'] = $this->formElClass($textarea ? 'text' : 'input');
 		return $fieldWidthAndStyle;
 	}
 
@@ -4605,7 +4585,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 	 * @todo Define visibility
 	 */
 	public function formWidthText($size = 48, $wrap = '') {
-		$wTags = $this->formWidth($size, 1);
+		$wTags = $this->formWidth($size, TRUE);
 		// Netscape 6+ seems to have this ODD problem where there WILL ALWAYS be wrapping with the cols-attribute set and NEVER without the col-attribute...
 		if (strtolower(trim($wrap)) != 'off' && $GLOBALS['CLIENT']['BROWSER'] == 'net' && $GLOBALS['CLIENT']['VERSION'] >= 5) {
 			$wTags .= ' cols="' . $size . '"';

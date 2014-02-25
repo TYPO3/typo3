@@ -158,7 +158,7 @@ class FileSystemNavigationFrameController {
 			top.TYPO3.Backend.ContentContainer.setUrl(theUrl);
 
 			' . ($this->doHighlight ? 'Tree.highlightActiveItem("file", highlightID + "_" + bank);' : '') . '
-			' . (!$GLOBALS['CLIENT']['FORMSTYLE'] ? '' : 'if (linkObj) linkObj.blur(); ') . '
+			if (linkObj) { linkObj.blur(); }
 			return false;
 		}
 		' . ($this->cMR ? ' jumpTo(top.fsMod.recentIds[\'file\'],\'\');' : ''));

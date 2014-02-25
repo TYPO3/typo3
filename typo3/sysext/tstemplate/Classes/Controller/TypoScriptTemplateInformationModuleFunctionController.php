@@ -340,13 +340,13 @@ class TypoScriptTemplateInformationModuleFunctionController extends \TYPO3\CMS\B
 				$theOutput .= $this->pObj->doc->section($GLOBALS['LANG']->getLL('sitetitle'), $outCode, TRUE);
 			}
 			if ($e['description']) {
-				$outCode = '<textarea name="data[description]" rows="5" class="fixed-font enable-tab"' . $this->pObj->doc->formWidthText(48, '', '') . '>' . GeneralUtility::formatForTextarea($tplRow['description']) . '</textarea>';
+				$outCode = '<textarea name="data[description]" rows="5" class="fixed-font enable-tab"' . $this->pObj->doc->formWidth(48) . '>' . GeneralUtility::formatForTextarea($tplRow['description']) . '</textarea>';
 				$outCode .= '<input type="Hidden" name="e[description]" value="1">';
 				$theOutput .= $this->pObj->doc->spacer(15);
 				$theOutput .= $this->pObj->doc->section($GLOBALS['LANG']->getLL('description'), $outCode, TRUE);
 			}
 			if ($e['constants']) {
-				$outCode = '<textarea name="data[constants]" rows="' . $numberOfRows . '" wrap="off" class="fixed-font enable-tab"' . $this->pObj->doc->formWidthText(48, 'width:98%;height:70%', 'off') . ' class="fixed-font">' . GeneralUtility::formatForTextarea($tplRow['constants']) . '</textarea>';
+				$outCode = '<textarea name="data[constants]" rows="' . $numberOfRows . '" wrap="off" class="fixed-font enable-tab"' . $this->pObj->doc->formWidth(48, TRUE, 'width:98%;height:70%') . ' class="fixed-font">' . GeneralUtility::formatForTextarea($tplRow['constants']) . '</textarea>';
 				$outCode .= '<input type="Hidden" name="e[constants]" value="1">';
 				// Display "Include TypoScript file content?" checkbox
 				$outCode .= BackendUtility::getFuncCheck($this->pObj->id, 'SET[includeTypoScriptFileContent]', $this->pObj->MOD_SETTINGS['includeTypoScriptFileContent'], '', '&e[constants]=1', 'id="checkIncludeTypoScriptFileContent"');
@@ -362,7 +362,7 @@ class TypoScriptTemplateInformationModuleFunctionController extends \TYPO3\CMS\B
 					if (filesize($path) < $GLOBALS['TCA']['sys_template']['columns']['resources']['config']['max_size'] * 1024) {
 						$fileContent = GeneralUtility::getUrl($path);
 						$outCode = $GLOBALS['LANG']->getLL('file') . ' <strong>' . $e[file] . '</strong><BR>';
-						$outCode .= '<textarea name="edit[file]" rows="' . $numberOfRows . '" wrap="off" class="fixed-font enable-tab"' . $this->pObj->doc->formWidthText(48, 'width:98%;height:70%', 'off') . ' class="fixed-font">' . GeneralUtility::formatForTextarea($fileContent) . '</textarea>';
+						$outCode .= '<textarea name="edit[file]" rows="' . $numberOfRows . '" wrap="off" class="fixed-font enable-tab"' . $this->pObj->doc->formWidth(48, TRUE, 'width:98%;height:70%') . ' class="fixed-font">' . GeneralUtility::formatForTextarea($fileContent) . '</textarea>';
 						$outCode .= '<input type="Hidden" name="edit[filename]" value="' . $e[file] . '">';
 						$outCode .= '<input type="Hidden" name="e[file]" value="' . htmlspecialchars($e[file]) . '">';
 						$theOutput .= $this->pObj->doc->spacer(15);
@@ -377,7 +377,7 @@ class TypoScriptTemplateInformationModuleFunctionController extends \TYPO3\CMS\B
 				}
 			}
 			if ($e['config']) {
-				$outCode = '<textarea name="data[config]" rows="' . $numberOfRows . '" wrap="off" class="fixed-font enable-tab"' . $this->pObj->doc->formWidthText(48, 'width:98%;height:70%', 'off') . ' class="fixed-font">' . GeneralUtility::formatForTextarea($tplRow['config']) . '</textarea>';
+				$outCode = '<textarea name="data[config]" rows="' . $numberOfRows . '" wrap="off" class="fixed-font enable-tab"' . $this->pObj->doc->formWidth(48, TRUE, 'width:98%;height:70%') . ' class="fixed-font">' . GeneralUtility::formatForTextarea($tplRow['config']) . '</textarea>';
 				$outCode .= '<input type="Hidden" name="e[config]" value="1">';
 				// Display "Include TypoScript file content?" checkbox
 				$outCode .= BackendUtility::getFuncCheck($this->pObj->id, 'SET[includeTypoScriptFileContent]', $this->pObj->MOD_SETTINGS['includeTypoScriptFileContent'], '', '&e[config]=1', 'id="checkIncludeTypoScriptFileContent"');

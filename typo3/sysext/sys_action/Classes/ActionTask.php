@@ -779,7 +779,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 			$dblist->counter++;
 			$dblist->MOD_MENU = array('bigControlPanel' => '', 'clipBoard' => '', 'localization' => '');
 			$dblist->modTSconfig = $this->taskObject->modTSconfig;
-			$dblist->dontShowClipControlPanels = $CLIENT['FORMSTYLE'] && !$this->taskObject->MOD_SETTINGS['bigControlPanel'] && $dblist->clipObj->current == 'normal' && !$this->modTSconfig['properties']['showClipControlPanelsDespiteOfCMlayers'];
+			$dblist->dontShowClipControlPanels = (!$this->taskObject->MOD_SETTINGS['bigControlPanel'] && $dblist->clipObj->current == 'normal' && !$this->modTSconfig['properties']['showClipControlPanelsDespiteOfCMlayers']);
 			// Initialize the listing object, dblist, for rendering the list:
 			$this->pointer = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange(GeneralUtility::_GP('pointer'), 0, 100000);
 			$dblist->start($this->id, $this->table, $this->pointer, $this->taskObject->search_field, $this->taskObject->search_levels, $this->taskObject->showLimit);

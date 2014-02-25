@@ -67,13 +67,7 @@ class AbstractRte {
 	 * @todo Define visibility
 	 */
 	public function isAvailable() {
-		$this->errorLog = array();
-		if (!$GLOBALS['CLIENT']['FORMSTYLE']) {
-			$this->errorLog[] = 'RTE API: Browser didn\'t support styles';
-		}
-		if (!count($this->errorLog)) {
-			return TRUE;
-		}
+		return TRUE;
 	}
 
 	/**

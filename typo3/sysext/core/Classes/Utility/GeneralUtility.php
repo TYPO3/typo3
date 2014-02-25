@@ -3509,7 +3509,7 @@ Connection: close
 	 * Client Browser Information
 	 *
 	 * @param string $useragent Alternative User Agent string (if empty, \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('HTTP_USER_AGENT') is used)
-	 * @return array Parsed information about the HTTP_USER_AGENT in categories BROWSER, VERSION, SYSTEM and FORMSTYLE
+	 * @return array Parsed information about the HTTP_USER_AGENT in categories BROWSER, VERSION, SYSTEM
 	 */
 	static public function clientInfo($useragent = '') {
 		if (!$useragent) {
@@ -3528,7 +3528,6 @@ Connection: close
 		} elseif (strpos($useragent, 'Flash') !== FALSE) {
 			$bInfo['BROWSER'] = 'flash';
 		}
-		$bInfo['FORMSTYLE'] = FALSE;
 		if (isset($bInfo['BROWSER'])) {
 			// Browser version
 			switch ($bInfo['BROWSER']) {
@@ -3566,8 +3565,6 @@ Connection: close
 			} elseif (strpos($useragent, 'Linux') !== FALSE || strpos($useragent, 'X11') !== FALSE || strpos($useragent, 'SGI') !== FALSE || strpos($useragent, ' SunOS ') !== FALSE || strpos($useragent, ' HP-UX ') !== FALSE) {
 				$bInfo['SYSTEM'] = 'unix';
 			}
-			// Is TRUE if the browser supports css to format forms, especially the width
-			$bInfo['FORMSTYLE'] = $bInfo['BROWSER'] == 'msie' || $bInfo['BROWSER'] == 'net' && $bInfo['VERSION'] >= 5 || $bInfo['BROWSER'] == 'opera' || $bInfo['BROWSER'] == 'konqu';
 		}
 		return $bInfo;
 	}
