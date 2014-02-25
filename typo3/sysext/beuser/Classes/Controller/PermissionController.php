@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Beuser\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
@@ -239,7 +240,8 @@ class PermissionController extends ActionController {
 				$viewData['editPermsAllowed'] = ($data['row']['perms_userid'] == $this->getBackendUser()->user['uid']
 					|| $this->getBackendUser()->isAdmin());
 
-				$viewData['html'] = $data['HTML'] . htmlspecialchars(GeneralUtility::fixed_lgd_cs($data['row']['title'], 20));
+				$viewData['html'] = $this->getControllerDocumentTemplate()->wrapClickMenuOnIcon($data['HTML'], 'pages', $data['row']['uid'])
+					. htmlspecialchars(GeneralUtility::fixed_lgd_cs($data['row']['title'], 20));
 				$viewData['id'] = $data['row']['_ORIG_uid'] ? $data['row']['_ORIG_uid'] : $pageId;
 
 				$viewData['userPermissions'] = ($pageId ?
@@ -375,6 +377,13 @@ class PermissionController extends ActionController {
 	 */
 	protected function getDatabaseConnection() {
 		return $GLOBALS['TYPO3_DB'];
+	}
+
+	/**
+	 * @return DocumentTemplate
+	 */
+	protected function getControllerDocumentTemplate() {
+		return $GLOBALS['TBE_TEMPLATE'];
 	}
 
 	/**

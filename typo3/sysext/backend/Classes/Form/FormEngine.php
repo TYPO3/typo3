@@ -3686,6 +3686,7 @@ class FormEngine {
 	 * @return string
 	 */
 	public function replaceTableWrap($arr, $rec, $table) {
+		$icon = IconUtility::getSpriteIconForRecord($table, $rec, array('title' => $this->getRecordPath($table, $rec)));
 		// Make "new"-label
 		$languageService = $this->getLanguageService();
 		if (strstr($rec['uid'], 'NEW')) {
@@ -3734,6 +3735,7 @@ class FormEngine {
 					$pageTitle = sprintf($label, $tableTitle, $pageTitle);
 				}
 			}
+			$icon = $this->getClickMenu($icon, $table, $rec['uid']);
 		}
 		foreach ($arr as $k => $v) {
 			// Make substitutions:
@@ -3750,7 +3752,7 @@ class FormEngine {
 					$newLabel,
 					$rLabel,
 					htmlspecialchars($languageService->sL($GLOBALS['TCA'][$table]['ctrl']['title'])),
-					IconUtility::getSpriteIconForRecord($table, $rec, array('title' => $this->getRecordPath($table, $rec)))
+					$icon
 				),
 				$arr[$k]
 			);
