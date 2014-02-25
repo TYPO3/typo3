@@ -1933,7 +1933,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		// 17 = pageId, 5 = recursionLevel, 0 = begin (entry to recursion, internal), TRUE = do not check enable fields
 		// 17 is positive, we expect 17 NOT to be included in result
 		$result = $this->cObj->getTreeList(17, 5, 0, TRUE);
-		$expectedResult = '0,42,719,321';
+		$expectedResult = '42,719,321';
 		$this->assertEquals($expectedResult, $result);
 	}
 
@@ -1974,7 +1974,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		// 17 = pageId, 5 = recursionLevel, 0 = begin (entry to recursion, internal), TRUE = do not check enable fields
 		// 17 is negative, we expect 17 to be included in result
 		$result = $this->cObj->getTreeList(-17, 5, 0, TRUE);
-		$expectedResult = '0,42,719,321,17';
+		$expectedResult = '42,719,321,17';
 		$this->assertEquals($expectedResult, $result);
 	}
 
