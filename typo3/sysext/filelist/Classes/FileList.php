@@ -291,6 +291,7 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 			$this->sort = trim($this->sort);
 			if ($this->sort !== '') {
 				$filesToSort = array();
+				/** @var $fileObject \TYPO3\CMS\Core\Resource\File */
 				foreach ($files as $fileObject) {
 					switch ($this->sort) {
 						case 'size':
@@ -304,6 +305,9 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 							break;
 						case 'tstamp':
 							$sortingKey = $fileObject->getModificationTime();
+							break;
+						case 'file':
+							$sortingKey = $fileObject->getName();
 							break;
 						default:
 							if ($fileObject->hasProperty($this->sort)) {
