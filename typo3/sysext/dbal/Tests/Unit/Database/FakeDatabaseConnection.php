@@ -33,14 +33,15 @@ class FakeDatabaseConnection {
 	/**
 	 * Creates a fake database connection.
 	 *
-	 * @param \TYPO3\CMS\Dbal\Database\DatabaseConnection $db
+	 * @param \TYPO3\CMS\Dbal\Database\DatabaseConnection|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $db
 	 * @param string $driver Driver to use (e.g., 'oci8')
 	 * @return \ADOConnection
 	 */
 	static public function connect(\TYPO3\CMS\Dbal\Database\DatabaseConnection $db, $driver) {
+		$GLOBALS['TYPO3_LOADED_EXT'] = array();
 		// Make sure to have a clean configuration
 		$db->clearCachedFieldInfo();
-		$db->_call('initInternalVariables');
+		$db->initialize();
 		require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('adodb') . 'adodb/adodb.inc.php';
 		require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('adodb') . 'adodb/drivers/adodb-' . $driver . '.inc.php';
 		$handlerKey = '_DEFAULT';

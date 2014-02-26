@@ -956,7 +956,7 @@ class SqlParser {
 		$level = 0;
 		// Recursivity brake.
 		$loopExit = 0;
-		// $parseString is continously shortend by the process and we keep parsing it till it is zero:
+		// $parseString is continuously shortened by the process and we keep parsing it till it is zero:
 		while (strlen($parseString)) {
 			// Look for next parenthesis level:
 			$newLevel = $this->nextPart($parseString, '^([(])');

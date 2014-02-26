@@ -7,6 +7,7 @@ namespace TYPO3\CMS\Dbal\Database;
  *  (c) 2004-2013 Kasper Skårhøj (kasperYYYY@typo3.com)
  *  (c) 2004-2013 Karsten Dambekalns <karsten@typo3.org>
  *  (c) 2009-2013 Xavier Perseguers <xavier@typo3.org>
+ *  (c) 2014 Markus Klein <klein.t3@mfc-linz.at>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -40,42 +41,40 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 
-	// Internal, static:
 	/**
-	 * @todo Define visibility
+	 * @var bool
 	 */
-	public $printErrors = FALSE;
+	protected $printErrors = FALSE;
 
-	// Enable output of SQL errors after query executions. Set through TYPO3_CONF_VARS, see init()
 	/**
-	 * @todo Define visibility
+	 * Enable output of SQL errors after query executions.
+	 * @var bool
 	 */
 	public $debug = FALSE;
 
-	// Enable debug mode. Set through TYPO3_CONF_VARS, see init()
 	/**
-	 * @todo Define visibility
+	 * Enable debug mode
+	 * @var bool
 	 */
 	public $conf = array();
 
-	// Configuration array, copied from TYPO3_CONF_VARS in constructor.
 	/**
-	 * @todo Define visibility
+	 * Configuration array, copied from TYPO3_CONF_VARS in constructor.
+	 * @var array
 	 */
 	public $mapping = array();
 
-	// See manual.
 	/**
-	 * @todo Define visibility
+	 * See manual
+	 * @var array
 	 */
-	public $table2handlerKeys = array();
+	protected $table2handlerKeys = array();
 
-	// See manual.
 	/**
-	 * @todo Define visibility
+	 * See manual
+	 * @var array
 	 */
 	public $handlerCfg = array(
-		// See manual.
 		'_DEFAULT' => array(
 			'type' => 'native',
 			'config' => array(
@@ -98,71 +97,67 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 		)
 	);
 
-	// Internal, dynamic:
 	/**
-	 * @todo Define visibility
+	 * Contains instance of the handler objects as they are created.
+	 *
+	 * Exception is the native mySQL calls, which are registered as an array with keys
+	 * "handlerType" = "native" and
+	 * "link" pointing to the link object of the connection.
+	 *
+	 * @var array
 	 */
 	public $handlerInstance = array();
 
-	// Contains instance of the handler objects as they are created. Exception is the native mySQL calls which are registered as an array with keys "handlerType" = "native" and "link" pointing to the link resource for the connection.
 	/**
-	 * @todo Define visibility
+	 * Storage of the handler key of last ( SELECT) query - used for subsequent fetch-row calls etc.
+	 * @var string
 	 */
 	public $lastHandlerKey = '';
 
-	// Storage of the handler key of last ( SELECT) query - used for subsequent fetch-row calls etc.
 	/**
-	 * @todo Define visibility
+	 * Storage of last SELECT query
+	 * @var string
 	 */
-	public $lastQuery = '';
+	protected $lastQuery = '';
 
-	// Storage of last SELECT query
 	/**
-	 * @todo Define visibility
+	 * The last parsed query array
+	 * @var array
 	 */
-	public $lastParsedAndMappedQueryArray = array();
+	protected $lastParsedAndMappedQueryArray = array();
 
-	// Query array, the last one parsed
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
-	public $resourceIdToTableNameMap = array();
+	protected $resourceIdToTableNameMap = array();
 
-	// Mapping of resource ids to table names.
-	// Internal, caching:
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
-	public $cache_handlerKeyFromTableList = array();
+	protected $cache_handlerKeyFromTableList = array();
 
-	// Caching handlerKeys for table lists
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
-	public $cache_mappingFromTableList = array();
+	protected $cache_mappingFromTableList = array();
 
-	// Caching mapping information for table lists
 	/**
-	 * @todo Define visibility
+	 * parsed SQL from standard DB dump file
+	 * @var array
 	 */
 	public $cache_autoIncFields = array();
 
-	// parsed SQL from standard DB dump file
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $cache_fieldType = array();
 
-	// field types for tables/fields
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $cache_primaryKeys = array();
 
-	// primary keys
 	/**
-	 * The cache identifier for the field information cache
-	 *
 	 * @var string
 	 */
 	protected $cacheIdentifier = 't3lib_db_fieldInfo';
@@ -188,6 +183,43 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	protected $queryCache;
 
 	/**
+	 * mysql_field_type compatibility map
+	 * taken from: http://www.php.net/manual/en/mysqli-result.fetch-field-direct.php#89117
+	 * Constant numbers see http://php.net/manual/en/mysqli.constants.php
+	 *
+	 * @var array
+	 */
+	protected $mysqlDataTypeMapping = array(
+		MYSQLI_TYPE_TINY => 'tinyint',
+		MYSQLI_TYPE_CHAR => 'tinyint',
+		MYSQLI_TYPE_SHORT => 'smallint',
+		MYSQLI_TYPE_LONG => 'int',
+		MYSQLI_TYPE_FLOAT => 'float',
+		MYSQLI_TYPE_DOUBLE => 'double',
+		MYSQLI_TYPE_TIMESTAMP => 'timestamp',
+		MYSQLI_TYPE_LONGLONG => 'bigint',
+		MYSQLI_TYPE_INT24 => 'mediumint',
+		MYSQLI_TYPE_DATE => 'date',
+		MYSQLI_TYPE_NEWDATE => 'date',
+		MYSQLI_TYPE_TIME => 'time',
+		MYSQLI_TYPE_DATETIME => 'datetime',
+		MYSQLI_TYPE_YEAR => 'year',
+		MYSQLI_TYPE_BIT => 'bit',
+		MYSQLI_TYPE_INTERVAL => 'interval',
+		MYSQLI_TYPE_ENUM => 'enum',
+		MYSQLI_TYPE_SET => 'set',
+		MYSQLI_TYPE_TINY_BLOB => 'blob',
+		MYSQLI_TYPE_MEDIUM_BLOB => 'blob',
+		MYSQLI_TYPE_LONG_BLOB => 'blob',
+		MYSQLI_TYPE_BLOB => 'blob',
+		MYSQLI_TYPE_VAR_STRING => 'varchar',
+		MYSQLI_TYPE_STRING => 'char',
+		MYSQLI_TYPE_DECIMAL => 'decimal',
+		MYSQLI_TYPE_NEWDECIMAL => 'decimal',
+		MYSQLI_TYPE_GEOMETRY => 'geometry'
+	);
+
+	/**
 	 * Constructor.
 	 * Creates SQL parser object and imports configuration from $TYPO3_CONF_VARS['EXTCONF']['dbal']
 	 */
@@ -198,15 +230,14 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 		$this->queryCache = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->getCache('dbal');
 		// Set internal variables with configuration:
 		$this->conf = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['dbal'];
-		$this->initInternalVariables();
 	}
 
 	/**
-	 * Setting internal variables from $this->conf.
+	 * Initialize the database connection
 	 *
-	 * @return 	void
+	 * @return void
 	 */
-	protected function initInternalVariables() {
+	public function initialize() {
 		// Set outside configuration:
 		if (isset($this->conf['mapping'])) {
 			$this->mapping = $this->conf['mapping'];
@@ -219,8 +250,15 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 		}
 		$this->cacheFieldInfo();
 		// Debugging settings:
-		$this->printErrors = $this->conf['debugOptions']['printErrors'] ? TRUE : FALSE;
-		$this->debug = $this->conf['debugOptions']['enabled'] ? TRUE : FALSE;
+		$this->printErrors = !empty($this->conf['debugOptions']['printErrors']);
+		$this->debug = !empty($this->conf['debugOptions']['enabled']);
+	}
+
+	/**
+	 * @return \TYPO3\CMS\Core\Cache\Frontend\PhpFrontend
+	 */
+	protected function getFieldInfoCache() {
+		return GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->getCache('cache_phpcode');
 	}
 
 	/**
@@ -229,8 +267,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	 * @return void
 	 */
 	public function clearCachedFieldInfo() {
-		$phpCodeCache = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->getCache('cache_phpcode');
-		$phpCodeCache->flushByTag('t3lib_db');
+		$this->getFieldInfoCache()->flushByTag('t3lib_db');
 	}
 
 	/**
@@ -239,7 +276,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	 * @return void
 	 */
 	public function cacheFieldInfo() {
-		$phpCodeCache = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->getCache('cache_phpcode');
+		$phpCodeCache = $this->getFieldInfoCache();
 		// try to fetch cache
 		// cache is flushed when admin_query() is called
 		if ($phpCodeCache->has($this->cacheIdentifier)) {
@@ -329,8 +366,8 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	protected function analyzeFields($parsedExtSQL) {
 		foreach ($parsedExtSQL as $table => $tdef) {
 			if (is_array($tdef['fields'])) {
-				foreach ($tdef['fields'] as $field => $fdef) {
-					$fdef = $this->SQLparser->parseFieldDef($fdef);
+				foreach ($tdef['fields'] as $field => $fdefString) {
+					$fdef = $this->SQLparser->parseFieldDef($fdefString);
 					$this->cache_fieldType[$table][$field]['type'] = $fdef['fieldType'];
 					$this->cache_fieldType[$table][$field]['metaType'] = $this->MySQLMetaType($fdef['fieldType']);
 					$this->cache_fieldType[$table][$field]['notnull'] = isset($fdef['featureIndex']['NOTNULL']) && !$this->SQLparser->checkEmptyDefaultValue($fdef['featureIndex']) ? 1 : 0;
@@ -355,9 +392,12 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	/**
 	 * This function builds all definitions for mapped tables and fields
 	 *
+	 * @param array $fieldInfo
+	 * @return array
+	 *
 	 * @see cacheFieldInfo()
 	 */
-	protected function mapCachedFieldInfo($fieldInfo) {
+	protected function mapCachedFieldInfo(array $fieldInfo) {
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['dbal']['mapping'])) {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['dbal']['mapping'] as $mappedTable => $mappedConf) {
 				if (array_key_exists($mappedTable, $fieldInfo['incFields'])) {
@@ -394,11 +434,15 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	 * These functions are extending counterparts in the parent class.
 	 *
 	 **************************************/
-	/* From the ADOdb documentation, this is what we do (_Execute for SELECT, _query for the other actions)Execute() is the default way to run queries. You can use the low-level functions _Execute() and _query() to reduce query overhead.
-	Both these functions share the same parameters as Execute().If you do not have any bind parameters or your database supports binding (without emulation), then you can call _Execute() directly.
-	Calling this function bypasses bind emulation. Debugging is still supported in _Execute().If you do not require debugging facilities nor emulated binding, and do not require a recordset to be returned, then you can call _query.
-	This is great for inserts, updates and deletes. Calling this function bypasses emulated binding, debugging, and recordset handling. Either
-	the resultid, TRUE or FALSE are returned by _query().
+	/*
+	 * From the ADOdb documentation, this is what we do (_Execute for SELECT, _query for the other actions)Execute()
+	 * is the default way to run queries. You can use the low-level functions _Execute() and _query() to reduce query overhead.
+	 * Both these functions share the same parameters as Execute().If you do not have any bind parameters or your database
+	 * supports binding (without emulation), then you can call _Execute() directly.
+	 * Calling this function bypasses bind emulation. Debugging is still supported in _Execute().If you do not require
+	 * debugging facilities nor emulated binding, and do not require a recordset to be returned, then you can call _query.
+	 * This is great for inserts, updates and deletes. Calling this function bypasses emulated binding, debugging,
+	 * and recordset handling. Either the resultid, TRUE or FALSE are returned by _query().
 	 */
 
 	/**
@@ -407,8 +451,8 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	 *
 	 * @param string $table Table name
 	 * @param array $fields_values Field values as key=>value pairs. Values will be escaped internally. Typically you would fill an array like "$insertFields" with 'fieldname'=>'value' and pass it to this function as argument.
-	 * @param boolean $no_quote_fields See fullQuoteArray()
-	 * @return boolean|\mysqli_result|object MySQLi result object / DBAL object
+	 * @param bool $no_quote_fields See fullQuoteArray()
+	 * @return bool|\mysqli_result|object MySQLi result object / DBAL object
 	 * @throws \RuntimeException
 	 */
 	public function exec_INSERTquery($table, $fields_values, $no_quote_fields = FALSE) {
@@ -425,21 +469,20 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 		}
 		// Select API:
 		$this->lastHandlerKey = $this->handler_getFromTableList($table);
-		$hType = (string) $this->handlerCfg[$this->lastHandlerKey]['type'];
+		$hType = (string)$this->handlerCfg[$this->lastHandlerKey]['type'];
+		$sqlResult = NULL;
 		switch ($hType) {
 			case 'native':
-				if ($this->lastHandlerKey === '_DEFAULT' && !$this->isConnected()) {
-					$this->connectDB();
-				}
 				$this->lastQuery = $this->INSERTquery($table, $fields_values, $no_quote_fields);
 				if (is_string($this->lastQuery)) {
-					$sqlResult = mysql_query($this->lastQuery, $this->handlerInstance[$this->lastHandlerKey]['link']);
+					$sqlResult = $this->query($this->lastQuery);
 				} else {
-					$sqlResult = mysql_query($this->lastQuery[0], $this->handlerInstance[$this->lastHandlerKey]['link']);
+					$sqlResult = $this->query($this->lastQuery[0]);
 					$new_id = $this->sql_insert_id();
 					$where = $this->cache_autoIncFields[$table] . '=' . $new_id;
 					foreach ($this->lastQuery[1] as $field => $content) {
-						mysql_query('UPDATE ' . $this->quoteFromTables($table) . ' SET ' . $this->quoteFromTables($field) . '=' . $this->fullQuoteStr($content, $table) . ' WHERE ' . $this->quoteWhereClause($where), $this->handlerInstance[$this->lastHandlerKey]['link']);
+						$stmt = 'UPDATE ' . $this->quoteFromTables($table) . ' SET ' . $this->quoteFromTables($field) . '=' . $this->fullQuoteStr($content, $table) . ' WHERE ' . $this->quoteWhereClause($where);
+						$this->query($stmt);
 					}
 				}
 				break;
@@ -542,24 +585,18 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 
 	/**
 	 * Creates and executes an INSERT SQL-statement for $table with multiple rows.
-	 * This method uses exec_INSERTquery() and is just a syntax wrapper to it.
 	 *
-	 * @param 	string		Table name
-	 * @param 	array		Field names
-	 * @param 	array		Table rows. Each row should be an array with field values mapping to $fields
-	 * @param 	string/array		See fullQuoteArray()
-	 * @return 	mixed		Result from last handler, usually TRUE when success and FALSE on failure
+	 * @param string $table Table name
+	 * @param array $fields Field names
+	 * @param array $rows Table rows. Each row should be an array with field values mapping to $fields
+	 * @param bool $no_quote_fields See fullQuoteArray()
+	 * @return bool|\mysqli_result|object MySQLi result object / DBAL object
 	 */
 	public function exec_INSERTmultipleRows($table, array $fields, array $rows, $no_quote_fields = FALSE) {
-		if ((string) $this->handlerCfg[$this->lastHandlerKey]['type'] === 'native') {
+		$res = NULL;
+		if ((string)$this->handlerCfg[$this->lastHandlerKey]['type'] === 'native') {
 			$this->lastHandlerKey = $this->handler_getFromTableList($table);
-			if ($this->lastHandlerKey === '_DEFAULT' && !$this->isConnected()) {
-				$this->connectDB();
-			}
-			$res = mysql_query(
-				parent::INSERTmultipleRows($table, $fields, $rows, $no_quote_fields),
-				$this->handlerInstance[$this->lastHandlerKey]['link']
-			);
+			$res = $this->query(parent::INSERTmultipleRows($table, $fields, $rows, $no_quote_fields));
 		} else {
 			foreach ($rows as $row) {
 				$fields_values = array();
@@ -576,18 +613,17 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	}
 
 	/**
-	 * Updates a record from $table
+	 * Creates and executes an UPDATE SQL-statement for $table where $where-clause (typ. 'uid=...') from the array with field/value pairs $fields_values.
+	 * Using this function specifically allow us to handle BLOB and CLOB fields depending on DB
 	 *
-	 * @param 	string		Database tablename
-	 * @param 	string		WHERE clause, eg. "uid=1". NOTICE: You must escape values in this argument with $this->fullQuoteStr() yourself!
-	 * @param 	array		Field values as key=>value pairs. Values will be escaped internally. Typically you would fill an array like "$updateFields" with 'fieldname'=>'value' and pass it to this function as argument.
-	 * @param mixed	List/array of keys NOT to quote (eg. SQL functions)
-	 * @return 	mixed		Result from handler, usually TRUE when success and FALSE on failure
+	 * @param string $table Database tablename
+	 * @param string $where WHERE clause, eg. "uid=1". NOTICE: You must escape values in this argument with $this->fullQuoteStr() yourself!
+	 * @param array $fields_values Field values as key=>value pairs. Values will be escaped internally. Typically you would fill an array like "$updateFields" with 'fieldname'=>'value' and pass it to this function as argument.
+	 * @param bool $no_quote_fields See fullQuoteArray()
+	 * @return boolean|\mysqli_result|object MySQLi result object / DBAL object
 	 */
-	public function exec_UPDATEquery($table, $where, $fields_values, $no_quote_fields = '') {
-		if ($this->debug) {
-			$pt = GeneralUtility::milliseconds();
-		}
+	public function exec_UPDATEquery($table, $where, $fields_values, $no_quote_fields = FALSE) {
+		$pt = $this->debug ? GeneralUtility::milliseconds() : 0;
 		// Do table/field mapping:
 		$ORIG_tableName = $table;
 		if ($tableArray = $this->map_needMapping($table)) {
@@ -605,18 +641,17 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 		// Select API
 		$this->lastHandlerKey = $this->handler_getFromTableList($table);
 		$hType = (string) $this->handlerCfg[$this->lastHandlerKey]['type'];
+		$sqlResult = NULL;
 		switch ($hType) {
 			case 'native':
-				if ($this->lastHandlerKey === '_DEFAULT' && !$this->isConnected()) {
-					$this->connectDB();
-				}
 				$this->lastQuery = $this->UPDATEquery($table, $where, $fields_values, $no_quote_fields);
 				if (is_string($this->lastQuery)) {
-					$sqlResult = mysql_query($this->lastQuery, $this->handlerInstance[$this->lastHandlerKey]['link']);
+					$sqlResult = $this->query($this->lastQuery);
 				} else {
-					$sqlResult = mysql_query($this->lastQuery[0], $this->handlerInstance[$this->lastHandlerKey]['link']);
+					$sqlResult = $this->query($this->lastQuery[0]);
 					foreach ($this->lastQuery[1] as $field => $content) {
-						mysql_query('UPDATE ' . $this->quoteFromTables($table) . ' SET ' . $this->quoteFromTables($field) . '=' . $this->fullQuoteStr($content, $table) . ' WHERE ' . $this->quoteWhereClause($where), $this->handlerInstance[$this->lastHandlerKey]['link']);
+						$stmt = 'UPDATE ' . $this->quoteFromTables($table) . ' SET ' . $this->quoteFromTables($field) . '=' . $this->fullQuoteStr($content, $table) . ' WHERE ' . $this->quoteWhereClause($where);
+						$this->query($stmt);
 					}
 				}
 				break;
@@ -664,16 +699,14 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	}
 
 	/**
-	 * Deletes records from table
+	 * Creates and executes a DELETE SQL-statement for $table where $where-clause
 	 *
-	 * @param 	string		Database tablename
-	 * @param 	string		WHERE clause, eg. "uid=1". NOTICE: You must escape values in this argument with $this->fullQuoteStr() yourself!
-	 * @return 	mixed		Result from handler
+	 * @param string $table Database tablename
+	 * @param string $where WHERE clause, eg. "uid=1". NOTICE: You must escape values in this argument with $this->fullQuoteStr() yourself!
+	 * @return boolean|\mysqli_result|object MySQLi result object / DBAL object
 	 */
 	public function exec_DELETEquery($table, $where) {
-		if ($this->debug) {
-			$pt = GeneralUtility::milliseconds();
-		}
+		$pt = $this->debug ? GeneralUtility::milliseconds() : 0;
 		// Do table/field mapping:
 		$ORIG_tableName = $table;
 		if ($tableArray = $this->map_needMapping($table)) {
@@ -689,13 +722,11 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 		// Select API
 		$this->lastHandlerKey = $this->handler_getFromTableList($table);
 		$hType = (string) $this->handlerCfg[$this->lastHandlerKey]['type'];
+		$sqlResult = NULL;
 		switch ($hType) {
 			case 'native':
-				if ($this->lastHandlerKey === '_DEFAULT' && !$this->isConnected()) {
-					$this->connectDB();
-				}
 				$this->lastQuery = $this->DELETEquery($table, $where);
-				$sqlResult = mysql_query($this->lastQuery, $this->handlerInstance[$this->lastHandlerKey]['link']);
+				$sqlResult = $this->query($this->lastQuery);
 				break;
 			case 'adodb':
 				$this->lastQuery = $this->DELETEquery($table, $where);
@@ -723,20 +754,19 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	}
 
 	/**
-	 * Selects records from Data Source
+	 * Creates and executes a SELECT SQL-statement
+	 * Using this function specifically allow us to handle the LIMIT feature independently of DB.
 	 *
-	 * @param 	string $select_fields List of fields to select from the table. This is what comes right after "SELECT ...". Required value.
-	 * @param 	string $from_table Table(s) from which to select. This is what comes right after "FROM ...". Required value.
-	 * @param 	string $where_clause Optional additional WHERE clauses put in the end of the query. NOTICE: You must escape values in this argument with $this->fullQquoteStr() yourself! DO NOT PUT IN GROUP BY, ORDER BY or LIMIT!
-	 * @param 	string $groupBy Optional GROUP BY field(s), if none, supply blank string.
-	 * @param 	string $orderBy Optional ORDER BY field(s), if none, supply blank string.
-	 * @param 	string $limit Optional LIMIT value ([begin,]max), if none, supply blank string.
-	 * @return 	mixed		Result from handler. Typically object from DBAL layers.
+	 * @param string $select_fields List of fields to select from the table. This is what comes right after "SELECT ...". Required value.
+	 * @param string $from_table Table(s) from which to select. This is what comes right after "FROM ...". Required value.
+	 * @param string $where_clause Additional WHERE clauses put in the end of the query. NOTICE: You must escape values in this argument with $this->fullQuoteStr() yourself! DO NOT PUT IN GROUP BY, ORDER BY or LIMIT!
+	 * @param string $groupBy Optional GROUP BY field(s), if none, supply blank string.
+	 * @param string $orderBy Optional ORDER BY field(s), if none, supply blank string.
+	 * @param string $limit Optional LIMIT value ([begin,]max), if none, supply blank string.
+	 * @return boolean|\mysqli_result|object MySQLi result object / DBAL object
 	 */
 	public function exec_SELECTquery($select_fields, $from_table, $where_clause, $groupBy = '', $orderBy = '', $limit = '') {
-		if ($this->debug) {
-			$pt = GeneralUtility::milliseconds();
-		}
+		$pt = $this->debug ? GeneralUtility::milliseconds() : 0;
 		// Map table / field names if needed:
 		$ORIG_tableName = $from_table;
 		// Saving table names in $ORIG_from_table since $from_table is transformed beneath:
@@ -755,17 +785,15 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 		}
 		$this->lastHandlerKey = $this->handler_getFromTableList($fromTable);
 		$hType = (string) $this->handlerCfg[$this->lastHandlerKey]['type'];
+		$sqlResult = NULL;
 		switch ($hType) {
 			case 'native':
-				if ($this->lastHandlerKey === '_DEFAULT' && !$this->isConnected()) {
-					$this->connectDB();
-				}
 				if (count($remappedParameters) > 0) {
 					list($select_fields, $from_table, $where_clause, $groupBy, $orderBy) = $this->compileSelectParameters($remappedParameters);
 				}
 				$this->lastQuery = $this->SELECTquery($select_fields, $from_table, $where_clause, $groupBy, $orderBy, $limit);
-				$sqlResult = mysql_query($this->lastQuery, $this->handlerInstance[$this->lastHandlerKey]['link']);
-				$this->resourceIdToTableNameMap[(string) $sqlResult] = $ORIG_tableName;
+				$sqlResult = $this->query($this->lastQuery);
+				$this->resourceIdToTableNameMap[serialize($sqlResult)] = $ORIG_tableName;
 				break;
 			case 'adodb':
 				if ($limit != '') {
@@ -830,13 +858,11 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	/**
 	 * Truncates a table.
 	 *
-	 * @param 	string		Database tablename
-	 * @return 	mixed		Result from handler
+	 * @param string $table Database tablename
+	 * @return mixed Result from handler
 	 */
 	public function exec_TRUNCATEquery($table) {
-		if ($this->debug) {
-			$pt = GeneralUtility::milliseconds();
-		}
+		$pt = $this->debug ? GeneralUtility::milliseconds() : 0;
 		// Do table/field mapping:
 		$ORIG_tableName = $table;
 		if ($tableArray = $this->map_needMapping($table)) {
@@ -848,13 +874,11 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 		// Select API
 		$this->lastHandlerKey = $this->handler_getFromTableList($table);
 		$hType = (string) $this->handlerCfg[$this->lastHandlerKey]['type'];
+		$sqlResult = NULL;
 		switch ($hType) {
 			case 'native':
-				if ($this->lastHandlerKey === '_DEFAULT' && !$this->isConnected()) {
-					$this->connectDB();
-				}
 				$this->lastQuery = $this->TRUNCATEquery($table);
-				$sqlResult = mysql_query($this->lastQuery, $this->handlerInstance[$this->lastHandlerKey]['link']);
+				$sqlResult = $this->query($this->lastQuery);
 				break;
 			case 'adodb':
 				$this->lastQuery = $this->TRUNCATEquery($table);
@@ -886,7 +910,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	 * EXPERIMENTAL since TYPO3 4.4.
 	 *
 	 * @param array $queryParts SQL parsed by method parseSQL() of \TYPO3\CMS\Core\Database\SqlParser
-	 * @return pointer Result pointer / DBAL object
+	 * @return \mysqli_result|object MySQLi result object / DBAL object
 	 * @see self::sql_query()
 	 */
 	protected function exec_query(array $queryParts) {
@@ -929,7 +953,23 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 			case 'TRUNCATETABLE':
 				$table = $queryParts['TABLE'];
 				return $this->exec_TRUNCATEquery($table);
-			}
+			default:
+				return NULL;
+		}
+	}
+
+	/**
+	 * Central query method. Also checks if there is a database connection.
+	 * Use this to execute database queries instead of directly calling $this->link->query()
+	 *
+	 * @param string $query The query to send to the database
+	 * @return bool|\mysqli_result
+	 */
+	protected function query($query) {
+		if (!$this->isConnected()) {
+			$this->connectDB();
+		}
+		return $this->handlerInstance[$this->lastHandlerKey]['link']->query($query);
 	}
 
 	/**************************************
@@ -939,69 +979,52 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	 **************************************/
 	/**
 	 * Creates an INSERT SQL-statement for $table from the array with field/value pairs $fields_values.
-	 * Usage count/core: 4
 	 *
-	 * @param 	string		See exec_INSERTquery()
-	 * @param 	array		See exec_INSERTquery()
-	 * @param mixed		See exec_INSERTquery()
-	 * @return 	mixed		Full SQL query for INSERT as string or array (unless $fields_values does not contain any elements in which case it will be FALSE). If BLOB fields will be affected and one is not running the native type, an array will be returned, where 0 => plain SQL, 1 => fieldname/value pairs of BLOB fields
+	 * @param string $table See exec_INSERTquery()
+	 * @param array $fields_values See exec_INSERTquery()
+	 * @param bool $no_quote_fields See fullQuoteArray()
+	 * @return string|NULL Full SQL query for INSERT, NULL if $rows is empty
 	 */
-	public function INSERTquery($table, $fields_values, $no_quote_fields = '') {
+	public function INSERTquery($table, $fields_values, $no_quote_fields = FALSE) {
 		// Table and fieldnames should be "SQL-injection-safe" when supplied to this function (contrary to values in the arrays which may be insecure).
-		if (is_array($fields_values) && count($fields_values)) {
-			foreach ($this->preProcessHookObjects as $hookObject) {
-				$hookObject->INSERTquery_preProcessAction($table, $fields_values, $no_quote_fields, $this);
-			}
-			if (is_string($no_quote_fields)) {
-				$no_quote_fields = explode(',', $no_quote_fields);
-			} elseif (!is_array($no_quote_fields)) {
-				$no_quote_fields = array();
-			}
-			$blobfields = array();
-			$nArr = array();
-			$handlerKey = $this->handler_getFromTableList($table);
-			$quoteClob = isset($this->handlerCfg[$handlerKey]['config']['quoteClob']) ? $this->handlerCfg[$handlerKey]['config']['quoteClob'] : FALSE;
-			foreach ($fields_values as $k => $v) {
-				if (!$this->runningNative() && $this->sql_field_metatype($table, $k) == 'B') {
-					// we skip the field in the regular INSERT statement, it is only in blobfields
-					$blobfields[$this->quoteFieldNames($k)] = $v;
-				} elseif (!$this->runningNative() && $this->sql_field_metatype($table, $k) == 'XL') {
-					// we skip the field in the regular INSERT statement, it is only in clobfields
-					$clobfields[$this->quoteFieldNames($k)] = $quoteClob ? $this->quoteStr($v, $table) : $v;
-				} else {
-					// Add slashes old-school:
-					// cast numerical values
-					$mt = $this->sql_field_metatype($table, $k);
-					if ($mt[0] == 'I') {
-						$v = (int)$v;
-					} elseif ($mt[0] == 'F') {
-						$v = (double) $v;
-					}
-					$nArr[$this->quoteFieldNames($k)] = !in_array($k, $no_quote_fields) ? $this->fullQuoteStr($v, $table) : $v;
-				}
-			}
-			if (count($blobfields) || count($clobfields)) {
-				if (count($nArr)) {
-					$query[0] = 'INSERT INTO ' . $this->quoteFromTables($table) . '
-					(
-						' . implode(',
-						', array_keys($nArr)) . '
-					) VALUES (
-						' . implode(',
-						', $nArr) . '
-					)';
-				}
-				if (count($blobfields)) {
-					$query[1] = $blobfields;
-				}
-				if (count($clobfields)) {
-					$query[2] = $clobfields;
-				}
-				if ($this->debugOutput || $this->store_lastBuiltQuery) {
-					$this->debug_lastBuiltQuery = $query[0];
-				}
+		if (!is_array($fields_values) || count($fields_values) === 0) {
+			return '';
+		}
+		foreach ($this->preProcessHookObjects as $hookObject) {
+			$hookObject->INSERTquery_preProcessAction($table, $fields_values, $no_quote_fields, $this);
+		}
+		if (is_string($no_quote_fields)) {
+			$no_quote_fields = explode(',', $no_quote_fields);
+		} elseif (!is_array($no_quote_fields)) {
+			$no_quote_fields = array();
+		}
+		$blobFields = $clobFields = array();
+		$nArr = array();
+		$handlerKey = $this->handler_getFromTableList($table);
+		$quoteClob = isset($this->handlerCfg[$handlerKey]['config']['quoteClob']) ? $this->handlerCfg[$handlerKey]['config']['quoteClob'] : FALSE;
+		foreach ($fields_values as $k => $v) {
+			if (!$this->runningNative() && $this->sql_field_metatype($table, $k) == 'B') {
+				// we skip the field in the regular INSERT statement, it is only in blobfields
+				$blobFields[$this->quoteFieldNames($k)] = $v;
+			} elseif (!$this->runningNative() && $this->sql_field_metatype($table, $k) == 'XL') {
+				// we skip the field in the regular INSERT statement, it is only in clobfields
+				$clobFields[$this->quoteFieldNames($k)] = $quoteClob ? $this->quoteStr($v, $table) : $v;
 			} else {
-				$query = 'INSERT INTO ' . $this->quoteFromTables($table) . '
+				// Add slashes old-school:
+				// cast numerical values
+				$mt = $this->sql_field_metatype($table, $k);
+				if ($mt[0] == 'I') {
+					$v = (int)$v;
+				} elseif ($mt[0] == 'F') {
+					$v = (double) $v;
+				}
+				$nArr[$this->quoteFieldNames($k)] = !in_array($k, $no_quote_fields) ? $this->fullQuoteStr($v, $table) : $v;
+			}
+		}
+		if (count($blobFields) || count($clobFields)) {
+			$query = array();
+			if (count($nArr)) {
+				$query[0] = 'INSERT INTO ' . $this->quoteFromTables($table) . '
 				(
 					' . implode(',
 					', array_keys($nArr)) . '
@@ -1009,23 +1032,40 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 					' . implode(',
 					', $nArr) . '
 				)';
-				if ($this->debugOutput || $this->store_lastBuiltQuery) {
-					$this->debug_lastBuiltQuery = $query;
-				}
 			}
-			return $query;
+			if (count($blobFields)) {
+				$query[1] = $blobFields;
+			}
+			if (count($clobFields)) {
+				$query[2] = $clobFields;
+			}
+			if (isset($query[0]) && ($this->debugOutput || $this->store_lastBuiltQuery)) {
+				$this->debug_lastBuiltQuery = $query[0];
+			}
+		} else {
+			$query = 'INSERT INTO ' . $this->quoteFromTables($table) . '
+			(
+				' . implode(',
+				', array_keys($nArr)) . '
+			) VALUES (
+				' . implode(',
+				', $nArr) . '
+			)';
+			if ($this->debugOutput || $this->store_lastBuiltQuery) {
+				$this->debug_lastBuiltQuery = $query;
+			}
 		}
+		return $query;
 	}
 
 	/**
 	 * Creates an INSERT SQL-statement for $table with multiple rows.
-	 * This method will create multiple INSERT queries concatenated with ';'
 	 *
-	 * @param 	string		Table name
-	 * @param 	array		Field names
-	 * @param 	array		Table rows. Each row should be an array with field values mapping to $fields
-	 * @param 	string/array		See fullQuoteArray()
-	 * @return 	array		Full SQL query for INSERT as array of strings (unless $fields_values does not contain any elements in which case it will be FALSE). If BLOB fields will be affected and one is not running the native type, an array will be returned for each row, where 0 => plain SQL, 1 => fieldname/value pairs of BLOB fields.
+	 * @param string $table Table name
+	 * @param array $fields Field names
+	 * @param array $rows Table rows. Each row should be an array with field values mapping to $fields
+	 * @param bool $no_quote_fields See fullQuoteArray()
+	 * @return string|array Full SQL query for INSERT (unless $rows does not contain any elements in which case it will be FALSE)
 	 */
 	public function INSERTmultipleRows($table, array $fields, array $rows, $no_quote_fields = FALSE) {
 		if ((string) $this->handlerCfg[$this->lastHandlerKey]['type'] === 'native') {
@@ -1049,39 +1089,38 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 
 	/**
 	 * Creates an UPDATE SQL-statement for $table where $where-clause (typ. 'uid=...') from the array with field/value pairs $fields_values.
-	 * Usage count/core: 6
 	 *
-	 * @param 	string		See exec_UPDATEquery()
-	 * @param 	string		See exec_UPDATEquery()
-	 * @param 	array		See exec_UPDATEquery()
-	 * @param 	mixed		See exec_UPDATEquery()
-	 * @return 	mixed		Full SQL query for UPDATE as string or array (unless $fields_values does not contain any elements in which case it will be FALSE). If BLOB fields will be affected and one is not running the native type, an array will be returned, where 0 => plain SQL, 1 => fieldname/value pairs of BLOB fields
+	 *
+	 * @param string $table See exec_UPDATEquery()
+	 * @param string $where See exec_UPDATEquery()
+	 * @param array $fields_values See exec_UPDATEquery()
+	 * @param bool $no_quote_fields
+	 * @throws \InvalidArgumentException
+	 * @return string Full SQL query for UPDATE
 	 */
-	public function UPDATEquery($table, $where, $fields_values, $no_quote_fields = '') {
+	public function UPDATEquery($table, $where, $fields_values, $no_quote_fields = FALSE) {
 		// Table and fieldnames should be "SQL-injection-safe" when supplied to this function (contrary to values in the arrays which may be insecure).
 		if (is_string($where)) {
 			foreach ($this->preProcessHookObjects as $hookObject) {
 				$hookObject->UPDATEquery_preProcessAction($table, $where, $fields_values, $no_quote_fields, $this);
 			}
-			$fields = array();
-			$blobfields = array();
-			$clobfields = array();
+			$blobFields = $clobFields = array();
+			$nArr = array();
 			if (is_array($fields_values) && count($fields_values)) {
 				if (is_string($no_quote_fields)) {
 					$no_quote_fields = explode(',', $no_quote_fields);
 				} elseif (!is_array($no_quote_fields)) {
 					$no_quote_fields = array();
 				}
-				$nArr = array();
 				$handlerKey = $this->handler_getFromTableList($table);
 				$quoteClob = isset($this->handlerCfg[$handlerKey]['config']['quoteClob']) ? $this->handlerCfg[$handlerKey]['config']['quoteClob'] : FALSE;
 				foreach ($fields_values as $k => $v) {
 					if (!$this->runningNative() && $this->sql_field_metatype($table, $k) == 'B') {
 						// we skip the field in the regular UPDATE statement, it is only in blobfields
-						$blobfields[$this->quoteFieldNames($k)] = $v;
+						$blobFields[$this->quoteFieldNames($k)] = $v;
 					} elseif (!$this->runningNative() && $this->sql_field_metatype($table, $k) == 'XL') {
 						// we skip the field in the regular UPDATE statement, it is only in clobfields
-						$clobfields[$this->quoteFieldNames($k)] = $quoteClob ? $this->quoteStr($v, $table) : $v;
+						$clobFields[$this->quoteFieldNames($k)] = $quoteClob ? $this->quoteStr($v, $table) : $v;
 					} else {
 						// Add slashes old-school:
 						// cast numeric values
@@ -1095,7 +1134,8 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 					}
 				}
 			}
-			if (count($blobfields) || count($clobfields)) {
+			if (count($blobFields) || count($clobFields)) {
+				$query = array();
 				if (count($nArr)) {
 					$query[0] = 'UPDATE ' . $this->quoteFromTables($table) . '
 						SET
@@ -1104,13 +1144,13 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 						WHERE
 							' . $this->quoteWhereClause($where) : '');
 				}
-				if (count($blobfields)) {
-					$query[1] = $blobfields;
+				if (count($blobFields)) {
+					$query[1] = $blobFields;
 				}
-				if (count($clobfields)) {
-					$query[2] = $clobfields;
+				if (count($clobFields)) {
+					$query[2] = $clobFields;
 				}
-				if ($this->debugOutput || $this->store_lastBuiltQuery) {
+				if (isset($query[0]) && ($this->debugOutput || $this->store_lastBuiltQuery)) {
 					$this->debug_lastBuiltQuery = $query[0];
 				}
 			} else {
@@ -1132,11 +1172,11 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 
 	/**
 	 * Creates a DELETE SQL-statement for $table where $where-clause
-	 * Usage count/core: 3
 	 *
-	 * @param 	string		See exec_DELETEquery()
-	 * @param 	string		See exec_DELETEquery()
-	 * @return 	string		Full SQL query for DELETE
+	 * @param string $table See exec_DELETEquery()
+	 * @param string $where See exec_DELETEquery()
+	 * @return string Full SQL query for DELETE
+	 * @throws \InvalidArgumentException
 	 */
 	public function DELETEquery($table, $where) {
 		if (is_string($where)) {
@@ -1157,15 +1197,14 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 
 	/**
 	 * Creates a SELECT SQL-statement
-	 * Usage count/core: 11
 	 *
-	 * @param 	string		See exec_SELECTquery()
-	 * @param 	string		See exec_SELECTquery()
-	 * @param 	string		See exec_SELECTquery()
-	 * @param 	string		See exec_SELECTquery()
-	 * @param 	string		See exec_SELECTquery()
-	 * @param 	string		See exec_SELECTquery()
-	 * @return 	string		Full SQL query for SELECT
+	 * @param string $select_fields See exec_SELECTquery()
+	 * @param string $from_table See exec_SELECTquery()
+	 * @param string $where_clause See exec_SELECTquery()
+	 * @param string $groupBy See exec_SELECTquery()
+	 * @param string $orderBy See exec_SELECTquery()
+	 * @param string $limit See exec_SELECTquery()
+	 * @return string Full SQL query for SELECT
 	 */
 	public function SELECTquery($select_fields, $from_table, $where_clause, $groupBy = '', $orderBy = '', $limit = '') {
 		$this->lastHandlerKey = $this->handler_getFromTableList($from_table);
@@ -1197,8 +1236,8 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	/**
 	 * Creates a SELECT SQL-statement to be used with an ADOdb backend.
 	 *
-	 * @param 	array		parsed parameters: array($select_fields, $from_table, $where_clause, $groupBy, $orderBy)
-	 * @return 	string		Full SQL query for SELECT
+	 * @param array $params parsed parameters: array($select_fields, $from_table, $where_clause, $groupBy, $orderBy)
+	 * @return string Full SQL query for SELECT
 	 */
 	protected function SELECTqueryFromArray(array $params) {
 		// $select_fields
@@ -1246,8 +1285,8 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	/**
 	 * Creates a TRUNCATE TABLE SQL-statement
 	 *
-	 * @param 	string		See exec_TRUNCATEquery()
-	 * @return 	string		Full SQL query for TRUNCATE TABLE
+	 * @param string $table See exec_TRUNCATEquery()
+	 * @return string Full SQL query for TRUNCATE TABLE
 	 */
 	public function TRUNCATEquery($table) {
 		foreach ($this->preProcessHookObjects as $hookObject) {
@@ -1270,19 +1309,17 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	/**
 	 * Creates a SELECT prepared SQL statement.
 	 *
-	 * @param string See exec_SELECTquery()
-	 * @param string See exec_SELECTquery()
-	 * @param string See exec_SELECTquery()
-	 * @param string See exec_SELECTquery()
-	 * @param string See exec_SELECTquery()
-	 * @param string See exec_SELECTquery()
+	 * @param string $select_fields See exec_SELECTquery()
+	 * @param string $from_table See exec_SELECTquery()
+	 * @param string $where_clause See exec_SELECTquery()
+	 * @param string $groupBy See exec_SELECTquery()
+	 * @param string $orderBy See exec_SELECTquery()
+	 * @param string $limit See exec_SELECTquery()
 	 * @param array $input_parameters An array of values with as many elements as there are bound parameters in the SQL statement being executed. All values are treated as \TYPO3\CMS\Core\Database\PreparedStatement::PARAM_AUTOTYPE.
 	 * @return \TYPO3\CMS\Core\Database\PreparedStatement Prepared statement
 	 */
 	public function prepare_SELECTquery($select_fields, $from_table, $where_clause, $groupBy = '', $orderBy = '', $limit = '', array $input_parameters = array()) {
-		if ($this->debug) {
-			$pt = GeneralUtility::milliseconds();
-		}
+		$pt = $this->debug ? GeneralUtility::milliseconds() : 0;
 		$precompiledParts = array();
 		if ($this->queryCache) {
 			$cacheKey = 'prepare_SELECTquery-' . \TYPO3\CMS\Dbal\QueryCache::getCacheKey(array(
@@ -1304,6 +1341,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 				}
 			}
 		}
+		$ORIG_tableName = '';
 		if (count($precompiledParts) == 0) {
 			// Map table / field names if needed:
 			$ORIG_tableName = $from_table;
@@ -1368,6 +1406,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	 * @param string $groupBy
 	 * @param string $orderBy
 	 * @param string $limit
+	 * @throws \InvalidArgumentException
 	 * @return array
 	 */
 	protected function getQueryComponents($select_fields, $from_table, $where_clause, $groupBy, $orderBy, $limit) {
@@ -1439,9 +1478,6 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 		$precompiledParts['ORIG_tableName'] = $components['ORIG_tableName'];
 		switch ($hType) {
 			case 'native':
-				if ($this->lastHandlerKey === '_DEFAULT' && !$this->isConnected()) {
-					$this->connectDB();
-				}
 				$query = parent::SELECTquery($select_fields, $from_table, $where_clause, $groupBy, $orderBy, $limit);
 				$precompiledParts['queryParts'] = explode($parameterWrap, $query);
 				break;
@@ -1466,25 +1502,24 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 
 	/**
 	 * Executes a prepared query.
+	 * This method may only be called by \TYPO3\CMS\Core\Database\PreparedStatement
 	 *
 	 * @param string $query The query to execute
 	 * @param array $queryComponents The components of the query to execute
-	 * @return pointer MySQL result pointer / DBAL object
-	 * @access protected This method may only be called by \TYPO3\CMS\Core\Database\PreparedStatement
+	 * @return boolean|\mysqli_result|object MySQLi result object / DBAL object
 	 */
-	public function exec_PREPAREDquery($query, array $precompiledParts) {
-		if ($this->debug) {
-			$pt = GeneralUtility::milliseconds();
-		}
+	public function exec_PREPAREDquery($query, array $queryComponents) {
+		$pt = $this->debug ? GeneralUtility::milliseconds() : 0;
 		// Get handler key and select API:
-		switch ($precompiledParts['handler']) {
+		$sqlResult = NULL;
+		switch ($queryComponents['handler']) {
 			case 'native':
 				$this->lastQuery = $query;
-				$sqlResult = mysql_query($this->lastQuery, $this->handlerInstance[$this->lastHandlerKey]['link']);
-				$this->resourceIdToTableNameMap[(string) $sqlResult] = $precompiledParts['ORIG_tableName'];
+				$sqlResult = $this->query($this->lastQuery);
+				$this->resourceIdToTableNameMap[serialize($sqlResult)] = $queryComponents['ORIG_tableName'];
 				break;
 			case 'adodb':
-				$limit = $precompiledParts['LIMIT'];
+				$limit = $queryComponents['LIMIT'];
 				if ($this->runningADOdbDriver('postgres')) {
 					// Possibly rewrite the LIMIT to be PostgreSQL-compatible
 					$splitLimit = GeneralUtility::intExplode(',', $limit);
@@ -1515,15 +1550,15 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 				}
 				$sqlResult->TYPO3_DBAL_handlerType = 'adodb';
 				// Setting handler type in result object (for later recognition!)
-				$sqlResult->TYPO3_DBAL_tableList = $precompiledParts['ORIG_tableName'];
+				$sqlResult->TYPO3_DBAL_tableList = $queryComponents['ORIG_tableName'];
 				break;
 			case 'userdefined':
-				$queryParts = $precompiledParts['queryParts'];
+				$queryParts = $queryComponents['queryParts'];
 				$sqlResult = $this->handlerInstance[$this->lastHandlerKey]->exec_SELECTquery($queryParts['SELECT'], $queryParts['FROM'], $queryParts['WHERE'], $queryParts['GROUPBY'], $queryParts['ORDERBY'], $queryParts['LIMIT']);
 				if (is_object($sqlResult)) {
 					$sqlResult->TYPO3_DBAL_handlerType = 'userdefined';
 					// Setting handler type in result object (for later recognition!)
-					$sqlResult->TYPO3_DBAL_tableList = $precompiledParts['ORIG_tableName'];
+					$sqlResult->TYPO3_DBAL_tableList = $queryComponents['ORIG_tableName'];
 				}
 				break;
 		}
@@ -1532,9 +1567,9 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 		}
 		if ($this->debug) {
 			$data = array(
-				'handlerType' => $precompiledParts['handler'],
-				'args' => $precompiledParts,
-				'ORIG_from_table' => $precompiledParts['ORIG_tableName']
+				'handlerType' => $queryComponents['handler'],
+				'args' => $queryComponents,
+				'ORIG_from_table' => $queryComponents['ORIG_tableName']
 			);
 			if ($this->conf['debugOptions']['numberRows']) {
 				$data['numberRows'] = $this->sql_num_rows($sqlResult);
@@ -1566,8 +1601,9 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	/**
 	 * Quotes field (and table) names with the quote character suitable for the DB being used
 	 *
-	 * @param 	string		List of fields to be used in query to DB
-	 * @return 	string		Quoted list of fields to be in query to DB
+	 * @param string $select_fields List of fields to be used in query to DB
+	 * @throws \InvalidArgumentException
+	 * @return string Quoted list of fields to be in query to DB
 	 */
 	public function quoteFieldNames($select_fields) {
 		if ($select_fields == '') {
@@ -1585,7 +1621,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	}
 
 	/**
-	 * Quotes field (and table) names in a SQL SELECT clause acccording to DB rules
+	 * Quotes field (and table) names in a SQL SELECT clause according to DB rules
 	 *
 	 * @param array $select_fields The parsed fields to quote
 	 * @return array
@@ -1624,11 +1660,11 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	/**
 	 * Quotes table names with the quote character suitable for the DB being used
 	 *
-	 * @param 	string		List of tables to be selected from DB
-	 * @return 	string		Quoted list of tables to be selected from DB
+	 * @param string $from_table List of tables to be selected from DB
+	 * @return string Quoted list of tables to be selected from DB
 	 */
 	public function quoteFromTables($from_table) {
-		if ($from_table == '') {
+		if ($from_table === '') {
 			return '';
 		}
 		if ($this->runningNative()) {
@@ -1640,7 +1676,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	}
 
 	/**
-	 * Quotes table names in a SQL FROM clause acccording to DB rules
+	 * Quotes table names in a SQL FROM clause according to DB rules
 	 *
 	 * @param array $from_table The parsed FROM clause to quote
 	 * @return array
@@ -1671,8 +1707,9 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	/**
 	 * Quotes the field (and table) names within a where clause with the quote character suitable for the DB being used
 	 *
-	 * @param 	string		A where clause that can be parsed by parseWhereClause
-	 * @return 	string		Usable where clause with quoted field/table names
+	 * @param string $where_clause A where clause that can be parsed by parseWhereClause
+	 * @throws \InvalidArgumentException
+	 * @return string Usable where clause with quoted field/table names
 	 */
 	public function quoteWhereClause($where_clause) {
 		if ($where_clause === '' || $this->runningNative()) {
@@ -1689,10 +1726,10 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	}
 
 	/**
-	 * Quotes field names in a SQL WHERE clause acccording to DB rules
+	 * Quotes field names in a SQL WHERE clause according to DB rules
 	 *
-	 * @param 	array		$where_clause The parsed WHERE clause to quote
-	 * @return 	array
+	 * @param array $where_clause The parsed WHERE clause to quote
+	 * @return array
 	 * @see quoteWhereClause()
 	 */
 	protected function _quoteWhereClause(array $where_clause) {
@@ -1709,12 +1746,12 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 						// quoteStr that will be used for Oracle
 						$pattern = str_replace($where_clause[$k]['func']['str'][1], '\\' . $where_clause[$k]['func']['str'][1], $where_clause[$k]['func']['str'][0]);
 						// table is not really needed and may in fact be empty in real statements
-						// but it's not overriden from \TYPO3\CMS\Core\Database\DatabaseConnection at the moment...
+						// but it's not overridden from \TYPO3\CMS\Core\Database\DatabaseConnection at the moment...
 						$patternForLike = $this->escapeStrForLike($pattern, $where_clause[$k]['func']['table']);
 						$where_clause[$k]['func']['str_like'] = $patternForLike;
 						// Intentional fallthrough
 					case 'IFNULL':
-
+						// Intentional fallthrough
 					case 'LOCATE':
 						if ($where_clause[$k]['func']['table'] != '') {
 							$where_clause[$k]['func']['table'] = $this->quoteName($v['func']['table']);
@@ -1755,7 +1792,10 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 							$where_clause[$k]['subquery'] = $this->quoteSELECTsubquery($v['subquery']);
 						}
 					} else {
-						if ((!isset($where_clause[$k]['value'][1]) || $where_clause[$k]['value'][1] == '') && is_string($where_clause[$k]['value'][0]) && strstr($where_clause[$k]['value'][0], '.')) {
+						if (
+							(!isset($where_clause[$k]['value'][1]) || $where_clause[$k]['value'][1] == '')
+							&& is_string($where_clause[$k]['value'][0]) && strstr($where_clause[$k]['value'][0], '.')
+						) {
 							$where_clause[$k]['value'][0] = $this->quoteFieldNames($where_clause[$k]['value'][0]);
 						}
 					}
@@ -1769,8 +1809,8 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	 * Quotes the field (and table) names within a group by clause with the quote
 	 * character suitable for the DB being used
 	 *
-	 * @param 	string		A group by clause that can by parsed by parseFieldList
-	 * @return 	string		Usable group by clause with quoted field/table names
+	 * @param string $groupBy A group by clause that can by parsed by parseFieldList
+	 * @return string Usable group by clause with quoted field/table names
 	 */
 	protected function quoteGroupBy($groupBy) {
 		if ($groupBy === '') {
@@ -1785,10 +1825,10 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	}
 
 	/**
-	 * Quotes field names in a SQL GROUP BY clause acccording to DB rules
+	 * Quotes field names in a SQL GROUP BY clause according to DB rules
 	 *
-	 * @param 	array		$groupBy The parsed GROUP BY clause to quote
-	 * @return 	array
+	 * @param array $groupBy The parsed GROUP BY clause to quote
+	 * @return array
 	 * @see quoteGroupBy()
 	 */
 	protected function _quoteGroupBy(array $groupBy) {
@@ -1805,8 +1845,8 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	 * Quotes the field (and table) names within an order by clause with the quote
 	 * character suitable for the DB being used
 	 *
-	 * @param 	string		An order by clause that can by parsed by parseFieldList
-	 * @return 	string		Usable order by clause with quoted field/table names
+	 * @param string $orderBy An order by clause that can by parsed by parseFieldList
+	 * @return string Usable order by clause with quoted field/table names
 	 */
 	protected function quoteOrderBy($orderBy) {
 		if ($orderBy === '') {
@@ -1821,7 +1861,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	}
 
 	/**
-	 * Quotes field names in a SQL ORDER BY clause acccording to DB rules
+	 * Quotes field names in a SQL ORDER BY clause according to DB rules
 	 *
 	 * @param 	array		$orderBy The parsed ORDER BY clause to quote
 	 * @return 	array
@@ -1848,39 +1888,48 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	/**
 	 * Escaping and quoting values for SQL statements.
 	 *
-	 * @param 	string		Input string
-	 * @param 	string		Table name for which to quote string. Just enter the table that the field-value is selected from (and any DBAL will look up which handler to use and then how to quote the string!).
-	 * @return 	string		Output string; Wrapped in single quotes and quotes in the string (" / ') and \ will be backslashed (or otherwise based on DBAL handler)
+	 * @param string $str Input string
+	 * @param string $table Table name for which to quote string. Just enter the table that the field-value is selected from (and any DBAL will look up which handler to use and then how to quote the string!).
+	 * @param bool $allowNull Whether to allow NULL values
+	 * @return string Output string; Wrapped in single quotes and quotes in the string (" / ') and \ will be backslashed (or otherwise based on DBAL handler)
 	 * @see quoteStr()
 	 */
-	public function fullQuoteStr($str, $table) {
+	public function fullQuoteStr($str, $table,  $allowNull = FALSE) {
+		if ($allowNull && $str === NULL) {
+			return 'NULL';
+		}
 		return '\'' . $this->quoteStr($str, $table) . '\'';
 	}
 
 	/**
 	 * Substitution for PHP function "addslashes()"
+	 * Use this function instead of the PHP addslashes() function when you build queries - this will prepare your code for DBAL.
 	 * NOTICE: You must wrap the output of this function in SINGLE QUOTES to be DBAL compatible. Unless you have to apply the single quotes yourself you should rather use ->fullQuoteStr()!
 	 *
-	 * @param 	string		Input string
-	 * @param 	string		Table name for which to quote string. Just enter the table that the field-value is selected from (and any DBAL will look up which handler to use and then how to quote the string!).
-	 * @return 	string		Output string; Quotes (" / ') and \ will be backslashed (or otherwise based on DBAL handler)
+	 * @param string $str Input string
+	 * @param string $table Table name for which to quote string. Just enter the table that the field-value is selected from (and any DBAL will look up which handler to use and then how to quote the string!).
+	 * @throws \RuntimeException
+	 * @return string Output string; Quotes (" / ') and \ will be backslashed (or otherwise based on DBAL handler)
 	 * @see quoteStr()
 	 */
 	public function quoteStr($str, $table) {
 		$this->lastHandlerKey = $this->handler_getFromTableList($table);
-		switch ((string) $this->handlerCfg[$this->lastHandlerKey]['type']) {
+		switch ((string)$this->handlerCfg[$this->lastHandlerKey]['type']) {
 			case 'native':
 				if ($this->handlerInstance[$this->lastHandlerKey]['link']) {
-					if ($this->lastHandlerKey === '_DEFAULT' && !$this->isConnected()) {
+					if (!$this->isConnected()) {
 						$this->connectDB();
 					}
-					$str = mysql_real_escape_string($str, $this->handlerInstance[$this->lastHandlerKey]['link']);
+					$str = $this->handlerInstance[$this->lastHandlerKey]['link']->real_escape_string($str);
 				} else {
 					// link may be null when unit testing DBAL
 					$str = str_replace('\'', '\\\'', $str);
 				}
 				break;
 			case 'adodb':
+				if (!$this->isConnected()) {
+					$this->connectDB();
+				}
 				$str = substr($this->handlerInstance[$this->lastHandlerKey]->qstr($str), 1, -1);
 				break;
 			case 'userdefined':
@@ -1895,10 +1944,10 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	/**
 	 * Quotes an object name (table name, field, ...)
 	 *
-	 * @param 	string		Object's name
-	 * @param 	string		Handler key
-	 * @param 	boolean		If method NameQuote() is not used, whether to use backticks instead of driver-specific quotes
-	 * @return 	string		Properly-quoted object's name
+	 * @param string $name Object's name
+	 * @param string $handlerKey Handler key
+	 * @param bool $useBackticks If method NameQuote() is not used, whether to use backticks instead of driver-specific quotes
+	 * @return string Properly-quoted object's name
 	 */
 	public function quoteName($name, $handlerKey = NULL, $useBackticks = FALSE) {
 		$handlerKey = $handlerKey ? $handlerKey : $this->lastHandlerKey;
@@ -1918,11 +1967,13 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	/**
 	 * Return MetaType for native field type (ADOdb only!)
 	 *
-	 * @param 	string		native type as reported by admin_get_fields()
-	 * @param 	string		Table name for which query type string. Important for detection of DBMS handler of the query!
-	 * @return 	string		Meta type (currenly ADOdb syntax only, http://phplens.com/lens/adodb/docs-adodb.htm#metatype)
+	 * @param string $type Native type as reported by admin_get_fields()
+	 * @param string $table Table name for which query type string. Important for detection of DBMS handler of the query!
+	 * @param int $maxLength
+	 * @throws \RuntimeException
+	 * @return string Meta type (currently ADOdb syntax only, http://phplens.com/lens/adodb/docs-adodb.htm#metatype)
 	 */
-	public function MetaType($type, $table, $max_length = -1) {
+	public function MetaType($type, $table, $maxLength = -1) {
 		$this->lastHandlerKey = $this->handler_getFromTableList($table);
 		$str = '';
 		switch ((string) $this->handlerCfg[$this->lastHandlerKey]['type']) {
@@ -1932,11 +1983,11 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 			case 'adodb':
 				if (in_array($table, $this->cache_fieldType)) {
 					$rs = $this->handlerInstance[$this->lastHandlerKey]->SelectLimit('SELECT * FROM ' . $this->quoteFromTables($table), 1);
-					$str = $rs->MetaType($type, $max_length);
+					$str = $rs->MetaType($type, $maxLength);
 				}
 				break;
 			case 'userdefined':
-				$str = $this->handlerInstance[$this->lastHandlerKey]->MetaType($str, $table, $max_length);
+				$str = $this->handlerInstance[$this->lastHandlerKey]->MetaType($str, $table, $maxLength);
 				break;
 			default:
 				throw new \RuntimeException('No handler found!!!', 1310027685);
@@ -1947,8 +1998,8 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	/**
 	 * Return MetaType for native MySQL field type
 	 *
-	 * @param 	string		native type as reported as in mysqldump files
-	 * @return 	string		Meta type (currenly ADOdb syntax only, http://phplens.com/lens/adodb/docs-adodb.htm#metatype)
+	 * @param string $t native type as reported as in mysqldump files
+	 * @return string Meta type (currently ADOdb syntax only, http://phplens.com/lens/adodb/docs-adodb.htm#metatype)
 	 */
 	public function MySQLMetaType($t) {
 		switch (strtoupper($t)) {
@@ -2014,8 +2065,8 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	/**
 	 * Return actual MySQL type for meta field type
 	 *
-	 * @param 	string		Meta type (currenly ADOdb syntax only, http://phplens.com/lens/adodb/docs-adodb.htm#metatype)
-	 * @return 	string		native type as reported as in mysqldump files, uppercase
+	 * @param string $meta Meta type (currenly ADOdb syntax only, http://phplens.com/lens/adodb/docs-adodb.htm#metatype)
+	 * @return string Native type as reported as in mysqldump files, uppercase
 	 */
 	public function MySQLActualType($meta) {
 		switch (strtoupper($meta)) {
@@ -2063,14 +2114,15 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	 *
 	 **************************************/
 	/**
-	 * Returns the error status on the most recent sql() execution (based on $this->lastHandlerKey)
+	 * Returns the error status on the last query() execution
 	 *
-	 * @return 	string		Handler error strings
+	 * @return string MySQLi error string.
 	 */
 	public function sql_error() {
+		$output = '';
 		switch ($this->handlerCfg[$this->lastHandlerKey]['type']) {
 			case 'native':
-				$output = mysql_error($this->handlerInstance[$this->lastHandlerKey]['link']);
+				$output = $this->handlerInstance[$this->lastHandlerKey]['link']->error;
 				break;
 			case 'adodb':
 				$output = $this->handlerInstance[$this->lastHandlerKey]->ErrorMsg();
@@ -2083,14 +2135,15 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	}
 
 	/**
-	 * Returns the error number on the most recent sql() execution (based on $this->lastHandlerKey)
+	 * Returns the error number on the last query() execution
 	 *
-	 * @return 	int		Handler error number
+	 * @return integer MySQLi error number
 	 */
 	public function sql_errno() {
+		$output = 0;
 		switch ($this->handlerCfg[$this->lastHandlerKey]['type']) {
 			case 'native':
-				$output = mysql_errno($this->handlerInstance[$this->lastHandlerKey]['link']);
+				$output = $this->handlerInstance[$this->lastHandlerKey]['link']->errno;
 				break;
 			case 'adodb':
 				$output = $this->handlerInstance[$this->lastHandlerKey]->ErrorNo();
@@ -2105,18 +2158,18 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	/**
 	 * Returns the number of selected rows.
 	 *
-	 * @param 	pointer		Result pointer / DBAL object
-	 * @return 	integer		Number of resulting rows.
+	 * @param boolean|\mysqli_result|object $res MySQLi result object / DBAL object
+	 * @return integer Number of resulting rows
 	 */
 	public function sql_num_rows($res) {
 		if ($res === FALSE) {
 			return FALSE;
 		}
-		$handlerType = is_object($res) ? $res->TYPO3_DBAL_handlerType : 'native';
+		$handlerType = $this->determineHandlerType($res);
 		$output = 0;
 		switch ($handlerType) {
 			case 'native':
-				$output = mysql_num_rows($res);
+				$output = $res->num_rows;
 				break;
 			case 'adodb':
 				$output = method_exists($res, 'RecordCount') ? $res->RecordCount() : 0;
@@ -2130,17 +2183,20 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 
 	/**
 	 * Returns an associative array that corresponds to the fetched row, or FALSE if there are no more rows.
+	 * MySQLi fetch_assoc() wrapper function
 	 *
-	 * @param 	pointer		MySQL result pointer (of SELECT query) / DBAL object
-	 * @return 	array		Associative array of result row.
+	 * @param boolean|\mysqli_result|object $res MySQLi result object / DBAL object
+	 * @return array|boolean Associative array of result row.
 	 */
 	public function sql_fetch_assoc($res) {
+		$tableList = '';
 		$output = FALSE;
-		$handlerType = is_object($res) ? $res->TYPO3_DBAL_handlerType : (is_resource($res) ? 'native' : FALSE);
-		switch ($handlerType) {
+		switch ($this->determineHandlerType($res)) {
 			case 'native':
-				$output = mysql_fetch_assoc($res);
-				$tableList = $this->resourceIdToTableNameMap[(string) $res];
+				$output = $res->fetch_assoc();
+				$key = serialize($res);
+				$tableList = $this->resourceIdToTableNameMap[$key];
+				unset($this->resourceIdToTableNameMap[$key]);
 				// Reading list of tables from SELECT query:
 				break;
 			case 'adodb':
@@ -2192,16 +2248,20 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	/**
 	 * Returns an array that corresponds to the fetched row, or FALSE if there are no more rows.
 	 * The array contains the values in numerical indices.
+	 * MySQLi fetch_row() wrapper function
 	 *
-	 * @param 	pointer		MySQL result pointer (of SELECT query) / DBAL object
-	 * @return 	array		Array with result rows.
+	 * @param boolean|\mysqli_result|object $res MySQLi result object / DBAL object
+	 * @return array|boolean Array with result rows.
 	 */
 	public function sql_fetch_row($res) {
 		$output = FALSE;
-		$handlerType = is_object($res) ? $res->TYPO3_DBAL_handlerType : 'native';
-		switch ($handlerType) {
+		switch ($this->determineHandlerType($res)) {
 			case 'native':
-				$output = mysql_fetch_row($res);
+				$output = $res->fetch_row();
+				if ($output === NULL) {
+					// Needed for compatibility
+					$output = FALSE;
+				}
 				break;
 			case 'adodb':
 				// Check if method exists for the current $res object.
@@ -2237,20 +2297,20 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	}
 
 	/**
-	 * Free result memory / unset result object
+	 * Free result memory
+	 * free_result() wrapper function
 	 *
-	 * @param 	pointer		MySQL result pointer to free / DBAL object
-	 * @return 	boolean		Returns TRUE on success or FALSE on failure.
+	 * @param boolean|\mysqli_result|object $res MySQLi result object / DBAL object
+	 * @return bool Returns TRUE on success or FALSE on failure.
 	 */
 	public function sql_free_result($res) {
 		if ($res === FALSE) {
 			return FALSE;
 		}
-		$handlerType = is_object($res) ? $res->TYPO3_DBAL_handlerType : 'native';
 		$output = TRUE;
-		switch ($handlerType) {
+		switch ($this->determineHandlerType($res)) {
 			case 'native':
-				$output = mysql_free_result($res);
+				$res->free();
 				break;
 			case 'adodb':
 				if (method_exists($res, 'Close')) {
@@ -2269,15 +2329,32 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	}
 
 	/**
+	 * Determine handler type by result set
+	 *
+	 * @param bool|\mysqli_result|object $res MySQLi result set / DBAL Object
+	 * @return bool|string
+	 */
+	protected function determineHandlerType($res) {
+		if (is_object($res) && !$res instanceof \mysqli_result) {
+			$handlerType = $res->TYPO3_DBAL_handlerType;
+		} elseif ($res instanceof \mysqli_result) {
+			$handlerType = 'native';
+		} else {
+			$handlerType = FALSE;
+		}
+		return $handlerType;
+	}
+
+	/**
 	 * Get the ID generated from the previous INSERT operation
 	 *
-	 * @return 	integer		The uid of the last inserted record.
+	 * @return integer The uid of the last inserted record.
 	 */
 	public function sql_insert_id() {
 		$output = 0;
 		switch ($this->handlerCfg[$this->lastHandlerKey]['type']) {
 			case 'native':
-				$output = mysql_insert_id($this->handlerInstance[$this->lastHandlerKey]['link']);
+				$output = $this->handlerInstance[$this->lastHandlerKey]['link']->insert_id;
 				break;
 			case 'adodb':
 				$output = $this->handlerInstance[$this->lastHandlerKey]->last_insert_id;
@@ -2292,12 +2369,13 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	/**
 	 * Returns the number of rows affected by the last INSERT, UPDATE or DELETE query
 	 *
-	 * @return 	integer		Number of rows affected by last query
+	 * @return integer Number of rows affected by last query
 	 */
 	public function sql_affected_rows() {
+		$output = 0;
 		switch ($this->handlerCfg[$this->lastHandlerKey]['type']) {
 			case 'native':
-				$output = mysql_affected_rows();
+				$output = $this->handlerInstance[$this->lastHandlerKey]['link']->affected_rows;
 				break;
 			case 'adodb':
 				$output = $this->handlerInstance[$this->lastHandlerKey]->Affected_Rows();
@@ -2312,16 +2390,15 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	/**
 	 * Move internal result pointer
 	 *
-	 * @param 	pointer		MySQL result pointer (of SELECT query) / DBAL object
-	 * @param 	integer		Seek result number.
-	 * @return 	boolean		Returns TRUE on success or FALSE on failure.
+	 * @param boolean|\mysqli_result|object $res MySQLi result object / DBAL object
+	 * @param integer $seek Seek result number.
+	 * @return bool Returns TRUE on success or FALSE on failure.
 	 */
 	public function sql_data_seek($res, $seek) {
 		$output = TRUE;
-		$handlerType = is_object($res) ? $res->TYPO3_DBAL_handlerType : 'native';
-		switch ($handlerType) {
+		switch ($this->determineHandlerType($res)) {
 			case 'native':
-				$output = mysql_data_seek($res, $seek);
+				$output = $res->data_seek($seek);
 				break;
 			case 'adodb':
 				$output = $res->Move($seek);
@@ -2338,9 +2415,9 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	 *
 	 * If the first parameter is a string, it is used as table name for the lookup.
 	 *
-	 * @param 	pointer		MySQL result pointer (of SELECT query) / DBAL object / table name
-	 * @param 	integer		Field index. In case of ADOdb a string (field name!) FIXME
-	 * @return 	string		Returns the type of the specified field index
+	 * @param string $table MySQL result pointer (of SELECT query) / DBAL object / table name
+	 * @param integer $field Field index. In case of ADOdb a string (field name!)
+	 * @return string Returns the type of the specified field index
 	 */
 	public function sql_field_metatype($table, $field) {
 		// If $table and/or $field are mapped, use the original names instead
@@ -2363,12 +2440,11 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 
 	/**
 	 * Get the type of the specified field in a result
+	 * mysql_field_type() wrapper function
 	 *
-	 * If the first parameter is a string, it is used as table name for the lookup.
-	 *
-	 * @param 	pointer		MySQL result pointer (of SELECT query) / DBAL object / table name
-	 * @param 	integer		Field index. In case of ADOdb a string (field name!) FIXME
-	 * @return 	string		Returns the type of the specified field index
+	 * @param boolean|\mysqli_result|object $res MySQLi result object / DBAL object
+	 * @param integer $pointer Field index.
+	 * @return string Returns the name of the specified field index, or FALSE on error
 	 */
 	public function sql_field_type($res, $pointer) {
 		if ($res === NULL) {
@@ -2380,12 +2456,17 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 			}
 			$handlerType = 'adodb';
 		} else {
-			$handlerType = is_object($res) ? $res->TYPO3_DBAL_handlerType : 'native';
+			$handlerType = $this->determineHandlerType($res);
 		}
 		$output = '';
 		switch ($handlerType) {
 			case 'native':
-				$output = mysql_field_type($res, $pointer);
+				$metaInfo = $res->fetch_field_direct($pointer);
+				if ($metaInfo) {
+					$output = $this->mysqlDataTypeMapping[$metaInfo->type];
+				} else {
+					$output = '';
+				}
 				break;
 			case 'adodb':
 				if (is_string($pointer)) {
@@ -2406,18 +2487,20 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	 *
 	 **********/
 	/**
-	 * Executes a query
+	 * Executes query
+	 *
 	 * EXPERIMENTAL - This method will make its best to handle the query correctly
 	 * but if it cannot, it will simply pass the query to DEFAULT handler.
 	 *
 	 * You should use exec_* function from this class instead!
 	 * If you don't, anything that does not use the _DEFAULT handler will probably break!
 	 *
-	 * This method was deprecated in TYPO3 4.1 but is considered experimental since TYPO3 4.4
-	 * as it tries to handle the query correctly anyway.
+	 * MySQLi query() wrapper function
+	 * Beware: Use of this method should be avoided as it is experimentally supported by DBAL. You should consider
+	 * using exec_SELECTquery() and similar methods instead.
 	 *
-	 * @param 	string		Query to execute
-	 * @return 	pointer		Result pointer / DBAL object
+	 * @param string $query Query to execute
+	 * @return boolean|\mysqli_result|object MySQLi result object / DBAL object
 	 */
 	public function sql_query($query) {
 		$globalConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['dbal']);
@@ -2429,9 +2512,13 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 		if (is_array($queryParts) && GeneralUtility::inList('SELECT,UPDATE,INSERT,DELETE', $queryParts['type'])) {
 			return $this->exec_query($queryParts);
 		}
+		$sqlResult = NULL;
 		switch ($this->handlerCfg['_DEFAULT']['type']) {
 			case 'native':
-				$sqlResult = mysql_query($query, $this->handlerInstance['_DEFAULT']['link']);
+				if (!$this->isConnected()) {
+					$this->connectDB();
+				}
+				$sqlResult = $this->handlerInstance['_DEFAULT']['link']->query($query);
 				break;
 			case 'adodb':
 				$sqlResult = $this->handlerInstance['_DEFAULT']->Execute($query);
@@ -2450,15 +2537,13 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	}
 
 	/**
-	 * Opening the _DEFAULT connection handler to the database.
-	 * This is typically done by the scripts "init.php" in the backend or "index_ts.php" in the frontend (\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->connectToDB())
-	 * You wouldn't need to use this at any time - let TYPO3 core handle this.
+	 * Open a (persistent) connection to a MySQL server
 	 *
 	 * @param string $host Deprecated since 6.1, will be removed in two versions. Database host IP/domain[:port]
 	 * @param string $username Deprecated since 6.1, will be removed in two versions. Username to connect with.
 	 * @param string $password Deprecated since 6.1, will be removed in two versions. Password to connect with.
-	 * @return 	mixed		Returns handler connection value
-	 * @see handler_init()
+	 * @return boolean|void
+	 * @throws \RuntimeException
 	 */
 	public function sql_pconnect($host = NULL, $username = NULL, $password = NULL) {
 		if ($host || $username || $password) {
@@ -2468,7 +2553,8 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 		// Overriding the _DEFAULT handler configuration of username, password, localhost and database name:
 		$this->handlerCfg['_DEFAULT']['config']['username'] = $this->databaseUsername;
 		$this->handlerCfg['_DEFAULT']['config']['password'] = $this->databaseUserPassword;
-		$this->handlerCfg['_DEFAULT']['config']['host'] = $this->databaseHost . ':' . $this->databasePort;
+		$this->handlerCfg['_DEFAULT']['config']['host'] = $this->databaseHost;
+		$this->handlerCfg['_DEFAULT']['config']['port'] = (int)$this->databasePort;
 		$this->handlerCfg['_DEFAULT']['config']['database'] = $this->databaseName;
 		// Initializing and output value:
 		$sqlResult = $this->handler_init('_DEFAULT');
@@ -2476,13 +2562,27 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	}
 
 	/**
-	 * Select database for _DEFAULT handler.
+	 * Select a SQL database
 	 *
-	 * @param 	string		Database to connect to.
-	 * @return 	boolean		Always returns TRUE; function is obsolete, database selection is made in handler_init() function!
+	 * @param string $TYPO3_db Deprecated since 6.1, will be removed in two versions. Database to connect to.
+	 * @return bool Returns TRUE on success or FALSE on failure.
 	 */
-	public function sql_select_db($TYPO3_db = '') {
-		return TRUE;
+	public function sql_select_db($TYPO3_db = NULL) {
+		if (!$TYPO3_db) {
+			$TYPO3_db = $this->handlerCfg[$this->lastHandlerKey]['config']['database'];
+		}
+		$ret = TRUE;
+		if ((string)$this->handlerCfg[$this->lastHandlerKey]['type'] === 'native') {
+			$ret = $this->handlerInstance[$this->lastHandlerKey]['link']->select_db($TYPO3_db);
+		}
+		if (!$ret) {
+			GeneralUtility::sysLog(
+				'Could not select MySQL database ' . $TYPO3_db . ': ' . $this->sql_error(),
+				'Core',
+				GeneralUtility::SYSLOG_SEVERITY_FATAL
+			);
+		}
+		return $ret;
 	}
 
 	/**************************************
@@ -2493,21 +2593,26 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	 **************************************/
 	/**
 	 * Listing databases from current MySQL connection. NOTICE: It WILL try to select those databases and thus break selection of current database.
+	 * This is only used as a service function in the (1-2-3 process) of the Install Tool.
+	 * In any case a lookup should be done in the _DEFAULT handler DBMS then.
 	 * Use in Install Tool only!
-	 * Usage count/core: 1
 	 *
-	 * @return 	array		Each entry represents a database name
+	 * @return array Each entry represents a database name
+	 * @throws \RuntimeException
 	 */
 	public function admin_get_dbs() {
 		$dbArr = array();
+		$this->lastHandlerKey = '_DEFAULT';
 		switch ($this->handlerCfg['_DEFAULT']['type']) {
 			case 'native':
-				$db_list = mysql_query('SHOW DATABASES', $this->link);
-				while ($row = mysql_fetch_object($db_list)) {
-					if ($this->sql_select_db($row->Database)) {
-						$dbArr[] = $row->Database;
+				/** @var \mysqli_result $db_list */
+				$db_list = $this->query("SELECT SCHEMA_NAME FROM information_schema.SCHEMATA");
+				while ($row = $db_list->fetch_object()) {
+					if ($this->sql_select_db($row->SCHEMA_NAME)) {
+						$dbArr[] = $row->SCHEMA_NAME;
 					}
 				}
+				$db_list->free();
 				break;
 			case 'adodb':
 				// check needed for install tool - otherwise it will just die because the call to
@@ -2529,26 +2634,24 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	}
 
 	/**
-	 * Returns the list of tables from the system (quering the DBMSs)
-	 * It looks up all tables from the DBMS of the _DEFAULT handler and then add all tables *configured* to be managed by other handlers
+	 * Returns the list of tables from the default database, TYPO3_db (quering the DBMS)
+	 * In a DBAL this method should 1) look up all tables from the DBMS  of
+	 * the _DEFAULT handler and then 2) add all tables *configured* to be managed by other handlers
 	 *
-	 * When fetching the tables, it skips tables whose names begin with BIN$, as this is taken as a table coming from the "Recycle Bin" on Oracle.
-	 *
-	 * @return 	array		Tables in an array (tablename is in both key and value)
-	 * @todo 	Should the check for Oracle Recycle Bin stuff be moved elsewhere?
-	 * @todo Should return table details in value! see \TYPO3\CMS\Core\Database\DatabaseConnection::admin_get_tables()
+	 * @return array Array with tablenames as key and arrays with status information as value
 	 */
 	public function admin_get_tables() {
 		$whichTables = array();
 		// Getting real list of tables:
 		switch ($this->handlerCfg['_DEFAULT']['type']) {
 			case 'native':
-				$tables_result = mysql_query('SHOW TABLE STATUS FROM `' . TYPO3_db . '`', $this->handlerInstance['_DEFAULT']['link']);
+				$tables_result = $this->query('SHOW TABLE STATUS FROM `' . TYPO3_db . '`');
 				if (!$this->sql_error()) {
 					while ($theTable = $this->sql_fetch_assoc($tables_result)) {
 						$whichTables[$theTable['Name']] = $theTable;
 					}
 				}
+				$tables_result->free();
 				break;
 			case 'adodb':
 				// check needed for install tool - otherwise it will just die because the call to
@@ -2599,10 +2702,13 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	/**
 	 * Returns information about each field in the $table (quering the DBMS)
 	 * In a DBAL this should look up the right handler for the table and return compatible information
-	 * This function is important not only for the Install Tool but probably for DBALs as well since they might need to look up table specific information in order to construct correct queries. In such cases this information should probably be cached for quick delivery
+	 * This function is important not only for the Install Tool but probably for
+	 * DBALs as well since they might need to look up table specific information
+	 * in order to construct correct queries. In such cases this information should
+	 * probably be cached for quick delivery.
 	 *
-	 * @param 	string		Table name
-	 * @return 	array		Field information in an associative array with fieldname => field row
+	 * @param string $tableName Table name
+	 * @return array Field information in an associative array with fieldname => field row
 	 */
 	public function admin_get_fields($tableName) {
 		$output = array();
@@ -2618,10 +2724,12 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 		$this->lastHandlerKey = $this->handler_getFromTableList($tableName);
 		switch ((string) $this->handlerCfg[$this->lastHandlerKey]['type']) {
 			case 'native':
-				$columns_res = mysql_query('SHOW columns FROM ' . $tableName, $this->handlerInstance[$this->lastHandlerKey]['link']);
-				while ($fieldRow = mysql_fetch_assoc($columns_res)) {
+				/** @var \mysqli_result $columns_res */
+				$columns_res = $this->query('SHOW columns FROM ' . $tableName);
+				while ($fieldRow = $columns_res->fetch_assoc()) {
 					$output[$fieldRow['Field']] = $fieldRow;
 				}
+				$columns_res->free();
 				break;
 			case 'adodb':
 				$fieldRows = $this->handlerInstance[$this->lastHandlerKey]->MetaColumns($tableName, FALSE);
@@ -2664,8 +2772,8 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	 * Returns information about each index key in the $table (quering the DBMS)
 	 * In a DBAL this should look up the right handler for the table and return compatible information
 	 *
-	 * @param 	string		Table name
-	 * @return 	array		Key information in a numeric array
+	 * @param string $tableName Table name
+	 * @return array Key information in a numeric array
 	 */
 	public function admin_get_keys($tableName) {
 		$output = array();
@@ -2681,10 +2789,12 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 		$this->lastHandlerKey = $this->handler_getFromTableList($tableName);
 		switch ((string) $this->handlerCfg[$this->lastHandlerKey]['type']) {
 			case 'native':
-				$keyRes = mysql_query('SHOW keys FROM ' . $tableName, $this->handlerInstance[$this->lastHandlerKey]['link']);
-				while ($keyRow = mysql_fetch_assoc($keyRes)) {
+				/** @var \mysqli_result $keyRes */
+				$keyRes = $this->query('SHOW keys FROM ' . $tableName);
+				while ($keyRow = $keyRes->fetch_assoc()) {
 					$output[] = $keyRow;
 				}
+				$keyRes->free();
 				break;
 			case 'adodb':
 				$keyRows = $this->handlerInstance[$this->lastHandlerKey]->MetaIndexes($tableName);
@@ -2756,78 +2866,102 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	}
 
 	/**
-	 * mysql() wrapper function, used by the Install Tool.
+	 * Returns information about the character sets supported by the current DBM
+	 * This function is important not only for the Install Tool but probably for
+	 * DBALs as well since they might need to look up table specific information
+	 * in order to construct correct queries. In such cases this information should
+	 * probably be cached for quick delivery.
 	 *
-	 * @return 	array
+	 * This is used by the Install Tool to convert tables tables with non-UTF8 charsets
+	 * Use in Install Tool only!
+	 *
+	 * @return array Array with Charset as key and an array of "Charset", "Description", "Default collation", "Maxlen" as values
 	 */
 	public function admin_get_charsets() {
-		return array();
+		$output = array();
+		if ((string)$this->handlerCfg[$this->lastHandlerKey]['type'] === 'native') {
+			/** @var \mysqli_result $columns_res */
+			$columns_res = $this->query('SHOW CHARACTER SET');
+			if ($columns_res !== FALSE) {
+				while ($row = $columns_res->fetch_assoc()) {
+					$output[$row['Charset']] = $row;
+				}
+				$columns_res->free();
+			}
+		}
+		return $output;
 	}
 
 	/**
-	 * mysql() wrapper function, used by the Install Tool and EM for all queries regarding management of the database!
+	 * mysqli() wrapper function, used by the Install Tool and EM for all queries regarding management of the database!
 	 *
-	 * @param 	string		Query to execute
-	 * @return 	pointer		Result pointer
+	 * @param string $query Query to execute
+	 * @throws \InvalidArgumentException
+	 * @return boolean|\mysqli_result|object MySQLi result object / DBAL object
 	 */
 	public function admin_query($query) {
 		$parsedQuery = $this->SQLparser->parseSQL($query);
 		$ORIG_table = $parsedQuery['TABLE'];
-		if (is_array($parsedQuery)) {
-			// Process query based on type:
-			switch ($parsedQuery['type']) {
-				case 'CREATETABLE':
-
-				case 'ALTERTABLE':
-
-				case 'DROPTABLE':
-					$this->clearCachedFieldInfo();
-					$this->map_genericQueryParsed($parsedQuery);
-					break;
-				case 'INSERT':
-
-				case 'TRUNCATETABLE':
-					$this->map_genericQueryParsed($parsedQuery);
-					break;
-				case 'CREATEDATABASE':
-					throw new \InvalidArgumentException('Creating a database with DBAL is not supported. Did you really read the manual?', 1310027716);
-					break;
-				default:
-					throw new \InvalidArgumentException('ERROR: Invalid Query type (' . $parsedQuery['type'] . ') for ->admin_query() function!: "' . htmlspecialchars($query) . '"', 1310027740);
-			}
-			// Setting query array (for other applications to access if needed)
-			$this->lastParsedAndMappedQueryArray = $parsedQuery;
-			// Execute query (based on handler derived from the TABLE name which we actually know for once!)
-			$this->lastHandlerKey = $this->handler_getFromTableList($ORIG_table);
-			switch ((string) $this->handlerCfg[$this->lastHandlerKey]['type']) {
-				case 'native':
-					// Compiling query:
-					$compiledQuery = $this->SQLparser->compileSQL($this->lastParsedAndMappedQueryArray);
-					if (in_array($this->lastParsedAndMappedQueryArray['type'], array('INSERT', 'DROPTABLE'))) {
-						return mysql_query($compiledQuery, $this->handlerInstance[$this->lastHandlerKey]['link']);
-					}
-					return mysql_query($compiledQuery[0], $this->handlerInstance[$this->lastHandlerKey]['link']);
-					break;
-				case 'adodb':
-					// Compiling query:
-					$compiledQuery = $this->SQLparser->compileSQL($this->lastParsedAndMappedQueryArray);
-					switch ($this->lastParsedAndMappedQueryArray['type']) {
-						case 'INSERT':
-							return $this->exec_INSERTquery($this->lastParsedAndMappedQueryArray['TABLE'], $compiledQuery);
-						case 'TRUNCATETABLE':
-							return $this->exec_TRUNCATEquery($this->lastParsedAndMappedQueryArray['TABLE']);
-					}
-					return $this->handlerInstance[$this->lastHandlerKey]->DataDictionary->ExecuteSQLArray($compiledQuery);
-					break;
-				case 'userdefined':
-					// Compiling query:
-					$compiledQuery = $this->SQLparser->compileSQL($this->lastParsedAndMappedQueryArray);
-					return $this->handlerInstance[$this->lastHandlerKey]->admin_query($compiledQuery);
-					break;
-			}
-		} else {
+		if (!is_array($parsedQuery)) {
 			throw new \InvalidArgumentException('ERROR: Query could not be parsed: "' . htmlspecialchars($parsedQuery) . '". Query: "' . htmlspecialchars($query) . '"', 1310027793);
 		}
+		// Process query based on type:
+		switch ($parsedQuery['type']) {
+			case 'CREATETABLE':
+
+			case 'ALTERTABLE':
+
+			case 'DROPTABLE':
+				$this->clearCachedFieldInfo();
+				$this->map_genericQueryParsed($parsedQuery);
+				break;
+			case 'INSERT':
+
+			case 'TRUNCATETABLE':
+				$this->map_genericQueryParsed($parsedQuery);
+				break;
+			case 'CREATEDATABASE':
+				throw new \InvalidArgumentException('Creating a database with DBAL is not supported. Did you really read the manual?', 1310027716);
+				break;
+			default:
+				throw new \InvalidArgumentException('ERROR: Invalid Query type (' . $parsedQuery['type'] . ') for ->admin_query() function!: "' . htmlspecialchars($query) . '"', 1310027740);
+		}
+		// Setting query array (for other applications to access if needed)
+		$this->lastParsedAndMappedQueryArray = $parsedQuery;
+		// Execute query (based on handler derived from the TABLE name which we actually know for once!)
+		$result = NULL;
+		$this->lastHandlerKey = $this->handler_getFromTableList($ORIG_table);
+		switch ((string)$this->handlerCfg[$this->lastHandlerKey]['type']) {
+			case 'native':
+				// Compiling query:
+				$compiledQuery = $this->SQLparser->compileSQL($this->lastParsedAndMappedQueryArray);
+				if (in_array($this->lastParsedAndMappedQueryArray['type'], array('INSERT', 'DROPTABLE'))) {
+					$result = $this->query($compiledQuery);
+				} else {
+					$result = $this->query($compiledQuery[0]);
+				}
+				break;
+			case 'adodb':
+				// Compiling query:
+				$compiledQuery = $this->SQLparser->compileSQL($this->lastParsedAndMappedQueryArray);
+				switch ($this->lastParsedAndMappedQueryArray['type']) {
+					case 'INSERT':
+						$result = $this->exec_INSERTquery($this->lastParsedAndMappedQueryArray['TABLE'], $compiledQuery);
+						break;
+					case 'TRUNCATETABLE':
+						$result = $this->exec_TRUNCATEquery($this->lastParsedAndMappedQueryArray['TABLE']);
+						break;
+					default:
+						$result = $this->handlerInstance[$this->lastHandlerKey]->DataDictionary->ExecuteSQLArray($compiledQuery);
+				}
+				break;
+			case 'userdefined':
+				// Compiling query:
+				$compiledQuery = $this->SQLparser->compileSQL($this->lastParsedAndMappedQueryArray);
+				$result = $this->handlerInstance[$this->lastHandlerKey]->admin_query($compiledQuery);
+			default:
+		}
+		return $result;
 	}
 
 	/************************************
@@ -2837,10 +2971,12 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	 **************************************/
 	/**
 	 * Return the handler key pointing to an appropriate database handler as found in $this->handlerCfg array
-	 * Notice: TWO or more tables in the table list MUST use the SAME handler key - otherwise a fatal error is thrown! (Logically, no database can possibly join two tables from separate sources!)
+	 * Notice: TWO or more tables in the table list MUST use the SAME handler key - otherwise a fatal error is thrown!
+	 *         (Logically, no database can possibly join two tables from separate sources!)
 	 *
-	 * @param 	string		Table list, eg. "pages" or "pages, tt_content" or "pages AS A, tt_content AS B
-	 * @return 	string		Handler key (see $this->handlerCfg array) for table
+	 * @param string $tableList Table list, eg. "pages" or "pages, tt_content" or "pages AS A, tt_content AS B
+	 * @throws \RuntimeException
+	 * @return string Handler key (see $this->handlerCfg array) for table
 	 */
 	public function handler_getFromTableList($tableList) {
 		$key = $tableList;
@@ -2876,124 +3012,144 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	/**
 	 * Initialize handler (connecting to database)
 	 *
-	 * @param 	string		Handler key
-	 * @return 	boolean		If connection went well, return TRUE
+	 * @param string $handlerKey Handler key
+	 * @return bool If connection went well, return TRUE
+	 * @throws \RuntimeException
 	 * @see handler_getFromTableList()
 	 */
 	public function handler_init($handlerKey) {
-		// Find handler configuration:
-		$cfgArray = $this->handlerCfg[$handlerKey];
-		$handlerType = (string) $cfgArray['type'];
-		$output = FALSE;
-		if (is_array($cfgArray)) {
-			if (!$cfgArray['config']['database']) {
-				// Configuration is incomplete
-				return;
-			}
-			switch ($handlerType) {
-				case 'native':
-					if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['no_pconnect']) {
-						$link = mysql_connect($cfgArray['config']['host'] . (isset($cfgArray['config']['port']) ? ':' . $cfgArray['config']['port'] : ''), $cfgArray['config']['username'], $cfgArray['config']['password'], TRUE);
-					} else {
-						$link = mysql_pconnect($cfgArray['config']['host'] . (isset($cfgArray['config']['port']) ? ':' . $cfgArray['config']['port'] : ''), $cfgArray['config']['username'], $cfgArray['config']['password']);
-					}
-					// Set handler instance:
-					$this->handlerInstance[$handlerKey] = array('handlerType' => 'native', 'link' => $link);
-					// If link succeeded:
-					if ($link) {
-						// For default, set ->link (see \TYPO3\CMS\Core\Database\DatabaseConnection)
-						if ($handlerKey == '_DEFAULT') {
-							$this->link = $link;
-							$this->isConnected = TRUE;
-						}
-						// Select database as well:
-						if (mysql_select_db($cfgArray['config']['database'], $link)) {
-							$output = TRUE;
-						}
-						$setDBinit = GeneralUtility::trimExplode(LF, str_replace('\' . LF . \'', LF, $GLOBALS['TYPO3_CONF_VARS']['SYS']['setDBinit']), TRUE);
-						foreach ($setDBinit as $v) {
-							if (mysql_query($v, $link) === FALSE) {
-								GeneralUtility::sysLog('Could not initialize DB connection with query "' . $v . '".', 'Core', 3);
-							}
-						}
-					} else {
-						GeneralUtility::sysLog('Could not connect to MySQL server ' . $cfgArray['config']['host'] . ' with user ' . $cfgArray['config']['username'] . '.', 'Core', 4);
-					}
-					break;
-				case 'adodb':
-					$output = TRUE;
-					require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('adodb') . 'adodb/adodb.inc.php';
-					if (!defined('ADODB_FORCE_NULLS')) {
-						define('ADODB_FORCE_NULLS', 1);
-					}
-					$GLOBALS['ADODB_FORCE_TYPE'] = ADODB_FORCE_VALUE;
-					$GLOBALS['ADODB_FETCH_MODE'] = ADODB_FETCH_BOTH;
-					$this->handlerInstance[$handlerKey] =& ADONewConnection($cfgArray['config']['driver']);
-					// Set driver-specific options
-					if (isset($cfgArray['config']['driverOptions'])) {
-						foreach ($cfgArray['config']['driverOptions'] as $optionName => $optionValue) {
-							$optionSetterName = 'set' . ucfirst($optionName);
-							if (method_exists($this->handlerInstance[$handlerKey], $optionSetterName)) {
-								$this->handlerInstance[$handlerKey]->{$optionSetterName}($optionValue);
-							} else {
-								$this->handlerInstance[$handlerKey]->{$optionName} = $optionValue;
-							}
-						}
-					}
-					if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['no_pconnect']) {
-						$this->handlerInstance[$handlerKey]->Connect($cfgArray['config']['host'] . (isset($cfgArray['config']['port']) ? ':' . $cfgArray['config']['port'] : ''), $cfgArray['config']['username'], $cfgArray['config']['password'], $cfgArray['config']['database']);
-					} else {
-						$this->handlerInstance[$handlerKey]->PConnect($cfgArray['config']['host'] . (isset($cfgArray['config']['port']) ? ':' . $cfgArray['config']['port'] : ''), $cfgArray['config']['username'], $cfgArray['config']['password'], $cfgArray['config']['database']);
-					}
-					if (!$this->handlerInstance[$handlerKey]->isConnected()) {
-						$dsn = $cfgArray['config']['driver'] . '://' . $cfgArray['config']['username'] . (strlen($cfgArray['config']['password']) ? ':XXXX@' : '') . $cfgArray['config']['host'] . (isset($cfgArray['config']['port']) ? ':' . $cfgArray['config']['port'] : '') . '/' . $cfgArray['config']['database'] . ($GLOBALS['TYPO3_CONF_VARS']['SYS']['no_pconnect'] ? '' : '?persistent=1');
-						GeneralUtility::sysLog('Could not connect to DB server using ADOdb on ' . $cfgArray['config']['host'] . ' with user ' . $cfgArray['config']['username'] . '.', 'Core', 4);
-						error_log('DBAL error: Connection to ' . $dsn . ' failed. Maybe PHP doesn\'t support the database?');
-						$output = FALSE;
-					} else {
-						$this->handlerInstance[$handlerKey]->DataDictionary = NewDataDictionary($this->handlerInstance[$handlerKey]);
-						$this->handlerInstance[$handlerKey]->last_insert_id = 0;
-						if (isset($cfgArray['config']['sequenceStart'])) {
-							$this->handlerInstance[$handlerKey]->sequenceStart = $cfgArray['config']['sequenceStart'];
-						} else {
-							$this->handlerInstance[$handlerKey]->sequenceStart = 1;
-						}
-					}
-					break;
-				case 'userdefined':
-					// Find class file:
-					$fileName = GeneralUtility::getFileAbsFileName($cfgArray['config']['classFile']);
-					if (@is_file($fileName)) {
-						require_once $fileName;
-					} else {
-						throw new \RuntimeException('DBAL error: "' . $fileName . '" was not a file to include.', 1310027975);
-					}
-					// Initialize:
-					$this->handlerInstance[$handlerKey] = GeneralUtility::makeInstance($cfgArray['config']['class']);
-					$this->handlerInstance[$handlerKey]->init($cfgArray, $this);
-					if (is_object($this->handlerInstance[$handlerKey])) {
-						$output = TRUE;
-					}
-					break;
-				default:
-					throw new \RuntimeException('ERROR: Invalid handler type: "' . $cfgArray['type'] . '"', 1310027995);
-			}
-			return $output;
-		} else {
+		if (!isset($this->handlerCfg[$handlerKey]) || !is_array($this->handlerCfg[$handlerKey])) {
 			throw new \RuntimeException('ERROR: No handler for key "' . $handlerKey . '"', 1310028018);
 		}
+		$cfgArray = $this->handlerCfg[$handlerKey];
+		if (!$cfgArray['config']['database']) {
+			// Configuration is incomplete
+			return FALSE;
+		}
+
+		$output = FALSE;
+		switch ((string)$cfgArray['type']) {
+			case 'native':
+				$host = $cfgArray['config']['host'];
+				if (!$GLOBALS['TYPO3_CONF_VARS']['SYS']['no_pconnect']) {
+					$host = 'p:' . $host;
+				}
+				$link = mysqli_init();
+				$connected = $link->real_connect(
+					$host,
+					$cfgArray['config']['username'],
+					$cfgArray['config']['password'],
+					$cfgArray['config']['database'],
+					isset($cfgArray['config']['port']) ? $cfgArray['config']['port'] : ''
+				);
+				if ($connected) {
+					// Set handler instance:
+					$this->handlerInstance[$handlerKey] = array('handlerType' => 'native', 'link' => $link);
+
+					if ($link->set_charset($this->connectionCharset) === FALSE) {
+						GeneralUtility::sysLog(
+							'Error setting connection charset to "' . $this->connectionCharset . '"',
+							'Core',
+							GeneralUtility::SYSLOG_SEVERITY_ERROR
+						);
+					}
+
+					// For default, set ->link (see \TYPO3\CMS\Core\Database\DatabaseConnection)
+					if ($handlerKey === '_DEFAULT') {
+						$this->link = $link;
+						$this->isConnected = TRUE;
+						$this->lastHandlerKey = $handlerKey;
+						foreach ($this->initializeCommandsAfterConnect as $command) {
+							if ($this->query($command) === FALSE) {
+								GeneralUtility::sysLog(
+									'Could not initialize DB connection with query "' . $command . '": ' . $this->sql_error(),
+									'Core',
+									GeneralUtility::SYSLOG_SEVERITY_ERROR
+								);
+							}
+						}
+						$this->setSqlMode();
+						$this->checkConnectionCharset();
+					}
+
+					// TODO:
+
+					$output = TRUE;
+				} else {
+					GeneralUtility::sysLog('Could not connect to MySQL server ' . $cfgArray['config']['host'] . ' with user ' . $cfgArray['config']['username'] . '.', 'Core', 4);
+				}
+				break;
+			case 'adodb':
+				$output = TRUE;
+				require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('adodb') . 'adodb/adodb.inc.php';
+				if (!defined('ADODB_FORCE_NULLS')) {
+					define('ADODB_FORCE_NULLS', 1);
+				}
+				$GLOBALS['ADODB_FORCE_TYPE'] = ADODB_FORCE_VALUE;
+				$GLOBALS['ADODB_FETCH_MODE'] = ADODB_FETCH_BOTH;
+				$this->handlerInstance[$handlerKey] = ADONewConnection($cfgArray['config']['driver']);
+				// Set driver-specific options
+				if (isset($cfgArray['config']['driverOptions'])) {
+					foreach ($cfgArray['config']['driverOptions'] as $optionName => $optionValue) {
+						$optionSetterName = 'set' . ucfirst($optionName);
+						if (method_exists($this->handlerInstance[$handlerKey], $optionSetterName)) {
+							$this->handlerInstance[$handlerKey]->{$optionSetterName}($optionValue);
+						} else {
+							$this->handlerInstance[$handlerKey]->{$optionName} = $optionValue;
+						}
+					}
+				}
+				if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['no_pconnect']) {
+					$this->handlerInstance[$handlerKey]->Connect($cfgArray['config']['host'] . (isset($cfgArray['config']['port']) ? ':' . $cfgArray['config']['port'] : ''), $cfgArray['config']['username'], $cfgArray['config']['password'], $cfgArray['config']['database']);
+				} else {
+					$this->handlerInstance[$handlerKey]->PConnect($cfgArray['config']['host'] . (isset($cfgArray['config']['port']) ? ':' . $cfgArray['config']['port'] : ''), $cfgArray['config']['username'], $cfgArray['config']['password'], $cfgArray['config']['database']);
+				}
+				if (!$this->handlerInstance[$handlerKey]->isConnected()) {
+					$dsn = $cfgArray['config']['driver'] . '://' . $cfgArray['config']['username'] . (strlen($cfgArray['config']['password']) ? ':XXXX@' : '') . $cfgArray['config']['host'] . (isset($cfgArray['config']['port']) ? ':' . $cfgArray['config']['port'] : '') . '/' . $cfgArray['config']['database'] . ($GLOBALS['TYPO3_CONF_VARS']['SYS']['no_pconnect'] ? '' : '?persistent=1');
+					GeneralUtility::sysLog('Could not connect to DB server using ADOdb on ' . $cfgArray['config']['host'] . ' with user ' . $cfgArray['config']['username'] . '.', 'Core', 4);
+					error_log('DBAL error: Connection to ' . $dsn . ' failed. Maybe PHP doesn\'t support the database?');
+					$output = FALSE;
+				} else {
+					$this->handlerInstance[$handlerKey]->DataDictionary = NewDataDictionary($this->handlerInstance[$handlerKey]);
+					$this->handlerInstance[$handlerKey]->last_insert_id = 0;
+					if (isset($cfgArray['config']['sequenceStart'])) {
+						$this->handlerInstance[$handlerKey]->sequenceStart = $cfgArray['config']['sequenceStart'];
+					} else {
+						$this->handlerInstance[$handlerKey]->sequenceStart = 1;
+					}
+				}
+				break;
+			case 'userdefined':
+				// Find class file:
+				$fileName = GeneralUtility::getFileAbsFileName($cfgArray['config']['classFile']);
+				if (@is_file($fileName)) {
+					require_once $fileName;
+				} else {
+					throw new \RuntimeException('DBAL error: "' . $fileName . '" was not a file to include.', 1310027975);
+				}
+				// Initialize:
+				$this->handlerInstance[$handlerKey] = GeneralUtility::makeInstance($cfgArray['config']['class']);
+				$this->handlerInstance[$handlerKey]->init($cfgArray, $this);
+				if (is_object($this->handlerInstance[$handlerKey])) {
+					$output = TRUE;
+				}
+				break;
+			default:
+				throw new \RuntimeException('ERROR: Invalid handler type: "' . $cfgArray['type'] . '"', 1310027995);
+		}
+		return $output;
 	}
 
 	/**
 	 * Checks if database is connected.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isConnected() {
 		$result = FALSE;
 		switch ((string) $this->handlerCfg[$this->lastHandlerKey]['type']) {
 			case 'native':
-				$result = is_resource($this->link);
+				$result = isset($this->handlerCfg[$this->lastHandlerKey]['link']);
 				break;
 			case 'adodb':
 
@@ -3007,20 +3163,20 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	/**
 	 * Checks whether the DBAL is currently inside an operation running on the "native" DB handler (i.e. MySQL)
 	 *
-	 * @return boolean	True if running on "native" DB handler (i.e. MySQL)
+	 * @return bool	TRUE if running on "native" DB handler (i.e. MySQL)
 	 */
 	public function runningNative() {
-		return (string) $this->handlerCfg[$this->lastHandlerKey]['type'] === 'native';
+		return (string)$this->handlerCfg[$this->lastHandlerKey]['type'] === 'native';
 	}
 
 	/**
 	 * Checks whether the ADOdb handler is running with a driver that contains the argument
 	 *
-	 * @param string	$driver	Driver name, matched with strstr().
-	 * @return boolean	True if running with the given driver
+	 * @param string $driver Driver name, matched with strstr().
+	 * @return bool	True if running with the given driver
 	 */
 	public function runningADOdbDriver($driver) {
-		return strstr($this->handlerCfg[$this->lastHandlerKey]['config']['driver'], $driver);
+		return strpos($this->handlerCfg[$this->lastHandlerKey]['config']['driver'], $driver) !== FALSE;
 	}
 
 	/************************************
@@ -3031,10 +3187,10 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	/**
 	 * Checks if mapping is needed for a table(list)
 	 *
-	 * @param 	string		List of tables in query
-	 * @param 	boolean		If TRUE, it will check only if FIELDs are configured and ignore the mapped table name if any.
-	 * @param 	array		Parsed list of tables, should be passed as reference to be reused and prevent double parsing
-	 * @return 	mixed		Returns an array of table names (parsed version of input table) if mapping is needed, otherwise just FALSE.
+	 * @param string $tableList List of tables in query
+	 * @param bool $fieldMappingOnly If TRUE, it will check only if FIELDs are configured and ignore the mapped table name if any.
+	 * @param array $parsedTableList Parsed list of tables, should be passed as reference to be reused and prevent double parsing
+	 * @return mixed Returns an array of table names (parsed version of input table) if mapping is needed, otherwise just FALSE.
 	 */
 	protected function map_needMapping($tableList, $fieldMappingOnly = FALSE, array &$parsedTableList = array()) {
 		$key = $tableList . '|' . $fieldMappingOnly;
@@ -3080,10 +3236,10 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	 * Observe mapping problems with join-results (more than one table): Joined queries should always prefix the table name to avoid problems with this.
 	 * Observe that alias fields are not mapped of course (should not be a problem though)
 	 *
-	 * @param 	array		Input array, associative keys
-	 * @param 	array		Array of tables from the query. Normally just one table; many tables in case of a join. NOTICE: for multiple tables (with joins) there MIGHT occur trouble with fields of the same name in the two tables: This function traverses the mapping information for BOTH tables and applies mapping without checking from which table the field really came!
-	 * @param 	boolean		If TRUE, reverse direction. Default direction is to map an array going INTO the database (thus mapping TYPO3 fieldnames to PHYSICAL field names!)
-	 * @return 	array		Output array, with mapped associative keys.
+	 * @param array $input Input array, associative keys
+	 * @param array $tables Array of tables from the query. Normally just one table; many tables in case of a join. NOTICE: for multiple tables (with joins) there MIGHT occur trouble with fields of the same name in the two tables: This function traverses the mapping information for BOTH tables and applies mapping without checking from which table the field really came!
+	 * @param bool $rev If TRUE, reverse direction. Default direction is to map an array going INTO the database (thus mapping TYPO3 fieldnames to PHYSICAL field names!)
+	 * @return array Output array, with mapped associative keys.
 	 */
 	protected function map_assocArray($input, $tables, $rev = FALSE) {
 		// Traverse tables from query (hopefully only one table):
@@ -3119,12 +3275,12 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	/**
 	 * Remaps table/field names in a SELECT query's parts
 	 *
-	 * @param 	mixed		Either parsed list of tables (SQLparser->parseFromTables()) or list of fields to select from the table. This is what comes right after "SELECT ...". Required value.
-	 * @param 	string		Table(s) from which to select. This is what comes right after "FROM ...". Require value.
-	 * @param 	string		Where clause. This is what comes right after "WHERE ...". Can be blank.
-	 * @param 	string		Group by field(s)
-	 * @param 	string		Order by field(s)
-	 * @return 	void
+	 * @param mixed $select_fields Either parsed list of tables (SQLparser->parseFromTables()) or list of fields to select from the table. This is what comes right after "SELECT ...". Required value.
+	 * @param string $from_table Table(s) from which to select. This is what comes right after "FROM ...". Require value.
+	 * @param string $where_clause Where clause. This is what comes right after "WHERE ...". Can be blank.
+	 * @param string $groupBy Group by field(s)
+	 * @param string $orderBy Order by field(s)
+	 * @return array
 	 * @see exec_SELECTquery()
 	 */
 	protected function map_remapSELECTQueryParts($select_fields, $from_table, $where_clause, $groupBy, $orderBy) {
@@ -3238,10 +3394,9 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	/**
 	 * Generic mapping of table/field names arrays (as parsed by \TYPO3\CMS\Core\Database\SqlParser)
 	 *
-	 * @param 	array		Array with parsed SQL parts; Takes both fields, tables, where-parts, group and order-by. Passed by reference.
-	 * @param 	string		Default table name to assume if no table is found in $sqlPartArray
-	 * @return 	void
-	 * @access private
+	 * @param array $sqlPartArray Array with parsed SQL parts; Takes both fields, tables, where-parts, group and order-by. Passed by reference.
+	 * @param string $defaultTable Default table name to assume if no table is found in $sqlPartArray
+	 * @return void
 	 * @see map_remapSELECTQueryParts()
 	 */
 	protected function map_sqlParts(&$sqlPartArray, $defaultTable) {
@@ -3432,69 +3587,69 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	 * Will do table/field mapping on a general \TYPO3\CMS\Core\Database\SqlParser-compliant SQL query
 	 * (May still not support all query types...)
 	 *
-	 * @param array Parsed QUERY as from \TYPO3\CMS\Core\Database\SqlParser::parseSQL(). NOTICE: Passed by reference!
-	 * @return 	void
+	 * @param array $parsedQuery Parsed QUERY as from \TYPO3\CMS\Core\Database\SqlParser::parseSQL(). NOTICE: Passed by reference!
+	 * @throws \InvalidArgumentException
+	 * @return void
 	 * @see \TYPO3\CMS\Core\Database\SqlParser::parseSQL()
 	 */
 	protected function map_genericQueryParsed(&$parsedQuery) {
 		// Getting table - same for all:
 		$table = $parsedQuery['TABLE'];
-		if ($table) {
-			// Do field mapping if needed:
-			if ($tableArray = $this->map_needMapping($table)) {
-				// Table name:
-				if ($this->mapping[$table]['mapTableName']) {
-					$parsedQuery['TABLE'] = $this->mapping[$table]['mapTableName'];
-				}
-				// Based on type, do additional changes:
-				switch ($parsedQuery['type']) {
-					case 'ALTERTABLE':
-						// Changing field name:
-						$newFieldName = $this->mapping[$table]['mapFieldNames'][$parsedQuery['FIELD']];
-						if ($newFieldName) {
-							if ($parsedQuery['FIELD'] == $parsedQuery['newField']) {
-								$parsedQuery['FIELD'] = ($parsedQuery['newField'] = $newFieldName);
-							} else {
-								$parsedQuery['FIELD'] = $newFieldName;
-							}
-						}
-						// Changing key field names:
-						if (is_array($parsedQuery['fields'])) {
-							$this->map_fieldNamesInArray($table, $parsedQuery['fields']);
-						}
-						break;
-					case 'CREATETABLE':
-						// Remapping fields:
-						if (is_array($parsedQuery['FIELDS'])) {
-							$newFieldsArray = array();
-							foreach ($parsedQuery['FIELDS'] as $fN => $fInfo) {
-								if ($this->mapping[$table]['mapFieldNames'][$fN]) {
-									$fN = $this->mapping[$table]['mapFieldNames'][$fN];
-								}
-								$newFieldsArray[$fN] = $fInfo;
-							}
-							$parsedQuery['FIELDS'] = $newFieldsArray;
-						}
-						// Remapping keys:
-						if (is_array($parsedQuery['KEYS'])) {
-							foreach ($parsedQuery['KEYS'] as $kN => $kInfo) {
-								$this->map_fieldNamesInArray($table, $parsedQuery['KEYS'][$kN]);
-							}
-						}
-						break;
-				}
-			}
-		} else {
+		if (!$table) {
 			throw new \InvalidArgumentException('ERROR, mapping: No table found in parsed Query array...', 1310028048);
+		}
+		// Do field mapping if needed:
+		if ($tableArray = $this->map_needMapping($table)) {
+			// Table name:
+			if ($this->mapping[$table]['mapTableName']) {
+				$parsedQuery['TABLE'] = $this->mapping[$table]['mapTableName'];
+			}
+			// Based on type, do additional changes:
+			switch ($parsedQuery['type']) {
+				case 'ALTERTABLE':
+					// Changing field name:
+					$newFieldName = $this->mapping[$table]['mapFieldNames'][$parsedQuery['FIELD']];
+					if ($newFieldName) {
+						if ($parsedQuery['FIELD'] == $parsedQuery['newField']) {
+							$parsedQuery['FIELD'] = ($parsedQuery['newField'] = $newFieldName);
+						} else {
+							$parsedQuery['FIELD'] = $newFieldName;
+						}
+					}
+					// Changing key field names:
+					if (is_array($parsedQuery['fields'])) {
+						$this->map_fieldNamesInArray($table, $parsedQuery['fields']);
+					}
+					break;
+				case 'CREATETABLE':
+					// Remapping fields:
+					if (is_array($parsedQuery['FIELDS'])) {
+						$newFieldsArray = array();
+						foreach ($parsedQuery['FIELDS'] as $fN => $fInfo) {
+							if ($this->mapping[$table]['mapFieldNames'][$fN]) {
+								$fN = $this->mapping[$table]['mapFieldNames'][$fN];
+							}
+							$newFieldsArray[$fN] = $fInfo;
+						}
+						$parsedQuery['FIELDS'] = $newFieldsArray;
+					}
+					// Remapping keys:
+					if (is_array($parsedQuery['KEYS'])) {
+						foreach ($parsedQuery['KEYS'] as $kN => $kInfo) {
+							$this->map_fieldNamesInArray($table, $parsedQuery['KEYS'][$kN]);
+						}
+					}
+					break;
+			}
 		}
 	}
 
 	/**
 	 * Re-mapping field names in array
 	 *
-	 * @param 	string		(TYPO3) Table name for fields.
-	 * @param 	array		Array of fieldnames to remap. Notice: Passed by reference!
-	 * @return 	void
+	 * @param string $table (TYPO3) Table name for fields.
+	 * @param array $fieldArray Array of fieldnames to remap. Notice: Passed by reference!
+	 * @return void
 	 */
 	protected function map_fieldNamesInArray($table, &$fieldArray) {
 		if (is_array($this->mapping[$table]['mapFieldNames'])) {
@@ -3514,10 +3669,10 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	/**
 	 * Debug handler for query execution
 	 *
-	 * @param 	string		Function name from which this function is called.
-	 * @param 	string		Execution time in ms of the query
-	 * @param 	array		In-data of various kinds.
-	 * @return 	void
+	 * @param string $function Function name from which this function is called.
+	 * @param string $execTime Execution time in ms of the query
+	 * @param array $inData In-data of various kinds.
+	 * @return void
 	 * @access private
 	 */
 	public function debugHandler($function, $execTime, $inData) {
@@ -3611,7 +3766,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	 *
 	 * @param string $table	Table name(s) the query was targeted at
 	 * @param string $where	The WHERE clause to be logged
-	 * @param string $script	The script calling the logging
+	 * @param string $script The script calling the logging
 	 * @return void
 	 */
 	public function debug_WHERE($table, $where, $script = '') {
@@ -3628,13 +3783,13 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	/**
 	 * Inserts row in the log table
 	 *
-	 * @param 	string		The current query
-	 * @param 	integer		Execution time of query in milliseconds
-	 * @param 	array		Data to be stored serialized.
-	 * @param 	string		Join string if there IS a join.
-	 * @param 	integer		Error status.
-	 * @param string $script	The script calling the logging
-	 * @return 	void
+	 * @param string $query The current query
+	 * @param integer $ms Execution time of query in milliseconds
+	 * @param array $data Data to be stored serialized.
+	 * @param string $join Join string if there IS a join.
+	 * @param integer $errorFlag Error status.
+	 * @param string $script The script calling the logging
+	 * @return void
 	 */
 	public function debug_log($query, $ms, $data, $join, $errorFlag, $script = '') {
 		if (is_array($query)) {
@@ -3664,13 +3819,12 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	/**
 	 * Perform EXPLAIN query on DEFAULT handler!
 	 *
-	 * @param 	string		SELECT Query
-	 * @return 	array		The Explain result rows in an array
-	 * @todo 	Not supporting other than the default handler? And what about DBMS of other kinds than MySQL - support for EXPLAIN?
+	 * @param string $query SELECT Query
+	 * @return array The Explain result rows in an array
 	 */
 	public function debug_explain($query) {
 		$output = array();
-		$hType = (string) $this->handlerCfg[$this->lastHandlerKey]['type'];
+		$hType = (string)$this->handlerCfg[$this->lastHandlerKey]['type'];
 		switch ($hType) {
 			case 'native':
 				$res = $this->sql_query('EXPLAIN ' . $query);
@@ -3681,7 +3835,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 			case 'adodb':
 				switch ($this->handlerCfg['_DEFAULT']['config']['driver']) {
 					case 'oci8':
-						$res = $this->sql_query('EXPLAIN PLAN ' . $query);
+						$this->sql_query('EXPLAIN PLAN ' . $query);
 						$output[] = 'EXPLAIN PLAN data logged to default PLAN_TABLE';
 						break;
 					default:

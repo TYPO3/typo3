@@ -27,6 +27,8 @@ namespace TYPO3\CMS\Core\Database;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Contains the class "DatabaseConnection" containing functions for building SQL queries
  * and mysqli wrappers, thus providing a foundational API to all database
@@ -175,6 +177,16 @@ class DatabaseConnection {
 	 */
 	protected $postProcessHookObjects = array();
 
+
+	/**
+	 * Initialize the database connection
+	 *
+	 * @return void
+	 */
+	public function initialize() {
+		// Intentionally blank as this will be overloaded by DBAL
+	}
+
 	/************************************
 	 *
 	 * Query execution
@@ -317,9 +329,7 @@ class DatabaseConnection {
 	 * @see exec_SELECTquery()
 	 */
 	public function exec_SELECT_mm_query($select, $local_table, $mm_table, $foreign_table, $whereClause = '', $groupBy = '', $orderBy = '', $limit = '') {
-		if ($foreign_table == $local_table) {
-			$foreign_table_as = $foreign_table . uniqid('_join');
-		}
+		$foreign_table_as = $foreign_table == $local_table ? $foreign_table . uniqid('_join') : '';
 		$mmWhere = $local_table ? $local_table . '.uid=' . $mm_table . '.uid_local' : '';
 		$mmWhere .= ($local_table and $foreign_table) ? ' AND ' : '';
 		$tables = ($local_table ? $local_table . ',' : '') . $mm_table;
@@ -468,25 +478,26 @@ class DatabaseConnection {
 	 * @param string $table See exec_INSERTquery()
 	 * @param array $fields_values See exec_INSERTquery()
 	 * @param boolean $no_quote_fields See fullQuoteArray()
-	 * @return string Full SQL query for INSERT (unless $fields_values does not contain any elements in which case it will be FALSE)
+	 * @return string|NULL Full SQL query for INSERT, NULL if $fields_values is empty
 	 */
 	public function INSERTquery($table, $fields_values, $no_quote_fields = FALSE) {
 		// Table and fieldnames should be "SQL-injection-safe" when supplied to this
 		// function (contrary to values in the arrays which may be insecure).
-		if (is_array($fields_values) && count($fields_values)) {
-			foreach ($this->preProcessHookObjects as $hookObject) {
-				$hookObject->INSERTquery_preProcessAction($table, $fields_values, $no_quote_fields, $this);
-			}
-			// Quote and escape values
-			$fields_values = $this->fullQuoteArray($fields_values, $table, $no_quote_fields, TRUE);
-			// Build query
-			$query = 'INSERT INTO ' . $table . ' (' . implode(',', array_keys($fields_values)) . ') VALUES ' . '(' . implode(',', $fields_values) . ')';
-			// Return query
-			if ($this->debugOutput || $this->store_lastBuiltQuery) {
-				$this->debug_lastBuiltQuery = $query;
-			}
-			return $query;
+		if (!is_array($fields_values) || count($fields_values) === 0) {
+			return NULL;
 		}
+		foreach ($this->preProcessHookObjects as $hookObject) {
+			$hookObject->INSERTquery_preProcessAction($table, $fields_values, $no_quote_fields, $this);
+		}
+		// Quote and escape values
+		$fields_values = $this->fullQuoteArray($fields_values, $table, $no_quote_fields, TRUE);
+		// Build query
+		$query = 'INSERT INTO ' . $table . ' (' . implode(',', array_keys($fields_values)) . ') VALUES ' . '(' . implode(',', $fields_values) . ')';
+		// Return query
+		if ($this->debugOutput || $this->store_lastBuiltQuery) {
+			$this->debug_lastBuiltQuery = $query;
+		}
+		return $query;
 	}
 
 	/**
@@ -496,31 +507,32 @@ class DatabaseConnection {
 	 * @param array $fields Field names
 	 * @param array $rows Table rows. Each row should be an array with field values mapping to $fields
 	 * @param boolean $no_quote_fields See fullQuoteArray()
-	 * @return string Full SQL query for INSERT (unless $rows does not contain any elements in which case it will be FALSE)
+	 * @return string|NULL Full SQL query for INSERT, NULL if $rows is empty
 	 */
 	public function INSERTmultipleRows($table, array $fields, array $rows, $no_quote_fields = FALSE) {
 		// Table and fieldnames should be "SQL-injection-safe" when supplied to this
 		// function (contrary to values in the arrays which may be insecure).
-		if (count($rows)) {
-			foreach ($this->preProcessHookObjects as $hookObject) {
-				/** @var $hookObject PreProcessQueryHookInterface */
-				$hookObject->INSERTmultipleRows_preProcessAction($table, $fields, $rows, $no_quote_fields, $this);
-			}
-			// Build query
-			$query = 'INSERT INTO ' . $table . ' (' . implode(', ', $fields) . ') VALUES ';
-			$rowSQL = array();
-			foreach ($rows as $row) {
-				// Quote and escape values
-				$row = $this->fullQuoteArray($row, $table, $no_quote_fields);
-				$rowSQL[] = '(' . implode(', ', $row) . ')';
-			}
-			$query .= implode(', ', $rowSQL);
-			// Return query
-			if ($this->debugOutput || $this->store_lastBuiltQuery) {
-				$this->debug_lastBuiltQuery = $query;
-			}
-			return $query;
+		if (count($rows) === 0) {
+			return NULL;
 		}
+		foreach ($this->preProcessHookObjects as $hookObject) {
+			/** @var $hookObject PreProcessQueryHookInterface */
+			$hookObject->INSERTmultipleRows_preProcessAction($table, $fields, $rows, $no_quote_fields, $this);
+		}
+		// Build query
+		$query = 'INSERT INTO ' . $table . ' (' . implode(', ', $fields) . ') VALUES ';
+		$rowSQL = array();
+		foreach ($rows as $row) {
+			// Quote and escape values
+			$row = $this->fullQuoteArray($row, $table, $no_quote_fields);
+			$rowSQL[] = '(' . implode(', ', $row) . ')';
+		}
+		$query .= implode(', ', $rowSQL);
+		// Return query
+		if ($this->debugOutput || $this->store_lastBuiltQuery) {
+			$this->debug_lastBuiltQuery = $query;
+		}
+		return $query;
 	}
 
 	/**
@@ -732,10 +744,10 @@ class DatabaseConnection {
 	public function prepare_SELECTquery($select_fields, $from_table, $where_clause, $groupBy = '', $orderBy = '', $limit = '', array $input_parameters = array()) {
 		$query = $this->SELECTquery($select_fields, $from_table, $where_clause, $groupBy, $orderBy, $limit);
 		/** @var $preparedStatement \TYPO3\CMS\Core\Database\PreparedStatement */
-		$preparedStatement = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\PreparedStatement', $query, $from_table, array());
+		$preparedStatement = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\PreparedStatement', $query, $from_table, array());
 		// Bind values to parameters
 		foreach ($input_parameters as $key => $value) {
-			$preparedStatement->bindValue($key, $value, \TYPO3\CMS\Core\Database\PreparedStatement::PARAM_AUTOTYPE);
+			$preparedStatement->bindValue($key, $value, PreparedStatement::PARAM_AUTOTYPE);
 		}
 		// Return prepared statement
 		return $preparedStatement;
@@ -875,7 +887,7 @@ class DatabaseConnection {
 	 * @see cleanIntArray()
 	 */
 	public function cleanIntList($list) {
-		return implode(',', \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $list));
+		return implode(',', GeneralUtility::intExplode(',', $list));
 	}
 
 	/**
@@ -1194,19 +1206,19 @@ class DatabaseConnection {
 			$this->isConnected = TRUE;
 
 			if ($this->link->set_charset($this->connectionCharset) === FALSE) {
-				\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog(
+				GeneralUtility::sysLog(
 					'Error setting connection charset to "' . $this->connectionCharset . '"',
 					'Core',
-					\TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_ERROR
+					GeneralUtility::SYSLOG_SEVERITY_ERROR
 				);
 			}
 
 			foreach ($this->initializeCommandsAfterConnect as $command) {
 				if ($this->query($command) === FALSE) {
-					\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog(
+					GeneralUtility::sysLog(
 						'Could not initialize DB connection with query "' . $command . '": ' . $this->sql_error(),
 						'Core',
-						\TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_ERROR
+						GeneralUtility::SYSLOG_SEVERITY_ERROR
 					);
 				}
 			}
@@ -1216,10 +1228,10 @@ class DatabaseConnection {
 			// @TODO: This should raise an exception. Would be useful especially to work during installation.
 			$error_msg = $this->link->connect_error;
 			$this->link = NULL;
-			\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog(
+			GeneralUtility::sysLog(
 				'Could not connect to MySQL server ' . $host . ' with user ' . $username . ': ' . $error_msg,
 				'Core',
-				\TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_FATAL
+				GeneralUtility::SYSLOG_SEVERITY_FATAL
 			);
 		}
 		return $this->link;
@@ -1235,13 +1247,13 @@ class DatabaseConnection {
 		if ($resource) {
 			$result = $this->sql_fetch_row($resource);
 			if (isset($result[0]) && $result[0] && strpos($result[0], 'NO_BACKSLASH_ESCAPES') !== FALSE) {
-				$modes = array_diff(\TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $result[0]), array('NO_BACKSLASH_ESCAPES'));
+				$modes = array_diff(GeneralUtility::trimExplode(',', $result[0]), array('NO_BACKSLASH_ESCAPES'));
 				$query = 'SET sql_mode=\'' . $this->link->real_escape_string(implode(',', $modes)) . '\';';
 				$this->sql_query($query);
-				\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog(
+				GeneralUtility::sysLog(
 					'NO_BACKSLASH_ESCAPES could not be removed from SQL mode: ' . $this->sql_error(),
 					'Core',
-					\TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_ERROR
+					GeneralUtility::SYSLOG_SEVERITY_ERROR
 				);
 			}
 		}
@@ -1259,7 +1271,7 @@ class DatabaseConnection {
 		}
 
 		if ($TYPO3_db) {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog(
+			GeneralUtility::deprecationLog(
 				'DatabaseConnection->sql_select_db() should be called without arguments.' .
 					' Use the setDatabaseName() before. Will be removed two versions after 6.1.'
 			);
@@ -1269,10 +1281,10 @@ class DatabaseConnection {
 
 		$ret = $this->link->select_db($TYPO3_db);
 		if (!$ret) {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog(
+			GeneralUtility::sysLog(
 				'Could not select MySQL database ' . $TYPO3_db . ': ' . $this->sql_error(),
 				'Core',
-				\TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_FATAL
+				GeneralUtility::SYSLOG_SEVERITY_FATAL
 			);
 		}
 		return $ret;
@@ -1291,6 +1303,7 @@ class DatabaseConnection {
 	 * Use in Install Tool only!
 	 *
 	 * @return array Each entry represents a database name
+	 * @throws \RuntimeException
 	 */
 	public function admin_get_dbs() {
 		$dbArr = array();
@@ -1385,7 +1398,7 @@ class DatabaseConnection {
 	 * in order to construct correct queries. In such cases this information should
 	 * probably be cached for quick delivery.
 	 *
-	 * This is used by the Install Tool to convert tables tables with non-UTF8 charsets
+	 * This is used by the Install Tool to convert tables with non-UTF8 charsets
 	 * Use in Install Tool only!
 	 *
 	 * @return array Array with Charset as key and an array of "Charset", "Description", "Default collation", "Maxlen" as values
@@ -1575,20 +1588,20 @@ class DatabaseConnection {
 		$this->postProcessHookObjects = array();
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_db.php']['queryProcessors'])) {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_db.php']['queryProcessors'] as $classRef) {
-				$hookObject = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($classRef);
+				$hookObject = GeneralUtility::getUserObj($classRef);
 				if (!(
-					$hookObject instanceof \TYPO3\CMS\Core\Database\PreProcessQueryHookInterface
-					|| $hookObject instanceof \TYPO3\CMS\Core\Database\PostProcessQueryHookInterface
+					$hookObject instanceof PreProcessQueryHookInterface
+					|| $hookObject instanceof PostProcessQueryHookInterface
 				)) {
 					throw new \UnexpectedValueException(
 						'$hookObject must either implement interface TYPO3\\CMS\\Core\\Database\\PreProcessQueryHookInterface or interface TYPO3\\CMS\\Core\\Database\\PostProcessQueryHookInterface',
 						1299158548
 					);
 				}
-				if ($hookObject instanceof \TYPO3\CMS\Core\Database\PreProcessQueryHookInterface) {
+				if ($hookObject instanceof PreProcessQueryHookInterface) {
 					$this->preProcessHookObjects[] = $hookObject;
 				}
-				if ($hookObject instanceof \TYPO3\CMS\Core\Database\PostProcessQueryHookInterface) {
+				if ($hookObject instanceof PostProcessQueryHookInterface) {
 					$this->postProcessHookObjects[] = $hookObject;
 				}
 			}
@@ -1627,10 +1640,10 @@ class DatabaseConnection {
 		$sessionResult = $this->sql_query('SHOW SESSION VARIABLES LIKE \'character_set%\'');
 
 		if ($sessionResult === FALSE) {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog(
+			GeneralUtility::sysLog(
 				'Error while retrieving the current charset session variables from the database: ' . $this->sql_error(),
 				'Core',
-				\TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_ERROR
+				GeneralUtility::SYSLOG_SEVERITY_ERROR
 			);
 			throw new \RuntimeException(
 				'TYPO3 Fatal Error: Could not determine the current charset of the database.',
@@ -1657,10 +1670,10 @@ class DatabaseConnection {
 		$hasValidCharset = TRUE;
 		foreach ($charsetRequiredVariables as $variableName) {
 			if (empty($charsetVariables[$variableName])) {
-				\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog(
+				GeneralUtility::sysLog(
 					'A required session variable is missing in the current MySQL connection: ' . $variableName,
 					'Core',
-					\TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_ERROR
+					GeneralUtility::SYSLOG_SEVERITY_ERROR
 				);
 				throw new \RuntimeException(
 					'TYPO3 Fatal Error: Could not determine the value of the database session variable: ' . $variableName,
@@ -1724,7 +1737,7 @@ class DatabaseConnection {
 	 * @param string|null $db Database
 	 */
 	protected function handleDeprecatedConnectArguments($host = NULL, $username = NULL, $password = NULL, $db = NULL) {
-		\TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog(
+		GeneralUtility::deprecationLog(
 			'DatabaseConnection->sql_pconnect() and DatabaseConnection->connectDB() should be ' .
 			'called without arguments. Use the setters instead.'
 		);
@@ -1801,10 +1814,10 @@ class DatabaseConnection {
 			}
 		}
 		$msg .= ': function TYPO3\\CMS\\Core\\Database\\DatabaseConnection->' . $trace[0]['function'] . ' called from file ' . substr($trace[0]['file'], (strlen(PATH_site) + 2)) . ' in line ' . $trace[0]['line'];
-		\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog(
+		GeneralUtility::sysLog(
 			$msg . '. Use a devLog extension to get more details.',
 			'Core/t3lib_db',
-			\TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_ERROR
+			GeneralUtility::SYSLOG_SEVERITY_ERROR
 		);
 		// Send to devLog if enabled
 		if (TYPO3_DLOG) {
@@ -1815,7 +1828,7 @@ class DatabaseConnection {
 			if ($this->debug_lastBuiltQuery) {
 				$debugLogData = array('SQL Query' => $this->debug_lastBuiltQuery) + $debugLogData;
 			}
-			\TYPO3\CMS\Core\Utility\GeneralUtility::devLog($msg . '.', 'Core/t3lib_db', 3, $debugLogData);
+			GeneralUtility::devLog($msg . '.', 'Core/t3lib_db', 3, $debugLogData);
 		}
 		return FALSE;
 	}
@@ -1833,8 +1846,8 @@ class DatabaseConnection {
 	 * @return boolean TRUE if explain was run, FALSE otherwise
 	 */
 	protected function explain($query, $from_table, $row_count) {
-		$debugAllowedForIp = \TYPO3\CMS\Core\Utility\GeneralUtility::cmpIP(
-			\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE_ADDR'),
+		$debugAllowedForIp = GeneralUtility::cmpIP(
+			GeneralUtility::getIndpEnv('REMOTE_ADDR'),
 			$GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask']
 		);
 		if (
@@ -1865,7 +1878,7 @@ class DatabaseConnection {
 		// Notice: Rows are skipped if there is only one result, or if no conditions are set
 		if (
 			$explain_output[0]['rows'] > 1
-			|| \TYPO3\CMS\Core\Utility\GeneralUtility::inList('ALL', $explain_output[0]['type'])
+			|| GeneralUtility::inList('ALL', $explain_output[0]['type'])
 		) {
 			// Only enable output if it's really useful
 			$debug = TRUE;

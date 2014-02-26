@@ -297,8 +297,7 @@ FROM pages WHERE pid IN (1,2,3,4)';
 		$this->assertTrue(is_array($components), $components);
 		$alterTable = $this->cleanSql($this->fixture->_callRef('compileALTERTABLE', $components));
 		$expected = 'ALTER TABLE tx_realurl_pathcache ENGINE = InnoDB';
-		$this->assertTrue(is_array($alterTable), $alterTable);
-		$this->assertEquals($expected, $alterTable[0]);
+		$this->assertEquals($expected, $alterTable);
 	}
 
 	/**
@@ -311,8 +310,7 @@ FROM pages WHERE pid IN (1,2,3,4)';
 		$this->assertTrue(is_array($components), $components);
 		$alterTable = $this->cleanSql($this->fixture->_callRef('compileALTERTABLE', $components));
 		$expected = 'ALTER TABLE index_phash DEFAULT CHARACTER SET utf8';
-		$this->assertTrue(is_array($alterTable), $alterTable);
-		$this->assertEquals($expected, $alterTable[0]);
+		$this->assertEquals($expected, $alterTable);
 	}
 
 	/**
@@ -507,9 +505,7 @@ FROM pages WHERE pid IN (1,2,3,4)';
 		$expected = $sql;
 		$alterTables = $this->fixture->_callRef('parseALTERTABLE', $sql);
 		$queries = $this->fixture->compileSQL($alterTables);
-		$this->assertTrue(is_array($queries), $queries);
-		$this->assertTrue(count($queries) == 1, $queries);
-		$this->assertEquals($expected, $queries[0]);
+		$this->assertEquals($expected, $queries);
 	}
 
 	///////////////////////////////////////
