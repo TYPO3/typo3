@@ -24,6 +24,9 @@
 			<trans-unit id="refreshPage">
 				<source>Refresh page</source>
 			</trans-unit>
+			<trans-unit id="language">
+				<source>Language</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

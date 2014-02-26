@@ -14,6 +14,12 @@
 						<f:translate key="width" />
 					</label>
 					<f:form.select options="{widths}" id="width" name="width" />
+					<f:if condition="{languages -> f:count()} > 1">
+						<label for="language">
+							<f:translate key="language" />
+						</label>
+						<f:form.select options="{languages}" id="language" name="language" />
+					</f:if>
 				</form>
 			</div>
 			<div class="typo3-docheader-buttons">

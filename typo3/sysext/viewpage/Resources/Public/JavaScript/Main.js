@@ -14,6 +14,7 @@
  * Main logic for resizing the view of the frame
  */
 define(['jquery', 'jquery-ui/resizable'], function($) {
+	"use strict";
 
 	// fetch the storage from the outer frame
 	var Storage = top.TYPO3.Storage;
@@ -26,6 +27,8 @@ define(['jquery', 'jquery-ui/resizable'], function($) {
 
 	ViewPage.initialize = function() {
 		var me = this;
+		me.$iframe = $('#tx_viewpage_iframe');
+		me.$languageSelector = $('#language');
 		me.$resizableContainer = $(me.resizableContainerIdentifier);
 		me.$widthSelector = $(me.widthSelectorIdentifier);
 
@@ -57,7 +60,7 @@ define(['jquery', 'jquery-ui/resizable'], function($) {
 		var storedWidth = Storage.Persistent.get(me.storagePrefix + 'widthSelectorValue');
 		// Check for the " symbol is done in order to avoid problems with the old (non-jQuery) syntax which might be stored inside
 		// the UC from previous versions, can be removed with TYPO3 CMS9 again
-		if (storedWidth && storedWidth.indexOf('"') == -1) {
+		if (storedWidth && storedWidth.indexOf('"') === -1) {
 			me.$widthSelector.val(storedWidth).trigger('change');
 		}
 
@@ -67,7 +70,7 @@ define(['jquery', 'jquery-ui/resizable'], function($) {
 		});
 
 		// Create and select custom option
-		me.$resizableContainer.on('resizestart', function(evt, ui) {
+		me.$resizableContainer.on('resizestart', function() {
 			// Check custom option is there, if not, add it
 			if (me.$widthSelector.find('#customOption').length === 0) {
 				me.addCustomWidthOption('100%|100%');
@@ -76,7 +79,7 @@ define(['jquery', 'jquery-ui/resizable'], function($) {
 			me.$widthSelector.find('#customOption').prop('selected', true);
 
 			// Add iframe overlay to prevent loosing the mouse focus to the iframe while resizing fast
-			$(this).append('<div id="iframeCover" style="zindex:99;position:absolute;width:100%;top:0px;left:0px;height:100%;"></div>');
+			$(this).append('<div id="iframeCover" style="z-index:99;position:absolute;width:100%;top:0;left:0;height:100%;"></div>');
 		});
 
 		me.$resizableContainer.on('resize', function(evt, ui) {
@@ -86,13 +89,32 @@ define(['jquery', 'jquery-ui/resizable'], function($) {
 			me.$widthSelector.find('#customOption').text(label).val(value);
 		});
 
-		me.$resizableContainer.on('resizestop', function(evt, ui) {
+		me.$resizableContainer.on('resizestop', function() {
 			Storage.Persistent.set(me.storagePrefix + 'widthSelectorCustomValue', me.$widthSelector.val()).done(function() {
 				Storage.Persistent.set(me.storagePrefix + 'widthSelectorValue', me.$widthSelector.val());
 			});
 
 			// Remove iframe overlay
 			$('#iframeCover').remove();
+		});
+
+		// select stored language
+		var storedLanguage = Storage.Persistent.get(me.storagePrefix + 'languageSelectorValue');
+		if (storedLanguage) {
+			// select it
+			me.$languageSelector.val(storedLanguage);
+		}
+
+		// Add event to language selector
+		me.$languageSelector.on('change',function() {
+			var iframeUrl = me.$iframe.attr('src');
+			var iframeParameters = ViewPage.getUrlVars(iframeUrl);
+			// change language
+			iframeParameters.L = me.$languageSelector.val();
+			var newIframeUrl = iframeUrl.slice(0, iframeUrl.indexOf('?') + 1) + $.param(iframeParameters);
+			// load new url into iframe
+			me.$iframe.attr('src', newIframeUrl);
+			Storage.Persistent.set(me.storagePrefix + 'languageSelectorValue', me.$languageSelector.val());
 		});
 	};
 
@@ -105,9 +127,20 @@ define(['jquery', 'jquery-ui/resizable'], function($) {
 		return data[0] + 'px ' + (data[1] ? '× ' + data[1] + 'px ' : '') + TYPO3.lang['customWidth'];
 	};
 
-	return function() {
-		$(document).ready(function() {
-			ViewPage.initialize();
-		});
-	}();
+	ViewPage.getUrlVars = function(url) {
+		var vars = {};
+		var hash;
+		var hashes = url.slice(url.indexOf('?') + 1).split('&');
+		for (var i = 0; i < hashes.length; i ++) {
+			hash = hashes[i].split('=');
+			vars[hash[0]] = hash[1];
+		}
+		return vars;
+	};
+
+	$(document).ready(function() {
+		ViewPage.initialize();
+	});
+
+	return ViewPage;
 });

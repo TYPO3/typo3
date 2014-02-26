@@ -29,7 +29,7 @@ class ViewModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 	 * @return void
 	 */
 	public function initializeAction() {
-		$GLOBALS['LANG']->includeLLFile('EXT:viewpage/Resources/Private/Language/locallang.xlf');
+		$this->getLanguageService()->includeLLFile('EXT:viewpage/Resources/Private/Language/locallang.xlf');
 		$pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
 		$pageRenderer->addInlineLanguageLabelFile('EXT:viewpage/Resources/Private/Language/locallang.xlf');
 	}
@@ -42,6 +42,7 @@ class ViewModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 	public function showAction() {
 		$this->view->assign('widths', $this->getPreviewFrameWidths());
 		$this->view->assign('url', $this->getTargetUrl());
+		$this->view->assign('languages', $this->getPreviewLanguages());
 	}
 
 	/**
@@ -53,6 +54,7 @@ class ViewModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 		$pageIdToShow = (int)GeneralUtility::_GP('id');
 		$adminCommand = $this->getAdminCommand($pageIdToShow);
 		$domainName = $this->getDomainName($pageIdToShow);
+		$languageParameter = $this->getLanguageParameter();
 		// Mount point overlay: Set new target page id and mp parameter
 		/** @var \TYPO3\CMS\Frontend\Page\PageRepository $sysPage */
 		$sysPage = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Page\PageRepository::class);
@@ -80,7 +82,7 @@ class ViewModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 				$protocolAndHost = $protocol . '://' . $domainName;
 			}
 		}
-		return $protocolAndHost . '/index.php?id=' . $finalPageIdToShow . $this->getTypeParameterIfSet($finalPageIdToShow) . $mountPointMpParameter . $adminCommand;
+		return $protocolAndHost . '/index.php?id=' . $finalPageIdToShow . $this->getTypeParameterIfSet($finalPageIdToShow) . $mountPointMpParameter . $adminCommand . $languageParameter;
 	}
 
 	/**
@@ -91,7 +93,7 @@ class ViewModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 	 */
 	protected function getAdminCommand($pageId) {
 		// The page will show only if there is a valid page and if this page may be viewed by the user
-		$pageinfo = BackendUtility::readPageAccess($pageId, $GLOBALS['BE_USER']->getPagePermsClause(1));
+		$pageinfo = BackendUtility::readPageAccess($pageId, $this->getBackendUser()->getPagePermsClause(1));
 		$addCommand = '';
 		if (is_array($pageinfo)) {
 			$addCommand = '&ADMCMD_editIcons=1' . BackendUtility::ADMCMD_previewCmds($pageinfo);
@@ -124,7 +126,7 @@ class ViewModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 	 * @return string|NULL Domain name from first sys_domains-Record or from TCEMAIN.previewDomain, NULL if neither is configured
 	 */
 	protected function getDomainName($pageId) {
-		$previewDomainConfig = $GLOBALS['BE_USER']->getTSConfig('TCEMAIN.previewDomain', BackendUtility::getPagesTSconfig($pageId));
+		$previewDomainConfig = $this->getBackendUser()->getTSConfig('TCEMAIN.previewDomain', BackendUtility::getPagesTSconfig($pageId));
 		if ($previewDomainConfig['value']) {
 			$domain = $previewDomainConfig['value'];
 		} else {
@@ -142,7 +144,7 @@ class ViewModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 		$pageId = (int)GeneralUtility::_GP('id');
 		$modTSconfig = BackendUtility::getModTSconfig($pageId, 'mod.web_view');
 		$widths = array(
-			'100%|100%' => $GLOBALS['LANG']->getLL('autoSize')
+			'100%|100%' => $this->getLanguageService()->getLL('autoSize')
 		);
 		if (is_array($modTSconfig['properties']['previewFrameWidths.'])) {
 			foreach ($modTSconfig['properties']['previewFrameWidths.'] as $item => $conf ){
@@ -161,7 +163,7 @@ class ViewModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 				if (substr($conf['label'], 0, 4) !== 'LLL:') {
 					$label .= $conf['label'];
 				} else {
-					$label .= $GLOBALS['LANG']->sL(trim($conf['label']));
+					$label .= $this->getLanguageService()->sL(trim($conf['label']));
 				}
 				$value = ($data['width'] ?: '100%') . '|' . ($data['height'] ?: '100%');
 				$widths[$value] = $label;
@@ -170,4 +172,70 @@ class ViewModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 		return $widths;
 	}
 
+	/**
+	 * Returns the preview languages
+	 *
+	 * @return array
+	 */
+	protected function getPreviewLanguages() {
+		$pageIdToShow = (int)GeneralUtility::_GP('id');
+		$modSharedTSconfig = BackendUtility::getModTSconfig($pageIdToShow, 'mod.SHARED');
+		$languages = array(
+			0 => isset($modSharedTSconfig['properties']['defaultLanguageLabel'])
+					? $modSharedTSconfig['properties']['defaultLanguageLabel'] . ' (' . $this->getLanguageService()->sl('LLL:EXT:lang/locallang_mod_web_list.xlf:defaultLanguage') . ')'
+					: $this->getLanguageService()->sl('LLL:EXT:lang/locallang_mod_web_list.xlf:defaultLanguage')
+		);
+		$excludeHidden = $this->getBackendUser()->isAdmin() ? '' : ' AND sys_language.hidden=0';
+		$rows = $this->getDatabaseConnection()->exec_SELECTgetRows(
+			'sys_language.*',
+			'pages_language_overlay JOIN sys_language ON pages_language_overlay.sys_language_uid = sys_language.uid',
+			'pages_language_overlay.pid = ' . (int)$pageIdToShow . BackendUtility::deleteClause('pages_language_overlay') . $excludeHidden,
+			'pages_language_overlay.sys_language_uid, sys_language.uid, sys_language.pid, sys_language.tstamp, sys_language.hidden, sys_language.title, sys_language.static_lang_isocode, sys_language.flag',
+			'sys_language.title'
+		);
+		if (!empty($rows)) {
+			foreach ($rows as $row) {
+				if ($this->getBackendUser()->checkLanguageAccess($row['uid'])) {
+					$languages[$row['uid']] = $row['title'];
+				}
+			}
+		}
+		return $languages;
+	}
+
+	/**
+	 * Gets the L parameter from the user session
+	 *
+	 * @return string
+	 */
+	protected function getLanguageParameter() {
+		$states = $this->getBackendUser()->uc['moduleData']['web_view']['States'];
+		$languages = $this->getPreviewLanguages();
+		$languageParameter = '';
+		if (isset($states['languageSelectorValue']) && isset($languages[$states['languageSelectorValue']])) {
+			$languageParameter = '&L=' . (int)$states['languageSelectorValue'];
+		}
+		return $languageParameter;
+	}
+
+	/**
+	 * @return \TYPO3\CMS\Core\Database\DatabaseConnection
+	 */
+	protected function getDatabaseConnection() {
+		return $GLOBALS['TYPO3_DB'];
+	}
+
+	/**
+	 * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+	 */
+	protected function getBackendUser() {
+		return $GLOBALS['BE_USER'];
+	}
+
+	/**
+	 * @return \TYPO3\CMS\Lang\LanguageService
+	 */
+	protected function getLanguageService() {
+		return $GLOBALS['LANG'];
+	}
 }
