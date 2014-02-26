@@ -365,6 +365,10 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	 */
 	protected function analyzeFields($parsedExtSQL) {
 		foreach ($parsedExtSQL as $table => $tdef) {
+			// check if table is mapped
+			if (isset($this->mapping[$table])) {
+				$table = $this->mapping[$table]['mapTableName'];
+			}
 			if (is_array($tdef['fields'])) {
 				foreach ($tdef['fields'] as $field => $fdefString) {
 					$fdef = $this->SQLparser->parseFieldDef($fdefString);
@@ -2397,10 +2401,6 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	public function sql_field_metatype($table, $field) {
 		// If $table and/or $field are mapped, use the original names instead
 		foreach ($this->mapping as $tableName => $tableMapInfo) {
-			if (isset($tableMapInfo['mapTableName']) && $tableMapInfo['mapTableName'] === $table) {
-				// Table name is mapped => use original name
-				$table = $tableName;
-			}
 			if (isset($tableMapInfo['mapFieldNames'])) {
 				foreach ($tableMapInfo['mapFieldNames'] as $fieldName => $fieldMapInfo) {
 					if ($fieldMapInfo === $field) {
