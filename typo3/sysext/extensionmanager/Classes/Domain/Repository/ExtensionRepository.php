@@ -262,17 +262,11 @@ class ExtensionRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 	 * @return void
 	 */
 	protected function markExtensionWithMaximumVersionAsCurrent($repositoryUid) {
-		$whereClauseParts = array();
-		foreach ($this->fetchMaximalVersionsForAllExtensions($repositoryUid) as $row) {
-			$whereClauseParts[] = '(extension_key = ' . $this->databaseConnection->fullQuoteStr($row['extension_key'], self::TABLE_NAME) .
-				' AND integer_version = ' . (int)$row['max_version'] . ')';
-		}
-
-		$whereClause = implode(' OR ', $whereClauseParts);
+		$uidsOfCurrentVersion = $this->fetchMaximalVersionsForAllExtensions($repositoryUid);
 
 		$this->databaseConnection->exec_UPDATEquery(
 			self::TABLE_NAME,
-			$whereClause,
+			'uid IN (' . implode(',', $uidsOfCurrentVersion) . ')',
 			array(
 				'current_version' => 1,
 			)
@@ -280,18 +274,27 @@ class ExtensionRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 	}
 
 	/**
-	 * Fetches the maximal version for all extensions.
+	 * Fetches the UIDs of all maximal versions for all extensions.
+	 * This is done by doing a subselect in the WHERE clause to get all
+	 * max versions and then the UID of that record in the outer select.
 	 *
 	 * @param int $repositoryUid
 	 * @return array
 	 */
 	protected function fetchMaximalVersionsForAllExtensions($repositoryUid) {
-		return $this->databaseConnection->exec_SELECTgetRows(
-			'extension_key, max(integer_version) AS max_version',
-			self::TABLE_NAME,
-			'repository = ' . (int)$repositoryUid,
-			'extension_key'
+		$extensionUids = $this->databaseConnection->exec_SELECTgetRows(
+			'a.uid AS uid',
+			self::TABLE_NAME . ' a',
+			'integer_version=(' .
+				$this->databaseConnection->SELECTquery(
+					'MAX(integer_version)',
+					self::TABLE_NAME . ' b',
+					'b.repository=' . (int)$repositoryUid . ' AND a.extension_key=b.extension_key'
+				) .
+			') AND repository=' . (int)$repositoryUid,
+			'', '', '', 'uid'
 		);
+		return array_keys($extensionUids);
 	}
 
 	/**
