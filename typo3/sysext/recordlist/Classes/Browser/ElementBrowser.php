@@ -279,6 +279,8 @@ class ElementBrowser {
 		$this->doc->getPageRenderer()->loadPrototype();
 		$this->doc->loadJavascriptLib('js/browse_links.js');
 		$this->doc->loadJavascriptLib('js/tree.js');
+		$this->doc->getPageRenderer()->addInlineSetting('Tree.SC_alt_db_navframe', 'ajaxUrl', BackendUtility::getAjaxUrl('SC_alt_db_navframe::expandCollapse'));
+		$this->doc->getPageRenderer()->addInlineSetting('Tree.SC_alt_file_navframe', 'ajaxUrl', BackendUtility::getAjaxUrl('SC_alt_file_navframe::expandCollapse'));
 		// init hook objects:
 		$this->hookObjects = array();
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.browse_links.php']['browseLinksHook'])) {

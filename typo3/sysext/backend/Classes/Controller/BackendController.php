@@ -81,6 +81,13 @@ class BackendController {
 	protected $pageRenderer;
 
 	/**
+	 * @return \TYPO3\CMS\Core\Page\PageRenderer
+	 */
+	public function getPageRenderer() {
+		return $this->pageRenderer;
+	}
+
+	/**
 	 * Constructor
 	 */
 	public function __construct() {
@@ -96,6 +103,8 @@ class BackendController {
 		$this->pageRenderer->enableExtJSQuickTips();
 		$this->pageRenderer->addJsInlineCode('consoleOverrideWithDebugPanel', '//already done', FALSE);
 		$this->pageRenderer->addExtDirectCode();
+		$this->pageRenderer->addInlineSetting('ModuleMenu.getData', 'ajaxUrl', BackendUtility::getAjaxUrl('ModuleMenu::getData'));
+		$this->pageRenderer->addInlineSetting('ModuleMenu.saveMenuState', 'ajaxUrl', BackendUtility::getAjaxUrl('ModuleMenu::saveMenuState'));
 		// Add default BE javascript
 		$this->js = '';
 		$this->jsFiles = array(
@@ -608,10 +617,11 @@ class BackendController {
 	}
 
 	/**
-	 * Sdds a javascript snippet to the backend
+	 * Adds a javascript snippet to the backend
 	 *
 	 * @param string $javascript Javascript snippet
 	 * @return void
+	 * @throws \InvalidArgumentException
 	 */
 	public function addJavascript($javascript) {
 		// TODO do we need more checks?
@@ -672,6 +682,7 @@ class BackendController {
 	 * @param string $toolbarItemName Toolbar item name, f.e. tx_toolbarExtension_coolItem
 	 * @param string $toolbarItemClassName Toolbar item class name, f.e. tx_toolbarExtension_coolItem
 	 * @return void
+	 * @throws \UnexpectedValueException
 	 */
 	public function addToolbarItem($toolbarItemName, $toolbarItemClassName) {
 		$toolbarItem = GeneralUtility::makeInstance($toolbarItemClassName, $this);

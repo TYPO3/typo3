@@ -58,7 +58,7 @@ var ShortcutMenu = Class.create({
 			var shortcutId = element.up('tr.shortcut').identify().slice(9);
 
 				// map InPlaceEditor to edit icons
-			var edit = new Ajax.InPlaceEditor('shortcut-label-' + shortcutId, 'ajax.php?ajaxID=ShortcutMenu::saveShortcut', {
+			var edit = new Ajax.InPlaceEditor('shortcut-label-' + shortcutId, TYPO3.settings.ShortcutMenu.saveShortcut.ajaxUrl, {
 				externalControl     : 'shortcut-edit-' + shortcutId,
 				externalControlOnly : true,
 				highlightcolor      : '#f9f9f9',
@@ -91,8 +91,8 @@ var ShortcutMenu = Class.create({
 					var deleteControl = event.element();
 					var shortcutId = deleteControl.up('tr.shortcut').identify().slice(9);
 
-					var del = new Ajax.Request('ajax.php', {
-						parameters : 'ajaxID=ShortcutMenu::delete&shortcutId=' + shortcutId,
+					var del = new Ajax.Request(TYPO3.settings.ShortcutMenu.delete.ajaxUrl, {
+						parameters : '&shortcutId=' + shortcutId,
 						onComplete : this.reRenderMenu.bind(this)
 					});
 				}
@@ -158,9 +158,8 @@ var ShortcutMenu = Class.create({
 		selectField.appendChild(option);
 
 			// get the groups
-		var getGroups = new Ajax.Request('ajax.php', {
+		var getGroups = new Ajax.Request(TYPO3.settings.ShortcutMenu.getGroups.ajaxUrl, {
 			method: 'get',
-			parameters: 'ajaxID=ShortcutMenu::getGroups',
 			asynchronous: false, // needs to be synchronous to build the options before adding the selectfield
 			requestHeaders: {Accept: 'application/json'},
 			onSuccess: function(transport, json) {
@@ -202,9 +201,8 @@ var ShortcutMenu = Class.create({
 
 		var render = new Ajax.Updater(
 			container,
-			backPath + 'ajax.php',
+			backPath + TYPO3.settings.ShortcutMenu.render.ajaxUrl,
 			{
-				parameters : 'ajaxID=ShortcutMenu::render',
 				asynchronous : false
 			}
 		);
@@ -227,10 +225,10 @@ var ShortcutMenu = Class.create({
 		var spinner = new Element('span').addClassName('spinner');
 		var oldIcon = toolbarItemIcon.replace(spinner);
 
-			// synchrous call to wait for it to complete and call the render
-			// method with backpath _afterwards_
-		var call = new Ajax.Request(backPath + 'ajax.php', {
-			parameters : 'ajaxID=ShortcutMenu::create&module=' + moduleName + '&url=' + url,
+		// synchrous call to wait for it to complete and call the render
+		// method with backpath _afterwards_
+		var call = new Ajax.Request(backPath + TYPO3.settings.ShortcutMenu.create.ajaxUrl, {
+			parameters : 'module=' + moduleName + '&url=' + url,
 			asynchronous : false
 		});
 

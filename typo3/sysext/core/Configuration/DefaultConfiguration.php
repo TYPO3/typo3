@@ -633,29 +633,101 @@ return array(
 		'spriteIconGenerator_handler' => 'TYPO3\\CMS\\Backend\\Sprite\\SimpleSpriteHandler',		// String: Used to register own/other spriteGenerating Handler, they have to implement the interface \TYPO3\CMS\Backend\Sprite\SpriteIconGeneratorInterface. If set to "\TYPO3\CMS\Backend\Sprite\SpriteBuildingHandler" icons from extensions will automatically merged into sprites.
 		'debug' => FALSE,									// Boolean: If set, the loginrefresh is disabled and pageRenderer is set to debug mode. Use this to debug the backend only!
 		'AJAX' => array(									// array of key-value pairs for a unified use of AJAX calls in the TYPO3 backend. Keys are the unique ajaxIDs where the value will be resolved to call a method in an object. See ajax.php for more information.
-			'SC_alt_db_navframe::expandCollapse' => 'TYPO3\\CMS\\Backend\\Controller\\PageTreeNavigationController->ajaxExpandCollapse',
-			'SC_alt_file_navframe::expandCollapse' => 'TYPO3\\CMS\\Backend\\Controller\\FileSystemNavigationFrameController->ajaxExpandCollapse',
-			'TYPO3_tcefile::process' => 'TYPO3\\CMS\\Backend\\Controller\\File\\FileController->processAjaxRequest',
-			't3lib_TCEforms_inline::createNewRecord' => 'TYPO3\\CMS\\Backend\\Form\\Element\\InlineElement->processAjaxRequest',
-			't3lib_TCEforms_inline::getRecordDetails' => 'TYPO3\\CMS\\Backend\\Form\\Element\\InlineElement->processAjaxRequest',
-			't3lib_TCEforms_inline::synchronizeLocalizeRecords' => 'TYPO3\\CMS\\Backend\\Form\\Element\\InlineElement->processAjaxRequest',
-			't3lib_TCEforms_inline::setExpandedCollapsedState' => 'TYPO3\\CMS\\Backend\\Form\\Element\\InlineElement->processAjaxRequest',
-			't3lib_TCEforms_suggest::searchRecord' => 'TYPO3\\CMS\\Backend\\Form\\Element\\SuggestElement->processAjaxRequest',
-			'ShortcutMenu::getGroups' => 'TYPO3\\CMS\\Backend\\Toolbar\\ShortcutToolbarItem->getAjaxShortcutGroups',
-			'ShortcutMenu::saveShortcut' => 'TYPO3\\CMS\\Backend\\Toolbar\\ShortcutToolbarItem->setAjaxShortcut',
-			'ShortcutMenu::render' => 'TYPO3\\CMS\\Backend\\Toolbar\\ShortcutToolbarItem->renderAjax',
-			'ShortcutMenu::delete' => 'TYPO3\\CMS\\Backend\\Toolbar\\ShortcutToolbarItem->deleteAjaxShortcut',
-			'ShortcutMenu::create' => 'TYPO3\\CMS\\Backend\\Toolbar\\ShortcutToolbarItem->createAjaxShortcut',
-			'ModuleMenu::saveMenuState' => 'TYPO3\\CMS\\Backend\\View\\ModuleMenuView->saveMenuState',
-			'ModuleMenu::getData' => 'TYPO3\\CMS\\Backend\\View\\ModuleMenuView->getModuleData',
-			'BackendLogin::login' => 'TYPO3\\CMS\\Backend\\AjaxLoginHandler->login',
-			'BackendLogin::logout' => 'TYPO3\\CMS\\Backend\\AjaxLoginHandler->logout',
-			'BackendLogin::refreshLogin' => 'TYPO3\\CMS\\Backend\\AjaxLoginHandler->refreshLogin',
-			'BackendLogin::isTimedOut' => 'TYPO3\\CMS\\Backend\\AjaxLoginHandler->isTimedOut',
-			'BackendLogin::getChallenge' => 'TYPO3\\CMS\\Backend\\AjaxLoginHandler->getChallenge',
-			'BackendLogin::refreshTokens' => 'TYPO3\\CMS\\Backend\\AjaxLoginHandler->refreshTokens',
-			'ExtDirect::getAPI' => 'TYPO3\\CMS\\Core\\ExtDirect\\ExtDirectApi->getAPI',
-			'ExtDirect::route' => 'TYPO3\\CMS\\Core\\ExtDirect\\ExtDirectRouter->route'
+			'SC_alt_db_navframe::expandCollapse' => array(
+				'callbackMethod' => 'TYPO3\\CMS\\Backend\\Controller\\PageTreeNavigationController->ajaxExpandCollapse',
+				'csrfTokenCheck' => TRUE
+			),
+			'SC_alt_file_navframe::expandCollapse' => array(
+				'callbackMethod' => 'TYPO3\\CMS\\Backend\\Controller\\FileSystemNavigationFrameController->ajaxExpandCollapse',
+				'csrfTokenCheck' => TRUE
+			),
+			'TYPO3_tcefile::process' => array(
+				'callbackMethod' => 'TYPO3\\CMS\\Backend\\Controller\\File\\FileController->processAjaxRequest',
+				'csrfTokenCheck' => TRUE
+			),
+			't3lib_TCEforms_inline::createNewRecord' => array(
+				'callbackMethod' => 'TYPO3\\CMS\\Backend\\Form\\Element\\InlineElement->processAjaxRequest',
+				'csrfTokenCheck' => TRUE
+			),
+			't3lib_TCEforms_inline::getRecordDetails' => array(
+				'callbackMethod' => 'TYPO3\\CMS\\Backend\\Form\\Element\\InlineElement->processAjaxRequest',
+				'csrfTokenCheck' => TRUE
+			),
+			't3lib_TCEforms_inline::synchronizeLocalizeRecords' => array(
+				'callbackMethod' => 'TYPO3\\CMS\\Backend\\Form\\Element\\InlineElement->processAjaxRequest',
+				'csrfTokenCheck' => TRUE
+			),
+			't3lib_TCEforms_inline::setExpandedCollapsedState' => array(
+				'callbackMethod' => 'TYPO3\\CMS\\Backend\\Form\\Element\\InlineElement->processAjaxRequest',
+				'csrfTokenCheck' => TRUE
+			),
+			't3lib_TCEforms_suggest::searchRecord' => array(
+				'callbackMethod' => 'TYPO3\\CMS\\Backend\\Form\\Element\\SuggestElement->processAjaxRequest',
+				'csrfTokenCheck' => TRUE
+			),
+			'ShortcutMenu::getGroups' => array(
+				'callbackMethod' => 'TYPO3\\CMS\\Backend\\Toolbar\\ShortcutToolbarItem->getAjaxShortcutGroups',
+				'csrfTokenCheck' => TRUE
+			),
+			'ShortcutMenu::saveShortcut' => array(
+				'callbackMethod' => 'TYPO3\\CMS\\Backend\\Toolbar\\ShortcutToolbarItem->setAjaxShortcut',
+				'csrfTokenCheck' => TRUE
+			),
+			'ShortcutMenu::render' => array(
+				'callbackMethod' => 'TYPO3\\CMS\\Backend\\Toolbar\\ShortcutToolbarItem->renderAjax',
+				'csrfTokenCheck' => TRUE
+			),
+			'ShortcutMenu::delete' => array(
+				'callbackMethod' => 'TYPO3\\CMS\\Backend\\Toolbar\\ShortcutToolbarItem->deleteAjaxShortcut',
+				'csrfTokenCheck' => TRUE
+			),
+			'ShortcutMenu::create' => array(
+				'callbackMethod' => 'TYPO3\\CMS\\Backend\\Toolbar\\ShortcutToolbarItem->createAjaxShortcut',
+				'csrfTokenCheck' => TRUE
+			),
+			'ModuleMenu::saveMenuState' => array(
+				'callbackMethod' => 'TYPO3\\CMS\\Backend\\View\\ModuleMenuView->saveMenuState',
+				'csrfTokenCheck' => TRUE
+			),
+			'ModuleMenu::getData' => array(
+				'callbackMethod' => 'TYPO3\\CMS\\Backend\\View\\ModuleMenuView->getModuleData',
+				'csrfTokenCheck' => TRUE
+			),
+			'BackendLogin::login' => array(
+				'callbackMethod' => 'TYPO3\\CMS\\Backend\\AjaxLoginHandler->login',
+				// Needs to be unprotected
+				'csrfTokenCheck' => FALSE
+			),
+			'BackendLogin::logout' => array(
+				'callbackMethod' => 'TYPO3\\CMS\\Backend\\AjaxLoginHandler->logout',
+				// Needs to be unprotected
+				'csrfTokenCheck' => FALSE
+			),
+			'BackendLogin::refreshLogin' => array(
+				'callbackMethod' => 'TYPO3\\CMS\\Backend\\AjaxLoginHandler->refreshLogin',
+				// Needs to be unprotected
+				'csrfTokenCheck' => FALSE
+			),
+			'BackendLogin::isTimedOut' => array(
+				'callbackMethod' => 'TYPO3\\CMS\\Backend\\AjaxLoginHandler->isTimedOut',
+				// Needs to be unprotected
+				'csrfTokenCheck' => FALSE
+			),
+			'BackendLogin::getChallenge' => array(
+				'callbackMethod' => 'TYPO3\\CMS\\Backend\\AjaxLoginHandler->getChallenge',
+				// Needs to be unprotected
+				'csrfTokenCheck' => FALSE
+			),
+			'ExtDirect::getAPI' => array(
+				'callbackMethod' => 'TYPO3\\CMS\\Core\\ExtDirect\\ExtDirectApi->getAPI',
+				// No need to be CSRF protected
+				'csrfTokenCheck' => FALSE
+			),
+			'ExtDirect::route' => array(
+				'callbackMethod' => 'TYPO3\\CMS\\Core\\ExtDirect\\ExtDirectRouter->route',
+				// All ExtJS calls are CSRF protected with another token
+				'csrfTokenCheck' => FALSE
+			),
 		),
 		'XCLASS' => array()
 	),

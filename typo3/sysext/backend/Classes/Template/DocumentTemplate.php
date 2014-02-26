@@ -1575,6 +1575,8 @@ class DocumentTemplate {
 		$this->pageRenderer->loadPrototype();
 		$this->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/common.js');
 		$this->loadJavascriptLib('js/tree.js');
+		$this->getPageRenderer()->addInlineSetting('Tree.SC_alt_db_navframe', 'ajaxUrl', BackendUtility::getAjaxUrl('SC_alt_db_navframe::expandCollapse'));
+		$this->getPageRenderer()->addInlineSetting('Tree.SC_alt_file_navframe', 'ajaxUrl', BackendUtility::getAjaxUrl('SC_alt_file_navframe::expandCollapse'));
 		// Setting prefs for drag & drop
 		$this->JScodeArray['dragdrop'] = '
 			DragDrop.changeURL = "' . $this->backPath . 'alt_clickmenu.php";

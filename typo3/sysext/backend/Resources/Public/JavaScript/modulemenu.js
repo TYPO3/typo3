@@ -47,7 +47,7 @@ TYPO3.ModuleMenu.Store = new Ext.data.JsonStore({
 		{name: 'subitems', type: 'int'},
 		'sub'
 	],
-	url: 'ajax.php?ajaxID=ModuleMenu::getData',
+	url: TYPO3.settings.ModuleMenu.getData.ajaxUrl,
 	baseParams: {
 		'action': 'getModules'
 	},
@@ -165,7 +165,7 @@ TYPO3.ModuleMenu.App = {
 						}
 						// save menu state
 						Ext.Ajax.request({
-							url: 'ajax.php?ajaxID=ModuleMenu::saveMenuState',
+							url: TYPO3.settings.ModuleMenu.saveMenuState.ajaxUrl,
 							params: {
 								'menuid': 'modmenu_' + id,
 								'state': state

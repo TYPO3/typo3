@@ -28,6 +28,7 @@ namespace TYPO3\CMS\Rtehtmlarea;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Resource;
 
@@ -114,6 +115,8 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 		// Load the Prototype library and browse_links.js
 		$this->doc->getPageRenderer()->loadPrototype();
 		$this->doc->loadJavascriptLib('js/tree.js');
+		$this->doc->getPageRenderer()->addInlineSetting('Tree.SC_alt_db_navframe', 'ajaxUrl', BackendUtility::getAjaxUrl('SC_alt_db_navframe::expandCollapse'));
+		$this->doc->getPageRenderer()->addInlineSetting('Tree.SC_alt_file_navframe', 'ajaxUrl', BackendUtility::getAjaxUrl('SC_alt_file_navframe::expandCollapse'));
 		$this->doc->loadJavascriptLib('js/browse_links.js');
 		$this->doc->JScode .= $this->doc->wrapScriptTags('
 			Tree.ajaxID = "SC_alt_file_navframe::expandCollapse";

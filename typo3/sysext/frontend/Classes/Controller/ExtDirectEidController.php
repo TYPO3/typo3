@@ -36,7 +36,7 @@ class ExtDirectEidController {
 	 *
 	 * @var \TYPO3\CMS\Core\Http\AjaxRequestHandler
 	 */
-	protected $ajaxObjext = NULL;
+	protected $ajaxObject = NULL;
 
 	/**
 	 * Routes the given eID action to the related ExtDirect method with the necessary
@@ -47,7 +47,7 @@ class ExtDirectEidController {
 	public function routeAction() {
 		\TYPO3\CMS\Frontend\Utility\EidUtility::initLanguage();
 		$ajaxID = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('action');
-		$ajaxScript = $GLOBALS['TYPO3_CONF_VARS']['BE']['AJAX']['ExtDirect::' . $ajaxID];
+		$ajaxScript = $GLOBALS['TYPO3_CONF_VARS']['BE']['AJAX']['ExtDirect::' . $ajaxID]['callbackMethod'];
 		$this->ajaxObject = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Http\\AjaxRequestHandler', 'ExtDirect::' . $ajaxID);
 		$parameters = array();
 		\TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($ajaxScript, $parameters, $this->ajaxObject, FALSE, TRUE);

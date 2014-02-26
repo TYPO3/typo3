@@ -60,11 +60,11 @@ TCEForms.Suggest = Class.create({
 		this.suggestResultList = objectId + 'SuggestChoices';
 		this.fieldType = fieldType;
 
-		new Ajax.Autocompleter(this.suggestField, this.suggestResultList, PATH_typo3 + 'ajax.php', {
+		new Ajax.Autocompleter(this.suggestField, this.suggestResultList, PATH_typo3 + TYPO3.settings.TCEFORMS.Suggest.ajaxUrl, {
 				paramName: 'value',
 				minChars: (minimumCharacters ? minimumCharacters : this.minimumCharacters),
 				updateElement: this.addElementToList.bind(this),
-				parameters: 'ajaxID=t3lib_TCEforms_suggest::searchRecord&table=' + table + '&field=' + field + '&uid=' + uid + '&pid=' + pid,
+				parameters: 'table=' + table + '&field=' + field + '&uid=' + uid + '&pid=' + pid,
 				indicator: objectId + 'SuggestIndicator'
 			}
 		);

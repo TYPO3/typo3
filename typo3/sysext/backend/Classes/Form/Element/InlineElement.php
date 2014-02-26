@@ -938,6 +938,7 @@ class InlineElement {
 		$pageRenderer = $GLOBALS['SOBE']->doc->getPageRenderer();
 		$pageRenderer->loadRequireJsModule('TYPO3/CMS/Filelist/FileListLocalisation');
 		$pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/DragUploader');
+		$pageRenderer->addInlineSetting('DragUploader', 'ajaxUrl', BackendUtility::getAjaxUrl('TYPO3_tcefile::process'));
 		$pageRenderer->addInlineLanguagelabelFile(
 			\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('lang') . 'locallang_core.xlf',
 			'file_upload'

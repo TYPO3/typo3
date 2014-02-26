@@ -1,6 +1,7 @@
 <?php
 namespace TYPO3\CMS\Rtehtmlarea;
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -66,6 +67,8 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 		// Loading the Prototype library and browse_links.js
 		$this->doc->getPageRenderer()->loadPrototype();
 		$this->doc->loadJavascriptLib('js/tree.js');
+		$this->doc->getPageRenderer()->addInlineSetting('Tree.SC_alt_db_navframe', 'ajaxUrl', BackendUtility::getAjaxUrl('SC_alt_db_navframe::expandCollapse'));
+		$this->doc->getPageRenderer()->addInlineSetting('Tree.SC_alt_file_navframe', 'ajaxUrl', BackendUtility::getAjaxUrl('SC_alt_file_navframe::expandCollapse'));
 		$this->doc->loadJavascriptLib('js/browse_links.js');
 		// Adding context menu code
 		$this->doc->getContextMenuCode();

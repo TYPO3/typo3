@@ -116,8 +116,11 @@ var DragDrop = {
 
 
 var Tree = {
-	thisScript: 'ajax.php',
 	ajaxID: 'SC_alt_db_navframe::expandCollapse',	// has to be either "SC_alt_db_navframe::expandCollapse" or "SC_alt_file_navframe::expandCollapse"
+	ajaxUrls: {
+		'SC_alt_file_navframe::expandCollapse': TYPO3.settings.Tree['SC_alt_file_navframe'].ajaxUrl,
+		'SC_alt_db_navframe::expandCollapse': TYPO3.settings.Tree['SC_alt_db_navframe'].ajaxUrl
+	},
 	frameSetModule: null,
 	activateDragDrop: true,
 	highlightClass: 'active',
@@ -133,7 +136,7 @@ var Tree = {
 
 			// fallback if AJAX is not possible (e.g. IE < 6)
 		if (typeof Ajax.getTransport() !== 'object') {
-			window.location.href = this.thisScript + '?ajaxID=' + this.ajaxID + '&PM=' + encodeURIComponent(params) + scope;
+			window.location.href = this.ajaxUrls[this.ajaxID] + '&PM=' + encodeURIComponent(params) + scope;
 			return;
 		}
 
@@ -153,10 +156,9 @@ var Tree = {
 		} else {
 			obj.style.cursor = 'wait';
 		}
-		
-		var call = new Ajax.Request(this.thisScript, {
+		var call = new Ajax.Request(this.ajaxUrls[this.ajaxID], {
 			method: 'get',
-			parameters: 'ajaxID=' + this.ajaxID + '&PM=' + encodeURIComponent(params) + scope,
+			parameters: 'PM=' + encodeURIComponent(params) + scope,
 			onComplete: function(xhr) {
 				// the parent node needs to be overwritten, not the object
 				$(obj.parentNode.parentNode).replace(xhr.responseText);

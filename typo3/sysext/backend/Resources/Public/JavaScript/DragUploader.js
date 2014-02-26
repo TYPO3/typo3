@@ -62,7 +62,7 @@ define('TYPO3/CMS/Backend/DragUploader', ['jquery'], function($) {
 			event.stopPropagation();
 			event.preventDefault();
 			me.$dropzone.hide();
-		}
+		};
 
 		me.dragFileIntoDocument = function(event) {
 			event.stopPropagation();
@@ -321,12 +321,11 @@ define('TYPO3/CMS/Backend/DragUploader', ['jquery'], function($) {
 			if(me.override) {
 				formData.append('overwriteExistingFiles', '1');
 			}
-			formData.append('ajaxID', 'TYPO3_tcefile::process');
 			formData.append('redirect', '');
 			formData.append('upload_1', me.file);
 
 			var s = $.extend(true, {}, $.ajaxSettings, {
-				url: 'ajax.php',
+				url: TYPO3.settings.DragUploader.ajaxUrl,
 				contentType: false,
 				processData: false,
 				data: formData,
