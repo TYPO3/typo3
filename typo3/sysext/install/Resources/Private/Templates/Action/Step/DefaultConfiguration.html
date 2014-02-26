@@ -3,7 +3,7 @@
 <f:layout name="Step" />
 
 <f:section name="Content">
-	<h3>Auto configuration and login</h3>
+	<h3>Auto configuration, distributions and login</h3>
 
 	<p>
 		Installation done! This last step will set some configuration values based on your
@@ -11,10 +11,27 @@
 		with the user you just created.
 	</p>
 
+	<h4>Want a pre-configured site?</h4>
+	<p>
+		You now have an empty installation. If you want a pre-configured site, there are
+		distributions on the web, which can be installed via the Extension Mananger.
+		If you check the option below, you will be redirected to the distributions
+		center, where a list of distributions is fetched. <strong>Please note:
+		This may take some time after the login.</strong>
+	</p>
+
 	<form method="post">
 		<f:render partial="Action/Common/HiddenFormFields" arguments="{_all}" />
 		<input type="hidden" value="execute" name="install[set]" />
-
+		<fieldset class="t3-install-form-label-width-21 t3-install-form-label-after">
+			<ol>
+				<li>
+					<input type="checkbox" id="load-distributions" name="install[values][loaddistributions]" value="1" checked="checked" />
+					<label for="load-distributions">Yes, download the list of distributions.</label>
+				</li>
+			</ol>
+		</fieldset>
+		<hr />
 		<button type="submit">
 			Continue
 		</button>

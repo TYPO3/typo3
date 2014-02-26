@@ -597,20 +597,37 @@ class BackendController {
 	}
 
 	/**
-	 * Sets the startup module from either GETvars module and mpdParams or user configuration.
+	 * Sets the startup module from either GETvars module and modParams or user configuration.
 	 *
-	 * @return void
+	 * @return string the JavaScript code for the startup module
 	 */
 	protected function setStartupModule() {
 		$startModule = preg_replace('/[^[:alnum:]_]/', '', GeneralUtility::_GET('module'));
 		if (!$startModule) {
-			if ($GLOBALS['BE_USER']->uc['startModule']) {
+			// start module on first login, will be removed once used the first time
+			if (isset($GLOBALS['BE_USER']->uc['startModuleOnFirstLogin'])) {
+				$startModule = $GLOBALS['BE_USER']->uc['startModuleOnFirstLogin'];
+				unset($GLOBALS['BE_USER']->uc['startModuleOnFirstLogin']);
+				$GLOBALS['BE_USER']->writeUC();
+			} elseif ($GLOBALS['BE_USER']->uc['startModule']) {
 				$startModule = $GLOBALS['BE_USER']->uc['startModule'];
 			} elseif ($GLOBALS['BE_USER']->uc['startInTaskCenter']) {
 				$startModule = 'user_task';
 			}
+
+			// check if the start module has additional parameters, so a redirect to a specific
+			// action is possible
+			if (strpos($startModule, '->') !== FALSE) {
+				list($startModule, $startModuleParameters) = explode('->', $startModule, 2);
+			}
 		}
+
 		$moduleParameters = GeneralUtility::_GET('modParams');
+		// if no GET parameters are set, check if there are parameters given from the UC
+		if (!$moduleParameters && $startModuleParameters) {
+			$moduleParameters = $startModuleParameters;
+		}
+
 		if ($startModule) {
 			return '
 					// start in module:
