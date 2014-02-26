@@ -27,8 +27,6 @@ namespace TYPO3\CMS\Core\Utility;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-
 /**
  * Extension Management functions
  *
@@ -879,6 +877,20 @@ class ExtensionManagementUtility {
 			'callbackClass' => $callbackClass,
 			'moduleName' => $moduleName,
 			'accessLevel' => $accessLevel
+		);
+	}
+
+	/**
+	 * Registers an Ajax Handler
+	 *
+	 * @param string $ajaxId Identifier of the handler, that is used in the request
+	 * @param string $callbackMethod TYPO3 callback method (className->methodName).
+	 * @param bool $csrfTokenCheck Only set this to FALSE if you are sure that the registered handler does not modify any data!
+	 */
+	static public function registerAjaxHandler($ajaxId, $callbackMethod, $csrfTokenCheck = TRUE) {
+		$GLOBALS['TYPO3_CONF_VARS']['BE']['AJAX'][$ajaxId] = array(
+			'callbackMethod' => $callbackMethod,
+			'csrfTokenCheck' => $csrfTokenCheck
 		);
 	}
 

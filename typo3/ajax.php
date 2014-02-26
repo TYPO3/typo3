@@ -55,8 +55,21 @@ if (in_array($ajaxID, $noUserAjaxIDs)) {
 
 require __DIR__ . '/init.php';
 
-// finding the script path from the variable
-$ajaxScript = $TYPO3_CONF_VARS['BE']['AJAX'][$ajaxID];
+// Finding the script path from the registry
+$ajaxRegistryEntry = isset($GLOBALS['TYPO3_CONF_VARS']['BE']['AJAX'][$ajaxID]) ? $GLOBALS['TYPO3_CONF_VARS']['BE']['AJAX'][$ajaxID] : NULL;
+$ajaxScript = NULL;
+$csrfTokenCheck = FALSE;
+if ($ajaxRegistryEntry !== NULL) {
+	if (is_array($ajaxRegistryEntry)) {
+		if (isset($ajaxRegistryEntry['callbackMethod'])) {
+			$ajaxScript = $ajaxRegistryEntry['callbackMethod'];
+			$csrfTokenCheck = $ajaxRegistryEntry['csrfTokenCheck'];
+		}
+	} else {
+		// @Deprecated since 6.2 will be removed two versions later
+		$ajaxScript = $ajaxRegistryEntry;
+	}
+}
 
 // Instantiating the AJAX object
 $ajaxObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Http\\AjaxRequestHandler', $ajaxID);
@@ -68,8 +81,19 @@ if (empty($ajaxID)) {
 } elseif (empty($ajaxScript)) {
 	$ajaxObj->setError('No backend function registered for ajaxID "' . $ajaxID . '".');
 } else {
-	$ret = \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($ajaxScript, $ajaxParams, $ajaxObj, FALSE, TRUE);
-	if ($ret === FALSE) {
+	$success = TRUE;
+	$tokenIsValid = TRUE;
+	if ($csrfTokenCheck) {
+		$tokenIsValid = \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get()->validateToken(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('ajaxToken'), 'ajaxCall', $ajaxID);
+	}
+	if ($tokenIsValid) {
+		// Cleanup global variable space
+		unset($csrfTokenCheck, $ajaxRegistryEntry, $tokenIsValid, $success);
+		$success = \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($ajaxScript, $ajaxParams, $ajaxObj, FALSE, TRUE);
+	} else {
+		$ajaxObj->setError('Invalid CSRF token detected for ajaxID "' . $ajaxID . '"!');
+	}
+	if ($success === FALSE) {
 		$ajaxObj->setError('Registered backend function for ajaxID "' . $ajaxID . '" was not found.');
 	}
 }

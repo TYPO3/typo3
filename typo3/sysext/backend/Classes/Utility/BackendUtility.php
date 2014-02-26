@@ -3003,15 +3003,38 @@ class BackendUtility {
 			return FALSE;
 		}
 		if ($backPathOverride === FALSE) {
-			$backPath = $GLOBALS['BACK_PATH'];
+			$backPath = isset($GLOBALS['BACK_PATH']) ? $GLOBALS['BACK_PATH'] : '';
 		} else {
 			$backPath = $backPathOverride;
 		}
-		$allUrlParameters = array();
-		$allUrlParameters['M'] = $moduleName;
-		$allUrlParameters['moduleToken'] = \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get()->generateToken('moduleCall', $moduleName);
-		$allUrlParameters = array_merge($allUrlParameters, $urlParameters);
-		$url = 'mod.php?' . ltrim(GeneralUtility::implodeArrayForUrl('', $allUrlParameters, '', TRUE, TRUE), '&');
+		$urlParameters['M'] = $moduleName;
+		$urlParameters['moduleToken'] = \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get()->generateToken('moduleCall', $moduleName);
+		$url = 'mod.php?' . ltrim(GeneralUtility::implodeArrayForUrl('', $urlParameters, '', TRUE, TRUE), '&');
+		if ($returnAbsoluteUrl) {
+			return GeneralUtility::getIndpEnv('TYPO3_REQUEST_DIR') . $url;
+		} else {
+			return $backPath . $url;
+		}
+	}
+
+	/**
+	 * Returns the Ajax URL for a given AjaxID including a CSRF token.
+	 *
+	 * @param string $ajaxIdentifier Identifier of the AJAX callback
+	 * @param array $urlParameters URL parameters that should be added as key value pairs
+	 * @param bool/string $backPathOverride Backpath that should be used instead of the global $BACK_PATH
+	 * @param bool $returnAbsoluteUrl If set to TRUE, the URL returned will be absolute, $backPathOverride will be ignored in this case
+	 * @return string Calculated URL
+	 */
+	static public function getAjaxUrl($ajaxIdentifier, array $urlParameters = array(), $backPathOverride = FALSE, $returnAbsoluteUrl = FALSE) {
+		if ($backPathOverride) {
+			$backPath = $backPathOverride;
+		} else {
+			$backPath = isset($GLOBALS['BACK_PATH']) ? $GLOBALS['BACK_PATH'] : '';
+		}
+		$urlParameters['ajaxID'] = $ajaxIdentifier;
+		$urlParameters['ajaxToken'] = \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get()->generateToken('ajaxCall', $ajaxIdentifier);
+		$url = 'ajax.php?' . ltrim(GeneralUtility::implodeArrayForUrl('', $urlParameters, '', TRUE, TRUE), '&');
 		if ($returnAbsoluteUrl) {
 			return GeneralUtility::getIndpEnv('TYPO3_REQUEST_DIR') . $url;
 		} else {
