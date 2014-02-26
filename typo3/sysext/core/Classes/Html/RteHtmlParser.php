@@ -111,18 +111,6 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 	public $preserveTags = '';
 
 	/**
-	 * Maximum width of magic images
-	 * @var integer
-	 */
-	protected $magicImageMaximumWidth;
-
-	/**
-	 * Maximum height of magic images
-	 * @var integer
-	 */
-	protected $magicImageMaximumHeight;
-
-	/**
 	 * Initialize, setting element reference and record PID
 	 *
 	 * @param string $elRef Element reference, eg "tt_content:bodytext
@@ -379,7 +367,7 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 			$resourceFactory = Resource\ResourceFactory::getInstance();
 			/** @var $magicImageService Resource\Service\MagicImageService */
 			$magicImageService = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\Service\\MagicImageService');
-			$this->setMagicImageMaximumDimensions();
+			$magicImageService->setMagicImageMaximumDimensions($this->tsConfig);
 			foreach ($imgSplit as $k => $v) {
 				// Image found, do processing:
 				if ($k % 2) {
@@ -409,7 +397,9 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 							/** @var $originalImageFile Resource\File */
 							$originalImageFile = $resourceFactory->getFileObject(intval($attribArray['data-htmlarea-file-uid']));
 						} catch (Resource\Exception\FileDoesNotExistException $fileDoesNotExistException) {
-							// The file has disappeared...
+							// Log the fact the file could not be retrieved.
+							$message = sprintf('Could not find file with uid "%s"', $attribArray['data-htmlarea-file-uid']);
+							$this->getLogger()->error($message);
 						}
 					}
 					if ($originalImageFile instanceof Resource\File) {
@@ -433,9 +423,7 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 							// Magic image case: get a processed file with the requested configuration
 							$imageConfiguration = array(
 								'width' => $imgTagDimensions[0],
-								'height' => $imgTagDimensions[1],
-								'maxW' => $this->magicImageMaximumWidth,
-								'maxH' => $this->magicImageMaximumHeight
+								'height' => $imgTagDimensions[1]
 							);
 							$magicImage = $magicImageService->createMagicImage($originalImageFile, $imageConfiguration);
 							$attribArray['width'] = $magicImage->getProperty('width');
@@ -456,9 +444,7 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 								$fileObject = $folder->createFile($fileName)->setContents($externalFile);
 								$imageConfiguration = array(
 									'width' => $attribArray['width'],
-									'height' => $attribArray['height'],
-									'maxW' => $this->magicImageMaximumWidth,
-									'maxH' => $this->magicImageMaximumHeight
+									'height' => $attribArray['height']
 								);
 								$magicImage = $magicImageService->createMagicImage($fileObject, $imageConfiguration);
 								$attribArray['width'] = $magicImage->getProperty('width');
@@ -1737,32 +1723,6 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 	}
 
 	/**
-	 * Set variables for maximum dimensions of magic images
-	 *
-	 * @return  void
-	 */
-	protected function setMagicImageMaximumDimensions() {
-		// Get maximum dimensions from the configuration of the image button
-		$buttonConfig = is_array($this->tsConfig['buttons.']) && is_array($this->tsConfig['buttons.']['image.']) ? $this->tsConfig['buttons.']['image.'] : array();
-		if (is_array($buttonConfig['options.']) && is_array($buttonConfig['options.']['magic.'])) {
-			if ($buttonConfig['options.']['magic.']['maxWidth']) {
-				$this->magicImageMaximumWidth = $buttonConfig['options.']['magic.']['maxWidth'];
-			}
-			if ($buttonConfig['options.']['magic.']['maxHeight']) {
-				$this->magicImageMaximumHeight = $buttonConfig['options.']['magic.']['maxHeight'];
-			}
-		}
-		// These defaults allow images to be based on their width - to a certain degree - by setting a high height.
-		// Then we're almost certain the image will be based on the width
-		if (!$this->magicImageMaximumWidth) {
-			$this->magicImageMaximumWidth = 300;
-		}
-		if (!$this->magicImageMaximumHeight) {
-			$this->magicImageMaximumHeight = 1000;
-		}
-	}
-
-	/**
 	 * Apply plain image settings to the dimensions of the image
 	 *
 	 * @param array $imageInfo: info array of the image
@@ -1790,6 +1750,17 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 			}
 		}
 		return $attribArray;
+	}
+
+	/**
+	* @return \TYPO3\CMS\Core\Log\Logger
+	*/
+	protected function getLogger() {
+
+		/** @var $logManager \TYPO3\CMS\Core\Log\LogManager */
+		$logManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Log\\LogManager');
+
+		return $logManager->getLogger(get_class($this));
 	}
 
 }

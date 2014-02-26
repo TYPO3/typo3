@@ -37,21 +37,35 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 class MagicImageService {
 
 	/**
+	 * Maximum width of magic images
+	 * These defaults allow images to be based on their width - to a certain degree - by setting a high height.
+	 * Then we're almost certain the image will be based on the width
+	 * @var int
+	 */
+	protected $magicImageMaximumWidth = 300;
+
+	/**
+	 * Maximum height of magic images
+	 * @var int
+	 */
+	protected $magicImageMaximumHeight = 1000;
+
+	/**
 	 * Creates a magic image
 	 *
 	 * @param Resource\File $imageFileObject: the original image file
-	 * @param array $fileConfiguration (width, height, maxW, maxH)
+	 * @param array $fileConfiguration (width, height)
 	 * @return Resource\ProcessedFile
 	 */
 	public function createMagicImage(Resource\File $imageFileObject, array $fileConfiguration) {
 		// Process dimensions
-		$maxWidth = MathUtility::forceIntegerInRange($fileConfiguration['width'], 0, $fileConfiguration['maxW']);
-		$maxHeight = MathUtility::forceIntegerInRange($fileConfiguration['height'], 0, $fileConfiguration['maxH']);
+		$maxWidth = MathUtility::forceIntegerInRange($fileConfiguration['width'], 0, $this->magicImageMaximumWidth);
+		$maxHeight = MathUtility::forceIntegerInRange($fileConfiguration['height'], 0, $this->magicImageMaximumHeight);
 		if (!$maxWidth) {
-			$maxWidth = $fileConfiguration['maxW'];
+			$maxWidth = $this->magicImageMaximumWidth;
 		}
 		if (!$maxHeight) {
-			$maxHeight = $fileConfiguration['maxH'];
+			$maxHeight = $this->magicImageMaximumHeight;
 		}
 		// Create the magic image
 		$magicImage = $imageFileObject->process(
@@ -64,4 +78,22 @@ class MagicImageService {
 		return $magicImage;
 	}
 
+	/**
+	 * Set maximum dimensions of magic images based on RTE configuration
+	 *
+	 * @param array $rteConfiguration: RTE configuration probably coming from PageTSConfig
+	 * @return void
+	 */
+	public function setMagicImageMaximumDimensions(array $rteConfiguration) {
+		// Get maximum dimensions from the configuration of the RTE image button
+		$imageButtonConfiguration = (is_array($rteConfiguration['buttons.']) && is_array($rteConfiguration['buttons.']['image.'])) ? $rteConfiguration['buttons.']['image.'] : array();
+		if (is_array($imageButtonConfiguration['options.']) && is_array($imageButtonConfiguration['options.']['magic.'])) {
+			if ((int) $imageButtonConfiguration['options.']['magic.']['maxWidth'] > 0) {
+				$this->magicImageMaximumWidth = (int) $imageButtonConfiguration['options.']['magic.']['maxWidth'];
+			}
+			if ((int) $imageButtonConfiguration['options.']['magic.']['maxHeight'] > 0) {
+				$this->magicImageMaximumHeight = (int) $imageButtonConfiguration['options.']['magic.']['maxHeight'];
+			}
+		}
+	}
 }
