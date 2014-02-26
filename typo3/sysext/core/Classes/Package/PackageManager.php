@@ -147,7 +147,7 @@ class PackageManager extends \TYPO3\Flow\Package\PackageManager implements \TYPO
 		if ($cacheIdentifier === NULL) {
 			// Create an artificial cache identifier if the package states file is not available yet
 			// in order that the class loader and class alias map can cache anyways.
-			$cacheIdentifier = substr(md5(implode('###', array_keys($this->activePackages))), 0, 13);
+			$cacheIdentifier = md5(implode('###', array_keys($this->activePackages)));
 		}
 		$this->classLoader->setCacheIdentifier($cacheIdentifier)->setPackages($this->activePackages);
 
@@ -164,7 +164,7 @@ class PackageManager extends \TYPO3\Flow\Package\PackageManager implements \TYPO
 	protected function getCacheIdentifier() {
 		if ($this->cacheIdentifier === NULL) {
 			if (@file_exists($this->packageStatesPathAndFilename)) {
-				$this->cacheIdentifier = substr(md5_file($this->packageStatesPathAndFilename), 0, 13);
+				$this->cacheIdentifier = md5_file($this->packageStatesPathAndFilename);
 			} else {
 				$this->cacheIdentifier = NULL;
 			}
