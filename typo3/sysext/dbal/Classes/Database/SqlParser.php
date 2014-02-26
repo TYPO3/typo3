@@ -28,6 +28,8 @@ namespace TYPO3\CMS\Dbal\Database;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * PHP SQL engine / server
  *
@@ -38,6 +40,20 @@ namespace TYPO3\CMS\Dbal\Database;
 class SqlParser extends \TYPO3\CMS\Core\Database\SqlParser {
 
 	/**
+	 * @var DatabaseConnection
+	 */
+	protected $databaseConnection;
+
+	/**
+	 * @param DatabaseConnection $databaseConnection
+	 */
+	public function __construct(DatabaseConnection $databaseConnection = NULL) {
+		parent::__construct();
+
+		$this->databaseConnection = $databaseConnection ?: $GLOBALS['TYPO3_DB'];
+	}
+
+	/**
 	 * Gets value in quotes from $parseString.
 	 *
 	 * @param string $parseString String from which to find value in quotes. Notice that $parseString is passed by reference and is shortened by the output of this function.
@@ -45,9 +61,9 @@ class SqlParser extends \TYPO3\CMS\Core\Database\SqlParser {
 	 * @return string The value, passed through parseStripslashes()!
 	 */
 	protected function getValueInQuotes(&$parseString, $quote) {
-		switch ((string) $GLOBALS['TYPO3_DB']->handlerCfg[$GLOBALS['TYPO3_DB']->lastHandlerKey]['type']) {
+		switch ((string)$this->databaseConnection->handlerCfg[$this->databaseConnection->lastHandlerKey]['type']) {
 			case 'adodb':
-				if ($GLOBALS['TYPO3_DB']->runningADOdbDriver('mssql')) {
+				if ($this->databaseConnection->runningADOdbDriver('mssql')) {
 					$value = $this->getValueInQuotesMssql($parseString, $quote);
 				} else {
 					$value = parent::getValueInQuotes($parseString, $quote);
@@ -63,7 +79,7 @@ class SqlParser extends \TYPO3\CMS\Core\Database\SqlParser {
 	 * Gets value in quotes from $parseString. This method targets MSSQL exclusively.
 	 *
 	 * @param string $parseString String from which to find value in quotes. Notice that $parseString is passed by reference and is shortened by the output of this function.
-	 * @param $quote The quote used; input either " or '
+	 * @param string $quote The quote used; input either " or '
 	 * @return string
 	 */
 	protected function getValueInQuotesMssql(&$parseString, $quote) {
@@ -95,7 +111,7 @@ class SqlParser extends \TYPO3\CMS\Core\Database\SqlParser {
 		}
 		$parts = explode($quote, substr($parseString, 1));
 		$buffer = '';
-		foreach ($parts as $k => $v) {
+		foreach ($parts as $v) {
 			$buffer .= $v;
 			$reg = array();
 			preg_match('/\\\\$/', $v, $reg);
@@ -106,25 +122,26 @@ class SqlParser extends \TYPO3\CMS\Core\Database\SqlParser {
 				return $this->parseStripslashes($buffer);
 			}
 		}
+		return '';
 	}
 
 	/**
 	 * Compiles a "SELECT [output] FROM..:" field list based on input array (made with ->parseFieldList())
 	 * Can also compile field lists for ORDER BY and GROUP BY.
 	 *
-	 * @param 	array		Array of select fields, (made with ->parseFieldList())
-	 * @param 	boolean		Whether comments should be compiled
-	 * @param 	boolean		Whether function mapping should take place
+	 * @param 	array		$selectFields Array of select fields, (made with ->parseFieldList())
+	 * @param 	boolean		$compileComments Whether comments should be compiled
+	 * @param 	boolean		$functionMapping Whether function mapping should take place
 	 * @return 	string		Select field string
 	 * @see parseFieldList()
 	 */
 	public function compileFieldList($selectFields, $compileComments = TRUE, $functionMapping = TRUE) {
-		switch ((string) $GLOBALS['TYPO3_DB']->handlerCfg[$GLOBALS['TYPO3_DB']->lastHandlerKey]['type']) {
+		$output = '';
+		switch ((string)$this->databaseConnection->handlerCfg[$this->databaseConnection->lastHandlerKey]['type']) {
 			case 'native':
 				$output = parent::compileFieldList($selectFields, $compileComments);
 				break;
 			case 'adodb':
-				$output = '';
 				// Traverse the selectFields if any:
 				if (is_array($selectFields)) {
 					$outputParts = array();
@@ -166,13 +183,14 @@ class SqlParser extends \TYPO3\CMS\Core\Database\SqlParser {
 	/**
 	 * Compiles a CASE ... WHEN flow-control construct based on input array (made with ->parseCaseStatement())
 	 *
-	 * @param 	array		Array of case components, (made with ->parseCaseStatement())
-	 * @param 	boolean		Whether function mapping should take place
+	 * @param 	array		$components Array of case components, (made with ->parseCaseStatement())
+	 * @param 	boolean		$functionMapping Whether function mapping should take place
 	 * @return 	string		case when string
 	 * @see parseCaseStatement()
 	 */
 	protected function compileCaseStatement(array $components, $functionMapping = TRUE) {
-		switch ((string) $GLOBALS['TYPO3_DB']->handlerCfg[$GLOBALS['TYPO3_DB']->lastHandlerKey]['type']) {
+		$output = '';
+		switch ((string)$this->databaseConnection->handlerCfg[$this->databaseConnection->lastHandlerKey]['type']) {
 			case 'native':
 				$output = parent::compileCaseStatement($components);
 				break;
@@ -205,7 +223,7 @@ class SqlParser extends \TYPO3\CMS\Core\Database\SqlParser {
 	 * This method overrides the method from \TYPO3\CMS\Core\Database\SqlParser because
 	 * the input string is already properly escaped.
 	 *
-	 * @param 	string		Input string
+	 * @param 	string		$str Input string
 	 * @return 	string		Output string
 	 */
 	protected function compileAddslashes($str) {
@@ -225,7 +243,8 @@ class SqlParser extends \TYPO3\CMS\Core\Database\SqlParser {
 	 * @see parseINSERT()
 	 */
 	protected function compileINSERT($components) {
-		switch ((string) $GLOBALS['TYPO3_DB']->handlerCfg[$GLOBALS['TYPO3_DB']->lastHandlerKey]['type']) {
+		$query = '';
+		switch ((string)$this->databaseConnection->handlerCfg[$this->databaseConnection->lastHandlerKey]['type']) {
 			case 'native':
 				$query = parent::compileINSERT($components);
 				break;
@@ -233,7 +252,7 @@ class SqlParser extends \TYPO3\CMS\Core\Database\SqlParser {
 				$values = array();
 				if (isset($components['VALUES_ONLY']) && is_array($components['VALUES_ONLY'])) {
 					$valuesComponents = $components['EXTENDED'] === '1' ? $components['VALUES_ONLY'] : array($components['VALUES_ONLY']);
-					$tableFields = array_keys($GLOBALS['TYPO3_DB']->cache_fieldType[$components['TABLE']]);
+					$tableFields = array_keys($this->databaseConnection->cache_fieldType[$components['TABLE']]);
 				} else {
 					$valuesComponents = $components['EXTENDED'] === '1' ? $components['FIELDS'] : array($components['FIELDS']);
 					$tableFields = array_keys($valuesComponents[0]);
@@ -253,36 +272,16 @@ class SqlParser extends \TYPO3\CMS\Core\Database\SqlParser {
 	}
 
 	/**
-	 * Compiles a DROP TABLE statement from components array
-	 *
-	 * @param array Array of SQL query components
-	 * @return string SQL DROP TABLE query
-	 * @see compileSQL()
-	 */
-	private function compileDROPTABLE($components) {
-		switch ((string) $GLOBALS['TYPO3_DB']->handlerCfg[$GLOBALS['TYPO3_DB']->lastHandlerKey]['type']) {
-			case 'native':
-				$query = 'DROP TABLE' . ($components['ifExists'] ? ' IF EXISTS' : '') . ' ' . $components['TABLE'];
-				break;
-			case 'adodb':
-				$handlerKey = $GLOBALS['TYPO3_DB']->handler_getFromTableList($components['TABLE']);
-				$tableName = $GLOBALS['TYPO3_DB']->quoteName($components['TABLE'], $handlerKey, TRUE);
-				$query = $GLOBALS['TYPO3_DB']->handlerInstance[$handlerKey]->DataDictionary->DropTableSQL($tableName);
-				break;
-		}
-		return $query;
-	}
-
-	/**
 	 * Compiles a CREATE TABLE statement from components array
 	 *
-	 * @param 	array		Array of SQL query components
+	 * @param 	array		$components Array of SQL query components
 	 * @return 	array		array with SQL CREATE TABLE/INDEX command(s)
 	 * @see parseCREATETABLE()
 	 */
 	public function compileCREATETABLE($components) {
+		$query = array();
 		// Execute query (based on handler derived from the TABLE name which we actually know for once!)
-		switch ((string) $GLOBALS['TYPO3_DB']->handlerCfg[$GLOBALS['TYPO3_DB']->handler_getFromTableList($components['TABLE'])]['type']) {
+		switch ((string)$this->databaseConnection->handlerCfg[$this->databaseConnection->handler_getFromTableList($components['TABLE'])]['type']) {
 			case 'native':
 				$query[] = parent::compileCREATETABLE($components);
 				break;
@@ -291,29 +290,29 @@ class SqlParser extends \TYPO3\CMS\Core\Database\SqlParser {
 				$fieldsKeys = array();
 				$indexKeys = array();
 				foreach ($components['FIELDS'] as $fN => $fCfg) {
-					$handlerKey = $GLOBALS['TYPO3_DB']->handler_getFromTableList($components['TABLE']);
-					$fieldsKeys[$fN] = $GLOBALS['TYPO3_DB']->quoteName($fN, $handlerKey, TRUE) . ' ' . $this->compileFieldCfg($fCfg['definition']);
+					$handlerKey = $this->databaseConnection->handler_getFromTableList($components['TABLE']);
+					$fieldsKeys[$fN] = $this->databaseConnection->quoteName($fN, $handlerKey, TRUE) . ' ' . $this->compileFieldCfg($fCfg['definition']);
 				}
 				if (isset($components['KEYS']) && is_array($components['KEYS'])) {
 					foreach ($components['KEYS'] as $kN => $kCfg) {
 						if ($kN === 'PRIMARYKEY') {
-							foreach ($kCfg as $n => $field) {
+							foreach ($kCfg as $field) {
 								$fieldsKeys[$field] .= ' PRIMARY';
 							}
 						} elseif ($kN === 'UNIQUE') {
 							foreach ($kCfg as $n => $field) {
-								$indexKeys = array_merge($indexKeys, $GLOBALS['TYPO3_DB']->handlerInstance[$GLOBALS['TYPO3_DB']->handler_getFromTableList($components['TABLE'])]->DataDictionary->CreateIndexSQL($n, $components['TABLE'], $field, array('UNIQUE')));
+								$indexKeys = array_merge($indexKeys, $this->databaseConnection->handlerInstance[$this->databaseConnection->handler_getFromTableList($components['TABLE'])]->DataDictionary->CreateIndexSQL($n, $components['TABLE'], $field, array('UNIQUE')));
 							}
 						} else {
-							$indexKeys = array_merge($indexKeys, $GLOBALS['TYPO3_DB']->handlerInstance[$GLOBALS['TYPO3_DB']->handler_getFromTableList($components['TABLE'])]->DataDictionary->CreateIndexSQL($components['TABLE'] . '_' . $kN, $components['TABLE'], $kCfg));
+							$indexKeys = array_merge($indexKeys, $this->databaseConnection->handlerInstance[$this->databaseConnection->handler_getFromTableList($components['TABLE'])]->DataDictionary->CreateIndexSQL($components['TABLE'] . '_' . $kN, $components['TABLE'], $kCfg));
 						}
 					}
 				}
 				// Generally create without OID on PostgreSQL
 				$tableOptions = array('postgres' => 'WITHOUT OIDS');
 				// Fetch table/index generation query:
-				$tableName = $GLOBALS['TYPO3_DB']->quoteName($components['TABLE'], NULL, TRUE);
-				$query = array_merge($GLOBALS['TYPO3_DB']->handlerInstance[$GLOBALS['TYPO3_DB']->lastHandlerKey]->DataDictionary->CreateTableSQL($tableName, implode(',' . chr(10), $fieldsKeys), $tableOptions), $indexKeys);
+				$tableName = $this->databaseConnection->quoteName($components['TABLE'], NULL, TRUE);
+				$query = array_merge($this->databaseConnection->handlerInstance[$this->databaseConnection->lastHandlerKey]->DataDictionary->CreateTableSQL($tableName, implode(',' . chr(10), $fieldsKeys), $tableOptions), $indexKeys);
 				break;
 		}
 		return $query;
@@ -327,20 +326,21 @@ class SqlParser extends \TYPO3\CMS\Core\Database\SqlParser {
 	 * @see parseALTERTABLE()
 	 */
 	public function compileALTERTABLE($components) {
+		$query = '';
 		// Execute query (based on handler derived from the TABLE name which we actually know for once!)
-		switch ((string) $GLOBALS['TYPO3_DB']->handlerCfg[$GLOBALS['TYPO3_DB']->lastHandlerKey]['type']) {
+		switch ((string)$this->databaseConnection->handlerCfg[$this->databaseConnection->lastHandlerKey]['type']) {
 			case 'native':
-				$query[] = parent::compileALTERTABLE($components);
+				$query = parent::compileALTERTABLE($components);
 				break;
 			case 'adodb':
-				$tableName = $GLOBALS['TYPO3_DB']->quoteName($components['TABLE'], NULL, TRUE);
-				$fieldName = $GLOBALS['TYPO3_DB']->quoteName($components['FIELD'], NULL, TRUE);
+				$tableName = $this->databaseConnection->quoteName($components['TABLE'], NULL, TRUE);
+				$fieldName = $this->databaseConnection->quoteName($components['FIELD'], NULL, TRUE);
 				switch (strtoupper(str_replace(array(' ', "\n", "\r", "\t"), '', $components['action']))) {
 					case 'ADD':
-						$query = $GLOBALS['TYPO3_DB']->handlerInstance[$GLOBALS['TYPO3_DB']->lastHandlerKey]->DataDictionary->AddColumnSQL($tableName, $fieldName . ' ' . $this->compileFieldCfg($components['definition']));
+						$query = $this->databaseConnection->handlerInstance[$this->databaseConnection->lastHandlerKey]->DataDictionary->AddColumnSQL($tableName, $fieldName . ' ' . $this->compileFieldCfg($components['definition']));
 						break;
 					case 'CHANGE':
-						$query = $GLOBALS['TYPO3_DB']->handlerInstance[$GLOBALS['TYPO3_DB']->lastHandlerKey]->DataDictionary->AlterColumnSQL($tableName, $fieldName . ' ' . $this->compileFieldCfg($components['definition']));
+						$query = $this->databaseConnection->handlerInstance[$this->databaseConnection->lastHandlerKey]->DataDictionary->AlterColumnSQL($tableName, $fieldName . ' ' . $this->compileFieldCfg($components['definition']));
 						break;
 					case 'DROP':
 
@@ -367,17 +367,18 @@ class SqlParser extends \TYPO3\CMS\Core\Database\SqlParser {
 	/**
 	 * Compile field definition
 	 *
-	 * @param 	array		Field definition parts
+	 * @param 	array		$fieldCfg Field definition parts
 	 * @return 	string		Field definition string
 	 */
 	public function compileFieldCfg($fieldCfg) {
-		switch ((string) $GLOBALS['TYPO3_DB']->handlerCfg[$GLOBALS['TYPO3_DB']->lastHandlerKey]['type']) {
+		$cfg = '';
+		switch ((string)$this->databaseConnection->handlerCfg[$this->databaseConnection->lastHandlerKey]['type']) {
 			case 'native':
 				$cfg = parent::compileFieldCfg($fieldCfg);
 				break;
 			case 'adodb':
 				// Set type:
-				$type = $GLOBALS['TYPO3_DB']->MySQLMetaType($fieldCfg['fieldType']);
+				$type = $this->databaseConnection->MySQLMetaType($fieldCfg['fieldType']);
 				$cfg = $type;
 				// Add value, if any:
 				if (strlen($fieldCfg['value']) && in_array($type, array('C', 'C2'))) {
@@ -405,11 +406,11 @@ class SqlParser extends \TYPO3\CMS\Core\Database\SqlParser {
 					}
 					foreach ($fieldCfg['featureIndex'] as $feature => $featureDef) {
 						switch (TRUE) {
-							case $feature === 'UNSIGNED' && !$GLOBALS['TYPO3_DB']->runningADOdbDriver('mysql'):
+							case $feature === 'UNSIGNED' && !$this->databaseConnection->runningADOdbDriver('mysql'):
 
 							case $feature === 'AUTO_INCREMENT':
 
-							case $feature === 'NOTNULL' && $GLOBALS['TYPO3_DB']->runningADOdbDriver('oci8'):
+							case $feature === 'NOTNULL' && $this->databaseConnection->runningADOdbDriver('oci8'):
 								continue;
 							case $feature === 'NOTNULL':
 								$cfg .= ' NOTNULL';
@@ -447,14 +448,10 @@ class SqlParser extends \TYPO3\CMS\Core\Database\SqlParser {
 	 * @see \TYPO3\CMS\Core\Database\SqlParser::parseFieldDef()
 	 */
 	public function checkEmptyDefaultValue($featureIndex) {
-		if (is_array($featureIndex['DEFAULT']['value'])) {
-			if (!is_numeric($featureIndex['DEFAULT']['value'][0]) && empty($featureIndex['DEFAULT']['value'][0])) {
-				return TRUE;
-			} else {
-				return FALSE;
-			}
+		if (!is_array($featureIndex['DEFAULT']['value'])) {
+			return TRUE;
 		}
-		return TRUE;
+		return !is_numeric($featureIndex['DEFAULT']['value'][0]) && empty($featureIndex['DEFAULT']['value'][0]);
 	}
 
 	/**
@@ -468,12 +465,14 @@ class SqlParser extends \TYPO3\CMS\Core\Database\SqlParser {
 	 * - the division (/)
 	 * - the modulo (%)
 	 *
-	 * @param array WHERE clause configuration
+	 * @param array $clauseArray
+	 * @param bool $functionMapping
 	 * @return string WHERE clause as string.
 	 * @see \TYPO3\CMS\Core\Database\SqlParser::parseWhereClause()
 	 */
 	public function compileWhereClause($clauseArray, $functionMapping = TRUE) {
-		switch ((string) $GLOBALS['TYPO3_DB']->handlerCfg[$GLOBALS['TYPO3_DB']->lastHandlerKey]['type']) {
+		$output = '';
+		switch ((string)$this->databaseConnection->handlerCfg[$this->databaseConnection->lastHandlerKey]['type']) {
 			case 'native':
 				$output = parent::compileWhereClause($clauseArray);
 				break;
@@ -482,7 +481,7 @@ class SqlParser extends \TYPO3\CMS\Core\Database\SqlParser {
 				$output = '';
 				// Traverse clause array:
 				if (is_array($clauseArray)) {
-					foreach ($clauseArray as $k => $v) {
+					foreach ($clauseArray as $v) {
 						// Set operator:
 						$output .= $v['operator'] ? ' ' . $v['operator'] : '';
 						// Look for sublevel:
@@ -494,14 +493,14 @@ class SqlParser extends \TYPO3\CMS\Core\Database\SqlParser {
 							if (isset($v['func']) && $v['func']['type'] === 'LOCATE') {
 								$output .= ' ' . trim($v['modifier']);
 								switch (TRUE) {
-									case $GLOBALS['TYPO3_DB']->runningADOdbDriver('mssql') && $functionMapping:
+									case $this->databaseConnection->runningADOdbDriver('mssql') && $functionMapping:
 										$output .= ' CHARINDEX(';
 										$output .= $v['func']['substr'][1] . $v['func']['substr'][0] . $v['func']['substr'][1];
 										$output .= ', ' . ($v['func']['table'] ? $v['func']['table'] . '.' : '') . $v['func']['field'];
 										$output .= isset($v['func']['pos']) ? ', ' . $v['func']['pos'][0] : '';
 										$output .= ')';
 										break;
-									case $GLOBALS['TYPO3_DB']->runningADOdbDriver('oci8') && $functionMapping:
+									case $this->databaseConnection->runningADOdbDriver('oci8') && $functionMapping:
 										$output .= ' INSTR(';
 										$output .= ($v['func']['table'] ? $v['func']['table'] . '.' : '') . $v['func']['field'];
 										$output .= ', ' . $v['func']['substr'][1] . $v['func']['substr'][0] . $v['func']['substr'][1];
@@ -518,10 +517,10 @@ class SqlParser extends \TYPO3\CMS\Core\Database\SqlParser {
 							} elseif (isset($v['func']) && $v['func']['type'] === 'IFNULL') {
 								$output .= ' ' . trim($v['modifier']) . ' ';
 								switch (TRUE) {
-									case $GLOBALS['TYPO3_DB']->runningADOdbDriver('mssql') && $functionMapping:
+									case $this->databaseConnection->runningADOdbDriver('mssql') && $functionMapping:
 										$output .= 'ISNULL';
 										break;
-									case $GLOBALS['TYPO3_DB']->runningADOdbDriver('oci8') && $functionMapping:
+									case $this->databaseConnection->runningADOdbDriver('oci8') && $functionMapping:
 										$output .= 'NVL';
 										break;
 									default:
@@ -535,21 +534,21 @@ class SqlParser extends \TYPO3\CMS\Core\Database\SqlParser {
 								$output .= ' ' . trim($v['modifier']) . ' ';
 								if ($functionMapping) {
 									switch (TRUE) {
-										case $GLOBALS['TYPO3_DB']->runningADOdbDriver('mssql'):
+										case $this->databaseConnection->runningADOdbDriver('mssql'):
 											$field = ($v['func']['table'] ? $v['func']['table'] . '.' : '') . $v['func']['field'];
 											if (!isset($v['func']['str_like'])) {
 												$v['func']['str_like'] = $v['func']['str'][0];
 											}
 											$output .= '\',\'+' . $field . '+\',\' LIKE \'%,' . $v['func']['str_like'] . ',%\'';
 											break;
-										case $GLOBALS['TYPO3_DB']->runningADOdbDriver('oci8'):
+										case $this->databaseConnection->runningADOdbDriver('oci8'):
 											$field = ($v['func']['table'] ? $v['func']['table'] . '.' : '') . $v['func']['field'];
 											if (!isset($v['func']['str_like'])) {
 												$v['func']['str_like'] = $v['func']['str'][0];
 											}
 											$output .= '\',\'||' . $field . '||\',\' LIKE \'%,' . $v['func']['str_like'] . ',%\'';
 											break;
-										case $GLOBALS['TYPO3_DB']->runningADOdbDriver('postgres'):
+										case $this->databaseConnection->runningADOdbDriver('postgres'):
 											$output .= ' FIND_IN_SET(';
 											$output .= $v['func']['str'][1] . $v['func']['str'][0] . $v['func']['str'][1];
 											$output .= ', ' . ($v['func']['table'] ? $v['func']['table'] . '.' : '') . $v['func']['field'];
@@ -564,11 +563,11 @@ class SqlParser extends \TYPO3\CMS\Core\Database\SqlParser {
 									}
 								} else {
 									switch (TRUE) {
-										case $GLOBALS['TYPO3_DB']->runningADOdbDriver('mssql'):
+										case $this->databaseConnection->runningADOdbDriver('mssql'):
 
-										case $GLOBALS['TYPO3_DB']->runningADOdbDriver('oci8'):
+										case $this->databaseConnection->runningADOdbDriver('oci8'):
 
-										case $GLOBALS['TYPO3_DB']->runningADOdbDriver('postgres'):
+										case $this->databaseConnection->runningADOdbDriver('postgres'):
 											$output .= ' FIND_IN_SET(';
 											$output .= $v['func']['str'][1] . $v['func']['str'][0] . $v['func']['str'][1];
 											$output .= ', ' . ($v['func']['table'] ? $v['func']['table'] . '.' : '') . $v['func']['field'];
@@ -588,7 +587,7 @@ class SqlParser extends \TYPO3\CMS\Core\Database\SqlParser {
 								// DBAL-specific: Set calculation, if any:
 								if ($v['calc'] === '&' && $functionMapping) {
 									switch (TRUE) {
-										case $GLOBALS['TYPO3_DB']->runningADOdbDriver('oci8'):
+										case $this->databaseConnection->runningADOdbDriver('oci8'):
 											// Oracle only knows BITAND(x,y) - sigh
 											$output .= 'BITAND(' . trim((($v['table'] ? $v['table'] . '.' : '') . $v['field'])) . ',' . $v['calc_value'][1] . $this->compileAddslashes($v['calc_value'][0]) . $v['calc_value'][1] . ')';
 											break;
@@ -603,7 +602,7 @@ class SqlParser extends \TYPO3\CMS\Core\Database\SqlParser {
 									} else {
 										$output .= $v['calc_value'][1] . $this->compileAddslashes($v['calc_value'][0]) . $v['calc_value'][1];
 									}
-								} elseif (!($GLOBALS['TYPO3_DB']->runningADOdbDriver('oci8') && preg_match('/(NOT )?LIKE( BINARY)?/', $v['comparator']) && $functionMapping)) {
+								} elseif (!($this->databaseConnection->runningADOdbDriver('oci8') && preg_match('/(NOT )?LIKE( BINARY)?/', $v['comparator']) && $functionMapping)) {
 									$output .= trim(($v['table'] ? $v['table'] . '.' : '') . $v['field']);
 								}
 							}
@@ -611,7 +610,7 @@ class SqlParser extends \TYPO3\CMS\Core\Database\SqlParser {
 							if ($v['comparator']) {
 								$isLikeOperator = preg_match('/(NOT )?LIKE( BINARY)?/', $v['comparator']);
 								switch (TRUE) {
-									case $GLOBALS['TYPO3_DB']->runningADOdbDriver('oci8') && $isLikeOperator && $functionMapping:
+									case $this->databaseConnection->runningADOdbDriver('oci8') && $isLikeOperator && $functionMapping:
 										// Oracle cannot handle LIKE on CLOB fields - sigh
 										if (isset($v['value']['operator'])) {
 											$values = array();
@@ -622,7 +621,7 @@ class SqlParser extends \TYPO3\CMS\Core\Database\SqlParser {
 										} else {
 											$compareValue = $v['value'][1] . $this->compileAddslashes(trim($v['value'][0], '%')) . $v['value'][1];
 										}
-										if (\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($v['comparator'], 'NOT')) {
+										if (GeneralUtility::isFirstPartOfStr($v['comparator'], 'NOT')) {
 											$output .= 'NOT ';
 										}
 										// To be on the safe side
@@ -631,7 +630,7 @@ class SqlParser extends \TYPO3\CMS\Core\Database\SqlParser {
 											// Table and field names are quoted:
 											$tableName = substr($v['table'], 1, strlen($v['table']) - 2);
 											$fieldName = substr($v['field'], 1, strlen($v['field']) - 2);
-											$fieldType = $GLOBALS['TYPO3_DB']->sql_field_metatype($tableName, $fieldName);
+											$fieldType = $this->databaseConnection->sql_field_metatype($tableName, $fieldName);
 											$isLob = $fieldType === 'B' || $fieldType === 'XL';
 										}
 										if (strtoupper(substr($v['comparator'], -6)) === 'BINARY') {
@@ -642,15 +641,15 @@ class SqlParser extends \TYPO3\CMS\Core\Database\SqlParser {
 											}
 										} else {
 											if ($isLob) {
-												$output .= '(dbms_lob.instr(LOWER(' . trim((($v['table'] ? $v['table'] . '.' : '') . $v['field'])) . '), ' . \TYPO3\CMS\Core\Utility\GeneralUtility::strtolower($compareValue) . ',1,1) > 0)';
+												$output .= '(dbms_lob.instr(LOWER(' . trim((($v['table'] ? $v['table'] . '.' : '') . $v['field'])) . '), ' . GeneralUtility::strtolower($compareValue) . ',1,1) > 0)';
 											} else {
-												$output .= '(instr(LOWER(' . trim((($v['table'] ? $v['table'] . '.' : '') . $v['field'])) . '), ' . \TYPO3\CMS\Core\Utility\GeneralUtility::strtolower($compareValue) . ',1,1) > 0)';
+												$output .= '(instr(LOWER(' . trim((($v['table'] ? $v['table'] . '.' : '') . $v['field'])) . '), ' . GeneralUtility::strtolower($compareValue) . ',1,1) > 0)';
 											}
 										}
 										break;
 									default:
 										if ($isLikeOperator && $functionMapping) {
-											if ($GLOBALS['TYPO3_DB']->runningADOdbDriver('postgres') || $GLOBALS['TYPO3_DB']->runningADOdbDriver('postgres64') || $GLOBALS['TYPO3_DB']->runningADOdbDriver('postgres7') || $GLOBALS['TYPO3_DB']->runningADOdbDriver('postgres8')) {
+											if ($this->databaseConnection->runningADOdbDriver('postgres') || $this->databaseConnection->runningADOdbDriver('postgres64') || $this->databaseConnection->runningADOdbDriver('postgres7') || $this->databaseConnection->runningADOdbDriver('postgres8')) {
 												// Remap (NOT)? LIKE to (NOT)? ILIKE
 												// and (NOT)? LIKE BINARY to (NOT)? LIKE
 												switch ($v['comparator']) {
@@ -670,7 +669,7 @@ class SqlParser extends \TYPO3\CMS\Core\Database\SqlParser {
 										}
 										$output .= ' ' . $v['comparator'];
 										// Detecting value type; list or plain:
-										if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList('NOTIN,IN', strtoupper(str_replace(array(' ', TAB, CR, LF), '', $v['comparator'])))) {
+										if (GeneralUtility::inList('NOTIN,IN', strtoupper(str_replace(array(' ', TAB, CR, LF), '', $v['comparator'])))) {
 											if (isset($v['subquery'])) {
 												$output .= ' (' . $this->compileSELECT($v['subquery']) . ')';
 											} else {
@@ -680,7 +679,7 @@ class SqlParser extends \TYPO3\CMS\Core\Database\SqlParser {
 												}
 												$output .= ' (' . trim(implode(',', $valueBuffer)) . ')';
 											}
-										} elseif (\TYPO3\CMS\Core\Utility\GeneralUtility::inList('BETWEEN,NOT BETWEEN', $v['comparator'])) {
+										} elseif (GeneralUtility::inList('BETWEEN,NOT BETWEEN', $v['comparator'])) {
 											$lbound = $v['values'][0];
 											$ubound = $v['values'][1];
 											$output .= ' ' . $lbound[1] . $this->compileAddslashes($lbound[0]) . $lbound[1];
@@ -705,4 +704,31 @@ class SqlParser extends \TYPO3\CMS\Core\Database\SqlParser {
 		return $output;
 	}
 
+	/**
+	 * Performs the ultimate test of the parser: Direct a SQL query in; You will get it back (through the parsed and re-compiled) if no problems, otherwise the script will print the error and exit
+	 *
+	 * @param string $SQLquery SQL query
+	 * @return string Query if all is well, otherwise exit.
+	 */
+	public function debug_testSQL($SQLquery) {
+		// Getting result array:
+		$parseResult = $this->parseSQL($SQLquery);
+		// If result array was returned, proceed. Otherwise show error and exit.
+		if (is_array($parseResult)) {
+			// Re-compile query:
+			$newQuery = $this->compileSQL($parseResult);
+			// TEST the new query:
+			$testResult = $this->debug_parseSQLpartCompare($SQLquery, $newQuery);
+			// Return new query if OK, otherwise show error and exit:
+			if (!is_array($testResult)) {
+				return $newQuery;
+			} else {
+				debug(array('ERROR MESSAGE' => 'Input query did not match the parsed and recompiled query exactly (not observing whitespace)', 'TEST result' => $testResult), 'SQL parsing failed:');
+				die;
+			}
+		} else {
+			debug(array('query' => $SQLquery, 'ERROR MESSAGE' => $parseResult), 'SQL parsing failed:');
+			die;
+		}
+	}
 }

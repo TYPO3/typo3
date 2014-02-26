@@ -40,8 +40,10 @@ class SqlParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * Prepares the environment before running a test.
 	 */
 	public function setUp() {
-		$className = self::buildAccessibleProxy('TYPO3\\CMS\\Dbal\\Database\\SqlParser');
-		$this->fixture = new $className();
+		$GLOBALS['TYPO3_DB'] = new \TYPO3\CMS\Dbal\Database\DatabaseConnection();
+		$this->fixture = $this->getAccessibleMock('TYPO3\\CMS\\Dbal\\Database\\SqlParser', array('dummy'));
+		$GLOBALS['TYPO3_DB']->lastHandlerKey = '_DEFAULT';
+		$GLOBALS['TYPO3_DB']->SQLparser = $this->fixture;
 	}
 
 	/**

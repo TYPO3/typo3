@@ -14,10 +14,8 @@ class DatabaseConnectionPostgresqlTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
 	public function setUp() {
 		// Reconfigure DBAL to use PostgreSQL
 		require __DIR__ . '/Fixtures/postgresql.config.php';
-		$className = self::buildAccessibleProxy('TYPO3\\CMS\\Dbal\\Database\\DatabaseConnection');
-		$GLOBALS['TYPO3_DB'] = new $className();
-		$parserClassName = self::buildAccessibleProxy('TYPO3\\CMS\\Dbal\\Database\\SqlParser');
-		$GLOBALS['TYPO3_DB']->SQLparser = new $parserClassName();
+		$GLOBALS['TYPO3_DB'] = $this->getAccessibleMock('TYPO3\\CMS\\Dbal\\Database\\DatabaseConnection', array('dummy'));
+		$GLOBALS['TYPO3_DB']->SQLparser = $this->getAccessibleMock('TYPO3\\CMS\\Dbal\\Database\\SqlParser', array('dummy'));
 		$this->assertFalse($GLOBALS['TYPO3_DB']->isConnected());
 		// Initialize a fake PostgreSQL connection (using 'postgres7' as 'postgres' is remapped to it in AdoDB)
 		\TYPO3\CMS\Dbal\Tests\Unit\Database\FakeDatabaseConnection::connect($GLOBALS['TYPO3_DB'], 'postgres7');

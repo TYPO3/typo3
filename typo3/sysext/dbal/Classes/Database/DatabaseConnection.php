@@ -193,7 +193,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	 */
 	public function __construct() {
 		// Set SQL parser object for internal use:
-		$this->SQLparser = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\SqlParser');
+		$this->SQLparser = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\SqlParser', $this);
 		$this->installerSql = GeneralUtility::makeInstance('TYPO3\\CMS\\Install\\Service\\SqlSchemaMigrationService');
 		$this->queryCache = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->getCache('dbal');
 		// Set internal variables with configuration:
@@ -369,6 +369,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 					}
 				}
 				if (array_key_exists($mappedTable, $fieldInfo['fieldTypes'])) {
+					$tempMappedFieldConf = array();
 					foreach ($fieldInfo['fieldTypes'][$mappedTable] as $field => $fieldConf) {
 						$tempMappedFieldConf[$mappedConf['mapFieldNames'][$field]] = $fieldConf;
 					}
@@ -399,18 +400,19 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	This is great for inserts, updates and deletes. Calling this function bypasses emulated binding, debugging, and recordset handling. Either
 	the resultid, TRUE or FALSE are returned by _query().
 	 */
+
 	/**
-	 * Inserts a record for $table from the array with field/value pairs $fields_values.
+	 * Creates and executes an INSERT SQL-statement for $table from the array with field/value pairs $fields_values.
+	 * Using this function specifically allows us to handle BLOB and CLOB fields depending on DB
 	 *
-	 * @param 	string		Table name
-	 * @param 	array		Field values as key=>value pairs. Values will be escaped internally. Typically you would fill an array like "$insertFields" with 'fieldname'=>'value' and pass it to this function as argument.
-	 * @param mixed	List/array of keys NOT to quote (eg. SQL functions)
-	 * @return 	mixed		Result from handler, usually TRUE when success and FALSE on failure
+	 * @param string $table Table name
+	 * @param array $fields_values Field values as key=>value pairs. Values will be escaped internally. Typically you would fill an array like "$insertFields" with 'fieldname'=>'value' and pass it to this function as argument.
+	 * @param boolean $no_quote_fields See fullQuoteArray()
+	 * @return boolean|\mysqli_result|object MySQLi result object / DBAL object
+	 * @throws \RuntimeException
 	 */
-	public function exec_INSERTquery($table, $fields_values, $no_quote_fields = '') {
-		if ($this->debug) {
-			$pt = GeneralUtility::milliseconds();
-		}
+	public function exec_INSERTquery($table, $fields_values, $no_quote_fields = FALSE) {
+		$pt = $this->debug ? GeneralUtility::milliseconds() : 0;
 		// Do field mapping if needed:
 		$ORIG_tableName = $table;
 		if ($tableArray = $this->map_needMapping($table)) {

@@ -14,10 +14,8 @@ class DatabaseConnectionMssqlTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function setUp() {
 		// Reconfigure DBAL to use MS SQL
 		require __DIR__ . '/Fixtures/mssql.config.php';
-		$className = self::buildAccessibleProxy('TYPO3\\CMS\\Dbal\\Database\\DatabaseConnection');
-		$GLOBALS['TYPO3_DB'] = new $className();
-		$parserClassName = self::buildAccessibleProxy('TYPO3\\CMS\\Dbal\\Database\\SqlParser');
-		$GLOBALS['TYPO3_DB']->SQLparser = new $parserClassName();
+		$GLOBALS['TYPO3_DB'] = $this->getAccessibleMock('TYPO3\\CMS\\Dbal\\Database\\DatabaseConnection', array('dummy'));
+		$GLOBALS['TYPO3_DB']->SQLparser = $this->getAccessibleMock('TYPO3\\CMS\\Dbal\\Database\\SqlParser', array('dummy'));
 		$this->assertFalse($GLOBALS['TYPO3_DB']->isConnected());
 		// Initialize a fake MS SQL connection
 		\TYPO3\CMS\Dbal\Tests\Unit\Database\FakeDatabaseConnection::connect($GLOBALS['TYPO3_DB'], 'mssql');
@@ -43,8 +41,7 @@ class DatabaseConnectionMssqlTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		if (!is_string($sql)) {
 			return $sql;
 		}
-		$sql = str_replace('
-', ' ', $sql);
+		$sql = str_replace("\n", ' ', $sql);
 		$sql = preg_replace('/\\s+/', ' ', $sql);
 		return trim($sql);
 	}

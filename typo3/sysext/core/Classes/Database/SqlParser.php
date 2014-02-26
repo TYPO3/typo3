@@ -47,6 +47,12 @@ class SqlParser {
 	 */
 	public $lastStopKeyWord = '';
 
+	/**
+	 * Default constructor
+	 */
+	public function __construct() {
+	}
+
 	/*************************************
 	 *
 	 * SQL Parsing, full queries
@@ -1995,33 +2001,4 @@ class SqlParser {
 			);
 		}
 	}
-
-	/**
-	 * Performs the ultimate test of the parser: Direct a SQL query in; You will get it back (through the parsed and re-compiled) if no problems, otherwise the script will print the error and exit
-	 *
-	 * @param string $SQLquery SQL query
-	 * @return string Query if all is well, otherwise exit.
-	 */
-	public function debug_testSQL($SQLquery) {
-		// Getting result array:
-		$parseResult = $this->parseSQL($SQLquery);
-		// If result array was returned, proceed. Otherwise show error and exit.
-		if (is_array($parseResult)) {
-			// Re-compile query:
-			$newQuery = $this->compileSQL($parseResult);
-			// TEST the new query:
-			$testResult = $this->debug_parseSQLpartCompare($SQLquery, $newQuery);
-			// Return new query if OK, otherwise show error and exit:
-			if (!is_array($testResult)) {
-				return $newQuery;
-			} else {
-				debug(array('ERROR MESSAGE' => 'Input query did not match the parsed and recompiled query exactly (not observing whitespace)', 'TEST result' => $testResult), 'SQL parsing failed:');
-				die;
-			}
-		} else {
-			debug(array('query' => $SQLquery, 'ERROR MESSAGE' => $parseResult), 'SQL parsing failed:');
-			die;
-		}
-	}
-
 }

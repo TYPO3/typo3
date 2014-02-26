@@ -18,8 +18,7 @@ class DatabaseConnectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function setUp() {
 		$this->temporaryFiles = array();
-		$className = self::buildAccessibleProxy('TYPO3\\CMS\\Dbal\\Database\\DatabaseConnection');
-		$GLOBALS['TYPO3_DB'] = new $className();
+		$GLOBALS['TYPO3_DB'] = $this->getAccessibleMock('TYPO3\\CMS\\Dbal\\Database\\DatabaseConnection', array('dummy'));
 		$GLOBALS['TYPO3_DB']->lastHandlerKey = '_DEFAULT';
 	}
 
