@@ -374,11 +374,6 @@ $(document).ready(function() {
 		return false;
 	});
 
-	// Focus input field on click on item-div around it
-	$('.toggleGroup .item').on('click', function() {
-		$(this).find('input').focus();
-	});
-
 	// Footer scrolling and visibility
 	if ($('#fixed-footer-fieldset').length > 0) {
 		$(window).scroll(handleButtonScrolling);
