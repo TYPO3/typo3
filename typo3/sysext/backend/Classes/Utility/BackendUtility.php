@@ -2731,11 +2731,9 @@ class BackendUtility {
 		if (!is_array($menuItems) || count($menuItems) <= 1) {
 			return '';
 		}
-
 		if (!is_array($mainParams)) {
 			$mainParams = array('id' => $mainParams);
 		}
-
 		if (!$script) {
 			$scriptUrl = self::getModuleUrl(GeneralUtility::_GET('M'), $mainParams) . $addparams;
 		} else {
@@ -2776,12 +2774,13 @@ class BackendUtility {
 		if (!is_array($mainParams)) {
 			$mainParams = array('id' => $mainParams);
 		}
-		$mainParams = GeneralUtility::implodeArrayForUrl('', $mainParams);
 		if (!$script) {
-			$script = basename(PATH_thisScript);
-			$mainParams .= GeneralUtility::_GET('M') ? '&M=' . rawurlencode(GeneralUtility::_GET('M')) : '';
+			$scriptUrl = self::getModuleUrl(GeneralUtility::_GET('M'), $mainParams) . $addparams;
+		} else {
+			$mainParams = GeneralUtility::implodeArrayForUrl('', $mainParams);
+			$scriptUrl = $script . '?' . $mainParams . $addparams;
 		}
-		$onClick = 'jumpToUrl(' . GeneralUtility::quoteJSvalue($script . '?' . $mainParams . $addparams . '&' . $elementName . '=') . '+(this.checked?1:0),this);';
+		$onClick = 'jumpToUrl(' . GeneralUtility::quoteJSvalue($scriptUrl . '&' . $elementName . '=') . '+(this.checked?1:0),this);';
 
 		return
 		'<input' .
@@ -2812,12 +2811,13 @@ class BackendUtility {
 		if (!is_array($mainParams)) {
 			$mainParams = array('id' => $mainParams);
 		}
-		$mainParams = GeneralUtility::implodeArrayForUrl('', $mainParams);
 		if (!$script) {
-			$script = basename(PATH_thisScript);
-			$mainParams .= GeneralUtility::_GET('M') ? '&M=' . rawurlencode(GeneralUtility::_GET('M')) : '';
+			$scriptUrl = self::getModuleUrl(GeneralUtility::_GET('M'), $mainParams) . $addparams;
+		} else {
+			$mainParams = GeneralUtility::implodeArrayForUrl('', $mainParams);
+			$scriptUrl = $script . '?' . $mainParams . $addparams;
 		}
-		$onChange = 'jumpToUrl(\'' . $script . '?' . $mainParams . $addparams . '&' . $elementName . '=\'+escape(this.value),this);';
+		$onChange = 'jumpToUrl(' . GeneralUtility::quoteJSvalue($scriptUrl . '&' . $elementName . '=') . '+escape(this.value),this);';
 		return '<input type="text"' . $GLOBALS['TBE_TEMPLATE']->formWidth($size) . ' name="' . $elementName . '" value="' . htmlspecialchars($currentValue) . '" onchange="' . htmlspecialchars($onChange) . '" />';
 	}
 

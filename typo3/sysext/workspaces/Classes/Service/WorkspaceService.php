@@ -28,6 +28,7 @@ namespace TYPO3\CMS\Workspaces\Service;
  ***************************************************************/
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 
 /**
@@ -605,17 +606,19 @@ class WorkspaceService implements \TYPO3\CMS\Core\SingletonInterface {
 			$uid = $this->getLivePageUid($uid);
 		}
 		/** @var $uriBuilder \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder */
-		$uriBuilder = $this->getObjectManager()->create('TYPO3\\CMS\\Extbase\\Mvc\\Web\\Routing\\UriBuilder');
+		$uriBuilder = $this->getObjectManager()->get('TYPO3\\CMS\\Extbase\\Mvc\\Web\\Routing\\UriBuilder');
 		// This seems to be very harsh to set this directly to "/typo3 but the viewOnClick also
 		// has /index.php as fixed value here and dealing with the backPath is very error-prone
 		// @todo make sure this would work in local extension installation too
 		$backPath = '/' . TYPO3_mainDir;
 		$redirect = $backPath . 'index.php?redirect_url=';
-		// @todo why do we need these additional params? the URIBuilder should add the controller, but he doesn't :(
-		$additionalParams = '&tx_workspaces_web_workspacesworkspaces%5Bcontroller%5D=Preview&M=web_WorkspacesWorkspaces&id=';
-		$viewScript = $backPath . $uriBuilder->uriFor('index', array(), 'TYPO3\\CMS\\Workspaces\\Controller\\PreviewController', 'workspaces', 'web_workspacesworkspaces') . $additionalParams;
+		// @todo this should maybe be changed so that the extbase URI Builder can deal with module names directly
+		$originalM = GeneralUtility::_GET('M');
+		GeneralUtility::_GETset('web_WorkspacesWorkspaces', 'M');
+		$viewScript = $backPath . $uriBuilder->uriFor('index', array(), 'Preview', 'workspaces', 'web_workspacesworkspaces') . '&id=';
+		GeneralUtility::_GETset($originalM, 'M');
 		if ($addDomain === TRUE) {
-			return BackendUtility::getViewDomain($uid) . $redirect . urlencode($viewScript) . $uid;
+			return BackendUtility::getViewDomain($uid) . $redirect . urlencode($viewScript);
 		} else {
 			return $viewScript;
 		}

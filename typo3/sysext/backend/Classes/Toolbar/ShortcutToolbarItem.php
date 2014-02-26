@@ -313,11 +313,28 @@ class ShortcutToolbarItem implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookI
 			$shortcut['group'] = $shortcutGroup;
 			$shortcut['icon'] = $this->getShortcutIcon($row, $shortcut);
 			$shortcut['iconTitle'] = $this->getShortcutIconTitle($shortcut['label'], $row['module_name'], $row['M_module_name']);
-			$shortcut['action'] = 'jump(unescape(\'' . rawurlencode($row['url']) . '\'),\'' . $moduleName . '\',\'' . $moduleParts[0] . '\', ' . (int)$pageId . ');';
+			$shortcut['action'] = 'jump(unescape(\'' . rawurlencode($this->getTokenUrl($row['url'])) . '\'),\'' . $moduleName . '\',\'' . $moduleParts[0] . '\', ' . (int)$pageId . ');';
 
 			$shortcuts[] = $shortcut;
 		}
 		return $shortcuts;
+	}
+
+	/**
+	 * Adds the correct token, if the url is a mod.php script
+	 *
+	 * @param string $url
+	 * @return string
+	 */
+	protected function getTokenUrl($url) {
+		$parsedUrl = parse_url($url);
+		parse_str($parsedUrl['query'], $parameters);
+		if (strpos($parsedUrl['path'], 'mod.php') !== FALSE && isset($parameters['M'])) {
+			$module = $parameters['M'];
+			unset($parameters['M']);
+			$url = str_replace('mod.php', '', $parsedUrl['path']) . BackendUtility::getModuleUrl($module, $parameters);
+		}
+		return $url;
 	}
 
 	/**

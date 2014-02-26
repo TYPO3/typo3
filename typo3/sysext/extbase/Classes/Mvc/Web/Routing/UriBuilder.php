@@ -282,7 +282,7 @@ class UriBuilder {
 	 * which results in using QUERY_STRING.
 	 *
 	 * @param string $addQueryStringMethod
-	 * @return Tx_Extbase_MVC_Web_Routing_UriBuilder the current UriBuilder to allow method chaining
+	 * @return \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder the current UriBuilder to allow method chaining
 	 * @api
 	 * @see TSref/typolink.addQueryString.method
 	 */
@@ -613,7 +613,7 @@ class UriBuilder {
 		$this->lastArguments = $arguments;
 		$moduleName = $arguments['M'];
 		unset($arguments['M'], $arguments['moduleToken']);
-		$uri = BackendUtility::getModuleUrl($moduleName, $arguments);
+		$uri = BackendUtility::getModuleUrl($moduleName, $arguments, '');
 		if ($this->section !== '') {
 			$uri .= '#' . $this->section;
 		}
