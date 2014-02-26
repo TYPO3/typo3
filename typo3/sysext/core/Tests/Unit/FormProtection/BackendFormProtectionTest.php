@@ -55,7 +55,7 @@ class BackendFormProtectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 		$this->subject = $this->getAccessibleMock(
 			'TYPO3\\CMS\\Core\\FormProtection\BackendFormProtection',
-			array('acquireLock', 'releaseLock', 'getLanguageService')
+			array('acquireLock', 'releaseLock', 'getLanguageService', 'isAjaxRequest')
 		);
 	}
 
@@ -232,7 +232,7 @@ class BackendFormProtectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$languageServiceMock->expects($this->once())->method('sL')->will($this->returnValue('foo'));
 		$this->subject->expects($this->once())->method('getLanguageService')->will($this->returnValue($languageServiceMock));
 
-		$GLOBALS['TYPO3_AJAX'] = TRUE;
+		$this->subject->expects($this->any())->method('isAjaxRequest')->will($this->returnValue(TRUE));
 		$this->subject->_call('createValidationErrorMessage');
 	}
 

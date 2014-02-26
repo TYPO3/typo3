@@ -124,7 +124,7 @@ class BackendFormProtection extends \TYPO3\CMS\Core\FormProtection\AbstractFormP
 			$this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:error.formProtection.tokenInvalid'),
 			'',
 			\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR,
-			!(isset($GLOBALS['TYPO3_AJAX']) && $GLOBALS['TYPO3_AJAX'] === TRUE)
+			!$this->isAjaxRequest()
 		);
 		/** @var $flashMessageService \TYPO3\CMS\Core\Messaging\FlashMessageService */
 		$flashMessageService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
@@ -133,6 +133,15 @@ class BackendFormProtection extends \TYPO3\CMS\Core\FormProtection\AbstractFormP
 		/** @var $defaultFlashMessageQueue \TYPO3\CMS\Core\Messaging\FlashMessageQueue */
 		$defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
 		$defaultFlashMessageQueue->enqueue($flashMessage);
+	}
+
+	/**
+	 * Checks if the current request is an Ajax request
+	 *
+	 * @return bool
+	 */
+	protected function isAjaxRequest() {
+		return (bool)(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_AJAX);
 	}
 
 	/**

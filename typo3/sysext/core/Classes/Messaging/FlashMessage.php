@@ -79,11 +79,11 @@ class FlashMessage extends \TYPO3\CMS\Core\Messaging\AbstractMessage {
 	/**
 	 * Sets the message's storeInSession flag
 	 *
-	 * @param boolean The persistence flag
+	 * @param boolean $storeInSession The persistence flag
 	 * @return void
 	 */
 	public function setStoreInSession($storeInSession) {
-		$this->storeInSession = (bool) $storeInSession;
+		$this->storeInSession = (bool)$storeInSession;
 	}
 
 	/**
