@@ -4,6 +4,12 @@
 TYPO3 CMS Backend Styleguide
 ============================
 
+![Scrutinizer-CI Code quality](https://scrutinizer-ci.com/g/7elix/TYPO3.CMS.Styleguide/badges/quality-score.png?s=3f407ffbd6096bcb26e8aede911ba446067e5323)
+
+![Scrutinizer-CI Code coverage](https://scrutinizer-ci.com/g/7elix/TYPO3.CMS.Styleguide/badges/coverage.png?s=3c445a0b04f0d6cf0cb44fc2361426e3a7ff0050)
+
+![Travis-CI Build Status](https://travis-ci.org/7elix/TYPO3.CMS.Styleguide.png)
+
 Presents all supported styles for TYPO3 backend modules.
 
 This styleguide is work in progress. It is not part of and does not represent the official documentation, yet.
@@ -14,11 +20,12 @@ Styleguide extension currently brings own css definitions that need to be integr
 # Table of content
 
 1. Typography
-2. Tables
-3. Forms
-4. Buttons
-5. FlashMessages
-6. Helpers
+2. Trees
+3. Tables
+4. Forms
+5. Buttons
+6. FlashMessages
+7. Helpers
 
 # Legal
 
