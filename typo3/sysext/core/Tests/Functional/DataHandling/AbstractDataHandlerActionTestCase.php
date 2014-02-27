@@ -42,7 +42,10 @@ abstract class AbstractDataHandlerActionTestCase extends \TYPO3\CMS\Core\Tests\F
 	protected $dataSetDirectory;
 
 	/**
-	 * @var int
+	 * If this value is NULL, log entries are not considered.
+	 * If it's an integer value, the number of log entries is asserted.
+	 *
+	 * @var NULL|int
 	 */
 	protected $expectedErrorLogEntries = 0;
 
@@ -84,6 +87,7 @@ abstract class AbstractDataHandlerActionTestCase extends \TYPO3\CMS\Core\Tests\F
 	}
 
 	public function tearDown() {
+		$this->assertErrorLogEntries();
 		unset($this->actionService);
 		parent::tearDown();
 	}
@@ -180,6 +184,30 @@ abstract class AbstractDataHandlerActionTestCase extends \TYPO3\CMS\Core\Tests\F
 		}
 
 		return FALSE;
+	}
+
+	/**
+	 * Asserts correct number of warning and error log entries.
+	 *
+	 * @return void
+	 */
+	protected function assertErrorLogEntries() {
+		if ($this->expectedErrorLogEntries === NULL) {
+			return;
+		}
+		$errorLogEntries = $this->getDatabase()->exec_SELECTgetRows('*', 'sys_log', 'error IN (1,2)');
+		$actualErrorLogEntries = count($errorLogEntries);
+		if ($actualErrorLogEntries === $this->expectedErrorLogEntries) {
+			$this->assertSame($this->expectedErrorLogEntries, $actualErrorLogEntries);
+		} else {
+			$failureMessage = 'Expected ' . $this->expectedErrorLogEntries . ' entries in sys_log, but got ' . $actualErrorLogEntries . LF;
+			foreach ($errorLogEntries as $entry) {
+				$entryData = unserialize($entry['log_data']);
+				$entryMessage = vsprintf($entry['details'], $entryData);
+				$failureMessage .= '* ' . $entryMessage . LF;
+			}
+			$this->fail($failureMessage);
+		}
 	}
 
 	/**
