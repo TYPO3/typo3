@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Impexp\Tests\Functional\Export\PagesAndTtContentWithImages;
+namespace TYPO3\CMS\Impexp\Tests\Functional\Export\PagesAndTtContentWithRteImagesAndFileLink;
 
 /***************************************************************
  * Copyright notice
@@ -33,18 +33,28 @@ require_once __DIR__ . '/../AbstractExportTestCase.php';
  */
 class ExportTest extends \TYPO3\CMS\Impexp\Tests\Functional\Export\AbstractExportTestCase {
 
+	/**
+	 * @var array
+	 */
+	protected $coreExtensionsToLoad = array(
+		'rtehtmlarea',
+		'impexp'
+	);
+
+	/**
+	 * @var array
+	 */
 	protected $pathsToLinkInTestInstance = array(
-		'typo3/sysext/impexp/Tests/Functional/Fixtures/Folders/fileadmin/user_upload' => 'fileadmin/user_upload'
+		'typo3/sysext/impexp/Tests/Functional/Fixtures/Folders/fileadmin/user_upload' => 'fileadmin/user_upload',
+		'typo3/sysext/impexp/Tests/Functional/Fixtures/Folders/fileadmin/_processed_' => 'fileadmin/_processed_'
 	);
 
 	public function setUp() {
 		parent::setUp();
 
 		$this->importDataSet(__DIR__ . '/../../Fixtures/Database/pages.xml');
-		$this->importDataSet(__DIR__ . '/../../Fixtures/Database/tt_content-with-image.xml');
-		$this->importDataSet(__DIR__ . '/../../Fixtures/Database/sys_language.xml');
+		$this->importDataSet(__DIR__ . '/../../Fixtures/Database/tt_content-with-rte-image-n-file-link.xml');
 		$this->importDataSet(__DIR__ . '/../../Fixtures/Database/sys_file.xml');
-		$this->importDataSet(__DIR__ . '/../../Fixtures/Database/sys_file_metadata.xml');
 		$this->importDataSet(__DIR__ . '/../../Fixtures/Database/sys_file_reference.xml');
 		$this->importDataSet(__DIR__ . '/../../Fixtures/Database/sys_file_storage.xml');
 
@@ -53,7 +63,7 @@ class ExportTest extends \TYPO3\CMS\Impexp\Tests\Functional\Export\AbstractExpor
 	/**
 	 * @test
 	 */
-	public function exportPagesAndRelatedTtContentWithImages() {
+	public function exportPagesAndRelatedTtContentWithRteImagesAndFileLink() {
 
 		$this->export->setRecordTypesIncludeFields(
 			array(
@@ -67,30 +77,10 @@ class ExportTest extends \TYPO3\CMS\Impexp\Tests\Functional\Export\AbstractExpor
 				'tt_content' => array(
 					'CType',
 					'header',
-					'header_link',
 					'deleted',
 					'hidden',
-					'image',
+					'bodytext',
 					't3ver_oid'
-				),
-				'sys_language' => array(
-					'uid',
-					'pid',
-					'hidden',
-					'title',
-					'flag'
-				),
-				'sys_file_reference' => array(
-					'uid_local',
-					'uid_foreign',
-					'tablenames',
-					'fieldname',
-					'sorting_foreign',
-					'table_local',
-					'title',
-					'description',
-					'alternative',
-					'link',
 				),
 				'sys_file' => array(
 					'storage',
@@ -99,6 +89,7 @@ class ExportTest extends \TYPO3\CMS\Impexp\Tests\Functional\Export\AbstractExpor
 					'identifier',
 					'identifier_hash',
 					'folder_hash',
+					'extension',
 					'mime_type',
 					'name',
 					'sha1',
@@ -116,32 +107,18 @@ class ExportTest extends \TYPO3\CMS\Impexp\Tests\Functional\Export\AbstractExpor
 					'is_public',
 					'is_writable',
 					'is_online'
-				),
-				'sys_file_metadata' => array(
-					'title',
-					'width',
-					'height',
-					'description',
-					'alternative',
-					'file',
-					'sys_language_uid',
-					'l10n_parent'
 				)
 			)
 		);
 
 		$this->export->relOnlyTables = array(
 			'sys_file',
-			'sys_file_metadata',
-			'sys_file_storage',
-			'sys_language'
+			'sys_file_storage'
 		);
 
 		$this->export->export_addRecord('pages', BackendUtility::getRecord('pages', 1));
 		$this->export->export_addRecord('pages', BackendUtility::getRecord('pages', 2));
 		$this->export->export_addRecord('tt_content', BackendUtility::getRecord('tt_content', 1));
-		$this->export->export_addRecord('sys_language', BackendUtility::getRecord('sys_language', 1));
-		$this->export->export_addRecord('sys_file_reference', BackendUtility::getRecord('sys_file_reference', 1));
 
 		$this->setPageTree(1, 1);
 
@@ -158,7 +135,7 @@ class ExportTest extends \TYPO3\CMS\Impexp\Tests\Functional\Export\AbstractExpor
 
 		$out = $this->export->compileMemoryToFileContent('xml');
 
-		$this->assertXmlStringEqualsXmlFile(__DIR__ . '/../../Fixtures/ImportExportXml/pages-and-ttcontent-with-image.xml', $out);
+		$this->assertXmlStringEqualsXmlFile(__DIR__ . '/../../Fixtures/ImportExportXml/pages-and-ttcontent-with-rte-image-n-file-link.xml', $out);
 	}
 
 }

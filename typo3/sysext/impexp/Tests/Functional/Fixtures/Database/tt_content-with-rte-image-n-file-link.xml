@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dataset>
+	<tt_content>
+		<uid>1</uid>
+		<pid>2</pid>
+		<CType>text</CType>
+		<header>Text element with image in RTE</header>
+		<bodytext><![CDATA[<img src="fileadmin/_processed_/csm_typo3_image2_5c2670fd59.jpg" title="typo3_image2.jpg" data-htmlarea-file-uid="1" data-htmlarea-file-table="sys_file" height="225" width="300" alt="" style="" />&nbsp;&nbsp;And here a <link file:2 - download "Initiates file download">link to an image</link>.]]></bodytext>
+		<deleted>0</deleted>
+		<t3ver_oid>0</t3ver_oid>
+		<t3ver_wsid>0</t3ver_wsid>
+	</tt_content>
+</dataset>

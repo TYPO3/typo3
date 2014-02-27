@@ -1,0 +1,15 @@
+"pages"
+,"uid","pid","sorting","deleted","title"
+,1,0,256,0,"Root"
+,2,1,256,0,"Dummy 1-2"
+"tt_content"
+,"uid","pid","sorting","deleted","header","bodytext"
+,1,2,256,0,"Text element with image in RTE",<img src="fileadmin/_processed_/csm_typo3_image2_5c2670fd59.jpg" title="typo3_image2.jpg" data-htmlarea-file-uid="1" data-htmlarea-file-table="sys_file" height="225" width="300" alt="" style="" />&nbsp;&nbsp;And here a <LINK file:2 - download "Initiates file download">link to an image</link>.
+"sys_file_storage"
+,"uid","pid","name","driver"
+,1,0,"fileadmin/ (auto-created)","Local"
+"sys_file"
+,"uid","pid","storage","type","identifier","identifier_hash","folder_hash","extension","mime_type","name","sha1","size"
+,1,0,1,2,"/user_upload/typo3_image2.jpg","f90bb9a35622f35b5279195e324eddbaec8164b2","19669f1e02c2f16705ec7587044c66443be70725","jpg","image/jpeg","typo3_image2.jpg","da9acdf1e105784a57bbffec9520969578287797","7958"
+,2,0,1,2,"/user_upload/typo3_image3.jpg","25777b72e5e1cbed2d1b33e4fe5b737304b5bd28","19669f1e02c2f16705ec7587044c66443be70725","jpg","image/jpeg","typo3_image3.jpg","e873c1e2ffd0f191e183a1057de3eef4d62e782d","5565"
+

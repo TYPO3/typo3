@@ -5,6 +5,7 @@
 		<pid>1</pid>
 		<CType>textpic</CType>
 		<header>Test content</header>
+		<header_link>file:1</header_link>
 		<image>1</image>
 		<deleted>0</deleted>
 		<t3ver_oid>0</t3ver_oid>

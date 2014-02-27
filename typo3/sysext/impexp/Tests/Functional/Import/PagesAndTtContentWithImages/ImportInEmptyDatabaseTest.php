@@ -31,7 +31,6 @@ require_once __DIR__ . '/../AbstractImportTestCase.php';
  */
 class ImportInEmptyDatabaseTest extends \TYPO3\CMS\Impexp\Tests\Functional\Import\AbstractImportTestCase {
 
-	protected $scenarioDataSetDirectory = 'typo3/sysext/impexp/Tests/Functional/Import/PagesAndTtContentWithImages/DataSet/Scenario/';
 	protected $assertionDataSetDirectory = 'typo3/sysext/impexp/Tests/Functional/Import/PagesAndTtContentWithImages/DataSet/Assertion/';
 
 	/**

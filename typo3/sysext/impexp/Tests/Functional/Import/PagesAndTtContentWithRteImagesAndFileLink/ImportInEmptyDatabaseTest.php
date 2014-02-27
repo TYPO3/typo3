@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Impexp\Tests\Functional\Import\PagesAndTtContent;
+namespace TYPO3\CMS\Impexp\Tests\Functional\Import\PagesAndTtContentWithRteImagesAndFileLink;
 
 /***************************************************************
  * Copyright notice
@@ -31,17 +31,34 @@ require_once __DIR__ . '/../AbstractImportTestCase.php';
  */
 class ImportInEmptyDatabaseTest extends \TYPO3\CMS\Impexp\Tests\Functional\Import\AbstractImportTestCase {
 
-	protected $assertionDataSetDirectory = 'typo3/sysext/impexp/Tests/Functional/Import/PagesAndTtContent/DataSet/Assertion/';
+	/**
+	 * @var array
+	 */
+	protected $additionalFoldersToCreate = array(
+		'/fileadmin/_processed_'
+	);
+
+	/**
+	 * @var string
+	 */
+	protected $assertionDataSetDirectory = 'typo3/sysext/impexp/Tests/Functional/Import/PagesAndTtContentWithRteImagesAndFileLink/DataSet/Assertion/';
 
 	/**
 	 * @test
 	 */
-	public function importSimplePagesAndRelatedTtContent() {
+	public function importPagesAndRelatedTtContentWithRteImagesAndFileLink() {
 
-		$this->import->loadFile(__DIR__ . '/../../Fixtures/ImportExportXml/pages-and-ttcontent.xml', 1);
+		$this->import->loadFile(__DIR__ . '/../../Fixtures/ImportExportXml/pages-and-ttcontent-with-rte-image-n-file-link.xml', 1);
 		$this->import->importData(0);
 
-		$this->assertAssertionDataSet('importSimplePagesAndRelatedTtContent');
+		$this->assertAssertionDataSet('importPagesAndRelatedTtContentWithRteImagesAndFileLink');
+
+		$this->assertFileNotExists(PATH_site . 'fileadmin/_processed_/csm_typo3_image2_5c2670fd59.jpg');
+
+		$this->assertFileEquals(__DIR__ . '/../../Fixtures/Folders/fileadmin/user_upload/typo3_image2.jpg', PATH_site . 'fileadmin/user_upload/typo3_image2.jpg');
+		$this->assertFileEquals(__DIR__ . '/../../Fixtures/Folders/fileadmin/user_upload/typo3_image3.jpg', PATH_site . 'fileadmin/user_upload/typo3_image3.jpg');
+
 	}
+
 
 }

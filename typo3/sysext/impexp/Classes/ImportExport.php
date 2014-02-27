@@ -1280,7 +1280,7 @@ class ImportExport {
 		$this->alternativeFileName = array();
 		$this->alternativeFilePath = array();
 
-		$this->initializeLocalStorages();
+		$this->initializeStorageObjects();
 	}
 
 	/**
@@ -1288,7 +1288,7 @@ class ImportExport {
 	 *
 	 * @return void
 	 */
-	protected function initializeLocalStorages() {
+	protected function initializeStorageObjects() {
 		/** @var $storageRepository \TYPO3\CMS\Core\Resource\StorageRepository */
 		$storageRepository = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\StorageRepository');
 		$this->storageObjects = $storageRepository->findAll();
@@ -2315,6 +2315,9 @@ class ImportExport {
 									if ($recWithUniqueValue['alias']) {
 										$insertValue = $recWithUniqueValue['alias'];
 									}
+								} elseif (strpos($cfg['subst']['tokenValue'], ':') !== FALSE) {
+									list($tokenKey, $tokenId) = explode(':', $cfg['subst']['tokenValue']);
+									$insertValue = $tokenKey . ':' . $insertValue;
 								}
 							}
 					}

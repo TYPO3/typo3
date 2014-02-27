@@ -3,8 +3,8 @@
 ,1,0,256,0,"Root"
 ,2,1,256,0,"Dummy 1-2"
 "tt_content"
-,"uid","pid","sorting","deleted","header","image"
-,1,1,256,0,"Test content",1
+,"uid","pid","sorting","deleted","header","header_link","image"
+,1,1,256,0,"Test content","file:1",1
 "sys_language"
 ,"uid","pid","hidden","title","flag"
 ,1,0,0,Deutsch,de
