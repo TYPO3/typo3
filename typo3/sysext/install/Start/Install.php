@@ -118,17 +118,15 @@ require __DIR__ . '/../../core/Classes/Core/Bootstrap.php';
 
 // Execute 'tool' or 'step' controller depending on install[controller] GET/POST parameter
 $getPost = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('install');
-if (isset($getPost['controller']) && $getPost['controller'] === 'tool') {
-	$controller = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-		'TYPO3\\CMS\\Install\\Controller\\ToolController'
-	);
-} elseif ($getPost['controller'] === 'ajax') {
-	$controller = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-		'TYPO3\\CMS\\Install\\Controller\\AjaxController'
-	);
-} else {
-	$controller = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-		'TYPO3\\CMS\\Install\\Controller\\StepController'
-	);
+$controllerClassName = 'TYPO3\\CMS\\Install\\Controller\\StepController';
+if (isset($getPost['controller'])) {
+	switch ($getPost['controller']) {
+		case 'tool':
+			$controllerClassName = 'TYPO3\\CMS\\Install\\Controller\\ToolController';
+			break;
+		case 'ajax':
+			$controllerClassName = 'TYPO3\\CMS\\Install\\Controller\\AjaxController';
+			break;
+	}
 }
-$controller->execute();
+\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($controllerClassName)->execute();

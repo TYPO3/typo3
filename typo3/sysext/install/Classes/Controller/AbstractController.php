@@ -27,6 +27,7 @@ namespace TYPO3\CMS\Install\Controller;
  ***************************************************************/
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Install\Service\EnableFileService;
 
 /**
  * Controller abstract for shared parts of Tool, Step and Ajax controller
@@ -49,6 +50,18 @@ class AbstractController {
 	protected $authenticationActions = array();
 
 	/**
+	 * @return bool
+	 */
+	protected function isInstallToolAvailable() {
+		/** @var \TYPO3\CMS\Install\Service\EnableFileService $installToolEnableService */
+		$installToolEnableService = $this->objectManager->get('TYPO3\\CMS\\Install\\Service\\EnableFileService');
+		if ($installToolEnableService->isFirstInstallAllowed()) {
+			return TRUE;
+		}
+		return $installToolEnableService->checkInstallToolEnableFile();
+	}
+
+	/**
 	 * Guard method checking typo3conf/ENABLE_INSTALL_TOOL
 	 *
 	 * Checking ENABLE_INSTALL_TOOL validity is simple:
@@ -58,16 +71,18 @@ class AbstractController {
 	 * @return void
 	 */
 	protected function outputInstallToolNotEnabledMessageIfNeeded() {
-		if (is_dir(PATH_typo3conf)) {
-			/** @var \TYPO3\CMS\Install\Service\EnableFileService $installToolEnableService */
-			$installToolEnableService = $this->objectManager->get('TYPO3\\CMS\\Install\\Service\\EnableFileService');
-			if (!$installToolEnableService->checkInstallToolEnableFile()) {
+		if (!$this->isInstallToolAvailable()) {
+			if (!EnableFileService::isFirstInstallAllowed() && !is_dir(PATH_typo3conf)) {
+				/** @var \TYPO3\CMS\Install\Controller\Action\ActionInterface $action */
+				$action = $this->objectManager->get('TYPO3\\CMS\\Install\\Controller\\Action\\Common\\AccessNotAllowedAction');
+				$action->setAction('accessNotAllowed');
+			} else {
 				/** @var \TYPO3\CMS\Install\Controller\Action\ActionInterface $action */
 				$action = $this->objectManager->get('TYPO3\\CMS\\Install\\Controller\\Action\\Common\\InstallToolDisabledAction');
-				$action->setController('common');
 				$action->setAction('installToolDisabled');
-				$this->output($action->handle());
 			}
+			$action->setController('common');
+			$this->output($action->handle());
 		}
 	}
 

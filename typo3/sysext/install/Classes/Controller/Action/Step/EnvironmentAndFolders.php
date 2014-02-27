@@ -72,7 +72,9 @@ class EnvironmentAndFolders extends AbstractStepAction {
 			}
 
 			// Create enable install tool file after typo3conf & LocalConfiguration were created
+			/** @var \TYPO3\CMS\Install\Service\EnableFileService $installToolService */
 			$installToolService = $this->objectManager->get('TYPO3\\CMS\\Install\\Service\\EnableFileService');
+			$installToolService->removeFirstInstallFile();
 			$installToolService->createInstallToolEnableFile();
 		}
 

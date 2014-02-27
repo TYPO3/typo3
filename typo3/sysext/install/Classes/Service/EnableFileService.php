@@ -38,6 +38,21 @@ class EnableFileService {
 	const INSTALL_TOOL_ENABLE_FILE_PATH = 'typo3conf/ENABLE_INSTALL_TOOL';
 
 	/**
+	 * @constant Relative path to  FIRST_INSTALL file
+	 */
+	const FIRST_INSTALL_FILE_PATH = 'FIRST_INSTALL';
+
+	/**
+	 * @return bool
+	 */
+	static public function isFirstInstallAllowed() {
+		if (!is_dir(PATH_typo3conf) && is_file(self::getFirstInstallFilePath())) {
+			return TRUE;
+		}
+		return FALSE;
+	}
+
+	/**
 	 * Creates the INSTALL_TOOL_ENABLE file
 	 *
 	 * @return boolean
@@ -61,6 +76,15 @@ class EnableFileService {
 	 */
 	static public function removeInstallToolEnableFile() {
 		return unlink(self::getInstallToolEnableFilePath());
+	}
+
+	/**
+	 * Removes the FIRST_INSTALL file
+	 *
+	 * @return boolean
+	 */
+	static public function removeFirstInstallFile() {
+		return unlink(self::getFirstInstallFilePath());
 	}
 
 	/**
@@ -113,5 +137,14 @@ class EnableFileService {
 	 */
 	static protected function getInstallToolEnableFilePath() {
 		return PATH_site . self::INSTALL_TOOL_ENABLE_FILE_PATH;
+	}
+
+	/**
+	 * Returns the path to the INSTALL_TOOL_ENABLE file
+	 *
+	 * @return string
+	 */
+	static protected function getFirstInstallFilePath() {
+		return PATH_site . self::FIRST_INSTALL_FILE_PATH;
 	}
 }
