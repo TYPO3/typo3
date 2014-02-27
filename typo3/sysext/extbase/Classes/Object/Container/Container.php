@@ -223,7 +223,7 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface {
 		foreach ($classInfo->getInjectProperties() as $injectPropertyName => $classNameToInject) {
 			$instanceToInject = $this->getInstanceInternal($classNameToInject);
 			if ($classInfo->getIsSingleton() && !$instanceToInject instanceof \TYPO3\CMS\Core\SingletonInterface) {
-				$this->log('The singleton "' . $classInfo->getClassName() . '" needs a prototype in "' . $injectPropertyName . '". This is often a bad code smell; often you rather want to inject a singleton.', 1320177676);
+				$this->log('The singleton "' . $classInfo->getClassName() . '" needs a prototype in "' . $injectPropertyName . '". This is often a bad code smell; often you rather want to inject a singleton.', 1);
 			}
 			$propertyReflection = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Reflection\\PropertyReflection', $instance, $injectPropertyName);
 			$propertyReflection->setAccessible(TRUE);
