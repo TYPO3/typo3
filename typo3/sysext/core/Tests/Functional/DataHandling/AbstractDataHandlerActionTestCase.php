@@ -42,6 +42,11 @@ abstract class AbstractDataHandlerActionTestCase extends \TYPO3\CMS\Core\Tests\F
 	protected $dataSetDirectory;
 
 	/**
+	 * @var int
+	 */
+	protected $expectedErrorLogEntries = 0;
+
+	/**
 	 * @var array
 	 */
 	protected $testExtensionsToLoad = array(
@@ -80,6 +85,7 @@ abstract class AbstractDataHandlerActionTestCase extends \TYPO3\CMS\Core\Tests\F
 
 	public function tearDown() {
 		unset($this->actionService);
+		parent::tearDown();
 	}
 
 	/**

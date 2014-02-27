@@ -243,9 +243,9 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 		$newTableIds = $this->actionService->createNewRecords(
 			self::VALUE_PageId,
 			array(
+				self::TABLE_Content => array('header' => 'Testing #1', self::FIELD_ContentHotel => '__nextUid'),
+				self::TABLE_Hotel => array('title' => 'Hotel #1', self::FIELD_HotelOffer => '__nextUid'),
 				self::TABLE_Offer => array('title' => 'Offer #1'),
-				self::TABLE_Hotel => array('title' => 'Hotel #1', self::FIELD_HotelOffer => '__previousUid'),
-				self::TABLE_Content => array('header' => 'Testing #1', self::FIELD_ContentHotel => '__previousUid'),
 			)
 		);
 		$this->assertAssertionDataSet('createParentContentNHotelNOfferChildren');
@@ -267,9 +267,9 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 		$newTableIds = $this->actionService->createNewRecords(
 			self::VALUE_PageId,
 			array(
+				self::TABLE_Content => array('header' => 'Testing #1', self::FIELD_ContentHotel => '__nextUid'),
+				self::TABLE_Hotel => array('title' => 'Hotel #1', self::FIELD_HotelOffer => '__nextUid'),
 				self::TABLE_Offer => array('title' => 'Offer #1'),
-				self::TABLE_Hotel => array('title' => 'Hotel #1', self::FIELD_HotelOffer => '__previousUid'),
-				self::TABLE_Content => array('header' => 'Testing #1', self::FIELD_ContentHotel => '__previousUid'),
 			)
 		);
 		$newContentId = $newTableIds[self::TABLE_Content][0];
@@ -303,9 +303,9 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 		$newTableIds = $this->actionService->createNewRecords(
 			self::VALUE_PageId,
 			array(
+				self::TABLE_Content => array('header' => 'Testing #1', self::FIELD_ContentHotel => '__nextUid'),
+				self::TABLE_Hotel => array('title' => 'Hotel #1', self::FIELD_HotelOffer => '__nextUid'),
 				self::TABLE_Offer => array('title' => 'Offer #1'),
-				self::TABLE_Hotel => array('title' => 'Hotel #1', self::FIELD_HotelOffer => '__previousUid'),
-				self::TABLE_Content => array('header' => 'Testing #1', self::FIELD_ContentHotel => '__previousUid'),
 			)
 		);
 		$newContentId = $newTableIds[self::TABLE_Content][0];
@@ -368,8 +368,8 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 		$this->actionService->modifyRecords(
 			self::VALUE_PageId,
 			array(
-				self::TABLE_Hotel => array('uid' => 4, 'title' => 'Testing #1'),
 				self::TABLE_Content => array('uid' => self::VALUE_ContentIdFirst, self::FIELD_ContentHotel => '3,4'),
+				self::TABLE_Hotel => array('uid' => 4, 'title' => 'Testing #1'),
 			)
 		);
 		$this->assertAssertionDataSet('modifyParentNHotelChild');
@@ -389,8 +389,8 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 		$this->actionService->modifyRecords(
 			self::VALUE_PageId,
 			array(
+				self::TABLE_Content => array('uid' => self::VALUE_ContentIdLast, self::FIELD_ContentHotel => '5,__nextUid'),
 				self::TABLE_Hotel => array('uid' => '__NEW', 'title' => 'Hotel #2'),
-				self::TABLE_Content => array('uid' => self::VALUE_ContentIdLast, self::FIELD_ContentHotel => '5,__previousUid'),
 			)
 		);
 		$this->assertAssertionDataSet('modifyParentNAddHotelChild');

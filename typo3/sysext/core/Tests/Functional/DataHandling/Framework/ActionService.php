@@ -76,12 +76,22 @@ class ActionService {
 		$dataMap = array();
 		$newTableIds = array();
 		$currentUid = NULL;
+		$previousTableName = NULL;
+		$previousUid = NULL;
 		foreach ($tableRecordData as $tableName => $recordData) {
 			$recordData = $this->resolvePreviousUid($recordData, $currentUid);
 			$recordData['pid'] = $pageId;
 			$currentUid = uniqid('NEW');
 			$newTableIds[$tableName][] = $currentUid;
 			$dataMap[$tableName][$currentUid] = $recordData;
+			if ($previousTableName !== NULL && $previousUid !== NULL) {
+				$dataMap[$previousTableName][$previousUid] = $this->resolveNextUid(
+					$dataMap[$previousTableName][$previousUid],
+					$currentUid
+				);
+			}
+			$previousTableName = $tableName;
+			$previousUid = $currentUid;
 		}
 		$this->dataHandler->start($dataMap, array());
 		$this->dataHandler->process_datamap();
@@ -131,6 +141,8 @@ class ActionService {
 	public function modifyRecords($pageId, array $tableRecordData) {
 		$dataMap = array();
 		$currentUid = NULL;
+		$previousTableName = NULL;
+		$previousUid = NULL;
 		foreach ($tableRecordData as $tableName => $recordData) {
 			if (empty($recordData['uid'])) {
 				continue;
@@ -143,6 +155,14 @@ class ActionService {
 			}
 			unset($recordData['uid']);
 			$dataMap[$tableName][$currentUid] = $recordData;
+			if ($previousTableName !== NULL && $previousUid !== NULL) {
+				$dataMap[$previousTableName][$previousUid] = $this->resolveNextUid(
+					$dataMap[$previousTableName][$previousUid],
+					$currentUid
+				);
+			}
+			$previousTableName = $tableName;
+			$previousUid = $currentUid;
 		}
 		$this->dataHandler->start($dataMap, array());
 		$this->dataHandler->process_datamap();
@@ -317,7 +337,7 @@ class ActionService {
 
 	/**
 	 * @param array $recordData
-	 * @param NULL|int $previousUid
+	 * @param NULL|string|int $previousUid
 	 * @return array
 	 */
 	protected function resolvePreviousUid(array $recordData, $previousUid) {
@@ -329,6 +349,24 @@ class ActionService {
 				continue;
 			}
 			$recordData[$fieldName] = str_replace('__previousUid', $previousUid, $fieldValue);
+		}
+		return $recordData;
+	}
+
+	/**
+	 * @param array $recordData
+	 * @param NULL|string|int $nextUid
+	 * @return array
+	 */
+	protected function resolveNextUid(array $recordData, $nextUid) {
+		if ($nextUid === NULL) {
+			return $recordData;
+		}
+		foreach ($recordData as $fieldName => $fieldValue) {
+			if (strpos($fieldValue, '__nextUid') === FALSE) {
+				continue;
+			}
+			$recordData[$fieldName] = str_replace('__nextUid', $nextUid, $fieldValue);
 		}
 		return $recordData;
 	}
