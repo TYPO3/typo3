@@ -158,4 +158,142 @@ class FrontendContentAdapterServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCa
 		$this->assertSame($expectedCaption, $dbRow['imagecaption']);
 	}
 
+	/**
+	 * @test
+	 */
+	public function registerAdditionalTypeForMigrationAddsTypeToArray() {
+
+		$migrateFields = array(
+			'testtable' => array(
+				'testfield' => array(
+					'paths' => 'oldfield',
+					'__typeMatch' => array(
+						'typeField' => 'mytypefield',
+						'types' => array('mytype'),
+					)
+				)
+			),
+		);
+
+		$expectedResult = array(
+			'testtable' => array(
+				'testfield' => array(
+					'paths' => 'oldfield',
+					'__typeMatch' => array(
+						'typeField' => 'mytypefield',
+						'types' => array('mytype', 'mytype2'),
+					)
+				)
+			),
+		);
+
+		$frontendContentAdapterService = $this->getAccessibleFrontendContentAdapterServiceWithEmptyConfiguration();
+		$frontendContentAdapterService->_setStatic('migrateFields', $migrateFields);
+		$frontendContentAdapterService->registerAdditionalTypeForMigration('testtable', 'testfield', 'mytype2');
+		$this->assertEquals($expectedResult, $frontendContentAdapterService->_getStatic('migrateFields'));
+	}
+
+	/**
+	 * @test
+	 * @expectedException \RuntimeException
+	 */
+	public function registerAdditionalTypeForMigrationThrowsExceptionIfNoConfigurationAvailable() {
+		$frontendContentAdapterService = $this->getAccessibleFrontendContentAdapterServiceWithEmptyConfiguration();
+		$frontendContentAdapterService->registerAdditionalTypeForMigration('testtable', 'testfield', 'mytype2');
+	}
+
+	/**
+	 * @test
+	 * @expectedException \RuntimeException
+	 */
+	public function registerAdditionalTypeForMigrationThrowsExceptionIfNoTypeConfigurationAvailable() {
+
+		$migrateFields = array(
+			'testtable' => array(
+				'testfield' => array(
+					'paths' => 'oldfield',
+				)
+			),
+		);
+
+		$frontendContentAdapterService = $this->getAccessibleFrontendContentAdapterServiceWithEmptyConfiguration();
+		$frontendContentAdapterService->_setStatic('migrateFields', $migrateFields);
+		$frontendContentAdapterService->registerAdditionalTypeForMigration('testtable', 'testfield', 'mytype2');
+	}
+
+	/**
+	 * @test
+	 * @dataProvider registerFieldForMigrationAddsCorrectConfigurationDataProvider
+	 */
+	public function registerFieldForMigrationAddsCorrectConfiguration($expectedResult, $table, $field, $migrationFields, $oldFieldName, $typeField, $types) {
+		$frontendContentAdapterService = $this->getAccessibleFrontendContentAdapterServiceWithEmptyConfiguration();
+		$frontendContentAdapterService::registerFieldForMigration($table, $field, $migrationFields, $oldFieldName, $typeField, $types);
+		$newConfiguration = $frontendContentAdapterService->_getStatic('migrateFields');
+		$this->assertEquals($expectedResult, $newConfiguration);
+	}
+
+	/**
+	 * Data provider for registerFieldForMigrationAddsCorrectConfiguration
+	 *
+	 * @return array
+	 */
+	public function registerFieldForMigrationAddsCorrectConfigurationDataProvider() {
+		return array(
+			'table without type column' => array(
+				array(
+					'tablename' => array(
+						'newfield' => array(
+							'paths' => 'oldfield',
+						),
+					),
+				),
+				'tablename',
+				'newfield',
+				'paths',
+				'oldfield',
+				NULL,
+				array()
+			),
+			'table with type column' => array(
+				array(
+					'tablename' => array(
+						'newfield' => array(
+							'paths' => 'oldfield',
+							'__typeMatch' => array(
+								'typeField' => 'typecolumn',
+								'types' => array('firsttype'),
+							)
+						),
+					),
+				),
+				'tablename',
+				'newfield',
+				'paths',
+				'oldfield',
+				'typecolumn',
+				array('firsttype'),
+			),
+		);
+	}
+
+	/**
+	 * @test
+	 * @expectedException \InvalidArgumentException
+	 */
+	public function registerFieldForMigrationThrowsExceptionForInvalidMigrationField() {
+		$frontendContentAdapterService = $this->getAccessibleFrontendContentAdapterServiceWithEmptyConfiguration();
+		$frontendContentAdapterService::registerFieldForMigration('table', 'field', 'invalidfield', 'oldfield');
+	}
+
+	/**
+	 * Creates an accessible mock of the FrontendContentAdapterService class
+	 * and sets the migrateFields property to an empty array.
+	 *
+	 * @return \TYPO3\CMS\Core\Resource\Service\FrontendContentAdapterService|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface
+	 */
+	protected function getAccessibleFrontendContentAdapterServiceWithEmptyConfiguration() {
+		$frontendContentAdapterService = $this->getAccessibleMock('TYPO3\\CMS\\Core\\Resource\\Service\\FrontendContentAdapterService', array('dummy'));
+		$frontendContentAdapterService->_setStatic('migrateFields', array());
+		return $frontendContentAdapterService;
+	}
 }
