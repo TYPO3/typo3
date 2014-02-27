@@ -3007,8 +3007,10 @@ class BackendUtility {
 		} else {
 			$backPath = $backPathOverride;
 		}
-		$urlParameters['M'] = $moduleName;
-		$urlParameters['moduleToken'] = \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get()->generateToken('moduleCall', $moduleName);
+		$urlParameters = array(
+			'M' => $moduleName,
+			'moduleToken' => \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get()->generateToken('moduleCall', $moduleName)
+		) + $urlParameters;
 		$url = 'mod.php?' . ltrim(GeneralUtility::implodeArrayForUrl('', $urlParameters, '', TRUE, TRUE), '&');
 		if ($returnAbsoluteUrl) {
 			return GeneralUtility::getIndpEnv('TYPO3_REQUEST_DIR') . $url;
@@ -3032,8 +3034,10 @@ class BackendUtility {
 		} else {
 			$backPath = isset($GLOBALS['BACK_PATH']) ? $GLOBALS['BACK_PATH'] : '';
 		}
-		$urlParameters['ajaxID'] = $ajaxIdentifier;
-		$urlParameters['ajaxToken'] = \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get()->generateToken('ajaxCall', $ajaxIdentifier);
+		$urlParameters = array(
+			'ajaxID' => $ajaxIdentifier,
+			'ajaxToken' => \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get()->generateToken('ajaxCall', $ajaxIdentifier)
+		) + $urlParameters;
 		$url = 'ajax.php?' . ltrim(GeneralUtility::implodeArrayForUrl('', $urlParameters, '', TRUE, TRUE), '&');
 		if ($returnAbsoluteUrl) {
 			return GeneralUtility::getIndpEnv('TYPO3_REQUEST_DIR') . $url;
