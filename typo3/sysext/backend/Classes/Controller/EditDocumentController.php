@@ -662,6 +662,8 @@ class EditDocumentController {
 		// Setting up the context sensitive menu:
 		$this->doc->getContextMenuCode();
 		$this->doc->bodyTagAdditions = 'onload="window.scrollTo(0,' . MathUtility::forceIntegerInRange(GeneralUtility::_GP('_scrollPosition'), 0, 10000) . ');"';
+
+		$this->getSignalSlotDispatcher()->dispatch(__CLASS__, __FUNCTION__ . 'After', array($this));
 	}
 
 	/**
