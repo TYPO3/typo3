@@ -32,4 +32,20 @@
 		<creation_date>1393346082</creation_date>
 		<modification_date>1392907534</modification_date>
 	</sys_file>
+	<sys_file>
+		<uid>3</uid>
+		<pid>0</pid>
+		<storage>1</storage>
+		<type>2</type>
+		<identifier>/user_upload/typo3_image5.jpg</identifier>
+		<identifier_hash>8180e85d25c96697ec9d2004683216831b91ffc1</identifier_hash>
+		<folder_hash>19669f1e02c2f16705ec7587044c66443be70725</folder_hash>
+		<extension>jpg</extension>
+		<mime_type>image/jpeg</mime_type>
+		<name>typo3_image5.jpg</name>
+		<sha1>c3511df85d21bc578faf71c6a19eeb3ff44af370</sha1>
+		<size>7425</size>
+		<creation_date>1393432184</creation_date>
+		<modification_date>1393432183</modification_date>
+	</sys_file>
 </dataset>

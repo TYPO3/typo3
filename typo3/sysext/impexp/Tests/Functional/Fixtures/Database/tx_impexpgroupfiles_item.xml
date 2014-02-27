@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dataset>
+	<tx_impexpgroupfiles_item>
+		<uid>1</uid>
+		<pid>1</pid>
+		<title>Test item</title>
+		<images>typo3_image4.jpg</images>
+		<image_references>fileadmin/user_upload/typo3_image5.jpg</image_references>
+		<deleted>0</deleted>
+		<t3ver_oid>0</t3ver_oid>
+		<t3ver_wsid>0</t3ver_wsid>
+	</tx_impexpgroupfiles_item>
+</dataset>

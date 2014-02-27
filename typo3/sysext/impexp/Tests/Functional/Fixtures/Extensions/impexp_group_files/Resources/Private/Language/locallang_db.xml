@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<type>database</type>
+		<description>Language labels for database tables/fields belonging to extension 'impexp_group_files'</description>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="tx_impexpgroupfiles_item">Item with group files and file references</label>
+			<label index="tx_impexpgroupfiles_item_images">Images</label>
+			<label index="tx_impexpgroupfiles_item_image_references">Image references</label>
+
+		</languageKey>
+	</data>
+</T3locallang>

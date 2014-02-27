@@ -78,7 +78,9 @@ abstract class AbstractExportTestCase extends \TYPO3\CMS\Core\Tests\FunctionalTe
 		$tree->init('AND ' . $permsClause);
 		$tree->tree[] = array('row' => $pidToStart);
 		$tree->buffer_idH = array();
-		$tree->getTree($pidToStart, $depth, '');
+		if ($depth > 0) {
+			$tree->getTree($pidToStart, $depth, '');
+		}
 
 		$idH[$pidToStart]['uid'] = $pidToStart;
 		if (count($tree->buffer_idH)) {

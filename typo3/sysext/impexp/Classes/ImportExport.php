@@ -606,10 +606,12 @@ class ImportExport {
 						$refIndexObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\ReferenceIndex');
 						// Yes to workspace overlays for exporting....
 						$refIndexObj->WSOL = TRUE;
+						$relations = $refIndexObj->getRelations($table, $row);
+						$relations = $this->fixFileIDsInRelations($relations);
 						// Data:
 						$this->dat['records'][$table . ':' . $row['uid']] = array();
 						$this->dat['records'][$table . ':' . $row['uid']]['data'] = $row;
-						$this->dat['records'][$table . ':' . $row['uid']]['rels'] = $refIndexObj->getRelations($table, $row);
+						$this->dat['records'][$table . ':' . $row['uid']]['rels'] = $relations;
 						$this->errorLog = array_merge($this->errorLog, $refIndexObj->errorLog);
 						// Merge error logs.
 						// Add information about the relations in the record in the header:
@@ -627,6 +629,43 @@ class ImportExport {
 			}
 		}
 	}
+
+	/**
+	 * This changes the file reference ID from a hash based on the absolute file path
+	 * (coming from ReferenceIndex) to a hash based on the relative file path.
+	 *
+	 * @param array $relations
+	 * @return array
+	 */
+	protected function fixFileIDsInRelations(array $relations) {
+		foreach ($relations as $field => $relation) {
+			if (isset($relation['type']) && $relation['type'] === 'file') {
+				foreach ($relation['newValueFiles'] as $key => $fileRelationData) {
+					$absoluteFilePath = $fileRelationData['ID_absFile'];
+					if (GeneralUtility::isFirstPartOfStr($absoluteFilePath, PATH_site)) {
+						$relatedFilePath = \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($absoluteFilePath);
+						$relations[$field]['newValueFiles'][$key]['ID'] = md5($relatedFilePath);
+					}
+				}
+			}
+			if ($relation['type'] == 'flex') {
+				if (is_array($relation['flexFormRels']['file'])) {
+					foreach ($relation['flexFormRels']['file'] as $key => $subList) {
+						foreach ($subList as $subKey => $fileRelationData) {
+							$absoluteFilePath = $fileRelationData['ID_absFile'];
+							if (GeneralUtility::isFirstPartOfStr($absoluteFilePath, PATH_site)) {
+								$relatedFilePath = \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($absoluteFilePath);
+								$relations[$field]['flexFormRels']['file'][$key][$subKey]['ID'] = md5($relatedFilePath);
+							}
+						}
+					}
+				}
+			}
+		}
+		return $relations;
+	}
+
+
 
 	/**
 	 * This analyses the existing added records, finds all database relations to records and adds these records to the export file.
@@ -785,7 +824,7 @@ class ImportExport {
 											if ($el['subst']['type'] === 'file' && $this->includeSoftref($el['subst']['tokenID'])) {
 												// Create abs path and ID for file:
 												$ID_absFile = GeneralUtility::getFileAbsFileName(PATH_site . $el['subst']['relFileName']);
-												$ID = md5($ID_absFile);
+												$ID = md5($el['subst']['relFileName']);
 												if ($ID_absFile) {
 													if (!$this->dat['files'][$ID]) {
 														$fI = array(
@@ -811,7 +850,7 @@ class ImportExport {
 									if ($el['subst']['type'] === 'file' && $this->includeSoftref($el['subst']['tokenID'])) {
 										// Create abs path and ID for file:
 										$ID_absFile = GeneralUtility::getFileAbsFileName(PATH_site . $el['subst']['relFileName']);
-										$ID = md5($ID_absFile);
+										$ID = md5($el['subst']['relFileName']);
 										if ($ID_absFile) {
 											if (!$this->dat['files'][$ID]) {
 												$fI = array(
@@ -1965,7 +2004,8 @@ class ImportExport {
 						switch ((string) $config['type']) {
 							case 'db':
 								if (is_array($config['itemArray']) && count($config['itemArray'])) {
-									$valArray = $this->setRelations_db($config['itemArray']);
+									$itemConfig = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
+									$valArray = $this->setRelations_db($config['itemArray'], $itemConfig);
 									$updateData[$table][$thisNewUid][$field] = implode(',', $valArray);
 								}
 								break;
@@ -2006,14 +2046,22 @@ class ImportExport {
 	 * Maps relations for database
 	 *
 	 * @param array $itemArray Array of item sets (table/uid) from a dbAnalysis object
-	 * @return array Array with values [table]_[uid]. These values have the regular tcemain-input group/select type which means they will automatically be processed into a uid-list or MM relations.
+	 * @param array $itemConfig Array of TCA config of the field the relation to be set on
+	 * @return array Array with values [table]_[uid] or [uid] for field of type group / internal_type file_reference. These values have the regular tcemain-input group/select type which means they will automatically be processed into a uid-list or MM relations.
 	 * @todo Define visibility
 	 */
-	public function setRelations_db($itemArray) {
+	public function setRelations_db($itemArray, $itemConfig) {
 		$valArray = array();
 		foreach ($itemArray as $relDat) {
 			if (is_array($this->import_mapId[$relDat['table']]) && isset($this->import_mapId[$relDat['table']][$relDat['id']])) {
-				$valArray[] = $relDat['table'] . '_' . $this->import_mapId[$relDat['table']][$relDat['id']];
+				// Since non FAL file relation type group internal_type file_reference are handled as reference to
+				// sys_file records Datahandler requires the value as uid of the the related sys_file record only
+				if ($itemConfig['type'] === 'group' && $itemConfig['internal_type'] === 'file_reference') {
+					$value = $this->import_mapId[$relDat['table']][$relDat['id']];
+				} else {
+					$value = $relDat['table'] . '_' . $this->import_mapId[$relDat['table']][$relDat['id']];
+				}
+				$valArray[] = $value;
 			} elseif ($this->isTableStatic($relDat['table']) || $this->isExcluded($relDat['table'], $relDat['id']) || $relDat['id'] < 0) {
 				// Checking for less than zero because some select types could contain negative values, eg. fe_groups (-1, -2) and sys_language (-1 = ALL languages). This must be handled on both export and import.
 				$valArray[] = $relDat['table'] . '_' . $relDat['id'];
@@ -2143,7 +2191,7 @@ class ImportExport {
 			$path = rtrim($path, '/');
 		}
 		if (is_array($config['flexFormRels']['db'][$path])) {
-			$valArray = $this->setRelations_db($config['flexFormRels']['db'][$path]);
+			$valArray = $this->setRelations_db($config['flexFormRels']['db'][$path], $dsConf);
 			$dataValue = implode(',', $valArray);
 		}
 		if (is_array($config['flexFormRels']['file'][$path])) {
