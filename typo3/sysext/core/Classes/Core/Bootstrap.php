@@ -222,18 +222,15 @@ class Bootstrap {
 	 * @internal This is not a public API method, do not use in own extensions
 	 */
 	public function loadConfigurationAndInitialize($allowCaching = TRUE, $packageManagerClassName = 'TYPO3\\CMS\\Core\\Package\\PackageManager') {
-		$this
-			->initializeClassLoader()
-			->populateLocalConfiguration()
-			->initializeCachingFramework()
+		$this->initializeClassLoader()
+			->populateLocalConfiguration();
+		if (!$allowCaching) {
+			$this->disableCoreAndClassesCache();
+		}
+		$this->initializeCachingFramework()
 			->initializeClassLoaderCaches()
 			->initializePackageManagement($packageManagerClassName)
 			->initializeRuntimeActivatedPackagesFromConfiguration();
-
-		// @TODO dig into this
-		if (!$allowCaching) {
-			$this->setCoreCacheToNullBackend();
-		}
 
 		$this->defineDatabaseConstants()
 			->defineUserAgentConstant()
@@ -418,9 +415,11 @@ class Bootstrap {
 	 * @return \TYPO3\CMS\Core\Core\Bootstrap
 	 * @internal This is not a public API method, do not use in own extensions
 	 */
-	public function setCoreCacheToNullBackend() {
+	public function disableCoreAndClassesCache() {
 		$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['cache_core']['backend']
 			= 'TYPO3\\CMS\\Core\\Cache\\Backend\\NullBackend';
+		$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['cache_classes']['backend']
+			= 'TYPO3\\CMS\\Core\\Cache\\Backend\\TransientMemoryBackend';
 		return $this;
 	}
 
