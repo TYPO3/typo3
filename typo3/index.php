@@ -43,13 +43,17 @@ if (!empty($_SERVER['HTTP_REFERER'])) {
 	$typo3RequestDir = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_DIR');
 	if (strpos($_SERVER['HTTP_REFERER'], $typo3RequestDir . 'mod.php') === 0) {
 		parse_str(substr($_SERVER['HTTP_REFERER'], strpos($_SERVER['HTTP_REFERER'], '?') + 1), $referrerParameters);
-		\TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog(
-			'Module ' . $referrerParameters['M'] . ' called index.php. This is deprecated since TYPO3 6.2, use' .
-			' BackendUtility::getModuleUrl() instead to get the target for your call.'
-		);
-		parse_str($_SERVER['QUERY_STRING'], $queryParameters);
-		header('Location: ' . \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl($referrerParameters['M'], $queryParameters, FALSE, TRUE));
-		exit;
+		// As of now, only web_info and web_func have been converted and need the compatibility layer
+		if (!empty($referrerParameters['M']) && in_array($referrerParameters['M'], array('web_info', 'web_func'), TRUE)) {
+			\TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog(
+				'Module ' . $referrerParameters['M'] . ' called index.php. This is deprecated since TYPO3 6.2, use' .
+				' BackendUtility::getModuleUrl() instead to get the target for your call.'
+			);
+			parse_str($_SERVER['QUERY_STRING'], $queryParameters);
+			header('Location: ' . \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl($referrerParameters['M'], $queryParameters, FALSE, TRUE));
+			exit;
+		}
+		unset($referrerParameters);
 	}
 	unset($typo3RequestDir);
 }
