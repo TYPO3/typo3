@@ -618,7 +618,7 @@ class WorkspaceService implements \TYPO3\CMS\Core\SingletonInterface {
 		$viewScript = $backPath . $uriBuilder->uriFor('index', array(), 'Preview', 'workspaces', 'web_workspacesworkspaces') . '&id=';
 		GeneralUtility::_GETset($originalM, 'M');
 		if ($addDomain === TRUE) {
-			return BackendUtility::getViewDomain($uid) . $redirect . urlencode($viewScript);
+			return BackendUtility::getViewDomain($uid) . $redirect . urlencode($viewScript) . $uid;
 		} else {
 			return $viewScript;
 		}
