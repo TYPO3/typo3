@@ -148,7 +148,7 @@ class StorageRepository extends AbstractRepository {
 
 		$storageObjects = array();
 		foreach (static::$storageRowCache as $storageRow) {
-			if (!$storageRow['driver'] !== $storageType) {
+			if ($storageRow['driver'] !== $storageType) {
 				continue;
 			}
 			if ($driverRegistry->driverExists($storageRow['driver'])) {
