@@ -89,7 +89,9 @@ return array(
 							'pid' => '0',
 							'setValue' => 'prepend'
 						),
-						'script' => 'wizard_add.php'
+						'module' => array(
+							'name' => 'wizard_add'
+						)
 					),
 					'list' => array(
 						'type' => 'script',
