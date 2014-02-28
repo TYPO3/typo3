@@ -1,10 +1,10 @@
 <?php
-namespace TYPO3\CMS\Core\Resource\Index;
+namespace TYPO3\CMS\Core\Resource\Processing;
 
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013 Steffen Ritter <steffen.ritter@typo3.org>
+ *  (c) 2014 Frans Saris <franssaris@gmail.com>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -27,38 +27,33 @@ namespace TYPO3\CMS\Core\Resource\Index;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use TYPO3\CMS\Core\Resource;
-
 /**
- * An Interface for MetaData extractors the FAL Indexer uses
+ * Abstract class for file ProcessingRequests
  */
-interface ExtractorInterface extends Resource\Processing\FileBasedConstraintInterface {
+abstract class AbstractProcessingRequest implements ProcessingRequestInterface {
 
 	/**
-	 * Returns the execution priority of the extraction Service
-	 * Should be between 1 and 100, 100 means runs as first service, 1 runs at last service
+	 * Processing Request configuration
 	 *
-	 * @return integer
+	 * @var array
 	 */
-	public function getExecutionPriority();
+	protected $configuration;
 
 	/**
-	 * Checks if the given file can be processed by this Extractor
+	 * Constructor
 	 *
-	 * @param Resource\File $file
-	 * @return boolean
+	 * @param array $configuration
 	 */
-	public function canProcess(Resource\File $file);
+	public function __construct(array $configuration = array()) {
+		$this->configuration = $configuration;
+	}
 
 	/**
-	 * The actual processing TASK
+	 * Return configuration as a flat array
 	 *
-	 * Should return an array with database properties for sys_file_metadata to write
-	 *
-	 * @param Resource\File $file
-	 * @param array $previousExtractedData optional, contains the array of already extracted data
 	 * @return array
 	 */
-	public function extractMetaData(Resource\File $file, array $previousExtractedData = array());
-
+	public function toArray() {
+		return $this->configuration;
+	}
 }

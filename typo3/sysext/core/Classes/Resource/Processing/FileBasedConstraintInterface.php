@@ -1,10 +1,10 @@
 <?php
-namespace TYPO3\CMS\Core\Resource\Index;
+namespace TYPO3\CMS\Core\Resource\Processing;
 
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013 Steffen Ritter <steffen.ritter@typo3.org>
+ *  (c) 2014 Frans Saris <franssaris@gmail.com>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -27,38 +27,43 @@ namespace TYPO3\CMS\Core\Resource\Index;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use TYPO3\CMS\Core\Resource;
-
 /**
- * An Interface for MetaData extractors the FAL Indexer uses
+ * Base Interface for file processing task like Extractor and FileProcessor that
+ * can be constrained to certain Drivers or FileTypes.
  */
-interface ExtractorInterface extends Resource\Processing\FileBasedConstraintInterface {
+interface FileBasedConstraintInterface {
 
 	/**
-	 * Returns the execution priority of the extraction Service
-	 * Should be between 1 and 100, 100 means runs as first service, 1 runs at last service
+	 * Returns an array of supported file types
+	 * An empty array indicates all file types
+	 *
+	 * @return array
+	 */
+	public function getFileTypeRestrictions();
+
+	/**
+	 * Get all supported DriverTypes
+	 *
+	 * Since some processors may only work for local files, and other
+	 * are especially made for processing files from remote.
+	 *
+	 * Returns array of strings with driver names of Drivers which are supported,
+	 * If the driver did not register a name, it's the class name.
+	 * empty array indicates no restrictions
+	 *
+	 * @return array
+	 */
+	public function getDriverRestrictions();
+
+	/**
+	 * Returns the data priority of the processing Service.
+	 * Defines the precedence if several processors
+	 * can handle the same file.
+	 *
+	 * Should be between 1 and 100, 100 is more important than 1
 	 *
 	 * @return integer
 	 */
-	public function getExecutionPriority();
-
-	/**
-	 * Checks if the given file can be processed by this Extractor
-	 *
-	 * @param Resource\File $file
-	 * @return boolean
-	 */
-	public function canProcess(Resource\File $file);
-
-	/**
-	 * The actual processing TASK
-	 *
-	 * Should return an array with database properties for sys_file_metadata to write
-	 *
-	 * @param Resource\File $file
-	 * @param array $previousExtractedData optional, contains the array of already extracted data
-	 * @return array
-	 */
-	public function extractMetaData(Resource\File $file, array $previousExtractedData = array());
+	public function getPriority();
 
 }
