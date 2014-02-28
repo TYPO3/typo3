@@ -128,6 +128,7 @@ class DependencyResolver {
 	 */
 	protected function buildDependencyGraphForPackages(array $packageStatesConfiguration, array $packageKeys) {
 		// Initialize the dependencies with FALSE
+		sort($packageKeys);
 		$dependencyGraph = array_fill_keys($packageKeys, array_fill_keys($packageKeys, FALSE));
 		foreach ($packageKeys as $packageKey) {
 			if (!isset($packageStatesConfiguration[$packageKey]['dependencies'])) {
