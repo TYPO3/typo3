@@ -22,6 +22,7 @@ return array(
 			'ignoreWebMountRestriction' => TRUE,
 			'ignoreRootLevelRestriction' => TRUE,
 		),
+		'searchFields' => 'name, type, mime_type, sha1'
 	),
 	'interface' => array(
 		'showRecordFieldList' => 'storage, name, type, mime_type, size, sha1, missing'

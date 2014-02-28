@@ -23,6 +23,7 @@ return array(
 			'ignoreWebMountRestriction' => TRUE,
 			'ignoreRootLevelRestriction' => TRUE,
 		),
+		'searchFields' => 'file,title,description,alternative'
 	),
 	'interface' => array(
 		'showRecordFieldList' => 'file, title, description, alternative'

@@ -16,6 +16,7 @@ return array(
 		'dividers2tabs' => TRUE,
 		'requestUpdate' => 'driver',
 		'iconfile' => '_icon_ftp.gif',
+		'searchFields' => 'name,description'
 	),
 	'interface' => array(
 		'showRecordFieldList' => 'hidden,name,description,driver,processingfolder,configuration'

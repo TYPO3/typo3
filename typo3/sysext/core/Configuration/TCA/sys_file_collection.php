@@ -27,6 +27,7 @@ return array(
 			'starttime' => 'starttime',
 			'endtime' => 'endtime'
 		),
+		'searchFields' => 'files,title'
 	),
 	'interface' => array(
 		'showRecordFieldList' => 'sys_language_uid,l10n_parent,l10n_diffsource,hidden,starttime,endtime,files,title'
