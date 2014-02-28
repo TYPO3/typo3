@@ -50,7 +50,11 @@ class DisabledFormProtection extends \TYPO3\CMS\Core\FormProtection\AbstractForm
 	 * Disable parent method.
 	 * Always return TRUE.
 	 *
-	 * @return boolean
+	 * @param string $tokenId
+	 * @param string $formName
+	 * @param string $action
+	 * @param string $formInstanceName
+	 * @return bool
 	 */
 	public function validateToken($tokenId, $formName, $action = '', $formInstanceName = '') {
 		return TRUE;

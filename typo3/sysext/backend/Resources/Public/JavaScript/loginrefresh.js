@@ -41,12 +41,11 @@ Ext.ux.TYPO3.loginRefresh = Ext.extend(Ext.util.Observable, {
 			run: function(){
 				// interval run
 				Ext.Ajax.request({
-					url: "ajax.php",
+					url: TYPO3.settings.BackendLogin['BackendLogin::isTimedOut'].ajaxUrl,
 					params: {
-						"ajaxID": "BackendLogin::isTimedOut",
-						"skipSessionUpdate": 1
+						'skipSessionUpdate': 1
 					},
-					method: "GET",
+					method: 'GET',
 					success: function(response, options) {
 						var result = Ext.util.JSON.decode(response.responseText);
 						if (result.login.locked) {
@@ -64,8 +63,8 @@ Ext.ux.TYPO3.loginRefresh = Ext.extend(Ext.util.Observable, {
 								Ext.MessageBox.hide();
 							}
 						}
-						if ((result.login.timed_out || result.login.will_time_out) && Ext.getCmp("loginformWindow")) {
-							Ext.getCmp("login_username").value = TYPO3.configuration.username;
+						if ((result.login.timed_out || result.login.will_time_out) && Ext.getCmp('loginformWindow')) {
+							Ext.getCmp('login_username').value = TYPO3.configuration.username;
 							this.stopTimer();
 							if (result.login.timed_out) {
 								this.showLoginForm();
@@ -89,38 +88,38 @@ Ext.ux.TYPO3.loginRefresh = Ext.extend(Ext.util.Observable, {
 
 	initComponents: function() {
 		var loginPanel = new Ext.FormPanel({
-			url: "ajax.php",
-			id: "loginform",
+			url: TYPO3.settings.BackendLogin['BackendLogin::login'].ajaxUrl,
+			id: 'loginform',
 			title: TYPO3.LLL.core.refresh_login_title,
 			defaultType: 'textfield',
 			scope: this,
-			width: "100%",
-			bodyStyle: "padding: 5px 5px 3px 5px; border-width: 0; margin-bottom: 7px;",
+			width: '100%',
+			bodyStyle: 'padding: 5px 5px 3px 5px; border-width: 0; margin-bottom: 7px;',
 
 			items: [{
-					xtype: "panel",
-					bodyStyle: "margin-bottom: 7px; border: none;",
+					xtype: 'panel',
+					bodyStyle: 'margin-bottom: 7px; border: none;',
 					html: TYPO3.LLL.core.login_expired
 				},{
 					fieldLabel: TYPO3.LLL.core.refresh_login_password,
-					name: "p_field",
+					name: 'p_field',
 					width: 250,
-					id: "password",
-					inputType: "password"
+					id: 'password',
+					inputType: 'password'
 				},{
-					inputType: "hidden",
-					name: "username",
-					id: "login_username",
-					value: ""
+					inputType: 'hidden',
+					name: 'username',
+					id: 'login_username',
+					value: ''
 				},{
-					inputType: "hidden",
-					name: "userident",
-					id: "userident",
-					value: ""
+					inputType: 'hidden',
+					name: 'userident',
+					id: 'userident',
+					value: ''
 				}, {
-					inputType: "hidden",
-					name: "challenge",
-					id: "challenge",
+					inputType: 'hidden',
+					name: 'challenge',
+					id: 'challenge',
 					value: ''
 				}
 			],
@@ -137,12 +136,12 @@ Ext.ux.TYPO3.loginRefresh = Ext.extend(Ext.util.Observable, {
 				text: TYPO3.LLL.core.refresh_logout_button,
 				formBind: true,
 				handler: function() {
-					top.location.href = TYPO3.configuration.siteUrl + TYPO3.configuration.TYPO3_mainDir + "logout.php";
+					top.location.href = TYPO3.configuration.siteUrl + TYPO3.configuration.TYPO3_mainDir + 'logout.php';
 				}
 			}]
 		});
 		this.loginRefreshWindow = new Ext.Window({
-			id: "loginformWindow",
+			id: 'loginformWindow',
 			width: 450,
 			autoHeight: true,
 			closable: true,
@@ -170,10 +169,10 @@ Ext.ux.TYPO3.loginRefresh = Ext.extend(Ext.util.Observable, {
 			resizable: false,
 			draggable: false,
 			modal: true,
-			id: "loginRefreshWindow",
+			id: 'loginRefreshWindow',
 			items: [{
-					xtype: "panel",
-					bodyStyle: "padding: 5px 5px 3px 5px; border-width: 0; margin-bottom: 7px;",
+					xtype: 'panel',
+					bodyStyle: 'padding: 5px 5px 3px 5px; border-width: 0; margin-bottom: 7px;',
 					bodyBorder: false,
 					autoHeight: true,
 					autoWidth: true,
@@ -188,11 +187,8 @@ Ext.ux.TYPO3.loginRefresh = Ext.extend(Ext.util.Observable, {
 				text: TYPO3.LLL.core.refresh_login_refresh_button,
 				handler: function() {
 					var refresh = Ext.Ajax.request({
-						url: "ajax.php",
-						params: {
-							"ajaxID": "BackendLogin::isTimedOut"
-						},
-						method: "GET",
+						url: TYPO3.settings.BackendLogin['BackendLogin::isTimedOut'].ajaxUrl,
+						method: 'GET',
 						scope: this
 					});
 					TYPO3.loginRefresh.progressWindow.hide();
@@ -202,7 +198,7 @@ Ext.ux.TYPO3.loginRefresh = Ext.extend(Ext.util.Observable, {
 			}, {
 				text: TYPO3.LLL.core.refresh_direct_logout_button,
 				handler: function() {
-					top.location.href = TYPO3.configuration.siteUrl + TYPO3.configuration.TYPO3_mainDir + "logout.php";
+					top.location.href = TYPO3.configuration.siteUrl + TYPO3.configuration.TYPO3_mainDir + 'logout.php';
 				}
 			}]
 		});
@@ -236,28 +232,25 @@ Ext.ux.TYPO3.loginRefresh = Ext.extend(Ext.util.Observable, {
 		if (TYPO3.configuration.showRefreshLoginPopup) {
 			//log off for sure
 			Ext.Ajax.request({
-				url: "ajax.php",
-				params: {
-				"ajaxID": "BackendLogin::logout"
-			},
-			method: "GET",
-			scope: this,
-			success: function(response, opts) {
-				TYPO3.loginRefresh.showLoginPopup();
-			},
-			failure: function(response, opts) {
-				alert("something went wrong");
-			}
+				url: TYPO3.settings.BackendLogin['BackendLogin::logout'].ajaxUrl,
+				method: 'GET',
+				scope: this,
+				success: function(response, opts) {
+					TYPO3.loginRefresh.showLoginPopup();
+				},
+				failure: function(response, opts) {
+					alert('something went wrong');
+				}
 			});
 		} else {
-			Ext.getCmp("loginRefreshWindow").hide();
-			Ext.getCmp("loginformWindow").show();
+			Ext.getCmp('loginRefreshWindow').hide();
+			Ext.getCmp('loginformWindow').show();
 		}
 	},
 
 	showLoginPopup: function() {
-		Ext.getCmp("loginRefreshWindow").hide();
-		var vHWin = window.open("login_frameset.php","relogin_" + TS.uniqueID,"height=450,width=700,status=0,menubar=0,location=1");
+		Ext.getCmp('loginRefreshWindow').hide();
+		var vHWin = window.open('login_frameset.php','relogin_' + TYPO3.configuration.uniqueID,'height=450,width=700,status=0,menubar=0,location=1');
 		vHWin.focus();
 	},
 
@@ -269,42 +262,46 @@ Ext.ux.TYPO3.loginRefresh = Ext.extend(Ext.util.Observable, {
 		Ext.TaskMgr.stop(this.loadingTask);
 	},
 
-	submitForm: function(challenge) {
-		var form = Ext.getCmp("loginform").getForm();
+	submitForm: function(parameters) {
+		var form = Ext.getCmp('loginform').getForm();
 		var fields = form.getValues();
-		if (fields.p_field === "") {
+		if (fields.p_field === '') {
 			Ext.Msg.alert(TYPO3.LLL.core.refresh_login_failed, TYPO3.LLL.core.refresh_login_emptyPassword);
 		} else {
-			if (TS.securityLevel === "superchallenged") {
+			if (TYPO3.configuration.securityLevel === 'superchallenged') {
 				fields.p_field = MD5(fields.p_field);
 			}
-			if (TS.securityLevel === "superchallenged" || TS.securityLevel === "challenged") {
-				fields.challenge = challenge;
-				fields.userident = MD5(fields.username + ":" + fields.p_field + ":" + challenge);
+			if (TYPO3.configuration.securityLevel === 'superchallenged' || TYPO3.configuration.securityLevel === 'challenged') {
+				fields.challenge = parameters.challenge;
+				fields.userident = MD5(fields.username + ':' + fields.p_field + ':' + parameters.challenge);
+			} else if (TYPO3.configuration.securityLevel === 'rsa') {
+				var rsa = new RSAKey();
+				rsa.setPublic(parameters.publicKeyModulus, parameters.exponent);
+				var encryptedPassword = rsa.encrypt(fields.p_field);
+				fields.userident = 'rsa:' + hex2b64(encryptedPassword);
 			} else {
 				fields.userident = fields.p_field;
 			}
-			fields.p_field =  "";
+			fields.p_field =  '';
 			form.setValues(fields);
 
 			form.submit({
-				method: "POST",
+				method: 'POST',
 				waitTitle: TYPO3.LLL.core.waitTitle,
-				waitMsg: " ",
+				waitMsg: ' ',
 				params: {
-					"ajaxID": "BackendLogin::login",
-					"login_status": "login"
+					'login_status': 'login'
 				},
 				success: function(form, action) {
-					// response object is "login" so real result will be available in failure handler
-					Ext.getCmp("loginformWindow").hide();
+					// response object is 'login' so real result will be available in failure handler
+					Ext.getCmp('loginformWindow').hide();
 					TYPO3.loginRefresh.startTimer();
 				},
 				failure: function(form, action) {
 					var result = Ext.util.JSON.decode(action.response.responseText).login;
 					if (result.success) {
 						// User is logged in
-						Ext.getCmp("loginformWindow").hide();
+						Ext.getCmp('loginformWindow').hide();
 						TYPO3.loginRefresh.startTimer();
 					} else {
 						// TODO: add failure to notification system instead of alert
@@ -316,11 +313,10 @@ Ext.ux.TYPO3.loginRefresh = Ext.extend(Ext.util.Observable, {
 	},
 
 	triggerSubmitForm: function() {
-		if (TS.securityLevel === 'superchallenged' || TS.securityLevel === 'challenged') {
+		if (TYPO3.configuration.securityLevel === 'superchallenged' || TYPO3.configuration.securityLevel === 'challenged') {
 			Ext.Ajax.request({
-				url: 'ajax.php',
+				url: TYPO3.settings.BackendLogin['BackendLogin::getChallenge'].ajaxUrl,
 				params: {
-					'ajaxID': 'BackendLogin::getChallenge',
 					'skipSessionUpdate': 1
 				},
 				method: 'GET',
@@ -328,18 +324,31 @@ Ext.ux.TYPO3.loginRefresh = Ext.extend(Ext.util.Observable, {
 					var result = Ext.util.JSON.decode(response.responseText);
 					if (result.challenge) {
 						Ext.getCmp('challenge').value = result.challenge;
-						TYPO3.loginRefresh.submitForm(result.challenge);
+						TYPO3.loginRefresh.submitForm(result);
+					}
+				},
+				scope: this
+			});
+		} else if (TYPO3.configuration.securityLevel === 'rsa') {
+			Ext.Ajax.request({
+				url: TYPO3.settings.BackendLogin['BackendLogin::getRsaPublicKey'].ajaxUrl,
+				params: {
+					'skipSessionUpdate': 1
+				},
+				method: 'GET',
+				success: function(response) {
+					var result = Ext.util.JSON.decode(response.responseText);
+					if (result.publicKeyModulus && result.exponent) {
+						TYPO3.loginRefresh.submitForm(result);
 					}
 				},
 				scope: this
 			});
 		} else {
-			this.submitForm();
+			TYPO3.loginRefresh.submitForm();
 		}
 	}
 });
-
-
 
 /**
  * Initialize login expiration warning object

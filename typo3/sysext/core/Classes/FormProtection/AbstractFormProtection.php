@@ -44,11 +44,13 @@ abstract class AbstractFormProtection {
 	protected $sessionToken;
 
 	/**
-	 * Constructor. Makes sure the session token is read and
-	 * available for checking.
+	 * @return string
 	 */
-	public function __construct() {
-		$this->retrieveSessionToken();
+	protected function getSessionToken() {
+		if ($this->sessionToken === NULL) {
+			$this->sessionToken = $this->retrieveSessionToken();
+		}
+		return $this->sessionToken;
 	}
 
 	/**
@@ -81,12 +83,13 @@ abstract class AbstractFormProtection {
 	 * @param string $action
 	 * @param string $formInstanceName
 	 * @return string the 32-character hex ID of the generated token
+	 * @throws \InvalidArgumentException
 	 */
 	public function generateToken($formName, $action = '', $formInstanceName = '') {
 		if ($formName == '') {
 			throw new \InvalidArgumentException('$formName must not be empty.', 1294586643);
 		}
-		$tokenId = \TYPO3\CMS\Core\Utility\GeneralUtility::hmac($formName . $action . $formInstanceName . $this->sessionToken);
+		$tokenId = \TYPO3\CMS\Core\Utility\GeneralUtility::hmac($formName . $action . $formInstanceName . $this->getSessionToken());
 		return $tokenId;
 	}
 
@@ -101,7 +104,7 @@ abstract class AbstractFormProtection {
 	 * @return boolean
 	 */
 	public function validateToken($tokenId, $formName, $action = '', $formInstanceName = '') {
-		$validTokenId = \TYPO3\CMS\Core\Utility\GeneralUtility::hmac(((string) $formName . (string) $action) . (string) $formInstanceName . $this->sessionToken);
+		$validTokenId = \TYPO3\CMS\Core\Utility\GeneralUtility::hmac(((string) $formName . (string) $action) . (string) $formInstanceName . $this->getSessionToken());
 		if ((string) $tokenId === $validTokenId) {
 			$isValid = TRUE;
 		} else {

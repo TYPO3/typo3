@@ -47,10 +47,10 @@ class FormProtectionTesting extends \TYPO3\CMS\Core\FormProtection\AbstractFormP
 	/**
 	 * Retrieves all saved tokens.
 	 *
-	 * @return array the saved tokens as a two-dimensional array, will be empty
+	 * @return string The saved token
 	 */
 	protected function retrieveSessionToken() {
-		$this->sessionToken = $this->generateSessionToken();
+		return $this->sessionToken = $this->generateSessionToken();
 	}
 
 	/**

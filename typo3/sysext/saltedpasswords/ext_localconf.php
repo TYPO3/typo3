@@ -27,8 +27,6 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/saltedpasswords']['saltMethods'] 
 	'className' => 'TYPO3\\CMS\\Saltedpasswords\\SaltedPasswordService'
 ));
 
-// Use popup window to refresh login instead of the AJAX relogin:
-$TYPO3_CONF_VARS['BE']['showRefreshLoginPopup'] = 1;
 // Register bulk update task
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['TYPO3\\CMS\\Saltedpasswords\\Task\\BulkUpdateTask'] = array(
 	'extension' => $_EXTKEY,

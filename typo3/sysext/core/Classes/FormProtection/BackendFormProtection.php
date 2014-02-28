@@ -109,7 +109,6 @@ class BackendFormProtection extends \TYPO3\CMS\Core\FormProtection\AbstractFormP
 			throw new \TYPO3\CMS\Core\Error\Exception('A back-end form protection may only be instantiated if there' . ' is an active back-end session.', 1285067843);
 		}
 		$this->backendUser = $GLOBALS['BE_USER'];
-		parent::__construct();
 	}
 
 	/**
@@ -147,7 +146,7 @@ class BackendFormProtection extends \TYPO3\CMS\Core\FormProtection\AbstractFormP
 	/**
 	 * Retrieves the saved session token or generates a new one.
 	 *
-	 * @return array<array>
+	 * @return string
 	 */
 	protected function retrieveSessionToken() {
 		$this->sessionToken = $this->backendUser->getSessionData('formSessionToken');
@@ -155,6 +154,7 @@ class BackendFormProtection extends \TYPO3\CMS\Core\FormProtection\AbstractFormP
 			$this->sessionToken = $this->generateSessionToken();
 			$this->persistSessionToken();
 		}
+		return $this->sessionToken;
 	}
 
 	/**
@@ -174,6 +174,7 @@ class BackendFormProtection extends \TYPO3\CMS\Core\FormProtection\AbstractFormP
 	 *
 	 * @access private
 	 * @return string
+	 * @throws \UnexpectedValueException
 	 */
 	public function setSessionTokenFromRegistry() {
 		$this->sessionToken = $this->getRegistry()->get('core', 'formSessionToken:' . $this->backendUser->user['uid']);
@@ -191,17 +192,16 @@ class BackendFormProtection extends \TYPO3\CMS\Core\FormProtection\AbstractFormP
 	 * @return void
 	 */
 	public function storeSessionTokenInRegistry() {
-		$this->getRegistry()->set('core', 'formSessionToken:' . $this->backendUser->user['uid'], $this->sessionToken);
+		$this->getRegistry()->set('core', 'formSessionToken:' . $this->backendUser->user['uid'], $this->getSessionToken());
 	}
 
 	/**
 	 * Removes the session token for the user from the registry.
 	 *
 	 * @access private
-	 * @return string
 	 */
 	public function removeSessionTokenFromRegistry() {
-		return $this->getRegistry()->remove('core', 'formSessionToken:' . $this->backendUser->user['uid']);
+		$this->getRegistry()->remove('core', 'formSessionToken:' . $this->backendUser->user['uid']);
 	}
 
 	/**

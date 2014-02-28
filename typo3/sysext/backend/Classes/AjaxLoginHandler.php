@@ -75,7 +75,7 @@ class AjaxLoginHandler {
 	 */
 	protected function hasLoginBeenProcessed() {
 		$loginFormData = $GLOBALS['BE_USER']->getLoginFormData();
-		return $loginFormData['status'] == 'login' && isset($loginFormData['uname']) && isset($loginFormData['uident']) && isset($loginFormData['chalvalue']) && (string) $_COOKIE[\TYPO3\CMS\Core\Authentication\BackendUserAuthentication::getCookieName()] !== (string) $GLOBALS['BE_USER']->id;
+		return $loginFormData['status'] === 'login' && !empty($loginFormData['uname']) && !empty($loginFormData['uident']);
 	}
 
 	/**

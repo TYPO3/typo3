@@ -39,7 +39,8 @@ $noUserAjaxIDs = array(
 	'BackendLogin::logout',
 	'BackendLogin::refreshLogin',
 	'BackendLogin::isTimedOut',
-	'BackendLogin::getChallenge'
+	'BackendLogin::getChallenge',
+	'BackendLogin::getRsaPublicKey',
 );
 
 // First get the ajaxID
