@@ -101,7 +101,9 @@ return array(
 							'table' => 'sys_filemounts',
 							'pid' => '0'
 						),
-						'script' => 'wizard_list.php'
+						'module' => array(
+							'name' => 'wizard_list'
+						)
 					)
 				)
 			)
