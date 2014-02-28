@@ -26,7 +26,7 @@
  ***************************************************************/
 
 /**
- * Wizard to add records from group/select lists in TCEforms
+ * Wizard to add new records to a group/select TCEform formfield
  */
 $editController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\Wizard\\AddController');
 $editController->main();

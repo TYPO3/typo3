@@ -26,7 +26,7 @@
  ***************************************************************/
 
 /**
- * Wizard to list records from group/select lists in TCEforms
+ * Wizard to list records from a page id.
  */
 $listController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\Wizard\\ListController');
 $listController->main();
