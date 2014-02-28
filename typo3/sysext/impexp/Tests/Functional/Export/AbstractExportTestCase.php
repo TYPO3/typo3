@@ -25,6 +25,7 @@ namespace TYPO3\CMS\Impexp\Tests\Functional\Export;
  ***************************************************************/
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 
 /**
  * Functional test for the ImportExport
@@ -86,4 +87,32 @@ abstract class AbstractExportTestCase extends \TYPO3\CMS\Core\Tests\FunctionalTe
 
 		$this->export->setPageTree($idH);
 	}
+
+	/**
+	 * Adds records to the export object for a specific page id.
+	 *
+	 * @param int $pid Page id for which to select records to add
+	 * @param array $tables Array of table names to select from
+	 * @return void
+	 */
+	protected function addRecordsForPid($pid, array $tables) {
+		foreach ($GLOBALS['TCA'] as $table => $value) {
+			if ($table != 'pages' && (in_array($table, $tables) || in_array('_ALL', $tables))) {
+				if ($GLOBALS['BE_USER']->check('tables_select', $table) && !$GLOBALS['TCA'][$table]['ctrl']['is_static']) {
+					$orderBy = $GLOBALS['TCA'][$table]['ctrl']['sortby'] ? 'ORDER BY ' . $GLOBALS['TCA'][$table]['ctrl']['sortby'] : $GLOBALS['TCA'][$table]['ctrl']['default_sortby'];
+					$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+						'*',
+						$table,
+							'pid = ' . (int)$pid . BackendUtility::deleteClause($table),
+						'',
+						$GLOBALS['TYPO3_DB']->stripOrderBy($orderBy)
+					);
+					while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+						$this->export->export_addRecord($table, $row);
+					}
+				}
+			}
+		}
+	}
+
 }

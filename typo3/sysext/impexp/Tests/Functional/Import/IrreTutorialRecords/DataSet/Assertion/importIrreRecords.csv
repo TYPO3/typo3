@@ -1,0 +1,85 @@
+"pages"
+,"uid","pid","sorting","deleted","title"
+,1,0,256,0,"IRRE"
+tt_content
+,uid,pid,sorting,deleted,sys_language_uid,l18n_parent,header,categories,tx_irretutorial_1nff_hotels,tx_irretutorial_1ncsv_hotels
+,1,1,256,0,0,0,"Test content",0,2,"1,2"
+tx_irretutorial_1ncsv_hotel
+,uid,pid,cruser_id,sys_language_uid,l18n_parent,sorting,deleted,hidden,title,offers
+,1,1,1,0,0,256,0,0,"Hotel 1 (csv)","1,2"
+,2,1,1,0,0,128,0,0,"Hotel 2 (csv)",3
+tx_irretutorial_1ncsv_offer
+,uid,pid,cruser_id,sys_language_uid,l18n_parent,sorting,deleted,hidden,title,prices
+,1,1,1,0,0,256,0,0,"Offer 1.1 (csv)",1
+,2,1,1,0,0,128,0,0,"Offer 1.2 (csv)",2
+,3,1,1,0,0,64,0,0,"Offer 2.2 (csv)",3
+tx_irretutorial_1ncsv_price
+,uid,pid,cruser_id,sys_language_uid,l18n_parent,sorting,deleted,hidden,title,price
+,1,1,1,0,0,256,0,0,"Price 1.1.1 (csv)",567.00
+,2,1,1,0,0,128,0,0,"Price 1.2.1 (csv)",90.00
+,3,1,1,0,0,64,0,0,"Price 2.2.1 (csv)",112.00
+tx_irretutorial_1nff_hotel
+,uid,pid,cruser_id,sys_language_uid,l18n_parent,sorting,deleted,hidden,parentid,parenttable,parentidentifier,title,offers
+,1,1,1,0,0,2,0,0,1,tt_content,,"Hotel 2 (nff)",1
+,2,1,1,0,0,1,0,0,1,tt_content,,"Hotel 1 (nff)",2
+tx_irretutorial_1nff_offer
+,uid,pid,cruser_id,sys_language_uid,l18n_parent,sorting,deleted,hidden,parentid,parenttable,parentidentifier,title,prices
+,1,1,1,0,0,2,0,0,2,tx_irretutorial_1nff_hotel,,"Offer 1.2 (nff)",1
+,2,1,1,0,0,1,0,0,1,tx_irretutorial_1nff_hotel,,"Offer 2.1 (nff)",1
+,3,1,1,0,0,1,0,0,2,tx_irretutorial_1nff_hotel,,"Offer 1.1 (nff)",2
+tx_irretutorial_1nff_price
+,uid,pid,cruser_id,sys_language_uid,l18n_parent,sorting,deleted,hidden,parentid,parenttable,parentidentifier,title,price
+,1,1,1,0,0,2,0,0,3,tx_irretutorial_1nff_offer,,"Price 1.1.2 (nff)",869.00
+,2,1,1,0,0,1,0,0,2,tx_irretutorial_1nff_offer,,"Price 2.1.1 (nff)",5467567.00
+,3,1,1,0,0,1,0,0,1,tx_irretutorial_1nff_offer,,"Price 1.2.1 (nff)",678.00
+,4,1,1,0,0,1,0,0,3,tx_irretutorial_1nff_offer,,"Price 1.1.1 (nff)",4.00
+tx_irretutorial_mnasym_hotel
+,uid,pid,cruser_id,sys_language_uid,l18n_parent,sorting,deleted,hidden,title,offers
+,1,1,1,0,0,256,0,0,"Hotel 1 (m:n ASym)",2
+tx_irretutorial_mnasym_hotel_offer_rel
+,uid,pid,cruser_id,sys_language_uid,l18n_parent,deleted,hidden,hotelid,offerid,hotelsort,offersort,prices
+,1,1,1,0,0,0,0,1,1,1,1,1
+,2,1,1,0,0,0,0,1,2,2,1,1
+tx_irretutorial_mnasym_offer
+,uid,pid,cruser_id,sys_language_uid,l18n_parent,sorting,deleted,hidden,title,hotels
+,1,1,1,0,0,256,0,0,"Offer 1 (m:n ASym)",1
+,2,1,1,0,0,128,0,0,"Offer 2 (m:n ASym)",1
+tx_irretutorial_mnasym_price
+,uid,pid,cruser_id,sys_language_uid,l18n_parent,sorting,deleted,hidden,parentid,title,price
+,1,1,1,0,0,1,0,0,1,"Price 2 1:1 (m:n ASym)",45.00
+,2,1,1,0,0,1,0,0,2,"Price 1 1:2 (m:n ASym)",678.00
+tx_irretutorial_mnattr_hotel
+,uid,pid,cruser_id,sys_language_uid,l18n_parent,sorting,deleted,hidden,title,offers
+,1,1,1,0,0,256,0,0,"Hotel 2 (m:n Attr)",1
+,2,1,1,0,0,128,0,0,"Hotel 1 (m:n Attr)",1
+tx_irretutorial_mnattr_hotel_offer_rel
+,uid,pid,cruser_id,sys_language_uid,l18n_parent,deleted,hidden,hotelid,offerid,hotelsort,offersort,quality,allincl
+,1,1,1,0,0,0,0,1,1,1,1,4,0
+,2,1,1,0,0,0,0,2,2,1,1,2,1
+tx_irretutorial_mnattr_offer
+,uid,pid,cruser_id,sys_language_uid,l18n_parent,sorting,deleted,hidden,title,hotels
+,1,1,1,0,0,256,0,0,"Offer 2 (m:n Attr)",1
+,2,1,1,0,0,128,0,0,"Offer 1 (m:n Attr)",1
+tx_irretutorial_mnmmasym_hotel
+,uid,pid,cruser_id,sys_language_uid,l18n_parent,sorting,deleted,hidden,title,offers
+,1,1,1,0,0,256,0,0,"Hotel 2 (m:n (MM) ASym)",1
+,2,1,1,0,0,128,0,0,"Hotel 1 (m:n (MM) ASym)",2
+tx_irretutorial_mnmmasym_offer
+,uid,pid,cruser_id,sys_language_uid,l18n_parent,sorting,deleted,hidden,title,hotels,prices
+,1,1,1,0,0,256,0,0,"Offer 1.1 (m:n (MM) ASym)",0,1
+,2,1,1,0,0,128,0,0,"Offer 1.2 (m:n (MM) ASym)",0,1
+,3,1,1,0,0,64,0,0,"Offer 2.1 (m:n (MM) ASym)",0,1
+tx_irretutorial_mnmmasym_price
+,uid,pid,cruser_id,sys_language_uid,l18n_parent,sorting,deleted,hidden,title,price,offers
+,1,1,1,0,0,256,0,0,"Price 1.1.1 (m:n (MM) ASym)",567.00,0
+,2,1,1,0,0,128,0,0,"Price 1.2.2 (m:n (MM) ASym)",567.00,0
+,3,1,1,0,0,64,0,0,"Price (m:n (MM) ASym)",223.00,0
+tx_irretutorial_mnsym_hotel
+,uid,pid,cruser_id,sys_language_uid,l18n_parent,sorting,deleted,hidden,title,branches
+,1,1,1,0,0,256,0,0,"Hotel 1 (mm sym)",2
+,2,1,1,0,0,128,0,0,"Hotel branch 1.2 (mm sym)",1
+,3,1,1,0,0,64,0,0,"Hotel Branch 1.1 (mm sym)",1
+tx_irretutorial_mnsym_hotel_rel
+,uid,pid,cruser_id,sys_language_uid,l18n_parent,deleted,hidden,hotelid,branchid,hotelsort,branchsort
+,1,1,1,0,0,0,0,1,2,2,0
+,2,1,1,0,0,0,0,1,3,1,1
