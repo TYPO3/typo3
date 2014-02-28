@@ -21,4 +21,10 @@ if (TYPO3_MODE === 'BE') {
 		'wizard_list',
 		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Modules/Wizards/ListWizard/'
 	);
+
+	// Register table wizard
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
+		'wizard_table',
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Modules/Wizards/TableWizard/'
+	);
 }

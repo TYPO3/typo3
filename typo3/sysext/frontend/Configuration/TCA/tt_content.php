@@ -483,7 +483,9 @@ return array(
 						'type' => 'script',
 						'title' => 'LLL:EXT:cms/locallang_ttc.xlf:bodytext.W.table',
 						'icon' => 'wizard_table.gif',
-						'script' => 'wizard_table.php',
+						'module' => array(
+							'name' => 'wizard_table'
+						),
 						'params' => array(
 							'xmlOutput' => 0
 						)

@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 1999-2013 Kasper Skårhøj (kasperYYYY@typo3.com)
+ *  (c) 2014 Alexander Schnitzler (typo3@alexanderschnitzler.de)
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -26,17 +26,8 @@
  ***************************************************************/
 
 /**
- * Wizard to help make tables (eg. for tt_content elements) of type "table".
- * Each line is a table row, each cell divided by a |
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
+ * Wizard to create/edit tables in TCEforms
  */
-require __DIR__ . '/init.php';
-
-\TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog('The way registering a wizard in TCA has chan
-ged in 6.2. Please set module[name]=wizard_table instead of script=wizard_table.php in your TCA. This
-script will be removed in two versions.');
-/** @var \TYPO3\CMS\Backend\Controller\Wizard\TableController $tableController */
 $tableController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\Wizard\\TableController');
 $tableController->main();
 $tableController->printContent();

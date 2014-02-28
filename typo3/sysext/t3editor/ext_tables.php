@@ -18,7 +18,9 @@ if (TYPO3_MODE === 'BE') {
 		'userFunc' => 'TYPO3\\CMS\\T3editor\\FormWizard->main',
 		'title' => 't3editor',
 		'icon' => 'wizard_table.gif',
-		'script' => 'wizard_table.php',
+		'module' => array(
+			'name' => 'wizard_table'
+		),
 		'params' => array(
 			'format' => 'html',
 			'style' => 'width:98%; height: 60%;'
