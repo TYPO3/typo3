@@ -1474,7 +1474,12 @@ class GeneralUtility {
 
 	/**
 	 * Reverse explode which explodes the string counting from behind.
-	 * Thus \TYPO3\CMS\Core\Utility\GeneralUtility::revExplode(':','my:words:here',2) will return array('my:words','here')
+	 *
+	 * Note: The delimiter has to given in the reverse order as
+	 *       it is occurring within the string.
+	 *
+	 * GeneralUtility::revExplode('[]', '[my][words][here]', 2)
+	 *   ==> array('[my][words', 'here]')
 	 *
 	 * @param string $delimiter Delimiter string to explode with
 	 * @param string $string The string to explode
@@ -1484,9 +1489,9 @@ class GeneralUtility {
 	static public function revExplode($delimiter, $string, $count = 0) {
 		// 2 is the (currently, as of 2014-02) most-used value for $count in the core, therefore we check it first
 		if ($count === 2) {
-			$position = strrpos($string, $delimiter);
+			$position = strrpos($string, strrev($delimiter));
 			if ($position !== FALSE) {
-				return array(substr($string, 0, $position), substr($string, $position + 1));
+				return array(substr($string, 0, $position), substr($string, $position + strlen($delimiter)));
 			} else {
 				return array($string);
 			}

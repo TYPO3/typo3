@@ -1355,47 +1355,70 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	// Tests concerning revExplode
 	//////////////////////////////////
 
+	/**
+	 * @return array
+	 */
 	public function revExplodeDataProvider() {
 		return array(
 			'limit 0 should return unexploded string' => array(
+				':',
 				'my:words:here',
 				0,
 				array('my:words:here')
 			),
 			'limit 1 should return unexploded string' => array(
+				':',
 				'my:words:here',
 				1,
 				array('my:words:here')
 			),
 			'limit 2 should return two pieces' => array(
+				':',
 				'my:words:here',
 				2,
 				array('my:words', 'here')
 			),
 			'limit 3 should return unexploded string' => array(
+				':',
 				'my:words:here',
 				3,
 				array('my', 'words', 'here')
 			),
 			'limit 0 should return unexploded string if no delimiter is contained' => array(
+				':',
 				'mywordshere',
 				0,
 				array('mywordshere')
 			),
 			'limit 1 should return unexploded string if no delimiter is contained' => array(
+				':',
 				'mywordshere',
 				1,
 				array('mywordshere')
 			),
 			'limit 2 should return unexploded string if no delimiter is contained' => array(
+				':',
 				'mywordshere',
 				2,
 				array('mywordshere')
 			),
 			'limit 3 should return unexploded string if no delimiter is contained' => array(
+				':',
 				'mywordshere',
 				3,
 				array('mywordshere')
+			),
+			'multi character delimiter is handled properly with limit 2' => array(
+				'[]',
+				'a[b][c][d]',
+				2,
+				array('a[b][c', 'd]')
+			),
+			'multi character delimiter is handled properly with limit 3' => array(
+				'[]',
+				'a[b][c][d]',
+				3,
+				array('a[b', 'c', 'd]')
 			),
 		);
 	}
@@ -1404,8 +1427,8 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 * @dataProvider revExplodeDataProvider
 	 */
-	public function revExplodeCorrectlyExplodesStringForGivenPartsCount($testString, $count, $expectedArray) {
-		$actualArray = Utility\GeneralUtility::revExplode(':', $testString, $count);
+	public function revExplodeCorrectlyExplodesStringForGivenPartsCount($delimiter, $testString, $count, $expectedArray) {
+		$actualArray = Utility\GeneralUtility::revExplode($delimiter, $testString, $count);
 		$this->assertEquals($expectedArray, $actualArray);
 	}
 
