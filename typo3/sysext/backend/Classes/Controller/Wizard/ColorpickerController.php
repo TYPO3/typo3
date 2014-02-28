@@ -27,6 +27,7 @@ namespace TYPO3\CMS\Backend\Controller\Wizard;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -149,10 +150,10 @@ class ColorpickerController {
 				$this->imageError = 'ERROR: The image, "' . $this->exampleImg . '", could not be found!';
 			}
 		}
-		// Setting field-change functions:
-		$fieldChangeFuncArr = unserialize($this->fieldChangeFunc);
 		$update = '';
 		if ($this->areFieldChangeFunctionsValid()) {
+			// Setting field-change functions:
+			$fieldChangeFuncArr = unserialize($this->fieldChangeFunc);
 			unset($fieldChangeFuncArr['alert']);
 			foreach ($fieldChangeFuncArr as $v) {
 				$update .= '
@@ -208,7 +209,7 @@ class ColorpickerController {
 		} else {
 			// Putting together the items into a form:
 			$content = '
-				<form name="colorform" method="post" action="wizard_colorpicker.php">
+				<form name="colorform" method="post" action="' . htmlspecialchars(BackendUtility::getModuleUrl('wizard_colorpicker')) . '">
 					' . $this->colorMatrix() . '
 					' . $this->colorList() . '
 					' . $this->colorImage() . '
@@ -275,7 +276,19 @@ class ColorpickerController {
 		');
 		$this->content = $GLOBALS['TBE_TEMPLATE']->startPage($GLOBALS['LANG']->getLL('colorpicker_title'));
 		// URL for the inner main frame:
-		$url = 'wizard_colorpicker.php?showPicker=1' . '&colorValue=' . rawurlencode($this->P['currentValue']) . '&fieldName=' . rawurlencode($this->P['itemName']) . '&formName=' . rawurlencode($this->P['formName']) . '&exampleImg=' . rawurlencode($this->P['exampleImg']) . '&md5ID=' . rawurlencode($this->P['md5ID']) . '&fieldChangeFunc=' . rawurlencode(serialize($this->P['fieldChangeFunc'])) . '&fieldChangeFuncHash=' . $this->P['fieldChangeFuncHash'];
+		$url = BackendUtility::getModuleUrl(
+			'wizard_colorpicker',
+			array(
+				'showPicker' => 1,
+				'colorValue' => $this->P['currentValue'],
+				'fieldName' => $this->P['itemName'],
+				'formName' => $this->P['formName'],
+				'exampleImg' => $this->P['exampleImg'],
+				'md5ID' => $this->P['md5ID'],
+				'fieldChangeFunc' => serialize($this->P['fieldChangeFunc']),
+				'fieldChangeFuncHash' => $this->P['fieldChangeFuncHash'],
+			)
+		);
 		$this->content .= '
 			<frameset rows="*,1" framespacing="0" frameborder="0" border="0">
 				<frame name="content" src="' . htmlspecialchars($url) . '" marginwidth="0" marginheight="0" frameborder="0" scrolling="auto" noresize="noresize" />
