@@ -2971,13 +2971,9 @@ class TypoScriptFrontendController {
 				$parameter .= ',' . $type;
 			}
 			$redirectUrl = $cObj->typoLink_URL(array('parameter' => $parameter));
-			// HTTP Status code header - dependent on shortcut type
-			$redirectStatus = HttpUtility::HTTP_STATUS_301;
-			if ($this->originalShortcutPage['shortcut_mode'] == \TYPO3\CMS\Frontend\Page\PageRepository::SHORTCUT_MODE_RANDOM_SUBPAGE) {
-				$redirectStatus = HttpUtility::HTTP_STATUS_307;
-			}
+
 			// redirect and exit
-			HttpUtility::redirect($redirectUrl, $redirectStatus);
+			HttpUtility::redirect($redirectUrl, HttpUtility::HTTP_STATUS_307);
 		}
 	}
 
