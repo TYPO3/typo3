@@ -496,7 +496,12 @@ return array(
 						'type' => 'script',
 						'title' => 'LLL:EXT:cms/locallang_ttc.xlf:bodytext.W.forms',
 						'icon' => 'wizard_forms.gif',
-						'script' => 'wizard_forms.php?special=formtype_mail',
+						'module' => array(
+							'name' => 'wizard_forms',
+							'urlParameters' => array(
+								'special' => 'formtype_mail'
+							)
+						),
 						'params' => array(
 							'xmlOutput' => 0
 						)

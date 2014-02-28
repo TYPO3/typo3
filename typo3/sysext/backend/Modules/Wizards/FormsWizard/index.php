@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 1999-2013 Kasper Skårhøj (kasperYYYY@typo3.com)
+ *  (c) 2014 Alexander Schnitzler (typo3@alexanderschnitzler.de)
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -26,15 +26,8 @@
  ***************************************************************/
 
 /**
- * Wizard to help make forms (fx. for tt_content elements) of type 'form'.
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
+ * Wizard to create/edit forms in TCEforms
  */
-require __DIR__ . '/init.php';
-
-\TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog('The way registering a wizard in TCA has chan
-ged in 6.2. Please set module[name]=wizard_forms instead of script=wizard_forms.php in your TCA. This
-script will be removed in two versions.');
 $formsController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\Wizard\\FormsController');
 $formsController->main();
 $formsController->printContent();
