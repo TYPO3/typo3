@@ -663,7 +663,7 @@ class ShortcutToolbarItem implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookI
 			case 'xMOD_file_edit.php':
 				$icon = 'gfx/edit_file.gif';
 				break;
-			case 'xMOD_wizard_rte.php':
+			case 'wizard_rte':
 				$icon = 'gfx/edit_rtewiz.gif';
 				break;
 			default:

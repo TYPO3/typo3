@@ -449,7 +449,7 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 			 * =======================================
 			 */
 			// Check if wizard_rte called this for fullscreen edtition
-			if (basename(PATH_thisScript) == 'wizard_rte.php') {
+			if (GeneralUtility::_GP('M') === 'wizard_rte') {
 				$this->fullScreen = TRUE;
 				$RTEWidth = '100%';
 				$RTEHeight = '100%';

@@ -1509,7 +1509,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 		$params['pid'] = $row['pid'];
 		$params['field'] = 'bodytext';
 		$params['returnUrl'] = GeneralUtility::linkThisScript();
-		$RTEonClick = 'window.location.href=\'' . $this->backPath . 'wizard_rte.php?' . GeneralUtility::implodeArrayForUrl('', array('P' => $params)) . '\';return false;';
+		$RTEonClick = 'window.location.href=' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('wizard_rte', array('P' => $params))) . ';return false;';
 		$addButton = $this->option_showBigButtons && $this->doEdit ? $GLOBALS['SOBE']->doc->t3Button($RTEonClick, $GLOBALS['LANG']->getLL('editInRTE')) : '';
 		return $addButton;
 	}

@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 1999-2013 Kasper Skårhøj (kasperYYYY@typo3.com)
+ *  (c) 2014 Alexander Schnitzler (typo3@alexanderschnitzler.de)
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -27,15 +27,9 @@
 
 /**
  * Wizard to display the RTE in "full screen" mode
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-require __DIR__ . '/init.php';
 \TYPO3\CMS\Backend\Utility\BackendUtility::lockRecords();
 
-\TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog('The way registering a wizard in TCA has chan
-ged in 6.2. Please set module[name]=wizard_rte instead of script=wizard_rte.php in your TCA. This
-script will be removed in two versions.');
 $rteController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\Wizard\\RteController');
 $rteController->main();
 $rteController->printContent();

@@ -93,7 +93,7 @@ class RteController {
 		$this->popView = GeneralUtility::_GP('popView');
 		$this->R_URI = GeneralUtility::linkThisScript(array('popView' => ''));
 		// "Module name":
-		$this->MCONF['name'] = 'xMOD_wizard_rte.php';
+		$this->MCONF['name'] = 'wizard_rte';
 		// Starting the document template object:
 		$this->doc = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];

@@ -78,7 +78,9 @@ return array(
 						'type' => 'script',
 						'title' => 'LLL:EXT:cms/locallang_ttc.xlf:bodytext.W.RTE',
 						'icon' => 'wizard_rte2.gif',
-						'script' => 'wizard_rte.php'
+						'module' => array(
+							'name' => 'wizard_rte'
+						)
 					)
 				)
 			)
