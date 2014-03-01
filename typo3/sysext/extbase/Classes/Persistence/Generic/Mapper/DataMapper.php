@@ -432,16 +432,20 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @see mapResultToPropertyValue()
 	 */
 	protected function mapObjectToClassProperty(\TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject, $propertyName, $fieldValue) {
-		if (empty($fieldValue) && !$this->propertyMapsByForeignKey($parentObject, $propertyName)) {
-			$propertyValue = $this->getEmptyRelationValue($parentObject, $propertyName);
-		} else {
-			$propertyMetaData = $this->reflectionService->getClassSchema(get_class($parentObject))->getProperty($propertyName);
-
-			if ($this->persistenceSession->hasIdentifier($fieldValue, $propertyMetaData['type'])) {
-				$propertyValue = $this->persistenceSession->getObjectByIdentifier($fieldValue, $propertyMetaData['type']);
-			} else {
+		if ($this->propertyMapsByForeignKey($parentObject, $propertyName)) {
 				$result = $this->fetchRelated($parentObject, $propertyName, $fieldValue);
 				$propertyValue = $this->mapResultToPropertyValue($parentObject, $propertyName, $result);
+		} else {
+			if ($fieldValue === '') {
+				$propertyValue = $this->getEmptyRelationValue($parentObject, $propertyName);
+			} else {
+				$propertyMetaData = $this->reflectionService->getClassSchema(get_class($parentObject))->getProperty($propertyName);
+				if ($this->persistenceSession->hasIdentifier($fieldValue, $propertyMetaData['type'])) {
+					$propertyValue = $this->persistenceSession->getObjectByIdentifier($fieldValue, $propertyMetaData['type']);
+				} else {
+					$result = $this->fetchRelated($parentObject, $propertyName, $fieldValue);
+					$propertyValue = $this->mapResultToPropertyValue($parentObject, $propertyName, $result);
+				}
 			}
 		}
 
