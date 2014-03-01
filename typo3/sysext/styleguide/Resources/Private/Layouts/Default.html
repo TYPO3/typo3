@@ -1,3 +1,5 @@
+{namespace sg = TYPO3\CMS\Styleguide\ViewHelpers}
+
 <f:be.container
 	includeCssFiles="{
 		1: '{f:uri.resource(path:\'Css/styles.css\')}'
@@ -30,7 +32,7 @@
 					<f:render section="iconButtons" />
 				</div>
 				<div class="right">
-					<a href="#" onClick="document.location.reload();">Reload</a>
+					<a href="#" onClick="document.location.reload();"><sg:spriteManagerIcon iconName="actions-system-refresh" /></a>
 					<f:be.buttons.shortcut />
 				</div>
 			</div>
