@@ -20,6 +20,29 @@ body {
 		margin-bottom: 12px;
 	}
 
+.example.code {
+	background-color: #272822;
+	color: #f8f8f8;
+	font-family: monospace, fixed;
+	box-shadow: inset 0 0 10px #000;
+}
+
+.tag-border {
+	color: #79ABFF;
+}
+.tag-name {
+	color: #BED6FF;
+}
+.tag-attribute {
+	color: #BED6FF;
+}
+.tag-attribute-value {
+	color: #E6DB74;
+}
+.tag-equals {
+	color: #F8F8F2;
+}
+
 .ci-color {
 	background-color: rgb(255, 134, 0);
 }
