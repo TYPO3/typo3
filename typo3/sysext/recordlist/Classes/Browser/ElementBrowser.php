@@ -251,6 +251,24 @@ class ElementBrowser {
 	public $fileProcessor;
 
 	/**
+	 * Sets the script url depending on being a module or script request
+	 */
+	protected function determineScriptUrl() {
+		if ($moduleName = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('M')) {
+			$this->thisScript = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl($moduleName);
+		} else {
+			$this->thisScript = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('SCRIPT_NAME');
+		}
+	}
+
+	/**
+	 * @return string
+	 */
+	protected function getThisScript() {
+		return strpos($this->thisScript, '?') === FALSE ? $this->thisScript . '?' : $this->thisScript . '&';
+	}
+
+	/**
 	 * Constructor:
 	 * Initializes a lot of variables, setting JavaScript functions in header etc.
 	 *
@@ -274,6 +292,7 @@ class ElementBrowser {
 		}
 		// Creating backend template object:
 		$this->doc = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
+		$this->doc->bodyTagId = 'typo3-browse-links-php';
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		// Load the Prototype library and browse_links.js
 		$this->doc->getPageRenderer()->loadPrototype();
@@ -297,8 +316,7 @@ class ElementBrowser {
 		// Site URL
 		// Current site url
 		$this->siteURL = GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
-		// The script to link to
-		$this->thisScript = GeneralUtility::getIndpEnv('SCRIPT_NAME');
+		$this->determineScriptUrl();
 		// Init fileProcessor
 		$this->fileProcessor = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Utility\\File\\BasicFileUtility');
 		$this->fileProcessor->init($GLOBALS['FILEMOUNTS'], $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
@@ -799,37 +817,37 @@ class ElementBrowser {
 			$menuDef['page']['isActive'] = $this->act == 'page';
 			$menuDef['page']['label'] = $GLOBALS['LANG']->getLL('page', TRUE);
 			$menuDef['page']['url'] = '#';
-			$menuDef['page']['addParams'] = 'onclick="jumpToUrl(\'?act=page\');return false;"';
+			$menuDef['page']['addParams'] = 'onclick="jumpToUrl(' . GeneralUtility::quoteJSvalue($this->getThisScript() . 'act=page') . ');return false;"';
 		}
 		if (in_array('file', $allowedItems)) {
 			$menuDef['file']['isActive'] = $this->act == 'file';
 			$menuDef['file']['label'] = $GLOBALS['LANG']->getLL('file', TRUE);
 			$menuDef['file']['url'] = '#';
-			$menuDef['file']['addParams'] = 'onclick="jumpToUrl(\'?act=file\');return false;"';
+			$menuDef['file']['addParams'] = 'onclick="jumpToUrl(' . GeneralUtility::quoteJSvalue($this->getThisScript() . 'act=file') . ');return false;"';
 		}
 		if (in_array('folder', $allowedItems)) {
 			$menuDef['folder']['isActive'] = $this->act == 'folder';
 			$menuDef['folder']['label'] = $GLOBALS['LANG']->getLL('folder', TRUE);
 			$menuDef['folder']['url'] = '#';
-			$menuDef['folder']['addParams'] = 'onclick="jumpToUrl(\'?act=folder\');return false;"';
+			$menuDef['folder']['addParams'] = 'onclick="jumpToUrl(' . GeneralUtility::quoteJSvalue($this->getThisScript() . 'act=folder') . ');return false;"';
 		}
 		if (in_array('url', $allowedItems)) {
 			$menuDef['url']['isActive'] = $this->act == 'url';
 			$menuDef['url']['label'] = $GLOBALS['LANG']->getLL('extUrl', TRUE);
 			$menuDef['url']['url'] = '#';
-			$menuDef['url']['addParams'] = 'onclick="jumpToUrl(\'?act=url\');return false;"';
+			$menuDef['url']['addParams'] = 'onclick="jumpToUrl(' . GeneralUtility::quoteJSvalue($this->getThisScript() . 'act=url') . ');return false;"';
 		}
 		if (in_array('mail', $allowedItems)) {
 			$menuDef['mail']['isActive'] = $this->act == 'mail';
 			$menuDef['mail']['label'] = $GLOBALS['LANG']->getLL('email', TRUE);
 			$menuDef['mail']['url'] = '#';
-			$menuDef['mail']['addParams'] = 'onclick="jumpToUrl(\'?act=mail\');return false;"';
+			$menuDef['mail']['addParams'] = 'onclick="jumpToUrl(' . GeneralUtility::quoteJSvalue($this->getThisScript() . 'act=mail') . ');return false;"';
 		}
 		if (is_array($this->thisConfig['userLinks.']) && in_array('spec', $allowedItems)) {
 			$menuDef['spec']['isActive'] = $this->act == 'spec';
 			$menuDef['spec']['label'] = $GLOBALS['LANG']->getLL('special', TRUE);
 			$menuDef['spec']['url'] = '#';
-			$menuDef['spec']['addParams'] = 'onclick="jumpToUrl(\'?act=spec\');return false;"';
+			$menuDef['spec']['addParams'] = 'onclick="jumpToUrl(' . GeneralUtility::quoteJSvalue($this->getThisScript() . 'act=spec') . ');return false;"';
 		}
 		// Call hook for extra options
 		foreach ($this->hookObjects as $hookObject) {
@@ -931,7 +949,8 @@ class ElementBrowser {
 
 				// Render the filelist if there is a folder selected
 				if ($selectedFolder) {
-					$files = $this->expandFolder($selectedFolder, $this->P['params']['allowedExtensions']);
+					$allowedExtensions = isset($this->P['params']['allowedExtensions']) ? $this->P['params']['allowedExtensions'] : '';
+					$files = $this->expandFolder($selectedFolder, $allowedExtensions);
 				}
 				$this->doc->JScode .= $this->doc->wrapScriptTags('
 				Tree.ajaxID = "SC_alt_file_navframe::expandCollapse";
@@ -2362,7 +2381,7 @@ class ElementBrowser {
 				<input type="hidden" name="file[upload][' . $a . '][data]" value="' . $a . '" /><br />';
 		}
 		// Make footer of upload form, including the submit button:
-		$redirectValue = $this->thisScript . '?act=' . $this->act . '&mode=' . $this->mode
+		$redirectValue = $this->getThisScript() . 'act=' . $this->act . '&mode=' . $this->mode
 			. '&expandFolder=' . rawurlencode($folderObject->getCombinedIdentifier())
 			. '&bparams=' . rawurlencode($this->bparams);
 		$code .= '<input type="hidden" name="redirect" value="' . htmlspecialchars($redirectValue) . '" />';
@@ -2426,7 +2445,7 @@ class ElementBrowser {
 				. '<input type="hidden" name="file[newfolder][' . $a . '][target]" value="'
 				. htmlspecialchars($folderObject->getCombinedIdentifier()) . '" />';
 		// Make footer of upload form, including the submit button:
-		$redirectValue = $this->thisScript . '?act=' . $this->act . '&mode=' . $this->mode
+		$redirectValue = $this->getThisScript() . 'act=' . $this->act . '&mode=' . $this->mode
 			. '&expandFolder=' . rawurlencode($folderObject->getCombinedIdentifier())
 			. '&bparams=' . rawurlencode($this->bparams);
 		$code .= '<input type="hidden" name="redirect" value="' . htmlspecialchars($redirectValue) . '" />'
@@ -2472,7 +2491,7 @@ class ElementBrowser {
 				. '&expandFolder=' . rawurlencode($this->selectedFolder->getCombinedIdentifier())
 				. '&bparams=' . rawurlencode($this->bparams);
 			$thumbNailCheck = BackendUtility::getFuncCheck('', 'SET[displayThumbs]', $_MOD_SETTINGS['displayThumbs'],
-					$this->thisScript, $addParams, 'id="checkDisplayThumbs"')
+					\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('M') ? '' : $this->thisScript, $addParams, 'id="checkDisplayThumbs"')
 				. ' <label for="checkDisplayThumbs">'
 				. $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_file_list.xlf:displayThumbs', TRUE) . '</label>';
 			$out .= $this->doc->spacer(5) . $thumbNailCheck . $this->doc->spacer(15);

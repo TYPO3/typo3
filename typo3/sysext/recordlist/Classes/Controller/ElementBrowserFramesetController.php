@@ -26,6 +26,8 @@ namespace TYPO3\CMS\Recordlist\Controller;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Script Class, putting the frameset together.
@@ -50,6 +52,7 @@ class ElementBrowserFramesetController {
 		// Setting GPvars:
 		$mode = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('mode');
 		$bparams = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('bparams');
+		$moduleUrl = BackendUtility::getModuleUrl('wizard_element_browser') . '&mode=';
 		// Set doktype:
 		$GLOBALS['TBE_TEMPLATE']->docType = 'xhtml_frames';
 		$GLOBALS['TBE_TEMPLATE']->JScode = $GLOBALS['TBE_TEMPLATE']->wrapScriptTags('
@@ -57,7 +60,7 @@ class ElementBrowserFramesetController {
 					close();
 				}
 				function setParams(mode,params) {	//
-					parent.content.location.href = "browse_links.php?mode="+mode+"&bparams="+params;
+					parent.content.location.href = ' . GeneralUtility::quoteJSvalue($moduleUrl) . '+mode+"&bparams="+params;
 				}
 				if (!window.opener) {
 					alert("ERROR: Sorry, no link to main window... Closing");
@@ -66,7 +69,7 @@ class ElementBrowserFramesetController {
 		');
 		$this->content .= $GLOBALS['TBE_TEMPLATE']->startPage($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:TYPO3_Element_Browser'));
 		// URL for the inner main frame:
-		$url = $GLOBALS['BACK_PATH'] . 'browse_links.php?mode=' . rawurlencode($mode) . '&bparams=' . rawurlencode($bparams);
+		$url = $GLOBALS['BACK_PATH'] . $moduleUrl . rawurlencode($mode) . '&bparams=' . rawurlencode($bparams);
 		// Create the frameset for the window:
 		// Formerly there were a ' onunload="closing();"' in the <frameset> tag - but it failed on Safari browser on Mac unless the handler was "onUnload"
 		$this->content .= '

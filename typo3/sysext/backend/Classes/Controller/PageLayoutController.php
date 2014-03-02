@@ -709,7 +709,7 @@ class PageLayoutController {
 		// Return-url for JavaScript:
 		$retUrlStr = $this->returnUrl ? '+\'&returnUrl=\'+\'' . rawurlencode($this->returnUrl) . '\'' : '';
 		// Drawing the edit record selectbox
-		$this->editSelect = '<select name="edit_record" onchange="' . htmlspecialchars(('jumpToUrl(\'db_layout.php?id=' . $this->id . '&edit_record=\'+escape(this.options[this.selectedIndex].value)' . $retUrlStr . ',this);')) . '">' . implode('', $opt) . '</select>';
+		$this->editSelect = '<select name="edit_record" onchange="' . htmlspecialchars(('jumpToUrl(' . GeneralUtility::quoteJSvalue('db_layout.php?id=' . $this->id . '&edit_record=') . '+escape(this.options[this.selectedIndex].value)' . $retUrlStr . ',this);')) . '">' . implode('', $opt) . '</select>';
 		// Creating editing form:
 		if ($GLOBALS['BE_USER']->check('tables_modify', $this->eRParts[0]) && $edit_record && ($this->eRParts[0] !== 'pages' && $this->EDIT_CONTENT || $this->eRParts[0] === 'pages' && $this->CALC_PERMS & 1)) {
 			// Splitting uid parts for special features, if new:
@@ -1107,7 +1107,7 @@ class PageLayoutController {
 						onclick="' . htmlspecialchars(('window.location.href=\'' . $GLOBALS['BACK_PATH'] . 'show_rechis.php?element=' . rawurlencode(($this->eRParts[0] . ':' . $this->eRParts[1])) . '&revert=ALL_FIELDS&sumUp=-1&returnUrl=' . rawurlencode($this->R_URI) . '\'; return false;')) . '"
 						title="' . htmlspecialchars(sprintf($GLOBALS['LANG']->getLL('undoLastChange'), BackendUtility::calcAge(($GLOBALS['EXEC_TIME'] - $this->undoButtonR['tstamp']), $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.minutesHoursDaysYears')))) . '">' . IconUtility::getSpriteIcon('actions-edit-undo') . '</a>';
 					// History button
-					$buttons['history_record'] = '<a href="#" onclick="' . htmlspecialchars(('jumpToUrl(\'' . $GLOBALS['BACK_PATH'] . 'show_rechis.php?element=' . rawurlencode(($this->eRParts[0] . ':' . $this->eRParts[1])) . '&returnUrl=' . rawurlencode($this->R_URI) . '#latest\');return false;')) . '" title="' . $GLOBALS['LANG']->getLL('recordHistory', TRUE) . '">' . IconUtility::getSpriteIcon('actions-document-history-open') . '</a>';
+					$buttons['history_record'] = '<a href="#" onclick="' . htmlspecialchars(('jumpToUrl(' . GeneralUtility::quoteJSvalue($GLOBALS['BACK_PATH'] . 'show_rechis.php?element=' . rawurlencode(($this->eRParts[0] . ':' . $this->eRParts[1])) . '&returnUrl=' . rawurlencode($this->R_URI) . '#latest') . ');return false;')) . '" title="' . $GLOBALS['LANG']->getLL('recordHistory', TRUE) . '">' . IconUtility::getSpriteIcon('actions-document-history-open') . '</a>';
 				}
 			}
 		}
@@ -1123,7 +1123,7 @@ class PageLayoutController {
 	 * Returns the number of hidden elements (including those hidden by start/end times)
 	 * on the current page (for the current sys_language)
 	 *
-	 * @return void
+	 * @return int
 	 * @todo Define visibility
 	 */
 	public function getNumberOfHiddenElements() {

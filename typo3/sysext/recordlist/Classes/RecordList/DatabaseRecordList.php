@@ -1082,14 +1082,14 @@ class DatabaseRecordList extends \TYPO3\CMS\Recordlist\RecordList\AbstractDataba
 					if (isset($this->currentTable['prev'][$row['uid']])) {
 						// Up
 						$params = '&cmd[' . $table . '][' . $row['uid'] . '][move]=' . $this->currentTable['prev'][$row['uid']];
-						$cells['moveUp'] = '<a href="#" onclick="' . htmlspecialchars(('return jumpToUrl(\'' . $GLOBALS['SOBE']->doc->issueCommand($params, -1) . '\');')) . '" title="' . $GLOBALS['LANG']->getLL('moveUp', TRUE) . '">' . IconUtility::getSpriteIcon('actions-move-up') . '</a>';
+						$cells['moveUp'] = '<a href="#" onclick="' . htmlspecialchars(('return jumpToUrl(' . GeneralUtility::quoteJSvalue($GLOBALS['SOBE']->doc->issueCommand($params, -1)) . ');')) . '" title="' . $GLOBALS['LANG']->getLL('moveUp', TRUE) . '">' . IconUtility::getSpriteIcon('actions-move-up') . '</a>';
 					} else {
 						$cells['moveUp'] = $this->spaceIcon;
 					}
 					if ($this->currentTable['next'][$row['uid']]) {
 						// Down
 						$params = '&cmd[' . $table . '][' . $row['uid'] . '][move]=' . $this->currentTable['next'][$row['uid']];
-						$cells['moveDown'] = '<a href="#" onclick="' . htmlspecialchars(('return jumpToUrl(\'' . $GLOBALS['SOBE']->doc->issueCommand($params, -1) . '\');')) . '" title="' . $GLOBALS['LANG']->getLL('moveDown', TRUE) . '">' . IconUtility::getSpriteIcon('actions-move-down') . '</a>';
+						$cells['moveDown'] = '<a href="#" onclick="' . htmlspecialchars(('return jumpToUrl(' . GeneralUtility::quoteJSvalue($GLOBALS['SOBE']->doc->issueCommand($params, -1)) . ');')) . '" title="' . $GLOBALS['LANG']->getLL('moveDown', TRUE) . '">' . IconUtility::getSpriteIcon('actions-move-down') . '</a>';
 					} else {
 						$cells['moveDown'] = $this->spaceIcon;
 					}
@@ -1102,10 +1102,10 @@ class DatabaseRecordList extends \TYPO3\CMS\Recordlist\RecordList\AbstractDataba
 				if ($permsEdit && $hiddenField && $GLOBALS['TCA'][$table]['columns'][$hiddenField] && (!$GLOBALS['TCA'][$table]['columns'][$hiddenField]['exclude'] || $GLOBALS['BE_USER']->check('non_exclude_fields', $table . ':' . $hiddenField))) {
 					if ($row[$hiddenField]) {
 						$params = '&data[' . $table . '][' . $rowUid . '][' . $hiddenField . ']=0';
-						$cells['hide'] = '<a href="#" onclick="' . htmlspecialchars(('return jumpToUrl(\'' . $GLOBALS['SOBE']->doc->issueCommand($params, -1) . '\');')) . '" title="' . $GLOBALS['LANG']->getLL(('unHide' . ($table == 'pages' ? 'Page' : '')), TRUE) . '">' . IconUtility::getSpriteIcon('actions-edit-unhide') . '</a>';
+						$cells['hide'] = '<a href="#" onclick="' . htmlspecialchars(('return jumpToUrl(' . GeneralUtility::quoteJSvalue($GLOBALS['SOBE']->doc->issueCommand($params, -1)) . ');')) . '" title="' . $GLOBALS['LANG']->getLL(('unHide' . ($table == 'pages' ? 'Page' : '')), TRUE) . '">' . IconUtility::getSpriteIcon('actions-edit-unhide') . '</a>';
 					} else {
 						$params = '&data[' . $table . '][' . $rowUid . '][' . $hiddenField . ']=1';
-						$cells['hide'] = '<a href="#" onclick="' . htmlspecialchars(('return jumpToUrl(\'' . $GLOBALS['SOBE']->doc->issueCommand($params, -1) . '\');')) . '" title="' . $GLOBALS['LANG']->getLL(('hide' . ($table == 'pages' ? 'Page' : '')), TRUE) . '">' . IconUtility::getSpriteIcon('actions-edit-hide') . '</a>';
+						$cells['hide'] = '<a href="#" onclick="' . htmlspecialchars(('return jumpToUrl(' . GeneralUtility::quoteJSvalue($GLOBALS['SOBE']->doc->issueCommand($params, -1)) . ');')) . '" title="' . $GLOBALS['LANG']->getLL(('hide' . ($table == 'pages' ? 'Page' : '')), TRUE) . '">' . IconUtility::getSpriteIcon('actions-edit-hide') . '</a>';
 					}
 				} elseif (!$this->table) {
 					$cells['hide'] = $this->spaceIcon;
@@ -1135,8 +1135,7 @@ class DatabaseRecordList extends \TYPO3\CMS\Recordlist\RecordList\AbstractDataba
 
 					$params = '&cmd[' . $table . '][' . $row['uid'] . '][delete]=1';
 					$onClick = htmlspecialchars(
-						('if (confirm(' . $warningText . ')) {jumpToUrl(\''
-							. $GLOBALS['SOBE']->doc->issueCommand($params, -1) . '\');} return false;')
+						('if (confirm(' . $warningText . ')) {jumpToUrl(' . GeneralUtility::quoteJSvalue($GLOBALS['SOBE']->doc->issueCommand($params, -1)) . ');} return false;')
 					);
 
 					$icon = IconUtility::getSpriteIcon('actions-edit-' . $actionName);
@@ -1150,14 +1149,14 @@ class DatabaseRecordList extends \TYPO3\CMS\Recordlist\RecordList\AbstractDataba
 					// Up (Paste as the page right after the current parent page)
 					if ($this->calcPerms & 8) {
 						$params = '&cmd[' . $table . '][' . $row['uid'] . '][move]=' . -$this->id;
-						$cells['moveLeft'] = '<a href="#" onclick="' . htmlspecialchars(('return jumpToUrl(\'' . $GLOBALS['SOBE']->doc->issueCommand($params, -1) . '\');')) . '" title="' . $GLOBALS['LANG']->getLL('prevLevel', TRUE) . '">' . IconUtility::getSpriteIcon('actions-move-left') . '</a>';
+						$cells['moveLeft'] = '<a href="#" onclick="' . htmlspecialchars(('return jumpToUrl(' . GeneralUtility::quoteJSvalue($GLOBALS['SOBE']->doc->issueCommand($params, -1)) . ');')) . '" title="' . $GLOBALS['LANG']->getLL('prevLevel', TRUE) . '">' . IconUtility::getSpriteIcon('actions-move-left') . '</a>';
 					}
 					// Down (Paste as subpage to the page right above)
 					if ($this->currentTable['prevUid'][$row['uid']]) {
 						$localCalcPerms = $GLOBALS['BE_USER']->calcPerms(BackendUtility::getRecord('pages', $this->currentTable['prevUid'][$row['uid']]));
 						if ($localCalcPerms & 8) {
 							$params = '&cmd[' . $table . '][' . $row['uid'] . '][move]=' . $this->currentTable['prevUid'][$row['uid']];
-							$cells['moveRight'] = '<a href="#" onclick="' . htmlspecialchars(('return jumpToUrl(\'' . $GLOBALS['SOBE']->doc->issueCommand($params, -1) . '\');')) . '" title="' . $GLOBALS['LANG']->getLL('nextLevel', TRUE) . '">' . IconUtility::getSpriteIcon('actions-move-right') . '</a>';
+							$cells['moveRight'] = '<a href="#" onclick="' . htmlspecialchars(('return jumpToUrl(' . GeneralUtility::quoteJSvalue($GLOBALS['SOBE']->doc->issueCommand($params, -1)) . ');')) . '" title="' . $GLOBALS['LANG']->getLL('nextLevel', TRUE) . '">' . IconUtility::getSpriteIcon('actions-move-right') . '</a>';
 						} else {
 							$cells['moveRight'] = $this->spaceIcon;
 						}

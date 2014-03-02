@@ -308,6 +308,24 @@ abstract class AbstractTreeView {
 	public $recs = array();
 
 	/**
+	 * Sets the script url depending on being a module or script request
+	 */
+	protected function determineScriptUrl() {
+		if ($moduleName = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('M')) {
+			$this->thisScript = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl($moduleName);
+		} else {
+			$this->thisScript = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('SCRIPT_NAME');
+		}
+	}
+
+	/**
+	 * @return string
+	 */
+	protected function getThisScript() {
+		return strpos($this->thisScript, '?') === FALSE ? $this->thisScript . '?' : $this->thisScript . '&';
+	}
+
+	/**
 	 * Initialize the tree class. Needs to be overwritten
 	 * Will set ->fieldsArray, ->backPath and ->clause
 	 *
@@ -526,7 +544,7 @@ abstract class AbstractTreeView {
 				$anchor = '#' . $bMark;
 				$name = ' name="' . $bMark . '"';
 			}
-			$aUrl = $this->thisScript . '?PM=' . $cmd . $anchor;
+			$aUrl = $this->getThisScript() . 'PM=' . $cmd . $anchor;
 			return '<a href="' . htmlspecialchars($aUrl) . '"' . $name . '>' . $icon . '</a>';
 		} else {
 			return $icon;

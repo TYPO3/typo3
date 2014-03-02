@@ -20,7 +20,7 @@ class localPageTree extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 	 * @todo Define visibility
 	 */
 	public function __construct() {
-		$this->thisScript = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('SCRIPT_NAME');
+		$this->determineScriptUrl();
 		$this->init();
 		$this->clause = ' AND doktype!=' . \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_RECYCLER . $this->clause;
 	}
@@ -66,7 +66,7 @@ class localPageTree extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 			} else {
 				$arrCol = '<td></td>';
 			}
-			$aOnClick = 'return jumpToUrl(\'' . $this->thisScript . '?act=' . $GLOBALS['SOBE']->browser->act . '&mode=' . $GLOBALS['SOBE']->browser->mode . '&expandPage=' . $v['row']['uid'] . '\');';
+			$aOnClick = 'return jumpToUrl(' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue($this->getThisScript() . 'act=' . $GLOBALS['SOBE']->browser->act . '&mode=' . $GLOBALS['SOBE']->browser->mode . '&expandPage=' . $v['row']['uid']) . ');';
 			$cEbullet = $this->ext_isLinkable($v['row']['doktype'], $v['row']['uid']) ? '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '"><img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/ol/arrowbullet.gif', 'width="18" height="16"') . ' alt="" /></a>' : '';
 			$out .= '
 				<tr class="' . $bgColorClass . '">
@@ -109,12 +109,13 @@ class localPageTree extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 	 * @todo Define visibility
 	 */
 	public function PM_ATagWrap($icon, $cmd, $bMark = '') {
+		$name = '';
 		if ($bMark) {
 			$anchor = '#' . $bMark;
 			$name = ' name="' . $bMark . '"';
 		}
-		$aOnClick = 'return jumpToUrl(\'' . $this->thisScript . '?PM=' . $cmd . '\',\'' . $anchor . '\');';
-		return '<a href="#"' . $name . ' onclick="' . htmlspecialchars($aOnClick) . '">' . $icon . '</a>';
+		$aOnClick = 'return jumpToUrl(' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue($this->getThisScript() . 'PM=' . $cmd) . ',' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue($anchor) . ');';
+		return '<a href="#"' . htmlspecialchars($name) . ' onclick="' . htmlspecialchars($aOnClick) . '">' . $icon . '</a>';
 	}
 
 	/**
@@ -168,9 +169,9 @@ class TBE_PageTree extends localPageTree {
 			$ficon = \TYPO3\CMS\Backend\Utility\IconUtility::getIcon('pages', $v);
 			$onClick = 'return insertElement(\'pages\', \'' . $v['uid'] . '\', \'db\', ' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue($v['title']) . ', \'\', \'\', \'' . $ficon . '\',\'\',1);';
 		} else {
-			$onClick = htmlspecialchars('return jumpToUrl(\'' . $this->thisScript . '?act=' . $GLOBALS['SOBE']->browser->act . '&mode=' . $GLOBALS['SOBE']->browser->mode . '&expandPage=' . $v['uid'] . '\');');
+			$onClick = 'return jumpToUrl(' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue($this->getThisScript() . 'act=' . $GLOBALS['SOBE']->browser->act . '&mode=' . $GLOBALS['SOBE']->browser->mode . '&expandPage=' . $v['uid']) . ');';
 		}
-		return '<a href="#" onclick="' . $onClick . '">' . $title . '</a>';
+		return '<a href="#" onclick="' . htmlspecialchars($onClick) . '">' . $title . '</a>';
 	}
 
 }
@@ -195,7 +196,7 @@ class localFolderTree extends \TYPO3\CMS\Backend\Tree\View\FolderTreeView {
 	 * @todo Define visibility
 	 */
 	public function __construct() {
-		$this->thisScript = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('SCRIPT_NAME');
+		$this->determineScriptUrl();
 		parent::__construct();
 	}
 
@@ -209,7 +210,7 @@ class localFolderTree extends \TYPO3\CMS\Backend\Tree\View\FolderTreeView {
 	 */
 	public function wrapTitle($title, \TYPO3\CMS\Core\Resource\Folder $folderObject) {
 		if ($this->ext_isLinkable($folderObject)) {
-			$aOnClick = 'return jumpToUrl(\'' . $this->thisScript . '?act=' . $GLOBALS['SOBE']->browser->act . '&mode=' . $GLOBALS['SOBE']->browser->mode . '&expandFolder=' . rawurlencode($folderObject->getCombinedIdentifier()) . '\');';
+			$aOnClick = 'return jumpToUrl(' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue($this->getThisScript() . 'act=' . $GLOBALS['SOBE']->browser->act . '&mode=' . $GLOBALS['SOBE']->browser->mode . '&expandFolder=' . rawurlencode($folderObject->getCombinedIdentifier())) . ');';
 			return '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">' . $title . '</a>';
 		} else {
 			return '<span class="typo3-dimmed">' . $title . '</span>';
@@ -242,12 +243,13 @@ class localFolderTree extends \TYPO3\CMS\Backend\Tree\View\FolderTreeView {
 	 * @todo Define visibility
 	 */
 	public function PM_ATagWrap($icon, $cmd, $bMark = '') {
+		$name = $anchor = '';
 		if ($bMark) {
 			$anchor = '#' . $bMark;
 			$name = ' name="' . $bMark . '"';
 		}
-		$aOnClick = 'return jumpToUrl(\'' . $this->thisScript . '?PM=' . $cmd . '\',\'' . $anchor . '\');';
-		return '<a href="#"' . $name . ' onclick="' . htmlspecialchars($aOnClick) . '">' . $icon . '</a>';
+		$aOnClick = 'return jumpToUrl(' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue($this->getThisScript() . 'PM=' . $cmd) . ',' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue($anchor) . ');';
+		return '<a href="#"' . htmlspecialchars($name) . ' onclick="' . htmlspecialchars($aOnClick) . '">' . $icon . '</a>';
 	}
 
 }
@@ -290,7 +292,7 @@ class TBE_FolderTree extends localFolderTree {
 	 */
 	public function wrapTitle($title, $folderObject) {
 		if ($this->ext_isLinkable($folderObject)) {
-			$aOnClick = 'return jumpToUrl(\'' . $this->thisScript . '?act=' . $GLOBALS['SOBE']->browser->act . '&mode=' . $GLOBALS['SOBE']->browser->mode . '&expandFolder=' . rawurlencode($folderObject->getCombinedIdentifier()) . '\');';
+			$aOnClick = 'return jumpToUrl(' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue($this->getThisScript() . 'act=' . $GLOBALS['SOBE']->browser->act . '&mode=' . $GLOBALS['SOBE']->browser->mode . '&expandFolder=' . rawurlencode($folderObject->getCombinedIdentifier())) . ');';
 			return '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">' . $title . '</a>';
 		} else {
 			return '<span class="typo3-dimmed">' . $title . '</span>';

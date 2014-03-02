@@ -3,6 +3,7 @@
  *  Copyright notice
  *
  *  (c) 1999-2013 Kasper Skårhøj (kasperYYYY@typo3.com)
+ *  (c) 2005-2013 Stanislas Rolland <typo3(arobas)sjbr.ca>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -24,16 +25,18 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * Displays the page/file tree for browsing database records or files.
  * Used from TCEFORMS an other elements
  * In other words: This is the ELEMENT BROWSER!
  *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
+ * Adapted for htmlArea RTE by Stanislas Rolland
+ *
+ * @author 	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author 	Stanislas Rolland <typo3(arobas)sjbr.ca>
  */
-require __DIR__ . '/init.php';
 
-$elementBrowserController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Recordlist\\Controller\\ElementBrowserController');
-$elementBrowserController->main();
-$elementBrowserController->printContent();
+// Make instance:
+$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Rtehtmlarea\\Controller\\BrowseLinksController');
+$SOBE->main();
+$SOBE->printContent();

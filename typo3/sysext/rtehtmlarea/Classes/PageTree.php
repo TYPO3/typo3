@@ -37,6 +37,8 @@ namespace TYPO3\CMS\Rtehtmlarea;
  * @author 	Kasper Skårhøj <kasperYYYY@typo3.com>
  * @author 	Stanislas Rolland <typo3(arobas)sjbr.ca>
  */
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Class which generates the page tree
  *
@@ -67,7 +69,7 @@ class PageTree extends \localPageTree {
 			} else {
 				$arrCol = '<td></td>';
 			}
-			$aOnClick = 'return jumpToUrl(\'' . $this->thisScript . '?act=' . $GLOBALS['SOBE']->browser->act . '&editorNo=' . $GLOBALS['SOBE']->browser->editorNo . '&contentTypo3Language=' . $GLOBALS['SOBE']->browser->contentTypo3Language . '&mode=' . $GLOBALS['SOBE']->browser->mode . '&expandPage=' . $v['row']['uid'] . '\');';
+			$aOnClick = 'return jumpToUrl(' . GeneralUtility::quoteJSvalue($this->getThisScript() . 'act=' . $GLOBALS['SOBE']->browser->act . '&editorNo=' . $GLOBALS['SOBE']->browser->editorNo . '&contentTypo3Language=' . $GLOBALS['SOBE']->browser->contentTypo3Language . '&mode=' . $GLOBALS['SOBE']->browser->mode . '&expandPage=' . $v['row']['uid']) . ');';
 			$cEbullet = $this->ext_isLinkable($v['row']['doktype'], $v['row']['uid']) ? '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '"><img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/ol/arrowbullet.gif', 'width="18" height="16"') . ' alt="" /></a>' : '';
 			$out .= '
 				<tr class="' . $bgColorClass . '">

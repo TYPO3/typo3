@@ -68,7 +68,7 @@ class ext_posMap extends \TYPO3\CMS\Backend\Tree\View\PagePositionMap {
 	 * @todo Define visibility
 	 */
 	public function wrapRecordTitle($str, $row) {
-		$aOnClick = 'jumpToUrl(\'' . $GLOBALS['SOBE']->local_linkThisScript(array('edit_record' => ('tt_content:' . $row['uid']))) . '\');return false;';
+		$aOnClick = 'jumpToUrl(' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue($GLOBALS['SOBE']->local_linkThisScript(array('edit_record' => ('tt_content:' . $row['uid'])))) . ');return false;';
 		return '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">' . $str . '</a>';
 	}
 
@@ -82,7 +82,7 @@ class ext_posMap extends \TYPO3\CMS\Backend\Tree\View\PagePositionMap {
 	 * @todo Define visibility
 	 */
 	public function wrapColumnHeader($str, $vv) {
-		$aOnClick = 'jumpToUrl(\'' . $GLOBALS['SOBE']->local_linkThisScript(array('edit_record' => ('_EDIT_COL:' . $vv))) . '\');return false;';
+		$aOnClick = 'jumpToUrl(' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue($GLOBALS['SOBE']->local_linkThisScript(array('edit_record' => ('_EDIT_COL:' . $vv)))) . ');return false;';
 		return '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">' . $str . '</a>';
 	}
 
@@ -103,7 +103,7 @@ class ext_posMap extends \TYPO3\CMS\Backend\Tree\View\PagePositionMap {
 		} else {
 			$location = $GLOBALS['SOBE']->local_linkThisScript(array('edit_record' => 'tt_content:new/' . $pid . '/' . $vv));
 		}
-		return 'jumpToUrl(\'' . $location . '\');return false;';
+		return 'jumpToUrl(' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue($location) . ');return false;';
 	}
 
 	/**

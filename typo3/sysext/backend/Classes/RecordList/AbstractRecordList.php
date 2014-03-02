@@ -103,9 +103,9 @@ abstract class AbstractRecordList {
 	public $fixedL = 30;
 
 	/**
-	 * @todo Define visibility
+	 * Script URL
 	 */
-	public $script = '';
+	public $thisScript = '';
 
 	// Set to zero, if you don't want a left-margin with addElement function
 	/**
@@ -168,6 +168,24 @@ abstract class AbstractRecordList {
 			$this->fixedL = $GLOBALS['BE_USER']->uc['titleLen'];
 		}
 		$this->getTranslateTools();
+	}
+
+	/**
+	 * Sets the script url depending on being a module or script request
+	 */
+	protected function determineScriptUrl() {
+		if ($moduleName = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('M')) {
+			$this->thisScript = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl($moduleName);
+		} else {
+			$this->thisScript = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('SCRIPT_NAME');
+		}
+	}
+
+	/**
+	 * @return string
+	 */
+	protected function getThisScript() {
+		return strpos($this->thisScript, '?') === FALSE ? $this->thisScript . '?' : $this->thisScript . '&';
 	}
 
 	/**
@@ -340,7 +358,7 @@ abstract class AbstractRecordList {
 	 * @todo Define visibility
 	 */
 	public function listURL($altId = '') {
-		return $this->script . '?id=' . ($altId !== '' ? $altId : $this->id);
+		return $this->getThisScript() . 'id=' . ($altId !== '' ? $altId : $this->id);
 	}
 
 	/**

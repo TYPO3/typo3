@@ -136,8 +136,7 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 		}
 		// Current site url
 		$this->siteURL = GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
-		// the script to link to
-		$this->thisScript = GeneralUtility::getIndpEnv('SCRIPT_NAME');
+		$this->determineScriptUrl();
 	}
 
 	/**
@@ -468,37 +467,37 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 			$menuDef['page']['isActive'] = $this->act == 'page';
 			$menuDef['page']['label'] = $GLOBALS['LANG']->getLL('page', TRUE);
 			$menuDef['page']['url'] = '#';
-			$menuDef['page']['addParams'] = 'onclick="jumpToUrl(\'' . htmlspecialchars(('?act=page&mode=' . $this->mode . '&bparams=' . $this->bparams)) . '\');return false;"';
+			$menuDef['page']['addParams'] = 'onclick="jumpToUrl(' . GeneralUtility::quoteJSvalue(($this->getThisScript() . 'act=page&mode=' . $this->mode . '&bparams=' . $this->bparams)) . ');return false;"';
 		}
 		if (in_array('file', $this->allowedItems)) {
 			$menuDef['file']['isActive'] = $this->act == 'file';
 			$menuDef['file']['label'] = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_browse_links.xlf:file', TRUE);
 			$menuDef['file']['url'] = '#';
-			$menuDef['file']['addParams'] = 'onclick="jumpToUrl(\'' . htmlspecialchars(('?act=file&mode=' . $this->mode . '&bparams=' . $this->bparams)) . '\');return false;"';
+			$menuDef['file']['addParams'] = 'onclick="jumpToUrl(' . GeneralUtility::quoteJSvalue(($this->getThisScript() . 'act=file&mode=' . $this->mode . '&bparams=' . $this->bparams)) . ');return false;"';
 		}
 		if (in_array('folder', $this->allowedItems)) {
 			$menuDef['folder']['isActive'] = $this->act == 'folder';
 			$menuDef['folder']['label'] = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_browse_links.xlf:folder', TRUE);
 			$menuDef['folder']['url'] = '#';
-			$menuDef['folder']['addParams'] = 'onclick="jumpToUrl(\'' . htmlspecialchars(('?act=folder&mode=' . $this->mode . '&bparams=' . $this->bparams)) . '\');return false;"';
+			$menuDef['folder']['addParams'] = 'onclick="jumpToUrl(' . GeneralUtility::quoteJSvalue(($this->getThisScript() . 'act=folder&mode=' . $this->mode . '&bparams=' . $this->bparams)) . ');return false;"';
 		}
 		if (in_array('url', $this->allowedItems)) {
 			$menuDef['url']['isActive'] = $this->act == 'url';
 			$menuDef['url']['label'] = $GLOBALS['LANG']->getLL('extUrl', TRUE);
 			$menuDef['url']['url'] = '#';
-			$menuDef['url']['addParams'] = 'onclick="jumpToUrl(\'' . htmlspecialchars(('?act=url&mode=' . $this->mode . '&bparams=' . $this->bparams)) . '\');return false;"';
+			$menuDef['url']['addParams'] = 'onclick="jumpToUrl(' . GeneralUtility::quoteJSvalue(($this->getThisScript() . 'act=url&mode=' . $this->mode . '&bparams=' . $this->bparams)) . ');return false;"';
 		}
 		if (in_array('mail', $this->allowedItems)) {
 			$menuDef['mail']['isActive'] = $this->act == 'mail';
 			$menuDef['mail']['label'] = $GLOBALS['LANG']->getLL('email', TRUE);
 			$menuDef['mail']['url'] = '#';
-			$menuDef['mail']['addParams'] = 'onclick="jumpToUrl(\'' . htmlspecialchars(('?act=mail&mode=' . $this->mode . '&bparams=' . $this->bparams)) . '\');return false;"';
+			$menuDef['mail']['addParams'] = 'onclick="jumpToUrl(' . GeneralUtility::quoteJSvalue(($this->getThisScript() . 'act=mail&mode=' . $this->mode . '&bparams=' . $this->bparams)) . ');return false;"';
 		}
 		if (is_array($this->thisConfig['userLinks.']) && in_array('spec', $this->allowedItems)) {
 			$menuDef['spec']['isActive'] = $this->act == 'spec';
 			$menuDef['spec']['label'] = $GLOBALS['LANG']->getLL('special', TRUE);
 			$menuDef['spec']['url'] = '#';
-			$menuDef['spec']['addParams'] = 'onclick="jumpToUrl(\'' . htmlspecialchars(('?act=spec&mode=' . $this->mode . '&bparams=' . $this->bparams)) . '\');return false;"';
+			$menuDef['spec']['addParams'] = 'onclick="jumpToUrl(' . GeneralUtility::quoteJSvalue(($this->getThisScript() . 'act=spec&mode=' . $this->mode . '&bparams=' . $this->bparams)) . ');return false;"';
 		}
 		// call hook for extra options
 		foreach ($this->hookObjects as $hookObject) {

@@ -164,9 +164,7 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 		}
 		// Site URL
 		$this->siteURL = GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
-		// Current site url
-		// the script to link to
-		$this->thisScript = GeneralUtility::getIndpEnv('SCRIPT_NAME');
+		$this->determineScriptUrl();
 	}
 
 	/**
@@ -370,10 +368,10 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 			var HTMLArea = window.parent.HTMLArea;
 
 			HTMLArea.TYPO3Image.insertElement = function (table, uid, type, filename, filePath, fileExt, fileIcon) {
-				return jumpToUrl(\'?editorNo=\' + \'' . $editorNo . '\' + \'&insertImage=\' + filePath + \'&table=\' + table + \'&uid=\' + uid + \'&type=\' + type + \'bparams=\' + \'' . $this->bparams . '\');
+				return jumpToUrl(' . GeneralUtility::quoteJSvalue($this->getThisScript() . 'editorNo=') . ' + \'' . $editorNo . '\' + \'&insertImage=\' + filePath + \'&table=\' + table + \'&uid=\' + uid + \'&type=\' + type + \'bparams=\' + \'' . $this->bparams . '\');
 			}
 			function insertElement(table, uid, type, fileName, filePath, fileExt, fileIcon, action, close) {
-				return jumpToUrl(\'?editorNo=\' + \'' . $editorNo . '\' + \'&insertImage=\' + filePath + \'&table=\' + table + \'&uid=\' + uid + \'&type=\' + type + \'bparams=\' + \'' . $this->bparams . '\');
+				return jumpToUrl(' . GeneralUtility::quoteJSvalue($this->getThisScript() . 'editorNo=') . ' + \'' . $editorNo . '\' + \'&insertImage=\' + filePath + \'&table=\' + table + \'&uid=\' + uid + \'&type=\' + type + \'bparams=\' + \'' . $this->bparams . '\');
 			}
 			function initEventListeners() {
 				if (Ext.isWebKit) {
@@ -694,25 +692,25 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 			$menuDef['image']['isActive'] = FALSE;
 			$menuDef['image']['label'] = $GLOBALS['LANG']->getLL('currentImage', TRUE);
 			$menuDef['image']['url'] = '#';
-			$menuDef['image']['addParams'] = 'onClick="jumpToUrl(\'?act=image&bparams=' . $this->bparams . '\');return false;"';
+			$menuDef['image']['addParams'] = 'onClick="jumpToUrl(' . GeneralUtility::quoteJSvalue($this->getThisScript() . 'act=image&bparams=' . $this->bparams) . ');return false;"';
 		}
 		if (in_array('magic', $this->allowedItems)) {
 			$menuDef['magic']['isActive'] = FALSE;
 			$menuDef['magic']['label'] = $GLOBALS['LANG']->getLL('magicImage', TRUE);
 			$menuDef['magic']['url'] = '#';
-			$menuDef['magic']['addParams'] = 'onClick="jumpToUrl(\'?act=magic&bparams=' . $this->bparams . '\');return false;"';
+			$menuDef['magic']['addParams'] = 'onClick="jumpToUrl(' . GeneralUtility::quoteJSvalue($this->getThisScript() . 'act=magic&bparams=' . $this->bparams) . ');return false;"';
 		}
 		if (in_array('plain', $this->allowedItems)) {
 			$menuDef['plain']['isActive'] = FALSE;
 			$menuDef['plain']['label'] = $GLOBALS['LANG']->getLL('plainImage', TRUE);
 			$menuDef['plain']['url'] = '#';
-			$menuDef['plain']['addParams'] = 'onClick="jumpToUrl(\'?act=plain&bparams=' . $this->bparams . '\');return false;"';
+			$menuDef['plain']['addParams'] = 'onClick="jumpToUrl(' . GeneralUtility::quoteJSvalue($this->getThisScript() . 'act=plain&bparams=' . $this->bparams) . ');return false;"';
 		}
 		if (in_array('dragdrop', $this->allowedItems)) {
 			$menuDef['dragdrop']['isActive'] = FALSE;
 			$menuDef['dragdrop']['label'] = $GLOBALS['LANG']->getLL('dragDropImage', TRUE);
 			$menuDef['dragdrop']['url'] = '#';
-			$menuDef['dragdrop']['addParams'] = 'onClick="jumpToUrl(\'?act=dragdrop&bparams=' . $this->bparams . '\');return false;"';
+			$menuDef['dragdrop']['addParams'] = 'onClick="jumpToUrl(' . GeneralUtility::quoteJSvalue($this->getThisScript() . 'act=dragdrop&bparams=' . $this->bparams) . ');return false;"';
 		}
 		// Call hook for extra options
 		foreach ($this->hookObjects as $hookObject) {

@@ -127,7 +127,7 @@ class FolderTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 			// Activates dynamic AJAX based tree
 			$scopeData = serialize($this->scope);
 			$scopeHash = GeneralUtility::hmac($scopeData);
-			$js = htmlspecialchars('Tree.load(\'' . $cmd . '\', ' . (int)$isExpand . ', this, \'' . $scopeData . '\', \'' . $scopeHash . '\');');
+			$js = htmlspecialchars('Tree.load(' . GeneralUtility::quoteJSvalue($cmd) . ', ' . (int)$isExpand . ', this, ' . GeneralUtility::quoteJSvalue($scopeData) . ', ' . GeneralUtility::quoteJSvalue($scopeHash) . ');');
 			return '<a class="pm" onclick="' . $js . '">' . $icon . '</a>';
 		} else {
 			return $icon;

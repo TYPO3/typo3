@@ -91,6 +91,9 @@ class ElementBrowserController {
 		// this might not be needed but some classes refer to $GLOBALS['SOBE']->doc, so ...
 		$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
+		// Apply the same styles as those of the base script
+		$this->doc->bodyTagId = 'typo3-browse-links-php';
+
 	}
 
 	/**

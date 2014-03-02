@@ -228,7 +228,13 @@
 										<type>popup</type>
 										<title>LLL:EXT:cms/locallang_ttc.xml:media.browseUrlTitle</title>
 										<icon>link_popup.gif</icon>
-										<script>browse_links.php?mode=wizard&amp;act=file|url</script>
+										<module type="array">
+											<name>wizard_element_browser</name>
+											<urlParameters type="array">
+												<mode>wizard</mode>
+												<act>file|url</act>
+											</urlParameters>
+										</module>
 										<params type="array">
 											<blindLinkOptions>page,folder,mail,spec</blindLinkOptions>
 											<allowedExtensions>class,swa,dcr,wav,avi,au,mov,asf,mpg,wmv,mp3,mp4,m4v,m4a,flv,ogg,ogv,swf,webm</allowedExtensions>
@@ -273,7 +279,13 @@
 														<type>popup</type>
 														<title>LLL:EXT:cms/locallang_ttc.xml:media.browseUrlTitle</title>
 														<icon>link_popup.gif</icon>
-														<script>browse_links.php?mode=wizard&amp;act=file|url</script>
+														<module type="array">
+															<name>wizard_element_browser</name>
+															<urlParameters type="array">
+																<mode>wizard</mode>
+																<act>file|url</act>
+															</urlParameters>
+														</module>
 														<params type="array">
 															<blindLinkOptions>page,folder,mail,spec</blindLinkOptions>
 															<allowedExtensions>mov,mpg,mp4,m4a,m4v,ogg,ogv,swf,webm</allowedExtensions>
@@ -302,7 +314,13 @@
 										<type>popup</type>
 										<title>LLL:EXT:cms/locallang_ttc.xml:media.browseUrlTitle</title>
 										<icon>link_popup.gif</icon>
-										<script>browse_links.php?mode=wizard&amp;act=file|url</script>
+										<module type="array">
+											<name>wizard_element_browser</name>
+											<urlParameters type="array">
+												<mode>wizard</mode>
+												<act>file|url</act>
+											</urlParameters>
+										</module>
 										<params type="array">
 											<blindLinkOptions>page,folder,mail,spec</blindLinkOptions>
 											<allowedExtensions>srt</allowedExtensions>
@@ -336,7 +354,13 @@
 														<type>popup</type>
 														<title>LLL:EXT:cms/locallang_ttc.xml:media.browseUrlTitle</title>
 														<icon>link_popup.gif</icon>
-														<script>browse_links.php?mode=wizard&amp;act=file|url</script>
+														<module type="array">
+															<name>wizard_element_browser</name>
+															<urlParameters type="array">
+																<mode>wizard</mode>
+																<act>file|url</act>
+															</urlParameters>
+														</module>
 														<params type="array">
 															<blindLinkOptions>page,folder,mail,spec</blindLinkOptions>
 															<allowedExtensions>au,asf,mp3,m4a,oga,ogg, wav,webm,wmv</allowedExtensions>
@@ -377,7 +401,13 @@
 										<type>popup</type>
 										<title>LLL:EXT:cms/locallang_ttc.xml:media.browseUrlTitle</title>
 										<icon>link_popup.gif</icon>
-										<script>browse_links.php?mode=wizard&amp;act=file|url</script>
+										<module type="array">
+											<name>wizard_element_browser</name>
+											<urlParameters type="array">
+												<mode>wizard</mode>
+												<act>file|url</act>
+											</urlParameters>
+										</module>
 										<params type="array">
 											<blindLinkOptions>page,folder,mail,spec</blindLinkOptions>
 											<allowedExtensions>au,asf,mp3,m4a,oga,swa,wav,webm,wmv</allowedExtensions>
@@ -411,7 +441,13 @@
 														<type>popup</type>
 														<title>LLL:EXT:cms/locallang_ttc.xml:media.browseUrlTitle</title>
 														<icon>link_popup.gif</icon>
-														<script>browse_links.php?mode=wizard&amp;act=file|url</script>
+														<module type="array">
+															<name>wizard_element_browser</name>
+															<urlParameters type="array">
+																<mode>wizard</mode>
+																<act>file|url</act>
+															</urlParameters>
+														</module>
 														<params type="array">
 															<blindLinkOptions>page,folder,mail,spec</blindLinkOptions>
 															<allowedExtensions>au,asf,mp3,m4a,oga,ogg, wav,webm,wmv</allowedExtensions>

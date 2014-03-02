@@ -42,6 +42,13 @@ class BrowseLinksController {
 	protected $content = '';
 
 	/**
+	 * Initialize language files
+	 */
+	public function __construct() {
+		$GLOBALS['LANG']->includeLLFile('EXT:rtehtmlarea/mod3/locallang.xlf');
+		$GLOBALS['LANG']->includeLLFile('EXT:rtehtmlarea/htmlarea/locallang_dialogs.xlf');
+	}
+	/**
 	 * Main function, rendering the element browser in RTE mode.
 	 *
 	 * @return 	void

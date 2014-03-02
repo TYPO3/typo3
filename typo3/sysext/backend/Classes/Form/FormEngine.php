@@ -4157,6 +4157,8 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 								$params['flexFormPath'] = $flexFormPath;
 								$params['md5ID'] = $md5ID;
 								$params['returnUrl'] = $this->thisReturnUrl();
+
+								$wScript = '';
 								// Resolving script filename and setting URL.
 								if (isset($wConf['module']['name'])) {
 									$urlParameters = array();
@@ -4179,6 +4181,8 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 											break;
 										}
 									} else {
+										// Compatibility layer
+										// @deprecated since 6.2, will be removed 2 versions later
 										$parsedWizardUrl = parse_url($wConf['script']);
 										if (in_array($parsedWizardUrl['path'], array(
 													'wizard_add.php',
@@ -4188,13 +4192,18 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 													'wizard_list.php',
 													'wizard_rte.php',
 													'wizard_table.php',
+													'browse_links.php',
 												))
 										) {
 											$urlParameters = array();
 											if (isset($parsedWizardUrl['query'])) {
 												 parse_str($parsedWizardUrl['query'], $urlParameters);
 											}
-											$moduleName = str_replace('.php', '', $parsedWizardUrl['path']);
+											$moduleName = str_replace(
+												array('.php', 'browse_links'),
+												array('', 'wizard_element_browser'),
+												$parsedWizardUrl['path']
+											);
 											$wScript = BackendUtility::getModuleUrl($moduleName, $urlParameters);
 											unset($moduleName, $urlParameters, $parsedWizardUrl);
 										} else {
@@ -4202,7 +4211,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 										}
 									}
 								} elseif (in_array($wConf['type'], array('script', 'colorbox', 'popup'), TRUE)) {
-									// Illeagal configuration, fail silently
+									// Illegal configuration, fail silently
 									break;
 								}
 
