@@ -184,7 +184,6 @@ function debugObj(obj,name)	{	//
 
 
 	// Used by Frameset Modules
-var condensedMode = TYPO3.configuration.condensedMode;
 var currentSubScript = "";
 var currentSubNavScript = "";
 

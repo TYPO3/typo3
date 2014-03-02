@@ -225,7 +225,6 @@ class PreviewController extends \TYPO3\CMS\Workspaces\Controller\AbstractControl
 			'securityLevel' => $loginSecurityLevel,
 			'TYPO3_mainDir' => TYPO3_mainDir,
 			'pageModule' => $pageModule,
-			'condensedMode' => $GLOBALS['BE_USER']->uc['condensedMode'] ? 1 : 0,
 			'inWorkspace' => $GLOBALS['BE_USER']->workspace !== 0 ? 1 : 0,
 			'workspaceFrontendPreviewEnabled' => $GLOBALS['BE_USER']->user['workspace_preview'] ? 1 : 0,
 			'veriCode' => $GLOBALS['BE_USER']->veriCode(),

@@ -170,7 +170,7 @@ class ClickMenu {
 		if ($this->iParts[2]) {
 			$this->listFrame = 1;
 		}
-		if ($GLOBALS['BE_USER']->uc['condensedMode'] || $this->iParts[2] == 2) {
+		if ($this->iParts[2] == 2) {
 			$this->alwaysContentFrame = 1;
 		}
 		if (isset($this->iParts[1]) && $this->iParts[1] !== '') {

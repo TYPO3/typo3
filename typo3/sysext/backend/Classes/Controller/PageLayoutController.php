@@ -703,9 +703,6 @@ class PageLayoutController {
 		// Setting close url/return url for exiting this script:
 		// Goes to 'Columns' view if close is pressed (default)
 		$this->closeUrl = $this->local_linkThisScript(array('SET' => array('function' => 1)));
-		if ($GLOBALS['BE_USER']->uc['condensedMode']) {
-			$this->closeUrl = $GLOBALS['BACK_PATH'] . 'alt_db_navframe.php';
-		}
 		if ($this->returnUrl) {
 			$this->closeUrl = $this->returnUrl;
 		}
