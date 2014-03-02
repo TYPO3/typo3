@@ -39,6 +39,7 @@ class DataProviderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function setUp() {
 		$GLOBALS['TYPO3_CONF_VARS']['BE']['pageTree']['preloadLimit'] = 0;
 		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/tree/pagetree/class.t3lib_tree_pagetree_dataprovider.php']['postProcessCollections'] = array();
+		$GLOBALS['LOCKED_RECORDS'] = array();
 		$this->fixture = new \TYPO3\CMS\Backend\Tree\Pagetree\DataProvider();
 	}
 
