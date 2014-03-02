@@ -51,7 +51,9 @@ return array(
 						'title' => 'LLL:EXT:cms/locallang_tca.xlf:backend_layout.wizard',
 						'type' => 'popup',
 						'icon' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('cms') . 'layout/wizard_backend_layout.png',
-						'script' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('cms') . 'layout/wizard_backend_layout.php',
+						'module' => array(
+							'name' => 'wizard_backend_layout'
+						),
 						'JSopenParams' => 'height=800,width=800,status=0,menubar=0,scrollbars=0'
 					)
 				)

@@ -45,4 +45,10 @@ if (TYPO3_MODE === 'BE') {
 		'wizard_colorpicker',
 		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Modules/Wizards/ColorpickerWizard/'
 	);
+
+	// Register backend_layout wizard
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
+		'wizard_backend_layout',
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Modules/Wizards/BackendLayoutWizard/'
+	);
 }
