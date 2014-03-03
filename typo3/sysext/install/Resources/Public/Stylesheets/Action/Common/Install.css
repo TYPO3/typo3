@@ -384,8 +384,27 @@ button span.t3-install-form-button-icon-negative {
 	background-image: url('../../../Images/Menu/Welcome.png');
 }
 
-#t3-install-menu #t3-install-menu-logout {
-	background-image: url('../../../Images/Menu/Logout.gif');
+#t3-install-menu-logout {
+	margin: 2em 0 0 0.8em;
+	padding: 0;
+	list-style: none;
+	width: 18em;
+	font-size: 110%;
+	line-height: 2em;
+}
+
+#t3-install-menu-logout li {
+	padding: 0.35em 0 0.35em 0;
+}
+
+#t3-install-menu-logout a {
+	color: #606060;
+	text-decoration: none;
+}
+
+body.standalone #t3-install-menu-logout a {
+	color: #797878;
+	text-decoration: none;
 }
 
 #t3-install-menu .t3-install-menu-errorCount {

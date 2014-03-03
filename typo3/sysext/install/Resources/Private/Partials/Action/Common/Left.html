@@ -1,13 +1,23 @@
 <div id="t3-install-left">
 	<ol id="t3-install-menu">
-		<li id="t3-install-menu-welcome" class="{f:if(condition:'{action} == \'welcome\'', then:'act')}">
-			<a href="Install.php?install[action]=welcome&install[context]={context}&install[controller]=tool">
-				Welcome
-			</a>
-		</li>
 		<li id="t3-install-menu-importantActions" class="{f:if(condition:'{action} == \'importantActions\'', then:'act')}">
 			<a href="Install.php?install[action]=importantActions&install[context]={context}&install[controller]=tool">
 				Important actions
+			</a>
+		</li>
+		<li id="t3-install-menu-configuration" class="{f:if(condition:'{action} == \'configuration\'', then:'act')}">
+			<a href="Install.php?install[action]=configuration&install[context]={context}&install[controller]=tool">
+				Configuration Presets
+			</a>
+		</li>
+		<li id="t3-install-menu-allConfiguration" class="{f:if(condition:'{action} == \'allConfiguration\'', then:'act')}">
+			<a href="Install.php?install[action]=allConfiguration&install[context]={context}&install[controller]=tool">
+				All configuration
+			</a>
+		</li>
+		<li id="t3-install-menu-upgradeWizard" class="{f:if(condition:'{action} == \'upgradeWizard\'', then:'act')}">
+			<a href="Install.php?install[action]=upgradeWizard&install[context]={context}&install[controller]=tool">
+				Upgrade Wizard
 			</a>
 		</li>
 		<li id="t3-install-menu-systemEnvironment" class="{f:if(condition:'{action} == \'systemEnvironment\'', then:'act')}">
@@ -16,11 +26,6 @@
 				<f:if condition="{environmentErrors}">
 					<span class="t3-install-menu-errorCount"><f:count>{environmentErrors}</f:count></span>
 				</f:if>
-			</a>
-		</li>
-		<li id="t3-install-menu-configuration" class="{f:if(condition:'{action} == \'configuration\'', then:'act')}">
-			<a href="Install.php?install[action]=configuration&install[context]={context}&install[controller]=tool">
-				Configuration Presets
 			</a>
 		</li>
 		<li id="t3-install-menu-folderStructure" class="{f:if(condition:'{action} == \'folderStructure\'', then:'act')}">
@@ -36,25 +41,15 @@
 				Test setup
 			</a>
 		</li>
-		<li id="t3-install-menu-upgradeWizard" class="{f:if(condition:'{action} == \'upgradeWizard\'', then:'act')}">
-			<a href="Install.php?install[action]=upgradeWizard&install[context]={context}&install[controller]=tool">
-				Upgrade Wizard
-			</a>
-		</li>
-		<li id="t3-install-menu-allConfiguration" class="{f:if(condition:'{action} == \'allConfiguration\'', then:'act')}">
-			<a href="Install.php?install[action]=allConfiguration&install[context]={context}&install[controller]=tool">
-				All configuration
-			</a>
-		</li>
 		<li id="t3-install-menu-cleanUp" class="{f:if(condition:'{action} == \'cleanUp\'', then:'act')}">
 			<a href="Install.php?install[action]=cleanUp&install[context]={context}&install[controller]=tool">
 				Clean up
 			</a>
 		</li>
-		<li id="t3-install-menu-logout">
-			<a href="Install.php?install[action]=logout&install[context]={context}&install[controller]=tool">
-				Logout from Install Tool
-			</a>
+	</ol>
+	<ol id="t3-install-menu-logout">
+		<li>
+			<a href="Install.php?install[action]=logout&install[context]={context}&install[controller]=tool">Logout from Install Tool</a>
 		</li>
 	</ol>
 	<ol id="t3-install-links">
