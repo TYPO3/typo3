@@ -98,11 +98,21 @@ class TtContentUploadsUpdateWizard extends AbstractUpdate {
 		// Fetch records where the field media does not contain a plain integer value
 		// * check whether media field is not empty
 		// * then check whether media field does not contain a reference count (= not integer)
-		$notMigratedRowsCount = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows(
-			'uid',
-			'tt_content',
-			'media <> \'\' AND CAST(CAST(media AS DECIMAL) AS CHAR) <> media OR (CType = \'uploads\' AND select_key != \'\')'
+		$mapping = $this->getTableColumnMapping();
+		$sql = $GLOBALS['TYPO3_DB']->SELECTquery(
+			'COUNT(' . $mapping['mapFieldNames']['uid'] . ')',
+			$mapping['mapTableName'],
+			'1=1'
 		);
+		$whereClause = $this->getDbalCompliantUpdateWhereClause();
+		$sql = str_replace('WHERE 1=1', $whereClause, $sql);
+		$resultSet = $GLOBALS['TYPO3_DB']->sql_query($sql);
+		$notMigratedRowsCount = 0;
+		if ($resultSet !== FALSE) {
+			list($notMigratedRowsCount) = $GLOBALS['TYPO3_DB']->sql_fetch_row($resultSet);
+			$notMigratedRowsCount = (int)$notMigratedRowsCount;
+			$GLOBALS['TYPO3_DB']->sql_free_result($resultSet);
+		}
 		if ($notMigratedRowsCount > 0) {
 			$description = 'There are Content Elements of type "upload" which are referencing files that are not using ' . ' the File Abstraction Layer. This wizard will move the files to fileadmin/' . self::FOLDER_ContentUploads . ' and index them.';
 			$updateNeeded = TRUE;
@@ -215,12 +225,105 @@ class TtContentUploadsUpdateWizard extends AbstractUpdate {
 	 * @return array
 	 */
 	protected function getRecordsFromTable() {
-		$fields = implode(',', array('uid', 'pid', 'select_key', 'media', 'imagecaption', 'titleText'));
-		$records = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+		$mapping = $this->getTableColumnMapping();
+		$reverseFieldMapping = array_flip($mapping['mapFieldNames']);
+
+		$fields = array();
+		foreach (array('uid', 'pid', 'select_key', 'media', 'imagecaption', 'titleText') as $columnName) {
+			$fields[] = $mapping['mapFieldNames'][$columnName];
+		}
+		$fields = implode(',', $fields);
+
+		$sql = $GLOBALS['TYPO3_DB']->SELECTquery(
 			$fields,
-			'tt_content', 'media <> \'\' AND CAST(CAST(media AS DECIMAL) AS CHAR) <> media OR (CType = \'uploads\' AND select_key != \'\')'
+			$mapping['mapTableName'],
+			'1=1'
 		);
+		$whereClause = $this->getDbalCompliantUpdateWhereClause();
+		$sql = str_replace('WHERE 1=1', $whereClause, $sql);
+		$resultSet = $GLOBALS['TYPO3_DB']->sql_query($sql);
+		$records = array();
+		if (!$GLOBALS['TYPO3_DB']->sql_error()) {
+			while (($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($resultSet)) !== FALSE) {
+				// Mapping back column names to native TYPO3 names
+				$record = array();
+				foreach ($reverseFieldMapping as $columnName => $finalColumnName) {
+					$record[$finalColumnName] = $row[$columnName];
+				}
+				$records[] = $record;
+			}
+			$GLOBALS['TYPO3_DB']->sql_free_result($resultSet);
+		}
 		return $records;
+	}
+
+	/**
+	 * Returns a DBAL-compliant where clause to be used for the update where clause.
+	 * We have DBAL-related code here because the SQL parser is not able to properly
+	 * parse this complex condition but we know that it is compatible with the DBMS
+	 * we support in TYPO3 Core.
+	 *
+	 * @return string
+	 */
+	protected function getDbalCompliantUpdateWhereClause() {
+		$mapping = $this->getTableColumnMapping();
+		$this->quoteIdentifiers($mapping);
+
+		$where = sprintf(
+			'WHERE %s <> \'\' AND CAST(CAST(%s AS DECIMAL) AS CHAR) <> %s OR (%s = \'uploads\' AND %s != \'\')',
+			$mapping['mapFieldNames']['media'],
+			$mapping['mapFieldNames']['media'],
+			$mapping['mapFieldNames']['media'],
+			$mapping['mapFieldNames']['CType'],
+			$mapping['mapFieldNames']['select_key']
+		);
+
+		return $where;
+	}
+
+	/**
+	 * Returns the table and column mapping.
+	 *
+	 * @return array
+	 */
+	protected function getTableColumnMapping() {
+		$mapping = array(
+			'mapTableName' => 'tt_content',
+			'mapFieldNames' => array(
+				'uid'          => 'uid',
+				'pid'          => 'pid',
+				'media'        => 'media',
+				'imagecaption' => 'imagecaption',
+				'titleText'    => 'titleText',
+				'CType'        => 'CType',
+				'select_key'   => 'select_key',
+			)
+		);
+
+		if ($GLOBALS['TYPO3_DB'] instanceof \TYPO3\CMS\Dbal\Database\DatabaseConnection) {
+			if (!empty($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['dbal']['mapping']['tt_content'])) {
+				$mapping = array_merge_recursive($mapping, $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['dbal']['mapping']['tt_content']);
+			}
+		}
+
+		return $mapping;
+	}
+
+	/**
+	 * Quotes identifiers for DBAL-compliant query.
+	 *
+	 * @param array &$mapping
+	 * @return void
+	 */
+	protected function quoteIdentifiers(array &$mapping) {
+		if ($GLOBALS['TYPO3_DB'] instanceof \TYPO3\CMS\Dbal\Database\DatabaseConnection) {
+			if (!$GLOBALS['TYPO3_DB']->runningNative() && !$GLOBALS['TYPO3_DB']->runningADOdbDriver('mysql')) {
+				$mapping['mapTableName'] = '"' . $mapping['mapTableName'] . '"';
+				foreach ($mapping['mapFieldNames'] as $key => &$value) {
+					$value = '"' . $value . '"';
+				}
+			}
+		}
 	}
 
 }
