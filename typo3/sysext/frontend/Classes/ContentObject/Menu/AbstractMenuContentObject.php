@@ -1862,6 +1862,11 @@ class AbstractMenuContentObject {
 			'languageField' => 'sys_language_uid',
 			'where' => $useColPos >= 0 ? 'colPos=' . $useColPos : ''
 		);
+		if ($basePageRow['content_from_pid']) {
+			// If the page is configured to show content from a referenced page the sectionIndex contains only contents of
+			// the referenced page
+			$selectSetup['pidInList'] = $basePageRow['content_from_pid'];
+		}
 		$resource = $this->parent_cObj->exec_getQuery('tt_content', $selectSetup);
 		if (!$resource) {
 			$message = 'SectionIndex: Query to fetch the content elements failed!';
