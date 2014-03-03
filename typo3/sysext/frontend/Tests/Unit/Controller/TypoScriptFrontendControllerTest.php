@@ -141,5 +141,4 @@ class TypoScriptFrontendControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
 		$refValue = $this->fixture->_callRef('roundTripCryptString', $clearText);
 		$this->assertEquals($clearText, $this->fixture->_callRef('roundTripCryptString', $refValue));
 	}
-
 }

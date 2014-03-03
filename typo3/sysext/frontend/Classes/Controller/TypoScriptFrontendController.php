@@ -56,12 +56,6 @@ class TypoScriptFrontendController {
 	 */
 	public $type = '';
 
-	// Loaded with the id, exploded by ','
-	/**
-	 * @todo Define visibility
-	 */
-	public $idParts = array();
-
 	// The submitted cHash
 	/**
 	 * @todo Define visibility
@@ -1265,7 +1259,7 @@ class TypoScriptFrontendController {
 	/**
 	 * Get The Page ID
 	 * This gets the id of the page, checks if the page is in the domain and if the page is accessible
-	 * Sets variables such as $this->sys_page, $this->loginUser, $this->gr_list, $this->id, $this->type, $this->domainStartPage, $this->idParts
+	 * Sets variables such as $this->sys_page, $this->loginUser, $this->gr_list, $this->id, $this->type, $this->domainStartPage
 	 *
 	 * @return void
 	 * @access private
@@ -1289,11 +1283,6 @@ class TypoScriptFrontendController {
 		if (isset($idParts[1])) {
 			$this->type = $idParts[1];
 		}
-		// Splitting $this->id by a comma (,).
-		// First part is 'id' and other parts are just stored for use in scripts.
-		// Still used in the old wapversion.lib files.
-		$this->idParts = explode(',', $this->id);
-		$this->id = $this->idParts[0];
 
 		// If $this->id is a string, it's an alias
 		$this->checkAndSetAlias();
