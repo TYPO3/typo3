@@ -1127,13 +1127,16 @@ class TypoScriptFrontendController {
 		$this->setIDfromArgV();
 		// If there is a Backend login we are going to check for any preview settings:
 		$GLOBALS['TT']->push('beUserLogin', '');
+		$originalFrontendUser = NULL;
 		if ($this->beUserLogin || $this->doWorkspacePreview()) {
 			// Backend user preview features:
 			if ($this->beUserLogin && $GLOBALS['BE_USER']->adminPanel instanceof \TYPO3\CMS\Frontend\View\AdminPanelView) {
 				$this->fePreview = $GLOBALS['BE_USER']->adminPanel->extGetFeAdminValue('preview') ? TRUE : FALSE;
 				// If admin panel preview is enabled...
 				if ($this->fePreview) {
-					$fe_user_OLD_USERGROUP = $this->fe_user->user['usergroup'];
+					if ($this->fe_user->user) {
+						$originalFrontendUser = $this->fe_user->user;
+					}
 					$this->showHiddenPage = $GLOBALS['BE_USER']->adminPanel->extGetFeAdminValue('preview', 'showHiddenPages');
 					$this->showHiddenRecords = $GLOBALS['BE_USER']->adminPanel->extGetFeAdminValue('preview', 'showHiddenRecords');
 					// Simulate date
@@ -1146,7 +1149,13 @@ class TypoScriptFrontendController {
 					$simUserGroup = $GLOBALS['BE_USER']->adminPanel->extGetFeAdminValue('preview', 'simulateUserGroup');
 					$this->simUserGroup = $simUserGroup;
 					if ($simUserGroup) {
-						$this->fe_user->user['usergroup'] = $simUserGroup;
+						if ($this->fe_user->user) {
+							$this->fe_user->user[$this->fe_user->usergroup_column] = $simUserGroup;
+						} else {
+							$this->fe_user->user = array(
+								$this->fe_user->usergroup_column => $simUserGroup
+							);
+						}
 					}
 					if (!$simUserGroup && !$simTime && !$this->showHiddenPage && !$this->showHiddenRecords) {
 						$this->fePreview = 0;
@@ -1193,7 +1202,7 @@ class TypoScriptFrontendController {
 			if (!$GLOBALS['BE_USER']->doesUserHaveAccess($this->page, 1)) {
 				// Resetting
 				$this->clear_preview();
-				$this->fe_user->user['usergroup'] = $fe_user_OLD_USERGROUP;
+				$this->fe_user->user = $originalFrontendUser;
 				// Fetching the id again, now with the preview settings reset.
 				$this->fetch_the_id();
 			}
