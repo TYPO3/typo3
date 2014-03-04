@@ -89,7 +89,7 @@ class OpcodeCacheUtility {
 				// Versions lower then 3.1.7 are known as malfunction
 				'error' => $apcVersion && VersionNumberUtility::convertVersionNumberToInteger($apcVersion) < 3001007,
 				'clearCallback' => function ($fileAbsPath) {
-					if (static::$supportedCaches['APC']['canInvalidate']) {
+					if (OpcodeCacheUtility::getCanInvalidate('APC')) {
 						// This may output a warning like: PHP Warning: apc_delete_file(): Could not stat file
 						// This warning isn't true, this means that apc was unable to generate the cache key
 						// which depends on the configuration of APC.
@@ -161,6 +161,20 @@ class OpcodeCacheUtility {
 				static::$activeCaches[$opcodeCache] = $properties;
 			}
 		}
+	}
+
+	/**
+	 * Gets the state of canInvalidate for given cache system.
+	 *
+	 * @param string $system The cache system to test (APC, ...)
+	 *
+	 * @return boolean The calculated value from array or FALSE if cache system not exists.
+	 * @internal Do not rely on this function. Will be removed if PHP5.4 is minimum requirement.
+	 */
+	static public function getCanInvalidate($system) {
+		return isset(static::$supportedCaches[$system])
+			? static::$supportedCaches[$system]['canInvalidate']
+			: FALSE;
 	}
 
 	/**
