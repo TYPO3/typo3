@@ -89,6 +89,9 @@ class ApcBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend implement
 		if (!extension_loaded('apc')) {
 			throw new \TYPO3\CMS\Core\Cache\Exception('The PHP extension "apc" or "apcu" must be installed and loaded in order to use the APC backend.', 1232985414);
 		}
+		if (PHP_SAPI === 'cli' && ini_get('apc.enable_cli') == 0) {
+			throw new \TYPO3\CMS\Core\Cache\Exception('The APC backend cannot be used because apc is disabled on CLI.', 1232985415);
+		}
 		parent::__construct($context, $options);
 	}
 
