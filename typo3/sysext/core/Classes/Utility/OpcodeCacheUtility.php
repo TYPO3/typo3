@@ -120,7 +120,9 @@ class OpcodeCacheUtility {
 				'canInvalidate' => FALSE,
 				'error' => FALSE,
 				'clearCallback' => function ($fileAbsPath) {
-					xcache_clear_cache(XC_TYPE_PHP);
+					if (!ini_get('xcache.admin.enable_auth')) {
+						xcache_clear_cache(XC_TYPE_PHP);
+					}
 				}
 			),
 
