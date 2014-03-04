@@ -256,7 +256,7 @@ class ObjectAccessTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function getGettablePropertyNamesReturnsAllPropertiesWhichAreAvailable() {
 		$gettablePropertyNames = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getGettablePropertyNames($this->dummyObject);
-		$expectedPropertyNames = array('anotherProperty', 'booleanProperty', 'property', 'property2', 'publicProperty', 'publicProperty2');
+		$expectedPropertyNames = array('anotherBooleanProperty', 'anotherProperty', 'booleanProperty', 'property', 'property2', 'publicProperty', 'publicProperty2');
 		$this->assertEquals($gettablePropertyNames, $expectedPropertyNames, 'getGettablePropertyNames returns not all gettable properties.');
 	}
 
@@ -265,7 +265,7 @@ class ObjectAccessTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function getSettablePropertyNamesReturnsAllPropertiesWhichAreAvailable() {
 		$settablePropertyNames = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getSettablePropertyNames($this->dummyObject);
-		$expectedPropertyNames = array('anotherProperty', 'property', 'property2', 'publicProperty', 'publicProperty2', 'writeOnlyMagicProperty');
+		$expectedPropertyNames = array('anotherBooleanProperty', 'anotherProperty', 'property', 'property2', 'publicProperty', 'publicProperty2', 'writeOnlyMagicProperty');
 		$this->assertEquals($settablePropertyNames, $expectedPropertyNames, 'getSettablePropertyNames returns not all settable properties.');
 	}
 
@@ -287,6 +287,7 @@ class ObjectAccessTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function getGettablePropertiesReturnsTheCorrectValuesForAllProperties() {
 		$allProperties = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getGettableProperties($this->dummyObject);
 		$expectedProperties = array(
+			'anotherBooleanProperty' => TRUE,
 			'anotherProperty' => 42,
 			'booleanProperty' => TRUE,
 			'property' => 'string1',
@@ -345,6 +346,7 @@ class ObjectAccessTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->assertFalse(\TYPO3\CMS\Extbase\Reflection\ObjectAccess::isPropertyGettable($this->dummyObject, 'privateProperty'));
 		$this->assertFalse(\TYPO3\CMS\Extbase\Reflection\ObjectAccess::isPropertyGettable($this->dummyObject, 'writeOnlyMagicProperty'));
 		$this->assertFalse(\TYPO3\CMS\Extbase\Reflection\ObjectAccess::isPropertyGettable($this->dummyObject, 'shouldNotBePickedUp'));
+		$this->assertTrue(\TYPO3\CMS\Extbase\Reflection\ObjectAccess::isPropertyGettable($this->dummyObject, 'anotherBooleanProperty'));
 	}
 
 	/**

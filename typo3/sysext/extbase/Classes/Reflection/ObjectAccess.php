@@ -127,6 +127,10 @@ class ObjectAccess {
 		if (is_callable(array($subject, $getterMethodName))) {
 			return $subject->{$getterMethodName}();
 		}
+		$getterMethodName = 'has' . ucfirst($propertyName);
+		if (is_callable(array($subject, $getterMethodName))) {
+			return $subject->{$getterMethodName}();
+		}
 		if (is_object($subject) && array_key_exists($propertyName, get_object_vars($subject))) {
 			return $subject->{$propertyName};
 		}
@@ -238,6 +242,9 @@ class ObjectAccess {
 				if (substr($methodName, 0, 3) === 'get') {
 					$declaredPropertyNames[] = lcfirst(substr($methodName, 3));
 				}
+				if (substr($methodName, 0, 3) === 'has') {
+					$declaredPropertyNames[] = lcfirst(substr($methodName, 3));
+				}
 			}
 		}
 		$propertyNames = array_unique($declaredPropertyNames);
@@ -318,6 +325,9 @@ class ObjectAccess {
 			return TRUE;
 		}
 		if (is_callable(array($object, 'get' . ucfirst($propertyName)))) {
+			return TRUE;
+		}
+		if (is_callable(array($object, 'has' . ucfirst($propertyName)))) {
 			return TRUE;
 		}
 		if (is_callable(array($object, 'is' . ucfirst($propertyName)))) {

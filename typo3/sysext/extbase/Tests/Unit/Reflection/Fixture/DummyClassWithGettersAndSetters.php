@@ -37,6 +37,8 @@ class DummyClassWithGettersAndSetters {
 
 	public $publicProperty2 = 42;
 
+	protected $anotherBooleanProperty = TRUE;
+
 	/**
 	 * @param mixed $property
 	 */
@@ -111,6 +113,24 @@ class DummyClassWithGettersAndSetters {
 	 * @param mixed $value
 	 */
 	public function setWriteOnlyMagicProperty($value) {
+	}
+
+	/**
+	 * sets the AnotherBooleanProperty
+	 *
+	 * @param boolean $anotherBooleanProperty
+	 *
+	 * @return void
+	 */
+	public function setAnotherBooleanProperty($anotherBooleanProperty) {
+		$this->anotherBooleanProperty = $anotherBooleanProperty;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function hasAnotherBooleanProperty() {
+		return $this->anotherBooleanProperty;
 	}
 
 }
