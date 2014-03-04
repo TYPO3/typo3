@@ -1719,6 +1719,7 @@ tt_content.mailform = COA
 tt_content.mailform.10 = < lib.stdheader
 tt_content.mailform.20 = FORM
 tt_content.mailform.20 {
+	useDefaultContentObject = 1
 	accessibility = 1
 	noWrapAttr=1
 	formName = mailform

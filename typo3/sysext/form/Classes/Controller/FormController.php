@@ -92,7 +92,9 @@ class FormController {
 	 */
 	public function cObjGetSingleExt($typoScriptObjectName, array $typoScript, $typoScriptKey, \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $contentObject) {
 		$content = '';
-		if ($typoScriptObjectName === 'FORM') {
+		if ($typoScriptObjectName === 'FORM' && !empty($typoScript['useDefaultContentObject'])) {
+			$content = $contentObject->getContentObject($typoScriptObjectName)->render($typoScript);
+		} elseif ($typoScriptObjectName === 'FORM') {
 			if ($contentObject->data['CType'] === 'mailform') {
 				$bodytext = $contentObject->data['bodytext'];
 				/** @var $typoScriptParser \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser */
