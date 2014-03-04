@@ -620,8 +620,12 @@ class IconUtility {
 			$innerHtml = self::getSpriteIcon($overlayIconName, $overlayOptions);
 		}
 
-		// Check if requested icon is available
-		$iconName = in_array($iconName, $GLOBALS['TBE_STYLES']['spriteIconApi']['iconsAvailable']) || $iconName === 'empty-empty' ? $iconName : 'status-status-icon-missing';
+		$availableIcons = isset($GLOBALS['TBE_STYLES']['spriteIconApi']['iconsAvailable'])
+			? (array) $GLOBALS['TBE_STYLES']['spriteIconApi']['iconsAvailable']
+			: array();
+		if ($iconName !== 'empty-empty' && !in_array($iconName, $availableIcons, TRUE)) {
+			$iconName = 'status-status-icon-missing';
+		}
 
 		// Create the CSS class
 		$options['class'] = self::getSpriteIconClasses($iconName) . (isset($options['class']) ? ' ' . $options['class'] : '');
