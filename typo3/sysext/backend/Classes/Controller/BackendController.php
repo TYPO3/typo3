@@ -110,6 +110,7 @@ class BackendController {
 		$this->pageRenderer->addInlineSetting('BackendLogin.BackendLogin::refreshLogin', 'ajaxUrl', BackendUtility::getAjaxUrl('BackendLogin::refreshLogin'));
 		$this->pageRenderer->addInlineSetting('BackendLogin.BackendLogin::isTimedOut', 'ajaxUrl', BackendUtility::getAjaxUrl('BackendLogin::isTimedOut'));
 		$this->pageRenderer->addInlineSetting('BackendLogin.BackendLogin::getChallenge', 'ajaxUrl', BackendUtility::getAjaxUrl('BackendLogin::getChallenge'));
+		$this->pageRenderer->addInlineSetting('ImportExport', 'moduleUrl', BackendUtility::getModuleUrl('xMOD_tximpexp'));
 		// Add default BE javascript
 		$this->js = '';
 		$this->jsFiles = array(

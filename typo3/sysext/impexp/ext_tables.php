@@ -50,4 +50,5 @@ if (TYPO3_MODE === 'BE') {
 			}
 		}
 	';
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath('xMOD_tximpexp', \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'app/');
 }

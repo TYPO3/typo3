@@ -61,6 +61,7 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * @todo Define visibility
 	 */
 	public function main() {
+		$GLOBALS['LANG']->includeLLFile('EXT:impexp/app/locallang.xlf');
 		// Start document template object:
 		$this->doc = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];

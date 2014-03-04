@@ -34,6 +34,7 @@ Ext.namespace('TYPO3.Components.PageTree');
  * @author Stefan Galinski <stefan.galinski@gmail.com>
  */
 TYPO3.Components.PageTree.Actions = {
+
 	/**
 	 * Evaluates a response from an ext direct call and shows a flash message
 	 * if it was an exceptional result
@@ -384,10 +385,11 @@ TYPO3.Components.PageTree.Actions = {
 	exportT3d: function(node) {
 		node.select();
 		TYPO3.Backend.ContentContainer.setUrl(
-			'sysext/impexp/app/index.php?tx_impexp[action]=export&' +
-				'id=0&tx_impexp[pagetree][id]=' + node.attributes.nodeData.id +
-				'&tx_impexp[pagetree][levels]=0' +
-				'&tx_impexp[pagetree][tables][]=_ALL'
+			TYPO3.settings.ImportExport.moduleUrl +
+			'&tx_impexp[action]=export&' +
+			'id=0&tx_impexp[pagetree][id]=' + node.attributes.nodeData.id +
+			'&tx_impexp[pagetree][levels]=0' +
+			'&tx_impexp[pagetree][tables][]=_ALL'
 		);
 	},
 
@@ -400,8 +402,9 @@ TYPO3.Components.PageTree.Actions = {
 	importT3d: function(node) {
 		node.select();
 		TYPO3.Backend.ContentContainer.setUrl(
-			'sysext/impexp/app/index.php?id=' + node.attributes.nodeData.id +
-				'&table=pages&tx_impexp[action]=import'
+			TYPO3.settings.ImportExport.moduleUrl +
+			'&id=' + node.attributes.nodeData.id +
+			'&table=pages&tx_impexp[action]=import'
 		);
 	},
 

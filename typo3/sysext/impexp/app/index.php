@@ -60,17 +60,12 @@
  *
  * external_ref[tables][]=table/_ALL
  */
-unset($MCONF);
-require __DIR__ . '/conf.php';
-require_once $BACK_PATH . 'init.php';
-$LANG->includeLLFile('EXT:impexp/app/locallang.xlf');
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('impexp', 1);
+
 /*
  * @deprecated since 6.0, the classname SC_mod_tools_log_index and this file is obsolete
  * and will be removed with 6.2. The class was renamed and is now located at:
  * typo3/sysext/impexp/Classes/Controller/ImportExportController.php
  */
-require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('impexp') . 'Classes/Controller/ImportExportController.php';
 // Make instance:
 $SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Impexp\\Controller\\ImportExportController');
 $SOBE->init();
