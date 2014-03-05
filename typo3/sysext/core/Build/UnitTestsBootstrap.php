@@ -98,7 +98,7 @@ $_SERVER['SCRIPT_NAME'] = PATH_thisScript;
 require PATH_site . '/typo3/sysext/core/Classes/Core/Bootstrap.php';
 \TYPO3\CMS\Core\Core\Bootstrap::getInstance()
 	->baseSetup()
-	->loadConfigurationAndInitialize(FALSE)
+	->loadConfigurationAndInitialize(TRUE)
 	// TODO: Maybe load only core extensions here? Also check if we need to change the bootstrap since we have package management now
 	->loadTypo3LoadedExtAndExtLocalconf(FALSE)
 	->applyAdditionalConfigurationSettings()
