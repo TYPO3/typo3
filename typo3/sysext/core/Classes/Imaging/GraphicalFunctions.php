@@ -2571,8 +2571,8 @@ class GraphicalFunctions {
 			$cmd = GeneralUtility::imageMagickCommand('identify', $this->wrapFileName($imagefile) . $frame);
 			$returnVal = array();
 			\TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd, $returnVal);
-			$splitstring = $returnVal[0];
-			$this->IM_commands[] = array('identify', $cmd, $returnVal[0]);
+			$splitstring = array_pop($returnVal);
+			$this->IM_commands[] = array('identify', $cmd, $splitstring);
 			if ($splitstring) {
 				preg_match('/([^\\.]*)$/', $imagefile, $reg);
 				$splitinfo = explode(' ', $splitstring);
