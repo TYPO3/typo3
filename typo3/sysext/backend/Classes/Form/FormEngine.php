@@ -2274,7 +2274,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 		$config = $PA['fieldConf']['config'];
 		$internal_type = $config['internal_type'];
 		$show_thumbs = $config['show_thumbs'];
-		$size = intval($config['size']);
+		$size = isset($config['size']) ? (int)$config['size'] : 5;
 		$maxitems = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($config['maxitems'], 0);
 		if (!$maxitems) {
 			$maxitems = 100000;
