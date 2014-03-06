@@ -4193,6 +4193,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 													'wizard_rte.php',
 													'wizard_table.php',
 													'browse_links.php',
+													'sysext/cms/layout/wizard_backend_layout.php'
 												))
 										) {
 											$urlParameters = array();
@@ -4200,8 +4201,8 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 												 parse_str($parsedWizardUrl['query'], $urlParameters);
 											}
 											$moduleName = str_replace(
-												array('.php', 'browse_links'),
-												array('', 'wizard_element_browser'),
+												array('.php', 'browse_links', 'sysext/cms/layout/wizard_backend_layout'),
+												array('', 'wizard_element_browser', 'wizard_backend_layout'),
 												$parsedWizardUrl['path']
 											);
 											$wScript = BackendUtility::getModuleUrl($moduleName, $urlParameters);
