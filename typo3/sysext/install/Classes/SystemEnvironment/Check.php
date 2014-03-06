@@ -807,16 +807,24 @@ class Check {
 	 */
 	protected function checkReflectionDocComment() {
 		$testReflection = new \ReflectionMethod(get_class($this), __FUNCTION__);
-		if (strlen($testReflection->getDocComment()) === 0) {
-			$status = new Status\ErrorStatus();
+		if ($testReflection->getDocComment() === FALSE) {
+			$status = new Status\AlertStatus();
 			$status->setTitle('PHP Doc comment reflection broken');
 			$status->setMessage(
-				'TYPO3 CMS core extensions like extbase and fluid heavily rely on method' .
-				' comment parsing to fetch annotations and add magic according to them.' .
-				' This does not work in the current environment and will lead to a lot of' .
-				' broken extensions. The PHP extension eaccelerator is known to break this if' .
-				' it is compiled without --with-eaccelerator-doc-comment-inclusion flag.' .
-				' This compile flag must be given, otherwise TYPO3 CMS is no fun.'
+				'TYPO3 CMS core extensions like extbase and fluid heavily rely on method'
+				. ' comment parsing to fetch annotations and add magic belonging to them.'
+				. ' This does not work in the current environment and so we can not install'
+				. ' TYPO3 CMS.' . LF
+				. ' Here are some possibilities: ' . LF
+				. '* In Zend OPcache you can disable to save/load comment. If you are using'
+				. ' Zend OPcache (included since PHP 5.5) then check your php.ini settings for'
+				. ' opcache.save_comments and opcache.load_comments and enable them.' . LF
+				. '* In Zend Optimizer+ you can disable to save comment. If you are using'
+				. ' Zend Optimizer+ then check your php.ini settings for'
+				. ' zend_optimizerplus.save_comments and enable it.' . LF
+				. '* The PHP extension eaccelerator is known to break this if'
+				. ' it is compiled without --with-eaccelerator-doc-comment-inclusion flag.'
+				. ' This compile flag must be given, otherwise TYPO3 CMS will not work.'
 			);
 		} else {
 			$status = new Status\OkStatus();

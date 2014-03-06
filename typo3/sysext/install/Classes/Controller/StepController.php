@@ -380,8 +380,10 @@ class StepController extends AbstractController {
 			$this->redirect();
 		}
 
+		$testReflection = new \ReflectionMethod(get_class($this), __FUNCTION__);
 		if (!@is_dir(PATH_typo3conf)
 			|| $needsExecution
+			|| $testReflection->getDocComment() === FALSE
 		) {
 			/** @var \TYPO3\CMS\Install\Controller\Action\Step\StepInterface $action */
 			$action = $this->objectManager->get('TYPO3\\CMS\\Install\\Controller\\Action\\Step\\EnvironmentAndFolders');

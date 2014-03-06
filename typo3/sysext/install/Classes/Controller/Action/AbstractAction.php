@@ -33,15 +33,31 @@ abstract class AbstractAction implements ActionInterface {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Object\ObjectManager
-	 * @inject
 	 */
 	protected $objectManager = NULL;
 
 	/**
-	 * @var \TYPO3\CMS\Install\View\StandaloneView
-	 * @inject
+	 * Do NOT refactor to use @inject annotation, as failsafe handling would not work any more
+	 *
+	 * @param \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager
+	 */
+	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManager $objectManager) {
+		$this->objectManager = $objectManager;
+	}
+
+	/**
+	 * @var \TYPO3\CMS\Install\View\FailsafeView
 	 */
 	protected $view = NULL;
+
+	/**
+	 * Do NOT refactor to use @inject annotation, as failsafe handling would not work any more
+	 *
+	 * @param \TYPO3\CMS\Install\View\FailsafeView $view
+	 */
+	public function injectView(\TYPO3\CMS\Install\View\FailsafeView $view) {
+		$this->view = $view;
+	}
 
 	/**
 	 * @var string Name of controller. One of the strings 'step', 'tool' or 'common'

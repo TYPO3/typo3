@@ -104,6 +104,8 @@ class EnvironmentAndFolders extends AbstractStepAction {
 		/** @var \TYPO3\CMS\Install\Status\StatusUtility $statusUtility */
 		$statusUtility = $this->objectManager->get('TYPO3\\CMS\\Install\\Status\\StatusUtility');
 		$environmentStatus = $statusUtility->sortBySeverity($statusObjects);
+		$alerts = $statusUtility->filterBySeverity($statusObjects, 'alert');
+		$this->view->assign('alerts', $alerts);
 		$this->view->assign('environmentStatus', $environmentStatus);
 
 		/** @var $folderStructureFactory \TYPO3\CMS\Install\FolderStructure\DefaultFactory */
@@ -122,6 +124,6 @@ class EnvironmentAndFolders extends AbstractStepAction {
 			$this->view->assign('errorsOrWarningsFromStatus', TRUE);
 		}
 
-		return $this->view->render();
+		return $this->view->render(!empty($alerts));
 	}
 }

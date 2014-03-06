@@ -39,6 +39,7 @@ class StatusUtility {
 	 */
 	public function sortBySeverity(array $statusObjects = array()) {
 		$orderedStatus = array(
+			'alert' => $this->filterBySeverity($statusObjects, 'alert'),
 			'error' => $this->filterBySeverity($statusObjects, 'error'),
 			'warning' => $this->filterBySeverity($statusObjects, 'warning'),
 			'ok' => $this->filterBySeverity($statusObjects, 'ok'),

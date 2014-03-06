@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Install\Controller\Action\Common;
+namespace TYPO3\CMS\Install\Status;
 
 /***************************************************************
  *  Copyright notice
@@ -24,26 +24,14 @@ namespace TYPO3\CMS\Install\Controller\Action\Common;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use TYPO3\CMS\Install\Controller\Action;
-
 /**
- * Welcome page
+ * Alert level status
  */
-class InstallToolDisabledAction extends Action\AbstractAction {
+class AlertStatus extends AbstractStatus implements StatusInterface {
 
 	/**
-	 * Executes the action
-	 *
-	 * @return string Rendered content
+	 * @var string The severity
 	 */
-	protected function executeAction() {
-		/** @var \TYPO3\CMS\Install\SystemEnvironment\Check $statusCheck */
-		$statusCheck = $this->objectManager->get('TYPO3\\CMS\\Install\\SystemEnvironment\\Check');
-		$statusObjects = $statusCheck->getStatus();
-		/** @var \TYPO3\CMS\Install\Status\StatusUtility $statusUtility */
-		$statusUtility = $this->objectManager->get('TYPO3\\CMS\\Install\\Status\\StatusUtility');
-		$alerts = $statusUtility->filterBySeverity($statusObjects, 'alert');
-		$this->view->assign('alerts', $alerts);
-		return $this->view->render(!empty($alerts));
-	}
+	protected $severity = 'alert';
+
 }

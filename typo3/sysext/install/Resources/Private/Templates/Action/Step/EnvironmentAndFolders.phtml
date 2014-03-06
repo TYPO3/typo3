@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>The Install Tool is locked</title>
+	<link rel="stylesheet" type="text/css" href="../Resources/Public/Stylesheets/Action/Common/EarlyExit.css?<?= $this->variables['time'] ?>" />
+	<link rel="stylesheet" type="text/css" href="../Resources/Public/Stylesheets/Action/Step/General.css?<?= $this->variables['time'] ?>" />
+</head>
+<body>
+<div id="container">
+	<h1>TYPO3</h1>
+	<?php if (!empty($this->variables['alerts'])): ?>
+		<?php foreach ($this->variables['alerts'] as $message): ?>
+				<div class="typo3-message message-error">
+					<div class="header-container">
+						<div class="message-header message-left"><strong><?= htmlspecialchars($message->getTitle()) ?></strong></div>
+						<div class="message-header message-right"></div>
+					</div>
+					<div class="message-body">
+						<?php echo nl2br(htmlspecialchars($message->getMessage()))?>
+					</div>
+				</div>
+				<p></p>
+		<?php endforeach; ?>
+	<?php endif; ?>
+	<?php if (!empty($this->variables['environmentStatus']['error'])): ?>
+		<?php foreach ($this->variables['environmentStatus']['error'] as $message): ?>
+				<div class="typo3-message message-<?= htmlspecialchars($message->getSeverity()) ?>">
+					<div class="header-container">
+						<div class="message-header message-left"><strong><?= htmlspecialchars($message->getTitle()) ?></strong></div>
+						<div class="message-header message-right"></div>
+					</div>
+					<div class="message-body">
+						<?php echo nl2br(htmlspecialchars($message->getMessage()))?>
+					</div>
+				</div>
+				<p></p>
+		<?php endforeach; ?>
+	<?php endif; ?>
+	<?php if (!empty($this->variables['environmentStatus']['warning'])): ?>
+		<?php foreach ($this->variables['environmentStatus']['warning'] as $message): ?>
+				<div class="typo3-message message-<?= htmlspecialchars($message->getSeverity()) ?>">
+					<div class="header-container">
+						<div class="message-header message-left"><strong><?= htmlspecialchars($message->getTitle()) ?></strong></div>
+						<div class="message-header message-right"></div>
+					</div>
+					<div class="message-body">
+						<?php echo nl2br(htmlspecialchars($message->getMessage()))?>
+					</div>
+				</div>
+				<p></p>
+		<?php endforeach; ?>
+	<?php endif; ?>
+</div>
+</body>
+</html>
