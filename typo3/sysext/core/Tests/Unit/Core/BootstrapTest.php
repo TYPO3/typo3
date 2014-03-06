@@ -54,11 +54,11 @@ class BootstrapTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			'',
 			FALSE
 		);
-		$GLOBALS['typo3CacheManager'] = $this->getMock(
+		$mockCacheManager = $this->getMock(
 			'TYPO3\\CMS\\Core\\Cache\\CacheManager',
 			array('getCache')
 		);
-		$GLOBALS['typo3CacheManager']
+		$mockCacheManager
 			->expects($this->any())
 			->method('getCache')
 			->will($this->returnValue($mockCache));
@@ -69,6 +69,7 @@ class BootstrapTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$mockCache
 			->expects($this->once())
 			->method('get');
+		$bootstrapInstance->setEarlyInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager', $mockCacheManager);
 		$bootstrapInstance->loadCachedTca();
 	}
 
@@ -91,11 +92,11 @@ class BootstrapTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			'',
 			FALSE
 		);
-		$GLOBALS['typo3CacheManager'] = $this->getMock(
+		$mockCacheManager = $this->getMock(
 			'TYPO3\\CMS\\Core\\Cache\\CacheManager',
 			array('getCache')
 		);
-		$GLOBALS['typo3CacheManager']
+		$mockCacheManager
 			->expects($this->any())
 			->method('getCache')
 			->will($this->returnValue($mockCache));
@@ -106,6 +107,7 @@ class BootstrapTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$mockCache
 			->expects($this->once())
 			->method('set');
+		$bootstrapInstance->setEarlyInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager', $mockCacheManager);
 		$bootstrapInstance->loadCachedTca();
 	}
 }

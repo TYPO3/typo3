@@ -162,7 +162,7 @@ class RootlineUtility {
 			}
 		}
 		if (self::$cache === NULL) {
-			self::$cache = $GLOBALS['typo3CacheManager']->getCache('cache_rootline');
+			self::$cache = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->getCache('cache_rootline');
 		}
 		self::$rootlineFields = array_merge(self::$rootlineFields, \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['FE']['addRootLineFields'], TRUE));
 		self::$rootlineFields = array_unique(self::$rootlineFields);

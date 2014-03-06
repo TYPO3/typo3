@@ -71,7 +71,7 @@ class ConfigurationUtility implements \TYPO3\CMS\Core\SingletonInterface {
 		/** @var $configurationManager \TYPO3\CMS\Core\Configuration\ConfigurationManager */
 		$configurationManager = $this->objectManager->get('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager');
 		$configurationManager->setLocalConfigurationValueByPath('EXT/extConf/' . $extensionKey, serialize($configuration));
-		$GLOBALS['typo3CacheManager']->flushCachesInGroup('system');
+		\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->flushCachesInGroup('system');
 	}
 
 	/**

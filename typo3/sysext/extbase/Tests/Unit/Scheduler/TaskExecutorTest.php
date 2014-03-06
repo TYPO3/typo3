@@ -28,6 +28,10 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Scheduler;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
+require_once __DIR__ . '/Fixtures/MockACommandController.php';
+
 /**
  * TaskExecutor Test Class
  */
@@ -37,11 +41,6 @@ class TaskExecutorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @var \TYPO3\CMS\Extbase\Mvc\Controller\CommandController|\PHPUnit_Framework_MockObject_MockObject|\Tx_Phpunit_Interface_AccessibleObject
 	 */
 	protected $controller;
-
-	/**
-	 * @var \TYPO3\CMS\Core\Cache\CacheManager|\PHPUnit_Framework_MockObject_MockObject
-	 */
-	protected $cacheManager;
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Object\ObjectManager|\PHPUnit_Framework_MockObject_MockObject
@@ -63,25 +62,31 @@ class TaskExecutorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 */
 	protected $taskExecuter;
 
+	/**
+	 * Backup of current singleton instances
+	 */
+	protected $singletonInstances;
+
 	public function setUp() {
 		if (!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('scheduler')) {
 			$this->markTestSkipped('Tests need EXT:scheduler loaded.');
 		}
-		$this->controller = $this->getAccessibleMock('TYPO3\CMS\Extbase\Tests\MockACommandController', array('dummy'));
-		$this->controller->_set('reflectionService', $this->objectManager->get('TYPO3\CMS\Extbase\Reflection\ReflectionService'));
-		$this->controller->_set('objectManager', $this->objectManager);
-
-		$command = new \TYPO3\CMS\Extbase\Mvc\Cli\Command('TYPO3\CMS\Extbase\Tests\MockACommandController', 'funcA');
+		$this->singletonInstances = \TYPO3\CMS\Core\Utility\GeneralUtility::getSingletonInstances();
 		$nullBackend = new \TYPO3\CMS\Core\Cache\Backend\NullBackend('production');
 		$variableFrontend = new \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend('foo', $nullBackend);
+		$mockCacheManager = $this->getMock('TYPO3\\CMS\\Core\\Cache\\CacheManager', array('dummy', 'getCache'));
+		$mockCacheManager->expects($this->any())->method('getCache')->will($this->returnValue($variableFrontend));
+		GeneralUtility::setSingletonInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager', $mockCacheManager);
 
-		$this->cacheManager = $this->getMock('TYPO3\CMS\Core\Cache\CacheManager', array('dummy', 'getCache'));
-		$this->cacheManager->expects($this->any())->method('getCache')->will($this->returnValue($variableFrontend));
-		$GLOBALS['typo3CacheManager'] = $this->cacheManager;
+		$this->controller = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Tests\\MockACommandController', array('dummy'));
+		$this->controller->_set('reflectionService', $this->objectManager->get('TYPO3\\CMS\\Extbase\\Reflection\\ReflectionService'));
+		$this->controller->_set('objectManager', $this->objectManager);
 
-		$this->objectManager = $this->getMock('TYPO3\CMS\Extbase\Object\ObjectManager', array('dummy'));
-		$this->commandManager = $this->getMock('TYPO3\CMS\Extbase\Mvc\Cli\CommandManager', array('dummy', 'getCommandByIdentifier'));
-		$this->configurationManager = $this->getAccessibleMock('TYPO3\CMS\Extbase\Configuration\ConfigurationManager', array('dummy', 'getConfiguration', 'setContentObject', 'setConfiguration'));
+		$command = new \TYPO3\CMS\Extbase\Mvc\Cli\Command('TYPO3\\CMS\\Extbase\\Tests\\MockACommandController', 'funcA');
+
+		$this->objectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManager', array('dummy'));
+		$this->commandManager = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Cli\\CommandManager', array('dummy', 'getCommandByIdentifier'));
+		$this->configurationManager = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManager', array('dummy', 'getConfiguration', 'setContentObject', 'setConfiguration'));
 
 		$this->configurationManager
 			->expects($this->once())
@@ -95,16 +100,21 @@ class TaskExecutorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 			->will($this->returnValue($command));
 	}
 
+	public function tearDown() {
+		\TYPO3\CMS\Core\Utility\GeneralUtility::resetSingletonInstances($this->singletonInstances);
+		parent::tearDown();
+	}
+
 	/**
 	 * @test
 	 * @author Alexander Schnitzler <alex.schnitzler@typovision.de>
 	 */
 	public function executeDispatchesTheRightCommandControllerAndCommandAction() {
-		$dispatcher = $this->getAccessibleMock('TYPO3\CMS\Extbase\Mvc\Dispatcher', array('resolveController'), array($this->objectManager));
+		$dispatcher = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Mvc\\Dispatcher', array('resolveController'), array($this->objectManager));
 		$dispatcher->expects($this->any())->method('resolveController')->will($this->returnValue($this->controller));
-		$dispatcher->_set('signalSlotDispatcher', $this->objectManager->get('TYPO3\CMS\Extbase\SignalSlot\Dispatcher'));
+		$dispatcher->_set('signalSlotDispatcher', $this->objectManager->get('TYPO3\\CMS\\Extbase\\SignalSlot\\Dispatcher'));
 
-		$this->taskExecuter = $this->getAccessibleMock('TYPO3\CMS\Extbase\Scheduler\TaskExecutor', array('dummy', 'shutdown', 'getDispatcher'));
+		$this->taskExecuter = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Scheduler\\TaskExecutor', array('dummy', 'shutdown', 'getDispatcher'));
 		$this->taskExecuter->expects($this->any())->method('getDispatcher')->will($this->returnValue($dispatcher));
 		$this->taskExecuter->_set('objectManager', $this->objectManager);
 		$this->taskExecuter->_set('commandManager', $this->commandManager);

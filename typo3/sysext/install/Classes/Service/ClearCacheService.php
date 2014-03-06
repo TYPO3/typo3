@@ -82,7 +82,7 @@ class ClearCacheService {
 			->initializeTypo3DbGlobal()
 			->loadExtensionTables(FALSE);
 
-		// $GLOBALS['typo3CacheManager'] is already instantiated in the install tool
+		// The cache manager is already instantiated in the install tool
 		// with some hacked settings to disable caching of extbase and fluid.
 		// We want a "fresh" object here to operate on a different cache setup.
 		// cacheManager implements SingletonInterface, so the only way to get a "fresh"

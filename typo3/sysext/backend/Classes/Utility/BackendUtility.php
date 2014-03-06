@@ -1092,7 +1092,7 @@ class BackendUtility {
 	 * @return 	void
 	 */
 	static public function storeHash($hash, $data, $ident) {
-		$GLOBALS['typo3CacheManager']->getCache('cache_hash')->set($hash, $data, array('ident_' . $ident), 0);
+		GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->getCache('cache_hash')->set($hash, $data, array('ident_' . $ident), 0);
 	}
 
 	/**
@@ -1102,12 +1102,12 @@ class BackendUtility {
 	 * IDENTICAL to the function by same name found in \TYPO3\CMS\Frontend\Page\PageRepository
 	 *
 	 * @param string $hash The hash-string which was used to store the data value
-	 * @param integer $expTime Variabele is not used in the function
+	 * @param integer $expTime Variable is not used in the function
 	 * @return mixed The "data" from the cache
 	 */
 	static public function getHash($hash, $expTime = 0) {
 		$hashContent = NULL;
-		$cacheEntry = $GLOBALS['typo3CacheManager']->getCache('cache_hash')->get($hash);
+		$cacheEntry = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->getCache('cache_hash')->get($hash);
 		if ($cacheEntry) {
 			$hashContent = $cacheEntry;
 		}
@@ -1892,7 +1892,7 @@ class BackendUtility {
 			return $GLOBALS['TCA'][$table]['columns'][$col]['label'];
 		}
 		if ($printAllWrap) {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog('The third parameter of getItemLabel() is deprecated with TYPO3 CMS 6.2 and will be removed two versions later.');
+			GeneralUtility::deprecationLog('The third parameter of getItemLabel() is deprecated with TYPO3 CMS 6.2 and will be removed two versions later.');
 			$parts = explode('|', $printAllWrap);
 			return $parts[0] . $col . $parts[1];
 		}

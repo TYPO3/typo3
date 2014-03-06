@@ -101,7 +101,7 @@ class TaskExecutor implements \TYPO3\CMS\Core\SingletonInterface {
 		}
 		// initialize reflection
 		$reflectionService = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Reflection\\ReflectionService');
-		$reflectionService->setDataCache($GLOBALS['typo3CacheManager']->getCache('extbase_reflection'));
+		$reflectionService->setDataCache(\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->getCache('extbase_reflection'));
 		if (!$reflectionService->isInitialized()) {
 			$reflectionService->initialize();
 		}

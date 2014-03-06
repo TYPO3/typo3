@@ -152,7 +152,7 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface {
 			return $this;
 		}
 		if ($className === 'TYPO3\\CMS\\Core\\Cache\\CacheManager') {
-			return $GLOBALS['typo3CacheManager'];
+			return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager');
 		}
 		if ($className === 'TYPO3\\CMS\\Core\\Package\\PackageManager') {
 			return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Package\\PackageManager');

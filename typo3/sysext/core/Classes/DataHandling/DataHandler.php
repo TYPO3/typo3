@@ -6538,18 +6538,6 @@ class DataHandler {
 	}
 
 	/**
-	 * Unlink (delete) core cache files
-	 *
-	 * @return void
-	 * @deprecated since 6.0, will be removed in two versions, use the cache manager directly instead
-	 * @todo Define visibility
-	 */
-	public function removeCacheFiles() {
-		GeneralUtility::logDeprecatedFunction();
-		$GLOBALS['typo3CacheManager']->flushCachesInGroup('system');
-	}
-
-	/**
 	 * Returns array, $CPtable, of pages under the $pid going down to $counter levels.
 	 * Selecting ONLY pages which the user has read-access to!
 	 *
@@ -6957,13 +6945,13 @@ class DataHandler {
 							// point to real pages and caches at all. Flushing caches for
 							// those records does not make sense and decreases performance
 							if ($pageId >= 0) {
-								$GLOBALS['typo3CacheManager']->flushCachesByTag('pageId_' . $pageId);
+								GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->flushCachesByTag('pageId_' . $pageId);
 							}
 						}
 					}
 					// Delete cache for current table and record
-					$GLOBALS['typo3CacheManager']->flushCachesByTag($table);
-					$GLOBALS['typo3CacheManager']->flushCachesByTag($table . '_' . $uid);
+					GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->flushCachesByTag($table);
+					GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->flushCachesByTag($table . '_' . $uid);
 				}
 			}
 			// Clear cache for pages entered in TSconfig:
@@ -7031,13 +7019,13 @@ class DataHandler {
 		switch (strtolower($cacheCmd)) {
 			case 'pages':
 				if ($this->admin || $this->BE_USER->getTSConfigVal('options.clearCache.pages')) {
-					$GLOBALS['typo3CacheManager']->flushCachesInGroup('pages');
+					GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->flushCachesInGroup('pages');
 				}
 				break;
 			case 'all':
 				if ($this->admin || $this->BE_USER->getTSConfigVal('options.clearCache.all')) {
 					// Clear cache group "all" of caching framework caches
-					$GLOBALS['typo3CacheManager']->flushCachesInGroup('all');
+					GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->flushCachesInGroup('all');
 					if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('cms')) {
 						$GLOBALS['TYPO3_DB']->exec_TRUNCATEquery('cache_treelist');
 					}
@@ -7058,7 +7046,7 @@ class DataHandler {
 			case 'temp_cached':
 			case 'system':
 				if ($this->admin || $this->BE_USER->getTSConfigVal('options.clearCache.system')) {
-					$GLOBALS['typo3CacheManager']->flushCachesInGroup('system');
+					GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->flushCachesInGroup('system');
 				}
 				break;
 		}
@@ -7092,7 +7080,7 @@ class DataHandler {
 		// process caching framwork operations
 		if (count($tagsToFlush) > 0) {
 			foreach ($tagsToFlush as $tag) {
-				$GLOBALS['typo3CacheManager']->flushCachesInGroupByTag('pages', $tag);
+				GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->flushCachesInGroupByTag('pages', $tag);
 			}
 		}
 
@@ -7213,7 +7201,7 @@ class DataHandler {
 	 */
 	public function internal_clearPageCache() {
 		GeneralUtility::logDeprecatedFunction();
-		$GLOBALS['typo3CacheManager']->flushCachesInGroup('pages');
+		GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->flushCachesInGroup('pages');
 	}
 
 	/**
@@ -7323,7 +7311,7 @@ class DataHandler {
 	 * @return \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend
 	 */
 	protected function getMemoryCache() {
-		return $GLOBALS['typo3CacheManager']->getCache('cache_runtime');
+		return GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->getCache('cache_runtime');
 	}
 
 	/**

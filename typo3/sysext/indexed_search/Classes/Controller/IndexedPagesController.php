@@ -990,7 +990,7 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 						while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 							$idList[] = (int)$row['page_id'];
 						}
-						$pageCache = $GLOBALS['typo3CacheManager']->getCache('cache_pages');
+						$pageCache = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->getCache('cache_pages');
 						foreach ($idList as $pageId) {
 							$pageCache->flushByTag('pageId_' . $pageId);
 						}

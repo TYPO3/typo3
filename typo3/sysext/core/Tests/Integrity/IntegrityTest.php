@@ -35,17 +35,6 @@ namespace TYPO3\CMS\Core\Tests\Integrity;
 class IntegrityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
-	 * This test fails if some test before mocked or substituted
-	 * $GLOBALS['typo3CacheManager'] but did not reconstitute correctly.
-	 *
-	 * @test
-	 */
-	public function globalsTypo3CacheManagerIsInstanceOfCoreCacheManager() {
-		$this->assertTrue(is_object($GLOBALS['typo3CacheManager']));
-		$this->assertTrue($GLOBALS['typo3CacheManager'] instanceof \TYPO3\CMS\Core\Cache\CacheManager);
-	}
-
-	/**
 	 * This test fails if some test before called
 	 * \TYPO3\CMS\Core\Utility\GeneralUtility::purgeInstances() without a proper
 	 * backup via \TYPO3\CMS\Core\Utility\GeneralUtility::getSingletonInstances()
@@ -58,6 +47,7 @@ class IntegrityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function standardSingletonIsRegistered() {
 		$registeredSingletons = \TYPO3\CMS\Core\Utility\GeneralUtility::getSingletonInstances();
-		$this->assertArrayHasKey('TYPO3\CMS\Core\Cache\CacheManager', $registeredSingletons);
+		$this->assertArrayHasKey('TYPO3\\CMS\\Core\\Cache\\CacheManager', $registeredSingletons);
+		$this->assertTrue($registeredSingletons['TYPO3\\CMS\\Core\\Cache\\CacheManager'] instanceof \TYPO3\CMS\Core\Cache\CacheManager);
 	}
 }

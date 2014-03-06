@@ -393,7 +393,7 @@ class TemplateService {
 	 * @return array Returns the unmatched array $currentPageData if found cached in "cache_pagesection". Otherwise FALSE is returned which means that the array must be generated and stored in the cache
 	 */
 	public function getCurrentPageData() {
-		return $GLOBALS['typo3CacheManager']->getCache('cache_pagesection')->get((int)$GLOBALS['TSFE']->id . '_' . GeneralUtility::md5int($GLOBALS['TSFE']->MP));
+		return GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->getCache('cache_pagesection')->get((int)$GLOBALS['TSFE']->id . '_' . GeneralUtility::md5int($GLOBALS['TSFE']->MP));
 	}
 
 	/**
@@ -520,7 +520,7 @@ class TemplateService {
 				// Only save the data if we're not simulating by hidden/starttime/endtime
 				$mpvarHash = GeneralUtility::md5int($GLOBALS['TSFE']->MP);
 				/** @var $pageSectionCache \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface */
-				$pageSectionCache = $GLOBALS['typo3CacheManager']->getCache('cache_pagesection');
+				$pageSectionCache = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->getCache('cache_pagesection');
 				$pageSectionCache->set((int)$GLOBALS['TSFE']->id . '_' . $mpvarHash, $cc, array(
 					'pageId_' . (int)$GLOBALS['TSFE']->id,
 					'mpvarHash_' . $mpvarHash

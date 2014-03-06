@@ -26,6 +26,7 @@ namespace TYPO3\CMS\Extensionmanager\Utility;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Extension Manager Install Utility
  *
@@ -82,6 +83,12 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	protected $packageManager;
 
 	/**
+	 * @var \TYPO3\CMS\Core\Cache\CacheManager
+	 * @inject
+	 */
+	protected $cacheManager;
+
+	/**
 	 * @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
 	 * @inject
 	 */
@@ -123,7 +130,7 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface {
 		$this->processRuntimeDatabaseUpdates($extensionKey);
 		$this->saveDefaultConfiguration($extension['key']);
 		if ($extension['clearcacheonload']) {
-			$GLOBALS['typo3CacheManager']->flushCaches();
+			$this->cacheManager->flushCaches();
 		}
 	}
 
@@ -290,7 +297,7 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return void
 	 */
 	public function reloadCaches() {
-		$GLOBALS['typo3CacheManager']->flushCachesInGroup('system');
+		$this->cacheManager->flushCachesInGroup('system');
 		\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->reloadTypo3LoadedExtAndClassLoaderAndExtLocalconf()->loadExtensionTables();
 	}
 

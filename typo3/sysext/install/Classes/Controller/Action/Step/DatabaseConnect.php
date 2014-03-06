@@ -183,7 +183,7 @@ class DatabaseConnect extends AbstractStepAction {
 					->disableCoreAndClassesCache();
 				if ($this->isDbalEnabled()) {
 					require(ExtensionManagementUtility::extPath('dbal') . 'ext_localconf.php');
-					$GLOBALS['typo3CacheManager']->setCacheConfigurations($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']);
+					\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->setCacheConfigurations($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']);
 				}
 				if (!$this->isConnectSuccessful()) {
 					/** @var $errorStatus \TYPO3\CMS\Install\Status\ErrorStatus */

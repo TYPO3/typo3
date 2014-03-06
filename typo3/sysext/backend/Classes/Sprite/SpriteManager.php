@@ -62,7 +62,7 @@ class SpriteManager {
 		if (!static::isInitialized()) {
 			$cacheIdentifier = static::getCacheIdentifier();
 			/** @var $codeCache \TYPO3\CMS\Core\Cache\Frontend\PhpFrontend */
-			$codeCache = $GLOBALS['typo3CacheManager']->getCache('cache_core');
+			$codeCache = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->getCache('cache_core');
 			if ($codeCache->has($cacheIdentifier)) {
 				$codeCache->requireOnce($cacheIdentifier);
 			} else {
@@ -117,7 +117,7 @@ class SpriteManager {
 		$cacheFileContent = '$GLOBALS[\'TBE_STYLES\'][\'spriteIconApi\'][\'iconsAvailable\'] = ';
 		$cacheFileContent .= var_export($iconNames, TRUE) . ';';
 		/** @var $codeCache \TYPO3\CMS\Core\Cache\Frontend\PhpFrontend */
-		$GLOBALS['typo3CacheManager']->getCache('cache_core')->set(static::getCacheIdentifier(), $cacheFileContent);
+		GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->getCache('cache_core')->set(static::getCacheIdentifier(), $cacheFileContent);
 	}
 
 	/**

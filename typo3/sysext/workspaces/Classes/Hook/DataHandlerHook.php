@@ -142,7 +142,7 @@ class DataHandlerHook {
 	 * @return void
 	 */
 	protected function flushWorkspaceCacheEntriesByWorkspaceId($workspaceId) {
-		$workspacesCache = $GLOBALS['typo3CacheManager']->getCache('workspaces_cache');
+		$workspacesCache = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->getCache('workspaces_cache');
 		$workspacesCache->flushByTag($workspaceId);
 		$workspacesCache->flushByTag(\TYPO3\CMS\Workspaces\Service\WorkspaceService::SELECT_ALL_WORKSPACES);
 	}

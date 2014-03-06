@@ -156,7 +156,7 @@ class Bootstrap implements \TYPO3\CMS\Extbase\Core\BootstrapInterface {
 	 * @see initialize()
 	 */
 	protected function initializeCache() {
-		$this->cacheManager = $GLOBALS['typo3CacheManager'];
+		$this->cacheManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager');
 	}
 
 	/**

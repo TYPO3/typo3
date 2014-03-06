@@ -79,7 +79,7 @@ abstract class AbstractTemplateView implements \TYPO3\CMS\Extbase\Mvc\View\ViewI
 	 */
 	public function injectTemplateCompiler(\TYPO3\CMS\Fluid\Core\Compiler\TemplateCompiler $templateCompiler) {
 		$this->templateCompiler = $templateCompiler;
-		$this->templateCompiler->setTemplateCache($GLOBALS['typo3CacheManager']->getCache('fluid_template'));
+		$this->templateCompiler->setTemplateCache(\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->getCache('fluid_template'));
 	}
 
 	/**

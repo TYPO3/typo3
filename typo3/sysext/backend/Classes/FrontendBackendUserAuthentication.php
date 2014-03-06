@@ -260,7 +260,7 @@ class FrontendBackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\B
 	 * @return integer The number of pages for this page in the table "cache_pages
 	 */
 	public function extGetNumberOfCachedPages($pageId) {
-		$pageCache = $GLOBALS['typo3CacheManager']->getCache('cache_pages');
+		$pageCache = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->getCache('cache_pages');
 		$pageCacheEntries = $pageCache->getByTag('pageId_' . (int)$pageId);
 		return count($pageCacheEntries);
 	}

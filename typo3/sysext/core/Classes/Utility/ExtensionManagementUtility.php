@@ -67,6 +67,23 @@ class ExtensionManagementUtility {
 		static::$packageManager = $packageManager;
 	}
 
+	/**
+	 * @var \TYPO3\CMS\Core\Cache\CacheManager
+	 */
+	static protected $cacheManager;
+
+	/**
+	 * Getter for the cache manager
+	 *
+	 * @return \TYPO3\CMS\Core\Cache\CacheManager $cacheManager
+	 */
+	static protected function getCacheManager() {
+		if (static::$cacheManager === NULL) {
+			static::$cacheManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager');
+		}
+		return static::$cacheManager;
+	}
+
 	/**************************************
 	 *
 	 * PATHS and other evaluation
@@ -1446,7 +1463,7 @@ tt_content.' . $key . $prefix . ' {
 		if ($allowCaching) {
 			$cacheIdentifier = self::getExtLocalconfCacheIdentifier();
 			/** @var $codeCache \TYPO3\CMS\Core\Cache\Frontend\PhpFrontend */
-			$codeCache = $GLOBALS['typo3CacheManager']->getCache('cache_core');
+			$codeCache = self::getCacheManager()->getCache('cache_core');
 			if ($codeCache->has($cacheIdentifier)) {
 				$codeCache->requireOnce($cacheIdentifier);
 			} else {
@@ -1516,7 +1533,7 @@ tt_content.' . $key . $prefix . ' {
 		$phpCodeToCache = implode(LF, $phpCodeToCache);
 		// Remove all start and ending php tags from content
 		$phpCodeToCache = preg_replace('/<\\?php|\\?>/is', '', $phpCodeToCache);
-		$GLOBALS['typo3CacheManager']->getCache('cache_core')->set(self::getExtLocalconfCacheIdentifier(), $phpCodeToCache);
+		self::getCacheManager()->getCache('cache_core')->set(self::getExtLocalconfCacheIdentifier(), $phpCodeToCache);
 	}
 
 	/**
@@ -1546,7 +1563,7 @@ tt_content.' . $key . $prefix . ' {
 		if ($allowCaching) {
 			$cacheIdentifier = static::getBaseTcaCacheIdentifier();
 			/** @var $codeCache \TYPO3\CMS\Core\Cache\Frontend\PhpFrontend */
-			$codeCache = $GLOBALS['typo3CacheManager']->getCache('cache_core');
+			$codeCache = self::getCacheManager()->getCache('cache_core');
 			if ($codeCache->has($cacheIdentifier)) {
 				// substr is necessary, because the php frontend wraps php code around the cache value
 				$GLOBALS['TCA'] = unserialize(substr($codeCache->get($cacheIdentifier), 6, -2));
@@ -1600,7 +1617,7 @@ tt_content.' . $key . $prefix . ' {
 	 */
 	static protected function createBaseTcaCacheFile() {
 		/** @var $codeCache \TYPO3\CMS\Core\Cache\Frontend\PhpFrontend */
-		$codeCache = $GLOBALS['typo3CacheManager']->getCache('cache_core');
+		$codeCache = self::getCacheManager()->getCache('cache_core');
 		$codeCache->set(static::getBaseTcaCacheIdentifier(), serialize($GLOBALS['TCA']));
 	}
 
@@ -1630,7 +1647,7 @@ tt_content.' . $key . $prefix . ' {
 			self::$extTablesWasReadFromCacheOnce = TRUE;
 			$cacheIdentifier = self::getExtTablesCacheIdentifier();
 			/** @var $codeCache \TYPO3\CMS\Core\Cache\Frontend\PhpFrontend */
-			$codeCache = $GLOBALS['typo3CacheManager']->getCache('cache_core');
+			$codeCache = self::getCacheManager()->getCache('cache_core');
 			if ($codeCache->has($cacheIdentifier)) {
 				$codeCache->requireOnce($cacheIdentifier);
 			} else {
@@ -1707,7 +1724,7 @@ tt_content.' . $key . $prefix . ' {
 		$phpCodeToCache = implode(LF, $phpCodeToCache);
 		// Remove all start and ending php tags from content
 		$phpCodeToCache = preg_replace('/<\\?php|\\?>/is', '', $phpCodeToCache);
-		$GLOBALS['typo3CacheManager']->getCache('cache_core')->set(self::getExtTablesCacheIdentifier(), $phpCodeToCache);
+		self::getCacheManager()->getCache('cache_core')->set(self::getExtTablesCacheIdentifier(), $phpCodeToCache);
 	}
 
 	/**
@@ -1788,7 +1805,7 @@ tt_content.' . $key . $prefix . ' {
 	 * @return void
 	 */
 	static public function removeCacheFiles() {
-		$GLOBALS['typo3CacheManager']->flushCachesInGroup('system');
+		self::getCacheManager()->flushCachesInGroup('system');
 	}
 
 	/**

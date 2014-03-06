@@ -897,7 +897,7 @@ class TypoScriptFrontendController {
 	 * @return void
 	 */
 	protected function initCaches() {
-		$this->pageCache = $GLOBALS['typo3CacheManager']->getCache('cache_pages');
+		$this->pageCache = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->getCache('cache_pages');
 	}
 
 	/**
@@ -4514,7 +4514,7 @@ if (version == "n3") {
 	 */
 	public function get_cache_timeout() {
 		/** @var $runtimeCache \TYPO3\CMS\Core\Cache\Frontend\AbstractFrontend */
-		$runtimeCache = $GLOBALS['typo3CacheManager']->getCache('cache_runtime');
+		$runtimeCache = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->getCache('cache_runtime');
 		$cachedCacheLifetimeIdentifier = 'core-tslib_fe-get_cache_timeout';
 		$cachedCacheLifetime = $runtimeCache->get($cachedCacheLifetimeIdentifier);
 		if ($cachedCacheLifetime === FALSE) {
@@ -4877,7 +4877,7 @@ if (version == "n3") {
 	protected function getSysDomainCache() {
 		$entryIdentifier = 'core-database-sys_domain-complete';
 		/** @var $runtimeCache \TYPO3\CMS\Core\Cache\Frontend\AbstractFrontend */
-		$runtimeCache = $GLOBALS['typo3CacheManager']->getCache('cache_runtime');
+		$runtimeCache = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->getCache('cache_runtime');
 
 		$sysDomainData = array();
 		if ($runtimeCache->has($entryIdentifier)) {

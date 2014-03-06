@@ -431,7 +431,7 @@ class AbstractController {
 		$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['fluid_template']['options'] = array();
 
 		/** @var $cacheManager \TYPO3\CMS\Core\Cache\CacheManager */
-		$cacheManager = $GLOBALS['typo3CacheManager'];
+		$cacheManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager');
 		$cacheManager->setCacheConfigurations($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']);
 	}
 

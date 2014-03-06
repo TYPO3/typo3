@@ -247,7 +247,7 @@ class GridDataService {
 	 * @return void
 	 */
 	protected function initializeWorkspacesCachingFramework() {
-		$this->workspacesCache = $GLOBALS['typo3CacheManager']->getCache('workspaces_cache');
+		$this->workspacesCache = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->getCache('workspaces_cache');
 	}
 
 	/**

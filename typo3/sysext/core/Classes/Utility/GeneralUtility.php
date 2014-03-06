@@ -4396,6 +4396,33 @@ Connection: close
 	}
 
 	/**
+	 * Removes the instance of a singleton class to be returned by makeInstance.
+	 *
+	 * Warning:
+	 * This is NOT a public API method and must not be used in own extensions!
+	 * This methods exists mostly for unit tests to inject a mock of a singleton class.
+	 * If you use this, make sure to always combine this with getSingletonInstances()
+	 * and resetSingletonInstances() in setUp() and tearDown() of the test class.
+	 *
+	 * @see makeInstance
+	 * @throws \InvalidArgumentException
+	 * @param string $className
+	 * @param \TYPO3\CMS\Core\SingletonInterface $instance
+	 * @return void
+	 * @internal
+	 */
+	static public function removeSingletonInstance($className, \TYPO3\CMS\Core\SingletonInterface $instance) {
+		self::checkInstanceClassName($className, $instance);
+		if (!isset(self::$singletonInstances[$className])) {
+			throw new \InvalidArgumentException('No Instance registered for ' . $className . '.', 1394099179);
+		}
+		if ($instance !== self::$singletonInstances[$className]) {
+			throw new \InvalidArgumentException('The instance you are trying to remove has not been registered before.', 1394099256);
+		}
+		unset(self::$singletonInstances[$className]);
+	}
+
+	/**
 	 * Set a group of singleton instances. Similar to setSingletonInstance(),
 	 * but multiple instances can be set.
 	 *

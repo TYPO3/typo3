@@ -811,12 +811,10 @@ class PageRepository {
 	 */
 	static public function getHash($hash, $expTime = 0) {
 		$hashContent = NULL;
-		if (is_object($GLOBALS['typo3CacheManager'])) {
-			$contentHashCache = $GLOBALS['typo3CacheManager']->getCache('cache_hash');
-			$cacheEntry = $contentHashCache->get($hash);
-			if ($cacheEntry) {
-				$hashContent = $cacheEntry;
-			}
+		$contentHashCache = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->getCache('cache_hash');
+		$cacheEntry = $contentHashCache->get($hash);
+		if ($cacheEntry) {
+			$hashContent = $cacheEntry;
 		}
 		return $hashContent;
 	}
@@ -835,9 +833,7 @@ class PageRepository {
 	 * @see tslib_TStemplate::start(), getHash()
 	 */
 	static public function storeHash($hash, $data, $ident, $lifetime = 0) {
-		if (is_object($GLOBALS['typo3CacheManager'])) {
-			$GLOBALS['typo3CacheManager']->getCache('cache_hash')->set($hash, $data, array('ident_' . $ident), (int)$lifetime);
-		}
+		GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->getCache('cache_hash')->set($hash, $data, array('ident_' . $ident), (int)$lifetime);
 	}
 
 	/**

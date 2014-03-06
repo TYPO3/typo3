@@ -2480,11 +2480,11 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$file = PATH_site . 'typo3temp/' . $unique . '.xml';
 		Utility\GeneralUtility::writeFileToTypo3tempDir($file, $xml);
 		// Make sure there is no cached version of the label
-		$GLOBALS['typo3CacheManager']->getCache('l10n')->flush();
+		Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->getCache('l10n')->flush();
 		// Get default value
 		$defaultLL = Utility\GeneralUtility::readLLfile('EXT:lang/locallang_core.xlf', 'default');
 		// Clear language cache again
-		$GLOBALS['typo3CacheManager']->getCache('l10n')->flush();
+		Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->getCache('l10n')->flush();
 		// Set override file
 		$GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride']['EXT:lang/locallang_core.xlf'][$unique] = $file;
 		/** @var $store \TYPO3\CMS\Core\Localization\LanguageStore */

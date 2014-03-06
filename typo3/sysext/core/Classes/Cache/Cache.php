@@ -23,6 +23,8 @@ namespace TYPO3\CMS\Core\Cache;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * A cache handling helper class
  *
@@ -36,22 +38,33 @@ class Cache {
 	static protected $isCachingFrameworkInitialized = FALSE;
 
 	/**
+	 * @var CacheManager
+	 */
+	static protected $cacheManager;
+
+	/**
+	 * @var CacheFactory
+	 */
+	static protected $cacheFactory;
+
+	/**
 	 * Initializes the caching framework by loading the cache manager and factory
 	 * into the global context.
 	 *
-	 * @return void
+	 * @return CacheManager
 	 */
 	static public function initializeCachingFramework() {
 		if (!self::isCachingFrameworkInitialized()) {
 			// New operator used on purpose, makeInstance() is not ready to be used so early in bootstrap
-			$GLOBALS['typo3CacheManager'] = new \TYPO3\CMS\Core\Cache\CacheManager();
-			\TYPO3\CMS\Core\Utility\GeneralUtility::setSingletonInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager', $GLOBALS['typo3CacheManager']);
-			$GLOBALS['typo3CacheManager']->setCacheConfigurations($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']);
+			self::$cacheManager = new CacheManager();
+			GeneralUtility::setSingletonInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager', self::$cacheManager);
+			self::$cacheManager->setCacheConfigurations($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']);
 			// New operator used on purpose, makeInstance() is not ready to be used so early in bootstrap
-			$GLOBALS['typo3CacheFactory'] = new \TYPO3\CMS\Core\Cache\CacheFactory('production', $GLOBALS['typo3CacheManager']);
-			\TYPO3\CMS\Core\Utility\GeneralUtility::setSingletonInstance('TYPO3\\CMS\\Core\\Cache\\CacheFactory', $GLOBALS['typo3CacheFactory']);
+			self::$cacheFactory = new CacheFactory('production', self::$cacheManager);
+			GeneralUtility::setSingletonInstance('TYPO3\\CMS\\Core\\Cache\\CacheFactory', self::$cacheFactory);
 			self::$isCachingFrameworkInitialized = TRUE;
 		}
+		return self::$cacheManager;
 	}
 
 	/**
@@ -61,9 +74,6 @@ class Cache {
 	 * @return boolean True if caching framework is initialized
 	 */
 	static public function isCachingFrameworkInitialized() {
-		if (!self::$isCachingFrameworkInitialized && isset($GLOBALS['typo3CacheManager']) && $GLOBALS['typo3CacheManager'] instanceof \TYPO3\CMS\Core\Cache\CacheManager && isset($GLOBALS['typo3CacheFactory']) && $GLOBALS['typo3CacheFactory'] instanceof \TYPO3\CMS\Core\Cache\CacheFactory) {
-			self::$isCachingFrameworkInitialized = TRUE;
-		}
 		return self::$isCachingFrameworkInitialized;
 	}
 
@@ -75,8 +85,10 @@ class Cache {
 	 */
 	static public function flagCachingFrameworkForReinitialization() {
 		self::$isCachingFrameworkInitialized = FALSE;
-		unset($GLOBALS['typo3CacheManager']);
-		unset($GLOBALS['typo3CacheFactory']);
+		GeneralUtility::removeSingletonInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager', self::$cacheManager);
+		GeneralUtility::removeSingletonInstance('TYPO3\\CMS\\Core\\Cache\\CacheFactory', self::$cacheFactory);
+		self::$cacheManager = NULL;
+		self::$cacheFactory = NULL;
 	}
 
 	/**
@@ -90,7 +102,7 @@ class Cache {
 	static public function getDatabaseTableDefinitions() {
 		$tableDefinitions = '';
 		foreach ($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'] as $cacheName => $_) {
-			$backend = $GLOBALS['typo3CacheManager']->getCache($cacheName)->getBackend();
+			$backend = self::$cacheManager->getCache($cacheName)->getBackend();
 			if (method_exists($backend, 'getTableDefinitions')) {
 				$tableDefinitions .= LF . $backend->getTableDefinitions();
 			}
@@ -107,7 +119,7 @@ class Cache {
 	 * @return array
 	 */
 	public function addCachingFrameworkRequiredDatabaseSchemaToTablesDefinition(array $sqlString, $extensionKey) {
-		$GLOBALS['typo3CacheManager']->setCacheConfigurations($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']);
+		self::$cacheManager->setCacheConfigurations($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']);
 		$sqlString[] = static::getDatabaseTableDefinitions();
 		return array('sqlString' => $sqlString, 'extensionKey' => $extensionKey);
 	}

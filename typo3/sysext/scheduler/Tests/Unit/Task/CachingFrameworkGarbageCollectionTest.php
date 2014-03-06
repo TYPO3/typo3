@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Scheduler\Tests\Unit\Task;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Test case
@@ -32,14 +33,35 @@ namespace TYPO3\CMS\Scheduler\Tests\Unit\Task;
 class CachingFrameworkGarbageCollectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
+	 * @var array
+	 */
+	protected $singletonInstances = array();
+
+	/**
+	 * Set up
+	 */
+	public function setUp() {
+		$this->singletonInstances = \TYPO3\CMS\Core\Utility\GeneralUtility::getSingletonInstances();
+	}
+
+	/**
+	 * Reset singleton instances
+	 */
+	public function tearDown() {
+		\TYPO3\CMS\Core\Utility\GeneralUtility::resetSingletonInstances($this->singletonInstances);
+		parent::tearDown();
+	}
+
+	/**
 	 * @test
 	 */
 	public function executeCallsCollectGarbageOfConfiguredBackend() {
 		$cache = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\StringFrontend', array(), array(), '', FALSE);
 		$cache->expects($this->any())->method('getIdentifier')->will($this->returnValue('cache'));
 		$cache->expects($this->atLeastOnce())->method('collectGarbage');
-		$GLOBALS['typo3CacheManager'] = new \TYPO3\CMS\Core\Cache\CacheManager();
-		$GLOBALS['typo3CacheManager']->registerCache($cache);
+		$mockCacheManager = new \TYPO3\CMS\Core\Cache\CacheManager();
+		$mockCacheManager->registerCache($cache);
+		GeneralUtility::setSingletonInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager', $mockCacheManager);
 		$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'] = array(
 			'cache' => array(
 				'frontend' => 'TYPO3\\CMS\\Core\\Cache\\Frontend\\StringFrontend',
@@ -58,8 +80,9 @@ class CachingFrameworkGarbageCollectionTest extends \TYPO3\CMS\Core\Tests\UnitTe
 		$cache = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\StringFrontend', array(), array(), '', FALSE);
 		$cache->expects($this->any())->method('getIdentifier')->will($this->returnValue('cache'));
 		$cache->expects($this->never())->method('collectGarbage');
-		$GLOBALS['typo3CacheManager'] = new \TYPO3\CMS\Core\Cache\CacheManager();
-		$GLOBALS['typo3CacheManager']->registerCache($cache);
+		$mockCacheManager = new \TYPO3\CMS\Core\Cache\CacheManager();
+		$mockCacheManager->registerCache($cache);
+		GeneralUtility::setSingletonInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager', $mockCacheManager);
 		$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'] = array(
 			'cache' => array(
 				'frontend' => 'TYPO3\\CMS\\Core\\Cache\\Frontend\\StringFrontend',

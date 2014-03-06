@@ -480,9 +480,10 @@ class Bootstrap {
 	 * @return Bootstrap
 	 */
 	protected function initializeCachingFramework() {
-		// @todo Please deuglify
-		\TYPO3\CMS\Core\Cache\Cache::initializeCachingFramework();
-		$this->setEarlyInstance('TYPO3\CMS\Core\Cache\CacheManager', $GLOBALS['typo3CacheManager']);
+		$this->setEarlyInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager', \TYPO3\CMS\Core\Cache\Cache::initializeCachingFramework());
+		// @deprecated since 6.2 will be removed in two versions
+		$GLOBALS['typo3CacheManager'] = new \TYPO3\CMS\Core\Compatibility\GlobalObjectDeprecationDecorator('TYPO3\\CMS\\Core\\Cache\\CacheManager');
+		$GLOBALS['typo3CacheFactory'] = new \TYPO3\CMS\Core\Compatibility\GlobalObjectDeprecationDecorator('TYPO3\\CMS\\Core\\Cache\\CacheFactory');
 		return $this;
 	}
 
@@ -698,7 +699,7 @@ class Bootstrap {
 	 * @return Bootstrap
 	 */
 	protected function setFinalCachingFrameworkCacheConfiguration() {
-		$GLOBALS['typo3CacheManager']->setCacheConfigurations($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']);
+		$this->getEarlyInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->setCacheConfigurations($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']);
 		return $this;
 	}
 
@@ -896,7 +897,7 @@ class Bootstrap {
 	public function loadCachedTca() {
 		$cacheIdentifier = 'tca_fe_' . sha1((TYPO3_version . PATH_site . 'tca_fe'));
 		/** @var $codeCache \TYPO3\CMS\Core\Cache\Frontend\PhpFrontend */
-		$codeCache = $GLOBALS['typo3CacheManager']->getCache('cache_core');
+		$codeCache = $this->getEarlyInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->getCache('cache_core');
 		if ($codeCache->has($cacheIdentifier)) {
 			// substr is necessary, because the php frontend wraps php code around the cache value
 			$GLOBALS['TCA'] = unserialize(substr($codeCache->get($cacheIdentifier), 6, -2));
