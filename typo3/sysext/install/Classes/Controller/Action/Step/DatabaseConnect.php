@@ -180,7 +180,7 @@ class DatabaseConnect extends AbstractStepAction {
 				// and fed with connect values directly in order to obsolete the bootstrap reload.
 				\TYPO3\CMS\Core\Core\Bootstrap::getInstance()
 					->populateLocalConfiguration()
-					->setCoreCacheToNullBackend();
+					->disableCoreAndClassesCache();
 				if ($this->isDbalEnabled()) {
 					require(ExtensionManagementUtility::extPath('dbal') . 'ext_localconf.php');
 					$GLOBALS['typo3CacheManager']->setCacheConfigurations($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']);
