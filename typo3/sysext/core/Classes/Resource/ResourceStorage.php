@@ -1106,14 +1106,16 @@ class ResourceStorage {
 		$this->assureFileAddPermissions($localFilePath, $targetFolder, $targetFileName);
 		$targetFolder = $targetFolder ?: $this->getDefaultFolder();
 		$targetFileName = $this->driver->sanitizeFileName($targetFileName ?: PathUtility::basename($localFilePath));
+
+		// We do not care whether the file exists yet because $targetFileName may be changed by an
+		// external slot and only then we should check how to proceed according to $conflictMode
+		$this->emitPreFileAddSignal($targetFileName, $targetFolder, $localFilePath);
+
 		if ($conflictMode === 'cancel' && $this->driver->fileExistsInFolder($targetFileName, $targetFolder->getIdentifier())) {
 			throw new Exception\ExistingTargetFileNameException('File "' . $targetFileName . '" already exists in folder ' . $targetFolder->getIdentifier(), 1322121068);
 		} elseif ($conflictMode === 'changeName') {
 			$targetFileName = $this->getUniqueName($targetFolder, $targetFileName);
 		}
-		// We do not care whether the file exists if $conflictMode is "replace",
-		// so just use the name as is in that case
-		$this->emitPreFileAddSignal($targetFileName, $targetFolder);
 
 		$fileIdentifier = $this->driver->addFile($localFilePath, $targetFolder->getIdentifier(), $targetFileName);
 		$file = ResourceFactory::getInstance()->getFileObjectByStorageAndIdentifier($this->getUid(), $fileIdentifier);
@@ -2094,12 +2096,13 @@ class ResourceStorage {
 	/**
 	 * Emits file pre-add signal
 	 *
-	 * @param string $fileName
+	 * @param string $targetFileName
 	 * @param Folder $targetFolder
+	 * @param string $sourceFilePath
 	 * @return void
 	 */
-	protected function emitPreFileAddSignal($fileName, Folder $targetFolder) {
-		$this->getSignalSlotDispatcher()->dispatch('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', self::SIGNAL_PreFileAdd, array($fileName, $targetFolder));
+	protected function emitPreFileAddSignal(&$targetFileName, Folder $targetFolder, $sourceFilePath) {
+		$this->getSignalSlotDispatcher()->dispatch('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', self::SIGNAL_PreFileAdd, array(&$targetFileName, $targetFolder, $sourceFilePath, $this, $this->driver));
 	}
 
 	/**
