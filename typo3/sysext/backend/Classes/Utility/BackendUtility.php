@@ -2994,12 +2994,9 @@ class BackendUtility {
 	 * @param array $urlParameters URL parameters that should be added as key value pairs
 	 * @param boolean/string $backPathOverride backpath that should be used instead of the global $BACK_PATH
 	 * @param boolean $returnAbsoluteUrl If set to TRUE, the URL returned will be absolute, $backPathOverride will be ignored in this case
-	 * @return boolean/string Calculated URL or FALSE
+	 * @return string Calculated URL
 	 */
 	static public function getModuleUrl($moduleName, $urlParameters = array(), $backPathOverride = FALSE, $returnAbsoluteUrl = FALSE) {
-		if (!$GLOBALS['BE_USER']->check('modules', $moduleName)) {
-			return FALSE;
-		}
 		if ($backPathOverride === FALSE) {
 			$backPath = isset($GLOBALS['BACK_PATH']) ? $GLOBALS['BACK_PATH'] : '';
 		} else {
