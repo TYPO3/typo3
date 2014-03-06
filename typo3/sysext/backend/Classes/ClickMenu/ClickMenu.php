@@ -197,18 +197,6 @@ class ClickMenu {
 		return $CMcontent;
 	}
 
-	/**
-	 * Returns TRUE if the menu should (also?) be displayed in topframe, not just <div>-layers
-	 *
-	 * @return boolean
-	 * @todo Define visibility
-	 * @deprecated since TYPO3 6.0, will be removed in 6.2 as there is no click menu in the topframe anymore (no topframe at all actually)
-	 */
-	public function doDisplayTopFrameCM() {
-		GeneralUtility::logDeprecatedFunction();
-		return FALSE;
-	}
-
 	/***************************************
 	 *
 	 * DATABASE
