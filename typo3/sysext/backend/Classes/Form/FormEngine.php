@@ -91,6 +91,14 @@ class FormEngine {
 	public $cachedAdditionalPreviewLanguages = NULL;
 
 	/**
+	 * Cache for the real PID of a record. The array key consists for a combinded string "<table>:<uid>:<pid>".
+	 * The value is an array with two values: first is the real PID of a record, second is the PID value for TSconfig.
+	 *
+	 * @var array
+	 */
+	protected $cache_getTSCpid;
+
+	/**
 	 * @todo Define visibility
 	 */
 	public $transformedRow = array();
@@ -6004,7 +6012,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 	 * @param string $table Tablename
 	 * @param string $uid UID value
 	 * @param string $pid PID value
-	 * @return integer Returns the REAL pid of the record, if possible. If both $uid and $pid is strings, then pid=-1 is returned as an error indication.
+	 * @return array Array of two integers; first is the real PID of a record, second is the PID value for TSconfig.
 	 * @see BackendUtility::getTSCpid()
 	 * @todo Define visibility
 	 */
