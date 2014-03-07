@@ -74,7 +74,7 @@ class MboxTransport implements \Swift_Transport {
 	/**
 	 * Outputs the mail to a text file according to RFC 4155.
 	 *
-	 * @param Swift_Mime_Message $message The message to send
+	 * @param \Swift_Mime_Message $message The message to send
 	 * @param string[] &$failedRecipients To collect failures by-reference, nothing will fail in our debugging case
 	 * @return int
 	 * @throws \RuntimeException
@@ -88,9 +88,9 @@ class MboxTransport implements \Swift_Transport {
 		// Add the complete mail inclusive headers
 		$messageStr .= $message->toString();
 		$messageStr .= LF . LF;
-		$lockObject = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Locking\\Locker', $this->debugFile, $GLOBALS['TYPO3_CONF_VARS']['SYS']['lockingMode']);
+		$lockObject = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Locking\\Locker', $this->debugFile);
 		/** @var \TYPO3\CMS\Core\Locking\Locker $lockObject */
-		$lockObject->acquire();
+		$lockObject->acquireExclusiveLock();
 		// Write the mbox file
 		$file = @fopen($this->debugFile, 'a');
 		if (!$file) {
@@ -109,7 +109,7 @@ class MboxTransport implements \Swift_Transport {
 	/**
 	 * Determine the best-use reverse path for this message
 	 *
-	 * @param Swift_Mime_Message $message
+	 * @param \Swift_Mime_Message $message
 	 * @return mixed|NULL
 	 */
 	private function getReversePath(\Swift_Mime_Message $message) {
@@ -132,7 +132,8 @@ class MboxTransport implements \Swift_Transport {
 	/**
 	 * Register a plugin in the Transport.
 	 *
-	 * @param Swift_Events_EventListener $plugin
+	 * @param \Swift_Events_EventListener $plugin
+	 * @return bool
 	 */
 	public function registerPlugin(\Swift_Events_EventListener $plugin) {
 		return TRUE;
