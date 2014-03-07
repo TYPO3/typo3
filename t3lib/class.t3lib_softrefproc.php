@@ -611,25 +611,45 @@ class t3lib_softrefproc {
 
 	/**
 	 * Analyse content as a TypoLink value and return an array with properties.
-	 * TypoLinks format is: <link [typolink] [browser target] [css class]>. See tslib_content::typolink()
+	 * TypoLinks format is: <link [typolink] [browser target] [css class] [title attribute] [additionalParams]>.
+	 * See tslib_cObj::typolink()
 	 * The syntax of the [typolink] part is: [typolink] = [page id or alias][,[type value]][#[anchor, if integer = tt_content uid]]
 	 * The extraction is based on how tslib_content::typolink() behaves.
 	 *
 	 * @param	string		TypoLink value.
 	 * @return	array		Array with the properties of the input link specified. The key "LINK_TYPE" will reveal the type. If that is blank it could not be determined.
-	 * @see tslib_content::typolink(), setTypoLinkPartsElement()
+	 * @see tslib_cObj::typolink(), setTypoLinkPartsElement()
 	 */
 	function getTypoLinkParts($typolinkValue) {
 		$finalTagParts = array();
-
-			// Split by space into link / target / class
-		list($link_param, $browserTarget, $cssClass) = t3lib_div::trimExplode(' ', $typolinkValue, 1);
-		if (strlen($browserTarget)) {
-			$finalTagParts['target'] = $browserTarget;
+		$browserTarget = '';
+		$cssClass = '';
+		$titleAttribute = '';
+		$additionalParams = '';
+		// Split into link / target / class / title / additionalParams
+		$linkParameter = t3lib_div::unQuoteFilenames($typolinkValue, TRUE);
+		// Link parameter value
+		$link_param = trim($linkParameter[0]);
+		// Target value
+		if (isset($linkParameter[1])) {
+			$browserTarget = trim($linkParameter[1]);
 		}
-		if (strlen($cssClass)) {
-			$finalTagParts['class'] = $cssClass;
+		// Link class
+		if (isset($linkParameter[2])) {
+			$cssClass = trim($linkParameter[2]);
 		}
+		// Title value
+		if (isset($linkParameter[3])) {
+			$titleAttribute = trim($linkParameter[3]);
+		}
+		if (isset($linkParameter[4]) && trim($linkParameter[4]) !== '') {
+			$additionalParams = trim($linkParameter[4]);
+		}
+		// set all tag parts because setTypoLinkPartsElement() rely on them
+		$finalTagParts['target'] = $browserTarget;
+		$finalTagParts['class'] = $cssClass;
+		$finalTagParts['title'] = $titleAttribute;
+		$finalTagParts['additionalParams'] = $additionalParams;
 
 			// Parse URL:
 		$pU = @parse_url($link_param);
@@ -803,15 +823,21 @@ class t3lib_softrefproc {
 			break;
 		}
 
-			// Finally, for all entries that was rebuild with tokens, add target and class in the end:
-		if (strlen($content) && strlen($tLP['target'])) {
+		// Finally, for all entries that was rebuild with tokens, add target, class, title and additionalParams in the end:
+		if (strlen($content) && isset($tLP['target']) && $tLP['target'] !== '') {
 			$content .= ' ' . $tLP['target'];
-			if (strlen($tLP['class'])) {
+			if (isset($tLP['class']) && $tLP['class'] !== '') {
 				$content .= ' ' . $tLP['class'];
+				if (isset($tLP['title']) && $tLP['title'] !== '') {
+					$content .= ' "' . $tLP['title'] . '"';
+					if (isset($tLP['additionalParams']) && $tLP['additionalParams'] !== '') {
+						$content .= ' ' . $tLP['additionalParams'];
+					}
+				}
 			}
 		}
 
-			// Return rebuilt typolink value:
+		// Return rebuilt typolink value:
 		return $content;
 	}
 
