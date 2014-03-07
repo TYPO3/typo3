@@ -45,7 +45,14 @@ class DatabasePreset extends Configuration\AbstractPreset {
 	 * @var array Configuration values handled by this preset
 	 */
 	protected $configurationValues = array(
-		'SYS/caching/cacheConfigurations/extbase_object' => array(),
+		'SYS/caching/cacheConfigurations/extbase_object' => array(
+			'frontend' => 'TYPO3\CMS\Core\Cache\Frontend\VariableFrontend',
+			'backend' => 'TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend',
+			'options' => array(
+				'defaultLifetime' => 0,
+			),
+			'groups' => array('system')
+		)
 	);
 
 	/**
