@@ -285,8 +285,10 @@ class ElementInformationController {
 			}
 
 			// Display download link?
-			if ($this->fileObject->getPublicUrl()) {
-				$downloadLink .= '<a href="../' . $this->fileObject->getPublicUrl() . '" target="_blank" class="t3-button">' .
+			$url = $this->fileObject->getPublicUrl(TRUE);
+
+			if ($url) {
+				$downloadLink .= '<a href="' . htmlspecialchars($url) . '" target="_blank" class="t3-button">' .
 						IconUtility::getSpriteIcon('actions-edit-download') . ' ' .
 						$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xlf:download', TRUE) .
 						'</a>';
