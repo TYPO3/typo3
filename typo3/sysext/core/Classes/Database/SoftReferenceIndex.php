@@ -555,25 +555,47 @@ class SoftReferenceIndex {
 
 	/**
 	 * Analyse content as a TypoLink value and return an array with properties.
-	 * TypoLinks format is: <link [typolink] [browser target] [css class]>. See tslib_content::typolink()
+	 * TypoLinks format is: <link [typolink] [browser target] [css class] [title attribute] [additionalParams]>.
+	 * See TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::typolink()
 	 * The syntax of the [typolink] part is: [typolink] = [page id or alias][,[type value]][#[anchor, if integer = tt_content uid]]
 	 * The extraction is based on how tslib_content::typolink() behaves.
 	 *
 	 * @param string $typolinkValue TypoLink value.
 	 * @return array Array with the properties of the input link specified. The key "LINK_TYPE" will reveal the type. If that is blank it could not be determined.
-	 * @see tslib_content::typolink(), setTypoLinkPartsElement()
+	 * @see TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::typolink(), setTypoLinkPartsElement()
 	 * @todo Define visibility
 	 */
 	public function getTypoLinkParts($typolinkValue) {
 		$finalTagParts = array();
-		// Split by space into link / target / class
-		list($link_param, $browserTarget, $cssClass) = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(' ', $typolinkValue, 1);
-		if (strlen($browserTarget)) {
-			$finalTagParts['target'] = $browserTarget;
+		$browserTarget = '';
+		$cssClass = '';
+		$titleAttribute = '';
+		$additionalParams = '';
+		// Split into link / target / class / title / additionalParams
+		$linkParameter =  \TYPO3\CMS\Core\Utility\GeneralUtility::unQuoteFilenames($typolinkValue, TRUE);
+		// Link parameter value
+		$link_param = trim($linkParameter[0]);
+		// Target value
+		if (isset($linkParameter[1])) {
+			$browserTarget = trim($linkParameter[1]);
 		}
-		if (strlen($cssClass)) {
-			$finalTagParts['class'] = $cssClass;
+		// Link class
+		if (isset($linkParameter[2])) {
+			$cssClass = trim($linkParameter[2]);
 		}
+		// Title value
+		if (isset($linkParameter[3])) {
+			$titleAttribute = trim($linkParameter[3]);
+		}
+		if (isset($linkParameter[4]) && trim($linkParameter[4]) !== '') {
+			$additionalParams = trim($linkParameter[4]);
+		}
+		// set all tag parts because setTypoLinkPartsElement() rely on them
+		$finalTagParts['target'] = $browserTarget;
+		$finalTagParts['class'] = $cssClass;
+		$finalTagParts['title'] = $titleAttribute;
+		$finalTagParts['additionalParams'] = $additionalParams;
+
 		// Parse URL:
 		$pU = @parse_url($link_param);
 		// Detecting the kind of reference:
@@ -593,7 +615,7 @@ class SoftReferenceIndex {
 				$fileChar = intval(strpos($link_param, '/'));
 				$urlChar = intval(strpos($link_param, '.'));
 
-					// Detects if a file is found in site-root and if so it will be treated like a normal file.
+				// Detects if a file is found in site-root and if so it will be treated like a normal file.
 				list($rootFileDat) = explode('?', rawurldecode($link_param));
 				$containsSlash = strstr($rootFileDat, '/');
 				$rFD_fI = pathinfo($rootFileDat);
@@ -679,25 +701,25 @@ class SoftReferenceIndex {
 			$content = '{softref:' . $tokenID . '}';
 			break;
 		case 'file':
-				// Process files referenced by their FAL uid
+			// Process files referenced by their FAL uid
 			if ($tLP['identifier']) {
 				list ($linkHandlerKeyword, $linkHandlerValue) = explode(':', trim($tLP['identifier']), 2);
 				if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($linkHandlerValue)) {
-						// Token and substitute value
+					// Token and substitute value
 					$elements[$tokenID . ':' . $idx]['subst'] = array(
 						'type' => 'db',
 						'recordRef' => 'sys_file:' . $linkHandlerValue,
 						'tokenID' => $tokenID,
 						'tokenValue' => $tLP['identifier'],
 					);
-						// Output content will be the token instead:
+					// Output content will be the token instead:
 					$content = '{softref:' . $tokenID . '}';
 				} else {
-						// This is a link to a folder...
+					// This is a link to a folder...
 					return $content;
 				}
 
-			// Process files found in fileadmin directory:
+				// Process files found in fileadmin directory:
 			} elseif (!$tLP['query']) {
 				// We will not process files which has a query added to it. That will look like a script we don't want to move.
 				// File must be inside fileadmin/
@@ -762,15 +784,21 @@ class SoftReferenceIndex {
 			}
 			break;
 		default:
-			$elements[$tokenID . ':' . $idx]['error'] = 'Couldn\\t decide typolink mode.';
+			$elements[$tokenID . ':' . $idx]['error'] = 'Couldn\t decide typolink mode.';
 			return $content;
 			break;
 		}
-		// Finally, for all entries that was rebuild with tokens, add target and class in the end:
-		if (strlen($content) && strlen($tLP['target'])) {
+		// Finally, for all entries that was rebuild with tokens, add target, class, title and additionalParams in the end:
+		if (strlen($content) && isset($tLP['target']) && $tLP['target'] !== '') {
 			$content .= ' ' . $tLP['target'];
-			if (strlen($tLP['class'])) {
+			if (isset($tLP['class']) && $tLP['class'] !== '') {
 				$content .= ' ' . $tLP['class'];
+				if (isset($tLP['title']) && $tLP['title'] !== '') {
+					$content .= ' "' . $tLP['title'] . '"';
+					if (isset($tLP['additionalParams']) && $tLP['additionalParams'] !== '') {
+						$content .= ' ' . $tLP['additionalParams'];
+					}
+				}
 			}
 		}
 		// Return rebuilt typolink value:
