@@ -1217,16 +1217,17 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * @todo Define visibility
 	 */
 	public function extensionSelector($prefix, $value) {
-		global $TYPO3_LOADED_EXT;
-		$extTrav = array_keys($TYPO3_LOADED_EXT);
+		$loadedExtensions = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getLoadedExtensionListArray();
+
 		// make box:
 		$opt = array();
 		$opt[] = '<option value=""></option>';
-		foreach ($extTrav as $v) {
+		foreach ($loadedExtensions as $extensionKey) {
+			$sel = '';
 			if (is_array($value)) {
-				$sel = in_array($v, $value) ? ' selected="selected"' : '';
+				$sel = in_array($extensionKey, $value) ? ' selected="selected"' : '';
 			}
-			$opt[] = '<option value="' . htmlspecialchars($v) . '"' . $sel . '>' . htmlspecialchars($v) . '</option>';
+			$opt[] = '<option value="' . htmlspecialchars($extensionKey) . '"' . $sel . '>' . htmlspecialchars($extensionKey) . '</option>';
 		}
 		return '<select name="' . $prefix . '[]" multiple="multiple" size="' . \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange(count($opt), 5, 10) . '">' . implode('', $opt) . '</select>';
 	}
