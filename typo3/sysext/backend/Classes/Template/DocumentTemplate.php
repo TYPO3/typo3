@@ -88,7 +88,12 @@ class DocumentTemplate {
 	/**
 	 * @todo Define visibility
 	 */
-	public $JScodeArray = array();
+	public $JScodeArray = array('jumpToUrl' => '
+function jumpToUrl(URL) {
+	window.location.href = URL;
+	return false;
+}
+	');
 
 	// Additional 'page-end' code could be accumulated in this var. It will be outputted at the end of page before </body> and some other internal page-end code.
 	/**

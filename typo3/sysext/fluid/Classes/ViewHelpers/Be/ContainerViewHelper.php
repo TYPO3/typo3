@@ -52,7 +52,7 @@ class ContainerViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBacken
 	 * Render start page with \TYPO3\CMS\Backend\Template\DocumentTemplate and pageTitle
 	 *
 	 * @param string  $pageTitle title tag of the module. Not required by default, as BE modules are shown in a frame
-	 * @param boolean $enableJumpToUrl If TRUE, includes "jumpTpUrl" javascript function required by ActionMenu. Defaults to TRUE
+	 * @param boolean $enableJumpToUrl If TRUE, includes "jumpTpUrl" javascript function required by ActionMenu. Defaults to TRUE, deprecated, as not needed anymore
 	 * @param boolean $enableClickMenu If TRUE, loads clickmenu.js required by BE context menus. Defaults to TRUE
 	 * @param boolean $loadPrototype specifies whether to load prototype library. Defaults to TRUE
 	 * @param boolean $loadScriptaculous specifies whether to load scriptaculous libraries. Defaults to FALSE
@@ -74,17 +74,8 @@ class ContainerViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBacken
 	public function render($pageTitle = '', $enableJumpToUrl = TRUE, $enableClickMenu = TRUE, $loadPrototype = TRUE, $loadScriptaculous = FALSE, $scriptaculousModule = '', $loadExtJs = FALSE, $loadExtJsTheme = TRUE, $extJsAdapter = '', $enableExtJsDebug = FALSE, $addCssFile = NULL, $addJsFile = NULL, $loadJQuery = FALSE, $includeCssFiles = NULL, $includeJsFiles = NULL, $addJsInlineLabels = NULL) {
 		$doc = $this->getDocInstance();
 		$pageRenderer = $doc->getPageRenderer();
-		if ($enableJumpToUrl) {
-			$doc->JScode .= '
-				<script language="javascript" type="text/javascript">
-					script_ended = 0;
-					function jumpToUrl(URL)	{
-						document.location = URL;
-					}
-					' . $doc->redirectUrls() . '
-				</script>
-			';
-		}
+		$doc->JScode .= $doc->wrapScriptTags($doc->redirectUrls());
+
 		// Load various standard libraries
 		if ($enableClickMenu) {
 			$doc->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/clickmenu.js');

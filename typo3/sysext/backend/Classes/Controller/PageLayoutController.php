@@ -424,18 +424,25 @@ class PageLayoutController {
 			$this->doc->setModuleTemplate('EXT:backend/Resources/Private/Templates/db_layout.html');
 			// JavaScript:
 			$this->doc->JScode = '<script type="text/javascript" ' . 'src="' . GeneralUtility::createVersionNumberedFilename(($GLOBALS['BACK_PATH'] . 'js/jsfunc.updateform.js')) . '">' . '</script>';
-			$this->doc->JScode .= $this->doc->wrapScriptTags('
-				if (top.fsMod) top.fsMod.recentIds["web"] = ' . (int)$this->id . ';
-				if (top.fsMod) top.fsMod.navFrameHighlightedID["web"] = "pages' . (int)$this->id . '_"+top.fsMod.currentBank; ' . (int)$this->id . ';
-				function jumpToUrl(URL,formEl) {	//
+
+			// override the default jumpToUrl
+			$this->doc->JScodeArray['jumpToUrl'] = '
+				function jumpToUrl(URL,formEl) {
 					if (document.editform && TBE_EDITOR.isFormChanged)	{	// Check if the function exists... (works in all browsers?)
-						if (!TBE_EDITOR.isFormChanged())	{	//
+						if (!TBE_EDITOR.isFormChanged()) {
 							window.location.href = URL;
 						} else if (formEl) {
 							if (formEl.type=="checkbox") formEl.checked = formEl.checked ? 0 : 1;
 						}
-					} else window.location.href = URL;
+					} else {
+						window.location.href = URL;
+					}
 				}
+';
+
+			$this->doc->JScode .= $this->doc->wrapScriptTags('
+				if (top.fsMod) top.fsMod.recentIds["web"] = ' . (int)$this->id . ';
+				if (top.fsMod) top.fsMod.navFrameHighlightedID["web"] = "pages' . (int)$this->id . '_"+top.fsMod.currentBank; ' . (int)$this->id . ';
 			' . ($this->popView ? BackendUtility::viewOnClick($this->id, $GLOBALS['BACK_PATH'], BackendUtility::BEgetRootLine($this->id)) : '') . '
 
 				function deleteRecord(table,id,url) {	//

@@ -152,10 +152,6 @@ class TypoScriptTemplateModuleController extends \TYPO3\CMS\Backend\Module\BaseS
 			// JavaScript
 			$this->doc->JScode = '
 		<script language="javascript" type="text/javascript">
-			script_ended = 0;
-			function jumpToUrl(URL) {
-				window.location.href = URL;
-			}
 			function uFormUrl(aname) {
 				document.forms[0].action = ' . GeneralUtility::quoteJSvalue(($aHref . '#'), TRUE) . '+aname;
 			}
@@ -167,7 +163,6 @@ class TypoScriptTemplateModuleController extends \TYPO3\CMS\Backend\Module\BaseS
 		';
 			$this->doc->postCode = '
 		<script language="javascript" type="text/javascript">
-			script_ended = 1;
 			if (top.fsMod) top.fsMod.recentIds["web"] = ' . $this->id . ';
 		</script>
 		';

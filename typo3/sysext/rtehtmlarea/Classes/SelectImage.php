@@ -823,6 +823,10 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 				}
 		}
 		$this->content .= $this->doc->endPage();
+
+		// unset the default jumpToUrl() function
+		unset($this->doc->JScodeArray['jumpToUrl']);
+
 		$this->doc->JScodeArray['rtehtmlarea'] = $this->getJSCode($this->act, $this->editorNo, $this->sys_language_content);
 		$this->content = $this->doc->insertStylesAndJS($this->content);
 		return $this->content;

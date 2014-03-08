@@ -194,12 +194,7 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass 
 			$access = is_array($this->pageinfo) ? 1 : 0;
 			if ($pidValue && $access || $GLOBALS['BE_USER']->user['admin'] && !$pidValue) {
 				// JavaScript
-				$this->doc->JScode .= '
-					<script language="javascript" type="text/javascript">
-						script_ended = 0;
-						function jumpToUrl(URL) {
-							window.location.href = URL;
-						}
+				$this->doc->JScode .= $this->doc->wrapScriptTags('
 
 						function hlSubelements(origId, verId, over, diffLayer)	{	//
 							if (over) {
@@ -216,8 +211,7 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass 
 								}
 							}
 						}
-					</script>
-				';
+				');
 				// If another page module was specified, replace the default Page module with the new one
 				$newPageModule = trim($GLOBALS['BE_USER']->getTSConfigVal('options.overridePageModule'));
 				$this->pageModule = BackendUtility::isModuleSetInTBE_MODULES($newPageModule) ? $newPageModule : 'web_layout';

@@ -68,19 +68,9 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		$this->doc->bodyTagId = 'imp-exp-mod';
 		$this->doc->setModuleTemplate(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('impexp') . '/app/template.html');
 		$this->pageinfo = BackendUtility::readPageAccess($this->id, $this->perms_clause);
-		// JavaScript
-		$this->doc->JScode = $this->doc->wrapScriptTags('
-			script_ended = 0;
-			function jumpToUrl(URL) {	//
-				window.location.href = URL;
-			}
-		');
 		// Setting up the context sensitive menu:
 		$this->doc->getContextMenuCode();
-		$this->doc->postCode = $this->doc->wrapScriptTags('
-			script_ended = 1;
-			if (top.fsMod) top.fsMod.recentIds["web"] = ' . (int)$this->id . ';
-		');
+		$this->doc->postCode = $this->doc->wrapScriptTags('if (top.fsMod) top.fsMod.recentIds["web"] = ' . (int)$this->id . ';');
 		$this->doc->form = '<form action="' . htmlspecialchars($GLOBALS['MCONF']['_']) . '" method="post" enctype="' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'] . '"><input type="hidden" name="id" value="' . $this->id . '" />';
 		$this->content .= $this->doc->header($GLOBALS['LANG']->getLL('title'));
 		$this->content .= $this->doc->spacer(5);

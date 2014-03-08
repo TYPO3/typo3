@@ -306,6 +306,8 @@ class ElementBrowser {
 		$this->setParams = $this->curUrlArray['params'] != '-' ? rawurlencode($this->curUrlArray['params']) : '';
 
 		// Finally, add the accumulated JavaScript to the template object:
+		// also unset the default jumpToUrl() function before
+		unset($this->doc->JScodeArray['jumpToUrl']);
 		$this->doc->JScode .= $this->doc->wrapScriptTags($this->getJSCode());
 	}
 

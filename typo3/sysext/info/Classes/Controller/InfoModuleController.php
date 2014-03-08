@@ -97,16 +97,7 @@ class InfoModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 				)
 			);
 			// JavaScript
-			$this->doc->JScode = $this->doc->wrapScriptTags('
-				script_ended = 0;
-				function jumpToUrl(URL) {	//
-					window.location.href = URL;
-				}
-			');
-			$this->doc->postCode = $this->doc->wrapScriptTags('
-				script_ended = 1;
-				if (top.fsMod) top.fsMod.recentIds["web"] = ' . (int)$this->id . ';
-			');
+			$this->doc->postCode = $this->doc->wrapScriptTags('if (top.fsMod) top.fsMod.recentIds["web"] = ' . (int)$this->id . ';');
 			// Setting up the context sensitive menu:
 			$this->doc->getContextMenuCode();
 			$this->doc->form = '<form action="' . htmlspecialchars(BackendUtility::getModuleUrl('web_info')) . '" method="post" name="webinfoForm">';

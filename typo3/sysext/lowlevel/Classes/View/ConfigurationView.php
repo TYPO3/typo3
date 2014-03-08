@@ -91,15 +91,6 @@ class ConfigurationView {
 		$this->doc = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
 		$this->doc->backPath = $BACK_PATH;
 		$this->doc->setModuleTemplate('EXT:lowlevel/Resources/Private/Templates/config.html');
-		// JavaScript
-		$this->doc->JScode = '
-		<script language="javascript" type="text/javascript">
-			script_ended = 0;
-			function jumpToUrl(URL) {
-				window.location.href = URL;
-			}
-		</script>
-		';
 		$this->doc->form = '<form action="" method="post">';
 	}
 

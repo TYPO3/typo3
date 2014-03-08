@@ -311,14 +311,7 @@ class FileListController {
 			// Generate the list
 			$this->filelist->generateList();
 			// Set top JavaScript:
-			$this->doc->JScode = $this->doc->wrapScriptTags('
-
-			if (top.fsMod) top.fsMod.recentIds["file"] = "' . rawurlencode($this->id) . '";
-			function jumpToUrl(URL) {	//
-				window.location.href = URL;
-			}
-
-			' . $this->filelist->CBfunctions());
+			$this->doc->JScode = $this->doc->wrapScriptTags('if (top.fsMod) top.fsMod.recentIds["file"] = "' . rawurlencode($this->id) . '";' . $this->filelist->CBfunctions());
 			// This will return content necessary for the context sensitive clickmenus to work: bodytag events, JavaScript functions and DIV-layers.
 			$this->doc->getContextMenuCode();
 			// Setting up the buttons and markers for docheader

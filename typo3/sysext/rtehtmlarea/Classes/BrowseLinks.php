@@ -121,6 +121,8 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 		// Add attributes to body tag. Note: getBodyTagAdditions will invoke the hooks
 		$this->doc->bodyTagAdditions = $this->getBodyTagAdditions();
 		// Adding RTE JS code
+		// also unset the default jumpToUrl() function before
+		unset($this->doc->JScodeArray['jumpToUrl']);
 		$this->doc->JScodeArray['rtehtmlarea'] = $this->getJSCode();
 	}
 

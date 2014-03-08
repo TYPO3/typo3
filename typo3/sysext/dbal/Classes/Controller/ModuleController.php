@@ -69,13 +69,6 @@ class ModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->form = '<form action="" method="post">';
-		// JavaScript
-		$this->doc->JScode = $this->doc->wrapScriptTags('
-				script_ended = 0;
-				function jumpToUrl(URL)	{	//
-					window.location.href = URL;
-				}
-			');
 		// DBAL page title:
 		$this->content .= $this->doc->startPage($GLOBALS['LANG']->getLL('title'));
 		$this->content .= $this->doc->header($GLOBALS['LANG']->getLL('title'));

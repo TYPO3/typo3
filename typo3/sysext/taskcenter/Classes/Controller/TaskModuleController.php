@@ -72,20 +72,8 @@ class TaskModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	public function main() {
 		$docHeaderButtons = $this->getButtons();
 		$markers = array();
-		$this->doc->JScodeArray[] = '
-			script_ended = 0;
-			function jumpToUrl(URL) {
-				document.location = URL;
-			}
-		';
-		$this->doc->postCode = '
-			<script language="javascript" type="text/javascript">
-				script_ended = 1;
-				if (top.fsMod) {
-					top.fsMod.recentIds["web"] = 0;
-				}
-			</script>
-		';
+		$this->doc->postCode = $this->doc->wrapScriptTags('if (top.fsMod) { top.fsMod.recentIds["web"] = 0; }');
+
 		// Render content depending on the mode
 		$mode = (string) $this->MOD_SETTINGS['mode'];
 		if ($mode == 'information') {

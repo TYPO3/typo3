@@ -197,11 +197,6 @@ class FormsController {
 		$this->doc = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->setModuleTemplate('EXT:backend/Resources/Private/Templates/wizard_forms.html');
-		$this->doc->JScode = $this->doc->wrapScriptTags('
-			function jumpToUrl(URL,formEl) {	//
-				window.location.href = URL;
-			}
-		');
 		// Setting form tag:
 		list($rUri) = explode('#', GeneralUtility::getIndpEnv('REQUEST_URI'));
 		$this->doc->form = '<form action="' . htmlspecialchars($rUri) . '" method="post" name="wizardForm">';

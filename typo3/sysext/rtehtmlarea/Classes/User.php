@@ -114,6 +114,10 @@ class User {
 				window.location.href = theLocation;
 			}
 		';
+
+		// unset the default jumpToUrl() function
+		unset($this->doc->JScodeArray['jumpToUrl']);
+
 		$this->doc->JScode = $this->doc->wrapScriptTags($JScode);
 		$this->modData = $GLOBALS['BE_USER']->getModuleData('user.php', 'ses');
 		if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('OC_key')) {

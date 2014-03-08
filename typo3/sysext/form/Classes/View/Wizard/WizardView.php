@@ -67,11 +67,6 @@ class WizardView extends \TYPO3\CMS\Form\View\Wizard\AbstractWizardView {
 		$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->setModuleTemplate('EXT:form/Resources/Private/Templates/Wizard.html');
-		$this->doc->JScode = $this->doc->wrapScriptTags('
-			function jumpToUrl(URL,formEl) {
-				window.location.href = URL;
-			}
-		');
 		$this->pageRenderer = $this->doc->getPageRenderer();
 		$this->pageRenderer->enableConcatenateFiles();
 		$this->pageRenderer->enableCompressCss();

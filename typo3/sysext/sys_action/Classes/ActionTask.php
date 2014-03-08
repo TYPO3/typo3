@@ -798,10 +798,6 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 			// Add JavaScript functions to the page:
 			$this->taskObject->doc->JScode = $this->taskObject->doc->wrapScriptTags('
 
-				function jumpToUrl(URL) {
-					window.location.href = URL;
-					return false;
-				}
 				function jumpExt(URL,anchor) {
 					var anc = anchor?anchor:"";
 					window.location.href = URL+(T3_THIS_LOCATION?"&returnUrl="+T3_THIS_LOCATION:"")+anc;

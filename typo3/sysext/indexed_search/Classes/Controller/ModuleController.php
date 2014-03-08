@@ -82,12 +82,6 @@ class ModuleController {
 		$this->doc->form = '<form action="" method="post">';
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->setModuleTemplate(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('indexed_search') . '/mod/mod_template.html');
-		// JavaScript
-		$this->doc->JScodeArray['indexed_search'] = '
-			script_ended = 0;
-			function jumpToUrl(URL) {
-				window.location.href = URL;
-			}';
 		$this->doc->tableLayout = array(
 			'defRow' => array(
 				'0' => array('<td valign="top" nowrap>', '</td>'),

@@ -622,14 +622,17 @@ class EditDocumentController {
 		$this->doc->setModuleTemplate('EXT:backend/Resources/Private/Templates/alt_doc.html');
 		$this->doc->form = '<form action="' . htmlspecialchars($this->R_URI) . '" method="post" enctype="' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'] . '" name="editform" onsubmit="document.editform._scrollPosition.value=(document.documentElement.scrollTop || document.body.scrollTop); return TBE_EDITOR.checkSubmit(1);">';
 		$this->doc->getPageRenderer()->loadPrototype();
-		$this->doc->JScode = $this->doc->wrapScriptTags('
-			function jumpToUrl(URL,formEl) {	//
+		// override the default jumpToUrl
+		$this->doc->JScodeArray['jumpToUrl'] = '
+			function jumpToUrl(URL,formEl) {
 				if (!TBE_EDITOR.isFormChanged()) {
 					window.location.href = URL;
 				} else if (formEl && formEl.type=="checkbox") {
 					formEl.checked = formEl.checked ? 0 : 1;
 				}
 			}
+';
+		$this->doc->JScode = $this->doc->wrapScriptTags('
 				// Object: TS:
 				// passwordDummy and decimalSign are used by tbe_editor.js and have to be declared here as
 				// TS object overwrites the object declared in tbe_editor.js

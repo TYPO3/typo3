@@ -94,15 +94,6 @@ class DatabaseIntegrityView {
 		$this->doc->backPath = $BACK_PATH;
 		$this->doc->setModuleTemplate('EXT:lowlevel/Resources/Private/Templates/dbint.html');
 		$this->doc->form = '<form action="" method="post" name="' . $this->formName . '">';
-		// JavaScript
-		$this->doc->JScode = '
-		<script language="javascript" type="text/javascript">
-			script_ended = 0;
-			function jumpToUrl(URL) {
-				window.location.href = URL;
-			}
-		</script>
-		';
 		$this->doc->table_TABLE = '<table class="t3-table">
 			<colgroup><col width="24"><col><col width="150"></colgroup>';
 		$this->doc->tableLayout = array(
