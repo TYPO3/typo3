@@ -611,6 +611,7 @@ class ClassLoader {
 	 * @return mixed
 	 */
 	static public function getAliasForClassName($className) {
+		GeneralUtility::logDeprecatedFunction();
 		$aliases = static::$staticAliasMap->getAliasesForClassName($className);
 		return is_array($aliases) && isset($aliases[0]) ? $aliases[0] : NULL;
 	}
