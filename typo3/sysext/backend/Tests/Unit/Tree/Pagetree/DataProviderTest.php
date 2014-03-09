@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Tree\Pagetree;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Testcase
  *
@@ -34,33 +35,42 @@ class DataProviderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @var \TYPO3\CMS\Backend\Tree\Pagetree\DataProvider|\PHPUnit_Framework_MockObject_MockObject
 	 */
-	protected $fixture = NULL;
+	protected $subject = NULL;
 
 	public function setUp() {
 		$GLOBALS['TYPO3_CONF_VARS']['BE']['pageTree']['preloadLimit'] = 0;
 		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/tree/pagetree/class.t3lib_tree_pagetree_dataprovider.php']['postProcessCollections'] = array();
 		$GLOBALS['LOCKED_RECORDS'] = array();
-		$this->fixture = new \TYPO3\CMS\Backend\Tree\Pagetree\DataProvider();
+		/** @var $backendUserMock \TYPO3\CMS\Core\Authentication\BackendUserAuthentication|\PHPUnit_Framework_MockObject_MockObject */
+		$backendUserMock = $this->getMock('TYPO3\\CMS\\Core\\Authentication\\BackendUserAuthentication', array(), array(),'', FALSE);
+		$GLOBALS['BE_USER'] = $backendUserMock;
+
+		$this->subject = new \TYPO3\CMS\Backend\Tree\Pagetree\DataProvider();
+
 	}
 
 	/**
 	 * @test
 	 */
 	public function getRootNodeReturnsNodeWithRootId() {
-		$this->assertSame('root', $this->fixture->getRoot()->getId());
+		$this->assertSame('root', $this->subject->getRoot()->getId());
 	}
 
 	/**
 	 * @test
 	 */
 	public function getRootNodeReturnsExpandedNode() {
-		$this->assertTrue($this->fixture->getRoot()->isExpanded());
+		$this->assertTrue($this->subject->getRoot()->isExpanded());
 	}
 
 	/**
 	 * @test
 	 */
 	public function getNodesSetsIsMountPointField() {
+		/** @var $backendUserMock \TYPO3\CMS\Core\Authentication\BackendUserAuthentication|\PHPUnit_Framework_MockObject_MockObject */
+		$backendUserMock = $this->getMock('TYPO3\\CMS\\Core\\Authentication\\BackendUserAuthentication', array('returnWebmounts'), array(), '', FALSE);
+		$GLOBALS['BE_USER'] = $backendUserMock;
+		$GLOBALS['BE_USER']->expects($this->any())->method('returnWebmounts')->will($this->returnValue(array('false', 'true', 'false')));
 		$subpages = array(
 			array(
 				'uid' => 1,
@@ -88,14 +98,16 @@ class DataProviderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				'title' => 'contact'
 			)
 		);
-		$fixture = $this->getMock('TYPO3\\CMS\\Backend\\Tree\\Pagetree\\DataProvider', array('getSubpages', 'getRecordWithWorkspaceOverlay'));
-		$fixture->expects($this->once())->method('getSubpages')->will($this->returnValue($subpages));
-		$fixture->expects($this->at(1))->method('getRecordWithWorkspaceOverlay')->with(1)->will($this->returnValue($subpagesWithWorkspaceOverlay[0]));
-		$fixture->expects($this->at(2))->method('getRecordWithWorkspaceOverlay')->with(2)->will($this->returnValue($subpagesWithWorkspaceOverlay[1]));
-		$fixture->expects($this->at(3))->method('getRecordWithWorkspaceOverlay')->with(3)->will($this->returnValue($subpagesWithWorkspaceOverlay[2]));
-		$node = new \TYPO3\CMS\Backend\Tree\TreeNode();
+		/** @var \TYPO3\CMS\Backend\Tree\Pagetree\DataProvider $subject */
+		$subject = $this->getMock('TYPO3\\CMS\\Backend\\Tree\\Pagetree\\DataProvider', array('getSubpages', 'getRecordWithWorkspaceOverlay'));
+		$subject->expects($this->once())->method('getSubpages')->will($this->returnValue($subpages));
+		$subject->expects($this->at(1))->method('getRecordWithWorkspaceOverlay')->with(1)->will($this->returnValue($subpagesWithWorkspaceOverlay[0]));
+		$subject->expects($this->at(2))->method('getRecordWithWorkspaceOverlay')->with(2)->will($this->returnValue($subpagesWithWorkspaceOverlay[1]));
+		$subject->expects($this->at(3))->method('getRecordWithWorkspaceOverlay')->with(3)->will($this->returnValue($subpagesWithWorkspaceOverlay[2]));
+		/** @var \TYPO3\CMS\Backend\Tree\TreeNode $node */
+		$node = $this->getMock('TYPO3\\CMS\\Backend\\Tree\\TreeNode');
 		$node->setId(12);
-		$nodeCollection = $fixture->getNodes($node);
+		$nodeCollection = $subject->getNodes($node);
 		$isMountPointResult = array();
 		/** @var $node \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode */
 		foreach ($nodeCollection as $node) {

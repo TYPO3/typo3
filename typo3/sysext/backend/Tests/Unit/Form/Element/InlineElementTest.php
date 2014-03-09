@@ -33,15 +33,15 @@ class InlineElementTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @var \TYPO3\CMS\Backend\Form\Element\InlineElement
 	 */
-	protected $fixture;
+	protected $subject;
 
 	/**
 	 * Sets up this test case.
 	 */
 	protected function setUp() {
 		// @todo Use $this->buildAccessibleProxy() if properties are protected
-		$this->fixture = new \TYPO3\CMS\Backend\Form\Element\InlineElement();
-		$this->fixture->fObj = new \TYPO3\CMS\Backend\Form\FormEngine();
+		$this->subject = new \TYPO3\CMS\Backend\Form\Element\InlineElement();
+		$this->subject->fObj = $this->getMock('TYPO3\\CMS\\Backend\\Form\\FormEngine', array(), array(), '', FALSE);
 	}
 
 	/**
@@ -52,12 +52,12 @@ class InlineElementTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function pushStructureFillsInlineStructure(array $arguments, array $expectedInlineStructure, array $expectedInlineNames) {
-		$this->fixture->inlineFirstPid = 'pageId';
+		$this->subject->inlineFirstPid = 'pageId';
 
-		call_user_func_array(array($this->fixture, 'pushStructure'), $arguments);
+		call_user_func_array(array($this->subject, 'pushStructure'), $arguments);
 
-		$this->assertEquals($expectedInlineStructure, $this->fixture->inlineStructure);
-		$this->assertEquals($expectedInlineNames, $this->fixture->inlineNames);
+		$this->assertEquals($expectedInlineStructure, $this->subject->inlineStructure);
+		$this->assertEquals($expectedInlineNames, $this->subject->inlineNames);
 	}
 
 	public function pushStructureFillsInlineStructureDataProvider() {
@@ -124,11 +124,11 @@ class InlineElementTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function structureStringIsParsed($string, array $expectedInlineStructure, array $expectedInlineNames) {
-		$this->fixture->parseStructureString($string, FALSE);
+		$this->subject->parseStructureString($string, FALSE);
 
-		$this->assertEquals('pageId', $this->fixture->inlineFirstPid);
-		$this->assertEquals($expectedInlineStructure, $this->fixture->inlineStructure);
-		$this->assertEquals($expectedInlineNames, $this->fixture->inlineNames);
+		$this->assertEquals('pageId', $this->subject->inlineFirstPid);
+		$this->assertEquals($expectedInlineStructure, $this->subject->inlineStructure);
+		$this->assertEquals($expectedInlineNames, $this->subject->inlineNames);
 	}
 
 	/**
