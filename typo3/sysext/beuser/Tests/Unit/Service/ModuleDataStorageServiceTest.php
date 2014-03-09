@@ -27,7 +27,7 @@ namespace TYPO3\CMS\Beuser\Tests\Unit\Service;
  ***************************************************************/
 
 /**
- * Test case for class \TYPO3\CMS\Beuser\Service\ModuleDataStorageService
+ * Test case
  *
  * @author Felix Kopp <felix-source@phorax.com>
  * @author Nikolas Hagelstein <nikolas.hagelstein@gmail.com>
@@ -35,22 +35,16 @@ namespace TYPO3\CMS\Beuser\Tests\Unit\Service;
 class ModuleDataStorageServiceTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
-	 * @var \TYPO3\CMS\Beuser\Service\ModuleDataStorageService
-	 */
-	protected $fixture;
-
-	public function setUp() {
-		$this->fixture = $this->objectManager->get('TYPO3\\CMS\\Beuser\\Service\\ModuleDataStorageService');
-	}
-
-	/**
 	 * @test
 	 */
 	public function loadModuleDataReturnsModuleDataObjectForEmptyModuleData() {
 		// Simulate empty module data
-		unset($GLOBALS['BE_USER']->uc['moduleData'][\TYPO3\CMS\Beuser\Service\ModuleDataStorageService::KEY]);
-		$result = $this->fixture->loadModuleData();
-		$this->assertInstanceOf('TYPO3\\CMS\\Beuser\\Domain\\Model\\ModuleData', $result);
-	}
+		$GLOBALS['BE_USER'] = $this->getMock('TYPO3\\CMS\\Core\\Authentication\\BackendUserAuthentication', array(), array(), '', FALSE);
+		$GLOBALS['BE_USER']->uc = array();
+		$GLOBALS['BE_USER']->uc['moduleData'] = array();
 
+		/** @var \TYPO3\CMS\Beuser\Service\ModuleDataStorageService $subject */
+		$subject = $this->objectManager->get('TYPO3\\CMS\\Beuser\\Service\\ModuleDataStorageService');
+		$this->assertInstanceOf('TYPO3\\CMS\\Beuser\\Domain\\Model\\ModuleData', $subject->loadModuleData());
+	}
 }
