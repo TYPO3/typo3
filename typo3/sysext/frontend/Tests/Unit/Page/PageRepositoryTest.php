@@ -244,52 +244,88 @@ class PageRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function enableFieldsHidesVersionedRecordsAndPlaceholders() {
+		$table = uniqid('aTable');
+		$GLOBALS['TCA'] = array(
+			$table => array(
+				'ctrl' => array(
+					'versioningWS' => 2
+				)
+			)
+		);
+
 		$this->pageSelectObject->versioningPreview = FALSE;
 		$this->pageSelectObject->init(FALSE);
 
-		$conditions = $this->pageSelectObject->enableFields('tt_content');
+		$conditions = $this->pageSelectObject->enableFields($table);
 
-		$this->assertThat($conditions, $this->stringContains(' AND tt_content.t3ver_state<=0'), 'Versioning placeholders');
-		$this->assertThat($conditions, $this->stringContains(' AND tt_content.pid<>-1'), 'Records from page -1');
+		$this->assertThat($conditions, $this->stringContains(' AND ' . $table . '.t3ver_state<=0'), 'Versioning placeholders');
+		$this->assertThat($conditions, $this->stringContains(' AND ' . $table . '.pid<>-1'), 'Records from page -1');
 	}
 
 	/**
 	 * @test
 	 */
 	public function enableFieldsDoesNotHidePlaceholdersInPreview() {
+		$table = uniqid('aTable');
+		$GLOBALS['TCA'] = array(
+			$table => array(
+				'ctrl' => array(
+					'versioningWS' => 2
+				)
+			)
+		);
+
 		$this->pageSelectObject->versioningPreview = TRUE;
 		$this->pageSelectObject->init(FALSE);
 
-		$conditions = $this->pageSelectObject->enableFields('tt_content');
+		$conditions = $this->pageSelectObject->enableFields($table);
 
-		$this->assertThat($conditions, $this->logicalNot($this->stringContains(' AND tt_content.t3ver_state<=0')), 'No versioning placeholders');
-		$this->assertThat($conditions, $this->stringContains(' AND tt_content.pid<>-1'), 'Records from page -1');
+		$this->assertThat($conditions, $this->logicalNot($this->stringContains(' AND ' . $table . '.t3ver_state<=0')), 'No versioning placeholders');
+		$this->assertThat($conditions, $this->stringContains(' AND ' . $table . '.pid<>-1'), 'Records from page -1');
 	}
 
 	/**
 	 * @test
 	 */
 	public function enableFieldsDoesFilterToCurrentAndLiveWorkspaceForRecordsInPreview() {
+		$table = uniqid('aTable');
+		$GLOBALS['TCA'] = array(
+			$table => array(
+				'ctrl' => array(
+					'versioningWS' => 2
+				)
+			)
+		);
+
 		$this->pageSelectObject->versioningPreview = TRUE;
 		$this->pageSelectObject->versioningWorkspaceId = 2;
 		$this->pageSelectObject->init(FALSE);
 
-		$conditions = $this->pageSelectObject->enableFields('tt_content');
+		$conditions = $this->pageSelectObject->enableFields($table);
 
-		$this->assertThat($conditions, $this->stringContains(' AND (tt_content.t3ver_wsid=0 OR tt_content.t3ver_wsid=2)'), 'No versioning placeholders');
+		$this->assertThat($conditions, $this->stringContains(' AND (' . $table . '.t3ver_wsid=0 OR ' . $table . '.t3ver_wsid=2)'), 'No versioning placeholders');
 	}
 
 	/**
 	 * @test
 	 */
 	public function enableFieldsDoesNotHideVersionedRecordsWhenCheckingVersionOverlays() {
+		$table = uniqid('aTable');
+		$GLOBALS['TCA'] = array(
+			$table => array(
+				'ctrl' => array(
+					'versioningWS' => 2
+				)
+			)
+		);
+
 		$this->pageSelectObject->versioningPreview = TRUE;
 		$this->pageSelectObject->init(FALSE);
 
-		$conditions = $this->pageSelectObject->enableFields('tt_content', -1, array(), TRUE	);
+		$conditions = $this->pageSelectObject->enableFields($table, -1, array(), TRUE	);
 
-		$this->assertThat($conditions, $this->logicalNot($this->stringContains(' AND tt_content.t3ver_state<=0')), 'No versioning placeholders');
-		$this->assertThat($conditions, $this->logicalNot($this->stringContains(' AND tt_content.pid<>-1')), 'No ecords from page -1');
+		$this->assertThat($conditions, $this->logicalNot($this->stringContains(' AND ' . $table . '.t3ver_state<=0')), 'No versioning placeholders');
+		$this->assertThat($conditions, $this->logicalNot($this->stringContains(' AND ' . $table . '.pid<>-1')), 'No ecords from page -1');
 	}
 
 

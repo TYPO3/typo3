@@ -1229,6 +1229,23 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function getQuery($table, $conf, $expected) {
+		$GLOBALS['TCA'] = array(
+			'pages' => array(
+				'ctrl' => array(
+					'enablecolumns' => array(
+						'disabled' => 'hidden'
+					)
+				)
+			),
+			'tt_content' => array(
+				'ctrl' => array(
+					'enablecolumns' => array(
+						'disabled' => 'hidden'
+					),
+					'versioningWS' => 2
+				)
+			),
+		);
 		$result = $this->cObj->getQuery($table, $conf, TRUE);
 		foreach ($expected as $field => $value) {
 			$this->assertEquals($value, $result[$field]);
@@ -1239,6 +1256,22 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function getQueryCallsGetTreeListWithNegativeValuesIfRecursiveIsSet() {
+		$GLOBALS['TCA'] = array(
+			'pages' => array(
+				'ctrl' => array(
+					'enablecolumns' => array(
+						'disabled' => 'hidden'
+					)
+				)
+			),
+			'tt_content' => array(
+				'ctrl' => array(
+					'enablecolumns' => array(
+						'disabled' => 'hidden'
+					)
+				)
+			),
+		);
 		$this->cObj = $this->getAccessibleMock('\\TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer', array('getTreeList'));
 		$this->cObj->start(array(), 'tt_content');
 		$conf = array(
@@ -1258,6 +1291,22 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function getQueryCallsGetTreeListWithCurrentPageIfThisIsSet() {
+		$GLOBALS['TCA'] = array(
+			'pages' => array(
+				'ctrl' => array(
+					'enablecolumns' => array(
+						'disabled' => 'hidden'
+					)
+				)
+			),
+			'tt_content' => array(
+				'ctrl' => array(
+					'enablecolumns' => array(
+						'disabled' => 'hidden'
+					)
+				)
+			),
+		);
 		$this->cObj = $this->getAccessibleMock('\\TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer', array('getTreeList'));
 		$GLOBALS['TSFE']->id = 27;
 		$this->cObj->start(array(), 'tt_content');
