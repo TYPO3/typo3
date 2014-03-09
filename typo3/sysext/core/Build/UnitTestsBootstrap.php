@@ -105,6 +105,4 @@ require PATH_site . '/typo3/sysext/core/Classes/Core/Bootstrap.php';
 	// TODO: Unit Tests should be able to run without database connection
 	->initializeTypo3DbGlobal()
 	->loadExtensionTables(TRUE)
-	->initializeBackendUser()
-	// TODO: Fix FAL tests which fatal without initialized storages
-	->initializeBackendUserMounts();
+	->initializeBackendUser();
