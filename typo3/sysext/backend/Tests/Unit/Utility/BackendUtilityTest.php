@@ -27,7 +27,7 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Utility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 
 /**
- * Testcase for \TYPO3\CMS\Core\Utility\BackendUtility
+ * Test case
  *
  * @author Oliver Klee <typo3-coding@oliverklee.de>
  */
@@ -36,10 +36,10 @@ class BackendUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @var \TYPO3\CMS\Backend\Utility\BackendUtility
 	 */
-	protected $fixture;
+	protected $subject;
 
 	public function setUp() {
-		$this->fixture = new BackendUtility();
+		$this->subject = new BackendUtility();
 	}
 
 	///////////////////////////////////////
@@ -128,7 +128,7 @@ class BackendUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @dataProvider calcAgeDataProvider
 	 */
 	public function calcAgeReturnsExpectedValues($seconds, $expectedLabel) {
-		$this->assertSame($expectedLabel, $this->fixture->calcAge($seconds));
+		$this->assertSame($expectedLabel, $this->subject->calcAge($seconds));
 	}
 
 	///////////////////////////////////////
@@ -139,36 +139,94 @@ class BackendUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @see http://forge.typo3.org/issues/20994
 	 */
 	public function getProcessedValueForZeroStringIsZero() {
-		$this->assertEquals('0', $this->fixture->getProcessedValue('tt_content', 'header', '0'));
+		$GLOBALS['TCA'] = array(
+			'tt_content' => array(
+				'columns' => array(
+					'header' => array(
+						'config' => array(
+							'type' => 'input',
+						),
+					),
+				),
+			),
+		);
+		$this->assertEquals('0', $this->subject->getProcessedValue('tt_content', 'header', '0'));
 	}
 
 	/**
 	 * @test
 	 */
 	public function getProcessedValueForGroup() {
-		$this->assertSame('1, 2', $this->fixture->getProcessedValue('tt_content', 'multimedia', '1,2'));
+		$GLOBALS['TCA'] = array(
+			'tt_content' => array(
+				'columns' => array(
+					'multimedia' => array(
+						'config' => array(
+							'type' => 'group',
+						),
+					),
+				),
+			),
+		);
+		$this->assertSame('1, 2', $this->subject->getProcessedValue('tt_content', 'multimedia', '1,2'));
 	}
 
 	/**
 	 * @test
 	 */
 	public function getProcessedValueForGroupWithOneAllowedTable() {
-		/** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Backend\Utility\BackendUtility $fixture */
-		$fixture = $this->getMock('TYPO3\\CMS\\Backend\\Utility\\BackendUtility', array('getRecordWSOL'));
-		$fixture->staticExpects($this->at(0))->method('getRecordWSOL')->will($this->returnValue(array('title' => 'Page 1')));
-		$fixture->staticExpects($this->at(1))->method('getRecordWSOL')->will($this->returnValue(array('title' => 'Page 2')));
-		$this->assertSame('Page 1, Page 2', $fixture->getProcessedValue('tt_content', 'pages', '1,2'));
+		$GLOBALS['TCA'] = array(
+			'tt_content' => array(
+				'columns' => array(
+					'pages' => array(
+						'config' => array(
+							'type' => 'group',
+							'allowed' => 'pages',
+							'internal_type' => 'db',
+							'maxitems' => 22,
+							'minitems' => 0,
+							'show_thumbs' => 1,
+							'size' => 3,
+						),
+					),
+				),
+			),
+		);
+		/** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Backend\Utility\BackendUtility $subject */
+		$subject = $this->getMock('TYPO3\\CMS\\Backend\\Utility\\BackendUtility', array('getRecordWSOL', 'getRecordTitle'));
+		$subject->staticExpects($this->at(0))->method('getRecordWSOL')->will($this->returnValue(array('title' => 'Page 1')));
+		$subject->staticExpects($this->at(1))->method('getRecordTitle')->will($this->returnValue('Page 1'));
+		$subject->staticExpects($this->at(2))->method('getRecordWSOL')->will($this->returnValue(array('title' => 'Page 2')));
+		$subject->staticExpects($this->at(3))->method('getRecordTitle')->will($this->returnValue('Page 2'));
+		$this->assertSame('Page 1, Page 2', $subject->getProcessedValue('tt_content', 'pages', '1,2'));
 	}
 
 	/**
 	 * @test
 	 */
 	public function getProcessedValueForGroupWithMultipleAllowedTables() {
-		/** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Backend\Utility\BackendUtility $fixture */
-		$fixture = $this->getMock('TYPO3\\CMS\\Backend\\Utility\\BackendUtility', array('getRecordWSOL'));
-		$fixture->staticExpects($this->at(0))->method('getRecordWSOL')->will($this->returnValue(array('title' => 'Page 1')));
-		$fixture->staticExpects($this->at(1))->method('getRecordWSOL')->will($this->returnValue(array('header' => 'Content 2')));
-		$this->assertSame('Page 1, Content 2', $fixture->getProcessedValue('sys_category', 'items', 'pages_1,tt_content_2'));
+		$GLOBALS['TCA'] = array(
+			'sys_category' => array(
+				'columns' => array(
+					'items' => array(
+						'config' => array(
+							'allowed' => '*',
+							'internal_type' => 'db',
+							'MM' => 'sys_category_record_mm',
+							'size' => 10,
+							'type' => 'group',
+						),
+					),
+				),
+			),
+		);
+		/** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Backend\Utility\BackendUtility $subject */
+		$subject = $this->getMock('TYPO3\\CMS\\Backend\\Utility\\BackendUtility', array('getRecordWSOL', 'getRecordTitle'));
+		$subject->staticExpects($this->at(0))->method('getRecordWSOL')->will($this->returnValue(array('title' => 'Page 1')));
+		$subject->staticExpects($this->at(1))->method('getRecordTitle')->will($this->returnValue('Page 1'));
+		$subject->staticExpects($this->at(2))->method('getRecordWSOL')->will($this->returnValue(array('header' => 'Content 2')));
+		$subject->staticExpects($this->at(3))->method('getRecordTitle')->will($this->returnValue('Content 2'));
+		$this->assertSame('Page 1, Content 2', $subject->getProcessedValue('sys_category', 'items', 'pages_1,tt_content_2'));
 	}
 
 	/**
@@ -279,12 +337,8 @@ class BackendUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @dataProvider getCommonSelectFieldsReturnsCorrectFieldsDataProvider
 	 */
 	public function getCommonSelectFieldsReturnsCorrectFields($table, $prefix = '', array $presetFields, array $tca, $expectedFields = '') {
-		$tcaBackup = $GLOBALS['TCA'][$table];
-		unset($GLOBALS['TCA'][$table]);
 		$GLOBALS['TCA'][$table] = $tca;
-		$selectFields = $this->fixture->getCommonSelectFields($table, $prefix, $presetFields);
-		unset($GLOBALS['TCA'][$table]);
-		$GLOBALS['TCA'][$table] = $tcaBackup;
+		$selectFields = $this->subject->getCommonSelectFields($table, $prefix, $presetFields);
 		$this->assertEquals($selectFields, $expectedFields);
 	}
 
@@ -365,12 +419,8 @@ class BackendUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @dataProvider getLabelFromItemlistReturnsCorrectFieldsDataProvider
 	 */
 	public function getLabelFromItemlistReturnsCorrectFields($table, $col = '', $key = '', array $tca, $expectedLabel = '') {
-		$tcaBackup = $GLOBALS['TCA'][$table];
-		unset($GLOBALS['TCA'][$table]);
 		$GLOBALS['TCA'][$table] = $tca;
-		$label = $this->fixture->getLabelFromItemlist($table, $col, $key);
-		unset($GLOBALS['TCA'][$table]);
-		$GLOBALS['TCA'][$table] = $tcaBackup;
+		$label = $this->subject->getLabelFromItemlist($table, $col, $key);
 		$this->assertEquals($label, $expectedLabel);
 	}
 
@@ -433,12 +483,8 @@ class BackendUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @dataProvider getLabelFromItemListMergedReturnsCorrectFieldsDataProvider
 	 */
 	public function getLabelFromItemListMergedReturnsCorrectFields($pageId, $table, $column = '', $key = '', array $tca, $expectedLabel = '') {
-		$tcaBackup = $GLOBALS['TCA'][$table];
-		unset($GLOBALS['TCA'][$table]);
 		$GLOBALS['TCA'][$table] = $tca;
-		$label = $this->fixture->getLabelFromItemListMerged($pageId, $table, $column, $key);
-		unset($GLOBALS['TCA'][$table]);
-		$GLOBALS['TCA'][$table] = $tcaBackup;
+		$label = $this->subject->getLabelFromItemListMerged($pageId, $table, $column, $key);
 		$this->assertEquals($label, $expectedLabel);
 	}
 
@@ -484,12 +530,8 @@ class BackendUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				}
 			));
 
-		$tcaBackup = $GLOBALS['TCA'][$table];
-		unset($GLOBALS['TCA'][$table]);
 		$GLOBALS['TCA'][$table] = $tca;
-		$label = $this->fixture->getLabelsFromItemsList($table, $col, 'foo,bar');
-		unset($GLOBALS['TCA'][$table]);
-		$GLOBALS['TCA'][$table] = $tcaBackup;
+		$label = $this->subject->getLabelsFromItemsList($table, $col, 'foo,bar');
 		$this->assertEquals('aFooLabel, aBarLabel', $label);
 	}
 
@@ -529,12 +571,8 @@ class BackendUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				}
 			));
 
-		$tcaBackup = $GLOBALS['TCA'][$table];
-		unset($GLOBALS['TCA'][$table]);
 		$GLOBALS['TCA'][$table] = $tca;
-		$label = $this->fixture->getProcessedValue($table, $col, 'foo,invalidKey,bar');
-		unset($GLOBALS['TCA'][$table]);
-		$GLOBALS['TCA'][$table] = $tcaBackup;
+		$label = $this->subject->getProcessedValue($table, $col, 'foo,invalidKey,bar');
 		$this->assertEquals('aFooLabel, aBarLabel', $label);
 	}
 
@@ -573,12 +611,8 @@ class BackendUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				}
 			));
 
-		$tcaBackup = $GLOBALS['TCA'][$table];
-		unset($GLOBALS['TCA'][$table]);
 		$GLOBALS['TCA'][$table] = $tca;
-		$label = $this->fixture->getProcessedValue($table, $col, 'invalidKey');
-		unset($GLOBALS['TCA'][$table]);
-		$GLOBALS['TCA'][$table] = $tcaBackup;
+		$label = $this->subject->getProcessedValue($table, $col, 'invalidKey');
 		$this->assertEquals('invalidKey', $label);
 	}
 
