@@ -458,7 +458,7 @@ class ClickMenu {
 	 * @todo Define visibility
 	 */
 	public function DB_history($table, $uid) {
-		$url = 'show_rechis.php?element=' . rawurlencode(($table . ':' . $uid));
+		$url = BackendUtility::getModuleUrl('record_history', array('element' => $table . ':' . $uid));
 		return $this->linkItem($GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->getLL('CM_history')), $this->excludeIcon(IconUtility::getSpriteIcon('actions-document-history-open')), $this->urlRefForCM($url, 'returnUrl'), 0);
 	}
 

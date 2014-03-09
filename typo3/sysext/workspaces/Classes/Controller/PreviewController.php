@@ -82,6 +82,7 @@ class PreviewController extends \TYPO3\CMS\Workspaces\Controller\AbstractControl
 		foreach ($jsFiles as $jsFile) {
 			$this->pageRenderer->addJsFile($resourcePathJavaScript . $jsFile);
 		}
+		$this->pageRenderer->addInlineSetting('RecordHistory', 'moduleUrl', BackendUtility::getModuleUrl('record_history'));
 		// todo this part should be done with inlineLocallanglabels
 		$this->pageRenderer->addJsInlineCode('workspace-inline-code', $this->generateJavascript());
 	}

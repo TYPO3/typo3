@@ -990,11 +990,31 @@ class EditDocumentController {
 				// Undo:
 				$undoRes = $GLOBALS['TYPO3_DB']->exec_SELECTquery('tstamp', 'sys_history', 'tablename=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->firstEl['table'], 'sys_history') . ' AND recuid=' . (int)$this->firstEl['uid'], '', 'tstamp DESC', '1');
 				if ($undoButtonR = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($undoRes)) {
-					$aOnClick = 'window.location.href=\'show_rechis.php?element=' . rawurlencode(($this->firstEl['table'] . ':' . $this->firstEl['uid'])) . '&revert=ALL_FIELDS&sumUp=-1&returnUrl=' . rawurlencode($this->R_URI) . '\'; return false;';
+					$aOnClick = 'window.location.href=' .
+						GeneralUtility::quoteJSvalue(
+							BackendUtility::getModuleUrl(
+								'record_history',
+								array(
+									'element' => $this->firstEl['table'] . ':' . $this->firstEl['uid'],
+									'revert' => 'ALL_FIELDS',
+									'sumUp' => -1,
+									'returnUrl' => $this->R_URI,
+								)
+							)
+						) . '; return false;';
 					$buttons['undo'] = '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '"' . ' title="' . htmlspecialchars(sprintf($GLOBALS['LANG']->getLL('undoLastChange'), BackendUtility::calcAge(($GLOBALS['EXEC_TIME'] - $undoButtonR['tstamp']), $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.minutesHoursDaysYears')))) . '">' . IconUtility::getSpriteIcon('actions-edit-undo') . '</a>';
 				}
 				if ($this->getNewIconMode($this->firstEl['table'], 'showHistory')) {
-					$aOnClick = 'window.location.href=\'show_rechis.php?element=' . rawurlencode(($this->firstEl['table'] . ':' . $this->firstEl['uid'])) . '&returnUrl=' . rawurlencode($this->R_URI) . '\'; return false;';
+					$aOnClick = 'window.location.href=' .
+						GeneralUtility::quoteJSvalue(
+							BackendUtility::getModuleUrl(
+								'record_history',
+								array(
+									'element' => $this->firstEl['table'] . ':' . $this->firstEl['uid'],
+									'returnUrl' => $this->R_URI,
+								)
+							)
+						) . '; return false;';
 					$buttons['history'] = '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">' . IconUtility::getSpriteIcon('actions-document-history-open') . '</a>';
 				}
 				// If only SOME fields are shown in the form, this will link the user to the FULL form:

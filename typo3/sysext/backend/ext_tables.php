@@ -4,6 +4,12 @@ if (!defined('TYPO3_MODE')) {
 }
 
 if (TYPO3_MODE === 'BE') {
+	// Register record history module
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
+		'record_history',
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Modules/RecordHistory/'
+	);
+
 	// Register edit wizard
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
 		'wizard_edit',

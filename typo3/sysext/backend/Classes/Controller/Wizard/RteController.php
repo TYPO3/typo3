@@ -245,7 +245,18 @@ class RteController {
 			$buttons['save_close'] = '<input type="image" class="c-inputButton" onclick="' . htmlspecialchars(('document.editform.redirect.value=\'' . $closeUrl . '\'; TBE_EDITOR.checkAndDoSubmit(1); return false;')) . '" name="_saveandclosedok"' . IconUtility::skinImg($this->doc->backPath, 'gfx/saveandclosedok.gif', '') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveCloseDoc', TRUE) . '" />';
 			// Undo/Revert:
 			if ($undoButton) {
-				$buttons['undo'] = '<a href="#" onclick="' . htmlspecialchars(('window.location.href=\'show_rechis.php?element=' . rawurlencode(($this->P['table'] . ':' . $this->P['uid'])) . '&revert=' . rawurlencode(('field:' . $this->P['field'])) . '&sumUp=-1&returnUrl=' . rawurlencode($this->R_URI) . '\'; return false;')) . '">' . '<img' . IconUtility::skinImg($this->doc->backPath, 'gfx/undo.gif') . ' class="c-inputButton" title="' . htmlspecialchars(sprintf($GLOBALS['LANG']->getLL('rte_undoLastChange'), BackendUtility::calcAge(($GLOBALS['EXEC_TIME'] - $undoButtonR['tstamp']), $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.minutesHoursDaysYears')))) . '" alt="" />' . '</a>';
+				$buttons['undo'] = '<a href="#" onclick="' . htmlspecialchars('window.location.href=' .
+					GeneralUtility::quoteJSvalue(
+						BackendUtility::getModuleUrl(
+							'record_history',
+							array(
+								'element' => $this->P['table'] . ':' . $this->P['uid'],
+								'revert' => 'field:' . $this->P['field'],
+								'sumUp' => -1,
+								'returnUrl' => $this->R_URI,
+							)
+						)
+					) . '; return false;') . '">' . '<img' . IconUtility::skinImg($this->doc->backPath, 'gfx/undo.gif') . ' class="c-inputButton" title="' . htmlspecialchars(sprintf($GLOBALS['LANG']->getLL('rte_undoLastChange'), BackendUtility::calcAge(($GLOBALS['EXEC_TIME'] - $undoButtonR['tstamp']), $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.minutesHoursDaysYears')))) . '" alt="" />' . '</a>';
 			}
 			// Shortcut
 			if ($GLOBALS['BE_USER']->mayMakeShortcut()) {

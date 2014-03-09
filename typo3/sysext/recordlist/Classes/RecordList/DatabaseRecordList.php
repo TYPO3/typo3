@@ -1050,7 +1050,7 @@ class DatabaseRecordList extends \TYPO3\CMS\Recordlist\RecordList\AbstractDataba
 			// If the table is NOT a read-only table, then show these links:
 			if (!$GLOBALS['TCA'][$table]['ctrl']['readOnly']) {
 				// "Revert" link (history/undo)
-				$cells['history'] = '<a href="#" onclick="' . htmlspecialchars(('return jumpExt(\'' . $this->backPath . 'show_rechis.php?element=' . rawurlencode(($table . ':' . $row['uid'])) . '\',\'#latest\');')) . '" title="' . $GLOBALS['LANG']->getLL('history', TRUE) . '">' . IconUtility::getSpriteIcon('actions-document-history-open') . '</a>';
+				$cells['history'] = '<a href="#" onclick="' . htmlspecialchars(('return jumpExt(' . GeneralUtility::quoteJSvalue($this->backPath . BackendUtility::getModuleUrl('record_history', array('element' => $table . ':' . $row['uid']))) . ',\'#latest\');')) . '" title="' . $GLOBALS['LANG']->getLL('history', TRUE) . '">' . IconUtility::getSpriteIcon('actions-document-history-open') . '</a>';
 				// Versioning:
 				if (ExtensionManagementUtility::isLoaded('version') && !ExtensionManagementUtility::isLoaded('workspaces')) {
 					$vers = BackendUtility::selectVersionsOfRecord($table, $row['uid'], 'uid', $GLOBALS['BE_USER']->workspace, FALSE, $row);

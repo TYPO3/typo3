@@ -802,7 +802,7 @@ class RecordHistory {
 		// Mergin overriding values:
 		$params = array_merge($params, $inparams);
 		// Make the link:
-		$link = 'show_rechis.php?' . GeneralUtility::implodeArrayForUrl('', $params) . ($anchor ? '#' . $anchor : '');
+		$link = BackendUtility::getModuleUrl('record_history', $params) . ($anchor ? '#' . $anchor : '');
 		return '<a href="' . htmlspecialchars($link) . '"' . ($title ? ' title="' . $title . '"' : '') . '>' . $str . '</a>';
 	}
 

@@ -479,11 +479,19 @@ class ElementInformationController {
 		$editOnClick = BackendUtility::editOnClick('&edit[' . $table . '][' . $uid . ']=edit', $GLOBALS['BACK_PATH']);
 		$icon = IconUtility::getSpriteIcon('actions-document-open');
 		$pageActionIcons = '<a href="#" onclick="' . htmlspecialchars($editOnClick) . '">' . $icon . '</a>';
-		$historyOnClick = 'window.location.href=\'show_rechis.php?element=' . $table . '%3A' .
-				$uid . '&returnUrl=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI')) . '\'; return false;';
+		$historyOnClick = 'window.location.href=' .
+			GeneralUtility::quoteJSvalue(
+				BackendUtility::getModuleUrl(
+					'record_history',
+					array(
+						'element' => $table . ':' . $uid,
+						'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
+					)
+				)
+			) . '; return false;';
 
 		$icon = IconUtility::getSpriteIcon('actions-document-history-open');
-		$pageActionIcons .= '<a href="#" onclick="' . $historyOnClick . '">' . $icon . '</a>';
+		$pageActionIcons .= '<a href="#" onclick="' . htmlspecialchars($historyOnClick) . '">' . $icon . '</a>';
 		if ($table === 'pages') {
 			$pageActionIcons .= $this->doc->viewPageIcon($uid, '');
 		}

@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 1999-2013 Kasper Skårhøj (kasperYYYY@typo3.com)
+ *  (c) 2014 Nicole Cordes (typo3@cordes.co)
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -24,15 +24,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
-/**
- * Shows information about a database or file item
- *
- * @author 	Kasper Skårhøj <kasperYYYY@typo3.com>
- */
-require __DIR__ . '/init.php';
-
-\TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog('The history of a record was moved to a separate module. Please use BackendUtility::getModuleUrl() to link to this script. This script will be removed two versions after 6.2.');
 
 $elementHistoryController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\ContentElement\\ElementHistoryController');
 $elementHistoryController->main();

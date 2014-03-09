@@ -372,7 +372,7 @@ TYPO3.Components.PageTree.Actions = {
 	openHistoryPopUp: function(node) {
 		node.select();
 		TYPO3.Backend.ContentContainer.setUrl(
-			'show_rechis.php?element=pages:' + node.attributes.nodeData.id
+			TYPO3.settings.RecordHistory.moduleUrl + '&element=pages:' + node.attributes.nodeData.id
 		);
 	},
 

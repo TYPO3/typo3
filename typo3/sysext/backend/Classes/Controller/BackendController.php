@@ -277,6 +277,7 @@ class BackendController {
 			foreach ($jsFiles as $jsFile) {
 				$this->pageRenderer->addJsFile($relativeComponentPath . 'javascript/' . $jsFile);
 			}
+			$this->pageRenderer->addInlineSetting('RecordHistory', 'moduleUrl', BackendUtility::getModuleUrl('record_history'));
 		}
 	}
 

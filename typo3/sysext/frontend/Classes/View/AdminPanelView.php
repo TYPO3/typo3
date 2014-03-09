@@ -596,7 +596,7 @@ class AdminPanelView {
 		$returnUrl = '&returnUrl=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI'));
 
 		$icon = IconUtility::getSpriteIcon('actions-document-history-open', array('title' => $this->extGetLL('edit_newContentElement')));
-		$toolBar = '<a href="' . htmlspecialchars((TYPO3_mainDir . 'show_rechis.php?element=' . rawurlencode(('pages:' . $id)) . $returnUrl)) . '#latest">' . $icon . '</a>';
+		$toolBar = '<a href="' . htmlspecialchars(TYPO3_mainDir . BackendUtility::getModuleUrl('record_history', array('element' => 'pages:' . $id)) . $returnUrl) . '#latest">' . $icon . '</a>';
 		if ($perms & 16 && $langAllowed) {
 			$params = '';
 			if ($GLOBALS['TSFE']->sys_language_uid) {

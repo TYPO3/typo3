@@ -192,6 +192,7 @@ class ReviewController extends \TYPO3\CMS\Workspaces\Controller\AbstractControll
 		foreach ($javaScriptFiles as $javaScriptFile) {
 			$this->pageRenderer->addJsFile($javaScriptFile);
 		}
+		$this->pageRenderer->addInlineSetting('RecordHistory', 'moduleUrl', \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('record_history'));
 	}
 
 }
