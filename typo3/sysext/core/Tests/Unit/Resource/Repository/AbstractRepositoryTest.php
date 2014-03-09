@@ -28,7 +28,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource\Repository;
  ***************************************************************/
 
 /**
- * Testcase for the abstract repository base class
+ * Test case
  *
  * @author Andreas Wolf <andreas.wolf@ikt-werk.de>
  */
@@ -37,7 +37,7 @@ class AbstractRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @var \TYPO3\CMS\Core\Resource\AbstractRepository
 	 */
-	protected $fixture;
+	protected $subject;
 
 	protected $mockedDb;
 
@@ -47,7 +47,7 @@ class AbstractRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 	public function setUp() {
-		$this->fixture = $this->getMockForAbstractClass('TYPO3\\CMS\\Core\\Resource\\AbstractRepository', array(), '', FALSE);
+		$this->subject = $this->getMockForAbstractClass('TYPO3\\CMS\\Core\\Resource\\AbstractRepository', array(), '', FALSE);
 	}
 
 	/**
@@ -55,7 +55,7 @@ class AbstractRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function findByUidFailsIfUidIsString() {
 		$this->setExpectedException('InvalidArgumentException', '', 1316779798);
-		$this->fixture->findByUid('asdf');
+		$this->subject->findByUid('asdf');
 	}
 
 	/**
@@ -64,7 +64,7 @@ class AbstractRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function findByUidAcceptsNumericUidInString() {
 		$this->createDatabaseMock();
 		$this->mockedDb->expects($this->once())->method('exec_SELECTgetSingleRow')->with($this->anything(), $this->anything(), $this->stringContains('uid=' . 123))->will($this->returnValue(array('uid' => 123)));
-		$this->fixture->findByUid('123');
+		$this->subject->findByUid('123');
 	}
 
 	/**
@@ -74,7 +74,14 @@ class AbstractRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function getWhereClauseForEnabledFieldsIncludesDeletedCheckInBackend() {
-		unset($GLOBALS['TSFE']);
+		$GLOBALS['TCA'] = array(
+			'sys_file_storage' => array(
+				'ctrl' => array(
+					'delete' => 'deleted',
+				),
+			),
+		);
+		/** @var \TYPO3\CMS\Core\Resource\StorageRepository|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $storageRepositoryMock */
 		$storageRepositoryMock = $this->getAccessibleMock(
 			'TYPO3\\CMS\\Core\\Resource\\StorageRepository',
 			array('dummy'),

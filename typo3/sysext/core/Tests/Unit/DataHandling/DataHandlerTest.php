@@ -23,8 +23,9 @@ namespace TYPO3\CMS\Core\Tests\Unit\DataHandler;
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
- * Testcase for TYPO3\CMS\Core\DataHandling\DataHandler
+ * Test case
  *
  * @author Oliver Klee <typo3-coding@oliverklee.de>
  * @author Tolleiv Nietsch <info@tolleiv.de>
@@ -39,7 +40,7 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @var \TYPO3\CMS\Core\DataHandling\DataHandler
 	 */
-	protected $fixture;
+	protected $subject;
 
 	/**
 	 * @var \TYPO3\CMS\Core\Authentication\BackendUserAuthentication a mock logged-in back-end user
@@ -47,10 +48,11 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	protected $backEndUser;
 
 	public function setUp() {
+		$GLOBALS['TCA'] = array();
 		$this->singletonInstances = \TYPO3\CMS\Core\Utility\GeneralUtility::getSingletonInstances();
 		$this->backEndUser = $this->getMock('TYPO3\\CMS\\Core\\Authentication\\BackendUserAuthentication');
-		$this->fixture = new \TYPO3\CMS\Core\DataHandling\DataHandler();
-		$this->fixture->start(array(), '', $this->backEndUser);
+		$this->subject = new \TYPO3\CMS\Core\DataHandling\DataHandler();
+		$this->subject->start(array(), '', $this->backEndUser);
 	}
 
 	public function tearDown() {
@@ -65,7 +67,7 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function fixtureCanBeCreated() {
-		$this->assertTrue($this->fixture instanceof \TYPO3\CMS\Core\DataHandling\DataHandler);
+		$this->assertTrue($this->subject instanceof \TYPO3\CMS\Core\DataHandling\DataHandler);
 	}
 
 	//////////////////////////////////////////
@@ -75,50 +77,58 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function adminIsAllowedToModifyNonAdminTable() {
-		$this->fixture->admin = TRUE;
-		$this->assertTrue($this->fixture->checkModifyAccessList('tt_content'));
+		$this->subject->admin = TRUE;
+		$this->assertTrue($this->subject->checkModifyAccessList('tt_content'));
 	}
 
 	/**
 	 * @test
 	 */
 	public function nonAdminIsNorAllowedToModifyNonAdminTable() {
-		$this->fixture->admin = FALSE;
-		$this->assertFalse($this->fixture->checkModifyAccessList('tt_content'));
+		$this->subject->admin = FALSE;
+		$this->assertFalse($this->subject->checkModifyAccessList('tt_content'));
 	}
 
 	/**
 	 * @test
 	 */
 	public function nonAdminWithTableModifyAccessIsAllowedToModifyNonAdminTable() {
-		$this->fixture->admin = FALSE;
+		$this->subject->admin = FALSE;
 		$this->backEndUser->groupData['tables_modify'] = 'tt_content';
-		$this->assertTrue($this->fixture->checkModifyAccessList('tt_content'));
+		$this->assertTrue($this->subject->checkModifyAccessList('tt_content'));
 	}
 
 	/**
 	 * @test
 	 */
 	public function adminIsAllowedToModifyAdminTable() {
-		$this->fixture->admin = TRUE;
-		$this->assertTrue($this->fixture->checkModifyAccessList('be_users'));
+		$this->subject->admin = TRUE;
+		$this->assertTrue($this->subject->checkModifyAccessList('be_users'));
 	}
 
 	/**
 	 * @test
 	 */
 	public function nonAdminIsNotAllowedToModifyAdminTable() {
-		$this->fixture->admin = FALSE;
-		$this->assertFalse($this->fixture->checkModifyAccessList('be_users'));
+		$this->subject->admin = FALSE;
+		$this->assertFalse($this->subject->checkModifyAccessList('be_users'));
 	}
 
 	/**
 	 * @test
 	 */
 	public function nonAdminWithTableModifyAccessIsNotAllowedToModifyAdminTable() {
-		$this->fixture->admin = FALSE;
-		$this->backEndUser->groupData['tables_modify'] = 'be_users';
-		$this->assertFalse($this->fixture->checkModifyAccessList('be_users'));
+		$tableName = uniqid('aTable');
+		$GLOBALS['TCA'] = array(
+			$tableName => array(
+				'ctrl' => array(
+					'adminOnly' => TRUE,
+				),
+			),
+		);
+		$this->subject->admin = FALSE;
+		$this->backEndUser->groupData['tables_modify'] = $tableName;
+		$this->assertFalse($this->subject->checkModifyAccessList($tableName));
 	}
 
 	/**
@@ -134,7 +144,7 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			'60aaa00' => '6000.00'
 		);
 		foreach ($testData as $value => $expectedReturnValue) {
-			$returnValue = $this->fixture->checkValue_input_Eval($value, array('double2'), '');
+			$returnValue = $this->subject->checkValue_input_Eval($value, array('double2'), '');
 			$this->assertSame($returnValue['value'], $expectedReturnValue);
 		}
 	}
@@ -174,7 +184,7 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				'upper' => '2000000'
 			)
 		);
-		$returnValue = $this->fixture->checkValue_input(array(), $value, $tcaFieldConf, array());
+		$returnValue = $this->subject->checkValue_input(array(), $value, $tcaFieldConf, array());
 		$this->assertSame($returnValue['value'], $expectedReturnValue);
 	}
 
@@ -192,7 +202,7 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$hookClass = uniqid('tx_coretest');
 		eval('class ' . $hookClass . ' {}');
 		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['checkModifyAccessList'][] = $hookClass;
-		$this->fixture->checkModifyAccessList('tt_content');
+		$this->subject->checkModifyAccessList('tt_content');
 	}
 
 	/**
@@ -206,7 +216,7 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$hookMock->expects($this->once())->method('checkModifyAccessList');
 		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['checkModifyAccessList'][] = $hookClass;
 		$GLOBALS['T3_VAR']['getUserObj'][$hookClass] = $hookMock;
-		$this->fixture->checkModifyAccessList('tt_content');
+		$this->subject->checkModifyAccessList('tt_content');
 	}
 
 	/**
@@ -222,7 +232,7 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			}
 		');
 		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['checkModifyAccessList'][] = $hookClass;
-		$this->assertTrue($this->fixture->checkModifyAccessList('tt_content'));
+		$this->assertTrue($this->subject->checkModifyAccessList('tt_content'));
 	}
 
 	/////////////////////////////////////
@@ -244,29 +254,40 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function processDatamapWhenEditingRecordInWorkspaceCreatesNewRecordInWorkspace() {
 		// Unset possible hooks on method under test
+		// @TODO: Can be removed if unit test boostrap is fixed to not load LocalConfiguration anymore
 		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'] = array();
 
 		$GLOBALS['TYPO3_DB'] = $this->getMock('TYPO3\\CMS\\Core\\Database\\DatabaseConnection');
-		/** @var $fixture \TYPO3\CMS\Core\DataHandling\DataHandler|\TYPO3\CMS\Core\Tests\UnitTestCase */
-		$fixture = $this->getMock('TYPO3\\CMS\\Core\\DataHandling\\DataHandler', array('newlog', 'checkModifyAccessList', 'tableReadOnly', 'checkRecordUpdateAccess'));
-		$fixture->bypassWorkspaceRestrictions = FALSE;
-		$fixture->datamap = array(
+
+		$GLOBALS['TCA'] = array(
+			'pages' => array(
+				'columns' => array(),
+			),
+		);
+
+		/** @var $subject \TYPO3\CMS\Core\DataHandling\DataHandler|\TYPO3\CMS\Core\Tests\UnitTestCase */
+		$subject = $this->getMock(
+			'TYPO3\\CMS\\Core\\DataHandling\\DataHandler',
+			array('newlog', 'checkModifyAccessList', 'tableReadOnly', 'checkRecordUpdateAccess')
+		);
+		$subject->bypassWorkspaceRestrictions = FALSE;
+		$subject->datamap = array(
 			'pages' => array(
 				'1' => array(
 					'header' => 'demo'
 				)
 			)
 		);
-		$fixture->expects($this->once())->method('checkModifyAccessList')->with('pages')->will($this->returnValue(TRUE));
-		$fixture->expects($this->once())->method('tableReadOnly')->with('pages')->will($this->returnValue(FALSE));
-		$fixture->expects($this->once())->method('checkRecordUpdateAccess')->will($this->returnValue(TRUE));
+		$subject->expects($this->once())->method('checkModifyAccessList')->with('pages')->will($this->returnValue(TRUE));
+		$subject->expects($this->once())->method('tableReadOnly')->with('pages')->will($this->returnValue(FALSE));
+		$subject->expects($this->once())->method('checkRecordUpdateAccess')->will($this->returnValue(TRUE));
 		$backEndUser = $this->getMock('TYPO3\\CMS\\Core\\Authentication\\BackendUserAuthentication');
 		$backEndUser->workspace = 1;
 		$backEndUser->workspaceRec = array('freeze' => FALSE);
 		$backEndUser->expects($this->once())->method('workspaceAllowAutoCreation')->will($this->returnValue(TRUE));
 		$backEndUser->expects($this->once())->method('workspaceCannotEditRecord')->will($this->returnValue(TRUE));
 		$backEndUser->expects($this->once())->method('recordEditAccessInternals')->with('pages', 1)->will($this->returnValue(TRUE));
-		$fixture->BE_USER = $backEndUser;
+		$subject->BE_USER = $backEndUser;
 		$createdTceMain = $this->getMock('TYPO3\\CMS\\Core\\DataHandling\\DataHandler', array());
 		$createdTceMain->expects($this->once())->method('start')->with(array(), array(
 			'pages' => array(
@@ -282,7 +303,7 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$createdTceMain->expects($this->never())->method('process_datamap');
 		$createdTceMain->expects($this->once())->method('process_cmdmap');
 		\TYPO3\CMS\Core\Utility\GeneralUtility::addInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler', $createdTceMain);
-		$fixture->process_datamap();
+		$subject->process_datamap();
 	}
 
 	/**
@@ -294,7 +315,7 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$hookMock->expects($this->once())->method('checkFlexFormValue_beforeMerge');
 		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['checkFlexFormValue'][] = $hookClass;
 		$GLOBALS['T3_VAR']['getUserObj'][$hookClass] = $hookMock;
-		$this->fixture->checkValue_flex(array(), array(), array(), array(), array(), '');
+		$this->subject->checkValue_flex(array(), array(), array(), array(), array(), '');
 	}
 
 	/////////////////////////////////////
@@ -306,9 +327,9 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function logCallsWriteLogOfBackendUserIfLoggingIsEnabled() {
 		$backendUser = $this->getMock('TYPO3\\CMS\\Core\\Authentication\\BackendUserAuthentication');
 		$backendUser->expects($this->once())->method('writelog');
-		$this->fixture->enableLogging = TRUE;
-		$this->fixture->BE_USER = $backendUser;
-		$this->fixture->log('', 23, 0, 42, 0, 'details');
+		$this->subject->enableLogging = TRUE;
+		$this->subject->BE_USER = $backendUser;
+		$this->subject->log('', 23, 0, 42, 0, 'details');
 	}
 
 	/**
@@ -317,9 +338,9 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function logDoesNotCallWriteLogOfBackendUserIfLoggingIsDisabled() {
 		$backendUser = $this->getMock('TYPO3\\CMS\\Core\\Authentication\\BackendUserAuthentication');
 		$backendUser->expects($this->never())->method('writelog');
-		$this->fixture->enableLogging = FALSE;
-		$this->fixture->BE_USER = $backendUser;
-		$this->fixture->log('', 23, 0, 42, 0, 'details');
+		$this->subject->enableLogging = FALSE;
+		$this->subject->BE_USER = $backendUser;
+		$this->subject->log('', 23, 0, 42, 0, 'details');
 	}
 
 	/**
@@ -327,12 +348,12 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function logAddsEntryToLocalErrorLogArray() {
 		$backendUser = $this->getMock('TYPO3\\CMS\\Core\\Authentication\\BackendUserAuthentication');
-		$this->fixture->BE_USER = $backendUser;
-		$this->fixture->enableLogging = TRUE;
-		$this->fixture->errorLog = array();
+		$this->subject->BE_USER = $backendUser;
+		$this->subject->enableLogging = TRUE;
+		$this->subject->errorLog = array();
 		$logDetailsUnique = uniqid('details');
-		$this->fixture->log('', 23, 0, 42, 1, $logDetailsUnique);
-		$this->assertStringEndsWith($logDetailsUnique, $this->fixture->errorLog[0]);
+		$this->subject->log('', 23, 0, 42, 1, $logDetailsUnique);
+		$this->assertStringEndsWith($logDetailsUnique, $this->subject->errorLog[0]);
 	}
 
 	/**
@@ -340,13 +361,13 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function logFormatsDetailMessageWithAdditionalDataInLocalErrorArray() {
 		$backendUser = $this->getMock('TYPO3\\CMS\\Core\\Authentication\\BackendUserAuthentication');
-		$this->fixture->BE_USER = $backendUser;
-		$this->fixture->enableLogging = TRUE;
-		$this->fixture->errorLog = array();
+		$this->subject->BE_USER = $backendUser;
+		$this->subject->enableLogging = TRUE;
+		$this->subject->errorLog = array();
 		$logDetails = uniqid('details');
-		$this->fixture->log('', 23, 0, 42, 1, '%1s' . $logDetails . '%2s', -1, array('foo', 'bar'));
+		$this->subject->log('', 23, 0, 42, 1, '%1s' . $logDetails . '%2s', -1, array('foo', 'bar'));
 		$expected = 'foo' . $logDetails . 'bar';
-		$this->assertStringEndsWith($expected, $this->fixture->errorLog[0]);
+		$this->assertStringEndsWith($expected, $this->subject->errorLog[0]);
 	}
 
 	/**
@@ -361,7 +382,7 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function equalSubmittedAndStoredValuesAreDetermined($expected, $submittedValue, $storedValue, $storedType, $allowNull) {
 		$result = $this->callInaccessibleMethod(
-			$this->fixture,
+			$this->subject,
 			'isSubmittedValueEqualToStoredValue',
 			$submittedValue, $storedValue, $storedType, $allowNull
 		);
@@ -626,6 +647,6 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				array('Item 3', 0)
 			)
 		);
-		$this->assertSame($expectedResult, $this->fixture->checkValue_check($result, $value, $tcaFieldConfiguration, array()));
+		$this->assertSame($expectedResult, $this->subject->checkValue_check($result, $value, $tcaFieldConfiguration, array()));
 	}
 }
