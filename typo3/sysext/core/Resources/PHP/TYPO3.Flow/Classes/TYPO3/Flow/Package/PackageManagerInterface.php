@@ -19,9 +19,9 @@ namespace TYPO3\Flow\Package;
 interface PackageManagerInterface {
 
 	/**
-	 * Initializes the package manager.
+	 * Initializes the package manager
 	 *
-	 * @param \TYPO3\Flow\Core\Bootstrap $bootstrap
+	 * @param \TYPO3\Flow\Core\Bootstrap $bootstrap The current bootstrap
 	 * @return void
 	 */
 	public function initialize(\TYPO3\Flow\Core\Bootstrap $bootstrap);

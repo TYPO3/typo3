@@ -68,7 +68,7 @@ class PackageManager implements \TYPO3\Flow\Package\PackageManagerInterface {
 	 * Absolute path leading to the various package directories
 	 * @var string
 	 */
-	protected $packagesBasePath;
+	protected $packagesBasePath = FLOW_PATH_PACKAGES;
 
 	/**
 	 * @var string
@@ -123,16 +123,13 @@ class PackageManager implements \TYPO3\Flow\Package\PackageManagerInterface {
 	 * Initializes the package manager
 	 *
 	 * @param \TYPO3\Flow\Core\Bootstrap $bootstrap The current bootstrap
-	 * @param string $packagesBasePath Absolute path of the Packages directory
-	 * @param string $packageStatesPathAndFilename
 	 * @return void
 	 */
-	public function initialize(\TYPO3\Flow\Core\Bootstrap $bootstrap, $packagesBasePath = FLOW_PATH_PACKAGES, $packageStatesPathAndFilename = '') {
+	public function initialize(\TYPO3\Flow\Core\Bootstrap $bootstrap) {
 		$this->systemLogger = new \TYPO3\Flow\Log\EarlyLogger();
 
 		$this->bootstrap = $bootstrap;
-		$this->packagesBasePath = $packagesBasePath;
-		$this->packageStatesPathAndFilename = ($packageStatesPathAndFilename === '') ? FLOW_PATH_CONFIGURATION . 'PackageStates.php' : $packageStatesPathAndFilename;
+		$this->packageStatesPathAndFilename = $this->packageStatesPathAndFilename ?: FLOW_PATH_CONFIGURATION . 'PackageStates.php';
 		$this->packageFactory = new PackageFactory($this);
 
 		$this->loadPackageStates();

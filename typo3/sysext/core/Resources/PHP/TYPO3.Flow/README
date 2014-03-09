@@ -9,3 +9,7 @@ The following has been changed:
 It has been imported from this commmit hash:
 
 327db44575d90f5f7309ec9febaa444fc2ac8a4e
+
+2014-03-10 Changes to PackageManager classes
+* The PackageManagerInterface dictates a constructor with only 1 parameter.
+  The PackageManager classes and the calls are adopted accordingly.
