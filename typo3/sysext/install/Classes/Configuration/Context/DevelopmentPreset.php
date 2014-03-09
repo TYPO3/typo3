@@ -52,10 +52,12 @@ class DevelopmentPreset extends Configuration\AbstractPreset {
 		'SYS/enableDeprecationLog' => 'file',
 		'SYS/sqlDebug' => 1,
 		'SYS/systemLogLevel' => 0,
+		// E_WARNING | E_RECOVERABLE_ERROR | E_DEPRECATED | E_USER_DEPRECATED
+		'SYS/exceptionalErrors' => 28674,
 	);
 
 	/**
-	 * Production preset is always available
+	 * Development preset is always available
 	 *
 	 * @return boolean TRUE if mbstring PHP module is loaded
 	 */
@@ -64,7 +66,7 @@ class DevelopmentPreset extends Configuration\AbstractPreset {
 	}
 
 	/**
-	 * If context is set to production, priority
+	 * If context is set to development, priority
 	 * of this preset is raised.
 	 *
 	 * @return integer Priority of preset
