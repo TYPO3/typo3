@@ -75,7 +75,8 @@ class UserElements extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 			RTEarea[' . $RTEcounter . '].buttons.' . $button . ' = new Object();';
 			}
 			$registerRTEinJavascriptString .= '
-			RTEarea[' . $RTEcounter . '].buttons.' . $button . '.pathUserModule = "' . $this->htmlAreaRTE->extHttpPath . 'mod5/user.php";';
+			RTEarea[' . $RTEcounter . '].buttons.' . $button . '.pathUserModule = "' .
+				\TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('rtehtmlarea_wizard_user') . '";';
 		}
 		return $registerRTEinJavascriptString;
 	}

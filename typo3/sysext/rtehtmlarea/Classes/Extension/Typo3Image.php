@@ -83,7 +83,8 @@ class Typo3Image extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 			RTEarea[' . $RTEcounter . ']["buttons"]["' . $button . '"] = new Object();';
 			}
 			$registerRTEinJavascriptString .= '
-			RTEarea[' . $RTEcounter . '].buttons.' . $button . '.pathImageModule = "' . $this->htmlAreaRTE->extHttpPath . 'mod4/select_image.php";';
+			RTEarea[' . $RTEcounter . '].buttons.' . $button . '.pathImageModule = "' .
+				\TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('rtehtmlarea_wizard_select_image') . '";';
 		}
 		return $registerRTEinJavascriptString;
 	}

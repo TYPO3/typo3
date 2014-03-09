@@ -2,6 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
+ *  (c) 1999-2013 Kasper Skårhøj (kasper@typo3.com)
  *  (c) 2005-2013 Stanislas Rolland <typo3(arobas)sjbr.ca>
  *  All rights reserved
  *
@@ -25,16 +26,14 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 /**
- * Content parsing for htmlArea RTE
+ * User defined content for htmlArea RTE
  *
+ * @author 	Kasper Skårhøj <kasper@typo3.com>
  * @author 	Stanislas Rolland <typo3(arobas)sjbr.ca>
  */
-error_reporting(E_ALL & ~(E_STRICT | E_NOTICE | E_DEPRECATED));
-unset($MCONF);
-require __DIR__ . '/conf.php';
-require $BACK_PATH . 'init.php';
+
 // Make instance:
-$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Rtehtmlarea\\ContentParser');
+$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Rtehtmlarea\\User');
 $SOBE->init();
 $SOBE->main();
 $SOBE->printContent();

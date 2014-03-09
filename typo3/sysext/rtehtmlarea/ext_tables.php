@@ -66,4 +66,22 @@ if (TYPO3_MODE === 'BE') {
 		'rtehtmlarea_wizard_element_browser',
 		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'mod3/'
 	);
+
+	// Register RTE wizard_select_image
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
+		'rtehtmlarea_wizard_select_image',
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'mod4/'
+	);
+
+	// Register RTE wizard_user
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
+		'rtehtmlarea_wizard_user',
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'mod5/'
+	);
+
+	// Register RTE wizard_user
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
+		'rtehtmlarea_wizard_parse_html',
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'mod6/'
+	);
 }

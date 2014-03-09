@@ -66,6 +66,14 @@ class User {
 	public $editorNo;
 
 	/**
+	 * Initialize language files
+	 */
+	public function __construct() {
+		$GLOBALS['LANG']->includeLLFile('EXT:rtehtmlarea/mod5/locallang.xlf');
+		$GLOBALS['LANG']->includeLLFile('EXT:rtehtmlarea/htmlarea/locallang_dialogs.xlf');
+	}
+
+	/**
 	 * @return 	[type]		...
 	 * @todo Define visibility
 	 */

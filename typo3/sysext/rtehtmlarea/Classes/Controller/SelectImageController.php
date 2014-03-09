@@ -42,6 +42,15 @@ class SelectImageController {
 	protected $content = '';
 
 	/**
+	 * Initialize language files
+	 */
+	public function __construct() {
+		$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_TYPO3\\CMS\\Recordlist\\Browser\\ElementBrowser.xlf');
+		$GLOBALS['LANG']->includeLLFile('EXT:rtehtmlarea/mod4/locallang.xlf');
+		$GLOBALS['LANG']->includeLLFile('EXT:rtehtmlarea/htmlarea/locallang_dialogs.xlf');
+	}
+
+	/**
 	 * Main function, rendering the element browser in RTE mode.
 	 *
 	 * @return 	void
