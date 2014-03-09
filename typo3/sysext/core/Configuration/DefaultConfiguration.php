@@ -708,6 +708,10 @@ return array(
 				// All ExtJS calls are CSRF protected with another token
 				'csrfTokenCheck' => FALSE
 			),
+			'DocumentTemplate::getFlashMessages' => array(
+				'callbackMethod' => 'TYPO3\\CMS\\Backend\\Template\\DocumentTemplate->renderFlashMessages',
+				'csrfTokenCheck' => TRUE
+			),
 		),
 		'XCLASS' => array()
 	),

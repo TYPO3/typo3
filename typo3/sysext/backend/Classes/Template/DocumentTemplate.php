@@ -1962,6 +1962,18 @@ function jumpToUrl(URL) {
 	}
 
 	/**
+	 * Renders the FlashMessages from queue and returns them as AJAX.
+	 *
+	 * @param array $params Always empty.
+	 * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj The AjaxRequestHandler object used to return content and set content types
+	 * @return void
+	 */
+	public function renderFlashMessages(array $params, \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj) {
+		$ajaxObj->addContent('result', $this->getFlashMessages());
+		$ajaxObj->setContentFormat('html');
+	}
+
+	/**
 	 * Fill the button lists with the defined HTML
 	 *
 	 * @param array $buttons HTML for all buttons

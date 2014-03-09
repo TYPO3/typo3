@@ -94,6 +94,7 @@ define('TYPO3/CMS/Backend/DragUploader', ['jquery'], function($) {
 		};
 
 		me.processFiles = function (files) {
+			me.queueLength = 0;
 
 			// ask user if we should override files
 			var override = confirm(TYPO3.l10n.localize('file_upload.overwriteExistingFiles'));
@@ -102,6 +103,7 @@ define('TYPO3/CMS/Backend/DragUploader', ['jquery'], function($) {
 			}
 			// Add each file to queue and start upload
 			$.each(files, function(i, file) {
+				me.queueLength++;
 				new FileQueueItem(me, file, override);
 			});
 		};
@@ -155,6 +157,26 @@ define('TYPO3/CMS/Backend/DragUploader', ['jquery'], function($) {
 
 			me.bindUploadButton(me.$trigger.length ? me.$trigger : me.$element);
 		}
+
+		me.decrementQueueLength = function() {
+			if (me.queueLength > 0) {
+				me.queueLength--;
+				if (me.queueLength == 0) {
+					$.ajax({
+						url: TYPO3.settings.DragUploader.ajaxFlashMessagesUrl,
+						cache: false,
+						success: function(data) {
+							var messages = $('#typo3-messages');
+							if (messages.length == 0) {
+								$('#typo3-inner-docbody').prepend(data);
+							} else {
+								messages.replaceWith(data);
+							}
+						}
+					});
+				}
+			}
+		}
 	};
 
 	var FileQueueItem = function(dragUploader, file, override) {
@@ -198,6 +220,7 @@ define('TYPO3/CMS/Backend/DragUploader', ['jquery'], function($) {
 				me.$progressPercentage.text('(' + response.statusText + ')');
 			}
 			me.$row.addClass('error');
+			dragUploader.decrementQueueLength();
 		};
 
 		me.updateProgress = function(event) {
@@ -208,6 +231,7 @@ define('TYPO3/CMS/Backend/DragUploader', ['jquery'], function($) {
 
 		me.uploadComplete = function(data) {
 			if (data.result.upload) {
+				me.dragUploader.decrementQueueLength();
 				me.$row.removeClass('uploading');
 				me.$fileName.text(data.result.upload[0].name);
 				me.$progressPercentage.text('');
