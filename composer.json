@@ -20,7 +20,7 @@
 	"support": {
 		"general": "http://typo3.org/support/",
 		"issues": "http://forge.typo3.org",
-		"irc": "http://typo3.org/support/irc-chat/",
+		"irc": "irc://irc.freenode.net/#typo3-cms",
 		"news": "nntp://lists.typo3.org"
 	},
     "config": {
