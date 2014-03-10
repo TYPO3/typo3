@@ -856,8 +856,14 @@ button.btn-save:hover {
 .phpinfo hr, .phpinfo table {
 	width: 500px;
 }
+.phpinfo table {
+	border-collapse: collapse;
+}
 .phpinfo td, .phpinfo th {
+	border: 1px solid #000000;
 	font-size: 11px;
+	vertical-align: baseline;
+	padding: 2px 4px;
 }
 .phpinfo td.v {
 	word-break: break-all;
@@ -865,5 +871,55 @@ button.btn-save:hover {
 }
 .phpinfo .toggleDataContent {
 	margin: 1em 0;
-	overflow: scroll;
+}
+.phpinfo pre {
+	font-family: monospace;
+	margin: 0;
+}
+.phpinfo .center,
+.phpinfo .center th {
+	text-align: center;
+}
+.phpinfo .center table {
+	margin-left: auto;
+	margin-right: auto;
+}
+.phpinfo .center table,
+.phpinfo .p {
+	text-align: left;
+}
+.phpinfo .e,
+.phpinfo .h,
+.phpinfo .v,
+.phpinfo .vr,
+.phpinfo hr {
+	color: #000000;
+}
+.phpinfo .e,
+.phpinfo .h {
+	font-weight: bold;
+}
+.phpinfo .e {
+	background-color: #ccccff;
+}
+.phpinfo .h {
+	background-color: #9999cc;
+}
+.phpinfo .v,
+.phpinfo .vr,
+.phpinfo hr {
+	background-color: #cccccc;
+}
+.phpinfo .vr {
+	text-align: right;
+}
+.phpinfo img,
+.phpinfo hr {
+	border: 0;
+}
+.phpinfo img {
+	float: right;
+}
+.phpinfo hr {
+	height: 1px;
 }

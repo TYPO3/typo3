@@ -46,11 +46,11 @@ class SystemEnvironment extends Action\AbstractAction {
 		$sortedStatusObjects = $statusUtility->sortBySeverity($statusObjects);
 		$this->view->assign('statusObjectsBySeverity', $sortedStatusObjects);
 
-		ob_start();
-		phpinfo();
-		$phpInfo = ob_get_clean();
-		$this->view->assign('phpInfo', $phpInfo);
+		/** @var $statusUtility \TYPO3\CMS\Install\Utility\PhpInfo */
+		$phpInfoUtility = $this->objectManager->get('TYPO3\\CMS\\Install\\Utility\\PhpInfo');
+		$this->view->assign('phpInfo', $phpInfoUtility->getBodyContent());
 
 		return $this->view->render();
 	}
+
 }
