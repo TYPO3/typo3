@@ -590,75 +590,86 @@ class SoftReferenceIndex {
 
 		// Parse URL:
 		$pU = @parse_url($link_param);
-		// Detecting the kind of reference:
+
+		// If it's a mail address:
 		if (strstr($link_param, '@') && !$pU['scheme']) {
-			// If it's a mail address:
 			$link_param = preg_replace('/^mailto:/i', '', $link_param);
 			$finalTagParts['LINK_TYPE'] = 'mailto';
 			$finalTagParts['url'] = trim($link_param);
-		} else {
-			// Check for FAL link-handler keyword
-			list ($linkHandlerKeyword, $linkHandlerValue) = explode(':', trim($link_param), 2);
-			if ($linkHandlerKeyword === 'file') {
+			return $finalTagParts;
+		}
+
+		list ($linkHandlerKeyword, $linkHandlerValue) = explode(':', trim($link_param), 2);
+
+		// Dispatch available signal slots.
+		$linkHandlerFound = FALSE;
+		list($linkHandlerFound, $finalTagParts) = $this->getSignalSlotDispatcher()->dispatch(get_class($this), 'getTypoLinkParts', array($linkHandlerFound, $finalTagParts, $linkHandlerKeyword, $linkHandlerValue));
+		if ($linkHandlerFound) {
+			return $finalTagParts;
+		}
+
+		// Check for FAL link-handler keyword
+		if ($linkHandlerKeyword === 'file') {
+			$finalTagParts['LINK_TYPE'] = 'file';
+			$finalTagParts['identifier'] = trim($link_param);
+			return $finalTagParts;
+		}
+
+		$isLocalFile = 0;
+		$fileChar = (int)strpos($link_param, '/');
+		$urlChar = (int)strpos($link_param, '.');
+
+		// Detects if a file is found in site-root and if so it will be treated like a normal file.
+		list($rootFileDat) = explode('?', rawurldecode($link_param));
+		$containsSlash = strstr($rootFileDat, '/');
+		$rFD_fI = pathinfo($rootFileDat);
+		if (trim($rootFileDat) && !$containsSlash && (@is_file(PATH_site . $rootFileDat) || GeneralUtility::inList('php,html,htm', strtolower($rFD_fI['extension'])))) {
+			$isLocalFile = 1;
+		} elseif ($containsSlash) {
+			// Adding this so realurl directories are linked right (non-existing).
+			$isLocalFile = 2;
+		}
+		if ($pU['scheme'] || ($isLocalFile != 1 && $urlChar && (!$containsSlash || $urlChar < $fileChar))) { // url (external): If doubleSlash or if a '.' comes before a '/'.
+			$finalTagParts['LINK_TYPE'] = 'url';
+			$finalTagParts['url'] = $link_param;
+		} elseif ($containsSlash || $isLocalFile) { // file (internal)
+			$splitLinkParam = explode('?', $link_param);
+			if (file_exists(rawurldecode($splitLinkParam[0])) || $isLocalFile) {
 				$finalTagParts['LINK_TYPE'] = 'file';
-				$finalTagParts['identifier'] = trim($link_param);
-			} else {
-				$isLocalFile = 0;
-				$fileChar = (int)strpos($link_param, '/');
-				$urlChar = (int)strpos($link_param, '.');
+				$finalTagParts['filepath'] = rawurldecode($splitLinkParam[0]);
+				$finalTagParts['query'] = $splitLinkParam[1];
+			}
+		} else {
+			// integer or alias (alias is without slashes or periods or commas, that is
+			// 'nospace,alphanum_x,lower,unique' according to definition in $GLOBALS['TCA']!)
+			$finalTagParts['LINK_TYPE'] = 'page';
 
-				// Detects if a file is found in site-root and if so it will be treated like a normal file.
-				list($rootFileDat) = explode('?', rawurldecode($link_param));
-				$containsSlash = strstr($rootFileDat, '/');
-				$rFD_fI = pathinfo($rootFileDat);
-				if (trim($rootFileDat) && !$containsSlash && (@is_file(PATH_site . $rootFileDat) || GeneralUtility::inList('php,html,htm', strtolower($rFD_fI['extension'])))) {
-					$isLocalFile = 1;
-				} elseif ($containsSlash) {
-					// Adding this so realurl directories are linked right (non-existing).
-					$isLocalFile = 2;
+			$link_params_parts = explode('#', $link_param);
+			// Link-data del
+			$link_param = trim($link_params_parts[0]);
+
+			if (strlen($link_params_parts[1])) {
+				$finalTagParts['anchor'] = trim($link_params_parts[1]);
+			}
+
+			// Splitting the parameter by ',' and if the array counts more than 1 element it's a id/type/? pair
+			$pairParts = GeneralUtility::trimExplode(',', $link_param);
+			if (count($pairParts) > 1) {
+				$link_param = $pairParts[0];
+				$finalTagParts['type'] = $pairParts[1]; // Overruling 'type'
+			}
+
+			// Checking if the id-parameter is an alias.
+			if (strlen($link_param)) {
+				if (!\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($link_param)) {
+					$finalTagParts['alias'] = $link_param;
+					$link_param = $this->getPageIdFromAlias($link_param);
 				}
-				if ($pU['scheme'] || ($isLocalFile != 1 && $urlChar && (!$containsSlash || $urlChar < $fileChar))) { // url (external): If doubleSlash or if a '.' comes before a '/'.
-					$finalTagParts['LINK_TYPE'] = 'url';
-					$finalTagParts['url'] = $link_param;
-				} elseif ($containsSlash || $isLocalFile) { // file (internal)
-					$splitLinkParam = explode('?', $link_param);
-					if (file_exists(rawurldecode($splitLinkParam[0])) || $isLocalFile) {
-						$finalTagParts['LINK_TYPE'] = 'file';
-						$finalTagParts['filepath'] = rawurldecode($splitLinkParam[0]);
-						$finalTagParts['query'] = $splitLinkParam[1];
-					}
-				} else {
-					// integer or alias (alias is without slashes or periods or commas, that is
-					// 'nospace,alphanum_x,lower,unique' according to definition in $GLOBALS['TCA']!)
-					$finalTagParts['LINK_TYPE'] = 'page';
 
-					$link_params_parts = explode('#', $link_param);
-					// Link-data del
-					$link_param = trim($link_params_parts[0]);
-
-					if (strlen($link_params_parts[1])) {
-						$finalTagParts['anchor'] = trim($link_params_parts[1]);
-					}
-
-					// Splitting the parameter by ',' and if the array counts more than 1 element it's a id/type/? pair
-					$pairParts = GeneralUtility::trimExplode(',', $link_param);
-					if (count($pairParts) > 1) {
-						$link_param = $pairParts[0];
-						$finalTagParts['type'] = $pairParts[1]; // Overruling 'type'
-					}
-
-					// Checking if the id-parameter is an alias.
-					if (strlen($link_param)) {
-						if (!\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($link_param)) {
-							$finalTagParts['alias'] = $link_param;
-							$link_param = $this->getPageIdFromAlias($link_param);
-						}
-
-						$finalTagParts['page_id'] = (int)$link_param;
-					}
-				}
+				$finalTagParts['page_id'] = (int)$link_param;
 			}
 		}
+
 		return $finalTagParts;
 	}
 
@@ -776,8 +787,15 @@ class SoftReferenceIndex {
 				}
 				break;
 			default:
-				$elements[$tokenID . ':' . $idx]['error'] = 'Couldn\'t decide typolink mode.';
-				return $content;
+				$linkHandlerFound = FALSE;
+				list($linkHandlerFound, $tLP, $content, $newElements) = $this->getSignalSlotDispatcher()->dispatch(get_class($this), 'setTypoLinkPartsElement', array($linkHandlerFound, $tLP, $content, $elements, $idx, $tokenID, $this));
+				// We need to merge the array, otherwise we would loose the reference.
+				\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($elements, $newElements);
+
+				if (!$linkHandlerFound) {
+					$elements[$tokenID . ':' . $idx]['error'] = 'Couldn\'t decide typolink mode.';
+					return $content;
+				}
 		}
 		// Finally, for all entries that was rebuild with tokens, add target, class, title and additionalParams in the end:
 		if (strlen($content) && isset($tLP['target']) && $tLP['target'] !== '') {
@@ -817,6 +835,13 @@ class SoftReferenceIndex {
 	 */
 	public function makeTokenID($index = '') {
 		return md5($this->tokenID_basePrefix . ':' . $index);
+	}
+
+	/**
+	 * @return \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
+	 */
+	protected function getSignalSlotDispatcher() {
+		return GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\SignalSlot\Dispatcher');
 	}
 
 }
