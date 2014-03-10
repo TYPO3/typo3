@@ -642,7 +642,6 @@ tt_content.image.20 {
 		allImageCaptions.cObject {
 			references {
 				table = tt_content
-				uid.field = uid
 				fieldName = image
 			}
 			renderObj = TEXT
