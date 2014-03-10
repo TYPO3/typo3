@@ -168,7 +168,9 @@ abstract class AbstractDataHandlerActionTestCase extends \TYPO3\CMS\Core\Tests\F
 			if (!empty($records)) {
 				foreach ($records as $record) {
 					$recordIdentifier = $tableName . ':' . $record['uid'];
-					$additionalInformation = $this->arrayToString($record);
+					$emptyAssertion = array_fill_keys($dataSet->getFields($tableName), '[none]');
+					$reducedRecord = array_intersect_key($record, $emptyAssertion);
+					$additionalInformation = ($hasUidField ? $this->renderRecords($emptyAssertion, $reducedRecord) : $this->arrayToString($reducedRecord));
 					$failMessages[] = 'Not asserted record found for "' . $recordIdentifier . '":' . LF . $additionalInformation;
 				}
 			}
