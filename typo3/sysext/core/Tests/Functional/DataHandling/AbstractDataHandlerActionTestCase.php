@@ -89,20 +89,11 @@ abstract class AbstractDataHandlerActionTestCase extends \TYPO3\CMS\Core\Tests\F
 	}
 
 	/**
-	 * @return \TYPO3\CMS\Core\DataHandling\DataHandler
-	 */
-	protected function getDataHandler() {
-		$dataHandler = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
-		return $dataHandler;
-	}
-
-	/**
 	 * @return \TYPO3\CMS\Core\Tests\Functional\DataHandling\Framework\ActionService
 	 */
 	protected function getActionService() {
 		return GeneralUtility::makeInstance(
-			'TYPO3\\CMS\\Core\\Tests\\Functional\\DataHandling\\Framework\\ActionService',
-			$this->getDataHandler()
+			'TYPO3\\CMS\\Core\\Tests\\Functional\\DataHandling\\Framework\\ActionService'
 		);
 	}
 

@@ -37,20 +37,6 @@ class ActionService {
 	protected $dataHandler;
 
 	/**
-	 * @param DataHandler $dataHandler
-	 */
-	public function __construct(DataHandler $dataHandler) {
-		$this->setDataHandler($dataHandler);
-	}
-
-	/**
-	 * @param DataHandler $dataHandler
-	 */
-	public function setDataHandler(DataHandler $dataHandler) {
-		$this->dataHandler = $dataHandler;
-	}
-
-	/**
 	 * @return DataHandler
 	 */
 	public function getDataHander() {
@@ -93,6 +79,7 @@ class ActionService {
 			$previousTableName = $tableName;
 			$previousUid = $currentUid;
 		}
+		$this->createDataHandler();
 		$this->dataHandler->start($dataMap, array());
 		$this->dataHandler->process_datamap();
 
@@ -127,6 +114,7 @@ class ActionService {
 				}
 			}
 		}
+		$this->createDataHandler();
 		$this->dataHandler->start($dataMap, $commandMap);
 		$this->dataHandler->process_datamap();
 		if (!empty($commandMap)) {
@@ -164,6 +152,7 @@ class ActionService {
 			$previousTableName = $tableName;
 			$previousUid = $currentUid;
 		}
+		$this->createDataHandler();
 		$this->dataHandler->start($dataMap, array());
 		$this->dataHandler->process_datamap();
 	}
@@ -194,6 +183,7 @@ class ActionService {
 				);
 			}
 		}
+		$this->createDataHandler();
 		$this->dataHandler->start(array(), $commandMap);
 		$this->dataHandler->process_cmdmap();
 		// Deleting workspace records is actually a copy(!)
@@ -226,6 +216,7 @@ class ActionService {
 				);
 			}
 		}
+		$this->createDataHandler();
 		$this->dataHandler->start(array(), $commandMap);
 		$this->dataHandler->process_cmdmap();
 	}
@@ -244,6 +235,7 @@ class ActionService {
 				),
 			),
 		);
+		$this->createDataHandler();
 		$this->dataHandler->start(array(), $commandMap);
 		$this->dataHandler->process_cmdmap();
 		return $this->dataHandler->copyMappingArray;
@@ -262,6 +254,7 @@ class ActionService {
 				),
 			),
 		);
+		$this->createDataHandler();
 		$this->dataHandler->start(array(), $commandMap);
 		$this->dataHandler->process_cmdmap();
 	}
@@ -280,6 +273,7 @@ class ActionService {
 				),
 			),
 		);
+		$this->createDataHandler();
 		$this->dataHandler->start(array(), $commandMap);
 		$this->dataHandler->process_cmdmap();
 		return $this->dataHandler->copyMappingArray;
@@ -299,40 +293,70 @@ class ActionService {
 				),
 			)
 		);
+		$this->createDataHandler();
 		$this->dataHandler->start($dataMap, array());
 		$this->dataHandler->process_datamap();
 	}
 
 	/**
 	 * @param string $tableName
-	 * @param integer $uid
-	 * @param string $fieldName
-	 * @param integer $referenceId
+	 * @param int $liveUid
+	 * @param bool $throwException
 	 */
-	public function addReference($tableName, $uid, $fieldName, $referenceId) {
-		$recordValues = $this->getRecordValues($tableName, $uid, $fieldName);
-
-		if (!in_array($referenceId, $recordValues)) {
-			$recordValues[] = $referenceId;
-		}
-
-		$this->modifyReferences($tableName, $uid, $fieldName, $recordValues);
+	public function publishRecord($tableName, $liveUid, $throwException = TRUE) {
+		$this->publishRecords(array($tableName => array($liveUid)), $throwException);
 	}
 
 	/**
-	 * @param string $tableName
-	 * @param integer $uid
-	 * @param string $fieldName
-	 * @param integer $referenceId
+	 * @param array $tableLiveUids
+	 * @param bool $throwException
+	 * @throws \TYPO3\CMS\Core\Tests\Exception
 	 */
-	public function deleteReference($tableName, $uid, $fieldName, $referenceId) {
-		$recordValues = $this->getRecordValues($tableName, $uid, $fieldName);
+	public function publishRecords(array $tableLiveUids, $throwException = TRUE) {
+		$commandMap = array();
+		foreach ($tableLiveUids as $tableName => $liveUids) {
+			foreach ($liveUids as $liveUid) {
+				$versionedUid = $this->getVersionedId($tableName, $liveUid);
+				if (empty($versionedUid)) {
+					if ($throwException) {
+						throw new \TYPO3\CMS\Core\Tests\Exception('Versioned UID could not be determined');
+					} else {
+						continue;
+					}
+				}
 
-		if (($index = array_search($referenceId, $recordValues)) !== FALSE) {
-			unset($recordValues[$index]);
+				$commandMap[$tableName][$liveUid] = array(
+					'version' => array(
+						'action' => 'swap',
+						'swapWith' => $versionedUid,
+						'notificationAlternativeRecipients' => array(),
+					),
+				);
+			}
 		}
+		$this->createDataHandler();
+		$this->dataHandler->start(array(), $commandMap);
+		$this->dataHandler->process_cmdmap();
+	}
 
-		$this->modifyReferences($tableName, $uid, $fieldName, $recordValues);
+	/**
+	 * @param int $workspaceId
+	 */
+	public function publishWorkspace($workspaceId) {
+		$commandMap = $this->getWorkspaceService()->getCmdArrayForPublishWS($workspaceId, FALSE);
+		$this->createDataHandler();
+		$this->dataHandler->start(array(), $commandMap);
+		$this->dataHandler->process_cmdmap();
+	}
+
+	/**
+	 * @param int $workspaceId
+	 */
+	public function swapWorkspace($workspaceId) {
+		$commandMap = $this->getWorkspaceService()->getCmdArrayForPublishWS($workspaceId, TRUE);
+		$this->createDataHandler();
+		$this->dataHandler->start(array(), $commandMap);
+		$this->dataHandler->process_cmdmap();
 	}
 
 	/**
@@ -373,39 +397,51 @@ class ActionService {
 
 	/**
 	 * @param string $tableName
-	 * @param integer $uid
-	 * @param string $fieldName
-	 * @return array
+	 * @param int $liveUid
+	 * @param bool $useDeleteClause
+	 * @return NULL|int
 	 */
-	protected function getRecordValues($tableName, $uid, $fieldName) {
-		$recordValues = array();
-
-		$recordValue = $this->getRecordValue($tableName, $uid, $fieldName);
-		if (!empty($recordValue)) {
-			$recordValues = explode(',', $recordValues);
+	protected function getVersionedId($tableName, $liveUid, $useDeleteClause = FALSE) {
+		$versionedId = NULL;
+		$liveUid = (int)$liveUid;
+		$workspaceId = (int)$this->getBackendUser()->workspace;
+		$row = $this->getDatabaseConnection()->exec_SELECTgetSingleRow(
+			'uid',
+			$tableName,
+			'pid=-1 AND t3ver_oid=' . $liveUid . ' AND t3ver_wsid=' . $workspaceId .
+			($useDeleteClause ? \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($tableName) : '')
+		);
+		if (!empty($row['uid'])) {
+			$versionedId = (int)$row['uid'];
 		}
-
-		return $recordValues;
+		return $versionedId;
 	}
 
 	/**
-	 * @param string $tableName
-	 * @param integer $uid
-	 * @param string $fieldName
-	 * @return bool|string|NULL
+	 * @return \TYPO3\CMS\Core\DataHandling\DataHandler
 	 */
-	protected function getRecordValue($tableName, $uid, $fieldName) {
-		$recordValue = FALSE;
-
-		$record = $this->getDatabaseConnection()->exec_SELECTgetSingleRow(
-			$fieldName, $tableName, 'uid=' . (int)$uid
+	protected function createDataHandler() {
+		$dataHandler = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+			'TYPO3\\CMS\\Core\\DataHandling\\DataHandler'
 		);
+		$this->dataHandler = $dataHandler;
+		return $dataHandler;
+	}
 
-		if (isset($record[$fieldName])) {
-			$recordValue = $record[$fieldName];
-		}
+	/**
+	 * @return \TYPO3\CMS\Workspaces\Service\WorkspaceService
+	 */
+	protected function getWorkspaceService() {
+		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+			'TYPO3\\CMS\\Workspaces\\Service\\WorkspaceService'
+		);
+	}
 
-		return $recordValue;
+	/**
+	 * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+	 */
+	protected function getBackendUser() {
+		return $GLOBALS['BE_USER'];
 	}
 
 	/**
