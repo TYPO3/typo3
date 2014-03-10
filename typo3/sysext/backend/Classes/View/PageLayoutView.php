@@ -624,8 +624,8 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 				foreach ($languageColumn as $cKey => $cCont) {
 					$out .= '
 					<tr>
-						<td valign="top" class="t3-gridCell t3-page-lang-column"">' . implode(('</td>' . '
-						<td valign="top" class="t3-gridCell t3-page-lang-column">'), $cCont) . '</td>
+						<td valign="top" class="t3-gridCell t3-page-column t3-page-lang-column">' . implode(('</td>' . '
+						<td valign="top" class="t3-gridCell t3-page-column t3-page-lang-column">'), $cCont) . '</td>
 					</tr>';
 					if ($this->defLangBinding) {
 						// "defLangBinding" mode
