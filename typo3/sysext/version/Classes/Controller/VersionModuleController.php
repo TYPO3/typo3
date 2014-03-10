@@ -116,6 +116,13 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass 
 	 */
 	public $recIndex = array();
 
+	/**
+	 * Initialize language files
+	 */
+	public function __construct() {
+		$GLOBALS['LANG']->includeLLFile('EXT:version/locallang.xlf');
+	}
+
 	// Determines whether to show the dummy draft workspace
 	/*********************************
 	 *
@@ -439,7 +446,9 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass 
 						<tr>
 							<td>' . $this->adminLinks($tN, $subrow) . '</td>
 							<td>' . $subrow['uid'] . '</td>
-							' . ($ownVer > 1 ? '<td style="font-weight: bold; background-color: yellow;"><a href="index.php?table=' . rawurlencode($tN) . '&uid=' . $subrow['uid'] . '">' . ($ownVer - 1) . '</a></td>' : '<td></td>') . '
+							' . ($ownVer > 1 ? '<td style="font-weight: bold; background-color: yellow;"><a href="' .
+							BackendUtility::getModuleUrl('web_txversionM1', array('table' => $tN, 'uid' => $subrow['uid'])) .
+							'">' . ($ownVer - 1) . '</a></td>' : '<td></td>') . '
 							<td width="98%">' . BackendUtility::getRecordTitle($tN, $subrow, TRUE) . '</td>
 						</tr>';
 					if ($tN == 'pages' && $c < 100) {

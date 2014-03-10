@@ -50,7 +50,7 @@ class VersionClickMenu {
 			// Adds the regular item
 			$LL = $this->includeLL();
 			// "Versioning" element added:
-			$url = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('version') . 'cm1/index.php?table=' . rawurlencode($table) . '&uid=' . $uid;
+			$url = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('web_txversionM1', array('table' => $table, 'uid' => $uid));
 			$localItems[] = $backRef->linkItem($GLOBALS['LANG']->getLLL('title', $LL), $backRef->excludeIcon('<img src="' . $backRef->backPath . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('version') . 'cm1/cm_icon.gif" width="15" height="12" border="0" align="top" alt="" />'), $backRef->urlRefForCM($url), 1);
 			// Find position of "delete" element:
 			$c = 0;

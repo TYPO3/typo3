@@ -1060,7 +1060,7 @@ class DatabaseRecordList extends \TYPO3\CMS\Recordlist\RecordList\AbstractDataba
 						if (count($vers) > 1) {
 							$versionIcon = count($vers) - 1;
 						}
-						$cells['version'] = '<a href="' . htmlspecialchars(($this->backPath . ExtensionManagementUtility::extRelPath('version') . 'cm1/index.php?table=' . rawurlencode($table) . '&uid=' . rawurlencode($row['uid']))) . '" title="' . $GLOBALS['LANG']->getLL('displayVersions', TRUE) . '">' . IconUtility::getSpriteIcon(('status-version-' . $versionIcon)) . '</a>';
+						$cells['version'] = '<a href="' . htmlspecialchars($this->backPath . BackendUtility::getModuleUrl('web_txversionM1', array('table' => $table, 'uid' => $row['uid']))) . '" title="' . $GLOBALS['LANG']->getLL('displayVersions', TRUE) . '">' . IconUtility::getSpriteIcon(('status-version-' . $versionIcon)) . '</a>';
 					} elseif (!$this->table) {
 						$cells['version'] = $this->spaceIcon;
 					}
