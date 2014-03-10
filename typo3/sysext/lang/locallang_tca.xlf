@@ -418,7 +418,7 @@
 				<source>Is browsable?</source>
 			</trans-unit>
 			<trans-unit id="sys_file_storage.is_public" xml:space="preserve">
-				<source>Is publically available?</source>
+				<source>Is publicly available?</source>
 			</trans-unit>
 			<trans-unit id="sys_file_storage.is_writable" xml:space="preserve">
 				<source>Is writable?</source>

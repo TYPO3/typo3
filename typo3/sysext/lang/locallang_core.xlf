@@ -931,6 +931,12 @@ Would you like to save now in order to refresh the display?</source>
 			<trans-unit id="warning.file_missing_text" xml:space="preserve">
 				<source>This file is marked as missing:</source>
 			</trans-unit>
+			<trans-unit id="warning.header.storage_is_no_public" xml:space="preserve">
+				<source>Storage is not public</source>
+			</trans-unit>
+			<trans-unit id="warning.message.storage_is_no_public" xml:space="preserve">
+				<source>The storage has been marked to be "publicly available" but is not detected as such by the driver. The setting has been reverted.</source>
+			</trans-unit>
 			<trans-unit id="error.formProtection.tokenInvalid" xml:space="preserve">
 				<source>Validating the security token of this form has failed. Please reload the form and submit it again.</source>
 			</trans-unit>

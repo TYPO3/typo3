@@ -72,8 +72,9 @@ return array(
 			'exclude' => 0,
 			'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_storage.is_public',
 			'config' => array(
-				'type' => 'check',
-				'default' => 1
+				'default' => TRUE,
+				'type' => 'user',
+				'userFunc' => 'typo3/sysext/core/Classes/Resource/Service/UserStorageCapabilityService.php:TYPO3\CMS\Core\Resource\Service\UserStorageCapabilityService->renderIsPublic',
 			)
 		),
 		'is_writable' => array(
