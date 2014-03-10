@@ -602,7 +602,7 @@ function jumpToUrl(URL) {
 	 * @param string $gvList Is the list of GET variables to store (if any)
 	 * @param string $setList Is the list of SET[] variables to store (if any) - SET[] variables a stored in $GLOBALS["SOBE"]->MOD_SETTINGS for backend modules
 	 * @param string $modName Module name string
-	 * @param string $motherModName Is used to enter the "parent module name" if the module is a submodule under eg. Web>* or File>*. You can also set this value to "1" in which case the currentLoadedModule is sent to the shortcut script (so - not a fixed value!) - that is used in file_edit.php and wizard_rte.php scripts where those scripts are really running as a part of another module.
+	 * @param string $motherModName Is used to enter the "parent module name" if the module is a submodule under eg. Web>* or File>*. You can also set this value to "1" in which case the currentLoadedModule is sent to the shortcut script (so - not a fixed value!) - that is used in file_edit and wizard_rte modules where those are really running as a part of another module.
 	 * @return string HTML content
 	 * @todo Define visibility
 	 */

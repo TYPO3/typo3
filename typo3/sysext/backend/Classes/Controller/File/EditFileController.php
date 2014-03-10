@@ -151,7 +151,10 @@ class EditFileController {
 			// Read file content to edit:
 			$fileContent = $this->fileObject->getContents();
 			// Making the formfields
-			$hValue = 'file_edit.php?target=' . rawurlencode($this->origTarget) . '&returnUrl=' . rawurlencode($this->returnUrl);
+			$hValue = BackendUtility::getModuleUrl('file_edit', array(
+				'target' => $this->origTarget,
+				'returnUrl' => $this->returnUrl
+			));
 			// Edit textarea:
 			$code .= '
 				<div id="c-edit">
@@ -163,8 +166,7 @@ class EditFileController {
 				<br />';
 			// Make shortcut:
 			if ($GLOBALS['BE_USER']->mayMakeShortcut()) {
-				$this->MCONF['name'] = 'xMOD_file_edit.php';
-				$docHeaderButtons['shortcut'] = $this->doc->makeShortcutIcon('target', '', $this->MCONF['name'], 1);
+				$docHeaderButtons['shortcut'] = $this->doc->makeShortcutIcon('target', '', 'file_edit', 1);
 			} else {
 				$docHeaderButtons['shortcut'] = '';
 			}

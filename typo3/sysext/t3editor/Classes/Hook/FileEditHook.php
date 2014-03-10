@@ -14,6 +14,8 @@ namespace TYPO3\CMS\T3editor\Hook;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * File edit hook for t3editor
  *
@@ -36,14 +38,14 @@ class FileEditHook {
 	 */
 	protected function getT3editor() {
 		if ($this->t3editor == NULL) {
-			$this->t3editor = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\T3editor\\T3editor')->setAjaxSaveType($this->ajaxSaveType);
+			$this->t3editor = GeneralUtility::makeInstance('TYPO3\\CMS\\T3editor\\T3editor')->setAjaxSaveType($this->ajaxSaveType);
 		}
 		return $this->t3editor;
 	}
 
 	/**
 	 * Hook-function: inject t3editor JavaScript code before the page is compiled
-	 * called in file_edit.php:SC_file_edit->main
+	 * called in file_edit module
 	 *
 	 * @param array $parameters
 	 * @param \TYPO3\CMS\Backend\Controller\File\EditFileController $pObj
@@ -66,7 +68,8 @@ class FileEditHook {
 	 * @see \TYPO3\CMS\Backend\Template\DocumentTemplate::startPage
 	 */
 	public function preStartPageHook($parameters, $pObj) {
-		if (preg_match('/typo3\\/file_edit\\.php/', $_SERVER['SCRIPT_NAME'])) {
+		// The preg_match call is deprecated and can be removed if the file typo3/file_edit.php is removed.
+		if (GeneralUtility::_GET('M') === 'file_edit' || preg_match('/typo3\\/file_edit\\.php/', $_SERVER['SCRIPT_NAME'])) {
 			$t3editor = $this->getT3editor();
 			if (!$t3editor->isEnabled()) {
 				return;
@@ -78,7 +81,7 @@ class FileEditHook {
 
 	/**
 	 * Hook-function:
-	 * called in file_edit.php:SC_file_edit->main
+	 * called in file_edit module
 	 *
 	 * @param array $parameters
 	 * @param \TYPO3\CMS\Backend\Controller\File\EditFileController $pObj
@@ -105,7 +108,7 @@ class FileEditHook {
 	public function save($parameters, $pObj) {
 		$savingsuccess = FALSE;
 		if ($parameters['type'] == $this->ajaxSaveType) {
-			$tceFile = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\File\\FileController');
+			$tceFile = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\File\\FileController');
 			$tceFile->processAjaxRequest(array(), $parameters['ajaxObj']);
 			$result = $parameters['ajaxObj']->getContent('result');
 			$savingsuccess = is_array($result) && $result['editfile'][0];

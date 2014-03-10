@@ -761,7 +761,7 @@ class ClickMenu {
 					$menuItems['edit2'] = $this->DB_edit('sys_file_metadata', $metaData['uid']);
 				}
 				if (!$folder && GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['SYS']['textfile_ext'], $fileObject->getExtension())) {
-					$menuItems['edit'] = $this->FILE_launch($identifier, 'file_edit.php', 'editcontent', 'edit_file.gif');
+					$menuItems['edit'] = $this->FILE_launch($identifier, 'file_edit', 'editcontent', 'edit_file.gif');
 				} elseif ($isStorageRoot && $userMayEditStorage) {
 					$menuItems['edit'] = $this->DB_edit('sys_file_storage', $fileObject->getStorage()->getUid());
 				}
@@ -841,7 +841,7 @@ class ClickMenu {
 	 * Multi-function for adding an entry to the $menuItems array
 	 *
 	 * @param string $path Path to the file/directory (target)
-	 * @param string $script Script (eg. file_edit.php) to pass &target= to
+	 * @param string $moduleName Script (deprecated) or module name (e.g. file_edit) to pass &target= to
 	 * @param string $type "type" is the code which fetches the correct label for the element from "cm.
 	 * @param string $image icon image-filename from "gfx/" (12x12 icon)
 	 * @param boolean $noReturnUrl If set, the return URL parameter will not be set in the link
@@ -849,9 +849,21 @@ class ClickMenu {
 	 * @internal
 	 * @todo Define visibility
 	 */
-	public function FILE_launch($path, $script, $type, $image, $noReturnUrl = FALSE) {
+	public function FILE_launch($path, $moduleName, $type, $image, $noReturnUrl = FALSE) {
 		$loc = 'top.content.list_frame';
-		$editOnClick = 'if(' . $loc . '){' . $loc . '.location.href=top.TS.PATH_typo3+\'' . $script . '?target=' . rawurlencode($path) . ($noReturnUrl ? '\'' : '&returnUrl=\'+top.rawurlencode(' . $this->frameLocation(($loc . '.document')) . '.pathname+' . $this->frameLocation(($loc . '.document')) . '.search)') . ';}';
+
+		if (strpos($moduleName, '.php') !== FALSE) {
+			GeneralUtility::deprecationLog(
+				'Using a php file directly in ClickMenu is deprecated since TYPO3 CMS 6.3.'
+				. ' Register the class as module and use BackendUtility::getModuleUrl() to get the right link.'
+				. ' For examples how to do this see ext_tables.php of EXT:backend.'
+			);
+			$scriptUrl = $moduleName;
+		} else {
+			$scriptUrl = BackendUtility::getModuleUrl($moduleName);
+		}
+
+		$editOnClick = 'if(' . $loc . '){' . $loc . '.location.href=top.TS.PATH_typo3+' . GeneralUtility::quoteJSvalue($scriptUrl . '&target=' . rawurlencode($path)) . ($noReturnUrl ? '' : '+\'&returnUrl=\'+top.rawurlencode(' . $this->frameLocation($loc . '.document') . '.pathname+' . $this->frameLocation($loc . '.document') . '.search)') . ';}';
 		return $this->linkItem($this->label($type), $this->excludeIcon('<img' . IconUtility::skinImg($this->PH_backPath, ('gfx/' . $image), 'width="12" height="12"') . ' alt="" />'), $editOnClick . 'top.nav.refresh();return hideCM();');
 	}
 

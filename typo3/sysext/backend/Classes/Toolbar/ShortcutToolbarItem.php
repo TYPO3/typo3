@@ -652,7 +652,7 @@ class ShortcutToolbarItem implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookI
 				}
 				$icon = IconUtility::skinImg($this->backPath, $icon, '', 1);
 				break;
-			case 'xMOD_file_edit.php':
+			case 'file_edit':
 				$icon = 'gfx/edit_file.gif';
 				break;
 			case 'wizard_rte':

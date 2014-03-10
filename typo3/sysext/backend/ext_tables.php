@@ -8,6 +8,12 @@ if (TYPO3_MODE === 'BE') {
 		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Modules/RecordHistory/'
 	);
 
+	// Register file_edit
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
+		'file_edit',
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Modules/File/Edit/'
+	);
+
 	// Register edit wizard
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
 		'wizard_edit',
