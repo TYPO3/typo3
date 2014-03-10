@@ -34,9 +34,7 @@ use TYPO3\CMS\Core\Utility\PathUtility;
 
 // TODO implement constructor-level caching
 /**
- * Factory class for FAL objects.
- *
- * NOTE: This class is part of the lowlevel FAL API and should not be used from outside the FAL package.
+ * Factory class for FAL objects
  *
  * @author Andreas Wolf <andreas.wolf@typo3.org>
  */
