@@ -23,8 +23,9 @@ namespace TYPO3\CMS\Belog\Tests\Unit\Domain\Repository;
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
- * Testcase
+ * Test case
  *
  * @author Oliver Klee <typo3-coding@oliverklee.de>
  */
@@ -45,10 +46,12 @@ class LogEntryRepositoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase 
 	 * @test
 	 */
 	public function initializeObjectSetsRespectStoragePidToFalse() {
+		$GLOBALS['TYPO3_DB'] = $this->getMock('TYPO3\\CMS\\Core\\Database\\DatabaseConnection', array(), array(), '', FALSE);
 		$this->querySettings->expects($this->atLeastOnce())->method('setRespectStoragePage')->with(FALSE);
-		$fixture = $this->getMock('TYPO3\\CMS\\Belog\\Domain\\Repository\\LogEntryRepository', array('setDefaultQuerySettings'), array($this->objectManager));
-		$fixture->expects($this->once())->method('setDefaultQuerySettings')->with($this->querySettings);
-		$fixture->initializeObject();
+		/** @var \TYPO3\CMS\Belog\Domain\Repository\LogEntryRepository|\PHPUnit_Framework_MockObject_MockObject $subject */
+		$subject = $this->getMock('TYPO3\\CMS\\Belog\\Domain\\Repository\\LogEntryRepository', array('setDefaultQuerySettings'), array($this->objectManager));
+		$subject->expects($this->once())->method('setDefaultQuerySettings')->with($this->querySettings);
+		$subject->initializeObject();
 	}
 
 }
