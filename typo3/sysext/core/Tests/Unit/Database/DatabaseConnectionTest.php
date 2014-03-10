@@ -295,4 +295,81 @@ class DatabaseConnectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$strippedQuery = $subject->stripGroupBy($groupByClause);
 		$this->assertEquals($expectedResult, $strippedQuery);
 	}
+
+
+	/////////////////////////////////////////////////
+	// Tests concerning stripOrderByForOrderByKeyword
+	/////////////////////////////////////////////////
+
+	/**
+	 * Data Provider for stripGroupByForGroupByKeyword()
+	 *
+	 * @see stripOrderByForOrderByKeyword()
+	 * @return array
+	 */
+	public function cleanIntArrayDataProvider() {
+		return array(
+			'simple array' => array(
+				array(1, 2, 3),
+				array(1, 2, 3)
+			),
+			'string array' => array(
+				array('2', '4', '8'),
+				array(2, 4, 8)
+			),
+			'string array with letters #1' => array(
+				array('3', '6letters', '12'),
+				array(3, 6, 12)
+			),
+			'string array with letters #2' => array(
+				array('3', 'letters6', '12'),
+				array(3, 0, 12)
+			),
+			'string array with letters #3' => array(
+				array('3', '6letters4', '12'),
+				array(3, 6, 12)
+			),
+			'associative array' => array(
+				array('apples' => 3, 'bananas' => 4, 'kiwis' => 9),
+				array('apples' => 3, 'bananas' => 4, 'kiwis' => 9)
+			),
+			'associative string array' => array(
+				array('apples' => '1', 'bananas' => '5', 'kiwis' => '7'),
+				array('apples' => 1, 'bananas' => 5, 'kiwis' => 7)
+			),
+			'associative string array with letters #1' => array(
+				array('apples' => '1', 'bananas' => 'no5', 'kiwis' => '7'),
+				array('apples' => 1, 'bananas' => 0, 'kiwis' => 7)
+			),
+			'associative string array with letters #2' => array(
+				array('apples' => '1', 'bananas' => '5yes', 'kiwis' => '7'),
+				array('apples' => 1, 'bananas' => 5, 'kiwis' => 7)
+			),
+			'associative string array with letters #3' => array(
+				array('apples' => '1', 'bananas' => '5yes9', 'kiwis' => '7'),
+				array('apples' => 1, 'bananas' => 5, 'kiwis' => 7)
+			),
+			'multidimensional associative array' => array(
+				array('apples' => '1', 'bananas' => array(3, 4), 'kiwis' => '7'),
+				// intval(array(...)) is 1
+				// But by specification "cleanIntArray" should only get used on one-dimensional arrays
+				array('apples' => 1, 'bananas' => 1, 'kiwis' => 7)
+			),
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider cleanIntArrayDataProvider
+	 * @param array $exampleData The array to sanitize
+	 * @param array $expectedResult The expected result
+	 * @return void
+	 */
+	public function cleanIntArray($exampleData, $expectedResult) {
+		/** @var \TYPO3\CMS\Core\Database\DatabaseConnection $subject */
+		$subject = new \TYPO3\CMS\Core\Database\DatabaseConnection();
+		$sanitizedArray = $subject->cleanIntArray($exampleData);
+		$this->assertEquals($expectedResult, $sanitizedArray);
+	}
+
 }

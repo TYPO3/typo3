@@ -876,10 +876,7 @@ class DatabaseConnection {
 	 * @see cleanIntList()
 	 */
 	public function cleanIntArray($arr) {
-		foreach ($arr as $k => $v) {
-			$arr[$k] = (int)$arr[$k];
-		}
-		return $arr;
+		return array_map('intval', $arr);
 	}
 
 	/**
