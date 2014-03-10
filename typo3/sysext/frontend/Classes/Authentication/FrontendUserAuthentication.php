@@ -413,7 +413,7 @@ class FrontendUserAuthentication extends \TYPO3\CMS\Core\Authentication\Abstract
 				// Remove session-data
 				$this->removeSessionData();
 				// Remove cookie if not logged in as the session data is removed as well
-				if (empty($this->user['uid'])) {
+				if (empty($this->user['uid']) && $this->isCookieSet()) {
 					$this->removeCookie($this->name);
 				}
 			} elseif ($this->sessionDataTimestamp === NULL) {
@@ -459,7 +459,9 @@ class FrontendUserAuthentication extends \TYPO3\CMS\Core\Authentication\Abstract
 	public function logoff() {
 		parent::logoff();
 		// Remove the cookie on log-off
-		$this->removeCookie($this->name);
+		if ($this->isCookieSet()) {
+			$this->removeCookie($this->name);
+		}
 	}
 
 	/**
