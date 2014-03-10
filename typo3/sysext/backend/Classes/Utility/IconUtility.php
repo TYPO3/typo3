@@ -602,8 +602,8 @@ class IconUtility {
 	static public function getSpriteIcon($iconName, array $options = array(), array $overlays = array()) {
 		// Check if icon can be cached and return cached version if present
 		if (empty($options) && empty($overlays)) {
-			if (isset(self::$spriteIconCache[$iconName])) {
-				return self::$spriteIconCache[$iconName];
+			if (isset(static::$spriteIconCache[$iconName])) {
+				return static::$spriteIconCache[$iconName];
 			}
 			$iconIsCacheable = TRUE;
 		} else {
@@ -630,7 +630,7 @@ class IconUtility {
 
 		// Store result in cache if possible
 		if ($iconIsCacheable) {
-			self::$spriteIconCache[$iconName] = $spriteHtml;
+			static::$spriteIconCache[$iconName] = $spriteHtml;
 		}
 		return $spriteHtml;
 	}
