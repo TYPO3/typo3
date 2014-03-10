@@ -745,7 +745,8 @@ class Check {
 	protected function checkSomePhpOpcodeCacheIsLoaded() {
 		$opcodeCaches = \TYPO3\CMS\Core\Utility\OpcodeCacheUtility::getAllActive();
 		if (count($opcodeCaches) === 0) {
-			$status = new Status\WarningStatus();
+			// Set status to notice. It needs to be notice so email won't be triggered.
+			$status = new Status\NoticeStatus();
 			$status->setTitle('No PHP opcode cache loaded');
 			$status->setMessage(
 				'PHP opcode caches hold a compiled version of executed PHP scripts in' .
@@ -773,9 +774,9 @@ class Check {
 				} elseif ($properties['canInvalidate']) {
 					$message .= ' This opcode cache should work correctly and has good performance.';
 				} else {
-					// Set status to warning if not already error set
+					// Set status to notice if not already error set. It needs to be notice so email won't be triggered.
 					if ($status->getSeverity() !== 'error' || $status->getSeverity() !== 'warning') {
-						$status = new Status\WarningStatus();
+						$status = new Status\NoticeStatus();
 					}
 					$message .= ' This opcode cache may work correctly but has medium performance.';
 				}
