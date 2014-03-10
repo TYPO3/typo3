@@ -443,7 +443,10 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 						if ($this->tt_contentConfig['languageMode']) {
 							$languageColumn[$key][$lP] = $head[$key] . $content[$key];
 							if (!$this->defLangBinding) {
-								$languageColumn[$key][$lP] .= '<br /><br />' . $this->newLanguageButton($this->getNonTranslatedTTcontentUids($defLanguageCount[$key], $id, $lP), $lP);
+								$languageColumn[$key][$lP] .= $this->newLanguageButton(
+									$this->getNonTranslatedTTcontentUids($defLanguageCount[$key], $id, $lP),
+									$lP
+								);
 							}
 						}
 						if (is_array($row) && !VersionState::cast($row['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER)) {
@@ -519,7 +522,10 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 					foreach ($cList as $k => $key) {
 						$languageColumn[$key][$lP] = $head[$key] . $content[$key];
 						if (!$this->defLangBinding) {
-							$languageColumn[$key][$lP] .= '<br /><br />' . $this->newLanguageButton($this->getNonTranslatedTTcontentUids($defLanguageCount[$key], $id, $lP), $lP);
+							$languageColumn[$key][$lP] .= $this->newLanguageButton(
+								$this->getNonTranslatedTTcontentUids($defLanguageCount[$key], $id, $lP),
+								$lP
+							);
 						}
 					}
 				} else {
@@ -628,7 +634,10 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 						foreach ($defLanguageCount[$cKey] as $defUid) {
 							$cCont = array();
 							foreach ($langListArr as $lP) {
-								$cCont[] = $defLangBinding[$cKey][$lP][$defUid] . '<br/>' . $this->newLanguageButton($this->getNonTranslatedTTcontentUids(array($defUid), $id, $lP), $lP);
+								$cCont[] = $defLangBinding[$cKey][$lP][$defUid] . $this->newLanguageButton(
+									$this->getNonTranslatedTTcontentUids(array($defUid), $id, $lP),
+									$lP
+								);
 							}
 							$out .= '
 							<tr>
@@ -1450,7 +1459,11 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 			}
 			// Copy for language:
 			$onClick = 'window.location.href=\'' . $GLOBALS['SOBE']->doc->issueCommand($params) . '\'; return false;';
-			$theNewButton = $GLOBALS['SOBE']->doc->t3Button($onClick, $GLOBALS['LANG']->getLL('newPageContent_copyForLang') . ' [' . count($defLanguageCount) . ']');
+			$theNewButton = '<div class="t3-page-lang-copyce">' .
+				$GLOBALS['SOBE']->doc->t3Button(
+					$onClick,
+					$GLOBALS['LANG']->getLL('newPageContent_copyForLang') . ' [' . count($defLanguageCount) . ']'
+				) . '</div>';
 			return $theNewButton;
 		}
 	}

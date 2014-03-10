@@ -112,8 +112,13 @@ table.typo3-page-columnsMode img.c-divider {
 	margin: 10px 0 5px 0;
 }
 
-td.t3-gridCell div.t3-page-ce {
+td.t3-gridCell div.t3-page-ce,
+div.t3-page-lang-copyce {
 	padding: 1px 12px 0 12px;
+}
+
+div.t3-page-lang-copyce {
+	margin-top: 30px;
 }
 
 .t3-page-ce.active .t3-page-ce-body {
