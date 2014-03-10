@@ -470,6 +470,9 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 							$singleElementHTML .= '</div>';
 							$statusHidden = $this->isDisabled('tt_content', $row) ? ' t3-page-ce-hidden' : '';
 							$singleElementHTML = '<div class="t3-page-ce' . $statusHidden . '" id="element-tt_content-' . $row['uid'] . '">' . $singleElementHTML . '</div>';
+							if ($this->tt_contentConfig['languageMode']) {
+								$singleElementHTML .= '<div class="t3-page-ce">';
+							}
 							$singleElementHTML .= '<div class="t3-page-ce-dropzone" id="colpos-' . $key . '-' . 'page-' . $id .
 								'-' . uniqid() . '">';
 							// Add icon "new content element below"
@@ -487,12 +490,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 									</div>
 								';
 							}
-							if (!$this->tt_contentConfig['languageMode']) {
-								$singleElementHTML .= '
-								</div>';
-							}
-							$singleElementHTML .= '
-							</div>';
+							$singleElementHTML .= '</div></div>';
 							if ($this->defLangBinding && $this->tt_contentConfig['languageMode']) {
 								$defLangBinding[$key][$lP][$row[$lP ? 'l18n_parent' : 'uid']] = $singleElementHTML;
 							} else {
