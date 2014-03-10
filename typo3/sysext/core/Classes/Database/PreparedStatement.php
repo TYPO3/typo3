@@ -4,7 +4,7 @@ namespace TYPO3\CMS\Core\Database;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2010-2013 Xavier Perseguers <typo3@perseguers.ch>
+ *  (c) 2010-2014 Xavier Perseguers <xavier@typo3.org>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -127,11 +127,21 @@ class PreparedStatement {
 	protected $defaultFetchMode = self::FETCH_ASSOC;
 
 	/**
-	 * MySQLi result object / DBAL object
+	 * MySQLi statement object / DBAL object
 	 *
-	 * @var boolean|\mysqli_result|object
+	 * @var \mysqli_stmt|object
 	 */
-	protected $resource;
+	protected $statement;
+
+	/**
+	 * @var array
+	 */
+	protected $fields;
+
+	/**
+	 * @var array
+	 */
+	protected $buffer;
 
 	/**
 	 * Random token which is wrapped around the markers
@@ -160,7 +170,15 @@ class PreparedStatement {
 		$this->precompiledQueryParts = $precompiledQueryParts;
 		$this->table = $table;
 		$this->parameters = array();
-		$this->resource = NULL;
+
+		// Test if named placeholders are used
+		if ($this->hasNamedPlaceholders($query) || count($precompiledQueryParts) > 0) {
+			$this->statement = NULL;
+		} else {
+			// Only question mark placeholders are used
+			$this->statement = $GLOBALS['TYPO3_DB']->prepare_PREPAREDquery($this->query, $this->precompiledQueryParts);
+		}
+
 		$this->parameterWrapToken = $this->generateParameterWrapToken();
 	}
 
@@ -234,6 +252,9 @@ class PreparedStatement {
 				}
 				break;
 		}
+		if (!is_int($parameter) && !preg_match('/^:[\\w]+$/', $parameter)) {
+			throw new \InvalidArgumentException('Parameter names must start with ":" followed by an arbitrary number of alphanumerical characters.', 1395055513);
+		}
 		$key = is_int($parameter) ? $parameter - 1 : $parameter;
 		$this->parameters[$key] = array(
 			'value' => $value,
@@ -268,13 +289,12 @@ class PreparedStatement {
 	 *
 	 * @param array $input_parameters An array of values with as many elements as there are bound parameters in the SQL statement being executed. The PHP type of each array value will be used to decide which PARAM_* type to use (int, string, boolean, NULL), so make sure your variables are properly casted, if needed.
 	 * @return boolean Returns TRUE on success or FALSE on failure.
+	 * @throws \InvalidArgumentException
 	 * @api
 	 */
 	public function execute(array $input_parameters = array()) {
-		$query = $this->query;
-		$precompiledQueryParts = $this->precompiledQueryParts;
 		$parameterValues = $this->parameters;
-		if (count($input_parameters) > 0) {
+		if (!empty($input_parameters)) {
 			$parameterValues = array();
 			foreach ($input_parameters as $key => $value) {
 				$parameterValues[$key] = array(
@@ -283,15 +303,100 @@ class PreparedStatement {
 				);
 			}
 		}
-		$this->replaceValuesInQuery($query, $precompiledQueryParts, $parameterValues);
-		if (count($precompiledQueryParts) > 0) {
-			$query = implode('', $precompiledQueryParts['queryParts']);
+
+		if ($this->statement !== NULL) {
+			// The statement has already been executed, we try to reset it
+			// for current run but will set it to NULL if it fails for some
+			// reason, just as if it were the first run
+			if (!$this->statement->reset()) {
+				$this->statement = NULL;
+			}
 		}
-		$this->resource = $GLOBALS['TYPO3_DB']->exec_PREPAREDquery($query, $precompiledQueryParts);
+		if ($this->statement === NULL) {
+			// The statement has never been executed so we prepare it and
+			// store it for further reuse
+			$query = $this->query;
+			$precompiledQueryParts = $this->precompiledQueryParts;
+
+			$this->convertNamedPlaceholdersToQuestionMarks($query, $parameterValues, $precompiledQueryParts);
+			if (count($precompiledQueryParts) > 0) {
+				$query = implode('', $precompiledQueryParts['queryParts']);
+			}
+			$this->statement = $GLOBALS['TYPO3_DB']->prepare_PREPAREDquery($query, $precompiledQueryParts);
+			if ($this->statement === NULL) {
+				return FALSE;
+			}
+		}
+
+		$combinedTypes = '';
+		$values = array();
+		foreach ($parameterValues as $parameterValue) {
+			switch ($parameterValue['type']) {
+				case self::PARAM_NULL:
+					$type = 's';
+					$value = NULL;
+					break;
+				case self::PARAM_INT:
+					$type = 'i';
+					$value = (int)$parameterValue['value'];
+					break;
+				case self::PARAM_STR:
+					$type = 's';
+					$value = $parameterValue['value'];
+					break;
+				case self::PARAM_BOOL:
+					$type = 'i';
+					$value = $parameterValue['value'] ? 1 : 0;
+					break;
+				default:
+					throw new \InvalidArgumentException(sprintf('Unknown type %s used for parameter %s.', $parameterValue['type'], $key), 1281859196);
+			}
+
+			$combinedTypes .= $type;
+			$values[] = $value;
+		}
+
+		// ->bind_param requires second up to last arguments as references
+		$bindParamArguments = array();
+		$bindParamArguments[] = $combinedTypes;
+		$numberOfExtraParamArguments = count($values);
+		for ($i = 0; $i < $numberOfExtraParamArguments; $i++) {
+			$bindParamArguments[] = &$values[$i];
+		}
+		call_user_func_array(array($this->statement, 'bind_param'), $bindParamArguments);
+
+		$success = $this->statement->execute();
+
+		// Store result
+		if (!$success || $this->statement->store_result() === FALSE) {
+			return FALSE;
+		}
+
+		if (count($this->fields) === 0) {
+			// Store the list of fields
+			if ($this->statement instanceof \mysqli_stmt) {
+				$result = $this->statement->result_metadata();
+				$fields = $result->fetch_fields();
+				$result->close();
+			} else {
+				$fields = $this->statement->fetch_fields();
+			}
+			if (is_array($fields)) {
+				foreach ($fields as $field) {
+					$this->fields[] = $field->name;
+				}
+			}
+
+		}
+
+		// New result set available
+		$this->buffer = NULL;
+
 		// Empty binding parameters
 		$this->parameters = array();
+
 		// Return the success flag
-		return $this->resource ? TRUE : FALSE;
+		return $success;
 	}
 
 	/**
@@ -305,16 +410,43 @@ class PreparedStatement {
 		if ($fetch_style == 0) {
 			$fetch_style = $this->defaultFetchMode;
 		}
-		switch ($fetch_style) {
-			case self::FETCH_ASSOC:
-				$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($this->resource);
-				break;
-			case self::FETCH_NUM:
-				$row = $GLOBALS['TYPO3_DB']->sql_fetch_row($this->resource);
-				break;
-			default:
-				throw new \InvalidArgumentException('$fetch_style must be either TYPO3\\CMS\\Core\\Database\\PreparedStatement::FETCH_ASSOC or TYPO3\\CMS\\Core\\Database\\PreparedStatement::FETCH_NUM', 1281646455);
+
+		if ($this->statement instanceof \mysqli_stmt) {
+			if ($this->buffer === NULL) {
+				$variables = array();
+				$this->buffer = array();
+				foreach ($this->fields as $field) {
+					$this->buffer[$field] = NULL;
+					$variables[] = &$this->buffer[$field];
+				}
+
+				call_user_func_array(array($this->statement, 'bind_result'), $variables);
+			}
+			$success = $this->statement->fetch();
+			$columns = $this->buffer;
+		} else {
+			$columns = $this->statement->fetch();
+			$success = is_array($columns);
 		}
+
+		if ($success) {
+			$row = array();
+			foreach ($columns as $key => $value) {
+				switch ($fetch_style) {
+					case self::FETCH_ASSOC:
+						$row[$key] = $value;
+						break;
+					case self::FETCH_NUM:
+						$row[] = $value;
+						break;
+					default:
+						throw new \InvalidArgumentException('$fetch_style must be either TYPO3\\CMS\\Core\\Database\\PreparedStatement::FETCH_ASSOC or TYPO3\\CMS\\Core\\Database\\PreparedStatement::FETCH_NUM', 1281646455);
+				}
+			}
+		} else {
+			$row = FALSE;
+		}
+
 		return $row;
 	}
 
@@ -326,7 +458,12 @@ class PreparedStatement {
 	 * @api
 	 */
 	public function seek($rowNumber) {
-		return $GLOBALS['TYPO3_DB']->sql_data_seek($this->resource, (int)$rowNumber);
+		$success = $this->statement->data_seek((int)$rowNumber);
+		if ($this->statement instanceof \mysqli_stmt) {
+			// data_seek() does not return anything
+			$success = TRUE;
+		}
+		return $success;
 	}
 
 	/**
@@ -352,7 +489,7 @@ class PreparedStatement {
 	 * @api
 	 */
 	public function free() {
-		$GLOBALS['TYPO3_DB']->sql_free_result($this->resource);
+		$this->statement->close();
 	}
 
 	/**
@@ -362,7 +499,7 @@ class PreparedStatement {
 	 * @api
 	 */
 	public function rowCount() {
-		return $GLOBALS['TYPO3_DB']->sql_num_rows($this->resource);
+		return $this->statement->num_rows;
 	}
 
 	/**
@@ -372,7 +509,7 @@ class PreparedStatement {
 	 * @api
 	 */
 	public function errorCode() {
-		return $GLOBALS['TYPO3_DB']->sql_errno();
+		return $this->statement->errno;
 	}
 
 	/**
@@ -387,8 +524,8 @@ class PreparedStatement {
 	 */
 	public function errorInfo() {
 		return array(
-			$GLOBALS['TYPO3_DB']->sql_errno(),
-			$GLOBALS['TYPO3_DB']->sql_error()
+			$this->statement->errno,
+			$this->statement->error
 		);
 	}
 
@@ -431,51 +568,67 @@ class PreparedStatement {
 	}
 
 	/**
-	 * Replaces values for each parameter in a query.
+	 * Returns TRUE if named placeholers are used in a query.
 	 *
 	 * @param string $query
-	 * @param array $precompiledQueryParts
+	 * @return boolean
+	 */
+	protected function hasNamedPlaceholders($query) {
+		$matches = preg_match('/(?<![\\w:]):[\\w]+\\b/', $query);
+		return $matches > 0;
+	}
+
+	/**
+	 * Converts named placeholders into question mark placeholders in a query.
+	 *
+	 * @param string $query
 	 * @param array $parameterValues
+	 * @param array $precompiledQueryParts
 	 * @return void
 	 */
-	protected function replaceValuesInQuery(&$query, array &$precompiledQueryParts, array $parameterValues) {
-		if (count($precompiledQueryParts['queryParts']) === 0) {
-			$query = $this->tokenizeQueryParameterMarkers($query, $parameterValues);
+	protected function convertNamedPlaceholdersToQuestionMarks(&$query, array &$parameterValues, array &$precompiledQueryParts) {
+		$queryPartsCount = count($precompiledQueryParts['queryParts']);
+		$newParameterValues = array();
+		$hasNamedPlaceholders = FALSE;
+
+		if ($queryPartsCount === 0) {
+			$hasNamedPlaceholders = $this->hasNamedPlaceholders($query);
+			if ($hasNamedPlaceholders) {
+				$query = $this->tokenizeQueryParameterMarkers($query, $parameterValues);
+			}
+		} elseif (count($parameterValues) > 0) {
+			$hasNamedPlaceholders = !is_int(key($parameterValues));
+			if ($hasNamedPlaceholders) {
+				for ($i = 1; $i < $queryPartsCount; $i += 2) {
+					$key = $precompiledQueryParts['queryParts'][$i];
+					$precompiledQueryParts['queryParts'][$i] = '?';
+					$newParameterValues[] = $parameterValues[$key];
+				}
+			}
 		}
-		foreach ($parameterValues as $key => $typeValue) {
-			switch ($typeValue['type']) {
-				case self::PARAM_NULL:
-					$value = 'NULL';
-					break;
-				case self::PARAM_INT:
-					$value = (int)$typeValue['value'];
-					break;
-				case self::PARAM_STR:
-					$value = $GLOBALS['TYPO3_DB']->fullQuoteStr($typeValue['value'], $this->table);
-					break;
-				case self::PARAM_BOOL:
-					$value = $typeValue['value'] ? 1 : 0;
-					break;
-				default:
-					throw new \InvalidArgumentException(sprintf('Unknown type %s used for parameter %s.', $typeValue['type'], $key), 1281859196);
-			}
-			if (is_int($key)) {
-				if (count($precompiledQueryParts['queryParts']) > 0) {
-					$precompiledQueryParts['queryParts'][2 * $key + 1] = $value;
-				} else {
-					$parts = explode($this->parameterWrapToken . '?' . $this->parameterWrapToken, $query, 2);
-					$parts[0] .= $value;
-					$query = implode('', $parts);
+
+		if ($hasNamedPlaceholders) {
+			if ($queryPartsCount === 0) {
+				// Convert named placeholders to standard question mark placeholders
+				$quotedParamWrapToken = preg_quote($this->parameterWrapToken, '/');
+				while (preg_match(
+					'/' . $quotedParamWrapToken . '(.*?)' . $quotedParamWrapToken . '/',
+					$query,
+					$matches
+				)) {
+					$key = $matches[1];
+
+					$newParameterValues[] = $parameterValues[$key];
+					$query = preg_replace(
+						'/' . $quotedParamWrapToken . $key . $quotedParamWrapToken . '/',
+						'?',
+						$query,
+						1
+					);
 				}
-			} else {
-				$queryPartsCount = count($precompiledQueryParts['queryParts']);
-				for ($i = 1; $i < $queryPartsCount; $i++) {
-					if ($precompiledQueryParts['queryParts'][$i] === $key) {
-						$precompiledQueryParts['queryParts'][$i] = $value;
-					}
-				}
-				$query = str_replace($this->parameterWrapToken . $key . $this->parameterWrapToken, $value, $query);
 			}
+
+			$parameterValues = $newParameterValues;
 		}
 	}
 

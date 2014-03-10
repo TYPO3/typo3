@@ -57,18 +57,12 @@ class PreparedStatementTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	private function setUpAndReturnDatabaseStub() {
 		$GLOBALS['TYPO3_DB'] = $this->getAccessibleMock(
 			'TYPO3\\CMS\\Core\\Database\\DatabaseConnection',
-			array('exec_PREPAREDquery', 'fullQuoteStr'),
+			array('prepare_PREPAREDquery'),
 			array(),
 			'',
 			FALSE,
 			FALSE
 		);
-		$GLOBALS['TYPO3_DB']->expects($this->any())->method('fullQuoteStr')
-			->will($this->returnCallback(
-				function($quoteStr, $table) {
-					return "'" . $quoteStr . "'";
-				}
-			));
 
 		return $GLOBALS['TYPO3_DB'];
 	}
@@ -115,20 +109,11 @@ class PreparedStatementTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function parametersAndQueriesDataProvider() {
 		return array(
-			'one named integer parameter' => array('SELECT * FROM pages WHERE pid=:pid', array(':pid' => 1), 'SELECT * FROM pages WHERE pid=1'),
-			'one unnamed integer parameter' => array('SELECT * FROM pages WHERE pid=?', array(1), 'SELECT * FROM pages WHERE pid=1'),
-			'one named integer parameter is replaced multiple times' => array('SELECT * FROM pages WHERE pid=:pid OR uid=:pid', array(':pid' => 1), 'SELECT * FROM pages WHERE pid=1 OR uid=1'),
-			'two named integer parameters are replaced' => array('SELECT * FROM pages WHERE pid=:pid OR uid=:uid', array(':pid' => 1, ':uid' => 10), 'SELECT * FROM pages WHERE pid=1 OR uid=10'),
-			'two unnamed integer parameters are replaced' => array('SELECT * FROM pages WHERE pid=? OR uid=?', array(1, 1), 'SELECT * FROM pages WHERE pid=1 OR uid=1'),
-			'php bool TRUE parameter is replaced with 1' => array('SELECT * FROM pages WHERE deleted=?', array(TRUE), 'SELECT * FROM pages WHERE deleted=1'),
-			'php bool FALSE parameter is replaced with 0' => array('SELECT * FROM pages WHERE deleted=?', array(FALSE), 'SELECT * FROM pages WHERE deleted=0'),
-			'php null parameter is replaced with NULL' => array('SELECT * FROM pages WHERE deleted=?', array(NULL), 'SELECT * FROM pages WHERE deleted=NULL'),
-			'string parameter is wrapped in quotes' => array('SELECT * FROM pages WHERE title=?', array('Foo bar'), 'SELECT * FROM pages WHERE title=\'Foo bar\''),
-			'number as string parameter is wrapped in quotes' => array('SELECT * FROM pages WHERE title=?', array('12'), 'SELECT * FROM pages WHERE title=\'12\''),
-			'question mark as values with unnamed parameters are properly escaped' => array('SELECT * FROM foo WHERE title=? AND name=?', array('?', 'fancy title'), 'SELECT * FROM foo WHERE title=\'?\' AND name=\'fancy title\''),
-			'parameter name as value is properly escaped' => array('SELECT * FROM foo WHERE title=:name AND name=:title', array(':name' => ':title', ':title' => 'fancy title'), 'SELECT * FROM foo WHERE title=\':title\' AND name=\'fancy title\''),
-			'question mark as value of a parameter with a name is properly escaped' => array('SELECT * FROM foo WHERE title=:name AND name=?', array(':name' => '?', 'cool name'), 'SELECT * FROM foo WHERE title=\'?\' AND name=\'cool name\''),
-			'unsubstituted question marks do not contain the token wrap' => array('SELECT * FROM foo WHERE title=:name AND question LIKE "%what?" AND name=:title', array(':name' => 'Title', ':title' => 'Name'), 'SELECT * FROM foo WHERE title=\'Title\' AND question LIKE "%what?" AND name=\'Name\'')
+			'one named integer parameter' => array('SELECT * FROM pages WHERE pid=:pid', array(':pid' => 1), 'SELECT * FROM pages WHERE pid=?'),
+			'one unnamed integer parameter' => array('SELECT * FROM pages WHERE pid=?', array(1), 'SELECT * FROM pages WHERE pid=?'),
+			'one named integer parameter is replaced multiple times' => array('SELECT * FROM pages WHERE pid=:pid OR uid=:pid', array(':pid' => 1), 'SELECT * FROM pages WHERE pid=? OR uid=?'),
+			'two named integer parameters are replaced' => array('SELECT * FROM pages WHERE pid=:pid OR uid=:uid', array(':pid' => 1, ':uid' => 10), 'SELECT * FROM pages WHERE pid=? OR uid=?'),
+			'two unnamed integer parameters are replaced' => array('SELECT * FROM pages WHERE pid=? OR uid=?', array(1, 1), 'SELECT * FROM pages WHERE pid=? OR uid=?'),
 		);
 	}
 
@@ -143,31 +128,10 @@ class PreparedStatementTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @param string $expectedResult Query with all markers replaced
 	 * @return void
 	 */
-	public function parametersAreReplacedInQueryByCallingExecute($query, $parameters, $expectedResult) {
+	public function parametersAreReplacedByQuestionMarkInQueryByCallingExecute($query, $parameters, $expectedResult) {
 		$statement = $this->createPreparedStatement($query);
-		$this->databaseStub->expects($this->any())->method('exec_PREPAREDquery')->with($this->equalTo($expectedResult));
+		$this->databaseStub->expects($this->any())->method('prepare_PREPAREDquery')->with($this->equalTo($expectedResult));
 		$statement->execute($parameters);
-	}
-
-	/**
-	 * @test
-	 */
-	public function executeCallsFullQuoteStrForStringParameter() {
-		$GLOBALS['TYPO3_DB'] = $this->getAccessibleMock(
-			'TYPO3\\CMS\\Core\\Database\\DatabaseConnection',
-			array('exec_PREPAREDquery', 'fullQuoteStr'),
-			array(),
-			'',
-			FALSE,
-			FALSE
-		);
-		$query = 'SELECT * FROM pages WHERE title=?';
-		$parameter = "'Foo'";
-		$uniqueQuoteResult = uniqid('quoteResult');
-		$GLOBALS['TYPO3_DB']->expects($this->once())->method('fullQuoteStr')->with($parameter)->will($this->returnValue($uniqueQuoteResult));
-		$GLOBALS['TYPO3_DB']->expects($this->any())->method('exec_PREPAREDquery')->with($this->stringContains($uniqueQuoteResult));
-		$statement = $this->createPreparedStatement($query);
-		$statement->execute(array($parameter));
 	}
 
 	/**
@@ -183,7 +147,7 @@ class PreparedStatementTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function parametersAreReplacedInQueryWhenBoundWithBindValues($query, $parameters, $expectedResult) {
 		$statement = $this->createPreparedStatement($query);
-		$this->databaseStub->expects($this->any())->method('exec_PREPAREDquery')->with($this->equalTo($expectedResult));
+		$this->databaseStub->expects($this->any())->method('prepare_PREPAREDquery')->with($this->equalTo($expectedResult));
 		$statement->bindValues($parameters);
 		$statement->execute();
 	}
@@ -225,27 +189,12 @@ class PreparedStatementTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 	/**
-	 * Checking if formerly bound values are replaced by the values passed to execute().
-	 *
-	 * @test
-	 * @return void
-	 */
-	public function parametersPassedToExecuteOverrulesFormerlyBoundValues() {
-		$query = 'SELECT * FROM pages WHERE pid=? OR uid=?';
-		$expectedResult = 'SELECT * FROM pages WHERE pid=30 OR uid=40';
-		$this->databaseStub->expects($this->any())->method('exec_PREPAREDquery')->with($this->equalTo($expectedResult));
-		$statement = $this->createPreparedStatement($query);
-		$statement->bindValues(array(10, 20));
-		$statement->execute(array(30, 40));
-	}
-
-	/**
 	 * Data Provider for invalid marker names.
 	 *
 	 * @see passingInvalidMarkersThrowsExeption
 	 * @return array
 	 */
-	public function passingInvalidMarkersThrowsExeptionDataProvider() {
+	public function passingInvalidMarkersThrowsExceptionDataProvider() {
 		return array(
 			'using other prefix than colon' => array('SELECT * FROM pages WHERE pid=#pid', array('#pid' => 1)),
 			'using non alphanumerical character' => array('SELECT * FROM pages WHERE title=:stra≠e', array(':stra≠e' => 1)),
@@ -260,14 +209,14 @@ class PreparedStatementTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 *
 	 * @test
 	 * @expectedException \InvalidArgumentException
-	 * @dataProvider passingInvalidMarkersThrowsExeptionDataProvider
+	 * @dataProvider passingInvalidMarkersThrowsExceptionDataProvider
 	 * @param string $query Query with unreplaced markers
 	 * @param array  $parameters Array of parameters to be replaced in the query
 	 * @return void
 	 */
-	public function passingInvalidMarkersThrowsExeption($query, $parameters) {
+	public function passingInvalidMarkersThrowsException($query, $parameters) {
 		$statement = $this->createPreparedStatement($query);
-		$statement->execute($parameters);
+		$statement->bindValues($parameters);
 	}
 
 }

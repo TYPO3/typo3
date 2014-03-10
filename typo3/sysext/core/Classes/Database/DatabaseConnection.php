@@ -765,19 +765,23 @@ class DatabaseConnection {
 	}
 
 	/**
-	 * Executes a prepared query.
-	 * This method may only be called by \TYPO3\CMS\Core\Database\PreparedStatement
+	 * Prepares a prepared query.
 	 *
 	 * @param string $query The query to execute
 	 * @param array $queryComponents The components of the query to execute
-	 * @return boolean|\mysqli_result|object MySQLi result object / DBAL object
+	 * @return \mysqli_statement|object MySQLi statement / DBAL object
+	 * @internal This method may only be called by \TYPO3\CMS\Core\Database\PreparedStatement
 	 */
-	public function exec_PREPAREDquery($query, array $queryComponents) {
-		$res = $this->query($query);
+	public function prepare_PREPAREDquery($query, array $queryComponents) {
+		if (!$this->isConnected) {
+			$this->connectDB();
+		}
+		$stmt = $this->link->stmt_init();
+		$success = $stmt->prepare($query);
 		if ($this->debugOutput) {
 			$this->debug('stmt_execute', $query);
 		}
-		return $res;
+		return $success ? $stmt : NULL;
 	}
 
 	/**************************************

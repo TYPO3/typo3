@@ -368,8 +368,9 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 			if (is_array($tdef['fields'])) {
 				foreach ($tdef['fields'] as $field => $fdefString) {
 					$fdef = $this->SQLparser->parseFieldDef($fdefString);
-					$this->cache_fieldType[$table][$field]['type'] = $fdef['fieldType'];
-					$this->cache_fieldType[$table][$field]['metaType'] = $this->MySQLMetaType($fdef['fieldType']);
+					$fieldType = isset($fdef['fieldType']) ? $fdef['fieldType'] : '';
+					$this->cache_fieldType[$table][$field]['type'] = $fieldType;
+					$this->cache_fieldType[$table][$field]['metaType'] = $this->MySQLMetaType($fieldType);
 					$this->cache_fieldType[$table][$field]['notnull'] = isset($fdef['featureIndex']['NOTNULL']) && !$this->SQLparser->checkEmptyDefaultValue($fdef['featureIndex']) ? 1 : 0;
 					if (isset($fdef['featureIndex']['DEFAULT'])) {
 						$default = $fdef['featureIndex']['DEFAULT']['value'][0];
@@ -851,7 +852,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 			}
 			$this->debugHandler('exec_SELECTquery', GeneralUtility::milliseconds() - $pt, $data);
 		}
-		// Return result handler.
+		// Return handler.
 		return $sqlResult;
 	}
 
@@ -1501,66 +1502,43 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	}
 
 	/**
-	 * Executes a prepared query.
-	 * This method may only be called by \TYPO3\CMS\Core\Database\PreparedStatement
+	 * Prepares a prepared query.
 	 *
 	 * @param string $query The query to execute
 	 * @param array $queryComponents The components of the query to execute
-	 * @return boolean|\mysqli_result|object MySQLi result object / DBAL object
+	 * @return boolean|\mysqli_statement|\TYPO3\CMS\Dbal\Database\AdodbPreparedStatement
+	 * @throws \RuntimeException
+	 * @internal This method may only be called by \TYPO3\CMS\Core\Database\PreparedStatement
 	 */
-	public function exec_PREPAREDquery($query, array $queryComponents) {
+	public function prepare_PREPAREDquery($query, array $queryComponents) {
 		$pt = $this->debug ? GeneralUtility::milliseconds() : 0;
 		// Get handler key and select API:
-		$sqlResult = NULL;
+		$preparedStatement = NULL;
 		switch ($queryComponents['handler']) {
 			case 'native':
 				$this->lastQuery = $query;
-				$sqlResult = $this->query($this->lastQuery);
-				$this->resourceIdToTableNameMap[serialize($sqlResult)] = $queryComponents['ORIG_tableName'];
+				$preparedStatement = parent::prepare_PREPAREDquery($this->lastQuery, $queryComponents);
+				$this->resourceIdToTableNameMap[serialize($preparedStatement)] = $queryComponents['ORIG_tableName'];
 				break;
 			case 'adodb':
-				$limit = $queryComponents['LIMIT'];
-				if ($this->runningADOdbDriver('postgres')) {
-					// Possibly rewrite the LIMIT to be PostgreSQL-compatible
-					$splitLimit = GeneralUtility::intExplode(',', $limit);
-					// Splitting the limit values:
-					if ($splitLimit[1]) {
-						// If there are two parameters, do mapping differently than otherwise:
-						$numrows = $splitLimit[1];
-						$offset = $splitLimit[0];
-						$limit = $numrows . ' OFFSET ' . $offset;
-					}
+				/** @var \TYPO3\CMS\Dbal\Database\AdodbPreparedStatement $preparedStatement */
+				$preparedStatement = GeneralUtility::makeInstance('TYPO3\\CMS\\Dbal\\Database\\AdodbPreparedStatement', $query, $queryComponents, $this);
+				if (!$preparedStatement->prepare()) {
+					$preparedStatement = FALSE;
 				}
-				if ($limit != '') {
-					$splitLimit = GeneralUtility::intExplode(',', $limit);
-					// Splitting the limit values:
-					if ($splitLimit[1]) {
-						// If there are two parameters, do mapping differently than otherwise:
-						$numrows = $splitLimit[1];
-						$offset = $splitLimit[0];
-					} else {
-						$numrows = $splitLimit[0];
-						$offset = 0;
-					}
-					$sqlResult = $this->handlerInstance[$this->lastHandlerKey]->SelectLimit($query, $numrows, $offset);
-					$this->lastQuery = $sqlResult->sql;
-				} else {
-					$this->lastQuery = $query;
-					$sqlResult = $this->handlerInstance[$this->lastHandlerKey]->_Execute($this->lastQuery);
-				}
-				$sqlResult->TYPO3_DBAL_handlerType = 'adodb';
-				// Setting handler type in result object (for later recognition!)
-				$sqlResult->TYPO3_DBAL_tableList = $queryComponents['ORIG_tableName'];
 				break;
 			case 'userdefined':
+				throw new \RuntimeException('prepare_PREPAREDquery is not implemented for userdefined handlers', 1394620167);
+				/*
 				$queryParts = $queryComponents['queryParts'];
-				$sqlResult = $this->handlerInstance[$this->lastHandlerKey]->exec_SELECTquery($queryParts['SELECT'], $queryParts['FROM'], $queryParts['WHERE'], $queryParts['GROUPBY'], $queryParts['ORDERBY'], $queryParts['LIMIT']);
-				if (is_object($sqlResult)) {
-					$sqlResult->TYPO3_DBAL_handlerType = 'userdefined';
+				$preparedStatement = $this->handlerInstance[$this->lastHandlerKey]->exec_SELECTquery($queryParts['SELECT'], $queryParts['FROM'], $queryParts['WHERE'], $queryParts['GROUPBY'], $queryParts['ORDERBY'], $queryParts['LIMIT']);
+				if (is_object($preparedStatement)) {
+					$preparedStatement->TYPO3_DBAL_handlerType = 'userdefined';
 					// Setting handler type in result object (for later recognition!)
-					$sqlResult->TYPO3_DBAL_tableList = $queryComponents['ORIG_tableName'];
+					$preparedStatement->TYPO3_DBAL_tableList = $queryComponents['ORIG_tableName'];
 				}
 				break;
+				*/
 		}
 		if ($this->printErrors && $this->sql_error()) {
 			debug(array($this->lastQuery, $this->sql_error()));
@@ -1571,13 +1549,10 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 				'args' => $queryComponents,
 				'ORIG_from_table' => $queryComponents['ORIG_tableName']
 			);
-			if ($this->conf['debugOptions']['numberRows']) {
-				$data['numberRows'] = $this->sql_num_rows($sqlResult);
-			}
-			$this->debugHandler('exec_PREPAREDquery', GeneralUtility::milliseconds() - $pt, $data);
+			$this->debugHandler('prepare_PREPAREDquery', GeneralUtility::milliseconds() - $pt, $data);
 		}
 		// Return result handler.
-		return $sqlResult;
+		return $preparedStatement;
 	}
 
 	/**************************************

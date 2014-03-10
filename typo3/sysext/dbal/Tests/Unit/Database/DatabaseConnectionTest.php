@@ -226,9 +226,24 @@ class DatabaseConnectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$statement = new $className($sql, 'cache');
 		$statement->bindValues($parameterValues);
 		$parameters = $statement->_get('parameters');
-		$statement->_callRef('replaceValuesInQuery', $query, $precompiledQueryParts, $parameters);
-		$expected = 'SELECT * FROM cache WHERE tag = \'tag-one\' OR tag = \'tag-two\' OR tag = \'tag-three\'';
-		$this->assertEquals($expected, $query);
+		$statement->_callRef('convertNamedPlaceholdersToQuestionMarks', $query, $parameters, $precompiledQueryParts);
+		$expectedQuery = 'SELECT * FROM cache WHERE tag = ? OR tag = ? OR tag = ?';
+		$expectedParameterValues = array(
+			0 => array(
+				'type' => \TYPO3\CMS\Core\Database\PreparedStatement::PARAM_STR,
+				'value' => 'tag-one',
+			),
+			1 => array(
+				'type' => \TYPO3\CMS\Core\Database\PreparedStatement::PARAM_STR,
+				'value' => 'tag-two',
+			),
+			2 => array(
+				'type' => \TYPO3\CMS\Core\Database\PreparedStatement::PARAM_STR,
+				'value' => 'tag-three',
+			),
+		);
+		$this->assertEquals($expectedQuery, $query);
+		$this->assertEquals($expectedParameterValues, $parameters);
 	}
 
 }
