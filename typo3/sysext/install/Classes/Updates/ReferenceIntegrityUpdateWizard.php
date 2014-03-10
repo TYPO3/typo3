@@ -116,7 +116,7 @@ class ReferenceIntegrityUpdateWizard extends AbstractUpdate {
 	protected function getFileReferencesPointingToMissingTables() {
 		$existingTables = array_flip(array_keys($GLOBALS['TYPO3_DB']->admin_get_tables()));
 		$missingTables = array();
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('DISTINCT tablenames', 'sys_file_reference');
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('DISTINCT tablenames', 'sys_file_reference', '');
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 			$thisTablename = $row['tablenames'];
 			if (!isset($existingTables[$thisTablename])) {
