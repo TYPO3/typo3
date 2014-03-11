@@ -14,7 +14,6 @@ namespace TYPO3\CMS\Rtehtmlarea;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Resource;
 
@@ -632,51 +631,17 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 	}
 
 	/**
+	 * Rich Text Editor (RTE) image selector
+	 *
+	 * @param boolean $wiz Not used here, kept for method signature compatibility with parent class
+	 * @return string Modified content variable.
 	 * @return string
-	 * @todo Define visibility
 	 */
-	public function main_rte() {
+	public function main_rte($wiz = FALSE) {
 		// Starting content:
 		$this->content = $this->doc->startPage($GLOBALS['LANG']->getLL('Insert Image', TRUE));
-		// Making menu in top:
-		$menuDef = array();
-		if (in_array('image', $this->allowedItems) && ($this->act === 'image' || GeneralUtility::_GP('cWidth'))) {
-			$menuDef['image']['isActive'] = FALSE;
-			$menuDef['image']['label'] = $GLOBALS['LANG']->getLL('currentImage', TRUE);
-			$menuDef['image']['url'] = '#';
-			$menuDef['image']['addParams'] = 'onClick="jumpToUrl(' . GeneralUtility::quoteJSvalue($this->getThisScript() . 'act=image&bparams=' . $this->bparams) . ');return false;"';
-		}
-		if (in_array('magic', $this->allowedItems)) {
-			$menuDef['magic']['isActive'] = FALSE;
-			$menuDef['magic']['label'] = $GLOBALS['LANG']->getLL('magicImage', TRUE);
-			$menuDef['magic']['url'] = '#';
-			$menuDef['magic']['addParams'] = 'onClick="jumpToUrl(' . GeneralUtility::quoteJSvalue($this->getThisScript() . 'act=magic&bparams=' . $this->bparams) . ');return false;"';
-		}
-		if (in_array('plain', $this->allowedItems)) {
-			$menuDef['plain']['isActive'] = FALSE;
-			$menuDef['plain']['label'] = $GLOBALS['LANG']->getLL('plainImage', TRUE);
-			$menuDef['plain']['url'] = '#';
-			$menuDef['plain']['addParams'] = 'onClick="jumpToUrl(' . GeneralUtility::quoteJSvalue($this->getThisScript() . 'act=plain&bparams=' . $this->bparams) . ');return false;"';
-		}
-		if (in_array('dragdrop', $this->allowedItems)) {
-			$menuDef['dragdrop']['isActive'] = FALSE;
-			$menuDef['dragdrop']['label'] = $GLOBALS['LANG']->getLL('dragDropImage', TRUE);
-			$menuDef['dragdrop']['url'] = '#';
-			$menuDef['dragdrop']['addParams'] = 'onClick="jumpToUrl(' . GeneralUtility::quoteJSvalue($this->getThisScript() . 'act=dragdrop&bparams=' . $this->bparams) . ');return false;"';
-		}
-		// Call hook for extra options
-		foreach ($this->hookObjects as $hookObject) {
-			$menuDef = $hookObject->modifyMenuDefinition($menuDef);
-		}
-		// Order the menu items as specified in Page TSconfig
-		$menuDef = $this->orderMenuDefinition($menuDef);
-		// Set active menu item
-		reset($menuDef);
-		if ($this->act === FALSE || !in_array($this->act, $this->allowedItems)) {
-			$this->act = key($menuDef);
-		}
-		$menuDef[$this->act]['isActive'] = TRUE;
-		$this->content .= $this->doc->getTabMenuRaw($menuDef);
+
+		$this->content .= $this->doc->getTabMenuRaw($this->buildMenuArray($wiz, $this->allowedItems));
 		switch ($this->act) {
 			case 'image':
 				$JScode = '
@@ -820,6 +785,54 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 	}
 
 	/**
+	 * Returns an array definition of the top menu
+	 *
+	 * @param $wiz
+	 * @param $allowedItems
+	 * @return array
+	 */
+	protected function buildMenuArray($wiz, $allowedItems) {
+		$menuDef = array();
+		if (in_array('image', $this->allowedItems) && ($this->act === 'image' || GeneralUtility::_GP('cWidth'))) {
+			$menuDef['image']['isActive'] = FALSE;
+			$menuDef['image']['label'] = $GLOBALS['LANG']->getLL('currentImage', TRUE);
+			$menuDef['image']['url'] = '#';
+			$menuDef['image']['addParams'] = 'onClick="jumpToUrl(' . GeneralUtility::quoteJSvalue($this->getThisScript() . 'act=image&bparams=' . $this->bparams) . ');return false;"';
+		}
+		if (in_array('magic', $this->allowedItems)) {
+			$menuDef['magic']['isActive'] = FALSE;
+			$menuDef['magic']['label'] = $GLOBALS['LANG']->getLL('magicImage', TRUE);
+			$menuDef['magic']['url'] = '#';
+			$menuDef['magic']['addParams'] = 'onClick="jumpToUrl(' . GeneralUtility::quoteJSvalue($this->getThisScript() . 'act=magic&bparams=' . $this->bparams) . ');return false;"';
+		}
+		if (in_array('plain', $this->allowedItems)) {
+			$menuDef['plain']['isActive'] = FALSE;
+			$menuDef['plain']['label'] = $GLOBALS['LANG']->getLL('plainImage', TRUE);
+			$menuDef['plain']['url'] = '#';
+			$menuDef['plain']['addParams'] = 'onClick="jumpToUrl(' . GeneralUtility::quoteJSvalue($this->getThisScript() . 'act=plain&bparams=' . $this->bparams) . ');return false;"';
+		}
+		if (in_array('dragdrop', $this->allowedItems)) {
+			$menuDef['dragdrop']['isActive'] = FALSE;
+			$menuDef['dragdrop']['label'] = $GLOBALS['LANG']->getLL('dragDropImage', TRUE);
+			$menuDef['dragdrop']['url'] = '#';
+			$menuDef['dragdrop']['addParams'] = 'onClick="jumpToUrl(' . GeneralUtility::quoteJSvalue($this->getThisScript() . 'act=dragdrop&bparams=' . $this->bparams) . ');return false;"';
+		}
+		// Call hook for extra options
+		foreach ($this->hookObjects as $hookObject) {
+			$menuDef = $hookObject->modifyMenuDefinition($menuDef);
+		}
+		// Order the menu items as specified in Page TSconfig
+		$menuDef = $this->orderMenuDefinition($menuDef);
+		// Set active menu item
+		reset($menuDef);
+		if ($this->act === FALSE || !in_array($this->act, $this->allowedItems)) {
+			$this->act = key($menuDef);
+		}
+		$menuDef[$this->act]['isActive'] = TRUE;
+		return $menuDef;
+	}
+
+	/**
 	 * Initializes the configuration variables
 	 *
 	 * @return 	void
@@ -854,8 +867,8 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 	/**
 	 * Get the allowed items or tabs
 	 *
-	 * @param 	string		$items: initial list of possible items
-	 * @return 	array		the allowed items
+	 * @param string $items: initial list of possible items
+	 * @return array the allowed items
 	 */
 	public function getAllowedItems($items) {
 		$allowedItems = explode(',', $items);

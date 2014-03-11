@@ -165,7 +165,7 @@ class ElementBrowserController {
 					$this->content = $this->browser->main_folder();
 					break;
 				case 'wizard':
-					$this->content = $this->browser->main_rte(1);
+					$this->content = $this->browser->main_rte(TRUE);
 					break;
 			}
 		}
