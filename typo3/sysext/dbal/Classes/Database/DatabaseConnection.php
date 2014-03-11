@@ -2550,12 +2550,6 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 			$this->handleDeprecatedConnectArguments($host, $username, $password);
 		}
 
-		// Overriding the _DEFAULT handler configuration of username, password, localhost and database name:
-		$this->handlerCfg['_DEFAULT']['config']['username'] = $this->databaseUsername;
-		$this->handlerCfg['_DEFAULT']['config']['password'] = $this->databaseUserPassword;
-		$this->handlerCfg['_DEFAULT']['config']['host'] = $this->databaseHost;
-		$this->handlerCfg['_DEFAULT']['config']['port'] = (int)$this->databasePort;
-		$this->handlerCfg['_DEFAULT']['config']['database'] = $this->databaseName;
 		// Initializing and output value:
 		$sqlResult = $this->handler_init('_DEFAULT');
 		return $sqlResult;
@@ -3020,6 +3014,14 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	public function handler_init($handlerKey) {
 		if (!isset($this->handlerCfg[$handlerKey]) || !is_array($this->handlerCfg[$handlerKey])) {
 			throw new \RuntimeException('ERROR: No handler for key "' . $handlerKey . '"', 1310028018);
+		}
+		if ($handlerKey === '_DEFAULT') {
+			// Overriding the _DEFAULT handler configuration of username, password, localhost and database name:
+			$this->handlerCfg[$handlerKey]['config']['username'] = $this->databaseUsername;
+			$this->handlerCfg[$handlerKey]['config']['password'] = $this->databaseUserPassword;
+			$this->handlerCfg[$handlerKey]['config']['host'] = $this->databaseHost;
+			$this->handlerCfg[$handlerKey]['config']['port'] = (int)$this->databasePort;
+			$this->handlerCfg[$handlerKey]['config']['database'] = $this->databaseName;
 		}
 		$cfgArray = $this->handlerCfg[$handlerKey];
 		if (!$cfgArray['config']['database']) {
