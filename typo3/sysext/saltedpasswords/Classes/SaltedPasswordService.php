@@ -112,10 +112,11 @@ class SaltedPasswordService extends \TYPO3\CMS\Sv\AbstractAuthenticationService 
 	 *
 	 * @param array $user User data array
 	 * @param array $loginData Login data array
+	 * @param string $passwordCompareStrategy Password compare strategy
 	 * @return boolean TRUE if login data matched
 	 * @todo Define visibility
 	 */
-	public function compareUident(array $user, array $loginData) {
+	public function compareUident(array $user, array $loginData, $passwordCompareStrategy = '') {
 		$validPasswd = FALSE;
 		$password = $loginData['uident_text'];
 		// Determine method used for given salted hashed password
