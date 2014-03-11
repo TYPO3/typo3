@@ -91,4 +91,13 @@
 		<sorting>10</sorting>
 		<deleted>0</deleted>
 	</tx_blogexample_domain_model_post>
+	<tx_blogexample_domain_model_post>
+		<uid>11</uid>
+		<pid>0</pid>
+		<blog>2</blog>
+		<tags>0</tags>
+		<title>Post11</title>
+		<sorting>11</sorting>
+		<deleted>0</deleted>
+	</tx_blogexample_domain_model_post>
 </dataset>

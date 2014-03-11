@@ -7,4 +7,11 @@
 		<deleted>0</deleted>
 		<posts>10</posts>
 	</tx_blogexample_domain_model_blog>
+	<tx_blogexample_domain_model_blog>
+		<uid>2</uid>
+		<pid>0</pid>
+		<title>Blog2</title>
+		<deleted>0</deleted>
+		<posts>1</posts>
+	</tx_blogexample_domain_model_blog>
 </dataset>

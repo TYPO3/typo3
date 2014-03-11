@@ -30,6 +30,11 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 class RelationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 
 	/**
+	 * @var int number of all records
+	 */
+	protected $numberOfRecordsInFixture = 11;
+
+	/**
 	 * @var \ExtbaseTeam\BlogExample\Domain\Model\Blog
 	 */
 	protected $blog;
@@ -55,10 +60,10 @@ class RelationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 		parent::setUp();
 
 		$this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/core/Tests/Functional/Fixtures/pages.xml');
-		$this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Relations/Fixtures/blogs.xml');
-		$this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Relations/Fixtures/posts.xml');
-		$this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Relations/Fixtures/tags.xml');
-		$this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Relations/Fixtures/post-tag-mm.xml');
+		$this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/blogs.xml');
+		$this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/posts.xml');
+		$this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/tags.xml');
+		$this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/post-tag-mm.xml');
 
 		$this->objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
 		$this->persistentManager = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager');
@@ -74,7 +79,7 @@ class RelationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 	 */
 	public function attachPostToBlogAtTheEnd() {
 		$countPosts = $this->getDatabase()->exec_SELECTcountRows('*', 'tx_blogexample_domain_model_post');
-		$this->assertSame(10, $countPosts);
+		$this->assertSame($this->numberOfRecordsInFixture, $countPosts);
 
 		$newPostTitle = 'sdufhisdhuf';
 		$newPost = $this->objectManager->get('ExtbaseTeam\\BlogExample\\Domain\\Model\\Post');
@@ -86,11 +91,11 @@ class RelationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 		$this->updateAndPersistBlog();
 
 		$countPosts = $this->getDatabase()->exec_SELECTcountRows('*', 'tx_blogexample_domain_model_post');
-		$this->assertSame(11, $countPosts);
+		$this->assertSame(($this->numberOfRecordsInFixture + 1), $countPosts);
 
 		$post = $this->getDatabase()->exec_SELECTgetSingleRow('title,sorting', 'tx_blogexample_domain_model_post', 'blog =' . $this->blog->getUid(), '', 'sorting DESC');
 		$this->assertSame($newPostTitle, $post['title']);
-		$this->assertSame('11', $post['sorting']);
+		$this->assertSame((string)($this->numberOfRecordsInFixture), $post['sorting']);
 	}
 
 	/**
@@ -100,7 +105,7 @@ class RelationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 	 */
 	public function removeLastPostFromBlog() {
 		$countPosts = $this->getDatabase()->exec_SELECTcountRows('*', 'tx_blogexample_domain_model_post');
-		$this->assertSame(10, $countPosts);
+		$this->assertSame($this->numberOfRecordsInFixture, $countPosts);
 
 		$post = $this->getDatabase()->exec_SELECTgetSingleRow('sorting', 'tx_blogexample_domain_model_post', 'blog =' . $this->blog->getUid(), '', 'sorting DESC');
 		$this->assertEquals(10, $post['sorting']);
@@ -115,7 +120,7 @@ class RelationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 		$this->updateAndPersistBlog();
 
 		$countPosts = $this->getDatabase()->exec_SELECTcountRows('*', 'tx_blogexample_domain_model_post', 'deleted=0');
-		$this->assertEquals(9, $countPosts);
+		$this->assertEquals(($this->numberOfRecordsInFixture - 1), $countPosts);
 
 		$post = $this->getDatabase()->exec_SELECTgetSingleRow('uid', 'tx_blogexample_domain_model_post', 'uid =' . $latestPost->getUid() . ' AND deleted=0');
 		$this->assertSame(NULL, $post['uid']);
@@ -132,7 +137,7 @@ class RelationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 	 */
 	public function addPostToBlogInTheMiddle() {
 		$countPosts = $this->getDatabase()->exec_SELECTcountRows('*', 'tx_blogexample_domain_model_post');
-		$this->assertSame(10, $countPosts);
+		$this->assertSame($this->numberOfRecordsInFixture, $countPosts);
 
 		$posts = clone $this->blog->getPosts();
 		$this->blog->getPosts()->removeAll($posts);
@@ -152,7 +157,7 @@ class RelationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 		$this->updateAndPersistBlog();
 
 		$countPosts = $this->getDatabase()->exec_SELECTcountRows('*', 'tx_blogexample_domain_model_post',  'deleted=0');
-		$this->assertSame(11, $countPosts);
+		$this->assertSame(($this->numberOfRecordsInFixture + 1), $countPosts);
 
 		//last post
 		$post = $this->getDatabase()->exec_SELECTgetSingleRow('title,sorting', 'tx_blogexample_domain_model_post', 'blog =' . $this->blog->getUid(), '', 'sorting DESC');
@@ -160,7 +165,7 @@ class RelationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 		$this->assertSame('11', $post['sorting']);
 
 		// check sorting of the post added in the middle
-		$post = $this->getDatabase()->exec_SELECTgetSingleRow('title,sorting', 'tx_blogexample_domain_model_post', 'uid=11');
+		$post = $this->getDatabase()->exec_SELECTgetSingleRow('title,sorting', 'tx_blogexample_domain_model_post', 'uid=' . ($this->numberOfRecordsInFixture + 1));
 		$this->assertSame($newPostTitle, $post['title']);
 		$this->assertSame('6', $post['sorting']);
 	}
@@ -172,7 +177,7 @@ class RelationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 	 */
 	public function removeMiddlePostFromBlog() {
 		$countPosts = $this->getDatabase()->exec_SELECTcountRows('*', 'tx_blogexample_domain_model_post');
-		$this->assertSame(10, $countPosts);
+		$this->assertSame($this->numberOfRecordsInFixture, $countPosts);
 
 		$posts = clone $this->blog->getPosts();
 		$counter = 1;
@@ -185,7 +190,7 @@ class RelationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 		$this->updateAndPersistBlog();
 
 		$countPosts = $this->getDatabase()->exec_SELECTcountRows('*', 'tx_blogexample_domain_model_post', 'deleted=0');
-		$this->assertSame(9, $countPosts);
+		$this->assertSame(($this->numberOfRecordsInFixture - 1), $countPosts);
 
 		$post = $this->getDatabase()->exec_SELECTgetSingleRow('title,sorting', 'tx_blogexample_domain_model_post', 'blog ='.$this->blog->getUid(), '', 'sorting DESC');
 		$this->assertSame('Post10', $post['title']);
@@ -199,7 +204,7 @@ class RelationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 	 */
 	public function movePostFromEndToTheMiddle() {
 		$countPosts = $this->getDatabase()->exec_SELECTcountRows('*', 'tx_blogexample_domain_model_post');
-		$this->assertSame(10, $countPosts);
+		$this->assertSame($this->numberOfRecordsInFixture, $countPosts);
 
 		$posts = clone $this->blog->getPosts();
 		$postsArray = $posts->toArray();
@@ -221,7 +226,7 @@ class RelationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 		$this->updateAndPersistBlog();
 
 		$countPosts = $this->getDatabase()->exec_SELECTcountRows('*', 'tx_blogexample_domain_model_post', 'deleted=0');
-		$this->assertSame(10, $countPosts);
+		$this->assertSame($this->numberOfRecordsInFixture, $countPosts);
 
 		$post = $this->getDatabase()->exec_SELECTgetSingleRow('title,sorting', 'tx_blogexample_domain_model_post', 'blog ='.$this->blog->getUid(), '', 'sorting DESC');
 		$this->assertSame('Post9', $post['title']);
