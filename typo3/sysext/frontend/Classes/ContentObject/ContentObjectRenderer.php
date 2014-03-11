@@ -1327,7 +1327,7 @@ class ContentObjectRenderer {
 			if ($linkWrap) {
 				$theValue = $this->linkWrap($theValue, $linkWrap);
 			} elseif ($conf['imageLinkWrap']) {
-				$theValue = $this->imageLinkWrap($theValue, $info['origFile'], $conf['imageLinkWrap.']);
+				$theValue = $this->imageLinkWrap($theValue, $info['originalFile'], $conf['imageLinkWrap.']);
 			}
 			$wrap = isset($conf['wrap.']) ? $this->stdWrap($conf['wrap'], $conf['wrap.']) : $conf['wrap'];
 			if ($wrap) {
@@ -1464,7 +1464,7 @@ class ContentObjectRenderer {
 	 * Wraps the input string in link-tags that opens the image in a new window.
 	 *
 	 * @param string $string String to wrap, probably an <img> tag
-	 * @param string $imageFile The original image file
+	 * @param string|\TYPO3\CMS\Core\Resource\File|\TYPO3\CMS\Core\Resource\FileReference $imageFile The original image file
 	 * @param array $conf TypoScript properties for the "imageLinkWrap" function
 	 * @return string The input string, $string, wrapped as configured.
 	 * @see cImage()
@@ -1480,9 +1480,22 @@ class ContentObjectRenderer {
 			if (isset($conf['file.'])) {
 				$imageFile = $this->stdWrap($imageFile, $conf['file.']);
 			}
+
+			if ($imageFile instanceof \TYPO3\CMS\Core\Resource\File) {
+				$file = $imageFile;
+			} elseif ($imageFile instanceof \TYPO3\CMS\Core\Resource\FileReference) {
+				$file = $imageFile->getOriginalFile();
+			} else {
+				if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($imageFile)) {
+					$file = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getFileObject((int)$imageFile);
+				} else {
+					$file = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getFileObjectFromCombinedIdentifier($imageFile);
+				}
+			}
+
 			// Create imageFileLink if not created with typolink
 			if ($content == $string) {
-				$parameterNames = array('width', 'height', 'effects', 'alternativeTempPath', 'bodyTag', 'title', 'wrap');
+				$parameterNames = array('width', 'height', 'effects', 'bodyTag', 'title', 'wrap');
 				$parameters = array();
 				$sample = isset($conf['sample.']) ? $this->stdWrap($conf['sample'], $conf['sample.']) : $conf['sample'];
 				if ($sample) {
@@ -1497,12 +1510,12 @@ class ContentObjectRenderer {
 					}
 				}
 				$parametersEncoded = base64_encode(serialize($parameters));
-				$md5_value = GeneralUtility::hmac(implode('|', array($imageFile, $parametersEncoded)));
-				$params = '&md5=' . $md5_value;
+				$hmac = GeneralUtility::hmac(implode('|', array($file->getUid(), $parametersEncoded)));
+				$params = '&md5=' . $hmac;
 				foreach (str_split($parametersEncoded, 64) as $index => $chunk) {
 					$params .= '&parameters' . rawurlencode('[') . $index . rawurlencode(']') . '=' . rawurlencode($chunk);
 				}
-				$url = $GLOBALS['TSFE']->absRefPrefix . 'index.php?eID=tx_cms_showpic&file=' . rawurlencode($imageFile) . $params;
+				$url = $GLOBALS['TSFE']->absRefPrefix . 'index.php?eID=tx_cms_showpic&file=' . $file->getUid() . $params;
 				$directImageLink = isset($conf['directImageLink.']) ? $this->stdWrap($conf['directImageLink'], $conf['directImageLink.']) : $conf['directImageLink'];
 				if ($directImageLink) {
 					$imgResourceConf = array(
@@ -1534,14 +1547,12 @@ class ContentObjectRenderer {
 							$url = $altUrl . ($conf['JSwindow.']['altUrl_noDefaultParams'] ? '' : '?file=' . rawurlencode($imageFile) . $params);
 						}
 					}
-					$gifCreator = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Imaging\\GifBuilder');
-					$gifCreator->init();
-					$gifCreator->mayScaleUp = 0;
-					$dims = $gifCreator->getImageScale($gifCreator->getImageDimensions($imageFile), $conf['width'], $conf['height'], array());
+
+					$processedFile = $file->process('Image.CropScaleMask', $conf);
 					$JSwindowExpand = isset($conf['JSwindow.']['expand.']) ? $this->stdWrap($conf['JSwindow.']['expand'], $conf['JSwindow.']['expand.']) : $conf['JSwindow.']['expand'];
 					$offset = GeneralUtility::intExplode(',', $JSwindowExpand . ',');
 					$newWindow = isset($conf['JSwindow.']['newWindow.']) ? $this->stdWrap($conf['JSwindow.']['newWindow'], $conf['JSwindow.']['newWindow.']) : $conf['JSwindow.']['newWindow'];
-					$a1 = '<a href="' . htmlspecialchars($url) . '" onclick="' . htmlspecialchars(('openPic(\'' . $GLOBALS['TSFE']->baseUrlWrap($url) . '\',\'' . ($newWindow ? md5($url) : 'thePicture') . '\',\'width=' . ($dims[0] + $offset[0]) . ',height=' . ($dims[1] + $offset[1]) . ',status=0,menubar=0\'); return false;')) . '"' . $target . $GLOBALS['TSFE']->ATagParams . '>';
+					$a1 = '<a href="' . htmlspecialchars($url) . '" onclick="' . htmlspecialchars(('openPic(\'' . $GLOBALS['TSFE']->baseUrlWrap($url) . '\',\'' . ($newWindow ? md5($url) : 'thePicture') . '\',\'width=' . ($processedFile->getProperty('width') + $offset[0]) . ',height=' . ($processedFile->getProperty('height') + $offset[1]) . ',status=0,menubar=0\'); return false;')) . '"' . $target . $GLOBALS['TSFE']->ATagParams . '>';
 					$a2 = '</a>';
 					$GLOBALS['TSFE']->setJS('openPic');
 				} else {

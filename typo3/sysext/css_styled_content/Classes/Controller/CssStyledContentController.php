@@ -732,7 +732,7 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 				}
 				if ($titleInLink && !$titleInLinkAndImg) {
 					// Check if the image will be linked
-					$link = $this->cObj->imageLinkWrap('', $totalImagePath, $imgConf['imageLinkWrap.']);
+					$link = $this->cObj->imageLinkWrap('', $this->cObj->getCurrentFile() ?: $totalImagePath, $imgConf['imageLinkWrap.']);
 					if ($link) {
 						// Title in A-tag only (set above: ATagParams), not in IMG-tag
 						unset($imgConf['titleText']);

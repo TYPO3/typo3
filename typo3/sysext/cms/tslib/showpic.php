@@ -26,27 +26,26 @@
  ***************************************************************/
 
 /**
- * Shows a picture from uploads/* in enlarged format in a separate window.
- * Picture file and settings is supplied by GET-parameters: file, width, height, sample, alternativeTempPath, effects, frame, bodyTag, title, wrap, md5
+ * eID-Script for tx_cms_showpic
  *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
+ * Shows a picture from FAL in enlarged format in a separate window.
+ * Picture file and settings is supplied by GET-parameters:
+ *  - file = fileUid or Combined Identifier
+ *  - encoded in an parameter Array (with weird format - see ContentObjectRenderer about ll. 1500)
+ *  	- width, height = usual width an height, m/c supported
+ *  	- sample = 0/1
+ *  	- effects
+ *  	- frame
+ *  	- bodyTag
+ *  	- title
+ *  	- wrap
+ *  - md5 = actually contains an hmac
  */
 
 if (!defined('PATH_typo3conf')) {
 	die('The configuration path was not properly defined!');
 }
 
-require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('core') . 'Classes/Imaging/GraphicalFunctions.php';
-
-/*
- * @deprecated since 6.0, the classname SC_tslib_showpic and this file is obsolete
- * and will be removed with 6.2. The class was renamed and is now located at:
- * typo3/sysext/frontend/Classes/Controller/ShowImageController.php
- */
-require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('frontend') . 'Classes/Controller/ShowImageController.php';
-
 // Make instance:
 $SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Controller\\ShowImageController');
-$SOBE->init();
-$SOBE->main();
-$SOBE->printContent();
+$SOBE->execute();

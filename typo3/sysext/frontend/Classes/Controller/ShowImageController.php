@@ -27,6 +27,10 @@ namespace TYPO3\CMS\Frontend\Controller;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use \TYPO3\CMS\Core\Utility\HttpUtility;
+use \TYPO3\CMS\Core\Utility\GeneralUtility;
+use \TYPO3\CMS\Core\Utility\MathUtility;
+
 /**
  * Script Class, generating the page output.
  * Instantiated in the bottom of this script.
@@ -35,108 +39,116 @@ namespace TYPO3\CMS\Frontend\Controller;
  */
 class ShowImageController {
 
-	// Page content accumulated here.
-	/**
-	 * @todo Define visibility
-	 */
-	public $content;
-
 	// Parameters loaded into these internal variables:
 	/**
-	 * @todo Define visibility
+	 * @var \TYPO3\CMS\Core\Resource\File
 	 */
-	public $file;
+	protected $file;
 
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
-	public $width;
+	protected $width;
 
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
-	public $height;
-
-	/**
-	 * @todo Define visibility
-	 */
-	public $sample;
-
-	/**
-	 * @todo Define visibility
-	 */
-	public $alternativeTempPath;
-
-	/**
-	 * @todo Define visibility
-	 */
-	public $effects;
-
-	/**
-	 * @todo Define visibility
-	 */
-	public $frame;
-
-	/**
-	 * @todo Define visibility
-	 */
-	public $bodyTag;
-
-	/**
-	 * @todo Define visibility
-	 */
-	public $title;
-
-	/**
-	 * @todo Define visibility
-	 */
-	public $wrap;
-
-	/**
-	 * @todo Define visibility
-	 */
-	public $md5;
+	protected $height;
 
 	/**
 	 * @var string
 	 */
-	protected $parametersEncoded;
+	protected $sample;
+
+	/**
+	 * @var string
+	 */
+	protected $effects;
+
+	/**
+	 * @var int
+	 */
+	protected $frame;
+
+	/**
+	 * @var string
+	 */
+	protected $hmac;
+
+	/**
+	 * @var string
+	 */
+	protected $bodyTag = '<body>';
+
+	/**
+	 * @var string
+	 */
+	protected $wrap = '|';
+
+	/**
+	 * @var string
+	 */
+	protected $title = 'Image';
+
+	/**
+	 * @var string
+	 */
+	protected $content = <<<EOF
+<!DOCTYPE html>
+<html>
+<head>
+	<title>###TITLE###</title>
+	<meta name="robots" content="noindex,follow" />
+</head>
+###BODY###
+	###IMAGE###
+</body>
+</html>
+EOF;
+
+	protected $imageTag = '<img src="###publicUrl###" alt="###alt###" title="###title###" />';
 
 	/**
 	 * Init function, setting the input vars in the global space.
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function init() {
 		// Loading internal vars with the GET/POST parameters from outside:
-		$this->file = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('file');
-		$parametersArray = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('parameters');
-		$this->frame = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('frame');
-		$this->md5 = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('md5');
-		// Check parameters
+		$fileUid = GeneralUtility::_GP('file');
+		$this->frame = GeneralUtility::_GP('frame');
+		/* For backwards compatibility the HMAC is transported within the md5 param */
+		$this->hmac = GeneralUtility::_GP('md5');
+
+		$parametersArray = GeneralUtility::_GP('parameters');
+
 		// If no file-param or parameters are given, we must exit
-		if (!$this->file || !isset($parametersArray) || !is_array($parametersArray)) {
-			\TYPO3\CMS\Core\Utility\HttpUtility::setResponseCodeAndExit(\TYPO3\CMS\Core\Utility\HttpUtility::HTTP_STATUS_410);
+		if (!$fileUid || !isset($parametersArray) || !is_array($parametersArray)) {
+			HttpUtility::setResponseCodeAndExit(HttpUtility::HTTP_STATUS_410);
 		}
-		$this->parametersEncoded = implode('', $parametersArray);
-		// Chech md5-checksum: If this md5-value does not match the one submitted, then we fail... (this is a kind of security that somebody don't just hit the script with a lot of different parameters
-		$md5_value = \TYPO3\CMS\Core\Utility\GeneralUtility::hmac(implode('|', array($this->file, $this->parametersEncoded)));
-		if ($md5_value !== $this->md5) {
-			\TYPO3\CMS\Core\Utility\HttpUtility::setResponseCodeAndExit(\TYPO3\CMS\Core\Utility\HttpUtility::HTTP_STATUS_410);
+
+		// rebuild the parameter array and check if the HMAC is correct
+		$parametersEncoded = implode('', $parametersArray);
+		$hmac = GeneralUtility::hmac(implode('|', array($fileUid, $parametersEncoded)));
+		if ($hmac !== $this->hmac) {
+			HttpUtility::setResponseCodeAndExit(HttpUtility::HTTP_STATUS_410);
+
 		}
-		$parameters = unserialize(base64_decode($this->parametersEncoded));
+
+		// decode the parameters Array
+		$parameters = unserialize(base64_decode($parametersEncoded));
 		foreach ($parameters as $parameterName => $parameterValue) {
 			$this->{$parameterName} = $parameterValue;
 		}
-		// Check the file. If must be in a directory beneath the dir of this script...
-		// $this->file remains unchanged, because of the code in stdgraphic, but we do check if the file exists within the current path
-		$test_file = PATH_site . $this->file;
-		if (!\TYPO3\CMS\Core\Utility\GeneralUtility::validPathStr($test_file)) {
-			\TYPO3\CMS\Core\Utility\HttpUtility::setResponseCodeAndExit(\TYPO3\CMS\Core\Utility\HttpUtility::HTTP_STATUS_410);
-		}
-		if (!@is_file($test_file)) {
-			\TYPO3\CMS\Core\Utility\HttpUtility::setResponseCodeAndExit(\TYPO3\CMS\Core\Utility\HttpUtility::HTTP_STATUS_404);
+
+		try {
+			if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($fileUid)) {
+				$this->file = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getFileObject((int)$fileUid);
+			} else {
+				$this->file = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->retrieveFileOrFolderObject($fileUid);
+			}
+		} catch (\TYPO3\CMS\Core\Exception $e) {
+			HttpUtility::setResponseCodeAndExit(HttpUtility::HTTP_STATUS_404);
 		}
 	}
 
@@ -145,58 +157,67 @@ class ShowImageController {
 	 * Accumulates the content in $this->content
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function main() {
-		// Creating stdGraphic object, initialize it and make image:
-		$img = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Imaging\\GraphicalFunctions');
-		$img->mayScaleUp = 0;
-		$img->init();
-		if ($this->sample) {
-			$img->scalecmd = '-sample';
+		$processedImage = $this->processImage();
+		$imageTagMarkers = array(
+			'###publicUrl###' => $processedImage->getPublicUrl(),
+			'###alt###' => ($this->file->getProperty('alternative') ?: $this->title),
+			'###title###' => ($this->file->getProperty('title') ?: $this->title)
+		);
+		$this->imageTag = str_replace(array_keys($imageTagMarkers), array_values($imageTagMarkers), $this->imageTag);
+		if ($this->wrap !== '|') {
+			$wrapParts = explode('|', $this->wrap, 2);
+			$this->imageTag = $wrapParts[0] . $this->imageTag . $wrapParts[1];
 		}
-		if ($this->alternativeTempPath && \TYPO3\CMS\Core\Utility\GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['FE']['allowedTempPaths'], $this->alternativeTempPath)) {
-			$img->tempPath = $this->alternativeTempPath;
-		}
+		$markerArray = array(
+			'###TITLE###' => ($this->file->getProperty('title') ?: $this->title),
+			'###IMAGE###' => $this->imageTag,
+			'###BODY###' => $this->bodyTag
+		);
+
+		$this->content = str_replace(array_keys($markerArray), array_values($markerArray), $this->content);
+
+	}
+
+	/**
+	 * Does the actual image processing
+	 * @return \TYPO3\CMS\Core\Resource\ProcessedFile
+	 */
+	protected function processImage() {
 		if (strstr($this->width . $this->height, 'm')) {
 			$max = 'm';
 		} else {
 			$max = '';
 		}
-		$this->height = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($this->height, 0);
-		$this->width = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($this->width, 0);
-		if ($this->frame) {
-			$this->frame = (int)$this->frame;
-		}
-		$imgInfo = $img->imageMagickConvert($this->file, 'web', $this->width . $max, $this->height, $img->IMparams($this->effects), $this->frame);
-		// Create HTML output:
-		$this->content = '';
-		$this->content .= '
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+		$this->height = MathUtility::forceIntegerInRange($this->height, 0);
+		$this->width = MathUtility::forceIntegerInRange($this->width, 0) . $max;
 
-<html>
-<head>
-	<title>' . htmlspecialchars(($this->title ?: 'Image')) . '</title>
-	' . ($this->title ? '' : '<meta name="robots" content="noindex,follow" />') . '
-</head>
-		' . ($this->bodyTag ?: '<body>');
-		if (is_array($imgInfo)) {
-			$wrapParts = explode('|', $this->wrap);
-			$this->content .= trim($wrapParts[0]) . $img->imgTag($imgInfo) . trim($wrapParts[1]);
-		}
-		$this->content .= '
-		</body>
-		</html>';
+		$processingConfiguration = array(
+			'width' => $this->width,
+			'height' => $this->height,
+			'frame' => $this->frame,
+
+		);
+		return $this->file->process('Image.CropScaleMask', $processingConfiguration);
 	}
-
 	/**
 	 * Outputs the content from $this->content
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function printContent() {
 		echo $this->content;
+		HttpUtility::setResponseCodeAndExit(HttpUtility::HTTP_STATUS_200);
 	}
 
+	/**
+	 *
+	 * @return void
+	 */
+	public function execute() {
+		$this->init();
+		$this->main();
+		$this->printContent();
+	}
 }
