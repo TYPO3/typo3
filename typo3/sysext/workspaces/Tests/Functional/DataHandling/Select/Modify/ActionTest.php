@@ -79,7 +79,6 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Sel
 	 * @see DataSet/changeElementSorting.csv
 	 */
 	public function changeElementSorting() {
-		$this->markTestSkipped('Core bug, see http://forge.typo3.org/issues/56782');
 		parent::changeElementSorting();
 		$this->assertAssertionDataSet('changeElementSorting');
 
