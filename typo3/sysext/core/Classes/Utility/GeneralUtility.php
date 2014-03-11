@@ -1087,10 +1087,15 @@ class GeneralUtility {
 	 * expect to get just two parts. So we pop off the domain and then glue the
 	 * rest together again.
 	 *
+	 * An additional, optional safety check can be done to see if the domain part
+	 * has a valid MX record. see #56771 for more details
+	 *
 	 * @param string $email Input string to evaluate
 	 * @return bool Returns TRUE if the $email address (input string) is valid
+	 * @param bool $checkDnsRecordForValidMxEntry if enabled, a lookup on the domain name (type=MX) is done in order to verify the host part of the email address
+	 * @return bool Returns TRUE if the $email address (input string) is valid
 	 */
-	static public function validEmail($email) {
+	static public function validEmail($email, $checkDnsRecordForValidMxEntry = FALSE) {
 		// Early return in case input is not a string
 		if (!is_string($email)) {
 			return FALSE;
@@ -1105,7 +1110,14 @@ class GeneralUtility {
 		if (!preg_match('/^[a-z0-9.\\-]*$/i', $domain)) {
 			$domain = self::idnaEncode($domain);
 		}
-		return filter_var($user . '@' . $domain, FILTER_VALIDATE_EMAIL) !== FALSE;
+
+		$result = (filter_var($user . '@' . $domain, FILTER_VALIDATE_EMAIL) !== FALSE);
+
+		// check if the domain has a valid MX record via a DNS lookup
+		if ($checkDnsRecordForValidMxEntry === TRUE && $result === TRUE) {
+			$result = checkdnsrr($domain);
+		}
+		return $result;
 	}
 
 	/**

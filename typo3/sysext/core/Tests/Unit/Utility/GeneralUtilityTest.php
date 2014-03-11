@@ -929,11 +929,35 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 	/**
+	 * Data provider for valid validEmail's with DNS Check
+	 *
+	 * @return array Valid email addresses
+	 */
+	public function validEmailValidWithDNSCheckDataProvider() {
+		// please take care when adding more addresses to this
+		// provider! Please not add real addresses to prevent
+		// SPAM bots find this addresses.
+		// this array must contain valid domains for the DNS check
+		return array(
+			'd3dcljkl38c23dasdas@typo3.org' => array('d3dcljkl38c23dasdas@typo3.org'),
+			'd3dcljkl38c23dasdas@frank-nägler.de' => array('d3dcljkl38c23dasdas@frank-nägler.de')
+		);
+	}
+
+	/**
 	 * @test
 	 * @dataProvider validEmailValidDataProvider
 	 */
 	public function validEmailReturnsTrueForValidMailAddress($address) {
 		$this->assertTrue(Utility\GeneralUtility::validEmail($address));
+	}
+
+	/**
+	 * @test
+	 * @dataProvider validEmailValidWithDNSCheckDataProvider
+	 */
+	public function validEmailReturnsTrueForValidMailAddressWithCheckDnsRecordForValidMxEntry($address) {
+		$this->assertTrue(Utility\GeneralUtility::validEmail($address, TRUE));
 	}
 
 	/**
@@ -983,6 +1007,14 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function validEmailReturnsFalseForInvalidMailAddress($address) {
 		$this->assertFalse(Utility\GeneralUtility::validEmail($address));
+	}
+
+	/**
+	 * @test
+	 * @dataProvider validEmailInvalidDataProvider
+	 */
+	public function validEmailReturnsFalseForInvalidMailAddressWithCheckDnsRecordForValidMxEntry($address) {
+		$this->assertFalse(Utility\GeneralUtility::validEmail($address, TRUE));
 	}
 
 	//////////////////////////////////
