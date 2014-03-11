@@ -522,3 +522,12 @@ TCEforms Sections
 .t3-form-palette-field-label {
 	text-indent: 2px;
 }
+
+/* - - - - - - - - - - - - - - - - - - - - -
+TCEforms Tree
+- - - - - - - - - - - - - - - - - - - - - */
+.t3-form-field-item .x-tree input.x-tree-node-cb {
+	height: auto;
+	margin: 0 0 0 1px;
+	vertical-align: middle;
+}

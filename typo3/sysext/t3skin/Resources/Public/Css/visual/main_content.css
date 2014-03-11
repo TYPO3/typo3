@@ -60,7 +60,8 @@ tr:hover a {
 	text-decoration: underline;
 }
 
-tr:hover .t3-page-ce a {
+tr:hover .t3-page-ce a,
+tr:hover .x-tree a {
 	text-decoration: none;
 }
 
