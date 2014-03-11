@@ -68,8 +68,6 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  */
 class ResourceStorage {
 
-	const SIGNAL_PreProcessConfiguration = 'preProcessConfiguration';
-	const SIGNAL_PostProcessConfiguration = 'postProcessConfiguration';
 	const SIGNAL_PreFileAdd = 'preFileAdd';
 	const SIGNAL_PostFileAdd = 'postFileAdd';
 	const SIGNAL_PreFileCopy = 'preFileCopy';
@@ -114,13 +112,6 @@ class ResourceStorage {
 	 * @var array
 	 */
 	protected $configuration;
-
-	/**
-	 * The base URI to this storage.
-	 *
-	 * @var string
-	 */
-	protected $baseUri;
 
 	/**
 	 * @var Service\FileProcessingService
@@ -235,7 +226,6 @@ class ResourceStorage {
 
 		$this->isDefault = (isset($storageRecord['is_default']) && $storageRecord['is_default'] == 1);
 		$this->resetFileAndFolderNameFiltersToDefault();
-		$this->processConfiguration();
 	}
 
 	/**
@@ -263,30 +253,6 @@ class ResourceStorage {
 	 */
 	public function getStorageRecord() {
 		return $this->storageRecord;
-	}
-
-	/**
-	 * Processes the configuration of this storage.
-	 *
-	 * @throws \InvalidArgumentException If a required configuration option is not set or has an invalid value.
-	 * @return void
-	 */
-	protected function processConfiguration() {
-		$this->emitPreProcessConfigurationSignal();
-		if (isset($this->configuration['baseUri'])) {
-			$this->baseUri = rtrim($this->configuration['baseUri'], '/') . '/';
-		}
-		$this->emitPostProcessConfigurationSignal();
-	}
-
-	/**
-	 * Returns the base URI of this storage; all files are reachable via URLs
-	 * beginning with this string.
-	 *
-	 * @return string
-	 */
-	public function getBaseUri() {
-		return $this->baseUri;
 	}
 
 	/**
@@ -2112,24 +2078,6 @@ class ResourceStorage {
 		} else {
 			return ResourceFactory::getInstance()->createFolderObject($this, $this->driver->getRootLevelFolder(), '');
 		}
-	}
-
-	/**
-	 * Emits the configuration pre-processing signal
-	 *
-	 * @return void
-	 */
-	protected function emitPreProcessConfigurationSignal() {
-		$this->getSignalSlotDispatcher()->dispatch('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', self::SIGNAL_PreProcessConfiguration, array($this));
-	}
-
-	/**
-	 * Emits the configuration post-processing signal
-	 *
-	 * @return void
-	 */
-	protected function emitPostProcessConfigurationSignal() {
-		$this->getSignalSlotDispatcher()->dispatch('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', self::SIGNAL_PostProcessConfiguration, array($this));
 	}
 
 	/**

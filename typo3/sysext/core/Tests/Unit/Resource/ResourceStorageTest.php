@@ -117,7 +117,6 @@ class ResourceStorageTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCa
 	protected function createDriverMock($driverConfiguration, \TYPO3\CMS\Core\Resource\ResourceStorage $storageObject = NULL, $mockedDriverMethods = array()) {
 		$this->initializeVfs();
 
-
 		if (!isset($driverConfiguration['basePath'])) {
 			$driverConfiguration['basePath'] = $this->getMountRootUrl();
 		}
@@ -136,15 +135,6 @@ class ResourceStorageTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCa
 		$driver->processConfiguration();
 		$driver->initialize();
 		return $driver;
-	}
-
-	/**
-	 * @test
-	 */
-	public function baseUriGetsSlashAppended() {
-		$uri = 'http://example.org/somewhere/else';
-		$this->prepareFixture(array('baseUri' => $uri));
-		$this->assertEquals($uri . '/', $this->fixture->getBaseUri());
 	}
 
 	/**
@@ -194,26 +184,25 @@ class ResourceStorageTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCa
 	 * @test
 	 * @dataProvider capabilitiesDataProvider
 	 */
-	public function capabilitiesOfStorageObjectAreCorrectlySet(array $capabilites) {
+	public function capabilitiesOfStorageObjectAreCorrectlySet(array $capabilities) {
 		$storageRecord = array(
-			'is_public' => $capabilites['public'],
-			'is_writable' => $capabilites['writable'],
-			'is_browsable' => $capabilites['browsable'],
+			'is_public' => $capabilities['public'],
+			'is_writable' => $capabilities['writable'],
+			'is_browsable' => $capabilities['browsable'],
 			'is_online' => TRUE
 		);
 		$mockedDriver = $this->createDriverMock(
 			array(
 				'pathType' => 'relative',
 				'basePath' => 'fileadmin/',
-				'baseUri' => 'http://www.test.de/'
 			),
 			$this->fixture,
 			NULL
 		);
 		$this->prepareFixture(array(), FALSE, $mockedDriver, $storageRecord);
-		$this->assertEquals($capabilites['public'], $this->fixture->isPublic(), 'Capability "public" is not correctly set.');
-		$this->assertEquals($capabilites['writable'], $this->fixture->isWritable(), 'Capability "writable" is not correctly set.');
-		$this->assertEquals($capabilites['browsable'], $this->fixture->isBrowsable(), 'Capability "browsable" is not correctly set.');
+		$this->assertEquals($capabilities['public'], $this->fixture->isPublic(), 'Capability "public" is not correctly set.');
+		$this->assertEquals($capabilities['writable'], $this->fixture->isWritable(), 'Capability "writable" is not correctly set.');
+		$this->assertEquals($capabilities['browsable'], $this->fixture->isBrowsable(), 'Capability "browsable" is not correctly set.');
 	}
 
 	/**
