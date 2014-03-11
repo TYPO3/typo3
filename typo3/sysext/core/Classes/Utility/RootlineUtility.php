@@ -285,6 +285,9 @@ class RootlineUtility {
 							$whereClauseParts[] = trim($configuration['foreign_table_field']) . ' = \'pages\'';
 						}
 					}
+					if (isset($GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled'])) {
+						$whereClauseParts[] = $table . '.' . $GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled'] . ' = 0';
+					}
 					$whereClause = implode(' AND ', $whereClauseParts);
 					$whereClause .= $this->pageContext->deleteClause($table);
 					$orderBy = isset($configuration['foreign_sortby']) ? $configuration['foreign_sortby'] : '';
