@@ -375,7 +375,7 @@ $(document).ready(function() {
 	});
 
 	// Footer scrolling and visibility
-	if ($('#fixed-footer-fieldset').length > 0) {
+	if ($('#fixed-footer-handler').length > 0) {
 		$(window).scroll(handleButtonScrolling);
 		$('body.backend #typo3-docbody').scroll(handleButtonScrolling);
 	}
@@ -394,10 +394,10 @@ $(document).ready(function() {
 });
 
 function handleButtonScrolling() {
-	if (!isScrolledIntoView($('#fixed-footer-fieldset'))) {
-		$('#fixed-footer-fieldset fieldset').addClass('fixed');
+	if (!isScrolledIntoView($('#fixed-footer-handler'))) {
+		$('#fixed-footer').addClass('fixed');
 	} else {
-		$('#fixed-footer-fieldset fieldset').removeClass('fixed');
+		$('#fixed-footer').removeClass('fixed');
 	}
 }
 function isScrolledIntoView(elem) {

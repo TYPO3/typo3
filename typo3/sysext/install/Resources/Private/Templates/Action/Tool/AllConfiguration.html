@@ -40,7 +40,7 @@
 			<form method="post">
 				<f:render partial="Action/Common/HiddenFormFields" arguments="{_all}" />
 
-				<div class="toggleAll">Toggle All</div>
+
 
 				<f:for each="{data}" as="sectionData" key="sectionName">
 					<f:if condition="{sectionData}">
@@ -48,8 +48,11 @@
 					</f:if>
 				</f:for>
 
-				<div id="fixed-footer-fieldset">
-					<f:render partial="Action/Common/SubmitButton" arguments="{name:'write', text:'Write configuration', className:'btn-save'}"/>
+				<div id="fixed-footer-handler">
+					<div id="fixed-footer">
+						<f:render partial="Action/Common/SubmitButton" arguments="{name:'write', text:'Write configuration', className:'btn-save'}"/>
+						<div class="toggleAll button">Toggle All</div>
+					</div>
 				</div>
 			</form>
 		</f:else>

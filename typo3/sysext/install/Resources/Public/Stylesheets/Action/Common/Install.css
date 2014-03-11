@@ -222,7 +222,8 @@ textarea {
 	font-size: 1.2em;
 }
 
-button {
+button,
+.button {
 	color: #606060;
 	font-size: 1.1em;
 	padding: 0.3em 0.6em;
@@ -237,7 +238,8 @@ button {
 	cursor: pointer;
 }
 
-button:hover {
+button:hover,
+.button:hover {
 	background-color: #ededed;
 	background: -moz-linear-gradient(top,  #f6f6f6 0%, #aaa 100%);
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f6f6f6), color-stop(100%,#aaa));
@@ -484,11 +486,6 @@ body.standalone #t3-install-menu-logout a {
 #t3-install-box-body .expanded .toggleButton {
 	background-image: url('../../../Images/Icon/arrowdown-white.png');
 	border-bottom: 1px solid #666;
-}
-
-#t3-install-box-body .toggleAll {
-	text-align: right;
-	cursor: pointer;
 }
 
 .toggleGroup {
@@ -823,31 +820,42 @@ button.btn-save:hover {
 	background-image: url('../../../Images/Icon/Save.png'), linear-gradient(to bottom,  #f6f6f6 0%,#aaa 100%);
 }
 
-#fixed-footer-fieldset fieldset li {
-	margin: 0 0;
-}
-#fixed-footer-fieldset fieldset {
-	margin: 0 -1.8em;
-	color: #fff;
-	text-align: center;
-	padding: 0.5em 0;
+#fixed-footer-handler {
+	height: 41px;
+	margin: 2em -1.8em 0 -1.8em;
 }
 
-#fixed-footer-fieldset fieldset.fixed {
-	width: 51.7em;
+#fixed-footer {
+	color: #fff;
+	overflow: hidden;
+	padding: 1em 1.8em;
+}
+
+#fixed-footer.fixed {
+	background-color: #666;
 	bottom: 0;
 	position: fixed;
-	background-color: #666;
+	width: 48.1em;
 }
 
-.standalone #fixed-footer-fieldset fieldset.fixed {
+#fixed-footer fieldset {
+	float: left;
+	margin: 0;
+}
+
+#fixed-footer .toggleAll {
+	cursor: pointer;
+	float: right;
+	line-height: 15px;
+}
+
+.standalone #fixed-footer.fixed {
 	background-color: #dadada;
 	border-right: 1px solid #dadada;
 }
 
-#fixed-footer-fieldset {
-	height: 41px;
-	margin-top: 2em;
+#fixed-footer fieldset li {
+	margin: 0;
 }
 
 .phpinfo {
