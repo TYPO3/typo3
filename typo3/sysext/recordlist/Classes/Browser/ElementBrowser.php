@@ -2387,16 +2387,15 @@ class ElementBrowser {
 	}
 
 	/**
-	 * Setter for the class that should be used by TBE_expandPage()
-	 * to generate the record list.
+	 * Setter for the class that should be used by TBE_expandPage() to generate the record list.
+	 * This method is intended to be used by Extensions that implement their own browsing functionality.
 	 *
 	 * @param \TYPO3\CMS\Backend\RecordList\ElementBrowserRecordList $recordList
 	 * @throws \InvalidArgumentException
 	 * @return void
-	 * @deprecated since 6.2 - will be removed two versions later without replacement
+	 * @api
 	 */
 	public function setRecordList($recordList) {
-		GeneralUtility::logDeprecatedFunction();
 		if (!$recordList instanceof \TYPO3\CMS\Backend\RecordList\ElementBrowserRecordList) {
 			throw new \InvalidArgumentException('$recordList needs to be an instance of \\TYPO3\\CMS\\Backend\\RecordList\\ElementBrowserRecordList', 1370878522);
 		}
