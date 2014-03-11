@@ -38,6 +38,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 	const VALUE_LanguageId = 1;
 	const VALUE_CategoryIdFirst = 28;
 	const VALUE_CategoryIdSecond = 29;
+	const VALUE_CategoryIdLast = 31;
 	const VALUE_WorkspaceId = 1;
 
 	const TABLE_Content = 'tt_content';
@@ -47,7 +48,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 	/**
 	 * @var string
 	 */
-	protected $dataSetDirectory = 'typo3/sysext/workspaces/Tests/Functional/DataHandling/ManyToMany/DataSet/';
+	protected $scenarioDataSetDirectory = 'typo3/sysext/workspaces/Tests/Functional/DataHandling/ManyToMany/DataSet/';
 
 	/**
 	 * @var array
@@ -61,8 +62,10 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 		parent::setUp();
 		$this->importScenarioDataSet('LiveDefaultPages');
 		$this->importScenarioDataSet('LiveDefaultElements');
+		$this->importScenarioDataSet('ReferenceIndex');
 
 		$this->setUpFrontendRootPage(1, array('typo3/sysext/core/Tests/Functional/Fixtures/Frontend/JsonRenderer.ts'));
+		$this->backendUser->workspace = self::VALUE_WorkspaceId;
 	}
 
 	/**
@@ -75,14 +78,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 	 */
 	public function addCategoryRelation() {
 		$this->actionService->modifyReferences(
-			self::TABLE_Content, self::VALUE_ContentIdFirst, 'categories', array(self::VALUE_CategoryIdFirst, self::VALUE_CategoryIdSecond, 31)
-		);
-		$this->assertAssertionDataSet('addCategoryRelation');
-
-		$responseContent = $this->getFrontendResponse(self::VALUE_PageId, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseContent();
-		$this->assertResponseContentStructureHasRecords(
-			$responseContent, self::TABLE_Content . ':' . self::VALUE_ContentIdFirst, 'categories',
-			self::TABLE_Category, 'title', array('Category A', 'Category B', 'Category A.A')
+			self::TABLE_Content, self::VALUE_ContentIdFirst, 'categories', array(self::VALUE_CategoryIdFirst, self::VALUE_CategoryIdSecond, self::VALUE_CategoryIdLast)
 		);
 	}
 
@@ -94,17 +90,6 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 		$this->actionService->modifyReferences(
 			self::TABLE_Content, self::VALUE_ContentIdFirst, 'categories', array(self::VALUE_CategoryIdFirst)
 		);
-		$this->assertAssertionDataSet('deleteCategoryRelation');
-
-		$responseContent = $this->getFrontendResponse(self::VALUE_PageId, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseContent();
-		$this->assertResponseContentStructureHasRecords(
-			$responseContent, self::TABLE_Content . ':' . self::VALUE_ContentIdFirst, 'categories',
-			self::TABLE_Category, 'title', array('Category A')
-		);
-		$this->assertResponseContentStructureDoesNotHaveRecords(
-			$responseContent, self::TABLE_Content . ':' . self::VALUE_ContentIdFirst, 'categories',
-			self::TABLE_Category, 'title', array('Category B', 'Category C', 'Category A.A')
-		);
 	}
 
 	/**
@@ -114,13 +99,6 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 	public function changeCategoryRelationSorting() {
 		$this->actionService->modifyReferences(
 			self::TABLE_Content, self::VALUE_ContentIdFirst, 'categories', array(self::VALUE_CategoryIdSecond, self::VALUE_CategoryIdFirst)
-		);
-		$this->assertAssertionDataSet('changeCategoryRelationSorting');
-
-		$responseContent = $this->getFrontendResponse(self::VALUE_PageId, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseContent();
-		$this->assertResponseContentStructureHasRecords(
-			$responseContent, self::TABLE_Content . ':' . self::VALUE_ContentIdFirst, 'categories',
-			self::TABLE_Category, 'title', array('Category A', 'Category B')
 		);
 	}
 
@@ -132,15 +110,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 		$newTableIds = $this->actionService->createNewRecord(
 			self::TABLE_Content, self::VALUE_PageId, array('header' => 'Testing #1', 'categories' => self::VALUE_CategoryIdSecond)
 		);
-		$this->assertAssertionDataSet('createContentNAddRelation');
-
-		$newContentId = $newTableIds[self::TABLE_Content][0];
-		$responseContent = $this->getFrontendResponse(self::VALUE_PageId, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseContent();
-		$this->assertResponseContentHasRecords($responseContent, self::TABLE_Content, 'header', 'Testing #1');
-		$this->assertResponseContentStructureHasRecords(
-			$responseContent, self::TABLE_Content . ':' . $newContentId, 'categories',
-			self::TABLE_Category, 'title', 'Category B'
-		);
+		$this->recordIds['newContentId'] = $newTableIds[self::TABLE_Content][0];
 	}
 
 	/**
@@ -148,20 +118,10 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 	 * @see DataSet/Assertion/createCategoryRecordAndAddCategoryRelation.csv
 	 */
 	public function createCategoryAndAddRelation() {
-		$this->actionService->createNewRecord(
+		$newTableIds = $this->actionService->createNewRecord(
 			self::TABLE_Category, 0, array('title' => 'Testing #1', 'items' => 'tt_content_' . self::VALUE_ContentIdFirst)
 		);
-		$this->assertAssertionDataSet('createCategoryNAddRelation');
-
-		// @todo Does not work due to the core bug of not setting the reference field in the MM record
-		/*
-			$responseContent = $this->getFrontendResponse(self::VALUE_PageId, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseContent();
-			$this->assertResponseContentHasRecords($responseContent, self::TABLE_Category, 'title', 'Testing #1');
-			$this->assertResponseContentStructureHasRecords(
-				$responseContent, self::TABLE_Content . ':' . self::VALUE_ContentIdFirst, 'categories',
-				self::TABLE_Category, 'title', 'Testing #1'
-			);
-		*/
+		$this->recordIds['newCategoryId'] = $newTableIds[self::TABLE_Category][0];
 	}
 
 	/**
@@ -176,20 +136,8 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 				self::TABLE_Content => array('header' => 'Testing #1', 'categories' => '__previousUid'),
 			)
 		);
-		$this->assertAssertionDataSet('createContentNCreateRelation');
-
-		$newContentId = $newTableIds[self::TABLE_Content][0];
-		$responseContent = $this->getFrontendResponse(self::VALUE_PageId, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseContent();
-		$this->assertResponseContentHasRecords($responseContent, self::TABLE_Content, 'header', 'Testing #1');
-
-		// @todo New category is not resolved in new content element due to core bug
-		// The frontend query ignores pid=-1 and thus the specific workspace record in sys_category:33
-		/*
-			$this->assertResponseContentStructureHasRecords(
-				$responseContent, self::TABLE_Content . ':' . $newContentId, 'categories',
-				self::TABLE_Category, 'title', 'Testing #1'
-			);
-		*/
+		$this->recordIds['newCategoryId'] = $newTableIds[self::TABLE_Category][0];
+		$this->recordIds['newContentId'] = $newTableIds[self::TABLE_Content][0];
 	}
 
 	/**
@@ -197,170 +145,90 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 	 * @see DataSet/Assertion/createCategoryRecordAndCreateCategoryRelation.csv
 	 */
 	public function createCategoryAndCreateRelation() {
-		$this->markTestSkipped('The new content record cannot be referenced in the new category record');
-		$this->actionService->createNewRecords(
+		$newTableIds = $this->actionService->createNewRecords(
 			self::VALUE_PageId,
 			array(
 				self::TABLE_Content => array('header' => 'Testing #1',),
 				self::TABLE_Category => array('title' => 'Testing #1', 'items' => 'tt_content___previousUid'),
 			)
 		);
-		$this->assertAssertionDataSet('createCategoryNCreateRelation');
+		$this->recordIds['newContentId'] = $newTableIds[self::TABLE_Content][0];
+		$this->recordIds['newCategoryId'] = $newTableIds[self::TABLE_Category][0];
 	}
 
 	/**
-	 * @test
 	 * @see DataSet/Assertion/modifyCategoryRecordOfCategoryRelation.csv
 	 */
 	public function modifyCategoryOfRelation() {
 		$this->actionService->modifyRecord(self::TABLE_Category, self::VALUE_CategoryIdFirst, array('title' => 'Testing #1'));
-		$this->assertAssertionDataSet('modifyCategoryOfRelation');
-
-		$responseContent = $this->getFrontendResponse(self::VALUE_PageId, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseContent();
-		$this->assertResponseContentStructureHasRecords(
-			$responseContent, self::TABLE_Content . ':' . self::VALUE_ContentIdFirst, 'categories',
-			self::TABLE_Category, 'title', array('Testing #1', 'Category B')
-		);
 	}
 
 	/**
-	 * @test
 	 * @see DataSet/Assertion/modifyContentRecordOfCategoryRelation.csv
 	 */
 	public function modifyContentOfRelation() {
 		$this->actionService->modifyRecord(self::TABLE_Content, self::VALUE_ContentIdFirst, array('header' => 'Testing #1'));
-		$this->assertAssertionDataSet('modifyContentOfRelation');
-
-		$responseContent = $this->getFrontendResponse(self::VALUE_PageId, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseContent();
-		$this->assertResponseContentHasRecords($responseContent, self::TABLE_Content, 'header', 'Testing #1');
 	}
 
 	/**
-	 * @test
 	 * @see DataSet/Assertion/modifyBothRecordsOfCategoryRelation.csv
 	 */
 	public function modifyBothsOfRelation() {
-		$this->markTestSkipped('Using specific UIDs on both sides is not implemented yet');
 		$this->actionService->modifyRecord(self::TABLE_Category, self::VALUE_CategoryIdFirst, array('title' => 'Testing #1'));
 		$this->actionService->modifyRecord(self::TABLE_Content, self::VALUE_ContentIdFirst, array('header' => 'Testing #1'));
-		$this->assertAssertionDataSet('modifyBothsOfRelation');
-
-		$responseContent = $this->getFrontendResponse(self::VALUE_PageId, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseContent();
-		$this->assertResponseContentStructureHasRecords(
-			$responseContent, self::TABLE_Content . ':' . self::VALUE_ContentIdFirst, 'categories',
-			self::TABLE_Category, 'title', array('Testing #1', 'Category B')
-		);
-		$this->assertResponseContentHasRecords($responseContent, self::TABLE_Content, 'header', 'Testing #1');
 	}
 
 	/**
-	 * @test
 	 * @see DataSet/Assertion/deleteContentRecordOfCategoryRelation.csv
 	 */
 	public function deleteContentOfRelation() {
 		$this->actionService->deleteRecord(self::TABLE_Content, self::VALUE_ContentIdLast);
-		$this->assertAssertionDataSet('deleteContentOfRelation');
-
-		$responseContent = $this->getFrontendResponse(self::VALUE_PageId, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseContent();
-		$this->assertResponseContentDoesNotHaveRecords($responseContent, self::TABLE_Content, 'header', 'Testing #1');
 	}
 
 	/**
-	 * @test
 	 * @see DataSet/Assertion/deleteCategoryRecordOfCategoryRelation.csv
 	 */
 	public function deleteCategoryOfRelation() {
 		$this->actionService->deleteRecord(self::TABLE_Category, self::VALUE_CategoryIdFirst);
-		$this->assertAssertionDataSet('deleteCategoryOfRelation');
-
-		$responseContent = $this->getFrontendResponse(self::VALUE_PageId, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseContent();
-		$this->assertResponseContentStructureDoesNotHaveRecords(
-			$responseContent, self::TABLE_Content . ':' . self::VALUE_ContentIdFirst, 'categories',
-			self::TABLE_Category, 'title', array('Category A')
-		);
 	}
 
 	/**
-	 * @test
 	 * @see DataSet/Assertion/copyContentRecordOfCategoryRelation.csv
 	 */
 	public function copyContentOfRelation() {
 		$newTableIds = $this->actionService->copyRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_PageId);
-		$this->assertAssertionDataSet('copyContentOfRelation');
-
-		$newContentId = $newTableIds[self::TABLE_Content][self::VALUE_ContentIdLast];
-		$responseContent = $this->getFrontendResponse(self::VALUE_PageId, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseContent();
-		$this->assertResponseContentStructureHasRecords(
-			$responseContent, self::TABLE_Content . ':' . $newContentId, 'categories',
-			self::TABLE_Category, 'title', array('Category B', 'Category C')
-		);
+		$this->recordIds['newContentId'] = $newTableIds[self::TABLE_Content][self::VALUE_ContentIdLast];
 	}
 
 	/**
-	 * @test
 	 * @see DataSet/Assertion/copyCategoryRecordOfCategoryRelation.csv
 	 */
 	public function copyCategoryOfRelation() {
-		$this->actionService->copyRecord(self::TABLE_Category, self::VALUE_CategoryIdFirst, 0);
-		$this->assertAssertionDataSet('copyCategoryOfRelation');
-
-		$responseContent = $this->getFrontendResponse(self::VALUE_PageId, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseContent();
-		$this->assertResponseContentStructureHasRecords(
-			$responseContent, self::TABLE_Content . ':' . self::VALUE_ContentIdFirst, 'categories',
-			self::TABLE_Category, 'title', 'Category A'
-			// @todo Actually it should be twice "Category A" since the category got copied
-			// The frontend query ignores pid=-1 and thus the specific workspace record in sys_category:33
-			// SELECT sys_category.* FROM sys_category JOIN sys_category_record_mm ON sys_category_record_mm.uid_local = sys_category.uid WHERE sys_category.uid IN (33,28,29)
-			// AND sys_category_record_mm.uid_foreign=297 AND (sys_category.sys_language_uid IN (0,-1))
-			// AND sys_category.deleted=0 AND (sys_category.t3ver_wsid=0 OR sys_category.t3ver_wsid=1) AND sys_category.pid<>-1
-			// ORDER BY sys_category_record_mm.sorting_foreign
-			// self::TABLE_Category, 'title', array('Category A', 'Category A')
-		);
+		$newTableIds = $this->actionService->copyRecord(self::TABLE_Category, self::VALUE_CategoryIdFirst, 0);
+		$this->recordIds['newCategoryId'] = $newTableIds[self::TABLE_Category][self::VALUE_CategoryIdFirst];
 	}
 
 	/**
-	 * @test
 	 * @see DataSet/Assertion/localizeContentRecordOfCategoryRelation.csv
 	 */
 	public function localizeContentOfRelation() {
-		$this->actionService->localizeRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_LanguageId);
-		$this->assertAssertionDataSet('localizeContentOfRelation');
-
-		$responseContent = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseContent();
-		$this->assertResponseContentStructureHasRecords(
-			$responseContent, self::TABLE_Content . ':' . self::VALUE_ContentIdLast, 'categories',
-			self::TABLE_Category, 'title', array('Category B', 'Category C')
-		);
+		$localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_LanguageId);
+		$this->recordIds['localizedContentId'] = $localizedTableIds[self::TABLE_Content][self::VALUE_ContentIdLast];
 	}
 
 	/**
-	 * @test
 	 * @see DataSet/Assertion/localizeCategoryRecordOfCategoryRelation.csv
 	 */
 	public function localizeCategoryOfRelation() {
-		$this->actionService->localizeRecord(self::TABLE_Category, self::VALUE_CategoryIdFirst, self::VALUE_LanguageId);
-		$this->assertAssertionDataSet('localizeCategoryOfRelation');
-
-		$responseContent = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseContent();
-		$this->assertResponseContentStructureHasRecords(
-			$responseContent, self::TABLE_Content . ':' . self::VALUE_ContentIdFirst, 'categories',
-			self::TABLE_Category, 'title', array('[Translate to Dansk:] Category A', 'Category B')
-		);
+		$localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Category, self::VALUE_CategoryIdFirst, self::VALUE_LanguageId);
+		$this->recordIds['localizedCategoryId'] = $localizedTableIds[self::TABLE_Category][self::VALUE_CategoryIdFirst];
 	}
 
 	/**
-	 * @test
 	 * @see DataSet/Assertion/moveContentRecordOfCategoryRelationToDifferentPage.csv
 	 */
 	public function moveContentOfRelationToDifferentPage() {
 		$this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_PageIdTarget);
-		$this->assertAssertionDataSet('moveContentOfRelationToDifferentPage');
-
-		$responseContent = $this->getFrontendResponse(self::VALUE_PageIdTarget, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseContent();
-		$this->assertResponseContentStructureHasRecords(
-			$responseContent, self::TABLE_Content . ':' . self::VALUE_ContentIdLast, 'categories',
-			self::TABLE_Category, 'title', array('Category B', 'Category C')
-		);
 	}
 
 }

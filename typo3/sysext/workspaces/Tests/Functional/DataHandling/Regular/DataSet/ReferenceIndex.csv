@@ -1,0 +1,5 @@
+sys_refindex
+,hash,tablename,recuid,field,flexpointer,softref_key,softref_id,sorting,deleted,ref_table,ref_uid,ref_string
+,25426f92d44dd2ccf416108462b446e3,sys_workspace,1,custom_stages,,,,0,0,sys_workspace_stage,1,
+,01a3ce8c4e3b2bb1aa439dc29081f996,sys_workspace_stage,1,responsible_persons,,,,0,0,be_users,3,
+,1b70a8e25c22645f7a49a79f57f3cf3f,sys_category,31,parent,,,,0,0,sys_category,28,

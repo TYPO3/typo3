@@ -1,0 +1,12 @@
+pages
+,uid,pid,sorting,deleted,t3ver_wsid,t3ver_state,t3ver_stage,t3ver_oid,t3ver_move_id,title
+,1,0,256,0,0,0,0,0,0,FunctionalTest
+,88,1,256,0,0,0,0,0,0,DataHandlerTest
+,89,1,192,0,0,0,0,0,0,Relations
+,90,1,128,0,0,0,0,0,0,Target
+,91,-1,512,0,0,0,0,90,0,Target
+,93,-1,256,0,0,0,0,89,0,Relations
+tt_content
+,uid,pid,sorting,deleted,sys_language_uid,l18n_parent,t3ver_wsid,t3ver_state,t3ver_stage,t3ver_oid,t3ver_move_id,header
+,297,89,256,0,0,0,0,0,0,0,0,"Regular Element #1"
+,298,89,512,0,0,0,0,0,0,0,0,"Regular Element #2"

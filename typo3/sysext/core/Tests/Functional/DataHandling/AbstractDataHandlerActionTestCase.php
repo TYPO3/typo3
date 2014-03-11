@@ -26,7 +26,6 @@ namespace TYPO3\CMS\Core\Tests\Functional\DataHandling;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Tests\Functional\DataHandling\Framework\DataSet;
-use TYPO3\CMS\Core\Tests\Functional\Framework\Frontend\Response;
 use TYPO3\CMS\Core\Tests\Functional\Framework\Frontend\ResponseContent;
 
 /**
@@ -39,7 +38,12 @@ abstract class AbstractDataHandlerActionTestCase extends \TYPO3\CMS\Core\Tests\F
 	/**
 	 * @var string
 	 */
-	protected $dataSetDirectory;
+	protected $scenarioDataSetDirectory;
+
+	/**
+	 * @var string
+	 */
+	protected $assertionDataSetDirectory;
 
 	/**
 	 * If this value is NULL, log entries are not considered.
@@ -66,6 +70,11 @@ abstract class AbstractDataHandlerActionTestCase extends \TYPO3\CMS\Core\Tests\F
 	);
 
 	/**
+	 * @var array
+	 */
+	protected $recordIds = array();
+
+	/**
 	 * @var \TYPO3\CMS\Core\Tests\Functional\DataHandling\Framework\ActionService
 	 */
 	protected $actionService;
@@ -89,6 +98,7 @@ abstract class AbstractDataHandlerActionTestCase extends \TYPO3\CMS\Core\Tests\F
 	public function tearDown() {
 		$this->assertErrorLogEntries();
 		unset($this->actionService);
+		unset($this->recordIds);
 		parent::tearDown();
 	}
 
@@ -105,7 +115,7 @@ abstract class AbstractDataHandlerActionTestCase extends \TYPO3\CMS\Core\Tests\F
 	 * @param string $dataSetName
 	 */
 	protected function importScenarioDataSet($dataSetName) {
-		$fileName = rtrim($this->dataSetDirectory, '/') . '/Scenario/' . $dataSetName . '.csv';
+		$fileName = rtrim($this->scenarioDataSetDirectory, '/') . '/' . $dataSetName . '.csv';
 		$fileName = GeneralUtility::getFileAbsFileName($fileName);
 
 		$dataSet = DataSet::read($fileName);
@@ -125,7 +135,7 @@ abstract class AbstractDataHandlerActionTestCase extends \TYPO3\CMS\Core\Tests\F
 	}
 
 	protected function assertAssertionDataSet($dataSetName) {
-		$fileName = rtrim($this->dataSetDirectory, '/') . '/Assertion/' . $dataSetName . '.csv';
+		$fileName = rtrim($this->assertionDataSetDirectory, '/') . '/' . $dataSetName . '.csv';
 		$fileName = GeneralUtility::getFileAbsFileName($fileName);
 
 		$dataSet = DataSet::read($fileName);

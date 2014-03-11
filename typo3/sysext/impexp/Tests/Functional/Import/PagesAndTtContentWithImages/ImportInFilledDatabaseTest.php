@@ -39,7 +39,8 @@ class ImportInFilledDatabaseTest extends \TYPO3\CMS\Impexp\Tests\Functional\Impo
 		'typo3/sysext/impexp/Tests/Functional/Fixtures/Folders/fileadmin/user_upload/typo3_image2.jpg' => 'fileadmin/user_upload/typo3_image2.jpg',
 	);
 
-	protected $dataSetDirectory = 'typo3/sysext/impexp/Tests/Functional/Import/PagesAndTtContentWithImages/DataSet/';
+	protected $scenarioDataSetDirectory = 'typo3/sysext/impexp/Tests/Functional/Import/PagesAndTtContentWithImages/DataSet/Scenario/';
+	protected $assertionDataSetDirectory = 'typo3/sysext/impexp/Tests/Functional/Import/PagesAndTtContentWithImages/DataSet/Assertion/';
 
 	/**
 	 * @test
