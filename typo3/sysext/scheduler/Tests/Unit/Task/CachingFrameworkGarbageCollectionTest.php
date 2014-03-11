@@ -68,9 +68,10 @@ class CachingFrameworkGarbageCollectionTest extends \TYPO3\CMS\Core\Tests\UnitTe
 				'backend' => 'TYPO3\\CMS\\Core\\Cache\\Backend\\AbstractBackend',
 			)
 		);
-		$task = new \TYPO3\CMS\Scheduler\Task\CachingFrameworkGarbageCollectionTask();
-		$task->selectedBackends = array('TYPO3\\CMS\\Core\\Cache\\Backend\\AbstractBackend');
-		$task->execute();
+		/** @var \TYPO3\CMS\Scheduler\Task\CachingFrameworkGarbageCollectionTask|\PHPUnit_Framework_MockObject_MockObject $subject */
+		$subject = $this->getMock('TYPO3\\CMS\\Scheduler\\Task\\CachingFrameworkGarbageCollectionTask', array('dummy'), array(), '', FALSE);
+		$subject->selectedBackends = array('TYPO3\\CMS\\Core\\Cache\\Backend\\AbstractBackend');
+		$subject->execute();
 	}
 
 	/**
@@ -89,9 +90,10 @@ class CachingFrameworkGarbageCollectionTest extends \TYPO3\CMS\Core\Tests\UnitTe
 				'backend' => 'TYPO3\\CMS\\Core\\Cache\\Backend\\AbstractBackend',
 			)
 		);
-		$task = new \TYPO3\CMS\Scheduler\Task\CachingFrameworkGarbageCollectionTask();
-		$task->selectedBackends = array('TYPO3\\CMS\\Core\\Cache\\Backend\\NullBackend');
-		$task->execute();
+		/** @var \TYPO3\CMS\Scheduler\Task\CachingFrameworkGarbageCollectionTask|\PHPUnit_Framework_MockObject_MockObject $subject */
+		$subject = $this->getMock('TYPO3\\CMS\\Scheduler\\Task\\CachingFrameworkGarbageCollectionTask', array('dummy'), array(), '', FALSE);
+		$subject->selectedBackends = array('TYPO3\\CMS\\Core\\Cache\\Backend\\NullBackend');
+		$subject->execute();
 	}
 
 }
