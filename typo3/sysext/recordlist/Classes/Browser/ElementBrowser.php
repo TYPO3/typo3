@@ -996,22 +996,24 @@ class ElementBrowser {
 					try {
 						$fileOrFolderObject = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->retrieveFileOrFolderObject($this->expandFolder);
 					} catch (\Exception $e) {
+						// No path is selected
 					}
 
 					if ($fileOrFolderObject instanceof Folder) {
 						// It's a folder
 						$selectedFolder = $fileOrFolderObject;
 					} elseif ($fileOrFolderObject instanceof \TYPO3\CMS\Core\Resource\FileInterface) {
-						// It's a file
-						// @todo: find the parent folder, right now done a bit ugly, because the file does not
-						// support finding the parent folder of a file on purpose
-						$folderIdentifier = dirname($fileOrFolderObject->getIdentifier());
-						$selectedFolder = $fileOrFolderObject->getStorage()->getFolder($folderIdentifier);
+						// it's a file
+						$selectedFolder = $fileOrFolderObject->getParentFolder();
 					}
 				}
 				// Or get the user's default upload folder
 				if (!$selectedFolder) {
-					$selectedFolder = $GLOBALS['BE_USER']->getDefaultUploadFolder();
+					try {
+						$selectedFolder = $GLOBALS['BE_USER']->getDefaultUploadFolder();
+					} catch (\Exception $e) {
+						// The configured default user folder does not exist
+					}
 				}
 				// Build the file upload and folder creation form
 				$uploadForm = '';
@@ -1398,8 +1400,8 @@ class ElementBrowser {
 			}
 		}
 		// Create upload/create folder forms, if a path is given
+		$this->selectedFolder = FALSE;
 		if ($this->expandFolder) {
-			$this->selectedFolder = FALSE;
 			$fileOrFolderObject = NULL;
 
 			// Try to fetch the folder the user had open the last time he browsed files
@@ -1415,15 +1417,16 @@ class ElementBrowser {
 				$this->selectedFolder = $fileOrFolderObject;
 			} elseif ($fileOrFolderObject instanceof \TYPO3\CMS\Core\Resource\FileInterface) {
 				// It's a file
-				// @todo: find the parent folder, right now done a bit ugly, because the file does not
-				// support finding the parent folder of a file on purpose
-				$folderIdentifier = dirname($fileOrFolderObject->getIdentifier());
-				$this->selectedFolder = $fileOrFolderObject->getStorage()->getFolder($folderIdentifier);
+				$this->selectedFolder = $fileOrFolderObject->getParentFolder();
 			}
 		}
 		// Or get the user's default upload folder
 		if (!$this->selectedFolder) {
-			$this->selectedFolder = $GLOBALS['BE_USER']->getDefaultUploadFolder();
+			try {
+				$this->selectedFolder = $GLOBALS['BE_USER']->getDefaultUploadFolder();
+			} catch (\Exception $e) {
+				// The configured default user folder does not exist
+			}
 		}
 			// Build the file upload and folder creation form
 		$uploadForm = '';

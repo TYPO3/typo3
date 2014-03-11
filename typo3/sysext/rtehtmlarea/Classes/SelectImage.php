@@ -722,21 +722,27 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 				// Get the selected folder
 				$selectedFolder = FALSE;
 				if ($this->expandFolder) {
-					$fileOrFolderObject = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->retrieveFileOrFolderObject($this->expandFolder);
+					$fileOrFolderObject = NULL;
+					try {
+						$fileOrFolderObject = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->retrieveFileOrFolderObject($this->expandFolder);
+					} catch (\Exception $e) {
+						// No path is selected
+					}
 					if ($fileOrFolderObject instanceof \TYPO3\CMS\Core\Resource\Folder) {
 						// it's a folder
 						$selectedFolder = $fileOrFolderObject;
 					} elseif ($fileOrFolderObject instanceof \TYPO3\CMS\Core\Resource\FileInterface) {
 						// it's a file
-						// @todo: find the parent folder, right now done a bit ugly, because the file does not
-						// support finding the parent folder of a file on purpose
-						$folderIdentifier = dirname($fileOrFolderObject->getIdentifier());
-						$selectedFolder = $fileOrFolderObject->getStorage()->getFolder($folderIdentifier);
+						$selectedFolder = $fileOrFolderObject->getParentFolder();
 					}
 				}
 				// If no folder is selected, get the user's default upload folder
 				if (!$selectedFolder) {
-					$selectedFolder = $GLOBALS['BE_USER']->getDefaultUploadFolder();
+					try {
+						$selectedFolder = $GLOBALS['BE_USER']->getDefaultUploadFolder();
+					} catch (\Exception $e) {
+						// The configured default user folder does not exist
+					}
 				}
 				// Build the file upload and folder creation form
 				$uploadForm = '';
