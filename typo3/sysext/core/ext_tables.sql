@@ -381,7 +381,7 @@ CREATE TABLE sys_file_processedfile (
 
 	PRIMARY KEY (uid),
 	KEY combined_1 (original,task_type,configurationsha1),
-	KEY identifier (storage,identifier)
+	KEY identifier (storage,identifier(332))
 );
 
 #
