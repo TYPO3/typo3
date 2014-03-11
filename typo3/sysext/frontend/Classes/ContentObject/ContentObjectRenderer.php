@@ -1049,7 +1049,7 @@ class ContentObjectRenderer {
 	 */
 	public function LOAD_REGISTER($conf, $name) {
 		if ($name === 'RESTORE_REGISTER') {
-			return $this->getContentObject('RESTORE_REGISTER')->render($conf);
+			return $this->getContentObject('RESTORE_REGISTER')->render();
 		} else {
 			return $this->getContentObject('LOAD_REGISTER')->render($conf);
 		}

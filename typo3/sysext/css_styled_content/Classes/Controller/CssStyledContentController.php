@@ -471,7 +471,9 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 		if (!$renderMethod || $renderMethod == 'table') {
 			return $this->cObj->IMGTEXT($conf);
 		}
+		$restoreRegisters = FALSE;
 		if (isset($conf['preRenderRegisters.'])) {
+			$restoreRegisters = TRUE;
 			$this->cObj->LOAD_REGISTER($conf['preRenderRegisters.'], 'LOAD_REGISTER');
 		}
 		// Specific configuration for the chosen rendering method
@@ -485,11 +487,17 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 		$imgList = trim($this->cObj->stdWrap($conf['imgList'], $conf['imgList.']));
 		if (!$imgList) {
 			// No images, that's easy
+			if ($restoreRegisters) {
+				$this->cObj->LOAD_REGISTER(array(), 'RESTORE_REGISTER');
+			}
 			return $content;
 		}
 		$imgs = GeneralUtility::trimExplode(',', $imgList, TRUE);
 		if (count($imgs) === 0) {
 			// The imgList was not empty but did only contain empty values
+			if ($restoreRegisters) {
+				$this->cObj->LOAD_REGISTER(array(), 'RESTORE_REGISTER');
+			}
 			return $content;
 		}
 		$imgStart = (int)$this->cObj->stdWrap($conf['imgStart'], $conf['imgStart.']);
@@ -1080,8 +1088,8 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 			$this->cObj->cObjGetSingle($conf['layout'], $conf['layout.'])
 		);
 
-		if (isset($conf['preRenderRegisters.'])) {
-			$this->cObj->LOAD_REGISTER($conf['preRenderRegisters.'], 'RESTORE_REGISTER');
+		if ($restoreRegisters) {
+			$this->cObj->LOAD_REGISTER(array(), 'RESTORE_REGISTER');
 		}
 
 		return $output;
