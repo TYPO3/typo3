@@ -12,17 +12,16 @@
 		<div id="t3-install-outer">
 			<h1></h1>
 
-			<div id="t3-install-step-execution-messages">
-				<f:if condition="{messages}">
+			<h2>Installing TYPO3 CMS <i:constant name="TYPO3_version" /></h2>
+
+			<f:if condition="{messages}">
+				<div id="t3-install-step-execution-messages">
+					<h4>Messages</h4>
 					<f:for each="{messages}" as="message">
 						<f:render partial="Action/Common/StatusMessage" arguments="{message: message}" />
 					</f:for>
-				</f:if>
-			</div>
-
-			<div id="t3-install-box-border-top">&nbsp;</div>
-
-			<h2>Installing TYPO3 CMS <i:constant name="TYPO3_version" /></h2>
+				</div>
+			</f:if>
 
 			<div id="t3-install-box-body">
 				<f:render section="Content" />

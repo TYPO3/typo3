@@ -276,7 +276,7 @@ button span.t3-install-form-button-icon-negative {
 	width: 57em;
 }
 
-#t3-install-box-body {
+#t3-install-box-body, #t3-install-step-execution-messages {
 	font-size: 110%;
 	line-height: 1.7em;
 	padding: 0.1em 1.8em 1.8em 1.8em;
@@ -390,6 +390,11 @@ h3 {
 	font-size: 163%;
 }
 
+h4 {
+	font-size: 120%;
+	margin: 0 0 0.5em 0;
+}
+
 #t3-install-box-border-top {
 	height: 3px;
 	background: #3e3e3e url('../../../Images/Background/ContentTop.png') no-repeat center bottom;
@@ -400,7 +405,7 @@ h3 {
 	background: #4d4c4d url('../../../Images/Background/ContentBottom.png') no-repeat center top;
 }
 
-#t3-install-box-body {
+#t3-install-box-body, #t3-install-step-execution-messages {
 	color: #787878;
 	background: #ebebeb url('../../../Images/Background/Content.jpg') repeat-x left bottom;
 	padding: 1em 1.8em 1em;
