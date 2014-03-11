@@ -27,6 +27,9 @@
 		<testsuite name="EXT:core tests">
 			<directory>../../../../typo3/sysext/core/Tests/Functional/</directory>
 		</testsuite>
+		<testsuite name="EXT:frontend tests">
+			<directory>../../../../typo3/sysext/frontend/Tests/Functional/</directory>
+		</testsuite>
 		<testsuite name="EXT:impexp tests">
 			<directory>../../../../typo3/sysext/impexp/Tests/Functional/</directory>
 		</testsuite>
