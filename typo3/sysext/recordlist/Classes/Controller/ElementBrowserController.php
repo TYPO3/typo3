@@ -132,12 +132,11 @@ class ElementBrowserController {
 			case 'filedrag':
 			case 'folder':
 				// Setting additional read-only browsing file mounts
-				// @todo: add this feature for FAL and TYPO3 6.0
 				$altMountPoints = trim($GLOBALS['BE_USER']->getTSConfigVal('options.folderTree.altElementBrowserMountPoints'));
 				if ($altMountPoints) {
 					$altMountPoints = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $altMountPoints);
 					foreach ($altMountPoints as $filePathRelativeToFileadmindir) {
-						$GLOBALS['BE_USER']->addFileMount('', $filePathRelativeToFileadmindir, $filePathRelativeToFileadmindir, 1, 'readonly');
+						// @todo: add this feature for FAL and TYPO3 6.2
 					}
 				}
 				break;

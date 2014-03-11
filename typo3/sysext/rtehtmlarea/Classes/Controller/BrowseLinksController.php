@@ -76,7 +76,7 @@ class BrowseLinksController {
 		if ($altMountPoints) {
 			$altMountPoints = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $altMountPoints);
 			foreach ($altMountPoints as $filePathRelativeToFileadmindir) {
-				$GLOBALS['BE_USER']->addFileMount('', $filePathRelativeToFileadmindir, $filePathRelativeToFileadmindir, 1, 'readonly');
+				// @todo: add this feature for FAL and TYPO3 6.2
 			}
 		}
 		// Render type by user function

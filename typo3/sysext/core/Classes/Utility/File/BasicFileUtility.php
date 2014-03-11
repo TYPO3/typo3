@@ -144,7 +144,7 @@ class BasicFileUtility {
 	 * @param 	array		Not in use anymore
 	 * @param 	array		Array with information about allowed and denied file extensions. Typically passed: $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']
 	 * @return 	void
-	 * @see typo3/init.php, \TYPO3\CMS\Core\Authentication\BackendUserAuthentication::returnFilemounts()
+	 * @see typo3/init.php
 	 */
 	public function init($mounts, $f_ext) {
 		$this->f_ext['webspace']['allow'] = GeneralUtility::uniqueList(strtolower($f_ext['webspace']['allow']));
