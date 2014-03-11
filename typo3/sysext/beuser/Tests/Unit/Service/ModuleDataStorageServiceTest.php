@@ -38,6 +38,10 @@ class ModuleDataStorageServiceTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTes
 	 * @test
 	 */
 	public function loadModuleDataReturnsModuleDataObjectForEmptyModuleData() {
+		// The test calls several static dependencies that can not be mocked and
+		// call database in the end, so we need to mock the database here.
+		$GLOBALS['TYPO3_DB'] = $this->getMock('TYPO3\\CMS\\Core\\Database\\DatabaseConnection', array(), array(), '', FALSE);
+
 		// Simulate empty module data
 		$GLOBALS['BE_USER'] = $this->getMock('TYPO3\\CMS\\Core\\Authentication\\BackendUserAuthentication', array(), array(), '', FALSE);
 		$GLOBALS['BE_USER']->uc = array();
