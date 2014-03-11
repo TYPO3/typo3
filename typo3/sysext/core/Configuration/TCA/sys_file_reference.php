@@ -26,6 +26,9 @@ return array(
 		'enablecolumns' => array(
 			'disabled' => 'hidden'
 		),
+		'typeicon_classes' => array(
+			'default' => 'mimetypes-other-other'
+		),
 		'security' => array(
 			'ignoreWebMountRestriction' => TRUE,
 			'ignoreRootLevelRestriction' => TRUE,

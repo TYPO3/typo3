@@ -5,6 +5,10 @@ return array(
 		'label' => 'uid',
 		'default_sortby' => '',
 		'hideTable' => TRUE,
+		'adminOnly' => TRUE,
+		'typeicon_classes' => array(
+			'default' => 'empty-icon'
+		)
 	),
 	'interface' => array(
 		'showRecordFieldList' => 'title,description,wsdl_url_mirror_list_url,last_update,extension_count'

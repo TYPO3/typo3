@@ -4,7 +4,11 @@ return array(
 		'title' => 'LLL:EXT:extensionmanager/Resources/Private/Language/locallang_db.xlf:tx_extensionmanager_domain_model_extension',
 		'label' => 'uid',
 		'default_sortby' => '',
-		'hideTable' => TRUE
+		'hideTable' => TRUE,
+		'adminOnly' => TRUE,
+		'typeicon_classes' => array(
+			'default' => 'empty-icon'
+		)
 	),
 	'interface' => array(
 		'showRecordFieldList' => 'extension_key,version,integer_version,title,description,state,category,last_updated,update_comment,author_name,author_email,md5hash,serialized_dependencies'

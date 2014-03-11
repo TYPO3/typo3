@@ -618,7 +618,8 @@ $GLOBALS['TBE_STYLES']['spriteIconApi']['coreSpriteImageNames'] = array(
 	'treeline-plus',
 	'treeline-plusbottom',
 	'treeline-plusonly',
-	'treeline-stopper'
+	'treeline-stopper',
+	'empty-icon'
 );
 
 
