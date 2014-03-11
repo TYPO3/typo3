@@ -1,7 +1,7 @@
 <?php
 
 /*
-V5.14 8 Sept 2011  (c) 2000-2011 John Lim (jlim#natsoft.com). All rights reserved.
+V5.18 3 Sep 2012  (c) 2000-2012 John Lim (jlim#natsoft.com). All rights reserved.
   Released under both BSD license and Lesser GPL library license.
   Whenever there is any discrepancy between the two licenses,
   the BSD license will take precedence. See License.txt.
@@ -89,7 +89,7 @@ class perf_mssql extends adodb_perf{
 			}
 		}
 
-		$s = '<p><strong>Explain</strong>: '.htmlspecialchars($sql).'</p>';
+		$s = '<p><b>Explain</b>: '.htmlspecialchars($sql).'</p>';
 		$this->conn->Execute("SET SHOWPLAN_ALL ON;");
 		$sql = str_replace('?',"''",$sql);
 		global $ADODB_FETCH_MODE;
@@ -124,7 +124,7 @@ class perf_mssql extends adodb_perf{
 		$save = $ADODB_FETCH_MODE;
 		$ADODB_FETCH_MODE = ADODB_FETCH_NUM;
 		//$this->conn->debug=1;
-		$s = '<table border="1" bgcolor="white"><tr><td><strong>tablename</strong></td><td><strong>size_in_k</strong></td><td><strong>index size</strong></td><td><strong>reserved size</strong></td></tr>';
+		$s = '<table border=1 bgcolor=white><tr><td><b>tablename</b></td><td><b>size_in_k</b></td><td><b>index size</b></td><td><b>reserved size</b></td></tr>';
 		$rs1 = $this->conn->Execute("select distinct name from sysobjects where xtype='U'");
 		if ($rs1) {
 			while (!$rs1->EOF) {

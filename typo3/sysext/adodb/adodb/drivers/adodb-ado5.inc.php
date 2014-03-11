@@ -1,6 +1,6 @@
 <?php
 /*
-V5.14 8 Sept 2011   (c) 2000-2011 John Lim (jlim#natsoft.com). All rights reserved.
+V5.18 3 Sep 2012  (c) 2000-2012 John Lim (jlim#natsoft.com). All rights reserved.
   Released under both BSD license and Lesser GPL library license.
   Whenever there is any discrepancy between the two licenses,
   the BSD license will take precedence.
@@ -99,10 +99,11 @@ class ADODB_ado extends ADOConnection {
 			if (!$argUsername) $argHostname .= ";Trusted_Connection=Yes";
 		} else if ($argProvider=='access')
 			$argProvider = "Microsoft.Jet.OLEDB.4.0"; // Microsoft Jet Provider
-		
+
 		if ($argProvider) $dbc->Provider = $argProvider;
 
 		if ($argProvider) $argHostname = "PROVIDER=$argProvider;DRIVER={SQL Server};SERVER=$argHostname";
+
 
 		if ($argDatabasename) $argHostname .= ";DATABASE=$argDatabasename";
 		if ($argUsername) $argHostname .= ";$u=$argUsername";
@@ -644,7 +645,7 @@ class ADORecordSet_ado extends ADORecordSet {
     			$this->fields[] = (float) $f->value; // if 64 bit PHP, could use (int)
     			break;
 			case 6: // currency is not supported properly;
-				ADOConnection::outp( '<strong>'.$f->Name.': currency type not supported by PHP</strong>');
+				ADOConnection::outp( '<b>'.$f->Name.': currency type not supported by PHP</b>');
 				$this->fields[] = (float) $f->value;
 				break;
 			case 11: //BIT;
