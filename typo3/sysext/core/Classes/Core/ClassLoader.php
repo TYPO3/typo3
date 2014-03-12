@@ -387,7 +387,7 @@ class ClassLoader {
 	 */
 	protected function getCacheEntryIdentifier() {
 		return $this->cacheIdentifier !== NULL
-			? 'ClassLoader_' . $this->$this->cacheIdentifier
+			? 'ClassLoader_' . $this->cacheIdentifier
 			: NULL;
 	}
 
