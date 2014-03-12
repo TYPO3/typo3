@@ -46,4 +46,4 @@ if (!defined('TYPO3_MODE')) {
 $GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['tx_openid'] = 'EXT:openid/class.tx_openid_eid.php';
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['setup']['accessLevelCheck']['TYPO3\\CMS\\Openid\\OpenidModuleSetup'] = '';
 // Use popup window to refresh login instead of the AJAX relogin:
-$TYPO3_CONF_VARS['BE']['showRefreshLoginPopup'] = 1;
+$GLOBALS['TYPO3_CONF_VARS']['BE']['showRefreshLoginPopup'] = 1;
