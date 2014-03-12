@@ -42,6 +42,8 @@ class TaskModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * @return void
 	 */
 	public function __construct() {
+		$GLOBALS['LANG']->includeLLFile('EXT:taskcenter/task/locallang.xlf');
+		$GLOBALS['BE_USER']->modAccess($GLOBALS['MCONF'], TRUE);
 		parent::init();
 		// Initialize document
 		$this->doc = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');

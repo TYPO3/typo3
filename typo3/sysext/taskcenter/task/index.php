@@ -21,10 +21,7 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-$LANG->includeLLFile('EXT:taskcenter/task/locallang.xlf');
-$BE_USER->modAccess($MCONF, 1);
 
-// Make instance:
 $SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Taskcenter\\Controller\\TaskModuleController');
 // Include files?
 foreach ($SOBE->include_once as $INC_FILE) {
