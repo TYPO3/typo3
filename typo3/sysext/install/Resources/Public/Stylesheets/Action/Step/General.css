@@ -288,7 +288,8 @@ button span.t3-install-form-button-icon-negative {
 }
 
 #t3-install-box-body h3 {
-	margin: 0.75em 0 2em;
+	margin: 0.75em 0 1em;
+	clear: left;
 }
 
 .t3-install-login #t3-install-box-body h3 {
@@ -426,4 +427,35 @@ h3 {
 
 #stepInstaller-databaseSelect ul li input.radio {
 	vertical-align: top;
+}
+
+#t3-install-box-body .steps_123 {
+	list-style: none;
+	padding: 0;
+	margin: 0.5em 0 0 0;
+	font-size: 25px;
+}
+#t3-install-box-body .steps_123 li {
+	float: left;
+	text-align: center;
+	width: 40px;
+	height: 30px;
+	margin-right: 10px;
+	padding-bottom: 1em;
+}
+#t3-install-box-body .steps_123 li span {
+	background-color: #d1d1d1;
+	padding-top: 10px;
+	width: 100%;
+	height: 100%;
+	display: block;
+	text-decoration: none !important;
+	color: #fff !important;
+	border-radius: 50px;
+}
+#t3-install-box-body .steps_123 li.cur span {
+	background-color: #FF8700;
+}
+#t3-install-box-body .steps_123 li.prev span {
+	background-color: #585858;
 }

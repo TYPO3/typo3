@@ -3,7 +3,9 @@
 <f:layout name="Step" />
 
 <f:section name="Content">
-	<h3>Database connection:</h3>
+	<f:render partial="Action/Step/StepCounter.html" arguments="{steps: steps}" />
+
+	<h3>Database connection</h3>
 
 	<p>
 		If you have not already created a username and password to access the database, please do so now.

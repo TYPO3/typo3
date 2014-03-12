@@ -43,4 +43,27 @@ interface StepInterface {
 	 * @return boolean TRUE if this step needs to be executed
 	 */
 	public function needsExecution();
+
+	/**
+	 * Tell the action which position it has in the list of actions
+	 *
+	 * @param int $current The current position
+	 * @param int $total The total number of steps
+	 * @return void
+	 */
+	public function setStepsCounter($current, $total);
+
+	/**
+	 * Gets current position
+	 *
+	 * @return int
+	 */
+	public function getCurrentStep();
+
+	/**
+	 * Gets total steps
+	 *
+	 * @return int
+	 */
+	public function getTotalSteps();
 }

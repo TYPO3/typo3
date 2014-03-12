@@ -125,6 +125,7 @@ class EnvironmentAndFolders extends AbstractStepAction {
 		) {
 			$this->view->assign('errorsOrWarningsFromStatus', TRUE);
 		}
+		$this->assignSteps();
 
 		return $this->view->render(!empty($alerts));
 	}

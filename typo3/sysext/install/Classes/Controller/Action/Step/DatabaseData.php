@@ -101,6 +101,7 @@ class DatabaseData extends AbstractStepAction {
 	 * @return string Rendered content
 	 */
 	protected function executeAction() {
+		$this->assignSteps();
 		return $this->view->render();
 	}
 

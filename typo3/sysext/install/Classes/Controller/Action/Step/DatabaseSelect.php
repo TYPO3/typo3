@@ -131,6 +131,7 @@ class DatabaseSelect extends AbstractStepAction {
 		$isInitialInstallationInProgress = $configurationManager->getConfigurationValueByPath('SYS/isInitialInstallationInProgress');
 		$this->view->assign('databaseList', $this->getDatabaseList($isInitialInstallationInProgress));
 		$this->view->assign('isInitialInstallationInProgress', $isInitialInstallationInProgress);
+		$this->assignSteps();
 		return $this->view->render();
 	}
 

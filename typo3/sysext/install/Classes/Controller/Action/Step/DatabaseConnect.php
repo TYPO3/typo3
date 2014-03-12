@@ -246,6 +246,7 @@ class DatabaseConnect extends AbstractStepAction {
 				->assign('renderConnectDetailsPort', TRUE)
 				->assign('renderConnectDetailsSocket', TRUE);
 		}
+		$this->assignSteps();
 
 		return $this->view->render();
 	}

@@ -123,6 +123,11 @@ class StepController extends AbstractController {
 		}
 
 		if ($needsExecution) {
+			if ($this->isInitialInstallationInProgress()) {
+				$currentStep = (array_search($action, $this->authenticationActions) + 1);
+				$totalSteps = count($this->authenticationActions);
+				$stepAction->setStepsCounter($currentStep, $totalSteps);
+			}
 			$stepAction->setMessages($this->session->getMessagesAndFlush());
 			$this->output($stepAction->handle());
 		} else {
@@ -387,6 +392,11 @@ class StepController extends AbstractController {
 		) {
 			/** @var \TYPO3\CMS\Install\Controller\Action\Step\StepInterface $action */
 			$action = $this->objectManager->get('TYPO3\\CMS\\Install\\Controller\\Action\\Step\\EnvironmentAndFolders');
+			if ($this->isInitialInstallationInProgress()) {
+				$currentStep = (array_search('environmentAndFolders', $this->authenticationActions) + 1);
+				$totalSteps = count($this->authenticationActions);
+				$action->setStepsCounter($currentStep, $totalSteps);
+			}
 			$action->setController('step');
 			$action->setAction('environmentAndFolders');
 			if (count($errorMessagesFromExecute) > 0) {
