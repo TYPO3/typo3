@@ -22,11 +22,6 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-/*
- * @deprecated since 6.0, the classname tx_form_Controller_Wizard and this file is obsolete
- * and will be removed with 6.2. The class was renamed and is now located at:
- * typo3/sysext/form/Classes/Controller/WizardController.php
- */
 /**
  * @var $wizard \TYPO3\CMS\Form\Controller\WizardController
  */
