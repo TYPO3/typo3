@@ -1208,31 +1208,6 @@ class HtmlParser {
 	}
 
 	/**
-	 * Strips tags except the tags in the list, $tagList
-	 * OBSOLETE - use PHP function strip_tags()
-	 *
-	 * @param string $value Value to process
-	 * @param string $tagList List of tags
-	 * @return string Output value
-	 * @deprecated For a long time, deprecationLog added since 6.0, well be removed two versions later
-	 * @todo Define visibility
-	 */
-	public function stripTagsExcept($value, $tagList) {
-		GeneralUtility::logDeprecatedFunction();
-		$tags = GeneralUtility::trimExplode(',', $tagList, TRUE);
-		$forthArr = array();
-		$backArr = array();
-		foreach ($tags as $theTag) {
-			$forthArr[$theTag] = md5($theTag);
-			$backArr[md5($theTag)] = $theTag;
-		}
-		$value = $this->mapTags($value, $forthArr, '<', '_');
-		$value = strip_tags($value);
-		$value = $this->mapTags($value, $backArr, '_', '<');
-		return $value;
-	}
-
-	/**
 	 * Internal function for case shifting of a string or whole array
 	 *
 	 * @param mixed $str Input string/array
