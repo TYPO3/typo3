@@ -1303,7 +1303,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 			'searchoptions' => serialize(array($this->piVars, $sWArr, $pt)),
 			'feuser_id' => (int)$this->fe_user->user['uid'],
 			// fe_user id, integer
-			'cookie' => $this->fe_user->id,
+			'cookie' => (string)$this->fe_user->id,
 			// cookie as set or retrieve. If people has cookies disabled this will vary all the time...
 			'IP' => GeneralUtility::getIndpEnv('REMOTE_ADDR'),
 			// Remote IP address
