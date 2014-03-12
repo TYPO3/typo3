@@ -345,7 +345,7 @@ class PackageManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function createPackageThrowsExceptionOnInvalidPackageKey() {
 		try {
-			$this->packageManager->createPackage('Invalid_PackageKey');
+			$this->packageManager->createPackage('Invalid.PackageKey');
 		} catch (\TYPO3\Flow\Package\Exception\InvalidPackageKeyException $exception) {
 		}
 		$this->assertFalse(is_dir('vfs://Test/Packages/Application/Invalid_PackageKey'), 'Package folder with invalid package key was created');

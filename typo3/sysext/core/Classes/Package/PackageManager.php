@@ -298,6 +298,9 @@ class PackageManager extends \TYPO3\Flow\Package\PackageManager implements \TYPO
 			} catch (\TYPO3\Flow\Package\Exception\MissingPackageManifestException $exception) {
 				$relativePackagePath = substr($packagePath, strlen($packagesBasePath));
 				$packageKey = substr($relativePackagePath, strpos($relativePackagePath, '/') + 1, -1);
+				if (!$this->isPackageKeyValid($packageKey)) {
+					continue;
+				}
 			} catch (\TYPO3\Flow\Package\Exception\InvalidPackageKeyException $exception) {
 				continue;
 			}
@@ -635,5 +638,16 @@ class PackageManager extends \TYPO3\Flow\Package\PackageManager implements \TYPO
 		parent::sortAndSavePackageStates();
 
 		\TYPO3\CMS\Core\Utility\OpcodeCacheUtility::clearAllActive($this->packageStatesPathAndFilename);
+	}
+
+	/**
+	 * Check the conformance of the given package key
+	 *
+	 * @param string $packageKey The package key to validate
+	 * @return boolean If the package key is valid, returns TRUE otherwise FALSE
+	 * @api
+	 */
+	public function isPackageKeyValid($packageKey) {
+		return parent::isPackageKeyValid($packageKey) || preg_match(\TYPO3\CMS\Core\Package\Package::PATTERN_MATCH_EXTENSIONKEY, $packageKey) === 1;
 	}
 }
