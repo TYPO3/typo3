@@ -125,6 +125,15 @@ class FileListController {
 	public $filelist = NULL;
 
 	/**
+	 * Constructor
+	 */
+	public function __construct() {
+		$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_mod_file_list.xlf');
+		$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_misc.xlf');
+		$GLOBALS['BE_USER']->modAccess($GLOBALS['MCONF'], TRUE);
+	}
+
+	/**
 	 * Initialize variables, file object
 	 * Incoming GET vars include id, pointer, table, imagemode
 	 *

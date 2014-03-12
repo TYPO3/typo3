@@ -24,21 +24,11 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Web>File: File listing
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-$LANG->includeLLFile('EXT:lang/locallang_mod_file_list.xlf');
-$LANG->includeLLFile('EXT:lang/locallang_misc.xlf');
-$BE_USER->modAccess($MCONF, 1);
-/*
- * @deprecated since 6.0, the classname SC_file_list and this file is obsolete
- * and will be removed with 6.2. The class was renamed and is now located at:
- * typo3/sysext/filelist/Classes/Controller/FileListController.php
- */
-require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('filelist') . 'Classes/Controller/FileListController.php';
-// Make instance:
+
 $SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Filelist\\Controller\\FileListController');
 $SOBE->init();
 $SOBE->main();
