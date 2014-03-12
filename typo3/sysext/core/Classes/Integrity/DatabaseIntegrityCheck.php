@@ -271,30 +271,6 @@ class DatabaseIntegrityCheck {
 	}
 
 	/**
-	 * Generates tree and returns statistics
-	 *
-	 * @param integer $root
-	 * @return array Record statistics
-	 * @deprecated and unused since 6.0, will be removed two versions later
-	 * @todo Define visibility
-	 */
-	public function genTreeStatus($root = 0) {
-		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
-		$this->genTree_includeDeleted = TRUE;
-		// if set, genTree() includes deleted pages. This is default.
-		$this->genTree_includeVersions = TRUE;
-		// if set, genTree() includes verisonized pages/records. This is default.
-		$this->genTree_includeRecords = TRUE;
-		// if set, genTree() includes records from pages.
-		$this->perms_clause = '';
-		// extra where-clauses for the tree-selection
-		$this->genTree_makeHTML = 0;
-		// if set, genTree() generates HTML, that visualizes the tree.
-		$this->genTree($root, '');
-		return $this->recStats;
-	}
-
-	/**
 	 * Fills $this->lRecords with the records from all tc-tables that are not attached to a PID in the pid-list.
 	 *
 	 * @param string $pid_list list of pid's (page-record uid's). This list is probably made by genTree()
