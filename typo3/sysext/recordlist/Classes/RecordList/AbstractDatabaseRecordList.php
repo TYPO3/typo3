@@ -491,19 +491,6 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 		return $content;
 	}
 
-	/**
-	 * Creates the display of sys_notes for the page.
-	 * Relies on the "sys_note" extension to be loaded.
-	 *
-	 * @return string HTML for the sys-notes (if any)
-	 * @deprecated since 6.0, will be removed two versions later
-	 * @todo Define visibility
-	 */
-	public function showSysNotesForPage() {
-		GeneralUtility::logDeprecatedFunction();
-		return '';
-	}
-
 	/******************************
 	 *
 	 * Various helper functions
