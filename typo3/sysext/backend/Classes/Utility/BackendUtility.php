@@ -466,12 +466,13 @@ class BackendUtility {
 		// All TCA keys
 		$tableNamesFromTca = array_keys($GLOBALS['TCA']);
 		// Fetch translations for table names
+		$tableToTranslation = array();
 		foreach ($tableNamesFromTca as $table) {
-			$tableNamesFromTca[$table] = $GLOBALS['LANG']->sl($GLOBALS['TCA'][$table]['ctrl']['title']);
+			$tableToTranslation[$table] = $GLOBALS['LANG']->sl($GLOBALS['TCA'][$table]['ctrl']['title']);
 		}
 		// Sort by translations
-		asort($tableNamesFromTca);
-		foreach ($tableNamesFromTca as $table => $translatedTable) {
+		asort($tableToTranslation);
+		foreach ($tableToTranslation as $table => $translatedTable) {
 			$excludeArrayTable = array();
 
 			// All field names configured and not restricted to admins
@@ -490,7 +491,7 @@ class BackendUtility {
 				}
 			}
 			// All FlexForm fields
-			$flexFormArray = self::getRegisteredFlexForms($table);
+			$flexFormArray = static::getRegisteredFlexForms($table);
 			foreach ($flexFormArray as $tableField => $flexForms) {
 				// Prefix for field label, e.g. "Plugin Options:"
 				$labelPrefix = '';
@@ -1770,7 +1771,7 @@ class BackendUtility {
 	 * @return string Label for item entry
 	 */
 	static public function getLabelFromItemListMerged($pageId, $table, $column, $key) {
-		$pageTsConfig = self::getPagesTSconfig($pageId);
+		$pageTsConfig = static::getPagesTSconfig($pageId);
 		$label = '';
 		if (is_array($pageTsConfig['TCEFORM.']) && is_array($pageTsConfig['TCEFORM.'][$table . '.']) && is_array($pageTsConfig['TCEFORM.'][$table . '.'][$column . '.'])) {
 			if (is_array($pageTsConfig['TCEFORM.'][$table . '.'][$column . '.']['addItems.']) && isset($pageTsConfig['TCEFORM.'][$table . '.'][$column . '.']['addItems.'][$key])) {
@@ -2645,7 +2646,7 @@ class BackendUtility {
 	 * @return array
 	 */
 	static public function getModTSconfig($id, $TSref) {
-		$pageTS_modOptions = $GLOBALS['BE_USER']->getTSConfig($TSref, self::getPagesTSconfig($id));
+		$pageTS_modOptions = $GLOBALS['BE_USER']->getTSConfig($TSref, static::getPagesTSconfig($id));
 		$BE_USER_modOptions = $GLOBALS['BE_USER']->getTSConfig($TSref);
 		if (is_null($BE_USER_modOptions['value'])) {
 			unset($BE_USER_modOptions['value']);
