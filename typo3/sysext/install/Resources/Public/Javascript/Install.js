@@ -495,14 +495,26 @@ function handleCheckExtensionsSuccess() {
 			} else {
 				$('.typo3-message', '#checkExtensions').hide();
 				$('.message-ok', '#checkExtensions').show();
-
 			}
 		},
-		error: function(data) {
+		error: function() {
 			$('.typo3-message', '#checkExtensions').hide();
 			$('.message-ok', '#checkExtensions').show();
 		}
-	})
+	});
+	$.getJSON(
+		$('#checkExtensions').data('errorprotocolurl'),
+		function(data) {
+			$.each(data, function(i, error) {
+				var messageToDisplay = error.message + ' in ' + error.file + ' on line ' + error.line;
+				$('#checkExtensions .typo3-message.message-error').before($(
+					'<div class="typo3-message message-warning"><div class="header-container"><div class="message-header">' +
+					'<strong>' + error.type + '</strong></div><div class="message-body">' +
+					messageToDisplay + '</div></div></div><p></p>'
+				));
+			});
+		}
+	);
 }
 
 /**

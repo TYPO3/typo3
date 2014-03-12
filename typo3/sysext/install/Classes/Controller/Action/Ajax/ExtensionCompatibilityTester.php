@@ -44,11 +44,26 @@ class ExtensionCompatibilityTester extends AbstractAjaxAction {
 	protected $protocolFile = '';
 
 	/**
+	 * Store errors that occured during checks.
+	 *
+	 * @var string
+	 */
+	protected $errorProtocolFile = '';
+
+	/**
+	 * Define whether to log errors to file or not.
+	 *
+	 * @var boolean
+	 */
+	protected $logError = FALSE;
+
+	/**
 	 * Construct this class
 	 * set default protocol file location
 	 */
 	public function __construct() {
 		$this->protocolFile = PATH_site . 'typo3temp/ExtensionCompatibilityTester.txt';
+		$this->errorProtocolFile = PATH_site . 'typo3temp/ExtensionCompatibilityTesterErrors.json';
 	}
 
 	/**
@@ -59,6 +74,7 @@ class ExtensionCompatibilityTester extends AbstractAjaxAction {
 	 * @return string "OK" if process ran through without errors
 	 */
 	protected function executeAction() {
+		register_shutdown_function(array($this, 'logError'));
 		$getVars = Utility\GeneralUtility::_GET('install');
 		if (isset($getVars['extensionCompatibilityTester']) && isset($getVars['extensionCompatibilityTester']['forceCheck']) && ($getVars['extensionCompatibilityTester']['forceCheck'] == 1)) {
 			$this->deleteProtocolFile();
@@ -68,13 +84,16 @@ class ExtensionCompatibilityTester extends AbstractAjaxAction {
 	}
 
 	/**
-	 * Delete the protocol file if it exists
+	 * Delete the protocol files if they exist
 	 *
 	 * @return void
 	 */
 	protected function deleteProtocolFile() {
 		if (file_exists($this->protocolFile)) {
 			unlink($this->protocolFile);
+		}
+		if (file_exists($this->errorProtocolFile)) {
+			unlink($this->errorProtocolFile);
 		}
 	}
 
@@ -190,6 +209,7 @@ class ExtensionCompatibilityTester extends AbstractAjaxAction {
 		$incompatibleExtensions = array_filter(Utility\GeneralUtility::trimExplode(',', (string)Utility\GeneralUtility::getUrl($this->protocolFile)));
 		$incompatibleExtensions = array_merge($incompatibleExtensions, array($extensionKey));
 		Utility\GeneralUtility::writeFile($this->protocolFile, implode(', ', $incompatibleExtensions));
+		$this->logError = TRUE;
 	}
 
 	/**
@@ -204,5 +224,46 @@ class ExtensionCompatibilityTester extends AbstractAjaxAction {
 		unset($extensionsByKey[$extensionKey]);
 		$extensionsForFile = array_flip($extensionsByKey);
 		Utility\GeneralUtility::writeFile($this->protocolFile, implode(', ', $extensionsForFile));
+		$this->logError = FALSE;
+	}
+
+	/**
+	 * Log last occured error for logging.
+	 *
+	 * @return void
+	 */
+	public function logError() {
+		// Logging is disabled.
+		if (!$this->logError) {
+			return;
+		}
+
+		// Fetch existing errors, add last one and write to file again.
+		$lastError = error_get_last();
+		$errors = array();
+
+		if (file_exists($this->errorProtocolFile)) {
+			$errors = json_decode(Utility\GeneralUtility::getUrl($this->errorProtocolFile));
+		}
+		switch ($lastError['type']) {
+			case E_ERROR:
+				$lastError['type'] = 'E_ERROR';
+				break;
+			case E_WARNING:
+				$lastError['type'] = 'E_WARNING';
+				break;
+			case E_PARSE:
+				$lastError['type'] = 'E_PARSE';
+				break;
+			case E_NOTICE:
+				$lastError['type'] = 'E_NOTICE';
+				break;
+			case E_NOTICE:
+				$lastError['type'] = 'E_NOTICE';
+				break;
+		}
+		$errors[] = $lastError;
+
+		Utility\GeneralUtility::writeFile($this->errorProtocolFile, json_encode($errors));
 	}
 }

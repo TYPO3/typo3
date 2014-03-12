@@ -5,7 +5,7 @@
 </p>
 <form method="post">
 	<f:render partial="Action/Common/HiddenFormFields" arguments="{_all}" />
-	<div id="checkExtensions" data-protocolurl="{extensionCompatibilityTesterProtocolFile}">
+	<div id="checkExtensions" data-protocolurl="{extensionCompatibilityTesterProtocolFile}" data-errorprotocolurl="{extensionCompatibilityTesterErrorProtocolFile}">
 		<f:render partial="Action/Common/StatusMessage" arguments="{
 			message: {severity:'loading', title:'', message:'Loading...'}
 		}" />
