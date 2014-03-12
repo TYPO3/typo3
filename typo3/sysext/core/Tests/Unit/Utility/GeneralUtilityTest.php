@@ -4346,31 +4346,6 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 	///////////////////////////////////////////////////
-	// Tests concerning hasValidClassPrefix
-	///////////////////////////////////////////////////
-	/**
-	 * @return array
-	 */
-	public function validClassPrefixDataProvider() {
-		return array(
-			'normal prefix' => array('tx_foo'),
-			'normal long prefix' => array('tx_foo_bar'),
-			'extbase named prefix' => array('Tx_foo'),
-			'user func named prefix' => array('user_foo'),
-			'empty string' => array('')
-		);
-	}
-
-	/**
-	 * @test
-	 * @dataProvider validClassPrefixDataProvider
-	 * @param string $className Class name to test
-	 */
-	public function hasValidClassPrefixAcceptsValidPrefixes($className) {
-		$this->assertTrue(Utility\GeneralUtility::hasValidClassPrefix($className));
-	}
-
-	///////////////////////////////////////////////////
 	// Tests concerning generateRandomBytes
 	///////////////////////////////////////////////////
 	/**

@@ -4215,31 +4215,6 @@ Connection: close
 	}
 
 	/**
-	 * Checks if a class or function has a valid prefix: tx_, Tx_ or custom, e.g. user_
-	 *
-	 * @param string $classRef The class or function to check
-	 * @param array $additionalPrefixes Additional allowed prefixes, mostly this will be user_
-	 * @return boolean TRUE if name is allowed
-	 * @deprecated since 6.0, will be removed two versions later
-	 */
-	static public function hasValidClassPrefix($classRef, array $additionalPrefixes = array()) {
-		self::logDeprecatedFunction();
-		return TRUE;
-	}
-
-	/**
-	 * Returns all valid class prefixes.
-	 *
-	 * @return array Array of valid prefixed of class names
-	 * @deprecated since 6.0, will be removed two versions later
-	 */
-	static public function getValidClassPrefixes() {
-		self::logDeprecatedFunction();
-		$validPrefixes = array('tx_', 'Tx_', 'user_', 'User_', 't3lib_', '');
-		return $validPrefixes;
-	}
-
-	/**
 	 * Creates an instance of a class taking into account the class-extensions
 	 * API of TYPO3. USE THIS method instead of the PHP "new" keyword.
 	 * Eg. "$obj = new myclass;" should be "$obj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance("myclass")" instead!
