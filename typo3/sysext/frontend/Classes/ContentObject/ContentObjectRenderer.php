@@ -792,18 +792,6 @@ class ContentObjectRenderer {
 	 * Functions rendering content objects (cObjects)
 	 *
 	 ********************************************/
-	/**
-	 * Rendering the cObject, HTML
-	 *
-	 * @param array $conf Array of TypoScript properties
-	 * @return string Output
-	 * @deprecated since 6.0, will be removed in two versions
-	 * @todo Define visibility
-	 */
-	public function HTML($conf) {
-		GeneralUtility::logDeprecatedFunction();
-		return '';
-	}
 
 	/**
 	 * Rendering the cObject, FLOWPLAYER
@@ -1088,20 +1076,6 @@ class ContentObjectRenderer {
 	 */
 	public function SEARCHRESULT($conf) {
 		return $this->getContentObject('SEARCHRESULT')->render($conf);
-	}
-
-	/**
-	 * Rendering the cObject, PHP_SCRIPT, PHP_SCRIPT_INT and PHP_SCRIPT_EXT
-	 *
-	 * @param array $conf Array of TypoScript properties
-	 * @param string $ext If "INT", then rendering "PHP_SCRIPT_INT"; If "EXT", then rendering "PHP_SCRIPT_EXT"; Default is rendering "PHP_SCRIPT" (cached)
-	 * @return string Output
-	 * @deprecated and unused since 6.0, will be removed two versions later
-	 * @todo Define visibility
-	 */
-	public function PHP_SCRIPT($conf, $ext = '') {
-		GeneralUtility::logDeprecatedFunction();
-		return '';
 	}
 
 	/**
