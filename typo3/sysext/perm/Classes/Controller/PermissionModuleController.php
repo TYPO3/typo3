@@ -160,6 +160,14 @@ class PermissionModuleController {
 	public $lastEdited;
 
 	/**
+	 * Constructor
+	 */
+	public function __construct() {
+		$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_mod_web_perm.xlf');
+		$GLOBALS['BE_USER']->modAccess($GLOBALS['MCONF'], TRUE);
+	}
+
+	/**
 	 * Initialization of the class
 	 *
 	 * @return void

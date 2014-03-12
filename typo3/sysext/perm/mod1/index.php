@@ -24,15 +24,11 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Module: Permission setting
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-$LANG->includeLLFile('EXT:lang/locallang_mod_web_perm.xlf');
-$BE_USER->modAccess($MCONF, 1);
 
-// Make instance:
 $SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Perm\\Controller\\PermissionModuleController');
 $SOBE->init();
 $SOBE->main();
