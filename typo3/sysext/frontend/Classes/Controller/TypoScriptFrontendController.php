@@ -1295,27 +1295,6 @@ class TypoScriptFrontendController {
 		$this->idParts = explode(',', $this->id);
 		$this->id = $this->idParts[0];
 
-			// Hook for further id manipulation
-		if (is_array($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['modifyPageId'])) {
-			$_params = array('id' => $this->id);
-			$newId = FALSE;
-			foreach ($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['modifyPageId'] as $_funcRef) {
-				$deprecationMessage = 'Hook $TYPO3_CONF_VARS[SC_OPTIONS][tslib/class.tslib_fe.php][modifyPageId] is ' .
-					'deprecated since 6.0 and will be removed two versions later';
-				if (!is_object($_funcRef) || !is_a($_funcRef, 'Closure')) {
-					$deprecationMessage .= '- used by ' . $_funcRef;
-				}
-				\TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog($deprecationMessage);
-				$newIdFromFunc = GeneralUtility::callUserFunction($_funcRef, $_params, $this);
-				if ($newIdFromFunc !== FALSE) {
-					$newId = $newIdFromFunc;
-				}
-			}
-			if ($newId !== FALSE) {
-				$this->id = $newId;
-			}
-		}
-
 		// If $this->id is a string, it's an alias
 		$this->checkAndSetAlias();
 		// The id and type is set to the integer-value - just to be sure...
