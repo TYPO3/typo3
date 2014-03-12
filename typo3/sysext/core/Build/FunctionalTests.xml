@@ -34,7 +34,12 @@
 			<directory>../../../../typo3/sysext/impexp/Tests/Functional/</directory>
 		</testsuite>
 		<testsuite name="EXT:workspaces tests">
-			<directory>../../../../typo3/sysext/workspaces/Tests/Functional/</directory>
+			<directory>../../../../typo3/sysext/workspaces/Tests/Functional/DataHandling/Group/</directory>
+			<directory>../../../../typo3/sysext/workspaces/Tests/Functional/DataHandling/IRRE/</directory>
+			<directory>../../../../typo3/sysext/workspaces/Tests/Functional/DataHandling/ManyToMany/</directory>
+			<directory>../../../../typo3/sysext/workspaces/Tests/Functional/DataHandling/Regular/</directory>
+			<directory>../../../../typo3/sysext/workspaces/Tests/Functional/DataHandling/Select/</directory>
+			<directory>../../../../typo3/sysext/workspaces/Tests/Functional/Service/</directory>
 		</testsuite>
 		<testsuite name="EXT:extbase tests">
 			<directory>../../../../typo3/sysext/extbase/Tests/Functional/Relations</directory>
