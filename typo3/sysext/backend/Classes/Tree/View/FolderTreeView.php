@@ -515,24 +515,6 @@ class FolderTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 	/**
 	 * Counts the number of directories in a file path.
 	 *
-	 * @param string $file File path.
-	 * @return integer
-	 * @deprecated since TYPO3 6.0, as the folder objects do the counting automatically
-	 */
-	public function getCount($file) {
-		GeneralUtility::logDeprecatedFunction();
-		// This generates the directory tree
-		$dirs = GeneralUtility::get_dirs($file);
-		$c = 0;
-		if (is_array($dirs)) {
-			$c = count($dirs);
-		}
-		return $c;
-	}
-
-	/**
-	 * Counts the number of directories in a file path.
-	 *
 	 * @param \TYPO3\CMS\Core\Resource\Folder $folderObject File path.
 	 * @return integer
 	 */
