@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Frontend\Tests\Unit\ContentObject;
+namespace TYPO3\CMS\Frontend\Tests\Functional\ContentObject;
 
 /***************************************************************
  *  Copyright notice
