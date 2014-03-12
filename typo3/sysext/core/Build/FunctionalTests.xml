@@ -42,7 +42,7 @@
 			<directory>../../../../typo3/sysext/workspaces/Tests/Functional/Service/</directory>
 		</testsuite>
 		<testsuite name="EXT:extbase tests">
-			<directory>../../../../typo3/sysext/extbase/Tests/Functional/Relations</directory>
+			<directory>../../../../typo3/sysext/extbase/Tests/Functional/Persistence/</directory>
 		</testsuite>
 	</testsuites>
 </phpunit>
