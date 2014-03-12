@@ -58,7 +58,7 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['TYPO3\\CMS\\Sch
 
 // Add recycler directory cleanup task. Windows is not supported
 // because "filectime" does not change after moving a file
-if (TYPO3_OS != 'WIN') {
+if (TYPO3_OS !== 'WIN') {
 	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['TYPO3\\CMS\\Scheduler\\Task\\RecyclerGarbageCollectionTask'] = array(
 		'extension' => $_EXTKEY,
 		'title' => 'LLL:EXT:' . $_EXTKEY . '/locallang.xlf:recyclerGarbageCollection.name',

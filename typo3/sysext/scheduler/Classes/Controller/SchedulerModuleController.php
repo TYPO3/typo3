@@ -82,6 +82,8 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 	 * @return \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController
 	 */
 	public function __construct() {
+		$GLOBALS['LANG']->includeLLFile('EXT:scheduler/mod1/locallang.xlf');
+		$GLOBALS['BE_USER']->modAccess($GLOBALS['MCONF'], TRUE);
 		$this->backPath = $GLOBALS['BACK_PATH'];
 		// Set key for CSH
 		$this->cshKey = '_MOD_' . $GLOBALS['MCONF']['name'];
