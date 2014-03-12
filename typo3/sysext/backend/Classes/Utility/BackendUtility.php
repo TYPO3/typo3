@@ -29,6 +29,7 @@ namespace TYPO3\CMS\Backend\Utility;
 
 use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
@@ -1538,15 +1539,26 @@ class BackendUtility {
 			foreach ($thumbs as $theFile) {
 				if ($theFile) {
 					$fileName = trim($uploaddir . '/' . $theFile, '/');
-					$fileObject = ResourceFactory::getInstance()->retrieveFileOrFolderObject($fileName);
-					$fileExtension = $fileObject->getExtension();
-
-					if ($fileObject->isMissing()) {
-						$flashMessage = \TYPO3\CMS\Core\Resource\Utility\BackendUtility::getFlashMessageForMissingFile($fileObject);
+					try {
+						/** @var File $fileObject */
+						$fileObject = ResourceFactory::getInstance()->retrieveFileOrFolderObject($fileName);
+						if ($fileObject->isMissing()) {
+							$flashMessage = \TYPO3\CMS\Core\Resource\Utility\BackendUtility::getFlashMessageForMissingFile($fileObject);
+							$thumbData .= $flashMessage->render();
+							continue;
+						}
+					} catch (\TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException $exception) {
+						/** @var \TYPO3\CMS\Core\Messaging\FlashMessage $flashMessage */
+						$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
+							htmlspecialchars($exception->getMessage()),
+							$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:warning.file_missing', TRUE),
+							\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR
+						);
 						$thumbData .= $flashMessage->render();
 						continue;
 					}
 
+					$fileExtension = $fileObject->getExtension();
 					if ($fileExtension == 'ttf' || GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], $fileExtension)) {
 						$imageUrl = $fileObject->process(ProcessedFile::CONTEXT_IMAGEPREVIEW, array(
 							'width' => $sizeParts[0],
