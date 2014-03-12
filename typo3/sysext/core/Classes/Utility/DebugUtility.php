@@ -109,19 +109,6 @@ class DebugUtility {
 	}
 
 	/**
-	 * Replaces special characters for the usage inside javascript
-	 *
-	 * @param string $string
-	 * @param boolean $asObject
-	 * @return string
-	 * @deprecated since 6.0 will be removed with 6.2
-	 */
-	static public function prepareVariableForJavascript($string, $asObject) {
-		GeneralUtility::logDeprecatedFunction();
-		return self::getJavaScriptEncoder()->encode($string);
-	}
-
-	/**
 	 * Converts a variable to a string
 	 *
 	 * @param mixed $variable
