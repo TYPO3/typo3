@@ -5170,7 +5170,7 @@ class ContentObjectRenderer {
 	 * In the latter case a GIFBUILDER image is returned; This means an image is made by TYPO3 from layers of elements as GIFBUILDER defines.
 	 * In the function IMG_RESOURCE() this function is called like $this->getImgResource($conf['file'], $conf['file.']);
 	 *
-	 * @param string $file A "imgResource" TypoScript data type. Either a TypoScript file resource or the string GIFBUILDER. See description above.
+	 * @param string|\TYPO3\CMS\Core\Resource\File|\TYPO3\CMS\Core\Resource\FileReference $file A "imgResource" TypoScript data type. Either a TypoScript file resource, a file or a file reference object or the string GIFBUILDER. See description above.
 	 * @param array $fileArray TypoScript properties for the imgResource type
 	 * @return array Returns info-array. info[origFile] = original file. [0]/[1] is w/h, [2] is file extension and [3] is the filename.
 	 * @see IMG_RESOURCE(), cImage(), \TYPO3\CMS\Frontend\Imaging\GifBuilder
@@ -5180,18 +5180,22 @@ class ContentObjectRenderer {
 		if (!is_array($fileArray)) {
 			$fileArray = (array) $fileArray;
 		}
-		switch ($file) {
-			case 'GIFBUILDER':
-				$gifCreator = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Imaging\\GifBuilder');
-				$gifCreator->init();
-				$theImage = '';
-				if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib']) {
-					$gifCreator->start($fileArray, $this->data);
-					$theImage = $gifCreator->gifBuild();
-				}
-				$imageResource = $gifCreator->getImageDimensions($theImage);
-				break;
-			default:
+		$imageResource = NULL;
+		if ($file === 'GIFBUILDER') {
+			$gifCreator = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Imaging\\GifBuilder');
+			$gifCreator->init();
+			$theImage = '';
+			if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib']) {
+				$gifCreator->start($fileArray, $this->data);
+				$theImage = $gifCreator->gifBuild();
+			}
+			$imageResource = $gifCreator->getImageDimensions($theImage);
+		} else {
+			if ($file instanceof \TYPO3\CMS\Core\Resource\File) {
+				$fileObject = $file;
+			} elseif ($file instanceof \TYPO3\CMS\Core\Resource\FileReference) {
+				$fileObject = $file->getOriginalFile();
+			} else {
 				try {
 					if ($fileArray['import.']) {
 						$importedFile = trim($this->stdWrap('', $fileArray['import.']));
@@ -5216,82 +5220,83 @@ class ContentObjectRenderer {
 						$file = GeneralUtility::resolveBackPath($file);
 						$fileObject = $this->getResourceFactory()->retrieveFileOrFolderObject($file);
 					}
-				} catch(\TYPO3\CMS\Core\Resource\Exception $exception) {
+				} catch (\TYPO3\CMS\Core\Resource\Exception $exception) {
 					/** @var \TYPO3\CMS\Core\Log\Logger $logger */
 					$logger = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Log\\LogManager')->getLogger(__CLASS__);
 					$logger->warning('The image "' . $file . '" could not be found and won\'t be included in frontend output');
 					return NULL;
 				}
-				if ($fileObject instanceof \TYPO3\CMS\Core\Resource\FileInterface) {
-					$processingConfiguration = array();
-					$processingConfiguration['width'] = isset($fileArray['width.']) ? $this->stdWrap($fileArray['width'], $fileArray['width.']) : $fileArray['width'];
-					$processingConfiguration['height'] = isset($fileArray['height.']) ? $this->stdWrap($fileArray['height'], $fileArray['height.']) : $fileArray['height'];
-					$processingConfiguration['fileExtension'] = isset($fileArray['ext.']) ? $this->stdWrap($fileArray['ext'], $fileArray['ext.']) : $fileArray['ext'];
-					$processingConfiguration['maxWidth'] = isset($fileArray['maxW.']) ? (int)$this->stdWrap($fileArray['maxW'], $fileArray['maxW.']) : (int)$fileArray['maxW'];
-					$processingConfiguration['maxHeight'] = isset($fileArray['maxH.']) ? (int)$this->stdWrap($fileArray['maxH'], $fileArray['maxH.']) : (int)$fileArray['maxH'];
-					$processingConfiguration['minWidth'] = isset($fileArray['minW.']) ? (int)$this->stdWrap($fileArray['minW'], $fileArray['minW.']) : (int)$fileArray['minW'];
-					$processingConfiguration['minHeight'] = isset($fileArray['minH.']) ? (int)$this->stdWrap($fileArray['minH'], $fileArray['minH.']) : (int)$fileArray['minH'];
-					$processingConfiguration['noScale'] = isset($fileArray['noScale.']) ? $this->stdWrap($fileArray['noScale'], $fileArray['noScale.']) : $fileArray['noScale'];
-					$processingConfiguration['additionalParameters'] = isset($fileArray['params.']) ? $this->stdWrap($fileArray['params'], $fileArray['params.']) : $fileArray['params'];
-					// Possibility to cancel/force profile extraction
-					// see $TYPO3_CONF_VARS['GFX']['im_stripProfileCommand']
-					if (isset($fileArray['stripProfile'])) {
-						$processingConfiguration['stripProfile'] = $fileArray['stripProfile'];
-					}
-					// Check if we can handle this type of file for editing
-					if (GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], $fileObject->getExtension())) {
-						$maskArray = $fileArray['m.'];
-						// Must render mask images and include in hash-calculating
-						// - otherwise we cannot be sure the filename is unique for the setup!
-						if (is_array($maskArray)) {
-							$processingConfiguration['maskImages']['m_mask'] = $this->getImgResource($maskArray['mask'], $maskArray['mask.']);
-							$processingConfiguration['maskImages']['m_bgImg'] = $this->getImgResource($maskArray['bgImg'], $maskArray['bgImg.']);
-							$processingConfiguration['maskImages']['m_bottomImg'] = $this->getImgResource($maskArray['bottomImg'], $maskArray['bottomImg.']);
-							$processingConfiguration['maskImages']['m_bottomImg_mask'] = $this->getImgResource($maskArray['bottomImg_mask'], $maskArray['bottomImg_mask.']);
-						}
-						if ($GLOBALS['TSFE']->config['config']['meaningfulTempFilePrefix']) {
-							$processingConfiguration['useTargetFileNameAsPrefix'] = 1;
-						}
-						$processedFileObject = $fileObject->process(\TYPO3\CMS\Core\Resource\ProcessedFile::CONTEXT_IMAGECROPSCALEMASK, $processingConfiguration);
-						$hash = $processedFileObject->calculateChecksum();
-						// store info in the TSFE template cache (kept for backwards compatibility)
-						if ($processedFileObject->isProcessed() && !isset($GLOBALS['TSFE']->tmpl->fileCache[$hash])) {
-							$GLOBALS['TSFE']->tmpl->fileCache[$hash] = array(
-								0 => $processedFileObject->getProperty('width'),
-								1 => $processedFileObject->getProperty('height'),
-								2 => $processedFileObject->getExtension(),
-								3 => $processedFileObject->getPublicUrl(),
-								'origFile' => $fileObject->getPublicUrl(),
-								'origFile_mtime' => $fileObject->getModificationTime(),
-								// This is needed by \TYPO3\CMS\Frontend\Imaging\GifBuilder,
-								// in order for the setup-array to create a unique filename hash.
-								'originalFile' => $fileObject,
-								'processedFile' => $processedFileObject,
-								'fileCacheHash' => $hash
-							);
-						}
-						$imageResource = $GLOBALS['TSFE']->tmpl->fileCache[$hash];
-					} else {
-						$imageResource = NULL;
-					}
+			}
+			if ($fileObject instanceof \TYPO3\CMS\Core\Resource\FileInterface) {
+				$processingConfiguration = array();
+				$processingConfiguration['width'] = isset($fileArray['width.']) ? $this->stdWrap($fileArray['width'], $fileArray['width.']) : $fileArray['width'];
+				$processingConfiguration['height'] = isset($fileArray['height.']) ? $this->stdWrap($fileArray['height'], $fileArray['height.']) : $fileArray['height'];
+				$processingConfiguration['fileExtension'] = isset($fileArray['ext.']) ? $this->stdWrap($fileArray['ext'], $fileArray['ext.']) : $fileArray['ext'];
+				$processingConfiguration['maxWidth'] = isset($fileArray['maxW.']) ? (int)$this->stdWrap($fileArray['maxW'], $fileArray['maxW.']) : (int)$fileArray['maxW'];
+				$processingConfiguration['maxHeight'] = isset($fileArray['maxH.']) ? (int)$this->stdWrap($fileArray['maxH'], $fileArray['maxH.']) : (int)$fileArray['maxH'];
+				$processingConfiguration['minWidth'] = isset($fileArray['minW.']) ? (int)$this->stdWrap($fileArray['minW'], $fileArray['minW.']) : (int)$fileArray['minW'];
+				$processingConfiguration['minHeight'] = isset($fileArray['minH.']) ? (int)$this->stdWrap($fileArray['minH'], $fileArray['minH.']) : (int)$fileArray['minH'];
+				$processingConfiguration['noScale'] = isset($fileArray['noScale.']) ? $this->stdWrap($fileArray['noScale'], $fileArray['noScale.']) : $fileArray['noScale'];
+				$processingConfiguration['additionalParameters'] = isset($fileArray['params.']) ? $this->stdWrap($fileArray['params'], $fileArray['params.']) : $fileArray['params'];
+				// Possibility to cancel/force profile extraction
+				// see $TYPO3_CONF_VARS['GFX']['im_stripProfileCommand']
+				if (isset($fileArray['stripProfile'])) {
+					$processingConfiguration['stripProfile'] = $fileArray['stripProfile'];
 				}
-				break;
+				// Check if we can handle this type of file for editing
+				if (GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], $fileObject->getExtension())) {
+					$maskArray = $fileArray['m.'];
+					// Must render mask images and include in hash-calculating
+					// - otherwise we cannot be sure the filename is unique for the setup!
+					if (is_array($maskArray)) {
+						$processingConfiguration['maskImages']['m_mask'] = $this->getImgResource($maskArray['mask'], $maskArray['mask.']);
+						$processingConfiguration['maskImages']['m_bgImg'] = $this->getImgResource($maskArray['bgImg'], $maskArray['bgImg.']);
+						$processingConfiguration['maskImages']['m_bottomImg'] = $this->getImgResource($maskArray['bottomImg'], $maskArray['bottomImg.']);
+						$processingConfiguration['maskImages']['m_bottomImg_mask'] = $this->getImgResource($maskArray['bottomImg_mask'], $maskArray['bottomImg_mask.']);
+					}
+					if ($GLOBALS['TSFE']->config['config']['meaningfulTempFilePrefix']) {
+						$processingConfiguration['useTargetFileNameAsPrefix'] = 1;
+					}
+					$processedFileObject = $fileObject->process(\TYPO3\CMS\Core\Resource\ProcessedFile::CONTEXT_IMAGECROPSCALEMASK, $processingConfiguration);
+					$hash = $processedFileObject->calculateChecksum();
+					// store info in the TSFE template cache (kept for backwards compatibility)
+					if ($processedFileObject->isProcessed() && !isset($GLOBALS['TSFE']->tmpl->fileCache[$hash])) {
+						$GLOBALS['TSFE']->tmpl->fileCache[$hash] = array(
+							0 => $processedFileObject->getProperty('width'),
+							1 => $processedFileObject->getProperty('height'),
+							2 => $processedFileObject->getExtension(),
+							3 => $processedFileObject->getPublicUrl(),
+							'origFile' => $fileObject->getPublicUrl(),
+							'origFile_mtime' => $fileObject->getModificationTime(),
+							// This is needed by \TYPO3\CMS\Frontend\Imaging\GifBuilder,
+							// in order for the setup-array to create a unique filename hash.
+							'originalFile' => $fileObject,
+							'processedFile' => $processedFileObject,
+							'fileCacheHash' => $hash
+						);
+					}
+					$imageResource = $GLOBALS['TSFE']->tmpl->fileCache[$hash];
+				}
+			}
 		}
-		$theImage = $GLOBALS['TSFE']->tmpl->getFileName($file);
 		// If image was processed by GIFBUILDER:
 		// ($imageResource indicates that it was processed the regular way)
-		if (!isset($imageResource) && $theImage) {
-			$gifCreator = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Imaging\\GifBuilder');
-			/** @var $gifCreator \TYPO3\CMS\Frontend\Imaging\GifBuilder */
-			$gifCreator->init();
-			$info = $gifCreator->imageMagickConvert($theImage, 'WEB');
-			$info['origFile'] = $theImage;
-			// This is needed by \TYPO3\CMS\Frontend\Imaging\GifBuilder, ln 100ff in order for the setup-array to create a unique filename hash.
-			$info['origFile_mtime'] = @filemtime($theImage);
-			$imageResource = $info;
+		if (!isset($imageResource)) {
+			$theImage = $GLOBALS['TSFE']->tmpl->getFileName($file);
+			if ($theImage) {
+				$gifCreator = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Imaging\\GifBuilder');
+				/** @var $gifCreator \TYPO3\CMS\Frontend\Imaging\GifBuilder */
+				$gifCreator->init();
+				$info = $gifCreator->imageMagickConvert($theImage, 'WEB');
+				$info['origFile'] = $theImage;
+				// This is needed by \TYPO3\CMS\Frontend\Imaging\GifBuilder, ln 100ff in order for the setup-array to create a unique filename hash.
+				$info['origFile_mtime'] = @filemtime($theImage);
+				$imageResource = $info;
+			}
 		}
 		// Hook 'getImgResource': Post-processing of image resources
 		if (isset($imageResource)) {
+			/** @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectGetImageResourceHookInterface $hookObject */
 			foreach ($this->getGetImgResourceHookObjects() as $hookObject) {
 				$imageResource = $hookObject->getImgResourcePostProcess($file, (array) $fileArray, $imageResource, $this);
 			}

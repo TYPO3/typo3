@@ -667,9 +667,8 @@ tt_content.image.20 {
 	# Single image rendering
 	imgObjNum = 1
 	1 {
-		// Since the current file is a reference we need to use uid_local
-		// to get the UID of the original file.
-		file.import.data = file:current:uid_local
+		file.import.data = file:current:uid
+		file.treatIdAsReference = 1
 		file.width.field = imagewidth
 
 		layoutKey = {$styles.content.imgtext.layoutKey}
@@ -725,7 +724,6 @@ tt_content.image.20 {
 			width = {$styles.content.imgtext.linkWrap.width}
 			height = {$styles.content.imgtext.linkWrap.height}
 			effects = {$styles.content.imgtext.linkWrap.effects}
-			treatIdAsReference = 1
 
 			JSwindow = 1
 			JSwindow.newWindow = {$styles.content.imgtext.linkWrap.newWindow}
