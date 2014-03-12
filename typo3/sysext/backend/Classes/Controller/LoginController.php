@@ -480,25 +480,6 @@ class LoginController {
 	}
 
 	/**
-	 * COPYRIGHT notice
-	 *
-	 * Warning:
-	 * DO NOT prevent this notice from being shown in ANY WAY.
-	 * According to the GPL license an interactive application must show such a notice on start-up ('If the program is interactive, make it output a short notice... ' - see GPL.txt)
-	 * Therefore preventing this notice from being properly shown is a violation of the license, regardless of whether you remove it or use a stylesheet to obstruct the display.
-	 *
-	 * @return string Text/Image (HTML) for copyright notice.
-	 *
-	 * @todo Define visibility
-	 * @deprecated since TYPO3 6.0, will be removed in TYPO3 6.2
-	 * @see \TYPO3\CMS\Backend\Utility\BackendUtility::TYPO3_copyRightNotice()
-	 */
-	public function makeCopyrightNotice() {
-		GeneralUtility::logDeprecatedFunction();
-		return BackendUtility::TYPO3_copyRightNotice();
-	}
-
-	/**
 	 * Returns the login box image, whether the default or an image from the rotation folder.
 	 *
 	 * @return string HTML image tag.
