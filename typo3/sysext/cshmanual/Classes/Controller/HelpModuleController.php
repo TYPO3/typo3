@@ -28,9 +28,11 @@ namespace TYPO3\CMS\Cshmanual\Controller;
  ***************************************************************/
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Script Class for rendering the Context Sensitive Help documents, either the single display in the small pop-up window or the full-table view in the larger window.
+ * Script Class for rendering the Context Sensitive Help documents,
+ * either the single display in the small pop-up window or the full-table view in the larger window.
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
@@ -123,13 +125,13 @@ class HelpModuleController {
 	public function init() {
 		$this->moduleUrl = BackendUtility::getModuleUrl('help_cshmanual');
 		// Setting GPvars:
-		$this->tfID = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('tfID');
+		$this->tfID = GeneralUtility::_GP('tfID');
 		// Sanitizes the tfID using whitelisting.
 		if (!preg_match('/^[a-zA-Z0-9_\\-\\.\\*]*$/', $this->tfID)) {
 			$this->tfID = '';
 		}
-		$this->back = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('back');
-		$this->renderALL = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('renderALL');
+		$this->back = GeneralUtility::_GP('back');
+		$this->renderALL = GeneralUtility::_GP('renderALL');
 		// Set internal table/field to the parts of "tfID" incoming var.
 		$identifierParts = explode('.', $this->tfID);
 		// The table is the first item
@@ -183,7 +185,7 @@ class HelpModuleController {
 			$this->content .= $this->render_TOC();
 		}
 
-		$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
+		$this->doc = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->setModuleTemplate('EXT:cshmanual/Resources/Private/Templates/cshmanual.html');
 
@@ -223,7 +225,7 @@ class HelpModuleController {
 		$GLOBALS['LANG']->loadSingleTableDescription('xMOD_csh_corebe');
 		$this->render_TOC_el('xMOD_csh_corebe', 'core', $outputSections, $tocArray, $CSHkeys);
 		// Backend Modules:
-		$loadModules = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Module\\ModuleLoader');
+		$loadModules = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Module\\ModuleLoader');
 		$loadModules->load($GLOBALS['TBE_MODULES']);
 		foreach ($loadModules->modules as $mainMod => $info) {
 			$cshKey = '_MOD_' . $mainMod;
@@ -251,21 +253,21 @@ class HelpModuleController {
 		}
 		// Extensions
 		foreach ($CSHkeys as $cshKey => $value) {
-			if (\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($cshKey, 'xEXT_') && !isset($GLOBALS['TCA'][$cshKey])) {
+			if (GeneralUtility::isFirstPartOfStr($cshKey, 'xEXT_') && !isset($GLOBALS['TCA'][$cshKey])) {
 				$GLOBALS['LANG']->loadSingleTableDescription($cshKey);
 				$this->render_TOC_el($cshKey, 'extensions', $outputSections, $tocArray, $CSHkeys);
 			}
 		}
 		// Glossary
 		foreach ($CSHkeys as $cshKey => $value) {
-			if (\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($cshKey, 'xGLOSSARY_') && !isset($GLOBALS['TCA'][$cshKey])) {
+			if (GeneralUtility::isFirstPartOfStr($cshKey, 'xGLOSSARY_') && !isset($GLOBALS['TCA'][$cshKey])) {
 				$GLOBALS['LANG']->loadSingleTableDescription($cshKey);
 				$this->render_TOC_el($cshKey, 'glossary', $outputSections, $tocArray, $CSHkeys);
 			}
 		}
 		// Other:
 		foreach ($CSHkeys as $cshKey => $value) {
-			if (!\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($cshKey, '_MOD_') && !isset($GLOBALS['TCA'][$cshKey])) {
+			if (!GeneralUtility::isFirstPartOfStr($cshKey, '_MOD_') && !isset($GLOBALS['TCA'][$cshKey])) {
 				$GLOBALS['LANG']->loadSingleTableDescription($cshKey);
 				$this->render_TOC_el($cshKey, 'other', $outputSections, $tocArray, $CSHkeys);
 			}
@@ -460,12 +462,12 @@ class HelpModuleController {
 			$val = trim($val);
 			if ($val) {
 				$iP = explode(':', $val);
-				$iPUrl = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('|', $val);
+				$iPUrl = GeneralUtility::trimExplode('|', $val);
 				// URL reference:
 				if (substr($iPUrl[1], 0, 4) == 'http') {
 					$lines[] = '<a href="' . htmlspecialchars($iPUrl[1]) . '" target="_blank"><em>' . htmlspecialchars($iPUrl[0]) . '</em></a>';
 				} elseif (substr($iPUrl[1], 0, 5) == 'FILE:') {
-					$fileName = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName(substr($iPUrl[1], 5), 1, 1);
+					$fileName = GeneralUtility::getFileAbsFileName(substr($iPUrl[1], 5), 1, 1);
 					if ($fileName && @is_file($fileName)) {
 						$fileName = '../' . \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($fileName);
 						$lines[] = '<a href="' . htmlspecialchars($fileName) . '" target="_blank"><em>' . htmlspecialchars($iPUrl[0]) . '</em></a>';
@@ -476,7 +478,7 @@ class HelpModuleController {
 						// Checking read access:
 						if (isset($GLOBALS['TCA_DESCR'][$iP[0]])) {
 							// Make see-also link:
-							$href = $this->renderALL || $anchorTable && $iP[0] == $anchorTable ? '#' . implode('.', $iP) : htmlspecialchars($this->moduleUrl) . '&amp;tfID=' . rawurlencode(implode('.', $iP)) . '&amp;back=' . $this->tfID;
+							$href = $this->renderALL || $anchorTable && $iP[0] == $anchorTable ? '#' . rawurlencode(implode('.', $iP)) : $this->moduleUrl . '&tfID=' . rawurlencode(implode('.', $iP)) . '&back=' . $this->tfID;
 							$label = $this->getTableFieldLabel($iP[0], $iP[1], ' / ');
 							$lines[] = '<a href="' . htmlspecialchars($href) . '">' . htmlspecialchars($label) . '</a>';
 						}
@@ -498,12 +500,12 @@ class HelpModuleController {
 	public function printImage($images, $descr) {
 		$code = '';
 		// Splitting:
-		$imgArray = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $images, TRUE);
+		$imgArray = GeneralUtility::trimExplode(',', $images, TRUE);
 		if (count($imgArray)) {
 			$descrArray = explode(LF, $descr, count($imgArray));
 			foreach ($imgArray as $k => $image) {
 				$descr = $descrArray[$k];
-				$absImagePath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($image, 1, 1);
+				$absImagePath = GeneralUtility::getFileAbsFileName($image, 1, 1);
 				if ($absImagePath && @is_file($absImagePath)) {
 					$imgFile = \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($absImagePath);
 					$imgInfo = @getimagesize($absImagePath);
@@ -656,7 +658,7 @@ class HelpModuleController {
 			$CSHkeys = array_flip(array_keys($GLOBALS['TCA_DESCR']));
 			// Glossary
 			foreach ($CSHkeys as $cshKey => $value) {
-				if (\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($cshKey, 'xGLOSSARY_') && !isset($GLOBALS['TCA'][$cshKey])) {
+				if (GeneralUtility::isFirstPartOfStr($cshKey, 'xGLOSSARY_') && !isset($GLOBALS['TCA'][$cshKey])) {
 					$GLOBALS['LANG']->loadSingleTableDescription($cshKey);
 					if (is_array($GLOBALS['TCA_DESCR'][$cshKey]['columns'])) {
 						// Traverse table columns as listed in TCA_DESCR
@@ -694,7 +696,7 @@ class HelpModuleController {
 	 * @todo Define visibility
 	 */
 	public function substituteGlossaryWords($code) {
-		$htmlParser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Core\Html\HtmlParser');
+		$htmlParser = GeneralUtility::makeInstance('TYPO3\CMS\Core\Html\HtmlParser');
 		$htmlParser->pObj = $this;
 		$code = $htmlParser->HTMLcleaner($code, array(), 1);
 		return $code;
@@ -716,7 +718,7 @@ class HelpModuleController {
 				// quoteMeta used so special chars (which should not occur though) in words will not break the regex. Seemed to work (- kasper)
 				$parts = preg_split('/( |[\\(])(' . quoteMeta($wordSet['title']) . ')([\\.\\!\\)\\?\\:\\,]+| )/i', ' ' . $code . ' ', 2, PREG_SPLIT_DELIM_CAPTURE);
 				if (count($parts) == 5) {
-					$parts[2] = '<a class="glossary-term" href="' . htmlspecialchars($this->moduleUrl . '&amp;tfID=' . rawurlencode($wordSet['key']) . '&amp;back=' . $this->tfID) . '" title="' . rawurlencode(htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs(rawurldecode($wordSet['description']), 80))) . '">' . htmlspecialchars($parts[2]) . '</a>';
+					$parts[2] = '<a class="glossary-term" href="' . htmlspecialchars($this->moduleUrl . '&amp;tfID=' . rawurlencode($wordSet['key']) . '&amp;back=' . $this->tfID) . '" title="' . rawurlencode(htmlspecialchars(GeneralUtility::fixed_lgd_cs(rawurldecode($wordSet['description']), 80))) . '">' . htmlspecialchars($parts[2]) . '</a>';
 					$code = substr(implode('', $parts), 1, -1);
 					// Disable entry so it doesn't get used next time:
 					unset($this->substWords[$wordKey]);
