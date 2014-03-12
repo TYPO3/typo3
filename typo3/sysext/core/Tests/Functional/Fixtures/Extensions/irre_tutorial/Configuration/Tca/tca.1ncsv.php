@@ -74,6 +74,7 @@ $TCA['tx_irretutorial_1ncsv_hotel'] = array(
 				),
 				'behaviour' => array(
 					'localizationMode' => 'select',
+					'localizeChildrenAtParentLocalization' => TRUE,
 				),
 			)
 		),
@@ -162,6 +163,7 @@ $TCA['tx_irretutorial_1ncsv_offer'] = array(
 				),
 				'behaviour' => array(
 					'localizationMode' => 'select',
+					'localizeChildrenAtParentLocalization' => TRUE,
 				),
 			)
 		),

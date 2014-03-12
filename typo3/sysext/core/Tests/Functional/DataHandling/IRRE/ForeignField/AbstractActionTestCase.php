@@ -304,7 +304,6 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 	 * @see DataSet/Assertion/createAndLocalizeParentContentRecordWithHotelAndOfferChildRecords.csv
 	 */
 	public function createAndLocalizeParentContentWithHotelAndOfferChildren() {
-		// @todo Localizing the new child records is broken in the Core
 		$newTableIds = $this->actionService->createNewRecords(
 			self::VALUE_PageId,
 			array(
@@ -315,24 +314,20 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 		);
 		$newContentId = $newTableIds[self::TABLE_Content][0];
 		$newHotelId = $newTableIds[self::TABLE_Hotel][0];
-		$localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Content, $newContentId, self::VALUE_LanguageId);
+		$this->actionService->localizeRecord(self::TABLE_Content, $newContentId, self::VALUE_LanguageId);
 		$this->assertAssertionDataSet('createNLocalizeParentContentNHotelNOfferChildren');
 
-		$localizedContentId = $localizedTableIds[self::TABLE_Content][$newContentId];
-		$localizedHotelId = $localizedTableIds[self::TABLE_Hotel][$newHotelId];
 		$responseContent = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId)->getResponseContent();
-
-		// @todo Does not work since children don't point to live-default record
-		/*
-			$this->assertResponseContentStructureHasRecords(
-				$responseContent, self::TABLE_Content . ':' . $localizedContentId, self::FIELD_ContentHotel,
-				self::TABLE_Hotel, 'title', '[Translate to Dansk:] Hotel #1'
-			);
-			$this->assertResponseContentStructureHasRecords(
-				$responseContent, self::TABLE_Hotel . ':' . $localizedHotelId, self::FIELD_HotelOffer,
-				self::TABLE_Offer, 'title', '[Translate to Dansk:] Offer #1'
-			);
-		*/
+		// Content record gets overlaid, thus using newContentId
+		$this->assertResponseContentStructureHasRecords(
+			$responseContent, self::TABLE_Content . ':' . $newContentId, self::FIELD_ContentHotel,
+			self::TABLE_Hotel, 'title', '[Translate to Dansk:] Hotel #1'
+		);
+		// Hotel record gets overlaid, thus using newHotelId
+		$this->assertResponseContentStructureHasRecords(
+			$responseContent, self::TABLE_Hotel . ':' . $newHotelId, self::FIELD_HotelOffer,
+			self::TABLE_Offer, 'title', '[Translate to Dansk:] Offer #1'
+		);
 	}
 
 	/**
