@@ -68,7 +68,7 @@ class ClassLoader {
 	protected $packages = array();
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $isEarlyCache = TRUE;
 
@@ -122,7 +122,6 @@ class ClassLoader {
 	 * @param \TYPO3\CMS\Core\Cache\Frontend\StringFrontend $classesCache
 	 */
 	public function injectClassesCache(Cache\Frontend\StringFrontend $classesCache) {
-		/** @var $earlyClassLoaderBackend Cache\Backend\TransientMemoryBackend */
 		$earlyClassesCache = $this->classesCache;
 		$this->classesCache = $classesCache;
 		$this->isEarlyCache = FALSE;
@@ -141,7 +140,7 @@ class ClassLoader {
 	 * a package and specifically registered classes.
 	 *
 	 * @param string $className Name of the class/interface to load
-	 * @return boolean
+	 * @return bool
 	 */
 	public function loadClass($className) {
 		if ($className[0] === '\\') {
@@ -153,23 +152,9 @@ class ClassLoader {
 		}
 
 		$cacheEntryIdentifier = strtolower(str_replace('\\', '_', $className));
-		$classLoadingInformation = NULL;
-		try {
-			$rawClassLoadingInformation = $this->classesCache->get($cacheEntryIdentifier);
-			if ($rawClassLoadingInformation !== FALSE) {
-				if ($rawClassLoadingInformation !== '') {
-					$classLoadingInformation = explode("\xff", $rawClassLoadingInformation);
-				}
-			} else {
-				$classLoadingInformation = $this->buildClassLoadingInformation($className);
-				if ($classLoadingInformation !== NULL) {
-					$this->classesCache->set($cacheEntryIdentifier, implode("\xff", $classLoadingInformation), $this->isEarlyCache ? array('early') : array());
-				} elseif (!$this->isEarlyCache) {
-					$this->classesCache->set($cacheEntryIdentifier, '');
-				}
-			}
-		} catch (\InvalidArgumentException $exception) {
-			return FALSE;
+		$classLoadingInformation = $this->getClassLoadingInformationFromCache($cacheEntryIdentifier);
+		if ($classLoadingInformation === NULL) {
+			$classLoadingInformation = $this->buildCachedClassLoadingInformation($cacheEntryIdentifier, $className);
 		}
 
 		// Class loading information structure
@@ -192,6 +177,52 @@ class ClassLoader {
 		}
 
 		return $loadingSuccessful;
+	}
+
+	/**
+	 * Get class loading information for the given identifier for cache
+	 *
+	 * @param string $cacheEntryIdentifier The identifier to fetch entry from cache
+	 * @return array|null The class information or NULL if class information was not found in cache
+	 */
+	public function getClassLoadingInformationFromCache($cacheEntryIdentifier) {
+		try {
+			$rawClassLoadingInformation = $this->classesCache->get($cacheEntryIdentifier);
+		} catch (\InvalidArgumentException $exception) {
+			return NULL;
+		}
+
+		if ($rawClassLoadingInformation !== FALSE && $rawClassLoadingInformation !== '') {
+			return explode("\xff", $rawClassLoadingInformation);
+		}
+		return NULL;
+	}
+
+	/**
+	 * Builds the class loading information and writes it to the cache. It handles Locking for this cache.
+	 *
+	 * @param string $cacheEntryIdentifier Cache identifier for this class
+	 * @param string $className Name of class this information is for
+	 *
+	 * @return array|null The class information or NULL if class was not found
+	 */
+	protected function buildCachedClassLoadingInformation($cacheEntryIdentifier, $className) {
+		// Look again into cache after we got the look
+		$classLoadingInformation = $this->getClassLoadingInformationFromCache($cacheEntryIdentifier);
+		if ($classLoadingInformation === NULL) {
+			$classLoadingInformation = $this->buildClassLoadingInformation($className);
+
+			if ($classLoadingInformation !== NULL) {
+				$this->classesCache->set(
+					$cacheEntryIdentifier,
+					implode("\xff", $classLoadingInformation),
+					$this->isEarlyCache ? array('early') : array()
+				);
+			} elseif (!$this->isEarlyCache) {
+				$this->classesCache->set($cacheEntryIdentifier, '');
+			}
+		}
+		return $classLoadingInformation;
 	}
 
 	/**
@@ -220,7 +251,7 @@ class ClassLoader {
 	 * Find out if a class name is valid
 	 *
 	 * @param string $className
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function isValidClassName($className) {
 		return strpos($className, ' ') === FALSE;
@@ -350,22 +381,13 @@ class ClassLoader {
 	}
 
 	/**
-	 * Get cache identifier
-	 *
-	 * @return string identifier
-	 */
-	protected function getCacheIdentifier() {
-		return $this->cacheIdentifier;
-	}
-
-	/**
 	 * Get cache entry identifier for the package namespaces cache
 	 *
 	 * @return string|null identifier
 	 */
 	protected function getCacheEntryIdentifier() {
-		return $this->getCacheIdentifier() !== NULL
-			? 'ClassLoader_' . $this->getCacheIdentifier()
+		return $this->cacheIdentifier !== NULL
+			? 'ClassLoader_' . $this->$this->cacheIdentifier
 			: NULL;
 	}
 
@@ -452,7 +474,7 @@ class ClassLoader {
 	/**
 	 * Load package namespaces from cache
 	 *
-	 * @return boolean TRUE if package namespaces were loaded
+	 * @return bool TRUE if package namespaces were loaded
 	 */
 	protected function loadPackageNamespacesFromCache() {
 		$cacheEntryIdentifier = $this->getCacheEntryIdentifier();
@@ -516,6 +538,8 @@ class ClassLoader {
 	/**
 	 * Transfers all entries from the early class information cache to
 	 * the classes cache in order to make them persistent
+	 *
+	 * @return void
 	 */
 	protected function transferRuntimeClassInformationCacheEntriesToClassesCache() {
 		foreach ($this->runtimeClassLoadingInformationCache as $classLoadingInformation) {
@@ -587,7 +611,7 @@ class ClassLoader {
 	 *
 	 * @param string $aliasClassName
 	 * @param string $originalClassName
-	 * @return boolean
+	 * @return bool
 	 */
 	public function setAliasForClassName($aliasClassName, $originalClassName) {
 		return $this->classAliasMap->setAliasForClassName($aliasClassName, $originalClassName);
@@ -607,8 +631,8 @@ class ClassLoader {
 	 * Get alias for class name
 	 *
 	 * @param string $className
-	 * @deprecated since 6.2, use getAliasesForClassName instead. will be removed 2 versions later
 	 * @return mixed
+	 * @deprecated since 6.2, will be removed 2 versions later - use getAliasesForClassName() instead
 	 */
 	static public function getAliasForClassName($className) {
 		GeneralUtility::logDeprecatedFunction();
