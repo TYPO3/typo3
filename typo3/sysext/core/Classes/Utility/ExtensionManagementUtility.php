@@ -526,7 +526,7 @@ class ExtensionManagementUtility {
 				'showAllLocalizationLink' => FALSE,
 
 				'enabledControls' => array(
-					'info' => FALSE,
+					'info' => TRUE,
 					'new' => FALSE,
 					'dragdrop' => TRUE,
 					'sort' => FALSE,
