@@ -80,7 +80,7 @@ class FileTableSplittingUpdate extends AbstractUpdate {
 	public function performUpdate(array &$dbQueries, &$customMessages) {
 
 		if (!array_key_exists($this->metaDataTable, $GLOBALS['TYPO3_DB']->admin_get_tables())) {
-			$customMessages = 'ERROR! Make sure you created the table before. If you added custom metadata to sys_file table add TCA configuration as well as sql definitions to sys_file_metadata, too.';
+			$customMessages = 'ERROR! Make sure you already created the table. If you added custom metadata to sys_file table add TCA configuration as well as sql definitions to sys_file_metadata, too.';
 			return FALSE;
 		}
 

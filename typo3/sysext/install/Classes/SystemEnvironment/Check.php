@@ -163,7 +163,7 @@ class Check {
 			$status->setMessage(
 				'file_uploads=' . ini_get('file_uploads') . LF .
 				'TYPO3 uses the ability to upload files from the browser in various cases.' .
-				' As long as this flag is disabled in PHP, you\'ll not be able to upload files.' .
+				' If this flag is disabled in PHP, you won\'t be able to upload files.' .
 				' But it doesn\'t end here, because not only are files not accepted by' .
 				' the server - ALL content in the forms are discarded and therefore' .
 				' nothing at all will be editable if you don\'t set this flag!' .
@@ -191,15 +191,15 @@ class Check {
 				'upload_max_filesize=' . ini_get('upload_max_filesize') . LF .
 				'By default TYPO3 supports uploading, copying and moving' .
 				' files of sizes up to 10MB (you can alter the TYPO3 defaults' .
-				' by the config option TYPO3_CONF_VARS[BE][maxFileSize]).' .
-				' Your current PHP value is below this, so at this point, PHP determines' .
+				' with the config option TYPO3_CONF_VARS[BE][maxFileSize]).' .
+				' Your current PHP value is below this, so right now, PHP determines' .
 				' the limits for uploaded filesizes and not TYPO3.' .
-				' It is recommended that the value of upload_max_filesize at least equals to the value' .
+				' It is recommended that the value of upload_max_filesize is at least equal to the value' .
 				' of TYPO3_CONF_VARS[BE][maxFileSize]'
 			);
 		} else {
 			$status = new Status\OkStatus();
-			$status->setTitle('PHP Maximum file upload size is higher or equal to 10MB');
+			$status->setTitle('PHP Maximum file upload size is higher than or equal to 10MB');
 		}
 		return $status;
 	}
@@ -220,7 +220,7 @@ class Check {
 				'post_max_size=' . ini_get('post_max_size') . LF .
 				'You have defined a maximum size for file uploads in PHP which' .
 				' exceeds the allowed size for POST requests. Therefore the' .
-				' file uploads can not be larger than ' . ini_get('post_max_size') . '.'
+				' file uploads can also not be larger than ' . ini_get('post_max_size') . '.'
 			);
 		} else {
 			$status = new Status\OkStatus();
@@ -242,7 +242,7 @@ class Check {
 			$status = new Status\WarningStatus();
 			$status->setTitle('Unlimited memory limit for PHP');
 			$status->setMessage(
-				'PHP is configured to not limit memory usage at all. This is a risk' .
+				'PHP is configured not to limit memory usage at all. This is a risk' .
 				' and should be avoided in production setup. In general it\'s best practice to limit this.' .
 				' To be safe, set a limit in PHP, but with a minimum of ' . $recommendedMemoryLimit . 'MB:' . LF .
 				'memory_limit=' . $recommendedMemoryLimit . 'M'
@@ -252,7 +252,7 @@ class Check {
 			$status->setTitle('PHP Memory limit below ' . $minimumMemoryLimit . 'MB');
 			$status->setMessage(
 				'memory_limit=' . ini_get('memory_limit') . LF .
-				'Your system is configured to enforce a memory limit of PHP scripts lower than ' .
+				'Your system is configured to enforce a memory limit for PHP scripts lower than ' .
 				$minimumMemoryLimit . 'MB. It is required to raise the limit.' .
 				' We recommend a minimum PHP memory limit of ' . $recommendedMemoryLimit . 'MB:' . LF .
 				'memory_limit=' . $recommendedMemoryLimit . 'M'
@@ -262,16 +262,17 @@ class Check {
 			$status->setTitle('PHP Memory limit below ' . $recommendedMemoryLimit . 'MB');
 			$status->setMessage(
 				'memory_limit=' . ini_get('memory_limit') . LF .
-				'Your system is configured to enforce a memory limit of PHP scripts lower than ' .
+				'Your system is configured to enforce a memory limit for PHP scripts lower than ' .
 				$recommendedMemoryLimit . 'MB.' .
 				' A slim TYPO3 instance without many extensions will probably work, but you should monitor your' .
-				' system for exhausted messages, especially if using the backend. To be on the safe side,' .
-				' we recommend a minimum PHP memory limit of ' . $recommendedMemoryLimit . 'MB:' . LF .
+				' system for "allowed memory size of X bytes exhausted" messages, especially if using the backend.' .
+				' To be on the safe side,' . ' we recommend a minimum PHP memory limit of ' .
+				$recommendedMemoryLimit . 'MB:' . LF .
 				'memory_limit=' . $recommendedMemoryLimit . 'M'
 			);
 		} else {
 			$status = new Status\OkStatus();
-			$status->setTitle('PHP Memory limit equals to ' . $recommendedMemoryLimit . 'MB or more');
+			$status->setTitle('PHP Memory limit is equal to or more than ' . $recommendedMemoryLimit . 'MB');
 		}
 		return $status;
 	}
@@ -313,15 +314,15 @@ class Check {
 				$status->setTitle('Infinite PHP script execution time');
 				$status->setMessage(
 					'Maximum PHP script execution time is always set to infinite (0) in cli mode.' .
-					' The setting used for web requests can not be checked from command line.'
+					' The setting used for web requests cannot be checked from command line.'
 				);
 			} else {
 				$status = new Status\WarningStatus();
 				$status->setTitle('Infinite PHP script execution time');
 				$status->setMessage(
 					'max_execution_time=' . $currentMaximumExecutionTime . LF .
-					'While TYPO3 is fine with this, you risk a denial-of-service of your system if for whatever' .
-					' reason some script hangs in an infinite loop. You are usually on safe side ' .
+					'While TYPO3 is fine with this, you risk a denial-of-service for your system if for whatever' .
+					' reason some script hangs in an infinite loop. You are usually on the safe side ' .
 					' if it is reduced to ' . $recommendedMaximumExecutionTime . ' seconds:' . LF .
 					'max_execution_time=' . $recommendedMaximumExecutionTime
 				);
@@ -331,7 +332,7 @@ class Check {
 			$status->setTitle('Low PHP script execution time');
 			$status->setMessage(
 				'max_execution_time=' . $currentMaximumExecutionTime . LF .
-				'Your max_execution_time is too low. Some expensive operation in TYPO3 can take longer than that.' .
+				'Your max_execution_time is too low. Some expensive operations in TYPO3 can take longer than that.' .
 				' It is recommended to raise the limit to ' . $recommendedMaximumExecutionTime . ' seconds:' . LF .
 				'max_execution_time=' . $recommendedMaximumExecutionTime
 			);
@@ -342,14 +343,15 @@ class Check {
 				'max_execution_time=' . $currentMaximumExecutionTime . LF .
 				'Your max_execution_time is low. While TYPO3 often runs without problems' .
 				' with ' . $minimumMaximumExecutionTime . ' seconds,' .
-				' it still may happen that script execution is stopped before finishing' .
+				' it may still happen that script execution is stopped before finishing' .
 				' calculations. You should monitor the system for messages in this area' .
 				' and maybe raise the limit to ' . $recommendedMaximumExecutionTime . ' seconds:' . LF .
 				'max_execution_time=' . $recommendedMaximumExecutionTime
 			);
 		} else {
 			$status = new Status\OkStatus();
-			$status->setTitle('Maximum PHP script execution time equals ' . $recommendedMaximumExecutionTime . ' or more');
+			$status->setTitle('Maximum PHP script execution time is equal to or more than '
+				. $recommendedMaximumExecutionTime);
 		}
 		return $status;
 	}
@@ -445,10 +447,10 @@ class Check {
 			$status->setMessage(
 				'doc_root=' . $docRootSetting . LF .
 				'PHP cannot execute scripts' .
-				' outside this directory. This setting is used seldom and must correlate' .
+				' outside this directory. This setting is seldom used and must correlate' .
 				' with your actual document root. You might be in trouble if your' .
 				' TYPO3 CMS core code is linked to some different location.' .
-				' If that is a problem, the setting must be adapted.'
+				' If that is a problem, the setting must be changed.'
 			);
 		} else {
 			$status = new Status\OkStatus();
@@ -499,7 +501,7 @@ class Check {
 					' infinite recursion. The current value is too low for TYPO3 CMS and must' .
 					' be either raised or xdebug unloaded. A value of ' . $recommendedMaxNestingLevel .
 					' is recommended. Warning: Expect fatal PHP errors in central parts of the CMS' .
-					' if the default value of 100 is not raised significantly to:' . LF .
+					' if the value is not raised significantly to:' . LF .
 					'xdebug.max_nesting_level=' . $recommendedMaxNestingLevel
 				);
 			} else {
@@ -538,7 +540,8 @@ class Check {
 			$status->setTitle('PHP OpenSSL extension not loaded');
 			$status->setMessage(
 				'OpenSSL is a PHP extension to encrypt/decrypt data between requests.' .
-				' TYPO3 CMS requires it to be able to store passwords encrypted to improve the security on database layer.'
+				' TYPO3 CMS requires it to be able to encrypt stored passwords to improve the security in the' .
+				' database layer.'
 			);
 		}
 
@@ -560,7 +563,7 @@ class Check {
 			$status->setMessage(
 				'suhosin is an extension to harden the PHP environment. In general, it is' .
 				' good to have it from a security point of view. While TYPO3 CMS works' .
-				' fine with suhosin, it has some requirements different from default settings' .
+				' fine with suhosin, it has some requirements different from the default settings' .
 				' to be set if enabled.'
 			);
 		}
@@ -581,8 +584,8 @@ class Check {
 				$status->setTitle('PHP suhosin.request.max_vars too low');
 				$status->setMessage(
 					'suhosin.request.max_vars=' . $currentRequestMaxVars . LF .
-					'This setting can lead to lost information if submitting big forms in TYPO3 CMS like' .
-					' it is done in the install tool. It is heavily recommended to raise this' .
+					'This setting can lead to lost information if submitting forms with lots of data in TYPO3 CMS' .
+					' (as the install tool does). It is highly recommended to raise this' .
 					' to at least ' . $recommendedRequestMaxVars . ':' . LF .
 					'suhosin.request.max_vars=' . $recommendedRequestMaxVars
 				);
@@ -616,8 +619,8 @@ class Check {
 				$status->setTitle('PHP suhosin.post.max_vars too low');
 				$status->setMessage(
 					'suhosin.post.max_vars=' . $currentPostMaxVars . LF .
-					'This setting can lead to lost information if submitting big forms in TYPO3 CMS like' .
-					' it is done in the install tool. It is heavily recommended to raise this' .
+					'This setting can lead to lost information if submitting forms with lots of data in TYPO3 CMS' .
+					' (as the install tool does). It is highly recommended to raise this' .
 					' to at least ' . $recommendedPostMaxVars . ':' . LF .
 					'suhosin.post.max_vars=' . $recommendedPostMaxVars
 				);
@@ -651,8 +654,8 @@ class Check {
 				$status->setTitle('PHP suhosin.get.max_value_length too low');
 				$status->setMessage(
 					'suhosin.get.max_value_length=' . $currentGetMaxValueLength . LF .
-					'This setting can lead to lost information if submitting big forms in TYPO3 CMS like' .
-					' it is done in the install tool. It is heavily recommended to raise this' .
+					'This setting can lead to lost information if submitting forms with lots of data in TYPO3 CMS' .
+					' (as the install tool does). It is highly recommended to raise this' .
 					' to at least ' . $recommendedGetMaxValueLength . ':' . LF .
 					'suhosin.get.max_value_length=' . $recommendedGetMaxValueLength
 				);
@@ -718,7 +721,7 @@ class Check {
 				$status->setMessage(
 					'suhosin.executor.include.whitelist= ' . implode(' ', $currentWhiteListArray) . LF .
 					'"vfs" is currently not a hard requirement of TYPO3 CMS but tons of unit tests rely on it.' .
-					' Furthermore, vfs is likely a base for an additional compatibility layer in the future.' .
+					' Furthermore, vfs will likely be a base for an additional compatibility layer in the future.' .
 					' A useful setting is:' . LF .
 					'suhosin.executor.include.whitelist=phar vfs'
 				);
@@ -750,12 +753,12 @@ class Check {
 			$status->setTitle('No PHP opcode cache loaded');
 			$status->setMessage(
 				'PHP opcode caches hold a compiled version of executed PHP scripts in' .
-				' memory and do not require to recompile any script on each access.' .
-				' This can be a massive performance improvement and can put load off a' .
+				' memory and do not require to recompile a script each time it is accessed.' .
+				' This can be a massive performance improvement and can reduce the load on a' .
 				' server in general. A parse time reduction by factor three for fully cached' .
-				' pages can be achieved easily if using some opcode cache.' .
-				' If in doubt choosing one, APC runs well and can be used as data' .
-				' cache layer in TYPO3 CMS as additional feature.'
+				' pages can be achieved easily if using an opcode cache.' .
+				' If you\'re not sure which to choose, APC runs well and can be used as a data' .
+				' cache layer in TYPO3 CMS as an additional feature.'
 			);
 		} else {
 			$status = new Status\OkStatus();
@@ -789,7 +792,7 @@ class Check {
 					$status->setTitle('A possibly malfunctioning PHP opcode cache is loaded');
 					break;
 				case 'warning':
-					$status->setTitle('A PHP opcode cache is loaded, which may cause problems');
+					$status->setTitle('A PHP opcode cache is loaded which may cause problems');
 					break;
 				case 'ok':
 				default:
@@ -814,18 +817,18 @@ class Check {
 			$status->setMessage(
 				'TYPO3 CMS core extensions like extbase and fluid heavily rely on method'
 				. ' comment parsing to fetch annotations and add magic belonging to them.'
-				. ' This does not work in the current environment and so we can not install'
+				. ' This does not work in the current environment and so we cannot install'
 				. ' TYPO3 CMS.' . LF
 				. ' Here are some possibilities: ' . LF
-				. '* In Zend OPcache you can disable to save/load comment. If you are using'
+				. '* In Zend OPcache you can disable saving/loading comments. If you are using'
 				. ' Zend OPcache (included since PHP 5.5) then check your php.ini settings for'
 				. ' opcache.save_comments and opcache.load_comments and enable them.' . LF
-				. '* In Zend Optimizer+ you can disable to save comment. If you are using'
+				. '* In Zend Optimizer+ you can disable saving comments. If you are using'
 				. ' Zend Optimizer+ then check your php.ini settings for'
 				. ' zend_optimizerplus.save_comments and enable it.' . LF
 				. '* The PHP extension eaccelerator is known to break this if'
 				. ' it is compiled without --with-eaccelerator-doc-comment-inclusion flag.'
-				. ' This compile flag must be given, otherwise TYPO3 CMS will not work.'
+				. ' This compile flag must be specified, otherwise TYPO3 CMS will not work.'
 			);
 		} else {
 			$status = new Status\OkStatus();
@@ -848,13 +851,15 @@ class Check {
 			$status = new Status\InfoStatus();
 			$status->setTitle('Empty systemLocale setting');
 			$status->setMessage(
-				'$GLOBALS[TYPO3_CONF_VARS][SYS][systemLocale] is not set. This is fine as long as no UTF-8 file system is used.'
+				'$GLOBALS[TYPO3_CONF_VARS][SYS][systemLocale] is not set. This is fine as long as no UTF-8' .
+				' file system is used.'
 			);
 		} elseif (setlocale(LC_CTYPE, $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLocale']) === FALSE) {
 			$status = new Status\ErrorStatus();
 			$status->setTitle('Incorrect systemLocale setting');
 			$status->setMessage(
-				'Current value of the $GLOBALS[TYPO3_CONF_VARS][SYS][systemLocale] is incorrect. Locale with this name doesn\'t exist in the operating system.'
+				'Current value of the $GLOBALS[TYPO3_CONF_VARS][SYS][systemLocale] is incorrect. A locale with' .
+				' this name doesn\'t exist in the operating system.'
 			);
 			setlocale(LC_CTYPE, $currentLocale);
 		} else {
@@ -880,7 +885,8 @@ class Check {
 				$status = new Status\ErrorStatus();
 				$status->setTitle('System locale not set on UTF-8 file system');
 				$status->setMessage(
-					'$GLOBALS[TYPO3_CONF_VARS][SYS][UTF8filesystem] is set, but $GLOBALS[TYPO3_CONF_VARS][SYS][systemLocale] is empty. Make sure a valid locale which supports UTF-8 is set.'
+					'$GLOBALS[TYPO3_CONF_VARS][SYS][UTF8filesystem] is set, but $GLOBALS[TYPO3_CONF_VARS][SYS][systemLocale]' .
+					' is empty. Make sure a valid locale which supports UTF-8 is set.'
 				);
 			} else {
 				$testString = 'ÖöĄĆŻĘĆćążąęó.jpg';
@@ -925,12 +931,12 @@ class Check {
 			$status = new Status\WarningStatus();
 			$status->setTitle('Windows apache thread stack size');
 			$status->setMessage(
-				'This current value can not be checked by the system, so please ignore this warning if it' .
+				'This current value cannot be checked by the system, so please ignore this warning if it' .
 				' is already taken care of: Fluid uses complex regular expressions which require a lot' .
 				' of stack space during the first processing.' .
 				' On Windows the default stack size for Apache is a lot smaller than on UNIX.' .
 				' You can increase the size to 8MB (default on UNIX) by adding the following configuration' .
-				' to httpd.conf and restart Apache afterwards:' . LF .
+				' to httpd.conf and restarting Apache afterwards:' . LF .
 				'<IfModule mpm_winnt_module>' . LF .
 				'ThreadStackSize 8388608' . LF .
 				'</IfModule>'
@@ -1098,8 +1104,8 @@ class Check {
 			$status = new Status\OkStatus();
 			$status->setTitle('PHP GD library has freetype font support');
 			$status->setMessage(
-				'There is a difference between the font size setting the GD' .
-				' library should be feeded with. If installation is completed' .
+				'There is a difference between the font size setting which the GD' .
+				' library should be supplied  with. If installation is completed' .
 				' a test in the install tool helps to find out the value you need.'
 			);
 		} else {
@@ -1141,7 +1147,7 @@ class Check {
 				$status = new Status\NoticeStatus();
 				$status->setTitle('FreeType True Type Font DPI');
 				$status->setMessage('Fonts are rendered by FreeType library. ' .
-					'This server renders fonts not as expected. ' .
+					'This server does not render fonts as expected. ' .
 					'Please configure FreeType or TYPO3_CONF_VARS[GFX][TTFdpi]'
 				);
 			}
@@ -1170,7 +1176,7 @@ class Check {
 			$status->setMessage(
 				'magic_quotes_gpc=' . $magicQuotesGpc . LF .
 				'Setting magic_quotes_gpc is deprecated since PHP 5.3.' .
-				' You are advised to disable it until it gets completely removed:' . LF .
+				' You are advised to disable it until it is completely removed:' . LF .
 				'magic_quotes_gpc=Off'
 			);
 		} else {

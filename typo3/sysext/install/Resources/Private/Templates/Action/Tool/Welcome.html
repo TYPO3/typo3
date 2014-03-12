@@ -15,18 +15,18 @@
 	<h4>How to configure TYPO3 CMS</h4>
 	<p>
 		Local configuration is done by overriding default values in the
-		included file, typo3conf/LocalConfiguration.php. In this file you enter the
-		database information along with values in the global array
+		file typo3conf/LocalConfiguration.php. The options that you
+		choose in the Install Tool will be saved in this file, such as database information
+		and values in the global array
 		TYPO3_CONF_VARS.
+		<br /><br />
+		If you wish to manually edit the file, the options in the TYPO3_CONF_VARS array
+		and how to use them for your own purposes are discussed in the base configuration file,
+		EXT:core/Configuration/DefaultConfiguration.php. This file sets up the default values,
+		then includes the LocalConfiguration.php file to override the default values.
 		<br />
-		The options in the TYPO3_CONF_VARS array and how to use it for your
-		own purposes is discussed in the base configuration file,
-		EXT:core/Configuration/DefaultConfiguration.php. This file sets up the default values and
-		subsequently includes the LocalConfiguration.php file in which you can then
-		override values.
-		<br />
-		See this page for <i:constant name="TYPO3_URL_SYSTEMREQUIREMENTS" /> more
-		information about system requirements.</a>
+		See this page for more information about system requirements:
+		<a target="_blank" href="<i:constant name="TYPO3_URL_SYSTEMREQUIREMENTS" />"><i:constant name="TYPO3_URL_SYSTEMREQUIREMENTS" /></a>
 	</p>
 	<hr />
 
@@ -44,9 +44,9 @@
 		The following actions are available here:
 		<ul>
 			<li><strong>Database Analyzer</strong> - compares the database table and field definitions of the
-				current database with the specification from all loaded extensions' ext_tables.sql.</li>
+				current database with the specification from all loaded extensions' ext_tables.sql files.</li>
 			<li><strong>Clear all cache</strong> - works similar to the cache clearing in the backend, but
-				follows a more straight ahead approach and the according backend hooks are not executed.</li>
+				takes a more straightforward approach and the according backend hooks are not executed.</li>
 			<li><strong>Check for broken extensions</strong> - checks whether the local extensions' ext_tables
 				and ext_localconf files can be included without errors, meaning they can be loaded without
 				breaking the system.</li>

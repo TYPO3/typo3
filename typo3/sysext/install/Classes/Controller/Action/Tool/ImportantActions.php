@@ -109,7 +109,7 @@ class ImportantActions extends Action\AbstractAction {
 			/** @var $message \TYPO3\CMS\Install\Status\StatusInterface */
 			$message = $this->objectManager->get('TYPO3\\CMS\\Install\\Status\\ErrorStatus');
 			$message->setTitle('Install tool password not changed');
-			$message->setMessage('Given passwords must be a least eight characters long.');
+			$message->setMessage('Given password must be at least eight characters long.');
 		} else {
 			/** @var \TYPO3\CMS\Core\Configuration\ConfigurationManager $configurationManager */
 			$configurationManager = $this->objectManager->get('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager');

@@ -7,26 +7,21 @@
 <body>
 <div id="container">
 	<h1>TYPO3</h1>
+
 	<div class="typo3-message message-warning">
 		<h2>The Install Tool is locked</h2>
+
 		<p>
-			To enable the Install Tool, the file ENABLE_INSTALL_TOOL must be created.
+			To enable the Install Tool, the file <strong>ENABLE_INSTALL_TOOL</strong>
+			must be created in the directory <strong>typo3conf/</strong>.
+			The file must be writable by the web server user.
+			The filename is case-sensitive but the file itself can be empty.
 		</p>
-		<ul>
-			<li>
-				In the typo3conf/ folder, create a file named ENABLE_INSTALL_TOOL. The file name is
-				case sensitive, but the file itself can simply be an empty file.
-			</li>
-			<li>
-				You are recommended to log out from the Install Tool after finishing your work.
-				The file will then automatically be deleted.
-			</li>
-		</ul>
+
 		<p>
-			For security reasons, it is highly recommended that you either rename or delete the file after the operation is finished.
-		</p>
-		<p>
-			As an additional security measure, if the file is older than one hour, TYPO3 will automatically delete it. The file must be writable by the web server user.
+			<strong>Security note:</strong>
+			When you are finished with the Install Tool, you should rename or delete this file.
+			It will automatically be deleted if you log out of the Install Tool or if the file is older than one hour.
 		</p>
 	</div>
 </div>

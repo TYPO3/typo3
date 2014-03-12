@@ -17,10 +17,10 @@
 			</trans-unit>
 			<trans-unit id="confirmUnlockInstallToolMessage" xml:space="preserve">
 				<source>&lt;p&gt;For security reasons the Install&#160;Tool is locked by default.&lt;/p&gt;
-&lt;p&gt;To unlock the Install&#160;Tool, an empty file with the name ENABLE_INSTALL_TOOL must be created in typo3conf/.&lt;/p&gt;
-&lt;p&gt;By hitting the button below, this file is created for you and the Install&#160;Tool will be unlocked.&lt;/p&gt;
-&lt;p&gt;You are recommended to log out from the Install&#160;Tool after finishing your work. Otherwise
-TYPO3 will automatically lock the Install&#160;Tool after one hour.&lt;/p&gt;</source>
+&lt;p&gt;To enable the Install&#160;Tool, the file &lt;strong&gt;ENABLE_INSTALL_TOOL&lt;/strong&gt; must be created in the directory &lt;strong&gt;typo3conf/&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;Just click the button below, the file will be created for you and the Install&#160;Tool will be unlocked.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Security note: &lt;/strong&gt;When you are finished with your work, please log out of the Install&#160;Tool. Otherwise TYPO3 will automatically lock the Install&#160;Tool after one hour.&lt;/p&gt;
+				</source>
 			</trans-unit>
 			<trans-unit id="confirmUnlockInstallToolButton" xml:space="preserve">
 				<source>Unlock the Install&#160;Tool</source>

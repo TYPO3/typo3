@@ -12,15 +12,15 @@
 				made by md5-hashing a serialized array with information.
 			</p>
 			<p>
-				Anyway this directory may contain many thousand files and a lot of them may be of no use anymore.
+				This directory may contain many thousands of files and a lot of them may be of no use anymore.
 			</p>
 			<p>
-				With this action you can delete the files in this folder. When you do that, you
-				should also clear the cache database tables afterwards.
+				With this action you can delete the files in this folder. Afterwards, you
+				should also clear the cache database tables.
 			</p>
 			<p>
-				This tool will delete files only if the last 10 characters before the extension
-				(3 chars+'.') are hexadecimal valid ciphers, which are lowercase a-f and 0-9.
+				This tool will delete files only if the last 10 characters before the file extension
+				('.' + 3 chars) are hexadecimal valid ciphers, which are lowercase a-f and 0-9.
 			</p>
 		</div>
 	</div>
@@ -110,6 +110,6 @@
 
 	<f:render
 		partial="Action/Common/SubmitButton"
-		arguments="{name:'deleteTypo3TempFiles', text:'Execute'}"
+		arguments="{name:'deleteTypo3TempFiles', text:'Empty selected folders'}"
 	/>
 </form>

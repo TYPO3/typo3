@@ -174,9 +174,9 @@ class CoreUpdateService {
 			$message = $this->objectManager->get('TYPO3\\CMS\\Install\\Status\\ErrorStatus');
 			$message->setTitle('Automatic core update not possible: Folder structure has errors or warnings');
 			$message->setMessage(
-				'To perform an update the folder structure of this TYPO3 CMS instance must'
+				'To perform an update, the folder structure of this TYPO3 CMS instance must'
 				. ' stick to the conventions, or the update process could lead to unexpected'
-				. ' results and may commit hazard to your system'
+				. ' results and may be hazardous to your system'
 			);
 			$messages[] = $message;
 		}

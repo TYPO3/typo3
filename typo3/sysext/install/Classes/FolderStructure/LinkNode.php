@@ -77,7 +77,7 @@ class LinkNode extends AbstractNode implements NodeInterface {
 	public function getStatus() {
 		if ($this->isWindowsOs()) {
 			$status = new Status\InfoStatus();
-			$status->setTitle($this->getRelativePathBelowSiteRoot() . ' should be a link, but this support is incomplete for windows.');
+			$status->setTitle($this->getRelativePathBelowSiteRoot() . ' should be a link, but this support is incomplete for Windows.');
 			$status->setMessage(
 				'This node is not handled for Windows OS and should be checked manually.'
 			);
@@ -87,7 +87,7 @@ class LinkNode extends AbstractNode implements NodeInterface {
 		if (!$this->exists()) {
 			$status = new Status\ErrorStatus();
 			$status->setTitle($this->getRelativePathBelowSiteRoot() . ' should be a link, but it does not exist');
-			$status->setMessage('Links can not be fixed by this system');
+			$status->setMessage('Links cannot be fixed by this system');
 			return array($status);
 		}
 
@@ -98,12 +98,12 @@ class LinkNode extends AbstractNode implements NodeInterface {
 			if ($type) {
 				$status->setMessage(
 					'The target ' . $this->getRelativePathBelowSiteRoot() . ' should be a link,' .
-					' but is of type ' . $type . '. This can not be fixed. Please investigate.'
+					' but is of type ' . $type . '. This cannot be fixed. Please investigate.'
 				);
 			} else {
 				$status->setMessage(
 					'The target ' . $this->getRelativePathBelowSiteRoot() . ' should be a file,' .
-					' but is of unknown type, probably because some upper level directory does not exist. Please investigate.'
+					' but is of unknown type, probably because an upper level directory does not exist. Please investigate.'
 				);
 			}
 			return array($status);

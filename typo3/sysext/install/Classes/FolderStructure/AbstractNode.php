@@ -163,7 +163,7 @@ abstract class AbstractNode {
 				$status = new Status\ErrorStatus();
 				$status->setTitle('Permission change on ' . $this->getRelativePathBelowSiteRoot() . ' not successful!');
 				$status->setMessage(
-					'Permissions could not be changed to ' . $this->targetPermission . '. There is probably some' .
+					'Permissions could not be changed to ' . $this->targetPermission . '. There is probably a' .
 						' group or owner permission problem on the parent directory.'
 				);
 			}

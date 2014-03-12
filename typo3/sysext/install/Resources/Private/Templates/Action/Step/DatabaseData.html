@@ -8,11 +8,8 @@
 
 	<p>
 		Import basic database structure and create a backend administrator user.
-		The password can be used to log in to the install tool and to the TYPO3 CMS backend (default: with username "admin").
-	</p>
-
-	<p>
-		The table import will drop possibly existing tables!
+		The password can be used to log in to the <strong>install tool</strong> and the <strong>TYPO3 CMS backend</strong>
+		(default username is "admin").
 	</p>
 
 	<form method="post" id="stepInstaller-databaseData" class="t3-install-form-label-before">
@@ -51,12 +48,15 @@
 				</li>
 			</ol>
 		</fieldset>
+		<div class="typo3-message message-warning">
+			This password gives an attacker full control over your instance if cracked. It should be strong (include lower and upper case characters, special characters and numbers) and must be at least eight characters long.
+		</div>
 		<hr />
 
 		<fieldset class="t3-install-form-label-width-10">
 			<ol>
 				<li>
-					<label for="sitename">Set a site name</label>
+					<label for="sitename">Site name</label>
 					<input
 						class="t3-install-form-input-text"
 						name="install[values][sitename]"

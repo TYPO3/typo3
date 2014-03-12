@@ -134,12 +134,12 @@ class DirectoryNode extends AbstractNode implements NodeInterface {
 			if ($fileType) {
 				$status->setMessage(
 					'The target ' . $this->getRelativePathBelowSiteRoot() . ' should be a directory,' .
-					' but is of type ' . $fileType . '. I can not fix this. Please investigate.'
+					' but is of type ' . $fileType . '. I cannot fix this. Please investigate.'
 				);
 			} else {
 				$status->setMessage(
 					'The target ' . $this->getRelativePathBelowSiteRoot() . ' should be a directory,' .
-					' but is of unknown type, probably because some upper level directory does not exist. Please investigate.'
+					' but is of unknown type, probably because an upper level directory does not exist. Please investigate.'
 				);
 			}
 			$result[] = $status;
@@ -170,7 +170,7 @@ class DirectoryNode extends AbstractNode implements NodeInterface {
 			$status = new Status\ErrorStatus();
 			$status->setTitle('Directory ' . $this->getRelativePathBelowSiteRoot() . ' not created!');
 			$status->setMessage(
-				'The target directory could not be created. There is probably some' .
+				'The target directory could not be created. There is probably a' .
 				' group or owner permission problem on the parent directory.'
 			);
 		}
@@ -196,25 +196,25 @@ class DirectoryNode extends AbstractNode implements NodeInterface {
 			$status = new Status\ErrorStatus();
 			$status->setTitle($this->getRelativePathBelowSiteRoot() . ' is not writable');
 			$status->setMessage(
-				'Path ' . $this->getAbsolutePath() . ' exists, but no file below' .
+				'Path ' . $this->getAbsolutePath() . ' exists, but no file underneath it' .
 				' can be created.'
 			);
 			$result[] = $status;
 		} elseif (!$this->isPermissionCorrect()) {
 			if ($this->getTargetPermissionRelaxed() === TRUE) {
 				$status = new Status\NoticeStatus();
-				$status->setTitle($this->getRelativePathBelowSiteRoot() . ' has wrong permission');
+				$status->setTitle($this->getRelativePathBelowSiteRoot() . ' has wrong permissions');
 				$status->setMessage(
-					'Target permission are ' . $this->targetPermission .
-					' but current permission are ' . $this->getCurrentPermission()
+					'Target permissions are ' . $this->targetPermission .
+					' but current permissions are ' . $this->getCurrentPermission()
 				);
 				$result[] = $status;
 			} else {
 				$status = new Status\WarningStatus();
-				$status->setTitle($this->getRelativePathBelowSiteRoot() . ' has wrong permission');
+				$status->setTitle($this->getRelativePathBelowSiteRoot() . ' has wrong permissions');
 				$status->setMessage(
-					'Target permission are ' . $this->targetPermission .
-					' but current permission are ' . $this->getCurrentPermission()
+					'Target permissions are ' . $this->targetPermission .
+					' but current permissions are ' . $this->getCurrentPermission()
 				);
 				$result[] = $status;
 			}

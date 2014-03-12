@@ -48,7 +48,7 @@ class DatabaseData extends AbstractStepAction {
 		$password = $postValues['password'];
 		if (strlen($password) < 8) {
 			$errorStatus = $this->objectManager->get('TYPO3\\CMS\\Install\\Status\\ErrorStatus');
-			$errorStatus->setTitle('Administrator password not good enough!');
+			$errorStatus->setTitle('Administrator password not secure enough!');
 			$errorStatus->setMessage(
 				'You are setting an important password here! It gives an attacker full control over your instance if cracked.' .
 				' It should be strong (include lower and upper case characters, special characters and numbers) and must be at least eight characters long.'

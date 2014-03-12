@@ -87,7 +87,7 @@ class DatabaseSelect extends AbstractStepAction {
 			/** @var $errorStatus \TYPO3\CMS\Install\Status\ErrorStatus */
 			$errorStatus = $this->objectManager->get('TYPO3\\CMS\\Install\\Status\\ErrorStatus');
 			$errorStatus->setTitle('No Database selected');
-			$errorStatus->setMessage('You have to select a database.');
+			$errorStatus->setMessage('You must select a database.');
 			$result[] = $errorStatus;
 		}
 

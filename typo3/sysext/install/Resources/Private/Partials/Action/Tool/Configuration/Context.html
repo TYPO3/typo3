@@ -6,11 +6,11 @@
 	<div class="toggleData" style="display:none">
 		<div class="toggleDataContent">
 			<p>
-				TYPO3 can be run in a specific application context by using one of the
-				built-in contexts "Production" (default), "Development" or "Testing".
+				TYPO3 can be run in a specific application context by using the environment
+				variable "TYPO3_CONTEXT", which is usually set in your webserver configuration
+				(e.g. in htaccess). Built-in contexts are "Production" (default), "Development"
+				or "Testing".
 				This can be used to provide specific configuration sets for each context.
-				The context can be defined with the environment variable "TYPO3_CONTEXT"
-				which is usually set through your webserver configuration (e.g. in htaccess).
 			</p>
 			<p>
 				However, if you don't set a context environment variable, you can still
