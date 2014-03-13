@@ -70,6 +70,14 @@ class ModuleController {
 	public $content;
 
 	/**
+	 * Constructor
+	 */
+	public function __construct() {
+		$GLOBALS['BE_USER']->modAccess($GLOBALS['MCONF'], TRUE);
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('indexed_search', TRUE);
+	}
+
+	/**
 	 * Initialization
 	 *
 	 * @return 	void

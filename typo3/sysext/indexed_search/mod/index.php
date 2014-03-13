@@ -27,11 +27,8 @@
 
 /**
  * Module: Indexing Engine Overview
- *
- * @author 	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-$BE_USER->modAccess($MCONF, 1);
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('indexed_search', 1);
+
 $SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\IndexedSearch\\Controller\\ModuleController');
 $SOBE->init();
 $SOBE->main();
