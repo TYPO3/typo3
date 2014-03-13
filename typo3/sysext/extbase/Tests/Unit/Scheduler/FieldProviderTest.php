@@ -108,7 +108,18 @@ class FieldProviderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @author Stefan Neufeind <info@speedpartner.de>
 	 */
 	public function getCommandControllerActionFieldFetchesCorrectClassNames() {
-		$actualResult = $this->fieldProvider->_call('getCommandControllerActionField', array());
+		$fieldProvider = $this->getAccessibleMock(
+			'\TYPO3\CMS\Extbase\Scheduler\FieldProvider',
+			array('getActionLabel'),
+			array(),
+			'',
+			FALSE
+		);
+		$fieldProvider->_set('objectManager', $this->objectManager);
+		$fieldProvider->_set('commandManager', $this->commandManager);
+		$fieldProvider->_set('reflectionService', $this->objectManager->get('TYPO3\\CMS\\Extbase\\Reflection\\ReflectionService'));
+		$fieldProvider->expects($this->once())->method('getActionLabel')->will($this->returnValue('some label'));
+		$actualResult = $fieldProvider->_call('getCommandControllerActionField', array());
 		$this->assertContains('<option title="test" value="extbase:mocka:funca">Extbase MockA: FuncA</option>', $actualResult['code']);
 		$this->assertContains('<option title="test" value="mypkg:mockb:funcb">Mypkg MockB: FuncB</option>', $actualResult['code']);
 		$this->assertContains('<option title="test" value="extbase:mockc:funcc">Extbase MockC: FuncC</option>', $actualResult['code']);
@@ -134,7 +145,9 @@ class FieldProviderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 */
 	public function validateAdditionalFieldsReturnsTrue() {
 		$submittedData = array();
-		$this->assertTrue($this->fieldProvider->validateAdditionalFields($submittedData, new \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController()));
+		/** @var \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $schedulerModule */
+		$schedulerModule = $this->getMock('TYPO3\\CMS\\Scheduler\\Controller\\SchedulerModuleController', array(), array(), '', FALSE);
+		$this->assertTrue($this->fieldProvider->validateAdditionalFields($submittedData, $schedulerModule));
 	}
 
 	/**
@@ -142,6 +155,20 @@ class FieldProviderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @author Alexander Schnitzler <alex.schnitzler@typovision.de>
 	 */
 	public function getAdditionalFieldsRendersRightHtml() {
+		$fieldProvider = $this->getAccessibleMock(
+			'\TYPO3\CMS\Extbase\Scheduler\FieldProvider',
+			array('getActionLabel', 'getArgumentLabel'),
+			array(),
+			'',
+			FALSE
+		);
+		$fieldProvider->_set('objectManager', $this->objectManager);
+		$fieldProvider->_set('commandManager', $this->commandManager);
+		$fieldProvider->_set('reflectionService', $this->objectManager->get('TYPO3\\CMS\\Extbase\\Reflection\\ReflectionService'));
+		$actionLabel = 'action label string';
+		$argumentLabel = 'argument label string';
+		$fieldProvider->expects($this->any())->method('getActionLabel')->will($this->returnValue($actionLabel));
+		$fieldProvider->expects($this->any())->method('getArgumentLabel')->will($this->returnValue($argumentLabel));
 		$expectedAdditionalFields = array(
 			'action' => array(
 				'code' => '<select name="tx_scheduler[task_extbase][action]">' . LF
@@ -149,7 +176,7 @@ class FieldProviderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 					. '<option title="test" value="mypkg:mockb:funcb">Mypkg MockB: FuncB</option>' . LF
 					. '<option title="test" value="extbase:mockc:funcc">Extbase MockC: FuncC</option>' . LF
 					. '</select>',
-				'label' => 'CommandController Command. <em>Save and reopen to define command arguments</em>'
+				'label' => $actionLabel
 			),
 			'description' => array(
 				'code' => '',
@@ -157,15 +184,16 @@ class FieldProviderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 			),
 			'arg' => array(
 				'code' => '<input type="text" name="tx_scheduler[task_extbase][arguments][arg]" value="1" /> ',
-				'label' => 'Argument: arg. <em>A not required argument</em>'
+				'label' => $argumentLabel
 			)
 		);
 
 		$taskInfo = array();
 		$task = new \TYPO3\CMS\Extbase\Scheduler\Task();
 		$task->setCommandIdentifier($this->command1->getCommandIdentifier());
-		$schedulerModule = new \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController();
+		/** @var \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $schedulerModule */
+		$schedulerModule = $this->getMock('TYPO3\\CMS\\Scheduler\\Controller\\SchedulerModuleController', array(), array(), '', FALSE);
 
-		$this->assertEquals($expectedAdditionalFields, $this->fieldProvider->getAdditionalFields($taskInfo, $task, $schedulerModule));
+		$this->assertEquals($expectedAdditionalFields, $fieldProvider->getAdditionalFields($taskInfo, $task, $schedulerModule));
 	}
 }
