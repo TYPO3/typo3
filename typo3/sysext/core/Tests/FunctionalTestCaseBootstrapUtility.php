@@ -544,8 +544,12 @@ class FunctionalTestCaseBootstrapUtility {
 					$OK = @rmdir($path);
 				}
 			} else {
-				// If $path is a file, simply remove it
-				$OK = unlink($path);
+				// If $path is a symlink to a folder we need rmdir() on Windows systems
+				if (!stristr(PHP_OS, 'darwin') && stristr(PHP_OS, 'win') && is_link($path) && is_dir($path . '/')) {
+					$OK = rmdir($path);
+				} else {
+					$OK = unlink($path);
+				}
 			}
 			clearstatcache();
 		} elseif (is_link($path)) {
