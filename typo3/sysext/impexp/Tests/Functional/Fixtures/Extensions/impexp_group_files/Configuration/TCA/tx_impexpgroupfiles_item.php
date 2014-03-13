@@ -28,10 +28,10 @@ return array(
 		'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('impexp_group_files') . 'Resources/Public/Icons/icon_tx_impexpgroupfiles_item.gif'
 	),
 	'interface' => array(
-		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, title, images, image_references',
+		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, title, images, image_references, flexform',
 	),
 	'types' => array(
-		'1' => array('showitem' => 'hidden, title, images, image_references,--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access,starttime, endtime'),
+		'1' => array('showitem' => 'hidden, title, images, image_references, flexform, --div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access,starttime, endtime'),
 	),
 	'palettes' => array(
 		'1' => array('showitem' => ''),
@@ -123,6 +123,90 @@ return array(
 				'maxitems' => 5,
 				'show_thumbs' => 1,
 			),
+		),
+		'flexform' => array(
+			'label' => 'LLL:EXT:impexp_group_files/Resources/Private/Language/locallang_db.xml:tx_impexpgroupfiles_item_flexform',
+			'config' => array(
+				'type' => 'flex',
+				'ds' => array(
+					'default' => '<T3DataStructure>
+							<meta>
+								<langDisable>1</langDisable>
+							</meta>
+							<sheets>
+								<sDEF>
+									<ROOT>
+										<TCEforms>
+											<sheetTitle>Default</sheetTitle>
+										</TCEforms>
+										<type>array</type>
+										<el>
+											<link>
+												<TCEforms>
+													<label>Link</label>
+													<config>
+														<type>input</type>
+														<size>50</size>
+														<max>256</max>
+														<eval>trim</eval>
+														<softref>typolink</softref>
+														<wizards type="array">
+															<_PADDING type="integer">2</_PADDING>
+															<link type="array">
+																<type>popup</type>
+																<title>Link</title>
+																<icon>link_popup.gif</icon>
+																<module type="array">
+																	<name>wizard_element_browser</name>
+																	<urlParameters type="array">
+																		<mode>wizard</mode>
+																	</urlParameters>
+																</module>
+																<JSopenParams>height=300,width=500,status=0,menubar=0,scrollbars=1</JSopenParams>
+															</link>
+														</wizards>
+													</config>
+												</TCEforms>
+											</link>
+											<images>
+												<TCEforms>
+													<label>Images</label>
+													<config>
+														<type>group</type>
+														<internal_type>file</internal_type>
+														<allowed>' . $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'] . '</allowed>
+														<disallowed>php</disallowed>
+														<max_size>' . $GLOBALS['TYPO3_CONF_VARS']['BE']['maxFileSize'] . '</max_size>
+														<uploadfolder>uploads/tx_impexpgroupfiles</uploadfolder>
+														<size>5</size>
+														<maxitems>5</maxitems>
+														<show_thumbs>1</show_thumbs>
+													</config>
+												</TCEforms>
+											</images>
+											<image_references>
+												<TCEforms>
+													<label>Image References</label>
+													<config>
+														<type>group</type>
+														<internal_type>file_reference</internal_type>
+														<allowed>' . $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'] . '</allowed>
+														<disallowed>php</disallowed>
+														<max_size>' . $GLOBALS['TYPO3_CONF_VARS']['BE']['maxFileSize'] . '</max_size>
+														<uploadfolder>uploads/tx_impexpgroupfiles</uploadfolder>
+														<size>5</size>
+														<maxitems>5</maxitems>
+														<show_thumbs>1</show_thumbs>
+													</config>
+												</TCEforms>
+											</image_references>
+										</el>
+									</ROOT>
+								</sDEF>
+							</sheets>
+						</T3DataStructure>'
+				)
+			)
 		),
 	),
 );

@@ -31,6 +31,7 @@ CREATE TABLE tx_impexpgroupfiles_item (
 	title tinytext NOT NULL,
 	images text NOT NULL,
 	image_references text NOT NULL,
+	flexform text NOT NULL,
 
 	PRIMARY KEY (uid),
 	KEY parent (pid),

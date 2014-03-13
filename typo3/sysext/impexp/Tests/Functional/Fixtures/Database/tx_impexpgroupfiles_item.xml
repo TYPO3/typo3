@@ -10,4 +10,32 @@
 		<t3ver_oid>0</t3ver_oid>
 		<t3ver_wsid>0</t3ver_wsid>
 	</tx_impexpgroupfiles_item>
+	<tx_impexpgroupfiles_item>
+		<uid>2</uid>
+		<pid>2</pid>
+		<title>Test item 2</title>
+		<images></images>
+		<image_references></image_references>
+		<flexform><![CDATA[<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3FlexForms>
+	<data>
+		<sheet index="sDEF">
+			<language index="lDEF">
+				<field index="link">
+					<value index="vDEF">file:2</value>
+				</field>
+				<field index="images">
+					<value index="vDEF">typo3_image4.jpg</value>
+				</field>
+				<field index="image_references">
+					<value index="vDEF">fileadmin/user_upload/typo3_image5.jpg</value>
+				</field>
+			</language>
+		</sheet>
+	</data>
+</T3FlexForms>]]></flexform>
+		<deleted>0</deleted>
+		<t3ver_oid>0</t3ver_oid>
+		<t3ver_wsid>0</t3ver_wsid>
+	</tx_impexpgroupfiles_item>
 </dataset>
