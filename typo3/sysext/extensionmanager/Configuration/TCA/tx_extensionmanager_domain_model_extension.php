@@ -5,6 +5,7 @@ return array(
 		'label' => 'uid',
 		'default_sortby' => '',
 		'hideTable' => TRUE,
+		'rootLevel' => TRUE,
 		'adminOnly' => TRUE,
 		'typeicon_classes' => array(
 			'default' => 'empty-icon'
