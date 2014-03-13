@@ -153,6 +153,7 @@ class ClassLoader {
 
 		$cacheEntryIdentifier = strtolower(str_replace('\\', '_', $className));
 		$classLoadingInformation = $this->getClassLoadingInformationFromCache($cacheEntryIdentifier);
+
 		if ($classLoadingInformation === NULL) {
 			$classLoadingInformation = $this->buildCachedClassLoadingInformation($cacheEntryIdentifier, $className);
 		}
@@ -410,6 +411,7 @@ class ClassLoader {
 	 */
 	public function setPackages(array $packages) {
 		$this->packages = $packages;
+
 		if (!$this->loadPackageNamespacesFromCache()) {
 			$this->buildPackageNamespacesAndClassesPaths();
 		} else {

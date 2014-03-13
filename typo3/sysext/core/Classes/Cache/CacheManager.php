@@ -40,7 +40,7 @@ class CacheManager implements \TYPO3\CMS\Core\SingletonInterface {
 	protected $cacheFactory;
 
 	/**
-	 * @var array
+	 * @var \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface[]
 	 */
 	protected $caches = array();
 

@@ -272,7 +272,7 @@ class Bootstrap {
 	 * Beware! This is not public API and necessary for edge cases in the install tool
 	 *
 	 * @param string $packageManagerClassName
-	 * @return void
+	 * @return Bootstrap
 	 */
 	public function reinitializeClassLoaderAndCachesAndPackageManagement($packageManagerClassName = 'TYPO3\\CMS\\Core\\Package\\PackageManager') {
 		$currentClassLoader = $this->getEarlyInstance('TYPO3\\CMS\\Core\\Core\\ClassLoader');
@@ -284,6 +284,7 @@ class Bootstrap {
 			->initializeCachingFramework()
 			->initializeClassLoaderCaches()
 			->initializePackageManagement($packageManagerClassName);
+		return $this;
 	}
 
 	/**
@@ -347,22 +348,6 @@ class Bootstrap {
 	public function loadTypo3LoadedExtAndExtLocalconf($allowCaching = TRUE) {
 		$this->getInstance()
 			->loadAdditionalConfigurationFromExtensions($allowCaching);
-		return $this;
-	}
-
-	/**
-	 * Load TYPO3_LOADED_EXT, recreate class loader registry and load ext_localconf
-	 *
-	 * @TODO: This method was changed with the package manager patch, do we still need it?
-	 * @return Bootstrap
-	 * @internal This is not a public API method, do not use in own extensions
-	 */
-	public function reloadTypo3LoadedExtAndClassLoaderAndExtLocalconf() {
-		$bootstrap = $this->getInstance();
-		// Commented out for package management patch, method is still used in extensionmanager
-		//		$bootstrap->populateTypo3LoadedExtGlobal(FALSE);
-		//		ClassLoader::loadClassLoaderCache();
-		$bootstrap->loadAdditionalConfigurationFromExtensions(FALSE);
 		return $this;
 	}
 

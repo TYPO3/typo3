@@ -131,6 +131,8 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface {
 		$this->saveDefaultConfiguration($extension['key']);
 		if ($extension['clearcacheonload']) {
 			$this->cacheManager->flushCaches();
+		} else {
+			$this->cacheManager->flushCachesInGroup('system');
 		}
 	}
 
@@ -185,7 +187,7 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	protected function unloadExtension($extensionKey) {
 		$this->packageManager->deactivatePackage($extensionKey);
-		$this->reloadCaches();
+		$this->cacheManager->flushCachesInGroup('system');
 	}
 
 	/**
@@ -297,8 +299,8 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return void
 	 */
 	public function reloadCaches() {
-		$this->cacheManager->flushCachesInGroup('system');
-		\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->reloadTypo3LoadedExtAndClassLoaderAndExtLocalconf()->loadExtensionTables();
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::loadExtLocalconf(FALSE);
+		\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->loadExtensionTables(FALSE);
 	}
 
 	/**
