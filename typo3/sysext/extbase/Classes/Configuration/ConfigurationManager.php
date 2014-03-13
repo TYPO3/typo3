@@ -103,9 +103,9 @@ class ConfigurationManager implements \TYPO3\CMS\Extbase\Configuration\Configura
 	 * The actual configuration will be merged from different sources in a defined order.
 	 *
 	 * You can get the following types of configuration invoking:
-	 * CONFIGURATION_TYPE_EXTBASE: Extbase settings
+	 * CONFIGURATION_TYPE_SETTINGS: Extbase settings
 	 * CONFIGURATION_TYPE_FRAMEWORK: the current module/plugin settings
-	 * CONFIGURATION_TYPE_TYPOSCRIPT: a raw TS array
+	 * CONFIGURATION_TYPE_FULL_TYPOSCRIPT: a raw TS array
 	 *
 	 * Note that this is a low level method and only makes sense to be used by Extbase internally.
 	 *
