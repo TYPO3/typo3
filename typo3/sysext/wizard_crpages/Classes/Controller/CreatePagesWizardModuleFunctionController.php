@@ -155,10 +155,12 @@ class CreatePagesWizardModuleFunctionController extends \TYPO3\CMS\Backend\Modul
 			} else {
 				// Display create form
 				$lines = array();
+				$tableData = array();
 				for ($a = 0; $a < 9; $a++) {
-					$lines[] = $this->getFormLine($a);
+					$tableData[] = $this->getFormLine($a);
 				}
-				$theCode .= '<h4>' . $GLOBALS['LANG']->getLL('wiz_newPages') . ':</h4>' . '<div id="formFieldContainer">' . implode('', $lines) . '</div>' . '<br class="clearLeft" />' . '<input type="button" id="createNewFormFields" value="' . $GLOBALS['LANG']->getLL('wiz_newPages_addMoreLines') . '" />' . '<br /><br />
+				$lines[] = '<table id="formFieldContainer" class="t3-table"><tbody id="formFieldContainerBody">' . implode(LF, $tableData) . '</tbody></table>';
+				$theCode .= '<h4>' . $GLOBALS['LANG']->getLL('wiz_newPages') . ':</h4>' . implode('', $lines) . '<br class="clearLeft" />' . '<input type="button" id="createNewFormFields" value="' . $GLOBALS['LANG']->getLL('wiz_newPages_addMoreLines') . '" />' . '<br /><br />
 				<input type="checkbox" name="createInListEnd" id="createInListEnd" value="1" /> <label for="createInListEnd">' . $GLOBALS['LANG']->getLL('wiz_newPages_listEnd') . '</label><br />
 				<input type="checkbox" name="hidePages" id="hidePages" value="1" /> <label for="hidePages">' . $GLOBALS['LANG']->getLL('wiz_newPages_hidePages') . '</label><br />
 				<input type="checkbox" name="hidePagesInMenus" id="hidePagesInMenus" value="1" /> <label for="hidePagesInMenus">' . $GLOBALS['LANG']->getLL('wiz_newPages_hidePagesInMenus') . '</label><br /><br />
@@ -168,11 +170,10 @@ class CreatePagesWizardModuleFunctionController extends \TYPO3\CMS\Backend\Modul
 					var tpl = "' . addslashes(str_replace(array(LF, TAB), array('', ''), $this->getFormLine('#'))) . '", i, line, div, bg, label;
 					var lineCounter = 9;
 					Ext.get("createNewFormFields").on("click", function() {
-						div = Ext.get("formFieldContainer");
+						div = Ext.get("formFieldContainerBody");
 						for (i = 0; i < 5; i++) {
 							label = lineCounter + i + 1;
-							bg = label % 2 === 0 ? 6 : 4;
-							line = String.format(tpl, (lineCounter + i), label, bg);
+							line = String.format(tpl, (lineCounter + i), label);
 							div.insertHtml("beforeEnd", line);
 						}
 						lineCounter += 5;
@@ -208,12 +209,10 @@ class CreatePagesWizardModuleFunctionController extends \TYPO3\CMS\Backend\Modul
 	protected function getFormLine($index) {
 		$backPath = $GLOBALS['BACK_PATH'];
 		if (is_numeric($index)) {
-			$backgroundClass = $index % 2 === 0 ? 'bgColor4' : 'bgColor6';
 			$label = $index + 1;
 		} else {
 			// used as template for ExtJS
 			$index = '{0}';
-			$backgroundClass = 'bgColor{2}';
 			$label = '{1}';
 		}
 		$content = '<label for="page_new_' . $index . '"> ' . $GLOBALS['LANG']->getLL('wiz_newPages_page') . ' ' . $label;
@@ -266,7 +265,7 @@ class CreatePagesWizardModuleFunctionController extends \TYPO3\CMS\Backend\Modul
 		}
 		$content .= $group ? '<optgroup class="c-divider" label="Special">' . $group . '</optgroup>' : '';
 		$content .= '</select>';
-		return '<div id="form-line-' . $index . '" class="' . $backgroundClass . '">' . $content . '</div>';
+		return '<tr id="form-line-' . $index . '"><td>' . $content . '</td></tr>';
 	}
 
 }
