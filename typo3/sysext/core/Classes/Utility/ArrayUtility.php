@@ -284,7 +284,12 @@ class ArrayUtility {
 		if (empty($arrays)) {
 			return $arrays;
 		}
-		$sortResult = uasort($arrays, function (array $a, array $b) use ($key, $ascending) {
+		// @ operator used: Some PHP versions like 5.4.4-14+deb7u8 (debian wheezy) are
+		// affected by PHP bug https://bugs.php.net/bug.php?id=50688 and trigger a warning.
+		// The code itself is ok and covered by unit tests, so the @ operator is used to
+		// suppress output of the PHP bug. This can be removed if the core does not
+		// support PHP version affected by this issue anymore.
+		$sortResult = @uasort($arrays, function (array $a, array $b) use ($key, $ascending) {
 			if (!isset($a[$key]) || !isset($b[$key])) {
 				throw new \RuntimeException('The specified sorting key "' . $key . '" is not available in the given array.', 1373727309);
 			}
