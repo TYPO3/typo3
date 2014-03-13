@@ -453,14 +453,33 @@ class ReferenceIndex {
 		// Implode parameter values:
 		list($table, $uid, $field) = array($PA['table'], $PA['uid'], $PA['field']);
 		// Add files
-		if ($result = $this->getRelations_procFiles($dataValue, $dsConf, $uid)) {
-			// Creates an entry for the field with all the files:
-			$this->temp_flexRelations['file'][$structurePath] = $result;
+		$resultsFromFiles = $this->getRelations_procFiles($dataValue, $dsConf, $uid);
+		if (!empty($resultsFromFiles)) {
+			// We have to fill different arrays here depending on the result.
+			// internal_type file is still a relation of type file and
+			// since http://forge.typo3.org/issues/49538 internal_type file_reference
+			// is a database relation to a sys_file record
+			$fileResultsFromFiles = array();
+			$dbResultsFromFiles = array();
+			foreach ($resultsFromFiles as $resultFromFiles) {
+				if (isset($resultFromFiles['table']) && $resultFromFiles['table'] === 'sys_file') {
+					$dbResultsFromFiles[] = $resultFromFiles;
+				} else {
+					$fileResultsFromFiles[] = $resultFromFiles;
+				}
+			}
+			if (!empty($fileResultsFromFiles)) {
+				$this->temp_flexRelations['file'][$structurePath] = $fileResultsFromFiles;
+			}
+			if (!empty($dbResultsFromFiles)) {
+				$this->temp_flexRelations['db'][$structurePath] = $dbResultsFromFiles;
+			}
 		}
 		// Add DB:
-		if ($result = $this->getRelations_procDB($dataValue, $dsConf, $uid, $field)) {
+		$resultsFromDatabase = $this->getRelations_procDB($dataValue, $dsConf, $uid, $field);
+		if (!empty($resultsFromDatabase)) {
 			// Create an entry for the field with all DB relations:
-			$this->temp_flexRelations['db'][$structurePath] = $result;
+			$this->temp_flexRelations['db'][$structurePath] = $resultsFromDatabase;
 		}
 		// Soft References:
 		if (strlen($dataValue) && ($softRefs = \TYPO3\CMS\Backend\Utility\BackendUtility::explodeSoftRefParserList($dsConf['softref']))) {
