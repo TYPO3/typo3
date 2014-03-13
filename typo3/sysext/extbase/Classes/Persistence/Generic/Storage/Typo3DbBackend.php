@@ -1239,6 +1239,7 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 				if (isset($tableName) && isset($GLOBALS['TCA'][$tableName])
 					&& isset($GLOBALS['TCA'][$tableName]['ctrl']['languageField'])
 					&& isset($GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField'])
+					&& !isset($GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerTable'])
 				) {
 					if (isset($row[$GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField']])
 						&& $row[$GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField']] > 0
@@ -1259,6 +1260,7 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 					$row = $pageRepository->getPageOverlay($row, $querySettings->getLanguageUid());
 				} elseif (isset($GLOBALS['TCA'][$tableName]['ctrl']['languageField'])
 					&& $GLOBALS['TCA'][$tableName]['ctrl']['languageField'] !== ''
+					&& !isset($GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerTable'])
 				) {
 					if (in_array($row[$GLOBALS['TCA'][$tableName]['ctrl']['languageField']], array(-1, 0))) {
 						$overlayMode = $querySettings->getLanguageMode() === 'strict' ? 'hideNonTranslated' : '';
