@@ -71,6 +71,11 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 		}
 		// Setting initial values for link attributes
 		$this->initLinkAttributes();
+
+		// Adding RTE JS code
+		// also unset the default jumpToUrl() function before
+		unset($this->doc->JScodeArray['jumpToUrl']);
+		$this->doc->JScodeArray['rtehtmlarea'] = $this->getJSCode();
 	}
 
 	/**
@@ -120,10 +125,6 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 		$this->doc->getPageRenderer()->addCssFile($this->doc->backPath . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('t3skin') . 'rtehtmlarea/htmlarea.css');
 		// Add attributes to body tag. Note: getBodyTagAdditions will invoke the hooks
 		$this->doc->bodyTagAdditions = $this->getBodyTagAdditions();
-		// Adding RTE JS code
-		// also unset the default jumpToUrl() function before
-		unset($this->doc->JScodeArray['jumpToUrl']);
-		$this->doc->JScodeArray['rtehtmlarea'] = $this->getJSCode();
 	}
 
 	/**
