@@ -69,17 +69,7 @@ class DocumentController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 	 * @return void
 	 */
 	public function listAction() {
-		$language = $this->languageUtility->getDocumentationLanguage();
-		$documents = $this->documentRepository->findByLanguage($language);
-
-		$this->signalSlotDispatcher->dispatch(
-			__CLASS__,
-			'afterInitializeDocuments',
-			array(
-				'language'  => $language,
-				'documents' => &$documents,
-			)
-		);
+		$documents = $this->getDocuments();
 
 		// Filter documents to be shown for current user
 		$hideDocuments = $this->getBackendUser()->getTSConfigVal('mod.help_DocumentationDocumentation.documents.hide');
@@ -94,6 +84,28 @@ class DocumentController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 		}
 
 		$this->view->assign('documents', $documents);
+	}
+
+	/**
+	 * Returns available documents.
+	 *
+	 * @return \TYPO3\CMS\Documentation\Domain\Model\Document[]
+	 * @api
+	 */
+	public function getDocuments() {
+		$language = $this->languageUtility->getDocumentationLanguage();
+		$documents = $this->documentRepository->findByLanguage($language);
+
+		$this->signalSlotDispatcher->dispatch(
+			__CLASS__,
+			'afterInitializeDocuments',
+			array(
+				'language'  => $language,
+				'documents' => &$documents,
+			)
+		);
+
+		return $documents;
 	}
 
 	/**

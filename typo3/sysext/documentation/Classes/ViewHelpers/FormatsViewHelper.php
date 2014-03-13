@@ -46,8 +46,7 @@ class FormatsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHel
 			/** @var \TYPO3\CMS\Documentation\Domain\Model\DocumentFormat $format */
 			$output .= '<a ';
 
-			// TODO: Encode uri with official TYPO3 API?
-			$uri = $this->controllerContext->getRequest()->getBaseURI() . '../' . $format->getPath();
+			$uri = '../' . $format->getPath();
 			$extension = substr($uri, strrpos($uri, '.') + 1);
 			if (strlen($extension) < 5) {
 				// This is direct link to a file
@@ -67,7 +66,7 @@ class FormatsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHel
 			);
 			$output .= ' title="' . htmlspecialchars($title) . '">';
 			$spriteIconHtml = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForFile($extension);
-			$output .= $spriteIconHtml . '</a>';
+			$output .= $spriteIconHtml . '</a>' . LF;
 		}
 		return $output;
 	}
