@@ -1,7 +1,7 @@
 <?php
 return array(
 	'ctrl' => array(
-		'title' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file',
+		'title' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_metadata',
 		'label' => 'file',
 		'tstamp' => 'tstamp',
 		'crdate' => 'crdate',
