@@ -6885,87 +6885,87 @@ class DataHandler {
 	public function clear_cache($table, $uid) {
 		$uid = (int)$uid;
 		$pageUid = 0;
-		if (is_array($GLOBALS['TCA'][$table]) && $uid > 0) {
-			// Get Page TSconfig relavant:
-			list($tscPID) = BackendUtility::getTSCpid($table, $uid, '');
-			$TSConfig = $this->getTCEMAIN_TSconfig($tscPID);
-			if (!$TSConfig['clearCache_disable']) {
-				// If table is "pages":
-				$list_cache = array();
-				if ($table === 'pages' || $table === 'pages_language_overlay') {
-					if ($table === 'pages_language_overlay') {
-						$pageUid = $this->getPID($table, $uid);
-					} else {
-						$pageUid = $uid;
-					}
-					// Builds list of pages on the SAME level as this page (siblings)
-					$res_tmp = $GLOBALS['TYPO3_DB']->exec_SELECTquery('A.pid AS pid, B.uid AS uid', 'pages A, pages B', 'A.uid=' . (int)$pageUid . ' AND B.pid=A.pid AND B.deleted=0');
-					$pid_tmp = 0;
-					while ($row_tmp = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res_tmp)) {
-						$list_cache[] = $row_tmp['uid'];
-						$pid_tmp = $row_tmp['pid'];
-						// Add children as well:
-						if ($TSConfig['clearCache_pageSiblingChildren']) {
-							$res_tmp2 = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'pages', 'pid=' . (int)$row_tmp['uid'] . ' AND deleted=0');
-							while ($row_tmp2 = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res_tmp2)) {
-								$list_cache[] = $row_tmp2['uid'];
-							}
-							$GLOBALS['TYPO3_DB']->sql_free_result($res_tmp2);
+		if (!isset($GLOBALS['TCA'][$table]) || $uid <= 0) {
+			return;
+		}
+		// Get Page TSconfig relavant:
+		list($tscPID) = BackendUtility::getTSCpid($table, $uid, '');
+		$TSConfig = $this->getTCEMAIN_TSconfig($tscPID);
+		if (empty($TSConfig['clearCache_disable'])) {
+			// If table is "pages":
+			$list_cache = array();
+			if ($table === 'pages' || $table === 'pages_language_overlay') {
+				if ($table === 'pages_language_overlay') {
+					$pageUid = $this->getPID($table, $uid);
+				} else {
+					$pageUid = $uid;
+				}
+				// Builds list of pages on the SAME level as this page (siblings)
+				$res_tmp = $GLOBALS['TYPO3_DB']->exec_SELECTquery('A.pid AS pid, B.uid AS uid', 'pages A, pages B', 'A.uid=' . (int)$pageUid . ' AND B.pid=A.pid AND B.deleted=0');
+				$pid_tmp = 0;
+				while ($row_tmp = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res_tmp)) {
+					$list_cache[] = $row_tmp['uid'];
+					$pid_tmp = $row_tmp['pid'];
+					// Add children as well:
+					if ($TSConfig['clearCache_pageSiblingChildren']) {
+						$res_tmp2 = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'pages', 'pid=' . (int)$row_tmp['uid'] . ' AND deleted=0');
+						while ($row_tmp2 = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res_tmp2)) {
+							$list_cache[] = $row_tmp2['uid'];
 						}
+						$GLOBALS['TYPO3_DB']->sql_free_result($res_tmp2);
+					}
+				}
+				$GLOBALS['TYPO3_DB']->sql_free_result($res_tmp);
+				// Finally, add the parent page as well:
+				$list_cache[] = $pid_tmp;
+				// Add grand-parent as well:
+				if ($TSConfig['clearCache_pageGrandParent']) {
+					$res_tmp = $GLOBALS['TYPO3_DB']->exec_SELECTquery('pid', 'pages', 'uid=' . (int)$pid_tmp);
+					if ($row_tmp = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res_tmp)) {
+						$list_cache[] = $row_tmp['pid'];
 					}
 					$GLOBALS['TYPO3_DB']->sql_free_result($res_tmp);
-					// Finally, add the parent page as well:
-					$list_cache[] = $pid_tmp;
-					// Add grand-parent as well:
-					if ($TSConfig['clearCache_pageGrandParent']) {
-						$res_tmp = $GLOBALS['TYPO3_DB']->exec_SELECTquery('pid', 'pages', 'uid=' . (int)$pid_tmp);
-						if ($row_tmp = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res_tmp)) {
-							$list_cache[] = $row_tmp['pid'];
-						}
-						$GLOBALS['TYPO3_DB']->sql_free_result($res_tmp);
-					}
-				} else {
-					// For other tables than "pages", delete cache for the records "parent page".
-					$list_cache[] = ($pageUid = (int)$this->getPID($table, $uid));
 				}
-				// Call pre-processing function for clearing of cache for page ids:
-				if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearPageCacheEval'])) {
-					foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearPageCacheEval'] as $funcName) {
-						$_params = array('pageIdArray' => &$list_cache, 'table' => $table, 'uid' => $uid, 'functionID' => 'clear_cache()');
-						// Returns the array of ids to clear, FALSE if nothing should be cleared! Never an empty array!
-						GeneralUtility::callUserFunction($funcName, $_params, $this);
-					}
-				}
-				// Delete cache for selected pages:
-				if (is_array($list_cache)) {
-					$pageIds = $GLOBALS['TYPO3_DB']->cleanIntArray($list_cache);
-					foreach ($pageIds as $pageId) {
-						// Workspaces always use "-1" as the page id which do not
-						// point to real pages and caches at all. Flushing caches for
-						// those records does not make sense and decreases performance
-						if ($pageId >= 0) {
-							GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->flushCachesByTag('pageId_' . $pageId);
-						}
-					}
-				}
-				// Delete cache for current table and record
-				GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->flushCachesByTag($table);
-				GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->flushCachesByTag($table . '_' . $uid);
+			} else {
+				// For other tables than "pages", delete cache for the records "parent page".
+				$list_cache[] = $pageUid = (int)$this->getPID($table, $uid);
 			}
-			// Clear cache for pages entered in TSconfig:
-			if ($TSConfig['clearCacheCmd']) {
-				$Commands = GeneralUtility::trimExplode(',', $TSConfig['clearCacheCmd'], TRUE);
-				$Commands = array_unique($Commands);
-				foreach ($Commands as $cmdPart) {
-					$this->clear_cacheCmd($cmdPart);
+			// Call pre-processing function for clearing of cache for page ids:
+			if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearPageCacheEval'])) {
+				foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearPageCacheEval'] as $funcName) {
+					$_params = array('pageIdArray' => &$list_cache, 'table' => $table, 'uid' => $uid, 'functionID' => 'clear_cache()');
+					// Returns the array of ids to clear, FALSE if nothing should be cleared! Never an empty array!
+					GeneralUtility::callUserFunction($funcName, $_params, $this);
 				}
 			}
-			// Call post processing function for clear-cache:
-			if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc'])) {
-				$_params = array('table' => $table, 'uid' => $uid, 'uid_page' => $pageUid, 'TSConfig' => $TSConfig);
-				foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc'] as $_funcRef) {
-					GeneralUtility::callUserFunction($_funcRef, $_params, $this);
+			$cacheManger = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager');
+			// Delete cache for selected pages:
+			$pageIds = $GLOBALS['TYPO3_DB']->cleanIntArray($list_cache);
+			foreach ($pageIds as $pageId) {
+				// Workspaces always use "-1" as the page id which do not
+				// point to real pages and caches at all. Flushing caches for
+				// those records does not make sense and decreases performance
+				if ($pageId >= 0) {
+					$cacheManger->flushCachesByTag('pageId_' . $pageId);
 				}
+			}
+			// Delete cache for current table and record
+			$cacheManger->flushCachesByTag($table);
+			$cacheManger->flushCachesByTag($table . '_' . $uid);
+		}
+		// Clear cache for pages entered in TSconfig:
+		if (!empty($TSConfig['clearCacheCmd'])) {
+			$Commands = GeneralUtility::trimExplode(',', $TSConfig['clearCacheCmd'], TRUE);
+			$Commands = array_unique($Commands);
+			foreach ($Commands as $cmdPart) {
+				$this->clear_cacheCmd($cmdPart);
+			}
+		}
+		// Call post processing function for clear-cache:
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc'])) {
+			$_params = array('table' => $table, 'uid' => $uid, 'uid_page' => $pageUid, 'TSConfig' => $TSConfig);
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc'] as $_funcRef) {
+				GeneralUtility::callUserFunction($_funcRef, $_params, $this);
 			}
 		}
 	}
