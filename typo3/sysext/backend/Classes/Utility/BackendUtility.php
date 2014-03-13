@@ -2995,7 +2995,7 @@ class BackendUtility {
 	 */
 	static public function getListViewLink($urlParameters = array(), $linkTitle = '', $linkText = '') {
 		$url = self::getModuleUrl('web_list', $urlParameters);
-		if (!ExtensionManagementUtility::isLoaded('recordlist') || $url === FALSE) {
+		if ($url === FALSE) {
 			return '';
 		} else {
 			return '<a href="' . htmlspecialchars($url) . '" title="' . htmlspecialchars($linkTitle) . '">' . IconUtility::getSpriteIcon('actions-system-list-open') . htmlspecialchars($linkText) . '</a>';
@@ -3337,13 +3337,11 @@ class BackendUtility {
 	 * @return string Domain name, if found.
 	 */
 	static public function firstDomainRecord($rootLine) {
-		if (ExtensionManagementUtility::isLoaded('cms')) {
-			foreach ($rootLine as $row) {
-				$dRec = self::getRecordsByField('sys_domain', 'pid', $row['uid'], ' AND redirectTo=\'\' AND hidden=0', '', 'sorting');
-				if (is_array($dRec)) {
-					$dRecord = reset($dRec);
-					return rtrim($dRecord['domainName'], '/');
-				}
+		foreach ($rootLine as $row) {
+			$dRec = self::getRecordsByField('sys_domain', 'pid', $row['uid'], ' AND redirectTo=\'\' AND hidden=0', '', 'sorting');
+			if (is_array($dRec)) {
+				$dRecord = reset($dRec);
+				return rtrim($dRecord['domainName'], '/');
 			}
 		}
 	}
@@ -3356,21 +3354,19 @@ class BackendUtility {
 	 * @return array Domain record, if found
 	 */
 	static public function getDomainStartPage($domain, $path = '') {
-		if (ExtensionManagementUtility::isLoaded('cms')) {
-			$domain = explode(':', $domain);
-			$domain = strtolower(preg_replace('/\\.$/', '', $domain[0]));
-			// Path is calculated.
-			$path = trim(preg_replace('/\\/[^\\/]*$/', '', $path));
-			// Stuff
-			$domain .= $path;
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('sys_domain.*', 'pages,sys_domain', '
-				pages.uid=sys_domain.pid
-				AND sys_domain.hidden=0
-				AND (sys_domain.domainName=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($domain, 'sys_domain') . ' OR sys_domain.domainName=' . $GLOBALS['TYPO3_DB']->fullQuoteStr(($domain . '/'), 'sys_domain') . ')' . self::deleteClause('pages'), '', '', '1');
-			$result = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
-			$GLOBALS['TYPO3_DB']->sql_free_result($res);
-			return $result;
-		}
+		$domain = explode(':', $domain);
+		$domain = strtolower(preg_replace('/\\.$/', '', $domain[0]));
+		// Path is calculated.
+		$path = trim(preg_replace('/\\/[^\\/]*$/', '', $path));
+		// Stuff
+		$domain .= $path;
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('sys_domain.*', 'pages,sys_domain', '
+			pages.uid=sys_domain.pid
+			AND sys_domain.hidden=0
+			AND (sys_domain.domainName=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($domain, 'sys_domain') . ' OR sys_domain.domainName=' . $GLOBALS['TYPO3_DB']->fullQuoteStr(($domain . '/'), 'sys_domain') . ')' . self::deleteClause('pages'), '', '', '1');
+		$result = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
+		$GLOBALS['TYPO3_DB']->sql_free_result($res);
+		return $result;
 	}
 
 	/**

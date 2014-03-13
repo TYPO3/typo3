@@ -501,7 +501,7 @@ class BackendController {
 			'moduleMenuWidth' => $this->menuWidth - 1,
 			'topBarHeight' => isset($GLOBALS['TBE_STYLES']['dims']['topFrameH']) ? (int)$GLOBALS['TBE_STYLES']['dims']['topFrameH'] : 30,
 			'showRefreshLoginPopup' => isset($GLOBALS['TYPO3_CONF_VARS']['BE']['showRefreshLoginPopup']) ? (int)$GLOBALS['TYPO3_CONF_VARS']['BE']['showRefreshLoginPopup'] : FALSE,
-			'listModulePath' => ExtensionManagementUtility::isLoaded('recordlist') ? ExtensionManagementUtility::extRelPath('recordlist') . 'mod1/' : '',
+			'listModulePath' => ExtensionManagementUtility::extRelPath('recordlist') . 'mod1/',
 			'debugInWindow' => $GLOBALS['BE_USER']->uc['debugInWindow'] ? 1 : 0,
 			'ContextHelpWindows' => array(
 				'width' => 600,
@@ -556,9 +556,6 @@ class BackendController {
 	 * @return void
 	 */
 	protected function handlePageEditing() {
-		if (!ExtensionManagementUtility::isLoaded('cms')) {
-			return;
-		}
 		// EDIT page:
 		$editId = preg_replace('/[^[:alnum:]_]/', '', GeneralUtility::_GET('edit'));
 		$editRecord = '';

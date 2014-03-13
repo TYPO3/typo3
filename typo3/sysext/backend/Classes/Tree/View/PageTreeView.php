@@ -67,17 +67,15 @@ class PageTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 	 */
 	public function init($clause = '', $orderByFields = '') {
 		parent::init(' AND deleted=0 ' . $clause, 'sorting');
-		if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('cms')) {
-			$this->fieldArray = array_merge($this->fieldArray, array(
-				'hidden',
-				'starttime',
-				'endtime',
-				'fe_group',
-				'module',
-				'extendToSubpages',
-				'nav_hide'
-			));
-		}
+		$this->fieldArray = array_merge($this->fieldArray, array(
+			'hidden',
+			'starttime',
+			'endtime',
+			'fe_group',
+			'module',
+			'extendToSubpages',
+			'nav_hide'
+		));
 		$this->table = 'pages';
 		$this->treeName = 'pages';
 	}

@@ -962,7 +962,7 @@ class EditDocumentController {
 			// SAVE button:
 			$buttons['save'] = IconUtility::getSpriteIcon('actions-document-save', array('html' => '<input type="image" name="_savedok" class="c-inputButton" src="clear.gif" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc', TRUE) . '" />'));
 			// SAVE / VIEW button:
-			if ($this->viewId && !$this->noView && ExtensionManagementUtility::isLoaded('cms') && $this->getNewIconMode($this->firstEl['table'], 'saveDocView')) {
+			if ($this->viewId && !$this->noView && $this->getNewIconMode($this->firstEl['table'], 'saveDocView')) {
 				$buttons['save_view'] = IconUtility::getSpriteIcon('actions-document-save-view', array('html' => '<input type="image" class="c-inputButton" name="_savedokview" src="clear.gif" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDocShow', TRUE) . '" />'));
 			}
 			// SAVE / NEW button:
@@ -1370,17 +1370,15 @@ class EditDocumentController {
 	 * @todo Define visibility
 	 */
 	public function editRegularContentFromId() {
-		if (ExtensionManagementUtility::isLoaded('cms')) {
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'tt_content', 'pid=' . (int)$this->editRegularContentFromId . BackendUtility::deleteClause('tt_content') . BackendUtility::versioningPlaceholderClause('tt_content') . ' AND colPos=0 AND sys_language_uid=0', '', 'sorting');
-			if ($GLOBALS['TYPO3_DB']->sql_num_rows($res)) {
-				$ecUids = array();
-				while ($ecRec = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-					$ecUids[] = $ecRec['uid'];
-				}
-				$this->editconf['tt_content'][implode(',', $ecUids)] = 'edit';
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'tt_content', 'pid=' . (int)$this->editRegularContentFromId . BackendUtility::deleteClause('tt_content') . BackendUtility::versioningPlaceholderClause('tt_content') . ' AND colPos=0 AND sys_language_uid=0', '', 'sorting');
+		if ($GLOBALS['TYPO3_DB']->sql_num_rows($res)) {
+			$ecUids = array();
+			while ($ecRec = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+				$ecUids[] = $ecRec['uid'];
 			}
-			$GLOBALS['TYPO3_DB']->sql_free_result($res);
+			$this->editconf['tt_content'][implode(',', $ecUids)] = 'edit';
 		}
+		$GLOBALS['TYPO3_DB']->sql_free_result($res);
 	}
 
 	/**
@@ -1463,7 +1461,7 @@ class EditDocumentController {
 	 * @todo Define visibility
 	 */
 	public function setDocument($currentDocFromHandlerMD5 = '', $retUrl = 'alt_doc_nodoc.php') {
-		if (!ExtensionManagementUtility::isLoaded('cms') && $retUrl === 'alt_doc_nodoc.php') {
+		if ($retUrl === 'alt_doc_nodoc.php') {
 			return;
 		}
 		if (!$this->modTSconfig['properties']['disableDocSelector'] && is_array($this->docHandler) && count($this->docHandler)) {

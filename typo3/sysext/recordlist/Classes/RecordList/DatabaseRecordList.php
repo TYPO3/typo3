@@ -312,11 +312,9 @@ class DatabaseRecordList extends \TYPO3\CMS\Recordlist\RecordList\AbstractDataba
 			$selectFields[] = $thumbsCol;
 		}
 		if ($table == 'pages') {
-			if (ExtensionManagementUtility::isLoaded('cms')) {
-				$selectFields[] = 'module';
-				$selectFields[] = 'extendToSubpages';
-				$selectFields[] = 'nav_hide';
-			}
+			$selectFields[] = 'module';
+			$selectFields[] = 'extendToSubpages';
+			$selectFields[] = 'nav_hide';
 			$selectFields[] = 'doktype';
 		}
 		if (is_array($GLOBALS['TCA'][$table]['ctrl']['enablecolumns'])) {

@@ -40,14 +40,12 @@ Example implementation for TYPO3 frontend:
    $password = 'XXX';
    $saltedPassword = '';
 
-   if (\TYPO3\CMS\Core\Utility\GeneralUtility::isLoaded('saltedpasswords')) {
-           if (\TYPO3\CMS\Saltedpasswords\Utility::SaltedPasswordsUtility::isUsageEnabled('FE')) {
-                   $objSalt = \TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::getSaltingInstance(NULL);
-                   if (is_object($objSalt)) {
-                           $saltedPassword = $objSalt->getHashedPassword($password);
-                   }
-           }
-   }
+       if (\TYPO3\CMS\Saltedpasswords\Utility::SaltedPasswordsUtility::isUsageEnabled('FE')) {
+               $objSalt = \TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::getSaltingInstance(NULL);
+               if (is_object($objSalt)) {
+                       $saltedPassword = $objSalt->getHashedPassword($password);
+               }
+       }
 
 
 .. _checking-a-password:

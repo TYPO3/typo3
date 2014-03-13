@@ -402,12 +402,10 @@ class DatabaseIntegrityView {
 		$codeArr[$i][] = $GLOBALS['LANG']->getLL('total_pages');
 		$codeArr[$i][] = count($admin->page_idArray);
 		$i++;
-		if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('cms')) {
-			$codeArr[$i][] = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('pages', array('hidden' => 1));
-			$codeArr[$i][] = $GLOBALS['LANG']->getLL('hidden_pages');
-			$codeArr[$i][] = $admin->recStats['hidden'];
-			$i++;
-		}
+		$codeArr[$i][] = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('pages', array('hidden' => 1));
+		$codeArr[$i][] = $GLOBALS['LANG']->getLL('hidden_pages');
+		$codeArr[$i][] = $admin->recStats['hidden'];
+		$i++;
 		$codeArr[$i][] = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('pages', array('deleted' => 1));
 		$codeArr[$i][] = $GLOBALS['LANG']->getLL('deleted_pages');
 		$codeArr[$i][] = count($admin->recStats['deleted']['pages']);

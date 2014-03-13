@@ -148,9 +148,9 @@ class DatabaseIntegrityCheck {
 	 */
 	public function genTree($theID, $depthData, $versions = FALSE) {
 		if ($versions) {
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,title,doktype,deleted,t3ver_wsid,t3ver_id,t3ver_count' . (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('cms') ? ',hidden' : ''), 'pages', 'pid=-1 AND t3ver_oid=' . (int)$theID . ' ' . (!$this->genTree_includeDeleted ? 'AND deleted=0' : '') . $this->perms_clause, '', 'sorting');
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,title,doktype,deleted,t3ver_wsid,t3ver_id,t3ver_count,hidden', 'pages', 'pid=-1 AND t3ver_oid=' . (int)$theID . ' ' . (!$this->genTree_includeDeleted ? 'AND deleted=0' : '') . $this->perms_clause, '', 'sorting');
 		} else {
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,title,doktype,deleted' . (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('cms') ? ',hidden' : ''), 'pages', 'pid=' . (int)$theID . ' ' . (!$this->genTree_includeDeleted ? 'AND deleted=0' : '') . $this->perms_clause, '', 'sorting');
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,title,doktype,deleted,hidden', 'pages', 'pid=' . (int)$theID . ' ' . (!$this->genTree_includeDeleted ? 'AND deleted=0' : '') . $this->perms_clause, '', 'sorting');
 		}
 		// Traverse the records selected:
 		$a = 0;

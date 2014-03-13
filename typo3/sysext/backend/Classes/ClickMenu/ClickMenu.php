@@ -529,7 +529,7 @@ class ClickMenu {
 		$tmpTSc = BackendUtility::getModTSconfig($this->pageinfo['uid'], 'mod.web_list');
 		$tmpTSc = $tmpTSc['properties']['newContentWiz.']['overrideWithExtension'];
 		$newContentWizScriptPath = ExtensionManagementUtility::isLoaded($tmpTSc) ? ExtensionManagementUtility::extRelPath($tmpTSc) . 'mod1/db_new_content_el.php' : 'sysext/cms/layout/db_new_content_el.php';
-		$url = $table == 'pages' || !ExtensionManagementUtility::isLoaded('cms') ? 'db_new.php?id=' . $uid . '&pagesOnly=1' : $newContentWizScriptPath . '?id=' . $rec['pid'] . '&sys_language_uid=' . (int)$rec['sys_language_uid'];
+		$url = $table == 'pages' ? 'db_new.php?id=' . $uid . '&pagesOnly=1' : $newContentWizScriptPath . '?id=' . $rec['pid'] . '&sys_language_uid=' . (int)$rec['sys_language_uid'];
 		return $this->linkItem($GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->getLL('CM_newWizard')), $this->excludeIcon(IconUtility::getSpriteIcon('actions-' . ($table === 'pages' ? 'page' : 'document') . '-new')), $this->urlRefForCM($url, 'returnUrl'), 0);
 	}
 
@@ -581,7 +581,7 @@ class ClickMenu {
 		if ($this->iParts[0] == 'pages' && $this->iParts[1] && $GLOBALS['BE_USER']->check('modules', $pageModule)) {
 			$theIcon = 'actions-page-open';
 			$this->editPageIconSet = 1;
-			if ($GLOBALS['BE_USER']->uc['classicPageEditMode'] || !ExtensionManagementUtility::isLoaded('cms')) {
+			if ($GLOBALS['BE_USER']->uc['classicPageEditMode']) {
 				$addParam = '&editRegularContentFromId=' . (int)$this->iParts[1];
 			} else {
 				$editOnClick = 'if(' . $loc . '){' . $loc . '.location.href=top.TS.PATH_typo3+\'alt_doc.php?returnUrl=\'+top.rawurlencode(' . $this->frameLocation(($loc . '.document')) . '.pathname+' . $this->frameLocation(($loc . '.document')) . '.search)+\'&edit[' . $table . '][' . $uid . ']=edit' . $addParam . '\';}';

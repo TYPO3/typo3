@@ -240,9 +240,7 @@ class RteController {
 			// Save
 			$buttons['save'] = '<a href="#" onclick="TBE_EDITOR.checkAndDoSubmit(1); return false;">' . '<img' . IconUtility::skinImg($this->doc->backPath, 'gfx/savedok.gif') . ' class="c-inputButton" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc', TRUE) . '" alt="" />' . '</a>';
 			// Save & View
-			if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('cms')) {
-				$buttons['save_view'] = '<a href="#" onclick="' . htmlspecialchars('document.editform.redirect.value+=\'&popView=1\'; TBE_EDITOR.checkAndDoSubmit(1); return false;') . '">' . '<img' . IconUtility::skinImg($this->doc->backPath, 'gfx/savedokshow.gif') . ' class="c-inputButton" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDocShow', TRUE) . '" alt="" />' . '</a>';
-			}
+			$buttons['save_view'] = '<a href="#" onclick="' . htmlspecialchars('document.editform.redirect.value+=\'&popView=1\'; TBE_EDITOR.checkAndDoSubmit(1); return false;') . '">' . '<img' . IconUtility::skinImg($this->doc->backPath, 'gfx/savedokshow.gif') . ' class="c-inputButton" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDocShow', TRUE) . '" alt="" />' . '</a>';
 			// Save & Close
 			$buttons['save_close'] = '<input type="image" class="c-inputButton" onclick="' . htmlspecialchars(('document.editform.redirect.value=\'' . $closeUrl . '\'; TBE_EDITOR.checkAndDoSubmit(1); return false;')) . '" name="_saveandclosedok"' . IconUtility::skinImg($this->doc->backPath, 'gfx/saveandclosedok.gif', '') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveCloseDoc', TRUE) . '" />';
 			// Undo/Revert:

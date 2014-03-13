@@ -626,10 +626,8 @@ class ShortcutToolbarItem implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookI
 					$selectFields[] = 'uid';
 					$selectFields[] = 'pid';
 					if ($table == 'pages') {
-						if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('cms')) {
-							$selectFields[] = 'module';
-							$selectFields[] = 'extendToSubpages';
-						}
+						$selectFields[] = 'module';
+						$selectFields[] = 'extendToSubpages';
 						$selectFields[] = 'doktype';
 					}
 					if (is_array($GLOBALS['TCA'][$table]['ctrl']['enablecolumns'])) {

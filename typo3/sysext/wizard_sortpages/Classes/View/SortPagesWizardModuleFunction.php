@@ -90,7 +90,7 @@ class SortPagesWizardModuleFunction extends \TYPO3\CMS\Backend\Module\AbstractFu
 				$lines = array();
 				$lines[] = '<thead><tr>';
 				$lines[] = '<th>' . $this->wiz_linkOrder($GLOBALS['LANG']->getLL('wiz_changeOrder_title'), 'title') . '</th>';
-				$lines[] = (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('cms') ? '<th> ' . $this->wiz_linkOrder($GLOBALS['LANG']->getLL('wiz_changeOrder_subtitle'), 'subtitle') . '</th>' : '');
+				$lines[] = '<th> ' . $this->wiz_linkOrder($GLOBALS['LANG']->getLL('wiz_changeOrder_subtitle'), 'subtitle') . '</th>';
 				$lines[] = '<th>' . $this->wiz_linkOrder($GLOBALS['LANG']->getLL('wiz_changeOrder_tChange'), 'tstamp') . '</th>';
 				$lines[] = '<th>' . $this->wiz_linkOrder($GLOBALS['LANG']->getLL('wiz_changeOrder_tCreate'), 'crdate') . '</th>';
 				$lines[] = '</tr></thead>';
@@ -100,7 +100,7 @@ class SortPagesWizardModuleFunction extends \TYPO3\CMS\Backend\Module\AbstractFu
 					// edit permissions for that page!
 					$pRec = BackendUtility::getRecord('pages', $rec['uid'], 'uid', ' AND ' . $m_perms_clause);
 					$lines[] = '<tr class="db_list_normal"><td nowrap="nowrap">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('pages', $rec) . (!is_array($pRec) ? $GLOBALS['TBE_TEMPLATE']->rfw('<strong>' . $GLOBALS['LANG']->getLL('wiz_W', TRUE) . '</strong> ') : '') . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($rec['title'], $GLOBALS['BE_USER']->uc['titleLen'])) . '</td>
-					' . (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('cms') ? '<td nowrap="nowrap">' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($rec['subtitle'], $GLOBALS['BE_USER']->uc['titleLen'])) . '</td>' : '') . '
+					<td nowrap="nowrap">' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($rec['subtitle'], $GLOBALS['BE_USER']->uc['titleLen'])) . '</td>
 					<td nowrap="nowrap">' . BackendUtility::datetime($rec['tstamp']) . '</td>
 					<td nowrap="nowrap">' . BackendUtility::datetime($rec['crdate']) . '</td>
 					</tr>';
@@ -111,9 +111,7 @@ class SortPagesWizardModuleFunction extends \TYPO3\CMS\Backend\Module\AbstractFu
 				// Menu:
 				$lines = array();
 				$lines[] = $this->wiz_linkOrder($GLOBALS['LANG']->getLL('wiz_changeOrder_title'), 'title');
-				if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('cms')) {
-					$lines[] = $this->wiz_linkOrder($GLOBALS['LANG']->getLL('wiz_changeOrder_subtitle'), 'subtitle');
-				}
+				$lines[] = $this->wiz_linkOrder($GLOBALS['LANG']->getLL('wiz_changeOrder_subtitle'), 'subtitle');
 				$lines[] = $this->wiz_linkOrder($GLOBALS['LANG']->getLL('wiz_changeOrder_tChange'), 'tstamp');
 				$lines[] = $this->wiz_linkOrder($GLOBALS['LANG']->getLL('wiz_changeOrder_tCreate'), 'crdate');
 				$lines[] = '';

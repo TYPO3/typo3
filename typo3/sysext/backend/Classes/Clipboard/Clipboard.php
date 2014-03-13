@@ -490,9 +490,7 @@ class Clipboard {
 			if ($this->fileMode) {
 				$str = $GLOBALS['TBE_TEMPLATE']->dfw($str);
 			} else {
-				if (ExtensionManagementUtility::isLoaded('recordlist')) {
-					$str = '<a href="' . htmlspecialchars(BackendUtility::getModuleUrl('web_list', array('id' => $rec['pid']), $this->backPath)) . '">' . $str . '</a>';
-				}
+				$str = '<a href="' . htmlspecialchars(BackendUtility::getModuleUrl('web_list', array('id' => $rec['pid']), $this->backPath)) . '">' . $str . '</a>';
 			}
 		} elseif (file_exists($rec)) {
 			if (!$this->fileMode) {

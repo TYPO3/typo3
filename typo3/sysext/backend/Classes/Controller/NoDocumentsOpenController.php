@@ -116,7 +116,7 @@ class NoDocumentsOpenController {
 		$pageModule = \TYPO3\CMS\Backend\Utility\BackendUtility::isModuleSetInTBE_MODULES($newPageModule) ? $newPageModule : 'web_layout';
 		// Perform some access checks:
 		$a_wl = $GLOBALS['BE_USER']->check('modules', 'web_list');
-		$a_wp = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('cms') && $GLOBALS['BE_USER']->check('modules', $pageModule);
+		$a_wp = $GLOBALS['BE_USER']->check('modules', $pageModule);
 		// Finding module images: PAGE
 		$imgFile = $GLOBALS['LANG']->moduleLabels['tabs_images']['web_layout_tab'];
 		$imgInfo = @getimagesize($imgFile);
