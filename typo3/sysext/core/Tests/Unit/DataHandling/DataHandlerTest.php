@@ -176,6 +176,7 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @dataProvider inputValuesStringsDataProvider
 	 */
 	public function inputValueCheckRecognizesStringValuesAsIntegerValuesCorrectly($value, $expectedReturnValue) {
+		$GLOBALS['TYPO3_DB'] = $this->getMock('TYPO3\\CMS\\Core\\Database\\DatabaseConnection', array(), array(), '', FALSE);
 		$tcaFieldConf = array(
 			'input' => array(),
 			'eval' => 'int',
@@ -310,6 +311,7 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function doesCheckFlexFormValueHookGetsCalled() {
+		$GLOBALS['TYPO3_DB'] = $this->getMock('TYPO3\\CMS\\Core\\Database\\DatabaseConnection', array(), array(), '', FALSE);
 		$hookClass = uniqid('tx_coretest');
 		$hookMock = $this->getMock($hookClass, array('checkFlexFormValue_beforeMerge'));
 		$hookMock->expects($this->once())->method('checkFlexFormValue_beforeMerge');

@@ -4468,6 +4468,7 @@ text with a ' . $urlMatch . '$|s'),
 	 * @param string $expected Text with correctly detected URLs
 	 */
 	public function substUrlsInPlainText($input, $expectedPreg) {
+		$GLOBALS['TYPO3_DB'] = $this->getMock('TYPO3\\CMS\\Core\\Database\\DatabaseConnection', array(), array(), '', FALSE);
 		$this->assertTrue(preg_match($expectedPreg, Utility\GeneralUtility::substUrlsInPlainText($input, 1, 'http://example.com/index.php')) == 1);
 	}
 

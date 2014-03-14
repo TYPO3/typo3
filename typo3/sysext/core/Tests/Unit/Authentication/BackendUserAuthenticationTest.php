@@ -54,20 +54,12 @@ class BackendUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		'recursivedeleteFolder' => FALSE
 	);
 
-
-	/**
-	 * @var \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
-	 */
-	protected $fixture = NULL;
-
 	public function setUp() {
 		// reset hooks
 		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'] = array();
-		$this->fixture = new \TYPO3\CMS\Core\Authentication\BackendUserAuthentication();
 	}
 
 	public function tearDown() {
-		unset($this->fixture);
 		\TYPO3\CMS\Core\FormProtection\FormProtectionFactory::purgeInstances();
 		parent::tearDown();
 	}
@@ -86,23 +78,26 @@ class BackendUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			'',
 			FALSE
 		);
+		$formProtection->expects($this->once())->method('clean');
+
 		\TYPO3\CMS\Core\FormProtection\FormProtectionFactory::set(
 			'TYPO3\\CMS\\Core\\FormProtection\\BackendFormProtection',
 			$formProtection
 		);
-		// logoff() call the static factory that has a dependency to a valid BE_USER object. Mock this away
-		$GLOBALS['BE_USER'] = $this->getMock('TYPO3\CMS\Core\Authentication\BackendUserAuthentication', array(), array(), '', FALSE);
-		$GLOBALS['BE_USER']->user = array('uid' => uniqid());
 
-		$formProtection->expects($this->once())->method('clean');
-		$this->fixture->logoff();
+		// logoff() call the static factory that has a dependency to a valid BE_USER object. Mock this away
+		$GLOBALS['BE_USER'] = $this->getMock('TYPO3\\CMS\\Core\\Authentication\\BackendUserAuthentication', array(), array(), '', FALSE);
+		$GLOBALS['BE_USER']->user = array('uid' => uniqid());
+		$GLOBALS['TYPO3_DB'] = $this->getMock('TYPO3\\CMS\\Core\\Database\\DatabaseConnection', array(), array(), '', FALSE);
+
+		$subject = $this->getMock('TYPO3\\CMS\\Core\\Authentication\\BackendUserAuthentication', array('dummy'), array(), '', FALSE);
+		$subject->logoff();
 	}
 
 	/**
 	 * @return array
 	 */
 	public function getTSConfigDataProvider() {
-
 		$completeConfiguration = array(
 			'value' => 'oneValue',
 			'value.' => array('oneProperty' => 'oneValue'),
@@ -244,9 +239,10 @@ class BackendUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function getTSConfigReturnsCorrectArrayForGivenObjectString(array $completeConfiguration, $objectString, array $expectedConfiguration) {
-		$this->fixture->userTS = $completeConfiguration;
+		$subject = $this->getMock('TYPO3\\CMS\\Core\\Authentication\\BackendUserAuthentication', array('dummy'), array(), '', FALSE);
+		$subject->userTS = $completeConfiguration;
 
-		$actualConfiguration = $this->fixture->getTSConfig($objectString);
+		$actualConfiguration = $subject->getTSConfig($objectString);
 		$this->assertSame($expectedConfiguration, $actualConfiguration);
 	}
 
@@ -309,14 +305,14 @@ class BackendUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @dataProvider getFilePermissionsTakesUserDefaultAndStoragePermissionsIntoAccountIfUserIsNotAdminDataProvider
 	 */
 	public function getFilePermissionsTakesUserDefaultPermissionsFromTsConfigIntoAccountIfUserIsNotAdmin(array $userTsConfiguration) {
-		$this->fixture = $this->getMock('TYPO3\\CMS\\Core\\Authentication\\BackendUserAuthentication', array('isAdmin'));
+		$subject = $this->getMock('TYPO3\\CMS\\Core\\Authentication\\BackendUserAuthentication', array('isAdmin'));
 
-		$this->fixture
+		$subject
 			->expects($this->any())
 			->method('isAdmin')
 			->will($this->returnValue(FALSE));
 
-		$this->fixture->userTS = array(
+		$subject->userTS = array(
 			'permissions.' => array(
 				'file.' => array(
 					'default.' => $userTsConfiguration
@@ -332,7 +328,7 @@ class BackendUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			}
 		);
 
-		$this->assertEquals($expectedPermissions, $this->fixture->getFilePermissions());
+		$this->assertEquals($expectedPermissions, $subject->getFilePermissions());
 	}
 
 	/**
@@ -446,21 +442,21 @@ class BackendUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @dataProvider getFilePermissionsFromStorageDataProvider
 	 */
 	public function getFilePermissionsFromStorageOverwritesDefaultPermissions(array $defaultPermissions, $storageUid, array $storagePermissions, array $expectedPermissions) {
-		$this->fixture = $this->getMock('TYPO3\\CMS\\Core\\Authentication\\BackendUserAuthentication', array('isAdmin', 'getFilePermissions'));
+		$subject = $this->getMock('TYPO3\\CMS\\Core\\Authentication\\BackendUserAuthentication', array('isAdmin', 'getFilePermissions'));
 		$storageMock = $this->getMock('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', array(), array(), '', FALSE);
 		$storageMock->expects($this->any())->method('getUid')->will($this->returnValue($storageUid));
 
-		$this->fixture
+		$subject
 			->expects($this->any())
 			->method('isAdmin')
 			->will($this->returnValue(FALSE));
 
-		$this->fixture
+		$subject
 			->expects($this->any())
 			->method('getFilePermissions')
 			->will($this->returnValue($defaultPermissions));
 
-		$this->fixture->userTS = array(
+		$subject->userTS = array(
 			'permissions.' => array(
 				'file.' => array(
 					'storage.' => array(
@@ -470,7 +466,7 @@ class BackendUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			)
 		);
 
-		$this->assertEquals($expectedPermissions, $this->fixture->getFilePermissionsForStorage($storageMock));
+		$this->assertEquals($expectedPermissions, $subject->getFilePermissionsForStorage($storageMock));
 	}
 
 	/**
@@ -481,21 +477,21 @@ class BackendUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @dataProvider getFilePermissionsFromStorageDataProvider
 	 */
 	public function getFilePermissionsFromStorageAlwaysReturnsDefaultPermissionsForAdmins(array $defaultPermissions, $storageUid, array $storagePermissions) {
-		$this->fixture = $this->getMock('TYPO3\\CMS\\Core\\Authentication\\BackendUserAuthentication', array('isAdmin', 'getFilePermissions'));
+		$subject = $this->getMock('TYPO3\\CMS\\Core\\Authentication\\BackendUserAuthentication', array('isAdmin', 'getFilePermissions'));
 		$storageMock = $this->getMock('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', array(), array(), '', FALSE);
 		$storageMock->expects($this->any())->method('getUid')->will($this->returnValue($storageUid));
 
-		$this->fixture
+		$subject
 			->expects($this->any())
 			->method('isAdmin')
 			->will($this->returnValue(TRUE));
 
-		$this->fixture
+		$subject
 			->expects($this->any())
 			->method('getFilePermissions')
 			->will($this->returnValue($defaultPermissions));
 
-		$this->fixture->userTS = array(
+		$subject->userTS = array(
 			'permissions.' => array(
 				'file.' => array(
 					'storage.' => array(
@@ -505,7 +501,7 @@ class BackendUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			)
 		);
 
-		$this->assertEquals($defaultPermissions, $this->fixture->getFilePermissionsForStorage($storageMock));
+		$this->assertEquals($defaultPermissions, $subject->getFilePermissionsForStorage($storageMock));
 	}
 
 	/**
@@ -647,25 +643,25 @@ class BackendUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @dataProvider getFilePermissionsTakesUserDefaultPermissionsFromRecordIntoAccountIfUserIsNotAdminDataProvider
 	 */
 	public function getFilePermissionsTakesUserDefaultPermissionsFromRecordIntoAccountIfUserIsNotAdmin($permissionValue, $expectedPermissions) {
-		$this->fixture = $this->getMock('TYPO3\\CMS\\Core\\Authentication\\BackendUserAuthentication', array('isAdmin'));
+		$subject = $this->getMock('TYPO3\\CMS\\Core\\Authentication\\BackendUserAuthentication', array('isAdmin'));
 
-		$this->fixture
+		$subject
 			->expects($this->any())
 			->method('isAdmin')
 			->will($this->returnValue(FALSE));
 
-		$this->fixture->userTS = array();
-		$this->fixture->groupData['file_permissions'] = $permissionValue;
-		$this->assertEquals($expectedPermissions, $this->fixture->getFilePermissions());
+		$subject->userTS = array();
+		$subject->groupData['file_permissions'] = $permissionValue;
+		$this->assertEquals($expectedPermissions, $subject->getFilePermissions());
 	}
 
 	/**
 	 * @test
 	 */
 	public function getFilePermissionsGrantsAllPermissionsToAdminUsers() {
-		$this->fixture = $this->getMock('TYPO3\\CMS\\Core\\Authentication\\BackendUserAuthentication', array('isAdmin'));
+		$subject = $this->getMock('TYPO3\\CMS\\Core\\Authentication\\BackendUserAuthentication', array('isAdmin'));
 
-		$this->fixture
+		$subject
 			->expects($this->any())
 			->method('isAdmin')
 			->will($this->returnValue(TRUE));
@@ -689,7 +685,7 @@ class BackendUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			'recursivedeleteFolder' => TRUE
 		);
 
-		$this->assertEquals($expectedPermissions, $this->fixture->getFilePermissions());
+		$this->assertEquals($expectedPermissions, $subject->getFilePermissions());
 	}
 
 }
