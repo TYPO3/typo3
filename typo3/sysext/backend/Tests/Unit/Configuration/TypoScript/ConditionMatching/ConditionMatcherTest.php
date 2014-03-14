@@ -47,12 +47,12 @@ class ConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	protected $testTableName;
 
 	public function setUp() {
-		$this->testTableName = 'TYPO3\\CMS\\Backend\\Configuration\\TypoScript\\ConditionMatching\\ConditionMatcher_testTable';
+		$this->testTableName = 'conditionMatcherTestTable';
 		$this->testGlobalNamespace = uniqid('TEST');
 		$GLOBALS['TCA'][$this->testTableName] = array('ctrl' => array());
 		$GLOBALS[$this->testGlobalNamespace] = array();
 		$this->setUpBackend();
-		$this->matchCondition = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Configuration\\TypoScript\\ConditionMatching\\ConditionMatcher');
+		$this->matchCondition = $this->getMock('TYPO3\\CMS\\Backend\\Configuration\\TypoScript\\ConditionMatching\\ConditionMatcher', array('determineRootline'), array(), '', FALSE);
 	}
 
 	private function setUpBackend() {
