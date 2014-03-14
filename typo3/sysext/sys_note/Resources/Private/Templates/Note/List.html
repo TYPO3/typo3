@@ -15,7 +15,8 @@
 							<f:then>{note.author.realName}</f:then>
 							<f:else>{note.author.userName}</f:else>
 						</f:if>
-						&middot;
+
+						&nbsp; <span>&bull;</span> &nbsp;
 
 						<span><f:translate key="date" /></span>
 						<f:format.date>{note.modificationDate}</f:format.date>

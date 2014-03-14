@@ -1,3 +1,7 @@
+/* - - - - - - - - - - - - - - - - - - - - -
+Sys notes
+- - - - - - - - - - - - - - - - - - - - - */
+
 #typo3-dblist-sysnotes {
 	margin-top: 15px;
 }
@@ -7,13 +11,11 @@
 }
 
 #typo3-dblist-sysnotes .single-note .header {
-	background: #d7d7d7;
-	height:24px;
+	min-height: 24px;
 	line-height: 24px;
 }
 
 #typo3-dblist-sysnotes .single-note .header span.typeicon {
-	background:  url(../../../../icons/ext/sys_note/icon-default.png) no-repeat top left;
 	width: 23px;
 	height: 24px;
 	margin-right: 7px;
@@ -25,38 +27,12 @@
 	visibility: hidden;
 }
 
-#typo3-dblist-sysnotes .single-note.active .header {
-	background-color: #666;
-}
-
 #typo3-dblist-sysnotes .single-note.active .header .right.icons {
 	visibility: visible;
 }
 
-#typo3-dblist-sysnotes .single-note.active .header,
-#typo3-dblist-sysnotes .single-note.active .header span {
-	color: #d7d7d7;
-}
-
 #typo3-dblist-sysnotes .single-note .header span.typeicon {
 	cursor: pointer;
-}
-
-#typo3-dblist-sysnotes .category-1 .header span.typeicon {
-	background-image: url(../../../../icons/ext/sys_note/icon-instruction.png);
-}
-#typo3-dblist-sysnotes .category-2 .header span.typeicon {
-	background-image: url(../../../../icons/ext/sys_note/icon-template.png);
-}
-#typo3-dblist-sysnotes .category-3 .header span.typeicon {
-	background-image: url(../../../../icons/ext/sys_note/icon-note.png);
-}
-#typo3-dblist-sysnotes .category-4 .header span.typeicon {
-	background-image: url(../../../../icons/ext/sys_note/icon-todo.png);
-}
-
-#typo3-dblist-sysnotes .single-note .header span {
-	color: #666;
 }
 
 #typo3-dblist-sysnotes .single-note .header .right {
@@ -66,13 +42,11 @@
 }
 
 #typo3-dblist-sysnotes .single-note .content {
-	background: #fffeed;
-	border: 1px solid #dadada;
 	border-top: none;
-	padding: 15px 10px;
+	padding: 12px;
 }
 
 #typo3-dblist-sysnotes .single-note .content .title {
 	font-weight: bold;
-	margin-bottom: 5px;
+	margin-bottom: 6px;
 }
