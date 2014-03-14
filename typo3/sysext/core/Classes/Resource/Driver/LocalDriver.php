@@ -139,10 +139,13 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 		if ($this->hasCapability(\TYPO3\CMS\Core\Resource\ResourceStorage::CAPABILITY_PUBLIC)) {
 			if (GeneralUtility::isFirstPartOfStr($this->absoluteBasePath, PATH_site)) {
 				// use site-relative URLs
-				$temporaryBaseUri = \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($this->absoluteBasePath);
-				$uriParts = explode('/', rtrim($temporaryBaseUri, '/'));
-				array_map('rawurlencode', $uriParts);
-				$this->baseUri = implode('/', $uriParts) . '/';
+				$temporaryBaseUri = rtrim(\TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($this->absoluteBasePath), '/');
+				if ($temporaryBaseUri !== '') {
+					$uriParts = explode('/', $temporaryBaseUri);
+					array_map('rawurlencode', $uriParts);
+					$temporaryBaseUri = implode('/', $uriParts) . '/';
+				}
+				$this->baseUri = $temporaryBaseUri;
 			} elseif (isset($this->configuration['baseUri']) && GeneralUtility::isValidUrl($this->configuration['baseUri'])) {
 				$this->baseUri = rtrim($this->configuration['baseUri'], '/') . '/';
 			}
