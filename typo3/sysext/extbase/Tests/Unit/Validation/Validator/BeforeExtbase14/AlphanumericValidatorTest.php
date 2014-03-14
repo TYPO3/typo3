@@ -49,7 +49,7 @@ class AlphanumericValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCa
 	 */
 	public function alphanumericValidatorReturnsFalseForAStringWithSpecialCharacters() {
 		/** @var \TYPO3\CMS\Extbase\Validation\Validator\AlphanumericValidator $alphanumericValidator */
-		$alphanumericValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\AlphanumericValidator', array('dummy'), array(), '', FALSE);
+		$alphanumericValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\AlphanumericValidator', array('translateErrorMessage'), array(), '', FALSE);
 		$alphanumericValidator->expects($this->never())->method('addError');
 		$alphanumericValidator->isValid('adsf%&/$jklsfdö');
 	}
@@ -58,8 +58,9 @@ class AlphanumericValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCa
 	 * @test
 	 */
 	public function alphanumericValidatorCreatesTheCorrectErrorForAnInvalidSubject() {
-		$alphanumericValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\AlphanumericValidator', array('addError'), array(), '', FALSE);
-		$alphanumericValidator->expects($this->once())->method('addError')->with('The given subject was not a valid alphanumeric string.', 1221551320);
+		$alphanumericValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\AlphanumericValidator', array('addError', 'translateErrorMessage'), array(), '', FALSE);
+		// we only test for the error key, after the translation method is mocked.
+		$alphanumericValidator->expects($this->once())->method('addError')->with(NULL, 1221551320);
 		$alphanumericValidator->isValid('adsf%&/$jklsfdö');
 	}
 }

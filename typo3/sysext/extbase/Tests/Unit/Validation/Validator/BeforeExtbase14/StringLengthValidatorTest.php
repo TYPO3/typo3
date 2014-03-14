@@ -49,7 +49,7 @@ class StringLengthValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCa
 	 * @test
 	 */
 	public function stringLengthValidatorReturnsFalseForAStringShorterThanThanMinLength() {
-		$stringLengthValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\StringLengthValidator', array('addError'), array(), '', FALSE);
+		$stringLengthValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\StringLengthValidator', array('addError', 'translateErrorMessage'), array(), '', FALSE);
 		$stringLengthValidator->expects($this->once())->method('addError');
 		$stringLengthValidator->setOptions(array('minimum' => 50, 'maximum' => 100));
 		$stringLengthValidator->isValid('this is a very short string');
@@ -59,7 +59,7 @@ class StringLengthValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCa
 	 * @test
 	 */
 	public function stringLengthValidatorReturnsFalseForAStringLongerThanThanMaxLength() {
-		$stringLengthValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\StringLengthValidator', array('addError'), array(), '', FALSE);
+		$stringLengthValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\StringLengthValidator', array('addError', 'translateErrorMessage'), array(), '', FALSE);
 		$stringLengthValidator->expects($this->once())->method('addError');
 		$stringLengthValidator->setOptions(array('minimum' => 5, 'maximum' => 10));
 		$stringLengthValidator->isValid('this is a very short string');
@@ -148,7 +148,7 @@ class StringLengthValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCa
 	 * @test
 	 */
 	public function stringLengthValidatorInsertsAnErrorObjectIfValidationFails() {
-		$stringLengthValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\StringLengthValidator', array('addError'), array(), '', FALSE);
+		$stringLengthValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\StringLengthValidator', array('addError', 'translateErrorMessage'), array(), '', FALSE);
 		$stringLengthValidator->expects($this->once())->method('addError');
 		$stringLengthValidator->setOptions(array('minimum' => 50, 'maximum' => 100));
 		$stringLengthValidator->isValid('this is a very short string');
@@ -177,7 +177,7 @@ class StringLengthValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCa
 	 * @test
 	 */
 	public function stringLengthValidatorAddsAnErrorIfTheGivenObjectCanNotBeConvertedToAString() {
-		$stringLengthValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\StringLengthValidator', array('addError'), array(), '', FALSE);
+		$stringLengthValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\StringLengthValidator', array('addError', 'translateErrorMessage'), array(), '', FALSE);
 		$stringLengthValidator->expects($this->once())->method('addError');
 		$stringLengthValidator->setOptions(array('minimum' => 5, 'maximum' => 100));
 		$className = uniqid('TestClass');

@@ -22,19 +22,15 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator;
  *                                                                        */
 
 /**
- * Testcase for the email address validator
+ * Test case
  *
- * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class EmailAddressValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator\AbstractValidatorTestcase {
-
-	protected $validatorClassName = 'TYPO3\\CMS\\Extbase\\Validation\\Validator\\EmailAddressValidator';
+class EmailAddressValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
 	 * Data provider with valid email addresses
 	 *
 	 * @return array
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	public function validAddresses() {
 		return array(
@@ -42,25 +38,25 @@ class EmailAddressValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validation
 			array('user@localhost.localdomain'),
 			array('info@guggenheim.museum'),
 			array('just@test.invalid'),
-			array('just+spam@test.de')
+			array('just+spam@test.de'),
 		);
 	}
 
 	/**
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 * @test
 	 * @dataProvider validAddresses
 	 * @param mixed $address
 	 */
 	public function emailAddressValidatorReturnsNoErrorsForAValidEmailAddress($address) {
-		$this->assertFalse($this->validator->validate($address)->hasErrors());
+		/** @var \TYPO3\CMS\Extbase\Validation\Validator\EmailAddressValidator|\PHPUnit_Framework_MockObject_MockObject $subject */
+		$subject = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\EmailAddressValidator', array('translateErrorMessage'));
+		$this->assertFalse($subject->validate($address)->hasErrors());
 	}
 
 	/**
 	 * Data provider with invalid email addresses
 	 *
 	 * @return array
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	public function invalidAddresses() {
 		return array(
@@ -77,20 +73,22 @@ class EmailAddressValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validation
 	}
 
 	/**
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 * @test
 	 * @dataProvider invalidAddresses
 	 * @param mixed $address
 	 */
 	public function emailAddressValidatorReturnsFalseForAnInvalidEmailAddress($address) {
-		$this->assertTrue($this->validator->validate($address)->hasErrors());
+		/** @var \TYPO3\CMS\Extbase\Validation\Validator\EmailAddressValidator|\PHPUnit_Framework_MockObject_MockObject $subject */
+		$subject = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\EmailAddressValidator', array('translateErrorMessage'));
+		$this->assertTrue($subject->validate($address)->hasErrors());
 	}
 
 	/**
 	 * @test
-	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 */
 	public function emailValidatorCreatesTheCorrectErrorForAnInvalidEmailAddress() {
-		$this->assertEquals(1, count($this->validator->validate('notAValidMail@Address')->getErrors()));
+		/** @var \TYPO3\CMS\Extbase\Validation\Validator\EmailAddressValidator|\PHPUnit_Framework_MockObject_MockObject $subject */
+		$subject = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\EmailAddressValidator', array('translateErrorMessage'));
+		$this->assertEquals(1, count($subject->validate('notAValidMail@Address')->getErrors()));
 	}
 }

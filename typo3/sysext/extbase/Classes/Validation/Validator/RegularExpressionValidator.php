@@ -55,7 +55,7 @@ class RegularExpressionValidator extends AbstractValidator {
 		$result = preg_match($this->options['regularExpression'], $value);
 		if ($result === 0) {
 			$this->addError(
-				\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate(
+				$this->translateErrorMessage(
 					'validator.regularexpression.nomatch',
 					'extbase'
 				), 1221565130);

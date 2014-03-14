@@ -125,7 +125,7 @@ class GenericObjectValidator extends AbstractValidator implements ObjectValidato
 			/* @deprecated since Extbase 1.4.0, will be removed two versions after Extbase 6.1 */
 			if (!is_object($object)) {
 				$this->addError(
-					\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate(
+					$this->translateErrorMessage(
 						'validator.genericobject.noobject',
 						'extbase'
 					), 1241099148);

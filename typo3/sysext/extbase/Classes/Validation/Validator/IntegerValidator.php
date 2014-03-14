@@ -45,7 +45,7 @@ class IntegerValidator extends AbstractValidator {
 	public function isValid($value) {
 		if (filter_var($value, FILTER_VALIDATE_INT) === FALSE) {
 			$this->addError(
-				\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate(
+				$this->translateErrorMessage(
 				'validator.integer.notvalid',
 				'extbase'
 				), 1221560494);

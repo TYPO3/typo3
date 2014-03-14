@@ -45,7 +45,7 @@ class EmailAddressValidator extends AbstractValidator {
 	public function isValid($value) {
 		if (!is_string($value) || !$this->validEmail($value)) {
 			$this->addError(
-				\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate(
+				$this->translateErrorMessage(
 					'validator.emailaddress.notvalid',
 					'extbase'
 				), 1221559976);

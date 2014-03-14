@@ -30,6 +30,10 @@ class TextValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validation\Validat
 
 	protected $validatorClassName = 'TYPO3\\CMS\\Extbase\\Validation\\Validator\\TextValidator';
 
+	public function setup() {
+		$this->validator = $this->getMock($this->validatorClassName, array('translateErrorMessage'));
+	}
+
 	/**
 	 * @test
 	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
@@ -69,7 +73,8 @@ class TextValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validation\Validat
 	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 */
 	public function textValidatorCreatesTheCorrectErrorIfTheSubjectContainsHtmlEntities() {
-		$expected = array(new \TYPO3\CMS\Extbase\Validation\Error('The given subject was not a valid text (e.g. contained XML tags).', 1221565786));
+		// we only test for the error code, after the translation Method for message is mocked anyway
+		$expected = array(new \TYPO3\CMS\Extbase\Validation\Error(NULL, 1221565786));
 		$this->assertEquals($expected, $this->validator->validate('<span style="color: #BBBBBB;">a nice text</span>')->getErrors());
 	}
 }

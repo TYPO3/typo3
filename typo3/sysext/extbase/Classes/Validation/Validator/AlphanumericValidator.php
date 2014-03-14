@@ -43,11 +43,7 @@ class AlphanumericValidator extends AbstractValidator {
 	 */
 	public function isValid($value) {
 		if (!is_string($value) || preg_match('/^[\pL\d]*$/u', $value) !== 1) {
-			$this->addError(
-				\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate(
-					'validator.alphanumeric.notvalid',
-					'extbase'
-				), 1221551320);
+			$this->addError($this->translateErrorMessage('validator.alphanumeric.notvalid', 'extbase'), 1221551320);
 		}
 	}
 }

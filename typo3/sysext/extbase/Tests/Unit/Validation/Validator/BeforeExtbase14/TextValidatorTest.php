@@ -70,7 +70,7 @@ Ke kille Minutt d\'Kirmes net. Hir Wand Lann Gaas da, wÃ¤r hu Heck Gart zÃ«n
 	 * @test
 	 */
 	public function textValidatorReturnsFalseForAStringWithHtml() {
-		$textValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\TextValidator', array('addError'), array(), '', FALSE);
+		$textValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\TextValidator', array('addError', 'translateErrorMessage'), array(), '', FALSE);
 		$textValidator->expects($this->once())->method('addError');
 		$textValidator->isValid('<span style="color: #BBBBBB;">a nice text</span>');
 	}
@@ -79,8 +79,9 @@ Ke kille Minutt d\'Kirmes net. Hir Wand Lann Gaas da, wÃ¤r hu Heck Gart zÃ«n
 	 * @test
 	 */
 	public function textValidatorCreatesTheCorrectErrorIfTheSubjectContainsHtmlEntities() {
-		$textValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\TextValidator', array('addError'), array(), '', FALSE);
-		$textValidator->expects($this->once())->method('addError')->with('The given subject was not a valid text (e.g. contained XML tags).', 1221565786);
+		$textValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\TextValidator', array('addError', 'translateErrorMessage'), array(), '', FALSE);
+		// we only test for the error key, after the translation method is mocked.
+		$textValidator->expects($this->once())->method('addError')->with(NULL, 1221565786);
 		$textValidator->isValid('<span style="color: #BBBBBB;">a nice text</span>');
 	}
 }

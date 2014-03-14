@@ -48,7 +48,7 @@ class NotEmptyValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @test
 	 */
 	public function notEmptyValidatorReturnsFalseForAnEmptyString() {
-		$notEmptyValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\NotEmptyValidator', array('addError'), array(), '', FALSE);
+		$notEmptyValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\NotEmptyValidator', array('addError', 'translateErrorMessage'), array(), '', FALSE);
 		$notEmptyValidator->expects($this->once())->method('addError');
 		$notEmptyValidator->isValid('');
 	}
@@ -57,7 +57,7 @@ class NotEmptyValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @test
 	 */
 	public function notEmptyValidatorReturnsFalseForANullValue() {
-		$notEmptyValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\NotEmptyValidator', array('addError'), array(), '', FALSE);
+		$notEmptyValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\NotEmptyValidator', array('addError', 'translateErrorMessage'), array(), '', FALSE);
 		$notEmptyValidator->expects($this->once())->method('addError');
 		$notEmptyValidator->isValid(NULL);
 	}
@@ -66,8 +66,9 @@ class NotEmptyValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @test
 	 */
 	public function notEmptyValidatorCreatesTheCorrectErrorForAnEmptySubject() {
-		$notEmptyValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\NotEmptyValidator', array('addError'), array(), '', FALSE);
-		$notEmptyValidator->expects($this->once())->method('addError')->with('The given subject was empty.', 1221560718);
+		$notEmptyValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\NotEmptyValidator', array('addError', 'translateErrorMessage'), array(), '', FALSE);
+		// we only test for the error key, after the translation method is mocked.
+		$notEmptyValidator->expects($this->once())->method('addError')->with(NULL, 1221560718);
 		$notEmptyValidator->isValid('');
 	}
 
@@ -75,8 +76,9 @@ class NotEmptyValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @test
 	 */
 	public function notEmptyValidatorCreatesTheCorrectErrorForANullValue() {
-		$notEmptyValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\NotEmptyValidator', array('addError'), array(), '', FALSE);
-		$notEmptyValidator->expects($this->once())->method('addError')->with('The given subject was NULL.', 1221560910);
+		$notEmptyValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\NotEmptyValidator', array('addError', 'translateErrorMessage'), array(), '', FALSE);
+		// we only test for the error key, after the translation method is mocked.
+		$notEmptyValidator->expects($this->once())->method('addError')->with(NULL, 1221560910);
 		$notEmptyValidator->isValid(NULL);
 	}
 }

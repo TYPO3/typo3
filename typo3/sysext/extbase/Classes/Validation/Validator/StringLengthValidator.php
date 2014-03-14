@@ -81,7 +81,7 @@ class StringLengthValidator extends AbstractValidator {
 		if ($isValid === FALSE) {
 			if ($this->options['minimum'] > 0 && $this->options['maximum'] < PHP_INT_MAX) {
 				$this->addError(
-					\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate(
+					$this->translateErrorMessage(
 						'validator.stringlength.between',
 						'extbase',
 						array (
@@ -91,7 +91,7 @@ class StringLengthValidator extends AbstractValidator {
 					), 1238108067, array($this->options['minimum'], $this->options['maximum']));
 			} elseif ($this->options['minimum'] > 0) {
 				$this->addError(
-					\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate(
+					$this->translateErrorMessage(
 						'validator.stringlength.less',
 						'extbase',
 						array(
@@ -100,7 +100,7 @@ class StringLengthValidator extends AbstractValidator {
 					), 1238108068, array($this->options['minimum']));
 			} else {
 				$this->addError(
-					\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate(
+					$this->translateErrorMessage(
 						'validator.stringlength.exceed',
 						'extbase',
 						array(

@@ -84,7 +84,7 @@ class EmailAddressValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCa
 	 * @param mixed $address
 	 */
 	public function emailAddressValidatorReturnsFalseForAnInvalidEmailAddress($address) {
-		$emailAddressValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\EmailAddressValidator', array('addError'), array(), '', FALSE);
+		$emailAddressValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\EmailAddressValidator', array('addError', 'translateErrorMessage'), array(), '', FALSE);
 		$emailAddressValidator->expects($this->once())->method('addError');
 		$emailAddressValidator->isValid($address);
 	}
@@ -93,8 +93,9 @@ class EmailAddressValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCa
 	 * @test
 	 */
 	public function emailValidatorCreatesTheCorrectErrorForAnInvalidEmailAddress() {
-		$emailAddressValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\EmailAddressValidator', array('addError'), array(), '', FALSE);
-		$emailAddressValidator->expects($this->once())->method('addError')->with('The given subject was not a valid email address.', 1221559976);
+		$emailAddressValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\EmailAddressValidator', array('addError', 'translateErrorMessage'), array(), '', FALSE);
+		// we only test for the error key, after the translation method is mocked.
+		$emailAddressValidator->expects($this->once())->method('addError')->with(NULL, 1221559976);
 		$emailAddressValidator->isValid('notAValidMail@Address');
 	}
 }

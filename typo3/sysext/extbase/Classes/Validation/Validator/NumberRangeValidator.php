@@ -53,7 +53,7 @@ class NumberRangeValidator extends AbstractValidator {
 	public function isValid($value) {
 		if (!is_numeric($value)) {
 			$this->addError(
-				\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate(
+				$this->translateErrorMessage(
 					'validator.numberrange.notvalid',
 					'extbase'
 				), 1221563685);
@@ -81,7 +81,7 @@ class NumberRangeValidator extends AbstractValidator {
 			$maximum = $x;
 		}
 		if ($value < $minimum || $value > $maximum) {
-			$this->addError(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate(
+			$this->addError($this->translateErrorMessage(
 				'validator.numberrange.range',
 				'extbase',
 				array(

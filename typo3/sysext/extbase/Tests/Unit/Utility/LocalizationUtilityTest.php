@@ -183,14 +183,20 @@ class LocalizationUtilityTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase
 	 * @test
 	 */
 	public function translateForEmptyStringKeyReturnsNull() {
-		$this->assertNull(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('', 'extbase'));
+		$this->localization->_setStatic('LOCAL_LANG', array());
+		$configurationManager = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManager', array('getConfiguration'));
+		$this->localization->staticExpects($this->atLeastOnce())->method('getConfigurationManager')->will($this->returnValue($configurationManager));
+		$this->assertNull($this->localization->translate('', 'extbase'));
 	}
 
 	/**
 	 * @test
 	 */
 	public function translateForEmptyStringKeyWithArgumentsReturnsNull() {
-		$this->assertNull(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('', 'extbase', array('argument')));
+		$this->localization->_setStatic('LOCAL_LANG', array());
+		$configurationManager = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManager', array('getConfiguration'));
+		$this->localization->staticExpects($this->atLeastOnce())->method('getConfigurationManager')->will($this->returnValue($configurationManager));
+		$this->assertNull($this->localization->translate('', 'extbase', array('argument')));
 	}
 
 	/**

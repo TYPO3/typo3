@@ -39,7 +39,7 @@ class RegularExpressionValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseT
 	 * @test
 	 */
 	public function regularExpressionValidatorMatchesABasicExpressionCorrectly() {
-		$regularExpressionValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\RegularExpressionValidator', array('addError'), array(), '', FALSE);
+		$regularExpressionValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\RegularExpressionValidator', array('addError', 'translateErrorMessage'), array(), '', FALSE);
 		$regularExpressionValidator->expects($this->once())->method('addError');
 		$regularExpressionValidator->setOptions(array('regularExpression' => '/^simple[0-9]expression$/'));
 		$regularExpressionValidator->isValid('simple1expression');
@@ -50,8 +50,9 @@ class RegularExpressionValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseT
 	 * @test
 	 */
 	public function regularExpressionValidatorCreatesTheCorrectErrorIfTheExpressionDidNotMatch() {
-		$regularExpressionValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\RegularExpressionValidator', array('addError'), array(), '', FALSE);
-		$regularExpressionValidator->expects($this->once())->method('addError')->with('The given subject did not match the pattern.', 1221565130);
+		$regularExpressionValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\RegularExpressionValidator', array('addError', 'translateErrorMessage'), array(), '', FALSE);
+		// we only test for the error key, after the translation method is mocked.
+		$regularExpressionValidator->expects($this->once())->method('addError')->with(NULL, 1221565130);
 		$regularExpressionValidator->setOptions(array('regularExpression' => '/^simple[0-9]expression$/'));
 		$regularExpressionValidator->isValid('some subject that will not match');
 	}

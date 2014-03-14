@@ -49,7 +49,7 @@ class DateTimeValidator extends AbstractValidator {
 			return;
 		}
 		$this->addError(
-			\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate(
+			$this->translateErrorMessage(
 				'validator.datetime.notvalid',
 				'extbase',
 				array(

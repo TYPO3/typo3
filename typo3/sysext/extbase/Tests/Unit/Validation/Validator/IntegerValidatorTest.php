@@ -30,6 +30,10 @@ class IntegerValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validation\Vali
 
 	protected $validatorClassName = 'TYPO3\\CMS\\Extbase\\Validation\\Validator\\IntegerValidator';
 
+	public function setup() {
+		$this->validator = $this->getMock($this->validatorClassName, array('translateErrorMessage'));
+	}
+
 	/**
 	 * Data provider with valid integers
 	 *

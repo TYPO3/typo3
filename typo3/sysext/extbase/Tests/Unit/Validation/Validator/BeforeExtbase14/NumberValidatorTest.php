@@ -48,7 +48,7 @@ class NumberValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @test
 	 */
 	public function numberValidatorReturnsFalseForAString() {
-		$numberValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\NumberValidator', array('addError'), array(), '', FALSE);
+		$numberValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\NumberValidator', array('addError', 'translateErrorMessage'), array(), '', FALSE);
 		$numberValidator->expects($this->once())->method('addError');
 		$numberValidator->isValid('not a number');
 	}
@@ -57,8 +57,9 @@ class NumberValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @test
 	 */
 	public function numberValidatorCreatesTheCorrectErrorForAnInvalidSubject() {
-		$numberValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\NumberValidator', array('addError'), array(), '', FALSE);
-		$numberValidator->expects($this->once())->method('addError')->with('The given subject was not a valid number.', 1221563685);
+		$numberValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\NumberValidator', array('addError', 'translateErrorMessage'), array(), '', FALSE);
+		// we only test for the error key, after the translation method is mocked.
+		$numberValidator->expects($this->once())->method('addError')->with(NULL, 1221563685);
 		$numberValidator->isValid('this is not a number');
 	}
 }

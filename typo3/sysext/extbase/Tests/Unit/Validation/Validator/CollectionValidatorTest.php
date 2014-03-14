@@ -53,7 +53,7 @@ class CollectionValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase
 	 * @param array $mockedMethods
 	 * @return \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface
 	 */
-	protected function getValidator(array $options = array(), array $mockedMethods = array('dummy')) {
+	protected function getValidator(array $options = array(), array $mockedMethods = array('translateErrorMessage')) {
 		return $this->getAccessibleMock($this->validatorClassName, $mockedMethods, array($options), '', TRUE);
 	}
 
@@ -103,7 +103,7 @@ class CollectionValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase
 		$this->mockValidatorResolver->expects($this->exactly(4))
 			->method('createValidator')
 			->with('EmailAddress')
-			->will($this->returnValue(new \TYPO3\CMS\Extbase\Validation\Validator\EmailAddressValidator()));
+			->will($this->returnValue($this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\EmailAddressValidator', array('translateErrorMessage'))));
 		$this->validator->_set('validatorResolver', $this->mockValidatorResolver);
 		$arrayOfEmailAddresses = array(
 			'foo@bar.de',
@@ -132,26 +132,27 @@ class CollectionValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase
 		$B->a = $A;
 		$B->c = array($A);
 
+
+		// Create validators
+		$aValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\GenericObjectValidator', array('translateErrorMessage'), array(array()));
+		$aValidator->injectConfigurationManager($this->configurationManager);
+		$this->validator->_set('options', array('elementValidator' => 'Integer'));
+		$integerValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\IntegerValidator', array('translateErrorMessage'), array(array()));
+
 		$this->mockValidatorResolver->expects($this->any())
 			->method('createValidator')
 			->with('Integer')
-			->will($this->returnValue(new \TYPO3\CMS\Extbase\Validation\Validator\IntegerValidator()));
+			->will($this->returnValue($integerValidator));
 		$this->mockValidatorResolver->expects($this->any())
 			->method('buildBaseValidatorConjunction')
-			->will($this->returnValue(new \TYPO3\CMS\Extbase\Validation\Validator\GenericObjectValidator()));
-
-			// Create validators
-		$aValidator = new \TYPO3\CMS\Extbase\Validation\Validator\GenericObjectValidator(array());
-		$aValidator->injectConfigurationManager($this->configurationManager);
-		$this->validator->_set('options', array('elementValidator' => 'Integer'));
-		$integerValidator = new \TYPO3\CMS\Extbase\Validation\Validator\IntegerValidator(array());
+			->will($this->returnValue($aValidator));
 
 			// Add validators to properties
 		$aValidator->addPropertyValidator('b', $this->validator);
 		$aValidator->addPropertyValidator('integer', $integerValidator);
 
 		$result = $aValidator->validate($A)->getFlattenedErrors();
-		$this->assertEquals('The given subject was not a valid integer', $result['b.0'][0]->getMessage());
+		$this->assertEquals(1221560494, $result['b.0'][0]->getCode());
 	}
 
 	/**

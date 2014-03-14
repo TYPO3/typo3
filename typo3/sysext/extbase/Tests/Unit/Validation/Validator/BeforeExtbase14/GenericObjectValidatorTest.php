@@ -41,7 +41,7 @@ class GenericObjectValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestC
 	public function isValidReturnsFalseIfTheValueIsNoObject() {
 		$configurationManager = $this->getMock('TYPO3\CMS\Extbase\Configuration\ConfigurationManager', array('isFeatureEnabled'), array(), '', FALSE);
 		$configurationManager->expects($this->any())->method('isFeatureEnabled')->with('rewrittenPropertyMapper')->will($this->returnValue(FALSE));
-		$validator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\GenericObjectValidator', array('addError'), array(), '', FALSE);
+		$validator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\GenericObjectValidator', array('addError', 'translateErrorMessage'), array(), '', FALSE);
 		$validator->injectConfigurationManager($configurationManager);
 		$this->assertFalse($validator->isValid('foo'));
 	}

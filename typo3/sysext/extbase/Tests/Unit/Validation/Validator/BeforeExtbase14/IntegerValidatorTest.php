@@ -82,7 +82,7 @@ class IntegerValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @param mixed $number
 	 */
 	public function integerValidatorReturnsFalseForAnInvalidInteger($number) {
-		$integerValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\IntegerValidator', array('addError'), array(), '', FALSE);
+		$integerValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\IntegerValidator', array('addError', 'translateErrorMessage'), array(), '', FALSE);
 		$integerValidator->expects($this->once())->method('addError');
 		$integerValidator->isValid($number);
 	}
@@ -91,10 +91,9 @@ class IntegerValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @test
 	 */
 	public function integerValidatorCreatesTheCorrectErrorForAnInvalidSubject() {
-		$integerValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\IntegerValidator', array('addError'), array(), '', FALSE);
-
-		$translatedMessage = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('validator.integer.notvalid', 'extbase');
-		$integerValidator->expects($this->once())->method('addError')->with($translatedMessage, 1221560494);
+		$integerValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\IntegerValidator', array('addError', 'translateErrorMessage'), array(), '', FALSE);
+		// we only test for the error key, after the translation method is mocked.
+		$integerValidator->expects($this->once())->method('addError')->with(NULL, 1221560494);
 		$integerValidator->isValid('not a number');
 	}
 }

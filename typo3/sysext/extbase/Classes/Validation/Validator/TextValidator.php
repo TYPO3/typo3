@@ -51,7 +51,7 @@ class TextValidator extends AbstractValidator {
 	public function isValid($value) {
 		if ($value !== filter_var($value, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES)) {
 			$this->addError(
-				\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate(
+				$this->translateErrorMessage(
 					'validator.text.notvalid',
 					'extbase'
 				), 1221565786);

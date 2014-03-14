@@ -46,7 +46,7 @@ class NumberValidator extends AbstractValidator {
 	public function isValid($value) {
 		if (!is_numeric($value)) {
 			$this->addError(
-			\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate(
+			$this->translateErrorMessage(
 				'validator.number.notvalid',
 				'extbase'
 			), 1221563685);

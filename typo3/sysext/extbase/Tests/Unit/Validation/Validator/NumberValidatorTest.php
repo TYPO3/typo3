@@ -26,16 +26,24 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator;
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class NumberValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator\AbstractValidatorTestcase {
+class NumberValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	protected $validatorClassName = 'TYPO3\\CMS\\Extbase\\Validation\\Validator\\NumberValidator';
+
+	/**
+	 * @var \TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface
+	 */
+	protected $validator;
+
+	public function setup() {
+		$this->validator = $this->getMock($this->validatorClassName, array('translateErrorMessage'));
+	}
 
 	/**
 	 * @test
 	 */
 	public function numberValidatorReturnsTrueForASimpleInteger() {
-		$numberValidator = new \TYPO3\CMS\Extbase\Validation\Validator\NumberValidator();
-		$this->assertFalse($numberValidator->validate(1029437)->hasErrors());
+		$this->assertFalse($this->validator->validate(1029437)->hasErrors());
 	}
 
 	/**
@@ -43,8 +51,8 @@ class NumberValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validation\Valid
 	 */
 	public function numberValidatorReturnsFalseForAString() {
 		$expectedResult = new \TYPO3\CMS\Extbase\Error\Result();
-		$expectedResult->addError(new \TYPO3\CMS\Extbase\Validation\Error('The given subject was not a valid number.', 1221563685));
-		$numberValidator = new \TYPO3\CMS\Extbase\Validation\Validator\NumberValidator();
-		$this->assertEquals($expectedResult, $numberValidator->validate('not a number'));
+		// we only test for the error code, after the message translation method is mocked
+		$expectedResult->addError(new \TYPO3\CMS\Extbase\Validation\Error(NULL, 1221563685));
+		$this->assertEquals($expectedResult, $this->validator->validate('not a number'));
 	}
 }

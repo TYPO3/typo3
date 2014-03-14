@@ -49,7 +49,7 @@ class FloatValidator extends AbstractValidator {
 
 		if (!is_string($value) || strpos($value, '.') === FALSE || preg_match('/^[0-9.e+-]+$/', $value) !== 1) {
 			$this->addError(
-				\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate(
+				$this->translateErrorMessage(
 				'validator.float.notvalid',
 				'extbase'
 				), 1221560288);

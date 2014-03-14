@@ -54,28 +54,28 @@ class NotEmptyValidator extends AbstractValidator {
 	public function isValid($value) {
 		if ($value === NULL) {
 			$this->addError(
-				\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate(
+				$this->translateErrorMessage(
 					'validator.notempty.null',
 					'extbase'
 				), 1221560910);
 		}
 		if ($value === '') {
 			$this->addError(
-				\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate(
+				$this->translateErrorMessage(
 					'validator.notempty.empty',
 					'extbase'
 				), 1221560718);
 		}
 		if (is_array($value) && empty($value)) {
 			$this->addError(
-				\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate(
+				$this->translateErrorMessage(
 					'validator.notempty.empty',
 					'extbase'
 				), 1347992400);
 		}
 		if (is_object($value) && $value instanceof \Countable && $value->count() === 0) {
 			$this->addError(
-				\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate(
+				$this->translateErrorMessage(
 					'validator.notempty.empty',
 					'extbase'
 				), 1347992453);

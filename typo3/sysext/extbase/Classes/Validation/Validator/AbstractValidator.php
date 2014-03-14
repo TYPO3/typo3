@@ -156,4 +156,21 @@ abstract class AbstractValidator implements \TYPO3\CMS\Extbase\Validation\Valida
 	final protected function isEmpty($value) {
 		return $value === NULL || $value === '';
 	}
+
+	/**
+	 * Wrap static call to LocalizationUtility to simplify unit testing
+	 *
+	 * @param string $translateKey
+	 * @param string $extensionName
+	 * @param array $arguments
+	 *
+	 * @return NULL|string
+	 */
+	protected function translateErrorMessage($translateKey, $extensionName, $arguments = array()) {
+		return \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate(
+			$translateKey,
+			$extensionName,
+			$arguments
+		);
+	}
 }

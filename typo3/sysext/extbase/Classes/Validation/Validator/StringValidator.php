@@ -45,7 +45,7 @@ class StringValidator extends AbstractValidator {
 	public function isValid($value) {
 		if (!is_string($value)) {
 			$this->addError(
-				\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate(
+				$this->translateErrorMessage(
 					'validator.string.notvalid',
 					'extbase'
 				), 1238108067);

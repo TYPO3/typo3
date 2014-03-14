@@ -84,7 +84,7 @@ class FloatValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @param mixed $number
 	 */
 	public function floatValidatorReturnsFalseForAnInvalidFloat($number) {
-		$floatValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\FloatValidator', array('addError'), array(), '', FALSE);
+		$floatValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\FloatValidator', array('addError', 'translateErrorMessage'), array(), '', FALSE);
 		$floatValidator->expects($this->once())->method('addError');
 		$floatValidator->isValid($number);
 	}
@@ -93,11 +93,9 @@ class FloatValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @test
 	 */
 	public function floatValidatorCreatesTheCorrectErrorForAnInvalidSubject() {
-		$floatValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\FloatValidator', array('addError'), array(), '', FALSE);
-
-		$translatedMessage = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('validator.float.notvalid', 'extbase');
-
-		$floatValidator->expects($this->once())->method('addError')->with($translatedMessage, 1221560288);
+		$floatValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\FloatValidator', array('addError', 'translateErrorMessage'), array(), '', FALSE);
+		// we only test for the error key, after the translation method is mocked.
+		$floatValidator->expects($this->once())->method('addError')->with(NULL, 1221560288);
 		$floatValidator->isValid(123456);
 	}
 }

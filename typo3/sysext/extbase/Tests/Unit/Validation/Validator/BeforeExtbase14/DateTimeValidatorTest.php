@@ -48,7 +48,7 @@ class DateTimeValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @test
 	 */
 	public function dateTimeValidatorReturnsFalseForAnInvalidDateTimeObject() {
-		$dateTimeValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\DateTimeValidator', array('addError'), array(), '', FALSE);
+		$dateTimeValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\DateTimeValidator', array('addError', 'translateErrorMessage'), array(), '', FALSE);
 		$dateTimeValidator->expects($this->once())->method('addError');
 		$dateTimeValidator->isValid('blah');
 	}

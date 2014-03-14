@@ -22,43 +22,44 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator;
  *                                                                        */
 
 /**
- * Testcase for the alphanumeric validator
+ * Test case
  *
- * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class AlphanumericValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator\AbstractValidatorTestcase {
-
-	protected $validatorClassName = 'TYPO3\\CMS\\Extbase\\Validation\\Validator\\AlphanumericValidator';
+class AlphanumericValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
 	 * @test
-	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 */
 	public function alphanumericValidatorShouldReturnNoErrorsForAnAlphanumericString() {
-		$this->assertFalse($this->validator->validate('12ssDF34daweidf')->hasErrors());
+		/** @var \TYPO3\CMS\Extbase\Validation\Validator\AlphanumericValidator|\PHPUnit_Framework_MockObject_MockObject $subject */
+		$subject = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\AlphanumericValidator', array('translateErrorMessage'));
+		$this->assertFalse($subject->validate('12ssDF34daweidf')->hasErrors());
 	}
 
 	/**
 	 * @test
-	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 */
 	public function alphanumericValidatorReturnsErrorsForAStringWithSpecialCharacters() {
-		$this->assertTrue($this->validator->validate('adsf%&/$jklsfdö')->hasErrors());
+		/** @var \TYPO3\CMS\Extbase\Validation\Validator\AlphanumericValidator|\PHPUnit_Framework_MockObject_MockObject $subject */
+		$subject = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\AlphanumericValidator', array('translateErrorMessage'));
+		$this->assertTrue($subject->validate('adsf%&/$jklsfdö')->hasErrors());
 	}
 
 	/**
 	 * @test
-	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 */
 	public function alphanumericValidatorCreatesTheCorrectErrorForAnInvalidSubject() {
-		$this->assertEquals(1, count($this->validator->validate('adsf%&/$jklsfdö')->getErrors()));
+		/** @var \TYPO3\CMS\Extbase\Validation\Validator\AlphanumericValidator|\PHPUnit_Framework_MockObject_MockObject $subject */
+		$subject = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\AlphanumericValidator', array('translateErrorMessage'));
+		$this->assertEquals(1, count($subject->validate('adsf%&/$jklsfdö')->getErrors()));
 	}
 
 	/**
 	 * @test
-	 * @author Alexander Schnitzler <alex.schnitzler@typovision.de>
 	 */
 	public function alphanumericValidatorShouldReturnNoErrorsForAnAlphanumericUnicodeString() {
-		$this->assertFalse($this->validator->validate('12ssDF34daweidfäøüößØœ你好')->hasErrors());
+		/** @var \TYPO3\CMS\Extbase\Validation\Validator\AlphanumericValidator|\PHPUnit_Framework_MockObject_MockObject $subject */
+		$subject = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\AlphanumericValidator', array('translateErrorMessage'));
+		$this->assertFalse($subject->validate('12ssDF34daweidfäøüößØœ你好')->hasErrors());
 	}
 }
