@@ -25,10 +25,11 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Tree\Pagetree;
  ***************************************************************/
 
 /**
- * Testcase
+ * Test case
  *
  * @author Stefan Galinski <stefan.galinski@gmail.com>
  * @author Oliver Klee <typo3-coding@oliverklee.de>
+ * @TODO: Refactor the subject class and make it better testable, especially getNodes()
  */
 class DataProviderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
@@ -42,7 +43,7 @@ class DataProviderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/tree/pagetree/class.t3lib_tree_pagetree_dataprovider.php']['postProcessCollections'] = array();
 		$GLOBALS['LOCKED_RECORDS'] = array();
 		/** @var $backendUserMock \TYPO3\CMS\Core\Authentication\BackendUserAuthentication|\PHPUnit_Framework_MockObject_MockObject */
-		$backendUserMock = $this->getMock('TYPO3\\CMS\\Core\\Authentication\\BackendUserAuthentication', array(), array(),'', FALSE);
+		$backendUserMock = $this->getMock('TYPO3\\CMS\\Core\\Authentication\\BackendUserAuthentication', array(), array(), '', FALSE);
 		$GLOBALS['BE_USER'] = $backendUserMock;
 
 		$this->subject = new \TYPO3\CMS\Backend\Tree\Pagetree\DataProvider();
@@ -62,58 +63,4 @@ class DataProviderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function getRootNodeReturnsExpandedNode() {
 		$this->assertTrue($this->subject->getRoot()->isExpanded());
 	}
-
-	/**
-	 * @test
-	 */
-	public function getNodesSetsIsMountPointField() {
-		/** @var $backendUserMock \TYPO3\CMS\Core\Authentication\BackendUserAuthentication|\PHPUnit_Framework_MockObject_MockObject */
-		$backendUserMock = $this->getMock('TYPO3\\CMS\\Core\\Authentication\\BackendUserAuthentication', array('returnWebmounts'), array(), '', FALSE);
-		$GLOBALS['BE_USER'] = $backendUserMock;
-		$GLOBALS['BE_USER']->expects($this->any())->method('returnWebmounts')->will($this->returnValue(array('false', 'true', 'false')));
-		$subpages = array(
-			array(
-				'uid' => 1,
-				'isMountPoint' => FALSE
-			),
-			array(
-				'uid' => 2,
-				'isMountPoint' => TRUE
-			),
-			array(
-				'uid' => 3
-			)
-		);
-		$subpagesWithWorkspaceOverlay = array(
-			array(
-				'uid' => 1,
-				'title' => 'Home'
-			),
-			array(
-				'uid' => 2,
-				'title' => 'service'
-			),
-			array(
-				'uid' => 3,
-				'title' => 'contact'
-			)
-		);
-		/** @var \TYPO3\CMS\Backend\Tree\Pagetree\DataProvider $subject */
-		$subject = $this->getMock('TYPO3\\CMS\\Backend\\Tree\\Pagetree\\DataProvider', array('getSubpages', 'getRecordWithWorkspaceOverlay'));
-		$subject->expects($this->once())->method('getSubpages')->will($this->returnValue($subpages));
-		$subject->expects($this->at(1))->method('getRecordWithWorkspaceOverlay')->with(1)->will($this->returnValue($subpagesWithWorkspaceOverlay[0]));
-		$subject->expects($this->at(2))->method('getRecordWithWorkspaceOverlay')->with(2)->will($this->returnValue($subpagesWithWorkspaceOverlay[1]));
-		$subject->expects($this->at(3))->method('getRecordWithWorkspaceOverlay')->with(3)->will($this->returnValue($subpagesWithWorkspaceOverlay[2]));
-		/** @var \TYPO3\CMS\Backend\Tree\TreeNode $node */
-		$node = $this->getMock('TYPO3\\CMS\\Backend\\Tree\\TreeNode');
-		$node->setId(12);
-		$nodeCollection = $subject->getNodes($node);
-		$isMountPointResult = array();
-		/** @var $node \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode */
-		foreach ($nodeCollection as $node) {
-			$isMountPointResult[] = $node->isMountPoint();
-		}
-		$this->assertSame(array(FALSE, TRUE, FALSE), $isMountPointResult);
-	}
-
 }
