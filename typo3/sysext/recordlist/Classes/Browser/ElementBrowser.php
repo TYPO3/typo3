@@ -1882,12 +1882,6 @@ class ElementBrowser {
 					<td colspan="4">No files found.</td>
 				</tr>';
 		}
-		// Init graphic object for reading file and image dimensions:
-		/** @var $imgObj \TYPO3\CMS\Core\Imaging\GraphicalFunctions */
-		$imgObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Imaging\\GraphicalFunctions');
-		$imgObj->init();
-		$imgObj->mayScaleUp = 0;
-		$imgObj->tempPath = PATH_site . $imgObj->tempPath;
 		// Traverse the file list:
 		/** @var $fileObject \TYPO3\CMS\Core\Resource\File */
 		foreach ($files as $fileObject) {
@@ -1899,7 +1893,10 @@ class ElementBrowser {
 					\TYPO3\CMS\Core\Resource\ProcessedFile::CONTEXT_IMAGEPREVIEW,
 					array('width' => 64, 'height' => 64)
 				)->getPublicUrl(TRUE);
-				$imgInfo = $imgObj->getImageDimensions($fileObject->getForLocalProcessing(FALSE));
+				$imgInfo = array(
+					$fileObject->getProperty('width'),
+					$fileObject->getProperty('height')
+				);
 				$pDim = $imgInfo[0] . 'x' . $imgInfo[1] . ' pixels';
 				$clickIcon = '<img src="' . $imageUrl . '" hspace="5" vspace="5" border="1" />';
 			} else {
@@ -2135,7 +2132,10 @@ class ElementBrowser {
 			// Show only web-images
 			$fileExtension = strtolower($fileObject->getExtension());
 			if (GeneralUtility::inList('gif,jpeg,jpg,png', $fileExtension)) {
-				$imgInfo = @getimagesize($fileObject->getForLocalProcessing(FALSE));
+				$imgInfo = array(
+					$fileObject->getProperty('width'),
+					$fileObject->getProperty('height')
+				);
 				$pDim = $imgInfo[0] . 'x' . $imgInfo[1] . ' pixels';
 				$size = ' (' . GeneralUtility::formatSize($fileObject->getSize()) . 'bytes' . ($pDim ? ', ' . $pDim : '') . ')';
 				$filenameAndIcon = IconUtility::getSpriteIconForResource($fileObject, array('title' => $fileObject->getName() . $size));
