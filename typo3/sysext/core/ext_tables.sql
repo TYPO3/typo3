@@ -22,7 +22,6 @@ CREATE TABLE be_groups (
   file_mountpoints text,
   file_permissions text,
   hidden tinyint(1) unsigned DEFAULT '0' NOT NULL,
-  inc_access_lists tinyint(3) unsigned DEFAULT '0' NOT NULL,
   description text,
   lockToDomain varchar(50) DEFAULT '' NOT NULL,
   deleted tinyint(1) unsigned DEFAULT '0' NOT NULL,

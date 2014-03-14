@@ -1375,16 +1375,14 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 					$this->dataLists['filemount_list'] .= ',' . $row['file_mountpoints'];
 				}
 				// The lists are made: groupMods, tables_select, tables_modify, pagetypes_select, non_exclude_fields, explicit_allowdeny, allowed_languages, custom_options
-				if ($row['inc_access_lists'] == 1) {
-					$this->dataLists['modList'] .= ',' . $row['groupMods'];
-					$this->dataLists['tables_select'] .= ',' . $row['tables_select'];
-					$this->dataLists['tables_modify'] .= ',' . $row['tables_modify'];
-					$this->dataLists['pagetypes_select'] .= ',' . $row['pagetypes_select'];
-					$this->dataLists['non_exclude_fields'] .= ',' . $row['non_exclude_fields'];
-					$this->dataLists['explicit_allowdeny'] .= ',' . $row['explicit_allowdeny'];
-					$this->dataLists['allowed_languages'] .= ',' . $row['allowed_languages'];
-					$this->dataLists['custom_options'] .= ',' . $row['custom_options'];
-				}
+				$this->dataLists['modList'] .= ',' . $row['groupMods'];
+				$this->dataLists['tables_select'] .= ',' . $row['tables_select'];
+				$this->dataLists['tables_modify'] .= ',' . $row['tables_modify'];
+				$this->dataLists['pagetypes_select'] .= ',' . $row['pagetypes_select'];
+				$this->dataLists['non_exclude_fields'] .= ',' . $row['non_exclude_fields'];
+				$this->dataLists['explicit_allowdeny'] .= ',' . $row['explicit_allowdeny'];
+				$this->dataLists['allowed_languages'] .= ',' . $row['allowed_languages'];
+				$this->dataLists['custom_options'] .= ',' . $row['custom_options'];
 				$this->dataLists['file_permissions'] .= ',' . $row['file_permissions'];
 				// Setting workspace permissions:
 				$this->dataLists['workspace_perms'] |= $row['workspace_perms'];

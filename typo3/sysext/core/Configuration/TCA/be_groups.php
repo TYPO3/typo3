@@ -10,11 +10,6 @@ return array(
 		'prependAtCopy' => 'LLL:EXT:lang/locallang_general.xlf:LGL.prependAtCopy',
 		'adminOnly' => 1,
 		'rootLevel' => 1,
-		'type' => 'inc_access_lists',
-		'typeicon_column' => 'inc_access_lists',
-		'typeicons' => array(
-			'1' => 'be_groups_lists.gif'
-		),
 		'typeicon_classes' => array(
 			'default' => 'status-user-group-backend'
 		),
@@ -28,7 +23,7 @@ return array(
 		'searchFields' => 'title'
 	),
 	'interface' => array(
-		'showRecordFieldList' => 'title, db_mountpoints, file_mountpoints, file_permissions, inc_access_lists, tables_select, tables_modify, pagetypes_select, non_exclude_fields, groupMods, lockToDomain, description'
+		'showRecordFieldList' => 'title, db_mountpoints, file_mountpoints, file_permissions, tables_select, tables_modify, pagetypes_select, non_exclude_fields, groupMods, lockToDomain, description'
 	),
 	'columns' => array(
 		'title' => array(
@@ -254,13 +249,6 @@ return array(
 				'iconsInOptionTags' => 1
 			)
 		),
-		'inc_access_lists' => array(
-			'label' => 'LLL:EXT:lang/locallang_tca.xlf:be_groups.inc_access_lists',
-			'config' => array(
-				'type' => 'check',
-				'default' => '0'
-			)
-		),
 		'description' => array(
 			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.description',
 			'config' => array(
@@ -322,14 +310,9 @@ return array(
 	),
 	'types' => array(
 		'0' => array('showitem' => 'hidden;;;;1-1-1, title;;;;2-2-2, description, subgroup;;;;3-3-3,
-			--div--;LLL:EXT:lang/locallang_tca.xlf:be_groups.tabs.base_rights, inc_access_lists;;;;1-1-1,
+			--div--;LLL:EXT:lang/locallang_tca.xlf:be_groups.tabs.base_rights;;;;1-1-1, groupMods, tables_select, tables_modify, pagetypes_select, non_exclude_fields, explicit_allowdeny , allowed_languages;;;;2-2-2, custom_options;;;;3-3-3,
 			--div--;LLL:EXT:lang/locallang_tca.xlf:be_groups.tabs.mounts_and_workspaces, workspace_perms;;;;1-1-1, db_mountpoints;;;;2-2-2, file_mountpoints;;;;3-3-3, file_permissions, category_perms,
 			--div--;LLL:EXT:lang/locallang_tca.xlf:be_groups.tabs.options, lockToDomain;;;;1-1-1, hide_in_lists;;;;2-2-2, TSconfig;;;;3-3-3,
 			--div--;LLL:EXT:lang/locallang_tca.xlf:be_groups.tabs.extended'),
-		'1' => array('showitem' => 'hidden;;;;1-1-1, title;;;;2-2-2, description, subgroup;;;;3-3-3,
-			--div--;LLL:EXT:lang/locallang_tca.xlf:be_groups.tabs.base_rights, inc_access_lists;;;;1-1-1, groupMods, tables_select, tables_modify, pagetypes_select, non_exclude_fields, explicit_allowdeny , allowed_languages;;;;2-2-2, custom_options;;;;3-3-3,
-			--div--;LLL:EXT:lang/locallang_tca.xlf:be_groups.tabs.mounts_and_workspaces, workspace_perms;;;;1-1-1, db_mountpoints;;;;2-2-2, file_mountpoints;;;;3-3-3, file_permissions, category_perms,
-			--div--;LLL:EXT:lang/locallang_tca.xlf:be_groups.tabs.options, lockToDomain;;;;1-1-1, hide_in_lists;;;;2-2-2, TSconfig;;;;3-3-3,
-			--div--;LLL:EXT:lang/locallang_tca.xlf:be_groups.tabs.extended')
 	)
 );
