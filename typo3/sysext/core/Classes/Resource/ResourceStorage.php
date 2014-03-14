@@ -1443,15 +1443,14 @@ class ResourceStorage {
 	 * clears output buffer first and sends headers accordingly.
 	 *
 	 * @param FileInterface $file
-	 * @param boolean $asDownload If set Content-Disposition headers are sent
+	 * @param boolean $asDownload If set Content-Disposition attachment is sent, inline otherwise
 	 * @param string $alternativeFilename the filename for the download (if $asDownload is set)
 	 * @return void
 	 */
 	public function dumpFileContents(FileInterface $file, $asDownload = FALSE, $alternativeFilename = NULL) {
-		if ($asDownload) {
-			$downloadName = $alternativeFilename ?: $file->getName();
-			header('Content-Disposition: attachment; filename=' . $downloadName);
-		}
+		$downloadName = $alternativeFilename ?: $file->getName();
+		$contentDisposition = $asDownload ? 'attachment' : 'inline';
+		header('Content-Disposition: ' . $contentDisposition . '; filename="' . $downloadName . '"');
 		header('Content-Type: ' . $file->getMimeType());
 		header('Content-Length: ' . $file->getSize());
 
