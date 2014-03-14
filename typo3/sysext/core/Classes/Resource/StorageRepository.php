@@ -105,7 +105,7 @@ class StorageRepository extends AbstractRepository {
 				$this->table,
 				'1=1' . $this->getWhereClauseForEnabledFields(),
 				'',
-				'',
+				'name',
 				'',
 				'uid'
 			);
