@@ -596,8 +596,12 @@ class InlineElement {
 					$imageSetup = $config['appearance']['headerThumbnail'];
 					unset($imageSetup['field']);
 					$imageSetup = array_merge(array('width' => '45', 'height' => '45c'), $imageSetup);
-					$imageUrl = $fileObject->process(\TYPO3\CMS\Core\Resource\ProcessedFile::CONTEXT_IMAGECROPSCALEMASK, $imageSetup)->getPublicUrl(TRUE);
-					$thumbnail = '<img class="t3-form-field-header-inline-thumbnail-image" src="' . $imageUrl . '" alt="' . htmlspecialchars($recTitle) . '">';
+					$processedImage = $fileObject->process(\TYPO3\CMS\Core\Resource\ProcessedFile::CONTEXT_IMAGECROPSCALEMASK, $imageSetup);
+					// Only use a thumbnail if the processing was successful.
+					if (!$processedImage->usesOriginalFile()) {
+						$imageUrl = $processedImage->getPublicUrl(TRUE);
+						$thumbnail = '<img class="t3-form-field-header-inline-thumbnail-image" src="' . $imageUrl . '" alt="' . htmlspecialchars($altText) . '" title="' . htmlspecialchars($altText) . '">';
+					}
 				}
 			}
 		}
