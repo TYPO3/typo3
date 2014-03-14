@@ -25,7 +25,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Database;
  ***************************************************************/
 
 /**
- * Testcase
+ * Test case
  *
  * @author Helmut Hummel <helmut@typo3.org>
  */
@@ -55,18 +55,21 @@ class PreparedStatementTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return \PHPUnit_Framework_MockObject_MockObject
 	 */
 	private function setUpAndReturnDatabaseStub() {
-		$GLOBALS['TYPO3_DB']->connectDB();
-		$databaseLink = $GLOBALS['TYPO3_DB']->getDatabaseHandle();
 		$GLOBALS['TYPO3_DB'] = $this->getAccessibleMock(
 			'TYPO3\\CMS\\Core\\Database\\DatabaseConnection',
-			array('exec_PREPAREDquery'),
+			array('exec_PREPAREDquery', 'fullQuoteStr'),
 			array(),
 			'',
 			FALSE,
 			FALSE
 		);
-		$GLOBALS['TYPO3_DB']->_set('isConnected', TRUE);
-		$GLOBALS['TYPO3_DB']->setDatabaseHandle($databaseLink);
+		$GLOBALS['TYPO3_DB']->expects($this->any())->method('fullQuoteStr')
+			->will($this->returnCallback(
+				function($quoteStr, $table) {
+					return "'" . $quoteStr . "'";
+				}
+			));
+
 		return $GLOBALS['TYPO3_DB'];
 	}
 
@@ -122,24 +125,22 @@ class PreparedStatementTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			'php null parameter is replaced with NULL' => array('SELECT * FROM pages WHERE deleted=?', array(NULL), 'SELECT * FROM pages WHERE deleted=NULL'),
 			'string parameter is wrapped in quotes' => array('SELECT * FROM pages WHERE title=?', array('Foo bar'), 'SELECT * FROM pages WHERE title=\'Foo bar\''),
 			'number as string parameter is wrapped in quotes' => array('SELECT * FROM pages WHERE title=?', array('12'), 'SELECT * FROM pages WHERE title=\'12\''),
-			'string single quotes in parameter are properly escaped' => array('SELECT * FROM pages WHERE title=?', array('\'Foo\''), 'SELECT * FROM pages WHERE title=\'\\\'Foo\\\'\''),
 			'question mark as values with unnamed parameters are properly escaped' => array('SELECT * FROM foo WHERE title=? AND name=?', array('?', 'fancy title'), 'SELECT * FROM foo WHERE title=\'?\' AND name=\'fancy title\''),
 			'parameter name as value is properly escaped' => array('SELECT * FROM foo WHERE title=:name AND name=:title', array(':name' => ':title', ':title' => 'fancy title'), 'SELECT * FROM foo WHERE title=\':title\' AND name=\'fancy title\''),
 			'question mark as value of a parameter with a name is properly escaped' => array('SELECT * FROM foo WHERE title=:name AND name=?', array(':name' => '?', 'cool name'), 'SELECT * FROM foo WHERE title=\'?\' AND name=\'cool name\''),
-			'regular expression back references as values are left untouched' => array('SELECT * FROM foo WHERE title=:name AND name=?', array(':name' => '\\1', '${1}'), 'SELECT * FROM foo WHERE title=\'\\\\1\' AND name=\'${1}\''),
 			'unsubstituted question marks do not contain the token wrap' => array('SELECT * FROM foo WHERE title=:name AND question LIKE "%what?" AND name=:title', array(':name' => 'Title', ':title' => 'Name'), 'SELECT * FROM foo WHERE title=\'Title\' AND question LIKE "%what?" AND name=\'Name\'')
 		);
 	}
 
 	/**
 	 * Checking if calling execute() with parameters, they are
-	 * properly relpaced in the query.
+	 * properly replaced in the query.
 	 *
 	 * @test
 	 * @dataProvider parametersAndQueriesDataProvider
-	 * @param string $query				Query with unreplaced markers
-	 * @param array  $parameters		Array of parameters to be replaced in the query
-	 * @param string $expectedResult	Query with all markers replaced
+	 * @param string $query Query with unreplaced markers
+	 * @param array  $parameters Array of parameters to be replaced in the query
+	 * @param string $expectedResult Query with all markers replaced
 	 * @return void
 	 */
 	public function parametersAreReplacedInQueryByCallingExecute($query, $parameters, $expectedResult) {
@@ -149,14 +150,35 @@ class PreparedStatementTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 	/**
+	 * @test
+	 */
+	public function executeCallsFullQuoteStrForStringParameter() {
+		$GLOBALS['TYPO3_DB'] = $this->getAccessibleMock(
+			'TYPO3\\CMS\\Core\\Database\\DatabaseConnection',
+			array('exec_PREPAREDquery', 'fullQuoteStr'),
+			array(),
+			'',
+			FALSE,
+			FALSE
+		);
+		$query = 'SELECT * FROM pages WHERE title=?';
+		$parameter = "'Foo'";
+		$uniqueQuoteResult = uniqid('quoteResult');
+		$GLOBALS['TYPO3_DB']->expects($this->once())->method('fullQuoteStr')->with($parameter)->will($this->returnValue($uniqueQuoteResult));
+		$GLOBALS['TYPO3_DB']->expects($this->any())->method('exec_PREPAREDquery')->with($this->stringContains($uniqueQuoteResult));
+		$statement = $this->createPreparedStatement($query);
+		$statement->execute(array($parameter));
+	}
+
+	/**
 	 * Checking if parameters bound to the statement by bindValues()
 	 * are properly replaced in the query.
 	 *
 	 * @test
 	 * @dataProvider parametersAndQueriesDataProvider
-	 * @param string $query				Query with unreplaced markers
-	 * @param array  $parameters		Array of parameters to be replaced in the query
-	 * @param string $expectedResult	Query with all markers replaced
+	 * @param string $query Query with unreplaced markers
+	 * @param array  $parameters Array of parameters to be replaced in the query
+	 * @param string $expectedResult Query with all markers replaced
 	 * @return void
 	 */
 	public function parametersAreReplacedInQueryWhenBoundWithBindValues($query, $parameters, $expectedResult) {
@@ -193,8 +215,8 @@ class PreparedStatementTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 * @expectedException \InvalidArgumentException
 	 * @dataProvider invalidParameterTypesPassedToBindValueThrowsExceptionDataProvider
-	 * @param mixed   $parameter	Parameter to be replaced in the query
-	 * @param integer $type			Type of the parameter value
+	 * @param mixed $parameter Parameter to be replaced in the query
+	 * @param integer $type Type of the parameter value
 	 * @return void
 	 */
 	public function invalidParameterTypesPassedToBindValueThrowsException($parameter, $type) {
@@ -218,7 +240,7 @@ class PreparedStatementTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 	/**
-	 * Data Provieder for invalid marker names.
+	 * Data Provider for invalid marker names.
 	 *
 	 * @see passingInvalidMarkersThrowsExeption
 	 * @return array
@@ -239,8 +261,8 @@ class PreparedStatementTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 * @expectedException \InvalidArgumentException
 	 * @dataProvider passingInvalidMarkersThrowsExeptionDataProvider
-	 * @param string $query				Query with unreplaced markers
-	 * @param array  $parameters		Array of parameters to be replaced in the query
+	 * @param string $query Query with unreplaced markers
+	 * @param array  $parameters Array of parameters to be replaced in the query
 	 * @return void
 	 */
 	public function passingInvalidMarkersThrowsExeption($query, $parameters) {
