@@ -29,11 +29,11 @@ use \org\bovigo\vfs\vfsStreamDirectory;
 use \org\bovigo\vfs\vfsStreamWrapper;
 
 /**
- * Testcase for \TYPO3\CMS\Core\Log\Writer\FileWriter
+ * Test case
  *
  * @author Steffen Gebert <steffen.gebert@typo3.org>
  */
-class FileTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class FileWriterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @var string

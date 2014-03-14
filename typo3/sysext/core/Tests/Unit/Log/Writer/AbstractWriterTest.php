@@ -25,21 +25,20 @@ namespace TYPO3\CMS\Core\Tests\Unit\Log\Writer;
  ***************************************************************/
 
 /**
- * Testcase for \TYPO3\CMS\Core\Log\Writer\AbstractWriter
+ * Test case
  *
  * @author Steffen Gebert <steffen.gebert@typo3.org>
  */
-class AbstractTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class AbstractWriterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
 	 * @expectedException \InvalidArgumentException
 	 */
-	public function refusesInvalidConfigurationOptions() {
+	public function constructThrowsExceptionWithInvalidConfigurationOption() {
 		$invalidConfiguration = array(
 			'foo' => 'bar'
 		);
-		$writer = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Tests\\Unit\\Log\\Fixtures\\WriterFixture', $invalidConfiguration);
+		$this->getMockForAbstractClass('TYPO3\\CMS\\Core\\Log\\Writer\\AbstractWriter', array($invalidConfiguration));
 	}
-
 }
