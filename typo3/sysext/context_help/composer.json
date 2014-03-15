@@ -11,5 +11,12 @@
 	},
 	"replace": {
 		"context_help": "*"
+	},
+	"extra": {
+		"typo3/cms": {
+			"Package": {
+				"partOfFactoryDefault": true
+			}
+		}
 	}
 }

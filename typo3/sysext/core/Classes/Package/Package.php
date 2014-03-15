@@ -95,8 +95,26 @@ class Package extends \TYPO3\Flow\Package\Package implements PackageInterface {
 		} catch (\TYPO3\Flow\Package\Exception\MissingPackageManifestException $exception) {
 			$this->getExtensionEmconf($packageKey, $this->packagePath);
 		}
+		$this->loadFlagsFromComposerManifest();
 		if ($this->objectManagementEnabled === NULL) {
 			$this->objectManagementEnabled = FALSE;
+		}
+	}
+
+	/**
+	 * Loads package management related flags from the "extra:typo3/cms:Package" section
+	 * of extensions composer.json files into local properties
+	 *
+	 * @return void
+	 */
+	protected function loadFlagsFromComposerManifest() {
+		$extraFlags = $this->getComposerManifest('extra');
+		if ($extraFlags !== NULL && isset($extraFlags->{"typo3/cms"}->{"Package"})) {
+			foreach ($extraFlags->{"typo3/cms"}->{"Package"} as $flagName => $flagValue) {
+				if (property_exists($this, $flagName)) {
+					$this->{$flagName} = $flagValue;
+				}
+			}
 		}
 	}
 

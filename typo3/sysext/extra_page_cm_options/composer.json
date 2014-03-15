@@ -11,5 +11,12 @@
 	},
 	"replace": {
 		"extra_page_cm_options": "*"
+	},
+	"extra": {
+		"typo3/cms": {
+			"Package": {
+				"partOfFactoryDefault": true
+			}
+		}
 	}
 }

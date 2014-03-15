@@ -215,4 +215,16 @@ class LoadedExtensionsArray implements \Iterator, \ArrayAccess, \Serializable, \
 	public function hasPackageManager() {
 		return $this->packageManager !== NULL;
 	}
+
+	/**
+	 * @return array
+	 */
+	public function toArray() {
+		return array_map(
+			function($loadedExtElement) {
+				return $loadedExtElement->toArray();
+			},
+			iterator_to_array($this)
+		);
+	}
 }

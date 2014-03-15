@@ -65,6 +65,11 @@ class PackageManager extends \TYPO3\Flow\Package\PackageManager implements \TYPO
 	/**
 	 * @var array
 	 */
+	protected $requiredPackageKeys = array();
+
+	/**
+	 * @var array
+	 */
 	protected $runtimeActivatedPackages = array();
 
 	/**
@@ -117,33 +122,20 @@ class PackageManager extends \TYPO3\Flow\Package\PackageManager implements \TYPO
 		$this->packageStatesPathAndFilename = PATH_typo3conf . 'PackageStates.php';
 		$this->packageFactory = new PackageFactory($this);
 
-		$this->loadPackageStates();
-
-		$requiredList = array();
-		foreach ($this->packages as $packageKey => $package) {
-			/** @var $package Package */
-			$protected = $package->isProtected();
-			if ($protected) {
-				$requiredList[$packageKey] = $package;
-			}
-			if (isset($this->packageStatesConfiguration['packages'][$packageKey]['state']) && $this->packageStatesConfiguration['packages'][$packageKey]['state'] === 'active') {
-				$this->activePackages[$packageKey] = $package;
-			}
-		}
-		$previousActivePackage = $this->activePackages;
-		$this->activePackages = array_merge($requiredList, $this->activePackages);
-
-		if ($this->activePackages != $previousActivePackage) {
-			foreach ($requiredList as $requiredPackageKey => $package) {
-				$this->packageStatesConfiguration['packages'][$requiredPackageKey]['state'] = 'active';
-			}
-			$this->sortAndSavePackageStates();
+		$loadedFromCache = FALSE;
+		try {
+			$this->loadPackageManagerStatesFromCache();
+			$loadedFromCache = TRUE;
+		} catch (Exception\PackageManagerCacheUnavailableException $exception) {
+			$this->loadPackageStates();
+			$this->initializePackageObjects();
+			$this->initializeCompatibilityLoadedExtArray();
 		}
 
 		//@deprecated since 6.2, don't use
 		if (!defined('REQUIRED_EXTENSIONS')) {
 			// List of extensions required to run the core
-			define('REQUIRED_EXTENSIONS', implode(',', array_keys($requiredList)));
+			define('REQUIRED_EXTENSIONS', implode(',', $this->requiredPackageKeys));
 		}
 
 		$cacheIdentifier = $this->getCacheIdentifier();
@@ -159,7 +151,19 @@ class PackageManager extends \TYPO3\Flow\Package\PackageManager implements \TYPO
 			$package->boot($bootstrap);
 		}
 
-		$this->saveToPackageCache();
+		if (!$loadedFromCache) {
+			$this->saveToPackageCache();
+		}
+	}
+
+	/**
+	 * @return PackageFactory
+	 */
+	protected function getPackageFactory() {
+		if (!isset($this->packageFactory)) {
+			$this->packageFactory = new PackageFactory($this);
+		}
+		return $this->packageFactory;
 	}
 
 	/**
@@ -197,22 +201,55 @@ class PackageManager extends \TYPO3\Flow\Package\PackageManager implements \TYPO
 				'packageStatesConfiguration'  => $this->packageStatesConfiguration,
 				'packageAliasMap' => $this->packageAliasMap,
 				'packageKeys' => $this->packageKeys,
-				'declaringPackageClassPathsAndFilenames' => array(),
+				'activePackageKeys' => array_keys($this->activePackages),
+				'requiredPackageKeys' => $this->requiredPackageKeys,
+				'loadedExtArray' => $GLOBALS['TYPO3_LOADED_EXT'],
 				'packageObjectsCacheEntryIdentifier' => $packageObjectsCacheEntryIdentifier
 			);
+			$packageClassSources = array(
+				'typo3\\flow\\package\\package' => NULL,
+				'typo3\\cms\\core\\package\\package' => NULL,
+			);
 			foreach ($this->packages as $package) {
-				if (!isset($packageCache['declaringPackageClassPathsAndFilenames'][$packageClassName = get_class($package)])) {
+				$packageClassName = strtolower(get_class($package));
+				if (!isset($packageClassSources[$packageClassName]) || $packageClassSources[$packageClassName] === NULL) {
 					$reflectionPackageClass = new \ReflectionClass($packageClassName);
-					$packageCache['declaringPackageClassPathsAndFilenames'][$packageClassName] = $reflectionPackageClass->getFileName();
+					$packageClassSource = file_get_contents($reflectionPackageClass->getFileName());
+					$packageClassSources[$packageClassName] = preg_replace('/<\?php|\?>/i', '', $packageClassSource);
 				}
 			}
 			$this->coreCache->set($packageObjectsCacheEntryIdentifier, serialize($this->packages));
 			$this->coreCache->set(
 				$cacheEntryIdentifier,
-				'return ' . PHP_EOL .
-					var_export($packageCache, TRUE) . ';'
+				implode(PHP_EOL, $packageClassSources) . PHP_EOL .
+					'return ' . PHP_EOL . var_export($packageCache, TRUE) . ';'
 			);
 		}
+	}
+
+	/**
+	 * Attempts to load the package manager states from cache
+	 *
+	 * @throws Exception\PackageManagerCacheUnavailableException
+	 */
+	protected function loadPackageManagerStatesFromCache() {
+		$cacheEntryIdentifier = $this->getCacheEntryIdentifier();
+		if ($cacheEntryIdentifier === NULL || !$this->coreCache->has($cacheEntryIdentifier) || !($packageCache = $this->coreCache->requireOnce($cacheEntryIdentifier))) {
+			throw new Exception\PackageManagerCacheUnavailableException('The package state cache could not be loaded.', 1393883342);
+		}
+		$this->packageStatesConfiguration = $packageCache['packageStatesConfiguration'];
+		$this->packageAliasMap = $packageCache['packageAliasMap'];
+		$this->packageKeys = $packageCache['packageKeys'];
+		$this->requiredPackageKeys = $packageCache['requiredPackageKeys'];
+		$GLOBALS['TYPO3_LOADED_EXT'] = $packageCache['loadedExtArray'];
+		$GLOBALS['TYPO3_currentPackageManager'] = $this;
+		// Strip off PHP Tags from Php Cache Frontend
+		$packageObjects = substr(substr($this->coreCache->get($packageCache['packageObjectsCacheEntryIdentifier']), 6), 0, -2);
+		$this->packages = unserialize($packageObjects);
+		foreach ($packageCache['activePackageKeys'] as $activePackageKey) {
+			$this->activePackages[$activePackageKey] = $this->packages[$activePackageKey];
+		}
+		unset($GLOBALS['TYPO3_currentPackageManager']);
 	}
 
 	/**
@@ -223,30 +260,55 @@ class PackageManager extends \TYPO3\Flow\Package\PackageManager implements \TYPO
 	 * @return void
 	 */
 	protected function loadPackageStates() {
-		$cacheEntryIdentifier = $this->getCacheEntryIdentifier();
-		if ($cacheEntryIdentifier !== NULL && $this->coreCache->has($cacheEntryIdentifier) && $packageCache = $this->coreCache->requireOnce($cacheEntryIdentifier)) {
-			foreach ($packageCache['declaringPackageClassPathsAndFilenames'] as $packageClassPathAndFilename) {
-				require_once $packageClassPathAndFilename;
-			}
-			$this->packageStatesConfiguration = $packageCache['packageStatesConfiguration'];
-			$this->packageAliasMap = $packageCache['packageAliasMap'];
-			$this->packageKeys = $packageCache['packageKeys'];
-			$GLOBALS['TYPO3_currentPackageManager'] = $this;
-			// Strip off PHP Tags from Php Cache Frontend
-			$packageObjects = substr(substr($this->coreCache->get($packageCache['packageObjectsCacheEntryIdentifier']), 6), 0, -2);
-			$this->packages = unserialize($packageObjects);
-			unset($GLOBALS['TYPO3_currentPackageManager']);
+		$this->packageStatesConfiguration = @include($this->packageStatesPathAndFilename) ?: array();
+		if (!isset($this->packageStatesConfiguration['version']) || $this->packageStatesConfiguration['version'] < 4) {
+			$this->packageStatesConfiguration = array();
+		}
+		if ($this->packageStatesConfiguration !== array()) {
+			$this->registerPackagesFromConfiguration();
 		} else {
-			$this->packageStatesConfiguration = @include($this->packageStatesPathAndFilename) ?: array();
-			if (!isset($this->packageStatesConfiguration['version']) || $this->packageStatesConfiguration['version'] < 4) {
-				$this->packageStatesConfiguration = array();
+			throw new Exception\PackageStatesUnavailableException('The PackageStates.php file is either corrupt or unavailable.', 1381507733);
+		}
+	}
+
+	/**
+	 * Initializes activePackages and requiredPackageKeys properties
+	 *
+	 * Saves PackageStates.php if list of required extensions has changed.
+	 *
+	 * @return void
+	 */
+	protected function initializePackageObjects() {
+		$requiredPackages = array();
+		foreach ($this->packages as $packageKey => $package) {
+			$protected = $package->isProtected();
+			if ($protected) {
+				$requiredPackages[$packageKey] = $package;
 			}
-			if ($this->packageStatesConfiguration !== array()) {
-				$this->registerPackagesFromConfiguration();
-			} else {
-				throw new Exception\PackageStatesUnavailableException('The PackageStates.php file is either corrupt or unavailable.', 1381507733);
+			if (isset($this->packageStatesConfiguration['packages'][$packageKey]['state']) && $this->packageStatesConfiguration['packages'][$packageKey]['state'] === 'active') {
+				$this->activePackages[$packageKey] = $package;
 			}
 		}
+		$previousActivePackage = $this->activePackages;
+		$this->activePackages = array_merge($requiredPackages, $this->activePackages);
+		$this->requiredPackageKeys = array_keys($requiredPackages);
+
+		if ($this->activePackages != $previousActivePackage) {
+			foreach ($this->requiredPackageKeys as $requiredPackageKey) {
+				$this->packageStatesConfiguration['packages'][$requiredPackageKey]['state'] = 'active';
+			}
+			$this->sortAndSavePackageStates();
+		}
+	}
+
+	/**
+	 * Initializes a backwards compatibility $GLOBALS['TYPO3_LOADED_EXT'] array
+	 *
+	 * @return void
+	 */
+	protected function initializeCompatibilityLoadedExtArray() {
+		$loadedExtObj = new \TYPO3\CMS\Core\Compatibility\LoadedExtensionsArray($this);
+		$GLOBALS['TYPO3_LOADED_EXT'] = $loadedExtObj->toArray();
 	}
 
 
@@ -381,7 +443,7 @@ class PackageManager extends \TYPO3\Flow\Package\PackageManager implements \TYPO
 			$manifestPath = isset($stateConfiguration['manifestPath']) ? $stateConfiguration['manifestPath'] : NULL;
 
 			try {
-				$package = $this->packageFactory->create($this->packagesBasePath, $packagePath, $packageKey, $classesPath, $manifestPath);
+				$package = $this->getPackageFactory()->create($this->packagesBasePath, $packagePath, $packageKey, $classesPath, $manifestPath);
 			} catch (\TYPO3\Flow\Package\Exception\InvalidPackagePathException $exception) {
 				$this->unregisterPackageByPackageKey($packageKey);
 				continue;
@@ -551,6 +613,10 @@ class PackageManager extends \TYPO3\Flow\Package\PackageManager implements \TYPO
 		$package = $this->getPackage($packageKey);
 		$this->runtimeActivatedPackages[$package->getPackageKey()] = $package;
 		$this->classLoader->addActivePackage($package);
+		if (!isset($GLOBALS['TYPO3_LOADED_EXT'][$package->getPackageKey()])) {
+			$loadedExtArrayElement = new \TYPO3\CMS\Core\Compatibility\LoadedExtensionArrayElement($package);
+			$GLOBALS['TYPO3_LOADED_EXT'][$package->getPackageKey()] = $loadedExtArrayElement->toArray();
+		}
 	}
 
 

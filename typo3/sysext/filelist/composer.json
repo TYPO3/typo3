@@ -11,5 +11,12 @@
 	},
 	"replace": {
 		"filelist": "*"
+	},
+	"extra": {
+		"typo3/cms": {
+			"Package": {
+				"partOfFactoryDefault": true
+			}
+		}
 	}
 }

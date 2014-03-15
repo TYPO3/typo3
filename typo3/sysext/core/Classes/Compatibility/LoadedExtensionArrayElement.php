@@ -222,4 +222,11 @@ class LoadedExtensionArrayElement implements \IteratorAggregate, \ArrayAccess, \
 	public function count() {
 		return count($this->extensionInformation);
 	}
+
+	/**
+	 * @return array
+	 */
+	public function toArray() {
+		return iterator_to_array($this);
+	}
 }

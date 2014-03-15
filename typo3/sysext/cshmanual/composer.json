@@ -11,5 +11,14 @@
 	},
 	"replace": {
 		"cshmanual": "*"
+	},
+	"extra": {
+		"typo3/cms": {
+			"Package": {
+				"protected": true,
+				"partOfFactoryDefault": true,
+				"partOfMinimalUsableSystem": true
+			}
+		}
 	}
 }

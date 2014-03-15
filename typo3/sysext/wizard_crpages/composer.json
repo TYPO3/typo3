@@ -11,5 +11,12 @@
 	},
 	"replace": {
 		"wizard_crpages": "*"
+	},
+	"extra": {
+		"typo3/cms": {
+			"Package": {
+				"partOfFactoryDefault": true
+			}
+		}
 	}
 }

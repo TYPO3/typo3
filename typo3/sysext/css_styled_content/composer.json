@@ -11,5 +11,12 @@
 	},
 	"replace": {
 		"css_styled_content": "*"
+	},
+	"extra": {
+		"typo3/cms": {
+			"Package": {
+				"partOfFactoryDefault": true
+			}
+		}
 	}
 }

@@ -11,5 +11,12 @@
 	},
 	"replace": {
 		"wizard_sortpages": "*"
+	},
+	"extra": {
+		"typo3/cms": {
+			"Package": {
+				"partOfFactoryDefault": true
+			}
+		}
 	}
 }

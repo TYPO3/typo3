@@ -11,5 +11,12 @@
 	},
 	"replace": {
 		"func_wizards": "*"
+	},
+	"extra": {
+		"typo3/cms": {
+			"Package": {
+				"partOfFactoryDefault": true
+			}
+		}
 	}
 }

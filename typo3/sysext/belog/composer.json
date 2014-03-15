@@ -11,5 +11,12 @@
 	},
 	"replace": {
 		"belog": "*"
+	},
+	"extra": {
+		"typo3/cms": {
+			"Package": {
+				"partOfFactoryDefault": true
+			}
+		}
 	}
 }

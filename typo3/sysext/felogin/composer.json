@@ -11,5 +11,12 @@
 	},
 	"replace": {
 		"felogin": "*"
+	},
+	"extra": {
+		"typo3/cms": {
+			"Package": {
+				"partOfFactoryDefault": true
+			}
+		}
 	}
 }

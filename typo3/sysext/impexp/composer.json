@@ -11,5 +11,12 @@
 	},
 	"replace": {
 		"impexp": "*"
+	},
+	"extra": {
+		"typo3/cms": {
+			"Package": {
+				"partOfFactoryDefault": true
+			}
+		}
 	}
 }

@@ -11,5 +11,12 @@
 	},
 	"replace": {
 		"tstemplate": "*"
+	},
+	"extra": {
+		"typo3/cms": {
+			"Package": {
+				"partOfFactoryDefault": true
+			}
+		}
 	}
 }

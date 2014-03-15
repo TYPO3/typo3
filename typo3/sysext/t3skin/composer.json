@@ -11,5 +11,13 @@
 	},
 	"replace": {
 		"t3skin": "*"
+	},
+	"extra": {
+		"typo3/cms": {
+			"Package": {
+				"partOfFactoryDefault": true,
+				"partOfMinimalUsableSystem": true
+			}
+		}
 	}
 }

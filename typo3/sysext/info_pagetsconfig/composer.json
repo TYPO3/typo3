@@ -11,5 +11,12 @@
 	},
 	"replace": {
 		"info_pagetsconfig": "*"
+	},
+	"extra": {
+		"typo3/cms": {
+			"Package": {
+				"partOfFactoryDefault": true
+			}
+		}
 	}
 }

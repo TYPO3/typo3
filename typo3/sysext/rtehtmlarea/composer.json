@@ -11,5 +11,12 @@
 	},
 	"replace": {
 		"rtehtmlarea": "*"
+	},
+	"extra": {
+		"typo3/cms": {
+			"Package": {
+				"partOfFactoryDefault": true
+			}
+		}
 	}
 }

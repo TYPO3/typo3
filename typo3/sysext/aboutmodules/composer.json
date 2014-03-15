@@ -11,5 +11,12 @@
 	},
 	"replace": {
 		"aboutmodules": "*"
+	},
+	"extra": {
+		"typo3/cms": {
+			"Package": {
+				"partOfFactoryDefault": true
+			}
+		}
 	}
 }
