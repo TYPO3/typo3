@@ -25,50 +25,41 @@ namespace TYPO3\CMS\Core\Tests\Unit\Database;
  ***************************************************************/
 
 /**
- * Testcase for TYPO3\CMS\Core\Database\DatabaseConnection
+ * Test case
  *
- * @author Ernesto Baschny <ernst@cron-it.de>
  */
 class DatabaseConnectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
-
-	/**
-	 * @var \TYPO3\CMS\Core\Database\DatabaseConnection
-	 */
-	protected $fixture = NULL;
-
-	protected $testTable;
-
-	public function setUp() {
-		$this->fixture = $GLOBALS['TYPO3_DB'];
-		$this->testTable = 'test_t3lib_dbtest';
-		$this->fixture->sql_query('CREATE TABLE ' . $this->testTable . ' (
-			id int(11) unsigned NOT NULL auto_increment,
-			fieldblob mediumblob,
-			PRIMARY KEY (id)
-		) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-		');
-	}
-
-	public function tearDown() {
-		$this->fixture->sql_query('DROP TABLE ' . $this->testTable . ';');
-		parent::tearDown();
-	}
 
 	//////////////////////////////////////////////////
 	// Write/Read tests for charsets and binaries
 	//////////////////////////////////////////////////
+
 	/**
 	 * @test
 	 */
-	public function storedFullAsciiRangeReturnsSameData() {
+	public function storedFullAsciiRangeCallsLinkObjectWithGivenData() {
 		$binaryString = '';
 		for ($i = 0; $i < 256; $i++) {
 			$binaryString .= chr($i);
 		}
-		$this->fixture->exec_INSERTquery($this->testTable, array('fieldblob' => $binaryString));
-		$id = $this->fixture->sql_insert_id();
-		$entry = $this->fixture->exec_SELECTgetRows('fieldblob', $this->testTable, 'id = ' . $id);
-		$this->assertEquals($binaryString, $entry[0]['fieldblob']);
+
+		/** @var \TYPO3\CMS\Core\Database\DatabaseConnection|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $subject */
+		$subject = $this->getAccessibleMock('TYPO3\\CMS\\Core\\Database\\DatabaseConnection', array('fullQuoteStr'), array(), '', FALSE);
+		$subject->_set('isConnected', TRUE);
+		$subject
+			->expects($this->any())
+			->method('fullQuoteStr')
+			->will($this->returnCallback(function ($data) {
+				return $data;
+			}));
+		$mysqliMock = $this->getMock('mysqli');
+		$mysqliMock
+			->expects($this->once())
+			->method('query')
+			->with('INSERT INTO aTable (fieldblob) VALUES (' . $binaryString . ')');
+		$subject->_set('link', $mysqliMock);
+
+		$subject->exec_INSERTquery('aTable', array('fieldblob' => $binaryString));
 	}
 
 	/**
@@ -76,23 +67,60 @@ class DatabaseConnectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function storedGzipCompressedDataReturnsSameData() {
 		$testStringWithBinary = @gzcompress('sdfkljer4587');
-		$this->fixture->exec_INSERTquery($this->testTable, array('fieldblob' => $testStringWithBinary));
-		$id = $this->fixture->sql_insert_id();
-		$entry = $this->fixture->exec_SELECTgetRows('fieldblob', $this->testTable, 'id = ' . $id);
-		$this->assertEquals($testStringWithBinary, $entry[0]['fieldblob']);
+
+		/** @var \TYPO3\CMS\Core\Database\DatabaseConnection|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $subject */
+		$subject = $this->getAccessibleMock('TYPO3\\CMS\\Core\\Database\\DatabaseConnection', array('fullQuoteStr'), array(), '', FALSE);
+		$subject->_set('isConnected', TRUE);
+		$subject
+			->expects($this->any())
+			->method('fullQuoteStr')
+			->will($this->returnCallback(function ($data) {
+				return $data;
+			}));
+		$mysqliMock = $this->getMock('mysqli');
+		$mysqliMock
+			->expects($this->once())
+			->method('query')
+			->with('INSERT INTO aTable (fieldblob) VALUES (' . $testStringWithBinary . ')');
+		$subject->_set('link', $mysqliMock);
+
+		$subject->exec_INSERTquery('aTable', array('fieldblob' => $testStringWithBinary));
 	}
+
 
 	////////////////////////////////
 	// Tests concerning listQuery
 	////////////////////////////////
+
 	/**
 	 * @test
 	 * @see http://forge.typo3.org/issues/23253
 	 */
 	public function listQueryWithIntegerCommaAsValue() {
+		/** @var \TYPO3\CMS\Core\Database\DatabaseConnection|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $subject */
+		$subject = $this->getAccessibleMock('TYPO3\\CMS\\Core\\Database\\DatabaseConnection', array('quoteStr'), array(), '', FALSE);
+		$subject->_set('isConnected', TRUE);
+		$subject
+			->expects($this->any())
+			->method('quoteStr')
+			->will($this->returnCallback(function ($data) {
+				return $data;
+			}));
 		// Note: 44 = ord(',')
-		$this->assertEquals($this->fixture->listQuery('dummy', 44, 'table'), $this->fixture->listQuery('dummy', '44', 'table'));
+		$this->assertEquals($subject->listQuery('dummy', 44, 'table'), $subject->listQuery('dummy', '44', 'table'));
 	}
+
+	/**
+	 * @test
+	 * @expectedException \InvalidArgumentException
+	 */
+	public function listQueryThrowsExceptionIfValueContainsComma() {
+		/** @var \TYPO3\CMS\Core\Database\DatabaseConnection|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $subject */
+		$subject = $this->getAccessibleMock('TYPO3\\CMS\\Core\\Database\\DatabaseConnection', array('quoteStr'), array(), '', FALSE);
+		$subject->_set('isConnected', TRUE);
+		$subject->listQuery('aField', 'foo,bar', 'aTable');
+	}
+
 
 	////////////////////////////////
 	// Tests concerning searchQuery
@@ -164,23 +192,36 @@ class DatabaseConnectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @dataProvider searchQueryDataProvider
 	 */
 	public function searchQueryCreatesQuery($expectedResult, $searchWords, $fields, $table, $constraint) {
-		$this->assertSame($expectedResult, $this->fixture->searchQuery($searchWords, $fields, $table, $constraint));
+		/** @var \TYPO3\CMS\Core\Database\DatabaseConnection|\PHPUnit_Framework_MockObject_MockObject $subject */
+		$subject = $this->getMock('TYPO3\\CMS\\Core\\Database\\DatabaseConnection', array('quoteStr'), array(), '', FALSE);
+		$subject
+			->expects($this->any())
+			->method('quoteStr')
+			->will($this->returnCallback(function ($data) {
+				return $data;
+			}));
+
+		$this->assertSame($expectedResult, $subject->searchQuery($searchWords, $fields, $table, $constraint));
 	}
+
 
 	/////////////////////////////////////////////////
 	// Tests concerning escapeStringForLikeComparison
 	/////////////////////////////////////////////////
+
 	/**
 	 * @test
 	 */
 	public function escapeStringForLikeComparison() {
-		$this->assertEquals('foo\\_bar\\%', $this->fixture->escapeStrForLike('foo_bar%', 'table'));
+		/** @var \TYPO3\CMS\Core\Database\DatabaseConnection|\PHPUnit_Framework_MockObject_MockObject $subject */
+		$subject = $this->getMock('TYPO3\\CMS\\Core\\Database\\DatabaseConnection', array('dummy'), array(), '', FALSE);
+		$this->assertEquals('foo\\_bar\\%', $subject->escapeStrForLike('foo_bar%', 'table'));
 	}
+
 
 	/////////////////////////////////////////////////
 	// Tests concerning stripOrderByForOrderByKeyword
 	/////////////////////////////////////////////////
-
 
 	/**
 	 * Data Provider for stripGroupByForGroupByKeyword()
@@ -210,9 +251,12 @@ class DatabaseConnectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return void
 	 */
 	public function stripOrderByForOrderByKeyword($orderByClause, $expectedResult) {
-		$strippedQuery = $this->fixture->stripOrderBy($orderByClause);
+		/** @var \TYPO3\CMS\Core\Database\DatabaseConnection|\PHPUnit_Framework_MockObject_MockObject $subject */
+		$subject = $this->getMock('TYPO3\\CMS\\Core\\Database\\DatabaseConnection', array('dummy'), array(), '', FALSE);
+		$strippedQuery = $subject->stripOrderBy($orderByClause);
 		$this->assertEquals($expectedResult, $strippedQuery);
 	}
+
 
 	/////////////////////////////////////////////////
 	// Tests concerning stripGroupByForGroupByKeyword
@@ -246,7 +290,9 @@ class DatabaseConnectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return void
 	 */
 	public function stripGroupByForGroupByKeyword($groupByClause, $expectedResult) {
-		$strippedQuery = $this->fixture->stripGroupBy($groupByClause);
+		/** @var \TYPO3\CMS\Core\Database\DatabaseConnection|\PHPUnit_Framework_MockObject_MockObject $subject */
+		$subject = $this->getMock('TYPO3\\CMS\\Core\\Database\\DatabaseConnection', array('dummy'), array(), '', FALSE);
+		$strippedQuery = $subject->stripGroupBy($groupByClause);
 		$this->assertEquals($expectedResult, $strippedQuery);
 	}
 }
