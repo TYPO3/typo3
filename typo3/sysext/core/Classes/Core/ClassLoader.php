@@ -111,6 +111,7 @@ class ClassLoader {
 	 * Get class alias map list injected
 	 *
 	 * @param ClassAliasMap
+	 * @return void
 	 */
 	public function injectClassAliasMap(ClassAliasMap $classAliasMap) {
 		$this->classAliasMap = $classAliasMap;
@@ -121,6 +122,7 @@ class ClassLoader {
 	 * Get core cache injected
 	 *
 	 * @param \TYPO3\CMS\Core\Cache\Frontend\PhpFrontend $coreCache
+	 * @return void
 	 */
 	public function injectCoreCache(Cache\Frontend\PhpFrontend $coreCache) {
 		$this->coreCache = $coreCache;
@@ -131,6 +133,7 @@ class ClassLoader {
 	 * Get classes cache injected
 	 *
 	 * @param \TYPO3\CMS\Core\Cache\Frontend\StringFrontend $classesCache
+	 * @return void
 	 */
 	public function injectClassesCache(Cache\Frontend\StringFrontend $classesCache) {
 		$earlyClassesCache = $this->classesCache;
@@ -167,7 +170,7 @@ class ClassLoader {
 		$cacheEntryIdentifier = strtolower(str_replace('\\', '_', $className));
 		$classLoadingInformation = $this->getClassLoadingInformationFromCache($cacheEntryIdentifier);
 
-		if ($classLoadingInformation === NULL) {
+		if ($classLoadingInformation === FALSE) {
 			$classLoadingInformation = $this->buildCachedClassLoadingInformation($cacheEntryIdentifier, $className);
 		}
 
@@ -178,7 +181,7 @@ class ClassLoader {
 		//   2 and following => alias class names
 		// )
 		$loadingSuccessful = FALSE;
-		if ($classLoadingInformation !== NULL) {
+		if ($classLoadingInformation !== FALSE && $classLoadingInformation !== NULL) {
 			// The call to class_exists fixes a rare case when early instances need to be aliased
 			// but PHP fails to recognize the real path of the class. See #55904
 			$loadingSuccessful = class_exists($classLoadingInformation[1], FALSE) || (bool)require_once $classLoadingInformation[0];
@@ -197,7 +200,7 @@ class ClassLoader {
 	 * Get class loading information for the given identifier for cache
 	 *
 	 * @param string $cacheEntryIdentifier The identifier to fetch entry from cache
-	 * @return array|null The class information or NULL if class information was not found in cache
+	 * @return array|FALSE|NULL The class information or FALSE if class information was not found in cache. NULL if a class couldn't be resolved
 	 */
 	public function getClassLoadingInformationFromCache($cacheEntryIdentifier) {
 		try {
@@ -206,10 +209,14 @@ class ClassLoader {
 			return NULL;
 		}
 
-		if ($rawClassLoadingInformation !== FALSE && $rawClassLoadingInformation !== '') {
+		if ($rawClassLoadingInformation === '') {
+			return FALSE;
+		}
+
+		if ($rawClassLoadingInformation) {
 			return explode("\xff", $rawClassLoadingInformation);
 		}
-		return NULL;
+		return FALSE;
 	}
 
 	/**
@@ -221,7 +228,7 @@ class ClassLoader {
 	 * @param string $cacheEntryIdentifier Cache identifier for this class
 	 * @param string $className Name of class this information is for
 	 *
-	 * @return array|null The class information or NULL if class was not found
+	 * @return array|FALSE|NULL The class information or FALSE if class was not found
 	 */
 	protected function buildCachedClassLoadingInformation($cacheEntryIdentifier, $className) {
 		// We do not need locking if we are in earlyCache mode
@@ -232,10 +239,10 @@ class ClassLoader {
 
 		// Look again into the cache after we got the lock, data might have been generated meanwhile
 		$classLoadingInformation = $this->getClassLoadingInformationFromCache($cacheEntryIdentifier);
-		if ($classLoadingInformation === NULL) {
+		if ($classLoadingInformation === FALSE) {
 			$classLoadingInformation = $this->buildClassLoadingInformation($className);
 
-			if ($classLoadingInformation !== NULL) {
+			if ($classLoadingInformation !== FALSE) {
 				$this->classesCache->set(
 					$cacheEntryIdentifier,
 					implode("\xff", $classLoadingInformation),
@@ -256,20 +263,20 @@ class ClassLoader {
 	 *
 	 * @param string $className Name of class this information is for
 	 *
-	 * @return array|null The class information or NULL if class was not found
+	 * @return array|FALSE The class information or FALSE if class was not found
 	 */
 	public function buildClassLoadingInformation($className) {
 		$classLoadingInformation = $this->buildClassLoadingInformationForClassFromCorePackage($className);
 
-		if ($classLoadingInformation === NULL) {
+		if ($classLoadingInformation === FALSE) {
 			$classLoadingInformation = $this->fetchClassLoadingInformationFromRuntimeCache($className);
 		}
 
-		if ($classLoadingInformation === NULL) {
+		if ($classLoadingInformation === FALSE) {
 			$classLoadingInformation = $this->buildClassLoadingInformationForClassFromRegisteredPackages($className);
 		}
 
-		if ($classLoadingInformation === NULL) {
+		if ($classLoadingInformation === FALSE) {
 			$classLoadingInformation = $this->buildClassLoadingInformationForClassByNamingConvention($className);
 		}
 
@@ -290,7 +297,7 @@ class ClassLoader {
 	 * Retrieve class loading information for class from core package
 	 *
 	 * @param string $className
-	 * @return array|null
+	 * @return array|FALSE
 	 */
 	protected function buildClassLoadingInformationForClassFromCorePackage($className) {
 		if (substr($className, 0, 14) === 'TYPO3\\CMS\\Core') {
@@ -300,29 +307,29 @@ class ClassLoader {
 				return array($classFilePath, $className);
 			}
 		}
-		return NULL;
+		return FALSE;
 	}
 
 	/**
 	 * Retrieve class loading information from early class name autoload registry cache
 	 *
 	 * @param string $className
-	 * @return array|null
+	 * @return array|FALSE
 	 */
 	protected function fetchClassLoadingInformationFromRuntimeCache($className) {
 		$lowercasedClassName = strtolower($className);
 		if (!isset($this->runtimeClassLoadingInformationCache[$lowercasedClassName])) {
-			return NULL;
+			return FALSE;
 		}
 		$classInformation = $this->runtimeClassLoadingInformationCache[$lowercasedClassName];
-		return @file_exists($classInformation[0]) ? $classInformation : NULL;
+		return @file_exists($classInformation[0]) ? $classInformation : FALSE;
 	}
 
 	/**
 	 * Retrieve class loading information from registered packages
 	 *
 	 * @param string $className
-	 * @return array|null
+	 * @return array|FALSE
 	 */
 	protected function buildClassLoadingInformationForClassFromRegisteredPackages($className) {;
 		foreach ($this->packageNamespaces as $packageNamespace => $packageData) {
@@ -352,14 +359,14 @@ class ClassLoader {
 				}
 			}
 		}
-		return NULL;
+		return FALSE;
 	}
 
 	/**
 	 * Retrieve class loading information based on 'extbase' naming convention into the registry.
 	 *
 	 * @param string $className Class name to find source file of
-	 * @return array|null
+	 * @return array|FALSE
 	 */
 	protected function buildClassLoadingInformationForClassByNamingConvention($className) {
 		$delimiter = '_';
@@ -374,7 +381,7 @@ class ClassLoader {
 		// We only handle classes that follow the convention Vendor\Product\Classname or is longer
 		// so we won't deal with class names that only have one or two parts
 		if (count($classNameParts) <= 2) {
-			return NULL;
+			return FALSE;
 		}
 
 		if (
@@ -406,13 +413,13 @@ class ClassLoader {
 			}
 		}
 
-		return NULL;
+		return FALSE;
 	}
 
 	/**
 	 * Get cache entry identifier for the package namespaces cache
 	 *
-	 * @return string|null identifier
+	 * @return string|NULL identifier
 	 */
 	protected function getCacheEntryIdentifier() {
 		return $this->cacheIdentifier !== NULL

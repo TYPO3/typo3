@@ -133,7 +133,7 @@ class ClassAliasMap implements \TYPO3\CMS\Core\SingletonInterface {
 			$originalClassNameCacheEntryIdentifier = str_replace('\\', '_', strtolower($originalClassName));
 			// Trigger autoloading for all aliased class names, so a cache entry is created
 			$classLoadingInformation = $this->classLoader->buildClassLoadingInformation($originalClassName);
-			if (NULL !== $classLoadingInformation) {
+			if (FALSE !== $classLoadingInformation) {
 				$classLoadingInformation = implode("\xff", array_merge($classLoadingInformation, $aliasClassNames));
 				$this->classesCache->set($originalClassNameCacheEntryIdentifier, $classLoadingInformation);
 				foreach ($aliasClassNames as $aliasClassName) {
