@@ -26,10 +26,8 @@ namespace TYPO3\CMS\Form\Tests\Unit\PostProcess;
  ***************************************************************/
 /**
  * Testcase for PostProcessor
- *
- * @author Susanne Moog, <typo3@susannemoog.de>
  */
-class PostProcessorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+class PostProcessorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Form\PostProcess\PostProcessor

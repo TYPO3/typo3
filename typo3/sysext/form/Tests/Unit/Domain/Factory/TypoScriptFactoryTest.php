@@ -27,18 +27,16 @@ namespace TYPO3\CMS\Form\Tests\Unit\Domain\Factory;
 
 /**
  * Test case for class \TYPO3\CMS\Form\Domain\Factory\TypoScriptFactory
- *
- * @author Stefan Neufeind <info@speedpartner.de>
  */
-class TypoScriptFactoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+class TypoScriptFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
-	 * @var TYPO3\CMS\Form\Domain\Factory\TypoScriptFactory
+	 * @var \TYPO3\CMS\Form\Domain\Factory\TypoScriptFactory
 	 */
-	protected $fixture;
+	protected $subject;
 
 	public function setUp() {
-		$this->fixture = new \TYPO3\CMS\Form\Domain\Factory\TypoScriptFactory();
+		$this->subject = new \TYPO3\CMS\Form\Domain\Factory\TypoScriptFactory();
 	}
 
 	/**
@@ -53,7 +51,7 @@ class TypoScriptFactoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 			);
 		$inputStdWrapped = 'ABCsomethingDEF';
 
-		$element = $this->fixture->createElement('textline', $input);
+		$element = $this->subject->createElement('textline', $input);
 
 		$this->assertSame(
 			$inputStdWrapped,

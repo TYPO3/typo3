@@ -28,7 +28,7 @@ namespace TYPO3\CMS\Form\Tests\Unit\PostProcess;
 /**
  * Test case
  */
-class MailPostProcessorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+class MailPostProcessorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @var \TYPO3\CMS\Form\PostProcess\MailPostProcessor

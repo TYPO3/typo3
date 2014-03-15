@@ -26,10 +26,9 @@ namespace TYPO3\CMS\Form\Tests\Unit\Validation;
 
 /**
  * Small helper class to DRY the code.
- *
- * @author Andreas Lappe <a.lappe@kuehlhaus.com>
  */
-class Helper extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+class Helper extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+
 	/**
 	 * @var array
 	 */
