@@ -46,8 +46,8 @@ class ContainerTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	protected $cachedClassInfo;
 
 	public function setUp() {
-		//our mocked cache will allways indicate that he has nothing in the cache to force that we get the real classinfo
-		$mockedCache = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\Container\\ClassInfoCache', array('get'));
+		// The mocked cache will always indicate that he has nothing in the cache to force that we get the real class info
+		$mockedCache = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\Container\\ClassInfoCache', array('get', 'set'));
 		$mockedCache->expects($this->any())->method('get')->will($this->returnValue(FALSE));
 		$mockedCache->expects($this->never())->method('has');
 		$this->container = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\Container\\Container', array('log', 'getClassInfoCache'));

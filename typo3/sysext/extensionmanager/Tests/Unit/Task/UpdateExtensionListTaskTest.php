@@ -90,7 +90,7 @@ class UpdateExtensionListTaskTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 		\TYPO3\CMS\Core\Utility\GeneralUtility::setSingletonInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager', $objectManagerMock);
 
-		$task = new \TYPO3\CMS\Extensionmanager\Task\UpdateExtensionListTask();
+		$task = $this->getMock('TYPO3\\CMS\\Extensionmanager\\Task\\UpdateExtensionListTask', array('dummy'), array(), '', FALSE);
 		$task->execute();
 	}
 
@@ -117,7 +117,7 @@ class UpdateExtensionListTaskTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 		\TYPO3\CMS\Core\Utility\GeneralUtility::setSingletonInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager', $objectManagerMock);
 
-		$task = new \TYPO3\CMS\Extensionmanager\Task\UpdateExtensionListTask();
+		$task = $this->getMock('TYPO3\\CMS\\Extensionmanager\\Task\\UpdateExtensionListTask', array('dummy'), array(), '', FALSE);
 		$task->execute();
 	}
 }

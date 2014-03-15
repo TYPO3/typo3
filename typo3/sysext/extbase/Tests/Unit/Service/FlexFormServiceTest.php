@@ -23,27 +23,39 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Service;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Testcase for class \TYPO3\CMS\Extbase\Service\FlexFormService
  */
 class FlexFormServiceTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Service\FlexFormService
+	 * @var array Backup of singletons
 	 */
-	protected $flexFormService;
+	protected $backupSingletons = array();
 
+	/**
+	 * Set up
+	 */
 	public function setUp() {
-		$this->flexFormService = new \TYPO3\CMS\Extbase\Service\FlexFormService();
+		$this->backupSingletons = GeneralUtility::getSingletonInstances();
 	}
 
 	/**
-	 * @return array
+	 * Tear down
 	 */
-	public function convertFlexFormContentToArrayTestData() {
-		$testdata = array();
-		$testdata[0] = array(
-			'flexFormXML' => '<?xml version="1.0" encoding="iso-8859-1" standalone="yes"?>
+	public function tearDown() {
+		GeneralUtility::resetSingletonInstances($this->backupSingletons);
+		parent::tearDown();
+	}
+
+	/**
+	 * @test
+	 */
+	public function convertFlexFormContentToArrayResolvesComplexArrayStructure() {
+		$input = '<?xml version="1.0" encoding="iso-8859-1" standalone="yes"?>
 <T3FlexForms>
 	<data>
 		<sheet index="sDEF">
@@ -84,34 +96,33 @@ class FlexFormServiceTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 			</language>
 		</sheet>
 	</data>
-</T3FlexForms>',
-			'expectedFlexFormArray' => array(
-				'settings' => array(
-					'foo' => 'Foo-Value',
-					'bar' => array(
-						1 => array(
-							'baz' => 'Baz1-Value',
-							'bum' => 'Bum1-Value'
-						),
-						2 => array(
-							'baz' => 'Baz2-Value',
-							'bum' => 'Bum2-Value'
-						)
+</T3FlexForms>';
+
+		$expected = array(
+			'settings' => array(
+				'foo' => 'Foo-Value',
+				'bar' => array(
+					1 => array(
+						'baz' => 'Baz1-Value',
+						'bum' => 'Bum1-Value'
+					),
+					2 => array(
+						'baz' => 'Baz2-Value',
+						'bum' => 'Bum2-Value'
 					)
 				)
 			)
 		);
-		return $testdata;
-	}
 
-	/**
-	 * @test
-	 * @dataProvider convertFlexFormContentToArrayTestData
-	 * @param string $flexFormXML
-	 * @param array $expectedFlexFormArray
-	 */
-	public function convertFlexFormContentToArrayResolvesComplexArrayStructure($flexFormXML, $expectedFlexFormArray) {
-		$convertedFlexFormArray = $this->flexFormService->convertFlexFormContentToArray($flexFormXML);
-		$this->assertSame($expectedFlexFormArray, $convertedFlexFormArray);
+		// The subject calls xml2array statically, which calls getHash and setHash statically, which uses
+		// caches, those need to be mocked.
+		$cacheManagerMock = $this->getMock('TYPO3\\CMS\\Core\\Cache\\CacheManager', array(), array(), '', FALSE);
+		$cacheMock = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\FrontendInterface', array(), array(), '', FALSE);
+		$cacheManagerMock->expects($this->any())->method('getCache')->will($this->returnValue($cacheMock));
+		GeneralUtility::setSingletonInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager', $cacheManagerMock);
+
+		$flexFormService = $this->getMock('TYPO3\\CMS\\Extbase\\Service\\FlexFormService', array('dummy'), array(), '', FALSE);
+		$convertedFlexFormArray = $flexFormService->convertFlexFormContentToArray($input);
+		$this->assertSame($expected, $convertedFlexFormArray);
 	}
 }

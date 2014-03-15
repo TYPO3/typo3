@@ -63,7 +63,7 @@ class Task extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 	protected $taskExecutor;
 
 	/**
-	 * Intanciates the Object Manager
+	 * Instantiates the Object Manager
 	 */
 	public function __construct() {
 		parent::__construct();

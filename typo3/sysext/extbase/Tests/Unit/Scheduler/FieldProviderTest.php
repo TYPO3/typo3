@@ -116,6 +116,7 @@ class FieldProviderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @author Alexander Schnitzler <alex.schnitzler@typovision.de>
 	 */
 	public function getAdditionalFieldsRendersRightHtml() {
+		$this->markTestSkipped('Incomplete mocking in a complex scenario. This should be a functional test');
 
 		/** @var \TYPO3\CMS\Extbase\Mvc\Cli\Command command1 */
 		$command1 = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Mvc\\Cli\\Command', array(), array(), '', FALSE);
