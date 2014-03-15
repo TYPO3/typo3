@@ -43,11 +43,6 @@ class QueryFactoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	protected $queryFactory = NULL;
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface|\PHPUnit_Framework_MockObject_MockObject
-	 */
-	protected $objectManager = NULL;
-
-	/**
 	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper|\PHPUnit_Framework_MockObject_MockObject
 	 */
 	protected $dataMapper = NULL;
@@ -64,9 +59,6 @@ class QueryFactoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$this->queryFactory->_set('configurationManager',
 			$this->getMock('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManagerInterface')
 		);
-
-		$this->objectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerInterface');
-		$this->queryFactory->_set('objectManager', $this->objectManager);
 
 		$this->dataMapper = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Mapper\\DataMapper', array('getDataMap', 'convertClassNameToTableName'));
 		$this->dataMapper->expects($this->any())->method('getDataMap')->will($this->returnValue($this->dataMap));
@@ -91,16 +83,20 @@ class QueryFactoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @test
 	 */
 	public function createDoesNotRespectStoragePageIfStaticOrRootLevelIsTrue($static, $rootLevel, $expectedResult) {
+		/** @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface|\PHPUnit_Framework_MockObject_MockObject $objectManager */
+		$objectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+		$this->queryFactory->_set('objectManager', $objectManager);
+
 		$this->dataMap->expects($this->any())->method('getIsStatic')->will($this->returnValue($static));
 		$this->dataMap->expects($this->any())->method('getRootLevel')->will($this->returnValue($rootLevel));
 
 		$query = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\QueryInterface');
-		$this->objectManager->expects($this->at(0))->method('get')
+		$objectManager->expects($this->at(0))->method('get')
 			->with('TYPO3\\CMS\\Extbase\\Persistence\\QueryInterface')
 			->will($this->returnValue($query));
 
 		$querySettings = new \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings();
-		$this->objectManager->expects($this->at(1))->method('get')
+		$objectManager->expects($this->at(1))->method('get')
 			->with('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\QuerySettingsInterface')
 			->will($this->returnValue($querySettings));
 		$query->expects($this->once())->method('setQuerySettings')->with($querySettings);

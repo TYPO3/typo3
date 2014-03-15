@@ -34,15 +34,6 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Hook\DataHandler;
 class CheckFlexFormValueTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
-	 * @var \TYPO3\CMS\Core\DataHandling\DataHandler
-	 */
-	protected $dataHandler;
-
-	public function setUp() {
-		$this->dataHandler = $this->objectManager->get('TYPO3\CMS\Core\DataHandling\DataHandler');
-	}
-
-	/**
 	 * @test
 	 */
 	public function checkFlexFormValueBeforeMergeRemovesSwitchableControllerActions() {
@@ -67,10 +58,13 @@ class CheckFlexFormValueTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase 
 			),
 		);
 
+		/** @var \TYPO3\CMS\Core\DataHandling\DataHandler $dataHandler */
+		$dataHandler = $this->getMock('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+
 		$newFlexFormDataArray = array();
 		/** @var \TYPO3\CMS\Extbase\Hook\DataHandler\CheckFlexFormValue $checkFlexFormValue */
-		$checkFlexFormValue = $this->objectManager->get('TYPO3\CMS\Extbase\Hook\DataHandler\CheckFlexFormValue');
-		$checkFlexFormValue->checkFlexFormValue_beforeMerge($this->dataHandler, $currentFlexFormDataArray, $newFlexFormDataArray);
+		$checkFlexFormValue = $this->getMock('TYPO3\\CMS\\Extbase\\Hook\\DataHandler\\CheckFlexFormValue', array('dummy'));
+		$checkFlexFormValue->checkFlexFormValue_beforeMerge($dataHandler, $currentFlexFormDataArray, $newFlexFormDataArray);
 
 		$this->assertSame($expectedFlexFormDataArray, $currentFlexFormDataArray);
 	}

@@ -45,13 +45,8 @@ class TaskTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	protected $taskExecutor;
 
 	public function setUp() {
-		if (!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('scheduler')) {
-			$this->markTestSkipped('Tests need EXT:scheduler loaded.');
-		}
 		$this->taskExecutor = $this->getMock('TYPO3\\CMS\\Extbase\\Scheduler\\TaskExecutor', array('execute'));
 		$this->task = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Scheduler\\Task', array('logException'), array(), '', FALSE);
-		$this->task->_set('objectManager', \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager'));
-		$this->task->_set('commandManager', \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Mvc\\Cli\\CommandManager'));
 	}
 
 	/**

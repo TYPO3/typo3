@@ -24,7 +24,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Reflection;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 /**
- * Some functional tests for the backport of the reflection service
+ * Some tests for the backport of the reflection service
  */
 class ReflectionServiceTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
@@ -73,43 +73,5 @@ class ReflectionServiceTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 				'type' => 'array'
 			)
 		), $parameters);
-	}
-
-	/**
-	 * @test
-	 */
-	public function classSchemaForModelIsSetAggregateRootIfRepositoryClassIsFoundForNamespacedClasses() {
-		$className = uniqid('BazFixture');
-		eval ('
-			namespace Foo\\Bar\\Domain\\Model;
-			class ' . $className . ' extends \\TYPO3\\CMS\\Extbase\\DomainObject\\AbstractEntity {}
-		');
-		eval ('
-			namespace Foo\\Bar\\Domain\\Repository;
-			class ' . $className . 'Repository {}
-		');
-
-		$service = $this->getAccessibleMock('TYPO3\CMS\Extbase\Reflection\ReflectionService', array('dummy'));
-		$service->_set('objectManager', $this->objectManager);
-		$classSchema = $service->getClassSchema('Foo\\Bar\\Domain\\Model\\' . $className);
-		$this->assertTrue($classSchema->isAggregateRoot());
-	}
-
-	/**
-	 * @test
-	 */
-	public function classSchemaForModelIsSetAggregateRootIfRepositoryClassIsFoundForNotNamespacedClasses() {
-		$className = uniqid('BazFixture');
-		eval ('
-			class Foo_Bar_Domain_Model_' . $className . ' extends \\TYPO3\\CMS\\Extbase\\DomainObject\\AbstractEntity {}
-		');
-		eval ('
-			class Foo_Bar_Domain_Repository_' . $className . 'Repository {}
-		');
-
-		$service = $this->getAccessibleMock('TYPO3\CMS\Extbase\Reflection\ReflectionService', array('dummy'));
-		$service->_set('objectManager', $this->objectManager);
-		$classSchema = $service->getClassSchema('Foo_Bar_Domain_Model_' . $className);
-		$this->assertTrue($classSchema->isAggregateRoot());
 	}
 }

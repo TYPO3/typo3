@@ -71,46 +71,13 @@ class BootstrapTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$configurationManagerMock = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManager', array('getConfiguration'));
 		$configurationManagerMock->expects($this->any())->method('getConfiguration')->with('Framework')->will($this->returnValue($frameworkSettings));
 
+		/** @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface|\PHPUnit_Framework_MockObject_MockObject  $objectManager */
+		$objectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+
 		/** @var $bootstrapMock \TYPO3\CMS\Extbase\Core\Bootstrap|\PHPUnit_Framework_MockObject_MockObject|\Tx_Phpunit_Interface_AccessibleObject */
 		$bootstrapMock = $this->getAccessibleMock('TYPO3\CMS\Extbase\Core\Bootstrap', array('inject'));
-		$bootstrapMock->_set('objectManager', $this->objectManager);
+		$bootstrapMock->_set('objectManager', $objectManager);
 		$bootstrapMock->_set('configurationManager', $configurationManagerMock);
 		$bootstrapMock->configureObjectManager();
-	}
-
-	/**
-	 * @test
-	 */
-	public function cliRequestHandlerIsFetchedByRequestHandlerResolver() {
-		/** @var $requestHandlerResolver \TYPO3\CMS\Extbase\Mvc\RequestHandlerResolver|\PHPUnit_Framework_MockObject_MockObject */
-		$requestHandlerResolver = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\RequestHandlerResolver', array('resolveRequestHandler'));
-
-		/** @var $cliRequestHandler \TYPO3\CMS\Extbase\Mvc\Cli\RequestHandler|\PHPUnit_Framework_MockObject_MockObject */
-		$cliRequestHandler = $this->getAccessibleMock('TYPO3\CMS\Extbase\Mvc\Cli\RequestHandler', array('canHandleRequest'));
-		$cliRequestHandler->expects($this->any())->method('canHandleRequest')->will($this->returnValue(TRUE));
-		$cliRequestHandler->_set('objectManager', $this->objectManager);
-		$cliRequestHandler->_set('requestBuilder', $this->objectManager->get('TYPO3\CMS\Extbase\Mvc\Cli\RequestBuilder'));
-
-		/** @var \TYPO3\CMS\Extbase\Mvc\Dispatcher|\PHPUnit_Framework_MockObject_MockObject $mockDispatcher */
-		$mockDispatcher = $this->getMock('TYPO3\CMS\Extbase\Mvc\Dispatcher', array('dispatch'), array(), '', FALSE);
-		$cliRequestHandler->_set('dispatcher', $mockDispatcher);
-		/** @var $cliResponse \TYPO3\CMS\Extbase\Mvc\Cli\Response */
-		$cliResponse = $this->getMock('TYPO3\CMS\Extbase\Mvc\Cli\Response', array('send'));
-
-		/** @var $reflectionServiceMock \TYPO3\CMS\Extbase\Reflection\ReflectionService */
-		$reflectionServiceMock = $this->getMock('TYPO3\\CMS\\Extbase\\Reflection\\ReflectionService', array(), array(), '', FALSE);
-
-		/** @var $bootstrap \TYPO3\CMS\Extbase\Core\Bootstrap |\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
-		$bootstrap = $this->getAccessibleMock('TYPO3\CMS\Extbase\Core\Bootstrap', array('isInCliMode', 'initializeReflection', 'configureObjectManager'));
-		$bootstrap->_set('reflectionService', $reflectionServiceMock);
-		$bootstrap->expects($this->once())->method('isInCliMode')->will($this->returnValue(TRUE));
-
-		$requestHandlerResolver->expects($this->once())->method('resolveRequestHandler')->will($this->returnValue($cliRequestHandler));
-
-		\TYPO3\CMS\Core\Utility\GeneralUtility::addInstance('TYPO3\\CMS\\Extbase\\Mvc\\RequestHandlerResolver', $requestHandlerResolver);
-		\TYPO3\CMS\Core\Utility\GeneralUtility::addInstance('TYPO3\CMS\Extbase\Mvc\Cli\RequestHandler', $cliRequestHandler);
-		\TYPO3\CMS\Core\Utility\GeneralUtility::addInstance('TYPO3\CMS\Extbase\Mvc\Cli\Response', $cliResponse);
-
-		$bootstrap->run('', array());
 	}
 }

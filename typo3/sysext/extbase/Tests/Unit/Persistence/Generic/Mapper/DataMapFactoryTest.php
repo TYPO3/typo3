@@ -398,18 +398,23 @@ class DataMapFactoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 			'Tx_SampleExt_Domain_Model_LevelTwo2',
 			'Tx_SampleExt_Domain_Model_LevelOne2'
 		);
+
+		/** @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface|\PHPUnit_Framework_MockObject_MockObject $objectManager */
+		$objectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManager', array('dummy'));
+
 		/** @var $configurationManager \TYPO3\CMS\Extbase\Configuration\ConfigurationManager|\PHPUnit_Framework_MockObject_MockObject */
 		$configurationManager = $this->getMock('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManager');
 		$configurationManager->expects($this->once())->method('getConfiguration')->with('Framework')->will($this->returnValue($configuration));
+		/** @var \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory $dataMapFactory */
 		$dataMapFactory = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Mapper\\DataMapFactory', array('test'));
 		$dataMapFactory->_set('reflectionService', new \TYPO3\CMS\Extbase\Reflection\ReflectionService());
-		$dataMapFactory->_set('objectManager', new \TYPO3\CMS\Extbase\Object\ObjectManager());
+		$dataMapFactory->_set('objectManager', $objectManager);
 		$dataMapFactory->_set('configurationManager', $configurationManager);
 		$cacheMock = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\VariableFrontend', array(), array(), '', FALSE);
 		$cacheMock->expects($this->any())->method('get')->will($this->returnValue(FALSE));
 		$dataMapFactory->_set('dataMapCache', $cacheMock);
 		$dataMap = $dataMapFactory->buildDataMap('TYPO3\\CMS\\Extbase\\Domain\\Model\\FrontendUser');
-		$this->assertSame($dataMap->getSubclasses(), $expectedSubclasses);
+		$this->assertSame($expectedSubclasses, $dataMap->getSubclasses());
 	}
 
 	/**
@@ -441,10 +446,16 @@ class DataMapFactoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	public function createColumnMapReturnsAValidColumnMap() {
 		/** @var $dataMapFactory \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory */
 		$dataMapFactory = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Mapper\\DataMapFactory', array('dummy'));
-		$dataMapFactory->_set('objectManager', $this->objectManager);
+
+		/** @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface|\PHPUnit_Framework_MockObject_MockObject $objectManager */
+		$objectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+		$columnMap = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Mapper\\ColumnMap', array(), array('column', 'property'));
+		$objectManager->expects($this->once())->method('get')->will($this->returnValue($columnMap));
+
+		$dataMapFactory->_set('objectManager', $objectManager);
 
 		$this->assertEquals(
-			new \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap('column', 'property'),
+			$columnMap,
 			$dataMapFactory->_call('createColumnMap', 'column', 'property')
 		);
 	}
@@ -482,7 +493,6 @@ class DataMapFactoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	public function setTypeDetectsTypeAndInternalTypeProperly(array $columnConfiguration, $type, $internalType) {
 		/** @var $dataMapFactory \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory | AccessibleObjectInterface */
 		$dataMapFactory = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Mapper\\DataMapFactory', array('dummy'));
-		$dataMapFactory->_set('objectManager', $this->objectManager);
 
 		/** @var \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap $columnMap */
 		$columnMap = $this->getAccessibleMock('TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap', array('dummy'), array(), '', FALSE);

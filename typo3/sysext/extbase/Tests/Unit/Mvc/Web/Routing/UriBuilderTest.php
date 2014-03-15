@@ -69,7 +69,7 @@ class UriBuilderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$this->uriBuilder->_set('contentObject', $this->mockContentObject);
 		$this->uriBuilder->_set('configurationManager', $this->mockConfigurationManager);
 		$this->uriBuilder->_set('extensionService', $this->mockExtensionService);
-		$this->uriBuilder->_set('environmentService', $this->objectManager->get('TYPO3\\CMS\\Extbase\\Service\\EnvironmentService'));
+		$this->uriBuilder->_set('environmentService', $this->getMock('TYPO3\\CMS\\Extbase\\Service\\EnvironmentService'));
 		// Mocking backend user is required for backend URI generation as BackendUtility::getModuleUrl() is called
 		$backendUserMock = $this->getMock('TYPO3\\CMS\\Core\\Authentication\\BackendUserAuthentication');
 		$backendUserMock->expects($this->any())->method('check')->will($this->returnValue(TRUE));
