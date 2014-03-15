@@ -101,6 +101,4 @@ require PATH_site . '/typo3/sysext/core/Classes/Core/Bootstrap.php';
 	->loadConfigurationAndInitialize(TRUE)
 	// TODO: Maybe load only core extensions here? Also check if we need to change the bootstrap since we have package management now
 	->loadTypo3LoadedExtAndExtLocalconf(FALSE)
-	->applyAdditionalConfigurationSettings()
-	// TODO: Unit Tests should be able to run without database connection
-	->initializeTypo3DbGlobal();
+	->applyAdditionalConfigurationSettings();
