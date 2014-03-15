@@ -63,6 +63,10 @@ class ConfigurationItemRepositoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\Base
 	 * @test
 	 */
 	public function getConfigurationArrayFromExtensionKeyReturnsSortedHierarchicArray() {
+		// due to a static call to LocalisationUtility, that ends up in RootlineUtility, we need to provide this
+		// otherwise a warning is raised
+		// 'Invalid argument supplied for foreach()' in typo3/sysext/core/Classes/Utility/RootlineUtility.php:263
+		$GLOBALS['TCA']['pages']['columns'] = array();
 		$flatConfigurationItemArray = array(
 			'item1' => array(
 				'cat' => 'basic',
