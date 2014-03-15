@@ -28,9 +28,8 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource\Service;
  ***************************************************************/
 
 /**
- * Testcase for the file indexing service
+ * Test case
  *
- * @author Andreas Wolf <andreas.wolf@ikt-werk.de>
  */
 class IndexerServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
@@ -38,8 +37,13 @@ class IndexerServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function indexFileUpdatesFileProperties() {
-		/** @var $fixture \TYPO3\CMS\Core\Resource\Service\IndexerService|\PHPUnit_Framework_MockObject_MockObject */
-		$fixture = $this->getMock('TYPO3\\CMS\\Core\\Resource\\Service\\IndexerService', array('gatherFileInformation', 'getFileIndexRepository'));
+		$GLOBALS['TYPO3_DB'] = $this->getMock('TYPO3\\CMS\\Core\\Database\\DatabaseConnection', array(), array(), '', FALSE);
+
+		/** @var $subject \TYPO3\CMS\Core\Resource\Service\IndexerService|\PHPUnit_Framework_MockObject_MockObject */
+		$subject = $this->getMock(
+			'TYPO3\\CMS\\Core\\Resource\\Service\\IndexerService',
+			array('gatherFileInformation', 'getFileIndexRepository', 'emitPreFileIndexSignal', 'emitPostFileIndexSignal')
+		);
 
 		$fileInfo = array(
 			'mount' => 1,
@@ -49,16 +53,16 @@ class IndexerServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			'sha1' => '123',
 		);
 
-		$fixture->expects($this->any())->method('gatherFileInformation')->will($this->returnValue($fileInfo));
+		$subject->expects($this->any())->method('gatherFileInformation')->will($this->returnValue($fileInfo));
 
 		$repositoryMock = $this->getMock('TYPO3\\CMS\\Core\\Resource\\Index\\FileIndexRepository');
 		$repositoryMock->expects($this->any())->method('findByContentHash')->will($this->returnValue(array()));
-		$fixture->expects($this->any())->method('getFileIndexRepository')->will($this->returnValue($repositoryMock));
+		$subject->expects($this->any())->method('getFileIndexRepository')->will($this->returnValue($repositoryMock));
 
 		$mockedFile = $this->getMock('TYPO3\\CMS\\Core\\Resource\\File', array(), array(), '', FALSE);
 		$mockedFile->expects($this->once())->method('updateProperties');
 
-		$fixture->indexFile($mockedFile);
+		$subject->indexFile($mockedFile);
 	}
 
 	/**
@@ -66,21 +70,20 @@ class IndexerServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function indexFileSetsCreationdateAndTimestampPropertiesOfRecordToCurrentExecutionTime() {
 		$fileInfo = array();
-		/** @var $fixture \TYPO3\CMS\Core\Resource\Service\IndexerService|\PHPUnit_Framework_MockObject_MockObject */
-		$fixture = $this->getMock('TYPO3\\CMS\\Core\\Resource\\Service\\IndexerService', array('gatherFileInformation', 'getFileIndexRepository'));
+		/** @var $subject \TYPO3\CMS\Core\Resource\Service\IndexerService|\PHPUnit_Framework_MockObject_MockObject */
+		$subject = $this->getMock('TYPO3\\CMS\\Core\\Resource\\Service\\IndexerService', array('gatherFileInformation', 'getFileIndexRepository'));
 
-		$fixture->expects($this->any())->method('gatherFileInformation')->will($this->returnValue($fileInfo));
+		$subject->expects($this->any())->method('gatherFileInformation')->will($this->returnValue($fileInfo));
 
 		$repositoryMock = $this->getMock('TYPO3\\CMS\\Core\\Resource\\Index\\FileIndexRepository');
 		$repositoryMock->expects($this->any())->method('findByContentHash')->will($this->returnValue(array()));
 		$repositoryMock->expects($this->once())->method('add');
-		$fixture->expects($this->any())->method('getFileIndexRepository')->will($this->returnValue($repositoryMock));
+		$subject->expects($this->any())->method('getFileIndexRepository')->will($this->returnValue($repositoryMock));
 
 		$GLOBALS['TYPO3_DB'] = $this->getMock('TYPO3\\CMS\\Core\\Database\\DatabaseConnection', array(), array(), '', FALSE);
 
 		$mockedFile = $this->getMock('TYPO3\\CMS\\Core\\Resource\\File', array(), array(), '', FALSE);
 
-		$fixture->indexFile($mockedFile);
+		$subject->indexFile($mockedFile);
 	}
-
 }
