@@ -28,7 +28,7 @@ namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Domain\Repository;
  * Tests for ConfigurationItemRepository
  *
  */
-class ConfigurationItemRepositoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+class ConfigurationItemRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @var \TYPO3\CMS\Extensionmanager\Domain\Repository\ConfigurationItemRepository|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject
@@ -52,7 +52,7 @@ class ConfigurationItemRepositoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\Base
 			array('dummy')
 		);
 
-		$this->injectedObjectManagerMock = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerInterface');
+		$this->injectedObjectManagerMock = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerInterface', array(), array(), '', FALSE);
 		$this->configurationItemRepository->_set(
 			'objectManager',
 			$this->injectedObjectManagerMock
@@ -63,10 +63,6 @@ class ConfigurationItemRepositoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\Base
 	 * @test
 	 */
 	public function getConfigurationArrayFromExtensionKeyReturnsSortedHierarchicArray() {
-		// due to a static call to LocalisationUtility, that ends up in RootlineUtility, we need to provide this
-		// otherwise a warning is raised
-		// 'Invalid argument supplied for foreach()' in typo3/sysext/core/Classes/Utility/RootlineUtility.php:263
-		$GLOBALS['TCA']['pages']['columns'] = array();
 		$flatConfigurationItemArray = array(
 			'item1' => array(
 				'cat' => 'basic',
@@ -105,13 +101,13 @@ class ConfigurationItemRepositoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\Base
 
 		$configurationItemRepository = $this->getAccessibleMock(
 			'TYPO3\\CMS\\Extensionmanager\\Domain\\Repository\\ConfigurationItemRepository',
-			array('mergeWithExistingConfiguration')
+			array('mergeWithExistingConfiguration', 'translate')
 		);
 		$configurationItemRepository->_set(
 			'objectManager',
 			$this->injectedObjectManagerMock
 		);
-		$configurationUtilityMock = $this->getMock('TYPO3\\CMS\\Extensionmanager\\Utility\\ConfigurationUtility');
+		$configurationUtilityMock = $this->getMock('TYPO3\\CMS\\Extensionmanager\\Utility\\ConfigurationUtility', array(), array(), '', FALSE);
 		$configurationUtilityMock
 			->expects($this->once())
 			->method('getDefaultConfigurationFromExtConfTemplateAsValuedArray')

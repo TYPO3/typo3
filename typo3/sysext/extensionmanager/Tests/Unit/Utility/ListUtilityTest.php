@@ -29,7 +29,7 @@ use TYPO3\CMS\Cms\Package;
  * List utility test
  *
  */
-class ListUtilityTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+class ListUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @var \TYPO3\CMS\Extensionmanager\Utility\ListUtility

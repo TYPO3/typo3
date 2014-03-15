@@ -107,8 +107,8 @@ class ConfigurationItemRepository {
 		} elseif (\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($configurationOption['type'], 'options')) {
 			$configurationOption = $this->extractInformationForConfigFieldsOfTypeOptions($configurationOption);
 		}
-		if (\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate($configurationOption['label'], $extensionKey)) {
-			$configurationOption['label'] = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate($configurationOption['label'], $extensionKey);
+		if ($this->translate($configurationOption['label'], $extensionKey)) {
+			$configurationOption['label'] = $this->translate($configurationOption['label'], $extensionKey);
 		}
 		$configurationOption['labels'] = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(':', $configurationOption['label'], FALSE, 2);
 		$configurationOption['subcat_name'] = $configurationOption['subcat_name'] ?: '__default';
@@ -256,6 +256,20 @@ class ConfigurationItemRepository {
 			$configurationObjectStorage->attach($configurationCategoryObject);
 		}
 		return $configurationObjectStorage;
+	}
+
+	/**
+	 * Returns the localized label of the LOCAL_LANG key, $key.
+	 * Wrapper for the static call.
+	 *
+	 * @param string $key The key from the LOCAL_LANG array for which to return the value.
+	 * @param string $extensionName The name of the extension
+	 * @return string|NULL The value from LOCAL_LANG or NULL if no translation was found.
+	 */
+	protected function translate($key, $extensionName) {
+		if (\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate($key, $extensionName)) {
+			$configurationOption['label'] = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate($key, $extensionName);
+		}
 	}
 
 }

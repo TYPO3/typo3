@@ -27,7 +27,7 @@ namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Utility;
 /**
  * Test case
  */
-class EmConfUtilityTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+class EmConfUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test

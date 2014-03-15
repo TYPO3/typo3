@@ -28,7 +28,7 @@ namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Utility;
  * Configuration utility test
  *
  */
-class ConfigurationUtilityTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+class ConfigurationUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
@@ -257,9 +257,9 @@ class ConfigurationUtilityTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCas
 	 * @return void
 	 */
 	public function convertValuedToNestedConfiguration(array $configuration, array $expected) {
-		/** @var $fixture \TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility */
-		$fixture = $this->objectManager->get('TYPO3\\CMS\\Extensionmanager\\Utility\\ConfigurationUtility');
-		$this->assertEquals($expected, $fixture->convertValuedToNestedConfiguration($configuration));
+		/** @var $subject \TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
+		$subject = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Utility\\ConfigurationUtility', array('dummy'), array(), '', FALSE);
+		$this->assertEquals($expected, $subject->convertValuedToNestedConfiguration($configuration));
 	}
 
 	/**
@@ -323,8 +323,8 @@ class ConfigurationUtilityTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCas
 	 * @return void
 	 */
 	public function convertNestedToValuedConfiguration(array $configuration, array $expected) {
-		/** @var $fixture \TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility */
-		$fixture = $this->objectManager->get('TYPO3\\CMS\\Extensionmanager\\Utility\\ConfigurationUtility');
-		$this->assertEquals($expected, $fixture->convertNestedToValuedConfiguration($configuration));
+		/** @var $subject \TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
+		$subject = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Utility\\ConfigurationUtility', array('dummy'), array(), '', FALSE);
+		$this->assertEquals($expected, $subject->convertNestedToValuedConfiguration($configuration));
 	}
 }

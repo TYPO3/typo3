@@ -27,9 +27,8 @@ namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Domain\Repository;
 /**
  * Test case
  *
- * @author Christian Kuhn <lolli@schwarzbu.ch>
  */
-class RepositoryRepositoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+class RepositoryRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface

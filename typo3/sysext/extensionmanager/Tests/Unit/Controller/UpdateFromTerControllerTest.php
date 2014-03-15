@@ -28,7 +28,7 @@ namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Controller;
  * Update from TER controller test
  *
  */
-class UpdateFromTerControllerTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+class UpdateFromTerControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface

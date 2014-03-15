@@ -28,7 +28,7 @@ namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Utility;
  * Test for ExtensionModelUtilityTest
  *
  */
-class ExtensionModelUtilityTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+class ExtensionModelUtilityTest extends \TYPO3\CMS\Core\Tests\BaseTestCase {
 	/**
 	 * @test
 	 * @return void
