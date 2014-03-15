@@ -38,9 +38,7 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  *
  * @author Andreas Wolf <andreas.wolf@typo3.org>
  */
-class ResourceFactory implements \TYPO3\CMS\Core\SingletonInterface {
-
-	const SIGNAL_PostProcessStorage = 'postProcessStorage';
+class ResourceFactory implements ResourceFactoryInterface, \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * Gets a singleton instance of this class.

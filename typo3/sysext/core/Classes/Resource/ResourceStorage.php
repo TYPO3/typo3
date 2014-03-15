@@ -66,31 +66,7 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  * @author Andreas Wolf <andreas.wolf@typo3.org>
  * @author Ingmar Schlecht <ingmar@typo3.org>
  */
-class ResourceStorage {
-
-	const SIGNAL_PreFileAdd = 'preFileAdd';
-	const SIGNAL_PostFileAdd = 'postFileAdd';
-	const SIGNAL_PreFileCopy = 'preFileCopy';
-	const SIGNAL_PostFileCopy = 'postFileCopy';
-	const SIGNAL_PreFileMove = 'preFileMove';
-	const SIGNAL_PostFileMove = 'postFileMove';
-	const SIGNAL_PreFileDelete = 'preFileDelete';
-	const SIGNAL_PostFileDelete = 'postFileDelete';
-	const SIGNAL_PreFileRename = 'preFileRename';
-	const SIGNAL_PostFileRename = 'postFileRename';
-	const SIGNAL_PreFileReplace = 'preFileReplace';
-	const SIGNAL_PostFileReplace = 'postFileReplace';
-	const SIGNAL_PreFolderAdd = 'preFolderAdd';
-	const SIGNAL_PostFolderAdd = 'postFolderAdd';
-	const SIGNAL_PreFolderCopy = 'preFolderCopy';
-	const SIGNAL_PostFolderCopy = 'postFolderCopy';
-	const SIGNAL_PreFolderMove = 'preFolderMove';
-	const SIGNAL_PostFolderMove = 'postFolderMove';
-	const SIGNAL_PreFolderDelete = 'preFolderDelete';
-	const SIGNAL_PostFolderDelete = 'postFolderDelete';
-	const SIGNAL_PreFolderRename = 'preFolderRename';
-	const SIGNAL_PostFolderRename = 'postFolderRename';
-	const SIGNAL_PreGeneratePublicUrl = 'preGeneratePublicUrl';
+class ResourceStorage implements ResourceStorageInterface {
 
 	/**
 	 * The storage driver instance belonging to this storage.
@@ -156,23 +132,6 @@ class ResourceStorage {
 	 */
 	protected $signalSlotDispatcher;
 
-	/**
-	 * Capability for being browsable by (backend) users
-	 */
-	const CAPABILITY_BROWSABLE = 1;
-	/**
-	 * Capability for publicly accessible storages (= accessible from the web)
-	 */
-	const CAPABILITY_PUBLIC = 2;
-	/**
-	 * Capability for writable storages. This only signifies writability in
-	 * general - this might also be further limited by configuration.
-	 */
-	const CAPABILITY_WRITABLE = 4;
-	/**
-	 * Name of the default processing folder
-	 */
-	const DEFAULT_ProcessingFolder = '_processed_';
 	/**
 	 * @var Folder
 	 */
