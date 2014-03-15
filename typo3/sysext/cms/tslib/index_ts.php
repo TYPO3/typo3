@@ -42,7 +42,11 @@ define('TYPO3_MODE', 'FE');
 	->applyAdditionalConfigurationSettings();
 
 // Timetracking started
-if ($_COOKIE[\TYPO3\CMS\Core\Authentication\BackendUserAuthentication::getCookieName()]) {
+$configuredCookieName = trim($GLOBALS['TYPO3_CONF_VARS']['BE']['cookieName']);
+if (empty($configuredCookieName)) {
+	$configuredCookieName = 'be_typo_user';
+}
+if ($_COOKIE[$configuredCookieName]) {
 	$TT = new \TYPO3\CMS\Core\TimeTracker\TimeTracker();
 } else {
 	$TT = new \TYPO3\CMS\Core\TimeTracker\NullTimeTracker();
