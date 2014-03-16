@@ -25,11 +25,9 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence\Generic;
  ***************************************************************/
 
 /**
- * Testcase for \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings
- *
- * @author Anja Leichsenring <anja.leichsenring@typo3.org>
+ * Test case
  */
-class Typo3QuerySettingsTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+class Typo3QuerySettingsTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings

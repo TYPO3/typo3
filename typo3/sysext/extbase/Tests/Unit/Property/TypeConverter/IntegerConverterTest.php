@@ -20,12 +20,11 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Property\TypeConverter;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+
 /**
- * Testcase for the Integer converter
- *
- * @covers \TYPO3\CMS\Extbase\Property\TypeConverter\IntegerConverter<extended>
+ * Test case
  */
-class IntegerConverterTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+class IntegerConverterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Property\TypeConverterInterface

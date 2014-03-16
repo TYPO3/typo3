@@ -20,10 +20,11 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Mvc\Cli;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+
 /**
- * Testcase for the CLI CommandManager class
+ * Test case
  */
-class CommandManagerTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+class CommandManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface

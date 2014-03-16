@@ -23,10 +23,11 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Reflection;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
- * Some tests for the backport of the reflection service
+ * Test case
  */
-class ReflectionServiceTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+class ReflectionServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @param array $foo The foo parameter

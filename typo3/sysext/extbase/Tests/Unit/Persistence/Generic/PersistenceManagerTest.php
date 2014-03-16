@@ -28,9 +28,9 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence\Generic;
  ***************************************************************/
 
 /**
- * A PersistenceManager Test
+ * Test case
  */
-class PersistenceManagerTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+class PersistenceManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface

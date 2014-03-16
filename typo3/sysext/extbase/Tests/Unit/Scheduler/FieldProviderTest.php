@@ -27,10 +27,11 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Scheduler;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
- * FieldProvider Test Class
+ * Test case
  */
-class FieldProviderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+class FieldProviderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test

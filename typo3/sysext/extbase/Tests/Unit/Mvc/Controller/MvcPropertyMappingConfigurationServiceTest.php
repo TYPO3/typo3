@@ -25,10 +25,9 @@ use TYPO3\CMS\Core\Utility\DebugUtility;
 use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 
 /**
- * Testcase for the MVC Property Mapping Configuration Service
- * @covers \TYPO3\CMS\Extbase\Mvc\Controller\MvcPropertyMappingConfigurationService
+ * Test case
  */
-class MvcPropertyMappingConfigurationServiceTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+class MvcPropertyMappingConfigurationServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * Data provider for generating the list of trusted properties

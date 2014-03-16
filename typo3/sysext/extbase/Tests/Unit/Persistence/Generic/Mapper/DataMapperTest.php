@@ -26,10 +26,11 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence\Generic\Mapper;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
- * Testcase for \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper
+ * Test case
  */
-class DataMapperTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+class DataMapperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test

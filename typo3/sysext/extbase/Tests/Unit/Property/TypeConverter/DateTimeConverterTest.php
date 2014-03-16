@@ -20,12 +20,11 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Property\TypeConverter;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+
 /**
- * Testcase for the DateTime converter
- *
- * @covers \TYPO3\CMS\Extbase\Property\TypeConverter\DateTimeConverter<extended>
+ * Test case
  */
-class DateTimeConverterTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+class DateTimeConverterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Property\TypeConverter\DateTimeConverter

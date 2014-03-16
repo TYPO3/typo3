@@ -23,7 +23,11 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-class RepositoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+
+/**
+ * Test case
+ */
+class RepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Persistence\Repository|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface

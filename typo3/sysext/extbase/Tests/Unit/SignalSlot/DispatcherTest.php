@@ -27,12 +27,11 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\SignalSlot;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
- * Testcase for the Signal Dispatcher Class
- *
- * @author Felix Oertel <f@oer.tel>
+ * Test case
  */
-class DispatcherTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+class DispatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher|\PHPUnit_Framework_MockObject_MockObject|\Tx_Phpunit_Interface_AccessibleObject

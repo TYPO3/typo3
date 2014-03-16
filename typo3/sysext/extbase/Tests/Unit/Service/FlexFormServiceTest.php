@@ -27,9 +27,9 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Service;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Testcase for class \TYPO3\CMS\Extbase\Service\FlexFormService
+ * Test case
  */
-class FlexFormServiceTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+class FlexFormServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @var array Backup of singletons

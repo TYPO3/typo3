@@ -26,12 +26,11 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Utility;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
- * Testcase for the \TYPO3\CMS\Extbase\Utility\ArrayUtility class.
- *
- * @author Tymoteusz Motylewski <t.motylewski@gmail.com>
+ * Test case
  */
-class ArrayUtilityTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+class ArrayUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test

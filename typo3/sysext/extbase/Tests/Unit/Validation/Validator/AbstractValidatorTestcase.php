@@ -20,12 +20,11 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+
 /**
- * Testcase for the Abstract Validator
- *
- * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
+ * Test case for the Abstract Validator
  */
-abstract class AbstractValidatorTestcase extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+abstract class AbstractValidatorTestcase extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	protected $validatorClassName;
 

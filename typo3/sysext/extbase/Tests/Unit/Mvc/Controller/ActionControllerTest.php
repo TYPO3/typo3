@@ -27,7 +27,11 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Mvc\Controller;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-class ActionControllerTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+
+/**
+ * Test case
+ */
+class ActionControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Mvc\Controller\ActionController|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface

@@ -24,10 +24,11 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Mvc\Controller;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
- * Abstract Controller Test Class
+ * Test case
  */
-class AbstractControllerTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+class AbstractControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test

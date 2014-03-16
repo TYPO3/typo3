@@ -20,10 +20,11 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Mvc\Cli;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+
 /**
- * Testcase for the MVC CLI Request Builder
+ * Test case
  */
-class RequestBuilderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+class RequestBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Mvc\Cli\RequestBuilder|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_Comparator_MockObject

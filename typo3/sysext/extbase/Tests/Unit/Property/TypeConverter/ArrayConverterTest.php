@@ -20,11 +20,11 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Property\TypeConverter;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+
 /**
- * Testcase for the Array converter
- *
+ * Test case
  */
-class ArrayConverterTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+class ArrayConverterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Property\TypeConverter\ArrayConverter

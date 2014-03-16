@@ -23,15 +23,13 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Object\Container;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('extbase') . 'Tests/Unit/Object/Container/Fixtures/Testclasses.php';
 
 /**
- * Testcase for class t3lib_object_ClassInfoFactory.
- *
- * @author Daniel Pötzinger
- * @author Bastian Waidelich <bastian@typo3.org>
+ * Test case
  */
-class ClassInfoFactoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+class ClassInfoFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Object\Container\ClassInfoFactory

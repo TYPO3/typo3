@@ -24,12 +24,9 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Property;
 require_once __DIR__ . '/../../Fixture/TxClassWithGettersAndSetters.php';
 
 /**
- * Testcase for the Property Mapper
- *
- * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
- * @covers \TYPO3\CMS\Extbase\Property\Mapper
+ * Test case
  */
-class MapperTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+class MapperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Property\Mapper

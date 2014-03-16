@@ -22,11 +22,9 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Property\TypeConverter;
  *                                                                        */
 
 /**
- * Testcase for the PersistentObjectConverter
- *
- * @covers \TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter<extended>
+ * Test case
  */
-class PersistentObjectConverterTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+class PersistentObjectConverterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Property\TypeConverterInterface

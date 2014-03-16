@@ -20,13 +20,11 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Mvc\Controller;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+
 /**
- * Testcase for the MVC Controller Argument
- *
- * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
- * @covers \TYPO3\CMS\Extbase\Mvc\Controller\Argument
+ * Test case
  */
-class ArgumentTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+class ArgumentTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Mvc\Controller\Argument

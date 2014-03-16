@@ -27,7 +27,11 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence\Generic\Storage;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-class Typo3DbBackendTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+
+/**
+ * Test case
+ */
+class Typo3DbBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * This is the data provider for the statement generation with a basic comparison

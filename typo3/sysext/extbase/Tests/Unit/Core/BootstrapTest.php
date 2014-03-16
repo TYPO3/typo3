@@ -27,12 +27,11 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Core;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
- * Testcase for the Bootstrap object
- *
- * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
+ * Test case
  */
-class BootstrapTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+class BootstrapTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @var array A backup of registered singleton instances

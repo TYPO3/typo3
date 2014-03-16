@@ -28,12 +28,9 @@ require_once 'Fixtures/Testclasses.php';
 require_once 'Fixtures/ContainerConstructorInjectionTestFixtures.php';
 
 /**
- * Testcase for class t3lib_object_Container.
- *
- * @author Daniel Pötzinger
- * @author Bastian Waidelich <bastian@typo3.org>
+ * Test case
  */
-class ContainerTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+class ContainerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Object\Container\Container

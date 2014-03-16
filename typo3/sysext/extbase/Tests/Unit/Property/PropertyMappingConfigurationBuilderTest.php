@@ -22,11 +22,9 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Property;
  *                                                                        */
 
 /**
- * Testcase for the Property Mapper
- *
- * @covers \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationBuilder
+ * Test case
  */
-class PropertyMappingConfigurationBuilderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+class PropertyMappingConfigurationBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationBuilder

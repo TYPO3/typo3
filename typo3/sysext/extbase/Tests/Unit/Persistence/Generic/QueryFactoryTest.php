@@ -25,12 +25,9 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence\Generic;
  ***************************************************************/
 
 /**
- * Testcase for \TYPO3\CMS\Extbase\Persistence\Generic\QueryFactory
- *
- * @author Alexander Schnitzler <alex.schnitzler@typovision.de>
- * @author Oliver Klee <typo3-coding@oliverklee.de>
+ * Test case
  */
-class QueryFactoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+class QueryFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @var string

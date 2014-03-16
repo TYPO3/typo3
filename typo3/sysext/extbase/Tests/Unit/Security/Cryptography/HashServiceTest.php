@@ -23,12 +23,11 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Security\Cryptography;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
- * Testcase for the Hash Service
- *
- * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser Public License, version 3 or later
+ * Test case
  */
-class HashServiceTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+class HashServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	protected $hashService;
 

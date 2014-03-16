@@ -27,7 +27,11 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Mvc\Web;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-class RequestBuilderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+
+/**
+ * Test case
+ */
+class RequestBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Mvc\Web\RequestBuilder|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface

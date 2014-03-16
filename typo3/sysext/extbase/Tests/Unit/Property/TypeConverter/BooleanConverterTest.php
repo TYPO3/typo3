@@ -20,11 +20,11 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Property\TypeConverter;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+
 /**
- * Testcase for the Boolean converter
- *
+ * Test case
  */
-class BooleanConverterTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+class BooleanConverterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Property\TypeConverter\BooleanConverter

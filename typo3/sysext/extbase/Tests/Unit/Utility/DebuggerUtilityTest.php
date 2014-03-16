@@ -27,12 +27,11 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Utility;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
- * Testcase for the \TYPO3\CMS\Extbase\Utility\DebuggerUtility class.
- *
- * @author Alexander Schnitzler <alex.schnitzler@typovision.de>
+ * Test case
  */
-class DebuggerUtilityTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+class DebuggerUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Utility\DebuggerUtility

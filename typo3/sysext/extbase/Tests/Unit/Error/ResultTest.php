@@ -20,12 +20,11 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Error;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+
 /**
- * Testcase for the Error Container object
- *
- * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
+ * Test case
  */
-class ResultTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+class ResultTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Error\Result

@@ -27,12 +27,11 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Mvc;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
- * Testcase for the MVC Generic Request
- *
- * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
+ * Test case
  */
-class RequestTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+class RequestTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test

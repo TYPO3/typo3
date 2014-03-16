@@ -27,9 +27,9 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Reflection;
  ***************************************************************/
 
 /**
- * Test Unit Test Base Class
+ * Test case
  */
-class ObjectAccessTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+class ObjectAccessTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	protected $dummyObject;
 

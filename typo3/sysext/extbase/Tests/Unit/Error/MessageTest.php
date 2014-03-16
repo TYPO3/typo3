@@ -27,12 +27,11 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Error;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
- * Testcase for the Message object
- *
- * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
+ * Test case
  */
-class MessageTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+class MessageTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test

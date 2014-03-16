@@ -27,12 +27,13 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Mvc\Controller;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * This test checks the Argument behavior before Extbase 1.4, i.e. with the old property mapper.
  *
  * @deprecated since Extbase 1.4.0, will be removed two versions after Extbase 6.1
  */
-class ArgumentBehaviorBeforeExtbase14Test extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+class ArgumentBehaviorBeforeExtbase14Test extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test

@@ -28,7 +28,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence\Generic;
 /**
  * Test case
  */
-class BackendTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+class BackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test

@@ -27,13 +27,14 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator\BeforeExtbase14;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
- * Testcase for the number range validator
+ * Test case
  *
  * This testcase checks the expected behavior for Extbase < 1.4.0, to make sure
  * we do not break backwards compatibility.
  */
-class NumberRangeValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+class NumberRangeValidatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test

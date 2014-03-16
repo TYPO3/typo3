@@ -23,9 +23,8 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator;
 
 /**
  * Test case
- *
  */
-class AlphanumericValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+class AlphanumericValidatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test

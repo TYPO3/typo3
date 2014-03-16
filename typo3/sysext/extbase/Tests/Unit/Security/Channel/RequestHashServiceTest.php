@@ -26,12 +26,11 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Security\Channel;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
- * Testcase for the Request Hash Service
- *
- * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser Public License, version 3 or later
+ * Test case
  */
-class RequestHashServiceTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+class RequestHashServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @return array

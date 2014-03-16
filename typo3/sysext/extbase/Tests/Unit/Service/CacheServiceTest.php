@@ -23,10 +23,11 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Service;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
- * Testcase for class \TYPO3\CMS\Extbase\Service\CacheService
+ * Test case
  */
-class CacheServiceTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+class CacheServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Service\CacheService

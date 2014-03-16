@@ -22,11 +22,9 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Property\TypeConverter;
  *                                                                        */
 
 /**
- * Testcase for the ObjectConverter
- *
- * @covers \TYPO3\CMS\Extbase\Property\TypeConverter\ObjectConverter<extended>
+ * Test case
  */
-class ObjectConverterTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+class ObjectConverterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Property\TypeConverter\ObjectConverter

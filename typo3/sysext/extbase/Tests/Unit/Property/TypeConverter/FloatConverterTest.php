@@ -20,12 +20,11 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Property\TypeConverter;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+
 /**
- * Testcase for the Float converter
- *
- * @covers \TYPO3\CMS\Extbase\Property\TypeConverter\FloatConverter<extended>
+ * Test case
  */
-class FloatConverterTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+class FloatConverterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Property\TypeConverterInterface

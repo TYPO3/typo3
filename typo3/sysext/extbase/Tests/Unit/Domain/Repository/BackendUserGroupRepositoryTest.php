@@ -23,13 +23,11 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Domain\Repository;
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
- * Testcase for \TYPO3\CMS\Extbase\Domain\Repository\BackendUserGroupRepository
- *
- * @author Markus Günther <mail@markus-guenther.de>
- * @api
+ * Test case
  */
-class BackendUserGroupRepositoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+class BackendUserGroupRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test

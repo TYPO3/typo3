@@ -29,9 +29,9 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Mvc\Web\Routing;
  ***************************************************************/
 
 /**
- * Uri Builder Test Class
+ * Test case
  */
-class UriBuilderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+class UriBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface

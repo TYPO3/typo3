@@ -22,11 +22,9 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator;
  *                                                                        */
 
 /**
- * Testcase for the Conjunction Validator
- *
- * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
+ * Test case
  */
-class CollectionValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+class CollectionValidatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @var string

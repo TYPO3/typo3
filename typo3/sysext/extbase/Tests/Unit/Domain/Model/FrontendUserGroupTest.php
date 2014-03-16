@@ -25,13 +25,11 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Domain\Model;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
- * Testcase for \TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup.
- *
- * @author Markus Günther <mail@markus-guenther.de>
- * @api
+ * Test case
  */
-class FrontendUserGroupTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+class FrontendUserGroupTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup

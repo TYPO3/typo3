@@ -25,10 +25,11 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Service;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
- * Testcase for class \TYPO3\CMS\Extbase\Service\TypoScriptService
+ * Test case
  */
-class TypoScriptServiceTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+class TypoScriptServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * data provider for convertTypoScriptArrayToPlainArray
