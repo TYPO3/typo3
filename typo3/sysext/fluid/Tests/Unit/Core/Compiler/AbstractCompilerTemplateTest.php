@@ -23,10 +23,11 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\Core\Compiler;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
- * Testcase for AbstractCompilerTemplate
+ * Test case
  */
-class AbstractCompilerTemplateTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+class AbstractCompilerTemplateTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test

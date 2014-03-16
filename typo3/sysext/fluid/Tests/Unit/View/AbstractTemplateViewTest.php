@@ -12,9 +12,9 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\View;
  *                                                                        */
 
 /**
- * Testcase for the TemplateView
+ * Test case
  */
-class AbstractTemplateViewTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+class AbstractTemplateViewTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @var \TYPO3\CMS\Fluid\View\AbstractTemplateView

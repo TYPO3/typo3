@@ -20,10 +20,11 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\View;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+
 /**
- * Testcase for the StandaloneView
+ * Test case
  */
-class StandaloneViewTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+class StandaloneViewTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @var array A backup of registered singleton instances

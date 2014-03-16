@@ -12,9 +12,9 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Format;
  *                                                                        */
 
 /**
- * Test for \TYPO3\CMS\Fluid\ViewHelpers\Format\NumberViewHelper
+ * Test case
  */
-class NumberViewHelperTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+class NumberViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test

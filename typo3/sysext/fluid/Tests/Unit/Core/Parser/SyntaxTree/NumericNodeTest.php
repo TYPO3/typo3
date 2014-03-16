@@ -12,10 +12,9 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\Core\Parser\SyntaxTree;
  *                                                                        */
 
 /**
- * Testcase for NumericNode
- *
+ * Test case
  */
-class NumericNodeTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+class NumericNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test

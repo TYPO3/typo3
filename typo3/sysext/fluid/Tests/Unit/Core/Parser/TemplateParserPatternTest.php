@@ -12,9 +12,9 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\Core\Parser;
  *                                                                        */
 
 /**
- * Testcase for Regular expressions in parser
+ * Test case for Regular expressions in parser
  */
-class TemplateParserPatternTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+class TemplateParserPatternTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test

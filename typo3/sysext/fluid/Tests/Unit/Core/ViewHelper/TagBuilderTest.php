@@ -12,9 +12,9 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\Core\ViewHelper;
  *                                                                        */
 
 /**
- * Testcase for TagBuilder
+ * Test case
  */
-class TagBuilderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+class TagBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test

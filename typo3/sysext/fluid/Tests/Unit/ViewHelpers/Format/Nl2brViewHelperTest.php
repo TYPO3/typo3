@@ -12,9 +12,9 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Format;
  *                                                                        */
 
 /**
- * Test for \TYPO3\CMS\Fluid\ViewHelpers\Format\Nl2brViewHelper
+ * Test case
  */
-class Nl2brViewHelperTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+class Nl2brViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test

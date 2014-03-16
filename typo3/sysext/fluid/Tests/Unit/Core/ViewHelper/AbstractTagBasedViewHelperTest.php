@@ -12,9 +12,14 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\Core\ViewHelper;
  *                                                                        */
 
 /**
- * Testcase for TagBasedViewHelper
+ * Test case
  */
-class AbstractTagBasedViewHelperTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+class AbstractTagBasedViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+
+	/**
+	 * @var \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject
+	 */
+	protected $viewHelper;
 
 	public function setUp() {
 		$this->viewHelper = $this->getAccessibleMock('TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\AbstractTagBasedViewHelper', array('dummy'), array(), '', FALSE);

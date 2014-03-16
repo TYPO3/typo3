@@ -10,10 +10,11 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\Core\Rendering;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+
 /**
- * Testcase for ParsingState
+ * Test case
  */
-class RenderingContextTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+class RenderingContextTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * Parsing state

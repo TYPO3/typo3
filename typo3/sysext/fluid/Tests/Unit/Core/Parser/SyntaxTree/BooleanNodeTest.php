@@ -12,9 +12,9 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\Core\Parser\SyntaxTree;
  *                                                                        */
 
 /**
- * Testcase for ViewHelperNode's evaluateBooleanExpression()
+ * Test case
  */
-class BooleanNodeTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+class BooleanNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @var \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode

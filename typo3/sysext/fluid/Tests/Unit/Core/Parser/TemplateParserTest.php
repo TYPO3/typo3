@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\Core\Parser;
  * This is to at least half a system test, as it compares rendered results to
  * expectations, and does not strictly check the parsing...
  */
-class TemplateParserTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+class TemplateParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test

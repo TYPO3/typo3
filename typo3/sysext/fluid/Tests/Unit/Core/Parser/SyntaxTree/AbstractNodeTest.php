@@ -12,9 +12,9 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\Core\Parser\SyntaxTree;
  *                                                                        */
 
 /**
- * An AbstractNode Test
+ * Test case
  */
-class AbstractNodeTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+class AbstractNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	protected $renderingContext;
 

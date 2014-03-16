@@ -12,9 +12,9 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\Core\ViewHelper;
  *                                                                        */
 
 /**
- * Testcase for TemplateVariableContainer
+ * Test case
  */
-class TemplateVariableContainerTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+class TemplateVariableContainerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @var \TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer

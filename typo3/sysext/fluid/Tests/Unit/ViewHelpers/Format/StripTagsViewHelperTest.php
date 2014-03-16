@@ -12,9 +12,9 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Format;
  *                                                                        */
 
 /**
- * Test for \TYPO3\CMS\Fluid\ViewHelpers\Format\StripTagsViewHelper
+ * Test case
  */
-class StripTagsViewHelperTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+class StripTagsViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @var \TYPO3\CMS\Fluid\ViewHelpers\Format\StripTagsViewHelper

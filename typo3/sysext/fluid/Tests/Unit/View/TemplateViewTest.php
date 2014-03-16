@@ -19,9 +19,9 @@ use org\bovigo\vfs\vfsStreamDirectory;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
 /**
- * Testcase for the TemplateView
+ * Test case
  */
-class TemplateViewTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+class TemplateViewTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * Test for #42123

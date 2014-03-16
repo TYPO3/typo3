@@ -12,9 +12,9 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Widget\Controller;
  *                                                                        */
 
 /**
- * Testcase for PaginateController
+ * Test case
  */
-class PaginateControllerTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+class PaginateControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @var \TYPO3\CMS\Fluid\ViewHelpers\Widget\Controller\PaginateController

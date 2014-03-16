@@ -12,9 +12,9 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\Core\Parser\SyntaxTree;
  *                                                                        */
 
 /**
- * Testcase for TextNode
+ * Test case
  */
-class TextNodeTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+class TextNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
