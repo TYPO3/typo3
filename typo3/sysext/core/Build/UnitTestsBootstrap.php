@@ -98,7 +98,7 @@ $_SERVER['SCRIPT_NAME'] = PATH_thisScript;
 require PATH_site . '/typo3/sysext/core/Classes/Core/Bootstrap.php';
 \TYPO3\CMS\Core\Core\Bootstrap::getInstance()
 	->baseSetup()
-	->loadConfigurationAndInitialize(TRUE)
-	// TODO: Maybe load only core extensions here? Also check if we need to change the bootstrap since we have package management now
-	->loadTypo3LoadedExtAndExtLocalconf(FALSE)
-	->applyAdditionalConfigurationSettings();
+	->loadConfigurationAndInitialize(TRUE);
+
+// Load ext_localconf of phpunit. It takes care of registering phpunit classes and dependencies like vfsStream
+require PATH_site . '/typo3conf/ext/phpunit/ext_localconf.php';

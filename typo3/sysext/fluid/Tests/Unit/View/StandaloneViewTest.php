@@ -127,6 +127,11 @@ class StandaloneViewTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->view->_set('templateCompiler', $this->mockTemplateCompiler);
 		\TYPO3\CMS\Core\Utility\GeneralUtility::setSingletonInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager', $this->mockObjectManager);
 		\TYPO3\CMS\Core\Utility\GeneralUtility::addInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer', $this->mockContentObject);
+
+		$mockCacheManager = $this->getMock('TYPO3\\CMS\\Core\\Cache\\CacheManager', array(), array(), '', FALSE);
+		$mockCache = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\PhpFrontend', array(), array(), '', FALSE);
+		$mockCacheManager->expects($this->any())->method('getCache')->will($this->returnValue($mockCache));
+		\TYPO3\CMS\Core\Utility\GeneralUtility::setSingletonInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager', $mockCacheManager);
 	}
 
 	/**
