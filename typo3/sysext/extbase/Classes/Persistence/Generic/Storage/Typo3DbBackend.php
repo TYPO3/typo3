@@ -402,12 +402,12 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 			$preparedStatement->free();
 		} else {
 
+			$sqlString = $statement->getStatement();
 			/**
 			 * @deprecated since 6.2, this block will be removed in two versions
 			 * the deprecation log is in Qom\Statement
 			 */
 			if (!empty($parameters)) {
-				$sqlString = $statement->getStatement();
 				$this->replacePlaceholders($sqlString, $parameters);
 			}
 
