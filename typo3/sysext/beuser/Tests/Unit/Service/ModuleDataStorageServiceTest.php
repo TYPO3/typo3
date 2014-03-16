@@ -28,11 +28,8 @@ namespace TYPO3\CMS\Beuser\Tests\Unit\Service;
 
 /**
  * Test case
- *
- * @author Felix Kopp <felix-source@phorax.com>
- * @author Nikolas Hagelstein <nikolas.hagelstein@gmail.com>
  */
-class ModuleDataStorageServiceTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+class ModuleDataStorageServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
@@ -48,7 +45,16 @@ class ModuleDataStorageServiceTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTes
 		$GLOBALS['BE_USER']->uc['moduleData'] = array();
 
 		/** @var \TYPO3\CMS\Beuser\Service\ModuleDataStorageService $subject */
-		$subject = $this->objectManager->get('TYPO3\\CMS\\Beuser\\Service\\ModuleDataStorageService');
-		$this->assertInstanceOf('TYPO3\\CMS\\Beuser\\Domain\\Model\\ModuleData', $subject->loadModuleData());
+		$subject = $this->getAccessibleMock('TYPO3\\CMS\\Beuser\\Service\\ModuleDataStorageService', array('dummy'), array(), '', FALSE);
+		$objectManagerMock = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManager', array(), array(), '', FALSE);
+		$moduleDataMock = $this->getMock('TYPO3\\CMS\\Beuser\\Domain\\Model\\ModuleData', array(), array(), '', FALSE);
+		$objectManagerMock
+			->expects($this->once())
+			->method('get')
+			->with('TYPO3\\CMS\\Beuser\\Domain\\Model\\ModuleData')
+			->will($this->returnValue($moduleDataMock));
+		$subject->_set('objectManager', $objectManagerMock);
+
+		$this->assertSame($moduleDataMock, $subject->loadModuleData());
 	}
 }

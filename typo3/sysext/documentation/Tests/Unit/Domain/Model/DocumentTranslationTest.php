@@ -25,9 +25,9 @@ namespace TYPO3\CMS\Documentation\Tests\Unit\Domain\Model;
  ***************************************************************/
 
 /**
- * Test case for class \TYPO3\CMS\Documentation\Domain\Model\DocumentTranslation.
+ * Test case
  */
-class DocumentTranslationTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+class DocumentTranslationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @var \TYPO3\CMS\Documentation\Domain\Model\DocumentTranslation

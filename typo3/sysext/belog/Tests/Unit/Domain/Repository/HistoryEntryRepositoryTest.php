@@ -25,11 +25,9 @@ namespace TYPO3\CMS\Belog\Tests\Unit\Domain\Repository;
  ***************************************************************/
 
 /**
- * Testcase
- *
- * @author Oliver Klee <typo3-coding@oliverklee.de>
+ * Test case
  */
-class HistoryEntryRepositoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+class HistoryEntryRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface

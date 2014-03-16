@@ -28,11 +28,9 @@ namespace TYPO3\CMS\Lang\Tests\Unit\Domain\Model;
  ***************************************************************/
 
 /**
- * Testcase for Language
- *
- * @author Wouter Wolters <typo3@wouterwolters.nl>
+ * Test case for Language
  */
-class LanguageTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+class LanguageTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @var \TYPO3\CMS\Lang\Domain\Model\Language

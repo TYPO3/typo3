@@ -25,11 +25,10 @@ namespace TYPO3\CMS\Belog\Tests\Unit\Domain\Model;
  ***************************************************************/
 
 /**
- * Testcase
+ * Test case
  *
- * @author Oliver Klee <typo3-coding@oliverklee.de>
  */
-class LogEntryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+class LogEntryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @var \TYPO3\CMS\Belog\Domain\Model\LogEntry

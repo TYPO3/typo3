@@ -23,12 +23,12 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\ContentObject\Menu;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
- * Testcase for TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject
+ * Test case
  *
- * @author Stefan Galinski <stefan.galinski@gmail.com>
  */
-class AbstractMenuContentObjectTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+class AbstractMenuContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @var \TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject

@@ -25,27 +25,15 @@ namespace TYPO3\CMS\Beuser\Tests\Unit\Domain\Repository;
  ***************************************************************/
 
 /**
- * Testcase for the \TYPO3\CMS\Beuser\Domain\Repository\BackendUserSessionRepository class.
- *
- * @author Felix Kopp <felix-source@phorax.com>
+ * Test case
  */
-class BackendUserSessionRepositoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
-
-	/**
-	 * @var \TYPO3\CMS\Beuser\Domain\Repository\BackendUserSessionRepository
-	 */
-	protected $fixture;
-
-	public function setUp() {
-		$this->objectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerInterface');
-		$this->fixture = new \TYPO3\CMS\Beuser\Domain\Repository\BackendUserSessionRepository($this->objectManager);
-	}
+class BackendUserSessionRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
 	 */
 	public function classCanBeInstantiated() {
-
+		$objectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerInterface');
+		new \TYPO3\CMS\Beuser\Domain\Repository\BackendUserSessionRepository($objectManager);
 	}
-
 }

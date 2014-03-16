@@ -62,8 +62,6 @@ abstract class BaseTestCase extends \PHPUnit_Framework_TestCase {
 	 *         a mock of $originalClassName with access methods added
 	 *
 	 * @throws \InvalidArgumentException
-	 *
-	 * @see \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase::getAccessibleMock
 	 */
 	protected function getAccessibleMock(
 		$originalClassName, array $methods = array(), array $arguments = array(), $mockClassName = '',

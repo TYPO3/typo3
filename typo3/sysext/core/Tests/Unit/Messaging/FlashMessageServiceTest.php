@@ -26,12 +26,11 @@ namespace TYPO3\CMS\Core\Tests\Unit\Messaging;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
- * Testcase for the TYPO3\CMS\Core\Messaging\FlashMessageService class.
- *
- * @author Alexander Schnitzler <alex.schnitzler@typovision.de>
+ * Test case
  */
-class FlashMessageServiceTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+class FlashMessageServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @var \TYPO3\CMS\Core\Messaging\FlashMessageService|\PHPUnit_Framework_MockObject_MockObject|\Tx_Phpunit_Interface_AccessibleObject

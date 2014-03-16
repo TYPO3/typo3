@@ -26,32 +26,22 @@ namespace TYPO3\CMS\Belog\Tests\Unit\Domain\Repository;
 
 /**
  * Test case
- *
- * @author Oliver Klee <typo3-coding@oliverklee.de>
  */
-class LogEntryRepositoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
-
-	/**
-	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings
-	 */
-	protected $querySettings = NULL;
-
-	public function setUp() {
-		$this->querySettings = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\QuerySettingsInterface');
-		$this->objectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerInterface');
-		$this->objectManager->expects($this->any())->method('get')->with('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\QuerySettingsInterface')->will($this->returnValue($this->querySettings));
-	}
+class LogEntryRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
 	 */
 	public function initializeObjectSetsRespectStoragePidToFalse() {
+		/** @var \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings $querySettings */
+		$querySettings = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\QuerySettingsInterface');
+		$objectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerInterface');
+		$objectManager->expects($this->any())->method('get')->with('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\QuerySettingsInterface')->will($this->returnValue($querySettings));
 		$GLOBALS['TYPO3_DB'] = $this->getMock('TYPO3\\CMS\\Core\\Database\\DatabaseConnection', array(), array(), '', FALSE);
-		$this->querySettings->expects($this->atLeastOnce())->method('setRespectStoragePage')->with(FALSE);
+		$querySettings->expects($this->atLeastOnce())->method('setRespectStoragePage')->with(FALSE);
 		/** @var \TYPO3\CMS\Belog\Domain\Repository\LogEntryRepository|\PHPUnit_Framework_MockObject_MockObject $subject */
-		$subject = $this->getMock('TYPO3\\CMS\\Belog\\Domain\\Repository\\LogEntryRepository', array('setDefaultQuerySettings'), array($this->objectManager));
-		$subject->expects($this->once())->method('setDefaultQuerySettings')->with($this->querySettings);
+		$subject = $this->getMock('TYPO3\\CMS\\Belog\\Domain\\Repository\\LogEntryRepository', array('setDefaultQuerySettings'), array($objectManager));
+		$subject->expects($this->once())->method('setDefaultQuerySettings')->with($querySettings);
 		$subject->initializeObject();
 	}
-
 }

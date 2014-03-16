@@ -25,11 +25,10 @@ namespace TYPO3\CMS\Belog\Tests\Unit\Domain\Model;
  ***************************************************************/
 
 /**
- * Testcase for \TYPO3\CMS\Belog\Domain\Model\Constraint
+ * Test case
  *
- * @author Steffen Müller <typo3@t3node.com>
  */
-class ConstraintTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+class ConstraintTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @var \TYPO3\CMS\Belog\Domain\Model\Constraint

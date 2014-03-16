@@ -32,7 +32,7 @@ namespace TYPO3\CMS\Lang\Tests\Unit\Domain\Model;
  *
  * @author Wouter Wolters <typo3@wouterwolters.nl>
  */
-class ExtensionTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+class ExtensionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @var \TYPO3\CMS\Lang\Domain\Model\Extension

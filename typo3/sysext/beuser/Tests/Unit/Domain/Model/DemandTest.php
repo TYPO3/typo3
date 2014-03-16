@@ -28,10 +28,8 @@ namespace TYPO3\CMS\Beuser\Tests\Unit\Domain\Model;
 
 /**
  * Test case for class \TYPO3\CMS\Beuser\Domain\Model\Demand
- *
- * @author Felix Kopp <felix-source@phorax.com>
  */
-class DemandTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+class DemandTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @var \TYPO3\CMS\Beuser\Domain\Model\Demand
