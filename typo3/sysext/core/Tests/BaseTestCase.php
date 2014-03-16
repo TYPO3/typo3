@@ -58,7 +58,7 @@ abstract class BaseTestCase extends \PHPUnit_Framework_TestCase {
 	 * @param boolean $callOriginalClone whether to call the __clone method
 	 * @param boolean $callAutoload whether to call any autoload function
 	 *
-	 * @return \PHPUnit_Framework_MockObject_MockObject|AccessibleObjectInterface
+	 * @return \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface
 	 *         a mock of $originalClassName with access methods added
 	 *
 	 * @throws \InvalidArgumentException
@@ -95,7 +95,7 @@ abstract class BaseTestCase extends \PHPUnit_Framework_TestCase {
 	 *
 	 * @throws \InvalidArgumentException
 	 *
-	 * @return \PHPUnit_Framework_MockObject_MockObject|AccessibleObjectInterface
+	 * @return \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface
 	 *
 	 */
 	protected function getAccessibleMockForAbstractClass(
@@ -121,10 +121,7 @@ abstract class BaseTestCase extends \PHPUnit_Framework_TestCase {
 	 * for calling even protected methods and access of protected properties.
 	 *
 	 * @param string $className Name of class to make available, must not be empty
-	 *
 	 * @return string Fully qualified name of the built class, will not be empty
-	 *
-	 * @see Tx_Extbase_Tests_Unit_BaseTestCase::buildAccessibleProxy
 	 */
 	protected function buildAccessibleProxy($className) {
 		$accessibleClassName = uniqid('Tx_Phpunit_AccessibleProxy');

@@ -2854,7 +2854,7 @@ class Tx_Extbase_SignalSlot_Exception_InvalidSlotException extends \TYPO3\CMS\Ex
 /**
  * @deprecated since 6.0 will be removed in 7.0
  */
-class Tx_Extbase_Tests_Unit_BaseTestCase extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {}
+class Tx_Extbase_Tests_Unit_BaseTestCase extends \TYPO3\CMS\Core\Tests\UnitTestCase {}
 
 /**
  * @deprecated since 6.0 will be removed in 7.0
