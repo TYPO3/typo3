@@ -138,7 +138,7 @@ class ExtensionCompatibilityTester extends AbstractAjaxAction {
 	 * @param \ArrayAccess $extension
 	 * @return void
 	 */
-	protected function loadExtTablesForExtension($extensionKey, \ArrayAccess $extension) {
+	protected function loadExtTablesForExtension($extensionKey, array $extension) {
 		// In general it is recommended to not rely on it to be globally defined in that
 		// scope, but we can not prohibit this without breaking backwards compatibility
 		global $T3_SERVICES, $T3_VAR, $TYPO3_CONF_VARS;
@@ -164,7 +164,7 @@ class ExtensionCompatibilityTester extends AbstractAjaxAction {
 	 * @param \ArrayAccess $extension
 	 * @return void
 	 */
-	protected function loadExtLocalconfForExtension($extensionKey, \ArrayAccess $extension) {
+	protected function loadExtLocalconfForExtension($extensionKey, array $extension) {
 		// This is the main array meant to be manipulated in the ext_localconf.php files
 		// In general it is recommended to not rely on it to be globally defined in that
 		// scope but to use $GLOBALS['TYPO3_CONF_VARS'] instead.
