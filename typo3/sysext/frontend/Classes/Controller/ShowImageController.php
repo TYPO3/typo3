@@ -161,9 +161,9 @@ EOF;
 	public function main() {
 		$processedImage = $this->processImage();
 		$imageTagMarkers = array(
-			'###publicUrl###' => $processedImage->getPublicUrl(),
-			'###alt###' => ($this->file->getProperty('alternative') ?: $this->title),
-			'###title###' => ($this->file->getProperty('title') ?: $this->title)
+			'###publicUrl###' => htmlspecialchars($processedImage->getPublicUrl()),
+			'###alt###' => htmlspecialchars($this->file->getProperty('alternative') ?: $this->title),
+			'###title###' => htmlspecialchars($this->file->getProperty('title') ?: $this->title)
 		);
 		$this->imageTag = str_replace(array_keys($imageTagMarkers), array_values($imageTagMarkers), $this->imageTag);
 		if ($this->wrap !== '|') {
