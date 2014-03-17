@@ -206,6 +206,7 @@ class RteMagicImagesUpdateWizard extends AbstractUpdate {
 						'hash=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($refRecord['hash'], 'sys_refindex'),
 						array(
 							'ref_table'  => 'sys_file',
+							'softref_key' => 'rtehtmlarea_images',
 							'ref_uid'    => $file->getUid(),
 							'ref_string' => $fileadminDirectory . $targetFileName
 						)

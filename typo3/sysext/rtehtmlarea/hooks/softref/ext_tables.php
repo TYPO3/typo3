@@ -10,7 +10,10 @@ foreach ($tempTables as $table) {
 	foreach ($GLOBALS['TCA'][$table]['columns'] as $column => $config) {
 		if ($config['config']['softref']) {
 			if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList($config['config']['softref'], 'images')) {
-				$GLOBALS['TCA'][$table]['columns'][$column]['config']['softref'] = 'rtehtmlarea_images,' . $GLOBALS['TCA'][$table]['columns'][$column]['config']['softref'];
+				// Remove obsolete soft reference key 'images'
+				// The references from RTE content to the original images are handled with the key 'rtehtmlarea_images'.
+				$softReferences = 'rtehtmlarea_images,' . \TYPO3\CMS\Core\Utility\GeneralUtility::rmFromList('images', $config['config']['softref']);
+				$GLOBALS['TCA'][$table]['columns'][$column]['config']['softref'] = $softReferences;
 			}
 		} else {
 			if ($config['config']['type'] == 'text') {
