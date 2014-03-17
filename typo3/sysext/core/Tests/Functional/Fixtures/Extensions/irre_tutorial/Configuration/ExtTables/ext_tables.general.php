@@ -124,4 +124,8 @@ if (!defined('TYPO3_MODE')) {
 	'tt_content',
 	'--div--;LLL:EXT:irre_tutorial/Resources/Private/Language/locallang_db.xml:tt_content.div.irre, tx_irretutorial_1nff_hotels;;;;1-1-1, tx_irretutorial_1ncsv_hotels, tx_irretutorial_flexform'
 );
+
+$GLOBALS['TCA']['tt_content']['ctrl']['shadowColumnsForNewPlaceholders'] = 'tx_irretutorial_1ncsv_hotels';
+$GLOBALS['TCA']['tt_content']['ctrl']['shadowColumnsForMovePlaceholders'] = 'tx_irretutorial_1ncsv_hotels';
+
 ?>

@@ -51,6 +51,8 @@ class OneToNCSVTest extends AbstractOneToNTestCase {
 	 * @test
 	 */
 	public function areAllChildrenVersionizedWithParent() {
+		$this->markTestSkipped('Will be replaced by ActionTests...');
+
 		$liveElements = $this->versionizeAllChildrenWithParent();
 		$this->assertWorkspaceVersions($liveElements);
 
@@ -81,6 +83,8 @@ class OneToNCSVTest extends AbstractOneToNTestCase {
 	 * @test
 	 */
 	public function areExistingChildVersionsUsedOnParentVersioning() {
+		$this->markTestSkipped('Will be replaced by ActionTests...');
+
 		$childElements = array(
 			self::TABLE_Offer => '1',
 		);
@@ -347,6 +351,8 @@ class OneToNCSVTest extends AbstractOneToNTestCase {
 	 * @test
 	 */
 	public function isChildPublishedSeparatelyIfParentIsNotVersionized() {
+		$this->markTestSkipped('Will be replaced by ActionTests...');
+
 		$childElements = array(
 			self::TABLE_Offer => '1',
 		);
@@ -406,6 +412,8 @@ class OneToNCSVTest extends AbstractOneToNTestCase {
 	 * @test
 	 */
 	public function isChildSwappedSeparatelyIfParentIsNotVersionized() {
+		$this->markTestSkipped('Will be replaced by ActionTests...');
+
 		$childElements = array(
 			self::TABLE_Offer => '1',
 		);

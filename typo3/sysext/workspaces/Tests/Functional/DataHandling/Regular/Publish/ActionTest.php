@@ -234,7 +234,12 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Reg
 	 */
 	public function copyPage() {
 		parent::copyPage();
-		$this->actionService->publishRecord(self::TABLE_Page, $this->recordIds['newPageId']);
+		$this->actionService->publishRecords(
+			array(
+				self::TABLE_Page => array($this->recordIds['newPageId']),
+				self::TABLE_Content => array($this->recordIds['newContentIdFirst'], $this->recordIds['newContentIdLast']),
+			)
+		);
 		$this->assertAssertionDataSet('copyPage');
 
 		$responseContent = $this->getFrontendResponse($this->recordIds['newPageId'], 0)->getResponseContent();

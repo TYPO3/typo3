@@ -815,9 +815,10 @@ class DataPreprocessor {
 	 * @todo Define visibility
 	 */
 	public function getDataIdList($elements, $fieldConfig, $row, $table) {
+		$liveDefaultId = $this->getLiveDefaultId($table, $row['uid']);
 		$loadDB = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\RelationHandler');
 		$loadDB->registerNonTableValues = $fieldConfig['config']['allowNonIdValues'] ? 1 : 0;
-		$loadDB->start(implode(',', $elements), $fieldConfig['config']['foreign_table'] . ',' . $fieldConfig['config']['neg_foreign_table'], $fieldConfig['config']['MM'], $row['uid'], $table, $fieldConfig['config']);
+		$loadDB->start(implode(',', $elements), $fieldConfig['config']['foreign_table'] . ',' . $fieldConfig['config']['neg_foreign_table'], $fieldConfig['config']['MM'], $liveDefaultId, $table, $fieldConfig['config']);
 		$idList = $loadDB->convertPosNeg($loadDB->getValueArray(), $fieldConfig['config']['foreign_table'], $fieldConfig['config']['neg_foreign_table']);
 		return $idList;
 	}
@@ -935,6 +936,22 @@ class DataPreprocessor {
 	 */
 	public function sL($in) {
 		return $GLOBALS['LANG']->sL($in);
+	}
+
+	/**
+	 * Gets the record uid of the live default record. If already
+	 * pointing to the live record, the submitted record uid is returned.
+	 *
+	 * @param string $tableName
+	 * @param int $id
+	 * @return int
+	 */
+	protected function getLiveDefaultId($tableName, $id) {
+		$liveDefaultId = BackendUtility::getLiveVersionIdOfRecord($tableName, $id);
+		if ($liveDefaultId === NULL) {
+			$liveDefaultId = $id;
+		}
+		return $liveDefaultId;
 	}
 
 }

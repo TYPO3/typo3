@@ -20,6 +20,8 @@ $TCA['tx_irretutorial_1ncsv_hotel'] = array(
 		'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY).'Resources/Public/Icons/icon_tx_irretutorial_hotel.gif',
 		'versioningWS' => 2,
 		'origUid' => 't3_origuid',
+		'shadowColumnsForNewPlaceholders' => 'offers',
+		'shadowColumnsForMovePlaceholders' => 'offers',
 		'dividers2tabs' => TRUE,
 	),
 	'feInterface' => array(
@@ -49,6 +51,8 @@ $TCA['tx_irretutorial_1ncsv_offer'] = array(
 		'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY).'Resources/Public/Icons/icon_tx_irretutorial_offer.gif',
 		'versioningWS' => 2,
 		'origUid' => 't3_origuid',
+		'shadowColumnsForNewPlaceholders' => 'prices',
+		'shadowColumnsForMovePlaceholders' => 'prices',
 		'dividers2tabs' => TRUE,
 	),
 	'feInterface' => array(

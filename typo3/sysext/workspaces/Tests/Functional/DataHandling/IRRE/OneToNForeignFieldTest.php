@@ -867,6 +867,8 @@ class OneToNForeignFieldTest extends AbstractOneToNTestCase {
 	 * @test
 	 */
 	public function areAllChildrenVersionizedWithParent() {
+		$this->markTestSkipped('Will be replaced by ActionTests...');
+
 		$liveElements = $this->versionizeAllChildrenWithParent();
 		$this->assertWorkspaceVersions($liveElements);
 
@@ -899,6 +901,8 @@ class OneToNForeignFieldTest extends AbstractOneToNTestCase {
 	 * @test
 	 */
 	public function areExistingChildVersionsUsedOnParentVersioning() {
+		$this->markTestSkipped('Will be replaced by ActionTests...');
+
 		$childElements = array(
 			self::TABLE_Offer => '1',
 		);
@@ -1145,6 +1149,8 @@ class OneToNForeignFieldTest extends AbstractOneToNTestCase {
 	 * @test
 	 */
 	public function isChildPublishedSeparatelyIfParentIsNotVersionized() {
+		$this->markTestSkipped('Will be replaced by ActionTests...');
+
 		$childElements = array(
 			self::TABLE_Offer => '1',
 		);
@@ -1204,6 +1210,8 @@ class OneToNForeignFieldTest extends AbstractOneToNTestCase {
 	 * @test
 	 */
 	public function isChildSwappedSeparatelyIfParentIsNotVersionized() {
+		$this->markTestSkipped('Will be replaced by ActionTests...');
+
 		$childElements = array(
 			self::TABLE_Offer => '1',
 		);
@@ -1265,6 +1273,8 @@ class OneToNForeignFieldTest extends AbstractOneToNTestCase {
 	 * @test
 	 */
 	public function isSortingOrderOfChildRecordsPreservedIfParentIsSwapped() {
+		$this->markTestSkipped('Will be replaced by ActionTests...');
+
 		$this->setWorkspacesConsiderReferences(TRUE);
 
 		$this->versionizeAllChildrenWithParent();
@@ -1344,6 +1354,8 @@ class OneToNForeignFieldTest extends AbstractOneToNTestCase {
 	 * @test
 	 */
 	public function doChildRecordsHaveCorrectSortingOrderOnCreation() {
+		$this->markTestSkipped('Will be replaced by ActionTests...');
+
 		$elements = $this->getElementStructureForEditing(
 			array(
 				self::TABLE_Hotel => 1,
@@ -1380,6 +1392,8 @@ class OneToNForeignFieldTest extends AbstractOneToNTestCase {
 	 * @test
 	 */
 	public function doNewChildRecordsOfPageHaveCorrectSortingOrderOnCreation() {
+		$this->markTestSkipped('Will be replaced by ActionTests...');
+
 		$elements = $this->getElementStructureForEditing(
 			array(
 				self::TABLE_Pages => self::VALUE_Pid,
@@ -1416,6 +1430,8 @@ class OneToNForeignFieldTest extends AbstractOneToNTestCase {
 	 * @test
 	 */
 	public function doNewChildRecordsOfPageHaveCorrectSortingOrderAfterPublishing() {
+		$this->markTestSkipped('Will be replaced by ActionTests...');
+
 		$this->setWorkspacesConsiderReferences(TRUE);
 
 		$elements = $this->getElementStructureForEditing(
@@ -1460,6 +1476,8 @@ class OneToNForeignFieldTest extends AbstractOneToNTestCase {
 	 * @test
 	 */
 	public function doAddedChildRecordsOfPageHaveCorrectSortingOrderOnCreation() {
+		$this->markTestSkipped('Will be replaced by ActionTests...');
+
 		$elements = $this->getElementStructureForEditing(
 			array(
 				self::TABLE_Pages => self::VALUE_Pid,
@@ -1491,6 +1509,8 @@ class OneToNForeignFieldTest extends AbstractOneToNTestCase {
 	 * @test
 	 */
 	public function doAddedChildRecordsOfPageHaveCorrectSortingOrderAfterPublishing() {
+		$this->markTestSkipped('Will be replaced by ActionTests...');
+
 		$this->setWorkspacesConsiderReferences(TRUE);
 
 		$elements = $this->getElementStructureForEditing(

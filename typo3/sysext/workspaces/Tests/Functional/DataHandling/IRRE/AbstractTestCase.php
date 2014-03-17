@@ -365,7 +365,7 @@ abstract class AbstractTestCase extends \TYPO3\CMS\Core\Tests\Functional\DataHan
 	}
 
 	public function getVersionTceMainCommandMapCallback(DataHandler $tceMain, array $commandMap) {
-		$this->versionTceMainCommandMap = GeneralUtility::makeInstance('TYPO3\\CMS\\Version\\DataHandler\\CommandMap', $this->versionTceMainHookMock, $tceMain, $commandMap);
+		$this->versionTceMainCommandMap = GeneralUtility::makeInstance('TYPO3\\CMS\\Version\\DataHandler\\CommandMap', $this->versionTceMainHookMock, $tceMain, $commandMap, self::VALUE_WorkspaceId);
 		return $this->versionTceMainCommandMap;
 	}
 

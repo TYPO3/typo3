@@ -167,6 +167,25 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 	public function copyPage() {
 		$newTableIds = $this->actionService->copyRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_PageIdTarget);
 		$this->recordIds['newPageId'] = $newTableIds[self::TABLE_Page][self::VALUE_PageId];
+		$this->recordIds['newContentIdFirst'] = $newTableIds[self::TABLE_Content][self::VALUE_ContentIdFirst];
+		$this->recordIds['newContentIdLast'] = $newTableIds[self::TABLE_Content][self::VALUE_ContentIdLast];
+	}
+
+	/**
+	 * @test
+	 * @see DataSet/Assertion/copyPageWHotelBeforeParentContent.csv
+	 */
+	public function copyPageWithHotelBeforeParentContent() {
+		// Ensure hotels get processed first
+		$GLOBALS['TCA'] = array_merge(
+			array(self::TABLE_Hotel => $GLOBALS['TCA'][self::TABLE_Hotel]),
+			$GLOBALS['TCA']
+		);
+
+		$newTableIds = $this->actionService->copyRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_PageIdTarget);
+		$this->recordIds['newPageId'] = $newTableIds[self::TABLE_Page][self::VALUE_PageId];
+		$this->recordIds['newContentIdFirst'] = $newTableIds[self::TABLE_Content][self::VALUE_ContentIdFirst];
+		$this->recordIds['newContentIdLast'] = $newTableIds[self::TABLE_Content][self::VALUE_ContentIdLast];
 	}
 
 	/**
@@ -245,6 +264,26 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 		$this->recordIds['newHotelId'] = $newTableIds[self::TABLE_Hotel][0];
 		$localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Content, $this->recordIds['newContentId'], self::VALUE_LanguageId);
 		$this->recordIds['localizedContentId'] = $localizedTableIds[self::TABLE_Content][$this->recordIds['newContentId']];
+		$this->recordIds['localizedHotelId'] = $localizedTableIds[self::TABLE_Hotel][$this->recordIds['newHotelId']];
+	}
+
+	/**
+	 * @see DataSet/Assertion/createNLocalizeParentContentNHotelNOfferChildrenNDiscardCreatedParent.csv
+	 */
+	public function createAndLocalizeParentContentWithHotelAndOfferChildrenAndDiscardCreatedParent() {
+		$newTableIds = $this->actionService->createNewRecords(
+			self::VALUE_PageId,
+			array(
+				self::TABLE_Content => array('header' => 'Testing #1', self::FIELD_ContentHotel => '__nextUid'),
+				self::TABLE_Hotel => array('title' => 'Hotel #1', self::FIELD_HotelOffer => '__nextUid'),
+				self::TABLE_Offer => array('title' => 'Offer #1'),
+			)
+		);
+		$this->recordIds['newContentId'] = $newTableIds[self::TABLE_Content][0];
+		$this->recordIds['versionedNewContentId'] = $this->actionService->getDataHander()->getAutoVersionId(self::TABLE_Content, $this->recordIds['newContentId']);
+		$localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Content, $this->recordIds['newContentId'], self::VALUE_LanguageId);
+		$this->recordIds['localizedContentId'] = $localizedTableIds[self::TABLE_Content][$this->recordIds['newContentId']];
+		$this->actionService->clearWorkspaceRecord(self::TABLE_Content, $this->recordIds['versionedNewContentId']);
 	}
 
 	/**
@@ -352,6 +391,35 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 			self::VALUE_ContentIdFirst,
 			array(self::FIELD_ContentHotel => '3'),
 			array(self::TABLE_Hotel => array(4))
+		);
+	}
+
+	/**
+	 * @see DataSet/modifyNDiscardNModifyParentWHotelChild.csv
+	 */
+	public function modifyAndDiscardAndModifyParentWithHotelChild() {
+		$this->actionService->modifyRecords(
+			self::VALUE_PageId,
+			array(
+				self::TABLE_Content => array('uid' => self::VALUE_ContentIdFirst, 'header' => 'Testing #1', self::FIELD_ContentHotel => '3,4'),
+				self::TABLE_Hotel => array('uid' => 4, 'title' => 'Testing #1'),
+			)
+		);
+		$this->recordIds['versionedContentId'] = $this->actionService->getDataHander()->getAutoVersionId(self::TABLE_Content, self::VALUE_ContentIdFirst);
+		$this->recordIds['versionedHotelIdFirst'] = $this->actionService->getDataHander()->getAutoVersionId(self::TABLE_Hotel, 3);
+		$this->recordIds['versionedHotelIdSecond'] = $this->actionService->getDataHander()->getAutoVersionId(self::TABLE_Hotel, 4);
+		$this->actionService->clearWorkspaceRecords(
+			array(
+				self::TABLE_Content => array($this->recordIds['versionedContentId']),
+				self::TABLE_Hotel => array($this->recordIds['versionedHotelIdSecond']),
+			)
+		);
+		$this->actionService->modifyRecords(
+			self::VALUE_PageId,
+			array(
+				self::TABLE_Content => array('uid' => self::VALUE_ContentIdFirst, 'header' => 'Testing #2', self::FIELD_ContentHotel => '3,4'),
+				self::TABLE_Hotel => array('uid' => 4, 'title' => 'Testing #2'),
+			)
 		);
 	}
 

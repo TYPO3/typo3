@@ -355,11 +355,13 @@ class ActionHandler extends \TYPO3\CMS\Workspaces\ExtDirect\AbstractHandler {
 		$recipients = $this->getRecipientList($parameters->receipients, $parameters->additional, $stageId);
 		foreach ($parameters->affects as $tableName => $items) {
 			foreach ($items as $item) {
+				// Publishing uses live id in command map
 				if ($stageId == \TYPO3\CMS\Workspaces\Service\StagesService::STAGE_PUBLISH_EXECUTE_ID) {
 					$cmdMapArray[$tableName][$item->t3ver_oid]['version']['action'] = 'swap';
 					$cmdMapArray[$tableName][$item->t3ver_oid]['version']['swapWith'] = $item->uid;
 					$cmdMapArray[$tableName][$item->t3ver_oid]['version']['comment'] = $comment;
 					$cmdMapArray[$tableName][$item->t3ver_oid]['version']['notificationAlternativeRecipients'] = $recipients;
+				// Setting stage uses version id in command map
 				} else {
 					$cmdMapArray[$tableName][$item->uid]['version']['action'] = 'setStage';
 					$cmdMapArray[$tableName][$item->uid]['version']['stageId'] = $stageId;

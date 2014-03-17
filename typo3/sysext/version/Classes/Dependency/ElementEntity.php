@@ -37,6 +37,12 @@ class ElementEntity {
 	const EVENT_CreateChildReference = 'TYPO3\\CMS\\Version\\Dependency\\ElementEntity::createChildReference';
 	const EVENT_CreateParentReference = 'TYPO3\\CMS\\Version\\Dependency\\ElementEntity::createParentReference';
 	const RESPONSE_Skip = 'TYPO3\\CMS\\Version\\Dependency\\ElementEntity->skip';
+
+	/**
+	 * @var bool
+	 */
+	protected $invalid = FALSE;
+
 	/**
 	 * @var string
 	 */
@@ -104,6 +110,20 @@ class ElementEntity {
 	}
 
 	/**
+	 * @param bool $invalid
+	 */
+	public function setInvalid($invalid) {
+		$this->invalid = (bool)$invalid;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function isInvalid() {
+		return $this->invalid;
+	}
+
+	/**
 	 * Gets the table.
 	 *
 	 * @return string
@@ -119,6 +139,15 @@ class ElementEntity {
 	 */
 	public function getId() {
 		return $this->id;
+	}
+
+	/**
+	 * Sets the id.
+	 *
+	 * @param int $id
+	 */
+	public function setId($id) {
+		$this->id = (int)$id;
 	}
 
 	/**
@@ -191,13 +220,19 @@ class ElementEntity {
 	public function getChildren() {
 		if (!isset($this->children)) {
 			$this->children = array();
-			$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'sys_refindex', 'tablename=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->table, 'sys_refindex') . ' AND recuid=' . $this->id);
+			$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'sys_refindex', 'tablename=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->table, 'sys_refindex') . ' AND recuid=' . $this->id . ' AND workspace=' . $this->dependency->getWorkspace(), '', 'sorting');
 			if (is_array($rows)) {
 				foreach ($rows as $row) {
-					$reference = $this->getDependency()->getFactory()->getReferencedElement($row['ref_table'], $row['ref_uid'], $row['field'], array(), $this->getDependency());
-					$callbackResponse = $this->dependency->executeEventCallback(self::EVENT_CreateChildReference, $this, array('reference' => $reference));
+					$arguments = array('table' => $row['ref_table'], 'id' => $row['ref_uid'], 'field' => $row['field'], 'scope' => self::REFERENCES_ChildOf);
+					$callbackResponse = $this->dependency->executeEventCallback(self::EVENT_CreateChildReference, $this, $arguments);
 					if ($callbackResponse !== self::RESPONSE_Skip) {
-						$this->children[] = $reference;
+						$this->children[] = $this->getDependency()->getFactory()->getReferencedElement(
+							$row['ref_table'],
+							$row['ref_uid'],
+							$row['field'],
+							array(),
+							$this->getDependency()
+						);
 					}
 				}
 			}
@@ -213,13 +248,19 @@ class ElementEntity {
 	public function getParents() {
 		if (!isset($this->parents)) {
 			$this->parents = array();
-			$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'sys_refindex', 'ref_table=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->table, 'sys_refindex') . ' AND deleted=0 AND ref_uid=' . $this->id);
+			$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'sys_refindex', 'ref_table=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->table, 'sys_refindex') . ' AND deleted=0 AND ref_uid=' . $this->id . ' AND workspace=' . $this->dependency->getWorkspace(), '', 'sorting');
 			if (is_array($rows)) {
 				foreach ($rows as $row) {
-					$reference = $this->getDependency()->getFactory()->getReferencedElement($row['tablename'], $row['recuid'], $row['field'], array(), $this->getDependency());
-					$callbackResponse = $this->dependency->executeEventCallback(self::EVENT_CreateParentReference, $this, array('reference' => $reference));
+					$arguments = array('table' => $row['tablename'], 'id' => $row['recuid'], 'field' => $row['field'], 'scope' => self::REFERENCES_ParentOf);
+					$callbackResponse = $this->dependency->executeEventCallback(self::EVENT_CreateParentReference, $this, $arguments);
 					if ($callbackResponse !== self::RESPONSE_Skip) {
-						$this->parents[] = $reference;
+						$this->parents[] = $this->getDependency()->getFactory()->getReferencedElement(
+							$row['tablename'],
+							$row['recuid'],
+							$row['field'],
+							array(),
+							$this->getDependency()
+						);
 					}
 				}
 			}
@@ -297,9 +338,9 @@ class ElementEntity {
 	 * @return array
 	 */
 	public function getRecord() {
-		if (!isset($this->record)) {
+		if (empty($this->record['uid']) || (int)$this->record['uid'] !== $this->id) {
 			$this->record = array();
-			$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', $this->getTable(), 'uid=' . $this->getId());
+			$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid,pid,t3ver_wsid,t3ver_state,t3ver_oid', $this->getTable(), 'uid=' . $this->getId());
 			if (is_array($rows)) {
 				$this->record = $rows[0];
 			}

@@ -238,7 +238,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 
 	/**
 	 * @test
-	 * @see DataSet/Assertion/copyPageRecord.csv
+	 * @see DataSet/Assertion/copyPageWHotelBeforeParentContent.csv
 	 */
 	public function copyPageWithHotelBeforeParentContent() {
 		// Ensure hotels get processed first

@@ -3386,13 +3386,28 @@ class DataHandler {
 					} else {
 						if (!\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($realDestPid)) {
 							$newId = $this->copyRecord($v['table'], $v['id'], -$v['id']);
-						} elseif ($realDestPid == -1 && BackendUtility::isTableWorkspaceEnabled($v['table'])) {
-							$workspaceVersion = BackendUtility::getWorkspaceVersionOfRecord($this->BE_USER->workspace, $v['table'], $v['id'], 'uid');
-							// If workspace version does not exist, create a new one:
-							if ($workspaceVersion === FALSE) {
-								$newId = $this->versionizeRecord($v['table'], $v['id'], isset($workspaceOptions['label']) ? $workspaceOptions['label'] : 'Auto-created for WS #' . $this->BE_USER->workspace, isset($workspaceOptions['delete']) ? $workspaceOptions['delete'] : FALSE);
+						// If the destination page id is a NEW string, keep it on the same page
+						} elseif ($this->BE_USER->workspace > 0 && BackendUtility::isTableWorkspaceEnabled($v['table'])) {
+							// A filled $workspaceOptions indicated that this call
+							// has it's origin in previous versionizeRecord() processing
+							if (count($workspaceOptions)) {
+								// Versions use live default id, thus the "new"
+								// id is the original live default child record
+								$newId = $v['id'];
+								$this->versionizeRecord(
+									$v['table'], $v['id'],
+									(isset($workspaceOptions['label']) ? $workspaceOptions['label'] : 'Auto-created for WS #' . $this->BE_USER->workspace),
+									(isset($workspaceOptions['delete']) ? $workspaceOptions['delete'] : FALSE)
+								);
+							// Otherwise just use plain copyRecord() to create placeholders etc.
 							} else {
-								$newId = $workspaceVersion['uid'];
+								// If a record has been copied already during this request,
+								// prevent superfluous duplication and use the existing copy
+								if (isset($this->copyMappingArray[$v['table']][$v['id']])) {
+									$newId = $this->copyMappingArray[$v['table']][$v['id']];
+								} else {
+									$newId = $this->copyRecord($v['table'], $v['id'], $realDestPid);
+								}
 							}
 						} else {
 							// If a record has been copied already during this request,
@@ -4746,25 +4761,27 @@ class DataHandler {
 									$overrideArray[$GLOBALS['TCA'][$table]['ctrl']['editlock']] = 0;
 								}
 								// Checking if the record already has a version in the current workspace of the backend user
-								$workspaceCheck = TRUE;
 								if ($this->BE_USER->workspace !== 0) {
 									// Look for version already in workspace:
-									$workspaceCheck = !BackendUtility::getWorkspaceVersionOfRecord($this->BE_USER->workspace, $table, $id, 'uid');
+									$versionRecord = BackendUtility::getWorkspaceVersionOfRecord($this->BE_USER->workspace, $table, $id, 'uid');
 								}
-								if ($workspaceCheck) {
+								// Create new version of the record and return the new uid
+								if (empty($versionRecord['uid'])) {
 									// Create raw-copy and return result:
 									// The information of the label to be used for the workspace record
 									// as well as the information whether the record shall be removed
 									// must be forwarded (creating remove placeholders on a workspace are
 									// done by copying the record and override several fields).
-									$workspaceOptions = array();
-									if ($delete) {
-										$workspaceOptions['delete'] = $delete;
-										$workspaceOptions['label'] = $label;
-									}
+									$workspaceOptions = array(
+										'delete' => $delete,
+										'label' => $label,
+									);
 									return $this->copyRecord_raw($table, $id, -1, $overrideArray, $workspaceOptions);
+								// Reuse the existing record and return its uid
+								// (prior to TYPO3 CMS 6.2, an error was thrown here, which
+								// did not make much sense since the information is available)
 								} else {
-									$this->newlog('Record "' . $table . ':' . $id . '" you wanted to versionize was already a version in the workspace (wsid=' . $this->BE_USER->workspace . ')!', 1);
+									return $versionRecord['uid'];
 								}
 							} else {
 								$this->newlog('Record cannot be deleted: ' . $this->cannotDeleteRecord($table, $id), 1);
@@ -5071,6 +5088,16 @@ class DataHandler {
 				/** @var $dbAnalysis \TYPO3\CMS\Core\Database\RelationHandler */
 				$dbAnalysis = $this->createRelationHandlerInstance();
 				$dbAnalysis->start($value, $conf['foreign_table'], '', 0, $table, $conf);
+
+				// Keep original (live) item array and update values for specific versioned records
+				$originalItemArray = $dbAnalysis->itemArray;
+				foreach ($dbAnalysis->itemArray as &$item) {
+					$versionedId = $this->getAutoVersionId($item['table'], $item['id']);
+					if (!empty($versionedId)) {
+						$item['id'] = $versionedId;
+					}
+				}
+
 				// Update child records if using pointer fields ('foreign_field'):
 				if ($inlineType == 'field') {
 					$dbAnalysis->writeForeignField($conf, $uid, $theUidToUpdate);
@@ -5085,7 +5112,7 @@ class DataHandler {
 				// Update child records if change to pid is required (only if the current record is not on a workspace):
 				if ($thePidToUpdate) {
 					$updateValues = array('pid' => $thePidToUpdate);
-					foreach ($dbAnalysis->itemArray as $v) {
+					foreach ($originalItemArray as $v) {
 						if ($v['id'] && $v['table'] && is_null(BackendUtility::getLiveVersionIdOfRecord($v['table'], $v['id']))) {
 							$GLOBALS['TYPO3_DB']->exec_UPDATEquery($v['table'], 'uid=' . (int)$v['id'], $updateValues);
 						}
@@ -7476,4 +7503,5 @@ class DataHandler {
 	protected function createRelationHandlerInstance() {
 		return GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\RelationHandler');
 	}
+
 }

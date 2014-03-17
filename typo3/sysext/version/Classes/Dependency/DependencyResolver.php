@@ -32,6 +32,11 @@ namespace TYPO3\CMS\Version\Dependency;
 class DependencyResolver {
 
 	/**
+	 * @var int
+	 */
+	protected $workspace = 0;
+
+	/**
 	 * @var \TYPO3\CMS\Version\Dependency\DependencyEntityFactory
 	 */
 	protected $factory;
@@ -55,6 +60,24 @@ class DependencyResolver {
 	 * @var array
 	 */
 	protected $outerMostParents;
+
+	/**
+	 * Sets the current workspace.
+	 *
+	 * @param int $workspace
+	 */
+	public function setWorkspace($workspace) {
+		$this->workspace = (int) $workspace;
+	}
+
+	/**
+	 * Gets the current workspace.
+	 *
+	 * @return int
+	 */
+	public function getWorkspace() {
+		return $this->workspace;
+	}
 
 	/**
 	 * Sets a callback for a particular event.
@@ -154,7 +177,7 @@ class DependencyResolver {
 	public function getNestedElements(\TYPO3\CMS\Version\Dependency\ElementEntity $outerMostParent) {
 		$outerMostParentName = $outerMostParent->__toString();
 		if (!isset($this->outerMostParents[$outerMostParentName])) {
-			throw new \RuntimeException('Element "' . $outerMostParentName . '" was detected as outermost parent.', 1289318609);
+			throw new \RuntimeException('Element "' . $outerMostParentName . '" was not detected as outermost parent.', 1289318609);
 		}
 		$nestedStructure = array_merge(array($outerMostParentName => $outerMostParent), $outerMostParent->getNestedChildren());
 		return $nestedStructure;

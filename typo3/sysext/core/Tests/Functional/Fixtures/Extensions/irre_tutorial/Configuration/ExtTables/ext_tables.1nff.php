@@ -22,6 +22,7 @@ $TCA['tx_irretutorial_1nff_hotel'] = array(
 		'origUid' => 't3_origuid',
 		// @see http://forge.typo3.org/issues/29278 which solves it implicitly in the Core
 		// 'shadowColumnsForNewPlaceholders' => 'parentid,parenttable',
+		'shadowColumnsForMovePlaceholders' => 'parentid,parenttable',
 		'dividers2tabs' => TRUE,
 	),
 	'feInterface' => array(
@@ -53,6 +54,7 @@ $TCA['tx_irretutorial_1nff_offer'] = array(
 		'origUid' => 't3_origuid',
 		// @see http://forge.typo3.org/issues/29278 which solves it implicitly in the Core
 		// 'shadowColumnsForNewPlaceholders' => 'parentid,parenttable',
+		'shadowColumnsForMovePlaceholders' => 'parentid,parenttable',
 		'dividers2tabs' => TRUE,
 	),
 	'feInterface' => array(
@@ -84,6 +86,7 @@ $TCA['tx_irretutorial_1nff_price'] = array(
 		'origUid' => 't3_origuid',
 		// @see http://forge.typo3.org/issues/29278 which solves it implicitly in the Core
 		// 'shadowColumnsForNewPlaceholders' => 'parentid,parenttable',
+		'shadowColumnsForMovePlaceholders' => 'parentid,parenttable',
 		'dividers2tabs' => TRUE,
 	),
 	'feInterface' => array(

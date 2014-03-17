@@ -4052,10 +4052,21 @@ class BackendUtility {
 	 * Determines whether a table is enabled for workspaces.
 	 *
 	 * @param string $table Name of the table to be checked
-	 * @return boolean
+	 * @return bool
 	 */
 	static public function isTableWorkspaceEnabled($table) {
-		return isset($GLOBALS['TCA'][$table]['ctrl']['versioningWS']) && $GLOBALS['TCA'][$table]['ctrl']['versioningWS'];
+		return !empty($GLOBALS['TCA'][$table]['ctrl']['versioningWS']);
+	}
+
+	/**
+	 * Determines whether a table is aware of using move placeholders,
+	 * which means 'versioningWS' is set to 2.
+	 *
+	 * @param string $table
+	 * @return bool
+	 */
+	static public function isTableMovePlaceholderAware($table) {
+		return (self::isTableWorkspaceEnabled($table) && (int)$GLOBALS['TCA'][$table]['ctrl']['versioningWS'] === 2);
 	}
 
 	/**

@@ -66,6 +66,8 @@ abstract class AbstractOneToNTestCase extends AbstractTestCase {
 	 * @test
 	 */
 	public function isChildPublishedSeparatelyIfParentIsVersionized() {
+		$this->markTestSkipped('Will be replaced by ActionTests...');
+
 		$this->setExpectedLogEntries(1);
 
 		$this->versionizeAllChildrenWithParent();
@@ -94,6 +96,8 @@ abstract class AbstractOneToNTestCase extends AbstractTestCase {
 	 * @test
 	 */
 	public function isChildSwappedSeparatelyIfParentIsVersionized() {
+		$this->markTestSkipped('Will be replaced by ActionTests...');
+
 		$this->setExpectedLogEntries(2);
 
 		$this->versionizeAllChildrenWithParent();
@@ -136,6 +140,8 @@ abstract class AbstractOneToNTestCase extends AbstractTestCase {
 	 * @test
 	 */
 	public function areAllChildrenSwappedAutomaticallyIfParentIsSwapped() {
+		$this->markTestSkipped('Will be replaced by ActionTests...');
+
 		$this->setWorkspacesConsiderReferences(TRUE);
 
 		$this->versionizeAllChildrenWithParent();
@@ -172,6 +178,8 @@ abstract class AbstractOneToNTestCase extends AbstractTestCase {
 	 * @test
 	 */
 	public function areAllChildrenDoubleSwappedAutomaticallyIfParentIsSwapped() {
+		$this->markTestSkipped('Will be replaced by ActionTests...');
+
 		$this->setWorkspacesConsiderReferences(TRUE);
 
 		$this->versionizeAllChildrenWithParent();
@@ -228,6 +236,8 @@ abstract class AbstractOneToNTestCase extends AbstractTestCase {
 	 * @test
 	 */
 	public function areChildRecordsConsideredToBeRemovedOnEditingParent() {
+		$this->markTestSkipped('Will be replaced by ActionTests...');
+
 		$this->simulateByStructure(
 			$this->getElementStructureForEditing(array(
 				static::TABLE_Hotel => '1',
@@ -250,6 +260,8 @@ abstract class AbstractOneToNTestCase extends AbstractTestCase {
 	 * @test
 	 */
 	public function areChildRecordsConsideredToBeRemovedOnEditingParentAndChildren() {
+		$this->markTestSkipped('Will be replaced by ActionTests...');
+
 		$this->simulateByStructure(
 			$this->getElementStructureForEditing(array(
 				static::TABLE_Hotel => '1',
@@ -293,6 +305,8 @@ abstract class AbstractOneToNTestCase extends AbstractTestCase {
 	 * @test
 	 */
 	public function areNestedChildRecordsConsideredToBeRemovedOnDirectRemoval() {
+		$this->markTestSkipped('Will be replaced by ActionTests...');
+
 		$this->simulateCommand(static::COMMAND_Delete, 1, array(static::TABLE_Offer => 1));
 
 		$this->assertHasDeletePlaceholder(array(
@@ -309,6 +323,8 @@ abstract class AbstractOneToNTestCase extends AbstractTestCase {
 	 * @test
 	 */
 	public function areChildRecordsRevertedOnRevertingTheRelativeRemovedParent() {
+		$this->markTestSkipped('Will be replaced by ActionTests...');
+
 		$this->setWorkspacesConsiderReferences(TRUE);
 
 		$this->simulateByStructure(
@@ -351,6 +367,8 @@ abstract class AbstractOneToNTestCase extends AbstractTestCase {
 	 * @test
 	 */
 	public function areChildRecordsRevertedOnRevertingMultipleElements() {
+		$this->markTestSkipped('Will be replaced by ActionTests...');
+
 		$this->setWorkspacesConsiderReferences(TRUE);
 
 		$this->simulateByStructure(
@@ -402,6 +420,8 @@ abstract class AbstractOneToNTestCase extends AbstractTestCase {
 	 * @test
 	 */
 	public function areParentAndChildRecordsRemovedOnPublishingDeleteAction() {
+		$this->markTestSkipped('Will be replaced by ActionTests...');
+
 		$this->setWorkspacesConsiderReferences(TRUE);
 
 		$this->simulateByStructure(
