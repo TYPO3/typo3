@@ -81,6 +81,29 @@ class ReferenceIndex {
 	public $hashVersion = 1;
 
 	/**
+	 * @var int
+	 */
+	protected $workspaceId = 0;
+
+	/**
+	 * Sets the current workspace id.
+	 *
+	 * @param int $workspaceId
+	 */
+	public function setWorkspaceId($workspaceId) {
+		$this->workspaceId = (int)$workspaceId;
+	}
+
+	/**
+	 * Gets the current workspace id.
+	 *
+	 * @return int
+	 */
+	public function getWorkspaceId() {
+		return $this->workspaceId;
+	}
+
+	/**
 	 * Call this function to update the sys_refindex table for a record (even one just deleted)
 	 * NOTICE: Currently, references updated for a deleted-flagged record will not include those from within flexform fields in some cases where the data structure is defined by another record since the resolving process ignores deleted records! This will also result in bad cleaning up in tcemain I think... Anyway, thats the story of flexforms; as long as the DS can change, lots of references can get lost in no time.
 	 *
@@ -242,6 +265,7 @@ class ReferenceIndex {
 			'softref_id' => $softref_id,
 			'sorting' => $sort,
 			'deleted' => $deleted,
+			'workspace' => $this->getWorkspaceId(),
 			'ref_table' => $ref_table,
 			'ref_uid' => $ref_uid,
 			'ref_string' => $ref_string
@@ -895,7 +919,6 @@ class ReferenceIndex {
 	 * @param boolean $testOnly If set, only a test
 	 * @param boolean $cli_echo If set, output CLI status
 	 * @return array Header and body status content
-	 * @todo Define visibility
 	 */
 	public function updateIndex($testOnly, $cli_echo = FALSE) {
 		$errors = array();
@@ -909,7 +932,8 @@ class ReferenceIndex {
 		// Traverse all tables:
 		foreach ($GLOBALS['TCA'] as $tableName => $cfg) {
 			// Traverse all records in tables, including deleted records:
-			$allRecs = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid', $tableName, '1=1');
+			$fieldNames = (BackendUtility::isTableWorkspaceEnabled($tableName) ? 'uid,t3ver_wsid' : 'uid');
+			$allRecs = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows($fieldNames, $tableName, '1=1');
 			if (!is_array($allRecs)) {
 				// Table exists in $TCA but does not exist in the database
 				GeneralUtility::sysLog(sprintf('Table "%s" exists in $TCA but does not exist in the database. You should run the Database Analyzer in the Install Tool to fix this.', $tableName), 'core', GeneralUtility::SYSLOG_SEVERITY_ERROR);
@@ -919,7 +943,11 @@ class ReferenceIndex {
 			$tableCount++;
 			$uidList = array(0);
 			foreach ($allRecs as $recdat) {
+				/** @var $refIndexObj ReferenceIndex */
 				$refIndexObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\ReferenceIndex');
+				if (isset($recdat['t3ver_wsid'])) {
+					$refIndexObj->setWorkspaceId($recdat['t3ver_wsid']);
+				}
 				$result = $refIndexObj->updateRefIndexTable($tableName, $recdat['uid'], $testOnly);
 				$uidList[] = $recdat['uid'];
 				$recCount++;

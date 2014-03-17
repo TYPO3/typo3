@@ -1030,6 +1030,9 @@ class RelationHandler {
 		if ($this->updateReferenceIndex) {
 			/** @var $refIndexObj \TYPO3\CMS\Core\Database\ReferenceIndex */
 			$refIndexObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\ReferenceIndex');
+			if (BackendUtility::isTableWorkspaceEnabled($table)) {
+				$refIndexObj->setWorkspaceId($GLOBALS['BE_USER']->workspace);
+			}
 			$statisticsArray = $refIndexObj->updateRefIndexTable($table, $id);
 		}
 		return $statisticsArray;
