@@ -19,7 +19,7 @@
 			</f:then>
 		</f:if>
 		<td>
-			<f:format.date format="{dateFormat} {timeFormat}">{session.timestamp}</f:format.date>
+			<f:format.date format="{dateFormat} {timeFormat}" date="@{session.timestamp}" />
 		</td>
 		<td>{session.ip}</td>
 		<td>

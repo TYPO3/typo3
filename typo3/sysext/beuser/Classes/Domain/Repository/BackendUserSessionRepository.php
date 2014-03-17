@@ -53,7 +53,7 @@ class BackendUserSessionRepository extends \TYPO3\CMS\Extbase\Persistence\Reposi
 			$sessions[] = array(
 				'id' => $row['id'],
 				'ip' => $row['ip'],
-				'timestamp' => new \DateTime('@' . $row['timestamp'])
+				'timestamp' => $row['timestamp']
 			);
 		}
 		$GLOBALS['TYPO3_DB']->sql_free_result($res);
