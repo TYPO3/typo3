@@ -252,7 +252,7 @@ class Folder implements FolderInterface {
 	 *
 	 * @param string $localFilePath
 	 * @param string $fileName
-	 * @param string $conflictMode possible value are 'cancel', 'replace'
+	 * @param string $conflictMode possible value are 'cancel', 'replace', 'changeName'
 	 * @return File The file object
 	 */
 	public function addFile($localFilePath, $fileName = NULL, $conflictMode = 'cancel') {
