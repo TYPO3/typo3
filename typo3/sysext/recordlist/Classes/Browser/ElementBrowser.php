@@ -262,15 +262,9 @@ class ElementBrowser {
 	}
 
 	/**
-	 * Calculate path to this script.
-	 *
-	 * Warning: This method is public, but it MUST only be used in hooks if
-	 * needed, not from other outside code.
-	 *
 	 * @return string
-	 * @internal
 	 */
-	public function getThisScript() {
+	protected function getThisScript() {
 		return strpos($this->thisScript, '?') === FALSE ? $this->thisScript . '?' : $this->thisScript . '&';
 	}
 
