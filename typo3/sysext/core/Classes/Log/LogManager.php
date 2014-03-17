@@ -53,7 +53,7 @@ class LogManager implements \TYPO3\CMS\Core\SingletonInterface, LogManagerInterf
 	 * Constructor
 	 */
 	public function __construct() {
-		$this->rootLogger = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Log\Logger::class, '');
+		$this->rootLogger = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(Logger::class, '');
 		$this->loggers[''] = $this->rootLogger;
 	}
 
@@ -89,7 +89,7 @@ class LogManager implements \TYPO3\CMS\Core\SingletonInterface, LogManagerInterf
 		} else {
 			// Lazy instantiation
 			/** @var $logger \TYPO3\CMS\Core\Log\Logger */
-			$logger = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Log\Logger::class, $name);
+			$logger = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(Logger::class, $name);
 			$this->loggers[$name] = $logger;
 			$this->setWritersForLogger($logger);
 			$this->setProcessorsForLogger($logger);
@@ -121,7 +121,6 @@ class LogManager implements \TYPO3\CMS\Core\SingletonInterface, LogManagerInterf
 	 *
 	 * @param \TYPO3\CMS\Core\Log\Logger $logger Logger to configure
 	 * @return void
-	 * @throws \RangeException
 	 */
 	protected function setWritersForLogger(Logger $logger) {
 		$configuration = $this->getConfigurationForLogger(self::CONFIGURATION_TYPE_WRITER, $logger->getName());
@@ -132,7 +131,9 @@ class LogManager implements \TYPO3\CMS\Core\SingletonInterface, LogManagerInterf
 				try {
 					$logWriter = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($logWriterClassName, $logWriterOptions);
 					$logger->addWriter($severityLevel, $logWriter);
-				} catch (\RangeException $e) {
+				} catch (\Psr\Log\InvalidArgumentException $e) {
+					$logger->warning('Instantiation of LogWriter "' . $logWriterClassName . '" failed for logger ' . $logger->getName() . ' (' . $e->getMessage() . ')');
+				} catch (\TYPO3\CMS\Core\Log\Exception\InvalidLogWriterConfigurationException $e) {
 					$logger->warning('Instantiation of LogWriter "' . $logWriterClassName . '" failed for logger ' . $logger->getName() . ' (' . $e->getMessage() . ')');
 				}
 			}
@@ -144,7 +145,6 @@ class LogManager implements \TYPO3\CMS\Core\SingletonInterface, LogManagerInterf
 	 *
 	 * @param \TYPO3\CMS\Core\Log\Logger $logger Logger to configure
 	 * @return void
-	 * @throws \RangeException
 	 */
 	protected function setProcessorsForLogger(Logger $logger) {
 		$configuration = $this->getConfigurationForLogger(self::CONFIGURATION_TYPE_PROCESSOR, $logger->getName());
@@ -155,7 +155,9 @@ class LogManager implements \TYPO3\CMS\Core\SingletonInterface, LogManagerInterf
 				try {
 					$logProcessor = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($logProcessorClassName, $logProcessorOptions);
 					$logger->addProcessor($severityLevel, $logProcessor);
-				} catch (\RangeException $e) {
+				} catch (\Psr\Log\InvalidArgumentException $e) {
+					$logger->warning('Instantiation of LogProcessor "' . $logProcessorClassName . '" failed for logger ' . $logger->getName() . ' (' . $e->getMessage() . ')');
+				} catch (\TYPO3\CMS\Core\Log\Exception\InvalidLogProcessorConfigurationException $e) {
 					$logger->warning('Instantiation of LogProcessor "' . $logProcessorClassName . '" failed for logger ' . $logger->getName() . ' (' . $e->getMessage() . ')');
 				}
 			}
@@ -168,7 +170,7 @@ class LogManager implements \TYPO3\CMS\Core\SingletonInterface, LogManagerInterf
 	 *
 	 * @param string $configurationType Type of config to return (writer, processor)
 	 * @param string $loggerName Logger name
-	 * @throws \RangeException
+	 * @throws \Psr\Log\InvalidArgumentException
 	 * @return array
 	 */
 	protected function getConfigurationForLogger($configurationType, $loggerName) {
@@ -191,8 +193,8 @@ class LogManager implements \TYPO3\CMS\Core\SingletonInterface, LogManagerInterf
 		foreach ($result as $level => $unused) {
 			try {
 				LogLevel::validateLevel($level);
-			} catch (\RangeException $e) {
-				throw new \RangeException('The given severity level "' . htmlspecialchars($level) . '" for ' . $configurationKey . ' of logger "' . $loggerName . '" is not valid.', 1326406447);
+			} catch (\Psr\Log\InvalidArgumentException $e) {
+				throw new \Psr\Log\InvalidArgumentException('The given severity level "' . htmlspecialchars($level) . '" for ' . $configurationKey . ' of logger "' . $loggerName . '" is not valid.', 1326406447);
 			}
 		}
 		return $result;

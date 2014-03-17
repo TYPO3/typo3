@@ -23,7 +23,7 @@ class AbstractProcessorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @expectedException \InvalidArgumentException
+	 * @expectedException \TYPO3\CMS\Core\Log\Exception\InvalidLogProcessorConfigurationException
 	 */
 	public function processorRefusesInvalidConfigurationOptions() {
 		$invalidConfiguration = array(

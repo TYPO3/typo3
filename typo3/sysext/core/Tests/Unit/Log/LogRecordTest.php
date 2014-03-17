@@ -91,7 +91,7 @@ class LogRecordTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @expectedException Psr\Log\InvalidArgumentException
+	 * @expectedException \Psr\Log\InvalidArgumentException
 	 */
 	public function setLevelValidatesLevel() {
 		$record = $this->getRecord();

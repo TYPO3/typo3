@@ -151,7 +151,6 @@ class LogRecord implements \ArrayAccess {
 	 *
 	 * @param int $level Severity level
 	 * @return \TYPO3\CMS\Core\Log\LogRecord
-	 * @throws \RangeException if the given log level is invalid
 	 * @see \TYPO3\CMS\Core\Log\Level
 	 */
 	public function setLevel($level) {

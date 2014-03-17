@@ -23,7 +23,7 @@ class AbstractWriterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @expectedException \InvalidArgumentException
+	 * @expectedException \TYPO3\CMS\Core\Log\Exception\InvalidLogWriterConfigurationException
 	 */
 	public function constructThrowsExceptionWithInvalidConfigurationOption() {
 		$invalidConfiguration = array(
