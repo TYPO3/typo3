@@ -280,9 +280,17 @@ class t3lib_softrefproc {
 			// First, split the input string by a comma if the "linkList" parameter is set.
 			// An example: the link field for images in content elements of type "textpic" or "image". This field CAN be configured to define a link per image, separated by comma.
 		if (is_array($spParams) && in_array('linkList', $spParams)) {
-			$linkElement = explode(',', $content); // Preserving whitespace on purpose.
+			// Preserving whitespace on purpose.
+			if (strpos($content, LF) !== FALSE) {
+				$linkElement = explode(LF, $content);
+				$glue = LF;
+			} else {
+				$linkElement = explode(',', $content);
+				$glue = ',';
+			}
 		} else {
 			$linkElement = array($content); // If only one element, just set in this array to make it easy below.
+			$glue = '';
 		}
 
 			// Traverse the links now:
@@ -295,7 +303,7 @@ class t3lib_softrefproc {
 			// Return output:
 		if (count($elements)) {
 			$resultArray = array(
-				'content' => implode(',', $linkElement),
+				'content' => implode($glue, $linkElement),
 				'elements' => $elements
 			);
 
