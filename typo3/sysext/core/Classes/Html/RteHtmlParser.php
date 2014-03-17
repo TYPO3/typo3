@@ -433,7 +433,6 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 								$attribArray['width'] = $magicImage->getProperty('width');
 								$attribArray['height'] = $magicImage->getProperty('height');
 								$attribArray['data-htmlarea-file-uid'] = $fileObject->getUid();
-								$attribArray['data-htmlarea-file-table'] = 'sys_file';
 								$attribArray['src'] = $magicImage->getPublicUrl();
 							}
 						}
@@ -461,7 +460,6 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 									$fileObject = $fileOrFolderObject->getStorage()->getFile($fileIdentifier);
 									// TODO: if the retrieved file is a processed file, get the original file...
 									$attribArray['data-htmlarea-file-uid'] = $fileObject->getUid();
-									$attribArray['data-htmlarea-file-table'] = 'sys_file';
 								}
 							} catch (Resource\Exception\ResourceDoesNotExistException $resourceDoesNotExistException) {
 								// Nothing to be done if file/folder not found

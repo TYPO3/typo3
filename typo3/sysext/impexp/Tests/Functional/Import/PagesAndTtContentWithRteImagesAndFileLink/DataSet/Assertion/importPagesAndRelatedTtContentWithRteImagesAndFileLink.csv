@@ -4,7 +4,7 @@
 ,2,1,256,0,"Dummy 1-2"
 "tt_content"
 ,"uid","pid","sorting","deleted","header","bodytext"
-,1,2,256,0,"Text element with image in RTE",<img src="fileadmin/_processed_/csm_typo3_image2_5c2670fd59.jpg" title="typo3_image2.jpg" data-htmlarea-file-uid="1" data-htmlarea-file-table="sys_file" height="225" width="300" alt="" style="" />&nbsp;&nbsp;And here a <LINK file:2 - "download" "Initiates file download">link to an image</link>.
+,1,2,256,0,"Text element with image in RTE",<img src="fileadmin/_processed_/csm_typo3_image2_5c2670fd59.jpg" title="typo3_image2.jpg" data-htmlarea-file-uid="1" height="225" width="300" alt="" style="" />&nbsp;&nbsp;And here a <LINK file:2 - "download" "Initiates file download">link to an image</link>.
 "sys_file_storage"
 ,"uid","pid","name","driver"
 ,1,0,"fileadmin/ (auto-created)","Local"

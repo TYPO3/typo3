@@ -68,7 +68,6 @@ class SoftReferenceHook extends \TYPO3\CMS\Core\Database\SoftReferenceIndex {
 				// Get FAL uid reference
 				$attribs = $htmlParser->get_tag_attributes($v);
 				$fileUid = $attribs[0]['data-htmlarea-file-uid'];
-				$fileTable = $attribs[0]['data-htmlarea-file-table'];
 				// If there is a file uid, continue. Otherwise ignore this img tag.
 				if ($fileUid) {
 					// Initialize the element entry with info text here
@@ -79,7 +78,7 @@ class SoftReferenceHook extends \TYPO3\CMS\Core\Database\SoftReferenceIndex {
 					$imgTags[$k] = str_replace('data-htmlarea-file-uid="' . $fileUid . '"', 'data-htmlarea-file-uid="{softref:' . $tokenID . '}"', $imgTags[$k]);
 					$elements[$k]['subst'] = array(
 						'type' => 'db',
-						'recordRef' => ($fileTable ?: 'sys_file') . ':' . $fileUid,
+						'recordRef' => 'sys_file:' . $fileUid,
 						'tokenID' => $tokenID,
 						'tokenValue' => $fileUid
 					);
