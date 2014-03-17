@@ -703,6 +703,7 @@ class PackageManager extends \TYPO3\Flow\Package\PackageManager implements \TYPO
 	protected function sortAndSavePackageStates() {
 		parent::sortAndSavePackageStates();
 
+		$this->initializeCompatibilityLoadedExtArray();
 		\TYPO3\CMS\Core\Utility\OpcodeCacheUtility::clearAllActive($this->packageStatesPathAndFilename);
 	}
 
