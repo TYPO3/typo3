@@ -4,6 +4,7 @@ if (!defined ('TYPO3_MODE')) {
 }
 
 // Open extension manual from within Extension Manager
+$signalSlotDispatcher = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\SignalSlot\\Dispatcher');
 $signalSlotDispatcher->connect(
 	'TYPO3\\CMS\\Extensionmanager\\ViewHelpers\\ProcessAvailableActionsViewHelper',
 	'processActions',
